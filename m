@@ -4,147 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C704CD98E4
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 05:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D68ECD98E4
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 05:25:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EA606B0005; Sat, 20 Jun 2026 01:02:58 -0400 (EDT)
+	id CCB116B0005; Sat, 20 Jun 2026 01:25:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19B6C6B008A; Sat, 20 Jun 2026 01:02:58 -0400 (EDT)
+	id C7C3A6B008A; Sat, 20 Jun 2026 01:25:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 063D46B008C; Sat, 20 Jun 2026 01:02:58 -0400 (EDT)
+	id B6B486B008C; Sat, 20 Jun 2026 01:25:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D53FF6B0005
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 01:02:57 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4D5291C5227
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 05:02:57 +0000 (UTC)
-X-FDA: 84899096394.19.F641EAD
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 33957160003
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 05:02:54 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=O2qWmUiR;
-	spf=pass (imf08.hostedemail.com: domain of stevensd@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=stevensd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B7856B0005
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 01:25:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8636A0668
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 05:25:52 +0000 (UTC)
+X-FDA: 84899154144.10.DEA02DE
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CDA5D180005
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 05:25:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=E7jM0yCy;
+	spf=pass (imf06.hostedemail.com: domain of stevensd@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781931775;
+	s=arc-20220608; t=1781933150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q0iI9bSF47iakb7tyW0taNGyAqiHP/K8psT2l20DPKs=;
-	b=e9BFrSwnvFWckc58oQ4A63Z9L3UsLxBKEtyeUUsXQ3S2K+0tu38H6kFq4nfMnhmYA/yD+/
-	dTvaRaZKG3x0nFz2fONDVwjNGwtLtG5kAtBTmVpxZ5BpscuqGb9XbzJIMhY+scLHGBlNMj
-	oXItzewfUpeEwilLhYVwyTGmfwLpQ5o=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781931775;
-	b=3G2B8Puf6q3zTJJTo2TjQw0t2KJm8qJr3savpexEWbxv/kQnYe19+DC1HcAlvqpGXr1HXP
-	th1QmIaXJKqaflE0KhIhdIfDm4JYZoxbVhnBPPDT4CfX6TV2WYIbxnbUyNLkpJa4ZohQTr
-	aTSe0/cmfBjK4UQWvVg31T09+h49GeM=
+	bh=qxtWIxGNRrF9UndHpAngMe2xl+y0Kw1z8tCAncmG/5s=;
+	b=szgDhdLzJYq6dOM2Rrbm8G8aVIQ2jfOxnWSmXzCNQB00VCVgQRx9WwAHdUTplY//SC/npc
+	vmq0ydnMZCo4h7XNpCRM7lGqOOEcxi7fR8yKATr8biLrJqidytht8gCDnUwuPuOkt4nyET
+	4K4G/cacY8YAru8r3rpJ4L94UdqY78g=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=O2qWmUiR;
-	spf=pass (imf08.hostedemail.com: domain of stevensd@google.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=stevensd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-69605f796b8so11848a12.1
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:02:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1781931773; cv=none;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=E7jM0yCy;
+	spf=pass (imf06.hostedemail.com: domain of stevensd@google.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=stevensd@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1781933150;
+	b=zlmMjhzCguQqbmLirP/IjqEMUxfhczEkNO+V4VqELfd8OkNWTiR9rTPzwO6rEq3th9s9pi
+	yn14DjrR6CBLshUPdGNmGSyjfOZI6U3HxU0cgQLXtByMpl4u+t25zVFLPK0rTjQVZYcDpQ
+	/UySoMiz9CD9yn0w8PX78iZBvcCqh3s=
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-695a3842230so15716a12.0
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:25:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1781933149; cv=none;
         d=google.com; s=arc-20260327;
-        b=IJSWNjKCqcgMkEpnuIN7YEyK79MnTbRmK4kNzx9Qv9Bi1Ay4VPaICFfY9Oft8i9fRp
-         AhB4OxbrzhQ3KlXcatsv6ModKhySTwFRnhpY9UKcg5NlD+8PFCX0DwcqUGPzjm9ehXn9
-         QnUD8F3gVfC00cVUDa7szvJgYfclMuik8PmdVf47sTqM9E1V+by8IyDz84ZDFF6goFFv
-         xbFCAiHaIZHCqHOFmh098t+SNjjws9su6hPLap1W7UGucNjia+CmS6d2RlglcqQgSTFM
-         uL1sQr6blSe1h5ljLcevhU9nbUy0tuOgbMEYB2WwHdCBJHyIhjh/gwj2BjuBR9ws6R6r
-         vTxQ==
+        b=ofzu5DhT3pP4uv+5ZQsSYpX9pYedxQwXLvKRPGE7d0mLjNYnayEtJTz8BMdq3Kghyc
+         7AaD7vMAA/JoeEv/+SMVSx1MQxTAsmCRHJo6kgVJaphHzTwWupFAWoZ1aIcS+nTLsvC8
+         +M4nJRyZNp5hdd66RTwD8Od3H03/FjyIVK93ejUIA6iWBXlU/zFY3N+FokSMJ35b9ZZ1
+         HDAOd3sDoX37oh3j4kjXj4GiLaSbxkTT95++Fy6ghMmmVT4bn3RoLyQZdlQlPsLZsiVw
+         5D4dd2X0x8QMivE10vXfQRGaMpKW3UFXpbwVH+ZO4MP1Evte6Jl793hr5Bf+6aKcHWg6
+         7pqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=q0iI9bSF47iakb7tyW0taNGyAqiHP/K8psT2l20DPKs=;
-        fh=la4TTex1r112Cyf91+nl/p3OBPaMWnZJKtTZtfgYBMU=;
-        b=H6QEl+r9FRjbi6T4D3hiiInNcmavn2Tn5ZhUeCNSLHKacP0nQWwqJhTnsA+O5d5V4r
-         50qchvHAYny23lu4qsJbPmeVEtGVumLS701EjUzpUnmoiMRB9pFzLXkKwtXWm7Y29ywG
-         YsCXMkcde7jc++Pq1eGE7TGQYDYAxC7R2z+pNvK2LA+aRIxNCBRWtSiBeQdxsLcbtT5X
-         kOQjeHjN6dReTUlwjp/bseplyu3bb57i9EKEMd8jOI7+2o7oLdUeuyJM3p7ofYIp6L3N
-         9iG7ufaqThmk8fi3yiuGJ5i1X427SA5/3HvixjHk2PXGAqswtk2dCYzwge5zKAfvskcx
-         0lpg==;
+        bh=qxtWIxGNRrF9UndHpAngMe2xl+y0Kw1z8tCAncmG/5s=;
+        fh=knNLUZI/ISB9gn4XjnI/3QDutis28L1HeHmdLSOSqXk=;
+        b=g0yaM1tG7I54U7jYpZQd1nzLRmimo/yR5Qr3qXaXKhqO86ixkPFWRO9i9SSm/xiaDT
+         SNtONbLjBlD8PssF/8LMxBz6yng8irlq2jX4F+yJs/feS1lnnsIfJ3Dmz82QMQ3wwW4z
+         vNShwe/k7Ub0/DqrNsDNBhpk07/9xWye1wDEk7p0ssCx7+QOuFV0tB/QLJYluoxpcqDp
+         Bt1VNd1CxRD92TVp96sPgL+4Y6bZ3DYj1VOvP3sGiAWlHTE6yWjSsAWK6BtKK81rWDAK
+         1qU9C4NC2x58DRfaQGJ1nKcGwveN6cP7KdrnOIAWWdjRYLKZMMQlB5Y7LdcrlbDFUGjw
+         4/1A==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781931773; x=1782536573; darn=kvack.org;
+        d=google.com; s=20251104; t=1781933149; x=1782537949; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=q0iI9bSF47iakb7tyW0taNGyAqiHP/K8psT2l20DPKs=;
-        b=O2qWmUiRx/PgCJHiTYqmpV9kR8eBdV8UNNyCj/lNxwUoSmj+MRBr+5XiwyAQlFjTkN
-         0LtRPbtSJ2Xf29KqGwT+DPyLg33AqOssURF8F/1GBvp4UlCPyG+B47xBQMt9wdUzBHcP
-         OEthCGrsPvZUeXR7AZuJwWVeuM0yDer0gOwk++BjX6BS/XGXk8p8CEDwI6PfPH+H0/gy
-         NiCpjqpG0myk3wTiFArQCfsf/xF0vFkVTBMvzDTabBjZTMVppOh25+3gfdJPiWTjnOOo
-         03Z2EjGVulG/Db8g4oqjdvozjBfb3+9+80FLMVQRhjBnFYCvp5r5dGEsfYdBBE0g6Ay1
-         V/ew==
+        bh=qxtWIxGNRrF9UndHpAngMe2xl+y0Kw1z8tCAncmG/5s=;
+        b=E7jM0yCyFfVj+TjgZc8UE83P/AbOslvylcCITSBQ28Zpwsz5Z3pYKDJWSm9N4VHnug
+         xcanVlPMRDeKOQFZ8szru5RBUHifsplMiz7/u6ZhIEbUT78jGCcd9sejlsxoBXNF4hWo
+         vmHf0R8bEMgl6zGwm3EW1dbZvz/dd28U6i3T8EvgQ55Fhebo9cV7TT+qs6wmvnfVfTV1
+         BUfvqy3Me/Y5iH6jvPv4QAECFLK10K68nj2hifBfXCD4hWgeDfv2dlC0+/Y6L8zHdLCm
+         Jyn6PRT3YD/VrUHJ0YLvrlAKOtWLoRW5KTHv9T2cnLorygc4cOFPrKcAEb+45AEvqQUO
+         GZCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781931773; x=1782536573;
+        d=1e100.net; s=20251104; t=1781933149; x=1782537949;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=q0iI9bSF47iakb7tyW0taNGyAqiHP/K8psT2l20DPKs=;
-        b=mhtV+l8AgCFIDO7O9ttQ+WtC67NTwGSuB+KrPXde5+ftN5/pmziQIYIAXq81HoBOEG
-         Rwe27tiVusAu2GOnMtz6otRgm0tXH3zM+KJs/Lc4YfyS/M82e3RpbiIIRPqduLuPwtQL
-         C+qkaEbwE8O7xXFpvxyMEj33prQqjx1BbOZp3C6FundgdAHY1eS5d2RJ94yLjyAU2JEg
-         +mw7dWt2fsQf5EoTz2h2WHwsg1xXux5KvCg19Pm8mE9U12eRDq2siS8vV/6XX/xaFWnH
-         l5sXc4/FAVg2dCoo0zCqqm3DE2Wv8fOFSM+rOmyguh7cuR9ld5PZ5fMgzAurprvVPZge
-         DZJw==
-X-Forwarded-Encrypted: i=1; AFNElJ9QIqMsTSCF32pNofp+PcqCFYa0kUkGIlpG5l+T24Cwy3+cnfy7PCjnGb788PRr8mYqvakHqFTlNA==@kvack.org
-X-Gm-Message-State: AOJu0YznmryP60cqnVZI4Nu7uvEWt7dH3gIAC+tQeOX3jT/wJ0fhHUSA
-	vvTeDeg4YvtOx7PxNRZCVF0F0ItX7L4Rfjm5AszHoiSQLAtKKI+o8TBiHcZs4bSnPnqz3zg/nrT
-	Yh271pfwnrM19AAsPC7Bkh2nFZ2DYk3/mWHKPdA0v
-X-Gm-Gg: AfdE7ckemd2k33Y73YbhdM6V5uhNbVCe3DZ8M+u9qkBip7sfU7e2JWDxg6t8u0OxEBd
-	W16m98pKkl9t43w8V+6cOyVGU2k8You1q9udSjrttSTmuGKTvfIzoSJ0+Jo12x8S2NnT1a/6VAr
-	aTvBoi6sU1FEnEkJj2QkE+mSlM27/kDN1IPRUfoV9Gfebs0E5vlWBS02F312o2hZymEUzOyxKyA
-	rCNde8NXafvzGmpv8CeWQKxHlFMpXS0RzNm4LYodl0z6Lz63WcHSJEaAKSk4+9/Nd9AgBiHXTFb
-	qZcyeHG4TUm+LtpUIYuiR5iSF+w=
-X-Received: by 2002:aa7:d644:0:b0:697:6207:bad9 with SMTP id
- 4fb4d7f45d1cf-6976207cf04mr28895a12.2.1781931773020; Fri, 19 Jun 2026
- 22:02:53 -0700 (PDT)
+        bh=qxtWIxGNRrF9UndHpAngMe2xl+y0Kw1z8tCAncmG/5s=;
+        b=OYoI6/y+37cSfdG6/BKsEC59Rcz8QV1huoEC7208LzWq4HIRTxfMwCYBcv9n87KYR5
+         NFYuKHyDVoUNv4OWyixyQOe2msytDhFQ0xoI0KgCf+dB3AwFc2YpHNDP3QieKyKRnAwl
+         AKMs8qW6I91wqmWGCr/rdeHKgf44pY/TQbVEDufCk68Gi2072EvMSBt7zHwSgYn0lKBl
+         WQy63W7U97q93HC5CKNBmP2Ze98U54Y8lkDL34SwuoUrhXhK6JPJlbi6VoWmAtfNLeKa
+         hxVVBK0908nWd0DslIWi/iRoFvhuwYamZmNAboCjBK/zYSYg4WhtrvjdCCvgLnuve3kK
+         VrXw==
+X-Forwarded-Encrypted: i=1; AFNElJ+K9qf9cGSWkg0Vd2LuGbvmcf5EfqMcYYu+cfqwHmc51Pr50vu8axpWLoPaeMUViwDhrQDYEebXNw==@kvack.org
+X-Gm-Message-State: AOJu0Ywu5J/TdCrpSTeQMsAEwqt4fY5Gjp3lrNg0vpqDGEXkVB31B7LW
+	js6I7/4ZvH6iUaOaDATgs9y3Eafk3Wi5Ie4uOQ/a1oGxHtBPq1UbhUHtbLa/ZO/xD/tRiAshCF2
+	3i2kv3RR7brTgErX3fotSNnXmJ2zKdavEqh70SWAM
+X-Gm-Gg: AfdE7cmUxnou8oIKXSV6H8EKA6uOslC/pWublcDOCrIACEI/gVleQ7TpxL3aDPs8qd8
+	3nnN4cIRxn6ZKtTHoKZFY5o4RLX14Djsyz3zK45ZcrNxib0iXuSAdIaLjE/ixmsgomkz72SIeBn
+	CaEE/tOw0vozsG5smyxWeiELE6mDvQ0bYZemqx5AsFnhmmogC0bwtvD7A0fWmZ7IIgWkl66IpOa
+	cSidr/4uQOH7yyKzYkRZ5W6d2lkDH2tyACUjMQeaJs9rxXcGivLxK8+/k4bU8pArDi65x92CgpK
+	+AwqBSbEdgnvy9i1EW8JxdpsOcw=
+X-Received: by 2002:aa7:d4c7:0:b0:695:46d9:11d6 with SMTP id
+ 4fb4d7f45d1cf-697217024cfmr64894a12.6.1781933148700; Fri, 19 Jun 2026
+ 22:25:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260424191456.2679717-1-stevensd@google.com> <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
- <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com> <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
- <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
- <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com> <87pl1md7h0.ffs@fw13>
- <CAAa6QmSHBDeY0G=_N1P4dAAH917J7jerfZrWDfDd8w=8jH8nVw@mail.gmail.com> <87qzm2b39k.ffs@fw13>
-In-Reply-To: <87qzm2b39k.ffs@fw13>
+ <aevhw9xqz1pWA2Ow@plex> <20260424232637.054f15dd@pumpkin> <85f19b94-18c6-471d-88f5-c05a2f10199b@intel.com>
+In-Reply-To: <85f19b94-18c6-471d-88f5-c05a2f10199b@intel.com>
 From: David Stevens <stevensd@google.com>
-Date: Fri, 19 Jun 2026 22:02:39 -0700
-X-Gm-Features: AVVi8CdYsUgsv573HUpfVVTdLRp23QhLPSRh7IggFdi1Dy7-4X398t61LvilB1Q
-Message-ID: <CAOiLmNFC+BWdBNm_waA2Ly1x6oyCzsomc0AM=r5TkQK3YskfGA@mail.gmail.com>
+Date: Fri, 19 Jun 2026 22:25:36 -0700
+X-Gm-Features: AVVi8Cc8O3sgTO_px-jKk_eMUMKdRMah9dQplctrEbQoYn4hRfDQhOOq67WvDsk
+Message-ID: <CAOiLmNE8okatb6RSonemyMT+BGVGg2h3=i_Epg5zppfp1Ks54g@mail.gmail.com>
 Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: "Zach O'Keefe" <zokeefe@google.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, 
-	Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: David Laight <david.laight.linux@gmail.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, 
+	Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 33957160003
 X-Rspam-User: 
-X-Stat-Signature: q83w8nhq4ptt3h8bg65xoukxt41x7pxu
-X-HE-Tag: 1781931774-789879
-X-HE-Meta: U2FsdGVkX1/o5diYYykuoqd+EROUB2x0hrAhslk5+20H0z5PBqVjg/oM4qFOv76v+SD6YYBR0I56TVFCpyVmhnHB3M9oa9Mds3J11OUJkmdEok2L6RX8IZDAS/PtxWzEAc3uiwZm2Dc78Wf9qzcq6qqZEdYZL/IVirOWdGlWDtovNLP6HHAaOYdV07AR3elthpHRtLk6RL2ROiLrxZhREsdjPac1zd75bY8u0BL2ncY48TMTBdh+CxhR2B2DFvsuVxcmlaqLHz7jxZtJrs5UVRVqp4OIxzukoqy0vNP+PhFTBtkm89k6G8B7ptAS4ogYI0h45fLqL028CX7kG3jYQyRFj2TY0rpXoL1Ig9WjMTIi29SZsQ2zgw8ui4o3opcfPePDuS16mHKYNz6L1X7e2fTKw9VmPr+pFZ7IXNwHO+Ej9aNyU5UeCOjb7e8/yV27Tc/5j9k+tVWw/voltF2WOmA38EadCRp+SqFWMNcH1KQSc9c9SpNnEC+vYZp+aGkR9wupIYXxxVLXk0/1FpkF0KcVM6xw7zy7W0++EV7jCERJ5Ubw5GQ6EK0iomGWJARq4gbCSL0paiacBLlV4Y+VArtcYKk1/XD6bLCHmKsQ9B1273Bo0yHcGFxfJ7XekJ6z/wkUyB9lXQ6k6Mv3wRbd0vwBZynLUcxFA9D4QyMstXCBLRjKS8GeqwdOoh9sLOFwpWj2MtOtaEEGhjh63ZsiI1/8pJ9oXu3gaCPW90cCB8C+G68mvPrCqpHSDYuAObzJH63S/x9bwPquuVuTKXV64uQ67xKmozqGXeKQ9esEF7qUOIl4AIUHcedom7gT4nUunSsQkGFOwMgiPy/9QkWPYfMKiLfEmxhr1pFsX4MjQAB9ePPymTBuEeltZCdjuOUkqjES2N4agzDSShrgY+8ZfBYKWHU2tiUtV6l+068yvoNvVG3igwdmEzcEI8TrDUVBYGP216MH+QHcUMGBrNP
- S0FSBvqN
- lk8ObsGRYFtiOBd29shxVKIExc8zylEvlUB3hzl1Hhg2RVchRb9LhdBnVfzHNSA6fIsHNdhti+2T4lq3cydxoY+XiwyY8nintULw5us7UC/YxCsZWytalMGJlsCNXUO23xVGBr04/9O7pyFvWkCv2kWYZXFAP0XbbeOznHxACQ/qWjpzVQ+GpnF8BdJzCt0cf0k745EDD12O5sBpsYNJBuAntpaRipficPf/YwaCdojIz6k+j9IH+8yoz9xI59VWKXQWX+RrXJfTDO3Y=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CDA5D180005
+X-Stat-Signature: dg91wa9r5ecmtwom7d6scrz13s3rmchd
+X-HE-Tag: 1781933150-168164
+X-HE-Meta: U2FsdGVkX18plXukqVzaUZTE6aFEa1wxmep3VjUOsFVSDNvlSreCoav21p13wAf4o732+GWgXG25PVsnRsKSqovTnWgTaDrq953t0mAGuSKXCTMeQIEuSgjiBeAJbArfdkPVh+S7ghhEAMj5Z+RiAqFvYcrAUYIJNHMKXBYfWVj7PhMyWvFnWFjqa/yfQC327cAex2QWU53l++OgXDBxf242Gitx5iU0duOGKlJcYzmuEolv9o9t7wSe78a9TE3vrIVclaR1Go9JmLEq6jKV+nJ2lqOexNPYaJRWk/j/sZoDuunUXBNTsTt7HZ/4jJuVKN/CWzKnkTJdKfb6TOa1MW5Gt/LIYQYzb5zK/4LZQ1sUGZyvx981159+orODA5Ia0v8MdevWDU8O4UD/pJhN2madVTxIHkDZ3fY0J20rHPJZyvAQPpRSXFpDCbnWYA1GpUo6pH5G8CLfPyq3aXSDTq6mK3m7LwKhye3tYuUaE3eF5sNuYCjbPDBdhCcBThfp7uUqDEMOl4ahjbvHV1EeSu9GtsA8M5LSu4MEI8lp9R+LdXJjYjvYtXLDd0K4+dk7aX1iAzSbeRRCOD/ew/PASn8StpvlBFkkK1LbtfY1CbI33WAJDRFE/aLaUuRcLD4f4SWKy+eOdWERAAwrq5gyNWo511+z5m5sqaqz0mR7WJeFf7u0E1f62I85QRyqNag6OzUE0dhG0w2x7vcl+6RHqB1G4wQKN7NhjRkaTUOAwwo5ROSTxJ4yTRxNwVA0cUVdJ1c2QjkCi3c8OQBfN9jt/3/XOExUCFBJtcrpNZJIogDDuv+KpaUDIcmqs4wEeIgTPUEh7DT2tbJq9CPFC6P1g5LXV+Mt9+FC/MhG8O7+iGcYKOPzSfWYC06gpQh+QAilZ0Y03vtrlukNIJzFGlcTD9MHuGZkGk3qtLk1IMPZ+YtQbbPfCJihodMO51JQLlYSt817PhCvdMTZyyyKbqL
+ lKh1jlZj
+ dv91/JlQahsEV3Dyh3Hh+1cfboWLsuaLH3wULFrwm2D0yNEsRDA/V9224A+YvJ+0AFX7Uw0YvwnjfYv/Bv1VPtTMGl1esmBgnpsCCb+IXSDJZtmTwkFXGLnjR5sr+VMtF/ruSyjOjYE2nIUnO/SLfQhI1N0XMz2Kgc0ppyQFOT9DmKMBnJEi6+slAcnxCTtJYnol/HtfiJ3USd13YQzN8z1YERJZvhyqEh2ihlp7VbevZJK7yQZzixIPNMXKPEvdBEEutWLY0kKIScDnbCnSIHF9b4/a+YcY1ru7aJVJOe3jfoB1kkp4gpN2SGFG/K4uI4OeOqif7YTQB2JZAthpOXymOZA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,109 +150,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 2:59=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> w=
-rote:
+On Thu, Jun 18, 2026 at 5:29=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
+ wrote:
 >
-> Zach!
+> On 4/24/26 15:26, David Laight wrote:
+> >> This true until, in a fleet of millions of machines, you encounter a
+> >> one-in-a-billion chance of a stack overflow. You are then forced to
+> >> double the statically allocated kernel stacks on every machine, paying=
+ a
+> >> memory tax even though 99.999..% of threads never exceed 4K. This
+> >> overhead accumulates to petabytes of wasted capacity.
+> > And then you hit a stack fault in some path where you can't sleep and
+> > there isn't any available kernel memory.
+> >
+> > An alternative idea is to arrange for some system calls to sleep in
+> > userspace, so when the thread is woken it re-executes the system call.
+> > It then makes sense to assign the kernel stack to the process when
+> > it enters the kernel.
 >
-> On Fri, Jun 19 2026 at 12:20, Zach O'Keefe wrote:
-> > While it seems common opinion that the IST-based solution is fragile,
-> > what of FRED? It seems like this is exactly the kind of support needed
-> > to avoid some of the aforementioned sw "mess" in various x86 exception
-> > handling paths. I agree that it's less-than-ideal that we are forced
-> > to downgrade exception levels in the common #PF case, but is that an
-> > unsurmountable problem? Pardon my ignorance.
+> There are probably other ways to do this without handling exceptions.
 >
-> The #PF path is considered perfomance critical. But how much the
-> downgrade matters needs actual numbers to analyze under various workload
-> scenarios.
+> For instance, let's say you always *map* 16k of stack for each process.
+> But, after context switching out, you take a look at 4x8b pte_t's that
+> were mapping the kernel stack. If the _PAGE_ACCESSED bit is clear, you
+> can just clear _PAGE_PRESENT and reclaim the page.
 >
-> I've not seen numbers to that effect anywhere. The only numbers provided
-> are marketing material about the memory savings on a freshly booted idle
-> machine. There are _zero_ numbers about the actual real world savings,
-> but claims about the PETABYTE savings possible.
->
-> Seriously?
->
-> > Lastly, I just want to clarify what folks have meant by "extraordinary
-> > claims" or "evidence".  Aside from the above discussion on FRED
-> > exception handling, the "only" other part of this is the allocation.
->
-> Clearly anything which is explained with "shouldn't happen" and
-> "unlikely". At cloud scale nothing is unlikely anymore. That's simply the
-> reality of statistical math.
->
-> As I pointed out before the same applies to the unexplained
-> upgrade/downgrade game with external interrupts. Such issues cannot be
-> papered over without understanding the root cause as from decades long
-> experience they come inevitably back some time down the road. Cloud
-> scale even guarantees that.
->
-> > Are people concerned about memory unavailability, deadlocking-type
-> > issues, or something else? We have considerable design freedom here to
-> > avoid certain classes of unreliability, but=E2=80=94barring any clever
-> > tricks=E2=80=94I don't know if the allocation can be guaranteed to succ=
-eed in
-> > all conceivable circumstances. I want to ensure that reality does not
-> > present a hard blocker.
->
-> First of all the failure scenario has to be clearly defined.
->
-> Right now, if I'm reading the patches correctly this simply can end up
-> killing the wrong tasks/processes just because an OOM situation results
-> in a depletion of the per CPU cache and the very wrong task which runs
-> into the deep call stack situation ends up in the creek without a paddle.
->
-> Given that you even fail to abort a CPU bringup when the allocation of
-> the per CPU stack page cache fails, makes it pretty clear that there has
-> been spent exactly zero thoughts about this problem.
->
-> Why the heck does this cache refill call have to be unconditionally in
-> __schedule() where preemption is disabled and therefore GFP_ATOMIC
-> is mandatory? I know "Works for me" (most of the time).
-> And just because I was looking at the patch in question I found this
-> other insanity:
->
-> > +     /*
-> > +      * Most likely we faulted in the page right next to the last mapp=
-ed
-> > +      * page in the stack, however, it is possible (but very unlikely)=
- that
-> > +      * the faulted page is actually skips some pages in the stack. Ma=
-ke sure
-> > +      * we do not create  more than one holes in the stack, and map ev=
-ery
-> > +      * page between the current fault  address and the last page that=
- is
-> > +      * mapped in the stack.
-> > +      */
->
-> Can anyone with a sane mind and the most minimal understanding of the
-> kernel's inner working explain to me how the kernel can skip "some
-> pages" on the stack?
->
-> If the kernel skips a whole page or more then there is a serious bug
-> somewhere. I might be missing something, but again the "very unlikely"
-> wording which handwaves about it is just disgustingly useless.
+> If you don't want the overhead in the normal context switch path, you
+> reclaim in a shrinker, at the cost of needing locking to coordinate with
+> the scheduler.
 
-FRAME_WARN accepts values up to 8192 bytes, and it can always be
-ignored or simply disabled. If a stack frame is larger than 4k, then
-it's entirely possible for the code and compiler to align in a way
-where the first access in the frame skips a page in the stack. I think
-we agree that such code would be highly suspect and (hopefully) would
-only exist in out-of-tree drivers. But it's something the kernel build
-system accepts today. Dynamic kernel stacks suddenly turning that into
-a runtime kernel panic seems like exactly the sort of edge case that
-we would get yelled at for not addressing.
+My understanding is that speculative execution can fill the TLB, but
+won't set access bits. Speculative execution of a function call could
+definitely put an apparently unused stack page into the TLB. In
+theory, I don't see anything preventing one CPU from speculatively
+accessing memory from another CPU's current stack. You definitely
+wouldn't want to do TLB shootdowns in the context switch path, so this
+would require a shrinker. I guess if you're batching shootdowns in a
+shrinker, it's probably not more expensive than swap on a
+per-page-freed basis.
 
+> A simple rule would be: a thread that ever accesses a page gets to keep
+> it forever. They're never reclaimed after being accessed, only before.
+>
+> For that, the worst case is that you go to schedule a new thread and
+> can't allocate memory fill in the 4 pte_t's. You can't run it until you
+> or some other CPU goes and does some reclaim.
+>
+> Needing memory in the middle of schedule() is generally a no-go. But its
+> a lot better than not being able to continue _execution_ of a kernel
+> thread at *ALL*, possibly in a non-preemptible context, like when you do
+> it in a #PF.
+
+I don't think this is different from the current proposal from a
+memory allocation standpoint. Both proposals effectively maintain a
+pool of preallocated pages used to fill the current thread's stack.
+They vary substantially in when the pages are put into the page
+tables, but both need to allocate during schedule().
 
 -David
 
-
-> I disagree with Dave on the RFC status of this series. It's not even
-> close to RFC, it's at PoC status.
+> Basically, I think there's a way to do this that limits the kernel blast
+> radius to _mostly_ being a core mm problem.
 >
-> Thanks,
->
->         tglx
+> What else has been considered before the #PF-based mechanism?
 
