@@ -4,119 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC80CCD98F6
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 03:27:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3F47CD98F6
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 03:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FCE56B0088; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
+	id 392C96B0088; Fri, 19 Jun 2026 23:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D3BA6B008A; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
+	id 344256B008A; Fri, 19 Jun 2026 23:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E96A6B008C; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
+	id 2331E6B008C; Fri, 19 Jun 2026 23:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 348AD6B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3249140614
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:27:55 +0000 (UTC)
-X-FDA: 84898856910.18.F5F7494
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	by imf19.hostedemail.com (Postfix) with ESMTP id BD9831A0008
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:27:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O4vXqbj4;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781926073;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
-	b=zLv4TD82qDECpZnAKpxTuafD/VKXg7pPuhrX9n1amujviQWOqgxtLEo7u8yKFF+WFf7Gb7
-	N9pEWRyeestacT+gSro7+1RSmANd6bn9RjdRBr4xkB1H1kbjiOPRl00dPnaQgoubCQ/lBA
-	GB2KpI3hCQXs0cloWkbyhBSZSJRoNDs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=O4vXqbj4;
-	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E67926B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:29:43 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 520D11C2D9A
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:29:43 +0000 (UTC)
+X-FDA: 84898861446.20.A665348
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 73603180006
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:29:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ma8tPoxQ;
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781926073;
-	b=TYeF+iz31wpd1Wodn4y+Jy4AsqC94XuMKYGSm0ZMmuKTDw6E6qxsuXzw4mrhHTdTW/QWhd
-	K1XIrQMbgm47SmV9RbUK8S6GmRfQsLUUcsJ6RANbc17efhU12xsAuPuaSHTpp2Yt4QLzot
-	D9oChJ+e4ZsvC8SEYrcNtZ1/B6Nf6RQ=
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-441080fd7b9so1911558fac.3
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:27:53 -0700 (PDT)
+	t=1781926181;
+	b=DbvgbAkJLZcRT31U6lO8pc3PN9/Uazp6O3GCUCvmdjeAdzj2C/irUL7OgLSniTaHL6VvL5
+	1SjWErXYnZgAZxSuS+TY6Ej8OLxKTAqD2mvdzMwxr6qZiRIn2UlY/CN+htmXmG6fbK4dpe
+	x688C4Ozzps05BqdlA+VP4tWysHSdo4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ma8tPoxQ;
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781926181;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tKO/bKY66Ocp5lpRa+SnULzcfr11NnLnRjMS8RVn2Cw=;
+	b=bVH9Gu0LcYqo7x17bVkNu59M5kvU2KsPw1TLUyEWER53LbyIadRbt0ivSwg2zmOHNUGAKr
+	fAtbY7o7sEWfXHSBvrw87Kvdj8BE5/KXxfJlYQD4FQ5AtGITiXoKMTWngAU7Nz95OxieOT
+	ivBWAWqN6spBlUgp1l0tJxAc9jZvJj4=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-46066e640easo1623602f8f.1
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:29:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781926073; x=1782530873; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781926180; x=1782530980; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
-        b=O4vXqbj4Pz0zv4glfhSKL9EAUj1CEFFsE1saWZzZURWfFJ1+dKt9uRLkx0IURrNhJ2
-         MnHKpKTRNzwokF7VGdVtKetoOmuCEuH7RVCEPPG672HBhvl8uPFxzP/9lMatQkOtLwdA
-         0Njko8yEVQdlKB9v/Yj20NZMLWxZZpKOzRBIUWcAtHVUZD0Tfv2GE8tGstbVUXjPCt0c
-         n9Q5rSUUdcRCNMLYVWSv3IebyeJCJ6a673JPpTHgMq02gnN1Zc81KWzrPjORyyuCB+6p
-         zzauZoYFhv1ztZQvv5/LlHok7ekKsCBpGQzWRceJVsKcVn+SaDZSC9JG3H4huq04Ha/S
-         BpWg==
+        bh=tKO/bKY66Ocp5lpRa+SnULzcfr11NnLnRjMS8RVn2Cw=;
+        b=Ma8tPoxQhraZ8Pokqv40zcDdTZTzONo72yjZ6JNbZwYwVi5p3blh8u9NrBDRmpKSmC
+         rFZjsWmrhXDGS7gHxqojw70xA29J3JQxPTp3Oq9srnfvvZmA5ut2upxaGY34HKKgcw2w
+         54K8Zt6KyhlrwjQnNTq+k+2shGZehq6EM4Y5kmgeoOisPmBADxyG5M9F7Z6HfbUJXSAe
+         Ruxx8DO0PdhuhnTBcl/zCsZ5CjF9US67w6g4pNfA7VvI6yhH7ss/yC3C5TiPf3lhM6Ai
+         LVxvgPqlwykwNsXa3F3MS86iHXnvo/sqEzElap7y+8Mg/R8JuEcKaRzEmu5tFU6HoDa0
+         0AuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781926073; x=1782530873;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
-        b=HFD/eEHJIX38RvT60yW2Y37U3+TjqYb5bzAp8NmwmHYy840GdbA6Bjafb+YlpYfew7
-         OkJ4jUFaACNrZHd0UKMRgHl4JOhUG2eYSyKY2Gc4LxyQyGEuhiZ06GqzxvFLoFFa0ibG
-         GBKP53FEZ/7VfXucQGINxLpqcu3avEno681R4tAQI1yNmHnYJse+qrb5JxuEuDpqaIzv
-         vApiBFxuqbscbBZCn/b/4w13wNnzFkfilPfWtmvBIcF2DREJfM76sqtwZjKO3VRKYRfR
-         cabYeUWlKHGUrRVMeeo2cownELCY9Mpxy++d0m5Eftnx44jSodRKSoEm7ZXihceAbILe
-         +P+A==
-X-Forwarded-Encrypted: i=1; AFNElJ+m9+hiv1iW3H6FSy7rKDPrvTehOzZiPY5PTpDL70K6kCgE7nXyh3aOPCPdsI5roFeCw5bW7mZXnQ==@kvack.org
-X-Gm-Message-State: AOJu0YzrPhnQl8R7ALYHwH1HQSBQ7b6aShEHJkEuzmzCLwk9/itBEn96
-	zyDxk1N7tzi3TgKeD8KGcZoHd2mjId6tyqsT+RR9IEsmVMDSrVB861x5
-X-Gm-Gg: AfdE7cnsQ8Qsg569np8wX2hu7RWUb96WbmWeXA+c/Qkpm0xvznMXv4+LJhuq77WTz2O
-	NUTGhViv3rTHEqhieYpeFJUSkaQnxLdpLYifWUchcIo4axx7P40Cpv3MUXya/0oX5xVJ+MWBwPk
-	jl2Qa1bxOBV8Wo9K/gAClOCaHO+OQck76efnisS07034vJRSorPtT/KORUG29j3rIcw6UcISxC0
-	+2CZXU+ZY0p8qFCRRxaKh5bXhmYVVGVKnn8Rgzk8ZXvhjNNQHIol1fljJap9wDrJd4LO9yHX8iS
-	ogaxDIbUY2Y3DP2VhkBZmBbKmPt6oFxdhclpwRWv/pAXUfUQST+H/VloBwRxrdRXigwzd4JoEl3
-	GCsmSWsP1uySXEqDzbTwbdlztFb9hV0BoZTET70Jn8OvzQovAP1aQgI/44wDkkuAYPjCVlFBw/V
-	y5MLUgVB6iKOGBbg/LnRFsQnWaSa5loUYb0AVsbtMsuX+6yRzTeM45OqUxeQ5bAb7auhFkihp1J
-	DT2NfG6wbyV7g99EA==
-X-Received: by 2002:a05:6820:189a:b0:696:573c:9f0b with SMTP id 006d021491bc7-6a0d8da24d7mr4814286eaf.14.1781926072536;
-        Fri, 19 Jun 2026 20:27:52 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:73::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472ecd3de2sm1275554fac.8.2026.06.19.20.27.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jun 2026 20:27:51 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 19 Jun 2026 20:27:50 -0700
-Message-Id: <DJDK2NVO8903.19LWKQ3ST3U89@gmail.com>
-Cc: "JP Kobryn" <jp.kobryn@linux.dev>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Alexei Starovoitov" <ast@kernel.org>, "bpf" <bpf@vger.kernel.org>,
- "linux-mm" <linux-mm@kvack.org>, "LKML" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/bpf_memcontrol: mark BPF memcg kfuncs static
-From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
-To: "Roman Gushchin" <roman.gushchin@linux.dev>
-X-Mailer: aerc
-References: <20260617202147.78347-1-jp.kobryn@linux.dev>
- <CAADnVQJ=q7hJkt=ekLD_a5KjJ_+icdwgsY61rujjLMKAKByvWw@mail.gmail.com>
- <7ia4cxxosss5.fsf@castle.c.googlers.com>
-In-Reply-To: <7ia4cxxosss5.fsf@castle.c.googlers.com>
+        d=1e100.net; s=20251104; t=1781926180; x=1782530980;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=tKO/bKY66Ocp5lpRa+SnULzcfr11NnLnRjMS8RVn2Cw=;
+        b=Uuf36bN/5/6Ho2elwktv9VLrFAWVdugDzWfPO97YsHgDkN9YNVpq99SvceD8be1ErK
+         8PcXr4prUcD93XzoAxQT5NlLNGZOQKhEAnL1VYPtr+/lmOjHctgoGXWd2nFW7wnhFZi4
+         96sIAVf18+zhSr7yroRCqIUVyl51WJbY5s2HVQlnyOSN3bKifEwzY6WO6GCcNz9Z7BgM
+         o1NRPHj22HFqcp3NdkGgG37MgInsz0uPqqUWDc1VgrUfEjMrBGO76vMmgyuodlKhXLp8
+         M4mgyLFKf+OBa4yliGkm1zGyNnlSFA4oZHMXkjgMj/yk0FoEbXNMgnRHk9fe0tI9FCob
+         Kgqw==
+X-Forwarded-Encrypted: i=1; AFNElJ+RyRY/8esPegf1mE9lc7shVu5Pwh+Po31GBrncUgxaaf195//Gm7tCRMCvhb+BxNAaqrWAwPK9QQ==@kvack.org
+X-Gm-Message-State: AOJu0YwKb7jbjBjeFsPpsZccI84aYAkheqWjs8+kqOSfFrQByzNCWKUD
+	DqLydFhG/zSCI09/8BoaXCSddJTRG5q/doNuLZPKxQjx2ow47yjVOVwM
+X-Gm-Gg: AfdE7cm+q6ZoPRxSsbEeahvqnEkufWsgkmZDqm1XGu/tzyAlKfiwti7Ms/PFVy3IM3i
+	2neBME+ceaOS8DS51+EycYaAb/11paOyIFeNF2kMeDVP2WfRkTKBeLA1lFJp5SiRFdotTZGe/SG
+	M6M/Kgqw11tlx3RD6ijjEzzT5NPXqWG5Qa0Ohn52kTOY5GcN/A5TVtG0LdYgqhcEMdYHkD4gPRh
+	GmKyB4oh7TFh4YmxUSIUdiPZqu20zI4sOlIJ6RRJiblbCDW0kSQs7tYB05WBn9igXmvPWzUXkBg
+	PY8tzoeXLJrPMtmghAVQ803QXA4bfdlN3ZYUPrX4goeuAFY3fC1OgVy3UcgJrpKvaD8Ln/bGED1
+	vJAWtqo+mFMpL4VDTnCuRhzk89hP/GwoIOOesccL6PklJpVMpJhxskySrzj0bwU/nSaKQbO8m6C
+	9j2MsnssnCb1E=
+X-Received: by 2002:adf:e004:0:20b0:464:f0a6:74b1 with SMTP id ffacd0b85a97d-46509d57e7dmr7848435f8f.33.1781926179740;
+        Fri, 19 Jun 2026 20:29:39 -0700 (PDT)
+Received: from user ([104.28.154.202])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-466643f4e93sm4475001f8f.7.2026.06.19.20.29.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 20:29:39 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: sj@kernel.org
+Cc: akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>
+Subject: [PATCH v3] mm/damon/reclaim: fix potential memory leak
+Date: Sat, 20 Jun 2026 06:29:31 +0300
+Message-ID: <20260620032931.14281-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260620003557.243313-2-yahia.a.abdrabou@gmail.com>
+References: <20260620003557.243313-2-yahia.a.abdrabou@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9uiayyhcdww9tqcpqpiyjd9phubqdcfg
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 73603180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BD9831A0008
-X-Stat-Signature: r1z5gsb7timduyj7eathdxa36hhse7kx
-X-HE-Tag: 1781926073-369297
-X-HE-Meta: U2FsdGVkX1+RE1Tum1aw6zZNsahgSOruqKMDsOX+4INvAO4h0jN7C9Y4TJM5qxZRgAx50c4hW+uRwMQfuxHH/Zfgo9lRcGqiom3t0XIEMydqk0maAbDGbUEWO/tJwVHedv2jpSNPpKm8hnEbnf0t0cgwnLPbbb3WudJCq0EWlEsZZOiMLIfdcj76XvSbLsV2XhMMFO/ilwoH79W+Br6x9e5NyNk8tRiCIli30JcbzK8VmMJJlzrx/nGc5alit9PqDxLSZkEw4H5eSF7tVoukvYsuRSJIL4IA3Z1PdPKfmYeVSxsHWbBaHmXTNg5UKxdvj+PGAcLFXlOiiSPtKqexfavtbU0lX+VDagQOG7p5sUnkyPOp8qphcXd/5SlDHhOegptq8Ni7FjQBOjsZC2fhyyytCNvwCwUvEGFAit4kPZmsIegYWXV8y6wXImtb6VJ0uDUOU/Q+YF8KYN4o/gYJi/AgMcna3H7u02ZLfznYB5PgJT7CAtuWttD4Dz0uH5Dk4rz9oeypkrij6RF22f/5zfWauTcj91mYTWkHT3j7tvReAfVnznYzK6dpbt0V7V0x4bh2TsVUOaDq20XC2b+zVC7oRLYgxPS1HcbCFM8fNgEwjUfaZZndVReQ7zXnbd+LaicRuFGZt5pPbs8GLPfrlrJoBlWa2zAuvGhrgDL+oelVPW5b49J3Loj5Yt48C6WLiS2fSGQLggOGyanbnPurUh5rj+CelMUyr9Zc67p7u+2TQDawSJIccy8/Ua/Idqwf+wtrNANeKqO+Nj4d3JYpPzxe5JcD8TAd2M1Dysxmva7pbuSeao7woWoRWOsKUtBaAD5NLcwFf7P7ntLxCCCm85hddJS5+Q26uTTQw7SLeeoucw7XgqQhaCVDs0nzCSho/b1mAJV0jOCNl+8adKEegqAQsdLbdwW/sAgBQx5qv2rOeiKqqOK7I2QojrUQey8WWPVz56ADbhp3kvENl3F
- sTWwlQ9Y
- gvmliRHcezEjvpDR32ggALeZQOK9wOzrLlj9Pr3WQvsYDXxGEW6SPv23twB+R00WPANH8RUiFeTSzbAzS9p1wFVBQfqA2E9LaOCML0pZrJxLdULmcLom2iSCleWzBMFzvMl4jylbuoxPzrQV8NTpzZvv6bcO9AX0wwaLa/HYlvmnDqMg+9Ddccoq+X7q7xAYCvHeNKSCLlk8/mCXLMU5U39qWGQcZMQK9M8ILC65NNtQf6gKONKRy3O+Ruo4/2cyRt7s2kwZ3OycLg0K0GP6gCSH9aCpW5o+0eEemwfEvbSNYkvztxZzz1XMwRklk0ffFI7wvBMClp6JEztPqA3Z0Hhe8mLu/Yn9c4ntXnQwPhi1hbADH2uMKWC09Ws1haGi7HGTTaIkNDtqhMOvBEUZOcwxgnftpad1rEn9XePkuicZyWSry7GB58srXyUKGYnEaKR0PmrcuD2vx2uFsOzneNb9feV4OQ+kV2xcEOMJUqQvfGfTsb1lhObsw5w/GFfy0mUNZvN29QmOTKy6/EpzzPXkBloGOvPfM2fVdh0Xi6fZ8VnhZFIwsPXswVLPfG/M/ZofC9CQrwyUTAuvM84/eqR7Z9Es8UuGVqR2lpWHpts28afs6Rn9CuM0I8J1Dz0Aj7CpcxGd5OkIMXszAkgTGGyKj61wYGo1gxHSH
+X-HE-Tag: 1781926181-732047
+X-HE-Meta: U2FsdGVkX1/SncG5L0wIrluoKDjQj+TEO8lIMF9DoAqRQE65ZllZNIEZL95CBPYqIRoEk3bXdd/4VwlEkA04jmhwq32GhFuH5I71tIo0qHW6Eumh9TVyTKYwXw7x/w7h31p5PVkBJC/uSy5wvt1i54yP9+T8NvfAphnmRO5LWB0QBdvg/QonTnroOnEOIvi3QVkEwO7UJrP7kZTGAkae+5PRpI3VgUXla48RCu/bh3kskdfHdqgfQTFs08m2WAov1vW7dJFqMG6MghJuAZ3Q2nkqNXsFIwC/YrN1RJpUmT9iq/1siWClQgkgVch+HY3LYM2NLB+ppyZsP6vcS+7uCI3I0XZb+zB13R/WNw2JnGA1jy1NSBIfVmP1jSHzZEMlQK2V72S7d8RAVpOS9cZ2885zkr1+1kUnZj+UA6vfO4d4pwt2WN6Zf+n6GX3XcnbxMOgKW5ZxElaj8hHQd++vJxnDSzQ8Clab/pz7AMtisJ7MHbAnruCIkbzcRU/YfR3Gk4IQS0zi+JvIc+6gKo6+RX2cLFGlB8bZhZ9l3WelnNVWBOz6zp+w8BD2XeaVlzdfvOJmFG9JRwkXp8Ctg0QYrl/MyivY+ueXwT8pBqjc2P1oVeBYWRQVMQ/miREg4DVEBiy+b4Lz1kfaGvTM7txCD7/PdeFggwqpPz7dv262dnbhUEggtxeWWGrgCS+v9RGUHDSfCheGvmhpMitIi9wOqKHuFOy5gOIBXh/+olVnYG8xGUS5NpIAP648USXKn3Ka71qklCOmiZ+JkbjxcwU9S9x/iYa4rhiPRshto0RPR6JGU7TBCyxNu/fk86iyF0/8tzh3ozDiLZRrx57kCw2ZpqquJ+SJBAbMumDB7fALZmNX889MdT1Q93ZvyOxTZB6k/OT+p4r9bZ1o7sViM5fAvXizklJArucfGoRVCVShrcown9/ovtfXvPMB6+bPVGe2D2bCXIvwEuE+Cc4Ti16
+ TZB+ZAmz
+ rEV0K/ePr+S2/Nv/0l6D99qA/3e7d4729MFzWdoaus/0hitLy8rlD3PszABmNlDfZ1u+xSMjS6o5GSWwJiTLWir7sCKX26Ebl8ZCVFQ0f/mwETDbNYtPzqJPKs7QMDzRNQCxGEgVppLw0gdXOal0R100Ypqvsz/TWbupmOzjFPhKAtxLBcb9HLCikuwxdpfPa1g03Di4comiNKnCHaRz7M2gfeSnBzHBQbdmMtvw7sEcSxdAd6zxozZUQDLM2FV+y5o4gIdQ2qxWR/b3R5ZREcKDyFRfSQ0OCgJ3I4hpJLOdDNl6buhx1W2XTKV95reJy0K84PKt1IvzvV9g1J1zoU/eupMHWW3o0J5f6vToRSkB3v6QS5LsOuMtidfFWOj8mbTJSTND8xb2w+JD8Z85rra+gzzNgMzgL3CNpcBAk/5XTQpBI/x5GInHJ3/C84VqN6J0T/9YQ7NsURAr8UEb+IuLrFiFjXTYExq1CsaCohrQTNcZjRVC40k7x8upvDMviP6CgwOxmWK3hcbQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,99 +120,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jun 17, 2026 at 3:31 PM PDT, Roman Gushchin wrote:
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
->
->> On Wed, Jun 17, 2026 at 1:22=E2=80=AFPM JP Kobryn <jp.kobryn@linux.dev> =
-wrote:
->>>
->>> The kfuncs in bpf_memcontrol.c are not called by in-kernel C code. They=
- are
->>> only referenced by BPF programs and resolved through BTF.
->>>
->>> Since no external linkage is needed, mark these functions static.
->>>
->>> Fixes: 5904db9891f8 ("mm: introduce BPF kfuncs to deal with memcg point=
-ers")
->>> Fixes: 5c7db3239c9f ("mm: introduce bpf_get_root_mem_cgroup() BPF kfunc=
-")
->>> Fixes: 99430ab8b804 ("mm: introduce BPF kfuncs to access memcg statisti=
-cs and events")
->>> Reported-by: kernel test robot <lkp@intel.com>
->>> Closes: https://lore.kernel.org/oe-kbuild-all/202606150332.Xy4Egd9s-lkp=
-@intel.com/
->>> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
->>> ---
->>>  mm/bpf_memcontrol.c | 21 +++++++++++----------
->>>  1 file changed, 11 insertions(+), 10 deletions(-)
->>>
->>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
->>> index 716df49d7647..eff79bb2c758 100644
->>> --- a/mm/bpf_memcontrol.c
->>> +++ b/mm/bpf_memcontrol.c
->>> @@ -20,7 +20,7 @@ __bpf_kfunc_start_defs();
->>>   *
->>>   * Return: A pointer to the root memory cgroup.
->>>   */
->>> -__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
->>> +__bpf_kfunc static struct mem_cgroup *bpf_get_root_mem_cgroup(void)
->>
->> sashiko disappoints. It couldn't notice that kfuncs should not be static=
-.
->> We have few "__bpf_kfunc static" in net/ipv4/
->> that work by sort-of "luck", since their addresses are taken.
->>
->> In general kfuncs cannot be declared static.
->
-> It seems like it thought hard on it but failed based on the existing
-> code and a bit vague documentation in Documentation/bpf/kfuncs.rst:
->
->   kfunc definitions should also always be annotated with the ``__bpf_kfun=
-c``
->   macro. This prevents issues such as the compiler inlining the kfunc if =
-it's a
->   static kernel function, or the function ...
->
-> So it reads like bpf kfuncs can be static.
->
-> This is the reasoning from the logs (a dismissed concern, to be precise):
-> {
->       "type": "Dead Code / Linker Error",
->
->       "description": "Marking kfuncs as static could cause the compiler
->       to optimize them away, breaking BPF verifier BTF resolution.",
->
->       "reasoning": "The patch adds `static` to multiple `__bpf_kfunc`
->       annotated functions that are not called anywhere in C
->       code. Normally, a compiler would remove unused static functions or
->       fail to expose them in object files, which could prevent the BTF
->       ID generation logic (`resolve_btfids`) from finding them. However,
->       the `__bpf_kfunc` macro expands to include `__used` and
->       `__retain`, which strictly instructs the compiler and linker to
->       preserve the functions in the object file regardless of
->       usage. Additionally, `resolve_btfids` and `BTF_ID_FLAGS`
->       successfully parse and resolve `STB_LOCAL` static symbols, making
->       this change completely safe and correct.",
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-Almost, except it's not clear what takes priority for the compiler.
-__bpf_kfunc used to have '__used' and it was enough until clang
-got too aggressive in LTO mode. So we added '__retain' and so far
-it seems to be holding, but sashiko is missing that both of these
-attributes don't say anything about _name_ of the function.
-'static' keyword means that compiler is free to rename it and
-compilers do take advantage of that from time to time,
-while __used and __retain don't add 'do-not-rename' restriction
-to the compiler.
+Fix a potential race condition by locking the ctx
+then using damon_stop() to eliminate the thread then
+destroy ctx.
 
-Also look at it from the other angle.. why anyone would add
-'static' when the function is clearly not static to this particular
-compilation unit. It will be used outside of it by bpf progs
-that are obviuosly not part of this .c file.
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+v3:
+- Add a mutex lock to prevent possible race condition
+- Stop the kdamond thread before destroying ctx
+v2:
+- Remove early return
+- Set ctx to NULL to avoid a use after free
+- Fix typo
+---
+ mm/damon/reclaim.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Documentation/bpf/kfuncs.rst needs to be updated.
-
-JP,
-pls send a patch to update the docs and include few words
-to ignore sparse.
+diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
+index 6601b08996c6..ec5558b7da41 100644
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -480,6 +480,15 @@ static int __init damon_reclaim_init(void)
+ 		enabled = false;
+ 
+ 	if (err && ctx) {
++		/* Hold a lock and stop the thread to prevent a possible race condition */
++		mutex_lock(&ctx->kdamond_lock);
++
++		if (ctx->kdamond) {
++			mutex_unlock(&ctx->kdamond_lock);
++			damon_stop(ctx);
++		} else {
++			mutex_unlock(&ctx->kdamond_lock);
++		}
+ 		damon_destroy_ctx(ctx);
+ 		ctx = NULL;
+ 	}
+-- 
+2.54.0
 
 
