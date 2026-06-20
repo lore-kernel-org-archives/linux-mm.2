@@ -4,92 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD377CD98F2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 02:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82493CD98F6
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 02:54:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D2B86B0005; Fri, 19 Jun 2026 22:36:35 -0400 (EDT)
+	id 6A0166B0088; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 982B06B008A; Fri, 19 Jun 2026 22:36:35 -0400 (EDT)
+	id 677CB6B008A; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89A9F6B008C; Fri, 19 Jun 2026 22:36:35 -0400 (EDT)
+	id 5B4E76B008C; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DD6A6B0005
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:36:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C17EE1205C9
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:36:34 +0000 (UTC)
-X-FDA: 84898727508.13.BC5FF13
-Received: from mail-oi1-f206.google.com (mail-oi1-f206.google.com [209.85.167.206])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 23452140003
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:36:32 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1EAD46B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57EA2C2C32
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:54:56 +0000 (UTC)
+X-FDA: 84898773792.27.2710B3E
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9589A140008
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:54:54 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3sPw1agkbANkNTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3sPw1agkbANkNTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+	dkim=pass header.d=google.com header.s=20251104 header.b=eo0ymUDr;
+	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1781924094;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
+	b=iEon4tmajMvJXrca2iKmwDIIarfDX5W9D0j/jA0jfSkMyi4IwcFq4ZopFYjc8xLs7xy6aC
+	g2MDSpRL0nKCtnm36qlQKiry10EyuwD8NBmZcfumD5r/halcNAsm8t7fF7jEK7wOPKd1pK
+	gwZhEYclrL1dAqIaiIPF8lwhNbtvvws=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781922993;
-	b=gf62TKQ98152vqOEoHDoZP4JI5zSsNcWx9yOhLWcPTC7MWdjKMdTGnHqhDDPLFSTGBiAfg
-	xePHi5MIL5QifZT+PJSZCFUtckH2I3B7FF8rabhCCmyAZRWkgPVfd1eSDmiCa7252R4Lrg
-	YXLtrP8WIHrdN4FlnqDg9BD0gppNUY0=
+	t=1781924094;
+	b=yErGqWYtQa6hRzD1NxeOiofsCp8OMYr3PGSrzAqOg7iThXVQ8X76STz44y/8kBsYAJOUZW
+	9AVSY66LzA9i1Jr8pVmR9cqbHsLb4GYq17wUu90yAdcFKZrEzb6bqEHJobwMuJ+K/TG4ow
+	bYxVP8UJC+YIj5QblaHycFPLzUXeY2g=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of 3sPw1agkbANkNTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.206 as permitted sender) smtp.mailfrom=3sPw1agkbANkNTUF5GG9M5KKD8.BJJBG9PN9M7JIO9IO.7JH@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781922993;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=Bs9CejVkt7nV7CDQU8YSZBGFYo+2nll6l7lLcfg/z8s=;
-	b=v5Sa/myazA45oZqk8NZCOZYX0TEmbOpI5zN4XJ0rhQmw9nZngVODS0RoRkRRWH5+KMeMSd
-	bMp/drO3SuJSGH3x3cI3A0rDuvffDQ8WsHBmTl9wslshGlptxchSwpEyP8B/FNkna3D35p
-	Cp5gcCDR5l7dah0g+Q8EDDHYsRklPVU=
-Received: by mail-oi1-f206.google.com with SMTP id 5614622812f47-48aa4e64046so1180381b6e.1
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:36:32 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=eo0ymUDr;
+	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c69fa0b1f8so79555ad.0
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1781924093; x=1782528893; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
+        b=eo0ymUDrxEqC2IGF0JwAqyVCbnCH37PS53Zrn8OY7mNMRQuFjKWT4sSR9dQ4ZmhgzY
+         LdAMAY69HRr22BaM12GBEJH2kBjLKJkZaNckwx9tvwUOkaBQUS8YfFB7pd0YdhIlMmQW
+         TNIxsGHuJ+Z+hqMxkiT5jGbHjpZiLI/IoSw41RlUOoFQ+TETvGVYUi5Eu/it4DbLwlhr
+         Y89AcR063b01z/salz8rFyhwTnL3ZKsmnF7sluJ2/wOoaQQC8ANgLRyeJUnr0+tUuWeh
+         CY3VZL1cqcJBr3Bop057zMg4mLqASFn0VCu/j+L23WAePz+f/W13ZOWwCHfN6qUFtqWc
+         0NHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781922992; x=1782527792;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bs9CejVkt7nV7CDQU8YSZBGFYo+2nll6l7lLcfg/z8s=;
-        b=gJd5/AjwOeF+mHR5SXfr3DH6WUpe/rFDbVFrz/n+jF47qq28i4Exz+pdUFgfrHYwrq
-         CwUTuXU/1aB9Xo6jLIufk7DAU+lcgWdCTIJdQ2Tw1FAaMBuhpoJoPvxc8lt+q4EBb60T
-         cN4XeXeppC9MncFo74PqE0fQLo9ayQ4ICSpTvPeARUtJ714SqNk/gYqxhEnnGhmjyFSz
-         7XiDuOInWtuUIu6UU94EzkQuynTF4gPi7edlhiTN4rkP5CPRqX/06Z4Ywy4rO83TVMSg
-         o8ymdcpqJYe3XPChtBTwI3JBAAmjl/ezdER2mOqR3yF5ryaI5m8k7x3d2j8lGBAwoYlk
-         xe0w==
-X-Forwarded-Encrypted: i=1; AFNElJ8KNJSiRH7YXgz7mla2EuISlwhpboQR1uWzmSKN7RtSQPTu6Z0bdoKDADIaSBMvLBCG3Fwr3TvTog==@kvack.org
-X-Gm-Message-State: AOJu0YxQcOwIWQIqE92q9vncJo3UG4Hn39Hn7LIci++mDC4d1g2hlOnA
-	e9vUwBJl1e8beRFpmtzbf3hM782GaIex0P6U4MOZTqGSFtgjAOeD1zmZrnC9w+KVvI5Wpn8s1zN
-	uMA9ENh7W2fQenP37YUCtsXxa9pvUnW9pDo6yaZ2x2kVEhLcfu/Xj7Rsz6fw=
+        d=1e100.net; s=20251104; t=1781924093; x=1782528893;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
+        b=andExfPPpn1+CqNxTi3P17ElMcy9YELYVzF38bLb9U1bTDqsnULwAmt2sBlCH5nNfS
+         HQY60qDJMOz51lXLrZPlmEv3aD+o4SKPGbnLFZOsdVz6tjLYjxB1rf0KbUxaLiMyv8QZ
+         3BcvESIKa9VVrwgSzX8HnT1f6c2o/v1kTixnvHUDifNHwKu5PyH/x+ZB5m5SmTiI/vn/
+         2yyURRn/8t/uD8pE6wCp99Ns7vVzcJC81O5bKCgqsE+TLY5vFDsppoT4DonMOF8UjOrm
+         8rv/nJbNyVfLn40pACYngOwSUoUtr8eO2zmb83m5h7GvX/C99PV9vU0YZqEqjIJQkw3L
+         lX4A==
+X-Gm-Message-State: AOJu0Yw3PMwg/+fQx+RyZl/0LCOdjgLLRI6FZtfDU5b6NrxkTiq1bVwl
+	fAu5BjI2YDERc+MrK3cD/V0WrqgKesjJ6TBsQDUWjq1C+NebBW9IpKv/SWxCfVd7UA==
+X-Gm-Gg: AfdE7cn/J42H0xPFezKYs979EKPaDeBAnDx0pRBeMOiYi6c3x3qcpCBCKjhlT9bzn87
+	fNuQNvh3xjJRR1KQjeCvVIIYapAJ5k3+M/5VB5j4zOHASrgwMqQr+dPlIRMi5Om1PTUKX8VhoLf
+	FTzsQH9SkHuEsM8LVU1UqFW+Iu/25rRRgclHT7ffRgHimnW9tTbebiy1ckS0a22xxx5dCCFQwD5
+	2dJzY4xLl04FQxNkiqxRkfQskLsZj00EZ3Wa4OHSE91EPZxApqf4/aFR6duWPXP3yjbNazx/TPC
+	QaLS7z0DlqVK25TBsfPMMjx/XafmOqldvUfgzjbGQe2EGmhyyQT8nmJbtGyRIRvFUNMLwdqq+8P
+	7gYZU1LViHjKdsSbU992LWy6eeuLUe4UrhDEauwqSi2OPniorCUivsfu5msmEmzm/6scTh39T+9
+	4eUY+p+XOH4+IVm4jNcP5/VBKyrQSKsuynYjLfperzoQXXELs5sDoKzPFEYj2LMEGJLgr99vooy
+	MV5+rhS9TCeHveqmPn2xi3RHxQ1vygU1Fc87vSCPrU=
+X-Received: by 2002:a17:902:ec8b:b0:2bd:3c1b:3073 with SMTP id d9443c01a7336-2c718fa99bamr2394035ad.16.1781924092875;
+        Fri, 19 Jun 2026 19:54:52 -0700 (PDT)
+Received: from [2a00:79e0:2eb0:8:f548:65dc:ec64:cc16] ([2a00:79e0:2eb0:8:f548:65dc:ec64:cc16])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8bc563c406sm954121a12.19.2026.06.19.19.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 19 Jun 2026 19:54:52 -0700 (PDT)
+Date: Fri, 19 Jun 2026 19:54:51 -0700 (PDT)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from June 18, 2026
+Message-ID: <cae6ab98-3441-38bd-1e07-4586a85cdc74@google.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6808:2519:b0:48a:a6d8:890e with SMTP id
- 5614622812f47-48aa6d88aaamr2026959b6e.41.1781922992185; Fri, 19 Jun 2026
- 19:36:32 -0700 (PDT)
-Date: Fri, 19 Jun 2026 19:36:32 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a35fcb0.6813c476.3c3d96.0003.GAE@google.com>
-Subject: [syzbot] [mm?] KCSAN: data-race in __anon_vma_prepare /
- __vmf_anon_prepare (2)
-From: syzbot <syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, david@kernel.org, harry@kernel.org, 
-	jannh@google.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, ljs@kernel.org, riel@surriel.com, 
-	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9589A140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 23452140003
-X-Stat-Signature: kh5t3ku7gw3hyfgayffx3jjmdp7mkufg
-X-HE-Tag: 1781922992-520455
-X-HE-Meta: U2FsdGVkX1++N/ToR3872AX7LF71AqiI6rmSC+2YyR5Upme+Hf+biwDyBaD8qPKALKOkZtXSC5B4g2F4m8g4cKWDB4s6sLRwUnmx5aKoZRGo7C8q02j2nOjIdu5l0lOGpX+0vS9vxVJ4rgvpn39ujaWiC3q14VUQls2Gp7rvBePyY5gysHYTV1MhyJdp6tDiS68yDhD9+D75ns3Z7PHiTPByvERailLFayOwOo0l5M8BFdzKbK1m8Vs4B7PrxrBupV15GB7QCdrMI0aw3LtqaELR+vuNypkEBajISN+3yaHpQssIl6TrvexKnie1Lr8d1XTozLUhGyqLrxpJpEsVn+EHUQgygdalqWa99w9u4Dlm/YogD6h4mBnncdn3smpkDn/IvW5mupVVOSlqCVjxr/nUi2DGeATdgeUsJMZyl8SRmJ297W5Alxr2NHMUH12N5pl8u1n0xtifIg4kXdt28+sljcdM7I44PzRVE8Bdkn0rKeWjNBNiRWFYuOFcU7wGzPi+s0jBbgIUelKh4ZRUxq7+/0Ch3z7PQHeMs6Hr9HGv4KgOWNfb7wOwaSZfa8oE7LXrfaIlJ745dGq+pZXGcZQOtJCJXSLeZ6pD9jOuWcutp+dG+n9iux0nku6PGD89q7Yv2cw2+dR4/hudN2Wa05AfPGoFvcVl2FqLHsPFqeWPsjGiUSVxpPgxmaa2vKragLrOS5laM2mhpMR+grKBbkpoYCIhFjS5l9DvTiRzIzC6tLUkj21B94jgkj2M+FI3kJcq9enT4FQgPCC5KYKqWmYi8IuPyZFVsz/qhABDbOfzrb3EREASAMUEgoIXi5kwy1gwXp5Q5KDvUVai8wYEIh4NwwDYmQKpPuBOEUFYSv/s8C8p7grKfOyw9dRx7cJpBQ0xEm05rdCrke1ST54ZLca08JGbc/e2b9z9t1Z5DW3n0TgHySWGEixGUClkA0cTagklhNRdtE22p/0F1ff
- haOfx1JM
- OJRs8Q7dHuWEtGfdEzN8R0ul6FWrgTImFMEEQusYLfUNg1dQq3FZBJb5zm9eeVQ05rl+8W3iMuvyDY7qd6xlES8gGy/xU3/sTdSUMvqAQISL0z1svEi5B93/sELhTeLUBXvv8ufwXUSNtqrNOXRIR35dFkppeBf/rzSfmAX220ODYyE39KZKAuiN9TPmFDq7ixspePSy6HJiBF6qdfPpSaaoF8Uw90GyRmjZGcCoyUrNurE+JPrs+B7ChmjKSKRsoOQbI9g899WgjI2hRxrYBDKzQCr1DC6flWR/zwYovbWrqXA60Vz6KZ8zTh6f6mCtom0VZoEi/zrc+kNu2SFb3/It8snwXQGvuILlBnVHxEckhi2zA6ttMhswhUlpH9hkbtbL2QEj99j8JzqIEzVCJoiCvtztfd/YfCySxiHwx4s91m0//GHBUpYNnEshXJXrplrknXz0wiUbyCy8QA2dBiS8ZgyzkrauU6OgoPlU75x2Rb+wbgIz1zNRlIlmRZWxgcCmf9ncYN/Qjfdm7fqNED815OsVL8ji+FgFn3fKYl7VrueRPE5DP33VVddRN3mhUkVPbQVD9LMOfBisVGT30gWNQ1H7TNelGegOv5g04hkuZV6zH5VY1cPrqiQmlG7F0htT2ord4pJzTMlWJC51QFDDtvPpIsKbAPFk1hxeSh+P1vz0XltIIA2eP9by+FoVnkvCAFXHoy3lXaqLYCGbzvYccadzT9Ai1wslMqQtAAv6DMBgApmF45vcFYcBebjvztUEIqoJ6XWwg0CE5o6otmOjP1XR/WPxDZRMgTBK9knSLuebLUi4swW286RjNMXquA1rNFLCV+U91nTdGkmvgSWibFNv8Xne8o88Bb3jYZPIFDG85+fG9bGbNOM90L8gCdO1vHRRuHGpFBqDoieXLubn8bIBN7qVKINGVevgo0Vt/jzGo8zjn0/juyvG3mqLlfTeUd3Mq4zanyci161ZEVqZjsfSs
- o+M9Ax8X
- rWRhVWR0Z6IyARxLR+lYWbBEJbz0Qp1Hc6l9xueE5U3e+jGHY4vp9JmyK54sWpYN66O4ABIhJFHd4sIBuU+x8KaAXHzJJ+2eSVm0Atziv/DxH+tPPjURDBMnhLRU3JRC4ln1OqUX8CFKPgR16Y6D6jZeYJFwSFE1rlAtWVuLGBXF1zC7fIjnV+w9nAm1B01xoX4/j9kLXw6ip46+ul5nmCxfKRRnhfBVOuljiEkZdy3o+B04ga7rW9OYHIi7Ymq54V1CNzlJmW6Ga3Bt8elVA3rE2fcg+VY+N9yuWwepFTG7rw39j3uZMfRtKN9F/yWRqfoHE/IRQTaH1podScZiRbeixDXGWmX8dfYhxpMDudKSHqP4Y2XvgNrzPcuT3DS+SHDOeaLuPiXmJXBDIIf9Wju8d8svF1ODNA88H8rsm8mf9K9HjDMxGDDaAkxF8GPn2i1iiFA9Byw=
+X-Stat-Signature: eczukwjor7mtzgh1osy7msp1cy99rgkb
+X-HE-Tag: 1781924094-465727
+X-HE-Meta: U2FsdGVkX1+nJAhcRn/jl1ScU3CPf6qS4BBhNbTM0+iPzjwdOSzdIFlAu2O7NfrTYK86VpxLsFX0rt199MBOl0HozoslcA3CyZhZ5Plixy14jcM55t6/1stPZ67ZV/MY6IO5id8JUxAEtYpzykWnkwguQ3HjFgMajqd95nJ9XOyb7qoXkgplVdILbdJqaeYoN+kIc4deFctDwr3aRuRe8x78FNrzw+M3NNqtcJw466Ahxq9q4bTpcZ5spRdnTlL9h5OFBtq7nYhWJho7kxdn2YfEwkz7af8Eeyd2RxPyvMPRuYFzLDdzm65AIdoKzIhJEriD5+wYFkcgFhWFCgs4XhgUCXPZKQsx6Y0A6ZjNEii+c+eRhr3tWGQYnhHaQEqmxvUmwe7FcZtVZj52/EKNCDZPp55XgxgUULkZY/C7VHxzfpxBUM9bhZyQRImr6TbacZJp/DKydm25HnNTltwrg7/atK8NNBQyiaj+7JO9ayB0pYGAzpSZfwfezou1AyI/d42F3Cd0y3wKFYwpf7Ge6kRRSnwn3hnlIxrMbmFvajTafFUVOxhMsexX6kbvIx4XY3GamfgYlhHc7wnnfOkufe4m0G/AuGW35GtuNawgJl2V+doi7upilxhpvDmMhY87+MAKq5j/y7Bb12b7BZT1pQQ6SSaRze39dwVy/8Bm1qrWR/2+Bfo1fvpbpiqO8rMYFkEe9M0v17ZxM/SQUoh56NxFTZ55p+4VnSU6TO89Lnjkkf7P8Rzhau5mEQ/gCa6iI/FYmUx0hbHPA1Kn/kqvs5/RmpqJrFUd8mIHMH8D/vBoYJeUYkV6EJ9blnzpGGRGIX7hcGkhfSY5p2Xhg103MBgam++X6KFV+a2j4wJp+gLCb09eQVDEAiqxpURPUfYoOZjcH0ynJpl1GYPB9i5Ca+8GAddToQTEPlQOkyOllD4MgPEoTzo3KCLawSQDXhb8iCEjuFkUUJxk165CoYD
+ 7Ahd3Te6
+ Aaf0AeS4YgEsRDTyoPYdiGppphMdkd06irX+ICFRwzQ5307DXToonmXNl0YUjqEmp+Tjyy5zsM9xbdzUA3sQmneU3Y167UfigPjcvuhJqaTmZ53QiRTNE2ZHR5m6DGWpoOUKQGA+HC+tuLUXWvoMdVLa/s8LDdGzBIbxL+0KGRkKGBWPp82uy9rfH+qJB4cztzDt+t6Sn5LfCl8hCdBUf+zzcTRvYHSwUcLjxnnI/6T/MIPxkrCwiUflKZQZkGFx2TgkQhqIA5UF8M8uJDRBYEXfRRcE3gZ9mzTnBhyr1fEMKsVDSdmrxTSR/FBJXqIoCN6Y6Xm2vqtANkckIBkG0uMRX9CYHuMKGHLk4xS4EtpTpE15hv8+/pUw8QNdRjpI5e/c0VWNv0w/Zt90tEDVdM7ZJD8bU9SpydQuh9Yf4f4rWeshiwzbiumL+GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,97 +117,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+Hi everybody,
 
-syzbot found the following issue on:
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, June 18.  Thanks to everybody who was involved!
 
-HEAD commit:    5e2e14749c3d Merge tag 'landlock-7.2-rc1' of git://git.ker..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=10e5ccfe580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b0ae27ce66b92956
-dashboard link: https://syzkaller.appspot.com/bug?extid=395b7abe9696862fc188
-compiler:       Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1~exp1~20260514074407.73), Debian LLD 22.1.6
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+----->o-----
+Bharata updated that he is getting more benchmark numbers for IBS Memory 
+Profiler source with pghot and he submitted an abstract to LPC for a talk 
+on IBS Memory Profiler.  The next version of the pghot patch series should 
+be posted in a couple weeks with new benchmark numbers.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a565c60a4762/disk-5e2e1474.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/e593a6eb0057/vmlinux-5e2e1474.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/d24b55020ea3/bzImage-5e2e1474.xz
+----->o-----
+Teja Vojjala updated that he will start working with Shivank's patch 
+series for migrate_pages() and collecting some benchmark numbers.  He 
+noted improvement on Zen5 especially for benchmarks that are flushing the 
+cache.  He was not so sure about the instruction that the patch is using, 
+whether or not this will pollute the cache when doing demotion from top 
+tier memory to lower tier memory.
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+395b7abe9696862fc188@syzkaller.appspotmail.com
+We're working on non-temporal writes to avoid unintentionally promoting 
+cold pages that appear as hot otherwise.  He also noted that comparison 
+with other approaches showing a degradation when using AMD's patch series.  
+I asked him to follow up on Shivank's patch series upstream to have the 
+discussion.
 
-==================================================================
-BUG: KCSAN: data-race in __anon_vma_prepare / __vmf_anon_prepare
+----->o-----
+We skipped ahead to discussing non-temporal stores given its overlap with 
+work being done in migrate_pages().  Yiannis had posted his patch series 
+as follow-up to the previous call in the series.  He noted that he took 
+one of the existing functions for the pmem era and that it may be possible 
+to do something better in terms of implementation.  We see reduced cache 
+pollution with these patches measured by the CXL device.  We see a 
+complete elimination of read traffic on the device itself as a result.
 
-write to 0xffff88811a6a4d00 of 8 bytes by task 20911 on cpu 1:
- __anon_vma_prepare+0x172/0x2f0 mm/rmap.c:212
- __vmf_anon_prepare+0x91/0x100 mm/memory.c:3829
- hugetlb_no_page+0x1b8/0xf30 mm/hugetlb.c:5756
- hugetlb_fault+0x608/0xda0 mm/hugetlb.c:-1
- handle_mm_fault+0x1de9/0x2da0 mm/memory.c:6684
- faultin_page mm/gup.c:1126 [inline]
- __get_user_pages+0x129c/0x1f10 mm/gup.c:1428
- populate_vma_page_range mm/gup.c:1860 [inline]
- __mm_populate+0x242/0x390 mm/gup.c:1963
- mm_populate include/linux/mm.h:4171 [inline]
- vm_mmap_pgoff+0x23b/0x2d0 mm/util.c:586
- ksys_mmap_pgoff+0x2c6/0x310 mm/mmap.c:606
- x64_sys_call+0x14df/0x3020 arch/x86/include/generated/asm/syscalls_64.h:10
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x136/0x3c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Gregory Price provided feedback upstream about the use of the Kconfig in 
+the patch series.  That was his only question for the series itself, he 
+thought we should be able to identify if we can do this offload through 
+cpuid; if so, then we could always just use it.  Yiannis noted that with 
+this implementation you could see a much higher number of instructions 
+retired which may or may not matter.  The bigger benefit here was that it 
+reduces bandwidth.  Gregory didn't think of a scenario where we would ever 
+want to turn this off.  Jonathan Cameron suggested removing the Kconfig 
+option.
 
-read to 0xffff88811a6a4d00 of 8 bytes by task 20901 on cpu 0:
- __vmf_anon_prepare+0x26/0x100 mm/memory.c:3823
- hugetlb_no_page+0x1b8/0xf30 mm/hugetlb.c:5756
- hugetlb_fault+0x608/0xda0 mm/hugetlb.c:-1
- handle_mm_fault+0x1de9/0x2da0 mm/memory.c:6684
- do_user_addr_fault+0x402/0x1060 arch/x86/mm/fault.c:1394
- handle_page_fault arch/x86/mm/fault.c:1483 [inline]
- exc_page_fault+0x62/0xa0 arch/x86/mm/fault.c:1536
- asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:595
- __put_user_nocheck_4+0x3/0x20 arch/x86/lib/putuser.S:97
- ____sys_recvmsg+0x1a1/0x280 net/socket.c:2917
- ___sys_recvmsg+0x11f/0x3a0 net/socket.c:2946
- do_recvmmsg+0x1e5/0x560 net/socket.c:3041
- __sys_recvmmsg net/socket.c:3115 [inline]
- __do_sys_recvmmsg net/socket.c:3138 [inline]
- __se_sys_recvmmsg net/socket.c:3131 [inline]
- __x64_sys_recvmmsg+0xe5/0x170 net/socket.c:3131
- x64_sys_call+0x80f/0x3020 arch/x86/include/generated/asm/syscalls_64.h:300
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x136/0x3c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+I pressed on the new migrate_mode addition given the long-term precedent 
+of the existing migrate modes.  Why do we need a new migrate_mode that 
+specifies whether we want NT stores or not?  Wei noted that Google does 
+the same thing because there are otherwise ABI issues which is a bigger 
+problem because the migration callback does not include the reason passed 
+to migrate_pages().  I was surprised that the only way to change migration 
+behavior today was to introduce a new migrate_mode that would be passed 
+into migrate_pages() and that this didn't seem very extensible.
 
-value changed: 0x0000000000000000 -> 0xffff8881020cec60
+Yiannis will refresh the patch series to not include the Kconfig and sent 
+out an RFC v2.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 UID: 0 PID: 20901 Comm: syz.0.4316 Tainted: G        W           syzkaller #0 PREEMPT(lazy) 
-Tainted: [W]=WARN
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/09/2026
-==================================================================
+Wei noted that some Google work was supporting memory errors while using 
+NT stores and that we could discuss that in a future call.  This would be 
+a natural extnesion to what Yiannis is working on.
 
+----->o-----
+Joshua updated on local testing for tier-aware memcg limits.  He ran some 
+benchmarks where DRAM performance was the exact same as CXL performance to 
+identify the impact of the overall approach itself.  The overhead was 
+minimized so far to 1-2%.  He also did testing on real hardware and got 
+similar results.  He will be going through this testing before posting the 
+next update.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+----->o-----
+The next meeting will be CANCELED due to the Independence Day Holiday in
+the United States.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Next meeting will be on Thursday, July 16 at 8:30am PDT (UTC-7),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+Topics for the next meeting:
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+ - LPC planning for October 5-7 in Prague
+ - update on Yiannis's RFC for non-temporal stores enlightenment in
+   migrate_pages()
+ - extensions to ensure that non-temporal stores can properly handle
+   memory errors
+ - v7 of Bharata's patch series, including new IBS hotness information
+   and NUMBA2 hint faults
+ - v5 of Shivank's series for enlightening migrate_pages() for hardware
+   assists and how this work will be charged to userspace, including for
+   memory compaction, and separating the first patches out into a non-RFC
+   series
+ - v2 of tier-aware memcg limits, including ABI changes to support more
+   than two tiers
+ - first class support for virtualization based memory tier support, how
+   to leverge memory tiers in the guest
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl,
+   otherwise utilizing bandwidth information will be challenging
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
+ - later: testing of tier aware memcg limits with Bharata's changes once
+   tier aware memcg limits is stable and further along
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
