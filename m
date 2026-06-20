@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723C8CD98F2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 18:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6970CD98F2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 18:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09A176B0005; Sat, 20 Jun 2026 14:16:51 -0400 (EDT)
+	id 5F0496B008C; Sat, 20 Jun 2026 14:16:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04BBF6B008A; Sat, 20 Jun 2026 14:16:51 -0400 (EDT)
+	id 5A16D6B0092; Sat, 20 Jun 2026 14:16:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E54FE6B008C; Sat, 20 Jun 2026 14:16:50 -0400 (EDT)
+	id 4B7C86B0093; Sat, 20 Jun 2026 14:16:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B43CC6B0005
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 14:16:50 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F0271C483D
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 18:16:50 +0000 (UTC)
-X-FDA: 84901096980.15.143D35F
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 671ACC000B
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 18:16:48 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ksOqoH9e;
-	spf=pass (imf22.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781979408;
-	b=XSmWlFBd4mQG/nDhGQi2y3qA469I+y10ph43iVivoORiVsR/awpibkxoXzBusIR6iFE8ij
-	2FWVG1ZHwH+ruDzXc6ss94XHlSFPO3cVZH1WlYlFzsaBwB4O1ttoFS/jsay/ipJrkYy6CK
-	/0MW0hs3AMqTHuHsJ8IQd7le898b+Hw=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ksOqoH9e;
-	spf=pass (imf22.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 149836B008C
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 14:16:57 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6DF041201CB
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 18:16:56 +0000 (UTC)
+X-FDA: 84901097232.06.1863FB9
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7C07140005
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 18:16:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hrLs013N;
+	spf=pass (imf07.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781979408;
+	s=arc-20220608; t=1781979414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MKXHChCZvPPhlY8n4Ua2hoJq9ToW4QcOYuQ0CXpouRI=;
-	b=u7Eco8zWTFvsamUX2ndFRe6SGmzJ84ME7eLBsDBLsentWUv+7yOadsYGuLLx1WwRv7QriO
-	HWCq5+Q+EQ736pscEDNaQAgtPrrgo4jJGJsWg6hL1Ko45Ih+GLeugTROLxV4UxvIBOnvMQ
-	rYZ8bXHAv5zSjQvXOIfTPJLp7DFPxJ4=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-c89370405aaso1390698a12.0
-        for <linux-mm@kvack.org>; Sat, 20 Jun 2026 11:16:48 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fqZzVql8FFtxQrj+HBUYcxO/Pzzfu2IxHZz+7Ww15C0=;
+	b=jBQgIHgs3BQRSrj2X+a2uFS3AxZZ+g+OnNmZnPy6gy2L7YZf99G+I70ucpGc4LWHiDh8f1
+	tmHbR0iHumIMR0NAMinUYHaYelpeXbS9HnNKW/hrFe98Sdxx+h1ijNGEAqVzzBmuqVeO+/
+	EBEHktvc5d5PerSC8YqK8/i72eERcj0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781979414;
+	b=5qoAmlgXJK6Ax1EsV3+w2yyY0CshGfAdXDaPP/RYaubnlPr9t+qu8zC+h+7GdWRluQ1CI2
+	om5ycOofHDzR+05j+1+zN4f3asP9SviPoBx7KaGB7F5kE8zErgkjSlboAnOmpzUTdLuwf8
+	/bHFPcD0AJL+BumhUZ9ZGP+hcS+iqN4=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=hrLs013N;
+	spf=pass (imf07.hostedemail.com: domain of her0gyugyu@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=her0gyugyu@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c0c1e0d00bso34176175ad.0
+        for <linux-mm@kvack.org>; Sat, 20 Jun 2026 11:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1781979407; x=1782584207; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MKXHChCZvPPhlY8n4Ua2hoJq9ToW4QcOYuQ0CXpouRI=;
-        b=ksOqoH9enuu2AHozCx2q65SlfzBPXSYtFrcnWrRUwA/Z1vJvbOV0fTq9mlDWw1ycpZ
-         0XMIVo4IVVnKaj+II18NxoZ9WxSXad21rXmiQQoK5XEI/WUNqdGQuvUMKAJ4fh6fBtmA
-         y5T40faFK40F3MZbBXMOupGm1hKYVN7XoiS66Wp9MyAjankexMOmvkL8hk7ULx62ZN6N
-         SqZ1ivVk+YBQVSR+pnWNMjrXBFBxDaFpENNkZ/R/PoVLRYy/PQD8ob13dHkacc/WUZNh
-         Z++tao7LDJSn0UyXtPEYp6dUjCiZvVtaRf3jNviKRNCr1qZXn871j+XCD9TaxSFTwG/S
-         q4MA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781979407; x=1782584207;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1781979413; x=1782584213; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MKXHChCZvPPhlY8n4Ua2hoJq9ToW4QcOYuQ0CXpouRI=;
-        b=NkpCT0ROItsiIk1Zi/+ly9PMYOxReD90KUYIAMx2fWE9Zl1zo/kTvNq/agBy7SBcNc
-         V0sk03hE1bHzWFaHuzzjy5UQh/aavDInVM4/eL/zX08qbc/8GTYxzN7BEdGe+R4Vx+A/
-         72r387/OckX6SybUgxaMiQMbnnwffXrMoCKWYJVlmG7PGiWOGxD5gdPQ8amtVddOQMnU
-         +7+Zh1R/ryryeWyxlq8zcORWn2pAswZogvnyE98yEsboIX+5z1ZgM5MnJCkdNBC9FqwD
-         ju75yGS0+raVYTTtlgIOolQkezYMuQLzsngOuCuXw348T5tWrw3uT8EnJ7xuPA9pf81b
-         rxEg==
-X-Forwarded-Encrypted: i=1; AHgh+RptFxeX91vU5DoQPjWGwjzBb9xhoTtoBHd6LXWSJFFeV+cPlK4Sk9qEHs55HMewKA9oGG+YmudZiQ==@kvack.org
-X-Gm-Message-State: AOJu0YxaYTSbELZPGRwYBSwGrp6IfsLIkpzCT9kwLIDiHXgDpjzaMOo4
-	Nda3T4Um9oegVjiiMMn6yUlwcNuujb6J9IMG98Qu8zZwLHRj1mLv5EWK
-X-Gm-Gg: AfdE7ckOxgymq6rvlCM+5x9KO9rmHYJ9yg6Ct6YrjrnrFyYbcEGX3PKGxe+JXfYny+p
-	2nNnZqOlhevRYiv43rsjPO7v4rqSzoSdJzST3z5NPUgCfdY8JxPMbXYjOdbs1u5FEyA6IhshAMu
-	LnP5+be2OTEQwQS80xSjpgXNbx5C2JbQKl5G311rwZRHvEQZr1cbhsaRpHa9F0m3pEK6185jJqZ
-	9CoPxM6KJpXpgf1WVBJ5N/nw5H2DQMRgi4r9OPSPJDBUyb3roPcxuFfu4a1a64zMmiLfo9d1/cK
-	hyYIr3xinukunNi+3ZeeDa0iwdcbeKJPWHpnF22UoX4rLzp4bn/nvZNWgyqaaB4KxKFJT84Byet
-	Avti2rrctkEnosTcjqg2FulRAIhidLForBxy1dnt7f+3RZpgFt4z4UXqLpCCDLX4ySPrMJZHo/Q
-	kP4EvzYURZzzIbZBD8RKt5zN7hQyf+ZWNC6+tv64URymZMOhHgpy+RE7RUrXJgmaE3l8huTJ6c2
-	r/2G5dYE2ct
-X-Received: by 2002:a17:902:d549:b0:2c4:608:167c with SMTP id d9443c01a7336-2c725a650f9mr77896095ad.6.1781979406967;
-        Sat, 20 Jun 2026 11:16:46 -0700 (PDT)
+        bh=fqZzVql8FFtxQrj+HBUYcxO/Pzzfu2IxHZz+7Ww15C0=;
+        b=hrLs013NmvBf1NKunsaezJZub8YcbaWQo1/ZAL2iqYm1cWlovJkeorIuBEGrTbk6wz
+         7o81ehniH58VpNPFUI4F8HNzhFjIKnfyWszKuc5Gfikv2fpcpP5TZd8ZrNSDtuTLzPbG
+         BOLbCcjKhg6iFe9FA8pnToUe+Fa0k61YmDWAqDIQHbrkOc/rGIadTa0215IhEz0cwM4N
+         sqWMNORqE9tQ2CCtfpY5MD73/WiVCCIraMffTG0KQMoERyTvTQ2V2Ro+Ce+PaOL8v7Bu
+         6Il8+qorTV705fAO811m27eCL/9azsKuvL6v+JbgpUb9EGTkhzIt8iNygiGxIWZfh6Qr
+         jG+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1781979413; x=1782584213;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fqZzVql8FFtxQrj+HBUYcxO/Pzzfu2IxHZz+7Ww15C0=;
+        b=o1yrHdaBPyKSOkLNP+gow9yW/H7jixXKmdTqD9CdZakrMmBkxvC07PkWLSEcdqwPOL
+         DB2uuCHraf1CMU/Q7vMyioFaMlWhNnSDtt/5eGMGyqRPe38WNWAM4XEzBH3qJp4yxwrM
+         K8fOAt2d8aNe+448W3ezqts7YE1CKKOK+3iq59sbh2LjQ9ejlDEOuNei6NI5CrEB0JGI
+         s3ILToZyMaQENatGe2lPM/ZF57rRTjQ67yqSzQYrLqAcUybCbyHCwnhWWlV1vn4VrrQg
+         xmgfuM+rRNktMnmbIjFyyD8h25xpT4X5s4ZOi8ZXzCpxI2k6cwrC2sJH0K5ZjYJEuIof
+         mlBg==
+X-Forwarded-Encrypted: i=1; AHgh+Ro6UAdkIlqeS/juKbm2sWc/ipCrwlcbqTM8RQ+S/N10sSKx/EYdKNQz9biZJY7zLM1n4au1aBevmg==@kvack.org
+X-Gm-Message-State: AOJu0YxBf4NQLVBxJ51Q33/6lvcrQCBtSfmN19M/d9p9Rw2CcuGo2ngX
+	TQrr0+elqXiFXtizScebxtYYWquMhc0/s7fOJxSOkdXW7sPUqQvAVWMA
+X-Gm-Gg: AfdE7clvD/abz4h6/IH7up/h4/C+NG9VKB45kQNR0aoXT/z1zUYVbbb0MRSOujY9vJG
+	i+YaIhXGO3JMh05PYZPGeJS2a+Sm9W3cj1QlotSKuRJUoeF4PlhhpIQsE3bgPym+gjqYn7UG8Eb
+	AqiztL/FfZk/VpVRPEKa7E+LuN0O5YRQIqk83XXyVU1Y2O8ogz0IInF1RjDGXTJg7MPD499psb9
+	xoQPzLSYpI9r3m+LvqXH3X7PFB9RrcIIVJmMDprMaZ4QyR5WluEXcS2MSV3BMuxOlN4Ih8fIsaH
+	paL++DxxBnohBrSM9Nt/fRN5yy/X5zRykbKG9tfek6d+xFE7G8I7Y1KSewghDHGZcfXdW4SwmJS
+	NPEcSQB1WXDzk+Q6uAPfflKpfbnwbHEdSwyd9vP8CZ9m2sQPf46JJSx+Ben39fXY6WK0dlHIyww
+	guWoVGPPwEvh7HeaPYj8vEjHOoKGB9EYTjUrwCm9UQPo+W94WoQBKF9HkLk6gdWX6rA5ZJkqf5v
+	zK6SZWVp3aM
+X-Received: by 2002:a17:902:cf0a:b0:2c6:cbcb:bc77 with SMTP id d9443c01a7336-2c725db5fbbmr81085355ad.28.1781979413256;
+        Sat, 20 Jun 2026 11:16:53 -0700 (PDT)
 Received: from localhost.localdomain ([220.85.166.190])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436af6d9sm30339465ad.4.2026.06.20.11.16.41
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436af6d9sm30339465ad.4.2026.06.20.11.16.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Jun 2026 11:16:45 -0700 (PDT)
+        Sat, 20 Jun 2026 11:16:52 -0700 (PDT)
 From: Youngjun Park <her0gyugyu@gmail.com>
 X-Google-Original-From: Youngjun Park <youngjun.park@lge.com>
 To: akpm@linux-foundation.org
@@ -115,20 +116,22 @@ Cc: chrisl@kernel.org,
 	mkoutny@suse.com,
 	baver.bae@lge.com,
 	matia.kim@lge.com
-Subject: [PATCH v9 0/6] mm/swap, memcg: Introduce swap tiers for cgroup based swap control 
-Date: Sun, 21 Jun 2026 03:16:25 +0900
-Message-ID: <20260620181635.299364-1-youngjun.park@lge.com>
+Subject: [PATCH v9 1/6] mm: swap: introduce swap tier infrastructure
+Date: Sun, 21 Jun 2026 03:16:26 +0900
+Message-ID: <20260620181635.299364-2-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20260620181635.299364-1-youngjun.park@lge.com>
+References: <20260620181635.299364-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: oqonfwwu7qj9hyeac59fbc7a8xx655kq
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 671ACC000B
-X-HE-Tag: 1781979408-304089
-X-HE-Meta: U2FsdGVkX1/F0Fcl3IKgfKs4xOv02AmIhcqRxBa3mu1W1SSVpBwhd8KxDyLslhd69v8KOx9AznnIvyjz4UWgEOXAmHtM300MxPLKg6z2mXOXz/lATojv/gnX72Zo9GQl4CvMQp6FaxFiQkETOCHRIdJACd79Jxk5OOyIIKOTtpi2Z65o3R6TZXBkqwBUDYYf7LjcpwBVKVzAch40kG71d9F7PXf0Rm5fhAHu5/RI3yUyYYsfIV+KXT3wQqRVxHHjoimKLZrxFYNVGyVO2YjmHDNMTaok/AgYMy6a9dgssYmptediH4nGbKPBMHwrAnBod1wlAxtqc7WSRhsmagXK6Sf6eKreL/RCtQo2gv1f7//mbG8A/cx2NbiJAXlDQd+2goNMC3Mf+GT9QZ+csuTQ+GCv273IRAi8f4W1M+MJGLiIg7krhwMtWZJit1zf/7zE8h8laJzMVnGio8vLd8TUcI9rqvHEyYRGYqUPSy8SD7vlY5N5Uoasn8PTyetSozpiDM3lWhOcO3A8tGaP6UZq0fH+u9q+wywI9F8UoJ+RweQhMUKmhV5TpzZANP3IjAJYLhRxicvC8rscRBK3HpSvP3uY9qgwPObTx1FOfXgaq3Tk0ofWiwzwbaaUzLGCopUX6LBPM/xYNk4A32wVFv/w8+BY/mDhBVIDkNQglM37gm/x60t27dA6Xj44Wm2IqD8R5u+jwGfBi2p9G0HYLM1U7oVOGovLJa5XtnlbBSgWDMaKRXniIQy+URWO3iMRs0R2eTojQnNrgDa71cOj3+9B/qP8uGTqTxbNZV8X4y6yoYI4ROzL5yqvD7ViR23qBB/SWDMMXEq4oashVHiQWWLlnKdbGmp2Hh0Wk0Hf2k/zki6WMAGenQ1qhbuvN2wqrid2qLSIEoC74qA+iNzdIZ4ie0fVbbpwpRtBHALWAI6/TMVcR4YW+eh/pwt27YJ2LK5H4nEreSXqZ9f9jTiP73t
- ZV5+O7/9
- ZUR/imn0L0wdh8g+3fgG/DfnPp9qgVUNjA6/pOVhFUzPxKUsmFgCpCZQIL+6dDOY5tl4PYH6r7XQGydXijITuXSnnbpzJz6vwt5xrp0rqXGkvgDyFc86AwpT0siKAXWRIK0kJhQJ15jPMXqdgatZ+j+3YoqHxL5/HQ93k5KZv8cXUAXsNy4VLhJlaxUCjETc8emwYKwWpb9dejHwk0Sz1NQncrORfptUw9Hxtm5nlYjNl0J6SzT0frPpNL9HPQSdFCHKNWRVYGakYRNqf4IEFOaxHnmsE4ofvEmZLQgpGFflpcrkgjt6mAUG4bX1MVxvxpyWBnoU/9dvcqVvYmvGU97pPvg8AL/8S5xMEiRzQanc/lF5kKt2bfiOmy3tZV2UTFbBW90w7C8FSNWVQGpVX+xjLroTxgYqyVFZ+/TCzbcpV4ozpV21H+jewRnCF9TECkHKxopI/FvWuL3WdAX8Ogix5Qw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7C07140005
+X-Stat-Signature: 6es7ocbi9c7tbwf7hq7hkqt13g61y39z
+X-HE-Tag: 1781979414-150353
+X-HE-Meta: U2FsdGVkX1/5xubItXOnq0ouO098BJ12xnOl+tyrYsqFYoeTFmQEn1fn3PvTV5KglG0Zc9o8IBUG82yldtJ3j5cykjhYhwagKEXleiZ0SN0QcxlI7tOf95AGzkm7RpnlP1yc/XG73IqmtUevQK5Bj/wX9fR05IANTFX75OxkveWPgMNReHQZqIkm4v2awqo1Z8+ysyPbuyHuNI23aXwJ0/OYbSHMcfTx9gJ2D/UI/ZeHbEY0BdekYXPONVuoGwAF3rAuEY3BYp7QKqVgSTwcYA5fP7F3wARMbiTSsP7+U/URdlIGkkbJeRF4xgg1nPxc9zl0EAAH2upg6l7wwJYSbkqw1ImPi2QAt8ymB0REWFDl8aDh8+QBP8E8Hqxx2PpSQLknjquAqj5e57JDUmI2r0yCq/Bh0l5HDN5w0yJVtIrUZkTyRht3ZsxqO28eK3z2nce1hEluSlJx1Gp+Hs4Rod+IKLFIKGGBYbwyq6l3wz5sVXpUfA4lfmrzL8/AsPRpBTMMN1wxyaQ8oK8okM56GDgIE2ZLevxv0ZqyNEBYg/1TUPj9fDsesl89CnSq0sfVmAeJQRKEsJWqkD4WX4oMYqcEey1yOzhH4ZvR8Wc8H2w2yYnguYEnUN1GTtID0oRvrqoNsgN0kMQp8WNOlagxA1+EDfaxDdnvWwPCQpLPDBos4lmUuhk7HvkF7HZibMIQtuBNbq6T4b+4yuM1I5Y6PyvBXZQaCK1UYs8FbWNkPY34Ah4yIB/dOO5uQDTFxxiMm9QUBP+RR5bamL+UWkWHfc7YCMODov2qaqOinPvjCTpDi5cb80HTcGTmKRzZdCwDDoOt6rYrTPLHEJvI9N0moem2rkbY9/U0WWAKl9xCO2jNoA4d2MsLvKIs5qvIfYm0IhcmM954qvu7nTGdonDjLY1CgHuVrx/uFwuealtkUi039G4kCl5P3wsYVKqJV4p9HVudG6B0NekojWn/jjd
+ XvkrXEcJ
+ 6iPd3f7qvdW2yigGTdk0DOh4dLZB8KHNUz2wRrX44qn6xndviOa8E0XrRlZNUfFrFLkUa1doZZJCc3swWgVtTukXOxA8gEc7PxJgcfvvrKFd99Z/6obmKHDIHpBjV6oFQkR2SY2VYlF/qj6EyeOvlZdtLgl0BMwtcNwww5MDy5Dc+Y0EPBsxPlvojlwoIT/OKgomfypWWXu4yBqYeet4KygkPvcHACXWo3cvBFlliDaqdjWHilOw+qM/pEsrt7p9XFlZ1w3FCGEHKKLiEZGXNz3FE1xfl5VWwIkgL/nW+M78yPXrcZBql3COo46gxRNZuheSxPXodGfrJ63Px9umXNSv6uS4Z+YgoWdZ+o1s1ZHP90ait03fCfa+TtGIzG3gE5XSkNiLdbXsMs0o4xPQykMuoaA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,306 +139,581 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the v9 series of the swap tier patchset.
+This patch introduces the "Swap tier" concept, which serves as an
+abstraction layer for managing swap devices based on their performance
+characteristics (e.g., NVMe, HDD, Network swap).
 
-The main change in this version is the addition of selftests for the tier
-interfaces, requested by Nhat; see the changelog below for the other changes.
-I designed the test cases and wrote the selftests with some AI assistance.
+Swap tiers are user-named groups representing priority ranges.
+Tier names must consist of alphanumeric characters and underscores.
+These tiers collectively cover the entire priority space from -1
+(`DEF_SWAP_PRIO`) to `SHRT_MAX`.
 
-For context, the bulk of the series is unchanged since v8, with great thanks
-to Shakeel Butt and Yosry for the reviews and discussions [1] that shaped it.
-The main change in v8 was the interface change to use memory.swap.tiers.max
-with '0' (disable) and 'max' (enable) values. This mechanism was suggested
-by Shakeel and Yosry.
+To configure tiers, a new sysfs interface is exposed at
+/sys/kernel/mm/swap/tiers. The input parser evaluates commands from
+left to right and supports batch input, allowing users to add or remove
+multiple tiers in a single write operation.
 
-This change allows for future extensions to control swap between tiers and
-aligns better with existing memcg interfaces. It is confined to patch #3's
-user-facing interface; internally, patch #3 still uses the existing mask
-processing method, which is implementation-efficient.
+Tier management enforces continuous priority ranges anchored by start
+priorities. Operations trigger range splitting or merging, but overwriting
+start priorities is forbidden. Merging expands lower tiers upwards to
+preserve configured start priorities, except when removing `DEF_SWAP_PRIO`,
+which merges downwards.
 
-We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel for their
-valuable feedback.
-
-Here is a brief summary of our tentative conclusions. Please correct me
-if anything is misrepresented (details in references):
-
-* Zswap tiering [2]:
-  Tiering applies only to the vswap + zswap combo. Zswap itself will
-  not be tiered, as the current architecture requires a physical device
-  for zswap allocation.
-* Vswap tiering [3]:
-  Vswap should be handled transparently to the user. Vswap itself will
-  not be tiered. But, someday supported if there is strong and real usecase.
-* Relationship with zswap.writeback [4]:
-  If zswap tiering is introduced, it could replace the zswap-only tier.
-  However, since zswap cannot be tiered independently, it is still
-  needed for non-vswap cases. Separately, the internal logic could
-  potentially be integrated into the tiering logic.
-* Tier demotion [5]:
-  A separate interface like memory.swap.tiers.demotion might be needed.
-  For now, we only support 0/max to enable/disable tiers. In the future,
-  we could introduce an "auto" mode to automatically scale the limit
-  based on swapfile size and memory.swap.max, similar to the direction
-  memory tiering is heading in.
-
-I plan to apply the swap tier infrastructure and the first use case
-(cgroup-based swap control) first, and continue following up on the
-discussions above.
-
-Overview
-========
-
-Swap Tiers group swap devices into performance classes (e.g. NVMe,
-HDD, Network) and allow per-memcg selection of which tiers to use.
-This mechanism was suggested by Chris Li.
-
-Design Rationale
-================
-
-Swap tier selection is attached to memcg. A child cgroup may select a
-subset of the parent's allowed tiers.
-
-This
-- Preserves cgroup inheritance semantics (boundary at parent,
-  refinement at child).
-- Reuses memcg, which already groups processes and enforces
-  hierarchical memory limits.
-- Aligns with existing memcg swap controls (e.g. swap.max, zswap.writeback)
-- Avoids introducing a parallel swap control hierarchy.
-
-Placing tier control outside memcg (e.g., via BPF, syscalls, or
-madvise) would allow swap preference to diverge from the memcg
-hierarchy. Integrating it into memcg keeps the swap policy
-consistent with existing memory ownership semantics. There are
-also real use cases built around memcg.
-
-In the future, this can be extended to other interfaces to cover
-additional use cases.
-
-I believe a memcg-based swap control is a good starting point
-before such extensions.
-
-Use Cases
-=========
-
-#1: Latency separation (our primary deployment scenario)
-  [ / ]
-     |
-     +-- latency-sensitive workload  (fast tier)
-     +-- background workload         (slow tier)
-
-The parent defines the memory boundary.
-Each workload selects a swap tier via memory.swap.tiers.max according to
-latency requirements.
-
-This prevents latency-sensitive workloads from being swapped to
-slow devices used by background workloads.
-
-#2: Per-VM swap selection (Chris Li's deployment scenario)
-  [ / ]
-     |
-     +-- [ Job on VM ]              (tiers: zswap, SSD)
-            |
-            +-- [ VMM guest memory ]  (tiers: SSD)
-
-The parent (job) has access to both zswap and SSD tiers.
-The child (VMM guest memory) selects SSD as its swap tier via
-memory.swap.tiers.max. In this deployment, swap device selection
-happens at the child level from the parent's available set.
-
-#3: Tier isolation for reduced contention (hypothetical)
-  [ / ]                    (tiers: A, B)
-     |
-     +-- workload X        (tiers: A)
-     +-- workload Y        (tiers: B)
-
-Each child uses a different tier. Since swap paths are separated
-per tier, synchronization overhead between the two workloads is
-reduced.
-
-Future extension (Follow up)
-============================
-
-#1: Intra-tier distribution policy:
-  Currently, swap devices with the same priority are allocated in a
-  round-robin fashion. Per-tier policy files under
-  /sys/kernel/mm/swap/tiers/ can control how devices within a tier
-  are selected (e.g. round-robin, weighted).
-
-#2: Inter-tier promotion and demotion:
-  Promotion and demotion apply between tiers, not within a single
-  tier. The current interface defines only tier assignment; it does
-  not yet define when or how pages move between tiers. Two triggering
-  models are possible:
-
-  (a) User-triggered: userspace explicitly initiates migration between
-      tiers (e.g. via a new interface or existing move_pages semantics).
-  (b) Kernel-triggered: the kernel moves pages between tiers at
-      appropriate points such as reclaim or refault.
-
-#3: Per-VMA, per-process swap and BPF:
-  Not just for memcg based swap, possible to extend Per-VMA or per-process
-  swap. Or we can use it as BPF program.
-
-#4: Zswap and vswap tiering:
-  Tiering applies to the vswap + zswap combination.
-
-#5: Vswap on/off control:
-  Currently not supported. If a strong use case arises where vswap needs
-  to be controlled by memcg, the tier interface could be used for it.
-
-#6: Per-CPU swap allocation caching:
-  Per-si/per-tier per-CPU caching of allocations to reduce contention in
-  the tier-filtered allocation path. 
-
-Experimentation
-===============
-
-Tested on our internal platform using NBD as a separate swap tier.
-Our first production's simple usecase.
-
-Without tiers:
-- No selective control over flash wear
-- Cannot selectively assign NBD to specific applications
-
-Cold launch improvement (preloaded vs. baseline):
-- App A: 13.17s -> 4.18s (68%)
-- App B: 5.60s -> 1.12s (80%)
-- App C: 10.25s -> 2.00s (80%)
-
-Performance impact with no tiers configured:
-<1% regression in kernel build and vm-scalability benchmarks
-
-Change log
-===========
-
-v9
-- Added selftests (per Nhat's request):
- - selftests/mm: swap tier configuration test for /sys/kernel/mm/swap/tiers.(#5 patch)
- - selftests/cgroup: swap tier routing test for memory.swap.tiers.max. (#6 patch)
-- Removed the redundant rcu_read_lock() around the memcg tier-mask tree walk;
-  for_each_mem_cgroup_tree() already takes RCU internally and returns each 
-  memcg with a reference held. (#3 patch)
-- Sashiko review: swap_sync_discard() now honors the memcg tier mask, so the
-  discard fallback no longer drains clusters on disallowed tiers. Left as-is:
-  the cgroup tree walk under spinlock (bounded by cgroup.max.descendants, an
-  admin-controlled limit, and triggered only by infrequent tier writes) and
-  the pre-existing swap_avail_lock drop in swap_alloc_slow(). (#4 patch)
-- Dropped patch #4's Reviewed-by tags (Nhat, Kairui, Baoquan): the
-  swap_sync_discard() change above modifies that patch (the tier mask is now
-  passed as a parameter into the alloc and discard paths), so the earlier tags
-  no longer apply. Re-review would be welcome.
-- v8 link: https://lore.kernel.org/linux-mm/20260617053447.2831896-1-youngjun.park@lge.com/
-
-v8
-- Changed the memcg interface to memory.swap.tiers.max.
-  Values are '0' (disable) and 'max' (enable). Default is 'max'.
-- Addressed Sashiko's review: Update the mask value atomically at once and
-  read the mask value while grabbing lock.
-- Collected review tags from Kairui and Nhat.
-- Rebase on recent mm-new
-- v7 link: https://lore.kernel.org/linux-mm/20260527062247.3440692-1-youngjun.park@lge.com/
-
-v7
-- Collect Baoquan's review tag
-- Baoquan's feedback on fixing improper comment
-- Minor code adjustments per Baoquan's feedback.
-- Rebase on recent mm-new
-- v6 link: https://lore.kernel.org/linux-mm/20260421055323.940344-1-youngjun.park@lge.com/
-
-v6
-- Sashiko AI review fixes
- - Fix batch parsing error path to restore snapshot before exit
- - Reject overlong tier names to prevent truncated duplicates
- - Avoid restoring raw list_head via memcpy (stale pointer risk)
- - Ensure early parse errors do not skip DEF_SWAP_PRIO validation
- - Use (1U << TIER_DEFAULT_IDX) to avoid signed shift UB
- - Defer tier mask inheritance to css_online() to close race window
- - Add READ_ONCE()/WRITE_ONCE() for tier mask accesses
-- Other fixes
- - Fix build error reintroduced due to missing v5 change
- - Fix WARNING in folio_tier_effective_mask by adding rcu_read_lock()
- - default number of swap tier max (change to 32->31, for reserving last bit)
- - commit message refinement.
- - rebased on recently mm-new
-- v5 link: https://lore.kernel.org/linux-mm/20260325175453.2523280-1-youngjun.park@lge.com/
-
-v5
-- Fixed build errors reported in v4
-- rebased on up to date mm-new
-- Minor cleanups
-- Design docs with validation (by Shakeel Butt discussion)
-- v4 link : https://lore.kernel.org/linux-mm/20260217000950.4015880-1-youngjun.park@lge.com/
-
-v4
-- Simplified control flow and indentation
-- Added CONFIG option for MAX_SWAPTIER (default: 4)
-- Added memory.swap.tiers.effective interface
-- Reworked save/restore logic into snapshot/rollback model
-- Removed tier priority modification support (deferred)
-- Improved validation and fixed edge cases
-- Rebased onto latest mm-new
-- RFC v3 link: https://lore.kernel.org/linux-mm/20260131125454.3187546-1-youngjun.park@lge.com/
-
-RFC v1 ~ v3
-- Change the direction after discussion with Chris-Li
-- apply some LPC feedback.
-- RFC v2 - https://lore.kernel.org/linux-mm/20260126065242.1221862-1-youngjun.park@lge.com/
-- RFC v1 - https://lore.kernel.org/linux-mm/20251109124947.1101520-1-youngjun.park@lge.com/
-
-Earlier Approach (per cgroup swap priority)
-- v1: https://lore.kernel.org/linux-mm/20250716202006.3640584-1-youngjun.park@lge.com/
-- RFC: https://lore.kernel.org/linux-mm/aEvLjEInMQC7hEyh@yjaykim-PowerEdge-T330/T/#mbbb6a5e9e30843097e1f5f65fb98f31d582b973d
-
-Reference
-=========
-
-[1] https://lore.kernel.org/linux-doc/aiw2p5ANjsQUCIHA@linux.dev/
-[2] https://lore.kernel.org/linux-mm/CAKEwX=Nz9SWcEVQGQjHN8P8OANJY4BG0w+iQOzoNOWuteoVjAg@mail.gmail.com/
-[3] https://lore.kernel.org/cgroups/CAKEwX=O23a4iWBZoewKVb8QqODte6r3Xijckw3_oCJNoiO9M5A@mail.gmail.com/
-[4] https://lore.kernel.org/linux-mm/CAO9r8zOg0OP1Ak1v7CRzSfQq0D8b4Dw+_T0Jui6YTM_KwQQNOA@mail.gmail.com/
-[5] https://lore.kernel.org/linux-mm/CAO9r8zNi4-QC4sUi=xXWHt9WMeG39mbyoSf8kON9vLOZ=cbCmw@mail.gmail.com/
-
-Youngjun Park (6):
-  mm: swap: introduce swap tier infrastructure
-  mm: swap: associate swap devices with tiers
-  mm: memcontrol: add interface for swap tier selection
-  mm: swap: filter swap allocation by memcg tier mask
-  selftests/mm: add a swap tier configuration test
-  selftests/cgroup: add a swap tier routing test
-
- Documentation/admin-guide/cgroup-v2.rst       |  20 +
- Documentation/mm/index.rst                    |   1 +
- Documentation/mm/swap-tier.rst                | 159 ++++++
- MAINTAINERS                                   |   3 +
- include/linux/memcontrol.h                    |   5 +
- include/linux/swap.h                          |   1 +
- mm/Kconfig                                    |  12 +
- mm/Makefile                                   |   2 +-
- mm/memcontrol.c                               |  67 +++
- mm/swap.h                                     |   4 +
- mm/swap_state.c                               |  75 +++
- mm/swap_tier.c                                | 477 +++++++++++++++++
- mm/swap_tier.h                                |  76 +++
- mm/swapfile.c                                 |  34 +-
- tools/testing/selftests/cgroup/.gitignore     |   1 +
- tools/testing/selftests/cgroup/Makefile       |   2 +
- tools/testing/selftests/cgroup/config         |   2 +
- .../selftests/cgroup/test_swap_tiers.c        | 500 ++++++++++++++++++
- tools/testing/selftests/mm/.gitignore         |   1 +
- tools/testing/selftests/mm/Makefile           |   1 +
- tools/testing/selftests/mm/config             |   2 +
- tools/testing/selftests/mm/run_vmtests.sh     |   5 +
- tools/testing/selftests/mm/swap_tier.c        | 323 +++++++++++
- 23 files changed, 1762 insertions(+), 11 deletions(-)
- create mode 100644 Documentation/mm/swap-tier.rst
+Suggested-by: Chris Li <chrisl@kernel.org>
+Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+---
+ MAINTAINERS     |   2 +
+ mm/Kconfig      |  12 ++
+ mm/Makefile     |   2 +-
+ mm/swap.h       |   4 +
+ mm/swap_state.c |  74 ++++++++++++
+ mm/swap_tier.c  | 302 ++++++++++++++++++++++++++++++++++++++++++++++++
+ mm/swap_tier.h  |  20 ++++
+ mm/swapfile.c   |   8 +-
+ 8 files changed, 420 insertions(+), 4 deletions(-)
  create mode 100644 mm/swap_tier.c
  create mode 100644 mm/swap_tier.h
- create mode 100644 tools/testing/selftests/cgroup/test_swap_tiers.c
- create mode 100644 tools/testing/selftests/mm/swap_tier.c
 
-
-base-commit: cdad4d4e4fc2e5acb9a8b2cac9af6ce87c92656f
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 65bd4328fe05..d1bb3b4b1e1c 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17060,6 +17060,8 @@ F:	mm/swap.c
+ F:	mm/swap.h
+ F:	mm/swap_table.h
+ F:	mm/swap_state.c
++F:	mm/swap_tier.c
++F:	mm/swap_tier.h
+ F:	mm/swapfile.c
+ 
+ MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 776b67c66e82..5343937f3da9 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -19,6 +19,18 @@ menuconfig SWAP
+ 	  used to provide more virtual memory than the actual RAM present
+ 	  in your computer.  If unsure say Y.
+ 
++config NR_SWAP_TIERS
++        int "Number of swap device tiers"
++        depends on SWAP
++        default 4
++        range 1 31
++        help
++          Sets the number of swap device tiers. Swap devices are
++          grouped into tiers based on their priority, allowing the
++          system to prefer faster devices over slower ones.
++
++          If unsure, say 4.
++
+ config ZSWAP
+ 	bool "Compressed cache for swap pages"
+ 	depends on SWAP
+diff --git a/mm/Makefile b/mm/Makefile
+index eff9f9e7e061..29cb1e778285 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -75,7 +75,7 @@ ifdef CONFIG_MMU
+ 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
+ endif
+ 
+-obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
++obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o swap_tier.o
+ obj-$(CONFIG_ZSWAP)	+= zswap.o
+ obj-$(CONFIG_HAS_DMA)	+= dmapool.o
+ obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
+diff --git a/mm/swap.h b/mm/swap.h
+index 77d2d14eda42..d6c5f5d31f63 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -34,6 +34,10 @@ extern int page_cluster;
+ #define swap_entry_order(order)	0
+ #endif
+ 
++#define DEF_SWAP_PRIO  -1
++
++extern spinlock_t swap_lock;
++extern struct plist_head swap_active_head;
+ extern struct swap_info_struct *swap_info[];
+ 
+ /*
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index 9c3a5cf99778..762d9ca6ad5a 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -25,6 +25,7 @@
+ #include "internal.h"
+ #include "swap_table.h"
+ #include "swap.h"
++#include "swap_tier.h"
+ 
+ /*
+  * swapper_space is a fiction, retained to simplify the path through
+@@ -1007,8 +1008,81 @@ static ssize_t vma_ra_enabled_store(struct kobject *kobj,
+ }
+ static struct kobj_attribute vma_ra_enabled_attr = __ATTR_RW(vma_ra_enabled);
+ 
++static ssize_t tiers_show(struct kobject *kobj,
++				     struct kobj_attribute *attr, char *buf)
++{
++	return swap_tiers_sysfs_show(buf);
++}
++
++static ssize_t tiers_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
++			    const char *buf, size_t count)
++{
++	char *p, *token, *name, *tmp;
++	int ret = 0;
++	short prio;
++
++	tmp = kstrdup(buf, GFP_KERNEL);
++	if (!tmp)
++		return -ENOMEM;
++
++	spin_lock(&swap_lock);
++	spin_lock(&swap_tier_lock);
++	swap_tiers_snapshot();
++
++	p = tmp;
++	while ((token = strsep(&p, ", \t\n")) != NULL) {
++		if (!*token)
++			continue;
++
++		switch (token[0]) {
++		case '+':
++			name = token + 1;
++			token = strchr(name, ':');
++			if (!token) {
++				ret = -EINVAL;
++				goto restore;
++			}
++			*token++ = '\0';
++			if (kstrtos16(token, 10, &prio)) {
++				ret = -EINVAL;
++				goto restore;
++			}
++			ret = swap_tiers_add(name, prio);
++			if (ret)
++				goto restore;
++			break;
++		case '-':
++			ret = swap_tiers_remove(token + 1);
++			if (ret)
++				goto restore;
++			break;
++		default:
++			ret = -EINVAL;
++			goto restore;
++		}
++	}
++
++	if (!swap_tiers_validate()) {
++		ret = -EINVAL;
++		goto restore;
++	}
++	goto out;
++
++restore:
++	swap_tiers_snapshot_restore();
++out:
++	spin_unlock(&swap_tier_lock);
++	spin_unlock(&swap_lock);
++	kfree(tmp);
++	return ret ? ret : count;
++}
++
++static struct kobj_attribute tier_attr = __ATTR_RW(tiers);
++
+ static struct attribute *swap_attrs[] = {
+ 	&vma_ra_enabled_attr.attr,
++	&tier_attr.attr,
+ 	NULL,
+ };
+ 
+diff --git a/mm/swap_tier.c b/mm/swap_tier.c
+new file mode 100644
+index 000000000000..ac7a3c2a48cb
+--- /dev/null
++++ b/mm/swap_tier.c
+@@ -0,0 +1,302 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/swap.h>
++#include <linux/memcontrol.h>
++#include "memcontrol-v1.h"
++#include <linux/sysfs.h>
++#include <linux/plist.h>
++
++#include "swap.h"
++#include "swap_tier.h"
++
++#define MAX_SWAPTIER	CONFIG_NR_SWAP_TIERS
++#define MAX_TIERNAME	16
++
++/*
++ * struct swap_tier - structure representing a swap tier.
++ *
++ * @name: name of the swap_tier.
++ * @prio: starting value of priority.
++ * @list: linked list of tiers.
++ */
++static struct swap_tier {
++	char name[MAX_TIERNAME];
++	short prio;
++	struct list_head list;
++} swap_tiers[MAX_SWAPTIER];
++
++DEFINE_SPINLOCK(swap_tier_lock);
++/* active swap priority list, sorted in descending order */
++static LIST_HEAD(swap_tier_active_list);
++/* unused swap_tier object */
++static LIST_HEAD(swap_tier_inactive_list);
++
++#define TIER_IDX(tier)	((tier) - swap_tiers)
++#define TIER_MASK(tier)	(1U << TIER_IDX(tier))
++#define TIER_INACTIVE_PRIO (DEF_SWAP_PRIO - 1)
++#define TIER_IS_ACTIVE(tier) ((tier->prio) !=  TIER_INACTIVE_PRIO)
++#define TIER_END_PRIO(tier) \
++	(!list_is_first(&(tier)->list, &swap_tier_active_list) ? \
++	list_prev_entry((tier), list)->prio - 1 : SHRT_MAX)
++
++#define for_each_tier(tier, idx) \
++	for (idx = 0, tier = &swap_tiers[0]; idx < MAX_SWAPTIER; \
++		idx++, tier = &swap_tiers[idx])
++
++#define for_each_active_tier(tier) \
++	list_for_each_entry(tier, &swap_tier_active_list, list)
++
++#define for_each_inactive_tier(tier) \
++	list_for_each_entry(tier, &swap_tier_inactive_list, list)
++
++/*
++ * Naming Convention:
++ *   swap_tiers_*() - Public/exported functions
++ *   swap_tier_*()  - Private/internal functions
++ */
++
++static bool swap_tier_is_active(void)
++{
++	return !list_empty(&swap_tier_active_list);
++}
++
++static struct swap_tier *swap_tier_lookup(const char *name)
++{
++	struct swap_tier *tier;
++
++	for_each_active_tier(tier) {
++		if (!strcmp(tier->name, name))
++			return tier;
++	}
++
++	return NULL;
++}
++
++/* Insert new tier into the active list sorted by priority. */
++static void swap_tier_activate(struct swap_tier *new)
++{
++	struct list_head *pos = &swap_tier_active_list;
++	struct swap_tier *tier;
++
++	for_each_active_tier(tier) {
++		if (tier->prio <= new->prio) {
++			pos = &tier->list;
++			break;
++		}
++	}
++
++	list_add_tail(&new->list, pos);
++}
++
++static void swap_tier_inactivate(struct swap_tier *tier)
++{
++	list_move(&tier->list, &swap_tier_inactive_list);
++	tier->prio = TIER_INACTIVE_PRIO;
++}
++
++void swap_tiers_init(void)
++{
++	struct swap_tier *tier;
++	int idx;
++
++	BUILD_BUG_ON(BITS_PER_TYPE(int) < MAX_SWAPTIER);
++
++	for_each_tier(tier, idx) {
++		INIT_LIST_HEAD(&tier->list);
++		swap_tier_inactivate(tier);
++	}
++}
++
++ssize_t swap_tiers_sysfs_show(char *buf)
++{
++	struct swap_tier *tier;
++	ssize_t len = 0;
++
++	len += sysfs_emit_at(buf, len, "%-16s %-5s %-11s %-11s\n",
++			 "Name", "Idx", "PrioStart", "PrioEnd");
++
++	spin_lock(&swap_tier_lock);
++	for_each_active_tier(tier) {
++		len += sysfs_emit_at(buf, len, "%-16s %-5td %-11d %-11d\n",
++				     tier->name,
++				     TIER_IDX(tier),
++				     tier->prio,
++				     TIER_END_PRIO(tier));
++	}
++	spin_unlock(&swap_tier_lock);
++
++	return len;
++}
++
++static struct swap_tier *swap_tier_prepare(const char *name, short prio)
++{
++	struct swap_tier *tier;
++
++	lockdep_assert_held(&swap_tier_lock);
++
++	if (prio < DEF_SWAP_PRIO)
++		return ERR_PTR(-EINVAL);
++
++	if (list_empty(&swap_tier_inactive_list))
++		return ERR_PTR(-ENOSPC);
++
++	tier = list_first_entry(&swap_tier_inactive_list,
++		struct swap_tier, list);
++
++	list_del_init(&tier->list);
++	strscpy(tier->name, name, MAX_TIERNAME);
++	tier->prio = prio;
++
++	return tier;
++}
++
++static int swap_tier_check_range(short prio)
++{
++	struct swap_tier *tier;
++
++	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swap_tier_lock);
++
++	for_each_active_tier(tier) {
++		/* No overwrite */
++		if (tier->prio == prio)
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
++static bool swap_tier_validate_name(const char *name)
++{
++	int len;
++
++	if (!name || !*name)
++		return false;
++
++	len = strlen(name);
++	if (len >= MAX_TIERNAME)
++		return false;
++
++	while (*name) {
++		if (!isalnum(*name) && *name != '_')
++			return false;
++		name++;
++	}
++	return true;
++}
++
++int swap_tiers_add(const char *name, int prio)
++{
++	int ret;
++	struct swap_tier *tier;
++
++	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swap_tier_lock);
++
++	/* Duplicate check */
++	if (swap_tier_lookup(name))
++		return -EEXIST;
++
++	if (!swap_tier_validate_name(name))
++		return -EINVAL;
++
++	ret = swap_tier_check_range(prio);
++	if (ret)
++		return ret;
++
++	tier = swap_tier_prepare(name, prio);
++	if (IS_ERR(tier)) {
++		ret = PTR_ERR(tier);
++		return ret;
++	}
++
++	swap_tier_activate(tier);
++
++	return ret;
++}
++
++int swap_tiers_remove(const char *name)
++{
++	int ret = 0;
++	struct swap_tier *tier;
++
++	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swap_tier_lock);
++
++	tier = swap_tier_lookup(name);
++	if (!tier)
++		return -EINVAL;
++
++	/* Removing DEF_SWAP_PRIO merges into the higher tier. */
++	if (!list_is_singular(&swap_tier_active_list)
++		&& tier->prio == DEF_SWAP_PRIO)
++		list_prev_entry(tier, list)->prio = DEF_SWAP_PRIO;
++
++	swap_tier_inactivate(tier);
++
++	return ret;
++}
++
++static struct swap_tier swap_tiers_snap[MAX_SWAPTIER];
++/*
++ * XXX: When multiple operations (adds and removes) are submitted in a
++ * single write, reverting each individually on failure is complex and
++ * error-prone. Instead, snapshot the entire state beforehand and
++ * restore it wholesale if any operation fails.
++ */
++void swap_tiers_snapshot(void)
++{
++	BUILD_BUG_ON(sizeof(swap_tiers_snap) != sizeof(swap_tiers));
++
++	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swap_tier_lock);
++
++	memcpy(swap_tiers_snap, swap_tiers, sizeof(swap_tiers));
++}
++
++void swap_tiers_snapshot_restore(void)
++{
++	struct swap_tier *tier;
++	int idx;
++
++	lockdep_assert_held(&swap_lock);
++	lockdep_assert_held(&swap_tier_lock);
++
++	memcpy(swap_tiers, swap_tiers_snap, sizeof(swap_tiers));
++
++	INIT_LIST_HEAD(&swap_tier_active_list);
++	INIT_LIST_HEAD(&swap_tier_inactive_list);
++
++	/*
++	 * memcpy copied snapshot-time list pointers into each tier's
++	 * list_head.  Those references are stale, so re-init every
++	 * tier before re-linking into the freshly initialised global
++	 * lists below.
++	 */
++	for_each_tier(tier, idx) {
++		INIT_LIST_HEAD(&tier->list);
++
++		if (TIER_IS_ACTIVE(tier))
++			swap_tier_activate(tier);
++		else
++			swap_tier_inactivate(tier);
++	}
++}
++
++bool swap_tiers_validate(void)
++{
++	struct swap_tier *tier;
++
++	/*
++	 * Initial setting might not cover DEF_SWAP_PRIO.
++	 * Swap tier must cover the full range (DEF_SWAP_PRIO to SHRT_MAX).
++	 */
++	if (swap_tier_is_active()) {
++		tier = list_last_entry(&swap_tier_active_list,
++			struct swap_tier, list);
++
++		if (tier->prio != DEF_SWAP_PRIO)
++			return false;
++	}
++
++	return true;
++}
+diff --git a/mm/swap_tier.h b/mm/swap_tier.h
+new file mode 100644
+index 000000000000..a1395ec02c24
+--- /dev/null
++++ b/mm/swap_tier.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _SWAP_TIER_H
++#define _SWAP_TIER_H
++
++#include <linux/types.h>
++#include <linux/spinlock.h>
++
++extern spinlock_t swap_tier_lock;
++
++/* Initialization and application */
++void swap_tiers_init(void);
++ssize_t swap_tiers_sysfs_show(char *buf);
++
++int swap_tiers_add(const char *name, int prio);
++int swap_tiers_remove(const char *name);
++
++void swap_tiers_snapshot(void);
++void swap_tiers_snapshot_restore(void);
++bool swap_tiers_validate(void);
++#endif /* _SWAP_TIER_H */
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index e3d126602a1e..3f7225dbc6cd 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -48,6 +48,7 @@
+ #include "swap_table.h"
+ #include "internal.h"
+ #include "swap.h"
++#include "swap_tier.h"
+ 
+ static void swap_range_alloc(struct swap_info_struct *si,
+ 			     unsigned int nr_entries);
+@@ -63,7 +64,8 @@ static void move_cluster(struct swap_info_struct *si,
+  *
+  * Also protects swap_active_head total_swap_pages, and the SWP_WRITEOK flag.
+  */
+-static DEFINE_SPINLOCK(swap_lock);
++DEFINE_SPINLOCK(swap_lock);
++
+ static unsigned int nr_swapfiles;
+ atomic_long_t nr_swap_pages;
+ /*
+@@ -74,7 +76,6 @@ atomic_long_t nr_swap_pages;
+ EXPORT_SYMBOL_GPL(nr_swap_pages);
+ /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
+ long total_swap_pages;
+-#define DEF_SWAP_PRIO  -1
+ unsigned long swapfile_maximum_size;
+ #ifdef CONFIG_MIGRATION
+ bool swap_migration_ad_supported;
+@@ -87,7 +88,7 @@ static const char Bad_offset[] = "Bad swap offset entry ";
+  * all active swap_info_structs
+  * protected with swap_lock, and ordered by priority.
+  */
+-static PLIST_HEAD(swap_active_head);
++PLIST_HEAD(swap_active_head);
+ 
+ /*
+  * all available (active, not full) swap_info_structs
+@@ -3988,6 +3989,7 @@ static int __init swapfile_init(void)
+ 		swap_migration_ad_supported = true;
+ #endif	/* CONFIG_MIGRATION */
+ 
++	swap_tiers_init();
+ 	return 0;
+ }
+ subsys_initcall(swapfile_init);
 -- 
 2.48.1
 
