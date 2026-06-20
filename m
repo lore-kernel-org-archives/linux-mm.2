@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6245CD98F2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97654CD98F2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AF4DE6B0093; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
+	id D8CB56B0095; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA59A6B0098; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
+	id D3D226B0096; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E8E86B0093; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
+	id C52F66B0098; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 71AB16B0093
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 987666B0095
 	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0824D401C4
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E87DEA0202
 	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:00 +0000 (UTC)
-X-FDA: 84900961320.16.3B70AC3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6BEC9A0008
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:22:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHuwwO9B;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781976178;
-	b=Ba7hgku0XCiEe/8ra4Gpq/ohUROYSgaIwB18OJr6n3IYi/oXXJFf3Ikf9mZkiyvA5OSupr
-	/2paEAuxQn5XxP+S5xvyjRNCPk5kj4neTzWtdC0EhWZWwgNwyxGcBgP3o+xaZsZsOC3vni
-	VjPoJ6CKoYfhcZtOHXEsOcA7EwWFlyQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHuwwO9B;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+X-FDA: 84900961320.06.7CAF70C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5A4511C0006
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:22:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nVNrz1gC;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781976178;
+	s=arc-20220608; t=1781976179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
-	b=rMj/HupAtE6fV6AVYf7z+Vb63DfneSPH4+gL0fTqMVGh2V0s0ZCoKcYuf6ryclWWHq4Z/C
-	kYb81nYpPsqXVbwM7Ixr4z/wW3SpncHBGk2FtXtEkOoL+mmchO1Lb8fPUN3qleLRfwII8w
-	XbYQbFTDZwKNfy4H3IL1cRRfv1g7HUQ=
+	bh=zSgj5Q1lJXKb2smRSTNEFl3wFQBmUv230OpsOgctQ9w=;
+	b=2p5ZhIPm0BuC2c8qGIH+gZmF341gSwcmEnKffAfET6L2btbHP8tkv4Jc7e1ptLYBcqDHWn
+	d7FWWfrMTOcfSe+WQ2kxRjbqRX2R/EphwJRoJGMgfFdTKvI9UgAhNjUFhjtDrEx4gEuRbk
+	bHLSrboamfNx0Ys3Djjx9/haBnJg+hs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781976179;
+	b=VavjW5Gatayytgi0dZpwAPlOhqhvmnHNFHeQvVTcQIdefg5K6KHpDzfB7GgqXlXoHXFAbT
+	98LN6UcokEOtAlzJY+suqT6TIbBw3fPK5x6dNfWNnNzxZGAfWbaaDdg6oT1QVsJfLJg44h
+	OTslhqMESHMVIqRfEXg/A/+6N3iAkGo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nVNrz1gC;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B04C444424;
+	by tor.source.kernel.org (Postfix) with ESMTP id F1523601E2;
+	Sat, 20 Jun 2026 17:22:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0B51F00A3D;
 	Sat, 20 Jun 2026 17:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25431F00A3E;
-	Sat, 20 Jun 2026 17:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781976177;
-	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
+	s=k20260515; t=1781976178;
+	bh=zSgj5Q1lJXKb2smRSTNEFl3wFQBmUv230OpsOgctQ9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PHuwwO9B54CWPTt5BvV46KzE/1dreh00K6wX1qBuSsMco5Bn1SOUpZnm7VX6JvLYW
-	 MdMGZO/UZwcviUhyhuxUrslPReBGjTOPXhZv3/T4fJMgqp1rO4e5P6NifuetqTaOP/
-	 D9Z72oVcZeluSY7G24yR4lozkuCFFNzX5KcX0sxQcke7w2nODKUudV0iH1waL4z6jI
-	 Pz7+d6t0wC3TjdpD/+0KA7Ue8w/jtG6iAWY7evrZpedJzzrZBA+v/YqU4ByFp4//fJ
-	 NVdd6RsgPOoPXpwAWlWe+2qcSO/R+fhskyUox+my14LWp3X7sdHpPM4ifecZbx53Zj
-	 NDGS2i00Mo4TQ==
+	b=nVNrz1gCKXXiDVJKN+W3DUXEZyv0fRAutNmwo93fxkEWFqIXR1uEr/mpqkpuOKwq+
+	 AE9Q9aTk21q+5iShcW5iiIiPNH75Iv6ZLWrmL8TsS3bNUWiQqOtupuwUgFJ4neZE4r
+	 tz3XPCkXqkkvtRvhbYe+BPBxC7j9ucjI2gtTO1O42xCUAIb4nnc8aRvV90FBw5iGq9
+	 S/bddDJQddqevyxg6VHK0fbxxugyW2HKJhHWE2p4Vk3YDrqJsnnfSiVFXhHyO+N8Wx
+	 /qgoza4KlqFGKBkw4tSuBw93ZEgNjfrNC/5FeMXwiL65c6ECU1gusS5dzKQ+ThZnJD
+	 +w9/V/LX37Nwg==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 02/13] mm/damon/tests/core-kunit: test damon_mvsum()
-Date: Sat, 20 Jun 2026 10:22:32 -0700
-Message-ID: <20260620172244.90953-3-sj@kernel.org>
+Subject: [RFC PATCH v1.1 03/13] mm/damon/core: use damon_nr_accesses_mvsum() in __damos_valid_target()
+Date: Sat, 20 Jun 2026 10:22:33 -0700
+Message-ID: <20260620172244.90953-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260620172244.90953-1-sj@kernel.org>
 References: <20260620172244.90953-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 6BEC9A0008
-X-Stat-Signature: zrp66jndgdsnsh4izkfgip194eksesug
-X-HE-Tag: 1781976178-111349
-X-HE-Meta: U2FsdGVkX19z/fVUl7gCIa5nYzdSszYdMaNTnGsQ29SaeXaaw+O/w2+UtzdyDHYzZ8fzoBg/oMaKPqQ95M5etOuc9ubcGJkXxZpZkVBZTgT7ne2RACrRHoycSa3wjUTV29bFIVCzVbD9Kspbd8ggoWtk2EVBDdfJ0f8MflgSnz+dKZlQi72dtS7H0gpylEWpPj/J2y1pz7fBWM9vnT9nOef36RtZhqGaBEAMcit/VRzgzFO2mhRB464aUqI9kJhNyumZdm6x2QEAKIFPKjSSjvA+zkIrKzITJimGWssDiTCXIhhp1e1bJEDX7uAzTFetq7spQsvrvfHInXyeMUJN11Vq3yyysi5moV+UXaU+M5M3RUtZ47rT0Y955NXv43xlzffzAYkC2v+kB7CgtyDLBheH9pkBxwyyHk3EGEJB+pZNQZ121IVjbdG8UwAvWme1U34B+c+LNhXBzNsBlON0LFa3pHdxpfMh+Kaz7Vf7YwAjJpRApAfK/8x5+UBHebxY/oBJ7swu+1InAWxG3iefxptvDFS8CNFU+Ou3BgWCBEmAwpG/kObtn+10gjVcnlpeJ3bT7Mk9huX6sjhHlUyf95KMw19J/pH7dWJF315butmpVhgFCbra2VuILPpVGZEYO5MbJFFZhld9gEA/ArahX0tyK+IWW/gA9tSFepitToBOgj+eGQO3ZeyWqBruEm2dzNqB5DFrJuvUwjKAJAMitP20aJmHZns//0P/YyjdJJobObSVh7G9TApfCQP/ylqsEc4HRouVnhs+5itcITboiXRN6OGSAbhPpDZVcSENu0kO2DkiO39cSBKoWmNr/IIzaGeCOV6vtp7BFS/hssqiXevREL57jPDMyxSXCO1LYf4ljp9sS2jXcDAWxWWi+pRsZecMOPkBdOPT23/T+ip5mu2YhuE7dWYJTiDdo6Cg6oJ6h1ZCLBd1dBh+SULWZyr1uXe4kLSMyNQChBUM/wW
- PVKQtApy
- TwbvFAUdt2Ix+OiIWu/CQpRnW5w0/GqPSN+haJwd1TG/+RL/sqdk1y2uUF1hTbkxlUqX760++oydCzo2v6O9JrxsqQrd8+GQlVzlSkFDumlMIaeVvhriVoEMWdNHGzeA5KaeWfdhZ4udU1Z2upynEEkiEggFGVMB+eZNBxTboa1BdrdwqD8EviqsPcTPS82NlxF3QcGxTOJs/ZFPJhaqoDZCLdPWpzSV9dPaMDw1wehZmWC3prz/N/k4vrrAQiNg4GYaZuj1SIuREff8+CStGCfxL7A==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5A4511C0006
+X-Stat-Signature: yobd6y1nyuom9n6scjocp6epui8kco9h
+X-HE-Tag: 1781976179-256734
+X-HE-Meta: U2FsdGVkX1/xJboxyo2DQJzPW75KpDI3pr2AoO9Z1ImPqmbdlQ90pv2MzdHK+WqVmOHuDrt0Q5l+JuLzqrTYxcyobIPv/oOIq1c2vhi/L2TbSw5Lic/lTVSrg5SaivInxGYnEPrUVzSact9JKh+bRoT6HSSARlmR9jzNA5gizKqqQupKsyRdd0A3nxDzQAUZ9k742F2OAnXmYqiJymQfGzEtPPLSsA38d6DmJAREtYGY151fVWlOClrklIZJ3YNAca8pVVuWj+J77h9Z3x3JFqNqWA59qytMimTEYRA0UR0vW+BKr4t8eGUOvRRZvX87QjT2zMJFxJ6W2zSkCmDBq2HhPxw18RLBZsPj08VZiY0pM6/gp9nSZCGT43krb15cGI0bpciAOWTnAhepCnogbmpSmdD81i+DhAAvG6QXy3d4KnKpo2OIH3gepk9erWJH1iEBhhXd1Ph9ctXjVCJhG3/QynwsfITKuTHPXL8GpxILqXWItIowkeAvpcZRmCJ4I/XtDrf+eoPz0AC6xO+qZkHXXNZOdQcuzfK2C4Wk5//X7eZ3XoQ6ixqoGiinh9JsCVAhP2hLToOfBpJHn6n/LMRFKXUEq5w2VZ4od/T4jw1vfi6p1dmuXYdhufBfP9HRILCu5Em+ceyNjYyDcZfGx1E9FUgZbiJAFeT02uS6bB3M+xlu2KZ7MGOXw+oWQuhAq0G35YekOKEUutBLytHLaJW8ZU3AYRnV32Zv1vkVR5C9jzUDcw3CeKJuiAKZJxs4TLt4qIpktQcIUzOGYo3LzUkr5lN0gJTe8cQNCy7PVX4h/4hj+o5tDBIWTfjyRUE6ax6NwZRL2dQeP3WbmNZ5F+jEBsO37Ou4GRiV3dgFzmR7hrVLHlkTyRYga907d0shlvGfCuvYOfn+DlL+YBjWjFPwmXfHYtdWAe3+E9tvrONnThG8AHYNhkbX/XuSjegJe/6JA1WEe4WlLShnwk5
+ Z1bzkArW
+ 8T2ogLawJ4L4tBCraoscvxUhwdNQVv/xv2KZ4cGGXtYszCY2B1Q1mpRHcUtmO40eSVFVE3brj2vAqAHDXW+llFAPhHYkv4r2iGvIjk/RATf35SwCgt3fGRIBR/6vGEWOx5wnipi1q2xgPGcG5YkDPFNxY6n+UJ2GEEF0uYJsUH8UlsRCr51p7NetHha8bg6o8fal+w0rfS20mC5PxTbG1CJ7Rf5fQmRIwCloxmBMeBmlhlpJNjBP708k7e6gaa6TQ499SpVf6qpGRiKc9YdtXI+OqzA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,58 +93,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a simple unit test for damon_nr_accesses_mvsum()'s internal core
-logic, damon_mvsum().  The test contains cases for just-started windows,
-partially completed windows, and just-completed windows.
+damon_nr_accesses_mvsum() returns a value same to nr_accesses_bp.  Also
+the function is more simple and therefore more tolerant to errors.
+Execution of the function would be more expensive than the simple read
+of the field, but because the function is quite simple, the overhead
+should be negligible.  Use it in __damos_valid_target() instead of the
+nr_accesses_bp.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ mm/damon/core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 4e448c08c724a..cdab14396250f 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -623,6 +623,30 @@ static void damon_test_moving_sum(struct kunit *test)
- 	}
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 687aa2ea1d013..ce0e2a4c1d523 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -2120,10 +2120,11 @@ static noinline_for_stack void kdamond_tune_intervals(struct damon_ctx *c)
+ 	damon_set_attrs(c, &new_attrs);
  }
  
-+static void damon_test_mvsum(struct kunit *test)
-+{
-+	unsigned long input_expects[] = {
-+		/* current value, last value, remaining window (bp) */
-+		0, 49, 10000, 49,	/* 0 + 49 * 1 */
-+		3, 10, 7000, 10,	/* 3 + 10 * 0.7 */
-+		3, 10, 5000, 8,		/* 3 + 10 * 0.5 */
-+		32, 100, 1000, 42,	/* 32 + 100 * 0.1 */
-+		42, 49, 0, 42,		/* 42 + 49 * 0 */
-+	};
-+
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(input_expects); i += 4) {
-+		unsigned long current_nr = input_expects[i];
-+		unsigned long last_nr = input_expects[i + 1];
-+		unsigned long left_window_bp = input_expects[i + 2];
-+		unsigned long expect = input_expects[i + 3];
-+
-+		KUNIT_EXPECT_EQ(test, damon_mvsum(current_nr, last_nr,
-+					left_window_bp), expect);
-+	}
-+}
-+
- static void damos_test_new_filter(struct kunit *test)
+-static bool __damos_valid_target(struct damon_region *r, struct damos *s)
++static bool __damos_valid_target(struct damon_region *r, struct damos *s,
++		struct damon_ctx *c)
  {
- 	struct damos_filter *filter;
-@@ -1501,6 +1525,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_update_monitoring_result),
- 	KUNIT_CASE(damon_test_set_attrs),
- 	KUNIT_CASE(damon_test_moving_sum),
-+	KUNIT_CASE(damon_test_mvsum),
- 	KUNIT_CASE(damos_test_new_filter),
- 	KUNIT_CASE(damos_test_commit_quota_goal),
- 	KUNIT_CASE(damos_test_commit_quota_goals),
+ 	unsigned long sz;
+-	unsigned int nr_accesses = r->nr_accesses_bp / 10000;
++	unsigned int nr_accesses = damon_nr_accesses_mvsum(r, c);
+ 
+ 	sz = damon_sz_region(r);
+ 	return s->pattern.min_sz_region <= sz &&
+@@ -2149,7 +2150,7 @@ static bool damos_quota_is_set(struct damos_quota *quota)
+ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+ 		struct damos *s)
+ {
+-	bool ret = __damos_valid_target(r, s);
++	bool ret = __damos_valid_target(r, s, c);
+ 
+ 	if (!ret || !damos_quota_is_set(&s->quota) || !c->ops.get_scheme_score)
+ 		return ret;
+@@ -2735,7 +2736,7 @@ static phys_addr_t damos_calc_eligible_bytes(struct damon_ctx *c,
+ 		damon_for_each_region(r, t) {
+ 			phys_addr_t addr, end_addr;
+ 
+-			if (!__damos_valid_target(r, s))
++			if (!__damos_valid_target(r, s, c))
+ 				continue;
+ 
+ 			/* Convert from core address units to physical bytes */
+@@ -3024,7 +3025,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 			(DAMOS_MAX_SCORE + 1));
+ 	damon_for_each_target(t, c) {
+ 		damon_for_each_region(r, t) {
+-			if (!__damos_valid_target(r, s))
++			if (!__damos_valid_target(r, s, c))
+ 				continue;
+ 			if (damos_core_filter_out(c, t, r, s))
+ 				continue;
 -- 
 2.47.3
 
