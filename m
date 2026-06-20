@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8D0ECDB46B
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6245CD98F2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B42FB6B0092; Sat, 20 Jun 2026 13:22:59 -0400 (EDT)
+	id AF4DE6B0093; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1A5C6B0093; Sat, 20 Jun 2026 13:22:59 -0400 (EDT)
+	id AA59A6B0098; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57306B0095; Sat, 20 Jun 2026 13:22:59 -0400 (EDT)
+	id 9E8E86B0093; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 767946B0092
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 13:22:59 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 71AB16B0093
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 13:23:01 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD9B5A017B
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0824D401C4
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:00 +0000 (UTC)
+X-FDA: 84900961320.16.3B70AC3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6BEC9A0008
 	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:22:58 +0000 (UTC)
-X-FDA: 84900961236.16.1535F09
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4DCFE100010
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:22:57 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJGVboc4;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHuwwO9B;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781976178;
+	b=Ba7hgku0XCiEe/8ra4Gpq/ohUROYSgaIwB18OJr6n3IYi/oXXJFf3Ikf9mZkiyvA5OSupr
+	/2paEAuxQn5XxP+S5xvyjRNCPk5kj4neTzWtdC0EhWZWwgNwyxGcBgP3o+xaZsZsOC3vni
+	VjPoJ6CKoYfhcZtOHXEsOcA7EwWFlyQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PHuwwO9B;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781976177;
+	s=arc-20220608; t=1781976178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dLCAfBHDChwPdrWPfXNspXQv9mabG8os1lau8ZVdRzE=;
-	b=khu3diJ9cJ/MYtahIcaD0fhFsdG1Dg4btAY1UOuVhb/Nu0cnTov88/HD1kdSgjoOidNRJQ
-	EZd3C20CWhT13ZnLYXitXFliUs7W3R7UHNH01b7d1qyVepflstuoU8Ql8iAm3flvxaSpMD
-	seWf1hRCqx2m3N01TvaSXSGTfAh/qek=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bJGVboc4;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781976177;
-	b=0LyPotXT6i6QU5xngljKYYCvvhUmJ31y3b4t6faNbIAa/7j8UGYqIQt/L2I6iW41dvk0zV
-	mscyxYmkGii4bl1hBlq+H5aQTiOoS5rB+XBfilOKorsus0nDsPaMoClmfiouCsc4QzZWv0
-	17hzD365vpI18kHN3QzqCWKzdpxFoJ4=
+	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
+	b=rMj/HupAtE6fV6AVYf7z+Vb63DfneSPH4+gL0fTqMVGh2V0s0ZCoKcYuf6ryclWWHq4Z/C
+	kYb81nYpPsqXVbwM7Ixr4z/wW3SpncHBGk2FtXtEkOoL+mmchO1Lb8fPUN3qleLRfwII8w
+	XbYQbFTDZwKNfy4H3IL1cRRfv1g7HUQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BFF9F601E1;
+	by sea.source.kernel.org (Postfix) with ESMTP id B04C444424;
+	Sat, 20 Jun 2026 17:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25431F00A3E;
 	Sat, 20 Jun 2026 17:22:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EBE1F00A3A;
-	Sat, 20 Jun 2026 17:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781976176;
-	bh=dLCAfBHDChwPdrWPfXNspXQv9mabG8os1lau8ZVdRzE=;
+	s=k20260515; t=1781976177;
+	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bJGVboc4eLqvEwRRd7VH1UikCMPDDiqQ/Q3H8jvrsgSx9z/5uBL4oTLBg+Bd5UYdM
-	 0pBE3j8Fwbw8D7WGZ/gmWpaGxmY/kKjF4zr4lcvie4d/9iuGccdLBxpk3H+rvOo9Dg
-	 oPZw8kUoY7RCCJfYviLsK1zd7lWAbiPGkxxNiWMbDTSjqRByRG+x4+TCqTPv+/h29d
-	 BpbvSAm8MzwTGrC4Vb+RCVZwOEsdiRGVp3Rh+ZyN1HGKLZF0C8JSM5rs9bD/SHzu0t
-	 l6g6cnsEQNkqO/euuD/jBnQgHaG6LrN0srIoFOPMYAZsqrUq5Fi41AlrctzdZGRtEZ
-	 YT8cO8Wm7v1bA==
+	b=PHuwwO9B54CWPTt5BvV46KzE/1dreh00K6wX1qBuSsMco5Bn1SOUpZnm7VX6JvLYW
+	 MdMGZO/UZwcviUhyhuxUrslPReBGjTOPXhZv3/T4fJMgqp1rO4e5P6NifuetqTaOP/
+	 D9Z72oVcZeluSY7G24yR4lozkuCFFNzX5KcX0sxQcke7w2nODKUudV0iH1waL4z6jI
+	 Pz7+d6t0wC3TjdpD/+0KA7Ue8w/jtG6iAWY7evrZpedJzzrZBA+v/YqU4ByFp4//fJ
+	 NVdd6RsgPOoPXpwAWlWe+2qcSO/R+fhskyUox+my14LWp3X7sdHpPM4ifecZbx53Zj
+	 NDGS2i00Mo4TQ==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 01/13] mm/damon: introduce damon_nr_accesses_mvsum()
-Date: Sat, 20 Jun 2026 10:22:31 -0700
-Message-ID: <20260620172244.90953-2-sj@kernel.org>
+Subject: [RFC PATCH v1.1 02/13] mm/damon/tests/core-kunit: test damon_mvsum()
+Date: Sat, 20 Jun 2026 10:22:32 -0700
+Message-ID: <20260620172244.90953-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260620172244.90953-1-sj@kernel.org>
 References: <20260620172244.90953-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4DCFE100010
-X-Stat-Signature: d7hqmdt13jzy34p5g8bm7p7djwwcu6e7
 X-Rspam-User: 
-X-HE-Tag: 1781976177-31161
-X-HE-Meta: U2FsdGVkX1+L10oiVFGIdwQlrrkAbHCPy8e8J8jrB2Iqv1Wspa+LFs9SpHRHuqTSyMfCh60SKwa79HcBBxF3ZO7vWhJ6vVexnD/47k1C9NCD6I9OLEHOsoO2LkLFuT1JZOAES/VVRJNMlp2ColKOXmyxz/YDbdGFvqXFRoqDaCHHZZWrerNhCoDoe0qxe4Qy6T5QU+lBMcT6Cbp+/KzGiUSF7HScP87qI5AermcfuR9WdxCPPxWSVm5lwQUpSEqXSWz8qvVApqpG/kZCtAtc26peA5t26FYUPYTmSAboCJ01+WHnr7TLMvFWIx+pbRT3192o5dZ1uZXxT9fU5eNKUNi8fLfORrlPFRuIyDgmabpzu1UyDKc/52agr+yqkORbe3ORSyyK7bhgSS4jWIDTLCge5JP0D+0fetFlQ5xMCdU5Es2aOdPclMCp0Y4OQQtexXcomuRtYMq3KMr9rRjGXwk9wIjib7Z6fFMm5ttQVgdHSd26wLq/xf7Jsvc6gkQ8gl1AEtO+5liuKeurK9BJPvpBYI18waeJBJq7i4+oaxvVhxkCH5btL+o395goQciG1ANe7HjyZeO6VkQO3Oc4IHLHeRV6iU2B/E7EBgUmKPbO+Q8JwHNlfFx+2onZS2622fjLMwNVJ+CBWFXLhtXIbecztFWNnSyZzb1M/d5wzN8VeFhIV2nQAcHhAzyboxMrL6yRtxB6E0H8/GsWzAu4TqYtAVIp4F++uSPO4qRaU2oJcO9kS4XnSAEzsEMyiZZEmQCH14CRdtd+hSi6svUqHuD6KP863ths4vaitfX87vm9GghWiEsDKTEeoxRAmUUQi+AuPvD0Fsq9eP2U8D0z8QRx1pBSUPRFrGjsFA3x3grT5pC/PZ0eBiNeADn0p02f6dJht9NeV/jYnkk/6GBmwogNKwd+1cWfqpQXTS8EssbJppCmz5sls98KxdfGeFsRyrCVOEiISSv4e6qBV8J
- s2iJ8NYl
- KYkQ/WY2wJl7jEH9YtTd9rsYkpAeJrRp3F/yjOELM5NMTEeqx8+nqNs2BXsAsNTs4saxRg07vz811dcPTpC/owxMYyRxBUfpNScon/+FKvhEIEczoc++hLOLdQKGA4m0ZeIhRll6tdfFu/mZVWwKX89yjl9RVbZ9WTT6GDjQ43e/FXxCuZGAGKAAkosLRFnn7CWWgK5YdQ1zZuLvIyJBuETxQAgAEnDci2TaQCVUvgXVp9WpU1MnApOYM1AupxDaLldkAFJMOPPgiXth7wzGo/GzCzA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 6BEC9A0008
+X-Stat-Signature: zrp66jndgdsnsh4izkfgip194eksesug
+X-HE-Tag: 1781976178-111349
+X-HE-Meta: U2FsdGVkX19z/fVUl7gCIa5nYzdSszYdMaNTnGsQ29SaeXaaw+O/w2+UtzdyDHYzZ8fzoBg/oMaKPqQ95M5etOuc9ubcGJkXxZpZkVBZTgT7ne2RACrRHoycSa3wjUTV29bFIVCzVbD9Kspbd8ggoWtk2EVBDdfJ0f8MflgSnz+dKZlQi72dtS7H0gpylEWpPj/J2y1pz7fBWM9vnT9nOef36RtZhqGaBEAMcit/VRzgzFO2mhRB464aUqI9kJhNyumZdm6x2QEAKIFPKjSSjvA+zkIrKzITJimGWssDiTCXIhhp1e1bJEDX7uAzTFetq7spQsvrvfHInXyeMUJN11Vq3yyysi5moV+UXaU+M5M3RUtZ47rT0Y955NXv43xlzffzAYkC2v+kB7CgtyDLBheH9pkBxwyyHk3EGEJB+pZNQZ121IVjbdG8UwAvWme1U34B+c+LNhXBzNsBlON0LFa3pHdxpfMh+Kaz7Vf7YwAjJpRApAfK/8x5+UBHebxY/oBJ7swu+1InAWxG3iefxptvDFS8CNFU+Ou3BgWCBEmAwpG/kObtn+10gjVcnlpeJ3bT7Mk9huX6sjhHlUyf95KMw19J/pH7dWJF315butmpVhgFCbra2VuILPpVGZEYO5MbJFFZhld9gEA/ArahX0tyK+IWW/gA9tSFepitToBOgj+eGQO3ZeyWqBruEm2dzNqB5DFrJuvUwjKAJAMitP20aJmHZns//0P/YyjdJJobObSVh7G9TApfCQP/ylqsEc4HRouVnhs+5itcITboiXRN6OGSAbhPpDZVcSENu0kO2DkiO39cSBKoWmNr/IIzaGeCOV6vtp7BFS/hssqiXevREL57jPDMyxSXCO1LYf4ljp9sS2jXcDAWxWWi+pRsZecMOPkBdOPT23/T+ip5mu2YhuE7dWYJTiDdo6Cg6oJ6h1ZCLBd1dBh+SULWZyr1uXe4kLSMyNQChBUM/wW
+ PVKQtApy
+ TwbvFAUdt2Ix+OiIWu/CQpRnW5w0/GqPSN+haJwd1TG/+RL/sqdk1y2uUF1hTbkxlUqX760++oydCzo2v6O9JrxsqQrd8+GQlVzlSkFDumlMIaeVvhriVoEMWdNHGzeA5KaeWfdhZ4udU1Z2upynEEkiEggFGVMB+eZNBxTboa1BdrdwqD8EviqsPcTPS82NlxF3QcGxTOJs/ZFPJhaqoDZCLdPWpzSV9dPaMDw1wehZmWC3prz/N/k4vrrAQiNg4GYaZuj1SIuREff8+CStGCfxL7A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,101 +97,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce a new DAMON core function, damon_nr_accesses_mvsum().  It
-returns a pseudo moving sum value of a given region's nr_accesses for
-the last aggregation interval.  The internal logic is the same to
-nr_accesses_bp.  The difference is that nr_accesses_bp is updated for
-each sampling interval, while the new function needs to be executed only
-when requested.  Hence the function's return value is the same as the
-value of nr_accesses_bp.
+Add a simple unit test for damon_nr_accesses_mvsum()'s internal core
+logic, damon_mvsum().  The test contains cases for just-started windows,
+partially completed windows, and just-completed windows.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h |  2 ++
- mm/damon/core.c       | 57 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+)
+ mm/damon/tests/core-kunit.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 02ac34537df9a..55a743d99b567 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1013,6 +1013,8 @@ struct damon_probe *damon_new_probe(void);
- void damon_add_probe(struct damon_ctx *ctx, struct damon_probe *probe);
- 
- struct damon_region *damon_new_region(unsigned long start, unsigned long end);
-+unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
-+		struct damon_ctx *ctx);
- 
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- 		unsigned int nr_ranges, unsigned long min_region_sz);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 5b84b3ce3fcff..687aa2ea1d013 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -210,6 +210,63 @@ static struct damon_probe *damon_nth_probe(int n, struct damon_ctx *ctx)
- 	return NULL;
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4e448c08c724a..cdab14396250f 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -623,6 +623,30 @@ static void damon_test_moving_sum(struct kunit *test)
+ 	}
  }
  
-+/*
-+ * damon_mvsum() - Returns pseudo moving sum value for a time window.
-+ * @current_nr:		The value of the current aggregation window.
-+ * @last_nr:		The value of the last aggregation window.
-+ * @left_window_bp:	Left time of the current aggregation window.
-+ *
-+ * This function calculates a pseudo moving sum value of a counter that is
-+ * aggregated for each time window.  @current_nr is the value of the counter
-+ * that aggregated so far (maybe not yet complete), from the beginning of the
-+ * current aggregation time window.  @last_nr is the value of the counter that
-+ * has completely aggregated in the last aggregation time window.
-+ * @left_window_bp represents how much time is left for the current aggregation
-+ * time window in bp (1/10,000).  For example, the aggregation time window is
-+ * for every 10 seconds and 7 seconds has passed since the beginning of the
-+ * current window, this parameter will be 3000 ((10 - 7) / 10 * 10000).
-+ *
-+ * The logic assumes the aggregation in the last phase was made in a single
-+ * speed.  Based on the assumption, the value from the last window that needs
-+ * to be added to the current value is calculated as a portion of the last
-+ * value based on the remaining time window.
-+ */
-+static unsigned long damon_mvsum(unsigned long current_nr,
-+		unsigned long last_nr, unsigned long left_window_bp)
++static void damon_test_mvsum(struct kunit *test)
 +{
-+	return current_nr + mult_frac(last_nr, left_window_bp, 10000);
++	unsigned long input_expects[] = {
++		/* current value, last value, remaining window (bp) */
++		0, 49, 10000, 49,	/* 0 + 49 * 1 */
++		3, 10, 7000, 10,	/* 3 + 10 * 0.7 */
++		3, 10, 5000, 8,		/* 3 + 10 * 0.5 */
++		32, 100, 1000, 42,	/* 32 + 100 * 0.1 */
++		42, 49, 0, 42,		/* 42 + 49 * 0 */
++	};
++
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(input_expects); i += 4) {
++		unsigned long current_nr = input_expects[i];
++		unsigned long last_nr = input_expects[i + 1];
++		unsigned long left_window_bp = input_expects[i + 2];
++		unsigned long expect = input_expects[i + 3];
++
++		KUNIT_EXPECT_EQ(test, damon_mvsum(current_nr, last_nr,
++					left_window_bp), expect);
++	}
 +}
 +
-+/**
-+ * damon_nr_accesses_mvsum() - Returns moving sum access frequency score.
-+ * @r:		Region to get the access frequency of.
-+ * @ctx:	DAMON context of @r.
-+ *
-+ * This function returns for how many sampling iterations in the last
-+ * aggregation interval (&damon_attrs->aggr_interval) the region was found to
-+ * be accessed.  Hence the value can be interpreted as the relative access
-+ * frequency score of the region (@r).  The value is calculated as a pseudo
-+ * moving sum, and hence it is not an exact value but just a best-effort
-+ * reasonable estimation.
-+ *
-+ * Return: the pseudo moving sum access frequency score.
-+ */
-+unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
-+		struct damon_ctx *ctx)
-+{
-+	unsigned long sample_interval, aggr_interval;
-+	unsigned long window_len, left_window, left_window_bp;
-+
-+	sample_interval = ctx->attrs.sample_interval ? : 1;
-+	aggr_interval = ctx->attrs.aggr_interval ? : 1;
-+	window_len = aggr_interval / sample_interval;
-+	left_window = ctx->next_aggregation_sis - ctx->passed_sample_intervals;
-+	left_window_bp = mult_frac(left_window, 10000, window_len);
-+
-+	return damon_mvsum(r->nr_accesses, r->last_nr_accesses,
-+			left_window_bp);
-+}
-+
- #ifdef CONFIG_DAMON_DEBUG_SANITY
- static void damon_verify_new_region(unsigned long start, unsigned long end)
+ static void damos_test_new_filter(struct kunit *test)
  {
+ 	struct damos_filter *filter;
+@@ -1501,6 +1525,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_update_monitoring_result),
+ 	KUNIT_CASE(damon_test_set_attrs),
+ 	KUNIT_CASE(damon_test_moving_sum),
++	KUNIT_CASE(damon_test_mvsum),
+ 	KUNIT_CASE(damos_test_new_filter),
+ 	KUNIT_CASE(damos_test_commit_quota_goal),
+ 	KUNIT_CASE(damos_test_commit_quota_goals),
 -- 
 2.47.3
 
