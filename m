@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AB62CD98F2
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FC81CD98F2
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 17:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 10A016B0096; Sat, 20 Jun 2026 13:23:03 -0400 (EDT)
+	id 7C0986B0099; Sat, 20 Jun 2026 13:23:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1FE6B0099; Sat, 20 Jun 2026 13:23:03 -0400 (EDT)
+	id 771936B009B; Sat, 20 Jun 2026 13:23:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0253E6B0096; Sat, 20 Jun 2026 13:23:02 -0400 (EDT)
+	id 660C76B009D; Sat, 20 Jun 2026 13:23:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB53E6B0096
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 13:23:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BE9C1C1182
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:02 +0000 (UTC)
-X-FDA: 84900961404.10.A60B9C3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C8556B0099
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 13:23:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8AADE8C69A
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:03 +0000 (UTC)
+X-FDA: 84900961446.04.82B548B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 84CA040014
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BaZRgqH3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf19.hostedemail.com (Postfix) with ESMTP id EA1731A0005
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 17:23:01 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XTEIVe6o;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781976180;
+	s=arc-20220608; t=1781976182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQ9tcQmAH5LACFHL/fzQkhDxMQKAnhPo6ksNR/v/d70=;
-	b=bUp6CUPZUfxSkVCkF3uUiZknNjod1XCXbBcTyio8ubZ386pk2LppqJwj8TIaBhyMBZYu0z
-	JnT6mtvM60zB4UeR8Kl+w9MsMVMTqQUcK4zjJIwEyFFG5URVwq9FKFPP5YpHJHCPqRDm0K
-	epm+XQaC8xubnfnQbl19kgE8ki1HFwM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781976180;
-	b=K/PcJH6rOTJOvFlHftcl7YIRbrxe1LRSEDHFFkF2zqMKEKlQIj4z/rAckfWGsgQYdpTHI9
-	Y6peCk4Gtm7P+M07hoVpaCOxnB0tRGM7ul6BtxHcH2hVHx4N58F8tcFCVfyDJ7gLjsvpPl
-	LGjrijOeoStvokrQzko/JTyZ0ELYsmg=
+	bh=HUk5Cck1sJbUUjMgjgxqdG3j5G1J/Fn/sddbtTw+llU=;
+	b=5nUsFoSgzGPxLB5o1Jy1Xd7twcdeoct0+9E0ddjMTEJQVKZRa46J6xsu37Egchd0u20Xpp
+	NlaJKMeo2gujxE5iYRu6OqnhVF1bw3Vg+LeQ2LkeGjIvuI5fbOmvZF+DngmaIqM+Cm4TMR
+	r/e/shkDVY8lz8o+oZZdsemTOHNPekc=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BaZRgqH3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XTEIVe6o;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781976182;
+	b=zEh0h69uk8/tdEfhAMApOoREdrKz7a/D+L4w1RB6M9rsohhCx6sTQ3OqGwZplhRCfkIYMw
+	a/+LvxQzCEj/6Mteh82a+RrGXdb21WC1/3d6HMfcp+Vj/nfCISu9Ted2Q4SnsI5MxIlFVg
+	lmPITqhk9sNUVmKK66zDcaJNnKHzPqk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D57C240823;
-	Sat, 20 Jun 2026 17:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6361F000E9;
-	Sat, 20 Jun 2026 17:22:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 46CA7443D1;
+	Sat, 20 Jun 2026 17:23:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 373F61F00A3A;
+	Sat, 20 Jun 2026 17:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1781976179;
-	bh=VQ9tcQmAH5LACFHL/fzQkhDxMQKAnhPo6ksNR/v/d70=;
+	s=k20260515; t=1781976181;
+	bh=HUk5Cck1sJbUUjMgjgxqdG3j5G1J/Fn/sddbtTw+llU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BaZRgqH3IvDG20Sb4Hu/dcRr0wUFCte532/LnaNz9hQjKqtvEHJjJ1tMSjSp4Sd7A
-	 COP7pwGFEujL3BSbDA9BPIaW1ySIgxx6rgigudCBaM2rIHlmna2IaIEDvb5/fwI04n
-	 rBqOZtMS3Lm19VoaIJ3zi9W8atG/L7vimE8ggoX8IZl/YaEpXsEB0A4BqrYvWc3WHf
-	 sWOdZlj4TowXfNQXKJe+/IsKTAmJluBo+5btL4AlJleZwTogtiBKIF+d8cdu2Eee4t
-	 v4G+VnULq/SUgqzm7h1dVIk+ZKv17w5nc4dLf0RBaEy6vjjCGG0Twp9ZhHE5sgycQZ
-	 WOddIOusudCYQ==
+	b=XTEIVe6ooWmjl6A5hvUJ7G1nD3Z3UhRAXiawgQ3122HI37NrW7y6ty0Hv0yP79/Vq
+	 XVtFJ26EKsianOMCXsTYRbBi4enF28mCunFUEg82EQzyzoEFjQ+OU3gjscyotvbLhI
+	 dQMzn29ywiJwgCm1hGjB9mTHbiO1MagUPYfv2C9uhbt5zEreg0jxlJYXuM61fFVlG6
+	 +bF3Efh53RiMREw8CWXqT3LVn3VTCnckjsFIrEYEdzEA1wqGobIUSbQmrU0VVWTJm3
+	 JT/sL7zeK62cDWOo5cXOj9UQyk9V6JjxFgBYd346aQOTutBCQB+xGskcIQvDVesdST
+	 ze27yBznSA64A==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [RFC PATCH v1.1 04/13] mm/damon/core: use damon_nr_accesses_mvsum() for damos region tracing
-Date: Sat, 20 Jun 2026 10:22:34 -0700
-Message-ID: <20260620172244.90953-5-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.1 05/13] mm/damon/sysfs-schemes: use damon_nr_accesses_mvsum() for damo regions
+Date: Sat, 20 Jun 2026 10:22:35 -0700
+Message-ID: <20260620172244.90953-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260620172244.90953-1-sj@kernel.org>
 References: <20260620172244.90953-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 84CA040014
-X-Stat-Signature: f97ipuy5txp5kfa9ojxa6nr965fajifi
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EA1731A0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1781976180-189462
-X-HE-Meta: U2FsdGVkX1+QQz8MBYx4P896edbh27S5mXgYEEsZvi+0TbuV5sjxHL5mXMY/fDjnU5SgONqLUOT8dWAIKCbm9LtnfLHKR/OxdLmrrIgygr9sqesyE6EjvLzogpavPM1azpcowb01Yo3Cz44z43PxUgbaM4fg7POPQLuq55lS89aA9h7rm81C064GLI/ZKZWmmFi4JlO0DQPMm1vgTPYglszkZ3Gol6M6o+G6myNyyItby7qWNXgL0Uauxo3Gq08gZ4E7VjH8g7qNKhcS/niI5qUKyDBUkpZ4yxJm29keg/jRNPiYC7MNIxPrF0GtJX9T/koPDkSx1sajOi6t7xW6199Rt+2nZnmFZWZh5FsjAiCgYf2rRuzbec9K5zGCVLNKJWl+eac0G1c/X6eFvTMBVA/c/KmY7i38cw5GBrMYC3HwafK0uezk1su+pDrAdIaDxhoNmOPYI48LBWOeMnXkN5uX+OsWxHEyOjM05bqmKR8t1TAUT91Kb9qgwpWf1Dqa4CaA+8RWSR15na5a8Koe2Ml9n4qm7pA+ZjBQy3ahqzwRr++Ff1W8EziVbbgfYi13pxphXifbu8t/9K99hcHVyW6kQ/T+IIuLA5Ev/7ysmVeChJGgjysMDh8E8VSFFH/l4LCIr+E07cUZBL8XTf+XxM+PV0RCO/eRE6r8PVFbt5HVig+LAKuuYO2FlEFEnAfJv6jWFz6gB5iq4KRtOvXkztT7spotH8gjmfd+JhzJI83N0y2PgpYpgImSEB5YQJ4eJcNUj+EsFjCsyibBAxZ6i3tOryI4c7UdrlnZ5AQBAKk1ugtyZmljhm3h9Zxm0m+UciMo9gVM4T0Rj+YlPsVJXV6OR8sDm2u3utKQMvg/w8+ITBpelzJZqoqw8BT8l1aXTzmowgUrtmoVQMzqeY3YaQoNb+dB0RNpaFI0awztBRiEmvv9JzQGIwjiMUZPm53WV5qVUz1S0LiLml1MIaH
- NwYha9xR
- 8UaKS5qfTILlV6GScTXSEdXOVh0GwRoNJlAslsUBP+LoJJwrQWtgJlHtG+LJthuW5zdWJR+/UIkrzXqtnRYOmqxeQpgV3S2AZWa44z1NFQlPRxUW9mhM3jjGVlP3GDYa66wAjzy6eXKKv8DhBzg6RBg2iANxY0glDRqnRHJMLuijBAxgW7Qb6Yayyho/vBSHm7yYCwQLV5Cbn1LAjMkzLr9XO3JaQ3NbybGKNmzmxNUX5ELkNGURoPqnjOZcLsqksCxfhnuiwdHyT68eV3D/oYzlK2g==
+X-Stat-Signature: dtjdukgudjxto7rz7gwzbqwrejcfqw3u
+X-HE-Tag: 1781976181-594893
+X-HE-Meta: U2FsdGVkX18tLd/yQm5G4fmKhI+V4Xnfj6P1iHUkLIi+Y1iTrmGdBB7qd0Sq75pJskTyX1+TZw7jCzZ6ZRJ8N4sOMAPpIRkNdH1FPW7bNS+l9PbnYhko6zPrA7Xf3PnQGo5KrKFCUCjqVYpiKKESCou2QgVyBpWOeo5W6JpQMBeNgipZzS6P2pZTq6Gm7oJVTR2S6igKUa5zILCX4jI73X0QiVqmuUO1ZZNHq/EiaOfqf6aF2vOT0ngJmge795nCTDr7PEkEqVXkg2IaKoWB8HNHKOUnT9WCnU3ZOV9nLYFe5S2lSYreyvGJLtikaHaCOAHMU6XznWIc/DJS1Cx4YH46Zv2Vz5SVjxZ8IVfNzNngmwnPEPoXwdqggb9r3CgGlIEyUPIAJLvkTOBpuETPaSJXBonJ23SqoIu3ZOtTo/IqbMENAdnXsOJtfQWyv3IDrE7NJpRIgsC6UO6WFM1SOEbqBJRgUpxaW5TEMtntPtdif/MqkzsLSk+g912H8172PoQ/dig7+xgH1Md89X0MGfLW94fVHCPx8P7M3md8qA4WN8NEMQX00f56YEKb4rRZlhxo1zZE74Jx6O75ghtfp3aTzuc6fu7A/K0fIqCdh3tqSiwCLB8NH0e1pRWZ0axbCvzqVGs1tTZX7z1xJrRT0aOo9tGgrbfhJ/LeFyESgzhHvSEXO1eR3lm5GCNHry2U7xafMmG20W1SfOvNsmzWmkSO75gpXGo1khNE0x98TZrfE3wdfJLb0Ld9J5wmdP7SxDryOhqqJ9hSVwzz9TNIPflUxKYI97iW6hY2g0PdG/X13X/whzEHpAbxuVLukNLygc9+9NC/VmpjHugoTn8ur69JK6II4kQFtPW+85coKciRvSHgzL8NSwHG1Jqo/Imy5RGKr2xP+tMeNE8AjWIJgPpadTJNVNFsDDffvGLL1U5yGpIn2UJd13BUrMBTudVwEVv7uCVh8rIcwg4LkQd
+ daaIuyhg
+ KJFFS64xyl9G8NgNTr3r3aI4G9M1acGeF7LX7dzicqXtccuvxdbftVKh27BSOg5BA2uJJN3OveHDd4eB5DYVQ/R5xBeqhPejIAqeH5/4nvL4Q4cYjJiDMb13Wi05Vi+wbM6c0UJVwV8RGTY/H7SPTA6etKILhl5QvYo6NyWHPomOHWgSQnPbO1h7j/sYGCvrjRJRvbMtH3NuYrj2aXi9viIGvKQE9WkHuLEiM/HX9oYxwh13TwA9M5ntp6BEYf95k0ejy2HaiNd0xXpTJOWStiwF+wQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,72 +97,45 @@ damon_nr_accesses_mvsum() returns a value same to nr_accesses_bp.  Also
 the function is more simple and therefore more tolerant to errors.
 Execution of the function would be more expensive than the simple read
 of the field, but because the function is quite simple, the overhead
-should be negligible.  Use it in the DAMON region exporting trace points
-instead of the nr_accesses_bp.
+should be negligible.  Use it in the DAMON sysfs interface for
+scheme-tried regions, instead of the nr_accesses_bp.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/trace/events/damon.h | 8 +++++---
- mm/damon/core.c              | 5 +++--
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ mm/damon/sysfs-schemes.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
-index 78388538acf44..8851727ae1627 100644
---- a/include/trace/events/damon.h
-+++ b/include/trace/events/damon.h
-@@ -78,9 +78,11 @@ TRACE_EVENT_CONDITION(damos_before_apply,
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 9d8fab32b80f7..30a007bcf82f4 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -159,7 +159,7 @@ struct damon_sysfs_scheme_region {
+ };
  
- 	TP_PROTO(unsigned int context_idx, unsigned int scheme_idx,
- 		unsigned int target_idx, struct damon_region *r,
--		unsigned int nr_regions, bool do_trace),
-+		unsigned int nr_accesses, unsigned int nr_regions,
-+		bool do_trace),
+ static struct damon_sysfs_scheme_region *damon_sysfs_scheme_region_alloc(
+-		struct damon_region *region)
++		struct damon_region *region, struct damon_ctx *ctx)
+ {
+ 	struct damon_sysfs_scheme_region *sysfs_region = kmalloc_obj(*sysfs_region);
  
--	TP_ARGS(context_idx, scheme_idx, target_idx, r, nr_regions, do_trace),
-+	TP_ARGS(context_idx, scheme_idx, target_idx, r, nr_accesses,
-+		nr_regions, do_trace),
+@@ -167,7 +167,7 @@ static struct damon_sysfs_scheme_region *damon_sysfs_scheme_region_alloc(
+ 		return NULL;
+ 	sysfs_region->kobj = (struct kobject){};
+ 	sysfs_region->ar = region->ar;
+-	sysfs_region->nr_accesses = region->nr_accesses_bp / 10000;
++	sysfs_region->nr_accesses = damon_nr_accesses_mvsum(region, ctx);
+ 	sysfs_region->age = region->age;
+ 	sysfs_region->probes = NULL;
+ 	INIT_LIST_HEAD(&sysfs_region->list);
+@@ -3124,7 +3124,7 @@ void damos_sysfs_populate_region_dir(struct damon_sysfs_schemes *sysfs_schemes,
+ 	if (total_bytes_only)
+ 		return;
  
- 	TP_CONDITION(do_trace),
- 
-@@ -101,7 +103,7 @@ TRACE_EVENT_CONDITION(damos_before_apply,
- 		__entry->target_idx = target_idx;
- 		__entry->start = r->ar.start;
- 		__entry->end = r->ar.end;
--		__entry->nr_accesses = r->nr_accesses_bp / 10000;
-+		__entry->nr_accesses = nr_accesses;
- 		__entry->age = r->age;
- 		__entry->nr_regions = nr_regions;
- 	),
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ce0e2a4c1d523..710ec13e98281 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2434,7 +2434,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 	struct damos *siter;		/* schemes iterator */
- 	unsigned int sidx = 0;
- 	struct damon_target *titer;	/* targets iterator */
--	unsigned int tidx = 0;
-+	unsigned int tidx = 0, nr_accesses = 0;
- 	bool do_trace = false;
- 
- 	/* get indices for trace_damos_before_apply() */
-@@ -2449,6 +2449,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 				break;
- 			tidx++;
- 		}
-+		nr_accesses = damon_nr_accesses_mvsum(r, c);
- 		do_trace = true;
- 	}
- 
-@@ -2464,7 +2465,7 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 		if (damos_core_filter_out(c, t, r, s))
- 			return;
- 		ktime_get_coarse_ts64(&begin);
--		trace_damos_before_apply(cidx, sidx, tidx, r,
-+		trace_damos_before_apply(cidx, sidx, tidx, r, nr_accesses,
- 				damon_nr_regions(t), do_trace);
- 		sz_applied = c->ops.apply_scheme(c, t, r, s,
- 				&sz_ops_filter_passed);
+-	region = damon_sysfs_scheme_region_alloc(r);
++	region = damon_sysfs_scheme_region_alloc(r, ctx);
+ 	if (!region)
+ 		return;
+ 	region->sz_filter_passed = sz_filter_passed;
 -- 
 2.47.3
 
