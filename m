@@ -4,112 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82493CD98F6
-	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 02:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC80CCD98F6
+	for <linux-mm@archiver.kernel.org>; Sat, 20 Jun 2026 03:27:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A0166B0088; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
+	id 7FCE56B0088; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 677CB6B008A; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
+	id 7D3BA6B008A; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4E76B008C; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
+	id 6E96A6B008C; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EAD46B0088
-	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 22:54:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57EA2C2C32
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:54:56 +0000 (UTC)
-X-FDA: 84898773792.27.2710B3E
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9589A140008
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 02:54:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eo0ymUDr;
-	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 348AD6B0088
+	for <linux-mm@kvack.org>; Fri, 19 Jun 2026 23:27:56 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3249140614
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:27:55 +0000 (UTC)
+X-FDA: 84898856910.18.F5F7494
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	by imf19.hostedemail.com (Postfix) with ESMTP id BD9831A0008
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 03:27:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O4vXqbj4;
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781924094;
+	s=arc-20220608; t=1781926073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
-	b=iEon4tmajMvJXrca2iKmwDIIarfDX5W9D0j/jA0jfSkMyi4IwcFq4ZopFYjc8xLs7xy6aC
-	g2MDSpRL0nKCtnm36qlQKiry10EyuwD8NBmZcfumD5r/halcNAsm8t7fF7jEK7wOPKd1pK
-	gwZhEYclrL1dAqIaiIPF8lwhNbtvvws=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1781924094;
-	b=yErGqWYtQa6hRzD1NxeOiofsCp8OMYr3PGSrzAqOg7iThXVQ8X76STz44y/8kBsYAJOUZW
-	9AVSY66LzA9i1Jr8pVmR9cqbHsLb4GYq17wUu90yAdcFKZrEzb6bqEHJobwMuJ+K/TG4ow
-	bYxVP8UJC+YIj5QblaHycFPLzUXeY2g=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
+	b=zLv4TD82qDECpZnAKpxTuafD/VKXg7pPuhrX9n1amujviQWOqgxtLEo7u8yKFF+WFf7Gb7
+	N9pEWRyeestacT+gSro7+1RSmANd6bn9RjdRBr4xkB1H1kbjiOPRl00dPnaQgoubCQ/lBA
+	GB2KpI3hCQXs0cloWkbyhBSZSJRoNDs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=eo0ymUDr;
-	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2c69fa0b1f8so79555ad.0
-        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 19:54:54 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=O4vXqbj4;
+	spf=pass (imf19.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.160.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1781926073;
+	b=TYeF+iz31wpd1Wodn4y+Jy4AsqC94XuMKYGSm0ZMmuKTDw6E6qxsuXzw4mrhHTdTW/QWhd
+	K1XIrQMbgm47SmV9RbUK8S6GmRfQsLUUcsJ6RANbc17efhU12xsAuPuaSHTpp2Yt4QLzot
+	D9oChJ+e4ZsvC8SEYrcNtZ1/B6Nf6RQ=
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-441080fd7b9so1911558fac.3
+        for <linux-mm@kvack.org>; Fri, 19 Jun 2026 20:27:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1781924093; x=1782528893; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
-        b=eo0ymUDrxEqC2IGF0JwAqyVCbnCH37PS53Zrn8OY7mNMRQuFjKWT4sSR9dQ4ZmhgzY
-         LdAMAY69HRr22BaM12GBEJH2kBjLKJkZaNckwx9tvwUOkaBQUS8YfFB7pd0YdhIlMmQW
-         TNIxsGHuJ+Z+hqMxkiT5jGbHjpZiLI/IoSw41RlUOoFQ+TETvGVYUi5Eu/it4DbLwlhr
-         Y89AcR063b01z/salz8rFyhwTnL3ZKsmnF7sluJ2/wOoaQQC8ANgLRyeJUnr0+tUuWeh
-         CY3VZL1cqcJBr3Bop057zMg4mLqASFn0VCu/j+L23WAePz+f/W13ZOWwCHfN6qUFtqWc
-         0NHw==
+        d=gmail.com; s=20251104; t=1781926073; x=1782530873; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
+        b=O4vXqbj4Pz0zv4glfhSKL9EAUj1CEFFsE1saWZzZURWfFJ1+dKt9uRLkx0IURrNhJ2
+         MnHKpKTRNzwokF7VGdVtKetoOmuCEuH7RVCEPPG672HBhvl8uPFxzP/9lMatQkOtLwdA
+         0Njko8yEVQdlKB9v/Yj20NZMLWxZZpKOzRBIUWcAtHVUZD0Tfv2GE8tGstbVUXjPCt0c
+         n9Q5rSUUdcRCNMLYVWSv3IebyeJCJ6a673JPpTHgMq02gnN1Zc81KWzrPjORyyuCB+6p
+         zzauZoYFhv1ztZQvv5/LlHok7ekKsCBpGQzWRceJVsKcVn+SaDZSC9JG3H4huq04Ha/S
+         BpWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1781924093; x=1782528893;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=j0vlDoCbw77gfg1P+5UXxDNO1W2TOIpEV0Usb0adE/s=;
-        b=andExfPPpn1+CqNxTi3P17ElMcy9YELYVzF38bLb9U1bTDqsnULwAmt2sBlCH5nNfS
-         HQY60qDJMOz51lXLrZPlmEv3aD+o4SKPGbnLFZOsdVz6tjLYjxB1rf0KbUxaLiMyv8QZ
-         3BcvESIKa9VVrwgSzX8HnT1f6c2o/v1kTixnvHUDifNHwKu5PyH/x+ZB5m5SmTiI/vn/
-         2yyURRn/8t/uD8pE6wCp99Ns7vVzcJC81O5bKCgqsE+TLY5vFDsppoT4DonMOF8UjOrm
-         8rv/nJbNyVfLn40pACYngOwSUoUtr8eO2zmb83m5h7GvX/C99PV9vU0YZqEqjIJQkw3L
-         lX4A==
-X-Gm-Message-State: AOJu0Yw3PMwg/+fQx+RyZl/0LCOdjgLLRI6FZtfDU5b6NrxkTiq1bVwl
-	fAu5BjI2YDERc+MrK3cD/V0WrqgKesjJ6TBsQDUWjq1C+NebBW9IpKv/SWxCfVd7UA==
-X-Gm-Gg: AfdE7cn/J42H0xPFezKYs979EKPaDeBAnDx0pRBeMOiYi6c3x3qcpCBCKjhlT9bzn87
-	fNuQNvh3xjJRR1KQjeCvVIIYapAJ5k3+M/5VB5j4zOHASrgwMqQr+dPlIRMi5Om1PTUKX8VhoLf
-	FTzsQH9SkHuEsM8LVU1UqFW+Iu/25rRRgclHT7ffRgHimnW9tTbebiy1ckS0a22xxx5dCCFQwD5
-	2dJzY4xLl04FQxNkiqxRkfQskLsZj00EZ3Wa4OHSE91EPZxApqf4/aFR6duWPXP3yjbNazx/TPC
-	QaLS7z0DlqVK25TBsfPMMjx/XafmOqldvUfgzjbGQe2EGmhyyQT8nmJbtGyRIRvFUNMLwdqq+8P
-	7gYZU1LViHjKdsSbU992LWy6eeuLUe4UrhDEauwqSi2OPniorCUivsfu5msmEmzm/6scTh39T+9
-	4eUY+p+XOH4+IVm4jNcP5/VBKyrQSKsuynYjLfperzoQXXELs5sDoKzPFEYj2LMEGJLgr99vooy
-	MV5+rhS9TCeHveqmPn2xi3RHxQ1vygU1Fc87vSCPrU=
-X-Received: by 2002:a17:902:ec8b:b0:2bd:3c1b:3073 with SMTP id d9443c01a7336-2c718fa99bamr2394035ad.16.1781924092875;
-        Fri, 19 Jun 2026 19:54:52 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:f548:65dc:ec64:cc16] ([2a00:79e0:2eb0:8:f548:65dc:ec64:cc16])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c8bc563c406sm954121a12.19.2026.06.19.19.54.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jun 2026 19:54:52 -0700 (PDT)
-Date: Fri, 19 Jun 2026 19:54:51 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-    Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from June 18, 2026
-Message-ID: <cae6ab98-3441-38bd-1e07-4586a85cdc74@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9589A140008
+        d=1e100.net; s=20251104; t=1781926073; x=1782530873;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p/1/Mg7emQaBENUuGSJ+5NebjL57uLeYV751FIXQTYs=;
+        b=HFD/eEHJIX38RvT60yW2Y37U3+TjqYb5bzAp8NmwmHYy840GdbA6Bjafb+YlpYfew7
+         OkJ4jUFaACNrZHd0UKMRgHl4JOhUG2eYSyKY2Gc4LxyQyGEuhiZ06GqzxvFLoFFa0ibG
+         GBKP53FEZ/7VfXucQGINxLpqcu3avEno681R4tAQI1yNmHnYJse+qrb5JxuEuDpqaIzv
+         vApiBFxuqbscbBZCn/b/4w13wNnzFkfilPfWtmvBIcF2DREJfM76sqtwZjKO3VRKYRfR
+         cabYeUWlKHGUrRVMeeo2cownELCY9Mpxy++d0m5Eftnx44jSodRKSoEm7ZXihceAbILe
+         +P+A==
+X-Forwarded-Encrypted: i=1; AFNElJ+m9+hiv1iW3H6FSy7rKDPrvTehOzZiPY5PTpDL70K6kCgE7nXyh3aOPCPdsI5roFeCw5bW7mZXnQ==@kvack.org
+X-Gm-Message-State: AOJu0YzrPhnQl8R7ALYHwH1HQSBQ7b6aShEHJkEuzmzCLwk9/itBEn96
+	zyDxk1N7tzi3TgKeD8KGcZoHd2mjId6tyqsT+RR9IEsmVMDSrVB861x5
+X-Gm-Gg: AfdE7cnsQ8Qsg569np8wX2hu7RWUb96WbmWeXA+c/Qkpm0xvznMXv4+LJhuq77WTz2O
+	NUTGhViv3rTHEqhieYpeFJUSkaQnxLdpLYifWUchcIo4axx7P40Cpv3MUXya/0oX5xVJ+MWBwPk
+	jl2Qa1bxOBV8Wo9K/gAClOCaHO+OQck76efnisS07034vJRSorPtT/KORUG29j3rIcw6UcISxC0
+	+2CZXU+ZY0p8qFCRRxaKh5bXhmYVVGVKnn8Rgzk8ZXvhjNNQHIol1fljJap9wDrJd4LO9yHX8iS
+	ogaxDIbUY2Y3DP2VhkBZmBbKmPt6oFxdhclpwRWv/pAXUfUQST+H/VloBwRxrdRXigwzd4JoEl3
+	GCsmSWsP1uySXEqDzbTwbdlztFb9hV0BoZTET70Jn8OvzQovAP1aQgI/44wDkkuAYPjCVlFBw/V
+	y5MLUgVB6iKOGBbg/LnRFsQnWaSa5loUYb0AVsbtMsuX+6yRzTeM45OqUxeQ5bAb7auhFkihp1J
+	DT2NfG6wbyV7g99EA==
+X-Received: by 2002:a05:6820:189a:b0:696:573c:9f0b with SMTP id 006d021491bc7-6a0d8da24d7mr4814286eaf.14.1781926072536;
+        Fri, 19 Jun 2026 20:27:52 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:73::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472ecd3de2sm1275554fac.8.2026.06.19.20.27.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Jun 2026 20:27:51 -0700 (PDT)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 19 Jun 2026 20:27:50 -0700
+Message-Id: <DJDK2NVO8903.19LWKQ3ST3U89@gmail.com>
+Cc: "JP Kobryn" <jp.kobryn@linux.dev>, "Shakeel Butt"
+ <shakeel.butt@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
+ "Alexei Starovoitov" <ast@kernel.org>, "bpf" <bpf@vger.kernel.org>,
+ "linux-mm" <linux-mm@kvack.org>, "LKML" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/bpf_memcontrol: mark BPF memcg kfuncs static
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+To: "Roman Gushchin" <roman.gushchin@linux.dev>
+X-Mailer: aerc
+References: <20260617202147.78347-1-jp.kobryn@linux.dev>
+ <CAADnVQJ=q7hJkt=ekLD_a5KjJ_+icdwgsY61rujjLMKAKByvWw@mail.gmail.com>
+ <7ia4cxxosss5.fsf@castle.c.googlers.com>
+In-Reply-To: <7ia4cxxosss5.fsf@castle.c.googlers.com>
 X-Rspam-User: 
-X-Stat-Signature: eczukwjor7mtzgh1osy7msp1cy99rgkb
-X-HE-Tag: 1781924094-465727
-X-HE-Meta: U2FsdGVkX1+nJAhcRn/jl1ScU3CPf6qS4BBhNbTM0+iPzjwdOSzdIFlAu2O7NfrTYK86VpxLsFX0rt199MBOl0HozoslcA3CyZhZ5Plixy14jcM55t6/1stPZ67ZV/MY6IO5id8JUxAEtYpzykWnkwguQ3HjFgMajqd95nJ9XOyb7qoXkgplVdILbdJqaeYoN+kIc4deFctDwr3aRuRe8x78FNrzw+M3NNqtcJw466Ahxq9q4bTpcZ5spRdnTlL9h5OFBtq7nYhWJho7kxdn2YfEwkz7af8Eeyd2RxPyvMPRuYFzLDdzm65AIdoKzIhJEriD5+wYFkcgFhWFCgs4XhgUCXPZKQsx6Y0A6ZjNEii+c+eRhr3tWGQYnhHaQEqmxvUmwe7FcZtVZj52/EKNCDZPp55XgxgUULkZY/C7VHxzfpxBUM9bhZyQRImr6TbacZJp/DKydm25HnNTltwrg7/atK8NNBQyiaj+7JO9ayB0pYGAzpSZfwfezou1AyI/d42F3Cd0y3wKFYwpf7Ge6kRRSnwn3hnlIxrMbmFvajTafFUVOxhMsexX6kbvIx4XY3GamfgYlhHc7wnnfOkufe4m0G/AuGW35GtuNawgJl2V+doi7upilxhpvDmMhY87+MAKq5j/y7Bb12b7BZT1pQQ6SSaRze39dwVy/8Bm1qrWR/2+Bfo1fvpbpiqO8rMYFkEe9M0v17ZxM/SQUoh56NxFTZ55p+4VnSU6TO89Lnjkkf7P8Rzhau5mEQ/gCa6iI/FYmUx0hbHPA1Kn/kqvs5/RmpqJrFUd8mIHMH8D/vBoYJeUYkV6EJ9blnzpGGRGIX7hcGkhfSY5p2Xhg103MBgam++X6KFV+a2j4wJp+gLCb09eQVDEAiqxpURPUfYoOZjcH0ynJpl1GYPB9i5Ca+8GAddToQTEPlQOkyOllD4MgPEoTzo3KCLawSQDXhb8iCEjuFkUUJxk165CoYD
- 7Ahd3Te6
- Aaf0AeS4YgEsRDTyoPYdiGppphMdkd06irX+ICFRwzQ5307DXToonmXNl0YUjqEmp+Tjyy5zsM9xbdzUA3sQmneU3Y167UfigPjcvuhJqaTmZ53QiRTNE2ZHR5m6DGWpoOUKQGA+HC+tuLUXWvoMdVLa/s8LDdGzBIbxL+0KGRkKGBWPp82uy9rfH+qJB4cztzDt+t6Sn5LfCl8hCdBUf+zzcTRvYHSwUcLjxnnI/6T/MIPxkrCwiUflKZQZkGFx2TgkQhqIA5UF8M8uJDRBYEXfRRcE3gZ9mzTnBhyr1fEMKsVDSdmrxTSR/FBJXqIoCN6Y6Xm2vqtANkckIBkG0uMRX9CYHuMKGHLk4xS4EtpTpE15hv8+/pUw8QNdRjpI5e/c0VWNv0w/Zt90tEDVdM7ZJD8bU9SpydQuh9Yf4f4rWeshiwzbiumL+GA==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BD9831A0008
+X-Stat-Signature: r1z5gsb7timduyj7eathdxa36hhse7kx
+X-HE-Tag: 1781926073-369297
+X-HE-Meta: U2FsdGVkX1+RE1Tum1aw6zZNsahgSOruqKMDsOX+4INvAO4h0jN7C9Y4TJM5qxZRgAx50c4hW+uRwMQfuxHH/Zfgo9lRcGqiom3t0XIEMydqk0maAbDGbUEWO/tJwVHedv2jpSNPpKm8hnEbnf0t0cgwnLPbbb3WudJCq0EWlEsZZOiMLIfdcj76XvSbLsV2XhMMFO/ilwoH79W+Br6x9e5NyNk8tRiCIli30JcbzK8VmMJJlzrx/nGc5alit9PqDxLSZkEw4H5eSF7tVoukvYsuRSJIL4IA3Z1PdPKfmYeVSxsHWbBaHmXTNg5UKxdvj+PGAcLFXlOiiSPtKqexfavtbU0lX+VDagQOG7p5sUnkyPOp8qphcXd/5SlDHhOegptq8Ni7FjQBOjsZC2fhyyytCNvwCwUvEGFAit4kPZmsIegYWXV8y6wXImtb6VJ0uDUOU/Q+YF8KYN4o/gYJi/AgMcna3H7u02ZLfznYB5PgJT7CAtuWttD4Dz0uH5Dk4rz9oeypkrij6RF22f/5zfWauTcj91mYTWkHT3j7tvReAfVnznYzK6dpbt0V7V0x4bh2TsVUOaDq20XC2b+zVC7oRLYgxPS1HcbCFM8fNgEwjUfaZZndVReQ7zXnbd+LaicRuFGZt5pPbs8GLPfrlrJoBlWa2zAuvGhrgDL+oelVPW5b49J3Loj5Yt48C6WLiS2fSGQLggOGyanbnPurUh5rj+CelMUyr9Zc67p7u+2TQDawSJIccy8/Ua/Idqwf+wtrNANeKqO+Nj4d3JYpPzxe5JcD8TAd2M1Dysxmva7pbuSeao7woWoRWOsKUtBaAD5NLcwFf7P7ntLxCCCm85hddJS5+Q26uTTQw7SLeeoucw7XgqQhaCVDs0nzCSho/b1mAJV0jOCNl+8adKEegqAQsdLbdwW/sAgBQx5qv2rOeiKqqOK7I2QojrUQey8WWPVz56ADbhp3kvENl3F
+ sTWwlQ9Y
+ gvmliRHcezEjvpDR32ggALeZQOK9wOzrLlj9Pr3WQvsYDXxGEW6SPv23twB+R00WPANH8RUiFeTSzbAzS9p1wFVBQfqA2E9LaOCML0pZrJxLdULmcLom2iSCleWzBMFzvMl4jylbuoxPzrQV8NTpzZvv6bcO9AX0wwaLa/HYlvmnDqMg+9Ddccoq+X7q7xAYCvHeNKSCLlk8/mCXLMU5U39qWGQcZMQK9M8ILC65NNtQf6gKONKRy3O+Ruo4/2cyRt7s2kwZ3OycLg0K0GP6gCSH9aCpW5o+0eEemwfEvbSNYkvztxZzz1XMwRklk0ffFI7wvBMClp6JEztPqA3Z0Hhe8mLu/Yn9c4ntXnQwPhi1hbADH2uMKWC09Ws1haGi7HGTTaIkNDtqhMOvBEUZOcwxgnftpad1rEn9XePkuicZyWSry7GB58srXyUKGYnEaKR0PmrcuD2vx2uFsOzneNb9feV4OQ+kV2xcEOMJUqQvfGfTsb1lhObsw5w/GFfy0mUNZvN29QmOTKy6/EpzzPXkBloGOvPfM2fVdh0Xi6fZ8VnhZFIwsPXswVLPfG/M/ZofC9CQrwyUTAuvM84/eqR7Z9Es8UuGVqR2lpWHpts28afs6Rn9CuM0I8J1Dz0Aj7CpcxGd5OkIMXszAkgTGGyKj61wYGo1gxHSH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,109 +124,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+On Wed Jun 17, 2026 at 3:31 PM PDT, Roman Gushchin wrote:
+> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+>
+>> On Wed, Jun 17, 2026 at 1:22=E2=80=AFPM JP Kobryn <jp.kobryn@linux.dev> =
+wrote:
+>>>
+>>> The kfuncs in bpf_memcontrol.c are not called by in-kernel C code. They=
+ are
+>>> only referenced by BPF programs and resolved through BTF.
+>>>
+>>> Since no external linkage is needed, mark these functions static.
+>>>
+>>> Fixes: 5904db9891f8 ("mm: introduce BPF kfuncs to deal with memcg point=
+ers")
+>>> Fixes: 5c7db3239c9f ("mm: introduce bpf_get_root_mem_cgroup() BPF kfunc=
+")
+>>> Fixes: 99430ab8b804 ("mm: introduce BPF kfuncs to access memcg statisti=
+cs and events")
+>>> Reported-by: kernel test robot <lkp@intel.com>
+>>> Closes: https://lore.kernel.org/oe-kbuild-all/202606150332.Xy4Egd9s-lkp=
+@intel.com/
+>>> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+>>> ---
+>>>  mm/bpf_memcontrol.c | 21 +++++++++++----------
+>>>  1 file changed, 11 insertions(+), 10 deletions(-)
+>>>
+>>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>>> index 716df49d7647..eff79bb2c758 100644
+>>> --- a/mm/bpf_memcontrol.c
+>>> +++ b/mm/bpf_memcontrol.c
+>>> @@ -20,7 +20,7 @@ __bpf_kfunc_start_defs();
+>>>   *
+>>>   * Return: A pointer to the root memory cgroup.
+>>>   */
+>>> -__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+>>> +__bpf_kfunc static struct mem_cgroup *bpf_get_root_mem_cgroup(void)
+>>
+>> sashiko disappoints. It couldn't notice that kfuncs should not be static=
+.
+>> We have few "__bpf_kfunc static" in net/ipv4/
+>> that work by sort-of "luck", since their addresses are taken.
+>>
+>> In general kfuncs cannot be declared static.
+>
+> It seems like it thought hard on it but failed based on the existing
+> code and a bit vague documentation in Documentation/bpf/kfuncs.rst:
+>
+>   kfunc definitions should also always be annotated with the ``__bpf_kfun=
+c``
+>   macro. This prevents issues such as the compiler inlining the kfunc if =
+it's a
+>   static kernel function, or the function ...
+>
+> So it reads like bpf kfuncs can be static.
+>
+> This is the reasoning from the logs (a dismissed concern, to be precise):
+> {
+>       "type": "Dead Code / Linker Error",
+>
+>       "description": "Marking kfuncs as static could cause the compiler
+>       to optimize them away, breaking BPF verifier BTF resolution.",
+>
+>       "reasoning": "The patch adds `static` to multiple `__bpf_kfunc`
+>       annotated functions that are not called anywhere in C
+>       code. Normally, a compiler would remove unused static functions or
+>       fail to expose them in object files, which could prevent the BTF
+>       ID generation logic (`resolve_btfids`) from finding them. However,
+>       the `__bpf_kfunc` macro expands to include `__used` and
+>       `__retain`, which strictly instructs the compiler and linker to
+>       preserve the functions in the object file regardless of
+>       usage. Additionally, `resolve_btfids` and `BTF_ID_FLAGS`
+>       successfully parse and resolve `STB_LOCAL` static symbols, making
+>       this change completely safe and correct.",
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, June 18.  Thanks to everybody who was involved!
+Almost, except it's not clear what takes priority for the compiler.
+__bpf_kfunc used to have '__used' and it was enough until clang
+got too aggressive in LTO mode. So we added '__retain' and so far
+it seems to be holding, but sashiko is missing that both of these
+attributes don't say anything about _name_ of the function.
+'static' keyword means that compiler is free to rename it and
+compilers do take advantage of that from time to time,
+while __used and __retain don't add 'do-not-rename' restriction
+to the compiler.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+Also look at it from the other angle.. why anyone would add
+'static' when the function is clearly not static to this particular
+compilation unit. It will be used outside of it by bpf progs
+that are obviuosly not part of this .c file.
 
------>o-----
-Bharata updated that he is getting more benchmark numbers for IBS Memory 
-Profiler source with pghot and he submitted an abstract to LPC for a talk 
-on IBS Memory Profiler.  The next version of the pghot patch series should 
-be posted in a couple weeks with new benchmark numbers.
+Documentation/bpf/kfuncs.rst needs to be updated.
 
------>o-----
-Teja Vojjala updated that he will start working with Shivank's patch 
-series for migrate_pages() and collecting some benchmark numbers.  He 
-noted improvement on Zen5 especially for benchmarks that are flushing the 
-cache.  He was not so sure about the instruction that the patch is using, 
-whether or not this will pollute the cache when doing demotion from top 
-tier memory to lower tier memory.
+JP,
+pls send a patch to update the docs and include few words
+to ignore sparse.
 
-We're working on non-temporal writes to avoid unintentionally promoting 
-cold pages that appear as hot otherwise.  He also noted that comparison 
-with other approaches showing a degradation when using AMD's patch series.  
-I asked him to follow up on Shivank's patch series upstream to have the 
-discussion.
-
------>o-----
-We skipped ahead to discussing non-temporal stores given its overlap with 
-work being done in migrate_pages().  Yiannis had posted his patch series 
-as follow-up to the previous call in the series.  He noted that he took 
-one of the existing functions for the pmem era and that it may be possible 
-to do something better in terms of implementation.  We see reduced cache 
-pollution with these patches measured by the CXL device.  We see a 
-complete elimination of read traffic on the device itself as a result.
-
-Gregory Price provided feedback upstream about the use of the Kconfig in 
-the patch series.  That was his only question for the series itself, he 
-thought we should be able to identify if we can do this offload through 
-cpuid; if so, then we could always just use it.  Yiannis noted that with 
-this implementation you could see a much higher number of instructions 
-retired which may or may not matter.  The bigger benefit here was that it 
-reduces bandwidth.  Gregory didn't think of a scenario where we would ever 
-want to turn this off.  Jonathan Cameron suggested removing the Kconfig 
-option.
-
-I pressed on the new migrate_mode addition given the long-term precedent 
-of the existing migrate modes.  Why do we need a new migrate_mode that 
-specifies whether we want NT stores or not?  Wei noted that Google does 
-the same thing because there are otherwise ABI issues which is a bigger 
-problem because the migration callback does not include the reason passed 
-to migrate_pages().  I was surprised that the only way to change migration 
-behavior today was to introduce a new migrate_mode that would be passed 
-into migrate_pages() and that this didn't seem very extensible.
-
-Yiannis will refresh the patch series to not include the Kconfig and sent 
-out an RFC v2.
-
-Wei noted that some Google work was supporting memory errors while using 
-NT stores and that we could discuss that in a future call.  This would be 
-a natural extnesion to what Yiannis is working on.
-
------>o-----
-Joshua updated on local testing for tier-aware memcg limits.  He ran some 
-benchmarks where DRAM performance was the exact same as CXL performance to 
-identify the impact of the overall approach itself.  The overhead was 
-minimized so far to 1-2%.  He also did testing on real hardware and got 
-similar results.  He will be going through this testing before posting the 
-next update.
-
------>o-----
-The next meeting will be CANCELED due to the Independence Day Holiday in
-the United States.
-
-Next meeting will be on Thursday, July 16 at 8:30am PDT (UTC-7),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
-
-Topics for the next meeting:
-
- - LPC planning for October 5-7 in Prague
- - update on Yiannis's RFC for non-temporal stores enlightenment in
-   migrate_pages()
- - extensions to ensure that non-temporal stores can properly handle
-   memory errors
- - v7 of Bharata's patch series, including new IBS hotness information
-   and NUMBA2 hint faults
- - v5 of Shivank's series for enlightening migrate_pages() for hardware
-   assists and how this work will be charged to userspace, including for
-   memory compaction, and separating the first patches out into a non-RFC
-   series
- - v2 of tier-aware memcg limits, including ABI changes to support more
-   than two tiers
- - first class support for virtualization based memory tier support, how
-   to leverge memory tiers in the guest
- - discuss generalized subsystem for providing bandwidth information
-   independent of the underlying platform, ideally through resctrl,
-   otherwise utilizing bandwidth information will be challenging
-   + preferably this bandwidth monitoring is not per NUMA node but rather
-     slow and fast
- - later: testing of tier aware memcg limits with Bharata's changes once
-   tier aware memcg limits is stable and further along
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
 
