@@ -4,151 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9146CDB466
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 03:00:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A596CD4F26
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 03:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8EF2D6B0005; Sat, 20 Jun 2026 23:00:20 -0400 (EDT)
+	id BE4D66B0005; Sat, 20 Jun 2026 23:24:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A0836B008A; Sat, 20 Jun 2026 23:00:20 -0400 (EDT)
+	id B955F6B008A; Sat, 20 Jun 2026 23:24:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 767566B008C; Sat, 20 Jun 2026 23:00:20 -0400 (EDT)
+	id A86EE6B008C; Sat, 20 Jun 2026 23:24:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 476C06B0005
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 23:00:20 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9B4E58D178
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 03:00:19 +0000 (UTC)
-X-FDA: 84902416158.12.A8A49D6
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7F4428000B
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 03:00:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HfBmH3EE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782010817;
+	by kanga.kvack.org (Postfix) with ESMTP id 81CC36B0005
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 23:24:28 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D39B28D1DB
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 03:24:27 +0000 (UTC)
+X-FDA: 84902476974.29.845958A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A47BA140003
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 03:24:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ql0NSVmN;
+	spf=pass (imf09.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782012265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LVrIryE2VF1sDSS46HMWn0Px6aDg+06V1VeyZcyjwRw=;
-	b=AL2xJh/nowG/+NXJkDdMRuTBInXXnIqYd450gZ6lBovAse/sNYn0nduPpFXb0fpkYzDl4H
-	8H0xbyZjx8EFUwaYxM7BE6w7RyQmIIzgdRfF7GeHtGlTbOCPHsrfXfAhNyKfgQb4HuvGbS
-	Jm87HWjYgl1lbLdl4XF0LEVnSWid28M=
-ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=HfBmH3EE;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf30.hostedemail.com: domain of surenb@google.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782010817;
-	b=4Rowp6Lw/qV71K6VbB+ZiAaKJvdEeF5sJymH/pnyNLAxXaplSwj7J7m99cJf4W/DPKmjhV
-	nuq+GV7F+6fVaJkEp2hwXNsqnN8X5OijZHGJM1kTviHwtqcsVsl7yw6qeKTHkgsovM6dIp
-	1xQtjT6jiy05H+N+YVcm59AFCIyiZbU=
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c6a4eccab1so77635ad.1
-        for <linux-mm@kvack.org>; Sat, 20 Jun 2026 20:00:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782010816; cv=none;
-        d=google.com; s=arc-20260327;
-        b=JR0jmlgni7jNNKjdnPpyLUUHw6oFJ2yH9uLQjJ1LhOAzeLVV2sTczwMLSLztfUlMIN
-         WwHC0quwgHqWHFdJrUhM4N5fljd5LHeSMzrYTQjbVMkI3f3g9LWFspkzyqECvUn4e3sW
-         Tl0OjJ7WXTPyVAq8aWCa+CCPc8+UEvhylA0qa70u9weanAv0JDXZZ9Zz5qjsaECoouoj
-         3vXiBJv5GigsScG9E4I59MR0KL0g1qP3u+i8BrGkuSMdYOmsuPfC5C1qcbqtGGVRVtfs
-         xdzlgOhbX5L39MvU1STY4yFVT+/RlxM7tGDOzoZ5ELtcwGH6RbF7tfuK7oeuHYjYz4x8
-         A2Yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=LVrIryE2VF1sDSS46HMWn0Px6aDg+06V1VeyZcyjwRw=;
-        fh=SbOltGtRSaHmfzSAa0al4UQx4d2YrLsW+5jBZuNnXHw=;
-        b=UAq/Eeamtn6aiRlMNBa5yOsn+vKmmiJRYxDNbRZLJwNQklq2rOKnbFV70lZ2qQRSzg
-         eSbPNGZvjZBRRP74jgHt8A42uQllTGOBjp5tAxIpMhOWGeOD6hjFdlqmNGDAqiuL6am7
-         Rfs9HRU0Nw+Ht3TcGre+rZslUR3Icr0d8R79w+JrWWU1JayiW8v/FfHXKMQxi9FSZjSg
-         UrwF0mbjvgYPWj1FaT2q4gljNrCjnyPOS7LU9BwEiKwQJNLiRrSeNKZsOujalLmB9ipz
-         F5L4pelEJ+wXG2Uo1uyj7YUCbBQWVHplOs23+CnK5eHqrArIcJwv9oV/eoxb8iSiYaSA
-         SkWg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782010816; x=1782615616; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LVrIryE2VF1sDSS46HMWn0Px6aDg+06V1VeyZcyjwRw=;
-        b=HfBmH3EEY2jBDpPoJPg9ooDlMW9JLNhj+gUbME6zYo36LXjlSvtf91zXOeTKTpTWES
-         A9vqXsZDtJhxtsQnrQwbxNreVoyzP5jlLWvxuOhFD+qlTExsHXnsSNyYHtb18PfyXMv6
-         UY94xVUFvY5Q1QGvUDstWLT1HzrxCocFtFFU13Q1NMD54wuQTMFfY5J1Rrl0icfspSmb
-         PpGkqG+Q+P9mL3U68EIGc9B84ewdXeiFTvKAfVn9Q6bFHlIaJcTU1wxTJHdPybmqLcU/
-         /9Z64qLXcd+Jf7OkUwU976KlgDXLuvZPZv3GAGwiJPh6EfiojC0RNJFzmTAVZm2Kn5jh
-         0eag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782010816; x=1782615616;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LVrIryE2VF1sDSS46HMWn0Px6aDg+06V1VeyZcyjwRw=;
-        b=G2c5s86mp7iVGLGHihHrtuIqhpOLBsd891pRAQEHMd8f6ZbGv7I1ocHoF7ybQDFCYx
-         BNgY3QIOGcwLIM54vhe9hMaHo7CiDJykj8T3h4tWmsh4Cr/MAHR+3xYATZOWyFhNtiYK
-         LPlylzte7MRDSmBGRF8Bk01Pl+p22iepSbxZD+cUcKIBIOu+B/vHFVMxd6WqTZ06FIW+
-         2IcmeHFDlMJFF1s5oM/q64r22PiovkwSiLQ9c1HcppAEzHAW8Mv9PDpsAY7m/Ek9GBDC
-         SJOKFL+kkf/u5mrqf2f9kGErQ2TlE9Mf6qlonUhW5OJRtsbEq8iWhKyTkicIay1KD3KL
-         K5og==
-X-Forwarded-Encrypted: i=1; AHgh+RoXL+05iryG+U8na9UzUcwFgoA1WvDhMUYFL+Lls8cdj6bALWQWHKwe/M9L8xUTVeD0Q6h7M8D0WA==@kvack.org
-X-Gm-Message-State: AOJu0YwYYKDnE+3HRJCuy2cdp8FAnnl+ud47Es4XNP7DAX2oNkUZfUrR
-	ZLIjEe+vnAeOFlftdZrCWmSj0cSPxtEVPli0XCeu/GTzJLPtVATdAri2tZfj2/kEh4UNwrYucZt
-	ZiXsZpQaTUlYJ8AJWUG9HMvh2703odDU4Kj2WxLx1
-X-Gm-Gg: AfdE7ckc0+wVLgjK11KkCRph7V31HtCpj0plb26/SR9T/PgqvaeGZ1xBSAiI1Q4aVYA
-	sGSVC69l0ihH9K0pmUhDgpXwz/FgJ6xwN5Ki12r5RMYYmEz+Z6clOWDTyHurdk1BB9U0Nsw9DAt
-	lS/pls178giWYpo7by/hthR4Jmj7+XGj29IWHFBh7ghvYMXdKYmvibIREk/30HfGnpXO4R/GfhF
-	6m1mLMVJH8nThqNzYN0VZlvKzKNyiags//WUAJbCkDpB67rhoOTdDSjmqG7WVfS8feRdmg=
-X-Received: by 2002:a05:622a:580a:b0:516:4f62:85f1 with SMTP id
- d75a77b69052e-519e4a744d4mr15890001cf.22.1781999348457; Sat, 20 Jun 2026
- 16:49:08 -0700 (PDT)
+	bh=4Yu2mki38BefPDLre6bXeAKMaOu1RLSJX8hzP70eax4=;
+	b=ZSt62kWZfFkDzW5508hhHH1ud8cWuPvTbcnlD1Fu3nihqcOuZM61RlLbFPmBnN8bxVOPqM
+	Yb7RToKrV1aGcQqaA5m4KyDiqh219hZevbS5Ntq14O3F6nk7ZQi7+x5MVUUlh7Fn9vkiYC
+	yPouX+cZHl5KNryK+xquS7bQ+OjEr9M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ql0NSVmN;
+	spf=pass (imf09.hostedemail.com: domain of longman@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=longman@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782012265;
+	b=rPwRCYhpvq1YA+Zu6I1RvrZJMCvSiVTV2pihOL70mBIY5qCCFRg1a+M3Yd4p1Z3eoD4n9/
+	Kr9oG1bodbUlC/dBt53VmGaKpMZ1A7f/jKd7fwTHNhVE/fzA93HfbTwuU8mHCyi53amOMJ
+	HkpReB9PKmEb3Tozw/w8XIpV0CRlZ2I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782012265;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Yu2mki38BefPDLre6bXeAKMaOu1RLSJX8hzP70eax4=;
+	b=Ql0NSVmNNSKeQlb1dmm/fN0Zt4fyvV0VdkaA5z9ZHPPt1fg8F3E2DX5yenjzU3DdMhavMs
+	Tu6J1lWo6ivjp0rZHkx/Jivr6aBVixe1URlLrAuYhg4OCkdLFBGLH59pgDFv81c6JCOoXE
+	nHTC3sqd32SljTuw3jv9Q9l4/tBS7xE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-537-HmnhANAkPfSLuV-PbR185Q-1; Sat,
+ 20 Jun 2026 23:24:21 -0400
+X-MC-Unique: HmnhANAkPfSLuV-PbR185Q-1
+X-Mimecast-MFC-AGG-ID: HmnhANAkPfSLuV-PbR185Q_1782012259
+Received: from mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.95])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 448821956060;
+	Sun, 21 Jun 2026 03:24:18 +0000 (UTC)
+Received: from [10.22.88.8] (unknown [10.22.88.8])
+	by mx-prod-int-10.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE5FA1686;
+	Sun, 21 Jun 2026 03:24:14 +0000 (UTC)
+Message-ID: <9d8b650d-6faa-425a-8db7-1e206cb25158@redhat.com>
+Date: Sat, 20 Jun 2026 23:24:13 -0400
 MIME-Version: 1.0
-References: <CAGsJ_4zqLfdWoTH9s7FFaqWWj0mESfikYgr7=GcV64qcuXrPxA@mail.gmail.com>
- <CAJuCfpE0WQrB3zJp9qn3jvn5DthS=ttpX7gJJvyEhA_BJGrp5g@mail.gmail.com>
- <CAGsJ_4zgeE3ebEJ+j7GJFzWVoVYHeiOn4dOoOsmWCLA6s=oECQ@mail.gmail.com>
- <5zdaa5uv5oj27q3taopl3amops57ouxgyfsdveudz4ovmbdw7z@6lwrlyvmhcp2>
- <CAGsJ_4yKxg1QugcsJi3WD0KVGJKe-zXycgm5D6cRi9vWtNcpDQ@mail.gmail.com>
- <ag4h87CBd-gph9zX@casper.infradead.org> <CAGsJ_4zA8afu0xXy0WS+tMe-eesDX1W6UBmfAsuouUpcAgK8JQ@mail.gmail.com>
- <ag4kj84EcKqamdB-@casper.infradead.org> <3be9475b-0e8a-4df8-a130-4262f993973d@kernel.org>
- <CAGsJ_4xC5LdhuoWV1=tK-RZ5rkjc8aOKOkmb1L_8BG_3gtJhDg@mail.gmail.com>
- <ahB6QyHgYq8ksj65@lucifer> <CAGsJ_4zxLvZ01i19vdo0xA47T1hxa1VRYvxLmiDhy5q1GDKPRg@mail.gmail.com>
-In-Reply-To: <CAGsJ_4zxLvZ01i19vdo0xA47T1hxa1VRYvxLmiDhy5q1GDKPRg@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 20 Jun 2026 16:48:57 -0700
-X-Gm-Features: AVVi8CdrqLszoGfh6nxxBjM6ZU4jlgAaXlfN0swetCJNc_4l9-uU6mX0T8CUJHo
-Message-ID: <CAJuCfpHTxaU4KdNmefU7C7cWZSLCFDLPdUrnqV6yzxzN+8RQ0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: Barry Song <baohua@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <liam@infradead.org>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
-	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, 
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	Nanzhe Zhao <nzzhao@126.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Gregory Price <gourry@gourry.net>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Farhad Alemi <falemi@asu.edu>,
+ Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+ <c1495b1b-9dee-4cd5-ac8e-eeb7a2d968ed@redhat.com>
+ <51eafe6c-6622-479b-b391-6d3ff9350e75@kernel.org>
+ <c61c7925-b9e7-4a6f-82e2-398849ad9f27@redhat.com>
+ <38578aea-61c3-4328-aee9-8e7421672647@kernel.org>
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <38578aea-61c3-4328-aee9-8e7421672647@kernel.org>
+X-Scanned-By: MIMEDefang 3.6 on 10.30.177.95
+X-Mimecast-MFC-PROC-ID: 6cQVd_mBMY2Yf6gVxr7g72uRAcTDb54paRLr6yQXSOw_1782012259
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A47BA140003
 X-Rspam-User: 
-X-Stat-Signature: gjomj8pryknnox6r5h39mxkw8h4xjjj9
-X-Rspamd-Queue-Id: 7F4428000B
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1782010817-438438
-X-HE-Meta: U2FsdGVkX197RXulsOOAjAc73W5HxcAxKYZlU8BZ3sdxwEs1QO0u08wqVbq7VYobnUO85msxjz4Xt+KTNvGfMy4VzLznPTKU+z8JtoB3lrKiz+MwypiJeefj6Dby7C/9BGZv7mStkyzETVQfF494ipti6jgCZDViQlpnDw9QoZLfP0AExHRyU3ef7nba2Dv3Le4PjzLQZhDv9uaq2K54K6ZgqAObb3CCh8sJLx/TUMyO+ompA6Y9Fmpsxz44wa6EhzgGVk1AQZLHh6Grgt8jPfUW9qJnWCA2lOdtc5HcF80aJNQaLHrScqWX56Z+aqt9CRTDmTYODCYP0pBIyNVm7SlpZmljUN3SRMnkss5drYcnMriz+10rMvR2gWtrQlrp2n56Y9k1Ut105Q5YGM8I+1WTe2x1aBuIOQfCfg4JiMw4gX0cSFHwVNC+jKrvy7LhOvflmhlW0aLbha4j6zooBmIzGisiHSt2nRwtb/07AnoofHZX/NrLg3vvYaC/XlnCVLkzRsRNhM5OAcUtWNawSpf0os1J4tupxF62+AfN2R8QOi7HE56QKd9411lybSV/qhoGxWeYMOxY27G9JGsbUiPmRhsUd2V1N9OK0o5/DhP+PQDPs78LtlFrwuMxtn/hAmgHyZWNa5GBtGYI+u2aM5ClzeM9yqziz+NcOotx4+ayhjf9d8dP1q1BAz/Z9vgWFaBxmaQ1DN1ULfqAo5h3oJMqt4nk4Lf9aN7YRzg69HX23CuD1j7iDRUOYZUKZyLi5euM7n3nxKeblXvza+OeioXaakinsO2raTLiNPX83CE2LCMfJgSnt0uYcrn1zwAetUGnxj74JsWrldZ9bd1qMt8+N+SZsMSmx1BQndV47kC9Bu+hj9QYmix7wr2wmQxSX63DuYjIyumXOzhFYXB3Ly6Hg/Exu56sQldIQpQqsy7W6HOjsjOfybzg58l6fpIsaxzFq37mZJyDY8acpVL
- UHoy/dmM
- BmPLHYgtJbsJB9SBvTL1aOHGEADOGM7JKpfY01WZDRsN3ZxpwT6e9Fw0vrbJeRldWsOV743l7FuNaJKckLu3h7qQ1gcYtINzNpi+gI8a3LyC3adJmlZhjZTDy2CsYwfwGk0Sqekc68+Zsr19se9xPPa92A3SpVjiHRqJLmMCwXx2/NDngLqW0pcknjj9yxvaiIgYlzl8PFE6VnWc5EXKye9IrZg9hGZNK1IWwBm1GE1ZXtcXx7MPo4KXn3uS9/J88rjDF0SXpOQ7iGuQIEUoFvo1/8c7fPLQXlLX9PfM80Ss+BMn+Da6vkeKZfzuGgyqP89dIsvQm8ufW6wfVzgkEL8guIUUmZEK0hqUGKZFEJ8LfFOE9Ct61PCmP3nD6jGy87F0K
+X-Stat-Signature: j7b5rqqtsagwb843aofd8kxo38y1uus5
+X-HE-Tag: 1782012265-749676
+X-HE-Meta: U2FsdGVkX18l44Yie1RkeXDMxT/tnc/hF4ueic9ndY86o3VWxXiI2c282/cxJUOr1OK8n8y4xuomxNDdNd4i8El+crIRF8tY0XISYOg1DiWfrXCZFJbjkUo0mw3+0BQBDBehbZQzsdOwwV+AGVbMD4yZAyd/RkRmy7tOw3Y0eQR5RN/WNEEud7zY1UUwj4M6WAwgqz13NF7wm7jFwO9ZP3XyCWFURpsvT3rh504UG3ToD1KOfOzaF/GksqgxHswt7xZf0wvSqMykdAtF+mOKJjTUQTY6QT0uJklhkfvWcas4xTFIP4ikX7sfe7hVGs+wRjV4ntVAl91IrT1FqKI/yXVGyGfXb5xofls5TmFjUM92weM+XHC/psZ3oncVvFdXMQOE2tMxScuX2YIZvW022QpanQKJ/ggZ0CixMKqa8NeaE/KVtN1n8oRljUuQJS79XsCq1GRh98kqwr2qvi6lqmtwrssa3m+0Os2owDH2TpMJ0L8BnZJ+HGtGTRpYTHrgwjnaDLxnwVDgUmEzffl8NApPKdQsK8MChWz0FZrLQVXaurVgFGtbu8VjMf/iZiajWPIJICA3pfiMvZ6DDmrG6agYX9b8ZYW5aIeGi1LDB+LnaoymZetM68EKH0sRy1MeA3Seev98lXDzHPU4LQvCO+wP3kzpdog+EttoauiNrmMl1jsTMIFFLAa9fQilt8nAcTfgy45InI1UOp/Q31kkSXpdA0H3GQe+ixrIxS0lk2FFtJew4ZsIMrNSpD+QnzKKvl8tDcw164lk/ZZxwN05mhtIjglQBlYEFRmE5OUT2shUDbIgOh++rYEB0qT7U+LXYfBJz/9tKDzwuBGuKK4DkFmO3hPTEqicnJUxEeSoTmDas5kJj/hjgkTFamzBFkCweUtFSmth5na20WlqiVpYHSF2zxesPQREYvcoI7gip89yitbT+RmIwzYwMzl1qPQ4nWovG+Bv7koZ3T3uze7
+ kxJJvnE0
+ ZBMseqmm0doMxIJNxiJDUDXxjDKiNMZlcgyCbMbxAOqcyLb3wwZ4zwuqxSXpAPVssp4tfCJyqLDSknMjyzqUWF4isOJ3EC6ye0IPpwB7ixqyuW5RrRCBG33+bzJnRDVfBp/qTGJ+6triwoLc1gSwEUcw89BqBhZi8/AHmTQOC550JlF7IJYia5VjfBwCs1g1dpCZNm+QKEXXfU19EpXc5xAx6OE7HWSa/u1FF72hZ1Ieix+sno0lDgak7q5Yc0uF2W3uwzrdppFAP2uQ0rz1n4i5hKcct1qCvfe3bNZoaDZqOfS8qi8cqZCeJa9BkHdZxWRFV8qY4LKEHd32JfhWQ6onhwcnI1BugOmNByR4epJJGUajXWx9poKlKCw8xn5UotC+lytPtiWBUTSr2byrVI95dNvCkqn/hbuA7LITrR7eAe+a63Gz+MqtS36xq89nCWjr8V0yJFHkVXDn/wkMLLao+2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,75 +124,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 2:31=E2=80=AFPM Barry Song <baohua@kernel.org> wrot=
-e:
+On 6/18/26 4:41 AM, David Hildenbrand (Arm) wrote:
+> On 6/16/26 17:23, Waiman Long wrote:
+>> On 6/16/26 2:59 AM, David Hildenbrand (Arm) wrote:
+>>> On 6/16/26 05:43, Waiman Long wrote:
+>>>> BTW, I still prefer the v2 patch. If it is decided we should use the
+>>>> guarantee_online_mems() value instead, it will have to be a separate patch with
+>>>> changes in the relevant documentation like Documentation/admin-guide/cgroup-v1/
+>>>> cpuset.rst.
+>>> newmems is "obviously" correct, so I really don't see why we should add
+>>> something that needs half a page of text to explain why it is fine -- if newmems
+>>> just does the trick?
+>>>
+>>> Please enlighten me.
+>> Yes, taking newmems is a reasonable choice and there are pros and cons with each
+>> options. My focus is more on not changing how v1 cpuset behaves as it is well
+>> defined in the v1 cpusets.rst file:
+>>
+>>      Requests by a task, using the sched_setaffinity(2) system call to
+>>      include CPUs in its CPU affinity mask, and using the mbind(2) and
+>>      set_mempolicy(2) system calls to include Memory Nodes in its memory
+>>      policy, are both filtered through that task's cpuset, filtering out any
+>>      CPUs or Memory Nodes not in that cpuset.  The scheduler will not
+>>      schedule a task on a CPU that is not allowed in its cpus_allowed
+>>      vector, and the kernel page allocator will not allocate a page on a
+>>      node that is not allowed in the requesting task's mems_allowed vector.
+>>
+>> v2, OTOH, is more vague as to what setting cpuset.mems will mean and we
+>> generally follow what v1 is doing, but we have more leeway of what we can do.
+>>
+>> Using newmems will make the above text not totally correct. At least the offline
+>> memory nodes will be filtered out which will not be utilized by the task when
+>> the offline node becomes online. That is why I am saying that we will have to
+>> correct the documentation if we want to make this change.
+> So IIUC:
 >
-> >
-> > Again this is making me want to sit outside and sip on some lemonade an=
-d
-> > ice :)
-> >
-> > Yes - android processes are aggressively multi-threaded, sure of course=
-.
-> >
-> > The missing bit here is the forking - what, where, why, when?
-> >
->
-> I really want to know the what, where, why, and when
-> as well. But since most applications are not
-> open-source, it is basically a black hole for anyone
-> other than the owners of those apps.
->
-> Let me try to do more investigation to understand what
-> is going on, although it is really hard.
-> To be honest, I would rather the Android framework
-> completely prohibit apps from calling fork(), if
-> possible.
->
-> > And then you say zygote is sometimes multi-threaded but sometimes
-> > single-threaded, which is adding a whole bunch of confusion on top of a=
-ll
-> > that.
-> >
-> > I don't find these stack trace dumps all that useful (though thanks of
-> > course for taking the time to gather them), I think we'd be better off =
-with
-> > specific data on forking, in some _concise_ _summarised_ form, ideally =
-with
-> > numbers.
-> >
-> > There's such a thing as too much information :))
->
-> This trace shows PF I/O in one thread overlapping
-> with a fork() call in another thread.
-> But as I explained, I really do not know what kind of
-> user behavior is behind it.
->
-> >
-> > Anyway, again, please let's see a new _RFC_ with the approach proposed =
-by
-> > Suren, with some _succinct_ data demonstrating _exactly_ what the probl=
-em
-> > is, so we can make some headway here.
->
-> Okay, sure. Thanks for your patience.
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index 1335e437098e..cdfc615f35a5 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -2645,7 +2645,13 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+>   
+>                  migrate = is_memory_migrate(cs);
+>   
+> -               mpol_rebind_mm(mm, &cs->mems_allowed);
+> +               /*
+> +                * For v1 we can have empty effective_mems, but we cannot
+> +                * attach any tasks (see cpuset_can_attach_check()). For v2,
+> +                * it's guaranteed to not be empty.
+> +                */
+> +               VM_WARN_ON_ONCE(nodes_empty(cs->effective_mems));
+> +               mpol_rebind_mm(mm, &cs->effective_mems);
+>                  if (migrate)
+>                          cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+>                  else
 
-Just checking in on the followup plans. IIUC the RFC mentioned will
-try to implement the solution we discussed at LSFMM: splitting
-VM_FAULT_RETRY into two flags - one for retrying under per-VMA locks
-and another one to fallback to mmap_lock.
+That is true, but I don't think we need a VM_WARN_ON_ONCE() here.
 
-Barry, if you need any help or clarification, please do not hesitate
-to contact me.
-Thanks,
-Suren.
+Cheers,
+Longman
 
 >
-> >
-> > And now I'm off for a cornetto! :)
->
-> Sounds good :) Enjoy your cornetto!
->
-> Best Regards
-> Barry
+
 
