@@ -4,81 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2D7CD98F0
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 17:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FFF3CD98F2
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 18:04:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 42CF76B0005; Sun, 21 Jun 2026 13:27:53 -0400 (EDT)
+	id E6DCC6B0088; Sun, 21 Jun 2026 14:04:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DF446B008A; Sun, 21 Jun 2026 13:27:53 -0400 (EDT)
+	id E1E616B008A; Sun, 21 Jun 2026 14:04:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD6F6B008C; Sun, 21 Jun 2026 13:27:53 -0400 (EDT)
+	id D34CB6B008C; Sun, 21 Jun 2026 14:04:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0AD76B0005
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 13:27:52 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 609371C2AAA
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 17:27:52 +0000 (UTC)
-X-FDA: 84904602384.14.DB6A8DB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B9984C0003
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 17:27:50 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CmiTqgEw;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782062870;
-	b=yIi5xnwU01iRiTlJL+mwcDBZzwYgw5fayf4A9fiUuZelhbgQlv94As+srd95+1hOq5zdFG
-	ZB5IAcIQC1dFRyko12ZJ840jBAtxS1L8378vj/Ed863tZwtRCxRQ4ahzNux85nyYDzjaRg
-	Skcis8bigU+6z7eGMJxxNY6Y6mbVrJE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=CmiTqgEw;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A48B06B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 14:04:03 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E69EBA04BB
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 18:04:02 +0000 (UTC)
+X-FDA: 84904693524.02.7FEB2D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 47C0620003
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 18:04:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0YSS5Dh;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782062870;
+	s=arc-20220608; t=1782065041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=vegQAqhBv1wruCbDcvXbL0ND8hsh2KcN0r7lwl9EJ8k=;
-	b=ocDLGYMirAgwHd/igfTItEmZRlH9+UBSMm66sQC+CAVYH3Q+iJMtE34eXvsUgAXhS2wYsT
-	lLqCwl1X47M2YS0k8VJxHZE7oNg4YsLNhc8RAahLyXMsLxUDjJmuQtA4qP/MyLTYKADfpy
-	kltk7X7R5vqWvm+1Nxo7lFQqeA8Vy+s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=54TyF7XxWkGv+SmhhNpIN1Mr1dGEVPPbVs82yylKPaY=;
+	b=ZjrELkLXgDfnjlaF80hPAKUhBEluMJxstKTI79EdH15T+ONk3U6toXQeZe9Lp5g4CAz7E1
+	/1h1oVlueekLoVBJhH/JCcA6Z5NySDmkW5AZxeawZGeK23VYyrPjcQGOqS8wrDiCHq+aEA
+	ThuVkTAhD5Dkmma6zfyxx6Knb0pt0S4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782065041;
+	b=R0mChcIQzB6n7OdzG9uDDAfFfJLJHY7uVTuIaTB4muksox/sWbkXmsBk1ssvDrxfbIxKpz
+	GlESFVE/pp+qKDmG9Qz93XXrB33j7dQcnlf2UhA1L7v0nw/l0i9mMmw1xjY2CdIDj8MACA
+	bwReEtez+9Ru+90bMtjfIbpEERLTy2Y=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l0YSS5Dh;
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 019E1601F1;
-	Sun, 21 Jun 2026 17:27:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903031F00A3A;
-	Sun, 21 Jun 2026 17:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782062869;
-	bh=vegQAqhBv1wruCbDcvXbL0ND8hsh2KcN0r7lwl9EJ8k=;
-	h=Date:From:To:Cc:Subject;
-	b=CmiTqgEwRcCA9O5VtApovpvxGWUqrVj6rVzR60yI9gm15WZIyr+wBMtpRAeRiTMwN
-	 +qdvdTDTPCZdK4yezLLNImmdHH2w6Cjfw2l4XCYo0jeUQJDVQA6oO5gRGl4zN8nmsG
-	 zsko4KNrRFuqH7vGtTcPeoORsfApQrcn0LS+JkbY=
-Date: Sun, 21 Jun 2026 10:27:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- mm-commits@vger.kernel.org
-Subject: [GIT PULL] non-MM updates for 7.2-rc1
-Message-Id: <20260621102749.186ffe45cf2fd65838bc3ccc@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D96044086;
+	Sun, 21 Jun 2026 18:04:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA0F1F000E9;
+	Sun, 21 Jun 2026 18:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782065039;
+	bh=54TyF7XxWkGv+SmhhNpIN1Mr1dGEVPPbVs82yylKPaY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=l0YSS5Dh6e/G7+zzbyorV8r97fLmf6IUEwf9ogcwCELprQUPx6gmVUJBhK/HXRoY9
+	 LKPQPCvnZz8IsJgmWJBIMS6Fcy9C6R3oOu2zQ1v7xwOgL64Xu7Ito4qX+U0S195aB5
+	 6X1juTWcf3xtoFh6B5GWEDcZRmoZz6fvC8kMuzoN5hlfpT6XFawpT3EzVGqxIAxGFd
+	 w7REcOpnrH9uc/RNYlfP7MLc7SEi7Ncl/MOQ3oWmP3BXN4EfMKHU6+XWmXERQgWcny
+	 ogQRLZzMMUgQkZZw0+bBoBjC5jf62bDT2uWZLlehFyQ/HmK3xDBAZ1X1sdN24e9MFW
+	 KI3Z+FScSoCJw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 5 . 16 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: handle zero intervals in damon_max_nr_accesses()
+Date: Sun, 21 Jun 2026 11:03:47 -0700
+Message-ID: <20260621180348.92118-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260621154808.86431-1-sj@kernel.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5uchouh5bwubonjyhhcu8adce6n53ufd
+X-Rspamd-Queue-Id: 47C0620003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: B9984C0003
-X-Stat-Signature: szduattxbssrc6bnxawxficmwbgymshf
-X-HE-Tag: 1782062870-340412
-X-HE-Meta: U2FsdGVkX1/UB4pfUT11zOHFIrYZDVGM4UnzlnR/0Dhq0PDWWuoxaQI+H0+69YdspCrFzEhuxZXh96xFSHX3Z8+MW2PhPBakTU3IsitRgqUzFZn9y5993NhmAD5bjLkgDiuQ2bijUMx2lXzxbeyIXK4U3yJetXm15Yr7akj+ZS3FHN+RuUuzLMq0RQ/S61NZmWibreAUMGpIAeXQQMiLkL1vN78Y3n1FuJYpShQaNn3p0jMwaa1lPmSp79kiJD1jUGPX4tdgGmcgmPmxr/JXisX7sttxvsLhJvHDW+AetGFDG2Ok6Ya1jvqe9bpUh7hVFt5aBH1jhKXqEvSi3n8bdSFvQu9v5dQjVeuBpffux2jhjxeeL/riqksxUtPHn9LqYONF1tQWUZ2+5akLULmiPqWnXkHdFDSJbqL0lYCHnZiHfAcVMK92wGu6a1dw7RnTkLF1G+VQU6n8aPdPssTl1g/wIMmjrxN54IwwQ3R9GKNp21gUA4v58HigZTO55yK3tfw93OKDyktgQSTgXtQpUelAHkvX1NiSw/cmCv3whj/LQJfa9DIT8l3afLpMMSbQfswr2D9S0hKXD/spqxCqcLVVC0yvPwqRPi+tY9z4xpn9znDMfOvBqlq0Em+vsBhUXf5owo97CgwJJuOyDdRD1osH/pEcBI5rWs9VwtTNRZTx22Qtw1VIB5XlSoJBhxPhcK9Q1y9HaVbSnGem9Cx/RaZ7tGSqMLL5m4a/i0c2ejC8QlquQYi2hZB4IM0d3wMAMZOGeLhwDk6OGp5bUAJ9ykXrx5KsCVzm7+oYNI99mGXH0RMN8zrNUWxvFc1CK0Aa5kZ3eZqQGgkWjSmBMM4G/KxAMHfpybTpKc5cNH7B9D+fFdzAIrEyJ9m51cplchnDFA9mIppE1sAqQgg9nh+Yjq8Do8dYOZoceX6hw2Lc2ycszL88v9Wf3w0iFc+C8cf7XcxnK53jYGIqmAfjjLM
- 9j7qacty
- 3NfqT8z7K/nXBJ89AuuwLfcCL6ydtmuUlZ+myIhtopGeGjR6fwjf6SNsPOYYe2A9EpcwWlGP1/a8bWgoIIu+g6xRvc91efkfTjV8EuBrrHs0xXYHs9zkQIAGNb4S8JJPgFlZXMFFxU03mmMZexQ93p6Bi7iQ1fxPFOPpDAaRaPQnOggqElgqq8YnN6NB06DlYPC09c1J6e4S3XDNF7WL8SI0L5EFyv0o8sQNeiSUOoiSu+OANuwtT54taXdMg21bcph9Fgm03SXmycPDN1LnUv0+j8csjM5OFSt+cXZPc0fvwh/ekuCwSCbYQzME1JvPcqf12XDVNpDj1yJw=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1782065041-923951
+X-HE-Meta: U2FsdGVkX1/rfIq06fOkAKQs9oKAzbL7ge8SzU7G78Xg3ukH0BDYemkxKw9EshBRfIRCebcVI5znITTQiBjEy1oisgKV0mC3M7FV9pA+12dohZzu2Y1LTDXiPaSNRQtSr/Blj/3K+JSiOVUEgVZ9cTlVtGG65l0IfzaBKHSgSH467Y/x5VjhLjCNpRNUFebxV8q3LJw4mmI28MZOzeMWHSD8u6jL4oRW9tsB0bF4wXCKa7lSdBGVk7XKRbn0qNwH+EK9baFbnnGDVc4KLWmxF67Rn3/saCoUwTgY1BDB6TPpPfJkZi3Q9hr9eHYQrJk+gBWmtUeiPnTlVn+d89tokAehgjcVZm7r6MridkmCfXrZ+HunF5UneCZizGq4AQ6/xJZ+xSRvbjBB+pKfyEAjoaX49I0pYObbCRvaCXN1Z2HCR0GopIQPf5kwBfI9rGi9c7gDmCThsMMATpLVeqiiKCJ/I/w3Vfe3uG7qPX3oM9q9gP/lQc+JsDavBQAQOipzoOQZeaeMumK6YO7y6+fdH4QAcYfMo3vUS+pG+uNctFP7C83Zt6lKc0U8xk52174Cv/Ani6ycVPhimAS4+b0wBh4Or+/RSW8NL8XD1+h3HbaXdpYCG2aq/iRdS9KdTr5nVErXXG/UfpPvcfXzfri/5F9vzYTwVktMhTCIXrHubam6DUOjaTU7L+vYvy2NkFfUf8VttYFgmMwGBQZOJTg5Wy9H+r39IRL+m59eGXhpfjo+uvkiQ8ipw+ANj6Jl9HqzYwNHkWcuxAEl/3YZIjOlpnB+klB39X/xMQzGLBW7WqK7uSLcG2TIBIHSdMrDdL48iINUL37fyemyNKL8rGhgLryiMT+BwvXAWJgYfNqHmN/lrYcs2pJ1WDm/j2gisE7iSjj9f07K3zIPqkr1/bMQCfI5PW+2gXuJ/kDZyq5rrQK6g1Qx24+RzlQ91WeSVBQhn6lSVaXE3lNomP/PAM2
+ cWTyg+FI
+ WTsHeWnrcOZZHJa2tl7yrmHvst2FB4TUWYqXor3J5LlA+sZWlP+26lyuIOcsuxqk+u/AF/tNB61wf0EdbIkoYeK9CuVdt5B9aTKC6CknJNNRdiOw+3yUsNXdOWHGShgMp+vJ4F0HGG/PjcX9c8wMR4v2H/ByhMF2U756DVsPkmoQXk13KwN/JlHRbZlVx0dW/dxudGD+o77fazLi3lyUuQi1a+YRU+/Eo+6LHw+hHpKH8OHYiMCJ7eSGExBQh0ZR6fL7z0gVFdNStSzpwN39p8lzrtg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,519 +93,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-Linus, please merge these other-then-MM updates for the upcoming -rc
-cycle, thanks.
-
-I'm seeing one possible upcoming conflict in fs/ocfs2/dir.c, versus the
-fs tree.  Mark resolved it thusly:
-	https://lore.kernel.org/adOxjbi2byrIet3y@sirena.org.uk
-
-
-The following changes since commit d60ec36cab338dfe2ae40d73e9c8d6c4af70d2b8:
-
-  Merge tag 'mm-hotfixes-stable-2026-05-25-16-22' of git://git.kernel.org/p=
-ub/scm/linux/kernel/git/akpm/mm (2026-05-26 08:23:19 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-nonmm-stabl=
-e-2026-06-21-10-22
-
-for you to fetch changes up to ff6f26c58421614b02694ac9d219ac61d924bc68:
-
-  ocfs2: fix circular locking dependency in ocfs2_dio_end_io_write (2026-06=
--17 15:37:48 -0700)
-
-----------------------------------------------------------------
-mm.git review status for mm-hotfixes-stable..mm-nonmm-stable
-
-Everything:
-
-Total patches:       108
-Reviews/patch:       0.84
-Reviewed rate:       75%
-
-Patch series in this merge:
-
-- The 2 patch series "taskstats: fix TGID dead-thread stat retention"
-  from Yiyang Chen fixes a taskstats TGID aggregation bug where fields
-  added in the TGID query path were not preserved after thread exit, and
-  adds a kselftest covering the regression.
-
-- The 2 patch series "lib/tests: string_helpers: Slight improvements"
-  from Andy Shevchenko improves lib/tests/string_helpers_kunit.c a little.
-
-- The 2 patch series "lib/base64: decode fixes" from Josh Law addreesses
-  minor issues in lib/base64.c.
-
-- The 3 patch series "selftests/filelock: Make output more kselftestish"
-  from Mark Brown makes the output from the ofdlocks test a bit easier for
-  tooling to work with, and also ignores the generated file.
-
-- The 3 patch series "uaccess: unify inline vs outline
-  copy_{from,to}_user() selection" from Yury Norov simplifies the usercopy
-  code by removing the selectability of inlining copy_{from,to}_user().
-
-- The 5 patch series "ocfs2: validate inline xattr header consumers"
-  from ZhengYuan Huang fixes a number of possible issues in the ocfs2
-  xattr code.
-
-- The 8 patch series "lib and lib/cmdline enhancements" from Dmitry
-  Antipov provides additional robustness checking in the cmdline handling
-  code and its in-kernel testing and selftests.
-
-- The 18 patch series "cleanup the RAID6 P/Q library" from Christoph
-  Hellwig cleans up the RAID6 P/Q library to match the recent updates to
-  the RAID 5 XOR library and other CRC/crypto libraries.
-
-- The 3 patch series "ocfs2: harden inode validators against forged
-  metadata" from Michael Bommarito adds three structural checks to OCFS2
-  dinode validation so malformed on-disk fields are rejected before
-  ocfs2_populate_inode() copies them into the in-core inode.
-
-- The 2 patch series "lib/raid: replace __get_free_pages() call with
-  kmalloc()" from Mike Rapoport cleans up the lib/raid code by using
-  kmalloc() in more places.
-
-----------------------------------------------------------------
-Adi Nata (1):
-      kunit: fat: test cluster and directory i_pos layout helpers
-
-Aleksandr Nogikh (1):
-      ocfs2: fix circular locking dependency in ocfs2_dio_end_io_write
-
-Alexander Potapenko (2):
-      kfence: fix KASAN HW tags bypass via runtime sample_interval change
-      MAINTAINERS: add Alexander as a kcov reviewer
-
-Alexander Sverdlin (1):
-      mailmap: update Alexander Sverdlin's Email addresses
-
-Alexey Dobriyan (2):
-      proc: add tgid_iter.pid_ns member
-      proc: rewrite next_tgid()
-
-Anand Moon (1):
-      treewide: fix indentation and whitespace in Kconfig files
-
-Andy Shevchenko (2):
-      lib/tests: string_helpers: decouple unescape and escape cases
-      lib/tests: string_helpers: don't use "proxy" headers
-
-Arnd Bergmann (2):
-      init.h: discard exitcall symbols early
-      err.h: use __always_inline on all error pointer helpers
-
-Bart Van Assche (1):
-      clang-format: fix formatting of guard() and scoped_guard() statements
-
-Christoph Hellwig (18):
-      raid6: turn the userspace test harness into a kunit test
-      raid6: remove __KERNEL__ ifdefs
-      raid6: move to lib/raid/
-      raid6: remove unused defines in pq.h
-      raid6: remove raid6_get_zero_page
-      raid6: use named initializers for struct raid6_calls
-      raid6: improve the public interface
-      raid6: warn when using less than four devices
-      raid6: hide internals
-      raid6: rework registration of optimized algorithms
-      raid6: use static_call for gen_syndrom and xor_syndrom
-      raid6: use static_call for raid6_recov_2data and raid6_recov_datap
-      raid6: update top of file comments
-      raid6_kunit: use KUNIT_CASE_PARAM
-      raid6_kunit: dynamically allocate data buffers using vmalloc
-      raid6_kunit: cleanup dataptr handling
-      raid6_kunit: randomize parameters and increase limits
-      raid6_kunit: randomize buffer alignment
-
-Costa Shulyupin (1):
-      include: remove unused cnt32_to_63.h
-
-Cryolitia PukNgae (1):
-      checkpatch: cuppress warnings when Reported-by: is followed by Link:
-
-Dan Carpenter (1):
-      rapidio/tsi721: prevent a bad dereference in tsi721_db_dpc()
-
-Dmitry Antipov (9):
-      lib: fix _parse_integer_limit() to handle overflow
-      lib: fix memparse() to handle overflow
-      lib: add more string to 64-bit integer conversion overflow tests
-      lib/cmdline_kunit: add test case for memparse()
-      lib/cmdline: adjust a few comments to fix kernel-doc -Wreturn warnings
-      riscv: add platform-specific double word shifts for riscv32
-      lib: kunit: add tests for __ashldi3(), __ashrdi3(), and __lshrdi3()
-      riscv: fix building compressed EFI image
-      ocfs2: fix buffer head management in ocfs2_read_blocks()
-
-Feng Tang (1):
-      lib/nmi_backtrace: print out the CPUs which fail to respond to NMI
-
-Guixin Liu (1):
-      selftests/uevent: increase __UEVENT_BUFFER_SIZE to avoid ENOBUFS on b=
-usy systems
-
-Hongfu Li (1):
-      selftests/perf_events: fix mmap() error check in sigtrap_threads
-
-Ian Bridges (3):
-      ocfs2: fix out-of-bounds write in ocfs2_remove_refcount_extent
-      ocfs2: fix UBSAN array-index-out-of-bounds in ocfs2_sum_rightmost_rec
-      ocfs2: fix NULL h_transaction deref in ocfs2_assure_trans_credits
-
-Ingyu Jang (1):
-      error-inject: use IS_ERR() check for debugfs_create_file()
-
-Jann Horn (2):
-      kcov: refactor common handle ID into kcov_common_handle_id
-      kcov: allow simultaneous KCOV_ENABLE/KCOV_REMOTE_ENABLE
-
-Joe Perches (2):
-      checkpatch: add check for function pointer arrays in declarations
-      MAINTAINERS/CREDITS: remove inactive checkpatch reviewers
-
-Jorge Ramirez-Ortiz (1):
-      mailmap: update Jorge Ramirez-Ortiz email address
-
-Joseph Qi (2):
-      ocfs2: add journal NULL check in ocfs2_checkpoint_inode()
-      ocfs2: fix race between ocfs2_control_install_private() and ocfs2_con=
-trol_release()
-
-Josh Law (2):
-      lib/base64: validate before writing in decode tail path
-      lib/base64: fix copy-pasted @padding doc in base64_decode()
-
-Karl Mehltretter (1):
-      kcov: use WRITE_ONCE() for selftest mode stores
-
-Konstantin Khorenko (1):
-      gcov: use atomic counter updates to fix concurrent access crashes
-
-Kyle Zeng (1):
-      ocfs2: avoid moving extents to occupied clusters
-
-Lucas Poupeau (1):
-      lib/bug: cleanup comment style, types and modernize logging
-
-Mark Brown (3):
-      kselftest/filelock: use ksft_perror()
-      kselftest/filelock: report each test in oftlocks separately
-      kselftest/filelock: add a .gitignore file
-
-Maxwell Doose (2):
-      fs: fat: inode: replace sprintf() with scnprintf()
-      fs: efs: remove unneeded debug prints
-
-Michael Bommarito (3):
-      ocfs2: reject dinodes with non-canonical i_mode type
-      ocfs2: reject dinodes whose i_rdev disagrees with the file type
-      ocfs2: reject non-inline dinodes with i_size and zero i_clusters
-
-Mike Rapoport (Microsoft) (2):
-      xor: use kmalloc() in calibrate_xor_blocks()
-      raid6: use kmalloc() in raid6_select_algo()
-
-Petr Vorel (2):
-      checkpatch: allow passing config directory
-      checkpatch: add option to not force /* */ for SPDX
-
-Philipp Stanner (1):
-      llist: make locking comments consistent
-
-Samuel Moelius (3):
-      lib/test_firmware: allocate the configured into_buf size
-      fat: reject BPB volumes whose data area starts beyond total sectors
-      lib: interval_tree_test: validate benchmark parameters
-
-Sasha Levin (1):
-      get_maintainer: add --json output mode
-
-Shardul Deshpande (1):
-      treewide: fix transposed "sign" typos and update spelling.txt
-
-Shuvam Pandey (2):
-      seq_buf: export seq_buf_putmem_hex() and add KUnit tests
-      lib/tests: extend cmdline KUnit with next_arg() tests
-
-Stepan Ionichev (1):
-      lib/uuid_kunit: add tests for the four random UUID/GUID generators
-
-Tetsuo Handa (1):
-      ocfs2: kill osb->system_file_mutex lock
-
-Thomas Wei=DFschuh (1):
-      lib: kunit_iov_iter: repeatedly call alloc_pages_bulk()
-
-Thorsten Blum (2):
-      proc: use strnlen() for name validation in __proc_create
-      string: use min in sized_strscpy
-
-Tristan Madani (1):
-      ocfs2: use kzalloc for quota recovery bitmap allocation
-
-Yiyang Chen (3):
-      tools/accounting/getdelays: fix -Wformat-truncation warning in format=
-_timespec
-      taskstats: retain dead thread stats in TGID queries
-      selftests/acct: add taskstats TGID retention test
-
-Yury Norov (4):
-      rust: uaccess: use INLINE_COPY_TO_USER to guard copy_to_user()
-      uaccess: unify inline vs outline copy_{from,to}_user() selection
-      uaccess: minimize INLINE_COPY_USER-related ifdefery
-      scripts/bloat-o-meter: ignore _sdata
-
-Zhang Cen (5):
-      ocfs2: rebase copied fsdlm LVB pointers in locking_state
-      ocfs2: reject oversized group bitmap descriptors
-      ocfs2: validate fast symlink target during inode read
-      ocfs2: reject FITRIM ranges shorter than a cluster
-      ocfs2/dlm: require a ref for locking_state debugfs open
-
-ZhengYuan Huang (7):
-      ocfs2: reject inconsistent inode size before truncate
-      ocfs2: don't BUG_ON an invalid journal dinode
-      ocfs2: validate inline xattr header before ibody lookups
-      ocfs2: validate inline xattr header before checking outside values
-      ocfs2: validate inline xattr header before ibody remove
-      ocfs2: validate inline xattr header before inline refcount attach
-      ocfs2: validate inline xattr header before reflinking inline xattrs
-
- .clang-format                                      |   2 +
- .mailmap                                           |  16 +-
- CREDITS                                            |   4 +
- Documentation/crypto/async-tx-api.rst              |   4 +-
- Documentation/dev-tools/checkpatch.rst             |  14 +
- Documentation/dev-tools/kcov.rst                   |   6 +
- MAINTAINERS                                        |   7 +-
- Makefile                                           |  27 +-
- arch/arc/include/asm/uaccess.h                     |   3 +-
- arch/arm/include/asm/uaccess.h                     |   3 +-
- arch/arm64/boot/dts/qcom/sc7280-qcard.dtsi         |   2 +-
- arch/arm64/include/asm/uaccess.h                   |   3 +-
- arch/hexagon/include/asm/uaccess.h                 |   3 +-
- arch/loongarch/include/asm/uaccess.h               |   3 +-
- arch/m68k/include/asm/uaccess.h                    |   3 +-
- arch/microblaze/include/asm/uaccess.h              |   3 +-
- arch/mips/include/asm/uaccess.h                    |   3 +-
- arch/nios2/include/asm/uaccess.h                   |   3 +-
- arch/openrisc/include/asm/uaccess.h                |   3 +-
- arch/parisc/include/asm/uaccess.h                  |   3 +-
- arch/riscv/Kconfig                                 |   3 -
- arch/riscv/include/asm/asm-prototypes.h            |   4 +
- arch/riscv/kernel/image-vars.h                     |   9 +
- arch/riscv/lib/Makefile                            |   1 +
- arch/riscv/lib/ashldi3.S                           |  36 ++
- arch/riscv/lib/ashrdi3.S                           |  36 ++
- arch/riscv/lib/lshrdi3.S                           |  36 ++
- arch/s390/include/asm/uaccess.h                    |   3 +-
- arch/sh/include/asm/uaccess.h                      |   3 +-
- arch/sparc/include/asm/uaccess_32.h                |   3 +-
- arch/sparc/include/asm/uaccess_64.h                |   3 +-
- arch/um/include/asm/uaccess.h                      |   3 +-
- arch/xtensa/include/asm/uaccess.h                  |   3 +-
- certs/Kconfig                                      |  16 +-
- crypto/async_tx/async_pq.c                         |   9 +-
- crypto/async_tx/async_raid6_recov.c                |   9 +-
- drivers/dma/bcm-sba-raid.c                         |   1 +
- drivers/firmware/efi/libstub/Makefile              |   6 +-
- drivers/gpu/drm/drm_color_mgmt.c                   |   2 +-
- drivers/md/raid5.c                                 |   4 +-
- drivers/rapidio/devices/tsi721.c                   |   3 +-
- drivers/scsi/elx/efct/efct_hw.h                    |   2 +-
- drivers/scsi/isci/host.c                           |   2 +-
- drivers/scsi/isci/port.c                           |   2 +-
- drivers/scsi/isci/port_config.c                    |   2 +-
- drivers/usb/usbip/usbip_common.h                   |  29 +-
- drivers/usb/usbip/vhci_rx.c                        |   4 +-
- drivers/usb/usbip/vhci_sysfs.c                     |   2 +-
- drivers/vhost/vhost.h                              |   2 +-
- fs/Kconfig                                         |   6 +-
- fs/btrfs/raid56.c                                  |   8 +-
- fs/efs/file.c                                      |  21 +-
- fs/fat/fat_test.c                                  |  33 ++
- fs/fat/inode.c                                     |  10 +-
- fs/ocfs2/alloc.c                                   |   2 +-
- fs/ocfs2/aops.c                                    |  13 +-
- fs/ocfs2/buffer_head_io.c                          |   7 +-
- fs/ocfs2/dlm/dlmdebug.c                            |  16 +-
- fs/ocfs2/dlmglue.c                                 |  17 +
- fs/ocfs2/file.c                                    |  23 +-
- fs/ocfs2/inode.c                                   | 206 ++++++++++-
- fs/ocfs2/journal.c                                 |  13 +-
- fs/ocfs2/journal.h                                 |   3 +
- fs/ocfs2/move_extents.c                            |   4 +-
- fs/ocfs2/ocfs2.h                                   |   2 -
- fs/ocfs2/quota_local.c                             |   2 +-
- fs/ocfs2/refcounttree.c                            |   9 +-
- fs/ocfs2/stack_user.c                              |  10 +-
- fs/ocfs2/suballoc.c                                |  22 ++
- fs/ocfs2/super.c                                   |   2 -
- fs/ocfs2/sysfile.c                                 |   9 +-
- fs/ocfs2/xattr.c                                   | 123 ++++---
- fs/proc/base.c                                     |  57 ++--
- fs/proc/generic.c                                  |  10 +-
- include/asm-generic/uaccess.h                      |   3 +-
- include/linux/cnt32_to_63.h                        | 104 ------
- include/linux/err.h                                |  12 +-
- include/linux/init.h                               |   2 +-
- include/linux/kcov.h                               |  14 +-
- include/linux/llist.h                              |   4 +-
- include/linux/raid/pq.h                            | 216 +-----------
- include/linux/raid/pq_tables.h                     |  19 ++
- include/linux/sched.h                              |   3 +
- include/linux/skbuff.h                             |  14 +-
- include/linux/types.h                              |   6 +
- include/linux/uaccess.h                            |  25 +-
- init/Kconfig                                       |  24 +-
- kernel/bpf/helpers.c                               |   2 +-
- kernel/kcov.c                                      | 104 +++---
- kernel/taskstats.c                                 |  62 ++--
- lib/Kconfig                                        |  13 +-
- lib/Kconfig.debug                                  |  10 +
- lib/Makefile                                       |   1 -
- lib/base64.c                                       |   5 +-
- lib/bug.c                                          |  80 ++---
- lib/cmdline.c                                      |  30 +-
- lib/error-inject.c                                 |   4 +-
- lib/interval_tree_test.c                           |  22 ++
- lib/kstrtox.c                                      |  37 +-
- lib/nmi_backtrace.c                                |  15 +-
- lib/raid/Kconfig                                   |  33 ++
- lib/raid/Makefile                                  |   2 +-
- lib/{ =3D> raid}/raid6/.gitignore                    |   0
- lib/raid/raid6/Makefile                            | 126 +++++++
- lib/raid/raid6/algos.c                             | 377 +++++++++++++++++=
-++++
- lib/raid/raid6/algos.h                             |  41 +++
- lib/{raid6 =3D> raid/raid6/arm}/neon.c               |  23 +-
- lib/{raid6 =3D> raid/raid6/arm}/neon.h               |   0
- lib/{raid6 =3D> raid/raid6/arm}/neon.uc              |   2 +-
- lib/raid/raid6/arm/pq_arch.h                       |  21 ++
- lib/{raid6 =3D> raid/raid6/arm}/recov_neon.c         |  27 +-
- lib/{raid6 =3D> raid/raid6/arm}/recov_neon_inner.c   |   2 +-
- lib/raid/raid6/arm64/pq_arch.h                     |   1 +
- lib/{ =3D> raid}/raid6/int.uc                        |  10 +-
- .../raid6/loongarch}/loongarch_simd.c              |  31 +-
- lib/raid/raid6/loongarch/pq_arch.h                 |  23 ++
- .../raid6/loongarch}/recov_loongarch_simd.c        |  39 +--
- lib/{ =3D> raid}/raid6/mktables.c                    |  28 +-
- lib/{raid6 =3D> raid/raid6/powerpc}/altivec.uc       |  32 +-
- lib/raid/raid6/powerpc/pq_arch.h                   |  32 ++
- lib/{raid6 =3D> raid/raid6/powerpc}/vpermxor.uc      |  29 +-
- lib/{ =3D> raid}/raid6/recov.c                       |  62 +---
- lib/raid/raid6/riscv/pq_arch.h                     |  21 ++
- lib/{raid6 =3D> raid/raid6/riscv}/recov_rvv.c        |  14 +-
- lib/{raid6 =3D> raid/raid6/riscv}/rvv.c              |   0
- lib/{raid6 =3D> raid/raid6/riscv}/rvv.h              |  26 +-
- lib/raid/raid6/s390/pq_arch.h                      |  15 +
- lib/{raid6 =3D> raid/raid6/s390}/recov_s390xc.c      |  14 +-
- lib/{raid6 =3D> raid/raid6/s390}/s390vx.uc           |  15 +-
- lib/raid/raid6/tests/Makefile                      |   3 +
- lib/raid/raid6/tests/raid6_kunit.c                 | 321 ++++++++++++++++++
- lib/{ =3D> raid}/raid6/unroll.awk                    |   0
- lib/{raid6 =3D> raid/raid6/x86}/avx2.c               |  47 +--
- lib/{raid6 =3D> raid/raid6/x86}/avx512.c             |  57 +---
- lib/{raid6 =3D> raid/raid6/x86}/mmx.c                |  39 +--
- lib/raid/raid6/x86/pq_arch.h                       |  96 ++++++
- lib/{raid6 =3D> raid/raid6/x86}/recov_avx2.c         |  22 +-
- lib/{raid6 =3D> raid/raid6/x86}/recov_avx512.c       |  26 +-
- lib/{raid6 =3D> raid/raid6/x86}/recov_ssse3.c        |  23 +-
- lib/{raid6 =3D> raid/raid6/x86}/sse1.c               |  49 +--
- lib/{raid6 =3D> raid/raid6/x86}/sse2.c               |  47 +--
- lib/raid/xor/xor-core.c                            |   5 +-
- lib/raid6/Makefile                                 |  83 -----
- lib/raid6/algos.c                                  | 291 ----------------
- lib/raid6/loongarch.h                              |  38 ---
- lib/raid6/test/.gitignore                          |   3 -
- lib/raid6/test/Makefile                            | 156 ---------
- lib/raid6/test/test.c                              | 152 ---------
- lib/raid6/x86.h                                    |  75 ----
- lib/seq_buf.c                                      |   1 +
- lib/string.c                                       |   8 +-
- lib/test-kstrtox.c                                 |   6 +
- lib/test_firmware.c                                |   2 +-
- lib/tests/Makefile                                 |   1 +
- lib/tests/cmdline_kunit.c                          | 118 +++++++
- lib/tests/kunit_iov_iter.c                         |  12 +-
- lib/tests/seq_buf_kunit.c                          |  34 ++
- lib/tests/shdi3_kunit.c                            | 175 ++++++++++
- lib/tests/string_helpers_kunit.c                   |  15 +-
- lib/tests/uuid_kunit.c                             |  56 +++
- lib/usercopy.c                                     |   4 +-
- mm/Kconfig                                         |   4 +-
- mm/kfence/core.c                                   |   5 +
- rust/helpers/uaccess.c                             |   2 +-
- scripts/bloat-o-meter                              |   1 +
- scripts/checkpatch.pl                              |  53 ++-
- scripts/get_maintainer.pl                          |  73 ++--
- scripts/spelling.txt                               |   1 +
- tools/accounting/getdelays.c                       |   8 +-
- tools/testing/selftests/acct/.gitignore            |   3 +-
- tools/testing/selftests/acct/Makefile              |   5 +-
- .../selftests/acct/taskstats_fill_stats_tgid.c     | 375 +++++++++++++++++=
-+++
- tools/testing/selftests/filelock/.gitignore        |   1 +
- tools/testing/selftests/filelock/ofdlocks.c        |  94 +++--
- .../selftests/perf_events/watermark_signal.c       |   2 +-
- tools/testing/selftests/uevent/uevent_filtering.c  |   2 +-
- 176 files changed, 3254 insertions(+), 2198 deletions(-)
- create mode 100644 arch/riscv/lib/ashldi3.S
- create mode 100644 arch/riscv/lib/ashrdi3.S
- create mode 100644 arch/riscv/lib/lshrdi3.S
- delete mode 100644 include/linux/cnt32_to_63.h
- create mode 100644 include/linux/raid/pq_tables.h
- rename lib/{ =3D> raid}/raid6/.gitignore (100%)
- create mode 100644 lib/raid/raid6/Makefile
- create mode 100644 lib/raid/raid6/algos.c
- create mode 100644 lib/raid/raid6/algos.h
- rename lib/{raid6 =3D> raid/raid6/arm}/neon.c (79%)
- rename lib/{raid6 =3D> raid/raid6/arm}/neon.h (100%)
- rename lib/{raid6 =3D> raid/raid6/arm}/neon.uc (99%)
- create mode 100644 lib/raid/raid6/arm/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/arm}/recov_neon.c (81%)
- rename lib/{raid6 =3D> raid/raid6/arm}/recov_neon_inner.c (99%)
- create mode 100644 lib/raid/raid6/arm64/pq_arch.h
- rename lib/{ =3D> raid}/raid6/int.uc (96%)
- rename lib/{raid6 =3D> raid/raid6/loongarch}/loongarch_simd.c (96%)
- create mode 100644 lib/raid/raid6/loongarch/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/loongarch}/recov_loongarch_simd.c (96%)
- rename lib/{ =3D> raid}/raid6/mktables.c (83%)
- rename lib/{raid6 =3D> raid/raid6/powerpc}/altivec.uc (84%)
- create mode 100644 lib/raid/raid6/powerpc/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/powerpc}/vpermxor.uc (82%)
- rename lib/{ =3D> raid}/raid6/recov.c (60%)
- create mode 100644 lib/raid/raid6/riscv/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/riscv}/recov_rvv.c (95%)
- rename lib/{raid6 =3D> raid/raid6/riscv}/rvv.c (100%)
- rename lib/{raid6 =3D> raid/raid6/riscv}/rvv.h (70%)
- create mode 100644 lib/raid/raid6/s390/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/s390}/recov_s390xc.c (90%)
- rename lib/{raid6 =3D> raid/raid6/s390}/s390vx.uc (93%)
- create mode 100644 lib/raid/raid6/tests/Makefile
- create mode 100644 lib/raid/raid6/tests/raid6_kunit.c
- rename lib/{ =3D> raid}/raid6/unroll.awk (100%)
- rename lib/{raid6 =3D> raid/raid6/x86}/avx2.c (94%)
- rename lib/{raid6 =3D> raid/raid6/x86}/avx512.c (93%)
- rename lib/{raid6 =3D> raid/raid6/x86}/mmx.c (81%)
- create mode 100644 lib/raid/raid6/x86/pq_arch.h
- rename lib/{raid6 =3D> raid/raid6/x86}/recov_avx2.c (95%)
- rename lib/{raid6 =3D> raid/raid6/x86}/recov_avx512.c (94%)
- rename lib/{raid6 =3D> raid/raid6/x86}/recov_ssse3.c (95%)
- rename lib/{raid6 =3D> raid/raid6/x86}/sse1.c (78%)
- rename lib/{raid6 =3D> raid/raid6/x86}/sse2.c (94%)
- delete mode 100644 lib/raid6/Makefile
- delete mode 100644 lib/raid6/algos.c
- delete mode 100644 lib/raid6/loongarch.h
- delete mode 100644 lib/raid6/test/.gitignore
- delete mode 100644 lib/raid6/test/Makefile
- delete mode 100644 lib/raid6/test/test.c
- delete mode 100644 lib/raid6/x86.h
- create mode 100644 lib/tests/shdi3_kunit.c
- create mode 100644 tools/testing/selftests/acct/taskstats_fill_stats_tgid.c
- create mode 100644 tools/testing/selftests/filelock/.gitignore
-
+On Sun, 21 Jun 2026 08:48:06 -0700 SeongJae Park <sj@kernel.org> wrote:
+
+> damon_max_nr_accesses() causes a divide-by-zero if the sampling interval
+> is set to zero by the user.  If the aggregation interval is set to zero,
+> the function returns zero.  It is wrong, since the real maximum
+> nr_acceses in the setup should be one.  Worse yet, it can cause another
+> divide-by-zero from its caller, damon_hot_score(), since it uses
+> damon_max_nr_accesses() return value as a denominator.
+> 
+> Fix the problem by setting the denominator in the function as 1 when the
+> sampling interval is zero.  Also ensure the return value is always 1 or
+> greater.
+> 
+> The issue was discovered [1] by Sashiko.
+> 
+> [1] https://lore.kernel.org/20260619202459.145010-1-sj@kernel.org
+> 
+> Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+
+Sashiko found [1] another bug that was introduced by another commit.  I will
+repost this patch with a fix for the another bug.
+
+[1] https://lore.kernel.org/20260621175849.91990-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
