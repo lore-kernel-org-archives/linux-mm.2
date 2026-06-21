@@ -4,135 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4545FCD4F26
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 02:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3271CD4F26
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 02:33:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8AB456B0005; Sat, 20 Jun 2026 22:30:49 -0400 (EDT)
+	id 5F1A46B008C; Sat, 20 Jun 2026 22:33:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883106B008A; Sat, 20 Jun 2026 22:30:49 -0400 (EDT)
+	id 5A31A6B0092; Sat, 20 Jun 2026 22:33:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7723B6B008C; Sat, 20 Jun 2026 22:30:49 -0400 (EDT)
+	id 4929B6B0093; Sat, 20 Jun 2026 22:33:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8046B0005
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 22:30:49 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B78811A02C3
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:30:48 +0000 (UTC)
-X-FDA: 84902341776.18.BCD5543
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BB41F40018
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:30:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hOZ7PcEg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782009046;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1736B6B008C
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 22:33:16 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 76986C144B
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:33:15 +0000 (UTC)
+X-FDA: 84902347950.24.00E575F
+Received: from xmbgsz5.mail.qq.com (xmbgsz5.mail.qq.com [113.108.92.97])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A1E681A0006
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:33:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=XfO1YKqX;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf19.hostedemail.com: domain of xiaowu.417@qq.com designates 113.108.92.97 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782009193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I7YVuvXThm0toGAM/4mpv9e/nJVFM7CnaeXRQvob9Js=;
-	b=thye8izulhpRCXHSNj628a3bx9cKwH/Z9pwI6fmFAuruRJdqQB++QpffKWoKuSaAOzET5s
-	O5gRGpcUuEi7LNmaNXH/76WHKDObinsBXnN1+9gD9BqcB3/VQA7qTgJgyQtwOVCGP4MSe0
-	wofrt2heddj+RVgkgO/2Va6sH8ADbzQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782009046;
-	b=eLAHu9+3ukS7CtJCvIRhQhCMdB8VVa/9UlYkoJKNZ3Sy/4r/N6HIsSvNUFFMOnpF2mDZKF
-	8XSZkz4uldZ93MnNdn56RWM5EojQ1tpwQ+M7c2IsOMZzXiVdoQct98OSel7L8hEwuZ1+m7
-	aFxHMg+Y5MYkGTTw1x0FUIwQJWnm38I=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=hOZ7PcEg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-51765331535so376581cf.1
-        for <linux-mm@kvack.org>; Sat, 20 Jun 2026 19:30:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782009046; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Be0d0qirFHyJ/HmVNhEK0jWcUgnymnU7J+s0UWWgGFXIct1ncQ7JbCS/6WNDF9wimE
-         Kf+F3SihJc1s3TXi0vZDlxm39rcJfBDSTpJX3L8bYhoUkH3aLh0JhSljmh584oGJW6jo
-         Xw+aQ2dNaDB9w6dw7QW517LxoJtKYPju2W+oV/uDkpA1oG7YvyHAorcdVx2vzL2y5oao
-         GzUBS6xrAI/xU3U494r/o0JG+SomjYe6zEmFmuC4Rtac6zJgRldO4uTOzEzjWWCgXaIu
-         ia97AV/ANzeRU89M58uVKldKMkBXylc5XdZMkRSfMsRl4JqoaXiAos7o+9EwQi9rSSv/
-         igJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I7YVuvXThm0toGAM/4mpv9e/nJVFM7CnaeXRQvob9Js=;
-        fh=Gw8vbWuKD98OaznkAM8dDa83F+dHkDjteRavURri8pk=;
-        b=p9cdTVqsddwqzQYiBwOSyKwOCKWxYJ4t36oNJdwv1+TT8G5ixv7RPsOVWvbqvmYiTd
-         TCrI6/19lWAHhGoEhMfBaxZEplGc3Q83prZp+5S1We81SgZhxQFYx29ayrOV4395AtcG
-         HIHnC0H3gxNH4Am/S6Nz/pAkhXM7IThxzqLpADV8h3omb1F3JaacQ7pbIdzSM/C931oR
-         M17v6ERWqOs1qE5zq5a3UpCZD76Fz0OBnfZ7aLyO/r4SfqKuNuXqMoWP6mtGSuhijy9m
-         Mbd445uaZY98v1kUR2jvV/wj48NwrUk0EYJaq44kElneksX3KP3Y+uwgc+QJJz7HYuDL
-         DQbg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782009046; x=1782613846; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I7YVuvXThm0toGAM/4mpv9e/nJVFM7CnaeXRQvob9Js=;
-        b=hOZ7PcEgvdJvhG3btUXGT8OcCXWrENtkZo96snkzQuI8mAmT790kuXKS5h7dSnv7Ya
-         BJ8/r2dL3p6EwIv1UmpvUr4BlCW8jqVGDTKn53m3ExUkS/gZfQIfyirVPVVWDAwi6Vpx
-         4M00wlU283II3RlZDlJywIofJeRKLimGfV9yZswv3AV4xe7WWLRMaixMgBUu6HXXEPkf
-         t228FgMYfBKgz9eh1zGJnZfbn0dp7Kj69cLgsWsu+jazaKRh70fbpXOMMS8xpmiKorBv
-         epRH87JdhIp5RMtnhYZaMp5U+q5sP4w6Yr4kl+Zz+DFtKanj6lzYqtP98sJ578L+IwNm
-         UlnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782009046; x=1782613846;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I7YVuvXThm0toGAM/4mpv9e/nJVFM7CnaeXRQvob9Js=;
-        b=KBp2uQAxmHOf97Bpr8E6atvaX5x3/rPwHVFMEAwgUm6l0DubTbxNWX4x04efqqZjPD
-         TJJ/CFeektggWe/HLzMPO+K678i7H8ZUC0ZVA1nUyj6pfIhJCPi6ycKU88yY/TrnRDGq
-         udTM4xCRt1jaNQVZB5XZv68I/Wb7VbPXf2O4p1f1D6f+qrqI6lH4ZGjCF2FU6WHDHokS
-         5GPzBgC4Bg1KCFwp6SpGrnK1bclzw/ML7eqizA28/lJ9Jk9zy4idyyqq+KtLa3DN6mOe
-         Cx45hVfn/FWOFlPQYvX4FfE8fx5HcoMBbdg4cToNzDtlBsJLAHESEaonthnWWorVlITA
-         O7Rw==
-X-Forwarded-Encrypted: i=1; AFNElJ/3bHBbW77WiAlKvU6pX3yTSsDtlIlMyexP5vlG/8YIQkM1ONgH2jc7ybO/z9ORlO/A1fFzNN+MiA==@kvack.org
-X-Gm-Message-State: AOJu0YxqslMgcTjmAp7bUIH1wnPXPDuN9M3XB7Qc5lw9aARdddFdvBKq
-	BB/VGtkDB5XKn6qIlWM9g/HTyCXoAi9+d3inl7HlTKm2XvvxyI2O7XeZ4/vK2yn+2eXUwLdnsQ3
-	TAH9dmSYvedd9QASn5lJzXpaqarPwyxdHi6U8wYkmN0bqM/B2YPNhJWN8fUc=
-X-Gm-Gg: AfdE7cm+qCOAGFSOqHVbFc896o/KLzrkSjkkQRynv4+Jpi/FC3fKGQM91vpITYobxUZ
-	uHgH5W8Tk4EGz5lLmLkkmxvp8qOzws4DISLki9b9VHvuIa2BQD4qih+VoP3L8uVp9zpfs5M2IKj
-	7fSjQPNXTY29Tznu16eDVyS2ySrg+ZrKPTndOKexJRs/E5G7VKlRKiyA+xUvlZjPwgAlcHU5+oN
-	rtYxzFplv0h6bpehi5i55CrM0KAsBv0/IacC8UgtCcJaaRYlC/IxxRnICESrsgb39kmpjI=
-X-Received: by 2002:a05:622a:11c5:b0:516:ccc0:ee38 with SMTP id
- d75a77b69052e-519e891bc2bmr13237071cf.9.1782000029589; Sat, 20 Jun 2026
- 17:00:29 -0700 (PDT)
+	bh=tV+HkNoqzvKpgSRnvGC6RmogVfBvelOvm7aH4UT4sWE=;
+	b=mbWlYHj09z7PRGKeKmVQrJL1aC61qOYIgUXAHGHac3jj1TVnGz+DhTzePkAFfqX12zm4Wr
+	Hq8WDlmLnBmW6Wp1+qFZVUeo3gZodVBiJQUinElNNo3jabYGlo/T7OzPNUmOrybygxNwJb
+	UC4jzjAPN4BdsktnhS3WW+z2+btfza4=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=XfO1YKqX;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf19.hostedemail.com: domain of xiaowu.417@qq.com designates 113.108.92.97 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782009193;
+	b=cAsSo5r6tBsbSpfZWN1VNmsWonwAH+M363aLb4uRWZb2hdF8PblSMd37fgwUkM30KiFws6
+	vvVxjd77M9e2JXm316OU+4uK7JtYGyxLrhDfUBpsBP9DH4auAJ2KKhf1vJNYT13vikmNjF
+	Z6ffoqRuthjcb2ANJjHW0HWPviQnI9w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782009188; bh=tV+HkNoqzvKpgSRnvGC6RmogVfBvelOvm7aH4UT4sWE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=XfO1YKqXVycZDP1g0d5ng3Nc/Xx/VfsVGIZ06/4Uyug0ZMjpF783NjfJG1AQcZpzj
+	 pC7Zw+oQzdKf6qWjPZQXKo4SSK6vSmfBBN0PLO7TPGwuOEa89imEN43k+7nbtTaoV5
+	 kmiRwEGujnGX+U8bVuyugflqG5NpCiq6x1/Ymh7o=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-XMAILINFO: MF2s0TKt0BDQ/rAu5/bVF6ZNILrc10mr2NDK5So5PZea2C0ouyc6T0AU7Lv/0m
+	 M+tiChHuvcTMkEr7KxEG8VnMxxBZg/FL2VWvaGR+PVbmIS213R4X2rMZTUn0tTK8tqPcAkg54H8hm
+	 MolsdFNAM21nSu+sGsS6BwabyTIUlI87LRHTYv6OC+bpdKnIYgkHyx1/8aIg+QOWQKCsFrCuAEOO2
+	 ikeK44vqRz3+kEZjQZYtGJHxm7o3OOGlLSLYGaQwguUUo+5isE5F3rdwiQiijWZjrFNcwDinft0xJ
+	 uk7SlLwRsMpfemvZf2tyJ/wRtmyJ42c5xoan+9jdHzbu0Fpn0ukU/uLfWzm8UBXVLWgLW68OtxZ+s
+	 s7UubAhyGi2OXhd37kt3OG1hB0sUBXP2GDdavSpB4w/mabdznQ6reeBY0HrU5tjSNazw2ZvnH+27l
+	 uqBEdF9IFVj65f8p9WJFtt4qO67/4cTjlD03/NsuvHON5OvsdOYj3DQLKVX3cxKysLMUcrFUicMfa
+	 FRz+GSBnNjRJtKh047QqHUJ6ONmwAQ7sKinwsMjiHzBWJDzh6flXhZLfD7Qc9nuYS/aj9/xuI2mwd
+	 KUiC9lDTKL4D0Tp1LKzldI1FK8ChtHutDuZSilufRP37SnjVKthlobfWZuOgNjb/kWKeFtChGZuoH
+	 NIuCGmd2y1PzzrJZyjDT55awvUINzzRpq7VIEjGHNkMHYJL9ZLN8GzWrfqZupeaUNdKg9Q7aljomT
+	 czs0HD+4/Bo9RHbKxfmm5qwKbCx0TrClmnshOdZFSxwK3i/Vi8XplgVonX78ZqRHzeRM9wJaZo5jW
+	 GxQ+316YYUksIkDpl25GrCh8UrMjB8JQwBbhcROpPiidgoCq8VTZCJuvrlJ0NGU5k2oFk5jd4bI3/
+	 x/v8/Sb9BSVlp2QtLRfJYGnW3htAUjy+MT2fam177lsNCnPgb3wNlAgG1RkN3yTeR27g8bfs7+efn
+	 +N3w9NvhV6ONr0SHy1f06fEgazvq7hkv5k/ZVjvYsP/w0D4rwV+tYIpXyvr7/g6mJv4/wHNOA9YYv
+	 81WKVzAZj0/KqNn4jFku/Aso0866oBomlIAXyY7yYVbBfVMCMRV4ITq3GnogfuCWqPonFdPZgNvcK
+	 jcjUlIxFvNXuePoauHAU+5rTvg95QwdWsFBdxMzP9IYHeg==
+Received: from [192.168.1.100] ([183.94.22.181])
+	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
+	id 75E2FA1F; Sun, 21 Jun 2026 08:29:30 +0800
+X-QQ-mid: xmsmtpt1782001770t17vm1vd5
+Message-ID: <tencent_45CAE878B5922990DB102BE05A1BAD50DA09@qq.com>
+X-OQ-MSGID: <213501bc-74e7-43ef-b72e-83ed5976371b@qq.com>
+Date: Sun, 21 Jun 2026 08:29:30 +0800
 MIME-Version: 1.0
-References: <cover.1781803482.git.abhishekbapat@google.com> <6944ab65167d8884ce0d856184730d06ead68cb5.1781803482.git.abhishekbapat@google.com>
-In-Reply-To: <6944ab65167d8884ce0d856184730d06ead68cb5.1781803482.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 20 Jun 2026 17:00:18 -0700
-X-Gm-Features: AVVi8CfHs4Muf6EinscyLyhahIerAJ8Wq3Zw_M8pDgJhxRBeKg_Tis_5NswmYtw
-Message-ID: <CAJuCfpGCdHc8br0fdGw4cQYgXGCCsCuTkVF_19QWzmV8bSVuhA@mail.gmail.com>
-Subject: Re: [PATCH v6 3/6] alloc_tag: add size-based filtering to ioctl
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BB41F40018
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-next v3 7/9] mm/slab: introduce kfree_rcu_nolock()
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-7-70a54f3775bb@kernel.org>
+From: XIAO WU <xiaowu.417@qq.com>
+In-Reply-To: <20260615-kfree_rcu_nolock-v3-7-70a54f3775bb@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A1E681A0006
 X-Rspam-User: 
-X-Stat-Signature: iu4wnuuaj5grcjsdo4775odjhq7d45w9
-X-HE-Tag: 1782009046-891178
-X-HE-Meta: U2FsdGVkX1+D4y2hZpGU2StaBHpWefBA3DnZUG69iccXci1B/dyFu4bgQYkjdHAN8o6HAXLlswXCR6JRvpLl6bFqVTr3SmCe15IOn8etLDS6+8MGwUAyzZUvKbpfGl8cR+96GS9D6N82k8eLAHO8XlJcZVWc+aICby1OjaqP8pjqQe8jfq8RxTQdJ33GF2MExn1nUCbtX/2uQ2DtRLtF+S0m0Xw4mrpkpm+JQn2Tu40uDzNqNMwzbgpLDen8D9aJ/THu3SA8TlS+I58LCtZJfzps5loxm6dZ7uhqeb1nUlVUzScBPZeE2Df5BTmLils4AnPywydeZuxxfrMnWn+79dqg6Dm0lKnOi6WdM0TVOZ4ZfSmw1KkW5fbGOBBA6+xWUdfsThS8biuUWLIjhKOTLLxoRNa+2jhEsxHzF9P+ACY/lq/uSw82wOQOTFbys6yvLoS5mYMBgLVhmBDVDYctKlScPraMHNAX40tubQzvPDpLgkWEPb0CvoBd3/1BSlxaJ/AOwTwb5pcUyiUUgCZnsdz2SaHResTqxx9hC9aRcihyI2oFYfjxYsDxIZc7A3llrdfdgrkRjJA7aJP4QUVhXF1tn9jl/RX6DOyLAmpuqpChvqmVobrabTdQSMvHc+FerhMTfVwhEk5vfmm0FFhmyEic6lrkGrQx6bmzR7mtwO2679kiyMFcPtjxGDWlKzL+kmDq7AXCUzXqYjp4XIZY6Z8LRNFMI6GVeeuxqitaCoIxEcPKEwXQreyEooXLraEXMNx8VCR6XRzSm/Ul4yNQRyP+WiP5Rw96DUjPKcedgMw0QXj0/U6tpyS+XldBvAxcD7QK9GQTKmwDpdRysNEUQcIbN1E0NJt91zAHVKLIlz+U80fsvV9Ov+806vJ1kDGO5o/6t5Wmk2mWLasLmr30vyEB7ffAOWdW6LWA9+WGXN+mQ4cc0Mp9NIlxsfpaY2k8lWdIONDTfhoxwkPkfUo
- XcKuXky3
- dlkq7WVrrcvMp/WWba5wqW2LcgQIAH/l1hCdbeaNJTc/XQehyht/PuHJRQI9A+HNQxHZAyx8Su1GBVJRSHs6r7Etykcyjkd7MG6ac6+MRfyppKeHelldUydZ4n2irr/bbH/0cIMWcNN/Na+LLOXIgHRgM62xDzTl9e5G1DuafiXdbnGvgQn2IMDw9mFhDGH6NbXHhT/AHRJaqJBUMDejRW3tcvzzgnL9iL4qk47o+1x41xW53Mh6Zb8ndHbAxe1Da0qlrSxqVpcOSXKg+jT6yHnUBn6uE0l9dazxInsdgjwzRjpxj1QhefYaJpJ10BhrABILZpcvBTCJTUPk=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ry4w9su48mkzdbfeobocu7nqiz5q9hzi
+X-HE-Tag: 1782009192-735133
+X-HE-Meta: U2FsdGVkX1+Q9r6z+u8StHtEFF1bkA6F3RXDAA0rlWna23LT3kV4CBLuz6CI3cocRX5ouqQl18XF+CK9XBL5kEYCU8yy4otdkgwd3JJIGkRr874vw0jDcqjUvBda/8fYT4+CXNYF9khAwEajnwnm6GPsWhCNZK0mNpxiDsJmsjfCSeW1GHyXwvdV+nWE653X+x2mIale50Ce7owuA6rluPotQogR2q4zr4Blt8YHvE5Fnc88Uzto03hJrcayqb2ytmMHdejLxC036cAtvotZyF5tg/ifcWMvW28YvTnTnIuoiuVobara5etuoNT9RLrrVfFQ/C1QMJB4Cq56jHki0M7C9p3+LJ/nQm6ZU13YRJh3E/9+CKDV8xwg41oLPUzsoLx5x0wYqhJ26NYRKAnfaubVIlb+8/zgXz6/Z3zPYk/Kzvggd0gsSS+/9xeyzdlD45RqkFxvZmqQkkl/oyUS9RN0yzLTp6sHei852r47PI+3otXMtszfiqkTR+VfB2lT25dWISb+v0f7hWzZaiJ5H+E/wca1+iv3pwNZqEMYBunxA3uOIbTshF4YPHAYucKjHu4agWhepKltytbXmmGqNWXmjPaui40HJTJyFYW05eRErsUBDUbnx49S8B4mPO1LC7Gi/JgUvZtmSOGOE7hbDgQkCPCsmPa4vpDtXbsziTEseCro9hk1CZJ2cFLPWHWEMPP21pxbvV682pDIzTGux2mncI8j6KLwHy6KzztUBaSseFzRpx/M0G7fvS1DDwpeuxm1e4r3ZCCWTqDDA7FApKj/LosROZcI0QO/c4XFUr6ObAsKUEbXTOa3rYRQGCH5f/HKG62p1XeGl1V8x/yAMK+NLCs2fa8xse7jIzTXh4FBdxap2E6QBCJWx0BRmoaDjE+KX9hjBLiK1SQJghUjl3aIilUrCUVsjOYVm7OcOgu9dS09Bo+Q3aNQG1xGbWQsmuoMqkMS+ZoWiVF/9cR
+ Gp0i/Vdg
+ vziANuAfsfwNpiSnsIoTtOIBFo6LKGCRkJX+KfH2JPIl3CcAwqTMUd24tIJT3/c6jojYtlLbNi0n8qd8eXGPL57LD+5NdtU32NOQheEjf5Cn9zmQmCs/kC1v4cxafrMDqEAsxL1ya5w7sLEXmCiqjEWU3sm9Lna+PwG3fpKyp5xkVF1IIy2GB1R78/V4jvqvVlWiJ0N3RfHbnXSNs6d+UB3wDMQHrUe/+7v7O0pCDTIqVY7xOdl8G02aa6mu8TJloE2mW3NVwUZjilbc5asn9c+kwVRhW5MOTO7kAWzzECfXjaYcFCgQ2MC91IWvYYAKz2zpMtPBmIdAjeYdU94Mh2S0iyYWkcxM0P0P3vIeCd7aG/4gVB3dnLVLXy6jB5f2CHG4UK98Tt/bjYCQ/7+1+hYNSW7uymXjjBX1zdJu3afr33wVX8Wn4DSL43KbyULtJPZUU0mgg7q7w4cb+zqSn2fldVbcK/3S9Dd4nvXUicgKi2h6L2o+WBcEqVQGGWxvMlRAn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,230 +123,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 10:36=E2=80=AFAM Abhishek Bapat
-<abhishekbapat@google.com> wrote:
->
-> Extend the allocinfo filtering mechanism to allow users to filter tags
-> based on the total number of bytes allocated [min_size, max_size]. The
-> size range is inclusive.
->
-> Filtering by size involves retrieving allocinfo per-CPU counters, which
-> is an expensive operation. Hence, the performance of size-based
-> filtering will be worse than other filters.
->
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
-> Acked-by: Hao Ge <hao.ge@linux.dev>
+Hi,
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+I noticed the Sashiko AI review [1] in this thread flagged that
+kfree_call_rcu_nolock() dereferences slab->slab_cache even when
+virt_to_slab() returns NULL (for large kmalloc objects that bypass
+SLUB, or vmalloc addresses).  The VM_WARN_ON_ONCE fires but does not
+stop execution, and the subsequent NULL dereference is deterministic.
 
-> ---
->  include/uapi/linux/alloc_tag.h |  8 ++++-
->  lib/alloc_tag.c                | 64 +++++++++++++++++++++++++++-------
->  2 files changed, 58 insertions(+), 14 deletions(-)
->
-> diff --git a/include/uapi/linux/alloc_tag.h b/include/uapi/linux/alloc_ta=
-g.h
-> index 13e9b5916bf5..0de5fc180790 100644
-> --- a/include/uapi/linux/alloc_tag.h
-> +++ b/include/uapi/linux/alloc_tag.h
-> @@ -50,13 +50,17 @@ enum {
->         ALLOCINFO_FILTER_FUNCTION,
->         ALLOCINFO_FILTER_FILENAME,
->         ALLOCINFO_FILTER_LINENO,
-> -       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_LINENO
-> +       ALLOCINFO_FILTER_MIN_SIZE,
-> +       ALLOCINFO_FILTER_MAX_SIZE,
-> +       __ALLOCINFO_FILTER_LAST =3D ALLOCINFO_FILTER_MAX_SIZE
->  };
->
->  #define ALLOCINFO_FILTER_MASK_MODNAME          (1 << ALLOCINFO_FILTER_MO=
-DNAME)
->  #define ALLOCINFO_FILTER_MASK_FUNCTION         (1 << ALLOCINFO_FILTER_FU=
-NCTION)
->  #define ALLOCINFO_FILTER_MASK_FILENAME         (1 << ALLOCINFO_FILTER_FI=
-LENAME)
->  #define ALLOCINFO_FILTER_MASK_LINENO           (1 << ALLOCINFO_FILTER_LI=
-NENO)
-> +#define ALLOCINFO_FILTER_MASK_MIN_SIZE         (1 << ALLOCINFO_FILTER_MI=
-N_SIZE)
-> +#define ALLOCINFO_FILTER_MASK_MAX_SIZE         (1 << ALLOCINFO_FILTER_MA=
-X_SIZE)
->
->  #define ALLOCINFO_FILTER_MASKS \
->         ((1 << (__ALLOCINFO_FILTER_LAST + 1)) - 1)
-> @@ -64,6 +68,8 @@ enum {
->  struct allocinfo_filter {
->         __u64 mask; /* bitmask of the filter fields used */
->         struct allocinfo_tag fields;
-> +       __u64 min_size;
-> +       __u64 max_size;
->  };
->
->  struct allocinfo_get_at {
-> diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
-> index f00d731b81cf..ad33d63ef7b4 100644
-> --- a/lib/alloc_tag.c
-> +++ b/lib/alloc_tag.c
-> @@ -198,16 +198,20 @@ static int allocinfo_cmp_str(const char *str, const=
- char *template)
->         return strncmp(allocinfo_str(str), template, ALLOCINFO_STR_SIZE);
->  }
->
-> +/* Fetch the per-CPU counters */
-> +static inline struct alloc_tag_counters allocinfo_prefetch_counters(stru=
-ct codetag *ct)
-> +{
-> +       return alloc_tag_read(ct_to_alloc_tag(ct));
-> +}
-> +
->  /*
->   * Populates the UAPI allocinfo_tag_data structure with active runtime
->   * profiling counters extracted from the given kernel codetag.
->   */
->  static void allocinfo_to_params(struct codetag *ct,
-> -                               struct allocinfo_tag_data *data)
-> +                               struct allocinfo_tag_data *data,
-> +                               struct alloc_tag_counters *counters)
->  {
-> -       struct alloc_tag *tag =3D ct_to_alloc_tag(ct);
-> -       struct alloc_tag_counters counter =3D alloc_tag_read(tag);
-> -
->         if (ct->modname)
->                 allocinfo_copy_str(data->tag.modname, ct->modname);
->         else
-> @@ -215,9 +219,9 @@ static void allocinfo_to_params(struct codetag *ct,
->         allocinfo_copy_str(data->tag.function, ct->function);
->         allocinfo_copy_str(data->tag.filename, ct->filename);
->         data->tag.lineno =3D ct->lineno;
-> -       data->counter.bytes =3D counter.bytes;
-> -       data->counter.calls =3D counter.calls;
-> -       data->counter.accurate =3D !alloc_tag_is_inaccurate(tag);
-> +       data->counter.bytes =3D counters->bytes;
-> +       data->counter.calls =3D counters->calls;
-> +       data->counter.accurate =3D !alloc_tag_is_inaccurate(ct_to_alloc_t=
-ag(ct));
->  }
->
->  /*
-> @@ -241,7 +245,9 @@ static int allocinfo_ioctl_get_content_id(struct seq_=
-file *m, void __user *arg)
->   * Verifies whether a given codetag satisfies the active filtering crite=
-ria by
->   * matching its characteristics against the specified filter.
->   */
-> -static bool matches_filter(struct codetag *ct, struct allocinfo_filter *=
-filter)
-> +static bool matches_filter(struct codetag *ct, struct allocinfo_filter *=
-filter,
-> +                          struct alloc_tag_counters *counters,
-> +                          bool *fetched_counters)
->  {
->         if (!filter || !filter->mask)
->                 return true;
-> @@ -268,6 +274,19 @@ static bool matches_filter(struct codetag *ct, struc=
-t allocinfo_filter *filter)
->             ct->lineno !=3D filter->fields.lineno)
->                 return false;
->
-> +       if (filter->mask & (ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCINFO_FI=
-LTER_MASK_MAX_SIZE)) {
-> +               if (!*fetched_counters) {
-> +                       *counters =3D allocinfo_prefetch_counters(ct);
-> +                       *fetched_counters =3D true;
-> +               }
-> +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> +                   counters->bytes < filter->min_size)
-> +                       return false;
-> +               if ((filter->mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> +                   counters->bytes > filter->max_size)
-> +                       return false;
-> +       }
-> +
->         return true;
->  }
->
-> @@ -281,6 +300,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         struct codetag *ct;
->         struct allocinfo_get_at params =3D {0};
->         __u64 skip_count;
-> +       struct alloc_tag_counters counters;
-> +       bool fetched_counters;
->
->         if (copy_from_user(&params, arg, sizeof(params)))
->                 return -EFAULT;
-> @@ -288,6 +309,11 @@ static int allocinfo_ioctl_get_at(struct seq_file *m=
-, void __user *arg)
->         if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
->                 return -EINVAL;
->
-> +       if ((params.filter.mask & ALLOCINFO_FILTER_MASK_MIN_SIZE) &&
-> +           (params.filter.mask & ALLOCINFO_FILTER_MASK_MAX_SIZE) &&
-> +           params.filter.min_size > params.filter.max_size)
-> +               return -EINVAL;
-> +
->         priv =3D m->private;
->
->         mutex_lock(&priv->ioctl_lock);
-> @@ -311,7 +337,8 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         ct =3D codetag_next_ct(&priv->ioctl_iter);
->
->         while (ct) {
-> -               if (matches_filter(ct, &priv->filter)) {
-> +               fetched_counters =3D false;
-> +               if (matches_filter(ct, &priv->filter, &counters, &fetched=
-_counters)) {
->                         if (skip_count =3D=3D 0)
->                                 break;
->                         skip_count--;
-> @@ -320,7 +347,9 @@ static int allocinfo_ioctl_get_at(struct seq_file *m,=
- void __user *arg)
->         }
->
->         if (ct) {
-> -               allocinfo_to_params(ct, &params.data);
-> +               if (!fetched_counters)
-> +                       counters =3D allocinfo_prefetch_counters(ct);
-> +               allocinfo_to_params(ct, &params.data, &counters);
->                 priv->positioned =3D true;
->         }
->
-> @@ -346,6 +375,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *=
-m, void __user *arg)
->         struct codetag *ct;
->         struct allocinfo_tag_data params;
->         int ret =3D 0;
-> +       struct alloc_tag_counters counters;
-> +       bool fetched_counters;
->
->         memset(&params, 0, sizeof(params));
->         priv =3D m->private;
-> @@ -359,11 +390,18 @@ static int allocinfo_ioctl_get_next(struct seq_file=
- *m, void __user *arg)
->         }
->
->         ct =3D codetag_next_ct(&priv->ioctl_iter);
-> -       while (ct && !matches_filter(ct, &priv->filter))
-> +       while (ct) {
-> +               fetched_counters =3D false;
-> +               if (matches_filter(ct, &priv->filter, &counters, &fetched=
-_counters))
-> +                       break;
->                 ct =3D codetag_next_ct(&priv->ioctl_iter);
-> -       if (ct)
-> -               allocinfo_to_params(ct, &params);
-> +       }
->
-> +       if (ct) {
-> +               if (!fetched_counters)
-> +                       counters =3D allocinfo_prefetch_counters(ct);
-> +               allocinfo_to_params(ct, &params, &counters);
-> +       }
->         if (!ct) {
->                 priv->positioned =3D false;
->                 ret =3D -ENOENT;
-> --
-> 2.55.0.rc0.786.g65d90a0328-goog
->
+I was able to reproduce this in QEMU with KASAN.  The trigger is as
+simple as passing a large (>8KB) kmalloc buffer to the new function.
+
+On Tue, Jun 16, 2026 at 12:06:14AM +0800, Harry Yoo (Oracle) wrote:
+ > This commit introduces kfree_rcu_nolock(), a variant of kfree_rcu()
+ > designed to be safely called from unknown contexts without falling
+ > back to batched processing.
+...
+ > +void kfree_call_rcu_nolock(struct rcu_head *head, void *ptr)
+ > +{
+ > +    struct slab *slab;
+ > +    struct kmem_cache *s;
+ > +
+ > +    VM_WARN_ON_ONCE(is_vmalloc_addr(ptr) || !virt_to_slab(ptr));
+ > +
+ > +    slab = virt_to_slab(ptr);
+ > +    s = slab->slab_cache;
+
+The problem: if ptr is a large kmalloc object (> KMALLOC_MAX_CACHE_SIZE,
+which is 8 KB on x86_64), the allocation bypasses SLUB and comes from
+the page allocator.  virt_to_slab() returns NULL.  VM_WARN_ON_ONCE
+prints a warning but does NOT return, and the next line dereferences
+NULL->slab_cache at offset 0x8.
+
+[Reproduction]
+
+I rebuilt the kernel with CONFIG_KASAN=y and added a small late_initcall
+that allocates a 16 KB buffer and passes it to kfree_call_rcu_nolock():
+
+   static int __init kfree_rcu_nolock_poc_trigger(void)
+   {
+       void *p = kmalloc(16384, GFP_KERNEL);
+       struct rcu_head *head = kmalloc(sizeof(*head), GFP_KERNEL);
+       kfree_call_rcu_nolock(head, p);
+       return 0;
+   }
+   late_initcall(kfree_rcu_nolock_poc_trigger);
+
+[Crash log — kernel 6.19.0-rc5, CONFIG_KASAN=y, CONFIG_DEBUG_VM=y]
+
+   kfree_rcu_nolock PoC: calling kfree_call_rcu_nolock on large obj 
+ffff888026c5c000
+
+   WARNING: mm/slab_common.c:1271 at kfree_call_rcu_nolock+0x1e/0xc0
+   VM_WARN_ON_ONCE(is_vmalloc_addr(ptr) || !virt_to_slab(ptr))
+
+   BUG: kernel NULL pointer dereference, address: 0000000000000008
+   #PF: supervisor read access in kernel mode
+   #PF: error_code(0x0000) - not-present page
+
+   RIP: 0010:kfree_call_rcu_nolock+0x5c/0xc0
+   Call Trace:
+    <TASK>
+    poc_trigger_init+0x2a/0x40
+    do_one_initcall+0x131/0x730
+    kernel_init_freeable+0x471/0x7e0
+    kernel_init+0x28/0x300
+    ret_from_fork+0x2c/0xc0
+    </TASK>
+
+   Kernel panic - not syncing: Fatal exception
+
+The crash is at offset 0x5c inside kfree_call_rcu_nolock(), which
+corresponds to `s = slab->slab_cache`.  The fault address 0x8 is
+exactly offsetof(struct slab, slab_cache).
+
+
+[1] 
+https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org
+     (Sashiko AI code review — "Null Pointer Dereference", Severity: 
+Critical)
+
+Thanks,
+XIAO
+
+
 
