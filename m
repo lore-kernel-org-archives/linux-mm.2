@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 678DACD98F2
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 15:00:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA8CCD98F2
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 15:48:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1825E6B0092; Sun, 21 Jun 2026 11:00:09 -0400 (EDT)
+	id DD1D86B0005; Sun, 21 Jun 2026 11:48:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1330F6B0093; Sun, 21 Jun 2026 11:00:09 -0400 (EDT)
+	id D824B6B008A; Sun, 21 Jun 2026 11:48:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 070036B0095; Sun, 21 Jun 2026 11:00:09 -0400 (EDT)
+	id C72646B008C; Sun, 21 Jun 2026 11:48:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D446D6B0092
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 11:00:08 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 375AB166CFB
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:00:08 +0000 (UTC)
-X-FDA: 84904230096.24.5E82D78
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 58757140003
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:00:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q74T+Zl4;
-	spf=pass (imf26.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id A1F096B0005
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 11:48:17 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08469166AE9
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:48:17 +0000 (UTC)
+X-FDA: 84904351434.18.289D927
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8DA541C0006
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:48:15 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrxISM1z;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782054006;
+	s=arc-20220608; t=1782056895;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1blrS4WOer0X3LUUXBUR34lRHsvWbpN8RbzJbSX9afE=;
-	b=7HG+rt+f+DMGyTgxxiUUZtirjBDAsRdbEhHt3RZcoyiBP46n5DQea2XnHt9kAlMEYRshCb
-	no380Xh/d3T36pOL4Pon3NFbl3aPrDpzsch1FyuDSp16GRZCMfJidBUBjURbI9uo2TOG+n
-	uoKFY3Wy9TIhDZySKY5xJzj+XPjaZQo=
+	 in-reply-to:references:dkim-signature;
+	bh=WgPuBJVNaV8iXn7vMN0W8u2z/1iTfOUDdPi402d7mmA=;
+	b=yBnTtLdXJcTJsNT2ThFRMiebM9KECoNZK5WAx0ujcd+cv3PwuC2y/W5B1Jvw6YXZrVCBeu
+	Lz2x0P005MH9EMe0CaOgyk4jwXqcHxGeVtoNyAKGcMgsBpNBe3hBxvt6iyoOlFuhdFuk89
+	8w+5hCm8+2Idkf3t3XAEKiAy4jkw6uE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782054006;
-	b=QfDEM4fVwHOZpiBIhRnDdc+zk5FHGcy9Febllvt8MNh3mhlhXHkPDpUqiV+VllSeS2Od3U
-	TsZxytr2J4RuNLn3vxL3oTaFsLGqO0QxJAd0wDo7be4ERJvD41CIpso3qn9wpn+YiXLZbZ
-	RN9hJQcfYnEcUZRYtyQukir8K6mE+zk=
+	t=1782056895;
+	b=Od8mVytJTAY5AvEtrA9hOHhxhDbaVV6ho0Xa/esRavM9OHJBjIV6PPGpa1yiJjbT2MdkAN
+	TBnju8IRUcflRSj0kjsJBmnyd4BrXxMQE5MlU/lYJY5Q6yo+vkrn9YL5JdtAIAABpAMYtV
+	8F1qvfYxyMxCE5OMGbsf6kXPwokdD/g=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=q74T+Zl4;
-	spf=pass (imf26.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.216.42 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-37c867bd3e0so1664017a91.0
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 08:00:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782054005; x=1782658805; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1blrS4WOer0X3LUUXBUR34lRHsvWbpN8RbzJbSX9afE=;
-        b=q74T+Zl4ZPD94M5i4kQb+k7D5olWwgJ/Ie1pn/aZgU588aQ6wYQSiIqRzMobxvkVMx
-         UHqu2MSzibXlyMoeMW+IKzV+UJ6KwyndAi//uLbXRuho5K4vY1iCPiHY9Qn9x1Z+ApDi
-         3pOU+58JCYMLCbXHRBXv45hp8u2h7j4fWIHJT6AXHjE8pee7LD1Osk5sHPN/dQ1q6/1P
-         unjOGbqPFryLyqtkdEP2GThfFAgvWG+Dsaa1r8iaGIHNyPsXGMfIa+dCmEJEtzoobUFw
-         Fv23SiGHjpWQCP0NN1M21CS/Fy4HV1JJ6wkUduWiHO689NJT22XV1SK82TWkVMxl20XZ
-         kYng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782054005; x=1782658805;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1blrS4WOer0X3LUUXBUR34lRHsvWbpN8RbzJbSX9afE=;
-        b=OcYaSa+/onHGCKf3lktwhv97JKd7Kgj7Cgz4TIGIUnU9NOzISr457N1N6akrve1pZ9
-         Id5WOCPLnxhijM33QRLI2W8sqY4C3XNZNDS64Mlqwggm2OARupBdgiO0lil0ozeNcMrS
-         HqCBpBOWiitMj+iy1fEkiZlJdG8In6bD3UFmvlrA+9DC3dDwRcc9M0FqYSTToir+rTcD
-         wM+kXMY/gDwOA+qF45XnidG12nKIcRhsZJGqS0dITyrLcqJYU+WjfbtDkS+kLEi+aX6U
-         y1jdmT2IQXJzrLLe5LVyv5DOHbAvOmLzfhcktlk/ZoFamp6rkderBB8Jr+MNlA2wmydM
-         7sKA==
-X-Forwarded-Encrypted: i=1; AHgh+RpAOhBJaZjWzMTFLl3VixHyCdr55/bsSm59BOLaGRHCNnRk6Xr6kpaV3CXP0mwGEUtC5JMzPw8qZw==@kvack.org
-X-Gm-Message-State: AOJu0Yy57mwa6QWywMh2qYxfXPPXizPCkhlGwiQq8eTSVAf2hwKs89IB
-	Oa4qIRJpP72RjZf/+kuctnHiuPdesEzHTWMN5cRTZr8CtuxSOz5pt2JQ
-X-Gm-Gg: AfdE7cmwJ/QZIdn2rMPi9KKHc4Zi9cS8fPkm6VgOvtpsjUGBhoVDNS+77Ns8QYpu+99
-	KSn5ffN91TFQ+p5WZnepFpvmFKiQRInvqhQTRp6ONXfz/N4TQMg7jy0ZvibME3sPZugD+Vp6+st
-	w3z81SeEFc/VPGfsPJv8Hgdlj+DJgeMlkWjBH52JcNSJ00Q6yCefqKU7oG/dB2D5MjyVR0oBe0X
-	rnbvYd75KbQN/P9AenyLpczpP2UGOgt2cfMdRRQagG7vSa0/ncKqbkGxXIHPPcSwokgTUPpMoHs
-	0zaDjl4qpJ+jpdwhISEVyzPgr4qEvbQbkJv40oVUfGGXfI0UNIF9aydg18snmEvwhoQxx/vFt1I
-	ZVXAKEvvpw8ApLfv0pheWvdHyflbct6tK1f7CEkIUOoPoORtNjMzoZlw428Pb+h1YKZBbv33YZT
-	7w6lW81WA=
-X-Received: by 2002:a17:90b:4a51:b0:377:424b:59e3 with SMTP id 98e67ed59e1d1-37d15ed439cmr12328153a91.24.1782054005191;
-        Sun, 21 Jun 2026 08:00:05 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d4f225870sm4544896a91.8.2026.06.21.08.00.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 08:00:04 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrxISM1z;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 733D543963;
+	Sun, 21 Jun 2026 15:48:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3451F000E9;
+	Sun, 21 Jun 2026 15:48:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782056894;
+	bh=WgPuBJVNaV8iXn7vMN0W8u2z/1iTfOUDdPi402d7mmA=;
+	h=From:To:Cc:Subject:Date;
+	b=FrxISM1zgRMO/d2IZ5VFsU3Ox0FmX7tXAqncJWmvpdLmADHpGk5f73S+Sa8rwE1ke
+	 c92AVcPIS2diEorB5JftN6EPClV3Bh1YXbPa/XL3Hsxv4BqbUzSXoaA+9zg5RUA4m5
+	 f17g6DRjmnQgyJ4PlEZcQ0iDiALUK3mUtII/AoZX3hW0EFPcBqKKrct8tB/XNMikPq
+	 lS3ppE5VKbLTjgQjnAwaAIPmVwsEi9LAUZN7WM6zL47PTneVqziTs7iimFVCPzUMC5
+	 RtOxN1QmyRV23E7EMZfjeb5DwoUOnqrLuHr+GdUr3xh5VmjLbzVJCAApx+mfCxnrNo
+	 djxouOXt73YQQ==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 16 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 6/6] mm/hugetlb: remove unnecessary empty range check in hugetlb_bootmem_set_nodes()
-Date: Sun, 21 Jun 2026 23:59:16 +0900
-Message-ID: <20260621145919.1453-7-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260621145919.1453-1-ekffu200098@gmail.com>
-References: <20260621145919.1453-1-ekffu200098@gmail.com>
+Subject: [PATCH] mm/damon/core: handle zero intervals in damon_max_nr_accesses()
+Date: Sun, 21 Jun 2026 08:48:06 -0700
+Message-ID: <20260621154808.86431-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fsft1tdcoqbfrjqroku9hfr85fxk3nte
-X-Rspamd-Queue-Id: 58757140003
+X-Stat-Signature: 3ryhhn9i1wjxiuw8kpyq9kdbhdyk151r
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1782054006-422656
-X-HE-Meta: U2FsdGVkX18zDvB1f+UGSdz/1TIvoje+siFiT/woH+4D6DkZ+oCeLffk2zdThCEO/g39SPi67Q0jLYxouHZsfdWaZ+OO84X+OOHKITDaj9CZaaDo7p1LEHuNv4uEy0vjDEPJpAJw+Q5qMnO9CDzGinx4rt1sUgMzSMPH/xPWZWrGIv7bd/MQ61F/fO0QEi4/4+a1MsgEA3tokxeofWsPt1jlCm84UNZcooAf+/mKfatEfOjrJLUwyjJFfQFtpsIDzp6dsRjuiaKPmviXLQ7MJUfxKFj5Tyw3Us8SRpDHuJfmHw2LI8KqLzm/e3+IwH3PNqOpK4hqIliV+srqyEr3JTX2rT6Zv8z9kXrOQmF5j1lMm71b4DhBxOlv8PzQToOkf66mmcwsSQ3mhOlITn4sy8nyo9ZK00orQ0nNR0+JhzjCbeLkfodM/nYIdoMEBIE7ald40dNL4XWd/G0ruv44Fprl7DSzoMVlDjyu8yC9Ts55yG4RnQ53jr+hsnMdtw3HQa/dj6a5gt+qN7ZCnIpovmjdiVLbBtTU5b2YCy1KZzGFU1/OXgZtOo+RZEqib5B0eM0KAKeM/KP/0vXyD7ssvTNtCtcxqsm/zub5ipd2vESru4+M3dze51cYO4Bdatp6pvZy/yq6euUcs6e2/kKFXKqkS5vkDn8rtr3uvIZqojBRIuQps2Ds9QTuZfDG5IhVruY+onSpcGlCU9vfh06rQSvfEGYWQvUauMGG6EIUfRB5cDWW+XyosSB20P/2F2lxsqxs8Qn4V/hlny1RCJ9s8CwHDPZX2iAPyMaK8A4efnBbl24Z9y5+nGKm0+JLzd+8bp2MdF210XQhOHlzC87m/prKhmrD7TYDzTpyGBA4MWTwJxSw9ctSWJ0TCgmLTpkxYx5dQa5ei+AOlFRsea1gYfl59VEjeX4ENDgb/pwempP42CYoPnJp4HP17Bt5L/zj8uPsI/u732SsHVXJVmk
- tvgcFaWY
- V2BNXQo4OISw8CHFzrW236XItxL//XVZt9HtKgn+Heo4sZHppqvJdTfpkf7NlBWzrQ9SAGEHuwAF2Iz2a20ZGrTuFWYyuSEeUMuIAeAZPnMQWUzgjEYWyxBgGJl91C7Qr/qCXsRy/6Xihqycsv1iS+pdANr1Lo2HtMmKF7UOQ7qumZDBGIkaZmQ810PYpR8kmE6Qt6RquOo8hCjceoh53fJcNp4IaOC1NEjl9axTqMToMceV4OvtJgmF34fz5QB55o4a7HZhoIfKa8VBG39sx2GO7QnXKfO7nDPS8lRgjXZ02XS0fm1j8LiJjpXGhwZvVNFxUXCXLn1vRswAiyU8k0Hjd3XXa5FYpPes5Y18yoSydNHV5Q9qYC7HjaKVNIYDwSuU3Znp0r8RhnQ1nYIW3mMO12gv78ycBHfQ4Q/fva14dR5/X0r8IGFC1uvTXucfCy5L/ZTVpO0P8zYA=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8DA541C0006
+X-HE-Tag: 1782056895-777066
+X-HE-Meta: U2FsdGVkX1+oV9DJq+yRNKD7KgNsvw+e0U/FYFWnpU5CMY9TUHPIEBcDpeTMmnJycY1MT0MNudkilzdeiZv5ZRXpde8Nc0v6if23oBsKv9TjaATcgHLjdHws8cN36fGIAciugWcga2wiR8fupYXySRNxr0MQ4nwqnIF/gwbK5TH4np+ETrjILhrpuXfc81VqYKesvdTPO6OSTeyYpVR0JYT4fnQad3eLmt1rHzHS3YHoFxAcXXLoe9gn5mPyMXsqzJrik4Pzq7BJ3oc6O/Xe1hubwl1jmKpsGJSbS+We7qvdnTaBuZKge5AydqresBjbBOi49ZvcodGHF3kMAac7//Fm7+z3pBnZTVYORfHH5D8JjVNEld10JR+Wr9CuXVurQxk4nG8rMycSyr3ZiMVMYXepkUZQZ60VpoAbjz6hj4C+Zk6+s4cw1uxy88MFlDkldWZU6jAxw9+Q7jFgydWJ5yYWMv1FiuwYHLSN+mXyG4JzIgI/1R8oCtG6iLKdz/fwzoEMiEr6AxKxfDWTK+lxVkxuDhZzDYFt8n1TgJI21vabeQp80+X+zbxJccbQ4ZkZEYJSz2iF1QBEYlJjvAytPKhNO8lFLOQegXZ+6SvnqkAM1rcF0DZL9HGDK8Kt9/7VEmG3t8g+tWOXqeVw5XrYxAuxjnAntj1Rr82UODDxwdiLjg0saksQg0RZK/EEOmpg/ezkmpu38cn2513FaSsmJBbDmkvgK5dGYhTYlZZ3/0vlHlmuKRvAVtVPkOHgMOIMBL4x3i5tz2fAzZZKjM520P8DNvsRSLs5kyjz699l1p5RpO4Zixaoc65amqzqWhxiqL3UNVsVzyGLag4e8tcufDVpxEBwIhJQ5ow3enGpA5mDcBhasgWqOFXMvVc4+2n6AK5KYivvP+n8+LDV4l9uoAYiIqLRS2WjH0fbrluDdye9/7wjrwrro02Xe0RDfu3C7QWB/T2nSFcsbbOF9b5
+ 6cI1BxaC
+ 4/KmW/DaeRWY3wmztvAfhEtvwXFwfHhTnihEMgkeotXoajlknfzfLhl7xwSFl3xNlqaOt2Szngnx6g67HqK71zNpfFPOgIGP/vMkwvHnsOqjf1s+RMINRcZWVq+hDjeKSZiDjgf4oM+bRWbDv6sTaFzOMZTTesQKCOR7xCci6Yc7XpC4ysscv6KEhFNKAreG845cog5twTjquPJ3+eNNLnIa6quXVJL7WuFIQry+lJfqiO9UWEO0yo7owC8kxDiylGtzCGCub2NPPmASvG2bCLAgnfg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,35 +91,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_bootmem_set_nodes() iterates the memory ranges with
-for_each_mem_pfn_range() and calls node_set(nid, hugetlb_bootmem_nodes)
-only when end_pfn > start_pfn. for_each_mem_pfn_range() never returns an
-empty range, so start_pfn < end_pfn always.
+damon_max_nr_accesses() causes a divide-by-zero if the sampling interval
+is set to zero by the user.  If the aggregation interval is set to zero,
+the function returns zero.  It is wrong, since the real maximum
+nr_acceses in the setup should be one.  Worse yet, it can cause another
+divide-by-zero from its caller, damon_hot_score(), since it uses
+damon_max_nr_accesses() return value as a denominator.
 
-Therefore the check is unnecessary, so remove it.
+Fix the problem by setting the denominator in the function as 1 when the
+sampling interval is zero.  Also ensure the return value is always 1 or
+greater.
 
-No functional change.
+The issue was discovered [1] by Sashiko.
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+[1] https://lore.kernel.org/20260619202459.145010-1-sj@kernel.org
+
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+Cc: <stable@vger.kernel.org> # 5.16.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/hugetlb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Changes from RFC v1.1
+- rfc v1.1: https://lore.kernel.org/20260620171413.89555-1-sj@kernel.org
+- Wordsmith commit message.
+- Drop RFC tag.
+Changes from RFC v1
+- rfc v1: https://lore.kernel.org/20260619205144.150664-1-sj@kernel.org
+- Handle zero aggr_interval case.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..d4d4c9df5f51 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4450,8 +4450,7 @@ void __init hugetlb_bootmem_set_nodes(void)
- 		return;
+ include/linux/damon.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 64d75c78f4df4..02ac34537df9a 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -1066,9 +1066,13 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
  
- 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
--		if (end_pfn > start_pfn)
--			node_set(nid, hugetlb_bootmem_nodes);
-+		node_set(nid, hugetlb_bootmem_nodes);
- 	}
+ static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
+ {
+-	/* {aggr,sample}_interval are unsigned long, hence could overflow */
+-	return min(attrs->aggr_interval / attrs->sample_interval,
++	unsigned long sample_interval;
++	unsigned long max_nr_accesses;
++
++	sample_interval = attrs->sample_interval ? : 1;
++	max_nr_accesses = min(attrs->aggr_interval / sample_interval,
+ 			(unsigned long)UINT_MAX);
++	return max_nr_accesses ? : 1;
  }
  
--- 
-2.43.0
+ 
 
+base-commit: 7a58ae62cdf3c006a53b805bbb12079ab2621a07
+-- 
+2.47.3
 
