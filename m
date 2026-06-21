@@ -4,135 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AF0CCDB466
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 02:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC71DCD4F26
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 02:14:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91DD26B0005; Sat, 20 Jun 2026 22:12:13 -0400 (EDT)
+	id 662F26B008C; Sat, 20 Jun 2026 22:14:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE756B008A; Sat, 20 Jun 2026 22:12:13 -0400 (EDT)
+	id 614876B0092; Sat, 20 Jun 2026 22:14:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 797786B008C; Sat, 20 Jun 2026 22:12:13 -0400 (EDT)
+	id 502786B0093; Sat, 20 Jun 2026 22:14:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B06F86B0005
-	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 22:12:05 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 20746166609
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:12:05 +0000 (UTC)
-X-FDA: 84902294610.13.2B22061
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 18D621A000B
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:12:02 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZewyBiAV;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1FD136B008C
+	for <linux-mm@kvack.org>; Sat, 20 Jun 2026 22:14:05 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 602B7402B1
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:14:04 +0000 (UTC)
+X-FDA: 84902299608.25.27916F6
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013028.outbound.protection.outlook.com [40.107.201.28])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6396240014
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 02:14:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mv7wmr2h;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782007923;
+	s=arc-20220608; t=1782008041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/7avvu3JxmkKSpM0Bw3iOtaoASVcC0L8AdB5HzPvqM=;
-	b=Ru5LH+fi1ISaFkkXwRoZuSyECGTrZyvPHyaaB8FzS+I5EV+odLC3o+683zgBO9P4C2i7SG
-	De0aXJVlCDZb8MFXSWfdns6rrrdHFJBb2I7PINOVDVVhSbyRO4jXb68naDvzkXHJsdfkhg
-	FD7xfBm9DCRbD9wjIiZudRrG2BsVUfE=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782007923;
-	b=w29gDgctSuDjRdcKVJ4HpVNeXlXUUMYjwgFoVk9qqS2JVEETJGlcgiiDbGHZDcJMYkO23S
-	QwDeegFiojqrX5njfkYkx2ZZ8FnkMijNlmActXvj9KhPAUj0Ohp5i9D8v5B3fJieCozEEd
-	nIsY1zQ7owLChVfo9gao/b7wDLsrfDc=
+	bh=UXp834G15RUJUTPPr334OGa0NXVXd1ekKEA9mt8CWrw=;
+	b=jSlmYgslgS4XtuEn7DRRyvzw5cbB0sL6Y3rJUJ4erdrZXXONYxz0gaLucTV9VIK2xEAB0b
+	OQlzA7tGO1Xsa6CR1Qb9CkNBGuNe2FntOYl+7wfjLq3Yai9PsUeNQfg/Z2kNQBeq+VVPRn
+	TqT4tnAgljZcKJq05tWccXeI/9Z/Z3U=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=ZewyBiAV;
-	spf=pass (imf19.hostedemail.com: domain of surenb@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51765531803so469091cf.0
-        for <linux-mm@kvack.org>; Sat, 20 Jun 2026 19:12:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782007922; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bO1geCNdrXAaO0+eDb9v1Nu0rTzhKm2uToWgc8aZknVLhv829FoF0cPRM6Ydj88qFC
-         we879YGa+78Wci/6x2G5bnZj6z2VFH9H+J7DQ5Tusw7LZMHJCSk4+0fKfQk+8O2CPbCM
-         IDzCob1fBSMpF/0B3yfz2JwVQ6uuvCirEN1J3GhASdgbs9w+jpuYg/IVXg+F/xHjoSy9
-         m0lwnCgWKjuDBeYVezdcpiOCGu3LUPtv7Y2oOFBYWGl4hI5aG1VVsvuOg63PBMOVY0ZI
-         +5/b4UYHqV7FP1I/iMy42uZu4PjvtDZ9B8ITCXCeu6NUgGBJfsKmc1/aDH1Mwex/0f/r
-         89vw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=t/7avvu3JxmkKSpM0Bw3iOtaoASVcC0L8AdB5HzPvqM=;
-        fh=8tuaSRRzN3XR2wu3TqUdauvXUfS9oAIOKeDnZc9xzmE=;
-        b=ml7i39bhjErAk8tbJA0XloiW/zGTvj2+bGk1fazgMB7/VPq9KZSwxpkgTy/7vyEn1w
-         +vaBdNvgqnndpruPG1dBY8Rpp0gp7AZ1oR5VOpP8cvMEp6+ApRs/iszP2U2r6PHvv7ZK
-         6pJawMbhcs0qssaVjuV+4n6VKh5G2q4z4RuhCYYuFDdXY05fBxjuNR66ZWLXdlmryUTc
-         CcWJA1cuTQ5WK3xgX5aJZC5TK04X9dKUvaK1kbxQRyl4XAHqBnMfnbCgpzLsQlKfvP6F
-         wJW2Sw4Icb0suGqoPsR8gW9idfhHXfpm3IrYyQBqboebvNvrNinBuaWO3XXnLd5vklgt
-         J5PQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782007922; x=1782612722; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=t/7avvu3JxmkKSpM0Bw3iOtaoASVcC0L8AdB5HzPvqM=;
-        b=ZewyBiAVfBVxturTASXNLWTDxEsu//0i2h+1EP5UUH4juTAwf2+Cww7tCyvBI4xf51
-         rrJWvrgK+SsuVKJxuAmI71bwqcx5NO0FsAoTuk73TKxtchc5obOEULK34gvCbUYofz9z
-         PYIeHb7Cxw65LUlEFw1j8SaLUqxKQyZvV+J5yGAbjFFZMZyt6pJNRLWRo0goP7lMQKZr
-         skY90/tCq0Brexb05EfaRaPILF1CGx+u4Gbckg7e/8zMbklI6p3/kpSiQ8dlW/ClwI7D
-         9RGgJcDfgfroksgsRSBHlI5Q/wdNSMJ4xg1S3Ri+/lEBFqv2WWjBs0XAjSzX8KhzVyCx
-         b+IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782007922; x=1782612722;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=t/7avvu3JxmkKSpM0Bw3iOtaoASVcC0L8AdB5HzPvqM=;
-        b=Daa9l148p43+LVOFh/aXY6o1M3MolNusDfWsM8O9ftC6M0zNZQ1CZzD0nsKnteQIYV
-         He7ZZGxhkL+TicA5uxWLkmpYZHxpxn0Hsz49feDW2lhmtjsnRU3ugwijG5j/kPUp7v9Z
-         AdaoUzcW/zU4BHPE0m1QYOvWetULvIZO3aX3zmnzrsZAvBiK/qg5BsnbVn7kl7hkgtwm
-         gGKT6K0CdWKomf1ykFrZWPs3HT3Bm6ig7abiVOJad576loRtknoNKX2h7OcGqLqgfDe5
-         4nJP+RxleLZ/NDD85gLazUYKKlS4aDqNMCl25PzMoKidl7iitXDRqqKtZwmMJ1NtnxM+
-         Rr+w==
-X-Forwarded-Encrypted: i=1; AFNElJ+KTXZ9u0AE7OZz9Gj06Edei4LEjxiBQekvnUL9J8NhWaovJsvDKlPlVvv0hv3fQ17QihpnPV0Z0g==@kvack.org
-X-Gm-Message-State: AOJu0YxQQFv6/Tj4HbRl8xerCJhE+wzyToQsZYbP1+bhYrqe+q0H1tjX
-	KULOrmAuuEGhp30T+Cml7dfvSiIdaKrVUvCkkcTN6Ic3EB14BE8S17fuDgQ1j7hDszICUplntyC
-	ZVpig5juQgH7zQU9Pb1qeJf3c+7Iras85bV7qDVnDl1x80KH0QA2MqmFjJ+c=
-X-Gm-Gg: AfdE7ck+16Ije2QwV9NFqYGfw8qmxX5eNAcFvd8ViM9glv0fotjBnU3tv6g7n/liUYO
-	x5MUooyh9JLaA0MA9IvH9pzjg74Vm6B6XMUVjmrd2uoFWw/+vryPJFTv25N4i50XByfbz1j8pqV
-	iGdoVPc+HCPjz3wETIBztIPVx1iyCwJoNT841AqHmvZAINqNnqDF4jtcccIYi/+1LZ37Txm5tUS
-	kcNGcxGBVrO5b1gN7PpL6FEeXpQlEpBynHCk1VPH0BDj0epLDl3HVDqXENLwiqNLQhD1eE=
-X-Received: by 2002:ac8:5810:0:b0:50e:41f3:6467 with SMTP id
- d75a77b69052e-519e48d14d6mr16859591cf.12.1782001904596; Sat, 20 Jun 2026
- 17:31:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <cover.1781803482.git.abhishekbapat@google.com> <5a485adaa95f8bdce7d29ddab30238b34e949f28.1781803482.git.abhishekbapat@google.com>
-In-Reply-To: <5a485adaa95f8bdce7d29ddab30238b34e949f28.1781803482.git.abhishekbapat@google.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sat, 20 Jun 2026 17:31:33 -0700
-X-Gm-Features: AVVi8CeJ2bjOzYmP-W27RQlWiULWjVex-vrgUwPzqXYZ3HL8Z1E95q9kptgOpXE
-Message-ID: <CAJuCfpEg6jqMbTP4ZEec_gCtaLAA6hHW0hmSsXf6hujB6sVODQ@mail.gmail.com>
-Subject: Re: [PATCH v6 6/6] kselftest: alloc_tag: extend the allocinfo ioctl kselftest
-To: Abhishek Bapat <abhishekbapat@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Hao Ge <hao.ge@linux.dev>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Sourav Panda <souravpanda@google.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mv7wmr2h;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.201.28 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782008041;
+	b=f+s78xsa1Avmy82OzIGCL0v8nSPRp2tV011zRykSG3N0ja9VZNwvGbxM3ZUlwlZGD5kJpJ
+	uGm8SSDbUvRPQsNkkUpVKbat6L6jBi16hJ5PxW2Zg5wZNfkhsZCDew5H7nKlDSfEdOR3Kn
+	mKY6Xo0dTRBEizCeZ4iHObOUxYfFeRQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aX0W4GZ7kVreqD2YQvUrf1DAMnXuzWy/uLOr0fyDYtwk8INFIM7eQPGlcluY9u7PQgIf15icd6jen6x069L5R5p1b1jYuXxm6VaOo9fbvYrPqwxjRgssDTmLXW6v6wtvaCG0UwVGIzFekaJrwGwnjMO4stS+sCnAgrH49zUYrHgxG31goSdQOsUhEvvLmtJ9R3EedzdYkhxey5AeGqhr2oMyFYgD048l08SzjuUhZB4wF/v6n42YhKQIIZiRyKD7JWYr0aBCyFduUt4bqILrP6sv+ZA3w61TOsxqmrQ5r6ixnP5a/UnuUdxhbcLskVIkcnm3K/8HF05V8/a4bjEH1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UXp834G15RUJUTPPr334OGa0NXVXd1ekKEA9mt8CWrw=;
+ b=j1PtGwsruiLnmhUlvjUgqXnN/GDuiRSQG5GMnr0vTLQn3H2BDWoMe0CoU44tZe/OWqHwbDQc8bmQhDcM6j2Wyz6FaT3P/Jg2Y2RZMq3l3F7VPMZ8fWSljNgd+ydBCGVUbxEiACa0Hksu67F65cLUKpSwugD88u+kiHNJNg1cvUo0GyvFMuR0XFqIKS+Qcpxu9ZZU3l+BEqvOcfKICaSJUwZdqKpV/GY+Jtj57EP3LLy3tI9KKHPOns0asgTpbie57yrgcPcATDUQINcvjW2ZRrXxvXupssmO5ikGfv7vvMvSEelSNI7ly7ewlNlM+aOnSNHo8rylGcfX8+r8iQTziQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UXp834G15RUJUTPPr334OGa0NXVXd1ekKEA9mt8CWrw=;
+ b=mv7wmr2h59PtTsKiRHf19eAkyK3bD7VWTPq1M0FHKn0CM7IrYo2RtVNW09jT6LsIbSqzY0zrSZOLLdUgib3OqkC873OWc5pt4gmUlmH4IVefnx0l0IKbnzFxuC89M61SlsdKc4FQm1HORdTdN3gmOXbRXyriASJ9UL2Y0loRGsZuvx9mHlEKhmVKZyRXwkqdSx35qALCDrivo0s9h3Z05h1Vp9uYKxy2A3sAIuynyzMZ6pSIk8UG8LqT5UEtowTidq+WgtFDFdtSGWEIaETzNnxrYQcyvc+6HGqYoeR7ab/trfV95jPuQKgkbcxXiyJ2uscMsqReA+3Q2rcyxbMK0g==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by DM4PR12MB6397.namprd12.prod.outlook.com (2603:10b6:8:b4::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Sun, 21 Jun
+ 2026 01:40:41 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0139.018; Sun, 21 Jun 2026
+ 01:40:35 +0000
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kpic7phjkf3rwnrkmih437pd6onue3ky
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 20 Jun 2026 21:40:32 -0400
+Message-Id: <DJECF2107V6T.23HGJJJ8ECKJ9@nvidia.com>
+Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
+Cc: <ivgorbunov@me.com>, <Liam.Howlett@oracle.com>, <apopple@nvidia.com>,
+ <artem.kuzin@huawei.com>, <baolin.wang@linux.alibaba.com>,
+ <david@kernel.org>, <foxido@foxido.dev>, <harry.yoo@oracle.com>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <lorenzo.stoakes@oracle.com>, <mhocko@suse.com>, <muchun.song@linux.dev>,
+ <rppt@kernel.org>, <surenb@google.com>, <torvalds@linuxfoundation.org>,
+ <vbabka@suse.cz>, <willy@infradead.org>, <yuzhao@google.com>,
+ <pfalcato@suse.de>, <kirill@shutemov.name>
+To: <ilya.gladyshev@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.21.0
+References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+ <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+ <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
+In-Reply-To: <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
+X-ClientProxiedBy: CH0PR03CA0331.namprd03.prod.outlook.com
+ (2603:10b6:610:11a::22) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DM4PR12MB6397:EE_
+X-MS-Office365-Filtering-Correlation-Id: b1f7cda4-13e5-49ed-f885-08decf3616a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|23010399003|4143699003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	5S0zlgXh000dULjSr0VOcEg0HzeQxgG4rql4PrmgRTbylsEQd3fhsYzVLA8vpNItxDVGsoHV6dvDB51e91aqBJ8Gq7WQ/QlUxuQANPzR+G8W6RVLKbnggaBPfKc6PJug3PWrMFn39N8V+HDgfog8+6xVRsMiZC39SbGckTwWCuLwYzSMolJos/Ek0DGSwlTdobVEJE2ixJ3868Im6Y9SJ4dwIVnLPTkKG/qzCu+Q1AP6yfpiORtauHBkJ62chXZqotm0G8TXOnmW+2n8R4q5w0NFjoP0KzBvEjiBedCKgZilwDFlTLhnC8VWiEcUJh/hsKpYjkIyJ4dcMz07i1TsXzfJbJyjrRiMAGldMoR8PmD4brLro9ydZwZUVvuJLYG31PiaUsdROS3i17jf20HQkQqKW8+2He6Lx7OeNSKDjYVokqOMRsR9+6s48TlUf6haRg0A+xXW8Rm8QGWFcfmcjxlxzeEfQYg0j1vvkTZkJy9E7nC5dQ5IOBFx5bj11Kp3DtPESKzs0EexNoJ8mchCiOVpwVLIoj5CqVLtuYMGhhYJDVtuH271R98jCZbwpaYXT6RS1uifuAMfU9ch7rPz8IKNsQWqOZJq0GUHWh5R4IUdIeCvmqTqR3eGSCcrytPsZlz9o79iZbsiRhhsSqI5cH0TqM78w8SVHDaQnOyZ8WU=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(23010399003)(4143699003)(56012099006)(11063799006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cURlR2hGL2RkZ1BzQWkwZHBOUG04cEsrREhiZ2RxZ04rVmdla2NTRld5Zjdt?=
+ =?utf-8?B?YkQ1Y1ZnMmRJemk0MkJwQXh0VVRiY29UTm9pR2ljVktzOGU3Q2F6N2YxRjE3?=
+ =?utf-8?B?Rld6VFd5L2h0dzN3cmYrTkY4OEZQL2UwS3FHOWFVK0YxczA0T05mbDRuQzh0?=
+ =?utf-8?B?NnhHb0lwa21kd3dWZUU4NUJSK3RrSEVFMktkWHQyRnE0amVONXcwVXBPOWY1?=
+ =?utf-8?B?WE80RllIT2w4TCtQSEFNanhYeDNkVjRrazcvd2xXUUVpNzBqOHJoSUZuSGFa?=
+ =?utf-8?B?aitCYnR6WEt4UlkveW9GcnZoNE96OUpEbDRkdDdCUzh3RzUzZ2ViazZpSWxY?=
+ =?utf-8?B?M2RVcTlVbzJPTHFOY3oybnkxaVBCWTNENVhsMGZXZ1lUZ1hMb042UEd5OEFr?=
+ =?utf-8?B?clBWNzNDVm1WSm1wS05UcWtVc3VKSjZrTjdYTjNYSHhVWmRmakdpK29jSFBu?=
+ =?utf-8?B?clNrNVlwUGloWUVLVU5GSlBJSmpXYzJlZ0NmQVR5T09iRWZDRExERFVvVFhB?=
+ =?utf-8?B?RkJ6U1pIaEh4c1cxY0E3QzdNY0V5VHFKYjBRM1ltTko2dUh3NXoveW0ybS91?=
+ =?utf-8?B?SWgrTmpCYzB0Z3NLU0tSWmY2R0xqemE0bVAyU1VldzdHUGRmYXpOcDQ3Qnda?=
+ =?utf-8?B?SUl4YUoyenpWb3MzaU1lNjR1eG45ejR2NEtmTDh1WWlQVGNiTW9ZSUFpTVFW?=
+ =?utf-8?B?NWNRYjdSQUZNa0sycjdHZGlQMjVYT25NQTFsZ0lJMk53TkJUcGlzUEEybU9L?=
+ =?utf-8?B?RkZBZkFGM1BSYUlsTitiK1UycmJBNXBKcmV3NVlTRTRwR2VQMzJHcDdZSnpP?=
+ =?utf-8?B?dkV1S252blBmTE5ib1dwUklBUk8yUk9ZNU41aTIzaGhDK1M3VGFjQU5SL0Nn?=
+ =?utf-8?B?NGs4aWE1S0RsaG12emFjYVNCZG0wVjZXa1ovZ28wbUk1cFp6dk1aVzdIU2J1?=
+ =?utf-8?B?L3ludHFVRmNxRnFzcU9LMllkK2dxWUQ1WUE1RFNXNTJnMGYzemF6Q2JVaktz?=
+ =?utf-8?B?Yjg5S3FFbjBqOUJuTG9mSjRFZ0ZXZHc4YnlNODFMc2E4S2JnSzNEUUR5aWxO?=
+ =?utf-8?B?ZzVPbVN5bDhrbGtEKzc5enhvaTJZSG54Vng5aXNzdXM5MkExQ3dHRUo1aXRO?=
+ =?utf-8?B?MFFjUDEybVA4azYzOXNXdGJUejNhU3BhNW1OWGVKK0xoREhYQ3NsWU1ieFZu?=
+ =?utf-8?B?SEV4SmN5ZVkxbWUvTzZwb3V4ZzdHbTRwRWhndmpsVWdLaWsyRExkbVhWWVIx?=
+ =?utf-8?B?akxTb25lVVdBMmVNZS9rMC9yelVyZ0NOR2ErZ0hrSzRCL1FuVzRubFJFOEVM?=
+ =?utf-8?B?dGpQSEppRk5XblI2dEZScDhLcjVRTmhFYUt2dS85TzdIZTVLLy9XaEt4RFR3?=
+ =?utf-8?B?NXFiVmVkWkZRWEt1ODB5UWVnYWh1SEdvSW03Q0NVNkNDMURoU2tQWm1sN0w2?=
+ =?utf-8?B?dThtdkh6VkxRajZLRHFqKzFzWWwvdGd4TXdPM1RiQXloL1RISG9TazBSL0p3?=
+ =?utf-8?B?YURYMFg5V3hXd016dUIvaERJMUErV2J0eGlzeEZDUGhIS1Z2bkU4UjhRS0V0?=
+ =?utf-8?B?czNxMGl1enY5eU1zaGNlaDlkVFFnMFdBQUV1UEgyYldORWVXZTROeHlDN2Z0?=
+ =?utf-8?B?OFBya3JsUjYzdDNycldsL0Y4dEVVRm5iOFBqKzNTQWlKMTZ0d2hOdkpDbEh2?=
+ =?utf-8?B?UURnMmZuUThMOVA1LzdSYUlHSysvK0ZlRk16aUNXbldpNWRjbnFPTVFKVmN6?=
+ =?utf-8?B?ZjFkSlgyMng2aS84YXpmMFV0K0FTeVVHZjR1NmtCbSs2cWt6a2hhdEJDTHFh?=
+ =?utf-8?B?SjdEZk9KYUtGZmtDWm94TUFxR3RnM0U0RUxIOUVHOW1hQ3JPaEw2UTd6aEIz?=
+ =?utf-8?B?WGQwelZSWFBic2hnS0NYaVFZNTNvQVpVbjZMZEtlM0ZoeXpWVnNMSG81RkNS?=
+ =?utf-8?B?Y214ZUd6eUx2dDI1ZUFyNDhTeDQwM2xrOEtBaTFvRFJac3VnbTVjY0FhU3ZK?=
+ =?utf-8?B?ZGp4czliMi8waC8zRDdiTTdZdVJteERqcU9SVXdhbWEwck1EbmNPQVg4cGt5?=
+ =?utf-8?B?Mzd0M0JOWm5sSWJlRGRQMmUzSURqdCtiTzhKblBLbEpvUUo0L0tjWTBXd3lv?=
+ =?utf-8?B?MzVoRVh5YzFtb1dtTUUwVHRPaHRtTWpSL1lZWXNKT0d5L0RPbjdST1pmQUI2?=
+ =?utf-8?B?NjhnTW00TnM0Y3pqTFR0bFdRZTJBR0Y4aW1ZRWgyOE1LSHRpNTd0OC8zYk1i?=
+ =?utf-8?B?dGtTRXA3U0pWRXdFM3E0dTM2Q001OG9oZEFBT0dQcERwcWcvSkZNc2IyenA0?=
+ =?utf-8?Q?DsIOwXI0XLgJbPZUlL?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b1f7cda4-13e5-49ed-f885-08decf3616a1
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2026 01:40:34.9437
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: d3wo5AL22W3QHhvMIhm6ErL+3fOx9PeMiW9qsDGX/qeqkUZq3Q2vtId+JgC7PJeK
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6397
+X-Rspamd-Queue-Id: 6396240014
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 18D621A000B
-X-HE-Tag: 1782007922-613174
-X-HE-Meta: U2FsdGVkX1+UWCy0I2TzUN1acdFNQ3gF5wja4PFwxN/Z6mm2NkY8XRSI4wNxBUNxrjVUzgfCcG2ieof2JW45XBOScZr4m1OSKtL9RPtlPpAYouzl0uAqsROflHyFIuVapmProJzPy+l1PP02AJ4S0+IZwMdx566AGHHO1QkS0tkLu2azPcPesntoubJ9pyvRt0vthgRgEeRxKJN0XFPIasViuzM1lJqfbYl4nmCzgz1hwapgs0f/yevQrQbQnT/kYnLy1q60aS5SCZzcZSGTZqPT41Og369dp7f/UUG5T/eC6mHfcDwskZg0LUOsMK3FfuY7BaFtfOKMpBCRFOaRUVYaZ2VKoCK6VZ2bk/ylaVZgWiY0zCqTA9QsYAdatu1Jzb/UeXGkjwvqe+K1lACwNTUg+zHi1pwyQOkCugQTDGTzId2Eu01SPbAECtoLBx0jNXdm0YIpcY8Ns6I5IXeWUhe4QFUV1yFaZrDd50myJFgND80cNkPDzh4F1atri/phNIX1Pw6sTT86SZtDjtGG60kl52bLCWhayhsxGD0SYGpVdKHiWR3/pX6CFX6akGRUkTEauTvs2kR0U8XRVWtfxIHgRj5weONAnaObhYkeIfGT/ydl6OKqW56KngNUtOhxVOzuhhr7TYiBD8Gf2RQOhM7S4yWEnGaYRAUEbSxloEED4nnTQH2Nwt7Vo0IO+pRPGtrVljMSH7NrG+x5U173opEOE/5bWHht7c7rSkAd3gVg6I63I0qLWm5ayhIf8wOUIqOMxSUC+oah1/MlstAOYwK8DTCR/QbIWxTfTSKLQmH40uVc9Lep7ImblvihqX+F9NYpyLrD/aMnVH7ewEa8OKHcO40J1sZoFyp18zH2sCrnQfyVR0xGuP2bwPp5YxEmV8QriAs1Dqsspc9yB2AQf2SiVxdNg4cBlTq91pAJynsvQkQoSrw7EMLSH1QsONRvmfnhA48NBcf8fr9GZy7
- 9bBOh/KP
- OXSO4jI2VfSQ2iArvv+AYdB+kheqJ6e5FeTYvr/IYjfGtn35A6zvqNJBXCrAxYXiP9rvJRwijijHe04HmuoIo+MJqhW/LPeknJYRxDe06OaEaFKUgXuEKFOy8Wra3kIStIOyUb00L1/CuWX0qQyMhPeTGOiXk/wwYhpD9kdKDuxKG90oblVtHz70aIGZkUp1Vc4TzUytM2/DlmJGcWxGP+SsnGKMDsNGnKXo1RkCcBcM4os/BYfUcMlXhyBYMVLawiJVjuQ870b97XbdLaH0PqOz7N7Dxo01PPvieUebojlnXm6cfpDxx0PgJrXl1ouNVSF+BAgYHmOLe5sdWNDu/d+N+VA==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: qihbdg33s1o8dk7uogixnbjgjt47qomd
+X-HE-Tag: 1782008041-662655
+X-HE-Meta: U2FsdGVkX1/DNqUhhVpuiCegQptp3Wgj/MiHaQ7ROpjiXJABt5d8CGKHG6GxtuAwEETwyqrbzAoPrs7IGre9EhnM64gio5RQ9nRZqyBhNPjh7dfUdVkOmMPUgR0Z0nG4fJm8MklX4oJu1pqf74GbU64D7bM/GHvz33xsopijA3lazRXcTWUxNVY4R2VqcLWgCHbENif8YQA7rDBz08uiXJPIxkvoxldRpP+wfzGrxewu0l2vFUGWDI2eTeaV3FDqfnikyDN/yTdnStpBkibRpxEh40yBMgA3t00xbycIHYc1I0OfxZOnBy8vsSFVpLZePW7TNKoqbTDNvNI9QHzF6CPRDRAElkhSoGgjvQPgI1tgPsRcnvoFfHIEH99lcsXwHAiyedSQpkBD9w3/BOGk9hRfy2wHgbNbufD+mFPj3tkTUVzLcwXbmMsbg6vIix7fcmq6xyz6s7Xbn0Jc2Zw/Uhb5pLyN6juXH3InuxdPaONZVOlarQH669a/+w8fiirTs3jV9nK8PZNZjvNpCTcDBYx7dOJ529jlqmzipA6k6eHky27SbXtW+wJc+tc+tn8Khn3J1URLhNMMBVwkTuYL4GhujGAWiUL38BUZt0Kvqipnr6K0tcc7eIrejv+AvBOHF8LBMobEQkIb/z41Do+EiRPNtA3rbEfxxrY/iXOdYqne5AVD+IDRsD8ZPe08z3fPfuVWxE11fC98ZR/dz9Ccjbc3LOjk0uzAkoTYflpnJOoroxMU1yHy8/7IECiM7Py5fJ1WnVA1Fh9KBu94DZAhhC70uix8z3tn/5Bgz6IsWXomgHDPVIOvToJ0QL6fKS3BYrzEcZ98j1fL7hMdJtDlkoiXmsrlcgbTkbKzfLRvyPNRegRBE+TE18s1pxNcoJw/4mD3bkXXIwWivbz/nssNSTfswCATj7qxtZviJgfcqRWYFPYbWvGH8PVs7W+6IHdVGd4gpP+j9DX+h12DEIb
+ CX/CB+Ru
+ XxxtdPoHsxmkGN9ZbpzlyjmXcusKUPa6II2CvW08MQr37exXuW8w1aOgV4ff1zDnL2EKFh+R0zhfrTB/dcZLtkZale+BygWMUQDUlQQAacaeCBCCAkrxqPN6NxAWv3Zt62/WRAdgQmCD7NJSDis+DOphIlVEjBrt9dj+vGjg11Gb1JhpDqBfs3dgQfzTb4/g22ZP5/8a2AOpaLNw2uag1Q+vhs3yBYhuJxuRUWV8WwBvBM7m9+CWJGIsq4P1VCSgKjsEZBI4qB1FeKznUPtg+fk1snLXiNnqA4EKAKo2ikGJpyugY1yYuieUF3Oee/DPSgulSP4HqRsHsVgJuDAbc3dq0TwkuR7MsDxdN4FkqKe3C0P7eTbQqkRQrWPJyWVViamf+8TzLK1r2sHzOYRzTcgf9ABWL7rffVGF84jEZ0GBBMBtxRnfz66JqHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,299 +177,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 18, 2026 at 10:36=E2=80=AFAM Abhishek Bapat
-<abhishekbapat@google.com> wrote:
+On Sat Jun 20, 2026 at 2:19 PM EDT,  wrote:
+>>
+>> >
+>> > This patch optimizes small file read performance and overall folio ref=
+count
+>> >  scalability by refactoring page_ref_add_unless [core of folio_try_get=
+].
+>> >  This is alternative approach to previous attempts to fix small read
+>> >  performance by avoiding refcount bumps [1][2].
+>> >
+>> Thanks. Nice numbers.
+>>
+>> AI review had some things to say:
+>>  https://sashiko.dev/#/patchset/df26082871b4c65b2bd38d409026237c08572836=
+@linux.dev
 >
-> Add the following 2 scenarios to the allocinfo ioctl kselftest:
-> 1. Validate size based filtering
-> 2. Validate lineno based filtering
+> Among some minor issues, it also pointed out a funny ABA race:
 >
-> The first test uses "do_init_module" as the candidate function for the
-> test. This is because the associated site will only allocate memory when
-> a kernel module is loaded. The return value of get_content_id() changes
-> every time modules are loaded or unloaded. Hence, as long as
-> get_content_id() values at the start and the end of the test are the
-> same, the memory allocated by the do_init_module call site should also
-> remain the same. Consequently, the test can assume consistency between
-> the value returned by the ioctl and the procfs resulting in less
-> flakiness.
+> ```
+> T1/T2 work with pages of type X.
+> T3 works with pages of type Y.
 >
-> Signed-off-by: Abhishek Bapat <abhishekbapat@google.com>
+> T1: page_dec_and_test()
+> T1: -> sub refcount [1 -> 0]
+> T1: -> *interrupted* (very bad hypervisor, for example)
+>
+> T2: optimistic get() [0 -> 1]
 
-Couple of improvement suggestions, but otherwise LGTM.
+How is this possible? folio_get() and folio_try_get() should prevent
+getting a refcount-0 folio; get_page() uses folio_get(); try_get_page()
+also checks refcount before ref_inc.
 
-> ---
->  .../alloc_tag/allocinfo_ioctl_test.c          | 198 +++++++++++++++++-
->  1 file changed, 197 insertions(+), 1 deletion(-)
+For your patch, is it because of the separation of refcount-0 and
+frozen? The page goes refcount-0 before it is frozen? Will it work if
+the page is frozen first then gets its refcount to 0? Basically, the
+frozen state prevents anyone else messing up with your refcount.
+
+> T2: put page back [1 -> 0]
+> T2: calls dtor for type X, returns into the allocator
 >
-> diff --git a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c b/t=
-ools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> index 1ae0291f2245..50755a45d3fe 100644
-> --- a/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> +++ b/tools/testing/selftests/alloc_tag/allocinfo_ioctl_test.c
-> @@ -5,6 +5,7 @@
->   * Copyright (C) 2026 Google, Inc.
->   */
+> T3: receives page of type Y, sets refcount to 1
+> T3: page_dec_and_test()
+> T3: -> sub refcount [1 -> 0]
 >
-> +#include <errno.h>
->  #include <fcntl.h>
->  #include <stdio.h>
->  #include <stdlib.h>
-> @@ -313,11 +314,194 @@ static int test_function_filter(void)
->         return run_filter_test(&filter);
->  }
+> *T1 resumes execution*
 >
-> +static int test_size_filter(void)
-> +{
-> +       int fd;
-> +       struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
-> +       struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof(*=
-procfs_entries));
-> +       struct allocinfo_filter filter;
-> +       int ret =3D KSFT_PASS;
-> +       __u64 target_size, i, pos;
-> +       bool found;
-> +       const char *target_function =3D "do_init_module";
-> +       struct allocinfo_content_id start_cont_id, end_cont_id;
-> +       int retry =3D 0;
-> +       const int max_retries =3D 10;
-> +
-> +       if (!tags || !procfs_entries) {
-> +               ksft_print_msg("Memory allocation failed.\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto freemem;
-> +       }
-> +
-> +       fd =3D open(ALLOCINFO_PROC, O_RDONLY);
-> +       if (fd < 0) {
-> +               ksft_print_msg("Failed to open " ALLOCINFO_PROC ": %s\n",=
- strerror(errno));
-> +               ret =3D KSFT_FAIL;
-> +               goto freemem;
-> +       }
-> +
-> +       do {
-> +               found =3D false;
-> +               pos =3D 0;
-> +
-> +               if (__allocinfo_get_content_id(fd, &start_cont_id)) {
-> +                       ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> +                       ret =3D KSFT_FAIL;
-> +                       goto exit;
-> +               }
-> +
-> +               memset(&filter, 0, sizeof(filter));
-> +               filter.mask |=3D ALLOCINFO_FILTER_MASK_FUNCTION;
-> +               strncpy(filter.fields.function, target_function, ALLOCINF=
-O_STR_SIZE);
-> +
-> +               if (get_filtered_procfs_entries(procfs_entries, &filter))=
- {
-> +                       ksft_print_msg("Error retrieving entries from " A=
-LLOCINFO_PROC "\n");
-> +                       ret =3D KSFT_FAIL;
-> +                       goto exit;
-> +               }
-> +
-> +               if (procfs_entries->count =3D=3D 0) {
-> +                       ksft_print_msg("Function %s not found in procfs\n=
-", target_function);
-> +                       ret =3D KSFT_SKIP;
-> +                       goto exit;
-> +               }
-> +
-> +               target_size =3D procfs_entries->tag[0].counter.bytes;
-> +
-> +               memset(&filter, 0, sizeof(filter));
-> +               filter.mask |=3D ALLOCINFO_FILTER_MASK_MIN_SIZE | ALLOCIN=
-FO_FILTER_MASK_MAX_SIZE;
-> +               filter.min_size =3D target_size;
-> +               filter.max_size =3D target_size;
-> +
-> +               while (1) {
-> +                       struct allocinfo_get_at get_at_params;
-> +
-> +                       memset(&get_at_params, 0, sizeof(get_at_params));
-> +                       memcpy(&get_at_params.filter, &filter, sizeof(fil=
-ter));
-> +                       get_at_params.pos =3D pos;
-> +
-> +                       if (__allocinfo_get_at(fd, &get_at_params))
-> +                               break;
-> +
-> +                       tags->count =3D 0;
-> +                       memcpy(&tags->tag[tags->count++], &get_at_params.=
-data,
-> +                              sizeof(get_at_params.data));
-> +
-> +                       while (tags->count < VEC_MAX_ENTRIES &&
-> +                              __allocinfo_get_next(fd, &tags->tag[tags->=
-count]) =3D=3D 0)
-> +                               tags->count++;
-> +
-> +                       for (i =3D 0; i < tags->count; i++) {
-> +                               if (strcmp(tags->tag[i].tag.function, tar=
-get_function) =3D=3D 0) {
-> +                                       found =3D true;
-> +                                       break;
-> +                               }
-> +                       }
-> +
-> +                       if (found || tags->count < VEC_MAX_ENTRIES)
-> +                               break;
-> +
-> +                       pos +=3D tags->count;
-> +               }
-> +
-> +               if (__allocinfo_get_content_id(fd, &end_cont_id)) {
-> +                       ksft_print_msg("allocinfo_get_content_id failed\n=
-");
-> +                       ret =3D KSFT_FAIL;
-> +                       goto exit;
-> +               }
-> +
-> +               if (start_cont_id.id =3D=3D end_cont_id.id)
-> +                       break;
-> +
-> +               ksft_print_msg("Module load detected during size verifica=
-tion, retrying...\n");
-> +       } while (retry++ < max_retries);
-> +
-> +       if (start_cont_id.id =3D=3D end_cont_id.id && !found) {
-> +               ksft_print_msg("Entry with function %s not found in IOCTL=
- results\n",
-> +                              target_function);
-> +               ret =3D KSFT_FAIL;
-> +       } else if (start_cont_id.id !=3D end_cont_id.id) {
-> +               ksft_print_msg("Failed to match content_ids for procfs an=
-d IOCTL, skipping...\n");
-> +               ret =3D KSFT_SKIP;
-> +       }
-
-I know we found the tag filtering by target_size and this might be
-seen as unnecessary, but let's take one more final verification step
-and check that tag.counter.bytes of the tag we found indeed equals
-target_size. For that check you can replace "found" boolean with
-"found_tag" pointer and the rest becomes trivial.
-
-> +
-> +exit:
-> +       close(fd);
-> +freemem:
-> +       free(tags);
-> +       free(procfs_entries);
-> +       return ret;
-> +}
-> +
-> +static int test_lineno_filter(void)
-> +{
-> +       struct allocinfo_tag_data_vec *tags =3D malloc(sizeof(*tags));
-> +       struct allocinfo_tag_data_vec *procfs_entries =3D malloc(sizeof(*=
-procfs_entries));
-> +       struct allocinfo_filter filter;
-> +       enum ioctl_ret ioctl_status;
-> +       int ret =3D KSFT_PASS;
-> +       __u64 target_lineno, i;
-> +
-> +       if (!tags || !procfs_entries) {
-> +               ksft_print_msg("Memory allocation failed.\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto exit;
-> +       }
-> +
-> +       memset(&filter, 0, sizeof(filter));
-> +
-> +       if (get_filtered_procfs_entries(procfs_entries, &filter)) {
-> +               ksft_print_msg("Error retrieving entries from " ALLOCINFO=
-_PROC "\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto exit;
-> +       }
-> +       if (procfs_entries->count =3D=3D 0) {
-> +               ksft_print_msg("Could not retrieve procfs entries\n");
-> +               ret =3D KSFT_SKIP;
-> +               goto exit;
-> +       }
-> +       /*
-> +        * We depend on the result of procfs entries to create the ioctl_=
-filter. Hence we
-> +        * cannot recycle the run_filter_test function here.
-> +        */
-
-The above comment is a bit unclear. What do you mean by "recycle the
-run_filter_test function"? Also there is no variable called
-ioctl_filter. I would change it to "filter later used in ioctl".
-
-> +       target_lineno =3D procfs_entries->tag[0].tag.lineno;
-> +
-> +       filter.mask |=3D ALLOCINFO_FILTER_MASK_LINENO;
-> +       filter.fields.lineno =3D target_lineno;
-> +
-> +       ioctl_status =3D get_filtered_ioctl_entries(tags, &filter, 0);
-> +       if (ioctl_status =3D=3D IOCTL_INVALID_DATA) {
-> +               ksft_print_msg("Trouble retrieving valid IOCTL entries, s=
-kipping.\n");
-> +               ret =3D KSFT_SKIP;
-> +               goto exit;
-> +       }
-> +       if (ioctl_status =3D=3D IOCTL_FAILURE) {
-> +               ksft_print_msg("Error retrieving IOCTL entries.\n");
-> +               ret =3D KSFT_FAIL;
-> +               goto exit;
-> +       }
-> +
-> +       for (i =3D 0; i < tags->count; i++) {
-> +               if (tags->tag[i].tag.lineno !=3D target_lineno) {
-> +                       ksft_print_msg("IOCTL entry %llu has incorrect li=
-neno %llu.\n",
-> +                                      i, tags->tag[i].tag.lineno);
-> +                       ret =3D KSFT_FAIL;
-> +                       goto exit;
-> +               }
-
-You can improve the test to also check if the filtered collection you
-retrieved contains the original tag you used to record target_lineno.
-
-> +       }
-> +
-> +exit:
-> +       free(tags);
-> +       free(procfs_entries);
-> +       return ret;
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->         int ret;
+> T1: -> CAS [0->LOCKED]
+> T1: BUG: calls dtor of type X on page of type Y
+> ```
 >
-> -       ksft_set_plan(2);
-> +       ksft_set_plan(4);
+> While this race seems unrealistic to me because of the full allocator
+> cycle between the two atomic operations, I wasn't able to prove it at
+> the first attempt. Maybe there is some synchronization in allocator
+> that forbids at least X !=3D Y, or something.
 >
->         ret =3D test_filename_filter();
->         if (ret =3D=3D KSFT_SKIP)
-> @@ -331,5 +515,17 @@ int main(int argc, char *argv[])
->         else
->                 ksft_test_result(ret =3D=3D KSFT_PASS, "test_function_fil=
-ter\n");
+> I'll try to research fixes/proofs a little bit more, but I am afraid
+> that unless someone wise with mm/ knowledge comes up with some fact that
+> I missed, this patch indeed has a major (but unrealistic) flaw.
 >
-> +       ret =3D test_size_filter();
-> +       if (ret =3D=3D KSFT_SKIP)
-> +               ksft_test_result_skip("Skipping test_size_filter\n");
-> +       else
-> +               ksft_test_result(ret =3D=3D KSFT_PASS, "test_size_filter\=
-n");
-> +
-> +       ret =3D test_lineno_filter();
-> +       if (ret =3D=3D KSFT_SKIP)
-> +               ksft_test_result_skip("Skipping test_lineno_filter\n");
-> +       else
-> +               ksft_test_result(ret =3D=3D KSFT_PASS, "test_lineno_filte=
-r\n");
-> +
->         ksft_finished();
->  }
 > --
-> 2.55.0.rc0.786.g65d90a0328-goog
->
+> Sorry for the delay, grass was more touchable than ever
+> Ilya Gladyshev
+
+--=20
+Best Regards,
+Yan, Zi
+
 
