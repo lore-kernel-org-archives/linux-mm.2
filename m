@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A974CD98F0
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 15:58:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEB22CD98F0
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 15:58:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED0E66B00A1; Sun, 21 Jun 2026 11:57:44 -0400 (EDT)
+	id C12066B00A2; Sun, 21 Jun 2026 11:57:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0C976B00A2; Sun, 21 Jun 2026 11:57:44 -0400 (EDT)
+	id B4D776B00A3; Sun, 21 Jun 2026 11:57:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CAC8A6B00A3; Sun, 21 Jun 2026 11:57:44 -0400 (EDT)
+	id 978AD6B00A4; Sun, 21 Jun 2026 11:57:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 984C46B00A1
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 11:57:44 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 649FB6B00A2
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 11:57:45 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 187CE1C2215
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBBC8C17EE
 	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:57:44 +0000 (UTC)
-X-FDA: 84904375248.17.B21C0C2
+X-FDA: 84904375248.17.C2D79B9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 77843140006
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:57:42 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iniIxnCW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 450634000B
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 15:57:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lqNv7/Du";
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782057463;
+	b=GX1PWdYprkUt3C5rcvuRTg8Qe8NpDTTZSrsuuKJLyTnk9njEmez22r2OOYs3Jw/AQ5Zo9q
+	anBnvUNlQLTWpHz6OMcAnfD61AL/nFxDWzPaiQ0MTSvHOEQO/qWxVZEcsJhLcQo1/dNzJi
+	ILbd9dYA+KiP/nqDXg3wV+7fY/FIepY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lqNv7/Du";
+	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782057462;
+	s=arc-20220608; t=1782057463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uvLgUJHE1vEAag5JmbsfYlxb2tTaH8mInR0sbbJDVgE=;
-	b=uCmqGKIGynHiQsMimEeFvlL+m4DPmVBjSVwaC2R4AVZN1d9vfqoNieKUYNlBxjjILLK8al
-	Ad+B0kT6iEsuIGnvXqLQMW0AA1GdabhDZlM2C88aDjXBvMvGxwFFAdcnrXmRsn2OKR1GmJ
-	7Asj4ML5ZgevHqrEkekndIcQWg42x+Y=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iniIxnCW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782057462;
-	b=S7OK8vk4rFYR2l5p3FUOILPYrC0rUF/Yq7u7d4x6WhzQBLfnnmOXHmCiu22qCMp/q7AnB6
-	fxK+kxV0RFN3E/eGyJmhCVUQTEusxkF/WeQVgbyVnacwBYLiszTqJVIC4ktSUIY3aiuAKs
-	57wshYl1vhBl9CjbRuQg8PfgW36ImFU=
+	bh=4SCo6lzfTq2NnUpvCBQ4Z8jQXScoLCzX5q9Y3rAVGW0=;
+	b=nvxyDLv96e8KJ5XUSS4nCn/2NR/IUUlDgBL8zBUZ2ZZNNBSAAoDjhKDy6n2CtQXcxpZOP2
+	ahCeuRMk3m8jfmgvy5h7E6N7eVebAdzhZOALeBOQEad53vxscbwoZbVJ1XEk0KLbKzHMoc
+	ANXdL3XiHBAmHtqQUH9Tfv0d+hJc1sE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C551D44501;
+	by sea.source.kernel.org (Postfix) with ESMTP id A00744453A;
+	Sun, 21 Jun 2026 15:57:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E833B1F00A3E;
 	Sun, 21 Jun 2026 15:57:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72A81F00A3D;
-	Sun, 21 Jun 2026 15:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782057461;
-	bh=uvLgUJHE1vEAag5JmbsfYlxb2tTaH8mInR0sbbJDVgE=;
+	s=k20260515; t=1782057462;
+	bh=4SCo6lzfTq2NnUpvCBQ4Z8jQXScoLCzX5q9Y3rAVGW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iniIxnCW7I2cg/mgubwoOLxmr7ujOTiYB0L00EXm00LtS/jdGIwYf2fjMPi+yEQwO
-	 15kmNcYavkDLntpqyI8wOH+VdEcMMf0zSzFfe+g89Rn2XlYz8U5viJzAxuMrzPTEV9
-	 g9uZh1ZjPeZcxiXm8X3lQplJvxn45Pd3HY/aqqZRewId5/bYx0obLt+SEV3u5M8czn
-	 cFbfg7bnxvCrNDnyBNgNc6VejnLTQAKTZcXaEusvq/rSEYL1CeqdiEEt3Q8tHndQKJ
-	 Q8gZ8Wl+3ww99i95tOc6/NhvQ7cKjXQ6zJHIvFpzVew4uVb1djZZpXgZ5JtasioM5L
-	 eAFNj6wXGNd6w==
+	b=lqNv7/Du8+OBKTSKBj6MYibfAgRaqYsLp2aNRZOlHdnSQQoofM9LS7XWeKKGazW71
+	 bICjE0aaZEavlvoBmRcW1ey3b6zwYgfJIhKsXoOmhPczFv1Aby5cBXZkrXoNemBc/B
+	 SMhaWr1TVLHQXW9FT+4iw3jFpu8gfLbA31kDeZDqVu5miYyALaqjLhnxJR2HfBQm6z
+	 k931Hm3fKMGRXXyDrXVg0tVglaHRgAMzcMOZNrZKFm4DNfc+Hie0k9wuTpCoonB6t9
+	 gWP6XVG2xJNKp4XHclXT0eN7hqZ/6PdKigzWiGWqRN1feCtbhcAJjDMa0xUiUSGxxX
+	 WU9ow8qXt3Kmw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -70,22 +70,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 13/17] mm/damon/core: remove attrs param from damon_update_region_access_rate()
-Date: Sun, 21 Jun 2026 08:57:09 -0700
-Message-ID: <20260621155715.87932-14-sj@kernel.org>
+Subject: [RFC PATCH v1.2 14/17] mm/damonn/paddr: remove attrs param from __damon_pa_check_access()
+Date: Sun, 21 Jun 2026 08:57:10 -0700
+Message-ID: <20260621155715.87932-15-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260621155715.87932-1-sj@kernel.org>
 References: <20260621155715.87932-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 77843140006
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 450634000B
+X-Stat-Signature: bcjgdh4j895wzihd31xcbu9txdmmjx6u
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ndgj7c4o1r7i98uqif47uz3b3em7gswa
-X-HE-Tag: 1782057462-601574
-X-HE-Meta: U2FsdGVkX1+8AFMIwjOsDcpqbIcnee9qZme1jD/kw4UgQA1uULVNwBjZPlIQHsG+198B6XTnqQ/CBzZErzDmFDdNNF7toxIqgs1PTEYTFHfwpkx4N/V9N/08gj4IkoxRskQnWSgzRSp5j4wEGGxrXllXaznEGkRPl7LCDIDc5lGkO5Yjb/dn+DzIHPKg0OwfgiymM6OM0rzNSYRo6OVYkyj6kcqjoKbrvLniKnrh2d1/TrXRUKbtuGilhaAfoGGOICTQcmrdb0U8Nkd8mYWiBhJBKTs8TFkXETFxP59lys95VTKUppJyQnr+Ik/7TQZve53qyEggIpdxKWM+WCKvccQrEuXy8kqHfpGTi1m1jAUu8SEC7RqYmEXFZtnX2ecQ8FDbOyR0fgFuWwLE5pWWAwLq6rE4K/roNIoAW4HcMWgMAk2x+FQ921zkbg4Cl35jRsR/JREZDxeQkea+7F0XpgXFYg9n6cdhuVGP0MoBLo2pC9J89RMl1SkFbgZfmhY5BcZ66XO5WzSFXCc7Ry+ZgYB+ej3RRCJiMDtzCshut9KW7GX5usPI32BnVMV7rnswcUbEfzjNPxjME/Cl/plKNj1Jn5nqeqqv/7Kc59FdWRZmPRy7v54cDh4pPSPoq4b4movOW9lQg0Rt0RsoguK3IVfWWnLM1dNFB3gEpVwnL5fhpkzlniIoaUelnpdKNGnzIQhrIG0ZZf5NRWDkogd9zpneiN5l2CueBF6EyCzqpQsJVBRWYg8DwwX3fZdlnfi1SO53RPrqSqPs4mFSXy//ARqcQp/1QeVyRR/w3k67zRtAB8aWJIDHHMYz3EAILTUcH7UM87ufXDCm+Di5t+SlIC2f9ON6swVqedKkV2iZ5Nwpl6eOBoelevJl89xKsLPbo+1e1uK4JzSFRSuIAj/jSrDjVeTImKyvkHu/PlqKdzuXW0739p3paZEC7S/vMz5P6zNX6na95d0p7sfLQnI
- fbbJ/wko
- W5CiBtK4aINoUu43QCog+f0tPzt75S06qA6UIizDxI5ozAxX++lVb/TmkbyHsy9kEVzxh7OG1hXX+jm5gDESYcUJF84KSmb+/k7rNA4IZ4e+CtT82oJk+SHcoMbTUNVKjytCxTrZ6gXooYn2WYJYIs7Lj9m2KJRAIlQ7EjgD0QovuDRUybdCCLgwtb2riN1TzJoexLgnZyuoNg7VXj9RbXL44k/Da2DQEMeNXosOFlonpHG45iYlZ+QYjuL5mN2m1D0F2qouYbUQAGULcSiX+gKT/vA==
+X-HE-Tag: 1782057463-215277
+X-HE-Meta: U2FsdGVkX1+RMMcgVOJKLpNqAyVXS+CprpljNIK5AaIUvdqg/3l4ub21xSoEVed6/NO4Zdj8anElJfTAhHs241bsggzUg4Vb5X7IDKPjo1OZpBrPzidYYgjwRt6x2PizsdkoUbJu+L9wFKZYAWoUkZRrk7QdHpD0zhex5XXnMjjNlyIhxU2CqdmLy+mhz3A5S9kRNvOAsREA0kcuZMTsicxtuIzQ9dQwwCAhPWX5m7XbsZzBL9bsxSTb4m4RyRjfGNGgaoQ9WMEPcyLS4WQZkV/trl23ESNK27kZ+NV2tJDOyobk2X6pxGCD3HHPlXYnenZcHDc6kJihx1DXpor12tFkqYX0s0nYVZXD7hUc1JdEpFKTd1egQCfFYtl68TpW+LL/lQpTeRD32jgbxNmRcJCRY7U+00ODXk3hxriFJYXZqREOqJtNi1V1/ysPrFtQobFL1x7QA4sTolveZmAPd9Ye1aGppxFU7cEJjMX48iR80yO4oUuufpkLWTPAHrPJLGXIAuOH0jph1htbBXXq6mcJ2qZPritsPSnZ0WsI3xnnrFJtza5dQjkrsjCPX9Ry6aTNhVLBlAHoO9VKtv89KIDze/ZZ47TEViNZlRNfB7Tcs4keue8fSRDPoAQ4y/DVmcv05g8M1LEu0bQhEbp3qFKLkQdMJvDhDbn0LZ3pUuU02GmHv2PQfxh/iWmZI6JkwXVJAUa1zhlHxbpe6tI9vZQVlqtBA44h8CV/o/18mdU6i/LGyQif42GRVpvudjNYyf9SoTwEIUBNQ3OxEtad84ShPN+4d75uILMrw5Ry/5oWbs3y21wvmlD0tiIqngVtlV80zr0ebEBGeq56l1YBRB2dNqjcFK5EkWh/hvkr4gpyfEGbWf2GBFIjxhO+soYlj33yFuqt5FNCXacW1HK3IQW7U494QLJ0UkK9b6TzHtPXbY2AfOCRJUGYTeYijmYWjKIdvnRW7dKozUL5o+7
+ xnASi7LY
+ jLR1QfUx52+AvUBXg+SfzH0g9t9tRotiI8J6huGcwJydzgyy5PYftl0hTGkVBcr+NYZ0zPiQMnLHfTcOpegT6+f7UWkDkGiXNb5UNVp6MWujYz3Y93jOaZBqtPiNqEWQGoBWCIPmPFA1RA3Xp2KJ/SLBrFKiCW6LO8ulXpaBVsVyR8rhjENtDOEBR/8EZYehKl21BMmqOINd5WX82vjQ3AC/MSOMHvYMzi0mGKB2AxGEebe5IO9zJVCS7DLs+TLxMAuWbGLHu5ZnDsDaTOIZKGhZgBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,97 +93,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_region_access_rate() is not using attrs parameter.  Remove it.
+The function is not using the parameter.  Remove it.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- include/linux/damon.h | 3 +--
- mm/damon/core.c       | 4 +---
- mm/damon/paddr.c      | 4 ++--
- mm/damon/vaddr.c      | 6 +++---
- 4 files changed, 7 insertions(+), 10 deletions(-)
+ mm/damon/paddr.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 55a743d99b567..a09ee8a09b5af 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -1018,8 +1018,7 @@ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
- 
- int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- 		unsigned int nr_ranges, unsigned long min_region_sz);
--void damon_update_region_access_rate(struct damon_region *r, bool accessed,
--		struct damon_attrs *attrs);
-+void damon_update_region_access_rate(struct damon_region *r, bool accessed);
- 
- struct damos_filter *damos_new_filter(enum damos_filter_type type,
- 		bool matching, bool allow);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index c3c8e83234011..6b36e17660c05 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3768,15 +3768,13 @@ static unsigned int damon_moving_sum(unsigned int mvsum, unsigned int nomvsum,
-  * damon_update_region_access_rate() - Update the access rate of a region.
-  * @r:		The DAMON region to update for its access check result.
-  * @accessed:	Whether the region has accessed during last sampling interval.
-- * @attrs:	The damon_attrs of the DAMON context.
-  *
-  * Update the access rate of a region with the region's last sampling interval
-  * access check result.
-  *
-  * Usually this will be called by &damon_operations->check_accesses callback.
-  */
--void damon_update_region_access_rate(struct damon_region *r, bool accessed,
--		struct damon_attrs *attrs)
-+void damon_update_region_access_rate(struct damon_region *r, bool accessed)
- {
- 	if (accessed)
- 		r->nr_accesses++;
 diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index d0598f5f26882..db48ad274b078 100644
+index db48ad274b078..a301e831a3945 100644
 --- a/mm/damon/paddr.c
 +++ b/mm/damon/paddr.c
-@@ -93,12 +93,12 @@ static void __damon_pa_check_access(struct damon_region *r,
- 	/* If the region is in the last checked page, reuse the result */
- 	if (ALIGN_DOWN(last_addr, last_folio_sz) ==
- 				ALIGN_DOWN(sampling_addr, last_folio_sz)) {
--		damon_update_region_access_rate(r, last_accessed, attrs);
-+		damon_update_region_access_rate(r, last_accessed);
- 		return;
- 	}
- 
- 	last_accessed = damon_pa_young(sampling_addr, &last_folio_sz);
--	damon_update_region_access_rate(r, last_accessed, attrs);
-+	damon_update_region_access_rate(r, last_accessed);
- 
- 	last_addr = sampling_addr;
+@@ -82,7 +82,7 @@ static bool damon_pa_young(phys_addr_t paddr, unsigned long *folio_sz)
  }
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index d271476035641..2e12cc628fea0 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -503,19 +503,19 @@ static void __damon_va_check_access(struct mm_struct *mm,
- 	static bool last_accessed;
  
- 	if (!mm) {
--		damon_update_region_access_rate(r, false, attrs);
-+		damon_update_region_access_rate(r, false);
- 		return;
+ static void __damon_pa_check_access(struct damon_region *r,
+-		struct damon_attrs *attrs, unsigned long addr_unit)
++		unsigned long addr_unit)
+ {
+ 	static phys_addr_t last_addr;
+ 	static unsigned long last_folio_sz = PAGE_SIZE;
+@@ -111,8 +111,7 @@ static unsigned int damon_pa_check_accesses(struct damon_ctx *ctx)
+ 
+ 	damon_for_each_target(t, ctx) {
+ 		damon_for_each_region(r, t) {
+-			__damon_pa_check_access(
+-					r, &ctx->attrs, ctx->addr_unit);
++			__damon_pa_check_access(r, ctx->addr_unit);
+ 			max_nr_accesses = max(r->nr_accesses, max_nr_accesses);
+ 		}
  	}
- 
- 	/* If the region is in the last checked page, reuse the result */
- 	if (same_target && (ALIGN_DOWN(last_addr, last_folio_sz) ==
- 				ALIGN_DOWN(r->sampling_addr, last_folio_sz))) {
--		damon_update_region_access_rate(r, last_accessed, attrs);
-+		damon_update_region_access_rate(r, last_accessed);
- 		return;
- 	}
- 
- 	last_accessed = damon_va_young(mm, r->sampling_addr, &last_folio_sz);
--	damon_update_region_access_rate(r, last_accessed, attrs);
-+	damon_update_region_access_rate(r, last_accessed);
- 
- 	last_addr = r->sampling_addr;
- }
 -- 
 2.47.3
 
