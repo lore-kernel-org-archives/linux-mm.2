@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CDCCD98F2
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 21:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0399CD98F0
+	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 21:42:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280636B0088; Sun, 21 Jun 2026 17:35:00 -0400 (EDT)
+	id 6173C6B0088; Sun, 21 Jun 2026 17:42:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 231766B008A; Sun, 21 Jun 2026 17:35:00 -0400 (EDT)
+	id 5A06A6B008A; Sun, 21 Jun 2026 17:42:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 148226B008C; Sun, 21 Jun 2026 17:35:00 -0400 (EDT)
+	id 468B86B008C; Sun, 21 Jun 2026 17:42:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DD8726B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 17:34:59 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 45E9AC21EC
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:34:59 +0000 (UTC)
-X-FDA: 84905225118.04.A9CDDD5
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4CA4720005
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:34:57 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GXExkcGT;
-	spf=pass (imf13.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A436B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 17:42:46 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69507120500
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:42:45 +0000 (UTC)
+X-FDA: 84905244690.22.8F07259
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E06BD140005
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:42:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QdC1fX2T;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782077697;
+	s=arc-20220608; t=1782078163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T+qigLIPdHrFoWDjUFktrl/sfbc2RolswMUSPfU7LxY=;
-	b=wUCByNk9e8ruM3Qpj0osfSR5++gOAbhlts6gjrWEEur9GbXd8Uha5PEgF1NN/k6FLzPGsJ
-	5PEY/cBCyQSsOxY2wj8AM5fVQRkJlv8UA8ZFE0F82XoL3okJn6tZ/zJEkDBicSvWmkmMJP
-	qxUePG0bVA26+JuMIhiQtvTk5nFVnPI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6CzYrLF00ygQ4iPvC+zTr5yElH0SDeqaQIEXKc18dDQ=;
+	b=iIrUW7SW3ZC30Fel2o4nb/3jj+J84qyA0MsZNAHu3SymxzP6xsp9RiNB6rEDtIZKyI29It
+	Ag6rTPQpvmoZEc5YQ9gQ4jm/ubMnEqfVLiv+bqUURRUayTo8170jdJvSIrnT23l6yDXDG+
+	U5+TtUmL0aIxlMYlAqqWBlv7+L8gScw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782077697;
-	b=q2XrmJo5MvaAq42QPZ6/tatNd/8KAQ2kSoA/ZagXkdeunGKfPDi3ahGkOJgUt1LOkV6071
-	sq2Gs7wiXRpkZt2v4c7dJc8qnJD5cepyeYfuM7qoAiLKI4wwaOhjuQTeAMjyJSLv5m89DI
-	8rxsuJnwoDbHA2joNXy8z4EZgSnJSd0=
+	t=1782078163;
+	b=mWvWHMoT6mOuEosiwEcaa+S0JtAIBKu/a9l/pZocHe3VAQ5GrxmBWHRmEiS2mIxTFtkUmZ
+	cOZiAYPIY8ZDQFH9Uur4CkYvko1qG5K7FXEYZ1fQIch57bjGcwwrhBIoK5qmBOMFUSDayn
+	8sZMHY2fz315GWcnFBxQ9slMc5GS6VQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GXExkcGT;
-	spf=pass (imf13.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QdC1fX2T;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 418CD60051;
+	Sun, 21 Jun 2026 21:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 659641F000E9;
+	Sun, 21 Jun 2026 21:42:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782078162;
+	bh=6CzYrLF00ygQ4iPvC+zTr5yElH0SDeqaQIEXKc18dDQ=;
+	h=From:To:Cc:Subject:Date;
+	b=QdC1fX2T4mf5OiO4uDSz5sUHx7PfyhyHoQb24Mii+55CNI2DljGxCGCCFCTFBk8cc
+	 UsSXgAaGrbg422AFkK5dKeA+EoQxw7gGIy6jncfBxsbqKJVgbMGjz4peTgEEaIYkL1
+	 E30+5DIs7RaJkDdH8rt76DHzPDYDr9yajqI2I5utL3pNC/fGaFu+C66Jof3tX2kRYj
+	 BR6QSBeUuhlrXsdCJy2Bcnu3az6Q7EqwrMsVbpKG4YBcg9zl3CC3GxoWX3LhfUP1Te
+	 tQsdjdPUii9kC5Uf3FhnYxQJdNAzpEwaS70bnEYlv4s+3DC3dTjpZVfeBJSi5DeM7a
+	 l84KRPdMer9qg==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 0/3] mm/damon: provide pseudo moving sum probe_hits
+Date: Sun, 21 Jun 2026 14:42:27 -0700
+Message-ID: <20260621214231.13449-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782077695;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T+qigLIPdHrFoWDjUFktrl/sfbc2RolswMUSPfU7LxY=;
-	b=GXExkcGTuOJcnv+ozYRBOM9AYGbahUnecr33XshVJiwNWeE+mKdii1lLEXYc63O5f/Nl+u
-	6WhSBwwt+MAk7FyWettP6l3VqNJXZx3dTy61egjU4aTyiqIfABw7B+mG2wY+XCJjCl4u8y
-	F0zyDJnEFdsKKAAl7q7JDLIjVYXBork=
-Date: Sun, 21 Jun 2026 21:34:47 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
-Message-ID: <839a2ea2755fdddf5af773e006237b07c9e261df@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-To: "Linus Torvalds" <torvalds@linuxfoundation.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, ivgorbunov@me.com,
- Liam.Howlett@oracle.com, apopple@nvidia.com, artem.kuzin@huawei.com,
- baolin.wang@linux.alibaba.com, david@kernel.org, foxido@foxido.dev,
- harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- rppt@kernel.org, surenb@google.com, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
-In-Reply-To: <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
- <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
- <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
- <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kof7u5zu9uu4ipn7gwijgarmjgsx8ot9
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mogbxmojfkx6ipmsbf3u73satw75yo7c
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4CA4720005
-X-HE-Tag: 1782077697-973876
-X-HE-Meta: U2FsdGVkX18C8DxzC/5TNe2OmlqTpUEN730sz7ZXviAMmsCJ8UsjVF8KeoiKSSzstvXakBe2t8v8CRkyG5z9kvn+zeJHBkR/nf4hVL03vsDNBQttc/KHAVt5ZKLIlfXyYx0JVW1VBeQ1D9rNVMQ+kW+UUajO+fxPqxf2ON7sxs0gEOIINfF4EpujYJ0XvIyQJaXjECaS5cNq92JhYnPPR/KRXplfzpo1RVtz2QQUySSyxRSWErd7ojYOX43HlBwqsx6mMYHD9h49hIbocLCD+QK1wqAzMc0hTf6h1MZAEZSDtGQgNqCvFB6SAXbFcM3hj0bqBQ2DOe7+4RWWqz70gVNKBbQGfHMN6qQBCJBikLbL1i9Zt5rX1tXYJQni0xVD/W9HtxgvH6qfJuJMjOH+pco9Qtqzg8QdZ4uNJuh91FYBWxRv+X92VsuksyCKi2bcq+yfYGNKvjgXCuxTeCyboj+RgtNGLcfLCf5k70vOgYktagtXR67Y7ag9qnCRjYFwQimOqLcvQJTXx51eO/9E4thbEr9WA3mh2qEE8jpPIT3M/H4fop/jtTchjS+AmiLd1HKkYEvMMTp1T3uHJuZf380e6RrOEar3skW0XBNgjURswlt04HrM18zKaWF3z78psN+SHf9fc74pdCl7yRTtJjjPbeQvEwWkJhlAJfpMYQhVFt5B12DNbKrw9OGXE2UkHu3fK9jM8KbrIGjfWfNvObE4vzEbTJnb8Q7xUKXTUTnrxUKycLT5XA4U7UnIB9+E0/dmwRZ7vFm6yhYdZf8sO6bqbczf25/iRAu6oF22DFJfv7XSKputoGMo+ozhnJ1A3s7/+9Ll9wT538itM/xaYCoi7j/eDcqgJGO3ALxgP7cNmaOxPbW3yV9VjhnooBGEhQnjGammVYhYDIovCFUlnOHFR56xFfJYH1sZKCUCbsZRC2PRQRorG6bEzI8SCyVz5PykKvt9ULwMC/IggVb
- Ul5QmSJi
- 1ifaL2WKC4cykx+JLZI+yd6MlOaUUhFpCUgqQ959BhVas5m3iyom5tfHXMkuCCOGOhMni9rqq+ix4BGURLNfqmWXMI5ZUTXVDMkxYfJEhPHCwBDe1yDY2Fb+ln2SFAAcVO3qtWlFbhcht5f8kHzBZrmaVPn7R7FUvRxsJUw+pwRxy5tiI/wTKbfUgE2M9YCdwJqm+3XbAim2s4dbIal8h15GpBw==
+X-Rspamd-Queue-Id: E06BD140005
+X-HE-Tag: 1782078163-766689
+X-HE-Meta: U2FsdGVkX18saJKeUaFq+Drhl39QfbzDa9gfPJ/b43BpGc96VpYM6R7ENPPwgVqzJ6oN01TzQs8KNPSU+ZgCD4Jqe1u3F007ie27CWMep580e3NvoLINf61PG6iHLoM1efAYddMBZz7lQlPLaXTvRX+gwidK4IQO9d/HL/LMQ5NzVyyie2T5OXNQD1Akm/AbT2tUy4j03AOSpGwQ3RLjXWTkit2+HdFbQJfWRPSJKtqvyQowGg5AyiZUDLCXk35yKYVKIbSx8LaM2uRytnijXlTyEoCQkHn5PAGn5Jc0FYETCI7WXL4eGHDMIvBAUw3WGNcTTfLwGqtrG7zdpI3pdjl2MUEp7V2UGJsiy7RbQ5Ji3JCj04LJZC/c8jpDGLRIKyOGvC0uzR0KereSLcJD7bF+WFCwBi4/0yg7H49Wwa6yRyjcTV3mjhTaUCmeHIUFaCHsQE3SCI+sltbUX/VKqnLivitYnDKusfHRpK/3S0d60XeLMHTW4LgvfR5h4fDwMtPUYjN665VyhRof5qye3yHYgof0Iyj1D69Hlr3AkEc1DY20iTT5HIT+rF7seV1ebFZ2C8lazrsRGBxjv/fffDxgDIqlSfDvS7G6a3d+Ud4iXrJXMV8J0kmLQhCYgLAeu/AIgbLW6O4j9Vkr2CPnoscfW4Ee7cSXXTo82jvXYDZ3u4uOmG0dFisN9mAes3GboBDltJOKwUJvrQiY7kIIww7adjlLwvtywGcqAf00cWWsh+vtrPEIMmD/AswLItJEdAqY8vME/spQWn8Z2cKGPrJAqcm+8uPGiuBbXxgk+JvnOnH5yQfM4vo5tDTNKlOrZd8hTmTsd4LsRnVCNic3SQSr/NTX6xkwtYwIdRVERxrsgtiTeyFhME3HxdmkRNnI7Vyzlz0uLZKrKocTjPOhdqEX9sysu8KN1MCKL1tMDfLFXEs0bViZIg27GNxC/6XlHgj8cnebcXKzNVsP3D7
+ bC9su27Q
+ KzOGLGgGN7aQhguTOhRogXiANiKqPnI0tXMexSY2HI0c5O9tsS7XEAVKubOWWTgoOQvL0cRoAw0WMuZW75w2nWXo7U3hIawiFX5Yje5Qz5os9bJKC5SkTVxZ+xXm44rADsEfuSd6DE2Z9I//E8pN5a7/Q7dpYevg/LpF7pgJ92Rcvtn7UsJ/NYY8PK9Ozykf++L8G3BBFjq3WR4C4y5s5DKmBjUVbKKKbx4oAJKzuSWH83OsD3GVhn2gLeLxk6LWEBt1L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,67 +91,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-June 21, 2026 at 7:46 AM, Linus Torvalds wrote:
->=20
->=20On Sat, 20 Jun 2026 at 11:19, <ilya.gladyshev@linux.dev> wrote:
->=20
->=20>=20
->=20> T2: optimistic get() [0 -> 1]
-> > T2: put page back [1 -> 0]
-> > T2: calls dtor for type X, returns into the allocator
-> >=20
->=20Which optimistic getter does this?
+Data attribute counters (probe_hits) of DAMON are managed in the
+classical way.  The counter value is accumulated every sampling
+interval, gets the complete view at the end of the aggregation interval,
+and is reset when the next aggregation interval starts.  Hence, the
+complete view can be retrieved only once per aggregation interval, which
+can be quite long.  With the suggested intervals autotuning setup, it
+becomes 2-4 seconds in common real production systems.  It can span up
+to 200 seconds in theory.  This will restrict online monitoring use case
+of DAMON.
 
-If I understood you correctly, you are talking about the scenario where
-an optimistic getter took a refcount on the stolen page, so the validity
-check in the XArray will fail. And this scenario does indeed work normall=
-y.
+Actually DAMON is already providing online monitoring of probe_hits.
+DAMON sysfs interface exposes the values via schemes tried regions
+directory files.  However, due to the above mentioned limitation, it
+usually shows only partially accumulated hit counters and therefore not
+useful.
 
-This "ABA" happens if the optimistic getter successfully gets a refcount
-on a valid page, so the full T2 execution looks like this:
+DAMOS is not using probe_hits at the moment.  In the future, using it
+can further strengthen DAMOS.  However, a recommended setup of DAMOS is
+utilizing sampling/aggregation intervals auto-tuning, and having its own
+DAMOS apply_interval (1 second is mostly recommended).  In the setup,
+DAMOS will nearly always show incompletely accumulated probe_hits, which
+will not really be useful.
 
-T2: optimistic get() [0 -> 1]
-T2: re-checks page [OK]
-T2: *normally works with this page*
-T2: frees page [1 -> 0 -> FROZEN]
-T2: calls dtor for type X, returns into the allocator
+Data frequency counter (nr_accesses) of DAMON solves this problem using
+the pseudo moving sum value.  The infrastructure is not limited to
+nr_accesses but general sampling based counters.  Maintain and provide
+the pseudo moving sum of probe_hits similar to nr_accesses, using the
+infrastructure.
 
-... T3 reuses the page, T1 wakes up and conflicts ...
+Tests
+=====
 
-T1 basically needs to sleep for a veeery long time to miss full T2 & T3
-execution.=20
+On an idle system, I ran DAMON with an attribute probe filter for
+non-anonymous page, using DAMON user-space tool, like below.
 
->=20I didn't go back and look at the series, but isn't the rule that the =
-code does:
->=20
->=20 - optimistic get
->=20
->=20 - then check that the folio is still valid (*not* using the page
-> count, but by re-looking it up elsewhere, typically the address space
-> mapping)
->=20
->=20 - put the page if it wasn't valid
->=20
->=20 - if it goes to zero, there's no destructor inherent in that
->=20
->=20 - everybody who sees it go to zero - optimistic or not - does the
-> "zero to frozen" cmpxchg
+    $ sudo ./damo start --probe_filter allow non anon
 
-The problem is -- the zero you've seen and zero you are trying to CAS
-can be different zeros if the page gets reused fast enough.
-(Or couldn't and I am just confused :) )
+Because the system is idle, nearly all memory is not an anonymous page
+but a free page, so the probe_hits are expected to be nearly always
+full.  In this setup, since the sampling interval is 5ms and the
+aggregation interval is 100ms, the counter value is expected to always
+be near 20.
 
->  - only *one* of those will succeed, and *THAT* triggers the destructor
->
->
-> IOW, the transition to zero is not special per se and has no
-> destructor. All it triggers is the "now we try to mark it frozen"
-> phase.
->=20
->=20At least that was my mental picture.
->=20
->=20Was I wrong? Am I just confused? Wouldn't be the first time.
->=20
->=20 Linus
->
+On kernels not having this series, if we retrieve the probe hits in an
+arbitrary time that is likely not aligned to the aggregation interval,
+the values are usually much lower than the expectation like below.  This
+is because the tool is showing the incompletely aggregated values.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000000000000000000000000000000000008999999711111111000000000000000000000000
+    # min/max temperatures: -1,630,000,000, 0, column size: 99.800 MiB
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 3.898 GiB   access 0 hz   age 16.300 s     probe_hits: 11
+    1   addr 3.898 GiB    size 77.859 MiB  access 0 hz   age 1.500 s      probe_hits: 11
+    2   addr 3.974 GiB    size 700.770 MiB access 0 hz   age 0 ns         probe_hits: 11
+    3   addr 4.659 GiB    size 791.078 MiB access 0 hz   age 13.700 s     probe_hits: 11
+    4   addr 5.431 GiB    size 1.472 GiB   access 0 hz   age 15.800 s     probe_hits: 11
+    5   addr 6.903 GiB    size 915.059 MiB access 0 hz   age 15.300 s     probe_hits: 11
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+After applying this series, I was able to reliably show the expected
+results like below.
+
+    $ sudo ./damo report access --format append region "probe_hits: <probe hits>"
+    heatmap: 00000000333333330000000166666665111111139999999855555555333333333333333444444444
+    intervals: sample 5 ms aggr 100 ms (max access hz 200)
+    0   addr 4.000 KiB    size 790.496 MiB access 0 hz   age 1 m 33.300 s probe_hits: 20
+    1   addr 790.500 MiB  size 791.160 MiB access 0 hz   age 1 m 15.400 s probe_hits: 19
+    2   addr 1.545 GiB    size 792.316 MiB access 0 hz   age 1 m 32.400 s probe_hits: 19
+    3   addr 2.318 GiB    size 795.465 MiB access 0 hz   age 1 m 2.600 s  probe_hits: 19
+    4   addr 3.095 GiB    size 797.102 MiB access 0 hz   age 1 m 23.500 s probe_hits: 20
+    5   addr 3.874 GiB    size 797.293 MiB access 0 hz   age 47.900 s     probe_hits: 20
+    6   addr 4.652 GiB    size 787.516 MiB access 0 hz   age 1 m 3.800 s  probe_hits: 20
+    7   addr 5.421 GiB    size 784.461 MiB access 0 hz   age 1 m 14.400 s probe_hits: 19
+    8   addr 6.187 GiB    size 795.621 MiB access 0 hz   age 1 m 15.700 s probe_hits: 20
+    9   addr 6.964 GiB    size 798.000 MiB access 0 hz   age 1 m 10.200 s probe_hits: 20
+    10  addr 7.744 GiB    size 54.566 MiB  access 0 hz   age 1 m 9.300 s  probe_hits: 20
+    memory bw estimate: 0 B per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+Patches Sequence
+================
+
+Patch 1 adds probe_hits counters for values that fully accumulated in
+the last aggregation interval.  This is required for using the moving
+sum infrastructure.  Patch 2 introduces a function for getting the
+moving sum values on demand, using the infrastructure.   Finally, patch
+3 updates the DAMON sysfs interface to expose the moving sum values to
+the schemes tried regions directory.
+
+SeongJae Park (3):
+  mm/damon: add damon_region->last_probe_hits
+  mm/damon/core: introduce damon_probe_hits_mvsum()
+  mm/damon/sysfs-schemes: set probe hits as pseudo moving sums
+
+ include/linux/damon.h    |  4 +++-
+ mm/damon/core.c          | 31 +++++++++++++++++++++++++++++--
+ mm/damon/sysfs-schemes.c |  3 ++-
+ 3 files changed, 34 insertions(+), 4 deletions(-)
+
+
+base-commit: 2c13bf619ad5282c48f178288dc632822d0629da
+-- 
+2.47.3
 
