@@ -4,102 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8A0CD98F6
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 03:36:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1F4BCD98F6
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 04:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E227D6B008A; Sun, 21 Jun 2026 23:36:18 -0400 (EDT)
+	id 713A96B0088; Mon, 22 Jun 2026 00:06:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD38C6B0092; Sun, 21 Jun 2026 23:36:18 -0400 (EDT)
+	id 6C5226B008A; Mon, 22 Jun 2026 00:06:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC4046B0093; Sun, 21 Jun 2026 23:36:18 -0400 (EDT)
+	id 5B3E16B008C; Mon, 22 Jun 2026 00:06:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 97D696B008A
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:36:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03635404FF
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:36:17 +0000 (UTC)
-X-FDA: 84906135636.14.B5A763E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1021A20004
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:36:15 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9Y5YTrg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 234586B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:06:43 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAE2D14054C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:06:41 +0000 (UTC)
+X-FDA: 84906212202.06.D2645BE
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E239A16000B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:06:39 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oHrwj+Sj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782099376;
+	s=arc-20220608; t=1782101200;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=07nQkqpBtDTLYno84Uq6wbRgR3YwoaOxYC/GqPDb5X8=;
-	b=3k6XKb3XSXIecAI1gJ8srTB8Fo5DDVCPO1NuwfvWpbxkNph9fbW52lTbq7f/PVNmo2JCPT
-	nqKHhKQ5utCqzCTXuFhRKz4LysyQgL0N9txreRvmimyNd0/o3g48IdjO6hzW9M9T3JkyeU
-	Y0dknAVzVlvSxVBRfR15vhikpdKNXRU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G9Y5YTrg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZUWyFEvXeVLfLgRyqSt5dzUpDWIXdvcmv/YrGiPhDm0=;
+	b=mzHjDRbBiSAZwL1TydIdmA48VfeHkKP1OcPOF0CFZ5n/K/T8/GZncrVvIP3Clonrc95ePf
+	5YkInEKZ5ZUJbNVusTBaYmy2BdmvU5QxWECFsVhEfX7MnPr19zNWRqK3hlolyvD9RNzH2r
+	lC9idAZ1z0Yh5Skmyj+iN4w2TNw3YOk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782099376;
-	b=qwyz/Z0Ij4FM412uJPo7Jxl+VtCnGe7TBfxkwrLyUL+twHo9S/SXM/9Jf9Am0U2v7/jYFQ
-	KSPHoaCgnBtjalfKsa3ZlHWLFMFBKuqLLFa3wVtBJKVFZJbkArr1YwVSeRWWEqZ+UFvyIL
-	r0l4Sm4gs04tp19xdEY2Ger3gw40XBw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DA92A444AE
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:36:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCE11F00ACF
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:36:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782099374;
-	bh=07nQkqpBtDTLYno84Uq6wbRgR3YwoaOxYC/GqPDb5X8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=G9Y5YTrgRYhnpS5NQO/2YIWIgnq7czbrsHBTxePpuwEYREyU0jwGo/kfkw4KmEU/W
-	 1duaFIlQVpWoARDVAYljRj4GWQL1Fkb30fAimVItrbv3eZxQzX6JjSTxGPHErZTmIS
-	 KBbZUSA8YjImY85+pBGhsXHlB+yfIZJqROaCUPTvdwOPD2HvYc8xA1Y9ShNHqjbzA1
-	 AOkEla1RDpO+6aAxtASPH0wAK/uOVL1QKfdqZ8z6tlai+7S56K4aGWQLrNUhLmIHeU
-	 OskzNF6tFF8K0CXZGeDFNXjkUsDP8g/v+1Dk27yN1bDf63GleB6BKJBClQSv7GmEhR
-	 cw5AmzG2oRkzQ==
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-9158643e538so352054785a.1
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 20:36:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ85WJC3YOppSz331vJUHDEhKtaCDdUaUzCSioHKg34rH/+9ZshwHYIXpBk92OUxadNk1rkZijL4eQ==@kvack.org
-X-Gm-Message-State: AOJu0YwkOytev3z6WkUuqRN76LwuzsF1GvM5+QoIsNjn31Y/VXb/E95q
-	oqq6WUUWgG7CUTCKrp2AA3c+Fpm1+Woc/vFASXXKKiYy/tjwLHSyaUGUYNw0DEr0Ehq3XESBTsS
-	oAXzx1sSR78Fabyo66GxL0/Fztd5AVvw=
-X-Received: by 2002:a05:620a:298d:b0:915:92bf:560f with SMTP id
- af79cd13be357-920d3379d9cmr1846790885a.36.1782099374017; Sun, 21 Jun 2026
- 20:36:14 -0700 (PDT)
+	t=1782101200;
+	b=n3fLzviVYwUHoDoQtynbvCBieOvFxd5MayMOdeGRxljwMiAqM8974OPkI/SMEwrkPwwS3H
+	F2xRO+U2Fl47Uc2SSYsltkcs6v59GG3Ff27+ZUYhg45vE06uuPL1g+FqITAM4Jxg3GCATK
+	fExRvEjUTuLSq5B4ysFzLVEhtva/6QY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oHrwj+Sj;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782101196;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZUWyFEvXeVLfLgRyqSt5dzUpDWIXdvcmv/YrGiPhDm0=;
+	b=oHrwj+SjzLCSYGSoHMsBlTyi/BPO1LYEAowZCiJy/BgfowxK1Nhv4wBnxGATzNJAQy2Usu
+	3Aui+a8Xl2VwYnUg4vaKt1jLEunHuuM12PdPzSO2e5i/XDE+X1RLFq1HeiZLctcF2EtPOU
+	pEKF/++lDxrY0G4TuBJvKoXJ/NqYwTU=
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Tejun Heo <tj@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-ntfs-dev@lists.sourceforge.net,
+	linux-fsdevel@vger.kernel.org,
+	io-uring@vger.kernel.org,
+	audit@vger.kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	live-patching@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	rcu@vger.kernel.org,
+	sched-ext@lists.linux.dev,
+	linux-mm@kvack.org,
+	virtualization@lists.linux.dev,
+	damon@lists.linux.dev,
+	llvm@lists.linux.dev,
+	chengkaitao <chengkaitao@kylinos.cn>
+Subject: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor state
+Date: Mon, 22 Jun 2026 12:05:30 +0800
+Message-ID: <20260622040533.29824-1-kaitao.cheng@linux.dev>
 MIME-Version: 1.0
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org> <6e89f868-ca7a-484f-aeea-5d8d029714f2@linux.alibaba.com>
-In-Reply-To: <6e89f868-ca7a-484f-aeea-5d8d029714f2@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 22 Jun 2026 11:36:02 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4w=nyJGn1uuwbMjG1JXG8TmiENBtzE0bXQN1Nd34ONdBQ@mail.gmail.com>
-X-Gm-Features: AVVi8CcIXqnC9P3rfAwFsBPHoY8IFpSmCdjLlRyd7eYchlLPB78bAQAhdNj-cQ8
-Message-ID: <CAGsJ_4w=nyJGn1uuwbMjG1JXG8TmiENBtzE0bXQN1Nd34ONdBQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: david@kernel.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
-	dev.jain@arm.com, kasong@tencent.com, lance.yang@linux.dev, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	ljs@kernel.org, npache@redhat.com, qi.zheng@linux.dev, ryan.roberts@arm.com, 
-	shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com, 
-	zhaonanzhe@xiaomi.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 1021A20004
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Stat-Signature: c3jp4isjuzr9t959y8ry34ogq9mfqxk4
+X-Rspamd-Queue-Id: E239A16000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qwtofrmk1mefzrihpofdgej9qtf4mzor
-X-HE-Tag: 1782099375-970750
-X-HE-Meta: U2FsdGVkX19t8bMBY2ReygMTeSbCAzWvPFsSSjM5HSMuZGbbxAb5G3tmVYFDASzTwOu6/Wuquu2y0TyLJGWS3CHQ6SFL8iOZHnfg+gWrGpl+CZ6iE1QNI6PRmX37hY71G/C1cjp5a2HT1jL2WDibWO9a67KI0Pzwj5u7vGKcsqW5EV7kL7DZ5KrOuAMcB1nJDar7qWU7//zguMjSwMkYfnO2aVI3dtE7l/bDPQfRODZIbOYSVtX6j0rYLNvu8EGGorUCTg6igZTLpKqUIrTcvXEGvyXZ5Sgngc7Ifbg+nAAThWpbwgoD7N0bWYV5B9KQAdglLHdULe8M5K2kSx/rMiwjVxmbfb5oqhipY1OKMbWF4IYxfNB2ajz5BsSj2/XXnsO28KtuJedbYvy7MJHqoU9iFISBhbbUPYdfUzD3hCn10nEEvd+Fj9QsUgz9M224cz5xIa20tnQlSNt5DtbmyKKKMMQjZUrNwowIgg23wF428C2IXIHl1cMSsLo4ZI+GdyfBgu5Pc4Uj/yxMpoMgKXyD1nFTddGEk4auDtequNTEjdXOcsqAFL1Au6hz9LFB71COaPXEcjCCt+nKuie2dEPvjP/oXiwd1Y93RLlge8ylHopbEbPvHRPG3yBJewEtf1zztYIDiQx1r0O35ouP8ud1pkesXAdcJ3qtdlkaGcA6nMHAcvd51wH4HJikmXWDKR3m9HKdxsWNpFBLlj/JT9S+Hk0zS6wU28yblEF4Hg2ayFZa8B44k8sJGGHjc/8f+E1Meeo3u00LD8VSb6F2Ih36iNW4DrpnEpuGMftoU7qnrgg2WAoNGpF2J/njIrliqpP0bQyfHxzIrNMVyxm6zoq+zo+qX23UgBQ1L1jT0kWM3aWjPfTy0zFz5AXaZjJQdRUlYGwuUGNNjaM9irzo9pma3QIVsUVXpWtLJRffSje+0IYzTCL1qApeTpLHyas8qWa3aUlzVbZ99BY4FHq
- fcF3H5Ee
- 4nc3O0IFcS4fNp8CfRTENrJNAZ996IBUtWZwNAkIs9SDgtsdqkBgK/fvIDZgzC3u6L76/tBDnU0kwG4SSoSQkAkcATLzuOrhmVNIwf3GBjbtbWeZKGiKv70CTANVrK5BzMSPnzQ7/WAg4Z8ygNjjpTd3frCRLWr30gT/WL/Rj5W1OF/yFGLrmPcn7GGlTd0KYeba5uxH0s8ClbYiT5RQhdq4bVIlHM6mYkBYmpjFaLsLFv5oZRgO6SlMNWu977lObM57XiOigIAvzqqP3KsjuRfoft/cWpo2dV5qUHwcuNJgvtqNkume/dffP3YY7K8kHVY0g+pigbWvZuaY=
+X-HE-Tag: 1782101199-185960
+X-HE-Meta: U2FsdGVkX192RMAVdevf5ZtHzT28w5+66j3yxzmjRplgFl2LEFhsjmxcVJWzFmEuN9edc2kX9whJaoFy/I99qM//tEkwbNJXdlBHyFj9xgd2x4nNzvsAlkc1skhB0hw7+h5xZioPrr5ce+mSraLry8VJqfVM6V+Jk7xh+rNoCqPqzfdGUwrl/qrerN7GpC99t7ZFb3eH5Gpgo8FB6Aj90065du4s075NLEJ0n/DgH8N/2rha3I9Jvv39Q2ksn9UjeMBtRvJTTXZdQFZbhgezkzA+eLwQF29vqZNAz1EN/yXXGZNqfQukJh9Ilven3kobzdpKymSzWjFK0Ji0E5Rq/RpjjQr/ZtoHXHZFiJR8U9Yc3y60u6auYBrvnuKhTU8UwCFIIU6bKWDFqwVgNd83z3LUbDYJJAyg9JLQNyJtfbJ7RAWfVYNuAtBZeHdtwEnHfo85FKqZEQ1/YcclEYAg2J01QLgrRA+Ypa1egx7yWpE31b5wuNGv0Qfym6/19J32imBAkcLtGleVPNBSsCl9+5ZM3P2sTDszng4YPs9wbbftUak7Quxtd7AK7rmgg7eobJZUo42qRXXeHQLt6RCEPe9VOvUubq33WikZ2PAWGuFYB9dgntWLAP9rj4bp5VsRa6TvD4qDTKtFd+MktPSvPKYEfdAIenl6g0QkDQ6rC1gzeWQIvRVSA06Lz+LrgCHPoXDPHNqZa6dWlds7/tL0/MpeP6HuGH65KWQ3o4z0lUgrMwruJocvR4ouJCLt8RH426c/WWfwpymZp3zhuOB0FGjuKAjfOmJ27NDsRiII1bFAGylVYC4sJcgOZZDwOU5OUtFWePsOKoeWMmNXrAM1zDvn+NOeydNYDT4G1sqZv4/uPXlSZR+7o0F8ofi6yOz7nwp3TTwOl0KAF/gq+DwVnCRD9EzZrkLAB+to3Htfg42qS+Ni68xhzd6Jj0V/aCt/EXWMgDH6iF/yhbYl+9w
+ dwGgF+75
+ Vn0hxnD6ePbQoWr8cMyxfcjtr1HNOESZEWyKBt5rXzhFWqH+HPJyOt8OObvm7Ax3WRo7PJn+6cnadmgQXQoquAu/83iRbMTkPcxlELOiBfnIsIvEI34tFiYl1HK2kuLQDv0+VYguyh/KS/dQdrbmW8AYhlYIdjQwMboDBh3WnK3Uq4m3FqQF/e1vuv4t/I5lNXy2Q7aqyelOJl18QlGQlWlYHm2wNqTDnaEnAC2XXw15gNmTX55hE0NtEUC/BzWIBI5nf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,130 +132,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 11:04=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 6/20/26 4:10 PM, Barry Song (Xiaomi) wrote:
-> > On Fri, Jun 19, 2026 at 10:04=E2=80=AFPM David Hildenbrand (Arm) <david=
-@kernel.org> wrote:
-> > [...]
-> >>>        /*
-> >>>         * The page can not be swapped.
-> >>>         *
-> >>> @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct li=
-st_head *folio_list,
-> >>>
-> >>>                                if (!folio_test_large(folio))
-> >>>                                        goto activate_locked_split;
-> >>> +                             if (!__can_reclaim_anon_pages(memcg, sc=
-))
-> >>> +                                     goto activate_locked_split;
-> >>
-> >> Why are we even trying to allocate swap space if we cannot reclaim suc=
-h pages?
-> >> Makes we wonder whether we would want to have that check earlier, befo=
-re the
-> >> folio_alloc_swap().
-> >>
-> >> Any downsides?
-> >
-> > I don't think there are any obvious downsides there. One issue is that
-> > the memcg may not be passed from reclaim_pages(), so memcg would
-> > always be NULL. However, the folio could still belong to a memcg
-> > whose swap quota has been exhausted. In that case, my
-> > __can_reclaim_anon_pages() will fail when checking whether we can
-> > swap out. But switching to folio_memcg() also seems awkward.
-> >
-> > So I feel Kairui=E2=80=99s suggestion [1] might be the best approach. I=
-n
-> > folio_alloc_swap(), we return -EAGAIN to tell vmscan.c that
-> > we can split the folio and retry the swap-out.
-> > only when there are sufficient swap slots and sufficient memcg swap
-> > quota do we return -EAGAIN, allowing vmscan to perform a split.
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index 78b49b0658ad..62e2c506ccae 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -1755,6 +1755,9 @@ int folio_alloc_swap(struct folio *folio)
-> >                       VM_WARN_ON_ONCE(1);
-> >                       return -EINVAL;
-> >               }
-> > +
-> > +             if (get_nr_swap_pages() < (1 << order))
-> > +                     return -ENOMEM;
->
-> Shouldn't this return -EAGAIN? Suppose we try to swap out an order-9
-> large folio but get_nr_swap_pages() returns 256, then we'd still need to
-> split the order-9 large folio to reclaim some memory.
+From: chengkaitao <chengkaitao@kylinos.cn>
 
-I guess Kairui has the opposite view. Quoting Kairui:
+The list_for_each*_safe() helpers are used when the loop body may remove
+the current entry.  Their current interface, however, forces every caller
+to define a temporary cursor outside the macro and pass it in, even when
+the caller never uses that cursor directly.  For most call sites this
+extra cursor is just boilerplate required by the macro implementation.
 
-"- 1. the mem_cgroup_try_charge_swap in it failed
-- 2. allocation failed but nr_swap_pages > folio size
-- 3. allocation failed because all devices are full or unusable
-(roughly nr_swap_pages < folio size)
+This is awkward because the saved next pointer is an internal detail of
+the iteration.  Callers that only remove or move the current entry do not
+need to spell it out.
 
-Only case 2 requires splitting. __can_reclaim_anon_pages also checks
-demote which is not related to swap."
+The _safe() suffix has also caused confusion.  Christian Koenig pointed
+out that the name is easy to read as a thread-safe variant, especially
+for beginners, even though it only means that the iterator keeps enough
+state to tolerate removal of the current entry.  He suggested _mutable()
+as a clearer description of what the loop permits.
 
-For example, if get_nr_swap_pages() returns 1, we can only
-swap out a single page after splitting. Is that really worth
-it? On the other hand, if it returns 256, we could at least
-swap out half of an order-9 large folio. Isn't that worthwhile?
+Add *_mutable() iterator variants for list, hlist and llist.  The new
+helpers are variadic and support both forms.  In the common case, the
+caller omits the temporary cursor and the macro creates a unique internal
+cursor with typeof(pos) and __UNIQUE_ID().  If a loop really needs an
+explicit temporary cursor, the caller can still pass it and the helper
+keeps the existing *_safe() behaviour.
 
->
-> >       }
-> >
-> >   again:
-> > @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
-> >       }
-> >
-> >       /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
-IL. */
-> > -     if (unlikely(mem_cgroup_try_charge_swap(folio)))
-> > +     if (unlikely(mem_cgroup_try_charge_swap(folio))) {
-> >               swap_cache_del_folio(folio);
-> > +             return -ENOMEM;
-> > +     }
-> >
-> >       if (unlikely(!folio_test_swapcache(folio)))
-> > -             return -ENOMEM;
-> > +             return -EAGAIN;
-> >
-> >       return 0;
-> >   }
-> > diff --git a/mm/vmscan.c b/mm/vmscan.c
-> > index 299b5d9e8836..63e8578454ea 100644
-> > --- a/mm/vmscan.c
-> > +++ b/mm/vmscan.c
-> > @@ -1257,6 +1257,8 @@ static unsigned int shrink_folio_list(struct list=
-_head *folio_list,
-> >                */
-> >               if (folio_test_anon(folio) && folio_test_swapbacked(folio=
-) &&
-> >                               !folio_test_swapcache(folio)) {
-> > +                     int ret;
-> > +
-> >                       if (!(sc->gfp_mask & __GFP_IO))
-> >                               goto keep_locked;
-> >                       if (folio_maybe_dma_pinned(folio))
-> > @@ -1275,10 +1277,10 @@ static unsigned int shrink_folio_list(struct li=
-st_head *folio_list,
-> >                                   split_folio_to_list(folio, folio_list=
-))
-> >                                       goto activate_locked;
-> >                       }
-> > -                     if (folio_alloc_swap(folio)) {
-> > +                     if ((ret =3D folio_alloc_swap(folio))) {
->
-> Also, please give shmem some love (shmem also calls folio_alloc_swap()
-> when swapping out) :)
+For example, a call site may use the shorter form:
 
-Sure. I'm pretty sure I love shmem. :-)
+  list_for_each_entry_mutable(pos, head, member)
 
-Best Regards
-Barry
+or keep the explicit temporary cursor form:
+
+  list_for_each_entry_mutable(pos, tmp, head, member)
+
+The existing *_safe() helpers remain available for compatibility.  This
+series only converts users in mm, block, kernel, init and io_uring.  If
+this approach looks acceptable, the remaining users can be converted in
+follow-up series.
+
+Changes in v3 (Christian König, Andy Shevchenko):
+- Convert safe list walks to mutable iterators
+
+Changes in v2 (Muchun Song, Andy Shevchenko):
+- Drop the list_for_each_entry_mutable*() helpers from v1 and make the
+  cursor change directly in the existing list_for_each_entry*() helpers.
+- Open-code special list walks that rely on updating the loop cursor in
+  the body, preserving their existing traversal semantics.
+
+Link to v2:
+https://lore.kernel.org/all/20260609061347.93688-1-kaitao.cheng@linux.dev/
+
+Link to v1:
+https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
+
+Kaitao Cheng (7):
+  list: Add mutable iterator variants
+  llist: Add mutable iterator variants
+  mm: Use mutable list iterators
+  block: Use mutable list iterators
+  kernel: Use mutable list iterators
+  initramfs: Use mutable list iterator
+  io_uring: Use mutable list iterators
+
+ block/bfq-iosched.c                 |  17 +-
+ block/blk-cgroup.c                  |  12 +-
+ block/blk-flush.c                   |   4 +-
+ block/blk-iocost.c                  |  18 +-
+ block/blk-mq.c                      |   8 +-
+ block/blk-throttle.c                |   4 +-
+ block/kyber-iosched.c               |   4 +-
+ block/partitions/ldm.c              |   8 +-
+ block/sed-opal.c                    |   4 +-
+ include/linux/list.h                | 269 ++++++++++++++++++++++++----
+ include/linux/llist.h               |  81 +++++++--
+ init/initramfs.c                    |   5 +-
+ io_uring/cancel.c                   |   6 +-
+ io_uring/poll.c                     |   3 +-
+ io_uring/rw.c                       |   4 +-
+ io_uring/timeout.c                  |   8 +-
+ io_uring/uring_cmd.c                |   3 +-
+ kernel/audit_tree.c                 |   4 +-
+ kernel/audit_watch.c                |  16 +-
+ kernel/auditfilter.c                |   4 +-
+ kernel/auditsc.c                    |   4 +-
+ kernel/bpf/arena.c                  |  10 +-
+ kernel/bpf/arraymap.c               |   8 +-
+ kernel/bpf/bpf_local_storage.c      |   3 +-
+ kernel/bpf/bpf_lru_list.c           |  25 ++-
+ kernel/bpf/btf.c                    |  18 +-
+ kernel/bpf/cgroup.c                 |   7 +-
+ kernel/bpf/cpumap.c                 |   4 +-
+ kernel/bpf/devmap.c                 |  10 +-
+ kernel/bpf/helpers.c                |   8 +-
+ kernel/bpf/local_storage.c          |   4 +-
+ kernel/bpf/memalloc.c               |  16 +-
+ kernel/bpf/offload.c                |   8 +-
+ kernel/bpf/states.c                 |   4 +-
+ kernel/bpf/stream.c                 |   4 +-
+ kernel/bpf/verifier.c               |   6 +-
+ kernel/cgroup/cgroup-v1.c           |   4 +-
+ kernel/cgroup/cgroup.c              |  54 +++---
+ kernel/cgroup/dmem.c                |  12 +-
+ kernel/cgroup/rdma.c                |   8 +-
+ kernel/events/core.c                |  44 +++--
+ kernel/events/uprobes.c             |  12 +-
+ kernel/exit.c                       |   8 +-
+ kernel/fail_function.c              |   4 +-
+ kernel/gcov/clang.c                 |   4 +-
+ kernel/irq_work.c                   |   4 +-
+ kernel/kexec_core.c                 |   4 +-
+ kernel/kprobes.c                    |  16 +-
+ kernel/livepatch/core.c             |   4 +-
+ kernel/livepatch/core.h             |   4 +-
+ kernel/liveupdate/kho_block.c       |   4 +-
+ kernel/liveupdate/luo_flb.c         |   4 +-
+ kernel/locking/rwsem.c              |   2 +-
+ kernel/locking/test-ww_mutex.c      |   2 +-
+ kernel/module/main.c                |  11 +-
+ kernel/padata.c                     |   4 +-
+ kernel/power/snapshot.c             |   8 +-
+ kernel/power/wakelock.c             |   4 +-
+ kernel/printk/printk.c              |  11 +-
+ kernel/ptrace.c                     |   4 +-
+ kernel/rcu/rcutorture.c             |   3 +-
+ kernel/rcu/tasks.h                  |   9 +-
+ kernel/rcu/tree.c                   |   6 +-
+ kernel/resource.c                   |   4 +-
+ kernel/sched/core.c                 |   4 +-
+ kernel/sched/ext.c                  |  22 +--
+ kernel/sched/fair.c                 |  28 +--
+ kernel/sched/topology.c             |   4 +-
+ kernel/sched/wait.c                 |   4 +-
+ kernel/seccomp.c                    |   4 +-
+ kernel/signal.c                     |  11 +-
+ kernel/smp.c                        |   4 +-
+ kernel/taskstats.c                  |   8 +-
+ kernel/time/clockevents.c           |   6 +-
+ kernel/time/clocksource.c           |   4 +-
+ kernel/time/posix-cpu-timers.c      |   4 +-
+ kernel/time/posix-timers.c          |   3 +-
+ kernel/torture.c                    |   3 +-
+ kernel/trace/bpf_trace.c            |   4 +-
+ kernel/trace/ftrace.c               |  49 +++--
+ kernel/trace/ring_buffer.c          |  25 ++-
+ kernel/trace/trace.c                |  12 +-
+ kernel/trace/trace_dynevent.c       |   6 +-
+ kernel/trace/trace_dynevent.h       |   5 +-
+ kernel/trace/trace_events.c         |  35 ++--
+ kernel/trace/trace_events_filter.c  |   4 +-
+ kernel/trace/trace_events_hist.c    |   8 +-
+ kernel/trace/trace_events_trigger.c |  17 +-
+ kernel/trace/trace_events_user.c    |  16 +-
+ kernel/trace/trace_stat.c           |   4 +-
+ kernel/user-return-notifier.c       |   3 +-
+ kernel/workqueue.c                  |  16 +-
+ mm/backing-dev.c                    |   8 +-
+ mm/balloon.c                        |   8 +-
+ mm/cma.c                            |   4 +-
+ mm/compaction.c                     |   4 +-
+ mm/damon/core.c                     |   4 +-
+ mm/damon/sysfs-schemes.c            |   4 +-
+ mm/dmapool.c                        |   4 +-
+ mm/huge_memory.c                    |   8 +-
+ mm/hugetlb.c                        |  56 +++---
+ mm/hugetlb_vmemmap.c                |  16 +-
+ mm/khugepaged.c                     |  14 +-
+ mm/kmemleak.c                       |   7 +-
+ mm/ksm.c                            |  25 +--
+ mm/list_lru.c                       |   4 +-
+ mm/memcontrol-v1.c                  |   8 +-
+ mm/memory-failure.c                 |  12 +-
+ mm/memory-tiers.c                   |   4 +-
+ mm/migrate.c                        |  23 ++-
+ mm/mmu_notifier.c                   |   9 +-
+ mm/page_alloc.c                     |   8 +-
+ mm/page_reporting.c                 |   2 +-
+ mm/percpu.c                         |  11 +-
+ mm/pgtable-generic.c                |   4 +-
+ mm/rmap.c                           |  10 +-
+ mm/shmem.c                          |   9 +-
+ mm/slab_common.c                    |  14 +-
+ mm/slub.c                           |  33 ++--
+ mm/swapfile.c                       |   4 +-
+ mm/userfaultfd.c                    |  12 +-
+ mm/vmalloc.c                        |  24 +--
+ mm/vmscan.c                         |   7 +-
+ mm/zsmalloc.c                       |   4 +-
+ 124 files changed, 875 insertions(+), 681 deletions(-)
+
+-- 
+2.43.0
+
 
