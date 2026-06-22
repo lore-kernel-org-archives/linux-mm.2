@@ -4,96 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB30CDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E8ECCDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:04:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 437356B00AD; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
+	id 375E76B00AE; Mon, 22 Jun 2026 06:04:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E7666B00AE; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
+	id 324F46B00B0; Mon, 22 Jun 2026 06:04:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AE746B00AF; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
+	id 1EDCF6B00B1; Mon, 22 Jun 2026 06:04:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E1CDE6B00AD
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:03:03 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 648A11A05A6
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:03:03 +0000 (UTC)
-X-FDA: 84907110246.26.B3E648F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DFD3516000B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:03:00 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NEgMjxC0;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782122581;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E20956B00AE
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:04:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6745C8FE08
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:04:00 +0000 (UTC)
+X-FDA: 84907112640.03.73BF688
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010011.outbound.protection.outlook.com [52.101.201.11])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3F68CA0008
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:03:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=JJWVgDdW;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.11 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782122637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=UrHVrGWtF0Gf9axzojlu+m2wABX4E9aeOydc2iHLOQk=;
-	b=USgje+/0ITshAX1bQI7e7QNPd92aViezP8xGnAIkxFhyMf1chOXJizzNiDG7EFdaDm0o5N
-	E29L5qrIfkDAHZSZULGlPC4xiND5brKNvGiv+iZzsHGMJRKnVbVgodO/bmlf1ZVvWU99sy
-	OG/SLD7coiv2Y0BbijHGvQMtvl7vh5w=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NEgMjxC0;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782122581;
-	b=8CqXfacO5AwjY8qa3ucRoDcunYvLGnxY9FzkOBigpPXTAoyrre+Ob+SwL7IzMs0USpm/5U
-	ZASx+3/OxdmKIGUX1EVu6PIEkT2DE83/+okUhUTnaJVgAQSll9l+ztqxyXxUXkvss9rhHz
-	B+ocSC0O6M0KuVwJrYPokq6UWOkKVYo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782122581; x=1813658581;
-  h=date:from:to:cc:subject:message-id;
-  bh=Ezw24O3pUNhcPccP+K5QyJauFSYVPD58ql9Js7X+gak=;
-  b=NEgMjxC00/pSqrCOvZArKPI5RBLEOrU4hWh9z8UNevLQbiDY/c1CeTLX
-   aTroECqtcoKUAoEW/1DgNlXZWs01alrBezKyBa6nmT08HzgpmOWPxDJAi
-   mAB7Jl42BPYV7KlyvPV45W4IY3VR/xFTFUGQhHIdTRULUZ09ueQTpDg7c
-   FvgukATcgyOjoWb+oyKZqMkFw6j1FoPAgOSNyz8d2nUX2O3xsgtku0Eln
-   uvUD8y11bbfgQuXvdd6qY23mKA0ZM49h1i7OaWuboBA3lPMQIvAu/t2xs
-   oKB26dacLiRt4KZRK0Om8kgfkS5v5jj25T9kUa7w7UU0CS4j2mi4uU7N4
-   Q==;
-X-CSE-ConnectionGUID: tq+evsFHRIKT1KFn4qgOlA==
-X-CSE-MsgGUID: m4c/zOc4To2K3901mtQ0xA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="86530614"
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="86530614"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:03:00 -0700
-X-CSE-ConnectionGUID: NiZXPYDIQV6LgEF1AF4ZOw==
-X-CSE-MsgGUID: Vaz+0ArVSouJz/efK/c68Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
-   d="scan'208";a="253521981"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 22 Jun 2026 03:02:58 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wbbUS-000000000xF-18Hy;
-	Mon, 22 Jun 2026 10:02:53 +0000
-Date: Mon, 22 Jun 2026 18:02:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
-Message-ID: <202606221720.CGRCyQ8e-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Stat-Signature: ummtbq6yiew1f9j76b6wyxso8dwz366c
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DFD3516000B
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3evS3VzYp4BwjqPPu3MHdkTGH2pYc+YL2ehIm8IgBHY=;
+	b=4GOa0jDs+/Ko5rz/q/1UBE2OeXV15FJFjnKAgH08UAGNpSPBSyykCGwKRGCGCHGEa7lcOs
+	BZPxyBxWng/DdhezlXd80NA7ecERSBhPi/aqRxBOgxWinfxiptWlPQHhyjrz+kOx7wwvlF
+	f/GhSbP+fW85Jn8p6WAigBiSI0mbY4Y=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=JJWVgDdW;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf15.hostedemail.com: domain of shivankg@amd.com designates 52.101.201.11 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782122637;
+	b=45sTaWi2F82qiu7S9NoX8Fsd7hOE2JoE7igmeIpDd58h7PUnW+Z4A36ICBsvSWgv2sPPuu
+	tJrM3EsQmMxclcA57huFNRg4Qvn7luJFcUw5krtMrR/OwIiMv1ev9jg49BAGl5fIYMb+xV
+	Glr+/p9evJO3DZc8UFsuLia0ZvcsbPE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ffCWt3pBMpR6cSxg0Yia8YC6UrBDHnw8lHCba0wX70GZOIa9wMqE67y8rQqHLAvDZLcLdmseJye+PvB7JGqa8SX4yd85uMNG1jo+uaEYS4Iq8XO1B207YhjrWqUR9dYZhT2iTphAh0pnkB6rS4ZrxwllxyOXio/2nYPhWqOW2ckJIUD3I7cY5FegbHJbHlMIRi6R5USEHhxiEPfvTBvbw75Zl+saSmHZbcPvONAGBn4KDF3TWNNjmSn3m+QF+kWc+O9+bwo8Dukxsyg+sdMASNiMATY/RKxbaeHwz8ktJSofdHixQcPKVb7UiqjXxwrzOT48Nm3nh3n1rLvRMbccyQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3evS3VzYp4BwjqPPu3MHdkTGH2pYc+YL2ehIm8IgBHY=;
+ b=N03iOsoEFTBks4/NojQMx7pr/oKb1iDGvDB8aXxtLHIkthyexi5LTanDrgY6nrir7k817Z4jbDNU0/1JuSyH9tMc2De4k+hbNHcYSpewYasPFgQN+U8NKX/ydwAjzs/UuY4FOBBgvv1I/avA1JPCSL1BIqXYoIGu8L4s6NzoEuch/olTrTusBRzgqZRq+d25ZHX5zICUekcAb/pcpwvhINwjqCag6vIZ1pC4MPJ4TAj7x1ySYRzXdZ5w+txk1WdKaoLGUovN+NJtIH+RyMr8My5kqv/cKeLtYRX5XZbXX7Xk/HfpXyEotumd1WFASeLmGc7McCfdHMSA2Gppvo+GSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3evS3VzYp4BwjqPPu3MHdkTGH2pYc+YL2ehIm8IgBHY=;
+ b=JJWVgDdWgXZkrSopk8CVnHsK4D7RLos26loXETPPPlMuEtyxAiGHoze7pctqWrpXm8JwtGHCfglaOFX6vDnDlQQivRXTW0lhYtv4yncdUQ/Lq0+xF5yQt4YXoryGaVEwWeq+vtt8Bqlic3m18cNGxG4y4FUKcaIuPwT3P7Zl2FE=
+Received: from BN0PR07CA0003.namprd07.prod.outlook.com (2603:10b6:408:141::15)
+ by SA1PR12MB7223.namprd12.prod.outlook.com (2603:10b6:806:2bc::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.21; Mon, 22 Jun
+ 2026 10:03:45 +0000
+Received: from BN2PEPF000044A1.namprd02.prod.outlook.com
+ (2603:10b6:408:141:cafe::a9) by BN0PR07CA0003.outlook.office365.com
+ (2603:10b6:408:141::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.139.19 via Frontend Transport; Mon,
+ 22 Jun 2026 10:03:45 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF000044A1.mail.protection.outlook.com (10.167.243.152) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.159.10 via Frontend Transport; Mon, 22 Jun 2026 10:03:45 +0000
+Received: from [10.128.114.94] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 22 Jun
+ 2026 05:03:34 -0500
+Message-ID: <054690e9-9113-49a6-844b-79d85045a3db@amd.com>
+Date: Mon, 22 Jun 2026 15:33:31 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/7] drivers/migrate_offload: add DMA batch copy driver
+ (dcbm)
+To: Karim Manaouil <kmanaouil.dev@gmail.com>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>, <kinseyho@google.com>,
+	<weixugc@google.com>, <ljs@kernel.org>, <Liam.Howlett@oracle.com>,
+	<vbabka@kernel.org>, <willy@infradead.org>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <ziy@nvidia.com>,
+	<matthew.brost@intel.com>, <joshua.hahnjy@gmail.com>, <rakie.kim@sk.com>,
+	<byungchul@sk.com>, <gourry@gourry.net>, <ying.huang@linux.alibaba.com>,
+	<apopple@nvidia.com>, <dave@stgolabs.net>, <Jonathan.Cameron@huawei.com>,
+	<rkodsara@amd.com>, <vkoul@kernel.org>, <bharata@amd.com>, <sj@kernel.org>,
+	<rientjes@google.com>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
+	<dave.hansen@intel.com>, <hannes@cmpxchg.org>, <jhubbard@nvidia.com>,
+	<peterx@redhat.com>, <riel@surriel.com>, <shakeel.butt@linux.dev>,
+	<stalexan@redhat.com>, <tj@kernel.org>, <nifan.cxl@gmail.com>,
+	<jic23@kernel.org>, <aneesh.kumar@kernel.org>, <nathan.lynch@amd.com>,
+	<Frank.li@nxp.com>, <djbw@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+References: <20260428155043.39251-2-shivankg@amd.com>
+ <20260428155043.39251-14-shivankg@amd.com>
+ <20260619160725.lfcxrbj5go67qy6u@wrangler>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20260619160725.lfcxrbj5go67qy6u@wrangler>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A1:EE_|SA1PR12MB7223:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7e435ef-f0ca-49d6-9c8e-08ded0458c4b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|23010399003|82310400026|7416014|376014|22082099003|4143699003|18002099003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info:
+	ghe90NWyNHd1mRsS+1qEwBMOaXNipXWNt/WJmK0PmCqeaRMcN7ri6qV97SMmK/IuoXDTvhX98iEqt8GRrNJbavX7hfJ3D+VzvCUIXrRM6S3RQ2L6n3W8DFw1NJe+5CQk/mIMJszW2l1q7X9zIJ/0YLpZUbys0+qTfeLkwB7yx171UlkvnYloMfn2h4mTXZ0Tr/BzQX9Wn2fWiZv1C0EFFd0no0fxh8hWMZuXuxZYhz+P5pfYT9hH7ds1J1bwC5qurBdkCnrCFauX64T/5HZlTaYvziAH7FlNkNtHQcxxPozTlyZ/b+0WQUwtTPo/rXSLxelJspttczM++mMscflpVEM1g/lnk3a3dvoboD+T6AGWVNb7MpkXDtL7LGwUWiW9Uz1NH9Jza85jkIRhPFtdHU3YMvsK01kOtbqnyY8FKsi1VFY1X8ADWq8++G9dH1dScf6btKgKIhfw9+TWaxYJTOQ5wsAv9JfZX6pGIzSq6LVpXtcvgO/mfrFMtMfNIgGU/qdMwnP1CHtUvuOepDVywEoDMOiNJz7pYV+jqPE5rJa46Eb86sjyeelqbaPw5hb8Rl146pCzct6noD9wNBsSbLOVnPza4z/6+ORZtgblTxkaMlpy56jeazYIS3LewaQYetHH1P3+YmJtBjDu3dluocyqVgrXLVQ656wYMg6/hp4EqvpRKEr7BS6wn/6pNF1GKvs+7ZX6BIY4mSQluvxhAQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(23010399003)(82310400026)(7416014)(376014)(22082099003)(4143699003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	89BC22yfbQ4cp/TOlts4raiKo6M8y46/ruT1cbIyozAL+J3OTlPXRu6C8nTCM6hbwOLkl2SghWo5RYDHxWeh1mygnH6iEDHm2TtB7XEvgqBg5kpCVy5nFl3cqvZeMm0RtT5a0XFIepyJXucggrwpHyHkOZYTkaMgHRfBR+8cZqAiJeudh91GzJFUVvOqC2rAxMyUrWCfPxaixogcb85YoyvecAXed83Ijl6611Hkfra8s2qR9/UzclXgqk0+rVDgxWOm1Pim5DaJasCXs+fRFgSiVrkN0Jak99ST8CreJsBFhy8zMMgEtj2UP5pAmJ9PjQkil6fBrqx7titDmpsQvfdtH/QKSdQ1EaS3OGtjyOPgX716ixivXHcIB+9Xq3quyskn7FTSp7Y1pAEp02EpYDdCtQy022/iEsG28GkC+axDLfiobx7v4vsaXVwtklaO
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 10:03:45.7850
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7e435ef-f0ca-49d6-9c8e-08ded0458c4b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A1.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7223
+X-Rspamd-Queue-Id: 3F68CA0008
 X-Rspam-User: 
-X-HE-Tag: 1782122580-565501
-X-HE-Meta: U2FsdGVkX195nfTY2du/G945eqJu9gZ8so5ySWcSGJDBNFcIdOXtGNhustisZ9NOjoiYaIy7kiM4ukBzSg9Ie6CUgosoyWL4bx2KoEjOXAZ9wgtyR8nUFnLSXE4rtRV4w4YL+MOmAOLKqMdV7nypi87Q4hxGp/u8hftrycHjNrAtCQhiKEwZWwGznzvgY12w6JufT1h5mnIac+gtXqAmKbNZaUwh3Ya+B/MFMBhHs613mTgzR2lsQfl1GkX0hvY7NmzA9JHoJVUdETOmaKB+eCk/U85AlqX9XEjNYWZhag1jbggyIUPzaB8OilKOQCXegNPsVybGiHL794bndJYqkCWCtYexYFlR9ZIA5S3fMtfQxODm/qQ36XOpxH7/O0XRdLYjaOETEIJnFg0Ybx+8jZ9ZJgMafneElbxWh20fqoTSh6rQBPcSYEdGCEarTjGFxjPB2+Na1gbWthDRdrMqSq7+7gGKcbD9hIpILj6lwmaKU+p7MaF91BMnvZgRGSajRb5TFoGwiBr3qBgthPxQ1H5cRkNatUVhHTYYIBY5l6DVgBuupwbhYwoVfKzBoiVwq+QEY4EvxYyd8PqeiANmmjNkWUcuC2eKtmOXa8+c4JAlwenSLylgJxlbxkFtJAZJqTQTaxOoregXjmYhcG5jeSv6QK9tHltxR6+GBGH64tWPySGgLp8uyzf+HZ7/huJ+SLsVzFj0D1rC65oMJeO5S3r4dNhDxfuRL0m+WMHQrqutJXuv6Q2fQDb9RBQp4R4n5eee23RVtC2Rp1idBf1cGCzaLfFQ5R5FTNmLNthNF2jrS58BVAtstHD4bi8aj39xUBBslou+SLchAOOMYYUpHuDKCid/niNt4awz89SyN7EQfinEGrRC3SicklXIyfO+BNjt4Z7XUOxiaxUHXlif2+3eP9pETcwr42H8af8eO+IuRDLCA73cs5hFOEpkqBAXwh9lfCAcMJ+kXaTWm4J
- 3TyhUPNd
- xWMqn0MejKyZta/TmClgQuSWZ/yoJZRWivbO5MOMcQX9SE/i1xu9tMqTKbJYmICM3vo//KJtFWTC2Yiq/CXr6uru2gmI5nOT8B5ft9R/4JGX2tdksPcDz6QLSevRSHHGbIt6VazObZ3SjmtwGNhfhqsa+maMiy0nmEv9mLGV0Zp8g2Eul4Es/5D4+cMU1BVqqF7sz/4GL6eULbSxi0mDreXB/ulPjXtgz+XF9rJpvkEhj9gePLg4CDjKA7nEwDA0S0etNYhb0SvYq6G/yFb/mdUV/bDWXTawJN60S
+X-Rspamd-Server: rspam09
+X-Stat-Signature: w8sew5fuc8cohkahj574q7ppe7daitrs
+X-HE-Tag: 1782122637-182669
+X-HE-Meta: U2FsdGVkX1+ryI05h01ETRnESLT6BQgYTA5+ZKEHn8g0oxemU2uwbPQNfVlO754SD+2D16VAyMfOavoUDL46ndKfTUj++4g9gE88d9J7ARh73pDTnehyzNH0AXjUZyusOENYjcWEgSuvadMlztgPdpAfbmq1msEK2oj76lvIHN6jmuclFmFoEMah+OOwVDfnF4CT4Qyvn3/xFS7OlJB8MfCfKHZ6oIlcwMTsP01xswJ1BXn/Qmzfjwy2upMXU/0CnEgqpnnUG8oIwJkp51M0qz6val/p1PvdflMzchyOugQCXSXbiMULuTz4QNhfIUkKf7PRWYHsuTHpzslhPEzdWOLmyVRcSgfdGmGnRAyg//ubwNPQf8eaTVSWd8MAxFBoVooM7OAUDR792Zimek1EYzfCkUEs4gJ9I2ZkASF+IEerGtKoVkMYxMeDL+bUOssxs8j4hNDsvE/9o/mOMyCCO1+nUcc8uVAhP2jTF2mw3tVYwXBok+eBgLSFzQ1Y4m2dC/JboQ7PHa+V19edvctAaWOk6MoEZzbJQs6srDuUw0m0j5VFjsrysto+uomQt4oj03Jo1M2o2i4IV2t7IC7V7wV7n1zTbv9tk71YFkP83Ql3w0VkSK3Z02aL3k2Xg1zRiGjPDy1KBeTF1clMcS9FScezfNYJ2b9XTTaXBA299dGLQueroZ1IFlCGxUtAqihgpLiIW4icSVDDU0usqvm7HOyIcSZaaohabzquG6r1DXSilkZg+4aP3VVRZE9Lqr10uBz0GyPnMeKuLazKrMI2x92SFeIg6FZLmAuJGVcuySXEy2NlDqazwEE23leP8WRGrVEvNwJQTM90JFQrIh2p8JPEZV/sr3tFEB5EmcAG8z8fgK0+su8Cd59Ij7twBoXBWgcFurvw1J6nY8REK5PBVwx5En9z/k0QSMaHlGQ15D0Dbyq1PYQI1RIVxNY/nw9enbOtsdX+R5tOBh2W8nr
+ b6cmhU2S
+ DaZe0hSkO6ypNgpLGVPDJUXT8Ir9Q5i8Q4ebHMPfTU/zJpVAhP/1QftwvKjwPPM5mil1RtW7qRAm7g+4pW8bH5W6qdq4xPKAoEfVxkO6NnD6qJBFrXHDpNIuk6PuUOwZ9Vf8bQv9pZdBWU/yWnFKdNAann493zmT21ifok1MSQWsOGsqYTDRN4DgwbHIo6olHRT/5BgqTisMlCaLuFyYfKk67bM/emXe2pjxU/lYU2PvRasUWICDUB4xxRaaYFQbRGGkjchrwLW9TqH3215J8ga5MmSy/xkQv08rMGudQgvC4B74VAfMi+8NMsXRGqmt5BuLoKkJjpI5M+pijWgnIMnvRucBhqpIJE+fgBnTQghAvp28v6n7ZXoq0+7YtD8dRbsiwAOpV+7P+44Dp2qVnUPusEWpcFYJsq/BQkE/774il132iOZ2j9TkeaFIcrkwyl8UtsCaj6XegjBOhq/epLrn1e4PDKXbmrAjYVVjXIn2jh7rIsaz56BkldK8goKXoTT3XGLh/gx04KDZVX+QGiOd1eIYqJN4wP1nQlfZZ3W9fvCh/b/9oGzOmETtSOefACiS/xr3DcwHdDVHIbw/v3aSDpMaeKC3bqc3VAaoZUNZgEyOvSZT5ALdDlRQgYr4MEZXNJ3/xIssxW8S0gDLulsiXbFtXhYKafXwzi3JrVc8iN0gHw86jPYeDjuWF71D+Uzj9z5L23FJH59M=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,163 +164,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   ef0c9f75a19532d7675384708fc8621e10850104
-commit: 3a6455d56bd7c4cfb1ea35ddae052943065e338e mm: convert do_brk_flags() to use vma_flags_t
-date:   3 months ago
-config: alpha-randconfig-r111-20260618 (https://download.01.org/0day-ci/archive/20260622/202606221720.CGRCyQ8e-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 10.5.0
-sparse: v0.6.5-rc1
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260622/202606221720.CGRCyQ8e-lkp@intel.com/reproduce)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Fixes: 3a6455d56bd7 ("mm: convert do_brk_flags() to use vma_flags_t")
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606221720.CGRCyQ8e-lkp@intel.com/
 
-sparse warnings: (new ones prefixed by >>)
->> mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
->> mm/mprotect.c:700:43: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/pgtable.h, include/linux/mm.h, include/linux/pagewalk.h):
-   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast to non-scalar
-   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast from non-scalar
-   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast to non-scalar
-   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast from non-scalar
-   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
-   include/linux/pgtable.h:475:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:475:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:468:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:468:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
-   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+On 6/19/2026 9:37 PM, Karim Manaouil wrote:
+> [You don't often get email from kmanaouil.dev@gmail.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> Hi again Shivank,
+> 
+> I just got some time to resume testing this on Intel Sapphire Rapids and
+> something caught my attention, below
+> 
+> On Tue, Apr 28, 2026 at 03:50:49PM +0000, Shivank Garg wrote:
+>> +static int submit_dma_transfers(struct dma_work *work)
+>> +{
+>> +     struct scatterlist *sg_src, *sg_dst;
+>> +     struct dma_async_tx_descriptor *tx;
+>> +     unsigned long flags = DMA_CTRL_ACK;
+>> +     dma_cookie_t cookie;
+>> +     int i;
+>> +
+>> +     atomic_set(&work->pending, 1);
+>> +
+>> +     sg_src = work->src_sgt->sgl;
+>> +     sg_dst = work->dst_sgt->sgl;
+>> +     for_each_sgtable_dma_sg(work->src_sgt, sg_src, i) {
+>> +             if (i == work->src_sgt->nents - 1)
+>> +                     flags |= DMA_PREP_INTERRUPT;
+>> +
+>> +             tx = dmaengine_prep_dma_memcpy(work->chan,
+>> +                             sg_dma_address(sg_dst),
+>> +                             sg_dma_address(sg_src),
+>> +                             sg_dma_len(sg_src), flags);
+>> +             if (!tx) {
+>> +                     atomic_set(&work->pending, 0);
+>> +                     return -EIO;
+>> +             }
+>> +
+>> +             if (i == work->src_sgt->nents - 1) {
+>> +                     tx->callback = dma_completion_callback;
+>> +                     tx->callback_param = work;
+>> +             }
+>> +
+> 
+> Here, you are submitting the descriptors one after the other and only
+> the last descriptor has a callback, which in theory sounds correct as
+> you expect the DMA engine to complete the descriptors in the same order
+> they were submitted. However, in reality that's not really gauranteed.
+> 
+> Intel DSA in particular can complete descriptors out of order. That
+> means, the last descriptor submitted may not necessarily be the last
+> descriptors that completes. In that case, you will return in
+> folios_copy_dma() before the copy truly completes for all the folios.
+> 
+> For correctness, we have to add a callback to every descriptor and
+> initialize work->pending to the number of descriptors submitted then
+> every time a descriptor completes, you call atomic_dec(&work->pending)
+> and only complete the completion the moment it reaches zero.
+> 
+> Btw, waiting for an interrupt adds massive scheduling overhead. If we
+> also add the logic above, it'll get even worse. In my measurements, this
+> can easily add up to 6ms, by which CPU page copy have easily completed
+> the entire copy, which again adds to the list of latency concerns I
+> raised in my other reply.
 
-vim +700 mm/mprotect.c
+Thanks Karim for catching this.
+I was not aware that descriptor chaining was not applicable for DSA.
 
-   693	
-   694	int
-   695	mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
-   696		       struct vm_area_struct *vma, struct vm_area_struct **pprev,
-   697		       unsigned long start, unsigned long end, vm_flags_t newflags)
-   698	{
-   699		struct mm_struct *mm = vma->vm_mm;
- > 700		const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
-   701		vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
-   702		long nrpages = (end - start) >> PAGE_SHIFT;
-   703		unsigned int mm_cp_flags = 0;
-   704		unsigned long charged = 0;
-   705		int error;
-   706	
-   707		if (vma_is_sealed(vma))
-   708			return -EPERM;
-   709	
-   710		if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags)) {
-   711			*pprev = vma;
-   712			return 0;
-   713		}
-   714	
-   715		/*
-   716		 * Do PROT_NONE PFN permission checks here when we can still
-   717		 * bail out without undoing a lot of state. This is a rather
-   718		 * uncommon case, so doesn't need to be very optimized.
-   719		 */
-   720		if (arch_has_pfn_modify_check() &&
-   721		    vma_flags_test_any(&old_vma_flags, VMA_PFNMAP_BIT,
-   722				       VMA_MIXEDMAP_BIT) &&
-   723		    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
-   724			pgprot_t new_pgprot = vm_get_page_prot(newflags);
-   725	
-   726			error = walk_page_range(current->mm, start, end,
-   727					&prot_none_walk_ops, &new_pgprot);
-   728			if (error)
-   729				return error;
-   730		}
-   731	
-   732		/*
-   733		 * If we make a private mapping writable we increase our commit;
-   734		 * but (without finer accounting) cannot reduce our commit if we
-   735		 * make it unwritable again except in the anonymous case where no
-   736		 * anon_vma has yet to be assigned.
-   737		 *
-   738		 * hugetlb mapping were accounted for even if read-only so there is
-   739		 * no need to account for them here.
-   740		 */
-   741		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
-   742			/* Check space limits when area turns into data. */
-   743			if (!may_expand_vm(mm, &new_vma_flags, nrpages) &&
-   744			    may_expand_vm(mm, &old_vma_flags, nrpages))
-   745				return -ENOMEM;
-   746			if (!vma_flags_test_any(&old_vma_flags,
-   747					VMA_ACCOUNT_BIT, VMA_WRITE_BIT, VMA_HUGETLB_BIT,
-   748					VMA_SHARED_BIT, VMA_NORESERVE_BIT)) {
-   749				charged = nrpages;
-   750				if (security_vm_enough_memory_mm(mm, charged))
-   751					return -ENOMEM;
-   752				vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
-   753			}
-   754		} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
-   755			   vma_is_anonymous(vma) && !vma->anon_vma) {
-   756			vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
-   757		}
-   758	
-   759		newflags = vma_flags_to_legacy(new_vma_flags);
-   760		vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
-   761		if (IS_ERR(vma)) {
-   762			error = PTR_ERR(vma);
-   763			goto fail;
-   764		}
-   765		new_vma_flags = legacy_to_vma_flags(newflags);
-   766	
-   767		*pprev = vma;
-   768	
-   769		/*
-   770		 * vm_flags and vm_page_prot are protected by the mmap_lock
-   771		 * held in write mode.
-   772		 */
-   773		vma_start_write(vma);
-   774		vm_flags_reset_once(vma, newflags);
-   775		if (vma_wants_manual_pte_write_upgrade(vma))
-   776			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
-   777		vma_set_page_prot(vma);
-   778	
-   779		change_protection(tlb, vma, start, end, mm_cp_flags);
-   780	
-   781		if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
-   782		    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
-   783			vm_unacct_memory(nrpages);
-   784	
-   785		/*
-   786		 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
-   787		 * fault on access.
-   788		 */
-   789		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
-   790			const vma_flags_t mask =
-   791				vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
-   792					      VMA_SHARED_BIT, VMA_LOCKED_BIT);
-   793	
-   794			if (vma_flags_same(&mask, VMA_LOCKED_BIT))
-   795				populate_vma_page_range(vma, start, end, NULL);
-   796		}
-   797	
-   798		vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
-   799		vm_stat_account(mm, newflags, nrpages);
-   800		perf_event_mmap(vma);
-   801		return 0;
-   802	
-   803	fail:
-   804		vm_unacct_memory(charged);
-   805		return error;
-   806	}
-   807	
+Going forward, implementing the device_prep_dma_memcpy_sg() fixes this
+broken assumption. So client will issue single transaction and see single
+completion for whole batch. The ordering/correctness will become provider's
+responsibility.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks,
+Shivank
 
