@@ -4,93 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 277C3CDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 04:22:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BA3CDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 04:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A19A36B008C; Mon, 22 Jun 2026 00:21:58 -0400 (EDT)
+	id C888A6B0088; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A3E76B0092; Mon, 22 Jun 2026 00:21:58 -0400 (EDT)
+	id C3A1C6B008A; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86CC56B0093; Mon, 22 Jun 2026 00:21:58 -0400 (EDT)
+	id B27B56B008C; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 540026B008C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:21:58 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE490C2525
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:21:57 +0000 (UTC)
-X-FDA: 84906250674.07.8C8E4A6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 726A0140002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:21:55 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IbRtbVJC;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782102116;
-	b=3zl5aIbb6rORHVetTEsMRxx9YYs2HTkkM2IfiRl74Soe0y7rSwg0bHnf8CAFW8xIPWXnVW
-	5wd/jefXnf3pAPylATD3Gf0Oy3y3R7o7l1WBpUrlfLYNVtJumZL0IMjHLuSHoxQy7TEHur
-	IEhqot0hK8wUS4Vdh3s1eTX7x0gB008=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=IbRtbVJC;
-	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C22E6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08EDC1A056B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:44 +0000 (UTC)
+X-FDA: 84906295488.28.CD66852
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 059E316000B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8tlJarj;
+	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782102116;
+	s=arc-20220608; t=1782103182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nVE/CETE6XJ69E1d+hXZBaTooyvpB4+dChpZFA7ZoMk=;
-	b=bkY55BDSLXhqHxZHKcWbYd5uItBohADD/chRENX2MWlzy3n2t0iy/uHWwQDX48rGpTXQUg
-	L/g/kcnL4PVVRv10OSPl4mREXKsb52EEQu7OL5XgE3VeVROarjVAiwOntGQYlF30edt79b
-	bf+xujx9hL88fGZ1uuWt/PU39YlpBvo=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A93661BF3;
-	Sun, 21 Jun 2026 21:21:49 -0700 (PDT)
-Received: from [10.164.148.39] (unknown [10.164.148.39])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E65393F632;
-	Sun, 21 Jun 2026 21:21:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782102114; bh=MeoUdRHU+a8GHZTXWy3AhV6g6+tAIm18618t9DJUnCg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IbRtbVJCoc0dwm5V7cKHFiVgZ9iYADrT13EoROHmpvgAovU/LJpHhIzFFEEl6wvdM
-	 sqhoZFbiyg75byqaF55UYJsFFAzQzT3bHs4+SK65T1LwpyBS8gpIjggXYF5AnxBoTM
-	 TidnUlP4peozlYOQ8q/TqZUfm8jNfOWpCBAjjo5M=
-Message-ID: <69b316bf-7163-4040-8682-e3d200b7d7c6@arm.com>
-Date: Mon, 22 Jun 2026 09:51:26 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
+	b=jhMWLYAdpF+/YuHBqMsXo8+glYBb24n9ujGckBoDHhXflcYX+i+HMYBjHmPF+EHUS3yc6K
+	jPW+M5a0q5B+/6cJVpH7eGtoeF3zhLvI8CH0Xnv7CD7SbQD1s4enaib+zxwbohoB5kTm8C
+	+66ZNZdJXh+YC9HNYoGhBgnPkHRf/fk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782103182;
+	b=jtFJ/l29i1zaIry3l6QPQIGPlLLxfO79rwHaa58/5U/Ed60MziFnE1hNXHZQOS3Izi+nRZ
+	6D2VY5qGkaZTKFSeZLhkug+uCfNldAGOSMUZJYRx+jRpE4AmnQmVczsaPi7Z66KqkrRlHd
+	MfS3JnLX4eKHtrCZnlzVpT79l+yyAZ0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8tlJarj;
+	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e6e21c47e6so2252652a34.1
+        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782103181; x=1782707981; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
+        b=G8tlJarjRsaez6j8CqpIYdSkzcbjMSMEQo7AX3n4iIEiJQKBlj3OwnsGAItUyJ4jj9
+         pJBbQl8l08m/HcMVuHKshYczp1JeUwllzNl0OU83Bm60ZEAPTi3LL3bfAZh5CRYOIHO4
+         55vaATnvCU9RG1cEuZNVFamBuRie6gwpUoGWmpp/TOtt0mWE4wtBqrhOnBS+WcVpsRqh
+         WJLy5MNK02gL96Vp7vCNvukN2tx010Nvl2RpagSHijcI6t0MkGXU9HuXNt1uq+qRa9LX
+         tLq1bFa9I1I+8Timi5skuLdV5u7JOWeGBAVP940oGiO7BJbZMN6EF5rDw4Yj1CqNXzvr
+         jLkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782103181; x=1782707981;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
+        b=frPSEhOqmTYhbCw7ud44JFMIIY1OiU1nq++rnWwXXI2m3Mc2tpHyRuOSa1ymlyHbKY
+         gNiiK8RrkcqQj+RikqTKBWCKA4z14I6Xh6ayBA/KhbiWryWmTB4iHfdt/kqgNilQHyH1
+         eCpnexOVjJn2VYRoDANH2SHVuBbcfQpzkupjxMmFDGvKipeQftW1W/jV7FxxsqTN7cnw
+         SJVisEt5Ka4E/m6iUKz08lR/NlIS0CWNFKJrtR/ZbSOD84PbLzQKAHrjKZb7J+EUMPjS
+         9shWOqf+X6Tz7TWGnG8+9k7kgy1joiY0YHv312zIOFHoSAUdrPvllOyQnGN4LuwsaNj+
+         GPZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9AbG+C1++8TJGdJTB4IKxumE2zz0JyJQ9iDl78/qJAve0AWxXfR8oRI2X9yBqRdvWjQmVT23QSRg==@kvack.org
+X-Gm-Message-State: AOJu0YzNB88mzzulIBlAzblLHAxDiS2ipEuCEQjTLpzCxmNhuJAO9MF7
+	zN+IUVwYeRebpKFjuKwKYkJrKuZUOznLprLTiVsDNiAKgXbYNbIVUnWe
+X-Gm-Gg: AfdE7cnJeZblglyY3gPXVogoOAi2RNDR+GBilstCXr6WWzlAC2mqkFxZ4tWkrSVdhGC
+	mRyUgayIM7FRbp3sjFCSLHkVWXnaMKyYNN/Brdc8da0jamIAKoCx2jauUKBtCZxXoxqO3lEdKd3
+	xZwlEamAFJh5Z7QDERr63Py2Lb9PLAXHuCWBW3PfP8cMXOrslZZhUGJ6nxZ5x0Iyn+lEvulhmQE
+	Y7FCLTPQjHUPBE0XymJbYbphKnuXI3iojNjhwd716hrDQJdxA43eTwApzbkW9H9NuRuxGgZBYGn
+	sQB/josQPYMJcrNPAfkpdro1iFm28bZLGpLwuE4JUpASRCS/VD1xjOdY2q7OCYy1iM8nLX1qS/t
+	hqyN8Ye13YwyI3ZFctAfsxTtMaW9gzHodHCF3r1uw6zk9feVshaqhs8HMRHoSylIAS8d9cTRdnC
+	4a8sjxqtKxtrs/ng2wuN3eqkaGy/DjSztW7rTgd4qgrk39
+X-Received: by 2002:a05:6830:83aa:b0:7e6:f5bc:496 with SMTP id 46e09a7af769-7e92d8eedc8mr11244425a34.16.1782103180884;
+        Sun, 21 Jun 2026 21:39:40 -0700 (PDT)
+Received: from nyx.tail25a6.ts.net ([2605:59c8:74db:6e0c:3a80:a3f:f9f0:1b3c])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e9442ea144sm5428453a34.27.2026.06.21.21.39.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Jun 2026 21:39:40 -0700 (PDT)
+From: Farid Zakaria <farid.m.zakaria@gmail.com>
+To: kees@kernel.org,
+	brauner@kernel.org,
+	viro@zeniv.linux.org.uk
+Cc: jack@suse.cz,
+	shuah@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Farid Zakaria <farid.m.zakaria@gmail.com>
+Subject: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
+Date: Sun, 21 Jun 2026 21:39:32 -0700
+Message-ID: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+X-Mailer: git-send-email 2.51.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-To: Isaac Manjarres <isaacmanjarres@google.com>
-Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, corbet@lwn.net,
- glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
- vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
- david@kernel.org, will@kernel.org, catalin.marinas@arm.com
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <aiyhb2XwMMJE3st7@google.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <aiyhb2XwMMJE3st7@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nwi9zo953anjajx8hy34axfu45d4px45
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 726A0140002
-X-Stat-Signature: 3baa95a4jbwjjnh8b498ccgex9bzowj1
-X-HE-Tag: 1782102115-946003
-X-HE-Meta: U2FsdGVkX19rfgLKOIYvRlTVttW/5C68tDKlLw02z1MQcLyUxzmJhZnAF+aytU7VhuQRNPRZHLzcS5ZEKiA+KEZXN1qsbYU5/sSmvJrdmiVz9a/g0HwkCwyEixJBScXu/Cnvs8IUI6TGYxayQanIcwcV1/Asehv7Q9A1DmyLSp7D2ivEhr757k+kevVlYVHhT3Y3WlmeI9Zx2UnHCug1F30EhDb6WBlSBoLZppEDUJVcK09MniazuZyUqVOwh+TV1MCOwJy/kjt4kx/yUsJEBkf80osieZ2Kx8CI0JGGD4gcYo700CLzGV8rrX8GE/SoynDyrnu2/k0rDqwd8jpR+orQx46XecSv1Iz1Gvs8a401bATdY3zJBX0bsHN2XE4Gkgqq8UGOhap/SM7DRkjK27W77THtrtyWYe2+SLlBb0nyQOFZZK6x9VNEICJ6HDvHVmTaMJARh1TPXmvbTE0bX393yVGjlz1DkIOTiZjoPjbKPeQnmf55eR6lkoNBAMLgVzxcDgUSAGN52vB15E3q8LHxFiepqCvv0QJdyiv58pm1bNTDJFBtq7Q6YjZQJeXK8Dza9U5ZgbG3YJ+Jm8aAIfgIvloko8A8OMv0W0PbGN+4CBuDrmGZIHDh6SHrzJbQ/DUpVHisgxwKV5WWnQHSgws2a9iBhDltY0HoewgmOS+IRyF9BA/ARqRiXRuhH+791Ik7cuvwBuMYgQltq4vTK3UeLOYeu/mJn3SjO9XyW9x9s5KT5YISaLa9ChvXZe8k9w+Jp+70t7hhiVtpWEP8zmRi/teEfjFfnaw4WZXZFyiyXBgUogExVGOlks60n0hbTchx6vTsybddqUhhsO5M7BDivSxfsHlm0QI9KSH+7idCuTLy7XlLa1kpAy5ZQmM8Z11x86k8X2kbNIoVnfYhR5bjV+JLSgFKjMcgmqVP8Uvy/OnS16p7A0ZScWpFfnn4Gc7V8/Whvx7LNT0zI3Q
- ULo9r+qp
- ZWPcMD9Qu1vJ6cls8EvYyXSSLZEsLEZNkB+6DX0fg1Lntdtm94cSQGZ87NeQoAggBapYHuxV74Ruj0MWTjduqDDcKmhXL+r+tPKMuaLIyT+WBxO4epB2mjIov1DtmSJ1No8APq3BeKCtPGyke06y45YBAU2VC+pWjrmcsh5eCOMJdZ+rZXtc+NrwE4RQic+GRgFYbo8FTKrRhAApqdarx1nFLg8FPRfj/E8bLlfD/+v4xO1BOgOhlMZFJM8PV/SHs7rXeeo8JNV9XjYKD/mhPzVx+aqse5l5SKhZkyFVFopUSs7w9QAvOxKDTBNpc2RcX5H7uqCa47hGKRrl5DdAQTBdulPYaj/kdD85uvcUWKzEGDg0=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 059E316000B
+X-HE-Tag: 1782103181-92294
+X-HE-Meta: U2FsdGVkX19cp+Nk9ahiQQ2/ZEDdw1vit1n9BN4Ms3F5IOoiwDrblgbK3X1+tGSM7IPnUK+GRJXQU0w42+3MwDg2orUyr78fqKyNeq/lxS99sy/o5ShRFH5pxYIYq7DmpazJriBrPcaC054EAgh/9gKplE2fOElszK8rCDQpiq8FqXwctVpJ6mtw47ioXyetYR3wxT5Id02kpUtZBihkRR7ni0xK5fb3vQJ5xWeL4Q33bC3I53LAV/1RxbmiPjqjgAqjD8rVMo4+y6B/pAiJGbEXT2mwqvChO29io4vLg+qLxYblI4mG0/9dnaysSu5EalzYUJcPmpnvM2mjLDfY5n0E9/Jjsp32unKYfbSuZdAFHIny+MSO2ICWRVXYTh7cAxr7sDmfFomJdyR0UpUIfc0eAmuVDizWl8MP1vY4WEPexPU9cm+4iulnKYE3s81eGzua4bbPTnQJipFmDnvxH2VUsvYRok+fkzuK+R9qksAHu7zS0Yf4bb5k4dK9mDiBjmwGGImZBDLFtVL77SHbkafKrrNaRomONT03rJIil68fBztLNw4vGH4sTnvrIjwFTHjdsGLIi27iY7Wq9IwR2I8VJjMmkXLiCIXse738xcs5sndXuTqWfoHv90oMVl0dbO94TA7Aa4do9MJninumblqMcvlMiKF6HvjLV1RruFtaF3MT9ErPETi/amE7m+CSRszJahaVgJ/osjKMEQeeQ1vH9h+xx3SZtwVlpdZrAwXhv80fGaaO3/nJ95smNXAtgqHc4IBlMvMuH5FogiBijTA2HiMtWdekVJAumVRqzhbD7F9+3QTgEWhPh2/p4pLXG1Dp0bFQfYdbjXKn3oLw+J9Ec+VKEP4Hg1tg81MEdVHGqXuK1gc9CwNw9yG9khiEJDEMfsoi0ODLIKB8/xel1HjfL+OSa50nHCfO5r4kY/RfN+OzpviJcTI6FaGpqy7m7dFbjRp7RwNml9fTiBF
+ XlK83iey
+ eN3EJW9HJaxtXzDAOYOXr8oJBE+E84Jb0vQblje07c9sJERHvtHyDnwCth/B12F+rBk5Ulu6umM5E85f47dLcBDe9zX1k7X0I+X4M8tejpYFT3BVNgopbnjRiPG7FQpKc/3xD1OEOXg3j/Gws5cnzx6WoKJaGyIX8qO2MeuevPwRBt9Mqz3CB2c2uz+Iur0Y5Z+CdbtsKy5nTDuxtEUsBTO/EqpavrUgQAW1e3Ad+K9Zu4I118a9XLCrZEFcF2SQ8kHdndmGuWw/LElP+22+OwrjFeE8WEz4jssOtjEx+SickaFgp4gL02OIGRrpZ0/eMB5EtNs7Mk3aFELmDH278NgdYylnidTSyVeudH/zDWexEE9sHF1Ilq86Uosc+kvNslvnLUJ4id4aS/xHNC2qyiuz/B/OKKa+lOztVO23VVkFXX8Eir869s/tW0pnBPbXzXsd7YIt0FlGOuXx3mlJQaVxuGuMV+4VlvWng+ZTcdKIW95DxmOJ1QTuZGRWaXc1XVhFeuLG3L88aAVVhWTsUZ1WNttnc7QhOrg9CsaYdFH86+P3ixuJERunpE5/l72c4a+9UvqBbLnQi8T16FB0hCVrTMn8quUu28ABPsHEeCDtccE0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,54 +121,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Currently, standard ELF and ELF FDPIC loaders require a fixed, absolute
+path to the dynamic linker/interpreter (specified via PT_INTERP). This
+creates significant inflexibility for relocatable dynamic interpreters,
+where binaries are packaged independent of global system paths.
 
+The primary goal of this patch series is to support relocatable binaries
+in Nix, where packages are stored in a read-only store (typically /nix/store).
+Allowing the ELF interpreter path to be resolved dynamically relative to
+the binary's location via $ORIGIN enables Nix packages to be relocated
+without needing patchelf or wrapper scripts.
 
-On 13/06/26 5:46 am, Isaac Manjarres wrote:
-> On Fri, Jun 12, 2026 at 04:44:22AM +0000, Dev Jain wrote:
->> Introduce a boot option to tag only at allocation time of the objects. This
->> reduces KASAN MTE overhead, the tradeoff being reduced ability of
->> catching bugs.
->>
->> Now, when a memory object will be freed, it will retain the random tag it
->> had at allocation time. This compromises on catching UAF bugs, till the
->> time the object is not reallocated, at which point it will have a new
->> random tag.
->>
->> Hence, not catching "use-after-free-before-reallocation" and not catching
->> "double-free" will be the compromise for reduced KASAN overhead.
->>
->> This is an RFC because we are not clear about the performance benefit.
->>
->> Android folks, please help with testing!
->>
->> ---
->> Applies on Linus master (9716c086c8e8).
->>
->> Dev Jain (2):
->>   kasan: hw_tags: Use KASAN_PAGE_REDZONE for vmalloc redzoning
->>   kasan: hw_tags: Add boot option to elide free time poisoning
->>
->>  Documentation/dev-tools/kasan.rst |  4 +++
->>  mm/kasan/hw_tags.c                | 45 +++++++++++++++++++++++++++++--
->>  mm/kasan/kasan.h                  | 23 +++++++++++++++-
->>  3 files changed, 69 insertions(+), 3 deletions(-)
->>
->> -- 
->> 2.43.0
-> 
-> I tested out this series on one of our devices that has MTE support,
-> and didn't see any functional issues.
+For details on the design and motivation for this in Nix, see:
+https://fzakaria.com/2026/06/21/nix-needs-relocatable-binaries
 
-Thanks for testing Isaac! Do you have the bandwidth to carry out some
-performance tests? We want to see whether this patchset gets perf boost
-on some HW.
+This series introduces support for resolving the $ORIGIN placeholder in 
+the ELF interpreter path, bringing the kernel's binary loading behavior
+in line with user-space dynamic linker origin resolution. 
 
-> 
-> One thing I did notice though, and it's independent of this patch, is
-> that the vmalloc_oob is failing, but that happens even if these patches
-> aren't present.
-> 
-> Thanks,
-> Isaac
+To achieve this cleanly:
+- We introduce a shared 'resolve_elf_interpreter()' helper in the VFS
+  exec subsystem to avoid code duplication across loader implementations.
+- For security, we restrict detection strictly to the prefix string
+  "$ORIGIN" to prevent complex parsing exploits in kernel space.
+
+Testing & Verification:
+- Added a KUnit test case verifying path resolution logic.
+- Added a kselftests integration test checking that a dynamically
+  linked binary with its interpreter set to '$ORIGIN/mock_interp' successfully
+  loads the mock interpreter (built statically using nolibc to avoid
+  glibc TLS setup constraints during interpreter load-time).
+- Verified end-to-end correct execution (PASS) using a minimal initramfs
+  under QEMU.
+
+Farid Zakaria (2):
+  fs: support $ORIGIN in ELF interpreter paths
+  selftests/exec: add test suites for $ORIGIN interpreter resolution
+
+ fs/binfmt_elf.c                               | 11 ++++-
+ fs/binfmt_elf_fdpic.c                         | 15 ++++++-
+ fs/exec.c                                     | 42 +++++++++++++++++++
+ fs/tests/exec_kunit.c                         | 26 ++++++++++++
+ include/linux/binfmts.h                       |  2 +
+ tools/testing/selftests/exec/Makefile         | 12 ++++--
+ tools/testing/selftests/exec/mock_interp.c    |  6 +++
+ tools/testing/selftests/exec/origin_interp.sh | 16 +++++++
+ tools/testing/selftests/exec/test_prog.c      |  5 +++
+ 9 files changed, 128 insertions(+), 7 deletions(-)
+ create mode 100644 tools/testing/selftests/exec/mock_interp.c
+ create mode 100755 tools/testing/selftests/exec/origin_interp.sh
+ create mode 100644 tools/testing/selftests/exec/test_prog.c
+
+-- 
+2.51.2
 
 
