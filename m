@@ -4,82 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BD6CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 19:21:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 559E8CDB466
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 19:29:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05F3B6B008C; Mon, 22 Jun 2026 15:21:23 -0400 (EDT)
+	id 5A31A6B0005; Mon, 22 Jun 2026 15:29:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2B0C6B0092; Mon, 22 Jun 2026 15:21:22 -0400 (EDT)
+	id 57BA56B008A; Mon, 22 Jun 2026 15:29:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF24F6B0093; Mon, 22 Jun 2026 15:21:22 -0400 (EDT)
+	id 469C36B0093; Mon, 22 Jun 2026 15:29:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A07696B008C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:21:22 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 20FD91C4DB2
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:21:22 +0000 (UTC)
-X-FDA: 84908517204.11.5D6BA82
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 66BE2140003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:21:19 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bWmq5dLT;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id D97D26B0005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:29:45 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C11DE8CD85
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:29:44 +0000 (UTC)
+X-FDA: 84908538288.06.CF8CB8D
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 92305180008
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:29:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YFVdX2yl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Bm+TR6Fh;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="A9Cc/YNp";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RtYkz2bH;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782156080;
-	b=A0l2PxyVnQDWp/T0QWkcwV2UGWNGJeVeu3pwWQzcnt7F8qLIZzttssAWylogz/lnGTsJQF
-	CI5eetFLyAV0tKsAHagB0CUCuKK4gUHUoOfhUYnF0EeSp3VNzwXF+Q+FOT9bWTWvUb5DMh
-	1zmCXicNaJA9D8453vqfKas2ZtvvB9Y=
+	t=1782156582;
+	b=NsufAqRpOyIYsG92CBByqCKZxYzqcye0Wlq8PtDR09xBid9FsnnLaQ+J9QLcmcETmGynD2
+	yAjO4uW+mr6Y3GxgcVYY+rM4jyoTYYFYqlJb/ND1c02cRFWK4JM0Sn6+ll0H0389zitsCG
+	VuqHMYpyKqdydw1muOlUJ2FPQw+492U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782156080;
+	s=arc-20220608; t=1782156582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=mb90/CtIiKrLnzucDBUG+lbblo8nEGwxt0h8xz1Qh6g=;
-	b=NKQUKNzxmzTpQ+6wqwDppdNq7spBHUoFTvMCUJP6SPAVW0rI5Ac2rGxsi3Pieb2LasmnRD
-	xzlrjcj7hGS/KoiTiX5SMnLU5+7Dq6q3OKEJd21GfGhEgrntG3sBUIx+047OnuAJOBPHYd
-	KqU36WUmgtVDIwQEipv9pvKBeTs05d0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oOyI9DPf+OPLkTpriyNWetIArQJTx5lcdWQuxRuSzak=;
+	b=tPxEn3X1TQnNGpO5rFkoTzArbpVU/Zxy6YS54jw2RZUsbF4YsLjA9VAfhQFMue5+jw4L32
+	MntHG4rlHWYaNWWg+Q7/blRCV+TDq7kqI/W3LITTT0BX94+h5t0Zu2rVdlZNbcMXa0XmxL
+	Ir3rnInj5baT0GJs3zdop4nzn+ZcBYM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=bWmq5dLT;
-	spf=pass (imf26.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=mb90/CtIiKrLnzucDBUG+lbblo8nEGwxt0h8xz1Qh6g=; b=bWmq5dLTJyRiyqaLK70xKmavEZ
-	prTvHVJcqTAx57BvHaiDcvLnGsFZLT2m6fyyXSxzCCP+YaCEUz+ke5XlNYtXe5uRdfEEZXRYGvtXm
-	+VDWGW1F9ire5hWZ5HHb34e5hL1Wq+SVrITvbWnzk1NqIOlEWUPxLkG1xrC2u9oamxEjuFezMEBfg
-	d97Z4+PCIZgi2yuku+u6/To2eFbbsEeZa1gIdbjzosMwpY5FIsOl2yaBQbDn5T8YZnPrg8ep8RMjl
-	Rztw2CkVDNaN5fej86IWlSrUeVDD4AkZSj7r4hAxvvwDix9UZxO0lhPhgSszi88zYp0wGAQQd40QH
-	1GrvFCGA==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wbkCq-00000004oS5-3WeB;
-	Mon, 22 Jun 2026 19:21:16 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-mm@kvack.org
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-fsdevel@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: [RFC PATCH] filemap: Remove file pinning during fault handling
-Date: Mon, 22 Jun 2026 20:21:12 +0100
-Message-ID: <20260622192114.1147198-1-willy@infradead.org>
-X-Mailer: git-send-email 2.54.0
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YFVdX2yl;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Bm+TR6Fh;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="A9Cc/YNp";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=RtYkz2bH;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C045B75D4C;
+	Mon, 22 Jun 2026 19:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782156581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOyI9DPf+OPLkTpriyNWetIArQJTx5lcdWQuxRuSzak=;
+	b=YFVdX2yljZkNOCr7ym6aWfSQWl2FzdxExPfWa8tKgA9r/dLdQd2C3atPJZqJxleBgLLpEJ
+	e+q7QJxOCi0seV/qQntUCS+Mc/6Px5aVglvAauOMsRLxOcaGmKBhVVCGa+E1UNo4c1KSX5
+	exPN32UtdbQVSKkOY2YGYLGRiixiuvI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782156581;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOyI9DPf+OPLkTpriyNWetIArQJTx5lcdWQuxRuSzak=;
+	b=Bm+TR6Fhtr82wUXQE6KMbndzinjvZhwfV761R7emRTGKALwTh9FyZF37kj7dwb8O6Itm4/
+	gYo98hqKztDiEUCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782156579; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOyI9DPf+OPLkTpriyNWetIArQJTx5lcdWQuxRuSzak=;
+	b=A9Cc/YNpUC53pt/VowlLRsrAl2cQ3h4BYfhVB/kzFfJ+hVQ4bE/p7MQ35LQqW0c01TdeyI
+	asI2APcT8QxarUpYf2HzoEiiRqvYzgK6SJI1wS19zm/8b4MBm0mVWbrsIxp7bPo2xH6ztm
+	fmZuPTHGiT21oM6lTz8bQDN+MH6pk2U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782156579;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOyI9DPf+OPLkTpriyNWetIArQJTx5lcdWQuxRuSzak=;
+	b=RtYkz2bHLTo25azAgm8e6gYXNgFfd5e66zHvKb25qxHlAPYIhm0JzNFhO2UJ5nLN91PX8i
+	bJlz0LQibdTS92Ag==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED802779A8;
+	Mon, 22 Jun 2026 19:29:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id r0YfNiKNOWpxewAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 22 Jun 2026 19:29:38 +0000
+Date: Mon, 22 Jun 2026 20:29:37 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Frederick Mayle <fmayle@google.com>, Kalesh Singh <kaleshsingh@google.com>, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead
+ to VMA boundaries"
+Message-ID: <ajmJT6AAor46gLBw@pedro-suse.lan>
+References: <CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
+ <ajWAYBXHJniJAO4u@casper.infradead.org>
+ <CAJuCfpHF1qtpHZQzLmLi7xz06OWgBfduHqBHF_-0Vkx7OtBmcw@mail.gmail.com>
+ <ajWXEn7gECvgG7F5@pedro-suse.lan>
+ <CAJuCfpFfr_SQ4ZDFojOkDKWbO2dKdL3pUPA06B2ZC-usUnYRgA@mail.gmail.com>
+ <7ftrqtta2bw2xxtrzelrs46t7khr7tf2vmh2ur2mhdphtymlsr@rqbd3pfjxdp7>
+ <ajk-NMghY50F6Sli@lucifer>
+ <20260622095855.50e4276e331cb2d01db7183a@linux-foundation.org>
+ <ajlsum91zeh-oRz6@casper.infradead.org>
+ <CAJuCfpHaBFtgAyE4jum-=p3u8X3STi3e6i6==fQR+0ksaU2wwA@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 66BE2140003
+In-Reply-To: <CAJuCfpHaBFtgAyE4jum-=p3u8X3STi3e6i6==fQR+0ksaU2wwA@mail.gmail.com>
+X-Rspamd-Action: no action
+X-Stat-Signature: dznairfu3aqk7d1rzmr8hzzegnotetmz
 X-Rspam-User: 
-X-Stat-Signature: dkk751jsp5ndxicyg5sgio83tcxykawc
-X-HE-Tag: 1782156079-295647
-X-HE-Meta: U2FsdGVkX19foUHYT/qacPKcxCevwI7u0Vn8r2FwI6zD1evHJbKLCT905nabZJ1cCdpe+iSfEUchxFeJOTx9IotQNJM9hXuo7dCtfr/iQj5BKSTDQaWD4TFMvCNvekRoyDkSVsiWSVaDqxXS7JE52C842rIqCfxQd2xAsSbPAvsTSZBd5HoZ+mD0ZuImg+U3BTfKd1NgCc1S9+4TKlX2fwg0Y2R9JIyDkTe9pq76QQyTq6aUAZBk2yisEVxp39wpWPi8rqF+Fn69R4ICCK2yCP4G5k18FiuNZYBEWG9NaTv2WlX4+psdBkNNCXAH1g59lfkCsm5mbjn2iNJPgPPjvCykWGFVAXjvD3auqmWQbBdyfEIHKVjKFuHv6i6zLm+Sx/Q5pVqeFkF28tATap7yMOjb5Hb8PPYs+KvaW32sMq+O2qSBch5n7hXrRikzxSTtM1pXHjv5qG6HEslOIfKXCytla3h/28CICm9u6ybXWfmSB7srX5KzsnsrPO63pwKGpvBo96QAvQlQ1UYWI0XyX/dnE8SdHASWO58mk5ln5SrwxgKV7+iCmd4idaKiZmPkpr6vU7zWDosLly60eJ7OagPetEhmOPTVKrI9JX67KEMI3k+Xaq+tXbrxdAl74VE4Nuk1qsHZQgRU+tsVwmQ0URz6NibNAKP7V73wj80NUHew+WlkaAYYWZw4KVG0TWCrw0hhxIu6R5fJGmf4oGHWgmQ71fmx6GIwYLWpJQntwt5K4bbn1ep7lVRuY7Dmc5Yg4dgPxNmJi930WzBsML7dYFn7DfWjdCj9UfGJnZ3q4Snmt4viVf0DLjPYcOptkOS51OUBfw4DElnVU3Q51DaR9IEsetPSDt+FJolXZiju8YVbyr2tomcwSadFsq9sFvO5HGA6kE6MH5RruQvBw1ggUxCMRuE4MQvPveSWdR7TTvTUeED3dueiTF1vtfOHQFfldQ22xTkourCGfPyRdS8
- aGdAJMtn
- aYO4DQHuJHFzf+yvWSKWzHYyf8O0ugsN6IhLC6Lx4OAX3SDggxE9Raep1ncYdKgyYf+TLHZWWoGChaOX3tKRxV3uaHmarL7PvmPpJWtuNM7/JdnkByAJKafTof5QO+Ltc0EcDfo4KyQl9V8OMwY8l/xT9P3ePzU835dhcVogg6BzzjgNgQTpNE5D2vmU9HhwJVwIPwW6Vv+p4LOlY5wKXAJUcNSvy2+8e0sJyJes9OxPCtOhKUOGqwwWMpck+XmAY6SterO/saMMwuo4Lqem12tM5qZ80pWbfdY2GSaV21D6+E0qRk6O9FGptj02JMb7L6mcDOM/6XHwHLKn0H/YlvsPXbg==
+X-Rspamd-Queue-Id: 92305180008
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782156582-165597
+X-HE-Meta: U2FsdGVkX187NXzfMZEWP4Y7jRu60nETeSrpXbce4mnWefrs/sBuNtghYyikq9nzd7+y8dkXghg/gxFu++iPcql69ppbRraoYTWdBu5RAx1tqFcvxLjO1dmk3+y2vFbfmH+7pZ4keXDH0CIIJlqgcJP4+r8JCUHhmLAz6nKsK+Cm6OkeYonHxIqv3s3+ojKSQvMrI46TeS/utbzzlNiiNHp/iDq7zZPM90eFxZ5j3SCCuQgDb4Wx32zDG12H9nDS7IzxGPgdMJeozdQDulUrej9bTCSXIIUCF/cRFHGVaemhdjXqt8P8bgthvhhxIYmrHqnQ+OWKdmUqQws3PHQ+gRJkqHWo6Ht87gDjEDNz3zHFz+VsmVlyq9YQDmWPKay/+XnE8iB4Kz/hIg9Y019/OttPgrUixzNbYbFjaZouPC9t3qcU/5DyawhRFK1isHh0eE+AYzejxGWxiQVaJjxv6HyaH4yEHE6oPlKB9psoTKrX/pEK7fji0C9X5eIQX+JsL2VFikRkj4nVY3cNOutXKZvGA0U9fGBL1aPjUwJMEeIhpT1CJdxAgW1Cd3DFmJkr08S8x0h3Y2Zilpns89KZXzWjEwtYJ2GTAH2DU22L7tRQFGvOQUxq4muw2gagfjJqV45ilTwiXXUpeyK8/7yzf/j6PMmkgrbWiuygIeqQ9KWLMA471zG4VhlwZnjdETM7x9G574stXBY2JlSZGp5K1R73u3sCE3sK0OnW+kmtchHqXRbBbTFknxRjj4QL0Lwz+14T9DsKHmYryGfB3H/53TzgRjoSNT18966/Q3fsCoaNQcU+GaPpBlHNopyqBJjetOihoNMkCYq/PVS67395ai+8WBPAyoEFSrsw9IR4aurOumhyrKlEREcVaCv2b/489wNbwcniA+QudlgDZgN85k6nQbi7luU5nWXCgvHoL5yjLJd4dDo8472GdiL4URHELvYxBJI/c4MHjYSYNT/
+ JlVnXKkN
+ 6OF2PzHy9JM6FYJFlNKw8aotXCiF4tCB7G4GFxYdo9H6dmo5dg0B/J/ToW3cvh8xa5V51zPbCBu5zykfoWqxJaxf9iE9iGwW6M0rrXSfDBaN5pBbPFPt4Qff0Z+myCTye6qb5HrloMdGxyJlmakQta4hLPuqWm+v8wYQMVvkWkLZXqn6eY64IeUyGvjQ51DiqT8i6oL6h60XMsxQZe/Vo4mrYMfJP95t0bJloqyUFO3CmsWCopQPgim+lg//KolecZgfd4TuY27YlHqCs7przDy3mu7czR5A9q6OgCQOJ9AM4K+ilhQUtN71RLmiMd9EXCMalpPTk50RYWSexDdGGtSf1aqnCIRmFoOJUYBmrxwDagI8S/8Te6oHIKyltD4H1G8TZ6Ad7jvGSPB9hDycpnmpl/E7IWv9Eh+qyR10aIo2Qb4o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,401 +149,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that faults are protected by a per-VMA lock instead of a process-wide
-mmap lock, it is far less important to avoid holding the fault lock while
-performing file reads.  The per-VMA lock does not prevent operations
-on other VMAs, nor does it prevent iterating through /proc (see commits
-6b4c9f446981 and a75d4c333772 for the original motivations behind dropping
-the fault lock).
+On Mon, Jun 22, 2026 at 10:57:30AM -0700, Suren Baghdasaryan wrote:
+> On Mon, Jun 22, 2026 at 10:11 AM Matthew Wilcox <willy@infradead.org> wrote:
+> >
+> > On Mon, Jun 22, 2026 at 09:58:55AM -0700, Andrew Morton wrote:
+> > > > > much as I personally find restricting mmap readahead to a VMA a sensible
+> > > > > thing to do). We just need to figure out how to improve the Android
+> > > > > usecase.
+> > >
+> > > Would a helpful heuristic be to do what 7b32f64bc512 is doing, but only
+> > > if PROT_EXEC?
+> >
+> > I was wondering the same thing.  But I think it's right to back this out
+> > for now and try that after -rc1 so it gets some time soaking and
+> > bot-teesting.
+> 
+> Thanks for the suggestion! That sounds sensible to me.
 
-We will now submit I/O and wait for I/O to complete while holding the
-fault lock.  This removes the need to return VM_FAULT_RETRY which means
-we won't fall back to the mmap_lock from the VMA lock just because we
-had to wait for I/O.
+I don't think this works. Here's an example readelf -a from a random,
+trivial ELF I have:
 
-This should result in improved lock contention, although it is possible
-that some workloads will find themselves contending on the VMA locks
-due to them being held for longer.
+pfalcato@pedro-suse:~/linux> cc -g main.c 
+pfalcato@pedro-suse:~/linux> readelf -a a.out 
+ELF Header:
+  Magic:   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  Class:                             ELF64
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           Advanced Micro Devices X86-64
+  Version:                           0x1
+  Entry point address:               0x401040
+  Start of program headers:          64 (bytes into file)
+  Start of section headers:          18448 (bytes into file)
+  Flags:                             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         14
+  Size of section headers:           64 (bytes)
+  Number of section headers:         38
+  Section header string table index: 37
 
-Cc: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- include/linux/pagemap.h |   8 +-
- mm/filemap.c            | 167 +++++++++-------------------------------
- 2 files changed, 40 insertions(+), 135 deletions(-)
+Section Headers:
+  [Nr] Name              Type             Address           Offset
+       Size              EntSize          Flags  Link  Info  Align
+  [ 0]                   NULL             0000000000000000  00000000
+       0000000000000000  0000000000000000           0     0     0
+  [ 1] .note.gnu.pr[...] NOTE             0000000000400350  00000350
+       0000000000000040  0000000000000000   A       0     0     8
+  [ 2] .note.gnu.bu[...] NOTE             0000000000400390  00000390
+       0000000000000024  0000000000000000   A       0     0     4
+  [ 3] .interp           PROGBITS         00000000004003b4  000003b4
+       000000000000001c  0000000000000000   A       0     0     1
+  [ 4] .hash             HASH             00000000004003d0  000003d0
+       0000000000000024  0000000000000004   A       6     0     8
+  [ 5] .gnu.hash         GNU_HASH         00000000004003f8  000003f8
+       000000000000001c  0000000000000000   A       6     0     8
+  [ 6] .dynsym           DYNSYM           0000000000400418  00000418
+       0000000000000060  0000000000000018   A       7     1     8
+  [ 7] .dynstr           STRTAB           0000000000400478  00000478
+       000000000000004a  0000000000000000   A       0     0     1
+  [ 8] .gnu.version      VERSYM           00000000004004c2  000004c2
+       0000000000000008  0000000000000002   A       6     0     2
+  [ 9] .gnu.version_r    VERNEED          00000000004004d0  000004d0
+       0000000000000030  0000000000000000   A       7     1     8
+  [10] .rela.dyn         RELA             0000000000400500  00000500
+       0000000000000030  0000000000000018   A       6     0     8
+  [11] .rela.plt         RELA             0000000000400530  00000530
+       0000000000000018  0000000000000018  AI       6    24     8
+  [12] .init             PROGBITS         0000000000401000  00001000
+       000000000000001b  0000000000000000  AX       0     0     4
+  [13] .plt              PROGBITS         0000000000401020  00001020
+       0000000000000020  0000000000000010  AX       0     0     16
+  [14] .text             PROGBITS         0000000000401040  00001040
+       000000000000011b  0000000000000000  AX       0     0     16
+  [15] .fini             PROGBITS         000000000040115c  0000115c
+       000000000000000d  0000000000000000  AX       0     0     4
+  [16] .rodata           PROGBITS         0000000000402000  00002000
+       0000000000000004  0000000000000004  AM       0     0     4
+  [17] .eh_frame_hdr     PROGBITS         0000000000402004  00002004
+       000000000000002c  0000000000000000   A       0     0     4
+  [18] .eh_frame         PROGBITS         0000000000402030  00002030
+       0000000000000088  0000000000000000   A       0     0     8
+  [19] .note.ABI-tag     NOTE             00000000004020b8  000020b8
+       0000000000000020  0000000000000000   A       0     0     4
+  [20] .init_array       INIT_ARRAY       0000000000403de8  00002de8
+       0000000000000008  0000000000000008  WA       0     0     8
+  [21] .fini_array       FINI_ARRAY       0000000000403df0  00002df0
+       0000000000000008  0000000000000008  WA       0     0     8
+  [22] .dynamic          DYNAMIC          0000000000403df8  00002df8
+       00000000000001e0  0000000000000010  WA       7     0     8
+  [23] .got              PROGBITS         0000000000403fd8  00002fd8
+       0000000000000010  0000000000000008  WA       0     0     8
+  [24] .got.plt          PROGBITS         0000000000403fe8  00002fe8
+       0000000000000020  0000000000000008  WA       0     0     8
+  [25] .data             PROGBITS         0000000000404008  00003008
+       0000000000000010  0000000000000000  WA       0     0     8
+  [26] .bss              NOBITS           0000000000404018  00003018
+       0000000000000008  0000000000000000  WA       0     0     1
+  [27] .comment          PROGBITS         0000000000000000  00003018
+       0000000000000019  0000000000000001  MS       0     0     1
+  [28] .debug_aranges    PROGBITS         0000000000000000  00003040
+       0000000000000150  0000000000000000           0     0     16
+  [29] .debug_info       PROGBITS         0000000000000000  00003190
+       0000000000000444  0000000000000000           0     0     1
+  [30] .debug_abbrev     PROGBITS         0000000000000000  000035d4
+       0000000000000245  0000000000000000           0     0     1
+  [31] .debug_line       PROGBITS         0000000000000000  00003819
+       0000000000000274  0000000000000000           0     0     1
+  [32] .debug_str        PROGBITS         0000000000000000  00003a8d
+       0000000000000540  0000000000000001  MS       0     0     1
+  [33] .debug_line_str   PROGBITS         0000000000000000  00003fcd
+       0000000000000163  0000000000000001  MS       0     0     1
+  [34] .debug_rnglists   PROGBITS         0000000000000000  00004130
+       0000000000000042  0000000000000000           0     0     1
+  [35] .symtab           SYMTAB           0000000000000000  00004178
+       0000000000000360  0000000000000018          36    20     8
+  [36] .strtab           STRTAB           0000000000000000  000044d8
+       00000000000001bc  0000000000000000           0     0     1
+  [37] .shstrtab         STRTAB           0000000000000000  00004694
+       0000000000000176  0000000000000000           0     0     1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  D (mbind), l (large), p (processor specific)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 1f50991b43e3..e6ac221ee54d 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -695,9 +695,6 @@ pgoff_t page_cache_prev_miss(struct address_space *mapping,
-  * * %FGP_CREAT - If no folio is present then a new folio is allocated,
-  *   added to the page cache and the VM's LRU list.  The folio is
-  *   returned locked.
-- * * %FGP_FOR_MMAP - The caller wants to do its own locking dance if the
-- *   folio is already in cache.  If the folio was allocated, unlock it
-- *   before returning so the caller can do the same dance.
-  * * %FGP_WRITE - The folio will be written to by the caller.
-  * * %FGP_NOFS - __GFP_FS will get cleared in gfp.
-  * * %FGP_NOWAIT - Don't block on the folio lock.
-@@ -714,9 +711,8 @@ typedef unsigned int __bitwise fgf_t;
- #define FGP_WRITE		((__force fgf_t)0x00000008)
- #define FGP_NOFS		((__force fgf_t)0x00000010)
- #define FGP_NOWAIT		((__force fgf_t)0x00000020)
--#define FGP_FOR_MMAP		((__force fgf_t)0x00000040)
--#define FGP_STABLE		((__force fgf_t)0x00000080)
--#define FGP_DONTCACHE		((__force fgf_t)0x00000100)
-+#define FGP_STABLE		((__force fgf_t)0x00000040)
-+#define FGP_DONTCACHE		((__force fgf_t)0x00000080)
- #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits */
- 
- #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 7e467c81d213..13a861b38621 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1995,7 +1995,7 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 			gfp &= ~GFP_KERNEL;
- 			gfp |= GFP_NOWAIT;
- 		}
--		if (WARN_ON_ONCE(!(fgp_flags & (FGP_LOCK | FGP_FOR_MMAP))))
-+		if (WARN_ON_ONCE(!(fgp_flags & FGP_LOCK)))
- 			fgp_flags |= FGP_LOCK;
- 
- 		if (order > mapping_max_folio_order(mapping))
-@@ -2042,12 +2042,6 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 				err = -EAGAIN;
- 			return ERR_PTR(err);
- 		}
--		/*
--		 * filemap_add_folio locks the page, and for mmap
--		 * we expect an unlocked page.
--		 */
--		if (folio && (fgp_flags & FGP_FOR_MMAP))
--			folio_unlock(folio);
- 	}
- 
- 	if (!folio)
-@@ -3259,52 +3253,6 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
- 
- #ifdef CONFIG_MMU
- #define MMAP_LOTSAMISS  (100)
--/*
-- * lock_folio_maybe_drop_mmap - lock the page, possibly dropping the mmap_lock
-- * @vmf - the vm_fault for this fault.
-- * @folio - the folio to lock.
-- * @fpin - the pointer to the file we may pin (or is already pinned).
-- *
-- * This works similar to lock_folio_or_retry in that it can drop the
-- * mmap_lock.  It differs in that it actually returns the folio locked
-- * if it returns 1 and 0 if it couldn't lock the folio.  If we did have
-- * to drop the mmap_lock then fpin will point to the pinned file and
-- * needs to be fput()'ed at a later point.
-- */
--static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
--				     struct file **fpin)
--{
--	if (folio_trylock(folio))
--		return 1;
--
--	/*
--	 * NOTE! This will make us return with VM_FAULT_RETRY, but with
--	 * the fault lock still held. That's how FAULT_FLAG_RETRY_NOWAIT
--	 * is supposed to work. We have way too many special cases..
--	 */
--	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
--		return 0;
--
--	*fpin = maybe_unlock_mmap_for_io(vmf, *fpin);
--	if (vmf->flags & FAULT_FLAG_KILLABLE) {
--		if (__folio_lock_killable(folio)) {
--			/*
--			 * We didn't have the right flags to drop the
--			 * fault lock, but all fault_handlers only check
--			 * for fatal signals if we return VM_FAULT_RETRY,
--			 * so we need to drop the fault lock here and
--			 * return 0 if we don't have a fpin.
--			 */
--			if (*fpin == NULL)
--				release_fault_lock(vmf);
--			return 0;
--		}
--	} else
--		__folio_lock(folio);
--
--	return 1;
--}
--
- /*
-  * Synchronous readahead happens when we don't even find a page in the page
-  * cache at all.  We don't want to perform IO under the mmap sem, so if we have
-@@ -3312,13 +3260,12 @@ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
-  * that.  If we didn't pin a file then we return NULL.  The file that is
-  * returned needs to be fput()'ed when we're done with it.
-  */
--static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
-+static void do_sync_mmap_readahead(struct vm_fault *vmf)
- {
- 	struct file *file = vmf->vma->vm_file;
- 	struct file_ra_state *ra = &file->f_ra;
- 	struct address_space *mapping = file->f_mapping;
- 	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
--	struct file *fpin = NULL;
- 	vm_flags_t vm_flags = vmf->vma->vm_flags;
- 	bool force_thp_readahead = false;
- 	unsigned int thp_order = 0;
-@@ -3348,15 +3295,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * VM_EXEC case below is already intended for random access.
- 		 */
- 		if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
--			return fpin;
-+			return;
- 
- 		if (!ra->ra_pages)
--			return fpin;
-+			return;
- 
- 		if (vm_flags & VM_SEQ_READ) {
--			fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 			page_cache_sync_ra(&ractl, ra->ra_pages);
--			return fpin;
-+			return;
- 		}
- 	}
- 
-@@ -3371,13 +3317,12 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * stop bothering with read-ahead. It will only hurt.
- 		 */
- 		if (mmap_miss > MMAP_LOTSAMISS)
--			return fpin;
-+			return;
- 	}
- 
- 	if (force_thp_readahead) {
- 		unsigned long folio_nr_pages = 1UL << thp_order;
- 
--		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 		ractl._index &= ~(folio_nr_pages - 1);
- 		ra->size = folio_nr_pages;
- 		/*
-@@ -3389,7 +3334,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		ra->async_size = folio_nr_pages;
- 		ra->order = thp_order;
- 		page_cache_ra_order(&ractl, ra);
--		return fpin;
-+		return;
- 	}
- 
- 	if (vm_flags & VM_EXEC) {
-@@ -3427,29 +3372,24 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		ra->order = 0;
- 	}
- 
--	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 	ractl._index = ra->start;
- 	page_cache_ra_order(&ractl, ra);
--	return fpin;
- }
- 
- /*
-- * Asynchronous readahead happens when we find the page and PG_readahead,
-- * so we want to possibly extend the readahead further.  We return the file that
-- * was pinned if we have to drop the mmap_lock in order to do IO.
-+ * Asynchronous readahead happens when we find the folio and it has the
-+ * readahead flag set so we want to possibly extend the readahead further.
-  */
--static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
--					    struct folio *folio)
-+static void do_async_mmap_readahead(struct vm_fault *vmf, struct folio *folio)
- {
- 	struct file *file = vmf->vma->vm_file;
- 	struct file_ra_state *ra = &file->f_ra;
- 	DEFINE_READAHEAD(ractl, file, ra, file->f_mapping, vmf->pgoff);
--	struct file *fpin = NULL;
- 	unsigned short mmap_miss;
- 
- 	/* If we don't want any read-ahead, don't bother */
- 	if (vmf->vma->vm_flags & VM_RAND_READ || !ra->ra_pages)
--		return fpin;
-+		return;
- 
- 	/*
- 	 * If the folio is locked, we're likely racing against another fault.
-@@ -3470,10 +3410,8 @@ static struct file *do_async_mmap_readahead(struct vm_fault *vmf,
- 
- 	if (folio_test_readahead(folio)) {
- 		ractl._max_index = vmf->vma->vm_pgoff + vma_pages(vmf->vma) - 1;
--		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 		page_cache_async_ra(&ractl, folio, ra->ra_pages);
- 	}
--	return fpin;
- }
- 
- static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
-@@ -3530,15 +3468,9 @@ static vm_fault_t filemap_fault_recheck_pte_none(struct vm_fault *vmf)
-  * it in the page cache, and handles the special cases reasonably without
-  * having a lot of duplicated code.
-  *
-- * vma->vm_mm->mmap_lock must be held on entry.
-- *
-- * If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
-- * may be dropped before doing I/O or by lock_folio_maybe_drop_mmap().
-- *
-- * If our return value does not have VM_FAULT_RETRY set, the mmap_lock
-- * has not been released.
-- *
-- * We never return with VM_FAULT_RETRY and a bit from VM_FAULT_ERROR set.
-+ * Context: May sleep waiting for I/O.  Can be interrupted by fatal
-+ * signals if @vmf flags permit.  The caller must hold the fault lock
-+ * (either mmap_lock or VMA lock).
-  *
-  * Return: bitwise-OR of %VM_FAULT_ codes.
-  */
-@@ -3546,7 +3478,6 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- {
- 	int error;
- 	struct file *file = vmf->vma->vm_file;
--	struct file *fpin = NULL;
- 	struct address_space *mapping = file->f_mapping;
- 	struct inode *inode = mapping->host;
- 	pgoff_t max_idx, index = vmf->pgoff;
-@@ -3566,15 +3497,31 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 	folio = filemap_get_folio(mapping, index);
- 	if (likely(!IS_ERR(folio))) {
- 		/*
--		 * We found the page, so try async readahead before waiting for
--		 * the lock.
-+		 * We found the folio, so try async readahead before
-+		 * waiting for the lock.
- 		 */
- 		if (!(vmf->flags & FAULT_FLAG_TRIED))
--			fpin = do_async_mmap_readahead(vmf, folio);
-+			do_async_mmap_readahead(vmf, folio);
- 		if (unlikely(!folio_test_uptodate(folio))) {
- 			filemap_invalidate_lock_shared(mapping);
- 			mapping_locked = true;
- 		}
-+
-+		if (!folio_trylock(folio)) {
-+			if (vmf->flags & FAULT_FLAG_KILLABLE) {
-+				if (__folio_lock_killable(folio) < 0)
-+					return VM_FAULT_SIGBUS;
-+			} else {
-+				__folio_lock(folio);
-+			}
-+		}
-+
-+		/* Did it get truncated? */
-+		if (unlikely(folio->mapping != mapping)) {
-+			folio_unlock(folio);
-+			folio_put(folio);
-+			goto retry_find;
-+		}
- 	} else {
- 		ret = filemap_fault_recheck_pte_none(vmf);
- 		if (unlikely(ret))
-@@ -3584,7 +3531,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		count_vm_event(PGMAJFAULT);
- 		count_memcg_event_mm(vmf->vma->vm_mm, PGMAJFAULT);
- 		ret = VM_FAULT_MAJOR;
--		fpin = do_sync_mmap_readahead(vmf);
-+		do_sync_mmap_readahead(vmf);
- retry_find:
- 		/*
- 		 * See comment in filemap_create_folio() why we need
-@@ -3595,25 +3542,13 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 			mapping_locked = true;
- 		}
- 		folio = __filemap_get_folio(mapping, index,
--					  FGP_CREAT|FGP_FOR_MMAP,
--					  vmf->gfp_mask);
-+					  FGP_CREAT | FGP_LOCK, vmf->gfp_mask);
- 		if (IS_ERR(folio)) {
--			if (fpin)
--				goto out_retry;
- 			filemap_invalidate_unlock_shared(mapping);
- 			return VM_FAULT_OOM;
- 		}
- 	}
- 
--	if (!lock_folio_maybe_drop_mmap(vmf, folio, &fpin))
--		goto out_retry;
--
--	/* Did it get truncated? */
--	if (unlikely(folio->mapping != mapping)) {
--		folio_unlock(folio);
--		folio_put(folio);
--		goto retry_find;
--	}
- 	VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio);
- 
- 	/*
-@@ -3625,7 +3560,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		/*
- 		 * If the invalidate lock is not held, the folio was in cache
- 		 * and uptodate and now it is not. Strange but possible since we
--		 * didn't hold the page lock all the time. Let's drop
-+		 * didn't hold the folio lock all the time. Let's drop
- 		 * everything, get the invalidate lock and try again.
- 		 */
- 		if (!mapping_locked) {
-@@ -3642,21 +3577,12 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		goto page_not_uptodate;
- 	}
- 
--	/*
--	 * We've made it this far and we had to drop our mmap_lock, now is the
--	 * time to return to the upper layer and have it re-find the vma and
--	 * redo the fault.
--	 */
--	if (fpin) {
--		folio_unlock(folio);
--		goto out_retry;
--	}
- 	if (mapping_locked)
- 		filemap_invalidate_unlock_shared(mapping);
- 
- 	/*
--	 * Found the page and have a reference on it.
--	 * We must recheck i_size under page lock.
-+	 * Found the folio and have a reference on it.
-+	 * We must recheck i_size under folio lock.
- 	 */
- 	max_idx = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
- 	if (unlikely(index >= max_idx)) {
-@@ -3675,10 +3601,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 	 * because there really aren't any performance issues here
- 	 * and we need to check for errors.
- 	 */
--	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 	error = filemap_read_folio(file, mapping->a_ops->read_folio, folio);
--	if (fpin)
--		goto out_retry;
- 	folio_put(folio);
- 
- 	if (!error || error == AOP_TRUNCATED_PAGE)
-@@ -3686,20 +3609,6 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 	filemap_invalidate_unlock_shared(mapping);
- 
- 	return VM_FAULT_SIGBUS;
--
--out_retry:
--	/*
--	 * We dropped the mmap_lock, we need to return to the fault handler to
--	 * re-find the vma and come back and find our hopefully still populated
--	 * page.
--	 */
--	if (!IS_ERR(folio))
--		folio_put(folio);
--	if (mapping_locked)
--		filemap_invalidate_unlock_shared(mapping);
--	if (fpin)
--		fput(fpin);
--	return ret | VM_FAULT_RETRY;
- }
- EXPORT_SYMBOL(filemap_fault);
- 
+Notice the section header table, and how it starts after program text and
+program data, and how all the other ELF gunk (debug info, symtab,
+strtab(s)) also goes after .data. So (mostly) the real problematic readahead
+would be on the RW VMA that covers .data.
+
+(This also matches my understanding of linkers, where they generally do
+(to put it simply) ELF headers - program headers - .text - .data - .bss, with
+stripable gunk after it.)
+
+It's also the case that synchronous RA on VM_EXEC is already pretty
+conservative and limited, see the big if (vm_flags & VM_EXEC) in
+do_sync_mmap_readahead(). (I think the underlying logic behind also
+implies that async RA will not be started against these pages, but I
+am not sure).
+
 -- 
-2.47.3
-
+Pedro
 
