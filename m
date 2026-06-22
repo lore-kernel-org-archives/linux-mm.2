@@ -4,103 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5841ECDB470
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 11:12:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04CBACDB470
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 11:22:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FD9D6B008C; Mon, 22 Jun 2026 07:12:24 -0400 (EDT)
+	id 9CB656B0088; Mon, 22 Jun 2026 07:22:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AF576B0092; Mon, 22 Jun 2026 07:12:24 -0400 (EDT)
+	id 97D116B008A; Mon, 22 Jun 2026 07:22:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14FBA6B0093; Mon, 22 Jun 2026 07:12:24 -0400 (EDT)
+	id 843DF6B008C; Mon, 22 Jun 2026 07:22:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C97C96B008C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:12:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4194612010E
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:12:23 +0000 (UTC)
-X-FDA: 84907284966.29.9F879FE
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7036F20003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:12:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m6zf0WV3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3kxg5agkKCAIvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3kxg5agkKCAIvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0626B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:22:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDAD7400BD
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:22:01 +0000 (UTC)
+X-FDA: 84907309242.14.2B0EB24
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5FAE618000D
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:21:59 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hus2QOkI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782126741;
+	s=arc-20220608; t=1782127320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YXbPmQmazgkFdDbtyTXXxgi0W9OrSOLs1ojwaV9lxRY=;
-	b=iolU74UOnV2owVb0nm5CXWhSGYiovtE297HiOack4CkNYuwNn05cJ5+k+Zv1HMZlYekgIt
-	/SNphKRm6rocNo67YBptgnvi/XadLKkZS+Y0/hxH4N4B67qepJHZMnpuXewaAtfkyDV3Lg
-	/9/zAtwkRz7GOcNBmVBpZaHAJsI7nRo=
+	bh=eyu8QkMU9oD+rhZhohHWmAdRSmzUx+ZJodmNZ5O/EZQ=;
+	b=QdyZcEXZCDgtr4sWD5G7DaFUkqW6xpvNcPlIq+pgOGNhgo6iYmBzlMgtCMMKX1Y2r2KhYZ
+	Tux/ShXXhO8kD/jgfdorIz3bWJVqwOxDq2Oop44sLDDAG/B/NLgQZwl3/76cKmgf2cD8UW
+	cTnOv9iJsSg/zIa15svL5JdE8qr9ybE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=m6zf0WV3;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3kxg5agkKCAIvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3kxg5agkKCAIvctwpucjwiqqing.eqonkpwz-oomxcem.qti@flex--tarunsahu.bounces.google.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Hus2QOkI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782126741;
-	b=YngydmTtEoj9wtRFrd4gukE7ScFcIkrs1X5X9EmoRxZ+ysu6LE/UYFvz3Sas6zWc/iiv/H
-	XUKS7zc5IK9Srlp4aLEyklYr0znpXBhh2sMk0EztJ0NThsskiZbMmwhb12O225M3X2vO2n
-	IzpymZHTVWKa44CWDvEImN+u7NNuS+E=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-695837464bcso4315123a12.3
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:12:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782126740; x=1782731540; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YXbPmQmazgkFdDbtyTXXxgi0W9OrSOLs1ojwaV9lxRY=;
-        b=m6zf0WV3a009iaQSnMgTtQdcZv2WLfT8guUX2UWBnKk6XaBNp8M/o7BSVOZ1e1xNjv
-         pg17Z1WsTWvFsNavgJNDGIE2zzwUhpJ2GPdb+BC4V3gXNY7mmrw+j2hNLq5WMywrvaRy
-         yFIpaDXoI8q2HFzuqS8jTOXi0i2aftH70s+HwqvMN4O6fj7bElDpP0Kh2c6GYnwzPjCk
-         dWWkTplulgx+tnwMFHSnvz14zIW8E9/2NqaKYirOXSNv7nnDFxVmxph2S32ZT4iixZ+q
-         8qHnvHSYwkPPHXuPxTQ7GuUuQxUEoCA0insUrjHMZnyTIw7NHBa7dpRVcCKUto/fg5Z9
-         nJPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782126740; x=1782731540;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YXbPmQmazgkFdDbtyTXXxgi0W9OrSOLs1ojwaV9lxRY=;
-        b=q0MghqTQ15H9gxGfNg5BBWPIRn9sUtQS7y7WgjCfY0ufgbLJqfbdOtBO7/HFB8+qwi
-         dwfor68NMZMe2/s5BsVUbUy8ZYSPsw8HXBj7PRdWSeWHK4zPmMe77GD8xXPtiqqvojsO
-         /sLiICqWukzqkqEGeaZlrW1jaCSYKECz05Eon6HLVI0zixsSfBZL6mh8vXUugPsGvel7
-         F9xlvXcovUVvuHt8XmnfEP8oXnYQ/FaLu2dP2FXwlATJqBy6YdK22oYbVfu6X99c21Pz
-         MBlGO9IG9cMJgEQsPn0v2fBG6tModoHXF4KuyzC0qnhCwsWP/cKEn7ldDvhnSw+b3cyA
-         HFcw==
-X-Forwarded-Encrypted: i=1; AFNElJ820j5QKcQEZNZ5ajYlRC27D5P7GSqmz8z6hrhIFAX8WD0LlBYOgWq/BdXtrGJo0H+MQHYVi1zbmw==@kvack.org
-X-Gm-Message-State: AOJu0Yw0p3Pb287PBvK4eS+SMQyclBRBZxM93J8MXkQv0H5zO4VF7F9a
-	sbCgdEF4ic1Cu86cSUDXXLxnIXOw5PLjPlictBlGYvQPYO9p4PibZ+e/7C3W1w8uNl95FQU7L1t
-	xMKUOA4XcwzUiVcNcGA==
-X-Received: from edai33.prod.google.com ([2002:a05:6402:f21:b0:697:ade6:f966])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:5215:b0:696:8f45:4ae7 with SMTP id 4fb4d7f45d1cf-696e5211777mr6088859a12.13.1782126739883;
- Mon, 22 Jun 2026 04:12:19 -0700 (PDT)
-Date: Mon, 22 Jun 2026 11:12:15 +0000
-In-Reply-To: <20260622111215.4157974-1-tarunsahu@google.com>
-Mime-Version: 1.0
-References: <20260622111215.4157974-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.738.g0c8ab3ebcc-goog
-Message-ID: <20260622111215.4157974-3-tarunsahu@google.com>
-Subject: [REESND PATCH v3 2/2] luo: Update serialized data to use KHOSER_PTR
-From: Tarun Sahu <tarunsahu@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Alexander Graf <graf@amazon.com>, Pratyush Yadav <pratyush@kernel.org>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xka6n1bmi5bz39uj7ban15w3d3ad7mnm
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7036F20003
+	t=1782127320;
+	b=UnXR80So44LoC1cweZJBLLrnh9HlMxJrSN3Lc5NOB5L3qHFvKLdRDXKiPhUHiaf34eOHUi
+	Qoocqxbor/LihEZ10bApPzlYvJ3HTLqO246/eYjAKKp14fc3ZG81poZdTiGhOBqHrUGmtf
+	qLzMa7VZkh4ygIp/ALAYBoPRJ6qH+dQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782127317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eyu8QkMU9oD+rhZhohHWmAdRSmzUx+ZJodmNZ5O/EZQ=;
+	b=Hus2QOkIp0sv1hOTAN3UcVZHhAwB+Vqzn++43K5BnELGdr9+tGZHGuYxKpVEznX5be4EEh
+	TuHnXTqHZVboT3QA0d6ckg8lLp8YpIvxvh22O9hbMrent2/wABmngEewPkcEw4hZngleN7
+	/o4iL0DHhWQNxDcykNUgQ2FN2lvNs78=
+From: Lance Yang <lance.yang@linux.dev>
+To: richard.weiyang@gmail.com
+Cc: david@kernel.org,
+	akpm@linux-foundation.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	balbirs@nvidia.com,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	ljs@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Mon, 22 Jun 2026 19:21:47 +0800
+Message-Id: <20260622112147.66777-1-lance.yang@linux.dev>
+In-Reply-To: <20260620021353.nn7xp2ldqachq7gp@master>
+References: <20260620021353.nn7xp2ldqachq7gp@master>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1782126741-446845
-X-HE-Meta: U2FsdGVkX19hcY9lyrHmc16FHfRFCEfB/42WxhQIhTc8FEML1mrPQcuMe3Be05xCImr3drQ8EgE7Hq7Fj5Y2HlYdHm5Uz/+sNBUURMHtWbMcXQutXNjVB2niE2rPWMGd/OcYsT4JKEKw/QuQI9O69ZWml8L2oGkw2ium90WIpbzdxzonNIXcoYbio4c6i4m6bfsiN3jjx+rTqpcIU3vkooqszh4A9mDAgFDGersYomJg4lxYjxbSWGNTzPTaqerJn53mrR/HJXLkJaDfvCnjUTYz5pRl+ThGXqA1PsQA/BIss2/J/7+8pB2yV/3rE5xRFb6Z56LGOapnmnxj+A6eC/OqvqqVP95Bh8C8oJ/KJ3XVyznPM7b/r8bbfPqKYsSKa2Bo6g+8KGpsFf22+0AhWJP0ZVdnFT3SC4lo71vcynSdqP04nV08kg0Xgl35F6QyL37qrDl6jBsZ9KkoKvV55Nx9+HTlN+KzGGpo+czS4k/GTQfaMyaftSFPnpP7x4HmCJsnHAd1VXNNQh3iwoES1Brz5eF9hEzXKKnwEBpTRVwS8NZiCTtt+XEdfmKEp9iTtmHPoza4M+H7Lc/Vod3MFdn9zX+k7n6zJJheJ2HCYSgKD1pGjitRHw0bqnALPNai8qXXPajLn2LpsBPSgbTUcV7tb0UZM0GDFl39LHGpuiueld+GXUxZIKRNshbrcyzb0oHDCXtQ+q8tJDJs1AVmLEfKlbGD27fYi6egRHQFJhS8i1NZxLGheEh48AMEBVfHYOu3YLLP+XVXBth3HuCWeciV2zhLfdv+2aLOsb+N2lWdSuzzHknVUzAvFxUQj3e8pw/FWg0nH5vXuDKjYdVvv4t2yuz6PqZVsB0LMq7h1g8KLgFXiuYRt0ntlkYjZa3zqVdGSKOQ1aVPfH7v3Qr+FLaVKCkrWjILrky2NEZXJ2lMGJMswl+7tjOKkf1wShloh8mLyVVYO75J6HI7IGW
- FXxOrYm0
- oylmEXOX5nHzdVWtoiy5qVwLT2vTqDplshOdSZrOcLHhT0zeG3xpzxihvHNO/6CzYFPBXIW3xvf+vYnJA0uTod0lwEK/YJw+kKby+tiWb2MJISL8cpn59b1kspJpUlHjOdx3IY/8PllNVpAVlYfXPpCtB4weH0o4eHjKb0hkOZpldwMLGUKB79vmDzVVDurhl/yEVYoa/Y8e9JTg/ieiHLcu/E2ofOtABkQB3Z2+nh50bkbXuH25bYMcjt340AWWkS0bBSulYb877TKAtjRSB6kKC6fxBK2lbh0OKG7Y6NQRyfH+K88iFRl2CUci1rLCX4YBAcErMlhOwmrmf30FrtVZqmIWHzi/FI3LMF8FcrMLWCRaL0EFXou2JgCL24LkxVmwP15oLq3jfsNINdO65HAYBgEFlZeKujX2i/5Qsyo3l5etKPOrGBiBChxUUuhqy7F72F+Egqyy1bJkVLAK/2e+MYnosdcX1pAULH7aA50NJNUv9L7r88K1HcQM/KgBhWXYFXlOe7T5mUrk4+pEjmnMw764hV6ozjRSGP6bt0V08UgniRUwauTtyg7VqrZJ0Kd31GDGe/0I5ZZvxt9HAWhltjXB7MzNj7l/E5D4r/iLjOfs=
+X-Stat-Signature: a8qqxnj7x3b96o94sh8rxzucccexgaxt
+X-Rspamd-Queue-Id: 5FAE618000D
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1782127319-53635
+X-HE-Meta: U2FsdGVkX19D82n6s4KjZq5bT2VyJJgBu9ReYUnw9QjxSecVf41fIDwMxdqzszxHGXAnEjFcLEvm/jbiK4FtRHyNa0LDXHEMb9d7nQUfxXO7dvg0YlhKPOlvK/jZi8kSbgfprsJMPnSROZwZSsvyNUcs3+fopNdd/R3rJcLh6gcaYHXEHu3zEMqvblDyymgQ1eyn6yJQqPLJTTKB/tN+8nybMy6Cp5HdBMIg+jcJZvj8vmK78wcTybd0wHR/8M/jKZkl3Hby+7o5Qk242nb/BLsIFAXIkWPw6J+K1dWe9y64+E+xO5H4AVXyqp+FiiUYOrgp7OjvaDHXp55Cwgrm53BeYq3XHCZ0z6zvqHOXvV/Wedm3IndWWuvBqtljCtoe17mcoVB3mzihxckF7FHyWOukL6IpA31T7GA1o1a6+CdE2Xj+linI8Y2gbkm4Pyf5kD9bACgcGAEU2hB3GUrKMaU1XMr8VFWT5MmTtBUq1a4hc/a6ZUa6HVimrdvmaNd2dKfpFhS0X+ax8agYeLCx4RGarmxYyEWQovjaGUih55fAxo/Mv531pV8IxOPgfmHKmDX0jhIpasEKvtqEqs4+8dzz/Z+F5BV310NDNEeRjMI8BnGAr04E4aR+wL+n6WfOct76AaihpWwbi+Dmd39vWSVu8/utS2p0W0r0G9OK1Jxf+cDf+dERoId+uZPdObUh4bk0CxoqtLSyKQ0t7d07jXYT+QXYIqYkZOgrdpiA3Z0eqIHEuIv8zvCnAcMpWoJkjDHfQQ+nuQVGE9WyGi4W+KiNQZOHmURI8FfQMHE5GeIcApwiUt3CvaufWJux/Fmi65RY+x2uU9X8Zu/wnwft3ukch4mayQBnBvqYpLSmMWvMf/v+ItUi22Yl3RTpLKXox5Okh+ifm0X3MKXO0RJzdI08gqgr6OT1h+WF4NDwIoEnHNht5zEL4nghzqMt+HAQTn5Ny+nPICuM4oNceLJ
+ 25/rwrRB
+ 4dpj55aUGTJYso+FJ8cQPPcU4JJDiFpIXodvpx+yHCj5ZHo5Cf3t6ToEocXyWxTe/FHrvrw8fslP5VhSVmucKSMxLfLgq2P1v62Ta3Tmri2t+ZewQTK7hXBT0zBhXXmMfGmiBGMkA2JymOXOLeo8bJ0BrcGoSUiVWZy4ZVXAT2kWrS+8htDyDrAJK2Wk9XMnrI2SvCMZ/g3NJe0UK2DPNfgoJvnaD/MBpJLB43hRugYFTMqfl3268g0q5ElPW+rPv8ihX+1/4Dy0spF2dnuxetigUESka5JpzI412SrF4hww4brgnsuYyIUmwBd9n1UYSbbX5GWpBT/k/WTxS/quXmvSoSyG5WHN4lYWDFLz4myUxqwfNbqn1oDmGepc1yhsvHaH4RobSBStwLSGSJ5zWCIf96kEvvKycVXe9WW7wf4gQdjbKydCDguIdbdkLUon/Ay6oe1bwUi3H1Sx/gKJe4qpQV9k5w3Bz5JuaR6OzkFSU98X0IP32NVu0uyre2v7cWrJ6ZXRKOoqQJmAaFZtCAxQLpEgl7QgaLorWdOe1OSPMSxTKPkordAAljlF/92bZGmtUbHXVhbFnoffW2uYBcIGAZ9OslWsydP32
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,251 +100,485 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Convert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
-This series also takes care of resolving the bug with memfd of using
-phys_to_virt before checking the args->serialized_data value.
 
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
----
- include/linux/kho/abi/luo.h  |  5 +++--
- include/linux/liveupdate.h   |  4 ++--
- kernel/liveupdate/luo_file.c | 24 ++++++++++++------------
- mm/memfd_luo.c               | 18 +++++++++---------
- 4 files changed, 26 insertions(+), 25 deletions(-)
+On Sat, Jun 20, 2026 at 02:13:53AM +0000, Wei Yang wrote:
+>On Fri, Jun 19, 2026 at 12:48:26PM +0200, David Hildenbrand (Arm) wrote:
+>>On 6/19/26 12:44, Lorenzo Stoakes wrote:
+>>> -cc wrong email
+>>> 
+>>> On Tue, Jun 16, 2026 at 06:34:36AM +0000, Wei Yang wrote:
+>>>> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
+>>>> before return the pmd entry:
+>>>>
+>>>>   * re-validate pmd entry after PTL
+>>>>   * check PVMW_MIGRATION
+>>>>   * check_pmd()
+>>>>   * handle on pte level if split under us
+>>>>
+>>>> But for device-private pmd, we just return after pmd_lock().
+>>>>
+>>>> This may return improper entry, e.g. if we are looking for a migration
+>>>> entry, device-private entry could still be returned, which leads to data
+>>>> corruption.
+>>> 
+>>> I don't thik this is quite clear?
+>>> 
+>>> How about:
+>>> 
+>>> 	If a softleaf entry is present, the existing code simply acquires the
+>>> 	PMD lock and returns success even if PVMW_MIGRATION is set (indicating a
+>>> 	migration entry is sought), meaning that the caller can incorrectly
+>>> 	interpret the entry as something it is not, causing data corruption.
+>>> 
+>>>>
+>>>> This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
+>>>> support device-private entries") by following the same pattern as
+>>>> pmd_trans_huge() and pmd_is_migration_entry() for device private entry.
+>>>>
+>>>> While at it, it cleanups the pmd entry handling in page_vma_mapped_walk().
+>>>>
+>>>>   * Instead of handling trans huge/migration entry/device private entry
+>>>>     in a mixed manner, we put each case into its own if condition and
+>>>>     handle with the same pattern.
+>>>>   * Also we grab PTL and make sure pmd is not changed under us after
+>>>>     above check instead of do the check with PTL hold.
+>>>>   * restart the process if pmd is changed under us
+>>> 
+>>> You're doing quite a bit for a fix and you're putting it all in one place.
+>>> 
+>>> How about do the fix as 1 patch, and then cleanups as other ones? It helps with
+>>> review too :)
+>>> 
+>>> It's a general rule of thumb that if you do more than one of moving, refactoring
+>>> or changing code, to do them as separate patches so a reviewer/somebody
+>>> bisecting can clearly separate each.
+>>> 
+>>> Also PLEASE do not add new functionality (this lock recheck) in a fixes
+>>> patch. We'll end up backporting new logic that way.
+>>> 
+>>> Make the fixes bit _minimal_.
+>>
+>>To be fair, I asked for this
+>>
+>>https://lore.kernel.org/all/2d48ef0d-1110-4a9d-adcb-f701a1ce2cfa@kernel.org/
+>>
+>>But given that Wei mostly used my quick draft without properly checking the
+>>implications, yeah, let's fix it first separately.
+>
+>Sorry, if I misunderstand your point.
+>
+>>
+>>I can then follow up with a proper cleanup.
 
-diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index 288076de6d4a..d5b3b1c0fec1 100644
---- a/include/linux/kho/abi/luo.h
-+++ b/include/linux/kho/abi/luo.h
-@@ -59,6 +59,7 @@
- 
- #include <linux/align.h>
- #include <linux/kho/abi/block.h>
-+#include <linux/kho/abi/kexec_handover.h>
- #include <uapi/linux/liveupdate.h>
- 
- /*
-@@ -89,14 +90,14 @@ struct luo_ser {
- /**
-  * struct luo_file_ser - Represents the serialized preserves files.
-  * @compatible:  File handler compatible string.
-- * @data:        Private data
-+ * @serialized_data:  The serialized pointer union for this file
-  * @token:       User provided token for this file
-  *
-  * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-  */
- struct luo_file_ser {
- 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
--	u64 data;
-+	DECLARE_KHOSER_PTR(serialized_data, void *);
- 	u64 token;
- } __packed;
- 
-diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-index 88722e5caf02..480d638b7d18 100644
---- a/include/linux/liveupdate.h
-+++ b/include/linux/liveupdate.h
-@@ -33,7 +33,7 @@ struct file;
-  * @file:             The file object. For retrieve: [OUT] The callback sets
-  *                    this to the new file. For other ops: [IN] The caller sets
-  *                    this to the file being operated on.
-- * @serialized_data:  The opaque u64 handle, preserve/prepare/freeze may update
-+ * @serialized_data:  The serialized pointer union, preserve/prepare/freeze may update
-  *                    this field.
-  * @private_data:     Private data for the file used to hold runtime state that
-  *                    is not preserved. Set by the handler's .preserve()
-@@ -47,7 +47,7 @@ struct liveupdate_file_op_args {
- 	struct liveupdate_file_handler *handler;
- 	int retrieve_status;
- 	struct file *file;
--	u64 serialized_data;
-+	DECLARE_KHOSER_PTR(serialized_data, void *);
- 	void *private_data;
- };
- 
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index c39f96961a85..79cfa5201899 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -125,7 +125,7 @@ static DEFINE_XARRAY(luo_preserved_files);
-  * @file:          Pointer to the kernel's &struct file that is being preserved.
-  *                 This is NULL in the new kernel until the file is successfully
-  *                 retrieved.
-- * @serialized_data: The opaque u64 handle to the serialized state of the file.
-+ * @serialized_data: The serialized pointer union to the serialized state of the file.
-  *                 This handle is passed back to the handler's .freeze(),
-  *                 .retrieve(), and .finish() callbacks, allowing it to track
-  *                 and update its serialized state across phases.
-@@ -161,7 +161,7 @@ static DEFINE_XARRAY(luo_preserved_files);
- struct luo_file {
- 	struct liveupdate_file_handler *fh;
- 	struct file *file;
--	u64 serialized_data;
-+	DECLARE_KHOSER_PTR(serialized_data, void *);
- 	void *private_data;
- 	int retrieve_status;
- 	struct mutex mutex;
-@@ -289,7 +289,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
- 	if (err)
- 		goto err_kfree;
- 
--	luo_file->serialized_data = args.serialized_data;
-+	KHOSER_COPY_TYPESAFE(luo_file->serialized_data, args.serialized_data);
- 	luo_file->private_data = args.private_data;
- 	list_add_tail(&luo_file->list, &file_set->files_list);
- 	file_set->count++;
-@@ -342,7 +342,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
- 
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
--		args.serialized_data = luo_file->serialized_data;
-+		KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 		args.private_data = luo_file->private_data;
- 		luo_file->fh->ops->unpreserve(&args);
- 		luo_flb_file_unpreserve(luo_file->fh);
-@@ -375,12 +375,12 @@ static int luo_file_freeze_one(struct luo_file_set *file_set,
- 
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
--		args.serialized_data = luo_file->serialized_data;
-+		KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 		args.private_data = luo_file->private_data;
- 
- 		err = luo_file->fh->ops->freeze(&args);
- 		if (!err)
--			luo_file->serialized_data = args.serialized_data;
-+			KHOSER_COPY_TYPESAFE(luo_file->serialized_data, args.serialized_data);
- 	}
- 
- 	return err;
-@@ -396,7 +396,7 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
- 
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
--		args.serialized_data = luo_file->serialized_data;
-+		KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 		args.private_data = luo_file->private_data;
- 
- 		luo_file->fh->ops->unfreeze(&args);
-@@ -483,7 +483,7 @@ int luo_file_freeze(struct luo_file_set *file_set,
- 
- 		strscpy(file_ser->compatible, luo_file->fh->compatible,
- 			sizeof(file_ser->compatible));
--		file_ser->data = luo_file->serialized_data;
-+		KHOSER_COPY_TYPESAFE(file_ser->serialized_data, luo_file->serialized_data);
- 		file_ser->token = luo_file->token;
- 	}
- 
-@@ -587,7 +587,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
- 	}
- 
- 	args.handler = luo_file->fh;
--	args.serialized_data = luo_file->serialized_data;
-+	KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 	err = luo_file->fh->ops->retrieve(&args);
- 	if (err) {
- 		/* Keep the error code for later use. */
-@@ -621,7 +621,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
- 
- 		args.handler = luo_file->fh;
- 		args.file = luo_file->file;
--		args.serialized_data = luo_file->serialized_data;
-+		KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 		args.retrieve_status = luo_file->retrieve_status;
- 		can_finish = luo_file->fh->ops->can_finish(&args);
- 	}
-@@ -638,7 +638,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
- 
- 	args.handler = luo_file->fh;
- 	args.file = luo_file->file;
--	args.serialized_data = luo_file->serialized_data;
-+	KHOSER_COPY_TYPESAFE(args.serialized_data, luo_file->serialized_data);
- 	args.retrieve_status = luo_file->retrieve_status;
- 
- 	luo_file->fh->ops->finish(&args);
-@@ -748,7 +748,7 @@ static int luo_file_deserialize_one(struct luo_file_set *file_set,
- 
- 	luo_file->fh = fh;
- 	luo_file->file = NULL;
--	luo_file->serialized_data = ser->data;
-+	KHOSER_COPY_TYPESAFE(luo_file->serialized_data, ser->serialized_data);
- 	luo_file->token = ser->token;
- 	mutex_init(&luo_file->mutex);
- 	list_add_tail(&luo_file->list, &file_set->files_list);
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 59de210bee5f..daf2c4c3da35 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -257,6 +257,7 @@ static void memfd_luo_unpreserve_folios(struct kho_vmalloc *kho_vmalloc,
- 
- static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- {
-+	DECLARE_KHOSER_PTR(sd, struct memfd_luo_ser *);
- 	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_folio_ser *folios_ser;
- 	struct memfd_luo_ser *ser;
-@@ -309,7 +310,8 @@ static int memfd_luo_preserve(struct liveupdate_file_op_args *args)
- 	inode_unlock(inode);
- 
- 	args->private_data = folios_ser;
--	args->serialized_data = virt_to_phys(ser);
-+	KHOSER_STORE_PTR(sd, ser);
-+	KHOSER_COPY_TYPEUNSAFE(args->serialized_data, sd);
- 
- 	return 0;
- 
-@@ -325,11 +327,10 @@ static int memfd_luo_freeze(struct liveupdate_file_op_args *args)
- {
- 	struct memfd_luo_ser *ser;
- 
--	if (WARN_ON_ONCE(!args->serialized_data))
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (WARN_ON_ONCE(!ser))
- 		return -EINVAL;
- 
--	ser = phys_to_virt(args->serialized_data);
--
- 	/*
- 	 * The pos might have changed since prepare. Everything else stays the
- 	 * same.
-@@ -344,14 +345,13 @@ static void memfd_luo_unpreserve(struct liveupdate_file_op_args *args)
- 	struct inode *inode = file_inode(args->file);
- 	struct memfd_luo_ser *ser;
- 
--	if (WARN_ON_ONCE(!args->serialized_data))
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
-+	if (WARN_ON_ONCE(!ser))
- 		return;
- 
- 	inode_lock(inode);
- 	shmem_freeze(inode, false);
- 
--	ser = phys_to_virt(args->serialized_data);
--
- 	memfd_luo_unpreserve_folios(&ser->folios, args->private_data,
- 				    ser->nr_folios);
- 
-@@ -397,7 +397,7 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (args->retrieve_status)
- 		return;
- 
--	ser = phys_to_virt(args->serialized_data);
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
- 	if (!ser)
- 		return;
- 
-@@ -522,7 +522,7 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	struct file *file;
- 	int err;
- 
--	ser = phys_to_virt(args->serialized_data);
-+	ser = KHOSER_LOAD_PTR(args->serialized_data);
- 	if (!ser)
- 		return -EINVAL;
- 
--- 
-2.55.0.rc0.738.g0c8ab3ebcc-goog
+FYI, spent a few days chasing the history here. Dropping my notes in case
+they save someone else some time reading or refactoring this code :P
 
+TL;DR below.
+
+For THP PMDs, the lockless pmd_trans_huge() check was only a candidate
+filter from day one.
+
+ace71a19cec5 [1] ("mm: introduce page_vma_mapped_walk()") already had the
+lock-and-recheck rule: the lockless check only got us into the branch,
+then the code took pmd_lock() before making any PMD-level decision:
+
+	if (pmd_trans_huge(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+	} else {
+		...
+	}
+
+616b8371539a [2] ("mm: thp: enable thp migration in generic path") later
+added PMD migration entries to that same locked branch:
+
+	if (pmd_trans_huge(*pvmw->pmd) || is_pmd_migration_entry(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+	} else {
+		...
+	}
+
+Current code spells that helper as pmd_is_migration_entry(); that came
+from the later 0ac881efe164 softleaf cleanup, with no functional change
+intended.
+
+3306d3119cea [3] ("mm: page_vma_mapped_walk(): use pmde for *pvmw->pmd")
+later made the post-lock PMD value explicit as pmde. Same rule, just less
+repeated *pvmw->pmd dereferencing under PTL:
+
+	pmde = READ_ONCE(*pvmw->pmd);
+	if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		pmde = *pvmw->pmd;
+		...
+	}
+
+One extra detail matters here. In ace71a19cec5 [1], the locked THP PMD
+branch rejected a non-present PMD before the present-THP check:
+
+	if (pmd_trans_huge(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		if (!pmd_present(*pvmw->pmd))
+			return not_found(pvmw);
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			...
+		} else {
+			...
+		}
+	}
+
+616b8371539a [2] could not keep that order after adding PMD migration
+entries, because a PMD migration entry is non-present. So the locked
+branch was reshaped to check the still-present THP PMD case first, and
+only then handle the non-present PMD as the PMD migration-entry case:
+
+	if (pmd_trans_huge(*pvmw->pmd) || is_pmd_migration_entry(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			...
+		} else if (!pmd_present(*pvmw->pmd)) {
+			...
+		} else {
+			...
+		}
+	}
+
+Inside that non-present branch, 616b8371539a [2] made it a
+PMD-migration-only case: first require THP migration support, then
+require PVMW_MIGRATION. Otherwise it is not a match:
+
+	if (pmd_trans_huge(*pvmw->pmd) || is_pmd_migration_entry(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			...
+		} else if (!pmd_present(*pvmw->pmd)) {
+			if (thp_migration_supported()) {
+				if (!(pvmw->flags & PVMW_MIGRATION))
+					return not_found(pvmw);
+				...
+			} else
+				WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+			return not_found(pvmw);
+		} else {
+			...
+		}
+	}
+
+Note that PMD-level swap entries for anonymous THPs were not supported
+then, and still aren't supported today.
+
+After those gates, the entry still had to be a migration entry for the
+target THP. Functionally, that check goes back to 616b8371539a [2]:
+
+	if (pmd_trans_huge(*pvmw->pmd) || is_pmd_migration_entry(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			...
+		} else if (!pmd_present(*pvmw->pmd)) {
+			if (thp_migration_supported()) {
+				if (!(pvmw->flags & PVMW_MIGRATION))
+					return not_found(pvmw);
+				if (is_migration_entry(pmd_to_swp_entry(*pvmw->pmd))) {
+					swp_entry_t entry = pmd_to_swp_entry(*pvmw->pmd);
+
+					if (migration_entry_to_page(entry) != page)
+						return not_found(pvmw);
+					return true;
+				}
+			} else
+				WARN_ONCE(1, "Non present huge pmd without pmd migration enabled!");
+			return not_found(pvmw);
+		} else {
+			...
+		}
+	}
+
+The later commits mostly changed how the same rule is written.
+e2e1d4076c77 rewrote it into the negative-check style; 2aff7a4755be
+changed the page comparison to check_pmd() when pvmw moved to
+pfn/nr_pages; 0d206b5d2e0d switched the PFN extraction to
+swp_offset_pfn(); and 0ac881efe164 moved the PMD swap-entry helpers over
+to softleaf helpers.
+
+e2e1d4076c77: nested positive style -> negative-check style
+2aff7a4755be: page comparison -> check_pmd(PFN range)
+0d206b5d2e0d: swp_offset() -> swp_offset_pfn()
+0ac881efe164: pmd_to_swp_entry/is_migration_entry -> softleaf helpers
+
+For the PMD-mapped THP case, the positive decision was also made under
+pmd_lock() from day one. In ace71a19cec5 [1], after taking pmd_lock(),
+the PMD had to still be a THP PMD, the walk had to be a
+non-PVMW_MIGRATION walk, and the PMD had to map the target THP:
+
+	if (pmd_trans_huge(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			if (pvmw->flags & PVMW_MIGRATION)
+				return not_found(pvmw);
+			if (pmd_page(*pvmw->pmd) != page)
+				return not_found(pvmw);
+			return true;
+		} else {
+			...
+		}
+	} else {
+		...
+	}
+
+2aff7a4755be later changed the target check from pmd_page(...) == page to
+check_pmd(pmd_pfn(pmde), pvmw), when pvmw moved to pfn/nr_pages. Same
+rule, but range-based now.
+
+The split fallback was there from ace71a19cec5 [1] as well. After taking
+pmd_lock(), if the locked PMD was no longer a THP PMD, the walker did not
+make a PMD-level true/not_found decision. It dropped pmd_lock(), cleared
+pvmw->ptl, and continued at PTE level:
+
+	if (pmd_trans_huge(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+		if (likely(pmd_trans_huge(*pvmw->pmd))) {
+			...
+		} else {
+			/* THP pmd was split under us: handle on pte level */
+			spin_unlock(pvmw->ptl);
+			pvmw->ptl = NULL;
+		}
+	} else {
+		...
+	}
+	if (!map_pte(pvmw))
+		goto next_pte;
+
+616b8371539a [2] kept that fallback after adding PMD migration entries.
+e2e1d4076c77 only rearranged the !pmd_present() block; the split fallback
+still drops pmd_lock() and falls through to map_pte().
+
+Now the outer non-present PMD case. In ace71a19cec5 [1], this was not an
+explicit else-if branch yet. It was hidden in check_pmd():
+
+static inline bool check_pmd(struct page_vma_mapped_walk *pvmw)
+{
+	pmd_t pmde;
+	/*
+	 * Make sure we don't re-load pmd between present and !trans_huge check.
+	 * We need a consistent view.
+	 */
+	pmde = READ_ONCE(*pvmw->pmd);
+	return pmd_present(pmde) && !pmd_trans_huge(pmde);
+}
+
+and the caller was:
+
+	if (pmd_trans_huge(*pvmw->pmd)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+	} else {
+		if (!check_pmd(pvmw))
+			return false;
+	}
+
+So outside the THP PMD branch, a non-present PMD failed check_pmd() and
+ended the walk.
+
+a7b100953aa3 [4] ("mm: page_vma_mapped: ensure pmd is loaded with
+READ_ONCE outside of lock") then made that lockless PMD value explicit in
+page_vma_mapped_walk():
+
+So this branch means: the lockless PMD read did not look like a THP PMD,
+did not look like a PMD migration entry, and was non-present.
+
+	pmde = READ_ONCE(*pvmw->pmd);
+	if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+	} else if (!pmd_present(pmde)) {
+		return false;
+	}
+
+The point of that commit was to use the same READ_ONCE() PMD snapshot for
+the initial lockless checks, rather than letting the compiler reload or
+reuse a stale PMD value around check_pmd().
+
+732ed55823fc [5] ("mm/thp: try_to_unmap() use TTU_SYNC for safe
+splitting") then added the PVMW_SYNC wait to this same outer non-present
+PMD branch:
+
+	pmde = READ_ONCE(*pvmw->pmd);
+	if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+		pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+		...
+	} else if (!pmd_present(pmde)) {
+		/*
+		 * If PVMW_SYNC, take and drop THP pmd lock so that we
+		 * cannot return prematurely, while zap_huge_pmd() has
+		 * cleared *pmd but not decremented compound_mapcount().
+		 */
+		if ((pvmw->flags & PVMW_SYNC) &&
+		    PageTransCompound(pvmw->page)) {
+			spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
+
+			spin_unlock(ptl);
+		}
+		return false;
+	}
+
+A lockless non-present PMD was still not a mapping. PVMW_SYNC only
+changed whether the walker could return immediately: under PVMW_SYNC, it
+had to take and drop pmd_lock() first, so it would not return while
+zap_huge_pmd() had cleared *pmd but not yet decremented
+compound_mapcount().
+
+a9a7504d9bea [6] ("mm/thp: fix page_vma_mapped_walk() if THP mapped by
+ptes") then changed the end of this branch from return false to
+step_forward(PMD_SIZE) + continue:
+
+		pmde = READ_ONCE(*pvmw->pmd);
+
+		if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+			...
+		} else if (!pmd_present(pmde)) {
+			/*
+			 * If PVMW_SYNC, take and drop THP pmd lock so that we
+			 * cannot return prematurely, while zap_huge_pmd() has
+			 * cleared *pmd but not decremented compound_mapcount().
+			 */
+			if ((pvmw->flags & PVMW_SYNC) &&
+			    PageTransCompound(page)) {
+				spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
+
+				spin_unlock(ptl);
+			}
+			step_forward(pvmw, PMD_SIZE);
+			continue;
+		}
+		if (!map_pte(pvmw))
+			goto next_pte;
+
+That was about the walk range, not about making a non-present PMD a match.
+step_forward(pvmw, PMD_SIZE) advances pvmw->address to the next PMD
+boundary, and continue restarts the walk from there. So this branch only
+rules out the current PMD-sized slot.
+
+		pmde = pmdp_get_lockless(pvmw->pmd);
+
+		if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde) ||
+		    (pmd_present(pmde) && pmd_devmap(pmde))) {
+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+			...
+		} else if (!pmd_present(pmde)) {
+			/*
+			 * If PVMW_SYNC, take and drop THP pmd lock so that we
+			 * cannot return prematurely, while zap_huge_pmd() has
+			 * cleared *pmd but not decremented compound_mapcount().
+			 */
+			if ((pvmw->flags & PVMW_SYNC) &&
+			    thp_vma_suitable_order(vma, pvmw->address,
+						   PMD_ORDER) &&
+			    (pvmw->nr_pages >= HPAGE_PMD_NR)) {
+				spinlock_t *ptl = pmd_lock(mm, pvmw->pmd);
+
+				spin_unlock(ptl);
+			}
+			step_forward(pvmw, PMD_SIZE);
+			continue;
+		}
+
+2aff7a4755be later converted page_vma_mapped_walk() to pfn/nr_pages, so
+the PVMW_SYNC condition became VMA/range based.
+
+c453d8c7d138 tightened the VMA side to transhuge_vma_suitable(vma,
+pvmw->address), and 3485b88390b0 later made that helper order-aware,
+giving the current thp_vma_suitable_order(vma, pvmw->address, PMD_ORDER)
+spelling.
+
+		if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde) ||
+		    (pmd_present(pmde) && pmd_devmap(pmde))) {
+
+There was also a temporary devmap wrinkle. 6472f6d2f7d9 added
+pmd_devmap() here because huge devmap PMDs were not covered by the old
+pmd_trans_huge() test.
+
+8a6a984c2e0e later removed the explicit pmd_devmap() checks because DAX
+no longer created pmd_devmap entries, and pXd_trans_huge() covered those
+mappings. This did not change the outer non-present PMD rule above.
+
+65edfda6f3f2 [7] ("mm/rmap: extend rmap and migration support
+device-private entries") later added the device-private PMD case into
+this same outer non-present branch:
+
+		pmde = pmdp_get_lockless(pvmw->pmd);
+
+		if (pmd_trans_huge(pmde) || is_pmd_migration_entry(pmde)) {
+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+			pmde = *pvmw->pmd;
+			...
+		} else if (!pmd_present(pmde)) {
+			/*
+			 * If PVMW_SYNC, take and drop THP pmd lock so that we
+			 * cannot return prematurely, while zap_huge_pmd() has
+			 * cleared *pmd but not decremented compound_mapcount().
+			 */
+			swp_entry_t entry = pmd_to_swp_entry(pmde);
+
+			if (is_device_private_entry(entry)) {
+				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+				return true;
+			}
+
+			...
+		}
+
+That changed the old rule for this branch: a lockless non-present PMD was
+no longer always skipped. If the lockless PMD decoded as device-private,
+the walker took pmd_lock() and returned true.
+
+0ac881efe164 later converted this code to softleaf helpers, with no
+functional change intended. So the names changed, but the control flow
+stayed the same:
+
+		pmde = pmdp_get_lockless(pvmw->pmd);
+
+		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+			...
+		} else if (!pmd_present(pmde)) {
+			const softleaf_t entry = softleaf_from_pmd(pmde);
+
+			if (softleaf_is_device_private(entry)) {
+				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+				return true;
+			}
+
+			if ((pvmw->flags & PVMW_SYNC) &&
+			    thp_vma_suitable_order(vma, pvmw->address,
+						   PMD_ORDER) &&
+			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+
+			step_forward(pvmw, PMD_SIZE);
+			continue;
+		}
+
+514c2fe9927e later moved the PVMW_SYNC take/drop pmd_lock() helper into
+sync_with_folio_pmd_zap().
+
+Note that PMD device-private handling still did not line up with the PTE
+side, as I pointed out earlier[8].
+
+[1] https://lore.kernel.org/all/20170129173858.45174-3-kirill.shutemov@linux.intel.com/T/#u
+[2] https://lore.kernel.org/all/20170717193955.20207-6-zi.yan@sent.com/
+[3] https://lore.kernel.org/all/53fbc9d-891e-46b2-cb4b-468c3b19238e@google.com/
+[4] https://lore.kernel.org/all/1507222630-5839-1-git-send-email-will.deacon@arm.com/
+[5] https://lore.kernel.org/linux-mm/20210616012353._aWHpXxeZ%25akpm@linux-foundation.org/
+[6] https://lore.kernel.org/all/fedb8632-1798-de42-f39e-873551d5bc81@google.com/
+[7] https://lore.kernel.org/all/20251001065707.920170-5-balbirs@nvidia.com/
+[8] https://lore.kernel.org/all/20260619121909.90510-1-lance.yang@linux.dev/
+
+[...]
+
+Cheers, Lance
 
