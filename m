@@ -4,99 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2759FCDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:15:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F4DCDB471
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:15:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E61D16B008C; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
+	id 75DE96B0093; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DEBC46B0092; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
+	id 735036B0095; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28FE6B0093; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
+	id 64B656B0096; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC5AC6B008C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E1D68B038
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:00 +0000 (UTC)
-X-FDA: 84906837960.09.3D05AE0
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 07BA31C0003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:14:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gnp3IodP;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E5D96B0093
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5217A05CC
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:11 +0000 (UTC)
+X-FDA: 84906838422.03.3E2A9AE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DB7C92000D
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:09 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaV52Ft+;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782116098;
-	b=LFnKgtrH7m7xIHCEOyrbxXGRXUniDpnecLU86T4mhttmuEFHwFll5qzvI5u/BvgymssWfp
-	85zOMHXcQQDQfLpSLhAyMzlzLEbrS+bnNkEWyVkiPolGE+fJxQwL7LIGD6HxpRb4eu2eUg
-	y7da5w1DjVN8eWoMs/JXiKHYnAzPKpg=
+	t=1782116109;
+	b=0WWboUQNXqm2f7I0qjxUjEto8Mhyqfffw43u4TzjnmxJH3Rb/aUKo9YfU7Jc91FZgLGVtX
+	ogn3XAhJLtMl1JpgD5c99TZBVx/wjrVgTSuIPRtcHxUxP6quF1WdNo/fYgbMYyXg4m2nAt
+	zND/+hFFnCf7XW69T1hNpLI4O8x2JYY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=gnp3IodP;
-	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaV52Ft+;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782116098;
+	s=arc-20220608; t=1782116109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M+os4f4D9ImgKLQn/d1mH2fmoljxB37D2eSbXZ+5FBc=;
-	b=YO6MrYTHdmQYxr5SXGDtiFwSjRr2kozf+6P/E64OY8dzbodU4hQFMrk/JicF2VhLJ7H1qr
-	MRSQBKXkomhFtayteESW3Ql2tHCGGIia0MySEqKEBppDBY6qFec/sNfo1Un9SceRwtAs8r
-	RKUVuoYFbenSs34pUy8yiM4ZKulnol4=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DFCE1BF7;
-	Mon, 22 Jun 2026 01:14:52 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C9523F632;
-	Mon, 22 Jun 2026 01:14:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782116097; bh=kfN/FpTa765EpipB1e7lODEHn3FZOJnKInx4uJ85UO0=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=gnp3IodPrm2sqVyqDQ7j95a2oBiRhHNNKL3rqJyJjVEA3HbvOS/+rOU/vexI9+H1u
-	 rHl+MtXyGAfJLWBIjr/V8D80HxS5qUYAMNAc1XZ18u5gnryrxrPw/IoYe4NjvT9wDo
-	 /5YcudYDmBmUay6rByCKKgj18d6G6W6MWY7HjsUg=
-Message-ID: <ae987527-7ab1-4905-b7f4-8fcc3bebdd52@arm.com>
-Date: Mon, 22 Jun 2026 13:44:46 +0530
+	bh=I7CiEqdgfo1EMG6k6a44m/PMxSYQ3XbZcJ/q6HRDPVY=;
+	b=bucJQKemnYRDOFhgvSpQTJteZQ0vv9tOsJRp5fUuJy1+7yQTgP1cZs8hgHriBWeHJuin9J
+	FMFWIsoL5q4oo3QDrUt34BCJwfmQb9Vm1uyBpQHEF+y3Rr9hG+NQy/5LPlobX6hMCkGvAU
+	+09xzDpqoq+DdWUMHNiaoh1woZGTBAM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 75E446001A;
+	Mon, 22 Jun 2026 08:15:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B381F000E9;
+	Mon, 22 Jun 2026 08:15:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782116109;
+	bh=I7CiEqdgfo1EMG6k6a44m/PMxSYQ3XbZcJ/q6HRDPVY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MaV52Ft+ZtcIY4Zuk+MIRru0fDYXiE5R1ETQs63VzVzqC/868iLnr54jcWhhbHiiA
+	 quoRqbjsVr//YKLPI/WhBotOpkjMcrdm9yqthzb7vTVTUmIhtwt3WcXFgdc1MLn8gb
+	 8KN3YkDiMgGPDBBvMVzsWN8eigVYSyJ5amadlyaLDudFWOVs7J8L41nAdDi0XgbUEh
+	 iQW0/+nsPcwpMVBJuoS6SfaRIFvTyDh+Axq3mU6SRBVnEI3/uGhjDv06aaLy0Ubu9V
+	 KzBI+5Vq3hKWaQGR1Lwg1mKpMn0Y7Na2V542ESOsvsjOnM1pD1YBojI/Dz1YIAAgl2
+	 t6sA3VDUcAm5Q==
+Message-ID: <086b119c-b777-46ae-b087-798ca3e44ecd@kernel.org>
+Date: Mon, 22 Jun 2026 10:15:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-From: Dev Jain <dev.jain@arm.com>
-To: Lance Yang <lance.yang@linux.dev>,
- "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
- kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
- bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
- pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
-References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
- <20260618074449.24974-1-lance.yang@linux.dev>
- <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
- <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
- <e64fc2f2-c4a0-434a-8d60-dcb28b99b8c6@kernel.org>
- <22613c23-612b-4de0-8731-00ad2da63eae@linux.dev>
- <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
+Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
+To: Linus Torvalds <torvalds@linuxfoundation.org>, ilya.gladyshev@linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>, ivgorbunov@me.com,
+ Liam.Howlett@oracle.com, apopple@nvidia.com, artem.kuzin@huawei.com,
+ baolin.wang@linux.alibaba.com, foxido@foxido.dev, harry.yoo@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ rppt@kernel.org, surenb@google.com, vbabka@suse.cz, willy@infradead.org,
+ yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
+References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+ <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+ <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
+ <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 07BA31C0003
-X-Stat-Signature: mqfzzwi9q3xwo3tey3bwrbz7drtiwmy8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8ime39hiye3rcsbwc53zs8pohj1o9syw
 X-Rspam-User: 
-X-HE-Tag: 1782116097-85572
-X-HE-Meta: U2FsdGVkX1/jXLkdHJI/pvNLMHj+zbNgP3lzuVkUikzxbOVXkWikkB0UakbqhZ2TiPO0GUrkHojoRqjxxARNtDf4Uh4UMJ5cAw6spLQAuD5kGtxIriFnYNhCeFal21uMAdIE82mK1s8F2AjjZoZcWpno/Wi8cmAACJQ4ZSZ7FFMZIhkGs3mvj5dfCoBA2LZ698zbZ+VSoavvL5GMixmKOXcOxvByWuRHIeBjuej8ES8geGK660D9VdGSUzWB1hfTD920pBbeMLvF1b2H/jrDmR9hwDLltc/+5/sX7O8bkPn3+jheuL8N9HHgyW4gz9yCbaZfl2ZxqbuJRTU4bDMvQFe7ZV3JDi5KKc+rywIYZkW68iAH2N2YtcqYPfk+Op/2msPJTgDRJyP3vQ+7dAzxQ8K8RIojB1yAkTWBo8k/G5B4YWMPsC2UI/IBgn6xZ1jsjJgehOWSBy6LTNwEgnOgdhNIB53IHiKbRHwxizCDNtE3TXZIavaf7C3CqE7Ja7EmrZd/qgXlyhpEGxSwExFApuo5fI84q9qe9BleOhHYDTBq16EaGEn47AbNOPPe1CNHIM0f8UpC0VgEbOil3O4nQwJc+D0pCNkvcoimc0kUxQ/Vj9B8kDp8mNBSKbNpBVXgONenxNF6J5eOkam+hLbPfqp0NtASUGzxMbhurdd0tMkLmWZZKsr7v3jVZLQF1vqybbq8rR49xZIvi8FO5cw3Kagp5d1na7ohFKylF9j0tZJqEviqNFFCppRlIdElDSCMQ6LzJMaa4MG5viXtfag4i6XDA9nTEtrbbmmzK5gt/kpIpo/0zRpQOKEqSzLmipaC8J+HAZo4cvLiw1pujSTCvKtKMNhsYI6jS3j1RiCVL2NpbAj3nyUMwqbgYqu6qsv6fl4/W5Ezq0p6mjQOC47QGRdNsrb3ZyYJ3zKytgAqoc5fp1shP8l/AMQuxohGrWxPn+AsbGChnYtb7tszNvi
- EmAEJFJY
- fXIU4L/RlNMB/J+eL+RgECTPoo2JxedKiTaE43QiHm1h4UI8KIr1UYvKChqVGiTcv3yN6WXiDEq9TI4/7qVrBp3XmgHlaDhau7QDFFa+A+dnRI/pHLQBYC8aCQcpNiiBit2XeMUlyAlNchW3unbWoJ/2rK63TMisYjaNLX9oUOhD09lXdgrtUokGJMqwLawfzoF9g78GZL2Wc9knft2iAPBEZiWncKCtfymWEJC/SecIJ8cofg81wyKaWrsFGG7Ohy9InAbd1Aah6J8xzmhKAhpPeWSyef3WjRdLeCryyA1qO3fXBopoN4miC1w==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DB7C92000D
+X-HE-Tag: 1782116109-474876
+X-HE-Meta: U2FsdGVkX19ZXPX/2zAl3X3JN8PAYy6px3//Rjb1YFPdwkTu22pvwPwFPiGOIegN1N7WV69baDYAoNXj19fpkGv8ZZeu1lEddO1zbo8ITCorycvIkgCLPF/va/mZijv96ffTlPnavp/ZMYUNvvbT/TqRQHt00eZ5xn0dHqiK5OlDzwpqBKPQCEcvEiVaTvD3/2Ts/fJOgiYyxLrdGPEG2sGjgI5jCe3z1FSb4hfxvVgiPIFVCDEjmmwPp71XyNQ/42a/ibKuOQH6FEXFtRnhXDh0s3V8Z7Q+JgQLVHk6XjALwRs7QVsU5Lj7SGWIMZkw4YczR83Idmig9/pfaBlxuiJTWZWYgmMofg4e7ijqnccA+Zqzl5Jp4pxu0ow7EszFN+hwYdHFfiWLqStqnCXywe6DUQY5ercsiK5n4UoXcJGO1fDHDPFPlSsHZUwlCUVo238NtxsPvBaI0jmpEk8jkssaEyAM9eXLS7W5vyKpsduEGiLkyZrpD5zIadW96ke4WrQeNKR4AulmPbAKAi/ScpGphTQC7sG0djnQjzNM+RA3DOtQ8X8rcIqFkDwNfJcLrV0x1F/UzBqbQJnqF+Lc9NfVh9xfIjrbb8AgTkUHRvLRJRWA/us3PEV+9tiWPt3tfbzUSLUV2N8jJWqrvyk0M9dJX92GqxJTG/DKnfy5Oase0gr0giikWgsPvwJ6JYyFFMr4oG1RBxE6vdDi714lgg9oNK0jAHmDaQSno7EKnTuT84xKlzPG5WqboVvRBJyxYQ9ACldSl2xhWjXb03TC81eGtYXUZhdAB4SpSjVdLvILoTHUItnWPnm1/+zb8jhBfdNh+So1o1KZzTlhp+YFmSdeRbupG2rE6fv2LMgZpR5jh9GJNH/7C/vnDv31UPpsy5p5o4B7/RpQ3ryVIFxnc5A9IvNimclJFgTn2fnC6gWHNxcQ48iHzi6rwuwRt0F1xg2B0XKfyZXtobr68SH
+ yk2jgXJX
+ JpswaRGM1d6QCTZ5tSPTGwhU5fI3dzmRFikWCelv/UUQiD2dlQ3aIQW4N9Ni7+u5FI1uAvAnwwfn7qsEtF/edaRiADsW0oMZOE/RVLf8Ua8IGGDqZOuq5qawYc2vx34xHPRj0+e7Acf/Ga79Pv4ky8t6zKB6TME7sVOKvkdyvxDPdjYKQ5iUxGpu1nsPiddj1fGHXAa2+hvi68tHSTr/37dZngK+f2zKRFQvZkvOfJpiDFrcGB0jKIJqI1/1RSMh989/x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,79 +145,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 22/06/26 1:43 pm, Dev Jain wrote:
-> 
-> 
-> On 18/06/26 3:31 pm, Lance Yang wrote:
+On 6/21/26 06:46, Linus Torvalds wrote:
+> On Sat, 20 Jun 2026 at 11:19, <ilya.gladyshev@linux.dev> wrote:
 >>
->>
->> On 2026/6/18 17:43, David Hildenbrand (Arm) wrote:
->>> On 6/18/26 11:09, Lance Yang wrote:
->>>>
->>>>
->>>> On 2026/6/18 15:55, David Hildenbrand (Arm) wrote:
->>>>>>      return __rste_to_pte(pte_val(*ptep));
->>>>>> }
->>>>>>
->>>>>>
->>>>>> So plain ptep_get() can feed raw huge-entry bits into pte_pfn(), and the
->>>>>> derived subpage can be wrong.
->>>>>
->>>>> Good question which impact that might have in practice?
->>>>
->>>> The subpage check can warn, but we still pass that subpage to
->>>> make_hwpoison_entry(). So the hwpoison marker can end up with the
->>>> wrong PFN?
->>>>
->>>> +    subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
->>>> +    VM_WARN_ON(folio_page(folio, 0) != subpage);
->>>> [...]
->>>> +    pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->>>
->>> My s390x page table knowledge is a bit rusty.
->>>
->>> IIUC, it would be a problem if some PTE bits in segment/region entries (pmd/pud/
->>> ...) would pass the
->>>
->>>      pte_pfn(x) -> (pte_val(x) >> PAGE_SHIFT)
->>>
->>> check. I don't think this applies, because
->>>
->>> While
->>>     #define _SEGMENT_ENTRY_ORIGIN_LARGE ~0xfffffUL
->>>
->>> We also have
->>>
->>>     #define _SEGMENT_ENTRY_ORIGIN ~0x7ffUL
->>>
->>> So these bits are not actually used.
->>>
->>> What __rste_to_pte() primarily does is reshuffling present bits etc.
->>>
->>> So using any other bits besides the PFN would be problematic I guess.
->>>
->>> Am I wrong or isn't the present bit already at a different location? For
->>> prot-none hugetlb folios there might be a real issue, as the PTE present bit
->>> corresponds to the PMD/PUD read-permission bit.
->>>
->>>
->>> Oh my :)
->>>
->>> So yeah, we should probably fix that ahead of time unless I am missing
->>> something? Good that we separate that hugetlb crap out.
->>
->> Yeah, looks like this was already there before the split. Should this
->> be fixed separately?
+>> T2: optimistic get() [0 -> 1]
+>> T2: put page back [1 -> 0]
+>> T2: calls dtor for type X, returns into the allocator
 > 
-> Same bug is there in try_to_migrate_one(), check_pte(), remove_migration_pte()
-> and prot_none_hugetlb_entry() :)
+> Which optimistic getter does this?
 > 
+> I didn't go back and look at the series, but isn't the rule that the code does:
+> 
+>  - optimistic get
+> 
+>  - then check that the folio is still valid (*not* using the page
+> count, but by re-looking it up elsewhere, typically the address space
+> mapping)
+> 
+>  - put the page if it wasn't valid
+> 
+>  - if it goes to zero, there's no destructor inherent in that
 
-Lemme send a series for them. Main thing is identifying the fixes tag really.
+I'm also confused about the destructor aspect. Usually we have
 
-> 
-> 
+	folio_try_get(folio)
 
+	... some checks
+
+	folio_put(folio);
+
+folio_put() is just:
+
+	if (folio_put_testzero(folio))
+		__folio_put(folio);
+
+
+If the thing was a folio at the start, but stopped being a folio halfway through
+folio_put(), I don't see the big difference to the thing not being a folio right
+from the start. (folio_try_get() would succeed on some random page either way
+right now)
+
+Which destructors are we concerned about?
+
+(1) hugetlb destructor
+
+If we grabbed a non-hugetlb folio but suddenly have a hugetlb folio after
+folio_put_testzero(), __folio_put() will just do the right thing and call
+free_huge_folio().
+
+
+(2) pagetable_dtor()
+
+These destructors are called when we unmap the page table, before actually
+freeing it. So it wouldn't apply here.
+
+
+Maybe it's about something like
+
+void page_frag_free(void *addr)
+{
+	struct page *page = virt_to_head_page(addr);
+
+	if (unlikely(put_page_testzero(page)))
+		free_frozen_pages(page, compound_order(page));
+}
+
+Whereby, if it's a folio, we wouldn't do the right thing as we are
+not going through __folio_put()?
+
+-- 
+Cheers,
+
+David
 
