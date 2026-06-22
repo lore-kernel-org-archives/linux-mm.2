@@ -4,113 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E31BCDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 21:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14BC2CDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 21:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5AF06B0088; Mon, 22 Jun 2026 17:35:33 -0400 (EDT)
+	id C3F616B0088; Mon, 22 Jun 2026 17:57:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0BB16B008A; Mon, 22 Jun 2026 17:35:33 -0400 (EDT)
+	id BC9966B008A; Mon, 22 Jun 2026 17:57:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFA426B008C; Mon, 22 Jun 2026 17:35:33 -0400 (EDT)
+	id A929D6B008C; Mon, 22 Jun 2026 17:57:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8298C6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:35:33 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 154C41669A1
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:35:33 +0000 (UTC)
-X-FDA: 84908855346.08.902F67E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0A681100007
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:35:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FDO4wxCc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 77F4D6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:57:59 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B6FF6402FA
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:57:58 +0000 (UTC)
+X-FDA: 84908911836.02.A06E0AB
+Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DA562C0009
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:57:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of lk@c--e.de designates 217.10.14.231 as permitted sender) smtp.mailfrom=lk@c--e.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782164131;
-	b=pu/noj7oQ++PN7ygNAWOgt6hZ6AijfvNgkQKir6g6hGmf16KlZOD1nrth9qmrgPjE6OFEZ
-	aD56GSnw2EJHjdv/nsFnLD6wCA8AKE5Mm8sR3cSCNi7EyVOspwd9XiZxC+/3sQFAXw/812
-	M4YeOAxnLfmLtel7vTOCOAyIqTROoRM=
+	t=1782165477;
+	b=iv0ukTPxDcJzBZ+y98hmkg60NBTUFzydnDne/blxcJVN0tRHJ7wPzL8Ggg43wqLyvm0nh6
+	bpmoDMxh3rohEcGaQT9uUDkJlRzvQ6MZ3WO3ZeHRCXAG5oc2Qj+ioN1uoSy3GA7zCOqvLh
+	k1G8NfTwzcOkGXh5z5O9c71vQbvtoZw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782164131;
+	s=arc-20220608; t=1782165477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HgImYFkLyD1hj/g9jIukArDdySmWi+kCTAd6Z7Own3s=;
-	b=EPN4iBmroOOvL1LKVUWBWLQq6JFDOF9h90/Ea9U5oqLajcdxU94sS5+2xQuPLxDsRMzx5c
-	emNicL9dvSmCZKF7ZzeK/YKMZ+qn1XsLtYBeiB7d2BJfzZ1DcvyF4JfpqcKHTYuOSysSMc
-	LL5OyPOvPBw4QBU0s7qzHLNquW2sDQU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=eUeG+DLdnxGpD2IPsWHN9Slrx+HrHbg3Z4NQp3a9bv8=;
+	b=DJ4adxkqTldR+Th98WMzGj00bDGyijSZlYVDrLpm4ZAZmby8sfmgTLIkZn/r1e20E3F7Af
+	hew1P0x/pucBM6xWf4rcmxgZaJoKbTm8Xx/QSL78/Mgty0L5P3mBy7N7nkEdAbnTrbxfq7
+	+eAodlohC4zN4LxTeF7PU+/V99ml75I=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FDO4wxCc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 19B0F44561
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEC61F0155D
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:35:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782164129;
-	bh=HgImYFkLyD1hj/g9jIukArDdySmWi+kCTAd6Z7Own3s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=FDO4wxCceO99ohP1/DFe16yqc13aAhyLtsANUMoZJaX7e4BN8T4H0dkpqjjugodGy
-	 Txa5lG/gOuD6AqiT51VHSE3PxN+QAzVHy9GcXAGrKyIOdKpJ/Jof1EU0UeaDz/GyYs
-	 J07GqksE/VR0z/Vu4s2PiQiIdj3gI84epywArnyq80LgwUJekrx0AD1KXG7ugHe1uv
-	 56sIsexmvNJFOFZy2cTq6YRjz5dnKSRaY54cJMDkac7sjtnfv3A7BKEGdq4vwzdd/3
-	 oDqkfNSkiytSqmY05D7nIH0dcBmhNJPoFxVubsTZKaso7jAHBcCq1/aCN74pAcjQ2b
-	 ZEj7BseReSOZw==
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5bbca605be3so230573e0c.1
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:35:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/RsgSOkqNbkz6pgm3edGplowZb0d/WRUhh4KD3yZUixFsiFVWTzcHNS4MXIIAg4/EP9f+jf4SuWA==@kvack.org
-X-Gm-Message-State: AOJu0YxGelm4D/KLFNSwsGqoS07z5ZcPdIoXTsBlFJbNwWH7izCj7Q4O
-	NveqxrnzVc4rCX3CMEmprgGCPPGxs9Fy5AvZ6WBhkh3XNsWZbwT3RBCtYnOPYIlScywlpFNoDe0
-	EN5fgeCEWguobOpS2BkFKbVOsZoNHlYI=
-X-Received: by 2002:a05:6102:3254:10b0:6cc:e6b1:7f84 with SMTP id
- ada2fe7eead31-72f85be19c5mr499665137.17.1782164129165; Mon, 22 Jun 2026
- 14:35:29 -0700 (PDT)
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of lk@c--e.de designates 217.10.14.231 as permitted sender) smtp.mailfrom=lk@c--e.de;
+	dmarc=none
+Received: by cae.in-ulm.de (Postfix, from userid 1000)
+	id 3B08F140033; Mon, 22 Jun 2026 23:57:54 +0200 (CEST)
+From: "Christian A. Ehrhardt" <lk@c--e.de>
+To: dri-devel@lists.freedesktop.org
+Cc: "Christian A. Ehrhardt" <lk@c--e.de>,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] drm/shmem_helper: Check VMA boundaries for PMD mappings
+Date: Mon, 22 Jun 2026 23:57:17 +0200
+Message-Id: <20260622215718.1532689-1-lk@c--e.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-References: <ag4h87CBd-gph9zX@casper.infradead.org> <CAGsJ_4zA8afu0xXy0WS+tMe-eesDX1W6UBmfAsuouUpcAgK8JQ@mail.gmail.com>
- <ag4kj84EcKqamdB-@casper.infradead.org> <3be9475b-0e8a-4df8-a130-4262f993973d@kernel.org>
- <CAGsJ_4xC5LdhuoWV1=tK-RZ5rkjc8aOKOkmb1L_8BG_3gtJhDg@mail.gmail.com>
- <ahB6QyHgYq8ksj65@lucifer> <CAGsJ_4zxLvZ01i19vdo0xA47T1hxa1VRYvxLmiDhy5q1GDKPRg@mail.gmail.com>
- <CAJuCfpHTxaU4KdNmefU7C7cWZSLCFDLPdUrnqV6yzxzN+8RQ0Q@mail.gmail.com>
- <ajhOUdbWsswgQyl2@casper.infradead.org> <CAGsJ_4ybg5LGYopTUJTh5R2rN6X3uR9xoJSL+RdTYVtm1-xqLg@mail.gmail.com>
- <c5soxcu245cerfljr2ddto4h7xqksfxzxti47mq6sqn6pnmnxh@th5kxapvnaj3>
-In-Reply-To: <c5soxcu245cerfljr2ddto4h7xqksfxzxti47mq6sqn6pnmnxh@th5kxapvnaj3>
-From: Barry Song <baohua@kernel.org>
-Date: Tue, 23 Jun 2026 05:35:16 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xeRmi_EtcLUpZm49zNO3pxscd1shDcO-wbBAZheyN9jQ@mail.gmail.com>
-X-Gm-Features: AVVi8CfVr0XrKkWqf7CvIbBvspzJJaewjz-ymsw_zXuVPurYIavkpzh5F1y4IKg
-Message-ID: <CAGsJ_4xeRmi_EtcLUpZm49zNO3pxscd1shDcO-wbBAZheyN9jQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
- fault performance
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, 
-	linux-mm@kvack.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
-	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
-	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, 
-	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	Nanzhe Zhao <nzzhao@126.com>, Hongru Zhang <zhanghongru06@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0A681100007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: g67nnqncqeq7rtm17ynmftufwxxg1ht4
-X-HE-Tag: 1782164130-709656
-X-HE-Meta: U2FsdGVkX1+tb4zYKkwptF+iZ0vy361zgN1vofoglTQYYa0lIUb2hnS0nqr6Pix2JYysfclZfaPF3wxFoFrBsx0LQPBZA4Edv4vdxJXNuz2DsYQVXKkurZZqWocTZv/TenweNQYnbtVV9ldZYFVkUA/Ji33XT5pAdVpMOPsc7dNlE0Kikgk0YelImJA299LR72r9vyTFazaES1aUVVyd0pBHHYxJcp7Dgbvb/TY/LoBrlIxyF8o2T3EXg6db+NhN23bUCQxwIoMdNGrnDNWY8R4azOUb3l022YYKOqC6oymF8iwWK3yRwPx1NpF2xYsY/5gQ8u3AOgZgFpFwoZw8g1BDrsl/b4Zez8G3wCpEUJsizqSk7mzu705mklWPr+1OhBdgHdsGbOl72u4uzwM7UQ0RFybe4sK6K6qzCwfHwbDF7ouv2mIaM41RBQ/6m971lOyy4Heds5ttkzlybUGPRr13LXlMii32S72CQIHEsUam32XEHTP/idDXWTH/YlxORF8K84Ro0/ig7f8R0e9YtAiNKvzC98F8hNRe2NSgaORSIXW4YZaDwpuSNtsCweFFZkmrEpB4EoKVOTaJtsCYN2ckIW8j7zIJdzao2mbx+PZTu1WvpFNvmQmYGPIe6Zv8vg+iOXPIQyrMpmQkBnoUi9iH+fkgZnLll1qIkezDaEXv8406k4cK+M2jmes90MyCLHRJfu4al+DboW7P4ga1sSttYsawWdkmzsYSM5ukeG5H30L30PFxVFEgg6NvqQU8T789KZX5Ns4fmwYRLWUVmrQWO2xoddfVUPr6VJQcYi2ImUNvIoak2nZbrN8MJzTU0946nNyuHIOn6N2Kc2XOOgkyGRS5V4D4AdGLHMl5R+mJMOZlbxMV929PP4AFpNSgSsQZTP5nuzvY8ddu7dSDSgTjXr1BkMdRDcvvpHUKiLWBvu8xS2NtZA02RR3bq9fQo3pqU68kx7K7hTAKmKp
- ZzgRoRea
- RGYC/ikKlk3oXsnmQf3kyi3EUUmll230p7KxeILQzHDplfLuy00ibxMAK8NtFRkBXJ1r4CO2Pc0vBvFL/COgRhfV9tBnCJAPn/7vyFJpk4iJBHJTrJVCCK3L4QljBpM72PWd0UKmgAVA4d/ryURL3akydQaO3YzS3gZhi0/6GZGH9biYMXunke4zXePeWNHA1XgHR7umJjJTPeSbz9Q1q5Jnbw48RKQfGc3R8KpNE6bUgNonBqZxMzyW2x55q5xH3SLqOe8wq17c1LtLA/fxu9Wrs7KsNbu/EvKj2IQI90uUBr3ZSEVW1/JHCAAy9ay4oGOasJky7bVfoS3JEGJNnq/UU/ZwqDE61fFR5HPwVr7f42W55RaMv+wud7CZg5mYelRRQbgk1s5MiZyBGA2Way28c9niTF7vXHQL4kWqc3X8p/ih29BjhsJFRkcmDeayxXQVuiyMYsgtyC4eDx+4jvN8yVA==
+X-Stat-Signature: 5yacn668khezaeinf1pm3rgpabx64dmz
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DA562C0009
+X-HE-Tag: 1782165476-101457
+X-HE-Meta: U2FsdGVkX1+o8bSntnoNjw6/W5wdPP45LqAA8ZW6rtiN7WIUA3GB+2PLaEAwu010XN10z1IHtKJAppENWtwYZQz8hVVWI42Sm5gKl0q5IkK+9JCdOznXXj4cUpQqUR+zH/iEf5HAcWJL0jXtZFs7noHKV4HcB2x+3f4gLohVZrTlxOkUGizkIEepwZCQ5yGyRTUqfB1McecLLQlk3tpsCHqV7dg8zeLX8bv4fdxvXgkRkSC33KOI5Jg0HUHncFN+EsPUY08AyJ/RJ0enzsFclchT1JUvIL5ho0npQdUt781DxT6BhFOynKPZfMimiSpkRThpO40IUEcZtlTqBjDyEUm/hB9dt0uPB41KP6n59efYdsNTAfnb6tylIyspWmjNLWAoaj/CxWwczBm2ocHDuIgCEBEWMSqF00XiZ3ZgKSOFriATadggJQOaGn/4S7LMdcifZWayFZqWQ1busZc6d79H1nLYwz3A56/N8n/WeNdqehLegyKLZjPdfboa0zbxMNJxyN2r07TEo7Ks/ZUxBNpg3uYdiShtLosta+h48Ngct7lL0mGo/hqyiiuMQy65v0975zvkWZSOcFs70jpsOTLeoK5kenc+uxFeQiLbfL4CblKH9u2i+a1QL0ktfQ7iW3K99X6U4S6/h0MjkfGM6XpnFgCous7DA7FVMWdxemMUvuAjf+cLDKEqDGCsnVo7Fg0ikJN79Tv7e3uC08Ge6eh6lcgPOrSF3VZpmXSe2Y5nfbFgXHGPQujf9cwnKzskaW/URD9yDkix4UO9jBm8q4MaCkr9AJwj7Zs7CHEepeD/Ab6U/tr2vm1wzAsazwN1kIbf60LdX5KOS5nZUc5G2HNaVs3PshM2pT9oOQ5atK+KXOyABMs+28F/4F4kRtfLpK9KC1zO2Yf6j6qI4YrgdrAUwOd36zFIU+3TGHqv9lpRC0IgGWYnf/GzBW9VP4FBs/EA0xcr73Pe1UkLZbc
+ FbgMLGMg
+ cr6dbZgm0cHXst4ZXWvXjloyJMyN2NGFNozWZi9NPpIUnS84ldPpWRLsYKtCEiuehAWDCWmhdHlYQdlj7Nr9Te2AT3/EuwoGFt282dbXxVr7x60EdcspdbsD1F2X56F3OEvOZFfqXbxbfPfGIhN0yuUIawwC0H0Bqn59gxb5vzE6fYE3ADxZV6j/h+zSwybSq+1KV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,225 +81,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 10:50=E2=80=AFPM Liam R. Howlett <liam@infradead.or=
-g> wrote:
->
-> On 26/06/22 08:15AM, Barry Song wrote:
-> > On Mon, Jun 22, 2026 at 4:49=E2=80=AFAM Matthew Wilcox <willy@infradead=
-.org> wrote:
-> > >
-> > > On Sat, Jun 20, 2026 at 04:48:57PM -0700, Suren Baghdasaryan wrote:
-> > > > Just checking in on the followup plans. IIUC the RFC mentioned will
-> > > > try to implement the solution we discussed at LSFMM: splitting
-> > > > VM_FAULT_RETRY into two flags - one for retrying under per-VMA lock=
-s
-> > > > and another one to fallback to mmap_lock.
-> > >
-> > > I continue to hate this idea.  I don't believe that those who were
-> > > pushing for it have ever tried to understand the whole fault path.
-> > > It's utterly byzantine.
-> > >
-> > > I defy anyone to make sense of this:
-> > >
-> > >         /*
-> > >          * NOTE! This will make us return with VM_FAULT_RETRY, but wi=
-th
-> > >          * the fault lock still held. That's how FAULT_FLAG_RETRY_NOW=
-AIT
-> > >          * is supposed to work. We have way too many special cases..
-> > >          */
-> > >         if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
-> > >                 return 0;
-> > >
-> > >         *fpin =3D maybe_unlock_mmap_for_io(vmf, *fpin);
-> > >         if (vmf->flags & FAULT_FLAG_KILLABLE) {
-> > >                 if (__folio_lock_killable(folio)) {
-> > >                         /*
-> > >                          * We didn't have the right flags to drop the
-> > >                          * fault lock, but all fault_handlers only ch=
-eck
-> > >                          * for fatal signals if we return VM_FAULT_RE=
-TRY,
-> > >                          * so we need to drop the fault lock here and
-> > >                          * return 0 if we don't have a fpin.
-> > >                          */
-> > >                         if (*fpin =3D=3D NULL)
-> > >                                 release_fault_lock(vmf);
-> > >                         return 0;
-> > >                 }
-> > >
-> > > Wed need to simplify the fault path, not add additional complexity.
-> > > Josef has said he wouldn't've done the lock dropping had we had per-V=
-MA
-> > > locks.  We should rip it out.
-> >
-> > I think you have agreed that, at least for anon vma, we can
-> > keep the current policy, since anon vma is much more volatile
-> > than file vma.
->
-> I don't think any of the above has to do with anon vmas.  Does any anon
-> vma handling have anything to do with your problem?
+In the ->huge_fault handler do not install a PMD huge page
+mapping if the huge page exceeds the boundaries of the VMA.
 
-Hi Liam,
+All other ->huge_fault handlers have similar checks and the
+resulting mapping will trigger a VM_BUG_ON_VMA() if it ever
+reaches copy_pmd_range().
 
-I think there may be a misunderstanding about the motivation behind
-this series.
+Cc: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: stable@vger.kernel.org
+Fixes: fc3bbf34e643 ("drm/shmem-helper: Fix huge page mapping in fault handler")
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+---
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Currently, for both file-backed and anonymous VMAs, when a page fault
-cannot lock the required folios=E2=80=94for example, because a folio is und=
-er
-I/O during a major fault=E2=80=94the fault handler drops any locks it is
-holding (either per-VMA locks or the mmap lock) and retries the fault
-under the mmap_lock. This page-fault retry pattern requiring the
-mmap_lock can lead to significant mmap_lock contention.
+diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+index c989459eb215..00807039f8d7 100644
+--- a/drivers/gpu/drm/drm_gem_shmem_helper.c
++++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+@@ -597,9 +597,13 @@ static vm_fault_t try_insert_pfn(struct vm_fault *vmf, unsigned int order,
+ #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+ 	} else if (order == PMD_ORDER) {
+ 		unsigned long paddr = pfn << PAGE_SHIFT;
++		struct vm_area_struct *vma = vmf->vma;
++		unsigned long start = ALIGN_DOWN(vmf->address, PMD_SIZE);
++		unsigned long end = start + PMD_SIZE;
++		bool in_range = vma->vm_start <= start && end <= vma->vm_end;
+ 		bool aligned = (vmf->address & ~PMD_MASK) == (paddr & ~PMD_MASK);
+ 
+-		if (aligned &&
++		if (aligned && in_range &&
+ 		    folio_test_pmd_mappable(page_folio(pfn_to_page(pfn)))) {
+ 			vm_fault_t ret;
+ 
+-- 
+2.43.0
 
-The entire purpose of this series is to avoid reacquiring the mmap_lock
-where possible, while ensuring that the implementation does not
-introduce new priority inversion issues or unnecessary complexity.
-
-We have two possible approaches:
-
-1. Keep the page-fault retry path, but retry under the per-VMA lock
-whenever possible. In this case, we would need a flag to indicate
-whether the retry should be performed under the per-VMA lock or the
-mmap_lock.
-
-2. Remove the page-fault retry path entirely. Instead, wait for the
-folio to become lockable while retaining the locks currently held,
-and continue the fault handling without retrying the page fault.
-
-Approach 1 is the direction taken by both the current patch and the
-RFC that was suggested.
-
-Approach 2 is a potential alternative, but I have never posted an RFC
-proposing it.
-
-For Approach 1, the primary concern seems to be the added complexity.
-
-For Approach 2, my concern is the increased risk of priority
-inversion. With this approach, we may end up holding a lock while
-waiting for I/O completion, potentially for a considerable amount of
-time. As a result, a concurrent VMA writer, along with any subsequent
-mmap_lock acquirers blocked behind it, could be stalled for an
-extended period.
-
-If there is an approach 3, it could be:
-for file VMAs, we take approach 2; for anonymous VMAs, we take
-approach 1.
-
->
-> This would be needed if anon vmas were being faulted while being
-> unmapped or merged?  Do we really need a fast path for that?  Note that
-> anon vmas cannot be merged if the vma chain... you know what, I wonder
-> how many people know what I'm talking about here... Let's just say that
-> they can't be merged if they were around for a fork.
-
-In terms of fork(), this is the concern I raised when considering
-approach 2=E2=80=94holding the VMA lock while performing I/O, since a
-concurrent fork would need to acquire the VMA write lock.
-
-I had Hongru add some tracing code and run it against the top 200
-Android applications in the China market. All of them are heavily
-multi-threaded. Unfortunately, we found that 82 of these 200 Android
-applications call fork(), and some even call fork() from multiple
-threads.
-
-So, although it may be technically a bad idea to call fork() in a
-multi-threaded application, it appears that in practice it is still
-widely used in real-world applications.
-
-I guess Hongru (Cc-ed) will share his observations later today or
-tomorrow.
-
->
-> So, then, we're looking at anon vmas taking the mmap lock on:
-> 1. single task anon vmas being expanded and faulted at the same time
-> 2. single task anon vmas being unmapped and faulted at the same time
->
-> I think that's it?
-
-Yes and no. It could also include mprotect, UFFDIO_REGISTER,
-UFFDIO_UNREGISTER, and setting VMA names, etc.
-
-Note that Java GC may also invoke UFFDIO_REGISTER and
-UFFDIO_UNREGISTER on Java heaps.
-
-Note that priority inversion can still occur between threads that are
-not operating on the same VMA if we take approach 2.
-
-For example:
-
-Thread A: page fault in vma1, holding the VMA lock and waiting for I/O.
-
-Thread B: concurrent write on vma1 (takes mmap_lock and then waits for
-the VMA write lock);
-
-Thread C: concurrent write on vma2 or do VMA iteration (acquires
-mmap_lock).
-
-In this scenario, Thread C may end up indirectly waiting for Thread A.
-
->
-> But maybe I missed something critical about your use case here?
->
-> I don't understand why you are involving anon vmas in this discussion,
-> so I must have missed something with your IO completion issue.  Is there
-> an anon vma causing your priority inversion?
-
-As explained, the primary goal is to reduce mmap_lock contention by
-avoiding taking the mmap_lock whenever possible, while ensuring that
-the implementation does not introduce new priority inversion issues.
-
->
-> > Concurrent page faults and VMA modifications can happen more
-> > often than with file VMAs.
->
-> But it's only a problem for anon vmas with per-vma locking if it's the
-> same vma (or the vma lock sequence counter overflows, but let's say
-> that's a statistically insignificant non-zero value).
->
-> >
-> > For file vmas, how much code can we actually remove, given that
-> > the first page fault might already be holding mmap_lock?
->
-> How much complexity can we remove and maintain the performance, might be
-> a better question.
-
-Right, thanks for improving the question.
-
->
-> > It could be the case that lock_vma_under_rcu() fails, and then
-> > on the first page fault we end up holding mmap_lock before
-> > retrying. So are we also going to rip out the lock release,
-> > even if it risks holding mmap_lock for a long time?
-> >
-> >         vma =3D lock_vma_under_rcu(mm, addr);
-> >         if (!vma)
-> >                 goto lock_mmap;
-> >        ...
-> > lock_mmap:
-> >
-> >         vma =3D lock_mm_and_find_vma(mm, addr, regs);
-> >         if (unlikely(!vma)) {
-> >                 fault =3D 0;
-> >                 si_code =3D SEGV_MAPERR;
-> >                 goto bad_area;
-> >         }
-> >
-> > If we still need to keep the page fault retry code there, it
-> > doesn't seem like "ripping out" really reduces complexity in
-> > the page fault code?
->
-> This seems unrelated to be above complexity that might be the target of
-> removal?
-
-I think it is highly related. If we take approach 2=E2=80=94holding locks t=
-o
-perform I/O and removing the page-fault retry path=E2=80=94we need to
-consider whether the same behavior should also apply when we are
-already holding the mmap_lock. We should understand the full picture
-before focusing on a specific part in isolation.
-
-Thanks
-Barry
 
