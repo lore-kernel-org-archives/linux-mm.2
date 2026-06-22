@@ -4,91 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9BA3CDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 04:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1B7CDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 04:39:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C888A6B0088; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
+	id 49A026B008C; Mon, 22 Jun 2026 00:39:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3A1C6B008A; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
+	id 471126B0092; Mon, 22 Jun 2026 00:39:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B27B56B008C; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
+	id 35FB56B0093; Mon, 22 Jun 2026 00:39:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C22E6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:39:44 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08EDC1A056B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:44 +0000 (UTC)
-X-FDA: 84906295488.28.CD66852
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 059E316000B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8tlJarj;
-	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 108366B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:39:51 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8A12E140548
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:50 +0000 (UTC)
+X-FDA: 84906295740.18.5E9E22E
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A565D140002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:39:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QolEDOZ3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782103182;
+	s=arc-20220608; t=1782103188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
-	b=jhMWLYAdpF+/YuHBqMsXo8+glYBb24n9ujGckBoDHhXflcYX+i+HMYBjHmPF+EHUS3yc6K
-	jPW+M5a0q5B+/6cJVpH7eGtoeF3zhLvI8CH0Xnv7CD7SbQD1s4enaib+zxwbohoB5kTm8C
-	+66ZNZdJXh+YC9HNYoGhBgnPkHRf/fk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q2URiiwAmBLau2vT0+5EPFKTJxMl3ImoKXAHWV/E4x4=;
+	b=igKOSq8O0PvmjxfojD65RKNjIPmLGWHSFqFHTZ/upXSs74cNszXb5HsO4RzELZ5mTqlwqG
+	5v0BfOeYeIFQzYvgP1eAQAYFFcaO91BvhuYSEMwlbgfuG5gb2So+mgEKyDj9PSfJTzA9tz
+	XhH3cc+AQjrFKPKK1ZE180mj0/qzapo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782103182;
-	b=jtFJ/l29i1zaIry3l6QPQIGPlLLxfO79rwHaa58/5U/Ed60MziFnE1hNXHZQOS3Izi+nRZ
-	6D2VY5qGkaZTKFSeZLhkug+uCfNldAGOSMUZJYRx+jRpE4AmnQmVczsaPi7Z66KqkrRlHd
-	MfS3JnLX4eKHtrCZnlzVpT79l+yyAZ0=
+	t=1782103188;
+	b=6C9j7V5pcdntYTxNISJWSBAfm3IeidL3o6N3ybl6Vk0yZkbYqlmuWyZQomRsdFrwKqnmh5
+	Cf5/nkf4MEo71Y+h6QT7sXvaeSkeFZ8Xx7RwrcozIHTZjeTqG95qhGOKI416HtNmlGY/LN
+	pZ7axmGPsn9TnKfFNsKr4bOnMkKYQQg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=G8tlJarj;
-	spf=pass (imf08.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7e6e21c47e6so2252652a34.1
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:39:41 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QolEDOZ3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of farid.m.zakaria@gmail.com designates 209.85.167.176 as permitted sender) smtp.mailfrom=farid.m.zakaria@gmail.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-4863ee8474eso2127340b6e.2
+        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:39:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782103181; x=1782707981; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
-        b=G8tlJarjRsaez6j8CqpIYdSkzcbjMSMEQo7AX3n4iIEiJQKBlj3OwnsGAItUyJ4jj9
-         pJBbQl8l08m/HcMVuHKshYczp1JeUwllzNl0OU83Bm60ZEAPTi3LL3bfAZh5CRYOIHO4
-         55vaATnvCU9RG1cEuZNVFamBuRie6gwpUoGWmpp/TOtt0mWE4wtBqrhOnBS+WcVpsRqh
-         WJLy5MNK02gL96Vp7vCNvukN2tx010Nvl2RpagSHijcI6t0MkGXU9HuXNt1uq+qRa9LX
-         tLq1bFa9I1I+8Timi5skuLdV5u7JOWeGBAVP940oGiO7BJbZMN6EF5rDw4Yj1CqNXzvr
-         jLkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782103181; x=1782707981;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782103187; x=1782707987; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LWLk8vwBsRQV/8chPVVuiTE+2TLYOW07i2z27bitdoE=;
-        b=frPSEhOqmTYhbCw7ud44JFMIIY1OiU1nq++rnWwXXI2m3Mc2tpHyRuOSa1ymlyHbKY
-         gNiiK8RrkcqQj+RikqTKBWCKA4z14I6Xh6ayBA/KhbiWryWmTB4iHfdt/kqgNilQHyH1
-         eCpnexOVjJn2VYRoDANH2SHVuBbcfQpzkupjxMmFDGvKipeQftW1W/jV7FxxsqTN7cnw
-         SJVisEt5Ka4E/m6iUKz08lR/NlIS0CWNFKJrtR/ZbSOD84PbLzQKAHrjKZb7J+EUMPjS
-         9shWOqf+X6Tz7TWGnG8+9k7kgy1joiY0YHv312zIOFHoSAUdrPvllOyQnGN4LuwsaNj+
-         GPZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9AbG+C1++8TJGdJTB4IKxumE2zz0JyJQ9iDl78/qJAve0AWxXfR8oRI2X9yBqRdvWjQmVT23QSRg==@kvack.org
-X-Gm-Message-State: AOJu0YzNB88mzzulIBlAzblLHAxDiS2ipEuCEQjTLpzCxmNhuJAO9MF7
-	zN+IUVwYeRebpKFjuKwKYkJrKuZUOznLprLTiVsDNiAKgXbYNbIVUnWe
-X-Gm-Gg: AfdE7cnJeZblglyY3gPXVogoOAi2RNDR+GBilstCXr6WWzlAC2mqkFxZ4tWkrSVdhGC
-	mRyUgayIM7FRbp3sjFCSLHkVWXnaMKyYNN/Brdc8da0jamIAKoCx2jauUKBtCZxXoxqO3lEdKd3
-	xZwlEamAFJh5Z7QDERr63Py2Lb9PLAXHuCWBW3PfP8cMXOrslZZhUGJ6nxZ5x0Iyn+lEvulhmQE
-	Y7FCLTPQjHUPBE0XymJbYbphKnuXI3iojNjhwd716hrDQJdxA43eTwApzbkW9H9NuRuxGgZBYGn
-	sQB/josQPYMJcrNPAfkpdro1iFm28bZLGpLwuE4JUpASRCS/VD1xjOdY2q7OCYy1iM8nLX1qS/t
-	hqyN8Ye13YwyI3ZFctAfsxTtMaW9gzHodHCF3r1uw6zk9feVshaqhs8HMRHoSylIAS8d9cTRdnC
-	4a8sjxqtKxtrs/ng2wuN3eqkaGy/DjSztW7rTgd4qgrk39
-X-Received: by 2002:a05:6830:83aa:b0:7e6:f5bc:496 with SMTP id 46e09a7af769-7e92d8eedc8mr11244425a34.16.1782103180884;
-        Sun, 21 Jun 2026 21:39:40 -0700 (PDT)
+        bh=Q2URiiwAmBLau2vT0+5EPFKTJxMl3ImoKXAHWV/E4x4=;
+        b=QolEDOZ3H9zKjHmMe8gYo0QnCx2HYz/Ez6WE9OsyrMNttF70Og9TzlAVnbED1glmU4
+         dRQd5eBFV6VshkmbvEMlRUhYc8LLJiFvtPRI4Mb3/PtSBg1O5sx01gm84J6ZGoodlX1T
+         X5z6watKiDYcr/Zm4pxTeitoMttxI6A+LOwLx9oW5DbE1O0tE1ieIC1utdTa2KYExHkj
+         6/JWQZOJNtBThRsW+EWLN6LGeEOCrD+I2Tm3HmOKzh5eh4D/Q1p95GjkDxqRKJ9+GFU6
+         T2F+rsFwVwSa0yv/j5sKFF+HYfY7hEqWtA40TWwOEXxAND/kn2uCkPps14METHe3AIvD
+         gxAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782103187; x=1782707987;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Q2URiiwAmBLau2vT0+5EPFKTJxMl3ImoKXAHWV/E4x4=;
+        b=q88a+3O+Cl0x+I79Xtvz9oE6Q5t7mzPZQ3hm8wpe7qJHG7+i33kahhUgL/SBAHzxrj
+         EWnH/ZdCDqt4bA3dN4flPkNfFdhpVbjlS+LFEtlYFPCNs3C3lzaRQBR/GSdFA3xyCqoH
+         pLRVeE7floWTVArU7y8D9G7Q17FeRyfj4aDBj/Ic18AsTVPlQsFpp3hKToV9CiDZL4Zr
+         t3q2YQlvOaTGSfMrYdBbSWLBoEXpu3FJKfdJVr8tT61zmltEaRRP+brfG/3IFwdw3THO
+         wNZ5V4AJdQi7/tAO7MGQJt9plWXg5KF05n/RGuVqeEVaoOiKxyX6+rv2T1x+Mu6cjtV/
+         Dy1w==
+X-Forwarded-Encrypted: i=1; AFNElJ82qlvXUlLk+CEelXZx96usUk0b8V79j1h9IkqeqFjPHwRz36EtKDxBMZ0thIpzB0nnzmrzVLrR2g==@kvack.org
+X-Gm-Message-State: AOJu0Yyd+OTBJyrX0R0SAOitEQsMQ4qRWTQLHZnkE83PooATl3DjUjLT
+	+hzAsdvKefmLtMinZQnXKZpn2J7B4bDcDzQo5VN7ySd3BSUOQNLBqKwV
+X-Gm-Gg: AfdE7cnNBOtxGV14fTqwute34HT2eOFvTdNnenLvTqB6VkfsVa9213XWA/1uEqwoxPB
+	uknpDi1yQ1rS6imUkyXekNRBwme/9iU1O3rkrzS3AEzjGZKfIRqVXUPn8QKe+IyL1YIvMhebeFJ
+	OzNJfJluiVtsocCoi8U2w5D6vtOQ6UC27DMzefuVkl6LuoaLdc2bvbWgzlu7Jxq40Lbtd/T2As2
+	d2NxFjvdtRa4oz7NRkX66RzijRLNcD29l30LdiprE7W40dGxieQ80xXb0GfCK0Tfx6SmWiMZqJ6
+	/nqw8oNUPi2qhuqqpTzFNNjk/3UahdR3pigGkaQn0qM8ScEfS3G64PKkBqRQ5KJ1DQy9FAhe34F
+	soOBksoXytRKla+J/BlTXhA9UZaaORTwKI+jplHSdqgWUaM4SPzNFSTYsQqFbGiqFPyAJKyGv6B
+	B+o3+/Mnq1sTKaiGb3QJeRr/PsaZ2Tjom9qQ==
+X-Received: by 2002:a05:6808:5290:b0:485:507:ee5d with SMTP id 5614622812f47-4896aa2ce16mr12307300b6e.10.1782103187573;
+        Sun, 21 Jun 2026 21:39:47 -0700 (PDT)
 Received: from nyx.tail25a6.ts.net ([2605:59c8:74db:6e0c:3a80:a3f:f9f0:1b3c])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e9442ea144sm5428453a34.27.2026.06.21.21.39.39
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e9442ea144sm5428453a34.27.2026.06.21.21.39.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 21:39:40 -0700 (PDT)
+        Sun, 21 Jun 2026 21:39:47 -0700 (PDT)
 From: Farid Zakaria <farid.m.zakaria@gmail.com>
 To: kees@kernel.org,
 	brauner@kernel.org,
@@ -100,20 +101,22 @@ Cc: jack@suse.cz,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Farid Zakaria <farid.m.zakaria@gmail.com>
-Subject: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
-Date: Sun, 21 Jun 2026 21:39:32 -0700
-Message-ID: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+Subject: [PATCH 1/2] fs: support $ORIGIN in ELF interpreter paths
+Date: Sun, 21 Jun 2026 21:39:33 -0700
+Message-ID: <20260622043934.179879-2-farid.m.zakaria@gmail.com>
 X-Mailer: git-send-email 2.51.2
+In-Reply-To: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nwi9zo953anjajx8hy34axfu45d4px45
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A565D140002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 059E316000B
-X-HE-Tag: 1782103181-92294
-X-HE-Meta: U2FsdGVkX19cp+Nk9ahiQQ2/ZEDdw1vit1n9BN4Ms3F5IOoiwDrblgbK3X1+tGSM7IPnUK+GRJXQU0w42+3MwDg2orUyr78fqKyNeq/lxS99sy/o5ShRFH5pxYIYq7DmpazJriBrPcaC054EAgh/9gKplE2fOElszK8rCDQpiq8FqXwctVpJ6mtw47ioXyetYR3wxT5Id02kpUtZBihkRR7ni0xK5fb3vQJ5xWeL4Q33bC3I53LAV/1RxbmiPjqjgAqjD8rVMo4+y6B/pAiJGbEXT2mwqvChO29io4vLg+qLxYblI4mG0/9dnaysSu5EalzYUJcPmpnvM2mjLDfY5n0E9/Jjsp32unKYfbSuZdAFHIny+MSO2ICWRVXYTh7cAxr7sDmfFomJdyR0UpUIfc0eAmuVDizWl8MP1vY4WEPexPU9cm+4iulnKYE3s81eGzua4bbPTnQJipFmDnvxH2VUsvYRok+fkzuK+R9qksAHu7zS0Yf4bb5k4dK9mDiBjmwGGImZBDLFtVL77SHbkafKrrNaRomONT03rJIil68fBztLNw4vGH4sTnvrIjwFTHjdsGLIi27iY7Wq9IwR2I8VJjMmkXLiCIXse738xcs5sndXuTqWfoHv90oMVl0dbO94TA7Aa4do9MJninumblqMcvlMiKF6HvjLV1RruFtaF3MT9ErPETi/amE7m+CSRszJahaVgJ/osjKMEQeeQ1vH9h+xx3SZtwVlpdZrAwXhv80fGaaO3/nJ95smNXAtgqHc4IBlMvMuH5FogiBijTA2HiMtWdekVJAumVRqzhbD7F9+3QTgEWhPh2/p4pLXG1Dp0bFQfYdbjXKn3oLw+J9Ec+VKEP4Hg1tg81MEdVHGqXuK1gc9CwNw9yG9khiEJDEMfsoi0ODLIKB8/xel1HjfL+OSa50nHCfO5r4kY/RfN+OzpviJcTI6FaGpqy7m7dFbjRp7RwNml9fTiBF
- XlK83iey
- eN3EJW9HJaxtXzDAOYOXr8oJBE+E84Jb0vQblje07c9sJERHvtHyDnwCth/B12F+rBk5Ulu6umM5E85f47dLcBDe9zX1k7X0I+X4M8tejpYFT3BVNgopbnjRiPG7FQpKc/3xD1OEOXg3j/Gws5cnzx6WoKJaGyIX8qO2MeuevPwRBt9Mqz3CB2c2uz+Iur0Y5Z+CdbtsKy5nTDuxtEUsBTO/EqpavrUgQAW1e3Ad+K9Zu4I118a9XLCrZEFcF2SQ8kHdndmGuWw/LElP+22+OwrjFeE8WEz4jssOtjEx+SickaFgp4gL02OIGRrpZ0/eMB5EtNs7Mk3aFELmDH278NgdYylnidTSyVeudH/zDWexEE9sHF1Ilq86Uosc+kvNslvnLUJ4id4aS/xHNC2qyiuz/B/OKKa+lOztVO23VVkFXX8Eir869s/tW0pnBPbXzXsd7YIt0FlGOuXx3mlJQaVxuGuMV+4VlvWng+ZTcdKIW95DxmOJ1QTuZGRWaXc1XVhFeuLG3L88aAVVhWTsUZ1WNttnc7QhOrg9CsaYdFH86+P3ixuJERunpE5/l72c4a+9UvqBbLnQi8T16FB0hCVrTMn8quUu28ABPsHEeCDtccE0=
+X-Stat-Signature: 55eq8w4gkyuiotueqk6m6oye4tocdhgp
+X-HE-Tag: 1782103188-957180
+X-HE-Meta: U2FsdGVkX19kldvoVcxStayt5IyEGvfPvOSpuP28GzKN/b0qwVsfmGr/18BMPgvFr8G9wGO8S8GgDqKz7pSI0JDcFhp/4Eu4VEYq0pnKhDze6P/n6NCm3gPK2PvJqzynPBMnmBLKznzQd/rhUVx34BybKwfmUpIFLQOHe4HAjqpqFI8flX5mxVmleV69CC4q3RnbLy73yAwKeqgmWz2f0MT5I297X54NQDUsDTeOKuwYa7fS8UpBjz16beEcspt/B0gK7UOU3VgyDwkTZBv28zuiGCtOBdbqsTANUa+1Ri6OhxsYdXJ7fPx0YHdEMuifXeLnZ8Ykm4/TTnZJ5RIHwmuHZC0fQRMKD7GPE6zSURLRvcemb4oqy8h/tn7+2oImGouHHjqmnA/VkYVFie8mXvSbLn/1T5V1crSMO7I5rT5YGNZcLT/ND+mBoaHqBTHTASGDmNyHOppoxae2LFEtrCfs/2AjCh4eAu8p0u/HDcFXFSpcNT4TpLrhoHkh/u1kwD6BTYHOSGB32zA6j/+YxHBew0ualvTnhj8Na6RUSqQvIoC2qG/CoGozVf6mH6L1OMIddCXEzC/tSuYWg+Czdjc5nUGOMlTVCbi1a/q2duzdY2ktN6hdW6RMf3bUGf0LRbeNKRQs3zPgg7sm+ngAxg+1fatfEqzo8BmH7G4P6Od3DNWHwLOQ6pFCfOChVM8EQ/e6OQfZRtavFdKb9GR3LcyAdVIEdUFb8u3do1JPhZbysfTSCfKDiuaSS4g3haJy54IkO44cZqcWoN4qj0GTCxuBlAMGFeV7sYPDfdHQj3e5Z0sWmnxQQvKD9UN5xZ2C7LGFzSuMomIAOzSv/fQR/JQdJaL7zICx8mV5BAOgZBz4yHICy7aKwFMGZGPE9uL9LanWWNQW6iqOtjm+pV6hJH3ZMDGukl+wufWKVlY8WRZy9KRlR2uRZES55oV2BeX4//61Q1gy/69V5qoVJ0T
+ SlmTaH/7
+ HHMDg49+2CFbmqoMr/INTUHuF7XswVTcU7IP/GhvJdq6ejkP/nhtdEggc7L2BNrWcpacrPQVhGQXBIt0PQNlPlCnhfLgOiHWujjoxNVOWXPRu2Bfn5qtb0G6WssOUkwvn8BVocMSqauLI8ThGN9IDwwnQ6GwaaSLV0v83c+hvVNgDt/YLXkZUZ9lVVJbmPt1ETyqacfRi4XWEh4k2bOg9RvBGVdmKo+oQnMckBZjh9vEPJ5mtya2KfNXFNveaSMT2sRL64Q6po7qr0nPUNW86hFVxnJvIDnVYiU7IPTmTvi2iXb6DA6Ey5VVsfvXD8tjRVUErwCEgKjJLmyXV4cC0ajwxrbJ81ZtBBK+PgGVJeRXwJedKw6oPI1K0jjDavZwzarZtXQRbhBkfWQkeyIuIcgLCK+M4XJPihtrOB4yQNujufRdNR1NEfMa48ykT6MkquRvI5yFU6PmkKEOAH8UwzinXq7uyvo49TucH8VJMVxS2C1zxBuvbSTMqu5WZXz4EtiyJtzvobFi8MAgB8+uichCWt5Tv9AzthdQLa7dzG7D7bpLwIX7uJQYFtAnEhVYNf1k86YmNsAYtb3SSs20qRl7OVf8NuW2MPZcW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,57 +124,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, standard ELF and ELF FDPIC loaders require a fixed, absolute
-path to the dynamic linker/interpreter (specified via PT_INTERP). This
-creates significant inflexibility for relocatable dynamic interpreters,
-where binaries are packaged independent of global system paths.
+Currently, standard ELF and ELF FDPIC loaders expect a fixed path to the
+dynamic linker/interpreter (PT_INTERP). However, for systems utilizing
+relocatable dynamic interpreters (such as Nix/store-based environments),
+hardcoding this path is inflexible and breaks binary portability.
 
-The primary goal of this patch series is to support relocatable binaries
-in Nix, where packages are stored in a read-only store (typically /nix/store).
-Allowing the ELF interpreter path to be resolved dynamically relative to
-the binary's location via $ORIGIN enables Nix packages to be relocated
-without needing patchelf or wrapper scripts.
+Introduce support for resolving the $ORIGIN placeholder in the ELF
+interpreter path. This maps the dynamic linker relative to the path
+of the binary being executed, matching user-space origin resolution.
 
-For details on the design and motivation for this in Nix, see:
-https://fzakaria.com/2026/06/21/nix-needs-relocatable-binaries
+To avoid code duplication, implement a shared 'resolve_elf_interpreter()'
+helper in the VFS exec layer. For safety, limit detection strictly to
+the prefix string "$ORIGIN" to prevent complex parsing exploits.
 
-This series introduces support for resolving the $ORIGIN placeholder in 
-the ELF interpreter path, bringing the kernel's binary loading behavior
-in line with user-space dynamic linker origin resolution. 
+Assisted-by: Antigravity:Gemini-Pro
+Signed-off-by: Farid Zakaria <farid.m.zakaria@gmail.com>
+---
+ fs/binfmt_elf.c         | 11 +++++++++--
+ fs/binfmt_elf_fdpic.c   | 15 +++++++++++++--
+ fs/exec.c               | 42 +++++++++++++++++++++++++++++++++++++++++
+ include/linux/binfmts.h |  2 ++
+ 4 files changed, 66 insertions(+), 4 deletions(-)
 
-To achieve this cleanly:
-- We introduce a shared 'resolve_elf_interpreter()' helper in the VFS
-  exec subsystem to avoid code duplication across loader implementations.
-- For security, we restrict detection strictly to the prefix string
-  "$ORIGIN" to prevent complex parsing exploits in kernel space.
-
-Testing & Verification:
-- Added a KUnit test case verifying path resolution logic.
-- Added a kselftests integration test checking that a dynamically
-  linked binary with its interpreter set to '$ORIGIN/mock_interp' successfully
-  loads the mock interpreter (built statically using nolibc to avoid
-  glibc TLS setup constraints during interpreter load-time).
-- Verified end-to-end correct execution (PASS) using a minimal initramfs
-  under QEMU.
-
-Farid Zakaria (2):
-  fs: support $ORIGIN in ELF interpreter paths
-  selftests/exec: add test suites for $ORIGIN interpreter resolution
-
- fs/binfmt_elf.c                               | 11 ++++-
- fs/binfmt_elf_fdpic.c                         | 15 ++++++-
- fs/exec.c                                     | 42 +++++++++++++++++++
- fs/tests/exec_kunit.c                         | 26 ++++++++++++
- include/linux/binfmts.h                       |  2 +
- tools/testing/selftests/exec/Makefile         | 12 ++++--
- tools/testing/selftests/exec/mock_interp.c    |  6 +++
- tools/testing/selftests/exec/origin_interp.sh | 16 +++++++
- tools/testing/selftests/exec/test_prog.c      |  5 +++
- 9 files changed, 128 insertions(+), 7 deletions(-)
- create mode 100644 tools/testing/selftests/exec/mock_interp.c
- create mode 100755 tools/testing/selftests/exec/origin_interp.sh
- create mode 100644 tools/testing/selftests/exec/test_prog.c
-
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 16a56b6b3..af11f96ae 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -872,7 +872,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 
+ 	elf_ppnt = elf_phdata;
+ 	for (i = 0; i < elf_ex->e_phnum; i++, elf_ppnt++) {
+-		char *elf_interpreter;
++		char *elf_interpreter, *resolved_interp;
+ 
+ 		if (elf_ppnt->p_type == PT_GNU_PROPERTY) {
+ 			elf_property_phdata = elf_ppnt;
+@@ -904,8 +904,15 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 		if (elf_interpreter[elf_ppnt->p_filesz - 1] != '\0')
+ 			goto out_free_interp;
+ 
+-		interpreter = open_exec(elf_interpreter);
++		resolved_interp = resolve_elf_interpreter(bprm, elf_interpreter);
+ 		kfree(elf_interpreter);
++		if (IS_ERR(resolved_interp)) {
++			retval = PTR_ERR(resolved_interp);
++			goto out_free_ph;
++		}
++
++		interpreter = open_exec(resolved_interp);
++		kfree(resolved_interp);
+ 		retval = PTR_ERR(interpreter);
+ 		if (IS_ERR(interpreter))
+ 			goto out_free_ph;
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 7e3108489..e85727d71 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -230,7 +230,9 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 
+ 	for (i = 0; i < exec_params.hdr.e_phnum; i++, phdr++) {
+ 		switch (phdr->p_type) {
+-		case PT_INTERP:
++		case PT_INTERP: {
++			char *resolved_interp;
++
+ 			retval = -ENOMEM;
+ 			if (phdr->p_filesz > PATH_MAX)
+ 				goto error;
+@@ -259,7 +261,15 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 			kdebug("Using ELF interpreter %s", interpreter_name);
+ 
+ 			/* replace the program with the interpreter */
+-			interpreter = open_exec(interpreter_name);
++			resolved_interp = resolve_elf_interpreter(bprm, interpreter_name);
++			kfree(interpreter_name);
++			if (IS_ERR(resolved_interp)) {
++				retval = PTR_ERR(resolved_interp);
++				goto error;
++			}
++
++			interpreter = open_exec(resolved_interp);
++			kfree(resolved_interp);
+ 			retval = PTR_ERR(interpreter);
+ 			if (IS_ERR(interpreter)) {
+ 				interpreter = NULL;
+@@ -284,6 +294,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 
+ 			interp_params.hdr = *((struct elfhdr *) bprm->buf);
+ 			break;
++		}
+ 
+ 		case PT_LOAD:
+ #ifdef CONFIG_MMU
+diff --git a/fs/exec.c b/fs/exec.c
+index b92fe7db1..0978ae613 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -2024,6 +2024,48 @@ static int __init init_fs_exec_sysctls(void)
+ fs_initcall(init_fs_exec_sysctls);
+ #endif /* CONFIG_SYSCTL */
+ 
++char *resolve_elf_interpreter(struct linux_binprm *bprm, const char *elf_interpreter)
++{
++	char *pathbuf, *path, *slash, *resolved;
++
++	if (strncmp(elf_interpreter, "$ORIGIN", 7) != 0) {
++		char *ret = kstrdup(elf_interpreter, GFP_KERNEL);
++
++		return ret ? ret : ERR_PTR(-ENOMEM);
++	}
++
++	pathbuf = kmalloc(PATH_MAX, GFP_KERNEL);
++	if (!pathbuf)
++		return ERR_PTR(-ENOMEM);
++
++	path = file_path(bprm->file, pathbuf, PATH_MAX);
++	if (IS_ERR(path)) {
++		kfree(pathbuf);
++		return (char *)path;
++	}
++
++	slash = strrchr(path, '/');
++	if (slash) {
++		if (slash == path)
++			*(slash + 1) = '\0';
++		else
++			*slash = '\0';
++	} else {
++		kfree(pathbuf);
++		char *ret = kstrdup(elf_interpreter, GFP_KERNEL);
++
++		return ret ? ret : ERR_PTR(-ENOMEM);
++	}
++
++	resolved = kasprintf(GFP_KERNEL, "%s%s", path, elf_interpreter + 7);
++	kfree(pathbuf);
++	if (!resolved)
++		return ERR_PTR(-ENOMEM);
++
++	return resolved;
++}
++EXPORT_SYMBOL(resolve_elf_interpreter);
++
+ #ifdef CONFIG_EXEC_KUNIT_TEST
+ #include "tests/exec_kunit.c"
+ #endif
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 2c77e383e..17419cd3d 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -150,4 +150,6 @@ extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
+ int kernel_execve(const char *filename,
+ 		  const char *const *argv, const char *const *envp);
+ 
++char *resolve_elf_interpreter(struct linux_binprm *bprm, const char *elf_interpreter);
++
+ #endif /* _LINUX_BINFMTS_H */
 -- 
 2.51.2
 
