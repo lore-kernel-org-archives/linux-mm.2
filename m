@@ -4,131 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 606E4CD98F0
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 02:50:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0DB6CD98E4
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 03:04:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B714F6B0088; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
+	id 501996B0088; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B22836B008A; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
+	id 4B2406B008A; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A11596B008C; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
+	id 3C7F46B008C; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 760BC6B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC141166BCC
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:50:18 +0000 (UTC)
-X-FDA: 84906019716.21.5795E55
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DCEA2160003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:50:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dk1IORVO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of soolaugust@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=soolaugust@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0D9706B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61FD7166CDD
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:04:24 +0000 (UTC)
+X-FDA: 84906055248.12.2986022
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 11F7F1C0003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:04:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wqr9jtKQ;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782096616;
+	s=arc-20220608; t=1782097462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
-	b=r86oEsn4GQbXrkDG7RQlgh3GsJNNMYUr+fbTWBwjRj5WKgzQ1lSUzdam/+DXKzMDxPPrAF
-	zxXhMcHNPKQnYVK+4mo22Nht+/t5w+O/UfkNmbnmewT/RQB3CxI4o9C5OhSVjiXwbBct5H
-	lajzrITU7w7s/EQWQVbXkcMVRI8bMfg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782096616;
-	b=FPl3S++Wha3Hhg9cCP5YnwviElv8wRb+QoA4giriIv8GFJSU4UzqTaRe6WsWMMH1ONza6k
-	+e7syaNnRC8TFppOkec522o5IRik3kYB63uAe2mKp7eL6yQa/LkeYVA7kBjfiBKJGoHgSb
-	XhKKHAkmi2RZ1RkF9DWLyynCTMSgrPM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gdVeD2YQ+4emLsNSDcMg53zBGqzDXufzRzbIKHc1Gs8=;
+	b=vRWUuoH7Sg7Tgr8y54RBfp8Kh8SxYUUJzI/PetFa4UU1wIJ8HASXeI6wS02ZJEz8zTmXWk
+	j0ts4blzCo6FZk1JQKfroNiACQit1IklEb14OJK4sVGaeq05MUli8+SeTW+AzOrn5h630J
+	3vMGLpl4qVyvB0Yiar3GAwZOf+6MKCs=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dk1IORVO;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of soolaugust@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=soolaugust@gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c6be9cd89bso16207965ad.2
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 19:50:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782096616; x=1782701416; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
-        b=dk1IORVOJwucZGWIqPlEMA9fRLpUQ2YvR/9BAXLXCTkYu+V6yYuIHW5FB+SpaxElQl
-         LJDO3YrxGKOm1T9lbPCX9IxvSaXDtd5O6BjttaBFCtNoZFzxQTCHKbfWndei70HIzaYb
-         C+x1OfG19vdyN5fjWHcQ7kxGCFC9qqyMeiSFwxpJkrHS1cW3c8k/wh+KY2ATokRyIhFQ
-         AylCJkf/w23vgsFL6ZLajo8I1LQPe+pBjf8rVnaCQY58RnoNunkWe79/48O6cK7UJHd/
-         sNszYoQkgf+PQB7AnXHAfPH4VT7/JNRhbN/eQl67/FaA5IKHSRjrrsv+ShIRm2Ogoa5w
-         MlvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782096616; x=1782701416;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
-        b=U3OLwB5PejZqXOAyYKOCYKNN7AduqVTbLaGkEkQeGe5lOuYHC28MKl4hoKW9R6lw28
-         Bih1cn3OiFCrbbx2+WIl0lwKQjMbtlVlsKdqSFtPIUckpvnZ8hL9viCS8Hj4PnzK8ESD
-         R7QfV3YeKFtJHWzIOe/DPdHn3rwUpYR2MZuz9BwkxMB38J2nvWF9xMHUHBGYCfisk7+5
-         zifjyltlZuuFjeAg9elTGwAJX7WKPtRF12iBBtq+9CEvRkP7rU+2OmnXhfJ71gOsQEVC
-         dENOKCZfGtaLMfCESna6P8dLU27otAvSRDWsvL+Lc68tJ97J3Zw4FavCaWMJrQzEpww4
-         GT/g==
-X-Forwarded-Encrypted: i=1; AHgh+RoGJ0PzlRqBVUf+YX8wjbB0CEDrAzajCMFPQv4jbmHKjpPjiwZC8Nxxq1KYCDLGREXEs4h5v94xHQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz/oAkoQ0evE+0jRWib2ou6744dojHaE8k1hlpO4g7a7DjjtjK5
-	B3krUMcJmlyWJ4JvSqJxnksY4RaeIv6k/j8y5FMHWu0gU655MIVWd2Ol
-X-Gm-Gg: AfdE7cnL0fzvVash8P9qe5Wvt09vBwlr5Etyimd8FeYS0KZMwFOo2f6+1FTbne74Qwt
-	m+j+MtQ60v7HD/yYwXZHLZF6bPdcb3WW0A56opm7wc3YoH6z+bnsCuGssWPb15oUyZL/zLq9JyU
-	v08puXCRK1Fow4COrdp2MhD7OB3gxtflu5RP2Xai5FjxmERAIJfk8zeCwYLj9tuevl5Gat0hMqG
-	iQDDxkhLdVAgQi2I7TIHm8mtPAiVgwftdBElot1uPHZf8LLe82LoGHoF/olVEaLmUzwop5mVYp0
-	MaMwPqBgOoe/5kjRCJlV7ZuU0n2AAPgnc5VgiBdpLcmjKttS6ej4vZoDcJnpZy1EpY2lfUzwoMI
-	TdvxZZm+GLdg43S/d05l6nym1ruq4QyXN76Qh3hFhWLxnuZ+1/1UrNdVSA+P5djwdIgDFPC0BvF
-	5AC+/sY8l2HvqM0DBhF9UyoFHPqeWPk5g5Vjo41cmJEpYem4JDV4ON1lHJQhLa3ZozqRvVwFWKf
-	fHL
-X-Received: by 2002:a17:902:d545:b0:2bc:ac76:c1cf with SMTP id d9443c01a7336-2c718f1f023mr152321965ad.24.1782096615676;
-        Sun, 21 Jun 2026 19:50:15 -0700 (PDT)
-Received: from mi-HP-ProDesk-680-G6-PCI-Microtower-PC.mioffice.cn ([43.224.245.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8e51sm65579495ad.39.2026.06.21.19.50.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jun 2026 19:50:15 -0700 (PDT)
-From: "zhidao su (Xiaomi)" <soolaugust@gmail.com>
-To: Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kees Cook <kees@kernel.org>,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	"zhidao su (Xiaomi)" <soolaugust@gmail.com>
-Subject: [PATCH] sched: Preserve timer slack default across RT reset-on-fork
-Date: Mon, 22 Jun 2026 10:50:06 +0800
-Message-ID: <20260622025006.614695-1-soolaugust@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wqr9jtKQ;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782097462;
+	b=6rcf6pslW1IsqpZ4IhkiuKVqz1NS6k4R9IInAm/grdIzIFXej8/heMbaWnl/Rgy06kEWOy
+	/7iFMlEW/1p48wGpfuGXrcCqrqIaF0l1BegkBr6ZfOq9iUTIc+OPq1XW1v1Huf2ShrMz04
+	MM/QuqqaRQBSU+a5LZ8aEouIptoRkVY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782097458; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gdVeD2YQ+4emLsNSDcMg53zBGqzDXufzRzbIKHc1Gs8=;
+	b=wqr9jtKQoHbmvSTo9Zy1fhgbDMaxlAYEltFn200kmYmCLk2MLnBpSpNPCbvQ2q7JI8Zkf7kxqRT+OrydUamTQLIqO6ZsRKTV9j0SuFLASnPGNLLbDpQzIDdz6MQ7XVeQyKMfUpLKvZraQgEARFqzmFpcHzKVO1wQtw8DAoanT9o=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X5GfpWi_1782097455;
+Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5GfpWi_1782097455 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 22 Jun 2026 11:04:16 +0800
+Message-ID: <6e89f868-ca7a-484f-aeea-5d8d029714f2@linux.alibaba.com>
+Date: Mon, 22 Jun 2026 11:04:14 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, david@kernel.org
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, dev.jain@arm.com,
+ kasong@tencent.com, lance.yang@linux.dev, liam@infradead.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+ npache@redhat.com, qi.zheng@linux.dev, ryan.roberts@arm.com,
+ shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com,
+ zhaonanzhe@xiaomi.com, ziy@nvidia.com
+References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
+ <20260620081017.89085-1-baohua@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260620081017.89085-1-baohua@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: DCEA2160003
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 11F7F1C0003
+X-Stat-Signature: uat5pz5fhefe4p9d4d6axzpzj5h1imsj
 X-Rspam-User: 
-X-Stat-Signature: b5ahixipaeuydqcs67mw9tjpucwphhoa
-X-HE-Tag: 1782096616-630705
-X-HE-Meta: U2FsdGVkX18hU1dlNaBSkVkRdAFjFxHPbUfK5PubB4+QPLwsVlJOHomXvdgvUitfLM5+SYAiWRtxsQMa7cSx+GUscfqxR5Ho5mpks0yPvoAEsx9mxQJxtyKBBoUipPzTK/yXZouaK6DtVwpFMK3cp0+0E0J7yOFGqTinFiyvIfnG22/Uwt2wKYGw82p6RyY02hcwrEd9NgyOAMGBq9vNZSiPdRHk6LOISxtvc20bV1Z5577fQ4hIuSQOj6hZLNnjwTmfZjvIR+MeSDjmiG91QubWOgBkbOiOCm8ftVdY3WdxY9WnLt9zri5LNOJRwocL74969kQci8OWHZV94Izc7XeDBpOyxAvEItmMOg5pgiFlay1qGss7HBtDAedC89opeRw1kzf+Ted2ZnpfgHNu5hIAUjeQN38mNx/5fmhIAA5YpY8WBNbgD/rTFjpTrdEjed5BToPbeXTxa4W0GeJ9Tu/rvz8sqPggik90w4QMuatJWm5VTmDOf8R3CnGovj1OZ+12OPdAFdWuLRQL7Jixq98gJ5o1AFCyxpIevFLoTCJoombASloQQZ6unlAiRDy7tpwGSRDWO7wNFEb2D0OzJ3Q7IbptOH2KB/DUoYEpzMqOcvC56ZjN7XKVoBoG5EKhiQZPBRBN7TFxJHxBytQsIWqQ841FcJTxUcyR9h2QU89AQBkgpzySQ4XVw981Z/lJNYO5VJEFWhGi0Zhsqp/pseZHydGn7BI5S2Vrjn1Z7ROjaFg9M3E9amiK0C9abHzpIW0MsUHSQWzVhTT65NAkm878Eng/e1fMnZNcDJVY5KVnsLRPGy+Px/arfxWCNxnk96XSjho3XjL5HEN4Ae4F/T9/rE/Ps/OrxBE0A9/hBr9BRLw7+pUTNDkbORmKUGdtCO9trvqabx9caowo1hTxEtRwBkq/1Z+vcvC6GwOs/FC44E51YhH6JBJXIsLugKt7mQpRUJxndTfxmsTmYOr
- pOwzNSN5
- r1uB99pGh+PmSnhwacfygXhLSohMIwPWw3e78SzBRjEeQfium7k4ll4PjnfFKWnSqg5hQ3fRYyDRkna5mxNvxhiqC4c68SO8L+nXg9A7KpUo/QvODOCLHdD587RQ6bVyIqfo56E97Djc7xgMiq1MJnQlNB9Yfw/5Rb/QLOeiZamwxzRsji5I+nJGneMU+I1rfZ4urmn7WslVaRVCdOrum6Z7ibGWxlRTjVoO1L4oKi2KTaJAvzj737vTQOKeNZIdrXUN5+L47m4CoxdeEOEM0YHOu86F8oSJ6E36VRpslhJ+pQ4uD2hRNt/ZsvyR7NkVpRFkwsFKsH/mPLuKjofVUfl0WKgjg3sBWLbVRc88ZCvAQswU93wN1I+cmKila6PW57WVNCTI0BfLmdp2qFxE8C7j5ib0R8IDvYWaT
+X-HE-Tag: 1782097460-202686
+X-HE-Meta: U2FsdGVkX1+KueIpnREQzVUMCMtSykDt69vPcgcEbR9/wd/4gZQdwxSEZKCkCzCdTzNPFiJ1LbJMHTZBmjBH5MQN4KlvyvsA7OPRH+I3nmVvX8wNYjpv0IW33NxH4jTsiP/CeTewJXhKwUekX5KKRWYWcnPIQE+2dtiJamJIeaLJYMvbvS3LCX9qnHTNvwKbMb3MPSi6tGX2ctiQkmXMfuQtOGGABd13Pvidseb62w7Mok1ykcy6MT30EOrmFh8HRzEo7udTmXaM3IYSmZuqPGLkJREOQprupdpCcDq6bCo/LP15SjneW7G4Hd2gMOx9LUaF7fBIiecLZc0m4m2DnIbsmojj4a1jy72fmpT1N/rdc82CXTjMQFIaXuZH6kJatnqCJbIloR5gSFCCFcDl2tfWo5XosqaBsaB/UIGmgREYVihY4cIlgGZk5/b/fuv7hcWuh9+w4vsk9zeBI07PVCGn0tUjekkyVGOqRETJrX0RcKtA+zY6U5OuWwt0z9FBl5dW5IZlKpMdqMIIu8PR8aqunBHXMm9TCD9osbrkcG+ESLmHCcoJCiyxay22GtTDXGxlGbGnds8M/lv+9ERgeqc5+5aFfrctRNhO5ageZ441G4Lc+g5htJKAZiXHVnimgc6CmElkOsQDVRsrhkvTLtALZvmzfkT8sPdytkEvXTZWRNwP5YFSroeoe4CvMwgx5TYvwLVahfq0bS9rXg0GDFifQkiCKJdctfum276cWxHBCUoPBoDwi/C75vk9H7asfzbZrRX7BwrSVT1v0rY7JzQ80zkr9cp5WWPNXYuTJKEcAXL7wWgU8KgLrVHRLxwJMHtEW5xfXmJGCipxDnInnJviDC03Bz7X5bZC2M2TkVC/ddQSkczO09/dyrIPeB/GvmJvDHkXnLSLS/JdSzuk+srqPgAgeJExX99Fi8Hx/w3pyppmgWFAYVZli0iutOG+qD0JAU119s19BauktpR
+ nE3O6JPS
+ ByvBM/2s9RsPdPfDfMRjVmSqyHYKjS0b930BRnVQid26uetniqAwORmVGj6HYg9hgFbLI/2XTikv7XHs9k58SFf4bf62olbVSbpDtwiS0hI/R8EOAthmjWvF+qqKrxAHZBGoiLzXcb40aEGvW8CrugdGDGrCbPP3gif20Rkq5BjIPygGufFN9eOq39xGZR77anddN7E7XSLeRvdcFf/3RZIJMzTKpXjvxyWChC19uPilTn+nd6JS0IkWTkrwM8nCf5AebtyCLBiaDiQBHj3XOYMhv48eflgfgZNMYZw9IE7H/8ARg/AFJWXGE6ADfbJmEXcQJmjkVuMPoW/8cT+E5Vn2mbxFzbr1BEShjn+3w6apmOI8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,50 +91,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-RT and deadline policies force timer_slack_ns to zero while a task runs
-under the realtime policy. The original slack value is kept in
-default_timer_slack_ns so it can be restored when the task returns to a
-normal policy.
 
-copy_process() initializes the child's default_timer_slack_ns from
-current->timer_slack_ns. For an RT/DL parent this copies the temporary
-zero value into the child's default. If the parent also uses
-SCHED_RESET_ON_FORK, sched_fork() resets the child to SCHED_NORMAL and
-restores timer_slack_ns from that already-poisoned default, leaving the
-child with zero slack.
 
-Preserve current->default_timer_slack_ns when current->timer_slack_ns is
-zero so reset-on-fork children can restore a real default slack value.
+On 6/20/26 4:10 PM, Barry Song (Xiaomi) wrote:
+> On Fri, Jun 19, 2026 at 10:04 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
+> [...]
+>>>        /*
+>>>         * The page can not be swapped.
+>>>         *
+>>> @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>>>
+>>>                                if (!folio_test_large(folio))
+>>>                                        goto activate_locked_split;
+>>> +                             if (!__can_reclaim_anon_pages(memcg, sc))
+>>> +                                     goto activate_locked_split;
+>>
+>> Why are we even trying to allocate swap space if we cannot reclaim such pages?
+>> Makes we wonder whether we would want to have that check earlier, before the
+>> folio_alloc_swap().
+>>
+>> Any downsides?
+> 
+> I don't think there are any obvious downsides there. One issue is that
+> the memcg may not be passed from reclaim_pages(), so memcg would
+> always be NULL. However, the folio could still belong to a memcg
+> whose swap quota has been exhausted. In that case, my
+> __can_reclaim_anon_pages() will fail when checking whether we can
+> swap out. But switching to folio_memcg() also seems awkward.
+> 
+> So I feel Kairui’s suggestion [1] might be the best approach. In
+> folio_alloc_swap(), we return -EAGAIN to tell vmscan.c that
+> we can split the folio and retry the swap-out.
+> only when there are sufficient swap slots and sufficient memcg swap
+> quota do we return -EAGAIN, allowing vmscan to perform a split.
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 78b49b0658ad..62e2c506ccae 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1755,6 +1755,9 @@ int folio_alloc_swap(struct folio *folio)
+>   			VM_WARN_ON_ONCE(1);
+>   			return -EINVAL;
+>   		}
+> +
+> +		if (get_nr_swap_pages() < (1 << order))
+> +			return -ENOMEM;
 
-Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
-Signed-off-by: zhidao su (Xiaomi) <soolaugust@gmail.com>
----
- kernel/fork.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Shouldn't this return -EAGAIN? Suppose we try to swap out an order-9 
+large folio but get_nr_swap_pages() returns 256, then we'd still need to 
+split the order-9 large folio to reclaim some memory.
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index addc555a1077..39db7502379b 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2196,7 +2196,14 @@ __latent_entropy struct task_struct *copy_process(
- 	retval = -EAGAIN;
- #endif
- 
--	p->default_timer_slack_ns = current->timer_slack_ns;
-+	/*
-+	 * RT/DL tasks run with timer_slack_ns forced to zero, but their
-+	 * default_timer_slack_ns still carries the value to restore when
-+	 * returning to a normal policy. Preserve that default across fork so
-+	 * SCHED_RESET_ON_FORK children can restore a real slack value.
-+	 */
-+	p->default_timer_slack_ns = current->timer_slack_ns ?:
-+				    current->default_timer_slack_ns;
- 
- #ifdef CONFIG_PSI
- 	p->psi_flags = 0;
+>   	}
+>   
+>   again:
+> @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
+>   	}
+>   
+>   	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+> -	if (unlikely(mem_cgroup_try_charge_swap(folio)))
+> +	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+>   		swap_cache_del_folio(folio);
+> +		return -ENOMEM;
+> +	}
+>   
+>   	if (unlikely(!folio_test_swapcache(folio)))
+> -		return -ENOMEM;
+> +		return -EAGAIN;
+>   
+>   	return 0;
+>   }
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 299b5d9e8836..63e8578454ea 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -1257,6 +1257,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>   		 */
+>   		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
+>   				!folio_test_swapcache(folio)) {
+> +			int ret;
+> +
+>   			if (!(sc->gfp_mask & __GFP_IO))
+>   				goto keep_locked;
+>   			if (folio_maybe_dma_pinned(folio))
+> @@ -1275,10 +1277,10 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+>   				    split_folio_to_list(folio, folio_list))
+>   					goto activate_locked;
+>   			}
+> -			if (folio_alloc_swap(folio)) {
+> +			if ((ret = folio_alloc_swap(folio))) {
 
-base-commit: e771677c937da5808f7b6c1f0e4a97ec1a84f8a8
--- 
-2.43.0
-
+Also, please give shmem some love (shmem also calls folio_alloc_swap() 
+when swapping out) :)
 
