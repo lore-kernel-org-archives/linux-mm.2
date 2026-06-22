@@ -4,115 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31626CDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:02:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BB30CDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:03:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40F206B00A1; Mon, 22 Jun 2026 06:02:06 -0400 (EDT)
+	id 437356B00AD; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BC866B00A2; Mon, 22 Jun 2026 06:02:06 -0400 (EDT)
+	id 3E7666B00AE; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FA546B00A3; Mon, 22 Jun 2026 06:02:06 -0400 (EDT)
+	id 2AE746B00AF; Mon, 22 Jun 2026 06:03:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F2B226B00A1
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:02:05 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6486C166FE0
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:02:00 +0000 (UTC)
-X-FDA: 84907107600.04.E572817
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8B3C118000A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:01:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=goDaQIqx;
-	spf=pass (imf06.hostedemail.com: domain of 3FAg5aggKCGEI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FAg5aggKCGEI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782122518;
-	b=earHgb7NDdXcCGAfdOwEMga3+pUf1nf2l/VYX60YP+OZC64oCHiCzV9rLnkCIwYYN4kV/U
-	EUAyjIIpUBQ3IbejqyKYGrRmA9F/8/iRgqNyy5OyKdXdMFimdprJjHtjV7qtjr/4OML5PB
-	bPCao2gSNMO7A7i9yH/cFt7x31hK+ng=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=goDaQIqx;
-	spf=pass (imf06.hostedemail.com: domain of 3FAg5aggKCGEI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3FAg5aggKCGEI9BJL9MAFNNFKD.BNLKHMTW-LLJU9BJ.NQF@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1CDE6B00AD
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:03:03 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 648A11A05A6
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:03:03 +0000 (UTC)
+X-FDA: 84907110246.26.B3E648F
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DFD3516000B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:03:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NEgMjxC0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782122518;
+	s=arc-20220608; t=1782122581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AO5lqlMnd9mItpXQ83kdKJUoYx9mwrmKGw5gn5aBMIM=;
-	b=A5Ui0QT2zKAz1Dov+Z2PiDCZReIpJIih030hlr1AQTfP4hLHkhimgT9N0wx455bZqXtZgD
-	y8XsJncauV+UWWTON/O44tKtfge5ejggi23mz+cMQlfUiCx1IcFtD5B9Ek6SasKNmmHjYE
-	hbK/JwbbxywGkfezhPc/dWAgWKatl/E=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-490afe64f26so17227145e9.0
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:01:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782122517; x=1782727317; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AO5lqlMnd9mItpXQ83kdKJUoYx9mwrmKGw5gn5aBMIM=;
-        b=goDaQIqxkFYfNtaKHwfGi7TJL4TAX3hG7vy3ZBWH7CRfTGSvGF6I2DudSX32AP2jtk
-         dTNbqcZHaWIkWLeoSfAkK9SRt7ACvZORSa/4v7buoDc9fVJygLg20qTfcncrkPg01XlG
-         5Asz2HhmLFo8ebiXTJ38ERXUjx7Vtf/2M4Fi175N//S2zflEGcKRBkKJx/Du8qfPeWVy
-         vOc6KLxevRfVMbnl5TYSA3QvnRGfMvbQLvW0/SnPaFrjethfGYzYPwWjs0yq8Vu2qpyL
-         QQyE4R+AojV7hf3n4gXmgbsaRVpWzn13VBifb88stjnpAKWnmnGv8qv5L7qqMffQ1H0n
-         5Zuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782122517; x=1782727317;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AO5lqlMnd9mItpXQ83kdKJUoYx9mwrmKGw5gn5aBMIM=;
-        b=Rij1VrRPNn/go/0J/aM16JzUubCJ3QYoYvHnTIxjU5ic7PYlUIt0qBJCrG57WouG55
-         CsfIMa/tc2Jl6/t/C3RcPh2gm30u/h4uy7A+n2PxUPTXYWbY9lhHPhWXK2ysUXCBcoF8
-         iGH4NcCgMTwDtptqPXsW7bamD2G0VsNbsB32f6YwyEXD1PkJEq10XiT9e+MNQyIG2X0O
-         nxlOukUvDebPGYjhTktjDNEaH8Jntgyx2rLMDVId4uDk9fSXK2KIt8OFL0S9VrrtjA+Z
-         kP8Cmq2r9t9VTIY1HzAH3IPkI/Tjux9i84ZttB6OwIKICWnO262NgOsA4eKiy/4FQHSQ
-         1bCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/ZC+9+9nBRHqFQ4acgfp9yPuW8E7UEtw7nRkS7P1DycLe0CtQ9OEm2MC8aeLkhtQLm5ZnTimaSAg==@kvack.org
-X-Gm-Message-State: AOJu0Yzq5M0oXSJ21tHswb+HfWTsi37zzsyo67jxBTJlTUB3cf3Dr3xP
-	uaX6QA6lHi9lS6xqVs0TR+DWVAl/KEPkZGN1nsCzcX2FTy0/QfXdhzWd778I+/4tRkRfCSZ9j7Q
-	nymFM2cLkrBA1+g==
-X-Received: from wmbjt3.prod.google.com ([2002:a05:600c:5683:b0:490:b6a8:96fa])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600d:4448:20b0:489:32b:ac0b with SMTP id 5b1f17b1804b1-49240a09f71mr144939135e9.6.1782122516674;
- Mon, 22 Jun 2026 03:01:56 -0700 (PDT)
-Date: Mon, 22 Jun 2026 10:01:38 +0000
-In-Reply-To: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
-Mime-Version: 1.0
-References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
-X-Mailer: b4 0.15.2
-Message-ID: <20260622-alloc-trylock-v2-11-31f31367d420@google.com>
-Subject: [PATCH v2 11/13] alloc_tag: Move to mm/
-From: Brendan Jackman <jackmanb@google.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
-	Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, Brendan Jackman <jackmanb@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: 7ktcjmuuqasxmm6gd67t3bpiwoj36u8d
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=UrHVrGWtF0Gf9axzojlu+m2wABX4E9aeOydc2iHLOQk=;
+	b=USgje+/0ITshAX1bQI7e7QNPd92aViezP8xGnAIkxFhyMf1chOXJizzNiDG7EFdaDm0o5N
+	E29L5qrIfkDAHZSZULGlPC4xiND5brKNvGiv+iZzsHGMJRKnVbVgodO/bmlf1ZVvWU99sy
+	OG/SLD7coiv2Y0BbijHGvQMtvl7vh5w=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=NEgMjxC0;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782122581;
+	b=8CqXfacO5AwjY8qa3ucRoDcunYvLGnxY9FzkOBigpPXTAoyrre+Ob+SwL7IzMs0USpm/5U
+	ZASx+3/OxdmKIGUX1EVu6PIEkT2DE83/+okUhUTnaJVgAQSll9l+ztqxyXxUXkvss9rhHz
+	B+ocSC0O6M0KuVwJrYPokq6UWOkKVYo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782122581; x=1813658581;
+  h=date:from:to:cc:subject:message-id;
+  bh=Ezw24O3pUNhcPccP+K5QyJauFSYVPD58ql9Js7X+gak=;
+  b=NEgMjxC00/pSqrCOvZArKPI5RBLEOrU4hWh9z8UNevLQbiDY/c1CeTLX
+   aTroECqtcoKUAoEW/1DgNlXZWs01alrBezKyBa6nmT08HzgpmOWPxDJAi
+   mAB7Jl42BPYV7KlyvPV45W4IY3VR/xFTFUGQhHIdTRULUZ09ueQTpDg7c
+   FvgukATcgyOjoWb+oyKZqMkFw6j1FoPAgOSNyz8d2nUX2O3xsgtku0Eln
+   uvUD8y11bbfgQuXvdd6qY23mKA0ZM49h1i7OaWuboBA3lPMQIvAu/t2xs
+   oKB26dacLiRt4KZRK0Om8kgfkS5v5jj25T9kUa7w7UU0CS4j2mi4uU7N4
+   Q==;
+X-CSE-ConnectionGUID: tq+evsFHRIKT1KFn4qgOlA==
+X-CSE-MsgGUID: m4c/zOc4To2K3901mtQ0xA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11824"; a="86530614"
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="86530614"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 03:03:00 -0700
+X-CSE-ConnectionGUID: NiZXPYDIQV6LgEF1AF4ZOw==
+X-CSE-MsgGUID: Vaz+0ArVSouJz/efK/c68Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,218,1774335600"; 
+   d="scan'208";a="253521981"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa004.jf.intel.com with ESMTP; 22 Jun 2026 03:02:58 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wbbUS-000000000xF-18Hy;
+	Mon, 22 Jun 2026 10:02:53 +0000
+Date: Mon, 22 Jun 2026 18:02:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>
+Subject: mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
+Message-ID: <202606221720.CGRCyQ8e-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Stat-Signature: ummtbq6yiew1f9j76b6wyxso8dwz366c
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DFD3516000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8B3C118000A
-X-HE-Tag: 1782122518-610447
-X-HE-Meta: U2FsdGVkX1934m/FtEwl+DB+FlUh7YZGvY9anr/GMLOuCSYnXlFkAbpERawz9Ujkw6oY+HoGaL7MQoGB32tVqqITeIEdXSyAd/NCYZCsdgRECXDeU9SWZhFKQuRZj/iJWDOKBDsQfUf9j9GNjfHfKcBmLDsreXT9/SqcEnsOILU8S8NvlfXfqILFBIg3oOgCzixgidssIosd3N/LPa3hYZCE1uN/jLAGj2GpHwaZZhVXpSEp293i1/m681qMWmV9ZXaTzTytNlvDngux19TWlhDBV1MP98+NQFwRAhPjEQ3LNkx9H5NYHCxKhPv82aYRUXOWmblLMisDNxiSC3KgGcdEowjX2E4L1ddUiklmaRjTv6tx1ftmzGLU8wAVz1M/2tscWbevjyr7pFHdLsq+bNilWLwBvIDvcIYUUDtnIMDLTpv57fl23yoC4fnPoKlvv25/kEl3QayXqDIBnFhf/VHMsj7wKG5c/br+ryRBiQs3eGZocSSIZ5acfIa+ABtoimOEHe5e2aY/X9G6xVo1kHUdShJBlKJkawlGLSFDv7/xDoduiXnLy4dAQENsMbLeCzm0Xt2DkzUYjeu7CcpvXs0LmmVxPuumolSo6cP/+bdzuLuBEYLEJ70gsdaX044g52hpJUFPM7n3Ck/TtdSjDDCWM61ZGzoNxvDNVX3rM8buR6y2oNp1RWR1PAWkbaX+swRXuHTFeytJlUwcTyUcCYzEPV/6kvF6qMpxaYUk0uo16rJf3GvT46vMmH4pJPMYO2AIWSOBpNNPp7wzEfh3Xr5I2KK2mQpowTeQc3OgtGEENV2vfjOPOhg50Se1kvXxk3/OG60fadA9a12+WhL8xsJTUYWmlAeqwDu+5NOM/WxSmJBcqTkXkk7t4tTHlOG4FpY0fB25uKh6bFPf2tYyPodPryJBmQQtwSdk4l/pmdW3DHvaeiUAKZp92J03hp38m6lranP3x77IwVYC+j4
- VW4izlPt
- xFlR3fQc8vCgGYFDDHzI+TQs+bbLLYKPzQd9+OJyquO0PpaQcbv0AGICYYCzKzQJVlArFdxYfJ0bJ+f1ZxpIy3lJZhZMX0QoNW6JPHPvFb0KLjdmdEXARjpNIVkptwrMlSPePtD2xyH3NT51RyZn12AINPri46HQjJ4Uw8ybDMq+HCtNZLxpBWEtA2x/aa1OoMk2V4zX5hRaUmC0lHTvdgwfagIWTzqhUNnWWJmAIdZX3el5x7SO8/kWfzIOFMaW62iiD79ZvIQuXtdy96C6YMUenUK3MEeHWDasuZ7tStYEMPokxJtxiPZdCofDWUN7SwQQs636SowDW3f2E/zDkc4pcBQDC+wyoTgPkpQT2bGHDYXdmsSzjiKJDpt4a5Q3ZXqnPR3erWrZ+gAQNbt4GkYDfaPTIQx6RqejYaidgdY8+hau21f6mxs3nJ5izx6WGyWtTS2YxShrGYDcKGZba5dhamVxq4w6OmBeLYXLoXqzRTzHPE3VEOi1RYhCASZkNwFOh3uMEUMXqhYxbXsGxxzABsqpivbFNpy0Whi83Si9MvB7IIvaxzHqOraAWucSADKygnHHOjA1bsiEP8/lz1c2nH6pLu1MeaQaeunz27JE0PIbni/FSXuKCghHP1dAGkeWPUJm4oWlv5iEkMB16S5lQ2P9cM0LrEBZ1IPjYtGEakNlt5IY+1iZeM8Dj71biTT0h63onGL7RZMc=
+X-HE-Tag: 1782122580-565501
+X-HE-Meta: U2FsdGVkX195nfTY2du/G945eqJu9gZ8so5ySWcSGJDBNFcIdOXtGNhustisZ9NOjoiYaIy7kiM4ukBzSg9Ie6CUgosoyWL4bx2KoEjOXAZ9wgtyR8nUFnLSXE4rtRV4w4YL+MOmAOLKqMdV7nypi87Q4hxGp/u8hftrycHjNrAtCQhiKEwZWwGznzvgY12w6JufT1h5mnIac+gtXqAmKbNZaUwh3Ya+B/MFMBhHs613mTgzR2lsQfl1GkX0hvY7NmzA9JHoJVUdETOmaKB+eCk/U85AlqX9XEjNYWZhag1jbggyIUPzaB8OilKOQCXegNPsVybGiHL794bndJYqkCWCtYexYFlR9ZIA5S3fMtfQxODm/qQ36XOpxH7/O0XRdLYjaOETEIJnFg0Ybx+8jZ9ZJgMafneElbxWh20fqoTSh6rQBPcSYEdGCEarTjGFxjPB2+Na1gbWthDRdrMqSq7+7gGKcbD9hIpILj6lwmaKU+p7MaF91BMnvZgRGSajRb5TFoGwiBr3qBgthPxQ1H5cRkNatUVhHTYYIBY5l6DVgBuupwbhYwoVfKzBoiVwq+QEY4EvxYyd8PqeiANmmjNkWUcuC2eKtmOXa8+c4JAlwenSLylgJxlbxkFtJAZJqTQTaxOoregXjmYhcG5jeSv6QK9tHltxR6+GBGH64tWPySGgLp8uyzf+HZ7/huJ+SLsVzFj0D1rC65oMJeO5S3r4dNhDxfuRL0m+WMHQrqutJXuv6Q2fQDb9RBQp4R4n5eee23RVtC2Rp1idBf1cGCzaLfFQ5R5FTNmLNthNF2jrS58BVAtstHD4bi8aj39xUBBslou+SLchAOOMYYUpHuDKCid/niNt4awz89SyN7EQfinEGrRC3SicklXIyfO+BNjt4Z7XUOxiaxUHXlif2+3eP9pETcwr42H8af8eO+IuRDLCA73cs5hFOEpkqBAXwh9lfCAcMJ+kXaTWm4J
+ 3TyhUPNd
+ xWMqn0MejKyZta/TmClgQuSWZ/yoJZRWivbO5MOMcQX9SE/i1xu9tMqTKbJYmICM3vo//KJtFWTC2Yiq/CXr6uru2gmI5nOT8B5ft9R/4JGX2tdksPcDz6QLSevRSHHGbIt6VazObZ3SjmtwGNhfhqsa+maMiy0nmEv9mLGV0Zp8g2Eul4Es/5D4+cMU1BVqqF7sz/4GL6eULbSxi0mDreXB/ulPjXtgz+XF9rJpvkEhj9gePLg4CDjKA7nEwDA0S0etNYhb0SvYq6G/yFb/mdUV/bDWXTawJN60S
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,56 +101,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is logically mm code. Moving to mm/ allows access to mm/internal.h
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+head:   ef0c9f75a19532d7675384708fc8621e10850104
+commit: 3a6455d56bd7c4cfb1ea35ddae052943065e338e mm: convert do_brk_flags() to use vma_flags_t
+date:   3 months ago
+config: alpha-randconfig-r111-20260618 (https://download.01.org/0day-ci/archive/20260622/202606221720.CGRCyQ8e-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 10.5.0
+sparse: v0.6.5-rc1
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260622/202606221720.CGRCyQ8e-lkp@intel.com/reproduce)
 
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
----
- MAINTAINERS             | 2 +-
- lib/Makefile            | 1 -
- mm/Makefile             | 1 +
- {lib => mm}/alloc_tag.c | 0
- 4 files changed, 2 insertions(+), 2 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Fixes: 3a6455d56bd7 ("mm: convert do_brk_flags() to use vma_flags_t")
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606221720.CGRCyQ8e-lkp@intel.com/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 65bd4328fe056..5d426b79b8fe7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16713,7 +16713,7 @@ S:	Maintained
- F:	Documentation/mm/allocation-profiling.rst
- F:	include/linux/alloc_tag.h
- F:	include/linux/pgalloc_tag.h
--F:	lib/alloc_tag.c
-+F:	mm/alloc_tag.c
- 
- MEMORY CONTROLLER DRIVERS
- M:	Krzysztof Kozlowski <krzk@kernel.org>
-diff --git a/lib/Makefile b/lib/Makefile
-index f33a24bf1c19a..44f6538533a97 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -197,7 +197,6 @@ obj-$(CONFIG_OF_RECONFIG_NOTIFIER_ERROR_INJECT) += \
- obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
- 
- obj-$(CONFIG_CODE_TAGGING) += codetag.o
--obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
- 
- lib-$(CONFIG_GENERIC_BUG) += bug.o
- 
-diff --git a/mm/Makefile b/mm/Makefile
-index eff9f9e7e061c..4fc713867b9bd 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-+obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-diff --git a/lib/alloc_tag.c b/mm/alloc_tag.c
-similarity index 100%
-rename from lib/alloc_tag.c
-rename to mm/alloc_tag.c
+sparse warnings: (new ones prefixed by >>)
+>> mm/mprotect.c:700:43: sparse: sparse: cast to non-scalar
+>> mm/mprotect.c:700:43: sparse: sparse: cast from non-scalar
+   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   mm/mprotect.c: note: in included file (through include/linux/pgtable.h, include/linux/mm.h, include/linux/pagewalk.h):
+   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast to non-scalar
+   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast from non-scalar
+   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast to non-scalar
+   arch/alpha/include/asm/pgtable.h:272:21: sparse: sparse: cast from non-scalar
+   mm/mprotect.c: note: in included file (through include/linux/mm.h, include/linux/pagewalk.h):
+   include/linux/pgtable.h:475:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:475:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:468:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:468:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast to non-scalar
+   include/linux/pgtable.h:461:16: sparse: sparse: cast from non-scalar
 
--- 
-2.54.0
+vim +700 mm/mprotect.c
 
+   693	
+   694	int
+   695	mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+   696		       struct vm_area_struct *vma, struct vm_area_struct **pprev,
+   697		       unsigned long start, unsigned long end, vm_flags_t newflags)
+   698	{
+   699		struct mm_struct *mm = vma->vm_mm;
+ > 700		const vma_flags_t old_vma_flags = READ_ONCE(vma->flags);
+   701		vma_flags_t new_vma_flags = legacy_to_vma_flags(newflags);
+   702		long nrpages = (end - start) >> PAGE_SHIFT;
+   703		unsigned int mm_cp_flags = 0;
+   704		unsigned long charged = 0;
+   705		int error;
+   706	
+   707		if (vma_is_sealed(vma))
+   708			return -EPERM;
+   709	
+   710		if (vma_flags_same_pair(&old_vma_flags, &new_vma_flags)) {
+   711			*pprev = vma;
+   712			return 0;
+   713		}
+   714	
+   715		/*
+   716		 * Do PROT_NONE PFN permission checks here when we can still
+   717		 * bail out without undoing a lot of state. This is a rather
+   718		 * uncommon case, so doesn't need to be very optimized.
+   719		 */
+   720		if (arch_has_pfn_modify_check() &&
+   721		    vma_flags_test_any(&old_vma_flags, VMA_PFNMAP_BIT,
+   722				       VMA_MIXEDMAP_BIT) &&
+   723		    !vma_flags_test_any_mask(&new_vma_flags, VMA_ACCESS_FLAGS)) {
+   724			pgprot_t new_pgprot = vm_get_page_prot(newflags);
+   725	
+   726			error = walk_page_range(current->mm, start, end,
+   727					&prot_none_walk_ops, &new_pgprot);
+   728			if (error)
+   729				return error;
+   730		}
+   731	
+   732		/*
+   733		 * If we make a private mapping writable we increase our commit;
+   734		 * but (without finer accounting) cannot reduce our commit if we
+   735		 * make it unwritable again except in the anonymous case where no
+   736		 * anon_vma has yet to be assigned.
+   737		 *
+   738		 * hugetlb mapping were accounted for even if read-only so there is
+   739		 * no need to account for them here.
+   740		 */
+   741		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+   742			/* Check space limits when area turns into data. */
+   743			if (!may_expand_vm(mm, &new_vma_flags, nrpages) &&
+   744			    may_expand_vm(mm, &old_vma_flags, nrpages))
+   745				return -ENOMEM;
+   746			if (!vma_flags_test_any(&old_vma_flags,
+   747					VMA_ACCOUNT_BIT, VMA_WRITE_BIT, VMA_HUGETLB_BIT,
+   748					VMA_SHARED_BIT, VMA_NORESERVE_BIT)) {
+   749				charged = nrpages;
+   750				if (security_vm_enough_memory_mm(mm, charged))
+   751					return -ENOMEM;
+   752				vma_flags_set(&new_vma_flags, VMA_ACCOUNT_BIT);
+   753			}
+   754		} else if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+   755			   vma_is_anonymous(vma) && !vma->anon_vma) {
+   756			vma_flags_clear(&new_vma_flags, VMA_ACCOUNT_BIT);
+   757		}
+   758	
+   759		newflags = vma_flags_to_legacy(new_vma_flags);
+   760		vma = vma_modify_flags(vmi, *pprev, vma, start, end, &newflags);
+   761		if (IS_ERR(vma)) {
+   762			error = PTR_ERR(vma);
+   763			goto fail;
+   764		}
+   765		new_vma_flags = legacy_to_vma_flags(newflags);
+   766	
+   767		*pprev = vma;
+   768	
+   769		/*
+   770		 * vm_flags and vm_page_prot are protected by the mmap_lock
+   771		 * held in write mode.
+   772		 */
+   773		vma_start_write(vma);
+   774		vm_flags_reset_once(vma, newflags);
+   775		if (vma_wants_manual_pte_write_upgrade(vma))
+   776			mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
+   777		vma_set_page_prot(vma);
+   778	
+   779		change_protection(tlb, vma, start, end, mm_cp_flags);
+   780	
+   781		if (vma_flags_test(&old_vma_flags, VMA_ACCOUNT_BIT) &&
+   782		    !vma_flags_test(&new_vma_flags, VMA_ACCOUNT_BIT))
+   783			vm_unacct_memory(nrpages);
+   784	
+   785		/*
+   786		 * Private VM_LOCKED VMA becoming writable: trigger COW to avoid major
+   787		 * fault on access.
+   788		 */
+   789		if (vma_flags_test(&new_vma_flags, VMA_WRITE_BIT)) {
+   790			const vma_flags_t mask =
+   791				vma_flags_and(&old_vma_flags, VMA_WRITE_BIT,
+   792					      VMA_SHARED_BIT, VMA_LOCKED_BIT);
+   793	
+   794			if (vma_flags_same(&mask, VMA_LOCKED_BIT))
+   795				populate_vma_page_range(vma, start, end, NULL);
+   796		}
+   797	
+   798		vm_stat_account(mm, vma_flags_to_legacy(old_vma_flags), -nrpages);
+   799		vm_stat_account(mm, newflags, nrpages);
+   800		perf_event_mmap(vma);
+   801		return 0;
+   802	
+   803	fail:
+   804		vm_unacct_memory(charged);
+   805		return error;
+   806	}
+   807	
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
