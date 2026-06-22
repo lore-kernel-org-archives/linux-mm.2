@@ -4,137 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD7FACDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 09:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B0ACDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:01:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B50706B0088; Mon, 22 Jun 2026 05:55:43 -0400 (EDT)
+	id 25DB36B0088; Mon, 22 Jun 2026 06:01:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B01E86B008A; Mon, 22 Jun 2026 05:55:43 -0400 (EDT)
+	id 235A96B008A; Mon, 22 Jun 2026 06:01:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C9356B008C; Mon, 22 Jun 2026 05:55:43 -0400 (EDT)
+	id 14AFD6B008C; Mon, 22 Jun 2026 06:01:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F6866B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:55:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E83F3166FE9
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:55:42 +0000 (UTC)
-X-FDA: 84907091724.10.D72B45B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 100AC100002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:55:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEYqsQ3T;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D777F6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:01:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 312C0A060E
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:01:45 +0000 (UTC)
+X-FDA: 84907106970.20.04324FF
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 50E9320002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:01:43 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Gx/fmo8E";
+	spf=pass (imf31.hostedemail.com: domain of 3Awg5aggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3Awg5aggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782122141;
-	b=NCdvrYUWecWHMEk6b7hOrRv78cmjQk1qz8W8l+HzcwLyai/AfyYiPNrOrvUND5b7dNexUJ
-	1GaE7MMkFoEZjPbQLd3lxWiMc7BiicszPq3HrEM2RIo9piafxu9LbPPsPHOV1bjT6cPIcB
-	NKtdrAAPIEVPnC2TQZ7lI5+qVGkVvOE=
+	t=1782122503;
+	b=TaM853pnYyREdEFXsSsNd9KqLkCc6NXPTFg79HA7x0X/Y/vwXaUtdCZMViniNwTA0oN6UZ
+	l2tZ5E7sIbGPm/rz077sRQD0miJWQFOR/sacOP0twi9GN+4SN9XDz4Tx/nuQuSYij1P5ji
+	w3Ai4D7NDO2PIAPtmyMFMsZVUf9jYac=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EEYqsQ3T;
-	spf=pass (imf14.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="Gx/fmo8E";
+	spf=pass (imf31.hostedemail.com: domain of 3Awg5aggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3Awg5aggKCFA1su24s5ty66y3w.u64305CF-442Dsu2.69y@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782122141;
+	s=arc-20220608; t=1782122503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/V21/Y3QZfwVUdB3NIeBi+XnD7XL4Xt67aol7kqmo4c=;
-	b=U2kIyd2wE3gbTFW2tA+q395n6+V+2gy//EY7306+Xqn4gnxwgqraWI6k991Pd66VEZDBKS
-	0pbVk/bRnaHEvCIVnsvrVfhPrhSZXfvZj70Y10Z3pdjtJRBo+/SkioPcBx9mQAdJL/+U+N
-	21Bgf3mQhBlQdYPhqmhbDhEiUpVfY1M=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3933A40DDA;
-	Mon, 22 Jun 2026 09:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C543F1F000E9;
-	Mon, 22 Jun 2026 09:55:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782122140;
-	bh=/V21/Y3QZfwVUdB3NIeBi+XnD7XL4Xt67aol7kqmo4c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EEYqsQ3TRB2hMmbU7Z79YG2RHRf9MC51VSumhuqrt6HrdNifmpdbgiXdj+mPOOuZn
-	 cGHRNhUuRMFgZbU1FsE0Knbg9l762v4L1xpLsjiqiLdYo1UjsVXFx8uNL0eSjfJv/V
-	 5JN+cQOhPTaqHR3nQdb1YKbrcAPE2GMgKGtj7ImzzeGN7tGBabXgNdAhpFhA1Hhwog
-	 QunbjMB9l0vA19HXJW3S2zAexHyQyNTuyvQMRklcEFQVJl92ZZdE8v0UUyEj0SYGYx
-	 /wzt36/BFphiOGtrnRSXv/NkfcMiAKOwFfnjThiNUnfmtxxmy/qTB025Ec/hFKr/cq
-	 TRd3NUImRxD/Q==
-Message-ID: <c8793c0f-7156-4cb7-9e6e-7909397e2fff@kernel.org>
-Date: Mon, 22 Jun 2026 11:55:34 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when
- compact_unevictable_allowed=0
-Content-Language: en-US
-To: Wandun <chenwandun1@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
- bigeasy@linutronix.de, clrkwllms@kernel.org, Alexander.Krabler@kuka.com,
- Hugh Dickins <hughd@google.com>
-References: <20260604023812.3700316-1-chenwandun1@gmail.com>
- <20260604023812.3700316-2-chenwandun1@gmail.com>
- <969cb14b-5b8b-48e6-add6-4dd13101dd89@kernel.org>
- <040788a9-e0d5-478e-bb48-3d22b8b41020@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <040788a9-e0d5-478e-bb48-3d22b8b41020@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: dptw33c946pdgwn7ba6ggg9y74n76s71
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HyN6/V2JO4AYCUsSUM4Fyt9cHVBJWqwO25DnwWB+tqc=;
+	b=gQqwkxi5PjEbJS6yCu9a8fnRWkYO3Wotd3GpcBjYItRmyq2vLvCvuRxJzigvH+S8Rjr3iD
+	lAoqSgL6yBtbCYaxtwODAZ7lWopNoPItplybRKd5Y5wshuc0K+mZbwOxk/O/11uJ+5hNVl
+	kPSO4aon6+WjMsGzaSe3NN+RpTszP+g=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-c0db30ce19aso109303666b.3
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782122501; x=1782727301; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HyN6/V2JO4AYCUsSUM4Fyt9cHVBJWqwO25DnwWB+tqc=;
+        b=Gx/fmo8EEl02lI3krrLPnoybC1yos4nZ1LRdLvrRh4gXv70ysXkSAlSVPCtdRoNxto
+         e+EJChhVrMrrH1O/X+IcJAY9DamTc304NLRcgjklWTggDapWd2RDnWAXG8Lb+y8A5MQX
+         jIiaoPDMay/hDzBWZyRartqzvvfv28dYYOWHOZn+dnMbF/BETA7I8/uRTfrvoOuo6vpJ
+         Vvv1EAQQ4cUzM1EMFJW6t6vgYTsh2sVaDJfJIvaLXwW53JNY8pQnB3ydrnTInoYI5Y1t
+         KammmBcUsS1MtdTmWCYUbnBfIAD9O4tINZeeDfMS37xXLGDcZMnX10NB3QdKguLxamoZ
+         HbMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782122501; x=1782727301;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HyN6/V2JO4AYCUsSUM4Fyt9cHVBJWqwO25DnwWB+tqc=;
+        b=hgaQcd42IO3FIQnH9CGw6UPRvITHOXAHfUREwkQkx53ecX2fnwWbM3ZPZiTbVrYBPZ
+         QQjzicHJdeDRI/NKK75jkLrVlVVmyZmQR+j7R2giU8aW+eKghnUk8gaguMIRxbSX7CiM
+         QYZxT6nfPNaPIt167oMeoA0riLkG8K+NtP/abiK+rpN2WzGhQEt7Gj0M0DdWlS/fP2WL
+         yU3ATsFh85PUvcHL6IeeDMKlN+aqM6S58Z/Bc2vswrc21SIgJ7vm+tOlNhOh1zxq5Uvs
+         gXw2JXR8lHdYJKcEPYtM6550NfrJQgWIgk3VnIVorKXOPG0X/+Orj+WjBGWkn4Dc4ezb
+         p2VA==
+X-Forwarded-Encrypted: i=1; AFNElJ8B1Bnvt7poxA7sq2v5qytRTZVPCPOlTD4mUFcxUiBIOsbNVyu51vl6/LRf0qpZ13QZPzrbM6zs7Q==@kvack.org
+X-Gm-Message-State: AOJu0YxNFizN64Tpq7uo8IknAsHIu02gg4rRmXAkb7tE4B0hkOMvv785
+	q+Ba7vc6hSuQnOrLRPKfDxJHGO/RH0RZpIGcp9Vuza1A9mPqRmX/C4w7WFUBkflBAgRt+cctm99
+	ATB0l4+dq+Qs/jA==
+X-Received: from wrbcp34.prod.google.com ([2002:a05:6000:4022:b0:460:672f:ad65])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:7210:b0:c0d:46ca:3ae9 with SMTP id a640c23a62f3a-c0d46ca3b73mr292642566b.3.1782122499355;
+ Mon, 22 Jun 2026 03:01:39 -0700 (PDT)
+Date: Mon, 22 Jun 2026 10:01:27 +0000
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPcHOWoC/3WNQQ7CIBREr9L8tZgCWogr72G6oPBL0VoMYGPT9
+ O5CXbuavGTmzQoRg8MIl2qFgLOLzk8Z2KECPajJInEmM7CaNXVDBVHj6DVJYcnxIPSkDBdGdZw
+ LyJtXwN59dt+t/XF8d3fUqUhKY3Ax+bDshzMtvX/umRJKJO+NkGcpOcOr9d6OeNT+Ce22bV9+s r3vvQAAAA==
+X-Change-Id: 20260617-alloc-trylock-14ad37dab337
+X-Mailer: b4 0.15.2
+Message-ID: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
+Subject: [PATCH v2 00/13] mm: Some cleanups for page allocator APIs
+From: Brendan Jackman <jackmanb@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev, Brendan Jackman <jackmanb@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Thomas Gleixner <tglx@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Dimitris Michailidis <dmichail@fungible.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 100AC100002
-X-HE-Tag: 1782122140-533858
-X-HE-Meta: U2FsdGVkX1/veo+IXV2i+qLdMWMDN++TeDJJD85UjYcaIj+sUw4JjJ3OpAqLDzMCYogo2v8YGxf6FnKlEIAFRCJflBEspZZG6KuaBCxylhbkugUjoF++WnUgnqG5WPnZf+2MG5JlBtEWVNKxmIlVq8sDmhkZvRVDQ8Y8BfnzYpqYmTw2eRWK/WpkYw9S2BhQ7/93IkBGB91CzzE1u/fbEcx1W/Ybz/MKLrOJ5ZRXUsspktcNBe12aqPIi2lQaBV+o6WCXl/yMoKNyS1wNA4WhaxhUIGsjc+mJaEVK6lX6/cMgHJuI2j/JB5ClcPriFEImTmEYU9OE33V+m99MncZBstfmtT3q7t6Kyucoauutcgxe6ezpSDubltiZZlJeyJRS3q8ddIqyXcr6/nU0T6g18CbVy4MN7tOb1mI0+PbgNksWZ/I9eh7U30UF9PWuB/OTnosCbNZD2J9ZCjsIwsPl6n8Pl3vQcJj1ZSI5AkzCF8vPdLBFc8JYs49O4wDQgxkavcyhCCe0LC1r1sRG3eGi+KAcQHdio0t7+wkGbgA0y2UOL6g8j8UiwYevBywUypA138NPPlgMQSlqjhsTw8frkvC7oFnLjSWWbP97khmcmZd/dijunNfAUE2sQMB9ExVq842AVjr7Sq7ReXXDCAejaQ/cOrAN8LoNqjp5tXtkYpVMyjcEF50v7bQzoD2o7JdB7zYec+a0Lf7dRwW1Vat5KZ+uiphpX2+kakxntpLwffPITC349n3nJyQayDi9iSbN8MfTLoQWrovjlgs6h0B1GP192xHngcX0FLpG5hHB6MBpMTxPejOmzHum2NIL5tRKAHHFFtoLZOTm1gVhDJpqudKZFL9uicDRCXvJpLRZHEMCx01HFZKKOCDkFX/FBJNJp1seZjjMTmaatyzZqTrmiq//dHhz6XCjo9WZnYH+DtjlFZ+TvV0jqknx1Va3CcY+YRbQNG2xJtWFuVD7wm
- hO/v1SFO
- IIwayYJM54/rK17Zt56fJgRd3KSDzTlRUmBTOzsFdJtgNzAk/VaGOkRGW01n9ON1M3BG6w1U1lRCn2TWWSciq8KfCMK/S0oBShW4XcqsvGfqk9P0g+WHYGRl3k1Lt8pp4xrGpq+aP3ZLI93GV8ueWoShWNaCcRiTPKECFpiRq4I0Z72F6TDMXePQNoaGPxLYzfFqflL0w9qTlLQunj7Q4lo4+WpC+/N5jLOJ/e+CsVSDFNy+bqD9/5MdGYsx/WLugggPQzOHA0Di0kYYPI0qkLdRLtEMd5znbQ4Klr/TsfhSYjcmPnRWjr+604AOCqSelx3yk4rZRFbYLkmfTicYMPU8ypKhK6Bc1l9gzbTRLkhOs09vCxdNWKcBLAxRpJPD5kja3MiSih1hyqraKMsxj7Dc8pS92rgLZLLKfdnNg+Kxp/Hc3JCS4dUGU/81MM8PD++21RH2Fzy84ZNrToZKedgNsNqpnzRIkhC3WrOhn+3juaqP4O8UWeF2WsiFA6hSYJQHs
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 50E9320002
+X-Stat-Signature: 4kk54suyj8rr6fdpugwm4peewc9kfxwr
+X-HE-Tag: 1782122503-311988
+X-HE-Meta: U2FsdGVkX1+UZre5RGsJEDhMVBNo4fosE9rmd6MO/go03yCATwmN84dA0YGi+yBoer9Lin7Aimu1gttgIKFVe1+cGEGyiq4Kxt8XDHotQL2bwrSZigKZWoJGffEeZbUIsXpWj48wbu/wcUft0y2dJ301El3xa29fPT8fnImc3MnoAntlK/JvUgUryPhnx2mmsU/slk0EMpeBi1Dj6MqGddGS2kKU7HTqTnX/hA1gFBVlhkijK7pjn6c/6I+rU1D4JYcvjsX4ZkPlfO0uhR+WzgrpadN2a3ZZgKb11sKMW+jhavk9ht+q6ATZDauhnJmXAPSV7A+Mi2eiA38AHVBh56XwFiDlChsZ61w9E5WyHvmM0XYV5tDylAMAmwYpzv2tmxKVwdHY7oZ+EXm9CaCwKgAGJspLPwJsZsqAp8IjijDpBn8PoY95zFFsJzP2MtnR3KbxRP2jOzqwqJsgj2bOmGzImPm97DTUGTngQdsPxQOdmBzj8//jFgnZT4Zitaug3LKmMCKxKWz/2yHiRgmCHixWRSnmBSCuSxUYSObY1y1vL+QdSmYfi//RzInolEdSYWXnAQfKSM1/R8YejgBY6SmdPH2QyrfLklxoJQLW0vWtXTYfzow4jeTlUkrPCgVkGXLtd3ypXKgcINgq3jeDfpc7rGyKRHvS9tmhQ2zPEmREMoNx/DN5bvpODeSoKZ5LAJvmWtiF1hPYpK5qAcgu+c7UYxwPXb/MiK7fdlubblXr3mrn05qVVAVCkF56bQDfyzoZZaImKLRQcXxsU9fBCvZRiHFYZghj3ueNSvgh4vFJBasJWiHdxk2NeDHX8elZE1GCHvq1n0ytNVA7+D7WsRPi+4SOGCe9e6GfPGeuAlzCnU0FWMVB6HplEwUfVoM+eSft6zJEZBkWtiGJr9Buct4/9/6RIhcAnAD8lW5x2WLDwy2ng9Pl8SMXNw+kxr7xhms2vkZQn4Bc3St8oE6
+ okVc5Y0Y
+ S01el2w4EZZFAsn5X75mYZGL5tLHmRqNFkX8no7gx6ploU0u1VJ5liEogtit877vaqgp5EDCDQxmZMrZX3ZblYk7zz2QkT1JxXgPhTNT/gZwRgJTdYISdXiqvqNLkpAlITWxcKmXAXtRj4YWRuQhzs//jJVPKZhkRgnEAtdSqpUo5awHS2kasSswB7nQQV7zUUWoWQqlBvBaTuGvYk6hlfgYkOEqoGYJExdZSrisCWyF3KFYZmJlqxp02fdRbhsmYLUx6BM9FYqHoRV/iDHpSQunfN6D4ptI9XQoe2CtkBrRwJkCYSjisV/42yRvsEjz6PXfRL2lQlhlMqQuabJR1XwbHLtRfKjAbaLgPbZ+LP7rIufIk9BySMJAc8HmfQcjNhTKWdT0uVhRpzvBBtfmaeamP+jdNM6o3b5QQobIQwG2d/DaE1c85Ej6QCsZSRW4UieJN1RhMgYLGJaQEYk7IqKOq9qW1k03YRmA6hORJ2249rYGOxN2x/asSk7N3Xsj4S9JgQxlsq+gxYP/QCItfAYReVDv3k/A6IOL/g4jhhBkcp+/suyMeGS2D1mEY8t4CelBbHY0nd11HTN7M6scslcen1xDjuEgz4NCFFrp7s5yiPZjTgySV8m7oyI6K2Uj9ZrBrQg55hWZv8YX45uomkQiurHZXiev+2MO/3gNStjDPBGHtCWhnwfr/6/1YhLX3xKp4zQnvYRsEtbbPZGhYPCzw1Ghrbd4fupOC8Mow9yTTQEP72NLkgoBidyb7VCni+6y3v5iRwAEE7eeRoVxq9bjNgg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,177 +135,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/18/26 13:43, Wandun wrote:
-> 
-> 
-> On 6/18/26 02:52, Vlastimil Babka (SUSE) wrote:
->> On 6/4/26 04:38, Wandun Chen wrote:
->>> From: Wandun Chen <chenwandun@lixiang.com>
->>>
->>> compact_unevictable_allowed is default 0 under PREEMPT_RT,
->>> isolate_migratepages_block() skips folios with PG_unevictable set.
->>> However, mlock_folio() sets PG_mlocked immediately but defers
->>> PG_unevictable to mlock_folio_batch(), result in a folio with
->>> PG_mlocked=1 but PG_unevictable=0. Compaction will isolate such a
->>> folio.
->>>
->>> Fix by checking folio_test_mlocked() together with the existing
->>> folio_test_unevictable() check.
->>>
->>> A similar issue has been reported by Alexander Krabler on a 6.12-rt
->>> aarch64 system. Vlastimil suggested to check the mlocked flag [1].
->>>
->>> Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
->>> Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F334100981888259A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
->>> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
->>> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
->>> Link: https://lore.kernel.org/all/33275585-f2db-4779-89f0-3ae24b455a67@suse.cz/ [1]
->> 
->> Well in that thread, Hugh doubted my suggestion and then it seems we didn't
->> concluded anything. Did you actually in practice observe the issue that
->> Alexander had, and that this patch fixed it, or is that theoretical?
->> 
-> Yes, I wrote a test case that can reproduce it in a few second.
-> 
-> The test case contains 3 steps:
-> 1. mlockall
-> 2. mmap file(2GB) + trigger file write page fault;
-> 3. during step 1, trigger compact via /proc/sys/vm/compact_memory
-> 
-> 
-> My reproduction environment is qemu with 4GB ram, 8 core, aarch64,
-> preempt_rt and includes the tracepoint in patch 02.
-> After running the reproduction program for a few seconds, the
-> following output appears.
+Some tweaks and cleanups for page allocator entrypoint and flags. This
+is motivated by preparation for __GFP_UNMAPPED [1] (which will probably
+become ALLOC_UNMAPPED in its next iteration), but all this is supposed
+to be an improvement to the codebase in its own right: unifying code
+paths, reducing API surface, and removing GFP flags.
 
-Ah, nice.
+[1] https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54f41@google.com/
 
-> repro-403     [004] ....1   101.270505: mm_compaction_isolate_folio: pfn=0x71e3a mode=0x0 flags=referenced|uptodate|mlocked
-> repro-403     [004] ....1   101.270507: mm_compaction_isolate_folio: pfn=0x71e3b mode=0x0 flags=referenced|uptodate|mlocked
-> repro-403     [004] ....1   101.270513: mm_compaction_isolate_folio: pfn=0x71e3c mode=0x0 flags=referenced|uptodate|mlocked
-> repro-403     [004] ....1   101.270515: mm_compaction_isolate_folio: pfn=0x71e3d mode=0x0 flags=uptodate|mlocked
-> repro-403     [004] ....1   101.270517: mm_compaction_isolate_folio: pfn=0x71e3e mode=0x0 flags=uptodate|mlocked
-> repro-403     [004] ....1   101.270520: mm_compaction_isolate_folio: pfn=0x71e3f mode=0x0 flags=uptodate|mlocked
-> 
-> 
-> Unfortunately, I recently found that there is still a bug in the
-> fix patch. Setting mlocked in the mlock_folio function could happen
-> even after the page is successfully isolated, so it still cannot
-> prevent migration. Because of this, I need to think more about how
-> to fix it.
-> 
-> Perhaps we should double-check whether the page is mlocked during
-> the actual migration phase.
+This started with unifying  __alloc_frozen_pages[_nolock]_noprof() and
+expanded from there.
 
-So IIUC the isolation+migration might be started between the folio is
-allocated, and mlocked? In that case the check during migration could still
-be racy, and if the page is isolated, it's already bad for the RT process.
+Unifying the nolock allocator entrypoint with the normal allocator
+entrypoint means adding an alloc_flags argument to the later (only
+exposed within mm/). This presents an opportunity to take advantage of
+that arg to remove some GFP flags, if we add that alloc_flags arg a bit
+more broadly to allocator entrypoints.
 
-So this would only be a short-term problem after the mlockall, but we don't
-have a way for the RT process to know the moment it's all settled, right?
-Probably the proper solution would be for mlock[all]() itself to wait for an
-isolated page, and only continue once it knows it can't be isolated anymore.
-This might howver would go against some of the folio batching optimizations?
+To distinguish between mm-internal and "public" allocator entrypoints,
+it makes sense to use the __ prefix. There are already some public APIs
+with that prefix. For *alloc_pages*, just removing those variants seems
+like a nice cleanup anyway, so do that. For get_free_pages, the "__"
+variant is the _only_ variant and it's very widely used, so it doesn't
+seem worthwhile to modify that. Therefore, scope this "__" change
+specifically to the *alloc_pages* API, which means we leave the
+*folio_alloc* API untouched too, even though that could probably be
+cleaned up if so desired.
 
-> What do you think of this best-effort approach?
-> 
-> 
-> Best regards,
-> Wandun
-> 
-> 
-> 
-> 
-> 
-> The full reproducer is as below:
-> 
-> /* gcc repro.c -o repro -lpthread */
-> 
-> #define _GNU_SOURCE
-> #include <fcntl.h>
-> #include <pthread.h>
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <sys/mman.h>
-> #include <unistd.h>
-> 
-> #define PAGE_SIZE       4096
-> #define NR_PAGES        32
-> #define FILE_SIZE       (2ULL * 1024 * 1024 * 1024)
-> 
-> static void *worker_fn(void *arg)
-> {
-> 	int fd = (long)arg;
-> 	size_t len = (size_t)FILE_SIZE;
-> 	char *p = mmap(NULL, len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-> 	if (p == MAP_FAILED)
-> 		return NULL;
-> 
-> 	for (size_t off = 0; off + NR_PAGES * PAGE_SIZE <= len;
-> 	     off += NR_PAGES * PAGE_SIZE) {
-> 		for (int i = 0; i < NR_PAGES; i++)
-> 			p[off + i * PAGE_SIZE] = 1;
-> 		usleep(200);
-> 	}
-> 
-> 	munmap(p, len);
-> 	return NULL;
-> }
-> 
-> static void *compact_fn(void *arg)
-> {
-> 	(void)arg;
-> 	int fd = open("/proc/sys/vm/compact_memory", O_WRONLY);
-> 	if (fd < 0)
-> 		return NULL;
-> 
-> 	while (1) {
-> 		if (write(fd, "1", 1) < 0) {}
-> 		usleep(5000);
-> 	}
-> }
-> 
-> int main(void)
-> {
-> 	mlockall(MCL_CURRENT | MCL_FUTURE);
-> 
-> 	int fd = open("./repro_largefile.dat", O_RDWR | O_CREAT, 0600);
-> 	if (fd < 0)
-> 		return 1;
-> 	unlink("./repro_largefile.dat");
-> 	if (ftruncate(fd, (off_t)FILE_SIZE) < 0)
-> 		return 1;
-> 
-> 	printf("repro_largefile: 1 worker, %d pages/batch, Ctrl-C to stop\n",
-> 	       NR_PAGES);
-> 
-> 	pthread_t compact, worker;
-> 	pthread_create(&compact, NULL, compact_fn, NULL);
-> 	pthread_create(&worker, NULL, worker_fn, (void *)(long)fd);
-> 
-> 	pthread_join(worker, NULL);
-> 	return 0;
-> }
-> 
->>> ---
->>>  mm/compaction.c | 3 ++-
->>>  1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/mm/compaction.c b/mm/compaction.c
->>> index b776f35ad020..7e07b792bcb5 100644
->>> --- a/mm/compaction.c
->>> +++ b/mm/compaction.c
->>> @@ -1116,7 +1116,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
->>>  		is_unevictable = folio_test_unevictable(folio);
->>>  
->>>  		/* Compaction might skip unevictable pages but CMA takes them */
->>> -		if (!(mode & ISOLATE_UNEVICTABLE) && is_unevictable)
->>> +		if (!(mode & ISOLATE_UNEVICTABLE) &&
->>> +		    (is_unevictable || folio_test_mlocked(folio)))
->>>  			goto isolate_fail_put;
->>>  
->>>  		/*
->> 
-> 
+Tested:
+
+- KVM, mm, and BPF selftests in a QEMU VM
+
+- kunit.py on x86_64
+
+- For the ALLOC_NO_CODETAG bits I just booted a VM and read
+  /proc/allocinfo. I confirmed that if I remove ALLOC_NO_CODETAG, the
+  kernel crashes in early boot, so I was at least booting code that
+  depends on this logic.
+
+I used Google's internal version of Antigravity (AI coding harness) to
+do the repetitive bits, those commits are marked with Assisted-by, the
+rest is manual.
+
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+---
+Changes in v2:
+- Fixed up whitespace in nolock unification patch
+- Introduced ALLOC_DEFAULT to replace literal 0 for alloc_flags
+- All other patches are new
+- Link to v1: https://patch.msgid.link/20260617-alloc-trylock-v1-1-83fd7858832e@google.com
+
+---
+Brendan Jackman (13):
+      mm/page_alloc: rename ALLOC_TRYLOCK -> ALLOC_NOLOCK
+      mm/page_alloc: some renames to clarify alloc_flags scopes
+      mm/page_alloc: unify __alloc_frozen_pages[_nolock]_noprof()
+      mm/page_alloc: relax GFP WARN in nolock allocs
+      perf/x86/intel: Use higher-level allocator
+      KVM: VMX: Use higher-level allocator
+      x86/virt: Use higher-level allocator
+      sgi-xp: Use higher-level allocator
+      net/funeth: Switch to higher-level allocator
+      mm: Remove __alloc_pages_node()
+      alloc_tag: Move to mm/
+      mm: Move __alloc_pages() to mm/internal.h
+      mm: remove __GFP_NO_CODETAG
+
+ Documentation/admin-guide/cgroup-v1/cpusets.rst  |   2 +-
+ Documentation/admin-guide/mm/transhuge.rst       |   2 +-
+ MAINTAINERS                                      |   2 +-
+ arch/x86/events/intel/ds.c                       |   6 +-
+ arch/x86/kvm/vmx/vmx.c                           |   2 +-
+ arch/x86/virt/hw.c                               |   2 +-
+ drivers/misc/sgi-xp/xpc_uv.c                     |   2 +-
+ drivers/net/ethernet/fungible/funeth/funeth_rx.c |   2 +-
+ include/linux/gfp.h                              |  28 +--
+ lib/Makefile                                     |   1 -
+ mm/Makefile                                      |   1 +
+ {lib => mm}/alloc_tag.c                          |  18 +-
+ mm/compaction.c                                  |   4 +-
+ mm/hugetlb.c                                     |   3 +-
+ mm/internal.h                                    |  20 +-
+ mm/mempolicy.c                                   |  10 +-
+ mm/page_alloc.c                                  | 254 +++++++++++++----------
+ mm/page_frag_cache.c                             |   4 +-
+ mm/slub.c                                        |   6 +-
+ 19 files changed, 193 insertions(+), 176 deletions(-)
+---
+base-commit: cbe5256a15fc26f592efb037e528da54b2139ee5
+change-id: 20260617-alloc-trylock-14ad37dab337
+
+Best regards,
+--  
+Brendan Jackman <jackmanb@google.com>
 
 
