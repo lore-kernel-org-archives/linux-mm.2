@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F57CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 16:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327CFCD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 16:59:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5236F6B0005; Mon, 22 Jun 2026 12:54:21 -0400 (EDT)
+	id 926056B008A; Mon, 22 Jun 2026 12:59:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D4446B008C; Mon, 22 Jun 2026 12:54:21 -0400 (EDT)
+	id 8D7556B0092; Mon, 22 Jun 2026 12:59:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C4BD6B0093; Mon, 22 Jun 2026 12:54:21 -0400 (EDT)
+	id 7EE5C6B0093; Mon, 22 Jun 2026 12:59:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 826246B0005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:54:20 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 63B054021A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:54:19 +0000 (UTC)
-X-FDA: 84908146638.29.3C96174
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B22016B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:58:59 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 328AE1C135C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:58:59 +0000 (UTC)
+X-FDA: 84908158398.23.6951C87
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C48CB1C0010
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:54:17 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XN8Wesbb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 35B684000D
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:58:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s+wGhbBS;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782147257;
+	s=arc-20220608; t=1782147537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TQRxOVfPsF5zdei5YjlXmlodQ7Ot2nd16HyX3ZqLG9w=;
-	b=oE2ERyxrtcdOXvMDwghkm1wB+AO0lLK4ryLzWf1yDFnhbN9R/k9H4rFh4lFmuQWtPtlc0g
-	4fOKKj72/gLIf+l0syTAjc6diM8mCSf7HmSuocdZ5/skiiUcWU21ZdJ+LlDYyCyZjMVIKe
-	+96SdEIH6om/8bu9jkCRsKsZIJIa8lM=
+	bh=wteg9KqRUVkfOS3mlSvn890zNUJTJ36A1pnkvMGAiZw=;
+	b=U/Hbms4fSE73pZCDylGnZPQUNm8ApTYn8XDGB0kMI4dfZkeDLkEIBL455fs0BjIbON6M9Z
+	SAi9lVwoFfGx/8wL0dARPvN8OxgxGWhur0MEitp+rz6BSBtxnn/p3s84oTBkItddqxpOyC
+	sx86cqFXOE2D1rAv6NeIUHiCpiGRZxc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XN8Wesbb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=s+wGhbBS;
+	dmarc=none;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782147257;
-	b=Jz4mROkscPcVkJtZsRQ95LSsmhxQaybqP4KtiJ7vegsLoZLk2PRgHgpC1zkboVYvOq/G/f
-	YrTgRcfCov6+Uj1nwwgTVh2Kny6sC6ID7EHKEP6py7KhYxKsX+9bwNq4/uL8hiIJrKe7NS
-	fx4vSGmvWQDgWZkeNGhXQe8Ai1s5bUM=
+	t=1782147537;
+	b=x34SRtTprp5KjeXuhzn6mnwKd5MbZX/IA+u7IDhQfJlPBohOw2y8VUup/KXoWRrDg33JMa
+	LvZSt6iLwu5bheNuk31bf0FepybzEqr/ui/8ZYVoSXEF2VE7idUgunWLaOKj82qnXAy9Kk
+	RofCb6oempQ7qZx4919+/OlGmMmgRts=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 57B14601F3;
-	Mon, 22 Jun 2026 16:54:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D951F000E9;
-	Mon, 22 Jun 2026 16:54:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782147257;
-	bh=TQRxOVfPsF5zdei5YjlXmlodQ7Ot2nd16HyX3ZqLG9w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XN8WesbbvyOworVWhVgscRDeNhSgZmydbPz/p4oR7VNlhMcua0LQgNIz4tMtc5Ju8
-	 R/pPzDNePrsm9XRX7YPBAPbyMKML2pvegsX4SjD+N7+DKOynfQueNX8tSXmAHWa/B0
-	 JVZbQAtfIdfxEXQl9LU+Jtfbcu2+9rSrayKmQKT8C7Gqxp8OyAdHw0STQ4dxvAMMoK
-	 2fWqED/xcGupntj2tnbHAZjSPhJAK6G7U09Jc1BbcBogWDG3ZrE8F29muik4Rva2Lg
-	 0nZhRDTFYFUVSvQyYnXSH9J0qy1OT2u8LX+ZnNJc0/MkyNb6gyycTj3dYincWe0QLu
-	 OLL1yDR4Ytt2Q==
-Date: Mon, 22 Jun 2026 17:54:10 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>, 
-	Alex Williamson <alex@shazbot.org>, Anthony Pighin <anthony.pighin@nokia.com>, 
-	linux-kernel@vger.kernel.org, Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>
-Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
-Message-ID: <ajlnTdkbmEzy_uhe@lucifer>
-References: <20260616180129.160016-1-anthony.pighin@nokia.com>
- <20260616163054.77fdb61a@shazbot.org>
- <ajKtdCN0AlbmBnAj@x1.local>
- <ajLontmFa1oRXeoK@casper.infradead.org>
- <20260617192928.GB231643@ziepe.ca>
- <ajQDVAu9b-LX8gUQ@lucifer>
- <ajQI5jMJpxyNZCLN@casper.infradead.org>
- <20260618153049.GG231643@ziepe.ca>
- <ajQRY7tHShCEz8vg@lucifer>
- <20260619131658.GA1068655@ziepe.ca>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260619131658.GA1068655@ziepe.ca>
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D060601F3;
+	Mon, 22 Jun 2026 16:58:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E5B1F000E9;
+	Mon, 22 Jun 2026 16:58:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782147536;
+	bh=wteg9KqRUVkfOS3mlSvn890zNUJTJ36A1pnkvMGAiZw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=s+wGhbBSz8S4aE8ceJeNSjIq29b/XvV9182QDDz5gOQFHOktd0YKeAj0QaiKCxXHx
+	 56JYfOHZP87mmKcBySns95ANIZL1UbcghqLb0790x1IC+N1VKHUPx3Ff/m1R1yDHB9
+	 joFEFNYD7OxpTHOKhuGg5VaESvYXLRRUxKYmXhxs=
+Date: Mon, 22 Jun 2026 09:58:55 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Suren Baghdasaryan <surenb@google.com>, Pedro
+ Falcato <pfalcato@suse.de>, Matthew Wilcox <willy@infradead.org>, Frederick
+ Mayle <fmayle@google.com>, Kalesh Singh <kaleshsingh@google.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH mm-hotfixses] Revert
+ "mm: limit filemap_fault readahead to VMA boundaries"
+Message-Id: <20260622095855.50e4276e331cb2d01db7183a@linux-foundation.org>
+In-Reply-To: <ajk-NMghY50F6Sli@lucifer>
+References: <20260619093711.d0d37c9920b3a16394c356a6@linux-foundation.org>
+	<ajVz1nhMn2JwucMY@casper.infradead.org>
+	<ajV0TbwEyaKMzoa6@lucifer>
+	<ajV49Fyogfa6aIjy@pedro-suse>
+	<CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
+	<ajWAYBXHJniJAO4u@casper.infradead.org>
+	<CAJuCfpHF1qtpHZQzLmLi7xz06OWgBfduHqBHF_-0Vkx7OtBmcw@mail.gmail.com>
+	<ajWXEn7gECvgG7F5@pedro-suse.lan>
+	<CAJuCfpFfr_SQ4ZDFojOkDKWbO2dKdL3pUPA06B2ZC-usUnYRgA@mail.gmail.com>
+	<7ftrqtta2bw2xxtrzelrs46t7khr7tf2vmh2ur2mhdphtymlsr@rqbd3pfjxdp7>
+	<ajk-NMghY50F6Sli@lucifer>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 357ra9s1hztmphdb4gb7bxpyuhfgrsok
-X-Rspamd-Queue-Id: C48CB1C0010
+X-Stat-Signature: gcj71wqzbcakgd5638duewna4fnjbraj
+X-Rspamd-Queue-Id: 35B684000D
 X-Rspamd-Server: rspam11
-X-HE-Tag: 1782147257-542574
-X-HE-Meta: U2FsdGVkX19FIDjx/Oe+lwsDZBwL1tE9O+t+QJTAHU9YiI2LgtqoAFj6r5Y65lR9jMJGevLu86UkfyzvHifz631wEI2K+2JWA5OXKSCNY4xCrl6noql732QtWv8yWTzQUuMgfgzkB61Woou30SWKCPvgG3NTRgq/T9EK6324h6bCs7wUj9kpEPbFrN5fi7ZDHO6B45qwQzYVADGXcrXdYGR3a6NmSdnTdJxc5sTm1MVhd/XgYjV701rBuqTMuk3+JPAlUlRA8qYSIvDfbZlR85ngRSstqRJhbXc3DngLcmr4UhE5PDVU5u7nscv5K1ZR9kpLvZY8DUd9WtoC5YY1Vi9KW2EG7LckGBOlg5mk9UwvY06WPKb+WAlcC9w/n6MS4dZnIRMs1fOHupnjYqhReQ0a8791GWq8WBENfLy36X14Po3P28vCJeP2tIwqgtmzTM6ZVrG2N5b87Ha9ddq8KJTHdXzCMGc3jQNmxCfXvo5B8iMYdQm+lDbVR6cMIeUfwg4Q6RUukj/Zmv/xm1ofAXH5gg8fB2nWd1v0hDZH5/jpXA9E/tx5Dsh6C7Zebg6v08SeAw9hH0AXONSDB3gQxRNWa5E3P4BdkoA78LS94cYvSKYupxwZr26q4uE1ALRB4dd9WYckiduALYYcKtcGP9XUG3BJVPs6A70xRRIH58MjTXkrhQkUGleg07gqEvOP4azPJKnfPD9U7mXBGFYJH7W1D/CY5UwKlD8OtVC50yGfDTtP8FLCwDT8++FFba1aQEiaTRY6BfOwd79Sc4fnmu3gdsYJhgAUQJnP/XEwJjSuHULbNh531WPoEa5oJZf4BnGUEbDwZCXcEfddW3PYUG41GYl5EHNqGuw/YNxeVXZrIDYnU1yovXvuKYqwlxB7DzrVdsuYthxQX6GVY3n96rOsBdE4kDbm682VlVZW5YY07KN9ugL7B7mkMPBKZGdRORD3eUwMm0xmCer1vas
- xGqjye7S
- QaV50VdcjppklGVQ89RpGmwedfilDN/vNFROv+D42wLgjDEX29/qDPHkiQsqdebVdM8JdG8Uc1VrwON9rxUuHg47UL4Jnr7cl5lFtXYy1PnFNwweyNZ/01sx9MCQDNVS++aRwcrR/9KfzY+n/FVLcvx+cjT0iPpmAgwTy6crH3V4Mvmf4OqagQYHn5EukbRhlMT5AoxBEjwlPV9/k5714W+BEKhLttUwnTDMm0/JAX36ohXF4W+2n9Jp8mTlcEL0ztXHiSlC+G4JExQUIqpjuv6kgFrvTjdnJE0YZ7jgJS5fl32XBdC92E7wOU8cw4BZaS8QWPNye1BUSbRM=
+X-HE-Tag: 1782147537-384258
+X-HE-Meta: U2FsdGVkX1+Hi4gt/D158mkyukA6TFV7X9tDtugD82e0x+yZ9kzNaWiGuOxLpQLU5IlmvLGZ9bMVeoAN3hKKb/KM8wVP4WcgLjbjRxdB+Zcgvqig1826bB+Ca92DMc6z8AwueARCnqKbL7umdQZ9asETw2tOanfykg+eGNhZ7839ymWwHP+YujnyyU3Oyh2ftxG/Q+aKfA4i7urYDdWZUYt9eGVODGm3t1uVnns5QXTSNNawwTQtHy0fBV8rEON+YkM+x0Q0mgxhatukrdHy/2EYdqHxzKEZTyJZolpYq7846cpcVobGlxa81nkdc8cV4X9AaQSqntugeTbsWE+Vgl02PaZEF+r8fzhQCTywjhujIaIFHBCBTl5GTf7Ya3Z77lpdsOE05nf3vgn8tGY+wRSDLYFiYWq6pSvx5U+7yqOJlukt3AjjjDoBztAPpIzW7N3njZxHBER/GvjTzj9APGTs07NxLWCKHTKB3kOFXZOvEotNlEOGCJUGwbqP3dAH03330tMDQD7/8Ys3HUUb5/nbK82TtUSFmhylWFPlRDWnZ2O64AJ68aKOqykvccjtJsX5axf3YGb/wikKC6fEZBZpKP2RBMEHrKQhRY423rho9EQbqlLvda5x27EAu+6hsT6RO1s8r+UsVyPGX2nE1ehpxRoirsneo1Wxdy0gqQdW+wW0YSpKFmm6nL3dk2VdCp+4x46Khsw2yvNs1xocJMenFiKf6Zo+P6+X55A08zD8zTsRzBhXpwA/PNxNXqAyZwehwW09LRlauBQquZ92KTRXDXi5YfNNz55SmBYqwvESX+BuDCFVnUBX2ETwo4PIobpn3Dy46JTfBgZjT2qvbsp+B+D1bamjvD6e4UPS6jGJ+CEc4il064yVrn6qh/CsydB4IK02w3h2Cp40Tn5YdruIXvVoOiOUts+YBG1U/I6vKlPGCmTdSMBD9yDOxpue7mOmVUORfdvgBj+EJQS
+ c+Gx6MPD
+ ohJitwBlynW2i4GG8YWS/D8D3m0SWlnM7l0jYmBx9J8QeQMyrq4a2+rX3B5P8Vai2PiZdQIkyv4ssJC2GlNmWV0+AsacNMrnwqOKm/ssxYrapn9k66EWqUX6txffCsvtk0NHwK2rn6Abj2JO0DE72GplEuk/Mg8a2Am/8ctbl+AujyvKN1+eYYM9jtaBCW1we8ehg4dqz51ce0aOY2tWx0coPw7tzhalyV2gCQbmYPij7vpa8QXKjpK9BeMJiTSIN/h5O3H7WO8kOuxvN6saQixqO+65qu/4V0UZY/5+FkkaRTa0l63plOztAYaO3FWwI70Rf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,33 +103,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 10:16:58AM -0300, Jason Gunthorpe wrote:
-> On Thu, Jun 18, 2026 at 04:56:06PM +0100, Lorenzo Stoakes wrote:
-> > > > What you're saying is that offset 0 of the opened file might correspond
-> > > > to a PFN that is not aligned in any way?  I had assumed that when trying
-> > > > to do the mapping of (2MB+4KiB to 64MB), that the offset specified to
-> > > > mmap was 2MB+4KiB.  But you seem to be saying that the offset in that
-> > > > case would be 0 and someone needs to know that it corresponds to a PFN
-> > > > that is misaligned?
-> > >
-> > > I do expect that the pgoff space is usually aligned to the pfn space,
-> > > most drivers do that or could be improved to do that. There will be
-> > > some off cases, but maybe we don't care, and VFIO should be fine.
-> >
-> > Some stuff has weird assumptions about pfn=0 at start of the range (DMA for
-> > instance).
->
-> Do you have a pointer? I'm drawing a blank what "dma" is?
+On Mon, 22 Jun 2026 14:55:14 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
 
-(I am obliged to link https://xkcd.com/138/... :)
+> > Anyway I agree with you using mmap-frame-by-frame approach for this usecase
+> > is kind of odd but not completely insane and it does demostrate people do
+> > odd things like this. For others the usecase of Android doing tons of small
+> > sparse mmaps into executable might look odd as well :) So this seems to be
+> > one of the cases where it's difficult to please everybody with the same
+> > behavior and we usually stick to the legacy behavior in cases like that (as
+> > much as I personally find restricting mmap readahead to a VMA a sensible
+> > thing to do). We just need to figure out how to improve the Android
+> > usecase.
 
-dmabuf as in [0], where vma->vm_pgoff must be the page offset
-into the DMA buffer.
+Would a helpful heuristic be to do what 7b32f64bc512 is doing, but only
+if PROT_EXEC?
 
-[0]:https://elixir.bootlin.com/linux/v7.1/source/kernel/dma/direct.c#L550
+> Reading the thread, I think we're all in agreement that this is a workload
+> that exists and we are regressing it here, thus the revert is the right
+> course of action.
+> 
+> Andrew - could we move this to the hotfixes branch please?
 
->
-> Jason
-
-Thanks, Lorenzo
+No need?  I'll send Linus the mm-stable batch #2 this week.
 
