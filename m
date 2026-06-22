@@ -4,148 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 104DFCDB471
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 23:00:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D97F3CDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 23:01:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 976396B0096; Mon, 22 Jun 2026 19:00:44 -0400 (EDT)
+	id AFE816B0092; Mon, 22 Jun 2026 19:01:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94CFA6B0098; Mon, 22 Jun 2026 19:00:44 -0400 (EDT)
+	id AD5656B0098; Mon, 22 Jun 2026 19:01:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8630D6B0099; Mon, 22 Jun 2026 19:00:44 -0400 (EDT)
+	id 9EC166B0099; Mon, 22 Jun 2026 19:01:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 53DCD6B0096
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:00:44 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B021EC106D
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:00:43 +0000 (UTC)
-X-FDA: 84909069966.19.CD8FCE4
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 9EAD2180018
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:00:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qLxSP0XA;
-	spf=pass (imf16.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7307F6B0092
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:01:38 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE79F120287
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:01:37 +0000 (UTC)
+X-FDA: 84909072234.11.FC1836C
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C3FBE180018
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:01:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ktOXu7cO;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782169241;
-	b=hEEm5NKmFvN4xFihWrWh28UCJcp85bVYsIn4KY8O51/LK2SPwgIilKtfFYBQ9fyfHyczW1
-	jXR5UjxqWu7A0YpI/opP+8evJ6PWs9aAUW5Xr4uhwDG/f4bM30c77vWWShmRP+owuuGgC3
-	suRlCit9r6Lj4lyCRUotltdPmo6WNxc=
+	t=1782169295;
+	b=uC1r2xtVOCWiVD5mF25JUyGZ9yPsrWpYtaYH+ZKQPzLPA/obVhuLtiK6LutXN6LWksbGVC
+	YRuf1JxBrHTSNFrEPrtarF5ijkg/eB88ULcg+t/bzhBanEI4xu42UUVAE1QnxuYD/P/+SG
+	cA/30DsSbBxpEEzP7e2f/i9zQreQNcg=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782169241;
+	s=arc-20220608; t=1782169295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+42+q8Rs66jl3Risg85EoToJVXof57Oaz+y/U1lIlLU=;
-	b=gYjYp3wQHAzQnYNZ4B9wRgV72swQmN0kxBFCjK3+8riYovTSe7cD4FSoc55gKkDCFceScr
-	GWQK6bSqKap9p/fajppsb3BezaKr5f6NuQx66CSNzQEIawOqU7lkseQjP3RE5EMe5QldS3
-	jNyHV/ZNj+PhWE/W0E1v//n37f/aGxs=
+	bh=Se78T3ehOJrnIX6EVHqhbA3McVgxD20iSWZ28XYCDdw=;
+	b=VlOAoPqy7qYIC3wYOfvd8u6HfcfM64koMNVW4/eL3JVGKAlNcOVAsNNM9JOpCngjxxk6Tp
+	OZA1y5C7IzhJlSarue765gMdKK2Y6Q1l1T+q708sLlwYnYdFRo6BGh2X8S2XLKNVAfAnnT
+	ghBOGjuJ5Ba/8VBjZfBDKuSCoD1voNs=
 ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=qLxSP0XA;
-	spf=pass (imf16.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=ktOXu7cO;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5177d1ff061so55281cf.1
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:00:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782169241; cv=none;
-        d=google.com; s=arc-20260327;
-        b=PWttkG30b3QYBMH5a4JTXna5IKbeQwy8hzbFZflkAYFhvP2cZZlBzgfOuLUDhacIgW
-         +1Yi7y2f5aE0qKD5zh7odlnAODG4P50tcxchUNpzp30Mh414U6acZDX7uEeh2vRx25Y2
-         kP4dS5vJhcxyYPkg82IMeufPLOVyKyhdT9n52kWyM/WYD/qJx/bus8K/yEI2WUKNlyDm
-         5IoRHk2Rt5wucZwxwlxTqVFdie4F/2lj9yRnEjtKmN4n7RTSQCRt4z1zZjrFJrU1hXRS
-         7suZxfH3sDF6sLyWTrE1x6WWOrxbWy9rHbHB+II32Mk2eDqcHsvsVXd3laj7KSlMQkSp
-         UpyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+42+q8Rs66jl3Risg85EoToJVXof57Oaz+y/U1lIlLU=;
-        fh=Enxg71LIGGbh2WADEUAK6Yu4+2W1STeGtaFpWLo63t0=;
-        b=h5YH6qvW32eLyQAZutSYz4AslLuj03NNOUT/AppktraWj1ghSydQkzVunomQlVrdMG
-         xKbIsk+wGztcAEu7Gf/Opy2zroFHvATyNmjDBQkjnpLChdHY45NncEliNNMM1QXnztu3
-         /gxYg33ORupw7K3VwRqZZTveVbsFANZjxcs0pHERBgPgXOClnVjcOfh+Me50yjbVSxhA
-         hQenASGpNd10meimlFIWgWgEfxTQATWHTSiaLLTp2P/JawYGNzfkIbGnGeyxP0mPNyCb
-         ZL9YK4Eas+q76CPjWgSPY2sC6TEaq5+5ScQmfdbNrcAEhdhyPotXsUkc1d/YeyYknWgr
-         U75g==;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf24.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-13988680a69so11461778c88.0
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:01:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782169294; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CFhvS/d58/PDwfFlqGu0oByk1vppW5iCaRfB2X//hB5gb+EbgonNW8dRtdkwUyNzsI
+         pEJZTkqLc/gg8TG3YqhPWuC1Fmz+6DpYX+8hpi4opf7D3MwAC03EDjmwYTd4+b7w5yLX
+         c5b8+NibcA5eSe8jOf6DRP92doxNjSq+Lqz7SFGZHdQg4hXjpGaLK7YRAtse58D6ShrD
+         UcubSlrckzwxvRvgsNNd5h+TSEX4djpZ++YcCnd6s4SK09oc7NRQ12tteR0ca+VNA9Ck
+         8zAhmvkvUSmvFeVmqIloZQDuhW0kCxZrvXYuBS/MiTFqKZDK1x7RjQ8xVJrtxBtJSco3
+         ocGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=Se78T3ehOJrnIX6EVHqhbA3McVgxD20iSWZ28XYCDdw=;
+        fh=kUZdesqLghxRUInHyBo6HRAqTAvZ9PAOX3a8YvukXk0=;
+        b=Hwd2b6m8WpHvGaxM3PRoPxRPf8ekxlCCYiZlntMcR2LdRYUyP/iLknnE2gImOTQiaY
+         /Zse28xP3DE+HH4yg33XZsLMR71AVR3hZwn+on/xlawnzbe8IfF6GTF5QxyxI1N6luEk
+         hW8R8DgetahrPOOc894DJcGMY1AVpMBwLJJvQCrXvDs3/uhU5YRWgP3FgvAmDLJv8Zuc
+         7PKI606dnmAHTlpmWMjWQf4bxO0raedvfMVzAtKSvpouTuKinsOAsnr1Anw/Ct6wNL4h
+         vKRk6iw4h8OneI9gNBia2cJbOqsTPKZr7FQEOONl561/ofMW172Cs5cTqSWbCMXh5egv
+         jEmg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782169241; x=1782774041; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+42+q8Rs66jl3Risg85EoToJVXof57Oaz+y/U1lIlLU=;
-        b=qLxSP0XAAkCxi6xVHlNQLrw3DJxG7BpLafHm7IgV0OOKCoE4dmZo4RqiR1aLlHrzYp
-         YPwhcvnOrp7l8TFbvBtNJwKV640DyaS6u+Bx2d1zXdbV//5OeqWIe3rzS0S/ujwu+ZzS
-         17JZSjjaaPMB1+uM/VOHi1ibWi8YFYIgwp6TyVnjDW1JSPwQIdS9EGXRqQmyx4pFlz0D
-         npBWayF2AHRhKjC372FKVWEP2KiA9Pf/ESQ3Qj4QeRvCMgxTpIMSzlhwUCYxtYk+9IhZ
-         caI2ymXGRgrXNJ0cM6QX7Y/ax67ZlFnkoofZGtNxDxUqkezeY1KHsBhrR+Lo45O2S+Lb
-         AvIA==
+        d=google.com; s=20251104; t=1782169294; x=1782774094; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Se78T3ehOJrnIX6EVHqhbA3McVgxD20iSWZ28XYCDdw=;
+        b=ktOXu7cOZgo4DKWqrqOmexXahkELm9b6wTp1DO+xBoDJuVbSYsW41v52Xz1eD1kUk2
+         ojoAU9n4RkDx2aJKt3mXqFX6Q6x+2qmC3IvtIeprPbJ/jPDpqNbPQwYqueZhR/Z6mm67
+         hj8WfkMcet4gcrylgojWUKzF6Tcq+VKgoCPLmImTLmbkKRWMtCpeIAzW4dQvWZM5J7NR
+         1cuPe7h9vRyXIjnD9mbCrRKH0O+QZvmGNisw2asi20jeaxRXWlCA9ARPz8IvkNFuY2kl
+         IWfmDITwRng0NZ8H6nALpJUVlz0EsvQ/eFWCQ/eiR/MmedD+M3sa7BfF6vQnxkHVwpla
+         vrzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782169241; x=1782774041;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+42+q8Rs66jl3Risg85EoToJVXof57Oaz+y/U1lIlLU=;
-        b=nChjhTVqqpspU8EGCLNggt8cnElk1hIY5yND7qlOg5ni9jLs5kYHPp6tHjN9T+Tu+Q
-         L9nNQ+9KCiCwQfzqtav5sZWB4GvlFftEl67WYYZjvw3qTzGU7n4bK+APitXwtnovYoEt
-         zOUe/oH3PtbGosRIg1j16FhdlYyGyfVm+cqQg7ugQYFe9BNWMm/r1GKiKV19BW+n77Vh
-         Z5wSntcttcOEkZb12cwgQUb4C86Ywv8MRzxIbxcg2OJ/9ahUU548ceEr/zALGTzsViae
-         enqz4joHChczhTdrnr4uGn33X0+m5LNQInVZvcj/pW8vtvt5lGpCBoOi9GPa7vO7ak6J
-         4dCA==
-X-Forwarded-Encrypted: i=1; AFNElJ8NZDRUfOPblrfktSPqbVFoc8gLoxUMwfXypk1vbxk/lhCabKLenoslL/EJJqJQgTYYJKxCTWLwJA==@kvack.org
-X-Gm-Message-State: AOJu0Yy8nkSzev8SCYQ7k4pSWDwcFv7H1CKi794j2J4j3efKOH791Vs4
-	E7XHf0TCTspLi8XpRL/GsEhXpeqL7rLKTdr7Fj//i29ScsJzMNb1ks2QpC+0ynqK4edekqPX4Tz
-	YO/PNNS+JrNUDuMdgZGu6PnjxO9NdFgiTsr8E0MtL
-X-Gm-Gg: AfdE7cl9ZH/4k6G9UNKxyHbu0OZooDg5SEybnGAb9zWGhNbhgwlB/nBIQSupGmfhNug
-	qsU/zEAKEnzB75q/Yd/Z3JaaN+nA7amHog51arGCKTfz3kVSo8q+9F1WFktbdfwh5eOK1fkrncV
-	sAsc2aR+RyBWrsDKm2ryMifbMpBvYq3H8RSyBZwC5u9OhtsiLXQ6AG71f27miMSPc6G/J/sRHhT
-	FAJ6VFMCevtYzpIBto+PsIrJaAFtdNkpcqi2bnWKKOZjS2McUnNcyjJ7AxY6XhxgRNCyNxjNw==
-X-Received: by 2002:a05:622a:5912:b0:517:99ea:ab77 with SMTP id
- d75a77b69052e-51a53db2b82mr1810911cf.23.1782169239966; Mon, 22 Jun 2026
- 16:00:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782169294; x=1782774094;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Se78T3ehOJrnIX6EVHqhbA3McVgxD20iSWZ28XYCDdw=;
+        b=Rx4zpCCkpNyqY2Kb0nfvbcQwHyHvw2ZnmfKHjL8oygnEjxXwxmCnuRDtPUks5mBIT0
+         RtoImOq+QTwd6lRv3F4bZxtckHMNtuxIiL5Tc1NXkKRQg9JvHNEArVfaEerP2BiMCaEV
+         aLvYkMdTHODMuIl5ScWZn6Ynvgw34lRn486gn7jSjKS3p8VAFJlpSXT0JDSZ+5bgGx9U
+         n2mRQLgNuOpicELI/GkGxGEMSdam9k07mTAMv2srNTQTuJU5PNKLsmlSCMFdQJnEp/un
+         jttWDm+h0rL2u4J7pB+kxX+1yS6D9VHVIInfSDqb9S9w8nHfTxTTcUr3EzOkqPTBhnfu
+         FlHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+H/dimvR4yFX5sPuL1zmorVFWHl5q82sVODlF8yySoptiJs45vFv2in1zez6X4+0DM0ONClopmLg==@kvack.org
+X-Gm-Message-State: AOJu0YyFJ5tf0u6WlS22ZsLJaiy1tzcJbNmt2z+lfuPUyLr89/xA6N2C
+	12dJ1mpcfXCm8PBFEQlQoo+cZvUTT0+ehGh6Kn6/ke18idUbcww7VSkV+l6nyTgp5dGJYZr4XWb
+	gUryF51r6ESoIMvtL1SsYS3As1cmqH1HRIGlMlss2
+X-Gm-Gg: AfdE7ckHN1UDemNzYoLwNjZdaAX1kDb1JraaGA1yBujmQ3GfGGNHvhCG2lUMLlTG2k1
+	BAy/jQkW2fnpLL/ni05ylCcWQxJJ+J1jxdh2V6F3CZH0nBcSv5bXr7I45ARwyOiCqP0kjL4yIWL
+	jrbHaT12nu8ZkQVaY0u9Miwx9Su6vBq5QptjO/US8QnoTKjdK3QC2LNLkbsH65GvlC/zR30oNYV
+	OX1aT0F5h8HMPwvj8zveTqhuLV7OOSfsgEI/yKxgmV1cRbbhOinbHGUO5IGuxMi8oU+kwNINpe8
+	1gGFUo8RgpMp15ePWE0/yJzKiFT+uHteuwoeoiKaVJt7cKZZg9WoyssZXoM=
+X-Received: by 2002:a05:7022:78c:b0:137:938a:1044 with SMTP id
+ a92af1059eb24-139a216738cmr11302655c88.33.1782169292599; Mon, 22 Jun 2026
+ 16:01:32 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 22 Jun 2026 16:01:31 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 22 Jun 2026 16:01:31 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
+References: <cover.1780676742.git.tarunsahu@google.com> <deb20fbe3584a8c6bfda276447fe464c6553737d.1780676742.git.tarunsahu@google.com>
 MIME-Version: 1.0
-References: <20260424191456.2679717-1-stevensd@google.com> <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
- <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com> <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
- <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
- <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com> <87pl1md7h0.ffs@fw13>
- <CAAa6QmSHBDeY0G=_N1P4dAAH917J7jerfZrWDfDd8w=8jH8nVw@mail.gmail.com>
- <87qzm2b39k.ffs@fw13> <CAAa6QmTO=hhdJQa-ofSZ6wW0geLaEfWZumF6KmksxZqM3i33OA@mail.gmail.com>
- <87mrwon5uw.ffs@fw13>
-In-Reply-To: <87mrwon5uw.ffs@fw13>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Mon, 22 Jun 2026 16:00:02 -0700
-X-Gm-Features: AVVi8CcGDBEDyRCzLMOtcAdT6QQeNbUGQ0xGcVw3LrnuK_1OS6uXdjles2piITw
-Message-ID: <CAAa6QmSeq8bbckyJk_5HFagsHfS5SXbG4y6Y-Py66eYLgvjcUg@mail.gmail.com>
-Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-To: Thomas Gleixner <tglx@kernel.org>
-Cc: Dave Hansen <dave.hansen@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	David Stevens <stevensd@google.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, 
-	Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Date: Mon, 22 Jun 2026 16:01:31 -0700
+X-Gm-Features: AVVi8Cfmvsh-tLhJUbMrgpAzFVY6IGOEzbMnkY3GArVYdQhVqbDKG-2CuMgaTr4
+Message-ID: <CAEvNRgE2GZNiDg_g6SP_H9CDsDDAnpN7KTRWJEK18wxpTZFJZw@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 10/10] selftests: kvm: Add guest_memfd_preservation_test
+To: Tarun Sahu <tarunsahu@google.com>, Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
+	fvdl@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, aneesh.kumar@kernel.org, 
+	skhawaja@google.com, vipinsh@google.com, Pratyush Yadav <pratyush@kernel.org>, 
+	david@redhat.com, dmatlack@google.com, mark.rutland@arm.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	seanjc@google.com, axelrasmussen@google.com
+Cc: linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C3FBE180018
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9EAD2180018
-X-Stat-Signature: uprgtffkqtxs5ykgrn8a941itzad8iup
-X-HE-Tag: 1782169241-834127
-X-HE-Meta: U2FsdGVkX18wg1mr84JcUlLs9CP7dUVlryfnIn2jCWLpb5PARYE9nEd+6jjAFSRX2/hZJQXMq9K3NPY1MX8RJpDUikgbafUdaGm3c4rpbhR7uD8yURVI9/I+OBW4wa5Ws+5rqBhdlJKR0zSISDT7E1IWu9vfU3JdzP6FbpxVt23TqdS9Uf98qm2QAQO4sdND/DMTfHiDtFGBHw935Q0KyttqbnyXfVTFzFd7VTKjhFpICIOqbbO3Kf1Pi1lphzwH9g61QyKg/Mq7KUrxh2zEtKtdr9nztelV53PmsVkWNYQVWDXlxO1ekoW9yqBzlg2kWTh+lvJsL4/0qoFHDvL2Fzkr3XCajkPLSqj5weonRHkKIwo3o1xuvCwkRD9zMjxjMstAzTY5TMiMDP3Mei0ZF3zEzjofjeuRFKSNhkZAoGMYxN+bvT5aykgrWRSOOM2/H8SlaDywjKHZ55zrn1Vb3oAvSBeggq+Flpfh9vEICTVVBTi2uhp/GA31/sb0DyWDqw/E7sV1oMZkwHiGIg7E68Li3eL+9bLTo70rLfFVTkjTf0yEXqMcXPFzNPNC1bNq2yHtiQWgCUR1kY6TTvmT0+D1fz9SI3tnCp4nXsbma73IttI/UUVBUJ+NM48YI9KTq8MqNRFN16cOqfrT+cOZbdS0jeexI4m1tDE/gO6iFKvxifAXOk0amauTSS4d5Puj4B6olVeMLmqqHxDA+c1Pd4umALxlLyvOdJRSOE/HWN5Bcw6VjP5XcClKFbRwqnUYRPiOV5dz2hTn4zcEMVwKKSj6vHPFtqoWRcV/8DnJGDYK/BsFaZ9S1y2Legt9IJ3VXQ6ZAvUKldTZxxpB4psKY8+cD+NhzKAZs9/2AdN3Ewi1FezXgxVJf3gTNMay0KMIeYgG2/QxT1RsNpXSLGAyZgmArOx+SE0JuEo4dzUeaz2z82RrHpQZCV+W96ZPG7cP+65+hm4gUUJaJMNMLXY
- aSnYl7Ui
- OzqR8Vo7H0wSmtkTKP4ssUwWJZbsCLCrDKGF+uy2RcCEgPW6dlexVIuC8tEqI8tXH0qeINehsSVb7fK9kQV2LUAzDk6uP999VAMNu9Xeu9cAdumodnLzMHmOvATodky1I0k80SSAxTH99cYM8cnzHIvOpNV9w4NpxKcKHo40Rad9N8Fui0tnOMEa9pgP/VYv3Hwlgv3C+niYdu4pebsbvE/hd4AH92XC3ZCUuSVz+tte+58/MW66nXI0SsVC4iSKT9BTYohTeWGPUkJg=
+X-Stat-Signature: 4mins5pw9scq4sio1phhqdqra7hibsw9
+X-HE-Tag: 1782169295-814648
+X-HE-Meta: U2FsdGVkX19zq+A0h55DdoaqoLk3Sqx+sLfImmnAs1jmpQn+q/pBVjAhF4lm/NyftZT5HCLVXTFQSs4Od6n+f8bfwo9V8xQZKUEina3kNuSbbGALlbMipue7GidvJZks1F5ItX0X6FVbHbDHRCxOJHFZ5xdN8yre+CTXP2TyOXCK5hMDqHis5yCb5zj6a43Y6cHhvqCYU/LUz6R7q89G3Z7A7ZqGH84tX2am44HklQG7rKDbovEszZp5s8vJ68FR7szyjPBNPx/Hxn3InbIEe4vplVygaDyXEr5RnQ7q08wW/FMOs7TrgQGmSyM022L7Bu1Pg7r0Vmyrmv/dnyJnkDUSYtCXkXwV9q08FasYJ0MmSlCs0zA14cXL/LXGzCC20IcwpOfhELk51U5MkxMOGJj/ifpr1o8/sQcjP8EmGjSkkT2eqPA+WlxnR9sjdKUHZ3+cGlwG1Grpz40H371NS4BlnfoWWBI39RVAWgz0mO9oF1s6k2FdPhjDknkjE8C8dAgu8Xie+nLkkl5SZN29V+cehwC/qTKJcH+r7Fbt+6VEcGXnZxWop2a2fLDCiG+Hgcd2EsaKThmIFu7dGYDKx1a0Q9/igK1hvsjlYlzHKcZWxECIL88dS3tJjphlVymfZmz+26c2jW3C8NhLpkMBvB6lR551lYg+BbwksD0ZpJbdSncQZVz+9VQXh/Km3T24E9DTYcX9XLiJk4yuOH4h8NJQZTAQhoCTf27c1Q/5vU2qXt0D0WyhqDQtz/TNOrWxsI+wdgXvpThSzIP8sHjP4CsiCFv0z5/syZN/jSPWG2uRXpypAT+BlGnYm7uE0s2MBSAA0BEegJV4mYn7yygTRaojqoWQq/L0N25KHEqc5wXGeBsBtsOXAZrPrPvNnzQpRR5zBKHKhsa/ciJcdvUPofG0YkIYBrcIqfi5jOfB0j2uYiixtH11GHkWyyXwTlX12PBaQxMoUSJ5SxB+4Ja
+ /3tVFci5
+ fCkLWJ4kjXrCYHqyrh8cX2lII+xip1Vu6gAqp4VTPzBn0LD0ICE1tNYsId+Psh41bvGdDF+sdrpfcyMpg3ym6iVbnAXJgsuIc9Pb+PlGVhdj+DLsBH3yM5YuNKj4ZWVRYiL1O2yMURQxmThAE4PvNkb5P1+GuiKuw7JLwz+0mTDXOLmQfcr8WTdeSCVtaafMbMnKwP6Et6JSqIAJxzBre4wLRBEMxG+7ytfPej1YCxCyKdYH+B5K65jznmLeZE9IgQSXKcga4ty1f9V4QF+HQICR124psZV+8OqyAkPxLY3b1Fboc3vp1UAMtIzHMEAfHCBzGk6Zn7s1K5VvkwKURwKX4/YjTNPwqmsUo29nsMdwCQi6XHBknXmsM1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,168 +146,259 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 20, 2026 at 4:34=E2=80=AFPM Thomas Gleixner <tglx@kernel.org> w=
-rote:
+Tarun Sahu <tarunsahu@google.com> writes:
 
-Thomas, thanks for taking the time, as always, for such a thoughtful respon=
-se.
+> Add a new KVM selftest `guest_memfd_preservation_test` to verify that
+> guest memory backed by guest_memfd is preserved properly.
+>
 
-> On Sat, Jun 20 2026 at 12:33, Zach O'Keefe wrote:
-> > On Fri, Jun 19, 2026 at 2:59=E2=80=AFPM Thomas Gleixner <tglx@kernel.or=
-g> wrote:
-> >> The #PF path is considered perfomance critical. But how much the
-> >> downgrade matters needs actual numbers to analyze under various worklo=
-ad
-> >> scenarios.
-> >
-> > Ya, that's my concern as well, as I don't have a good intuition for
-> > how perf critical kernel #PF is for real workloads. If this is your
-> > primary concern, I'll take that as a _good_ thing ; i.e. there's
-> > nothing architecturally stopping us from doing this downgrade safely.
-> > We'll still need the analysis, but that can be a later stage -- we're
-> > more than happy to get this data for all.
->
-> No. That's not a later stage optional requirement.
->
-> You have a PoC which works for you otherwise you wouldn't have posted
-> it. So you can trivially microbenchmark the costs of the
-> up/downgrade. And that's critical information for us but also for
-> you. If the costs are significant then you really have to think about
-> the tradeoffs.
->
-> Care to read Documentation/process/* carefully? It applies to you as it
-> applies to anyone else.
->
-> >> I've not seen numbers to that effect anywhere. The only numbers provid=
-ed
-> >> are marketing material about the memory savings on a freshly booted id=
-le
-> >> machine. There are _zero_ numbers about the actual real world savings,
-> >> but claims about the PETABYTE savings possible.
-> >>
-> >> Seriously?
-> >
-> > This is actually the most understood aspect. With O(100B) active tasks
-> > fleetwide at any point, it only takes an average savings of O(10KiB)
-> > per task to get to 1PiB. At least for our fleet, we know the % of
-> > tasks that use only 4KiB, 8KiB, or require the full 16KiB, and the
-> > math confirms that we expect O(PiB) aggregate savings. The % of stacks
-> > requiring the full 16KiB is minuscule, but it still occurs at a rate
-> > higher than what we can tolerate for SO panics. Given the vast
-> > majority of stacks never exceed the first 4KiB, this enables the
-> > significant opportunity.
->
-> I know that the potential savings are well understood and my
-> understanding of math is sufficient to calculate how much tasks and
-> average saving it takes to save 1PiB on a fleet.
->
-> That's a no-brainer, but this is an aggregate saving, which sounds WOW
-> but does not tell much about anything else.
->
->  1) What's the actual percentage of savings in relation to the overall
->     memory?
->
->  2) Does the saving allow you to get more stuff done on a machine, pack
->     more threads on it?
->
->  3) Can you actually downsize the memory on the machines?
->
->  4) What is the performance tradeoff for that?
->
-> IOW, you fail to tell what the actual benefit of such an intrusive
-> change is. Just boasting an aggregate Petabyte number does not tell
-> anything at all.
->
-> Let me give you a trivial example with a scenario which I have access
-> to:
->
->     256  CPUs
->     256  GiB Memory
->     64k  Threads
->
-> Let's assume the full saving of 12k per thread. That sums up to
->
->       64k * 12k =3D 768MB of memory
->
-> which is 0.29% of the total 256 GiB of memory. Not so impressive as the
-> petabyte aggregate number, right?
->
-> The workload consumes about 80% of the overall memory and is already
-> constraint on close to 100% CPU utilization.
->
-> Now let's assume that the runtime overhead of this amounts to 1% then
-> this is a net loss.
->
-> Let me turn that around and use a made up example assuming the 1Mio
-> threads per compute unit taken from some reply in this thread.
->
-> Now the full saving of 12k per thread amounts to:
->
->     1M * 12k =3D 12G
->
-> which is 4.7% of the overall available memory. Agreed that's a
-> substantial number.
->
-> That 12G saving does not do anything in terms of hardware downsizing.
->
-> The only way that has a benefit is when the system is constraint by
-> overall memory consumption, but has quite some compute capacity left.
->
-> IOW, if 1M threads hit the memory limit that means that the savings in
-> kernel stack consumed memory allows you to add about 4% (~40k) more
-> threads. If that ups the CPU utilization accordingly then yes, I can see
-> the benefit. But TBH, if that's the case then you are trying to fix a
-> user space implementation problem in the kernel.
->
-> That said you really have to describe the scenarios where there is a
-> benefit and I do not buy this "fleet level" argument at all because
-> there is no single fleet which has a uniform workload distribution.
+Don't think using backticks in commit messages is a common practice but
+I might be wrong here.
 
-These are good thoughts, thank you. Perhaps I've been too biased by
-our particular environment=E2=80=94apologies for that.
-
-We (mostly) punt this problem to cluster-level scheduling, which
-ironically exploits this non-uniformity of workload dynamics to
-appropriately bin-pack machines and materialize these small savings.
-
-In the general case, I guess a lot hinges on that overhead cost -- in
-the best (memory-constrained) case.
-
-> Aside of that. If your argument holds that there are only a few
-> scenarios which require a deep stack, then we are better off to identify
-> them and fix them up rather than trying to hack around the occacional
-> insanity of deep stack usage by adding complexity for complexity sake.
+> The test leverages the Live Update Orchestrator (LUO) infrastructure
+> to validate that memory folios and configuration layouts are
+> successfully saved and then restored during kernel live updates,
+> preventing any memory loss for the guest.
 >
-> As you say that you have numbers of your fleet which confirm that the
-> vast majority of the stack depth is below 4k, you can surely figure out
-> the information which call chains are actually exceeding the limit.
+> Here, I have used the kvm selftests framework by creating a new
+> vm and mapping two memory slots to it. One is the code that is executed
+> inside the vm and other is the guest_memfd whose memory is being
+> written by the guest code.
 >
-> I prefer to fix such shitty code and downgrade the stacksize in general
-> instead of papering over the underlying issues which probably have been
-> ignored for years if not decades.
+
+Don't think commit messages with "I" are common either
+
+> In Phase 1: Once data is written the vm exits and wait for the user
+> to trigger the kexec.
 >
-> Have you ever thought about that instead of adding complexity with a
-> dubious value?
-
-Yeah, and that is certainly an alternative path we can explore. I was
-_hoping_ to be able to maximize the savings here, via the >90% case
-where 4KiB is sufficient. If we instead play whack-a-mole with the
-handful of cases requiring > 8KiB, the best case is we can move back
-to 8KiB stacks. Ironically, I was thinking going this route would be
-_more_ of a maintenance burden vs having a generalized solution ;)
-
-To Yourself, Dave, Peter --
-
-I do appreciate all your thoughts and assistance. I'll likely take a
-few days to collect some my thoughts, and take a harder look at some
-alternative paths.
-
-Thanks again, and have a great day,
-Zach
-
-> Thanks,
->
->         tglx
+> In Phase 2: A new vm is created with retrieved kvm and again two
+> memory slots are assigned. Once for guest code, and another is for
+> retrieved guest_memfd where guest_memfd memory is verified by the
+> executed guest code. If verification succeeds, The test passes.
 >
 >
+> [...snip...]
+>
+> +#define SESSION_NAME "gmem_vm_preservation_session"
+> +#define VM_TOKEN 0x1001
+> +#define GMEM_TOKEN 0x1002
+> +
+> +#define GMEM_SIZE (16ULL * 1024 * 1024)
+> +#define DATA_SIZE (5ULL * 1024 * 1024)
+> +
+> +static size_t page_size;
+> +
+> +/* Deterministic byte pattern generation based on offset */
+> +static inline uint8_t get_pattern_byte(size_t offset)
+> +{
+> +	return (uint8_t)(offset ^ 0x5A);
+> +}
+> +
+> +static void guest_code_phase1(uint64_t gpa, uint64_t size, uint64_t data_size)
+> +{
+> +	uint8_t *mem = (uint8_t *)gpa;
+> +	size_t i;
+> +
+> +	for (i = 0; i < data_size; i++)
+> +		mem[i] = get_pattern_byte(i);
+> +
+> +	GUEST_DONE();
+> +}
+> +
+> +static void guest_code_phase2(uint64_t gpa, uint64_t size, uint64_t data_size)
+> +{
+> +	uint8_t *mem = (uint8_t *)gpa;
+> +	size_t i;
+> +
+> +	for (i = 0; i < data_size; i++) {
+> +		uint8_t val = get_pattern_byte(i);
+> +
+> +		__GUEST_ASSERT(mem[i] == val,
+> +			       "Data mismatch at offset %lu! Expected 0x%x, got 0x%x",
+> +			       i, val, mem[i]);
+> +	}
+> +
+> +	GUEST_DONE();
+> +}
+> +
+> +static void do_phase1(void)
+> +{
+> +	uint64_t flags = GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED;
+
+Is there a reason to set GUEST_MEMFD_FLAG_MMAP? We're not really
+accessing that memory from the host in this test.
+
+> +	int gmem_fd, dev_luo_fd, session_fd, ret;
+> +	const uint64_t gpa = SZ_4G;
+> +	struct kvm_vcpu *vcpu;
+> +	const int slot = 1;
+> +	struct kvm_vm *vm;
+> +
+> +	vm = __vm_create_shape_with_one_vcpu(VM_SHAPE_DEFAULT, &vcpu, 1,
+> +					guest_code_phase1);
+> +	gmem_fd = vm_create_guest_memfd(vm, GMEM_SIZE, flags);
+> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
+> +				 gmem_fd, 0);
+> +
+> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
+> +		virt_pg_map(vm, gpa + i, gpa + i);
+> +
+> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
+
+If GMEM_SIZE and DATA_SIZE are static I think we don't have to set those
+as vcpu_args_set(), they can be used as macros from within the guest.
+
+> +
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
+> +
+> +	dev_luo_fd = luo_open_device();
+> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
+> +
+> +	session_fd = luo_create_session(dev_luo_fd, SESSION_NAME);
+> +	TEST_ASSERT(session_fd >= 0, "Failed to create LUO session");
+> +
+> +	ret = luo_session_preserve_fd(session_fd, vm->fd, VM_TOKEN);
+> +	TEST_ASSERT(ret == 0, "Failed to preserve VM file descriptor");
+> +
+> +	ret = luo_session_preserve_fd(session_fd, gmem_fd, GMEM_TOKEN);
+> +	TEST_ASSERT(ret == 0, "Failed to preserve guest_memfd file descriptor");
+> +
+
+Thanks for showing how this works :)
+
+> +	printf("\n============================================================\n");
+> +	printf("Phase 1 Complete Successfully!\n");
+> +	printf("VM file and guest_memfd file have been preserved via LUO.\n");
+> +	printf("Tokens: VM_TOKEN=0x%x, GMEM_TOKEN=0x%x\n", VM_TOKEN, GMEM_TOKEN);
+> +	printf("Machine Size: %llu MB, Data Size: %llu MB\n", GMEM_SIZE / SZ_1M,
+> +				 DATA_SIZE / SZ_1M);
+> +	printf("------------------------------------------------------------\n");
+> +
+> +	daemonize_and_wait();
+> +}
+> +
+> +static struct kvm_vm *vm_create_from_fd(int resurrected_vm_fd,
+> +					struct vm_shape shape)
+> +{
+> +	struct kvm_vm *vm;
+> +
+> +	vm = calloc(1, sizeof(*vm));
+> +	TEST_ASSERT(vm != NULL, "Insufficient Memory");
+> +
+> +	vm_init_fields(vm, shape);
+
+What would happen if the shape was changed between preserving and
+restoring?
+
+> +
+> +	vm->kvm_fd = open_path_or_exit(KVM_DEV_PATH, O_RDWR);
+> +	vm->fd = resurrected_vm_fd;
+> +
+> +	if (kvm_has_cap(KVM_CAP_BINARY_STATS_FD))
+> +		vm->stats.fd = vm_get_stats_fd(vm);
+> +	else
+> +		vm->stats.fd = -1;
+> +
+> +	vm_init_memory_properties(vm);
+> +
+> +	return vm;
+> +}
+> +
+
+I think vm_create_from_fd() could be introduced in an earlier patch to
+reduce the amount of new code in this patch. Also, I think it could
+perhaps be moved to kvm_util.c assuming that other test will use it too.
+
+> +static void do_phase2(void)
+> +{
+> +	int retrieved_vm_fd, retrieved_gmem_fd, dev_luo_fd, session_fd;
+> +	struct vm_shape shape = VM_SHAPE_DEFAULT;
+> +	const uint64_t gpa = SZ_4G;
+> +	struct kvm_vcpu *vcpu;
+> +	const int slot = 1;
+> +	struct kvm_vm *vm;
+> +
+> +	dev_luo_fd = luo_open_device();
+> +	TEST_ASSERT(dev_luo_fd >= 0, "Failed to open /dev/liveupdate");
+> +
+> +	session_fd = luo_retrieve_session(dev_luo_fd, SESSION_NAME);
+> +	TEST_ASSERT(session_fd >= 0, "Failed to retrieve LUO session");
+> +
+> +	retrieved_vm_fd = luo_session_retrieve_fd(session_fd, VM_TOKEN);
+> +	TEST_ASSERT(retrieved_vm_fd >= 0, "Failed to retrieve VM file descriptor");
+> +
+> +	retrieved_gmem_fd = luo_session_retrieve_fd(session_fd, GMEM_TOKEN);
+> +	TEST_ASSERT(retrieved_gmem_fd >= 0, "Failed to retrieve guest_memfd file descriptor");
+> +
+> +	vm = vm_create_from_fd(retrieved_vm_fd, shape);
+> +
+> +	u64 nr_pages = 2048; /* 8MB is plenty for slot0 pages */
+> +
+
+I don't think declarations are usually mixed with regular code.
+
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, 0, 0, nr_pages, 0);
+> +	kvm_vm_elf_load(vm, program_invocation_name);
+> +
+> +	for (int i = 0; i < NR_MEM_REGIONS; i++)
+> +		vm->memslots[i] = 0;
+> +
+> +	struct userspace_mem_region *slot0 = memslot2region(vm, 0);
+> +
+> +	ucall_init(vm, slot0->region.guest_phys_addr + slot0->region.memory_size);
+> +
+> +	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, GMEM_SIZE, NULL,
+> +				   retrieved_gmem_fd, 0);
+> +
+> +	for (size_t i = 0; i < GMEM_SIZE; i += page_size)
+> +		virt_pg_map(vm, gpa + i, gpa + i);
+> +
+> +	vcpu = vm_vcpu_add(vm, 0, guest_code_phase2);
+> +	kvm_arch_vm_finalize_vcpus(vm);
+> +
+> +	vcpu_args_set(vcpu, 3, gpa, GMEM_SIZE, DATA_SIZE);
+> +
+> +	printf("Resuming / Running VM in Phase 2...\n");
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_EQ(get_ucall(vcpu, NULL), UCALL_DONE);
+> +
+> +	printf("\nSUCCESS: Phase 2 Complete! All 5MB complex data verified intact!\n");
+> +
+> +	luo_session_finish(session_fd);
+> +	close(session_fd);
+> +	close(dev_luo_fd);
+> +	/* This will also close the vm_fd */
+> +	kvm_vm_free(vm);
+> +	close(retrieved_gmem_fd);
+> +}
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	bool phase2 = false;
+> +
+> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_GUEST_MEMFD));
+> +	page_size = getpagesize();
+> +
+> +	for (int i = 1; i < argc; i++) {
+> +		if (strcmp(argv[i], "--phase2") == 0)
+> +			phase2 = true;
+> +	}
+> +
+
+Maybe use getopt() here?
+
+> +	if (phase2)
+> +		do_phase2();
+> +	else
+> +		do_phase1();
+> +
+> +	return 0;
+> +}
+> --
+> 2.54.0.1032.g2f8565e1d1-goog
+
+I think we also need tests for trying to allocate while frozen, and
+conversion while frozen, and trying to preserve while preservation is
+not allowed.
 
