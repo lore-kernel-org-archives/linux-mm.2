@@ -4,80 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96CEBCDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E63B5CDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 09:07:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 833326B008A; Mon, 22 Jun 2026 04:58:29 -0400 (EDT)
+	id 9D01C6B0088; Mon, 22 Jun 2026 05:07:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E4696B008C; Mon, 22 Jun 2026 04:58:29 -0400 (EDT)
+	id 980AB6B008A; Mon, 22 Jun 2026 05:07:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6ADFA6B0092; Mon, 22 Jun 2026 04:58:29 -0400 (EDT)
+	id 8962B6B008C; Mon, 22 Jun 2026 05:07:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 410FC6B008A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:58:29 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC9D3166CCD
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:58:28 +0000 (UTC)
-X-FDA: 84906947496.08.78F18A8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 652936B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:07:34 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id F10041A05C3
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:07:33 +0000 (UTC)
+X-FDA: 84906970386.28.0E13056
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E84C380009
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:58:26 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qg7LegUu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 24E2E1C0006
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:07:31 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsBGj0Ka;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782119252;
+	b=oeabsx8HJ5icgDUMoNy7p1KnkCjt9zfL8SLiE4VSu7PSuRiKsdKt/j3w/n0WeZkIU692yH
+	WpyRbMHEYbNOEqXBe9TD0fQ/7z8t49FaJs9mIK1qDpvfdQU9SHdIBFMP/0HElpHqB4Jcwc
+	ywO82+3LkmM5R6DrO3nCUEo5KGgBlQA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bsBGj0Ka;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782118707;
+	s=arc-20220608; t=1782119252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1axEUDSKUCZxXWYIuAFylYrZQLRQGoLVwSR5dVqSN1g=;
-	b=S4i4QW5xmQ+7nKpU54lEROXAHnzMPYXBVhTsA0mBGRfp+95tHvkssrPscbqym/Zpjj1ub8
-	IF9flqTsV4UWjGfNKKtsHSAwa3dPfiVAFhSO47hBPoNpircqykOXizK/rcpM/2Cs4ClfzV
-	tDOpCVdRw9TJ3l47VYYhM/25iSUBCUM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782118707;
-	b=fsXBNGlsjZgfE8wtWmsQrw0axcsOtddM25wlPx98qyd1Q3QRTdMCtfb4emrbKTfeGT7HMK
-	kEwD5Vfn8ggDCquq4sQhYLiVMHDQClmpQCrKUZH88MOEKI3qFnd39bzQxFQgIhZwWHaHjq
-	JAjo9xtsJU0eims7mGoUFGLyeNAsswE=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qg7LegUu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NFZ35FzPXQdOQq3s39dM5wKLfyApcvTpz6XHQgSTFIw=;
+	b=1OU266w994YR3kmARo+G5++13UjNiaWN0oxMYQ64xs6qBUvxzuo4sD+sx7ks/pLyml62UX
+	+QYb3RSWoRWdIApjvEPdSN17r4zE3iOl3FaVY3JUUFajY/63o3THTC85yR86hHjyynuWqV
+	ve9sUzBKvEDgpMv5iqaKRdNow9/gSRs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F335A41A51;
-	Mon, 22 Jun 2026 08:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7651F00A3D;
-	Mon, 22 Jun 2026 08:58:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BDF343A9A;
+	Mon, 22 Jun 2026 09:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A6E1F000E9;
+	Mon, 22 Jun 2026 09:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782118705;
-	bh=1axEUDSKUCZxXWYIuAFylYrZQLRQGoLVwSR5dVqSN1g=;
+	s=k20260515; t=1782119251;
+	bh=NFZ35FzPXQdOQq3s39dM5wKLfyApcvTpz6XHQgSTFIw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qg7LegUu+eE/t5ZVmf123u++iukFhC3v6Y0SR+Zf/z+Gf8dQvLeMP5Yl15J54JXtF
-	 7CuCD7p5Ohy5AQkm9SZZ8ckeqHHMoV6i+3QD4yNCt+aUJMIdQNOfhNVvXITkMLOibq
-	 gBkVFCqpLX9EY/Y1dEITKk299MSqD9fs7K8bC/NesR/jHSan4dlhCKvvjnEoffOLnY
-	 SknsBq0f10PADghliYZdWWlMT0M3hANV3uILg3NpJ3g3uXimncVYJ1L+FR9DA5XAo7
-	 1jqFRXVGUp04GilEjCFB4/2tJz1lpmlJ8+m/BS8yUmw+SCuMaKmC4yv7kMrQnkQlMp
-	 GhGViHi6ddDmQ==
-Message-ID: <4aa8350e-712f-4380-b3bf-2ff06cf2a35d@kernel.org>
-Date: Mon, 22 Jun 2026 10:58:20 +0200
+	b=bsBGj0KazsOFozDBp9hAoxV6gL6zq3A+An5uN2lyXp8z06AO+NjkJIonjXJRHyDbT
+	 w5fKlS6JTqIJG8grI2ajObQh6Zip8hnzwzkAFF5OhdBiGqW1pJ84fqQtVSuKUK6GR1
+	 ba/1n+W06edyFQrdoNgoURK2nj4WayKVyTU7035jMmSF1zEwkJRMd4pDdjFgdQNJod
+	 ABNU87FqWEiESyh+30BvGYZI00XINixNqfEoj4Ix6mlJFAF0U1s1ATPDG+oCCF+R+1
+	 D2e+mpk7hNkKCMwDUth5zMxncmHFCeyrLd/hOQxhJyR8llAQsn/F31V1j4N+WLLgZT
+	 Tz0WIj64f0hRw==
+Message-ID: <b8e21f13-14ea-4e9a-bf17-d69a4f7d85b2@kernel.org>
+Date: Mon, 22 Jun 2026 11:07:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com,
- baolin.wang@linux.alibaba.com, dev.jain@arm.com, kasong@tencent.com,
- lance.yang@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, npache@redhat.com, qi.zheng@linux.dev,
- ryan.roberts@arm.com, shakeel.butt@linux.dev, weixugc@google.com,
- yuanchu@google.com, zhaonanzhe@xiaomi.com, ziy@nvidia.com
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org>
+Subject: Re: [PATCH 6/6] mm/hugetlb: remove unnecessary empty range check in
+ hugetlb_bootmem_set_nodes()
+To: Sang-Heon Jeon <ekffu200098@gmail.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+References: <20260621145919.1453-1-ekffu200098@gmail.com>
+ <20260621145919.1453-7-ekffu200098@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260620081017.89085-1-baohua@kernel.org>
+In-Reply-To: <20260621145919.1453-7-ekffu200098@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: st641yoz4mjydbkg97xd8wymhtby5ur7
-X-Rspamd-Queue-Id: E84C380009
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1782118706-836901
-X-HE-Meta: U2FsdGVkX1+YyV384Be3ShQzkfaNoJXCKvk493Y/SJpupud8lQrzJgVjJ9KF87eH4nN3j90gDwkfOnNFDh/Ya1XOPprTOwam3gvfOJiADpsjwCEc8ifr6/tJAM0Htb3PmWeN7ysaR6zsIrrM/n6UTVMa/umv9LwAS/RD0WWVUtuOaBZeovuN4WEbBjjQF1O4m2WrHe7rUS16Zik+yO49vmbmFtFFNRDxAZ0TlTffMMeS/dJkLjasp0ldkw4yGnXJiK+8PolOfc8vXTxH5stBanYVw47ouLppYesr8Itz6kGHFFLU3wJeyR5HSPCykTsvGIipPUt+cEqwxKvw1IUybDYZLxAI/saMQ1wU4SGKYcKdMaKE97mHmQw4OYVYoNSQVcTf9x7KeH++mTmHRAJ1xqzIP6Wv/OZBW8lKzL+Qse8IZokAyrVTwXK0cP5pNRWuwJ3KZ4jHO4qAuAy3U1Dt9/eu3sehFeiL/4s1dunxnVpqXeRh7Wubp3Z/Clb2Yxz2mB8y/O8gm/vezPsfHnjjdrffW/u/Tx4tuMFs7JMvgQ4czGn49/N+aiFIr9mA4s3z+D4wrPYysUF44ll+gXDPbD5z7+c3S4EbqwsvuYfSM3t9wGpb/UoNY3XiP8GRDa+JKD+rf5FiryiGFvTBb7JnVKio1YAbz7LV2DwvXB481V3E+6WHSIRNWIOygIFCGFNLuN8zeR2+IH7LsTTtivJb9msrbNp5rhIt7NromLF3XsY2hbqcywaNXYP4JjOhEJ5fvel9H392kCuVE86MvNIgdPTYMDBNHiq2Js89WDy4UvOq38y+75ECQn+JstBBZ8qguIkwgYMiz7epg3ObyLGAO0+4r8wTlRDI8chLLE9TuFx2F8sc5tpd0V7CXAVJfdlMiUB5kYMJ5+G4Q/VtjNJH/R/SOaZhjmjpG+k8oNk5FHGvWqeuPzds6eqiC3YOjMWrxz+MD0SeV3qjEHaC37N
- /Lulc9D6
- IIuBgH6n3BNks38xyU2e0dKSmlagUE1eSCM4vht5VTcafOZcuSXY1JAqlmTfg6Hc13fLm2VWXxCiPYw7Gng5Yv2Q+rL4TGk7IVAkkZA6UrbZxlYD2gzQODel2hXg/2N37kGeWljl2wnR8BZ3CBoGWzcBSCggfjuv3pIbUaHQko1PNet8+vxF4GLxs2aGb7izd6uD/zFRUOagjF7bNdVLH4nF/bNWQmornZb9GEwHdX1ueZlPVL29IioAAchWF3B+lGK0Cd6gq+L0RFoj3nPMIzt5slHM5u5qpUZPnNaRddqtZ/U0f9VIqu9Sdag==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 24E2E1C0006
+X-Stat-Signature: 66jur1wozciktboesnb4f9xfdhqr8s6t
+X-HE-Tag: 1782119251-580254
+X-HE-Meta: U2FsdGVkX19d1PwM/fWKNs+oZos5jNHzJeHtWSLDrHcthHk+vZldEtPLOQ6MVMzh6RfGKajbD3KQpy/F0y/okDddL8bcIP2rTPbwaqKxw3tFef/TSImovd8tckpb+xjPt6zsjFV7YZarUg3D0JR6q2AQcg0G3qInkKIB+5evGEFxyMALVMCL/XFEKXmCY5KX/nh/6U6RH90GIqqGFjxDGN7S4qiQ8IkbBQP46pyysfB0HLvhSPFl4Puuvm22Ln3wle6X9lh6vMC59hgA7mDQkCtO+CKUB5mMmn/jXFt+0HeBnUw4HXLqEy6gO4NWX38kv7OAj54jNOl3QL/fC1Uc1YCvjr6AIzrEy0EpVAkcpXPzupls9JGXSTLvZ9zvn1CDBK7CsbI3L0zvN/SCO6fvL8rDqJaw5SGQBlRBqKK7Mco7YuNO03aIK/HdDQzM9kF82D0DR0T0uEQyw5RmyvzSMbRCweODLJpN+aNeiVoApUUYT8zqOMAG50SQhobZB4RSIu/ExDhzz6raXV4IOFl8ZUo9Lr+M6+MqCYZhQkF0z57WBeT/3QfIaOvObaOez71vTxfVjXU3HToltQk1sN+385CM28KSgcLpHM+r3TusXxkHKJq3andyr/NvaCHtkuYbJ9XQ5iE0MbP2A6VOFoUMAcu7XySFvXGomDJ4aX2FZwHwCkeD+GMQbbd7+SbQUoEm5/ICuvu9X3jAzUlj779urhQcaf2iLNpduY4NyIQhoTO4g6jlgEnQBnf4a2wnev0SsPQRna3X0jbeGWOTtvRjyYW+dCO74InAfIvXBsfcgDG6HzpvkS/EgfDezCeJmEN3XsgeyHOEuCG9DxVcJwQne35RAxs64OKzqNrSC/vnAZsxMdrQlW6FaCG8q44srWRD11md56NnVROgqui5EMuEqkUt3/baEgDWRXOe1dUYcpXFnWLDuE97zpUXqE7p7dVPFoFbtj60FfkzRKkW1Oh
+ gCv/qFmp
+ qt7BOJDfUcWasb2xgxrSjiZiNoyKdMPm1+KyueJtrDu0rXGvMYfVnMArhvwq9jZLTDqpdDBLPEqaq0QYbwlNNhvII8jN7l/rQkWcTCctK/Abzgi382LFJxPWmhYkakab67AX5M4UkJt06Vm4r+VGHC0cJBBqSnIKw9rWb/y9GIQbKPuVrmSegNHHXKELbmxPmILqeWb0yNiu+2crawWsbPO9PUIIp+I31TxKfPXz0EgfdteWe69mXGMdKWQSFHEOHq+c/FTZHpuCkLa6aT6y+QObE0dBG/vkUbG4XeXzAMda32zL4LGyZ+Zuac+1tKMJZR7bC71C0aZZcP6brzvTbACb680C8v+5+DF0s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,132 +140,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/20/26 10:10, Barry Song (Xiaomi) wrote:
-> On Fri, Jun 19, 2026 at 10:04 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
-> [...]
->>>       /*
->>>        * The page can not be swapped.
->>>        *
->>> @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->>>
->>>                               if (!folio_test_large(folio))
->>>                                       goto activate_locked_split;
->>> +                             if (!__can_reclaim_anon_pages(memcg, sc))
->>> +                                     goto activate_locked_split;
->>
->> Why are we even trying to allocate swap space if we cannot reclaim such pages?
->> Makes we wonder whether we would want to have that check earlier, before the
->> folio_alloc_swap().
->>
->> Any downsides?
+On 6/21/26 16:59, Sang-Heon Jeon wrote:
+> hugetlb_bootmem_set_nodes() iterates the memory ranges with
+> for_each_mem_pfn_range() and calls node_set(nid, hugetlb_bootmem_nodes)
+> only when end_pfn > start_pfn. for_each_mem_pfn_range() never returns an
+> empty range, so start_pfn < end_pfn always.
 > 
-> I don't think there are any obvious downsides there. One issue is that
-> the memcg may not be passed from reclaim_pages(), so memcg would
-> always be NULL. However, the folio could still belong to a memcg
-> whose swap quota has been exhausted. In that case, my
-> __can_reclaim_anon_pages() will fail when checking whether we can
-> swap out. But switching to folio_memcg() also seems awkward.
+> Therefore the check is unnecessary, so remove it.
 > 
-> So I feel Kairui’s suggestion [1] might be the best approach. In
-> folio_alloc_swap(), we return -EAGAIN to tell vmscan.c that
-> we can split the folio and retry the swap-out.
-> only when there are sufficient swap slots and sufficient memcg swap
-> quota do we return -EAGAIN, allowing vmscan to perform a split.
+> No functional change.
 > 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 78b49b0658ad..62e2c506ccae 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1755,6 +1755,9 @@ int folio_alloc_swap(struct folio *folio)
->  			VM_WARN_ON_ONCE(1);
->  			return -EINVAL;
->  		}
-> +
-> +		if (get_nr_swap_pages() < (1 << order))
-> +			return -ENOMEM;
-
-I guess we could be clearer with the return value:
-
--> !get_nr_swap_pages() -> -ENOSPC / -ENOMEM
-
-(no space at all)
-
--> get_nr_swap_pages() < (1 << order) -> -E2BIG
-
-(there is some space, but not for the full thing)
-
-But now I wonder whether we would also want to check "is there any free swap
-space", not just "is there any swap".
-
-
-Essentially, try returning -E2BIG if there is the chance to swap out after
-split, and  -ENOSPC / -ENOMEM if a split wouldn't help.
-
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+>  mm/hugetlb.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 571212b80835..d4d4c9df5f51 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4450,8 +4450,7 @@ void __init hugetlb_bootmem_set_nodes(void)
+>  		return;
+>  
+>  	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+> -		if (end_pfn > start_pfn)
+> -			node_set(nid, hugetlb_bootmem_nodes);
+> +		node_set(nid, hugetlb_bootmem_nodes);
 >  	}
->  
->  again:
-> @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
->  	}
->  
->  	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
-> -	if (unlikely(mem_cgroup_try_charge_swap(folio)))
-> +	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
->  		swap_cache_del_folio(folio);
-> +		return -ENOMEM;
-
-Here we wouldn't have the information whether we could charge after a split.
-
-So that would require a rework to signal this more cleanly to the caller.
-
-> +	}
->  
->  	if (unlikely(!folio_test_swapcache(folio)))
-> -		return -ENOMEM;
-> +		return -EAGAIN;
->  
->  	return 0;
 >  }
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 299b5d9e8836..63e8578454ea 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -1257,6 +1257,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  		 */
->  		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
->  				!folio_test_swapcache(folio)) {
-> +			int ret;
-> +
->  			if (!(sc->gfp_mask & __GFP_IO))
->  				goto keep_locked;
->  			if (folio_maybe_dma_pinned(folio))
-> @@ -1275,10 +1277,10 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->  				    split_folio_to_list(folio, folio_list))
->  					goto activate_locked;
->  			}
-> -			if (folio_alloc_swap(folio)) {
-> +			if ((ret = folio_alloc_swap(folio))) {
 
-I prefer doing the assignment outside the conditional.
+We have
 
->  				int __maybe_unused order = folio_order(folio);
->  
-> -				if (!folio_test_large(folio))
-> +				if (!folio_test_large(folio) || ret != -EAGAIN)
->  					goto activate_locked_split;
->  				/* Fallback to swap normal pages */
->  				if (split_folio_to_list(folio, folio_list))
-> 
-> What’s your view on this, David?
+	if (PFN_UP(r->base) >= PFN_DOWN(r->base + r->size))
+		continue;
 
-I guess returning from folio_alloc_swap() whether a split could allow for
-swapout (e.g., -E2BIG) would be reasonable.
+...
 
-To catch all the cases where it makes a difference:
-* No free swap space (split won't work)
-* Some free swap space (split would work)
-* Sufficient free swap space, but fragmented (split would work)
-* No memcg space (split won't work)
-* Some memcg space (split would work)
+*out_start_pfn = PFN_UP(r->base);
+*out_end_pfn = PFN_DOWN(r->base + r->size);
+
+So we should always have *out_start_pfn < *out_end_pfn
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
