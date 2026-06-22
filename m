@@ -4,158 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA8D9CDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 05:28:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16992CDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 05:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F9A66B0088; Mon, 22 Jun 2026 01:28:56 -0400 (EDT)
+	id 4B8CC6B008A; Mon, 22 Jun 2026 01:28:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AA416B008A; Mon, 22 Jun 2026 01:28:56 -0400 (EDT)
+	id 48F2C6B008C; Mon, 22 Jun 2026 01:28:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 09A7F6B008C; Mon, 22 Jun 2026 01:28:56 -0400 (EDT)
+	id 3CDB46B0092; Mon, 22 Jun 2026 01:28:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CA6AC6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:28:55 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5980CA0460
+	by kanga.kvack.org (Postfix) with ESMTP id F1B9F6B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:28:57 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 44436A0576
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:28:57 +0000 (UTC)
+X-FDA: 84906419514.19.0509BDA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 88FBB40004
 	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:28:55 +0000 (UTC)
-X-FDA: 84906419430.27.357F636
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 54D6C40007
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:28:53 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qh0Nb2ih;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782106133;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jZdfY7lw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782106135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5KNOLAwZyaBThMY1NJgMdUSjBoVwiFJr4CThsL0B6VY=;
-	b=l0n/QDYkE9CY2rwWUDeolTpJ1QTqh+zISH+NWyapadD/4qM/qzSCa2gpveJ3y+kR6EKisP
-	ZpoE+0eCOLGCHcC96Szl90sxblPuDxtRHK0+95U/kTZk31NAFJ8u1+gS2/sLNSzdtUP4J1
-	ubKPqdZ31aJ6RIDODadays+i/2r8tiU=
-ARC-Authentication-Results: i=2;
+	bh=6AoqeIgtsoIEotLsuT/6S5kA35HKRcKnzuszYGA9cSU=;
+	b=7xLDOMa8aRbS11XdfpiMjKWMsGVZuqThx8fW+tOck7qv/hRFctdUWKY4CLXYIBFASWGn/l
+	dvJpNc/vyXlvxA71eqVTMBbLeiRpNO1ibqNCu/02bw6Y5aQmpuy6nywVcWyKNCIVb523Xa
+	BHNFj5a1P7aUbzyf1U4BJeN+lPq0cRI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782106135;
+	b=gcd2SS548czDluZ/3DuCOoRM1nBCPtF0vSZXUwOwStXqqwCjXgxCC723i0YEDENfoKeAf9
+	BONx3tpq6nZMXrRVF21WhXn3JmmwzVfyF6SbhEYYwYwrVT0OpJMipC5ghqEA/mVJUbHQMt
+	+E8m8evPVw6tR+oTH5SOUojZGF7BVh8=
+ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Qh0Nb2ih;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782106133;
-	b=zeX3Sw0792gO/mI1pRXuC6BKr71UvlWU0hzKs2YfpIwufgbkKhieQ47UxyvS+d/CTc+4tZ
-	ZELJUIE7GlumfDPOXtCbt3D6NZuRRUJucLZFszMcxDELu1aUowuTJQqPy7L6d2WSry3o91
-	/5UhFt3ejjznGWQAr37GC6zlpnmPC4U=
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c85a297d2d2so2695026a12.0
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 22:28:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782106132; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IxnSqUxXP/Mfu4aCN+JPebEO1cL035p6z9H+0HXnLmOnmG9BOUw7gfk6eFzHo5kyza
-         9FMIQi3UAt/GpDmR7BMCTHf6y0znj/5/PHC710J1heI6hldNlgYCREN3oVmXtmecWbma
-         PzXQFvTJZLY3Rh9DzcPXZoSJEOsTvnybO/kvZEoBa0sG9ayzoaBNU1/J0gdaKJxUgvWl
-         /o8enveA+XM0IZRIPGG3H1tPnZD6VxCbPAwEzvH5UUHMPTMzgRZ2uH/ULndFL+CMliDz
-         Xjk8c9z8JZqMI+5vgRsh4Krm+UTbtAeQ1TS7mYVfBool4e7fe1AK5JB3WGWqeAFv24IV
-         lXhA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5KNOLAwZyaBThMY1NJgMdUSjBoVwiFJr4CThsL0B6VY=;
-        fh=zD/kqbAlvtE3hRGv4eiZXqAqWlWpC15TFKRKdPXVH14=;
-        b=WbGu2mR1tGf6DX5ZJ8V+wwTxTwaXFhBrf9U+l/XYw7dX5ah7uNjyKhmQUWyyTh63l5
-         D8W43VxkxHrrh//Yf2U384XLP+Num7AOnV/mRyF39umFC9A1ij03tw78Yg8V6G69khZ5
-         hZIa1/FMJAusN3+lQ4nMj4e/SKwatGmS9326G8aaBZ0uvEBjBqD40ixtoqfCyWF+L6zz
-         Nffi8RtqHOWOSG/4WDTO6TOhVW49lFnYBtT9mp4WLb3fkb9tHmm1C87J/VPOfbtRzl0r
-         nja1sR87aGXcXd+bXIyVUzYv/bLRY5bBwtg8g+lxcu4vzB40AtZVQB1XkphbUA/quKRK
-         5a/Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782106132; x=1782710932; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5KNOLAwZyaBThMY1NJgMdUSjBoVwiFJr4CThsL0B6VY=;
-        b=Qh0Nb2ihjYqJIDGjyOn0eIm4J7IovKRxvqCXLLZUesFYAfT/+lKW324AgSl5XJFQGN
-         btcOtk7VI9+zE2VGhp85vXNJDuKO6YPnY8kHuwfkQ/2yn9Jyq3qdscYMRyQanyCW5coj
-         sxSHdMNHseEeP0jktABNlFfD9Va21WHxN83uL+9GCHJwwf7klML8jMGo+EERMvyf2I5r
-         n3iqxv4bEOxzpa1ZU6Ehof/z6m1E7yalxrSGmEzXEEFSxVKQeea+/xo0O2f7TRmWfYMr
-         Wy2Q5L+CpPJQLw2OuLwDRZvP2lC7R728gYzmj2lJLNSA9ccEzk2pRjjFOm2SXCKQ2X+i
-         K0tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782106132; x=1782710932;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5KNOLAwZyaBThMY1NJgMdUSjBoVwiFJr4CThsL0B6VY=;
-        b=JudLnu35WMqpU/jmW02Y61M7GVddhSOze1LlIc+yrJblFBaMxc1ZJmY8+NxHhyebQS
-         Iad7Xcl/L11c78l7SMGQcBqWvOgV5BC0BRhh2v/ouO7UYUWzVRNoFwmQIiSjLpEmy2I7
-         uQ2O3Eq92E7IuhqQIf21AIHblyopfHcAfgkPej8CfrFECvEP87WugoiTbnbQsUHaZtvE
-         FW5aNWi3UgHVywgYvmWs40O5Bh1Tslw70Tg/6CWmp+u2gYObq/g+xJBUH4j46GuIgmHu
-         Fehpkng7D1TCfJR0SINcW4fxYPF9S9HwieRi/o/N7SsP1u5e0n/RWgMHJhdkhmBh58ZW
-         7EGg==
-X-Forwarded-Encrypted: i=1; AFNElJ9UddD+czzTUaEXg3iJMPEXdCLhKsx0F1F1/l423mvaDytkpIqxgAnC1td3XnE/O0aGCFdgIpJzbg==@kvack.org
-X-Gm-Message-State: AOJu0Yx1xHIQFHnYzdTGgG+iAYHYjA/LORUKPmguAacKuUoBuNnsR9VQ
-	eAERNtOwFk+aO4Dm7vJtfUydbF1H6wagngQDTWBSA/3emlMgLCvfbfl8ETpL1hcpHjWYLcSi+eF
-	eqvFp5/wOx+xarwJPChWFdfBvQIiAYq8=
-X-Gm-Gg: AfdE7cldkAhcNncge6YLG1W8qowJjXl92ex2MSLSbMw3wcxpGiFmFXQblB6dm9cxKk/
-	QsvBGZQMmjqVmXzv+gfUEcsDHat/SD3KKWs9CeToMqwPcxYw7G1Y2QAxuLC5ZOJ74KqA0VZEv5y
-	kM/FKOgWflJP/PE/HKTNoeqTkOrd2QuwiD37o0uVuYWtu6HGm6A4KXltEkQ5qE3oXXNE+TsqjNi
-	bRJampRf60M9lQE5kq0k/RmGq9X/HZfSRpv+odaeqJMZnZbKwRoHy9QgEA8WXjkgoKpcQeYbVN3
-	KMDqYT1Kv0LcXzoIfoZNI0SlKYiqVJQYrijovh72zwfaj4kvfd3vip3w/YsO4L+5g2PPBOM9Z8C
-	/jtdw9DAktiWsCmnSD54q+6Vx
-X-Received: by 2002:a05:6a21:9102:b0:3b7:b328:4c8b with SMTP id
- adf61e73a8af0-3bb3241d5bemr15602261637.19.1782106131632; Sun, 21 Jun 2026
- 22:28:51 -0700 (PDT)
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jZdfY7lw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E3D606001A;
+	Mon, 22 Jun 2026 05:28:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC5D1F000E9;
+	Mon, 22 Jun 2026 05:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782106134;
+	bh=6AoqeIgtsoIEotLsuT/6S5kA35HKRcKnzuszYGA9cSU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=jZdfY7lwrXHdCZrH4e7gAQhZZ7JXmuA+oGmtDtuFw7JIfOkwv8aT4Th3uO/RA+qPH
+	 Zv3GJjDK9oEYKuSYIexqQ/T1oCye9QpWGn80r6l5mZwVA78VRELY3ulL9fPWPogz6w
+	 Ba0Onckl6/+59VNCO7iW92MoCuttpHcavMkmU7bbUW71La5yo1XzLR/YFWP0v0VBE3
+	 dm0t2Xv3323e/fpD4ESeQqz5xFT+hQ02lmNy/o2exeientP2rluE4VtuDMXOxVaPt8
+	 d9BQfttxOj1KZZme9/oCYX5c0eTyZ3v3bLRL/d8/gmoa+3RYhXcZuSRfkDDHttJauN
+	 mKB2Kdclqnwfg==
+Message-ID: <e54ce8be-9480-4583-9c6a-d0dbe1378f53@kernel.org>
+Date: Mon, 22 Jun 2026 14:28:44 +0900
 MIME-Version: 1.0
-References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
-In-Reply-To: <20260622040533.29824-1-kaitao.cheng@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 21 Jun 2026 22:28:40 -0700
-X-Gm-Features: AVVi8CdydPWkgrsWeukABG1V_xsA12RL457Ae_ewOX27KaNNGTwhs0J8OHNbSBg
-Message-ID: <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor state
-To: Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Paul Moore <paul@paul-moore.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	David Howells <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>, 
-	Randy Dunlap <rdunlap@infradead.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, linux-ntfs-dev@lists.sourceforge.net, 
-	Linux-Fsdevel <linux-fsdevel@vger.kernel.org>, io-uring <io-uring@vger.kernel.org>, 
-	audit@vger.kernel.org, bpf <bpf@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, dri-devel@lists.freedesktop.org, 
-	"linux-perf-use." <linux-perf-users@vger.kernel.org>, 
-	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, kexec@lists.infradead.org, 
-	live-patching@vger.kernel.org, linux-modules@vger.kernel.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
-	Linux Power Management <linux-pm@vger.kernel.org>, rcu@vger.kernel.org, sched-ext@lists.linux.dev, 
-	linux-mm <linux-mm@kvack.org>, virtualization@lists.linux.dev, damon@lists.linux.dev, 
-	clang-built-linux <llvm@lists.linux.dev>, chengkaitao <chengkaitao@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 54D6C40007
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH for-next v3 7/9] mm/slab: introduce kfree_rcu_nolock()
+To: XIAO WU <xiaowu.417@qq.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-7-70a54f3775bb@kernel.org>
+ <tencent_45CAE878B5922990DB102BE05A1BAD50DA09@qq.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <tencent_45CAE878B5922990DB102BE05A1BAD50DA09@qq.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------0bA2sXgPSFRAxm6IZvk0FJpS"
+X-Rspamd-Server: rspam10
+X-Stat-Signature: hs5u14sszpkzxk6rh54y57writdwi9xi
+X-Rspamd-Queue-Id: 88FBB40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: y95cme3pz8q6du5tu9doqcfs3dxufmnu
-X-HE-Tag: 1782106133-784664
-X-HE-Meta: U2FsdGVkX19wJAYRJenGVu8muaQWU39EFX1XQ4sNfGha7V3TqdACv8k32BlZsYEff3wwXsTM7ZTEf7deE8/LSnxU96XR2IFeuy+/kkJuZDH9nDPVVL3RQMWvXIKQ504HqXqyKjMIKioA1s5ZiqCPPz1Ymx6T8AH0fdf+8O1uyAm5APh6bB0BJEJCFx1CwIbWWc9e9EnCFAptF8QfQrEeVCYpOvKtYC0Rxd/wpPCdNI8oeVHvth5ja8GmW3UmbvTkGSUeAHHFkjalgO1VxojT7i6DB7nwAmLivXjlqbkqyBi/QerckCv36R7x0wim2l3fYMCSyHbSpYfM1QWlu0tUOH1tPKf+207CSz12L82+COeDAE+dZEzmUFxFrThHFyTW6B6is+r5v+tu1xbQNxyBhJDmcIUBD8GyxaNjLhjcxA7OSpZsePT4vHoahMkdfaqgC4Hr0OJXbZtsaP9XNE1WS1sBQaOVI6ElQVVjWmts5JZr6sovQMzQNblbpyy7/bp/Y4fDu8NTlsBXLP5/AWk+bV4IAvxaPAMInG3J4+UBvMF2kFualgUlRunyeCU2tVIyb2CcK8AKckpNXLiBkRmYlJcBuTQTW8E8iR8y54qZ2EGqAOYvTLbHNLYeACy1RzQVZcQJSeCycEnxrfKLfysKjVR/TPuYFbrgZg4g0S/sycFc98Faw8ZHeSDJTvd55a69d9mLskt2AR2PRMd6KvErF81hCWkiK0bltLPe8DnxJXtW8JH67mheVm5LpyrE+VwgD0tVMEgjPEFFPH8YAx0JIQ6oe4TiPbtNsVflgqwUIu4VUpj2yl/M4RowLPAwbHZWdinXcFjfEgk+BVIsdC7ADKGpxq92DgvK9B8i93SvaW/N4iNLj6AIb5cn6jFEgp7FpAePKtdWyv2sWVcAoO0Yz+/HZ9Y1xg3lBXlFznlcm3cn2aOBq+7kDqWhaJz9PDhQTLqTjDZRby+OirAxcgu
- GIDxxt7K
- 3ohnGg8canFVVnfTgx5LD06ZiXSYfTGagaXG7oaUXDLN61qZrBLz9pKTsok1W86YPdfbNZSOOX0pJPN6NSPQv/f0q9+bcHGKL8wiKQbBGXJ5628Vym1owhHG3BI9sb50dvAlf9vfJr+GmmvroKkqqTx3Cx/56gZU/XY9nqlRbeMu9gIaIRUwCevOwTZ2lEu4yN3Dmqz0cdNn+Kuwh7MeOp/eu+Jp6S9jqre3don3GeKiVGML9B8Vp9Y8k9350x3fU+ABSxq4gk68rJEHQgFWwhfKEdOKHvupxeHBS9pKFDUtoDfzZlmc3RRrFBPs5zpXtxO7uHUl6veVDg+v2PI/SK2/x33RnaUMm3csFjuk11LS3TC+xHCTwNutyOezi6iq05nAWn3LJWvGSphgr+Rd8Lz2D+9IMse0uXrq0J0lfXFkuzww=
+X-HE-Tag: 1782106135-145492
+X-HE-Meta: U2FsdGVkX19pfmeKGs6fZZv94MZ8EncZpz3VHTvEJMMQk5XJp+KODq7kPaxqwsaG0J/xT2D2P6InHF+wKaT9kITFTJ5krFM+4OhVwnwB7j267IQgMokjbVKYog3q5bOSLG6NqgZ3jcxWToG7ayOOTGDhDydoSzioNZhJB+0Q8DPf9MlHRk2yywI8pnfjKvl+BaxqHT9sxo6ZZWJkB2rbL/qIGyAxbIMmxcvJBUfBRMtIx//MDNvFlW8GabQo0Rl/kEbvzeoYL5agTFJ+WtK2vHG+mlkieUm8Vi5h39PX5HPHWbez35WQr0CjIYGFP8SvVYup1HukY854dC+wy+yAnUAfG6NvCyEjUXCn+fWry/2uG6AxHqXDgI995YkN1XMi1sd0OqMx3zErj3GpTtgubg9MhUNTE0O6uv1ViB+GYh5AYnNhEG2izylORif9nynHO9p8Wqk3+7409PLolp8Y1n+mZ31KjzAPYTL6jvp+BAbf4JF5ayb3Ks28ZHpJ6NAbl1Hp/H7o9a5+Ek+iuLEAMeJeGpihQSdtWW08k+FkWFixlaMOnm2+XGPOL+0w3bOTzj+NktQaebRcfBJLcEQ2Lr19Wjds8vzJsLSs9YrMnO4Gm7Ullbb8gFGuRQsbnBsP2V6VGwLwsU1oAKs/QjfBDbEz3q8osAyZ/wqnx5oP3jj5jZ0hBzkRzBNsOM9BtwmOzZH5l2B/CKxPhT2rKcw6D7Po3gGRJaWHzE+iguGwNAZVuhMAZdGBpzzUmkgrhAvyKc+GWaI/sxeWmVDKUTDX9Pm65wREHHnK9OVhBQWmw2DbjEKVoAIz9DYDNssPL2HWS9D8TXUFISuUg1Lo2ZkZ1FOeAvVmyFQsb/fX2cWo4vy5GZeXjxHmSvBR1pq1nIB2QkRMumVMfmGBEFjeUcBdHuY1NYk2Hkxrqk1LBTKU66ZSvhd0Tq+pt1mFVEKuJpDzG3uchKM6Jex/nkHfUuE
+ dHmtTBBi
+ UO70CIzVBnAUzZ7THnRr+VqJhj+7ScQ8bY1HeDRufp+KpW+0X2FHXPfFAZAt+lwCM/y93UV3/lvovus/SGpNxDG7hg1fjK32S0yAQocXEzS2GTi25mIOsanzSbqsedyKQY11TUknZpi/qrRpRYtEsbbdW3pZrK3Ej+7IKszuDakJXJTnDnJe/p/BVqEXzMaof3/P47eLAVHRLp+KM+Z1W9gP3M06/HqlZMgTcWII1Mny/vGxfFHCAzb+BxPsreTLNWxFmE1a7V2amrWNz6PFh9qU2uYu0UhW91qgisR8RnRk6V6CtkiqzP5A5nqPGrRKpJEiYdRapJaK8MXaUmiMWoMVl/r56DemkxfE0pr9layEElqZOmDHAP/EP9zBKrwfWPVc5lR0l+8rsDJ09R04JztIlYQ8rSxatT5iaOOB6M/QWnD9VD4JLXNF38d47A7rEq+NwhFeSnsnGFOeNFH/ALhloTc77tQCL2Ylt3wx2fQS3m9uQNUSj67Uu2oSbh/7yfVq/XcoC+oPQj0IlkYcPCHCgBjLyWFMI5Sq+OkoaqU31ofGzF61gCbmyHTKlmhBnueKQ92mjnNZNpZc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,201 +111,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 21, 2026 at 9:06=E2=80=AFPM Kaitao Cheng <kaitao.cheng@linux.de=
-v> wrote:
->
-> From: chengkaitao <chengkaitao@kylinos.cn>
->
-> The list_for_each*_safe() helpers are used when the loop body may remove
-> the current entry.  Their current interface, however, forces every caller
-> to define a temporary cursor outside the macro and pass it in, even when
-> the caller never uses that cursor directly.  For most call sites this
-> extra cursor is just boilerplate required by the macro implementation.
->
-> This is awkward because the saved next pointer is an internal detail of
-> the iteration.  Callers that only remove or move the current entry do not
-> need to spell it out.
->
-> The _safe() suffix has also caused confusion.  Christian Koenig pointed
-> out that the name is easy to read as a thread-safe variant, especially
-> for beginners, even though it only means that the iterator keeps enough
-> state to tolerate removal of the current entry.  He suggested _mutable()
-> as a clearer description of what the loop permits.
->
-> Add *_mutable() iterator variants for list, hlist and llist.  The new
-> helpers are variadic and support both forms.  In the common case, the
-> caller omits the temporary cursor and the macro creates a unique internal
-> cursor with typeof(pos) and __UNIQUE_ID().  If a loop really needs an
-> explicit temporary cursor, the caller can still pass it and the helper
-> keeps the existing *_safe() behaviour.
->
-> For example, a call site may use the shorter form:
->
->   list_for_each_entry_mutable(pos, head, member)
->
-> or keep the explicit temporary cursor form:
->
->   list_for_each_entry_mutable(pos, tmp, head, member)
->
-> The existing *_safe() helpers remain available for compatibility.  This
-> series only converts users in mm, block, kernel, init and io_uring.  If
-> this approach looks acceptable, the remaining users can be converted in
-> follow-up series.
->
-> Changes in v3 (Christian K=C3=B6nig, Andy Shevchenko):
-> - Convert safe list walks to mutable iterators
->
-> Changes in v2 (Muchun Song, Andy Shevchenko):
-> - Drop the list_for_each_entry_mutable*() helpers from v1 and make the
->   cursor change directly in the existing list_for_each_entry*() helpers.
-> - Open-code special list walks that rely on updating the loop cursor in
->   the body, preserving their existing traversal semantics.
->
-> Link to v2:
-> https://lore.kernel.org/all/20260609061347.93688-1-kaitao.cheng@linux.dev=
-/
->
-> Link to v1:
-> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev=
-/
->
-> Kaitao Cheng (7):
->   list: Add mutable iterator variants
->   llist: Add mutable iterator variants
->   mm: Use mutable list iterators
->   block: Use mutable list iterators
->   kernel: Use mutable list iterators
->   initramfs: Use mutable list iterator
->   io_uring: Use mutable list iterators
->
->  block/bfq-iosched.c                 |  17 +-
->  block/blk-cgroup.c                  |  12 +-
->  block/blk-flush.c                   |   4 +-
->  block/blk-iocost.c                  |  18 +-
->  block/blk-mq.c                      |   8 +-
->  block/blk-throttle.c                |   4 +-
->  block/kyber-iosched.c               |   4 +-
->  block/partitions/ldm.c              |   8 +-
->  block/sed-opal.c                    |   4 +-
->  include/linux/list.h                | 269 ++++++++++++++++++++++++----
->  include/linux/llist.h               |  81 +++++++--
->  init/initramfs.c                    |   5 +-
->  io_uring/cancel.c                   |   6 +-
->  io_uring/poll.c                     |   3 +-
->  io_uring/rw.c                       |   4 +-
->  io_uring/timeout.c                  |   8 +-
->  io_uring/uring_cmd.c                |   3 +-
->  kernel/audit_tree.c                 |   4 +-
->  kernel/audit_watch.c                |  16 +-
->  kernel/auditfilter.c                |   4 +-
->  kernel/auditsc.c                    |   4 +-
->  kernel/bpf/arena.c                  |  10 +-
->  kernel/bpf/arraymap.c               |   8 +-
->  kernel/bpf/bpf_local_storage.c      |   3 +-
->  kernel/bpf/bpf_lru_list.c           |  25 ++-
->  kernel/bpf/btf.c                    |  18 +-
->  kernel/bpf/cgroup.c                 |   7 +-
->  kernel/bpf/cpumap.c                 |   4 +-
->  kernel/bpf/devmap.c                 |  10 +-
->  kernel/bpf/helpers.c                |   8 +-
->  kernel/bpf/local_storage.c          |   4 +-
->  kernel/bpf/memalloc.c               |  16 +-
->  kernel/bpf/offload.c                |   8 +-
->  kernel/bpf/states.c                 |   4 +-
->  kernel/bpf/stream.c                 |   4 +-
->  kernel/bpf/verifier.c               |   6 +-
->  kernel/cgroup/cgroup-v1.c           |   4 +-
->  kernel/cgroup/cgroup.c              |  54 +++---
->  kernel/cgroup/dmem.c                |  12 +-
->  kernel/cgroup/rdma.c                |   8 +-
->  kernel/events/core.c                |  44 +++--
->  kernel/events/uprobes.c             |  12 +-
->  kernel/exit.c                       |   8 +-
->  kernel/fail_function.c              |   4 +-
->  kernel/gcov/clang.c                 |   4 +-
->  kernel/irq_work.c                   |   4 +-
->  kernel/kexec_core.c                 |   4 +-
->  kernel/kprobes.c                    |  16 +-
->  kernel/livepatch/core.c             |   4 +-
->  kernel/livepatch/core.h             |   4 +-
->  kernel/liveupdate/kho_block.c       |   4 +-
->  kernel/liveupdate/luo_flb.c         |   4 +-
->  kernel/locking/rwsem.c              |   2 +-
->  kernel/locking/test-ww_mutex.c      |   2 +-
->  kernel/module/main.c                |  11 +-
->  kernel/padata.c                     |   4 +-
->  kernel/power/snapshot.c             |   8 +-
->  kernel/power/wakelock.c             |   4 +-
->  kernel/printk/printk.c              |  11 +-
->  kernel/ptrace.c                     |   4 +-
->  kernel/rcu/rcutorture.c             |   3 +-
->  kernel/rcu/tasks.h                  |   9 +-
->  kernel/rcu/tree.c                   |   6 +-
->  kernel/resource.c                   |   4 +-
->  kernel/sched/core.c                 |   4 +-
->  kernel/sched/ext.c                  |  22 +--
->  kernel/sched/fair.c                 |  28 +--
->  kernel/sched/topology.c             |   4 +-
->  kernel/sched/wait.c                 |   4 +-
->  kernel/seccomp.c                    |   4 +-
->  kernel/signal.c                     |  11 +-
->  kernel/smp.c                        |   4 +-
->  kernel/taskstats.c                  |   8 +-
->  kernel/time/clockevents.c           |   6 +-
->  kernel/time/clocksource.c           |   4 +-
->  kernel/time/posix-cpu-timers.c      |   4 +-
->  kernel/time/posix-timers.c          |   3 +-
->  kernel/torture.c                    |   3 +-
->  kernel/trace/bpf_trace.c            |   4 +-
->  kernel/trace/ftrace.c               |  49 +++--
->  kernel/trace/ring_buffer.c          |  25 ++-
->  kernel/trace/trace.c                |  12 +-
->  kernel/trace/trace_dynevent.c       |   6 +-
->  kernel/trace/trace_dynevent.h       |   5 +-
->  kernel/trace/trace_events.c         |  35 ++--
->  kernel/trace/trace_events_filter.c  |   4 +-
->  kernel/trace/trace_events_hist.c    |   8 +-
->  kernel/trace/trace_events_trigger.c |  17 +-
->  kernel/trace/trace_events_user.c    |  16 +-
->  kernel/trace/trace_stat.c           |   4 +-
->  kernel/user-return-notifier.c       |   3 +-
->  kernel/workqueue.c                  |  16 +-
->  mm/backing-dev.c                    |   8 +-
->  mm/balloon.c                        |   8 +-
->  mm/cma.c                            |   4 +-
->  mm/compaction.c                     |   4 +-
->  mm/damon/core.c                     |   4 +-
->  mm/damon/sysfs-schemes.c            |   4 +-
->  mm/dmapool.c                        |   4 +-
->  mm/huge_memory.c                    |   8 +-
->  mm/hugetlb.c                        |  56 +++---
->  mm/hugetlb_vmemmap.c                |  16 +-
->  mm/khugepaged.c                     |  14 +-
->  mm/kmemleak.c                       |   7 +-
->  mm/ksm.c                            |  25 +--
->  mm/list_lru.c                       |   4 +-
->  mm/memcontrol-v1.c                  |   8 +-
->  mm/memory-failure.c                 |  12 +-
->  mm/memory-tiers.c                   |   4 +-
->  mm/migrate.c                        |  23 ++-
->  mm/mmu_notifier.c                   |   9 +-
->  mm/page_alloc.c                     |   8 +-
->  mm/page_reporting.c                 |   2 +-
->  mm/percpu.c                         |  11 +-
->  mm/pgtable-generic.c                |   4 +-
->  mm/rmap.c                           |  10 +-
->  mm/shmem.c                          |   9 +-
->  mm/slab_common.c                    |  14 +-
->  mm/slub.c                           |  33 ++--
->  mm/swapfile.c                       |   4 +-
->  mm/userfaultfd.c                    |  12 +-
->  mm/vmalloc.c                        |  24 +--
->  mm/vmscan.c                         |   7 +-
->  mm/zsmalloc.c                       |   4 +-
->  124 files changed, 875 insertions(+), 681 deletions(-)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------0bA2sXgPSFRAxm6IZvk0FJpS
+Content-Type: multipart/mixed; boundary="------------FtmCIR510BgenahTU3dM406w";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: XIAO WU <xiaowu.417@qq.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+ Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
+ <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>, Suren Baghdasaryan <surenb@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, rcu@vger.kernel.org, bpf@vger.kernel.org
+Message-ID: <e54ce8be-9480-4583-9c6a-d0dbe1378f53@kernel.org>
+Subject: Re: [PATCH for-next v3 7/9] mm/slab: introduce kfree_rcu_nolock()
+References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
+ <20260615-kfree_rcu_nolock-v3-7-70a54f3775bb@kernel.org>
+ <tencent_45CAE878B5922990DB102BE05A1BAD50DA09@qq.com>
+In-Reply-To: <tencent_45CAE878B5922990DB102BE05A1BAD50DA09@qq.com>
 
-Not sure what you were thinking, but this diff stat
-is not landable.
+--------------FtmCIR510BgenahTU3dM406w
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-pw-bot: cr
+
+
+On 6/21/26 9:29 AM, XIAO WU wrote:
+> Hi,
+
+Hi Xiao,
+
+> I noticed the Sashiko AI review [1] in this thread flagged that
+> kfree_call_rcu_nolock() dereferences slab->slab_cache even when
+> virt_to_slab() returns NULL (for large kmalloc objects that bypass
+> SLUB, or vmalloc addresses).  The VM_WARN_ON_ONCE fires but does not
+> stop execution, and the subsequent NULL dereference is deterministic.
+
+Thanks for taking a look, but this was intentional.
+
+I should have documented that only kmalloc_nolock() ->
+kfree_rcu_nolock() is allowed and kmalloc() -> kfree_rcu_nolock()
+is not allowed (yet).
+
+> I was able to reproduce this in QEMU with KASAN.  The trigger is as
+> simple as passing a large (>8KB) kmalloc buffer to the new function.
+>=20
+> On Tue, Jun 16, 2026 at 12:06:14AM +0800, Harry Yoo (Oracle) wrote:
+>> This commit introduces kfree_rcu_nolock(), a variant of kfree_rcu()
+>> designed to be safely called from unknown contexts without falling
+>> back to batched processing.
+> ...
+>> +void kfree_call_rcu_nolock(struct rcu_head *head, void *ptr)
+>> +{
+>> +    struct slab *slab;
+>> +    struct kmem_cache *s;
+>> +
+>> +    VM_WARN_ON_ONCE(is_vmalloc_addr(ptr) || !virt_to_slab(ptr));
+>> +
+>> +    slab =3D virt_to_slab(ptr);
+>> +    s =3D slab->slab_cache;
+>=20
+> The problem: if ptr is a large kmalloc object (> KMALLOC_MAX_CACHE_SIZE=
+,
+> which is 8 KB on x86_64), the allocation bypasses SLUB and comes from
+> the page allocator.  virt_to_slab() returns NULL.  VM_WARN_ON_ONCE
+> prints a warning but does NOT return, and the next line dereferences
+> NULL->slab_cache at offset 0x8.
+
+Since kmalloc_nolock() does not support large kmalloc, the warning
+is not supposed to trigger. That is why I added only debug warnings.
+
+> [Reproduction]
+>=20
+> I rebuilt the kernel with CONFIG_KASAN=3Dy and added a small late_initc=
+all
+> that allocates a 16 KB buffer and passes it to kfree_call_rcu_nolock():=
+
+>=20
+>   static int __init kfree_rcu_nolock_poc_trigger(void)
+>   {
+>       void *p =3D kmalloc(16384, GFP_KERNEL);
+>       struct rcu_head *head =3D kmalloc(sizeof(*head), GFP_KERNEL);
+>       kfree_call_rcu_nolock(head, p);
+
+As mentioned ealier, kmalloc() -> kfree_rcu_nolock() is not supported.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+>       return 0;
+>   }
+>   late_initcall(kfree_rcu_nolock_poc_trigger);
+>=20
+> [Crash log =E2=80=94 kernel 6.19.0-rc5, CONFIG_KASAN=3Dy, CONFIG_DEBUG_=
+VM=3Dy]
+>=20
+>   kfree_rcu_nolock PoC: calling kfree_call_rcu_nolock on large obj
+> ffff888026c5c000
+>=20
+>   WARNING: mm/slab_common.c:1271 at kfree_call_rcu_nolock+0x1e/0xc0
+>   VM_WARN_ON_ONCE(is_vmalloc_addr(ptr) || !virt_to_slab(ptr))
+>=20
+>   BUG: kernel NULL pointer dereference, address: 0000000000000008
+>   #PF: supervisor read access in kernel mode
+>   #PF: error_code(0x0000) - not-present page
+>=20
+>   RIP: 0010:kfree_call_rcu_nolock+0x5c/0xc0
+>   Call Trace:
+>    <TASK>
+>    poc_trigger_init+0x2a/0x40
+>    do_one_initcall+0x131/0x730
+>    kernel_init_freeable+0x471/0x7e0
+>    kernel_init+0x28/0x300
+>    ret_from_fork+0x2c/0xc0
+>    </TASK>
+>=20
+>   Kernel panic - not syncing: Fatal exception
+>=20
+> The crash is at offset 0x5c inside kfree_call_rcu_nolock(), which
+> corresponds to `s =3D slab->slab_cache`.  The fault address 0x8 is
+> exactly offsetof(struct slab, slab_cache).
+>=20
+> [1] https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-
+> v3-0-70a54f3775bb%40kernel.org
+>     (Sashiko AI code review =E2=80=94 "Null Pointer Dereference", Sever=
+ity:
+> Critical)
+>=20
+> Thanks,
+> XIAO
+
+--------------FtmCIR510BgenahTU3dM406w--
+
+--------------0bA2sXgPSFRAxm6IZvk0FJpS
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajjIDAAKCRCGXBN6rc5S
+1lXTAQD/UF6jRRFlByYwyRtFV1aCLkXuvtjzk07gG5EFoGXyowEAsd0BXdoNNnRS
+u74XP6LNkEXRVCalQe/Jc0H5N9M0EQw=
+=oppK
+-----END PGP SIGNATURE-----
+
+--------------0bA2sXgPSFRAxm6IZvk0FJpS--
 
