@@ -4,107 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9489ECDB466
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 02:37:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 606E4CD98F0
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 02:50:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C5786B0088; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
+	id B714F6B0088; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4757D6B008A; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
+	id B22836B008A; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33FA66B008C; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
+	id A11596B008C; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08A976B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 22:37:51 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E465165BB3
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:37:51 +0000 (UTC)
-X-FDA: 84905988342.06.97D88D2
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B4AE21C0002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:37:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TvQpDImR;
+	by kanga.kvack.org (Postfix) with ESMTP id 760BC6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 22:50:19 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AC141166BCC
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:50:18 +0000 (UTC)
+X-FDA: 84906019716.21.5795E55
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf08.hostedemail.com (Postfix) with ESMTP id DCEA2160003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:50:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dk1IORVO;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	spf=pass (imf08.hostedemail.com: domain of soolaugust@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=soolaugust@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782095869;
+	s=arc-20220608; t=1782096616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
-	b=knNgp7VcpUMkqRh4noVBxuEAYce7L2snyl3zYvgYwoVoqZs0xj+K5eALK+JvPcbpjDePCI
-	enC2xoPy2/ebtA+FfbPOFGKwhlZFoxdxCTUpRy41ONQI6qAE4WbU1GcfFnHtPqMoFxRffK
-	wvJA6VL83kbwUMIPDJ5kpDwvhOQpc64=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=TvQpDImR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
+	b=r86oEsn4GQbXrkDG7RQlgh3GsJNNMYUr+fbTWBwjRj5WKgzQ1lSUzdam/+DXKzMDxPPrAF
+	zxXhMcHNPKQnYVK+4mo22Nht+/t5w+O/UfkNmbnmewT/RQB3CxI4o9C5OhSVjiXwbBct5H
+	lajzrITU7w7s/EQWQVbXkcMVRI8bMfg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782095869;
-	b=h22tzTWhvzpaArBq9hy85EoNIWeN/cQNP4CKx2f4g1fKrIDi/FMq5PeTA2XQnZVKNlhfPv
-	M05n5zsqGO6pmy+iJ50zk057JwgsBJPHLqNZi4Z9uo40MNI2MRjocBVj9IoOS56ZlRqvs1
-	h6Euc0lIaxwnmM2Mk4bEkoyPj1gtnO8=
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c0c15bd6b8fso203181466b.0
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 19:37:49 -0700 (PDT)
+	t=1782096616;
+	b=FPl3S++Wha3Hhg9cCP5YnwviElv8wRb+QoA4giriIv8GFJSU4UzqTaRe6WsWMMH1ONza6k
+	+e7syaNnRC8TFppOkec522o5IRik3kYB63uAe2mKp7eL6yQa/LkeYVA7kBjfiBKJGoHgSb
+	XhKKHAkmi2RZ1RkF9DWLyynCTMSgrPM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dk1IORVO;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of soolaugust@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=soolaugust@gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2c6be9cd89bso16207965ad.2
+        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 19:50:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782095868; x=1782700668; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
-        b=TvQpDImRCWHTebGcZ3XPzriXEmTEZFGOuufS2Bbdc7akz7rf5Ps0z+/RKojUhXpArl
-         gyxE7/azGrhjT+Ti6rVvgDUA+Roc967/A5m6VFh7m8oQJrpUGwUQQeOc/16QE+MD8M+w
-         kwUlCoWtX7Qw7NEOfBifsIEkVIwAvBqtgEvoq4OsjLlrl11t/j/q8XvSzvAuksrmXeBK
-         H/IPwHWo/vCc/viI2UfbORy6jz3E3l6b7xIbgMhYTzuX0rjc5X+DuS/DzEbqPvHD+Y5U
-         Zvpcl/Dj4TChxPbQYbhmsb/te59GE5tJqErxYml7vsuzlqA2z4Ym02zEYZ+IWJByOzbZ
-         i+YA==
+        d=gmail.com; s=20251104; t=1782096616; x=1782701416; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
+        b=dk1IORVOJwucZGWIqPlEMA9fRLpUQ2YvR/9BAXLXCTkYu+V6yYuIHW5FB+SpaxElQl
+         LJDO3YrxGKOm1T9lbPCX9IxvSaXDtd5O6BjttaBFCtNoZFzxQTCHKbfWndei70HIzaYb
+         C+x1OfG19vdyN5fjWHcQ7kxGCFC9qqyMeiSFwxpJkrHS1cW3c8k/wh+KY2ATokRyIhFQ
+         AylCJkf/w23vgsFL6ZLajo8I1LQPe+pBjf8rVnaCQY58RnoNunkWe79/48O6cK7UJHd/
+         sNszYoQkgf+PQB7AnXHAfPH4VT7/JNRhbN/eQl67/FaA5IKHSRjrrsv+ShIRm2Ogoa5w
+         MlvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782095868; x=1782700668;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
-        b=TpmCXpzWx8WksJpm5g7pGwMwF7nCrahDa+oqeHEokoG0lfN+OeLPTQs442PYNhg1Dw
-         rG+WrIem/8D+T5ZzzkIDweX93MUZmjPIU10ZcQjfWQQxYBGSiKTvvlbgiKSvvwks1eWY
-         w0TuMEMu+cZ4iZGftoTbASQ7KgP8GvVI9uAP28J0Pw/xAPUfrcolnEFtrfN5nDxxS2VX
-         DDvzXMG8KeMgsKnKlATdQMCDFCL6Xp7nuFz5uZyMqMOwMvZ1PaZXjxfXDLBILHPDX9do
-         gvZB5K3JPzrF9xf3dQ1TkxfA7i9a+fVO3/OlAo09pvzDDSjKx4ds8yT77UfxL/wRPZ2L
-         vsng==
-X-Gm-Message-State: AOJu0Yz5rjItTNA+XNpVwxfkP5ATK39vC3G4wuCetBmLgtnSnuTT8FOA
-	neJ+o0CCTdK3BGMtOJ7XBLWU0adrhwQJKW9kxFEaCtJEnmG2DSmsDQTq
-X-Gm-Gg: AfdE7clT84Y0ryfok0Wg62E8olTunsk2Xc0RCl/z/sDWOBGns/LZ1zGdMU2w1AvGLnf
-	NLG6mZDyx26647uNO4MThrkunm+/81Yh6HDhTMDBmKL098OuKadVdkDaMvjMZektK3y+KwOo2Fk
-	BmAwTNFA14SVJbgGaUoGXXYqsDzv39ww50p1iRmJnevyFjEpVztgwR6+HUyxEJuTqGPIY+/mCZV
-	g7GujuMFvWnsmTQuecTCer1JoFSUAofSUlCjm73KfXZC5ZzrJoGrKb4OylXP8eqt9+sq/WCtcul
-	vnKuwvBO8mQZbO/TXh6CcBtemc5qG0MuQtfil66Nbs3Wdbo6KjC6votr0pVyAe4gIeojYCQsIbZ
-	DiM7rOQSyVh/BXI1zVGycdRpltc64MtCoMRMVMkgHR6SgM9Da63OnSOtppU35ySslUTBg5/tc/h
-	LmJSZw6sOKx9U=
-X-Received: by 2002:a17:907:971e:b0:c08:713e:d8b2 with SMTP id a640c23a62f3a-c097c4b516emr635623666b.25.1782095867778;
-        Sun, 21 Jun 2026 19:37:47 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e998ebfsm275902366b.16.2026.06.21.19.37.46
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 21 Jun 2026 19:37:46 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: rppt@kernel.org,
-	akpm@linux-foundation.org,
-	izumi.taku@jp.fujitsu.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Yuan Liu <yuan1.liu@intel.com>
-Subject: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
-Date: Mon, 22 Jun 2026 02:24:03 +0000
-Message-Id: <20260622022403.16375-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+        d=1e100.net; s=20251104; t=1782096616; x=1782701416;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hyww99ljWm4jab5h2ExE0M0oFPAAyg/3ek5Kzuwfymw=;
+        b=U3OLwB5PejZqXOAyYKOCYKNN7AduqVTbLaGkEkQeGe5lOuYHC28MKl4hoKW9R6lw28
+         Bih1cn3OiFCrbbx2+WIl0lwKQjMbtlVlsKdqSFtPIUckpvnZ8hL9viCS8Hj4PnzK8ESD
+         R7QfV3YeKFtJHWzIOe/DPdHn3rwUpYR2MZuz9BwkxMB38J2nvWF9xMHUHBGYCfisk7+5
+         zifjyltlZuuFjeAg9elTGwAJX7WKPtRF12iBBtq+9CEvRkP7rU+2OmnXhfJ71gOsQEVC
+         dENOKCZfGtaLMfCESna6P8dLU27otAvSRDWsvL+Lc68tJ97J3Zw4FavCaWMJrQzEpww4
+         GT/g==
+X-Forwarded-Encrypted: i=1; AHgh+RoGJ0PzlRqBVUf+YX8wjbB0CEDrAzajCMFPQv4jbmHKjpPjiwZC8Nxxq1KYCDLGREXEs4h5v94xHQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz/oAkoQ0evE+0jRWib2ou6744dojHaE8k1hlpO4g7a7DjjtjK5
+	B3krUMcJmlyWJ4JvSqJxnksY4RaeIv6k/j8y5FMHWu0gU655MIVWd2Ol
+X-Gm-Gg: AfdE7cnL0fzvVash8P9qe5Wvt09vBwlr5Etyimd8FeYS0KZMwFOo2f6+1FTbne74Qwt
+	m+j+MtQ60v7HD/yYwXZHLZF6bPdcb3WW0A56opm7wc3YoH6z+bnsCuGssWPb15oUyZL/zLq9JyU
+	v08puXCRK1Fow4COrdp2MhD7OB3gxtflu5RP2Xai5FjxmERAIJfk8zeCwYLj9tuevl5Gat0hMqG
+	iQDDxkhLdVAgQi2I7TIHm8mtPAiVgwftdBElot1uPHZf8LLe82LoGHoF/olVEaLmUzwop5mVYp0
+	MaMwPqBgOoe/5kjRCJlV7ZuU0n2AAPgnc5VgiBdpLcmjKttS6ej4vZoDcJnpZy1EpY2lfUzwoMI
+	TdvxZZm+GLdg43S/d05l6nym1ruq4QyXN76Qh3hFhWLxnuZ+1/1UrNdVSA+P5djwdIgDFPC0BvF
+	5AC+/sY8l2HvqM0DBhF9UyoFHPqeWPk5g5Vjo41cmJEpYem4JDV4ON1lHJQhLa3ZozqRvVwFWKf
+	fHL
+X-Received: by 2002:a17:902:d545:b0:2bc:ac76:c1cf with SMTP id d9443c01a7336-2c718f1f023mr152321965ad.24.1782096615676;
+        Sun, 21 Jun 2026 19:50:15 -0700 (PDT)
+Received: from mi-HP-ProDesk-680-G6-PCI-Microtower-PC.mioffice.cn ([43.224.245.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7439f8e51sm65579495ad.39.2026.06.21.19.50.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 21 Jun 2026 19:50:15 -0700 (PDT)
+From: "zhidao su (Xiaomi)" <soolaugust@gmail.com>
+To: Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kees Cook <kees@kernel.org>,
+	Felix Moessbauer <felix.moessbauer@siemens.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	"zhidao su (Xiaomi)" <soolaugust@gmail.com>
+Subject: [PATCH] sched: Preserve timer slack default across RT reset-on-fork
+Date: Mon, 22 Jun 2026 10:50:06 +0800
+Message-ID: <20260622025006.614695-1-soolaugust@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: DCEA2160003
 X-Rspam-User: 
-X-Stat-Signature: 7h8nb64qkwzgfc1ctyxwgcgw5xofbbw1
-X-Rspamd-Queue-Id: B4AE21C0002
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1782095869-948177
-X-HE-Meta: U2FsdGVkX19UY2bbUD8yM369C1KiEw6halC6eqwJoShjbEOWlGcSzS1niLJy1zpfNlHVRF8DmDYohi54shdTGbQm0hH7594Bm5bx9wVtSQQJie2jslC0WzcOflwP6P08A0GslrBw5N9MhIpOm6Kf0LEvu36ZS1sb6/xtlmTCeNrkQWrpZ1BhWX43GVd9jXvc5XztkiY60/OE5eVXLt7AP91k0tEUOsAippXkzEDGFAwgES3jCd6KCe+7U+hhe2UyDhwYJLNrcZsjScLE30fAz67t+Hidyo8eWcup5ZBeJZpVyefRFUV+xVEDfK/82D1lTXHEUQuZhTkk8SJq2sLgm23EUQsyv4h6hHfOBr6gmdCoarlDRNg1cFo89jIw4IPZ6eK3SeZGstQUZpQMqUMhnbTyMCyPz53ozjLP7o6IAiRh2B35EyRXx4Eb/45KC5LLoUloSU5RP1eyMl/AujCk9Cy2akHX2slOm6VQS9Q1VC7BaCLNL7eeRbir0Kw1cLdvdOHhJqilDsxlFknvA35hAhyqdJIqyCtDClLz0114JqdWNX40KIU7IRqs2VyzprKnpo79628r4Bg2BljAFie+gHTESPVRgeiylbNdtRHwY1dGseiXjshmNwUuDmqRbSaNTpDFvbH9wrjQW/lZekU/KCBoM3y+g3aTfHVKtsKmE7aCEugsU7RTEuXh8ClRzrVgbbkHSIFt/5rovVw4FxutxO453c8fDLdLUAcQlxfaTiC18JNE+jJya4bXUz/EWB2P9zRMMZN0da2CHW1wy0h19CMHOfg2yOlbT75n9rfxigeuSokZZvrMiX0P68IZK4EkBZv3kdU++jsDl8rHEFTzOm2eGavfPcgM9sgyVZK+GJQMIIl3wWb5olu1/pfjUmfSUvqI340DD+D0sStWSuSyYM9IkWG7lQ0zWErSkomEGPHGmqETXC/vNICU56RK59hCCmUuusfl7SPOEw0cXaH
- lwDHqr3X
- UoGjbcmaWM50pvZYJ3y1802CK848KkrBPjXMbvrpFvDFJjHrjRGviOfUZtp1aww0PLthu2inI8wJsPpt0Z2BtOU46vLhvAx8Y1gMfCwI9pYh4m4EAex/2+oEv00CWRb+MLdtZbf4BVKU5dt6gWLDqhBeU8gpVzhA00jNCpTJn2xMKLX/2Yfl93i6qhjYNrxbDT2BC4ABhjYGYB3rWo1rdUE4n6Xd7qJgYaOXpb1q6GHAfYIFDrWeQc7rMVt/ecMloBTcBFPwXeXsIiulUrN70sdamKwxcwf2CVzhqOpLO6WSmvVOvZqLyc631U6ASonMDcA1YhIs5xfUqCSBtx4dvBixy9GEtBCsMd0d9Dv+9H940uT8+qp/s5oy0ePoUE9xdi2QgFHpF+J5SV86PZ+RXEYn1jNzuK54j5yt/MfM6pnp1xA+nW4WRyBQtrfmNkL2HkKS7ZU4OKAtx1WP03rtUiAd2EgyjAiWOCpG79KcWas3qgVoZBcgKqfekHD4mEDoG0nb8bGxEZRPfM4g4ErLddd7mp9H4Peq1B3bGhZicJW++xLlCyVbdd1bAiNxkYlb5pvFzkF4maK+xiROlMLg11DvjtUNgSR/Pdfe7
+X-Stat-Signature: b5ahixipaeuydqcs67mw9tjpucwphhoa
+X-HE-Tag: 1782096616-630705
+X-HE-Meta: U2FsdGVkX18hU1dlNaBSkVkRdAFjFxHPbUfK5PubB4+QPLwsVlJOHomXvdgvUitfLM5+SYAiWRtxsQMa7cSx+GUscfqxR5Ho5mpks0yPvoAEsx9mxQJxtyKBBoUipPzTK/yXZouaK6DtVwpFMK3cp0+0E0J7yOFGqTinFiyvIfnG22/Uwt2wKYGw82p6RyY02hcwrEd9NgyOAMGBq9vNZSiPdRHk6LOISxtvc20bV1Z5577fQ4hIuSQOj6hZLNnjwTmfZjvIR+MeSDjmiG91QubWOgBkbOiOCm8ftVdY3WdxY9WnLt9zri5LNOJRwocL74969kQci8OWHZV94Izc7XeDBpOyxAvEItmMOg5pgiFlay1qGss7HBtDAedC89opeRw1kzf+Ted2ZnpfgHNu5hIAUjeQN38mNx/5fmhIAA5YpY8WBNbgD/rTFjpTrdEjed5BToPbeXTxa4W0GeJ9Tu/rvz8sqPggik90w4QMuatJWm5VTmDOf8R3CnGovj1OZ+12OPdAFdWuLRQL7Jixq98gJ5o1AFCyxpIevFLoTCJoombASloQQZ6unlAiRDy7tpwGSRDWO7wNFEb2D0OzJ3Q7IbptOH2KB/DUoYEpzMqOcvC56ZjN7XKVoBoG5EKhiQZPBRBN7TFxJHxBytQsIWqQ841FcJTxUcyR9h2QU89AQBkgpzySQ4XVw981Z/lJNYO5VJEFWhGi0Zhsqp/pseZHydGn7BI5S2Vrjn1Z7ROjaFg9M3E9amiK0C9abHzpIW0MsUHSQWzVhTT65NAkm878Eng/e1fMnZNcDJVY5KVnsLRPGy+Px/arfxWCNxnk96XSjho3XjL5HEN4Ae4F/T9/rE/Ps/OrxBE0A9/hBr9BRLw7+pUTNDkbORmKUGdtCO9trvqabx9caowo1hTxEtRwBkq/1Z+vcvC6GwOs/FC44E51YhH6JBJXIsLugKt7mQpRUJxndTfxmsTmYOr
+ pOwzNSN5
+ r1uB99pGh+PmSnhwacfygXhLSohMIwPWw3e78SzBRjEeQfium7k4ll4PjnfFKWnSqg5hQ3fRYyDRkna5mxNvxhiqC4c68SO8L+nXg9A7KpUo/QvODOCLHdD587RQ6bVyIqfo56E97Djc7xgMiq1MJnQlNB9Yfw/5Rb/QLOeiZamwxzRsji5I+nJGneMU+I1rfZ4urmn7WslVaRVCdOrum6Z7ibGWxlRTjVoO1L4oKi2KTaJAvzj737vTQOKeNZIdrXUN5+L47m4CoxdeEOEM0YHOu86F8oSJ6E36VRpslhJ+pQ4uD2hRNt/ZsvyR7NkVpRFkwsFKsH/mPLuKjofVUfl0WKgjg3sBWLbVRc88ZCvAQswU93wN1I+cmKila6PW57WVNCTI0BfLmdp2qFxE8C7j5ib0R8IDvYWaT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,97 +136,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Current node_spanned_pages is got as a summation of all zone's spanned page
-in calculate_node_totalpages(). Generally this is good, but if we use
-kernelcore=mirror, it is would be wrong.
+RT and deadline policies force timer_slack_ns to zero while a task runs
+under the realtime policy. The original slack value is kept in
+default_timer_slack_ns so it can be restored when the task returns to a
+normal policy.
 
-Without kernelcore=mirror:
+copy_process() initializes the child's default_timer_slack_ns from
+current->timer_slack_ns. For an RT/DL parent this copies the temporary
+zero value into the child's default. If the parent also uses
+SCHED_RESET_ON_FORK, sched_fork() resets the child to SCHED_NORMAL and
+restores timer_slack_ns from that already-poisoned default, leaving the
+child with zero slack.
 
-    The test machine has below memory layout:
+Preserve current->default_timer_slack_ns when current->timer_slack_ns is
+zero so reset-on-fork children can restore a real default slack value.
 
-      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
-      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
-      memory[0x2]     [0x0000000100000000-0x00000001bfffffff], 0x00000000c0000000 bytes on node 0 flags: 0x0
-
-    And the Zone range is:
-
-      DMA      [mem 0x0000000000001000-0x0000000000ffffff]
-      DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
-      Normal   [mem 0x0000000100000000-0x00000001bfffffff]
-
-    Then we see, with spanned_pages printed:
-
-      On node 0 spanned_pages: 1835007 totalpages: 1572733
-
-With kernelcore=mirror:
-
-    The test machine has below memory layout:
-
-      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x2
-      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x2
-      memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 0 flags: 0x2
-      memory[0x3]     [0x0000000140000000-0x00000001bfffffff], 0x0000000080000000 bytes on node 0 flags: 0x0
-
-    And the Zone range is:
-
-      DMA      [mem 0x0000000000001000-0x0000000000ffffff]
-      DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
-      Normal   [mem 0x0000000100000000-0x00000001bfffffff]
-      Device   empty
-    Movable zone start for each node
-      Node 0: 0x0000000140000000
-
-    Then we see, with spanned_pages printed:
-
-      On node 0 spanned_pages: 2359295 totalpages: 1572733
-
-The total range of memory on node 0 doesn't change, but the spanned_pages
-becomes much larger.
-
-The reason is when kernelcore=mirror is specified, the range of Zone Normal
-and Zone Movable would overlap. So the overlapped range would be calculated
-twice.
-
-A wrong node_spanned_pages would effect defer_init(), since each
-zone_end_pfn is less than pgdat_end_pfn().
-
-As we already passed in node_start_pfn and node_end_pfn, fix this by get it
-from (node_start_pfn - node_end_pfn) directly.
-
-Fixes: 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror option")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Yuan Liu <yuan1.liu@intel.com>
+Fixes: ed4fb6d7ef68 ("hrtimer: Use and report correct timerslack values for realtime tasks")
+Signed-off-by: zhidao su (Xiaomi) <soolaugust@gmail.com>
 ---
- mm/mm_init.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/fork.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index a0e6a91283fb..7ad01eeddda9 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -1304,7 +1304,7 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
- 						unsigned long node_start_pfn,
- 						unsigned long node_end_pfn)
- {
--	unsigned long realtotalpages = 0, totalpages = 0;
-+	unsigned long realtotalpages = 0;
- 	enum zone_type i;
- 
- 	for (i = 0; i < MAX_NR_ZONES; i++) {
-@@ -1334,11 +1334,10 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
- 		zone->present_early_pages = real_size;
+diff --git a/kernel/fork.c b/kernel/fork.c
+index addc555a1077..39db7502379b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2196,7 +2196,14 @@ __latent_entropy struct task_struct *copy_process(
+ 	retval = -EAGAIN;
  #endif
  
--		totalpages += spanned;
- 		realtotalpages += real_size;
- 	}
+-	p->default_timer_slack_ns = current->timer_slack_ns;
++	/*
++	 * RT/DL tasks run with timer_slack_ns forced to zero, but their
++	 * default_timer_slack_ns still carries the value to restore when
++	 * returning to a normal policy. Preserve that default across fork so
++	 * SCHED_RESET_ON_FORK children can restore a real slack value.
++	 */
++	p->default_timer_slack_ns = current->timer_slack_ns ?:
++				    current->default_timer_slack_ns;
  
--	pgdat->node_spanned_pages = totalpages;
-+	pgdat->node_spanned_pages = node_end_pfn - node_start_pfn;
- 	pgdat->node_present_pages = realtotalpages;
- 	pr_debug("On node %d totalpages: %lu\n", pgdat->node_id, realtotalpages);
- }
+ #ifdef CONFIG_PSI
+ 	p->psi_flags = 0;
+
+base-commit: e771677c937da5808f7b6c1f0e4a97ec1a84f8a8
 -- 
-2.34.1
+2.43.0
 
 
