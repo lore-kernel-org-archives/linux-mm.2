@@ -4,142 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A611CDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 23:27:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE4BCDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 23:27:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08C406B0088; Mon, 22 Jun 2026 19:27:12 -0400 (EDT)
+	id 485C16B008A; Mon, 22 Jun 2026 19:27:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03CD46B008A; Mon, 22 Jun 2026 19:27:11 -0400 (EDT)
+	id 45DA26B008C; Mon, 22 Jun 2026 19:27:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E472A6B008C; Mon, 22 Jun 2026 19:27:11 -0400 (EDT)
+	id 2FDE86B0092; Mon, 22 Jun 2026 19:27:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AD6E56B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:27:11 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2B9FE1202F6
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:27:11 +0000 (UTC)
-X-FDA: 84909136662.12.DE69526
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1637040003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:27:08 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QuNcLTMH;
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED23A6B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:27:31 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6647F1C511C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:27:31 +0000 (UTC)
+X-FDA: 84909137502.07.02AC837
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011029.outbound.protection.outlook.com [40.107.208.29])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 73E5440007
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:27:28 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TV36fMNu;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782170829;
-	b=Z6cz9CwCMFLmuDuG8Mr5Vp7RKag0qxbVBwuRTpU7GYl2bV0MDOC+0BF/SKZ9TP9j9VlxAc
-	ZPkvyW7ko/hI9aXeJM0O6pyv5e/vYYQklqgZt5Ch4hJN95e+J05jV7r5NV4QuYY25aLBWf
-	ISeBf1k98NXqYjfJFEqLgSICDe2ZGmI=
+	t=1782170848;
+	b=xerD5DUxt+yvLkI1TNxMpAd+b7CJ8XSJpbjqqW5P7Vc8URqh/j++GDSUq7eEaW9+IzZ+D9
+	1baIEh0fE19WXDJTT/6wxIiKwg2kiDruPAPJWAwCK2+O8kW/ZarlljRqKHmj5An1EJADbm
+	Ui3iCU+Wftwi6cA4e4llNpFQ7DNxm5k=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782170829;
+	s=arc-20220608; t=1782170848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8z5zT7JXgptWFjE3jHFCHBVUed62ggfr+7Ys0A7VNqY=;
-	b=GsWRlqMF4CqYXJ7o2+HPKzV/+Z2E/qCJUoheJyaBBAJCGp+1q02155AdboH7l2qijPIWb9
-	E+25Mj3WJBjTbR4AlJ1wxGWjogslmLT4Usz3X0dL3ifSLnHO/4N68/s3T1dHUl5y7uAQjS
-	iwP0KYODCZwpvvh/oZKERSiLoUA3JQw=
+	bh=Tl0FxxTLApGO2yYYxlBD4UH5HLe2xw7zM1N+4f7Qmes=;
+	b=pwoZx6og7ymXNgdQDfsKJZhrUxqeuFoUxiEqtWbD4JwkzXf+5huyzR+xcs6dT3mcWyzqPP
+	H8S8gCFCFN1Rq8vadvz5A54OLDXfAosg9h5jsu4tTL/sOFGuBteOYh4ZJkLKUDOBND2BJc
+	1B1pg3cM6O5DooTWoC07kSdyBZJjU1w=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=QuNcLTMH;
-	spf=pass (imf07.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-13988680a69so11500591c88.0
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:27:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782170828; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h4bXYfNj8z2bbmVnOrTl3RwAVdt/wAj3bVN8H1JpJBuK5SkrN19TGO4jdXHZLN4xqI
-         DM4EjnNskftYt8KXCdmsbltFISqxm7pOc8WPyojA9T2kf9SuBEEQOXhHGWsRTYrCRDDt
-         tv1ZQ8k39Bbn8heYkYCogXEj7dp6RlOT25BiY+9DUBPhiqJIHmJjO2EMP3EhkftttpUM
-         iw/+jlx5yZ+NMAH+Mw63rcmp8ZyshL+5XlyrZKT7dxKT2AX00HXZvXWnG91FCzAePQOP
-         c6oy6nz2kg+rjM24aG8XTpqoc/j7jSvlmZ5mLz/kGQ0v1uLskUHtMVllBTIDgSBAxbUh
-         Z6jw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=8z5zT7JXgptWFjE3jHFCHBVUed62ggfr+7Ys0A7VNqY=;
-        fh=vGEfnBH8yG6CbSS47lunmjApiutccbefh4iK973AR3E=;
-        b=FY82YxhpV86lr+bRVth9IoLwD9LJpohPdzcRWTn/z4K6OUsPrq+Huk6BCJN+sh9zp/
-         loQ92Rt1FigPKMxKkJuGkdWyWGlJuetfR05XMm7vRZPcRMl6WguMxTdsGWXWfzPPDHvk
-         jST9jGr2Hr8wwli6m8eeIUu91DbP28DggQEgxVt7pma5iIVHERUyfKLN5qX3fLfaoJqE
-         QSa8w3A303XFHTCHfk+UkHeI+ZHl4fsHFZrIsFkeMkf0GRsBEP01ZDF1dMDN92lv/NoR
-         EaEvfnjbI44L7yGKa6SVvAkPtiHeuc7j0/85x8Bjbb60+eNbCNQx23ixnoIV76f6aJn9
-         Pysw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782170828; x=1782775628; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8z5zT7JXgptWFjE3jHFCHBVUed62ggfr+7Ys0A7VNqY=;
-        b=QuNcLTMHCQTmrNWBsoxGXhwmxZ8wQyS2NaNVhB74KmJkGQ6Q+SDBaqEFfCYc5fV73A
-         zJT7zAsQSXQePmtqDRyMFF7jvzTyLAww4agFqLFc69kQStoSQaFfbq/ZNlprwNz3wv8u
-         c74W8EOiwFAqnMKpxdTNro3numQ7bLhDtWHXGq44DvzsVgmOVZUqTMVcg+ezH3zJLIMF
-         F8HW+3FqrggwzLGzJF72pAJdmlp5Ti7A9vYAGnQotKp2YXW/MVEKRWBty4EEkPqLgnvt
-         szPQaB1BmEXjeNE9oZWLv73jQIcB/wswhjTddJO+KyGMvnZcsBZgNYS4GHynN3069fg3
-         XNGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782170828; x=1782775628;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8z5zT7JXgptWFjE3jHFCHBVUed62ggfr+7Ys0A7VNqY=;
-        b=Jm0An066XAR2YQs0at6JjT6Ahb8guxSe0gcooOOTNQQozHSfWJ7cDbQGholF09WCAD
-         hU4lt3uCVvyK7L4qby1jzt+rYnkmjxGp3zHbjRzEc3Gzoa24cUXb5NzR+1Jiu4/v0Gyb
-         k8Vh1xVDp1utFX1x4cKtr0jCLR1QyJzIC+CZhfrLn39StXBGiMxTfEP6gnPa5FXT8Dtv
-         rG7wu6YnuGtSGbZZXzFKhkPxO/FNJv3w5Jf5CLRcd79NNudpjPuDi4FKXNbz6jyPyQjv
-         1nmqswpwuoaU7SAY3F0CSSI/ZsYYX1qrWzV6p6b4fp/bon2sKAbewck6CWzRJRNuubnb
-         7gCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/D/+s03/qNpf+pGB0xSPYM3pvGNT/yAeFhA8rtqQqaUJpfU7wR5cSn5oBdeTPfH1bJa5ATGo0HoA==@kvack.org
-X-Gm-Message-State: AOJu0YzY2GzGOFGJKzJchN1sPxpubYb8iFIfGizzBlKbEAFnp4jtBV75
-	7K7jBQhRcR0QkK1SMk32JgR2gWA9mwwKAef2gPUj0weymfrpHpuuPDkKPhyivV/gbKlgxv1ua1G
-	HcgzdH0jJ/ICM9NirVcKgUet0dzHOMZJEwL0FTBYV
-X-Gm-Gg: AfdE7clsnKlMgMkg9g/zFUICijOu5N4xqTy8ra10NW7qaRHzweyUPa5DqH6alzSwYd4
-	F20FEyHQSiU7EXXe2zDRdT8DmbQ0LlbPHdT2B3qIN8UZcV2taQdd7DScZ7gUcrl3OCkiuzJiAsN
-	Xk1jHWzXUSDjr+Y5m4iDj6ZlHUKAL4fMsvqjWUcYnHMlzXePopNZ6DiBw5mldPz+TQOssCzODD/
-	Df+XtOmZyUfxYahK4/etkIdJuqF48gIUDArodZd7Hue1VIR3yOdKyglJVim+HG9uvBujY0HdEQZ
-	erKGjofHlRgq+0o+Hu5eV5wnpdWi9Y9V8pkvrOAbOOycNTp+aXcySclQMA4=
-X-Received: by 2002:a05:7022:662a:b0:138:49ea:f467 with SMTP id
- a92af1059eb24-139c6e2da0bmr42465c88.0.1782170826758; Mon, 22 Jun 2026
- 16:27:06 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 22 Jun 2026 16:27:05 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 22 Jun 2026 16:27:05 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <4b2216f5c459fe699a3f62464cbc765624e20ae6.1780676742.git.tarunsahu@google.com>
-References: <cover.1780676742.git.tarunsahu@google.com> <4b2216f5c459fe699a3f62464cbc765624e20ae6.1780676742.git.tarunsahu@google.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=TV36fMNu;
+	spf=pass (imf17.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.29 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rrDVVx6eewqcSKJ8/1GqaKSBJj6pfv2SEpDyzAzVPcT/khwLOAoVUu8y7Z6aROdLs2HOiJiISqLtiBsO+oIwqZ58Ia3RQuffFA5/yoXAKpxiQClZSzEULuffAakjFJ4p/vYsjHO1zho8H/O142nV/xuQ4WaQFcoWNzIWyFcD8PPiCOTO/IS6HW/Pn6bXGub3bEHoOuij13z2tqajGEydrgSKv+Nz6QXBzV34dAbVpXpf2KmTUYOPsHKb9l3bozvl/ahye/tHmN71e1G6C8KSrCB8awnIuuHufMt2rrJLPcmZskQBMYXy3Z2/nhL7aGpx3Z8Riflv8QJAt3+8Apub6g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Tl0FxxTLApGO2yYYxlBD4UH5HLe2xw7zM1N+4f7Qmes=;
+ b=VyxNXInmG8bUXXZyoVMSwMacbrGfUe8lCEuyRkHlUPT3pi/ypg9r/b49gJCjlAJjAvaIeiQ23i3R0YJfHuQS1k8HjTGfkpN/rWD2eJRUQq6KG6YH7HB6wYzGdG9cALSmig5Cbl2AqfcN6gZo0rYXSUOdpj5Kk5kPrXhdZAQ9f2gl8oGmZ3BqQaCrdGHcIg5DJBScqr+R+WWAwyCimoCRAxGFmNr1SEYG6lfim7c0iwrA0FW716ClSNDLMmt/iVmfa8vUu1Y+Bc0x5S1zxsxS+ZqYqv4iP9PdxPQUXceMipVW7+frKlruQeoaF7h0z65UDFMi301MDHW5oQnpLWNz6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Tl0FxxTLApGO2yYYxlBD4UH5HLe2xw7zM1N+4f7Qmes=;
+ b=TV36fMNuKsdUqrGhxdKpQbBgSxHa7f9c7TEA5/e6+d/V84lr48OHN38Oq4AJNsovOaIMwobjiHXzb6Pw8qA3BMRCexivx3QHp1IR/HSuJSx7whklc0QBA020eOl9GLYFGYIoo5vYMLoNsp3Gm7g73cnMY6PaLpDbyvoDcsyQiw5A/Yf+zA7Fe8azOR/NDyXMQo9R48lHVQc5VEIQzKrwN19/FWZ295/jnMm5CdDEWhL2iQxPuYe9SOluLnfxwBWFkx+j5vDp3QfK16C+AYeTft1JU2NptpbGWxNUt+JZ50Y9Jtqh8AQTMbE6HoG00puWw3Df/7Bd3a7BhkOjuE34Rw==
+Received: from DS7PR12MB8371.namprd12.prod.outlook.com (2603:10b6:8:e9::18) by
+ SJ2PR12MB9189.namprd12.prod.outlook.com (2603:10b6:a03:55b::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
+ 2026 23:27:23 +0000
+Received: from DS7PR12MB8371.namprd12.prod.outlook.com
+ ([fe80::23d7:9e07:1de8:d80a]) by DS7PR12MB8371.namprd12.prod.outlook.com
+ ([fe80::23d7:9e07:1de8:d80a%6]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
+ 23:27:23 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 22 Jun 2026 19:27:21 -0400
+Message-Id: <DJFYU5ZU3S15.2TM0XSBEOB2EM@nvidia.com>
+Cc: <kernel@oss.qualcomm.com>, <stable@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Matthew Wilcox"
+ <willy@infradead.org>, <syzbot@syzkaller.appspotmail.com>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Mike
+ Rapoport" <rppt@kernel.org>
+To: "Ketan" <ketan.kishore@oss.qualcomm.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Brendan Jackman" <jackmanb@google.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Luiz Capitulino" <luizcap@redhat.com>, "David
+ Hildenbrand" <david@kernel.org>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v3] mm: page_ext: add count limit to page_ext_iter_next
+ to prevent invalid PFN access
+X-Mailer: aerc 0.21.0
+References: <20260623-page_ext-v3-1-a89799a5367c@oss.qualcomm.com>
+In-Reply-To: <20260623-page_ext-v3-1-a89799a5367c@oss.qualcomm.com>
+X-ClientProxiedBy: CH5P220CA0010.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:610:1ef::14) To DS7PR12MB8371.namprd12.prod.outlook.com
+ (2603:10b6:8:e9::18)
 MIME-Version: 1.0
-Date: Mon, 22 Jun 2026 16:27:05 -0700
-X-Gm-Features: AVVi8Cehz0Rg1LgwIZbVcyJm62KBqkPPz4LAbN_M8Nt57BLwYaGpvUyCozqDq9s
-Message-ID: <CAEvNRgGYM+evk5H-bU8suU++zX3-w25fcc+9mu1YoNG8DtysHw@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 07/10] kvm: guest_memfd_luo: add support for
- guest_memfd preservation
-To: Tarun Sahu <tarunsahu@google.com>, Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
-	fvdl@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, aneesh.kumar@kernel.org, 
-	skhawaja@google.com, vipinsh@google.com, Pratyush Yadav <pratyush@kernel.org>, 
-	david@redhat.com, dmatlack@google.com, mark.rutland@arm.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	seanjc@google.com, axelrasmussen@google.com
-Cc: linux-kselftest@vger.kernel.org, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: s7oj57zm7n4njdaxybqfafpdrhpisgb6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB8371:EE_|SJ2PR12MB9189:EE_
+X-MS-Office365-Filtering-Correlation-Id: f290bdc0-7dcb-43dc-a508-08ded0b5cff6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|376014|1800799024|366016|22082099003|18002099003|11063799006|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	6fZVqYI59HzYiLiljuYjx6TqKktlCKErJv9uXCYSUBzLjQrEeSA4ew6neZroNmDGdT2WZkIrHrvAJ2xZUxBrOkIf+/gAjazW4P5mEfv1bf0e1s5no4jyi0V0GKSt2vWKUEUPz4YGdIKvpDPeXxCG7AnNAbOL1DoGjp47MoYIHxINoTQF5+zV2Udn4rMk7N56PAY3ddk7Ek14c4Wh7U9NsQcLEz5MQTepQHwlPxCjQQ13Sq3eitOA3oFnn5XyiKXI8wSKwmiYE4143OQlHMQVpzKPIJZ+OnESsKoGR0utGaTjNFSQd5HOyvvaw2F3je6rdkV475ihGqGXBHTs8f4A3cOVif5+4O3AxEJISWOCX09tWICuIF5P4R1smwLRC5ebQ2ju8mZWnYiC4/QcKQq06G/Nh8m5bYMjiizchTB5IWDGQvoK9U/eh7pfoBa8DSl1ybPQTSaEYlRdX35Q/HtAQ3Z0zEn6b0CPDD2povN6E94HE7yNfU7rf7gQqK6fdQbEYkFOQFzQWLIEJwEw+CV9cd1xNQ29noQKGiEQSQKQkp5xu4vHb70fqIWQKWk26sabvh7W9oQinNYRRMINPhwk4THqXQSuf2rUK4uQlQdYK4Ttk/y+ERSjInk1VtWHeyiywXdb2Vky7P60F6KCKEAIzym1jxSgm5/ISXMd3esxjuc=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8371.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(22082099003)(18002099003)(11063799006)(56012099006)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eDF5bWhLVTRmcEtmWHpTSDlvejYxVDNjTmdJMW44S2M4Y3BDM2dSdVFmczQx?=
+ =?utf-8?B?OWRRY21iVHJyQnJrVS9UUFAzVTY1ODIwZS9CSG9sQWR0cjJGUkJHTGJPTGNl?=
+ =?utf-8?B?aDg1cjhTM1YyRFVvVFFudXFkMVpFQitONTlmVVNKSms4eXBaN01xdktaYS9U?=
+ =?utf-8?B?cGFtMzFtZ09ERFllaFoxMXhETFpHK2RQbWNMZFp2VTMwYVZGdXh2VUR5TU5o?=
+ =?utf-8?B?N0lKdXJOdHFhVllXNmZuVEFoYjlHZGRmMjQxYXgwanpHRGxBU3B6U2VxcFJJ?=
+ =?utf-8?B?Q3k2SEhObHJ5YXJvWTRLVFlkczlHVnJXTXZjT25WbTJKUXY0djVaSFNuZXRn?=
+ =?utf-8?B?OHpsejdiOFhya1RJeTlMU3doenY5NkNERTMwdjV2c0NRODF5WnFCc3hObUh1?=
+ =?utf-8?B?ZHVvcS9WOUxZUThNbFk1WUs3OTRTZ3VpZytIa2p6YkVWT0x6Y2RFby8rNnQ1?=
+ =?utf-8?B?VjNtWXFLZm5qclRYNzNEY3g2QW1kTEplbEFOUGEvVFVsOERFWFNxQVBJSCtu?=
+ =?utf-8?B?TDhNT29jNzBwcXhWV0RVa0Q2Yi9vNDlrZ0FmdER3NE80TDVEUEpxRlB1V1pI?=
+ =?utf-8?B?dU1rdmU4UHpsTE9BZkh5RjZWanM3TDA0N3ZFMzRNYUJZSGl5bVJrTXpRZEFC?=
+ =?utf-8?B?bGpyK01CR0N4RktrSlJnYkxyd3REV0RkWWFNaFpPVlNQUnBwYXMwZzZsZkNy?=
+ =?utf-8?B?eXhjZmdJUnIrSk95cndQTkpYQzFuQUtxZ29zdUFhNnFWa0pLZ2paNlNLdGFo?=
+ =?utf-8?B?WU1yK01Jemx3aTZVcTdtWENvd1MraDdGYnBPT1V0NTN3ZkZRNkFzeUh6dkNF?=
+ =?utf-8?B?ZnZORmlKREJtaHFaQ28vdHdoY0kvZjNhUDcwUVdtNVh1MXBxOUxkN2Y3UTBl?=
+ =?utf-8?B?QWk4YVVscUFVOUZMTENkZGJ0VjFSOUpud2VyMlNLWjZreStyR293L3JWbGFK?=
+ =?utf-8?B?MkwwQ1VrZlo0ajlNbEI0dzVOL0hiaU1qQ3FCVjhlRHI4SDJ6SGRBeG5TdFFr?=
+ =?utf-8?B?b2sxRzdoa3ZVeXVSa21mNE9ZWDlIWksyQnhob3I1T3NKQ3lSazBLeVBVSUI5?=
+ =?utf-8?B?VnBOVGdwdjg0dUdzSVZZN1o3MWd1YzBFcTYwV1R6SVNwQ2Y1Q25xRnl6UFZs?=
+ =?utf-8?B?aUtzTGI1a3FtQ1VFZUVweUF3N0hlbHVvRXVRMG40cWQxeFVaTTExekp1T1VS?=
+ =?utf-8?B?cHprM1huVU90aG1KVXE1SXZPU0Z4QzNyVHQzRTdKZEdjTEdPVnl2OUlNMkZJ?=
+ =?utf-8?B?YUNkSnJxaU1HM2RNOVZCak9yaG5FNzZXa2RaekE1SDV4dlZHazJJajBzcFIr?=
+ =?utf-8?B?V2syTVNRREVvYTlSWXh6a3JxSWNZK3pSbW56RGREcnppeTJsc2g1TitSTVBO?=
+ =?utf-8?B?VnJ6U1RGUmR1cHhsRXg2eFp2eXNadUNrSXpYeENkdlJibE1jdkFxT0hQL3ps?=
+ =?utf-8?B?am43MTNCTTEvZTc1R3dMS3lXT1l6SjJmaTQ2RXB4T0ZieWVkU0svaUhQejNQ?=
+ =?utf-8?B?UHB3NDlFSXpTcWVKNExZQUc4TVhyT1Y5SG9KMFpBVitjVWY0T3dmRzRRM0VK?=
+ =?utf-8?B?V2JIck5pSHpRL2tzenZqZVV0a3l5MlJHbHhZVWlVa3hCUDkzei9uejN0a2di?=
+ =?utf-8?B?WE84MFo0dktubDZVa2t3TFNQTTN3NG90UGwwNWpndzlqbjRIdlZDbTdyakxo?=
+ =?utf-8?B?VWlMdTQ3Rlh0RFRFMTlzYUFJSjhrK3ZSYUxWZUZldW5XZVh4VENXcFB6TlBw?=
+ =?utf-8?B?V2I5WUN5OUd0SW50R0dreEdkd3JsWXgxbzI0Sk16RWxzL1dNcG02WWYzZkV3?=
+ =?utf-8?B?cmFxaFZPdHhBQTB2Wk9Sa0NYSDd1ekltalc5V0tnQTNYbWordFA4Mk1CT3I3?=
+ =?utf-8?B?R1lRaUxTL1JMZVZDU1dBVldHZ1NMRmZMU1hNNlUxWm0xSHBxUW1FOHoya2FM?=
+ =?utf-8?B?dG1tV2s4SGMzcVMwd0J0QWlqeENoMGpIQU9yKzZVN0FnMHJXVkFsWllTOEVm?=
+ =?utf-8?B?V1lrTDl4amk1aEpBeFpETnZWK0o0d2g5cFB3Vk5nQk8wMGl4Zk1Fa2NMVG1K?=
+ =?utf-8?B?V3BYTmRRUUx2OTZGMXIvYkRTcmNTK3BhbGZZd2k4VG4wOXExbTZmL3dFYXdM?=
+ =?utf-8?B?WlJvNkJEWXZpZWlxU1BmbkFXSGZyNHk5Q1UvVlpienhvNEZUZUtZMFJJajcz?=
+ =?utf-8?B?U0g3RVV0L0RmRndzdnVtWFhzczE1L2N4c0VvMWJ5R1RmVEJjS0dEak9tczRv?=
+ =?utf-8?B?dVpQcjA0UjAyY25qOHlOWXdmYkJqNm5JeWlPekVwRmVqZDB2OXdOTkN4RWo2?=
+ =?utf-8?Q?GBxcdyTrE5/QPMFpHT?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f290bdc0-7dcb-43dc-a508-08ded0b5cff6
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8371.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 23:27:23.1306
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4Po38ii1wB64rInrDvCyAX3Ykl3rnAxu4KM9rLQ3riKpj/nVJCcVijxGiOczNmKl
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB9189
+X-Stat-Signature: j9kzneg5s9b9ngy3ors46bszb5mnfch4
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1637040003
-X-HE-Tag: 1782170828-616633
-X-HE-Meta: U2FsdGVkX1/+Z3F1TvdARzPwLpqnvUphKpidJERasXyvEDdI6y/f1+7zQCiK4OP+UVstaPW4ov4sRDWTmKm9hRDMTVj9nIvQlKApgnKhmBdsxTIDHzhq6j1CRIKejaAeHWKL95im6/y4zmWViswdpahAkoXA0sRp/kQftMHLly+hicTmCDg3Y0LVs2kwzkWlPgohsl6VGUfTit8VX1UrQFAk87X+3kDlzce+kFyO3A3Z31I5kfWyJ4LrxGuI+ACpOglnR65aZMc14lk1PxXdKq9D6pl8+4ZbO+VRfjwEQvvRU+t9pAAVXexicipXTSu7ZhoU2vmNTrh8U48uzzXqipSH1c3wJLQJVCqtdTtv1M/Ra0aKyPXCsflQmYGGCXuJ5OEUr4tlSazF0AqWnA+6EvZL737NJazTfyrsMpk/khv9j6VOXx52UAJ4pNnDM9S2NO0IslW6K1nPCC1FZbxzPk5izMwuDUHEvYWTH9X1M8JJ9J6hk72QjkvMiwBtH9EDslfxrbiXIRMELox/ZG2NeJxXpGQnYY6tFlB10z6UYbjis+/4gxHFnxtFGaxCHM11f1xwosdE/0+VGT+5vYDjzGQjzs56WkPJjrsv/mH4AQLttK0UsJtawzeqjabkV+P1nEbprTEekiPLst+pQdZPmqo8jSc8lCVTF2QJq9pE+7NIeie2CZzwVcBlKzPUA641RWV5jgvtIhXqhZi2EgFLmEGCsITyxXKadsn7NdFJAxJ/DVv3NRrN9cEBZlKqiaanA1c2BNIHsZ/ct34Z4hKZQmSUr672EQJn953um7y5Vp2yB+lLouUzp/FcC8Mn/Wgf/hYms9fqSmK/kdVlsoM+t/VcDMnw83K9PsgWq96dyfQB1XCPnC4NoCTMsV7s7aK3JsRul0BYnXo2UXj0JX3rJqTQbTaE73w04eVp13NJumvDcla2RduCpLq8cY5hPlFQfMTTjJ+syzK2CxvPmuD
- Ue08+AOI
- vSCBnRVcvvFCoizIF/dIU1Dl9gqdug6/O0oMM2q7KqiiMxj7U62PGqudAFWL7BNFz/9mKOZWtDBXNc1gWVG1+3ess3jn4TF4vRbEahC5k51Q2vCv0O+oVNnk9mN9ueAEaRgLeXhAN+f4XTa9gGHULiUVyLy5xjQgOdQ+ISBRuQ2LgD0jk7wb1Tp6B1TrJ7SB11K28jFo3iZxafDdJ8N1uGVA3qicI4hdVFF5W9nwKaCrnFXCY877mywvc+XF3VEVS2Sztu8XwY6TjzZXBlltSLCZfKahuf+jfPe/bWa9QJX8ORiZHgurzFY3VM8cq2rqEDbaa7TOTCKfj/l0WwUd2whrrES2YUnQQ6/Oppd/cQPFeF0AyPbuvP8OaXv8Uyu/d0G3eyL/qED5KbDnP7RZx4ol5bR1oWSVDp3zJcQuij0y5YetUb475H/ycfTMqSyKtwMJXqZCUUYsugIQ=
+X-Rspamd-Queue-Id: 73E5440007
+X-HE-Tag: 1782170848-654097
+X-HE-Meta: U2FsdGVkX1+eXLC/e4syAic7tnL6O4C4i0l5myoLCMOTZynpe5iPizDa8P9TBorINmouyV5uYeDIQzoOZMTflGM7vtYTAAZea1eHomUtEOHunIjS8HeReLPa7NYx+dpD0HzArTUqkqQOboRlclEB8/8+Hp5ls4yn9XOiPglI/9QMhfD57G1ZhSV7l8QxDPZ2WH8+vNmwNpLZjhxEDutqfKxE9niqdT3dLYDktwYPke7d8CrAa7mckrb9DJw2otof9XRmkmLRtBX2cmt8wVi6qJjQwDdtUDcExZEeVlH/EdeDaaWp7BcdzUQ2hkXXee740j9LkUEs6Vb/9R9mpdfDE7YGSK+/yysPush/tafv1st+O8sSbPH913h7zGjZ79lD4hG6p+t6OPLQBMly4GMAIh2YHrxg8pv0w+PRpLlzIt3IoMjGvfV9B0oxNTL8izuPNV6t5VzgHPRofOm9L7WDfEOm/d4GUu1JzDC1rPQxdGijY/5605FLOBwz59jRssd4R+ZpFCsu4nVuZ2SCz5JLjDG+5SpuaS8mlJXvFfzU7qY3fw+GtIbJECR8nM2nHGh5iU0OtaVtD5wY36upsSNrJ513//APJ5ybGJPTMda2PyedNzO16nE1r2sjILNoifiol3CDL1LKR+ocK+CkLxa91dfyqKaEUpPB/jSLpoQQ6XcDbGNd4wGUvpFA51Qpqbg3CxPtL1Z+IMFsxb0jA2vd8v/hc2a9bS233tqMVlKsPqODvJxX8A+TFdIX2Dzy88ibuvac9p9DzQZZs8dNo8nEcOPrRlhsCS3FV2HYSeATal3APLq9I4C6/3MMFOMO9wSSGfU0auQW/ObVG4XoLux1P0tyfXEPRTP+SQcRXxvQ4wGGGS9GcBPcPNNZLbM/lvgfJWuR1xzaghOpJIZkl7vYJkFJ3OnVQ9cAWySkTYby2vVxA1MNNAfORUt/X61aXMl16+NgEH2DY+atgmfYNeg
+ ZJX/czny
+ cpKwhvgmj0x+3tq08V8BnPK0asvjzYnhV4dl2bhrNEocyowro8a91yr9buAKb2GJCtEzRRNm8nzXN69mUNyKh8cEtICCJaC59nsUjyOMymdERP5cDGZXb8yLXzUKSG3cBksw6QISKzB+7N2rv/sPSeQPqGvJl1Na18bXVXH+OugLlvnyxnsf2XSpImQBXYaZe8zex92+X3RcsSLOMwtzzdE71EeaXVEsgHo7WBlkADVPiJA4gJl/EAY34lxWlQ27m1C5B/6VTXgytNcLY0wco/D2tKt2a5hFn4zADK8ijd+c3BL3T8sQp7aRwYqiLYgBme4cOvCKu3VE8cdoyRRsJJG38BqPWEsKFfOlW0iSouLQDHwf/nLj2fLdcGtVs0Wuee0PD1CC6vqrZJ1M3ezLN1lPZm7ElOcZtmrz6xFp/1euttc1z6Mno/m/9fSJXpv9MaGjjV/8enk0xLpFGqsu1axWHAU1RBarmI2rg+/IbcX8CG9k8IictKTsF+LwVu+ofVoO6O6AbClxS9mVD29dDYYsxwiGl1aYKlcn9YvJPRSbWRoG7KYvUdi28RN1+My7wNQRXZZrJKzwXQgqWKDA04v0mT/iVKrcFjPSNi4bHLKWxTx/Mv3cykB5qQ/TgrMgWqMHqRpJ/Ni+7LaHgtgcB7bk64KDACT8UKqtPbRZoTdVQj4aU+nxFYk1srf2hynGKjiJnSUZjI99DlVvfM7yuwHh61Ffa7VPhX0ryfjNanDg2GFE6GdIxd1UHJ/+S4IZYcrWqe4cDy8XZOct1iFOz1EdBcjYkVd6VmbIuCyoe8RUXm/dq8qIB/ZvrLCsUumcHp8i12MvKSEyQYOf+SUMLbW9q6L3/P6/MDvipGxjJJPSNRbrlVzwOOYpiLutcQ6oQJUM5d96qJNXiapUlYZAlKzTvZ2TcBb3htK5U
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,525 +178,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Tarun Sahu <tarunsahu@google.com> writes:
-
-> This patch sets up the basic infrastructure to preserve the guest_memfd.
-> Currently this supports only fully shared guest_memfd and backed by
-> PAGE_SIZE pages.
+On Mon Jun 22, 2026 at 5:18 PM EDT, Ketan wrote:
+> The page_ext iteration API does not validate if the PFN still
+> belongs to a valid section while advancing the iterator. When
+> dynamically adding memory in the hotplug path, it can lead to a
+> NULL pointer dereference during page_ext_lookup at the boundary
+> of the last valid section when iterator count equals __pgcount.
 >
-> It registers a new LUO file handler for guest_memfd files to serialize
-> and deserialize guest memory. This allows preserving guest memory backed
-> by guest_memfd across updates, ensuring that guest instances can be
-> resumed seamlessly without losing their memory contents.
+> The for_each_page_ext() macro calls page_ext_iter_next() as its
+> loop increment. for_each_page_ext() does a
+> "__page_ext =3D page_ext_iter_next(&__iter)" at the end. This
+> causes page_ext_iter_next() to increment iter->index past
+> __pgcount and call page_ext_lookup(start_pfn + __pgcount).
+> During memory hotplug (online), the PFN at start_pfn + __pgcount
+> may belong to a section that has not yet been initialized,
+> causing page_ext_lookup() to trigger a NULL pointer dereference.
 >
-> Preservation is straight forward. It walks through the folios and
-> serialize them.
+> [   14.555124][  T846] Call trace:
+> [   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
+> [   14.555127][  T846]  page_ext_lookup+0x30/0x3c
+> [   14.555129][  T846]  __reset_page_owner+0x11c/0x260
+> [   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
+> [   14.571204][  T846]  __free_pages_core+0x78/0xf0
+> [   14.571206][  T846]  generic_online_page+0x14/0x24
+> [   14.597782][  T846]  online_pages+0x178/0x30c
+> [   14.597784][  T846]  memory_block_change_state+0x284/0x32c
+> [   14.597787][  T846]  memory_subsys_online+0x4c/0x64
+> [   14.597789][  T846]  device_online+0x88/0xb0
+> [   14.597791][  T846]  online_memory_block+0x30/0x40
+> [   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
+> [   14.597794][  T846]  add_memory_resource+0x280/0x298
+> [   14.656161][  T846]  add_memory+0x60/0x98
 >
-> There is kvm_gmem_freeze call on preserve which freeze the guest_memfd
-> inode. It avoids any changes to inode mapping with fallocate calls or
-> any new fault allocation (fails) on or after preservation. No need to check
-> this during the page fault as preservation is only supported for
-> pre-faulted/pre-allocated guest_memfd.
+> Move the iteration boundary enforcement inside the iterator
+> functions, so callers cannot inadvertently access beyond the
+> requested range.
 >
-> While retrieving the guest_memfd, it requires the struct kvm to create
-> new guest_memfd. So it first get the vm_file from the same session using
-> the token passed during the preservation. And use it to get
-> vm_file->kvm.
->
-> This change also update the MAINTAINERS list.
->
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+> Fixes: 9039b9096ea2 ("mm: page_owner: use new iteration API")
+> Cc: stable@vger.kernel.org
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+> Tested-by: syzbot@syzkaller.appspotmail.com
+This is probably not needed.
 > ---
->  MAINTAINERS                 |   1 +
->  include/linux/kho/abi/kvm.h |  79 +++++-
->  virt/kvm/Makefile.kvm       |   2 +-
->  virt/kvm/guest_memfd_luo.c  | 485 ++++++++++++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c         |   7 +
->  virt/kvm/kvm_mm.h           |   4 +
->  6 files changed, 571 insertions(+), 7 deletions(-)
->  create mode 100644 virt/kvm/guest_memfd_luo.c
+> Changes in v3:
+> - Fix the iter->index++ increment to pre increment(++iter->index)
+> - modify the (count =3D=3D 0) check to (!count)
+> - Link to v2: https://patch.msgid.link/20260622-page_ext-v2-1-135d4cfbc42=
+f@oss.qualcomm.com
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9bfc3c1f6676..16cba790a84d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14418,6 +14418,7 @@ L:	kexec@lists.infradead.org
->  L:	kvm@vger.kernel.org
->  S:	Maintained
->  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git
-> +F:	virt/kvm/guest_memfd_luo.c
->  F:	virt/kvm/kvm_luo.c
+> Changes in v2:
+> - Incorporated comments from David and Matthew to check for invalid PFN
+>   in page_ext iterator rather than checking for NULL section in
+>   page_ext_lookup.
+> - Minor improvement in commit description to include the issue with
+>   page_ext_iter_next
+> - Link to v1: https://patch.msgid.link/20260617-page_ext-v1-1-37ad802b1a3=
+8@oss.qualcomm.com
 >
->  KVM PARAVIRT (KVM/paravirt)
-> diff --git a/include/linux/kho/abi/kvm.h b/include/linux/kho/abi/kvm.h
-> index 718db68a541a..42074d76e04a 100644
-> --- a/include/linux/kho/abi/kvm.h
-> +++ b/include/linux/kho/abi/kvm.h
-> @@ -9,20 +9,23 @@
->  #define _LINUX_KHO_ABI_KVM_H
+> To: Andrew Morton <akpm@linux-foundation.org>
+> To: David Hildenbrand <david@kernel.org>
+> To: Lorenzo Stoakes <ljs@kernel.org>
+> To: "Liam R. Howlett" <liam@infradead.org>
+> To: Vlastimil Babka <vbabka@kernel.org>
+> To: Mike Rapoport <rppt@kernel.org>
+> To: Suren Baghdasaryan <surenb@google.com>
+> To: Michal Hocko <mhocko@suse.com>
+> To: Luiz Capitulino <luizcap@redhat.com>
+> Cc: kernel@oss.qualcomm.com
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>  include/linux/page_ext.h | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
 >
->  #include <linux/types.h>
-> +#include <linux/bits.h>
->  #include <linux/kho/abi/kexec_handover.h>
->
->  /**
-> - * DOC: KVM Live Update ABI
-> + * DOC: KVM and guest_memfd Live Update ABI
->   *
-> - * KVM uses the ABI defined below for preserving its state
-> + * KVM and guest_memfd use the ABI defined below for preserving their states
->   * across a kexec reboot using the LUO.
->   *
-> - * The state is serialized into a packed structure `struct kvm_luo_ser`
-> - * which is handed over to the next kernel via the KHO mechanism.
-> + * The state is serialized into packed structures (struct kvm_luo_ser and
-> + * struct guest_memfd_luo_ser) which are handed over to the next kernel via
-> + * the KHO mechanism.
->   *
-> - * This interface is a contract. Any modification to the structure layout
-> + * This interface is a contract. Any modification to the structure layouts
->   * constitutes a breaking change. Such changes require incrementing the
-> - * version number in the KVM_LUO_FH_COMPATIBLE compatibility string.
-> + * version number in the KVM_LUO_FH_COMPATIBLE or
-> + * GUEST_MEMFD_LUO_FH_COMPATIBLE compatibility strings.
->   */
->
->  /**
-> @@ -36,4 +39,68 @@ struct kvm_luo_ser {
->  /* The compatibility string for KVM VM file handler */
->  #define KVM_LUO_FH_COMPATIBLE	"kvm_vm_luo_v1"
->
-> +/**
-> + * struct guest_memfd_luo_folio_ser - Serialization layout for a single folio in guest_memfd.
-> + * @pfn:   Page Frame Number of the folio.
-> + * @index: Page offset of the folio within the file.
-> + * @flags: State flags associated with the folio.
-> + */
-> +struct guest_memfd_luo_folio_ser {
-> +	u64 pfn:52;
-> +	u64 flags:12;
-> +	u64 index;
-> +} __packed;
-> +
-> +/**
-> + * GUEST_MEMFD_LUO_FOLIO_UPTODATE - The folio is up-to-date.
-> + *
-> + * This flag is per folio to check if the folio is uptodate.
-> + */
-> +#define GUEST_MEMFD_LUO_FOLIO_UPTODATE	BIT(0)
-> +
-> +
-> +/**
-> + * GUEST_MEMFD_LUO_FLAG_MMAP - The guest_memfd supports mmap.
-> + *
-> + * This flag indicates that the guest_memfd supports host-side mmap.
-> + */
-> +#define GUEST_MEMFD_LUO_FLAG_MMAP		BIT(0)
-> +
-> +/**
-> + * GUEST_MEMFD_LUO_FLAG_INIT_SHARED - Initialize memory as shared.
-> + *
-> + * This flag indicates that the guest_memfd has been initialized as shared
-> + * memory.
-> + */
-> +#define GUEST_MEMFD_LUO_FLAG_INIT_SHARED	BIT(1)
-> +
-> +/**
-> + * GUEST_MEMFD_LUO_SUPPORTED_FLAGS - Supported guest_memfd LUO flags mask.
-> + *
-> + * A mask of all guest_memfd preservation flags supported by this version
-> + * of the KVM LUO ABI.
-> + */
-> +#define GUEST_MEMFD_LUO_SUPPORTED_FLAGS	(GUEST_MEMFD_LUO_FLAG_MMAP | \
-> +						 GUEST_MEMFD_LUO_FLAG_INIT_SHARED)
-> +
-> +/**
-> + * struct guest_memfd_luo_ser - Main serialization structure for guest_memfd.
-> + * @size:      The size of the file in bytes.
-> + * @flags:     File-level flags.
-> + * @nr_folios: Number of folios in the folios array.
-> + * @vm_token:  Token of the associated KVM VM instance.
-> + * @folios:    KHO vmalloc descriptor pointing to the array of
-> + *             struct guest_memfd_luo_folio_ser.
-> + */
-> +struct guest_memfd_luo_ser {
-> +	u64 size;
-> +	u64 flags;
-> +	u64 nr_folios;
-> +	u64 vm_token;
-> +	struct kho_vmalloc folios;
-> +} __packed;
-> +
-> +/* The compatibility string for GUEST_MEMFD file handler */
-> +#define GUEST_MEMFD_LUO_FH_COMPATIBLE	"guest_memfd_luo_v1"
-> +
->  #endif /* _LINUX_KHO_ABI_KVM_H */
-> diff --git a/virt/kvm/Makefile.kvm b/virt/kvm/Makefile.kvm
-> index c1a962159264..d30fca094c42 100644
-> --- a/virt/kvm/Makefile.kvm
-> +++ b/virt/kvm/Makefile.kvm
-> @@ -13,4 +13,4 @@ kvm-$(CONFIG_HAVE_KVM_IRQ_ROUTING) += $(KVM)/irqchip.o
->  kvm-$(CONFIG_HAVE_KVM_DIRTY_RING) += $(KVM)/dirty_ring.o
->  kvm-$(CONFIG_HAVE_KVM_PFNCACHE) += $(KVM)/pfncache.o
->  kvm-$(CONFIG_KVM_GUEST_MEMFD) += $(KVM)/guest_memfd.o
-> -kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/kvm_luo.o
-> +kvm-$(CONFIG_LIVEUPDATE_GUEST_MEMFD) += $(KVM)/guest_memfd_luo.o $(KVM)/kvm_luo.o
-> diff --git a/virt/kvm/guest_memfd_luo.c b/virt/kvm/guest_memfd_luo.c
-> new file mode 100644
-> index 000000000000..d466f889c9aa
-> --- /dev/null
-> +++ b/virt/kvm/guest_memfd_luo.c
-> @@ -0,0 +1,485 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +/*
-> + * Copyright (c) 2026, Google LLC.
-> + * Tarun Sahu <tarunsahu@google.com>
-> + *
-> + * Guestmemfd Preservation for Live Update Orchestrator (LUO)
-> + */
-> +
-> +/**
-> + * DOC: Guestmemfd Preservation via LUO
-> + *
-> + * Overview
-> + * ========
-> + *
-> + * Guest memory file descriptors (guest_memfd) can be preserved over a kexec
-> + * reboot using the Live Update Orchestrator (LUO) file preservation. This
-> + * allows userspace to preserve VM memory across kexec reboots.
-> + *
-> + * The preservation is not intended to be transparent. Only select properties
-> + * of the guest_memfd are preserved, while others are reset to default.
-> + *
-> + * Preserved Properties
-> + * ====================
-> + *
-> + * The following properties of guest_memfd are preserved across kexec:
-> + *
-> + * File Size
-> + *   The size of the file is preserved.
-> + *
-> + * File Contents
-> + *   All folios present in the page cache are preserved.
-> + *
-> + * File-level Flags
-> + *   The file-level flags (such as MMAP support and INIT_SHARED default mapping)
-> + *   are preserved.
-> + *
-> + * Non-Preserved Properties
-> + * ========================
-> + *
-> + * NUMA Memory Policy
-> + *   NUMA memory policies associated with the guest_memfd are not preserved.
-> + */
-> +#include <linux/liveupdate.h>
-> +#include <linux/kvm_host.h>
-> +#include <linux/pagemap.h>
-> +#include <linux/file.h>
-> +#include <linux/err.h>
-> +#include <linux/anon_inodes.h>
-> +#include <linux/magic.h>
-> +#include <linux/kexec_handover.h>
-> +#include <linux/kho/abi/kexec_handover.h>
-> +#include <linux/kho/abi/kvm.h>
-> +#include "guest_memfd.h"
-> +
-> +static int kvm_gmem_luo_walk_folios(struct address_space *mapping,
-> +		pgoff_t end_index, struct guest_memfd_luo_folio_ser *folios_ser,
-> +		u64 *out_count)
-> +{
-> +	struct folio_batch fbatch;
-> +	pgoff_t index = 0;
-> +	u64 count = 0;
-> +	int err = 0;
-> +
-> +	folio_batch_init(&fbatch);
-> +	while (index < end_index) {
-> +		unsigned int nr, i;
-> +
-> +		nr = filemap_get_folios(mapping, &index, end_index - 1, &fbatch);
-> +		if (nr == 0)
-> +			break;
-> +
-> +		for (i = 0; i < nr; i++) {
-> +			struct folio *folio = fbatch.folios[i];
-> +
-> +			if (folios_ser) {
-> +				if (folio_test_hwpoison(folio)) {
-> +					err = -EHWPOISON;
-> +					folio_batch_release(&fbatch);
-> +					goto out;
-> +				}
-> +				err = kho_preserve_folio(folio);
-> +				if (err) {
-> +					folio_batch_release(&fbatch);
-> +					goto out;
-> +				}
-> +
-> +				folios_ser[count].pfn = folio_pfn(folio);
-> +				folios_ser[count].index = folio->index;
-> +				folios_ser[count].flags = folio_test_uptodate(folio) ?
-> +							  GUEST_MEMFD_LUO_FOLIO_UPTODATE : 0;
-> +			}
-> +			count++;
-> +		}
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
-> +	}
-> +
-> +out:
-> +	*out_count = count;
-> +	return err;
-> +}
-> +
-> +static bool kvm_gmem_luo_can_preserve(struct liveupdate_file_handler *handler, struct file *file)
-> +{
-> +	struct inode *inode = file_inode(file);
-> +	struct gmem_file *gmem_file = file->private_data;
-> +	struct kvm *kvm = gmem_file->kvm;
-> +
-> +	if (inode->i_sb->s_magic != GUEST_MEMFD_MAGIC)
-> +		return 0;
-> +
 
-How does .can_preserve decide route to this function? If it already
-routes here, wouldn't this inode definitely be a guest_memfd file?
+LGTM.
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-> +	if (kvm_arch_has_private_mem(kvm))
-> +		return 0;
-> +
-> +	if (mapping_large_folio_support(inode->i_mapping))
-> +		return 0;
-> +
-> +	return 1;
 
-Let's return true and false rather than relying on casting.
+--=20
+Best Regards,
+Yan, Zi
 
-> +}
-> +
-> +static int kvm_gmem_luo_preserve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct guest_memfd_luo_folio_ser *folios_ser = NULL;
-> +	u64 count = 0, gmem_flags, abi_flags = 0;
-> +	struct guest_memfd_luo_ser *ser;
-> +	struct address_space *mapping;
-> +	struct gmem_file *gmem_file;
-> +	struct inode *inode;
-> +	pgoff_t end_index;
-> +	struct kvm *kvm;
-> +	int err = 0;
-> +	long size;
-> +
-> +	inode = file_inode(args->file);
-
-I think to lock out all allocates, you'd have to take
-filemap_invalidate_lock() before freezing.
-
-> +	kvm_gmem_freeze(inode, true);
-> +
-> +	mapping = inode->i_mapping;
-> +	size = i_size_read(inode);
-> +	if (!size) {
-> +		err = -EINVAL;
-> +		goto err_unfreeze_inode;
-> +	}
-> +
-> +	if (WARN_ON_ONCE(!PAGE_ALIGNED(size))) {
-> +		err = -EINVAL;
-> +		goto err_unfreeze_inode;
-> +	}
-> +
-> +	gmem_file = args->file->private_data;
-> +	kvm = gmem_file->kvm;
-> +
-> +	gmem_flags = READ_ONCE(GMEM_I(inode)->flags);
-> +	if (gmem_flags & ~(GUEST_MEMFD_FLAG_MMAP | GUEST_MEMFD_FLAG_INIT_SHARED
-
-Why condition this on MMAP?
-
-After conversions lands, we'd have to iterate to check that the entire
-guest_memfd is shared offset-by-offset instead of checking for INIT_SHARED.
-
-> +				| GUEST_MEMFD_F_MAPPING_FROZEN)) {
-
-This would always be true since kvm_gmem_freeze() is done above.
-
-> +		err = -EOPNOTSUPP;
-> +		goto err_unfreeze_inode;
-> +	}
-> +
-> +	if (gmem_flags & GUEST_MEMFD_FLAG_MMAP)
-> +		abi_flags |= GUEST_MEMFD_LUO_FLAG_MMAP;
-> +	if (gmem_flags & GUEST_MEMFD_FLAG_INIT_SHARED)
-> +		abi_flags |= GUEST_MEMFD_LUO_FLAG_INIT_SHARED;
-> +
-
-Is it intentional to have a different set of flags that are actually
-preserved? I think we should refactor out a function to transfer the
-flags over.
-
-> +	end_index = size >> PAGE_SHIFT;
-> +
-> +	ser = kho_alloc_preserve(sizeof(*ser));
-> +	if (IS_ERR(ser)) {
-> +		err = PTR_ERR(ser);
-> +		goto err_unfreeze_inode;
-> +	}
-> +
-> +	/* First pass: Count the folios present in the page cache */
-> +	err = kvm_gmem_luo_walk_folios(mapping, end_index, NULL, &count);
-> +	if (err)
-> +		goto err_free_ser;
-> +
-> +	ser->size = size;
-> +	ser->flags = abi_flags;
-> +	ser->nr_folios = count;
-> +	ser->vm_token = 0; // It will be set during the kvm_gmem_luo_freeze()
-
-I don't think // is commonly used.
-
-> +
-> +	if (count > 0) {
-> +		folios_ser = vcalloc(count, sizeof(*folios_ser));
-> +		if (!folios_ser) {
-> +			err = -ENOMEM;
-> +			goto err_free_ser;
-> +		}
-> +
-> +		/* Second pass: Fill the metadata array and preserve folios */
-> +		err = kvm_gmem_luo_walk_folios(mapping, end_index, folios_ser, &count);
-
-I think it's clearer to just define 2 functions rather than using the
-same function twice to do these different things. The comments on the
-two passes can then be dropped.
-
-> +		if (err)
-> +			goto err_unpreserve_unlocked;
-> +
-> +		if (WARN_ON_ONCE(count != ser->nr_folios)) {
-> +			err = -EINVAL;
-> +			goto err_unpreserve_unlocked;
-> +		}
-> +	}
-> +
-> +	if (count > 0) {
-> +		err = kho_preserve_vmalloc(folios_ser, &ser->folios);
-> +		if (err)
-> +			goto err_unpreserve_unlocked;
-> +	}
-> +
-> +	args->serialized_data = virt_to_phys(ser);
-> +	args->private_data = folios_ser;
-> +
-> +	return 0;
-> +
-> +err_unpreserve_unlocked:
-> +	for (long i = (long)count - 1; i >= 0; i--) {
-
-Not sure if it's common to define long i inline.
-
-> +		struct folio *folio = pfn_folio(folios_ser[i].pfn);
-> +
-> +		kho_unpreserve_folio(folio);
-> +	}
-> +	vfree(folios_ser);
-> +err_free_ser:
-> +	kho_unpreserve_free(ser);
-> +err_unfreeze_inode:
-> +	kvm_gmem_freeze(inode, false);
-> +	return err;
-> +}
-> +
-> +static int kvm_gmem_luo_freeze(struct liveupdate_file_op_args *args)
-> +{
-> +	struct guest_memfd_luo_ser *ser;
-> +	struct gmem_file *gmem_file;
-> +	struct kvm *kvm;
-> +	struct file *kvm_file;
-> +	u64 vm_token;
-> +	int err;
-> +
-> +	if (WARN_ON_ONCE(!args->serialized_data))
-> +		return -EINVAL;
-> +
-> +	ser = phys_to_virt(args->serialized_data);
-> +
-> +	gmem_file = args->file->private_data;
-> +	kvm = gmem_file->kvm;
-> +
-> +	/*
-> +	 * Obtain a strong reference to kvm->vm_file to prevent the SLAB_TYPESAFE_BY_RCU
-> +	 * file memory from being reallocated while it is being processed.
-> +	 */
-> +	kvm_file = get_file_active(&kvm->vm_file);
-> +	if (!kvm_file)
-> +		return -ENOENT;
-> +
-> +	err = liveupdate_get_token_outgoing(args->session, kvm_file, &vm_token);
-> +	fput(kvm_file);
-> +	if (err)
-> +		return err;
-> +
-> +	ser->vm_token = vm_token;
-> +	return 0;
-> +}
-> +
-> +static void kvm_gmem_luo_discard_folios(
-> +	const struct guest_memfd_luo_folio_ser *folios_ser,
-> +	u64 nr_folios, u64 start_idx)
-> +{
-> +	long i;
-> +
-> +	for (i = start_idx; i < nr_folios; i++) {
-> +		struct folio *folio;
-> +		phys_addr_t phys;
-> +
-> +		if (!folios_ser[i].pfn)
-> +			continue;
-> +
-> +		phys = PFN_PHYS(folios_ser[i].pfn);
-> +		folio = kho_restore_folio(phys);
-> +		if (folio)
-> +			folio_put(folio);
-> +	}
-> +}
-> +
-> +static void kvm_gmem_luo_unpreserve(struct liveupdate_file_op_args *args)
-> +{
-> +	struct guest_memfd_luo_folio_ser *folios_ser = args->private_data;
-> +	struct guest_memfd_luo_ser *ser;
-> +	long i;
-> +
-> +	if (WARN_ON_ONCE(!args->serialized_data))
-> +		return;
-> +
-> +	ser = phys_to_virt(args->serialized_data);
-> +	if (!ser)
-> +		return;
-> +
-> +	if (ser->nr_folios > 0)
-> +		kho_unpreserve_vmalloc(&ser->folios);
-> +	for (i = ser->nr_folios - 1; i >= 0; i--) {
-> +		struct folio *folio;
-> +
-> +		if (!folios_ser[i].pfn)
-
-Is it possible for pfn to be 0 here? Perhaps this should be a
-WARN_ON_ONCE().
-
-> +			continue;
-> +
-> +		folio = pfn_folio(folios_ser[i].pfn);
-> +		kho_unpreserve_folio(folio);
-> +	}
-> +	vfree(folios_ser);
-> +
-> +	kho_unpreserve_free(ser);
-> +	kvm_gmem_freeze(file_inode(args->file), false);
-> +}
-> +
->
-> [...snip...]
->
 
