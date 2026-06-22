@@ -4,125 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D06BCD98F0
-	for <linux-mm@archiver.kernel.org>; Sun, 21 Jun 2026 23:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4613CDB466
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 00:16:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7BD26B0088; Sun, 21 Jun 2026 19:01:13 -0400 (EDT)
+	id 71CEE6B0088; Sun, 21 Jun 2026 20:16:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E06F06B008A; Sun, 21 Jun 2026 19:01:13 -0400 (EDT)
+	id 6CDEB6B008A; Sun, 21 Jun 2026 20:16:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CCDBF6B008C; Sun, 21 Jun 2026 19:01:13 -0400 (EDT)
+	id 5BE596B008C; Sun, 21 Jun 2026 20:16:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8A06B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 19:01:13 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 099E3404E1
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:01:13 +0000 (UTC)
-X-FDA: 84905442426.15.EB35BE2
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B78E8140008
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:01:10 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=XUhy6sJs;
-	spf=pass (imf26.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782082871;
-	b=TfK6ki7fELWnMlUfdmxZinE+gobhIMxx8BKYninYPqbadwd3iM/15K3cLqX5UZtZHoAj8c
-	8IMKpItrDv+LloSzX2l+bNG8ZmQaYRE+EOej8YWye37nRV6Cc1vs3B8sVnTMlUC1jFWyfX
-	/lip9SJ5J4LWqyC815INcHdXYeVNIyM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=google header.b=XUhy6sJs;
-	spf=pass (imf26.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.46 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3560F6B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 20:16:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9964A404F7
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:16:10 +0000 (UTC)
+X-FDA: 84905631300.18.5AE37BA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 92DD140003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:16:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMLhsAtt;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782082871;
+	s=arc-20220608; t=1782087368;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ayxpk5lMi8kgF5G790ndxiShXBXkVm3vjul0YcGB4oE=;
-	b=GbE2qeayXr/aJD8EyXAfWWbqKHyo2IK7eGG/bAuiFy0MKcxl6aMFezGhfXCy6aJmjNv/xU
-	IBxTAvkL8Xei4sdJ5VpmJ1FtfrE0fo4JT6q6tdtSJ0OZirTHWN7qVneQt7U2ZfgkmJVdUS
-	KvM/dUinWsKIFunnNCUgoqcEQ9CROOM=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bec450b950dso524145466b.2
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 16:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1782082869; x=1782687669; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ayxpk5lMi8kgF5G790ndxiShXBXkVm3vjul0YcGB4oE=;
-        b=XUhy6sJs/CSyCWLiynEw1Xl+/inMzCqiCOq7ay+AH+5+nlflSXB6tZzQJaHt8WQ2sF
-         Wau23ah5ZJuY+9Vs8uC3H33baNJ+kQJIuzXpZg79LT6f4WXiy6gzQtOzvIoxDQ02hchP
-         AcZrOKxOxMGpCGCbXAs4iPJlwdsxDWtyQ+sqI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782082869; x=1782687669;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ayxpk5lMi8kgF5G790ndxiShXBXkVm3vjul0YcGB4oE=;
-        b=AJ2h8iPG82dlPr9CzI6PFGAP7w22m9xZRYHcpOWIKatmXOnOMY7oupXUqcsBrDG2WH
-         g72M4in4ypfIi49FTKQmIKrZwCTKanAF1XphaT8//dCL3erNILJV3ZTSCmMNq8hGh1wX
-         riNf1FIeElOhGtgR88D20kK61txpS7CmJNZkYXwYIX8speskgOZRrBMfYsZQ+ICTsoPB
-         AfqQXI3OemecMs0NJYDxzL/IoqVGS0DlxMJMjjEfMnuQK5X25kZ8sqVUpl5Ta/+dy02E
-         jnboCsDgx38EpdFWNTAFdaASm3/zVoTCAnzSWes7gOQ/NN2YJA49ipOM5b+yrVlFQgRI
-         KjBA==
-X-Forwarded-Encrypted: i=1; AFNElJ8oN551+r9fb+PhGCkSRiaYvbalG3StqlWhgbuTyFWT9EDCVSW05/pmDCULiBnC5J4sOvMzqVAazw==@kvack.org
-X-Gm-Message-State: AOJu0Yyj9PiAdBQKyMUIFDRktsobNd2aKaaJdXPyckCGWSY/Medtinel
-	3+5y+sDmfzTSMtHVJhlYRcJ0+H69Beah7qAx66QERNYp4IBA/U1mH4ZbZtXyVTCgC3cqRyrdlMq
-	9sRD3Pq/6xw==
-X-Gm-Gg: AfdE7clbH8zlRbEvWdab0sPbiaCWC/n4/j/vHQLSUNvcy+4GiuUnboStvnGZVHouC6M
-	jipWQHfWfv6d5+GV+ofkWpasiypabnFaHLEaFlK7iW1NgRBE8D2Jz+3IhxtMAtvlm/gedyYCW1A
-	uyQGvjyI+KuJ5g7MKvHq9M0UzZ0ZiZIV/zsND3PH7c9kBvO3SY2+N6M0wQiN16z9FJ0PFkW2QQW
-	6NQzoV1JiWCwOzMXCSgLrNQmgH8QuZf4693Tsh1H7DOLYa47jnDNAvHHQxSHhxfc61LPtlrKN0l
-	XptAO99nmOedNgONMZK47QC+f7sNsCNLn+roMuhaWVXxWeKG6Xcr4GLyFyYFeLkbfaYGEkUtzNA
-	0kShdLCvyu4CERK4Zdxz6WIuDQNiIx8UwdjPlofeA+tVGBuXnJEW9+4vlgdlphFQoQyvxVbqdMs
-	PiSOp4QSs9ol4B3KbluxW6/TBFhYfQZvd/FQooMysHO4kpDS90+1T7Hp082E66c4EZHuNSv5o=
-X-Received: by 2002:a17:907:d649:b0:bd3:6ec5:f141 with SMTP id a640c23a62f3a-c0b743ac8ffmr561758366b.30.1782082868840;
-        Sun, 21 Jun 2026 16:01:08 -0700 (PDT)
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c60ac80c8sm243679166b.40.2026.06.21.16.01.08
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Jun 2026 16:01:08 -0700 (PDT)
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bec450b950dso524143866b.2
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 16:01:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/7hzcZJAZUPK4TRV4e19HKsoB7Jzyqtt+H3kjpUsy5yPhEWn+mgRz4VlxMXTQBoV0RGu/exOj+Fw==@kvack.org
-X-Received: by 2002:a17:907:7254:b0:c06:5ce4:7ca0 with SMTP id
- a640c23a62f3a-c0b75b9034cmr501551966b.53.1782082433619; Sun, 21 Jun 2026
- 15:53:53 -0700 (PDT)
+	bh=IHIwIiKiSPJeb13YpcTgfxJcsK09+PRa0/JU1j/CnWg=;
+	b=mBCesKQ5BjXFRMQRqZaiySXuEZ6xWjYD/Wgwa592sgAHcwm5Q3w9QWx82eTWm5UsUGGWZr
+	vfWcHR7qdZxm3PZRUwss8flqZtcMdpyL71UyPjtRFhp0NaJaGlxOMliRBTYbXnnrjJ5IYs
+	OqGferWcHG/DhWHFm4xKZ2x3NDL45us=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cMLhsAtt;
+	spf=pass (imf04.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782087368;
+	b=PuoqT5VtTqqRfkGCWEgz71Tu9AOR0hCUpU5TodjyP14J4YmQ/BBVvtshOsQKIc4Y78OnFg
+	ET0gzv9CuKwgFbsXtCg7KEM+wgGwd5WckL91MeYDJhQxxlFWdY3XNk2rwVn+nQr5vHASsZ
+	awLXIQWTJOrbW8p4RuFrrfN0UiRufY0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 87AAE443B4
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:16:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5870E1F00ADE
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 00:16:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782087367;
+	bh=IHIwIiKiSPJeb13YpcTgfxJcsK09+PRa0/JU1j/CnWg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cMLhsAttTe8dyYAVQ5ButgRPTCNVZUjJ+rFUJS/Nb+BEGqhTUydcs0LU3Lix/Z3ek
+	 KD0MCI/yAPBWlN6wb7sqDiwlAttozmfCiUFWz9O3jE4hYXuyhq8p1QaOAF9Rxm+bPp
+	 zboU9r+goMAm9xbYv8LFtKEEZ5j6ZLteAPSQZ6OcSh5MIs/62zPpZIj5oiIaFmvUDR
+	 QC6ZRHtySEUkXZIEInSyph82+HpL4LpnJ7gqwRc/Aciq0eNZH9YLMUThL9XzXyeqjI
+	 Rm0VjsR1+yxuogHe+HIFTcJ5KRUzQnReJU7/nUzkEoFcP0eQK2LX+MLHdOMaRBfjL5
+	 BYH2jN1C6LQGQ==
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-517863a2edfso29922891cf.1
+        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 17:16:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8y7IUqB22JQg94O0iU8CWAnAQN/20hUOKO1SQko71/Ea88qsQHJ66y3RH+hy1WuP5sQ972Ab5Myg==@kvack.org
+X-Gm-Message-State: AOJu0Yy1aSwUqbJhAQRN1KA6bsHI9xeAL+fP7VhlLnK//9E51IGgi/OI
+	+Bpwctnz4ucg6TF/xJ9pKUDWwoX15zuuOGg6eCOXS32tcOHbvNKMb0+14eDUKYkDSVvfeaKAPp2
+	c98lrrIeLR+CaMjbSmDOd/CGQ0NyGhCY=
+X-Received: by 2002:a05:620a:2991:b0:920:bc4a:6d9f with SMTP id
+ af79cd13be357-921d185ff31mr1291391485a.25.1782087366553; Sun, 21 Jun 2026
+ 17:16:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
- <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
- <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev> <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
- <839a2ea2755fdddf5af773e006237b07c9e261df@linux.dev>
-In-Reply-To: <839a2ea2755fdddf5af773e006237b07c9e261df@linux.dev>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Sun, 21 Jun 2026 15:53:37 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wg2H=0Uf5skMriD4dhv-UM78UmZwrJ9+QCyq-keQKCubw@mail.gmail.com>
-X-Gm-Features: AVVi8Cc9exsaNG32LrKZVpIWvCzlobZG8EYlo8msA-PdfbSNmBeEMkDNyHrU1Q4
-Message-ID: <CAHk-=wg2H=0Uf5skMriD4dhv-UM78UmZwrJ9+QCyq-keQKCubw@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-To: Gladyshev Ilya <ilya.gladyshev@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, ivgorbunov@me.com, Liam.Howlett@oracle.com, 
-	apopple@nvidia.com, artem.kuzin@huawei.com, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, foxido@foxido.dev, harry.yoo@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, muchun.song@linux.dev, rppt@kernel.org, surenb@google.com, 
-	vbabka@suse.cz, willy@infradead.org, yuzhao@google.com, ziy@nvidia.com, 
-	pfalcato@suse.de, kirill@shutemov.name
+References: <5zdaa5uv5oj27q3taopl3amops57ouxgyfsdveudz4ovmbdw7z@6lwrlyvmhcp2>
+ <CAGsJ_4yKxg1QugcsJi3WD0KVGJKe-zXycgm5D6cRi9vWtNcpDQ@mail.gmail.com>
+ <ag4h87CBd-gph9zX@casper.infradead.org> <CAGsJ_4zA8afu0xXy0WS+tMe-eesDX1W6UBmfAsuouUpcAgK8JQ@mail.gmail.com>
+ <ag4kj84EcKqamdB-@casper.infradead.org> <3be9475b-0e8a-4df8-a130-4262f993973d@kernel.org>
+ <CAGsJ_4xC5LdhuoWV1=tK-RZ5rkjc8aOKOkmb1L_8BG_3gtJhDg@mail.gmail.com>
+ <ahB6QyHgYq8ksj65@lucifer> <CAGsJ_4zxLvZ01i19vdo0xA47T1hxa1VRYvxLmiDhy5q1GDKPRg@mail.gmail.com>
+ <CAJuCfpHTxaU4KdNmefU7C7cWZSLCFDLPdUrnqV6yzxzN+8RQ0Q@mail.gmail.com> <ajhOUdbWsswgQyl2@casper.infradead.org>
+In-Reply-To: <ajhOUdbWsswgQyl2@casper.infradead.org>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 22 Jun 2026 08:15:55 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4ybg5LGYopTUJTh5R2rN6X3uR9xoJSL+RdTYVtm1-xqLg@mail.gmail.com>
+X-Gm-Features: AVVi8CfKzSAPaNgcIJCxOHQBAHV_wanqXUmTigM-8i98Bk0ci-4XCgmSQNzZol4
+Message-ID: <CAGsJ_4ybg5LGYopTUJTh5R2rN6X3uR9xoJSL+RdTYVtm1-xqLg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, vbabka@kernel.org, rppt@kernel.org, mhocko@suse.com, 
+	jack@suse.cz, pfalcato@suse.de, wanglian@kylinos.cn, chentao@kylinos.cn, 
+	lianux.mm@gmail.com, kunwu.chan@gmail.com, liyangouwen1@oppo.com, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	Nanzhe Zhao <nzzhao@126.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B78E8140008
-X-Stat-Signature: n8rjgnqzjcmkqe5gf89omk3xucz7tqse
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 92DD140003
 X-Rspam-User: 
-X-HE-Tag: 1782082870-157753
-X-HE-Meta: U2FsdGVkX1+UfZHiCieMYMyLlUljzeeq6WcGwDkXq2aZWGxoyMfiBBQknmODJtkCo8qvN/d7ZhcPMOjRmP2gbvVupQDv3CmPesfnIneyYQ6Ix0QGW7W0Cv7Vc5wzMwsezbhr2ME4DJgKIZtRnCSZ+mx9lFho0hIn0lCKeYYwwcf87hz2cdSsyEppxOtxoVWKfVi0WkTR5F6ltqc7OvG1jUlba/MiSoM5RP6O75nUOAvh0H6lpHxG3cI1zA5M+KH7a+8okqbA3doYzEOIETzYeP23tRC7HNXZaS82UFFyuYS4s0RQEIradNezvXZ57ve0b0Rbk1Upgitc1ajgFm0AJOvcp5ZHY9uCvoNZL/KNfmor0Ou1G7ngY99Sy1fmQYuRxprmlU3ix4DJKaIbUZWLPHkMWSjG/kCNAlqxD/81Fufs1agp7+CGHz5h97FTHiEg1jD8wdH7sKxMRpsiUFxwCjcOAHitlxVW2DAh4PpTKQF7RvC1hS8trhtZDF9LNqV6HW4KTwkyHPAfXMJr06cO4SlfSAxlw0p9n9UCH49HtinZws/J01SuQgF1tX0CRZolpyQKV4d7Ap8pteJ7HZ8sCp99lv5NcIv6SZCfYeAaF7USMOx2amzi/uzuaB1YTr2WF2cCm1bJIau2mOoj0O0H3X8tyYeA9CFiXJ9soSxMcvxUL4jU8ZgBLkUM8MTTs+e28Eeep7EteeCXEe3Y039CO4ej3V62m7oMrhy1J4B72ywPbn8QHXQnZ7IX4g0dhTQqOZa6WvOnTiakjaPIlDN/OCiuMiIK8y382KsaYc3PTpOrIYCe1BdoX2Bgc/7jNbB4rCvEF2Zki1KZexBEqaxAE7x8YZP8gd0qD8r+sEP2FEm/fK4u9BDU/L+sjD+R+J/KPG7CeXBjKZ2UWWgqMhF/x16mzGFo4L1eM7tJCLciHKRsWqC8l/10mH7w5rrlmAPPqXOJU4krjkG6N+cULst
- hE/dQ8Eq
- QVBOTPkNurIwHd/nlkbIk1VmDbXP3rAzOjeeAgKQvkX5pmjeK0yOwVR4K9DbfPeZ22Z0+3YJrwENYx7wnywe6Z17UNiu82Mq11AbDIdtnqU/XLylV6G65/EF0s08OTgY9LLvyoQ5KWLNS5Kw7joUdcMnCkiBUUXATB+wC9L/i4VWdqPRTtGvUGCcL6qxhi82rZkXGw+LaGxQUGmF5bvZGExQ9HPQf9Bh35c8bItN5HBbIgVb0FOTfbNXFRh7enTsG62KWXiFO1gWCVUeX27E+8iDR0sgLGMlmCIc3pJRixJA1ERxem8wWe1Js0fxJxiQe/BcXtQpKqlcb+56oiTuHJPXAjQ==
+X-Stat-Signature: y41bc19tpc7k1eoepi5uw1d8zyd8awh3
+X-HE-Tag: 1782087368-909090
+X-HE-Meta: U2FsdGVkX18s8eteQaqdvb0rWe4eD7DloPAOkiefoqsm9ufnd+ICX/KdAUQcB4Xic3V7VDOz48hcsc9xgJDtPi2MoP9af4mQG/jEwLwu9ed34cSiXf5p8h0w8gk5WkWdzmVbw65xsZ9Jee7+fltXp+8R837iOno9EZ6in6H5PPBlp+nzdtdPu8LF6pS4bqh5q3rRWyojQhfBkI8ReO8XejVzJcIb4jIY0NQFBluhVp0TGkMh4rO7Cj0qUqHBKZ85HyDfcO/wsYUs1yMdxIX2ypvFRp0nnCQ9Khoht8QJvNZbDXprGNo0xxRDOMfKhJrK3/m9awhliVz19Hjj6/pEynMdSUpP//V/LXqbf1Q2fzKGCySbxZmDuNXBVdishREpz1u9LKUB5T4ckJ/C5+lyTH2HrR0HQqgzwWSaG2kD6gZxbVEWuKmnJoZFZSzGTEb2L8SsF4SThwT+P/3CxhWPXHyC59LnvSMKUr65uZhURjdx8jfuDEaYtK227lpvB4tVpVGBvobicGyAzyLTRK/+ND3qPqTcPTfyY9FLNNI5XhBwp4iYqpm20PPrpBTB06WT1wf+6aXiDlPEhhS5sxyTFNWuunODzojNAtojWTO16q465cIjSXWkF9SH2cMP0YJ22eErMmLA2N45xO8W07ZUcxqA/+nCtLe2wXGG14BuyhGJRraCtN/1VnbTdcsU87hQRRcY8qp377S9UkquU8EydgbeaSWQWPdInnrcWqWnygcygwklMXgw2iVvbcVhdwJWqYc15D9X3u8zN89g4Z2/IexzokfRd8v1k37ZIt+OC6788nT6N+yOsrAP5TLAuI0LdUQ+Ch6+1mg/aACfStgH1Xgt//oYEe8tkNw6uO8ir/301X8yXATNSCLQM4j6EyFjsru62CQSP+GeWwveKtgR1VSz9wv5pvytaUkoBQou/5rEI2+i+TbYGLwZE+PeZ2MUhfjQSePLqlMbiK4iHcT
+ QeTjXHoW
+ WPwacrgCgR3wY5rteJG3q0kVrzCUpBXY1IRohE5/8wJ8pJj3EA27kdRe7yp+TbdPuRF9lKw+TdwTMWM/7wqAvIl6e3x8f9dJYt0YW7uz82p+/Z54VQjVUgxbKgBB3dpX4WCnwbhwvOrxGk3iY1NE2l/v39NS7Jw8E2+p6r6kinkX4Fzyjg5J61Hjaay03lYqgYRU+7G+8jUDPBycxfS//AB9w2hiTNjpMyJBdyh4FBPCDHfQI9faG33SCegHVMhgHjKdffVwYc0ClL5dr14ARER/azrKNhAuG/G3CEcjN48eEVJSbN7rtYxeFCPdWREfeAgshd7JoRBm8NlsvFyZLz6XOnX0QvHmt78fC9W9VOT+Cb4NEXh3u4UeSKwsyjKfbzMcXO48ExHT5l3hLOPSkEtIozKchB0zs4DQP7xNUeweA/OgUcmiIRpjvEpTwWZH1YxtuhhDKhzyegMBb2OE8RH765Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,63 +118,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 21 Jun 2026 at 14:34, Gladyshev Ilya <ilya.gladyshev@linux.dev> wrote:
+On Mon, Jun 22, 2026 at 4:49=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
+> wrote:
 >
-> >  - everybody who sees it go to zero - optimistic or not - does the
-> > "zero to frozen" cmpxchg
+> On Sat, Jun 20, 2026 at 04:48:57PM -0700, Suren Baghdasaryan wrote:
+> > Just checking in on the followup plans. IIUC the RFC mentioned will
+> > try to implement the solution we discussed at LSFMM: splitting
+> > VM_FAULT_RETRY into two flags - one for retrying under per-VMA locks
+> > and another one to fallback to mmap_lock.
 >
-> The problem is -- the zero you've seen and zero you are trying to CAS
-> can be different zeros if the page gets reused fast enough.
+> I continue to hate this idea.  I don't believe that those who were
+> pushing for it have ever tried to understand the whole fault path.
+> It's utterly byzantine.
+>
+> I defy anyone to make sense of this:
+>
+>         /*
+>          * NOTE! This will make us return with VM_FAULT_RETRY, but with
+>          * the fault lock still held. That's how FAULT_FLAG_RETRY_NOWAIT
+>          * is supposed to work. We have way too many special cases..
+>          */
+>         if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
+>                 return 0;
+>
+>         *fpin =3D maybe_unlock_mmap_for_io(vmf, *fpin);
+>         if (vmf->flags & FAULT_FLAG_KILLABLE) {
+>                 if (__folio_lock_killable(folio)) {
+>                         /*
+>                          * We didn't have the right flags to drop the
+>                          * fault lock, but all fault_handlers only check
+>                          * for fatal signals if we return VM_FAULT_RETRY,
+>                          * so we need to drop the fault lock here and
+>                          * return 0 if we don't have a fpin.
+>                          */
+>                         if (*fpin =3D=3D NULL)
+>                                 release_fault_lock(vmf);
+>                         return 0;
+>                 }
+>
+> Wed need to simplify the fault path, not add additional complexity.
+> Josef has said he wouldn't've done the lock dropping had we had per-VMA
+> locks.  We should rip it out.
 
-I don't think re-using the page matters.
+I think you have agreed that, at least for anon vma, we can
+keep the current policy, since anon vma is much more volatile
+than file vma.
+Concurrent page faults and VMA modifications can happen more
+often than with file VMAs.
 
-As mentioned, the only thing that matters is that only *one* entity
-does the destructor, and does it using the data *from*the*page*.
+For file vmas, how much code can we actually remove, given that
+the first page fault might already be holding mmap_lock?
+It could be the case that lock_vma_under_rcu() fails, and then
+on the first page fault we end up holding mmap_lock before
+retrying. So are we also going to rip out the lock release,
+even if it risks holding mmap_lock for a long time?
 
-IOW, for an optimistic failure case, you can't decide "I failed to get
-this page for my use XYZ, so I'll use the destructor for XYZ".  You
-need to go "I failed to get the page for my use XYZ, so I'll use the
-destructor for this *page*".
+        vma =3D lock_vma_under_rcu(mm, addr);
+        if (!vma)
+                goto lock_mmap;
+       ...
+lock_mmap:
 
-I think we do that anyway, but yes, it's worth making explicit.
+        vma =3D lock_mm_and_find_vma(mm, addr, regs);
+        if (unlikely(!vma)) {
+                fault =3D 0;
+                si_code =3D SEGV_MAPERR;
+                goto bad_area;
+        }
 
-And if it wasn't an optimistic failure, but a success - then it
-doesn't even matter.
+If we still need to keep the page fault retry code there, it
+doesn't seem like "ripping out" really reduces complexity in
+the page fault code?
 
-Because even if it was released and re-used, the definition of a
-success must involve having checked that the page matched your use
-XYZ.
-
-IOW, let's say that you *successfully* did the 0->1 transition, amnd
-after doing that transition you checked "yes, that page is still in
-the radix tree".
-
-Then it simply is entirely immaterial if your success was because the
-page was released and then immediately re-used for the same thing.
-
-It doesn't matter that you didn't notice that it might have gone
-through a FROZEN state, and then been re-allocated and put back in the
-tree: the end result is 100% the same.
-
-Yes, between you looked up the page optimistically the first time,
-somebody could have done all the work to put it back in the page
-allocator structures, and then somebody else would have re-allocated
-it again and taken it off the page allocation structures and put it
-back into the page cache radix tree and might be in the process of
-being free'd *again*.
-
-And then you come along later - after you were interrupted by a VM
-delay or whatever - and now you check the radix tree and you see "ok,
-same page, still there, optimistic lookup successful", and you don't
-even *realize* that it was free'd and re-allocated in the meantime.
-But none of that actually matters. Your lookup was a success, you
-updated the count from 0->1, and that page is valid and all is fine.
-
-So I think that yes, there's a kind of ABA thing there, but that just
-doesn't matter. The whole point of "re-check after you got the
-reference" is literally to check that the optimistic page that was
-looked up is good to go. And it is, even if it might have had
-something else going on just before.
-
-             Linus
+Best Regards
+Barry
 
