@@ -4,172 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A63CCCD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 19:44:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09ABFCDB466
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 19:45:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 529986B0093; Mon, 22 Jun 2026 15:44:43 -0400 (EDT)
+	id 8AED76B0096; Mon, 22 Jun 2026 15:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3596B0095; Mon, 22 Jun 2026 15:44:43 -0400 (EDT)
+	id 85F2C6B0098; Mon, 22 Jun 2026 15:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37B886B0096; Mon, 22 Jun 2026 15:44:43 -0400 (EDT)
+	id 6DA9C6B0099; Mon, 22 Jun 2026 15:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EC5CC6B0093
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:44:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 25AF76B0096
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:45:39 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33691C16EE
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:44:42 +0000 (UTC)
-X-FDA: 84908576004.04.E2EECA2
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010065.outbound.protection.outlook.com [52.101.61.65])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4B76520005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:44:39 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fRhYUEeQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.65 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7569C166121
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:45:38 +0000 (UTC)
+X-FDA: 84908578356.04.5F834EA
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf31.hostedemail.com (Postfix) with ESMTP id A884120004
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:45:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QgoGMeqM;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=aft2ZknU;
+	spf=pass (imf31.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782157479;
-	b=ecr/xTo9u6Nayo9vFY2Wx7wSLYy8JMTnCeAJRpUJ9jVMsLCjTkHVt/8LcbTAFSx5orhF73
-	ypA5rX3MGAuJSOzRPuHGEwFHlCmMuc1cxE7DT1sn6NmgUf/vzOoS5Xv8y5dmS9slBIcYjc
-	b14mtGgmFXTrOWdDjNWHBA50I+8CXVQ=
+	t=1782157536;
+	b=ExGly63+uIlRCTx2G9aOjtOOxLALxwk0oxN6hgnNBI6xUskF5/2xS2EMJgvHdzQNT+VzLm
+	yFZCx1fm+LH2x6MmcXOIkyhxHzD00d5N6p4asDmQi77wYXCXcKmQGb4ocRuJc9ounwTMAC
+	ZYcjxBFrvpKNeTv1a+QlWLkG1aC1fHM=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782157479;
+	s=arc-20220608; t=1782157536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XcxLdbg2wMfcO5DViw194V286oVJ72doKU4pBCzXZaI=;
-	b=fmUBp/wNyXluTNx3N6pDr81Vs1AMxnCvy9zqSotO4GwsaEdZP8NN/oYM6RwuDLmlGMz6hd
-	7PVvDL3TTuwIYguOFqMmbrcLUqZU8NPpoQQaq0x7G50z2BMJOKGFSsS3RzpwSPv+tDDMLc
-	cwTqhhSyfZwwegwXp0+TZ3YLPwKtrEc=
+	bh=KjoHWP/GNd8XzkURSsjarJERcmLz0FeprGXlq7m6kmw=;
+	b=B1wyqwIZm6TcnNBfHuicPzgp9Eq4tJ/3EGPNwwy4+oXXUOFunc+cLefHVYJykzpRi3669q
+	fSwMgp+95D/4pcMEonAS43TRb7e+Nungz3PChFQ9S0SM60/dND0JURZVMCTZ7+87AVIK7R
+	pWwC/lggtatyqcXnayQ8eJJzcEOEJhU=
 ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fRhYUEeQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.65 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r1+hpoMCE7Ik+GXJYwmDLd+i8WeoqBl4HTeWVyQ7bRNh2iWIZQTpGpunUEZfsEiU+29N+h2kfgLBUV1UIC/OUXg8x5djF0wejvaKnQJWGWvhF11OMNC0gi9FUPDrkqUvPE1hiLsEuhwyxl1aICz9k26gKxlys2UoIzxYwwJeFV7bQGvS3ev2IfkxS0rk3dGaigSHwSMmU357G/cma1Y09gCx4SDTLdUidh/1EuZpLsOrjDadE7TqsixKBpxqNa3JGa8W0c+13b+G1yoknHHo5Fqlb2+HDoEPR8r7PW12C3hegCYhYJbT1qFvHoK6FC42zLH0X6M2e0jSaZlC74Lo3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XcxLdbg2wMfcO5DViw194V286oVJ72doKU4pBCzXZaI=;
- b=OnSaTxP/S3rfbKfqBSCWGdvKtMkY35vOlgEUTMigFbpA4RxevTmqrGxMZawNp6ESynnr6K8wzeCbV7IevaOo1YL78V3xV8bfsxS4xXaP5vM6FgWb/y/BM6q9k23t6gei5yvK9HiicpNxBqSlY/1tl+HzP5qH4VMhhhoU5UvlfBwWeDOY1FwaUPpF3gabNkucVvHw8xUfhGW/nVO1PwLZLNBN7UPpGjLD0rmNQaFLlzQmvi9M/O/K57XXwuioASiHi498OOVE9pPtOs2/0q1fcr7WFoFmyC+CHn+bAAQVW+yOIsjsVPmUa0f1TqQKPdv61n1GEbXxEomLXlzt3xbFwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XcxLdbg2wMfcO5DViw194V286oVJ72doKU4pBCzXZaI=;
- b=fRhYUEeQf2G1jIffEBcGxT6Q68DgMo/9qv67il4rEtCiu9hl4XRXOtX1mg8Zm3G3qaL8no0cVNLqvYPYGkogABUW68ZnG3HC1uPLm7QdqysMDYYwerNY+cipaTyq0KccqKWzX8UgS8IzzjnIOWUP3YVX+paTss9qtSOzYvWPcrHYwLUu/nFlBSkQnCxL1OSaTde5OMwKbBh9J+w9izjpFTrLL5ZzSj2Do9yg8ROWYRwjpcf7FpxyoCGcmeTo7C47otsZ2Rjjr8F+gwckwaE7AWhTz+k10pfh5Ow6d0O8adL9x2c2Edz3cPyEnWRAfYxKS4N707gVf6HSal9bn28nIw==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS7PR12MB8081.namprd12.prod.outlook.com (2603:10b6:8:e6::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Mon, 22 Jun
- 2026 19:44:33 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0139.018; Mon, 22 Jun 2026
- 19:44:33 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 22 Jun 2026 15:44:32 -0400
-Message-Id: <DJFU3KAWA9Q0.7PMOHCSBGIIF@nvidia.com>
-Cc: <kernel@oss.qualcomm.com>, <stable@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Matthew Wilcox"
- <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>
-To: "Ketan" <ketan.kishore@oss.qualcomm.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
- "Brendan Jackman" <jackmanb@google.com>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Luiz Capitulino" <luizcap@redhat.com>, "David
- Hildenbrand" <david@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v2] mm: page_ext: add count limit to page_ext_iter_next
- to prevent invalid PFN access
-X-Mailer: aerc 0.21.0
-References: <20260622-page_ext-v2-1-135d4cfbc42f@oss.qualcomm.com>
-In-Reply-To: <20260622-page_ext-v2-1-135d4cfbc42f@oss.qualcomm.com>
-X-ClientProxiedBy: MN2PR18CA0016.namprd18.prod.outlook.com
- (2603:10b6:208:23c::21) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	imf31.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=QgoGMeqM;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=aft2ZknU;
+	spf=pass (imf31.hostedemail.com: domain of ketan.kishore@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=ketan.kishore@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65MJbA5x2205753
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:45:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	KjoHWP/GNd8XzkURSsjarJERcmLz0FeprGXlq7m6kmw=; b=QgoGMeqMygnqk2Y/
+	joGIOnPfDp06RjLx8Df6pM0vBcNl5GbpKU5S33Bs0SIAJLQ6pTovIWZ5NqQ6CXDo
+	F/J9Vx4RaeWCDHgi97HLJ3yVOmg4do/SMz7fIBes++CZrkW2cCkeaJ8fbaf/HuVK
+	avK3HNNor+QK8q+mbhnmE1cLRbp9CxZ9jtBijcAyEVHF0L1+9ythRuMz3oYcuBxp
+	8528JW9aYMK8PLg4k9Y0coDTc2P1Ithl18BYKzFCv5hP/cnBEonlrrb7G9rp1CZr
+	ZRwzaePlQEUKLtPZ3pNJIHloTFG4HI2yhA4Foh54ES8o4upQcKASI9HDw+pCOmuF
+	S3pPVg==
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com [209.85.128.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ey6tms6hb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:45:34 +0000 (GMT)
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7df25ce3000so106594127b3.1
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:45:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782157534; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B5/38wYk+fhrZx7GXlxvry3KTXGjA6TB+Hp4zOydTE0mwIbYSfFbFBfGumDXyr8SMd
+         ncLH2gKMCIqZEe8X/JHhEMAPAgp3WHJWj7ky5NqCvfZIRCaAjdQ/1Ze+dT/miGywa1Ci
+         jim7GZKsO54ny+rLtu/bo3gtNQcUCqYc2J9Hd8FzoUFCrx2qBqzUcWsb8EPHsagzCCGH
+         4GQPA1i0HfqCYJmwYDLD4Kal+OCnpFRO5cMfPAJA/VVB8ulC8q/+4dUHm8e9AzR8NMsU
+         Z4vXRbBVh8nlcnC4oAqtfaHwQ1PLi+5WjCmEC2sirRJUHySXdKCz9VrlQXnW5pUmQhi1
+         HGjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KjoHWP/GNd8XzkURSsjarJERcmLz0FeprGXlq7m6kmw=;
+        fh=sWGkgon96dKr00cnjLyFWMbbYTBNro5SxgJ2z3TF8/g=;
+        b=Ixl60QtGvkZ+615PRuARu9iB6d42HzYFd3P2OV/WbLSKor2xJlquWFDz9Saxyvkqby
+         sYeQuZn7gNcvDRnibfcoCEiYXY590RcDPcWyfsqcG4KnhVgVo1V9JvR3NTfDgPwFCdwS
+         MLncIRck43v7Woee9pJmFN8xQZjCkpSsvP7/D9oUrpqusnjyHUSMgXILAdayAXqbtP5z
+         KxWooioFnWYXoIEPQscmgtztURHmq7Hl9csmw/uHUSu9YurnglAxPurT0/bYyfMPwnZx
+         Gs1jRq/b6oqOon+fujXP01EE1+XYLoP1uYI15CV0OKKAvz2h8M22uuzHrUHlWvzp16Vr
+         XFxg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782157534; x=1782762334; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KjoHWP/GNd8XzkURSsjarJERcmLz0FeprGXlq7m6kmw=;
+        b=aft2ZknUyItOeazS1nc1ZzigTm6BPIbVb6enO6C5IR1lmY4gA6yGf+FihgxeDdZNlk
+         gn7auC1RBKVsc2G5B0IvlIY238DUodcLkgVDo1Fau3AQ94RMUZyJ1LwzldFWZbcfd3DJ
+         fdGg0tThvC0W/3WHF1tzM/n2LDKvqib1F+IOHT49hB4umxWxhvgEMr8UCQSjGOCqMCN0
+         9wAJ4EC0qqAUZy3c8JnUcaiMf7syhj4bkuyTJ/Ctu7J5RuptuOdPMtRQQx4yCTADjcoh
+         +jajyvB/RmQoXHAr+rwvnjQTwCp0f+O+aIQw0OEvsAG2BiAM77Ks9utWSk9kD6SS7Cnt
+         EMRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782157534; x=1782762334;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KjoHWP/GNd8XzkURSsjarJERcmLz0FeprGXlq7m6kmw=;
+        b=pQrGdnU9/MD1+qO5VyW9yqCFqJrQFoCEY4hfbvrIY7g5Go7KXGN8E2dvEYTK2o3gLR
+         htZIp/WAgsiangWeDnKFoAAgqjV1FC8pLUUcx7KY2E3DVosvUZ7K8ETw6yZOATazubAp
+         1iFbB4RMfWXyIfxOBe913/x9Q/bzzJmu7i4TXoV4AEUZeDWHUgvIFK07wqmBsRIZEVAG
+         hBH0sbK1j7LLtUHjy82V68smUEdUIvcqeRehP/zq9Klwa/wKe+hV6xDITf7DqwqyUgsc
+         72Es9/tTrTQjNN7urLNrG+16qGPue4+wdA8fR7uVlwlbz64lDflLcAeG4BcYaFdQrM3N
+         103g==
+X-Forwarded-Encrypted: i=1; AHgh+Rql1wrZvxara1ErGmExwI9WCn9MdChA82CARXLv1gAfQabnewzkJRZ8ZAVs7cuHE6NINmKD5YyCaw==@kvack.org
+X-Gm-Message-State: AOJu0YztAHfyx/FDFWPiPD4WxQPaPEI+i/Isal8us+6pYEL+GKDaX/cr
+	Qbc3+TKlHNe6AsZ8GqpGdWLt8xV7OkiiwcZugsMJ4AKvujPzPexbM2wfdd5UD+wwlbpzMx0C0+O
+	rF1VxTqEGwOeLMS+gZ1F5Iyb5zhxBWg94cQG+rXHtiPg7DQe76onq9fBnJporqSoCcQMJ/maTmP
+	ooy9Lx5Q5jcz9WagkQEEmqczOe3riv
+X-Gm-Gg: AfdE7cmiAd25sKD+fTjiOs1B62E4Rxci9NZJUkIrr6wabIxH0snFbgCjIw4rsW4QBAA
+	oifsmzsvP4JEu63KDZa0NRVhKkPnd45x8MV0tOixfyAnKJ6Atdu5U/RGMOURoTqk6NdTq6tvN3x
+	X8/pVEggHbeDJ/pWezK1jsGPXy4ZG6fUt+ihSHhWDZk04Xdl99u25PUE1wU8H6DZpmMnwD
+X-Received: by 2002:a05:690c:b14:b0:7bd:577d:7828 with SMTP id 00721157ae682-80134c787a7mr171856207b3.31.1782157534033;
+        Mon, 22 Jun 2026 12:45:34 -0700 (PDT)
+X-Received: by 2002:a05:690c:b14:b0:7bd:577d:7828 with SMTP id
+ 00721157ae682-80134c787a7mr171855877b3.31.1782157533540; Mon, 22 Jun 2026
+ 12:45:33 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS7PR12MB8081:EE_
-X-MS-Office365-Filtering-Correlation-Id: f5eaceaf-5f96-4e02-ca49-08ded096aecd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|7416014|366016|1800799024|56012099006|11063799006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	P7NbJ0X5e8nxs8Hr9Epmqa926ISX0lLn3IbwHVyszXrzOIWv8KbUNNOImqESwaBN+7nganm0xMSVsNUAOOO45Xns1Kchqa1Qgd+n/F5j+DDhopVxHG6lhKytro0bkyKp+rueHkqsFhqOmNNdkPH1TyPmdO5QPDabd5KvB3XwZc/xfigaHSDBBDsBmAoOviugH/fbIOinAWm6jUgieHTXVBP5UuQmvwrDwzU6qJKdZQtNKi9QUO2fOJoCGmX/uaR/+47/n5sSp3/Ltcu3RvirpTPMGSPMfIKopVImldQpu/6DTbaTCr07tcimhMrvTaYkZ6uDmyNW/h1mG2ODDdcoQ4Be/yT/VZDvab1U77P4xRkO/ETQrWYjBZwFSiv978gImGKDo2ekGIyPgKz485GKEL3oQRKAL/vOS212QK9S986ytWrlYImvo/jcTfJS5liPIfL9xgBB8BW07IX1YHmxCzIlbez9ydRJ8qmXx5MUqEFPKmsKaoh2NiQic0SyClxs8OrdBUnroATCLlwuSAJq0y/HSPEw4oHuZRwnvzL3kdASHYR8trH7FuYC2OmCmhc+wyQjHjO/xcqOiLKCEiY4DdBBhdTJIo9tl4kCrGj9nIzu0l7co/kPuqut9lRTybmgq1AhCaapqBedY0haIcvGSkuObVa1Za9dEC0CrCozzHQ=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(7416014)(366016)(1800799024)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MTYzQzJwamZ6TTcrRmcyNTVzYTV3QTNwSko0OU9XWVF6Z0N4aHFNcElWLzV3?=
- =?utf-8?B?VENLZkltTWg0S0t1OWlOM3NZNnJhUW5pcGJUZ0pnUjJ5YXp5c1VGZTNiNWJT?=
- =?utf-8?B?dDdybHU2d2ZoVkpvQVVCaGhMRUVNMnBFbk9CcGdQNTVjMWt1OU92TkFjbDYr?=
- =?utf-8?B?M0FuQ1hFNlU3VzcxM3hGQWNpNTRqeVc4YUIwR2hCTy9SODVMWTVHU0tWNHJJ?=
- =?utf-8?B?dW5RVjlrbDRibCtBMzJyNngyK1JremVuK1pQTnZ6VTFKTHlIK3A1RGJLQnFh?=
- =?utf-8?B?VEtCaFVLZ0tsQlBqUWJRTkJ5RmIxMlFEWVEwNEdCdFRGcFk4WGZsNjkwaVg3?=
- =?utf-8?B?Z2lmd3lrWXNlc25TMmlNUjJURmVDL0ZlY1FRWUFWaWpWUUJ5bEU1OUFOMS9q?=
- =?utf-8?B?N25kdktLa2N6Z0x1RkdoZDhYWDlEN2JmcCsybGx6TEFmdW0vZTBSTzdZNTBO?=
- =?utf-8?B?SHB6azBnN09JbjE2b0NCK1JTYll5cUM4Q2tRS25CaGo3S1MxTm1VOXJ6M2JV?=
- =?utf-8?B?WXV3LytmVmlIUlpmcTVvSWJ6RVNZTFhpcjNQbVVGcndINU5nTzVGZDEwV2xK?=
- =?utf-8?B?eUhGQnR5QlNhalVOTkZGMk15a0xTM3JkMGgvQWdPdjE1WUdDVXVuOTZHL0t5?=
- =?utf-8?B?aTI3R3Fla3ZGOUZkelcvZ0E3ZWRIY3lsT2diSFF0ZjVuYnBpay9oWTVqcS8x?=
- =?utf-8?B?RThITzVPRXdmdWFZdFJ6V0VQdzQyZXRWYms2c2lDV3dBUGw2VWJVbG1xUjZS?=
- =?utf-8?B?UWtWalo5alJYbFdwcitoM2dEcXlIU2tYZVduYzJrOVdQTHhKSUp3MnBjVmFs?=
- =?utf-8?B?TnRQL1Ryc3h4SHBRZ2N1WXhocU91OTM4S2pRcGRzZnVqNURtekQwYmQyTHJH?=
- =?utf-8?B?akR1OXVSZkptUXVPS1lWZDAxdjFBbnZnOTZ5VzJ0Z25KUmlqTVBqT2t0TEFO?=
- =?utf-8?B?b2hFcWtKbUpjaWRTa1prVVZCSW1aQzM1L0YyN0Z5NVNjczZtaG9TUldDTU9Y?=
- =?utf-8?B?d2ZybURoQ2pHQUVlM2NLbkZYL3pFREhxNkNUMk83SE5SOXpHQ3RiOTlsaUd2?=
- =?utf-8?B?RlVjNDVZSmZFbHNNT2o2Yng4R2tFUVlRNUI4a0RHOS9xWStlTTZsdHBGbWd0?=
- =?utf-8?B?Q05uZ3hUTkVoaU5oNHFscHY1WXpZYm1CWGFKYS91Wjh3amozSkJjRm9qZmpZ?=
- =?utf-8?B?cFJabHVscHRwa1Y4MHNxYUQ1eFZyU3F4WUVTSjVydklTV0s4bVNWdkZrSDVx?=
- =?utf-8?B?UVhUQmVLSjBHWG9leDBNSW5TVEVnRTlJRUVPTjVQUGFMNkhzeFMwZFp6YnUy?=
- =?utf-8?B?bEZCNmc5cHNUekRzS2cwZkQ4eSswL2tjU0ltbnpXT1hlMk5RUjBWWWFXc04v?=
- =?utf-8?B?UXMzUCs1eGl5c1lxTGsyYTI5bVZ5SmlWZ3REVmNRSE4vNURtTmYxbmg1Ykh1?=
- =?utf-8?B?eHVUNmNpQkF1SzZPUWdnZGlNSWFCL1J2SVV2ZFdxN1VWMUp4Qm01NExmYkdB?=
- =?utf-8?B?djNaWE93QlZIdWlUNThmTUYvaC9tVmE0cmlaMDZYeEdPMERyc3Z2U1hyQlY5?=
- =?utf-8?B?ZFh4NkpuU0dnTkJHSU1WTFBSVW5nOTM1dkJXY1BpU0J3RTRnekZnQWVZc1Q3?=
- =?utf-8?B?OUJuQ21vSDdwK2VFbEkxN2lndy84bEcrU0hWaWx6R1FnSXp1OFNaMkdnaTV6?=
- =?utf-8?B?aWZyTnpzWk4yN1JTajJQVi9nYWNMVEh0dzRINEJrN2o0TDg0cUdzS1piQVBR?=
- =?utf-8?B?OTY4QUxJVnR3OEJWYzl2dzhmZlBqRVQwS3NpVzYwTVdHbGZGejlUTmNyNW1k?=
- =?utf-8?B?Y1IyTjRqTnYyRGtMSmpVUlk2VVBNTSszZCt3TXVEWDFzRk1hcUF0Nm5yQysv?=
- =?utf-8?B?Y25OaDJjTVlCZnBmR3R3NGNkdXE3L2xaMDQwaXJGc1ovMjdEcGkrQ09LNndF?=
- =?utf-8?B?bVRRR0xBMUtEOG5NcFdaSmpyeFpEOThSNTRwRWp6VmE3bWZhT2lRcVRTbnkv?=
- =?utf-8?B?MVFkVnpnSFhUSnBGYnhlOG04ejFnTmhVNzhIemtaN3FpaWNTVDB2ZVI1VW16?=
- =?utf-8?B?U0VnK1RqQ3duQmxZMm1yZHZpbC94eFQ0NzJmTGp1ODk2eGRzT1JvRFVVMGxl?=
- =?utf-8?B?eEQ1cUduRGNUZW5ybnVYdTBFVkVSaE91TzRYRDNmc211djNTTDdXRVFPTWx6?=
- =?utf-8?B?bHFYcCt0RzZrdjl5UVU0d3JYeGZvRkw2S2tGZ3FqZzE5cy91M0UxVnNZYVQw?=
- =?utf-8?B?T3U0M0NDN3B1ajBxbTlaRXJkWE5zZ3ViZkU3dW0xdnlTUm1UWCt6WEg4d09Z?=
- =?utf-8?Q?190q+Xs7coO7d7+qE9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f5eaceaf-5f96-4e02-ca49-08ded096aecd
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jun 2026 19:44:33.0957
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0ypw8NYlWhNbknddyeJ5g3qq15rL87kCTC53k1ulLgxQ3aoB4BtldiIBzhI9jXbG
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8081
+References: <6a396a5a.ac26f6c2.9a9c4.0000.GAE@google.com> <88AEEEF8-B9D9-48C8-9069-00E8528BB619@nvidia.com>
+In-Reply-To: <88AEEEF8-B9D9-48C8-9069-00E8528BB619@nvidia.com>
+From: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
+Date: Tue, 23 Jun 2026 01:15:22 +0530
+X-Gm-Features: AVVi8Ce2VS_LW6HKwQlFH8hNBHkfiSM0A_5L0419nLeoXjFofdIM8pmW8_DIuuc
+Message-ID: <CAEuHeqQ+AcNwQGB0a+Buqfs=_S339UD521ryez1NGmwZ_e0Jcg@mail.gmail.com>
+Subject: Re: [syzbot ci] mm: page_ext: add count limit to page_ext_iter_next
+ to prevent invalid PFN access
+To: Zi Yan <ziy@nvidia.com>
+Cc: syzbot ci <syzbot+ci8a7f89fd8f70a458@syzkaller.appspotmail.com>,
+        akpm@linux-foundation.org, david@kernel.org, hannes@cmpxchg.org,
+        jackmanb@google.com, kernel@oss.qualcomm.com, liam@infradead.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
+        luizcap@redhat.com, mhocko@suse.com, rppt@kernel.org,
+        stable@vger.kernel.org, surenb@google.com, vbabka@kernel.org,
+        willy@infradead.org, syzbot@lists.linux.dev,
+        syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjIyMDE5MCBTYWx0ZWRfX6iHoxpJVYZCD
+ C8NRxsulR2GT12sOCGbYVBGkIAjpgHkiDEcKfTeme0naTDApRon6o/fs6NTjF8mfe230CbEmof0
+ XWrUzTM3Ai9XrYOr088kTDa4Q/umB1U=
+X-Proofpoint-GUID: RGS5eiVP-vVTvrzv3Wyu0I9TpGmFbKPl
+X-Proofpoint-ORIG-GUID: RGS5eiVP-vVTvrzv3Wyu0I9TpGmFbKPl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjIyMDE5MCBTYWx0ZWRfX9YceRjbRQlIg
+ PXYonwo18XDKC913csQ5LSnl9mJ9k+UMJfIPORAvl2f9jgw2a94dwedifPqjsmNFhQe5hgYc4Xz
+ qER66kqeQFD+fT/xnbbIAiSBa3txt2EHhQGpEP6TPFjtD4I62azwoi8O+5VKweGpkHYtdXf+k5A
+ dpPvWdikXhIsgZK87jAwDQDzCQxl4xamNKCMebm0FDTKqjiBx3BgOvSfGGzX5iZPvapkHzX40UE
+ GcFTtX//Q/stxig+C1bnHVAw8M19rsFf9sszqcBXSkQhxC0JE140AL5DBlmNbu5K0bo9ROBhaGz
+ r29ZQu6NGKlcg/cgB4B+ROapxQQy/QKLLtG0vUfNERdNFm3BlvtszK3wxeIEP9RfHT5ZIfCuKR6
+ mOIzCfPlxXnwXIq1VVmeqSrxcYBSveYyE1cynXTnK8CSxLcqfMU7qQI+UabmfzQtktQK/F+5Uuk
+ DRUeQi0u6AprBUw8Agg==
+X-Authority-Analysis: v=2.4 cv=H4HrBeYi c=1 sm=1 tr=0 ts=6a3990de cx=c_pps
+ a=NMvoxGxYzVyQPkMeJjVPKg==:117 a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10
+ a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=-ibLmwfWAAAA:8
+ a=Oh2cFVv5AAAA:8 a=Ikd4Dj_1AAAA:8 a=hSkVLCK3AAAA:8 a=4RBUngkUAAAA:8
+ a=Ddikh3kw0lfEB4zVT9gA:9 a=QEXdDO2ut3YA:10 a=kLokIza1BN8a-hAJ3hfR:22
+ a=A6MkUVyZPcTV1i89ro0M:22 a=7KeoIwV6GZqOttXkcoxL:22 a=cQPPKAXgyycSBL8etih5:22
+ a=_sbA2Q-Kp09kWB8D3iXc:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-22_04,2026-06-22_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ priorityscore=1501 impostorscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2606220190
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4B76520005
-X-Stat-Signature: 1a5kwb9ri8ry71dqquxiwdooh3kgryeh
-X-HE-Tag: 1782157479-308596
-X-HE-Meta: U2FsdGVkX1+TVfKN1I2585OB+OL6bLpsZrLU7fv8cQMGc0KayJ4CnCq0vSLliU1oeRLsRfz0zJphuRRYPj3OrhqBTMJ5UonDz9NCJ75Vxn9N7X5aP5O9mnMYZvTj4WLr3VcRKtUxDotePGb5X5VpwE1vavddgSA5bBB8JKD4xOCSk+4RsSe90yFvHZuXwof7q6mYJ23Hf8yDyt/aZmkoVKJpCFa0C11QovS50/e+NqQDqsUFovll9eyaIUPdhSXDoOvrb4/H43QOa2qWdGV6Q06opTDFLjP1skQ1CaC8+ThgysU6PY2PJi50e8vyMcQS4X79YlYv1/eSnaq+swsuN45w+JNIZh5Az/OQKU9rpcqXYc5Y+0G0pUllAHZwdaeFoRoi/4S9drlkYFRGVn5GpDPrdVCS9kPw8p+9gfyDaCb/YwRjeHZmmwYn4SWK/4/F6xF3GleCMGf+aU9mbZAWaJUEXOaSJLYJBX9Q9lkwZGd4jKjMrBPAuZW2R9Jbk20nltClvdN6y9B843SQ2YO/fpigKX/yGzFue26sorG7p+IZJ8ZTsJxwumzyYh6KTz/5NirTpp2BsBUPSmqEQtm/ENeAu/XfR0/CE1sCVdaaSW1WsvWuMJgj5M4cUy5Z8vdxBkmix2As0gih55DV9rU7oaLv4JAs7i91si6ppC8wTYpFlo8xV/nKyIe20afl168RFgPVE/gJRYZWcY8cy/bGFh30LbtTvVfpBYdkGwywLpNzzt2L4gs+CRJO7+AiC+by8xRbS+SY8yYrVkZePzgT/8oHPQ6lo7SShLiq21AQ424uVOxhiUBh+4U10JduUV1kG9yqRCGPvZ7wIGWZSl98f0dyexZ1Wa85NOPIwQu7zaWDyUZn1mXlroYv88RVdeWAvEWbWLU4PyPfKfwfb01rNY1L7wBsnoWY6AmB/K7+HUuRG8YslMC0r91dTNg5cReDzZyQHuuVVJbgJBXtp9b
- GrgwX6DG
- e0yUQrvdNj+TO7TRN2xad/XlRGbIsPFkZRIeFZmXyHhxUP+zQUey3dzTXEp3foRaPR/QedSitzlMVMWkxwXZTr1NN8jrEYhwIYdFzQoEvdPWlRHPCWwkQ2v2lPK0hWuQmK30nsRWsKYx3ANGd9ONz9z5EukPky2lLey4Butxt5+jk4RhJvzhA6/XHGJgy9/BkP43ye5UauS4vv2iCGN5LOfYJeYEc4hWmMdIUKsrmo9JFV3QJBgeWKOECw6CdwdyzZN9WgM4A5lREVbsrRwGMyYic3ZrmmOdlCPmdb9G+zWzpBN8F4len1F8ag+M+JQzk5CNcugx3O+eznVTiH6OquOhGFyEVafTIfhT5UDB7um9L3oT3WQeARef9FhpdfWBd48Rs4/AYuu5UUFDpbdVgHGsyLZraBGrmH4Oa3q1Gk30o5CkAq9iooY6XzMTsVmNYk6q4iuIjtT/o9IYfAvZVbHVrUQQzLsmWfaIVOFLIcyIjsRFt+9SrA0JCIlDdgHrpqVCe1IOWQDASMwzM/6MhXMz6JGM3Rb5aUeZBeiv8qDAL/sFUSVZZ8eoTR9U4qWTTvGCqJUJygYRCili0GZCzWLPfO+wyxRXZ7V2gAmXRnMOLC/qPpXh78z5a8UMUHFMfgLwlicsSzckRaUkhF88aQqonQwKXZ3v2xkI/qSnXxmtzHO6gvYJEq6pImxAWQFehwCFy4/4/IprM3dQfHuNazwyEOQMrElmI3W1iXjVKux3uzytE1AcCKFznU5vEzbuN3KxZdlDSlZFzENk3oeqNr5U1KR8J+HSJbKUtsMKXnqUJCAHlIzSZQ8cbBRHqQjeiyxiv8wFJ7GJjQnU=
+X-Stat-Signature: 4e7yu9gjdjmopy9rd66i4fbhcf4cwjzc
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A884120004
+X-HE-Tag: 1782157535-400374
+X-HE-Meta: U2FsdGVkX18nMi3pJAAIZtM5BgC0qOn/LVE2NeK4s//CMp+ps/uli1ZZ1EqvdZGGozq1axLJ6nwkYsRgfNCMKYI6zdpeiwJHeXKOzjVd/T0cdja0Cszk+wTtIIoNr9+PpuStF1ogDWFRW84YQ2ktqSTSAXw/hZ1lc2uGHYv+/y9i4VGnXk6kk8kgnPoiWfN25hc/wwClfEGufUe/ilq2A/1uTdnCY047wp79iFfMJP7Yp0EnmX6i0ZRG7viuk20yuMZo9cCuHt/HadHufLkAgSFc1u2jTyWdrX4/y2lnSkkdN8A8Alz++LP4755vkwQOK2NC8N6iBPmIA1bzmYAEY+CMEqxy1XUIbYziDa+wwDBmRCPYuUGS/On2PTacTgvhY0CqGTvbVbqwsD0zvcQCNTGsJOH/o9w5uXlb4wS4pJ0EcL71zew8kN9VisOx+39GT0ze4N+kOXIpYDuc2zRqBj6Tq+xdFImx0aPYgmYJPJuyZ8Fs3f1oF4eKK63cl7azzVNTpDOBWd15Cml+2mgrbksNlWWQDAZT3HI98CwTLRVfK/+u7CwzJLLLYIrM4tVs0heDGdAhqbzNyyQUD94dOj+ynRhHoe+ttY5z+x+G7BLwLcGC7F63FykCIO4L/hd6A3gcqEpLy07KJy2TYjyoUjfJbbl2qHXT8xx6/Zk4x3hSNKFveFeT6ZawpeBdnan1lGsZ7t1tXmGYMqSjU7/+AYNsol2ePAyYqRT9CrtDXZ5a2P3Rh8KCUj1c9TTUPHuhxyTNfWbTDnC2LmpZK3hOc6EEL6sRfM7jzZI0gbiLnraOFL5d6okUpgVI2YoBr212U8NV4O0996Vh5X6dAncbmp4tBRfQTCHUvj/O3fJHUNDzGviBvQZ5zwBzepR7/qXE3WTo5BD60YQVS3cEtY7+XMoflavDPyvg1j3BUUhlXtgvpvW6KIiokvT1lbBzdzQdWXS79LYuQPRy4AjkhM1
+ oJotQqQo
+ uYYLc7whVhWxrkwcGyv+sFYBJM7EYtou8ixPFLOxYpKo9IS4LE5Yq1UGrB7tmQSwu6hhzOvhL4MFF7zHetnY+XoyBRu9wkEv0YiosQJdHh/fI4tFd8qzH8MeX2a3YN7kFDeOUuInkVurv/MptCSBvCFJVOqa8R1yMcST9Z9AUdMXLnQIhww9ViK1oeN+PSqh6UR23n/za8pPLZPd0xIPyWauHBWm/OWXNAVkDRvS8Ei4+/SiiCEDXgZlrEd143+68N0igIxLWftf/bFVlmod6XqSXFQfouB07s1UkBft7BoIf7vVUrAXUtaVLnnjGbIkWQQ3kOLJqNvhrHSnGpekLI4/ggb4TNzIV58HjGHdmD6BM9l3OkRiELSHT9v0Iah+Hn3eElVG3hgoRoD4/J1KEgHCMeJ7+bOSq2CQZZdIf+QT8HjO4maCC9oZVaONy8rHsZLq/edK9nNlvGjIId7QAkm5g+mGxQESYG32fRtTGaPqRUSn/8eqTIY3ZA64XMmYWBwfQO+K2OiB93734SopGOXF1wSHs0bf3z60DUwjs8mC1Ye2hLLdefwP/LZWzKsOlLWgFoEZxniDNQuX2yoMF+xXg0oYkjKqWB0A+WnbMLaraLoelbC9/cFtQh+oo67Iu/w06hcqFMNGVvX6+e9JkvzJV2hFI9WxHjPUk2Cmhjc59xSVEGAjbAx++2NymTvEjxNep+aASymu9MOGPP6ObYqOCLsLSvrHUL7rDhdB488ix6DoNUvfKl4kmnOpiNmPDF4IuOgDVOc3DK+IGM3PjuRt2JwuU2t6LJqsk5vx6B4MAupH4sCKY63pqTFdAQre85DH2JfZ93kZ89L8PMgz1Ne/w/ogmdpCuMBjb7lNtR6+O77/++ywyjdTBblBys1lWDFdeOH1Us+POHbs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,124 +195,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon Jun 22, 2026 at 10:14 AM EDT, Ketan wrote:
-> The page_ext iteration API does not validate if the PFN still
-> belongs to a valid section while advancing the iterator. When
-> dynamically adding memory in the hotplug path, it can lead to a
-> NULL pointer dereference during page_ext_lookup at the boundary
-> of the last valid section when iterator count equals __pgcount.
+Thankyou Yan.
+i missed the post increment change from the last v2.
+i am posting a v3 with pre incerement.
+
+- if (iter->index++ >=3D count)
++ if (++iter->index >=3D count)
+
+i think that is aligned with the fix you suggested.
+
+Thank you
+Ketan
+
+On Tue, Jun 23, 2026 at 1:06=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
 >
-> The for_each_page_ext() macro calls page_ext_iter_next() as its
-> loop increment. for_each_page_ext() does a
-> "__page_ext =3D page_ext_iter_next(&__iter)" at the end. This
-> causes page_ext_iter_next() to increment iter->index past
-> __pgcount and call page_ext_lookup(start_pfn + __pgcount).
-> During memory hotplug (online), the PFN at start_pfn + __pgcount
-> may belong to a section that has not yet been initialized,
-> causing page_ext_lookup() to trigger a NULL pointer dereference.
+> On 22 Jun 2026, at 13:01, syzbot ci wrote:
 >
-> [   14.555124][  T846] Call trace:
-> [   14.555125][  T846]  lookup_page_ext+0x6c/0x108 (P)
-> [   14.555127][  T846]  page_ext_lookup+0x30/0x3c
-> [   14.555129][  T846]  __reset_page_owner+0x11c/0x260
-> [   14.571201][  T846]  __free_pages_ok+0x5e8/0x8e0
-> [   14.571204][  T846]  __free_pages_core+0x78/0xf0
-> [   14.571206][  T846]  generic_online_page+0x14/0x24
-> [   14.597782][  T846]  online_pages+0x178/0x30c
-> [   14.597784][  T846]  memory_block_change_state+0x284/0x32c
-> [   14.597787][  T846]  memory_subsys_online+0x4c/0x64
-> [   14.597789][  T846]  device_online+0x88/0xb0
-> [   14.597791][  T846]  online_memory_block+0x30/0x40
-> [   14.597793][  T846]  walk_memory_blocks+0xac/0xe8
-> [   14.597794][  T846]  add_memory_resource+0x280/0x298
-> [   14.656161][  T846]  add_memory+0x60/0x98
+> > syzbot ci has tested the following series
+> >
+> > [v2] mm: page_ext: add count limit to page_ext_iter_next to prevent inv=
+alid PFN access
+> > https://lore.kernel.org/all/20260622-page_ext-v2-1-135d4cfbc42f@oss.qua=
+lcomm.com
+> > * [PATCH v2] mm: page_ext: add count limit to page_ext_iter_next to pre=
+vent invalid PFN access
+> >
+> > and found the following issue:
+> > WARNING in depot_fetch_stack
+> >
+> > Full report is available here:
+> > https://ci.syzbot.org/series/092dd7dc-cb78-46b6-8703-6044fff2631d
+> >
+> > ***
+> >
+> > WARNING in depot_fetch_stack
+> >
+> > tree:      mm-new
+> > URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akp=
+m/mm.git
+> > base:      e1201ff76176ef666b13d1a4ec6b6190ddc6abc8
+> > arch:      amd64
+> > compiler:  Debian clang version 22.1.6 (++20260514074242+fc4aad7b5db3-1=
+~exp1~20260514074407.73), Debian LLD 22.1.6
+> > config:    https://ci.syzbot.org/builds/18f461a2-7098-44bc-9d42-634b56b=
+a48d9/config
+> >
+> > ------------[ cut here ]------------
+> > !refcount_read(&stack->count)
+> > WARNING: lib/stackdepot.c:517 at depot_fetch_stack+0x91/0xa0, CPU#0: kw=
+orker/u9:4/1114
+> > Modules linked in:
+> > CPU: 0 UID: 0 PID: 1114 Comm: kworker/u9:4 Not tainted syzkaller #0 PRE=
+EMPT(full)
+> > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-=
+1.16.2-1 04/01/2014
+> > Workqueue: events_unbound call_usermodehelper_exec_work
+> > RIP: 0010:depot_fetch_stack+0x91/0xa0
+> > Code: 39 f5 72 d0 48 8d 3d 7e 1b 4d 0b 89 ee 44 89 f2 89 d9 67 48 0f b9=
+ 3a 31 c0 5b 41 5e 5d e9 87 67 b8 06 cc 90 0f 0b 90 eb ee 90 <0f> 0b 90 eb =
+e8 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90
+> > RSP: 0000:ffffc900079a6ce0 EFLAGS: 00010246
+> > RAX: ffff888168b94000 RBX: 0000000000000ce0 RCX: 0000000000000067
+> > RDX: 0000000000000000 RSI: ffffffff8e215937 RDI: ffffffff8c28ab20
+> > RBP: 0000000000000067 R08: ffff88810495a407 R09: 1ffff1102092b480
+> > R10: dffffc0000000000 R11: ffffed102092b481 R12: 00000000019c0068
+> > R13: 0000000000000001 R14: 000000000000010f R15: ffff88810afb1dc0
+> > FS:  0000000000000000(0000) GS:ffff88818dcb5000(0000) knlGS:00000000000=
+00000
+> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > CR2: ffff88823ffff000 CR3: 000000000e74a000 CR4: 00000000000006f0
+> > Call Trace:
+> >  <TASK>
+> >  __set_page_owner+0x140/0x4c0
+> >  post_alloc_hook+0x1f9/0x250
+> >  get_page_from_freelist+0x21fa/0x2270
+> >  __alloc_frozen_pages_noprof+0x18d/0x380
+> >  alloc_pages_mpol+0x212/0x380
+> >  alloc_pages_noprof+0xac/0x2a0
+> >  get_free_pages_noprof+0xf/0x80
+> >  __kasan_populate_vmalloc+0x38/0x1c0
+> >  alloc_vmap_area+0xd1a/0x1420
+> >  __get_vm_area_node+0x1f2/0x300
+> >  __vmalloc_node_range_noprof+0x358/0x1730
+> >  __vmalloc_node_noprof+0xc2/0x100
+> >  dup_task_struct+0x28e/0x830
+> >  copy_process+0x79d/0x4380
+> >  kernel_clone+0x2d7/0x940
+> >  user_mode_thread+0x110/0x180
+> >  call_usermodehelper_exec_work+0x5c/0x230
+> >  process_scheduled_works+0xa8e/0x14e0
+> >  worker_thread+0xa47/0xfb0
+> >  kthread+0x389/0x470
+> >  ret_from_fork+0x514/0xb70
+> >  ret_from_fork_asm+0x1a/0x30
+> >  </TASK>
+> >
+> >
+> > ***
+> >
+> > If these findings have caused you to resend the series or submit a
+> > separate fix, please add the following tag to your commit message:
+> >   Tested-by: syzbot@syzkaller.appspotmail.com
+> >
+> > ---
+> > This report is generated by a bot. It may contain errors.
+> > syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+> >
+> > To test a patch for this bug, please reply with `#syz test`
+> > (should be on a separate line).
+> >
+> > The patch should be attached to the email.
+> > Note: arguments like custom git repos and branches are not supported.
 >
-> Move the iteration boundary enforcement inside the iterator
-> functions, so callers cannot inadvertently access beyond the
-> requested range.
+> #syz test
 >
-> Fixes: 9039b9096ea2 ("mm: page_owner: use new iteration API")
-> Cc: stable@vger.kernel.org
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Ketan Kishore <ketan.kishore@oss.qualcomm.com>
-> ---
-> Changes in v2:
-> - Incorporated comments from David and Matthew to check for invalid PFN
->   in page_ext iterator rather than checking for NULL section in
->   page_ext_lookup.
-> - Minor improvement in commit description to include the issue with
->   page_ext_iter_next
-> - Link to v1: https://patch.msgid.link/20260617-page_ext-v1-1-37ad802b1a3=
-8@oss.qualcomm.com
->
-> To: Andrew Morton <akpm@linux-foundation.org>
-> To: David Hildenbrand <david@kernel.org>
-> To: Lorenzo Stoakes <ljs@kernel.org>
-> To: "Liam R. Howlett" <liam@infradead.org>
-> To: Vlastimil Babka <vbabka@kernel.org>
-> To: Mike Rapoport <rppt@kernel.org>
-> To: Suren Baghdasaryan <surenb@google.com>
-> To: Michal Hocko <mhocko@suse.com>
-> To: Luiz Capitulino <luizcap@redhat.com>
-> Cc: kernel@oss.qualcomm.com
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> ---
->  include/linux/page_ext.h | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
->
-
-<snip>
-
-> @@ -138,19 +142,22 @@ static inline struct page_ext *page_ext_iter_begin(=
-struct page_ext_iter *iter,
->  /**
->   * page_ext_iter_next() - Get next page extension
->   * @iter: page extension iterator.
-> + * @count: maximum number of page extensions to return.
->   *
->   * Must be called with RCU read lock taken.
->   *
->   * Return: NULL if no next page_ext exists.
->   */
-> -static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *=
-iter)
-> +static inline struct page_ext *page_ext_iter_next(struct page_ext_iter *=
-iter,
-> +		unsigned long count)
->  {
->  	unsigned long pfn;
-> =20
->  	if (WARN_ON_ONCE(!iter->page_ext))
->  		return NULL;
-> =20
-> -	iter->index++;
-> +	if (iter->index++ >=3D count)
-
-The before-incremented iter->index is used to compared to count.
-
-Either
-
-if (++iter->index >=3D count)
-
-or
-
-iter->index++;
-if (iter->index >=3D count)
-
-works.
-
-I tried the latter locally and it fixed the issue reported by syzbot[1].
-
-[1] https://lore.kernel.org/all/6a396a5a.ac26f6c2.9a9c4.0000.GAE@google.com=
-/
-
-> +		return NULL;
->  	pfn =3D iter->start_pfn + iter->index;
-
---=20
-Best Regards,
-Yan, Zi
-
+> Best Regards,
+> Yan, Zi
 
