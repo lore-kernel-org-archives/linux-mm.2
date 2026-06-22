@@ -4,150 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BCACCD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 13:06:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D061CD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 13:07:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D00246B008A; Mon, 22 Jun 2026 09:06:37 -0400 (EDT)
+	id 6C1B36B008C; Mon, 22 Jun 2026 09:07:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD7FA6B008C; Mon, 22 Jun 2026 09:06:37 -0400 (EDT)
+	id 671F16B0092; Mon, 22 Jun 2026 09:07:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEDA16B0092; Mon, 22 Jun 2026 09:06:37 -0400 (EDT)
+	id 514CE6B0093; Mon, 22 Jun 2026 09:07:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 937916B008A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:06:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3E60C021D
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:06:36 +0000 (UTC)
-X-FDA: 84907572792.01.5615EC1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2B07B20015
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:06:35 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVO3TrLz;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C6056B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:07:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A468840165
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:07:43 +0000 (UTC)
+X-FDA: 84907575606.03.0F812DE
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E50A516000B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:07:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VRA4A8RZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782133595;
+	s=arc-20220608; t=1782133662;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sLW3835ooF/gyASPq4HfcxuD4xTqS9E83di9vyQnNuU=;
-	b=vVcSAxKTPRgvX663UVEhH9pmOesgjfbBx/0x988/fgMjvi6W5Y8Xssbk+GVhpj1/1c/dd5
-	2DjtdRCL/I8Awqk3w4HNOQ1cClyqKigi7G5NsjBjH4Do0TVZRGDhPZygJ820wvAnP1tTFe
-	mPs9TkOO/cRxnTVCdCkn9XZgOF1J4Z4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=z3wp3qDNeLDwzCm9eD9hHpUci3sq6PvJ0QUokiq7Icw=;
+	b=G/Utp9/IvFoZ0I+jNMsV7a7+f7RTLCKS2X9eVclV9GYodU45T6wH42yiPM7UxDqfRDS8nw
+	H3udQ3uOySVBKPoifee/oU1zY+bCM8NV/qi25gCWrPU8wyz6Uo5NOoYnaIDguMmxJHAqOu
+	BF29P2n8d+qopCBczWJXTxdd5oK+Zpk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782133595;
-	b=y/fyKxB4OFNbhrMMbki4r/MO96X47ZB3DfHNR4hhKKk9+QTWgj8f+FhDF85GHBBGADWepI
-	9vZt332/WQ8CpajfH61VSelBtHovV1ZcpE3KfihfXX98lHOdFuf27Xe6pGU9lKftZ4oVNZ
-	6SzQH5CdJon5DqM5iuEWKFpGhHKsSg4=
+	t=1782133662;
+	b=aFEEhGOHQ62C5HWmuA5w7wxXLhHQarV/FoGtVz/p9N2fJSqNswCnUEMS85F7EeggPpzkob
+	fO7+NELX29XykebED303n2lbzB701zNoYGJL7bxNRscSNhta7LfnK5cqd7YB6UMlZV8WSn
+	PGML/3svvGq07sB/5o7tCGbA3VXTeSg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EVO3TrLz;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8465C601F0;
-	Mon, 22 Jun 2026 13:06:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF82F1F000E9;
-	Mon, 22 Jun 2026 13:06:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782133594;
-	bh=sLW3835ooF/gyASPq4HfcxuD4xTqS9E83di9vyQnNuU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EVO3TrLz+bQjQqozayKpjazPXBGIy5tAHLEgjkJc5yRgHhuigoWiPudPbB7kB3uSE
-	 UtOB7y4258R1S8pmCtLnbYcOTWEOgS1mobD4Vp2ge358defYkyY8pQXmxRNwU15rV1
-	 Ei+5Bo4/bRcahmSXjuouj9qFQs4cAbI2gW6BpP00CZ7W46vU8vs/AUyBRerlYuhUeb
-	 lN3nggcejKli1r/PdVvLluVgSkDo1kSQNWtxN6jdlzE5spv02okcBDbYdiSjyKf7Z4
-	 J49g9/QL5cjv9luKHEhmdvKOLNQpWYbz9+abchACeNQfHOHgZoBWOmOgLYVDgLwj++
-	 y8z5oo4KQuOuw==
-Message-ID: <c42354f7-4add-4f56-bb7e-d33000db1f1b@kernel.org>
-Date: Mon, 22 Jun 2026 15:06:24 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v8 03/24] arm64: mm: Enable overlays for all EL1
- indirect permissions
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>
-References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
- <20260526-kpkeys-v8-3-eaaacdacc67c@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260526-kpkeys-v8-3-eaaacdacc67c@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: regon6u9kyhdrkbjy6bo1cjwzkzdx8b8
-X-Rspamd-Queue-Id: 2B07B20015
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=VRA4A8RZ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-69775980397so3708693a12.2
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:07:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782133660; x=1782738460; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z3wp3qDNeLDwzCm9eD9hHpUci3sq6PvJ0QUokiq7Icw=;
+        b=VRA4A8RZqd1XSmT3MmibnMKegLtIXmbMxrQW0pJZtPbZnzevPNoeFKL0Lzj7OVROez
+         qN1ti6AHf/9JtAEpLcTDpoZ19kv2PnLmKLLMlGkSecC9QqCxFzukpXqLwxlgHwahC71c
+         g26Q1x+LRE/XyqJwcYAJyIv3rxtRIocRYYdLIWEHeBOemWuZVxrRTACsPHoDwF9zknfL
+         yOzvI5YMTCIkSXIbQjMf9JZ4QZM6BCAJOt5uw/u2YKVfFyrhxSxhVSHN1INrCo9r8sFK
+         +0DrYIVqjyz/XpqkhpHgVy3jfV0oXEJSfTtR43OCvYeDHLgbtbWSG1UW6HF0JUf3TyQA
+         7uuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782133660; x=1782738460;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=z3wp3qDNeLDwzCm9eD9hHpUci3sq6PvJ0QUokiq7Icw=;
+        b=TIB/2C/Zt3OxvUwLoOIoGG3dbnT5RAWaWMKsuSVPWCB9+PZJQjoFy02wkRqb67UAA1
+         IlSllHry9mR7LYJ41loEjITIYUvATL4BlOZVyxcb09KJiKyaCM/4YueNeh0bh0cYG/dc
+         MkCMRFSUp8nCWIrudsRYnFifnsg2yybVeGDsPgaLbPztej6DukbSW3WT67KC+d37IM+L
+         j+d/fprNoigIPja/ARcIqRoXcdmL/3DqlZpkbsJD7fQK6G/+74CALYyZ4Vxb/iI598tI
+         gWZOfyQu5VNvQqIFypIy6A/mOuYO3XlA+/D561AqXRCBeyIMg+JyUkmp4YFEzarmH80q
+         6PyQ==
+X-Gm-Message-State: AOJu0YwM+Wo1R4OXO1KMjQpzKgB19Hgfv1Eciy79pUeT79B+fLQB/KZo
+	6Rb84taI6Q9A1KbiUW9udB4a4FOXNY7L2yL0RCdeDTvIeZaVjcUdZ66j
+X-Gm-Gg: AfdE7cn38XA5Ce94THzvRMN8N6nu/mSrnEOTJYPrmuUP2P5MdG6+6CSqzduKJX9v0+H
+	fTTMkq/hrr8peM9aGMxFglR7Oc8aZ5CUJk392+Mz3BlfXpQzrIbuwNQu9PKl+EX5nldMIjm92P6
+	E7S+H5M/iaZHPZpc1vhncz02zkpPtoJP5xUjn4+XXWVm0MXLw5NJHPBSjrVwBtOw3z1VyDPLXRo
+	DlHsCZsEYTHuHzp2O1kSBSReO8M4po5L4rPOmODyX65Oa5XxVD4FUHNDdLDT/J0KlioGtTW5R7Z
+	eWDww/nfpmU14B0y0l8YR47E3zcIxQ6BfQ/Y6V3aMuKCPvqqK3UqBhKtdpfw0Uaj0OWrwqA/cEA
+	QgYShTPjNi0UEKDtdyGiQy+4t5m439ouwRjHQv/NCvibfwOuyw/ZJFtHfA5t0owfuwf1P9oe8lN
+	tgfpMRRmhZo+o=
+X-Received: by 2002:a17:906:9fc5:b0:c06:1310:21cc with SMTP id a640c23a62f3a-c09901dce24mr813472666b.47.1782133660090;
+        Mon, 22 Jun 2026 06:07:40 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c610e55aesm360917766b.52.2026.06.22.06.07.39
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 22 Jun 2026 06:07:39 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	sj@kernel.org,
+	ziy@nvidia.com,
+	balbirs@nvidia.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+Date: Mon, 22 Jun 2026 13:06:51 +0000
+Message-Id: <20260622130651.23359-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam10
+X-Stat-Signature: myby86iez9uz3an1485jeqqgf5mw3ysy
+X-Rspamd-Queue-Id: E50A516000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1782133595-914886
-X-HE-Meta: U2FsdGVkX186V3gALELgzK/ldGfzZq2L3yfj7ZXnNhzUYcpDFzw8Zocg+RT/GnOasbMiAu+pSXHTHOfgyEaKpbd42Fhfk4GXtV5m/mRZfxUf/aNfXnloR7sbuXeHKI85/SfU+zEU7mQewVNcFdV2lf0cKBwdb521DWZRsyu65fqEswCCbKJbDpFUds/Eegb4SERy2k0UWmsEdoCB78pTkF5/V8JrKaQcwlwkjfYsmZjMrtmDaC3uK5JCaUFCKp/Z5/JRXt5E/ci4OY+qNGqyGXmVsbsg2m5sm8MuCwUGFHBxyRrmod67pHf7+RSopmwKQxWGi5pcCI9lXL7sBB6PMifq000lkJnJMVS5HDrXawpcqFleh+57qc+VaNCekzq1+GD+Eq9dtdLFPSW1EZX+kYRYY7wmCss77Tpz4XwHnitcXVsjqXkaN1WZfQ+iBq7/w6Zu/HFb+YmUNXA8LVT7L/bVvLKAbNYG+cmM3BvGLIPazfFp5X5lYvifSO8ZyJK4+p1yDiC5KqkfcwRjekclBRglAIZYAzzRQKzkaXxhjduAh4aRUwAsS8xhaqYUdDZdeKTDhlScflc4JWDitp/FN60iwykHOcghfBfrFM1aM9CLOwbQspJzR6kkdRii0antiby1D3eqK/TD5sKS+I/jguUM3cwwg24ZQUbsWX050rqVGkD4PhQpFDFVb+TvFARe7hBuqNHX9ea/8unAapmuRkHpB0jagkALsDJiJMmEqQFXvsMzYzAJxfGCO3XdqclIAG+EvzOJZSqKXR8n7NpEfLZrua1kEP0B4w/o9QuDHOJa8GIj/cd3hKmJgACl+gd+Aeu7br+QTHH3f7lxkQtpKLLVMVXVw2ufxYRCtVCIpG0dHKz0Igb1R30NVYYWp3xnIaAeWlIccYTwIk4kyjCa+zDFnBa3Yv9Rs0fGCBjh6X0iU3zRP+VM2JUXOcTKDxj6YLuV0RZeGej6RfFio5k
- KfvNJpeJ
- zrV722cWA7MrWcIH29c/bHpq1MC6xkqikAcZdZ8qbX4vgaaLZJxRsdzy0U3b9XtmxBQCpsRgc4tVCYG9UG3gQArJ9P7PzDeZH4TpGd3+DHUSqcbDLXNPaWfwlir//ZciPrUgkSRQ7lMwod2+ClfkoVJ/BzlqgIuKQpMIJxtx6JBX+KJ1Lax7ds6B+yXVGG4mzOmHtmtnQ+1Bj68tl8RydYRm8pGJEDvLNOS6mGsS/IjvXaT70zGpfAWsXkS4GB222JhnSbMuYXPrDoDT33rB7ynHz2cjrposYvXEmb6MRYPlBSGoZTV6aGbcBxAD6SVK1DPmN5/n9o2VZp4rZ6ZxPd4njkw==
+X-HE-Tag: 1782133661-280723
+X-HE-Meta: U2FsdGVkX1/UcYPKU0ViWAz+Kk2ofs1TZPesqZaXdwrEImRLQkpk3KXs7NmV5wW1R1TJl0pWECivnwZVhG7c33Tpabu3gbzl/A9sWpoiZkjCH4TNtVdYrIHGI+hb/wPnZ7I/gXFEJWIDhvnyWR+jH/tjtAJmjN76JrJD33AbVi+xK039+xYKtHSbIujfBIkx7SCF5ixIO9jnkVyww4QjLmeB7u7kKV3pc8/3Jta7mEsaq1+Z9IaltLb7NPAQUu+eIAo2iu/O501LGinDpSGKlSapoHMy4y8xbfN+CcHqFF+f5/gjWBTfwE1bCXcx8Ll2cSLwxKRUnKV/j7K6O4y0WVjvMvD57NsIeIdZKea2SDtmyS29Y47asC8GruUs30oxj3w6QlO/eJE5Q4g4JAbDHB0w49wfqeltKOMD0lzfKjtzr/+4q9zazDG17Y6JJrtHwzWgm5wSP28VVpKsabZNYYO9yvGXAavHbKqbh3ATUOoL2ogzow1dYQ3i0uyNP3wtEe6Unst9XwMx7cEfglvVnMcQFd7aP7a2lCK/LjB3cBXjr+yD5bTSHfHlQiHjNfxIBCen0pzfQmvfKImnKEritjafOKmEut16mC9wtu/xMtgvCK6brTmMiM3r4FWzuVkIXQtxs3RdY/xeb7iyD7LBQopdkDt+Pwz8v2A6YjMfqHKSCIVXgUa4Uusu8DxxKeXn9VGQPT+CWznU4s1Wx42kCk/BM5WYFEZyMo00jbEHG/Sq9tU/mtM60bbXI6ekxY8wwqoD9NWPpHkRa3nxZx4DM9p4B7tD7P+HC5t8JJvwn0a/aclHYTQ06n0Rl7AhUXCXvvo3C2XW9QM4i141Y92hma731qXvbyPu62qWEojofg9v0Gg93MHpQJfuBzAfokISMQuccEA7iPiqzI73dSdhP3MdlD+T/J8wOQ+DREGBGF3fSdTtUl+Hr4K6dugnVvC81OTKdmQ2x2cFesdyfe5
+ KeoA0In+
+ 1Qvd7whLRKl5JwzRch1ZuONM4F0boQu+olZTk/vevjC5ce/KZd/RYI82AmjjWfNfSZjBUPrLrlIPQ7KYLCpjpRbrZoAnEMFutc6CpNayhUoigNopx8LsH1AEWIxAIDI+sxo5uydrQW2/C5mKISgIpOO/syK9oZnS+LGHMbp09vtbWkPknb3HO7+Dj7L7xmWuBqrPhZ7atCV5rToud9G7Kqcuyol+fRPq2pAo0SNDmWoahqBw5wJe5CsvZxYhOMAu4hXgrA4uXXlUlKU5EMiP0abjKoLJ5qJg2mu1GaA8OnreJPA6MfRpJ3AqneaRD4kaGYt0gNobAYYDlAxkDlvaWe4jd9p00/zhcXGZQn+9Nsoqbdc7rW1G09D5cp2vsn6r45Pgd+VC154iyLhlG56qkv4mzxKgqxNurGlJ5CD6XPQiRpj5Rnwb8OgEzE7WHfkGIMlMzRW9/pho36HRHavirtLUDfHhniHYQ8o/sKWscRLz9zlmOs9EwFHS2xCAtu4XG9e0bEUFD65AoAKqMvTfIm4HVN1hyyBhTvk5KxTvQ/KKObfw9k5aXwk2em97WVE3GSsCcvEbypu5eJCUCpKUegLUOkYRAg8AQxQeUJdtG17mIAdhU80niSf+7lAnNocflCy01
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,49 +120,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/26/26 13:15, Kevin Brodsky wrote:
-> In preparation of using POE inside the kernel, enable "Overlay
-> applied" for kernel memory types in PIR_EL1. This ensures that the
-> permissions set in POR_EL1 affect all kernel mappings.
-> 
-> User memory types must be left untouched (overlays not applied)
-> because any privileged access to user memory (e.g. futex atomic
-> without FEAT_LSUI) would then be mistakenly checked against POR_EL1.
+For pmd_trans_huge() and pmd_is_migration_entry(), we does following
+before return the pmd entry:
 
-That makes sense. Still learning the architecture, but ... leaving the user bits
-as is sounds good to me (and unrelated to using overlays for kernel memory).
+  * re-validate pmd entry after PTL
+  * check PVMW_MIGRATION
+  * check_pmd()
+  * handle on pte level if split under us
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+But for device-private pmd, we just return after pmd_lock().
 
-> 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
->  arch/arm64/include/asm/pgtable-prot.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable-prot.h b/arch/arm64/include/asm/pgtable-prot.h
-> index 212ce1b02e15..d4d45ab86a5a 100644
-> --- a/arch/arm64/include/asm/pgtable-prot.h
-> +++ b/arch/arm64/include/asm/pgtable-prot.h
-> @@ -183,9 +183,9 @@ static inline bool __pure lpa2_is_enabled(void)
->  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_SHARED_EXEC),   PIE_RW)     | \
->  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_READONLY),      PIE_R)      | \
->  	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_SHARED),        PIE_RW)     | \
-> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_ROX),    PIE_RX)     | \
-> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_EXEC),   PIE_RWX)    | \
-> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_RO),     PIE_R)      | \
-> -	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW))
-> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_ROX),    PIE_RX_O)   | \
-> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_EXEC),   PIE_RWX_O)  | \
-> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL_RO),     PIE_R_O)    | \
-> +	PIRx_ELx_PERM_PREP(pte_pi_index(_PAGE_KERNEL),        PIE_RW_O))
->  
->  #endif /* __ASM_PGTABLE_PROT_H */
-> 
+If a softleaf entry is present, e.g. device-private pmd, the existing
+code simply acquires the PMD lock and returns success even if
+PVMW_MIGRATION is set (indicating a migration entry is sought), meaning
+that the caller can incorrectly interpret the entry as something it is
+not, causing data corruption.
 
+This patch fixes commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
+support device-private entries") by following the same pattern as
+pmd_trans_huge() and pmd_is_migration_entry() for device private entry.
 
+Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Suggested-by: David Hildenbrand <david@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Balbir Singh <balbirs@nvidia.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>
+
+---
+v3:
+  * remove cleanup part, only fix the issue for device-private entry
+  * refine user effect description based on Lorenzo's suggestion
+v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
+  * specify the possible error case of current code and user visible effect
+  * besides fix, cleanup the pmd entry handling based on David's suggestion
+
+v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
+---
+ mm/page_vma_mapped.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
+
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 2ccbabfb2cc1..8de3c6b82df6 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -270,21 +270,33 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			const softleaf_t entry = softleaf_from_pmd(pmde);
++			softleaf_t entry = softleaf_from_pmd(pmde);
+ 
+ 			if (softleaf_is_device_private(entry)) {
+ 				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+-				return true;
+-			}
+ 
+-			if ((pvmw->flags & PVMW_SYNC) &&
+-			    thp_vma_suitable_order(vma, pvmw->address,
+-						   PMD_ORDER) &&
+-			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+-				sync_with_folio_pmd_zap(mm, pvmw->pmd);
++				entry = softleaf_from_pmd(*pvmw->pmd);
+ 
+-			step_forward(pvmw, PMD_SIZE);
+-			continue;
++				if (softleaf_is_device_private(entry)) {
++					if (pvmw->flags & PVMW_MIGRATION)
++						return not_found(pvmw);
++					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
++						return not_found(pvmw);
++					return true;
++				}
++				/* device-private pmd was split under us: handle on pte level */
++				spin_unlock(pvmw->ptl);
++				pvmw->ptl = NULL;
++			} else {
++				if ((pvmw->flags & PVMW_SYNC) &&
++				    thp_vma_suitable_order(vma, pvmw->address,
++							   PMD_ORDER) &&
++				    (pvmw->nr_pages >= HPAGE_PMD_NR))
++					sync_with_folio_pmd_zap(mm, pvmw->pmd);
++
++				step_forward(pvmw, PMD_SIZE);
++				continue;
++			}
+ 		}
+ 		if (!map_pte(pvmw, &pmde, &ptl)) {
+ 			if (!pvmw->pte)
 -- 
-Cheers,
+2.34.1
 
-David
 
