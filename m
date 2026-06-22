@@ -4,98 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C904CCD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 17:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E333ACDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 17:13:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 264D46B0005; Mon, 22 Jun 2026 13:11:31 -0400 (EDT)
+	id 528516B0005; Mon, 22 Jun 2026 13:13:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 215C56B008A; Mon, 22 Jun 2026 13:11:31 -0400 (EDT)
+	id 4D9716B008A; Mon, 22 Jun 2026 13:13:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 106146B008C; Mon, 22 Jun 2026 13:11:31 -0400 (EDT)
+	id 4157B6B008C; Mon, 22 Jun 2026 13:13:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D3A256B0005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:11:30 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 42DF6120234
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:11:30 +0000 (UTC)
-X-FDA: 84908189940.17.DEA9DB2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B75E2100010
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:11:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=erB7xUSe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 161BD6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:13:28 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5831C1A021C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:13:27 +0000 (UTC)
+X-FDA: 84908194854.14.38164FC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3EE4020005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:13:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cB1cmzMz;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782148288;
+	s=arc-20220608; t=1782148405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Ob4n515gwjUACWmJ3PEmGOd7nhYBm2e6boWfItYT/o=;
-	b=5b+rOsGJtXbiAa7RreviHDW5yFbNAX64YIIVSXrfbFF7nCNkUUWY1/mayl1lYxhtdZgwVi
-	HOFToramZkQ3m/i/H70B63RBO1KDlXSB//QkJlglVw0XJET989NuBAEjfgnf7slpV8v6gU
-	bjKShL75twCsQkVE5aTykcnORreTmhI=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=erB7xUSe;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf05.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+	bh=MhF+Z7QvSyF8SFiHgEa+zx62DspglqwUqFsjrg9vB+A=;
+	b=yLB0oywL9an8bqgEbCkvsTm1d8nMug9bn5oRbW17pvmEqDYpwR8dxs5IWvZgigfQC8OvIr
+	lb3hxqTfBHj3JbOTEAadn9YiQgQL4jAjZQ4vf1CV+dItchi/2n7J5g/Zd7ikAMWoSscqNk
+	opmKZcaw68CMb4noSSTNp5U3ToBAWGs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782148288;
-	b=xI5evNjdmJK40ZvCRupgLz1KlwekVUBxumFBWu1c2dCE6YnIicpvknJHDMHQ6P7hHdAe4g
-	9reDHM9Osgl5Rp3Z8+/nz4wL9e5De+4Dlpss6zwMidvrI2gzDT0IIGfi8QnjzhxkculPf2
-	3WGaOV7cIp9iWjRJ1piX6cd6c7zLhwc=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=6Ob4n515gwjUACWmJ3PEmGOd7nhYBm2e6boWfItYT/o=; b=erB7xUSeC1VU5j7O3O4Dd9QPaI
-	+Q3OSYWIPxsxt/C9U1wyrVC3FWoIzshmgw5dy5Brh2q9nPsbxaEFYoOMnjoN4UyeGQ3NsR8ZGdl6q
-	Y7HX4WrENJjfKbcTznAl++DBjHOV7Omzl5/k/gu/K3xt20MIr2g+oqR9qLLo1FjoxG9XPX8D76Vxs
-	jLwhTzEILHFWDtobbQZOib1/ybqikxLSbhobg4ZmZxlijjbaIo/8B/CGOoasm+v3cSErUpKRtPxO6
-	KzNNPDnEEcxowK6CtNxZXpEP0GWk3liMGeAg8sB+9++YIvhgCg/ar7ldMaSfniFpyJ+kIHqeItjlH
-	ydu+JrNw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wbiB8-00000004bnx-22CY;
-	Mon, 22 Jun 2026 17:11:22 +0000
-Date: Mon, 22 Jun 2026 18:11:22 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Frederick Mayle <fmayle@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>
-Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead
- to VMA boundaries"
-Message-ID: <ajlsum91zeh-oRz6@casper.infradead.org>
-References: <ajV0TbwEyaKMzoa6@lucifer>
- <ajV49Fyogfa6aIjy@pedro-suse>
- <CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
- <ajWAYBXHJniJAO4u@casper.infradead.org>
- <CAJuCfpHF1qtpHZQzLmLi7xz06OWgBfduHqBHF_-0Vkx7OtBmcw@mail.gmail.com>
- <ajWXEn7gECvgG7F5@pedro-suse.lan>
- <CAJuCfpFfr_SQ4ZDFojOkDKWbO2dKdL3pUPA06B2ZC-usUnYRgA@mail.gmail.com>
- <7ftrqtta2bw2xxtrzelrs46t7khr7tf2vmh2ur2mhdphtymlsr@rqbd3pfjxdp7>
- <ajk-NMghY50F6Sli@lucifer>
- <20260622095855.50e4276e331cb2d01db7183a@linux-foundation.org>
+	t=1782148405;
+	b=HiE3tqm4Rl+mpPiMA1NqqDZdJb6DkIohaL6wXLnh5JcjksC4ImNDd61aX63rMDChD46TzJ
+	64ZZOtigA9vAYyAzxDVBxjnfffHGZzZYoTiANubq8iO76xFc0nDQtDHxRx2R9lvH12q70D
+	1hS2rtqDcOC+LVyCYtUFE1Q0wCmmAwQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=cB1cmzMz;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F0191A00;
+	Mon, 22 Jun 2026 10:13:19 -0700 (PDT)
+Received: from arm.com (RQ4T19M611-7.cambridge.arm.com [10.1.32.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EAF23F62B;
+	Mon, 22 Jun 2026 10:13:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782148403; bh=RnwiQypkRLn7P8qYZseBV6Ihj32aR3RId+p6z4H6xw0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cB1cmzMzT+YCCg7NorZIa+KSxvTRYpIbv/SMaoP0VaMTLqKhCnwscEnPUCC+jZb+/
+	 gaRLYTCzh177urdLiaRvwUNvASV/HdLMAMWqfK5gWm4lR38lQmrPWtcwc4xEt/s8Y+
+	 xzl5xklVxQ8HOQlcmaoggGEB00Xm26zmkx0NmFW4=
+Date: Mon, 22 Jun 2026 18:13:17 +0100
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Harry Yoo <harry@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+	akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
+	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, kaleshsingh@google.com,
+	21cnbao@gmail.com, david@kernel.org, will@kernel.org
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+Message-ID: <ajltLd6FQg1aMge_@arm.com>
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+ <ajVByfkLbetzA8bB@arm.com>
+ <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260622095855.50e4276e331cb2d01db7183a@linux-foundation.org>
+In-Reply-To: <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org>
+X-Rspamd-Server: rspam10
+X-Stat-Signature: q8eimhibx6ss4rnx8wywjt1yey9mnn1f
+X-Rspamd-Queue-Id: 3EE4020005
 X-Rspam-User: 
-X-Stat-Signature: z8a3hzhe75xmaqc7emssr3f7hbs9y66j
-X-Rspamd-Queue-Id: B75E2100010
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1782148287-245499
-X-HE-Meta: U2FsdGVkX19fBhVqit/4wfIhp3daQVhhe574rkrfTCpZVXTZpyiFYCiREEBlTT1xP0Gh4I16rncrRj/pMqZ0X93GqIlwlxCHep4FA8Sokbsuxqje+McPiD3V2Es31H8cS1wf9hQC9kNbkKPlhfRZCfLZalBR2WrVOxs2aG3Tn+wumoq87UkvLS1HAddxwfKU/V14HFBjv3phR+/8fLF/WphVuykzAKg/nAnA/D3MGudrImwHhfTtTsx2b6MJicazlShR2i1j9rZCajr7NcbTkzn7goNjgdM6LqlyY9tDimkp8gSEj9FP/5I9bH/6HhvPvQuc7KWoALrNkdKwicxOc8MtU2NDYk5GEiYZb6NHTiSJEdKu/grymZsQAWwyhrzcRBEZPQMmXra9ibCbJHw4QDaaPFoNHiHkdWiXJgg8aWcRNAy1QehoSIuluKExRyZkCHiEv58vzxEjz01qxdlW/7VRTcLJzulKqQJx3N9IycyE5MY7TGAkqV9ug5ChZIkKTnnhXH8YX/fZ1hDEG33DWwF7ZaZ8CZHiH+uTHdfeO3Tp2foylDiXQZ3gb7U6oZAxJFskF42MMGiPYE8lgG0SUzeTrMMmFur0G/aIWTIsgAbVjn6+VsqKgxNL17TRln2Atd4CZSQhLaNQzPRcPfEKjIGaaBKaC6zWTsXfvneAmKwrfgWT8gTwuISl/GrG8LCfgQDsQvrPfBKOFE1reuf42k/zGUAi9pSbNvcKe1PBN/yU/0ipinIIsfC3fcTBomxLhZGwRbpcX2VpDmMf0teiS8IBhLd/HD8AXGmdDrG+LmrtftYSXxMVARsglLSUlwHcU38Y8VL3a90yEFJ9WVhKkAmZR3MgMW9qiGpyVK0qcB/1/p6APxNDD3oA/CW6OUy17xdUR6AM/niRCjDJvAgkpy/YYvonJ1hWZasnC5a88GCSrAILuxzN2k/b+AWNlWrKoc3jhryVMlUOBW1m6Uq
- kDTBcjHt
- wNk+TcFlj9ShOI4256SHOcMIx4ux4+IeSJn4SPlM2uDKf7IAcgKeVP8hPA6tYmzAmPBKBUafANOzGhOnW/usKh6JWa38slJrqp+HRDh6nVVJQ8zOgARVfWCmjae34C3MZnH6MAOG7/992L93Ilo5jJtfqaVcPW4zW7JhdlVQ1HUk99paP3l8NqVH22RB/8TpLmtZv+F4Au9G01BOzykZjxFGNGufqH6/qmAJW83+/I0n4nxgB//CMyDNNthFbtkOSzMTbgZHLDcnZYGlGyPtBRyYl1j6xa60zUW/1
+X-HE-Tag: 1782148405-588011
+X-HE-Meta: U2FsdGVkX1/7/83p7gQwCLy1gObkXOYCf3BZhfbjyUZ39PdfhaW91YHalpAMKYizLUEFgM8/dSMo6w/77R5U6YQLUp/LHVYi9eQlU36y8FoC1lqKKOmFkbp7x1oBZW4X5HJzzdjda/9j6LEvRCWPKu0agaYukGBV1mIqUWoGJKzkWQCx9MdmuEs3gFpmBUVLij/lNShTzPTb0QqcOpQ1BYbZBXtrnQzzE4VIs3AwcSL+RrRtKgDgoyfPDGny/0j3UYZcSn41c+Nxt4O2gzqgx7qPYSYGELqlj1NSR2mMUoB/VEzjBhRTu3TiBUogFxGxUsKPVbqGwbZ/ev4Yem+HuuZ61YISKqhT2Phc7R2R8eNX1gn13jg4cI4qP+JeNEN/s4+OHLNaWL7d+oVOuiN+PwdfKkhguNwL24FUjqZGLsaXDXAwQ0wuEwMd4lORxBDEpbgFEZ8LJ+kohRZRyDPklCzn2d/Pn7bgBUtTn5oD03seiJv3RZ+CmK7tCXNNYJmMQhEWT9z4tkywfqsitGApVOnpbeaa8B+yTYS+WsY1wITYdO70giEPsy1rQwKA81hi5w0VgFhpqkk/QKKZgZCFoa24AvMut1uiAyy6b7nuN6C7Httk6hKcFEFV3rXA1QdW6ymJ93UWQJmxPPC5zf9M+sk8mDlAyZ94+XAU1F7H31gJTlJM5iab5lzasRfVUhmC7wktqLa/SjTnYY/g6rlxymYUA5WVG16FekBYrjiJ91ftF464bqOzlRrLCNAGWfC8P9StIEtBkw6VxG1oDCxb6wQQr2Ahx5/hAuZcrU3A33LN0BSr9rtQ2MUqUAk7ZCYZcakk4XY91x/CiaPlvMx5miVetTKlLu232cP3CMbdReMKu28jNPoZ1uo/RZkwFZoMgyvbD9+sdZxWlveuES3RDqZ3Isk+7wVzeFelOTzAVWeGcHYklUcRVoRlgMBcRwW1eovwUL/UR7p5YOCx2P5
+ aCyfkR8X
+ 3oHxa6J/b8OXwkLYpRYDkhS5ppggLwu77VgcwJZhjlWSwGOt1qBejdDJX/+KswNyTiDlSrkhDHAm5cRLcbo+w7G2yH/bLp0Ya5hhDZv0KIIx1BtRfX9JqeHRy0nuUZmqiiTd6QFi8FeonO5VExnUNbrxZf6tqa1AYLeR0eO3E7VfjPh8A68LIYakcix2DhdMLc3tD/bvttTZpp+OEL1V+oxZKiLvpgDFamA1tlmlDZOvKYe4dw6X5Sqh3ODhnkjWko8+861s+HbWsyYaG4xPovLaYN3KN6sVoEVz+n1kmMPK1DmAkpio7AqNAI5VJ8Olh0t4TBH3obGAtFd2I2PW8aev0sp+T4rW3lKh2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,16 +98,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 09:58:55AM -0700, Andrew Morton wrote:
-> > > much as I personally find restricting mmap readahead to a VMA a sensible
-> > > thing to do). We just need to figure out how to improve the Android
-> > > usecase.
+Hi Harry,
+
+On Mon, Jun 22, 2026 at 09:42:10PM +0900, Harry Yoo wrote:
+> On 6/19/26 10:19 PM, Catalin Marinas wrote:
+> > On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
+> >> On 6/12/26 1:44 PM, Dev Jain wrote:
+> >>> Now, when a memory object will be freed, it will retain the random tag it
+> >>> had at allocation time. This compromises on catching UAF bugs, till the
+> >>> time the object is not reallocated, at which point it will have a new
+> >>> random tag.
+> >>>
+> >>> Hence, not catching "use-after-free-before-reallocation" and not catching
+> >>> "double-free" will be the compromise for reduced KASAN overhead.
+> >>
+> >> I doubt users who care about security enough to enable HW_TAGS KASAN
+> >> are willing to compromise on security just to save a few instructions
+> >> to store tags in the free path.
+> >>
+> >> To me, it looks like too much of a compromise on security for little
+> >> performance gain.
+> > 
+> > I don't think there's much compromise on security for use-after-free.
 > 
-> Would a helpful heuristic be to do what 7b32f64bc512 is doing, but only
-> if PROT_EXEC?
+> I think it depends... OH, WAIT! I see what you mean.
+> 
+> You mean use-after-free before reallocation does not lead to much
+> compromise on security because objects are initialized after allocation?
+> 
+> You're probably right.
+> 
+> Hmm, but stores to e.g.) free pointer, fields initialized by
+> constructor or accessed by SLAB_TYPESAFE_BY_RCU semantics after free
+> will be undiscovered if they happen before reallocation.
 
-I was wondering the same thing.  But I think it's right to back this out
-for now and try that after -rc1 so it gets some time soaking and
-bot-teesting.
+Even with SLAB_TYPESAFE_BY_RCU, the object isn't tagged on free either
+(or realloc, only if the actual slab page ends up freed). But we don't
+get type confusion for such slab.
 
+However, without tagging on free, one could argue that it reduces
+security for cases where the page is re-allocated as untagged - e.g. all
+user pages mapped without PROT_MTE. Currently we have a deterministic
+tag check fault if the page is coloured as KASAN_TAG_INVALID. I think
+for this patch, it might be better to only do such skip on free in
+kasan_poison_slab() rather than kasan_poison(). Freed pages would then
+be tagged.
+
+An alternative would be tagging on free only with a new tag and skipping
+it on re-alloc. But we'd need to track when it's a completely new
+allocation or a reused object (I haven't looked I'm pretty sure it's
+doable).
+
+-- 
+Catalin
 
