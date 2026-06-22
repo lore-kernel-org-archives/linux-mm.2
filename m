@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0DB6CD98E4
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 03:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC34FCD98F0
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 03:13:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 501996B0088; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
+	id A6C5F6B008C; Sun, 21 Jun 2026 23:13:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B2406B008A; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
+	id A1CD96B0092; Sun, 21 Jun 2026 23:13:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C7F46B008C; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
+	id 934776B0093; Sun, 21 Jun 2026 23:13:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D9706B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:04:25 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 61FD7166CDD
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:04:24 +0000 (UTC)
-X-FDA: 84906055248.12.2986022
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 11F7F1C0003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:04:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wqr9jtKQ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C11B6B008C
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:13:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2F7BA0574
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:13:03 +0000 (UTC)
+X-FDA: 84906077046.18.FF13867
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 0026340002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:12:59 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="b/JPhVoR";
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782097982;
+	b=lKjN6LJozd0Zrzajplcl1OUVf1WxLqbVphlYnR4DX29PWADZAYQBScn5W0mm/TGel7sd4b
+	I4UT35lGVqdLOLsi5ze6L1mDVHzKM8cY2o7F/DegD9F7fykGKmFAV307Io9X1ZZsU7z9O0
+	LfVEL4dSQs4I2v/aJiB+ubTA6I9QRZA=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="b/JPhVoR";
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782097462;
+	s=arc-20220608; t=1782097982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gdVeD2YQ+4emLsNSDcMg53zBGqzDXufzRzbIKHc1Gs8=;
-	b=vRWUuoH7Sg7Tgr8y54RBfp8Kh8SxYUUJzI/PetFa4UU1wIJ8HASXeI6wS02ZJEz8zTmXWk
-	j0ts4blzCo6FZk1JQKfroNiACQit1IklEb14OJK4sVGaeq05MUli8+SeTW+AzOrn5h630J
-	3vMGLpl4qVyvB0Yiar3GAwZOf+6MKCs=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=wqr9jtKQ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf21.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782097462;
-	b=6rcf6pslW1IsqpZ4IhkiuKVqz1NS6k4R9IInAm/grdIzIFXej8/heMbaWnl/Rgy06kEWOy
-	/7iFMlEW/1p48wGpfuGXrcCqrqIaF0l1BegkBr6ZfOq9iUTIc+OPq1XW1v1Huf2ShrMz04
-	MM/QuqqaRQBSU+a5LZ8aEouIptoRkVY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782097458; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=gdVeD2YQ+4emLsNSDcMg53zBGqzDXufzRzbIKHc1Gs8=;
-	b=wqr9jtKQoHbmvSTo9Zy1fhgbDMaxlAYEltFn200kmYmCLk2MLnBpSpNPCbvQ2q7JI8Zkf7kxqRT+OrydUamTQLIqO6ZsRKTV9j0SuFLASnPGNLLbDpQzIDdz6MQ7XVeQyKMfUpLKvZraQgEARFqzmFpcHzKVO1wQtw8DAoanT9o=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=19;SR=0;TI=SMTPD_---0X5GfpWi_1782097455;
-Received: from 30.74.144.120(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5GfpWi_1782097455 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 22 Jun 2026 11:04:16 +0800
-Message-ID: <6e89f868-ca7a-484f-aeea-5d8d029714f2@linux.alibaba.com>
-Date: Mon, 22 Jun 2026 11:04:14 +0800
+	bh=EVDknkMPYHwtjP5EdM2HdKpVYJO996AavSVHwEl4Jgg=;
+	b=uLda/yT8uOXUXUnCxX04fGYBzD00bOiBoV8cYSyxj5rrra4tmwjbd/52WQ7lM2QoMnvpTb
+	GaRfCC2vIVGFywx4xfjVxobBHXTL7xwHNYWspP4476A7Vx5v9dEHgPSNOeAN3J1ilYjSVp
+	fXA8wGOLek6PzYYRRXvpbOsGBR0VmXs=
+Message-ID: <6af11da2-affa-414c-8426-168224cd2f69@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782097977;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EVDknkMPYHwtjP5EdM2HdKpVYJO996AavSVHwEl4Jgg=;
+	b=b/JPhVoR4HIOdlvHluL12MOhVou49Gn84LSlMtzYCuWS6+mTapMbpQ1g++sabTlfvQkoXd
+	Ez/c5VWCYsFwb34UBuCG1yZOZeOZZ7I01V9fsdduYPIynB9CSkwYENorv7+cSS4yNJ8CbI
+	z6JsLHAjdHKBihRw+2XcrSFUGSetBbc=
+Date: Mon, 22 Jun 2026 11:12:34 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>, david@kernel.org
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, dev.jain@arm.com,
- kasong@tencent.com, lance.yang@linux.dev, liam@infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- npache@redhat.com, qi.zheng@linux.dev, ryan.roberts@arm.com,
- shakeel.butt@linux.dev, weixugc@google.com, yuanchu@google.com,
- zhaonanzhe@xiaomi.com, ziy@nvidia.com
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260620081017.89085-1-baohua@kernel.org>
+Subject: Re: [BUG] mm: mglru: stale aging batch triggers lru_gen_exit_memcg
+ warning
+To: Peiyang He <peiyang_he@smail.nju.edu.cn>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, linux-mm@kvack.org
+Cc: mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+ muchun.song@linux.dev, kasong@tencent.com, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ david@kernel.org, ljs@kernel.org, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org, syzkaller@googlegroups.com
+References: <5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 11F7F1C0003
-X-Stat-Signature: uat5pz5fhefe4p9d4d6axzpzj5h1imsj
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1782097460-202686
-X-HE-Meta: U2FsdGVkX1+KueIpnREQzVUMCMtSykDt69vPcgcEbR9/wd/4gZQdwxSEZKCkCzCdTzNPFiJ1LbJMHTZBmjBH5MQN4KlvyvsA7OPRH+I3nmVvX8wNYjpv0IW33NxH4jTsiP/CeTewJXhKwUekX5KKRWYWcnPIQE+2dtiJamJIeaLJYMvbvS3LCX9qnHTNvwKbMb3MPSi6tGX2ctiQkmXMfuQtOGGABd13Pvidseb62w7Mok1ykcy6MT30EOrmFh8HRzEo7udTmXaM3IYSmZuqPGLkJREOQprupdpCcDq6bCo/LP15SjneW7G4Hd2gMOx9LUaF7fBIiecLZc0m4m2DnIbsmojj4a1jy72fmpT1N/rdc82CXTjMQFIaXuZH6kJatnqCJbIloR5gSFCCFcDl2tfWo5XosqaBsaB/UIGmgREYVihY4cIlgGZk5/b/fuv7hcWuh9+w4vsk9zeBI07PVCGn0tUjekkyVGOqRETJrX0RcKtA+zY6U5OuWwt0z9FBl5dW5IZlKpMdqMIIu8PR8aqunBHXMm9TCD9osbrkcG+ESLmHCcoJCiyxay22GtTDXGxlGbGnds8M/lv+9ERgeqc5+5aFfrctRNhO5ageZ441G4Lc+g5htJKAZiXHVnimgc6CmElkOsQDVRsrhkvTLtALZvmzfkT8sPdytkEvXTZWRNwP5YFSroeoe4CvMwgx5TYvwLVahfq0bS9rXg0GDFifQkiCKJdctfum276cWxHBCUoPBoDwi/C75vk9H7asfzbZrRX7BwrSVT1v0rY7JzQ80zkr9cp5WWPNXYuTJKEcAXL7wWgU8KgLrVHRLxwJMHtEW5xfXmJGCipxDnInnJviDC03Bz7X5bZC2M2TkVC/ddQSkczO09/dyrIPeB/GvmJvDHkXnLSLS/JdSzuk+srqPgAgeJExX99Fi8Hx/w3pyppmgWFAYVZli0iutOG+qD0JAU119s19BauktpR
- nE3O6JPS
- ByvBM/2s9RsPdPfDfMRjVmSqyHYKjS0b930BRnVQid26uetniqAwORmVGj6HYg9hgFbLI/2XTikv7XHs9k58SFf4bf62olbVSbpDtwiS0hI/R8EOAthmjWvF+qqKrxAHZBGoiLzXcb40aEGvW8CrugdGDGrCbPP3gif20Rkq5BjIPygGufFN9eOq39xGZR77anddN7E7XSLeRvdcFf/3RZIJMzTKpXjvxyWChC19uPilTn+nd6JS0IkWTkrwM8nCf5AebtyCLBiaDiQBHj3XOYMhv48eflgfgZNMYZw9IE7H/8ARg/AFJWXGE6ADfbJmEXcQJmjkVuMPoW/8cT+E5Vn2mbxFzbr1BEShjn+3w6apmOI8=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 0026340002
+X-Stat-Signature: um895x76yrja53iuj5ubbwizdin9db1d
+X-HE-Tag: 1782097979-1712
+X-HE-Meta: U2FsdGVkX19BkUiX6m5CcJLw6dydQM0xxCt0LNsyHIg3AOKzHHQhMqAeZAzv/Ctn84MciGXIgRD3u3vWGZE1LEdUnVoBCPBmu7hesyeKi216NLNxZLtJ7Q+w19ZKpwlVGs5ocgSWU4HpqoYXHSeATVD+D/8UgeBzFNd46KCSjvtKu6DhExRKrZcqpOVc4HJvf8l+ta4q1CFSue6XdafaRzpUMRzXrtQW1kVEBbqSAZ+rsHbcSt9b/MZjO6XrhrdBF8gE76NB9ei24bC1U5QLElRzXv7jKtPckDhHiSTsc3stRyjbaUgC3W9nHdYfjgg4C8qyOx1S7fRwZ5y8UGl2E0fkKIs0uNTB9XfIBD2bQ/ERnfcMvaDx45vHYrAsWlZ/cXDGlhRc9ChDwky5JpMoVgU22PJmRr55MxLPm7LfNQGvz9pTdgSpJCHJj09oh5Zilg4J8p8C/Zdys7lsXfzX9tWV7ta4nt7uouhmYGiL9U6SewyLpkqyChPYF0vSyHZ3KQipNKSEmEO9ECOqN0dxTtKsO3CFs719EvfT6gddPL6aLcBlV56cBJuKS4VxXg7gmJ2iYqHsBc4yEBcddf1W2Z4XPKxIh5IlEOix0dRNmSTC7ginB5FdJX86TjKYyHQHj3L7Zm7PsyP6OQ1/KAqxDtPzD2/flOSSieotodvvFW1ILuesqcQJQfluOxzKRf7K0uZeSqi2VGKljcL1PSd3ZEE+HVUdls8fdwIoP1C7JnVZMkxAbadmLOfsTEPOZYL4UR1IOL+BZXpvlNxarNsUTzy9/JskxBf5b2RU7QUQqjlcjWYgOzc4UkUhAsgEk8kcDHBPUZF4j6RcjCrArWoy+/EBYIbeOqdu9AO1B31df/0wmEjkptiKuJ94B2ymfuDEyHaSkOGEjRb2fIDoFY5QDkODRaosCuJnVm7gcCCQrURAOBFNxBrVUsc9ZavJIEo4VPc58huDPUSbzMjlvPi
+ F3BI53oz
+ uUZ4Knyea1zq5vQDF1CCXYdvpwAmvYwT/NuHsOea/8OMsPNsyhl7eD73hayJPiOjrBzkZRl1eJYAxYe5KrCIx7YJUAHB14gtw1uzNbEjyriXjJW3mD8e5QcmQh4cW5bLEw6d0w7BML9A/3/RMwSEOw3rAtat0XjW6TTbroxOw/vnfuSot336lyJE/GMt8iS6gC6ow/lUHJjLB4YxzoLmPeUV5bgpeYBlpSFdzb6Jf/i+BubxZx5wUhsBWhNq1UYHbfpvTZCgfbrVob7V8eKfcKO1O6gtyoVIGGX6Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,95 +93,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Peiyang,
 
+Thanks for reporting this issue!
 
-On 6/20/26 4:10 PM, Barry Song (Xiaomi) wrote:
-> On Fri, Jun 19, 2026 at 10:04 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
-> [...]
->>>        /*
->>>         * The page can not be swapped.
->>>         *
->>> @@ -1280,6 +1289,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->>>
->>>                                if (!folio_test_large(folio))
->>>                                        goto activate_locked_split;
->>> +                             if (!__can_reclaim_anon_pages(memcg, sc))
->>> +                                     goto activate_locked_split;
->>
->> Why are we even trying to allocate swap space if we cannot reclaim such pages?
->> Makes we wonder whether we would want to have that check earlier, before the
->> folio_alloc_swap().
->>
->> Any downsides?
+On 6/21/26 9:50 PM, Peiyang He wrote:
+> Hello,
 > 
-> I don't think there are any obvious downsides there. One issue is that
-> the memcg may not be passed from reclaim_pages(), so memcg would
-> always be NULL. However, the folio could still belong to a memcg
-> whose swap quota has been exhausted. In that case, my
-> __can_reclaim_anon_pages() will fail when checking whether we can
-> swap out. But switching to folio_memcg() also seems awkward.
+> I hit the following warning while fuzzing other kernel code with Syzkaller.
 > 
-> So I feel Kairui’s suggestion [1] might be the best approach. In
-> folio_alloc_swap(), we return -EAGAIN to tell vmscan.c that
-> we can split the folio and retry the swap-out.
-> only when there are sufficient swap slots and sufficient memcg swap
-> quota do we return -EAGAIN, allowing vmscan to perform a split.
+> The original Syzkaller report:
 > 
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 78b49b0658ad..62e2c506ccae 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1755,6 +1755,9 @@ int folio_alloc_swap(struct folio *folio)
->   			VM_WARN_ON_ONCE(1);
->   			return -EINVAL;
->   		}
-> +
-> +		if (get_nr_swap_pages() < (1 << order))
-> +			return -ENOMEM;
+> WARNING: mm/vmscan.c:5867 at lru_gen_exit_memcg+0x26f/0x300 mm/ 
+> vmscan.c:5867, CPU#0: kworker/0:0/9
+> Modules linked in:
+> CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 7.1.0 #2 PREEMPT(full)
+> Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 
+> 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+> Workqueue: cgroup_free css_free_rwork_fn
+> RIP: 0010:lru_gen_exit_memcg+0x26f/0x300 mm/vmscan.c:5867
+> Code: 89 de e8 d4 62 ba ff 49 83 fd 3f 0f 86 9c fe ff ff 48 83 c4 08 5b 
+> 5d 41 5c 41 5d 41 5e 41 5f e9 17 68 ba ff e8 12 68 ba ff 90 <0f> 0b 90 
+> e9 b0 fe ff ff e8 04 68 ba ff 66 90 e8 fd 67 ba ff 90 0f
+> RSP: 0018:ffffc900001afb78 EFLAGS: 00010293
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff82049e88
+> RDX: ffff888016f35c40 RSI: ffffffff8204a02e RDI: ffff88801d4103b8
+> RBP: dffffc0000000000 R08: 0000000000000005 R09: 0000000000000040
+> R10: 0000000000000000 R11: 0000000000002ba4 R12: ffff8880481f1600
+> R13: ffff88801d410650 R14: ffff88801d410040 R15: dead000000000100
+> FS:  0000000000000000(0000) GS:ffff888098d91000(0000) 
+> knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 000055ac6490c1d8 CR3: 00000000249b0000 CR4: 0000000000350ef0
+> Call Trace:
+>   <TASK>
+>   mem_cgroup_free mm/memcontrol.c:3972 [inline]
+>   mem_cgroup_css_free+0x76/0xb0 mm/memcontrol.c:4241
+>   css_free_rwork_fn+0x125/0x1260 kernel/cgroup/cgroup.c:5575
+>   process_one_work+0xa0d/0x1c30 kernel/workqueue.c:3314
+>   process_scheduled_works kernel/workqueue.c:3397 [inline]
+>   worker_thread+0x645/0xe80 kernel/workqueue.c:3478
+>   kthread+0x367/0x480 kernel/kthread.c:436
+>   ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>   </TASK>
+> 
+> Kernel version: commit 8cd9520d35a6c38db6567e97dd93b1f11f185dc6 (tag v7.1)
+> 
+> Relevant kernel config:
+> 
+>    CONFIG_MEMCG=y
+>    CONFIG_LRU_GEN=y
+>    CONFIG_LRU_GEN_ENABLED=y
+>    CONFIG_LRU_GEN_WALKS_MMU=y
+>    CONFIG_NUMA=y
+> 
+> Root Cause:
+> 
+> The bug is a race between two code paths that each hold `lruvec- 
+>  >lru_lock`, but at
+> non-overlapping times.
+> 
+> Component 1 - `reset_batch_size()`:
+> 
+> During `walk_mm()`, `update_batch_size()` accumulates per-generation 
+> page deltas into
+> `walk->nr_pages` WITHOUT holding `lruvec_lock`.  After 
+> `mmap_read_unlock(mm)`, the
+> walker reacquires `lruvec_lock` and `reset_batch_size()` writes those 
+> deltas
+> UNCONDITIONALLY into `lrugen->nr_pages`.
+> 
+> Component 2 - `lru_gen_reparent_memcg()`:
+> 
+> When a memcg is offlined, `lru_gen_reparent_memcg()` moves all folios to 
+> the parent
+> lruvec and zeros the child's `lrugen->nr_pages`, all under `lruvec_lock`.
+> 
+> I have not bisected the issue.  Based on code inspection, the important 
+> interaction
+> appears to be the reparenting path that clears the child's `nr_pages` while
+> `reset_batch_size()` can still commit a batch that was generated before 
+> the memcg
+> went offline.  This looks related to f304652609ea ("mm: vmscan: prepare for
+> reparenting MGLRU folios").
+> 
+> Race sequence:
+> 
+>      1. The aging path enters walk_mm() for the child memcg lruvec.
+> 
+>      2. walk_page_range() scans PTEs and update_batch_size() stores 
+> deltas in
+>         walk->nr_pages.  At this point the deltas have not been 
+> committed to
+>         lruvec->lrugen.nr_pages yet.
+> 
+>      3. walk_mm() drops mmap_read_lock(mm).  Before it reaches
+>         reset_batch_size(), the child memcg is killed and removed.
+> 
+>      4. The memcg offline path runs lru_gen_reparent_memcg().  Under
+>         lruvec_lock, it moves the child folios to the parent and clears the
+>         child's lrugen.nr_pages.
+> 
+>      5. The old aging walk resumes, takes lruvec_lock, and 
+> reset_batch_size()
+>         writes the stale walk->nr_pages deltas back into the original child
+>         lruvec.
+> 
+>      6. Later, lru_gen_exit_memcg(child) checks the child's 
+> lrugen.nr_pages with
+>         memchr_inv(...).  Since the stale batch made some slots non-zero 
+> again,
+>         VM_WARN_ON_ONCE() triggers.
 
-Shouldn't this return -EAGAIN? Suppose we try to swap out an order-9 
-large folio but get_nr_swap_pages() returns 256, then we'd still need to 
-split the order-9 large folio to reclaim some memory.
+It seems this race can actually happen.
 
->   	}
->   
->   again:
-> @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
->   	}
->   
->   	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
-> -	if (unlikely(mem_cgroup_try_charge_swap(folio)))
-> +	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
->   		swap_cache_del_folio(folio);
-> +		return -ENOMEM;
-> +	}
->   
->   	if (unlikely(!folio_test_swapcache(folio)))
-> -		return -ENOMEM;
-> +		return -EAGAIN;
->   
->   	return 0;
->   }
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 299b5d9e8836..63e8578454ea 100644
+> 
+> The two critical sections are serialized by `lruvec_lock`, but the batch 
+> accumulation
+> in `walk->nr_pages` happens outside that lock, so there is no ordering 
+> between the
+> accumulation and the reparenting zeroing.
+> 
+> The relevant code path:
+> 
+>    mm/vmscan.c:
+>      run_cmd('+')              selects the target memcg and child lruvec
+>      try_to_inc_max_seq()      stores the child lruvec in walk->lruvec
+>      update_batch_size()       accumulates deltas in walk->nr_pages
+>      walk_mm()                 calls walk_page_range(), then later 
+> reset_batch_size()
+>      reset_batch_size()        writes cached deltas into walk->lruvec- 
+>  >lrugen.nr_pages
+>      lru_gen_reparent_memcg()  reparents child MGLRU state and clears 
+> child nr_pages
+>      lru_gen_exit_memcg()      warns if the exiting memcg has non-zero 
+> nr_pages
+> 
+>    mm/memcontrol.c:
+>      mem_cgroup_css_offline()  calls memcg_reparent_objcgs() and 
+> lru_gen_offline_memcg()
+>      mem_cgroup_free()         calls lru_gen_exit_memcg()
+> 
+> Reproducer:
+> 
+> The C reproducer and the helper script for running it are provided in 
+> the attachments.
+> 
+> The PoC creates a leaf memory cgroup, moves a victim process into it, 
+> and makes the victim fault and continuously touch file-backed pages so 
+> MGLRU aging can produce cached generation deltas for that memcg. A 
+> separate `lru_ager` thread repeatedly writes aging commands to `/sys/ 
+> kernel/debug/lru_gen`; when the instrumentation reports that the ager is 
+> delayed just before `reset_batch_size()`, the PoC kills the victim and 
+> removes the leaf cgroup, forcing memcg offline/reparenting before the 
+> stale batch is committed.
+> 
+> The helper script builds the PoC, creates a temporary qcow2 overlay, 
+> boots the instrumented kernel in QEMU with fake NUMA and SSH port 
+> forwarding, copies the PoC into the guest, runs it, and scans the serial 
+> console for `exit_nonzero`, `WARNING: mm/vmscan.c`, or `Kernel panic`. 
+> It writes the full serial console, extracted kernel events, and guest 
+> stdout/stderr under the chosen output directory.
+> 
+> The example command:
+> 
+>    ./repros/lru_gen_exit_memcg/run_poc_qemu.sh /tmp/lru_gen_poc_manual 
+> 10450 20 32
+> 
+> The arguments are:
+> 
+>    /tmp/lru_gen_poc_manual  output directory for the overlay, console log,
+>                             extracted events and guest log
+>    10450                    host TCP port forwarded to guest SSH
+>    20                       number of PoC iterations to run
+>    32                       file-backed working-set size in MiB per 
+> iteration
+> 
+> The script uses default `KERNEL`, `IMAGE` and `SSH_KEY` paths, or they 
+> can be
+> overridden with environment variables.
+> 
+> Since this bug requires a specific race window, kernel instrumentation 
+> is needed
+> to enlarge the race window in order to reproduce the bug more reliably.  
+> The
+> instrumentation patch is also included in the attachments.
+> 
+> The patch only instruments `mm/vmscan.c`: it delays the PoC aging task just
+> before `reset_batch_size()`, logs when a stale batch is written into an 
+> already
+> offlined and zeroed memcg lruvec, and dumps the non-zero 
+> `lrugen.nr_pages` slots
+> before `lru_gen_exit_memcg()` triggers the warning.
+> 
+> A successful run reports `status=repro_triggered`, and the extracted events
+> include a warning like:
+> 
+>    WARNING: mm/vmscan.c:5943 at lru_gen_exit_memcg+0x420/0x520
+> 
+> Proposed Fix:
+> 
+> One possible fix direction is to make `reset_batch_size()` skip writing 
+> back the
+> stale delta when the memcg is no longer online. `reset_batch_size()` is 
+> called
+> under `lruvec_lock`, the same lock that `lru_gen_reparent_memcg()` holds 
+> when it
+> zeroes `nr_pages`, so this should avoid committing a batch after 
+> reparenting has
+> completed.
+> 
+> Possible fix direction, not a tested patch:
+> 
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -1257,6 +1257,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->   		 */
->   		if (folio_test_anon(folio) && folio_test_swapbacked(folio) &&
->   				!folio_test_swapcache(folio)) {
-> +			int ret;
+> @@ -... reset_batch_size() ...
+>   static void reset_batch_size(struct lru_gen_mm_walk *walk)
+>   {
+>       int gen, type, zone;
+>       struct lruvec *lruvec = walk->lruvec;
+>       struct lru_gen_folio *lrugen = &lruvec->lrugen;
+> +    struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+> 
+>       walk->batched = 0;
+> 
+>       for_each_gen_type_zone(gen, type, zone) {
+>           enum lru_list lru = type * LRU_INACTIVE_FILE;
+>           int delta = walk->nr_pages[gen][type][zone];
+> 
+>           if (!delta)
+>               continue;
+> 
+>           walk->nr_pages[gen][type][zone] = 0;
 > +
->   			if (!(sc->gfp_mask & __GFP_IO))
->   				goto keep_locked;
->   			if (folio_maybe_dma_pinned(folio))
-> @@ -1275,10 +1277,10 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
->   				    split_folio_to_list(folio, folio_list))
->   					goto activate_locked;
->   			}
-> -			if (folio_alloc_swap(folio)) {
-> +			if ((ret = folio_alloc_swap(folio))) {
+> +        /*
+> +         * If the memcg went offline while we were walking page tables,
+> +         * lru_gen_reparent_memcg() has already zeroed nr_pages and moved
+> +         * all folios to the parent.  Writing our stale batch delta back
+> +         * would corrupt the offline child and trigger WARN_ON in
+> +         * lru_gen_exit_memcg().  Discard the delta; the parent lruvec
+> +         * already owns the pages and accounts for them correctly.
+> +         */
+> +        if (memcg && !mem_cgroup_online(memcg))
+> +            continue;
 
-Also, please give shmem some love (shmem also calls folio_alloc_swap() 
-when swapping out) :)
+This check is insufficient, because offline_css() clears the CSS_ONLINE
+after ss->css_offline(css). And we can not simple drop the delta.
+
+Thanks,
+Qi
+
+> +
+>           WRITE_ONCE(lrugen->nr_pages[gen][type][zone],
+>                  lrugen->nr_pages[gen][type][zone] + delta);
+> 
+>           if (lru_gen_is_active(lruvec, gen))
+>               lru += LRU_ACTIVE;
+>           __update_lru_size(lruvec, lru, zone, delta);
+>       }
+>   }
+> 
+> Thanks
+
 
