@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B15ECDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 14:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F8B9CDB470
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 14:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B8FC6B009F; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
+	id 1C1596B009E; Mon, 22 Jun 2026 10:21:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5422C6B00A0; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
+	id 198D86B00A0; Mon, 22 Jun 2026 10:21:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 457F86B00A2; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
+	id 0D5506B00A3; Mon, 22 Jun 2026 10:21:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 411A96B009F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12B166B009E
 	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:21:53 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF7B9120183
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8EF24140189
 	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:52 +0000 (UTC)
-X-FDA: 84907762464.16.15106A5
+X-FDA: 84907762464.10.4B6B8A5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2793B140007
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnKATpWv;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 321172000D
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKFS2GeK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782138111;
+	s=arc-20220608; t=1782138110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PQradOyUplHOgC8HnoJqDwUCjl6LH6os+/rkUZXzJJQ=;
-	b=2+QIgZlJaXBxDAuVE9CPKV2AMNkG1u2iKEL0uXiNd4WSRyQh1h34grU1ZcwS2uugnWcqcE
-	5FZX+3K02xZSxoozSh7lt3Er8Q6IGRU60pkBidZV7j2VpYKrtaimDR1fAGV04N57BWraPD
-	bSvtEOiaoH7pKGvO6r1IJpLH/uGPfa4=
+	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
+	b=NUt3CuHFJYp+3U3EKTk3Kt1JprPOJyNDubzcFw6ltp4jnPsAsTYSg/VSVNgMhp297CAyvJ
+	i72AOx5GpRSIXbkvCN7IaEE7LH9Cwr9jc2BnccSBw40E8FmcHUk+xs6twC5bPDdLSMTw1v
+	uAmZ43ob3VGzVHCHKF08P/WRufjdsTY=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnKATpWv;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKFS2GeK;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782138111;
-	b=v71n65w1Ih1Y3FZjJW5JFSAnTKOqMUV6aaO8yzl2Pyn79OP/xuWx3Sp38c1U5MgFQm3Oga
-	m9BzucerbvdfTdABHGMc209ULjKBp+GqeiiODVJ8TjL9K5hfBN2n02T7N1tRQlMsqaOLVO
-	sqpnr2ae8i9iVmw/DG3zdhbXODq4vJ8=
+	t=1782138110;
+	b=3f7JYAtOyuCRhy5C5eWv78+xRukqRdWEGX6TVpS1IHsJGWLFp7guf3TfGjagKO+FJgQqkg
+	+m3gJen2kY6GTbV5kPC3jBX2sy7u7IkH7YUNMCVtx7yeJmPKeMEYGHroo6g0za6cyulaK1
+	e4szxa42PqpVEyK20HTq0gvCMEn0Z9M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 73C00442EA;
-	Mon, 22 Jun 2026 14:21:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3151F00A3E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DD8D44177;
 	Mon, 22 Jun 2026 14:21:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B15B1F00A3D;
+	Mon, 22 Jun 2026 14:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782138110;
-	bh=PQradOyUplHOgC8HnoJqDwUCjl6LH6os+/rkUZXzJJQ=;
+	s=k20260515; t=1782138109;
+	bh=dGqKzRnIP+DKXc/Th2v0SJe+T3xtV4bAe2ASi7qsS9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FnKATpWvDwkHRwdi9Uav1cD+mTAY2mfWw9x4neKuDXB+UkN3ME3GrN0aTqK3bnXKR
-	 UahrR9MatgNRQp8lcBKKxTCp44jVg6UdjIDyPWtNas6yFDl8E8PxfCUfrxyqg6s9z7
-	 4X8JiaU0kCdrp+SZ3TrAGpCu+2iF8abRAx2swsglG/mCp5WCPmf+12o0cfJ4fdFx/d
-	 +jC4BdEwcAL3TT7V0mQ7tmXBTHXF6uNR60ZyLWS2jSYoYpCmQPGJgn8imLYKCvyYEc
-	 /SvhOqO1BtPJN0Kch5b3h9z1RyNM+fQzI9s2KDWPpOzDtK5l7dhIlUgooKIxv5y9FE
-	 Bjg4YrbyBTk/w==
+	b=hKFS2GeK5U3MgDNMoCsMQIKsrh3pn/TsMBTeO4WBg4OCVz3wmpQ957Pw8ugD9nw28
+	 4oThG6qRW4hz4M5XYkMs7YTn2obP7oJV/DnxX2pP9I9OoW+M3mlJMK1Qfw8ujVZnSL
+	 LNKf60nNUEvRrMFCmzc45s1ioplG2jl4N2pmTJOWtPqInPV+U6puJJrPzLyx0PZ51P
+	 xM6id3Xp46vTDnId+acniulVAiMk1PDmOq80ISfeLvxrgE4COuDIThpAKfYqgbMD2A
+	 Q0v8KcqpCFDv0dz7qnLIAs6Z6bMpbSgiohiEl6mg4VsbqBiWYv0tL88HyX9jQ5if+j
+	 y25rTKguMgfNA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.3 03/18] mm/damon/core: always update ->last_nr_accesses for intervals change
-Date: Mon, 22 Jun 2026 07:21:23 -0700
-Message-ID: <20260622142139.30269-4-sj@kernel.org>
+Subject: [RFC PATCH v1.3 02/18] mm/damon/tests/core-kunit: test damon_mvsum()
+Date: Mon, 22 Jun 2026 07:21:22 -0700
+Message-ID: <20260622142139.30269-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260622142139.30269-1-sj@kernel.org>
 References: <20260622142139.30269-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 321172000D
 X-Rspam-User: 
-X-Stat-Signature: fed74tmkaukh5ugmfy7tskzn187dgzzd
-X-Rspamd-Queue-Id: 2793B140007
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1782138110-575406
-X-HE-Meta: U2FsdGVkX1855qXplTohj47lWh7sjilyj80HWFmJt+EnYGELCO0bx9Z3ksAstlRTw69nRBnRoTc9QO3HrQdZq4OOpa0K8c04GCCd1v/GhGvcoIgNpxP8kID3eTisgHmiD8ap6enM9jT1F0SWxCnoQx5aiSnMBF1ZO0Xjd0TI5hYnL3eNScKxFtd0CFRH9KLULR3yBj+HLqGLclhuFXcAa9y1R5dC3bkkxFKdO7z4hCem678H+IbLViXiRcEsHflwp8096QVvCuYEcngdVTxt2WCS3/seTHjDyweV2PYgZa7WsWrB02nzfljnRDe5x65RVSMgJosJimG/UCZqWb9Axy9DYHDj2ISrmYeltPHUTF2OXR8HF55Nk+JGpxV7VspVlpGLbUYAK7vf4i+oP7tPtTfLVmeO3lyjqqMUgWW1hf8wUsfrhEzHsw++QC55N1CJl82CwGzLv4bemnEx7R+Ij7ilJO6rgaNV6/ProutMgnnv+7TvXZKpo4nd4n3Qgr7i6nJij4GcquM7CcIqdNr5+RsMKwhFk7uhvLskoE/C345ng++C8S9tcfOeIMikNlH63cdL5oZiqljrBJeY0FWdUg65545xvgZO02/QMXlz1unetohaGyyCh/W3JnliCaiDXbCi9k2YK6uqXsKAeVy6qD7IATAWORrEUGscz4fSraIa4IQwXD/953g+H8hjj/vRwlIPNdT91X4VSgAXT5XczywRicuIgtmkZMGAWa/23hpiEugV69jkvj/ZP/VbHRiYvbPCb3xbzwxklZA1mKQAHJNd/JDlkuCfVOp9S3gbXl59mwURJqySgLi36HEvOuF76F0grDHUlt9chyhRu4qya+i8Oc0fH83p+2A38lgIs8jBlYzESxGOiwzLkhZ/Y31shrqsee9nO+TF92mN1ZHrVI6fPZanJrzuGIBGu+Y8J3Y2R3zlC3IkmLgC0FzwoJbj4M7Sxo4jvQM/3I9tdrK
- i/hlFUNJ
- EwXeGsGLeYRKHXe7OrUlgazKwOhLIbT0bHi0dSQT938G//0JfvgC6FpLlzvxramJj3kM4HnYFTzLK+BdVuDtSKpL+wFipnoAs4HBLaZYkLbSv7PRws2SDmG/iXrCre4aYkkRsohsCojauuIaRdHCemRvgg34ZLcQ6Jl2ZroWtYwowQ7kCFGTOB5SW5v0ODl5kT+wsvGAELaov3sl7tj6sc583qTzVUBu9DVFUF4EDTuyrBynHtWE400gT40gMTvzW5MKhGuBo9DX1AvJRx570SRC6cw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: w3ryubhy8ob3xudh5wy4fyhwe9zus69c
+X-HE-Tag: 1782138110-582556
+X-HE-Meta: U2FsdGVkX19jjqSPgUZ7jVwfv1vtEjaOc0Cp7mT0rorZH/2Vps+ETuuNp6Uz+INVJPQT75uS03jqxnQeGs1k9Ulv4yWXeCq8KRr+DuQ2qA0BN4VDCTNOjZoJP/z4uZqcrfReQQ6j3W2B/7FFm2KZZABY99y+FoitznzBlqdN7/YWXZWtk2OaL7Gjn07fJKSBaeknlDoRjiYSpO4SPjsU8Mz2vJA5I2GQI0O1e9rnYznLaUxDcPcWeq7cEYMhbF5di+5GW/zeE7RLGXfSl6yhM4fcE4FHZ5cPvn2g7bQbbk3XLFmdQYCRpRBhoM440tIbLC7NOoGGy8Hr3egvf6t5APn0hir1b6qDc3JZTbLTBfV/35xOFSh4DjyHdkicwFPoDkyH18bqkAZ98UlEEOdM1SXGmlsgNNCZUBbH9Qe/WKenp1oN74bTij1/6R6ePIdj3FV9cn0we3UtnsER2njXOdVt2PX0AQqtAAC0Z+bu509Mb2rG25nncXft7C3/L8mCGC87ueSbAotOqY0823uEpTFdOpO7eYGo8gCHfLrMgr7uXi7H2fUhgFtLEK6bOw7SHlvVmXdIO0SLgBF/UovTpa7hhxoSU5aOCDlL/ACSgYNuhG32QPYnA/Szbe6AqJujaOf8c74NKazUYZbopkdvcp1RvjkAe4VFxhR7+CpFB7yTlLHvj/YDQPRUGkINOdu6OMWgx+bceSysfRKToQJiyCrKfj2idRTKURHcUVqw9/qVmhFubv0UwCWAbcdLRgCadGVn36S8G9f0N+qNrzTQJGtCP9y69IGhXLRtUVIxEN42tNvIm5QR4XBByij9Fl6TWlqSNSPmfKQPx44Q454xOOU68PiX/1X2kT5NkTKm+ZpjJIillybbWlep33MOJNtyJKBcP3VIdXnTRe2tKHIg3J+NMQ2cRunzQ87WpnnBpbzJhlIWpi7a6y5KRy1FFFrHeM8EpnVS5LecwMwNuD3
+ BfwMfTuR
+ 6ev9UK1AAzw9ih8K+IE/8DEMpt1fPXR68E6bahYAntcS739z5okqo2LMyOqBggL9zwu7zHOvVPzC57JrfXVYVipzhOL6TUwdTmHq/ryYcFgARAI6YAYlIwcois0yEV2de0KEicnWcIXWYrMWB6TDY00StlXOazU0NOi51tqE/JKEcmUAYswCDGL/9qvk4PmxT6UlU8J61dKblf8SNUD/Rp9LCmVlw8tI5YJwhv5PpQy7DNc3TvTraKLEeXBNHaWN8JYkZiH4NRVA932DqazWuWULndw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,54 +97,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Each iteration of kdamond_fn() main loop caches and use the next
-aggregation time (next_aggregation_sis) because it can be updated in the
-middle, inside kdamond_call().  If that happens,
-damon_update_monitoring_result() is called for scaling the access
-frequency information of each region according to the changed intervals.
-The function does not update damon_region->last_nr_accesses when it is
-at the end of the aggregation, because it will anyway be reset after the
-function is executed, in kdamond_reset_aggregated().
-
-Let's suppose damon_nr_accesses_mvsum() is called with the not yet
-updated last_nr_accesses.  It will use the fresh next_aggregation_sis in
-the context instead of the cached one, unlike kdamond_fn().  As a
-result, use of not updated last_nr_acceses with the updated
-next_aggregation_sis result in returning wrong value.
-
-There is no such damon_nr_accesses_nvsum() call at the moment, so this
-is no problem.  It is planned to add such calls, though.  Prevent the
-issue by updating last_nr_accesses always.  This adds overhead, but
-that's fine because the overhead is not big, and it is anyway not a fast
-path.
+Add a simple unit test for damon_nr_accesses_mvsum()'s internal core
+logic, damon_mvsum().  The test contains cases for just-started windows,
+partially completed windows, and just-completed windows.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/tests/core-kunit.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 2cc911fa221aa..191533685cf2f 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -873,6 +873,8 @@ static void damon_update_monitoring_result(struct damon_region *r,
- 		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs,
- 		bool aggregating)
- {
-+	r->last_nr_accesses = damon_nr_accesses_for_new_attrs(
-+			r->last_nr_accesses, old_attrs, new_attrs);
- 	if (!aggregating) {
- 		r->nr_accesses = damon_nr_accesses_for_new_attrs(
- 				r->nr_accesses, old_attrs, new_attrs);
-@@ -884,8 +886,6 @@ static void damon_update_monitoring_result(struct damon_region *r,
- 		 * interval.  In other words, make the status like
- 		 * kdamond_reset_aggregated() is called.
- 		 */
--		r->last_nr_accesses = damon_nr_accesses_for_new_attrs(
--				r->last_nr_accesses, old_attrs, new_attrs);
- 		r->nr_accesses_bp = r->last_nr_accesses * 10000;
- 		r->nr_accesses = 0;
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index 4e448c08c724a..cdab14396250f 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -623,6 +623,30 @@ static void damon_test_moving_sum(struct kunit *test)
  	}
+ }
+ 
++static void damon_test_mvsum(struct kunit *test)
++{
++	unsigned long input_expects[] = {
++		/* current value, last value, remaining window (bp) */
++		0, 49, 10000, 49,	/* 0 + 49 * 1 */
++		3, 10, 7000, 10,	/* 3 + 10 * 0.7 */
++		3, 10, 5000, 8,		/* 3 + 10 * 0.5 */
++		32, 100, 1000, 42,	/* 32 + 100 * 0.1 */
++		42, 49, 0, 42,		/* 42 + 49 * 0 */
++	};
++
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(input_expects); i += 4) {
++		unsigned long current_nr = input_expects[i];
++		unsigned long last_nr = input_expects[i + 1];
++		unsigned long left_window_bp = input_expects[i + 2];
++		unsigned long expect = input_expects[i + 3];
++
++		KUNIT_EXPECT_EQ(test, damon_mvsum(current_nr, last_nr,
++					left_window_bp), expect);
++	}
++}
++
+ static void damos_test_new_filter(struct kunit *test)
+ {
+ 	struct damos_filter *filter;
+@@ -1501,6 +1525,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_update_monitoring_result),
+ 	KUNIT_CASE(damon_test_set_attrs),
+ 	KUNIT_CASE(damon_test_moving_sum),
++	KUNIT_CASE(damon_test_mvsum),
+ 	KUNIT_CASE(damos_test_new_filter),
+ 	KUNIT_CASE(damos_test_commit_quota_goal),
+ 	KUNIT_CASE(damos_test_commit_quota_goals),
 -- 
 2.47.3
 
