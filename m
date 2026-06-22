@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4836CD98F6
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 06:09:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42668CDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 06:16:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9538F6B0088; Mon, 22 Jun 2026 02:09:06 -0400 (EDT)
+	id 19A386B0088; Mon, 22 Jun 2026 02:16:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92AC96B008A; Mon, 22 Jun 2026 02:09:06 -0400 (EDT)
+	id 14C2B6B008A; Mon, 22 Jun 2026 02:16:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F3226B008C; Mon, 22 Jun 2026 02:09:06 -0400 (EDT)
+	id 03A626B008C; Mon, 22 Jun 2026 02:16:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 566586B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:09:06 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC0AB166F0B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:09:05 +0000 (UTC)
-X-FDA: 84906520650.17.C5740EF
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DD63D160003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:09:03 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ps5iefhM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C99A56B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:16:18 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 503521C55DF
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:16:18 +0000 (UTC)
+X-FDA: 84906538836.16.3EB5522
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A9BA31C0002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:16:14 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t15fr1vS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782108543;
+	s=arc-20220608; t=1782108976;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eDyp+nco3B5NIcQm8dnJlrIpz1rH5PTwVnURehE3SCs=;
-	b=H/8ZtZ/wTXU4g1FaTooDwPUvK8KfPvn0t5OR20xTmtQYPb8FhPPdqiCArXYRQ4ut8Y4anI
-	vPJy4uvyixzitrIKoZoYWVZND5jDPMRQp3rwvT/4U3KoaDjSBOAEFxjKjEczWQLl6bkO/h
-	HCox6ytTZug/sKjpmLM0J4kLAT7QQy8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782108543;
-	b=tZWPsAfLag6rQFp4IgGVkkVbu0EdtwQPJ3AKEtNWSTVCpSeDgCk13ryxAUjeVEirJGquWY
-	T+pRZvxlWxtwEeyq+0LK622iIcXZ7VbtHr4IIipX/QTBbLj0CyYubICyrK64s2/XylmY6n
-	8pPYFhyzRbpOGPGFgnR58oU42XtbPLg=
+	bh=uc01vIZYGfTIV3fdEG67Z2UKVAOKK7e6urfcQoWTPXs=;
+	b=KSR/atADrT0h+mPnRA7NJFWRlcS0Hkc+8wlQx3ZMZoy7gk+o7WuuNn/AmIeC+cNgKOuwaG
+	aZYVuHW+CJZ602MOi59MajMJXx6vofr1Scr3Ddsg9OiGe7XANaM/aei2zPKpmIRWyB7MvQ
+	3ARzm8qFemUZ6I2omPQkGdHz4Fts3lI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Ps5iefhM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c40397e3caso37415215ad.2
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 23:09:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782108543; x=1782713343; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eDyp+nco3B5NIcQm8dnJlrIpz1rH5PTwVnURehE3SCs=;
-        b=Ps5iefhM7a9ziMJxrAYK4ykkQyKhXp1tl90yUIeKl1Ag+onxkLbBUhoaUTY8uNUzn+
-         5Q5qHpIANyv0zdKHoCxegXuigx6sJitJiDkf97oeFUM8KIV9ZJYGWiAzcY8B6MP0HDC5
-         QynxpbUXZy4mBtoytojnVkFH2jsyETxEn6baDcuIzhBbF7tSn7QR/WtKb4hPeyDpMzgB
-         iVnHyJL0Uiuhr5MswsHffzzT1+KZp/A3s0//I8YlboHsoprvcftryxCnOKaig9uLLShn
-         Yw7hQTLeqnG+GdnIMM4h4mLoC3XIiFwpjk2ERZ0YR8VMUGNNaW+SrmKrE8vaBS+LvsD1
-         DspA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782108543; x=1782713343;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eDyp+nco3B5NIcQm8dnJlrIpz1rH5PTwVnURehE3SCs=;
-        b=lHK7BjsyloVEVxG1ldRzC50IMUW+ETZ9gkCm/mNBxTxmErBe6II8McgZeBUG31GJif
-         9uSTIpizTeoT8QYx8XQA6WQcX8ygnw8kZV6Ser0Fx6qzeLGTWVMRD0LCvrrRncwZguwi
-         sjfSiVeWNm3cFRKN2A03p375f7j2CKLyeLf40RKV5NSUO7/h3dcNu7ELsN3lWvMTM+lL
-         ok5ptRhtgLz9ncyaV3REyqxF2GLVPuIaQ8aNF1GabPVaOZHb+huHFXCVKNwmQdUXKnUE
-         oOt3t5flCwo9CikrC5yiJCsqTNWxxnB4nFx2s9jQZJlcJ6Xiu+DK52xU8SCLU/oDOHV5
-         WYyA==
-X-Forwarded-Encrypted: i=1; AHgh+Ro7K9QqOZg2xM/0COIH0WwhzVaahwzdyxzS4smG0NaDdX9olFsQ4ThNWZDK0tVLIv21sHU2vmE4xw==@kvack.org
-X-Gm-Message-State: AOJu0YytuVjqtFNB6oXAFZfOJdis/YDHRjDCqaqLqNAAW9jzenwEfi8D
-	kuvlUClNKHOEaEZbcvn+SBD0RkNDfti6Sv17pZP19geS9ISui/PsM4fS
-X-Gm-Gg: AfdE7cnBt3s3IkRIX9F5KvM9a91otxlTXbY1rOQi/hS4JFrt4lY5sCoKHfGd9x/rCa/
-	jtMk5ObpPWGQHGuOySlm//vdbQhc03taj6k83HQfeNObirIQXMUfJp1cAlnm/pJ8lcS1dUdb5HS
-	nYOHJ0b8/AeQG2KbC7HWGIBGKetK2yPLovSq8yiUf0DjNb9HIxYUyykyW5ORAOpcpfsM9Q6bwAA
-	S+jSIHTFXT4SE6Ej26hVEx+WF9c0pWZd366WyJGtlRno02v/DwoCaB3Rn132laMupuxc0bTEqX3
-	gmtVNcvNzBx1p8IF5G2bFdKeS4Wtfg8XhMLb6xb09zAksoiFXewnb06S0L4Kn14c1L7280L2tYq
-	/cBGqOlQ7pfSv9L6UqMX7Ls88kdZCc1xgyfNVMWwtP0L2NZBgINv0cEmGDuNGOaoq1QmLUn/gb1
-	upqd4AilxrlRE/mEhi3KfVfeYEZ6XO8M5a
-X-Received: by 2002:a17:902:db0c:b0:2bd:8dbb:293e with SMTP id d9443c01a7336-2c725bf2b83mr132353945ad.14.1782108542643;
-        Sun, 21 Jun 2026 23:09:02 -0700 (PDT)
-Received: from [10.125.192.89] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436f6395sm67323825ad.28.2026.06.21.23.08.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Jun 2026 23:09:02 -0700 (PDT)
-Message-ID: <26a034b3-9cfa-e4f5-eea1-e69fbfff02b4@gmail.com>
-Date: Mon, 22 Jun 2026 14:08:49 +0800
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t15fr1vS;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782108976;
+	b=PXzN1jBNoz21WZKyMxL7og61kNopvwp2k9S2Em2KidAiOXXenvC1C7eM8AH8FGaktZdEDi
+	GFregT54mYosIdTmOZgutI89RVxybblLpIf0ZOyC7cUh6E2TUlAE+taPRaiZa8SGY0Rw3C
+	FrsF9a6gs0NzAoIt8e14zWWCDsg9m+o=
+Message-ID: <8c8f1849-86d3-4c69-be27-30bbdffdf616@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782108966;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uc01vIZYGfTIV3fdEG67Z2UKVAOKK7e6urfcQoWTPXs=;
+	b=t15fr1vSWPqYuOVx1/bxMEqBYsgHtm0lD1qKuOgL6xYl94f+kJLWMkDtNXA1O6oXS4NWrk
+	UXfi4I4xGSapixdXs6K5v7yl7QxZTsj0xBO+b54oW8Z9JaKuiK5OobLxhWf+TcWH/AL++5
+	EurPaDWOivYCOI4YE0QW4UrJN1dv49Y=
+Date: Mon, 22 Jun 2026 14:15:01 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 0/5] mm/zswap: Implement per-cgroup proactive writeback
-To: Muchun Song <muchun.song@linux.dev>, youngjun.park@lge.com,
- yosry@kernel.org
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, roman.gushchin@linux.dev,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- Hao Jia <jiahao1@lixiang.com>
-References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
- <CAAAF57B-7DE9-45EA-8AB6-DE6CFAF60F47@linux.dev>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAAAF57B-7DE9-45EA-8AB6-DE6CFAF60F47@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor
+ state
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Howells <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+ LKML <linux-kernel@vger.kernel.org>,
+ "open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
+ linux-ntfs-dev@lists.sourceforge.net,
+ Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
+ io-uring <io-uring@vger.kernel.org>, audit@vger.kernel.org,
+ bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
+ dri-devel@lists.freedesktop.org,
+ "linux-perf-use." <linux-perf-users@vger.kernel.org>,
+ linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
+ kexec@lists.infradead.org, live-patching@vger.kernel.org,
+ linux-modules@vger.kernel.org,
+ Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+ Linux Power Management <linux-pm@vger.kernel.org>, rcu@vger.kernel.org,
+ sched-ext@lists.linux.dev, linux-mm <linux-mm@kvack.org>,
+ virtualization@lists.linux.dev, damon@lists.linux.dev,
+ clang-built-linux <llvm@lists.linux.dev>,
+ chengkaitao <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+ <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: epx7fxu1ct77qycu1q6hycz3o4cxfqqu
-X-Rspamd-Queue-Id: DD63D160003
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A9BA31C0002
+X-Stat-Signature: 8gtpnu9u9tmfh693eeq4c3hq6ah77syk
 X-Rspam-User: 
-X-HE-Tag: 1782108543-367854
-X-HE-Meta: U2FsdGVkX1+gC+wnwr93SWexhccxZihwxkgkw0bgzmSosJNf2bHEfe32nnXVH1IYXWLsfvrTy3uTk1cDMIObCq5Em8pns4NePg3RqRlsmkfeqhUSmc2Ko72PkpAb3HyX7dLZJDWB2VE02+0opu0JbcW2CaV6bCroqmOVCVEGAKeRjVDRw50Gw9XzdXdcg7QHsuqnB4whlUDAyaBXLrVZ4hdXi1xLrUfstuPKKqQLwSFmfkRZBvlP3nEGcKCCPHZs6+jdGX9WPlUOEV4Nbt+kozG8vBwo4pQ+Xv1djkqJBBQE4FmYSuhqQbYHgNaJgdCCzSbunS4FCHORD9XJkWRPezAWGwH1FFG09rpbhX3X2dj5rilBPx5VB+dO2mfLuRG4kJm8Zz23XL70DQfzu/dk05WSqI1oaQILPLD9y/bjQqfb5yjCTH0NG08Bpddq/zvOED0EcbTyD0NlL99pF6iCWrb0P2I96T5x/jCpDkffccZH/D4kcBqpKeN9kFsFtoKDZQb+POumE7uI4LJiIZeZBiG++ODUtcWXsPfw3jROo/4sEdE6Y3PDUdaU6B03/x7pGdidKV+BTRb/LfSeVP92TkISF0NISyQREx0w7hz0sDAc4y37OeHwPUecoVvhJKBasTCT8g9xxOjsu+1BG6XTxUL7bXKTFghVMGc6f8E+tD0w4zxyWIro0lqoLv2blNnz6YLENw19bTx8N1EvO3GdIHjag4mz++baS4Js6SuZUrQfux1zvbET+xLw3TOn0tC0e0SdwRMIlnKqFY/cPBr/6txCwqqKTh0yIv/mqoTwN5bEEkvhE0yjLfsrU1i0unTyaw9Mti9/3zWtLq23GSgMoylm/IWkus24GhlDNGLl+qNrjmlGfXTfYZWIo2Hj0xnAsnbqc6ivbtGj46oQkekeFZT+GtEqE23WF7XjH5hW1K1XrPciLmZ1zHaC0AMOkH8Xi+bFcXt4riHAjJ5bC3m
- veP4zHzl
- CJa0OgAZ0yius4GzIIDpA181Dw1tGbq79vfiNzmx+Tkmjre058Y+j9xNWQZ3a9Abl7zOKENZ2EsFt54FUoQLyyBW2KW0927hcXuKF1GlpOv9UOgFPvRVLUPLAEYJNlYrT+hd53vuYYG610x/3b2+npWhGjyEOjLJu8yNXLSg0552mSco1lXF1+WpmvbBdPNz2IN/S5ZBQ2eNfRZesn4NnVTTbVJrmPAq0CHBgeWi+CIKRosi6d/p30YmpM20NsMHiCKHicSdiIAxncIs8rzo1NLbn5e79IDhxIo6zOlNl5yG7YmL4ngLGeo2ZpKIEgWLjiRGDzy6B9C7AouyK+axQ5t7EgcQmbthKwQqyL37QDwPrZbkJ2D9rY6ybLSPDFC0fGZK8n8xkn/xPdhYTtA2jC7+0pEEgzYMws3llb5QRqAMPF6jbG2EHD3xUZz4gnj8JzHB7WBMqDw2XMh0hKHAD0iNQWITUS6vSBvQ/n0Jf1vkDfqQu0PACIzXfpGA+yKUVG2S3sCgKDCyMl0rktEuS4KOS1D7gCKs8YU+1V3EeBd29WXw=
+X-HE-Tag: 1782108974-874318
+X-HE-Meta: U2FsdGVkX1/JWYxBlmUfTN58G63NQDKke+NhZgRaYKFPC9NDeP1w9X4lYJfUeGlKKGGcgQBR+xKHwn4RKyb+Rm5cVvbnped9bcPGiyPz6lZNygIXE3pjLrPT5N3tEueNLV4Wz/9qXgB/onKVF1gZALHxGuGwVInrnZ+/HIfl5salSDfaA6Z3//yzYdU9Ob8uhCpzy1gk3g+U1XmZcNy7g2wN8nyc6fDfYDTSuOhxKoVFuFMzEUCZJV+6CQN06+MQT+GXZJU9SbuS8CNi+PKG3E7M0mW1QSWZXOKncYhklYeUYc/ABQLKJFi2IC7J32T4Elw8U6F3tgQ4b0FzBLT7exLnKQavaTCVt+JnystQZ4R8CmLMjeGZeeNekRxAeikXTwBYh1HLD8n7hidJ45Q/Q8epk47mMS2xvsmSZouxWUfDDIhN2+OMPgOfbVn773aTj63VfeXPRwZutAl11GO4VwtQGp6YBzUm7lz4/3ZD2cDv5DpROa1BPa5yWSjpU9wRiL8Xa2yWhvt0sOEXAvNqm7Eebw+0B1qs628NZX8sS+M5vPmg4uK2dUYUGij59qmf8oKseZNmspirD5zCD+Dc2r+BqZEFF7wyFI7LT8Xas7aIGE1uK+RZHu7mflDyJ7QSxp6KiEEyIBLOD0M3L5P5KYf0BG8LNs9CzHuxQIY/8Lxqr6+XWTVunrnE61ppbZJ6gvmjHUqyQDqtmMJ1bVXpi8sZ39vUGDF7oEST/hyVAZ0NEmtQw0nTp9WHj26xBX6TGGGpzjUx56FIqUZhYXP+xtzsQrsP6zwWC9UAv8sth6XBmJHDhG7HqBkAKjb01CC4CQcCH8qjxec6VM+dGRoeGtp6pDRvQfqSNZzYxA+q2TdvCv1dPANoUSVpZ+lkUuBdPEb6Qnnyqqn9gC+brxsshzZk4ZNOgLtfP3zoVOTETaXCCkrSRpM7AHxCTPxy/PF0w/6BHPzHdfUVxZp3lur
+ Ea4hmcHo
+ wzgzjVKZPSTRzALmYe8o2s0Z2/MSYI1SxOcwQn6mnvBpqxKkN6mETtkLrB3Nxwt8HZ4uiAPCb4ETTZOtlvkvsYzcTGqkdJ4ngqdPMl23ucx5aXmnTv4yrDZ949HY/kWeV4aN7oUTL6jD7Fgl7uObz/Z3wcQVwUiGjrxHdNAi0vBFfO/SBsTDvdm1j9ftUMqRT21yKichAGHkoOfPs8lIfgq0X8gmaTnOxqLmdKsu1LwaEvs6Xo49IhslPyyuVJ3XhSS4r2X7T5ue7Oy9CkezSLDulx9sBQSoyAML/kB3OIrd6+wYpyAb58A3S4iqXLKVk2pcooVC+qtYyuTm8cLmnvO1j2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,84 +126,215 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/21 12:20, Muchun Song wrote:
-> 
-> 
->> On Jun 18, 2026, at 12:48, Hao Jia <jiahao.kernel@gmail.com> wrote:
+在 2026/6/22 13:28, Alexei Starovoitov 写道:
+> On Sun, Jun 21, 2026 at 9:06 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
 >>
->> From: Hao Jia <jiahao1@lixiang.com>
+>> From: chengkaitao <chengkaitao@kylinos.cn>
 >>
->> Zswap currently writes back pages to backing swap reactively, triggered
->> either by the shrinker or by the pool reaching its size limit. Although
->> proactive memory reclaim can automatically write back a portion of zswap
->> pages via the shrinker, it cannot explicitly control the amount of
->> writeback for a specific memory cgroup. Moreover, proactive memory reclaim
->> may not always be triggered during a steady state.
+>> The list_for_each*_safe() helpers are used when the loop body may remove
+>> the current entry.  Their current interface, however, forces every caller
+>> to define a temporary cursor outside the macro and pass it in, even when
+>> the caller never uses that cursor directly.  For most call sites this
+>> extra cursor is just boilerplate required by the macro implementation.
 >>
->> In certain scenarios, it is desirable to trigger writeback in advance to
->> free up memory. For example, users may want to prepare for an upcoming
->> memory-intensive workload by flushing cold memory to the backing storage
->> when the system is relatively idle.
+>> This is awkward because the saved next pointer is an internal detail of
+>> the iteration.  Callers that only remove or move the current entry do not
+>> need to spell it out.
 >>
->> This patch series introduces a "zswap_writeback_only" key to memory.reclaim
->> cgroup interface, allowing users to proactively write back cold compressed
->> data from zswap to the backing swap device. When specified, this key
->> bypasses standard memory reclaim and exclusively performs proactive zswap
->> writeback up to the requested budget. If omitted, the default reclaim
->> behavior remains unchanged.
+>> The _safe() suffix has also caused confusion.  Christian Koenig pointed
+>> out that the name is easy to read as a thread-safe variant, especially
+>> for beginners, even though it only means that the iterator keeps enough
+>> state to tolerate removal of the current entry.  He suggested _mutable()
+>> as a clearer description of what the loop permits.
 >>
->> Example usage:
->>   # Write back 10MB of compressed data from zswap to the backing swap
->>   echo "10M zswap_writeback_only" > memory.reclaim
+>> Add *_mutable() iterator variants for list, hlist and llist.  The new
+>> helpers are variadic and support both forms.  In the common case, the
+>> caller omits the temporary cursor and the macro creates a unique internal
+>> cursor with typeof(pos) and __UNIQUE_ID().  If a loop really needs an
+>> explicit temporary cursor, the caller can still pass it and the helper
+>> keeps the existing *_safe() behaviour.
+>>
+>> For example, a call site may use the shorter form:
+>>
+>>   list_for_each_entry_mutable(pos, head, member)
+>>
+>> or keep the explicit temporary cursor form:
+>>
+>>   list_for_each_entry_mutable(pos, tmp, head, member)
+>>
+>> The existing *_safe() helpers remain available for compatibility.  This
+>> series only converts users in mm, block, kernel, init and io_uring.  If
+>> this approach looks acceptable, the remaining users can be converted in
+>> follow-up series.
+>>
+>> Changes in v3 (Christian König, Andy Shevchenko):
+>> - Convert safe list walks to mutable iterators
+>>
+>> Changes in v2 (Muchun Song, Andy Shevchenko):
+>> - Drop the list_for_each_entry_mutable*() helpers from v1 and make the
+>>   cursor change directly in the existing list_for_each_entry*() helpers.
+>> - Open-code special list walks that rely on updating the loop cursor in
+>>   the body, preserving their existing traversal semantics.
+>>
+>> Link to v2:
+>> https://lore.kernel.org/all/20260609061347.93688-1-kaitao.cheng@linux.dev/
+>>
+>> Link to v1:
+>> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
+>>
+>> Kaitao Cheng (7):
+>>   list: Add mutable iterator variants
+>>   llist: Add mutable iterator variants
+>>   mm: Use mutable list iterators
+>>   block: Use mutable list iterators
+>>   kernel: Use mutable list iterators
+>>   initramfs: Use mutable list iterator
+>>   io_uring: Use mutable list iterators
+>>
+>>  block/bfq-iosched.c                 |  17 +-
+>>  block/blk-cgroup.c                  |  12 +-
+>>  block/blk-flush.c                   |   4 +-
+>>  block/blk-iocost.c                  |  18 +-
+>>  block/blk-mq.c                      |   8 +-
+>>  block/blk-throttle.c                |   4 +-
+>>  block/kyber-iosched.c               |   4 +-
+>>  block/partitions/ldm.c              |   8 +-
+>>  block/sed-opal.c                    |   4 +-
+>>  include/linux/list.h                | 269 ++++++++++++++++++++++++----
+>>  include/linux/llist.h               |  81 +++++++--
+>>  init/initramfs.c                    |   5 +-
+>>  io_uring/cancel.c                   |   6 +-
+>>  io_uring/poll.c                     |   3 +-
+>>  io_uring/rw.c                       |   4 +-
+>>  io_uring/timeout.c                  |   8 +-
+>>  io_uring/uring_cmd.c                |   3 +-
+>>  kernel/audit_tree.c                 |   4 +-
+>>  kernel/audit_watch.c                |  16 +-
+>>  kernel/auditfilter.c                |   4 +-
+>>  kernel/auditsc.c                    |   4 +-
+>>  kernel/bpf/arena.c                  |  10 +-
+>>  kernel/bpf/arraymap.c               |   8 +-
+>>  kernel/bpf/bpf_local_storage.c      |   3 +-
+>>  kernel/bpf/bpf_lru_list.c           |  25 ++-
+>>  kernel/bpf/btf.c                    |  18 +-
+>>  kernel/bpf/cgroup.c                 |   7 +-
+>>  kernel/bpf/cpumap.c                 |   4 +-
+>>  kernel/bpf/devmap.c                 |  10 +-
+>>  kernel/bpf/helpers.c                |   8 +-
+>>  kernel/bpf/local_storage.c          |   4 +-
+>>  kernel/bpf/memalloc.c               |  16 +-
+>>  kernel/bpf/offload.c                |   8 +-
+>>  kernel/bpf/states.c                 |   4 +-
+>>  kernel/bpf/stream.c                 |   4 +-
+>>  kernel/bpf/verifier.c               |   6 +-
+>>  kernel/cgroup/cgroup-v1.c           |   4 +-
+>>  kernel/cgroup/cgroup.c              |  54 +++---
+>>  kernel/cgroup/dmem.c                |  12 +-
+>>  kernel/cgroup/rdma.c                |   8 +-
+>>  kernel/events/core.c                |  44 +++--
+>>  kernel/events/uprobes.c             |  12 +-
+>>  kernel/exit.c                       |   8 +-
+>>  kernel/fail_function.c              |   4 +-
+>>  kernel/gcov/clang.c                 |   4 +-
+>>  kernel/irq_work.c                   |   4 +-
+>>  kernel/kexec_core.c                 |   4 +-
+>>  kernel/kprobes.c                    |  16 +-
+>>  kernel/livepatch/core.c             |   4 +-
+>>  kernel/livepatch/core.h             |   4 +-
+>>  kernel/liveupdate/kho_block.c       |   4 +-
+>>  kernel/liveupdate/luo_flb.c         |   4 +-
+>>  kernel/locking/rwsem.c              |   2 +-
+>>  kernel/locking/test-ww_mutex.c      |   2 +-
+>>  kernel/module/main.c                |  11 +-
+>>  kernel/padata.c                     |   4 +-
+>>  kernel/power/snapshot.c             |   8 +-
+>>  kernel/power/wakelock.c             |   4 +-
+>>  kernel/printk/printk.c              |  11 +-
+>>  kernel/ptrace.c                     |   4 +-
+>>  kernel/rcu/rcutorture.c             |   3 +-
+>>  kernel/rcu/tasks.h                  |   9 +-
+>>  kernel/rcu/tree.c                   |   6 +-
+>>  kernel/resource.c                   |   4 +-
+>>  kernel/sched/core.c                 |   4 +-
+>>  kernel/sched/ext.c                  |  22 +--
+>>  kernel/sched/fair.c                 |  28 +--
+>>  kernel/sched/topology.c             |   4 +-
+>>  kernel/sched/wait.c                 |   4 +-
+>>  kernel/seccomp.c                    |   4 +-
+>>  kernel/signal.c                     |  11 +-
+>>  kernel/smp.c                        |   4 +-
+>>  kernel/taskstats.c                  |   8 +-
+>>  kernel/time/clockevents.c           |   6 +-
+>>  kernel/time/clocksource.c           |   4 +-
+>>  kernel/time/posix-cpu-timers.c      |   4 +-
+>>  kernel/time/posix-timers.c          |   3 +-
+>>  kernel/torture.c                    |   3 +-
+>>  kernel/trace/bpf_trace.c            |   4 +-
+>>  kernel/trace/ftrace.c               |  49 +++--
+>>  kernel/trace/ring_buffer.c          |  25 ++-
+>>  kernel/trace/trace.c                |  12 +-
+>>  kernel/trace/trace_dynevent.c       |   6 +-
+>>  kernel/trace/trace_dynevent.h       |   5 +-
+>>  kernel/trace/trace_events.c         |  35 ++--
+>>  kernel/trace/trace_events_filter.c  |   4 +-
+>>  kernel/trace/trace_events_hist.c    |   8 +-
+>>  kernel/trace/trace_events_trigger.c |  17 +-
+>>  kernel/trace/trace_events_user.c    |  16 +-
+>>  kernel/trace/trace_stat.c           |   4 +-
+>>  kernel/user-return-notifier.c       |   3 +-
+>>  kernel/workqueue.c                  |  16 +-
+>>  mm/backing-dev.c                    |   8 +-
+>>  mm/balloon.c                        |   8 +-
+>>  mm/cma.c                            |   4 +-
+>>  mm/compaction.c                     |   4 +-
+>>  mm/damon/core.c                     |   4 +-
+>>  mm/damon/sysfs-schemes.c            |   4 +-
+>>  mm/dmapool.c                        |   4 +-
+>>  mm/huge_memory.c                    |   8 +-
+>>  mm/hugetlb.c                        |  56 +++---
+>>  mm/hugetlb_vmemmap.c                |  16 +-
+>>  mm/khugepaged.c                     |  14 +-
+>>  mm/kmemleak.c                       |   7 +-
+>>  mm/ksm.c                            |  25 +--
+>>  mm/list_lru.c                       |   4 +-
+>>  mm/memcontrol-v1.c                  |   8 +-
+>>  mm/memory-failure.c                 |  12 +-
+>>  mm/memory-tiers.c                   |   4 +-
+>>  mm/migrate.c                        |  23 ++-
+>>  mm/mmu_notifier.c                   |   9 +-
+>>  mm/page_alloc.c                     |   8 +-
+>>  mm/page_reporting.c                 |   2 +-
+>>  mm/percpu.c                         |  11 +-
+>>  mm/pgtable-generic.c                |   4 +-
+>>  mm/rmap.c                           |  10 +-
+>>  mm/shmem.c                          |   9 +-
+>>  mm/slab_common.c                    |  14 +-
+>>  mm/slub.c                           |  33 ++--
+>>  mm/swapfile.c                       |   4 +-
+>>  mm/userfaultfd.c                    |  12 +-
+>>  mm/vmalloc.c                        |  24 +--
+>>  mm/vmscan.c                         |   7 +-
+>>  mm/zsmalloc.c                       |   4 +-
+>>  124 files changed, 875 insertions(+), 681 deletions(-)
 > 
-> I’m not entirely sure if other candidate names were already brought up
-> in previous discussions, so my apologies if I'm repeating something here!
-> I do think expanding memory.reclaim is a great approach. That said, I
-> was wondering if we could make the interface a bit more concise while
-> keeping it flexible for future extensions.
-> 
-> Essentially, what we want is to control the specific targets of the reclaim
-> process—such as file, anon, or zswap. What do you think about using
-> something like "source=zswap"? For instance, if we want to reclaim 10M from
-> zswap, the command would look like this:
-> 
-> 	echo "10M source=zswap" > memory.reclaim
-> 
+> Not sure what you were thinking, but this diff stat
+> is not landable.
 
-Thanks for the suggestion. TBH, I personally think your approach makes 
-more sense than "zswap_writeback_only".
+[PATCH v3 1/7] and [PATCH v3 2/7] contain the main logic and can
+be merged directly. They are also compatible with the old API.
+[PATCH v3 3/7] through [PATCH v3 7/7] are just simple interface
+replacements and do not change any functional logic. They can be
+left unmerged for now; individual modules can pick them up later
+if needed.
 
+In v2, Andy Shevchenko mentioned: "If it's done by Linus himself
+during the day when he prepares -rc1, it's fine." Even so, the
+changes in this patch series are indeed quite large and touch
+almost every subsystem. I have only converted part of them for
+now, so I wanted to send this out first and see what people think.
 
-Hi YoungJun and Yosry,
-
-I am not sure if this suggestion from Muchun could decouple zswap 
-proactive writeback from the swap tiers, or make it easier to migrate to 
-swap tiers in the future:
-
-     echo "10M source=zswap" > memory.reclaim
-
-For now, we only specify the source. Later on, the swap tiers feature 
-could extend this to control whether to demote to SSD swap, HDD swap, or 
-other tiers.
-
-Thanks,
-Hao
-
-
-> If we only want to reclaim 10M from file pages, we could easily extend the
-> syntax:
-> 
-> 	echo "10M source=file" > memory.reclaim
-> 
-> And of course, we could even combine them down the road:
-> 
-> 	echo "10M source=anon,file" > memory.reclaim
-> 
-> to only reclaim anon and file but bypass zswap.
-> 
-> Just some thoughts of mine.
-> 
-> Muchun,
-> Thanks
+-- 
+Thanks
+Kaitao Cheng
 
 
