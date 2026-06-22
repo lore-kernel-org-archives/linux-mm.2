@@ -4,109 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBE6CD98F0
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 01:59:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9489ECDB466
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 02:37:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 839B66B0088; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
+	id 4C5786B0088; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E9326B008A; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
+	id 4757D6B008A; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FF7D6B008C; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
+	id 33FA66B008C; Sun, 21 Jun 2026 22:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43DE26B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B373F1A0550
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:58:59 +0000 (UTC)
-X-FDA: 84905890398.19.F72822A
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AB82E40005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:58:57 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NxFaFZSm;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 08A976B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 22:37:51 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E465165BB3
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:37:51 +0000 (UTC)
+X-FDA: 84905988342.06.97D88D2
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B4AE21C0002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:37:49 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TvQpDImR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782093538;
+	s=arc-20220608; t=1782095869;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0qpRzlSyLktZxcLZDCE/8RBM2MX99p//TZMgpKeEF9c=;
-	b=voUoDVLE6KBTZ3JVNUluOTXRnZ4ffGyZ38tCBsl/mjKwZ52raHsuBMbkVWtl507d+gUKCX
-	+L0HY6BbyM37+BkfsIPDteg+SEsmVDzPji7XI4pOexWi5ms6DG2W2A/6og/CGTZTcSUW72
-	mgG04HuVeVw9FruYgGxAYqp41i3IjrU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782093538;
-	b=2if2DXAMxqSyemKAd2i5WRVKMg+9Dgiu9EAW8UhMRp58MQAJX63tsvK/rIaxgY15AqG93t
-	mWpROcmKCNdXuYGzkTePLLT2E+DjDdIeGeD4loObAAGKj6SXKjOavOyuHVr9C/S9fQA1Un
-	JmC/cE8xhGZZ1ATbI/HMPyLdJXoOpP4=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
+	b=knNgp7VcpUMkqRh4noVBxuEAYce7L2snyl3zYvgYwoVoqZs0xj+K5eALK+JvPcbpjDePCI
+	enC2xoPy2/ebtA+FfbPOFGKwhlZFoxdxCTUpRy41ONQI6qAE4WbU1GcfFnHtPqMoFxRffK
+	wvJA6VL83kbwUMIPDJ5kpDwvhOQpc64=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NxFaFZSm;
-	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <267e070f-adc2-4f42-b528-746f852d9ef4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782093535;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0qpRzlSyLktZxcLZDCE/8RBM2MX99p//TZMgpKeEF9c=;
-	b=NxFaFZSmEW+ZWMeELNcIGCdhQ61H6KXKppMDcfRpFas7ME15wP+WUEtZZQoKET/vfzZHJM
-	T4aMhPb8ktKruOCy6L+uoJ7VUXfLkbV3gpbyN6nq+y+oAc8YqFniPixLSLsy3WzjQKg4NR
-	VyI6gSHfcIUoVL1ANtxXoVvryXQrYd8=
-Date: Mon, 22 Jun 2026 09:58:00 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-To: Suren Baghdasaryan <surenb@google.com>,
- Brendan Jackman <brendan.jackman@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Alexei Starovoitov <ast@kernel.org>, "Harry Yoo (Oracle)"
- <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
- <2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org>
- <CAJuCfpG48TmvaiaRvnL-NXKU6nn55D3bks2DgzAc0URsZhAxqA@mail.gmail.com>
- <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
- <45fcc57a-ec8d-46d6-9c28-065d001c081f@linux.dev>
- <DJD0AGHTWYRN.1YWG5MDH87WVO@linux.dev>
- <CAJuCfpGtymV=Tmsvs8Z-oF6pi7mD54mRiZNZtpF3UpYwBL7Uig@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpGtymV=Tmsvs8Z-oF6pi7mD54mRiZNZtpF3UpYwBL7Uig@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: kmbbmap3xh1bkyyr4smaokkhfkd83sdp
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TvQpDImR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782095869;
+	b=h22tzTWhvzpaArBq9hy85EoNIWeN/cQNP4CKx2f4g1fKrIDi/FMq5PeTA2XQnZVKNlhfPv
+	M05n5zsqGO6pmy+iJ50zk057JwgsBJPHLqNZi4Z9uo40MNI2MRjocBVj9IoOS56ZlRqvs1
+	h6Euc0lIaxwnmM2Mk4bEkoyPj1gtnO8=
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c0c15bd6b8fso203181466b.0
+        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 19:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782095868; x=1782700668; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
+        b=TvQpDImRCWHTebGcZ3XPzriXEmTEZFGOuufS2Bbdc7akz7rf5Ps0z+/RKojUhXpArl
+         gyxE7/azGrhjT+Ti6rVvgDUA+Roc967/A5m6VFh7m8oQJrpUGwUQQeOc/16QE+MD8M+w
+         kwUlCoWtX7Qw7NEOfBifsIEkVIwAvBqtgEvoq4OsjLlrl11t/j/q8XvSzvAuksrmXeBK
+         H/IPwHWo/vCc/viI2UfbORy6jz3E3l6b7xIbgMhYTzuX0rjc5X+DuS/DzEbqPvHD+Y5U
+         Zvpcl/Dj4TChxPbQYbhmsb/te59GE5tJqErxYml7vsuzlqA2z4Ym02zEYZ+IWJByOzbZ
+         i+YA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782095868; x=1782700668;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3aBWFOQIWzQcebQpmQwfzu4nP5Zuxd9NagHRXZa8pr4=;
+        b=TpmCXpzWx8WksJpm5g7pGwMwF7nCrahDa+oqeHEokoG0lfN+OeLPTQs442PYNhg1Dw
+         rG+WrIem/8D+T5ZzzkIDweX93MUZmjPIU10ZcQjfWQQxYBGSiKTvvlbgiKSvvwks1eWY
+         w0TuMEMu+cZ4iZGftoTbASQ7KgP8GvVI9uAP28J0Pw/xAPUfrcolnEFtrfN5nDxxS2VX
+         DDvzXMG8KeMgsKnKlATdQMCDFCL6Xp7nuFz5uZyMqMOwMvZ1PaZXjxfXDLBILHPDX9do
+         gvZB5K3JPzrF9xf3dQ1TkxfA7i9a+fVO3/OlAo09pvzDDSjKx4ds8yT77UfxL/wRPZ2L
+         vsng==
+X-Gm-Message-State: AOJu0Yz5rjItTNA+XNpVwxfkP5ATK39vC3G4wuCetBmLgtnSnuTT8FOA
+	neJ+o0CCTdK3BGMtOJ7XBLWU0adrhwQJKW9kxFEaCtJEnmG2DSmsDQTq
+X-Gm-Gg: AfdE7clT84Y0ryfok0Wg62E8olTunsk2Xc0RCl/z/sDWOBGns/LZ1zGdMU2w1AvGLnf
+	NLG6mZDyx26647uNO4MThrkunm+/81Yh6HDhTMDBmKL098OuKadVdkDaMvjMZektK3y+KwOo2Fk
+	BmAwTNFA14SVJbgGaUoGXXYqsDzv39ww50p1iRmJnevyFjEpVztgwR6+HUyxEJuTqGPIY+/mCZV
+	g7GujuMFvWnsmTQuecTCer1JoFSUAofSUlCjm73KfXZC5ZzrJoGrKb4OylXP8eqt9+sq/WCtcul
+	vnKuwvBO8mQZbO/TXh6CcBtemc5qG0MuQtfil66Nbs3Wdbo6KjC6votr0pVyAe4gIeojYCQsIbZ
+	DiM7rOQSyVh/BXI1zVGycdRpltc64MtCoMRMVMkgHR6SgM9Da63OnSOtppU35ySslUTBg5/tc/h
+	LmJSZw6sOKx9U=
+X-Received: by 2002:a17:907:971e:b0:c08:713e:d8b2 with SMTP id a640c23a62f3a-c097c4b516emr635623666b.25.1782095867778;
+        Sun, 21 Jun 2026 19:37:47 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e998ebfsm275902366b.16.2026.06.21.19.37.46
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 21 Jun 2026 19:37:46 -0700 (PDT)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	izumi.taku@jp.fujitsu.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Yuan Liu <yuan1.liu@intel.com>
+Subject: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
+Date: Mon, 22 Jun 2026 02:24:03 +0000
+Message-Id: <20260622022403.16375-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AB82E40005
-X-HE-Tag: 1782093537-456778
-X-HE-Meta: U2FsdGVkX182Q9ZtrNuG42o8jAfhS99Q2OPaSl20anbfdRWeOz+BS0MygoMmtmPIwNlgrvEc6it7YeholY6JAxo9fRG2RFZWJyVzHU3fhBhN8FQeX7Im+lIJknF2vWHkulppN3RK1IOgb+8VKB2/Mm8d7e67ezJ1Ok4cHIieE85buF34mutBeCSoSzvbej3dpWJRreUMNFEPtnM36OH5bqKpDDbSYGxm+vcGXC3gqKBNKDz7BVwdaM2SOa+m/s+j9hw7baJyTwm6+aAAb1iNo+OXlqrVDVW2GRoYBkQIfEC7nMVvBCE+FtDyXeJgR9OPgjgaQUVxiPn1MOZy9a3ynbG1Zx1kJAciO9tydloCKGNcPPb8GVgXlY5NtzKO3E7c3YIJ7+eHYH2KIu9RXSO/le6wSAcpPk2amrDYWxbeZc9SjPd65LXGsLOOGo1PdCpnny7eI96ptnhoO7z7kywvLP3Z+9hRofo9EMAN8oskKIoibZ28vE308sDu2ZaTvFssukL7DX5Xb3gZOvqkU+lU7Mfwys2klS8FC2szvG6chgd4+GV/AKoQhsRyuxIJP4YBmpGpWUYIlKBjdvvxuoAT/WLPvV2OwfmlWKXSHEX7uNL3JxdMZ9SVX8JHUrzEn8PEsYRlHUpuCOwkiZs9Z9rzxFF6i77CCiFgXWXv8xOET559IM8KKF859sbWzOtmmdtCR2MZ+LNnQxAUiPlynfEnVNC4GMWb+/MftXP3UYdYHm7fNcXIyZFEuMNgBtYrM5R2j+9ftl9thmS75LvREkCvVxQ+A8BMq6wZIxkV1bHT75PlOWrGYDlb0GMzzq0sHTw0vCDuvufmYyz5yExd4IcIWcklinzMOG9Ihai/xmE3jZ89ag7BHaCSYS6VgcWJKzSibsfO3LssDjEG+1kpn5VKfGkcnhY48ad7yLBLRCMxPCAxqipodmoy51jN+rTt0/j9aoNmH1uAc92K6HwgNpe
- Wv5reSP4
- APpcrLmToA9Jh0dLarMI97edktIWqGPrdDJwUglGw9VGu+cV9i2HwyvvS4ai9PGaWQBWZXczf3qFQOF/h3LekB9FTK1ZSPDgLR8y50ha0M7eMacy+vyJS8qKEaVuSNAmR3HUHEIZP4msU3w5YnG0ZBLGUYS4OvAxDw79ynEwdcokZiA5LzL8kG/n4Wzy3gKUPSWNdniPQvtxejB/NFJZe57YoLVdItkasKc5AZhx9xhbSCh1Zc9ydOagOWzD479ln05AbgbaJM+Xi01SVqPW2v8j1fjZKPBxWDhiyJMfSjfHwTJR6MncKhvRTm+6dHoXrDLBaYxQm8xIamujgb2cVNGP47v1ZRwRlJQIOPkfz8Tt0XzjSxPo4xtj+rDVYuCRzh/7FttMaOZOarFMHgfbdAVu5ew==
+X-Stat-Signature: 7h8nb64qkwzgfc1ctyxwgcgw5xofbbw1
+X-Rspamd-Queue-Id: B4AE21C0002
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1782095869-948177
+X-HE-Meta: U2FsdGVkX19UY2bbUD8yM369C1KiEw6halC6eqwJoShjbEOWlGcSzS1niLJy1zpfNlHVRF8DmDYohi54shdTGbQm0hH7594Bm5bx9wVtSQQJie2jslC0WzcOflwP6P08A0GslrBw5N9MhIpOm6Kf0LEvu36ZS1sb6/xtlmTCeNrkQWrpZ1BhWX43GVd9jXvc5XztkiY60/OE5eVXLt7AP91k0tEUOsAippXkzEDGFAwgES3jCd6KCe+7U+hhe2UyDhwYJLNrcZsjScLE30fAz67t+Hidyo8eWcup5ZBeJZpVyefRFUV+xVEDfK/82D1lTXHEUQuZhTkk8SJq2sLgm23EUQsyv4h6hHfOBr6gmdCoarlDRNg1cFo89jIw4IPZ6eK3SeZGstQUZpQMqUMhnbTyMCyPz53ozjLP7o6IAiRh2B35EyRXx4Eb/45KC5LLoUloSU5RP1eyMl/AujCk9Cy2akHX2slOm6VQS9Q1VC7BaCLNL7eeRbir0Kw1cLdvdOHhJqilDsxlFknvA35hAhyqdJIqyCtDClLz0114JqdWNX40KIU7IRqs2VyzprKnpo79628r4Bg2BljAFie+gHTESPVRgeiylbNdtRHwY1dGseiXjshmNwUuDmqRbSaNTpDFvbH9wrjQW/lZekU/KCBoM3y+g3aTfHVKtsKmE7aCEugsU7RTEuXh8ClRzrVgbbkHSIFt/5rovVw4FxutxO453c8fDLdLUAcQlxfaTiC18JNE+jJya4bXUz/EWB2P9zRMMZN0da2CHW1wy0h19CMHOfg2yOlbT75n9rfxigeuSokZZvrMiX0P68IZK4EkBZv3kdU++jsDl8rHEFTzOm2eGavfPcgM9sgyVZK+GJQMIIl3wWb5olu1/pfjUmfSUvqI340DD+D0sStWSuSyYM9IkWG7lQ0zWErSkomEGPHGmqETXC/vNICU56RK59hCCmUuusfl7SPOEw0cXaH
+ lwDHqr3X
+ UoGjbcmaWM50pvZYJ3y1802CK848KkrBPjXMbvrpFvDFJjHrjRGviOfUZtp1aww0PLthu2inI8wJsPpt0Z2BtOU46vLhvAx8Y1gMfCwI9pYh4m4EAex/2+oEv00CWRb+MLdtZbf4BVKU5dt6gWLDqhBeU8gpVzhA00jNCpTJn2xMKLX/2Yfl93i6qhjYNrxbDT2BC4ABhjYGYB3rWo1rdUE4n6Xd7qJgYaOXpb1q6GHAfYIFDrWeQc7rMVt/ecMloBTcBFPwXeXsIiulUrN70sdamKwxcwf2CVzhqOpLO6WSmvVOvZqLyc631U6ASonMDcA1YhIs5xfUqCSBtx4dvBixy9GEtBCsMd0d9Dv+9H940uT8+qp/s5oy0ePoUE9xdi2QgFHpF+J5SV86PZ+RXEYn1jNzuK54j5yt/MfM6pnp1xA+nW4WRyBQtrfmNkL2HkKS7ZU4OKAtx1WP03rtUiAd2EgyjAiWOCpG79KcWas3qgVoZBcgKqfekHD4mEDoG0nb8bGxEZRPfM4g4ErLddd7mp9H4Peq1B3bGhZicJW++xLlCyVbdd1bAiNxkYlb5pvFzkF4maK+xiROlMLg11DvjtUNgSR/Pdfe7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,170 +112,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Current node_spanned_pages is got as a summation of all zone's spanned page
+in calculate_node_totalpages(). Generally this is good, but if we use
+kernelcore=mirror, it is would be wrong.
 
-On 2026/6/20 02:08, Suren Baghdasaryan wrote:
-> On Fri, Jun 19, 2026 at 4:57 AM Brendan Jackman
-> <brendan.jackman@linux.dev> wrote:
->> On Thu Jun 18, 2026 at 2:22 AM UTC, Hao Ge wrote:
->>> On 2026/6/18 01:14, Brendan Jackman wrote:
->>>> On Wed Jun 17, 2026 at 4:49 PM UTC, Suren Baghdasaryan wrote:
->>>>> On Wed, Jun 17, 2026 at 9:39 AM Vlastimil Babka (SUSE)
->>>>> <vbabka@kernel.org> wrote:
->>>>>> +Cc Alexei
->>>>>>
->>>>>> On 6/17/26 17:29, Brendan Jackman wrote:
->>>>>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
->>>>>> It's not, it's ALLOC_TRYLOCK! Thanks for proving that we need to rename it
->>>>>> to ALLOC_NOLOCK:
->>>>>>
->>>>>> https://lore.kernel.org/all/DJ9QPTO2WXNB.10E88ZHWRDHB0@gmail.com/
->>>>>>
->>>>>> So you just won the job to do the rename :) I think it should be done before
->>>>>> this patch, so that the new usages and other _trylock names introduced here
->>>>>> can be done as _nolock outright.
->>>> Ack. I'll aim to send that tomorrow once Sashiko has caught up.
->>>>
->>>>>>> main entry point function is significantly different from the normal
->>>>>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
->>>>>>>
->>>>>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
->>>>>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
->>>>>>> exposed to mm/) and then turn the nolock variant into a thin wrapper
->>>>>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
->>>>>>> how some of the wrappers in gfp.h do).
->>>>>>>
->>>>>>> Rationale that this doesn't change anything:
->>>>>>>
->>>>>>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
->>>>>>>      the new alloc_order_allowed(), alloc_trylock_allowed() and
->>>>>>>      gfp_trylock.
->>>>>>>
->>>>>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->>>>>>>      previously in the nolock variant:
->>>>>>>
->>>>>>>      a. Application of gfp_allowed_mask; this only affects early boot, and
->>>>>>>         only flags that affect the slowpath get changed here.
->>>>>>>
->>>>>>>      b. Application of current_gfp_context() - also only affects the
->>>>>>>         slowpath
->>>>>>>
->>>>>>> 3. The slowpath itself: this is now just explicitly skipped under
->>>>>>>      !ALLOC_TRYLOCK.
->>>>>> I'll have to ponder it more closely.
->>>>>>
->>>>>>> Ulterior motive: adding an alloc_flags arg to the allocator's
->>>>>>> mm-internal entrypoint can later be used to do more allocation
->>>>>>> customisation without needing to create new GFP flags.
->>>>>> Ack.
->>>>> I think this change might also help us in removing __GFP_NO_CODETAG
->>>> Nice, this actually looks trivial? I can probably just tack it onto the
->>>> v2 for this patch/series.
->>>>
->>>>> introduced in [1] and being the only user of __GFP_NO_OBJ_EXT once
->>>>> Vlastimil's patchset removing other __GFP_NO_OBJ_EXT users lands.
->>>>> CC'ing Hao as he is brainstorming ways to remove __GFP_NO_CODETAG, and
->>>>> this might be the answer.
->>>
->>> Hi Brendan, Suren,
->>>
->>> Thanks for CC'ing me, Suren. This is indeed a viable approach
->>>
->>> and I believe it brings us one step closer to removing
->>>
->>> __GFP_NO_CODETAG entirely.
->>>
->>>
->>> Brendan, I'd actually put together a rough local implementation
->>>
->>> earlier with mostly the same core idea as yours, and this change
->>>
->>> would indeed be minimal based on your patch.
->>>
->>> Thanks a lot for being interested in tacking this into your v2 patch series.
->> Oh, I just took a look and it's a bit more fiddly than I thought because
->> alloc_tag.c is actually in lib/ not mm/.
+Without kernelcore=mirror:
 
-Hi Suren and Bredan
+    The test machine has below memory layout:
 
+      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x0
+      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x0
+      memory[0x2]     [0x0000000100000000-0x00000001bfffffff], 0x00000000c0000000 bytes on node 0 flags: 0x0
 
-> One option is to move alloc_tag.c into mm/ (while keeping more generic
-> codetag.c in lib/). From a quick look, that seems doable and probably
-> the easiest approach.
->
->> How did you tackle that, can you share your implementation? It would be
->> nice if we can avoid exposing alloc_flags in gfp.h.
+    And the Zone range is:
 
-First, I introduced the ALLOC_NO_CODETAG flag as shown below:
+      DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+      DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+      Normal   [mem 0x0000000100000000-0x00000001bfffffff]
 
-@@ -1478,6 +1480,7 @@ unsigned int reclaim_clean_pages_from_list(struct 
-zone *zone,
-  #define ALLOC_HIGHATOMIC       0x200 /* Allows access to 
-MIGRATE_HIGHATOMIC */
-  #define ALLOC_TRYLOCK          0x400 /* Only use spin_trylock in 
-allocation path */
-  #define ALLOC_KSWAPD           0x800 /* allow waking of kswapd, 
-__GFP_KSWAPD_RECLAIM set */
-+#define ALLOC_NO_CODETAG       0x1000 /* skip codetag tracking for this 
-allocation */
+    Then we see, with spanned_pages printed:
 
+      On node 0 spanned_pages: 1835007 totalpages: 1572733
 
-Then, mirroring __alloc_pages_noprof, we wrapped a helper function named 
-alloc_pages_noprof_notag.
+With kernelcore=mirror:
 
+    The test machine has below memory layout:
 
-@@ -5252,13 +5335,25 @@ struct page *__alloc_pages_noprof(gfp_t gfp, 
-unsigned int order,
-  {
-         struct page *page;
+      memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x2
+      memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x2
+      memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 0 flags: 0x2
+      memory[0x3]     [0x0000000140000000-0x00000001bfffffff], 0x0000000080000000 bytes on node 0 flags: 0x0
 
--       page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, 
-nodemask);
-+       page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, 
-nodemask, 0);
-         if (page)
-                 set_page_refcounted(page);
-         return page;
-  }
-  EXPORT_SYMBOL(__alloc_pages_noprof);
+    And the Zone range is:
 
-+struct page *alloc_pages_noprof_notag(gfp_t gfp, unsigned int order)
-+{
-+       struct page *page;
-+
-+       page = __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL,
-+                                          ALLOC_NO_CODETAG);
-+       if (page)
-+               set_page_refcounted(page);
-+       return page;
-+}
-+EXPORT_SYMBOL_GPL(alloc_pages_noprof_notag);
+      DMA      [mem 0x0000000000001000-0x0000000000ffffff]
+      DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+      Normal   [mem 0x0000000100000000-0x00000001bfffffff]
+      Device   empty
+    Movable zone start for each node
+      Node 0: 0x0000000140000000
 
+    Then we see, with spanned_pages printed:
 
-Lastly, we exported this function in gfp.h as shown below:
+      On node 0 spanned_pages: 2359295 totalpages: 1572733
 
+The total range of memory on node 0 doesn't change, but the spanned_pages
+becomes much larger.
 
-diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-index 51ef13ed756e..ac6e837ac8c0 100644
---- a/include/linux/gfp.h
-+++ b/include/linux/gfp.h
-@@ -234,6 +234,9 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, 
-unsigned int order, int preferred_
-                 nodemask_t *nodemask);
-  #define __folio_alloc(...) alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
+The reason is when kernelcore=mirror is specified, the range of Zone Normal
+and Zone Movable would overlap. So the overlapped range would be calculated
+twice.
 
-+struct page *alloc_pages_noprof_notag(gfp_t gfp, unsigned int order);
-+#define alloc_pages_notag(...) 
-alloc_hooks(alloc_pages_noprof_notag(__VA_ARGS__))
+A wrong node_spanned_pages would effect defer_init(), since each
+zone_end_pfn is less than pgdat_end_pfn().
 
+As we already passed in node_start_pfn and node_end_pfn, fix this by get it
+from (node_start_pfn - node_end_pfn) directly.
 
-Hope this information helps you.
+Fixes: 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror option")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Yuan Liu <yuan1.liu@intel.com>
+---
+ mm/mm_init.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-
-Thanks
-
-Best Regards
-
-Hao
-
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index a0e6a91283fb..7ad01eeddda9 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1304,7 +1304,7 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
+ 						unsigned long node_start_pfn,
+ 						unsigned long node_end_pfn)
+ {
+-	unsigned long realtotalpages = 0, totalpages = 0;
++	unsigned long realtotalpages = 0;
+ 	enum zone_type i;
+ 
+ 	for (i = 0; i < MAX_NR_ZONES; i++) {
+@@ -1334,11 +1334,10 @@ static void __init calculate_node_totalpages(struct pglist_data *pgdat,
+ 		zone->present_early_pages = real_size;
+ #endif
+ 
+-		totalpages += spanned;
+ 		realtotalpages += real_size;
+ 	}
+ 
+-	pgdat->node_spanned_pages = totalpages;
++	pgdat->node_spanned_pages = node_end_pfn - node_start_pfn;
+ 	pgdat->node_present_pages = realtotalpages;
+ 	pr_debug("On node %d totalpages: %lu\n", pgdat->node_id, realtotalpages);
+ }
+-- 
+2.34.1
 
 
