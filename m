@@ -4,111 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD71CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 11:27:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C5DCDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 11:33:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE6B26B0088; Mon, 22 Jun 2026 07:27:50 -0400 (EDT)
+	id 2BA6F6B0088; Mon, 22 Jun 2026 07:33:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C711C6B008A; Mon, 22 Jun 2026 07:27:50 -0400 (EDT)
+	id 26CE56B008A; Mon, 22 Jun 2026 07:33:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B10C06B008C; Mon, 22 Jun 2026 07:27:50 -0400 (EDT)
+	id 135896B008C; Mon, 22 Jun 2026 07:33:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CCA66B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:27:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 05A081A0104
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:27:50 +0000 (UTC)
-X-FDA: 84907323900.12.EFA91C9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 481AB20003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:27:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NP5vIVfj;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782127668;
-	b=D4zyK4xVvOLt8VE3p0G82Wr5zEZxJ2mG9FF58Ej6vbu3dhUjl0NhMKNDcTKlLCWU8F0Gum
-	88WrlvGmcbbEYzE6lsfSGj2EPgTbstNDLBT8nAmgzAXaTXEmdSHtALqmxeBmxZlk1GrZHX
-	ybo4XYSuQ+EcFmgtDq2iJc8xKs8Zeqs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NP5vIVfj;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D01956B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:33:35 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4DCC21C00CA
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:33:35 +0000 (UTC)
+X-FDA: 84907338390.07.4D3A3AA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 730CE1A0009
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:33:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GV7WUOR3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782127668;
+	s=arc-20220608; t=1782128013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CxKnwWbJ6o3Gp2gCYHflIyVCw0BGlYpweEWWlR7Zxlc=;
-	b=aUk0EZVBQuVxYaE87MudYKUUDRP9Dkq0fK5R87mN1JkFlRTJ3SPtm2ys0ta73FSaBFZiMn
-	DO9svnLI1SFznxKbQ2iHzMNf4iSEo/IPSI5B5rAn2nwjiHysSDqbpHikoYeosKHtuTsaC7
-	3O8+ytTSyUsrmi/2nM8ELf3gYtGhv0w=
+	bh=kdAHnBdpZTVQI6juQSN7tgkFMstxWIXJjISjq/WP2WU=;
+	b=QFyHCstPFBZw0MOS/IE6Tz5z69q4HwHqdsfq6DELTQWenT6a72oFRdKsFDJS8j78PRMpK7
+	8lujOff38e5H/hmIxJUsFa4riKMn9bPzJ1KcEJK5TumIdb/fgxOohh8Sacbkvw3Ui0FEE8
+	J60E+DcihtMfxVuxmKqqjCosbBUolCQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GV7WUOR3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782128013;
+	b=O1AkeQb+1oRuMFwSKA0cQxvSp5c3A7GvgGOtAAu+ksBrz+nXdE/tZIwdMAgxm7KuC6Grvb
+	SKhF6qrP8NNtqKrqQlmaEj6p+MdC3Le/d+MXtB9ccMx83nuUwCtYuP71n1CqGMpWPUtRFE
+	7oVjkD+Des1jpHZ3TkajVUgSYvMOjAA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8EBA7600AF;
-	Mon, 22 Jun 2026 11:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AED81F000E9;
-	Mon, 22 Jun 2026 11:27:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CB4743B75;
+	Mon, 22 Jun 2026 11:33:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E83E1F000E9;
+	Mon, 22 Jun 2026 11:33:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782127667;
-	bh=CxKnwWbJ6o3Gp2gCYHflIyVCw0BGlYpweEWWlR7Zxlc=;
+	s=k20260515; t=1782128012;
+	bh=kdAHnBdpZTVQI6juQSN7tgkFMstxWIXJjISjq/WP2WU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NP5vIVfjsp4feyIcuAfoiRvYPwPZKLTXzyb0N0wUNoKxJZDnW14mB+Ksso1zMBEZX
-	 fUxTpjrKClw00GwNOT/ge4xL2rriBHbh5PxOP732GJlaoArFBmxyEOXdYsklIEobB9
-	 /pFQVIcOni9/exs8OPh0iGTCF0YrB1elReGRM0Pk+0VV64ksMWO5Yff5O4AFlcbETU
-	 7oQHcuU8AyNBq9zKQ3Q/5sFiPWawUkfJJPp52WQ+UesWgVbFX7LlIhxh77+4lU8xhN
-	 0Mxv8uME2L+nRo7wVhECL6694CE+9AKg1Xt97qlcIjmOAoH39Xw4JyyfVaAkL3HiaO
-	 P5VjuChOEJC/w==
-Message-ID: <8f98a3a6-f97b-4673-964f-fb09c8879e2e@kernel.org>
-Date: Mon, 22 Jun 2026 13:27:34 +0200
+	b=GV7WUOR3AKzyuoyutFs2YXlaNT29n2+g5sSGF91wr8n4mM+tAuY/Yn/RROb5L5VeK
+	 WOKciHW3pMe5vks9O8qElaXX7Viqz6vnJWaT3HPP1m58rajXIVBTJo8Zggr2VZyoQ+
+	 Af8KNEFcYbHd80QCcNPsWOgPKVsy+DRMqWjf/AhyZ2KjABigK/lg7a3+FgnAgJBYQg
+	 HQlkyFUDE4LdL/n9maBixJzJR8QlfBOfBbaHNM132BuEFVtcxtMKQZ+LGOeNJZ9Scb
+	 k0KMMctAjURC4tmPhQxot9lVafqX/z1NyZNDNdYRhx5Sj3a7N2aVGXFUDHK58cNZIt
+	 9CjY/hlc97c8Q==
+Message-ID: <35b8dea6-3f0e-4e95-bbcc-bb778e567d20@kernel.org>
+Date: Mon, 22 Jun 2026 13:33:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor
- state
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
- Kaitao Cheng <kaitao.cheng@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>,
- Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Paul Moore <paul@paul-moore.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Howells <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>,
- Randy Dunlap <rdunlap@infradead.org>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>,
- "open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
- linux-ntfs-dev@lists.sourceforge.net,
- Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
- io-uring <io-uring@vger.kernel.org>, audit@vger.kernel.org,
- bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- dri-devel@lists.freedesktop.org,
- "linux-perf-use." <linux-perf-users@vger.kernel.org>,
- linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
- kexec@lists.infradead.org, live-patching@vger.kernel.org,
- linux-modules@vger.kernel.org,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Linux Power Management <linux-pm@vger.kernel.org>, rcu@vger.kernel.org,
- sched-ext@lists.linux.dev, linux-mm <linux-mm@kvack.org>,
- virtualization@lists.linux.dev, damon@lists.linux.dev,
- clang-built-linux <llvm@lists.linux.dev>,
- chengkaitao <chengkaitao@kylinos.cn>
-References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
- <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
+ before return device-private pmd
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, akpm@linux-foundation.org,
+ riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
+ linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260616063436.20455-1-richard.weiyang@gmail.com>
+ <ajUXNjRMraKb6k2n@lucifer> <5e7f7fe5-221a-4fca-aa76-297ae19eb80d@kernel.org>
+ <20260620021353.nn7xp2ldqachq7gp@master>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -155,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+In-Reply-To: <20260620021353.nn7xp2ldqachq7gp@master>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 730CE1A0009
+X-Stat-Signature: c7phj6gcohteafjr6e6bxppd8nzc139f
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 481AB20003
-X-Stat-Signature: k35dskhda6f1eg8a1k9nw7o1a9k5meat
-X-HE-Tag: 1782127668-253754
-X-HE-Meta: U2FsdGVkX1+WwpYC5dXMVf37xVD9h6sE317UC70UQV3rsLGjfxAbnW//WZdgSbGgxZCVyZ2oLpxNbaj+JXgUvPxeQZsolUb0Gq1j5mqm3ES5cpHMBCcWfEr25doFchwNxGkWokrhjjFt/ZRWilNgYuJ61IF1YLrk7nu6Rva6m4pzU8fhlVCTmYdnUXy85i5tTywbPZEOUqrF8Rb/5ZFmEZnEdsqiqhafYTJT66VeTejnS3nsHlJXALia0wXPpDkEJ64+Plfiyj2suLGqQYuf6+BwnHggbuW0OFvBcEHqwtk9gm0xKPgdckmuplIz/5MCgYOST4SSqel4htG9UHp9+EMUgjyRNEhBHRfBjJFnGMRRq+sz3/olUXz22nAndd13E4UNskdcODdJsvTrkXMzZdlyOh0IfQkbPca+Qs6svFyWpwIdsCamxcIWBk10fEz18R2x5Arr28vmvOf1+pRdBnn7EZFsSft7eFrbWj7aExxi6mr5JxoBvwMFD85Y8w47f9Bej3Dwk4dBz5UlTv9jZiHrP0mf6/k4PX7TazlBqh8FSpPNVq/8FctBskKDLgA5iNGWVk3JE5AoMDLVW1jw7mZ3Uz5R05fDUNv+gDEQzZy9/3WayaIXStxISspzR+HDhm/FOL0+EaiayPAAXn1wcf433wnCLviLvwu1e7jSr3G/rVryx70zKxuyFt+EOHG7+/YX0byIWDUHRAGHwuHlMqZfMQ+BhvIU72XJFx/nxiehQlQIFaq+QX6oT5zg7bqyd5OWJooquKpiydY1hePrXG474SJJ/hXpZtJtQ5JHU9WKFHwEaVXqp7RAw6D2LbDGC7ZIky9whYTP/az56qGcuYoT9Zmx6RDrGXpwH78doaWKOsmd+qo04syJ96BEtkAIiRk25XPzPexhmyvrHNQVoBu/JKyrGp1E/k8qgfGTsrG528MIybNKqZX3n063KCpYxVQboRZnaCnSuQCoBPP
- rvWcMt7r
- WAbPNUiwRyseNtnXwcg/rRUZJVqmfvgweHfmqQfaspIQo693HU18TczmVZfQEIkxHSiB210Ry1aTVVr89o1N1AvZee7rNLKKE4on5ilAWqZoBaZS22iXNB3hZ10HvKOH3eGhbzlEQ1sDUqdZDY9UzjJ5Ns1/StdDX0XqBFoSwsFYnOclfigVpFsdx120/WAxNqL6jwyV9ctNm/gR8EK2qKTU+XZ7/Qdv1ShCPR6IkjRM9hQfGfn9lU4QYbNYpGZ2deDSX1CB00eZ3/Sc1EZsUuP9VMsx03us2lNdb7JEZsINP2Oa7W/R8TOS03G4FRl8wQmiseBDPVMwFeucZrAVN4qgvIiYWio7PnyFZlI5lqkx7mRolkHHvANacsQM8MXpF3v6Z
+X-HE-Tag: 1782128013-996930
+X-HE-Meta: U2FsdGVkX1+rWJaByzzY5RYKB5kAIztpQUCSBgTl2ObKSP8ZvWspu8e5vUikdLNwXTzVemBo4/Mh0ndocWMbTUK8mK96klBYj3bh1IF8xll7WGFqUSUHAAQ+wYeIDoiaumfxD9pGlw/H8x8XuZFS0XYxSgDcy+2ZlfVb6JdF2iq4ByRDvCLXiMfjUJbQqJ1vAEk4O8/04QMD2JEzQI+EsUDzpOkDogwnoDmQi7qfTpoFi3PRZTp5FIaWqAj1/tlJHPFqqyYRfbna0lVROjwEdwFgcAJE7ho5YISkNSN0RGNUUPqJ7P2+Mp5fChH5cSOToJqy5mvkTVWnGbsviUqSsqF8712AaA+8PQAnfF6zE2rJKt4hy0MWdcXtRTbppDKkSp4j+pL/Cb67uUqC/Xea13Q1M0QLJMhd5weSvzUw9E/2zomuft82zlSvHfXs4Y1SFKSugmC0qEvepz2jTLCxwDEko2+obMnL8fBR1zhbX86q4RrgoJO5RH7WbCz2RLQr52jguJoDRA3lGGJg9riMC6DnzhW3ZJd440UOOJS9Za9ruuJiCsFQ+ZWqG/88PjvzbbCNUwGgQMJcf4do43Dltor2j14pod8jX4uMEQyECFQRXwux1B/rhnHwo7j38Vow7jJYl+Ri/2bMgI0rwJBGYOBH9UKSickGL3beUwQp9UNae71DkoYa/VOkprEbY9zE2/hHYTMRHQRCvNXT7F+fBWgSpueXPl0HHFNveO8QtyDGA+6bDur3jpU4l1DVEfMU+y6YOtjmLgwlMTwTX8Dq/G01/55tXSP1Ygrs+HjRc4WvKVb+ASREBxllSN/3GnoIYBzrslL8Xas6KuAaMLJtIAuvAYEh0D3eRV2ynbhuZ5Ok3ador64S2rgYo4HSsPHzdKdDRGJTcgV0e5pNve2IuKZljcE2G4cmZ12Tv0uRe2p0k9p9qKR8FTjEFfWlXpqQ1GCkDhvkeDF8MdXcwxO
+ 0zM/MUiH
+ NEt69O15zeDW2VONqMN4chu3HgWUuyC/H/6qm8+bu8eiHhKIl+GRN+LPsPpJ7JMYKtZkffgdtnsjaAk+hwubxWRI46JHrWdwpswDunkz4gHSyo3/q45agUFraIuaX6nGdDnwtOrr/mEi3uADN3b32nmXJ/eZppHiEFQtF3C/qGWdQ7NruDSIyz55jZLATrzIQDtcTXMrOfsEmzHl/db0lNUoaipHu5/Y9wn67a+i4FEs2Xe1t3d/Ii5PYkzODKsnyxN1Cy/c+g/LiFXfg7iCTjMzxGqbouFMZUcMBTmXvI61M8nzs1mLtNzMUM9kn+YZaPyQc6BdDvYHMH4hnKDZfogkrpEn8/ZZLkfNoQE9vg8yvZPV2L/3uOgKJXcvdb3TmPc3X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,211 +142,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/22/26 07:28, Alexei Starovoitov wrote:
-> On Sun, Jun 21, 2026 at 9:06 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
->>
->> From: chengkaitao <chengkaitao@kylinos.cn>
->>
->> The list_for_each*_safe() helpers are used when the loop body may remove
->> the current entry.  Their current interface, however, forces every caller
->> to define a temporary cursor outside the macro and pass it in, even when
->> the caller never uses that cursor directly.  For most call sites this
->> extra cursor is just boilerplate required by the macro implementation.
->>
->> This is awkward because the saved next pointer is an internal detail of
->> the iteration.  Callers that only remove or move the current entry do not
->> need to spell it out.
->>
->> The _safe() suffix has also caused confusion.  Christian Koenig pointed
->> out that the name is easy to read as a thread-safe variant, especially
->> for beginners, even though it only means that the iterator keeps enough
->> state to tolerate removal of the current entry.  He suggested _mutable()
->> as a clearer description of what the loop permits.
->>
->> Add *_mutable() iterator variants for list, hlist and llist.  The new
->> helpers are variadic and support both forms.  In the common case, the
->> caller omits the temporary cursor and the macro creates a unique internal
->> cursor with typeof(pos) and __UNIQUE_ID().  If a loop really needs an
->> explicit temporary cursor, the caller can still pass it and the helper
->> keeps the existing *_safe() behaviour.
->>
->> For example, a call site may use the shorter form:
->>
->>   list_for_each_entry_mutable(pos, head, member)
->>
->> or keep the explicit temporary cursor form:
->>
->>   list_for_each_entry_mutable(pos, tmp, head, member)
->>
->> The existing *_safe() helpers remain available for compatibility.  This
->> series only converts users in mm, block, kernel, init and io_uring.  If
->> this approach looks acceptable, the remaining users can be converted in
->> follow-up series.
->>
->> Changes in v3 (Christian König, Andy Shevchenko):
->> - Convert safe list walks to mutable iterators
->>
->> Changes in v2 (Muchun Song, Andy Shevchenko):
->> - Drop the list_for_each_entry_mutable*() helpers from v1 and make the
->>   cursor change directly in the existing list_for_each_entry*() helpers.
->> - Open-code special list walks that rely on updating the loop cursor in
->>   the body, preserving their existing traversal semantics.
->>
->> Link to v2:
->> https://lore.kernel.org/all/20260609061347.93688-1-kaitao.cheng@linux.dev/
->>
->> Link to v1:
->> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
->>
->> Kaitao Cheng (7):
->>   list: Add mutable iterator variants
->>   llist: Add mutable iterator variants
->>   mm: Use mutable list iterators
->>   block: Use mutable list iterators
->>   kernel: Use mutable list iterators
->>   initramfs: Use mutable list iterator
->>   io_uring: Use mutable list iterators
->>
->>  block/bfq-iosched.c                 |  17 +-
->>  block/blk-cgroup.c                  |  12 +-
->>  block/blk-flush.c                   |   4 +-
->>  block/blk-iocost.c                  |  18 +-
->>  block/blk-mq.c                      |   8 +-
->>  block/blk-throttle.c                |   4 +-
->>  block/kyber-iosched.c               |   4 +-
->>  block/partitions/ldm.c              |   8 +-
->>  block/sed-opal.c                    |   4 +-
->>  include/linux/list.h                | 269 ++++++++++++++++++++++++----
->>  include/linux/llist.h               |  81 +++++++--
->>  init/initramfs.c                    |   5 +-
->>  io_uring/cancel.c                   |   6 +-
->>  io_uring/poll.c                     |   3 +-
->>  io_uring/rw.c                       |   4 +-
->>  io_uring/timeout.c                  |   8 +-
->>  io_uring/uring_cmd.c                |   3 +-
->>  kernel/audit_tree.c                 |   4 +-
->>  kernel/audit_watch.c                |  16 +-
->>  kernel/auditfilter.c                |   4 +-
->>  kernel/auditsc.c                    |   4 +-
->>  kernel/bpf/arena.c                  |  10 +-
->>  kernel/bpf/arraymap.c               |   8 +-
->>  kernel/bpf/bpf_local_storage.c      |   3 +-
->>  kernel/bpf/bpf_lru_list.c           |  25 ++-
->>  kernel/bpf/btf.c                    |  18 +-
->>  kernel/bpf/cgroup.c                 |   7 +-
->>  kernel/bpf/cpumap.c                 |   4 +-
->>  kernel/bpf/devmap.c                 |  10 +-
->>  kernel/bpf/helpers.c                |   8 +-
->>  kernel/bpf/local_storage.c          |   4 +-
->>  kernel/bpf/memalloc.c               |  16 +-
->>  kernel/bpf/offload.c                |   8 +-
->>  kernel/bpf/states.c                 |   4 +-
->>  kernel/bpf/stream.c                 |   4 +-
->>  kernel/bpf/verifier.c               |   6 +-
->>  kernel/cgroup/cgroup-v1.c           |   4 +-
->>  kernel/cgroup/cgroup.c              |  54 +++---
->>  kernel/cgroup/dmem.c                |  12 +-
->>  kernel/cgroup/rdma.c                |   8 +-
->>  kernel/events/core.c                |  44 +++--
->>  kernel/events/uprobes.c             |  12 +-
->>  kernel/exit.c                       |   8 +-
->>  kernel/fail_function.c              |   4 +-
->>  kernel/gcov/clang.c                 |   4 +-
->>  kernel/irq_work.c                   |   4 +-
->>  kernel/kexec_core.c                 |   4 +-
->>  kernel/kprobes.c                    |  16 +-
->>  kernel/livepatch/core.c             |   4 +-
->>  kernel/livepatch/core.h             |   4 +-
->>  kernel/liveupdate/kho_block.c       |   4 +-
->>  kernel/liveupdate/luo_flb.c         |   4 +-
->>  kernel/locking/rwsem.c              |   2 +-
->>  kernel/locking/test-ww_mutex.c      |   2 +-
->>  kernel/module/main.c                |  11 +-
->>  kernel/padata.c                     |   4 +-
->>  kernel/power/snapshot.c             |   8 +-
->>  kernel/power/wakelock.c             |   4 +-
->>  kernel/printk/printk.c              |  11 +-
->>  kernel/ptrace.c                     |   4 +-
->>  kernel/rcu/rcutorture.c             |   3 +-
->>  kernel/rcu/tasks.h                  |   9 +-
->>  kernel/rcu/tree.c                   |   6 +-
->>  kernel/resource.c                   |   4 +-
->>  kernel/sched/core.c                 |   4 +-
->>  kernel/sched/ext.c                  |  22 +--
->>  kernel/sched/fair.c                 |  28 +--
->>  kernel/sched/topology.c             |   4 +-
->>  kernel/sched/wait.c                 |   4 +-
->>  kernel/seccomp.c                    |   4 +-
->>  kernel/signal.c                     |  11 +-
->>  kernel/smp.c                        |   4 +-
->>  kernel/taskstats.c                  |   8 +-
->>  kernel/time/clockevents.c           |   6 +-
->>  kernel/time/clocksource.c           |   4 +-
->>  kernel/time/posix-cpu-timers.c      |   4 +-
->>  kernel/time/posix-timers.c          |   3 +-
->>  kernel/torture.c                    |   3 +-
->>  kernel/trace/bpf_trace.c            |   4 +-
->>  kernel/trace/ftrace.c               |  49 +++--
->>  kernel/trace/ring_buffer.c          |  25 ++-
->>  kernel/trace/trace.c                |  12 +-
->>  kernel/trace/trace_dynevent.c       |   6 +-
->>  kernel/trace/trace_dynevent.h       |   5 +-
->>  kernel/trace/trace_events.c         |  35 ++--
->>  kernel/trace/trace_events_filter.c  |   4 +-
->>  kernel/trace/trace_events_hist.c    |   8 +-
->>  kernel/trace/trace_events_trigger.c |  17 +-
->>  kernel/trace/trace_events_user.c    |  16 +-
->>  kernel/trace/trace_stat.c           |   4 +-
->>  kernel/user-return-notifier.c       |   3 +-
->>  kernel/workqueue.c                  |  16 +-
->>  mm/backing-dev.c                    |   8 +-
->>  mm/balloon.c                        |   8 +-
->>  mm/cma.c                            |   4 +-
->>  mm/compaction.c                     |   4 +-
->>  mm/damon/core.c                     |   4 +-
->>  mm/damon/sysfs-schemes.c            |   4 +-
->>  mm/dmapool.c                        |   4 +-
->>  mm/huge_memory.c                    |   8 +-
->>  mm/hugetlb.c                        |  56 +++---
->>  mm/hugetlb_vmemmap.c                |  16 +-
->>  mm/khugepaged.c                     |  14 +-
->>  mm/kmemleak.c                       |   7 +-
->>  mm/ksm.c                            |  25 +--
->>  mm/list_lru.c                       |   4 +-
->>  mm/memcontrol-v1.c                  |   8 +-
->>  mm/memory-failure.c                 |  12 +-
->>  mm/memory-tiers.c                   |   4 +-
->>  mm/migrate.c                        |  23 ++-
->>  mm/mmu_notifier.c                   |   9 +-
->>  mm/page_alloc.c                     |   8 +-
->>  mm/page_reporting.c                 |   2 +-
->>  mm/percpu.c                         |  11 +-
->>  mm/pgtable-generic.c                |   4 +-
->>  mm/rmap.c                           |  10 +-
->>  mm/shmem.c                          |   9 +-
->>  mm/slab_common.c                    |  14 +-
->>  mm/slub.c                           |  33 ++--
->>  mm/swapfile.c                       |   4 +-
->>  mm/userfaultfd.c                    |  12 +-
->>  mm/vmalloc.c                        |  24 +--
->>  mm/vmscan.c                         |   7 +-
->>  mm/zsmalloc.c                       |   4 +-
->>  124 files changed, 875 insertions(+), 681 deletions(-)
 > 
-> Not sure what you were thinking, but this diff stat
-> is not landable.
+>>
+>> I can then follow up with a proper cleanup.
+>>
+> 
+> I would like to do a followup cleanup for this, may I have this chance?
 
-Agreed. If we decide we want this, I guess we should target per-subsystem
-conversions.
-
-If this goes through the MM tree, I would even appreciate doing this on a per-MM
-component granularity.
-
-(unless we have some magic "Linus converts all of them" script, which I doubt we
-will have)
-
-Is there a way forward to replace list_for_each_*_safe entirely, possibly just
-reusing the old name but simply the parameter?
+Let's fix it first and then decide how to proceed with this code here. I get the
+feeling that some more of this code might deserve a cleanup.
 
 -- 
 Cheers,
