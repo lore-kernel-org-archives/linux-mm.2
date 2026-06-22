@@ -4,110 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07FD1CDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85570CD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 10:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9F176B009E; Mon, 22 Jun 2026 06:20:27 -0400 (EDT)
+	id 58BD76B0095; Mon, 22 Jun 2026 06:33:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4F5B6B00A2; Mon, 22 Jun 2026 06:20:27 -0400 (EDT)
+	id 563B96B0096; Mon, 22 Jun 2026 06:33:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98CCF6B00A3; Mon, 22 Jun 2026 06:20:27 -0400 (EDT)
+	id 4542D6B0098; Mon, 22 Jun 2026 06:33:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6100C6B009E
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:20:27 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7BF4166C56
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:20:26 +0000 (UTC)
-X-FDA: 84907154052.19.36975AA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 15441120002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:20:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m3dNwSEd;
-	spf=pass (imf29.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 14C756B0095
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:33:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6888CA0620
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:33:51 +0000 (UTC)
+X-FDA: 84907187862.09.DFBC5A8
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BD92A140007
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:33:49 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uPaN+F6o;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3iw85agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3iw85agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782123625;
+	s=arc-20220608; t=1782124429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Av5Cay2iQgE4dmKixANA1y2OxA30B1PEKQsa9QOD1Vk=;
-	b=flArPOCruJPXNffKy0j8tSCmMN82PZoD2kUe8JPkggykO8D1ToBZYfr4AMpyLeK5FbX2Og
-	h96mC5mTjT1aXOmta59pH2muxm0UxjxMNo2XC2q6xh1IYJEiSJZxfDdZlMpOym5V0nTZbm
-	Nczd9pgUp42ya/H7nnXXiEakEGiEu7g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782123625;
-	b=rZQqbBh8O+d1lUrvzJWgyd6n6ha6Wq4mFtceWVkR1hbw7Hu7C3DZRPXLrP8COmS3QVtvJN
-	vnStbK2BsmrweQtHkMWGM5kSNvGOyJqn4riik9Nw1pciJfWo9amQex8NamOj2LKGJ74B7H
-	xm04vfXLYPOqZdieUdGKTJlzpVc5rZw=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+N+IZZBBGfHHVcpbuDlZE6lMJRHVBCZgw8qCBfTHFu4=;
+	b=mMid44D03rUPY3qMuivpNiZ3kH4P2m6VeqdabmM7mFpHVR/qWQ3/BbSD8AV0BuFIauMrCS
+	6lDEYH7OCGRKuLqNy6TvipRJUPWQ7ftOAaYalzHj2UeRHH/KJEfhfhSKdVCczC9Ogdrm+3
+	V+LRGDzHWdl+s+wjMr9ZEmoa9NDcSzU=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=m3dNwSEd;
-	spf=pass (imf29.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A9BB403B8;
-	Mon, 22 Jun 2026 10:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AC21F000E9;
-	Mon, 22 Jun 2026 10:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782123624;
-	bh=Av5Cay2iQgE4dmKixANA1y2OxA30B1PEKQsa9QOD1Vk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=m3dNwSEdQK97otKyW4aA+SnAcax0LXFVdX64+OZjOO0Yq/NxEgpmFc+PVwtEkPciV
-	 QQueXKNfzqnoitADM34KU9cMQrKUiA+WB5ez0XvobjUs5biRvhuvuLKAQJ0kAFD71K
-	 spFd56Fk/w4Va/+NdkMYcD/JhXmr0IoR5GnqKN64=
-Date: Mon, 22 Jun 2026 12:20:38 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Harry Yoo (Oracle)" <harry@kernel.org>,
-	Gregory Price <gourry@gourry.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	Robin Holt <robinmholt@gmail.com>, Steve Wahl <steve.wahl@hpe.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH v2 08/13] sgi-xp: Use higher-level allocator
-Message-ID: <2026062229-lumping-latitude-b091@gregkh>
-References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
- <20260622-alloc-trylock-v2-8-31f31367d420@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622-alloc-trylock-v2-8-31f31367d420@google.com>
-X-Stat-Signature: 6zbh4xn6pb9jxuihjxzzdbpxkycmrkbr
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=uPaN+F6o;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3iw85agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3iw85agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782124429;
+	b=OMvELvbLc0XSPG+nvvPIV3KqklR9rZomZVhEOI7VDZi++qHZTlrITmnCTkvDsUDCVtRDrG
+	cYaDyXUyp4RaPrSdGmTcfFkZ8pEaVHMiyZQWSn1gxGhWgqIDXyWmZ99LpkZk56rAWKfvP2
+	flsoDhayqaI5hdaLzSfbKxHImB77JEk=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-c0bcdf949d5so257036866b.2
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:33:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782124428; x=1782729228; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=+N+IZZBBGfHHVcpbuDlZE6lMJRHVBCZgw8qCBfTHFu4=;
+        b=uPaN+F6orfgAH9hOsnEc17a6roSSu/wm9zMa5M24Kf9TMTxj7FMJ4/ObPCCtrLKA2m
+         HLY1A6NgF0p5ZwiUgU4aPdomQuL7OZuENlNuxY/crQMXWWRpQLfXrCLrcfh21LHH36nv
+         g6mE88C0x32dtvB4bL1eTtYpJsIv12f5RBzjf2LCLv3uoMjUe6uXJIwaRMVvnOLIN4XT
+         mspN4m/G7W4HPsb/oOVHwxLaebL6NVD0/84uX9A64dW2MJWEKad5Xl+yaLaYN7mnNS4L
+         +JtOircULQeu8zCOKKoKJG6fmVR4se+6HCLV5NdYg1HQP+cGQa7zNEOD9loN/LiTRpi4
+         OEqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782124428; x=1782729228;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+N+IZZBBGfHHVcpbuDlZE6lMJRHVBCZgw8qCBfTHFu4=;
+        b=Tq8SKdpm/mBAUfEMPAWbjo5x9pqb4S07B1fqL3qrJ4AgF3hOi9m6gcv0mtq7UAHUil
+         kqJkXF91ojxeEeZXWQoO5pXUupGI8WAzrzTYh8Os0ROPezH+UBCFkfSvE98pwqqiFsLU
+         +i9h2TkpUzOyjvsmeue32XTkzBssHR139Ml43XMQZNuDChU4uTjnW90al6ok6eVtFS9c
+         wv88sg9RzhFVfE2UkEPQANmzTOqCRC/1DKxkFrQHCeXtFI98Pc7rZlH5z2VZhAXnqQdm
+         ertv6WbNZhuj544xbXInhlpsZMswpjZ9J2m+tOnXoPTsZoKx3rNU9aA4vCaJeVS642Ax
+         ma8A==
+X-Gm-Message-State: AOJu0YzgV1mlpU+ANJcVlfw5BNTEQKs8FeiNU4ksW34hvHWEB/o5Hdhp
+	40j3tDVH2GKyuhX+kPZGYX71EffGXo/UOjIx17YjRgnm1PzA+QMRbOnLizjeZzmbuQXoGw1jkiZ
+	0bEcM+JuR1FYepL5CPA==
+X-Received: from edvd21.prod.google.com ([2002:aa7:ce15:0:b0:68b:3197:253e])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:6c0f:b0:c0d:9172:c8bc with SMTP id a640c23a62f3a-c0d9172cdd5mr322007166b.42.1782124427905;
+ Mon, 22 Jun 2026 03:33:47 -0700 (PDT)
+Date: Mon, 22 Jun 2026 10:33:43 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.738.g0c8ab3ebcc-goog
+Message-ID: <cover.1781863524.git.tarunsahu@google.com>
+Subject: [PATCH v3 0/2] luo: migrate serialized_data to KHOSER_PTR
+From: Tarun Sahu <tarunsahu@google.com>
+To: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: BD92A140007
+X-Stat-Signature: r33h7s888gzz1ud6b9538dp1fft1e44g
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 15441120002
-X-HE-Tag: 1782123624-998418
-X-HE-Meta: U2FsdGVkX1+hIRi/WUEleDXKlAZiI7E8oO0Ejbp7EXYpe6PyukmD0XIbeQ+WBP8k3Wgtp40MBoL8Ip/rbplnXFzVgRm62MUt2xnfoF+6/9nERfHCvaI1a+pMSseyu3rXYthpsSg/Oac50e7zfREyWf8nTKKuU52BkfRKgey8fyKZ7cnFIi1GuqMgyc2xgxiZnkseyZmOGf7I/0l1DHcUK0X9sbu6uu8cfIIa9wEKp0sSc1CA1RtbIQvaJPjQ9HR4m3+V3T/aLHTXvzIhNyGv7Ee5H57cR1A9qZKQJfmwuwifh96AtGd9Wp8O3wey6GvMuTGw83VLrc5Q2Tn7yfw/laKe6/fLwl7qLxQcnCLsVgOzUZzXKOf+BbbsFp84ZtGCIZe/PiwvAjBCjfRwhiXJqEE8AsbJqPnjxP4yyE9CIxtGb5ja5aR3Eo60UFglkZrDs4N2XXkC0Q6xHGquq79lUWOzWsb+epw/YrtVB3wy5sFJV4Q2oXSwXE+X897KfFL4OgD4Db9KdZK4+Wn+0GPuDIJbQfn1BmZdy3oHNAkq8mqAmZ/Cb5sUpFlFRu7De0eJZecadurn07nBn0YtDFz8Ivfry66lvx8d8phPdZNcaDNLISuRzSzONCSC5NkTCDawqE6EYK0S22owgk25a7kQqLCt96lD1/TDjgNF2+dJZPv5rR6kJgEdYNVombhYLJVX1DF94gkppluNSoqknjqYWuasebzvfxAbOOJ5btku7Q4HSYDNPGvIFqcQv/9VLEZByC+ov4PpHuV7CTKPkku3nhgngxv42iZYg5gbXm1/AoGEzZtqKycU/vmlXQSJX1ElcJJG8QKuJ4aXqbCmarvfE32XigbVHIiL56XgZZAfT0GRqZiQ8ideWIBdmRkYobAR+cY7E0RE1fY2yxpZAJ6UQw9lpHYhIErC0O9Sj+JBJofB/Re/Zi+uyHXqHCWwDQUAwjxi3IOUi5DEcKKFZOS
- Rc2ZPZjm
- iXYxFUiDbDaXSPUR3OVlsVB0HVJZmCNyMb6eXqIRsKX0UCm3yCt4Nz3pCyhCHWf5tPEWICAXRY81qPjYVft7vP5gTN1u7/3un9ERdPHbwJNu89Kp6AIAqfRKjyEe8AYEFPlh9bgAuzDSGmTvKre7MstN0EvtXRmaqnl8rgv1S7lxkElvUjzD2tKzhy+bi3qq9ms66jFqkoDk2m4uAdTgh8f8idnx2OtyBUSZ9c5YtpFSX6HPhgHtBuHMVbwhV837xy45Pua1ETK8tpedyivHpAEBICG3yHyLuRLJrFtydSuSpcbSKbdpkXVGYWMgXlmiXPeWFqcVIUPesr/BaLPOwFcvCEyUdQbzUvLwulctklq+dZY1ksbx70siAInPaV2LC3ZVrt11/Vkd7tXYI5pZnF4XygC/71fBpskno59NoYVPhCpClM7fJuIeziJ5TPKXWcPKhHobqINHuSwzDnutj5MZVKduWkhTFl6FmrPJaFjf2ULiRnOP7hBxcVVkj1VTgGk5bYveCJy4VN4LFWUICCJ5wZw==
+X-HE-Tag: 1782124429-289823
+X-HE-Meta: U2FsdGVkX1+5ZSCE1AoRGSKuzCpsx5l0BFg0Uza8azp9SMK778Sy4+ZWUqRVraNW1cDJiVqAYXWo2eboeZCXyVreDO/kzUd014TKmfyyXXbcHT2HbuKggLWjtColhpg1hiSnFC7w1Gp4cEjC3pA5kroIW28MLGxFDmBD1zsxu4Rtk/GC+tt3rd0HcVebEUxERYi9bv1NX/frNCwzniPdBsTUGok0rejmeD3ThfalCMrU1NEA6le8j/ND8mtgXuD9WhZ+O9iumuPBZH6E6ptCPCgSsTLG2EF8Uppi0CI/AgI6+514/TgJwoqgqgW1KIhYq0LnwWctZr24rowcN+hm2KvpeX8R8SG3aDsZUUiNCrxx5g102O0V4YNi6lsRDb+7EHaLC17MeVRuJYiecKXYOIoBHaJ77TNdyoj2kr1bIWD+KffF0vePT3DeiC00UbcX+wa8EAefUEdaX+bzkpPydBVB2qOI9SAlnKxG3eY/f0z8cIhNHoJf72i9pz7DKgVhbWNFkpKTl/pPlj6EtMJ9QvC2ul+ookfL2sEeWTJTNEh9uw0k5gEOnWui9qOtXdbIjXkaCyEBnGLt0JZa+HzPY/0/SoSYvFFBnXBX0TTEf8Pb8ErLD3bFuLMQrousicymuV7ifHeIGm5CVLK28pRt4A5OvkkKiyf3blNbFqGPmhwAaz7AmbzoNoYIZuDq/XbptQZQDiUGDefShG/K2zTF5I0umBXFLWqVtwV2VwXF/rtGlxegGntSMfKpqdsr+bzZIRkheU3U5Q8kYNbk2uBW1+aBDe0x8sLTOBRCl1ENkzqkxs2vCAdflA87RGIRP/Jzsm0H6QaBF3+qTejYooyTPjdkADe76H31t7bTB5TzgnZ6Vqb2eSSZJSWwoQopy5ncD2sCxAzH1EQTD64YfokKiLOzWHhzBFA5EXmdd6hWPshYK/Vt0MlzOznDD3Y1gmucc8cSmQikfAFo1yMkPlD
+ z9ejl/PI
+ zh8VmKZ49bvEylJc/i2+7knicZBHF4EH2vUty4ZlwJYvl0eJoVYhy4/pOgz21wcFOl+O/ZbJGMEaX8ShBjQFmBrnoX2V9OZLBrOTU8TN9wKMphOEuEjSRaeAZ62XjBHTTAxK2ZO9gMf6Fmzy6BZEwCyF+xzf8cMEAFM7vxZ7L3Rw9tFE3Zmgyp2LfNw4HNSDz2TXcWoXxOsmS6NLdcDf6EItmO3ELhBosMDKUV9+Nk8YmPF2+mw879EsRZd6MsD7iaK+FeIGvmV3DItKHOtzbS9u3MW3Vfu8TZjFwzimknjaIgAdgHc2FAca/RQjBIXM7DxJzPJxxjhUsG5owk2R2MUd2Mr2bjTk0HIaeshQ6xV7V7d61Olo5ntlaXivbqlq7ti24Oqj2uY5e+JYNI5bmK9JaFlCINwIqseqE6/lF20dj78jP3YDdcss2pemM7aAq6m+M2/Hn6zLzlz6gIuQm01I2569vo1/RZ1rsQvwfmC06RNCtTZa1YRQkZC6/VoyHUIedPShAVa53khrlJsPJWFXDXI+l0Cs6nPyDOBx5nuQL4WlPkmyTEEZ2ae2/ncpDKDAOIcNSp6X4oZ+Nz4vntKigTqyoo1q3DZzrilB+miHMicUhZ3C3tkf3wrljZHnS98TOYtjPR3kJDAc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,39 +105,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 10:01:35AM +0000, Brendan Jackman wrote:
-> The difference between __alloc_pages_node() and alloc_pages_node() is
-> that the former allows you to pass NUMA_NO_NODE.
-> 
-> The former is going away and the latter works fine here so switch over.
-> 
-> Cc: Robin Holt <robinmholt@gmail.com>
-> Cc: Steve Wahl <steve.wahl@hpe.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Assisted-by: Gemini:unknown-model
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  drivers/misc/sgi-xp/xpc_uv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/sgi-xp/xpc_uv.c b/drivers/misc/sgi-xp/xpc_uv.c
-> index 772c787268932..aacff70204241 100644
-> --- a/drivers/misc/sgi-xp/xpc_uv.c
-> +++ b/drivers/misc/sgi-xp/xpc_uv.c
-> @@ -170,7 +170,7 @@ xpc_create_gru_mq_uv(unsigned int mq_size, int cpu, char *irq_name,
->  	mq->mmr_blade = uv_cpu_to_blade_id(cpu);
->  
->  	nid = cpu_to_node(cpu);
-> -	page = __alloc_pages_node(nid,
-> +	page = alloc_pages_node(nid,
->  				      GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE,
->  				      pg_order);
->  	if (page == NULL) {
-> 
-> -- 
-> 2.54.0
-> 
+Covvert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
+This series also takes care of resolving the bug with memfd preservation
+of using phys_to_virt before checking the args->serialized_data value.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+REBASED on top of liveupdate/next.
+
+Tarun Sahu (2):
+  kho: add KHOSER_COPY_TYPE(UN)SAFE for phys copy
+  luo: Update serialized data to use KHOSER_PTR
+
+ include/linux/kho/abi/kexec_handover.h | 12 ++++++++++++
+ include/linux/kho/abi/luo.h            |  4 ++--
+ include/linux/liveupdate.h             |  4 ++--
+ kernel/liveupdate/luo_file.c           | 24 ++++++++++++------------
+ mm/memfd_luo.c                         | 18 +++++++++---------
+ 5 files changed, 37 insertions(+), 25 deletions(-)
+
+
+base-commit: e98a9c61721c14bcd29f11f4802e52e908701f7a
+-- 
+2.55.0.rc0.738.g0c8ab3ebcc-goog
+
 
