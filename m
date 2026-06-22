@@ -4,131 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FDD2CDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 09:45:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A2CCDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 09:49:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D82D56B008A; Mon, 22 Jun 2026 05:45:08 -0400 (EDT)
+	id DD9AE6B0093; Mon, 22 Jun 2026 05:49:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D33776B008C; Mon, 22 Jun 2026 05:45:08 -0400 (EDT)
+	id DB1566B0095; Mon, 22 Jun 2026 05:49:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C22936B0092; Mon, 22 Jun 2026 05:45:08 -0400 (EDT)
+	id CC7DC6B0096; Mon, 22 Jun 2026 05:49:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 92F206B008A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:45:08 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A7AA405B2
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:45:08 +0000 (UTC)
-X-FDA: 84907065096.27.AB1E1D8
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id B61424000F
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:45:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07fja9HP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9XY7ja74;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MOop4gpu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7oEoYWGq;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A06076B0093
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:49:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 33A83C2865
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:49:16 +0000 (UTC)
+X-FDA: 84907075512.21.608FE59
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 729EF1A0008
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:49:14 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ro+wwemI;
+	spf=pass (imf19.hostedemail.com: domain of lpieralisi@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lpieralisi@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782121506;
+	s=arc-20220608; t=1782121754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=awkGMLcNQTXeoZYS3WSSrFuhu9UYarp2Pp+iMwFqadQ=;
-	b=kqLUA7gnTDE6efdaflKmk6v80Y8pY70+B9PeUEFtpK0FGEplbeQO75z8dcx54rgQTcEKto
-	XBSukbTmt3m+7ShW31e/fOzb5iqCi6/yVLqIkqc/QCwyKNwyNTXETWfINx8U0QIOvmNFP1
-	iEj5+Xf1YXBJu3sBuPOlXPJLuXtZtGs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=07fja9HP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9XY7ja74;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MOop4gpu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7oEoYWGq;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	bh=jiUK4zqlgPufMf5KeLuWGqbjOdMtUleMUc6fesqkDDY=;
+	b=PtgTXTC0armvANJ4ciUkZshILFblghNj8QlxK7nt66rPDtIfl13csJSThvU5J3Xrj/rW1z
+	Lmr7pn3WuzbbFfOi4d5juWRUUinNXVHQpA15NzNaw++2CbXSxoY3HWtC/IFSLgOEKYrD5p
+	h5w3e4V86Y0XJfnrkTZI9sPE2OKnnvc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782121506;
-	b=2uihwuLEP/qsbvTEEsytVDSMyKy8u0FhGXkPmo/xnOgbtLntpMRcVKm4JVE3XBFw4XeN8C
-	Bpmp+nF88jDl73sgcHVLp4dAhsWD/nij3cN3VQKjJBmMUBW7gXk8KEpKYiOz3Sp6M/SJrr
-	5dGQE3QmK2fLlSTkNoZLwiXIj/AwRkA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 411AD75C77;
-	Mon, 22 Jun 2026 09:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782121504; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awkGMLcNQTXeoZYS3WSSrFuhu9UYarp2Pp+iMwFqadQ=;
-	b=07fja9HPTM9mrOeQ9kTjjZDpnykpKOVj2QGbffa2CkoCM2ZB1HokGz9okyUKeZzadJiW4o
-	Mkxbm+HrsFadSfZu4HHP5CXExQW28qGD9lNwcnlQFtMIY8YBIVXcwSJ+1y3bcs+Wxv+sLy
-	S3FO8An8KzUrF/fTxvPNa0VjahDJrDQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782121504;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awkGMLcNQTXeoZYS3WSSrFuhu9UYarp2Pp+iMwFqadQ=;
-	b=9XY7ja74QqMm2l2oUaeWaUOIVYpUhMefDP2PUO5nXRYPxfjpGvK2p7rvcJ23v2HdNa+EuL
-	ePxOhdM31pwzbIDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782121503; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awkGMLcNQTXeoZYS3WSSrFuhu9UYarp2Pp+iMwFqadQ=;
-	b=MOop4gpuAEmAdUk2XT1F0kBCviZXTkmFbodDR+hzYA1agCt2L0oqcVUtsm0UDhYNR4d/+W
-	kmMyAZzX8jX4uIe2RXGyRBQLlwFqG6qunCXyprlAg7/pcwRN0uWdLZQWyj7JJReWeLa9vu
-	GHwqP8gnrzlBrR+ZhvqHNVXNqcdXQmQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782121503;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=awkGMLcNQTXeoZYS3WSSrFuhu9UYarp2Pp+iMwFqadQ=;
-	b=7oEoYWGqzLPNkxotKFWQtvkIrjJTNMjiCPrPQzrvJRa1eFXeja11YfC6CUPAXMb/gdBgI4
-	FmhUFOKSvBSmVyAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 390B3779A8;
-	Mon, 22 Jun 2026 09:45:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GRTsDR8EOWrfRgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 22 Jun 2026 09:45:03 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id D5086A12DE; Mon, 22 Jun 2026 11:45:02 +0200 (CEST)
-Date: Mon, 22 Jun 2026 11:45:02 +0200
-From: Jan Kara <jack@suse.cz>
-To: Chi Zhiling <chizhiling@163.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chi Zhiling <chizhiling@kylinos.cn>
-Subject: Re: [PATCH 2/2] mm/filemap: reduce unnecessary xarray lookups in
- filemap_get_folios_contig()
-Message-ID: <wznnhy6lnmwiwb6yay3rnuq23ougftzkxlckdne2ujrfi57g24@ylpkr7snc6ho>
-References: <20260620062446.351475-1-chizhiling@163.com>
- <20260620062446.351475-3-chizhiling@163.com>
+	t=1782121754;
+	b=pucbcrLTHZEDW8nLzmieyFSc8TsrK90bFJHHC9AfnMtgYb1q0RBDctNx80FeLcX41bAfdL
+	7Lt8dGr16vSl1KVZvW7un5/IHrF721pQS0r9RL1TiCu2Nf2xycgex1H8eLmfReflI+WxJa
+	CTHynlcjihasE1KGVE2e2kaJwJIjb3k=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ro+wwemI;
+	spf=pass (imf19.hostedemail.com: domain of lpieralisi@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=lpieralisi@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7459C40720;
+	Mon, 22 Jun 2026 09:49:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E281F00A3A;
+	Mon, 22 Jun 2026 09:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782121753;
+	bh=jiUK4zqlgPufMf5KeLuWGqbjOdMtUleMUc6fesqkDDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Ro+wwemIX5Rnl9nAhj+phv88wYwnNld218ormKKPUv87BSnNLRpu9D4ciAcUA/9aV
+	 kV4TvSmy+7jhFDP2oTR+Exc2QVRYoubH/yPD+VaTIMWT8VS/+p61VDFEaJPz++o8ne
+	 kE9+3EKuoxURhelikJG9QDtIfxSkA0IT0eQUNH3RkoSTQU2Zt2RTfro5W1PVopTbiG
+	 o41jD0WHJSDAZsV0Qj/arNHOdzJ2xoX9m2yvWfcQ8esxEH4ixQZ71B46G1ovm8h7h/
+	 jVkEtJYrAXXnNEVq2SI1M44qgHwVIrCtuDv1A8wENZIgx2URMumPdgLlDT6YI543Sf
+	 g4qAHZKxjQLsg==
+Date: Mon, 22 Jun 2026 11:49:07 +0200
+From: Lorenzo Pieralisi <lpieralisi@kernel.org>
+To: Hanjun Guo <guohanjun@huawei.com>
+Cc: Will Deacon <will@kernel.org>, Yu Peng <pengyu@kylinos.cn>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, sudeep.holla@kernel.org
+Subject: Re: [RFC] arm64: early_ioremap fails to map ACPI MADT on 64K pages
+Message-ID: <ajkFE6TmwW6B/huP@lpieralisi>
+References: <20260617060110.2846851-1-pengyu@kylinos.cn>
+ <ajVVfnGIq_6zt2jC@willie-the-truck>
+ <3cceb66d-4496-1a46-60ab-f43b0669fb71@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260620062446.351475-3-chizhiling@163.com>
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B61424000F
+In-Reply-To: <3cceb66d-4496-1a46-60ab-f43b0669fb71@huawei.com>
+X-Stat-Signature: yhdi8htnkp7hqcx857aqqineaaseuap1
+X-Rspamd-Queue-Id: 729EF1A0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: et5wa1xqbz1dj4nfw6n9jpxr4pwks8in
-X-HE-Tag: 1782121505-329618
-X-HE-Meta: U2FsdGVkX1+z4scpIKW/C1iQpk4CLYhA33Jd6tPyT0Y8UQqEjQShG8jlSmS/QLYaxlOhlkV474Fqwa/vGGYMV6gUVxGe9wiMRqM12GWjNgjT8xmcgFfh1qkwqBOONVu5DF8oNM5oNfVg12gKRqffcWIrQky50f8pnTLDZYKL+MYy0mu1Y147ldZBXgJCSzJKpFWrr8/DPjXm5p1LDo722IWrXN4PbqBfe0wWiX8FKy6NBSoI/jKfRlW7lfBuF4L/WvcYzLCQ3ggJQNSzlKvfbU76/jnBXmPlkxtHQgm2DfZYDP9cq4Tap5Uw5G7BEXzMV6HK/nWKirSlxceS/rI9lW34g5N/wwgr304Gn/KpOsxgN1mhcNeZGpxgcH3G4ry4Sla4pkjIqMDB/7F4djgVkJ2lJ5HR+WqBrcDUrRXfpGV9pekrklYiK+P3wWy0kJni47ImvWh3BgqlUOUOUf3gId2iBAdmf3oMA4Z37/4Q9ETcF6LZ24FpeT+4ahkXFZKA45TQF1gwFQJliGeDQlVad5KFe8uamh5qIHG+EU+A99qtFk97pYlOdYuQWfRYRFsiKlpQrdy4JlKF6FS7LKZIFuXGatq5SDF8DxtcnGiJaNV5h+IxNSeMFArrNv/5d3xg9GqDHX272/Vqa+Gj3Qx62WC96lVRkWvNUl4mWIAWNtEZXqFCJSDJXt9L7wQyYUzL7i4IdQtqulaP8aaAD18/JvaTqtUvLmstLEqhpxK8fyhh+w9SRD5TJNVfzFY3bWQBV3+/wp9eMFic5GIic7ls11RYJgPD5tri0eZojSq0vidGyGiNWjkTAPQZy6R3ddp+FaPvtAdKp8lJVHt/rJWWHJsolSbZvXcisYngR4g7GZDFaelQBfEh8cpvkLOp6797pZXJa0PonOP3wxB3DFL7x1nJVc1HJKGKxslwNR3H5M9NTvHoAc32qVMykyUJJLmyUcps1px2XjHuCUvJLu2
- H/irmsyI
- GkNKHMeFTSnr8PUt7cgBz+s6a6NMNIFWM8hnKTsoy6UPBdvgaXKPwFtV3NVEHmSbzp718uC5h1DOQZF+4/i047C3SCqY1EtDuqblN2ik8Og0GPiH3o8ryqPFt/xBgQNVAYSOyohi5fZG7sWjcWDVN80ORC7w40VzMVaeow9GhiyZV3Hx3FSOzQ1+OucTDuByBzD3aE8iCs0hE0x7FnOUlP57R+x4+noT03X8r0Gz3zu1Cn5S6+DePQF2QprhUGygIC7m5pc10KGKGoiFyeYJvSBsJNfdPxDgKFWM2wIq6g9akKP3ADmg9LQMZwbHRqbsvkn3+KOE5pP/P6XrJuIGW7WO9ub6vEScUr0h8gRwBardf4M5kP5DdDn2AQWxbbDbxoznBRASD2G7uaCcXHnX0HlVA3C5HLQMSmgcc/4UF0gFdrivWwa8Ec4b+xINd7JN6C+uHcwrsYsvKHVER9tdpgNciyQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1782121754-878162
+X-HE-Meta: U2FsdGVkX19PVymcqklXYhIFamlLa2jTagumIOLz9aCpl/t5kGInH+PV/GEvNeisC5C3MHx19rFnmouk3NiUJQjC7fw7MSBOEiB9WnKYmGS5yK52HS9difptSApA2Akqjmcr5JS7xq6WMdBGIufuZewaJ4ut7K3HPQVnjaggDbutr/fNhIMJeugomRsnsHM5u7ZAS3Qg94HxJDCrV06O0cYic7zyKmhgmJYvRo934GXXLu+R8wBtQZAfKYoUTWdmUVhbyVVz+2F2q4X0wJRFo4XRzbDJzbUOP5FPkKZI5qBwRbx3evnzvQNSnpL5gZMt57a5Yox9Y+hasmahGnhsP+1XooqN4jnqCcd7swN97XLDYB2U0xXUpqXCBKD0drLO4xG2/dsFZNeqc2FSwijoE/3kYBmqQ+4SLd5CYjse9UPEX043jAoTMuyzt4LHRsINqnhmOr0GVyImMN4AH+L19qzdgz6jd3136uqYdwgfW/tMy2nNd+gUhrQP+leAtoRPjYoJ6cnJ/XWyh4PKkkKeE89lFasMPu5aVOUNAxH66vgNe1ToJN+CYRNhb5kzVdzjxP/uyOjstrVVYtpNSgrLM8+IrHeTXl+ONFsNo1981BmueHyM17pSCD3uUDhFTzy4I3Zj040F1PG0KU70JI3P7HqLHMtF8EeABMbWf5WX42HGr289zjReRY6Eg0hHsSrS+vJk1S4JBoSD6SD7jq/sHzyH7rrhZzbCZXNMIEOZ/Ow/apnaaeabse4YbPdRoh4YON8oJ4n5s5Gn+op9o0EqsRfYo2uJhKOcFQ7eke0ig88xPxsvjk4GVC2Cc5IGClfgbJt9nJtlCG9pVp5UJYbaQTuegNoRSSC3sqttQL+xUo0gAZFSadr3soWsBafMzvZWVDUYG5JIMe+jp6oVnRJyt9POCJ6koFmAmmBm8ZcoakaGbd85R3N2V0Zpe+Cf5K5blfS+FcmpTpnrWTcQWXU
+ B2inOgV7
+ D6F+1PgSDsKFvkAc3QrADSAuNS7HcIf4zNZ1yA+vPf04Cb9AiWZiPRjW5bUmU8ZtRGrqLANxlco6FMuWQtoAqjCbuaCF1N9rD5UBMD9dvGnCExVk3cOHsyhVgAQmNLBg2FX/eSyIL7vSh74FmEL1eOcxV5X9mVWf7wrKPGBx49gEFI1KcsRUHhJVTQt4A1Bz1Xhf+TWlium5HPE4VSK2ndYK+hOjMJhvdWbXvi118RWP1r1YMT/jYr8FyXV8FuOFfMWP3EPSfLXpbXGiorYWDq3UiAVvht2VHQ9joe+k1qF89nN987MrnrEr6fD9lrs76W38LXDTmooybZbeA7JBVFwg28gGVNOfIOavY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,101 +97,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 20-06-26 14:24:46, Chi Zhiling wrote:
-> From: Chi Zhiling <chizhiling@kylinos.cn>
-> 
-> Apply the same optimization used in filemap_get_read_batch() by moving
-> the boundary check from the loop condition to before xas_next(),
-> avoiding an unnecessary xarray lookup and reducing branches in the fast
-> path.
-> 
-> Signed-off-by: Chi Zhiling <chizhiling@kylinos.cn>
+On Mon, Jun 22, 2026 at 04:55:29PM +0800, Hanjun Guo wrote:
+> On 2026/6/19 22:43, Will Deacon wrote:
+> > +arm64 ACPI maintainers
+> > 
+> > On Wed, Jun 17, 2026 at 02:01:10PM +0800, Yu Peng wrote:
+> > > I hit an early boot failure on an arm64 system built with 64K pages while
+> > > parsing the ACPI MADT.
+> > > 
+> > > The failing system reports:
+> > > 
+> > >    PAGE_SIZE: 64K
+> > >    MADT physical address: 0x5a7ae018
+> > >    MADT length: 0x32094
+> > 
+> > The MADT isn't even 4k aligned, so why does the page size matter in this
+> > case?
+> > 
+> > > The failure happens when acpi_table_parse_madt() calls into early_memremap()
+> > > via __acpi_map_table(). The MADT itself is smaller than 256K, but its
+> > > placement causes the early mapping to require 5 64K pages:
+> > > 
+> > >    offset within 64K page = 0x5a7ae018 & 0xffff = 0xe018
+> > >    mapped range           = PAGE_ALIGN(0xe018 + 0x32094)
+> > >                           = PAGE_ALIGN(0x400ac)
+> > >                           = 0x50000
+> > >    nrpages                = 0x50000 / 0x10000 = 5
+> > > 
+> > > On arm64, NR_FIX_BTMAPS is currently derived from a 256K per-slot budget:
+> > > 
+> > >    #define NR_FIX_BTMAPS        (SZ_256K / PAGE_SIZE)
+> > > 
+> > > So for 64K pages, NR_FIX_BTMAPS is 4. The mapping therefore fails the
+> > > early_ioremap() check:
+> > > 
+> > >    if (WARN_ON(nrpages > NR_FIX_BTMAPS))
+> > >            return NULL;
+> > > 
+> > > After that, MADT parsing fails and the boot continues with symptoms such as:
+> > > 
+> > >    ACPI: APIC not present
+> > >    missing boot CPU MPIDR, not enabling secondaries
+> > >    Kernel panic - not syncing: No interrupt controller found.
+> > > 
+> > > A firmware change can avoid this by placing MADT so that:
+> > > 
+> > >    (madt_phys & 0xffff) + madt_length <= SZ_256K
+> > > 
+> > > However, I do not think ACPI requires such placement, so this looks like a
+> > > kernel-side robustness issue as well, especially on large arm64 systems where
+> > > MADT can grow with CPU topology.
+> > > 
+> > > One possible kernel-side change is to increase the boot-time mapping budget for
+> > > CONFIG_ARM64_64K_PAGES, for example using a 512K per-slot budget only in that
+> > > configuration. I do not think this should be applied unconditionally to all
+> > > page sizes, since the arm64 early fixmap code expects the boot-ioremap range
+> > > to stay within one PMD.
+> > > 
+> > > Has anyone seen similar failures on arm64 64K systems?
 
-Nice. Feel free to add:
+First bug report I am aware of, perhaps this was papered over in FW,
+MADT parsing failure is the first thing you would notice in bootstrapping
+an ACPI system (FADT is not that big).
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  mm/filemap.c | 29 ++++++++++++++---------------
->  1 file changed, 14 insertions(+), 15 deletions(-)
+> > > 
+> > > Would maintainers prefer treating this as a firmware layout issue, or would
+> > > increasing the early_ioremap budget for 64K pages be acceptable?
+> > 
+> > It think it boils down to what ACPI says about the alignment of the MADT.
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 199c835c68bf..4ee591bc7e71 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -2270,10 +2270,11 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
->  	unsigned long nr;
->  	struct folio *folio;
->  
-> -	rcu_read_lock();
-> +	if (*start > end)
-> +		return 0;
->  
-> -	for (folio = xas_load(&xas); folio && xas.xa_index <= end;
-> -			folio = xas_next(&xas)) {
-> +	rcu_read_lock();
-> +	for (folio = xas_load(&xas); folio; folio = xas_next(&xas)) {
->  		if (xas_retry(&xas, folio))
->  			continue;
->  		/*
-> @@ -2281,11 +2282,11 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
->  		 * No current caller is looking for DAX entries.
->  		 */
->  		if (xa_is_value(folio))
-> -			goto update_start;
-> +			break;
->  
->  		/* If we landed in the middle of a THP, continue at its end. */
->  		if (xa_is_sibling(folio))
-> -			goto update_start;
-> +			break;
->  
->  		if (!folio_try_get(folio))
->  			goto retry;
-> @@ -2293,29 +2294,27 @@ unsigned filemap_get_folios_contig(struct address_space *mapping,
->  		if (unlikely(folio != xas_reload(&xas)))
->  			goto put_folio;
->  
-> -		if (!folio_batch_add(fbatch, folio)) {
-> -			*start = folio_next_index(folio);
-> -			goto out;
-> -		}
-> +		if (!folio_batch_add(fbatch, folio))
-> +			break;
-> +
->  		xas_advance(&xas, folio_next_index(folio) - 1);
-> +		if (xas.xa_index >= end)
-> +			break;
->  		continue;
-> +
->  put_folio:
->  		folio_put(folio);
-> -
->  retry:
->  		xas_reset(&xas);
->  	}
-> +	rcu_read_unlock();
->  
-> -update_start:
->  	nr = folio_batch_count(fbatch);
-> -
->  	if (nr) {
->  		folio = fbatch->folios[nr - 1];
->  		*start = folio_next_index(folio);
->  	}
-> -out:
-> -	rcu_read_unlock();
-> -	return folio_batch_count(fbatch);
-> +	return nr;
->  }
->  EXPORT_SYMBOL(filemap_get_folios_contig);
->  
-> -- 
-> 2.43.0
+> I checked the ACPI spec and it didn't require the alignment for ACPI
+> tables, but in UEFI spec, it says (for aarch64):
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> ACPI Tables loaded at boot time can be contained in memory of type
+> EfiACPIReclaimMemory (recommended) or EfiACPIMemoryNVS.
+> 
+> EFI memory descriptors of type EfiACPIReclaimMemory and EfiACPIMemoryNVS
+> must be aligned on a 4 KiB boundary and must be a multiple of 4 KiB in
+> size.
+> 
+> It only requires EfiACPIReclaimMemory type to be 4K aligned, not
+> for each ACPI table, because ACPI tables can be packed into the
+> allocated EfiACPIReclaimMemory type, correct me if I'm wrong!
+
+I am afraid you are not wrong - we can't blame firmware (yet), this
+has to be addressed.
+
+Lorenzo
 
