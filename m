@@ -4,95 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C55B7CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 14:21:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B15ECDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 14:22:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5E966B0099; Mon, 22 Jun 2026 10:21:53 -0400 (EDT)
+	id 5B8FC6B009F; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B35CA6B00A0; Mon, 22 Jun 2026 10:21:53 -0400 (EDT)
+	id 5422C6B00A0; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A25166B00A1; Mon, 22 Jun 2026 10:21:53 -0400 (EDT)
+	id 457F86B00A2; Mon, 22 Jun 2026 10:21:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A9976B0099
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:21:49 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A67001C3C24
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:48 +0000 (UTC)
-X-FDA: 84907762296.21.C89FD33
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 302C64000B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5upGlO7;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 411A96B009F
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:21:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF7B9120183
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:52 +0000 (UTC)
+X-FDA: 84907762464.16.15106A5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2793B140007
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:21:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnKATpWv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782138107;
+	s=arc-20220608; t=1782138111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ulp3AjMI7B4owCFSWbljnqEOw+fQMJireuqm4uU5XDA=;
-	b=sVYm4gHEpSPkV4xPc34+FOIMNe8C83x80FtcJg5As7NUGHaq7IjrnhIHDmUSgZA4zNqJ7s
-	b7H5m6n6JOEobIOCtJg9UugvLVtGTDF46wjdViOLcJ5KuoGOxRz7maamrqGPJ57NlEnzGW
-	40cuciO1PRb3y1NvRseLF7n9t/G/pcI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PQradOyUplHOgC8HnoJqDwUCjl6LH6os+/rkUZXzJJQ=;
+	b=2+QIgZlJaXBxDAuVE9CPKV2AMNkG1u2iKEL0uXiNd4WSRyQh1h34grU1ZcwS2uugnWcqcE
+	5FZX+3K02xZSxoozSh7lt3Er8Q6IGRU60pkBidZV7j2VpYKrtaimDR1fAGV04N57BWraPD
+	bSvtEOiaoH7pKGvO6r1IJpLH/uGPfa4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f5upGlO7;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FnKATpWv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782138107;
-	b=qQeL/UTw0NlpC2vmtFspz1N+3OBHtsCDGKFaY0i5UPZxLugrLI9f1auQilSaT8RiXnanN8
-	uctpwXnIXRG5OTrktHVCWdk5Uu74U+Socll9ED3RUa0iYL9GKn45/GzCARJ2RfXiHY+4C0
-	vTKUZvTzGiaCYs661Dk+mgCE/OKcWQw=
+	t=1782138111;
+	b=v71n65w1Ih1Y3FZjJW5JFSAnTKOqMUV6aaO8yzl2Pyn79OP/xuWx3Sp38c1U5MgFQm3Oga
+	m9BzucerbvdfTdABHGMc209ULjKBp+GqeiiODVJ8TjL9K5hfBN2n02T7N1tRQlMsqaOLVO
+	sqpnr2ae8i9iVmw/DG3zdhbXODq4vJ8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE594601F3;
-	Mon, 22 Jun 2026 14:21:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55CA1F000E9;
-	Mon, 22 Jun 2026 14:21:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 73C00442EA;
+	Mon, 22 Jun 2026 14:21:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3151F00A3E;
+	Mon, 22 Jun 2026 14:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782138106;
-	bh=ulp3AjMI7B4owCFSWbljnqEOw+fQMJireuqm4uU5XDA=;
-	h=From:To:Cc:Subject:Date;
-	b=f5upGlO7tDaw2xoj25Q0J6HRHLPKbqkTMUPQDH4FgG/FbyZTeze8a9YMz+D4OqDnB
-	 8xf4fWEYEmNX4IiqH4yHZPl4G1Mzru9Eqmnf03K2ePUacbq4Wa7INIoebAI8vYoba+
-	 DAeupamDMxxuR/rO3R2O064FMtTTcdy7tCJjfw+p6hRPHYWX+XSkHPmaBiD4OILXUY
-	 NAgWjSG1aPqi/Z0NhR0urrhchDa64wjpL2SJbrjrrpTBEK/G44vgaavy9U4LZwu4WI
-	 GWwKpPmS4/SPsqZikB4uB7VhnW3ZDP7HjvtPYIrzsEm8sDGDrs9MCiIT3DLdx7ui0I
-	 BwdmvhSgoNg8Q==
+	s=k20260515; t=1782138110;
+	bh=PQradOyUplHOgC8HnoJqDwUCjl6LH6os+/rkUZXzJJQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=FnKATpWvDwkHRwdi9Uav1cD+mTAY2mfWw9x4neKuDXB+UkN3ME3GrN0aTqK3bnXKR
+	 UahrR9MatgNRQp8lcBKKxTCp44jVg6UdjIDyPWtNas6yFDl8E8PxfCUfrxyqg6s9z7
+	 4X8JiaU0kCdrp+SZ3TrAGpCu+2iF8abRAx2swsglG/mCp5WCPmf+12o0cfJ4fdFx/d
+	 +jC4BdEwcAL3TT7V0mQ7tmXBTHXF6uNR60ZyLWS2jSYoYpCmQPGJgn8imLYKCvyYEc
+	 /SvhOqO1BtPJN0Kch5b3h9z1RyNM+fQzI9s2KDWPpOzDtK5l7dhIlUgooKIxv5y9FE
+	 Bjg4YrbyBTk/w==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [RFC PATCH v1.3 00/18] mm/damon: optimize out nr_accesses_bp
-Date: Mon, 22 Jun 2026 07:21:20 -0700
-Message-ID: <20260622142139.30269-1-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.3 03/18] mm/damon/core: always update ->last_nr_accesses for intervals change
+Date: Mon, 22 Jun 2026 07:21:23 -0700
+Message-ID: <20260622142139.30269-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260622142139.30269-1-sj@kernel.org>
+References: <20260622142139.30269-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 302C64000B
 X-Rspam-User: 
-X-Stat-Signature: mrayk8395w5q4gqb45m88cxjxzup3pj6
-X-HE-Tag: 1782138107-935986
-X-HE-Meta: U2FsdGVkX1+lSvjJbyOPpaPjDQNCWAcz639+mNM84hV4ygb1F9hSZM3A62dVtrR4pLCawEuq215/tkIoaRtDtt+1t4ncyNwcC2dq7pWPrZepWK6lQrA+4ZaVW+AhTPf7jWzYY8bZNEREZlp3pcmn/2e8wvNVhTx6TadDd7TP3qkB3OgfAR7wUZTz1+mi2A7nithiFsSXB8a9j7/hAPFVLSoQ5ZP2F8/msC0Flkqw0PQyo6NlATP2INBz7FL4BiIM97+uVRjrJhakMrPt9P8lkODPuyHVcqkg6kN5cM0qLoLK7uih5AbA7FImETNpFoxyMYpq8sz3eLIdJT8+Am5Ypkm6JzOycybcvmsjmqyQDDEs4HIxM5CxUauQMcqoC+mBRNKCDpdqqHqbo4qTLX6zp2gOPTyCGfmwIt4YVbnzEpRsdweFoNYVsLE7JqczDZVaL5AQ3oL96cFBHJrWNwNLPmadxqZIBE7ygGBcVkI2HCCPJ6/jqpIwXDctVEpXZRb0hwD8yFReNWXlNFb9E3mQZergg4107FyXHMGNvlTr4JIlzL7cPro1iJuziB+gI5TQS3q5b+XXMDotS0MKhxpIHbvTnAWv3t+0vFtyGgIdCqrqY0yr46UV/gi64AKYai+B/kqngkwh9Xsyejg0+UXwhRlXCJBreGT1kSNLvvSdZlBGJFkhWcEyILQWH69i+zj4MM2ImUIr4T+xe0AzjUwEMYKQgzCkWqr90zxeDRxcWNCPNAiTeafCDGdxJiiRZ0wT0WNKpwbddN/2XR/VZaMGX01kezb97NmSCX00K6Ow4tnreubYzJVwBqXLuXmAtHnMsevlIeudyzlRpcBoWXkSS6D5t+yHcWvogxm/qp2yzvAUlFN2d7cO4KBYC8LaPKAVpi+17ERTV+rLcvN0bEn8c2GiFqHEtNGhgHptQxfA+aKKrxvh8lJDGDvXEmCMd0IPWmxcLMmPtIUUER0GqSS
- mGOB6biz
- TH9LOwwgjHHv4yKE0CRvMEo0C+4FJXf/cGhiSxDJHTRCjCyPab+nPPK+bZaViHwBuit3Q/R5QIxNMZENjuB0xHw5Cnpu67Lonr4tH7A0pcBAOxbDD9MJQNTikCoddtY8ATxGcIBNOYNssDbkj0QZ3ZQQdJW3xA7KoaCfaDESkjerpNDkqnf98UZqIaswfNPLuMOBzIk/WoSDcQcnaWrBEbU2qJqIG85SCx/jQCbeB6qsC2d2UptI73PXj488oiYlE4VEvXfZfviWJGFK1TT9mnvCekk3zx4OyoKpx
+X-Stat-Signature: fed74tmkaukh5ugmfy7tskzn187dgzzd
+X-Rspamd-Queue-Id: 2793B140007
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1782138110-575406
+X-HE-Meta: U2FsdGVkX1855qXplTohj47lWh7sjilyj80HWFmJt+EnYGELCO0bx9Z3ksAstlRTw69nRBnRoTc9QO3HrQdZq4OOpa0K8c04GCCd1v/GhGvcoIgNpxP8kID3eTisgHmiD8ap6enM9jT1F0SWxCnoQx5aiSnMBF1ZO0Xjd0TI5hYnL3eNScKxFtd0CFRH9KLULR3yBj+HLqGLclhuFXcAa9y1R5dC3bkkxFKdO7z4hCem678H+IbLViXiRcEsHflwp8096QVvCuYEcngdVTxt2WCS3/seTHjDyweV2PYgZa7WsWrB02nzfljnRDe5x65RVSMgJosJimG/UCZqWb9Axy9DYHDj2ISrmYeltPHUTF2OXR8HF55Nk+JGpxV7VspVlpGLbUYAK7vf4i+oP7tPtTfLVmeO3lyjqqMUgWW1hf8wUsfrhEzHsw++QC55N1CJl82CwGzLv4bemnEx7R+Ij7ilJO6rgaNV6/ProutMgnnv+7TvXZKpo4nd4n3Qgr7i6nJij4GcquM7CcIqdNr5+RsMKwhFk7uhvLskoE/C345ng++C8S9tcfOeIMikNlH63cdL5oZiqljrBJeY0FWdUg65545xvgZO02/QMXlz1unetohaGyyCh/W3JnliCaiDXbCi9k2YK6uqXsKAeVy6qD7IATAWORrEUGscz4fSraIa4IQwXD/953g+H8hjj/vRwlIPNdT91X4VSgAXT5XczywRicuIgtmkZMGAWa/23hpiEugV69jkvj/ZP/VbHRiYvbPCb3xbzwxklZA1mKQAHJNd/JDlkuCfVOp9S3gbXl59mwURJqySgLi36HEvOuF76F0grDHUlt9chyhRu4qya+i8Oc0fH83p+2A38lgIs8jBlYzESxGOiwzLkhZ/Y31shrqsee9nO+TF92mN1ZHrVI6fPZanJrzuGIBGu+Y8J3Y2R3zlC3IkmLgC0FzwoJbj4M7Sxo4jvQM/3I9tdrK
+ i/hlFUNJ
+ EwXeGsGLeYRKHXe7OrUlgazKwOhLIbT0bHi0dSQT938G//0JfvgC6FpLlzvxramJj3kM4HnYFTzLK+BdVuDtSKpL+wFipnoAs4HBLaZYkLbSv7PRws2SDmG/iXrCre4aYkkRsohsCojauuIaRdHCemRvgg34ZLcQ6Jl2ZroWtYwowQ7kCFGTOB5SW5v0ODl5kT+wsvGAELaov3sl7tj6sc583qTzVUBu9DVFUF4EDTuyrBynHtWE400gT40gMTvzW5MKhGuBo9DX1AvJRx570SRC6cw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,133 +93,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-TLDR: Replace damon_region->nr_accesses_bp, which is easy to be wrong,
-with a simpler on-demand moving sum function, damon_nr_accesses_mvsum().
+Each iteration of kdamond_fn() main loop caches and use the next
+aggregation time (next_aggregation_sis) because it can be updated in the
+middle, inside kdamond_call().  If that happens,
+damon_update_monitoring_result() is called for scaling the access
+frequency information of each region according to the changed intervals.
+The function does not update damon_region->last_nr_accesses when it is
+at the end of the aggregation, because it will anyway be reset after the
+function is executed, in kdamond_reset_aggregated().
 
-Background
-==========
+Let's suppose damon_nr_accesses_mvsum() is called with the not yet
+updated last_nr_accesses.  It will use the fresh next_aggregation_sis in
+the context instead of the cached one, unlike kdamond_fn().  As a
+result, use of not updated last_nr_acceses with the updated
+next_aggregation_sis result in returning wrong value.
 
-DAMON's monitoring output (access pattern snapshot, or more technically
-speaking, damon_region->nr_accesses) is completed once per aggregation
-interval, which is 100 ms by default.  Users can arbitrarily increase
-the interval for demand.  Under the suggested intervals auto-tuning
-setup, it can span up to 200 seconds.  If the aggregation interval is
-too long, the snapshot users cannot use it in reasonable time.  To
-mitigate this, we introduced a new field of damon_region, namely
-nr_accesses_bp.  It contains a pseudo moving sum of nr_accesses in bp
-units and is updated for each sampling interval.
+There is no such damon_nr_accesses_nvsum() call at the moment, so this
+is no problem.  It is planned to add such calls, though.  Prevent the
+issue by updating last_nr_accesses always.  This adds overhead, but
+that's fine because the overhead is not big, and it is anyway not a fast
+path.
 
-It turned out keeping it correctly updated every sampling interval is
-not that easy.  From online parameter update feature development and
-more experimental hacks, we found it is easy to be corrupted.  Once it
-is corrupted, DAMON's monitoring outputs become quite insane.  Hence we
-added a few validation checks.  It is easy  to be corrupted because it
-requires every update per sampling interval to be correct.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ mm/damon/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Solution
-========
-
-There is no real reason to keep it updated every sampling interval.  Due
-to the simple pseudo-moving sum mechanism and existing helper field
-(last_nr_accesses), we can also calculate the pseudo moving sum on
-demand in a much simpler way.
-
-Implement a function for getting the pseudo moving sum on demand, and
-replace nr_accessses_bp uses with the new function.  Also remove no more
-needed tests for nr_accesses_bp and the per-sampling interval update
-functions.  Finally, remove the nr_accesses_bp.  The new function is
-quite simple.
-
-Discussion
-==========
-
-Depending on the use case, multiple nr_accesses readers could be
-executed in the same kdamond_fn() main loop iteration, which is executed
-once per sampling interval.  Such readers include DAMON region exporting
-tracepoints (damon_[region_]aggregated and damos_before_apply), DAMOS,
-and DAMON sysfs interface logic for update_schemes_tried_regions
-command.  In this case, the new function will be called multiple times
-and this could be overhead compared to the old logic, which simply reads
-the field without any additional work.  Nonetheless, the new function is
-quite simple.  And the new approach does nothing while there is no need
-to read.  The old approach had to execute its update function for each
-region for every sampling interval.  Hence the new approach is believed
-to be even more lightweight in common case, and the overhead is anyway
-negligible.
-
-One more advantage of this change is that one field from the
-damon_region struct is removed.  On setups that uses a high number of
-DAMON regions, this could be a potential memory space benefit.
-
-Patches Sequence
-================
-
-Patch 1 introduces the new function for getting the pseudo moving sum of
-nr_accesses on demands.  Patch 2 implements a unit test for the new
-function's internal logic.  Patch 3 and 4 update monitoring logic and
-the new function to ready for safe use on the existing logic.  Patches
-5-7 replace uses of nr_accesses_bp in DAMOS, tracepoints and DAMON sysfs
-interface with the new function, respectively.  Patches 8-10 removes
-nr_accesses_bp validation functions in DAMON core, one by one.  Patches
-11 and 12 further remove tests and test helper for nr_accesses_bp,
-respectively.  Patches 13 removes the setups and updates or
-nr_accesses_bp field.  Patches 14-16 cleans up function parameters that
-are no more being used due to the previous patch.  Patch 17 removes the
-function that was used for updating nr_accesses_bp field with its unit
-test, which is the single remaining caller of the function.  Finally,
-patch 18 removes damon_region->nr_accesses_bp field.
-
-Changes from RFC v1.2
-- RFC v1.2: https://lore.kernel.org/20260621155715.87932-1-sj@kernel.org
-- Explicitly ignore nr_accesses from mvsum at the beginning of
-  aggregation.
-- Fix a typo in a commit message.
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260620172244.90953-1-sj@kernel.org
-- Handle next_aggregation_sis < passed_sample_intervals in
-  nr_accesses_mvsum().
-- Always rescale ->last_nr_accesss for parameter changes.
-- Remove unused attrs params from damon_update_region_access_rate() and
-  its callers.
-Changes from RFC v1
-- RFC v1: https://lore.kernel.org/20260619193415.73833-1-sj@kernel.org
-- Avoid divide-by-zero from zero aggregation interval.
-- Call damon_nr_accesses_mvsum() for damos tracing only when it is enabled.
-- Remove obsolete mentions of nr_accesses_bp in comments.
-
-SeongJae Park (18):
-  mm/damon: introduce damon_nr_accesses_mvsum()
-  mm/damon/tests/core-kunit: test damon_mvsum()
-  mm/damon/core: always update ->last_nr_accesses for intervals change
-  mm/damon/core: handle unreset nr_accesses in damon_nr_accesses_mvsum()
-  mm/damon/core: use damon_nr_accesses_mvsum() in __damos_valid_target()
-  mm/damon/core: use damon_nr_accesses_mvsum() for damos region tracing
-  mm/damon/sysfs-schemes: use damon_nr_accesses_mvsum() for damo regions
-  mm/damon/core: remove damon_warn_fix_nr_accesses_corruption()
-  mm/damon/core: remove damon_verify_reset_aggregated()
-  mm/damon/core: remove damon_verify_merge_regions_of()
-  mm/damon/tests/core-kunit: remove nr_accesses_bp setup and tests
-  selftests/damon/drgn_dump_damon_status: do not dump nr_accesses_bp
-  mm/damon/core: remove nr_accesses_bp setups and updates
-  mm/damon/core: remove attrs param from
-    damon_update_region_access_rate()
-  mm/damonn/paddr: remove attrs param from __damon_pa_check_access()
-  mm/damon/vaddr: remove attrs param from __damon_va_check_access()
-  mm/damon/core: remove damon_moving_sum() and its unit test
-  mm/damon: remove damon_region->nr_accesses_bp
-
- include/linux/damon.h                         |  15 +-
- include/trace/events/damon.h                  |   8 +-
- mm/damon/core.c                               | 201 +++++++-----------
- mm/damon/paddr.c                              |   9 +-
- mm/damon/sysfs-schemes.c                      |   6 +-
- mm/damon/tests/core-kunit.h                   |  37 ++--
- mm/damon/vaddr.c                              |  12 +-
- .../selftests/damon/drgn_dump_damon_status.py |   1 -
- 8 files changed, 119 insertions(+), 170 deletions(-)
-
-
-base-commit: e08d3bec1dc38cc991fc819afd698bf7bd07bd6d
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 2cc911fa221aa..191533685cf2f 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -873,6 +873,8 @@ static void damon_update_monitoring_result(struct damon_region *r,
+ 		struct damon_attrs *old_attrs, struct damon_attrs *new_attrs,
+ 		bool aggregating)
+ {
++	r->last_nr_accesses = damon_nr_accesses_for_new_attrs(
++			r->last_nr_accesses, old_attrs, new_attrs);
+ 	if (!aggregating) {
+ 		r->nr_accesses = damon_nr_accesses_for_new_attrs(
+ 				r->nr_accesses, old_attrs, new_attrs);
+@@ -884,8 +886,6 @@ static void damon_update_monitoring_result(struct damon_region *r,
+ 		 * interval.  In other words, make the status like
+ 		 * kdamond_reset_aggregated() is called.
+ 		 */
+-		r->last_nr_accesses = damon_nr_accesses_for_new_attrs(
+-				r->last_nr_accesses, old_attrs, new_attrs);
+ 		r->nr_accesses_bp = r->last_nr_accesses * 10000;
+ 		r->nr_accesses = 0;
+ 	}
 -- 
 2.47.3
 
