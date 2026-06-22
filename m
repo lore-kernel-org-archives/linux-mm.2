@@ -4,98 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B2CACDB46F
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:56:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BC4DCD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 13:00:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E72D16B0088; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
+	id 048DD6B008A; Mon, 22 Jun 2026 09:00:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E49806B008A; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
+	id F3BCE6B008C; Mon, 22 Jun 2026 09:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D387C6B008C; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
+	id E2ABD6B0092; Mon, 22 Jun 2026 09:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ADD266B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EA7CA0165
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:56:38 +0000 (UTC)
-X-FDA: 84907547676.04.22464CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9942618000C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:56:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhTXUQv3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782132996;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC1A86B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:00:46 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2678114017B
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:00:46 +0000 (UTC)
+X-FDA: 84907558092.26.AAF0137
+Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0EB99140019
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:00:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AD309Z2p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of coregee2000@gmail.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=coregee2000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782133244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l2iDIuaF1VKCPijPKmXFMyUN8rIqLYAfStTAg8/YV8I=;
-	b=oyNwt/i/Ytq/YXxmsc5GHYizizbV8swJCS9SvlLTjYZXFEpQMQsQ/cwYKTBKNEsrXNW2PH
-	XNDd14QY8s5Ti61IBjMsRmItdB1QbpE1+rsibEEXM8MpvpBbejU5j2ZYZsyG4zTzfzxkR3
-	69M6MjJ78ecFtqqQV6TEo1JUBX0RLkU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhTXUQv3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782132996;
-	b=ynldeyhSGFmdVe1rsXeMXkLvbh7kmKqwet9arBU416Pmt9djJZTPhEK/v31xQ1ZiUO9BWw
-	qQT9ib0UWdB8Mn9dfNIL+DHfP9E6tgUgE3qpLWFSgRqKU4VtcxgtmFKvlQ/Vy85BnyoT33
-	qmVrdx887LpLMk+mZca5do5C7+QPD+w=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35A69601F0;
-	Mon, 22 Jun 2026 12:56:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C321F000E9;
-	Mon, 22 Jun 2026 12:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782132995;
-	bh=l2iDIuaF1VKCPijPKmXFMyUN8rIqLYAfStTAg8/YV8I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dhTXUQv3s+G3948VNEUzwG8LXH8B99YNS4TcI8bDdEjy3NoNMQW8qC1bUUBSBq0Gl
-	 9CS1dv+dU1cEQKaafkSSnUFEbNMHMoE6bXWDLVN7hboEaUaa0dWkHmM3ceKJRehheI
-	 62XYgsevyO2fp8MahzfXuYboKooKO40EB5EXQNxnRy3bIhPev9AIkS9Bp6dEnSFUlM
-	 AjZ2wghBrD6limeBOmkB7AGjF4ZSY0kPfNw6svzcq0JIoX8gZWxztnmnWbaGHMOIDY
-	 oHJqQ4QcmtGnNGHxzYYAGiy5TkFXhUSIZiiK6+1TAFqEmqIuNPWL3IkLCH3FgkliFd
-	 sxlx9gq6SF69w==
-Message-ID: <4ab3bf02-70b9-4748-a12e-2bd564fec53d@kernel.org>
-Date: Mon, 22 Jun 2026 21:56:24 +0900
+	bh=/XBqbMNr66nfg94FNA4L5tcvQmnApC0ioReYsX0LRV0=;
+	b=p55sWpmkZ8AE142KKqzWZ8Drvn4D0RfDouhDiHMlILCPZJF8CKi4AI3Bt+mjfbuIjpKhFu
+	6PMml9J8mEtp/Bk+rOh89WWa9sEfZwcfoZpJQVNSBxtoqN+V4v8sQu2F/Yq6yW2Lu3RRN1
+	V1Hu97OBGcBkpLHJjAGaZxdsuGPykTQ=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=AD309Z2p;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf09.hostedemail.com: domain of coregee2000@gmail.com designates 209.85.219.68 as permitted sender) smtp.mailfrom=coregee2000@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782133244;
+	b=p5Kz9++5ucyCsGhC1aQgqZeZH10Lvu+MJgapKZ+9N2ad8rDvrtSihkj/dO4y3ZoxgyVqb3
+	jdgqtf44/17EAUo2sQWhd1wE6d6DzSoLK+e5Xi4kniE8154TJsYcEXlWdyCJZ4hMCXS3MK
+	SQMnwjY7KY4oR7u+dxUcLN8WoNlFEQU=
+Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-8dc87f7d68bso51044796d6.3
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:00:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782133243; cv=none;
+        d=google.com; s=arc-20240605;
+        b=i0Ekg8SVW5iOSoWY5kw7kpU+8/xfaWmXD8yMx6+a/pFmIJE/ok8g94mnQ+ZMJ+HadU
+         szKbCijc9XNAaY5aNQHFLqXh1IOzoLoXKxKWlCWy1S4/dsKVmeBgOyve9wBADz9xd6yf
+         dqyjW0OM04Trr3gYkPzWgNCa1iKgdZ4z19hbKkJACp4P4fVjPlGMjWtH5aqGl96dyWQZ
+         cdLWKuHjwUvs3bwB04hKGiSdRzsrbhw3X+/0c/A4LN4QUvQlOz+r4eIK7C/RjUZMY1is
+         frisXbttlNRJqDCx++4nxvIqx2byrco8OVdkTr15VJ5JTXt1IPTqYwf2UNmYXHsCdh04
+         7wZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/XBqbMNr66nfg94FNA4L5tcvQmnApC0ioReYsX0LRV0=;
+        fh=I4hMfI/14kBvS/noF4k6NKZaSfMpbRNqJ3ovDxChhZE=;
+        b=Rce2eUFPeksE1ktMkfqJRvaWuqblscHFSuf4JRGYJTiK65pLgzqdzlMgtyu0pNA0en
+         7QX0i/4FQcACIVkTjITQKE769w4zorzHyMUJW43upasssd2IfAihvC6VlQ3ToJjt9YTi
+         vO2wkUWo4n2w3umasMqKnvlJrwFy2S+DZKM2Zjh1n2jAk1HVdbyzlbQWnx+wMqR4WUlz
+         THB7c1nJi13Zxq/dCAzqZONdG+G36BzRm/IyZTXcZFq/5P83i6cH5gtTWKUWdEnkA0k/
+         Ey0KKOp4+jJvK2Z0xEzVqGZvST563nw3AkRAjz0BUGJam6oNhzd5kNNEOVk3giAK6VrU
+         I36A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782133243; x=1782738043; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/XBqbMNr66nfg94FNA4L5tcvQmnApC0ioReYsX0LRV0=;
+        b=AD309Z2pGZG5JORADo4/tzFhT5A29M0UoscuyJT+FaVoJ5ATYw8kmO6k7TKtCCWxNc
+         qyN4L0LejorIbCQZE0P91wHpXsqjV7AFQ0/Ozd1ug+Jv1FyNV3/sZxK8DyCuGXVI3VOJ
+         6LiRuTPj/Map1CCbYnB9IeKxDJY8H+d7NO8O8KvV2x8dTUVtBFKX8wpm5Fn7lfW9Vw47
+         Pb7xALAakI9LfktrC9tsgCc57dw8dogBNWsimEYKlRP1qHQAM/FaWNDymwO0MnZUKut/
+         YJAuaIXIkUwVog6nY0bidXMndMTLLIocMdCFEFQaakcpfbM5QAN6VHqNz4L2hjfAA7Wg
+         P9mQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782133243; x=1782738043;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/XBqbMNr66nfg94FNA4L5tcvQmnApC0ioReYsX0LRV0=;
+        b=tP/+wOlKhnj1qP7C9e8GlvN9gem/J3TWmiaoao5RDkzUhGZmIELKyucDRVMSUIvEeu
+         9b0w9LeUWhVvyM/9NSga0YNNiCdMjmTIgyc6Rzpm/dtBp9FTLjwyqSUrkVHrQjrL+WXf
+         w9q6RRAPjbCgtMimQ8NaEueGtqCa2X4e0Ndr+sEjs1U/sAWWgBG+0l7HEvGa3kWc04G6
+         oE2KA6Az+d2z0cEwwyxEJ1pGZ3VXBEI28bb3dB0VV2TA1o8It+8UQJ2AwrlV/SVAUhMi
+         aPsrB/g7+j5Y4x6rBp3RrMB074yZlNbCwxJt0AQVSVj1raUBvRdT9Vo9EQQImynL9BcD
+         ukpA==
+X-Forwarded-Encrypted: i=1; AHgh+RrxjhFDRxeB61OfUaC50vQAIZMzM8/OGvCfVFeLBfku7oM/WmqwfOzjGeiBJFZttsIpPwpWJGgYZQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz4U9nQrLTOqmJ60wCJMVaN/oISHr1v9rfsaoRWjCgXpel3oQGn
+	7HPEM9w/sBzdL5G7Wr3qtzG6CJO6nrbVV9WcqIxNxTmqxinCHngRzbB6KPBTAT1bhbi1nibcrW1
+	yZyjXGqOlbBurD///BuAqJylaUNnLFqM=
+X-Gm-Gg: AfdE7cm71XeLDfppNo1qqysgrKl4Z7++YSdBkD/sPQAceU9WKH19hclVKq3YTVSfU2M
+	D3U36tfHg8pHHxGTT48UjPXCMGIxWtKIEBtWVGhOuxKyF8G/BI5ScsBBQaqmrszj1KwCtV41lLv
+	YlNXhgrVTZxsgAippFu5PU8/ro0dR2cqE1BnqGvGTdBFGJZ0FDeRc+tePyiAdotj1MHTpZgNo0Y
+	e2Aq/izDZELgC5xW5Ghz4uRTVL3+Jm7n12obpvZVJLKWEdPo/uibbiWQPz45lIorf0D6qliDQ==
+X-Received: by 2002:a05:6214:1cc4:b0:8dd:ace4:6f17 with SMTP id
+ 6a1803df08f44-8de3bc0ade3mr239119376d6.10.1782133241777; Mon, 22 Jun 2026
+ 06:00:41 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
- akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
- andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
- david@kernel.org, will@kernel.org
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
- <2a7d21fa-28c1-446c-97f5-2513f29157d3@kernel.org> <ajU-b32dmwS7XOg4@arm.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ajU-b32dmwS7XOg4@arm.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------upsrUBOQYnFEnSXIs0AYK6aO"
+References: <CAHPqNmzgCY+sHOOG8YVrCFO-7oh6TBeL4SCHEcfVvH6J1SUVdg@mail.gmail.com>
+ <airuQ36pKQ8x8CZk@linux.dev>
+In-Reply-To: <airuQ36pKQ8x8CZk@linux.dev>
+From: Longxing Li <coregee2000@gmail.com>
+Date: Mon, 22 Jun 2026 21:00:38 +0800
+X-Gm-Features: AVVi8CdwjZFcRa-oVlnafv4xlC1qYdc7VGGH_SFssuRNPccf47k7UE3k0Lmjy6A
+Message-ID: <CAHPqNmwWp3p+PYb2HQsSmvDQ39OQ51byE30wYxVwaS1SOjQvhA@mail.gmail.com>
+Subject: Re: [Kernel Bug] INFO: rcu detected stall in count_memcg_event_mm
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: syzkaller@googlegroups.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, cgroups@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0EB99140019
+X-Stat-Signature: hrw9o1omkmtcro65as4s9znd9rj44azw
 X-Rspam-User: 
-X-Stat-Signature: yu97ibh9mbgm3ac1g38qx49oc84ig4gt
-X-Rspamd-Queue-Id: 9942618000C
-X-Rspamd-Server: rspam11
-X-HE-Tag: 1782132996-265524
-X-HE-Meta: U2FsdGVkX1/juHn+0dmmfGTYgq0lN7uAYszkSE9joLHPWHRH7V2C98pcxBE4yE0IFEdJMIPw8szSxuihqxMQWF5vaTApfsVmNiJf1UhCF6sBS5GtFHsSrtJamAGg60dmep4y8lfkXZVM10pkt1CEP6OeGZeCE3obyAqfjNktP6Nn77kEa3Ni7Bpg+9z+BHhgzbHbc0O/M+zesyH3vHMTcwqkduIuhq1k7ad8/j/wZ7pUx0vt1vtGcvg/Rj7FYtkUFSYo2XCfMyEwb/qIjNXHI0YIAW2T64Wce7sHNJ1FGZFIedK8VPavztC2l/BjAGgQ0lWBL0uj1QkEZNpS4PcL0EHyk8kJy1/E4bqaeWkyXqvdvUlY2VzW8Rr9anFLckqQUs5Nh6ITiBYG8x6WZhiTcOGK92WVjP6loFtqHfO89jWeaDlapzcUzF4qqcwBsLJD5B49idXk+TO/bwIVbfKJjIHLRh7YBPZXyWQN3mE8IjXN7inf1PgFXzBpGGFdz+tYDoNF8bUJNh9rucUU42m92mhn8fb6A5Jv7wpXndThUYMXAL0hrTvOIwTEN3e5yc53acwPRk6Tl3swxdwdwxZMWCDXK+TBhL6MDthXTISi3EiRcquGilnogsPbKWifKQ/roeUl+OnzragRAqHwS9nuzFfUvx+Fe+6y3g0/7xBZA+PCpLuqQO/cznkKrnFXGJKLAX8uxmK66IwqrLmKuAV4cy+cigcHa7asZaE4lavqNryBAmX7JrhpdbM8+IfRl8am6yFbFfLgIccXR+JJM1f1/EoT+NsZguIsjdEckMZ+lZHAXKAu6DXTC2b/wopl14jyUCvwnQXhEXxfQp6LGiyUbn0E7sWl3dzj1zycoplET7dQt4zpjAvDAWkbFestB3SwwBJr/WSZicIRnb/4/4RiWeQR/EEKimCBS6KzpLEh33rImRnm/yOOWrignFyItEi7pVSmWLGlgrreotLMU6G
- DVE7Lql3
- HEJrTF0Tbb1DI//6BgR3wUt0//AIo7x+6gu9KS3074sC6NcvQUSWX4kbS4b91nUzfNXssw54Rm9+j/Pk3C3R/OjooxfnPATsdtbgea84/eGZuXWvryzVA7m3nTLUQjcnW+ktqRzwXtX9kDno8c6510MiRpvh+F5uUgLELxBE1pnFhyMXe5YKem9IBE7Cn214FABJwgpJDsFrHwfaQvFRjycKL+fWQojMOlFee0509zqRoJ6w/Wk2G7zsH3CX6fPe4m/Ru5AJnSsoYLyS0jsOTDt1sP26ZKKLETRRAYz0r2HzZL6KQ4BG17ux1Y9fzz5gzEVAO0BQHTWKCDciyNBQpelYvpHQaI1QqMmAB3xhPf3IIWX2PIm1jzNvtvR3+By2w/019o/lR4GQl5AKHc5jt+L4tC5b6AyitAGtwFZY+ZxdpGX6+M3ucG5M7YoECSLFK2bBGz9mj+RfFZhU4lDziWBoRAWXSjyKegcj8757jlcrPzG7EEvYh+YCHPvMKBclbom/8aAyhfxQje/KWG1jejGjXNOWCXVOyv/kaqErGmWaAwHbg6Kwjf4YXY1PeeJ+2BqYRMpOv5fCOjQc=
+X-HE-Tag: 1782133243-395483
+X-HE-Meta: U2FsdGVkX1+/qSkaHh2Til+yc2VsByceljCiTYhW79rUMVp5kawW1ECSLWjEPNsxBaxsmTcihTzjQeBbXW4oIonmMG+9fE1s6JtyJeR2tTVMWMRlfzYbTJKJ2zsx+/pLa1OmLf3e0KAoYw/zzLL3BzjKaJ4ibzxWI2WyEPCGYR8iIUqbm9UOK1/xqq76KetETC4oC/QCUlfB4Kc06dgBa5slCw7KiQMSTm+EF0aZWXVDjLRJjyyd+/hioZntjA4dh4ofFwlyzuH7NJz6fkZPp/bNouU3gakARwCBALRQqRm9+lovbOr/cbaZVFJax5CnKxFexZB+zyIrz7/qelMK3oyTu8bA9ZG/7kr6SRKURH472S0rr0JDaUNmhuSB6l9LzcVTMlw9QhIBEl3Plyntf2aBmhDCsg3CG5LGESpeL9SkfUhdGgRs9MScZcvoN1cFiiq9vCZQHg/5MmDusBV+uj2P39rNRV3ERxvGdOD4vAGH7eZYAfv9wds2BUhH4Giu6GGS3lNfTc37gz/uAxnYegXtmaSiH/gMsVfpMqpYJCLTQhigHb/W3gNQzwIDyChcVMTI5JTRKy3uDTCF3Zg5BJSX8afvwV0+4RlEYD+udeTt/aVbJOhGWJnvcVwTm4Xp/9I9jGj80HmMDc+8TYMfKuk9dTHhec5izcJ4cMfEff6tI/IGetyPTM0lFvM2j4z9DVofFsknNC/zepjNwJFlWtDYV7xjTTK8bDDPhRW9EyMM+SHUgR6X5TVwD1pYjhnTCuH59IDd7ph3b95QC/90PxP6r9Lgd9qAfBS85fWzxXz6I+16KWrcnDzxpJxieqdFESQzUsWCMqKJxAJLC7IKnlu8iT0yrZF//p6BwfGMLBWbsA4okFRM/LvKhXg91pVt5SIQU6LSQ5fhwPxyiX8SjJHKEqCq/eNraHSwTtN7OEB9GY+C+60u6afYfaCXeOsh0FK54E1WkPB84jXf83m
+ FdFngfPp
+ EdoGZ2+v6Th/ns401UraGadDTYbIJDUDMafJVCpKS/lp6JIvwsdxRRm2FxwIqpsbWwVmP6w6gI/CXYT8YN0N2tze+SIHCIBtZDIKIM2qskiIbgKy8C6RxbrGmsAfDJsSrvVWLTGkiqw1JLcpNeFx34J59lRbsnG6bzcqcQ2Xf+Sf7WdQwyaa1O6c2swLTCbjADLZINtR2hHAlJjU+HSM0pV+umTU4MgVTfu2X4a7bynl0kldZeF2jkLY+TXsSpaP61o1MzUltsNzrMchSE/Xt2hh0FJUJ4FV2CWFUt4yGm5qvh/8zK0nyfryuSSDqlTlbr/9A7O1/ellVmFhUEOgCARrpngcKL6ff4LWNl0sck5w8i0DDXTxor0mbrYL5stiT3H1/g55+f+85D9sNYGqCIDsRz4ETiHiwCNuwxX13GxXwJczlBXVfwNCKw2Bw9/ahQnoHwGuBbwOwG0qqyaf3imYsLDiiaHcplcKeP+QFQ7Du+VPxM78rWi6jNrFav3B+E6UJi4gdQXzmsNcCoEt4EtkUyg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,82 +139,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------upsrUBOQYnFEnSXIs0AYK6aO
-Content-Type: multipart/mixed; boundary="------------Ps3zmfE9YngvIs8RaS9wbP7c";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
- akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
- andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
- david@kernel.org, will@kernel.org
-Message-ID: <4ab3bf02-70b9-4748-a12e-2bd564fec53d@kernel.org>
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
- <2a7d21fa-28c1-446c-97f5-2513f29157d3@kernel.org> <ajU-b32dmwS7XOg4@arm.com>
-In-Reply-To: <ajU-b32dmwS7XOg4@arm.com>
+  Hi Shakeel,
 
---------------Ps3zmfE9YngvIs8RaS9wbP7c
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+  Thank you for the reply.
 
+  This seems like a CPU starvation scenario. The reproduction triggers
+extreme CPU contention where rcu_preempt kthread cannot get sufficient
+CPU time to complete grace periods.
+  1. The stall occurs in count_memcg_event_mm / get_obj_cgroup_from_current
+  2. Both paths correctly hold RCU read-side locks
+  3. The deadlock is: page fault =E2=86=92 dentry allocation =E2=86=92 memc=
+g kmem
+tracking =E2=86=92 RCU lookup =E2=86=92 need RCU grace period =E2=86=92 rcu=
+_preempt starved
+  4. This may require extreme stress to reproduce, and can be random
 
+ We will try to reproduce with the latest kernel and report back if we
+find any specific deficiency.
 
-On 6/19/26 10:04 PM, Catalin Marinas wrote:
-> On Thu, Jun 18, 2026 at 11:05:43PM +0900, Harry Yoo wrote:
->> On 6/18/26 10:35 PM, Harry Yoo wrote:
->>> On 6/12/26 1:44 PM, Dev Jain wrote:
->>>> Introduce a boot option to tag only at allocation time of the object=
-s. This
->>>> reduces KASAN MTE overhead, the tradeoff being reduced ability of
->>>> catching bugs.
->>>
->>> I think most of overhead when enabling MTE comes from loading and
->>> validing tags for every memory access (either in SYNC or ASYNC mode),=
+  Best regards,
+  Longxing Li
 
->>> rather than from storing tags.
->>
->> Is there any reason not to use STGM instead of STG + DC GVA when
->> setting/clearing tags for large sizes when we know they are properly
->> aligned?
->=20
-> STGM is intended for copying tags when paired with LDGM. Have you seen
-> hardware where STGM is faster than STG or DC GVA?
-
-No, I haven't. It was a question I had after learning that there are
-multiple ways to store tags ;)
-
-> For properly aligned
-> buffers, I'd expect DC GVA to behave at least on par with STGM.
-
-Thanks for answering!
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------Ps3zmfE9YngvIs8RaS9wbP7c--
-
---------------upsrUBOQYnFEnSXIs0AYK6aO
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajkw+AAKCRCGXBN6rc5S
-1qvyAPsF0DurImeEtMtFke9YXQWImsgXI+xfZ4SEz1mY+wbGswEA158qtw/Yf70R
-7SKOnegedFGVqJzsq5p+vAkSpPMfJQw=
-=RsAK
------END PGP SIGNATURE-----
-
---------------upsrUBOQYnFEnSXIs0AYK6aO--
+Shakeel Butt <shakeel.butt@linux.dev> =E4=BA=8E2026=E5=B9=B46=E6=9C=8812=E6=
+=97=A5=E5=91=A8=E4=BA=94 01:21=E5=86=99=E9=81=93=EF=BC=9A
+>
+> Hi Longxing,
+>
+> Thanks for the report.
+>
+> On Tue, Jun 09, 2026 at 07:57:56PM +0800, Longxing Li wrote:
+> > Dear Linux kernel developers and maintainers,
+> >
+> > We would like to report a new kernel bug found by our tool. INFO: rcu
+> > detected stall in count_memcg_event_mm. Details are as follows.
+> >
+> > Kernel commit: v5.15.189
+>
+> This is an old kernel, can you reproduce with the latest kernel? Also at =
+the
+> high level this seems like CPU starvation. Can you also describe your sys=
+tem and
+> the workload/test which is trigerring this issue?
+>
 
