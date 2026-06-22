@@ -4,85 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C96DDCDB470
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 13:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07798CD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 14:10:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 645F56B0096; Mon, 22 Jun 2026 09:58:56 -0400 (EDT)
+	id 8FAA36B0005; Mon, 22 Jun 2026 10:10:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F6F76B0098; Mon, 22 Jun 2026 09:58:56 -0400 (EDT)
+	id 8B1B56B008A; Mon, 22 Jun 2026 10:10:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 534CB6B0099; Mon, 22 Jun 2026 09:58:56 -0400 (EDT)
+	id 7C2E56B008C; Mon, 22 Jun 2026 10:10:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C1BD6B0096
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 09:58:56 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9D3641C0CEB
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:58:55 +0000 (UTC)
-X-FDA: 84907704630.27.C0CF49B
+	by kanga.kvack.org (Postfix) with ESMTP id 4D88F6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:10:44 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8DEE165BBA
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:10:43 +0000 (UTC)
+X-FDA: 84907734366.03.2B1DAA6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CD9F2A0010
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:58:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Me7/eH+Y";
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 288C640017
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:10:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcv08X6g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782136733;
+	s=arc-20220608; t=1782137442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T7WunNKZumC36tWFYnv1B0H/OcASaVCEPhh8ZR04/OI=;
-	b=tE9V4Qhbuoh+3/RUtjoD1oBq6nYmTiJMvkvg03wZob5ARIh0Qu+vtzkSpje97rVbqS73tK
-	WgzcyOAcOytpWnss/6R5N9VCYuROaxV4c6BQZkOOt5PvWGiNzojbm7efd8sn8o8zXf7vUn
-	yJudW3LOr/06RqtWk0ux0NwYSgq3V2Y=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=J9rAqV+BtrJJS3bA6hXAT31xn9dA5LK7yhOjyVOIFTU=;
+	b=ZBs64xi1rjkGlLeJUdJK3E6kAWbwqJYPXsyAKpGeIa6j0iJMUP8lfkgvpNJiYL8FoZq6WQ
+	OXuabNm2Vt+7Rc9Pb6WLMn3k2HNn0c7NsdXGb9m08Zc9TSNOnQlG9TC1H3fc7S7eUiFq7Z
+	61+mKvqVr3ZGFH/SFTRWLtk+XHWfAFo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782136733;
-	b=dgSe2VanBB+iqNC+mlXERgiLEgudaJL7xvhVyOmUxUCJ6ax9WU6x8i6ON8VBX/Dk+Bvpcd
-	xG74fonTPXeuND0u4I8XgBzWz1iZ2ersU5z5FGOo0fPtLagj92BRxWg9iocnepSZDZEXks
-	dyF4tmaNa7G66W/0yxKThU0t7SioMJM=
+	t=1782137442;
+	b=7G6pvEE3msrphmQakNgxM2eLTmAK4TGRyI27gwLn3BwS1cVGWrN81vjwB1ifzfx1Vx8DYT
+	IU5X3V3opna7kbXlX+XZkNYWR2kXQftFGCz/7Wo0wIGeE4XEKLk/Q4/Tk60/uvAKYibnB0
+	8ZMIf6pL+vyOipcWD1FM2nc5DWYIKcM=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Me7/eH+Y";
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gcv08X6g;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EF59B438DF;
-	Mon, 22 Jun 2026 13:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD961F000E9;
-	Mon, 22 Jun 2026 13:58:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 229664352C;
+	Mon, 22 Jun 2026 14:10:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7891F000E9;
+	Mon, 22 Jun 2026 14:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782136732;
-	bh=T7WunNKZumC36tWFYnv1B0H/OcASaVCEPhh8ZR04/OI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Me7/eH+YNuhFegkkm4+Fe43rlOaONG+UJxBQqMEcZnL5cK31MmYnfCmRecPaS5rBe
-	 KBYG1Esv+I9fg19hZGP6sEtjtptqg2dA0r2YJhz1Py/KKi+3zJpZBXbuii5/4jN2Rw
-	 loWjyEmbURdpZhSo/FNVMm14JUnOsIyDB7J764D+yftVte2RG5q/joIr7pVIgxdl4j
-	 yhtX+P8gE03i8F4NiUCvogRkhnuALZlQnNlo2AqDUkA4d2amNLUWx1bR9NR0IbK68P
-	 ed/DyMVIJhxATbpzj5aQch0Tu9qL701KJqH/xwOpkurxTwAz3rotUE9PYh7rp6glD2
-	 /VYQJ2BGi/ggw==
-Date: Mon, 22 Jun 2026 16:58:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, izumi.taku@jp.fujitsu.com,
-	linux-mm@kvack.org, Yuan Liu <yuan1.liu@intel.com>
-Subject: Re: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
-Message-ID: <ajk_l8cT0mIyhs4r@kernel.org>
-References: <20260622022403.16375-1-richard.weiyang@gmail.com>
+	s=k20260515; t=1782137441;
+	bh=J9rAqV+BtrJJS3bA6hXAT31xn9dA5LK7yhOjyVOIFTU=;
+	h=From:To:Cc:Subject:Date;
+	b=gcv08X6g+i3LbrmFn2qQmBt8NVRzGcb4Q8CY7KbQ/jd26MwiQqtKCDJ/rcrAupG35
+	 Qq6NQ33NLOmy/DVUyS4OXRoHQweV8dgowskar4kXyD4fWUgO3rdjPqw8CaqM5SVsSo
+	 YCq3PHQFmNpv40lgnjtlGKkUgKp6V8ltuADGJEg3r8XERIm1snV0mzCmq63/PW4/eL
+	 hrenBujrrOs/KW5WQSSBQlPXPccbyVaW2vtpKSe2bMxLdw8sHSND3ZNlbexQVOC2Pc
+	 s+8ys4Qd9W/7bVWJBmjWVhG7GfLFDljJZczYkahTJQLpUv4ku/Xbs/wIBssdVu/skW
+	 3IvOnE+NNA8mw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 16 . x" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.2 0/2] mm/damon: handle zero {sample,aggr} intervals for DAMOS quota score
+Date: Mon, 22 Jun 2026 07:10:23 -0700
+Message-ID: <20260622141027.29145-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622022403.16375-1-richard.weiyang@gmail.com>
-X-Stat-Signature: xezrxoyijjddsza778cssbftytu14rx4
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Stat-Signature: d5w79k95kfiipf4kfrjzy6sge8ncjhsz
+X-Rspamd-Queue-Id: 288C640017
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CD9F2A0010
-X-HE-Tag: 1782136733-275813
-X-HE-Meta: U2FsdGVkX188DyOge7fh8YRANbcfpPWRcCYUbY+9EFlJhsvmE6KhL8L4WNHwOqeu2pIAFzaoukdAGH6un9qoSt4Yc0O0pOEEjhwNZADLZ8YE9lGET3xawMZOTtrMprtifiFTByZA10tGZQ4+nxD95ShuStlKSaca7lqwQOaAOy47uMKDQib21kcX2i9hKooyGNDKGK6HyAfpXWRxp2KSBGIweacCt98Dhzj24msFys4OpwUlPKRgO0wg3RQJ35cZcfGMt72a6Cz9Ja+ytInHnGXEnyl4p8LDTLfNdmdWmMnJqXCYXiwmIOButs2Zb+5/jHGQ7r/RVSGlg6o/jUnUk3JmdnwKQVbUTkQq5HugC22ScFqAKfAcgwgPVZ/HekJjXCMYUGm4E87VIVAd3zFUFTzKI96KuYAUV/EiMP+kgPuwh+/8pSeKj3qFnGsZljuTVu0SlF3iWfingtIUCdWye0IFpr5sdq2FwB3JkviIZFxVNXWAdhab12p3a1uX3SU8vWPJG8S4lNJ4t+MhtsXPh2WVz2IK09kaxd9pvOTLqDTBIB9BN4MqLwejmFcO2FC4diRlQxWEN5eX4Ya3cNG5/03V4jjrzWqobuE9dtYO1BLcIZw+CQvD5CH8k1VVz94b/gbcHffx7dSmPt3x12pIe7paPEhGeAZUsIewTQvr6tU+be83e+k5YQPcpRxN9yOr0gCvTtwq3Q/V4NGTvBafNV4qLT6SSMktvrSBzSxpgkDpOwXHqYFrqim6SLwJEnIL1WwMdepihHl+Mx67NjRtrvL6BE+cVUcFb6To2PdCEWwEOCTkCm0fFYZl84x4AmQzRyPn6hO8+HQkCl13mQK8f0/orpGp5BoEtsFU0U51kX+DElBAgsY3E7pMHQcKw0T0+Ldog0AbOJylLHfKNaEAbIgg4cPzFGxDTXXK9fA7/PKfrnqS+YlBM1NIxf1AQAzz/A0V4e3rZgsFdE72IX7
- j01569h8
- J0nTJhOOA73agjJllQxgF1T3MVlIcOpqwcQ5rzfy0QnMXBsRnHLMMHk9M3GaiHWshfU4o7DhbblL/NwZ8shWRnijpjWgOH8d2YkkYxc/HxLd8CgeJNX89qAzGolceoWKaZJHZz+PQ0zy96RiZbxnK+NeiW5Z/+1dxs8qm5U28OmvF8ALqjIjZOmIBAf9oLrWhwFuHbUB3if+28D+l0ZqOrBMzzCvdn/qFBTnkbNFjXPWo0C2AFY2qAlPCHxfvTis+NQa+h4/UCl+vUS3W+7Ycrf7kV8PHYWAWgf0OfoLTFQoibsbj64tn/Qm19LBt/QzwM3pNRb1sgBcYKVPFkkW1A+Q4m5E1APWZZIM4f+85gA8FDS2cJTJ5/T+FgzXDOitpAoyiWhXIlcxwqsNK/P+oGAty848OlEkPD/z+PamScCROLK8=
+X-HE-Tag: 1782137442-730477
+X-HE-Meta: U2FsdGVkX19y5HBA1mzBnVyzJvL0eKF7legj+kbK0WqcgGeJP3qnc1CywaF8p/G/+yWYshxBuxDrmnurXRknimf4GODMnMyVIaVGq6DmR5W0ZRXn4osfEAgKmxsEG7gEVf3Wvp0J+gTdEKWbWahhVEIoJSiwApIxQgTa6h5foN9n7Stem73RjjOdSHx8MBd+T0ZHbtdabyGaRZE4Xv6eOmgKRqfYEnknu+7kukTRicpfB7GebshLuQbtuslSwvEt9lyMuvfYppYTBW+b6s7o5Tmv8fdGWh8QLUJ+pqyvBHUPIZly+hZALLthGSPsk82QGSVnaa6cHacuypDqqKOU8jiPi00l2k4Lvn1QfGCMdut3W2ImH6nIUd7YPtzporvydkqsIT2STsigYxzHls9E93oXqJvcy+toxcXnedv36BRcplfxV6OgfKKJfw26sDL+KBbGkWte5ThVN6dmPoKWZD03NvWFr1thve5B6714ee2dEA22gMw0LYG4lFucw0NSKdxALtwnoR8y0Not444Fc//DQ7Lv0mn3vkBUxoVUlRscwBCxXfU5yMdpVemDzrYMddBPaAhBXWRecy3g3gEhLzULRLnALk4o2z0MYk0RmD7TwLydyrQaMscl3CC/bRQ1bIBiYKNuwiqbXW5LWC1TKGx8JLMpy7w7zIA5XBG22R9ktdzNOH/AW/mUHAe8zG4bB0iDnt4bV3Wk14FVl8FLPJLHqdkXNKV/2NpLZLEGMI+i2INwa7hDJPCirkvLEl8aKaFMWxQFdcXymhQz54b6tbTsgXkl5+nb5T0wSn8YbWNCGH8qBY9baTEltZifgW4rOsU4nELz1teruzHWObUr989GIM9K0NTPn/YqBrs8ax+eO7NVBdQfjCD9EWpby4ExPqixIsKBri2LFwmquzSkH+hLGCXqqi3BfVnSNG72829AEfx8vMxvb0SBzm0HZw3rT+S/Gj0G15bUqMAi4Co
+ mmh+KY3d
+ IOlwgizbJ0suiDxNVRcB6SZRiLTcKHtCZfg3Ty7ERRGbPeAL80cbFfSfzAoxwb4kUxr/g/MxKou8hw7Acdvmy7H5nlY9nwbu43o7A4GODNJRre/tYuUDagnaFNu7CqFmxprodhfgtBi9l/S4Tn8x2GOCagqK+2+jaqJIl9wjd6Foa3i3Ma15pP9xDwCAPDUE/d3ys9geYxksloBOVngChWSXl9ytBhrnj4eDcDg3QVXHX1ZorjmwQI036nNV9FRdm46Or
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,28 +92,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Wei,
+When the intervals are zero, divide-by-zero can happen during DAMOS
+quota score calculation.  Fixing it alone enables out-of-bound array
+access.  Fix those.
 
-On Mon, Jun 22, 2026 at 02:24:03AM +0000, Wei Yang wrote:
-> Current node_spanned_pages is got as a summation of all zone's spanned page
-> in calculate_node_totalpages(). Generally this is good, but if we use
-> kernelcore=mirror, it is would be wrong.
->
-> As we already passed in node_start_pfn and node_end_pfn, fix this by get it
-> from (node_start_pfn - node_end_pfn) directly.
-> 
-> Fixes: 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror option")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Yuan Liu <yuan1.liu@intel.com>
+Changes from v1
+- v1: https://lore.kernel.org/20260621154808.86431-1-sj@kernel.org
+- Add out-of-bound array access bug fix as patch 2.
+- Add the RFC tag again.
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260620171413.89555-1-sj@kernel.org
+- Wordsmith commit message.
+- Drop RFC tag.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260619205144.150664-1-sj@kernel.org
+- Handle zero aggr_interval case.
 
-I queued it for now, will push to one of memblock branches after merge
-window closes.
+SeongJae Park (2):
+  mm/damon/core: handle zero intervals in damon_max_nr_accesses()
+  mm/damon/ops-common: prevent >DAMON_MAX_SUBSCORE freq_subscore
 
-> ---
->  mm/mm_init.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+ include/linux/damon.h | 8 ++++++--
+ mm/damon/ops-common.c | 3 +++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
+
+base-commit: 42306d32afd75f28e3f13a1259c3b52191b4ff2c
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
