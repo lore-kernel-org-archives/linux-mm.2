@@ -4,107 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 877EECD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 18:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0C05CDB476
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 18:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABFFA6B009E; Mon, 22 Jun 2026 14:49:25 -0400 (EDT)
+	id 34B766B00A8; Mon, 22 Jun 2026 14:52:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A97386B009F; Mon, 22 Jun 2026 14:49:25 -0400 (EDT)
+	id 2883E6B00A9; Mon, 22 Jun 2026 14:52:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D51C6B00A0; Mon, 22 Jun 2026 14:49:25 -0400 (EDT)
+	id 14F246B00AA; Mon, 22 Jun 2026 14:52:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 06EB76B009E
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:49:24 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DFDF316549E
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:49:08 +0000 (UTC)
-X-FDA: 84908435976.27.ADD2611
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0F28640005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:49:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RohXc72g;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3oYM5agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3oYM5agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id DEF236B00A8
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:52:02 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BCDA516549E
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:51:56 +0000 (UTC)
+X-FDA: 84908443032.29.05EC536
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 81C2CA0002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:51:53 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LQ5UmGuH;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782154315;
+	b=U6lr1ddbRAucrg1NmDOvADqjCNIkrkFRbi2BPLkX3XrEPQ0kuS9/xlO6rI/cGjqTs+OsWs
+	09PwsKZvJMI+63ZaUuv6WqZHFxHxB4WDb0m7hol9NgoiuMjAMRj5Tz2mfM4st+7/Dkx8s1
+	QguXk/Ft/mnLepdbEvzuL/lIAOAOSQE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782154147;
+	s=arc-20220608; t=1782154315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vrCK2iLTFuPkCKKXsEtILhMjhO8cYkJcRVq4TpiCh/Y=;
-	b=5x13pRSmQXFbGnn7GDZm7f8Qac6/y9BDtsVLw9N/q3s6y58LGB857huKqLfNAuMt3JEZ3M
-	sDeynZ6QcMrQxXZIHAmmSyBBZuA2ECBejBMhKMEmMlRoBtw0XAZ7eG0LUMr+qs1uF4c3tT
-	WLuQFo3IrNm2JIqXgRZ23vmrI3XWxCs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=P2FntB3QrBOJu+PV6zq+MqWBctOWxjgmfPOSEN+T8fQ=;
+	b=rffo6t2fMi1H82arlHOcIbP1kjmGg4/fpb+wrL98zmgLdDuDwb1+Hh2mAJmKal0izCz1yf
+	OXJV5YMV51cW0aCDF9jkoEvIYP0pKYYtj5JmNkDVH4iaDmayeuSLPr4aLRjLbe8RM58bsl
+	vBFHhqbnMRpiuiCvGIRd+m6pp0lH+GY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=RohXc72g;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3oYM5agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3oYM5agkKCOYbIZcVaIPcOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--tarunsahu.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782154147;
-	b=tdRZ5uxkaz11eTmK9+IZK72WZA3A5h7VuUjcQFPAV00ik9u9FMttFRu7Z55T3D0MPSLyWg
-	zT+P9ZWv5bQqNAY9BT7gAlxHqeynIsudzIPXW0g885jyXJm8cIlnGEMxPa8wz5x25ohBbi
-	vhXtIt5lLje00kSlm/46JGAF2z+V/Gw=
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6960fb32b73so4305981a12.3
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:49:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782154145; x=1782758945; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vrCK2iLTFuPkCKKXsEtILhMjhO8cYkJcRVq4TpiCh/Y=;
-        b=RohXc72gqV/jRq7mASFABPisXK1EfhX3oiCpbt57YbJh1MDv1z88wDQiM/2qelBCDq
-         Iqqco+XT6Eh5+Hhy2DKgooAeSHDnvni9JugUUEzR5uA2ITEV194crgPSmJHhqbrqVI+6
-         EOYrnv5/aj3Q/95c9Abg8JhKOCWtTB2zLP3swjIF09wBbRoXJnY+iUBtCdjC2hlAQarw
-         t70owRimg1vIPLOIMqKw54/CHeFRAUVPGUHa2QNR9dRQWA4H2HLVH+wLT7LWIvGLXtjg
-         Hme/SGZCQZbsaVDvz7Gs/1k2i1NK9l+YQwZaiIxlFvR/XmkppqY81gZTVFVAD3Yz+Gyc
-         UQGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782154145; x=1782758945;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vrCK2iLTFuPkCKKXsEtILhMjhO8cYkJcRVq4TpiCh/Y=;
-        b=oEQK8F2FQoVO9d3vA2nKoDEEuoSJwBjYl7tRxxV7IsuTyCfY22GpKysJQigVOGXM9v
-         H40TDCYJ+D64VxnK052WXITutNNjT4Fg1drOymLg4nBqP+/NEOApsqODjSgmRwom1KiS
-         Gu7VeJG1AD0EJQVO9ThgXeAkWcu0/ffUD+i/SsJgNUaT5hw7CPB0BRSaKPwiUNJd9utd
-         6F6VZT4bAhfDVQn4evrSg2cQ6ZgYLHxTbmlfqxGVq5aBClUf/M9lyzq6zyg7N7MxtPK9
-         JIERP9034On7OpXXt0M4vzjDnfJ9ZQw+mYMgvfos43tWI0236JPzjOwDSaHVbZctWUt6
-         M5gA==
-X-Forwarded-Encrypted: i=1; AFNElJ9VaiYv6kwy7Sd9eCfc0YqlQfIGlvJrMN6Oy3VQ05VEzfBQ7h4ATgrzOoD9XAlchskEFnIHa4BWgg==@kvack.org
-X-Gm-Message-State: AOJu0Yz5gCptl+MbIWErYoeUfqyTbuL7FOaC0n/wCX7Pys6jprXqLvId
-	9yTJskTjzdrR93kIzhgLjPc0Oszy6Nx7H+FhrXRN4bCcaZxCQV6qQvTrP+XHQ7sK0vf8hCUfIlT
-	lhVUPN/8+DNzeg6h8ng==
-X-Received: from edsl17.prod.google.com ([2002:aa7:d951:0:b0:695:f6a4:adb4])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:35ca:b0:697:bd1d:116d with SMTP id 4fb4d7f45d1cf-697bd1d14acmr2221698a12.27.1782154145133;
- Mon, 22 Jun 2026 11:49:05 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:48:46 +0000
-In-Reply-To: <20260622184851.2309827-1-tarunsahu@google.com>
-Mime-Version: 1.0
-References: <20260622184851.2309827-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.786.g65d90a0328-goog
-Message-ID: <20260622184851.2309827-5-tarunsahu@google.com>
-Subject: [PATCH v3 4/9] kvm: guest_memfd: Move internal definitions and helper
- to new header
-From: Tarun Sahu <tarunsahu@google.com>
-To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: xkejzrkr879hq4qrhtobhnyqa1brp1dq
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0F28640005
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LQ5UmGuH;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782154311;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=P2FntB3QrBOJu+PV6zq+MqWBctOWxjgmfPOSEN+T8fQ=;
+	b=LQ5UmGuHzFWHqd4GHfy0JN96cJGwdY/deLgob6tnNEhffHniusw8d7dZWRP4O+D7ueXhqo
+	saP0kl8mWM9szfoXk82w7rja1AKDf7JQnoge7BEACXrcmH6IDhOC6XNsL11Sh7ipaYm+9p
+	Qo+lpUJuO2M0jG8xOjGMd2NExehc6rI=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: linux-mm@kvack.org,
+	willy@infradead.org,
+	shakeel.butt@linux.dev,
+	usama.arif@linux.dev,
+	akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	mhocko@suse.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chrisl@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH v5] mm/lruvec: trace LRU add drains and drain-all requests
+Date: Mon, 22 Jun 2026 11:51:27 -0700
+Message-ID: <20260622185127.24579-1-jp.kobryn@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 81C2CA0002
+X-Stat-Signature: smexqr7md73hynquxpkkh6bqo6fq69o4
 X-Rspam-User: 
-X-HE-Tag: 1782154146-234698
-X-HE-Meta: U2FsdGVkX1+OxFLUZ8lRwaVstsPLlWgCpWW/nyJPCLO6Zs1CQo67ZUPe9XNmHd+n7zJF4x6udnGk3Pfyg1cDcy4jeDAogJx+gRpLxDmUQx5jAyBknQ2nVBpOzZEWtVXxY8lRLHeCsSwLEE6cUA6hpo4ZVAmO8xDKSaBHUOXqCcXC06fesXwCGY3KOOaFCjLCx7EU6bwvzdpQJyucSIt6iNrzUKR454n0J16nYnYUHkLQDVTxPKzVqQemFye3PpaW61cTADXlj9nn6wxlpq9BO9ps3NuJtTchEGQHJbXTCBcR2b+JGUlnXpgACEbxC4QYKJDC3EO9yh9Is5LFdAJ9rAq4mLu3J+Yv80gA8ug60gJepXOjPAlRcCwg8P1vZ3Xc9MMS6hYX0+nnIMWBblbHzYiZj+wvRutApUNVUNZzdE8wAsLV9IcuWQbz9o0YpH6HBydRv9ZGOtTxDbYVHBxA4sHipsmj35KLz94lcML/kDy17o5bfcg71WDKJ+u2+Ivn5LMIokzWI6ofPDuf5ISED9SF+eGnRDQn6GsPjnaNmsPIBnC9y8i8UPx76mGgZFlnmg/ZJzocybnMpEqPPAXobUALJ3JsOwxM2s3mp5Qs6V+7007+91/vmQNEgtmn+IST0MiusqhMggPG20/V6071xyej5Igop/xQ2MSWG+6Kw/X6ypVXHPrlns+va29Y1WFeTvBHXA0nhp3dCtf7N2DVSCg+p9U+h95zJDkMh5/Gt5A4xncBFi6R89ilp6qMWVlXFlsF0F5ANct+hz925ebq2FnLu2Iko2bH0Qn4tAJdn+rHnr9FW1qJbANtw8R5Nd55GLImi04O6jycS4flq34Q+pmDpQcnZrFX3ZouWIJ4HHyJvMHpoRzNOvotPZRENzD+QgsXj15/xWxM4yaFsc2ulrRuUu9Kkw1O7Xtkr14509e25gt+kBdulGc1qw7sawp4MNtfXsCW9iaiB7fMroi
- Pkiuu7Hn
- yap3E49XQTtBt4l9DLeUeh+J9ocaNjXZV2lBE/lF5A77BnPiMeDw1JsK3/ZLHDdbQA65I5uFcxCFuXDZiCJWoejxD0sVp9rWXRIzrDFFCeahR+siGFjIFGY8TZHf8jJm+gh2VlIZRtmgio73ILHBGmFbdlusqODWHmWDtdHhZdN/pes0+WPb5RTFyJGmK6h+edFUG9bEF+VGthRwKzeR1MTpctlBjp4ICnuFBEsJTq4v44WqzstB4Ohl6IgqP8ysQEvn1kK7Q2BN1h6FalFlKsH6hCKAbaaAOS6ofjn0h8XnlROe8UWCTrtQjrrq76anm7VgirsPyvc+XcQMlWwRHz8uc/Pv4FBmBmJGtqKSgbOshq0KJWvTjFU9OKvAYRcVvua2/Be8vhDXS3iX7zUOZj9C2tIG+Yxkmma05bEmdkLfsqLLS2iT3HJUCphg3qkdHNP440Q5lEWA+LsP2fddXxn7Bdxx8fsl8tPZdfijN6T/2d7sxACGGp5htSUMubGSj+WbnBPSeI3Nyo3DWMl3xXxxuBhM/7PeFB3eUTFPWnZoCIZL8x0xCd2DWXSFsFBy6eKVyxkVmXqjJ9aD6mov9EvZQDKLsqqkQXBwDrpK1uic3iMw=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782154313-554182
+X-HE-Meta: U2FsdGVkX19fJ0JzHogQFOp2xZorXnV3xtZKSSrWad+rtcba0U9XWuZdIcQ5HHZucU3uSiaqV3IVPOli3wI2vOaQ1Jg1D8CcSqdMoRa6crWpfXk3P6suxpfnNj0MirP0sOWva3UQRqujHBxGjEHRFsWzJkGomkmC+kAQn62FzKs5WoAii4M/zFzTiUdAGrYT4WqS4fZDJd8ujc07HAFa1T48rjKIXa4ngxw16SQy5qzpxdy5EWzoNpmMcZmYO7nkFcdjG8VP0iv2za8SOua397PZ3YJoRQp/C95Tj9qX1O5OmybOU4j903RZXOEq54oV+ifJKH5kvTLrdonuUGnlnGQqXEzuapzauMcMaXwfKqik+k/urXIz59eRq9OwTPY+z0vJLizQ9MiLpqJlvRvQxLqV4fQ8WuW5oB+PYd1Ov8Fbjhyn+ep6JHfibCLrH5JDxr3VhOHg5rW/ya46OIW9V8IuRxsA0aRdoUosac8LHRzkfXlVFLT+aKL0S7+TsQiZFI5pOwo+3wA5cXPyxFJdNLhkdrk2iMvlHZjeyYmBQVAKg7CC+UuIrE/WzoBN5q2pxWErfC6KrZkzCLWHkfwoJCKboYFCCutx+83Mr6reBiuU0Z7Egnwg+O5HHrJ4OmMx66IAB4NMBscLCyEZaaog1EhN1ygD1KjTXjLsYMk0c8z87WepRdEdhM/YxG09BKWRrA0NbLcnoRvk7op2S93BmTo6UGliqztder74OdpQsq/jOODKOESVv9cBizgPA9P9lk1EM1eZ//oPAxTa1M20kDP7q2QqbNQO092grNA5g+Dl/CxGeWqVR79m9f6uVHHxFaHrcz0woOOa823kJShBv2EDBS1LmqUruGYQW78+TEnp/+Toly9ZFZyDJCPXwLu3cDjVkAZOo/uRzifkojTewumS1R6mD0ykC90gUOxvxmzEIdXFzXseouBO0dB5OEcqgxrHQAiz1cWm3vlEeSJ
+ +ODIGtDE
+ SiqDD3RteeIqhvbkSCKdS3cR3AqJWjO6+1Ptkvk/iaE26qSc1WbqYrVNXei6fSkNzUXX6mBGHlemrhYcQKfSKs1smUcGxWIUHwNI+KeE3qQm30s3tIZsZcV/Ie2BwTpOPYbLDYVYFnly3kSnwXHRHhAW68BKDncNSkVXAwcoBN8GI4a0k7g4joH/37LZAcscTKRHjMmdJs3OiePBW37ggIHXQFQXIWhFLjutW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,183 +103,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To support guest_memfd memory preservation with LUO, guest_memfd luo
-code needs to access guest_memfd internals and reconstruct guest_memfd
-file instances from a preserved state.
+LRU add batches can be drained before they reach capacity. This can be a
+source of LRU lock contention, but it is not currently possible to
+attribute these drains to callers with existing tracepoints.
 
-Extract gmem_file, gmem_inode, and the GMEM_I() helper from guest_memfd.c
-into a new internal header virt/kvm/guest_memfd.h.
+Add mm_lru_add_drain to report the CPU and lru_add batch count when an
+lru_add batch is drained. This allows tracing to distinguish full drains
+from partial drains and attribute them to the calling stack.
 
-Additionally, split __kvm_gmem_create() to expose a non-static
-__kvm_gmem_create_file() helper. This helper returns a struct file
-instead of a file descriptor, enabling file creation and initialization
-without installing it into a file descriptor table.
+Add mm_lru_add_drain_all to capture callers of __lru_add_drain_all and
+whether they set the force flag for all CPUs. The tracepoint resembles
+the signature of the enclosing function, but is needed because of
+potential inlining.
 
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+Note that DECLARE_TRACE() is used for these new trace hooks to avoid
+creating a new trace event ABI.
+
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- virt/kvm/guest_memfd.c | 68 +++++++++++++++++-------------------------
- virt/kvm/guest_memfd.h | 39 ++++++++++++++++++++++++
- 2 files changed, 67 insertions(+), 40 deletions(-)
- create mode 100644 virt/kvm/guest_memfd.h
+v5:
+  - change from trace events to bare trace hooks
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 8669068..fe1adc9b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -7,38 +7,12 @@
- #include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
-+#include "guest_memfd.h"
+v4: https://lore.kernel.org/linux-mm/20260610234808.212397-1-jp.kobryn@linux.dev/
+  - renamed nr_folio_add to nr_folios in lru_add_drain()
+  - renamed nr to nr_folios in tracepoint for consistency
+
+v3: https://lore.kernel.org/linux-mm/20260610195220.12403-1-jp.kobryn@linux.dev/
+  - restored and renamed tracepoint in __lru_add_drain_all
+
+v2: https://lore.kernel.org/linux-mm/20260609041156.31127-1-jp.kobryn@linux.dev/
+  - removed mm_lru_drain_all tracepoint
+
+v1: https://lore.kernel.org/linux-mm/20260609041156.31127-1-jp.kobryn@linux.dev/
+
+ include/trace/events/pagemap.h | 8 ++++++++
+ mm/swap.c                      | 7 ++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/include/trace/events/pagemap.h b/include/trace/events/pagemap.h
+index 171524d3526d..36c3a90f0acc 100644
+--- a/include/trace/events/pagemap.h
++++ b/include/trace/events/pagemap.h
+@@ -77,6 +77,14 @@ TRACE_EVENT(mm_lru_activate,
+ 	TP_printk("folio=%p pfn=0x%lx", __entry->folio, __entry->pfn)
+ );
  
- #include "kvm_mm.h"
++DECLARE_TRACE(mm_lru_add_drain,
++	      TP_PROTO(int cpu, unsigned int nr_folios),
++	      TP_ARGS(cpu, nr_folios));
++
++DECLARE_TRACE(mm_lru_add_drain_all,
++	      TP_PROTO(bool force_all_cpus),
++	      TP_ARGS(force_all_cpus));
++
+ #endif /* _TRACE_PAGEMAP_H */
  
- static struct vfsmount *kvm_gmem_mnt;
- 
--/*
-- * A guest_memfd instance can be associated multiple VMs, each with its own
-- * "view" of the underlying physical memory.
-- *
-- * The gmem's inode is effectively the raw underlying physical storage, and is
-- * used to track properties of the physical memory, while each gmem file is
-- * effectively a single VM's view of that storage, and is used to track assets
-- * specific to its associated VM, e.g. memslots=>gmem bindings.
-- */
--struct gmem_file {
--	struct kvm *kvm;
--	struct xarray bindings;
--	struct list_head entry;
--};
--
--struct gmem_inode {
--	struct shared_policy policy;
--	struct inode vfs_inode;
--	struct list_head gmem_file_list;
--
--	u64 flags;
--};
--
--static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
--{
--	return container_of(inode, struct gmem_inode, vfs_inode);
--}
- 
- #define kvm_gmem_for_each_file(f, inode) \
- 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
-@@ -557,23 +531,17 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
- 	return true;
- }
- 
--static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-+struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags)
+ /* This part must be outside protection */
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8..460e56370b3c 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -694,9 +694,12 @@ void lru_add_drain_cpu(int cpu)
  {
- 	static const char *name = "[kvm-gmem]";
- 	struct gmem_file *f;
- 	struct inode *inode;
- 	struct file *file;
--	int fd, err;
--
--	fd = get_unused_fd_flags(0);
--	if (fd < 0)
--		return fd;
-+	int err;
+ 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+ 	struct folio_batch *fbatch = &fbatches->lru_add;
++	unsigned int nr_folios = folio_batch_count(fbatch);
  
- 	f = kzalloc_obj(*f);
--	if (!f) {
--		err = -ENOMEM;
--		goto err_fd;
--	}
-+	if (!f)
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* __fput() will take care of fops_put(). */
- 	if (!fops_get(&kvm_gmem_fops)) {
-@@ -612,8 +580,7 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	xa_init(&f->bindings);
- 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
- 
--	fd_install(fd, file);
--	return fd;
-+	return file;
- 
- err_inode:
- 	iput(inode);
-@@ -621,7 +588,28 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
- 	fops_put(&kvm_gmem_fops);
- err_gmem:
- 	kfree(f);
--err_fd:
-+	return ERR_PTR(err);
-+}
-+
-+static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
-+{
-+	struct file *file;
-+	int fd, err;
-+
-+	fd = get_unused_fd_flags(0);
-+	if (fd < 0)
-+		return fd;
-+
-+	file = __kvm_gmem_create_file(kvm, size, flags);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto err_put_fd;
+-	if (folio_batch_count(fbatch))
++	if (nr_folios) {
+ 		folio_batch_move_lru(fbatch, lru_add);
++		trace_mm_lru_add_drain_tp(cpu, nr_folios);
 +	}
+ 
+ 	fbatch = &fbatches->lru_move_tail;
+ 	/* Disabling interrupts below acts as a compiler barrier. */
+@@ -869,6 +872,8 @@ static inline void __lru_add_drain_all(bool force_all_cpus)
+ 	if (WARN_ON(!mm_percpu_wq))
+ 		return;
+ 
++	trace_mm_lru_add_drain_all_tp(force_all_cpus);
 +
-+	fd_install(fd, file);
-+	return fd;
-+
-+err_put_fd:
- 	put_unused_fd(fd);
- 	return err;
- }
-diff --git a/virt/kvm/guest_memfd.h b/virt/kvm/guest_memfd.h
-new file mode 100644
-index 0000000..c528b04
---- /dev/null
-+++ b/virt/kvm/guest_memfd.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __KVM_GUEST_MEMFD_H__
-+#define __KVM_GUEST_MEMFD_H__ 1
-+
-+#include <linux/kvm_host.h>
-+#include <linux/fs.h>
-+#include <linux/mempolicy.h>
-+
-+/*
-+ * A guest_memfd instance can be associated multiple VMs, each with its own
-+ * "view" of the underlying physical memory.
-+ *
-+ * The gmem's inode is effectively the raw underlying physical storage, and is
-+ * used to track properties of the physical memory, while each gmem file is
-+ * effectively a single VM's view of that storage, and is used to track assets
-+ * specific to its associated VM, e.g. memslots=>gmem bindings.
-+ */
-+struct gmem_file {
-+	struct kvm *kvm;
-+	struct xarray bindings;
-+	struct list_head entry;
-+};
-+
-+struct gmem_inode {
-+	struct shared_policy policy;
-+	struct inode vfs_inode;
-+	struct list_head gmem_file_list;
-+
-+	u64 flags;
-+};
-+
-+static inline struct gmem_inode *GMEM_I(struct inode *inode)
-+{
-+	return container_of(inode, struct gmem_inode, vfs_inode);
-+}
-+
-+struct file *__kvm_gmem_create_file(struct kvm *kvm, loff_t size, u64 flags);
-+
-+#endif /* __KVM_GUEST_MEMFD_H__ */
+ 	/*
+ 	 * Guarantee folio_batch counter stores visible by this CPU
+ 	 * are visible to other CPUs before loading the current drain
 -- 
-2.55.0.rc0.786.g65d90a0328-goog
+2.54.0
 
 
