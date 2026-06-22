@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41969CDB466
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 18:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3952CDB466
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 18:49:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F4B06B0005; Mon, 22 Jun 2026 14:46:24 -0400 (EDT)
+	id 1220E6B008C; Mon, 22 Jun 2026 14:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07E346B008A; Mon, 22 Jun 2026 14:46:24 -0400 (EDT)
+	id 0F9D36B0093; Mon, 22 Jun 2026 14:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED6BD6B008C; Mon, 22 Jun 2026 14:46:23 -0400 (EDT)
+	id 03CBE6B008C; Mon, 22 Jun 2026 14:49:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E756B0005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:46:23 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 277CBC153D
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:46:23 +0000 (UTC)
-X-FDA: 84908429046.09.5DF597A
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A8D0E160012
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:46:20 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AS6jNDbu;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782153981;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=saaZNbL1xP6BFYcvImMmZw16cqbwSWsCE6giljApULI=;
-	b=pXmy6juvssTa56Vw4Rjbr0cCQiWUFaw0WvOthON3K2TdpdjuxQR4xAoUY/5ZJlsUIVwRb7
-	9MnfPdc0JL7w/rF7i4I8QzAsRrQgwa4M8ufqGRD3JJVf7hTS54WlnV2Hli83a5AZ8Lwbmw
-	Ro/XHfUBh5wAWggM/E4STQNLBR7sCJo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=AS6jNDbu;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf08.hostedemail.com: domain of lkp@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B69B86B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:49:04 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 16D2812027F
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:49:04 +0000 (UTC)
+X-FDA: 84908435808.02.E5C9663
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5B023100009
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:49:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iTo3eHcH;
+	spf=pass (imf14.hostedemail.com: domain of 3nIM5agkKCOEWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3nIM5agkKCOEWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782153981;
-	b=0arWXwiwU/WIq5pEHkpGPzUyfVMETzjlHl763hu/za2Yq9rzHoU6t4KV0Rh0IE61Q4HEzw
-	eZ0ZJAU6jjNLeNJUplHlrm0jbOxUUVGjhYdbiFdaHGDyWv+P7ItAllGe6FdPdukoV369pd
-	muBTnJJ83NFlR6dv5axV7viXI1w7EH0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782153980; x=1813689980;
-  h=date:from:to:cc:subject:message-id;
-  bh=LFeBm448ZH+AurP5febN8KfVhijbJzhf3SgQU1UwVuU=;
-  b=AS6jNDbuANXlVSkGiJpB2QaU/TwtrRNY/uhr3BE3m1oSFAlko7x80jSy
-   o7SrX2eIZ61t2+8hwFrrWmzXsl3SzbZ/gSSpwQjND0mAaDnCTgRODYr1e
-   mkNbCdDzALwx0BIkjEpRwez226GFWeSKSGqElEky0lyb9iqmuegYiNz8I
-   zz96vpVPWDBToqK6FsW0N/gR1eLCzCCwflnsZ9qeIgyu5gDMr4yp5+Ghb
-   bUTpBCaErW+zyR00ebednTKDf/4nMRpUTTkQMh9F02TFynb4ovaQoLdKW
-   oLFUu1FdG16NrqZXzdk9t0n17AVbo9j5GXpEKh2WJ4JG+VRzPxRse8dBO
-   A==;
-X-CSE-ConnectionGUID: BUgjmDztQrmrbFOdgJSg2A==
-X-CSE-MsgGUID: 8CeOwGAqRH6WGn9ZAyH/zA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93548908"
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="93548908"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 11:46:19 -0700
-X-CSE-ConnectionGUID: HhdaVeN2Sse/Vy28/pd6kA==
-X-CSE-MsgGUID: YCPMOoY0QzmOmUlXHtvk5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="254391490"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 22 Jun 2026 11:46:17 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wbjen-000000001jh-2fFb;
-	Mon, 22 Jun 2026 18:46:06 +0000
-Date: Tue, 23 Jun 2026 02:45:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS
- e1201ff76176ef666b13d1a4ec6b6190ddc6abc8
-Message-ID: <202606230227.UGnWbsis-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Queue-Id: A8D0E160012
+	t=1782154141;
+	b=ZMf6HVnccNzyDXPL3L+t9G7h9fPw8VG1GfuKCtelWoaWEu+FID6VmV2rU5Tee2zj+hMZS2
+	zSJpb9yTT46edNbEQjaekpSPzB/wZoB6q3mR25acSOLffS7GdNhLG3eZs+BZUjlcYXVHJL
+	B6Uy8voNvCSz3VgzrCksCVfVrJpHDSQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782154141;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
+	b=fssDO058Nqit4UcnDg1V+SHkT7RTsQ59DgCO0sI9FOgzyEX/xcIR4jDyPEM92bpTSHUZ8Y
+	0SN/twiCU+SBMM7MDiIE6V4DJcl3+Seu9kSN0Iqq9D+3v/qlHyfekGvOFiHBnbP9CJqmGf
+	clboMmbn77WuUB9fyqFQ4A7o62uYhd0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=iTo3eHcH;
+	spf=pass (imf14.hostedemail.com: domain of 3nIM5agkKCOEWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3nIM5agkKCOEWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-490b5d2e394so31106855e9.3
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:49:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782154141; x=1782758941; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
+        b=iTo3eHcHIwXLojVrzbtozQMvWCIFzcckKMgGF6pO3SNSU4+ayfMFZwqZVLeP+ZZolm
+         vj+N7ZWBoxgRKPynmaAnncOqHtfKvvVpog6PobHgzr4HfyrkOMraMyyIXtNpkJS4VBbX
+         ncdB8AVS+92bIOmosqosDD16uU5XchgQeuV/R2vzoQ0LiFgsTXhPh+oMT+TQ34Dk2a+e
+         4fN9qKofQO3NMRwbkxTW5VNka2B+ukQuwRddMtuyO4qwTXP//Vtw+njyBd8WGd7GXEG9
+         kfdcrSUN6Yvda6kiQvJszlm3Kd+YPtapHJ/aDreVn7j/s9icPh10Jh18CAD2VxJREXfz
+         9XJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782154141; x=1782758941;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OEWwFi6TggeUgPIb5O1s/aY8eVgW9dSMubR6vHRGBr0=;
+        b=aU0AqaMD/oX7nCChwjrqzJ3yXpKo2SPD4RBdSSNOGuUocH9+RJtpMB6x226v6hE7cd
+         4lMmtxanGVXN6dXaf8Hy2kJ9iHY/21KnWm3kqdqHEOFmUGVhPKgMiw0xuSGbQ36jTq2p
+         skNA+SeHLet3Yh4U1dpR4SoZL6b37hsIZqUfJWEUBfLKRv0kV16QBLyzTKbnAmlCS/FY
+         /jRFLSyUq+5cH1x4WgXrJFTfSZWMBiYsR3Tztq5lrQ5caKlHSwMTaGUn+YtmBE8ogKIY
+         CSKW9zPpHhw9aewvcVlA5+EzgxMFxn0iijEBCXMwd7BFSk1DfOgfCRXiZ8vVDlnsbwOS
+         fKHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8JbcTGzvaGQt70VW/DzVx6VWIP2BEBubp/94kMgp5JafRYkGy1hLnwLJbgY39wDvIZuOmh7wpV4w==@kvack.org
+X-Gm-Message-State: AOJu0YzAs6nrBQC+lkKx6F5rf934D4NINLGlzOyTe/1gNK/Z3uWpmAn/
+	CGhYIbonlT5/tysUAwcYH2uXgxR9uk34b0u6cFwXjpGEe95LbzRDJi+A3R0OEzF8IxO3qZHG6Ia
+	m7Muz4VufCevogSaWkA==
+X-Received: from wmnj21.prod.google.com ([2002:a05:600c:755:b0:492:4a9f:3d5a])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:c059:10b0:490:bb45:79da with SMTP id 5b1f17b1804b1-49240e427f0mr195668185e9.13.1782154140754;
+ Mon, 22 Jun 2026 11:49:00 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:48:42 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.786.g65d90a0328-goog
+Message-ID: <20260622184851.2309827-1-tarunsahu@google.com>
+Subject: [PATCH v3 0/9] liveupdate: kvm: guest_memfd preservation
+From: Tarun Sahu <tarunsahu@google.com>
+To: Jonathan Corbet <corbet@lwn.net>, Mike Rapoport <rppt@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Alexander Graf <graf@amazon.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Tarun Sahu <tarunsahu@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: kvm@vger.kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 5B023100009
+X-Stat-Signature: anajqnqy9sprxu19itux9zf5f77j4fyf
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qyfin9kjezromuk1aukqfy75ht3dj8iz
-X-HE-Tag: 1782153980-212460
-X-HE-Meta: U2FsdGVkX1+mjN82kJZIaU3RT351FH0ufYXaK96PuoJTbQOidphzgxNMJVadH9B9KL+iCTPjTaJakiaxKR7xbcFxAHe8rqiuX4EuChs63q7W9w/jKeeE9UEyNyi6YUUHhnRV92lPJsua1ON+LM1FHGNRenNzb7EmeYg66mHj5kgYdVw4UlQUSJXeqMdA4FZ6/j12HNdqKWFkepxvKAxtqyHCK+VN64B3YklrfiPrzqVyW6r2xZF2OX1PGPJRSsmW/H6Plf5H/A/S7fRN+kYyh7Z6roJm9Z4GB24A9W4bjJMMds9XeYvt9fDq5tDhd9hxO/zywKfZePqo5hUP0pLZQaHyYFeaQn4Aln6cGxAE016QxIRF1ZQRwnBG1wDrOBnF7hw3iH6vHffok9GHdChZloGS9QEHLckZ8QRAiDtUP9TrpoIMcAtmeUmbDtuooOzTAD3/gd1qpGflY4lD5I5Y0BUPPhxHwB1G3TUVh6o1GSW5dLqGeEMc7z8UgDycLjo65bj/3w70lpKXaaa20rHXrWd3nqLJKlA/QNvqfzGYZXgEWo5StxtubFpTunZHV6RSU9X+tGf74a84magzSG/jP9EuXCxyjs5cWFUOVzxPpyJR0qpghih7T1XNHeUZ9J4DvgnnGX/Gfa8I1WO8TYMlTh4XplmrCt8bkLmAr0AuEOxETkqaxPeKX8dFH7JjI1F6p8UTd2ErNMEeWurLZMLYmGBK8c1AzNG0uBc8UcFacWCQujK0++YpxNx0kBJnrzUMUXl+mf5D6SK6ajmX7D85TMnNXiNlHYavAZEM1rAV65IsV2UBZQ7wlf4AuCpK/bnrM3Mm7oZupwMI32BW5z24acv/yxG6G75NbuWUR8xRnJ82Jb7kRj8KsmSrsk4J7GKnLeG2qbQIGcueNTcWlJ8awjB9KWPzh4Hw+bYJcWacvT+V/Vv9tGFpF/DL8P6GsImpV4VK0StDywt4rKfvzxK
- kD9g+G3S
- G+VWxO2o+30lSZhevp4Voh5oxUKLnIdhuyWc8zFdRBK1ZsekfQY4F6nA7qCZd6q6EZwil/P/Lwt7Bs6rmO4RSBOmlTKNA8Bh1kNN69+jv9KnfHKlZr0nxwZyWCj9L9mqcIA5TXOJz5zcopSf5RQjEs1c88hlrg7S/VJbSn5GU0qcWr39Vs35jPuBciHyOvrJoMRWL8jBBi2XSu7U=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782154142-940351
+X-HE-Meta: U2FsdGVkX18r2vmlfwuvN3Vf9kEuTO0No9vcNme19tLvzFu31VDAqnfhwXbrup/8Wq0ZgeLZ3iMuEQsRVcviJydu82TkI4SGvVELDcjnnzyHcDFngDHglO9orVEoDp+ewfVD/kj7KWOfZ4v3kt5/DrNc4/olmJaKcjaXhjGdtp2bg4xY58KfBzcR+cFe9mdr2VP6nuhtZcIR5vsTMimYRwiJL7dcIpOxL3wKrFO+fdtcJa0Ol7+VhizSv7hE6g5wVpiMD2p+HWihFX/W1o2MuoTr0z1IZX2nyG/K3R3kuGVauMNjTx3dWRP0pXqisjKiX+9jx73HMvD97kpEScKfsQ6KEgi5DBgt9o/dBpk7zdCX6CJdk613sgFV4kUrAcevP//0QS5ys6U7yQTARwDC4j+0IDdKm9nMVISSOVQ3tnFN1IrKeiOMXoWmWu8Bi4Vh93uBphNCWTOsYa6qw9jFrqEYEWfQnJEVChjUo8v1ZH4sDsdLPZC3vHcfs1mouPEqk+rnEYkSBXLKSRJoxTR4dajvYBVmbEbCSqvHkUlAwN4m96O2Hf28YtWrO+z6FqtetH+7GzGQ3RLOn6rwObxVH6yxM1BuUwGak5PTY6SuSn9CA4YPb5MbQuvdSDLJQ8idfHqLMQOPtfdWNXkBpEUvEDQWOnq/gc0rRfYM0ovswwL+tc2iau960vX6URJ55E52LwOdS1RgL346HxBWjykvEK9gPmkfV5RgYviRFCesCPf4bByqm1YUd1rj28utG1jkxjJgv4YUCTTF/KY1KzIY2eBVVp2S4OJ+WoAkX5CW52GiSoV73HXDrSDomhMpeLOnCYNGxxzGDqkMHFS1GesgccsrIq+5d1qXdy20lVWh3tSIl/56cIQUstp48D9CKmE3k3lexPQ7N8vBCHJAYvW5KI+U//MKVZ/hL59E8VRNG6lyc+5FJhpNeD3bEESJR6aofQ2CIJDnhpwXiKaGDYE
+ hp/uj7vQ
+ QAJhpNph13aq8oFL6+zUV1OklLeYbQF68/NbLyM67wq3XvVEfjh3F1kSnVyMCfOFUlCNvvh5weA6L+qheJvEBBwQvXHTQGI1Lwkoji7oVabiJWvPXtl5NANgSMlBQSyq9kKikAsYpfx6IxoUb6/hIc7JQeYvVIj8Bk5TedvtpcOgMVNtWH6ePvFgzpiNulkWqANid6fC4Wwd/V/GxwyppWD3fmm18wa40dccCO2KaMhGT0Kjc3SftU3sG3s41/jQ6Ker5JPSviFWlY5IHSUVsC4u3YybfDccc7QynsGQt0b6I9GWQm2J664HfMjkv0h1mWO5yiSY5/3kUFfEjuBJ2pHgzmCxRKUA9OPZSFYq9zCdE6Mfuw9NfOwfOv29tJqRoo78S5Q9AGyKXGZGDD2yQOIDr1nEe1Upz0VX3GH7v61y1ILxWYpfVzhQoNrrCuns2KUe2qsOCycmU6TU5WSN9rAZIPfwzbDEmnGqkalwQnE1JtIp0csNEsLcxDFhJmnAVzkmYbv/gZqTGcVNai+79VzLNcu2qSNcuACP9zVHkvA8BS8Rib+ZZcheoYW7xm6NkgbmpDVpqaXP2V/OrtAVsI1i9oOqfbOcvHioszttaoKlAZJBtuGEk5u4PplXBtm/2f6rJXzf7Ocr6iq1g3ga5qESyktrBFY50a0sy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,173 +108,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: e1201ff76176ef666b13d1a4ec6b6190ddc6abc8  mm/swap, PM: hibernate: atomically replace hibernation pin
+Hello,
+This is Non-RFC patch series for guest_memfd preservation. After
+having multiple discussion across hypervisor liveupdate meeting,
+guest_memfd bi-weekly meeting, the design for the basic support of
+guest_memfd preservation is final. This series is going to include
+guest_memfd which are fully shared and does not support private mem
+and backed by PAGE_SIZE pages.
 
-elapsed time: 952m
+Steps to test:
+1. Compile Kernel with CONFIG_LIVEUPDATE_GUEST_MEMFD=y
+2. boot kernel with command line: kho=on liveupdate=on
+3. run the following kselftest
+	$ .selftests/kvm/guest_memfd_preservation_test --stage 1
+	$ <kexec> --reuse-cmdline
+	$ .selftests/kvm/guest_memfd_preservation_test --stage 2
 
-configs tested: 153
-configs skipped: 16
+NOTE: Assert the following:
+	$ ls /dev/liveupdate
+	$ ls /dev/kvm
+	$ dmesg | grep liveupdate # (should have kvm_vm_luo &&
+		# guest_memfd_luo handler registered)
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+The changes are rebased on:
+	kvm/next + liveupdate/next (merge) + [3] + [4] + [5]
+	Where,
+	[3]: luo: conversion of serialized_data to KHOSER_PTR
+	[4]: luo: APIs to retrieve file internally from session
+	[5]: selftests: liveupdate sefltests library
+Here is the github repo:
+	https://github.com/tar-unix/linux/tree/gmem-pre
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                   randconfig-001-20260622    gcc-15.2.0
-arc                   randconfig-002-20260622    gcc-9.5.0
-arm                               allnoconfig    clang-23
-arm                                 defconfig    clang-23
-arm                   randconfig-001-20260622    gcc-13.4.0
-arm                   randconfig-002-20260622    clang-23
-arm                   randconfig-003-20260622    gcc-8.5.0
-arm                   randconfig-004-20260622    gcc-15.2.0
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                 randconfig-001-20260622    gcc-8.5.0
-arm64                 randconfig-002-20260622    gcc-13.4.0
-arm64                 randconfig-003-20260622    gcc-8.5.0
-arm64                 randconfig-004-20260622    clang-22
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                  randconfig-001-20260622    gcc-13.4.0
-csky                  randconfig-002-20260622    gcc-11.5.0
-hexagon                          allmodconfig    clang-23
-hexagon                           allnoconfig    clang-23
-hexagon                             defconfig    clang-23
-hexagon               randconfig-001-20260622    clang-23
-hexagon               randconfig-002-20260622    clang-23
-i386                              allnoconfig    gcc-14
-i386        buildonly-randconfig-001-20260622    gcc-14
-i386        buildonly-randconfig-002-20260622    clang-22
-i386        buildonly-randconfig-003-20260622    gcc-14
-i386        buildonly-randconfig-004-20260622    gcc-12
-i386        buildonly-randconfig-005-20260622    gcc-14
-i386        buildonly-randconfig-006-20260622    gcc-14
-i386                                defconfig    clang-22
-i386                  randconfig-001-20260622    gcc-14
-i386                  randconfig-002-20260622    clang-22
-i386                  randconfig-003-20260622    gcc-14
-i386                  randconfig-004-20260622    gcc-14
-i386                  randconfig-005-20260622    clang-22
-i386                  randconfig-006-20260622    gcc-14
-i386                  randconfig-007-20260622    clang-22
-i386                  randconfig-011-20260622    gcc-14
-i386                  randconfig-012-20260622    clang-22
-i386                  randconfig-013-20260622    gcc-14
-i386                  randconfig-014-20260622    clang-22
-i386                  randconfig-015-20260622    clang-22
-i386                  randconfig-016-20260622    clang-22
-i386                  randconfig-017-20260622    clang-22
-loongarch                         allnoconfig    clang-20
-loongarch                           defconfig    clang-23
-loongarch             randconfig-001-20260622    clang-18
-loongarch             randconfig-002-20260622    clang-18
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260622    gcc-8.5.0
-nios2                 randconfig-002-20260622    gcc-8.5.0
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                         randconfig-001    gcc-8.5.0
-parisc                randconfig-001-20260622    gcc-14.3.0
-parisc                         randconfig-002    gcc-12.5.0
-parisc                randconfig-002-20260622    gcc-12.5.0
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc                       ebony_defconfig    clang-23
-powerpc                        randconfig-001    gcc-10.5.0
-powerpc               randconfig-001-20260622    gcc-8.5.0
-powerpc                        randconfig-002    gcc-8.5.0
-powerpc               randconfig-002-20260622    gcc-8.5.0
-powerpc64                      randconfig-001    clang-16
-powerpc64             randconfig-001-20260622    clang-21
-powerpc64                      randconfig-002    clang-23
-powerpc64             randconfig-002-20260622    clang-20
-riscv                             allnoconfig    gcc-16.1.0
-riscv                               defconfig    clang-23
-riscv                 randconfig-001-20260622    clang-23
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                  randconfig-001-20260622    gcc-14.3.0
-s390                  randconfig-002-20260622    clang-23
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-16.1.0
-sh                    randconfig-001-20260622    gcc-13.4.0
-sh                    randconfig-002-20260622    gcc-15.2.0
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                 randconfig-001-20260622    gcc-16.1.0
-sparc                 randconfig-002-20260622    gcc-8.5.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64               randconfig-001-20260622    gcc-16.1.0
-sparc64               randconfig-002-20260622    clang-23
-um                               allmodconfig    clang-23
-um                                allnoconfig    clang-16
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-23
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20260622    gcc-14
-um                    randconfig-002-20260622    gcc-14
-um                           x86_64_defconfig    clang-23
-x86_64                            allnoconfig    clang-22
-x86_64      buildonly-randconfig-001-20260622    clang-22
-x86_64      buildonly-randconfig-002-20260622    clang-22
-x86_64      buildonly-randconfig-003-20260622    clang-22
-x86_64      buildonly-randconfig-004-20260622    clang-22
-x86_64      buildonly-randconfig-005-20260622    gcc-14
-x86_64      buildonly-randconfig-006-20260622    clang-22
-x86_64                              defconfig    gcc-14
-x86_64                randconfig-001-20260622    clang-22
-x86_64                randconfig-002-20260622    gcc-14
-x86_64                randconfig-003-20260622    clang-22
-x86_64                randconfig-004-20260622    clang-22
-x86_64                randconfig-005-20260622    gcc-14
-x86_64                randconfig-006-20260622    gcc-14
-x86_64                randconfig-011-20260622    clang-22
-x86_64                randconfig-012-20260622    clang-22
-x86_64                randconfig-013-20260622    gcc-14
-x86_64                randconfig-014-20260622    gcc-14
-x86_64                randconfig-015-20260622    clang-22
-x86_64                randconfig-016-20260622    clang-22
-x86_64                randconfig-071-20260622    gcc-14
-x86_64                randconfig-072-20260622    gcc-14
-x86_64                randconfig-073-20260622    clang-22
-x86_64                randconfig-074-20260622    gcc-14
-x86_64                randconfig-075-20260622    gcc-14
-x86_64                randconfig-076-20260622    clang-22
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                randconfig-001-20260622    gcc-16.1.0
-xtensa                randconfig-002-20260622    gcc-8.5.0
+V3 <- RFC V2 [2]
+1. Finalize the design
+2. resolve sashiko reported bugs
+3. Use of KHOSER_PTR instead of raw serialized_data as per [3]
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+RFC V2 [2] <- RFC V1 [1]
+1. Removed mem_attr_array as it is not needed for fully-shared
+2. Removed pre-faulted condition
+3. Added vm_type preservation for ARM64.
+4. Removed liveupdate_get_file_incoming api patch as it is sent
+   separately [4] by Samiullah.
+
+[1] https://lore.kernel.org/all/cover.1779080766.git.tarunsahu@google.com/
+[2] https://lore.kernel.org/all/c054ba0fb2639932bbe354420d3f4f84cce84905.1780676742.git.tarunsahu@google.com/
+[3] https://lore.kernel.org/all/20260622111215.4157974-1-tarunsahu@google.com/
+[4] https://lore.kernel.org/all/20260613012521.835490-1-skhawaja@google.com/
+[5] https://lore.kernel.org/all/20260612214512.464146-1-vipinsh@google.com/
+
+Tarun Sahu (9):
+  liveupdate: Add LIVEUPDATE_GUEST_MEMFD config option
+  kvm: Prepare core VM structs and helpers for LUO support
+  kvm: kvm_luo: Allow kvm preservation with LUO
+  kvm: guest_memfd: Move internal definitions and helper to new header
+  kvm: guest_memfd: Add support for freezing and unfreezing mappings
+  kvm: guest_memfd_luo: add support for guest_memfd preservation
+  docs: add documentation for guest_memfd preservation via LUO
+  selftests: kvm: Split ____vm_create() to expose init helpers
+  selftests: kvm: Add guest_memfd_preservation_test
+
+ Documentation/core-api/liveupdate.rst         |   1 +
+ Documentation/liveupdate/vmm.rst              | 107 ++++
+ MAINTAINERS                                   |  14 +
+ include/linux/kho/abi/kvm.h                   | 106 ++++
+ include/linux/kvm_host.h                      |  14 +
+ kernel/liveupdate/Kconfig                     |  15 +
+ tools/testing/selftests/kvm/Makefile.kvm      |   6 +-
+ .../kvm/guest_memfd_preservation_test.c       | 236 +++++++++
+ .../testing/selftests/kvm/include/kvm_util.h  |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  26 +-
+ virt/kvm/Makefile.kvm                         |   1 +
+ virt/kvm/guest_memfd.c                        | 185 +++++--
+ virt/kvm/guest_memfd.h                        |  44 ++
+ virt/kvm/guest_memfd_luo.c                    | 497 ++++++++++++++++++
+ virt/kvm/kvm_luo.c                            | 195 +++++++
+ virt/kvm/kvm_main.c                           |  94 +++-
+ virt/kvm/kvm_mm.h                             |  15 +
+ 17 files changed, 1477 insertions(+), 81 deletions(-)
+ create mode 100644 Documentation/liveupdate/vmm.rst
+ create mode 100644 include/linux/kho/abi/kvm.h
+ create mode 100644 tools/testing/selftests/kvm/guest_memfd_preservation_test.c
+ create mode 100644 virt/kvm/guest_memfd.h
+ create mode 100644 virt/kvm/guest_memfd_luo.c
+ create mode 100644 virt/kvm/kvm_luo.c
+
+-- 
+2.55.0.rc0.786.g65d90a0328-goog
+
 
