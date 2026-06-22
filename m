@@ -4,104 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC528CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 22:26:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 741B2CDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 22:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 46BFB6B0088; Mon, 22 Jun 2026 18:26:34 -0400 (EDT)
+	id 284316B0088; Mon, 22 Jun 2026 18:52:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F5C46B008A; Mon, 22 Jun 2026 18:26:34 -0400 (EDT)
+	id 20E816B008A; Mon, 22 Jun 2026 18:52:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BDA66B008C; Mon, 22 Jun 2026 18:26:34 -0400 (EDT)
+	id 0D69F6B008C; Mon, 22 Jun 2026 18:52:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC9D6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:26:33 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6AF731C53BF
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:26:33 +0000 (UTC)
-X-FDA: 84908983866.16.CB82A7E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CCEDA6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:52:20 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 30C871202EE
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:52:20 +0000 (UTC)
+X-FDA: 84909048840.15.5B7E505
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7C50680007
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:26:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H69N20hX;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2C8E9C0009
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:52:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIOxnaKa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782167191;
-	b=4frzrE3dJ6Ye6h8pc4myzQXJdJn6Z031JUsdFaHTGbYurDtELveJ2BEQCfwPT7Bw6Chono
-	+GRkTNpCZIkqrL0GwgKZ1k8yDCpW7ZYDPaaVdb+Ys4jdJGryutq/deMnFkVOmDHvXIEWX+
-	WRw+hFuNc+j8+IRHiIpVXQlyNOfrYzY=
+	t=1782168738;
+	b=m13PI0Ny3y4Qy8zSoMhHWOe/rqDk/Af9iJ+QcADeo0NeU9IS4KHArBr9V23DjSs381YPhI
+	Zrlfc1rTdBjAEZvKbRNbEUD6oEuDy7bCeg3hvs4VbaDkexz60u69Z6Z3/aTliFeyb1tCJX
+	7hOO+NJqTVSn3Qn6749cVSB59Qg0BKA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782167191;
+	s=arc-20220608; t=1782168738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LGHFR3otSoYMVHIMKTx92Qc2dyqLTWvcbb+UcCOAzWk=;
-	b=L3IuUmbRER/0bLpoAIIq2f3q5xF38RZCVqOv+6ee65ZzT3cweWG3XspuJ0pofUZTfMpMhx
-	z9zlfPJVfmOBJALuR7RLuqts2eJ1n/a3/E+ugNkBzhcPqrZ8o09z+FoFxs8PoPiWnpAyAN
-	HhktMqUDmI6ESS8D9iihKApuU9yFZAw=
+	bh=sOaJBY2vYbjxJ/JpG7DCE2JRLzNVwpwwc0x2I1M0tkU=;
+	b=DS/dSf/JzdKopQPgmgQ8KXlHbGPfFR3eJBqgmqvKq9DEfGnBNx6dCrKoklQJat82ce4yBH
+	xze0IKKRuNHZHYVJmS06JEcdC1tL0mE5k2iySp7d3MsMdpWM00EeJO6j9oZUrrsC+iRXzP
+	NarDU5/yA/SeJhyHEHnLvGSsnJ5HOxQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H69N20hX;
-	spf=pass (imf02.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZIOxnaKa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44DD64456E
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF9E1F01564
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:26:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 57B724456F
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:52:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207031F0155C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782167190;
-	bh=LGHFR3otSoYMVHIMKTx92Qc2dyqLTWvcbb+UcCOAzWk=;
+	s=k20260515; t=1782168737;
+	bh=sOaJBY2vYbjxJ/JpG7DCE2JRLzNVwpwwc0x2I1M0tkU=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=H69N20hXCx2EFg2GRY1BYm2M3GBmBAqcjbIX2TUFlx3VlSneU8Dy4Q8JA/OQj4tEn
-	 /LW0VMDEn/LlfsGBKL8Bj/qN10Jt4Xpdbmgkh0s1JA9B2mcTES4r+WcmN1VOI/tQrk
-	 HYv23c3F3vSaMUWgPGT46FgU6T/N8yiV7GelXqRk4yn68vUbnVHwloCMJyp+B631bq
-	 yqYQWKNnhUg0pdr4uVKGGkNiKVUM5fx09BM3FlhrRQch64Pj2wYKvdIeM5CBr+XjOr
-	 WMwie2OyfWQbNazRk6UhG7pgLf9aZ5+s2LmzrRipsEihZqclUPgE+vVTfCU8J37mYP
-	 csJUXTDuChaMw==
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c0be5e548a4so430579566b.3
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:26:29 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ90AI8UakBf5wWaSbPDm7db/kei/+XZLQiljBSMA7B5emrn2/XmsfRnGxlSsf1Xv6Tgh11GMoHtsA==@kvack.org
-X-Gm-Message-State: AOJu0YwudRJF5sIew0FsfK3oTSHIu3eHArzfSUWaXAAm+fqhSvuX9aAt
-	nDni/Ze48vssj6x72t+tley5DmhGWtSYbsStTqRhIrQp958cAizxfDiZlw2R7uq3rIiaSOSm88Z
-	nSd1fvd2IrlHTBWPxzAlDUKpj1Te/3+c=
-X-Received: by 2002:a17:907:3d4d:b0:bfe:ed06:5a20 with SMTP id
- a640c23a62f3a-c098ed16f00mr822557666b.53.1782167188897; Mon, 22 Jun 2026
- 15:26:28 -0700 (PDT)
+	b=ZIOxnaKab5p1n/3vTLL9gXUkmX2oYBpiSSI4S1Uk7/8zrSjEy4ofyrWXKIk/7YAyq
+	 EIWbcTgfeqfpaQWtp89e++0rRLLoJ0jGyKhsnjB+nA6RbCXJ2urbaNlaVOEpEksnW0
+	 +NI4Tmh/r5FFEazkOrnPF0cVnldvTgPEBCCRpUex6WgBu2wzruGpvm/KQOV+dnCnNS
+	 2je8b9x8rWa46d6mP7P07hk5/7kSuu2lJbxdTTY6b17r6cfiux0vCxtYj3MsoFF12U
+	 oeTNV7yKN5OY2kcDbfFvqAeGWTC3dPTMtHQym47+ezpqjj0ahN4oJt7s2Gsu0SJIV3
+	 6bUTMmOdJX9xA==
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9158fbaa4bbso562172885a.1
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 15:52:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/vLb1kaqZEIL+gFGW9u6cdClfrDiB5Y82wtywh4ZT9e2TmE7/aDbbazv3nZBTKEJ68Vskp+yhhLQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzs/2JyW8+rmtODehT6AY7CPS7Q+YnyigexP7fkIcb6yTGL3OLk
+	zot5t1BQVRHGDAwj3/d9GZDk7I5QHsCX2qHgZgduQ/zKgOTIWgxD1RSXn7x+2nQp0rMiggK9yaA
+	jbLc8GP0GPrEoS4AcntgOANPxwvNngao=
+X-Received: by 2002:a05:620a:a2c5:10b0:920:be30:2d38 with SMTP id
+ af79cd13be357-920be302dbamr1837599785a.9.1782168736458; Mon, 22 Jun 2026
+ 15:52:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAO9r8zNjyW1rh26vv2vavCM_2-r70EuynU+-7XdEmrBdLL=TkQ@mail.gmail.com>
- <20260622221037.255359-1-joshua.hahnjy@gmail.com>
-In-Reply-To: <20260622221037.255359-1-joshua.hahnjy@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 22 Jun 2026 15:26:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP6zDshSGU4chaHiPocahQZpiK5Z-eP9VKH+2_xjNM+4g@mail.gmail.com>
-X-Gm-Features: AVVi8CcPvB6x8GnlUC9ZSP0DpmmufpwngYWRm_3G-i9cXpRnV9FIWkWhZqkPsUg
-Message-ID: <CAO9r8zP6zDshSGU4chaHiPocahQZpiK5Z-eP9VKH+2_xjNM+4g@mail.gmail.com>
-Subject: Re: [PATCH v9 3/6] mm: memcontrol: add interface for swap tier selection
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Youngjun Park <her0gyugyu@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	akpm@linux-foundation.org, chrisl@kernel.org, youngjun.park@lge.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, gunho.lee@lge.com, 
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com, 
-	baver.bae@lge.com, matia.kim@lge.com
+References: <5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn>
+ <20260622073703.79258-1-qi.zheng@linux.dev>
+In-Reply-To: <20260622073703.79258-1-qi.zheng@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 06:52:04 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4z34ZRu_RKkaZ7EgTWMOxptUjZ90WJyNoJrXGNjzutxnA@mail.gmail.com>
+X-Gm-Features: AVVi8Ce0foZMj_P664AgKaMfmRLO4b5-1jEQyynf-QVbFLWZ4URCnbuGkwqxqQo
+Message-ID: <CAGsJ_4z34ZRu_RKkaZ7EgTWMOxptUjZ90WJyNoJrXGNjzutxnA@mail.gmail.com>
+Subject: Re: [PATCH] mm: mglru: fix stale batch updates after memcg reparenting
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org, 
+	muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: ua8ngu9q4h69r8it3o4xukrm39zm7jey
-X-Rspamd-Queue-Id: 7C50680007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782167191-731825
-X-HE-Meta: U2FsdGVkX1/YZu5qG/35KSu1ebHvRv3uqcxoSfprUDYf7eClZpESf7tJeCw7pyO47zznjJClOxU04+H+5XUJWIuO7r0Pu0ObQsag5auAe+fCVDYTawmW9rUNDKYjw/uiUzhuKFkQuPHjCe4flDvEqpcfSN6OHRoyb2++NisgXO+nQzJKXZU3a7H4B4fIo08udbuKA1g3sV4OTUBQ+htbipkcqRGaPisiAjqvWTnKWKy5vx+3aCwq8LC6WDo62atbVnZ+rUSEtGR0vvAwGU2/S+i/d/YzPDWXnIYO6QBFu1vZvefZJOiRELbpkyXDR7zunWF6XsVVzDvemrddSHNDsFjdEi8i4g1L06j1evzUajzWRIDcbxx1A5TPYSDz3qiaJXY1eQwX3O9JeU35FL0Qud9L7pF5ibc7Q6IH8rDJun8a9k4L2BGLblrMrqgLpfZ6AFXUGPKLq8guBprwlMd9VYVVqT9EyF25LnlpPMLXD7XZ7MmPm7KwakCLb/j0i3DRMKFFQfzp+Vwgxwu9Y0xCQgCZZyDBGlRxkhIRD4Gc6ey9A5vlBopgs23qxzGwoVo61ycPFOmYtIlY67bAHEywstZY/PLaAbvzp8tr//ebvMwGaMWLLyfFSQoeHKS99mss/9n8sZfAJ4cZ3pzMIyi3N56uhk6cJntEL4MxXkC+Eg9kB1dtM5U7sIr9r+A6g89tJSkwfz8Sa2hXQFzpAv+yWadKEZ6q7NKGhdfWh9hc3reCLMvtKh3neLY0yaSO+dSc2nyM37jyEpqSMCRw3AtTClaM8tSZeTx7LR1IAt7pkARNAUYmqJccTQgQib3UQPypHI3D9SfLRnafLRngPKt7Y4w0uNAgHfuzgBqhN3IkYABMevntUDEJufykAhq0yQJou/K6UcZlOeNgWDfM5KzZ6Cbvn/SfCG7+9GRgwmKBqMN4DMMJ9xW+v/H4iyrcs/1RE+QAhg4rm3xTBJaQhcc
- qGcXZ8I7
- XrL4+GR0k6hLFlCN0V2Wi6STtnYcNOP81yH0+JAah3zFBSBNlk6Vq6wB06EoYD+xN7oOWUwkxtlD9C12efqBM6CuEyBxUvGb/Y79hhDi2+n+kcgrM78r+bGN4Ge+u1dJxZ3OShkEDYdvMLIK/FmbYJvHgvkHyfIwtff+n47f8EyXs8ou74hdT/p/7kEH0YDra9R+MOJPNKE5CvmXBdiWbwsFXRcZdBpxqDomjsHAIDmJbnbpdtn5fSe5Sh46K4888luvNxQ6vsFKc9s8jqTs/YJyMJ2THMIf9H0KSn2uRjTLzkTsmXJ4sfEeomSD4a+837LFAOAPXxFiKdZhi0eEzb55t07HjqPX7WZjya8RKhTEf5B4CwFI3asFkNQYSrQompU5cmKCNzYX4Sb0trbGo0vPJzD2j21V5tLuVq2wud4AtaryVW1CovlXsaw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2C8E9C0009
+X-Stat-Signature: wjej4u1i9sjh4yfnf8wd5kemokiw5pkw
+X-HE-Tag: 1782168738-458925
+X-HE-Meta: U2FsdGVkX18OOhUY8ZgGY2dNYUHNstS9k6JyGs3+lxFCIYhOVjI3RzqSDXj8/HPNopAZwBZHSPsGi9Ov+JDmpd7jjOB5Taew36bVKCjJ7J7ZTJJHknv4AiaPJMzmLF864FAj42MJNGN9mPNsLF/eG6zMnHPKQQSHj6gvFtq7mCNYohpMTfKShujBmvUvYfSe88txupN3LUO/0zhcVTk3aC1gY9cpHFWuYwqhnKDWai/dTo0rr2/8zEHmhIpud2m54GDnP9+AkO7aDZYs4id4FeIOnUPv7dUhbELwOe3ml5wy85CC9y2ZJpO8TOPhM8nPOQxqpwL9ds0SszdI2ZollpmoXGe/5At6anfTePBl5fMoc+L3fbSh0k4wvfmutjroRX3+rAydxv/eSePHJaaO8OUf2P9TAndEyEBOyZYoZwRYtjwZirpg6IjrLETIfwKtFwdYpEF6FQ37bWrbNwaeYQKB6akhZFx9S5Latl+QBZ57pjdrGeNZ86ssnqdC/L4Q78k0HR6VryyU3n67iFvYc0IH7zTImL0wbLQbJQNLYV12I6YmnDWdJvKgNmIY+YsN3XCpU5U3TkGfWZzZ6rpUxL7ckon4rRhQ17NllQR5Y063B/87aYIOyFvJIZhSLYp+t5Knx2w5qj9iLJyoS2b+E1jY698PLwYfsqeEX+8ZK8DuNW8yOj3+SfilN20CwM+rYMyHbCRLB+WKAdrHg/pPxECJIxjKGaRN+NtkjADYyn6heMh5Jtvt16SKLEecnak55kzPuyP+lRL9ZnnkKdMGztc8c0eX9/jD8ETQq7RrVA9/atpmohFLb1THnf5O1DgQC1Ba762mU/6s3BTBZ76E260w33i0Ixr/VdrKiVvHOpGEaRqh35D28ic1NUG3XkbdSd4A1A//xN2YN8vPw5qW1qN3P/q+eoXDdcTKDQ4uUbP9JtHgXIPp0xWnazGsx6EKs5SyMwnEOorEZ3kClUg
+ VHRdvUIz
+ IX0HJ3shqxDnyg3SZqA9uUCARMOUPl7IZuFtUB1Zu+m4Yy3cDQpAMHNPnNI4n2/jUTbcJ1l2PRv28im8wW1L5pHVeJUnXb0Qp7j9geqItgPppy2LNcMKKoGHkEs+KnXrJK93iPuCrE7LxlwSh14G3UaRpnCmnBBWHZvvt+FwkKnvxTmRkEj/KDY7MfNMM3zMCSMqABhVlSowFmHpL0QV1nYLyTbTBEwYj5rdMIXaoD95f+JVL+tHJAe7SFHulvqxVjvJLmdAG99KuacEQ9ru0qZYS2q9V1cr8ZSFX8cj5bkpjW2JICOpeXwGLAo9ui3ayzDW9MmqhGve2XYY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,118 +108,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 3:10=E2=80=AFPM Joshua Hahn <joshua.hahnjy@gmail.co=
-m> wrote:
+On Mon, Jun 22, 2026 at 3:38=E2=80=AFPM Qi Zheng <qi.zheng@linux.dev> wrote=
+:
 >
-> On Mon, 22 Jun 2026 14:21:30 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >
-> > On Sat, Jun 20, 2026 at 11:17=E2=80=AFAM Youngjun Park <her0gyugyu@gmai=
-l.com> wrote:
-> > >
-> > > Introduce memory.swap.tiers.max, a flat-keyed file listing each
-> > > tier defined in /sys/kernel/mm/swap/tiers with its state, "max"
-> > > (allowed, the default) or "0" (disabled).  A tier is one bit in the
-> > > cgroup's tier mask, so writing "<tier> max" or "<tier> 0" sets or
-> > > clears that bit.
-> > >
-> > > Since the current use case lacks amount control, it only supports
-> > > "max" (on) and "0" (off). Therefore, it does not track per-tier swap
-> > > usage, relying instead on a fast runtime bitmask check.
-> > >
-> > > We maintain both `mask` and `effective_mask`. The `effective_mask` is
-> > > strictly bounded by the parent (e.g., if a parent is "0", the child's
-> > > effective state is "0" even if its `mask` is "max"). Maintaining this
-> > > separately avoids costly cgroup tree traversals to check ancestors at
-> > > runtime.
-> > >
-> > > Suggested-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > > Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> > > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> > > ---
-> > >  Documentation/admin-guide/cgroup-v2.rst |  20 +++++
-> > >  Documentation/mm/swap-tier.rst          |   9 +++
-> > >  include/linux/memcontrol.h              |   5 ++
-> > >  mm/memcontrol.c                         |  67 ++++++++++++++++
-> > >  mm/swap_state.c                         |   5 +-
-> > >  mm/swap_tier.c                          | 102 ++++++++++++++++++++++=
-+-
-> > >  mm/swap_tier.h                          |  57 +++++++++++--
-> > >  7 files changed, 255 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/=
-admin-guide/cgroup-v2.rst
-> > > index 6efd0095ed99..4843ffcfd110 100644
-> > > --- a/Documentation/admin-guide/cgroup-v2.rst
-> > > +++ b/Documentation/admin-guide/cgroup-v2.rst
-> > > @@ -1850,6 +1850,26 @@ The following nested keys are defined.
-> > >         Swap usage hard limit.  If a cgroup's swap usage reaches this
-> > >         limit, anonymous memory of the cgroup will not be swapped out=
-.
-> > >
-> > > +  memory.swap.tiers.max
-> > > +       A read-write flat-keyed file which exists on non-root
-> > > +       cgroups.  The default is "max" for every tier.
+> The mglru page table walker batches per-generation size deltas in
+> walk->nr_pages while walking page tables without holding the lruvec lock.
+> The reset_batch_size() later folds those deltas into walk->lruvec under
+> the lruvec lock.
 >
-> Hi Yosry,
+> The page table walker can run concurrently with the memcg reparenting pat=
+h
+> as follows:
 >
-> Sorry, I feel like I'm joining the party late. Apologies if I'm missing
-> some context or repeating a discussion that's already been had.
-> Please let me know if that is the case.
+> CPU0                           CPU1
+> =3D=3D=3D=3D                           =3D=3D=3D=3D
 >
-> One quick tangent:
-> I was chatting with Nhat last week about swap tiers and its relation to
-> memory tiering. Nhat brought up a good point, which is that while both
-> swap tiers and memory tiers provide a clear hierarchy of performance,
-> only memory tiering allows for movement between the tiers.
-> AFAICT, swap tiering does not allow for direct migration from a higher
-> tier swap backend to a lower tier swap backend if the higher tier
-> backend runs out of memory.
+> walk_mm
+> --> walk_page_range
+>     --> update_batch_size
+>         --> walk->nr_pages +=3D delta
 >
-> In that sense, I'm not entirely sure if we need to enforce similar
-> semantics across swap tiering and memory tiering; it seems like there
-> are some fundamental differences anyways to how we treat these tiers.
+>                               mem_cgroup_css_offline
+>                               --> memcg_reparent_objcgs
+>                                   --> lock lruvec
+>                                       lru_gen_reparent_memcg
+>                                       --> reparent child folios to parent
+>                                       unlock lruvec
 >
-> > I wonder what should the default behavior be if memory.swap.max is set
-> > to a value other than "max". Should the limits in
-> > memory.swap.tiers.max auto-scale or remain as "max"? We probably want
-> > to keep the behavior consistent with memory tiering.
-> >
-> > Shakeel/Joshua, WDYT?
+>     lock lruvec
+>     reset_batch_size
+>     --> child lrugen->nr_pages +=3D delta
 >
-> I think that the motivation behind these tiers is different for swap
-> and memory. Tiered memory limits is motivated by preventing one
-> workload from conusming all of a valuable resource, while swap tiers
-> seems more to do with excluding certain workloads from using performant
-> tiers and ensuring other workloads stay on those performant tiers.
+> This can trigger the following warning:
 >
-> IOW memory tiers exist for fairness, but it seems like swap tiers exist
-> for workload performance tiering. But maybe there's a usecase out there
-> that would want fairness to apply in the swap tiers as well that I am
-> not seeing.
+> WARNING: mm/vmscan.c:5867 at lru_gen_exit_memcg+0x26f/0x300
+> RIP: 0010:lru_gen_exit_memcg+0x26f/0x300 mm/vmscan.c:5867
 
-I am not sure what use cases exist, but I think it's possible we end
-up wanting to enforce fairness for swap tiers as well. Maybe not as
-aggressively as memory (e.g. to avoid wearing out SSDs), but maybe at
-least proactively through userspace?
+I can't find 5867; instead, I can find 5828:
 
-At the end of the day, faster swap tiers are also valuable resources
-that we probably don't want a few workloads to hog. I also think the
-interfaces being consistent makes everyone's lives easier, even if
-it's a bit of an overkill for swap tiers.
+VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+  sizeof(lruvec->lrugen.nr_pages)));
 
+Is this the warning?
+
+> Call Trace:
+>   <TASK>
+>   mem_cgroup_free mm/memcontrol.c:3972 [inline]
+>   mem_cgroup_css_free+0x76/0xb0 mm/memcontrol.c:4241
+>   css_free_rwork_fn+0x125/0x1260 kernel/cgroup/cgroup.c:5575
+>   process_one_work+0xa0d/0x1c30 kernel/workqueue.c:3314
+>   process_scheduled_works kernel/workqueue.c:3397 [inline]
+>   worker_thread+0x645/0xe80 kernel/workqueue.c:3478
+>   kthread+0x367/0x480 kernel/kthread.c:436
+>   ret_from_fork+0x72b/0xd50 arch/x86/kernel/process.c:158
+>   ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+>   </TASK>
 >
-> If that is the case, I think auto-scaling makes sense but can be a bit
-> tricky, since there is no universal tiered ratio; each workload will
-> have different tiers it can swap to, so they will all have to calculate
-> their own ratios. Tiered memory limits escapes this difficulty since we
-> assume all memory can be placed on all tiers, so we have a system-wide
-> ratio : -)
-
-Hmm I don't follow. It's also possible (maybe not initially) that a
-memcg cannot use specific memory tiers, right? I am not sure what the
-difference is.
-
+> To fix it, add lrugen->reparented to remember the new owner of a
+> reparented lruvec, and make reset_batch_size() charge pending deltas to
+> that owner.
 >
-> Let me know what you think! Have a great day :D
-> Joshua
+> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a=
+53a-1e28cc894f0b@smail.nju.edu.cn
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+Looks reasonable to me.
+Reviewed-by: Barry Song <baohua@kernel.org>
 
