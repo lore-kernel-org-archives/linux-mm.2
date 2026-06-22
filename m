@@ -4,142 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B308CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 17:57:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6EDFCDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 18:32:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 452176B0005; Mon, 22 Jun 2026 13:57:46 -0400 (EDT)
+	id 4A3636B0005; Mon, 22 Jun 2026 14:32:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 403F76B008A; Mon, 22 Jun 2026 13:57:46 -0400 (EDT)
+	id 42CD76B008A; Mon, 22 Jun 2026 14:32:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CB656B008C; Mon, 22 Jun 2026 13:57:46 -0400 (EDT)
+	id 2A67A6B008C; Mon, 22 Jun 2026 14:32:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0136F6B0005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:57:45 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 735091665A3
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:57:45 +0000 (UTC)
-X-FDA: 84908306490.25.70D8D5A
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 77511A0003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:57:43 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gjx98eF1;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782151063;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EE3FA6B0005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 14:32:01 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 385D88C786
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:31:51 +0000 (UTC)
+X-FDA: 84908392422.11.973B77A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7C48020002
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:31:49 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQomjpaT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782153109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GWMkkw80MANt4r5YV0GD44Um7JLS7FMoaybOL0CoS30=;
-	b=zJp8v1kvNI2fwi2bGH0HGoneEoE2uTRYTRtilCpTd/ylzSuDCPebackR8O0YP1CimabAb9
-	JKn1dsi3lsFzol7eLdIsud6P+1Ai244gqjO+LwmiWpkWUUXDSO6HyLJe9XXdZiXR6ad9bO
-	GR/hcMdDx1HmNsh/UKEW9tXaHXRCt4Q=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782151063;
-	b=zhwLFDtKdFAKhFC3lLqYaDuAXG3u+7Ph/SbakVSm1ISEYjNgA0gljX7LABj1/9K+4S6TT7
-	WB+ON4b/F6NJiirWhHyq91noZEBwjE89FJHGR9ayrIcov2BVtZFgmsJNlGpK1pc8/0zYLt
-	+AOIznBaEwlCALbdwtIUMpkiPuLSAoY=
-ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=gjx98eF1;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-5177d1ff061so23251cf.1
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 10:57:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782151062; cv=none;
-        d=google.com; s=arc-20260327;
-        b=gWGJYw9YfHeSqrX99+8y/4h/3aid6lpO0zaeCs7AUdTMU4IbWfV0RSZGXp5Q+6wWKA
-         kFPcNZ2kQXygBf+FNNR0tx8b4jAYmOFDjrrouUAJ6XRosLILKKC1aWnSniBhG27mS/wK
-         m9VU3y8Yh0e/jFbDYTbAD9EgggpffIX2tUilB4I77Sptlf2RBWx6NNriKC+TOiJeLgSD
-         YozZ0MaOmEJNG7JF58DU3gmceLseKfnMiGqwFoHNEBUukt1EN2ZpdPByLzzjgfJ+NUBy
-         vmTuYKg1h0asHnBouO5c7LiIWu30/nGY8ikWAgdR8ilLtNKe+Jp284JlgKdiULX4rH5S
-         TJ4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GWMkkw80MANt4r5YV0GD44Um7JLS7FMoaybOL0CoS30=;
-        fh=rCsl3ZgrOnQFAtYlLDszO/97bnagwqxnde2+4v1FVLM=;
-        b=U+Vi6gr6jusT6NEDfG2W8oZIgfOfTGJRcuEvfyvSjMI4fnvX90Thwjzaj8J257qqzb
-         GJQScWKeNfNPR8k0wbOV6gZsfPVWZQYM8R62mTCqBusgr3xaFlxm8/L+Wr6gc3fU1bBs
-         VCzrCXBf09DKwoDV7Oq62JQCSJaEQXgbFvp91tpKwBPIKMOGWA8eEuWn3TncJPKq345j
-         Q6WyZIMOZrLA3Rpa2ufbjdq5kp2zmd3A+mf+z2IbsdQZ5mxW18Ks35EILCP0imfp9C73
-         g0sMcVsqiFkecAZqhq/fw0iqIycztPihhl6bzQjvJJXxXtijSUmqDxJ2CSvJraEDmNAZ
-         XS7Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782151062; x=1782755862; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=GWMkkw80MANt4r5YV0GD44Um7JLS7FMoaybOL0CoS30=;
-        b=gjx98eF1fADA1evin4ZNoI2vnCctYWOnj5NT5by4/xRIcdiqDqMafPcXwNJh62OY9w
-         Ur8u+w8a/Rpmn+ThcK4j/S6LJyGpHqht/yO3NccOTuSMX4eqXA5VjN8ulLsOfkmaLMdR
-         cl9/uq1rZ5I/+6g4RiQu8pgkCNW4cJSIpo/pRj1wIZZPez1K+DFP55aeQY5xF65OmLXq
-         65LuNEWUVbEAy5X2o5nWL3suNUFuobB8EOfhtpXT/4jeGrxvZcP+RvBfw6TJmahKbjlY
-         JhMweNq70ajyFC4hNn2wljw2vGWmHio3luYs3v8EQGfjJx27idTUW0slJDhjQCRdp4d9
-         ocUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782151062; x=1782755862;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GWMkkw80MANt4r5YV0GD44Um7JLS7FMoaybOL0CoS30=;
-        b=YIKp525yHIZbalper0XEittY8G01L6xZuK9S6bsaloFhS5zFwAB7hBXso+Fx/FuJqa
-         yqIqK6ulAlyMI8XJ4BhRcMP1kEzJW5pLm9vb5Uij84xYBLh0mjceutYa1nTsFkN2fDly
-         dl0JSmGETaLyEmzxnB6gV5KXUaxDirObva8rrE2UNTCD/iI+bkaU2wYhgzfs03lxXp3U
-         YYhMGKZKDjZhMWkYgWf13ESerOFqjQTIv1njxeNwrfHrLefPnFb3ZdHJVd2qh9V3yxix
-         ZULxelDgMjfcCYIZPQsU/ssY5htpSd+Ox5PC6aQU0sBjE7K9FGPziA+PWo+6gfYoW+fU
-         adYA==
-X-Forwarded-Encrypted: i=1; AFNElJ83H9uB7qTkobtRJTCLUEfkXIh78HpMAxCLsfTvyxyl8kpGRcJbhfB1dcFbP2bjrakjb9RQukt1BA==@kvack.org
-X-Gm-Message-State: AOJu0Yyp0xLB8GxYZieZfPpccY/8g41eFLfxLYrOdwHCfgPDA28d101O
-	C8lrYMU2DmisLepYJ3yVNcxPGaALYeqqlbH978QkdPautLcattmghhUAWOJHczkHXbrWrLd30tB
-	yeYCZXDK5VxflNUZFtexQMx6U59BvW+e4CKhRgCEY
-X-Gm-Gg: AfdE7cm7MkNKAP+lku86inml8wxohoPWZcZ1fzlaDF6FghbZfd687yCj16QWtMQnJeS
-	O9q0nAqGNxoAie8EtCYMSbt/BdBpjf7SwdiGbGZo2DBl5HnW2dJKIAfOW9HD0uxlGKsQwFKMRdK
-	uaqHgtX0Ehba2jUeEZ5DLxZgpzilqEAvnU4sgq4Dsd5FoQQotQzJL6K+++p/rdMvOFgGjHnN353
-	TWDX0LVVFadXBMIGH0/wDwtME4E8O77VeGDmFR9Y8zZ0IL14WjjMWE8agjD/0Y3h08MzhI=
-X-Received: by 2002:ac8:7f0b:0:b0:517:99ea:ab77 with SMTP id
- d75a77b69052e-51a526f3a5dmr378051cf.23.1782151061635; Mon, 22 Jun 2026
- 10:57:41 -0700 (PDT)
+	bh=55jLFm1tgqLZgP3j5m4nWSNV/0r+16xUHlzXotnzTow=;
+	b=eFcOk/nem0s86/gsn0q/4KZWXK+ZL0hdOPhKF+b49D/C1XITDzDcRE6wr1l1lplvyUqQ7V
+	LOhtWJnaUhYVqTxFRv94QczqMscqqmdIAE1wUgjLF6zGaaYNrx91b200O7PT24hRWsR8vQ
+	lSoUmMvMb+QivvaAjaVHVDwvTIRmE6A=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JQomjpaT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782153109;
+	b=wyqEujPY4px5Bvx9PNNhZRPAgegpaURiPbIms8XBNFh3cf+WPl/EWHy+a1z+tmm4kMQJtE
+	UzDS6lD9ocy6QfKZaNlNWQtnf3HqA8BpRhg+mRxgqe/wbWrOl4l6yy+JxNjFuJtbelSguO
+	13eykOtaEk0hgqsl2eLjGldJdVtrkeE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DBCCF601F6;
+	Mon, 22 Jun 2026 18:31:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2601F000E9;
+	Mon, 22 Jun 2026 18:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782153108;
+	bh=55jLFm1tgqLZgP3j5m4nWSNV/0r+16xUHlzXotnzTow=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JQomjpaTOvNfiV4dqstZ06FLLKreOf+7k4xRDwv+PPIswZU3deua7kH55Iedu5qBn
+	 wOILN2apLlBtP3rV24JczXz34SIL1J1YkUWuxHUzZyWL465RBsnd2UsXE5oRd5XfuE
+	 GdEQ3s7obJ9WUeqZkVCP+oGrqNnP1nQJ75iFI+flt1JlyBVcmlrFTKso3xILLp/LTV
+	 SIdWcWz+Jg7nRy6AoEZ9QLMukxQ+1LjVFd/oSVeDQ/8p+Ek4oKFXVRnik8DWm2lB0d
+	 F5WV16ZnihRBc0BTOvRpvGJol79dT+lLaFmeVU68VJFkIMtOAXHkZQMYSVxONuhsf5
+	 +xg6Kr5aH5ejg==
+Message-ID: <7ffdf957-41d9-4201-a9cc-ed2809929d3d@kernel.org>
+Date: Mon, 22 Jun 2026 20:31:42 +0200
 MIME-Version: 1.0
-References: <ajV0TbwEyaKMzoa6@lucifer> <ajV49Fyogfa6aIjy@pedro-suse>
- <CAJuCfpGdxsPDbxOwQFdY+Xt7mZGFvoKWmed6FteTongvFgjgww@mail.gmail.com>
- <ajWAYBXHJniJAO4u@casper.infradead.org> <CAJuCfpHF1qtpHZQzLmLi7xz06OWgBfduHqBHF_-0Vkx7OtBmcw@mail.gmail.com>
- <ajWXEn7gECvgG7F5@pedro-suse.lan> <CAJuCfpFfr_SQ4ZDFojOkDKWbO2dKdL3pUPA06B2ZC-usUnYRgA@mail.gmail.com>
- <7ftrqtta2bw2xxtrzelrs46t7khr7tf2vmh2ur2mhdphtymlsr@rqbd3pfjxdp7>
- <ajk-NMghY50F6Sli@lucifer> <20260622095855.50e4276e331cb2d01db7183a@linux-foundation.org>
- <ajlsum91zeh-oRz6@casper.infradead.org>
-In-Reply-To: <ajlsum91zeh-oRz6@casper.infradead.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 22 Jun 2026 10:57:30 -0700
-X-Gm-Features: AVVi8CfXgyRAyliFo4Za0NRqWcCus8s-Epc8nE_M6ZH607LHMdm7JUR2m8-lFu0
-Message-ID: <CAJuCfpHaBFtgAyE4jum-=p3u8X3STi3e6i6==fQR+0ksaU2wwA@mail.gmail.com>
-Subject: Re: [PATCH mm-hotfixses] Revert "mm: limit filemap_fault readahead to
- VMA boundaries"
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Pedro Falcato <pfalcato@suse.de>, Frederick Mayle <fmayle@google.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 86gdahxjhjngdsus3pqizsqu3ouehbci
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lance Yang <lance.yang@linux.dev>, Rik van Riel <riel@surriel.com>,
+ "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260622155913.280355-1-ljs@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: q8o7e44h3da3874yajegg9wcqos1p166
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7C48020002
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 77511A0003
-X-HE-Tag: 1782151063-33339
-X-HE-Meta: U2FsdGVkX19DXFXqZfWKAK1g38UJnLHjZkjlmNQzqHqVSwjtdV5lbsfskVhFNAihkdhpdfWjDR76tE+dn+mLWS5Ry3xEELtWQnJmGCNkD9cCEseV58A1w1TwxjWfQ8c2UveThh76n/hwiNGHqpUMrkwEBtRo/GVFQe4eBB1e2VD9xibiTlZ3J7W+rgHgU5hg8FinVmXp7H6Vb09tJ7CvVLdtdQex3Uk6/OiREIN6c3N3xIVbwFDEPgMTGsWK2BPETYAZQGIpDWouyw9vkWKd+wp01PT1r67q1S8pQyZmj8k6eWDsgRFgLzbPusA9uNoPXk/f03vEV+TAjjU/eRDvOBGBgk5iQ6LbZRdEqarPT/TE9wM78eSbB5MDKq3OI9lwQa4X1b2LihhMAicpR9tIFmTxqCNuzVfXxDOz2TjfVfMRAwvEmPFmphqgWD3Zk73lQgQDPgcPOIXdHGJA7g941+JAHav9cI9xB+qgVD2q7QWPvaUUgUpab3tk4b0QT4TqYr0BiaCwG1wjbVqGVhc7ChJOcsO3qFGvvtQceBvFYuZzHmIXpX3bP7rLqOPHmpsB714m/n4Sw06PUgUD1HP1+MAdUjrlU1VCCG++l0RspdCHk7uzHEL44Wfj7HnJ3lFO84JfHwZWUBgIPf4u3KYZQ92ntgPtc15SZ3zqfuG/AxcYE6ZYHftQKn7lZ2S6pJd8Xturo3roJlmX9Veoa1ef52sGIbrWnxGycBEkLtCgd6TlSzMVn54iHLJJRRgRDV1f+ca/xtx2DLqTD7bZCAdGoMuzlrbqEO5GD7RQ0hPp1WJzJfdlXZKLOFpSxm1/XrNKDVfpD8P6ra+9eE0luk5XIueV/bduXp3NleMS2OjW4ORdmnnpPNhWhn2KdlscNnyvQia5fdow9tAp0tmiRth/nFSqn7VTFRplnXqyCWwIxn5FjsOGJu3H+iHUib+XBXKKX6RJjka/ng54Voss1KL
- mIK2ZsTu
- +T4tClvagXtTMwnms5KYengHuavswuG5VED/b5u2/TuD8rCpNBLErxDiLndeyUFfzrdfNgL5KLjXHkNrTfo3390Q2l/iSH3/qssoz4dO0Iv7rFkzxsE1KZj8YFIVvmxwAQ9vCBp51+3uOq/8ZuJQvzMGLA8I1ZU94Q1HrbeA3g0L9Ko8JKS6bxl/culrCYtni6RFAzfa8FnK3ne9zCtg0m2+POvihlcx/GEND4WDaqLkCQXSdfsXJlA52ozT2JKvx/jhDW+C795eGIW2PwD0YWOPrXmfXehS2J3qxMm4ah8WeKUxkC1SGgB8KqXLSXLijnoxT48hghNqcJJJ1LBbr0eHGSA==
+X-HE-Tag: 1782153109-383022
+X-HE-Meta: U2FsdGVkX1+3GvFubZvzEC/ocmUxODI+Vq9+eyNC6dRqYWw9DVGlFpiqDhk1bUhcnVaZe792KMLZYPi6lrT5Ntcno/kjEiipB3Wwwx4l+aJ7m+EYLxhbRkgZHwoR0mwuXt4Jf5fxM0EflwfhY15U63zKAQILZh9sNUcWKn+MGB2CrUCIeZLJIlYLt/lbnec9u+7B/ok0gJw+Diu/dI1L2QDaeEBL2iEUw34Lb76svdXfNcAHKdnLKkW4hVG6HD9Hcm9sxDM4v9D7EkioeYGKsrildN+u/cQzuGo64qSdV5gX/tfGeKpIsNNeMW2eAxjaGFocTCeeLWVkfumnyvC1kLPu9mTjwRopXHTrPr7g98fk2R9RsquejYvUSSVDOPYT19Ph9pt47hoLA/TO/w3K+uB71jmo1HgdgKqPme1Sysbw50H2L4bF0Er5NzSiWBq7DXaWc/ZyRUu79jLKSgcJGEhweY0jP/rxSdnPbNsw8WEYyJ9m5hq8GIVzMZx6BgGrMf0heE0zsZ4VtD+5IR4nfYHhoI8e11dfz4xR7U0QYNo+A3LzTpRN8D7/Vl9MR9ysSybiVifKtPBJH6eyiaGM64uT5hZzmhx4NRKzbogoy7wHTWlbfI/bWPrySatCAm5gU2jwtKaiFa3RV6ryZr56Gzr5R0q0CSH76HFXyA1f8Rjbex5JWNyjBt1l/+sEgZntzcYmmh5MwN8tHD27ra2WfFemM8TC5vFEtk4a/b/3454651M4CcqVnzkcMRmP8tJZECzUqxvE9mDy/Ga1nlzQ8GUNGoOeKoRgkasRoeR92pDfizDN6zn+SG69zaYPD7LvrHshXbxZoueYbP5EjklghxBWND2OLtMP7+gXuhPlu+WOvR9Phz5DO5NgMxlD7n+U3ucG4fYyYUoORDlQ7M/U6wb40OcGjfX36sm+uQSXpXL/f5dpQ6E6kUOJy0hfDvNdGo4D+hev3lvQ5jszDhi
+ i9ci+R2s
+ n+BBUVFg5EGSldchaWcJ1ObIiC2TM6ccjlg5znwn7K2Qjf+QGfoBktda5Fugjk9ThEGw5/+u1fuHdw5KwKmGeWoOdldk3FN9kCdKWPhS+Ice7lF9nOC84Qi1atQzdZlsnaMYdS4dy+cIasLbQSR1eZgxqooXhFuPb2H5NVczbFx62woY1DjjoN7ZchlF7znVtYQ9aElSjrKffOi5XS2xKDHxnmJFyTCgP+HUZN3kGHvSiqbZSqEpZLYk7hp9IupAv+tTS5m7uQsc5q/CCTdjfcjLlRMgSTEhB+SgIMU47AL1qsODFBzMFHzW8Mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,23 +141,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 10:11=E2=80=AFAM Matthew Wilcox <willy@infradead.or=
-g> wrote:
->
-> On Mon, Jun 22, 2026 at 09:58:55AM -0700, Andrew Morton wrote:
-> > > > much as I personally find restricting mmap readahead to a VMA a sen=
-sible
-> > > > thing to do). We just need to figure out how to improve the Android
-> > > > usecase.
-> >
-> > Would a helpful heuristic be to do what 7b32f64bc512 is doing, but only
-> > if PROT_EXEC?
->
-> I was wondering the same thing.  But I think it's right to back this out
-> for now and try that after -rc1 so it gets some time soaking and
-> bot-teesting.
+On 6/22/26 17:59, Lorenzo Stoakes wrote:
+> Lance has been doing excellent work reviewing rmap series and has proven
+> himself to be a great member of the community in general, so add him as an
+> rmap reviewer.
 
-Thanks for the suggestion! That sounds sensible to me.
+100%!
 
->
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
