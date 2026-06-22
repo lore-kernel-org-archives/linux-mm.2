@@ -4,102 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5ECB6CDB466
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 01:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACBE6CD98F0
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 01:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F0FF76B0088; Sun, 21 Jun 2026 21:40:01 -0400 (EDT)
+	id 839B66B0088; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E72B16B008A; Sun, 21 Jun 2026 21:40:01 -0400 (EDT)
+	id 7E9326B008A; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D149A6B008C; Sun, 21 Jun 2026 21:40:01 -0400 (EDT)
+	id 6FF7D6B008C; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A13C76B0088
-	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:40:01 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A18591C551C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:40:00 +0000 (UTC)
-X-FDA: 84905842560.01.691889B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id ABBB4160007
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:39:58 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OlsUkLk+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 43DE26B0088
+	for <linux-mm@kvack.org>; Sun, 21 Jun 2026 21:59:00 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B373F1A0550
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:58:59 +0000 (UTC)
+X-FDA: 84905890398.19.F72822A
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AB82E40005
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:58:57 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NxFaFZSm;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782092398;
+	s=arc-20220608; t=1782093538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rx0mLq1GyG1gPfhWohtRuJsYSfIXcRSpekf/XOMayPE=;
-	b=AzClLwhwo20fKKAAdS9KvvdpyEJixWoRhB7D8imCBjlTzA3mRV92JjexUeahskd3svAUw9
-	zPa1xpe16gsp/0uRFhAzstQdOwkewI5BCAvrbJCOy0Ub1DvDyp5e4waXQkRqjmyykbuA6l
-	9K49uJTXiRWJ3a71ytJOTTHjkx+2/mE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OlsUkLk+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	bh=0qpRzlSyLktZxcLZDCE/8RBM2MX99p//TZMgpKeEF9c=;
+	b=voUoDVLE6KBTZ3JVNUluOTXRnZ4ffGyZ38tCBsl/mjKwZ52raHsuBMbkVWtl507d+gUKCX
+	+L0HY6BbyM37+BkfsIPDteg+SEsmVDzPji7XI4pOexWi5ms6DG2W2A/6og/CGTZTcSUW72
+	mgG04HuVeVw9FruYgGxAYqp41i3IjrU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782092398;
-	b=10VIETn7qiVgsV5RxLeoM3emi9h1FHiPCuaf2EXlmfscvHawIRtUcd0pWgSscG/QXZBDEF
-	eDLAyB0q21J2K5pOztpbDEW+9psXRjuGKe/xQX/XMCo/YdfCpvqueoTUcosivorMF8/zsW
-	6Mkefvr0DTjgg6GAUCZ11ypIEBNIKTU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0453444F1
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:39:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8E61F01558
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 01:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782092397;
-	bh=rx0mLq1GyG1gPfhWohtRuJsYSfIXcRSpekf/XOMayPE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OlsUkLk+fc+Hyi466MxqhAa76hkwJ4T//hd3BpWmTUg6W5S0jHxOeGmV0bgnRjxnr
-	 3hvhy8UdUVXlb7vmQqRNukPibA0KXst8GHmyw6U7CBmHzTKGbrJqhkJppbDPWy0mis
-	 4PamqWbf350aTkTN1Ja1g7E/wAUT9DMGIZ7z90cS2jHHI8I245cYsgfDj9f74JtGpI
-	 qrGV7fwgAFGkOUOXiVA8zZmt/p+yG2GeFBWUWvvIB0QrjO4cAJvtf1k0Q2hgTb7LDL
-	 HleXs2k4vJxl2eh6XD7Irnd66poVyDB4GRK3dRwFzSGDSlbrUXb4xOXSF9p4muDTbx
-	 1aqFRQBuhboKA==
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-9157b94a07aso402075585a.0
-        for <linux-mm@kvack.org>; Sun, 21 Jun 2026 18:39:57 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwuNZKZoblPa9QXTmOBz8FWolDOVFpvXZar8wC6x16zp3Hp/eoY
-	rffd7dw4If6HIInLdlYsU1S9tsivBFGH46yYTMM0OLZzdhEXlEX4941Y+fMmx92w3ZwJ59HVJPT
-	2XzRD5VpK7s3fK49CnxrHa9g8Tg1GkP8=
-X-Received: by 2002:a05:620a:29c6:b0:914:7e9a:2716 with SMTP id
- af79cd13be357-920d46198e3mr1850079885a.38.1782092396983; Sun, 21 Jun 2026
- 18:39:56 -0700 (PDT)
+	t=1782093538;
+	b=2if2DXAMxqSyemKAd2i5WRVKMg+9Dgiu9EAW8UhMRp58MQAJX63tsvK/rIaxgY15AqG93t
+	mWpROcmKCNdXuYGzkTePLLT2E+DjDdIeGeD4loObAAGKj6SXKjOavOyuHVr9C/S9fQA1Un
+	JmC/cE8xhGZZ1ATbI/HMPyLdJXoOpP4=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NxFaFZSm;
+	spf=pass (imf11.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <267e070f-adc2-4f42-b528-746f852d9ef4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782093535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0qpRzlSyLktZxcLZDCE/8RBM2MX99p//TZMgpKeEF9c=;
+	b=NxFaFZSmEW+ZWMeELNcIGCdhQ61H6KXKppMDcfRpFas7ME15wP+WUEtZZQoKET/vfzZHJM
+	T4aMhPb8ktKruOCy6L+uoJ7VUXfLkbV3gpbyN6nq+y+oAc8YqFniPixLSLsy3WzjQKg4NR
+	VyI6gSHfcIUoVL1ANtxXoVvryXQrYd8=
+Date: Mon, 22 Jun 2026 09:58:00 +0800
 MIME-Version: 1.0
-References: <cover.1781843449.git.ritesh.list@gmail.com> <e519e98f51be2d310367e39df0935da79001e535.1781843449.git.ritesh.list@gmail.com>
-In-Reply-To: <e519e98f51be2d310367e39df0935da79001e535.1781843449.git.ritesh.list@gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 22 Jun 2026 09:39:44 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y++uh_4Dqso-fafywFCAvTLd-JSRJ8RZ6HvNLDkaLUJA@mail.gmail.com>
-X-Gm-Features: AVVi8CfWnOC73cLiX1qD7RC8Yb8ND5XGWQFATC1PtKwV9KhKnymRT10brK4O9Ng
-Message-ID: <CAGsJ_4y++uh_4Dqso-fafywFCAvTLd-JSRJ8RZ6HvNLDkaLUJA@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] mm, swap: make SWAPFILE_CLUSTER runtime
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
-	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5i3cx9icqj8c7kcp34zw9dunc3dmzgw3
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: ABBB4160007
+Subject: Re: [PATCH] mm/page_alloc: unify
+ __alloc_frozen_pages[_nolock]_noprof()
+To: Suren Baghdasaryan <surenb@google.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Alexei Starovoitov <ast@kernel.org>, "Harry Yoo (Oracle)"
+ <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+References: <20260617-alloc-trylock-v1-1-83fd7858832e@google.com>
+ <2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org>
+ <CAJuCfpG48TmvaiaRvnL-NXKU6nn55D3bks2DgzAc0URsZhAxqA@mail.gmail.com>
+ <DJBHRVM65A11.1OL2M9MXN56H@linux.dev>
+ <45fcc57a-ec8d-46d6-9c28-065d001c081f@linux.dev>
+ <DJD0AGHTWYRN.1YWG5MDH87WVO@linux.dev>
+ <CAJuCfpGtymV=Tmsvs8Z-oF6pi7mD54mRiZNZtpF3UpYwBL7Uig@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <CAJuCfpGtymV=Tmsvs8Z-oF6pi7mD54mRiZNZtpF3UpYwBL7Uig@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: kmbbmap3xh1bkyyr4smaokkhfkd83sdp
 X-Rspam-User: 
-X-HE-Tag: 1782092398-681115
-X-HE-Meta: U2FsdGVkX19qt2ESO6w8Vcd1Vlt5Qb3VnQ0ZAxc2+MRygtFiGjkH0luuq61uZNpS5MTINwg7UY1cz5FsIGQV+RMrNx+bsg5dVFVFfkPI9uX8DYoV6vjC8i1ewDH1rZ3GqfXJZHg2h/mUDkrU1qlYE0Bcy5Fp/cA6TF7Jf61lSZMw9ki4WV4RAdfnD/qUp/mot8x2lyNoxHafz0tWSVyAWj0F1bnh0u/8qlCO5RHeAmTjILx6LKhbXCh/Z63wtj0wWbGI2QbLd8gNmYvVpca/qfrwM0/44H9S5Oq6H6fOyzrMNLBHf9FXhL/XC1tLpo3XXHhOy9PoUs5HBhN+ng3PkwsNErch4t9RaXbzvyMntltQkFr07i4syF05MYtGhiqDzvST+IBJcUXNDrl9f+CE5E98qjglbkeIfIOXKDZT6TMLMOhjwh0CE/Apf+51NIKTq9WLq6XkQqJZxm+LkXlww67myFg1HILW/gEdLAJOGF7/xIhR2wnp+AWm+cTRmT3F10gqxRNjyf5r6SccoEonpjNXWvjR4xw3f8U189Fk3HWXH5FzlwUYTAXepvbx0eK7C5qCnYWtd6G6zRwVMjOljLias/Aba+PSjHNoFH0Br5y2Baf2HNbwkD6FN1ldm4SNPQWscy9Z1E7u0tLYlffzzK/0VirssmqQl3LRP1JowSwZ3kQ61/i9vzOygauEauhEXZtWauokackN0SYAioMDAaMZnmDF/xuzhowSfdxujXS9gCX+XtUZLJRxIVthJqMU9tQal2INAv9UBuCtkVJ8RF274bmummcI7BZKhv/WEeSJTIsyaUGU5V7SATW8ZIJugQdJzCiZwUMPkvPZpEu08EykQwOoIAa4SRkxAk00GhAsqHMJvhr4wh2p2IPTSPvnE69bs3CsnNfWzWEUetauB7NLM/JQlQhIFGkukLftcaoh0HA2o/4/NXfvSikRpORr7cHaFO3UoyWoGNjx9i8
- qxSBEnA6
- OPCOk7tJr+VMGQj9n0LggHf3GswLyQAqhGBAMgeijHnYgXQdRuVso5aKzk68BHByCxWsOJjs8e48pjXd1yahw/lI8WjtwJSnazT7KMBuoyrFh5qB3XZUdYlfgUZHnEJoYFNfqwazY5N7Ga7fqylyDpqIJWBlzfcFVfiAMZ3C1sSSkkMV2lhWy6RrhMY5iYDkWN1kORrx58yEzAV9ezoeRC+88jdmofbjbAjUaegx3B7g+Rueot9twQiLD/4AgFIrcLbA8NMQU+FgKU3Ddd7V5aTcJ1DwwYzKB2od6JtSJmztIE8Ukci3p5IJFldIUy2lynHGV7A+LpnOBna4LaiGdB09NcwubDsfLKdHWj1+AegoW/hBVx5eAB/WGcsWhrD7l68DJYF6gpeqQfXDILW/6DGSMVA7mGmq1SJbxQ0Qo+WkzHUvUv6DeaRJCXQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AB82E40005
+X-HE-Tag: 1782093537-456778
+X-HE-Meta: U2FsdGVkX182Q9ZtrNuG42o8jAfhS99Q2OPaSl20anbfdRWeOz+BS0MygoMmtmPIwNlgrvEc6it7YeholY6JAxo9fRG2RFZWJyVzHU3fhBhN8FQeX7Im+lIJknF2vWHkulppN3RK1IOgb+8VKB2/Mm8d7e67ezJ1Ok4cHIieE85buF34mutBeCSoSzvbej3dpWJRreUMNFEPtnM36OH5bqKpDDbSYGxm+vcGXC3gqKBNKDz7BVwdaM2SOa+m/s+j9hw7baJyTwm6+aAAb1iNo+OXlqrVDVW2GRoYBkQIfEC7nMVvBCE+FtDyXeJgR9OPgjgaQUVxiPn1MOZy9a3ynbG1Zx1kJAciO9tydloCKGNcPPb8GVgXlY5NtzKO3E7c3YIJ7+eHYH2KIu9RXSO/le6wSAcpPk2amrDYWxbeZc9SjPd65LXGsLOOGo1PdCpnny7eI96ptnhoO7z7kywvLP3Z+9hRofo9EMAN8oskKIoibZ28vE308sDu2ZaTvFssukL7DX5Xb3gZOvqkU+lU7Mfwys2klS8FC2szvG6chgd4+GV/AKoQhsRyuxIJP4YBmpGpWUYIlKBjdvvxuoAT/WLPvV2OwfmlWKXSHEX7uNL3JxdMZ9SVX8JHUrzEn8PEsYRlHUpuCOwkiZs9Z9rzxFF6i77CCiFgXWXv8xOET559IM8KKF859sbWzOtmmdtCR2MZ+LNnQxAUiPlynfEnVNC4GMWb+/MftXP3UYdYHm7fNcXIyZFEuMNgBtYrM5R2j+9ftl9thmS75LvREkCvVxQ+A8BMq6wZIxkV1bHT75PlOWrGYDlb0GMzzq0sHTw0vCDuvufmYyz5yExd4IcIWcklinzMOG9Ihai/xmE3jZ89ag7BHaCSYS6VgcWJKzSibsfO3LssDjEG+1kpn5VKfGkcnhY48ad7yLBLRCMxPCAxqipodmoy51jN+rTt0/j9aoNmH1uAc92K6HwgNpe
+ Wv5reSP4
+ APpcrLmToA9Jh0dLarMI97edktIWqGPrdDJwUglGw9VGu+cV9i2HwyvvS4ai9PGaWQBWZXczf3qFQOF/h3LekB9FTK1ZSPDgLR8y50ha0M7eMacy+vyJS8qKEaVuSNAmR3HUHEIZP4msU3w5YnG0ZBLGUYS4OvAxDw79ynEwdcokZiA5LzL8kG/n4Wzy3gKUPSWNdniPQvtxejB/NFJZe57YoLVdItkasKc5AZhx9xhbSCh1Zc9ydOagOWzD479ln05AbgbaJM+Xi01SVqPW2v8j1fjZKPBxWDhiyJMfSjfHwTJR6MncKhvRTm+6dHoXrDLBaYxQm8xIamujgb2cVNGP47v1ZRwRlJQIOPkfz8Tt0XzjSxPo4xtj+rDVYuCRzh/7FttMaOZOarFMHgfbdAVu5ew==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,67 +114,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 12:41=E2=80=AFPM Ritesh Harjani (IBM)
-<ritesh.list@gmail.com> wrote:
->
-> On PowerPC Book3S64, MMU is selected at runtime, so macros like
-> PMD_SHIFT are effectively runtime variables in the Book3S64 code. THP
 
-Not an expert on Book3S64=E2=80=94could you explain the runtime variables i=
-n
-more detail? Does enabling THP_SWAP on PowerPC cause any build issues?
+On 2026/6/20 02:08, Suren Baghdasaryan wrote:
+> On Fri, Jun 19, 2026 at 4:57 AM Brendan Jackman
+> <brendan.jackman@linux.dev> wrote:
+>> On Thu Jun 18, 2026 at 2:22 AM UTC, Hao Ge wrote:
+>>> On 2026/6/18 01:14, Brendan Jackman wrote:
+>>>> On Wed Jun 17, 2026 at 4:49 PM UTC, Suren Baghdasaryan wrote:
+>>>>> On Wed, Jun 17, 2026 at 9:39 AM Vlastimil Babka (SUSE)
+>>>>> <vbabka@kernel.org> wrote:
+>>>>>> +Cc Alexei
+>>>>>>
+>>>>>> On 6/17/26 17:29, Brendan Jackman wrote:
+>>>>>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
+>>>>>> It's not, it's ALLOC_TRYLOCK! Thanks for proving that we need to rename it
+>>>>>> to ALLOC_NOLOCK:
+>>>>>>
+>>>>>> https://lore.kernel.org/all/DJ9QPTO2WXNB.10E88ZHWRDHB0@gmail.com/
+>>>>>>
+>>>>>> So you just won the job to do the rename :) I think it should be done before
+>>>>>> this patch, so that the new usages and other _trylock names introduced here
+>>>>>> can be done as _nolock outright.
+>>>> Ack. I'll aim to send that tomorrow once Sashiko has caught up.
+>>>>
+>>>>>>> main entry point function is significantly different from the normal
+>>>>>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
+>>>>>>>
+>>>>>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+>>>>>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+>>>>>>> exposed to mm/) and then turn the nolock variant into a thin wrapper
+>>>>>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+>>>>>>> how some of the wrappers in gfp.h do).
+>>>>>>>
+>>>>>>> Rationale that this doesn't change anything:
+>>>>>>>
+>>>>>>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
+>>>>>>>      the new alloc_order_allowed(), alloc_trylock_allowed() and
+>>>>>>>      gfp_trylock.
+>>>>>>>
+>>>>>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+>>>>>>>      previously in the nolock variant:
+>>>>>>>
+>>>>>>>      a. Application of gfp_allowed_mask; this only affects early boot, and
+>>>>>>>         only flags that affect the slowpath get changed here.
+>>>>>>>
+>>>>>>>      b. Application of current_gfp_context() - also only affects the
+>>>>>>>         slowpath
+>>>>>>>
+>>>>>>> 3. The slowpath itself: this is now just explicitly skipped under
+>>>>>>>      !ALLOC_TRYLOCK.
+>>>>>> I'll have to ponder it more closely.
+>>>>>>
+>>>>>>> Ulterior motive: adding an alloc_flags arg to the allocator's
+>>>>>>> mm-internal entrypoint can later be used to do more allocation
+>>>>>>> customisation without needing to create new GFP flags.
+>>>>>> Ack.
+>>>>> I think this change might also help us in removing __GFP_NO_CODETAG
+>>>> Nice, this actually looks trivial? I can probably just tack it onto the
+>>>> v2 for this patch/series.
+>>>>
+>>>>> introduced in [1] and being the only user of __GFP_NO_OBJ_EXT once
+>>>>> Vlastimil's patchset removing other __GFP_NO_OBJ_EXT users lands.
+>>>>> CC'ing Hao as he is brainstorming ways to remove __GFP_NO_CODETAG, and
+>>>>> this might be the answer.
+>>>
+>>> Hi Brendan, Suren,
+>>>
+>>> Thanks for CC'ing me, Suren. This is indeed a viable approach
+>>>
+>>> and I believe it brings us one step closer to removing
+>>>
+>>> __GFP_NO_CODETAG entirely.
+>>>
+>>>
+>>> Brendan, I'd actually put together a rough local implementation
+>>>
+>>> earlier with mostly the same core idea as yours, and this change
+>>>
+>>> would indeed be minimal based on your patch.
+>>>
+>>> Thanks a lot for being interested in tacking this into your v2 patch series.
+>> Oh, I just took a look and it's a bit more fiddly than I thought because
+>> alloc_tag.c is actually in lib/ not mm/.
 
-> swap code uses these macros to size some of its array data structures
-> based on PMD_ORDER e.g. SWAPFILE_CLUSTER macro is used for this very
-> purpose.
-> Hence this patch makes the users of SWAPFILE_CLUSTER to use this macro va=
-lue at
-> runtime and also modifies swap_table and swap_memcg_table which were earl=
-ier
-> using this macro for defining the number of table entries.
->
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> ---
->  mm/swap_table.h |  6 ++----
->  mm/swapfile.c   | 17 ++++++++++++-----
->  2 files changed, 14 insertions(+), 9 deletions(-)
->
-> diff --git a/mm/swap_table.h b/mm/swap_table.h
-> index e6613e62f8d0..90e2a7852300 100644
-> --- a/mm/swap_table.h
-> +++ b/mm/swap_table.h
-> @@ -8,16 +8,14 @@
->
->  /* A typical flat array in each cluster as swap table */
->  struct swap_table {
-> -       atomic_long_t entries[SWAPFILE_CLUSTER];
-> +       DECLARE_FLEX_ARRAY(atomic_long_t, entries);
->  };
->
->  /* For storing memcg private id */
->  struct swap_memcg_table {
-> -       unsigned short id[SWAPFILE_CLUSTER];
-> +       DECLARE_FLEX_ARRAY(unsigned short, id);
->  };
->
-> -#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) =3D=3D PAGE_SIZE)
-> -
->  /*
->   * A swap table entry represents the status of a swap slot on a swap
->   * (physical or virtual) device. The swap table in each cluster is a
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 78b49b0658ad..4bf11c5b87eb 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -129,6 +129,8 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, per=
-cpu_swap_cluster) =3D {
->         .lock =3D INIT_LOCAL_LOCK(),
->  };
->
-> +static bool swap_table_use_page __ro_after_init;
+Hi Suren and Bredan
 
-Does a static key help here?
+
+> One option is to move alloc_tag.c into mm/ (while keeping more generic
+> codetag.c in lib/). From a quick look, that seems doable and probably
+> the easiest approach.
+>
+>> How did you tackle that, can you share your implementation? It would be
+>> nice if we can avoid exposing alloc_flags in gfp.h.
+
+First, I introduced the ALLOC_NO_CODETAG flag as shown below:
+
+@@ -1478,6 +1480,7 @@ unsigned int reclaim_clean_pages_from_list(struct 
+zone *zone,
+  #define ALLOC_HIGHATOMIC       0x200 /* Allows access to 
+MIGRATE_HIGHATOMIC */
+  #define ALLOC_TRYLOCK          0x400 /* Only use spin_trylock in 
+allocation path */
+  #define ALLOC_KSWAPD           0x800 /* allow waking of kswapd, 
+__GFP_KSWAPD_RECLAIM set */
++#define ALLOC_NO_CODETAG       0x1000 /* skip codetag tracking for this 
+allocation */
+
+
+Then, mirroring __alloc_pages_noprof, we wrapped a helper function named 
+alloc_pages_noprof_notag.
+
+
+@@ -5252,13 +5335,25 @@ struct page *__alloc_pages_noprof(gfp_t gfp, 
+unsigned int order,
+  {
+         struct page *page;
+
+-       page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, 
+nodemask);
++       page = __alloc_frozen_pages_noprof(gfp, order, preferred_nid, 
+nodemask, 0);
+         if (page)
+                 set_page_refcounted(page);
+         return page;
+  }
+  EXPORT_SYMBOL(__alloc_pages_noprof);
+
++struct page *alloc_pages_noprof_notag(gfp_t gfp, unsigned int order)
++{
++       struct page *page;
++
++       page = __alloc_frozen_pages_noprof(gfp, order, numa_node_id(), NULL,
++                                          ALLOC_NO_CODETAG);
++       if (page)
++               set_page_refcounted(page);
++       return page;
++}
++EXPORT_SYMBOL_GPL(alloc_pages_noprof_notag);
+
+
+Lastly, we exported this function in gfp.h as shown below:
+
+
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index 51ef13ed756e..ac6e837ac8c0 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -234,6 +234,9 @@ struct folio *__folio_alloc_noprof(gfp_t gfp, 
+unsigned int order, int preferred_
+                 nodemask_t *nodemask);
+  #define __folio_alloc(...) alloc_hooks(__folio_alloc_noprof(__VA_ARGS__))
+
++struct page *alloc_pages_noprof_notag(gfp_t gfp, unsigned int order);
++#define alloc_pages_notag(...) 
+alloc_hooks(alloc_pages_noprof_notag(__VA_ARGS__))
+
+
+Hope this information helps you.
+
+
+Thanks
 
 Best Regards
-Barry
+
+Hao
+
+
 
