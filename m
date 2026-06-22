@@ -4,83 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F4DCDB471
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:15:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07562CDB471
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:18:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75DE96B0093; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
+	id E418A6B0096; Mon, 22 Jun 2026 04:18:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 735036B0095; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
+	id DCC4C6B0098; Mon, 22 Jun 2026 04:18:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64B656B0096; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
+	id C6DEB6B0099; Mon, 22 Jun 2026 04:18:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5D96B0093
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:15:12 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A5217A05CC
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:11 +0000 (UTC)
-X-FDA: 84906838422.03.3E2A9AE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DB7C92000D
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:09 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaV52Ft+;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782116109;
-	b=0WWboUQNXqm2f7I0qjxUjEto8Mhyqfffw43u4TzjnmxJH3Rb/aUKo9YfU7Jc91FZgLGVtX
-	ogn3XAhJLtMl1JpgD5c99TZBVx/wjrVgTSuIPRtcHxUxP6quF1WdNo/fYgbMYyXg4m2nAt
-	zND/+hFFnCf7XW69T1hNpLI4O8x2JYY=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaV52Ft+;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 96FE66B0096
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:18:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 24977166F36
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:18:06 +0000 (UTC)
+X-FDA: 84906845772.29.4CDFC5A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 50E74C0003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:18:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3Pjhen;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782116109;
+	s=arc-20220608; t=1782116284;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I7CiEqdgfo1EMG6k6a44m/PMxSYQ3XbZcJ/q6HRDPVY=;
-	b=bucJQKemnYRDOFhgvSpQTJteZQ0vv9tOsJRp5fUuJy1+7yQTgP1cZs8hgHriBWeHJuin9J
-	FMFWIsoL5q4oo3QDrUt34BCJwfmQb9Vm1uyBpQHEF+y3Rr9hG+NQy/5LPlobX6hMCkGvAU
-	+09xzDpqoq+DdWUMHNiaoh1woZGTBAM=
+	bh=G7FY/n6BfGkQmovoPL/bYOjU9mfVXkPNdqUJ0uKKED4=;
+	b=DE9dKsCvM1cPSk/xnG4o1xWckaqBAimI27S6i2Qoca57zFt4HDvhr9S3lNQf7MoUzVhigh
+	vblM586WMlQAqbTy/8rReD+6W5v8gP1ZfJBu+yOyf0JbgRFA9kxb3kWPDLGkoXEiliUgvv
+	4/o23jtM29mUyRFFT9JoHSpulcqCDKE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3Pjhen;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782116284;
+	b=CNeq6pQDJmNSDlOw2or/uPql7VmMEeXfp0oQhdZ0HawsJ1UDAn7yOnzek4qIFK3QUghcly
+	33BAgTAb0j5Vwc58ETW9HDIgP2wCavbSdCgHPLL/KjKjfaypBsMPJJOUr1E+kcGiE0rmB5
+	5fNThYSiMsyE09QMeORu71PSKk6aiEY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75E446001A;
-	Mon, 22 Jun 2026 08:15:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B381F000E9;
-	Mon, 22 Jun 2026 08:15:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 49FDB43B43;
+	Mon, 22 Jun 2026 08:18:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BFD1F000E9;
+	Mon, 22 Jun 2026 08:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782116109;
-	bh=I7CiEqdgfo1EMG6k6a44m/PMxSYQ3XbZcJ/q6HRDPVY=;
+	s=k20260515; t=1782116283;
+	bh=G7FY/n6BfGkQmovoPL/bYOjU9mfVXkPNdqUJ0uKKED4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=MaV52Ft+ZtcIY4Zuk+MIRru0fDYXiE5R1ETQs63VzVzqC/868iLnr54jcWhhbHiiA
-	 quoRqbjsVr//YKLPI/WhBotOpkjMcrdm9yqthzb7vTVTUmIhtwt3WcXFgdc1MLn8gb
-	 8KN3YkDiMgGPDBBvMVzsWN8eigVYSyJ5amadlyaLDudFWOVs7J8L41nAdDi0XgbUEh
-	 iQW0/+nsPcwpMVBJuoS6SfaRIFvTyDh+Axq3mU6SRBVnEI3/uGhjDv06aaLy0Ubu9V
-	 KzBI+5Vq3hKWaQGR1Lwg1mKpMn0Y7Na2V542ESOsvsjOnM1pD1YBojI/Dz1YIAAgl2
-	 t6sA3VDUcAm5Q==
-Message-ID: <086b119c-b777-46ae-b087-798ca3e44ecd@kernel.org>
-Date: Mon, 22 Jun 2026 10:15:02 +0200
+	b=Qj3PjhendpcKgOV5uS+8poO34V6NEWEyMlhurbT28lGH/h4ev2j2wVek1/4As/CL7
+	 TjwepK4CJyD/Fv4/CmNXYgx2D+PnYLdQedhG7dbX48q+cAVqBJKxGJZrgW7dp1V92P
+	 Ur5BnGxMmSsA4lAxCnKVjkuRYiufbKPVQDY4Q0wji10mszxofOcRe3tz+0AwrOV6aI
+	 e9E+344c4sZ+rgI0ua7Pak0gVN3l6o9rTfYH3YQ/IXAtCQSDC5IPwhiXDZYqMh6jHh
+	 6YHe1x6Hnp96+a64KHS1BznK8ytrq1jw6DvW/0lJfrn0K/RTWmxjDuyjz1UHYv1dJv
+	 SBrR1/l0+2SRA==
+Message-ID: <0368128c-664a-40aa-9b37-27768d403795@kernel.org>
+Date: Mon, 22 Jun 2026 10:17:55 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
-To: Linus Torvalds <torvalds@linuxfoundation.org>, ilya.gladyshev@linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>, ivgorbunov@me.com,
- Liam.Howlett@oracle.com, apopple@nvidia.com, artem.kuzin@huawei.com,
- baolin.wang@linux.alibaba.com, foxido@foxido.dev, harry.yoo@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- rppt@kernel.org, surenb@google.com, vbabka@suse.cz, willy@infradead.org,
- yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
-References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
- <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
- <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
- <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
+Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
+To: Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
+ pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
+ <20260618074449.24974-1-lance.yang@linux.dev>
+ <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
+ <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
+ <e64fc2f2-c4a0-434a-8d60-dcb28b99b8c6@kernel.org>
+ <22613c23-612b-4de0-8731-00ad2da63eae@linux.dev>
+ <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
+ <ae987527-7ab1-4905-b7f4-8fcc3bebdd52@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
+In-Reply-To: <ae987527-7ab1-4905-b7f4-8fcc3bebdd52@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8ime39hiye3rcsbwc53zs8pohj1o9syw
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 50E74C0003
+X-Stat-Signature: k9ehzx9tfb745ay6kjkg57r3xjezd6er
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DB7C92000D
-X-HE-Tag: 1782116109-474876
-X-HE-Meta: U2FsdGVkX19ZXPX/2zAl3X3JN8PAYy6px3//Rjb1YFPdwkTu22pvwPwFPiGOIegN1N7WV69baDYAoNXj19fpkGv8ZZeu1lEddO1zbo8ITCorycvIkgCLPF/va/mZijv96ffTlPnavp/ZMYUNvvbT/TqRQHt00eZ5xn0dHqiK5OlDzwpqBKPQCEcvEiVaTvD3/2Ts/fJOgiYyxLrdGPEG2sGjgI5jCe3z1FSb4hfxvVgiPIFVCDEjmmwPp71XyNQ/42a/ibKuOQH6FEXFtRnhXDh0s3V8Z7Q+JgQLVHk6XjALwRs7QVsU5Lj7SGWIMZkw4YczR83Idmig9/pfaBlxuiJTWZWYgmMofg4e7ijqnccA+Zqzl5Jp4pxu0ow7EszFN+hwYdHFfiWLqStqnCXywe6DUQY5ercsiK5n4UoXcJGO1fDHDPFPlSsHZUwlCUVo238NtxsPvBaI0jmpEk8jkssaEyAM9eXLS7W5vyKpsduEGiLkyZrpD5zIadW96ke4WrQeNKR4AulmPbAKAi/ScpGphTQC7sG0djnQjzNM+RA3DOtQ8X8rcIqFkDwNfJcLrV0x1F/UzBqbQJnqF+Lc9NfVh9xfIjrbb8AgTkUHRvLRJRWA/us3PEV+9tiWPt3tfbzUSLUV2N8jJWqrvyk0M9dJX92GqxJTG/DKnfy5Oase0gr0giikWgsPvwJ6JYyFFMr4oG1RBxE6vdDi714lgg9oNK0jAHmDaQSno7EKnTuT84xKlzPG5WqboVvRBJyxYQ9ACldSl2xhWjXb03TC81eGtYXUZhdAB4SpSjVdLvILoTHUItnWPnm1/+zb8jhBfdNh+So1o1KZzTlhp+YFmSdeRbupG2rE6fv2LMgZpR5jh9GJNH/7C/vnDv31UPpsy5p5o4B7/RpQ3ryVIFxnc5A9IvNimclJFgTn2fnC6gWHNxcQ48iHzi6rwuwRt0F1xg2B0XKfyZXtobr68SH
- yk2jgXJX
- JpswaRGM1d6QCTZ5tSPTGwhU5fI3dzmRFikWCelv/UUQiD2dlQ3aIQW4N9Ni7+u5FI1uAvAnwwfn7qsEtF/edaRiADsW0oMZOE/RVLf8Ua8IGGDqZOuq5qawYc2vx34xHPRj0+e7Acf/Ga79Pv4ky8t6zKB6TME7sVOKvkdyvxDPdjYKQ5iUxGpu1nsPiddj1fGHXAa2+hvi68tHSTr/37dZngK+f2zKRFQvZkvOfJpiDFrcGB0jKIJqI1/1RSMh989/x
+X-HE-Tag: 1782116284-107190
+X-HE-Meta: U2FsdGVkX1+qZPSQDLnOZSDVV5oES+FCuJynM8Dr7Uh7Wn+cg0/xwvE286EkkDzAXr1dKOlB4aBqqGTPOYOBLAMZYdoo42+rAOJdZ64+SFwVrOdtRpYbtO9pPcvq7h1wtPYgxmj+JofUq+p4PbtiV2VWJZuS/wRGfgNBA9Fv8y2NIHcRxrsDe+HRDJqhcRRBX+IAu+RaVO1kxVBa4fsV2T/JgWSA2bQ5Hy0iJppyjSthdc1V/KeC9llO+FEmlVXtHnAzoFoODcZLFjn2QyfdNBrfvi6RJndBD4/dGUgUwwVCT5b87Oea9Nlkhn52JvzxHHf4wTO01GN6cYyBisziJmGHtnqtjcy127sxKiBZuqUaOynzTs/8F4pWWpfYxovFIgXDmKOvBXQ5wPVSy+MguVTODCX2VDf4dCSu7TIXr/Yvnqomnbr/NBBakAWQMir/1gYVfu30CZsigtfOZrjvw4z96zv/6ew2kWg6u5BUaadC2NqwpHGZg2K3KwpWS1+2B8bjXi2SQDnN3IUP8JeBKMWUL8o1sT//IdD+z2lqnqZGNw660vLJP3KmcTWIfXx4dO4jyb/ytLtGWabn04aX02MCnXXPGGyJ8z+HpxYw2b5ltqH4zRJ+3wqrpBwlKBgU/pikRNfjdPIM2sAqPB69vd15tkI7Y3lCE2Kpaahneuv6Eobh6IWK3ytgY9rXVkcy8c6doxDOSWhDaXNtP6Fv5WtEVD0pwlXgGDPzpQpnZzBGqvW6oLEEZY58N7GdgNr5bH/H9LYRWPZPdpkBN/QqAwQUcdiLLIHBDde19nhmFYhc4A68pXizSiKAy7YdrOfvRrXXv449HvLvY7BrpaEHh19IvWYscRaq4d7BJFcXGrS90p+MKZlnjH5L1vEw4VRe3wsrZtglYnKy7IA8ilVEsFDUOR891SwlnVqZUGSC/eat8XduEDAHWgcJN9kGeAM1hV6FG5xJygBDbfZoeSi
+ tcx2wj0e
+ xjHodOwqsRC/reE81SyNCblxyRaQtdUZpzZ1gan1Zd/RhYrjOG31o3XtjD2feZd7vLy8OwRjekTAvx/QrIIZsOt8X5kWaLB2iurTv3K1urGJ1Lsk63u+v+pIQiqzAPr52hAQpKSVriwwiMkRAMBGPHAeU4nFoUkRrXcm7ur++c+0k+43SNWs8PGFuIZuz+hkwcS+I+cfro9CdznNDkpqG4NJuXlcNHJVC8xK87mE6dhSXWCi/sOyCD81JhQEEOj48ARLVR79rIRqxM9dK0YoOSDVJOEa9aYPf1wCP0cS25vZdtD2pKLnqJ6RfPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,73 +151,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/21/26 06:46, Linus Torvalds wrote:
-> On Sat, 20 Jun 2026 at 11:19, <ilya.gladyshev@linux.dev> wrote:
+On 6/22/26 10:14, Dev Jain wrote:
+> 
+> 
+> On 22/06/26 1:43 pm, Dev Jain wrote:
 >>
->> T2: optimistic get() [0 -> 1]
->> T2: put page back [1 -> 0]
->> T2: calls dtor for type X, returns into the allocator
+>>
+>> On 18/06/26 3:31 pm, Lance Yang wrote:
+>>>
+>>>
+>>>
+>>> Yeah, looks like this was already there before the split. Should this
+>>> be fixed separately?
+>>
+>> Same bug is there in try_to_migrate_one(), check_pte(), remove_migration_pte()
+>> and prot_none_hugetlb_entry() :)
+>>
 > 
-> Which optimistic getter does this?
-> 
-> I didn't go back and look at the series, but isn't the rule that the code does:
-> 
->  - optimistic get
-> 
->  - then check that the folio is still valid (*not* using the page
-> count, but by re-looking it up elsewhere, typically the address space
-> mapping)
-> 
->  - put the page if it wasn't valid
-> 
->  - if it goes to zero, there's no destructor inherent in that
+> Lemme send a series for them. Main thing is identifying the fixes tag really.
 
-I'm also confused about the destructor aspect. Usually we have
-
-	folio_try_get(folio)
-
-	... some checks
-
-	folio_put(folio);
-
-folio_put() is just:
-
-	if (folio_put_testzero(folio))
-		__folio_put(folio);
-
-
-If the thing was a folio at the start, but stopped being a folio halfway through
-folio_put(), I don't see the big difference to the thing not being a folio right
-from the start. (folio_try_get() would succeed on some random page either way
-right now)
-
-Which destructors are we concerned about?
-
-(1) hugetlb destructor
-
-If we grabbed a non-hugetlb folio but suddenly have a hugetlb folio after
-folio_put_testzero(), __folio_put() will just do the right thing and call
-free_huge_folio().
-
-
-(2) pagetable_dtor()
-
-These destructors are called when we unmap the page table, before actually
-freeing it. So it wouldn't apply here.
-
-
-Maybe it's about something like
-
-void page_frag_free(void *addr)
-{
-	struct page *page = virt_to_head_page(addr);
-
-	if (unlikely(put_page_testzero(page)))
-		free_frozen_pages(page, compound_order(page));
-}
-
-Whereby, if it's a folio, we wouldn't do the right thing as we are
-not going through __folio_put()?
+Thanks!
 
 -- 
 Cheers,
