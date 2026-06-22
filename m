@@ -4,67 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E9DBCDB471
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:14:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2759FCDB46B
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 08:15:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C17826B008A; Mon, 22 Jun 2026 04:14:55 -0400 (EDT)
+	id E61D16B008C; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BC8436B008C; Mon, 22 Jun 2026 04:14:55 -0400 (EDT)
+	id DEBC46B0092; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B05C76B0092; Mon, 22 Jun 2026 04:14:55 -0400 (EDT)
+	id D28FE6B0093; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 89EEB6B008A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:14:55 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 145FA1C31EA
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:14:55 +0000 (UTC)
-X-FDA: 84906837750.17.D28E8B1
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf02.hostedemail.com (Postfix) with ESMTP id D0DFA8000B
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:14:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w4htQ3HE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC5AC6B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 04:15:00 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E1D68B038
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:15:00 +0000 (UTC)
+X-FDA: 84906837960.09.3D05AE0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 07BA31C0003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:14:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gnp3IodP;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782116098;
+	b=LFnKgtrH7m7xIHCEOyrbxXGRXUniDpnecLU86T4mhttmuEFHwFll5qzvI5u/BvgymssWfp
+	85zOMHXcQQDQfLpSLhAyMzlzLEbrS+bnNkEWyVkiPolGE+fJxQwL7LIGD6HxpRb4eu2eUg
+	y7da5w1DjVN8eWoMs/JXiKHYnAzPKpg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=gnp3IodP;
+	spf=pass (imf21.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782116093;
+	s=arc-20220608; t=1782116098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3h1tz/dJ9kRilDDcZ539pJ47xNMN6AhgjIhHbqlewzg=;
-	b=DAlTXDsICbt/CcuJtrNdjvTHcUyoF/rmnRGLwEVvIRgmdDyCUioyrSOL/lMAViFR9gRayv
-	H0Ax3oeFN665jqHlQKlCHjlklEBf2jvGil0fDQQikgTzJ6SqxYPNE9Ic2GdIE+n2qpY/tz
-	MHTR8F1clBjCZmFWTjtHEQW41nGyvbk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782116093;
-	b=BUqjD1uKwTj3WCLiiRVw/Diyz0Vnu5cXc5cL8lPg9w9RNkEPBgAa6jpGeP1w5aMJPWChup
-	ElMmrJ1hspS88sqqi483ClDBsjL3txtcbrOmzk51cCad77PL7xw5yQ0mCV+OEH1XoOvzQq
-	dJqLdGU1RicvAdlEE/WoxFOYrxOAGbE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w4htQ3HE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <2021e00b-2943-479b-8309-4f6dc97131d7@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782116090;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3h1tz/dJ9kRilDDcZ539pJ47xNMN6AhgjIhHbqlewzg=;
-	b=w4htQ3HEU9Rzbt7I5wvpTk37qhZ+QsSfLijIP2mn8RiggNHxe8KlkxdI/KIYAsfFAHtqdZ
-	rTrX+GtW4pCVWmyFKlInAc0NWeHhAJDgSVG5P2wSjn436VVa+rRrk/2iepmMUxHhzR5kYB
-	3fiYYqpHWQoHrjvy3mp0nP117HpmnEo=
-Date: Mon, 22 Jun 2026 16:14:35 +0800
+	bh=M+os4f4D9ImgKLQn/d1mH2fmoljxB37D2eSbXZ+5FBc=;
+	b=YO6MrYTHdmQYxr5SXGDtiFwSjRr2kozf+6P/E64OY8dzbodU4hQFMrk/JicF2VhLJ7H1qr
+	MRSQBKXkomhFtayteESW3Ql2tHCGGIia0MySEqKEBppDBY6qFec/sNfo1Un9SceRwtAs8r
+	RKUVuoYFbenSs34pUy8yiM4ZKulnol4=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5DFCE1BF7;
+	Mon, 22 Jun 2026 01:14:52 -0700 (PDT)
+Received: from [10.164.19.14] (unknown [10.164.19.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C9523F632;
+	Mon, 22 Jun 2026 01:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782116097; bh=kfN/FpTa765EpipB1e7lODEHn3FZOJnKInx4uJ85UO0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=gnp3IodPrm2sqVyqDQ7j95a2oBiRhHNNKL3rqJyJjVEA3HbvOS/+rOU/vexI9+H1u
+	 rHl+MtXyGAfJLWBIjr/V8D80HxS5qUYAMNAc1XZ18u5gnryrxrPw/IoYe4NjvT9wDo
+	 /5YcudYDmBmUay6rByCKKgj18d6G6W6MWY7HjsUg=
+Message-ID: <ae987527-7ab1-4905-b7f4-8fcc3bebdd52@arm.com>
+Date: Mon, 22 Jun 2026 13:44:46 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-Content-Language: en-US
-To: Dev Jain <dev.jain@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>
+From: Dev Jain <dev.jain@arm.com>
+To: Lance Yang <lance.yang@linux.dev>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
  kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
  vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
@@ -81,20 +85,18 @@ References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
  <e64fc2f2-c4a0-434a-8d60-dcb28b99b8c6@kernel.org>
  <22613c23-612b-4de0-8731-00ad2da63eae@linux.dev>
  <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
+Content-Language: en-US
 In-Reply-To: <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D0DFA8000B
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 07BA31C0003
+X-Stat-Signature: mqfzzwi9q3xwo3tey3bwrbz7drtiwmy8
 X-Rspam-User: 
-X-Stat-Signature: drtu8s51yzbtestie3a61pjbu6gt1kw4
-X-HE-Tag: 1782116092-625802
-X-HE-Meta: U2FsdGVkX18v2VoVRsZx65mXCaBOebhNgLA9xzuWGVrYMyX+V8diztIWVWWJSrDOdo4YXWS0K+G/mn9o1yB8LBg20JIlMwSYIRpVIFe1WgWRuxmRLayrYhxYO0K5+UrMqx3xptnQxpreIshLv93jd5IWDYa6R2mo7DJ2ufwf4Y7WeT1gSg60D6yfn84m/5WhtN9O6pZmsYW6CKmY2Im3x9K+zN5GbOYaGHBbvV88eOSOCqvIp+cHjUunYtt7j/fthYnFeP3jZ/9fDmN5thzu4MgOKE8EI+RUh8k5iuc/pQBwAEgPu8IK/BNQNw8r6QBQiST7DgukcEbgMCXPnb7Y6QTa0fVLAohTHPXZ0Fau2dXN+1W3QSgzIdN8ApUXYFFvpcS7XK4ClG3Bdv7oh6e2Us+pD9FGrQiEMKo7EGVZaGKbV07X3jJgMeiRxQ7/UohgKEY/j/N9A5hwrRwbnuxpmkbzbPuKGkDVVYZOrqORg7Fh0ZQpAFKwb79noIWBn+nCryQrArZLruaWu4mzc+oF3GESvxvJUSy0o5/VR3Z+BA/VmLMrk1Q46dMEyonE0hXndcQ6v9x1G/GXbk60dSJDWJvBo0iJjNeTFboiqmPJFmvCbOeLzszNFxNRM8OlkCeNrAkboCzZYZ3t1h9+nAKQzuP1XP5Rg+1658IpjRWIob/pUit+hI+dE3WAKXQyjzvI5GU45R/I3Ifs8KKqu+QKsovwb1dhaRvd90jEMrPzm1/ULb4LTzbTuAq6NP6Cbw180iEfLu4TMwx3M3zaQTsj9yisQQ841U/uQT7XEck57g8kjr0SRLjHr+gVSNerg/X8vwFVMlwEH1Mpq5lAMi0Dq5oDXC26d5bn3D3oVel9hdP8Emb9fTczW6SuoNsJxBuyZqlWuwQTUU9YcEhaI2lttF56zSWtWdRPfaTer91ojZgDbW0EQE1ekpxkyEMIAh56jOi8E61v9LNEq++ptXn
- nHLFGWcn
- tVeOQAbxIW6DeFHqp17aEnN1rdOZALUsCRd6NNifBngqCiKTdesO5C1jUUJHCC2+zuGtJJta9qaX830ISeoLWJCEzEZF/ZkXngfiyNlhuOXl6fJnppAE9AibykT3ThfTMsg8xMY3FzPpMy1isb7pTizxUlHkaqNhtR1PakKwnZ7D8A6H601Qg4wsNREX+NaXzz+nrZUTZSRw7koJEzuEkpLNFfR0/hoG43j2/4T7Dy0eecFTsVGbrUEr2C2tdvpVXtRzpRQPoo07jG02NySpzVRuQqcThCzQGtFIN
+X-HE-Tag: 1782116097-85572
+X-HE-Meta: U2FsdGVkX1/jXLkdHJI/pvNLMHj+zbNgP3lzuVkUikzxbOVXkWikkB0UakbqhZ2TiPO0GUrkHojoRqjxxARNtDf4Uh4UMJ5cAw6spLQAuD5kGtxIriFnYNhCeFal21uMAdIE82mK1s8F2AjjZoZcWpno/Wi8cmAACJQ4ZSZ7FFMZIhkGs3mvj5dfCoBA2LZ698zbZ+VSoavvL5GMixmKOXcOxvByWuRHIeBjuej8ES8geGK660D9VdGSUzWB1hfTD920pBbeMLvF1b2H/jrDmR9hwDLltc/+5/sX7O8bkPn3+jheuL8N9HHgyW4gz9yCbaZfl2ZxqbuJRTU4bDMvQFe7ZV3JDi5KKc+rywIYZkW68iAH2N2YtcqYPfk+Op/2msPJTgDRJyP3vQ+7dAzxQ8K8RIojB1yAkTWBo8k/G5B4YWMPsC2UI/IBgn6xZ1jsjJgehOWSBy6LTNwEgnOgdhNIB53IHiKbRHwxizCDNtE3TXZIavaf7C3CqE7Ja7EmrZd/qgXlyhpEGxSwExFApuo5fI84q9qe9BleOhHYDTBq16EaGEn47AbNOPPe1CNHIM0f8UpC0VgEbOil3O4nQwJc+D0pCNkvcoimc0kUxQ/Vj9B8kDp8mNBSKbNpBVXgONenxNF6J5eOkam+hLbPfqp0NtASUGzxMbhurdd0tMkLmWZZKsr7v3jVZLQF1vqybbq8rR49xZIvi8FO5cw3Kagp5d1na7ohFKylF9j0tZJqEviqNFFCppRlIdElDSCMQ6LzJMaa4MG5viXtfag4i6XDA9nTEtrbbmmzK5gt/kpIpo/0zRpQOKEqSzLmipaC8J+HAZo4cvLiw1pujSTCvKtKMNhsYI6jS3j1RiCVL2NpbAj3nyUMwqbgYqu6qsv6fl4/W5Ezq0p6mjQOC47QGRdNsrb3ZyYJ3zKytgAqoc5fp1shP8l/AMQuxohGrWxPn+AsbGChnYtb7tszNvi
+ EmAEJFJY
+ fXIU4L/RlNMB/J+eL+RgECTPoo2JxedKiTaE43QiHm1h4UI8KIr1UYvKChqVGiTcv3yN6WXiDEq9TI4/7qVrBp3XmgHlaDhau7QDFFa+A+dnRI/pHLQBYC8aCQcpNiiBit2XeMUlyAlNchW3unbWoJ/2rK63TMisYjaNLX9oUOhD09lXdgrtUokGJMqwLawfzoF9g78GZL2Wc9knft2iAPBEZiWncKCtfymWEJC/SecIJ8cofg81wyKaWrsFGG7Ohy9InAbd1Aah6J8xzmhKAhpPeWSyef3WjRdLeCryyA1qO3fXBopoN4miC1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,7 +106,7 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/22 16:13, Dev Jain wrote:
+On 22/06/26 1:43 pm, Dev Jain wrote:
 > 
 > 
 > On 18/06/26 3:31 pm, Lance Yang wrote:
@@ -115,7 +117,7 @@ On 2026/6/22 16:13, Dev Jain wrote:
 >>>>
 >>>>
 >>>> On 2026/6/18 15:55, David Hildenbrand (Arm) wrote:
->>>>>>       return __rste_to_pte(pte_val(*ptep));
+>>>>>>      return __rste_to_pte(pte_val(*ptep));
 >>>>>> }
 >>>>>>
 >>>>>>
@@ -138,16 +140,16 @@ On 2026/6/22 16:13, Dev Jain wrote:
 >>> IIUC, it would be a problem if some PTE bits in segment/region entries (pmd/pud/
 >>> ...) would pass the
 >>>
->>>       pte_pfn(x) -> (pte_val(x) >> PAGE_SHIFT)
+>>>      pte_pfn(x) -> (pte_val(x) >> PAGE_SHIFT)
 >>>
 >>> check. I don't think this applies, because
 >>>
 >>> While
->>>      #define _SEGMENT_ENTRY_ORIGIN_LARGE ~0xfffffUL
+>>>     #define _SEGMENT_ENTRY_ORIGIN_LARGE ~0xfffffUL
 >>>
 >>> We also have
 >>>
->>>      #define _SEGMENT_ENTRY_ORIGIN ~0x7ffUL
+>>>     #define _SEGMENT_ENTRY_ORIGIN ~0x7ffUL
 >>>
 >>> So these bits are not actually used.
 >>>
@@ -170,7 +172,11 @@ On 2026/6/22 16:13, Dev Jain wrote:
 > 
 > Same bug is there in try_to_migrate_one(), check_pte(), remove_migration_pte()
 > and prot_none_hugetlb_entry() :)
+> 
 
-Oh my :)
+Lemme send a series for them. Main thing is identifying the fixes tag really.
+
+> 
+> 
 
 
