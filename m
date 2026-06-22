@@ -4,118 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C03F1CD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 20:23:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9CACCD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 20:25:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309626B0005; Mon, 22 Jun 2026 16:23:54 -0400 (EDT)
+	id 2E55B6B008A; Mon, 22 Jun 2026 16:25:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BB526B008A; Mon, 22 Jun 2026 16:23:54 -0400 (EDT)
+	id 2953C6B008C; Mon, 22 Jun 2026 16:25:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A9406B008C; Mon, 22 Jun 2026 16:23:54 -0400 (EDT)
+	id 1ABCF6B0092; Mon, 22 Jun 2026 16:25:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CD90F6B0005
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:23:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07B1EC1566
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:23:53 +0000 (UTC)
-X-FDA: 84908674746.04.FCC81DB
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A17681C0006
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:23:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cER8Xk3f;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DFFE16B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 16:25:02 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65D001A02D4
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:25:02 +0000 (UTC)
+X-FDA: 84908677644.01.EF85831
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9F3B440004
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:25:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3G5o5agkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3G5o5agkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782159831;
-	b=1jAZ19CETy+6Y7vCfSBeIOw9/gmVKp3r3F5Au3Y3juFKSDSbIPULsETWo81rzYFE44pE2x
-	j51swLF4FxU2dTLZ7b07wKzpG0l/JKcI/v0bOd4Tbl1ea9HrxWTiRdwA97VvnUB98FxRRp
-	yH9Ote7lgxgrZFU0EI4Ig06CpaxrxJo=
+	t=1782159900;
+	b=gPq+PgpLb4gIBsYRcaoP+7Ep/5qhMyYccnNYAUhij3S8Dp+pxigKCxjfS9w4oF9BcSCkMF
+	s8BaOtfZK13d0A+7gF1wh5HDrT0Q9CpQtnjOfsKsMoRjE9S2Jkl2Aqpt07Q+2iXdAlFEP6
+	2RK+VgIsMWWkwruvbQyIvco9jaTrV64=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782159831;
+	s=arc-20220608; t=1782159900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DmKAzXUWgr5Z6Z1mBVW0DXpsiSegxpV2RCsb4MGdO1I=;
-	b=wALoXCBzOQp+z33XuP9/sWbwONFWk3lSkaTZlWktjtvjzS0B19R9fyCIH5jzjtFWOfKYri
-	A0QeBo+vHhD7bP0uA/cC4VOgiIsqW+BdLM+PbLvbXZ3M/OCrJpa7dSnHKVyiMLUqZJDCGF
-	tM2lBLYD9TL7vqJJdbky/qtyFu00T0o=
+	 in-reply-to:in-reply-to:references;
+	bh=G96X2qL2qjjy6tCavIwKInPWUO3/eFR1t4NdfcLJhng=;
+	b=NLnMKj4I7yp6j92+LW0WOpuMIOZ2xFcX8On8/7BN9hiFKVSPscC/hNDssFXE8GOfR1teb1
+	cRgFVNBBuhZsRcnk0wBy4eJ28cInKtPidF6RQS4UagfRg6i999/gQ01NU+aeauo9ZRx3eB
+	VwHDiMgaFINauJGPKm11PBVxJE+fd+E=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=cER8Xk3f;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8dcd895a4c0so57517066d6.3
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:23:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782159829; x=1782764629; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DmKAzXUWgr5Z6Z1mBVW0DXpsiSegxpV2RCsb4MGdO1I=;
-        b=cER8Xk3fzf1Nf/zRGpm+I7OeQqDcB8dpRDfd+z+5uteHR+ucGb6hW7GXuQJANgaME3
-         xhsrSZHkRPgyfxy5lyHDjm2dVDM6UvnrTJmR/o0HUhJKbgfIJcE7DDwf5Gow450U6efZ
-         qp/RL2nim01RbwFBhft3q2wB4uCHzExqc4Jml+7MD9Ihcs5Dudihq47eh68iP5iGWx4X
-         eldHhNSipbSapjYtwAHaRrNkotRrD95sycZ+tSet5VzlG1ctwH4x/wzo/JTUVhsia1tp
-         Ubp9geHbRiBUJjcp0NpYw/W169jacgHpQRrIsghsCnKYbmq3Esrlr0zeldb3SELQAQcQ
-         2BPQ==
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf12.hostedemail.com: domain of 3G5o5agkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3G5o5agkbAI4AGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-7e74781faaaso9048896a34.2
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 13:25:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782159829; x=1782764629;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DmKAzXUWgr5Z6Z1mBVW0DXpsiSegxpV2RCsb4MGdO1I=;
-        b=b/WJqbp+aW82MhTzy6Z2eHtSulLKW4e6+EH9fkkcAnrfAfDaBd6ez0iJr770DlGWH/
-         c2fh+T4O1wie7mCW6iuF2/U6PI+mdEOazXOXGkdYHkgwauOJHmerKdbvNPih12RzYyGS
-         yzoVOji/IoZ23lOWpT+iV29PXUZd1y2Evi1qXcFaaAxyOxP5SZ/d0wQo5JmsY4WhbSB5
-         BUaryDKHcEcIfGz+vZoFAuEAUa3adPNMLIpfdmhv5235G8oOP/K89k6zMfad58RiTyXw
-         8NGlg7Euuyd7RFfU7Z6mZ9g4Yfn6ytqIEhA+XowR4MtO8wsgAujCXFDARourkqLaAu0W
-         3zUw==
-X-Forwarded-Encrypted: i=1; AHgh+RpvlxskLQjWb3s29QXFHZF9FVtCEgm62uxaeuLsn9oii7fM5UGzMB2COE0hHBXJ/IiqgmSzkXG5lQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy0j/TY91amJggxvo6FfUsvOmzFgxqYITxcoLZSqBEeAk0Hy9aK
-	jPV5yPuIFyBndkyeqyBBwsT+gqZyE6THsek97Wucant9EmZZKeyINGosk+yoN5dUpn0=
-X-Gm-Gg: AfdE7ckUQYGKfR0mv29KC/lOt6aAjdUkU2+5pYJ/Xm079pFfmMbpl94DjjgS2QJ+AP5
-	TJY4ZPGfd5me+tWn9QOfqBFRfdEoZX7sNiu1ZJvH+zwVcuCZAuJwAcCubkb88yI3iDnURd1PVFq
-	o7r9GP/uUMbUVr7eIX4KIXLr0Lnt//E8qqnjhJ3uWNSlv1f7ezu5xr6xfK19TWy33qq/CBihtFC
-	RklnjETjvLtDch4IB01BT8QJjqvy4kObo/EBi9d7HDnIP/SItt6DmZ5plja5qorEAvcBPEqIvqL
-	zI/qXNmkGSGfshFT/0KtjQzhAenxaqyFILdk0qKVLxSbpELp25On9f1VC586gs2PyWpgZot49T2
-	ydUXVoqoxo1y0kPa8hbzALrw9wCyWAfiHAxTHK/1xCEcqRhDeq+KUZP2vH7egBqhGRa7rTkBidQ
-	dQzbQQJu/CZuw=
-X-Received: by 2002:a05:6214:3314:b0:8c9:cb98:5fb1 with SMTP id 6a1803df08f44-8de3f78e4f3mr241102106d6.12.1782159829411;
-        Mon, 22 Jun 2026 13:23:49 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81cde319sm105792376d6.31.2026.06.22.13.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 13:23:48 -0700 (PDT)
-Date: Mon, 22 Jun 2026 16:23:44 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Jiaqi Yan <jiaqiyan@google.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH hotfix] mm/compaction: handle free_pages_prepare()
- properly in compaction_free()
-Message-ID: <ajmZ0IPORONQ_Vs4@cmpxchg.org>
-References: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
+        d=1e100.net; s=20251104; t=1782159899; x=1782764699;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G96X2qL2qjjy6tCavIwKInPWUO3/eFR1t4NdfcLJhng=;
+        b=XnBVatuMQJrpKkW+GtFAoW2CV0yi8gmqubA/vvWefQ/LE7gR3d1cFGLSpHVbdpCJ1K
+         JCH6u2f4WoEfsHGsNIFkpa0sgfRVpwM25n8SFECf9AcdC481j8wlCpS72rpERn8U8a1C
+         yOnNhigbtJUS/TCFvsnOE6dMmOPToYTq4XnorfkQXFHCx3uR3IS1QM1u3B1xFvTVx92P
+         49RHtzpIRzFPnY1ltlhpmhfHSPOP4QZuG6GRjaXlfnXhnm7puMutCc/pv8zwoj4Zx/n/
+         e0s68Pfrk14/ey+7FLCc0e13zNAqcgqS+xnSCMVmUxHkc7UsNATXEv/M/k+RtIYAYQCL
+         g0tA==
+X-Forwarded-Encrypted: i=1; AFNElJ+f4EisJXeXHcTVX1DnKANyU7djB97fLdPqVL1SfSWqRN+DRWgURMkAJu+JJdns1MWnzngI0zTE6g==@kvack.org
+X-Gm-Message-State: AOJu0YyeJAKTbt6Mxg5lE9M7m2NlG7wAabnG6eCEbSvGTh3khPUJ0nsM
+	rnKuAojeNP2WSnCXRjnvJOV0/hUVxU6YTAOWQ5UZCBEd2P62YpbrNU+Zy54H3P613Ic3nED7MYW
+	qRQ7Xbi3/G7LYfITE7MvGqIPFdv+z0T0NQdiNL7kWMMLETi5OHgTuJ+0ImLA=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
-X-Stat-Signature: dg8pbwrdwgk9yfwe6bccn8dbfq8skio1
+X-Received: by 2002:a05:6808:1b0a:b0:489:93ff:9ea0 with SMTP id
+ 5614622812f47-489940ef971mr12301066b6e.2.1782159899616; Mon, 22 Jun 2026
+ 13:24:59 -0700 (PDT)
+Date: Mon, 22 Jun 2026 13:24:59 -0700
+In-Reply-To: <88AEEEF8-B9D9-48C8-9069-00E8528BB619@nvidia.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a399a1b.b71f6517.a55ba.0002.GAE@google.com>
+Subject: [syzbot ci] Re: mm: page_ext: add count limit to page_ext_iter_next
+ to prevent invalid PFN access
+From: syzbot ci <syzbot+ci6c9b06d29f32fca1@syzkaller.appspotmail.com>
+To: ziy@nvidia.com, akpm@linux-foundation.org, david@kernel.org, 
+	hannes@cmpxchg.org, jackmanb@google.com, kernel@oss.qualcomm.com, 
+	ketan.kishore@oss.qualcomm.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
+	luizcap@redhat.com, mhocko@suse.com, rppt@kernel.org, stable@vger.kernel.org, 
+	surenb@google.com, syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com, 
+	vbabka@kernel.org, willy@infradead.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A17681C0006
-X-HE-Tag: 1782159830-572926
-X-HE-Meta: U2FsdGVkX18IDguT3PMArh+9FjpPthnQm5Ash0OuV86elQOowRXdQ6xYl3ta+GFu4rOI+9RQybsAp6N6DfOOznyNKbf6pZ4zjLzJBbxwhxCYNEK4xZA+CWtSU57xhOTFeoY0zKXIo08iW5CF4yCTYZ1zE9uXj36umUxKbyFdU6JCckIssDWRIIMo9bPXHE3ACsIKGpb2SYGUeVHLQGmFpwsqkqGHGLarRg/5z0FXbjpI4898eMTPYjnSjtpmJS5yL6CTRHHXEQzXJUbdfaqVOoE1dgRrt+4sIz6G18fIH52QtXT+P9skY5vZNE6TfP6Sd4nN6nkIM8p3Pt0lnBWn3z9nSm/T5RDIs1SziPVvoTUcwfHVSojcwUSunwZiYMfRslMw2fCYfX6YOcxOiVpLS2NaHbUFBjmoa42OOB1XdUA133+pmyt/1mfm2s+pyf9jjcKKrNxILy9SGTS3P8EP2zg0VM1LvdhSKvhnzs580lRZ+iHQoI9ruUdyYuu8sxFk5Goy8wuLGwEZgNL9JLO+hCd2ichvMqHat0dFHMx/2p/YCnQ0sr0hWhrMw47FUIcYpJV6rH2qSQUstzymtxY7lqp6nkZcewZmptxL22MVMlZpye6F11IaxbdhaaUph5rf1rAVVP0xlORZ567migEqJBojal1wmn4sUvJsKdjjVItok4WgfTaw65GCrv3hfVUFyZTg1res+hpEqfvVNiBRQEBF3gkjk4KvwBNRuh2CDt5j7rFYJiJDzFBXq+ZNQFK4tdea6m5ctlCfi9G1LVv83Bnw0ZKOt6XFDrZGsncHPocpuBCOs/OX6GAjRRyIkHdt5eLQJ+6qlxUk/DWwbfgP7omfmzsDxOcscJIlYGaBOIbTj7IfceZ4Sq+QyFoCHeSWNocwZ8jyjUvf+f1Rz4L09CbvFoU/o62VnAwDFX9RtgwWeSux7B3gS5KDcpzhIXWoUiR9/mkYbCYJXsvjhqK
- 2SYFgVeH
- BRxkV0mbvNkpWzDXheIo9WBmwMTeUcjbcvB/ymRIwpje2nVaP43qpyidJRCFb0W5EyF6MyPwF/psOXE751JcVNBOnBqE9d4gzC1jBP8R7aCxPLO1d9DT1r66mVBleLvzv/NOFI+wQUlB4ElppsnDcjJyT//XdxbVq3rqg4+QA4f+6IgbXlPXp3NmF0Kc3yrR3Uueq+FyQTrbOoXOBXp9soXZWp1HnQp2OchTXNBKthIzaHOzd7g20pFa6e/I5TiUrgWkPb/VYKa4gO81nFX/DsMBPh80aE1yYamuI0fRwNeMAFMRhz0cm55EagW48HbgIt14zfLwLk3MydrXujLIorz9wg6NHUBLjLRGmjpFbh7iHpRgAMs7o/zBKLbeuJREOyzDrh4LbGbZnb5RRVMwST7ni/huFEoJLJw333WsrL9Dg7PAVf7kxl3SXtn7eDaH63NQ5A75SBLEudXu1OA3LY3POEjoMeJSOOMU9SFuYwZOM083YWxtkMl57Z/dx+2mNDu6E5bTJxJJtJ2m32sIwyU8uSw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9F3B440004
+X-Stat-Signature: o9t185k4tijjihdjex4pi34ngs3665ge
+X-HE-Tag: 1782159900-476737
+X-HE-Meta: U2FsdGVkX19MUZ7jbly9ZgdY+onPOd4DRDlsEFwsZVKNwqHglwV/pWzW/iz+H6zQakmLxVlEoqdj730jSIp36uWrDB/n4OBsX5lqjDCq09nu+g1r7BKa7i6mNFLbBl+raQN9rYmd5ZiHCiodnhrzsqFHMW9N4v591YCWpFYQp/Yjxejm3gPMfHLO2HD4eTZGNE7BmUZ6M3TYwUuNExjPYNByBf8Owuiar9fXUoitSwK9s7CxViWv3ILXZOUjxqSWZ4cm2SOTT0ViOOdSK7tDYB7hiqVtH0Dzg+6HQJLDF5WG+POAj0ihZWHQiAZ2o8UMCFloQHG9y7S+Hq1b2GWhqCIsUl6gTJVIWlIC8hHSSDmMlkiIryy9sGE8ZutrWxT30aod0PEJJ2ZVV7vZp4svZK2tn+kFvDuoK8hfeBho3FB6D2tO8FQnf2COqbDGk9ihtZCDtZqYJxOkyoftqsSUQ06cuy27AkOc2TBlXfp7Q0axJ0KgEhzbUzPjQ3DSxSW+A4H7dDhayk3FP7yyNZfEQQCG2zyZwNnZTE5ZglD5ZyUd0F3eD2HXdt+5wbI/J9KDy4GLWl5zIlaN5bhE0FsMd9WNex40ygJ0ZWo2VcC7cSoeAa9Eh4wfRNq3EBkbTW9nhCWfEDW3R6wA3EwlYoKcza4Wx9M0+bX7GAp78F+IjhMfVuZkRjq7sIku7c2IB6n5oJ9/cthEs3NwikpdXI0WQRIK7lLmFjRkOs6qxmGLn9z4dez5v4xMH8qjy9sbLytCjkdeV5J9hwjEZk0vfynHCvrF9ejKb0KSv9fDQnNuYajAHw/tKPCbE2b6Nn9RKZwFECAvhT5/qU68BIXPVaaLBWu3JyZi5295ule8/VY/yiZzYKU0rTq6Ycp4bujIqLiz+W+bMtbezg9Si0lFnQ7CauZRolxXBVCmjDh6o6NYyNbXGegonEd23V+EmDQjV/kTIFee5yYCQU4nr1pog5W
+ 6fBqH/Is
+ 4WqjYTfwEfjewYW/2RSNCtd+NmEnimvKJDIw0WQNoKWDmpjS6deY76QFcRAHRG8fEed2tiIY6ceKKsrPFbbo4Q03VQypgiTWf9xZvuNfnH/tYJBBftKqBs1q3i2NVGOucc/xScJkjlvR5GZ9VhRxtoTX9TIdglInxoILt7/pFS1zWlGCEKu5UDWvhibrL0PTZBaCqNkuKVGIamA1YM99NK7JeKF3roTMxCVHLWQ6N9TPS/98EGk/NfsewD0x1Mx9X40/SprAQU2wPpd2/44qqibbQARAlH1QedF/UI79ZnyUydGlG5AMYMkTCNOuTNOd0y90YEG4Mrynf6gz3Zklyf0b1Iy5alb2WzJQUQWFbQdSBwI5Tmgqe3+Yzc3EsmXmpWQm6cIhaWalPckU0e4N/lCLFECFCfvjY/TP9TZJLvD+gt5v2z8bb0kgECqlIvQ3UyFLz4r4teFLDqL7F06yO2QIPgYRPHzJ+eHyszMCKq473dbDaP/PnDTCqNxRo6SDdm5ig8X9UvXYyev1EdYeYa6PZ1955v8blgUL5TrJHNh6G11jjHmJvnswUFJwktvFrFf9luAGvpk5az7zu/Gg69rJGZ1HiCJTUVkFg59VIYM8gacKu83BZUOLWf6qEJ32WY3LqfCIjpnsRf5DZo5epgbKLYoOJ9mdeoFSMWdKNFI4fMc5tQYVuek7LVqVhn57+CUJtH/idsys/PsRf1sWRhYHzQZIX49v31uG4tmNdpQLvXGZJAgNjdVJYdp0QpnOLNlo4remRq5qmI8lrSVar3nLCEpneuqlBVqFVE5anKUPJqcuCTkbvQ2rjpgIeEDtERuZqfXrTmEpfip0A+r7f7sKoL8xkglW1qFlCdyU5mTHxlGiVmh/y+2QwWpfSGJeBFeTDCErwDGHCunVBsYJONOQtIk79m4JKQVulu75lKDzn2NBomxqsgiHzoSfB+qoxi+id4vYE5OTx9t45VSZ8ll9xGTpD
+ c+byI0MX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,15 +102,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 11:30:42AM -0400, Zi Yan wrote:
-> free_pages_prepare() can fail but compaction_free() does not handle the
-> failure case. Failed pages should not be added back to cc->freepages for
-> future use, since they can be either PageHWPoison or free_page_is_bad()
-> and might cause data corruption.
-> 
-> Fixes: 733aea0b3a7bb ("mm/compaction: add support for >0 order folio memory compaction.")
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Cc: stable@vger.kernel.org
+syzbot ci has tested the suggested fix patch on top of the following series:
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+[v2] mm: page_ext: add count limit to page_ext_iter_next to prevent invalid PFN access
+https://lore.kernel.org/all/20260622-page_ext-v2-1-135d4cfbc42f@oss.qualcomm.com
+
+Patch: https://ci.syzbot.org/jobs/c1b2fffb-acae-4bd1-b00c-622d37f59120/patch
+Testing results:
+* [build 0] Build Patched: passed
+* [build 0] Boot test: Patched: passed
+
+Full report is available here:
+https://ci.syzbot.org/session/e38844bc-7d59-4cf9-ac06-b987a2745fb3
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
