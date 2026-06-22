@@ -4,122 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0BFDCDB470
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:52:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B2CACDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:56:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE63A6B0088; Mon, 22 Jun 2026 08:52:42 -0400 (EDT)
+	id E72D16B0088; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A974F6B008A; Mon, 22 Jun 2026 08:52:42 -0400 (EDT)
+	id E49806B008A; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987D36B008C; Mon, 22 Jun 2026 08:52:42 -0400 (EDT)
+	id D387C6B008C; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 742B16B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:52:42 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0336C1C01BD
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:52:41 +0000 (UTC)
-X-FDA: 84907537764.25.C2342AA
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 067A2140002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:52:39 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="AVb/qhwl";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id ADD266B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:56:38 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EA7CA0165
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:56:38 +0000 (UTC)
+X-FDA: 84907547676.04.22464CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9942618000C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:56:36 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhTXUQv3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782132760;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782132996;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6TkQhP0uWUVoXEcgVjZA91Kv5N2KnxefpO2wbntWaF0=;
-	b=UPKU1QaeHCUfD4+quGYRQw3Ly7P316gwN6P5bYAyZvo+VDKVLDN6T7aDoCM2+N661YiX1S
-	f8QdvHOcO7E5TmLcP5JMOOdBqEVmRY7wKswP1fyGPsmpZsrTRTcTNsCCAcSPe8i6PH8i/X
-	2mCSlLvFgg2kqc1/rK4Hti11iprK144=
+	bh=l2iDIuaF1VKCPijPKmXFMyUN8rIqLYAfStTAg8/YV8I=;
+	b=oyNwt/i/Ytq/YXxmsc5GHYizizbV8swJCS9SvlLTjYZXFEpQMQsQ/cwYKTBKNEsrXNW2PH
+	XNDd14QY8s5Ti61IBjMsRmItdB1QbpE1+rsibEEXM8MpvpBbejU5j2ZYZsyG4zTzfzxkR3
+	69M6MjJ78ecFtqqQV6TEo1JUBX0RLkU=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="AVb/qhwl";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhTXUQv3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782132760;
-	b=fXVdHSVDNz9N+p1SqbjY6LmT2scW/0k/GCWk7PgOqfNCz7vMdndrNfcYmxOduCPY6dA2xN
-	EyhLLneIqqbUbmmXI2QgcyjiW0KFwPS5UFYv5aktUTAAsHOLNtCO78M5z0TlcISC5sSS+k
-	bO6N+bwbnAyXOIjPvmuONv3rjD1Y1/Q=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bec43ee8ff0so678725566b.1
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 05:52:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782132758; x=1782737558; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6TkQhP0uWUVoXEcgVjZA91Kv5N2KnxefpO2wbntWaF0=;
-        b=AVb/qhwlNIDipUbRx6IaseatuGFuKAIv/bwEGw4LFcvykOBNqrC48JTh55QpKSCk/u
-         5RvBwABDQIS8/kmWCXkmeb9Ylhpwf0HehjclKzjgOX2mInHQHN9O9P7aUoQy4XHPg2nW
-         QIIEPi9OGgPB8PrD6St/fpLiJfn+9iwA5fu/grrMnWZ2lK4Ogyg95tfrMiqarqNn0QCO
-         oHIryqiZp4vxLyQbmWJpwsJ0x025W98norCI/uusMZ2/c5MiT9VLrov4xhuAJFFSNisp
-         iGC7WbyJHG2MstT9KPH8FedGcBdLrvduNbSnXqiRJuRuGMLc5xHeHHJYDeCWfr7/WlSh
-         6h3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782132758; x=1782737558;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6TkQhP0uWUVoXEcgVjZA91Kv5N2KnxefpO2wbntWaF0=;
-        b=Kn71LE2pm7ggLuRxnRmK63AVD/NHze1Tguv6ugjO5kNTKXD90jk5gWh0fpjuhIixcr
-         9TN1GICoZ3x0uqpv87/aGYacaw35RQKY3Ctrr9Afr2q3TiGa8Ua8Hffid+0kkZo5/3q6
-         CnFxSa7yQcDYAmNzDGSS2PS1KufQPKqEq8jits1YYLkSLmbQ/VVl7WmFd8T21bnszB4x
-         Qd4fwEJ2YZJX/oFyoeuMHi+siCAQDZpmrXpSzTv8aAH4FFLto4IASm66gj9hWBvAWjNJ
-         2QejK9+Uoa3N7xIo8h8g0u0F8yif01sFUrBgCfMOgxkYict+90Y36WBNEiOoVjiGTYfj
-         yj5Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8M1IxcQo3UhD+bH6JhI5K52/X0nW3vHNqOKvj4LG3cdyLGjolWITPpmbMKHGPqdh8ywCCMWr/K+A==@kvack.org
-X-Gm-Message-State: AOJu0YyJFBurfJsFey01w0TY5o836kHsWJi3URoFf1jZbqnKcNR3Gef9
-	m1UA+D7HsVzNjnAO88MrdYQ5cVKJ4vVxxyzIoq6FWyOmf9gMFEFZd7WR
-X-Gm-Gg: AfdE7cl00qlAIObrB0hZXlwvl6HzjqbDUBfhPkl2OQAQDYhh7o05yDhoxYRNL1wdqa3
-	y+hRB9JFoUuV86/+CyAeysSUcvcsLlFMxG7g48vQwhmfkO7L3BFoPyASMkK8/Hv8j2d/UK5ZdPK
-	0QRByBT9KcTH7+nZC2+I9gHTCladQRY9t87a3BWcHNKcrbKfWYsdeq5bLq/1SOS4MKcrJSNUZQJ
-	hfVB2MFYLcxpukv6xsexeHRdS7CoHKZsUQSJH4q9MllWXjlytiD679vJ6nXfL8RJ8vn8j8nO0n0
-	wOc3KPCqFgRwxkUl9+76DralpSq+ze3Z07oH4wDtk/Cz7JZ4iH9HVdlooOtUOfaqHIzpZmGagfg
-	bFFzmt8SIke8U5pGbDeSSBj0Mh82zcAURq+57s3XtbLq3Vb453L7dSOBof3YpgYkquBjCwL26+b
-	/AtVSAsaRYoYs=
-X-Received: by 2002:a17:907:940e:b0:c08:580e:899a with SMTP id a640c23a62f3a-c09b7b99854mr653419266b.10.1782132758077;
-        Mon, 22 Jun 2026 05:52:38 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e49a9fbsm354825066b.12.2026.06.22.05.52.37
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 22 Jun 2026 05:52:37 -0700 (PDT)
-Date: Mon, 22 Jun 2026 12:52:36 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
-	akpm@linux-foundation.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	balbirs@nvidia.com, ziy@nvidia.com, sj@kernel.org,
-	linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260622125236.c7uqapdqn4bybvvp@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260616063436.20455-1-richard.weiyang@gmail.com>
- <ajUXNjRMraKb6k2n@lucifer>
- <5e7f7fe5-221a-4fca-aa76-297ae19eb80d@kernel.org>
- <20260620021353.nn7xp2ldqachq7gp@master>
- <35b8dea6-3f0e-4e95-bbcc-bb778e567d20@kernel.org>
+	t=1782132996;
+	b=ynldeyhSGFmdVe1rsXeMXkLvbh7kmKqwet9arBU416Pmt9djJZTPhEK/v31xQ1ZiUO9BWw
+	qQT9ib0UWdB8Mn9dfNIL+DHfP9E6tgUgE3qpLWFSgRqKU4VtcxgtmFKvlQ/Vy85BnyoT33
+	qmVrdx887LpLMk+mZca5do5C7+QPD+w=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35A69601F0;
+	Mon, 22 Jun 2026 12:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C321F000E9;
+	Mon, 22 Jun 2026 12:56:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782132995;
+	bh=l2iDIuaF1VKCPijPKmXFMyUN8rIqLYAfStTAg8/YV8I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dhTXUQv3s+G3948VNEUzwG8LXH8B99YNS4TcI8bDdEjy3NoNMQW8qC1bUUBSBq0Gl
+	 9CS1dv+dU1cEQKaafkSSnUFEbNMHMoE6bXWDLVN7hboEaUaa0dWkHmM3ceKJRehheI
+	 62XYgsevyO2fp8MahzfXuYboKooKO40EB5EXQNxnRy3bIhPev9AIkS9Bp6dEnSFUlM
+	 AjZ2wghBrD6limeBOmkB7AGjF4ZSY0kPfNw6svzcq0JIoX8gZWxztnmnWbaGHMOIDY
+	 oHJqQ4QcmtGnNGHxzYYAGiy5TkFXhUSIZiiK6+1TAFqEmqIuNPWL3IkLCH3FgkliFd
+	 sxlx9gq6SF69w==
+Message-ID: <4ab3bf02-70b9-4748-a12e-2bd564fec53d@kernel.org>
+Date: Mon, 22 Jun 2026 21:56:24 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35b8dea6-3f0e-4e95-bbcc-bb778e567d20@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 067A2140002
-X-Stat-Signature: 5szseuk4r87d9gyrwwzb7sndxnn41uig
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
+ andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+ <2a7d21fa-28c1-446c-97f5-2513f29157d3@kernel.org> <ajU-b32dmwS7XOg4@arm.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <ajU-b32dmwS7XOg4@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------upsrUBOQYnFEnSXIs0AYK6aO"
 X-Rspam-User: 
-X-HE-Tag: 1782132759-511582
-X-HE-Meta: U2FsdGVkX19Xk9Ih8ydOzPUYw9cSbGMmgwwrZ9jfZomaVKwijfN9RmoB+VHFSJ2/kkhtX+RvGb++4gHqHyNUdFNUJVwxIa6qHz7/r+oKQmCkUnckV/9AnxFlMW39sSom1I/tweKSg6bSAzQNijDkxOoWw1CJKlG4AouN/Mvp52+cKKhtYbaKJLO51NqEKzSofHW3jalKhv1QNIzm1xlRV9rZ/EKp7QUTVTbLQk9V1wcK6MALQxZ/WBbLAPVkQMwtnhGnmpo1xIDsQfJNkYgcjgbelNBPtsn3U6Id6DMyXQn1dU4/LYTfyFGwQHcW6deKZQnTo7oGka/6Z7o+UKN1QEh5xhfBHEB/tCJH+13W2XKceViv6SjZtvjFfw8F4jTaxmYFv3QSgQMVb3ef4AycgXYxit58sB4Za0LQWEGWb/g+hO3QsXOtfmjRHZvMQ3/r6pJA42rJvlSRp48fkOtEXcPKTVReUigBO9RKTsGzNlPrmPNm0oiIxwl23/BifV6rUc9qWZTjAMJSv1PTZHUjEEcYuJSI1OQAw/moShf5n1xl+hQvqGb+cnr64D39H1zovF08Xvj0pnaUBjYEKdBCMHA36qexz/R79hBydVm82A4Jg2M9V6FPHVtcAQiQve5Pu5dunwcZAp41S3g4q2vr+cGLTUTfF0Td9zuNfSalX1OQS0I1xz6pRj2UZA9Wrgv3XC+VEAWDuqdmD/06J2YnNyFrPLzAqor3l45y8/3sJ5U5ON67WU1BJqsWoxMw9I4BCDt5fM2KNmO0hIxW5uOZSTFq3y6qu3g7P9OANO/zY87buuYjFDdjS37wpYpqcBkXBXpKnwpH0RFZiouHw4y5OTRY8+Q6i0KAnUehuo6aAD/I5UpmhNjzcFTgbOXz90BYOT3CSDEO3ka5dhX0Nl+zL6XU9TpqLcZ2jbRfy2yzXpfS6UQbCuB/55vkzf/ZkORJfT+IfGBQff5l3zADjuh
- RnKt6QJN
- /+/ZwW+B/Pcvy2w481DcD0XVTadF4rtR87uJ/DlvU3lRtAkVxhvtpkOmmlUX1aw9nxYLllVRinmXvZfq9mOdARYZ55ziyzX/UJVSpPqi7W/QWMRGyh3/txc+pT3W9/I1/A+LvFCatdFCYPMT1tJkHmUn6caIgmfcjP+XM6H4Jw20CNHLlVSf/KvOKoFZ6AyQba0hFSIH4rVyrn7V3GzVr8j3FykAmp3M3AilnvM2AT0kuqgbynhAEFwZgtAb0RL4dL2dyHUSPKwo9EHljcy+hOHVJ+Y3JQTX59q+NN4/X5lrwpljl50zfA0yz6qWypF2t0OQJ2mdPyVZcUFPlOWGUbeHuhLphmMaR9zebjMATK7wyVhodosSgekwURJ002Nk0iVEK4t1kEMIIVU1AR4ihA8EfUdnUn87h5r3GhvGD63bOTOfXweavIamoDKFYChFJJ55gkKaevQ9nj6PSFZW2vuAx7sneo7LzZNRqGpPBJDPVW4cUPPIgzmxR5K7juL8Atc6EEaOPND0IFHvkqt+dzu2j7JZS642QGu8klKmv0eNhzAr2vpxfA2/f9UveYHs2r8f+v/nzoKYo/E9Ojv0DRPJkMQ86pBYp/wUap/NgxNHq9ZkJgb5IF9soWZBmUw9QmJ/s8XyHDl1O7Ao5MLBTRGO7tRAvIpk8BI6nqEIBgiuixVMfKefFdVrRYnX9mjPHRWP3NBMmevD2fNGDuZ0hSRqYRud9VYS3qARp
+X-Stat-Signature: yu97ibh9mbgm3ac1g38qx49oc84ig4gt
+X-Rspamd-Queue-Id: 9942618000C
+X-Rspamd-Server: rspam11
+X-HE-Tag: 1782132996-265524
+X-HE-Meta: U2FsdGVkX1/juHn+0dmmfGTYgq0lN7uAYszkSE9joLHPWHRH7V2C98pcxBE4yE0IFEdJMIPw8szSxuihqxMQWF5vaTApfsVmNiJf1UhCF6sBS5GtFHsSrtJamAGg60dmep4y8lfkXZVM10pkt1CEP6OeGZeCE3obyAqfjNktP6Nn77kEa3Ni7Bpg+9z+BHhgzbHbc0O/M+zesyH3vHMTcwqkduIuhq1k7ad8/j/wZ7pUx0vt1vtGcvg/Rj7FYtkUFSYo2XCfMyEwb/qIjNXHI0YIAW2T64Wce7sHNJ1FGZFIedK8VPavztC2l/BjAGgQ0lWBL0uj1QkEZNpS4PcL0EHyk8kJy1/E4bqaeWkyXqvdvUlY2VzW8Rr9anFLckqQUs5Nh6ITiBYG8x6WZhiTcOGK92WVjP6loFtqHfO89jWeaDlapzcUzF4qqcwBsLJD5B49idXk+TO/bwIVbfKJjIHLRh7YBPZXyWQN3mE8IjXN7inf1PgFXzBpGGFdz+tYDoNF8bUJNh9rucUU42m92mhn8fb6A5Jv7wpXndThUYMXAL0hrTvOIwTEN3e5yc53acwPRk6Tl3swxdwdwxZMWCDXK+TBhL6MDthXTISi3EiRcquGilnogsPbKWifKQ/roeUl+OnzragRAqHwS9nuzFfUvx+Fe+6y3g0/7xBZA+PCpLuqQO/cznkKrnFXGJKLAX8uxmK66IwqrLmKuAV4cy+cigcHa7asZaE4lavqNryBAmX7JrhpdbM8+IfRl8am6yFbFfLgIccXR+JJM1f1/EoT+NsZguIsjdEckMZ+lZHAXKAu6DXTC2b/wopl14jyUCvwnQXhEXxfQp6LGiyUbn0E7sWl3dzj1zycoplET7dQt4zpjAvDAWkbFestB3SwwBJr/WSZicIRnb/4/4RiWeQR/EEKimCBS6KzpLEh33rImRnm/yOOWrignFyItEi7pVSmWLGlgrreotLMU6G
+ DVE7Lql3
+ HEJrTF0Tbb1DI//6BgR3wUt0//AIo7x+6gu9KS3074sC6NcvQUSWX4kbS4b91nUzfNXssw54Rm9+j/Pk3C3R/OjooxfnPATsdtbgea84/eGZuXWvryzVA7m3nTLUQjcnW+ktqRzwXtX9kDno8c6510MiRpvh+F5uUgLELxBE1pnFhyMXe5YKem9IBE7Cn214FABJwgpJDsFrHwfaQvFRjycKL+fWQojMOlFee0509zqRoJ6w/Wk2G7zsH3CX6fPe4m/Ru5AJnSsoYLyS0jsOTDt1sP26ZKKLETRRAYz0r2HzZL6KQ4BG17ux1Y9fzz5gzEVAO0BQHTWKCDciyNBQpelYvpHQaI1QqMmAB3xhPf3IIWX2PIm1jzNvtvR3+By2w/019o/lR4GQl5AKHc5jt+L4tC5b6AyitAGtwFZY+ZxdpGX6+M3ucG5M7YoECSLFK2bBGz9mj+RfFZhU4lDziWBoRAWXSjyKegcj8757jlcrPzG7EEvYh+YCHPvMKBclbom/8aAyhfxQje/KWG1jejGjXNOWCXVOyv/kaqErGmWaAwHbg6Kwjf4YXY1PeeJ+2BqYRMpOv5fCOjQc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,21 +103,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 01:33:28PM +0200, David Hildenbrand (Arm) wrote:
->> 
->>>
->>> I can then follow up with a proper cleanup.
->>>
->> 
->> I would like to do a followup cleanup for this, may I have this chance?
->
->Let's fix it first and then decide how to proceed with this code here. I get the
->feeling that some more of this code might deserve a cleanup.
->
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------upsrUBOQYnFEnSXIs0AYK6aO
+Content-Type: multipart/mixed; boundary="------------Ps3zmfE9YngvIs8RaS9wbP7c";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
+ andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org
+Message-ID: <4ab3bf02-70b9-4748-a12e-2bd564fec53d@kernel.org>
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
+ <2a7d21fa-28c1-446c-97f5-2513f29157d3@kernel.org> <ajU-b32dmwS7XOg4@arm.com>
+In-Reply-To: <ajU-b32dmwS7XOg4@arm.com>
 
-Sure, I will prepare the fix first.
+--------------Ps3zmfE9YngvIs8RaS9wbP7c
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Wei Yang
-Help you, Help me
+
+
+On 6/19/26 10:04 PM, Catalin Marinas wrote:
+> On Thu, Jun 18, 2026 at 11:05:43PM +0900, Harry Yoo wrote:
+>> On 6/18/26 10:35 PM, Harry Yoo wrote:
+>>> On 6/12/26 1:44 PM, Dev Jain wrote:
+>>>> Introduce a boot option to tag only at allocation time of the object=
+s. This
+>>>> reduces KASAN MTE overhead, the tradeoff being reduced ability of
+>>>> catching bugs.
+>>>
+>>> I think most of overhead when enabling MTE comes from loading and
+>>> validing tags for every memory access (either in SYNC or ASYNC mode),=
+
+>>> rather than from storing tags.
+>>
+>> Is there any reason not to use STGM instead of STG + DC GVA when
+>> setting/clearing tags for large sizes when we know they are properly
+>> aligned?
+>=20
+> STGM is intended for copying tags when paired with LDGM. Have you seen
+> hardware where STGM is faster than STG or DC GVA?
+
+No, I haven't. It was a question I had after learning that there are
+multiple ways to store tags ;)
+
+> For properly aligned
+> buffers, I'd expect DC GVA to behave at least on par with STGM.
+
+Thanks for answering!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------Ps3zmfE9YngvIs8RaS9wbP7c--
+
+--------------upsrUBOQYnFEnSXIs0AYK6aO
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajkw+AAKCRCGXBN6rc5S
+1qvyAPsF0DurImeEtMtFke9YXQWImsgXI+xfZ4SEz1mY+wbGswEA158qtw/Yf70R
+7SKOnegedFGVqJzsq5p+vAkSpPMfJQw=
+=RsAK
+-----END PGP SIGNATURE-----
+
+--------------upsrUBOQYnFEnSXIs0AYK6aO--
 
