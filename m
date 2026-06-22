@@ -4,164 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCF15CDB470
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:31:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7717CCD98F2
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6B576B0088; Mon, 22 Jun 2026 08:31:46 -0400 (EDT)
+	id 52BE16B0088; Mon, 22 Jun 2026 08:42:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1C396B008A; Mon, 22 Jun 2026 08:31:46 -0400 (EDT)
+	id 4B5626B008A; Mon, 22 Jun 2026 08:42:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E4D06B008C; Mon, 22 Jun 2026 08:31:46 -0400 (EDT)
+	id 37CC76B008C; Mon, 22 Jun 2026 08:42:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6204F6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:31:46 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E5A031C01FE
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:31:45 +0000 (UTC)
-X-FDA: 84907484970.21.FB4F908
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 06A666B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:42:35 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76370A015F
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:42:35 +0000 (UTC)
+X-FDA: 84907512270.19.D41F7B6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 29C6C180003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:31:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yq6Bpl9x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id C53F41C000E
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:42:33 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KiUQC1bI;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782132153;
+	b=qqqHEGXoCR3xqVuWDrx1RU49ou2nC5ENvHHhdOc0fSwberB6SToCLrSu1no7ERXq/VOB1J
+	h3yN4mBaEGxv/gvqWxDEy1mKVEWejzoZPIZHgOqU0XTDlgKZyLNiYi/FAYBfNtl/SbbnB8
+	LwKQJbkj3h53TNXVM6y8vGmp/p9WK2E=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KiUQC1bI;
+	spf=pass (imf20.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782131504;
+	s=arc-20220608; t=1782132153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mv1TDIjJmBLfFfHDh7TWc3Ec+yFIfWNb9f4z3gl0gSU=;
-	b=AGysRyyfjzNA4smAajl2d9IO8+sLpOy76Ll/dq8RfHdBCifA2a2NwCCbFCeCzDKiYd9OpT
-	vAUOAqeEUGIzxZe9DlK9BwcCLzQz9W6/DXoNJ3+vYhyYHOibVDhojE+7MFKPelXXyBUz9I
-	9AaERvFZOksdvJoMOJjf8T4ILram6kc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782131504;
-	b=auKg7EAqgrjigwWm2joTx+iGr/cMYAv3rIDxNMClVtpXBBXYopqEnYVefksKswvQ5xNcQE
-	X1bjKvggOhAcX/PmPo28w5Xm8gza9Y9lI36qHPjjf6mSLXAWVL+vBh4JaxK+ArCQp3wu9l
-	rKTlEe7QlxUrs4zHhOMKTJgySyX3HWQ=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yq6Bpl9x;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+	bh=sBB9HIOJyh0+Q0tdVfj5BPTOtaz69ZBxp/hs1U8uyTg=;
+	b=aPmYF4t+PN+DJjYprri4KGf4CZAtshMJlPNDvym4+yCREM6zedhLKfLariRutoVc94qP/z
+	UrIt65wjAxhZ19K4MitCVlL+y9HznxX+xiTsIIvtyD3Yt01MdsbBPBvdv8ESckLnNeCjyA
+	6T85kHNO/cbc7K/UUYwRU2vyBlRsUU0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5FD806008A;
-	Mon, 22 Jun 2026 12:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0ED1F000E9;
-	Mon, 22 Jun 2026 12:31:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5A4C96008A;
+	Mon, 22 Jun 2026 12:42:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA621F00A3A;
+	Mon, 22 Jun 2026 12:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782131503;
-	bh=mv1TDIjJmBLfFfHDh7TWc3Ec+yFIfWNb9f4z3gl0gSU=;
+	s=k20260515; t=1782132153;
+	bh=sBB9HIOJyh0+Q0tdVfj5BPTOtaz69ZBxp/hs1U8uyTg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Yq6Bpl9xNgG8eaRATgdPo0E6+dJzOGDQdCno3iqmf9KIjIyllG26382Fr+fu01Xf9
-	 bUxEbSPKJ8PlEknLGKhUqgRA61PAmFzSJyc1PboFoovpAJAw/XooS3FS6ehllQovLR
-	 lZjaUXJqM2NijaocEgvjjV0L0wYR640roDVz94qNQodlQ/fWv/DAdDjodvjLDklrZs
-	 5/kg/o5GRcSCI3UnWdBn5hE0/Yxen3qdzKU4Pv1QmF/0aj1G+OQ+VuKGt8hcVDMbXm
-	 6CrJEankWsCzYKYacNiCs0vkPokNkFSC7JFUDLoURnu1O0TSFTiyMNn3+RaT36bGsh
-	 H6c0z304WZg0A==
-Message-ID: <6b22698c-ac2e-4c71-9448-50f073b4efc6@kernel.org>
-Date: Mon, 22 Jun 2026 14:31:24 +0200
+	b=KiUQC1bI/NhfyctJLPMotIQzxW83XndStg/PtDhr/qg5jbTQLrqw2JqVnJBpjLAYh
+	 Eela41QyhwlZebJRBHeTf1rc0/F76YSzr2jWcDtiK2vpuUZqJyOh9d1kh1cuN6xBR+
+	 dc/6MlJL9RYmhezFY20KznZRo/RqADe2wR+wxCdoqA3w76THZZXJBlYHRBj5eNwEL8
+	 rjyLcShGMbmu3AjyHYavIQA2rk7oFcwlbwrahiS6dDeSr5/eT2VqC4vrbcOqinm5FE
+	 +Yu2Llh8Tm6gfVg/3xoRPl4lWkTKrzlUKYw3REicBtT/iT5QaiRNXHqePtqljF92q3
+	 NsFFXorFVrqvw==
+Message-ID: <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org>
+Date: Mon, 22 Jun 2026 21:42:10 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC][RFC PATCH v4 00/27] Private Memory
- Nodes (w/ Compressed RAM)
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
+ andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <b1502a60-09a1-4699-886b-93d041de7023@kernel.org> <ajVByfkLbetzA8bB@arm.com>
 Content-Language: en-US
-To: Gregory Price <gourry@gourry.net>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>,
- Balbir Singh <balbirs@nvidia.com>, lsf-pc@lists.linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, damon@lists.linux.dev,
- kernel-team@meta.com, gregkh@linuxfoundation.org, rafael@kernel.org,
- dakr@kernel.org, dave@stgolabs.net, jonathan.cameron@huawei.com,
- dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
- ira.weiny@intel.com, dan.j.williams@intel.com, longman@redhat.com,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, osalvador@suse.de, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- ying.huang@linux.alibaba.com, apopple@nvidia.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, yury.norov@gmail.com,
- linux@rasmusvillemoes.dk, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, tj@kernel.org, hannes@cmpxchg.org,
- mkoutny@suse.com, jackmanb@google.com, sj@kernel.org,
- baolin.wang@linux.alibaba.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
- muchun.song@linux.dev, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
- jannh@google.com, linmiaohe@huawei.com, nao.horiguchi@gmail.com,
- pfalcato@suse.de, rientjes@google.com, shakeel.butt@linux.dev,
- riel@surriel.com, harry.yoo@oracle.com, cl@gentwo.org,
- roman.gushchin@linux.dev, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
- zhengqi.arch@bytedance.com, terry.bowman@amd.com,
- Matthew Wilcox <willy@infradead.org>
-References: <aik_ddHymus2DJ6D@gourry-fedora-PF4VCD3F>
- <c1b66e7a-bb95-4295-8193-55ceadaaa578@kernel.org>
- <aimSzvoJDrpeQsmM@gourry-fedora-PF4VCD3F>
- <d01fb1ed-2418-42ee-aea2-37f9a5c5729c@kernel.org>
- <ainFROZ3WrGioyuY@gourry-fedora-PF4VCD3F>
- <aiwl4kCG814dpX7L@gourry-fedora-PF4VCD3F>
- <9f1815b0-896b-44ab-9e6d-9316d8f11033@kernel.org>
- <fdbdc9f7-d142-4880-b429-065d5056cabb@kernel.org>
- <ajAcIwBAnqgEEWSD@gourry-fedora-PF4VCD3F>
- <90418cd3-751f-439d-83ed-a0c33517c3bd@kernel.org>
- <ajPS3AKrZEbZbXBw@gourry-fedora-PF4VCD3F>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <ajPS3AKrZEbZbXBw@gourry-fedora-PF4VCD3F>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Stat-Signature: cmx4hseubjezgg5smfqzm8o9i5fad5ii
-X-Rspamd-Queue-Id: 29C6C180003
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <ajVByfkLbetzA8bB@arm.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------PC6AVe6DTCIpK9DJB7Cd0h9E"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C53F41C000E
+X-Stat-Signature: 715f5qqdo35szt4kiyfd3zf5o1ebxnrr
 X-Rspam-User: 
-X-HE-Tag: 1782131504-639873
-X-HE-Meta: U2FsdGVkX18Kitu9reIiO3khLTqdovPWdCmfV4UQa52cFxAizNzMZ8U4B7D1jPg5Qkbo4HgaIpPh7CQd1B3nfqn2VhowYqItHLS7WxckkNWvVotkfEwif+7LRNASw/RXP7lENCWSyvGPuryKSuYZ4sJnn/9y15ms2dlN7g0ui/hjK8qMDIg6JQ2VEZ+MOeoTyOqdJ3IauCOwBqRQ7aXGRVD3AjXGPOquj/LmQOfyfox3YW5kWyq+CSpnTz2uY5IrbgS6ArDLj0STVn5K8uV/ioDHdal4SkiFZFwmAAAhmATKFj8kPS4Z6ZRd4P9C99BCBo2V5fJO+wxqdCpCC42xTxVL9k/9YuZZ2+8wXEmQMjdK4JFw45C4kz7nDOratkOLuFUfMSFObD9AG/joihvLmimAP5XHy4B9LGl3EUey+rTDJv0dxW5OEzSujPiFr46FUV4IcRc+sXIQ7eSnmD2RhQk6UYTseMSbVjX+7VtgofvdVvzvrP2XKeitv7+Xsv+mhhs9St0bqbQrfgjE2JVwe4uzfVRyrgobuvPMvRdQRcAv3ikoclvpRzBZfcV81yAo8SZK6FeBpTLStZAqMHN5Jd93hs+7J9Un2t7BjfOhJmhVLO1O5SN39gHczo9dPnYzKBhIuWArf+kI8zbeObOQRSjsFwHCtaMA9IJJ1GlxiRNby/uCmHbHXeqVaraQFtRmSNK4GqagimVLLYcJQSFu+oS8zv9rMCtDouQhlBfh93siXGFFvEhCimiUdv+nKHMNk9MMwmbVmZnViO/Rxz3kvcdzQN3ZJwuwbAP24k/tG9E6ntmUEpSfvnjjHzJZHVkcuiksm3SQ1B7P4+Dg4jnmA9GmwutJW/0MWX7Vn+Jh5mKdFmYNr0zojXVi2p//oI9of9h/Ksc7jY3f75iNYyyaQ6kBW/lCbYcwAnzQeJNyMqg+cWKnbnCFlQYuUcWlp7y1HGRRwKlpkmcIvNzUOpL
- LgPl8oXg
- UXMP/FkEstk0FUxjqF32FYzHh1eBrfBW9u10VpRgwGmROL5NBl1XkyoKnTaIRY2Qb6O/VHIq3OivGZSWFX3aOVKnkTF9GgVVqItc1OT8eMGWqkeA+ZiWlGulYGK0gfGZX3ydIpxh7wU/b8zzEI2e5uyDRHTsQmsP9nxXs2W2184AEGSDi0pN0LjjePtEUrSXdlNjW6biWYQunxKcCECvRh8sFsFuLIUJMwno293OSaTKxD26DX8BdoCe4Ar0IBJcCL+Hr6G/YJLAm5xsnQAYpltV1QC8s9N52DY8osULRo11mQLQlCPN8p1u4ZICENDAG6MhZuKPrLDjtW9w=
+X-HE-Tag: 1782132153-62904
+X-HE-Meta: U2FsdGVkX1+VGExedxp9TSzuMnF6RHsdw1M2dOeB4YrYl6Wbs4x0axbi46C2MqdPSeZzJwRPNCfmDokz16FswgFU+24IkSqlWBBw5nbD99WCldn14uFprLyL0IMzxlIwOYyEX0ELWYgNrhqHhni6gfIRI3dT4UsXzXXrn4ZlguQVF8fmdJbpA1Xvkd7qUEMhhFmp1Kmynam95J1gT8DxzNMzl6RMT/5C32Q8v7KjFcN/Hk7xUIl9cPFzt34ldxCXiuf44mrc8PaG0fteW1LmcE7cpVTJpiLPIzCC5Curr06IY7BpBHY+R1oZdMOY7ki6EK4pN0nJTwcalGs1KnkYgGXSHDU6OK/BvRKw+9XSt75QODABf6WBRVd7RNZrIheC7xz/8XYrBKmrh45hWmO0F/MLcyjFG/caRCiIFxEiSPkzV0BzohO7AQzpJFNQDVd4lypJQznZhu/9fYURf7jcfd34/c3XHrC7gGCCgdn3ku85pxJIAKN7l620DMvG7hBWxRH0QsKvyknXwCVNEk7wedD8ESgHpA0S9hEStE39mNQqZ2r2YnE0Nc0dKEAA2WVkgFP5V7Zvp/q1pWi6O1i1gIQT9M7aGV7AU6r6A0ITyZh8n6JoUaeJ/3+rX+E2nGQwDDhWjB8hgklkXn+UeHvloAdLO/EdFvFiva0UCn27FtAo9UCSiHUFp8Tz4eN0XZyjvyn0LFnwDAi+XnDIcfJq+7+EhWdyjgBu5vNuKwNxzY8nas5cYNaqBSPR8/SeHH0FG/Bdb28oWncIPkJG8Qo8NhWpT9ivqWHoVsiq8I7RnxwpJ/Ct3hRVR0q9y6+7FUA0cJTv7So/u2x6pPpk9W7+GUaYqmbVmlj15QgZAP8UorcPLTxjujpVGqdDpfv/yzi0fdiCxVgauK86wAtoHVorC6fkcf878tlgden8ZQuu+s3HhzM6DTA5NWDv5aMm1FYxfxW7ztVGm+HCFI6af3j
+ SQrwNY8s
+ RSpjaZEMEIHQDoY8Gup12VB4Pqcy2MrwIDt86YLXbF6SNbpeX3DKsfT8AuZy3webxxhOMCTiXjmAuuLfMAM/5IFORqcu1V8r+NptUS54nWc7Lt3KTlNBmkO63z58Ifc7Uulwe8rD1XqrZQqbn1eNZBZlm4C+ygp0k7r1eSH8jTdqLBjuM4q5L9G1astPEIiLVVrkSZMJM1XYUMEN2imT5eqY/Ugi4pl72BOg5WAqrqlxRw3K9kyRqbBH2iMqeMcBBmEHu/GaqBsQ5E447CbKJECqCgtoZTY1TEKmbPA82CMfpT3ZmshQfAycLJJrISo+jJs4UboI+ee1BzjICdISbg1+M2UhdbNeaGoMPtlKIG986E1qYtQZzU0ekFuww6OrzQcrls/If1Jbbm5Z+YwLXjw5h9LtjXtueLY+C/NGMOLO0+ylKP5H0JKe8qZBwhfWbd3BULw5Po+6Z7W2cTScEX+UPC24bu8ksxNOosVGfo0BevX9PCrLjLSVW6P6SXvqN/kV3yW+bLvaZmrMFao4NO7UoSNRm5jK2xTWS7EK9Otf+ve4yT5pC1qF/DXK+dPsivN+ZChDCbiFx3e0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,138 +102,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/18/26 13:13, Gregory Price wrote:
-> On Thu, Jun 18, 2026 at 10:21:30AM +0200, Vlastimil Babka (SUSE) wrote:
->> On 6/15/26 17:37, Gregory Price wrote:
->> > 
->> > One thought would be a way to switch what fallback list is used, and
->> > then have specific fallback lists for certain contexts.
->> > 
->> > Right now there is a single example of this: __GFP_THISNODE
->> >   |= __GFP_THISNODE   =>  NOFALLBACK
->> >   &= ~__GFP_THISNODE  =>  FALLBACK
->> > 
->> > We could add an interface with the desired fallback list based as an
->> > argument, and let get_page_from_freelist to prefer that over the default
->> > global lists.
->> 
->> Does it mean a new argument in a number of functions in the page allocator,
->> or can it be mapped to alloc_flags (at least internally?), because the
->> number of possible fallback lists is small enough?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------PC6AVe6DTCIpK9DJB7Cd0h9E
+Content-Type: multipart/mixed; boundary="------------DucNVyWowjWn2Qipbe0sleBO";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dev Jain <dev.jain@arm.com>, ryabinin.a.a@gmail.com,
+ akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
+ andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
+ david@kernel.org, will@kernel.org
+Message-ID: <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org>
+Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
+ allocation time
+References: <20260612044425.763060-1-dev.jain@arm.com>
+ <b1502a60-09a1-4699-886b-93d041de7023@kernel.org> <ajVByfkLbetzA8bB@arm.com>
+In-Reply-To: <ajVByfkLbetzA8bB@arm.com>
+
+--------------DucNVyWowjWn2Qipbe0sleBO
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+Hi Catalin,
+
+On 6/19/26 10:19 PM, Catalin Marinas wrote:
+> On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
+>> On 6/12/26 1:44 PM, Dev Jain wrote:
+>>> Introduce a boot option to tag only at allocation time of the objects=
+=2E This
+>>> reduces KASAN MTE overhead, the tradeoff being reduced ability of
+>>> catching bugs.
 >>
-> 
-> What I ended up with was adding a single page_alloc.c external interface
-> that allows you define the zonelist via an enum, and then an internal
-> selector resolution in prepare_alloc_pages() stored in alloc_context
+>> I think most of overhead when enabling MTE comes from loading and
+>> validing tags for every memory access (either in SYNC or ASYNC mode),
+>> rather than from storing tags.
+>=20
+> I guess it depends on the workload. Lots of allocations for short-lived=
 
-OK. Since it's in alloc_context then there should be no parameter bloat
-inside page allocator. And for the single external entry point it's better
-to be explicit.
+> buffers (e.g. network traffic) may notice the additional tagging more
+> than the actual tag checking.
 
-> 
-> eg:
-> 
-> static inline bool prepare_alloc_pages(gfp_t gfp_mask, unsigned int order,
->                 int preferred_nid, nodemask_t *nodemask,
->                 struct alloc_context *ac, gfp_t *alloc_gfp,
->                 unsigned int *alloc_flags)
-> {       
->         ac->highest_zoneidx = gfp_zone(gfp_mask);
->         ac->zonelist = select_zonelist(preferred_nid, gfp_mask, ac->zlsel);
-> 	... snip ...
-> }
-> 
-> struct folio *__folio_alloc_zonelist_noprof(gfp_t gfp, unsigned int order,
->                 int preferred_nid, nodemask_t *nodemask,
->                 enum alloc_zonelist zlsel);
-> 
-> 
-> The original __folio_alloc* functions just add a DEFAULT - which tells
-> select_zonelist() to base the decision on __GFP_THISNODE.
-> 
-> 
-> struct folio *__folio_alloc_noprof(gfp_t gfp, unsigned int order, int preferred_nid,
->                 nodemask_t *nodemask)
-> {
->         return __folio_alloc_core(gfp, order, preferred_nid, nodemask,
->                                   ALLOC_ZONELIST_DEFAULT);
-> }
-> EXPORT_SYMBOL(__folio_alloc_noprof);
-> 
-> 
-> This does a few things
->   - The isolation is structural, there is no way to accidentally
->     allocate private memory without passing ALLOC_ZONELIST_PRIVATE
-> 
->   - The isolation forces folios - there are no non-folio interfaces
->     which allow zonelist selection
-> 
->   - The zonelist selection is confined to this allocation context,
->     so no inheritence is possible.
-> 
+Agreed. Likely depends on lifetime and size of objects.
 
-Ack.
+> Of course, it would be nice to get some numbers from those who have
+> access to MTE capable hardware.
 
-> 
-> I tried to avoid using an ALLOC_ flag so we can avoid yet another flag
-> crunch, but there certainly are few enough zonelists that we could
-> encode it there and expose it.  I know Brendan was looking at plumbing
-> alloc flags out to an interface, so i'm open to that.
-> 
-> Externally the way I determine what zonelist to use is a lookup based on
-> reason - letting the node filter.  This is really only needed in a
-> couple spots:
-> 
-> mm/khugepaged.c:  enum alloc_zonelist zlsel = alloc_zonelist_for_node(node, NODE_ALLOC_RECLAIM);
-> mm/vmscan.c:      mtc->zlsel = alloc_zonelist_for_nodemask(mtc->nmask, NODE_ALLOC_TIERING);
-> mm/migrate.c:     .zlsel = alloc_zonelist_for_node(node, NODE_ALLOC_USER_MIGRATE),
-> 
-> static inline enum alloc_zonelist
-> alloc_zonelist_for_node(int nid, enum node_alloc_reason reason)
-> {
->         bool ok;
-> 
->         if (!node_state(nid, N_MEMORY_PRIVATE))
->                 return ALLOC_ZONELIST_DEFAULT;
->         switch (reason) {
->         case NODE_ALLOC_RECLAIM:
->                 ok = node_is_reclaimable(nid);
->                 break;
->         case NODE_ALLOC_TIERING:
->                 ok = node_allows_tiering(nid);
->                 break;
->         case NODE_ALLOC_USER_MIGRATE:
->                 ok = node_allows_user_migrate(nid);
->                 break;
->         default:
->                 ok = false;
->         }
->         return ok ? ALLOC_ZONELIST_PRIVATE : ALLOC_ZONELIST_DEFAULT;
-> }
-> 
-> Otherwise... everything is now a mempolicy w/ MPOL_F_BIND and all the
-> handling goes through the normal fault-paths :]
-> 
-> static struct page *__alloc_pages_mpol(gfp_t gfp, unsigned int order,
->                 struct mempolicy *pol, pgoff_t ilx, int nid)
-> {
->         nodemask_t *nodemask;
->         struct page *page;
->         enum alloc_zonelist zlsel = (pol->flags & MPOL_F_PRIVATE) ?
->                 ALLOC_ZONELIST_PRIVATE : ALLOC_ZONELIST_DEFAULT;
-> ...
->         if (pol->mode == MPOL_PREFERRED_MANY)
->                 return alloc_pages_preferred_many(gfp, order, nid, nodemask,
->                                                   zlsel);
-> ...
-> }
-> 
-> 
-> Switching to an alloc_flag would probably be trivially if that's really
-> wanted
+Agreed! (I don't have one, unfortunately. It's pretty new hardware
+feature)
 
-I guess not. Thanks for the explanation!
+>>> Now, when a memory object will be freed, it will retain the random ta=
+g it
+>>> had at allocation time. This compromises on catching UAF bugs, till t=
+he
+>>> time the object is not reallocated, at which point it will have a new=
 
-> ~Gregory
+>>> random tag.
+>>>
+>>> Hence, not catching "use-after-free-before-reallocation" and not catc=
+hing
+>>> "double-free" will be the compromise for reduced KASAN overhead.
+>>
+>> I doubt users who care about security enough to enable HW_TAGS KASAN
+>> are willing to compromise on security just to save a few instructions
+>> to store tags in the free path.
+>>
+>> To me, it looks like too much of a compromise on security for little
+>> performance gain.
+>=20
+> I don't think there's much compromise on security for use-after-free.
 
+I think it depends... OH, WAIT! I see what you mean.
+
+You mean use-after-free before reallocation does not lead to much
+compromise on security because objects are initialized after allocation?
+
+You're probably right.
+
+Hmm, but stores to e.g.) free pointer, fields initialized by
+constructor or accessed by SLAB_TYPESAFE_BY_RCU semantics after free
+will be undiscovered if they happen before reallocation.
+
+Not sure what are security implications of that,
+but sounds worth discussing.
+
+> The buffer will be re-tagged later so use-after-realloc should be
+> caught, especially if we ensure that a different tag will be used (I
+> don't think Dev's patches do this).
+
+Agreed that it'll be nice to ensure that.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------DucNVyWowjWn2Qipbe0sleBO--
+
+--------------PC6AVe6DTCIpK9DJB7Cd0h9E
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajktogAKCRCGXBN6rc5S
+1mwdAQCV/v9TESQBXaNvWWnvoxqvNG1qbVtP+p+94ya719IJXQD/fT2zvm7NaU5r
+ozgxj903g6vHgfHpqx9u07IM7QQCrwQ=
+=GrWq
+-----END PGP SIGNATURE-----
+
+--------------PC6AVe6DTCIpK9DJB7Cd0h9E--
 
