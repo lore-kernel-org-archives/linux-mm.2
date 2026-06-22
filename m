@@ -4,78 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6320ECD98F2
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 11:45:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE5C2CDB46F
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 12:01:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CC86B0088; Mon, 22 Jun 2026 07:45:46 -0400 (EDT)
+	id 9D8BC6B0088; Mon, 22 Jun 2026 08:01:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3243B6B008A; Mon, 22 Jun 2026 07:45:46 -0400 (EDT)
+	id 9B05D6B008A; Mon, 22 Jun 2026 08:01:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2614B6B008C; Mon, 22 Jun 2026 07:45:46 -0400 (EDT)
+	id 8C73C6B008C; Mon, 22 Jun 2026 08:01:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E31FC6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:45:45 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 62C5C40105
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:45:45 +0000 (UTC)
-X-FDA: 84907369050.11.0C24DC4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 88BF4160003
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 11:45:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yy+7bd7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5963E6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 08:01:06 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DD77AA012E
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:01:05 +0000 (UTC)
+X-FDA: 84907407690.21.759B2E8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 04AB0100015
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 12:01:03 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fp5uGzNY;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782129664;
+	b=yaOy5YI9L6j6mpxTLkKkrSzwePjJg9vOWhkUnnA1EDT/FuCEoNdEOdv0l4AALZq2eAKJMD
+	yXssa5u+0cw4hKcq7zq1C2vCka4esPus14wNUiXV7lt6jIqfRz4UtINyEUP9IxrDH9Wvn4
+	Qr0WTPCkd6zCfY6Qgjj8mtM7pTOqp50=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fp5uGzNY;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782128743;
+	s=arc-20220608; t=1782129664;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9JBsCDSqStclSYNDRHkOppan6Uc/0g5zBLrT/zyXuAc=;
-	b=QNjpFaHeszGk7T/ln+MZxQUS0ruUUd7QOSk4OxH8Zsmz5nqpCdcpQcG2P8E7c8PCsI0jol
-	z9pN34t+Na9p1wtg1hvEIUlI8yce6FAEFs0CokYPve9Ez/wfnOpkgoqBt9Vd3eUDONaMn5
-	/kEzct7jlXvLXoQk+JaOhrsfwtoUtr8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yy+7bd7w;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782128743;
-	b=YayDccWcSBWJaP2IxdjDFMCxwb3jcE25pcEOHE8NOeUC2bujVg51JsdalWEMmCrPZcP7JW
-	bVGKN6heBAVtGe9K0ejSq8ILgN2vvGQmN5ruQ3vQKFDBaBrhWg2OpwyELYjHuRmKxFXiZo
-	W5fT6iThsRRhQYMuHQSldTGdUuvfZ9g=
+	bh=Hb+xK1K2v16uboBzyh3TzN4n8wpgYjwMIIEfcewwUJg=;
+	b=ZxnwkUiszk4tweT+DgbtMVrLfVNDdvg14aj1fQxF2db2hj0HAkcFNqX6oxlbM16QWiDSbS
+	lDS/Blofh+EwjfoB+EgEIks3ZPxD+yUu3CnNz2AegOnkFpZDeqLpGgb9kiTp9xayY56saZ
+	/9T6W8E7lQeA/F07kzTV2635yePHPQw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B17EB40959;
-	Mon, 22 Jun 2026 11:45:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C156D1F000E9;
-	Mon, 22 Jun 2026 11:45:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7883F6001A;
+	Mon, 22 Jun 2026 12:01:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30401F000E9;
+	Mon, 22 Jun 2026 12:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782128742;
-	bh=9JBsCDSqStclSYNDRHkOppan6Uc/0g5zBLrT/zyXuAc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Yy+7bd7wWK11Akz64zjyb9ETsTQsEDXkuUsN6tcHwpwvYCMhDbHlrqwp1+bwrkKYq
-	 9KSylJf5mnx+Y4V7oJ6C1tWzsOeTt89DV14ERJ7HehMvWf1x9Hng4jYsiYa8Ti9UjY
-	 ZIuD5GfqcJBgqy+od90T0l2BwSc530EHDZvnfe5KIUvZHtpWX6tGecSYSTFAY9iszE
-	 tIq+nduxxxT2Kq9hdisGg+S0BiSc6rAxsoIEsEj+VXmjcQqaFdKYpdH4tD9dwm1dLP
-	 B/C1OAjBp+zksOnIFZBdV15EVBVXr/mqBKhCnemobrsyKy4TW5jNjyqxujKxUdJie9
-	 PZCbkX4fvk4ag==
-Message-ID: <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
-Date: Mon, 22 Jun 2026 13:45:38 +0200
+	s=k20260515; t=1782129663;
+	bh=Hb+xK1K2v16uboBzyh3TzN4n8wpgYjwMIIEfcewwUJg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=fp5uGzNY7paUzv00kCFpF+NxNCdwOOIxnW9qL4vct2NCpHuFSbM4tyq5o7aFNuUQx
+	 3zM0af3z5joZrCn43s/96UJEyoSljgjaBMixwLm80KN2an3jg6+yLy/1grrDAxpCSu
+	 Y5d0FiaMiFc824QPjb7SAIXhSFLzUTrVoN5WvBTGSjbYeFtoo5iWBqJfGc1/OvSBJU
+	 Tt8v/3aA8QRU9dwStjFgV9Y0rciWhcf19Rzn7vQcHTw2MJR7C6gj6Eb+1LFaMSW0w5
+	 QGR4uId+6WhxK9cT4M/OBKlNslhd/mAevTq6qAk69nIIjtQ3q0HEpWnVKl1qAZLAXP
+	 jFiHPDTzlQ7Jw==
+Message-ID: <a6f2b88a-3a99-44c3-ac49-b8d9027d483d@kernel.org>
+Date: Mon, 22 Jun 2026 14:00:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] fs/proc: fix KPF_KSM reported for all anonymous pages
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
  ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
  linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
  chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
 Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
 References: <20260622091539.836531-1-tujinjiang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -121,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260622091539.836531-1-tujinjiang@huawei.com>
+In-Reply-To: <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 88BF4160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 86hrbk7fyj58ymoaniq9tjp9pdc6w4bz
-X-HE-Tag: 1782128743-849214
-X-HE-Meta: U2FsdGVkX1+eavRze3//Lf1AYeEhTchhmGvWvqOf3gVu5BUj5HjciQtEP6QoQBYWaGk4XmNUgxkVGzTEK9qfEoxNo/F/y3Z/l+LELaWfGf6Uf/6fvJO9ztCJ1KkR8pqIPXDgSSeq+V8wnp5A3EjtnEOJNeXSetbMF9lWCCZ6FfWAKff3eRWDoFAIgh0XF+7mSK1imxoe27EqGSzSg763VBeu2aoXe1vOqb4KH061zLcF5wT+jqsIJ3T50OQFbHVi0JMovNvw0e9GrCwCkKaSnIVAMbBKBUTRsM0L7rJPOMFwAyZ2Z17yOsKbqrIUGTJ53aHE656gRp12YlG3LbQqv+liut79j9Z4VoybF7HiMeUrBS76+oWTX3ZyLPQXAoe0HKnojLqcNUY9gNeA/FdGnp3mTHAceo5rWnub0f7o3xw/9EkYnwnmEELh3cP5zoUbRNJGF1khlXopFSZ5IY/TXUZufci8PTDdqqmVHFVOU2kehXh6BP7j9mcWN5oBisH2IqLy1tsguge4j4z4VDNop15+K1jMy/qdoJXTPgxF5e98awGCMjAXjqCeif+cgjCmvlOCrg9v5jRep1eQjvyfBfdDiUkmS/A+MLQKYAVvrT9dJF87iwrcnkUdbCXGiKnpyrOi/9XRa9KTz7JDKfTinND8EEXGYeSFpjpZgzRKeLPsiPnAZNUBc4cgf/lD7KUbJB8X6YUoY20+DmNN2W6UWcIp+SLOCL6V4B1/YCRfy/yb4WyfP9vmFwRayXQToWj0HOOuJNFbC5MWCCyj/BjfTR4vLQdihNpUprrkHU/vcMCh74PX1+6EI/NH56t9stfU4Wn4GHIWcbexeuRWm9fpta+QUv2eJoy2kpUt1Y0sxtKFbgxvji9LnM+vJD/MgDEUeFuaMHoBtjWgkB4/XgNdZCW7QohhBlr3OV9xYcOurE3xqeQ489VAtZD1Q8yQlUQrW83ZSJrvRcNj1PPQWsD
- AXnTEu6H
- 39X2WaPsFSAtICTYTKeW8Dk7ct2dAFNI99+tco+uV2fEUeBewX/7P0D/i19azCSqQsBePxfmx4KtWqvzx/7x3NxvVYYEpZfPE/4vYMP0VlEo3QhnWsF2CZCQ+GNnHGJ813C24iwmx9IU7HMve8S4rYJluIugxnrkMuRwDFSFoiR84beysS0JC3UrMLB0hfXrIolFTHuWDa/6x6MpZP+7RP4/ZoD0lLLO6WomRg1zViH/fHdiJBhbe6VpZj3FhUM9HUPlDvzuy9K+m9FAGOkbLFSz35JnE3vWD2rgar6yKqOjTE24/ZsHwz+ED05k0GmTT5w4RYppfTLaJGUQ=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 04AB0100015
+X-Stat-Signature: 3gcq8mta3r6bxt6akn14ki8ksyraai1d
+X-HE-Tag: 1782129663-480587
+X-HE-Meta: U2FsdGVkX1+LuKcZghmyhOAdDCRcK6MDTH0Spx9ogFrez2MdbnJgba2gLDM3mNy463mSoc9/dj6xnlW/s/zcKzYJ3BD3WekUaAEiUddgV1zLlvD4tcf/XlB87KFu70F+n1YYD/i6VD/BMzGAGzO8b2AeVqCzitVGcu15qesdVJYOgsqOzwEfiImpYHD5ejOFjqnX6qpdQi9pSm9awQgVTjcoNX3xLwE5Yw4ZHNotpwsSzpf/jyndGhUvoxiBp9p5buOoksj2X0jxeD3rS6kh/uL9pPSwrNxDW4Ss/9AZNU+p7gbLmVdtaC8k+vkNmx8GTdbAzBaZyB9dZHPZctpzZYBOj6Ft+2EQe8F0hqp3CYle4AVDiE06Sc1+2UaxF5QfdtqBoAGu4bhEOwTrpGZgf4IUXOTknbrXv5IFEG1Mo9wsZ5ejv/0yXBFX2Y3siXg64lFgHPtoHurRzJ5++qUxt0SjIDBg5RIuoxeYoyc8ANrxhdN7TGtYGSGtM3Ef1TtesnvFXWAXKb311kLZsMp4TeduT2bD4ZJL3VRZAK8q6fd46BrSnYdyFouc3qdTTQ39XSiO2ltXmz0OeL4zOvBSduLzB02tI6vB0ctoqT8uZJYNn4C01LH3gSt27v8r99r3dsWxbYHfVYjaIX6ptx9ePbOOMzm1nPhYFcfbyYoKrzwV21aBsbGSvZpiUSNs1tEpoT0MRtjCRKhixmCy3x+Et63BIjr+ALpV6vJ10+ExXUlSG/PzVtdY675MzYMCLI3JkvLNY6DL8ullt8vTOa5IGFCW3xc7qfXK9PrWza+cLW5pE2IRKguGu1SYjIrzH8D5/05r8iSxh62sDBKT+xihB5IdQNnLPoQ8FU0SI2XxL2mpYu3jbK90km8fcALNSuKBdA6qHGvXsmwQgjs0plf1hFU70zXn2RGC/XkrH94c/JijTIdVVUcRl9CbUCCtOU3fo2UhI+SzAa+NzE7SHd6
+ RuEGoenN
+ l/k+MzYJrf7Yref3QPbeK8VQbFx/cMuV6waRCinINkTy+8ctYywJfeHDRRg5f8ImbGnZ37NEQiKgDx6xyoo7NeEYlkjuv+mDjLf7H5pD/hUsLAyZ/SLxzcuOyI0ynqa+3E9fLH8NWJIBFwYrlfqEpSd0GlBNqbTvzHyTYSGAR55cEXGdX+QzNt3kE/zsPUi5jYX0z6BrCoorARxXBGt3MD4Un21iJU1J2TqKKEp9GBmw4Wi2PBtDRjiUDhRnuSldAV69fFb30CC4IOIYwE7WNOlJ8lKANJC6+54bmziI5g1ZrEudeN31ijwsoRZC7TV3W3p0GSSOacH/lxB0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,64 +140,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/22/26 11:15, Jinjiang Tu wrote:
-> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
-> when KSM is not in use. As a result, tools misclassify all anonymous pages
-> as KSM merged.
+On 6/22/26 13:45, David Hildenbrand (Arm) wrote:
+> On 6/22/26 11:15, Jinjiang Tu wrote:
+>> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
+>> when KSM is not in use. As a result, tools misclassify all anonymous pages
+>> as KSM merged.
+>>
+>> In stable_page_flags(), if the page is anonymous, then use (mapping &
+>> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
+>> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
+>> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
+>>
+>> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
+>>
+>> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
 > 
-> In stable_page_flags(), if the page is anonymous, then use (mapping &
-> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
-> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
-> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
+> Right,
 > 
-> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
+> #define PAGE_MAPPING_KSM       (PAGE_MAPPING_ANON | PAGE_MAPPING_ANON_KSM)
 > 
-> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-
-Right,
-
-#define PAGE_MAPPING_KSM       (PAGE_MAPPING_ANON | PAGE_MAPPING_ANON_KSM)
-
-Which we later renamed to FOLIO_MAPPING_KSM.
-
-
-Before switching to manual flag checks, PageKsm() translated to folio_test_ksm()
-that checked whether the values actually matched:
-
-((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS) == PAGE_MAPPING_KSM;
-
-
-This only affects /proc/kpageflags (well, and hwpoison inject on a weird testing
-interface), so it's not really that relevant for real workloads (debugging and
-testing).
-
-So not sure whether we should CC:stable. Likely not.
-
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
->  fs/proc/page.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Which we later renamed to FOLIO_MAPPING_KSM.
 > 
-> diff --git a/fs/proc/page.c b/fs/proc/page.c
-> index f9b2c2c906cd..cef8ded97610 100644
-> --- a/fs/proc/page.c
-> +++ b/fs/proc/page.c
-> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
->  		u |= 1 << KPF_MMAP;
->  	if (is_anon) {
->  		u |= 1 << KPF_ANON;
-> -		if (mapping & FOLIO_MAPPING_KSM)
-> +		if (mapping & FOLIO_MAPPING_ANON_KSM)
+> 
+> Before switching to manual flag checks, PageKsm() translated to folio_test_ksm()
+> that checked whether the values actually matched:
+> 
+> ((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS) == PAGE_MAPPING_KSM;
+> 
+> 
+> This only affects /proc/kpageflags (well, and hwpoison inject on a weird testing
+> interface), so it's not really that relevant for real workloads (debugging and
+> testing).
+> 
+> So not sure whether we should CC:stable. Likely not.
+> 
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>> ---
+>>  fs/proc/page.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>> index f9b2c2c906cd..cef8ded97610 100644
+>> --- a/fs/proc/page.c
+>> +++ b/fs/proc/page.c
+>> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
+>>  		u |= 1 << KPF_MMAP;
+>>  	if (is_anon) {
+>>  		u |= 1 << KPF_ANON;
+>> -		if (mapping & FOLIO_MAPPING_KSM)
+>> +		if (mapping & FOLIO_MAPPING_ANON_KSM)
+> 
+> 
+> Wonder whether we should just do
+> 
+> 		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+> 
+> To match what we have in folio_test_ksm.
+> 
+> (although I doubt we would reuse this flag for other purposes, likely
+> it's more future proof to check it like that)
+> 
 
+And just to mention: given that this function now operates on folio+page
+snapshot now, I think we could even stop doing this manual folio->mapping dance
+here and just use folio_test_anon() + folio_test_ksm(), as the values cannot
+change concurrently.
 
-Wonder whether we should just do
-
-		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
-
-To match what we have in folio_test_ksm.
-
-(although I doubt we would reuse this flag for other purposes, likely
-it's more future proof to check it like that)
+But that should rather be a separate cleanup (and needs double-checking).
 
 -- 
 Cheers,
