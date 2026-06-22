@@ -4,119 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42668CDB46B
-	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 06:16:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8DD1CDB471
+	for <linux-mm@archiver.kernel.org>; Mon, 22 Jun 2026 07:12:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19A386B0088; Mon, 22 Jun 2026 02:16:19 -0400 (EDT)
+	id 39FB76B0088; Mon, 22 Jun 2026 03:12:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14C2B6B008A; Mon, 22 Jun 2026 02:16:19 -0400 (EDT)
+	id 350E36B008A; Mon, 22 Jun 2026 03:12:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03A626B008C; Mon, 22 Jun 2026 02:16:18 -0400 (EDT)
+	id 23FD36B008C; Mon, 22 Jun 2026 03:12:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C99A56B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 02:16:18 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 503521C55DF
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:16:18 +0000 (UTC)
-X-FDA: 84906538836.16.3EB5522
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id A9BA31C0002
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 06:16:14 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t15fr1vS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E860A6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 03:12:47 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 719FBA057F
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:12:47 +0000 (UTC)
+X-FDA: 84906681174.30.BB9961C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BD03E1C0003
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 07:12:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L4PNXIa9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782108976;
+	s=arc-20220608; t=1782112365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uc01vIZYGfTIV3fdEG67Z2UKVAOKK7e6urfcQoWTPXs=;
-	b=KSR/atADrT0h+mPnRA7NJFWRlcS0Hkc+8wlQx3ZMZoy7gk+o7WuuNn/AmIeC+cNgKOuwaG
-	aZYVuHW+CJZ602MOi59MajMJXx6vofr1Scr3Ddsg9OiGe7XANaM/aei2zPKpmIRWyB7MvQ
-	3ARzm8qFemUZ6I2omPQkGdHz4Fts3lI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=t15fr1vS;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+	bh=JPDKWUY1v1INodMedwDx7DwR6GeDNvta1xVixbP8aME=;
+	b=k7Ba1InMoVYa3kva14LAMiDcltRDj+htSQFnegkk+jFsMWXIz6VCsDxluz1eJ5Z/T4XZIS
+	ocW6JYTdXj4e59+kXwImXuZ70tUlwHBZEjtyGNXERMTpBkAPqMiWbzFRNGHvF6JFobfgKR
+	G8t/phBixisyBdeTJFBV5X9PqQie2II=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782108976;
-	b=PXzN1jBNoz21WZKyMxL7og61kNopvwp2k9S2Em2KidAiOXXenvC1C7eM8AH8FGaktZdEDi
-	GFregT54mYosIdTmOZgutI89RVxybblLpIf0ZOyC7cUh6E2TUlAE+taPRaiZa8SGY0Rw3C
-	FrsF9a6gs0NzAoIt8e14zWWCDsg9m+o=
-Message-ID: <8c8f1849-86d3-4c69-be27-30bbdffdf616@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782108966;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uc01vIZYGfTIV3fdEG67Z2UKVAOKK7e6urfcQoWTPXs=;
-	b=t15fr1vSWPqYuOVx1/bxMEqBYsgHtm0lD1qKuOgL6xYl94f+kJLWMkDtNXA1O6oXS4NWrk
-	UXfi4I4xGSapixdXs6K5v7yl7QxZTsj0xBO+b54oW8Z9JaKuiK5OobLxhWf+TcWH/AL++5
-	EurPaDWOivYCOI4YE0QW4UrJN1dv49Y=
-Date: Mon, 22 Jun 2026 14:15:01 +0800
+	t=1782112365;
+	b=n1v3xDAUhi97db0XgapBZfNADioxslWAuUi8pkDDiKwmum5XNHwU3B7qAbUgHGIUYsFl8S
+	Qe8Q+/Uh7TkH0JoWTZBruxfdZiAfCQWuW5BOQ1rYux+sruxC39pTPkY5GwPK2P49dQ3Sz3
+	lnTO1AC1DDFSXGHmCOqvgpB805aDxpo=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L4PNXIa9;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 129C4600AF;
+	Mon, 22 Jun 2026 07:12:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A371F000E9;
+	Mon, 22 Jun 2026 07:12:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782112364;
+	bh=JPDKWUY1v1INodMedwDx7DwR6GeDNvta1xVixbP8aME=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=L4PNXIa9Zw4w4w825y5AbRuIkOOgKjEMz0H/IY6pmo0/6ndTOJFPljNEwX3AL7dbj
+	 plw6zBxzTfQaZ/UroLuI54iZKHPFrPnF3lAqPwgK92ea6EP595egePsMrZLYbUJJoU
+	 168UWkvIZs2O/Ux0HkhEJiGWOLIT53MX63q3eL8x0Hhha674hOrFnrSs35GDOW2/Lx
+	 CSSgZC2lV8LlJN/6+qpsxBWDeUwGAGbcZWTnr89VN2ut3cW8PKou1Rl9C1+nzzIlw5
+	 6g7rbChB8u464k5hXQt7m1oerM34BEUDf/rr49Uy6trcC8HiyUQtylGI43wb1argWM
+	 rOa11sg/oUJ/w==
+Message-ID: <e629ca4a-69c8-4288-802a-9150ab9da4ee@kernel.org>
+Date: Mon, 22 Jun 2026 09:12:38 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v3 0/7] Prepare mutable list iterators to cache cursor
- state
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Paul Moore <paul@paul-moore.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Howells <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>,
- Randy Dunlap <rdunlap@infradead.org>,
- Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>,
- "open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
- linux-ntfs-dev@lists.sourceforge.net,
- Linux-Fsdevel <linux-fsdevel@vger.kernel.org>,
- io-uring <io-uring@vger.kernel.org>, audit@vger.kernel.org,
- bpf <bpf@vger.kernel.org>, Network Development <netdev@vger.kernel.org>,
- dri-devel@lists.freedesktop.org,
- "linux-perf-use." <linux-perf-users@vger.kernel.org>,
- linux-trace-kernel <linux-trace-kernel@vger.kernel.org>,
- kexec@lists.infradead.org, live-patching@vger.kernel.org,
- linux-modules@vger.kernel.org,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- Linux Power Management <linux-pm@vger.kernel.org>, rcu@vger.kernel.org,
- sched-ext@lists.linux.dev, linux-mm <linux-mm@kvack.org>,
- virtualization@lists.linux.dev, damon@lists.linux.dev,
- clang-built-linux <llvm@lists.linux.dev>,
- chengkaitao <chengkaitao@kylinos.cn>, Muchun Song <muchun.song@linux.dev>
-References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
- <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-In-Reply-To: <CAADnVQJmPWFT01b7DuLdtafv=8FyB84GYHNZ8zSTck+9Aw0JpA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+To: Waiman Long <longman@redhat.com>, Gregory Price <gourry@gourry.net>
+Cc: Farhad Alemi <farhad.alemi@berkeley.edu>,
+ Andrew Morton <akpm@linux-foundation.org>, Farhad Alemi <falemi@asu.edu>,
+ Yury Norov <ynorov@nvidia.com>, Joshua Hahn <joshua.hahnjy@gmail.com>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, stable@vger.kernel.org
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <8d3b4561-92cd-4ebc-8462-5fb0fd659e8a@kernel.org>
+ <ai_IHvyptWPcTD0y@gourry-fedora-PF4VCD3F>
+ <70f486ce-5ef6-4d72-8cc3-7086f4eea930@redhat.com>
+ <c1495b1b-9dee-4cd5-ac8e-eeb7a2d968ed@redhat.com>
+ <51eafe6c-6622-479b-b391-6d3ff9350e75@kernel.org>
+ <c61c7925-b9e7-4a6f-82e2-398849ad9f27@redhat.com>
+ <38578aea-61c3-4328-aee9-8e7421672647@kernel.org>
+ <9d8b650d-6faa-425a-8db7-1e206cb25158@redhat.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <9d8b650d-6faa-425a-8db7-1e206cb25158@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A9BA31C0002
-X-Stat-Signature: 8gtpnu9u9tmfh693eeq4c3hq6ah77syk
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: BD03E1C0003
 X-Rspam-User: 
-X-HE-Tag: 1782108974-874318
-X-HE-Meta: U2FsdGVkX1/JWYxBlmUfTN58G63NQDKke+NhZgRaYKFPC9NDeP1w9X4lYJfUeGlKKGGcgQBR+xKHwn4RKyb+Rm5cVvbnped9bcPGiyPz6lZNygIXE3pjLrPT5N3tEueNLV4Wz/9qXgB/onKVF1gZALHxGuGwVInrnZ+/HIfl5salSDfaA6Z3//yzYdU9Ob8uhCpzy1gk3g+U1XmZcNy7g2wN8nyc6fDfYDTSuOhxKoVFuFMzEUCZJV+6CQN06+MQT+GXZJU9SbuS8CNi+PKG3E7M0mW1QSWZXOKncYhklYeUYc/ABQLKJFi2IC7J32T4Elw8U6F3tgQ4b0FzBLT7exLnKQavaTCVt+JnystQZ4R8CmLMjeGZeeNekRxAeikXTwBYh1HLD8n7hidJ45Q/Q8epk47mMS2xvsmSZouxWUfDDIhN2+OMPgOfbVn773aTj63VfeXPRwZutAl11GO4VwtQGp6YBzUm7lz4/3ZD2cDv5DpROa1BPa5yWSjpU9wRiL8Xa2yWhvt0sOEXAvNqm7Eebw+0B1qs628NZX8sS+M5vPmg4uK2dUYUGij59qmf8oKseZNmspirD5zCD+Dc2r+BqZEFF7wyFI7LT8Xas7aIGE1uK+RZHu7mflDyJ7QSxp6KiEEyIBLOD0M3L5P5KYf0BG8LNs9CzHuxQIY/8Lxqr6+XWTVunrnE61ppbZJ6gvmjHUqyQDqtmMJ1bVXpi8sZ39vUGDF7oEST/hyVAZ0NEmtQw0nTp9WHj26xBX6TGGGpzjUx56FIqUZhYXP+xtzsQrsP6zwWC9UAv8sth6XBmJHDhG7HqBkAKjb01CC4CQcCH8qjxec6VM+dGRoeGtp6pDRvQfqSNZzYxA+q2TdvCv1dPANoUSVpZ+lkUuBdPEb6Qnnyqqn9gC+brxsshzZk4ZNOgLtfP3zoVOTETaXCCkrSRpM7AHxCTPxy/PF0w/6BHPzHdfUVxZp3lur
- Ea4hmcHo
- wzgzjVKZPSTRzALmYe8o2s0Z2/MSYI1SxOcwQn6mnvBpqxKkN6mETtkLrB3Nxwt8HZ4uiAPCb4ETTZOtlvkvsYzcTGqkdJ4ngqdPMl23ucx5aXmnTv4yrDZ949HY/kWeV4aN7oUTL6jD7Fgl7uObz/Z3wcQVwUiGjrxHdNAi0vBFfO/SBsTDvdm1j9ftUMqRT21yKichAGHkoOfPs8lIfgq0X8gmaTnOxqLmdKsu1LwaEvs6Xo49IhslPyyuVJ3XhSS4r2X7T5ue7Oy9CkezSLDulx9sBQSoyAML/kB3OIrd6+wYpyAb58A3S4iqXLKVk2pcooVC+qtYyuTm8cLmnvO1j2w==
+X-Stat-Signature: b51tnckhwzj7xrhqc6xok8azireb6mcj
+X-HE-Tag: 1782112365-235227
+X-HE-Meta: U2FsdGVkX19Lp5tQNlcxhpGQ+tmWJLFRHudnOYqhFEvtnWa8NFa+ImeZSTbnjf3Unqhu6MoD2zplkMr0eSOmBgu/rdLSEd0pXjDOCjVBKpiqwQf+czP39uS9L/s0I+N/coBoPdvtBf6GDTNhb/9RKmtrrMOnAwNXmC1m0uCRNh+5QkpUZK/5VWgQOPBiPtiA6gfHXD7Qe9xGRiavZ9uF3G/jvJnMA+NB+WASIOUi1ujRPzF66rbI45C3R7lXxRsqZxTdEP+0fnbeYyoiwd1OrJO5SRcSLSsx5sLqgcUaIH0aZ5Tff9bUICmaVr5Tjh2NyRw4TFZA2/BTXwE8V6h01bnJF56WrESxd0wZxzT9rXl2puuTdxI7MAcpTHBpAbprfB0WAx6J3S9zQMvbcEfokjU3k2KXatgwX++LFUrKralAEXKStVNUt1j6US1+5aGkfy61uihnyyzLdmwR0hvbQr4sRQ8pKW9w3NcWN24uBXYnuWHRcUkXreFBUxxPZ2jdI6xqFZg1xuLlW2VVp5BESTpsxQIEXNEYhB3qMpRachXWON93C+8szQQfZbNRmjvm+Cp6ZNCLMJIXyz8Jc/9VZQNEFd/qNeN0+ygeynMJomVDC/Lax5qaErxZMq3Q9c1MVzJGFy8GspUUTEx4zZFRkn3ASSGCLqhP2Kff/u0t23gy+P+rpkDVyC/PGTpqR6FcSnLL9vy6j3rHmJlFcqQIi2sAEm+CKd5pisyIiGYqHjaeZqH5ohbn7XK0Ni6ckGAaGZ/fxl4yp/ueWkYUhAhN28I3NAtOHb6ejXkRRqjXmAQNNyAU3bZ2WHnsXWq00ConzN/vcJ0lHnsD4wgj897QEqLm0mpCqiIAvbPQ5FB6vZIaK2Y1yeooi9yDfmoMAJ8z0dY6vlq6/m0G2SLv+MMmDwzApDCVvsD8eh9Dn5j5v7ZZhvP5NfC3MQIkV3QUyGaxCqqJaFaOAoklE/pyG+T
+ z6J6n/01
+ K6gnJDUjbdQzxU1YSF8nz6tB1BKMiI8DBeVjYKYA3xTQdJunNi6F7OLtR9/Z/ef1qCWW6u90TePt1BHE6OMgbaOVb5epvKG7Em55SJew9NTdeKlezzJSLbMux5wYOqSEOEfVS5LgHx1xDRVlrUoYNlNRojm54G/EPfJrSlyH3MDBAxkXYUoH9tp/Ebo9lLvg7wcMkEMWhX1mzvXSvZkhHDIYwKF7gUv2fasXvjU6CswlrUkVhUkhBGwyLaZhVGfNsYaNMQsBPdQUwdsX6KI1Mmk3HKhs+42Kr//jbSjfNC/RuNErxSmQ5hPwMCcvt2v30CBYvQmG4axhhH6MHNwjJ4+itCDd8lZpKKe5ZOi41AiCsBMXIUsDAhNu7ck93ZY1Us1qIDvcxrFpQzxy26pazkrfZkg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,217 +154,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-在 2026/6/22 13:28, Alexei Starovoitov 写道:
-> On Sun, Jun 21, 2026 at 9:06 PM Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+On 6/21/26 05:24, Waiman Long wrote:
+> On 6/18/26 4:41 AM, David Hildenbrand (Arm) wrote:
+>> On 6/16/26 17:23, Waiman Long wrote:
+>>> Yes, taking newmems is a reasonable choice and there are pros and cons with each
+>>> options. My focus is more on not changing how v1 cpuset behaves as it is well
+>>> defined in the v1 cpusets.rst file:
+>>>
+>>>      Requests by a task, using the sched_setaffinity(2) system call to
+>>>      include CPUs in its CPU affinity mask, and using the mbind(2) and
+>>>      set_mempolicy(2) system calls to include Memory Nodes in its memory
+>>>      policy, are both filtered through that task's cpuset, filtering out any
+>>>      CPUs or Memory Nodes not in that cpuset.  The scheduler will not
+>>>      schedule a task on a CPU that is not allowed in its cpus_allowed
+>>>      vector, and the kernel page allocator will not allocate a page on a
+>>>      node that is not allowed in the requesting task's mems_allowed vector.
+>>>
+>>> v2, OTOH, is more vague as to what setting cpuset.mems will mean and we
+>>> generally follow what v1 is doing, but we have more leeway of what we can do.
+>>>
+>>> Using newmems will make the above text not totally correct. At least the offline
+>>> memory nodes will be filtered out which will not be utilized by the task when
+>>> the offline node becomes online. That is why I am saying that we will have to
+>>> correct the documentation if we want to make this change.
+>> So IIUC:
 >>
->> From: chengkaitao <chengkaitao@kylinos.cn>
->>
->> The list_for_each*_safe() helpers are used when the loop body may remove
->> the current entry.  Their current interface, however, forces every caller
->> to define a temporary cursor outside the macro and pass it in, even when
->> the caller never uses that cursor directly.  For most call sites this
->> extra cursor is just boilerplate required by the macro implementation.
->>
->> This is awkward because the saved next pointer is an internal detail of
->> the iteration.  Callers that only remove or move the current entry do not
->> need to spell it out.
->>
->> The _safe() suffix has also caused confusion.  Christian Koenig pointed
->> out that the name is easy to read as a thread-safe variant, especially
->> for beginners, even though it only means that the iterator keeps enough
->> state to tolerate removal of the current entry.  He suggested _mutable()
->> as a clearer description of what the loop permits.
->>
->> Add *_mutable() iterator variants for list, hlist and llist.  The new
->> helpers are variadic and support both forms.  In the common case, the
->> caller omits the temporary cursor and the macro creates a unique internal
->> cursor with typeof(pos) and __UNIQUE_ID().  If a loop really needs an
->> explicit temporary cursor, the caller can still pass it and the helper
->> keeps the existing *_safe() behaviour.
->>
->> For example, a call site may use the shorter form:
->>
->>   list_for_each_entry_mutable(pos, head, member)
->>
->> or keep the explicit temporary cursor form:
->>
->>   list_for_each_entry_mutable(pos, tmp, head, member)
->>
->> The existing *_safe() helpers remain available for compatibility.  This
->> series only converts users in mm, block, kernel, init and io_uring.  If
->> this approach looks acceptable, the remaining users can be converted in
->> follow-up series.
->>
->> Changes in v3 (Christian König, Andy Shevchenko):
->> - Convert safe list walks to mutable iterators
->>
->> Changes in v2 (Muchun Song, Andy Shevchenko):
->> - Drop the list_for_each_entry_mutable*() helpers from v1 and make the
->>   cursor change directly in the existing list_for_each_entry*() helpers.
->> - Open-code special list walks that rely on updating the loop cursor in
->>   the body, preserving their existing traversal semantics.
->>
->> Link to v2:
->> https://lore.kernel.org/all/20260609061347.93688-1-kaitao.cheng@linux.dev/
->>
->> Link to v1:
->> https://lore.kernel.org/all/20260529082149.76764-1-kaitao.cheng@linux.dev/
->>
->> Kaitao Cheng (7):
->>   list: Add mutable iterator variants
->>   llist: Add mutable iterator variants
->>   mm: Use mutable list iterators
->>   block: Use mutable list iterators
->>   kernel: Use mutable list iterators
->>   initramfs: Use mutable list iterator
->>   io_uring: Use mutable list iterators
->>
->>  block/bfq-iosched.c                 |  17 +-
->>  block/blk-cgroup.c                  |  12 +-
->>  block/blk-flush.c                   |   4 +-
->>  block/blk-iocost.c                  |  18 +-
->>  block/blk-mq.c                      |   8 +-
->>  block/blk-throttle.c                |   4 +-
->>  block/kyber-iosched.c               |   4 +-
->>  block/partitions/ldm.c              |   8 +-
->>  block/sed-opal.c                    |   4 +-
->>  include/linux/list.h                | 269 ++++++++++++++++++++++++----
->>  include/linux/llist.h               |  81 +++++++--
->>  init/initramfs.c                    |   5 +-
->>  io_uring/cancel.c                   |   6 +-
->>  io_uring/poll.c                     |   3 +-
->>  io_uring/rw.c                       |   4 +-
->>  io_uring/timeout.c                  |   8 +-
->>  io_uring/uring_cmd.c                |   3 +-
->>  kernel/audit_tree.c                 |   4 +-
->>  kernel/audit_watch.c                |  16 +-
->>  kernel/auditfilter.c                |   4 +-
->>  kernel/auditsc.c                    |   4 +-
->>  kernel/bpf/arena.c                  |  10 +-
->>  kernel/bpf/arraymap.c               |   8 +-
->>  kernel/bpf/bpf_local_storage.c      |   3 +-
->>  kernel/bpf/bpf_lru_list.c           |  25 ++-
->>  kernel/bpf/btf.c                    |  18 +-
->>  kernel/bpf/cgroup.c                 |   7 +-
->>  kernel/bpf/cpumap.c                 |   4 +-
->>  kernel/bpf/devmap.c                 |  10 +-
->>  kernel/bpf/helpers.c                |   8 +-
->>  kernel/bpf/local_storage.c          |   4 +-
->>  kernel/bpf/memalloc.c               |  16 +-
->>  kernel/bpf/offload.c                |   8 +-
->>  kernel/bpf/states.c                 |   4 +-
->>  kernel/bpf/stream.c                 |   4 +-
->>  kernel/bpf/verifier.c               |   6 +-
->>  kernel/cgroup/cgroup-v1.c           |   4 +-
->>  kernel/cgroup/cgroup.c              |  54 +++---
->>  kernel/cgroup/dmem.c                |  12 +-
->>  kernel/cgroup/rdma.c                |   8 +-
->>  kernel/events/core.c                |  44 +++--
->>  kernel/events/uprobes.c             |  12 +-
->>  kernel/exit.c                       |   8 +-
->>  kernel/fail_function.c              |   4 +-
->>  kernel/gcov/clang.c                 |   4 +-
->>  kernel/irq_work.c                   |   4 +-
->>  kernel/kexec_core.c                 |   4 +-
->>  kernel/kprobes.c                    |  16 +-
->>  kernel/livepatch/core.c             |   4 +-
->>  kernel/livepatch/core.h             |   4 +-
->>  kernel/liveupdate/kho_block.c       |   4 +-
->>  kernel/liveupdate/luo_flb.c         |   4 +-
->>  kernel/locking/rwsem.c              |   2 +-
->>  kernel/locking/test-ww_mutex.c      |   2 +-
->>  kernel/module/main.c                |  11 +-
->>  kernel/padata.c                     |   4 +-
->>  kernel/power/snapshot.c             |   8 +-
->>  kernel/power/wakelock.c             |   4 +-
->>  kernel/printk/printk.c              |  11 +-
->>  kernel/ptrace.c                     |   4 +-
->>  kernel/rcu/rcutorture.c             |   3 +-
->>  kernel/rcu/tasks.h                  |   9 +-
->>  kernel/rcu/tree.c                   |   6 +-
->>  kernel/resource.c                   |   4 +-
->>  kernel/sched/core.c                 |   4 +-
->>  kernel/sched/ext.c                  |  22 +--
->>  kernel/sched/fair.c                 |  28 +--
->>  kernel/sched/topology.c             |   4 +-
->>  kernel/sched/wait.c                 |   4 +-
->>  kernel/seccomp.c                    |   4 +-
->>  kernel/signal.c                     |  11 +-
->>  kernel/smp.c                        |   4 +-
->>  kernel/taskstats.c                  |   8 +-
->>  kernel/time/clockevents.c           |   6 +-
->>  kernel/time/clocksource.c           |   4 +-
->>  kernel/time/posix-cpu-timers.c      |   4 +-
->>  kernel/time/posix-timers.c          |   3 +-
->>  kernel/torture.c                    |   3 +-
->>  kernel/trace/bpf_trace.c            |   4 +-
->>  kernel/trace/ftrace.c               |  49 +++--
->>  kernel/trace/ring_buffer.c          |  25 ++-
->>  kernel/trace/trace.c                |  12 +-
->>  kernel/trace/trace_dynevent.c       |   6 +-
->>  kernel/trace/trace_dynevent.h       |   5 +-
->>  kernel/trace/trace_events.c         |  35 ++--
->>  kernel/trace/trace_events_filter.c  |   4 +-
->>  kernel/trace/trace_events_hist.c    |   8 +-
->>  kernel/trace/trace_events_trigger.c |  17 +-
->>  kernel/trace/trace_events_user.c    |  16 +-
->>  kernel/trace/trace_stat.c           |   4 +-
->>  kernel/user-return-notifier.c       |   3 +-
->>  kernel/workqueue.c                  |  16 +-
->>  mm/backing-dev.c                    |   8 +-
->>  mm/balloon.c                        |   8 +-
->>  mm/cma.c                            |   4 +-
->>  mm/compaction.c                     |   4 +-
->>  mm/damon/core.c                     |   4 +-
->>  mm/damon/sysfs-schemes.c            |   4 +-
->>  mm/dmapool.c                        |   4 +-
->>  mm/huge_memory.c                    |   8 +-
->>  mm/hugetlb.c                        |  56 +++---
->>  mm/hugetlb_vmemmap.c                |  16 +-
->>  mm/khugepaged.c                     |  14 +-
->>  mm/kmemleak.c                       |   7 +-
->>  mm/ksm.c                            |  25 +--
->>  mm/list_lru.c                       |   4 +-
->>  mm/memcontrol-v1.c                  |   8 +-
->>  mm/memory-failure.c                 |  12 +-
->>  mm/memory-tiers.c                   |   4 +-
->>  mm/migrate.c                        |  23 ++-
->>  mm/mmu_notifier.c                   |   9 +-
->>  mm/page_alloc.c                     |   8 +-
->>  mm/page_reporting.c                 |   2 +-
->>  mm/percpu.c                         |  11 +-
->>  mm/pgtable-generic.c                |   4 +-
->>  mm/rmap.c                           |  10 +-
->>  mm/shmem.c                          |   9 +-
->>  mm/slab_common.c                    |  14 +-
->>  mm/slub.c                           |  33 ++--
->>  mm/swapfile.c                       |   4 +-
->>  mm/userfaultfd.c                    |  12 +-
->>  mm/vmalloc.c                        |  24 +--
->>  mm/vmscan.c                         |   7 +-
->>  mm/zsmalloc.c                       |   4 +-
->>  124 files changed, 875 insertions(+), 681 deletions(-)
+>> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+>> index 1335e437098e..cdfc615f35a5 100644
+>> --- a/kernel/cgroup/cpuset.c
+>> +++ b/kernel/cgroup/cpuset.c
+>> @@ -2645,7 +2645,13 @@ void cpuset_update_tasks_nodemask(struct cpuset *cs)
+>>                    migrate = is_memory_migrate(cs);
+>>   -               mpol_rebind_mm(mm, &cs->mems_allowed);
+>> +               /*
+>> +                * For v1 we can have empty effective_mems, but we cannot
+>> +                * attach any tasks (see cpuset_can_attach_check()). For v2,
+>> +                * it's guaranteed to not be empty.
+>> +                */
+>> +               VM_WARN_ON_ONCE(nodes_empty(cs->effective_mems));
+>> +               mpol_rebind_mm(mm, &cs->effective_mems);
+>>                  if (migrate)
+>>                          cpuset_migrate_mm(mm, &cs->old_mems_allowed, &newmems);
+>>                  else
 > 
-> Not sure what you were thinking, but this diff stat
-> is not landable.
+> That is true, but I don't think we need a VM_WARN_ON_ONCE() here.
 
-[PATCH v3 1/7] and [PATCH v3 2/7] contain the main logic and can
-be merged directly. They are also compatible with the old API.
-[PATCH v3 3/7] through [PATCH v3 7/7] are just simple interface
-replacements and do not change any functional logic. They can be
-left unmerged for now; individual modules can pick them up later
-if needed.
-
-In v2, Andy Shevchenko mentioned: "If it's done by Linus himself
-during the day when he prepares -rc1, it's fine." Even so, the
-changes in this patch series are indeed quite large and touch
-almost every subsystem. I have only converted part of them for
-now, so I wanted to send this out first and see what people think.
+I'd prefer if we catch such stuff in the future more easily than running into
+late divide-by-zero. Maybe we should check in mpol_rebind_mm() instead.
 
 -- 
-Thanks
-Kaitao Cheng
+Cheers,
 
+David
 
