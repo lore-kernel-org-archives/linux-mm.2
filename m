@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3C7BCDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 101C8CD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:47:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99E326B008C; Tue, 23 Jun 2026 07:47:51 -0400 (EDT)
+	id 6B63F6B0092; Tue, 23 Jun 2026 07:47:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 974AD6B0092; Tue, 23 Jun 2026 07:47:51 -0400 (EDT)
+	id 667CF6B0093; Tue, 23 Jun 2026 07:47:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8657E6B0093; Tue, 23 Jun 2026 07:47:51 -0400 (EDT)
+	id 508586B0095; Tue, 23 Jun 2026 07:47:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 583C86B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:47:51 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEACC1C58DA
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:47:50 +0000 (UTC)
-X-FDA: 84911003100.19.9AB9EE2
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 096E4120004
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:47:48 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECgBA3kr;
+	by kanga.kvack.org (Postfix) with ESMTP id 082456B0092
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:47:52 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 418E81C5756
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:47:52 +0000 (UTC)
+X-FDA: 84911003184.05.5D182FA
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E47411A0009
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:47:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABlGrpEp;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com
+	spf=pass (imf19.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782215269;
-	b=Cvdlx00xT5agcE2J7+CfuPEvaN6PMVX1lVlvnvOQk+jKf/rtB5D3mob3a7BVaOtIqWRdtz
-	NSHWkffGENSqVJG/xJAp1B2BVKAngJKjH9sMmUPvfzn5FMjhVNkYheCnsjtsj5JTGtJfde
-	SD18V+OHWznZtQBWqKqzI3P0ZK7BeH8=
+	t=1782215270;
+	b=fNjdetBifR2y3feWjhlR03WfYFqqPHEHoszxnI8koYfdsiN+/wt3YncYHmGx1NkLZgIqta
+	L/44MLe6P/tQspSjun/lRDwL/WdpCymlVJyrCy+CQk9vdK3hWKOfWzox5nxCSjRJC2otTz
+	J0oi5N6ka2WdDgpBjDdPP86wVBnuSeU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782215269;
+	s=arc-20220608; t=1782215270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=UWO1pnif7wwTSbqZ2zwXL6YIFLc1Uu0qFeb1JG28/To=;
-	b=p54hy6fENYoPvJr6eyM27kjwTxfd56fySYtxzwdgPKPLTG/VhgojhIzD4CzkBbwhajyMpG
-	CwY7WxQJLfkaFL8mDJRcwf8FQfnndOZoJt+3axuXpQcW5OXdxWvQBI/Mn3dz91kmrHlz0e
-	T4mBEPvBVe8vi5ZyzMo9HekwrlgUswE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w+GJOHW7bUhTRibZxxrx+5BAKKENWwY9HUVzNzwGEiY=;
+	b=JSTNCaxTH8aRZ5csg+BFqKsxHxMXpQlXUhkfowSchcqVTgDDIVjnvRFjtfEXU/cGTVu1Ue
+	HfB5o/i94ZKTKvMCfwMSi/3R91flSrBJXFuZrpVMP5TvVgegggm8ResqpkVTxYGhwpIrMh
+	oAcglSiDVjPWOV6Jfgq5zhn66wsnLk4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=ECgBA3kr;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ABlGrpEp;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5ad68b30252so1295411e87.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:47:48 -0700 (PDT)
+	spf=pass (imf19.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-399f5e574b0so7980561fa.1
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:47:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782215267; x=1782820067; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UWO1pnif7wwTSbqZ2zwXL6YIFLc1Uu0qFeb1JG28/To=;
-        b=ECgBA3krKvoH7uBjkalW8vZAYvWCpcdEq+Qqpd7ZWgZ7tzSim1xNAvkwEar2XVjK1t
-         PtIadNqTMrHX/GN0MIBkG+Ll0lDi2ogJIpAvf2y2HRDFhQsaM5CYV4VJYtweOvu7BCX0
-         ixx32+9uxq/Litl/m0GHZsjwvBUJOgQg6qJgJCRDJOhc3dNhjtf7lMSd0IvdJvR4VjHF
-         nycnGAUg3+b4KxPiMeB0+w7CNiDjMUbnETBiGjOOSDHBUWiAqjh7RyC4Z/VK3EHLZtN6
-         5ATlxdh6C8s8aD/PXSXf3YB9/bHHk3Q96QPrAVlacJHDfMTo/jvoy27gg9jwg2rdEAO1
-         nz2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782215267; x=1782820067;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782215268; x=1782820068; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UWO1pnif7wwTSbqZ2zwXL6YIFLc1Uu0qFeb1JG28/To=;
-        b=rzJyk8/wCu5NEv7UyF817mGuUF3mOaOSQHqpGNNopLSXoBXuUVm5UGKA9RFTlrDv1l
-         HJ5c2J0c1tLKuvnyr8px1HIJHNkYnYix4OdA4a0IIfVJma7dyRf9MZr1+V/jFQP6xqsj
-         tnLxd/zyG7hgHK625MKNIhLWXVO67t7kCRvlCJV6oBmo2VVTQUTYSQUwkcublnSXPHhI
-         /A3tf0ndY7ATdw9Ghv5d4nm4scQX1DflZAzVf9xDZW3dJqRayeUHi5caseqZm6a76lep
-         tiupFRpWKGFj8/b8j5//JU17scf4DAo/hMHgRN0Nd3Wtq87qE2Y7w2shFxakLs4Z8G6S
-         iMgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+1jU/MtR3YPCFpGCxHomVDqFSesW2pBBFanDANefwrf1zdqA5Nb4lvjeuEtKN1WIokqgGV3+qn8w==@kvack.org
-X-Gm-Message-State: AOJu0YxoYEBF49CAhNCZlYPxwYenziI76unSOdQ959kyOMG+GY/ErMS9
-	uGzDm+HKWTo+33ZF6DU/KQJWuhbb6pnPTIBB49EyMT4HCoKzNZsPS0hW
-X-Gm-Gg: AfdE7clcxb1JhS+O6PJmmvUi29Gj4rTe8JI/ujgzzc2TAxUxnABZ1v9L72LqA/zND0M
-	rshZDwBKhNZUXCxT5etUqcIvXEbmpb/ZYsW9mnaCD5bq4sSUBAB0klBmLbAw4vZo2UShjeGvakQ
-	ALid2h3i190VrKPsSXqT8uXfzkMpnbQQVFaISae8Ry+QKqLk7mLVMq9xFbIhYm5wHdWiEAN/W8R
-	39SLMLu4ayE1OiKX6TqXeAL3ZMCKUvnzzsEzg6NUb8OrBymQJAtcV74QVgIsXJjrlKHKY1rWs1t
-	uqiDqsOx3q3zbKI6b0FaOR5Tp6x/1gyLSpvLG/0KtlvR8lvmXUpSAygcDbMn7NXhKy3YVXRNQ4N
-	Xoae/9kBCFObrTgEja8L/qdFmPdEihC1PFYDhSHXpjtAtRFepMhMod2iDx/ffv+OpJSus8AFs3q
-	D3agkofwuar1Xd3DTpHd8B0sog4TNu5yQc8mTReVJHwBwVOwzmJUOAslUVHViM+M7U1YymxBsD5
-	xy6r0ADIcY=
-X-Received: by 2002:a05:6512:6711:b0:5ad:5456:8eff with SMTP id 2adb3069b0e04-5ad577242acmr5297882e87.50.1782215266849;
-        Tue, 23 Jun 2026 04:47:46 -0700 (PDT)
+        bh=w+GJOHW7bUhTRibZxxrx+5BAKKENWwY9HUVzNzwGEiY=;
+        b=ABlGrpEpoAzOvfnqfnXUCzfMoxbfSE8LLwxxAdOHtXD3Z0UwtuFcY4QYkeCPxBcCGY
+         +udi6ljQvUW1yRl3CyPyHF+OqPAjMG9y5V8EV3MuAIGpijVAI7wEd/WxBQiJWJBR+vHW
+         yixowBIF89ltqNd3pZsyoOM/XtJ52JvufjzLRr0L8zAFAnDL6WNw3viuZuganua4Ystj
+         z9aNr0GZUCysOGw9gqptoitJWgQVadX3EAUyzBAWOqRYpcvdo5eTa1OweLcIztJJpFMe
+         p/jBu693Rjudm2WAfKOLXp2seVEiI53kj/BJTJVYpeQVDdsHAdFza1V/mr7mg4NGANXe
+         Z6Xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782215268; x=1782820068;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=w+GJOHW7bUhTRibZxxrx+5BAKKENWwY9HUVzNzwGEiY=;
+        b=Gc25/x1Eqn6XqkiyjhT/e+99F5aEuLg84HohGWhdIEfvRFPL6PJqzEVmgmczsjBeln
+         agqXqa4D4O4Nybk84Srp7qmrnRyLnHq+QpJOc2lfwQvEziTLlYr7SHo1NuVLl+WDFMdM
+         1JiAlfDHK3DZW0JZKB1PjgjtDWeafsuIqW12TovFqQ5OyPE5l2YslIBm6G5C+v0nCBa6
+         dZIG65xZNIlht8c4hT5drUW4yUUxum2tQcNfN61GaU0NkNFryRamw1ljFVmBbNeqfLTJ
+         4+oIZuei/oHto71mOc+HfmGStrP0oSSXiD1KgXtjE3uj7ym4kxhd9BOsiDNNTynoF7ZL
+         3JcA==
+X-Forwarded-Encrypted: i=1; AFNElJ/Rv27Q56s0teIene/hXm8RWFfnn9sjelEuB1jipiZwbK/RSYOSqvrut3nq2d1Y3QbeQ6SiAc2x6w==@kvack.org
+X-Gm-Message-State: AOJu0YzkYaPzlSKJEzMgwb/0pl00A3fIuWz7YBa4egd3CSM6MrqRHD8S
+	bWr9YqsWevQrDR3sgy356CHjJAVu928BmLyOt6BJsanJPtYZprMmvevA
+X-Gm-Gg: AfdE7ckLxiZGV0Yl9v9/cihNjcybmJ0PagNpT2wqnD6z/oxHjI+3enngv9JERIxXLyL
+	7D+ccKQTueBjR+iyQjhK89s7K7zp56XZ/Dtpt5eG4U6OD9kSOpEG4L8rxwFcJEWQ0BtbHCzk1+j
+	XOzwhx5QFtcWm9VMvtYYPRI2uV+68OUb2+B/nThTJ1/ZkEdE1qmJs8LxN7xapEdUzfIH9yVDkuQ
+	r6CrUcr21pIqm115Tmn1RPFUaKKr1DALYCB8/XfPNcyXjmxcgCtkBH8YxDOn9huGPYmqb69GvLd
+	++VkVADxUnPPPgVkz00D9ZQAXTt6D1IqIJZO6j8zqAmgHE4Yd4e5ycU8+X2wYbEK9Wi76KQiWGU
+	QTMpy2ecIB9Hm16XMICkUGEDgjDVpzrSN3VoOlFLtrUMEntzARVVNoAxNsixjQ15P7+mvpOjKGW
+	0Sw76zELD8rhh3s2jNIgOuQLUCv1tib7GsWu8qq6jAn8AgDA8EXQWF+kkZURNbF8262Lp0R0hWI
+	RJD/kdBxVc=
+X-Received: by 2002:a05:6512:3087:b0:5aa:6395:9a00 with SMTP id 2adb3069b0e04-5ae3e5242cdmr709671e87.45.1782215267913;
+        Tue, 23 Jun 2026 04:47:47 -0700 (PDT)
 Received: from g.localdomain (95-25-158-125.broadband.corbina.ru. [95.25.158.125])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad69555981sm712083e87.34.2026.06.23.04.47.45
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad69555981sm712083e87.34.2026.06.23.04.47.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 04:47:46 -0700 (PDT)
+        Tue, 23 Jun 2026 04:47:47 -0700 (PDT)
 From: Igor Putko <igorpetindev@gmail.com>
 To: ryabinin.a.a@gmail.com,
 	glider@google.com,
@@ -103,20 +104,22 @@ Cc: akpm@linux-foundation.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Igor Putko <igorpetindev@gmail.com>
-Subject: [PATCH 0/2] mm: remove redundant static variable initializations
-Date: Tue, 23 Jun 2026 14:47:41 +0300
-Message-Id: <20260623114743.4565-1-igorpetindev@gmail.com>
+Subject: [PATCH 1/2] mm/kasan: remove redundant initialization for kasan_flag_write_only
+Date: Tue, 23 Jun 2026 14:47:42 +0300
+Message-Id: <20260623114743.4565-2-igorpetindev@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260623114743.4565-1-igorpetindev@gmail.com>
+References: <20260623114743.4565-1-igorpetindev@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E47411A0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 096E4120004
-X-Stat-Signature: g974sgmau9m8p4fe7jjz711wr9xcm4cc
-X-HE-Tag: 1782215268-294121
-X-HE-Meta: U2FsdGVkX19VAE+1pBl3EpDKrbVeknrB0CAEdkErCsJ6GN/SxyGneK/6KUnwkTlcOJ2yGKZ17w2I/nJuBcP+ivK2u2H1PziBEpfYRUTtykv93f1zdr8GsEFaou0Keh2oCk+Z+l2xbWouLLYc4vsCg68lLbq+m6956JGPHpfOr6dkGD1wv924cupxoxhGtjvyNzoQogGt3E83eMAJfY7TNyH46p0J/L5v64u0aW1Ig89koPFEdGsNVzXDq4av1Tjr1T9iD36Ug8hlzQRVgPPKp9bNtIF1ughwZh+dXeNxsqdB5IfciWrVvYm0YDKnecBo8TESk+Kj37L79wu8bXmS/MmVLNAFt7urZynd8o+hd5BTH5O73GQ07kBvoXnMXXh7Ev3KzAg9rJAsv1GG1ai3vwwOUM6klMRt/ye0MCuinzlPSG8F7I0CyeIKybggKVcU8H95/lGBWBsbj4FYwZ2vweyiCm9pyEdk4XOfgKf234UOPUZ6RolouQiRB/dmwqSBWAenKMSNPzvy8HQCh2Zpo0JvHgiqrfBkCna9bWc4Fw/FfiJ471XprA2jr12hxtdwydweMJuNI6/xzGSfRAL503jwjxUlPCuh4Z+yCvA4OCCiaLEIwsfeEkz0hxI56MZj7Np0ujpgnEqpId1FxIFjZdnEeSHzjdmhzk2dCJpGnwmj01s8Jc6Tp9Pr1aV0OJYViJMd5H+5Df6phN6N0aWyQRi0bCt8/rNVgZfufki307zJyVgzYSWFErg/Roh/LSOo6cmNx/Va7S2UutlaoS9F/6be/WV6I2SBpZkp+213BANts286Rk2JBcLgTqVfsfQWgf3nNP6zqhqmlsCB9IGYhn2AoH+9bckFAdeC7VgCbdCBsuUu6NEpaiW50pN/RSzVQWP+hW8gSdQQCt+wGjkwXgF6iyvf65gttsPPhh3xrmVC8E579Nh7k7TDLZrgxI44COw/MTzBlnCclxLWw8y
- clpd8lTV
- cTYG8PT27O5ZZdeE9INnVlKpb4DEzeray6E853zrMy6QZ7MjVrxFIdbKYQS6oxXlMQ00RF5Z5S6S3UOwJ2LC0PFZ+RKabrqfhy1Wk88iSeNeO0g4wU74QRSxeaVImxfp/fWb6r5bcm3px8obIk0g16SfVIwBTf6aCSyGX+lKUBpeIwpG4Ude+Zmq9cA1NVB2CAOqsTVbFOLo51d5jyYJpJb+Whd8dZNr0MtgNWqP0OF++PC7gF+ZaFayKr3R1A15jeIFsjaP5Ujj9Wftr3cKPBagLVStkG83Y1Hz8hwAQeWxjLq/rTNLTBh512kP7aY65c1Ozk9FOXr8b2KrU5YmLj2gL1emKr3myraDdYDt2BTTY60bGbp3Yu0rE92ZdGnY0L+zNiuzSXXxRmPuNFYXQSxQ0LYkW6IXGEX2WHjXNPL97zHffe8pVvlVOgtYiMS+vp2mOgKzIF3yL3ro5Gsma2YVFBmm1lges8rcP/BQNV5tffpzAnJMRPN6NwAR6mHJIV2/E5jkABfvc+V8hnvczf/e7YAlS+DiPOydI5YTo9D+EK1U=
+X-Stat-Signature: d6g1ci73j9gcj5wg3efy8wpfr7uws4hj
+X-HE-Tag: 1782215269-726184
+X-HE-Meta: U2FsdGVkX1+hB64+uF3jzBc9P6FbLEDFDVpm6h2ixZSomVlSk8lZd0tf+LKVazTyjoqurzOEaNzA4siOYRcau+o3CiwzEQUKCZ1RmvOiaIt1QNxwo+umiqGn0J13W16Az7i4+s/6bougYy5uVCGXMPUD00uFaUPX4Cdjy7sPwyjbsXBo1fMBipiF6FS52v4b74KbEwV3vcQvtiSdO2mT4mvRhTMUkIiaHsPrQqLz4kgLuxKwO7NSf4EhzT/FQrl72HWIkGKU9Fe9zkGsvWYrPkv1KSnDV0a7CxJ8aNboqoZk40VwJoGVQqhE3sOXqBRUNoI1KGa63YfTC+QZQhM/Vn/yoWDp349MM7lTFtgiGa8k1+OndNc3UsGCeCdxi7vrZPlrS/tUf4iF2PhN0cfNvXvyZzIn0In1Ra/qyudrBzk1EQJnNNpl27kZnRNF6Wyu168cTbqRQt/TefrDq3eire0E1kegW2KBu9Vcc/H9NAjVg6XgL1vbG+mILoCoUtMz9PxwoqIEd+naVoXAxsitwDwp/8lnERwu+rgF7Y52ufYOkauAJMxu7w/8Cc1RpFYGDQplxI/gHJqjntcfJMPosxAfnRosJEA+EC2lMm/yJXOPYNtkmjkDbEcKSiduTUR07N1GwTT4olN8spj9xMt9WDK8jtbRO+kwMXZTq8yPB/sIb3kXMOSda1HmWowPmOgeAOwu2cCltfY2ruggVumAvNH02qZKepECqNc9MNETtbZ3lA/uVzK4FShoX7PmCS72UmGcZBKyMGo1bObZKXCaomFiIEU1GMS6FHcSnqGh8SKuRPwXdzmtVVUzQ43CksFweLFLJrdNMwU/gzmQMm7koT1kLICj9ml//Pq71LrarRZ7nBxg9F/SVk2l74frNOMN2axuAXSrI1zxD8PNkNGBs4Wty9Y0VeclPrTzTgL0/2jx4gze8bAdNwDhx9sFSPbdeeQcgr8OAifyFPdinjh
+ y5TmLbOh
+ /bkmWUlEwlMHPiZ2QyZbEmrymbgl8h1/AglB2cRM3JnTQmN46NpZGBAm0NfQRpY6rLrjdq0Vz3I2qSinilUet3kgmOTC28eqbXjmIjcQ23gOVZCB988N9Yyqgq3bEJVo/cAcHjPfvs0QRH9MfEnoFdKqUCobV/6ePG7jiGaVu0MnvTzr0zFLXBVNw+o43dT/SiMn2LwZ7hF7dP0yXlShbG9+VIhC+s9veqPHKHwsSs05qAHmtXCgDkGRaRo5ZvfBXF+8FB2qcnvz7phfLoheD14eCnQl0G9G+EVnksPmKUoc37j4DzPm1nm7wClENnUold1SvpGhbMODoJ1WEl2u3rpk6BXen3C81EZo2bDS7ylgxsrZfe+EoDGFtHP6cNmZdqA5nKVMW7hiwIqX9FZAg1yxh27F1/ddb6V/CGjvfZuUJY8+D9edcf1ODOX5vGOyT17XY8RLZtIFKCgMf37K+PMYP2umhFI+jNmUoLQchHo4joy2hoNvHEYbkBq0dRhwQXBIWxYt7c+rcy0kIEf9hS7dsusLZiKXkP9OVRT32rFhFqxZFtRvdbqLxo+eAxD22PCTeMW8BrbE65Tk8JRkVtL3W+JVJngj+YVECfhL3Syxbsd8toLln6WJTTQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,21 +127,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series removes explicit initializations of static bool variables to
-false within the mm/ subsystem. In C, static variables without explicit
-initialization are implicitly placed in the .bss section and initialized
-to zero/false by default. Removing these explicit initializations follows
-the Linux kernel coding style and avoids cluttering the data section.
+The static variable 'kasan_flag_write_only' is implicitly initialized
+to false. Remove the explicit initialization to follow the Linux
+kernel coding style.
 
-Igor Putko (2):
-  mm/kasan: remove redundant initialization for kasan_flag_write_only
-  mm/memory-failure: remove redundant initialization for
-    hw_memory_failure
+Signed-off-by: Igor Putko <igorpetindev@gmail.com>
+---
+ mm/kasan/hw_tags.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/kasan/hw_tags.c  | 2 +-
- mm/memory-failure.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index cbef5e450954..a848eb2f9910 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -61,7 +61,7 @@ DEFINE_STATIC_KEY_FALSE(kasan_flag_vmalloc);
+ EXPORT_SYMBOL_GPL(kasan_flag_vmalloc);
+ 
+ /* Whether to check write accesses only. */
+-static bool kasan_flag_write_only = false;
++static bool kasan_flag_write_only;
+ 
+ #define PAGE_ALLOC_SAMPLE_DEFAULT	1
+ #define PAGE_ALLOC_SAMPLE_ORDER_DEFAULT	3
 -- 
 2.34.1
 
