@@ -4,77 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0780CCDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:20:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9443CDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:33:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E42626B008C; Tue, 23 Jun 2026 14:20:30 -0400 (EDT)
+	id 70DFC6B0088; Tue, 23 Jun 2026 14:33:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF3806B0092; Tue, 23 Jun 2026 14:20:30 -0400 (EDT)
+	id 6BEBB6B008A; Tue, 23 Jun 2026 14:33:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0B2A6B0093; Tue, 23 Jun 2026 14:20:30 -0400 (EDT)
+	id 5B5396B008C; Tue, 23 Jun 2026 14:33:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8AB36B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:20:30 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 240AF1C5AF5
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:20:30 +0000 (UTC)
-X-FDA: 84911992620.19.9B751F1
-Received: from cae.in-ulm.de (cae.in-ulm.de [217.10.14.231])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 3855D20006
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:20:28 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	spf=pass (imf31.hostedemail.com: domain of lk@c--e.de designates 217.10.14.231 as permitted sender) smtp.mailfrom=lk@c--e.de
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 354476B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:33:55 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AEE1A1205E0
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:33:54 +0000 (UTC)
+X-FDA: 84912026388.21.C60A596
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 20BE9180006
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:33:52 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HmuvRFHe;
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782238828;
-	b=NUXo4C8STwP2e9ZgvGcU8fr6q82jVJW35rtoTJGoBTdTTTzbux6W9ORvD3qovqtlug3Nl/
-	bnxciSS/qH4HaO50JRIf1Fg57NNRKKJ4xnyzO6p1InY8jk8uCKYJMrcFTvY7UcfTJL6M0n
-	sfYZ9nLB/0wNIerWQ8IkOm7zovtTEfM=
+	t=1782239633;
+	b=3p8MS1i7Gg2yByOfCKVp9t95Ns9G2Y5PFGp8CDChj5/Zc6XNCVO0eMraLwkoZDqF24OEf9
+	5qr59AkQnsHwaHf52jRjDhSwHL56slEHo9VSqyUaVmiIvftslnQPAlBBiz8PRliKA+UYt3
+	gN3zsrFpSrxSy3u+FvrAEEmnRuJ8dn4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782238828;
+	s=arc-20220608; t=1782239633;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=efqGrB8ETzsh4BM75JuEawgxVYXiuQIPjgC9ZruIEFA=;
-	b=0eS4GFa7PnSbkmLWGtOe2CSWrCghbt05iTfg5z1YVoehhw8LoFEHH3A6j32m8/nln5ejlC
-	/pE/Z5sXQkNAtmG243U0ccpIWi9GI4sZxA6Oaod/zdwNJQ+WzTTAGfpXlq+j7AdPHKcbXI
-	VYK/pAV/U/mWrUB9L1SvhsfFf/xkwS4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8gavGOESHLq3+poxJrUxbYbmCuo9oiYFM15F/Tg6AEA=;
+	b=tQNbCPVH9RQSxGrwcoO12Ztd745D0/7iGFU0kEsQHrGMplHkc5drot+fknrTKTiUHccfRW
+	1Cg4VE2lzJu0QgfkCsEIWezuz/QUrhNVbeewsPPP31uqo8vWd0PyilUvV56oHPe0I34x4h
+	0gK6ppXVZwO1oZcQlKnNa7+ikFzqWkg=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=none;
-	spf=pass (imf31.hostedemail.com: domain of lk@c--e.de designates 217.10.14.231 as permitted sender) smtp.mailfrom=lk@c--e.de;
-	dmarc=none
-Received: by cae.in-ulm.de (Postfix, from userid 1000)
-	id B3C15140033; Tue, 23 Jun 2026 20:20:25 +0200 (CEST)
-From: "Christian A. Ehrhardt" <lk@c--e.de>
-To: Boris Brezillon <boris.brezillon@collabora.com>,
-	dri-devel@lists.freedesktop.org
-Cc: "Christian A. Ehrhardt" <lk@c--e.de>,
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=HmuvRFHe;
+	spf=pass (imf06.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8gavGOESHLq3+poxJrUxbYbmCuo9oiYFM15F/Tg6AEA=; b=HmuvRFHeDE7oJMQz0vOstfzrQZ
+	caCfhKNV7npiQ9lxy2BfPq+mh/C3C0nm5oPCSr7DO2Ubc61J6uJxhYZAcprNT9gWiDtpO3JhMIZH2
+	c+B9CuXL30eQZ5nTU+FlHZlGMM2IvnROwgBxPkEkByNe8jxasvwd57rX42o3l8KDJrWErQVxVtP1N
+	1fQSn62S/yX4og+7pYw/D3lQZaO50zuxLbxspWGoPQ9PCq14W+crmwXsT//eJqlEDBqfpHLwo7E7W
+	AM2fCdu0SwaipdbFyBVeOXcAWPMIYGJ8MbM0jgjYmElkgn/tir72WYvOGIew7cMxKvt6S9NmfddqV
+	ZYaUEwqA==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wc5wM-00000006cwF-1Y3h;
+	Tue, 23 Jun 2026 18:33:42 +0000
+Date: Tue, 23 Jun 2026 19:33:42 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: "Christian A. Ehrhardt" <lk@c--e.de>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>,
+	dri-devel@lists.freedesktop.org,
 	Steven Price <steven.price@arm.com>,
 	Liviu Dudau <liviu.dudau@arm.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/panthor: Check VMA boundaries for PMD mappings
-Date: Tue, 23 Jun 2026 20:19:42 +0200
-Message-Id: <20260623181942.1536598-1-lk@c--e.de>
-X-Mailer: git-send-email 2.39.5
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/panthor: Check VMA boundaries for PMD mappings
+Message-ID: <ajrRhpVH6uhOABnV@casper.infradead.org>
+References: <20260623181942.1536598-1-lk@c--e.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3855D20006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623181942.1536598-1-lk@c--e.de>
+X-Stat-Signature: aueir161dhdqdhd67ni6tpa9in9336kt
+X-Rspamd-Queue-Id: 20BE9180006
 X-Rspam-User: 
-X-Stat-Signature: 8be13hkptbohzrpomj3ozr9xrjhj4wtf
-X-HE-Tag: 1782238828-376262
-X-HE-Meta: U2FsdGVkX1+8WJZ4ExjVUpL5+JmEqmjbzKrYyz6NagD9BbUejplaRwXWP6FALBBAyaqsk9wyIYb9d2Iur/mSjMWUD4SBbhEfxVvvUN4DNgtffuCb007apHtg9/NK/Hzqy/7kV7+SLgAw/VjpJhe6fjwe4gCbFhyqWUBhoN8zZh4hkoQsME0/te/TZey5qVsIHk/yPoV3R0qGnRr/VUkSCHeVJe9nDpnHRGpfJR4BTURRC2sZTpNeXqjMntXsQNxChwcX+z7a6a+uCroTCUHC6b1+7cFLmhImLNmy8Ju3NNqO1ZB0QX0Dl7FYeiDQFLL7aFANut5zjDpQzIVd3pfllc1mpPKdbMNnV3BYJoES6Ewctnp1cZSO1+5jTkoQbaKbnCh60H1On7edfZc9wwv756NnYRTiF0Ae6GPBKmnjxJ7fMxTwI/VC7419zRrHWOe3sJRBTgVJCObgF31AWbZWnQWBLLwZHy8QbXQbPK+exl6aaGs2pCXD7OQE7XChPBOS/NxO+fkmq0DQgjm5QBCkSojLAuj/J2xXqP4IaBi/EEW6YtUzCtqr99F8D6WXhoKiT+/2P0OiDyq24bzSQkpZDGTXDKvl8bDtBkasm73TioBZkwdecFi7MLDcTu4s4fnhlE+whEp/6o1jJVIw2m3oniPfWFOSHk/VjBfBsQ1e5wHAMyYjR0p13vPVlOeaBIbASjIRCL6DaHsM0PJyYBlLiRBaqSC5oolYOm32KXCufmEbyLHCPwrAHhSt+0Ub6hexm0Y+btNwXjAB6C/8E7vh7qC5+nK7rvwUTyL+mK0PAkNmGBRPqj4xMQbRALnyWoOB7ezGKzGzcMIcxr+VORhRWUsiDIH2e4tiq2eJI9BD5GJU+EGvaMAg8fkGiVOz3E0wLsTu0sltueBf//Wmv1jz1Cy07JQd93gXBL8xLwsMCLySvaVYs1I5CDEkpfdT5LSCH4q9sI90OnjsB7HBqBB
- FXBHyvfN
- 3oT6/km4QN0F4Tsk5nLCKiXTWV4Q0a464qAoYjoVhV/GWQyD8UKQgKdcPMQ+Cj/p3anrnx2jLacJzoWSyRKo5geUuhxcrpgjv2PnhW+AGKn5Whq4psb2aaQg1RaJ/xKNGZtJZRzs+kM48P7KwPorFqh9h6A3jpApoN94X1MOkPHHJN9hJxwsdORnbbJHgeSsO2DujCxRn8C0CNGXU/L/awvTcLvp7BIUzJ5PRuIC7wh2V/tw=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782239632-954780
+X-HE-Meta: U2FsdGVkX1+8ay+DaOEzJIrQppMdcLMLFqIfvgw5DFMQICEtX5K/XyzpIgNP1rpzg7T3a4wuuhDwFO7UT+YboV10KQrocBLQvrDBNVNFCre9DrUubR83QF9LSedaagLYxKO8E5AkUlNrr/5P7cOLHW0LJ/Yh8rmF3logxq9FU0e12SizPwWJv1bds0/ig21GTlfrw6emoLwZMMUwo51EgBPrCOxmgF3h6gSMfVTNAepfXLHrtteWI14tkkRVcyWoY/4zFD6xGERcdha4NZNFLP6IF8BaVEkhq5XJQfaNkdSehAFTikPhV7pZJISxWkh+2cIiAiS/rcoLMcAd32JcJ1n+WdoloCcNZlzvrifqieAiaoJ/dOmJjCqpMBZq7Oo1Ub8tnAS6G26+b/ip4XZacHgyUw3pXKRDkrOviY/VFl1jL2HfW/cIQ+6ZtxyvhcYRKBmW0CIKe6q9anKk7/3I34+iRtOADD5l60X1fW8QzazhlVs/KuzrhpYvv4wkEvViBossUtgrr4VDchHpvZjVLx9wjOdHg0cl11M0Yt/KWLk/AnMNNsdroTuHJWBDymkCsc4y8TWgRiyugGASjaRMGbYVuzxh+DpUbh2K3/6MvNdFyK+1V18EGWT3D0IiZj5q10Bpj30LCrNv++bbulGFnnb+QhGeJRQEFv7/wWk/MCBJWRzpdUv3NVbgei6W9berFZ4ocE+ieq1hbm65bWyI6gP2njuAnmwkk9TdI9Z9b7hEwc1z16agCuqZDRHtefgOBG58aUx3o6bhI9qtNBxCNavYZxqMx16R7HsAMFmo7fPkrKL/qbS//4q0InLLfu06m/1hvrEvGcjgzicx008EWdQ0lwiq7WFA5+QGLeTPCi/Vg+zxPAZaBhFf9whjGFluNTi9dvv1XRVQUxxOmb1y9ZPM5wc40FoQWK6FGZNpVXIUb4T/pAeoflt2y5/6lE9bIkptJ94U1WwhJTnp/sR
+ fSQlGXBl
+ I1naFv91lsgbfvu8oDOWCDSYT/AVlWDKtM8QyKrwQfOY2hI9/+8mzZ5n+JJUhNpfEyk/H20d1bPztDPBq3L/SE5Ixk73BXEd989mkSzhh7XiPQgV53cIigpPYhEESMnNLeCs9KcpCAKahCafhFXpFyvKM4bA9ScEIvapqx+cmB4Az1v5hEGbSVRg7CJgs6P8VqkInLJJqM4HxDo610V11e67zcGcKWG1XbOcr7IXEFY2vWBFl4mu9XnIVU4Rhb8w90v0Z5mD9w7WCliMEie2WQUc0sw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -82,51 +96,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When checking a different patch[1] sashiko AI pointed out that
-panthor needs the same fix[2]:
+On Tue, Jun 23, 2026 at 08:19:42PM +0200, Christian A. Ehrhardt wrote:
+> The panthor version is only compile tested because I don't
+> have the hardware. However, the code is identical to that
+> fixed in [1] and I have a reproducer for that.
+> 
+> No need for for stable backports. The code is new in 7.1.
 
-In the ->huge_fault handler do not install a PMD huge page
-mapping if the huge page exceeds the boundaries of the VMA.
+What documentation did you need to see to persuade you to use
+map_pages instead of writing a huge_fault handler?
 
-[1] https://lore.kernel.org/lkml/20260622215718.1532689-1-lk@c--e.de/
-[2] https://sashiko.dev/#/patchset/20260622215718.1532689-1-lk%40c--e.de
-
-Cc: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Liviu Dudau <liviu.dudau@arm.com>
-Fixes: 68cbf96b1e9b ("drm/panthor: Part ways with drm_gem_shmem_object")
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
----
- drivers/gpu/drm/panthor/panthor_gem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-NOTE:
-The panthor version is only compile tested because I don't
-have the hardware. However, the code is identical to that
-fixed in [1] and I have a reproducer for that.
-
-No need for for stable backports. The code is new in 7.1.
-
-diff --git a/drivers/gpu/drm/panthor/panthor_gem.c b/drivers/gpu/drm/panthor/panthor_gem.c
-index a1e2eb1ca7bb..54535bae2b0c 100644
---- a/drivers/gpu/drm/panthor/panthor_gem.c
-+++ b/drivers/gpu/drm/panthor/panthor_gem.c
-@@ -802,9 +802,13 @@ static vm_fault_t insert_page(struct vm_fault *vmf, unsigned int order, struct p
- 	} else if (order == PMD_ORDER) {
- 		unsigned long pfn = page_to_pfn(page);
- 		unsigned long paddr = pfn << PAGE_SHIFT;
-+		struct vm_area_struct *vma = vmf->vma;
-+		unsigned long start = ALIGN_DOWN(vmf->address, PMD_SIZE);
-+		unsigned long end = start + PMD_SIZE;
-+		bool in_range = vma->vm_start <= start && end <= vma->vm_end;
- 		bool aligned = (vmf->address & ~PMD_MASK) == (paddr & ~PMD_MASK);
- 
--		if (aligned &&
-+		if (aligned && in_range &&
- 		    folio_test_pmd_mappable(page_folio(page))) {
- 			pfn &= PMD_MASK >> PAGE_SHIFT;
- 			return vmf_insert_pfn_pmd(vmf, pfn, vmf->flags & FAULT_FLAG_WRITE);
--- 
-2.43.0
-
+(yes, you're all Doing It Wrong, please stop, but help us help you)
 
