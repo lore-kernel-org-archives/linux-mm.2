@@ -4,125 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27088CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:02:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7B20CDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:09:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2327D6B009D; Tue, 23 Jun 2026 14:02:13 -0400 (EDT)
+	id 80EE36B008C; Tue, 23 Jun 2026 14:09:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2090E6B009E; Tue, 23 Jun 2026 14:02:13 -0400 (EDT)
+	id 7BEC56B0092; Tue, 23 Jun 2026 14:09:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F8F96B009F; Tue, 23 Jun 2026 14:02:13 -0400 (EDT)
+	id 6D4AB6B0095; Tue, 23 Jun 2026 14:09:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DD9686B009D
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:02:12 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 49BAA16729E
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:02:12 +0000 (UTC)
-X-FDA: 84911946504.29.19C9078
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5FBC9C0005
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:02:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fqIx2fk8;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D1346B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:09:06 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BE3971C5AF2
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:09:05 +0000 (UTC)
+X-FDA: 84911963850.30.195D18D
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C0A50180011
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:09:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wgEd/U9D";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782237730;
-	b=rXKq/ZsjP6KRQChpnJnTwXhVt6OCSRAOCQwda7oV8d4vZlM6orgOOl5y9NPo6smw5OCMOP
-	5dmbMfeZEw7ocmDiZIxrjMbosyp11v0cGoRZzUEdSrvCk0HEAU+mQNoXItfi2sv2YWVzK8
-	7I8g10LUqs+OEeYpPGhbLmdKN1UnHVs=
+	t=1782238144;
+	b=58gui3cOy+9aKAnpvUMMWW+o6dm6eLbeZonPF7jVC6TSinGHxx5jaJ+oyzDJu8DaGrVKFM
+	ppMnD0AY33ZmeyFtjSw4hnV1SEGZp7/DibVYJyUpKXwumoOPYSb2VwVHSOzGOBKwj1znJl
+	BUhytuFWagSfWxKlIhNbk3zCwc8o7OY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782237730;
+	s=arc-20220608; t=1782238144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=trCYdPhQh348weekSBC7Ceo7XQeHFRdxOAyYAHYqFjo=;
-	b=oTnuLG2q0rvIpLfoZ3q4abu7stibsqVibkEVC54wIYiAKQzx6fwf4Rb0IX2rwEkE5LjTmK
-	ACw0FawVvC+/aQhecciYFh1KaiwsiBop/K4DIz2NU2k1iNkWBoPZydCF+sD8EBShPITk0J
-	hMtWxEH4qUAlCDRHo5IFWtqXXpgiNwE=
+	bh=zXfEiM4jkm920RVfEhKOk9S2wafZQEGin844HPcRxZE=;
+	b=4J3VkJnGZoCG6eYwlWOcbmXPCVitNqOYLUUldmbH+mwPMwL3uKD1e3l21I+K/I9MbKZqdq
+	nQ774mDERQBSDtGREzsdFbukE9GWJNLNIn7tf8FFylK4O8zhmuVG38nSp/pse6zpBe5ml6
+	+kqjQJjX4ekx5Y9O3I6clwghFefhLc0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fqIx2fk8;
-	spf=pass (imf10.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.45 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-6a11c68ae41so90193eaf.3
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782237729; x=1782842529; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=trCYdPhQh348weekSBC7Ceo7XQeHFRdxOAyYAHYqFjo=;
-        b=fqIx2fk8oqjMPjOZHKnjvWHDVYly7cKZQUJQpFbcYYP6kSXW6sfJFAhSETfV0G2GN8
-         wx31KCWcqfpaVcSEjyCokA4ibNxjOwMMbx8s1chnLe4HSYAhTxcf9/uIUqOINXj6h4X9
-         oXWuMQlWpcnX893SSTuK2G8/qS2rJunvjlxGXusTovs8NeyzSxS1GmUI+EslJ81IMdT4
-         T2c97jO9AjhJqP16wRhNcJpwXpxP+lB+4qwjmsbAcNazpa1N7wi9I4KF85WAUK+Y4bQK
-         i1zR6Zqslsy61C1Uw1zNBFf1IxwTElU0xVosRf3tabSsHSnn/53cicv0liJcIZT/SHd8
-         mdGA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782237729; x=1782842529;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=trCYdPhQh348weekSBC7Ceo7XQeHFRdxOAyYAHYqFjo=;
-        b=pv+pemUb5LI2ya/mBVNEcwBCBsp9S14y0BDQM6CMQ8AVDSqYLBJQba5vxR3xtioADZ
-         KFVPu9E/YdhME4iS7qEVYJX6Zssjz+Govmiu6EvnOQ2feZF3fTsxlnXZpQFyYi4911aa
-         2cS8Jn4d7X2SmWrDAVHGkn1H8KuVgf/TrqWo0mZ9GfsVNmR6FQc32Qg/qiUiprnWbQ4E
-         HxsHW9dzQuAH4sp7jHg7e2Hiqu4+J3Hf1uXv2B6XQSKroZu2/2mXlV4Wy7FZiYkykcjb
-         lBng+pSe4RHFQ10U3ej6jQvROaLNKxfOfy+4QkZ/wf/7LIq7E+P7hEcZeeOI3sH1jBBp
-         FtOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ96nK4cnbxzkzyrQXJAkDodZJ9Bt2TOu4tWfPFrRN6Q8D6P/1n7tdj3aZcGQR0fKT3NJ0Ehkf3llA==@kvack.org
-X-Gm-Message-State: AOJu0YyxIMavXY5npB1ZBEw7+bUmvAgbW9X6gSbd8uDwfGxIC1GHSzJY
-	7fYzWXuJDIRIPgCuUDYYVb/n8TxAjRP/R0SxPTkkeTNCGjPlEMfPRLnl
-X-Gm-Gg: AfdE7cnVSR5E7xlotv9vSaoiSuD6dHQ+cODqwZCYMBj/EzD1GM3sa7A3p1PQkU5b4IS
-	xj4fwPNGcP1wzZfsi+is5dCKa0Id6XuGe8oJBRhvgue+MP0BHB1PJSJxkvmz2JirAMCH0gp2mfe
-	GkecHtkmnJ34yeaVXhfD+igMg0EcE2pBVlgxcKywRC5Rd5o4sRFsxptsi10G4KchRMLycbX1XjA
-	lfpX8lULNpPaq6OyqWA9DyBKggOXlSBnlU4mufwRVBArJLMj+N0+Q1Z8KuS2cR0NAbxjzXfeSFI
-	hddICb//8Y/C8H0FzWZaEUzUL/kcyNF1S2P+GlZtdE+avCyvdDu/S7j75gJyy7aII1SpS6qzLHo
-	22lM13jb1Ysa/DxF4oyARExStvEasfvBeNP6/uC/23W1vQUzO1NK6Dk6C5XnOPsU2f+cXOZuHOp
-	QAoE9maa9zH+xBTzk+ptDtlbIClgqjrs/TBo5HYA0yxzY=
-X-Received: by 2002:a05:6820:3082:b0:69d:f855:b748 with SMTP id 006d021491bc7-6a11623b266mr2355735eaf.34.1782237690173;
-        Tue, 23 Jun 2026 11:01:30 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:45::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a0e9f2a583sm7583532eaf.1.2026.06.23.11.01.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 11:01:29 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v4 3/5] mm/page_counter: introduce page_counter_try_charge_stock()
-Date: Tue, 23 Jun 2026 11:01:21 -0700
-Message-ID: <20260623180124.868655-4-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260623180124.868655-1-joshua.hahnjy@gmail.com>
-References: <20260623180124.868655-1-joshua.hahnjy@gmail.com>
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wgEd/U9D";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Tue, 23 Jun 2026 11:08:43 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782238141;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zXfEiM4jkm920RVfEhKOk9S2wafZQEGin844HPcRxZE=;
+	b=wgEd/U9Db0WHWapZ+mfVWppaS6KYtdPfphaKlnqjcR3/jlMe6efMFDfyrXFopmBzVtfzze
+	4g02EQ2WT0HLbzgAJ5gMNq6kl9MDi0XtctBvx2/SBjTKm0kHOf//4LFdgcqI1hQSiyhTc4
+	qJbinVk9+MLAmzDUedlX/VWn9UAgI5M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org, 
+	hughd@google.com, boris@bur.io, clm@fb.com, dsterba@suse.com, 
+	linux-btrfs@vger.kernel.org, cem@kernel.org, linux-xfs@vger.kernel.org, hannes@cmpxchg.org, 
+	riel@surriel.com, kernel-team@meta.com
+Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in
+ memcg slab shrink
+Message-ID: <ajrHa_JGxQvCMf8t@linux.dev>
+References: <20260609123047.1948242-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5FBC9C0005
-X-Stat-Signature: d5dewzr1p3h3yx31uyqesnydbejmemkm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260609123047.1948242-1-usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782237730-724808
-X-HE-Meta: U2FsdGVkX1+3bSjo4Jdi4mhlLSu/aV4VeDYrTbac8cpO8XpkI9BZxxwqnGMbXC6F9HsBUef1CSBuTolHMTd9UTFmuSS7YT4orPc1RxxKX7RyYUPSGay8sK0ACXnvYSpUARTx90Oipvcj8Xz7kTUf+gseKOauUIEYZ8TibBUvhUire127Gk0PE6fgohXvijqch0QUGMrzG0mbr9SdDXgK42dgOE4oliTFXKrMUUtSepP1a2oOt1afndtqIGhQUla5jqWP9+OeSQ7ri7ySY/LxOwq0L7Y5HS8ZOxgRj8mr6kFBLziH2icZphXUpR0YmzHE/iuA6CgYCs0VOSMRztopGdPytMOViyU1Vxy5tn5sdn65UQnoJa3TbQElyLLSV3dA4/MP9y3hKH3NCZcciPOC3erLA2yG/ZYn4bm5EbQssp6XabW6+HjrJ6xMHk7ETUiTzcGsqu+/2ZfzH6dczIVjQ3hN7PwhZQphFunF7RRRUkfJHBP8Qc/Bf96ICBZEyuuhXEphvwTdv54nvKloTYVacMk3UtvpT1B9MkA6FJb55t1xpkD2gSX3BTuYsuLnzWOF8nv10Lv2XPmCMRBexWgFkMLn87xhBtSRBkqy/N6moP/K8zrQHQc+iFs603aLlSU0E2QwI7DxOQTUuiMk9HRan+y8mybFMNUCDtRODRqv86pPv+ploQwuGZ+FTc4GrScdCg2SqDa9y4ipW+PgZlrCz0eDGANch58hnoe1Mw/EN+HPZyjLeWgi5Ox5Dn4f5SwhkIFpk7czPvqAKVI7uA0P1xYyun0ukgJSBhh5SuxXp+aIYBNo4pS93ebsRB4PdfHs0mNUdmDnROIddRNiJspHqyY0TSTP/brdYD61e/UwgrKO55c9A9Ag/dZ4zBBdlALRKVF2b3Lh1VVpSECDNA2cgp01Y32D4HXFYxtDcMnRWsKyA026o3ZXVPgaOtki2tVHM9uW80uRY5XVHo3Xs0p
- LOHxzAND
- RpXUWb9Y0P1bdgMQ+0S5Pj+nGKWS5OPVaQefQpiBQ45BNviIY0YdAMsZuaFd3p4xDO87MoS5b+82P8Y/i1bwDA1BlLyOIIR0sBSJoQH7SurKo/o4wd+tUBSA7VSE+mWp93lu1JhSuhZtI1z/7kz/ehew++TFHbbVgyhU4frxnIFjj7I0970w+s/2819szvZFKjOL/Uvc/snxXGOTqKSi2iBqbcSS5GER2QRPdQJfXznPlanRWooMBT+U7B8JzZW/utzcr+qRjz1yCaB4GcpD/+zzZhBjQxNXM5Ax9wR6zDqhx88AXQ3SSh0WcribdpF4YryiL5VVc5LtOGx+u1+yLuqzfaMjjTSlBgDhu1t7putCv64b+u8NHUw3nYvmACvheLnFp51j7stnLJPb+Z7O4zAxMg4hR+DfwPkhkWCgUgrO4s35paOx0aZdeJDEZYqf3XomoyvZu2crbAz/0l+YUQUDPTbESxz3JU85tqNq2mtpUtHlcR+uwAS9DanZhWC41q+TTW4vh4Uim2UvxqmOAXr/gCe/R2cSHvH7OX9vdzb9DQms6L1MDBLfIxsDklCZFd2zkivs2KOr9RHV/xlaVGcAzVw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C0A50180011
+X-Stat-Signature: f8e1gaej3tsf6jrsoxi3ecaiufuut3kp
+X-HE-Tag: 1782238143-864849
+X-HE-Meta: U2FsdGVkX19geOBFmYWUnD6/vqjn9IPANA57qQxZWGcChmA41N9EuofXQvbg/MPS3nD5ULdiTV3tgL+KSzivoiO1i4xtodm2EPjyrT6k8sCq4NCsmTkEOERsA8DI7FNEQEPoVsI31VqjY9jeeG4mtOdzy3SgAxnKw5CAbKhle0ILUDR5qSao+CPxxZJ18InqMP7HyAE9O4fL9TxgnoC5AhZtI/W3YjNu6p1LB4cPaUw1OrQDW2zYmYkOaBmqDA5Ku00pspZ1/mNbkK3p8dWmg6cnMEqxqmDERKtzyw4n/gvV/0kZEVEeIiAf7VNMoWTD68j/8eE+HTv1JblFHbwsqF00KbmoeDlkZbqwY24yNhfl0io6k1yWm3CbwBgDo8zzzY5Bmnin2ee1RVnPD2yPBKz9ArgN5MJp9pCSmgbvoa+Rj4nojfHgCcxZc7eVv4pb27aHYZuKLlfP5iqmGymkJu152eYf/mDmI/9kPm6Ti/AkQpTH/xN8cNSapf10zqyNy4E+mRtUp9kznbe93cMx/APMhnHa/9euvBQ7qW2mwAKtgWzbGcAYzW4uwUzJQrSWkztiPbmTffPa5e/9Qv5o8wBmzcawKpHzUGSVQdJ0jZ5ZVf7UEGY0cmVO5FMgeDhtyIDmGfYdUAfml+s1JbkdllM3BEDdxpH6hcT8SbFHAViyD67WzP2mLm2fO7dRs9awCmjVyA7SQ/FqFYBanCnUemx5HDNqVs25zBHjCN6oXu0ZJYjmOayYw+F5mZeMunIHAZ1hPuU37GZ/w7NLKVuFn9usB1UrInvDcjThPwOTR/sCNUXpMoIrJCxKnrXFshn1N2NqwhSweTJ+chBWUx+Jnx6X+NdXYa+qfFf3JEKzwk7LFP4pZhuORSHkGCgngSQeUJxYTFJMDzIHd8K07mUra1jZhQ8Xfrz6wqYtpU5Bgmz2b6qvJdjaxXt63AufV0iCWNfT+E1WJ7ewZWBd6JQ
+ Rz2WCgXB
+ /jDnpQpuG3yuf/V1XBV1J8Ys4sz8qNRi0hPhmtgSEzpV5rhloOpHl0yGcojQhBX3pkeSVip+p+QNge72emIGAre+Konfxv/YiUIYECRq3sydrBktLxaX2oAanZ32zNaCuFHbAVxAhneZrNq9o+YAWElLzrt2rCHACFsWMDbpZGBl24H3k82brqI75/anEODdFL9xSmw/u8n7Ggrod9WgTnnkk4ki8f/hrgWOZMxlwTZc2FznMpS5cfIlmGRjVV+NzdgmC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,101 +90,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a stock-aware variant of page_counter_try_charge.
+On Tue, Jun 09, 2026 at 05:30:47AM -0700, Usama Arif wrote:
+> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
+> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
+> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
+> btrfs extent maps and xfs inode reclaim operate on filesystem-global
+> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
+> None of them filter by sc->memcg.
 
-As before with try_charge_memcg, it first tries to satisfy the charge by
-consuming the per-cpu stock (and skipping the hierarchical charge). On a
-miss, it tries to greedily overcharge up to counter->batch pages to
-refill the stock. Finally, if this fails, it tries to charge exactly the
-requested number of pages.
+I see the underlying objects whose count is returned by ->nr_cached_objects()
+hook is memcg charged for shmem and xfs but not for btrfs. Do you envision
+there might be a rare scenario where we have a lot of memory charged to a memcg
+consumed by objects which ->nr_cached_objects() tracks and that memory becomes
+unreclaimable due to this patch?
 
-The number of pages that were charged to the page_counter is reported
-back to the caller, so that stock hits don't trigger memory limit
-checks.
+> 
+> The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
+> calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
+> whose bit is set in the per-superblock shrinker bitmap, which on a busy
+> host means hundreds of calls per reclaim pass. Each scan queues the same
+> global shrinker work item that's already kicked from the root path.
+> 
+> Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
+> the returned total stays positive even if a memcg's own dentry/inode LRUs
+> are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
+> in the memcg bitmap, so subsequent reclaim passes from the same memcg
+> re-enter super_cache_count() and pay for the global counter walk again.
 
-The variant is unused for now; memcg is converted in a later patch.
+What is the main concern? Is it the amount of CPU wasted or are we over
+reclaiming or reclaiming from unrelated memcgs?
 
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
----
- include/linux/page_counter.h |  4 +++
- mm/page_counter.c            | 48 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
+> 
+> Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
+> or root). The memcg-aware dentry/inode LRUs keep being counted and
+> scanned per memcg as before; only the global fs-specific hooks are skipped.
+> The root/global shrink path still drives those hooks; only their
+> invocation from non-root memcg slab reclaim is removed.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index 4abc7fe7c3494..b97b5491447e4 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -84,6 +84,10 @@ void page_counter_charge(struct page_counter *counter, unsigned long nr_pages);
- bool page_counter_try_charge(struct page_counter *counter,
- 			     unsigned long nr_pages,
- 			     struct page_counter **fail);
-+bool page_counter_try_charge_stock(struct page_counter *counter,
-+				   unsigned long nr_pages,
-+				   struct page_counter **fail,
-+				   unsigned long *nr_charged);
- void page_counter_uncharge(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_set_min(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_set_low(struct page_counter *counter, unsigned long nr_pages);
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 6bb48a913a90d..cce3af3f19e03 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -172,6 +172,54 @@ bool page_counter_try_charge(struct page_counter *counter,
- 	return false;
- }
- 
-+bool page_counter_try_charge_stock(struct page_counter *counter,
-+				   unsigned long nr_pages,
-+				   struct page_counter **fail,
-+				   unsigned long *nr_charged)
-+{
-+	struct page_counter_stock *stock;
-+	unsigned long charge = 0;
-+	int old;
-+
-+	if (!counter->stock)
-+		goto charge_exact;
-+
-+	preempt_disable();
-+	stock = this_cpu_ptr(counter->stock);
-+	old = atomic_read(&stock->nr_pages);
-+	while ((unsigned long)old >= nr_pages) {
-+		if (atomic_try_cmpxchg(&stock->nr_pages, &old,
-+				       old - (int)nr_pages)) {
-+			preempt_enable();
-+			goto out_success;
-+		}
-+	}
-+	preempt_enable();
-+
-+	charge = max_t(unsigned long, READ_ONCE(counter->batch), nr_pages);
-+	if (charge <= nr_pages)
-+		goto charge_exact;
-+
-+	if (page_counter_try_charge(counter, charge, fail)) {
-+		preempt_disable();
-+		stock = this_cpu_ptr(counter->stock);
-+		atomic_add((int)(charge - nr_pages), &stock->nr_pages);
-+		preempt_enable();
-+		goto out_success;
-+	}
-+
-+charge_exact:
-+	/* stock is not enabled, no need for surplus, or greedy charge failed */
-+	charge = nr_pages;
-+	if (!page_counter_try_charge(counter, charge, fail))
-+		return false;
-+
-+out_success:
-+	if (nr_charged)
-+		*nr_charged = charge;
-+	return true;
-+}
-+
- /**
-  * page_counter_uncharge - hierarchically uncharge pages
-  * @counter: counter
--- 
-2.53.0-Meta
+I am fine with the stopgap but it would be nice to have proper memcg awareness
+in xfs and shmem callbacks. For btrfs, I am not sure if it makes sense to memcg
+charge btrfs_extent_map objects but at least to decision to skip memcg reclaim
+will be inside the fs callbacks i.e. nr_cached_objects.
 
 
