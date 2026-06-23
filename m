@@ -4,126 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A98D3CDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4525CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:30:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FDAA6B0088; Mon, 22 Jun 2026 21:24:54 -0400 (EDT)
+	id 1C86D6B0093; Mon, 22 Jun 2026 21:30:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AEAF6B008C; Mon, 22 Jun 2026 21:24:54 -0400 (EDT)
+	id 152E36B0095; Mon, 22 Jun 2026 21:30:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C4A86B0093; Mon, 22 Jun 2026 21:24:54 -0400 (EDT)
+	id 040F96B0096; Mon, 22 Jun 2026 21:30:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 41E996B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:24:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B646D1C54F5
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:24:53 +0000 (UTC)
-X-FDA: 84909433266.25.D8E846E
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0A622140002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:24:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mRzitYB4;
-	spf=pass (imf09.hostedemail.com: domain of 3YuA5agYKCGMTFBOKDHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3YuA5agYKCGMTFBOKDHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C3C2C6B0093
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:30:00 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 272B11C5539
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:30:00 +0000 (UTC)
+X-FDA: 84909446160.26.F02A48E
+Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 1568140009
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:29:56 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782177892;
-	b=2YMVSKT7WW0fkvXvThbkPwKh2kbsiL+hATu4z3tDhLeWC5MJgry7SAvUnlS4lwExRV1KA/
-	sHOMPIC6wB28QbH9ck5GwyMDQh/SNKeJTMJM4HGwq66mjG0GBhwrc6GR3YjuxCLxE8FODm
-	M5/ofhN8oYyALPaijLacb90fc8pu8gE=
+	t=1782178198;
+	b=JX2PtjDJYCVCz7VTNvn2qavO9dN/ZX5h11giprw2frGNNrSegHsGs3VmzV8jxlUe+b6yM7
+	imHg1iuMZktzDvU5L1JvUnT4H1Lxl3wHNZUA9sGijPuzR/3jvWgCeWrJ5hY/M7WJFYUjDP
+	17muSgKTM5XZkGvqWv61CJOpdYbVQco=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782177892;
+	s=arc-20220608; t=1782178198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cP6zcq/A46NjpXBVqyG7Tuag7/oGP09m6JyCX4S5UME=;
-	b=IxKWDdNcsDUWHQGH2xBebeiDQaHigGXTtbht9rU1NqHHGZU82FNyXoXJIUt6WqTtI0Saqi
-	gtzhJlF1p7BXqoMNnHt4gLKtfBEDcgLjk1rGBEKdJaERgbmBfjbuFzOAx1rrunH6cGzXaa
-	Qrdnp8mfkOw7mZPXWS7Z+hK+YLiqni4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bVtT8Z60CmRfiFt3TG8n0q/MjEeoQcxixq0qeXU4+ew=;
+	b=sjrazq8c1qr3Z4xNOFhxmv7z0bU37VvXvZ5TgYh/1y79ZNzuMY8nIo8l0+e2EfhQuStV7R
+	KfTyU74GIOZVu3mYyuoS3PzJ+4MCiZWw5GTolm7UilnMvbqfMjcyLvZZXKAlysguWdsN1W
+	fAeoBMwG2Bg/4OpQJrmyEfvugXU2K+4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=mRzitYB4;
-	spf=pass (imf09.hostedemail.com: domain of 3YuA5agYKCGMTFBOKDHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--seanjc.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3YuA5agYKCGMTFBOKDHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36bbcd40642so3267420a91.0
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:24:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782177891; x=1782782691; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cP6zcq/A46NjpXBVqyG7Tuag7/oGP09m6JyCX4S5UME=;
-        b=mRzitYB403hoivLjhK/Xbbmymk6rXX906Wso+JTGCLwMxDuVRp8+wmSML9eBny1jdS
-         8kENJffER74c0M7PAIBf8KEHyF6iHxtyAQsjLdy1gZOgMF+c5RvNaYRzluwupIedZHyl
-         nV/LQjAgenG7E9+PMQhnlEkcVSJKLxJyjmAe/kotSdpLwbY4Jwpx6zOiQpDWF5mNloiX
-         bQunPjUO1JZAqf/3qtyAxe0jqwhLdvMB6dtFqGs8/e2N5EM0TDkJb5XxKshVhuSejQOj
-         MGUfVtbku7kNm1SryylTm+SFOosDE0BaFvleXgCawYkHNLsPycd9ExCSs8MNXPS9wKUt
-         Om+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782177891; x=1782782691;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cP6zcq/A46NjpXBVqyG7Tuag7/oGP09m6JyCX4S5UME=;
-        b=dAUoKBddor61S19V7aPA7e84IDKRwDQRsoDeWJkgiiSbj9s1Jetek6lhM9bcFX+zmP
-         XaKMY3DnvH02eBfFZAtAFfmLGN+aSBEuTMPhBQAMsCXAi+YuT80zmLOoraKiwn4yFMgW
-         OrwF28f3hpahhBGBHdQmWXvJ5d+FIBScgehGcdDX8vvJrwu1xuDhg789w34OpXuiwrvR
-         1OYLv/KLzeh4TBPG3klpiQJpOub16BT57Qmog9rfIlh5U6D/rIA5iFxgzV0Yr6o+hvZv
-         F4XodNmLhmXMsWF4U9EElsIO0fNYvmnsyXu61osV7LYvsyLTqQBffY8iB+bNQX633C3m
-         0Lyw==
-X-Forwarded-Encrypted: i=1; AHgh+RrgVMOoTGIfqdhDPQ+qzhEqgwsQMcJYFXzhjfZjxlqUtJNJvJ+FCLigrTYPVoj32Ess91igFRodiQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy9qeyViM0pj/CNGwxzGKU1bI0HA6Skl4yufPgr1OjnwuCrLzth
-	K1XDF3S0RNMA7pWXGh9geWR2yAiAHqrjRvyLZttmeLdCcEodeekE+L3bgkafWMG7e/aXclz4yOp
-	XDZq1vA==
-X-Received: from pjbbf6.prod.google.com ([2002:a17:90b:b06:b0:37d:8595:7a08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2707:b0:366:3ac:f730
- with SMTP id 98e67ed59e1d1-37d160feaa4mr19637357a91.25.1782177890287; Mon, 22
- Jun 2026 18:24:50 -0700 (PDT)
-Date: Mon, 22 Jun 2026 18:24:49 -0700
-In-Reply-To: <CA+EHjTyj-JdW8H0ii2j3dayqnT2s3VV+brSG++p335=FGd2GXg@mail.gmail.com>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com> <CA+EHjTyj-JdW8H0ii2j3dayqnT2s3VV+brSG++p335=FGd2GXg@mail.gmail.com>
-Message-ID: <ajngYb3aNTvtXkwl@google.com>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
+	by 156.147.23.52 with ESMTP; 23 Jun 2026 10:29:52 +0900
+X-Original-SENDERIP: 156.147.1.126
+X-Original-MAILFROM: youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.154)
+	by 156.147.1.126 with ESMTP; 23 Jun 2026 10:29:52 +0900
+X-Original-SENDERIP: 10.177.112.154
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Tue, 23 Jun 2026 10:29:52 +0900
+From: Youngjun Park <youngjun.park@lge.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Youngjun Park <her0gyugyu@gmail.com>, akpm@linux-foundation.org,
+	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kasong@tencent.com,
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev, muchun.song@linux.dev,
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com,
+	hyungjun.cho@lge.com, mkoutny@suse.com, baver.bae@lge.com,
+	matia.kim@lge.com
+Subject: Re: [PATCH v9 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
+ based swap control
+Message-ID: <ajnhkK/dT4MsqyAR@yjaykim-PowerEdge-T330>
+References: <20260620181635.299364-1-youngjun.park@lge.com>
+ <CAO9r8zOy99szvC4W0+SUv4b3P2UxppJuBeZDV3HZzQuHUc1P1g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAO9r8zOy99szvC4W0+SUv4b3P2UxppJuBeZDV3HZzQuHUc1P1g@mail.gmail.com>
+X-Stat-Signature: 43nhms9mb8g8m61hauor7aonhr64n6en
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0A622140002
-X-Stat-Signature: 6fgzwre7nnwy67g4eu7crxrgy78erfhr
-X-HE-Tag: 1782177891-297940
-X-HE-Meta: U2FsdGVkX1+1hbSaPl8bIo9YBJ3HCOVv0TjPXFat32g0i9EY0lN2v0dFPDAE9Hm8n5eZ1BZKgDPrIHce+5IkqYk1LtC+JUhJZSqsFO8nIBvy5LR4nzs38jTU6vgn81mqVcF+AdUjMNUDA7YwcK5ROLHWWg5bhM8JsKfjcFmrjgdBwvqMGk0msflcnpZNISsx9rhm9BxZQ2Sr3Qggg2y+xp8GOqgz+2xEk+5P2FpgUyqgZr/QaNBe/HDxSEG6uL3nluI03mwWVmK8PMje5FK95XGrkck8jV1j7zbEenNBicrF5n/mokiyFGA3HaYF9Gf1ABgUWPX/dQONGEStCXNA06n0Binavhc+wgiip89czToSSexhPEouZ9OVh2EKYAuAA2QMgUd3sNQaff8YMI+8y/uGFpZn9d2vgkjx37Ke1813myZ/9T41d3FdIrg0WtJtqVlUDvMTKfGpvYxmCvxXynuGNbOb5qtONFaErp0Z2GWqTT7WNwkXqTBCNSdDBShFOBi/uKo06tSmythAr87+MutoUgwKLAnHPTy4nnBaqctMaTsMwqHJvhw/Vgzw3SRwhIe/IlsjD8qRVu78Rok5u/4KYhCluALmUdb0c66AHN4kFmAOUVTivCtexz86dgzpM4EOVPjQ1kzP+9K5SK5U/Dl8eop4LtEfq6ySDrWgDefZGfcyae3ybsBRT9MqhgEm/fjGGXapgwbWzw0y6YgNsQgUsgi/wAN30gFT+2UZmKcJIjITERagVDYthxM1UV0ZhqW/8HvFoXHQu8WQJTOLCC53/aj5gfUsZEo3w29pVgnbxGworGfMhuDXu/8mjJNFCFkmKRsf+4Ash7xTQhK6qgrPPgSZAZKNJ9C0EzZL7SakNe18U13fZmhKoZUpv2zO2z1SqHiz9g1bQP4CuVh7mfYU7t66MDSFj1TlR/9ODYES3v0amLs9uT9Bo+4Yd7evpVBQowiDfDDW7T6e1gE
- zGCuTVrb
- m9fO/AUUEvsrblAOMfMr41vZGNQC71UcR/c22u1nnIgWoiXk6CsildsPX7irEERNIgNKAKfmqND/aKDJiYSKcQcSa42rttcGwKhWY8kv/5izntUTGkzGUfjpIUTYXbJv6ySKJUSG9pNY4ucDlrBj+x5MSagcxEt19gxsCpgJoTRJoivmOZAir2IMhOHNMKYrVo3smrUBR9RqDboeXnHjgciM3lRKUz9ZXacZYGLIbJ/Ksla4Qz+HY/ckZY1LGCR6mYmbTD9IYiNQY/pOjI+BkUpvBbN2axSRotPJvMC1HEe2CcBcUms9qB0jC5bkUbLcGkHzmcvdPxwa9hMlLGQOQ/VLbDC/Rv/+Lrw0KKIBdpPlbwwcPnuTRlzMVAfEv0JkWE4hDusMtLWwiKdKV2smzMT5Bqhqp8ChfZY3Z6YfJ3nNl0/d50q9JafkcJARaOmvZmN3sP3FsvfmSHjoKy9KwZMrqQh90cReh97Yo32CUcS54l0X1ofcFY8J5WOp3R1l/2ileqdBzuYPfvYaaZajMBdFFOjqK1CvgWU8QdHkkDozTGZlxpHsu9B5QcpqSpy65lJ2/Hf7MKUmnZWPRLbN1Thbmjo3xVVgl1xOTgVqvwdflG0udQdOBE/nMnG7BHQvbNq22
+X-Rspamd-Queue-Id: 1568140009
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782178196-611635
+X-HE-Meta: U2FsdGVkX19D2JBoLJ4ixHeGBSM9uojECZ0lVN7OEVLH6+fUa4kMMl0mV8NQ/IivERduXcpn7dqVjor2kCdA0jNQPZ+haMY/6xXLa726IvCvuFGq2dpC+5VrCKH6inS51OIZVgQDr5nGAudbbzMdhEfscBK/yyXuG+wadPHE00H8cLeJpkOWv5kYVy3Ey7ouSZyD2i1mYCynk5wQqpd3uSISMUabYY9JYiWgR/S09Z1ff+PovXQdprq/KsQ8kFDJEqqY40M8naSEHjVWKGYJBsQ4h05+BAiOWsOfRvPk9UYLEYBmPv2uIUGZf0tXsCNb6bEyW3P5r20OezBfSv3WPhN1KKWtK28JfeBrKahQ3/ZMZ+pK9RqRqvyCdLxXNAN7gDOcHMD/tShsd9shoMfySczAJb7ENsh3EUtIiYJ60O9xy479NKpKcO6kjsiJha3Is72eQaB/dts5h5Oquss8Fr8StkbadHjvs0H9l3LpdyZ2BngDyORvNIVu5K/e8+PVBkoH9eO+EiUle1ZTOGrYBqk++LuSdYzbAaI/Cd2vpVlabFj31RN3j9RrnOMTzLfMWQSU8zPsvvfuqDLroJL/7iejygU+1X/8saPEAkh3oZ6cb+AXE8CklxcMOa/CJB0RJA9slk1NSOttCT6k8KFuwKmy/AArASL04zC6fOByTWlvfhoBPI6Jncw7Cs1/RkPrwaT02OqXQy+Bo7ko15rXkuzlGFxy3xGVDctzmOfgUCUeuvC3NSGRwUPnhezz/14RJPZZhFtWUiZ+XWP6TutTkQmpB7Kxgjzfjgy6ONMowicJ6LXZNWHeYiXpCxBkYwlrDQU2IdH8m9W8M8Hna0aUXkVlx5SNoX+dxMZgfRkIBgnA+R+kE7+f9a2NJYha2cOv8Ax2yiCqOmA++H8nSWMEJ18uQCUveHBrgDxU0kLMf4nI3RMkQ+Wsgz7myt4tbNxrPuB++odb6v8F0SjDtot
+ CwDs/QjP
+ dZKRnnzSz+SdvVCNlT5siSNvDD2TIElyztX+MVY+RU//f4dCPZWzjMqHOxYkU4goCA46sohuukYnLpq3kDysURHz2CxmsxKoMbIE76K+6tW9YABpLjQqx9KURG691C4LwNjGDL/C3X7Qb0ohNRjvZfIpfy/1UW4sb/E+QIifqG5SibHKQwSv9pGvy6d8cwYm4ax+sum7k84ITHuhyvR4xJJpw5sslIR4DUE2rE3tfwJeW3p8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,11 +94,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026, Fuad Tabba wrote:
-> nit: why does it have Sean's SoB?
+On Mon, Jun 22, 2026 at 02:23:40PM -0700, Yosry Ahmed wrote:
+> On Sat, Jun 20, 2026 at 11:16 AM Youngjun Park <her0gyugyu@gmail.com> wrote:
+> >
+> > This is the v9 series of the swap tier patchset.
+> >
+> > The main change in this version is the addition of selftests for the tier
+> > interfaces, requested by Nhat; see the changelog below for the other changes.
+> > I designed the test cases and wrote the selftests with some AI assistance.
+> >
+> > For context, the bulk of the series is unchanged since v8, with great thanks
+> > to Shakeel Butt and Yosry for the reviews and discussions [1] that shaped it.
+> > The main change in v8 was the interface change to use memory.swap.tiers.max
+> > with '0' (disable) and 'max' (enable) values. This mechanism was suggested
+> > by Shakeel and Yosry.
+> >
+> > This change allows for future extensions to control swap between tiers and
+> > aligns better with existing memcg interfaces. It is confined to patch #3's
+> > user-facing interface; internally, patch #3 still uses the existing mask
+> > processing method, which is implementation-efficient.
+> >
+> > We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel for their
+> > valuable feedback.
+> >
+> > Here is a brief summary of our tentative conclusions. Please correct me
+> > if anything is misrepresented (details in references):
+> >
+> > * Zswap tiering [2]:
+> >   Tiering applies only to the vswap + zswap combo. Zswap itself will
+> >   not be tiered, as the current architecture requires a physical device
+> >   for zswap allocation.
+> 
+> I thought we agreed that zswap should be a tier, so that proactive
+> zswap writeback can be implemented as proactive swap demotion?
+> 
+> The only restriction we talked about is that zswap cannot be the only
+> allowed tier as long as vswap isn't supported. We can lift the
+> restriction when vswap support is added.
 
-Heh, I had the same question at first.  It's because I tweaked the module param
-name to gmem_in_place_conversion, and so updated this patch and sent that version
-to Ackerley off-list.  Ackerley's SoB really should come last in this case, even
-though it creates a somewhat weird SoB chain given the author.
+Okay, I misunderstood that part. Thanks for the clarification.
+
+To summarize our agreement.
+zswap can be the first tier regardless of vswap support.
+
+- With vswap: zswap can be the only allowed tier, as it can operate
+  independently.
+- Without vswap: zswap cannot be the only allowed tier, as it cannot
+  operate without a physical backing device.
+
+I will proceed with this understanding.
+
+Youngjun Park
 
