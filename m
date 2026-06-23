@@ -4,96 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F865CDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 373D9CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:43:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D24716B0088; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
+	id E18786B008A; Mon, 22 Jun 2026 21:42:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CD4EB6B008A; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
+	id DCA6A6B008C; Mon, 22 Jun 2026 21:42:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC5986B008C; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
+	id CBABB6B0092; Mon, 22 Jun 2026 21:42:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BDD66B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D766C166BF5
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:38:07 +0000 (UTC)
-X-FDA: 84909466614.17.58B4FB6
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 454FCC0004
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:38:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cuCO3gs5;
-	spf=pass (imf28.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92E896B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:42:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 153E84033E
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:37:21 +0000 (UTC)
+X-FDA: 84909464682.03.9713D38
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4967A1C0003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:37:19 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rG2VGjBx;
+	spf=pass (imf18.hostedemail.com: domain of 3TeM5agYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3TeM5agYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782178686;
-	b=kZl4mky2Vt1oG/u7YlXLR9HEAwBhjcfBBMvxmO60330PXgCjbwmXF39vYmrMPBfYcY+toQ
-	DBUY+pS8wwZqiUnCH4fuT2vQL5oLDeNLOoQi7lciSKxuusWFhYYzPZGXo5GUGyXGBrhbD+
-	KlIBQe2yrDa7BST7dmkBxxL6gZzZk0I=
+	t=1782178639;
+	b=lPTiZseeC/awYtrvqapOmzF88L8pmQ0M7IIdbSDI3xLzey3TgXv6P4aSC99cUjksXR1N7K
+	d8xOaxUKres/cpT03u1+Bsz4nOGob2H5V/iEHl/ZaogNSXG6Hhu4eBIrV9Dj2Ftj/x/Lfq
+	RIqzEMB5K6qOfyN8oiMlDdAwjEvxlQI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782178686;
+	s=arc-20220608; t=1782178639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G1HxnYaFAzm8U5OOXij8ylCTKpYTXv8afbfuywpH9SU=;
-	b=jDUJfyV7MQcQUUc3W/5HiR+oovMJ+3Hal4nTQ58I8rQT1njs+ESw4vHq5nlefH51KK9Wfm
-	w3DICatsTFIJz7XXNsnkD9BjQJ15v0bNJnq/VeTZq1+lvEil/W/ZDwUslHni2KydvxNvL9
-	6i2J8MoAMsbo5C90na5iNLRunIij4SI=
+	bh=AP9gehEakYRCrViEtM0iQf/Z+UhqMaziDYgqcj7Zu0I=;
+	b=FBJqnwWCKD+x9djommvtS8OCCJA889QbYPUt8fM09E53bJWNPiPZA5ebHyKUkpsmSzzbnp
+	uKnWaGUUKVVl23xQP3JqvrGy5Fo1ywkIb1FiDPIk2yRQKRj/Ym3ncVxvt/szW2KIeUiyD6
+	uVx7hHXlB/jEj7kpZB2AWrd2CfjTdEc=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cuCO3gs5;
-	spf=pass (imf28.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=G1HxnYaFAzm8U5OOXij8ylCTKpYTXv8afbfuywpH9SU=;
-	b=cuCO3gs5UxA6mkL0Q+gGsNlSTLv6cKrzcE8xO7/C3WY0gpCEs8C0Cw82KjiRM9y9swYNSk2DL
-	g+LyODIB6By+Gg3gt4triFmGTiOXdO2JUGqfRFP/7g+Hir/3/Ss79wgifEEyQqeOht7DHBoAu9s
-	kpQYL2wBOlXN/cMXANpY7zE=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gknYZ2zmhzKm73;
-	Tue, 23 Jun 2026 09:29:54 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id E0EE24055B;
-	Tue, 23 Jun 2026 09:37:58 +0800 (CST)
-Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 23 Jun
- 2026 09:37:58 +0800
-Message-ID: <601fb5dd-18e1-4a6c-bc99-dc2a655240e2@huawei.com>
-Date: Tue, 23 Jun 2026 09:37:57 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] fs/proc: fix KPF_KSM reported for all anonymous pages
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<ziy@nvidia.com>, <luizcap@redhat.com>, <willy@infradead.org>,
-	<linmiaohe@huawei.com>, <svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
-	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
-	<linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20260622091539.836531-1-tujinjiang@huawei.com>
- <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.9]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 454FCC0004
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rG2VGjBx;
+	spf=pass (imf18.hostedemail.com: domain of 3TeM5agYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.214.201 as permitted sender) smtp.mailfrom=3TeM5agYKCFQE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2c354050c34so41843545ad.3
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 18:37:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782178638; x=1782783438; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AP9gehEakYRCrViEtM0iQf/Z+UhqMaziDYgqcj7Zu0I=;
+        b=rG2VGjBxdTVSSjIggAEOPCm0QPxX0KjlH0M9dtxKjcQzEnQlVqpovaDK1LrppGanZZ
+         ufnEjbiWfYEAHq9Qtqfhr6ZyMFlIOllObYn7tA52LWsaW05lrmhmDKyMtsoJeJKQOKpD
+         53coSSHClIyjz3Nr0IqLMjilyZPjDPDlcc1iItbbSMcnZdAJf/WvAbQkBSr+qi/h57Oe
+         55ACUlfHhjTfFrxg1yVvDZbMOJLipIvh//x77qbghcn+31+rqHlNKFzycxf9JMxPP2As
+         68yCixAGoyRO2pjuRzQLJFylwye34FGD+P4ZvmhLCfQp9h+axMjy1zZcvYuZKC0fjt2F
+         OtgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782178638; x=1782783438;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AP9gehEakYRCrViEtM0iQf/Z+UhqMaziDYgqcj7Zu0I=;
+        b=SboY88+8xSQXGi1fxR+ZBoGNDqRVrn9HCHCHl6duAgbafH3T2fXLaRRK+WnNIZxbQf
+         HTH1LhluuuBCHe2NjaJQWC78D5St6o/U7uOR1FGxjmtZd+qLqZL7a9B2TsPE4ZCMOsCR
+         xxBScxQXU8V4Dk5jOAgnaZuXzpyb1HOz7BeEUdBZtYx4p071JbSUTc1bMGXZ1N430ubb
+         +XROSVbCSqVj3e4cwh30O5+2GzPUMJTFiROIG1Pl1rZUW2+kQY5omgCdcKo87rGmubSZ
+         Yt2uIZ0uD4Yewje61zbePmxP5eZhEnaXLK1CoDygijWFc52J/WpSC52pUXPEJAwYYeof
+         CPZg==
+X-Forwarded-Encrypted: i=1; AHgh+RrWBLMt3pYMVPWYZkjYHDofLYsrqDAApYtItBWEYJzqpNSLz8POT9dnuym7cJx3JBDyfqWoUGEX6A==@kvack.org
+X-Gm-Message-State: AOJu0YxjCF3LG01tt4zpBYXmZQIaN8o05wlxYB2HFgP/AutOAfV9/Z17
+	wLjfAfbYDjBRGPCUpBRyoV76eJ162Q3x2xr7QqIRu/Wh7qWBR9vUlcH2Mv0QCWL6gSmI1Y/ENmP
+	ahcK+wA==
+X-Received: from plox10.prod.google.com ([2002:a17:902:8eca:b0:2bf:27ab:9cf4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a68:b0:2c7:9ba7:a39f
+ with SMTP id d9443c01a7336-2c7c99de6e3mr2076175ad.17.1782178637132; Mon, 22
+ Jun 2026 18:37:17 -0700 (PDT)
+Date: Mon, 22 Jun 2026 18:37:16 -0700
+In-Reply-To: <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com> <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
+Message-ID: <ajnjTJdQKD1Kz3tf@google.com>
+Subject: Re: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
+ use to guard user mappings
+From: Sean Christopherson <seanjc@google.com>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 X-Rspam-User: 
-X-Stat-Signature: 31wr47hrono3ob41fs9xw93r1ptdrkta
-X-HE-Tag: 1782178684-963158
-X-HE-Meta: U2FsdGVkX18v6w8WfITj7fiwQznJHHdeKggeyKQzJT64rNNrG1iOmAKo/BZUbNC+yTSGHd7UEaybmUHVx0dbIC3TtNjfl1X31xcJUT6rXzG3moIS425LPhODqql5lPm191ugMTMxQ56tlhxTvJ+JUeKzPYHitqBSu8noDB5lskt7ON4gb70KzpMR6526klSOYpwrbMp8CuiJD83sDT1mr2kY+NG1TdANiuO1Y2W8ynxXETidYxY2fG8cqfYJA20RJMsPtDMZu6m2RFgXu+f8PN+A1bRxlJhFLEMqVed8jGXCmaSXttCUIEDPpoqGzwQSINWo7sKxjvaKeDp3QkZhuclY/D8W48drIy+1xCJpV6+tLfIsOmwh3/mIKE6DAJZ5TKRg8/L4pilX1d/Iy+/LryMv4fqqUTCKkzGisXTNKhtOcoltn/6NiD8BseBw2F4hCMypQ574B56d6BrxiijeDlwHcnZZJ2IDGDt5UvCoFE7ypRDqB/LRHTMMaEWjzlap3pIpOe2ErzHYq4euqnj3HbdmlwWKtkqpEaMaQdGx9zLZZSEqLqRHkuVC0BNtDuKCWRDBhwMLc7+NX7yGpnn3ELxdJevVX0twfPAUCOWrXaMaqBL0/JxClu8ztftFiKhSadc7Mv5kuUara9rdQNbrObfzrHo2RImncaUo2ode4VuEjk0+7t/XEBENKrUY1ROfvgO9Kl1c0NvuE1BdGB01JXK+TccqwkRG0xj39SLhyXzR6vrtYRjxQyEEuXyi8XvW2jFoCNfwsQOdwQA1lv6pOWPLrF4sd7IKSOG9fC2lSEBkjI5cZTbkrmteCFXQ29tMxTdKd35dEtT6SgV2/t0y8akbdDxsUIQohraPX5fkYQuqpOW6HLZUOLdx4+LD+cUPNGHJBJXUbAjBnqwjKAoP64gtCDXztSAwjTsFezJv0ZSYwb7j1AqZkFKNOpRQPt6kTtJsuHIDkXdecLWK+hg
- AjNBS4a6
- zNcl0dfIZQiiHkWruqCPddhqiguC3Ly1+CjtREoy2/YGp2hg6vU6qEukV8sYIPiyiQ00O39qIVyisxgtEANsKHPw2EEGja3glvrOL6roOrm4BOf9gxVI08TdH+PZnmgQxzCvbr+x1XFJUZJMlQfowya8MasaRosiPL3sqzn6+at6dTepMwF/85eG1pHbcnV22SSijsPSBVggbFVVfsV9J8b6/4rnOcF7E+qcgbaaY7sVnHoymBBUBcslAzmHTXLtxm1qsxILpEAbul5CyX6QnJ8ii86EX0391dZD4O0uY45Gv+RAFYhvJy2bHbRJjulmmWOtSi3tayHzUV/QWzvATgf9pqlELb9uCtQGsLxZhprAlDumd9SJXAXBrVAQayCQpyNxZAl+95mUkhypQ33zUTXjUDqotCGR6tgHr
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4967A1C0003
+X-Stat-Signature: yqk69wxzuhirx53eir4deonyu785oi8f
+X-HE-Tag: 1782178639-849560
+X-HE-Meta: U2FsdGVkX1/K7xV1ooj4Kuf8dyT1RG0iohHQhUYUJDLyuwUCM/HeWdBGDS09MoYQqH0KXPHpt57dMTK6zspv6HLzMgm+sIoQT490tOrOqcpLm10MLcuAaAmI6zINOix3GbnyJzBaHBgtHwoD5sMDZLgtsjwsHJScDTc0jwSN4uOJZpSNY2mt4H7J3sO1+vroaAeU8Dz4hehZw91Ucm6Q9dIQVYpKYozzigtW+l9ipCdlUICVtTFdDEoWQ9lHpWVDa9gBHbr+0ELyTd2MPsvkAzYmkLree3102cf3776iYeUKmDhZsaxx4jYUE/cNZT8FnQJECAVcMfzWxbM2dOic8/TTk9MJwhFAswhfyC6L5JNEZohMm5zUre/Ak9VKJUmP9LbmmvRux/gbNIb4r5I4phKxMa3mZerjx10HkWw4HfqguZMF6Ys/H62uwAOhgCT3GM5he5ABztewKNDerNQ77+RnrHeb8NcB6JcbghT32QyP5WlbGGlGT1AuAAa6Ug4/8smwnNY/uuVRWFoPMZ7beJBZXDLjoV7Ti9fRelfMLh6RQBW5Rcfio04jW8RVSq4fdwfu9hpHBOm4YnVluv/b/p96vIWTVHA0TqTh2HRu2+eO28/uAfMqREL+Aq2tH3hm7NH0aBVDMbvOsaf6vhUn/6LTiTrxrr8RlXZrsFRUs/hVF7NDfRU9gub/QMZyF9uuXAst9scMOt5/XO0y2gxGS5GR6Uyma7EZxQAG4KD5q0aeeK/Z4bYbdQs3bmuRVUCq3J3fVGTGDMb+CJJMGTp1wUxvbFgKdENifWp7efWI63Vwr/TyAC369YlVPoZEjtH1PKEIT92CIWK+At4dGZAYEmSGagIaKnBP1ze8gkG518dEiWzmkW3TkHRdOU1JbvnAQDftB47/PsaUO0nJuzHsEgAX3xCd0bIPoFxrDq5XMPKsF5Qpn7uFIBa3qrtXiIHxbUd4g0pMTJ4VDJmJFnO
+ Rd8eQLvT
+ zM9Y9OaRtZGq+s6sgjd4VpthE5HIdl/lv8cOA51Uw5DDOOJNZphPEHiYMQUC33OrK/B3iyvd0WCEVCQAJVCAoWfGRPCxJ+Sf4ZMlr63suh2toxKMsAqstnNVDJnaFIh48stSQgo2BgxKBmmed5R1W2S+1T7HpvQDs4mxhIe+MVg+Rwxj7Pl9Rq8LOBWHaMVs+iY1jhdAARruB+rkXX2YVk2canTIs8zZg7uLPcxClXna3vMLHdRCJiG3YIjwtlS3ickTzkrB7otVtr9hcr/wH0tbss/nKMF1kA/XMZsngnftB5QQ5EfhavexKSWFfmU+LrtgliWKo6qTF6ZUotd1Qk/OzwwmagSst3uflnFEt3Gshg7n+c8in0Vn8h4/XRJzIoLrLixXu3ImZCs/hOI0N3Mm+VOW3oz813j8x417cZzfb9P9D0vUZYgMuGiqKDtc/Wk3/gBN8wNRHqLuOipZwecpM3KGV60KWsm6WOGvnu+xdXpe+FwGV+dF+P2Glpiix8B1Cc75GJlcGA3OP9B/zbH3NB0EStb7LtNhja4vk8ybGi92qwNzf8XMUK7IZ3D1CUJ1zOCU30k8N0s2TGUBdPy6myVSpDwl6+QP81brHoRgJ/pIHFSkHY2/JQxRuejVEKUv5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,80 +132,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 22, 2026, Binbin Wu wrote:
+> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> 
+> [...]
+> 
+> >  
+> > +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
+> > +{
+> > +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+> > +	void *entry = mtree_load(mt, index);
+> > +
+> > +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
+> 
+> If the entry is unexpectedly missing, returning 0 means the attribute would
+> be treated as shared.  And then in kvm_gmem_fault_user_mapping(), it would
+> allow the userspace to fault in the folio.
+> 
+> Should gmem deny such edge case?
 
-在 2026/6/22 19:45, David Hildenbrand (Arm) 写道:
-> On 6/22/26 11:15, Jinjiang Tu wrote:
->> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
->> when KSM is not in use. As a result, tools misclassify all anonymous pages
->> as KSM merged.
->>
->> In stable_page_flags(), if the page is anonymous, then use (mapping &
->> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
->> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
->> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
->>
->> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
->>
->> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-> Right,
->
-> #define PAGE_MAPPING_KSM       (PAGE_MAPPING_ANON | PAGE_MAPPING_ANON_KSM)
->
-> Which we later renamed to FOLIO_MAPPING_KSM.
->
->
-> Before switching to manual flag checks, PageKsm() translated to folio_test_ksm()
-> that checked whether the values actually matched:
->
-> ((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS) == PAGE_MAPPING_KSM;
->
->
-> This only affects /proc/kpageflags (well, and hwpoison inject on a weird testing
-> interface), so it's not really that relevant for real workloads (debugging and
-> testing).
->
-> So not sure whether we should CC:stable. Likely not.
+After several bugs this year where a WARN_ON_ONCE() fired, but was entirely
+insufficient to prevent true badness, I'm definitely senstive to making the "bad"
+behavior as harmless as possible.
 
-/proc/kpageflags is generally used only for analysis and is unlikely to be
-used in production environments. I found this issue due to I was analyzing
-pfns allocated by which stacks are KSM-merged. So I think it's unnecessary
-to CC:stable.
+However, in this case I think we're just hosed.  If KVM treats the memory as
+private, KVM will incorrectly do prepare(), incorrectly allow populate(), and
+will caused missed invalidations (though I suppose __kvm_gmem_set_attributes()
+"only" lies to userspace in that case).
 
->> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
->> ---
->>   fs/proc/page.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/proc/page.c b/fs/proc/page.c
->> index f9b2c2c906cd..cef8ded97610 100644
->> --- a/fs/proc/page.c
->> +++ b/fs/proc/page.c
->> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
->>   		u |= 1 << KPF_MMAP;
->>   	if (is_anon) {
->>   		u |= 1 << KPF_ANON;
->> -		if (mapping & FOLIO_MAPPING_KSM)
->> +		if (mapping & FOLIO_MAPPING_ANON_KSM)
->
-> Wonder whether we should just do
->
-> 		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
->
-> To match what we have in folio_test_ksm.
->
-> (although I doubt we would reuse this flag for other purposes, likely
-> it's more future proof to check it like that)
+That said, assuming SHARED is definitely odd for cases where guest_memfd *can't*
+hold shared memory.  Ditto for assuming PRIVATE.  What if we instead fall back to
+the "init" state, e.g.?
 
-Both are ok. The following check has checked FOLIO_MAPPING_ANON,
+static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
+{
+	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+	void *entry = mtree_load(mt, index);
 
-	if (is_anon) {
-		if (mapping & FOLIO_MAPPING_ANON_KSM)
+	if (WARN_ON_ONCE(!entry)) {
+		bool shared = GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED;
+
+		return shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
 	}
 
-So it's equivalent to do
-	if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
-or
-	if (mapping & FOLIO_MAPPING_ANON_KSM)
-
->
+	return xa_to_value(entry);
+}
 
