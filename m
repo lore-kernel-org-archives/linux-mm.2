@@ -4,136 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4408CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CEB3CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:48:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A70096B008C; Tue, 23 Jun 2026 05:42:47 -0400 (EDT)
+	id E9AEE6B0088; Tue, 23 Jun 2026 05:48:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A20F36B0092; Tue, 23 Jun 2026 05:42:47 -0400 (EDT)
+	id E729E6B008A; Tue, 23 Jun 2026 05:48:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90FD36B0093; Tue, 23 Jun 2026 05:42:47 -0400 (EDT)
+	id D8BA26B0093; Tue, 23 Jun 2026 05:48:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D1A16B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:42:47 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E0F90C1E62
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:42:46 +0000 (UTC)
-X-FDA: 84910687932.27.E16C03D
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EEF3B4000C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:42:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=o9SCywv0;
-	spf=pass (imf12.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B9336B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:48:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE05540456
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:48:43 +0000 (UTC)
+X-FDA: 84910702926.30.40311FF
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4086C20006
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:48:40 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ME1VcZpF;
+	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782207765;
-	b=QfrJiyHtXkW/9B3jvKjRZD5gn4Am7+lw4vcDNya8O+nzU3WHz42WEfUSFgB6MmzS5sFj3H
-	CHLHxiHdWp0KCDbWl+aZulOcMPMF/VNl+HO5jPOB38/jpBRtV50QKaje5+qU1fP0hz3EBn
-	VwHmclpBuiQA35hjIbN4rUVrNTIYS1M=
+	t=1782208120;
+	b=ZvXUBnh2/XUddL8n0tQXkqKtUn8FvuQqmdomk8GznP7oLH0yxKlzv8YBrDC1ofPpQOAp9B
+	vhcAmCiUEs3e45w7xsKyXqXlcLx9JF69FKNV4C7xPN3Mbru8z6Us6qEMaT+6PEj4Aspv3g
+	w2G7SiL7ue+jra8FWHfF7iRz900S2Uo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782207765;
+	s=arc-20220608; t=1782208120;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3SJWx7Zgz0Pyhs4JZwrYmJyYWWMlxydwzpM41quzKVA=;
-	b=2ZJj7pICgIFv4MnRPtXScb9cU5XT6MWcm1jDi7WDhyvm3qNBwXt2BSjncxgyIJ0YlxpWVQ
-	Qxs2rFlHob5x1CxhLPtNRSOKkKNCkleN1+9zZc92fgZO6+79j1ReDvFZE4giDou1vIfVew
-	oCMoGf15LWBelBGBv1ZknMNPykoMLvg=
+	bh=seNyv2iZP6EgmXdShTEBw1lleNTf/6BaodayxEKQLYM=;
+	b=8puEj7t/F/c4n1eINT1XHzIrBrQUdOKlv19jzgatPWTTACGtQqfpR+OqVYGcdVcbfDl0Ma
+	d2nMGAfWsyeo79OMxJjb+C+sa5KZxByezaRYwx5N+lhlAWk2GWGdhfm6zSg0Z25axQrfmH
+	g9CQDMps35bCHBV5+CgUMnTiIAjfBX4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=o9SCywv0;
-	spf=pass (imf12.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so42386955e9.1
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:42:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782207763; x=1782812563; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3SJWx7Zgz0Pyhs4JZwrYmJyYWWMlxydwzpM41quzKVA=;
-        b=o9SCywv0u2LnuynAWeYPADFevajADRDCe2enNbcp0jRaxsEyxSGik6QEV7pPWJzMa1
-         9mQ9tsmSoUgyrbFf3yhRYfp4pBfTq/Sz6Dl8oYYaYebFvWEsAVS0aDZ5p/8ST0XzFb0D
-         4sfwASyNRGvZ5ePP25ruwRrzyY2ChFVynMcNg2lpWJfZ7nTxuGtfwSzNG2GbROjqvInt
-         DDrx1EW7EaVMxIjCVM1ciGoxfrp8Xolo8IKsiOKlZ2Y788j0Cha4lM6Zx7mk4xIUbWcD
-         bRw0N4jzXm2TNOXsKCRoAZc8wcBv5HGOOnLJJIHlhuuqT2+pHVVa9GVr3ByGerZKwjT3
-         0bvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782207763; x=1782812563;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3SJWx7Zgz0Pyhs4JZwrYmJyYWWMlxydwzpM41quzKVA=;
-        b=frwUkofDxSjqS1YjWU9Hv1pwH+LSSQHhIJTOJvhcHgYlbzUTyKPM+6zcWoWnT+aiis
-         FG0/NKSW7moRpF8OhQn+bMFLL4XoXnCZ3wGTjkohNcg//oN2S6Dfii0g/VOBuAfBCOV6
-         S2gA2PD5Zeg7+vHHO57UFUY3Sm8eZvj1N8Qz/bWyW/ZndRUO6ZfSbwBxjztMYm2DgTbT
-         U2JhdSw+oO03Boi4hFTUOQzSF/0RwL3jzvGwuhizjCYgGpQxXh3M1LG/XJtCndJlhgf5
-         buKdZ0mxx1IYq4+SHLJk3esGzfpX88uWaJ1XbvDOVbhhPWVvfnM06nkDc+UXwPfCwrUK
-         3ntw==
-X-Forwarded-Encrypted: i=1; AFNElJ9/ibAKLCr8/yt6tU7hjLmeKY3Zgy1vBg3LFh357nVwSQK9jYLStdQn83TQCLXKFaOG/k2AIM5Q9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy2Z2CZSGMZwUjp5GUdFYBqRiJGtxwaHdnuBGhYxChEUDh7D1/Y
-	YTzsUq8xwvaJjcZjILGIClOh36xb3B2l+dAvDadxsmEUiNl/RocMCu5iOv5uWDDC
-X-Gm-Gg: AfdE7cmlWtJY8aMP0r75lvlL7b+No9+519o3Mc7vKZtLS4bzqqonifDKaW/5G2aQBjY
-	0KsMSje2yVcSutkovFqjmVg2CxGqwDI3/i9HY/E/MsgIownvxpTPKFdhbJPfg3xTGvkT5g9EjIK
-	Rqt0gh+2gmBAEQWyA6u8HTS4SbioFEk6Li7Mr0JW1wcX3WeQkQGq3svdG47dLtQofiKRG9iuoq0
-	CKUWhZSPyfd8pmYOAnAwYBD5Us21BwbpcCp2DRTckxt2QOqegliYUuyEEiIQTjMsX6V0DDAlKsJ
-	Lq5Curg8RHY6wJwUYUXHRCFKGw91d0B6JmZvog/QetxJ2rCArlhDwzgqsjsYJ7G6ROWKMhB0Tzq
-	RLp2nbOpWEzVUbOzB6iPtRGq2xBc7f1wfZEL4FATvdRn6ztQOfoYgsN+NGVb+YlL1bsbyP1fynj
-	g++XuAEqCU
-X-Received: by 2002:a05:600c:8b8a:b0:492:2e48:81e6 with SMTP id 5b1f17b1804b1-4925b389b83mr30093645e9.4.1782207762970;
-        Tue, 23 Jun 2026 02:42:42 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49249455302sm280248525e9.15.2026.06.23.02.42.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Jun 2026 02:42:42 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: avagin@gmail.com
-Cc: akpm@linux-foundation.org,
-	alexander@mihalicyn.com,
-	axboe@kernel.dk,
-	bernd@bsbernd.com,
-	brauner@kernel.org,
-	criu@lists.linux.dev,
-	david@kernel.org,
-	dhowells@redhat.com,
-	fuse-devel@lists.linux.dev,
-	hch@infradead.org,
-	jack@suse.cz,
-	joannelkoong@gmail.com,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	rostedt@goodmis.org,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	val@packett.cool,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Tue, 23 Jun 2026 12:42:11 +0300
-Message-ID: <20260623094211.1080873-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANaxB-xVCP5HSUNwphFrKPdW0Qh1pA33A6npac60WArkZMFt7w@mail.gmail.com>
-References: <CANaxB-xVCP5HSUNwphFrKPdW0Qh1pA33A6npac60WArkZMFt7w@mail.gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ME1VcZpF;
+	spf=pass (imf13.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782208120; x=1813744120;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5923JLJcSnP+ammi926uhmSL7dT/T35P5AbtWqZVok4=;
+  b=ME1VcZpFzF2OCbL72i0cVwa6Ngw32RzHDS6NyvVLYcJpXpBG9vy5NtAW
+   RTuKzXJgD/bBYRWL9InJa4DcBcgO6imcjv8NLmxRodDholSCkNs+BEsoS
+   dcUo9g27r+B4CMgz/+jEUQGs0EhAPoDW/PaGVQq8diE2S5nJSt5ijIF0K
+   liklGk4Gkz3tTGUi/54ubhU/JetzbJkLnpS0tRfll3ixr4dQMbsFf+hym
+   Zna8OTEvtSVXV6xLq4aDmg6xUaAJCLIKshS/4OjQ5H7IifiWLUxbvQxMj
+   hxlKnYjSjdrwGalvLonzfonbByDGP54PjgEVLH1kLQlb14w3cCZKKJAzw
+   A==;
+X-CSE-ConnectionGUID: EgiVLujVRPWnxH84+jQfUg==
+X-CSE-MsgGUID: xvxhl18EShesZmw7Ix1CCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="82988608"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="82988608"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:48:38 -0700
+X-CSE-ConnectionGUID: MXLmCZy4SperyKCaH8GJSA==
+X-CSE-MsgGUID: DGnOq6mSRvK9V69SMz9Zcg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="254572830"
+Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 02:48:26 -0700
+Message-ID: <6fc7f450-6d0a-494d-b295-297e4703148d@linux.intel.com>
+Date: Tue, 23 Jun 2026 17:48:24 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EEF3B4000C
-X-Stat-Signature: q7nm4kt9k6ibe5i6z3hp5pzyhjizemwh
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wmfjqqga7mykehnzxi1deptorx4brjqs
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782207764-166939
-X-HE-Meta: U2FsdGVkX19pDLVgNQNS20gdCZOx91wkDVSBddxOLfdScdSJ6fwnE5MUiqOa0GR6ra8TE7aSWiC2z6rJspadBH8cH6n4/Teb9G+W8pXX1K5W0lVfEBdFSa8UcOMJNSEsMn1NObSO69Y9u9TIvjwpAC0MGCrP4uPDmCrwxhmhQ9LDDYnt4EVIjPhC+NiS3USUB6SpYl5GxEvyBKnQI3RXMpPym+L2YX1gBRin92I8TIXtFrXtkWfluDP+TXByAjbrgbgsHdn6f2swZOsL3rYvG8q8UWYEltMlkpsw32LBtkssVwxYm5yL80NpSnDKYvbefQ7NMswYxyNG5SXq6FnKGcS3b/LDI7pZNWDSiCq1k9WDShczWOoWuoOzXUFvXsWJbrtZq4HliNxH19++b5d2Klreerikxc/LhQ18c8HkILzfEQEJ8oB8o1XMnzG8ZEtYl40robcDlECRGKaPh85YnDMimF19Xo9NsPk2RdpkkqcjZTjaZHD3ONNbW7YfpjKvsCi6Ev4C4Mk2xuJ3FY4dxYZDAe23DQoZrDPQ/2ERndzl5a65b01IgkIvIfUrAhKXjk1TKif3odp63JOLzcR2Z3UVI/9hfAYtCH64/le1G6OU4WYKJ6T4TGua2HPT7NuYBQ9W4sJnD2zXh2AkUnPFwunEjZalybmWdFBtV2qXMq8F5PW3BzEwRE01H3agPna5iY4NxEqFEShS3RZch97fM5rCn0viJyPx1CEBMUb3JIurwC3Go7gJW/aT9n6y/e2ew4lu4pOO1JkZUHl1529gwo6P2lMW9ujcF09aRDNcXpfmIPNrWl4FpDYcD/ND8jHpPt+pjBRcLILZTUc4Um6PRtUuM6uNg1RL0Fe2yPLfh3uMYgmWj7LxvfoNWD/yJeU7QvtVIveuhq5IX5We/yFwIUpFF49ngponDxOLVGcZ1JSAQt9B6WmASO03Z2+nf1V7ci9jzuThPb/NeXw2TiA
- fzAKDVm1
- FUzuMSqVbGsb6yN6J42vqQe52QSRjIoX1J2dmqUzlQ5aisXqiTyn3vdsXIIDcd9RAXnDPMjz1SL25oIXBVJkXmJpZkMUfDus0IRaHwKt07luJkOgC1MOrFHq+pZqXBojWl6OeF1aBGJtZMN08v9RrASH+CIOKEa26njF6rx9pu2Xd8RmeTmeI8waYoACGJWKENY4PorML+eOWz2+ZSgilacE2vqoWMnqCD9mEddw/azkofujz9NfvqRqTgRI5l+6JCGQcmATwNhzt5maCRFueJDeoEolcVzuVgi8Wi6K2K/sT+KPYGOBMhhkTHObJI/lxOXY7vceweFwuk4+4cZw7lWm0y1GARxN94UYrL+BlCCiiVIQJsgcAlYwYKcoJxYMWDZQBusa1S7xyclUrJ7Z9M3rQnYvQKlRDS1w/I7Tg0O0Cfe6/U5a8UTW+36KUuXrKpRf+4Kjyvj9k0aw=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4086C20006
+X-HE-Tag: 1782208120-533268
+X-HE-Meta: U2FsdGVkX1+UEeG61e0CS1iO9b4ydWNXAmMRN3vtInQVZkKRLN4uPldMTDY1lgWky7jww5Mrmw6LIYt+MGxMXv75J4SbYoyFIy6ivv1T65cRQXHUgXwhKLwp7tsEvUxAKkEa2rQvY5lT/o5ZEnGJbQzoPvssrxMFPZJDeQGgTqIJHhTJRkMHO/aoZ1LF4GSxhHqTufeVFWQbxvXrqQUxPIURt7m9oUqFr1BY6tJ0C4vcuvdM4f5fSbUnf+QW7HhK+7kYMK3XhHqylEIPTKj+Jgv4KkkibvWOMtrK6UMwIGe4q/1RDlrjAM+1JtSD0OZGi915W/GQWsSkT777afOI31J4HHQN34ApwnOuGp8WXtTv/6ltVGkoPtqfS468Y9sShQNxBfsncrAHcJX23PYRcuE/nwtJ3sS5Z6L+Z8Wvn8WMPryRkkiXg/19DZe8Es5vFDW8hfY41VJXDUKwJQt1CQnE7oQq9GASZnwX4DndJY1RSYVU0mET6MuupeNcKvHqFfhSZd5eQihBYzi0CxAfDg3T6clKP3h0YTluhmH1i0D77sVO1RL8rJxGT2Y22o/o0kJ3A72B8NoPAkYH30otxoSXcv1CkpBrCXiMd5gcD5jxRcl9fHdQdhnLOBcIoWYfKGE31tXTxAGyS5eiUALDZgIfpZfM+1cSq1GuL/F0nnocf4evWiZjn0u7RheZgl6aW9cccO81+E2wonWjuOFNLCOu4RW6CoaK8qz1srIAEevLB69pWo59UhAN+CYxxAAHYrji95oHpHl5V9+o2hy3aPm+0SjY5DNbSxhgdfRHPjG7L4HVW+uWl8MtEexDQD9vpQnpK/oRnIzI+oDTW0kYadatqydZXaIoO8ZSk6F2ecvr+ro3IzFUK3g5v2PnSR3hNyTuPzFTnvId6ulf8MyKcWqcNMI5V16XZa2cBFD6dGBmCokuZKV0QE7jYvcQAYIpcyjjpujh19JlyVCR5sH
+ 70/RIjvc
+ vZlFshzl4ZWTqj80ragjLp98Vhug5dQhbwwoTUD0kip9Hq1jo4KaFA20HQYD6AnCcVL825kXLlvJUo+RdHN1mlvTkufMtrlOs6wO8h56SVCU5x85rgDlXiFwqZ8PGt8HV9MdIkrPqc8YbgM3wcfWSN94KeTaQOX0N8kq1aWXfk96MCzythSYdyTQV6GnLLvUi5r9S6unANqov/Ce/5eNRV0/a4loBznK1W0EjAAOo07QQihDOSNl/qpO96+6/kEEO6gDjQMclveksrUzkDI+JbILXPxWUN4hzlG8JBzcJqZ/3j/I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,82 +134,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrei Vagin <avagin@gmail.com>:
-> Actually, this change introduces a performance and functional
-> regression for CRIU.
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> @@ -606,12 +608,20 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
+>  	next = start;
+>  	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+>  
+> -		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
+> +		for (i = 0; i < folio_batch_count(&fbatch);) {
+>  			struct folio *folio = fbatch.folios[i];
+>  
+> -			if (folio_ref_count(folio) !=
+> -			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
+> -				safe = false;
+> +			safe = (folio_ref_count(folio) ==
+> +				folio_nr_pages(folio) +
+> +				filemap_get_folios_refcount);
+> +
+> +			if (safe) {
+> +				++i;
+> +			} else if (folio_may_be_lru_cached(folio) &&
+> +				   !lru_drained) {
+> +				lru_add_drain_all();
+
+It seems unprivileged userspace is able to trigger lru_add_drain_all() repeatedly
+by invoking KVM_SET_MEMORY_ATTRIBUTES2 in a loop, which could lead to DoS risk?
+
+> +				lru_drained = true;
+> +			} else {
+>  				*err_index = max(start, folio->index);
+>  				break;
+>  			}
 > 
-> Here is a brief overview of how CRIU currently dumps memory pages:
-> 
-> CRIU injects a parasite code blob into the target process's address
-> space. The parasite invokes vmsplice() with the SPLICE_F_GIFT flag to
-> pin physical pages directly inside a pipe without copying them. The main
-> CRIU process then takes over from outside the target context, calling
-> splice() on the other end of the pipe to stream the data directly into
-> checkpoint image files or a remote network socket.
-> 
-> I ran a simple test that creates an anonymous mapping and touches every
-> page within it:
-> Without this patch, CRIU takes 9 seconds to dump the test process.
-> With this patch, It takes 18 seconds...
-> 
-> Plus, it obviously introduces some memory overhead.
-> 
-> If these changes are merged, we will need to completely rework the
-> memory dumping mechanism in CRIU. Using vmsplice() in this proposed form
-> no longer makes any sense for our architecture...
 
-I just have read some docs for CRIU. I found this statement:
-
-> #### Why `splice` is Better:
-> *   **Consistency via COW**: The `SPLICE_F_GIFT` flag ensures that if the process modifies a "gifted" page after resuming, the kernel performs a **Copy-on-Write (COW)**. The pipe buffer > continues to hold the *original* version of the page as it existed at the moment of the `vmsplice()` call, ensuring a perfectly consistent snapshot of that page.
-
-This is wrong (with released kernels). I confirmed this by testing this on my current kernel (6.12.90).
-
-See the code in the end of this message.
-
-If you actually rely on mentioned consistency, then, it seems, CRIU is broken.
-
-So, in fact, my patch actually brings consistency to CRIU. :)
-
--- 
-Askar Safin
-
-
-
-
-#define _GNU_SOURCE
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/uio.h>
-#include <sys/wait.h>
-#include <errno.h>
-
-int
-main (void)
-{
-    int p[2];
-    if (pipe (p) != 0)
-        abort ();
-    char buf[1] = {'a'};
-    struct iovec iov[] = {
-        {
-            .iov_base = buf,
-            .iov_len = 1,
-        }
-    };
-    // I pass "SPLICE_F_NONBLOCK | SPLICE_F_GIFT" here, because this is what criu passes
-    if (vmsplice (p[1], iov, 1, SPLICE_F_NONBLOCK | SPLICE_F_GIFT) != 1)
-        abort ();
-    if (close (p[1]) != 0)
-        abort ();
-    buf[0] = 'b';
-    char buf2[1];
-    if (read (p[0], buf2, 1) != 1)
-        abort ();
-    printf ("[%c]\n", buf2[0]); // Prints "b" as opposed to "a" on Linux 6.12.90
-    return 0;
-}
 
