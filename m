@@ -4,132 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FE5CCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36907CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:16:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 45A8C6B008A; Tue, 23 Jun 2026 04:09:49 -0400 (EDT)
+	id 15A6E6B008C; Tue, 23 Jun 2026 04:16:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40B9E6B0092; Tue, 23 Jun 2026 04:09:49 -0400 (EDT)
+	id 10BE06B0092; Tue, 23 Jun 2026 04:16:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FADF6B0093; Tue, 23 Jun 2026 04:09:49 -0400 (EDT)
+	id F3D526B0093; Tue, 23 Jun 2026 04:16:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E03646B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:09:48 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5E3191C57E5
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:09:48 +0000 (UTC)
-X-FDA: 84910453656.27.E869E6F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8D5E3120003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:09:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUiPILmV;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C6FCE6B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:16:01 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4C9AF8DCD2
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:16:01 +0000 (UTC)
+X-FDA: 84910469322.25.3B422C4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7A9701C000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:15:59 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gb/n3uJE";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782202186;
-	b=ENuoK/OZ786Kt5/6niCt98+twEtTFvCXZ9G39nl7RXilCiZMG/FwoosCHRWOr4MkiUDRl8
-	y+3Gt3DWmrAezhpkSEvn1GVVtQHM/MmwYCQOLIzvzq5KK/bBrxP3E8bhFtPNnfyQaKQ2kV
-	zLqW9r6NkwBLFk5SqIzE456PhaD1ZQA=
+	t=1782202559;
+	b=BAZMf0BMIL4qh9EnxYtL7SyFiNfObvIFcdlUan/hQgRqvN9ebc75BiHBI2KRIwJCY05WxJ
+	poKr3UNeGeJYw9SyNp+o8sn9wsTQCR5Hobo0v2lhvvYMfEfIT3I1vdUNosRHU/CVf6Ew9h
+	U9a0K+OYfvsG0JwHW54zhcoVr8Ih3S0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782202186;
+	s=arc-20220608; t=1782202559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l6+hcxSmHD+x+2Iij3EYW/GYPqB/Bat6jKxnqJcOT3M=;
-	b=OoARDXPfwZAuuh8LSFJtsXRgR8y3A+bJoh1lp8NL9bdeoB6IFx//Hx0MBFJ9mpLV2tuEFc
-	3uKMctgfzSk+1cRQIytmcn4Ja9CIjljts8iKvuDu3lb+uslEni9Xmyoe+dKrM0lHwJ7EjM
-	/yw2oOVy4w802Aog7pZzfp5OExaS31E=
+	bh=kqRuB/Vj2Q/v7R+2z0gF31Rqvkx71DYA4rE3F/kz7ro=;
+	b=dKsH50aNTRveipFgBKdFlAXqBQdNgu0hQXirctVCT9cwiP/p1Jgqi6QHkSSV8zWPB+c4MM
+	q6z4rwwQtJssuaTJVJub77pGbreFqbqIY45VlbCqxqPw7LZJQzKXu1Bl4ubqbC+Geexn3z
+	2EsGtHUWyRmTEo+CmGaKiVfw+duuULI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUiPILmV;
-	spf=pass (imf29.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gb/n3uJE";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E5B51601F5;
-	Tue, 23 Jun 2026 08:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7016C1F000E9;
-	Tue, 23 Jun 2026 08:09:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AFC52406D9;
+	Tue, 23 Jun 2026 08:15:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8796A1F000E9;
+	Tue, 23 Jun 2026 08:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782202185;
-	bh=l6+hcxSmHD+x+2Iij3EYW/GYPqB/Bat6jKxnqJcOT3M=;
+	s=k20260515; t=1782202558;
+	bh=kqRuB/Vj2Q/v7R+2z0gF31Rqvkx71DYA4rE3F/kz7ro=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XUiPILmVm7LgmfMvBEO6XriuWaAs+jsKuXqnY/yk8STR8I7rfyLXhwImyw5sjIgOu
-	 jyVGpMZIePQ88xA2V5O6tmUtNqg161khaPd3UZoN7FD85RRCpQ3tD6JuFPUAGYgM6j
-	 8IynBXpQ5DNsscGVZB5zyX0jzWBostPktxqx5/oPNn3yo3UO71H0QFW4Kh0jOIBjZW
-	 YzpnKU1avILvYzlqcY4YGqqlsCgGxRVKmX1Wpojpm5xOz2rFa6c0zX6N4F/swfNPAi
-	 Nku0u7jGPGL689jTX53842vKpfK3lDdTnOrwLRPKyi1KoBnB26olmQuz2Ngwh3k+uv
-	 8Fx+3nF+7KE0w==
-Message-ID: <151b1c96-0ed5-44ce-b9d5-86a48d8ad592@kernel.org>
-Date: Tue, 23 Jun 2026 10:09:41 +0200
+	b=gb/n3uJED2LlHAm1mGoSXJt5h0csRmPinx3JXk7XhkIj0PvkjtChUzDNkvII91cjn
+	 i3iljyrG0DEqIH4vQVqPmvYz9hgLB7E8/lLWbF9N2Oi6lsJpeIOuQ3xfgMbmkzi/xL
+	 0IRjmVeUw3LcT+a3h5f5DnF54HAzP8o119SxgbZDDBKiELPPBLHhUolyaMzKM8v+Is
+	 ZmXJveaYGZQCto3cbObI8vCEr5TM0vnIdJjS/hIyY0aYual7s4qbo1OUSjyS/evc0o
+	 9A8bZKdegcEr/Pxh09vIw1b6VpmeKtuNdikNkFoRHxpLAJQmp/qCdhxmwGc4z6yVkm
+	 fed/cfeocTlLA==
+Message-ID: <d421c081-8686-4d46-8452-e543401b0503@kernel.org>
+Date: Tue, 23 Jun 2026 10:15:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 00/10] kmem_cache instances with static storage
- duration
-Content-Language: en-US
-To: Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org
-Cc: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
- linux-fsdevel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Mateusz Guzik <mjguzik@gmail.com>,
+Subject: Re: [PATCH] docs/mm: clarify that we are not looking for LLM
+ generated content
+To: linux-doc@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Matthew Wilcox
+ <willy@infradead.org>, Harry Yoo <harry@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
-References: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
- <20260613050951.855141-1-viro@zeniv.linux.org.uk>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260613050951.855141-1-viro@zeniv.linux.org.uk>
+References: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260420-llmdoc-v1-1-47d2091177c4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8D5E3120003
-X-Stat-Signature: cctbj4uw3kwz8hzkajdomw9ng68e3qtp
-X-HE-Tag: 1782202186-613749
-X-HE-Meta: U2FsdGVkX1+ugqBD1qji/93cV/uucAZMkD3eu7IPRq2uY0hNQRTwCFWIRZEjKFl68+/Xg/Q80gedDI7u3/q6TM03TvWSVI1bQtzEhdyUUYV3u/euth+ta8wOFho0m3jLPK78NnODF0hb+dudHvtxphFfCX2o9WC12UMI2JyE0oJxGHXB4FT9uLPJKM+n6uULKuu4L2/U/Zb38S9RJZDELCna3+9HcXeUDfZGqrMYmyCfdbuw8xi3oz/9ufU1vHscp278VdykNiF584sxHrvmTj7dti0lPSjcK4ClL95QuT2aC3E7hf2Omb6LZ4843/lM0IZ+RoFAWWNaOKmVlq2IvhAqS6uaHrQIXrdDauRyGrxlrmp8Qi3Kn8STEGEXYWpE2gRsC+diNDzvnUnqhLsZ5lcs/oQffBj+dYri12reVBIAkfOpfpmBbVmslN6EKCjNmG3dQUEpSv6+VxRP2KT2oTI6bao3RLrUXx1Ecc34dydjNzBhuG6lLyQmYRuW1FmpL1sguYyRylbMaxzJZ+tA3ZU9wEsMy5A+bXDWMfMGxphGyysunIolE2GG2iwEfwKLqqJ0WpKeebVqIN0e9A5WAaWqP+Bbye4DuStgCApgdbDXsfwQkbI0tdIwGgsmlNSG3RJtmwDdz+1Nt82jR9k6GZivFijtUObOd3JydpyvQTU1mE1VhnPNgLcaEGY29elLkx9Gpb0+7QYLmlJb4A325EhSeQcFkI/STPNf1EW1fzfgzNWpESolqbMYGt1/k0b+SKDFez/TS+rNvaquxuEc4ZzlPM0PhjEguxjjtrB3oXflZk9Onn1JNtqoy8KpXppppAqH48MwYiuGfMDT9gvyxbQvl0Cf4qL0nAi7CUEAeIvJEzxDRtj2U9P+B+R5BvTF6RiD4cYYygJeMr0zPzH2Jt3L97FPX7isWVq0eN+QX58tuOS6EppkB0J+pw8lFnu7UjAKNE90jibetc3I937
- 1wZFwLB4
- I/V3AqpmOBz1nYzKf8NbaOG+p1rrZYUjFktqwKSZrQI/hcIQC+kgygIge9tSCOjlgXEl1ktWhfPIo5LnHNaaajERsItp4a7UxhpTpTDDj0DcFrpPyMJVfqqXcGJoR//4lPekeWxW+v2jFbYw1figvKiPjPu4lKQlTDqyitqk3Xt7qXXPXyWuSqZ/dfPXV2ARFIpWjUU19Iwr5VMv5+zQb2QP/ZrA0kPol83joOXWCkDhrT5P0RIMv1KGniiAInu6SfWYvzQIiGfiVmCK69sMw5+3ULepkqvvY1PjAE2yPEL8IB5xOKByLqA7Jm0JJCgTIL7I2MXSoIVaM1KY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7A9701C000A
+X-Stat-Signature: fi1ukxqejr4aqfbk5px8j44jzrwgwint
+X-HE-Tag: 1782202559-875924
+X-HE-Meta: U2FsdGVkX186tZr0Qsjl4Ul0suMXsuHNUEMG25VBAOVP6HZ+UdvF0c755cwLsh4Z+ZqGQic9hZmBWmKipPdxBY2mg8d64CJ4frHNQMExjr93qN6fgGRTszvG/1T7SjSfIY2u77OCvXY/m9z6F/OPRZC9pkCHh7IRnT+XZWHf5doqXXQPefU6oO06YhtSoz22q6i8yvSb/EPbGrnOf3lD6FI/Cfde7gzHfgJH0HZ6sNL0t784UBkn+fLMb1jrtZpyTPoQXk0oIBMM3Lj83ALKRMVChvPoE2wLpMQdsTqmoS1m8ur5fV5+562Vj3UZ6LY1p5k6KwNu7VvcpvqwDvuMBjGFZvdhzRvEQn5rg1o5ODRZoEjpAg60P5G9ZptH02AoJuPOgU1L6njBYKz7ZTkFfZ0tpiSKruZumruUy6OEcAsPSsiknn8fFt/ne4BHrXadF5rTmCTHVCRiGbFOP/rFKlVz6DfflQ6SLXdpmJo+OilJLhAjxWy5jt3Gu2rc7nxZiIxACxDD3kDqh+bKd76BRFVMdp9MKgKjhM7ZdYGkBEBbEa047sPbdonm/8DQTA2E3v5Nwu9dmcp/W7nwYmqWlsjkfMRx5+TRVjluOeSTSlQeSrnbTm7GoTqi2dLjAghK1kTbMq1iP6FbWJhHQkWcw0VY277RZmyBQwzdAJ5OmC29JHY7L6fkYb58G++XsGteX4Zux/2yTAg09u4QeyP8ut1TkAGwWLP3ZD3NeLbImrAkYbG4TFJ3qrzEozDqvOtolsU/FtAnbSGtDbpemHxu3ERqPpzFysFWf37HSgWZeTbf4QzHyoE77Q9Ih4DYJ+k/MhMoZaY5ql6Uq/Mch9FPjFATl4SkUfI5FDuDfhj8BQ9jfbteRWdZbsWg1zDms6kHslXQaIFDwtsUqEMr9mhuLR5ItKn+zMeIWuFq8Ygl5SPFuMkaNmS5721BIUxZ1q1Oq4+CepOaGUtT1tndJDe
+ pJXeI41x
+ WsjcyXlxOfTrRe85M2rC5yPTvMwPq4qk7LD8zWenH0l8+tuMTS1RGU6lMtA2vFpjBVux/rMq7NNijd9rIPVfS4mxIWswxOmaic6X+VScedSJMo2tXopThX4zuVQbX1XSmLCnNLNudQkDM9BTmRs3++hp2TdRAwSNt5zyra5ucxBOJNwc9Q9mVhf949JkaAl599NYNfe1arjoNnbXPTnC8PvD5wZ4R3q8YjdUCUHPuAej8H9iKJ6aGNE2dyLCo00HI6JHZ9535YYLcw6ft8cPkVBgvHKlbXgclRSeC7tHeIIbVYXszNjXYPJOizg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,225 +144,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/13/26 07:09, Al Viro wrote:
-> Changes since v2:
-> 	* fixed the braindamage in /sys/kernel/slab (any statically allocated
-> caches should just use their name for subdirectory, whether they are mergable
-> or not)
-> 	* infrastructure bits slightly reordered and carved in hopefully saner
-> way.
-> 	* rebased to 7.1-rc7.
+On 4/20/26 23:03, David Hildenbrand (Arm) wrote:
+> Let's make it clear that we are not looking for LLM generated content
+> from contributors not familiar with the details of MM, as it shifts the
+> real work onto reviewers.
 > 
-> Changes since v1:
-> 	* milder restrictions on mergability (non-modular static cache
-> can be used as alias for later dynamic ones)
-> 	* consolidated conversions into fewer commits
-> 	* rebased to 7.1-rc6.
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  Documentation/mm/index.rst | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 > 
-> Branch lives in
-> git://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git #work.kmem_cache_static
-> individual patches in followups.
+> diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
+> index 7aa2a8886908..13a79f5d092c 100644
+> --- a/Documentation/mm/index.rst
+> +++ b/Documentation/mm/index.rst
+> @@ -7,6 +7,19 @@ of Linux.  If you are looking for advice on simply allocating memory,
+>  see the :ref:`memory_allocation`.  For controlling and tuning guides,
+>  see the :doc:`admin guide <../admin-guide/mm/index>`.
+>  
+> +.. note::
+> +
+> +  Unfortunately, parts of this guide are still incomplete or missing.
+> +  While we appreciate contributions, documentation in this area is hard
+> +  to get right and requires a lot of attention to detail.  New contributors
+> +  should reach out to the relevant maintainers early.
+> +
+> +  This guide is expected to reflect reality, which requires contributors
+> +  to have a detailed understanding.  Documentation generated with LLMs
+> +  by contributors unfamiliar with these details shifts the real work onto
+> +  reviewers, which is why such contributions will be rejected without
+> +  further comment.
+> +
+>  .. toctree::
+>     :maxdepth: 1
+>  
 > 
-> Please, review.  It appears to work; the impact on merging is very small -
-> on the testbox here (251 distinct aliases) mainline gets 140 kmem_cache
-> instances and this series gets 142 - fs_cachep and names_cache get split
-> from the group of 192-byte caches.  Considering the contents and use patterns
-> for those two... we might be better off that way, actually.
+> ---
+> base-commit: da6b5aae84beb0917ecb0c9fbc71169d145397ff
+> change-id: 20260420-llmdoc-21bf5fadbd6f
 > 
->         kmem_cache_create() and friends create new instances of
-> struct kmem_cache and return pointers to those.  Quite a few things in
-> core kernel are allocated from such caches; each allocation involves
-> dereferencing an assign-once pointer and for sufficiently hot ones that
-> dereferencing does show in profiles.
-> 
->         There had been patches floating around switching some of those
-> to runtime_const infrastructure.  Unfortunately, it's arch-specific
-> and most of the architectures lack it.
+> Best regards,
 
-There's only a handful of architectures that would be considered performance
-critical enough for us to care, right? So the question is which ones of
-those lack it and would the effort to make them support it be smaller than
-doing this? Also this covers slab only, but I'd expect runtime_const() would
-have use cases also in other subsystems that wouldn't need
-subsystem-specific changes?
+I assume this was not picked up yet? (via documentation or mm tree?)
 
->         There's an alternative approach applicable at least to the caches
-> that are never destroyed, which covers a lot of them.  No matter what,
-> runtime_const for pointers is not going to be faster than plain &,
-> so if we had struct kmem_cache instances with static storage duration, we
-> would be at least no worse off than we are with runtime_const variants.
+-- 
+Cheers,
 
-But the argument for doing the static duration support is that it should be
-faster, not just "not slower"? So is runtime_const equivalent or for some
-fundamental reason it's slower than plain &?
-
-Or is the advantage that static caches can support modules and runtime_const
-can't?
-
->         There are obstacles to doing that, but they turn out to be easy
-> to deal with.
-> 
-> 1) as it is, struct kmem_cache is opaque for anything outside of a few
-> files in mm/*; that avoids serious headache with header dependencies,
-> etc., and it's not something we want to lose.  Solution: struct
-> kmem_cache_opaque, with the size and alignment identical to struct
-> kmem_cache.  Calculation of size and alignment can be done via the same
-> mechanism we use for asm-offsets.h and rq-offsets.h, with build-time
-> check for mismatches.  With that done, we get an opaque type defined in
-> linux/slab-static.h that can be used for declaring those caches.
-> In linux/slab.h we add a forward declaration of kmem_cache_opaque +
-> helper (to_kmem_cache()) converting a pointer to kmem_cache_opaque
-> into pointer to kmem_cache.
-> 
-> 2) real constructor of kmem_cache needs to be taught to deal with
-> preallocated instances.  That turns out to be easy - we already pass an
-> obscene amount of optional arguments via struct kmem_cache_args, so we
-> can stash the pointer to preallocated instance in there.  Changes in
-> mm/slab_common.c are very minor - we should not merge preallocated caches
-> with anything already created, use the instance passed to us instead of
-> allocating a new one and we should not free them.  That's it.
-> 
-> 	A set of helpers parallel to kmem_cache_create() and friends
-> (kmem_cache_setup(), etc.) is provided in the same linux/slab-static.h;
-> generally, conversion affects only a few lines.
-> 
-> 	Note that slab-static.h is needed only in places that create
-> such instances; all users need only slab.h (and they can be modular,
-> unlike runtime_const-based approach).
-> 
-> 
-> 	That covers the instances that never get destroyed.  Quite a few
-> fall into that category, but there's a major exception - anything in
-> modules must be destroyed before the module gets removed.  Note that
-> unlike runtime_constant-based approach, cache _uses_ in a module are
-> fine - if kmem_cache_opaque instance is exported, its address is available
-> to modules without any problems.  It's caches _created_ in a module
-
-So are there uses in modules of caches created in built-in code, which
-therefore could not be changed to runtime_const?
-
-> that offer an extra twist.
-> 
-> 	Teaching kmem_cache_destroy() to skip actual freeing of given
-> kmem_cache instance is trivial; the problem is that kmem_cache_destroy()
-> may overlap with sysfs access to attributes of that cache.  In that
-> case kmem_cache_destroy() may return before the instance gets freed -
-> freeing (from slab_kmem_cache_release()) happens when the refcount of
-> embedded kobject drops to zero.  That's fine, since all references
-> to data structures in module's memory are already gone by the time
-> kmem_cache_destroy() returns.  That, however, relies upon the struct
-> kmem_cache itself not being in module's memory; getting it unmapped
-> before slab_kmem_cache_release() has run needs to be avoided.
-> 
-> 	It's not hard to deal with, though.  We need to make sure that
-> instance in a module will get to slab_kmem_cache_release() before the
-> module data gets freed.  That's only a problem on sysfs setups -
-> otherwise it'll definitely be finished before kmem_cache_destroy()
-> returns.
-> 
-> 	Note that modules themselves have sysfs-exposed attributes,
-> so a similar problem already exists there.  That's dealt with by
-> having mod_sysfs_teardown() wait for refcount of module->mkobj.kobj
-> reaching zero.  Let's make use of that - have static-duration-in-module
-> kmem_cache instances grab a reference to that kobject upon setup and
-> drop it in the end of slab_kmem_cache_release().
-> 
-> 	Let setup helpers store the kobject to be pinned in
-> kmem_cache_args->owner (for preallocated; if somebody manually sets it
-> for non-preallocated case, it'll be ignored).  That would be
-> &THIS_MODULE->mkobj.kobj for a module and NULL in built-in.
-> 
-> 	If sysfs is enabled and we are dealing with preallocated instance,
-> let create_cache() grab and stash that reference in kmem_cache->owner
-> and let slab_kmem_cache_release() drop it instead of freeing kmem_cache
-> instance.
-> 
-> 
-> 	Costs:
-> * a bit (SLAB_PREALLOCATED) is stolen from slab_flags_t
-> * such caches can't be merged with anything preexisting (obviously)
-> and subsequent cache creations can't merge with static-in-module
-> ones.  If you want them more mergable, don't use that technics.
-> * you can't do kmem_cache_setup()/kmem_cache_destroy()/kmem_cache_setup()
-> on the same instance.  Just don't do that.
-> 
-> Al Viro (9):
->   static kmem_cache instances for core caches
->   allow static-duration kmem_cache in modules
->   VFS caches: switch from runtime_const() machinery to slab-static.h
->   make inode_cache statically allocated
->   make mnt_cache statically allocated
->   make bh_cachep statically allocated
->   make seq_file_cache statically allocated
->   make thread component caches (fs_cachep, files_cachep, etc.)
->     statically allocated
->   make ufs_inode_cache statically allocated
-> 
->  Kbuild                            | 14 ++++++-
->  fs/buffer.c                       |  6 ++-
->  fs/dcache.c                       |  8 ++--
->  fs/file_table.c                   | 40 ++++++++----------
->  fs/inode.c                        |  6 ++-
->  fs/namei.c                        | 16 +++----
->  fs/namespace.c                    |  6 ++-
->  fs/seq_file.c                     |  6 ++-
->  fs/ufs/super.c                    |  9 ++--
->  include/asm-generic/vmlinux.lds.h |  6 +--
->  include/linux/fdtable.h           |  3 +-
->  include/linux/fs_struct.h         |  3 +-
->  include/linux/signal.h            |  3 +-
->  include/linux/slab-static.h       | 69 +++++++++++++++++++++++++++++++
->  include/linux/slab.h              | 11 +++++
->  kernel/fork.c                     | 37 ++++++++++-------
->  mm/kmem_cache_size.c              | 20 +++++++++
->  mm/slab.h                         |  1 +
->  mm/slab_common.c                  | 49 ++++++++++++++--------
->  mm/slub.c                         |  7 ++++
->  20 files changed, 231 insertions(+), 89 deletions(-)
->  create mode 100644 include/linux/slab-static.h
->  create mode 100644 mm/kmem_cache_size.c
-> 
-> --
-> 2.47.3
-> 
-> 
-> 
-> Al Viro (10):
->   static kmem_cache instances for core caches: infrastructure
->   static kmem_cache instances for core caches: setup primitives
->   allow preallocated kmem_cache instances in modules
->   VFS caches: switch from runtime_const() machinery to slab-static.h
->   make inode_cache statically allocated
->   make mnt_cache statically allocated
->   make bh_cachep statically allocated
->   make seq_file_cache statically allocated
->   make thread component caches (fs_cachep, files_cachep, etc.)
->     statically allocated
->   make ufs_inode_cache statically allocated
-> 
->  Kbuild                            | 14 ++++++-
->  fs/buffer.c                       |  6 ++-
->  fs/dcache.c                       |  8 ++--
->  fs/file_table.c                   | 40 ++++++++----------
->  fs/inode.c                        |  6 ++-
->  fs/namei.c                        | 16 +++----
->  fs/namespace.c                    |  6 ++-
->  fs/seq_file.c                     |  6 ++-
->  fs/ufs/super.c                    |  9 ++--
->  include/asm-generic/vmlinux.lds.h |  6 +--
->  include/linux/fdtable.h           |  3 +-
->  include/linux/fs_struct.h         |  3 +-
->  include/linux/signal.h            |  3 +-
->  include/linux/slab-static.h       | 69 +++++++++++++++++++++++++++++++
->  include/linux/slab.h              | 11 +++++
->  kernel/fork.c                     | 37 ++++++++++-------
->  mm/kmem_cache_size.c              | 20 +++++++++
->  mm/slab.h                         |  1 +
->  mm/slab_common.c                  | 50 +++++++++++++++-------
->  mm/slub.c                         | 27 +++++++-----
->  20 files changed, 242 insertions(+), 99 deletions(-)
->  create mode 100644 include/linux/slab-static.h
->  create mode 100644 mm/kmem_cache_size.c
-> 
-
+David
 
