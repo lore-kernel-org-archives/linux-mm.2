@@ -4,105 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC7BCDB47D
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:53:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCEACDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:55:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 869926B0099; Tue, 23 Jun 2026 06:53:50 -0400 (EDT)
+	id C3C986B008A; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 841226B009B; Tue, 23 Jun 2026 06:53:50 -0400 (EDT)
+	id C14C66B0092; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7596F6B009D; Tue, 23 Jun 2026 06:53:50 -0400 (EDT)
+	id B2AA56B0095; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B5056B0099
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:53:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C9C698E110
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:53:49 +0000 (UTC)
-X-FDA: 84910866978.01.AAEBF29
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F382F40004
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:53:47 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ur9HtJUO;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3umU6agkKCMc6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3umU6agkKCMc6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8711A6B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D1FD120468
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:55:03 +0000 (UTC)
+X-FDA: 84910870086.22.D27E3CD
+Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E4FFF4000B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:54:59 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=mwgiGPDg;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf17.hostedemail.com: domain of xiaowu.417@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782212028;
-	b=Y25R3AfYWYb35G2Q8/NjO/+Snk0ryDQ8knTG7m+I7luQDOW2Y8vP5nC1bvDRm/vO/2iEdf
-	RGlfb4x20OXXMIdS4bb3VkiP/RpRwuGazdMUH1pP4bfUa17aPpCBvuG1CBKucLPxNSVEoA
-	hQcHlZrpZ6FZHHyZ6XgpffcL96KxfvI=
+	t=1782212101;
+	b=YZiURChT2mKzdJ8n0XSR/+phoWC7UZziBD8FOCwdkFVbST7sxPsupHFfMoq9ooMbm79DqK
+	hQiEdek4Fwf4kFThmOqwYbGZn1XveU1Buul8VoC1JUTa0PPjLYxObmK3XKL0YhF8szChNZ
+	JqHUtl15ht2PlyfFKclTZft1EKtgeBo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782212028;
+	s=arc-20220608; t=1782212101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Duz8Zx+8AiYnCdBwNjKZl5RmXQ31zXqUNM7RLp7vFfQ=;
-	b=DC2j9wO8h3Nsa3lzSQ45MNeo2lF7U8IT+4FE1aeh2AGDmWFBKVGqAYx08OK91iVROHqFBu
-	DOeviGF/4CYcOec96lOp4QKBSo+wj6BuUmSoVa+o4UHZoC4hrpC7PHafk3GeHFic7am8wY
-	AzEeWp44o7YjZh3+rJP/kCEkDpFxjJ4=
+	bh=4q88+ttZMviWZpntI44EOp6qd5JvFg5Bi7R2f2PE/as=;
+	b=tsbPRZi2CwI/VEmiiioUBWHVMmN2rBS3ZEl4f2vo9brJe/fYN0hXs2cB4dUWNLOLiunNj2
+	hdwMeX9WQPrGn7xBLuirDTj/sfAoVTkMkUomPDQt7RNn2BMgxspUZftOSlCO1+wnRac+YH
+	zTGwx1mo/1NgI983ck0sjCh+sZAYiV0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Ur9HtJUO;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of 3umU6agkKCMc6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3umU6agkKCMc6n4705nu7t11tyr.p1zyv07A-zzx8npx.14t@flex--tarunsahu.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6973d186db0so3570016a12.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:53:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782212026; x=1782816826; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Duz8Zx+8AiYnCdBwNjKZl5RmXQ31zXqUNM7RLp7vFfQ=;
-        b=Ur9HtJUO0558POcfB377sBd931WmW/pNbB6mVI5IWBLGRZOxkaHeLCBx4LkXqT/ZIF
-         1qSr7Kfy9i59vHzOllRbHPqaHg/IlWQYuhaDHdFztyqQoiOlBL6q+y4LoQJDCz4AtRTp
-         12MUABEQ5+xd8w5K7NAYYIDtyqWLYQ5aAlCQxJvbRbIpPmhQKLtHiT//W8nXxQaKYHMl
-         cEsnFVnArgECI9J6/XgZ46+8ZmBqTh09NjgE9d1RmKBsUarza35OCij4V+qr5fFfjJpu
-         9CQ9cz2a6EHz9xdMe+HSc5MOb+XU2MNaI0EraL0NKt/gkE61Ok4cnejB8Tt9GjyQwMrq
-         sqdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782212026; x=1782816826;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Duz8Zx+8AiYnCdBwNjKZl5RmXQ31zXqUNM7RLp7vFfQ=;
-        b=j8hMpq2f8/e/iS9qm9+x25G6y5n95rvvrFImVxP0TRR1WZ2Sx+Vby5khthEHLhMBDo
-         IK42NChtPkIwcg8ru05HE2jeZl5VecO5swrI1OsrNzwAM9IxjB5cKFtpR8jeSV6nAS4H
-         TVyYM8Dikb1OYrV/p1Y5wOpiuAGk3HD2xfxlSGuN75Nx1aaC2Nx11YsxheDNiyaffSJf
-         qSRU+clM9r5XeYvn5JRpLkCgD98misd/yxRVPBrM4lrXJ+NwIw+9cUziERbTUd9dnjqQ
-         1STQG1JMl9E19y1OQqXudFbhFHuZCLcNpqjlNDIGnbf3IC/7dBI8gsSAPVMYR+Xy7oGQ
-         Wwhw==
-X-Forwarded-Encrypted: i=1; AFNElJ8325XHI1trrPvP6OOvbgRjZuDj9/6Xb+wlIiKOufuRVbpsheho4B+2kBPFxMgtQ6pTNtLxGt5NCw==@kvack.org
-X-Gm-Message-State: AOJu0Yx83hGfmqgFsmmvriB0yMtwEcpwilkVQX4CIJUKeuN1tAFr5Xjc
-	UpoOxt6ZmIjeGl/+Oosgujrjkh7XXMt4nN+86gTgEYt3e5yHyEPAQsa3+U22+9dicoEXZTtdPxT
-	uExVLnbkoomsd0/hfgA==
-X-Received: from edah41.prod.google.com ([2002:a05:6402:ea9:b0:68b:8a53:a28e])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:380a:b0:691:b5aa:5a57 with SMTP id 4fb4d7f45d1cf-697dbb55ea4mr960674a12.18.1782212026359;
- Tue, 23 Jun 2026 03:53:46 -0700 (PDT)
-Date: Tue, 23 Jun 2026 10:53:45 +0000
-In-Reply-To: <ajpbHkuWiGQrUec8@kernel.org>
-Mime-Version: 1.0
-References: <20260622225736.2961438-1-tarunsahu@google.com>
- <20260622225736.2961438-3-tarunsahu@google.com> <178220761164.162773.6384380547612711985.b4-review@b4>
- <9huzpl1h37hj.fsf@tarunix.c.googlers.com> <ajpbHkuWiGQrUec8@kernel.org>
-Message-ID: <9huzse6dle86.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 2/2] luo: Update serialized data to use KHOSER_PTR
-From: tarunsahu@google.com
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Mike Rapoport <rppt@kernel.org>, Breno Leitao <leitao@debian.org>
-Content-Type: text/plain; charset="UTF-8"
+	imf17.hostedemail.com;
+	dkim=pass header.d=qq.com header.s=s201512 header.b=mwgiGPDg;
+	dmarc=pass (policy=quarantine) header.from=qq.com;
+	spf=pass (imf17.hostedemail.com: domain of xiaowu.417@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1782212095; bh=4q88+ttZMviWZpntI44EOp6qd5JvFg5Bi7R2f2PE/as=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mwgiGPDgEyICWYsAjjQ2IFXcPh64q/rnAkz9W60L4x9IEBiNsvHooZaj+m1AI0ic4
+	 DLv6lqycCj3mP1S0Zi7LCh6SzZ/Cg96HtzwY5GlRaqF7Z6FV3+YV6xyQpdQWg+ZALV
+	 sBku/OqHWaiXDbTxmhvMx1hnHNMdYPxYUeG66Vcc=
+Received: from [192.168.3.157] ([115.156.144.140])
+	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
+	id DB30CEEF; Tue, 23 Jun 2026 18:54:51 +0800
+X-QQ-mid: xmsmtpt1782212091tn5pm9rfd
+Message-ID: <tencent_222F50A4CB8E790B93AB90E5109DE13E1A09@qq.com>
+X-QQ-XMAILINFO: OKOirRU4nj6hMqiv/M7N7uFPSUU+cUH9KafDvKjAUKlgZ/b860U6gUDxBB+MhG
+	 V1b989M8wuAge71fRcW+pMYJgmrduR7t73knpWxcCaV/VtDg4qNJV9s0WyECUcSJPlNhY81wJhqu
+	 +cB1ziQb3pWXyfiCHN4trXzZ69/9poI3JZmSKyyH6I3emdJPz6XpzmvI7SKiUDSAr3btNxYJqZkE
+	 lHpEjdYROVZ1gQx4jSe2QBbRIkLWaaqS7WZyM8gwl/PQ15OLGa/m17rEvXWApOwaLLAJrX1JN6oJ
+	 oOkM6FCvdrMqa2/d3slO2X2p3xIBmTI3uKCtU4RgSyLOfYBm9mS5p9r0uFtOEuRvlIaqqxyiwWaV
+	 luD+ujQisVcfjTR3rCyeXFlRwqeWvvGtOdTeAzsT14jbOve2bAPSQZv5J/R3MMpVbdh15FfTlMQO
+	 opXIF8Bt2YsxbumHN8M7pQdvHkrafX4pe+MfzmHRor20tYChUhWHzc4TC7odjuIG3SWp1crwfdPg
+	 AEl9yLXKR/yzKAJeSMwnHgJKpGqNzX3pX6tIb2N76NAOHZQhkSIwn8JwJmIbOF7Qv24vu+CkIl5W
+	 4kcslfQ5uvcb/5e6s9FW2JuD1F6k25OKxDZq424lYnANNaWmzQxKreXCqGmnf63QR9J3FtrtCcy1
+	 J6brugBsWZ1xDjk9UmBAdi5x/rogr+30zFGNnICT8DBYW61KS249/nlHoZi7Kq0LBtc6gesYaYHS
+	 cp2ktfOSQrW+dRoCMUbYWmCn0SswbiUH6oIiYqTzAONEF6hIgMW9iaU3kOWc+V0mbwGuJ4YRjYhS
+	 5GCYszNpwE7XpHZUGnu6/pvsHu8BDIELeb8iwmpSYGTOzPTTtOFntyesl+P27KCyphowN4lpGh8v
+	 A/QC7thBlqWknwwnNppkGvj3zt0h0fcjgtebR16e3XWCwZZau4LEU11jbldnJHTo+mcYSvvdU2+o
+	 KHJTNFRxbDWCJnUe4xvL6G8/wvE9Hi2eRf3OAk9d6GGAILRY4RWwUppubsHeXvf8HxwMkX336OOL
+	 vgeYnRhsQhZsUnuFrlT3sv0KtdByCIPpHZ3zPweQRxl6OPOccqgVbTzYolDfhhhImj1zgjvRyJxD
+	 Y0yvbDj+j5ciqtq50EaTx6YuRj/w==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-OQ-MSGID: <ce01e205-4129-4c97-8b2a-ab129cebf5e3@qq.com>
+Date: Tue, 23 Jun 2026 18:54:50 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/11] hugetlb: Convert the vmf->pgoff to PAGE_SIZE
+ granularity
+To: Jane Chu <jane.chu@oracle.com>, akpm@linux-foundation.org
+Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
+ david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
+ linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
+ rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20260617172534.1740152-1-jane.chu@oracle.com>
+ <20260617172534.1740152-6-jane.chu@oracle.com>
+From: XIAO WU <xiaowu.417@qq.com>
+In-Reply-To: <20260617172534.1740152-6-jane.chu@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E4FFF4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F382F40004
-X-Stat-Signature: qngpniitzucm7tf534oq4fjbs98u6zo9
-X-HE-Tag: 1782212027-64385
-X-HE-Meta: U2FsdGVkX1927ZNGOsVIYbq3l8bMQuXSeNacXFggUg/QRWlwjpVqIIodSvHtdjBg0jMwX5oGmIw3OKlwqwN2CYyfBPr6bEOvIZCvDEvYqUBJE8wxx0hSq9eUsYVfet36dholeDK2/yliYCfxm5a9WQyTFksUMTzIqYmPMnZNRuVarMU8lW5jCHKjP/U+nsh5SLBFLDTJyzbltTIozOILtU7n1BOjgnRBT0ZMejufkcG2hUt+XIU4s9VsgjBwexNQt2bCcRSRPaVhEjP+boPoqa1Xwe3jF7Iz9psRTG0Uux5HvEqBO6LIZnQC/TV/Wq5FJc0FIHPaco/eg95q8o97YrwMMTckmYKTaLI+VCDdyWxnapgPNR9b1iBSO4AdXNwYnaChbCN1jX69FsW1ke5wMxmJXMYj2Rl4ply19lXdVBVCo41vJjfVb02QP51kxWOtQiG9lB4Yy1V365qsE5sY5sGg5pDDbkAI9iEJRMFnO6CkfqnGvx4jIQB8nKZ957s2lgwsBlqgkUBiNLdAaCIPsApJZyBc4GYBiT3ckAtIP4AScXVeEApzCOrOzCOOBndhPgojbNF487zvupYRszoeKnrzQZLSofK3ejWhY2NYJF3vZSWW8JkjxBmolOYac0pP8k12OyVI4Xtni12JNwBmSXoI+8+NTynrNBcL+CPkmm9TXSuxB2vHImSARjz/rIkX5opGCSEgQ6gVFzx9OQtVdzt1amSlslRlrTCZyBLdvHz1UQyOgtUcwXqzFw6nA3iPKOauthmVcZzDAZhmot3ItGmzXkrKF7/aLbMaqNLTeKPvo+c49XQgOYHcbdrR7/Ci1aOd/BoGETHyyjHEA4lPYjgjUmsyQa8nCvT+TGUoFhF6NxkM6t3/KW79Ndj2BlXG/ZwR7xHhP7Vd/V1KJeFYkWKGPd7i0bU2Md1xIh8Y5g7EZOe+r+4wj5C6alCiaTwQ9DAwAL6fnGoTPzIc5np
- Oaavom2O
- 3a692l46CqDcMw9XbalSS6k9OHDuU/azKp32XPJrcNnQSjP1p/QIrD1ocb5c94Ha+P+UCCWOxKZVLvED4mtH3DJ+CECsD2Gk3fqX5g140D64JX4uLSMPIyuBh5PNe5MzCR9Cz485ig7578+fvYji33a1T+Zk2ELqQskhgDx3rUFZdIFE2qefALJesdKrTdhS4Skb5l9D2aIWFlV8nHKMWBzKzCLZiXj7DrC5wZv3LFqI5/gQfjo6AVVEAYE4l+Rm4MMHKaiDgJLdx2U8mVqfvdoJ+02fTYsgvyUQzINrDre/YomZxaCfQYAxA2wayJruK46cYa8W9dAIfu6gXjkrYii/ROmp9Ur+PQp3CI2qgTNujCAVJO7HohtEScvFVj80MoYtqmzcEPzd1wQA1oMPGrGSbKrkw1Q5zITyqfa7MBEODm6a03WIOpPRGjBqbheU0gBf/4ZcmFkuQFgq3X7amCQMRQbVOMsnFu3i37sO1h0OktgdN9p0cMZtQkvb9orgI3a+mOwJxaC39DBSTMQCEtd3f6NF7u1bfZ00Gdu5L0eE8/yHV3NIJZGPjjO7TIpECSJm6dDKoKruvckZc+GaPTufSaa1AlKLLpTTX+YcylKQpWeDng7fVriSngQ==
+X-Stat-Signature: hemswpyyubn9kog1yeysz3zmtdberg4q
+X-HE-Tag: 1782212099-361230
+X-HE-Meta: U2FsdGVkX1/m8IqtlXRujVV0+fOHZVhfV0w1wP83qa7yDEoH+QccJnePtXtDxS7GuuTVX34pR7rncpwbR44SUlgNi1cARXmr3J970PeOItrgNckwTMIYPP4WUWjxOqDrY2FsHHMq8zZkEaxJIFULSd7dV1pGYkIKdDsSghEd4uLm2xFORMZGmcVP59+UdjmTxUYegAgDzHZ+iGaOuC1sljXWN/Fpy+YwVyaFpHxoypArnXSVBFL7w3/DZ6V020PRK2EdWaQsESkQLupG47B1p2FyA3eALVx3qYMSLwgu4oOQ2ZnH+uKs8ZnnH/e0tKERLk84ukMBMMeELX6b231ne6iAPCy4q4wiSeHcLGY2YgUI/VKrG5d5lVM8RRAFo/PcrY+gegcZxKsFI17cBPKgTfwaPLpadWw6Ht0mSdysFFvTNakvmjgpmugJSDTeerXlfLBlV5fnwM5vNhgnsL9pyVy+l+fZPuuSd9Qc3PxdAANbDpX+gQH1ahWmB2SgcikAxakuCRnAMmzaCznog3Do1eSHdQSP18CsuHWM+Pnf0/zo/uex1CDbzoZo+zOGvMQXTc8b47gvJy7sG4khgeCPbummfwqVVxkllpMk8RRbgdLamnvrOVBdMyvAK8UIxMKQyoCADPnoUSisB+53uluBzSXokUxHxKjDPxHY1BSGhi6enkWioFGax2gA8CyPo2ZgUi9erfgynAWvM83qgFtA9gWoiiasZVMvyaBo06f8DtBnbxDX03qN/ooxyksKyjb3MN4V9oo3drjttQTO25oYUh3p6ZybzfNMLA/UPxYWOv0pGedYSK0ROVdL9dq7aVR+F0cwwlgY63qeP0L2mznuuG01DH8DR6ReqrszGy7wE8RGnDAcv6fpzqPXVcO8WiXZw3G5H8McCbuF1soukytlem2WXf0nZfyCHm0JvmGbQiTConEESoao6YwGD3ePtw0qwtQxsbtkhkIpN9dJCUf
+ RI8+Gctt
+ f6oH6x/oZqQQN39EP3/1YXXU6dqz1dN3w9/4OM1cEFN0pE+V9u6OdGrx4lJzDoM0X26gCR/2I5ivLF3Z4ny5zfoqG6sqpRJO6CGVN7dWJnXTOyUe9rViD1wsh4m4L9vmIS18HPvq3I2MZjlY5EGj7tkg1tmo+qN5pxmxFnkEo8O29P/Vbhg9RmjgRdxdy6M25wSDHQCNLEIhL85zaeqytf6DfNeNXDsH7Kyi1mO7lTxqlNu2qsq+GQtQnF4MGbk1r/Rg7OY7OvOwOzBoKTJBVZ55ez/BsMKjsdi/lziQrevhuoWB9qtYcI/DRatuakyWVYPxM4AZ565hdqTeRXinjm4IWGY1FsqUtzDwmgyBtbfkN4sPEPe2WkU1MN7RznpeAbzXQf8OYTYA6XkMeFOkoD4RaPAmjHP5XGPg9Aqim1ox+pm7fuMskZonvcT51d6rcyMLXhcFJT/gePCH/57rSJ5pNPMgvZcksFIX2bMn6eBF5+AS7TdlDBOidp7jePjrVeCApwYxeQk9IeCMdCcu/jMc/tuJBoHKM8qW4FjVm98H9h1FUoSGfHQQZuq1+ajjgIfw6xJM9So8nTs8EUL0EjQ0mIA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,46 +112,210 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
+Hi Jane,
 
-> On Tue, Jun 23, 2026 at 09:56:40AM +0000, tarunsahu@google.com wrote:
->> Mike Rapoport <rppt@kernel.org> writes:
->> 
->> > On Mon, 22 Jun 2026 22:57:36 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
->> >> Convert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
->> >> This series also takes care of resolving the bug with memfd of using
->> >> phys_to_virt before checking the args->serialized_data value.
->> >
->> > For easier backporting the memfd fix should be a standalone commit that
->> > comes first in the series.
->> >
->> > Other than that
->> 
->> It will break compilation for individual patch. For example, memfd_luo
->> changes are hard coded dependent on the args->serialized_data
->> conversion to KHOSER_PTR?
->> 
->> Maybe I did not understand, Could you please explain what you mean?
->
-> Sorry I wasn't clear. 
-> If people think it's important to have the memfd_luo fix in 7.1, the fix
-> should be the first patch in the series and shouldn't use KHOSER pointers.
+Thanks for this series — the conversion to PAGE-granularity indexing is a
+nice cleanup.
 
-I dont think, this is critical issue. But it will be a good practice. I
-sent v5 with these changes.
-Thanks for the review!
+I came across a Sashiko AI review of this patch series, which flagged
+several issues, one of which I was able to confirm triggers a real kernel
+crash:
 
-~Tarun
+https://sashiko.dev/#/patchset/20260617172534.1740152-1-jane.chu@oracle.com
 
->  
->> >
->> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> >
->> > -- 
->> > Sincerely yours,
->> > Mike.
->
-> -- 
-> Sincerely yours,
-> Mike.
+ > +++ b/mm/hugetlb.c
+ > @@ -5952,8 +5955,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, 
+struct vm_area_struct *vma,
+ >          .address = address & huge_page_mask(h),
+ >          .real_address = address,
+ >          .flags = flags,
+ > -        .pgoff = vma_hugecache_offset(h, vma,
+ > -                address & huge_page_mask(h)),
+ > +        .pgoff = linear_page_index(vma, address),
+
+This change sets vmf.pgoff to linear_page_index(vma, address), but
+`address` here is the raw unaligned fault address, not the huge-page-aligned
+address.  Previously, vma_hugecache_offset() used `address & 
+huge_page_mask(h)`
+which produced a huge-page-aligned index.
+
+When a page fault occurs at a non-huge-page-aligned address within a hugetlb
+mapping (e.g., vm_start + 0x1000 for a 2MB page), the resulting pgoff is not
+a multiple of pages_per_huge_page (512 for 2MB).  This unaligned index
+propagates through:
+
+   hugetlb_fault() → hugetlb_no_page() → hugetlb_add_to_page_cache()
+   → __filemap_add_folio()
+
+where this assertion fires (mm/filemap.c:862):
+
+   VM_BUG_ON_FOLIO(index & (folio_nr_pages(folio) - 1), folio);
+
+With CONFIG_DEBUG_VM=y, this becomes a BUG() and panics the kernel.
+
+I was able to reproduce this in a QEMU VM.  The fix should be trivial:
+pass the aligned address to linear_page_index().
+
+=== Reproduction ===
+
+Kernel: 7.1.0-rc5-g7ba451f8a24f #1 SMP PREEMPT_DYNAMIC x86_64
+Config: CONFIG_HUGETLBFS=y, CONFIG_DEBUG_VM=y, CONFIG_KASAN=y
+
+Trigger: mmap a hugetlbfs file, then access an address at offset 0x1000
+(one 4K page) into the mapping, which is unaligned relative to the 2MB
+huge page boundary.
+
+=== Full PoC ===
+
+Compile with: gcc -o poc poc.c -static
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/syscall.h>
+#include <fcntl.h>
+#include <errno.h>
+
+#ifndef MAP_HUGETLB
+#define MAP_HUGETLB 0x40000
+#endif
+#ifndef MAP_HUGE_SHIFT
+#define MAP_HUGE_SHIFT 26
+#endif
+
+/*
+  * Bug: hugetlb_fault() sets vmf.pgoff = linear_page_index(vma, address)
+  * using the raw unaligned fault address.  This unaligned pgoff reaches
+  * __filemap_add_folio() which VM_BUG_ON_FOLIO's on it.
+  */
+
+static long get_hugepage_size(void)
+{
+     FILE *f;
+     char line[256];
+     long size = 2 * 1024 * 1024;
+
+     f = fopen("/proc/meminfo", "r");
+     if (!f)
+         return size;
+     while (fgets(line, sizeof(line), f)) {
+         if (sscanf(line, "Hugepagesize: %ld kB", &size) == 1)
+             size *= 1024;
+     }
+     fclose(f);
+     return size;
+}
+
+int main(void)
+{
+     void *addr;
+     size_t hpage_size;
+     const char *hugetlbfs_path = "/mnt/huge/testfile";
+     int fd;
+     int ret;
+
+     hpage_size = get_hugepage_size();
+     printf("[+] Huge page size: %zu bytes\n", hpage_size);
+
+     /* Mount hugetlbfs */
+     mkdir("/mnt/huge", 0755);
+     ret = syscall(__NR_mount, "hugetlbfs", "/mnt/huge", "hugetlbfs", 0, 
+NULL);
+     if (ret < 0 && errno != EBUSY && errno != ENOENT)
+         perror("mount hugetlbfs");
+
+     /* Reserve 1 huge page */
+     {
+         FILE *f = fopen("/proc/sys/vm/nr_hugepages", "w");
+         if (f) { fprintf(f, "1"); fclose(f); }
+     }
+
+     /* Create hugetlbfs file and mmap it */
+     fd = open(hugetlbfs_path, O_CREAT | O_RDWR, 0644);
+     if (fd < 0) {
+         perror("open hugetlbfs");
+         printf("[!] Trying anonymous MAP_HUGETLB\n");
+         addr = mmap(NULL, hpage_size, PROT_READ | PROT_WRITE,
+                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
+         if (addr == MAP_FAILED) {
+             perror("mmap MAP_HUGETLB");
+             return 1;
+         }
+     } else {
+         ftruncate(fd, hpage_size);
+         addr = mmap(NULL, hpage_size, PROT_READ | PROT_WRITE,
+                 MAP_SHARED, fd, 0);
+         close(fd);
+         if (addr == MAP_FAILED) {
+             perror("mmap hugetlbfs file");
+             return 1;
+         }
+     }
+     printf("[+] Mapping at %p\n", addr);
+
+     /*
+      * Trigger: access address at offset 0x1000 into the huge page.
+      * vm_start is huge-page-aligned, but vm_start + 0x1000 is not.
+      * hugetlb_fault() sets vmf.pgoff = linear_page_index(vma, address)
+      * with the unaligned address, producing an unaligned pgoff.
+      */
+     printf("[+] Triggering fault at unaligned offset (%p + 
+0x1000)...\n", addr);
+     fflush(stdout);
+     volatile char *trigger = (volatile char *)addr + 0x1000;
+     *trigger = 0x41;
+
+     printf("[+] Survived: value = 0x%02x\n", *trigger);
+     return 0;
+}
+
+=== Crash Log ===
+
+Linux syzkaller 7.1.0-rc5-g7ba451f8a24f #1 SMP PREEMPT_DYNAMIC x86_64
+
+[  527.288433][ T9873] page dumped because: VM_BUG_ON_FOLIO(index & 
+(folio_nr_pages(folio) - 1))
+[  527.300642][ T9873] kernel BUG at mm/filemap.c:862!
+[  527.301090][ T9873] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[  527.301640][ T9873] CPU: 0 UID: 0 PID: 9873 Comm: poc Not tainted
+[  527.303803][ T9873] RIP: 0010:__filemap_add_folio+0xf39/0x1200
+[  527.311913][ T9873] Call Trace:
+[  527.312345][ T9873]  <TASK>
+[  527.312676][ T9873]  hugetlb_add_to_page_cache+0xe3/0x240
+[  527.313414][ T9873]  hugetlb_no_page+0x1301/0x21b0
+[  527.314402][ T9873]  hugetlb_fault+0x531/0x1570
+[  527.315259][ T9873]  handle_mm_fault+0x970/0xaf0
+[  527.316565][ T9873]  do_user_addr_fault+0x60b/0x14c0
+[  527.317434][ T9873]  asm_exc_page_fault+0x26/0x30
+[  527.318733][ T9873] RIP: 0033:0x401fa2
+[  527.326921][ T9873]  <TASK>
+[  527.327245][ T9873] RIP: 0010:__filemap_add_folio+0xf39/0x1200
+[  527.335300][ T9873] Kernel panic - not syncing: Fatal exception
+
+The Sashiko review also flagged a few other pre-existing issues in
+this series that I haven't verified yet:
+
+1. [Critical] remove_inode_hugepages() in patch 9: passing folio->index
+    (base-page index) to hugetlb_unmap_file_folio() which multiplies by
+    pages_per_huge_page(h), effectively squaring the offset and causing
+    the interval tree search to miss VMAs (potential UAF).
+
+2. [High] hugetlbfs_zero_partial_page() in patch 7: Usama already
+    pointed out the start >> PAGE_SHIFT question — `start` is a byte
+    offset but filemap_lock_folio() expects a page index.
+
+3. [Critical] filemap_get_pages() in patch 4: the `if (is_hugetlbfs)
+    goto done` path returns 0 with an empty batch, which could cause
+    filemap_read() to loop forever when reading a hole in a hugetlbfs
+    file.
+
+Thanks,
+Xiao
+
+
 
