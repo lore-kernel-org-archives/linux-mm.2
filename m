@@ -4,89 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4525CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:30:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F865CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 01:38:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C86D6B0093; Mon, 22 Jun 2026 21:30:01 -0400 (EDT)
+	id D24716B0088; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 152E36B0095; Mon, 22 Jun 2026 21:30:01 -0400 (EDT)
+	id CD4EB6B008A; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 040F96B0096; Mon, 22 Jun 2026 21:30:00 -0400 (EDT)
+	id BC5986B008C; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C3C2C6B0093
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:30:00 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 272B11C5539
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:30:00 +0000 (UTC)
-X-FDA: 84909446160.26.F02A48E
-Received: from lgeamrelo12.lge.com (lgeamrelo12.lge.com [156.147.23.52])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1568140009
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:29:56 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BDD66B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:38:13 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D766C166BF5
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:38:07 +0000 (UTC)
+X-FDA: 84909466614.17.58B4FB6
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 454FCC0004
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:38:04 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cuCO3gs5;
+	spf=pass (imf28.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782178198;
-	b=JX2PtjDJYCVCz7VTNvn2qavO9dN/ZX5h11giprw2frGNNrSegHsGs3VmzV8jxlUe+b6yM7
-	imHg1iuMZktzDvU5L1JvUnT4H1Lxl3wHNZUA9sGijPuzR/3jvWgCeWrJ5hY/M7WJFYUjDP
-	17muSgKTM5XZkGvqWv61CJOpdYbVQco=
+	t=1782178686;
+	b=kZl4mky2Vt1oG/u7YlXLR9HEAwBhjcfBBMvxmO60330PXgCjbwmXF39vYmrMPBfYcY+toQ
+	DBUY+pS8wwZqiUnCH4fuT2vQL5oLDeNLOoQi7lciSKxuusWFhYYzPZGXo5GUGyXGBrhbD+
+	KlIBQe2yrDa7BST7dmkBxxL6gZzZk0I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782178198;
+	s=arc-20220608; t=1782178686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bVtT8Z60CmRfiFt3TG8n0q/MjEeoQcxixq0qeXU4+ew=;
-	b=sjrazq8c1qr3Z4xNOFhxmv7z0bU37VvXvZ5TgYh/1y79ZNzuMY8nIo8l0+e2EfhQuStV7R
-	KfTyU74GIOZVu3mYyuoS3PzJ+4MCiZWw5GTolm7UilnMvbqfMjcyLvZZXKAlysguWdsN1W
-	fAeoBMwG2Bg/4OpQJrmyEfvugXU2K+4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=G1HxnYaFAzm8U5OOXij8ylCTKpYTXv8afbfuywpH9SU=;
+	b=jDUJfyV7MQcQUUc3W/5HiR+oovMJ+3Hal4nTQ58I8rQT1njs+ESw4vHq5nlefH51KK9Wfm
+	w3DICatsTFIJz7XXNsnkD9BjQJ15v0bNJnq/VeTZq1+lvEil/W/ZDwUslHni2KydvxNvL9
+	6i2J8MoAMsbo5C90na5iNLRunIij4SI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.23.52 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-Received: from unknown (HELO lgeamrelo02.lge.com) (156.147.1.126)
-	by 156.147.23.52 with ESMTP; 23 Jun 2026 10:29:52 +0900
-X-Original-SENDERIP: 156.147.1.126
-X-Original-MAILFROM: youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.154)
-	by 156.147.1.126 with ESMTP; 23 Jun 2026 10:29:52 +0900
-X-Original-SENDERIP: 10.177.112.154
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Tue, 23 Jun 2026 10:29:52 +0900
-From: Youngjun Park <youngjun.park@lge.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Youngjun Park <her0gyugyu@gmail.com>, akpm@linux-foundation.org,
-	chrisl@kernel.org, linux-mm@kvack.org, cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kasong@tencent.com,
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev,
-	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
-	baohua@kernel.org, gunho.lee@lge.com, taejoon.song@lge.com,
-	hyungjun.cho@lge.com, mkoutny@suse.com, baver.bae@lge.com,
-	matia.kim@lge.com
-Subject: Re: [PATCH v9 0/6] mm/swap, memcg: Introduce swap tiers for cgroup
- based swap control
-Message-ID: <ajnhkK/dT4MsqyAR@yjaykim-PowerEdge-T330>
-References: <20260620181635.299364-1-youngjun.park@lge.com>
- <CAO9r8zOy99szvC4W0+SUv4b3P2UxppJuBeZDV3HZzQuHUc1P1g@mail.gmail.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cuCO3gs5;
+	spf=pass (imf28.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=G1HxnYaFAzm8U5OOXij8ylCTKpYTXv8afbfuywpH9SU=;
+	b=cuCO3gs5UxA6mkL0Q+gGsNlSTLv6cKrzcE8xO7/C3WY0gpCEs8C0Cw82KjiRM9y9swYNSk2DL
+	g+LyODIB6By+Gg3gt4triFmGTiOXdO2JUGqfRFP/7g+Hir/3/Ss79wgifEEyQqeOht7DHBoAu9s
+	kpQYL2wBOlXN/cMXANpY7zE=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gknYZ2zmhzKm73;
+	Tue, 23 Jun 2026 09:29:54 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id E0EE24055B;
+	Tue, 23 Jun 2026 09:37:58 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 23 Jun
+ 2026 09:37:58 +0800
+Message-ID: <601fb5dd-18e1-4a6c-bc99-dc2a655240e2@huawei.com>
+Date: Tue, 23 Jun 2026 09:37:57 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc: fix KPF_KSM reported for all anonymous pages
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
+	<ziy@nvidia.com>, <luizcap@redhat.com>, <willy@infradead.org>,
+	<linmiaohe@huawei.com>, <svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20260622091539.836531-1-tujinjiang@huawei.com>
+ <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAO9r8zOy99szvC4W0+SUv4b3P2UxppJuBeZDV3HZzQuHUc1P1g@mail.gmail.com>
-X-Stat-Signature: 43nhms9mb8g8m61hauor7aonhr64n6en
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 454FCC0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1568140009
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782178196-611635
-X-HE-Meta: U2FsdGVkX19D2JBoLJ4ixHeGBSM9uojECZ0lVN7OEVLH6+fUa4kMMl0mV8NQ/IivERduXcpn7dqVjor2kCdA0jNQPZ+haMY/6xXLa726IvCvuFGq2dpC+5VrCKH6inS51OIZVgQDr5nGAudbbzMdhEfscBK/yyXuG+wadPHE00H8cLeJpkOWv5kYVy3Ey7ouSZyD2i1mYCynk5wQqpd3uSISMUabYY9JYiWgR/S09Z1ff+PovXQdprq/KsQ8kFDJEqqY40M8naSEHjVWKGYJBsQ4h05+BAiOWsOfRvPk9UYLEYBmPv2uIUGZf0tXsCNb6bEyW3P5r20OezBfSv3WPhN1KKWtK28JfeBrKahQ3/ZMZ+pK9RqRqvyCdLxXNAN7gDOcHMD/tShsd9shoMfySczAJb7ENsh3EUtIiYJ60O9xy479NKpKcO6kjsiJha3Is72eQaB/dts5h5Oquss8Fr8StkbadHjvs0H9l3LpdyZ2BngDyORvNIVu5K/e8+PVBkoH9eO+EiUle1ZTOGrYBqk++LuSdYzbAaI/Cd2vpVlabFj31RN3j9RrnOMTzLfMWQSU8zPsvvfuqDLroJL/7iejygU+1X/8saPEAkh3oZ6cb+AXE8CklxcMOa/CJB0RJA9slk1NSOttCT6k8KFuwKmy/AArASL04zC6fOByTWlvfhoBPI6Jncw7Cs1/RkPrwaT02OqXQy+Bo7ko15rXkuzlGFxy3xGVDctzmOfgUCUeuvC3NSGRwUPnhezz/14RJPZZhFtWUiZ+XWP6TutTkQmpB7Kxgjzfjgy6ONMowicJ6LXZNWHeYiXpCxBkYwlrDQU2IdH8m9W8M8Hna0aUXkVlx5SNoX+dxMZgfRkIBgnA+R+kE7+f9a2NJYha2cOv8Ax2yiCqOmA++H8nSWMEJ18uQCUveHBrgDxU0kLMf4nI3RMkQ+Wsgz7myt4tbNxrPuB++odb6v8F0SjDtot
- CwDs/QjP
- dZKRnnzSz+SdvVCNlT5siSNvDD2TIElyztX+MVY+RU//f4dCPZWzjMqHOxYkU4goCA46sohuukYnLpq3kDysURHz2CxmsxKoMbIE76K+6tW9YABpLjQqx9KURG691C4LwNjGDL/C3X7Qb0ohNRjvZfIpfy/1UW4sb/E+QIifqG5SibHKQwSv9pGvy6d8cwYm4ax+sum7k84ITHuhyvR4xJJpw5sslIR4DUE2rE3tfwJeW3p8=
+X-Stat-Signature: 31wr47hrono3ob41fs9xw93r1ptdrkta
+X-HE-Tag: 1782178684-963158
+X-HE-Meta: U2FsdGVkX18v6w8WfITj7fiwQznJHHdeKggeyKQzJT64rNNrG1iOmAKo/BZUbNC+yTSGHd7UEaybmUHVx0dbIC3TtNjfl1X31xcJUT6rXzG3moIS425LPhODqql5lPm191ugMTMxQ56tlhxTvJ+JUeKzPYHitqBSu8noDB5lskt7ON4gb70KzpMR6526klSOYpwrbMp8CuiJD83sDT1mr2kY+NG1TdANiuO1Y2W8ynxXETidYxY2fG8cqfYJA20RJMsPtDMZu6m2RFgXu+f8PN+A1bRxlJhFLEMqVed8jGXCmaSXttCUIEDPpoqGzwQSINWo7sKxjvaKeDp3QkZhuclY/D8W48drIy+1xCJpV6+tLfIsOmwh3/mIKE6DAJZ5TKRg8/L4pilX1d/Iy+/LryMv4fqqUTCKkzGisXTNKhtOcoltn/6NiD8BseBw2F4hCMypQ574B56d6BrxiijeDlwHcnZZJ2IDGDt5UvCoFE7ypRDqB/LRHTMMaEWjzlap3pIpOe2ErzHYq4euqnj3HbdmlwWKtkqpEaMaQdGx9zLZZSEqLqRHkuVC0BNtDuKCWRDBhwMLc7+NX7yGpnn3ELxdJevVX0twfPAUCOWrXaMaqBL0/JxClu8ztftFiKhSadc7Mv5kuUara9rdQNbrObfzrHo2RImncaUo2ode4VuEjk0+7t/XEBENKrUY1ROfvgO9Kl1c0NvuE1BdGB01JXK+TccqwkRG0xj39SLhyXzR6vrtYRjxQyEEuXyi8XvW2jFoCNfwsQOdwQA1lv6pOWPLrF4sd7IKSOG9fC2lSEBkjI5cZTbkrmteCFXQ29tMxTdKd35dEtT6SgV2/t0y8akbdDxsUIQohraPX5fkYQuqpOW6HLZUOLdx4+LD+cUPNGHJBJXUbAjBnqwjKAoP64gtCDXztSAwjTsFezJv0ZSYwb7j1AqZkFKNOpRQPt6kTtJsuHIDkXdecLWK+hg
+ AjNBS4a6
+ zNcl0dfIZQiiHkWruqCPddhqiguC3Ly1+CjtREoy2/YGp2hg6vU6qEukV8sYIPiyiQ00O39qIVyisxgtEANsKHPw2EEGja3glvrOL6roOrm4BOf9gxVI08TdH+PZnmgQxzCvbr+x1XFJUZJMlQfowya8MasaRosiPL3sqzn6+at6dTepMwF/85eG1pHbcnV22SSijsPSBVggbFVVfsV9J8b6/4rnOcF7E+qcgbaaY7sVnHoymBBUBcslAzmHTXLtxm1qsxILpEAbul5CyX6QnJ8ii86EX0391dZD4O0uY45Gv+RAFYhvJy2bHbRJjulmmWOtSi3tayHzUV/QWzvATgf9pqlELb9uCtQGsLxZhprAlDumd9SJXAXBrVAQayCQpyNxZAl+95mUkhypQ33zUTXjUDqotCGR6tgHr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,55 +101,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 02:23:40PM -0700, Yosry Ahmed wrote:
-> On Sat, Jun 20, 2026 at 11:16 AM Youngjun Park <her0gyugyu@gmail.com> wrote:
-> >
-> > This is the v9 series of the swap tier patchset.
-> >
-> > The main change in this version is the addition of selftests for the tier
-> > interfaces, requested by Nhat; see the changelog below for the other changes.
-> > I designed the test cases and wrote the selftests with some AI assistance.
-> >
-> > For context, the bulk of the series is unchanged since v8, with great thanks
-> > to Shakeel Butt and Yosry for the reviews and discussions [1] that shaped it.
-> > The main change in v8 was the interface change to use memory.swap.tiers.max
-> > with '0' (disable) and 'max' (enable) values. This mechanism was suggested
-> > by Shakeel and Yosry.
-> >
-> > This change allows for future extensions to control swap between tiers and
-> > aligns better with existing memcg interfaces. It is confined to patch #3's
-> > user-facing interface; internally, patch #3 still uses the existing mask
-> > processing method, which is implementation-efficient.
-> >
-> > We also discussed tier extensions. Thanks to Yosry, Nhat and Shakeel for their
-> > valuable feedback.
-> >
-> > Here is a brief summary of our tentative conclusions. Please correct me
-> > if anything is misrepresented (details in references):
-> >
-> > * Zswap tiering [2]:
-> >   Tiering applies only to the vswap + zswap combo. Zswap itself will
-> >   not be tiered, as the current architecture requires a physical device
-> >   for zswap allocation.
-> 
-> I thought we agreed that zswap should be a tier, so that proactive
-> zswap writeback can be implemented as proactive swap demotion?
-> 
-> The only restriction we talked about is that zswap cannot be the only
-> allowed tier as long as vswap isn't supported. We can lift the
-> restriction when vswap support is added.
 
-Okay, I misunderstood that part. Thanks for the clarification.
+在 2026/6/22 19:45, David Hildenbrand (Arm) 写道:
+> On 6/22/26 11:15, Jinjiang Tu wrote:
+>> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
+>> when KSM is not in use. As a result, tools misclassify all anonymous pages
+>> as KSM merged.
+>>
+>> In stable_page_flags(), if the page is anonymous, then use (mapping &
+>> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
+>> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
+>> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
+>>
+>> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
+>>
+>> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
+> Right,
+>
+> #define PAGE_MAPPING_KSM       (PAGE_MAPPING_ANON | PAGE_MAPPING_ANON_KSM)
+>
+> Which we later renamed to FOLIO_MAPPING_KSM.
+>
+>
+> Before switching to manual flag checks, PageKsm() translated to folio_test_ksm()
+> that checked whether the values actually matched:
+>
+> ((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS) == PAGE_MAPPING_KSM;
+>
+>
+> This only affects /proc/kpageflags (well, and hwpoison inject on a weird testing
+> interface), so it's not really that relevant for real workloads (debugging and
+> testing).
+>
+> So not sure whether we should CC:stable. Likely not.
 
-To summarize our agreement.
-zswap can be the first tier regardless of vswap support.
+/proc/kpageflags is generally used only for analysis and is unlikely to be
+used in production environments. I found this issue due to I was analyzing
+pfns allocated by which stacks are KSM-merged. So I think it's unnecessary
+to CC:stable.
 
-- With vswap: zswap can be the only allowed tier, as it can operate
-  independently.
-- Without vswap: zswap cannot be the only allowed tier, as it cannot
-  operate without a physical backing device.
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>> ---
+>>   fs/proc/page.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>> index f9b2c2c906cd..cef8ded97610 100644
+>> --- a/fs/proc/page.c
+>> +++ b/fs/proc/page.c
+>> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
+>>   		u |= 1 << KPF_MMAP;
+>>   	if (is_anon) {
+>>   		u |= 1 << KPF_ANON;
+>> -		if (mapping & FOLIO_MAPPING_KSM)
+>> +		if (mapping & FOLIO_MAPPING_ANON_KSM)
+>
+> Wonder whether we should just do
+>
+> 		if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+>
+> To match what we have in folio_test_ksm.
+>
+> (although I doubt we would reuse this flag for other purposes, likely
+> it's more future proof to check it like that)
 
-I will proceed with this understanding.
+Both are ok. The following check has checked FOLIO_MAPPING_ANON,
 
-Youngjun Park
+	if (is_anon) {
+		if (mapping & FOLIO_MAPPING_ANON_KSM)
+	}
+
+So it's equivalent to do
+	if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+or
+	if (mapping & FOLIO_MAPPING_ANON_KSM)
+
+>
 
