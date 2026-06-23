@@ -4,96 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67133CDB47C
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4129FCDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2B356B0092; Tue, 23 Jun 2026 04:43:00 -0400 (EDT)
+	id 05CE56B0095; Tue, 23 Jun 2026 04:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8E6E6B0093; Tue, 23 Jun 2026 04:43:00 -0400 (EDT)
+	id 00DBF6B0096; Tue, 23 Jun 2026 04:44:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A44116B0095; Tue, 23 Jun 2026 04:43:00 -0400 (EDT)
+	id E67A46B0098; Tue, 23 Jun 2026 04:44:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 76DA06B0092
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:43:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA803C1DDD
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:59 +0000 (UTC)
-X-FDA: 84910537278.21.588813E
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0152D180009
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=G549Fzeu;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BC96D6B0095
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:44:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4587A1C4F39
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:44:26 +0000 (UTC)
+X-FDA: 84910540932.18.E75C645
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6F2E2140007
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:44:24 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DK6H1+he;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782204178;
-	b=BImGv8blHnv/gH0612Am0JX3X1iBf2kkqneMpUJiaONB9CGArbni1ur6Rs32GESGN94fsW
-	gsIrt0JMxEVDi7cvsSL2bSbTaE0UeT2nwXTHQ8rlrYpAfcjEIF44ENnVGGhCwf0EZ6JK+T
-	DqjomZp4EgsHtIKILYZCOJuNDHELARc=
+	t=1782204264;
+	b=tl5x3mT0jivUK6YdSlNXRkgpg8u4jmYJ7LWT/IxKSOFHikYPNqBfi6EjCk9A8cX+d0aAy1
+	IlePCR5s6JP4Hu8BYfvJVvsQtEzyXoQzYb67Bh0ZAJMgvfXXB1kn9+rND6GR7XO4jnmnye
+	84pZSKbad2mqO++Gr7w5SCPqIyBfdtg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782204178;
+	s=arc-20220608; t=1782204264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UiErUWPgXUYEKMOiubM0+y4JVVhXhHFXLKptNThNeiw=;
-	b=h3v/aLaqQKKOOK5+LffpkCxsf5h06phOw/xGAhDdk1xE6cANAkiCrdkfjciO6OE+ivxuVE
-	Wx9fOOnrqrkdPROlIcDfpsWOVxLj/uMoEIZk68QZwN9xaZJ9tkzXN5Umcgv539w31zQg4U
-	jV6E6CEyodicJQyXAiz6/9lsenhB3j4=
+	bh=V06gLYpVPdQObMIALtn+nG4jTG6QOLPlsd9Xveo2TGg=;
+	b=W5c3GOdynlfEf0zmmohlu+xnxY2GPazSRkAo7RDAsfQOj5t28tWSUvUM5W6LYrIb2enoxC
+	Mexc9pwvuJN5z6PuuWRN+ze5tUVH6eGZM4MXmg0jeKJlr+o870ApT3gOpoDMLSfSMOOK63
+	PqnXIwB7Y5gTQ6ctYvMDnvAYVvu57xo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=G549Fzeu;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 44EDC1A25;
-	Tue, 23 Jun 2026 01:42:52 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 28FF13F632;
-	Tue, 23 Jun 2026 01:42:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782204176; bh=apcyADjqiE8fk9NSJLQOIEwwZsOqAW2rHJXWbblmtUc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=G549Fzeu52BzvudWHBhxRkDR214H/0uxNE6OXRIold2m/bYzwYxocXNWqAmUZHy02
-	 wUw7nMEDNKVsvbszcz5sHDzBdd2TbjBRLM41Ttcvs+b45MgNRNZBOBFwkCqqgjWbQT
-	 B4Y3hrKfaBbwh2AUXi86Wyky/2mAhQ6pJ0bHOlZ8=
-Message-ID: <dbe63454-6ee8-49f9-b956-f5a211785aec@arm.com>
-Date: Tue, 23 Jun 2026 14:12:46 +0530
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DK6H1+he;
+	spf=pass (imf26.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 998C744381
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF341F0155D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782204263;
+	bh=V06gLYpVPdQObMIALtn+nG4jTG6QOLPlsd9Xveo2TGg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DK6H1+heID3E/pUR/HqL+kQG1FPd45HfBcYd+muM2fJpu/+jWR89tId3qlRYdHPSD
+	 aNYIr7BkYtkOg4usQA/eB7gk55ahHoY4xPYBPEoBUCa76knDgqG1x/uGh8K7QofxDS
+	 3Wy2xUE5CL14PLsJOmxRfB3kYPGSyUSFJCpvgoB1zK4yKDvKVop7K2YFseKTuaYx/H
+	 DpS13fO5wVpuw9VVCWi0mtgUmtx3ELIOvc8nCAixaboIdGT+s5fk73AEkO/Ib7Qc2j
+	 mLVAaTTPHhpiQqKDnG4J9n0xrTOsr9CmprfWo2VT/HcKMq0Y6eFdzLcx8WQTSb/yWb
+	 eDQiRZ98Wl1Yw==
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-8dc87f7d68bso61663856d6.3
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:44:23 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyzT5RC5SmIrN2/C465S/6/l/aj04G51bQGMG/sYRQeEcgUa4Re
+	FFCcUMM+vx1TNP9BSuEqghdKLKOgA4oLf8oNWF6DF3HSoCVI3HPPQiScjN5XmGRLwk+5x8JRCO3
+	DKwKBKypC3496xAbH2R9X//JH0+gdSDg=
+X-Received: by 2002:a05:620a:2813:b0:915:b852:4361 with SMTP id
+ af79cd13be357-9208f92f166mr2327832385a.20.1782204262908; Tue, 23 Jun 2026
+ 01:44:22 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/12] mm/rmap: refactor some code around lazyfree
- folio unmapping
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
- liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-4-dev.jain@arm.com>
- <dcfcc52e-7e1c-4940-944a-faf0c02672e0@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <dcfcc52e-7e1c-4940-944a-faf0c02672e0@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0152D180009
+References: <cover.1781843449.git.ritesh.list@gmail.com> <e519e98f51be2d310367e39df0935da79001e535.1781843449.git.ritesh.list@gmail.com>
+In-Reply-To: <e519e98f51be2d310367e39df0935da79001e535.1781843449.git.ritesh.list@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 16:44:11 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xf4FoYAzGwf1w6hT2RKA0Vjr_yY2LHGzke_cP4VQh_9g@mail.gmail.com>
+X-Gm-Features: AVVi8CcGK9RQyTQe6B_OzPqxpd__RZ0H_vwxCCpKUZk2XxYWrFfWHfgF1qK0Drc
+Message-ID: <CAGsJ_4xf4FoYAzGwf1w6hT2RKA0Vjr_yY2LHGzke_cP4VQh_9g@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] mm, swap: make SWAPFILE_CLUSTER runtime
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 6F2E2140007
+X-Stat-Signature: w6xpytwjf8fo3s7jns171zpdrx5rsukc
 X-Rspam-User: 
-X-Stat-Signature: 95mgecunh975yo4sn6etupx8pzq5izy5
-X-HE-Tag: 1782204177-27455
-X-HE-Meta: U2FsdGVkX1856jhb+2gcDWgtxXtXO7PblIwvugHAWJGWhpzMDgJBPZAIAPUAzAS5CryAFbi8K3yykxPbCQkw7lQii+yBkt5uCS+XqOmyBnmWLeQUnqjCNqRVIu4jgmZUXXJ84wYs+w9WWEH7W/s6J2mIdSvvVgj6NLtCr01t8/0PQrYiaLOxeoegeC1jqMnToSy5rG+JfXZK6sEYlhQkFGsskPU/1val9oLcUMKD02am4IYClaCZ1o65U/QoqWO6lUxS76/tARo1kayb4zuzDJAJiChSqTIUrXx4mOuxv4tuNXRGkPvxYSX8aENqyKmFXL4zix5EIrFINVs0U2jICUSX41Gn14+zJyCN2vqaBdoXaNCT3k/IlJcqHhiapgtJXYWCWvdtiF/LOUNrMeQKOW/iV5OdZxtGpKIbo+diPriqRXo/jUeJHadB7x6o3tQpVmhoGnRRyHYTIoHFsMmK0rbyJWkiEaLF5TLeCv20hfMbRwy8b+/VKhQ5mmB2Q/+EpySwXCIbNgrc7690sK+K8w7mcO0RmF0zXA3tcCgWakuJ22U8b8V8nmIQtGVcaTID0ELM+qeGRJ37kHA5OUbG7NIvbAGmAZlXolzQWJKOTiq120fz1/buBjoyxPGPqxcURy9ayCq7Z9JKIENX/9jYsrXcXt6FD+5oqcNriX3SnaQYjEW0Fhq3vDEOXltUyynyy4xBuF906H2/4LJ63AdIQtTsbDGgsdTpt7xpyKwbJ4MjkH0ammtpvHldqOmT9yrThhrC+d3wlC+sGuQxLRc1tnSI3prJeRvHwYIZ97pFx8TH3f7kBSB2cKKKfadXrbVXwZDZEw+san85OS3mLsehg480DKRUjq3gszO4JPszP789NGJ1NCr3jPg85QmqGeC/Ii0Xxk56VFlkuq/2V3jV9/O0ar6D4Fbj+3ANFETpOEjMwf88nPzgmrxM8sbSSZKM724oGLucvEMX/5Xc/xo
- e2H7n5tz
- 95bpx5aHRoOLrgotjemIJYFuZyTRYs0u+9HUW6PTP3BYfbt2fBsS7a1hTry0hRy1invK5pMdHCcDd+wvHt4qpZ9AX+/pLqdUs3qIUg8MsbrSdLyiKx6Et6AXfW2ASAVYVasrt5owO2ZnduiFnFmg0PigY6CDXiaLACANHsGwbfJS/wjdF3FDQP6Vg6lfbcptIANCpCUM0Tncz/zkIK3T17shP5A+fjgGbdn+y3aBUPRnlNkSb0KBasCjzYp21cS6Kbmog/e9fOCcBrsz+0DY3bF60gDzEEOdHSONXrG8S+nEnTLw=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782204264-623448
+X-HE-Meta: U2FsdGVkX19T59RINRQivd/KP/6auKkaFYJ3iVGWAD/YavW5kAZi4jVqd5JTO+YRYAZkX/OSKzQoVRHpEbwX/M0yZ+eUCJCNOanitOyNxGxHqqJVuHxcyAJG2GWavpej8Xif52Lak6xQD0K+pF+jRxB6/k3wGlawt+WCeznDMaf7ke46/F9Ud/0zY4WuBHgp+p3RGbh4gGRY2F5S30MW3A991+P+nt3euaCm1irMbEUVXO2BXgkTmGC9jlFSePWyLHRfrIG2jXhkldzcJRPwzQUBjUd8Jh6nuN82wdTLDkueSTo8X5gp2rfb2s6opu0QFlZpACvty6DleOIHzyiTfMNkcEN/xCxybI3K3dsHGJvYrVcr3bMnwoaPV9gGXc7kxJOyKfhF/Yn4Fw1jeaFC1vWWvIJYPlnd6EX2Tv2C30YQBVeVWLW1a9DgxY9mlvPQLm5oJfl+Fvy0JSMHtL+Gk+pPgkBxn4UUO+Pxr8GdAcfDnTmhp6D+V3G/wZTe4Nr+7w5vxhsKfFrUtrWj3hE4YbCJResofklPvot/clnhVXbTW2PzEpLYbayN/NhxHsZUUGdj6XBdrrKOZhLgAYn+f1sacrWo6/2GVnom+TVzjbLDmVZNChi+TgMHWUWSYUJrpyqqF2I3QoKef9BCLs/znjLA24gQDDczTbQi8/P22/XzU9Zg2OUMWO2her1inbnUW2otLxxN6XBCSiE154lno2MLtehS8PeNLbOzVs5BY2oSBPf8VcrYxlHGF8T5/jBWXhDizmxhoScEbyqychVXL9LdIS3KPopcRYq41SgzJbaI/yp90f5k0lzCuf8SLqliy6U3qitUCjw6fVk7j57P81MOMEspsZJXts0CX5C8H95CS8rFQj3Vf+b95aO3nZsp/bcxatHEqc2ahfTciO8bp46g+mZv0Ah7mu115ATLWrz3jQna+JOwWT72ip9iL+wC8CLPfYMmdFyiGzfZAeq
+ PneoZKgt
+ 03t8K8EKW8Jbyx5gmgmvqlq7aimIQr14rLRnHzYMdXm85ZkBgWCm29CX+CjwydNLpSX2bR/fdztBO/pEYlWPGGRtTYRPNG3QvRkkVpk96FZTna3zELE/bbpV37O0qvDuE82yvrInxO3Nz2fjXozHdjn3MeSeS1E8pnJPChUwc4fMUPr2W2jmIpPiIJ2oD26iq8hcfP1QKYSiyA9gC3EIVafeazksKSNLLqunKZPoY1TPz6cvTzy6VoWdNFNVv0Gzn1QY0N8D+Dl9g9xY/QPZfewjk5aDbpjEJ75838KjlXfh6Zg7gnZIGwKaPM/i8SJgZbDvXe0p45EZ84Q7hO+5Q3M9/jZJQTxqAFnG19+3RuqjZoo1xAGmnPb4b5jyuKvVTF5LPgcb+YcwNYtjqg7k5Y2t914ebzINjGGzYMbqnYEvGVog3CDixMsibJOMr6jh10bFwTB0aC4NrxHY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,50 +107,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jun 19, 2026 at 12:41=E2=80=AFPM Ritesh Harjani (IBM)
+<ritesh.list@gmail.com> wrote:
+>
+> On PowerPC Book3S64, MMU is selected at runtime, so macros like
+> PMD_SHIFT are effectively runtime variables in the Book3S64 code. THP
+> swap code uses these macros to size some of its array data structures
+> based on PMD_ORDER e.g. SWAPFILE_CLUSTER macro is used for this very
+> purpose.
+> Hence this patch makes the users of SWAPFILE_CLUSTER to use this macro va=
+lue at
+> runtime and also modifies swap_table and swap_memcg_table which were earl=
+ier
+> using this macro for defining the number of table entries.
+>
+> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> ---
 
-
-On 09/06/26 7:50 pm, David Hildenbrand (Arm) wrote:
-> On 5/26/26 08:36, Dev Jain wrote:
->> For lazyfree folio unmapping, after clearing the ptes we must abort the
->> operation if the folio got dirtied or it has unexpected references.
->>
->> Refactor this logic into a function which will return whether we need
->> to abort or not.
->>
->> If we abort, we restore the ptes and bail out of try_to_unmap_one.
->> Otherwise adjust the rss stats of the mm and jump to a label.
->>
->> Also rename that label from "discard" to "finish_unmap"; the former
->> is appropriate in the lazyfree context, but the code following the label
->> is executed for other successful unmap code paths too, so 'discard' does
->> not sound correct for them.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/rmap.c | 88 +++++++++++++++++++++++++++++++------------------------
->>  1 file changed, 50 insertions(+), 38 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 06ab1158d4cd1..12bbee57f20da 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2093,6 +2093,52 @@ static bool try_to_unmap_hugetlb_one(struct folio *folio,
->>  	return ret;
->>  }
->>  
->> +static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
->> +		struct folio *folio)
-> 
-> Nitty, but I wonder whether we want to return an int with 0 vs. -EBUSY instead.
-> 
-> Reading "!ttu_lazyfree_folio" naturally makes me assume that this would be a
-> success path (which it is not).
-
-You have a point but if you don't have a strong opinion I'll prefer to keep as is.
--EBUSY won't be consumed by the callers anyways : )
-> 
-> 
-> Apart from that LGTM.
-> 
-
+Reviewed-by: Barry Song <baohua@kernel.org>
 
