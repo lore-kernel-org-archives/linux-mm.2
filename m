@@ -4,101 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D572CDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 20:06:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7130FCDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 20:14:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01C666B008C; Tue, 23 Jun 2026 16:06:55 -0400 (EDT)
+	id 5FC376B0088; Tue, 23 Jun 2026 16:14:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35B86B0092; Tue, 23 Jun 2026 16:06:54 -0400 (EDT)
+	id 5D3D96B008A; Tue, 23 Jun 2026 16:14:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4BDE6B0093; Tue, 23 Jun 2026 16:06:54 -0400 (EDT)
+	id 50FE96B008C; Tue, 23 Jun 2026 16:14:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5C5D6B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:06:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 078FB165249
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:54 +0000 (UTC)
-X-FDA: 84912260748.02.EAAC4A5
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 941BBA0015
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:44 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 297C76B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:14:45 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B1FB51C0599
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:14:44 +0000 (UTC)
+X-FDA: 84912280488.24.43396CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5DFFD4001C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:14:35 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782245204;
-	b=Q55TJ6TiUMV7equ6Rdkn3VrEU8SBv6bph1o+7NNGnAzVmco+jdy2N+awVDbyvWFCmmWaXz
-	3Qfvct7xgfnIay7jnBY1mYRqhMtr60km1WJ22GTdRLn191aXaHnm6Bh9SMS+VNHG9mbiJx
-	GUffe5UKZ0Zsx84dlDLgqSPw02cIlMI=
+	t=1782245675;
+	b=4S/BYSJqFTP1iwlguVHHf3bKcxSDuw4qNH9WyeynJCktvTK12Dlb8gPZYY1rYeLx4RSuK/
+	RYSjlm8U/JQpwWDq+Hy/L1CMvphEtq5kcgw6ypS0Lk4DGn7U9NCw6lib72UKIO18VI4/z1
+	wFNpCHMaWk6G0eypaZ0xcLjbYJip6Zw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782245204;
+	s=arc-20220608; t=1782245675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kYPy5Kp/eciXGU33EP09NXjsbX2uzzGfRHxirk+T+0A=;
-	b=cyYlrqNMO1wgMWnMdshrRBjyiiCuPqezHwTJsb8g16+FckjFy+/ivhUH7eZ19xYUReYrMm
-	KfL4Iw7wbt75eCWxlxCvBv6lmmgrCCyHI/NSj7x6Jyppe+IEG7M7RqLCVtgQrZAxmQ02+l
-	c22iSuyB9jDEC+Djftk9o4b7+0Qh6PU=
+	bh=Ra1bLWv4R1sxRHDql8Lrgj/OtpZzKuZ/JFVnOfvRwes=;
+	b=wPkLigHqWhxOnirDlYv+dd3/+URfV5+GdY2h4XG+BrT9q39rXrYkyhPAN//eIceTthEKlu
+	a1G0dF0JgIA8ooV8RFpxAmZp6N7yQfa4f1cZbbhsJVwQFZKc4F/HHJ9kXnn0KKvU+fz4Xp
+	GLtGjurzWSAY7TSDjutTwrlXuKZlcs4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="F+efduP/";
-	spf=pass (imf25.hostedemail.com: domain of 3Uuc6agkKCGUWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3Uuc6agkKCGUWDUXQVDKXJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-697498c701eso146758a12.3
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:06:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782245203; x=1782850003; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kYPy5Kp/eciXGU33EP09NXjsbX2uzzGfRHxirk+T+0A=;
-        b=F+efduP/3Q/apV3YZzQzu3zPWPrUo1UwGvrZnbE23Cj7HBhh818xQ5BiCaOll8nfqv
-         mFhp6L4EeHuVa49BF1pHfJSw6IYH9VAdchxPu+4AQQHUobSBcpIYkakc6BuqjBm6SfdR
-         fyEfyez5n+UA8YwHh+7QISbfEk912n86lvxk2hCqIZ1JWyTR/buK5IXUw5raLZlujMyB
-         zRiM33Vl6uFu4rCUy7H1caj5x3oMVHl7SwJD4EH0bmOnOtUoZsLh6QaiTXdcatEbIPBZ
-         dPHBhE4nvlVDVGOJZ0+Y51hEeNyG8T2d0LaYnPkTF254OytckIhBmje8PCGHeSObfU7k
-         nVUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782245203; x=1782850003;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kYPy5Kp/eciXGU33EP09NXjsbX2uzzGfRHxirk+T+0A=;
-        b=PZBn+Qdl3p++gXqBdRnE799wwCM9ysfeGXMNtcLlSKBQdHA4BohaRsA6ba6PKHVAIt
-         llBnj0e+nl+h1CmT28II707CteVWt3BrIndpLig/WxMTB+AWK2V28SOcOF2GgH3xs2Fl
-         ge5YzTXUM6WUfqtUAC65C1OF+gz/KQ6vqYgVEXGy+WfMD2vSMeXYz3ENuML7r86O8f58
-         8TJ4z2qpPIvknv1K18ltrefjlX3RuIdC0tGJVYiaKRhlUmXJ/8XA62BVMY4OmgQUcrAz
-         ZLQxEFE6r+5wj1D6JdPT3mgVGsra8jhqJeel1QeRNG16uPqKzRxo6PZ6G0cFpP+qxsJJ
-         gV0w==
-X-Forwarded-Encrypted: i=1; AFNElJ9twvVLnqDCSGlwdO2exks4fblZCJkkI0GZZJVQh7UEIq5DiVhy+yg1wV2wedQWqXSmYIGCx7TlcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwX30XRPGpeT1hWG8HHtYqCkjWMAsVOe2VXR93MH20xinWxzKCm
-	Y6wj+fdtdvkqMQXLcFN69D8rSpPMJ8w4jfZoTyRkoxYl9AP3tTw/vuskSaH3ixoMjiocsHUTU7T
-	nhxH9f/rvaEj3EJzwtw==
-X-Received: from edyc13.prod.google.com ([2002:aa7:df0d:0:b0:697:e99f:d111])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:3554:b0:691:b5aa:5a7a with SMTP id 4fb4d7f45d1cf-697f3adf4a5mr19296a12.21.1782245202451;
- Tue, 23 Jun 2026 13:06:42 -0700 (PDT)
-Date: Tue, 23 Jun 2026 20:06:41 +0000
-In-Reply-To: <2vxz8q85mdyh.fsf@kernel.org>
-Mime-Version: 1.0
-References: <cover.1780676742.git.tarunsahu@google.com> <48777f4749fa43d5648085dbb2037aa99c144a88.1780676742.git.tarunsahu@google.com>
- <CAEvNRgFEHciT3T9y+qEYRvXhDwfrggoU7Rm=f9hT3OrV+wgpNQ@mail.gmail.com>
- <9huztsqtmihs.fsf@tarunix.c.googlers.com> <2vxz8q85mdyh.fsf@kernel.org>
-Message-ID: <9huzv7b910oe.fsf@tarunix.c.googlers.com>
-Subject: Re: [RFC PATCH v2 06/10] kvm: guest_memfd: Add support for freezing
- and unfreezing mappings
-From: tarunsahu@google.com
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Ackerley Tng <ackerleytng@google.com>, Jonathan Corbet <corbet@lwn.net>, vannapurve@google.com, 
-	fvdl@google.com, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, sagis@google.com, aneesh.kumar@kernel.org, 
-	skhawaja@google.com, vipinsh@google.com, Pratyush Yadav <pratyush@kernel.org>, 
-	david@redhat.com, dmatlack@google.com, mark.rutland@arm.com, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	seanjc@google.com, axelrasmussen@google.com, linux-kselftest@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-HE-Tag: 1782245204-624749
-X-HE-Meta: U2FsdGVkX1+dcyfRNY75S9jmitAkBPCGZxCjCuRbmY+CjKu7vG9tP0UHXEmUotCxsj/Z1l7gfEePIsFUSlVyIPgRniho3uaS09BzObW8h+Z35s2FRNKl5i5vk3Rw3QcR/jcTGqip3zOS8+QBxIk6m6QlSePfo2i3eQLIX9tddfLJTdR9L5Dsp/FT9dfr198JEKwl1CzpkGfwwsuGkavNgDdVBkBp4Z0cnp30C6sT7uK7Z180BnRFBfIsNETQmlODTaRayeYlOEMsNxO3cFbKPfZtBBkY8acQub1R0LhVqQIVQVEzGEIAujDRyg8ESdcOaZLxsaS9XC1V3W0uqs7OMcfm878R1bfVeK7M3KguIRm9wPf063jp8Q==
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZJAZRpdB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8C0AA4431E;
+	Tue, 23 Jun 2026 20:14:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB461F00A3A;
+	Tue, 23 Jun 2026 20:14:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782245674;
+	bh=Ra1bLWv4R1sxRHDql8Lrgj/OtpZzKuZ/JFVnOfvRwes=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZJAZRpdBwWufrpjPgspdDTMpomP3SINRtHl8ZOxMtF3PzVz1QwLXUZTwQeAf+uol9
+	 1eIpnqZcQyu2eA9WuB6vdOXm9HrjZdTgIPf+GrfrgLo8/1h8rMn/j5yDRNaQWYcg1z
+	 SoHVXI9jcgMMPfJkeYwgC4Aatt17v9Hrbt5Q4aTLYVl0YHTUn9K219XN/LW5EzZI0y
+	 B0d5t1wmHvNPJk9v6TNFwFUo5f4iAyISIUYJYHJhlyOkJaw1/mmdsfWGo5L315qei/
+	 YFO0TfeLjSI4hSuiUWmQa08cUvaJ9yIlXFnzTK6RlmVc+HJmDya/kd/485ShKYpsJz
+	 AZUK1DyLQaYzA==
+Date: Tue, 23 Jun 2026 13:14:34 -0700
+From: Kees Cook <kees@kernel.org>
+To: Farid Zakaria <farid.m.zakaria@gmail.com>
+Cc: brauner@kernel.org, viro@zeniv.linux.org.uk, jack@suse.cz,
+	shuah@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] fs: support $ORIGIN in ELF interpreter paths
+Message-ID: <202606231236.325C882A78@keescook>
+References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+ <20260622043934.179879-2-farid.m.zakaria@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260622043934.179879-2-farid.m.zakaria@gmail.com>
+X-HE-Tag: 1782245675-20963
+X-HE-Meta: U2FsdGVkX18lGy4T423lIXxOoRBharMqF7dchLcdOG32AzmRewiAOOcB5pq/62dYEir2ARpgyC3TDiqjSsEk6pcTtOGlMA9LwwT8ffamqvWMuI47zn2mn0w49a3I9Z5IHcaeCEOdBMG/pd3x3X/50ccWLo87a23pGxiSJZuharIbJMSwG7zAkSM5FOnRmRTFqWV+8XwFErfwdmdUFTahj7QlfcgcEXIRsr+WH/4UEHoVVoh0uGrhaqHM+0LDx2240HTuRqYfYKODuNMD7HJbp6qRZnSucg++qaZNqgkIThUaiGoG3t3TmnCt6dKAm2tFXN6uVJsikCEE0xARp2wnZyHgtw0fSgvHJ3EjI07trJpMYcKKf0bEEqZTe8kULI2qTybk6W4VpdmB4pqry10YpZk7cbc1NxGbVmlI1S5aIbo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,98 +82,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pratyush Yadav <pratyush@kernel.org> writes:
+On Sun, Jun 21, 2026 at 09:39:33PM -0700, Farid Zakaria wrote:
+> Currently, standard ELF and ELF FDPIC loaders expect a fixed path to the
+> dynamic linker/interpreter (PT_INTERP). However, for systems utilizing
+> relocatable dynamic interpreters (such as Nix/store-based environments),
+> hardcoding this path is inflexible and breaks binary portability.
+> 
+> Introduce support for resolving the $ORIGIN placeholder in the ELF
+> interpreter path. This maps the dynamic linker relative to the path
+> of the binary being executed, matching user-space origin resolution.
+> 
+> To avoid code duplication, implement a shared 'resolve_elf_interpreter()'
+> helper in the VFS exec layer. For safety, limit detection strictly to
+> the prefix string "$ORIGIN" to prevent complex parsing exploits.
 
-> On Tue, Jun 23 2026, tarunsahu@google.com wrote:
->
->> Ackerley Tng <ackerleytng@google.com> writes:
->>
->>> Tarun Sahu <tarunsahu@google.com> writes:
->>>
->>>>  static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
->>>>  			       loff_t len)
->>>>  {
->>>> +	struct inode *inode = file_inode(file);
->>>>  	int ret;
->>>> +	int idx;
->>>>
->>>> -	if (!(mode & FALLOC_FL_KEEP_SIZE))
->>>> -		return -EOPNOTSUPP;
->>>> +	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
->>>> +	if (kvm_gmem_is_frozen(inode)) {
->>>> +		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
->>>> +		return -EPERM;
->>>> +	}
->>>
->>> fallocate may eventually go to kvm_gmem_get_folio(), so that would check
->>> kvm_gmem_is_frozen() twice. Is this meant to catch the punch hole case?
->
-> Yeah, I reckon you can get away with doing this check only in
-> kvm_gmem_get_folio(). Normally you'd like to fail early, but as of now I
-> don't see much of a problem. If you drop the check here and fail in
-> kvm_gmem_get_folio() you'd end up taking and releasing the mapping
-> invalidate_lock, but this isn't a fast path anyway so I don't think it
-> should matter much.
+Does any other OS that implements ELF support also support $ORIGIN in
+the loader? $ORIGIN isn't even part of the ELF spec at all and is a
+glibc extension, IIUC.
 
-No, Don't agree.
-kvm_gmem_get_folios already have the is_frozen check. which blocks the
-kvm_gmem_allocate. But not kvm_gmem_punch_hole. Your argument is correct
-for kvm_gmem_allocate only. So is_frozen check in fallocate is to
-block the punch hole as well. What ackerley said is correct.
+I'm not excited about path-based string manipulations as they end up
+being racy, and mucking with loader path seems like we're inviting
+trouble (since the _binary_ specifies setuid-ness), and we've seen
+issues with $ORIGIN before, even strictly outside of the kernel:
+https://seclists.org/fulldisclosure/2010/Oct/257
 
->
-> I think either way can work just as fine...
->
->>>
->>>>
->>>> -	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
->>>> -		return -EOPNOTSUPP;
->>>> +	if (!(mode & FALLOC_FL_KEEP_SIZE)) {
->>>> +		ret = -EOPNOTSUPP;
->>>> +		goto out;
->>>> +	}
->>>>
->>>> -	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
->>>> -		return -EINVAL;
->>>> +	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE)) {
->>>> +		ret = -EOPNOTSUPP;
->>>> +		goto out;
->>>> +	}
->>>> +
->>>> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
->>>> +		ret = -EINVAL;
->>>> +		goto out;
->>>> +	}
->>>
->>> There's some reordering here. Why not let the validation happen like
->>> before, then check kvm_gmem_is_frozen()?
->
-> There is no reordering, if I am reading the diff correctly. The diff is
-> somewhat misleading. The kvm_gmem_is_frozen() call is added at the top
-> of the function, and then all the later checks are in the same place but
-> get a goto out (and hence a full body to the if block). So the diff
-> reads like reordering, but there is none.
->
+> [...]
+> diff --git a/fs/exec.c b/fs/exec.c
+> index b92fe7db1..0978ae613 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -2024,6 +2024,48 @@ static int __init init_fs_exec_sysctls(void)
+>  fs_initcall(init_fs_exec_sysctls);
+>  #endif /* CONFIG_SYSCTL */
+>  
+> +char *resolve_elf_interpreter(struct linux_binprm *bprm, const char *elf_interpreter)
+> +{
+> +	char *pathbuf, *path, *slash, *resolved;
+> +
+> +	if (strncmp(elf_interpreter, "$ORIGIN", 7) != 0) {
+> +		char *ret = kstrdup(elf_interpreter, GFP_KERNEL);
+> +
+> +		return ret ? ret : ERR_PTR(-ENOMEM);
+> +	}
 
-That is right. I thought Ackerley was asking why not add the check after
-the all the if condition and before the kvm_gmem_punch_hole/allocate calls.
+But even if we did take this, I really don't want to incur a universal
+penalty on exec for it. This is doing a kmalloc+dup (and later kfree)
+for all non-$ORIGIN execs. So even if this gets added, it needs to be
+handled differently.
 
-> It would be very neat if scru had a cleanup.h style scope-based locking
-> function, but on a quick glance I can't see one.
->
->>
->> To align with design. "stop the fallocate call if inode is frozen, No
->> need to go further". I dont have strict opinion on this. I am fine with
->> taking it across punch hole as well to make it more fine grained. But it
->> will no longer claims stop the fallocate call (allocation one is stopped
->> in separate path: fault path) , though functionally it does the same
->> thing.
->>
->> WDYT?
->>
->> ~Tarun
->
+I would probably say this helper should return a struct file * instead
+and have a fast-path for the common case. I think a check for leading
+'$' (if strncmp doesn't get inlined) would be okay here as far as
+"incurring common performance cost"; that string is almost certainly
+cache-hot.
+
+> +	pathbuf = kmalloc(PATH_MAX, GFP_KERNEL);
+> +	if (!pathbuf)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	path = file_path(bprm->file, pathbuf, PATH_MAX);
+> +	if (IS_ERR(path)) {
+> +		kfree(pathbuf);
+> +		return (char *)path;
+> +	}
+
+This still just _feels_ like an info leak or a race condition to me. I
+can't give a credible example, though. But it creeps me out. :)
+(I note the blog post also says "and the shabang" and I get even more
+creeped out about seeing that patch.)
+
+> +
+> +	slash = strrchr(path, '/');
+> +	if (slash) {
+> +		if (slash == path)
+> +			*(slash + 1) = '\0';
+
+This is not idiomatic string manipulation.
+
+> +		else
+> +			*slash = '\0';
+
+More readable, IMO, as:
+
+	if (slash)
+		slash[1] = '\0';
+	else
+		path = "";
+
+But does this match the glibc resolution logic? i.e. should it be:
+
+	if (strncmp(elf_interpreter, "$ORIGIN/", 8) != 0)
+	...
+	if (!slash)
+		slash = path;
+	*slash = '\0';
+	...
+	resolved = kasprintf(GFP_KERNEL, "%s/%s", path, elf_interpreter + 8);
+
+(requires the trailing /)
+
+> +	} else {
+> +		kfree(pathbuf);
+> +		char *ret = kstrdup(elf_interpreter, GFP_KERNEL);
+> +
+> +		return ret ? ret : ERR_PTR(-ENOMEM);
+
+This is the same as the logic top of the function. This repetition smells
+of the LLM. :)
+
+> +	}
+> +
+> +	resolved = kasprintf(GFP_KERNEL, "%s%s", path, elf_interpreter + 7);
+> +	kfree(pathbuf);
+> +	if (!resolved)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	return resolved;
+> +}
+> +EXPORT_SYMBOL(resolve_elf_interpreter);
+> +
+>  #ifdef CONFIG_EXEC_KUNIT_TEST
+>  #include "tests/exec_kunit.c"
+>  #endif
+> diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+> index 2c77e383e..17419cd3d 100644
+> --- a/include/linux/binfmts.h
+> +++ b/include/linux/binfmts.h
+> @@ -150,4 +150,6 @@ extern ssize_t read_code(struct file *, unsigned long, loff_t, size_t);
+>  int kernel_execve(const char *filename,
+>  		  const char *const *argv, const char *const *envp);
+>  
+> +char *resolve_elf_interpreter(struct linux_binprm *bprm, const char *elf_interpreter);
+> +
+>  #endif /* _LINUX_BINFMTS_H */
 > -- 
-> Regards,
-> Pratyush Yadav
+> 2.51.2
+> 
+
+So, I guess, I'd like more convincing, but I'm very happy to see a KUnit
+test included!
+
+-Kees
+
+-- 
+Kees Cook
 
