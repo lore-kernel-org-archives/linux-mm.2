@@ -4,87 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E9ACD98F0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 04:03:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE7DCD98F0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 04:07:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 054F96B0088; Tue, 23 Jun 2026 00:03:18 -0400 (EDT)
+	id DCA6E6B0088; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006496B008A; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
+	id D54C16B008A; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E380A6B008C; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
+	id BF64E6B008C; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BC6C46B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44CC91C5331
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:03:17 +0000 (UTC)
-X-FDA: 84909832434.30.8E7C555
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DF011180002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:03:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jtEUwR++;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 997256B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E4E28D582
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:07:20 +0000 (UTC)
+X-FDA: 84909842640.02.F2DFB4D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id CFD891C0009
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:07:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Tmb5uj37;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782187395;
-	b=anFkLK1tMg9oz8XHrGcyrGQt0K+2xcQWw2My4ZM+cP/0a/wnCuZl0V7YyQeshyByCeIDlU
-	btU5Z/N4n9R8LbUF0tL/nIRY4VnE6HPdc23hfbzPw8R3C0cjrUvAj6b1m4nfi5pFw4io8X
-	e4HtNQRv2kTbp2tNrWaZxhkvbC71DGE=
+	t=1782187638;
+	b=luQwp2cEM12b8FrYYTKDktnEmckv85xq8V2kdvJaGnRxNBNE2GbzGX2gHqFw7hqjkVo3uC
+	huRSHnDssQOmBZ4epU86ebVKRB2KGgZ0V+uNOUi+gyWpCSygBp8s1Vub5uv4mDzzT1kZcF
+	f+CYCSJve4bnfxCmvom6kvbPZQ6jwdY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782187395;
+	s=arc-20220608; t=1782187638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MDml3DYC5pqWqIgrJTA2AlrjEEywE4UPFgWUZRf3Kqk=;
-	b=QJb3LoDacZ66JpV73mWr0NF5jKm5A/EH+wl+fAFnRgxKn9hjwpC0EwfliWFWHe/pB5asET
-	tQ8ckbYVQ+WHsphyumuCrWoYSqjcZ/tLUGEqXpNXaH0qyjdmMuvzYlB/yWWAYAiBOMlXvD
-	wTAUtgZ3Oc8rKb71bJywTPr1cWL0GbA=
+	bh=1E/ptj+RS20Bidb80rfTzevjxywaQ+ft1dWMLD1tiK0=;
+	b=hUyYRaxWJ9M5d6RHftzOhyA/8ginIomKd15QaCZejzjxPqDHENfGLVRfSx+AHY4JIrRFnT
+	HNG5GwI0wIvYm6L2ZWOKbER1NdlMmnxrji8tltwVotCjbAxz6Wx25MuTR5vBNAz9YE7gB4
+	0oLUtOFoXFArOuEd3h21UJPpw7Srsck=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jtEUwR++;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782187390; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=MDml3DYC5pqWqIgrJTA2AlrjEEywE4UPFgWUZRf3Kqk=;
-	b=jtEUwR++9CvdONakBHMGhE9lnxzbVDtQ8IDS1adEO+vrzKqaJq2lY3WK7aWVETYrqMhcdD86tA0dsKXmSKywUNHO0aGNaYiuJVW2QXCshfYvGfFPracP0KNUtRO9X4VczQEnjzdZ5QCrF4AX7LUNVO31Fb5Iln8lBn2n0NDFRJ4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X5ShOlu_1782187388;
-Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5ShOlu_1782187388 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 23 Jun 2026 12:03:09 +0800
-Message-ID: <c45653f6-0b2b-499b-aa51-09e934ddf1fb@linux.alibaba.com>
-Date: Tue, 23 Jun 2026 12:03:07 +0800
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Tmb5uj37;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB0321A25;
+	Mon, 22 Jun 2026 21:07:11 -0700 (PDT)
+Received: from [10.164.148.38] (unknown [10.164.148.38])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 407283F632;
+	Mon, 22 Jun 2026 21:07:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782187636; bh=JO4KWmoFaB9If/+qfuYmnRSo/7s+sYdF2HGr25bcjkI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Tmb5uj37Jnvd6vKeYhLLgcykqbBv01QfvcC6AKXwkMa3t6PNmz2sqCk9qjtway2Mg
+	 AlqvzvpjmpMW1HoSALdQ0X3yHrlX3xWJofj+AK8g1NZkC2Jr0fFNTUhPBobDaCgvOc
+	 o3Rps+Cyf8UE25sl4t7tqlCEfHSZ+7htln8d9orU=
+Message-ID: <711edc64-67a2-4927-be1f-b9529af39533@arm.com>
+Date: Tue, 23 Jun 2026 09:37:04 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
- muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
- roman.gushchin@linux.dev, ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260623024237.45990-1-qi.zheng@linux.dev>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260623024237.45990-1-qi.zheng@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260622155913.280355-1-ljs@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: nbj67ciux6run5sk31s77ku8g7sy33xo
+X-Rspamd-Queue-Id: CFD891C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DF011180002
-X-Stat-Signature: 6fnfifgbkm7z59ucm3dxihrhyceqxx9x
-X-HE-Tag: 1782187393-36225
-X-HE-Meta: U2FsdGVkX1/V5GIiGGOtOsxxWImMqnLUC5lCJl5KJ0h0rUjyH51XbfpFBEUaTWbJrRarWQ/P+ftEkL/WVux9zwKSZn4GN/aFZRQ9uOkmVQ1ksZsMvdjBeGlB4OWHRuu3286IRRwOspbYtvXsfn6VY9uuKgZO1G89eB8u1aA2g2nuR2bFkJaKVyteHf7k3K/x+n4XfDSjCnC4gPB6aGKPa2hG3ayp9zH0q70DSl6u9+tw6o6CZRO1HBCCYxa3Seb04KT/tYElZs7VUJ7c9iZ4DyzlrnKDdlvSBy+2nLjsvvbL0rPe+5cBmEfm+cQ9ZL6i8CAXzHUlHSRtgKbqJKUKJZfSjpTq8sf1lGLl3lLonI7ICByaU8fnftuXDcSyDlypqHinA0vKyvdqg/J9RimfXPDQFjeovaOFrGc5usFfAJ4I7ScCucuEWeOO3cbgKXmpCecf4Re3n5eqosL7r6SLaej+GU0JFcXGNVzpfP3IHJpQiLNlrN/tOrVzr+TrgsUGoJ43M8NzxPK7aDRtGaXRvIlg0FY265rf7RL/Wd+Yr9H/gGMrL7goZ0WifZ6sWSIXrV8MWsANBhI0WDEXu+pkceKU5GndRz+hQb6pqiZJno8+fKphxsc3D2/yjhHPfzH+FCx9/x0v5tG+5GiuazaMqZoyObuQATtFzxo48oh/twjFMyMr6sqxDcUifU5NO1PrzzidtlkSrOiTH4uW2oEpAAzeImix28HcNSnxkZZalEDe3PKPVPp0G3F1zojYrbGPLwR0A6v1YDE75bur1PvzO2ICKUMrmnQMppTHEHScmU7Gc+w+yuMZtbC7yYr6uQ0UoG9vdY2ED0e7Gdxa4roI3EAcnBwTKblPwhdO2jM0deW7JrZtne3FNd5/TfbJRd4PCxl4XyxHvP0BJFYT7xaDaC28WymYjXyjNGc4Hg83ZAWuLrEFwxDdn3mzqAJJlV7VJnnMC1FlsbHasvfmYF1
- pLpzSUOt
- zu1fhYTlFDwj3TFwLbChAgOvH70+yUXr5bH6ec69frv2mF3lrKx0GxV4EXqFez8fmYuDuST3V4gp7RJR5sG2w8zngml2XdmtVLUL189+1KUsreDsohKthvui1ak/9i+/9WrVr1zk4atN9yPY8knjd/iqU4V7UWFnSNGHp+VdpsfeUhNCPf5HZH5Esez6SMR3dwLVmxKlzt9/D9PKMYVRMhToowAXRtj7SgHGbd4jvmwMqlJwhQM3j7QxdwJH9c0VQJIXplNdQXIjtjMmlaoX5BsrpGDtyzscuWLrvsOPJsB1/C1igQ6vDgu7PDRQPQi2dJ+kyZWjUtGDiRPxdzc4odt8YMGolEnw7Y2CP
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782187637-31516
+X-HE-Meta: U2FsdGVkX1++ZRngSQB3LrhO7aCFbZGq+e1Xap66WdxJA26Aqzlv3CwRa+FX/JAqfTdidC2xKrSw9Z5dmjcRW0C9ioWpdMc7r3IkO6lsz+waagOxxTrAwwK8rU4XRl+JjfsZcNrBOfxJeFfXKI6NGMR+bR+moO7JE0/eLMAovJnbKLUD0bMWKWzi/a7DDpQwt9WYqP9G7kFYBlLK/WBPi2XD0fwQyLN2jNe2T3mN1of8pNyjEk5QeKFd48uw77sIyssfxPtJdNxN8lzp2RvhqFlS0be6W3vwsqzU6/qXUkjqeD0eQSb1RoWsW2e1nY24gTQlGUdm3d/jiAt9aOATK4k7g6dcnJX9NQ1GPPkEUeiKvMrBT7YK6H9ebJMyJ0rvprSFQYUwPCw1bEzJYKWW0c3+1za837eJZxdG9j1+lSIeM97I7Iv6ThN7D+Zc+66sUDd0/BFPcjrNdDbc0h9R9ldWLxLQR/1HB2B8iXXESkcJXrKxeZ4UTZB8ECarIONEJrkpsSAAbU/AC7Z148vBr13dYPP8B34TDwzdPyeVN78GkcYyhUFHrHdJ2LKtggJasXDYwd1nPlJpQJ4Kt/BFvfMqHcrxbl9JHfu5Q0jjv73hSK4nX8XIyenogvMA9heShA6PKQtcnMlGKyMfB1tpuP/VKk30Oqsm+Y497LFtliOrWgPa20IAVq6NFluZW3E3QBrCFGVyXMNbfWOjecG0FiBK2C9HAQXwuAKsidbs+fNGny17zMSAXZeHmeu+a2aWXm1WZewqy8hN7oMptIEdkkqJNmYCHd43DcCn152jYnJsSugKFgNpN4c0lfZdThId8tNNVZtp48/faTsCq/ypadJczbLLYSjQDIjLCo0RtFC52VBX5ahj5Va/dNsguOYVTRb6BWgELlmOCK+MFuKWhTIrikWpKyBBNgRQ8oDvkxOvCwfX/9IiyJ9ctuzaRYDMeI+hu6cIyQfi0T2coQn
+ Lm+lvA7V
+ 3z3MdbZyxT6CmJ+kdXshMK+z0kAqyrVB5cBwsniwIuRlM5KkfdOLBLSA68r9TPg6CO64zGrISeMJCWCIhQkjyS7Z/HTRrQaPnvA6+FFuBUMUyetfpCuMyv9FC9uMWMUJWsb4Yxvk85m4YxjRFIvr5IMuFhH8hRbDzOpBz43huK0hF/qrrgKB2wdJx71IvUU5rrdF5ux4RYbIUjL4wQ97nFcqBQUmTeEpfp+Uf65KyJ0ZtvNrVwCKorI8U2g6CN11hB5+mapDqTrFDpq8l5sZRp9pLQg5dC1VYEhIhdeDfJ6bITg62kyFDKeeNQ1fd1AsMmZUtp++IISwM7DAUaXaqUNBkXOn5vUHZZpqYOrIGkWpYaK5xV7FpQJgHfXmKqHRHl5Tn0MA4yThgdRrQ8YocSWd4Sno2r6wrfZjx71EQV/psrdVz17ZxmEsJyNdVWC1Nu/Q+3y4EY1mrdGY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +96,32 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 6/23/26 10:42 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 22/06/26 9:29 pm, Lorenzo Stoakes wrote:
+> Lance has been doing excellent work reviewing rmap series and has proven
+> himself to be a great member of the community in general, so add him as an
+> rmap reviewer.
 > 
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec lock.
-> The reset_batch_size() later folds those deltas into walk->lruvec under
-> the lruvec lock.
-> 
-> The page table walker can run concurrently with the memcg reparenting path
-> as follows:
-> 
-> CPU0                           CPU1
-> ====                           ====
-> 
-> walk_mm
-> --> walk_page_range
->      --> update_batch_size
->          --> walk->nr_pages += delta
-> 
->                                mem_cgroup_css_offline
->                                --> memcg_reparent_objcgs
->                                    --> lock lruvec
->                                        lru_gen_reparent_memcg
->                                        --> reparent child folios to parent
->                                        unlock lruvec
-> 
->      lock lruvec
->      reset_batch_size
->      --> child lrugen->nr_pages += delta
-> 
-> This will trigger the following warning in lru_gen_exit_memcg():
-> 
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
-> 
-> To fix it, add lrugen->reparented to remember the new owner of a
-> reparented lruvec, and make reset_batch_size() charge pending deltas to
-> that owner.
-> 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 > ---
 
-Looks reasonable to me. Thanks for the fix.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+True!
+
+Acked-by: Dev Jain <dev.jain@arm.com>
+
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 65bd4328fe05..dd963b72c614 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17024,6 +17024,7 @@ R:	Liam R. Howlett <liam@infradead.org>
+>  R:	Vlastimil Babka <vbabka@kernel.org>
+>  R:	Harry Yoo <harry@kernel.org>
+>  R:	Jann Horn <jannh@google.com>
+> +R:	Lance Yang <lance.yang@linux.dev>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+>  F:	include/linux/rmap.h
+
 
