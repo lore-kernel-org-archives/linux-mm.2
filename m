@@ -4,128 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBABCCDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:25:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4080DCDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:25:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 966BC6B0088; Tue, 23 Jun 2026 06:25:02 -0400 (EDT)
+	id E48186B008A; Tue, 23 Jun 2026 06:25:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F6776B008A; Tue, 23 Jun 2026 06:25:02 -0400 (EDT)
+	id E1F886B008C; Tue, 23 Jun 2026 06:25:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B7F86B008C; Tue, 23 Jun 2026 06:25:02 -0400 (EDT)
+	id D0E616B0092; Tue, 23 Jun 2026 06:25:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A4956B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:25:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF3F5140447
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:25:01 +0000 (UTC)
-X-FDA: 84910794402.12.01466F6
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D333E140007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:24:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdPiUzEV;
-	spf=pass (imf09.hostedemail.com: domain of cppcoffee@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cppcoffee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A96686B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:25:12 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2E94AC1D9B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:25:12 +0000 (UTC)
+X-FDA: 84910794864.30.7A8636B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8C51A40004
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:25:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E4KivSwy;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782210299;
-	b=dmsoQ8nlL5tJrD7pJPELtL4hv9WvriQ8MNyH1kUWuHeiAd7KhMptGBGtYltb3/yaYdidno
-	BgSWvWxPEMetUBf3ZN/Ej08G79Qw74xUyfsTN0QmtR4BPO/kyO9e9b6ShzFRkN0Ofnr0y/
-	CF2oXR9a9+hRaev5fRXC6XJ6D4I+EcI=
+	t=1782210310;
+	b=elszbqy/fFTy1gH2YOj9mLqjpqBjjb9W+kd/BZxZUPaf7fXDUcJq472WSbNpkAwXpF5FLI
+	5dCRV7lIyivJGvDygMRvuF0OqgrG0wI7NQGxVyhMUEN0W6O/0S7Kch2hhQKhQr/wrcL0Rl
+	MF75bYGEzWWRcVn8SL+QB4jWaIFRWDI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782210299;
+	s=arc-20220608; t=1782210310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MN3pPDGcF8EmJYIIls8L0QT+n17wsCPpidJtsIu7n1Q=;
-	b=X9KX05262WBx4qls0wyUgtEiJSiQI9wk54tcBmTwdNF+VCDJZYssIL0BYKdXsgpd2KjoyT
-	ygPL5K1KB3VRONCXrr7CqQ9mogR6x1qTONiqg8uaBb6RtpV1szLNraHDVuiqH3xGOh7aP0
-	+9jxfiuTvedWXI0ZSb1k6dZQieSFxLQ=
+	bh=QuwqPl/DdRExnnCu9OGScQ5Xmc6WliItT49dCHtwxdw=;
+	b=MBstWD/9F76YwbPwFQwLVEbSB2R1FmfyY3T1L4wmzX38BxzQUILxAO1y7CrleV7PH4b9p6
+	ahx12/VWjaJxS77qlCK19eDkQz7lvt1cM5g69St1RhBSv4fWP5lQvOf5Hc7KUKxfSv9J21
+	bdkg8C1ghg3Hnxyd8TgSjCYZC8yEM/k=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=kdPiUzEV;
-	spf=pass (imf09.hostedemail.com: domain of cppcoffee@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=cppcoffee@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2bf2247e38eso61625365ad.3
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782210298; x=1782815098; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MN3pPDGcF8EmJYIIls8L0QT+n17wsCPpidJtsIu7n1Q=;
-        b=kdPiUzEVkaZc1TJ+HVF3uM5qnvgt70exgGDkxXFW44USyAGewXnCTKq605CICDBb/b
-         ti6rwu0rS3A2MVl6130qV7/Zgr7ze2BjxJzd4GNjwlDf0ldZnjk6SrHz/EbD+QPDs6Kl
-         EqqB8QUEXqLcphmDbmvzDrisgsLoJelX+3EsACASQuNQRV8b1B9lZFq8HGsTLyatelWk
-         eKKg7Qq1iMLEv3P5r3HCdBm6ir0IZndN8v6gqfiTer2ckCqFmD0hfaG//5pOkU8T1W9B
-         eTzNv+SS+oInpsBObghGgeeWemc7k+Whu14XnHz2cLuePLx20sGxArUHWzrcKv2MnB3v
-         s0AQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782210298; x=1782815098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MN3pPDGcF8EmJYIIls8L0QT+n17wsCPpidJtsIu7n1Q=;
-        b=PSKaKKMW9vHA2K53PApWy73FjZMZCQDyRr717WGS3V08W7t8/K6N0ucX7xdDmf1kBo
-         EZWl4rBG5C/ZON5w9V2kN003zmo+n5AqqRVXUFabTQgL39+6TCMHUsOKmVIYrB6vp2XP
-         Tb7jf9U01Y8qo9+Tty/WqkKrMI9O9gGvSTfcrLf7xwOhQ/tXxOHaD4ECRt3WvZIMP6UK
-         cZ9Svv2KOxBOTqMGZPL+wkzfMBoSZX6lwvKuK4eNsjyxVygBQEPokk0R2jRN9lkEyFyH
-         CRVcI+0cUefXeNl2zbJNKtu/64Ls/zsgRYOF43QgELvKy36xUlmgHb2mS0o53bpkLzLP
-         m6Uw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp6w92v2P1Xsd0RkLLbNCNSHYa9PyUVTpiYBLm0Ov+ED8egBPUt9tCiNrbGAePMSLXxJWXNGoIvbA==@kvack.org
-X-Gm-Message-State: AOJu0YzCGruDuxGXx95xL2R3fImVJ7luTPu+KKKLhOqqCVcZ4uPZRwsj
-	4AVyj8qvWdqtNHaGXow1SyIqGO3qKkoDEHf2KX/uzGFpWyrdFalRfG3+
-X-Gm-Gg: AfdE7clWcrz87dMwnRHq881VWNogBpeTrxe3Woib/inZ3EWiE4GkM7P4m0AowGZtB3V
-	d9+ggn/H1Yd6tjfMeQMYHsBFaUxh1Cp5waX2LsAWKZ/lk04Zi/sNliAFp/5fN3zjNOO0Vhpzkz2
-	Mlqj+s0ygfhtizXOYa3k50wj+VXF5WKP8jBe4AzaxAdRA5EBVHAezt72lZrEM18iaTmEEOXjL8g
-	w7wXf4lkyEt1JnY5L1kPVKA+Oaz6OrGj+uBeWjTRqE9MsTPLPCpY0Coq0xWsXkCdSvrAdgyFuWW
-	zkxaoM7O3nsZi3ZyNo5B2g4SNgPfc/2lxFrwhPyp4c+8uREh+Dd0ccUyVROhQzTs9YR6dQSGOzR
-	Eq0VuAoW1bg+Td//8dax+RAtnySsMpsXeAq8x8JBwSQ8+yUrRYzgT/0DJIlew3u7++qkN4ubvBN
-	EM2nPJ1bZ5Q8ubDmLGLettqtmleGJGUg8BWailESK5/EW/6okIIIck66T3EEC0MIYlXp22HF/6J
-	fcalvzNiTIaCyI7JJPVjWIEM0axUe0hJNdzn2h9VVmC7UlhrA==
-X-Received: by 2002:a17:903:22c5:b0:2ba:4ad9:70f6 with SMTP id d9443c01a7336-2c718f953c5mr188846435ad.31.1782210298472;
-        Tue, 23 Jun 2026 03:24:58 -0700 (PDT)
-Received: from localhost.localdomain (ec2-54-199-123-161.ap-northeast-1.compute.amazonaws.com. [54.199.123.161])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7436ee37csm103161525ad.26.2026.06.23.03.24.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 03:24:57 -0700 (PDT)
-From: Xiaobo Liu <cppcoffee@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: ojeda@kernel.org,
-	miguel.ojeda.sandonis@gmail.com,
-	akpm@linux-foundation.org,
-	david@fromorbit.com,
-	qi.zheng@linux.dev,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	boqun@kernel.org,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	lossin@kernel.org,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Xiaobo Liu <cppcoffee@gmail.com>
-Subject: [PATCH v2] rust: helpers: move list_lru and task_work helpers out of binder.c
-Date: Tue, 23 Jun 2026 18:24:31 +0800
-Message-Id: <20260623102431.3577627-1-cppcoffee@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
-References: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E4KivSwy;
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EFF3B60207;
+	Tue, 23 Jun 2026 10:25:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAE21F000E9;
+	Tue, 23 Jun 2026 10:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782210309;
+	bh=QuwqPl/DdRExnnCu9OGScQ5Xmc6WliItT49dCHtwxdw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E4KivSwyGZFxXffDk/Vt3Px8vA1CbyhPHDP47lNNJ7szT26VvcSc7qGCtrBR90H/k
+	 rKJn+oEhr43yZ92MkI6SLFEI7zny0/e4YijR25E1lI/JuBgEKP99aBDpCOALVN+iXx
+	 c+bPYmiBSofBu9XN/II1kzckbdcDV3Hg7OsDNw/xJ3ra54hJ9QVWhoJntkXyoFNPt0
+	 bD8plIrLTi/QiYw9bTycvJDyNnFdcIXHuedBb1+aTsqsCL/D39Jv62cYU9pj1ARwoj
+	 2KvD/zpvrHSMriP88SRSH7NefbWyChEQUZHOALvxF6jf83DGmejAt9chUxhNWHXYpz
+	 izbpybBP14RFw==
+Date: Tue, 23 Jun 2026 11:25:02 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH] mm: avoid KCSAN false positive in page_to_nid()
+Message-ID: <ajpehMzABvNh1wN_@lucifer>
+References: <20260623074157.578113-1-hui.zhu@linux.dev>
+ <97f2c4ad-c302-424d-a7c8-fdfa0fc0d811@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <97f2c4ad-c302-424d-a7c8-fdfa0fc0d811@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 4jsx9ftxar4m5ohe87qrgg8syhzhoedr
-X-Rspamd-Queue-Id: D333E140007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782210299-345212
-X-HE-Meta: U2FsdGVkX18DY5N6ImFIA7l78EhK67/72QJSBu9GHj3IFS30qfIwOGV+G07pnyBkg3mLsSG2LCaJsOWnsXr3vM/nnX6ldPXARNfWZo430ClmYkUAiM+nQil4J0eqL0akxbZdRw257Tt5GmGcVKgKCCVSSqz5eLwpk4o1Sx0DNhzYJnKdjDuEmbJc+WRhk9Je/m4fBJiAq+uf0bGvYo+ApJAxL91mfIhMWZnHF/TjPuceLqUN+IiNTd52YSVo7/x8elCrdPUyncjvoFJgxW1xM7vDHUT2iHuK+PMexPLYM3i8yFKo6oCXAQRteqep+zsA25bEh+4xgJ2NumTWFNowvYhPKwqreFk9xaBfrGWE8S4VO1LhDM4cFYUypnd+ttxgLvN6cxluo9M/41qUmB0Fu7LCBUYf6EtRxciyW9VoicPvEXJNoVk6Rc8+YVmOgqSOzoS1uPUH8w/oAI/mpVBgxr3tWAZ4D77BtY3RVYMECd1jwW5xFDjM4HW31RqKctR503i9HVXg4g2kzRBESdfNOJoIZI8bUERAk7FfFj+Y8QJfdKZ5Ak5EHs0OmNECR2q9iVwExryd6fEKuS4r89tXP8WCuB81qnFSU88t1DaRfkCU0rHT094SK2dMUfIQBUpSSxVIZkXD0RyAiqGFJ3rHvr0fa38CCr8OXPKhYIztfwBWGVT1erzcfyOttsSAUQr7EkAUgeONtoaGd+BlRb6ricWF802yrfejopyCpJU2WVXCv7n998J1V0+y1xdwXSY53q8nELN9yWEGYYABa8nZElRKo/0JD9+5PYMql8T5wJIxVfMrfgxC0O7JBkUBgWIAvP90vZn+nw6Oq2R/ft0fveyQzUorwBh9Trqwxu5LvEbxYtS6N6LIsArr2adtGSdzIT53VMvCj7qHIiwqiUCxaN3brgP0sgty+ZxHt9tWH4DXgaJmbvsnHoGU/hJk4/+sXnGFKX2YIu3xx3hoT5k
- gcf8tUWc
- Ig7l4nWOWmVpC+D/gitE35K/b3IO9Lzl4A2EfmPGL0lw/flh5lAKqZkvtsjq6srsGXGwjqWujQ0DBBWSYbHuOFaei2i19P/EVUiOZ/8tiP/OzgkdUxE2cJL0MsDERSIaGS4/wLvNwc2Cqb3maLut0niSqqO3DdTGhp6wrtkUx62PgF+lSmt1aW7iDG7E8KljltWXcnSgXFPpIJqbtgtQyPg1CvJ0VpqHZFUt+n62xg7XYPw2wuOTmcKesI5+7SI+h0djxLaRHhVQWTf+JEdvPMxZ3zSRYzBvBctLfb3NNRYgKv7+IwNtok32yUWmtSCkBNHJAoVTl+8mCMDvmL386R8Lh2ZKrVfOMgvMe37muDdnic48Dt4sDkVFpGxnUm0wO9UxqEvEvg81QmUrlIpT4U6at6PfhKXsdGw8JNAYbg134n4D/hAkEtp7hFqKmMkCvrTGwHRTYoEoujava0Te5U9OYszW5XXoz1lVMm8v62iHIKGpJWOBrQvZZVoLmnq5LS7+TyyJm1giq2UGV2FeODuPJS9S1glNNW3Jn7sAOvYkFFJ1RuZTQMme4g3X/WLAzjYdUgs5ndggTk0iDrA8n3S047Yy8VkY6Jz+jdl2Y59B3pKojmJdkJjDItorqaBja3kJMsaN1qPwwfCpmBPYz3bTTq5F2BZdm3Bog
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8C51A40004
+X-Stat-Signature: b88z9gwqjicjwrhcq97f3nijtkzyn58m
+X-HE-Tag: 1782210310-554922
+X-HE-Meta: U2FsdGVkX1+ZCOxJewqUA8cLie8fbK7oiqfk0uL0M/m511WfoFPhiL2V58If8G5RUHTEunKV8rjxSa8EdfBjUBbQZ6RLAfylK2nuO1FatqzZR9Y8ho8a0KpyAguffL2caM8Zac2l7k/fq/Xg0PtLLyU85suuX8asUfF4Jvl3FH+D83an5vEXlerJgvyWL/RTSzLz5lfOMdtmEjYuYileEDfDln0DanfeUcPuwRcrBgbtILQ44eVJ+EZKNXbyFwvsZSlGrAzUdFWOJ8Lsx8ft5fj0t+Men7htxvH1ctmC7r/NhWxCdN0ipExY4rfQWUzlKaZr7RgMlqGSVrEsXIEPuH4Jph/xkR/4OuoiUCcPL6mEqyHvi3vB7UZd+HJw2JYu9mw4gZPK235i9gHN6SsOGAL3uIWqVDD2K4Vda7vDd1C3dCFZMSNzsgYum6t4zzuDWpSVOfpUqxTgnW9mPW3kp9wm84DV7M6Xyfcwfh+RCKr2V/VFBAAdnxEk1mQvxFZixoCDvdFWxR2tBQVNkUQpqLD4lcr0O9ZCi9dV+F7GqXhQTTAGvP5l5Jm2FPkbCpsCpb3DhpWgkhcpPy0UhH3xwxA7eQcJuNRkBuzzoPNz5yWzyTWc/j4RlCL5Wc4r0yJoQ/EFyJpKNgxcPkg+fiz8BJ2vMhYlimQJzLBjORSEXzwm2TCvY0+78qM/kK3T09roZwheaQMC8Je7Zg0xA3bfQHq/h6qTcvGFrnzjjCHiXKWEUJSAUHzMQOCYHx7zx6ujVIprQEyfI8LINWBLRwC6zPNwOYDe3ccrnC9vXUKhtLw/7gtt5dZHF63Y/tkMewx8UkubUnsaJwISmPMkWgbY2Yfv7g6Epu8AoUreuh/Dlm5SWVMPBh42Y+7jF5hKzdJsNg1J91054cPyhkamY31T7zGfWlwd7csiCmkgyzJ8sR9Cd/GkVehB1D0saHxzs7IrtrxaRlMFZOLom1GHdvN
+ wWmPmkV+
+ us6Q+Ve6z9z2mIP9AoQ2KOyL3lrLPFzrctFuwB731Kih+DZRBcyylvpbKrk9/nINT6h4qRbhgODmWCsboaMWnP8ykI+AHp088VrhTjElcxHfpP/ZzzNyD1hhhaiXN6d2BwiCKZeQXECtJkaluan3M4MZ6AB9TfJA9sQi+3mstFpP3f4YmQiiR7XIRMUibnGUSeEeaRe0+EV4dvG550QLbcDAbbGAMU5eDUhktY3Ibnt5qOjdpnO7JPDOewFwPbT77VfTqMHySys56vQm/VuOHDgbGesrPQipXFzx3h6Xz7xCx3nGIL+n+ewkIS++L/n4Y9E8qkFh7ND7xFMVMwXtWvNyefgp/Vndi8pXU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,111 +94,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The helpers in binder.c wrap generic list_lru and task_work inline
-functions and have nothing to do with binder. Move each of them to a
-file named after its own C header:
+On Tue, Jun 23, 2026 at 09:59:45AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/23/26 09:41, Hui Zhu wrote:
+> > From: Hui Zhu <zhuhui@kylinos.cn>
+> >
+> > KCSAN reports a data race between page_to_nid() reading page->flags
+> > and folio_trylock()/folio_lock() doing test_and_set_bit_lock(PG_locked,
+> > ...) on the same word from another CPU, e.g.:
+> >
+> >   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> >
+> > The node id occupies a fixed, high bit-range of page->flags that is
+> > set once when the page is initialized and never modified afterwards,
+> > so it can never overlap with the low PG_locked/PG_waiters bits touched
+> > by the folio lock path. The race is therefore harmless: page_to_nid()
+> > always returns a consistent value regardless of how the read
+> > interleaves with the lock bit ops.
+> >
+> > Wrap the flags read with data_race() to tell KCSAN this race is
+> > intentional and benign, consistent with how page->page_type is
+> > already annotated for similar packed-field accesses.
+> >
+> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 
-  - list_lru helpers move to list_lru.c,
-  - init_task_work moves to task_work.c.
+How did you discover this?
 
-Add the new list_lru.c to the SHRINKER entry in MAINTAINERS, which
-already covers include/linux/list_lru.h.
+A syzbot report? If so please include Reported-by, Closes tags.
 
-Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
----
- MAINTAINERS                           |  1 +
- rust/helpers/helpers.c                |  3 ++-
- rust/helpers/{binder.c => list_lru.c} |  7 -------
- rust/helpers/task_work.c              | 13 +++++++++++++
- 4 files changed, 16 insertions(+), 8 deletions(-)
- rename rust/helpers/{binder.c => list_lru.c} (72%)
- create mode 100644 rust/helpers/task_work.c
+> > ---
+> >  include/linux/mm.h | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 485df9c2dbdd..122d3b39369f 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -2296,7 +2296,14 @@ static inline int memdesc_nid(memdesc_flags_t mdf)
+> >
+> >  static inline int page_to_nid(const struct page *page)
+> >  {
+> > -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
+> > +	/*
+> > +	 * The node id occupies a fixed high bit-range of page->flags
+> > +	 * that is set once at page init and never changed afterwards.
+> > +	 * It cannot overlap with the low PG_locked/PG_waiters bits
+> > +	 * that folio_lock()/folio_unlock() concurrently update, so
+> > +	 * this data race is benign.
+> > +	 */
+>
+> Do we really need this excessive comment?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ba45953bb..428992431 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24590,6 +24590,7 @@ S:	Maintained
- F:	Documentation/admin-guide/mm/shrinker_debugfs.rst
- F:	include/linux/list_lru.h
- F:	include/linux/shrinker.h
-+F:	rust/helpers/list_lru.c
- F:	mm/list_lru.c
- F:	mm/shrinker.c
- F:	mm/shrinker_debug.c
-diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-index 998e31052..ea34101b9 100644
---- a/rust/helpers/helpers.c
-+++ b/rust/helpers/helpers.c
-@@ -43,7 +43,6 @@
- #include "atomic_ext.c"
- #include "auxiliary.c"
- #include "barrier.c"
--#include "binder.c"
- #include "bitmap.c"
- #include "bitops.c"
- #include "blk.c"
-@@ -69,6 +68,7 @@
- #include "jump_label.c"
- #include "kunit.c"
- #include "list.c"
-+#include "list_lru.c"
- #include "maple_tree.c"
- #include "mm.c"
- #include "mutex.c"
-@@ -93,6 +93,7 @@
- #include "string.c"
- #include "sync.c"
- #include "task.c"
-+#include "task_work.c"
- #include "time.c"
- #include "uaccess.c"
- #include "usb.c"
-diff --git a/rust/helpers/binder.c b/rust/helpers/list_lru.c
-similarity index 72%
-rename from rust/helpers/binder.c
-rename to rust/helpers/list_lru.c
-index a2327f1b3..3b88d1a96 100644
---- a/rust/helpers/binder.c
-+++ b/rust/helpers/list_lru.c
-@@ -5,7 +5,6 @@
-  */
- 
- #include <linux/list_lru.h>
--#include <linux/task_work.h>
- 
- __rust_helper unsigned long rust_helper_list_lru_count(struct list_lru *lru)
- {
-@@ -19,9 +18,3 @@ __rust_helper unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
- {
- 	return list_lru_walk(lru, isolate, cb_arg, nr_to_walk);
- }
--
--__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
--					      task_work_func_t func)
--{
--	init_task_work(twork, func);
--}
-diff --git a/rust/helpers/task_work.c b/rust/helpers/task_work.c
-new file mode 100644
-index 000000000..cb961cd22
---- /dev/null
-+++ b/rust/helpers/task_work.c
-@@ -0,0 +1,13 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (C) 2025 Google LLC.
-+ */
-+
-+#include <linux/task_work.h>
-+
-+__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
-+					      task_work_func_t func)
-+{
-+	init_task_work(twork, func);
-+}
--- 
-2.34.1
+Agreed, just delete it. For a trivial benign data race it's a bit much, and the
+commit message can cover it off for those who are curious.
 
+>
+> > +	return memdesc_nid(data_race(PF_POISONED_CHECK(page)->flags));
+>
+> In memdesc_zonenum() we use ASSERT_EXCLUSIVE_BITS.
+>
+> Can we do the same here inside memdesc_nid?
+
+Also agreed
+
+>
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 69daeeab7fe8f..76d3bb54be844 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2290,6 +2290,7 @@ int memdesc_nid(memdesc_flags_t mdf);
+>  #else
+>  static inline int memdesc_nid(memdesc_flags_t mdf)
+>  {
+> +       ASSERT_EXCLUSIVE_BITS(mdf.f, NODES_MASK << NODES_PGSHIFT);
+>         return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
+>  }
+>  #endif
+>
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
