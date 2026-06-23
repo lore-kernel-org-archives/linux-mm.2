@@ -4,111 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A941FCDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:07:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56484CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:10:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A7C56B0096; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
+	id 1086D6B008A; Tue, 23 Jun 2026 05:10:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67EF56B0098; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
+	id 0DF3A6B008C; Tue, 23 Jun 2026 05:10:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 595E96B0099; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
+	id F39D06B0092; Tue, 23 Jun 2026 05:10:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 287736B0096
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93580166A6B
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:07:38 +0000 (UTC)
-X-FDA: 84910599396.30.4676410
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BEECFA0008
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:07:36 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YoAkfJEb;
-	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id CDA4C6B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:10:25 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 678B6166766
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:10:25 +0000 (UTC)
+X-FDA: 84910606410.07.CB6DDB8
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7819D40003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:10:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sCxk8wFD;
+	spf=pass (imf07.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782205656;
-	b=s1Bb7fc7NnNglEI6g+s3EJgMv2M2ZGad99nHuVRjT08RQ5DeQ7NiaAs3zxROD6x7nrq675
-	jWYfBj9LfPxa/Wlhk8WSXb7IZ53Ov8c+A7Z0Q3du13tN14r64ZyiQtnWLnX3wcgeYcMibs
-	DFV+uMia3aa8n42Aeb7KXQgaum6iksY=
+	t=1782205823;
+	b=eI0vhZ26NAQhlJF1Vs3B5LIHC5pILLfkEBS8CDNw+4zpLwwEmcnPOY0SGvW0LwnyUGzFLu
+	PUVMi/eCIBYrbzE7tvgSKWKNO8ybO8+vxotgqJ+rtC/jV4Jqlgs2TZeDbHY9wjX4k8E6fD
+	0wieqdO4ahMqLu9D9gyRC7InLnnNWkU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782205656;
+	s=arc-20220608; t=1782205823;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
-	b=trcOiTcwDKvJ2MXx6DgyIzyVf9NMfifpZbOOHigS0Q5IrJ4th7/QQB9VUQCPlrYFcbJnkg
-	Vhkvpno1EOrvDEliwJW+GS4UlaqrbsRyuRqRITu8pdMg/XhCUoJDXQ09MaU+FJy+8+gSE+
-	tZ1BkgykRtQaUP9eSSoOMNBW8ST2t0E=
+	bh=RmkBF/F+ufBgZMZn6F7DXZ929zTCk8KNdKVzQpVyQ8s=;
+	b=ppWlBlr2mmB2GXs8behxOKOn0QX+zi9ZYiSvCVB4rDaGIzvC5/vHBUA/Nl4Igs/pLMlRs2
+	5kEVEEvtbj5tDFJkfCllCtrNJ/vJBy+/eQO7CiNZo2cbdY4w2LkMvm6iRtncwn7/q4wnaF
+	ldMA1HDQNP476hlXdy8SVjEcOOUnBbc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YoAkfJEb;
-	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=sCxk8wFD;
+	spf=pass (imf07.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37d82f3a244so1193082a91.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:07:36 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49249072f03so16157125e9.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:10:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782205655; x=1782810455; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
-        b=YoAkfJEbq97PstEMYyFrmQ8+6q6RLP7kHtPZnqtEqtRlcHHH1ePQth/vxXWIcIAFZi
-         MsHyXM+CpCb44/+x0QghMEkd9g/BaaqFIdnW/kxK1EopCRM2hmeD/ZNgNQNFBuyr2ng8
-         cnA7Y46Jyt/Qz3GxItX+fbgBB3gCKZ/ySee36bSv3bXFq5Ql2MxLHi8EGRpAD8ZdpjIq
-         H0BlTEZSuaFp/f+94GFBp72uEj6vvnp94jeLA6KN1p3hfFqZXi7ZIwy4Y7K+7/w964a+
-         CkYcqgbMSyd/JHNz1tHLPJ4H9JftbMFrw5uk1lEJXu3s4Qs5J3FY4oixBdnEl/EPFkbB
-         Igzw==
+        d=gmail.com; s=20251104; t=1782205822; x=1782810622; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RmkBF/F+ufBgZMZn6F7DXZ929zTCk8KNdKVzQpVyQ8s=;
+        b=sCxk8wFDt9K6oZbn/isea9BghkdDQtZpYwAgR7BOgNGyXcIwTLiT9K94c7L0XV1J2q
+         k48w344563vkeo6Lm5D2tZT0WorQCKWw9qUNhNdqJQ5PB3rIpk3+yh+QFFLyMFpbMm8O
+         VUAKFnUeVU+jEazS9IaaINueolRi4OIjkvIt3Ts75sd7V+gFHCc28OJbBo0szLjnJ/zG
+         4UN+Qltnu5WO4rIlJsGY0RkflNcL8E64V0cojH+HmaIZz+zC3o+coALjtlbx8iz9XvGZ
+         D0JuWFAP4PS+eL2UsolUb8s/+8tW8PonWREIbFqTXyw+czTnlOU8K7LICdrU1JFfeA44
+         OQoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782205655; x=1782810455;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
-        b=SmT78FmXpyp3k0peREqD0f79Ftm+lk9fF4mA5bISsrFt04Zj+8fdSIdPDwsyx/jg/0
-         jaDrolmU/VRMNoq6qdH7y90PZCS9/xPDZjeA9Zyo9tvzl60mVEcXQ9YmOYWV50s0DTtx
-         ywJGmYR6xD9U6HgwoNskUtpnNcWBt80I0FbwunwU/dlL0JvDfdsLiCmda+eHSdBFBQaK
-         DbXS3FazwV3B4oVYYMRehVBQyqthP14tegMOdAxIlfe4dWc106xWlvWEcT+H02uCffhc
-         aLE2YgSJ4xDzfQHjjc+R3K/1Ymjb1a2N50A4iybMOLayKm4B5xHxEs8KoIjIefOTm7TQ
-         aETw==
-X-Gm-Message-State: AOJu0YwhR2d6tadu7RQsEy2OuwD4j5pqz4Pl+13+e4PMzudKLbobDXdD
-	LzOJMr070hBiQGRFCCUpJtQFB4LfmldDzD1udLTzIgDZAjPEcAzgf7zi
-X-Gm-Gg: AfdE7ckDns3THdjstns59T6qvwpyWSHpqDrGIll3bC2fHndxhg2nJjhTGvuVZ3PGvUi
-	rnlB+K78+SAnr6zQpM3seEiqO+fMZ+15sR3BCq305S5lSGcSIbKH9JherHUdOAi63O1C9zG4pqi
-	gcEQ186I0oDDb+vih0gyF2jSTzKNEnFmEkoLhQhfFvj5jOUT423uR1fI6PMmq4ZJfdckehEgQN8
-	m1nfLQVmQR2vyWctH9IRHPbvfff29pph8Va7vXlfeGlZxjzU2kYVRQr3uUjFuAW8HSEmsgrjEHe
-	fnSnryob0rWZSueOF6UyQweYSgmLGN+/QEDzpwRV6cQQevfOuinrHmi7hoXu+hjDi6W/9eDUnHv
-	jUT6lAMcDiC7HGFQeIbH6xiah37jzAk4wT6f8NayMQ4ceidOLoiX6sXyEsXr2tULonSCr2UJJnI
-	B7Gw3NRXznXisKg0qYqlF7aYCIIA==
-X-Received: by 2002:a17:90b:43:b0:369:7433:2fe with SMTP id 98e67ed59e1d1-37d4d834636mr13010957a91.6.1782205655379;
-        Tue, 23 Jun 2026 02:07:35 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d15df7424sm12256623a91.14.2026.06.23.02.07.29
+        d=1e100.net; s=20251104; t=1782205822; x=1782810622;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RmkBF/F+ufBgZMZn6F7DXZ929zTCk8KNdKVzQpVyQ8s=;
+        b=SFh5joQnIit7DiD2g57mP2IW3ZwdnRuuVr4wr2bQfku5Oh173GqXcWeuK2Wm+30Lzh
+         QXwkIxjVsGgEV13at4Ca64HRtQYhux8kayVe6srflTTiSSEIhQ0aJGofXI95j0P96Gme
+         76mZ5U1lHUv8+3pbDDGFpSpFK2NZps2G5l8U+MJXAEsZafiK/Rb3c+g75Jlpcd++3t83
+         526u6zPCb0FAKKvXV044T95MKRDhlj9/Uul+8P6nU6rF8vf6eb/GYpy31ymlERuQlL5/
+         td/0W+pkJvOvve7UjnaGJ96dMAATGwm3AM0mEuP7HMBY+bP0eE6AtsegR7NY62BDaApM
+         oBoA==
+X-Forwarded-Encrypted: i=1; AFNElJ8x83cjhhKaUC1MYBwcQoP2vkTDWAhHMGyElnmt7yI0a+RKd2kcLzU+jNMp7hZGz0jGJuHW7ML9DQ==@kvack.org
+X-Gm-Message-State: AOJu0Yw/4qtIwdrtJtwrdxsa09nbQZWOWGVupZsRSCpIn1h6Dal9O27D
+	RfhwNyyDWUNZLzbYVN8iaJzvGpx1t98tk9PPiT9Ku4W55ywVbfwh7KRp
+X-Gm-Gg: AfdE7ckJayE8GOg1GddrLZjiYVvs0BDoaZvoje5fIDKYqnNvBqhwzwN98Sp6Lko4IaB
+	DVOlwX3BAMIkUlL/y+qUTW88YK35F+xBQW/5+wnRD3VLqANr+Zd7VWkzu3/JaNDWzHrjNPDoA23
+	sQ+0IeuZOodvdjyPRfFu5a59PsG/yyex7bi7ndQD4OzRJ3H3yO0+J9dpbVMfcyafXsv5Ty/w+IW
+	jnTjVHVML71nYrWu+3n8ncxCs+pMEsg4ut9uBazLiwQLxzHzs+FLH8YkIIXwRQovJjODtftZNPZ
+	Cc5/W1v4KQMTwt/L97H2WLMe8g3VaVGewXeQmYml7QOwhcOHk4hAs/dacombGT86kTrMnyOAohE
+	o+3x8CpA7Wjzsck4j9UaqXPc/w/fkmCcZ6kpe67v2eWegYWYY0R4ZmF+YVJYgJ6n9baCoKgf843
+	KMclRaDMDEKmlaTzpo5OAQ8ZiJvMa+jGpkfLAhrdqj+7vcgFEgKQ==
+X-Received: by 2002:a05:600d:844f:10b0:490:b2c9:e284 with SMTP id 5b1f17b1804b1-4925b3b4744mr21760465e9.30.1782205821796;
+        Tue, 23 Jun 2026 02:10:21 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49245bba787sm226309215e9.1.2026.06.23.02.10.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 02:07:34 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
-Subject: Re: [PATCH v4 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
-In-Reply-To: <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
-Date: Tue, 23 Jun 2026 14:33:54 +0530
-Message-ID: <zf0lwrut.ritesh.list@gmail.com>
-References: <cover.1781843449.git.ritesh.list@gmail.com> <ecbca3be3fa8bd7e213d013a2ec6ff9a11c6e0d1.1781843449.git.ritesh.list@gmail.com> <CAGsJ_4zxcp-jdnRTn09b8ZfxT0P7suFq3BEpyiUzA2C_iRRUGw@mail.gmail.com> <1pdxybv5.ritesh.list@gmail.com> <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+        Tue, 23 Jun 2026 02:10:20 -0700 (PDT)
+Date: Tue, 23 Jun 2026 10:10:18 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zach O'Keefe <zokeefe@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Dave Hansen <dave.hansen@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ David Stevens <stevensd@google.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, Will
+ Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, Andy Lutomirski
+ <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren
+ Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, Matthew Wilcox
+ <willy@infradead.org>
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+Message-ID: <20260623101018.789a4094@pumpkin>
+In-Reply-To: <d4926c7a-32e4-498d-be6c-ab2969c8f672@kernel.org>
+References: <20260424191456.2679717-1-stevensd@google.com>
+	<da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+	<6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
+	<dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+	<CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+	<c070c4d6-a570-4eea-aca0-72eed319a198@intel.com>
+	<87pl1md7h0.ffs@fw13>
+	<CAAa6QmSHBDeY0G=_N1P4dAAH917J7jerfZrWDfDd8w=8jH8nVw@mail.gmail.com>
+	<87qzm2b39k.ffs@fw13>
+	<CAAa6QmTO=hhdJQa-ofSZ6wW0geLaEfWZumF6KmksxZqM3i33OA@mail.gmail.com>
+	<87mrwon5uw.ffs@fw13>
+	<CAAa6QmSeq8bbckyJk_5HFagsHfS5SXbG4y6Y-Py66eYLgvjcUg@mail.gmail.com>
+	<d4926c7a-32e4-498d-be6c-ab2969c8f672@kernel.org>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: 3ntyiq5zuxdnpm7p3fhz7pm37qk15hap
-X-Rspamd-Queue-Id: BEECFA0008
+X-Stat-Signature: wx19egdtyshk5imks7ehiy8effte8bz5
+X-Rspamd-Queue-Id: 7819D40003
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782205656-726625
-X-HE-Meta: U2FsdGVkX1+NA+PZCTHbqCtRQP5uajLHm5JwKMO7y3JNFk5IAqs5A0OLpTTEBxrVZIfT/0vPJUQcD1e+Iu2K3Fzy+LA7azh7nwJQxaGHhb56blGuhT4pyQU0jjhfi7AFn6yb2RW558cgaS7Fn/h8Z+Owl2QB1SP32QvOJxSmpX9t2/emBrPo9ObQMuYjk27jawERFKAD3grEIvIpwVYBIbTM3w5/y4HZ/gyjyhcejYJPFBJBKojE3mpG1IP9Mbg0eAJdvCPYXSwc6qOTlYmiaYvL24JS7qui8MHeGv5pjBIJsYL3YzX2QSWGPmCvRep2Xk9XOAM8CLHkQ0jCtU96p01TQ95o3kW+tVPUbFgBIUzNPumxSR9xzqUx4AHxem1z0igpu2zBIUWpBo0uL1tP2s4PlIflWwV14MQ0rDQivP/ZDjQN78nYjM13XvYi3B1gPWHBE+WBeHnH2JtzEII0spe5GonyVvlkjxyOyDFkPqWpBPm+7+z1fHTYEa0V3p65pp8mvnJOI1qdAS62qQV/NaRkFHWoDkorKr8IJJH/d1u0B/BsXOOj8USkifKEax1CRWaO/1qHTqtYKfQv/m1iKUuySzjeORgU00SZK5km6jmbzwPK6pKeui54fARIP+1fwr4DDeBwdxkEfMqDDzqkiXtQBiGjobRuAgnAB2xqpGe9GTxE43wuLbu2Gi6+GtovJ3As1+W0CvpbYb2gO6B2wVItlaIIsizOzJwpeIuBt0SuWpLOx5wE6ngBdeYBJpS39EWuYICXl99qXeovOxjKbStISeSq9SrWYWri2qrkl3namlHQ7LIb1hbtvxqqw0rq1k4f05KEdSO9CGgt3n1o5qdPtJkCLJna/dKYo4eiNo5uexf8aBr0Df6q3B9vb2vSvVl+9ukUi9+dz9mASLLtPuc6VW+EZmMMTgrq0lxrxh28F+9jYLMbtaCBxpgQqm39rSmRIlJamL0ZNZctNde
- 3N+i/BTx
- 9dUMCvGHOXw2JGskQTl14u7QvWfQDc5EfNuTHa87rIGGNc1TGa7NmAtbgN2xWGAaDaIsVW/Df/hpEoM+cPxf8qHVTCoKABuEZUXCKkAipz881KfpmwnpcbbvfST/BV1xuYW0GuYFh6VfvnPk9HmAjcv9hY8B5edi8O/3DBik23WQ8+B6TJ92A7jp+b+Mq0AAYQQ4G3nmoqxk9Tg2ovr4OjgWYkwO9iNU1RP9RObH0UDwdeI7gWOIItQdEHbHs8xHDoSpSuy9hmElehSPiYcY//gNy/6KQCPKgpB/N0Z9+pM/QZwDcq0//OOT1Y547kl/llCMp1g70mKlip5HhRAhk21KMUTXPXaKkPuLeP+QX36s8qTbM4LSzAV9D85Rq1ueKB582/j8jCP19peJsWizGbTOMT9cNhWPAAEkSVNDsZ8Yra6Xmasq7fuvpBpI5NmawREYH36a/aOxPGluA1ksRCC0Ny0Mso1V3fhImMfQkoO5Pa8pp+nkyhyqP6dRNGM8fDEoYKh/Hy4r0dy41uhU7hcVroTQGfiLZcdR+gMny0GtFcTMYBDlMFAFfhZHeAN99MXWDGG2L/mfa+KGmr+vFsbeAIw==
+X-HE-Tag: 1782205823-813946
+X-HE-Meta: U2FsdGVkX18afYOYZozee9Cd15ub+3bXOWkA19RiUIhbWLDSyf0Q4qaJ9d9bJeUVWJRUynDA675ic0EavrrMdTuljE136TfE/m8/x4f9ADz9oc9LRwoTSZiemnPEN8Wl7lDWQtcSqBGcb5RRoyRyrOW0agthvcizlUm65ietlz/uxbc93I+Jr0Yng5RoX+5yd0heRflOhgj5I6C6CzDXPhDiSo5ZqOkDLTkwPHOxACHF2MDUaqjkyDQZoo0yqrld5Z9aqg2reDRd4g4868xw6F0Ke8NhmC/QycGJjKkxumfomMwLzd1AJR0WM77qBSbXgRTyCBd6VbMUK0xzigItT3NopA7kA6FriZucW8/X6ly8CWl6c5BlBATIl3uPaGY+gO9teGEJrsjJM9QMor3cOpVHzsWXoUzhUAciGOK2X+FvRYU4cRNsM81JWS2ZcidYHIgnFXcRoJuXYCOAdUQChREdDmltTL7dx1Gsj+Xuc4m97ZH84IXTTdrBzSZn9rLd86ayh8hQagA+zAdfMIx1LrWIXd6l/V6qtFP8Y6iZjmc/z/j+l4a9yM1o0m082Uv/ahDwclUA8hDcax97T7O4iv2e0b/bq0oAlMOhPNdYXBMeh8wyfOcnh5uvabVPXTxGcFYhHriBXnFa1/YMHipupadU1SDmholzFsV9GmDe94Ky1QgtjGWXCK6RiC2tzYS0R9kPq/vDqpmnCr8HvqBb7yZTQ49am8863R9XEJR24KvBeaGI71wabxe6j6VhuCfLgWtjEXBaM6e5JSP+x/q2LVk8sOysnLeg8zOJzE3xZbc74fU9/gKzJw8wP0wKHVVomv65sTUWDObDG8oBp5aP8/jn9KDUnTQG/qO4N1Lc3R7TncuZ2qGq9tAKFFHrGcAQGgjIkI/xoZi5ONfzSLNCILUkBlVKB1OBWksxnTVtUAVB2QnbTt3osRF7nxxH7p3sX73HCkS4O+EG7NHrTXP
+ YdehtI33
+ +BRmldXW57msgqNi7CiQP2EkWadrA3DpyDMrV3g0AZ7yUkgzXxsUucn7/vc+2v8kw0iiHgZxpHP4a62Lo53TpK6QfQkUzNjvhdCezVeG5G6rcZkIw1ewU3cabSfk8Ewnf7/DdoXAsHT/b5iBMRIzZcCkimV+Ko1n6KAFXxq9M5moL8JGYCdIl/lHSBCAi7f1ZSHuSqoDcpGyknplzfq9YWL3obnbK54bm55fCf8NIQEwyD/k8MXyCooTDYcHKoEPXV8+YO7fX77WoD/R+7N/+yQMQ1Yh3F/LxYCePgERAlS0tHUfCXRAuTRk16ov9Pl7RT7R60Iyn/BSnmrd7UrvBQZSh8ukSM6MxvnI+F0p13OjvR6BGRZK8RfAPRM3AaWNJMLOlxkIX23+/1bUTpJNzp0lR7DN1FQeFgYNxlg9zMx2hC/p28ZowRw6W2wgUjwb2UIhbCmP7hPx6oHQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,62 +144,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Barry Song <baohua@kernel.org> writes:
+On Tue, 23 Jun 2026 09:50:00 +0200
+"David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> On Tue, Jun 23, 2026 at 3:12 PM Ritesh Harjani <ritesh.list@gmail.com> wrote:
->>
->> Barry Song <baohua@kernel.org> writes:
->>
->> > On Fri, Jun 19, 2026 at 12:41 PM Ritesh Harjani (IBM)
->> > <ritesh.list@gmail.com> wrote:
->> >>
->> >> THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
->> >> 64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folios
->> >> (Hash-64K pagesize / 16M PMD), during swapout. This improves the
->> >> swapping performance since all the bookking & I/O submission happens
->> >> once per large folio. More details at [1].
->> >>
->> >> PowerPC Book3S64 could not enable this before because PMD_ORDER is
->> >> selected at runtime depending upon the chosen MMU. The earlier patches
->> >> in this series turn SWAPFILE_CLUSTER into a runtime value and introduce
->> >> an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With those
->> >> changes, we can now enable THP SWAP for Book3S64.
->> >>
->> >> This increases bandwidth throughput with zram backend for swapout by
->> >> 40-50% with Radix and 100-130% with Hash (Tested by Sayali)
->> >
->> > Thanks!
->> >
->> > I am curious about the contents of the anonymous memory being tested
->> > and the compression algorithm used by zram.
->> >
->>
->> I am sure it was derived from your microbenchmark itself which you had
->> shared here (so repetitive pattern) with default zram compression
->> algorithm. Thanks for that :)
->>
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d0637c505f
->>
->> I think I got your point - I can mention that it was a microbenchmark
->> similar to yours and not a real world workload test. Is this what you
->> meant here?
->
-> Yep. Please make it clear in the changelog what kind of workload was
-> used, as different data can result in completely different compression
-> ratios and compression/decompression costs. Consequently, the reported
-> swap-out and swap-in performance improvements can vary significantly as
-> well.
->
+...
+> There was some (hallway?) talk at LSF/MM about possibly removing direct reclaim,
+> similar to how other operating systems handle it. Now, I don't know how feasible
+> it is (I guess devil is in the detail ;) ), or any details how that would work,
+> but direct reclaim was repeatedly called out as one of the main reasons we can
+> get huge stacks.
+> 
+> So I guess direct reclaim (incl. compaction) is one of the main problematic
+> pieces. Are we aware of other scenarios where we (easily) trigger consumption of
+> larger stacks?
 
-Sure, I will update the changelog in the next version with more details
-on the benchmark ran. Mainly planning to provide the link to your commit
-for the e.g. microbenchmark code we ran along with few other details.
+I suspect some printk in error paths could get problematic.
+Especially if they involve direct writes to a non-trivial console
+(does that happen any more??).
+How much stack does dump_stack() need?
 
-> w/ that, please feel free to add:
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
+> Wild idea: as a first step to test the waters, use smaller stacks on selected
+> kernel threads and disallow direct reclaim/compaction if the stack for the
+> thread is small?
 
-Thanks Barry for the review.
+Or if there isn't much stack space left?
 
--ritesh
+Isn't reclaim one of the places that is actually likely to exceed the stack
+limit because it is unusual and won't be exercised at most of the kmalloc()
+call sites?
+One you get to the slow bits (especially ones that do IO) it is unlikely
+that a context-switch to a special worker thread will make much difference.
+(You might need to boost the thread priority based on the priority of the
+waiting process.)
+
+	David
+
+
 
