@@ -4,108 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E67CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 06:20:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAF5CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 06:24:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 576CD6B0096; Tue, 23 Jun 2026 02:20:23 -0400 (EDT)
+	id 691826B0088; Tue, 23 Jun 2026 02:24:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5009A6B0098; Tue, 23 Jun 2026 02:20:23 -0400 (EDT)
+	id 668F46B008A; Tue, 23 Jun 2026 02:24:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C8546B0099; Tue, 23 Jun 2026 02:20:23 -0400 (EDT)
+	id 5A61D6B008C; Tue, 23 Jun 2026 02:24:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 093E86B0096
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:20:23 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 779A7403D0
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:20:22 +0000 (UTC)
-X-FDA: 84910177884.24.39C9421
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A6E83100007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:20:20 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m2BM3w9M;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of imnotamilkglass@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=imnotamilkglass@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 31BCC6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:24:27 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 999B3403E8
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:24:26 +0000 (UTC)
+X-FDA: 84910188132.19.0A05B87
+Received: from mail-m82155.xmail.ntesmail.com (mail-m82155.xmail.ntesmail.com [156.224.82.155])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 8FA7A80003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:24:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.155 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782195620;
-	b=zSJ9kSbNytstNn8dxr2vVYU6PkRt8dK9yGslIXvO/Dh0uJgPdN81Aw6/MbZ9TfXO1hP0ah
-	uNhciMl0fpftZHdg0y8ipny5TJDd+fMAgKLXhC3TEnk+qYTLbflwoSIEc3NJU+WyKu+JQc
-	Ifk+roS05F/C+NBMEdqzw7dOOZlsik8=
+	t=1782195864;
+	b=EzyKcroCfEglcY97Zt82h1NvyEK3DrNbX+QlCMm4peXftEvhl7yy24lgu+AixxSXkUvPwF
+	F1OaQo1aWY5LuVjQcAKjIIqOAfHSetc5ibqsa/dqyNqL1Gi7VSZJLWf2NubYT2sRWfMWCq
+	7kPytFDC38e4hSiYDIpnoQNaR46W+3k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782195620;
+	s=arc-20220608; t=1782195864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=11Q18joXZirXmCzPw0aVBqfPmaFFMvws43nEK3ke8us=;
-	b=eMH6BnF0jI5YkZ4XwoMOR8mNE8YdglHJ40PrITImAcANorDUHYLIg7wqmMaXxsABuozpwf
-	pKLNq1xpPnfhNiizi3elrJre/73y1Sy3fgnhYm6lk7h/zdz2vSo+BqMuS9bROHvrN1EIDI
-	auRaLhpIJjL551SfMTv7Cpej/CQySdA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WXZ+m0J7mLJlcZTcCfhAFmRBVRmZaP74+AwuC+iH42g=;
+	b=k44Ac4k9ADl+KWb7CSZE/QFxsNK7PKbJTKAcThT9eqUxbj8saZ2JJcG1T4cxL1jM+Wluvr
+	vmMn7WrWtV/HJA3GbqGwa2XcXX4mH8KdL8Cvrl2yxQAP6ELzixRyUtD6K4ezwJcGO+r6Q7
+	XGGqG5Ti8yG8606pbBA2eZv2N24DFQ4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m2BM3w9M;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of imnotamilkglass@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=imnotamilkglass@gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8454c5a280aso334275b3a.1
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:20:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782195619; x=1782800419; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=11Q18joXZirXmCzPw0aVBqfPmaFFMvws43nEK3ke8us=;
-        b=m2BM3w9McQNY3GtL5PJ66KZKQ39SfbvrctKLAfcRwjfPKuWZCj/wXrWiH6uMo3OCYc
-         E5SOt3Kor9A2ckUhAgHo9lxhbGfUB6mkiphj5HqCbw7/Tn9eyOnCdS7CjZp/beu7QJD2
-         VdkHS2Pa7tBVIBNS0vYCRdUAFarmCvN5V04mz6BfxOIZJCIWqQDQZPT+OkZmSKFT3e5Q
-         Ahun3UA2X0lB3wiPI7kqfpsNab8pWo8kK2nUF0P9BKc5hLVzpsWLg3DOak/n+YJ0pISg
-         EGxwA1F3S+kQHmZR96FOiltfh/h9blLLyJZ8Htoxwzn+XTHh5o1sA1zQYFeH/VYi8UA4
-         NK6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782195619; x=1782800419;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=11Q18joXZirXmCzPw0aVBqfPmaFFMvws43nEK3ke8us=;
-        b=TB2uOsT04XYrhVd8DJahFN3qDSdwT9C3B/4jXszyUFdlNYgyjfiASKs8NmK/N9Akwh
-         DvWIRkK+221AjrvHoRCfh4Kk4nBnaXujTeH1qjNIwq7QEXSdgCdJooJoa46Z6EAqmzNy
-         zSIbE6mPdHwQHtEC1KKk03choXs0vWEgaGawq8Gd1llJCej2C6RtBU/MHp0iCDejJAxI
-         couewJS/2KZ2pHf24kLkQx83VfOgfNq/PYaV1v0tNV29ICfGu/+9w/DVtp+JhaVe/JRZ
-         O5ysVW3yiXAd6hT1x9z24XujVZoGQCvrkEG6/8hYHF9XYzHR5AKhSyaJ/X9G8t6Tf7UU
-         xMBQ==
-X-Gm-Message-State: AOJu0YxEJiGVVtnPsBHkBsayvUaLD3NHAc4K83/1SSEkS6wMz22oM/tE
-	kbeeSKBHs690xdmRtPLnzgcWV6+P7/hdF6//YgGnTd4CZbx8MYMpRaOHrUCVlUYnzFk=
-X-Gm-Gg: AfdE7cmqHiwuAe4TjZiwCSlvdXTaGLVD5X9Dt+9GZSnIfawhcWQFNN3adRJ1VvQ1wBm
-	SEmY8Z+RwqSfWhHxqUvMzEyyIPjJvKPkTT+2BRmoEchTMntNug4Z9ckSZb5i5W7JmldNrj9nMQe
-	oKcrdMnFt1dXB27I2RUHkulqJFCqAGZlmXWDfdZkz7qyVcLrQUUg0VfbqBaetEcwHcd2oQm3nxl
-	tRcoYwWDNXfKW38xI4lsULN63vWCFpD7sC+ai2SgfJ0hhaU0dyxyjSj2t28lZUcCuaFT/YN26GU
-	MvWmstWsQlE90W7J2mfCJz7DCVs9QvrBF/dd+6gjh3VNwDowegXURDaAcjvMAQHKk8QiPkUyNGJ
-	9NhCyLmeP50x6H3xe/oUAebNoMjAgq4egQkONn/PphJmwoAyHorpH9SUlLgi2+LVBNtF//ALcm+
-	5dcxipWz3NiMUfaTTKF4XUrT8Cggk=
-X-Received: by 2002:a05:6a00:94f7:b0:842:446a:4cb5 with SMTP id d2e1a72fcca58-84591a0e8e7mr2131312b3a.0.1782195619270;
-        Mon, 22 Jun 2026 23:20:19 -0700 (PDT)
-Received: from Louie360.grammar.local ([138.44.161.233])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ed9516sm9467654b3a.57.2026.06.22.23.20.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 23:20:18 -0700 (PDT)
-From: Watson Wheeler <imnotamilkglass@gmail.com>
-X-Google-Original-From: Watson Wheeler <git@tazy.dev>
-To: linux-mm@kvack.org
-Cc: Watson Wheeler <git@tazy.dev>
-Subject: [PATCH] lib/maple_tree: add missing spaces after switch keyword
-Date: Tue, 23 Jun 2026 16:17:12 +1000
-Message-ID: <20260623061730.2024-1-git@tazy.dev>
-X-Mailer: git-send-email 2.47.3
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.155 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn;
+	dmarc=pass (policy=none) header.from=easystack.cn
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1bc5a41bf;
+	Tue, 23 Jun 2026 14:24:16 +0800 (GMT+08:00)
+Message-ID: <b5b68a98-a947-4135-9ac7-22a9db11d99f@easystack.cn>
+Date: Tue, 23 Jun 2026 14:24:15 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 3/4] tools/mm: add page_owner_filter userspace tool
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260618035750.3724613-4-zhen.ni@easystack.cn>
+ <20260618072103.92397-1-lance.yang@linux.dev>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <20260618072103.92397-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A6E83100007
+X-HM-Tid: 0a9ef326a2fc0229kunm09b7638324d840
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZH0lDVhhLGkxNT0JJGU4ZSlYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
+	lPT09IVUpLS1VKQktLWQY+
+X-Rspamd-Queue-Id: 8FA7A80003
+X-Stat-Signature: zzhekntmxdf84fdjuoeir1q1auragnf6
 X-Rspam-User: 
-X-Stat-Signature: ygwx1zqw86bdhf4zi1aoiq536hjijisd
-X-HE-Tag: 1782195620-103097
-X-HE-Meta: U2FsdGVkX1/y5Z1PIjb3IFTYRYbAmw9sf1NGvFzNYO5+8nBxvEiph8x0hXamtiFdy4JXkbtmODk2WJO8e61PWjAoNz8uNv4RCXwoF8MyM2mMTZCbDBEh2XPMoqeLBujclw6pWNkYz9TFPYPlx7+aAQice0c+6TqVmrjBeL9qBRXFdKFKH6nTM8eJfEbBJuvJqYq9KkmcWnBu5AGFQDV8MJk2ASfeUQByQ7PRbmUS1BzBBQDlUomRLMOlwazDL2/TNjoIs31gFsPP1DRlb+h/JcCBlbZFH6SeVQtO1SztCT3vm7yKxKPzQkN5UlcnCy9lcK5BYGZ5GWtzs8cWXXlzMGI+ZAUSkhKzrblmXgNu5d9eNir55tAqgxjO5+GYGL7HQ/q/uQtDwFF6iOnnru0QCalZYeEmbvuDjN6eYqc3DOqK+ZUJsQbI+sWRkMDpE3s+lfE29lvb+HKvUGsKWeB6eCVWlby+6aPih55SA6iJKs+1jNg4p6F5/akaNRhlKUlCAVtTMlFpaMeK+R+j7Sq0tqRGuVnFF/7Ud92kBpPjsYPu3J9VtmMLHnTqqEMQKxLvsNGwDtnhj+hWaa3pHds0Yar22a7Yb/al0XlASh3TCZCnu22r3Gmlk8S//LTUH4FEEDGnefVM8IEN3sefnH797u9SRDWONimig4MW7gwzK6+vbIJ5vzHuZ3w82AUm9BMKengEP+GtCPV6g4cRDiGd/YpfHOBN2EmYLVGSiCtEkt4viSg38DE8cRwUsOriS4ptkX7uB163mXL9x4RVwWiLpuPsq/sGlQ9DJ0aaA/TsILPhcKY0vUIyOCugtzDjVILt1AMhGRgcOBak9LgFo9TDmBLChZe0m5V44Lx2awWsZcgdJDLoZpo0XqmkfYOhbaslvdnXXeU+4fLkifstsJ01+uYSs7+Oezs/721xDVXitTsH9aGcZEMdDve5qhtIURD04l5ndrdZXLxjnyvQ3+Q
- U99FLbyk
- tDMzH7Fj9JXcG0h3kGU/36V9bV3UA+/s9+ZETfyHtYu1RXWAMBXlEWJlUW2so4vsXjZtd3s+rvk+yZjVzgmBg5rtYd2X6yJT2qvL123zb6HHUjvqQ6lWh1mfg9g/h1lb6R67JahGYDae4PpdIyD6rAEl7yUxcr6sKebeh6/tR4KxaXDlxP7DKn9+FBsQiB8lXNzOLdmYvkiEqZNOUhogdIXZtTrY9hZbnqRyUuiGgxuow20j2ycuoMc9mOE4vzhujrH4+uuJt0ePmegN09IhjSykAbE1GMYMK8nwgV0u7w5PH2f8hB9ZJvB2FJcDG+pUVIudYnH+7xTF6yykS0GFKpITcVjYtxsxZMJgnR4U/SFka0ybYylrrSvAp/jrz0INmvSnmXNbw48R5kkU=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782195862-631347
+X-HE-Meta: U2FsdGVkX18Cg5QuFZheLaqGs6ZZrXr8wJwj5sBznpyCVYIkks0jdC+wPq5r0dtF0l3lXl2YI5LqFozTW6HlEo2YCXNnqooyITa3W79L6+M8iGIiyQ+aMMZvDe7iTApZCuD+zkw8bBiFiPxVc2Xs7hirHP+VD+SVu4eBe39ckpBvMNKdJK80x+6N/0fVpkFRfLcBSMe1qqwSpIEsRBO1sWjlsEWi78ZfG4qMbFg81Xy1U0/5f2XM6ncVgGC+LQwdtCJiBwCuXUeFabfX+X5Op1Y8DkzQiF70SKkg3/qDqcAfADbJdX/LsRKTEnO+o658nBWVbCo7bmtUbNPvbwEwBV1vwZHiGbfxi7FJRTZaUGwpYYJRUhI1RR99yQWuIVZr8XBXFPmm/Ga0ccLLJKrE/qrfnFyeKfVBkc5BPen8FcCQ19ShVdayRtV8AyzK1H/KUFNeAzgqVEted/nRcT4o94y4Wb1o+qtTjvcO1FshnyMcUWEkw7wMrGRrHeweZ4wFKFOGmoDZjbZdb+W+8oS/Vdl5kE5V5dpbKiQtjG605H/qyTFRIKHUbwFflW65TAGQ0JNOy39aQE/ScfioAL2k7EJXiVZJHIVR2mavfGC8+UWRoEcazd/L2NqmhPS9sVkC6B0R+HEfO9rZnSMQrmVtwi04bLqEB8sfC2fs5eSZJcE/ctnTnxHkltvkSA7ksMJstvFVj9Brm9i/tDVgcuTZSJJ+Gz2lyvlPplYvcr/2wyXw8cAT2FNrn1iD+Fts2Gf0Kp6HAonYxiXmKBmYShDr4nVlqP0P5Xf0R4jb6VMvecLJMzh730W8NeSAIYzuxlVIpswtqRYbJf9FPzhqtgcq5uT+jV8hPAfwfVP7G5Pvl0Ble32i/cwiUs8ffgVF6gtG6Kys/21A/UuiejtWCk4kFlMIHfyrlKHqkAZyHNa/srNkPgIsROeKBytXVbGfWVDDwykF7c7hD32PT0TH7b7
+ zQZkCt1m
+ xtWOwWmp2GOzrUl0/TI1hNgR6rVSMWRkuPRLJ/XEdKpNU1c/EAT4m+QFYDU7lZJPSrPv2OEsChWs5yW8umS1MxN9nxN9TDZMBu8pxMCOqWutjyKtdLvmMKeIcqJIRDp6hTD+Sljzjom4B0KOImsuZcDeGi+SSlcqOfp+Cdv6sCbkWRQyi963M+adig44kgqR8YzSjuHuAPRqRQsjB+4t0SVZgnFBmmdYRFYt2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,55 +88,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add the required space before the opening parenthesis in
-switch statements to conform to kernel coding style.
 
-Signed-off-by: Watson Wheeler <git@tazy.dev>
----
- lib/maple_tree.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index e52876435b77..529acc056e55 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -6447,7 +6447,7 @@ static void mt_dump_range(unsigned long min, unsigned long max,
- {
- 	static const char spaces[] = "                                ";
- 
--	switch(format) {
-+	switch (format) {
- 	case mt_dump_hex:
- 		if (min == max)
- 			pr_info("%.*s%lx: ", depth * 2, spaces, min);
-@@ -6489,7 +6489,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
- 
- 	pr_cont(" contents: ");
- 	for (i = 0; i < MAPLE_RANGE64_SLOTS - 1; i++) {
--		switch(format) {
-+		switch (format) {
- 		case mt_dump_hex:
- 			pr_cont(PTR_FMT " %lX ", node->slot[i], node->pivot[i]);
- 			break;
-@@ -6517,7 +6517,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
- 		if (last == max)
- 			break;
- 		if (last > max) {
--			switch(format) {
-+			switch (format) {
- 			case mt_dump_hex:
- 				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
- 					node, last, max, i);
-@@ -6576,7 +6576,7 @@ static void mt_dump_arange64(const struct maple_tree *mt, void *entry,
- 		if (last == max)
- 			break;
- 		if (last > max) {
--			switch(format) {
-+			switch (format) {
- 			case mt_dump_hex:
- 				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
- 					node, last, max, i);
--- 
-2.47.3
+在 2026/6/18 15:21, Lance Yang 写道:
+> 
+> On Thu, Jun 18, 2026 at 11:57:49AM +0800, Zhen Ni wrote:
+> [...]
+>> +	/* Read and display filtered output */
+>> +	ret = 0;
+>> +	while ((ret = read(fd, buf, sizeof(buf))) > 0) {
+>> +		size_t written = fwrite(buf, 1, ret, output);
+>> +
+>> +		if (written != (size_t)ret) {
+>> +			if (errno == EPIPE) {
+> 
+> Hmm ... does this work without handling SIGPIPE first?
+> 
+> With something like:
+> 
+> $ ./page_owner_filter -m handle | head
+> 
+> The writer can be killed by SIGPIPE before fwrite() returns EPIPE no?
+> so this branch would usually not be reached ...
+> 
+>> +				/* Pipe closed, treat as success */
+>> +				ret = 0;
+>> +				goto out;
+>> +			}
+>> +			perror("write output");
+>> +			ret = -1;
+>> +			goto out;
+>> +		}
+>> +	}
+>> +
+>> +	if (ret < 0) {
+>> +		perror("read page_owner");
+>> +		goto out;
+>> +	}
+>> +
+>> +	if (fflush(output)) {
+> 
+> fflush() can also be where the broken pipe is reported, but still treats
+> EPIPE as an error ...
+> 
+> Shouldn't we ignore/handle SIGPIPE and treat EPIPE from both fwrite()
+> and fflush() as succes?
+> 
+> Cheers, Lance
+> 
+>> +		perror("flush output");
+>> +		ret = -1;
+>> +	}
+>> +
+>> +out:
+>> +	close(fd);
+>> +	if (output != stdout)
+>> +		fclose(output);
+>> +	return ret < 0 ? 1 : 0;
+>> +}
+>> -- 
+>> 2.20.1
+>>
+>>
+> 
+> 
+
+Thanks for the review.
+
+The SIGPIPE handling was indeed incomplete. Without ignoring SIGPIPE first,
+the process gets killed before fwrite() or fflush() can return EPIPE, so 
+that
+error branch would never be reached.
+
+I've fixed this in v11 by:
+1. Adding signal(SIGPIPE, SIG_IGN) at the start of main()
+2. Handling EPIPE from both fwrite() and fflush() as success
+
+The fix ensures that when the output pipe is closed (e.g., `| head`), 
+the program
+exits cleanly instead of being terminated by SIGPIPE.
+
+Thanks,
+Zhen
 
 
