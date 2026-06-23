@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA86CCDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:49:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65EC6CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:52:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB20C6B008C; Mon, 22 Jun 2026 22:49:06 -0400 (EDT)
+	id 450246B0088; Mon, 22 Jun 2026 22:52:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A63486B0092; Mon, 22 Jun 2026 22:49:06 -0400 (EDT)
+	id 400CE6B008A; Mon, 22 Jun 2026 22:52:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 951F46B0093; Mon, 22 Jun 2026 22:49:06 -0400 (EDT)
+	id 2F1926B008C; Mon, 22 Jun 2026 22:52:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DA686B008C
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:49:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BEE21120363
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:49:05 +0000 (UTC)
-X-FDA: 84909645450.05.07524B2
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 48ACCA0005
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:49:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gsAoquKE;
-	spf=pass (imf15.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 054206B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:52:04 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6EED0C1A61
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:52:04 +0000 (UTC)
+X-FDA: 84909652968.29.1ACF239
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D641640006
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:52:01 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IqwTSbJw;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf11.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782182943;
-	b=E2GuU/RDUSUSjKLKaNJBMIEe05gmbX0hy9JOHGcOjCYz3gcpCNKSMTxEJROA+kaSMVXwbS
-	RlGb1N0tbTNn1j5kfUjg6aZNsUBSNy1x66j+//T5FkDjEo7LJ2C10Ci2V8GOAmC5Qk0j0f
-	xUS+Nfa1wcoNfY4iLnWQ1eWGbcjHkdA=
+	t=1782183122;
+	b=wOSYrs5DJmgeWVHaHuzdP3zIIptbE5EA5PwNLMGKi7v+b6H9vy8gnMgQQOXw0ZnvBpnEvf
+	vGGTJHMHg0MCA44GjQGLoMymn/9NVTs3/iGu9kugCFEtSSMMtvrWFOh8/x7ST5rpmKKfjg
+	HTNrbtcmQ0PHxXN265T9TYvegvTEKgA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782182943;
+	s=arc-20220608; t=1782183122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b5glPhRdv6V52efTc0oro6Kq52Ms64agPxwuba/GrA0=;
-	b=6lR3yhrSr3YU1ejDlEVb76tjUN6iy2GZPWVxGY+DK/1m2dlYF5PkSeNG6WQpACVXpDxu6/
-	U8PsB/3Lsa0fxwinpaxhjrzZLvFtccGymdPxhjeFQzU30fyPWWHxh4zV7WfSRYcAu731k2
-	wvT7hrf/WctbIi/kAmnNAkdr0RKmT/s=
+	bh=+7Q+NUzmhIUzhnPRRS4RG9zk8PnTg2ytEjKZBaLaKYs=;
+	b=z1DQO8kNKocqGLV1T2jejyNYSaZn2VZCN+zIU7TiwszGwIoK7l0aLoiYP1dSJ7ErjFdjNi
+	9Tu1uhaVYwtg5yfbdOWilbMFEShx3TmVAjTYK55jzte+34KTBntGb2pQPTUKODWr5Y+7OB
+	44q2lrTZqunclAdtNOBlJkAziB1+cro=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=gsAoquKE;
-	spf=pass (imf15.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=IqwTSbJw;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf11.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782182943; x=1813718943;
+  t=1782183122; x=1813719122;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=ArTZKS9r3TPMaQgQTYCYM5ecuBaoroMU8Bd1y5b6InM=;
-  b=gsAoquKEoSxtQqIuPBA1KqqBy3d8OOkV5E8L148SkFZy57E/daXlQOzO
-   jYFZJzvnMjvRH+dCFe1Ewge7dxrYHuPtGRMhf04+w6oCX6WqHJaT8pMg8
-   +830DbdYOgt6Tca6T67EeniZrKcGfdPR6yFY1UQm9O98E9wIaG9TEJgvQ
-   5MH55or04RncACuXYvA9IKSu4V7Rkz3Zf5w/yzHXQEoTxJHgt/L99FzbQ
-   S8Py+oURuuruaOtdZwhPg5EcDJaYlP8Ijznj1fkRmzIR8X7ofj0ufETyQ
-   1LOeBzHchvbuxG0SgaHWDcDX2cB5ZDFKKfou8JST9z/aIdTubCtOJI/MK
-   w==;
-X-CSE-ConnectionGUID: 5DXbpyUQSZmY248O9vGneA==
-X-CSE-MsgGUID: YXXAT0OOTsyILBBhwxYbwQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="108462688"
+  bh=fjVDDQxNLoarUNyLHXojlIytkjIfDGYDPBQea8XedRo=;
+  b=IqwTSbJwMmhEafpktjWr2QNVrV0BBxPFftxRbwwes6oNcFbc3/Al+kFs
+   VqgQVeF0pw4b35FRD3tYdIotl5vIbQj5dGCEMJr4o7V7jjZcr8Ehkt9qp
+   OoLP6VnEhQRL6jDNiDMtX9p98mwij+wjOSSpn1m7wV2PPoIzzXN6pVIqw
+   jE3jpTbAVKN/0iARUy9BmlTUjtbgash3BLJi7CzH0DzUGUtsl5V89GDGQ
+   +PSj16OI5XarZWi+4yS2orjXTGqSIa9REZ/7059j6NXwveTAJr6nq1C0v
+   /suMPnsR2YtDyEyPlgKZtLA125wZHU9LUXMRnD2IKq2sltD73Zzq79IOu
+   Q==;
+X-CSE-ConnectionGUID: B/UgFLAsQhWVL5z466/7Lw==
+X-CSE-MsgGUID: kTgx3aFoSxq0/5+H6QvtxQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="83010796"
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="108462688"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:49:02 -0700
-X-CSE-ConnectionGUID: VyLcM+fpRMG4zA1uPD/clw==
-X-CSE-MsgGUID: qZ1vfIQ/Rfi813vIpp5Oqg==
+   d="scan'208";a="83010796"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:52:01 -0700
+X-CSE-ConnectionGUID: DX/WscZvQoiIRwAKC5Kyvg==
+X-CSE-MsgGUID: axAQd5q8QI2J7SjgRPnb8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="249521046"
+   d="scan'208";a="254374133"
 Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:48:48 -0700
-Message-ID: <47e32f37-ba46-49d0-919b-8c0889afb0ff@linux.intel.com>
-Date: Tue, 23 Jun 2026 10:48:46 +0800
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:51:47 -0700
+Message-ID: <a21bfc05-787e-4cd8-89af-8579357e6a12@linux.intel.com>
+Date: Tue, 23 Jun 2026 10:51:44 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 03/46] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
- definition to x86
+Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from
+ CONFIG_KVM_VM_MEMORY_ATTRIBUTES
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
@@ -113,20 +113,20 @@ Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
  linux-coco@lists.linux.dev
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-3-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-3-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: icp6n4aoicgrobchtfot76xjmny4aknk
-X-Rspamd-Queue-Id: 48ACCA0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782182943-51755
-X-HE-Meta: U2FsdGVkX1861/GERQbVYHflqD8q+d9teZsbDLycNOvzJCt8om0hqkQf5uFhAfyRBZWF9MsviB6WS7zrjP+hcNNQ/06nO8kt4XUpsqUp7qvAZ+gFXrme7/+UPcuzoooCUFiVjmJOapeoU3RMGTbHnUzB4umZ9qYUhF+SNgiTPFnBGsBYoH78QKp8uvIvzkiLxjER7U8cZIYpIhEJ6qnmGieHuDFQXqhfYdqN6X6Elxa8FGs3vTogV6F3+xbsl/uADD/yoiUTA6kxJ0CnNLrXtWkbx28CJ0njDavs+gF2SrQ7KBpGTXCtZsR9HMp+AFuxiqFD51HHYGixN2ZqYGKHGFMDlFf0VFnUL4+QCvcs05evNKfSz6LsvOMM1XTtu72yvrxiDuFM+2U0EAdgH3EMTisJhsyF0fTmLQyXDQjSON2M0vjWxkdbO7r8NicoHhPDJRNKRh48hxBqX7YOWSWUZLoMslVBR49U+N40EqIb7D1SPtTgx9jlq1Uqhi0Ox6E3aR3A6n93cS6L9n3xvxVSKQexM7WcunMXR7p4aZlQ/+FKX80PAXtw322cVpTYbU1aLA64nvJt3UIrMg5NlMsbjzxjt8nLml2TtI0EaTTz65NmY9MfLe9XJhdFwPmde5fIK/Zt5LqKjm5iKjJSSXrq/YcXRYEveLbc7cFKfoGLv2+/n4o12R8nB1Un5k4ibPJiusoK/Yiw3qkDU+4jIh4ZB1spttlt/xFEipoNkXnoQ7mEQWvbrRYBMy681g2zsNekwDtEiTSOo9X42Wam0z52v5/nV89wE2ltit08KmJzOfSpApqQ+tH9248zgLEk1tIyWi3WH4xmDG3qgSNYr0stONMnNPwCfumN4Ev3+B83Bjl1lvBTApjMexjG7v6aIRJNa3HK4nOLz9gB5NoT/FFBH4OcP1F1kN2BMKzVyg0V3v0dyVtTBgS3aP92Dj+jIdeCyKcR1bdV/BuF4IKjAXi
- AYeWTQOI
- 1PaYQxM3n4Ad5Nb1gP5bEUCvSqdbbTdohFgh+ULHO2EMheOY9a5mRDaGALF1YU/Ufa2tJLg6N5sYnchG1VpNawDp2B/eXUJxTy4pBn2fhJZRddPQV2hU3g+aDEQV9/xDCLG/3pmclNSKSsBYRhsuxozZDVcDPMQW8lDysWa0PnhLdTUgSspo5uF1Fy+qJXjc7fZi+HTkznq6iCncPt51ocmFsRdzDGxbv8sAVbbrK6jNDA8WEMaNVBCoVBJKhoL5K2TGNhXV9j/h/gAjKCNCSZ0mp1sSGhcyZYNHuZWsuwFdf50HWOY7Cf/oqcge4dib3dQuURlQELLlPYI8Yw5ObDlLmyOLFanzcwfV6
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D641640006
+X-Stat-Signature: h4ywamjnwoexw4hu3ayjoxgrg4a4kase
+X-HE-Tag: 1782183121-814316
+X-HE-Meta: U2FsdGVkX19m9vZgg5f4EE/IFKDjtDrkGHxQdJuYVOlTFgFyU9Zyggso+ZPuBjH8bVIulTN4M4ws/++9Di6EY+c06rXWmJYx/fuUV8aZl7yyvw3K/OoCkJ53jU2FMmiIaHcyXps/cPgZD2RYw84WtgLEnBUag/gcELjaF5VCspj/7HxHp31l8zP3/zWQAkeaMBfbCL6aQEbyMVs4xrgP/aewCd54A7HstlnqBXVSkbQSfPKKgEVRRdgVgQeHDez9xZt++zVCW+Q0dtm7i/A3rcfIHPoFjQD1PoVqNJT+Q/fxGuLi7tX96acXgg/MjTQZsG1PEdCu3FsRxv8l3vEnf1KN3m0c2ZBbp68KNzcyvKSvDrHkIfXrA3M4T2utCh8y1WRg58wtNmBEi99Jjp3NRFdKJ6CWUDd7H61yQo6eb8QwNFIZFCC3Ga6ISZ4/Jtf5hSZdoJogS6kqgr1ZVu7FjiFf9fa9os5s+pHo3fmwtcrd/RpOmk6bfiV1GzqpQdguVoXOyMQ2r6ooyd9mOT4qMOpPPRHZRS2Z8JwDW/cZTVzMFK3cBDfH8p3vvIBph/wb2CM6jMKEnCL9QYDnF12t/2ZlU009prv1G2iFC8+SMR5OFhoBZeK5uyzO9YoQmvk7B2xogslEcmw91HZpFSv1jjlHyLThWgLU53f0L+VIRx5I4fLTwFhCRPISw3CZmmR8UcHA+kbP+V+64lMy2NAtLnbufif291GaQjDcjaSA3tpzkf6TSOsq83w24iv+PgFZmGH0/8aXhabxWzASoxO9WxvnmhaG2ahA3F/fnW1A38UZe7pf2oaw/NqhM9DK/MCvUnUlkI0U8nl4/K67NVn8UQk9+U6nV8ZejKxiTvVg3oZDZjwcKtXZSCi8/oSkm1narVDama76F5cN1fUE2EDlsfi/aub6nFgLlW2V2lZIiZeEB05m1wE3nHH3pTtSMSjZfCUZcsgWq/1QGEPGSNU
+ oprTHAcd
+ GjWE/3IGI/wqd0sK5diLfdudt3kgYMlv9ag2LJ0X/H2POpuI2VI3iyOwPDSkelWPa5Lrbv/q03J8Q0vni4I8j2qDn/es9p9GvtxOAnwUTgQM+y8TZK0RtfjUbNSUo14AU66fwtTUQP2bHrnFsRqbGDAlmU3jwSYfeq2fi/9WfiybgMgpkBjSXnCNThME35p0AoJ9NKvUsKLColCV6ozj1lx1rYiWH3y+KEVL0QR7fA1AT66idznGOOuOczUQoJU/8E//jxWMA/wOgwEyN6Uo73kQ2WmLXsK0mzSZs/XCVpOTi1FlkAuNIWSO0s00ccUVp7rr8o47/ZJGnZKD6ZsIrf0joBA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,59 +137,60 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
 > From: Sean Christopherson <seanjc@google.com>
 > 
-> Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
-> from adding support for per-VM memory attributes, because tracking private
-> vs. shared memory on a per-VM basis is now deprecated in favor of tracking
-> on a per-guest_memfd basis, and while RWX memory attributes are on the
-> horizon, they too are expected to be x86-only.
+> When memory attributes become trackable in guest_memfd, the concept of
+> having private memory is no longer dependent on
+> CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
 > 
-> This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
-> user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
-> Now that guest_memfd supports in-place conversions, it's entirely possible
-> to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
-> 
-> Leave the code itself in common KVM so that it's trivial to undo this
-> change if new per-VM attributes do come along.
+> With this, on x86, kvm_arch_has_private_mem() is defined if some CoCo
+> platform support (or the testing CONFIG_KVM_SW_PROTECTED_VM) is compiled
+> in.
 > 
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
+One nit below.
+
 > ---
->  arch/x86/kvm/Kconfig | 3 +++
->  virt/kvm/Kconfig     | 3 ---
->  2 files changed, 3 insertions(+), 3 deletions(-)
+>  arch/x86/include/asm/kvm_host.h | 4 +++-
+>  include/linux/kvm_host.h        | 2 +-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-> index 26f6afd51bbdc..24f96396cfa1c 100644
-> --- a/arch/x86/kvm/Kconfig
-> +++ b/arch/x86/kvm/Kconfig
-> @@ -80,6 +80,9 @@ config KVM_WERROR
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+>  		       int tdp_max_root_level, int tdp_huge_page_level);
 >  
->  	  If in doubt, say "N".
 >  
-> +config KVM_VM_MEMORY_ATTRIBUTES
-> +	bool
-> +
->  config KVM_SW_PROTECTED_VM
->  	bool "Enable support for KVM software-protected VMs"
->  	depends on EXPERT
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 5119cb37145fc..297e4399fbd49 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -100,9 +100,6 @@ config KVM_ELIDE_TLB_FLUSH_IF_YOUNG
->  config KVM_MMU_LOCKLESS_AGING
->         bool
+> -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
+> +	defined(CONFIG_KVM_INTEL_TDX) ||	\
+> +	defined(CONFIG_KVM_AMD_SEV)
+
+Nit:
+Vertically align the defined(XXX) statements for better readability?
+
+
+>  #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+>  #endif
 >  
-> -config KVM_VM_MEMORY_ATTRIBUTES
-> -       bool
-> -
->  config KVM_GUEST_MEMFD
->         select XARRAY_MULTI
->         bool
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 201d0f2143976..d370e834d619e 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+>  }
+>  #endif
+>  
+> -#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+> +#ifndef kvm_arch_has_private_mem
+>  static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+>  {
+>  	return false;
 > 
 
 
