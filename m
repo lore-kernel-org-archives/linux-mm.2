@@ -4,130 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1157FCDB46B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:15:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72E00CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:16:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3D616B0088; Mon, 22 Jun 2026 22:15:19 -0400 (EDT)
+	id 2551E6B008A; Mon, 22 Jun 2026 22:16:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEF226B008A; Mon, 22 Jun 2026 22:15:19 -0400 (EDT)
+	id 22C536B008C; Mon, 22 Jun 2026 22:16:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB61B6B008C; Mon, 22 Jun 2026 22:15:19 -0400 (EDT)
+	id 142D66B0092; Mon, 22 Jun 2026 22:16:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 805BC6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:15:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E7EDD1A0392
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:15:17 +0000 (UTC)
-X-FDA: 84909560274.11.1BB9C54
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D911818000D
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:15:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="KKtU/piF";
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id E67286B008A
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:16:12 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6ECA91A0392
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:16:12 +0000 (UTC)
+X-FDA: 84909562584.10.999C796
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 76EDA4000B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:16:10 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XP9pTHwD;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782180915;
-	b=uIbjxx+VF4r8fC0ERVbINuNNzs/V2czTbhQPVNMgs/4fVhqY2uk/ZV/yLUYulLJClW7SXH
-	B5by7xZO1MSB7GFNZ1FrweRg8dCMYaaQ6a0XW0n+JBndw5AWpzRPki2I9NgqgswaJDyuKr
-	GsKtoagY82Dbw2Plpy2iW4lggoyimkg=
+	t=1782180970;
+	b=Ir4RIBXe5UIQ24s7GI0+m+ModWA50lu3f00IWJeFxLWeGMVhhii3qDB5JeuAL8ymb1zj0y
+	sfPrGgfTDcFTrGLTzb2mPpp7hD/PWpppyJkzj3ytTzEJy2BDWJOOJe4fC03n59kd8Cig91
+	M8DiCoYmAKbVGw7qj1z1qBelseqnF48=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782180915;
+	s=arc-20220608; t=1782180970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cj4f9gMpklQdXLuSCT4Zp45J83xP673/kzsesCTgNUo=;
-	b=Uc1F3/KmTXzGMnCDfGkgVNva1314lF8sPo9zMr14X2pufN28ZQ+HdA6r88RUgg0imLB5UN
-	Ex/7sDUR1US6tLDL8P7x9bK7BxgSuJxibjl9FJ0DNgc2BXeSJdC7H1oG2I6OZKYw9Bt59s
-	hC8GeLx87Y5cFD8PmJWsCxbbG7kFlvs=
+	bh=ORG1110TKZO9YaLb3hwjWsJ78jK9FF5h+lt0diWED9Y=;
+	b=T5GWxHD9dRPsJ0IxHl/uG4mQ1DtzHqwMPN8Uph4mHffpWzSLCZnJa/gZF7UumMpAYDzwlv
+	RKIu91Bph91sKYZnINGv+Jk6y6fY9tccho599iE/Un2isrt9/THwtXzBCSI6YvVBtBjw7q
+	EX6ecovadX6t52KY6yaew+5e44daJF8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="KKtU/piF";
-	spf=pass (imf24.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782180915; x=1813716915;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=d5AgO5tMzxYFDBtDlIOi/5Ij485uiyqm1kvbZMmKbDQ=;
-  b=KKtU/piFvlSDY++3wXxUxifIW7klPxFG6kivnxP8Y8dbuxJ9nniqSvw/
-   g1QGmSA6s5zfKt/XH/ZLS9nbXWyqoDJwyWBEjiteYYAwQvInRA2ioqmF8
-   ycImOfbKMFJLAMTGaMHYMxILsxA0dMIB6gji2CGU2X28mpTSPA4Y7c8c4
-   MmBt8BEyCn2S6cY+k9CYjF2SDZSsSE0Al3cQTAXAZut5IyOxdu7r/aDhb
-   GK19+QCFJVZ1tMoVz9TF6P8w6BxHFHeKQ2U9ocQMVh8opUvsFhoes2FmX
-   398lIao9xxj7mGMKVLk6V23EwflUNFRX8Ul4t52J55xtQ789P20ra6cl0
-   A==;
-X-CSE-ConnectionGUID: KqxPz9ppSBytW9t8w5tr5Q==
-X-CSE-MsgGUID: f3U667OaTaq+o4ZCHUljVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="100467944"
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="100467944"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:15:13 -0700
-X-CSE-ConnectionGUID: tGc2qhuAQciVN83fjDT2Dg==
-X-CSE-MsgGUID: 2ZnM0rp0RyKyL7OQapoTMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="247044499"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:15:00 -0700
-Message-ID: <cc2fbb22-e70c-4f97-9c91-ac1f4dfbe48a@linux.intel.com>
-Date: Tue, 23 Jun 2026 10:14:58 +0800
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XP9pTHwD;
+	spf=pass (imf11.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9284044451
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:16:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DAB1F00ACF
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:16:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782180969;
+	bh=ORG1110TKZO9YaLb3hwjWsJ78jK9FF5h+lt0diWED9Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=XP9pTHwD5gI1rie9x1qke3VNK/muvum94K8NNGS2ZMK54STe2BUBuLXVUXfRjPH73
+	 4Hlj5UP7dXLZf36+X++F/7Y5ao0IedlvQWGMOQzD1OKXrRoDv6UBmohd+pLVhtamhg
+	 G/+SUxjqqhvaDubmB7A/u0did3yllQW3yIZ+Nr1Jz6pQYyTxld5U3N6aujTl4UVMHp
+	 9ZU7Bq8wouzCdVUUezp/WMhyqRzfS/3g57JUSe71KT/n/tAyokKKJBjslwUFinf+a6
+	 jocINOArtkObwpQ6R91w0PLxa0l0Z7D/aWt2RG4oe6BOSa8oLA/4mTm43iWE9/qLdM
+	 Z5LuGHy89V1MQ==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-923220bf1d5so154261485a.0
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 19:16:09 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+hs7zc66ViyitXrZBp65IGctBCzlSL/mA2gvamOKuVi3JNalNwJZTkUvR7eXu04DzQX6tciWsVXQ==@kvack.org
+X-Gm-Message-State: AOJu0YzbDYT3VBeRMNQOnY1tZRqcx+YWkDpmlTdQbJto5MsoP19wEgaY
+	DjxxzH6g9E/vhbf5cxMlB0RJO+ZRF74zincqcrHS24/6uKoHYMhM/HaaqgGoTmQAhXYSgZSAbFx
+	GT30ATnpyOPQrz6aff5MC4QUQSKHN9r0=
+X-Received: by 2002:a05:620a:4455:b0:91f:12a7:beae with SMTP id
+ af79cd13be357-920900fa471mr2990686585a.24.1782180968833; Mon, 22 Jun 2026
+ 19:16:08 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 01/46] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
-To: Sean Christopherson <seanjc@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, tabba@google.com, willy@infradead.org,
- wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com,
- pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org,
- liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-1-9d2959357853@google.com>
- <aceb07e1-77bc-49b6-a932-5fd9b5a21727@linux.intel.com>
- <ajnjTJdQKD1Kz3tf@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ajnjTJdQKD1Kz3tf@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D911818000D
-X-Stat-Signature: w4csjayupych5wbn4mo7k8gp6rfah8wj
+References: <5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn>
+ <20260622073703.79258-1-qi.zheng@linux.dev> <CAGsJ_4z34ZRu_RKkaZ7EgTWMOxptUjZ90WJyNoJrXGNjzutxnA@mail.gmail.com>
+ <19710ee5-8e1c-4b13-812b-4b03ca34260d@linux.dev>
+In-Reply-To: <19710ee5-8e1c-4b13-812b-4b03ca34260d@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 10:15:57 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zC8jMNk0twWQd+oRWCzZTm523K-KgzDQ6TkjbzPq4MTw@mail.gmail.com>
+X-Gm-Features: AVVi8CcgxGHg4osYX-YWIWEqreagag-ELHwB1D_7PjRMnGTDlB9P1uVVdJMh8og
+Message-ID: <CAGsJ_4zC8jMNk0twWQd+oRWCzZTm523K-KgzDQ6TkjbzPq4MTw@mail.gmail.com>
+Subject: Re: [PATCH] mm: mglru: fix stale batch updates after memcg reparenting
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org, 
+	muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782180914-41567
-X-HE-Meta: U2FsdGVkX1/SErtqjlRnnn9rhfQH5BdRpFBXrYmpH9b73UISqOk05XUA3Q7rceJi4MwZkMugsnUB8hlPZXRc2YwHod9Cx6l7YmQp22HX6TWYOy3N6ovtL67Z7jVWzYlSTzXLqxPeRBPFE8QOT3K2vowYK2YJmIkV4ma1PgtyJw1G0tzM6X8feuufSf0IvASha8WyoVWkbRqPrcXl2X+o+EY45UrzjTkXfb+83OtgSOfHQt6oxDIhuckWvFvLV8Bj+jEkFWpRjX6Vynm1h52kHwqXyfRXcsAHgIE4STeuP1yQl2UuunOCuKwezlzp4Siq/ExduHaaJftTZW1W+egnTlyT3f8h67VUfjkPOHFQ8/FapYMzIPYfMLSJQOKlqc3wtevmTgxRm9CUEpsQUqmzeY46GNRrTyIK/sN4ExauL2D86HpMuAL1hh80xXW+nTWlSgaEvNUM9cdKjkUHb0jBz8GBj0B12U/qe97+jBsQoBFseyS+zwaLc7ar7zlFZjAAjmdzGjK5g5Smri963kXHtdUZJPCMSqZTe3YV+imlRWnmY8+b7AdOmjkfdvV6uuGde/rbCLs42Rhl4jYS18pcIAUV7NTzmsYzg/3pO65FHyKZu3KqTfQbUD8VcbMEcMUHThEPFrgMeVN2FXMN9Gsj8ShdwudFTIFLe2sdbIoKBuSpDM/cVC6FDJ/F7IMaPrqYd/Y3Bq1gJgTlwu3vMCK7vHjvdQ33pPcaACFCtyssBg/URLF1aT73NUiBoHaZpZTncAYF3ubKN5gQGnwLL70ZakQ1Q3PKbTRbveLsURdHOyIX3UkTvtSRGNVni+gpiFkhiAlLEOI2CRsyyaJvsi6ptvYXzd2nZ5fYrg/r8I07odb0anpklsz2IRFBHOr+HHkrHseksBulVRS/d4U0sWDzcQEYW+5B+yeUexohqMp3Ntf8XimngFWbri7G6FOV1TZZBBF0GuTzgqNpJufCglI
- nmz7d2Tt
- e3ZfFVcn4ilr4eoifLpnb+gIpoQfFj80HbhKrrbtjjzx0VSyzHWVH74B9+BcBuMFdbQm32Jfaq0eKXNLfpTUsKoij9E+O0qK6n4/dwXnXlyMdYObzAvCd2MpDynqFTEtoMK7r/U2wNmaFfYEaXz91plo9FtD+jA7E06jjB2g6OJNU/SPE61uvmUcmd3V8ehMtCgt7IEf+ITI4xV8SLZTuIvqPjEHNdMIABj44yGhJ8cO7yITFiOPwQH7uuK5xIS8kMlclXoFG7WonWVpXxaNdLkJwDc2JJpkVScao7JtpuezfQm4=
+X-Stat-Signature: azxyntbfesd5cj98bcnw553335b33w1s
+X-Rspamd-Queue-Id: 76EDA4000B
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782180970-417616
+X-HE-Meta: U2FsdGVkX18fUOQRWtia6bpqxV659RkKbHvoLmwtVpWphTgbNxy+lNHMi3XZ0DsinS3EdYxBSh4Rdq89ma7KOHcuL8B9LMBBCYpQHuosAVu5yYYiw+oQT4716Y5lxUCwkUCYEEUXbekWXb2WT+/UwO4UQLVPojHjx61tGd9fYwWsKMgrqWJDJLQQHSB/VV9dhX4L2wGOqkl+PiHp8spbVCVOBa7mMBVHkLpNKTCwqzmVWFkUo8FXvm1j5TJL+p9BT/fRzno5Fn8kiuFLJjSSiYFJRTsFxgemUUBqs8jBui63v74htDNo3jD2EoeCQo8AA4DA86bXEU0O8wUxugg460h5W/ohqYBA3Cq7ZsuOo1FNxay3mmJydV/FuNFNWWBIR55zK6ac6A/5oV/TLgXBPtYyzpM+ga3yD94BD0xVj6sOtA0gtxb+v+xf3iJLkNZOIYW94u9ljbHw9DM8FbUmCRT5pTRHBiweLB3SxQi1AbsSbsczkmmcA+V8jjP/BxS1It3vWss6Y0TSigezvSSKNJrrtyQRSa1fF0FdQmfl5FmLlVDKJ2Y11DtBkEKb0HLXBF2JKnfuIcA690+yVaJNIAI5Aa8xTavqmJ7oYenFgxcArmmC0SI9dmmiPHhsQAckUs+ckVPTiOTIdYn4wXFAzdGhq06s+RumA5QRYwU5XiNswqe1xOJoleVQM+Re1q/wKVQwUZgxB7Hykiyp5flEULfBSKclcp1/7jv/RdJNoF7A7D81dspf793aLJF4TFgY3avV07pjZHew63eInMrBMiCIMgyh6wvs0tcEJ9f4P8NCA2E8rHbL+a3mojyXtLs8qdANiBiM3RiBxe4pb0hjLHZss9QGLDlHveN1WPJNCAPOcjC0xQ4Y5cb0h+G2JR5H9lrgblGdKFuxrAf0swmCHNmK4CSJY1rP3rHYAoZ19A6G7WOuje2LupWpOJ3NR/xUs97D4GGRhvuT901SUPE
+ mWV7ae8r
+ 5FPirEd8Q2woyBapU/kFIIGIjFivifUBBLvBLPI/jRssWp8H54/XxNhxpu6ZJqUw0YwRT6jeuLxDi0S+JEFZQrkLf7Qtj5iYBo/QvBuzJAtVyqDrPS9SFa9ZVvmMNXQ9km/9Bbq2O8AhJhnguwoBzgO9voA7coR2pGn9dny1JnkRPH+ilLZ4ZXDu5GTWt6HGqTOq5xa+p6VfQ9XKir0+qIDvpbms/+TZ8/8t8XQVGslvnOWL/abdY3V9iE+o+A/4VaeOZ+sYNJPf1YOj/57+a3UK6QtO8HwoGyWoZCh6DsBDiq7ojZbIh+fvRcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,60 +109,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 23, 2026 at 9:58=E2=80=AFAM Qi Zheng <qi.zheng@linux.dev> wrote=
+:
+>
+> Hi Barry,
+>
+> On 6/23/26 6:52 AM, Barry Song wrote:
+> > On Mon, Jun 22, 2026 at 3:38=E2=80=AFPM Qi Zheng <qi.zheng@linux.dev> w=
+rote:
+> >>
+> >> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> >>
+> >> The mglru page table walker batches per-generation size deltas in
+> >> walk->nr_pages while walking page tables without holding the lruvec lo=
+ck.
+> >> The reset_batch_size() later folds those deltas into walk->lruvec unde=
+r
+> >> the lruvec lock.
+> >>
+> >> The page table walker can run concurrently with the memcg reparenting =
+path
+> >> as follows:
+> >>
+> >> CPU0                           CPU1
+> >> =3D=3D=3D=3D                           =3D=3D=3D=3D
+> >>
+> >> walk_mm
+> >> --> walk_page_range
+> >>      --> update_batch_size
+> >>          --> walk->nr_pages +=3D delta
+> >>
+> >>                                mem_cgroup_css_offline
+> >>                                --> memcg_reparent_objcgs
+> >>                                    --> lock lruvec
+> >>                                        lru_gen_reparent_memcg
+> >>                                        --> reparent child folios to pa=
+rent
+> >>                                        unlock lruvec
+> >>
+> >>      lock lruvec
+> >>      reset_batch_size
+> >>      --> child lrugen->nr_pages +=3D delta
+> >>
+> >> This can trigger the following warning:
+> >>
+> >> WARNING: mm/vmscan.c:5867 at lru_gen_exit_memcg+0x26f/0x300
+> >> RIP: 0010:lru_gen_exit_memcg+0x26f/0x300 mm/vmscan.c:5867
+> >
+> > I can't find 5867; instead, I can find 5828:
+> >
+> > VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+> >    sizeof(lruvec->lrugen.nr_pages)));
+> >
+> > Is this the warning?
+>
+> Yes, I just copy-pasted the warning log from Peiyang's report.
+>
+> Maybe the description should be changed to:
+>
+> This will trigger the following warning in lru_gen_exit_memcg():
+>
+>         VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>                                            sizeof(lruvec->lrugen.nr_pages=
+)));
+>
+> >
 
+Yep. Can we update the v2 changelog accordingly?
 
-On 6/23/2026 9:37 AM, Sean Christopherson wrote:
-> On Mon, Jun 22, 2026, Binbin Wu wrote:
->> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
->>
->> [...]
->>
->>>  
->>> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
->>> +{
->>> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
->>> +	void *entry = mtree_load(mt, index);
->>> +
->>> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
->>
->> If the entry is unexpectedly missing, returning 0 means the attribute would
->> be treated as shared.  And then in kvm_gmem_fault_user_mapping(), it would
->> allow the userspace to fault in the folio.
->>
->> Should gmem deny such edge case?
-> 
-> After several bugs this year where a WARN_ON_ONCE() fired, but was entirely
-> insufficient to prevent true badness, I'm definitely senstive to making the "bad"
-> behavior as harmless as possible.
-> 
-> However, in this case I think we're just hosed.  If KVM treats the memory as
-> private, KVM will incorrectly do prepare(), incorrectly allow populate(), and
-> will caused missed invalidations (though I suppose __kvm_gmem_set_attributes()
-> "only" lies to userspace in that case).
-> 
-> That said, assuming SHARED is definitely odd for cases where guest_memfd *can't*
-> hold shared memory.  Ditto for assuming PRIVATE.  
-
-Indeed.
-
-> What if we instead fall back to
-> the "init" state, e.g.?
-LGTM.
-
-> 
-> static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-> {
-> 	struct maple_tree *mt = &GMEM_I(inode)->attributes;
-> 	void *entry = mtree_load(mt, index);
-> 
-> 	if (WARN_ON_ONCE(!entry)) {
-> 		bool shared = GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED;
-> 
-> 		return shared ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> 	}
-> 
-> 	return xa_to_value(entry);
-> }
-> 
-
+Best Regards
+Barry
 
