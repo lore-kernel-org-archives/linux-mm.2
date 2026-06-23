@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2C6DCDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B02CCDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:46:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D4176B0088; Mon, 22 Jun 2026 20:40:24 -0400 (EDT)
+	id B520F6B0088; Mon, 22 Jun 2026 20:46:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883EB6B008A; Mon, 22 Jun 2026 20:40:24 -0400 (EDT)
+	id B02EF6B008A; Mon, 22 Jun 2026 20:46:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 772406B008C; Mon, 22 Jun 2026 20:40:24 -0400 (EDT)
+	id 9F4176B008C; Mon, 22 Jun 2026 20:46:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 466A96B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:40:24 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6EF78D29D
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:40:23 +0000 (UTC)
-X-FDA: 84909321126.18.99D2E8D
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E0A6F40003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:40:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OReJsq1O;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 737356B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:46:30 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 04A6140331
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:46:29 +0000 (UTC)
+X-FDA: 84909336540.29.C938837
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3CC67A0003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:46:28 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fpHGXV+b;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782175221;
-	b=x4Zia8GSUaCCkRTL0/ocFCOE6domSkVVWYT3MLxHVUXiLQRxMP5VfAJBJ9rMWu7ACij9PI
-	p7qn0yKB3ZLBjCNd2UX2s/Ua6et0lM1NyQ4LIAA4hAgIN1H8HgkcS75qYMf5PmGayAUZyc
-	C0hkHMjHlIhC0aaNDIL8g/Wjhoh7uV0=
+	t=1782175588;
+	b=YLeGAR5jk69T5tF6FAfoE/pY9Rm+NuM8s7gvtyq/IzdSB+qOCMnzKLP2j0SbL6twPu5jtf
+	/Ve7hFdkOMB+Ln2vL7/1ZQ4gNpwg74tczcEatNur0w9RAYcY5IU4Lc4ewQGOvx67sSFAMF
+	rotkNOP8/VnIsNEp3oxY+2EBXb7oFKM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782175221;
+	s=arc-20220608; t=1782175588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n2f1vIQGRwaVINXfqVMqUzfca2k+PegWVGEvoxiBw6w=;
-	b=jddB2LrqKFkFsrCbfO/18pl1PeYv23MWuhhtrvC7WcCiwG0heJqQWJ4uqC0mUg3DeEj013
-	IFi379ssrFShwDFkWg5gVf+XY0YRhC5q21JnQTEf9Da+u4tCwo/FHpufuTvtafigTEFlwS
-	B9A1Yo9rND5UHXzfKkIixXD30ofKL+Y=
+	 in-reply-to:references:dkim-signature;
+	bh=XlkqxyqOJoqvIllh9mUeQc2L3VjewKUXQAdYDGn19nU=;
+	b=O/jPkmzOL+0yxggGtP1MHxvqN6wPkEeOzXE5ujD/FD4i3daNUDyg0izECPXL01rkYwTsCY
+	D9LDGeE0kCp6aGD1zTzOT2haZNSoSUuJcSx0D2YvkKui5IaqqDe6m3HV3yxu9POswkFYz5
+	z49jv3QOZTBCLQPLq9nv6fAosD497O0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OReJsq1O;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6a0e075cfafso1452729eaf.3
-        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:40:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782175221; x=1782780021; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n2f1vIQGRwaVINXfqVMqUzfca2k+PegWVGEvoxiBw6w=;
-        b=OReJsq1OiXd8APU7eo3cd8iYzS+H1v2Ppmn140qaFSSStLpARsoUgH6p8T7oPORCmA
-         J8EH8DAcSLPvSrLluhrLy0yPuHDI3wIvlq6vh/0qvWtSKD0ZmlpbaKZ5XdGtmvo5k3Xz
-         NbEE7pKON7L8DkA8N4G9CIzlAzKea4hOdebM3eWqKBX0YrLmnNp/dKE1R4G3+eJtB48u
-         wCVdxWVL1/kshkJFABaclH+x02yzJ79rQYmVTbUPkWIyDlVIVtqzm0EoQeVR6IZRY0pP
-         GVikBI9ouyIRdFYktNiF3lDgVzowHzmqN/E5QBJfCe0GMJyGMUd5PZjiaZWZtP5rWewa
-         buUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782175221; x=1782780021;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=n2f1vIQGRwaVINXfqVMqUzfca2k+PegWVGEvoxiBw6w=;
-        b=BAPlvr/GoZssaBioBOtugrlMNlOTK12HywMZlDUgFwmWfFUoJMMDcRRg1GJlae+qYb
-         /gZDoPg5FPeTRlrWB68EjH4mAutKnf+R9az8bMAqA6MiB17lDh9Mv9HuQm3jHO+vLvCX
-         jWu2VEK0R4oeUQ1eqFIph4ZkvfP3p11y77s8Yv0yBU8IuJcSPW2qdSvRpb3IpvXpA15Y
-         YbyPTnNIjXbBpeS+mn/at4uO8HMh1rcBf6eXFkg++7Dajz7g2CAd/pKsI2KQxrMNcQAd
-         q+YwB8X5/lNBciZi/ickppyBBEDCrWYWHwkeSU3Wk46nQJRL9GswnGrQeq3rR7M+XE1M
-         zy3A==
-X-Forwarded-Encrypted: i=1; AFNElJ/f4KOumF6T/6Adaka9SdeR6RgQOev9MV6R+keUP5ww+36EEgIyfkxuRxajShvfe2h8FOponFNK0Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy3MonpEyqSv8/Hcn4XyUMf89v+tUaJ1YdrTHASxY5VRQ8rb2C5
-	GqypJJsDMpSHtOmjiOTPmIeAlkQzimSRXIkXybCg+jEAFkLtiqSu4GmF
-X-Gm-Gg: AfdE7cm43QTKl5zjsVj18Ex+a0g7X9jkzVtlW3V8f8+UEPmZDeaIBFz0eRpDWKsB2AW
-	obDohdwcY7ms/cYp8eQl4C5oCiPev7rfyuWVzRJdirhwLoedULHYYk9S8LDA8igsP/fbNx9iUqt
-	XbrcylETtnym2t4MjuqpnhV+pqyF8Z9RweCWC905jFhaMtjaRb58ukKPHnq0qCxG7px9skhOXK0
-	9Fy0v4E2TFbupzbesMzjpccADdYWmXsom2mTztYLxitfCmb3GIYgadHqEHsB5z+CFEXxqlXJzk2
-	hj9sxAXKoYbjzuYdJpo0gTziqQUpT9NwhuZtJYEK4z3K57Dx53I3uneezq3nzi54FBZsJDWbuyN
-	Mamk/d91lKcFB4vVZs2vFFd1bQ2g8ML6TQxTIEIBldlhnK3l8ZycFidhV1oQ4odHa8ZfDck5WlH
-	QRsyzYmdB7xi5lBhoiVlWK9uGqHfXoy3R2o76gNwxxHTG3poujbtX4Dg==
-X-Received: by 2002:a05:6820:16ab:b0:694:a1d1:f363 with SMTP id 006d021491bc7-6a114b59217mr673249eaf.15.1782175220586;
-        Mon, 22 Jun 2026 17:40:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4d::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472f0475e3sm7140080fac.16.2026.06.22.17.40.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jun 2026 17:40:20 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Youngjun Park <her0gyugyu@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fpHGXV+b;
+	spf=pass (imf15.hostedemail.com: domain of jp.kobryn@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=jp.kobryn@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782175586;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XlkqxyqOJoqvIllh9mUeQc2L3VjewKUXQAdYDGn19nU=;
+	b=fpHGXV+bOWANXRUf4vFTJWaXsRwbL6mq5UVW/e2SdaLe860HN79yRDQ0c4NRJ851uGB9KZ
+	oqCNbaDImHw9u08HRL4lY237DBueGOycSHhY6+++pidQlRl0zHnF8T/9alStrooX/nhIOq
+	BN3Qa2m/1b/fzSyjeF7OxJ18ZV1+gs8=
+From: JP Kobryn <jp.kobryn@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
 	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	gunho.lee@lge.com,
-	taejoon.song@lge.com,
-	hyungjun.cho@lge.com,
-	mkoutny@suse.com,
-	baver.bae@lge.com,
-	matia.kim@lge.com
-Subject: Re: [PATCH v9 3/6] mm: memcontrol: add interface for swap tier selection
-Date: Mon, 22 Jun 2026 17:40:17 -0700
-Message-ID: <20260623004018.1864121-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <ajnIasdb6j6yDUdy@google.com>
-References: 
+	ziy@nvidia.com,
+	fvdl@google.com,
+	linux-mm@kvack.org
+Cc: shakeel.butt@linux.dev,
+	usama.arif@linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3] mm/page_alloc: use existing highatomic reserves on the buddy fastpath
+Date: Mon, 22 Jun 2026 17:46:00 -0700
+Message-ID: <20260623004600.113347-1-jp.kobryn@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 4ez815xz4jnsoyfgkk1rmjniw36wdyit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E0A6F40003
-X-HE-Tag: 1782175221-210315
-X-HE-Meta: U2FsdGVkX18f9CGbCOZ9dFaoWEFkDIEcN5LSIa04QWKYkYREsScKkmXnT3wYv5Q3AJ2748Ka91d74zBUX5gjB4RrFzZkRpO4gOk7T452kH6lenTX1eggAbchKDJ+9aumvp6Jh9sGXyLJRX7QZIS9JKEcWWMGdTO0TOGjEXYbgr5dAHucKhfJZPbbAJtuDkfovKkH4NN3H1HS7zMZ2X6CXjCvROcekoUK3i8c6+Ck7ZQQXuFPJdFPYcV8dBJtmZwwbp8BBsBPu1Hcf24mkWHNdtNAyrduQf62PUbOCVwM22chrPxFcc0RfAXNeLV6Ak2fJGjQBhzi3QfQcyiY8+ndEJUO+sybKDhKMEk7amB/Rc0kJXk83H6DmOJ5ubEXSsyDN46pvj7/1+cqzZSZoGmH975t8miQANeL7RYMdP6xj3ejQoMl9YvaoCkKKWT7j7ku6IH5Cg82f4Ozzj2TXgx2jbw9OQCdNIIDZblDG/KFzkY34aioNFCA+AqDC8KIuTJhHT7LAPg8IHWVJMRwOWpZ+FUyvgf22+CAHF6Ql/nhnhAHNYODrmXOgUWkFUfgEJyd6EjhbcS3yOE2GlGZY7FHg3KIet3sodnV3jN3pLJ8ygun/1/ES8OrPCyaAlwPGzXxgfm6Fis1IR8LTp8qJWHL+fNlrqY7ljqnnyDzla3Gn+pnVnGLs33UNX2jD7WwoBqxbUmZWmWUAyl2dCe4uEMK5rzA/Ho9GZVH63fW45yu2ZCxNMfv3FFHRrtRLI8JDbVvVyN7SS80nBFn33wD56U2rlFiXTxqak8Fb1z2JZtxu26vGZA2me5WEtotHUmjIGXAYiR0L+IHJra2+hmBb4K4xLKDpwH/iLKyHz70WzHpe+Ptk34jsFVnYZflD1zZzGwqTNc0PRYB2Xh5kIWh7cZ0iFK81aYG5o8CzZsF5yPuaB2Zd12zxkPZSg4exvpIB+vM3q6zp4Xk2Or2ir+ujLq
- r1WlmAFv
- lHnMD2pVe1JdoJaQtEtWqLtbRVO9rRGoPNmeKzyA8EaHb8IGHWz1BnLm1eS32xqITKZE9ZCNgrn3d5SLWqKQd4i3MT8jJAJsXFcieYw3rbCPM40E7FrEuE4rebnhaZQR0T/vyFYcWUs/Mxqy6XDxAaQ6QVlkvWYEbIX7+3rB8o0vklMzO1cI/UZDWLOe0Yz4zc34u/p6juAMGPYC/LyKtouqap+8N5fkKX9ArbhC06QzzYUJvR2gIR3Em2dBUbcuFBWsrzzApy9FKwtVRUl3UpErH2LyqYPF1Ff52CmR6+dzF6xSyt9xQRDZEye3AL6aMTue2gBnav8zThqd278Z573nhMpk3gWKRBx+h26yegpcf6mgh/Lho7xEP9uS4mls4OwdfYfMkOqitmYLFWmK6WWaq3N/2nzCLL5MRheGbF82Zor7tu79jnDJZ+yuH/xYoQKK8tjE7SWYBFH32G/Lx+mb5LMoWA7uAq+oPkbW3lCSUrZLEA74ik4Wb4sksuGLPN3crBy1sTPOXw2q83f9QLbKsT7HTXDivyRcy
+X-Stat-Signature: zhb1ipocfkxru8seidd1usrhmjbuhuwi
+X-Rspamd-Queue-Id: 3CC67A0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782175588-792078
+X-HE-Meta: U2FsdGVkX1/7aUW/eINLVuJXHlZSWkAEVI2xu5+opaH2zSfMXn1ttVR2pX3fC/Sa4m1oxiDkAmRQGlbXOtBsNkzF9LPCRFFUMDIEUDSQzlNqFa1LnjdSfU07uvhEDCOC+PVaM61AdjwnHN0SOX+GDoXXBKvMF3TXjBVlIfJOBhz7DGC9dmpUxXqPbvOp4mVvJzwAVDo1sj69QGgx2wtNGGDmR15IAQ5Ymx85d9xOwvaJgcE+DDo5ebsHu5kfmNa//NTX5oPXI91NEvQqcwJJ7zF1vp09bhSq7gIxokEAiq16XAzGj/x6NQLoWqId73Q1iePq2U5NrD2GR1piXiYebgwHi3bvLnscHwpSl2YzuZgCoG6L5Que0BRJPjae5UyRmftZ4MiUCRzNMnzUdcHKiKL+Pi7DzNOtiItaUiDcruvd3mjcyHeNVyQSrwLmfCELmVA5i+x5RrJU+2I0n+MzSzpEQB1h663y4w2Oz6Y9og0l7F91Rt17P7S6nV5Rl3N3Bka9IlTqgfCrbGuT5HeLjVlFWGICCcGtpY18UTyx+CB93JhWXx//NyD3Hsj2RCR5QN5jmPnoV3S5MuEYaz9XO6tGvqYFYh8VUyB0PV68EfsCMCStYVOO48bW1+cqFJzbK+vrZZp/jRBi9WsGuku4YMDhBeOgFN6edq3DXQnM+J1+dViPtdSPqJr4QTq9XtgF+Z1dnkJ5x9dlGzIKHSaC8uv1RElYulM8VlQodIgcc8qZ0I6OO8ZxpYSVbzfq2wKZAxXrbAly0XTm6trfkCNrb12AYxidxpuYoNhYYxAS7JGgLYM8A2cYbhXGYNaFqEfCkcztfmNG7urpgmdgjN5DuHSGZgOr7DoyO1AHxwWKsQEOHNXSi1QZ0I4P+ZVbL9x8gslNrlAJ9ZqgzlCIf5JIDaep+TLoBduisna+CryqUjgX4HLVHnG1KNBs4xEIj/Mpsjqi/SBxvSSKBNIcKc1
+ lGaKvsL5
+ n3njCB2B22ImFEiyiwWxZBsXieje2l+l9pIPDwhm+6Gqcubl5DOO5GmjVn7GNwN3KDpoyswQzdBFll7QHtnXNTbpcEwcszzRm/TZlNfDfC3WnZA13mS1gcKYlBfF0Rwv0mB7CB9OB1o59z6cguHbDS0hrzyUKtOheY1qaY3qf2n+80qtw32J6Gp3qOpXqwQalRbhUfQhjGc+DYO3G4pNIewgr9h8S3X88oyJ4YfvG7rsHQ1yJNmQ2qzJ3mYeD4APZdUiEdAzF3iBhyFkngXQ4AE0vqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,64 +96,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 22 Jun 2026 23:46:31 +0000 Yosry Ahmed <yosry@kernel.org> wrote:
+ALLOC_HIGHATOMIC currently provides both access to MIGRATE_HIGHATOMIC free
+pages and permission to create new highatomic pageblock reserves. This
+makes it unsuitable for the fastpath.
 
-> > > > If that is the case, I think auto-scaling makes sense but can be a bit
-> > > > tricky, since there is no universal tiered ratio; each workload will
-> > > > have different tiers it can swap to, so they will all have to calculate
-> > > > their own ratios. Tiered memory limits escapes this difficulty since we
-> > > > assume all memory can be placed on all tiers, so we have a system-wide
-> > > > ratio : -)
-> > > 
-> > > Hmm I don't follow. It's also possible (maybe not initially) that a
-> > > memcg cannot use specific memory tiers, right? I am not sure what the
-> > > difference is.
-> > 
-> > You're right, I was speaking more to the current state of memory tiers.
-> > The majority of the feedack I received was that we already have too
-> > many memcg knobs, so I just opted to make tiered memcg limits a
-> > cgroup mount, with no ability for individual memcgs to tune their
-> > limits or opt-in/out.
-> 
-> Right, I think this is similar to the approach taken here. We have a
-> single interface for per-tier limits. The main difference is that we're
-> allowing 0/max values to disable/enable different swap tiers per-memcg,
-> as there's a use case for that.
-> 
-> Seems like for memory tiering there's no use case for that yet.
+However, the fastpath can reach rmqueue_buddy() while MIGRATE_HIGHATOMIC
+reserves have free pages available. In this situation, the allocation can
+fall back to other migratetypes without trying those reserves first.
 
-Yes, I would agree with that.
+Allow high-priority non-blocking allocations to use existing
+MIGRATE_HIGHATOMIC reserves on the buddy fastpath without growing them.
+First tighten the criteria for reserving pageblocks so that growth may only
+occur in the slowpath. Then allow fastpath usage by enabling
+ALLOC_HIGHATOMIC when the GFP mask describes a non-blocking high-priority
+allocation. This logic has been factored out from gfp_to_alloc_flags() to a
+new function gfp_to_alloc_flags_nonblocking().
 
-> > What do you think Yosry? Would it make sense for us to be able to 
-> > tune these values? Personally I think it makes sense but just wanted to
-> > make the basic features merged before I went to push for making those
-> > knobs tunable.
-> 
-> Right now we're not proposing to allow tuning swap tier limits either,
-> just enable or disable a tier. My main question is about the default
-> values.
-> 
-> IIUC, for memory tiering, if you set memory.max, then the limits for
-> tiers are auto-scaled. I think it makes sense to do the same for swap
-> tiers for cosnsitency. Or am I wrong about the memory tiering limits
-> behavior?
+A UDP receive workload was run with free MIGRATE_HIGHATOMIC pageblocks
+available in the target zone. Before this patch, the workload did not
+consume these blocks. With this patch, eligible order-1 allocations
+reaching the buddy path consumed existing MIGRATE_HIGHATOMIC pageblocks,
+with no highatomic misses observed. The workload did not grow highatomic
+reserves and NAPI page-frag allocations remained healthy with no failures
+or order-0 fallbacks.
 
-No, you're right about that. Sorry for steering the thread to my 
-series ; -)
+Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+---
+v3:
+  - remove ALLOC_HIGHATOMIC_RESERVE and let ALLOC_HIGHATOMIC keep original behavior
+  - use ALLOC_WMARK_MIN to identify slowpath before growing reserve
+  - factor out non-blocking logic from gfp_to_alloc_flags() into *_nonblocking() helper
+  - dropped reviewed-by tag
 
-To get back to the question of how the auto-tuning should work, the
-main question is to which ratio we scale the swap limits to.
-Do we set the swap limits proportional to how much swap is present
-in the system, or how much swap is available to the cgroup?
+v2: https://lore.kernel.org/linux-mm/20260617234958.150339-1-jp.kobryn@linux.dev/
+  - decouple use semantics from ALLOC_HIGHATOMIC_RESERVE
+  - update changelog to reflect above change and reword test paragraph
+  - adjust comment in PCP path
 
-So if we have 3 swap tiers A, B, C, with 50G, 30G, and 20G capacity
-respectively, how much should a cgroup with swap.max = 10G have if
-it is limited to tiers A and B?
+v1: https://lore.kernel.org/linux-mm/20260616191420.52556-1-jp.kobryn@linux.dev/
 
-This is what I was getting at earlier when I said we have to calculate
-different ratios for different cgroups, based on what tiers they have
-access to.
+ mm/page_alloc.c | 44 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-Sorry if that doesn't make sense, please let me know how I can
-elaborate!
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index f7db8f049bd2..7330f22e3f8f 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3247,10 +3247,11 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
+ 	} while (check_new_pages(page, order));
+ 
+ 	/*
+-	 * If this is a high-order atomic allocation then check
+-	 * if the pageblock should be reserved for the future
++	 * Slowpath (precarious) high-atomic allocations may reserve
++	 * a pageblock for future use.
+ 	 */
+-	if (unlikely(alloc_flags & ALLOC_HIGHATOMIC))
++	if (unlikely((alloc_flags & ALLOC_HIGHATOMIC) &&
++			((alloc_flags & ALLOC_WMARK_MASK) == ALLOC_WMARK_MIN)))
+ 		reserve_highatomic_pageblock(page, order, zone);
+ 
+ 	__count_zid_vm_events(PGALLOC, page_zonenum(page), 1 << order);
+@@ -4473,6 +4474,29 @@ static void wake_all_kswapds(unsigned int order, gfp_t gfp_mask,
+ 	}
+ }
+ 
++static inline unsigned int
++gfp_to_alloc_flags_nonblocking(gfp_t gfp_mask, unsigned int order)
++{
++	unsigned int alloc_flags = 0;
++
++	if (gfp_mask & __GFP_DIRECT_RECLAIM)
++		return 0;
++
++	/*
++	 * Not worth trying to allocate harder for __GFP_NOMEMALLOC even
++	 * if it can't schedule.
++	 */
++	if (gfp_mask & __GFP_NOMEMALLOC)
++		return 0;
++
++	alloc_flags |= ALLOC_NON_BLOCK;
++
++	if (order > 0 && (gfp_mask & __GFP_HIGH))
++		alloc_flags |= ALLOC_HIGHATOMIC;
++
++	return alloc_flags;
++}
++
+ static inline unsigned int
+ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ {
+@@ -4495,18 +4519,9 @@ gfp_to_alloc_flags(gfp_t gfp_mask, unsigned int order)
+ 	alloc_flags |= (__force int)
+ 		(gfp_mask & (__GFP_HIGH | __GFP_KSWAPD_RECLAIM));
+ 
+-	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+-		/*
+-		 * Not worth trying to allocate harder for __GFP_NOMEMALLOC even
+-		 * if it can't schedule.
+-		 */
+-		if (!(gfp_mask & __GFP_NOMEMALLOC)) {
+-			alloc_flags |= ALLOC_NON_BLOCK;
+-
+-			if (order > 0 && (alloc_flags & ALLOC_MIN_RESERVE))
+-				alloc_flags |= ALLOC_HIGHATOMIC;
+-		}
++	alloc_flags |= gfp_to_alloc_flags_nonblocking(gfp_mask, order);
+ 
++	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+ 		/*
+ 		 * Ignore cpuset mems for non-blocking __GFP_HIGH (probably
+ 		 * GFP_ATOMIC) rather than fail, see the comment for
+@@ -5299,6 +5314,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order,
+ 	 * memory until all local zones are considered.
+ 	 */
+ 	alloc_flags |= alloc_flags_nofragment(zonelist_zone(ac.preferred_zoneref), gfp);
++	alloc_flags |= gfp_to_alloc_flags_nonblocking(gfp, order) & ALLOC_HIGHATOMIC;
+ 
+ 	/* First allocation attempt */
+ 	page = get_page_from_freelist(alloc_gfp, order, alloc_flags, &ac);
+-- 
+2.54.0
+
 
