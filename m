@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63BDACD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:24:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2756CCD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:24:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FC366B0092; Tue, 23 Jun 2026 05:24:23 -0400 (EDT)
+	id 47E616B0093; Tue, 23 Jun 2026 05:24:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 05E8E6B0093; Tue, 23 Jun 2026 05:24:23 -0400 (EDT)
+	id 3BA8B6B0095; Tue, 23 Jun 2026 05:24:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE2606B0095; Tue, 23 Jun 2026 05:24:22 -0400 (EDT)
+	id 2F5E66B0096; Tue, 23 Jun 2026 05:24:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C85136B0092
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:24:22 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5275B167004
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:24:22 +0000 (UTC)
-X-FDA: 84910641564.07.A032EBD
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8B1A3A0003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:24:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="N/gish/x";
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E95896B0093
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:24:23 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6A2AC140418
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:24:23 +0000 (UTC)
+X-FDA: 84910641606.04.C3A965A
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A290720002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:24:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cGZ6v4VY;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782206660;
-	b=NPZyJaeWsT9tDkkMAx/0Gt5kTuktFSFKv6mp0nt4AWHRd+fjfWGl4awgDe7eCWxlgqRxrq
-	DnYRsHshanr4Z/nuqT0e9iAWKTOFGJJEUyvcYOdTF1UQouBM8wcvj5SSIjNq48nw+7GQwB
-	EXN/wJmAvKHlq6xgAnGVnCWK1hSGEDI=
+	t=1782206661;
+	b=iOk6p/MG6SWVPBtEnvXtyKwPTQwu9lGbqmPTkkEJhseclih64x8vCeI7MyvoZh+gnUnY9B
+	2qzLLrUP3FyIfaBiqXPjqsLxHomsWZOZdE5XbvIR93B7SiwYYNW7YNGUOR+b+eCw2lL7Gd
+	bqC7X6tn184rJT+Ixxi2l/YQ2XJo/SU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782206660;
+	s=arc-20220608; t=1782206661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=SZ7maC10bAKA2Vue+KAWspxqEt2HCnYBjNNvBiW/T3Y=;
-	b=0sBwXfXwFNWhZvqTatlm4w/frPRswCK7Ds0LS/7sHDw/7WsF/QCF6mPgRtqznH1FaG2ft7
-	QzXPnEp/rQLIp+c98W70IOyfEMFRCE5N7Sqw6rcnxFMIC7DgMuPwEJUrWkODNIROdb3v97
-	rHg02VFJrpZwK+V0D5aHM2Bn7Auk74s=
+	bh=h1js4iTIk2T/KClSyxWwkjP+L1YbVSXomlj6I6PanWg=;
+	b=SQlWNZ3m4hxbyl+atC4ZzDZr9LFILp7knMgT7U1ga+29FEb7dNJfb3aKYOIeabVJEKReiR
+	C5JGHGYB4ea730GkMbq2+CVRsXoFlAI9n/I7MTAtFL3VcEeK7M4hm6/1o3PeA2ilsYwzTC
+	uK4bNFOkvJvZu1bJL0BCOF2yGRUCbGM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="N/gish/x";
-	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cGZ6v4VY;
+	spf=pass (imf13.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-695bba79ae1so1170454a12.1
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:24:20 -0700 (PDT)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-c029505b389so143529166b.1
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:24:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782206659; x=1782811459; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782206660; x=1782811460; darn=kvack.org;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=SZ7maC10bAKA2Vue+KAWspxqEt2HCnYBjNNvBiW/T3Y=;
-        b=N/gish/xMOVNRnav4pTPmSpbEdKrygBJinMHGWkv9IiDksYKL5MtTtQyPF5S7CMIq5
-         hzduCujmT2gJ+b65/bFrZmfa2dY/2WJBEmR9FBX7mBeXgeq4NzbLZFaltP7DD83v4deS
-         BfzGE23nrgw3N1d/ClnmQxG2r8cDoCbOX345htlglzDDRY6CrEuI8ojAknc4YcMzhREK
-         jOawZkCGVDUTYndCtpwEqZ/3lx3mreZVyYOw1fNJD9YzFlqmHcpzU2RemUFMohEzNbZb
-         V5Yr/KitIofVTrV6MsXSRYJIhwuV3M0H27U8J/Jlk4yt7JqgsqZ0I2rodqZO+tqeN9VZ
-         JyGw==
+        bh=h1js4iTIk2T/KClSyxWwkjP+L1YbVSXomlj6I6PanWg=;
+        b=cGZ6v4VY6Irz2DIj+bupJXspv11WWCQnmKWHd1Gio3YOt+wiiSEIbrX8gZ1anDmFoc
+         AGjCJvt31s/RUbwLZcrtZwMrwiN+XPo0/JJVMeyA/e/HB+Tv5YKE/3Ahag1CTzjbHLr5
+         fu+xfro50D20KZjOKnHf19bDLslK46+upOTpBV4jc6k7309zMzvQahcfWe9qO7QkFijM
+         DQYXzDLNRbULpf2F23PILmavvEwpqoRZnYoem/+CFdPTfj4J8eZKUjmMt+2kXyUE3bCp
+         wQYYF1G0L6mbazlH7R/F3d+00OYtrn6xtm6x7mdyMaVjcwnos7poOMYKEnjNY9M1Eglg
+         VUtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782206659; x=1782811459;
+        d=1e100.net; s=20251104; t=1782206660; x=1782811460;
         h=references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SZ7maC10bAKA2Vue+KAWspxqEt2HCnYBjNNvBiW/T3Y=;
-        b=SFrn8Dszs83/FiNs3q55Wv3Z0+RKksn36NAyLMtC9gi+Ot6iovrokH7Uc3fVohgSbl
-         DUUmdxQNvELzLAyC+Zq65z9/kv2eoETWNfnAvMdAWyJyExVLZJmtnOAgADXcTacxOx4X
-         x/eZd3TRNG5FZ80VW3BAEce20+eI2MyBn7TRscsA2HO5aZ+JeZk4n+o+366nzfnU3s7R
-         JZGdQ40kR6OYSHZsmmhrxe4TadZ/JDMh+umUyvu5xLi89/+mvm8PKhreUZc2NdGXd2DD
-         lCqU50PfuaFuqCakze8fha9JSWGHJNBy9Eql8vHULHQ5YNwl7OVWNCcn3WidilJUyvmV
-         Jn6w==
-X-Gm-Message-State: AOJu0YyUxBF9Nl4g4YJcpbSGUdr9BA5o6rFBIHOdAsC+1bC6MgWxw7Bl
-	PGagVquKRNOEEWSJydOKryjbq/+6iELIcLbrtKXjBgTVp8WenAaUijMR
-X-Gm-Gg: AfdE7ckA7phZnpXegWcFNhWKgWgYshP9/SWVJ+MsA5en+YjMkhs5HmbpBHLWiddIh36
-	reVV4f9IEc+IV0ND6JapLoI26IXi+AKxtdrL1xfoXHOard0TJYYtgzCh8gs2sIbVuFYXM3Zffgg
-	4xtg+1/KMHmmEs5GWlTCwOyT7h1GDZqSawUJWFnv0mVDXH+DgquJaZx0Df/OyAbEuDu8eXrXI8O
-	Bh2+fJdFvHOCiN2WAdT625UCqEWVLGJUNpT8/RWK4kBtNbcQQFrnDA3C8buAeSguylpdmaKtE5n
-	aLuB/+TXc62QLnXEkYinjrFgx/tZq860MaGvGY13O3ERApq2bySA7eZVeHjoQeChOak9IOtM6Mt
-	8jHiy5dqUBM2DqH18yp43nMQIA5jta4KaIiOTQllRnMjeujBNx2GDiwg2JperNQg1Msui9eZr6d
-	8txSSKjZ4aLqhFm3Lfs5hwPw==
-X-Received: by 2002:a17:907:c719:b0:c10:bfaf:6f73 with SMTP id a640c23a62f3a-c10bfaf941dmr64850966b.22.1782206658963;
-        Tue, 23 Jun 2026 02:24:18 -0700 (PDT)
+        bh=h1js4iTIk2T/KClSyxWwkjP+L1YbVSXomlj6I6PanWg=;
+        b=aV3pCOT4okljd27Mt4LRBrXuzftRh2tGKqv/G0Te69ZlAwosP6iWNOEOzCT53BKJgw
+         9qCv/Ao/PP3iA10hYIr/0DqUCxxM2l96HHz2spHFyIqznZ2v6H1BQUKCzgHA1JfiZ9OQ
+         yAaNxvp1jfsxKh4V9jO/N7Ze1Ohbvds2vtea8piK4SfTvZVmiaakgmYYfW1dk2seyzVk
+         j0lWxI47IWbC2EB7SDZ7xhYFOmX/BsZmpACIXQdhYn2kCCqDAL52hr7jl1vt1loD6DGm
+         mrsq/as3w1/ksPMyu/IbDHqvl4aE7axh2VSFbc9XbowLy7yGpGKDOF9WWT2B46rJopa1
+         Nq9g==
+X-Gm-Message-State: AOJu0YxlPyPgBDzYZi4KlKEsKNqQllGWhQjvUp0Nej3LC8zZK4jXWp3E
+	/FOMG/crfOj6P9j/snX2OqxmhPh/mfBLkQJ288dduwD6BpJmRrPp9Nu5
+X-Gm-Gg: AfdE7ckr5k85OgpA7cTPHKxT45M/pDJdbJsw6z6ga/hQ5TzotaA9ZKdCF/7Gmzl1nIf
+	zy5v062iecSh1X3ZBlOQMo7mJEu/3S5VaImaKmYFNJ1ftlRVGruupwK34S1bEIInQEd10Qu4MLo
+	Mw3rF+cUQnyEa9dHHRvvcQ5GcwT0uNSyWfsqpLku7vZU96NG2EW1eoQn85gajz80d0ZFQLNdJ8T
+	+wAzrRqcpoTp3F9ilMAd1A9L47BIbpgWCzekAIlmoS7tXgcaT8OGYOWe5nzsZD9f1c9sx4IaOcH
+	lB7GUR6GYXZYSwiy5Bfs+9pdbFvlT/CboN18EEYUYYwzT0ZZadxgCFWKB1a7nZP4ZtK3K4hIMH5
+	f1FZFP0ATSp2BmoxJrOZamyZxGFICYlnQMfVeh777ziN8veDy9xsWNbHVV+cv5FjhXfcqhnhpJP
+	+TYO/O+fhKnRU=
+X-Received: by 2002:a17:906:9f86:b0:c0d:7c31:26a9 with SMTP id a640c23a62f3a-c102faa5967mr165140566b.2.1782206659723;
+        Tue, 23 Jun 2026 02:24:19 -0700 (PDT)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c610e12f6sm499937066b.47.2026.06.23.02.24.18
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c6161ec94sm479276666b.59.2026.06.23.02.24.19
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Jun 2026 02:24:18 -0700 (PDT)
+        Tue, 23 Jun 2026 02:24:19 -0700 (PDT)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: rppt@kernel.org,
 	akpm@linux-foundation.org,
@@ -96,20 +96,20 @@ Cc: linux-mm@kvack.org,
 	david@kernel.org,
 	yuan1.liu@intel.com,
 	Wei Yang <richard.weiyang@gmail.com>
-Subject: [RFC Patch 1/3] mm/mm_init: adjust overlapped zone for mirror memory too
-Date: Tue, 23 Jun 2026 09:23:49 +0000
-Message-Id: <20260623092351.13031-2-richard.weiyang@gmail.com>
+Subject: [RFC Patch 2/3] mm/mm_init: remove overlap_memmap_init() as no overlapped zone
+Date: Tue, 23 Jun 2026 09:23:50 +0000
+Message-Id: <20260623092351.13031-3-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
 In-Reply-To: <20260623092351.13031-1-richard.weiyang@gmail.com>
 References: <20260623092351.13031-1-richard.weiyang@gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A290720002
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8B1A3A0003
-X-Stat-Signature: iio3bgsnjo6tkwiucr3unp4kaas51sph
-X-HE-Tag: 1782206660-994690
-X-HE-Meta: U2FsdGVkX1/M2GdsTga00oiN4AS4cRkozyRorWvDTTUep8xTeRypsY84YcSoGp1snXxGKsKCyhn1gmbO96Tga649zB2pkPwdjZqJSsoEC3d9UKHg3kaOCTTbRdIPkpoyRT+vO3nB7Fi98k/O+x8wWo4g4/9moTOiBcVzLAMq9e6tUrzTrg6HJrut+D7gOE+FQyWP2beXJupuGKvZhN4IYYV69ZAgcrvfnw/HOMK388Q03pH6Q+GlDriWDbVYKdQN0AMoSODZylzeJX4VUzQRXMJFM47MvvsQUW93MYeHaAQzFrLl2MtNW9hnX7XBDd9U25LQn7zHvi4ajglwKK+JjOEE8UkVPW1TrYRlEjmaVBYAt6S4UcsekzLBjKog9nluMQRUlMyMFLaievbtQta8995sJsz2NG2SL6yZPHAJiTCqpr0LbiATgYb4OunAH++wpjuW0bH46EpsjAw3uudBg91FVvFF36tAm80p86DyIl4loEJIlk4DJ1+StDAYBUYf/RbugAzLw/aZwtySyFY7a6V5b/N2TZq+K/JrZaAKX33oBB34HnT3QDjgrl1BcdL2KF6mQVG9KUn1g6OXAqjFZ5dGPCcIU+Zg8blRz+XYgFVPoBPrdEzwyxcV3lActlLtiTwSGWXSN13SXJ/6cpNFZN7YMCjfevM4f5B10K+8dXwDAfGwFBXTZOnnoOni8fk5ciSNrWOv7oIIIdtHWgFMEzHXFFwBuktXM16RDuAcgnmtHmyAnZmMBpEvu1OlHPF2uw9tEsb5+7D1OrziZ8cx8oIPP8tv7dYou3IRaMxgJmbDzOqsEYwFGxGSJg1BVa2Vo4d7zGnuqvG5hT5pYISGxTaR4GtarJgBdL1Spn+fV5i2GzPau7vfQAm96LiEzG3QalX3+jNVOWjyxwhbQd7CQ9XPmu1iYi4GCHTbcM6HN572Yyidpn4lIDuZRVj1dJ7MH4NhE7J2WhWFHI6h6uI
- 7+MS52+j
- m9JTa+N8Lq+ztYRo53WFBjrvWlJo8Pe9BOpTnHPFr6RUATOUK0KSPw3ajMdVAsLmAyh1r8iagSO+M95sxfQKTbVQpUGYJWFGSF/LpXmbVs6LEfEwZNBP0lvbZ1907fFFTxOidnceou3beJtZEcxSpiquo26ZztwuaCtfnhAmAqXLqBgOLVYXsgWRlY8kESVAuzO75eSHVAsD5ywuhF5HEHlccDUHim0TaLsKccKEF/eeMMMOxDnGfdTdMNOIiTtGK+Aw1e491wmjMfbR8ofs48J0bIuMMBuaDLFlqftVf2MjPUWkjh0AJyNnxsXyfMvKzSrkKsSxI2THx4k3dIi9oBe7UJfzG8xA9S8loNxP296cmlU2ab0lp+VrhW20PBOz9db9dY9IRwFaaikK6ZBJes56+oAqYUG77J0Hkq9Bb7dSsWlicWtpNdRj6+TdxWRIKRSJqtosPR5Jz2TlKvc5WpQgUuBT9kHl/n2VjzwtkP33tO/ZxAnGEPDDtR2y8shX16XbNmWgGVw3JxafBb6Bv1XZKJn5SrDZp1Zxb3RF4BIcJ3X9WasS/pAwkTaQrQaKF2i+pYRKiCNtDe/BS36rvfjFc7R5XFcvU0qMA3XXWIAGIC9rY9ZPafxzcNhASUaNNa/Fi
+X-Stat-Signature: tq9jobb7quo4fabwnn3ecakdnzjxoosn
+X-HE-Tag: 1782206661-223594
+X-HE-Meta: U2FsdGVkX1/U0DifXrFAi8K0O/BGVRI5KYGGKhvUAGr/0X4+RkrbrZ7BxkOVLvXHBnyN0hoK7jOojxpoMbpJHsJKIo7GF5AHtXACIOThdtRzEyizHzxZMbNUkySpaKh6i/5LRfd4mPVCJcAEnQoT7u6UraOhGfEtgThv0uHr22z4dSxx6EMoTks/WDbY3JOVN4HYpFWOP62cBMmGtfNfhaUsVMoT89lpOU6GdmqgIpLiMAvpQRyJVsbV1bfSA1kFzz6tB6QksN6+JLEo3OPQYX+mS/ZouZijM1sD1KSXXTGuHjdG1pTSMeUKeksLQSSoFk2Jz3nP+emV+KPYIQK3vLrHZTWVH28CRklEIWaBMX5JluMlFhqJAfJ/XWllVrvailrMNmman4ot2tHbbLcGHU60f2PUg5GIaHJhf2Ct78S4OBaqDBTBvXNemsR2ULdqtNIL9axhVcyZPQzf2q2GMs0ryS8d+wMZhRa9k8c/OjSCHnOeGaEyypwfd4fqlm08OH1sRVRuMygNSwyUWbUiwfq2k/WCRm3I+aWfmXGxxwJiaRZvhlIVOh+bKoTiVTERlodOxdzEMtNs4z99PHGsdFGr6v2VMDz6bJXfcM3UX4iGAQCiQgXtdcIgwoFft+0CgPp4OV1j9di0IUj3WgCuTLPcNBBBPV6sBY+xIzpe7G7iHMGgGRW1Wmsb3HFBxNAk9/1zItltes2wBYQf31CJtU/GLUjtMbhgRaHfQhLKaXjzEMEhaxFuurznDECSIRMoZU6uythFg3Mw1oyDmns2tS0jlAN/gf49GFHWu6Vf05DQBY9SIR4FI53PYBn5g1mS8C4mEzBKns8m/ReXnqz0wetEf3XPUwzYvXZtcrL3C4wBTSObhAB+Cly77JXKw1OsgVqLOqGjn+vwiCplOqmPmrxaMD9mpwEFvveayc16UOCIFEY2L/2b1c3qf5nrqyDqP1CpvTw1breffJfnUKj
+ 1Dmo+IN9
+ jbgY7xdL4EDiYSDcSycE5MsXRnpF2Jtop+dx/YaEGYDAF1lxPxKY97XcXUPh22/4FCX1vlUsGEJjJHjFRCQAk7zJIBap5+VOmH8RagcvD2hUQ0GYYofSnG6jO/mERe8yeAtOTAScET0YLY+wgy2dKXhYI1i+N9PFlzgy6c8nKIo1TWcGBu7l2P5pu+0eDA5Mdt+/y0bxl+Tz1cOtczXGCooI9D29w7f8Gwh3557XZjexU0IWhKzEwXZrszovk9TpzwaB0DEqfNNRTLwLi/YmGsg7/3Jxd2Mk2ErpCfniU+kFd+8j/p2pJMqWTpz7lcJDkMsqsbAl4YL42l0HBN8heCJPYWK1kkwGc3t2dhBKA8gfLIYxOULwxYNKmel3i8UOiFLiXtuBwuaUM13x8+qEvM55SC1ythMKTjqGfiJ/mHD2SOJFFvd/0VmNdCLoIVsv2sgZNiIcxvA92NCnGkLtb9hhkf6ZJQB0+bU/iWitYUlTd7HEfuN8pL42+h8wbI712sNlOr6rdVXV9jKM1Zx/knlVM/ogc42Lr2F6GE70IUcF6FFx68xEMaeZWQIVVXYu11KpmqzCJaMfUuP55e6jwep/V4kclGdzNZPRGZUVHdYuR4puFKvbAoL2pgvvr9gnl1cnD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,79 +117,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When mirrored_kernelcore is set, adjust_zone_range_for_zone_movable() would
-skip the adjustment if ZONE_MOVABLE starts within one zone.
+When commit 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror
+option") is introduced, it would have overlapped Zone Normal and Zone
+Movable. And this original code would initialize overlapped range twice.
 
-This makes the zone, usually ZONE_NORMAL, ends the same as ZONE_MOVABLE.
-
-For example, we have a system with following memory layout:
+For example, if the memory layout is below:
 
   memory[0x0]     [0x0000000000001000-0x000000000009efff], 0x000000000009e000 bytes on node 0 flags: 0x2
   memory[0x1]     [0x0000000000100000-0x00000000bffdefff], 0x00000000bfedf000 bytes on node 0 flags: 0x2
   memory[0x2]     [0x0000000100000000-0x000000013fffffff], 0x0000000040000000 bytes on node 0 flags: 0x2
   memory[0x3]     [0x0000000140000000-0x00000001bfffffff], 0x0000000080000000 bytes on node 0 flags: 0x0
 
-With kernelcore=mirror set, current kernel set zone with below range:
+We would get Zone range with kernelcore=mirror set:
 
   Normal  [100000, 1c0000]
   Movable [140000, 1c0000]
 
-This changes the expected behavior of defer_init(), because it only expect to
-defer_init() memory in last zone. As Zone Normal and Movable stops at the same
-end_pfn, defer_init() would set first_deferred_pfn in Zone Normal. And what is
-worse, pages belongs to Zone Normal would be counted as Zone Movable.
+According to original logic, during memmap_init() it calls
+memmap_init_zone_range() with the same range from
+for_each_mem_pfn_range() for each populated zone. And then clamp the
+same memory range with specific zone boundary.
 
-  Node 0, zone   Normal
-          spanned  786432
-          present  262144
-          managed  34390
-  Node 0, zone  Movable
-          spanned  524288
-          present  524288
-          managed  715855    <- manage more pages than present
+  memmap_init()
+      for_each_mem_pfn_range(&start_pfn, &end_pfn)
+          for: zone = ZONE_DMA, ZONE_DEVICE
+              memmap_init_zone_range(zone, start_pfn, end_pfn)   <-- same range, but different zone
+                  memmap_init_range()                            <-- clamped with zone range
 
-While when we look at the memory layout, we can see Zone Normal and Movable
-could be not overlapped if we adjust Zone Normal just other movable zone case.
-And we don't expect they would interleave.
+For the last memblock region:
 
-After doing so, we have non-overlap Zones:
+  [0x0000000140000000-0x00000001bfffffff]
 
-  Normal  [100000, 140000]
-  Movable [140000, 1c0000]
+It belongs to both Zone Normal and Zone Movable, which means the same range
+would be initialized twice by memmap_init_range(), but with different
+zone_id.
 
-And the page locality looks correct:
+Original code is expected to skip overlapped range with
+overlap_memmap_init(). But it only skip when (zone == ZONE_MOVABLE), which
+in turn has no effect for this memory layout. So the last range is first
+initialized to Zone Normal, then to Zone Movable which is what we
+expect.
 
-  Node 0, zone   Normal
-          spanned  262144
-          present  262144
-          managed  233614
-  Node 0, zone  Movable
-          spanned  524288
-          present  524288
-          managed  524242
+After previous cleanup, the overlapped zone is gone, so the
+overlap_memmap_init() is not necessary anymore.
 
-Fixes: 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror option")
 Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>
 Cc: Yuan Liu <yuan1.liu@intel.com>
 ---
- mm/mm_init.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/mm_init.c | 24 ------------------------
+ 1 file changed, 24 deletions(-)
 
 diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 7c4af27a6557..b8ff4aff19c0 100644
+index b8ff4aff19c0..da0e65bf8d02 100644
 --- a/mm/mm_init.c
 +++ b/mm/mm_init.c
-@@ -1170,8 +1170,7 @@ static void __init adjust_zone_range_for_zone_movable(int nid,
- 				arch_zone_highest_possible_pfn[movable_zone]);
+@@ -797,28 +797,6 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
+ 	__init_deferred_page(pfn, nid);
+ }
  
- 		/* Adjust for ZONE_MOVABLE starting within this range */
--		} else if (!mirrored_kernelcore &&
--			*zone_start_pfn < zone_movable_pfn[nid] &&
-+		} else if (*zone_start_pfn < zone_movable_pfn[nid] &&
- 			*zone_end_pfn > zone_movable_pfn[nid]) {
- 			*zone_end_pfn = zone_movable_pfn[nid];
- 
+-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
+-static bool __meminit
+-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+-{
+-	static struct memblock_region *r __meminitdata;
+-
+-	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
+-		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
+-			for_each_mem_region(r) {
+-				if (*pfn < memblock_region_memory_end_pfn(r))
+-					break;
+-			}
+-		}
+-		if (*pfn >= memblock_region_memory_base_pfn(r) &&
+-		    memblock_is_mirror(r)) {
+-			*pfn = memblock_region_memory_end_pfn(r);
+-			return true;
+-		}
+-	}
+-	return false;
+-}
+-
+ /*
+  * Only struct pages that correspond to ranges defined by memblock.memory
+  * are zeroed and initialized by going through __init_single_page() during
+@@ -905,8 +883,6 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
+ 		 * function.  They do not exist on hotplugged memory.
+ 		 */
+ 		if (context == MEMINIT_EARLY) {
+-			if (overlap_memmap_init(zone, &pfn))
+-				continue;
+ 			if (defer_init(nid, pfn, zone_end_pfn)) {
+ 				deferred_struct_pages = true;
+ 				break;
 -- 
 2.34.1
 
