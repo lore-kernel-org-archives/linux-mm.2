@@ -4,116 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD37CDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:43:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0480FCD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F9376B0088; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
+	id CF2556B0092; Tue, 23 Jun 2026 12:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A9F96B008A; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
+	id CCA246B0093; Tue, 23 Jun 2026 12:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 599E46B008C; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
+	id BE15B6B0095; Tue, 23 Jun 2026 12:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EA4F6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC76C1C5AEC
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:43:39 +0000 (UTC)
-X-FDA: 84911748558.04.E437837
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1E02018001B
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:43:29 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 99B7C6B0092
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:46:00 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17BB4140265
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:46:00 +0000 (UTC)
+X-FDA: 84911754480.05.A467CD5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 833BBC0003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:45:58 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WNoNdlTf;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782233010;
-	b=bbpJ+VDRs7daG1oDq6V9WA1/gRmBvUSnK42tnVGKxaIFXa8xf11pUJh0JMN5jv5JL97f68
-	HKDV9qUBeR6ZwYRcLJ+FTEach3upMzZZNRfS8oLmfh0LKomk/1wXBQRmnenXPe58iJnNSE
-	Ktdl3Blkgjwnv4vAFdUCBMLXPwzSD1I=
+	t=1782233158;
+	b=FJ4KwqQWXRt3EhONEL+yRXuko8YkcEY26tefuQIfgTsspgI9KsSpMZsO8F9zREpgxHdUy5
+	mO3zmCABHk07vHDLhQ/VK/eo3IivQgk8o9mxrE+1ePZLGd5BSQMAhcU/aAF1oclM6h9osk
+	JJQo1LRJeP9DlXu7UQ1ub/PbT3a4tyc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782233010;
+	s=arc-20220608; t=1782233158;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
-	b=kdcl2yzPyDWZKT9chlMuysBF0It2WYtYVHwMjxrpJlIkhcRg31T0DxFFK6WaOegf+Z0R3y
-	RtsZb/NsF/JiHMgNjJk/SIVnQkPX+9gOF2oZ4vLi6JnMfpV2G53Cr+aMiH+rjyBVscHI1b
-	ykXKr2LbS27R5pf99P9Xstp1vlEGt8Q=
+	bh=zvnJVHOKhUJTuaDT+cJ6ybd01RvOsf9xGCdjcPmiwiw=;
+	b=DwE1ebFMQKB3ZcUFGX9/I/wM0FzcKFWGfh2Jx0+HYOWYkND0rNzDWzUr4PR5+tsVN/FF4T
+	Qut0Yfdt1BE+zXXZ8tQrbWI0/4TGUjlTUMbHWCDRgrXLkwnjvWtxjI2RskE135YokY4X+S
+	7k+m0nGZZ7LEPX64lA8IijS6JkUWAlQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rdNLn0QM;
-	spf=pass (imf16.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c73cefe192so62545ad.1
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:43:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782233009; x=1782837809; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
-        b=rdNLn0QM0Rlm+EWD0a4A5kO/mQw5jYQRKPJTdmd1eZR1eR5Uf/hlDt/MRrf9B2A/bC
-         k88fPMeZVanMzWIfoCXEmCMEYQqzi9YmbrJ+/ALIghtONibxhCsBEoriIhmRjEucdd+b
-         sQLqC+OvrMcwtJ/MyU2vYZtZvNeomFswh79FKV8+5R6rM4sbMDurbaOk16jeDP6xN83b
-         roH19U+gVHasOMa/WDss0PYWbKODzRZHCT2E+cx8mAk860oCV/OAyAssS9dnsxhm17C6
-         orXAcoILavVc48QH/NV5lKhCPgJ5ut7aUaHEU18f9dQTD6HW7GewrTXy0NilCxBmoMe9
-         41rQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782233009; x=1782837809;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
-        b=Lf1NyRTA2sSAorPdt5M9y9wjl8Yr6Iv/wE2nH1z15oTeZgqbf3yxTg3JC11qOU6YXF
-         y1IaBA0Df1GXZgDCKGmsDZ6iGuvpxcIQuXtb7QWD1jVmX6yFtcnmDHzWLXGOVCKqaJ96
-         4o7yuZUHka/HNN9xKyAUBcCtbFbGDX0iP46QaprsmaFf2Htnse0SXfdzixw3k6jqay5Z
-         78DhiZx/HTC7CSomoRCOu3jK+P4f6P5B1W0bLQNdAvlup9k0/J7dhUkkFcMwOJ4YXMZS
-         SvJMM6iRLZBOxcOvmhgGqRZVCuhwbRrerSgyxrJFXU36U33p38INqL1ZAgCo2yem0Fmi
-         lY3w==
-X-Forwarded-Encrypted: i=1; AHgh+RoaQ4MHHQxUiEtE0UoUqaPZo/v9xKTE5Ve/TyEh38Hfh4diQ+HBzoJRczR4qVW3nicckxbRb+JmAQ==@kvack.org
-X-Gm-Message-State: AOJu0YxQMfMSCV40pGseRtD/AgFcFDgYhPeQZZ7X+BqkjIcUsudNeqaP
-	h3WT4NwI93ME8Sm8vbmDGUdJyGDaIe7cSsaH9kvqTFtLny4s2ce2Zx/zF8hevWqJNw==
-X-Gm-Gg: AfdE7cmdoA4PYYzPGC7Y4q3LusqNLT0/Iqc9I0rW+2LjCc9gCdgY90gsFraBM+8uiSV
-	0j8xEndb9lw5LaTN6+pXrlB+Khkg5TDTiPYC+mn/crlPsvIJj7GjjZxWpopaS6KpVs95ME/LPGo
-	kicWBSON79lw3oUpJe1v4EpLZpwsNtp8NmVAfBO8E/8s/2PhgEqasRFb5A26UidRQkALBRs62sc
-	goTgQAFPzbXF+K4NqVZlyhFq2/4R5z5OtqgZjrDJ9dP6xJF3COYnzdnvuJXld6x7x3WD6/hFyrS
-	hJ9nCd/3Vb5H79+N6qS1AweOhmLRMLioacNBv/mVWDCiZNufRU+qgHuTsNEOXo3nIKP2fjaMTVL
-	PC4kMGy1NcLf8LAHjbLdft0T7ZiPTKi4j7lJQqUmI93RrdTQv+L90l2M/qDbX3q4lFGgwSwVb+j
-	6EstS661zxCILvun04QFdYAgEVaATx35REKVUJ3f/btDzDWHlvV5h+SoVrJTw2gcX7f5EQuNrHA
-	7HRK3rw
-X-Received: by 2002:a17:903:320a:b0:2bd:6dad:7ccd with SMTP id d9443c01a7336-2c7c7118b8amr2140445ad.25.1782233008303;
-        Tue, 23 Jun 2026 09:43:28 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564d6c5dbsm10669159b3a.12.2026.06.23.09.43.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 09:43:27 -0700 (PDT)
-Date: Tue, 23 Jun 2026 16:43:24 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v6 04/12] PCI: liveupdate: Document driver binding
- responsibilities
-Message-ID: <ajq3ohoU2hJfhsp5@google.com>
-References: <20260522202410.3104264-1-dmatlack@google.com>
- <20260522202410.3104264-5-dmatlack@google.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WNoNdlTf;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D9827601F5;
+	Tue, 23 Jun 2026 16:45:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9781F000E9;
+	Tue, 23 Jun 2026 16:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782233157;
+	bh=zvnJVHOKhUJTuaDT+cJ6ybd01RvOsf9xGCdjcPmiwiw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WNoNdlTf5dtoVDrLtPpaABEWdsNJzXTRo4n42kxANANgtU3aTQQgD59XzJIMaD6NE
+	 FMReDXe3YQIdJpTDoIcIapQA6oASlDdnjZ7FaF4nJrISrV8jtwbdoCQWekxPrUbL6B
+	 UuqcdbC9i4S+nCAsvKfBuu/IlzE1cnTDEkAKPTctj8notPVtMIIdA9S6k1Ir5JrZEw
+	 QVDQ4w3vrwaPbW+6DSbWDqwKQfxS1uL0ua8u0cMQ8ikARTdccgvTkZBwi/p8j+3FuK
+	 4LuVes7IHfWWphMl0/EQPlXiTQt3C4n/TSzvtT47KHvQcFW+tCkGmMsP+xmsXmXhjF
+	 JjyhRhzIiDfqw==
+Date: Tue, 23 Jun 2026 17:45:49 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	liam@infradead.org, shikemeng@huaweicloud.com, nphamcs@gmail.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de, 
+	ryan.roberts@arm.com, anshuman.khandual@arm.com, david@kernel.org
+Subject: Re: [PATCH 1/2] mm/swap: rename subpage->page in
+ folio_dup_swap/folio_put_swap
+Message-ID: <ajq4Jwng1yuK5oJ2@lucifer>
+References: <20260623125723.2503832-1-dev.jain@arm.com>
+ <20260623125723.2503832-2-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260522202410.3104264-5-dmatlack@google.com>
-X-HE-Tag: 1782233009-965674
-X-HE-Meta: U2FsdGVkX1/tRNjNOPSHYwxIO8CehI/wxXWRoxya7hDOxahXxLdmN04gjBzTaXchMhjaQd4g19IXm2qcIaqnH8iTjCJ1nYRREK1R213D2qJh+CswgD8IxTM5a1F5yt60WBMxbI56f3n6yCACY0nuHzjALb+vMndlw5uYLSrI6Ksy4cjn0nRxYiXRy20ap+o6wfeDmt4cF7IgO45SpE73weCob2ZVYwbYyDTr8VIDkg1m5fzbZmefM+a7RzPTHC9F3X6siFjJUJFBpEvkMBybKgeAh8mEB7ELSJM1xnElLtZF0WpTXy1DQzBQoQVkXXY/gpXWWrmHCwpOFsQ5OMkrFCA12R708AElXlNGfHqyluX5cIjU0RGfrRFmvRJKIVnvfPNHmN9uS12U2spcJ/GQkea77bftVhpJ1LQxNZCwbVQ=
+In-Reply-To: <20260623125723.2503832-2-dev.jain@arm.com>
+X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 833BBC0003
+X-Stat-Signature: q6mtpm9io4u6ahihw1q5yr43epyh55hd
+X-HE-Tag: 1782233158-926725
+X-HE-Meta: U2FsdGVkX19zFHMd+8UbxJpLuLJ/mGBVsqsE7Kk2CUrI4DMweJ65VuOuqIAvanXMmRf+z9GszpYbJLsgkNRcqgiy7igG4Xymlg1Ety+yJYtvhUuJ32g9CH89BiGlUbrduvWQSFhjo6ZJhtEmp0sLoVf6L67EFCn1c93XNLJcnzqYgpu3EvNJwgFING7hYcCrNQFLKA0/YvieYcgei0sfLY1d3KP2MAnov4GuFCIln/vavv4FgHd1K/2Y5Pa2FOufbaYM7ySgBg5zFZRJc9qICtUL+fIAxM0D7oGfLlQktwyrdnF+evkaY/kM/hKRGvaCeKWLLovihEegKh9fvMpUVfJmX/KxaZJrSIiXqGu0GaLuzwQZjY/ngG6R8EMWYP/ABpWdPnUKVt7SBfFcZCYGFuDc6UFui8uI9DoIpJi7jLMi/6/0L0EY5OhZBYVVGDMsJPSkpTcBYI7LDG4du+yGeCfD6h8ajLF3EPo9uZuL37TeLJFzr2Y9WFQFkMsJbZ34J+k8qvL5ua30rulxJNdegD7ynIjk5uHcfH1gqOlmOONYiyYIytx9Y9gtV3hfnvuY9xPLr2K6XcGHgdTTjkUSvxeTgvbsSbYfUsXw+1Zez32/oa+C2FYSikHylEgEEyNj0xmBSzwU45Uy5QhCFPpTCaGhje+NVRQs/NLCzQMPjm2xmRxR472LjeT+4exnZjJJJ8GMiVbA0GTbKxwRzKOx1uQ3qYNHgD1Bgarv1MAdHrBsDpNEz1okKq+yVh3w8wijS05oqtcG4v+/KI5Nmc8hFmSm8sOgCf15I6k9vAeRD3uBRUS44lxrFysbhZ8KI7Xx5Kh9PyvZJ4TXGr/AEFUgtv+9Z3vgyCmzFcyKKXurj5jDss1pKjFU8Xj38DBfprEBg9cSL4O6+b6KFNM3UFqdFakNPk6/b0/aK8gnXvBnYmVBzgAS/QOTSXziBY5yjnuqQqu7/PAn9DU4ntNBWUj
+ 9gQtVEJ4
+ SiD40IBsSSzaIaoip1wAuShpYKWoaGzgc/FzmB/l7A7b5KqiycqoH9qKp2ouThxIDJINUgh2z5BEpjBlsSVsuJBBLcNCX4zxzvb1PuTcjQcvCcCNRwojG2aPvGDjOQ1jdDJvXt1fykhrO/SrGXfMD6ifYoRzEkxw5cYcjeWPx++E/HmmiGwOOTJ3ddfihMUHApRLhi1CjE8KYXRmvXPLLsHIAlMJAOPYxVMgIcw+9vw0Ig1HqImAdw8FARVV/mOoEMJD6GsKh+Ys7P375pMPhS6v77JXXxDZrwxxJiqEmSSfwwvezR13DDytpsps7URT9OeBe/+rygUG+TIyuAx5IyE12PHh6suTkEfd2hXjhabcnYVtX+kX4YM+H62kVCY5soD+l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,47 +95,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, May 22, 2026 at 08:24:02PM +0000, David Matlack wrote:
->Document how driver binding works during a Live Update and what the PCI
->core expects of drivers and users. Note that this is only a description
->of the current division of responsibilities. These can change in the
->future if we decide.
+On Tue, Jun 23, 2026 at 12:57:21PM +0000, Dev Jain wrote:
+> Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
 >
->Signed-off-by: David Matlack <dmatlack@google.com>
->---
-> drivers/pci/liveupdate.c | 16 ++++++++++++++++
-> 1 file changed, 16 insertions(+)
->
->diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
->index 96c43b84532c..4f2ec6ffdd16 100644
->--- a/drivers/pci/liveupdate.c
->+++ b/drivers/pci/liveupdate.c
->@@ -70,6 +70,22 @@
->  * preserved. These may be relaxed in the future:
->  *
->  *  * The device cannot be a Virtual Function (VF).
->+ *
->+ * Driver Binding
->+ * ==============
->+ *
->+ * In the outgoing kernel, it is the driver's responsibility to ensure that it
->+ * does not release a device between pci_liveupdate_preserve() and
->+ * pci_liveupdate_unpreserve().
->+ *
->+ * In the incoming kernel, it is the driver's responsibility to ensure that it
->+ * does not release a preserved device between probe() and
->+ * pci_liveupdate_finish().
->+ *
->+ * It is the user's responsibility to ensure that incoming preserved devices are
->+ * bound to the correct driver. i.e. The PCI core does not protect against a
->+ * device getting preserved by driver A in the outgoing kernel and then getting
->+ * bound to driver B in the incoming kernel.
->  */
->
-> #define pr_fmt(fmt) "PCI: liveupdate: " fmt
->-- 
->2.54.0.746.g67dd491aae-goog
->
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
+This subpatch of your series LGTM! ;) so:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+Thanks, Lorenzo
+
+> ---
+>  mm/swap.h     |  4 ++--
+>  mm/swapfile.c | 16 ++++++++--------
+>  2 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/mm/swap.h b/mm/swap.h
+> index 77d2d14eda421..44ab8e1e595b0 100644
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -230,8 +230,8 @@ extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
+>   * folio_put_swap(): does the opposite thing of folio_dup_swap().
+>   */
+>  int folio_alloc_swap(struct folio *folio);
+> -int folio_dup_swap(struct folio *folio, struct page *subpage);
+> -void folio_put_swap(struct folio *folio, struct page *subpage);
+> +int folio_dup_swap(struct folio *folio, struct page *page);
+> +void folio_put_swap(struct folio *folio, struct page *page);
+>
+>  /* For internal use */
+>  extern void __swap_cluster_free_entries(struct swap_info_struct *si,
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 78b49b0658add..a602e5820513a 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1781,7 +1781,7 @@ int folio_alloc_swap(struct folio *folio)
+>  /**
+>   * folio_dup_swap() - Increase swap count of swap entries of a folio.
+>   * @folio: folio with swap entries bounded.
+> - * @subpage: if not NULL, only increase the swap count of this subpage.
+> + * @page: if not NULL, only increase the swap count of this page.
+>   *
+>   * Typically called when the folio is unmapped and have its swap entry to
+>   * take its place: Swap entries allocated to a folio has count == 0 and pinned
+> @@ -1795,7 +1795,7 @@ int folio_alloc_swap(struct folio *folio)
+>   * swap_put_entries_direct on its swap entry before this helper returns, or
+>   * the swap count may underflow.
+>   */
+> -int folio_dup_swap(struct folio *folio, struct page *subpage)
+> +int folio_dup_swap(struct folio *folio, struct page *page)
+>  {
+>  	swp_entry_t entry = folio->swap;
+>  	unsigned long nr_pages = folio_nr_pages(folio);
+> @@ -1803,8 +1803,8 @@ int folio_dup_swap(struct folio *folio, struct page *subpage)
+>  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+>  	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
+>
+> -	if (subpage) {
+> -		entry.val += folio_page_idx(folio, subpage);
+> +	if (page) {
+> +		entry.val += folio_page_idx(folio, page);
+>  		nr_pages = 1;
+>  	}
+>
+> @@ -1815,13 +1815,13 @@ int folio_dup_swap(struct folio *folio, struct page *subpage)
+>  /**
+>   * folio_put_swap() - Decrease swap count of swap entries of a folio.
+>   * @folio: folio with swap entries bounded, must be in swap cache and locked.
+> - * @subpage: if not NULL, only decrease the swap count of this subpage.
+> + * @page: if not NULL, only decrease the swap count of this page.
+>   *
+>   * This won't free the swap slots even if swap count drops to zero, they are
+>   * still pinned by the swap cache. User may call folio_free_swap to free them.
+>   * Context: Caller must ensure the folio is locked and in the swap cache.
+>   */
+> -void folio_put_swap(struct folio *folio, struct page *subpage)
+> +void folio_put_swap(struct folio *folio, struct page *page)
+>  {
+>  	swp_entry_t entry = folio->swap;
+>  	unsigned long nr_pages = folio_nr_pages(folio);
+> @@ -1830,8 +1830,8 @@ void folio_put_swap(struct folio *folio, struct page *subpage)
+>  	VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+>  	VM_WARN_ON_FOLIO(!folio_test_swapcache(folio), folio);
+>
+> -	if (subpage) {
+> -		entry.val += folio_page_idx(folio, subpage);
+> +	if (page) {
+> +		entry.val += folio_page_idx(folio, page);
+>  		nr_pages = 1;
+>  	}
+>
+> --
+> 2.43.0
+>
 
