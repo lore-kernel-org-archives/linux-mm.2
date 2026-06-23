@@ -4,90 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02564CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 07:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A367CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 07:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6BF06B0096; Tue, 23 Jun 2026 03:16:57 -0400 (EDT)
+	id 255566B0088; Tue, 23 Jun 2026 03:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF5C86B0098; Tue, 23 Jun 2026 03:16:57 -0400 (EDT)
+	id 206946B008A; Tue, 23 Jun 2026 03:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E4736B0099; Tue, 23 Jun 2026 03:16:57 -0400 (EDT)
+	id 11E5A6B008C; Tue, 23 Jun 2026 03:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 706306B0096
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:16:57 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EE3981C53F4
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:16:56 +0000 (UTC)
-X-FDA: 84910320432.08.D8AB60D
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AC2CF18000A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:16:54 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jQrd2K6W;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DD8FB6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:26:17 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51AE440274
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:26:17 +0000 (UTC)
+X-FDA: 84910343994.03.35F091C
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8A827C000F
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:26:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YKLqdtPH;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782199015;
-	b=wmaxEX3W6MWsoJh9OI2Kv6Zbu9HzOxFGu9CRSedvBXIY+Xeem3ePOQcP6wBRYYxIbQicIW
-	A6IdG94V9IiaRBhr/4cT/3L+7OEl1eA4tVIKRZqq3KYZDTZkWZQgyTyDDrkbNsP4LcaRYz
-	XUumU0bUL+IcewPb77nXkXZp8SQ6zao=
+	t=1782199575;
+	b=g4fONcQtcVTvqvgjxh9EccbZvxDAVZRvPC+2ifkyyBEictZFc7dnEy1OgzjaYUHtwZB7fY
+	idkd5s9w3WHEjvIoVMMb15fx7eu9CEVCZbGoyyw4Gntmsi28fM2MzwD7BuNUNiFncmw8ZZ
+	uD23B98NrY2zosWxJiUf1vFGoEp1vC0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782199015;
+	s=arc-20220608; t=1782199575;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zZ+uAaSGd3OZS1aU2uMCCmFDj6tXs2rYH2kiB6ZZtOs=;
-	b=gVM5wXDxA4mi6liPk6A24h+thzbcaqP5a4SKlm4gHS0Vq/I/QPHdeAa0J9if/pdYKE5RbN
-	yINP/i5BFBusS0EByootjs1Z5HGPOtn+YaS35f2Dc+tiK149pZcE+uR17frxYPFQD6o7SR
-	Ensg3MKJwos8TiT5rIrh+jGPnl8NdsQ=
+	bh=zuaTe8OyzpGDUNIVA+uFcRVLeTjcxr1Tcp7dy1adM0M=;
+	b=cbr5qDJYMXtjF0SLrv7Zg1JFrtdG9FMEaQSqgLNX9CJbHB9V3WknZuSjt4G4VWy9Qdildp
+	ReftMxc7fiWDHYtbXu8i2E3rXzh4vzTVBG3E5aCJoYRoH4bq9uL/T+k+YbqJiOjM+aCO6c
+	pS01PSnDiGuFS5+hEZZz/JXTkGEvYyQ=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jQrd2K6W;
-	spf=pass (imf06.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YKLqdtPH;
+	spf=pass (imf10.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782199012;
+	t=1782199573;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zZ+uAaSGd3OZS1aU2uMCCmFDj6tXs2rYH2kiB6ZZtOs=;
-	b=jQrd2K6Wcjb+o/3i0dgciyF91g4QWNDhUnuaOH0U/WqJXuqyfCODDSAdXGvqwnfORs9/pp
-	NoJIu+nDxRDWNjuYV3koTQWxNHMwTCB4948DzxfGQiXU4rgwzn1XJNWgfBp0ZlycHlj8Bs
-	6FPTSMSFVXKDjpvJFk6zfgKzttDwzSc=
-Date: Tue, 23 Jun 2026 15:16:16 +0800
+	bh=zuaTe8OyzpGDUNIVA+uFcRVLeTjcxr1Tcp7dy1adM0M=;
+	b=YKLqdtPHjSJizQIA7e48JK4rzzGxmmisdccbx8Txgm2GmTU8coD3fqaGdlNXnMni10wVo/
+	ylphzZuLXwiX1EBp+fRAv6OnJWkyIOZWZUcaSsNFiqXrqwIQlAeENgCEHjnRH7I2Vin4Vq
+	FsrcJXZCg515Nt4n3IA7AqvpYLEE3WA=
+From: Lance Yang <lance.yang@linux.dev>
+To: ziy@nvidia.com
+Cc: akpm@linux-foundation.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	baolin.wang@linux.alibaba.com,
+	jiaqiyan@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH hotfix] mm/compaction: handle free_pages_prepare() properly in compaction_free()
+Date: Tue, 23 Jun 2026 15:26:01 +0800
+Message-Id: <20260623072601.78245-1-lance.yang@linux.dev>
+In-Reply-To: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
+References: <20260622-handle_free_pages_prepare_in_compaction_free-v1-1-fcf3b14abcf7@nvidia.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Harry Yoo <harry@kernel.org>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260623024237.45990-1-qi.zheng@linux.dev>
- <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AC2CF18000A
+X-Stat-Signature: zhmo9dn43kgmpdyctua97cxwr8wwnq9q
+X-Rspamd-Queue-Id: 8A827C000F
 X-Rspam-User: 
-X-Stat-Signature: x5z6465wiy14qmx6yaxrcxjqqr9wnydf
-X-HE-Tag: 1782199014-614669
-X-HE-Meta: U2FsdGVkX18I1/fbYGuFQlXGFvo+3JQ2jtawJR4YchrvfB59+lV3xiQEIJibzf3XY0CHM9NdEL7bvRh44o6K04//O36TeTACWAUoDq9YcxB20dXuJ3bshIj/1Tb+pj4VOPCyjTP+tTaTVaETTQHbryU0n7FGE5LqQUAOlEFNEgklI/d9TdAm1QLljYtk8shi685/DPlEAsj70GGgIfz7imtO2fl+e3XhrawTeKF2LA8SSmpYFAhWATjfVdTqYC+ThZYgS2FOUZFmg8ShZp44wIXgrgQS9+EEZuKzT+OnMVIxkJcLY+eIWaDSQj98vgHWAIuD1msCJGvm38dpMJBNPcjeKPg8d9kgdGEoeiHhIFdDEq5PAUTa7eCHF4r/KPIw3njWrNDuX8ap0AoMt3DlXRxo2IOQ9QrTCBA9EwvLkY7h3bXKGjB5B67x6GIlPuuNjtxRFZFtwMtpSh5E/zyH2c0nAWSY8jAk1+BapxXKj+3SIaObUwy8dRkWRnLTgKaFoEc0a1QMCpp1X6HCWqezBJ0OyCfGCsK979L+QTH+C/dwh7Ei+U0zGo4APHEJGacvQiljRHlAy3+MeQriypaOoBFR/e/BIfnukD8/Xsg2LdxMxlezZU2rps64c9FhKx6rq/ZNdfUgzIAigIySYTxzlAMv9lV/Szh1fyv+T1NJ+AZ/5tTEMNOFmpgKivr9bTEX3yaroL0FOzmcLhthu9hY75BTqzeFWXXEngO6+eWeLt7J0jgPIFUkT9N84bMnCKxhUb0P4QjzgrnhgA7+vD5QOS8oRLHkl2PuIHpB+vnOw/92O8P4GGw5RR0JuCt24ALh+xxh4IdWjykdedhEQN4Dr5wnM1E7+LFRKFs2HImNRWRdvL3hodUYDeOPgi7RaR3sHPCOQKaj+E8hg9IWRxjPnl/1yIuEjR7J4SakTLX2syT5475DChUZ0GkaFVPNwUeSgPRdBPwav7HQeajXVVT
- S1u5Kk8A
- N5mSod5sZfWmW5s9eqgPSzxQXi05JMW+n09caSZiirUmzQPghmULzinlpNQhfwQRYfo77xaWGGTqrrVeuoeSC1xf9bgCirMxix7Gm/vgyo3wpGOh2wZHPjUWKBMwsK/tG7jWVbdM4aW7l0vKVPp4+rCBvhWGC5D0X5zTcg3N7TfyOT5Rg5s7FuxlvGs/MMH3TxPcWbi4aHRq58wgqcI6nGXCZvZhatO0nXawZv3NxpbnV2ynzp3gBQFtro2E/msv7K1RR
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782199575-477008
+X-HE-Meta: U2FsdGVkX18lzWDDG4WhmIccy7LrZhXbRKpLX88TTjadMC6KQsp1Q270q9OlefTkA3oTYioa3i2CA6kO7gVi87TbGLOfkzOy22RXbpfGDMBvyyoVR8VUT7dXD6rjQJ+jtXcBJa3rUNgS6haU9mLzdMarMq1xgoCT0vS+kw4SWPch05Q+bMUaidMrHuUdVKucR2Xw0Nc1pEwtSQLbme6KDDOqJ7Ky+o8T+MoDdhxrAVSg13UPARrfDst6Yk4Q+DTr8T+a8q0mZNmdc8m3b+joJNpL7o7xjd9nsPG40JfmlkeFPG+Vk/r7FJB+CsgC8TkIK9Tr94H8Y8QARorVHFmW6sf7zGm1nMOpe09cYiJ27KSMNfDTGIRQ1zX+w6TRzhX5Sm9CHd/AL/u5HrVfboNOZj4kdAhRAc5nTw+QpGQ9QZ2E7VmxDZ8SkjOaHSz8zGiS6pXTrOe5otEwLcOpGhHWP5BQAQEqdOcXewnZglCSvxNnYrlNTNqy86i1rNnxNQhviQa1EeMa4S/vIOeiP8ojpF4yL6Wj4KUI55ZdtsJbRbIC+9u/wPNBFcAOAWo86xfjHMpQorJ/3ZNPS2k5xwh03xjXr01C6YJnituIZAM7Zf7OI4VyIW9y9et+vwRd0B8kTUwFBc73VLHjHzNhqzXY0Ma2v9tqmDaO1JdG0dsGwIiDUYU7GPSh8j8DjibrnzE5JdNt8YtfKx4ljULwLBsdDFlYMmkbQ0pLZhqc3wjVN+mfM9/6fOpEI5tFolevHkIGwZ3xcxr4IuqeVWL4SXNaK4U3TEF1yvjMYw+bEg5wxvfphL9/AnAF0OrIKhPYqOsZllbScw7Svo2+6AUJqh4Lmg15y+1iH5B8HRK254r7IDWuPqAVvxrFLFGydAPyq4VlCMlHHJe0QeF6rr6YIZDE+HWNsg6xdBjdmv8knfK5QU8H12Qch5Jok4s0Y0OTJyFrCyNnVtPxY73PStwpgaP
+ y160BGJw
+ x60HZm2rsSbpUB3tFNdwzrrllBeh0ntmeuQepfN6T/eRTNt2wFaFOT35v3YHz621qO4+U+kkbYSFI+etLwQMnzokT6wk+Fx59XMsKTsWxNewlD5puELg+lgbGwjaXRFe7tV4euGSm5Pw2zWgfc5Gqj45j49A8nlV8Mo3Wnf2QUXOFVJ3ToJueYj6gevx1JSTqwgEnE6x/z3X/J9+HtoxxQAtO/xGKKtxVj4+1ZtX60cwmh7Q+ET98Dlsfadca3jOW2pG1YgAqRwvJA4sTUzUaTBZomqnCbO79xoLbmaQ+KKQ/ohQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,94 +98,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
 
-On 6/23/26 2:17 PM, Harry Yoo wrote:
-> 
-> 
-> On 6/23/26 11:42 AM, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> The mglru page table walker batches per-generation size deltas in
->> walk->nr_pages while walking page tables without holding the lruvec lock.
->> The reset_batch_size() later folds those deltas into walk->lruvec under
->> the lruvec lock.
-> 
-> Ouch.
-> 
-> IIRC the user-visible impact of underestimated nr_pages in MGLRU
-> was premature OOMs because MGLRU does not try to reclaim memory when
-> nr_pages reaches zero, but there are still more pages.
-> 
-> Perhaps worth mentioning in the changelog?
+On Mon, Jun 22, 2026 at 11:30:42AM -0400, Zi Yan wrote:
+>free_pages_prepare() can fail but compaction_free() does not handle the
+>failure case. Failed pages should not be added back to cc->freepages for
+>future use, since they can be either PageHWPoison or free_page_is_bad()
+>and might cause data corruption.
+>
+>Fixes: 733aea0b3a7bb ("mm/compaction: add support for >0 order folio memory compaction.")
+>Signed-off-by: Zi Yan <ziy@nvidia.com>
+>Cc: stable@vger.kernel.org
+>---
 
-Maybe this should be placed before "To fix it...".
-
-> 
->> The page table walker can run concurrently with the memcg reparenting path
->> as follows:
->>
->> CPU0                           CPU1
->> ====                           ====
->>
->> walk_mm
->> --> walk_page_range
->>      --> update_batch_size
->>          --> walk->nr_pages += delta
->>
->>                                mem_cgroup_css_offline
->>                                --> memcg_reparent_objcgs
->>                                    --> lock lruvec
->>                                        lru_gen_reparent_memcg
->>                                        --> reparent child folios to parent
->>                                        unlock lruvec
->>
->>      lock lruvec
->>      reset_batch_size
->>      --> child lrugen->nr_pages += delta
-> 
-> The problem here is that, while grabbing a reference to memcg
-> (via mem_cgroup_iter(), for example) makes sure that the memcg is not
-> freed, it does not prevent offlining happening, and reset_batch_size()
-> doesn't check whether the lruvec has been reparented, or the lruvec
-> is going to be reparented.
-> 
->> This will trigger the following warning in lru_gen_exit_memcg():
->>
->> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->> 				   sizeof(lruvec->lrugen.nr_pages)));
->>
->> To fix it, add lrugen->reparented to remember the new owner of a
->> reparented lruvec, and make reset_batch_size() charge pending deltas to
->> that owner.
-> 
-> Could you please explain why it is unavoidable to introduce the new
-> field and why checking whether the cgroup is dying (and charging deltas
-> to non-dying parent) doesn't work?
-
-Peiyang tried doing this [1], but it doesn't work because
-ss->css_offline() is called before clearing the CSS_ONLINE flag. I
-also considered using mem_cgroup_tryget_online(), but that only prevent
-the memcg from being freed. It's doesn't prevent the offlining.
-
-So in the end, I chose the approach used in this patch. Simply adding
-a new field to mglru to track its reparenting status seems to be the
-most straightforward and effective approach.
-
-Thanks,
-Qi
-
-[1]. 
-https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-
-> 
->> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
->> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
->> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Reviewed-by: Barry Song <baohua@kernel.org>
->> ---
-> 
-
+LGTM. Feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
