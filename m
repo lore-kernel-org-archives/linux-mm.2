@@ -4,91 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C1FCDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:29:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01BB3CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:29:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49CFE6B0088; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
+	id C8CE16B008C; Mon, 22 Jun 2026 20:29:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44D216B008A; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
+	id C645C6B0092; Mon, 22 Jun 2026 20:29:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33DC06B008C; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
+	id B79BE6B0093; Mon, 22 Jun 2026 20:29:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DA436B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76452A0305
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:07 +0000 (UTC)
-X-FDA: 84909292734.03.A2D232E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B2097180002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mwd+82e1;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FB996B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:29:24 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 103E31C5372
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:24 +0000 (UTC)
+X-FDA: 84909293448.24.56B9A25
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 056618000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtCd3XDx;
+	spf=pass (imf30.hostedemail.com: domain of ihor.solodrai@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782174545;
-	b=ZMOdTFzfRUY6D9gP4tiZW6oJwwy73tgmJH64z6Io3wBb0JjkbCqNKMPLW+wN5pJvRyUGbO
-	2IrQKausdnih9WJY27XM3wEIaZe3jkC7aTBiMgT4Le/YrA2LS28VTJT16nlBw/Uyrgd4hl
-	PPsvbZVXIf5oc0fN7v4aSGaWq3ZGpiI=
+	t=1782174562;
+	b=udMu5cqjfia8sDoRDc9y8HlWiqlICHQgs5hwc4BYkpLXlQ9j3Eif0mIwnUtj1irt1hnUh7
+	hM3/3S6lo8k6lcspS9HJwwp3OqkkSAMUboHFrF8WroL1sWzDlaedjqwpEn9X6WfpMTwnjN
+	W8bQ0FYRFrRYGXEefOLhfY0JQFBuXbc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782174545;
+	s=arc-20220608; t=1782174562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eK03vkkuyEwvtYJT6roqYFJxffy2Bhftb2nbg6xVsZU=;
-	b=I78XibiqKA3swx00P5ees86kLvsle2F0XIJU49+8IfsCBmgHwwBYKV4s04fszujR/2Zqr6
-	p1oE3J/jqn6u1iDoz4QdknP1cYrO8Y6tnluVnaqAI3h0FmyJdf5hdUM7MCkCbFkUUW8M9/
-	kOxV4dVK3addse9jmxA/Tj+68P5SOcw=
+	bh=Lef+zbZlC2cznmfkqDRBusiikF7Bb2MGAD4tRP3lvcI=;
+	b=sc1ydB7D+9ZhSWVpLVVWT+jxf6Mj4mJEQsYlflYjj/OZGqxkoqKQWK1iaWEaB11FiQPFoa
+	MAkES/yrjWD9qRE/juJDG33dAghTvGlyKWCTzB1O94s4WpHW3iVUqMaP6NTDOkpANjoND8
+	UOskKcfxHE0Ql04O2PkaqjfSa3lRIzg=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mwd+82e1;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF9184028E;
-	Tue, 23 Jun 2026 00:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D821F000E9;
-	Tue, 23 Jun 2026 00:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782174544;
-	bh=eK03vkkuyEwvtYJT6roqYFJxffy2Bhftb2nbg6xVsZU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Mwd+82e1EzaV3w22I6l+SlqzIz/Wi1uZWOCYPOu8bbxZOTC3/h16/v+eXyOre5tEF
-	 b0N4/ZT38HIetJhbF6a9c3awp27F3tlQSPhi2TCHkZF2DSN5EJS5LRlflFKXprFJt5
-	 fRW1Npm41jV+UB+r5LQZrwUkxTVmfbnQBo4FYvcbrQ0RCyNJhJKnjvIpQCY9GtJDsO
-	 nY/QMIrx5MYqfgBO5KmZSEM+jFuWT/DXTTf1UitxJ/RYlGQjPjkFdcx2NM+EVkdNCP
-	 ZHgOWlkOsGtSta4t1yn5+JJnt9a2g74DfnyKe7Q+QrGlHrDhvEW2gtVIIeoeib6jSC
-	 691bcbnOt8XbQ==
-Message-ID: <2f4c0914-1459-4895-bc64-345b80afad2e@kernel.org>
-Date: Tue, 23 Jun 2026 09:28:59 +0900
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZtCd3XDx;
+	spf=pass (imf30.hostedemail.com: domain of ihor.solodrai@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <87643862-e32e-43c7-8c81-7186f30059ea@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782174559;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lef+zbZlC2cznmfkqDRBusiikF7Bb2MGAD4tRP3lvcI=;
+	b=ZtCd3XDxWg0myslgDTzVk2YO2R3BnwFZmpAoKhA9z0ZIMsOrDnQFedfzaW0FuaQqSny/iB
+	XYlbpSnXAQeic22gwrkLt2R1F+7zT6puwWjkHkLl5TFtCsOwVRS72C9j/kCFMUDkbruCSU
+	VyCQm9v69Zf0f83gU9SARBWTZqxzVHE=
+Date: Mon, 22 Jun 2026 17:29:12 -0700
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
- Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260622155913.280355-1-ljs@kernel.org>
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
+ under 5-level paging
+To: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Eduard Zingerman
+ <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
+ kasan-dev@googlegroups.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Andrey Konovalov <andreyknvl@gmail.com>
+References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+ <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
+ <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
+ <3207a706-354c-4e9d-ba53-dded1abb1842@intel.com>
+ <20260618183815.GDajQ7F-bqTHnrakoi@fat_crate.local>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------Y1cniXBnvQmmPIIYzS5Sh721"
-X-Stat-Signature: bg7aqhym8map3q8nyb4p5makzhmcznai
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ihor Solodrai <ihor.solodrai@linux.dev>
+In-Reply-To: <20260618183815.GDajQ7F-bqTHnrakoi@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B2097180002
-X-HE-Tag: 1782174545-923515
-X-HE-Meta: U2FsdGVkX1+2+fVa2BX0EoUUlDj5NsLGHt9lkWYzy3iob7Z0ajPRT9OWJPmdi6A+JPLxhPQTA1FvbQyJHbZsZu5+BQTgdSj1eDeXUxX3l0So7Gfls6V1zVcuMVC/AW8T4YFHW6Ex2hUrHo/tn5nEjCDsb5gNEKaK/IjZwO4H2YQXdWF8ovdjqVKEsV38w/Y5bfMt0sKMf/ytFWcnrH5A3d/+mz/Y/fSUFtkWnJApY3IUoF1tACo8QXKWxFcQRnTitBjh6gn5jHS9LUQPXfmG6tJssHTHgsbxH+ZEgVRCtVLacrsQYHxu3CwKrvzJiwzLymzuOuYcaaccLzTW3NfSeaYvUE01VmDx1K4erD8zYD+FL4Bztahg/Cr+bY6BEF8sT8CPV4f4xJU4QBnuo4HYZOsg9wgYjrbImF56/B4gsVwKzBuW34+VX+RaXHxOxg6jjL/3KJ2x/pPBrrYSJzkbA2lLxZqntTCTecK1DME3UcneL+9BwXjgNyLlow+xZbdZQ6YxhB/T2deCFWa68+wDAkYKxMwWvCd35omFCg9AX9n/nIMHu8UD6AfE9P2x9s4d5tPz6XnrXnhuj5zQQ3H94OYNwFry4TjhOxFXb/XP8M93wDXSAd1X/IKvbcqlUrvKKeHEvuLFxJ9mUm/A9ny6el0qbmw9U4m57sZQs20B8R2dJ8sIRwBZi5pbgqEmtpkKePnY+A+tF06lTvAc6FvLFVIFEDyexARHNmZMISOFB/52bRP6YlS/nC9T9Wvr8n6epjP10WJWXPCN4OYUSdUvyGNhwFBSczjsxH/Tls3ZA8DWxJ0vESj3tqbobhKDobUXi6GgIXe0nXXEI0ilLWNQcFRn5UtE91O4B2roxVmg8XnEbWSOqNS19to8tIYIEIeM0WUDRVZY32gtiZX3j4lLy502ezvyEXzRbgMUXDB2LeJAx8rcWDDUpKRqSK2VxiRP8KE9VIq1RBr55QCbAEb
- lesSszF1
- EMK6+UV+Xom4br4sRw4CF6j5jh1GYwCxUNxP1f0uiQZOnYWXQ0ZD96cMhQUR1RJj9aGgypvOY4X2viC4BVq5FGIwj0pa9HYeexn6FmDSBXdEhrZHHfAT5dSaUYBo+p7y3BBSEdCHrksc0Ishk+jkWkjnvTljIQYSObVYgbKNF6rhIFVuP/Gwl7o+iuJW/A1KUwV7Cd++Z7p3YuE9THhCXUFTXiS1qsj6ZUJOCHkvFFFVrjt51d6D3fMhATw5wxlsZtws7LvqKwVpyq1RZU103q3EIvLr3tInrKO/qGOc60iJyIeaqzJmItn9LsX2GMTpgIaq8Kgxees/cAAoDMUap0gEtvCWSSGRsQVH0VxBUwkzw+99xCyDw7srSG+BFR4yeWiK9Wh3nyp2iu9wqRBu0Cv9TV71uLoNBcMgDdP1BOWIQL+2AVvK60Dt3/bLEPlc1PnQdSREQJTnWFEr9ay06loOZsrq1na2qBalU/OD0aYQwl6M38LkeHUpfzg7uhcxU1lrQHyZi5j4yeWReyJk/w2xwdtCyymCvf9wAxYAUbm11Y3UBke1m+7kzb0nKG7aqPpiP7nxSP1DE8aaqMZoUp6rqkG4lh0AauhWS7smhassOLAQ=
+X-Stat-Signature: kjuairrwm6c8igudm585uk8cmd4jb1sg
+X-Rspamd-Queue-Id: 056618000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782174561-695813
+X-HE-Meta: U2FsdGVkX19PSpkI6x8PhG+0aWnZkzoL3YmmJj5OKEK8U7rlRTrjm34sD2Ebe9OVmETNt4jQ1tksFnYpBGTgF5jjmbKmsTH8g6wLLxEynFDysSBUSsG8iFVKHJK3oZ3Ood46nQrn35gDrI9UZAaiI+96U02PWX42s+TvKn34dT+Ttbf+n/Z/+PEFXPKmygFTgSYPGvFAdUKJ1TgvGQQ8lK9vL0ip/LXPRQpHBrq93z8LjMca4shH1NOlgYtz/UX0sM9xsrrbrnwoe1xx7HdNOfK77tzZrGVAMUSbBok+OsYSJ25Cl4nvoPqgxzD1KFqm26dyPflqoA8NGXlnVJc9mjw2zLSbzf560v4l/wIWVKwPZTG2o7UmlngQaEflbCJEeV/bjw1mNzh6+M/1sMjjVRPqBQsPmgIraSOy0tluoY4SO+DxJr7KJS4qYlkkXc26TniQ+z3Bcu7RlXZw0LVIIu4aYyAy8p/UnmEGi7u6e6UWcBbmA8kgJcXSwdPWeVcmmINJZmtOEC/Lh9m3z6tR5JwMcUMKcWKSr2UyBTCLtRabO/F7zL0djdY2wioCGOJGw18GZ03IKAImRnbb8rjxqhxq/L1QXpTdZTx99aMWv8Ux1qP+RIVg9+Pof3zEfmYtKhPgwJFAYKrVhcrfhArazRJIKpULeM1qBS10Ac4gLGeCE13KoRDnI9byqqQKPgucRnTAoBZtTfkDoy7S+E0n770HMx1pvXpjm133V8d1+Up2UksivJ192Hf+zH2E9ILojGB/H9QS5m3Aw+6m68lsfN73/x3GuDhLqmKzdneIxVIYbAyT5UiXwNj/0q8UTIB4s8r3ZW0/nINneqxKKFlU9FtummR+rFgX7kqShHDi/MSV50VHbpQl0qMJd2O0rz1T/cLYvaaioPlwjUdA0cl3RgURq6/5/fjR5tg5ptmsQrEWM9nSxwg/fNRlo2f+rl7hpWZHMBx3JPFAunAoixI
+ 82lqhsab
+ 42z04qN+XKe9HrDE90eDrbLwen2ospMTIoICmmo7En1G8TUKwhTBDj4TmGIfoOqFEzOOb/8nV4w3NJKWgDp/rdQuAEJcmvOmTrxhwtn2EYycbFE1aCmY1aUoau+WtI90Xcbf/5hdx2dVJPGz3p/3AUKadxGX3heWjTlzhUvBVMzm6HHjZQf7SfrSHS2cEZmis95xtevr0+KzIdSxl0wVS7ZzLgPffDd681VovQA9/s8vU0OsYPwgHjlFv+Al9kEEnhlQxDVnK6i4lpguO+sm3jQGHU7GNGdqNiLbEsfRNNyHeuMnz82/UdaM+hw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,76 +102,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------Y1cniXBnvQmmPIIYzS5Sh721
-Content-Type: multipart/mixed; boundary="------------7HTyjs0BAWD8GdgzJmGY714K";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
- Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <2f4c0914-1459-4895-bc64-345b80afad2e@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
-References: <20260622155913.280355-1-ljs@kernel.org>
-In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
+On 6/18/26 11:38 AM, Borislav Petkov wrote:
+> On Thu, Jun 18, 2026 at 11:12:09AM -0700, Dave Hansen wrote:
+>> On 6/18/26 10:09, Borislav Petkov wrote:
+>>> On Wed, Jun 17, 2026 at 03:13:33PM -0700, Ihor Solodrai wrote:
+>>>> So my question to maintainers is what approach seems best?
+>>> The CPUID stuff is being rewritten currently and it should address your issue
+>>> too. If not, then we need to rewrite it better.
+>>>
+>>> Can you reproduce with this set applied ontop:
+>>>
+>>> https://lore.kernel.org/r/20260528153923.403473-1-darwi@linutronix.de
+>>
+>> Thinking about this a bit more... If Ahmed's series does fix this, I
+>> think it will be accidental. It still uses identify_cpu() and also does
+>> a memset() of the new c->cpuid structure in addition to the old
+>> c->x86_capability structure.
+>>
+>> I'm not knocking Ahmed's series by any means. It just probably won't fix
+>> this issue.
+>>
+>> In a perfect world early_identify_cpu() and identify_cpu() would either
+>> get consolidated into one thing. Or at least become two discrete things
+>> that initialize two completely disjoint sets of data. That way,
+>> identify_cpu() wouldn't memset() anything.
+>>
+>> Isn't that the _real_ fix? Instead of trying to hide the inconsistency
+>> when good data is blown away, we stop blowing it away in the first place?
+> 
+> early_ is only on the BSP and you want to scan all CPUs.
+> 
+> AFAIR, the last time I was looking at how we scan the CPUID leafs, we do have
+> cases where there's blips in time when cap bits get disappeared to be
+> rescanned again. The toggling of MSR bits which control feature flags is one
+> thing that comes to mind.
+> 
+> But I'm with you on the consolidation approach. I think this is what we should
 
---------------7HTyjs0BAWD8GdgzJmGY714K
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hello Dave, Boris. Thank you for the input.
+
+I tried a slight refactoring of the identify_cpu() machinery to
+eliminate the memset(x86_capability) from the boot cpu, and it fixes
+the splat that I reported.
+
+identify_cpu() is split into two parts:
+  * identify_cpu_scan() - the top part, up to and including the
+    generic_identify() call
+  * identify_cpu() proper with the rest, no memset here
+
+Then (gated on x86_64) identify_boot_cpu() *skips* the
+identify_cpu_scan() call, only executing the bottom part of current
+identify_cpu(). We can do that because boot cpu already did the _scan
+part in early_identify_cpu(), when interrupts are still disabled.
+
+One caveat: get_model_name() is moved from generic_identify() into
+identify_cpu(), otherwise it wouldn't be called on boot cpu. Same for
+c->loops_per_jiffy = loops_per_jiffy; - it's moved to the "bottom"
+identify_cpu().
+
+The behavior for secondary cpus is unchanged: identify_secondary_cpu()
+calls identify_cpu_scan() then immediately identify_cpu().
+
+Please take a look at the diff below and let me know if this is a good
+way to proceed. I don't know exactly what I'm doing, so concerns and
+corrections are welcome.
 
 
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index a4268c47f2bc..4a655109cacf 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1978,8 +1978,6 @@ static void generic_identify(struct cpuinfo_x86 *c)
+ 
+ 	get_cpu_address_sizes(c);
+ 
+-	get_model_name(c); /* Default name */
+-
+ 	/*
+ 	 * ESPFIX is a strange bug.  All real CPUs have it.  Paravirt
+ 	 * systems that run Linux at CPL > 0 may or may not have the
+@@ -1999,13 +1997,12 @@ static void generic_identify(struct cpuinfo_x86 *c)
+ }
+ 
+ /*
+- * This does the hard work of actually picking apart the CPU stuff...
++ * Rebuild capability set from CPUID and re-apply the forced-cap overrides
++ * through generic_identify(). This *should* run with interrupts off, otherwise
++ * an interrupt handler might see the capability bits cleared.
+  */
+-static void identify_cpu(struct cpuinfo_x86 *c)
++static void identify_cpu_scan(struct cpuinfo_x86 *c)
+ {
+-	int i;
+-
+-	c->loops_per_jiffy = loops_per_jiffy;
+ 	c->x86_cache_size = 0;
+ 	c->x86_vendor = X86_VENDOR_UNKNOWN;
+ 	c->x86_model = c->x86_stepping = 0;	/* So far unknown... */
+@@ -2028,6 +2025,19 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+ #endif
+ 
+ 	generic_identify(c);
++}
++
++/*
++ * This is safe to run with interrupts on.
++ * The boot CPU can run just this from arch_cpu_finalize_init(), because
++ * the scan part already happened in early_identify_cpu().
++ */
++static void identify_cpu(struct cpuinfo_x86 *c)
++{
++	int i;
++
++	c->loops_per_jiffy = loops_per_jiffy;
++	get_model_name(c); /* Default name */
+ 
+ 	cpu_parse_topology(c);
+ 
+@@ -2154,6 +2164,17 @@ void enable_sep_cpu(void)
+ 
+ static __init void identify_boot_cpu(void)
+ {
++	/*
++	 * The boot CPU's capabilities were already scanned by early_identify_cpu().
++	 * Here identify_cpu() only finalizes them.
++	 *
++	 * 32-bit still needs the full scan here: it sets X86_BUG_ESPFIX (via
++	 * generic_identify()) and the no-CPUID cpuid_level default, which the early
++	 * path does not.
++	 */
++#ifndef CONFIG_X86_64
++	identify_cpu_scan(&boot_cpu_data);
++#endif
+ 	identify_cpu(&boot_cpu_data);
+ 	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
+ 		pr_info("CET detected: Indirect Branch Tracking enabled\n");
+@@ -2178,6 +2199,7 @@ void identify_secondary_cpu(unsigned int cpu)
+ 		*c = boot_cpu_data;
+ 	c->cpu_index = cpu;
+ 
++	identify_cpu_scan(c);
+ 	identify_cpu(c);
+ #ifdef CONFIG_X86_32
+ 	enable_sep_cpu();
+-- 
+2.53.0-Meta
 
-On 6/23/26 12:59 AM, Lorenzo Stoakes wrote:
-> Lance has been doing excellent work reviewing rmap series and has prove=
-n
-> himself to be a great member of the community in general, so add him as=
- an
-> rmap reviewer.
->=20
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
-
-Welcome, Lance!
-
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 65bd4328fe05..dd963b72c614 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17024,6 +17024,7 @@ R:	Liam R. Howlett <liam@infradead.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Harry Yoo <harry@kernel.org>
->  R:	Jann Horn <jannh@google.com>
-> +R:	Lance Yang <lance.yang@linux.dev>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  F:	include/linux/rmap.h
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------7HTyjs0BAWD8GdgzJmGY714K--
-
---------------Y1cniXBnvQmmPIIYzS5Sh721
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajnTSwAKCRCGXBN6rc5S
-1t9nAQCkngTYeGWxrp8gqpHof5x7TV1WsqM4uBEIMrk2WAXI2wD+JWU66F/R7xr/
-HiqHXR5AP3FS0tgNAvMWJStfTiZg2Qg=
-=N6jl
------END PGP SIGNATURE-----
-
---------------Y1cniXBnvQmmPIIYzS5Sh721--
 
