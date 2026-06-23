@@ -4,66 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D85CCDB479
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 13:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2C3ECDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 13:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E72D56B0093; Tue, 23 Jun 2026 09:13:10 -0400 (EDT)
+	id B65566B0096; Tue, 23 Jun 2026 09:13:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E23456B0095; Tue, 23 Jun 2026 09:13:10 -0400 (EDT)
+	id B3D376B0098; Tue, 23 Jun 2026 09:13:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D39756B0096; Tue, 23 Jun 2026 09:13:10 -0400 (EDT)
+	id A537D6B0099; Tue, 23 Jun 2026 09:13:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A45CF6B0093
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:13:10 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C9837167135
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:13:09 +0000 (UTC)
-X-FDA: 84911218098.09.D233114
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3D63720005
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:13:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OjCnwgpr;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 7E41C6B0096
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:13:19 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 059DC1C2EB1
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:13:19 +0000 (UTC)
+X-FDA: 84911218518.07.FD0BEA2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 648682000F
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:13:17 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/iifiGe";
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782220388;
-	b=4A0MPMI11Sdu0MAd98xJq14HPg6xxlfba5T7t44NYJcJwBF1bKVolHJE3OlLkVeoQsxDu1
-	IJLeSgMhAwWjoPwjbLXLam8VYM9O5Y+c3qnAU/QpWtPuzdIDKz/UN7t78IIMdYMW7Fquxl
-	oGp4NjlJ6WoMGFAnp1cUxSd67BeVOwA=
+	t=1782220397;
+	b=AkYk0LfIIKbj+mu6TbGlYbxlBvp87vTcDd5n30qAhiKysnMaF8kBaetTsm92epiQ249vjX
+	bzI8gctY1WmcN+ag0NTqU63kX8JwYv/mnDt3CLNYaoJYHNKcNNDSlR6Kyyi1/gx3Ioog7p
+	bd4O2dtble7MT0HAV7DBZUMR89dQxIo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782220388;
+	s=arc-20220608; t=1782220397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qcLfDsGf5XPj73nZRA08ZmnCvcH4OilI07UFYaMsrX0=;
-	b=jdLA/IlDbol5xDqVmMq5qoSp97D8eV/BZgHI585HP4JpTCOM3Ow9OCmkUr4V231Hjc7HQt
-	v0mV0g/oXr37gcRRcv1TE2qdxar73Q0J2byBzFSF565DpetvENNGqVsjgi0bXpXUrpls4Q
-	qt6/BesxgdhNhz608E98cqN49NKZBT8=
+	bh=g5mc2seyBJ1pVIiIaXg4bERPFOr66pMuwtVwk9IXTQw=;
+	b=vElOm9j6+DQ22OtPyQInchnn5xI+T4zfSU+Sl7VQZeVjDUIfBnFMgzfigPUU76IRbN1JCu
+	pvBcBpzKu/3Ka6IlRdVLgtNX5C1IXRpmZfGl8UWQiuzbxJAsTGY1+QXFaMFzlLobrTwrSq
+	RUCOvo41BG8JFWE1LwSJ9HyoQP+Heao=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OjCnwgpr;
-	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="W/iifiGe";
+	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D209F601F5;
-	Tue, 23 Jun 2026 13:13:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46C41F00A3D;
-	Tue, 23 Jun 2026 13:12:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5564A406E1;
+	Tue, 23 Jun 2026 13:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF4D1F00A3A;
+	Tue, 23 Jun 2026 13:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782220387;
-	bh=qcLfDsGf5XPj73nZRA08ZmnCvcH4OilI07UFYaMsrX0=;
+	s=k20260515; t=1782220396;
+	bh=g5mc2seyBJ1pVIiIaXg4bERPFOr66pMuwtVwk9IXTQw=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=OjCnwgprBvqVQyzGVVvo6XJUzznS8AnpuvLHrOCQFqN1QVYAEwE/GNzUwv15vVox0
-	 RV7qTbnR9HY6Bg1g4XuP+B/sca6oV8MerRA5MOYnkIW7AlhNI/BFy/pEHGefWsXHVC
-	 0QPKUgRxjZskNeLVc1ExAFytUesI1m7OuDn8caryOkjGWcnibEErL8YN0/dEn8DNQb
-	 I8DV/2fAeAHWsxW5kh76Uvlj8KrzcccHNBBGocme+XQOgne01TRAVsB1vaR45JAdZ8
-	 OzDlBA5wSSflDSl0fC3Sw0rbs2ZcKlIxufpPcm8cBKVDKZgrJkVaBExwebq3v40D6G
-	 RMmb3OgkINwtw==
+	b=W/iifiGeQ+aI6lAeV71CEqax9mMJWJCFwgoBoQoIXt5uDLfWF2eopH8ndgqr5khmL
+	 ETCbgXqUuQLrRe0nw90m5Y1k/nWjyo/F9LvE0c0A9jPuFsW6g+yW9pteF6cL5KfxKm
+	 6gsTB1cF8sSKT8xWb9CUH7u2G+WpMr5QrWkbkcR/0vltXolw6QZiMIyDgOog42tKMz
+	 +FstpuzGaoX6FoBosQztfPgipJpx2kH42sKLMG8FKKd7zao4S1oih9afeLeAIwUgyI
+	 5IWt+x5Kqr9Gmam/rVWXq/uNF1ViiAoavSb7we+Cbe6vy6rHcUnEUYAx0VyPJTwgEp
+	 X8PyHtZfF+/Ew==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
@@ -89,25 +88,25 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>,
  linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
  linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- driver-core@lists.linux.dev, Asahi Lina <lina+kernel@asahilina.net>
-Subject: Re: [PATCH v17 05/10] rust: page: convert to `Ownable`
-In-Reply-To: <CAH5fLgggdf0CM0o4Oa1VbY+y8gQxrU0VU5z_yB4GWCxnbqsFuQ@mail.gmail.com>
+ driver-core@lists.linux.dev, Asahi Lina <lina+kernel@asahilina.net>,
+ Oliver Mangold <oliver.mangold@pm.me>
+Subject: Re: [PATCH v17 02/10] rust: types: Add Ownable/Owned types
+In-Reply-To: <ajE5c-5gZtJRoadx@google.com>
 References: <20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org>
- <20260604-unique-ref-v17-5-7b4c3d2930b9@kernel.org>
- <CAH5fLgggdf0CM0o4Oa1VbY+y8gQxrU0VU5z_yB4GWCxnbqsFuQ@mail.gmail.com>
-Date: Tue, 23 Jun 2026 15:11:33 +0200
-Message-ID: <87bjd1pfju.fsf@t14s.mail-host-address-is-not-set>
+ <20260604-unique-ref-v17-2-7b4c3d2930b9@kernel.org>
+ <ajE5c-5gZtJRoadx@google.com>
+Date: Tue, 23 Jun 2026 15:09:04 +0200
+Message-ID: <87h5mtpfnz.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: orrucxq5rjpp7ei3hdje45zciijc56ta
+Content-Type: text/plain
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3D63720005
-X-HE-Tag: 1782220388-704871
-X-HE-Meta: U2FsdGVkX19yO27ppJtZTgflptetINxIddaARMXBtltCH6hQavQjf/PGBIMA82q/RwJ5xRmUhoIJ4wISLZFPVoIx73TWQiM/ohNPw7p9KJaZPC8GHVNlddHZvlelUOGbLy+61HunBM9BngfaFrJzLpjowckXqmeLwYWt+PNOUN8W+1G7yWlf3hfL/5WQ81E2ZwolhC/rmh2y+GzuOBiYCorRwS8JEhjHysxH25VIztScjP9vEIsU1v5xDC4E0liORAgptvbEmkqxFJfQy1ciLq10sgKKY99rXqWagK/R8Rge0R9D/RBFT35L9Kqzo8Vuh4bGONtUaX78laMD2gbIXnk5zUuAN4BO/f8F3SJgE2I0EqdA1escYhffIua49SnACG8M5NcVH1Vn50f+jb8pW845aGXXY7+l3G7kVqQfNK/jbm2TUz6GMenlcwDRWKFkIXcO2l4Cb55t//bk01oJKWOzPE19couR4XuBTond8DPCV3UpQkydJX2xH5ZSorTIdWLJYi7S/mqg6U2iDNch5fPqubSWkFnFv6zE1drq/H2C+b3OZusRWrEzIFDwzm4uVWZ1ePMJc1ZTSGxiGEasLLHHcrwl8Myx6G/Q3nY2YTy4kUQ/OhN4FS4iUKzYNp4tgTJWnDnJ3p9zEysTk6qwKXKnAyK/c2R1/uhxhc7VkAJVfClOdViZpMI+guNeWnpb4yFsGRItDZR58r3AnhvPC2iV/nsEi9rArbrzq4x4s+mCxNRRo6Fb76hOjV/ErYIGzrDZLyTpZHTQMOS4MdGPYRUPmWwXNHfCxr0LDLjN6P0+GIL8cvSmd6IhEi0MknJzjfTxjV/IGBqBIuEGmbuOYh7VTdpJz/jm5I9c+9zBOOlu1PH0mc8BFdgxpDLSakc9S+DbDwUF9QDqP3aR3e6FnHVJ2OuWQCwmE/MGhh7TUk0P1zNV+ewETDUafjKkfBZ4VcMRNfst4u5aqQ9rDZC
- idcFIEPN
- VAcbb+eJL6q3WauO0U8O+tEhdFntgTwlrjMmuW2PAgtS8QWchj0o9mNE4jpCXfjEB89t6IpNlu1cppkY/H9RuwJDnMLzVWo4e96WZhC7DcF/kZtU0RmrdanyIy5iWZM8WVBpdpgGtS8h0mZUjloZkR3BD5T0odT/yNzDHo9/g9WcLmD+bIk3heWCQwqWgK15pbTNWbozUhX7QAeYAdK6b/lh1RLr/OPuSQ5iSZ84JGG+L4Bqc77Y/QSk2enRlwL6m/oKNz5tnGfTLroopn6MGtjrQ+GoAE3YrcY4BZv4PAn3GnE1fPflmRBCOoMKUR0kTSRbPnAXltgIh3Bm+UelxoDG7vf0rnUuhhBpWyk4+Gf/z3J5KMj7etYi8Vr4cW5IvydZNyBy0oUmkeICqDSAJLFbkFTMZEur3623Q+O2BH386ke/iGy2xVP3FpA==
+X-Stat-Signature: 61rr9darih5wifecgs7xsty5jz1ppzik
+X-Rspamd-Queue-Id: 648682000F
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782220397-498907
+X-HE-Meta: U2FsdGVkX1/sfEykYH4iokz6y2+fR2ogR5HK0b/B755MXKijPwpYGyv0cuPLfIF4N/6oyWesOjXOFakWb8Mqoa7gHcFpIkRtVv+KgUGH6vn8kT1BGPC0q7XDh1z2ZqZinrez3T0Fsj73cAF+h+9MFj8QxNl91PpH3CsynWSvkOIxtqhxyxJ4urLP7hhlKRDfCF0+dmcChyVIYg9uUi1qGxLxCE+Cjf2tBlp00i0YvaaiFUz4gVVJ1rsSXvScwwePyvr9AoLF0d8G6psyld2LyOYorJNfBI4xKQ0xDl5nfV7kF6Gigl63q68L4utlwmWph2RtNSPT4xvOXG7o1QMWh7y9G5CnnT3hUl7VHrOEWJ9CalGZDwxueGDkpClizYS2FzaEGquYPGZVEnVpB9Av1Y5VH7du+VlknmCoteSIoWxHZ5OI4/PrruZIPUL4ybsrtuBo7KcO4RV818SIM2bciHBgIXYumqwC2qiG972YyNoZbYkC6RF1lQEwNvyY2HW08S2j8GhYNOhMPmc7Fuid7Z11fzwm0Z+eM1ssSFJ895Q1VAEYlP/WX/px/K/vfFyy0F5Nz9NemT7ouyltyTjk10mZ/0L9UeyGMwKsnfro6+gApFAqn6c8nWhYMSZEQrdy8iBr/wWegvu+K4Gdx//qD022wdFK58xkOjz6a5C6pGkupsvnC+nH/LgYWnmuDbS0zCeCidyi7NJ8vVFywTmfLrPqPnZ7ADhIsyRL1Y+S1XU+GAxoEopM5SgHxRz+7VTX4zeAGTveAI9RxNI+HsZKjUzZKOhRZcxRLtTRKKiStWqQ4piPCMxH+eOOahvG2HqfwlUnBMcNlu5kSZ6BXukT2HYHXQPpce19sskQy24EKjG5kyuZDwGA326dhRCrR86QuW5ymldLxqAVjicJxJupH0iSg2eVCyZBLmJ59LICF7zjoghWAqucBeuu53nX5riEmIZlyWDZPPIfOIuvlPW
+ 9Ka7ciKo
+ 7F7JtK56BV26bvj1lcr8dWKlKc5zPzmcyqKBXj5tyMlZ45fpZgDQWGSBmEQOCFraSjLd5ZlOfrIYTpC1HO/uL102gXBq4WEGPLyEKHnyWfBvQTdgcywU7MSUv7HiPi/04fAeCaGp0PwD0pXxc20cIG634+IDEQDQYuNbmTOlBFB7fnioJ0RR99nscfHzAv4GeGN9vQT2vksu2z2IuxLNawcPPwxz32ac9eaBUVhmMjJ0SOUP4d9EFCsUUj9dWMucTz1T20bXz/AD/tfsdPsbfpJGDTbQdqXhT3wQXkPIEFPS+EU8Pg8wqY9Gr8vjSl3VvcwY1tRx2UEBiWVhIB7ejx8tOj0oFH1WFmhQKqdedG1Jm2tUbc8N9mjpvFxXjXPYR4MGIeXNuffdJXV36U55vRolo5rQYujC+314sSV4CaT2zVgISgjPSRRSc2p+K39WQmUVe41umgQ6F+5QR2WLp2Q/MuJxCgIVPUhsrLXYTY/TSaxGkxM+gIsamzHfEmi/AGgZmt3wMIyFDyrjKobm2jeVk46QSsIcHi0Rmbkxbj89o2XiyoXA0mpYL4BAn5et2IRKF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,21 +116,81 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Alice Ryhl <aliceryhl@google.com> writes:
 
-> On Thu, Jun 4, 2026 at 10:14=E2=80=AFPM Andreas Hindborg <a.hindborg@kern=
-el.org> wrote:
->>
->> From: Asahi Lina <lina@asahilina.net>
->>
->> This allows Page references to be returned as borrowed references,
->> without necessarily owning the struct page.
->>
->> Signed-off-by: Asahi Lina <lina@asahilina.net>
->> [ Andreas: Fix formatting and add a safety comment. ]
+> On Thu, Jun 04, 2026 at 10:11:14PM +0200, Andreas Hindborg wrote:
+>> From: Asahi Lina <lina+kernel@asahilina.net>
+>> 
+>> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+>> (typically C FFI) type that *may* be owned by Rust, but need not be. Unlike
+>> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+>> within Rust, and does not allow cloning.
+>> 
+>> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+>> resource management to the `T` instead of using a generic allocator.
+>> 
+>> [ om:
+>>   - Split code into separate file and `pub use` it from types.rs.
+>>   - Make from_raw() and into_raw() public.
+>>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+>>   - Usage example/doctest for Ownable/Owned.
+>>   - Fixes to documentation and commit message.
+>> ]
+>> 
+>> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@asahilina.net/
+>> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+>> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+>> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>> Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+>> [ Andreas: Updated documentation, examples, and formatting. Change safety
+>>   requirements, safety comments. Use a reference for `release`. ]
+>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
 >> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 >
-> This will not compile unless Rust Binder is also updated.
+> Overall looks good to me, but two nits below. With them fixed:
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+>> +pub trait Ownable {
+>> +    /// Tear down this `Ownable`.
+>> +    ///
+>> +    /// Implementers of `Ownable` can use this function to clean up the use of `Self`. This can
+>> +    /// include freeing the underlying object.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// Callers must ensure that the caller has exclusive ownership of `T`, and this ownership can
+>> +    /// be transferred to the `release` method.
+>> +    unsafe fn release(&mut self);
+>
+> I'd make this take a raw pointer because the pointer can be freed during
+> the execution of release(), which references don't allow.
 
-I'll be sure to build test against binder.
+Ok.
+
+>
+>> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+>> index 4329d3c2c2e5..4aec7b699269 100644
+>> --- a/rust/kernel/types.rs
+>> +++ b/rust/kernel/types.rs
+>> @@ -11,6 +11,17 @@
+>>  };
+>>  use pin_init::{PinInit, Wrapper, Zeroable};
+>>  
+>> +pub use crate::{
+>> +    owned::{
+>> +        Ownable,
+>> +        Owned, //
+>> +    },
+>> +    sync::aref::{
+>> +        ARef,
+>> +        AlwaysRefCounted, //
+>> +    }, //
+>> +};
+>
+> We removed the types::ARef re-export, so you shouldn't add it back.
+
+Looks like a rebase failure, I will remove it.
 
 
 Best regards,
