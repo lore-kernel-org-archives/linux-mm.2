@@ -4,123 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2336CDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:56:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C626CCDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 19:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9643F6B0088; Tue, 23 Jun 2026 14:56:31 -0400 (EDT)
+	id A0D5F6B0088; Tue, 23 Jun 2026 15:02:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9154A6B008A; Tue, 23 Jun 2026 14:56:31 -0400 (EDT)
+	id 9BE6C6B008A; Tue, 23 Jun 2026 15:02:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8055B6B008C; Tue, 23 Jun 2026 14:56:31 -0400 (EDT)
+	id 8D37A6B008C; Tue, 23 Jun 2026 15:02:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5825E6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:56:31 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AADAFC277F
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:56:30 +0000 (UTC)
-X-FDA: 84912083340.08.7FAFE65
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2F865180012
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:56:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 679EA6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 15:02:06 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB0691A05BC
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:02:05 +0000 (UTC)
+X-FDA: 84912097410.19.D8BBF4B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id C77964000B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:02:03 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WgWyZwwj;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782240981;
-	b=Dzq5i9QOgn94D0xGJQpQ5e6DvNl2z0rYYlFJUzSwYNqLXPhHu5IfrhWdfumc64n1+OD81y
-	fUVkcbdtX2okvfMpryRHoirK3LN7bwqEFWGTsgHsFiRU1PEXioS4zNcDyJWGzf/Vh8150O
-	dJFPBE9x02G4/xKqNs0DcPP5Xrlsp34=
+	t=1782241323;
+	b=bV4kgkvoc+LgA0wKwLe1++wXKehxRWCYqFp4agW8sxhheFCM672QfN9qMZtWQviK/HXsmU
+	XURCMPIhgSvIo4XDZ/cH0mpbBkIzhHLLXZWEb1KFCVlGidXsdundT2X5gPpEfifLZ1eLDf
+	ALvEsLklYtKh/v5XIv2V57oqtA82Ojk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782240981;
+	s=arc-20220608; t=1782241323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6J+ANK03VaN7rdpDI6tnomDHkaUzerJG7W4wHHMwOJo=;
-	b=KM7zY7c5j92ndt1sRXVbg+6ko2smuofpgdtlxDkCTennT8XtKRVcYFvwp4gluqkbj4xJv0
-	6jgPlBSskmOoEqcP9JI/c8a0FCCpanApEfJoTpHkzrPdZ8+fyC7jZo8XnUVtVaK7K1TVRQ
-	QA1X+3nusGKGu/IZ16f9noS0dUq4rYU=
+	bh=y0u6nVtK/qnX+X7yL0jwUT2bDPnwgnxx/Mcp9KbGIeI=;
+	b=OFmq8FWg4kFFfr6SGCqfB4+V9018yotPgr6rs5Excg6WThRKq5owlDFS9Lj4DbvUn1wRWg
+	mR9dOThhVjeEkUkmid0IvvQp9SHrQUTJJMDj2W0x2uEC5iSIQhabqhnHMVk0aS/3L1drxa
+	jhEkEQnPJWJHei7XEdNTCFdbhbQEBiU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NLAXnrnf;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-48d3fe218f7so199817b6e.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:56:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782240980; x=1782845780; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6J+ANK03VaN7rdpDI6tnomDHkaUzerJG7W4wHHMwOJo=;
-        b=NLAXnrnfiVLuyhHaaXZ+/yBRnlsp1Ugi98FQDqFOkog3CNhv+TKY/3bfoUdjkNjELx
-         5MSmZj66/IqKS2WuNJfFqKeVQqQYwAjemKrgNH9IT/pczAFsQTn1U3jzX42aBcLZ3Z8y
-         YoT96HYsNsrIsrP0PfnMsenTk3BLPFjqjRR0hx1icvj3UAzQMwo9b72ufsz0H7dmQoy9
-         7bY6G1042l28/g38KOhG2Ney3zkcbNO9et3j2i2ASI8bA0ssIdy1KatS8Vyq/jwDIgrO
-         kK6cxHBBavS+8XxxB4dBZnH/s+J0ucofXHkf5DTQwiSDcSR9VVQZ0QhCFlGBHynnkwjE
-         XYLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782240980; x=1782845780;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6J+ANK03VaN7rdpDI6tnomDHkaUzerJG7W4wHHMwOJo=;
-        b=PMegFzaBWrLKJU8/oF7NufwfoEYJrFFeKxGWAv8TVR2doV7/lEKq2upK2fepSUbSSo
-         rD/opCZWW9BikpS7J8QKJMuOjPPFughB1cDdWD3zzYRb+EGFqH2tayqEXYYuI2Ow7WE0
-         tfTVNBOqcF1GIyz6JFfLd8GU+Qonzt+kKUqK1PpCVHlpWuAGoQ0KP10LJYKI9bCkle9Z
-         ZouMntx274jJC8JiqxhIe67OQrsvaA8NC1u1lr/21/afn36xhmoS2+keb8trmmPIQhTe
-         BgOZrYjgccA/EZ5K4QtzMXqyQIOlBcaUzLjKtnL1Z2FNUL866cZWVVmj+wBlwITncem7
-         f+cw==
-X-Forwarded-Encrypted: i=1; AFNElJ9zan0TNOWs7/xSwAvzsLnvuejf/hvK9PUfCMOm6GJg/v/3Jj20NKHDCIj8kiSGWz5ZJN3ObMOnJQ==@kvack.org
-X-Gm-Message-State: AOJu0YwzUHH8A8yQJYaouwuWGgnAWmfsmeMIsfyMnRQ3qkmXXqh0St6S
-	jBIbqbLO0Cl5AZOLiZk1BZkZTzw/M0rfcU5VtjdONj8IaAd6AJQf66/n
-X-Gm-Gg: AfdE7cmpGiVJ7cjxzSjMtapz3ydx0rpXUsxc2/XZ9M/XNRJmI3LQyGAiKHSYOs+ds1k
-	wHtRHoCIuTf0TPmtPqxD9l9j3qh+GM6WPpS/SyVtParJ21uJ5TtackcB0TK39RwghPzldvcDoRz
-	duQvjffaA/iQy0bH7HNXsWWx/vD45LA+E6PaEwC/rLnL9gPRzwgBwUgXC52rBfza/R8NaYBFFw5
-	O1accqpg+y+gJiH4Jvj5O69qKIGBAW+jhCp/gfK4YZDKcp7uwY5NC12Iu969tNQ4jPXlAxdawlq
-	qya5gglKDlhhn4sJ+GWb/utoVkX0F0YraM3pOMm91Dk94ED8t935y74O9Vm3Nu4jVkl6kr3C5mK
-	T/VpsQxQ8p47HG//L8BLh4xOKAe7ItZvuWhG0UptHS/VK6s2s9BjPtEfRxK828K26BY5s/07Dku
-	nn1sK3KyrOV9pjjnKp8Gg7e5XnESWIzvEILkKNZk0vuA==
-X-Received: by 2002:a05:6808:7008:b0:487:5613:1f with SMTP id 5614622812f47-4907a57addemr445b6e.27.1782240980141;
-        Tue, 23 Jun 2026 11:56:20 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:e::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-48aec0e5e53sm6944307b6e.8.2026.06.23.11.56.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 11:56:19 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Youngjun Park <her0gyugyu@gmail.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	youngjun.park@lge.com,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	gunho.lee@lge.com,
-	taejoon.song@lge.com,
-	hyungjun.cho@lge.com,
-	mkoutny@suse.com,
-	baver.bae@lge.com,
-	matia.kim@lge.com
-Subject: Re: [PATCH v9 3/6] mm: memcontrol: add interface for swap tier selection
-Date: Tue, 23 Jun 2026 11:56:17 -0700
-Message-ID: <20260623185618.1488231-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAO9r8zOQQwDxmHGsRw_9k2eu6r=HU_HiXxbB4cbpwhc1GGgHOw@mail.gmail.com>
-References: 
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WgWyZwwj;
+	spf=pass (imf12.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 235D260126
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF5D1F00ADF
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:02:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782241322;
+	bh=y0u6nVtK/qnX+X7yL0jwUT2bDPnwgnxx/Mcp9KbGIeI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=WgWyZwwjocbxiwbsfkw8IuWztr3YfbY15fMNWJ37Z23Zkc7NA3jpaSd6zhxlIZL9M
+	 jJB7MsNwc6ThiBC8POBmIPCXfLrjXjmIJPQhSQsD9P1oAVfRdjhTSVqH0YH4nCcQCX
+	 i1U9uIr2DASjbrmOiZnWsqsHC6BVfRbGGX/e+NdUhcjNOtuqKZIn/uc3HePQnl2lc9
+	 r2T3pr1VY5JZ+70JLDNHb6HCVrksr+7t1JaB67WVdOCOmxwXr8KUqKbgFx1jDuUa2i
+	 ouFqMOZBhIuH4DBBrSDfSOh0wHXX7gJzVhT37l2Gpf4aAD//rsWDDkVIKxVriUUDGs
+	 evQw5R0Dfrc/g==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-697bd21fdc2so294335a12.1
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:02:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/zjRJHgfeEmSU6QN7a9GtmyFr6te6UX9Q5AUQUpjGuXxtVoNq+75zKw7Ntc6DKARDfBclwyO7+eg==@kvack.org
+X-Gm-Message-State: AOJu0YykzydVax9vAWdsMNQ4MvQjtONrxbzrwZktAo8tQCaQlJBO7P+h
+	knIhTMlQnlWJti3ECLIo0K6SwFMP8KhsniaRo4ZJ75IPbmojIDm6VVgXo4rinHB/22Y0kh+JZj6
+	dar8lUoydSvRggLEtqsZvOL+ox7M6X+c=
+X-Received: by 2002:a17:906:9fc5:b0:c06:1310:21cc with SMTP id
+ a640c23a62f3a-c09901dce24mr1220373466b.47.1782241321011; Tue, 23 Jun 2026
+ 12:02:01 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HE-Tag: 1782240981-792812
-X-HE-Meta: U2FsdGVkX19DtZtqbcO1YDIqq7EHXLHcJ/ZABuVJGemRxwrU9YdKK1LPTuKWG8PKXP5q1DJHDIiz/o9ZLr6lLauoevlMMVTAMcpqUqGyCoIOCujPgVxrtmcEef53NXWlAmC+0ocfqKkjYShhLvS45D5chRYLDOKR5QVaB5KL8tFkbbR3bCLkkhDxX2K14/KWFVg1fTEXTx5PL+O+m0Tqv1m8ZZLVCrg9Z8vXXzk5x9gmzUtQ+Nml3lgbL1qlABeH3klLKze5lID+T05bC9Wr5bWZN+ATG+3LRmzlVu0snLtrUS1mhLIYQcitihvbSyc+PZxU8t2eZB79WV/2mfSFGiLY0NqT1RRrp6hrbWVeQo+8aN9qp6Nc6S+8cBLqAFJd1UEVeQ1N0HzCW0AlBNQYqnGRoVSKUvrce/wT1T4nPnNRAPIALBhNOwM5KRXHzZb/dEizAoS6yy+a8AJ89mWnp/+W7NxOmrnX
+References: <20260612193738.2183968-1-nphamcs@gmail.com> <20260612193738.2183968-4-nphamcs@gmail.com>
+In-Reply-To: <20260612193738.2183968-4-nphamcs@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 23 Jun 2026 12:01:49 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPXk2eRbVcEMQDTCH1j-w241h189=p04FenAfKAjkkQtA@mail.gmail.com>
+X-Gm-Features: AVVi8CeMEsmSPhPPFsXFa4O7MYG4Joyu2sWMWrZwPnhH3H9VtouH8kf4mAa2ZTQ
+Message-ID: <CAO9r8zPXk2eRbVcEMQDTCH1j-w241h189=p04FenAfKAjkkQtA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/7] mm, swap: support physical swap as a vswap backend
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, kernel-team@meta.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C77964000B
+X-Stat-Signature: 6rcebth61mmtponh1ikq8w61f9jfobgr
+X-Rspam-User: 
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782241323-495486
+X-HE-Meta: U2FsdGVkX183m1EMmBACoobvC69tRgE54TKgFqJnu/6F/3negRiuo6eCTrrtiF/E+CrKqFwQHnm9IATOVoLSobZw7KAVqTABG92A75LTdXXrNmYVpcnNL/PbNRigZk0E8TdKQgEY2CFRu17dDRB/vHqPa8VYftRhdnap0ZpiPAJQ5qjf60s7gGDnpV6jzRj9Tz9Psbn836Vml7jCgIc0goZs39tcjMwNjFvWM3dc1jVemkTRKX8pvEs6DB0G08vWKg23SelA21LGpcCuLxcVj3QZtoZ+RRnwBOvzoZg6MieQuHjOkp/lETHCACiA2l8yjAZwpbQYy1MMWqk0gjEesRp+/Wl1pMV+0uvDwutm0NKnvmwEV9+HKwX49NCrK0oCZiybeQD3eSCzZJ2T4PqFAHWZzDTVmpm4NpWNO7O7JbXO6DH+s0JGaWBeomrfm28pW2pXgq2RfANKgWgjinRaxNesUToPE0XWVjP2/af67N52T3mUhl/V6vxrfd+jw2w/S5jyhgOWZfaC98TYpnQCuQlcBhu1BGes2cge9lZ5acFGfgZLozdAovRYoN62Y5dTWKfXcp8vPAjvNUCWk+rmm3lBYcEMxzRFYkSs6gPTdYy9miWkwbyacDu1AuYRBDrJBoijW3WuiuAFes8v9c4vKnukZMFp1RxloeqDHQERUtvfV5wnarKiddSpqr8NUBp0ogeBOVmToblKRmcgRqWP605RsdgPgdhbSIPvsakmglPzvrtbEsdLWvMXF+7etKMLmY21oacHsN1uDv7qnbPnqkDDB059Lnh3AnuyUWRsCylJYzg79pVit2QPCuZCmS5ygFSUlt2GXRlzz2S1nvWuPVafxHmfcynMHcwVW0evzjP+f9VrXHDlzQw0pzrBBolwhr1To63j3inhmjA4GDdJOS0vcjZN7Dd+grYvcJ2Wu16/J48GbdT9VsT4ATJaK6tj1fTHDRLTA9vD+ShSBwt
+ rhQwddM+
+ hFJqFAOjQ283gn6GeAOenV8RzyaBExKZfH1dfROQVi+IQkjLkPXYBhnQOX7F73dkSPcWLY/NXRsh5GhDs8jzeSAJXi1+j/QXi4ixxUKnWnNGwmo0rt1UYK0MZJ1GbTArVwINf6sTUGFXrIF1Zjfg51UwarXM6JW4FQGjPEZjY6vlbj6bxanpt6tDpmtSMm9syaKijABX72FKSP751ORR/DQI9oON29qr8gfCJBZbs1K3+s0YdbZLvQXoe8wC4sOBs8aphy6sODzdh22940yYFp0VePE4iuBoXKYYP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,81 +108,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 11:10:32 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 466f8a182716..5daff7a25f67 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -993,6 +993,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>         struct folio *folio;
+>         struct mempolicy *mpol;
+>         struct swap_info_struct *si;
+> +       swp_entry_t phys = {};
+>         int ret = 0;
+>
+>         /* try to allocate swap cache folio */
+> @@ -1000,16 +1001,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>         if (!si)
+>                 return -EEXIST;
+>
+> -       /*
+> -        * Vswap entries have no physical backing - writeback would fail
+> -        * and SIGBUS the caller. Bail before we waste a swap-cache folio
+> -        * allocation.
+> -        */
+> -       if (si->flags & SWP_VSWAP) {
+> -               put_swap_device(si);
+> -               return -EINVAL;
+> -       }
+> -
+>         mpol = get_task_policy(current);
+>         folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
+>                                        NO_INTERLEAVE_INDEX);
+> @@ -1028,40 +1019,78 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
+>         /*
+>          * folio is locked, and the swapcache is now secured against
+>          * concurrent swapping to and from the slot, and concurrent
+> -        * swapoff so we can safely dereference the zswap tree here.
+> -        * Verify that the swap entry hasn't been invalidated and recycled
+> -        * behind our backs, to avoid overwriting a new swap folio with
+> -        * old compressed data. Only when this is successful can the entry
+> -        * be dereferenced.
+> +        * swapoff so we can safely dereference the zswap tree (or vswap
+> +        * vtable) here. Verify that the swap entry hasn't been
+> +        * invalidated and recycled behind our backs, to avoid overwriting
+> +        * a new swap folio with old compressed data. Only when this is
+> +        * successful can the entry be dereferenced.
+>          */
+> -       tree = swap_zswap_tree(swpentry);
+> -       if (entry != xa_load(tree, offset)) {
+> -               ret = -ENOMEM;
+> -               goto out;
+> +       if (swap_is_vswap(si)) {
+> +               if (entry != vswap_zswap_load(swpentry)) {
+> +                       ret = -ENOMEM;
+> +                       goto out;
+> +               }
+> +               /*
+> +                * Allocate physical backing BEFORE decompress - if it fails,
+> +                * no wasted work. folio_realloc_swap sets vtable to PHYS,
+> +                * overwriting ZSWAP - the old entry pointer is only held
+> +                * by the caller now.
+> +                */
+> +               phys = folio_realloc_swap(folio);
+> +               if (!phys.val) {
+> +                       ret = -ENOMEM;
+> +                       goto out;
+> +               }
+> +       } else {
+> +               tree = swap_zswap_tree(swpentry);
+> +               if (entry != xa_load(tree, offset)) {
+> +                       ret = -ENOMEM;
+> +                       goto out;
+> +               }
 
-> > To get back to the question of how the auto-tuning should work, the
-> > main question is to which ratio we scale the swap limits to.
-> > Do we set the swap limits proportional to how much swap is present
-> > in the system, or how much swap is available to the cgroup?
-> >
-> > So if we have 3 swap tiers A, B, C, with 50G, 30G, and 20G capacity
-> > respectively, how much should a cgroup with swap.max = 10G have if
-> > it is limited to tiers A and B?
-> >
-> > This is what I was getting at earlier when I said we have to calculate
-> > different ratios for different cgroups, based on what tiers they have
-> > access to.
-> 
-> That's a good question. I think the case that is particularly
-> interesting is whether or not the limits of other tiers should change
-> when another tier is disabled/enabled.
-> 
-> So basically in your example, assuming everything starts as "max",
-> when swap.max is set to 10G, the autoscaled limits would be: (tier A,
-> 5G), (tier B, 3G), (tier C, 2G). Now the question becomes, if
-> userspace sets the limit of tier C to 0, should the limits for tiers A
-> and B change?
-> 
-> On one hand, it's simpler to just keep the autoscaled limits unchanged
-> in this case. However, this means that the effective swap limit is now
-> 8G, which is not great :/
-> 
-> The alternative is to recalculate all the limits when one of them
-> changes, in which case the limits of A and B would change to 6.25G and
-> 3.75G. But I don't know if this will work well if we allow custom
-> limits. What happens if the limit of tier C is written as 1 (or 4096)
-> instead of 0? It's effectively the same scenario, but the tier is
-> technically allowed.
+There's a lot of divergence in the code (in this patch and previous
+ones). Seems like a lot of it is to do xarray operations vs vswap
+operations. I wonder if we can abstract these into helpers, e.g.
+zswap_tree_store(), zswap_tree_load(), etc. Maybe the name is not the
+best, but you get the point :)
 
-I think the one problem with this is that it becomes quite easy to
-accidentally overcommit. As a toy example, if you have 10 workloads and
-100G swap (as in the example I gave above), intuitively setting
-swap.max = 10G for all 10 workloads shouldn't ever cause any contention
-on capacity. But if you start excluding some tiers from some workloads,
-you actually get overcommitting on the tiers that can service the
-most workloads.
+Here we can then do zswap_tree_load() for both code paths and only the
+folio_realloc_swap() needs to be different for vswap. We can do
+similar cleanups for the load/store paths as well.
 
-I am not sure how concerning swap overcommit was, but at least in the
-memory tiering scenario accidental overcommitting of toptier memory
-seemed bad enough that I wanted to avoid the problem entirely.
+>         }
+>
+>         if (!zswap_decompress(entry, folio)) {
+>                 ret = -EIO;
+> +               /*
+> +                * For vswap: folio_realloc_swap already moved the entry
+> +                * out of the vtable. Restore it via vswap_zswap_store so
+> +                * the entry stays tracked (and the just-allocated PHYS
+> +                * slot is freed). For non-vswap: entry is still in the
+> +                * zswap tree.
+> +                */
+> +               if (swap_is_vswap(si) && phys.val)
+> +                       vswap_zswap_store(swpentry, entry);
 
-> The more I think about it, the more I realize it may be best to drop
-> the autoscaling thing. I imagine memory tiering might run into similar
-> issues too :/
+Should this go in the cleanup path instead (i.e. in the 'out' label?).
 
-And that's why I didn't include opt-in/opt-out for any of the tiers;
-if you have system-wide ratios, there's no need to change the ratios
-at all, and as long as the sum of your memory.limit for each workload
-is under the total capacity, all tiers will also not be overcommitted.
+>                 goto out;
+>         }
+>
+> -       xa_erase(tree, offset);
+> +       if (!swap_is_vswap(si))
+> +               xa_erase(tree, offset);
 
-Now, all of these complications aside, I think we might be overthinking
-a bit here : -) The auto-scaling should just provide some sort of
-"reasonable" default, the users can always override the per-tier
-limits if they are unhappy with the autoscaled values.
+Maybe this can also be abstracted into a helper, but I wonder what the
+corresponding vswap operation would be. I think folio_realloc_swap()
+will have already "erased" the zswap entry from vswap. Maybe have a
+vswap helper that will only remove it if it's a zswap entry? We can
+probably do a lockless check first to make it cheap?
 
-In fact, maybe it even makes sense to have sum of swap tier limits >
-swap.max.
+It's probably silly to do this, and maybe there's a better way.
+Generally, I think the code would be easier to follow if we abstract
+away the xarray vs. vswap stuff into helpers (where it's reasonable).
 
-(I actually recall having a really similar discussion when I was working
-on weighted interleave auto-tuning a year ago, on how weights should be
-set when switching between manually-set limits and relying on
-auto-scaled defaults [1]. I don't think there's a need to follow this
-convention, but we should think about what the expected behavior should
-be if a user manually sets a limit, but later wants to go back to
-auto-scaling limits). 
-
-Anyways, I think these are important questions. Youngjun, Nhat, Shakeel,
-any thoughts from you all? : -)
-
-[1] https://lore.kernel.org/all/8734hbiq7j.fsf@DESKTOP-5N7EMDA/
+>
+>         count_vm_event(ZSWPWB);
+>         if (entry->objcg)
+>                 count_objcg_events(entry->objcg, ZSWPWB, 1);
+>
+> -       zswap_entry_free(entry);
+> -
+>         /* folio is up to date */
+>         folio_mark_uptodate(folio);
+>
+>         /* move it to the tail of the inactive list after end_writeback */
+>         folio_set_reclaim(folio);
+>
+> -       /* start writeback */
+> -       ret = __swap_writepage(folio, NULL);
+> -       WARN_ON_ONCE(ret);
+> +       /*
+> +        * Start writeback. __swap_writepage_phys is void; __swap_writepage
+> +        * returns 0 today (async IO errors surface in the bio end_io
+> +        * callback). Either way the entry has been moved out of its prior
+> +        * location (vtable PHYS for vswap, removed from tree otherwise),
+> +        * so we own the free.
+> +        */
+> +       if (swap_is_vswap(si)) {
+> +               __swap_writepage_phys(folio, NULL, phys);
+> +       } else {
+> +               ret = __swap_writepage(folio, NULL);
+> +               WARN_ON_ONCE(ret);
+> +       }
+> +
+> +       zswap_entry_free(entry);
+>
+>  out:
+>         if (ret) {
+> @@ -1212,6 +1241,18 @@ static unsigned long zswap_shrinker_count(struct shrinker *shrinker,
+>         if (!zswap_shrinker_enabled || !mem_cgroup_zswap_writeback_enabled(memcg))
+>                 return 0;
+>
+> +       /*
+> +        * With CONFIG_VSWAP, vswap-backed zswap entries need a physical
+> +        * swap slot allocated on demand (via folio_realloc_swap) for
+> +        * writeback. If no physical slots are available, writeback will
+> +        * fail - skip the shrinker to avoid spinning on entries we cannot
+> +        * drain. Vanilla zswap-on-swapfile is unaffected because every
+> +        * zswap entry already has a backing slot; gate on CONFIG_VSWAP so
+> +        * the check compiles out there.
+> +        */
+> +       if (IS_ENABLED(CONFIG_VSWAP) && !get_nr_swap_pages())
+> +               return 0;
+> +
+>         /*
+>          * The shrinker resumes swap writeback, which will enter block
+>          * and may enter fs. XXX: Harmonize with vmscan.c __GFP_FS
+> @@ -1558,7 +1599,7 @@ bool zswap_store(struct folio *folio)
+>          * writeback could overwrite the new data in the swapfile.
+>          */
+>         if (partial_store && is_vswap_entry(swp))
+> -               folio_release_vswap_backing(folio);
+> +               folio_release_non_phys_swap_backing(folio);
+>         else if (!ret && !is_vswap_entry(swp)) {
+>                 unsigned type = swp_type(swp);
+>                 pgoff_t offset = swp_offset(swp);
+> --
+> 2.53.0-Meta
+>
 
