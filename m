@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 724A8CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:10:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84DC6CD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 18:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F7E46B008A; Tue, 23 Jun 2026 14:10:56 -0400 (EDT)
+	id 7AE316B0088; Tue, 23 Jun 2026 14:18:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8F46B0093; Tue, 23 Jun 2026 14:10:56 -0400 (EDT)
+	id 75F4E6B008A; Tue, 23 Jun 2026 14:18:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0BFA36B0095; Tue, 23 Jun 2026 14:10:56 -0400 (EDT)
+	id 6282C6B008C; Tue, 23 Jun 2026 14:18:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DBFF06B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:10:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 605A71A05EC
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:10:55 +0000 (UTC)
-X-FDA: 84911968470.06.84BD08F
+	by kanga.kvack.org (Postfix) with ESMTP id 370A66B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:18:23 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B82FB1A05E7
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:18:22 +0000 (UTC)
+X-FDA: 84911987244.29.8859838
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C0F611C0003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:10:45 +0000 (UTC)
+	by imf10.hostedemail.com (Postfix) with ESMTP id 2208BC0018
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:18:12 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782238245;
-	b=gTC5gh8kc62QBYgssqz0xpSlkAfSnXWTd9KEYLG3cb5Z3+pczLkmsE6j7bXzkBLCxSOrs9
-	lx1dk9nSnqQz8O1AfThTX/FB/VH0kQk7ASmc2K9zMmV/6neVaPCKf5SIJVZx1XULVvXmXU
-	jy1cEEC4WlSa6p4uXwuCTPyj+pzJ6fI=
+	t=1782238693;
+	b=kJyUrovXDCkTslQAw48TSbC5KDLlt7378mhEuLb9KYMGGMZRjSaR+o0EWnXvx+hFk2Va0c
+	/F3OpyPPMtH306Ssrj1RE3KmFTxuvhsL+DlQfafLH9vX3yur7MB1ZZ1dCQwH91IzIa2sDn
+	q63QhhZeHjYu9Xrbxjs58cei/VDB5rw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782238245;
+	s=arc-20220608; t=1782238693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tq05N2NyBqQ5JGKENo2Kp7YwhqEkQubdotmf3YJrnZA=;
-	b=jJah0ISbEzAZeS3y8SXCUsR9fHmowRzids+Ew5YFwVzDtPlfe6socjQT0ZsmjGIW13ymFY
-	p59NKs2usaXVLDhvq3DdwgqMRGfKm2SYzkwXvrH899EJAd/8vlBv8Cq5u3w3pSonms1dc7
-	twvy7v36BzhtAfLPx8AUTeZFwUIxTaI=
+	bh=HGo7jsa0z5bGAjnw8+UYFQWCBJbRAWPtpG1kEYRil0Y=;
+	b=Af/8eWp2DDj64F0cL8UiXX1G3EoKbsRxaFJn6HvAHlbXlqqqBJC0zw4wtFeDvCwSHBFhS2
+	PdPccJTZ/eS6igPX7kM4Ft1qXQDhE38NpyHhw7IoofcVv2TP1WKGU01Q96Hkwu6aprnp0P
+	H3zkpjbKGfyUsCAtKoV06PvQiM3BTbU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1nRv515;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cswXgtWY;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B09B243EED
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:10:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D631F00ACF
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:10:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44A11444B1
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:18:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B4E1F00ADF
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 18:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782238244;
-	bh=tq05N2NyBqQ5JGKENo2Kp7YwhqEkQubdotmf3YJrnZA=;
+	s=k20260515; t=1782238692;
+	bh=HGo7jsa0z5bGAjnw8+UYFQWCBJbRAWPtpG1kEYRil0Y=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=X1nRv515Stl6t4+NoB6Qix0fteA6CssGL7EH+pwMSccY3Ak5P6yAKM3Rb1l7XfVdy
-	 v+rjOF+lidhUlZzT/l/FcWlaf5yW+kdLDq2udjVAy7ShamhhQi8M+hnKRKc26pU2J6
-	 POo+qIaI234y7ErtLkXgInDdKbOMmMjHb4yqEnu7fuo6SYwct2Zt9egfwfKQ24+0pS
-	 kfZ8LOVHfXwTpumpK6tm0tr6F+CxnSzaFL6C7cPG/O25/MAm49C2grq0mitD8CL6Xh
-	 denrmS3s46mguFUWhQ6E9jlCirsGKXLiGX9co3tIUNMYuVIzJDNON+/IpaB4oYMaUL
-	 +X16byTeHjz0A==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c0c5d170ad4so14476966b.3
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:10:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9onQDsbqh1ospmOO0NCac2gzZslqurKxQuwkYfGQ9GzVzfU0lzNU4266M0TDRlJLbPW/HiXAKykQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw+wsYStmJBylpZKNTVvHFJNV9jQ1JcwkIWE62MLkAEcGIyIjYP
-	Y4++sReS6JqtcEyQV+dBSBd//0M9v7etES/UWmCr+Mi9g7+1F07KX7jnuhctSB9Ts8if48uXnFb
-	J+YB7a9f4GyEaGOkQ7E2gZNt2LR/bwgc=
-X-Received: by 2002:a17:906:9f8a:b0:c0e:4007:8d94 with SMTP id
- a640c23a62f3a-c108ecfa2b1mr236060766b.43.1782238243526; Tue, 23 Jun 2026
- 11:10:43 -0700 (PDT)
+	b=cswXgtWY0xG6YvKTRPM32z+O3mxYc3CAiwmLGtv/6mJyGgXtGV8sKegeFOWXOrR7H
+	 Mt8CgyrUiha2MBWMnHiYRNh6PW6jpd7OK3unt/mAy2wWsq3V+PxL4V2thvztVCB0VX
+	 gJJE//oVk7nXdB8Het/6fNwkqNfdD97Y/Co+OPuZ0NNEveij2hOzJbML4ZruZirQBM
+	 7gdCkasqiJfzXhePaEEorhtZMijTPNFMmVrI9uKyATbeVslN2MnJfqaeoyoJ+qVyKo
+	 4xEW1rycCV/1eLJEvyTgJIX5YoEJfHgwjqmDjyAhY+aBBGwmNMx9Uzn1SP04we0Fy8
+	 iK66FCyiatALQ==
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-697df404e32so209917a12.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:18:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+jsfSRlw49AVxnQcTsCyAfmy5zQYvRzoSYsQl43ux0T25V+HKEYd82cUvGWuJ4G3UQJ3tgG2KT8A==@kvack.org
+X-Gm-Message-State: AOJu0YxvT54jmaUs9mEY0bLeG2XD3ccdmOrXBQil6+2L82DVfudxsNBW
+	Ivngv+7z4GJC7RLvctSHI/Fp+0LdWCQPo/EAsQpY+hyJKWDuDzamo3XeNwHe3y9ixGi3mwCOAf3
+	RgLkG5ZWfX5yVRtLuhBezUqMCwF9VBJM=
+X-Received: by 2002:a17:907:9628:b0:c0f:d987:444f with SMTP id
+ a640c23a62f3a-c108ecf8d57mr247144966b.28.1782238691095; Tue, 23 Jun 2026
+ 11:18:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <ajnIasdb6j6yDUdy@google.com> <20260623004018.1864121-1-joshua.hahnjy@gmail.com>
-In-Reply-To: <20260623004018.1864121-1-joshua.hahnjy@gmail.com>
+References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
+ <20260618044857.69439-2-jiahao.kernel@gmail.com> <ajnB8IZrFZwbIr9P@google.com>
+ <d0f05c35-457a-4b2c-6faa-7a83d4bdec01@gmail.com>
+In-Reply-To: <d0f05c35-457a-4b2c-6faa-7a83d4bdec01@gmail.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 23 Jun 2026 11:10:32 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zOQQwDxmHGsRw_9k2eu6r=HU_HiXxbB4cbpwhc1GGgHOw@mail.gmail.com>
-X-Gm-Features: AVVi8CeHkJg-OCEUnLamzkS0g71Y0U9F0-dgswBYdQt5v8lrD2Rr2s34MhEXIG4
-Message-ID: <CAO9r8zOQQwDxmHGsRw_9k2eu6r=HU_HiXxbB4cbpwhc1GGgHOw@mail.gmail.com>
-Subject: Re: [PATCH v9 3/6] mm: memcontrol: add interface for swap tier selection
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Youngjun Park <her0gyugyu@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	akpm@linux-foundation.org, chrisl@kernel.org, youngjun.park@lge.com, 
-	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
-	nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, gunho.lee@lge.com, 
-	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com, 
-	baver.bae@lge.com, matia.kim@lge.com
+Date: Tue, 23 Jun 2026 11:17:58 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMgaqP=n6rmhnMU+qhp1Www1Y5kdbLTLX1v=fj_ybHyiw@mail.gmail.com>
+X-Gm-Features: AVVi8CeWbi9xozE3IgWvakuBVZiX3iyiSg_u18BJ2jTIomReldLs6eE9A54a5PI
+Message-ID: <CAO9r8zMgaqP=n6rmhnMU+qhp1Www1Y5kdbLTLX1v=fj_ybHyiw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/5] mm/zswap: Extend shrink_memcg() writeback capability
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-HE-Tag: 1782238245-967680
-X-HE-Meta: U2FsdGVkX19bY28IVgqHzS7v38ywCYlfiig/kxid5EzvwjojIIsUL9XuriC0nC/bQYzJcXOeMMBqwKflJUdwVrQmldAjUnMHo0JlXI+mK5Px9B4qzjmN9Oazh9xyyFNEUtj+RtVDS4WYo3CxSfvkdvG1mteaxk/V01C9BxxYGn75snKbdUjMWGZGtE5LRj7aVSmZnu9bsuwsJZ/nd2BJsyhLlavRdil9dMtgnTBeMe+SSjBjEQDmeoDysDa3RuGDHFpuCJEW8exN35ri0nBCrXFk7Tnvh+Pj2zUBQ6+f40+ByaVN7SU8IuiZaGqD9aWFXc+YrO//YGN0K83LZd8SgU5IHRYFUlrruqXu7UojSrnRpMbe16rt9wXWM5xgMl7P6UxPtCC+AHZrfNHlnHOLUi+a+C7k9VnJ
+X-HE-Tag: 1782238692-383326
+X-HE-Meta: U2FsdGVkX184NDMSUnenNYyQ1CIi3v2nqT37T7fonV2gLuG9vbnYAowHXQKXbs847473A09FHRukok4dy05uiyt0MWmrc4qhOh2khKRekhaT2M15AEJdGf0m2uFGACRGL6Zr42uH1YdU3cb4J0TmzkGrLbZQDXChCKRhTEKBhVNCuggpdWwFogzXoZV483TlaeUCnRfEk0Hrt3K5+WjNQFhn5nlovyCdQ/ww5byy8297JQqk9hRf6gtRWIseEUnV7l6zTNfcvU0LDWymK8p7CcbFgXlWqvSfpbZcIkNC45Llv6MvbQ33cKxCiUdo6kOXAxXP915ncfhP8y5EouGojCkylma2XAKepJynltmzRFftZLdnouh31Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,97 +95,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 5:40=E2=80=AFPM Joshua Hahn <joshua.hahnjy@gmail.co=
-m> wrote:
->
-> On Mon, 22 Jun 2026 23:46:31 +0000 Yosry Ahmed <yosry@kernel.org> wrote:
->
-> > > > > If that is the case, I think auto-scaling makes sense but can be =
-a bit
-> > > > > tricky, since there is no universal tiered ratio; each workload w=
-ill
-> > > > > have different tiers it can swap to, so they will all have to cal=
-culate
-> > > > > their own ratios. Tiered memory limits escapes this difficulty si=
-nce we
-> > > > > assume all memory can be placed on all tiers, so we have a system=
--wide
-> > > > > ratio : -)
-> > > >
-> > > > Hmm I don't follow. It's also possible (maybe not initially) that a
-> > > > memcg cannot use specific memory tiers, right? I am not sure what t=
-he
-> > > > difference is.
-> > >
-> > > You're right, I was speaking more to the current state of memory tier=
-s.
-> > > The majority of the feedack I received was that we already have too
-> > > many memcg knobs, so I just opted to make tiered memcg limits a
-> > > cgroup mount, with no ability for individual memcgs to tune their
-> > > limits or opt-in/out.
-> >
-> > Right, I think this is similar to the approach taken here. We have a
-> > single interface for per-tier limits. The main difference is that we're
-> > allowing 0/max values to disable/enable different swap tiers per-memcg,
-> > as there's a use case for that.
-> >
-> > Seems like for memory tiering there's no use case for that yet.
->
-> Yes, I would agree with that.
->
-> > > What do you think Yosry? Would it make sense for us to be able to
-> > > tune these values? Personally I think it makes sense but just wanted =
-to
-> > > make the basic features merged before I went to push for making those
-> > > knobs tunable.
-> >
-> > Right now we're not proposing to allow tuning swap tier limits either,
-> > just enable or disable a tier. My main question is about the default
-> > values.
-> >
-> > IIUC, for memory tiering, if you set memory.max, then the limits for
-> > tiers are auto-scaled. I think it makes sense to do the same for swap
-> > tiers for cosnsitency. Or am I wrong about the memory tiering limits
-> > behavior?
->
-> No, you're right about that. Sorry for steering the thread to my
-> series ; -)
->
-> To get back to the question of how the auto-tuning should work, the
-> main question is to which ratio we scale the swap limits to.
-> Do we set the swap limits proportional to how much swap is present
-> in the system, or how much swap is available to the cgroup?
->
-> So if we have 3 swap tiers A, B, C, with 50G, 30G, and 20G capacity
-> respectively, how much should a cgroup with swap.max =3D 10G have if
-> it is limited to tiers A and B?
->
-> This is what I was getting at earlier when I said we have to calculate
-> different ratios for different cgroups, based on what tiers they have
-> access to.
+> My initial thought was that if cold memory is evenly distributed across
+> nodes and we are doing a large writeback, it would be better to balance
+> the zswap entry writeback across all nodes rather than just draining
+> node 0 first. However, since we currently lack a proper metric to
+> represent hot/cold memory (such as age-based tracking), doing this
+> probably doesn't make much sense right now.
 
-That's a good question. I think the case that is particularly
-interesting is whether or not the limits of other tiers should change
-when another tier is disabled/enabled.
+Yeah let's start simple and go from there.
 
-So basically in your example, assuming everything starts as "max",
-when swap.max is set to 10G, the autoscaled limits would be: (tier A,
-5G), (tier B, 3G), (tier C, 2G). Now the question becomes, if
-userspace sets the limit of tier C to 0, should the limits for tiers A
-and B change?
+>
+> So, perhaps we want something like this? Please correct me if I'm wrong.
+>
+> static long shrink_memcg(struct mem_cgroup *memcg,
+>         unsigned long nr_to_scan)
+> {
+>    struct zswap_shrink_walk_arg walk_arg = {
+>      .bytes_written = 0,
+>      .encountered_page_in_swapcache = false,
+>    };
+>    unsigned long nr_remaining = nr_to_scan;
+>    bool memcg_list_is_empty = true;
+>    int nid;
+>
+>    if (!mem_cgroup_zswap_writeback_enabled(memcg))
+>      return -ENOENT;
+>
+>    if (memcg && !mem_cgroup_online(memcg))
+>      return -ENOENT;
+>
+>    for_each_node_state(nid, N_NORMAL_MEMORY) {
+>      unsigned long nr_to_walk;
+>
+>      /*
+>       * Cap the per-node scan by the current LRU length. A referenced
+>       * entry is only rotated to the tail (second chance) and may be
+>       * revisited within a single walk; without this cap those rotated
+>       * entries could drain the shared scan budget on one node.
+>       */
 
-On one hand, it's simpler to just keep the autoscaled limits unchanged
-in this case. However, this means that the effective swap limit is now
-8G, which is not great :/
+The comment here is a bit misleading. It's not just about draining one
+node. One call to shrink_memcg() should only scan entries once. The
+caller can then choose to scan the memcg again, or scan a different
+one. In this case, the caller should iterate all memcgs first before
+retrying memcgs again and reclaiming rotated entries.
 
-The alternative is to recalculate all the limits when one of them
-changes, in which case the limits of A and B would change to 6.25G and
-3.75G. But I don't know if this will work well if we allow custom
-limits. What happens if the limit of tier C is written as 1 (or 4096)
-instead of 0? It's effectively the same scenario, but the tier is
-technically allowed.
+>      nr_to_walk = min(nr_remaining,
+>           list_lru_count_one(&zswap_list_lru, nid, memcg));
+>      if (!nr_to_walk)
+>        continue;
+>      memcg_list_is_empty = false;
+>
+>      nr_remaining -= nr_to_walk;
+>      list_lru_walk_one(&zswap_list_lru, nid, memcg,
+>            &shrink_memcg_cb, &walk_arg, &nr_to_walk);
+>      /* Return the unused share of the budget to the pool. */
+>      nr_remaining += nr_to_walk;
+>
+>      /* Bail out once the whole scan budget has been spent. */
 
-The more I think about it, the more I realize it may be best to drop
-the autoscaling thing. I imagine memory tiering might run into similar
-issues too :/
+The comment is unnecessary.
+
+>      if (!nr_remaining)
+>        break;
+>
+>      cond_resched();
+
+Did you observe a problem here or did you just add this due to an
+abundance of caution?
+
+>    }
+>
+>    if (memcg_list_is_empty)
+
+Do we need memcg_list_is_empty? Can we just check if nr_remaining
+matches nr_to_scan?
+
+>      return -ENOENT;
+>
+>    return walk_arg.bytes_written;
+> }
+>
+> Thanks,
+> Hao
 
