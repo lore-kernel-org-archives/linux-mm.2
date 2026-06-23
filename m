@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D65FCCDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 15:37:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B5F1CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 15:38:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FBBE6B0093; Tue, 23 Jun 2026 11:37:39 -0400 (EDT)
+	id AAC826B0092; Tue, 23 Jun 2026 11:38:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AD946B0095; Tue, 23 Jun 2026 11:37:39 -0400 (EDT)
+	id A35496B0095; Tue, 23 Jun 2026 11:38:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 776616B0096; Tue, 23 Jun 2026 11:37:39 -0400 (EDT)
+	id 926C96B0096; Tue, 23 Jun 2026 11:38:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A1066B0093
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:37:39 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A22AE12055D
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 15:37:38 +0000 (UTC)
-X-FDA: 84911582196.04.9127A14
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6132D6B0092
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:38:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D7DB7A04CE
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 15:38:18 +0000 (UTC)
+X-FDA: 84911583876.06.07B6999
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 8F30C100012
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 15:37:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qYvQlaXf;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Wdne8ZXC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MxNgs3U8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Vt3iRckU;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf07.hostedemail.com (Postfix) with ESMTP id C1A9240007
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 15:38:16 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qeF62V9C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bV41k8LH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qeF62V9C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bV41k8LH;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782229056;
-	b=2dmGw0yn0fWUrpDPWd7VUUvj/tlrQVTGeL9OVAtDOMBOdNZX5x4ApFFoGdfabfPZ3XHo3X
-	+uIJ/aeFJueQGu1xZ6L6Yh6xIbve6kkBHf1dmvoirGrCHrCTL/d9f55g/X3s13Q5KkrkkJ
-	1xpLr/UKG4F+JJIT3rtgpB+eY8iE/fA=
+	t=1782229096;
+	b=kZ4OXCaKQx09nYLdip2L3e9ZcxWTPyz3xRNfPV7qyfvNKP0G1Pi7toMe62qHXPqP0jKHes
+	4q8fUSpu33PELkCWykygjD7Ja/u9M/GTPKqcVWQ2RGKZXe7hU4/qfhXIHXfT9GTz3xugRx
+	PLzYUO1dcaVArG3AHjSgGCOLfT+Xp2E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782229056;
+	s=arc-20220608; t=1782229096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SiD1HDzT0dAVNzQtD4cPBAiA9o8xQG+2zp040/DmQ4c=;
-	b=v8N0nQ+ziGqPiNQ/C61uOd7EI9QdJfdacAcT0uk2OBhPn9W+bBsEdyrlImcEtv4xGWPkKv
-	CMntrgC0QA0skN+vqDuizTcar+ox+1CfILogJ0HYn89OWvpCq+hmpjhFRzfEDsLfpOIB5c
-	ulvvdmoTaSNi4W7kVz1Vj4ANJKDh3U0=
+	bh=aA3HPVOr7YF8xREs33IURQZghuJZuFxX+5WHttHNZ+c=;
+	b=Guc+rSUeB+T9r+RqSYq+gazWrrQz6yXw7aeVfr+3/vhcs0Lzv9jHK/MTuLExfD/oF5ZOs1
+	jEmJFbUEr/BUFeDVX3RsOQTn0f1/GaMpT04CiVnaVV9UPh90z8sFRVBOHbbiUT15ksgiUP
+	7kqZOh6x5tgroQ946OdRFAiG0neGSP4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qYvQlaXf;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Wdne8ZXC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=MxNgs3U8;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Vt3iRckU;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qeF62V9C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bV41k8LH;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qeF62V9C;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bV41k8LH;
+	spf=pass (imf07.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E0A5D75B1F;
-	Tue, 23 Jun 2026 15:37:34 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4D57175FC1;
+	Tue, 23 Jun 2026 15:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782229055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782229095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SiD1HDzT0dAVNzQtD4cPBAiA9o8xQG+2zp040/DmQ4c=;
-	b=qYvQlaXfnfRFEt9oMsm+il25gqZd8o49PQiAtlBJuSMCzEqOhxI+iijeV1Cs8zscd1o1Iu
-	43mq9bhdPkWl3maZ44/wgqik6Wu1b+i/UzWaJoDBaROo0eGXyE5nehr91OnRvl3QH95oB1
-	oq0tp+oxevsIS2/bwomlM5Mx/akUVlM=
+	bh=aA3HPVOr7YF8xREs33IURQZghuJZuFxX+5WHttHNZ+c=;
+	b=qeF62V9CLDIcvxVPfO3FGBs5RmtTxvGGB4DIR+wwZhBSgFRrc9ONWp5qCuHM8t5T6KkxSB
+	l1rgJdBUFRsuVJpTPtWTro7ptFk0mVN2a6hulOLAj2MO7iIASDNNynjf4jSSRqvg2cLeJk
+	Fbh2Vh9L9RFMXCdPaQTQpaFXObH1DdY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782229055;
+	s=susede2_ed25519; t=1782229095;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SiD1HDzT0dAVNzQtD4cPBAiA9o8xQG+2zp040/DmQ4c=;
-	b=Wdne8ZXC/q07bL7Q9etkSilv8y7VoyO81suWnLaiMrbjkw4Q6+GwCHqKep/IqXoPJRammq
-	4ep4zcp9u7mSFUCA==
+	bh=aA3HPVOr7YF8xREs33IURQZghuJZuFxX+5WHttHNZ+c=;
+	b=bV41k8LHrFXfB0yMTmoPXJn9PvnYGMnNJaAiWzI0Si28RUQh+xy7DvF7H/GpM3FY8vtTvi
+	VDdV/1JqwenKSFBg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782229054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782229095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SiD1HDzT0dAVNzQtD4cPBAiA9o8xQG+2zp040/DmQ4c=;
-	b=MxNgs3U8wRRMXGJhgR3vi5K0NnhqIefh1FxtSITOJi8/sxn+U8ghMzQp0aetcHDxQMUBev
-	1G/nWhGjTUziGG7p5eOhdjKSTeyIlxZ46Eeeg1jub6LLNiSFyfC4eb3hE3tHi/xnNsmW25
-	ESVHCKRQJiE53sHQhAQp2qiPjRb6r7w=
+	bh=aA3HPVOr7YF8xREs33IURQZghuJZuFxX+5WHttHNZ+c=;
+	b=qeF62V9CLDIcvxVPfO3FGBs5RmtTxvGGB4DIR+wwZhBSgFRrc9ONWp5qCuHM8t5T6KkxSB
+	l1rgJdBUFRsuVJpTPtWTro7ptFk0mVN2a6hulOLAj2MO7iIASDNNynjf4jSSRqvg2cLeJk
+	Fbh2Vh9L9RFMXCdPaQTQpaFXObH1DdY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782229054;
+	s=susede2_ed25519; t=1782229095;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SiD1HDzT0dAVNzQtD4cPBAiA9o8xQG+2zp040/DmQ4c=;
-	b=Vt3iRckUuMYsknVhBk3Z2rCrmb/pET5kYAvXQomN1TVMkn4FzApO0AFwhnByeXuJ/fGeCj
-	k1uDBGqCO7xRhbCA==
+	bh=aA3HPVOr7YF8xREs33IURQZghuJZuFxX+5WHttHNZ+c=;
+	b=bV41k8LHrFXfB0yMTmoPXJn9PvnYGMnNJaAiWzI0Si28RUQh+xy7DvF7H/GpM3FY8vtTvi
+	VDdV/1JqwenKSFBg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A96D2779A8;
-	Tue, 23 Jun 2026 15:37:33 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1878A779A8;
+	Tue, 23 Jun 2026 15:38:14 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qVkJJj2oOmoLcQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 23 Jun 2026 15:37:33 +0000
-Date: Tue, 23 Jun 2026 16:37:31 +0100
+	id QkqWAmaoOmqtcQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 23 Jun 2026 15:38:14 +0000
+Date: Tue, 23 Jun 2026 16:38:12 +0100
 From: Pedro Falcato <pfalcato@suse.de>
 To: Dev Jain <dev.jain@arm.com>
 Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
@@ -110,23 +110,24 @@ Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
 	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, linux-mm@kvack.org, 
 	linux-kernel@vger.kernel.org, vbabka@kernel.org, jannh@google.com, ryan.roberts@arm.com, 
 	anshuman.khandual@arm.com, david@kernel.org
-Subject: Re: [PATCH 2/2] mm/mprotect: drop 'sub' from batching context
-Message-ID: <ajqoHiUc28tcfm7-@pedro-suse>
+Subject: Re: [PATCH 1/2] mm/swap: rename subpage->page in
+ folio_dup_swap/folio_put_swap
+Message-ID: <ajqoTDkE2-iDGsv2@pedro-suse>
 References: <20260623125723.2503832-1-dev.jain@arm.com>
- <20260623125723.2503832-3-dev.jain@arm.com>
+ <20260623125723.2503832-2-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260623125723.2503832-3-dev.jain@arm.com>
+In-Reply-To: <20260623125723.2503832-2-dev.jain@arm.com>
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8F30C100012
 X-Rspam-User: 
-X-Stat-Signature: eghjm4hcquwusj7fexzgb7kae1kbaen9
-X-HE-Tag: 1782229056-552033
-X-HE-Meta: U2FsdGVkX192SM5D2Z3c1NBbb5RNWyO59PnJjbzT8ol+CgzgY6+Z94ZjVmQBYa4AlWAIxoMEfKSHGUZyZibtFmnUI26lUEEZji5ihch43Bcj5PwgY76KMZfKRwRK5YNtQH88o+2ooed49svEAB0jzY6XEgyRrsULiFOBpmLPHguo6vTo6n/3KzP7iOxRZPBguOTeMLDO1X9M2mBmKh5knL2S8raC5TPWWHPqgg1F2Pvs3lE3gPdyePlWPwMMroGYaiOdGI9cuAHwZWVcN5sSP1St15XATj8vpgshxvJy7161AfthJOFyJGXMdFLnPuZQjp9FF8WiR08thrTmYqladqhHJ4tW9bH2lYah+dOiIh4+NfY2HFxHHJsbAST5YPS0MdrlwLaWrCEUTGoa2V5RWRfgEzJgssvO/dWtcXyc+SONvmMLGWVYkvpvKChkW/Ik7N5iqQGYvhkzoMXDOyWbHSy6VcMEwW98cjxFxB8W5awi3We9WLNDDph7q9TYStDaGFkOvTTHPRGZUpBsswI3VKKJKtq87x407KxIJoYTl/mdOi4Qs3BBM1ALm6HYEUlhNpj6AelK1IWD1Km6RLUJG/nCcocGP9O6en91WAwFCZ1gL/FofLaDzxRUpB6MIkTL9fGk45proWg7a4fcTF8Nv9zoCaB/qf9Sr+cLlJplgfRR4mIevXP5uZ64XQ60738BwCdZXPjZYyN3Ar7XCzywPFIS9HZlOS+0YEaQ9xKxwlqSicCovHOgU0o+dR8xAEgTa6J7+DKE5LXi8D313fCDBO/JgtRl0t+jn7UCuHRvdDoMo+YSiPeNejn6ALAiSOJIo4pUIfJJWmIcPpfGLipTuNF/EgWcjOhTnHL1+CiVHmz4AaF7wmOb1idKzr/EkWrNCfpc+pitllzT/VqeZKlh5PgSomu79cxZe0M/CpoKR7ugTAJynomRytL872zcfnT/lqJMWRQ6LlRk2fJ6EQB
- gteIwNmz
- wui4Xq33gMHGOROxOkdcWj6as/bN7jD2x9g6JbeWrVbmy3ln4LYstMw2CTkaxzMg3vezcM4VEh0hjlAYKIZq2BeDy7Umttsxpeiq9+sC+j/LV4Atq/TCJWjcKQ5ZTjFyliN+WRlv7aRV87+au9+rRutTvbp8y0ib6rM8LTCmYdJy8384AGqsLWAIedjAfTn8LSfhefJKbjPedDCbeqrmD5VeNC6/NW0+nkakkqZ1fmlaJEtfvicdAmu4F0rpHSLQX28xc9yPr8it9wj5LCQXLqIHzPN3eoESHjSK8feAhX5qnulBMaR80+6Zmk2dODKQrQgmQow96oHgKprTnSdMYBqewqgLaqGgOZ35NgEkRDiO91HA=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C1A9240007
+X-Stat-Signature: 334s5yxpk95m8zz9u6izy5siotna36m9
+X-HE-Tag: 1782229096-3086
+X-HE-Meta: U2FsdGVkX19WOAB7DkyM1V+b/hoYDtfCGFD09PqNiteeYosxtYoUAUsBxf8zYx3wEIgwU6Vx9xChRe+KNvOVJoaJWeTG2HlaGNE9s6xdudc5clZjFCrkKCKfgT8nF/9LQ9WwBLs0UQbrmVuZToDDAk3WS9flvHiAnENKgimQyg+fKYDWDP+f8Clp7f5BCBWYv7TDWPJdCzQ+FdUXob9ohRLZxt5ZitlpBbCx3BFfuyHdUc1KNzYbSenMujG0RpfV5XipYt1RJ7ckHZmTJmiEeme/n0X8K3GBLbd4K75uT1zAi1f2sj8k53f+q1TJAGfFpt4XCRBQK0D04OrykC5jTw8zXoVzzDIwiJ3iI2Hy9Rzm3SSj4JFKPw0NWxj6sipNoPt4As52nJpe1KOUUB2hVrDpvoaj57QmpZyOSu1XZ4sWpkCcCVzrSuvbH+/Abf/jzABj1JAsCeOwhdPfV6FKp/cy6BhZ6qaNiXNmQes7csqs37GwoPThjWbAN/UT76sz7IZLnFv88oBOilJeqIBGW18Q8CXqqprcpHgFuUHCG9xjrRyxVxBea33wH0MdnGOS7Qw+NndGCk80MsFlRLhuETohEtHsKVHrCVXEKyPYkQCmc36M8U+3cVk/uLtwFZr1FYeXzT/Y3f6Bk5qFjG9CV0HjWUT0QAqqTSnA75Qmd7Q559xxNIu4N1s/qxFfxYpB4SD4GssKbMK/NC7r7oTyD1b10vBlJ19LBtgg8LO1P41yHCbQRXVqaY5fXs3zEgptw7mlJXNVDdaR4ukdp1y15Qu8OzbnDOuP6uG2unedOmkwp2a4nBVKtQYgRPC4GZNMUt6ZqDOj+cr9z3cvAGeNtsY9eulNlD8/UUCyD+gvDVeMBRCYYzYBn5AHkIRibqYAHcTkgfzcWsmfMcTMjClP8KTnjdWdDXW6rKwewpAn6EoPEltajt2fjJozolCDCoLzxg6aLNHV2Iwsl6H2J7M
+ iQulcE5l
+ jVAsyP4odnpyvpR3UfBPvX9PbloIsaK/0OWovTARcjPyJT0YWNEIvrJ5qlDbpBkhMhlxtxo8clu7ry6wMSlmpXeAO+f+O+R4VaX+Bo41e/cs9loYiK1zu3ukMI3bgPGClUNDKj2ATP5YCdXkWZHAjOI1teHRzVIeOH56jvbcOHfppsgFU+2Yz7aCNpsaykMlj7nkwVjd27fboBWxOQhzfY1GL51F4735oHMnz4EWaR73PtamAvYrDOiEOVLm2+i7G92H8vQm+D/BcUhBW5Iu8YRUQrj10wt+W/qqeMT/+dKoCyWQCgug25gls6BqF4FT5xZE7UXFp+3QhhtMNL1a9k17VeRokMrSv1GdQyCMiSbYAaj/Az7o8XyH0q4L76PVpo0BlP3AND98uPnI984+disTVapTcFE5JKUMA98voixboggp9Tf1GPNem4dAoewOUfi/CzKuXb/Ubv8SpDC2KKOilXffJLKzpgCncp4Wnu0XzmkzvGIubZiitPA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,17 +135,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23, 2026 at 12:57:22PM +0000, Dev Jain wrote:
-> Shorten the name of page_anon_exclusive_sub_batch by dropping the
-> "sub-batch" context - the function itself doesn't need this context.
-> Similarly, drop "sub" from sub_batch_idx, it is unnecessary and the
-> usage is clear enough.
+On Tue, Jun 23, 2026 at 12:57:21PM +0000, Dev Jain wrote:
+> Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
 > 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-This is less confusing, thanks!
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
 Pedro
