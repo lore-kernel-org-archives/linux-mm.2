@@ -4,89 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE7DCD98F0
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 04:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16010CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 04:22:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCA6E6B0088; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
+	id BEF8F6B0088; Tue, 23 Jun 2026 00:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D54C16B008A; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
+	id BA1276B008A; Tue, 23 Jun 2026 00:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF64E6B008C; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
+	id A8EC56B008C; Tue, 23 Jun 2026 00:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 997256B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:07:20 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E4E28D582
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:07:20 +0000 (UTC)
-X-FDA: 84909842640.02.F2DFB4D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CFD891C0009
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:07:17 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Tmb5uj37;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EE9C6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:22:52 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF4031A03B4
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:22:51 +0000 (UTC)
+X-FDA: 84909881742.26.E453234
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 18B8B40005
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:22:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fa1+/U02";
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782187638;
-	b=luQwp2cEM12b8FrYYTKDktnEmckv85xq8V2kdvJaGnRxNBNE2GbzGX2gHqFw7hqjkVo3uC
-	huRSHnDssQOmBZ4epU86ebVKRB2KGgZ0V+uNOUi+gyWpCSygBp8s1Vub5uv4mDzzT1kZcF
-	f+CYCSJve4bnfxCmvom6kvbPZQ6jwdY=
+	t=1782188570;
+	b=AkNZHRj7p6crbPIW9nH0oZZuYTiY6nv7iW8p4z0AzFMDGGIYkGFZGF/HgarZCW8D1qJAwY
+	SO+8vuUJQdGhRkSiY71Y8PNt0GbOjVvEusSzUFSziPOFbGfazkeI+d14uutExRQ1oLj/K2
+	dHpmj2k63p8VGqMAy1zTcaZ1qfQGhik=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782187638;
+	s=arc-20220608; t=1782188570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1E/ptj+RS20Bidb80rfTzevjxywaQ+ft1dWMLD1tiK0=;
-	b=hUyYRaxWJ9M5d6RHftzOhyA/8ginIomKd15QaCZejzjxPqDHENfGLVRfSx+AHY4JIrRFnT
-	HNG5GwI0wIvYm6L2ZWOKbER1NdlMmnxrji8tltwVotCjbAxz6Wx25MuTR5vBNAz9YE7gB4
-	0oLUtOFoXFArOuEd3h21UJPpw7Srsck=
+	bh=iCeZzcSVN670PFFl9OXDzKKPTpZS94DK0FINkgJfL0o=;
+	b=sih2TA/6KaNI/MiVuSOlrOcth1Ewi1dhu60zFJhIxRGf+uHbNzvH/zC5pdZITG/lE+/PzJ
+	R0Epc2yg0WAXR2FjyFJnm4cxKr12wzPkwmhsaRTMdcJtZjrNlEkQTGiNqMEoDqxsAiNuZw
+	D+UHLpqgiyCqwc/pWeL0AUD3L9/6OSY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Tmb5uj37;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB0321A25;
-	Mon, 22 Jun 2026 21:07:11 -0700 (PDT)
-Received: from [10.164.148.38] (unknown [10.164.148.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 407283F632;
-	Mon, 22 Jun 2026 21:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782187636; bh=JO4KWmoFaB9If/+qfuYmnRSo/7s+sYdF2HGr25bcjkI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Tmb5uj37Jnvd6vKeYhLLgcykqbBv01QfvcC6AKXwkMa3t6PNmz2sqCk9qjtway2Mg
-	 AlqvzvpjmpMW1HoSALdQ0X3yHrlX3xWJofj+AK8g1NZkC2Jr0fFNTUhPBobDaCgvOc
-	 o3Rps+Cyf8UE25sl4t7tqlCEfHSZ+7htln8d9orU=
-Message-ID: <711edc64-67a2-4927-be1f-b9529af39533@arm.com>
-Date: Tue, 23 Jun 2026 09:37:04 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
- Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260622155913.280355-1-ljs@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nbj67ciux6run5sk31s77ku8g7sy33xo
-X-Rspamd-Queue-Id: CFD891C0009
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="Fa1+/U02";
+	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-37c8e7c8137so2959800a91.1
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 21:22:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782188569; x=1782793369; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iCeZzcSVN670PFFl9OXDzKKPTpZS94DK0FINkgJfL0o=;
+        b=Fa1+/U02TlYe8aj9qRXcedxofKra4nU4mzcMSZMBu+27vIlVZvF+WGJ7yhV6EB/Umr
+         55c00Ak/4IQHYlK6gW1dXNITL3OsjrY+iv/DxphgfX4TbGAbtn+8y4bkefHCSZuId3Vy
+         ekp10k9iILjClBEPXoCUvtsdOQNb3BhQuXIoim+1APWqFHrWstN/Ows/ZZ5VX6ARg7rM
+         NSiOHLy8BNZpEFws97+KNNxKfHaTorvz7/M+c60LmauSPP7ll9HW7FC3NWLSMfE7neLr
+         o7klF26NL7bvdscIsfaFTCV9d9VpfYqmQdFcL6CH3G0WG2Kk3LPPhsjwqT3t7Pod+2kh
+         Z5jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782188569; x=1782793369;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=iCeZzcSVN670PFFl9OXDzKKPTpZS94DK0FINkgJfL0o=;
+        b=oa4iYdi5A5kSOSf3K+vY3JmNjs0cSe5AIPUssG453X6/i7n+fnkNpvBk1UA5n/hKLV
+         x17ntUne2aSw1oe/tIYzC+b8OkgNWaWIZvrLVGDvpYqqyiXijH9XiIAuSW1MCLpflJd6
+         FoSHZHYfvm9tzX2xrjJg9amCTO6h7y9gv+Ub/ieDx0P49AA+63TefBvtio7QakmYKvRL
+         piHrtnuElEhEjdMjbz/jDN8JNWatgDYOKV+qyl4BEirrUBqLLU5lMLW8r8j0k1YxRevM
+         Glyu0tB0mvTyYW1M8/F4O9wWqPA67YPhCeptsmeK32Du4usK42HUbuPDXC0PiUFSZAaN
+         Lc5g==
+X-Gm-Message-State: AOJu0YyaGcS4epXIrKQ8m0bV8kk07UCd+7RhutADn/J7E2ZAS3mxCi3T
+	zEnqkjF0f2HSD8cjxM9VA3C51h90pjIeQGel9/YC8S/uih6h56k6jR4j
+X-Gm-Gg: AfdE7ckqmWW5plZtD2kJhob5dFMJY8FyEYPRuj2WL1s+jfR3gXXpt9QjPvH0iyyFUTK
+	szla6uCoeyVhqRDcijfFvuEIWSgTd1PrCqx2p7Z2228pXV9GK5pXAVhBs9ADKxD74/0gH2iE6uS
+	HPUiD4CKgyqI1iVaq3kyCXqOmOZdr0Zzq0YFcSyJ0t/82xM3myWbfUJmAaMuZ6W74DwoTYTs2fX
+	m589cLoQdv/MmFKMTXiSzoQua9eIInntT7M9m6S4NLw/7lyM8RGT/pFTMen/7WcDOWaYy0tw57F
+	8cKOfFSTqvQwZWEo0UrtZsUsTNRf4xZaDAS9A2wx/XnSXeqD8j2lpdldr/boQVz5s32/GsFs6uq
+	uuQIRgOaVLBUIvWVuxgoQ06IUhD6eYbkkXKAEULTOytrHeDfSI1DMckq5tkDKDFfSkCkpHdonSM
+	9BCbKESwZT02ZgKVs=
+X-Received: by 2002:a17:90b:5346:b0:36d:5dbe:2a0d with SMTP id 98e67ed59e1d1-37dd0d30e19mr1352554a91.7.1782188568802;
+        Mon, 22 Jun 2026 21:22:48 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d1536b541sm11397460a91.1.2026.06.22.21.22.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jun 2026 21:22:47 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v4 1/3] mm, swap: make SWAPFILE_CLUSTER runtime
+In-Reply-To: <CAGsJ_4y++uh_4Dqso-fafywFCAvTLd-JSRJ8RZ6HvNLDkaLUJA@mail.gmail.com>
+Date: Tue, 23 Jun 2026 09:41:48 +0530
+Message-ID: <4iityjy3.ritesh.list@gmail.com>
+References: <cover.1781843449.git.ritesh.list@gmail.com> <e519e98f51be2d310367e39df0935da79001e535.1781843449.git.ritesh.list@gmail.com> <CAGsJ_4y++uh_4Dqso-fafywFCAvTLd-JSRJ8RZ6HvNLDkaLUJA@mail.gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: dhb6ys33oiiiqi67jsu3tj33khbsfcne
+X-Rspamd-Queue-Id: 18B8B40005
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1782187637-31516
-X-HE-Meta: U2FsdGVkX1++ZRngSQB3LrhO7aCFbZGq+e1Xap66WdxJA26Aqzlv3CwRa+FX/JAqfTdidC2xKrSw9Z5dmjcRW0C9ioWpdMc7r3IkO6lsz+waagOxxTrAwwK8rU4XRl+JjfsZcNrBOfxJeFfXKI6NGMR+bR+moO7JE0/eLMAovJnbKLUD0bMWKWzi/a7DDpQwt9WYqP9G7kFYBlLK/WBPi2XD0fwQyLN2jNe2T3mN1of8pNyjEk5QeKFd48uw77sIyssfxPtJdNxN8lzp2RvhqFlS0be6W3vwsqzU6/qXUkjqeD0eQSb1RoWsW2e1nY24gTQlGUdm3d/jiAt9aOATK4k7g6dcnJX9NQ1GPPkEUeiKvMrBT7YK6H9ebJMyJ0rvprSFQYUwPCw1bEzJYKWW0c3+1za837eJZxdG9j1+lSIeM97I7Iv6ThN7D+Zc+66sUDd0/BFPcjrNdDbc0h9R9ldWLxLQR/1HB2B8iXXESkcJXrKxeZ4UTZB8ECarIONEJrkpsSAAbU/AC7Z148vBr13dYPP8B34TDwzdPyeVN78GkcYyhUFHrHdJ2LKtggJasXDYwd1nPlJpQJ4Kt/BFvfMqHcrxbl9JHfu5Q0jjv73hSK4nX8XIyenogvMA9heShA6PKQtcnMlGKyMfB1tpuP/VKk30Oqsm+Y497LFtliOrWgPa20IAVq6NFluZW3E3QBrCFGVyXMNbfWOjecG0FiBK2C9HAQXwuAKsidbs+fNGny17zMSAXZeHmeu+a2aWXm1WZewqy8hN7oMptIEdkkqJNmYCHd43DcCn152jYnJsSugKFgNpN4c0lfZdThId8tNNVZtp48/faTsCq/ypadJczbLLYSjQDIjLCo0RtFC52VBX5ahj5Va/dNsguOYVTRb6BWgELlmOCK+MFuKWhTIrikWpKyBBNgRQ8oDvkxOvCwfX/9IiyJ9ctuzaRYDMeI+hu6cIyQfi0T2coQn
- Lm+lvA7V
- 3z3MdbZyxT6CmJ+kdXshMK+z0kAqyrVB5cBwsniwIuRlM5KkfdOLBLSA68r9TPg6CO64zGrISeMJCWCIhQkjyS7Z/HTRrQaPnvA6+FFuBUMUyetfpCuMyv9FC9uMWMUJWsb4Yxvk85m4YxjRFIvr5IMuFhH8hRbDzOpBz43huK0hF/qrrgKB2wdJx71IvUU5rrdF5ux4RYbIUjL4wQ97nFcqBQUmTeEpfp+Uf65KyJ0ZtvNrVwCKorI8U2g6CN11hB5+mapDqTrFDpq8l5sZRp9pLQg5dC1VYEhIhdeDfJ6bITg62kyFDKeeNQ1fd1AsMmZUtp++IISwM7DAUaXaqUNBkXOn5vUHZZpqYOrIGkWpYaK5xV7FpQJgHfXmKqHRHl5Tn0MA4yThgdRrQ8YocSWd4Sno2r6wrfZjx71EQV/psrdVz17ZxmEsJyNdVWC1Nu/Q+3y4EY1mrdGY=
+X-HE-Tag: 1782188569-664920
+X-HE-Meta: U2FsdGVkX18YJ6cBe2sZyygXWbjr11BDQ5jRWKg6QKiLCW7/o9M5GbhvCd67TPkGAr+L6/aWsbnSZPGlXVVPN67TXiH/vw4LNZAExYMJvStn/86WLshMAyAAzVeoxeO1K9LhWWGt98wi3rrRpzkOPKcLIFcRoJeH/fnwiGW/TKxDZ94tXKVvz4scLgnYk5y2VvlC8H0rYVPpWDzwpibHovRWp+a6Ilg3ZzQEFCSA3hJMk8L2OSnsWj+le5kWFKNd8XEqYRy6k8Ye+Od0cfCObBsOfOziPTxbVCDovWSCx2ycDpdQcDLKy2OKq6hdt8jQz9Ryr3yRWobXWawcu2X3oDRMHyT8C8r4Dssb0EzNffgMR27z3kVXM1fCAuPKIiz5XrDiihvrOG+LnIH0e07sCVVpL+v4MPeAEnt5XIbeFpyKSPZiTECtcZTmrVjhtFX7tFjvOeLS8pfxoUo7QmSVGhVFWLNRjOSkJdY6uumkV9hP1QMmFsQYLqTXZATQMHkhOxDSt3ieWLbrFOVzpsWplNZjHDV6fAargQYC8zZysVtzqfgxHUlY6UY59fl4Sl+WZ7nqvReirCf/22dlbbxtVLgtINCkdDH8QvEKgcDBFjZ8HjlUYfiGxDp/xfMsc5lYg02TNw9yUNR2jpHqDIZYuYto1sVH0/sgzD4X3g9LEAAgZtkut11HC0r8sInb46elt4hlgohOhgbWSVpTg5oqscU9eoPXPdGjHDnWHT5/n59s61uDxf7LKM/nxY5DoXQacC6LodXiSCb8KqK+1xWEUl36rsu6Z21DtAmO0wRx501MjJLRQBk4ERdJrbK4H6wDBT9k0306CDzQ7XkDGFv04kMbsltHtgerkMu6aWDulcoPI3CYj/rbv3DDHKGDOYlSU3RksOYQz0HCWfHTNytqp/Jsjv9gnly8Q+XrSRE6Vl7GoNm7kWA8G006dLJaeRT9WMLq5NgAlIMJ40/cGp5
+ rpc2VotP
+ /IhWuHE2ftcRxmRsZhxMv6CnHHwW1K1eDS/tRraPKPq7zEn6To5dgtkQOxa3BhPv670t86tnYZXsS96GLm/qAZD6agopMY7Olx3Rv0g7uqeJsrJz1ioumXBYMRnjYpvC3+bm7fsb6D0qg9hpkl+if6DbGV4b8SnpgJoolfjcHR06F+XhAAyQojv6AlZaEcccRxYdbYkc6r7dEDbglMGcLUEDGbUvDly5yVo9/dt6JAim+EF7DEuAlLqnfmPPiW919yEoKaWDb1aX9TJd4AjvlHrc1jgcl7+7HVjHSTZv2PyjAKmuniL87MSbCw4zpd9osWXGjLrn+usC2HF0aNMjlCMyamoUX0RngRtRERDoelm5ltTwU8GvpDlq/McfwLNWZGYoPwhm1C5KPfyRwvjXX8PxvUlC31a2dKN3pr25qVhDVmGeoUWCo7QPmdm6zONYFdGKgqXc7SWgeD9OiYgg1q0svrrgZVmJHAmD2Jw42uhQoYgGYVr4/TXICquOnhKsaOb/SAFE19nnW3JPeda+tp5+t2H9CwTdqSjBPq5Hxw499fZN7sv/y4F4cWaU2W3sISjLpNIqd5l1rkR5n1imS2tNKog==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,34 +116,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Barry Song <baohua@kernel.org> writes:
 
+> On Fri, Jun 19, 2026 at 12:41 PM Ritesh Harjani (IBM)
+> <ritesh.list@gmail.com> wrote:
+>>
+>> On PowerPC Book3S64, MMU is selected at runtime, so macros like
+>> PMD_SHIFT are effectively runtime variables in the Book3S64 code. THP
+>
+> Not an expert on Book3S64—could you explain the runtime variables in
+> more detail? Does enabling THP_SWAP on PowerPC cause any build issues?
+>
 
-On 22/06/26 9:29 pm, Lorenzo Stoakes wrote:
-> Lance has been doing excellent work reviewing rmap series and has proven
-> himself to be a great member of the community in general, so add him as an
-> rmap reviewer.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> ---
+yes, build issues. We cannot declare array sizes by using runtime
+variables. That's what this patch series fixes.
 
-True!
+>> swap code uses these macros to size some of its array data structures
+>> based on PMD_ORDER e.g. SWAPFILE_CLUSTER macro is used for this very
+>> purpose.
+>> Hence this patch makes the users of SWAPFILE_CLUSTER to use this macro value at
+>> runtime and also modifies swap_table and swap_memcg_table which were earlier
+>> using this macro for defining the number of table entries.
+>>
+>> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> ---
+>>  mm/swap_table.h |  6 ++----
+>>  mm/swapfile.c   | 17 ++++++++++++-----
+>>  2 files changed, 14 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/mm/swap_table.h b/mm/swap_table.h
+>> index e6613e62f8d0..90e2a7852300 100644
+>> --- a/mm/swap_table.h
+>> +++ b/mm/swap_table.h
+>> @@ -8,16 +8,14 @@
+>>
+>>  /* A typical flat array in each cluster as swap table */
+>>  struct swap_table {
+>> -       atomic_long_t entries[SWAPFILE_CLUSTER];
+>> +       DECLARE_FLEX_ARRAY(atomic_long_t, entries);
+>>  };
+>>
+>>  /* For storing memcg private id */
+>>  struct swap_memcg_table {
+>> -       unsigned short id[SWAPFILE_CLUSTER];
+>> +       DECLARE_FLEX_ARRAY(unsigned short, id);
+>>  };
+>>
+>> -#define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
+>> -
+>>  /*
+>>   * A swap table entry represents the status of a swap slot on a swap
+>>   * (physical or virtual) device. The swap table in each cluster is a
+>> diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> index 78b49b0658ad..4bf11c5b87eb 100644
+>> --- a/mm/swapfile.c
+>> +++ b/mm/swapfile.c
+>> @@ -129,6 +129,8 @@ static DEFINE_PER_CPU(struct percpu_swap_cluster, percpu_swap_cluster) = {
+>>         .lock = INIT_LOCAL_LOCK(),
+>>  };
+>>
+>> +static bool swap_table_use_page __ro_after_init;
+>
+> Does a static key help here?
 
-Acked-by: Dev Jain <dev.jain@arm.com>
+That IMO won't give much benefit, given the allocation by either kmem or
+alloc pages, anyway dominates the cost. Also I believe this is exactly
+the usecase where branch predictor helps signficantly and reliably given
+the variable is ro_after_init.
 
->  MAINTAINERS | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 65bd4328fe05..dd963b72c614 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17024,6 +17024,7 @@ R:	Liam R. Howlett <liam@infradead.org>
->  R:	Vlastimil Babka <vbabka@kernel.org>
->  R:	Harry Yoo <harry@kernel.org>
->  R:	Jann Horn <jannh@google.com>
-> +R:	Lance Yang <lance.yang@linux.dev>
->  L:	linux-mm@kvack.org
->  S:	Maintained
->  F:	include/linux/rmap.h
+>
+> Best Regards
+> Barry
 
+Thanks Barry for looking into this.
+
+-ritesh
 
