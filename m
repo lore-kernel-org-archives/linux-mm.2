@@ -4,111 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA12CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:37:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0D7CD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C20926B008A; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
+	id CC9006B0088; Tue, 23 Jun 2026 07:43:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAB1A6B008C; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
+	id C79AB6B008A; Tue, 23 Jun 2026 07:43:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A71EA6B0092; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
+	id B8FE96B008C; Tue, 23 Jun 2026 07:43:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7738D6B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E547E16700B
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:37:51 +0000 (UTC)
-X-FDA: 84910977942.18.B77AC3D
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E1CA4120005
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:37:49 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="UFaS/IGp";
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C1866B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:43:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 217041A04C7
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:43:40 +0000 (UTC)
+X-FDA: 84910992600.13.5E7F754
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5E59B140003
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:43:38 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rw0wY6tX;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782214670;
-	b=acNXOFUWQyRQQXXHmvf8Le5P+ZEySBNjVuTor7Hiz/QEQ/GzpP8P9qDiUeqo3fzt5I0L7g
-	y2iTzwSoRh1dXorNDxejNn1JKXbcQje/KFNMH1r6Xd+hBgAFOHKX6nXD8uLIRcv81u9HB4
-	vlokL6RuzmOA6k29TKmskTJJVXr2gxI=
+	t=1782215018;
+	b=Wrly05uvbfJUiYYkISmwfjTlxg8DBKM4juiEJGPOO0qoVTQQyWMLDPW395oZy9jiOxq7R3
+	7ttgLdfk2Oj3W8neJsF466nb2VXmuJCMgfRNygqFWjQ4C9XaD8FbT4nV0uyTVGcJAe4bQG
+	FN0DAtbVouLNvCFRK61RsVOQMp894us=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782214670;
+	s=arc-20220608; t=1782215018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
-	b=lV+4/SmhxXDlgAtH2/a6hFNBec3tv2kYvzQELWxiB+I9eIvYvYJ2ZE/C9Z/qnW25jvPHCD
-	Cxzen+f8jGwC/LQR1CdHep5bDJ/xHt2qNfI1O5v7kbLC9ZPTjWIpmv/vM41hFW9ySieQhi
-	F3qiHTH5pPW+Y6HTwKxDFmfA9oYkuVM=
+	bh=MIYLLXEdXx7L4o6dYJYDdrb0D5HpwPqotDGYXKoVR5s=;
+	b=2g1SGSg3KDwFkCvWLZwN/3R4WXstPr3vwVszZwgey/Zq2wQwWXHm/CLCAWRglCQLawm8om
+	17Jn1rPTaLELkL+ypRpti+cK+u1F8dxm3bs796xQF83M88a5KEE2sHWxGReRorBZaarHCk
+	YiWSABkcqOy821z/mPjLYgqOJtDal40=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="UFaS/IGp";
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84229481d44so2444110b3a.0
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:37:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782214669; x=1782819469; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
-        b=UFaS/IGpkSYYATqHfG5Sk2HSynZzCFwAs1pmksneAKVU1XB/MbekgOGUp1IhK0E+ls
-         yV95vS6FWhQB3I4qDfeJ/Mb1JaNKlSRwgZpX5yK83ocD0fFOL8cOUKSimp35yv0lb1tb
-         BfmDW//Nx4R0YqMolNG4sgoHLrwU1p8gXNR1fDRq9lGFY/+v0lVKE9H+BBuBn7I6Ldnw
-         lhJrqgQGMmIpos8lIc1SBJo2wk2tqcxbycyG8VzMgHA7yHsT14VoPYqlj3KwUW66PBvV
-         SEClgv4a+rkLKf7VkbJJyLvVh8FGlP6mqb9awq7+7QxE2UllzJDuvzF3iz8loNot3oMz
-         YgiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782214669; x=1782819469;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
-        b=Wf7X+Ro9iQFPDwQoGu3PWzavj1mtqhpsAiYpy1vfKqtehdXAK0FBnuevQUNkkuFDSk
-         xYgvHWC6cHgq0dyxaqH9Wkw/xUiyw+JMgHFT1+aErw1+/pzg3jdFBeQB1hTIQ3QgfHwC
-         WkeLrgRS/dbmfKhH0siKTO38KrVbytOmlKMMhbE1qOuiYpuHF2KISV8zxKQyuPT6JtB6
-         a9LUrMtLkUO4IiN4c6dtItS/tSIVWketlzLVueRPpO2EXBDpjeJOMTmFpRXn76jDMvaS
-         aNVbODNtjtvl38iCrbtYIuNQK/w+ErSZyAVTm9prFjxvQJClUuvaX/SKiWQ2tQ709Z1L
-         xUiQ==
-X-Gm-Message-State: AOJu0YwmYi6TSM3r65clPb1XPOMm2eX/G9EwIxSAeNev3cOGmt5KetZn
-	dbEmkoN5sWimHhd5IyIGjjacVaQqYnL4k3v+/BU+vTHQa+Op6ieTXvza
-X-Gm-Gg: AfdE7cl3R1QFtys2PmcmFQEDOoLc6nUSc2paQ1/DQApfu+ejENgZIJDwIgh2jd7M79S
-	vkU5LPCCMTQmhG/TSTRswEICMMS/zae3M1xK+Lxzihy/7yo9Q5yPh4E+ol1nsn6pY1JPRvj9S+W
-	A25nI5XOs3TGbXHh9riJXRPz5MmowUnVtiNbTqgLnJkqitGgG7ebpX9j62C3BAl5TrXWnTdoAYU
-	P6H+0FOsqoRuuATW75JzI0pvCm5Pe+amaKddmfra6H+KJ5T9jYL/ZbfJW3f7ru0tBKrQe1AGAJ0
-	PPtRNE8cA/GgMm1IUpVWcY7miRpcpYPjpo+OQmve6QDUvyL3YFZceUfSi46cOjW9JdnvmqBtyqT
-	hqyugJa3YV4+00nWFnWJVMhyz4qfg5E3eeqX2wsws11OcOFGuNjT41MPo1p1l8ueGFlaKqZssqJ
-	JE03HEVZIht8JgJko=
-X-Received: by 2002:a05:6a00:4b51:b0:842:4327:6cfb with SMTP id d2e1a72fcca58-84597123e04mr2464203b3a.46.1782214668486;
-        Tue, 23 Jun 2026 04:37:48 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ef4c09sm11953864b3a.61.2026.06.23.04.37.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 04:37:47 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Barry Song <baohua@kernel.org>
-Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
-Subject: Re: [PATCH v4 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS via ARCH_MAX_PMD_ORDER
-In-Reply-To: <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
-Date: Tue, 23 Jun 2026 15:02:07 +0530
-Message-ID: <wlvpwqjs.ritesh.list@gmail.com>
-References: <cover.1781843449.git.ritesh.list@gmail.com> <eda4e51ee9f1270582fbb2823ec5873e769de089.1781843449.git.ritesh.list@gmail.com> <CAGsJ_4yTY8g3M7qmpM7HeUq=E05e7v_QFTzk=2D5Mv3Vj3Usqg@mail.gmail.com> <33ydyd82.ritesh.list@gmail.com> <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E1CA4120005
-X-Stat-Signature: bakrnxg19u57eu5sih5pk8srsqd1kdn8
+	imf26.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=rw0wY6tX;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf26.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3F99B41722;
+	Tue, 23 Jun 2026 11:43:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99F81F00A3A;
+	Tue, 23 Jun 2026 11:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1782215017;
+	bh=MIYLLXEdXx7L4o6dYJYDdrb0D5HpwPqotDGYXKoVR5s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=rw0wY6tXv+5a5BRQ63p93wABtbFhv2RtKPXr5/x5aQ4PYasTgBb/Y9xDHp1xkp4zk
+	 N3CLzRvVPAYdvGj6Fv5XbXutveX54MBQsEAJE7CaAEnYDsbdedNny6QTxLdg89ZFPJ
+	 JnQ49sQlBZuFEglkXvXApvgS7ZIuKPiTuwtYrb/I=
+Date: Tue, 23 Jun 2026 13:42:25 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Xiaobo Liu <cppcoffee@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, akpm@linux-foundation.org,
+	david@fromorbit.com, qi.zheng@linux.dev, roman.gushchin@linux.dev,
+	muchun.song@linux.dev, boqun@kernel.org, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, lossin@kernel.org, a.hindborg@kernel.org,
+	aliceryhl@google.com, tmgross@umich.edu,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] rust: helpers: move list_lru and task_work helpers
+ out of binder.c
+Message-ID: <2026062302-girdle-entrench-11bb@gregkh>
+References: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
+ <20260623102431.3577627-1-cppcoffee@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623102431.3577627-1-cppcoffee@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 5E59B140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782214669-490182
-X-HE-Meta: U2FsdGVkX1+b+ecXgUx51d7o36Se/VxFjlIKwAWFJGNhSb3uQUvIJuCVfUa7FTQp30b0ezEQoL0aGESw2KZGEMQ1WIhLSYWGboJqJlyDf3nUuCDloub89gguieeV4FDtRuHLLxqDmQ1nmg1I6idylBp6nsAzIcMFSD2F4cU8NBNX9luJdl+p0Xw8YkRT5qZtHNWiukqPK5iVJEdBFOjqbAWV9iYLduEcs2yJimejfSRYYpzlUyvGSnHTjA912tbsMz+fpZ6Evi3Gcyj4jNYmcxpWLt0qB0ZtlFJd2VgOPOtfdHS+tLhV9MT4hmBglZ0pqIVUzdSToa5rsUOLn0wD1OJ1pMWM3yruD5gt64WmahQKlofnSTsIytYKX1LwnYAfKsCMfIfrMKouQ8B1ELWJgOxEDVwwyC5p9B3jdkgkZCcWyhM2LhgwsE4Pgt3wN8C0RB/n12UIvzXNKwmxhwyC+zYj/hNf9wn+Ax5b+9AJx5aftKKPJbagPR6XJAngUS/+ByP7uqLMkk6Ku/i4No8f+J2Cq3Os2eSnTYOzvjHfjVZ7zow4eSXzIut3UOS6Ac71VA2dnlfSdHs+uSG3WPSwriEw/OmXDTWK5HyH984kIaGR1EhSKRgknCyrP+q8Yk2iWAKDqTPyoSeuHr7ttGGKyL7n6QjgNWApodJn2V51UadvI4sj3UHIbh0qVSh6IVYRQAnWt6cQDgMh41WNoJ6gVeKdDeecF3QuUUpyYvgjI0l/7BQ0oUSWLDGKdDXwOfi6F8RmQ8hWOA10fifb/pgJ6TEDmyHNWi5GhzWDRLsDdaXAV5KzkfufFVpoFNqS12rJrrVJaa9n7ygRkxtYlSRv4dmw5UezWBqNHcPIjZmkhvngik2dsgrDiyIvXiGu1HxDwUlqys5kVE99TWrgnIx3kWZ88YM+CXwQr3tWobMy38QdU9fCxeC03hMgarvVsaafkT7o9ZW30pe+pSk/ipq
- z8XQCOml
- hnE43UW53pRZ5vo4tNkMKkEk068AuKoXkK+Ulo2cw1ANYfIJaWzPrcfeTYuhD+E8HKXu4OMwXnYG8OAzG2jyQqZpVq7ANC6gb+xE8yuu4JUcsvmwCbnB/CkeimZGWeYNPiXBmxS3/5g2ovyHRGzLMVfbOQ2QYSwJ3D7IS8V7tM0Dkp5XgIn21eAoiGWkaLhvL18QF9qAaYLPJZNS6hjTdGOpj8m08cXwVqW05xLN22wgquP+VCTiJefgXQt/i1ds3E2f3utiuOhOvkTUZ0k5vwSMuI3H3PXyd/wbNftcWd6/EZkSm89Vwu66oZOU+K1IzZs+BFbqpK3WGhQ51d2dCJ+RYtY6O1j4sOLQ1n04s27S9KKQcx9DRmWhbhI4mbX4NQiXHDyy5BaMri6lQWnmBiRA8a5rMSX+AcYm+/Jeyryvb09ppSzKYXN1umCv/DYH8gLHmG4VNe+gVS8fT+Cphofl4H3bBr5LJXr0MvrNgIPjfZrlxj6X2tEm9cnI4m9hYpeyAUsJCA0r0iWiXtdCJGEsu58Qak4JB8fQ4AjKqPEH2ytcQACvjRab2MCe5ZOAyZnZqOpRKcjuzkvU=
+X-Stat-Signature: oiyp11954gjbjiw7pkfemu9gfa3ciri9
+X-HE-Tag: 1782215018-316911
+X-HE-Meta: U2FsdGVkX1/9mccu9p3TLEZNTyKaVU6eef6lixkoKpRGSvJ/3oGJbkxnp90xTHNgcEzV/nw4FRyF5AZ99QX/Yqb2HNtXBTvssBZwiTgpF7sG0nuDYjLcZ2WxDiSnbb5Z53k5YbFbSpqxFpBBfrKz2WeCrjUT15oj4eM9ihTCGJFPR1xHGjv7tXKUfOp1YmOPpKCjXlW5249vSvjSwxshkEn+Vi6xwG3WuCYJZnapfTjdI6hKH07atkTQyfEG0qV1vXD1rYNQQwoi5Nec/p7ATzGfgJ1TsAO2C7VbDCDfod/SGirfFjd+i3fzVDRtMFpJT8OOlqA/sWBYqw3McRcRS8GQ9ciQ+B00Bj6SzKQX4IHyc88N1Gql84YMZQ5JxhQ+irTXVUEYm9HeQwfQwTPQYb/q7plOTRYLb4FvzGuKdRSut8W3jDGmG1+EQRzBxoGcT6wAFbqYDVfYZDk49q2VSzeWFKSTN3sN1y01jPmdnvOH9tL/Ww8c8QhbSV0Ashtm9e94ahNanU+/uItPE0DGrLyHR2a60C5I5qQIqX4J3AiS6wCN2HOYmvGtFofrUs+g64fM4eJF9Q5rhRgt3m96BLv+ZmnxTJDNMgHxJL9iWE6FcSKwJxzqejIcoIlY6QRL/J8BNgRzc/QiQM8WSnz6cpoZGeYMwShDy04GfaJn+q4wDyjoQVAY8YdPVMvTfsUjO8gUF8LlEo5mNCeHYkYb4KGqYqBzwZ7ad2PzNYgNmps35htfeAVU62SRvEwvOIWkdn0m3rDscYdkSD+0dcB5WoSy+bXWbuiBYWzjiJdoDRQ1OdRpXIG0Zb4AtYabYYFK81y+nS0jXNLGBJ18+lrwQG6J6WWUp4PrFA3Li2Ok/Diyn5Sd5YAC/s3LYVrhBXrYGJUWMYvj6xvz68KKjicZzobP4zB7eY5x2S1CEV8P8TxXuc93sFL71NHY5dbtjRVg1gnqxu4gsPcju93qvn2
+ yCYgsYka
+ aUqyUrK/ynOvlDZ+6ve/DrnjmyLQlVchrOOqRBvdmMJscqH1eW8Y5RIRLB4roXP+M55s79akg7z6BgsbM/Ff4WoORYBEpEy0Q7PgwEGrBxim9sIyVBYTIABHzOeMEW50JshoLJfzZlX/y4yyMUEfnEpD/x6IWKXVdpMV15+aLWyVSocmva2pz868b5bMfG1W2k3DQZaLdIYkIQ+u3vie/RKjOnV6UEPd/Ru8/pPXJdD6k6oYGn1NK1/JbkfiVMYs8/Djf1qhGnGFqura5uGaDJs+MpjE2BO1g8b+7cMlKB83uqGUtAWzsZTS6/JHmi/dGnQdyhosRLmjsVpCtMuq4kWTrmgt4f+R3MszbuAIIBv1WDGN+1htHA2o7QR5OkA5vo19xQoSROfwTxkkwsg3b/8+m/wh/0tGbU/WSINr+JywBsjP3N+aMbp2nka5qolpwRWSzmJKdOMtmVIpzAqKmAHwl5YNB7qjVKzLyLOjid3E9TwUhS+mk0yMNPiFdTe5BxIcF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,87 +94,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Barry Song <baohua@kernel.org> writes:
+On Tue, Jun 23, 2026 at 06:24:31PM +0800, Xiaobo Liu wrote:
+> The helpers in binder.c wrap generic list_lru and task_work inline
+> functions and have nothing to do with binder. Move each of them to a
+> file named after its own C header:
+> 
+>   - list_lru helpers move to list_lru.c,
+>   - init_task_work moves to task_work.c.
+> 
+> Add the new list_lru.c to the SHRINKER entry in MAINTAINERS, which
+> already covers include/linux/list_lru.h.
+> 
+> Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
+> ---
+>  MAINTAINERS                           |  1 +
+>  rust/helpers/helpers.c                |  3 ++-
+>  rust/helpers/{binder.c => list_lru.c} |  7 -------
+>  rust/helpers/task_work.c              | 13 +++++++++++++
+>  4 files changed, 16 insertions(+), 8 deletions(-)
+>  rename rust/helpers/{binder.c => list_lru.c} (72%)
+>  create mode 100644 rust/helpers/task_work.c
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index ba45953bb..428992431 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24590,6 +24590,7 @@ S:	Maintained
+>  F:	Documentation/admin-guide/mm/shrinker_debugfs.rst
+>  F:	include/linux/list_lru.h
+>  F:	include/linux/shrinker.h
+> +F:	rust/helpers/list_lru.c
+>  F:	mm/list_lru.c
+>  F:	mm/shrinker.c
+>  F:	mm/shrinker_debug.c
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 998e31052..ea34101b9 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -43,7 +43,6 @@
+>  #include "atomic_ext.c"
+>  #include "auxiliary.c"
+>  #include "barrier.c"
+> -#include "binder.c"
+>  #include "bitmap.c"
+>  #include "bitops.c"
+>  #include "blk.c"
+> @@ -69,6 +68,7 @@
+>  #include "jump_label.c"
+>  #include "kunit.c"
+>  #include "list.c"
+> +#include "list_lru.c"
+>  #include "maple_tree.c"
+>  #include "mm.c"
+>  #include "mutex.c"
+> @@ -93,6 +93,7 @@
+>  #include "string.c"
+>  #include "sync.c"
+>  #include "task.c"
+> +#include "task_work.c"
+>  #include "time.c"
+>  #include "uaccess.c"
+>  #include "usb.c"
+> diff --git a/rust/helpers/binder.c b/rust/helpers/list_lru.c
+> similarity index 72%
+> rename from rust/helpers/binder.c
+> rename to rust/helpers/list_lru.c
+> index a2327f1b3..3b88d1a96 100644
+> --- a/rust/helpers/binder.c
+> +++ b/rust/helpers/list_lru.c
+> @@ -5,7 +5,6 @@
+>   */
+>  
+>  #include <linux/list_lru.h>
+> -#include <linux/task_work.h>
+>  
+>  __rust_helper unsigned long rust_helper_list_lru_count(struct list_lru *lru)
+>  {
+> @@ -19,9 +18,3 @@ __rust_helper unsigned long rust_helper_list_lru_walk(struct list_lru *lru,
+>  {
+>  	return list_lru_walk(lru, isolate, cb_arg, nr_to_walk);
+>  }
+> -
+> -__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
+> -					      task_work_func_t func)
+> -{
+> -	init_task_work(twork, func);
+> -}
+> diff --git a/rust/helpers/task_work.c b/rust/helpers/task_work.c
+> new file mode 100644
+> index 000000000..cb961cd22
+> --- /dev/null
+> +++ b/rust/helpers/task_work.c
+> @@ -0,0 +1,13 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2025 Google LLC.
+> + */
+> +
+> +#include <linux/task_work.h>
+> +
+> +__rust_helper void rust_helper_init_task_work(struct callback_head *twork,
+> +					      task_work_func_t func)
+> +{
+> +	init_task_work(twork, func);
+> +}
+> -- 
+> 2.34.1
+> 
+> 
 
-> On Tue, Jun 23, 2026 at 3:05 PM Ritesh Harjani <ritesh.list@gmail.com> wrote:
->>
->> Barry Song <baohua@kernel.org> writes:
->>
->> > On Fri, Jun 19, 2026 at 12:41 PM Ritesh Harjani (IBM)
->> > <ritesh.list@gmail.com> wrote:
->> >>
->> >> SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
->> >> allocator code (nofull/frag cluster lists, percpu_swap_cluster's
->> >> si/offset arrays, next array for rotational device). This currently
->> >> expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
->> >> time constant.
->> >>
->> >> However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
->> >> variable which depends upon which MMU is selected (Radix / Hash), so in
->> >> that case, PMD_ORDER cannot be used to size the static arrays.
->> >>
->> >> This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
->> >> override for such architectures. The memory overhead on enabling this
->> >> override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
->> >> default slab padding could cause some memory waste. Also we lose the
->> >> per-cpu cacheline benefits (for percpu_swap_cluster) because it might
->> >> cost an extra cacheline indirection overhead in swap_alloc_fast() for
->> >> fetching si[order]/offset[order]. Note that a fully runtime
->> >> SWAP_NR_ORDERS was considered in previous version but was dropped for
->> >> this reason [1]
->> >
->> > Do we know the maximum PMD size?
->>
->> ARCH_MAX_PMD_ORDER will be 8 on PowerPC book3s64 with 64K pagesize.
->> PowerPC Hash MMU with 64K default pagesize supports PMD size of 16MB.
->>
->> > On arm64 with a 64 KB base page,
->> > a PMD can be as large as 512 MB:
->> > https://docs.kernel.org/arch/arm64/hugetlbpage.html
->> >
->> > One concern we have is that performing I/O on such a large folio could
->> > incur significant latency before reclaiming any memory. For this
->> > reason, on arm64 we initially enabled THP_SWAPOUT only for 4 KB base
->> > pages:
->> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d0637c505f
->> >
->>
->> That's not the case on PowerPC. Max PMD size for Hash will be 16MB.
->
-> Yep. A 16 MB folio might be fine, although I'm not sure whether
-> splitting a 16 MB folio into eight 2 MB folios would help much.
->
-> For 512 MB PMD-sized pages on arm64, one possible approach might be to
-> split them into 256 × 2 MB folios rather than all the way down to 4 KB
-> pages. That could provide a better balance between I/O latency and swap
-> performance.
->
+Hi,
 
-Fair enough. I guess this can be looked upon but is outside of the scope
-of this work. For now Radix with 2MB PMD is the default on latest
-PowerPC, so this will be slightly lower priority for me right now.
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
->> Also we still need this patch since we can at runtime choose Hash or
->> Radix MMU. So, the main problem this patch is trying to solve on PowerPC
->> Book3s64 is enabling this feature w/o impacting any other architecture.
->> W/O this patch series, we can't enable it, since it gives build errors.
->
-> I see. If possible, please mention in the changelog that the maximum
-> PMD size on your platform is 16 MB.
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-Sure. I can do that.
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
-> In that case, the I/O latency concerns I raised may not really apply.
->
-> w/ that, please free feel to add:
->
-> Reviewed-by: Barry Song <baohua@kernel.org>
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
-Thanks again for the reviewing this patch series.
+thanks,
 
-I will re-spin the updated version (with additional details in the
-commit msg as you requested) in a couple of days.
-
--ritesh
-
+greg k-h's patch email bot
 
