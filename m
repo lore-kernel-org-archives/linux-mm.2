@@ -4,147 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A1A3CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:53:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E82CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:56:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63FE66B0088; Tue, 23 Jun 2026 05:53:12 -0400 (EDT)
+	id 499016B0088; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F03D6B008A; Tue, 23 Jun 2026 05:53:12 -0400 (EDT)
+	id 44ADC6B008A; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B8C96B008C; Tue, 23 Jun 2026 05:53:12 -0400 (EDT)
+	id 33AD86B008C; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DE7E6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:53:12 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8B51D12043D
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:53:11 +0000 (UTC)
-X-FDA: 84910714182.04.A8F37B9
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8A2D1140003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:53:09 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qa+wsXZP;
-	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782208389;
-	b=kZfQQjus+1FFyi/WamNI9V9USR/GAYMzhr1ZV/434l0lDmgXbxhw6Tatd4pCmoz7aI0S0U
-	gspEgbJYQi4c09UXBqZqGf1cST3N+8fv98oAnITWmHUPYYSFYLXue1O5PnPj/bIL4H+3fb
-	Y/QTlmDcbaKy7LZJeEZcUtMqDMd3OdU=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782208389;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 07D116B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:56:50 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8828B140439
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:56:45 +0000 (UTC)
+X-FDA: 84910723170.01.205E637
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id CD4324000B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:56:43 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="U/7TVqpe";
+	spf=pass (imf11.hostedemail.com: domain of 3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782208603;
+	b=gB6J7jn4aoetbpFzja3+O6lgU/nF9tVtyZGFBDzF3sELeiZSyw37+alQS1/tPl8ir4chCK
+	X8I1z8nBApTavnC3lYey2WLNjlkw2Vuqu7jpexXLM4AGAlgerKc4KzwLQ0SKSx1pm2e8MP
+	J7YOJnEj7AVnulVMdjaP+RXpEYLw5Po=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782208603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oD0SX+qNmhfrapVROd/rHVLulNY501VFTgteqW+bmiM=;
-	b=a4dEugatdYZp6qz/aeqlrIzLyqVBBWVi/w0FJgnBahC+dLGFOtxEJJKNocHYugTpoNKcYs
-	sjxOg7kvaiSQUsUWwFUbFRrtvlKRF1bqNX+5FHA11DEl6NfkAp2mFN0SfozT/Z0DhQy2s6
-	XmdQr8kzRpMS8KJwq0A2GuuO8QLwOJM=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qa+wsXZP;
-	spf=pass (imf26.hostedemail.com: domain of miguel.ojeda.sandonis@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=miguel.ojeda.sandonis@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-30c5912314fso70155eec.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:53:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782208388; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VeO55FT2Ur63UcSeEdyRK73WSeX+/aoe8olfRXY+qnwm1l6k2TO/lU6mMnBd75nbpO
-         lz39wvKjOmA+4H7IhrQ5rxXjjlOcZy4rcl2CeiRS7uiCmrxU4azt2FOq2tGxao7vGV+j
-         cB3UV9tEwVkH/T9vknLbhpMYqAlz38EN7LQbRZKH5HXScgM61vHpHZtGf045FQOTU8lW
-         SazjLLVzIkUn3I/wqnyQmbaYnesqOHBY9TXW25/H8+cT9VNrthr36L18LrpE9eNZpKJS
-         lWEekXo440/S87bjLXX5WZg8WuafRSe3gfJLRa1YKmWm4Z6HIxzH02+A11Jpf4/f/DdG
-         6rrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oD0SX+qNmhfrapVROd/rHVLulNY501VFTgteqW+bmiM=;
-        fh=wfgQyBH7nvlm+97Qh5aWimo5ZyA09VmWGZE1uAXWV9w=;
-        b=kWDaNRJ4wrfsOFvvha0/fvD5Jr/bWloROix/4EAGCDf8C5gUHLE3oJepEyE4PK4FQ2
-         oo/Z0gISh9ZrqM2YhUQPirLT+Oi2SIBJ6HzVYbXBJx1QHv7pnZTgWRE/Y9c7QyofzK00
-         o+gaWHGhRAEqjfBS1SXb0q2+B/bStShA9JwjEv42hNnCYZ8kCQIvBctiYTEWQQEEAlyW
-         itIDx4TVYaGv+LblWHNzvHbj6OrQiRgrNed/vSek9DLG8xluh6nrgYtt9sepyi5kXDNS
-         jrFdbeahkMPLeO5p4QqKsTWJ0RhmKfGSz4bK9HP62TE0KM9Gth2l1AR11Q4m8mWqqdQ4
-         KzHA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
+	b=8WPu4IYFbS+3nYvX7Na407rqq0VqUFGrzZnNrlnxjXv8OHAhNdTf/kGPIXLYdoPJrmnjYE
+	4gRA0k9j4C7qkoHKVG3wfVIXGqls43u1IVF5oSFdVk+RTX+w5FRa2N2gkdcXOvk31q2f9F
+	UWy7EH5IBofuw38ZwMImhrTN/2ewK9U=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="U/7TVqpe";
+	spf=pass (imf11.hostedemail.com: domain of 3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-695c0775f8aso6737393a12.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782208388; x=1782813188; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oD0SX+qNmhfrapVROd/rHVLulNY501VFTgteqW+bmiM=;
-        b=qa+wsXZPuQUnMvM+xauM/pAXn+LA6inuetdQBF4GmhqFIoI1ueRTnHqzWprRh900dN
-         ACx5d2w++w9wTj5NJ2RV9a5/J6MkYaQglBx0w9ibFBw3VscEZKhkhW2TNk/BQEPg66dw
-         h02mYmLSaX8/33TrbBSYdNnYsINxCnk+KGPMS+NjnVC3vYja42HRO68lkNSsPPPBRWkR
-         45hc8nzlZRPuPWnn1LzUsGdEWkJha7VAFmbXUPN1W56lfmQ5akuDoZvk6acucb82iaw7
-         YLNYik4qbNq8OYtuBMoeQme4j4XwoLM7uqIxBNzXsKQgSIhQHfS3POo6VkLoJfeJdcMe
-         fGjA==
+        d=google.com; s=20251104; t=1782208602; x=1782813402; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
+        b=U/7TVqpeabPFoBMo/vgMJ54WZtFCBX8Q9MMwUA7OZ0QKD8HPXx+oBZLgHrmD9doyuy
+         gzFIgWDOXoGu87GlaWdhVQb2ciZunPOm9QS8GULrPIrOtRiwjNxtqRF1UiaEMUVWxNFQ
+         DK4tB4MVwo41e1f19sfGpd23bBmByTCPhM233041zN/MSntMOn7O4BX62L+cYzawdIh/
+         r3S0KEISOPIw6hnMa5KiQzM2peywAAOchulMLDm0une0ARTGmpmIFhWlCoP7bZ+xzXgD
+         /EVvI7gI7cv56F5jyBvYqvogCViTfyU+kobZRTAzmjLPO0UXmZ0L7u1S6M+N1gKQ2dNp
+         a1aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782208388; x=1782813188;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=oD0SX+qNmhfrapVROd/rHVLulNY501VFTgteqW+bmiM=;
-        b=UYjYLAJD6tJCEm+FgIY/mKg2BZEd44g57X8kRcBZXHFKz+y2gZYDLAyCEXlWiN/rD1
-         rHvs/k6lz0zyrLwaCpvyBPmPDbQhZZvC7Hl1CI7RFh1jQxOJa2fbAnxD3yvOdY92GNfl
-         +sc6ifoM6oPkT1vRycc/Z/6q7o03q048QYYa8G+x2RVIbI1lENPjn/ca2TqpksfRfrod
-         fEgsaMRKOKHxJG5Enzaa+vlp3nctuvvIZqd0fP18dSgMIL/JLAMa9YrjK95u7JPBwn7p
-         Gy6+2WQp4MCPIpXuVmSfCPnTw4QYOnQywuDzXncry5f8r8ow44qR+BpjwYthM8Khd9+9
-         DYpw==
-X-Forwarded-Encrypted: i=1; AHgh+RqcPSjovLwp2+D91aTPdCa2Naq7TGVg7BdNL6mxO6iXaCw+ffIfy/juZHfemsb9Fo+tnF6qclwOwg==@kvack.org
-X-Gm-Message-State: AOJu0Ywk7akKevIp7J8W995yYsOzPt0Ju9Kgd2afzd/Eml3DcjZcBY3y
-	uEtcUrkLF1u+TCbBzAOhlhpYyY0rr8DCSeRG79NqDGuK7cZacd2LKjBtzztotQ8wuwlDeom124E
-	Q02CFDunOzlKvmnFbTNTki+SBGwdObN8=
-X-Gm-Gg: AfdE7cnRvOS6QI6lHLIr7wlo1ShPPmwF5+DpvcC8vtZ6FaMmCbr4ixvgnO1qej2z+7W
-	U94TDH3b4JiPCA9xxBfQol7jSpSyS6Msi5peMhtaxWzG2C6fmgtDyiGkaCgxOBuwmqfMUEkG1fy
-	XHmJK0z1BnRiqZpSr8ySagUpcD93PaDSaNVKJq8LEWFrtVrFAim06Hp0VkI8jnKOkAUMMQBeVcg
-	uO7zE0OwcgqjCEm1Ylhg8suet0W3lMWXY1su6itok9Dzcye1Aeioyu+80J3ILN080u0SUQnNkK6
-	c4nZx02vIyruqrrNrhE6T1qcRpScLkUGJWmoSYSIlxrz7M5qaAO3ZSmwWjLSCqdpFhwnfsce4Lc
-	fOt5SGtKBge1q
-X-Received: by 2002:a05:7300:8626:b0:2da:b05a:5a7d with SMTP id
- 5a478bee46e88-30c51e0a9c6mr1347953eec.0.1782208388003; Tue, 23 Jun 2026
- 02:53:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260623093919.3543473-1-cppcoffee@gmail.com>
-In-Reply-To: <20260623093919.3543473-1-cppcoffee@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Jun 2026 11:52:54 +0200
-X-Gm-Features: AVVi8CeV80fcldi_N9sbAOnQmjyg1l3bbXCp4cBmAtT1SPqIg-CTD7xhKY0n3LY
-Message-ID: <CANiq72=sSkApehxg6eEpAoNU8zSsRAfqD+RVymM3UQGuvfKyeQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: helpers: move list_lru and task_work helpers out of binder.c
-To: Xiaobo Liu <cppcoffee@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, ojeda@kernel.org, 
-	Linux-MM <linux-mm@kvack.org>, linux-kernel <linux-kernel@vger.kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Christian Brauner <christian@brauner.io>, 
-	Carlos Llamas <cmllamas@google.com>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, 
-	=?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>
+        d=1e100.net; s=20251104; t=1782208602; x=1782813402;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
+        b=c/k/PEQgYxDx/qtZZx62RG0K8Nbky4HBtIOfbMe0O8mv6XTb93ygO52SZ9dgn+V80N
+         nbHAVOwwX1jANfMHDjPR1HouDd31sEXCXVTVtSB8D5+ZTMZI5+4quRgsQTZq6jJgKlcA
+         HycD56JxQ6wPu7TNe+epUUBsJU5gCGD4BPz03KzevIAkwwV51Nskjo9Vhb4nlMnF/CHa
+         Fqrfv38x7kC6I4gb21lOaHZma4JgAqdtjEPNcOaap/KLE1uMHBMkUZ+y10gLrpTZq9WB
+         SK3g1be5GRDzSHDSyhGgwjCj0ozge0eNYcV5lgA6jLwlLfvLU0+o2F/Ah5DIOCLhwouO
+         116w==
+X-Forwarded-Encrypted: i=1; AFNElJ+FHK7SC9Thcq9k/Uu+sNa55kM6jMZfsTwuGWiS/y0LWSNvUez0YZQMw0yGS5wDcnKY2X8kInT2gg==@kvack.org
+X-Gm-Message-State: AOJu0YyTFTETPr9joMeQzfXrY1t7o4baYPDM1kEQKs0Gv+H4LtEB6IYm
+	lp4XsXboqZqHb9KYX2qglmlUAErQNoYJ2NJqU8tFsVax4bxu5k1KiZW5N3RNlFqPhb2RIKIxomX
+	7WrHWgCn5Bu4nnSBlDA==
+X-Received: from edtr21.prod.google.com ([2002:aa7:cb95:0:b0:695:4c2b:47b3])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:a50d:10b0:697:5efa:ef21 with SMTP id 4fb4d7f45d1cf-6975efaf64fmr5571985a12.9.1782208601957;
+ Tue, 23 Jun 2026 02:56:41 -0700 (PDT)
+Date: Tue, 23 Jun 2026 09:56:40 +0000
+In-Reply-To: <178220761164.162773.6384380547612711985.b4-review@b4>
+Mime-Version: 1.0
+References: <20260622225736.2961438-1-tarunsahu@google.com>
+ <20260622225736.2961438-3-tarunsahu@google.com> <178220761164.162773.6384380547612711985.b4-review@b4>
+Message-ID: <9huzpl1h37hj.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 2/2] luo: Update serialized data to use KHOSER_PTR
+From: tarunsahu@google.com
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, kexec@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: mwcrbyq5yrcgjcbtu9bzjbgyb55m1fhg
-X-Rspamd-Queue-Id: 8A2D1140003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782208389-868446
-X-HE-Meta: U2FsdGVkX193nNW5vFaAq4abPHar38gFyWwcsFZFm7cxkph4zEZZOgG3UpSekFqnthYcw6gS8pneQMppdH/8I9pkZQTFryL+yaSMzHJlJat8Xksib9176N3IDypY2I0X6ZvTybEOgblfqr0OilfVz3SPHcw/QZHBUotLp9DTSvQvVEmjcqgxIxopy2lqVSqYa+f6kLqkytw11Ov43Ty2EzUVEd66H9wgDOihbfRybShXdR/Hy8sKi866iu9PYycnjVcAiT2sSw9TK2rZK7GrYM5MpzR0jkDpT1I5wbRYhI/ZNhyT+tSDpid6Dt4bnmVCuXrFKnWnMmBanK9SOqyC4Gy3J1QO6YrdxK86VgM6NI4m/94GLEehFZ5Se6EuXCn4RkcabyV9wcpVn5uSSpJBBP8cVmVitsZ3iv+0tmjbDDyfFNfcDe+2ZG1gh6Bid/6Jh8+ytYzdyA3KlcNO1xE1/aNtr126rV4W89JyBV9re+ywO3D6sBO5ZjEut1iCHpHopLwPiDXqHtsddEWvkWaM+EtO3Rp8Lustkp6xSfd3K1yZiamFx0oG4GKqMmzUhSVbdsH/1k9HPC3cOl/6SEHIjdzv6N4VYQWpYuKoGnZXc/Xq7kH/b8ezPpACj548mSkjQBDGz2VtFQelXGNWUaUfA2X4VxSTy5qUaz7HWlMMgFl7ETEgHPkS49A7ZR2Txrd2sClxKZhxj9NXVnnWjMDrBVoRVN6P01lQA3q+tLSRWqadC4xdILmBWAAiUiy1+Gze+Nic/u6mPw9VVJhzKu6OmjCCdl8rrPeKbaRAF5bu/3wqNQge1bg+BNoJRr908k6E0fkXDYRnV0Z57iU0HYhwxf1QmRXrdiI72GyLOetQyA3iKKeEgWoUS1lTAkoMp8GB30ha0C2ffAJhg5Z8YRboRIATR9laEWtyLCp0t8pdq56W8A4MbR60sTf1763vkwy41hgvdl9IdPqV7v+flB/
- gVtIe8SC
- x3cVCbst2wInVnQLJGcqouDZyMdOtYisAxId7f0tJo2a/9RKCDyddctsB2XlL+N8P1rJS+Qhj+9gUoFHiiTcqQ7wtLMaINBMAoorh+7VYGoLytsbO2yrPrbZOhCnZBcaE7XWaSYaD+7jcTf0JGtT1epuuvgB5eE0/cU6zQBluzLEA6vYJsC193fimJIShpcIqcNLFcJwS8ycIuICkAJc2QPxmE68iFXk7ejYZTZ71eP6d8181ei/470uGz6E/NVxMvtMM9zHV50MMFBSmtpbNkNHNPzcwL7F8dI851cOoVvv00LduX7ZkP/JPHHv8DzwvWNV4uVHHH4p45A8nWzqkzI2gLZCLxlN8wNx9/SmJ+Q2izG6U3JbnjZ60poNRXlNA3I0l2kF07y0Bdy0HB0GvA0xUoK8OoqjfdN+ULEgvFnb80aN1KxJSceF3eNRdU6E5WO/O4M2vOr9lfD8LyNliLuauGzYVK7d69Z+er9gk4pR0KRu7jA6PpKLibxED4oZn3WW5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: CD4324000B
+X-Stat-Signature: o7zjtfjxrzzdf4tfuqo3zwds6fw1cws5
+X-HE-Tag: 1782208603-891074
+X-HE-Meta: U2FsdGVkX19HU/Sv3ABRm3iW5idZ/CP8qAS/BvTi/shZvYSmWBTkqCBQqNrte9Sh2/S9TONKo9+hiDcrdrUz93lfs3JRcdNpzYafYnCIUyVnWKHoFIAMkJ+hoYqnylnO4BiGWaGCraQi3H1oZL1N0e9QZJRtfBDnje0hqC0ZL8W3sYX6/sOfkl8ks9Cw1HnjialIeq70qfwsLz2ohDsWrXWHerzA7Fai1rxv35SVGeXoHMQlRzBzRDK/PTMsJceqHPtRpx8KuEkuEiwZtSmj6WGz0+Dc7/LYLCxXB1r4LBGTXSMzJ1fXtS+XDilpDSLToPBaK611HJrSMS0DZXPxrhu0vqFXtOJ24QFmlfqLmLqhDZZR6mQMINF4e8CBBuOBI4UfE/SFjhBNciaADV+btTKs11Y3GjL1axCSFOtUpWji6NNpI8apGuzU7bVTH2BgWtrDZSx1w/63KwxDcCT2Xaayh6QZl8i9MgiE8OPiy8QSaSgk2n1Sw2JOfa3/pP11g90SwgyQ5Qe1b1gVx6DpcWyP62YYTROHdq+FBOVB+mlk4BCKriqCOhZfPkZgHfK49jSMytePFiotAyxs5ZWEx1vZusyK4+wEvT9HgxSIkZzeFUSWEFbiFOKY6EUTd7A9sQIn38gViPjO5amWC92XbzgbWX7vMMnfu5g/Bqad8ZRDn4qGN3htnBAeWZoAH8WG/Q/oSpP1fDShXdFT48YX4TzwQl0XN7fk9FLBsDbpnSjX8459XRvT+1ld+5G6iFjOaJ/AjYY7xb2I08uzdsAUf5s/1C/5ecpfxqHvYLpruIAUqDE4sSglV9UlVKWX+jUZirqXSOXHrBOJ3DAz0Do5Ar32Xv+GMLxQ9G1+taIy8F98c/E8Y/YC/JG0LJ9A/uPNMSaexs9ondOE9ppIGduocHiTo4YexZ3pz98TQJu765qrXdLppyu3fH0gzR8WOOOSkzIAsFCkS/Bd625WXzH
+ E4coVx/5
+ fEa3w+OCsVauFhhYA+bEo9bV6/IbkjaRHmLFM+EzzzqbiZ9lsk1+SEmbNUjMDQIiHbHaonCIwhsW4yEO0lLtPvRHsIJ/q+AqLGuDSiWzN+o38RgcltOTueZKu5gU19uPD9FLmwswLMhqUys1EBBOhlGj2lLWO93EgCFgRvnlQWwmJFhdejImIndxJZuIRspmduCZ+prQJDYGfe0XL3a2FepsmV8S5fQRjxgYvHLImNzvNkUoGolLYxNsHJfdx4zzbMudESeTjqKWA+Q84uBR3u9dJ2V5WgjIausQVQxkPJfVZ66OwVim0bnDCsRnsmr0+/nloxSX4Wn79MF3BEsLvoDpDeGMmtDS2cfurNRzH+IMiufNgy7IJo/ZFE2ZgmrMVzHIPcRD4LCDvoHXOoiaT+Dey3uP+qHwKHpgMe4T3a9iLOHp/VK94vY92xlN7VFzYtzwVqgOtbQJaXLzIuQeEmK4AgqN7pllELy9msrhEk5qF0bRXlkvfiqbp2F63KfAGtuB0rnvyTPkrCtLrD4dqueMDsVKKIZobogCoQduQOFYwgobjxRdLiK64ioBpt3fH/XZVauQJONLUBJ9qhb9B0cSkYQFdHNJnJzsf12hgBBgsUDBKjUvVWnq29lsIWRhK7CLWcCpz8mGO3a8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,32 +109,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23, 2026 at 11:39=E2=80=AFAM Xiaobo Liu <cppcoffee@gmail.com> w=
-rote:
+Mike Rapoport <rppt@kernel.org> writes:
+
+> On Mon, 22 Jun 2026 22:57:36 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+>> Convert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
+>> This series also takes care of resolving the bug with memfd of using
+>> phys_to_virt before checking the args->serialized_data value.
 >
-> The helpers in binder.c wrap generic list_lru and task_work inline
-> functions and have nothing to do with binder. Move them to mm.c and
-> task_work.c respectively, where they belong by subsystem.
+> For easier backporting the memfd fix should be a standalone commit that
+> comes first in the series.
 >
-> Signed-off-by: Xiaobo Liu <cppcoffee@gmail.com>
+> Other than that
 
-In general, please Cc the relevant maintainers/reviewers/subsystems as
-well as the LKML -- `scripts/get_maintainer.pl` can help there;
-otherwise, you can check `MAINTAINERS` manually too.
+It will break compilation for individual patch. For example, memfd_luo
+changes are hard coded dependent on the args->serialized_data
+conversion to KHOSER_PTR?
 
-Doing so here for you to give you an idea of how it could look like --
-I hope it helps.
+Maybe I did not understand, Could you please explain what you mean?
 
-> +#include <linux/list_lru.h>
-
-Since you are creating a new file for `task_work`, what about one for
-`list_lru` too?
-
-(And we should likely add the new files to the respective
-`MAINTAINERS` entries.)
-
-Thanks!
-
-Cheers,
-Miguel
+>
+> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>
+> -- 
+> Sincerely yours,
+> Mike.
 
