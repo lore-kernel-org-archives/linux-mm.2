@@ -4,98 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C52CDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 17:36:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1852FCD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 17:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E3926B0092; Tue, 23 Jun 2026 13:36:19 -0400 (EDT)
+	id EAE216B0088; Tue, 23 Jun 2026 13:42:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06E626B0093; Tue, 23 Jun 2026 13:36:19 -0400 (EDT)
+	id E85DB6B008A; Tue, 23 Jun 2026 13:42:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEC686B0095; Tue, 23 Jun 2026 13:36:18 -0400 (EDT)
+	id D9C7A6B008C; Tue, 23 Jun 2026 13:42:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C17696B0092
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:36:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id BB97C8F9E5
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:29:06 +0000 (UTC)
-X-FDA: 84911863092.30.4C591D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 25B2F160011
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:29:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+A9Dyhi;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782235745;
-	b=Aac0AqiSsMr9WGYf4V7WBMoG4n5G32hrFu9dkGAvXYDonQEgAK7yD2SMV4HOYkXggRyjhe
-	QKRPrf4r/NkVMNlYp7rJOnPhuSns237fCerOWluSN8iyS0aSTLm/IZr4ZNjado0DuIULx6
-	kfoUMBVt/zfyJkvwBMZ6XUZqJMkNqzE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782235745;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA8526B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:42:35 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 586A1167242
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:23:11 +0000 (UTC)
+X-FDA: 84911848182.11.7D9ECA3
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 49C5A80008
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:23:09 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L4zm6y00;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782235389;
+	b=Qn/gjIiw8AC5Nvuh7UvB76tj4lIqSloNTiHt9PcGM9vAD0uZnD9F0yOGRTI0pcd9FsdXkE
+	hJznNq0W5+c6JbNB3yE97ipg1mCaHokzrBmBXUzgDyyefmonMlRIP+MB++gf3sfHqCOV4L
+	bsaf0S5bMDENcdVs1jP6UG3tPXrvtsg=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782235389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wy+blSt5xdCwchobAX7ZrvH2NCFjXYGm/UFwJUwBnm4=;
-	b=Q+/fpwnHyDfFADdUhqNwGd8ufwDZzkZ+vDVLS52zDA/0iVg2F2cf7NWDOI+YAqkMdSVEnl
-	TPCiG8y1knkFE3R7hlrdInSctSb00AmMo3ZDtwiXiIAME0Cl/9CshLg+ojUg3UmgoAjqbi
-	s2VrqxyUkyKSgIVc3fb+q7GPQARMhWo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d+A9Dyhi;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 892CB60210;
-	Tue, 23 Jun 2026 17:29:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94ACC1F000E9;
-	Tue, 23 Jun 2026 17:28:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782235744;
-	bh=Wy+blSt5xdCwchobAX7ZrvH2NCFjXYGm/UFwJUwBnm4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=d+A9DyhiU0QEnMXLzKvsOFJugbfK+126pc5tl7z3mzF0WWFMGZCMZWr/JbfzVoi91
-	 W4H+61ZYt6tKEUOgEWsQL8Sa41B1snb3BmYBIPp0xB5oOmyHOd28tFSptLQG3s6D8y
-	 tDp6x9dj9FtSIrJsCujVxSvKwnTOwMFNlamej3AVOmJz9MLKWiwJAc7Y5xzOrIz20w
-	 7i8lria7zrQccSkIL8TusUdr7xy2p3Y1iAxKklrDvSN8GBqzMdUz9UO5CBqXP2o/JX
-	 hYXj+0TyrRzPXdnUiXxVXKWEax5CCeYrruxSK1fLEbZH+x3CTd9+NsgezxqerWlD3G
-	 piWILdNijvcnA==
-Date: Tue, 23 Jun 2026 18:28:53 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	"Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>, 
-	Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH v2 11/13] alloc_tag: Move to mm/
-Message-ID: <ajrA4wiAKTdiraEO@lucifer>
-References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
- <20260622-alloc-trylock-v2-11-31f31367d420@google.com>
+	bh=gXiMe8HDIOE+0WDakylldpBC9cK0yztON8/tEoX5NxM=;
+	b=fox3mEj17e9LaHWnSbWOlRAffOqDp2D1byuD6FWZzwBfYqtZOthzwIb2ychpZltDCaqmxK
+	/wPhinJoh1Tj/f2J2cDZmDWjNYl7gamlNHBXdN9CO+AQIFxdV5Hwois+Mph9Yz+20jT6M2
+	iplX4csnkdC5Kl1w5KVovpNP8qwLRGM=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L4zm6y00;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4627adcf4d6so108913f8f.3
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:23:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782235388; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Nbp3vvbIRvZeLezFJGIG+Vznbs79uf+htWpnRtwsFvRJI4Bih8y1uEEQoAUhLZhE6q
+         7Xf4q8VIQlouiqZgqNTBLxlx5BaK7B7SW06Z9a1TxAV9/wO6/qUNFaK+ZEGHlElY+Xg+
+         q8rZ25ZA1+yiSAoHTH+oReMrSn9LFQOBG7/WMWBSBZUhATbPR1pf6cp4rdYQUtFbNnca
+         baYuH0e4a8M1ITe1G7Z8Z0i7mF5bauIThFfQv8rPOWEvW81k5K9RDmC5gyOZ9e8vf2CR
+         5VGEFjnaowDuwWmgzXJPE42chVFuA81ifjgAemKuHVAzYy20KDEow/9EzrKeDXMmUcAy
+         H8xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gXiMe8HDIOE+0WDakylldpBC9cK0yztON8/tEoX5NxM=;
+        fh=TmUL++rgVS+Q7FVr2CUc08zj0a/sSn5yeruhljXB8Zw=;
+        b=fwTgx2FQlQObHLwMtNWYnYYVEx+YBYYSHBkQcDv1mj4aDtcs+FVB/VFOqdVf5Kr4CF
+         gOaMfd6V54XiKzzTCXStWFMZGfhDqHbABQQnyD+SqdFEXxLDns8+rWqdTGTUitfZqQdB
+         NljLG+FdnF67jMICBWobf8yu9w5T7KD9C1Y0izngAwypRi0szfiN+gGlFaXPSBw0IlmH
+         UDP2DWFBmM+3xoeuqK9gpplibelFZu7W3zezImxadYJnkIsmYcDbbPdgIQ41wwP7l2sO
+         IDF894LQJIu6FJw0Xfwq6NbltXYV7kME0TBPWzLHLXTLtTmKr4OusPl/rlOYcQSVL5pg
+         Hcsw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782235388; x=1782840188; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gXiMe8HDIOE+0WDakylldpBC9cK0yztON8/tEoX5NxM=;
+        b=L4zm6y00sCr8bU5xhV2qaZkEDMw+CiKKul4LtmHz1JvcSpy8RpMZv5U1MFsVJ7d+0M
+         F5Tl7U3l4jjEpyBNi21sjmb3rxUN8OQxZdYqKgxMNB7L7Rdr/84VJopRimJp60cW5T+q
+         +Cy1Qzdh2gameZbvNoKvmxCsXeFO9SsmZabKJAOHWS7bs6o+oSonOx1vZz0isxo/T2WY
+         KLJQ04+pUEyKMY7CwKiIzg/6oAteoodxu1Xb7NLiBhy4hA/2o7/h3ZL+OdlzXgc/aOAE
+         1iQxsS4bm7ALzjK0/q8w2k1RkRR3wJcGmdUc6IG0bjgSuM7h7V4zZ25o/nBihw4q0sVK
+         OaNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782235388; x=1782840188;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gXiMe8HDIOE+0WDakylldpBC9cK0yztON8/tEoX5NxM=;
+        b=fBb1uN+x7plUYrdqGmtcNqQc9zNzXTMVnKsREcSIf+NOkffUKmmzrlj0aptgsv9iPL
+         uTsoXfZlFJAHLUgQy2vZ8mO68MqMScD3EVlqWReP30q0A2jX5fdGl4IrIDOCZJl1Wrjc
+         93t5c71O6B3YjRSJndfEGiQ8w92wEsyzMPq5ZCck+yoXmAcPF6VYvOuQ81HnYKlaE9dy
+         KdKUbb8dxIt3Sh4xfMRCcxsANgb8/rF39SxCsjYfTFjQlNoXZhK/9utbI4L7RcLDgrrd
+         cy3WyEnLe+1VTRgHGK9YYgYhZQI2++RWnD3HtWl7SiozXkTAimey/PU8nHXCbjMIA4Hf
+         UOAg==
+X-Forwarded-Encrypted: i=1; AHgh+RrPjVLX8AnkDpUjR//TZbYhafEUtCj5bCj3MNo/7gQVA11x/g69btRQwuZjqwu0wngza+P5W3hL/g==@kvack.org
+X-Gm-Message-State: AOJu0YwPCudAsy9/kgHT5sa5lK6u6OJznu6ivqvxGEC8WoyAVaF+UGvA
+	PI0KhT1m6cDmF2TjL9O2i8mXrrtMq2dI7DFauC7xaF3wO3nSL9HbyfueXhapJQtHleSQEwgz5vl
+	xvnf1f02ulyvU2pYp7oDLFyEHHw+xq3yoNIcC
+X-Gm-Gg: AfdE7cmf6tU1cCcLaLcMcBuT89VW8smUxLTQt0ykhtKsSehxpAIbqw1ZkfR3pf1pR3z
+	gBi9jqKExLnfnI7/xGRYw9wcwLk2FHtnExpJjVdEG633U5cV3sScER9lfw9qDBWQvBQJWJSj1Vx
+	UsN5Tgys5WqVMf5AAgHwgvbCpyDI7LLweoWLWB1dN7NXm3OQsiZrn/fCvm/Jk3yvxUc33OWns/i
+	HhnjyzmnYBM5F7idOYdeSAIi9uvIMN0UMzms9uBkf4B2tVjV/ubLkN1GGT/cGUQf99zPMYiWHDi
+	hbWoRxluuBU9RfV7epHzwANSV0sd
+X-Received: by 2002:a05:6000:40c9:b0:462:be7:bb3e with SMTP id
+ ffacd0b85a97d-4650a32ad86mr33428442f8f.39.1782235387480; Tue, 23 Jun 2026
+ 10:23:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260622-alloc-trylock-v2-11-31f31367d420@google.com>
+References: <20260623125723.2503832-1-dev.jain@arm.com> <20260623125723.2503832-2-dev.jain@arm.com>
+In-Reply-To: <20260623125723.2503832-2-dev.jain@arm.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 23 Jun 2026 10:22:56 -0700
+X-Gm-Features: AVVi8CeEvgfnl7jMBz7m1KFt2-6f-dIEtukzhV0KPjrg6mB4fbL8SHYLbk2XYw8
+Message-ID: <CAKEwX=PWQTyrUj7y0uO5qo3VHYZQcP4z9wrqHTS2yufKyA4ERA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/swap: rename subpage->page in folio_dup_swap/folio_put_swap
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	liam@infradead.org, ljs@kernel.org, shikemeng@huaweicloud.com, 
+	baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, ryan.roberts@arm.com, 
+	anshuman.khandual@arm.com, david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 25B2F160011
-X-Stat-Signature: ry5uuo8twdhcrtqnuckpdnaksp8jfofc
-X-HE-Tag: 1782235744-734230
-X-HE-Meta: U2FsdGVkX18zUgXjxNGqhi9iRA2EgKH628KDDXs3yV+0Fh0gvHyxXG9oeEXWc52Jy/ODhyxt9y6tRacvz0E4BT09A7rpCRqlFqO2v5s38zuOhlHkNux0gChZhY3A9lJEGydynaNzuDBdaLYOnNLJBPwaGfxwqQrqK3Xx9FJENimiyzRp3Jw/awm1Q41jxMNFMr2KCbTVJ2ZKOH48UDlKBx+cSzfEKwEfxthEvGeA77SlaqtzWTzG3ttPN35BQK9Jq7tV+3EbyBd3XaAaaPV27V37PM+/Ap9GpQN7bcfGsWFB7ElSgUEk5DR11JCdD35ebK0SLSCmSEztcrRg1dhXadFD99LPKASfwjNdluWE9gq6aHQ/AobF5A1uIZ7QjIMYitIWGqTpWoBCtYaBBaYpiRNCEL1AoXe9hO4k664sPbiG9Hh5tGxmzOQwWDA/xRpIKBnsIPawkPxnAlmrQHnQpp13kJZIjCQFhtybV+pgR7u4HSAkOKE/l67MxbnC/mhO3xuoOHpQFM1Q3wTFarjEAoXJuGnP4SsuLhRV20HruiRK+JRAvEkJok8s9k8BmZWXim/3FGhWLBl+rsxa9d53mSO4ySx/S+CKkrhlV6Z4WZQCTEJ84j5o6CZAzYzW3zEDU39HMZ1e1uYloE/Q1B+iwVNQKz+fw6MYu6smha25Y3Ec5XAsJkp9xCywC85AX8lpMOD5t8oa0kubuIh8EeMsn3UUfToj4tNuMBabPpXrlZguVZv1WcApSw8kXpVHOmkgcsre7Wt3DnsDbITUKO3G9qeMlUYOdKu4AlfSzfQpyO+rhuATNR/MlG+nVDT6pYaSDWKi7mt09dV3nO2S4WXPyQ49ugzPAZHBhPmLQ2bpEgqWyjGpmLbV1skUkgg27Pcz4bloR7/0dT81gJaH/CrAlHNA19VMHQmwGUp0EQeshCedACJ1ojbL8a+SQT3BK53KVTtSjQY7+QIc/it7X1l
- 4vs9PpIZ
- 48rVtv4RoYrQUFTYxiN91c3nXkw9htOnv/e2Btbi74ytWnMiBRRnEophUzVRf+Z96TeIKSLhnWnSaEdclXwskZyPib3GyJfmhktFL/uohHqopcpsQI+C7l0brPylEwrfNkuXLg9f2cD8TIE/rlAHqhKfTtNXy2wcNV8nU81Va4/M1qCAwYf4nragLLOuFbWGdkFalAUJBYvjO/U9S1lc3h05vbUWpkqf8622jxYPMXkNh7foZodgXwyvPtx+Bluc9Eu9g7gLIXGE92LsBsJH9UVY2HZ1K9cxrw2VY2ujfi71rm3b6D9HWm+9n1L3DTbKPaXN7tG1ZnvKIdXBdeZGcmuJ7i/EsVXZFog2OSdX/xQxT9BYatcCgsLbeKrIaXbNMyuL26g8Pc6KWbH546X8EW9Ud1JavIoPOZq7bB7CBtox6HxE=
+X-Rspamd-Queue-Id: 49C5A80008
+X-Stat-Signature: ay8ada57z4aqw31op9a4abj8zswrz1xu
+X-HE-Tag: 1782235389-461948
+X-HE-Meta: U2FsdGVkX1+t6MzoJGPQGhs0itSs0TBw+Uml7UkUFt8LJGWG7XkNJQHg6888XJ9hjMJzbuqWsSkexE8YCFsvnYXM9OHVWRjLxTBcKYh/vj79sMGh4rktYAaJlN5kZ5vmM2yOtpG7TT1u0b6f8Wjs0G0g9X53wS5/W6mvZZbX1LZ9QQcrVsP7Ng7e/wtBorBEJcS/uzRn8H2kDpfbP2Z+nLJWuIj5qvwEbtsHh+4XV8SmXANBdwBc/o2N+Q2675jbUXqXfpqqyEY1CXPgO+bhWAiR2JUo/xKo4uoFKyY3hu1zt6jrFsOgV94hPH4jX3+X+cpxXNlRF52QIgQG6gr5wzSaMEodeOJMks9xilMFVVphnnO7U4tUKd38hZTChP0gIf+KEbA704UJMf0uab+aUNfiHTS/lZK0v3qAN+8PiPnCQR1KIB18b1w4bi6GAvjEme+g1dtd72Bcf4m5r/7zD/zjRFYRRwd0Y1ZLpK5qDY6cuwyicbvLsnlKqwbyksk8gE/ReVycU+27JPadR/DoSDEhv/o2m+lPbbePFdSOm/XdXJ7hElaeETItQD+9o4Xyzw/otymmv9WT3rIOm2Ib7y/H2lB12M7hrgU58hj6dM6xRKNMB7ew7IK1ODabHz+i83ECcPM14/7doHx+1AtUmSMAZuwI7mmvbytd9oN4Fp2Qh77KBUuTo4fYPMRGgaqLY1ET96GSS/edIOspnNGZp2s04GYLdp/XiNqW2CiYuU/90zyUbUaFYj1uddT4Uj7ZTFle5cRdaAjPMc646ToCUUDHM0GW3lr8kv5uI45s/nwcMWsOt3NBoWgl7yNT+u/RQTB3TmWoe0uyyup1IcH3cgALLfIi4ODbw7GCPeYljjHe/F5G9SFbPbNaZnWyP+2tt+YGL89Jada8LTnmRk6Emd4gf3kuDo7VoHAUJU/dl3bIJ9cGWZSldvtcSMGZMZLNE9JPXlo3chirt8vGDep
+ WkAIfIqD
+ f6DfpRt9xZSO5YnUgLnzMjj3z1wqi5KLc/nWi2K2UX6wck2NOJ6ALrFzTo78MBdE1k+3CautxlrWfg5DrIU9Pmm2MYgXX78Z1iHdOmC7GnnYf+xhhW0OFJgdQyw4FK4Bce+PjiMKbVbU1yiO8k1+4iBEq0ENFlL/4coAEhKPeT9ohX2GdLndrzdKxuVvy89/9yzqbMcephhKAcExz7wDnd97B0RdNk5AEmRob+fSCQGQH8/gLytxuPkyMUZvQMU/l9LcVqGIGwiBLED2s4DsI4EQa2Ic0bc920kPobcSNsm/t8rKD/eykgmMFTzofx1iwrOBrDELMDX12cJVz9in2vATCHeiH0jx9m/f4ynuSuCi85YFX2GeNget3s/4jsv8hFt4KIHAF4bEoEVO0V3dJyYkLUmiqVJAyDkYuGIJztXNry4cesmoaK8zaAiiCJZxJi3L57ZUvMfJSruvasEx+kvCed7CtF3X047u7rt7uSt82uD6zda17b+xzWojRQRdYim+L9Zy92FzYtdx21NYsZTR5HUoMimuBgW/ho4vfs2tATWIe73CPi7oIppSDqrfElpAKXuOgt71Xr0o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,63 +142,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 10:01:38AM +0000, Brendan Jackman wrote:
-> This is logically mm code. Moving to mm/ allows access to mm/internal.h
+On Tue, Jun 23, 2026 at 5:57=E2=80=AFAM Dev Jain <dev.jain@arm.com> wrote:
 >
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Sorry to be a pain, but I feel that this change should be dealt with separately
-perhaps as a pre-requisite to this series.
-
-Thanks, Lorenzo
-
-> ---
->  MAINTAINERS             | 2 +-
->  lib/Makefile            | 1 -
->  mm/Makefile             | 1 +
->  {lib => mm}/alloc_tag.c | 0
->  4 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 65bd4328fe056..5d426b79b8fe7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16713,7 +16713,7 @@ S:	Maintained
->  F:	Documentation/mm/allocation-profiling.rst
->  F:	include/linux/alloc_tag.h
->  F:	include/linux/pgalloc_tag.h
-> -F:	lib/alloc_tag.c
-> +F:	mm/alloc_tag.c
->
->  MEMORY CONTROLLER DRIVERS
->  M:	Krzysztof Kozlowski <krzk@kernel.org>
-> diff --git a/lib/Makefile b/lib/Makefile
-> index f33a24bf1c19a..44f6538533a97 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -197,7 +197,6 @@ obj-$(CONFIG_OF_RECONFIG_NOTIFIER_ERROR_INJECT) += \
->  obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
->
->  obj-$(CONFIG_CODE_TAGGING) += codetag.o
-> -obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
->
->  lib-$(CONFIG_GENERIC_BUG) += bug.o
->
-> diff --git a/mm/Makefile b/mm/Makefile
-> index eff9f9e7e061c..4fc713867b9bd 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
->  obj-$(CONFIG_EXECMEM) += execmem.o
->  obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
->  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-> +obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-> diff --git a/lib/alloc_tag.c b/mm/alloc_tag.c
-> similarity index 100%
-> rename from lib/alloc_tag.c
-> rename to mm/alloc_tag.c
->
-> --
-> 2.54.0
->
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
