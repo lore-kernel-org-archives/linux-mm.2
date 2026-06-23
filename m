@@ -4,89 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7E82CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F36F0CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:57:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 499016B0088; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
+	id D4E046B008C; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44ADC6B008A; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
+	id D25586B0092; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33AD86B008C; Tue, 23 Jun 2026 05:56:51 -0400 (EDT)
+	id C3DA66B0093; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07D116B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:56:50 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8828B140439
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:56:45 +0000 (UTC)
-X-FDA: 84910723170.01.205E637
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CD4324000B
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:56:43 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="U/7TVqpe";
-	spf=pass (imf11.hostedemail.com: domain of 3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 95C926B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 096EF8DE7F
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:57:41 +0000 (UTC)
+X-FDA: 84910725522.18.9FDB81E
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 372101C0002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:57:38 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CwFbM4bv;
+	spf=pass (imf20.hostedemail.com: domain of 3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782208603;
-	b=gB6J7jn4aoetbpFzja3+O6lgU/nF9tVtyZGFBDzF3sELeiZSyw37+alQS1/tPl8ir4chCK
-	X8I1z8nBApTavnC3lYey2WLNjlkw2Vuqu7jpexXLM4AGAlgerKc4KzwLQ0SKSx1pm2e8MP
-	J7YOJnEj7AVnulVMdjaP+RXpEYLw5Po=
+	t=1782208659;
+	b=GYOjdHAj2BSdnjp82XfK8W0FHQMc9o+cWbhD0/20Vg36OQVN9GqUP4BUdnQg+998Qu8mpu
+	Vm04UC8QXVfne2JxzNMz40sS3JEUUMnCPdXjhkWrFerPJvN8x49edpFaAvM6mRSpu5kYuZ
+	zdFV30oDUWZG/imw3JUJtvsIfgNh+PQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782208603;
+	s=arc-20220608; t=1782208659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
-	b=8WPu4IYFbS+3nYvX7Na407rqq0VqUFGrzZnNrlnxjXv8OHAhNdTf/kGPIXLYdoPJrmnjYE
-	4gRA0k9j4C7qkoHKVG3wfVIXGqls43u1IVF5oSFdVk+RTX+w5FRa2N2gkdcXOvk31q2f9F
-	UWy7EH5IBofuw38ZwMImhrTN/2ewK9U=
+	bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
+	b=tX5NktXs1NVISQ1ZJBADfXNzPoPp204LWf5pnkpglfEf8jKb58D4qN5nN/NpBIpRTjUBYf
+	PCr1hfmYcEwlEXMJflKStscrnKTMelL2Cb2rt7aSVzdDvgF00C8+j4/17JJbBreX6RMjXd
+	ZDiAneht0eZKJXcFTACYP4qp1mvsUn4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="U/7TVqpe";
-	spf=pass (imf11.hostedemail.com: domain of 3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3WVg6agkKCEw7o5816ov8u22uzs.q20zw18B-00y9oqy.25u@flex--tarunsahu.bounces.google.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=CwFbM4bv;
+	spf=pass (imf20.hostedemail.com: domain of 3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-695c0775f8aso6737393a12.0
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:56:43 -0700 (PDT)
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-696bf062625so4339330a12.2
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782208602; x=1782813402; darn=kvack.org;
+        d=google.com; s=20251104; t=1782208658; x=1782813458; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
-        b=U/7TVqpeabPFoBMo/vgMJ54WZtFCBX8Q9MMwUA7OZ0QKD8HPXx+oBZLgHrmD9doyuy
-         gzFIgWDOXoGu87GlaWdhVQb2ciZunPOm9QS8GULrPIrOtRiwjNxtqRF1UiaEMUVWxNFQ
-         DK4tB4MVwo41e1f19sfGpd23bBmByTCPhM233041zN/MSntMOn7O4BX62L+cYzawdIh/
-         r3S0KEISOPIw6hnMa5KiQzM2peywAAOchulMLDm0une0ARTGmpmIFhWlCoP7bZ+xzXgD
-         /EVvI7gI7cv56F5jyBvYqvogCViTfyU+kobZRTAzmjLPO0UXmZ0L7u1S6M+N1gKQ2dNp
-         a1aw==
+        bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
+        b=CwFbM4bvFHSqxPdKXPRUUrdm4jUuAGUZSh4oaHR3VZ16/DzQZDwO/zFtuitE1GHq8O
+         4NcEY4EC7I8RIgLLtJif1T12Icp8q1diGdYBdp2fRh1oFGLmrxSc9HGf1RC1IqevE/Vi
+         aS53QtMjPWG1j6yehwAHmF2YtiQnIC0Wk62AcI6vcd6Sa+d7/FRVUT5ohOd9dDy0ZJPm
+         /pBrrVexHvPfzWLfDPk3+wfQIKOD3nc/eUR9eWb8wrr0MayCy+16705zUffOv/1+Hq1J
+         pa+EU6uMiXMqwxPgvOfmQYPLVmmmgx0SokqdlAQYVA25StuOFlB9KCeehUZxz1TzLO2a
+         OV1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782208602; x=1782813402;
+        d=1e100.net; s=20251104; t=1782208658; x=1782813458;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7l5YUe4iMmfyIV/63bKF7KguYvHwDoEqvDEkpS8VgM=;
-        b=c/k/PEQgYxDx/qtZZx62RG0K8Nbky4HBtIOfbMe0O8mv6XTb93ygO52SZ9dgn+V80N
-         nbHAVOwwX1jANfMHDjPR1HouDd31sEXCXVTVtSB8D5+ZTMZI5+4quRgsQTZq6jJgKlcA
-         HycD56JxQ6wPu7TNe+epUUBsJU5gCGD4BPz03KzevIAkwwV51Nskjo9Vhb4nlMnF/CHa
-         Fqrfv38x7kC6I4gb21lOaHZma4JgAqdtjEPNcOaap/KLE1uMHBMkUZ+y10gLrpTZq9WB
-         SK3g1be5GRDzSHDSyhGgwjCj0ozge0eNYcV5lgA6jLwlLfvLU0+o2F/Ah5DIOCLhwouO
-         116w==
-X-Forwarded-Encrypted: i=1; AFNElJ+FHK7SC9Thcq9k/Uu+sNa55kM6jMZfsTwuGWiS/y0LWSNvUez0YZQMw0yGS5wDcnKY2X8kInT2gg==@kvack.org
-X-Gm-Message-State: AOJu0YyTFTETPr9joMeQzfXrY1t7o4baYPDM1kEQKs0Gv+H4LtEB6IYm
-	lp4XsXboqZqHb9KYX2qglmlUAErQNoYJ2NJqU8tFsVax4bxu5k1KiZW5N3RNlFqPhb2RIKIxomX
-	7WrHWgCn5Bu4nnSBlDA==
-X-Received: from edtr21.prod.google.com ([2002:aa7:cb95:0:b0:695:4c2b:47b3])
+        bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
+        b=FBb/aw1hLUmtDKPprTiE89fyrRAQ8xKbLLmOSSwpmwQDwFX+holpubgtZPJU+jgdyE
+         0YIX9FsLOo9NCKg0CvkxelSjQ3QaX9fqMFUL2u9/AGmqD5mJldV2jdBY/PtDwUBOsZEi
+         LlNraLWuQZei475qFDRDyZW1WHlLvbv1AzlExZm95fku+99w+ZR71sR3TU7lyZ34KUqp
+         segFg3NqZorK0BRIjtHn7xDWToXrvRezBwLY9A3qLXGz0fOQ55RjftPK7czM28+uLokx
+         sD1WNOiZVuv31X9oY4x2NL6wysemQyg7hpqLUsd681RmJ13OyzEntwqDwyA3mRHnRT8g
+         2FSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8HIyVmDOehDrNLB/WIQKm4iuNvcc7HF3RIN9jyB+vHGXCKQvQH6mUAsMchtmi0eOX3Dp803TlCXg==@kvack.org
+X-Gm-Message-State: AOJu0Ywf4azuajwuvqhobBVKpE+i5e2Nvh4lkxzgDzAI1k0oNpuETmmT
+	M+lg+LvmB3N4m1xKyPniP5khV8eRFJZ2LrmQda830OzyFaYQFFKP8u2q+dlGMqZXVkoI9hAdKkQ
+	QkJD8X1z7KceGErQW9A==
+X-Received: from edim4.prod.google.com ([2002:a50:cc04:0:b0:696:edc4:b307])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:a50d:10b0:697:5efa:ef21 with SMTP id 4fb4d7f45d1cf-6975efaf64fmr5571985a12.9.1782208601957;
- Tue, 23 Jun 2026 02:56:41 -0700 (PDT)
-Date: Tue, 23 Jun 2026 09:56:40 +0000
-In-Reply-To: <178220761164.162773.6384380547612711985.b4-review@b4>
+ 2002:a05:6402:2710:b0:697:6b05:e801 with SMTP id 4fb4d7f45d1cf-697dbb38f5emr1011923a12.17.1782208657371;
+ Tue, 23 Jun 2026 02:57:37 -0700 (PDT)
+Date: Tue, 23 Jun 2026 09:57:36 +0000
+In-Reply-To: <178220761161.162773.13771896658073176.b4-review@b4>
 Mime-Version: 1.0
 References: <20260622225736.2961438-1-tarunsahu@google.com>
- <20260622225736.2961438-3-tarunsahu@google.com> <178220761164.162773.6384380547612711985.b4-review@b4>
-Message-ID: <9huzpl1h37hj.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 2/2] luo: Update serialized data to use KHOSER_PTR
+ <20260622225736.2961438-2-tarunsahu@google.com> <178220761161.162773.13771896658073176.b4-review@b4>
+Message-ID: <9huzmrwl37fz.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v4 1/2] kho: add KHOSER_COPY_TYPE(UN)SAFE for phys copy
 From: tarunsahu@google.com
 To: Mike Rapoport <rppt@kernel.org>
 Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
@@ -94,14 +94,14 @@ Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, kexec@lists.infradead.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: cnmxh913o8ejapdu5wbcw3pytpexfezh
+X-Rspamd-Queue-Id: 372101C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CD4324000B
-X-Stat-Signature: o7zjtfjxrzzdf4tfuqo3zwds6fw1cws5
-X-HE-Tag: 1782208603-891074
-X-HE-Meta: U2FsdGVkX19HU/Sv3ABRm3iW5idZ/CP8qAS/BvTi/shZvYSmWBTkqCBQqNrte9Sh2/S9TONKo9+hiDcrdrUz93lfs3JRcdNpzYafYnCIUyVnWKHoFIAMkJ+hoYqnylnO4BiGWaGCraQi3H1oZL1N0e9QZJRtfBDnje0hqC0ZL8W3sYX6/sOfkl8ks9Cw1HnjialIeq70qfwsLz2ohDsWrXWHerzA7Fai1rxv35SVGeXoHMQlRzBzRDK/PTMsJceqHPtRpx8KuEkuEiwZtSmj6WGz0+Dc7/LYLCxXB1r4LBGTXSMzJ1fXtS+XDilpDSLToPBaK611HJrSMS0DZXPxrhu0vqFXtOJ24QFmlfqLmLqhDZZR6mQMINF4e8CBBuOBI4UfE/SFjhBNciaADV+btTKs11Y3GjL1axCSFOtUpWji6NNpI8apGuzU7bVTH2BgWtrDZSx1w/63KwxDcCT2Xaayh6QZl8i9MgiE8OPiy8QSaSgk2n1Sw2JOfa3/pP11g90SwgyQ5Qe1b1gVx6DpcWyP62YYTROHdq+FBOVB+mlk4BCKriqCOhZfPkZgHfK49jSMytePFiotAyxs5ZWEx1vZusyK4+wEvT9HgxSIkZzeFUSWEFbiFOKY6EUTd7A9sQIn38gViPjO5amWC92XbzgbWX7vMMnfu5g/Bqad8ZRDn4qGN3htnBAeWZoAH8WG/Q/oSpP1fDShXdFT48YX4TzwQl0XN7fk9FLBsDbpnSjX8459XRvT+1ld+5G6iFjOaJ/AjYY7xb2I08uzdsAUf5s/1C/5ecpfxqHvYLpruIAUqDE4sSglV9UlVKWX+jUZirqXSOXHrBOJ3DAz0Do5Ar32Xv+GMLxQ9G1+taIy8F98c/E8Y/YC/JG0LJ9A/uPNMSaexs9ondOE9ppIGduocHiTo4YexZ3pz98TQJu765qrXdLppyu3fH0gzR8WOOOSkzIAsFCkS/Bd625WXzH
- E4coVx/5
- fEa3w+OCsVauFhhYA+bEo9bV6/IbkjaRHmLFM+EzzzqbiZ9lsk1+SEmbNUjMDQIiHbHaonCIwhsW4yEO0lLtPvRHsIJ/q+AqLGuDSiWzN+o38RgcltOTueZKu5gU19uPD9FLmwswLMhqUys1EBBOhlGj2lLWO93EgCFgRvnlQWwmJFhdejImIndxJZuIRspmduCZ+prQJDYGfe0XL3a2FepsmV8S5fQRjxgYvHLImNzvNkUoGolLYxNsHJfdx4zzbMudESeTjqKWA+Q84uBR3u9dJ2V5WgjIausQVQxkPJfVZ66OwVim0bnDCsRnsmr0+/nloxSX4Wn79MF3BEsLvoDpDeGMmtDS2cfurNRzH+IMiufNgy7IJo/ZFE2ZgmrMVzHIPcRD4LCDvoHXOoiaT+Dey3uP+qHwKHpgMe4T3a9iLOHp/VK94vY92xlN7VFzYtzwVqgOtbQJaXLzIuQeEmK4AgqN7pllELy9msrhEk5qF0bRXlkvfiqbp2F63KfAGtuB0rnvyTPkrCtLrD4dqueMDsVKKIZobogCoQduQOFYwgobjxRdLiK64ioBpt3fH/XZVauQJONLUBJ9qhb9B0cSkYQFdHNJnJzsf12hgBBgsUDBKjUvVWnq29lsIWRhK7CLWcCpz8mGO3a8=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782208658-616338
+X-HE-Meta: U2FsdGVkX1/eco8bK+msQOtsfkp0pEayM9EWEm/miT1En+syonQ/ZJPqv/v2KR75RPHN+YXHxjlUFnbjio8YmYcDE8fDB3XxD360QK4ZeBgs0KJm/SOORZgBl1aQC1tf9PeuYUiEOhirfA2LMCRTvU+r+sPJnvX1KNeM03K9SOf9FygFxewwzY2Le36yHfBqkOjBAdpRUJGgPmCRe01sQIJV+maAkQw95j5AxgplnJymn8S4INdwtPtiMo2A/7r3Xyviv/7fcBRY7HiRaKA/ObBA02Ffg96xaabQEc3noz6fj/3Ta/45P7gIwVQqewJvS2GiY+d0wSoZJrACqDuVUFIVjyoIDUpL3wnrA6BGIl2/WRdvw6GcCoE4mg+x4+eFsqJL5fcAJRGQEabGd0Il7PHswDvypIo2IAhF9LX6RG3tGP9/BITi1BI7DCI/SMXE4BZ+lQM1t+uhPytTSSq8PF6HvSHMIl90gUmDyybERs8v6j3Q7QZ2y3cgYFegw1hp+8dzqcRKuKOXBI7SEbYGhITCtWjRovqOSsyih3ejPzvGX6rDB5usXbnUSCVyqUDgeIj3gWBsXwQJ92vO+5kKzdY8l2NFyoM7z/d4yXU0vEzsI3hvXqJDBQp7CAtT2DI5FEcqSi5+G9SkDqy7pryT+BkdQN1kWN/ctYO2WqWsuEDlNEh6u0FLc2vqR+uxjepOM8xb+dIDsWoWtxQULIg8ig8NBMRGMhKCS0AgNKVufch5XQblVhjk/qm7p3/P4/7bHPznxyn/CVCnceOYleCjy+wYYNkhil83rHfpNXHKtsRVENx1v80gh6j5eD8rCb7nLpv+NUXFH2JwhlQWNZbWHL2uDsFeswASd1r7b7yRNUYbnnAqOhvk8GGirZY6shNBVIjOYuAKP2qTVjc5rzRsIs3XRYqi4oBjJamZ3ObiYHpJShgKJzxyxEjuZgdAP8qpH9ycAFVvf5pqnhkzcnE
+ zwgGsrdu
+ aO/MVxeC5IptCrFrsaxSU8moA2uEQQI/ASoMLOBdpqs97+RWK7TBsDa8Lg5fgyrnJLUJDKcYt3jdOJwId91O0v8+P9+XPkL0UQcfxluWNHFy02D8u1j+48+oQl8fiXMJ02xqsxRs0s50DWhu4x7ucVU6Rcg1epUPBobndLcwm8g1j4x17XfRnF3ke5wV22JBlgjOjw8K+hdhgFXTQ7pe8nhfW1u7tPrp3HduFvPzizOUlUaa4yT9NB2BaBwvp5zxTn/oQ8jo2YBN6u42Q9QQ0DgADAspPu6q0TJtjY8wOzSmjOgbMm+sJvUeu2Gdui+c0Yl0p9jxam9FsNlJEJ/KRTvCM/3DBmbCMxhxM3ogmy7FUIQ73PS7XEZw3Qa4t3ERxwm1eQ2Sy/j8Ai/48Zmv9/Z9Km9Eaxbm+4XaGRgYYq9ynZH5gd1KebXi0r3072mlE8/0ayEnBUaKNV3k1W1yZXbPhXEMjN/rewt/SAe4rwRMtL0XnSL5do34xnBK5X4+dUMl26N1IRSj18Y1bZ4soHebOtzYMd/8c16uMEsnUdCMRa0Ma8IiCw/UK79IwZHPyhX2S7KoMJi5PNeyHOoU6JuWjPGHx822Lrstn0qb2u8bbUiryreODbgLZxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,24 +111,57 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Mike Rapoport <rppt@kernel.org> writes:
 
-> On Mon, 22 Jun 2026 22:57:36 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
->> Convert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
->> This series also takes care of resolving the bug with memfd of using
->> phys_to_virt before checking the args->serialized_data value.
+> On Mon, 22 Jun 2026 22:57:35 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+>> Adding KHOSER_COPY_TYPESAFE and KHOSER_COPY_TYPEUNSAFE to copy one
+>> serializeable pointer to another. It basically allows copy of phys val
+>> of the serializeable pointer.
 >
-> For easier backporting the memfd fix should be a standalone commit that
-> comes first in the series.
+> Please update the commit message :)
 >
-> Other than that
-
-It will break compilation for individual patch. For example, memfd_luo
-changes are hard coded dependent on the args->serialized_data
-conversion to KHOSER_PTR?
-
-Maybe I did not understand, Could you please explain what you mean?
-
+>>
+>>
+>> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+>> index 5e2eb8519bda..c1b61d875dcc 100644
+>> --- a/include/linux/kho/abi/kexec_handover.h
+>> +++ b/include/linux/kho/abi/kexec_handover.h
+>> @@ -139,6 +139,17 @@
+>>  		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
+>>  	})
+>>  
+>> +/* Copies one serializable pointer to another. */
+>> +#define KHOSER_COPY_PTR(dest, src) \
+>> +	({ \
+>> +		static_assert( \
+>> +			__builtin_types_compatible_p(typeof((dest).ptr), typeof((src).ptr)) || \
+>> +			__builtin_types_compatible_p(typeof((dest).ptr), void *) || \
+>> +			__builtin_types_compatible_p(typeof((src).ptr), void *), \
+>> +			"pointer type mismatch in KHOSER_COPY_PTR" \
+>> +		); \
+>> +		(dest).phys = (src).phys; \
+>> +	})
 >
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> I'd suggest declaring local variables for the pointers and verifying
+> their compatibility. E.g.
+>
+> 	({								\
+> 		typeof((dest).ptr) __dst;				\
+> 		typeof((src).ptr) __src;				\
+> 		static_assert(						\
+> 			__builtin_types_compatible_p(__dst, __src)) ||	\
+> 			__builtin_types_compatible_p(__dst, void *) ||	\
+> 			__builtin_types_compatible_p(__src, void *),	\
+> 			"pointer type mismatch in KHOSER_COPY_PTR"	\
+> 		); \
+> 		(dest).phys = (src).phys; \
+> 	})
+>
+> IMO it's easier to decipher this way.
+
+Okay, Will update in next revision.
+Thanks for reviewing.
+
+
+~Tarun
 >
 > -- 
 > Sincerely yours,
