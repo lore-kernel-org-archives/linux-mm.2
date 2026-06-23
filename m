@@ -4,116 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 972B5CDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:35:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336F4CDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:39:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 811E26B0099; Tue, 23 Jun 2026 04:35:14 -0400 (EDT)
+	id 9EF3C6B009D; Tue, 23 Jun 2026 04:39:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79BF96B009D; Tue, 23 Jun 2026 04:35:14 -0400 (EDT)
+	id 9C7206B009F; Tue, 23 Jun 2026 04:39:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68A426B009E; Tue, 23 Jun 2026 04:35:14 -0400 (EDT)
+	id 8B7256B00A0; Tue, 23 Jun 2026 04:39:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 38A2D6B0099
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:35:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA4E0A0384
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:35:13 +0000 (UTC)
-X-FDA: 84910517706.24.98FA0EF
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id AD37C40004
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:35:11 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Tj+sZrNV;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BE8A6B009D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:39:29 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D02411C2AC7
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:39:28 +0000 (UTC)
+X-FDA: 84910528416.25.72BC230
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0F7D5100004
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:39:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMPaLzo5;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782203711;
-	b=nMTaMp7J6F3CXD5aW5X08CT6Q776jnZvRLOqlC5nPCNFFLyPLQCyljfY3i/3+z7ssuMwrm
-	rvUdMK0VrNuitCIK9/+keuwDxdVV8Bw+P0LJd/cMR6VTR0eF4Cp/lw/OSHE6i5B1l9EmMB
-	KoNe3RV4O4Wv+0Qu1d292EcAYk4q7G4=
+	t=1782203967;
+	b=r5Ui/Zt84n0JviyPlLiuuHuMut3DI0m24f/pW5o//b13PIBaOPM1PxDnCqncVAQg2H0gP1
+	aW7kjlg2NgCUZugCxU+hUNtBHtayz271I5fBpSqgl0I9NIs2KxH6jRN0aZaJQdUtS+MVJ7
+	ZYtl2un4m5MVagDNOhRWbc4bWpNXuac=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782203711;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782203967;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qAp7b6BcU4kkNXCTfexjoDeqwZPOPVgX166JQPj092U=;
-	b=e2L50NJRetk8D0tsBljrgVbjOvYQg/gu2ZOXrYHCVFEZgDHGC5bOVn6KV9tlVywNELdMSv
-	VIoZG0umRlN8obpHIUPQNePncgE4N6X9p95d9GfLGsAa3R8hygHiu4PRpktsVadu6w1heo
-	bQiXjlOLHry+oolkcGBXvZpcIvOMu/M=
+	bh=g19TbfS9RzQGFHPiPSlQ3EkgUSFQDJrLrVSig7447/8=;
+	b=sKmE1y0q6Q/dPatG2Ux+wghlcJuYeaTsgr2B8Q7jYEGPmdAWRFVFSvmGX7+YeizRzalrm6
+	P06KEhfJhD6oMFznYYjCWSWw+TdHcHWs4hlaPg1sjzpyWFe6czuWa8tRHVUC8/gCrazCGm
+	79dEgKcf18//7+vSetigKiO1Rch/N9I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=Tj+sZrNV;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-697564cb69eso6916616a12.0
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:35:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782203710; x=1782808510; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qAp7b6BcU4kkNXCTfexjoDeqwZPOPVgX166JQPj092U=;
-        b=Tj+sZrNVHPqlSZ9n2aO8TUgomf2aLwCxZxeHY4ys/7UFMSzMkNZIuUWyrLeYtx+QVG
-         Ju8spz9p7cDTP+TNbpjSkGCKpDjfZCCyY2IyQ7lhj9m8XchNIL/ux959PiO998taB1zN
-         8qzinN6THmh5vrWaPAf7LIt7jqJFPHtVUNe0Qzhwy3WiK+xV1l2nuUQ/2zznT/2iZcSe
-         REeqY9EjkTahWfGTKuViVBsVZ8VNhrsKzxt3X90tixfYv+Hq7wCb9zk2A9HA6KACNbhT
-         CYW6BivuWmHTjnIF8GH8BrL5ta5xi3jrBcRc0INSwA4TGQndZ3Wi79YPbDy3zr6+TpNz
-         qfZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782203710; x=1782808510;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qAp7b6BcU4kkNXCTfexjoDeqwZPOPVgX166JQPj092U=;
-        b=GA1SLHIqGDWCq7rh8FSB8Tb4uu5pqiF+hv8FLD2k9fdwo0+rPPw3ayx53/kXQNIvfX
-         GX/4BPq/TLDLZYHwdl59/bW+AovuoF776HmuL2kc7PMVUzandisAkG4vhIzqQErhQ/pJ
-         4Lkgv4oCattzpHF8y5KyhdZvzGdJHUE11pxbUVPVqlGrWsfHBt8S1ltRbefpNdOjFQ5g
-         /dYR+6KgfvHpNeD8PqV/Iv7PpC0uHAo7FnF7EO6/PJaf1ikAnMusIQbMPmdBer3D9a75
-         BcoEIZMnQ4ZfzMHboexuMq7aHOsZCQ9henqwbQ8S/M64t2+mWTVMMCphc5RfgQFUxoZq
-         M83Q==
-X-Forwarded-Encrypted: i=1; AFNElJ81A2VYfXP4lUpxU/KfzofS25kDfdsj9CwKJTjdLI0KrFcMahhvCS4CWI0t/6ocNHrJG//MHnB0lw==@kvack.org
-X-Gm-Message-State: AOJu0YzNxZIafGNrgImBV9LaNjJMCbECLl+BWd48vdtDrdJLwlMCzMig
-	2Z4AMBxe0r8Vi5YQXULZ5IVpFbls1RT1GpZ3GQJtxz/JCaPsh+Euo5y1
-X-Gm-Gg: AfdE7ckUOFLpTW6oM4EJGyvji3wvuSR32fHLTPNNt2HLkBcC+xbuF+GH5AhbPkRDZYU
-	KOn4M5v7/qmfe4MHuy/ReqZ7isbdSveLXkX3RUnX4we0WXAmLLd9UySV9Qi8HkayAi1InYNsBrx
-	0eCf5N8mCVGuizn/YlVbxE9MForjubg1siZ6bhjB/P8+5sctsccC6R3dko+Wxxmt6JfFCtKBf/V
-	yAo+Ri2Jg+aLFYef1gYRhGENQuzaP3ocphf/9oeDnFBGm1TmN0RxYZzt9DrPr/dbWqmebMTDge1
-	kkeE4VSzOuZSvFeSrohx8AgEUEn3wzPL+GsaHzj0JDUzJ5QYDFN/4zOulay4hGxNKMQvwzfctPv
-	lbzp8wtXdDmrGIlbS5KvFl+k4vRWBSu8XldUwB54sQMhlV8VrGrDcr+oUvVk6QJWLvXX8Jc5iqq
-	3oZTW5nirQBzY=
-X-Received: by 2002:a05:6402:2710:b0:697:d645:a9db with SMTP id 4fb4d7f45d1cf-697d645acfamr1333409a12.23.1782203709705;
-        Tue, 23 Jun 2026 01:35:09 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6977be640a5sm4022711a12.26.2026.06.23.01.35.08
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Jun 2026 01:35:09 -0700 (PDT)
-Date: Tue, 23 Jun 2026 08:35:07 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	izumi.taku@jp.fujitsu.com, linux-mm@kvack.org,
-	Yuan Liu <yuan1.liu@intel.com>
-Subject: Re: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
-Message-ID: <20260623083507.kg7jmd7ofz3awqmq@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260622022403.16375-1-richard.weiyang@gmail.com>
- <ajk_l8cT0mIyhs4r@kernel.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMPaLzo5;
+	spf=pass (imf05.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 920FA6001D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E091F000E9
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:39:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782203966;
+	bh=g19TbfS9RzQGFHPiPSlQ3EkgUSFQDJrLrVSig7447/8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DMPaLzo5ZQ1DQOxG2NNbZimBVOltVkjq8/ySqnPDQUlpLPkazHuOfMeBPKXseNKy3
+	 3BdWGqzeEYRzPVsBhkjyG5w+ckQtm7QxnaZR8TN+z3HlcOeVFqtWchxbEuC3qgLzJU
+	 30FZFA7K+KllLg80025wXmJQFQ6zkihDOsh0zuVYRIlcrHF7ZdYfDk6ajoJKXdKDEU
+	 KhPODXpXIDUlQlhsBTqRDo3gZzF4XmHvMPa7/yTvITRvByMmdDVI1AZk7laClxnsa7
+	 3hPwVD7AjohwfcKVXmKBpWkRDs2obLJEIxxRKEMJuk9dOy1tafT2GeVJGeNILDNgnv
+	 nHnU8cqnP4jzQ==
+Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8cc0ef7c306so61959816d6.3
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:39:26 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwRiNW4eaaLcGJzokve9lVFnV+Xag9efvk2VXAhuIIFMBYaS9C9
+	HgL/UR9eaJ8S4XWm0ul0kTesT7SKRRobf3dph7ZC0ZaDTn9AwR+RbSsRsVygeP5aTBmgW+izAYC
+	BNfm/QshXyH79piWpW6Qebr+8f6GBO7M=
+X-Received: by 2002:a05:620a:4714:b0:915:9aa6:8e3d with SMTP id
+ af79cd13be357-920913952a7mr3044826585a.33.1782203965754; Tue, 23 Jun 2026
+ 01:39:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ajk_l8cT0mIyhs4r@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: qhogzskd5e4s3zgiz97ttgcqz668xkkd
+References: <cover.1781843449.git.ritesh.list@gmail.com> <ecbca3be3fa8bd7e213d013a2ec6ff9a11c6e0d1.1781843449.git.ritesh.list@gmail.com>
+ <CAGsJ_4zxcp-jdnRTn09b8ZfxT0P7suFq3BEpyiUzA2C_iRRUGw@mail.gmail.com> <1pdxybv5.ritesh.list@gmail.com>
+In-Reply-To: <1pdxybv5.ritesh.list@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 16:39:14 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
+X-Gm-Features: AVVi8CeWSeuAX2KI166xjMwcifx0Mh0MFzcaEdEraCJxEokE4HeYDOzf9_tycxY
+Message-ID: <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AD37C40004
-X-HE-Tag: 1782203711-365604
-X-HE-Meta: U2FsdGVkX1+obeadbhHdZUH7SV0BBDB8hKaEJ0FRtgbDA6233J91aFdn1ndjAcL60lOQwRoJjvO6idNpiDN2/YRc2vtXNFa3TyVJayR+7pDz4s8kZV0VimfE3zJCjL745qA1CTI62/lcwNYbmim9rMAJlg/eEjocn/lp3UZDYG/m+b22VPAFskUd5ShZM74eOb59L6UdzGjxKgepnRf6kj7gfH4Rw9xC0XqgGvEG7tIwPn1MSXHROjgEgqGb7P8MJu4Z8NgT7jzVTVv5naDx6SsIosxbSEtJsk2IW62dt2YI0weSAs5oEDuvG9A1L9XxcvlrXW/uxwNBoLCqWehrF18bDZ2hJNuE6kNQD65P/Iysy3LeDsaNovhvj9HQiKU0flUbqkTROTSgUfGD4Fe3XassDoKYp4zSqIDmADaxZsjrTZXmczp2hmym+JnStXNGfhoUyMKhnjxA5h5r5ty43ZeDsoZU9P/SL8Y1uQuMLPJgE1jkeAKJAznxMjFJz89uYf0UGW8Ff5Tjc65XrRsKEi3F99guUxx4wa6vF9mvYhf28MilNaWATLuhqkdySYE5jqTJ1mzu0w73tJC/XJTf7k0Tayt3mu9H4McC5HnSuMZmhrxn+pbuEm0nYfCRe70Pk+XPHSDDJ3gmzyG0nhWpWK7D96WW6FZHcd6jcwM+tDDJigBXVrYL7tSM+qsYwO4SLH+RDmYFxE+kRF3DVhPNL1KweYYvR/MO/SuLHHB8kmrkGpC+aBWvTkQ+RcN85GuXJ0gb/5AUC2+YH8bo+lLnsBIEIBKGLZAQ68dfcfOB72a4iqJ98Eu23VDDOPN5qldzoFmcO/mUfSZ96eTThSESq8plLE2hZYwgZLG4ahCjhQJhFI7qdsZlM4LJt3djabGJ/P94h/qAyMgGxBwqa45XzaI4sF24n5K7leVyrxkajodd3mMuermbniYSMLewJsmmJlIOWXGfhGWLmuvLKKK
- 0nHaZXhY
- qpqUsRbPO1HvddKCxlTLOoWO5Jp+TsAip//YhX6CzMaTJI4zdUlIdw1RihZY8GMNeNuaENToWyLXNNmPkz917ml6agvIG9qcObfmAN24WkEpjAoBTnMG9LLgySI6sBPvL0vv5IqHEBfvCp4JyjEsbreGia7Tr2hEYcAESn+iv1H7hCNpuO2BHcgbCIo5+2GrorPl7/8xWoSTTvbfTiKAwHhu9UTMcszRzbdAbwYdXxUy40Jrw2L9lpwtOwCV7b3e7k7niGKfqtGcRzHnI0XFN6o6hlkFv2DX301vUBIPA0ADKhM4PQkKPfb6yvCrnYT6GDFjribqIo8NZCLnPyzi+pS8HXOGeiWKfemWYyKfgBi0y1bLbRHV5LGzYVF2sL1iYaxdacCfVAD44ZHToFoSENFZsngIithWs7edcKMFjq4DlyH2tXpjGuuBq1VMg/V9dBaPp7sY80Y242o0+5/jzbsEn0IP/pUUnjfwwy2W6NHeD1CQWWQrPmEI81+TKWoWh8p1fgbmf1MBiN5OFzumG93UKww55aCGfBNlrY8BZCq4CDuwmA2pI/xS84jcXmkrXZR5qgub6ANk+adH2DaNWDy+xSKO+WjtoZ2exnE37baUZuntAfLYimNy8Fmfu5Dkgvi7HvshwErWgOlIjfGhKQUCazAhIxvx4rqGJ9VrugXRYanIXIMuUJJBIcpaDvsSzhwXYzE6dASVRR4OLhXeZUzMqM9Ye9fYB8xZ50uxNLxNbf0TqjYSHXsvghC7cc0AHgeYQs3/ccMa1ST4=
+X-Stat-Signature: fmsfruzoxwbpau5fgik5y17n8surtdd4
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0F7D5100004
+X-HE-Tag: 1782203966-471404
+X-HE-Meta: U2FsdGVkX1/DibnLkSbZq+4pZncVmP6PaDwOr0YxeKpCilqLTiQxIACNfilOGShc2L3oE+W5QfVeh+InGiYmN1zPvJcxCBCE5aX6g/w5aZHMvHylELg5FaE1bdF/5kH9L6TbwHJb2Z+yf9CofMuUg+Xq9fWTsGKCvQ0XwQ1Ol1tTnMfY/NO35oWOpanMGtFvaKqCChQjG2Lc+teww4AH6qwGY0vlIMFyX310J23vSLP3Rp9Q4uws7q3xbFq6SVsZq1D3GO5WcdwRKUjKNQn2vQuVUnTjN1qECeVfLyyom1RfA4nQlbQ3xvS7VjAPWRomMkR1MJxXeHXI29d7/26PJ9DS0BPdR5PjegvAglW0K0oXkGA1Dhgz4RiRDektgC6oQTVfpbkaL304m/bjRl01R9AZEhQt47cCbR0uTGwKMZAEG/Ytx3Ip2F/+2v2jEEkkIBOEhSuyy8AE9xud5R0ENtt2Q+uP8+ISyJh9OKqYKyr0maW/Av7ORjyeso+xxSY3J4anf6qC4dDJ8SnMSpZp4axSEkP0FpsNywOMfrtjd50Ze2OARA7ucpUrLrMO047o+6CeTUxsTQukgLiI+GNDtyOe8/axDV29XKQt7G9ZsJH5ar1tixRFG3YoKfznz0ECpeFEjvT44XmRITXtoEBibil1UY9OJ5qfLqUs813K1Cs9q+E+PspLWNhikFq3s06H5Bcn1tWFrnMx0PUDMcKywKVqMfxX+BRilaVT/kWig8HStU3IzIbM2ShQ3PLmxw/girzNvnkycd18KXRzMJyAKA76YVPcdEgl0Gclg6SkgfMnj0PGBWivtYNDXQVEKU0p8XwZh46XSnnh11f8NeNJtsL+sbH/FTvAj7zq88ZBAfQpAsLpSRv3nAgiRs0QyY0p9qG4+pVzZWpr+zKXLUOF3yjZ+pLapadEHFWpw/F24mwacSjmQGKXGy1QQY5DN2nuamAXjtKD+r7F0Wx9ilt
+ VzeXHldE
+ J4skaloNDWT8C/Z3Y3lNY54FRn/m1iQ6P0tl2d93Bh5vr0jVfTEA1wTaQ5Y/Pn8JIsQE1CpYVjy9t7a+fyqkLlSB2mUYn7CUoAEi23fxbhVIfqlDcdosZ6MX4noCN0GGbMNaDZMuYDfaFww8YSX/SYl+QjDaabMBmNTZ0k/CkNzbw8/93uk5UFKR02OxIJcAR2xPU9AQ0veMcNYcHBGVi1IQiLW4D32tHM6Oox8/MLCIwvc/zbbzAYj6NDz1LPXd6Rt81T9kPnRRIRAEeJznkhnyXvQtSAC0EO5wNIpiVt1G/4yCNDXSY2wHE9M7WXA1RAydMtxnqsjAl2KvkYUFiKQav4+NZsgUfZOk2Hkox9meMKhZ5wnrB/OLOnS7UyeMAU0kl5A8LIlfgTEBjTln76V9VdxbdnxXsH4aeqXKwxvmZ8JrttSxbBlLBgJ4KoWkKFqgjRtzGgte9h9I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,42 +108,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 04:58:47PM +0300, Mike Rapoport wrote:
->Hi Wei,
-
-Hi, Mike
-
+On Tue, Jun 23, 2026 at 3:12=E2=80=AFPM Ritesh Harjani <ritesh.list@gmail.c=
+om> wrote:
 >
->On Mon, Jun 22, 2026 at 02:24:03AM +0000, Wei Yang wrote:
->> Current node_spanned_pages is got as a summation of all zone's spanned page
->> in calculate_node_totalpages(). Generally this is good, but if we use
->> kernelcore=mirror, it is would be wrong.
->>
->> As we already passed in node_start_pfn and node_end_pfn, fix this by get it
->> from (node_start_pfn - node_end_pfn) directly.
->> 
->> Fixes: 342332e6a925 ("mm/page_alloc.c: introduce kernelcore=mirror option")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Yuan Liu <yuan1.liu@intel.com>
+> Barry Song <baohua@kernel.org> writes:
 >
->I queued it for now, will push to one of memblock branches after merge
->window closes.
+> > On Fri, Jun 19, 2026 at 12:41=E2=80=AFPM Ritesh Harjani (IBM)
+> > <ritesh.list@gmail.com> wrote:
+> >>
+> >> THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
+> >> 64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folio=
+s
+> >> (Hash-64K pagesize / 16M PMD), during swapout. This improves the
+> >> swapping performance since all the bookking & I/O submission happens
+> >> once per large folio. More details at [1].
+> >>
+> >> PowerPC Book3S64 could not enable this before because PMD_ORDER is
+> >> selected at runtime depending upon the chosen MMU. The earlier patches
+> >> in this series turn SWAPFILE_CLUSTER into a runtime value and introduc=
+e
+> >> an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With tho=
+se
+> >> changes, we can now enable THP SWAP for Book3S64.
+> >>
+> >> This increases bandwidth throughput with zram backend for swapout by
+> >> 40-50% with Radix and 100-130% with Hash (Tested by Sayali)
+> >
+> > Thanks!
+> >
+> > I am curious about the contents of the anonymous memory being tested
+> > and the compression algorithm used by zram.
+> >
 >
-
-After some investigation, I found current mirrored_kernelcore may still affect
-memmap_init() in some aspects.
-
-But how to fix is not sure, will prepare an RFC for discussion.
-
->> ---
->>  mm/mm_init.c | 5 ++---
->>  1 file changed, 2 insertions(+), 3 deletions(-)
+> I am sure it was derived from your microbenchmark itself which you had
+> shared here (so repetitive pattern) with default zram compression
+> algorithm. Thanks for that :)
 >
->-- 
->Sincerely yours,
->Mike.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit=
+/?id=3Dd0637c505f
+>
+> I think I got your point - I can mention that it was a microbenchmark
+> similar to yours and not a real world workload test. Is this what you
+> meant here?
 
--- 
-Wei Yang
-Help you, Help me
+Yep. Please make it clear in the changelog what kind of workload was
+used, as different data can result in completely different compression
+ratios and compression/decompression costs. Consequently, the reported
+swap-out and swap-in performance improvements can vary significantly as
+well.
+
+w/ that, please feel free to add:
+
+Reviewed-by: Barry Song <baohua@kernel.org>
 
