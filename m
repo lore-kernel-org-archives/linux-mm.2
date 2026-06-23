@@ -4,96 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19DADCDB46B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:47:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2747CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C360A6B0088; Mon, 22 Jun 2026 22:47:27 -0400 (EDT)
+	id 46FBE6B0088; Mon, 22 Jun 2026 22:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE6376B008A; Mon, 22 Jun 2026 22:47:27 -0400 (EDT)
+	id 420486B008A; Mon, 22 Jun 2026 22:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD396B008C; Mon, 22 Jun 2026 22:47:27 -0400 (EDT)
+	id 30EA06B008C; Mon, 22 Jun 2026 22:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 788636B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:47:27 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D6EDA0349
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:47:26 +0000 (UTC)
-X-FDA: 84909641292.10.AE2503D
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 78263180003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:47:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of pengyu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=pengyu@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E641A6B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:48:24 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 42D761A03A0
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:48:24 +0000 (UTC)
+X-FDA: 84909643728.25.A7C8A86
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 6A0E6A0005
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:48:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RmY5ltJt;
+	spf=pass (imf15.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782182844;
-	b=Tm+t7rMdiCBv3TLcdUXynSrUxUe0Kk/FgS3W9BVvtRiM0nWu2dDF6G2CvqZesHu2xZx4Xm
-	4ZreqSNCdYF8GrjAMV/ieT5vewZsqeHVurXibGnqpWLIwc9ea7aALuX6qs5P6upwUZjNOz
-	LtQMS/k3OB+fdrcvEfJe03YV0EGCu5U=
+	t=1782182902;
+	b=HZHOYKuccTGgdYVOd2QPmavwnFHNTVx8nSj6k5gbbqIP+rXnTDgMnM7vy+qnPTIikuZyF2
+	rNA2rFzb4MVA54+KclxCOAyI8nMWHl0LvWibmZHmniZFLsKVNMowE51mNWqbyc93veYbTk
+	5SeYSN1FUeYrq3XOYFkayPXPercYMVo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782182844;
+	s=arc-20220608; t=1782182902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O57Z9kXdDW9ZvhXzAN1RTvICh19sqqK2KSZkn2nN/4o=;
-	b=LS8vy/jeVlbwrlFpduH2RQyTLxzZCmauvAsChwVztDWv2W9HpTjszxx0YJagmjG8bZg9/6
-	bnBzLKpjTTV9JY0b5kqBWajwhk/o+fIZQw2LWph6SqfWL0npmP64M5Yo25EKoH55vg78r1
-	GEP9oJauN6CXwevoga0pWUw3L9zQyI8=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=qqHmD7JR9t+Z/0KEel6mY6qfmZPWJdHpdBu80i1TItU=;
+	b=5pAs1abkvStZLwpIoi5AdSFuLs8gYDjmbXlEKweGCFyltPggchBDk5zAPpLci+lZoJqhm0
+	hQ+N1QSGaGjrULr7KHMrx3gEaJhXods/4OtJXYNix+4n9daLw+YobvTPItYZwWLx1bJAYM
+	7L9IwVtUu7P4dwAMAEN/Z5YNk72EgfI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of pengyu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=pengyu@kylinos.cn;
-	dmarc=none
-X-UUID: d71f2ee46ead11f1aa26b74ffac11d73-20260623
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:57e4046d-e2fe-4921-88a0-35e3f2cdd9ca,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:20
-X-CID-META: VersionHash:e7bac3a,CLOUDID:b120238e1bb89aa4ce6b6f1014414011,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102|850|865|898,TC:nil,Content:
-	0|15|50,EDM:5,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,O
-	SI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: d71f2ee46ead11f1aa26b74ffac11d73-20260623
-Received: from localhost [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <pengyu@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 1455545477; Tue, 23 Jun 2026 10:47:14 +0800
-From: Yu Peng <pengyu@kylinos.cn>
-To: lpieralisi@kernel.org
-Cc: akpm@linux-foundation.org,
-	catalin.marinas@arm.com,
-	guohanjun@huawei.com,
-	lenb@kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	pengyu@kylinos.cn,
-	rafael@kernel.org,
-	sudeep.holla@kernel.org,
-	will@kernel.org
-Subject: Re: [RFC] arm64: early_ioremap fails to map ACPI MADT on 64K pages
-Date: Tue, 23 Jun 2026 10:47:12 +0800
-Message-Id: <20260623024712.3480399-1-pengyu@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <ajkFE6TmwW6B/huP@lpieralisi>
-References: <ajkFE6TmwW6B/huP@lpieralisi>
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=RmY5ltJt;
+	spf=pass (imf15.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782182901; x=1813718901;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xcTCbDjQUR7rxGmM347P8QLVcSjWKie3dpW6fuAityA=;
+  b=RmY5ltJta2UToa6PgTZ8wscpAArYHHyNek6hXfOT9qxfGP7fu2OstX1g
+   UAAAMWc/d5zcS0GAaoWWKDTdX/R+J8sFXzoSg6yfx3ugEBm1psrlNKZx9
+   e5TWm42yq38yCQ8o9mLxFwYO5EWr1R5RKoS9PxV4o4m7LcYBD1KZmpffP
+   zyMW4kWBDOIEKsOq02dvAwCqomB6QcOokAtkxZdSWwXTEK9RNhU0aFusC
+   0uOh6I/MxiGIxErsU+ECenbBxP1ukpmORhwuhVLabSOk6EHJ3SScIHubs
+   GSo9dXsRSuR+rMBsT+jODdv+1WWzAQfcOgWGHP56tv8/pDU0ImxvYg2UO
+   w==;
+X-CSE-ConnectionGUID: YTboh/qyTQWIZKLYTs+Jrg==
+X-CSE-MsgGUID: HViJ17RHQbaREryafkPHkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="108462625"
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="108462625"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:48:19 -0700
+X-CSE-ConnectionGUID: ge4zSK9JQp2sW0bCR1G14w==
+X-CSE-MsgGUID: GAIO5dR+SgyTg9YNRJbOpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="249520909"
+Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:48:06 -0700
+Message-ID: <7391833b-f754-4cdf-a46a-9a27d357750b@linux.intel.com>
+Date: Tue, 23 Jun 2026 10:48:04 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 02/46] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
+ KVM_VM_MEMORY_ATTRIBUTES
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-2-9d2959357853@google.com>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-2-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: rrm4r9dbx8f1eeyi3awanapydfzhwgbm
-X-Rspamd-Queue-Id: 78263180003
+X-Stat-Signature: e447pu79p3fq6q68isjhsnbuw86z3371
+X-Rspamd-Queue-Id: 6A0E6A0005
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782182843-806473
-X-HE-Meta: U2FsdGVkX18XLKmH1mT1AzGb/BE/afWlVC92HRIfMfTueF7tqMQu4V4LSg5u6nEFsp3TzOpK9vfLfKmlyaAUvCEzMqVpmzSmOoo+CGDZ3Ro4bGbPI5+3ZhyjMjE2+XmV74DcgczMMXvCuF+pHzi8kp9jTGUChiRw4u6KjiFovUG2z089+UykGz0/YmMQvHWWyhVmrP4kxmddRFVJxzn5TQ3BP7npu8Tlz5kD2n2RQYtjujmf7f9Le15Kwr6wGVn6dqQj8z+yJi1+ir+H5RRbpW0xw2XrOg4PVIWi0I21SApD5tYqBPsRqzgHOvUu1x0SKIW2/tHUhwCTe65P1kgBgPYUDo6OqX+r0wMYFaQAscHozLukz6bWamIyTREfXfKwJ5oAPd7MK9gD+hVqSUOoDva3I73TKVvqogn5XjehVv6ZVMk/koZbQBLpUiZQf9N9SQBDbGx2EQMfxEuuJQ9ZWiXXj6F6zFSIaHJNg4e9yDB2NHdOg9Y8pEwMaFQ64s6dXea0sFd2/VCiFxfyzv0QkBtUg+enw55w04r1CQa2KU/6henEjhIGEtcob8/MZOC/DuwagBiNH/yy4EGfuOAXOQM3Ab6Nua+SSIWFrD378GSSZqBNtDU7bOUUyLoPhjjWOfI1Jtgtb4ECc/vZtFLPu9TlgTYISc38f7CdMxb0+n+oS55MjMOtR7vqfqfdJ6yoqAITj3g/nEqSq9/T2HI9v/VQvxqIyDlSs1yMRw4ToCTngvosu3sfERJldf6Z+tQ5XihhDbPamTPcmcep0Ff3veVjkyHQiUrm5rYlhB5Aeq7i/lAzKTIJRMxvmCPylDLWEYoqFVjn21utrioT989NWCkk1bxw6nJuPsxNUJxGEUi8YDZed8AJlsXIVaSSGIApzae1E5vHMe0MzWdugQryrqCkdgahbW9xFikk+paUKp7Zp9T18EApuI58QJHph+CxPWJAZkWJH2z3vdE0m3v
- lZ5pDVbP
- vrnj6D/yAmMjmvDX7wSJhdyY+RUYQFdYVQAfqsGj1LAaHkdPW0L4Os1SacbUAA2Ijtm6V1el78e0bXWcXLc1hFG5sHT1SFhgpU9Nn
+X-HE-Tag: 1782182901-260106
+X-HE-Meta: U2FsdGVkX1+rCdVS4D3j0TcCva+zv6VhAaOBTbumwy0UgdKJddY2YBWv29INbS9fitmIO3D3FfJ34a80Wk7k7QqWbwCTJ4y7vWmHOHlG7JSTMNyHqNe5UJfjv1712wL0OIW7+3eolkhvG0hI/Lf9lgesUsMPRJRwT9yBqM6aVq3IhRjoMYZWBG40M8e00CK5cXF4PxYIfXxJ8i+FvIVRktzTJehQWDW/pIU/nH817UL5OH7JSIuIzD0y+vLGZH7Px2n0spwBQJzgfA7XfqsklV+2IvKjMCxaNmGCkor7mZDHwsaGg1DBddTY3GyRwF74LWnxqG7ONOhBkMejl+bdAmeQrNUhxiGGBnvLhh7IBESo7Hj6XWlgt4u8t2lPZSKvQXQ5T50IjNN9HBn8SBBzmd6B0JgGHq8d7NjfvK4CcuyUwGGeXLF0gLMTZ1mi54v2cG3rlFokmZDXGrduhZgpubsza0N3b3xpq+Ciss48pavm7YneVXTyMFxlBx4P9qVVW4uzK5B+mVvXXmwpBghsx/87onDNws+K/bDsXhxelb+zKAIR85DPVPmLkbFfzMtZkS6+3D323YazV24jnqTiLUKuqla1kLC12CLUEIYbChM1n3dHuemHGVPqbZV+j2KiJzCurO/e34nffZ5fvXICRRVZsFdbnePUwOuhY9dG8a0LT229h+3BTr+Z7fqkPccqkt/RbgmYqrlIs5lHACBRgF/BXVFOwJSOIxjvgCsL7MewBYLxAYcN8n8pORkfCxc0LO/DZ4OJ2yEjCCOvVddJifsqICp5OYlM9UT4hUhIQCWQpagfCtC7JCKID8FLuBk6613RidcFwCfGPD/HUGYb5L106RxRVGO61BRA2Jj39L7fIRqT00gU2eiuYWsDPl7wjZwE9WXhae/Ha/0nzNKviumafTEbJ+IiP0Vi2z/zVjJ4KYcdfKDPbqfNb8Q9lj9mEMPMDVmNS5WOdCW97go
+ HaFMjr+5
+ 4Lle7ThpH1u9uvmtM6dTnsFPb5OGAOBQc/Ma4ue4asfYl40xVYNSBFAwKOsuri8jIkMcop1wl2D6+N+P63PKieb8FLW0UGLP6YP5Nio9vVbR3l3ALlfwC4+9DSR0JKgGvNi9QqB1zBC2MBkgGTZLuYCAWKGrZdNu7igbBOT7vqeHeHmluVh87fFsIET8DUtK1WYJ8oq+JbkOgVB1SAZTuX1y5DGkX8MwZNGQKZQ8TQFqF0dlEgLFVYrnQWSofHAruxcP6wM7YciiASZwPUTHyzcCPfVkI80A28kd/AB6ZVDDrcmYM40OO5z/+4voJ960LoK5Hcpq6AIb9pXs7cV8ZYXiwGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,29 +134,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo, Hanjun, Will,
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Rename the per-VM memory attributes Kconfig to make it explicitly about
+> per-VM attributes in anticipation of adding memory attributes support to
+> guest_memfd, at which point it will be possible (and desirable) to have
+> memory attributes without the per-VM support, even in x86.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Reviewed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Thanks for confirming.
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-I will send a proper patch for this. The change I plan to post is along
-these lines:
-
-diff --git a/arch/arm64/include/asm/fixmap.h b/arch/arm64/include/asm/fixmap.h
-index ... .. ...
---- a/arch/arm64/include/asm/fixmap.h
-+++ b/arch/arm64/include/asm/fixmap.h
-@@ -79,7 +79,11 @@ enum fixed_addresses {
- 	 * Temporary boot-time mappings, used by early_ioremap(),
- 	 * before ioremap() is functional.
- 	 */
-+#ifdef CONFIG_ARM64_64K_PAGES
-+#define NR_FIX_BTMAPS		(SZ_512K / PAGE_SIZE)
-+#else
- #define NR_FIX_BTMAPS		(SZ_256K / PAGE_SIZE)
-+#endif
- #define FIX_BTMAPS_SLOTS	7
- #define TOTAL_FIX_BTMAPS	(NR_FIX_BTMAPS * FIX_BTMAPS_SLOTS)
-
-Thanks,
-Yu Peng
 
