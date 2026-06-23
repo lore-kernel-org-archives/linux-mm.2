@@ -4,78 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0BBCCD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 07:59:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA17CDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A61E16B0093; Tue, 23 Jun 2026 03:59:54 -0400 (EDT)
+	id 7F6996B0088; Tue, 23 Jun 2026 04:02:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A38FF6B0095; Tue, 23 Jun 2026 03:59:54 -0400 (EDT)
+	id 7A60B6B008A; Tue, 23 Jun 2026 04:02:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 903B06B0096; Tue, 23 Jun 2026 03:59:54 -0400 (EDT)
+	id 6E3506B0095; Tue, 23 Jun 2026 04:02:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 681886B0093
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:59:54 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2CB7A0371
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:59:53 +0000 (UTC)
-X-FDA: 84910428708.14.847002F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 445C36B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:02:55 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B128440405
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:02:54 +0000 (UTC)
+X-FDA: 84910436268.01.9F9192D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 1A2E2100002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:59:51 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGrFCjlh;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id D6A6840006
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:02:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FklgZfZv;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782201592;
-	b=tUMgdP4vXVskIN3YDs0XbjmTw0V8deQJCQ0k9sf1Xnx2tr0HpPQam6XuXnkNSjFZ8RPJbI
-	6w5UVc/1adrV2FtBriIhnKmU849FL1iIUaUt6akfLDr6dyGs3VN2C0w1PD4L2LQRZnq4pf
-	EZKPX/SKR+bfysnEtB5z1NW6kA1NJbk=
+	t=1782201773;
+	b=qwB536oxwIdbfx2gdtP8rzycbrr+9MNeZV5VNiXGn6n5I1H1krIyRi4ake8f7kTJRjfOjv
+	vac39UbkznDYCtcWQ9IwNaEUhuQyZBWksoVtorv7jid2xLwKCme/RlfZKFaMfdCcyJ0pPf
+	pxYZveWc0o+FfqnxTOfQLMYzn12Ygiw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782201592;
+	s=arc-20220608; t=1782201773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ReFzOAG/aop/XLXwnu7jqpdSGC0TM43hdACQPrs7w8=;
-	b=dPbQZbLOkJt44hXrfoPDfhLIFaX8upaS4uxjW/imjIf+KqWp2dMTEY0MKjt/qUyLaILTfd
-	prsgLCzKXwlNHnK02FkFloOHZOcNC7vjtIWot9HYHSVzYiY+54zAkTsgtYQwZXvSaAHMwB
-	qfEq22/6HSYEpzYCntsAm/rZXSVxyQg=
+	bh=uGXAbbvDtMgdseoEBMP4tUzRSWv2MJSuTR3Me0ClWC8=;
+	b=SlqPkl4I8Df0qkkZMyX7JfloloVAmIzSCZt68FWR+/e0X0GTnc+UuWUG8ef5gau9pKIrA8
+	VCeM2YdOF7j9eRSe+quFPi/LlzyjB88p6UktZldbVGn3y+jdZAKY9JAU3COkCES/syg+VX
+	H3qMXMREyOU2JopSazB/S/5jZSN51hI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UGrFCjlh;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FklgZfZv;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0905C43D46;
-	Tue, 23 Jun 2026 07:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E691F000E9;
-	Tue, 23 Jun 2026 07:59:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C6A2437DF;
+	Tue, 23 Jun 2026 08:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 986D81F000E9;
+	Tue, 23 Jun 2026 08:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782201590;
-	bh=9ReFzOAG/aop/XLXwnu7jqpdSGC0TM43hdACQPrs7w8=;
+	s=k20260515; t=1782201771;
+	bh=uGXAbbvDtMgdseoEBMP4tUzRSWv2MJSuTR3Me0ClWC8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UGrFCjlh1/3KCsbFeugr5KMlYdzAEX110rDTHhR7OPJdb0hkYBhpsyiLNV1y82SLa
-	 ghuhkCIK4raVycHuqabJ/g+wDVqpIQI8GtcrEbVijonVjIjR2wogh9GNM07nAxfrFy
-	 nRWZnHVXH7hEFdWCL2wsFnrvnEgKgxtr5SUyeEy+BbwjQQDufaT8Dorm7U0OPugRV1
-	 YQUrfPvfAd0CC2soZM7OrFnvqPQIbGZHXWQ6+GQucGNdse5JHYWgULc3Ap4QkJo8hY
-	 5j9xVS8MsDAo9c0w5mUp67sTQNwqUOa5C8e9EVkOh57Bm8k8py5NpfPyvggJTbkUMF
-	 1HukMqUMNsnIg==
-Message-ID: <97f2c4ad-c302-424d-a7c8-fdfa0fc0d811@kernel.org>
-Date: Tue, 23 Jun 2026 09:59:45 +0200
+	b=FklgZfZvf9emq2gmny2eGq6EMuPFgTPg3jmwAxmLaYfdeYYOx9o/LUsxGSyhC90Aj
+	 wyT19RvXdWlMCbyU9x5qRfWKwzHtDUwLyiTaRdHPzlhCnqASxByUiH+reBxZa6dm6/
+	 2eUrKJ7Sl3Ard2QCWFs5RMYz0cEIAQCf+F3cTsedtE8mzwpzHancQo4aEImHF0L8cr
+	 Fy0cEII7dznV9is/6QM/nYIXsQ76KUnc8J3lz0n9fEPXD9BgbtOHKKHco2unHFN5KT
+	 hMyDhDgPqCuk0aLgK7toBqI2XUvKRYcOcAAOK274SYOnvXU30gUDeEG5XgOjyI10Dd
+	 19K+31feZDQsg==
+Message-ID: <d04f745d-eb3e-4d2c-8ea2-5fdcf2cf27b8@kernel.org>
+Date: Tue, 23 Jun 2026 10:02:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: avoid KCSAN false positive in page_to_nid()
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20260623074157.578113-1-hui.zhu@linux.dev>
+Subject: Re: [PATCH v2 0/5] mm: reduce mmap_lock contention and improve page
+ fault performance
+To: Hongru Zhang <zhanghongru06@gmail.com>
+Cc: akpm@linux-foundation.org, baohua@kernel.org, bhe@redhat.com,
+ chentao@kylinos.cn, chrisl@kernel.org, jack@suse.cz, kasong@tencent.com,
+ kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ liyangouwen1@oppo.com, ljs@kernel.org, loongarch@lists.linux.dev,
+ mhocko@suse.com, nphamcs@gmail.com, nzzhao@126.com, pfalcato@suse.de,
+ rppt@kernel.org, shikemeng@huaweicloud.com, surenb@google.com,
+ vbabka@kernel.org, wanglian@kylinos.cn, willy@infradead.org,
+ youngjun.park@lge.com
+References: <3be9475b-0e8a-4df8-a130-4262f993973d@kernel.org>
+ <20260623075805.466317-1-zhanghongru@xiaomi.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260623074157.578113-1-hui.zhu@linux.dev>
+In-Reply-To: <20260623075805.466317-1-zhanghongru@xiaomi.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 1A2E2100002
-X-Stat-Signature: j6e8kd1itnb1hasb9rz591jxqb9sh9w3
-X-HE-Tag: 1782201591-465570
-X-HE-Meta: U2FsdGVkX1/Kk6EOYzSzc9u3ngGVXPC8U3kL2EU6D3dzSATT9PHiiPJ0kjt0Y7R05YX3q/n2drEIQGyzxul3IDeKS0LtHf+mVYKDuuDoO/tc9SODkGVPAZJZTGGToqlx24ElPlX+Va5y6pHLjcI4fyJZZCOcXQDrjZknseaiTa1n7s/Y/ReRcYvIovTvuMhq5L7C3vOOqaUWD+a30A0nLlq/gjY/EzdZ/ZutIktT3wXinoaKEJ0gcSzaDZsdcTz82GqlTwlsLeLxRdJL4l9Tru0LEQg/vtpZwnzXTSwM+cAcLLfTLWfGgh10t6jlR5+ECiku94sefG9oWWTWQN6vak87Lv4pDH2nFdM+NK592N/trKAmpZGp4jkJYeW4MwuHGJifQbWVBXh8+KELdZwJl+8B7j6wyfyXVdpxAc8TeqZ6Yk4CCgFAX2+3cwaVYqXiCkr8eOrdZUfbIjfH+j2zuSgFC/fE+noeLLI0qn0TzzIur4Oc0tkR/zsKxE69c1Qse++HsQ3/sLg2H8VeqFUJTJKW46ZRnQu6yT6gIakSTiRqsxFe//Ixu05lWMqsC1s6+z5UoKb0FgcbFM/rd3T/gOJxh2PwhJZ1fOa7pevtMgrVPK21N5Tr0/Xh6NMqmw+65FCOOdyA7PgldZtHuhMyn33exVPi6e3Q6/3iXeUkRx3b1h+atT5GAS+o5iBYUvQn6yfeJz8vkZ//wvP1mcBAC2M1FIs8P5+7A5Lb2BrVqeDrmT0kGTaU5/EVoOBoy+UzRiyL7727WC2KURD5acLhU3/IgkjTyFU9TycXrlwAQ3ACNNFbV4wTGH+ZW41zSgqcQtw9DlfCUdnDBkz8H2lhWT9ExoEixF3yvp6JfsFNvg56Ev2snbli7JtLw4kYhe8DYv7HUe2uhjCJPky00QwoguzJNsnWgCilHUWkMFDzajxSR7lrW0Lauoc7+BF/tryYScjx6KhqfIlQ+sBZiQM
- MXqTLE/I
- jIQeUmhNnHWyGav1UGOtQOg4dOE96KSEYlKH2heTdib9omMMbioQYwrlcyRrJbPwNJwHchAPDcUVTMp+EPrx38MpLGSqTOoK9DaO8j0PCA1qnyXjwu9lDulENjwDD8/gEoNAJ28csDLtRyYpgoZX80w0wOZYzvvwVD1HF+c2MM5kUkLQE9lbqskZizTEANQHnA4IYNOCH/PUN5GBqq7KTJA2dqYn0hbhg34DFerCA73GCXaNSYt8GE6dMP23/FnCQi82ym64EjaL6al8rU/ZFJvy1U/4Jtq1yvF32g+up1SOGAyP3jeH0ubDMKTvLO2Cpg2iEuDmFKFm6xGXAJ8WnfXA9/VUedJyTom6fYgGp9yGSZlg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D6A6840006
+X-Stat-Signature: b8uim78zuwusixwmnubxfywfozigmcpn
+X-HE-Tag: 1782201772-740556
+X-HE-Meta: U2FsdGVkX19HkkVN27dLDB0BcKgshQ6AeS//WVK5sM/vbdjdI+NaM+LbA8VoxzaBTrFxx9cPs1y1tYzAyf4O/dGlOnz14wYSSZJSfJy+LtmYzB+e5EwCSazTfWimS1EL2FVtgJSzPoNp2dIouFSK2fcVDrpnx5y21+8UH0JBb+ReWOEKnfcK8WdrHu9D2YOpEa84ZSMYD+gVF/tY0gVn9Qhwkpr59oXPlETumw5ffTRCu8Jz9S6tKwM0q/+kvBmP9g2JSKbb80JGBiLdf1r/tZOv6Q2+UD4flAp91Lk9Gj0A383vJ8h3lqYExfifShhds76u8RzdqucOFovldXB8bm2g+/w2zDZGLKvYUepiFoQGftHcF2vU/x/yYyJEU1PY5cazsW82AMALGDXRPE/VBOFRFHDFFF+9WaH1BGuzMPDO1CLQBkMHQ3BB0FI9TmDRjbudoZctXVpRtwRuzWhUpHRsHsxnmETIh3fBU/cFsFpflLtg46HmUtYPlOMylsYaO/rmN9WVLWDNHWHTUsvZVIeLEZEGdricssfjHAuqJXrtcifiQWo2Lhujoa2fVGe6/x/D72dFxoOEObLC5lLUyip9sei5StmNJDxxeN4xmiIdpL+/baBAlgzKAN0A6s/4hW0micFz+U756bo0q5n0v1eL8dFsupolhJb5E+KfANHB7lGsubBBGaI1lrzgi/S9fbGmO0wEZHnLx5cZEX4VljUoMeFJ8qRl55kMAbJYoxo+9ztG9VrbwsAC1dclys5DX274E6HpFKMBUI3LEJgqNADh07keZdCa9ZyFc8IfSojinD52SFmhmLMHxDO5LLbmv9y8zT7oz+HRRTKZLNaXgJcZfWAa/h4m+UwT/aaVo5Xg7gAra5x6pi7HfsfJ10LpwxjJz9LuCoAoNCMJku5h6sMX5C4iYcX14xZiCo0KwYGQbNliKNxRmWXvLugz6WvrJVOSaH6x/QviCK36bR7
+ z1nx8y7V
+ RntAudqfg6+awSE0oa2p9JqQkYljcrHqdnnXqvgHX0+nuJJ4i0Vn/9mX+OCzoeKZJ6M2ITaEt9muAMBy8btZnVjW7ibgy3HXlegmd/u8xv8h6wcK0hbedk/qrEot2MBuQRrmOduoltNo9agBchq5mraedCoZ+TEB8tTjJqHiEx0pd18oWCxrKUWe/ZXLCojevUI0T6HtyKNjuWI0LcTPUe24tpo/JZ6BrXcSfjnvxnXDefjwJk64zCcA4EISB1KXcb9Xq4a2a6oAojQSp4Ehy7XCEvitgwyPQUVT/mycvGUWg2XZhSZczt57baUYP/mh+7Lvb/4MATOxJteRsLzJGmnzZq6jDp7OrnBoz59cR765MbC5h4QklYKAqTVIv32qZVjAEVoEOIGiO6rsJDI5eRX0I6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,69 +148,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/23/26 09:41, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+On 6/23/26 09:58, Hongru Zhang wrote:
+>> On 5/20/26 23:15, Matthew Wilcox wrote:
+>>>
+>>> all of the applications i run are either single threaded or don't fork.
+>>> what multithreaded applications call fork?
+>>
+>> Traditionally the problem was random libraries using fork+execve to launch other
+>> programs ... instead of using alternatives like posix_spwan (some use cases
+>> require more work done before execve and cannot yet switch to that). I'd hope
+>> that that is less of a problem on Android.
+>>
+>> I assume Android zygote might be multi threaded? Maybe sshd as well? Systemd?
+>> But I'd be surprised if there are really performance implications.
+>>
+>> Not sure about webbroswers .... I think most of them switched to fork servers,
+>> where I would assume fork servers would be single-threaded.
+>>
+>> So, yeah, getting a clear understanding how this ends up being a problem on
+>> Android would be great.
 > 
-> KCSAN reports a data race between page_to_nid() reading page->flags
-> and folio_trylock()/folio_lock() doing test_and_set_bit_lock(PG_locked,
-> ...) on the same word from another CPU, e.g.:
+> Barry asked me to share observations on fork() usage across Android
+> applications.
 > 
->   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> I wrote a BPF-based tracing tool (kprobe on copy_process, checking
+> CLONE_VM to distinguish process creation from thread creation) and ran
+> it against the top 200 Android applications in the China market during
+> normal usage scenarios.
 > 
-> The node id occupies a fixed, high bit-range of page->flags that is
-> set once when the page is initialized and never modified afterwards,
-> so it can never overlap with the low PG_locked/PG_waiters bits touched
-> by the folio lock path. The race is therefore harmless: page_to_nid()
-> always returns a consistent value regardless of how the read
-> interleaves with the lock bit ops.
+> Results:
+> - 82 out of 200 apps (41%) call fork() during normal operation
+
+Crazy. Thanks for these numbers.
+
+> - Among these, some call fork() from multiple threads
 > 
-> Wrap the flags read with data_race() to tell KCSAN this race is
-> intentional and benign, consistent with how page->page_type is
-> already annotated for similar packed-field accesses.
+> These are not zygote forks — they are fork() calls initiated by app
+> threads at runtime. Examples by category:
 > 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
->  include/linux/mm.h | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
+>   Browsers:     com.quark.browser, com.UCMobile, com.xunlei.browser
+>   Shopping:     com.taobao.taobao, com.tmall.wireless, com.achievo.vipshop
+>   Video:        com.youku.phone, com.qiyi.video, com.hunantv.imgo.activity
+>   Social/IM:    com.alibaba.android.rimet, com.ss.android.lark
+>   News:         com.ss.android.article.news, com.ss.android.article.lite
+>   Navigation:   com.autonavi.minimap, com.sdu.didi.psnger
+>   Finance:      com.eg.android.AlipayGphone, com.chinamworld.main
+
+I know that especially browser usually use fork servers: a tiny
+(single-threaded) process just to create new child processes. Any information
+regarding the apps above that use fork() on small vs. large processes?
+
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbdd..122d3b39369f 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2296,7 +2296,14 @@ static inline int memdesc_nid(memdesc_flags_t mdf)
->  
->  static inline int page_to_nid(const struct page *page)
->  {
-> -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
-> +	/*
-> +	 * The node id occupies a fixed high bit-range of page->flags
-> +	 * that is set once at page init and never changed afterwards.
-> +	 * It cannot overlap with the low PG_locked/PG_waiters bits
-> +	 * that folio_lock()/folio_unlock() concurrently update, so
-> +	 * this data race is benign.
-> +	 */
+> This confirms that fork() is widely used in real-world multi-threaded
+> Android applications.
 
-Do we really need this excessive comment?
-
-> +	return memdesc_nid(data_race(PF_POISONED_CHECK(page)->flags));
-
-In memdesc_zonenum() we use ASSERT_EXCLUSIVE_BITS.
-
-Can we do the same here inside memdesc_nid?
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 69daeeab7fe8f..76d3bb54be844 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2290,6 +2290,7 @@ int memdesc_nid(memdesc_flags_t mdf);
- #else
- static inline int memdesc_nid(memdesc_flags_t mdf)
- {
-+       ASSERT_EXCLUSIVE_BITS(mdf.f, NODES_MASK << NODES_PGSHIFT);
-        return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
- }
- #endif
-
+Above you write "some call fork() from multiple threads". Any further
+information on that?
 
 -- 
 Cheers,
