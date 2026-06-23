@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 900C1CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76487CDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:42:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 781986B008A; Tue, 23 Jun 2026 04:40:40 -0400 (EDT)
+	id 4426B6B0088; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7584D6B009F; Tue, 23 Jun 2026 04:40:40 -0400 (EDT)
+	id 4028A6B008C; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66E6D6B00A1; Tue, 23 Jun 2026 04:40:40 -0400 (EDT)
+	id 316C36B0092; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 36E2B6B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:40:40 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B550C1203E1
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:40:39 +0000 (UTC)
-X-FDA: 84910531398.30.6B55559
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8304540007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:40:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AotjKw9x;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 06D6F6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:42:46 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D5828DD36
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:46 +0000 (UTC)
+X-FDA: 84910536732.19.A265920
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id BC7842000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kH1EY9Ft;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782204037;
-	b=ARQYy65i4AlGxOZGkzB1RNu9m8Eifd3rM509feTvmFUSTW6WIslCLl+bC5DXx1TyLeVhBC
-	bxL4JGPFTz8VvkKZd843AWPRuinu4jzZDa+MnWXnHoyi0sNp29E5jk60esBEJmv1oU3A1B
-	boaXRLHgbvjon1oN8ft7snoz0A5gM6U=
+	t=1782204164;
+	b=kMcf4B5INz+ueU1NKPGapRVaruKqO4ps9EcO879uMc73XDWFBdP2JHhk8MjaBEiSqF7ebB
+	ahJiJ59CVgjwvlu+rz6znHmZQZQF4e876DWJVhEG/8Sc1sqeXD1qF7o//R3QmSZYqwoD0M
+	cahhHpP+fZ/2BqZaIckSp7fY6GydOZA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782204037;
+	s=arc-20220608; t=1782204164;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TackL0w4O3TSZZvsVLHQSU3GftCmhECUyDnGn5lnbS0=;
-	b=L/Ehmozjb6lpozQ+8NmyIwyFMrQV3dMshajFP2Us7Svk/lcxb7xL4/bSiBTyTA4o1ckvBK
-	yCx7/WrMVylco3nhw9bLf38mgrgDA0GOmZhGgrF4AHrRo19hdgEzPN96E7MoejRfMbwHur
-	zGQVzS8BTgs4tVCH4o+0E75hRQ0UZ1E=
+	bh=WvtWN1xiCjJwXiB3+SIzkmRkMwl7Gqj7f6Y9+Y6EJHc=;
+	b=jpP2818OIjsH6qYlGAxrcyKlXOx4MWKGqpkGy2yoozxs8AaCrPn7lNu8Ew70E4aFWuOr7F
+	p8DMfsaDJWRAOJz14yFa9wsn5Uu1bxkNJ8aEdm8NyExfI81op9LoAlhcwbXLKYkISMuEZO
+	ANxF/qHTlSQJgcoN5rzlMC7Nil5pciE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=AotjKw9x;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53BB51A25;
-	Tue, 23 Jun 2026 01:40:31 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 71B8C3F632;
-	Tue, 23 Jun 2026 01:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782204035; bh=XiQydRpXwl93K+PWXATZ3/FDrqkrMfjR/B392rLxffs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AotjKw9xPe0WVaX1GDgz+vOkiKuQ4wzcnl9b3lfkGoXVBWXxpPAxu3zLWAs3YvjLN
-	 1X8SZUwFHc90/zc52SJ8oGEkXeGzN0dvIz2DAblavC4eCULY+YoxGOFWtgUxCzxwDP
-	 q4ggwyZiRsVCsI6Ds+xPPeFvFMBUUI5/OlVrS61Y=
-Message-ID: <6a85489f-8b26-4c4b-8333-38f8ae1b680a@arm.com>
-Date: Tue, 23 Jun 2026 14:10:25 +0530
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kH1EY9Ft;
+	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id DC070407DC;
+	Tue, 23 Jun 2026 08:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7D61F000E9;
+	Tue, 23 Jun 2026 08:42:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782204163;
+	bh=WvtWN1xiCjJwXiB3+SIzkmRkMwl7Gqj7f6Y9+Y6EJHc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kH1EY9Ft+UdI/ni3u57iqoC8MmP0qyZL/qIE/vbffZbyFWP2v014OtRjw+jgb0Zix
+	 bKYQ4IgnCcmiMrvMRlBqQ7shfTmaZHA+9LmWCXohb/d3qwyD3IOKkn6BQN1Z8zwYHM
+	 JUsCpm8HNwZMNC0EQvV4UOZDCHp+7PZPAnEM4pMJzVOevfOU5K7Hgrmv7qrub9pQpd
+	 ppn1BjZ74vV6ZH7Q2Ug6Mz2CbEPUin3vpbK/IGNMqSQ8Lo0tu2FB56fQkJJNzb4ht7
+	 cYqEczV8M2k0mH43v0pPgfAF0T6p7HGpapbsXmqNtxWEfTpTiQhen6xkQJ+1GyysNV
+	 zxUWOpUpcOH5A==
+Message-ID: <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
+Date: Tue, 23 Jun 2026 17:42:40 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
- liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-3-dev.jain@arm.com>
- <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
+Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
+To: Guopeng Zhang <guopeng.zhang@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>
+References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260623082614.81621-1-guopeng.zhang@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------LgOrC2BRSzJunWsHWQMW456l"
 X-Rspam-User: 
-X-Stat-Signature: 1b4g531jttpyxc5gfhda1iba5pj46yhe
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8304540007
-X-HE-Tag: 1782204036-337827
-X-HE-Meta: U2FsdGVkX19Z0BX6DxHPy0em2GNRaph7l7fp0YB0laz/cQlSDCqR57wqwJR6xoGEVPW8V1J3QmdrT2lHjydwiDHjrN15UBDuR2P5YlXAgM37ajcqatpcBmNNOgcj2goadfNoWm50agXJy1tqCeqnCvmuMsh4XYz6vrDRTbv3P+0sHd33mI9N4g1pGIbb4NMc8uAWwoXNbe0GS6z9BSsjxXpuOLR40QUTYZup7ERmvNT8zWuwvSZJrnWj0EYdgXcCZn2XGPpI1JJtb5ZYXozqa3qoQ55xPYS1q+X+LQbF8ydbA1MCkSznZ8DTAsB/AYmbDuQ5GhaGDNoE/qQGr5G1s3Y7JjupYZ5rO9aaV2OIXd/7fsIYnoGpSdLgKUvEpuwdZ/aeaHt5L916z26WNamaDfGpgWnzENgxpxSa4a5zpPkPxvBpi2OGHIov8dJyIi4It0zIRt7JwLTc6Gh7jlZLw/bYtmJyFG5C6UDXVEd5BCMSy8r7tbKhcM3Yr8zQ58Nxx3WqPuH+akxLKEoMQsZNvipaSQeqU7aY8BgGiDmuWTxpgoEGHZdnb7UnzxLk/q3n+CTfJgvibt2fdlB2/r0e+BLDVZx9YLmPSpDW9BzXFUcvDCqeWZAX+gzW+far+NQzm9xq/TmBnZIuVICIjxcfHgl5ps5ltzcNdZxj3Cv/RcTRPV93uMuKDuHus5saf+IEXbkJHT87hnrpVAaSfebC2CAEEnOSCqGn0UrjDJp6cRKS0V8LeeYd0At+x2ZNfZxXKjJnqSwwKLvjcepnZakV1xJwE/K4pZKgYLNli8lKEJ8zj/7+8idV9WR2OLwvBaNyoQs69P83LjJvX+8yjUDTeoZa1nbrmn98bLdPPn9TZZHMc4EQhzp4mr20g4BN6k7KO2UWtG0N1jFfsIZMhzOd+S36jeNhAv86iKrKFOLyakmxh/TpNHDCNPR7SvUrvmrOeo9mhsqNBK5nLQWQ15w
- bJldbVf0
- SaRzAK53DbRaIGUmUsbs5A3rNT2ldLtCJjvlJz/V5ew7EdAmZeRnYM+0Ua7PEl7jDOa1MrxjnhN8dEetPHntvhn/YVjH8R1qMxmkgaZdhFeazxpsNAOxc7XUCoH0fHuKIA+4Wfyvki3yp4GzhJPj10ln8WtOshI5YHeZcJzrHbGeracPXCRPnVKJCuouxlSDktPWPSjXzz4F79RoSYuiy1xB29YJecDjKdWK7/vlSsX1yAEN1q0Idn3igV3q/3Ae28qkg23qcpgxUshYUzTLEOsmAdpIxRQzN/KDWbkYiBYrjTpn+Ts5u0YYt9OoTrGTfsgLen9NeHIz3y1469WqE/EF5lA==
+X-Stat-Signature: 98x4qqgpsf1w4cjcj91xcjrstnco3acm
+X-Rspamd-Queue-Id: BC7842000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782204164-912614
+X-HE-Meta: U2FsdGVkX1+BxuWJSYpZAeCyZnK0Ab7X6pr+MijIHA5aOdwpWmyjttBfheJlB2ttng3M1rX+Z2nocy18Zp2YF1Z6eGBu2STWjuHHmHysVCXNyyfrtgkOl9cFB9oec10v//crXWiF95Ehs2wbzfp6GxUPPIh5/n7+dO89+CGoEMWQBK9U45+M2lo/D4n21NRQ4uN4FysgjPmCanJ4z5GsHqPsycE07GU5klRU2AlgKCXTYUb7tmO4sICCxFhSQfztJaWg+QNZxHmH1eDJCJHqST7/co5wHg+Ti5QyS9vyhQa58i9Gu2xVT42NnbDetlqU2M6a5+Irf/+gGhWrOViGj+y3XNjdGrjCKM4Bm7g1UiRJe5C0JTOUWFEfgNV0UiF5/YCiztHnV3mhy5AvArAn5siuyMKIBuNKRqWmHyO1ZtqU9WLfPaBwFaNeG70mqURJEZOXftkwKc6ixsFlj7EQqdU5fw7iW1NjlrOnCeRdrTAlstnC/F6PUkmj+CSETVAZ5r29TTxIK7B5B0p9j+ZLfYZzZxlEVK6H04Z+LhrDEqhXPY/96nje5fCRhQ1QTjvunYueZ5ZFQ6QmKNB1TPyd+rIKZWfTYjvDCFHZdSmd7nF2UVHQMHDuLmH24do7oMQPb1Rnmancrj6R3Zz+TwtJz2IgGExHITYV+lc9bBPfkfcwIO7IUaV4Idh26df1xsW83VrNFI047g+B6JvubM58USzJHWcJoJj5pEJl8lpD4o9GgmMaIbn5GvRZibW1WH4ZL0wXbWqhoyv7VuSVmpB/sJ4AvrYvZp9LYK3jdIXxaIuJLx3S84wwh6zE1wWNSSpYBEcA5Cj8PoKcx6imB0lyyqll8qwl00ejnpZmR4JJS6/7fl13wIVcavu9/Mc/eodu/XeMvDscC3sjfCkiqdIujG5GAgrRGgjvYN6hGfrl7XsveI4In4eTpSaxen2C0OHcbRokMH+EmSBE1PxQCCT
+ pWHO0E49
+ GBGuQNFlRKMFB6w/y/TWNRItEc0LtztXQJ7/JgOGk91sx+pPgHf3FCrveo9CnrDuTBEXipCT9LyTcVrvFUOD03iq8wV6dJizbb7hXyduqzNQLJzgf5qeM2UIZoIBa56gPBQiM5vMX7rdm0lXZGVvFs5BhqZ7y6MQ1MgmkUWbCB7DE5Y8sDaxOTAtSMZpaTwO2mkiLPHnOIYv7I67cXtrQh+L9VKtbLNKErTc0i8jLCve/6Z+T8UwgvnXCl7ScFtDt3OT15hQt2o4FqZU3+HnPCiMN/Rl3MtTHjsXa3YWGS9F87+ZUO/W0r/7IfrbV1Ftmfl016YujCHrgLgRO7EpKRfXzxUePIo0RqMPRgDKdqh/Tuxah1PiNKQbS+lFs7uUNrgRAyl9IYhghd+H5Yi6wrkTDRQvw2BrbOw//1xFGfQ4DEQLyuqWDt+hzXkZ1WULloUWQRyGyvR07fk0lEL0QUt3R5wb/9TKXkLra2sCqBA8Z1Oa/5MChO6KIZJxMeE+ke2utahMqvWDLORwwzPu6muR5Ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,323 +97,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------LgOrC2BRSzJunWsHWQMW456l
+Content-Type: multipart/mixed; boundary="------------3PVOusf7gTMSTMxMX4UWEjnM";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Guopeng Zhang <guopeng.zhang@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>
+Message-ID: <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
+Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
+References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
+In-Reply-To: <20260623082614.81621-1-guopeng.zhang@linux.dev>
+
+--------------3PVOusf7gTMSTMxMX4UWEjnM
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 09/06/26 7:46 pm, David Hildenbrand (Arm) wrote:
-> On 5/26/26 08:36, Dev Jain wrote:
->> Simplify try_to_unmap_one by separating out the hugetlb parts into
->> try_to_unmap_hugetlb_one.
->>
->> To understand the correctness of the refactoring, the following points
->> are noted:
->>
->> 1. try_to_unmap() is called for hugetlb folios only when they are
->>    hwpoisoned.
-> 
-> Ack
-> 
->>
->> 2. A hugetlb VMA cannot be mlocked.
-> 
-> Ack
-> 
->>
->> 3. The pvmw API sets pvmw.pte to the base of the hugetlb folio (pvmw.pmd
->>    is NULL).
-> 
-> Ack
-> 
->>
->> 4. We won't ever process a softleaf entry that encodes a hugetlb folio;
->>    hugetlb folios are never swapped out, migration entries will be skipped
->>    (PVMW_MIGRATION not passed) and device-exclusive does not work for
->>    hugetlb.
-> 
-> Ack, we should always find present entries.
-> 
->>
->> 5. uffd-wp bit is lost when converting pvmw.pte to hwpoison softleaf
->>    (therefore no need to call pte_install_uffd_wp_if_needed after
->>    clearing pvmw.pte)
-> 
-> Are you sure? And if so, can you elaborate why + document?
 
-If you see the current code, we construct pteval from the subpage, losing any
-bit state of the previous entry. Also it doesn't make sense anyways to keep
-uffd-wp for an hwpoisoned entry.
-> 
-> 
->>
->> 6. TTU_HWPOISON is always present; for it to not be present, either folio
->>    has to be in swapcache, or mapping_can_writeback() is true (see
->>    unmap_poisoned_folio), none of which is true for hugetlb folios.
-> 
-> Agreed. That's one very confusing bit in the existing code.
-> 
->>
->> 7. hugetlb uses separate counters from normal rss counters, therefore
->>    update_highwater_rss() need not be called.
-> 
-> Ack.
-> 
->>
->> While at it:
->>
->>  - Change VM_BUG_* to VM_WARN_*.
->>
->>  - Do not declare variables which are only used once
->>
->>  - Assert that the subpage derived by the pvmw walk is exactly the head
->>    page. This is because try_to_unmap() does not remember the specific
->>    subpage which was hwpoisoned, and, since we cannot munmap/mremap
->>    across a hugetlb folio partially, the first pte mapping the hugetlb
->>    folio (in case of a contpte or contpmd mapped folio) cannot ever point
->>    to an intermediate page.
-> 
-> Might want to add a Suggested-by:, so people know directly whom to blame :)
+On 6/23/26 5:26 PM, Guopeng Zhang wrote:
+> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+>=20
+> A patch filename was accidentally inserted into the comment describing
+> the nr_bytes field of struct obj_stock_pcp. Remove it.
 
-Sure.
+nit: perhaps add something like
+"Fix a typo in the comment (target -> targets)"?
 
-> 
-> I am very much in favor of decoupling both things cleanly, instead of hacking it
-> together and make the code all big and confusing.
-> 
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/rmap.c | 203 ++++++++++++++++++++++++++++++++----------------------
->>  1 file changed, 121 insertions(+), 82 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 430c91c8fe2ae..06ab1158d4cd1 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -1978,6 +1978,121 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>  				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
->>  }
->>  
->> +static bool __try_to_unmap_hugetlb_one(struct folio *folio,
->> +		struct vm_area_struct *vma, struct page_vma_mapped_walk *pvmw,
->> +		struct mmu_notifier_range *range, enum ttu_flags flags)
->> +{
->> +	unsigned long hsz = huge_page_size(hstate_vma(vma));
-> 
-> Can be const.
+> No functional change.
+>=20
+> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> ---
 
-Ok.
+FWIW,
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
 
-> 
->> +	unsigned long address = pvmw->address;
-> 
-> Can be const. But do we even need the temporary variable?
+Thanks!
 
-It is being used 3 times in this function, so temporary variable is fine.
+>  mm/memcontrol.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..3eedfc4e84a0 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2039,7 +2039,7 @@ struct obj_stock_pcp {
+>  	/*
+>  	 * On rare archs with 256KiB base page size (hexagon and powerpc 44x)=
 
-> 
->> +	struct mm_struct *mm = vma->vm_mm;
->> +	struct page *subpage;
-> 
-> a) subpages do not exist. It's just a folio page.
-> b) subpages are irrelevant for hugetlb, just drop anything that deals with them.
+>  	 * keep nr_bytes to unsigned int as uint16_t cannot represent the ful=
+l
+> -e patches/memcg-uint16_t-for-nr_bytes-in-obj_stock_pcp.patch	 * sub-pa=
+ge remainder. Such archs are not cacheline optimization target.
+> +	 * sub-page remainder. Such archs are not cacheline optimization targ=
+ets.
+>  	 */
+>  	unsigned int nr_bytes[NR_OBJ_STOCK];
+>  #else
 
-Ok.
+--=20
+Cheers,
+Harry / Hyeonggon
 
-> 
->> +	bool ret = true;
->> +	pte_t pteval;
->> +
-> 
-> Worth adding a comment here, why we don't need a loop.
-> 
-> /* There is only a single mapping in a VMA. */
+--------------3PVOusf7gTMSTMxMX4UWEjnM--
 
-Ok.
+--------------LgOrC2BRSzJunWsHWQMW456l
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-> 
->> +	if (!page_vma_mapped_walk(pvmw))
->> +		return true;
->> +
->> +	pteval = ptep_get(pvmw->pte);
-> 
-> Should we now properly use huge_ptep_get()?
+-----BEGIN PGP SIGNATURE-----
 
-Sending a series to fix this soon : )
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajpHAAAKCRCGXBN6rc5S
+1l19AP9QHR1322qFfoOBeJdfJ6IA6ZpZt3Tz6oa0N59Be08okAEA9sJXP5B7C9O9
+pgwT4jOiILEhQIen/p8J71ZxryzPoQQ=
+=MJe0
+-----END PGP SIGNATURE-----
 
-> 
->> +	VM_WARN_ON(!pte_present(pteval));
->> +	subpage = folio_page(folio, pte_pfn(pteval) - folio_pfn(folio));
-> 
-> No need for subpages.
-
-Ok.
-
-> 
->> +	VM_WARN_ON(folio_page(folio, 0) != subpage);
-> 
-> 	VM_WARN_ON(pte_pfn(pteval) != folio_pfn(folio));
-> 
-> 
-> I assume both can be VM_WARN_ON_ONCE()
-
-Ok.
-
-> 
->> +
->> +	/*
->> +	 * huge_pmd_unshare may unmap an entire PMD page. There is no way of
->> +	 * knowing exactly which PMDs may be cached for this mm, so we must
->> +	 * flush them all. start/end were already adjusted above to cover this
->> +	 * range.
->> +	 */
->> +	flush_cache_range(vma, range->start, range->end);
->> +
->> +	/*
->> +	 * To call huge_pmd_unshare, i_mmap_rwsem must be held in write mode.
->> +	 * Caller needs to explicitly do this outside rmap routines.
->> +	 *
->> +	 * We also must hold hugetlb vma_lock in write mode. Lock order dictates
->> +	 * acquiring vma_lock BEFORE i_mmap_rwsem. We can only try lock here and
->> +	 * fail if unsuccessful.
->> +	 */
->> +	if (!folio_test_anon(folio)) {
->> +		struct mmu_gather tlb;
->> +
->> +		VM_WARN_ON(!(flags & TTU_RMAP_LOCKED));
->> +		if (!hugetlb_vma_trylock_write(vma)) {
->> +			ret = false;
->> +			goto walk_done;
->> +		}
->> +
->> +		tlb_gather_mmu_vma(&tlb, vma);
->> +		if (huge_pmd_unshare(&tlb, vma, address, pvmw->pte)) {
->> +			hugetlb_vma_unlock_write(vma);
->> +			huge_pmd_unshare_flush(&tlb, vma);
->> +			tlb_finish_mmu(&tlb);
->> +			/*
->> +			 * The PMD table was unmapped, consequently unmapping
->> +			 * the folio.
->> +			 */
->> +			goto walk_done;
->> +		}
->> +		hugetlb_vma_unlock_write(vma);
->> +		tlb_finish_mmu(&tlb);
->> +	}
->> +	pteval = huge_ptep_clear_flush(vma, address, pvmw->pte);
->> +	if (pte_dirty(pteval))
-> 
-> Should we now use huge_pte_dirty() for consistency?
-
-Ok.
-
-> 
->> +		folio_mark_dirty(folio);
->> +
->> +	VM_WARN_ON(!(flags & TTU_HWPOISON));
-> 
-> This should be checked right at the very beginning of try_to_unmap_hugetlb_one().
-
-Ok.
-
-> 
->> +	pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->> +	hugetlb_count_sub(folio_nr_pages(folio), mm);
->> +	set_huge_pte_at(mm, address, pvmw->pte, pteval, hsz);
->> +	hugetlb_remove_rmap(folio);
->> +	folio_put_refs(folio, 1);
->> +
->> +walk_done:
->> +	page_vma_mapped_walk_done(pvmw);
->> +	return ret;
->> +}
->> +
->> +static bool try_to_unmap_hugetlb_one(struct folio *folio,
->> +		struct vm_area_struct *vma, unsigned long address, void *arg)
->> +{
->> +	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->> +	struct mmu_notifier_range range;
->> +	enum ttu_flags flags = (enum ttu_flags)(long)arg;
->> +	bool ret;
->> +
->> +	/*
->> +	 * The try_to_unmap() is only passed a hugetlb folio in the case
->> +	 * where the hugetlb folio contains a poisoned page.
->> +	 */
->> +	VM_WARN_ON_FOLIO(!folio_contain_hwpoisoned_page(folio), folio);
-> 
-> As discussed, I'd prefer to just have folio_test_hwpoison() here.
-
-Ok.
-
-> 
->> +
->> +	/*
->> +	 * When racing against e.g. zap_pte_range() on another cpu,
->> +	 * in between its ptep_get_and_clear_full() and folio_remove_rmap_*(),
->> +	 * try_to_unmap() may return before folio_mapped() has become false,
->> +	 * if page table locking is skipped: use TTU_SYNC to wait for that.
->> +	 */
-> 
-> The comment should be updated to mention hugetlb primitives ... but
-> 
-> ... it's a good question whether that is required *at all* ...
-> 
->> +	if (flags & TTU_SYNC)
->> +		pvmw.flags = PVMW_SYNC;
-> 
-> ... and in fact, looking at page_vma_mapped_walk(), PVMW_SYNC is irrelevant.
-
-You are right, I'll drop this.
-
-> 
->> +
->> +	/*
->> +	 * For hugetlb, it could be much worse than THP if we need pud
->> +	 * invalidation in the case of pmd sharing.
-> 
-> I don't understand that comment. Is it really helpful?
-> 
->> +	 *
->> +	 * Note that the folio can not be freed in this function as call of
-> 
-> "cannot" ?
-> 
->> +	 * try_to_unmap() must hold a reference on the folio.
->> +	 */
-> 
-> Do we really need this comment entirely? We don't even look at the folio after
-> unmapping it.
-
-Yeah I just blindly copied it, looks like historical baggage, I can't understand
-that comment at all. I'll drop it entirely.
-
-> 
->> +	range.end = vma_address_end(&pvmw);
->> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
->> +				address, range.end);
->> +	adjust_range_if_pmd_sharing_possible(vma, &range.start, &range.end);
->> +	mmu_notifier_invalidate_range_start(&range);
->> +	ret = __try_to_unmap_hugetlb_one(folio, vma, &pvmw, &range,
->> +					 flags);
-> 
-> Is it really worth it moving that stuff to a separate function?
-
-I derive pleasure in a code style of:
-
-foo():
-  lock/start
-  __foo()
-  unlock/end
-
-Although, I think this is entirely pointless here since foo() has barely
-anything apart from __foo(), and that __foo() has 5 function parameters.
-So I'll collapse into a single function.
-> 
-> 
->> +	mmu_notifier_invalidate_range_end(&range);
->> +	return ret;
->> +}
->> +
-> 
-> 
-
+--------------LgOrC2BRSzJunWsHWQMW456l--
 
