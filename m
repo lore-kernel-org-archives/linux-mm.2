@@ -4,69 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F09ECDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A85ACCDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:04:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FE966B008A; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
+	id 796016B0088; Tue, 23 Jun 2026 07:04:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AFF76B008C; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
+	id 746506B0092; Tue, 23 Jun 2026 07:04:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ED556B0092; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
+	id 65C8C6B0093; Tue, 23 Jun 2026 07:04:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F146E6B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:03:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B742165AF6
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:03:00 +0000 (UTC)
-X-FDA: 84910890120.14.00243FF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 42F716B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:04:42 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E6211C58AA
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:04:41 +0000 (UTC)
+X-FDA: 84910894362.11.5AF19B6
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B3FDAA0011
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dlyVYc7G;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6296840014
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:04:39 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="uJO/NSPw";
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782212578;
-	b=BJ8DPPPNTrA1sn1KxHbWRwIrz69oUeau1rA/KIxFrnozGRTMBs7iZ+awALjn/1bT7gsolK
-	Qcy5UuSQvyAktyi212lDEpaVkl4uU09J3sofuZ5ctB1hZkznnxy252pp/E/WvZ7/m3e8ks
-	3u2E+/MRWQog3agO16Ih8mRd04QFV1A=
+	t=1782212679;
+	b=h/3oSrcf4qrLroI2DJrkvQPs2sfUzr9LwrInkKTcWAdh0ZCukFDYNp2VxXedsteqx4RuW7
+	ehd9vG36f/iTtd3SS10ZoNtBt3SZ+w4q+2EUuvzI6/sOoV8OJnpZ0HrNeB16RmaXsijwMo
+	vs1meg6Ea8zeDzki4U+nb3sq+Hr8cCo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782212578;
+	s=arc-20220608; t=1782212679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d/ElG25trDLXT4uWjPEZOjtfFQm7and7DsyLONax6iQ=;
-	b=S8I+9o94qC0BgC9t8a1a/UES+beSZaP2H/E2qceKBsF9VwFJ4YzofZoMO4KRKuGbKsUROB
-	qE0kvUBsMOMlnMFs1NHElY2jeHMs+Yhwx04fLjDsOrwwK5BsD4FYp2WRkfCvll/47t+Idh
-	TjIOuQEmIEHQAqrLgyvahDE8CD8Y9Ak=
+	bh=ECNV8ax8Hsh3Nn75cE7WAvXQBednnQ4wmgobByUsQSs=;
+	b=fJO2paKz20cc42LqCRUtHCzT9j4UqLVnkoWXht3Vj4D5iiYnInRSle6+tFtUIdt+oOyVPj
+	HoNiR0a7iHOYAxMhNy/ZQ8Zc4alrRRAKjBffnfhTgP9vUV8+jgoPlrT+ESmbze7mhFY4MH
+	LH4ejJlYpaexN+vjJPBxyAizqExpBFo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=dlyVYc7G;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="uJO/NSPw";
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54CFE1A25;
-	Tue, 23 Jun 2026 04:02:53 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 853AC1A25;
+	Tue, 23 Jun 2026 04:04:33 -0700 (PDT)
 Received: from [10.164.148.38] (unknown [10.164.148.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A95C3F632;
-	Tue, 23 Jun 2026 04:02:49 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07D953F62B;
+	Tue, 23 Jun 2026 04:04:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782212577; bh=gGjnqReNbED3UDwNUKA/bNOxEnxJjqfSBvAvUFwdl1g=;
+	t=1782212678; bh=f0gGtvxOEphT2DUNUoQMZGrP+QDdes+x+kNtkL06yUo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dlyVYc7GDR+VoWyQTKZhpk7itUHypD9D3TGNIaLEKmykY+7rMKI7tS9NhvJwa6h4i
-	 lmUmPU0COJwk3mx6g597g0JvK1FqqwexCOoPMz6Ourm837ktIHoFYuLjwm7ZQDMnpY
-	 wp6wHbkIWdtdKMWIYFqaPo5LsngC8VmPqfcq94s0=
-Message-ID: <6847a972-65d9-47ff-b971-c79544d53957@arm.com>
-Date: Tue, 23 Jun 2026 16:32:46 +0530
+	b=uJO/NSPwv6i1UphGcwTSZJ6nX2IfgfWmiJvtlQQGGrD8WgwEUXr0blhXQzi0yurXx
+	 SfVHkZTryrdUqUzj7FHHz8RrLGu823kX07BHyaae8XpbMWbPLosXo30EVBHgKz7L6H
+	 /m152kwkgTT3Hlh6bapGhDb2PzWrf9b/rML9ZcWg=
+Message-ID: <93e3ea2e-336b-4cb3-8be4-efdb353ff236@arm.com>
+Date: Tue, 23 Jun 2026 16:34:27 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 11/12] mm/mprotect: drop 'sub' from
- page_anon_exclusive_sub_batch
+Subject: Re: [PATCH v4 00/12] Optimize anonymous large folio unmapping
 To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
  ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
  liam@infradead.org
@@ -79,21 +78,20 @@ Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
  baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
  anshuman.khandual@arm.com
 References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-12-dev.jain@arm.com>
- <bce8698c-ae4d-4e87-ab6b-5f4059617a69@kernel.org>
+ <39e1a740-1126-47d0-b5dd-d711c04c6af0@kernel.org>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <bce8698c-ae4d-4e87-ab6b-5f4059617a69@kernel.org>
+In-Reply-To: <39e1a740-1126-47d0-b5dd-d711c04c6af0@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h8c4dp48fhpta8tjntxoc33n6e7j5j1b
-X-Rspamd-Queue-Id: B3FDAA0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782212578-540836
-X-HE-Meta: U2FsdGVkX1+wF6Y2yNPLfFMLtbUQj44rBrbqZ/Ti1EJIlzn7IRa45LPkabxQd3q4zmQnOk9KsMjHmvHwiJ7+0QfdBhLh3DyAQZ1j15x+50cL4tncbB8vJCLuQ8M9l2VL0h62Kmlwya0gjHPcvxEIT0k7BfcENc7wGfPzwnh1R6kHFb0sEEAbixryP7eeJAB35pJ7ijcvT9zlO8/eUJZDmEP+HPGK39DE6RTiDKmRtArLDC40nhfVL7+O9BP0lbCl1Bp0LHvU66M5WwjL05Kcgt5Lk463/miCyPhdL+5jYw1U5ouHzNWGgNbD+yEyuHR6eJyYKAJgAjoHugHPNKlQO1dmBk21ucuBLIJNiIsmfsd/587FDJog8iSMxrhfTdAxKI/YogYdsPA8Cl30Z39udSyKRSAyDYAEqbeZvKgQPEryVdPHU93jlUKP5sv/BLyC2YoFz1OzMR+yHjWL05MKq1QKIRs4wY/RxAAXboLp3hE3RIgMEzSVQBesJyl9SOFmaZZdHrOgHGKqXpIuOIkIKeGg5+CvKYlWScQSyTojABCSrvqT4wck1pDRQmyHTJuWfyyojRAStYuVExeX8ux6ZE9Hw3xGoziECOg/QJ5hmLrGHRXxx2kIgcTwKIqYddjanAyeNkiw7H5TWa4jhCXkDm4kSCNvRHae24lawuXF6wDpMiwIe4fi2abdCyRNTmtY4JY+psXSnMeFbR7IMBSbtOIUYztPGw+kk0tO9SkbNLqkgVqPM5JC5tYsWlgAgJXJqPhRsXfzB3ivXV5mA59TacV5V8/wR88dK/oF/zu23L2GGoXOJRepsSuDRAm3NoqcLeVLGuNHLDzQ+FOg28QChjPv+gsDgj5ryKaS3H8GNmbmluXKP/cq3AS6fow/RwUSpPS5o886fszeI7AaRMpZ7rcCQS/LFEVj/hTQiAslVw17x15I9RwGHvnic679TQkMEJ/p2kQ/hIeXWHb2Hqb
- coPzY7ft
- pW8DdGBXDuqGKfAtdP2X53BX3paJI6Y0MEQIJ9tJ294gfyuHqz/l52+DSq3ypKIWsRYAE1DMSUhWKrn3r/t3XrhZ/SRVxuf2Xi552zExZaMZdsPqNkAV6fOsxoEGxWk6F7vsXLglZtBZNIJUNvl5Sn/ZdUpebP0a/zE/3COthgK32hGDL1thtbmRc0tNwB08v7h2Np0YMPLeJHUUS88nS8bOiDXNAE6ii/CRh/FW0eyckp2/zk/gc2JRAo6eiAtn5L2FtDbvnOWZDqaIhhjFPpKtpTlyEVDTJNFdLwwLzCYZQBUlq9rqUtBJxvFOXp0WwQ3Rkl310fGNTj1rXhoVfOw5H2A==
+X-Stat-Signature: 551jwmxspdz3gm153ukhmicj8xthyey9
+X-Rspamd-Queue-Id: 6296840014
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782212679-854800
+X-HE-Meta: U2FsdGVkX1+aNzaVAMdKDa/oq3H/cPqMm3zV5xyHB+PWR/3A9ekTOuqqUO3xScPgOYpuZjeJ3Tem8IMUjmfnj4wfd4vzzDF849iXEqbyOQXZHC73DeT2IAsC6XCmqSEhL0cnHXOCoQjb7I8z3/hbKbADU/oJKKDZrgdZ3LuI7gFL6feGgB6lIljEysxe/040w4XzCVNvhn8dXyw/sDG8onPPJdi5pigdo6sKeCYA6fO3uBrXi/4sm71yxhfnmISrhhhZ6l8Cv+Zcop/YemJoE8AJPR1Wkk3tsEdUV0iqX/w4sgyCDszd9Yev//pmnONgKZz3d9f+B5jOOP68QIafQb7i/ZW6MCrxKOxaTyp6lnvEEcyuBUgL9/JrlRg2v3hiO7gHKZxqA/7EVNj/hO4QluULqcGkQNocrhCLeWQKxv5CL8qpQaEtjZMv3+8AGDrw+bRZd5lnIQhxUH5WgMNkwpmh/VfCQc6v092DfCf9n9EXId9s/xHQSsx4XGZRROsn56pvGWDCvGZ6in+8JV+1kpW9Mc6J+6nlQT7H4K3w9aJ5lWvJJFD2+CFbIdNATKowp0QARMhKRfjYfy6JhduoQDLMC7MufcNhrAOm9/dkJvzeW503xDKVYXZUekAL2nvpfLBXidwOZOINHx0TnTE4JLROVOuMu82D5LUu5Bi67ayvS3tAvI89OLXTwXe+BbDEGtTpfTqq1aPtT20evGU2WeQGnBcC0WhPktZz4KLrRqZhnbbphud7fVT1zrQk04ug5i3ni2mPIo1zhRpQ9f4KT54ba/iZTvpo3Qfj5oNAcyirMktsd1tq00WtyMWGtB7TupG8xBx/omlnZq8OF+Ku+61JVxHeEq3Zc10GBmFvHZU8EYgiSoc2Mi2TnQUZOSpikySFUzo6p6LoWFPGKYX+jfKlA6tT3eU9E/4fJH7XtuEsjPWGt87rmLwsnyFhvo9FKPuUSJboAX3GB1+gM8B
+ QbjFYvZV
+ kSyCGBEilccFNnnCK0kRsNeguoAQpEAS7s01zGXISBnEAKnUdf7LjPr6RpOP7/51tYbp7TTpdEZ7sr4mZN1IuIQg3DZZWxd17FC0xWf08jUbcAyvDZW/ZFKp9qicGbcDOwToaASOZpjvQoYr5jHEZ2EKPgQ3Gl0h6z5iIeyeAsj5ZWVqDMrz8UdrbudrUfvVd4ADeMT/lhXz7Z0VU5bomYsHh/+hZk8DHZLAI5/KJKd1e/XY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,51 +101,19 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 16/06/26 7:42 pm, David Hildenbrand (Arm) wrote:
+On 09/06/26 7:48 pm, David Hildenbrand (Arm) wrote:
 > On 5/26/26 08:36, Dev Jain wrote:
->> Shorten the function name by dropping the "sub-batch" context - the
->> function itself doesn't need this context.
-> 
-> What about "sub_batch_idx" ?
-
-I'll change that.
-
-> 
-> This function is rather independent of the rest, so best to send that as a
-> cleanup separately.
-
-Okay.
-
-> 
+>> Speed up unmapping of anonymous large folios by clearing the ptes, and
+>> setting swap ptes, in one go.
 >>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/mprotect.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/mprotect.c b/mm/mprotect.c
->> index 9cbf932b028cf..3357058672016 100644
->> --- a/mm/mprotect.c
->> +++ b/mm/mprotect.c
->> @@ -143,7 +143,7 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
->>   * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
->>   * that the ptes point to consecutive pages of the same anon large folio.
->>   */
->> -static __always_inline int page_anon_exclusive_sub_batch(int start_idx, int max_len,
->> +static __always_inline int page_anon_exclusive_batch(int start_idx, int max_len,
->>  		struct page *first_page, bool expected_anon_exclusive)
->>  {
->>  	int idx;
->> @@ -179,7 +179,7 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
->>  
->>  	while (nr_ptes) {
->>  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
->> -		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
->> +		len = page_anon_exclusive_batch(sub_batch_idx, nr_ptes,
->>  					first_page, expected_anon_exclusive);
->>  		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, len,
->>  				       sub_batch_idx, expected_anon_exclusive, tlb);
+>> The following benchmark (stolen from Barry at [1]) is used to measure the
+>> time taken to swapout 256M worth of memory backed by 64K large folios:
 > 
+> I suggest sending out patch #1->#3 ahead of times as separate cleanups, so we
+> get more targeted review for them.
+
+Okay I will do this.
+
 > 
 
 
