@@ -4,78 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 683F0CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC737CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:50:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 496116B0099; Tue, 23 Jun 2026 07:48:26 -0400 (EDT)
+	id BEB0D6B009D; Tue, 23 Jun 2026 07:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 446DA6B009B; Tue, 23 Jun 2026 07:48:26 -0400 (EDT)
+	id BC2C26B009E; Tue, 23 Jun 2026 07:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3362B6B009D; Tue, 23 Jun 2026 07:48:26 -0400 (EDT)
+	id ADB616B009F; Tue, 23 Jun 2026 07:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7E96B0099
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:48:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CEDD167024
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:48:25 +0000 (UTC)
-X-FDA: 84911004570.01.01896FA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DFBA6B009D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:50:04 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA3ACC1E05
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:50:03 +0000 (UTC)
+X-FDA: 84911008686.17.E5D7B5B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B1A5512000A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:48:23 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sgu2UXjg;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 0182C16000F
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:50:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/jvcnkx";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782215303;
-	b=zrd6uFPHVloAHsK+b0Kruzam3CrxIL0ZuXq2l/N/SBBrTIVQ51laKLeR8bmjulBAu+ziNF
-	z7U8xemLXFbTWDb6hASp1F1zxPaklJaDZwrOdutrdikZryplm/lRboc699j4jS7bZlDZ1b
-	T0aqEtktwP0lo8Wzmo3sPna/KBYQgFk=
+	t=1782215402;
+	b=hQm+cORK0SssNAhaqYjAvD+JCcXhD1Ox7f9aCrqHi6XH7L1v15vb3licZpDoPRPysBXVJo
+	gcXWRX3L7vCphAUXMBNJP/Bm/W0pAZi0qkOGNbJMefuaYP1N10g/oWApaDjA+BlsS62eSL
+	JIvsJVu/TXl3tqig0wQAV+GNKN9K9Oo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782215303;
+	s=arc-20220608; t=1782215402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OtjwWXEuZAsYDPcpleuNlTNndFnbrGXHnPOWcgGQAuQ=;
-	b=T969s7Cy5iGxzPs6USp9pIQbLoX1XZFFPmj9ejWuOuyt3HaKP13WVqUS3HLosuS8Zy/4al
-	qo1k3isrP4+btmq3e18NXD1xkrGiUSE1eOxHBa9QTaFxvkVqGViq3ATSiK8KiyP/O7ACj5
-	qjVZwEJkgOQsz+iwc3EFcMJ3XFhshnc=
+	bh=n90/FCvkfLh5mKq5gig+7rKJkhz1HQOD5cIteVuMxhY=;
+	b=iymsy+jzpZH9j39q782M8CEvto4yDmoUbV10cPjuRtoxD7rMuF5/lX6qAm3ddrAJkwKHoG
+	4MrWM6QR8tCvgHX5FZ0DcAQRH4MX2yWdSGwuaE2rCjN7cKg2ERz+x44XW6HiMaan1YYNnJ
+	vAaMjbIiRC/oi5qp0bCzP+X9b0Xdhgc=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sgu2UXjg;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b/jvcnkx";
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E69F9441C5;
-	Tue, 23 Jun 2026 11:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9061F1F000E9;
-	Tue, 23 Jun 2026 11:48:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 22E5A40325;
+	Tue, 23 Jun 2026 11:50:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEB51F000E9;
+	Tue, 23 Jun 2026 11:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782215302;
-	bh=OtjwWXEuZAsYDPcpleuNlTNndFnbrGXHnPOWcgGQAuQ=;
+	s=k20260515; t=1782215401;
+	bh=n90/FCvkfLh5mKq5gig+7rKJkhz1HQOD5cIteVuMxhY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Sgu2UXjgmvNoZiNkjzcPVn8oGkRUMO9moGfMrVyBk3H/WGLviFw+NBhtmjASYDxIh
-	 ZM14RIJKpQVaC/o3WPcHHvv1kKCWdT+Uw4oGJ+cNGurNhDjgtCOxS3Vo2HA1SzenjB
-	 gLKRQwnhvbjccM3DNkZdsOYNWyYaJNyGVLtNYEqXBN2USpcYHK7gRqc9tVs+RnvdNr
-	 Pu73Qk4/UP8tMmKJFwXMyjGI0/1iSutTqeT4v9jGCAut9ODJHZF3WSTPQgNbj71kgs
-	 zyIobycGLTz5v83JwlXWWUfxw/nphCJ7uR9n0mborOAxgiwFoY8R9G1OZ9vMYHFxMY
-	 HdZ4E9SSsu2jg==
-Message-ID: <b7527f33-c0ef-41ec-9eb5-1b9a4d547689@kernel.org>
-Date: Tue, 23 Jun 2026 13:48:17 +0200
+	b=b/jvcnkxcsYb8OCiXUklf4q+V6hHfrFnC2A5w8Cmf/D8R6/Y1ZUQq348w6dAC4Koa
+	 MAXt3v9fxMPN0+afjplSrUMN7za/UhNPgrcqXAKMdL+6heEUWRsLm0pNKsdTuUxXYi
+	 qQp2Br1Oxoh2fNjER1hiGe20qjKx8p0vQZ99vHt7B1MX48l4GkwYOeRN3EwZ/1ZBCk
+	 kLno+hQOmhzCZiuvy1vEQNPSZoVDTR7zgNEETk5c0495fyG5EuUvGITr8/UWHzzbcc
+	 GjqRoUFZhikwdOT9zUejhpkWFYvCeq8IjUEG3s38ldxaEzRwv58jnXDkbqlNOzD6XB
+	 WrZI5OMSeOiWw==
+Message-ID: <1ee68304-4e86-4519-93ea-d31ab5ee5bff@kernel.org>
+Date: Tue, 23 Jun 2026 13:49:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: avoid KCSAN false positive in memdesc_nid()
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20260623084432.701120-1-hui.zhu@linux.dev>
+Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-3-dev.jain@arm.com>
+ <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
+ <6a85489f-8b26-4c4b-8333-38f8ae1b680a@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260623084432.701120-1-hui.zhu@linux.dev>
+In-Reply-To: <6a85489f-8b26-4c4b-8333-38f8ae1b680a@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9pksehgi1q8nkpuzyaarce58hnqthazh
+X-Stat-Signature: e1wumo9fmt6p4zrfiqytqpgt78b3zfx1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B1A5512000A
+X-Rspamd-Queue-Id: 0182C16000F
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1782215303-63618
-X-HE-Meta: U2FsdGVkX1/QYp6XUV17dVONjbiuMxmDhIECX3tXm5FUDfz5FjINt6+Rsz+Nw+u0lf40x+0+3/lm6EqhCBFY6wcKQBjYz3Cd75lhYkcvhruKis+IWyiPb0Yoy6Cn+9RuhTAmbIRpubIy8yxfETzeAvF2R0uPyWCTlT3pnq2kIKPwydWSmfBSdCSQkC6BjCYnr+yvCyIQD0FjhhO2O6aBbR0HkyIA4rM2Q7GfeafYBszqXi4kvAfXWkwHXudH7mKMu9Loa5dDKg5MrvyheaCIyXUQeEg8mY3dVgqlhCEYv+fgpz79gDQ4huIOFzHOVqZbmLSeKufBXM1wN/Y8HbPBtZ/9+OBWlZJjYYIF70gD9bFyLn8dFb03MCrlEdIZTp5QztDT3/tkpn4UpxrZPmOHpFNy7m3dp1acTTA17B+H6GweVu2eqT2f/JTceWD6VXk+VuadQd9pReO31geOXQRyTA8yvhfXIFVxjnasQmqQgWGl9VcdGhP2jXjQICXiRX/eN6XIwOh8MuDWbOGdq28yZoMdFOfsVahMPCFJ5thLSWb9kRB+eaUKhPT/c3HeVxKsxtOX9j56IH8X9C6guamTLWrXptHlNovQksGyx9AHqq/ptz7FEWedz3QJXpkYckfFSkukBrA1fKs+DrocnZtRdYVt34yyWJN5Jr8ZRgogdiOG9u+eh3sVW+agnJLYVvwn9JWaf3+btBooijq/R7VhYbUvbVaAvrpohtrjGSGtDhgirSGjYWt3cxmvJTbFH/z75722c0KJgOZfAGMnle7SwbW6HdsYd/yStGs+SmbTGc1pGebKW8jeB59cNg82c0+W+ChOLbIS3kGLBUR28K93p+tZJDDclj96386vdVpWaZb4b/6Hv/yYeasxy0dBO/PDVy4jsfh95MDxKLT8lssU+vuA1kRjgTdh6+5axgDv0EoGlAt5Cm8QlZ59jsrgwuZEWWSXasDTmusP8fua5ys
- Cc/PmHqk
- FB6YiQ+vWrYUw6mreik9MnZII8X3Uttd1sSdK1f4UegL7ylTr3vGZFx/x9FV7naDYYJIwnEe2LIp3oaWBBWOwYNUir8QhGSZU/0whoAuyAZIjPLkkeky9KY7Z3U2hWvsV30GjRFrSxun1v/c3V5ZG7TRcEYdSWht7d94BThDDR5teML/AU2JjwNtZcBhmrPjmfcm02psxmfFAJl8OIlg0EvFJjjeurOxewOKUsAc38d5quEjzqoupui7G4aNmPqo6MbtfV6kO4ftLTxRRJJHj1AoSgKnT6OkQosdcn9Z+tQ+qqPH/VQixP42WPPWneu2bvgjo3HhDP6f4csU=
+X-HE-Tag: 1782215401-806452
+X-HE-Meta: U2FsdGVkX192nn8zPEpcte5scKATQDFU9/K2tIrR7iSHzX/TOY3UrxxcXzAHimvGw+zL6Ctrh0MMtClEYwWUC3/NBX7JJOkEjDJXDHIdWoEWUluvnmjFzQrHsqutI8aj50mXyBVSZufFFblpKoehuLUCvoTVLuiN7XGsLpfNl+Kafbw0mE2WORnt319UiJa8e7O/i/JL0gD8I9ERydlKL/eiKRorLp0u9nn7JwFaiC9P5TQ5IA9t7ASXc6a0kCOHkPiaBrXcHg8ctmadNNDRs1EugNCcfJ+Hybf3u74aOr3nlS8MDkwMIQpoAzK9gj3s0XQylHlJqhxTuSTjT0tM1NEZ3wOWweFwFb6m+8faSsYri0pnur3aOgfsenbl1R4rJWgKndTGMCQkJSVFoHXSURbTPm8ijjfTn7u/3JlixPMpA3syIi538jyfgomk5UJ8EUQ7sCrgLIEAcXY42XRYyGhYk2WGpMy2f96tmpszbqkPmqb//vm5weL+pMW/2bGDK3e/vxarLZ5aDVg0gdspbh08OYs5OkBdzGn4+RRBB/2agyxdCnA+CxUVypvY3hGyQ2a7vxoTr5tevIczY2z6kffG7mMRlwZLEa48EFBg0Xm0QFGp/zRw0yFmj2h/L1/908soyZ6EiMGCiE/B5d97PTkPwQytFXPzQszb6KdwrrPt3ZkWjIefxpJmJavXBxTB3Fpx6T/dPIXbaHFBJjWrjnNcbVempMf3wlimV2exW0iTo+phCDqz+eMwc6NkxXtuDBOuN/nxcQmnws7Qu6spVq9p1aU4f5iDT3irfRNGk/IGZw5yF5HgjqF/tLgPI9Awv1WBZ5SBnr8dBrMa3KfUKYHOzMgESPZ4hYZ77+/YnytUJcbaMr8iKSzT5quFnPWXVwNiS8UItiUdDUpPfrrEsb1pumOECRfXtSvC3fvMsZUDpxCjs7yb00dpxKWDmqSJ2bJ+XotHHngWNsn5eFK
+ rHcD26WJ
+ Qpj4F8vaJDjNPtdHL2/mDgluaNWWLirytDOfgg3enctBvKIcrx+cgJoaMqIWm88NzLzVdt2uGvuvLAaRtyDtRSkFLeJ2EcMWtm+yn2702FWlTzQDq2DYfYss5uJDsRgwa45650k+WgIuvj6QHYQ8HU/MnWnja+H3kJgapw2t1uH2ulJatQkR8TFN12IzsQ4RV4LdQi7Nsa4cwgZhvGhXNmPykfgdX4WMgEYo+9pesIWKa1ZgLTvt16Ri0qbSmBpaK/EyTPc0VZQFig05SrO/tOvwY1vN8D330v1zfpbYJ7ihHllHOuXrXt/6Vsw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,28 +147,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/23/26 10:44, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
+On 6/23/26 10:40, Dev Jain wrote:
 > 
-> KCSAN reports a data race between page_to_nid()/folio_nid() reading
-> page->flags and folio_trylock()/folio_lock() concurrently doing
-> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
 > 
->   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> On 09/06/26 7:46 pm, David Hildenbrand (Arm) wrote:
+>> On 5/26/26 08:36, Dev Jain wrote:
+>>> Simplify try_to_unmap_one by separating out the hugetlb parts into
+>>> try_to_unmap_hugetlb_one.
+>>>
+>>> To understand the correctness of the refactoring, the following points
+>>> are noted:
+>>>
+>>> 1. try_to_unmap() is called for hugetlb folios only when they are
+>>>    hwpoisoned.
+>>
+>> Ack
+>>
+>>>
+>>> 2. A hugetlb VMA cannot be mlocked.
+>>
+>> Ack
+>>
+>>>
+>>> 3. The pvmw API sets pvmw.pte to the base of the hugetlb folio (pvmw.pmd
+>>>    is NULL).
+>>
+>> Ack
+>>
+>>>
+>>> 4. We won't ever process a softleaf entry that encodes a hugetlb folio;
+>>>    hugetlb folios are never swapped out, migration entries will be skipped
+>>>    (PVMW_MIGRATION not passed) and device-exclusive does not work for
+>>>    hugetlb.
+>>
+>> Ack, we should always find present entries.
+>>
+>>>
+>>> 5. uffd-wp bit is lost when converting pvmw.pte to hwpoison softleaf
+>>>    (therefore no need to call pte_install_uffd_wp_if_needed after
+>>>    clearing pvmw.pte)
+>>
+>> Are you sure? And if so, can you elaborate why + document?
 > 
-> The node id occupies a fixed bit-range of page->flags that is set
-> once at page init and never modified afterwards, so it can never
-> overlap with the low PG_locked/PG_waiters bits touched by the folio
-> lock path.
-> 
-> Use ASSERT_EXCLUSIVE_BITS() in memdesc_nid() to scope the exemption
-> to just the node-id bits, consistent with how memdesc_zonenum()
-> already handles the same class of race for the zone-id bits.
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
+> If you see the current code, we construct pteval from the subpage, losing any
+> bit state of the previous entry. Also it doesn't make sense anyways to keep
+> uffd-wp for an hwpoisoned entry.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Ah, yes, makes sense. For some reason I confused hugetlb with hwpoison here ...
+so yeah, this is good.
 
 -- 
 Cheers,
