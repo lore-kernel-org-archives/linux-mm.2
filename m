@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCEDBCDB479
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 12:26:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 608B1CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 12:43:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 977B56B0088; Tue, 23 Jun 2026 08:26:18 -0400 (EDT)
+	id 2BE9C6B0088; Tue, 23 Jun 2026 08:43:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928846B008A; Tue, 23 Jun 2026 08:26:18 -0400 (EDT)
+	id 272196B008A; Tue, 23 Jun 2026 08:43:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 817556B008C; Tue, 23 Jun 2026 08:26:18 -0400 (EDT)
+	id 1875C6B008C; Tue, 23 Jun 2026 08:43:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D2F16B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:26:18 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9204C1C1A28
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:26:17 +0000 (UTC)
-X-FDA: 84911099994.25.43EBFD4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E8A481C0010
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:26:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3mI0J1V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E37C36B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:43:40 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67EDEA04B5
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:43:40 +0000 (UTC)
+X-FDA: 84911143800.19.14EA9EC
+Received: from mail-m82152.xmail.ntesmail.com (mail-m82152.xmail.ntesmail.com [156.224.82.152])
+	by imf06.hostedemail.com (Postfix) with ESMTP id E733F180010
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:43:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf06.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.152 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782217576;
-	b=FSd3sFn8DMB18VO9u3UBT3tUe8iZBQANJy06cTdsL648m4szAFVHWVNPoUyvdZwv+JYcjJ
-	WJb6h5YcWsUozbUU0ArUPFxubyzq6oSuSidCHbFwEO9tyIuYcPtL8nC+xhuwOOYKP1Lq/H
-	v7D4O8yQ/673ReCSrz2UXJU0oHXfDb4=
+	t=1782218618;
+	b=Fy2j7K6uX7RMrh8p0gfgEbQtv/M2YuKDGV3RyxG/NsNT9p99huRIPNlh6hD4f0M+UOICr8
+	Sk/tpeaXDbbgESjzBzwXnTFUE1viN6Zub1OrdzJSy2LE2kKGwq9/SVmgMcsFtJKm/M+q7M
+	88TXiWpwPmCWnHJR2Z1sDozFj1dwsBk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782217576;
+	s=arc-20220608; t=1782218618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rcjq+2Qi4hTz9gKpcoKUN1BL+JOY7raiZGGeg9KpcvI=;
-	b=BpIqmABJIw3YlZZpsdd+Lvo7UMlyPYMvHp0UdXtf9fB9dvAArUMr3BiQ55rOTMtV/XBHm9
-	6yhgdVrZsce76uQcrNkY+eKmGnmcBXBs2IYROYvKtuPZWRjynTzkDsBkpCU/xcgluUdO5u
-	Y1PTMBLKf/2IUwTNBfBCS6ZfgGqiDBI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jz7oJ47z0/xmp/6MiqV0lejcYbJp+60j1lQP1nOkpP8=;
+	b=cxMKyuvXrZLVABQx+NedyZjmKQMTHKnx8cGB+qvC8yHItSB6YAX46zDtumTAnf2BB3snlA
+	QDrNZqNkmPy89u5QhGaY6L96cFoBtzbGI0IeWhacyPk02TG+t87wgUTYUaqz36mNyHvQZ8
+	gEnzxpQX+DJIU+Gs2cefaXjVqTeiMEc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3mI0J1V;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18B89401B5;
-	Tue, 23 Jun 2026 12:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8527B1F00A3A;
-	Tue, 23 Jun 2026 12:26:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782217575;
-	bh=rcjq+2Qi4hTz9gKpcoKUN1BL+JOY7raiZGGeg9KpcvI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=b3mI0J1Vj5tnmd4HneMBGK3p59ITz1VieMW/bOYNqdxbOLqd8N2r5t+cjcSOrLyya
-	 7jzMOUt1wqTPFDP89MqfmDtptnYY8qAei+XgbfUfs2t7s1C2fonAzHq4yxEixK5mGM
-	 xSaxJZn7aNqNDusQt5TDinrbc7WnHUeXMWYp6r+9oqTkrjij931bCW7OIhlSWp3z6p
-	 dNfzE7OhdfPAhZ2Wb53TNmSQI0nLlpvURc4pJuE7MrWKlMvWMwd6EqyQaf4RPQPera
-	 yd4+3OBz/pJwEe9uWowBQcO+lCEjkdyPEie9BNHK6RPPB83+o7DyX26Xsj4t5DSDk7
-	 VjP42yWJXnxjg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Pratyush Yadav <pratyush@kernel.org>,
-  Andrew Morton <akpm@linux-foundation.org>,  Alexander Graf
- <graf@amazon.com>,  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] kho: add KHOSER_COPY_PTR to allow phys copy of
- serialized ptr
-In-Reply-To: <20260623105201.3724592-3-tarunsahu@google.com> (Tarun Sahu's
-	message of "Tue, 23 Jun 2026 10:52:00 +0000")
-References: <20260623105201.3724592-1-tarunsahu@google.com>
-	<20260623105201.3724592-3-tarunsahu@google.com>
-Date: Tue, 23 Jun 2026 14:26:12 +0200
-Message-ID: <2vxzy0g5moij.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=easystack.cn;
+	spf=pass (imf06.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.152 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+Received: from [192.168.0.59] (unknown [218.94.118.90])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1bca25288;
+	Tue, 23 Jun 2026 20:43:30 +0800 (GMT+08:00)
+Message-ID: <eb759401-341b-4660-be70-f1525ca9bff8@easystack.cn>
+Date: Tue, 23 Jun 2026 20:43:29 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E8A481C0010
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/4] mm/page_owner: add per-fd filter infrastructure
+ for print_mode and NUMA filtering
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260525081652.2210206-1-zhen.ni@easystack.cn>
+ <20260525125819.1857f215bc56b26a0727bedc@linux-foundation.org>
+ <5ef656db-c6b6-4a2c-b6be-628e5214952f@easystack.cn>
+ <7b2125bb-c2d6-4678-9ae3-6f4e93034391@kernel.org>
+ <444a6fd9-26dd-4d33-b836-987ef220b5f2@easystack.cn>
+ <ef2db739-fa41-4203-91e5-61c0625ecbf4@kernel.org>
+From: "zhen.ni" <zhen.ni@easystack.cn>
+In-Reply-To: <ef2db739-fa41-4203-91e5-61c0625ecbf4@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9ef481d59b0229kunm463626fe2ab2
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZSU1IVkNPHRhKGk0fGU9OSlYVFA
+	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVCQk
+	lOS1VKS0tVSkJLQlkG
+X-Stat-Signature: onf5ezeat9un7octkfw8fyqbhw5tqsck
+X-Rspamd-Queue-Id: E733F180010
 X-Rspam-User: 
-X-Stat-Signature: 3b779z84zkudo3b6tdfjfddqh4864puj
-X-HE-Tag: 1782217575-178238
-X-HE-Meta: U2FsdGVkX18lWSPSUruO5BNvQHfJPgnZXPCfDL9KPyrEcyG98K4Tx502pSKX6LoeHS5DwChjC/Z8gxUbKt7RxDEHI0er/aNUiAFJzsGc5R/6PF4pfb5mpMcuRN+TTEfLwjEYo4e6SJLeE+py3bCcHhlOpgWI6GctiXDTugF5fZX1Q3BUg2adT1LCmGkz+5BPLECRNSDUuilfBORaPGlX4Jt380DBotjmmT9eCM+FZ8agMG6Rb5jWoPuIuLQXcjktyaB7z/duPLW3148gkELXAP+gztnJ0p1SEOTQSgkW1p91YHE8Vs+GMPk61lICHJCP4ei7XhUCjuHZRgPvIf27W6T5OtJlL55yeVTA5XsXcyOb3h/2xJtvVAMaamGOVb0VDmtTl/0XkZ50ujgkGGxM9v2Qdq9Wi30n2EH5ib/tYa8+K65Xd7FnvX+RndO/qJH41iHXmkDme7ad5y/GjG0I7XPELCW5c82TpOpc8kZjeZmbqae319vQogzFtj4FX9eFjzbIyHKm51JdtBq77OoIXGfT9mbzyiYJcGR4MZqsrrYiCGDuz5U/v/ZEAERe7BpoZE3XLTxq1LBM16/f6PfwoPUOGAvgTP6R6QAX6WT5VsV+oCeSGDjOdR/avnCI7N6SvCMDYWAv9Etwy4u7tcasutOpBb6D+nwgteM7fOBoEJSLeGZ22QXShCLuucK7Ky5Z/2oK3vGSktr7jLPGapIdu1SNBL4LKVzdMsVZ6uus+hBeSkHAV5RureWn+fQsy6pfdjDFUiwjjHd9iFc4TDSDDaQfdCc7YEaCD1NXYDVVdI/d4HO21DRtUs6iGBahpjKf4QGkew91QGyZXD8/tLtV5fXtAtqz5PdadqKVsV1famG38amIKZBdVEvXBEo6EOgx+ZduPqqbPeO1bdMiAqOHaUt0V2enZ0jFtsGga7NxqJO647XNrF/e6geojSe5p4gYXMh+mOw2JiSdLs8phKG
- qaNUenzO
- MUZ21DgbeLcBPJpjP5m3q1rmRl1+W+cyuBZh3T48SZKdqVqvay1xRkF5We+L2vgZf3rvZ0DsdwHs//hWdibausSNrRWaFiXRJhq9KfiuOvnuaApdyXvbmJusNxtkHKyqk57hFTbh2FUUIFHSN5cQp1c2ZRU1ExWhByV+T7BBnMgI9jtHCUpGMaji+5R4S0YH4kGFNloFgKm14o3MqH6dNLhwzcHAAlN/abK4Zu2Sx1fC+xa/pYZph+HVDOLOEtJHbTqSHJOgShMrtgKEa5Se341piVTaT3hXMycqV0nNZejNAKGhX46dMrCZ2hg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782218616-773549
+X-HE-Meta: U2FsdGVkX1/aVNxmEzA1/U56WalN3TujYzRz6j+DDc89fAXU2sOWYygTJKo+uKqEhMuVsoSzR52jGLDWw4CXi5kE4qEkXLXoCM+D93tZFwDMe+JsT2SEaf11z9mDgd+9XQW3ndOSpH2/ysSKd6Sym+BfdW1waBHzsvYavCIjyrDK6Vi9zINjNdnXPhcB4tkNWSrYaV6n+tqAohGe8f92QQM2YhdqhP3uz3UkD+L/USrAawEoxr0YtKrEAIDWz7SdYexUjNw9cpP8dNKeaQGq864FHKMugD1plQ1PrgPPzYpkZSgKgG3Yqghm7Dqz6lu/9Jd1GkXdHYpvCuOav7+v3IgsTuRhZYR1HCtiPjuaoMjgbg4r12bgUUZ/CVNZOnkxvaRpzcPz/+DkMohr9MO2XEPRkESMcLoMxZDVwb/2yrYb/okZryJdWW4ysyLzvLQczOMHgpEVad5DNbuEq0Q8ExnJZ/VID+TQWOIC/1MjChWPB2pJ5ZeyXT9+6/TSP158vg20/mYXO5Cnknk08+1Z9YnVGUwhglEXnHrEZ5wplH3/nPuY7tDQ13Qud7A6Mg0cG8CZ5m1tXOO48ZrYCtEZ6LL4dZJGFIQ6onnwODojfUMVn+8YCSfHTAiugp+W5PPPZhG8JiwfSxfi4r4weAFQ3kAZt64BAkMB4eEH6n14ViupLkkoUPL2yiJiXrxzIhYAN0I4wftmGvywLXUXsn1Sjhl3wmFUaaMy2CaJkHwapMLSlfoRaOS54sa+jEnEKt5d3eFrjwqcinf+MZptwgO38K3faeVqk81O7xfWSdjFOR4msN6fJXzf4OkjfEWPqpkO3PIbQs0H0STP+BS28tGBncL6RMoGdIySBh5kS/f6mfWNLPALSZozGuY88ScKs5SMIMEC8gFcvSp9giEKMzxnHYAIE9HgzChrWVyTlgKPX6X8rRFy/96r/JP0xU2GJaQjV+MD9bTUUb3CPgvUsI7
+ N2ODN9T5
+ zcY363JZ0jM6lm2fAV0aPzYzrcUqZrCGZj4ErasrADUy8tIH5mMGvQgZT5vLDktF9a6bLJHAFyG1j6wJkLevp7FRJQZ8E9pFTbMMQwxRwYYTOXtk/JQAokAT0eo4YI/hz3Bu18Ok9HW122qWMJ9TieICadqmxhF2LYnA+54GwoiHKWAh8Il5NqucxmlwRsZT5cpAQTkJFdtSBPDwAzK8NunGh3tnmeZaJPjwrwWJDrhTY667weFX8PPC30cyn/BfdVx3te3VUSNvNgFr44IvU7LRIPQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,21 +94,213 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23 2026, Tarun Sahu wrote:
 
-> Adding KHOSER_COPY_PTR to copy one serializeable pointer to
-> another. It basically allows copy of phys val of the
-> serializeable pointer.
+
+在 2026/6/23 14:52, Vlastimil Babka (SUSE) 写道:
+> On 6/18/26 10:15, zhen.ni wrote:
+>>
+>>
+>> 在 2026/6/18 15:27, Vlastimil Babka (SUSE) 写道:
+>>> On 6/17/26 10:52, zhen.ni wrote:
+>>>> 在 2026/5/26 03:58, Andrew Morton 写道:
+>>>>> On Mon, 25 May 2026 16:16:48 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+>>>>>
+>>>>>> This patch series introduces per-file-descriptor filtering capabilities to the
+>>>>>> page_owner feature.
+>>>>>
+>>>>> Thanks again.  AI review has found a bunch of new things to get worried
+>>>>> about:
+>>>>> 	https://sashiko.dev/#/patchset/20260525081652.2210206-1-zhen.ni@easystack.cn
+>>>>>
+>>>>>
+>>>> Hi,
+>>>>
+>>>> Can this lead to an out-of-bounds memory read?
+>>>>
+>>>> The NUMA filter in page_owner (mm/page_owner.c:790-798) bypasses
+>>>> PF_POISONED_CHECK() to avoid triggering VM_BUG_ON during concurrent page
+>>>> allocation/free:
+>>>>
+>>>>        int page_nid = memdesc_nid(page->flags);
+>>>>
+>>>> When NODE_NOT_IN_PAGE_FLAGS is defined, memdesc_nid() performs unchecked
+>>>> array access:
+>>>>
+>>>>        int memdesc_nid(memdesc_flags_t mdf)
+>>>>        {
+>>>>            return section_to_node_table[memdesc_section(mdf)];
+>>>>        }
+>>>>
+>>>> If page->flags is poisoned, memdesc_section() can return a garbage
+>>>> section_nr that causes out-of-bounds access.
+>>>>
+>>>> ## Lockless Access Safety Principle
+>>>>
+>>>> The page_owner iterator runs without locks, meaning pages can be
+>>>> allocated or freed concurrently. The fundamental design principle should be:
+>>>>
+>>>> "It's acceptable to skip a small number of abnormal pages, but panics
+>>>> must be prevented."
+>>>>
+>>>> In lockless iteration, TOCTOU is unavoidable - even with reference
+>>>> counting or RCU, page->flags can still be modified concurrently during
+>>>> access. Zone locks prevent this but are prohibitively expensive.
+>>>>
+>>>> ## Proposed Solution: Add nid to struct page_owner
+>>>>
+>>>> Record nid at allocation time when page state is stable, eliminating the
+>>>> need to extract it from page->flags during iteration:
+>>>>
+>>>> ### 1. Modify struct page_owner
+>>>>
+>>>>        struct page_owner {
+>>>>            unsigned short order;
+>>>>            short last_migrate_reason;
+>>>>            ...
+>>>>            pid_t tgid;
+>>>>            pid_t free_pid;
+>>>>            pid_t free_tgid;
+>>>>            int nid;  // NEW
+>>>>        };
+>>>>
+>>>> ### 2. Record nid during allocation
+>>>>
+>>>>        static inline void __update_page_owner_handle(struct page *page, ...)
+>>>>        {
+>>>>            int nid = page_to_nid(page);  // Safe in allocation context
+>>>>
+>>>>            for_each_page_ext(page, 1 << order, page_ext, iter) {
+>>>>                page_owner = get_page_owner(page_ext);
+>>>>                page_owner->nid = nid;
+>>>>                // ... other fields ...
+>>>>            }
+>>>>        }
+>>>>
+>>>> ### 3. Use saved nid in NUMA filter
+>>>>
+>>>>        if (state->nid_filter_enabled) {
+>>>>            int page_nid = page_owner->nid;  // Direct read, safe
+>>>>
+>>>>            if (!node_isset(page_nid, state->nid_filter)) {
+>>>>                spin_unlock_irqrestore(&state->lock, flags);
+>>>>                goto ext_put_continue;
+>>>>            }
+>>>>        }
+>>>>
+>>>> ### 4. Update nid on page migration
+>>>>
+>>>>        // In split_page_owner() when page migrates
+>>>>        page_owner->nid = page_to_nid(&newfolio->page);
+>>>>
+>>>
+>>> This (presumably LLM) suggestion is a, let's say "lazy" solution to the
+>>> problem, leading to more memory usage. I'd be surprised if it's not possible
+>>> to read the nid in a way that avoids the hazards. If page_to_nid() can
+>>> trigger a VM_BUG_ON(), then I'd add a version without that VM_BUG_ON(),
+>>> handling the poisoned state gracefully - if it's poisoned, return e.g.
+>>> NUMA_NO_NODE and skip the page, or something.
+>>>
+>>>> The remaining two issues can also be improved. If there are no
+>>>> additional comments, I will proceed with sending v10.
+>>>>
+>>>>
+>>>> Thanks,
+>>>> Zhen
+>>>
+>>>
+>>>
+>>
+>> Thank you for the review.
+>>
+>> I'd like to clarify that the "nid" member approach was my own design
+>> after careful consideration of alternatives, not a suggestion from
+>> automated tools.:)
+> 
+> Alright, good :)
+> 
+>> In fact, LLMs suggested approaches like "check then access" which I had
+>> already implemented and rejected in earlier versions due to TOCTOU
+>> issues. The key insight is that page_owner serves as a buffering layer
+>> for struct page,  eliminating lockless access inconsistency entirely.
+> 
+> Sure, but is the elimination necessary if it has a memory cost?
+> 
+>> Think about it this way:
+>> Even with extensive checks, page_owner->handle cannot guarantee the page
+>> won't be freed when printed. The time window between checking
+>> page->flags and accessing page->flags is unavoidable in lockless
+>> iteration.
+> 
+> Of course, but that's an argument saying that page owner as a whole can't be
+> a perfect snapshot anyway. Then it follows that "nid" snapshot doesn't need
+> to be perfect either.
+> 
+>> By recording nid at allocation time (when page->flags is stable),
+>> page_owner becomes a "consistent snapshot" that can be safely accessed
+>> without locks. This is the same principle that makes page_owner work as
+>> a debug feature in the first place - it accepts a small inconsistency
+>> window in exchange for lockless access.
+> 
+> And that means we can accept some more small inconsistency for nid, without
+> occupying more memory.
+> 
+>> Alternative approaches (adding poison checks, bounds checking) cannot
+>> fully eliminate TOCTOU in lockless code - they just reduce the
+>> probability. The buffering approach is the way to provide both
+>> safety and lockless performance.
+> 
+> Please explain how the following "page_to_nid_robust()" (or similar name)
+> code cannot eliminate the out of bounds accesses completely. The section/nid
+> in page flags is possibly the most stable part of the whole struct page, it
+> doesn't change as page is allocated, freed, or how it's used. The only
+> problem is the poison.
+> 
+> memdesc_flags_t flags = READ_ONCE(page->flags);
+> 
+> // our flags variable is no longer subject to TOCTOU
+> 
+> if (flags.f == PAGE_POISON_PATTERN)
+> 	return NUMA_NO_NODE;
+> 
+> return memdesc_nid(flags);
+> 
+> -
+>> Thanks,
+>> Zhen
+> 
+> 
 >
-> It ignores the typecheck if any of the argument is of void *
->
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+Hi,
 
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-[...]
+I agree that saving page->flags to a local variable can prevent TOCTOU. 
+Both the nid member and page_to_nid_robust approaches are functionally 
+equivalent, but the memory cost of the nid member is real.
 
--- 
-Regards,
-Pratyush Yadav
+Here's how I'm handling this logic:
+
+     if (state->nid_filter_enabled) {
+         int nid;
+         memdesc_flags_t page_flags = READ_ONCE(page->flags);
+
+         if (page_flags.f == PAGE_POISON_PATTERN) {
+             spin_unlock_irqrestore(&state->lock, flags);
+             goto ext_put_continue;
+         }
+         nid = memdesc_nid(page_flags);
+         if (!node_isset(nid, state->nid_filter)) {
+             spin_unlock_irqrestore(&state->lock, flags);
+             goto ext_put_continue;
+         }
+     }
+
+This might not be suited to be a separate public function - here we
+just need to check if the page is poisoned to prevent crashes. If it
+were a public function, it might need to check if the page exists
+before getting nid.
+
+If you have further suggestions, please let me know.
+
+Thanks,
+Zhen
 
