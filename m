@@ -4,127 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A491CDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:39:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AA52CDB46B
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:44:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B61A56B0088; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
+	id 0965B6B0088; Mon, 22 Jun 2026 22:44:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B12926B008A; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
+	id 046A16B008A; Mon, 22 Jun 2026 22:44:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2AEC6B008C; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
+	id E785A6B008C; Mon, 22 Jun 2026 22:44:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CD416B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 055D640360
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:39:35 +0000 (UTC)
-X-FDA: 84909621552.21.941AF3B
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 02437100002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:39:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jW6WODSB;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id BFBC46B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:44:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83DF71A03A2
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:44:34 +0000 (UTC)
+X-FDA: 84909634068.09.901A8D5
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B467220002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:44:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PJaN6uT9;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782182374;
-	b=vHQLRJJErqUHYBrwQiMowvQFtjka5b0gULGPN1AYmkOG3yzyYvmM2TjLdtUBE7CX6BWPLw
-	sRT8RY4g4yhaDrAAbN3sQyeALF6MSJ7rZhTRRMYuLBZ7qc6nctW3UiMY7WDlxWyGRfL7nx
-	nk4wjRRVKqeu2ezZVbMaUcEBhRYLyyk=
+	t=1782182673;
+	b=a+xu6z7GoBaizEKdPr8qoOb2r+edmK9oGO/hISb0bpbIdnuU7L3cLwT1unYnkGJdocu0HH
+	/E5DK/w/RwGabIzNt0jnIs8J9/X3mCfPCjZyUmiPdmWmmxCSmtA3fPN+I1A95MXwG93SiH
+	Io79U8GAox8HM8bXvQv1Ccs0BPVXLWw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782182374;
+	s=arc-20220608; t=1782182673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yzvB8g1T/a284WOGnvYsStebwn5aGi0+beh7T+/4S7k=;
-	b=i7W8oWhXFlzueGn0JjLlOwWpQkIJUAjD9LxeZnOzFuCceG31P/fcYL7sVPODHBObr8TKwh
-	MzemsEi2a4Wiq10b+ywm/cYG1xMJOkezkSw9VwYK3bBU8agH28I4Dmzt/0dw1BS4xf4MLu
-	lewEM0PF95OAds9AAszrZGdr86zF7tk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=a8+eeytXWCIVLCbNBOynGcBvbUA5M39lvYGkiNnFZO8=;
+	b=1BVRtph7zkcvuHFs7u3AFPimysyrXiuphRBEE6dx2+x1dszClg9st2yg/YX8gRfc8EaTEq
+	cCSB92oXOZ/JSFp0LCSL9yOFWPTfWGyhHnMGp/5qxCkZarw3qnrM63iN/uDbID/RQpMUSW
+	h0AbSE3ziSoqd9CfiPs4UOJV13Nop/Q=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=jW6WODSB;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782182373; x=1813718373;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/A0PS1KBXecicXMwu0KgF5PdNmPIby5wsNW8nHW++bE=;
-  b=jW6WODSBHcVcEEOtqrkwSKg1uV888raWg9tfhpaaeGrduNBX1iwo3Ya4
-   tvUgWVW2av9oUaBktpCgZSaTarbJaNxRR5uDLaJkxMmjFNqQZ7vvSPhmD
-   dsHnK5oqxrFuo46rT00fy7TBGo+rPEDsy4p2J7ISMHdyZdgGjMWMu4DOw
-   EnlYHJLEjVD87CbpoHUjYkjVeyJ8w8dvfOsE4OXDIT90nXRVxGLnQIfsB
-   RDzTfDek+y2n+MfhoP79clFdbOM/fHi3w37KrU2lTsJvaCIqzP9Dfg1/M
-   5fvlEwy94YUH2DSPjhrYeoccDrw5dvE0uc7Pd76/jEgMHglZughTY7AqG
-   A==;
-X-CSE-ConnectionGUID: LWePrdKzT0qQqDqWpO+/ng==
-X-CSE-MsgGUID: 2+S+l0gVT7iwrWkk3vjdTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93281955"
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="93281955"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:39:31 -0700
-X-CSE-ConnectionGUID: bAXEwp5sTTeAhs29D3ojQQ==
-X-CSE-MsgGUID: arY23Fs/TOybNGBssQOy7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
-   d="scan'208";a="245254055"
-Received: from unknown (HELO [10.239.158.46]) ([10.239.158.46])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:39:17 -0700
-Message-ID: <9f81ea12-98c4-4ce6-a95e-233851dfe8dd@intel.com>
-Date: Tue, 23 Jun 2026 10:39:14 +0800
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PJaN6uT9;
+	spf=pass (imf13.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782182670;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a8+eeytXWCIVLCbNBOynGcBvbUA5M39lvYGkiNnFZO8=;
+	b=PJaN6uT9J5NDYZoml3Hbdmj+s929N+ngw8MxLLg7VrG/3KFVLHJ00nBb8oVd4Pevs3i3WX
+	DmnWEBkUt16AaqT/66s8Nw9kMBzMCS9/jybeucwFcjVSWTmkVRDi5Q92oib9s2Ma5zrafi
+	dFJfp1wUHfx4vfdPehzulUYLwsoDnyQ=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	muchun.song@linux.dev,
+	peiyang_he@smail.nju.edu.cn,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	ljs@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: mglru: fix stale batch updates after memcg reparenting
+Date: Tue, 23 Jun 2026 10:42:37 +0800
+Message-ID: <20260623024237.45990-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 00/46] guest_memfd: In-place conversion support
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 02437100002
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: rskc18wi9yf6ihkqifyrcwtoypfy5mh4
 X-Rspam-User: 
-X-Stat-Signature: j4moq4ghoeiupyy334rhwmpwdrbhioaa
-X-HE-Tag: 1782182372-699269
-X-HE-Meta: U2FsdGVkX19m5XuGAXS6aWuW1NuptCfwioQeBXVKiJM4nOkDMhXnLEPn0e2grOcf6gvgl6/83+Ly4L0ey6J9PlOsYf56A+sNr6DkNlNP21RK795sw2goxlt1LfG/C7WZl43yCAVzUfdFAybJMbENaLI3KU/64cH02B2/Jj7xoyWqMVGX6mWsx6mxZPKYCLcnC+A2eAl0v6WHRvomH56Dp7lElOdDypfnKpPRzBob2Jcx4wNbDY88s9R+0317tjGP1sMHc8ZHafq9/wbpKBpK7jOeqCKMt3r18nAqvOlHpB4Qj9L6f7G7DTo4bpTPYpxm4fB7eE1ThRUdhYzz093Lvc/lWv7U17fsjqO6kF0Yrk6kJk+VtWkNiY8LeGi7yZtuV8egLNWZWa8s8Hicw+78iCb5/5/TIhdj3wlwyTTbpyacruhkwa6Xk0tpuvtzkmg/fWUol936W57iv4u30NaqLHpFJTkyKYaZNc/Yix1RQ/sah+7tmCvLno2DIabzQ0hmbayX+iZawdaDNyk9WZOFwng2K48r+xsAmWQuJd6l06tI9sBFS6adzwAv3yYPNC49VrdD2tarsCix2nMm9vcVmYusvFF2fM0Cwz9dVZB+u31naV+Z2d6YG5SxWwfBTpr5nBHX3PtNZDqXdSibmJYb1/aBkhDnaG7r6gDkBGkoHSmfX5jIjyX0/jST+bM/VOTza9RFFHLKvHz2tY2E/Q3r3lsgqpxYZuBe/5HVm1F6pYhmfvjTn2jCjHCdcm2Kp1miq1zegXqjucd9kGHxC45bTuSb/YZp/U9U0nXS6f+1oI7eRcXmw3tYfZCVc6tq0LyTVmq+2cRvPj+gEjWNhSfA6e3ilBBBS8qrHsO3WwDfeK784r/qN2r+p5Z0kzuh34pr7lKYxG8v60t89Bcrk2WrCSlDXi6AXJHw3wHHUhs1qyhZ6aBgobsvklD/VrKhiXrbjgyde0kYiK23htgr4La
- XDTzmUSP
- H7xaPJlmvtlzuXuE3ct2CtpJi6rfOLsf6W9iSYms3/owaQ57IfyvxqdyBPeKc+Cb5+H8d8P2Bew8BAO59sTjUmwI+2tlLWko4H5JAZvh7eSymDPlOAfJpDEd85T5Vibz8nduEXdBRqSUkLo41zMMsswgPpCF/RBU3igME+yO8A2dIKk9RVUXwyMPe5FtwYzG/qcq9nC6dlSCP/H/h34DVRiB6b2OXs0nCsRDLA62sMRuYzQAGbys2Qkr7P3KbVyO4RPLZC6nJp3dWewX4PHkzG0RYyg1PUOHOu7NRrAJDt7gO4pM=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B467220002
+X-HE-Tag: 1782182672-285884
+X-HE-Meta: U2FsdGVkX1+RCBRdQ0WGBuNz/5O4tPgsIayu225cmh1SBQrBkSl59qRLxghPRo1tE5lg1us3ep+cZpIXs/JwclyoTBfxlVi+ire0viW8+my0ZqxHTGQVLjo3M19eEwX9un1zd2xaFTD9mIzBkMg1ErxvP8ill2pWRnyKIj0SNwZ5nVMl+ZB4vqGts2RIazGZqUbjNz159ZnBfJpdLAIPz6GwbKJhiT59sLIOhhcf7Su16v0pCZVBmOdCUl+LZyKiPNhAtZTpLkab6idfDzU8OAVPQKhtREv8KimeZSPbkF3yj4M7RTqwUAO4MCZx9MhAmsHy8ZHeKOSbhnDGDtGwcyuKFEG1v21tvdqgVjj4Rwf+w7Ing42XJBGhOdhPU1xGlT2qoHdOfxI88rkHqFJuQPnloSnOKlMGbpPBu5C2apk0fWxCfB2NEIkQCbe2DmGFshYKIfU+IbpSO3kjuo3nYQWhCLxCFLDCJmt4KwSKpAB3qVt8etSupwKvsOOwKf2dctROzFceOcJAwOBwTQj+5BovSavLAG6T4nZD47cWXazihGSRA2FJZMrPjXFIuApthNfDT7nCmTgHVJvLFpj2ATe/6Deac+4VWXAllTG70asZ7StVii28nxolDHODgk96IgQ3ghZWZHW2aj+S7EwzLzrRCGS1lagKFyTsinnGfQ6Q7rj3FUwf4ibmlyC8D+z8QIgGgFEZ1s6FKT+04Kc7jpKhs2j6+RtD4ZdKiduejpnTY7/HHgsKlP5TSoYd9OcMlF3r00vXN1WE5ADitK/6e2aKugRBTlJcFridu8fU193Z9LbbT0387+gCXcuE4RdjKqsm+FjLNP2pYInO/F12k25RGmNxLPfwhQ0m7VRfEWUtwgSpZzsizt5VYr3Z+Bo+HGMipj1EXhZRKT/TTLdhUopDLrwKIJ83CQsj8Ok15jeFkxxS5yBUhI9WQGqNu3z67AhtuxA2Tlf4txG5Gl9
+ sUlxy2lV
+ H9KbIDFLnl9/PaN+VmucJXoHDTQ3qiC0M3z5A8PyROpSpTK7ShFjoRE3wLUQs0uAwbBItDfwaikyqVKHhuua0dFQ9xZQi2EvgySLuB97se5QYULXspAi74wtHp1abT4q+bNCWvgmHQWlChagj7kMqhtUwf7A3MN6TNEXMX0RY/uFoCKkr7Z14QHXPupcWvtTYygFXIGPxzYBaf08/pR18Nw1vuXdzK1R9Q6DCOfxaXF605s/LY2dba+/BUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,13 +99,165 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> TODOs
-> 
-> + Retest with TDX selftests. v7 was tested with TDX [12], but the setup there was
->    wrong. Conversions were successful (no errors), but the shared memory being
->    tested is actually in a completely different host physical page.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Glad to see you knew it already (I was going to report this to the 
-original POC TDX patch)
+The mglru page table walker batches per-generation size deltas in
+walk->nr_pages while walking page tables without holding the lruvec lock.
+The reset_batch_size() later folds those deltas into walk->lruvec under
+the lruvec lock.
+
+The page table walker can run concurrently with the memcg reparenting path
+as follows:
+
+CPU0                           CPU1
+====                           ====
+
+walk_mm
+--> walk_page_range
+    --> update_batch_size
+        --> walk->nr_pages += delta
+
+                              mem_cgroup_css_offline
+                              --> memcg_reparent_objcgs
+                                  --> lock lruvec
+                                      lru_gen_reparent_memcg
+                                      --> reparent child folios to parent
+                                      unlock lruvec
+
+    lock lruvec
+    reset_batch_size
+    --> child lrugen->nr_pages += delta
+
+This will trigger the following warning in lru_gen_exit_memcg():
+
+	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+				   sizeof(lruvec->lrugen.nr_pages)));
+
+To fix it, add lrugen->reparented to remember the new owner of a
+reparented lruvec, and make reset_batch_size() charge pending deltas to
+that owner.
+
+Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+---
+ include/linux/mmzone.h |  4 ++++
+ mm/vmscan.c            | 43 +++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 40 insertions(+), 7 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ca2712187147..0d572db2ef64 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -584,6 +584,10 @@ struct lru_gen_folio {
+ 	u8 gen;
+ 	/* the list segment this lru_gen_folio belongs to */
+ 	u8 seg;
++#ifdef CONFIG_MEMCG
++	/* the lruvec this lruvec has been reparented to */
++	struct lruvec *reparented;
++#endif
+ 	/* per-node lru_gen_folio list for global reclaim */
+ 	struct hlist_nulls_node list;
+ };
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..64362cbed814 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3262,10 +3262,37 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+ 	walk->nr_pages[new_gen][type][zone] += delta;
+ }
+ 
++#ifdef CONFIG_MEMCG
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	struct lruvec *reparented;
++
++	for (;;) {
++		lruvec_lock_irq(lruvec);
++
++		reparented = lruvec->lrugen.reparented;
++		if (!reparented)
++			break;
++
++		lruvec_unlock_irq(lruvec);
++		lruvec = reparented;
++	}
++
++	return lruvec;
++}
++#else
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	lruvec_lock_irq(lruvec);
++
++	return lruvec;
++}
++#endif
++
+ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ {
+ 	int gen, type, zone;
+-	struct lruvec *lruvec = walk->lruvec;
++	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
+ 	walk->batched = 0;
+@@ -3285,6 +3312,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ 			lru += LRU_ACTIVE;
+ 		__update_lru_size(lruvec, lru, zone, delta);
+ 	}
++
++	lruvec_unlock_irq(lruvec);
+ }
+ 
+ static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
+@@ -3779,11 +3808,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
+ 			mmap_read_unlock(mm);
+ 		}
+ 
+-		if (walk->batched) {
+-			lruvec_lock_irq(lruvec);
++		if (walk->batched)
+ 			reset_batch_size(walk);
+-			lruvec_unlock_irq(lruvec);
+-		}
+ 
+ 		cond_resched();
+ 	} while (err == -EAGAIN);
+@@ -4563,6 +4589,8 @@ void lru_gen_reparent_memcg(struct mem_cgroup *memcg, struct mem_cgroup *parent,
+ 			mem_cgroup_update_lru_size(parent_lruvec, lru, zid, size);
+ 		}
+ 	}
++
++	child_lruvec->lrugen.reparented = parent_lruvec;
+ }
+ 
+ #endif /* CONFIG_MEMCG */
+@@ -4867,9 +4895,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	walk = current->reclaim_state->mm_walk;
+ 	if (walk && walk->batched) {
+ 		walk->lruvec = lruvec;
+-		lruvec_lock_irq(lruvec);
+ 		reset_batch_size(walk);
+-		lruvec_unlock_irq(lruvec);
+ 	}
+ 
+ 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+@@ -5784,6 +5810,9 @@ void lru_gen_init_lruvec(struct lruvec *lruvec)
+ 
+ 	lrugen->max_seq = MIN_NR_GENS + 1;
+ 	lrugen->enabled = lru_gen_enabled();
++#ifdef CONFIG_MEMCG
++	lrugen->reparented = NULL;
++#endif
+ 
+ 	for (i = 0; i <= MIN_NR_GENS + 1; i++)
+ 		lrugen->timestamps[i] = jiffies;
+-- 
+2.54.0
+
 
