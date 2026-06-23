@@ -4,116 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A50CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:36:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD37CDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:43:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04496B0088; Tue, 23 Jun 2026 12:36:35 -0400 (EDT)
+	id 6F9376B0088; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8E206B008A; Tue, 23 Jun 2026 12:36:35 -0400 (EDT)
+	id 6A9F96B008A; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7B886B008C; Tue, 23 Jun 2026 12:36:35 -0400 (EDT)
+	id 599E46B008C; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AE4E6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:36:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E291A1A04F3
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:36:34 +0000 (UTC)
-X-FDA: 84911730708.15.3703C28
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 54B6A20021
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:36:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EA4F6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:43:40 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AC76C1C5AEC
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:43:39 +0000 (UTC)
+X-FDA: 84911748558.04.E437837
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1E02018001B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:43:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782232585;
-	b=yZoXrERgH08tmO2ZHI5+cO19MOYYN/FZCP4cMc25RQhMwphGvWz+rBOZJBCP4423K91mM7
-	hKMjTaDrP4JbcelZz8gWMrPI1e9kQm88GiwGcGnaqSWl6rd6yNL91EC3aBrKqiRNKC45mA
-	mb1oX8p8ybdnMcK/rWaIM2G0yBuf3/w=
+	t=1782233010;
+	b=bbpJ+VDRs7daG1oDq6V9WA1/gRmBvUSnK42tnVGKxaIFXa8xf11pUJh0JMN5jv5JL97f68
+	HKDV9qUBeR6ZwYRcLJ+FTEach3upMzZZNRfS8oLmfh0LKomk/1wXBQRmnenXPe58iJnNSE
+	Ktdl3Blkgjwnv4vAFdUCBMLXPwzSD1I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782232585;
+	s=arc-20220608; t=1782233010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dpQ1AwczYKCoguf7Vbwxx1q5Epc4lMpg8aH6LEWm7xE=;
-	b=zAWSXXwNTNTYjxl4+XlJ03A/4TZHl+d7W2hr7XWGxNGYrUNX+NEIjtxdYBfBUTLRHj6Qxw
-	meWBNaFHWXjrm6ihFs1GzRZYnyZYD4xNzflVJ1AmfKisfV951CG3MdZcjunvugwRs8pAIY
-	v/HINs+Tp1jbqZl42X/XF3W+/femVCU=
+	bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
+	b=kdcl2yzPyDWZKT9chlMuysBF0It2WYtYVHwMjxrpJlIkhcRg31T0DxFFK6WaOegf+Z0R3y
+	RtsZb/NsF/JiHMgNjJk/SIVnQkPX+9gOF2oZ4vLi6JnMfpV2G53Cr+aMiH+rjyBVscHI1b
+	ykXKr2LbS27R5pf99P9Xstp1vlEGt8Q=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=luoYW8Y8;
-	spf=pass (imf31.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-922e181f199so249631585a.3
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:36:25 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rdNLn0QM;
+	spf=pass (imf16.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2c73cefe192so62545ad.1
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:43:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782232584; x=1782837384; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dpQ1AwczYKCoguf7Vbwxx1q5Epc4lMpg8aH6LEWm7xE=;
-        b=luoYW8Y8zifQgb5YjMUVxZiuupl+Q53GY68Y6/a3g0McKC9ogDMgf1cicOeQ/9F7LW
-         lS6dkb2yNRRzTKBktxByfFljY9m6zOrf4jyIU2XNrPFajLZYfyY1Y+PZbBUxKgDsRTrV
-         2nMsRFWbAcJ6wW3YOivZC8uQLmUjkJ/iuJbWI1xME2MPgiYInkKrOaeFizTzQ4bQI+No
-         khrnZCKpgyTEUEdU4PKmQh2kqzqwB0r1S1oNGXItIjloG2npWDxokbNvD44ZvFAiI8Q+
-         tRvCb4KkNnpgQ0/V6uOU8+zVAbSLS60yxVsi10zjxu282HglpDUKfyeV2ZDlpem1qUQ/
-         Bqzg==
+        d=google.com; s=20251104; t=1782233009; x=1782837809; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
+        b=rdNLn0QM0Rlm+EWD0a4A5kO/mQw5jYQRKPJTdmd1eZR1eR5Uf/hlDt/MRrf9B2A/bC
+         k88fPMeZVanMzWIfoCXEmCMEYQqzi9YmbrJ+/ALIghtONibxhCsBEoriIhmRjEucdd+b
+         sQLqC+OvrMcwtJ/MyU2vYZtZvNeomFswh79FKV8+5R6rM4sbMDurbaOk16jeDP6xN83b
+         roH19U+gVHasOMa/WDss0PYWbKODzRZHCT2E+cx8mAk860oCV/OAyAssS9dnsxhm17C6
+         orXAcoILavVc48QH/NV5lKhCPgJ5ut7aUaHEU18f9dQTD6HW7GewrTXy0NilCxBmoMe9
+         41rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782232584; x=1782837384;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dpQ1AwczYKCoguf7Vbwxx1q5Epc4lMpg8aH6LEWm7xE=;
-        b=eNt7C5NGCIGRLObRS4a9cGu67zTyqiFJxjitYtXEHbk5u3hpeLtXAhgf6UnFw3NMAf
-         E9vyZTqJYClj/qZChCEVo/QVV4dAXHrDM3cadmLXMZTDEKkUPUbZw5IClPqm5lHT+sIa
-         goM7uEEc9IkIurwONq/DlQhNpVbKp3sREUZdqIpQv3QAsIiOTfa+I12zb6LoYCK8Tvxo
-         tM+wGl1iQNOBGrNWHHHbxLJeA79x8UBZRTKhWqu0GcqjnMibklnOsoohO2M+FpWAPVer
-         j+yhrDwqBuvg1zfh3MZOnA38os4sr7mGskf88Wvz4MWjeFQzd9dtyewAhF4Jyx5Z3XjR
-         00VQ==
-X-Gm-Message-State: AOJu0YwEflDJBltIJJxuMJ0smK1mS68dt7sa47cIDj8Ye1LijCkFKops
-	2y5L6IPrpy15s4aj+N9NdsrKQVYdjX1OI1Tme233FyD967rHVg6tSNp1yFVAFFFEOEo=
-X-Gm-Gg: AfdE7cnp7DcEP2HqHIgxwMQd8TnEmQMKfZtqocpujhbaDWJwkEgfs0O8bU9QN8YPwfm
-	CeAG0QOYN8aTlA3hD2K1gPCwBTYMn1E1tP65oUHJz1lHgoX6mXOnL/UYfz5Uo9zXEDeYTobL0xh
-	o8AaN+RQ/0h6itbhTii4g/Zx3rwq6Fbwo5KZMtFKUGDVBQh77GdyyIRUg+4RusQopG51cvzXlzZ
-	81joICVc99FnxQoIlxxL7Un4EkVGe8dh3e+HtNCiPvlFrtgCSM/HFNMCpJ/6x6e0XJiVhwT56iI
-	nKPNyEH1pLkRPkH41iII7xXJwKa7spkEitlYyr7xhFOAW/iJxKHULFq0gLT4R1w0iCyk8bSLEhi
-	pda/+Lvdxc+pFExjm0SMx2QEufme7ey3wDpgtZY9TCO9ot+5/A3ufi3FqoQXrLYDJ0zdge+dt/D
-	xLK8i3v36MkJwpqMakZ+4c36vqX88lhPd0kUNYZTB3gljnm4cEogF4Jc+GJwcxeMG2Q32TD7BDW
-	JEbkGw=
-X-Received: by 2002:a05:620a:6892:b0:926:a969:89d9 with SMTP id af79cd13be357-926a9698aaamr393123185a.7.1782232584382;
-        Tue, 23 Jun 2026 09:36:24 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c2a09sm306953585a.31.2026.06.23.09.36.23
+        d=1e100.net; s=20251104; t=1782233009; x=1782837809;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=rUCXLhb0bwQI5jAi3AeGaL2pacxrrvJDt+WvFjr4LkY=;
+        b=Lf1NyRTA2sSAorPdt5M9y9wjl8Yr6Iv/wE2nH1z15oTeZgqbf3yxTg3JC11qOU6YXF
+         y1IaBA0Df1GXZgDCKGmsDZ6iGuvpxcIQuXtb7QWD1jVmX6yFtcnmDHzWLXGOVCKqaJ96
+         4o7yuZUHka/HNN9xKyAUBcCtbFbGDX0iP46QaprsmaFf2Htnse0SXfdzixw3k6jqay5Z
+         78DhiZx/HTC7CSomoRCOu3jK+P4f6P5B1W0bLQNdAvlup9k0/J7dhUkkFcMwOJ4YXMZS
+         SvJMM6iRLZBOxcOvmhgGqRZVCuhwbRrerSgyxrJFXU36U33p38INqL1ZAgCo2yem0Fmi
+         lY3w==
+X-Forwarded-Encrypted: i=1; AHgh+RoaQ4MHHQxUiEtE0UoUqaPZo/v9xKTE5Ve/TyEh38Hfh4diQ+HBzoJRczR4qVW3nicckxbRb+JmAQ==@kvack.org
+X-Gm-Message-State: AOJu0YxQMfMSCV40pGseRtD/AgFcFDgYhPeQZZ7X+BqkjIcUsudNeqaP
+	h3WT4NwI93ME8Sm8vbmDGUdJyGDaIe7cSsaH9kvqTFtLny4s2ce2Zx/zF8hevWqJNw==
+X-Gm-Gg: AfdE7cmdoA4PYYzPGC7Y4q3LusqNLT0/Iqc9I0rW+2LjCc9gCdgY90gsFraBM+8uiSV
+	0j8xEndb9lw5LaTN6+pXrlB+Khkg5TDTiPYC+mn/crlPsvIJj7GjjZxWpopaS6KpVs95ME/LPGo
+	kicWBSON79lw3oUpJe1v4EpLZpwsNtp8NmVAfBO8E/8s/2PhgEqasRFb5A26UidRQkALBRs62sc
+	goTgQAFPzbXF+K4NqVZlyhFq2/4R5z5OtqgZjrDJ9dP6xJF3COYnzdnvuJXld6x7x3WD6/hFyrS
+	hJ9nCd/3Vb5H79+N6qS1AweOhmLRMLioacNBv/mVWDCiZNufRU+qgHuTsNEOXo3nIKP2fjaMTVL
+	PC4kMGy1NcLf8LAHjbLdft0T7ZiPTKi4j7lJQqUmI93RrdTQv+L90l2M/qDbX3q4lFGgwSwVb+j
+	6EstS661zxCILvun04QFdYAgEVaATx35REKVUJ3f/btDzDWHlvV5h+SoVrJTw2gcX7f5EQuNrHA
+	7HRK3rw
+X-Received: by 2002:a17:903:320a:b0:2bd:6dad:7ccd with SMTP id d9443c01a7336-2c7c7118b8amr2140445ad.25.1782233008303;
+        Tue, 23 Jun 2026 09:43:28 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564d6c5dbsm10669159b3a.12.2026.06.23.09.43.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2026 09:36:23 -0700 (PDT)
-Date: Tue, 23 Jun 2026 12:36:19 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, x86@kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org,
-	driver-core@lists.linux.dev, kernel-team@meta.com, corbet@lwn.net,
-	skhan@linuxfoundation.org, dave.hansen@linux.intel.com,
-	luto@kernel.org, peterz@infradead.org, tglx@kernel.org,
-	mingo@redhat.com, bp@alien8.de, hpa@zytor.com, rafael@kernel.org,
-	lenb@kernel.org, gregkh@linuxfoundation.org, dakr@kernel.org,
-	akpm@linux-foundation.org, rdunlap@infradead.org,
-	feng.tang@linux.alibaba.com, dapeng1.mi@linux.intel.com,
-	elver@google.com, kuba@kernel.org, ebiggers@kernel.org,
-	lirongqing@baidu.com, paulmck@kernel.org, dave.jiang@intel.com,
-	jic23@kernel.org, xueshuai@linux.alibaba.com, kai.huang@intel.com
-Subject: Re: [RFC PATCH 1/3] mm/numa: add exclusive node pool and
- numa=standby boot parameter
-Message-ID: <ajq2A9GUOBWjzYM6@gourry-fedora-PF4VCD3F>
-References: <20260610014517.253609-1-gourry@gourry.net>
- <20260610014517.253609-2-gourry@gourry.net>
- <aip5IWmxg9CWg8hQ@kernel.org>
- <airAUSrNjbSEwuti@gourry-fedora-PF4VCD3F>
- <ai5vj_RjSxl_FLu-@kernel.org>
+        Tue, 23 Jun 2026 09:43:27 -0700 (PDT)
+Date: Tue, 23 Jun 2026 16:43:24 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+	Chris Li <chrisl@kernel.org>, David Rientjes <rientjes@google.com>, 
+	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, 
+	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 04/12] PCI: liveupdate: Document driver binding
+ responsibilities
+Message-ID: <ajq3ohoU2hJfhsp5@google.com>
+References: <20260522202410.3104264-1-dmatlack@google.com>
+ <20260522202410.3104264-5-dmatlack@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ai5vj_RjSxl_FLu-@kernel.org>
-X-HE-Tag: 1782232585-759617
-X-HE-Meta: U2FsdGVkX1/YEDNrONz0rqFKgRw0ZnyRlH83rXl7Xgsrvxl3lFZhQ8boDCV63Z8+xNYWPrBHfCtqdmm23N3cAux8My8mEDDpZZC8iePawsblQz74j3hwtsxqbIbLo6+p920VryJVxCBUSKVnDrUZ23F2u5fWfOLoXekr0oFWWelYwPSvDYsc0Ufiw3b4gTmfLpyLzqd+UYhrdcLfx+HRGdnAxpmqb8WCe401gx+dl15811HrHLIoSFeUODIPTLsGnWk63dh9vu7JQQw6ZkhT/HsaANWOtjBzMvvrh4gRi8my9IyXC5CL+dNVuMMX79bhPfOkcxwyvNz0Of1f3uUE6sbcVDTIkCUFtfrMUfIS6MiMf71nL3ob5a17roqAvMh8+jKQu1QEES7z8YBjPc/Qqw==
+In-Reply-To: <20260522202410.3104264-5-dmatlack@google.com>
+X-HE-Tag: 1782233009-965674
+X-HE-Meta: U2FsdGVkX1/tRNjNOPSHYwxIO8CehI/wxXWRoxya7hDOxahXxLdmN04gjBzTaXchMhjaQd4g19IXm2qcIaqnH8iTjCJ1nYRREK1R213D2qJh+CswgD8IxTM5a1F5yt60WBMxbI56f3n6yCACY0nuHzjALb+vMndlw5uYLSrI6Ksy4cjn0nRxYiXRy20ap+o6wfeDmt4cF7IgO45SpE73weCob2ZVYwbYyDTr8VIDkg1m5fzbZmefM+a7RzPTHC9F3X6siFjJUJFBpEvkMBybKgeAh8mEB7ELSJM1xnElLtZF0WpTXy1DQzBQoQVkXXY/gpXWWrmHCwpOFsQ5OMkrFCA12R708AElXlNGfHqyluX5cIjU0RGfrRFmvRJKIVnvfPNHmN9uS12U2spcJ/GQkea77bftVhpJ1LQxNZCwbVQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,28 +121,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 14, 2026 at 12:08:31PM +0300, Mike Rapoport wrote:
-> On Thu, Jun 11, 2026 at 10:04:01AM -0400, Gregory Price wrote:
-> > On Thu, Jun 11, 2026 at 12:00:17PM +0300, Mike Rapoport wrote:
->  
-> > So really i think you're pointing out that futex_init() here probably
-> > shouldn't be using num_possible_nodes?
-> 
-> I'd rather say that num_possible_nodes() with and without CXL (or other
-> differentiated memory) has different semantics.
-> Maybe we need to add a new primitive for possible differentiated nodes and
-> keep num_possible_nodes() to mean "number of possible nodes with normal
-> memory".
->  
+On Fri, May 22, 2026 at 08:24:02PM +0000, David Matlack wrote:
+>Document how driver binding works during a Live Update and what the PCI
+>core expects of drivers and users. Note that this is only a description
+>of the current division of responsibilities. These can change in the
+>future if we decide.
+>
+>Signed-off-by: David Matlack <dmatlack@google.com>
+>---
+> drivers/pci/liveupdate.c | 16 ++++++++++++++++
+> 1 file changed, 16 insertions(+)
+>
+>diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
+>index 96c43b84532c..4f2ec6ffdd16 100644
+>--- a/drivers/pci/liveupdate.c
+>+++ b/drivers/pci/liveupdate.c
+>@@ -70,6 +70,22 @@
+>  * preserved. These may be relaxed in the future:
+>  *
+>  *  * The device cannot be a Virtual Function (VF).
+>+ *
+>+ * Driver Binding
+>+ * ==============
+>+ *
+>+ * In the outgoing kernel, it is the driver's responsibility to ensure that it
+>+ * does not release a device between pci_liveupdate_preserve() and
+>+ * pci_liveupdate_unpreserve().
+>+ *
+>+ * In the incoming kernel, it is the driver's responsibility to ensure that it
+>+ * does not release a preserved device between probe() and
+>+ * pci_liveupdate_finish().
+>+ *
+>+ * It is the user's responsibility to ensure that incoming preserved devices are
+>+ * bound to the correct driver. i.e. The PCI core does not protect against a
+>+ * device getting preserved by driver A in the outgoing kernel and then getting
+>+ * bound to driver B in the incoming kernel.
+>  */
+>
+> #define pr_fmt(fmt) "PCI: liveupdate: " fmt
+>-- 
+>2.54.0.746.g67dd491aae-goog
+>
 
-We'd have to define "normal" here a little more discretely.
-
-Normal = N_MEMORY at __init?
-Normal = N_MEMORY in the future?
-
-We also use the possible_nodes() mask to allocate per-node pgdat, so
-the futex example is largely just another "hey look at this thing,
-I wonder what other stuff is out there".
-
-~Gregory
+Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
 
