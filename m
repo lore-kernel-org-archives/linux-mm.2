@@ -4,73 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B774CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 14:22:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A846FCDB479
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 14:29:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A85F6B0088; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
+	id 83DF46B0088; Tue, 23 Jun 2026 10:29:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 659086B008A; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
+	id 815C66B008A; Tue, 23 Jun 2026 10:29:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56F126B008C; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
+	id 72D436B008C; Tue, 23 Jun 2026 10:29:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E6046B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B32FD140481
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:22:38 +0000 (UTC)
-X-FDA: 84911393196.01.3DC495B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9053F8000A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:22:29 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E8AE6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:29:07 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CCF8B167158
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:29:06 +0000 (UTC)
+X-FDA: 84911409492.09.8CD5E85
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6F04E140007
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:28:57 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782224550;
-	b=xtf1j272dZPkQ4urCINtLusZwIaERHRUmCDsy2Oh6CuwiVu8DUuMkjlfwB/a9O3SbU0tCk
-	k+TAmYDB4delOzL9D0GFDjjP7d8JeuljmdxAgTj8Y8PsLhDsvCN2QCQoXLiduKkx/nPK82
-	DMnnzi2Iilvg8K1ky47ypidOXW9Pqjw=
+	t=1782224937;
+	b=Js8yTj6XlKzsyAP7fe76WXL8AV3kO68A4dYU/e17g+52d89F2E7JCcz5Iz/9HDwgLyfQgX
+	LEtG00Ph1PluLPtg5YtWZ69x2JTRDO/tPdffXN8t9/byCwf6C278s37+OAl2zhYZIf1WtZ
+	azWNeDcmZKFghV8UXdRtTOOldzQq8WI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782224550;
+	s=arc-20220608; t=1782224937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fbJ30SnwEwUR3e8QYeawvmgbLBk+kjbCq3ADAQydQzg=;
-	b=ve0fJSSzzECrFD4wkk7/SltJBk5Lgg8yswkA5cDPNzyvl2k/Btu2HNIq6s3KOcUVt9OdHo
-	+00FUpyazxDnd7SaZhtRBVgS8fJt3ZVb4G13dAWJw5BACtF9tBBrdBe5wdW5P/B4QyuJ4a
-	KOBNDglKFRnMInruQ6ZdL4r9+UOBxWo=
+	bh=2ObquCP80+lkdtJP6r9f8mVVxeADf+5b1sqhk+da61Q=;
+	b=4UqsNCGV6gnlYmZUK/o1Ftvfog8AWB3Z3qx5hp+4ZVb4hRvaPFhSp33zkh1+rzbqPkyLo6
+	7zw5sfbnS3BP7Wef3cxh549nlZJa4SFJjbHpiVHoACSI39C9tppCEZd2OqK9cEGy3Qn5z1
+	ZbF2fJp4I5FkVVUHB/iCgJqwKWDy704=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wkJmvyRY;
-	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=fbJ30SnwEwUR3e8QYeawvmgbLBk+kjbCq3ADAQydQzg=; b=wkJmvyRYcFD3fRkfyKwa8m3t+m
-	n8NWc/IW+IFlDBUKitA+2xKjsdqTGoNxB9Nlm6qD4kE4FCpe6Jt0CZqxzKTtthkJoEPw5MZr0xAvw
-	Rzp3RcGEoh3p6n/YRjGwXvK9jdzd6vXMs0d6ShbFC2/dU3ZRwPpy6VrtirW8ALhR//DP+RFCPgRbr
-	8SRtPYM0TyANAisg/ElWKSc8it83cr8rg1BRlmamwbb7nFMzXTlcPrcpqKTNsnY0FMv5EwdtPJnKR
-	JI9cTB6IMXcWKKINYxKlJakAZ8+JdxND2hfRVv7b5tMtWu84leNe6PXZ43zPoF6ejL0l1XxE5WFJg
-	1ta+nKsA==;
-Received: from [38.23.173.23] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wc21D-00000006QeY-3tdN;
-	Tue, 23 Jun 2026 14:22:28 +0000
-Date: Tue, 23 Jun 2026 10:22:26 -0400
-From: "Liam R. Howlett" <liam@infradead.org>
-To: Watson Wheeler <imnotamilkglass@gmail.com>
-Cc: linux-mm@kvack.org, Watson Wheeler <git@tazy.dev>
-Subject: Re: [PATCH] lib/maple_tree: add missing spaces after switch keyword
-Message-ID: <pbswbs3zreboqwtwqqorjwndrt666xm7obtdy3e6fqamy6tled@r2c57n4ei7iy>
-References: <20260623061730.2024-1-git@tazy.dev>
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TqkDJBRh;
+	spf=pass (imf26.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782224935;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ObquCP80+lkdtJP6r9f8mVVxeADf+5b1sqhk+da61Q=;
+	b=TqkDJBRhs/kMRfcVBEVfJ7OYZdofHudk9xL2+AwKmb9Ll8HlcnAtbf9jjnroatxk5I2vx/
+	85/OK0Am8jPd8UOuMkt/s53dF1sBLdvBIYMcjz/4YRj2iklTzb6oL50+G01vHsdoXkun1a
+	Tr4dQ0nrwAs/9wZnrxfd+OFwV1RoS4k=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	liam@infradead.org,
+	ljs@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	david@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 1/2] mm/swap: rename subpage->page in folio_dup_swap/folio_put_swap
+Date: Tue, 23 Jun 2026 22:28:33 +0800
+Message-Id: <20260623142833.60115-1-lance.yang@linux.dev>
+In-Reply-To: <20260623125723.2503832-2-dev.jain@arm.com>
+References: <20260623125723.2503832-2-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623061730.2024-1-git@tazy.dev>
-X-HE-Tag: 1782224549-43034
-X-HE-Meta: U2FsdGVkX1/gZ0tjQZA1ggoK3diaPox3l4RtZS8WUgZ0c36EOuUrnjR5wm0ITX2WE4wK/jTXmmLfiPVAUmfPZzW7TyxTbpLfVaN97K3s9PowGQnfZQKBV637DhytUN2+9k1IElY4BUebi8sIcVMKUtKkrahKau16hM2u1wV6QYtZ6MteoWdvj+3TF9AlUmEm30budyjnf/b1J2X63VLnaWvD6YvN/3M2THINTXWfCPVWANk0uSzKNvjV+Fnyl9ofaI8amS8d6b033dV/S8OifQ0pn7hadV7slywQc5JYGtaACfgL0wuXXIui0hne+a+ZwwZEfqZSNGVGUd77TDVtFzdR1IHH+RRb33dX+NMjPXT4HRTG0TdceRN80RZvQ+U2U/j0Ssv87tZqnBfYQ/s5VlZl6rmo3dOD53rc/ANrdm4=
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-HE-Tag: 1782224937-52733
+X-HE-Meta: U2FsdGVkX19sphTWo5Rso2bBb3Zx2MhbChrJkCIpOY/ZDOCFgmAiE3pDjBqm6KskUuXQI7qoi88uyzk4WE7mPbMue0htX6RcvgHeJJlaPGv00wdYLzVwsP61CpSe5Y7PAsip3D/24AYGvpVjjJJBzDrvQy/SP9OJ7zPRUpUsbFk8HBqq5qq1lboklBTf0vrn6nMue0OXTVGAmGbz3UA1M3Kqi1Y9BmHL803mWnCCISso6lxxIk69ZXYBHuYP//jh26K7JYuI3et1JTtg+pgBtrFqbENURvCxM0gnt/exKU8yb09nH524Yuzcb4R/RLRbTVLU43ijVDZpa4Jr70CBNI47eay6/9IuNKtcSDMqIpX/1dNakq4izPD+j7XGITCPct4xzYdQ5qOGlE7HeeM2AyYEYYcqngP1d2hpgJgTU+uTQ6+DSz4ZnbbM882bijFhpVysu+aQDIhdE7LOGKJiZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -78,60 +95,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/06/23 04:17PM, Watson Wheeler wrote:
-> Add the required space before the opening parenthesis in
-> switch statements to conform to kernel coding style.
-> 
-> Signed-off-by: Watson Wheeler <git@tazy.dev>
 
-Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+On Tue, Jun 23, 2026 at 12:57:21PM +0000, Dev Jain wrote:
+>Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
+>
+>Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
+>---
 
-> ---
->  lib/maple_tree.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index e52876435b77..529acc056e55 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -6447,7 +6447,7 @@ static void mt_dump_range(unsigned long min, unsigned long max,
->  {
->  	static const char spaces[] = "                                ";
->  
-> -	switch(format) {
-> +	switch (format) {
->  	case mt_dump_hex:
->  		if (min == max)
->  			pr_info("%.*s%lx: ", depth * 2, spaces, min);
-> @@ -6489,7 +6489,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
->  
->  	pr_cont(" contents: ");
->  	for (i = 0; i < MAPLE_RANGE64_SLOTS - 1; i++) {
-> -		switch(format) {
-> +		switch (format) {
->  		case mt_dump_hex:
->  			pr_cont(PTR_FMT " %lX ", node->slot[i], node->pivot[i]);
->  			break;
-> @@ -6517,7 +6517,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
->  		if (last == max)
->  			break;
->  		if (last > max) {
-> -			switch(format) {
-> +			switch (format) {
->  			case mt_dump_hex:
->  				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
->  					node, last, max, i);
-> @@ -6576,7 +6576,7 @@ static void mt_dump_arange64(const struct maple_tree *mt, void *entry,
->  		if (last == max)
->  			break;
->  		if (last > max) {
-> -			switch(format) {
-> +			switch (format) {
->  			case mt_dump_hex:
->  				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
->  					node, last, max, i);
-> -- 
-> 2.47.3
-> 
-> 
+Just rename cleanup. Didn't see anything off, feel free to add:
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
