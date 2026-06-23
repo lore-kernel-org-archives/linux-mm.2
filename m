@@ -4,93 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30DEFCDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A491CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 02:39:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14E3B6B0088; Mon, 22 Jun 2026 22:21:15 -0400 (EDT)
+	id B61A56B0088; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8BD6B008A; Mon, 22 Jun 2026 22:21:15 -0400 (EDT)
+	id B12926B008A; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC9B6B008C; Mon, 22 Jun 2026 22:21:14 -0400 (EDT)
+	id A2AEC6B008C; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8F376B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:21:14 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36398140349
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:21:14 +0000 (UTC)
-X-FDA: 84909575268.16.A543B8F
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 78AF21A000A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:21:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VUCWDlmG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CD416B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:39:36 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 055D640360
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:39:35 +0000 (UTC)
+X-FDA: 84909621552.21.941AF3B
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 02437100002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:39:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jW6WODSB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782181272;
-	b=RaQGsWX+4AUk9rmwVzfoX/Zl0LDC98gO0omk6NA5BSyCmbxE0CJypQOomUHjQef7Ae0NTO
-	6vtvIbkCBgum6vkwtCG8nR0PYIJvaVAILnRfbbLG2qN0vGcivKNL/0FVj3B8KhQxsMIuQo
-	MqxE7vLBu7/9VcomWVwAi4bi/4IXXks=
+	t=1782182374;
+	b=vHQLRJJErqUHYBrwQiMowvQFtjka5b0gULGPN1AYmkOG3yzyYvmM2TjLdtUBE7CX6BWPLw
+	sRT8RY4g4yhaDrAAbN3sQyeALF6MSJ7rZhTRRMYuLBZ7qc6nctW3UiMY7WDlxWyGRfL7nx
+	nk4wjRRVKqeu2ezZVbMaUcEBhRYLyyk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782181272;
+	s=arc-20220608; t=1782182374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lMffO2o77SuR2hBlttDpYw1QPIJxJT/T6T/rBhU7vx4=;
-	b=gd992wweUaaDKzDr/OjqYwS3zZ7wYy6A1cfc8QuEe+2tJ2hLcLsR460PnthbUwViVvN4xK
-	JjTWb/ruUE22gz/RwcI80N9u9EaOAqXJ8pn+qQJyzRL+BKx6IyKmu8U9AKl36yuktIscEK
-	rxXRnMSsM7Qc/sKfkSjawWbJiN+FX3s=
+	bh=yzvB8g1T/a284WOGnvYsStebwn5aGi0+beh7T+/4S7k=;
+	b=i7W8oWhXFlzueGn0JjLlOwWpQkIJUAjD9LxeZnOzFuCceG31P/fcYL7sVPODHBObr8TKwh
+	MzemsEi2a4Wiq10b+ywm/cYG1xMJOkezkSw9VwYK3bBU8agH28I4Dmzt/0dw1BS4xf4MLu
+	lewEM0PF95OAds9AAszrZGdr86zF7tk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VUCWDlmG;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <46730710-fa60-4332-820c-0a68acf00dd4@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782181268;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lMffO2o77SuR2hBlttDpYw1QPIJxJT/T6T/rBhU7vx4=;
-	b=VUCWDlmG7W9buVSD5ve7UbTJnBWCcsS3T/Oq+PfLVKKFkVQmc97akdOQDziHich3ufJFtK
-	QaYoQwbOgqjrvYDiTCUImSPEGiC2q3Bc2U2smVp9Z5UCFzARkJS8wC1BapXmpb8mInfnh/
-	6Xr+q2+2RYBYhhAh3SxFOtsSz70yPpc=
-Date: Tue, 23 Jun 2026 10:20:27 +0800
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jW6WODSB;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782182373; x=1813718373;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/A0PS1KBXecicXMwu0KgF5PdNmPIby5wsNW8nHW++bE=;
+  b=jW6WODSBHcVcEEOtqrkwSKg1uV888raWg9tfhpaaeGrduNBX1iwo3Ya4
+   tvUgWVW2av9oUaBktpCgZSaTarbJaNxRR5uDLaJkxMmjFNqQZ7vvSPhmD
+   dsHnK5oqxrFuo46rT00fy7TBGo+rPEDsy4p2J7ISMHdyZdgGjMWMu4DOw
+   EnlYHJLEjVD87CbpoHUjYkjVeyJ8w8dvfOsE4OXDIT90nXRVxGLnQIfsB
+   RDzTfDek+y2n+MfhoP79clFdbOM/fHi3w37KrU2lTsJvaCIqzP9Dfg1/M
+   5fvlEwy94YUH2DSPjhrYeoccDrw5dvE0uc7Pd76/jEgMHglZughTY7AqG
+   A==;
+X-CSE-ConnectionGUID: LWePrdKzT0qQqDqWpO+/ng==
+X-CSE-MsgGUID: 2+S+l0gVT7iwrWkk3vjdTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93281955"
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="93281955"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:39:31 -0700
+X-CSE-ConnectionGUID: bAXEwp5sTTeAhs29D3ojQQ==
+X-CSE-MsgGUID: arY23Fs/TOybNGBssQOy7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,219,1774335600"; 
+   d="scan'208";a="245254055"
+Received: from unknown (HELO [10.239.158.46]) ([10.239.158.46])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 19:39:17 -0700
+Message-ID: <9f81ea12-98c4-4ce6-a95e-233851dfe8dd@intel.com>
+Date: Tue, 23 Jun 2026 10:39:14 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
- muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
- roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-References: <5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn>
- <20260622073703.79258-1-qi.zheng@linux.dev>
- <CAGsJ_4z34ZRu_RKkaZ7EgTWMOxptUjZ90WJyNoJrXGNjzutxnA@mail.gmail.com>
- <19710ee5-8e1c-4b13-812b-4b03ca34260d@linux.dev>
- <CAGsJ_4zC8jMNk0twWQd+oRWCzZTm523K-KgzDQ6TkjbzPq4MTw@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <CAGsJ_4zC8jMNk0twWQd+oRWCzZTm523K-KgzDQ6TkjbzPq4MTw@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 00/46] guest_memfd: In-place conversion support
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 78AF21A000A
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 02437100002
 X-Rspam-User: 
-X-Stat-Signature: 8jkyi85zu7jskakbtwfd54rkn8na74cy
-X-HE-Tag: 1782181270-719721
-X-HE-Meta: U2FsdGVkX19eZJUCnHxionHpv8baWpUPEuVEZqvn08nRkuW9SNC0ee2Nch6hB3eNVmaF6BF1zLM9JHRfgleCJU2jxNWG3Qiz/IhG4o8a/CeAEuI+GIKgoXYOzSLSBdtPp5oT5aihoHhd//PoJN7T3jkEtrJlB55q4TlrDyHoSU4R4sqp9uMlykS4mAU2xaMWfoc8b37W2E8vLLb9BBEL/9/LhxeJIj4lIHkHPOZ2iZxkuShLTGabvv/nz/T8Ke1SmrWapVL5TMNHrM5MPZkIrwutzkNVN0Hz00n7D90dGVrYN9I8F9jvmyLVHNuiHPsbxlt35S1OOlD6jQmgk4moJLWRKmGHhTyCIDKQRtZVmQ9D/5X+aPXFnrry8g1Vtr0FQ3PtioeDom+0BeFdS385gFHtJxCBdt6QaOc88W8SS2Eo/86AszS+0S5u+V1spikfkoBt63yDUISVSIzjwPHFg1ENv0hFLBczzHmogWTcXs6NyFhj7p6tcNr0MSTwqZuHKAUqKjLC9jEzMtRsw3IFkqQ1WqftF68+IIyPrO+X64f+Hi0GTUCSErEZu90BgnCFw7tkns5m+JPKhpOBGmQLm8eAJMp2qzKkNQZyEKUIDhmKovjN7kdWkwndiMbGkFWK9MdDHvniXrWymfCVvd+SrUWHIjAQOls0oVAkpW3rat7SkAtLjGVXOMOGPHvn1xj9e0LeaUUCxcrhB5XRdss3xwwJpxWW2VLL27eUVJ/t81q53aNiD9bBJli9t34P0mXtTfdhtwe1tizvBA5jzuoY4JLKwnJ4n3Mnqi5x+rHQwtLhZ7zWoGK+L5gQBEWQLKHL1X5RkBL/04TnX73Jy6ATO+ENzqSRj3tqk34m0sSeq7hVg4RlIRL/7BofnNLFNKeqt9Xf5ABLqEJssXCXtNzS9UinjzVV4Yljm6gCxvhu3QYAPJtelpgvMkluoZGC71qsDkk59VhbTSTd+hn+CTM
- Q0zwz9CO
- 8YDiwSYSIwGAqjD0rZGumRwQyQdtDdpD37fmw+JQ6ZaEZ7Npr54L/vVcW1seqEcLf2i+GlWqQMkI7rVjwpJ7ugtbks6YmK+7qW11dNl1i2qht2qlx1M/dnRFiZYM/Fru5bHorXqd1PqL0IFN2Vf0eS7tzvOG1aFgG1UI0MNvKsTzMuKeR4+PyMHCfQaoismPTfehp6P9oC6qqd9zc1tcBODXbHmUCXg98ACGat2NpBXfO4KI=
+X-Stat-Signature: j4moq4ghoeiupyy334rhwmpwdrbhioaa
+X-HE-Tag: 1782182372-699269
+X-HE-Meta: U2FsdGVkX19m5XuGAXS6aWuW1NuptCfwioQeBXVKiJM4nOkDMhXnLEPn0e2grOcf6gvgl6/83+Ly4L0ey6J9PlOsYf56A+sNr6DkNlNP21RK795sw2goxlt1LfG/C7WZl43yCAVzUfdFAybJMbENaLI3KU/64cH02B2/Jj7xoyWqMVGX6mWsx6mxZPKYCLcnC+A2eAl0v6WHRvomH56Dp7lElOdDypfnKpPRzBob2Jcx4wNbDY88s9R+0317tjGP1sMHc8ZHafq9/wbpKBpK7jOeqCKMt3r18nAqvOlHpB4Qj9L6f7G7DTo4bpTPYpxm4fB7eE1ThRUdhYzz093Lvc/lWv7U17fsjqO6kF0Yrk6kJk+VtWkNiY8LeGi7yZtuV8egLNWZWa8s8Hicw+78iCb5/5/TIhdj3wlwyTTbpyacruhkwa6Xk0tpuvtzkmg/fWUol936W57iv4u30NaqLHpFJTkyKYaZNc/Yix1RQ/sah+7tmCvLno2DIabzQ0hmbayX+iZawdaDNyk9WZOFwng2K48r+xsAmWQuJd6l06tI9sBFS6adzwAv3yYPNC49VrdD2tarsCix2nMm9vcVmYusvFF2fM0Cwz9dVZB+u31naV+Z2d6YG5SxWwfBTpr5nBHX3PtNZDqXdSibmJYb1/aBkhDnaG7r6gDkBGkoHSmfX5jIjyX0/jST+bM/VOTza9RFFHLKvHz2tY2E/Q3r3lsgqpxYZuBe/5HVm1F6pYhmfvjTn2jCjHCdcm2Kp1miq1zegXqjucd9kGHxC45bTuSb/YZp/U9U0nXS6f+1oI7eRcXmw3tYfZCVc6tq0LyTVmq+2cRvPj+gEjWNhSfA6e3ilBBBS8qrHsO3WwDfeK784r/qN2r+p5Z0kzuh34pr7lKYxG8v60t89Bcrk2WrCSlDXi6AXJHw3wHHUhs1qyhZ6aBgobsvklD/VrKhiXrbjgyde0kYiK23htgr4La
+ XDTzmUSP
+ H7xaPJlmvtlzuXuE3ct2CtpJi6rfOLsf6W9iSYms3/owaQ57IfyvxqdyBPeKc+Cb5+H8d8P2Bew8BAO59sTjUmwI+2tlLWko4H5JAZvh7eSymDPlOAfJpDEd85T5Vibz8nduEXdBRqSUkLo41zMMsswgPpCF/RBU3igME+yO8A2dIKk9RVUXwyMPe5FtwYzG/qcq9nC6dlSCP/H/h34DVRiB6b2OXs0nCsRDLA62sMRuYzQAGbys2Qkr7P3KbVyO4RPLZC6nJp3dWewX4PHkzG0RYyg1PUOHOu7NRrAJDt7gO4pM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,45 +132,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 6/23/26 10:15 AM, Barry Song wrote:
-> On Tue, Jun 23, 2026 at 9:58 AM Qi Zheng <qi.zheng@linux.dev> wrote:
->>
-
-[...]
-
->>>>
->>>> WARNING: mm/vmscan.c:5867 at lru_gen_exit_memcg+0x26f/0x300
->>>> RIP: 0010:lru_gen_exit_memcg+0x26f/0x300 mm/vmscan.c:5867
->>>
->>> I can't find 5867; instead, I can find 5828:
->>>
->>> VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->>>     sizeof(lruvec->lrugen.nr_pages)));
->>>
->>> Is this the warning?
->>
->> Yes, I just copy-pasted the warning log from Peiyang's report.
->>
->> Maybe the description should be changed to:
->>
->> This will trigger the following warning in lru_gen_exit_memcg():
->>
->>          VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->>                                             sizeof(lruvec->lrugen.nr_pages)));
->>
->>>
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> TODOs
 > 
-> Yep. Can we update the v2 changelog accordingly?
+> + Retest with TDX selftests. v7 was tested with TDX [12], but the setup there was
+>    wrong. Conversions were successful (no errors), but the shared memory being
+>    tested is actually in a completely different host physical page.
 
-Sure, will do in v2.
-
-Thanks,
-Qi
-
-> 
-> Best Regards
-> Barry
-
+Glad to see you knew it already (I was going to report this to the 
+original POC TDX patch)
 
