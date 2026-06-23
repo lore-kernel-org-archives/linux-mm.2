@@ -4,92 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76487CDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F098CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 08:43:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4426B6B0088; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
+	id EDFE26B008C; Tue, 23 Jun 2026 04:42:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4028A6B008C; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
+	id EB0966B0092; Tue, 23 Jun 2026 04:42:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 316C36B0092; Tue, 23 Jun 2026 04:42:47 -0400 (EDT)
+	id DC6A26B0093; Tue, 23 Jun 2026 04:42:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 06D6F6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:42:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D5828DD36
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:46 +0000 (UTC)
-X-FDA: 84910536732.19.A265920
+	by kanga.kvack.org (Postfix) with ESMTP id B4BC16B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:42:59 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3F038140400
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:59 +0000 (UTC)
+X-FDA: 84910537278.03.57C925B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BC7842000A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kH1EY9Ft;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5E90E20004
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:57 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjnU+52t;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782204164;
-	b=kMcf4B5INz+ueU1NKPGapRVaruKqO4ps9EcO879uMc73XDWFBdP2JHhk8MjaBEiSqF7ebB
-	ahJiJ59CVgjwvlu+rz6znHmZQZQF4e876DWJVhEG/8Sc1sqeXD1qF7o//R3QmSZYqwoD0M
-	cahhHpP+fZ/2BqZaIckSp7fY6GydOZA=
+	t=1782204177;
+	b=yCEl0lwwCIs4NJ1AOXENIq74+OBuRhPhDSUB77vrhDnwrnYKq6weckxio3Vo4uU8rZOxcV
+	CPgXkMYlcz1hgSAmYJu6eJOyak9Gyx5yVyFaTqIVpTezU5XVt+ne9a9Vvs0cz0r3seYvhx
+	JYQZVeTZH6rwHXu25NbMY0LCCwNIKB0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782204164;
+	s=arc-20220608; t=1782204177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WvtWN1xiCjJwXiB3+SIzkmRkMwl7Gqj7f6Y9+Y6EJHc=;
-	b=jpP2818OIjsH6qYlGAxrcyKlXOx4MWKGqpkGy2yoozxs8AaCrPn7lNu8Ew70E4aFWuOr7F
-	p8DMfsaDJWRAOJz14yFa9wsn5Uu1bxkNJ8aEdm8NyExfI81op9LoAlhcwbXLKYkISMuEZO
-	ANxF/qHTlSQJgcoN5rzlMC7Nil5pciE=
+	bh=UFt61Kzusvt5l7Yt4iU4ICngyInau9SaQcqREiJkKOQ=;
+	b=e2HKdZH6CzUVav7s2dWFtg3AJqk4E25EGyyksiRIfHdJfUBpDsfE6o5ENV74lL7Ov/VufN
+	9h41VN/RY0dAArJG4HZ6Y8eTfBvNMdFDmPXQqID1Mzk3bMA/YJec6j/Vg4LLJld+5F3HJj
+	TkqgTv5aL7qeGu6TKybnyILrE1JwmpI=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kH1EY9Ft;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mjnU+52t;
+	spf=pass (imf31.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DC070407DC;
-	Tue, 23 Jun 2026 08:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7D61F000E9;
-	Tue, 23 Jun 2026 08:42:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id AD8A143268
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9053C1F00AC4
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 08:42:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782204163;
-	bh=WvtWN1xiCjJwXiB3+SIzkmRkMwl7Gqj7f6Y9+Y6EJHc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kH1EY9Ft+UdI/ni3u57iqoC8MmP0qyZL/qIE/vbffZbyFWP2v014OtRjw+jgb0Zix
-	 bKYQ4IgnCcmiMrvMRlBqQ7shfTmaZHA+9LmWCXohb/d3qwyD3IOKkn6BQN1Z8zwYHM
-	 JUsCpm8HNwZMNC0EQvV4UOZDCHp+7PZPAnEM4pMJzVOevfOU5K7Hgrmv7qrub9pQpd
-	 ppn1BjZ74vV6ZH7Q2Ug6Mz2CbEPUin3vpbK/IGNMqSQ8Lo0tu2FB56fQkJJNzb4ht7
-	 cYqEczV8M2k0mH43v0pPgfAF0T6p7HGpapbsXmqNtxWEfTpTiQhen6xkQJ+1GyysNV
-	 zxUWOpUpcOH5A==
-Message-ID: <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
-Date: Tue, 23 Jun 2026 17:42:40 +0900
+	s=k20260515; t=1782204176;
+	bh=UFt61Kzusvt5l7Yt4iU4ICngyInau9SaQcqREiJkKOQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=mjnU+52tnCf+Xf0ZcXLqFRqjyyuJ4tAn68qH7cJFRCDTylR/xORmKTOULuwVtdGBH
+	 FGdoCU505hWRSwKJyuA9nVDj7NY4+UNQU8A5hDMx0rqyQ7xnLP9MhGBffx3Q4Wn1gc
+	 boBjWoWc7AlpObFYJZdWfxSgt4dE17IUmT8Jcf0ojRb/ytZh1ebm0ritaSaeqp4vua
+	 wBuILWfLfSQyU+LV2gACiRiarhELXFn7j6IGP2+t+Dl3Gc87aG9x+Bk8MGzMz+/As9
+	 2x7JCrtl3r+0Ia7SErX4ZIvYeUZ0kNfOVxEBDBIjcV98Ro+xUjUOq4TQN5ebTicXQw
+	 DsCx1ai7GdPrQ==
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-915aa0a9293so78498885a.1
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:42:56 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxUExKrWdwMbexq/Ij+0UWf56qexURfVfe52HofpwHztT4M7AIk
+	bkBGnjJeGtjIv2qMm6thZnhe6ivkS5KK/PzNSfO1hHQO/XpXAwChxt7wVDhuBbafnYr7gQ4IOYU
+	cRb/AqU9Orv095mF29s/Bb0OQAL5e5bg=
+X-Received: by 2002:a05:620a:7208:b0:922:479e:3e4c with SMTP id
+ af79cd13be357-92602308e33mr369251385a.26.1782204175998; Tue, 23 Jun 2026
+ 01:42:55 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
-To: Guopeng Zhang <guopeng.zhang@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>
-References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260623082614.81621-1-guopeng.zhang@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------LgOrC2BRSzJunWsHWQMW456l"
+References: <cover.1781843449.git.ritesh.list@gmail.com> <eda4e51ee9f1270582fbb2823ec5873e769de089.1781843449.git.ritesh.list@gmail.com>
+ <CAGsJ_4yTY8g3M7qmpM7HeUq=E05e7v_QFTzk=2D5Mv3Vj3Usqg@mail.gmail.com> <33ydyd82.ritesh.list@gmail.com>
+In-Reply-To: <33ydyd82.ritesh.list@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 16:42:44 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
+X-Gm-Features: AVVi8CfZuCW69WQalFY9UHNfppKh8zYKqZFY_JiowJ3XQDEH5PVphCNkHnGHWP0
+Message-ID: <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS
+ via ARCH_MAX_PMD_ORDER
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5E90E20004
 X-Rspam-User: 
-X-Stat-Signature: 98x4qqgpsf1w4cjcj91xcjrstnco3acm
-X-Rspamd-Queue-Id: BC7842000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782204164-912614
-X-HE-Meta: U2FsdGVkX1+BxuWJSYpZAeCyZnK0Ab7X6pr+MijIHA5aOdwpWmyjttBfheJlB2ttng3M1rX+Z2nocy18Zp2YF1Z6eGBu2STWjuHHmHysVCXNyyfrtgkOl9cFB9oec10v//crXWiF95Ehs2wbzfp6GxUPPIh5/n7+dO89+CGoEMWQBK9U45+M2lo/D4n21NRQ4uN4FysgjPmCanJ4z5GsHqPsycE07GU5klRU2AlgKCXTYUb7tmO4sICCxFhSQfztJaWg+QNZxHmH1eDJCJHqST7/co5wHg+Ti5QyS9vyhQa58i9Gu2xVT42NnbDetlqU2M6a5+Irf/+gGhWrOViGj+y3XNjdGrjCKM4Bm7g1UiRJe5C0JTOUWFEfgNV0UiF5/YCiztHnV3mhy5AvArAn5siuyMKIBuNKRqWmHyO1ZtqU9WLfPaBwFaNeG70mqURJEZOXftkwKc6ixsFlj7EQqdU5fw7iW1NjlrOnCeRdrTAlstnC/F6PUkmj+CSETVAZ5r29TTxIK7B5B0p9j+ZLfYZzZxlEVK6H04Z+LhrDEqhXPY/96nje5fCRhQ1QTjvunYueZ5ZFQ6QmKNB1TPyd+rIKZWfTYjvDCFHZdSmd7nF2UVHQMHDuLmH24do7oMQPb1Rnmancrj6R3Zz+TwtJz2IgGExHITYV+lc9bBPfkfcwIO7IUaV4Idh26df1xsW83VrNFI047g+B6JvubM58USzJHWcJoJj5pEJl8lpD4o9GgmMaIbn5GvRZibW1WH4ZL0wXbWqhoyv7VuSVmpB/sJ4AvrYvZp9LYK3jdIXxaIuJLx3S84wwh6zE1wWNSSpYBEcA5Cj8PoKcx6imB0lyyqll8qwl00ejnpZmR4JJS6/7fl13wIVcavu9/Mc/eodu/XeMvDscC3sjfCkiqdIujG5GAgrRGgjvYN6hGfrl7XsveI4In4eTpSaxen2C0OHcbRokMH+EmSBE1PxQCCT
- pWHO0E49
- GBGuQNFlRKMFB6w/y/TWNRItEc0LtztXQJ7/JgOGk91sx+pPgHf3FCrveo9CnrDuTBEXipCT9LyTcVrvFUOD03iq8wV6dJizbb7hXyduqzNQLJzgf5qeM2UIZoIBa56gPBQiM5vMX7rdm0lXZGVvFs5BhqZ7y6MQ1MgmkUWbCB7DE5Y8sDaxOTAtSMZpaTwO2mkiLPHnOIYv7I67cXtrQh+L9VKtbLNKErTc0i8jLCve/6Z+T8UwgvnXCl7ScFtDt3OT15hQt2o4FqZU3+HnPCiMN/Rl3MtTHjsXa3YWGS9F87+ZUO/W0r/7IfrbV1Ftmfl016YujCHrgLgRO7EpKRfXzxUePIo0RqMPRgDKdqh/Tuxah1PiNKQbS+lFs7uUNrgRAyl9IYhghd+H5Yi6wrkTDRQvw2BrbOw//1xFGfQ4DEQLyuqWDt+hzXkZ1WULloUWQRyGyvR07fk0lEL0QUt3R5wb/9TKXkLra2sCqBA8Z1Oa/5MChO6KIZJxMeE+ke2utahMqvWDLORwwzPu6muR5Ag==
+X-Stat-Signature: cm7h37si5xqrtiqpuwnndzwzmobip6nu
+X-HE-Tag: 1782204177-124364
+X-HE-Meta: U2FsdGVkX18QCgrkfQbWZCaw++eNTKk5S5rxiVmm7Zvt/v7PvjXnHXT3BggF4JWy+MdE6MpIQnI3lZeoTBuyUlR4ThHv/Ka//1aL2L1N5B0ejWGHTunCS2hq0SwWlQBlklOR5TPh6J+dloLDcomXwsQO+cXn9p+b9DYp9wX/Wt5ZkJH/mBi+VmPgF8tmRJEbiavL83gXJi99jWCk8EVXcmBCiAPAVmmpKXEMx2EipFtxaa4I5wC+HknAMp29W0oKi3um0FMQ3REFbqxwtlHKVjmg2m4hwzI1DRusPXxozH1/hyX8Ggc1EpmD4wO1NAIFBfhxOpM7vWngbwkc5i6IVxmI0+tujla+VUJiFP8iPv29h8C6CGo48PqgdZ7Jjh5uviKRAJpme15SZgXYSEWeBuLr/m/W1vTjmrw1SrFeK7SyAg1O18n7ve6yShG/0B6ZKSUsojE72Fsv5yYj+5WSpopwlg5q5RvnNVl4L+jiTtNWN4C4KEab+vPio6qlNStdPsqq9VL2hkUW9SH+Ugp0nhrWkoLUZuajSs87SxlwnfdhObKzdwdR3kOm5mHL47bh/Q8LaBudZ++HKYZdGtj0g3mU7HjUcAejzbHzRP3hN0+PcER1G2aMe7dC1bVbGUtBHJ8er2BODKgRPloW4WTDAaUzGZ2GujmWkyA14aGlBfUDrgK1k9bA1qPVrN6vvBRWDaLynsncM3yOtBHpQUiChwxBuGWS0x4oktXJWXLeUXX8Op4etALh9+d34E8G1dZNDCCaoeqlelOzVBFMmxP3wfPLZkdkVnsOKsvjsWcGuOMvJmd4u7yvDbywlJ67he1rgt5rxWdJKiWgEh7vcZ3IfFZUKQS31EgNB2xaCEEAD5KLenCmcST3NN9h03wv/ROjSPCAy8nv3B7cm3YsJlY6fNc/eF7DDc/gX3Dm2VhKCsAAteEMaKyhu9YaRfbTdZoCnfTjoSaCjLSS2+mV2QZ
+ 8YXUr4mF
+ FmbRv4gUt7C7TetYpovAXP5IxjRv0QifERky+cK3kOMO1RsF2a/VMbLwftUX1aC80i1Ka7i5nxdY+qUNgZNzrF0INjzNjCuq+KiOPFgLlpC68G/HRMu44P0qmBK56vklZLs/KqJN7SUpluXTLd6ucqdk3cnEc9zRra3mx3iv4gjz6TRmn80iCrxNMcvwggsa0ABTTrmjHKEdtVu8zeYQih16NG+EcN4divheB/zp28q93rcrweU+gDmgGIqBBRRL0SeHoiBiMeb6Wje1kzZ4GBKJ2EHYw6KAqRiprvijGbk2c08kpSV18x7iJgBerr3tmtgmXWz1hAM2boOu8qaaHIDy4xFwkmo+59U/0GITkAvUYn7VnCRdI+V4028EzC7dhRc1ElsRu5kOUo9j5Tzq/DklRhxIgtLQVP3n/FRghlGGtpjPiCcBMxcSbC42hOlPxg105oXxB1F1aoXgCFFGLO9tPDpO2sImULdna
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,87 +109,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------LgOrC2BRSzJunWsHWQMW456l
-Content-Type: multipart/mixed; boundary="------------3PVOusf7gTMSTMxMX4UWEjnM";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Guopeng Zhang <guopeng.zhang@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Guopeng Zhang <zhangguopeng@kylinos.cn>
-Message-ID: <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
-Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
-References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
-In-Reply-To: <20260623082614.81621-1-guopeng.zhang@linux.dev>
+On Tue, Jun 23, 2026 at 3:05=E2=80=AFPM Ritesh Harjani <ritesh.list@gmail.c=
+om> wrote:
+>
+> Barry Song <baohua@kernel.org> writes:
+>
+> > On Fri, Jun 19, 2026 at 12:41=E2=80=AFPM Ritesh Harjani (IBM)
+> > <ritesh.list@gmail.com> wrote:
+> >>
+> >> SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
+> >> allocator code (nofull/frag cluster lists, percpu_swap_cluster's
+> >> si/offset arrays, next array for rotational device). This currently
+> >> expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
+> >> time constant.
+> >>
+> >> However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
+> >> variable which depends upon which MMU is selected (Radix / Hash), so i=
+n
+> >> that case, PMD_ORDER cannot be used to size the static arrays.
+> >>
+> >> This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
+> >> override for such architectures. The memory overhead on enabling this
+> >> override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
+> >> default slab padding could cause some memory waste. Also we lose the
+> >> per-cpu cacheline benefits (for percpu_swap_cluster) because it might
+> >> cost an extra cacheline indirection overhead in swap_alloc_fast() for
+> >> fetching si[order]/offset[order]. Note that a fully runtime
+> >> SWAP_NR_ORDERS was considered in previous version but was dropped for
+> >> this reason [1]
+> >
+> > Do we know the maximum PMD size?
+>
+> ARCH_MAX_PMD_ORDER will be 8 on PowerPC book3s64 with 64K pagesize.
+> PowerPC Hash MMU with 64K default pagesize supports PMD size of 16MB.
+>
+> > On arm64 with a 64 KB base page,
+> > a PMD can be as large as 512 MB:
+> > https://docs.kernel.org/arch/arm64/hugetlbpage.html
+> >
+> > One concern we have is that performing I/O on such a large folio could
+> > incur significant latency before reclaiming any memory. For this
+> > reason, on arm64 we initially enabled THP_SWAPOUT only for 4 KB base
+> > pages:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3Dd0637c505f
+> >
+>
+> That's not the case on PowerPC. Max PMD size for Hash will be 16MB.
 
---------------3PVOusf7gTMSTMxMX4UWEjnM
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Yep. A 16 MB folio might be fine, although I'm not sure whether
+splitting a 16 MB folio into eight 2 MB folios would help much.
 
+For 512 MB PMD-sized pages on arm64, one possible approach might be to
+split them into 256 =C3=97 2 MB folios rather than all the way down to 4 KB
+pages. That could provide a better balance between I/O latency and swap
+performance.
 
+> Also we still need this patch since we can at runtime choose Hash or
+> Radix MMU. So, the main problem this patch is trying to solve on PowerPC
+> Book3s64 is enabling this feature w/o impacting any other architecture.
+> W/O this patch series, we can't enable it, since it gives build errors.
 
-On 6/23/26 5:26 PM, Guopeng Zhang wrote:
-> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
->=20
-> A patch filename was accidentally inserted into the comment describing
-> the nr_bytes field of struct obj_stock_pcp. Remove it.
+I see. If possible, please mention in the changelog that the maximum
+PMD size on your platform is 16 MB. In that case, the I/O latency
+concerns I raised may not really apply.
 
-nit: perhaps add something like
-"Fix a typo in the comment (target -> targets)"?
+w/ that, please free feel to add:
 
-> No functional change.
->=20
-> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
-> ---
-
-FWIW,
-Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
-
-Thanks!
-
->  mm/memcontrol.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 6dc4888a90f3..3eedfc4e84a0 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2039,7 +2039,7 @@ struct obj_stock_pcp {
->  	/*
->  	 * On rare archs with 256KiB base page size (hexagon and powerpc 44x)=
-
->  	 * keep nr_bytes to unsigned int as uint16_t cannot represent the ful=
-l
-> -e patches/memcg-uint16_t-for-nr_bytes-in-obj_stock_pcp.patch	 * sub-pa=
-ge remainder. Such archs are not cacheline optimization target.
-> +	 * sub-page remainder. Such archs are not cacheline optimization targ=
-ets.
->  	 */
->  	unsigned int nr_bytes[NR_OBJ_STOCK];
->  #else
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------3PVOusf7gTMSTMxMX4UWEjnM--
-
---------------LgOrC2BRSzJunWsHWQMW456l
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajpHAAAKCRCGXBN6rc5S
-1l19AP9QHR1322qFfoOBeJdfJ6IA6ZpZt3Tz6oa0N59Be08okAEA9sJXP5B7C9O9
-pgwT4jOiILEhQIen/p8J71ZxryzPoQQ=
-=MJe0
------END PGP SIGNATURE-----
-
---------------LgOrC2BRSzJunWsHWQMW456l--
+Reviewed-by: Barry Song <baohua@kernel.org>
 
