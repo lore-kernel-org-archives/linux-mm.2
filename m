@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACA9CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:05:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65AABCDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:08:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9DAC6B0093; Tue, 23 Jun 2026 06:05:31 -0400 (EDT)
+	id 2190D6B008C; Tue, 23 Jun 2026 06:08:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4E3C6B0095; Tue, 23 Jun 2026 06:05:31 -0400 (EDT)
+	id 1F0476B0092; Tue, 23 Jun 2026 06:08:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98D496B0096; Tue, 23 Jun 2026 06:05:31 -0400 (EDT)
+	id 0E14F6B0093; Tue, 23 Jun 2026 06:08:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 708BB6B0093
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:05:31 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EC7B0166DCC
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:05:30 +0000 (UTC)
-X-FDA: 84910745220.12.61A2986
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1E3912000E
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:05:28 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iXq0M+bk;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D113D6B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:08:40 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 287A540461
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:08:40 +0000 (UTC)
+X-FDA: 84910753200.10.96B938A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8D31F14000C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:08:38 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hL8dPLl2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782209129;
-	b=I13dPi3NWzisFCFNexHONR+AggF6hfmebdIOn6HAY6albRRP2CQpXqZeD5gnR/xBMrxbqx
-	d7LP/IgV6G22kyrrVqzY0ymeTwiUb6G0dNUR5vxFWPaj6UN+/3QCeGRZCtceG8lZoLVkCQ
-	Vj10zJM6p1VyPO9HdnEvLiOPWQ8hEGM=
+	t=1782209318;
+	b=Loic4MWsPBGqaYwoFffjKLKG26hSre43848nv2Av5W8NZbU3a1mUhqp2IjvDtkXgZmcDel
+	br5EDnbQNxVxnsiziqZLZRU19JbairZClNDxjC/ReIBLz2MC56u8yVVbUg3wcrsbJr2a4k
+	X0ij/xDiW93OQSsW5cdpIZNWA8u7LMo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782209129;
+	s=arc-20220608; t=1782209318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3u1SRP8WX2qvNfRNBLXT6gUaHrTTwGTqNbq02MorydE=;
-	b=UMuwv0ftdBHiy91QIWeB6Q5ukVYNbQYF0HZ6UjQ56r/89b3wz775IEo8wfZldCZe47GEHA
-	FaQmc2fxlZiUz9kugsn11DvZY3oaliHInxKovwc75v/63cU4FYVJX1J21RxVp6XEqhFT/R
-	/Et3Jw5KIJ1zxdkJ2dRzeOrp2Xy9sZE=
+	bh=EarkyJBnDqnFqSO5fYETAhufrAjwPx1wYCTrBDOh/fE=;
+	b=qVlNhg6tW69AbYhSmQ5XbXCuJYM1aQ3iWPTQTXLWgmWvgbQWseloPmhm+o4637Atjbew0y
+	l2Hf3JHPdBCFRGljE974iLv34zAxGFzTtdONGkxxzV4vkduGnAj/v4rC25mBdKnVSpvaPF
+	zXqTkARHZRNfzgVy1991Pjl/SlkQOkE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=iXq0M+bk;
-	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85E0A1A25;
-	Tue, 23 Jun 2026 03:05:22 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AFEAA3F632;
-	Tue, 23 Jun 2026 03:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782209127; bh=iCAi4kghzK4zKgQDV+QmVx1z4g6L/JSiiDzsaIfIioA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iXq0M+bkRbXaLZQCmiCkj8WpNZ/Usqvwrkt6+n/60955gaN/J4rHZ0YTEueZa2S0b
-	 01YBisTnjFIJm7PScsGEomxLX4Qgk7odBt/1E9Q809URtPSf8oTt8gVaPCKGw093BZ
-	 W6+vDV1IdhKpFm6hx25sUQxsoSYjOKbXOkUfcsxc=
-Message-ID: <a969758c-1c0b-4f38-8528-e17810638c7f@arm.com>
-Date: Tue, 23 Jun 2026 15:35:16 +0530
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hL8dPLl2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2117D601F5;
+	Tue, 23 Jun 2026 10:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600C91F000E9;
+	Tue, 23 Jun 2026 10:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782209317;
+	bh=EarkyJBnDqnFqSO5fYETAhufrAjwPx1wYCTrBDOh/fE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hL8dPLl2eSFhMWTGjZ58D9t0L2fZD36v4cEpXmeX2vod1MEQmC7X8hrlRv0Smn/Oh
+	 YJ7IK/mRmly7OCs+bJIQSS1HPFID+F5LJKbQ57m5dt9ZW/5NpNSQ4l5Szb1LSn6qw5
+	 YJ52BgdHnrD+fKe5ZH37Gme6yEIj9PavF2ydwXFd0OFfGu2ButLzrPmFj4HvfJwAGc
+	 +uIn++yZEfbNM7UC6FYTz0/U+AppBVDLh1hVwEbomtV/AcBx5HQv5xbOo5VmijMA/w
+	 esMRBseeCQGVHTI+etOiDQSP2BFqrZQvKu5yfamQovWe5a3Fv8l+ocBeSVVf7lzxuf
+	 AJj63/YCOy+ow==
+Date: Tue, 23 Jun 2026 13:08:30 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: tarunsahu@google.com
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Mike Rapoport <rppt@kernel.org>, Breno Leitao <leitao@debian.org>
+Subject: Re: [PATCH v4 2/2] luo: Update serialized data to use KHOSER_PTR
+Message-ID: <ajpbHkuWiGQrUec8@kernel.org>
+References: <20260622225736.2961438-1-tarunsahu@google.com>
+ <20260622225736.2961438-3-tarunsahu@google.com>
+ <178220761164.162773.6384380547612711985.b4-review@b4>
+ <9huzpl1h37hj.fsf@tarunix.c.googlers.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/12] mm/rmap: Add batched version of
- folio_try_share_anon_rmap_pte
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
- liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
- nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
- baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
-References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-10-dev.jain@arm.com>
- <2a1781f3-741b-4073-b23f-f5cb3f0d98e2@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <2a1781f3-741b-4073-b23f-f5cb3f0d98e2@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 5bmcci9frzikm867yqwsm5qwfscx5oze
-X-Rspamd-Queue-Id: C1E3912000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9huzpl1h37hj.fsf@tarunix.c.googlers.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8D31F14000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782209128-407389
-X-HE-Meta: U2FsdGVkX19NWsEhOd+GNI3n798j+R2IZumyhOMRNjk+nOl68H6sq7uy87l2Thna4RaGlNioA+kZtEiwUPulpviyVd2+GHPg2QWgz3j5q5NkrBqTX1OKBeI8OZWHzX98gPA++C69Vd1a53WckQsdv6qh5vg147VfffyLnFyTnh9JTi5nlgPIqmBe2nn5FlLY4rq0grK+IcqC6r0tIu8YOmK84A/8tkzsM0et4XN33qsVS7qxFN7zQkG4R9woFYAOh6y8Q7S/zWopuRYwjceCO3mK9amhfOARk51z79CiRnxPBiMc22xyGY1fE61UZNz9+PrOWJsTE2X4LJbZR9Y0x8sQUYA3qfK3jVWah0e1jA66/ofCM1HD1ncYYrWNYYo6fPJ8Kt+edyozKtnid9fklSvMrnZkNcq5uvhmrqpjFUpPNxhXKvRU0JyR6lrtIR9lC3FHGX41VQ1WHnMCP7hCgj2D4vMLHY92h46PovFJV6XjN9eWI9HyRRUf1lQzXjyaFTFyOZV9PTLj5Tokc+yLzICx0ZIeJ1WSRda6f7Mwya1z+svVl/dX/rcKULumoX8Yja3ImiFLuA9qRzX25rRIFYV/Fr8TUMPN8NyQLUMiEZkOW1zX/haVQIcyfq1zp9ETBpLwKGvmIm6RXdWIbSYtt+rvOt3TZyXrDFNmf49HJovykBzISA7+cZe/ir7f50zCWI4vMYLOSLbrZWVmL8ZQfJtVzN+WxUcKJobeEqv4hLqYFufddQGxMAi4QmHtrpAtV6x7UHyw75CdyrVxcJIXIzEpIhpZf9vMK120QuhqBRrh/pu6/eBD1v8WBqsgaMICOfcA5iSiRfF/8/UEqv4tEcXKNEux5Ktximjgo6HlQDj08UWn6m9HZzmVzUna41uMAUFM5g8vWQS9e09p8mOE7LgN6Upwj66DueX3h+sqhQnWK1s0yAHJwSbXuFi7gLxXj7lW9CH1o0C/viVHs5b
- Zl23+Zx9
- UCASS6xQo5WibNCeYRmMPQhbWabEuqogRZHfciwUl5XAxdFVp4d1bR/keQluoFuJbj9uhLx0pglYdLUR2Jy9EDLoBJ3Rb/ZGPTrgy11Q0zHMV+S0kfcWb+C6qYM3KTLWvheKy/rD1gof+C6BZSjDovR8nXXlyFokMz+l06hor/BOu/DhEri9Pe4S+ko9k6TLoSG3g/bmadPBSnYAqRWCBd1bCutOrsHdAPJKISX6QY4SnxulMkq96XUt4oOpLkQGR9XDZgz1SnGPGtZ3U++H3UXxBX518QFnwCKSOWhsGZhVIFioIpayrlB0HfkM+1GTOpLAb7J9CH5I5yAWpxf3awVpElw==
+X-Stat-Signature: burgph1wc4c7wx1i4k1436qosf1zzc71
+X-HE-Tag: 1782209318-54349
+X-HE-Meta: U2FsdGVkX19m1HATnZtaJEP04rXqiqYp1NEc/MqPwCwIw0A017VerBEtsfoPHLBciErUaGZBT2FAmbm2Pwr3TqveOBz+dE0X9KALsql+3LdNDRrYZTUCAyL5AE7tsJZBYmvIGQ+lANd4i/V2Y2PQ1hwnAmcJvZnzt8VqViR+08DxZUAPtL9MHVUJD8jNI7rA9g5H0TaIi2CZ3iqiAQMgRu17DUYloWmkGuxVPRNGWZy9o6QcVSJpD5hk6AUmyIgq3bQZcqxamkZXh4wUdtA6ACnCRwb+iyCPI3Sra8iQOXLrSENqX/ptmaEAW6ii6WHSD3nFb2V/toEsZGtEK/roDepVwCXJaCSJRS4ud9paA0/szOBqZvjGte9BQBgdQOk98rIZJj1oGZ/CPaGl3iiqDwcGHuNX4sxIFwQdHTNdwLa80BITWsw9Tk9GqHmYKrPKQYOqL30EGcNcfgVgbIkTY8LmuzaRZQk1sXKU8gFQnClxuEF57VzpZ0rZDAmpooy4rp5vYefFw3YEvlbBQ7YDb8aq1NBskahrFE/ZqUs5XL7dHt6j6qiUkaektcZMl8099SNiEdAK9lKiz7NZV3NQXDPhzlmo7tmw+x6RXOkOCdheC8gKRyEpIabVRvIUWlNi3IMGLAUmvsrKlu5XkHy/20zz0qQU7waxwP+p8CiHf+95yFGfenGm9mFKH5oM0wROo6qZy+i1NblueE80Pcw76uH6nmHuarzpl1vRNUIeXDKqwaeyUnBH0jYNFGFQV5jVzO1/+YAMAbXjJdbF9+KdBfKmATufQe9C98kqC2FL/TBPz8rJE8u1/hAIGl0+L1bCnOE7NXBxHgPS/JfsCdY5soB8exom1ZciEUtkBwCkffnK6jMUt3ZtuPIJpx6lsIyaWu7zJKkBHPzooZtL0HW6fXsHKeQQs+HooHa1Uk0NEAvqCJ1ocbuDw8a0IYEWHC4ehC1yqn3ORkRYoszlBBs
+ 7Hlfm5ML
+ II005E+szoN3R3keeiBQiBp02+HxC5PDH16EeO/WOEkVxdI0NdOQuN5Zq32aEIaMFhgGRx2wb970m5Yiu1je4+fM/eW9VAXh6zmZHrSdCFnIhIzM9hxQlCQ8yOLJqCisbATHZAVOU52tm98lhsrENuKZq/JAiWf0aLhK3M4QH1cKmkzaw5VnULlJ/ZpsUIJ7cDx8cPKN5UgMVgleTn/4S5uhKYELDcntVSb5XjNDqrZSc+E+ftm8pJe44sUbiFY8RcJ+7kCveYUKbIe4y/WWXjIWNRtEvNPb97hzjKnoxjCsizx3Qob6o+MaDf5XS79Ibc3uoQJ8yho8L5WL7qi4nTtcnseuEdas0pwoF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,104 +97,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue, Jun 23, 2026 at 09:56:40AM +0000, tarunsahu@google.com wrote:
+> Mike Rapoport <rppt@kernel.org> writes:
+> 
+> > On Mon, 22 Jun 2026 22:57:36 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+> >> Convert raw serialized_data to KHO serializeable pointer (KHOSER_PTR).
+> >> This series also takes care of resolving the bug with memfd of using
+> >> phys_to_virt before checking the args->serialized_data value.
+> >
+> > For easier backporting the memfd fix should be a standalone commit that
+> > comes first in the series.
+> >
+> > Other than that
+> 
+> It will break compilation for individual patch. For example, memfd_luo
+> changes are hard coded dependent on the args->serialized_data
+> conversion to KHOSER_PTR?
+> 
+> Maybe I did not understand, Could you please explain what you mean?
 
+Sorry I wasn't clear. 
+If people think it's important to have the memfd_luo fix in 7.1, the fix
+should be the first patch in the series and shouldn't use KHOSER pointers.
+ 
+> >
+> > Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >
+> > -- 
+> > Sincerely yours,
+> > Mike.
 
-On 16/06/26 7:34 pm, David Hildenbrand (Arm) wrote:
-> On 5/26/26 08:36, Dev Jain wrote:
->> To enable batched unmapping of anonymous folios, we need to handle the
->> sharing of exclusive pages. Hence, a batched version of
->> folio_try_share_anon_rmap_pte is required.
->>
->> Currently, the sole purpose of nr_pages in __folio_try_share_anon_rmap is
->> to do some rmap sanity checks. Now, clear the PageAnonExclusive bit on a
->> batch of nr_pages. Refactor the function such that the clearing of the bit
->> can be done at one place without duplication.
->>
->> Note that __folio_try_share_anon_rmap can receive nr_pages == HPAGE_PMD_NR
->> from the PMD path, but currently we only clear the bit on the head page.
->> Retain this behaviour by setting nr_pages = 1 in case the caller is
->> folio_try_share_anon_rmap_pmd.
->>
->> While at it, convert nr_pages to unsigned long to future-proof from
->> overflow in case P4D-huge mappings etc get supported down the road.
->> I haven't made such a change in each function receiving nr_pages in
->> try_to_unmap_one - perhaps this can be done incrementally.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  include/linux/rmap.h | 52 +++++++++++++++++++++++++++++---------------
->>  1 file changed, 35 insertions(+), 17 deletions(-)
->>
->> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
->> index 8dc0871e5f001..64929490a7cfc 100644
->> --- a/include/linux/rmap.h
->> +++ b/include/linux/rmap.h
->> @@ -706,17 +706,18 @@ static inline int folio_try_dup_anon_rmap_pmd(struct folio *folio,
->>  }
->>  
->>  static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->> -		struct page *page, int nr_pages, enum pgtable_level level)
->> +		struct page *page, unsigned long nr_pages, enum pgtable_level level)
->>  {
->> +	/* device private folios cannot get pinned via GUP. */
->> +	const bool pinnable = likely(!folio_is_device_private(folio));
-> 
-> We don't seem to have a lot of users of likely/unlikely when assigning
-> variables, so I wonder if the compiler really uses that information then.
-> 
-> git grep " = " | grep "likely(" | grep ";$" | wc -l
-> 32
-> 
-> 
-> Maybe clearer to just push the "likely" into the actual two condition below.
-
-Ok.
-
-> 
-> [...]
-> 
->>  /**
->> - * folio_try_share_anon_rmap_pte - try marking an exclusive anonymous page
->> - *				   mapped by a PTE possibly shared to prepare
->> + * folio_try_share_anon_rmap_ptes - try marking exclusive anonymous pages
->> + *				   mapped by PTEs possibly shared to prepare
->>   *				   for KSM or temporary unmapping
->>   * @folio:	The folio to share a mapping of
->> - * @page:	The mapped exclusive page
->> + * @page:	The first mapped exclusive page of the batch in the folio
->> + * @nr_pages:	The number of pages to share in the folio (batch size)
->>   *
->>   * The caller needs to hold the page table lock and has to have the page table
->>   * entries cleared/invalidated.
->> @@ -797,11 +807,19 @@ static __always_inline int __folio_try_share_anon_rmap(struct folio *folio,
->>   *
->>   * Returns 0 if marking the mapped page possibly shared succeeded. Returns
->>   * -EBUSY otherwise.
->> + *
->> + * The caller needs to hold the page table lock.
-> 
-> Isn't that stated further above?
-
-I'll drop it.
-
-> 
->>   */
->> +static inline int folio_try_share_anon_rmap_ptes(struct folio *folio,
->> +		struct page *page, unsigned long nr_pages)
->> +{
->> +	return __folio_try_share_anon_rmap(folio, page, nr_pages, PGTABLE_LEVEL_PTE);
->> +}
->> +
->>  static inline int folio_try_share_anon_rmap_pte(struct folio *folio,
->>  		struct page *page)
->>  {
->> -	return __folio_try_share_anon_rmap(folio, page, 1, PGTABLE_LEVEL_PTE);
->> +	return folio_try_share_anon_rmap_ptes(folio, page, 1);
->>  }
->>  
->>  /**
-> 
-> In general, LGTM.
-> 
-
+-- 
+Sincerely yours,
+Mike.
 
