@@ -4,90 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A4CFCDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:14:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 774CFCDB471
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 16:19:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7062A6B008C; Tue, 23 Jun 2026 12:14:30 -0400 (EDT)
+	id 451346B0093; Tue, 23 Jun 2026 12:19:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6E38C6B0092; Tue, 23 Jun 2026 12:14:30 -0400 (EDT)
+	id 401C26B0095; Tue, 23 Jun 2026 12:19:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D4B6B0093; Tue, 23 Jun 2026 12:14:30 -0400 (EDT)
+	id 2F2FE6B0096; Tue, 23 Jun 2026 12:19:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3884D6B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:14:30 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A7DD916718A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:14:29 +0000 (UTC)
-X-FDA: 84911675058.24.E41630E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4BAB140011
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:14:20 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 045C46B0093
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 12:18:59 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 811ED4048E
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:18:59 +0000 (UTC)
+X-FDA: 84911686398.26.59B2B49
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9E2EBC0028
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:18:49 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782231260;
-	b=v53Ml4yFL1v2s0NDH1stGH+4p4u5w9N/o7Lvz+TyCaDJiFivMMbPkyx8s/Qawn81ZV/h5x
-	NJrHSCGlS+j/8lgkd33SpS5B3NjKWMLZE4BSyE0cx82/dcv+0UePx9Lk7FOfR0MQNRWp8c
-	AmwZ4LitbYnwwhb2sFLm3+SgiVOSeUQ=
+	t=1782231530;
+	b=3YckKcweNn2iFGB3QISEHgRav5nFeQvZjD4Qq7hwum+Xo5489AXqA2bfJ5dcU8cfdb1Rq8
+	gcyEDSsVsijpZq8XUxTZgJL5Ujt4nzpTV0JSiQQcIsNwfGOjR9hqCSFz+lMVtND/YHGnqJ
+	3QAZKxns8PH57rGZDHLlU1gdfghlhjA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782231260;
+	s=arc-20220608; t=1782231530;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PcajKOa6/fzwx6pWaVxtdohrAAfHL26/qCXeO5E8rLc=;
-	b=rWRAhJy4xf4FI9YrPAm/NmZO4MTqNvlwgWsXAAkHlVHloqstxS4iPPbEKdoWx4KXxmlbI7
-	Va585XtIyMCkOwwJDq7KVZ3D9wL0Qen8sAbW+j8GnwuuEkJEgs/QtbE0ni0W1BJKwM0+vc
-	lRwWw3zwufOJttejrdNLNNKxCf4yico=
+	bh=SMgY2n1EfLvlRsgBNgA9MAjJMVDDa30z5+bZN/hVjek=;
+	b=hO+SNrYxc/YLWa0X7xZDqKA9dEGGDrubFFGk0uIzBX40ZVgy9c11ufyim1qrM8mi9G3LZK
+	OV6/yrRXlzQX6p8GPCgAyAmL5PuxQKz7teSAMqYmQ2NIEfWEAbsfqg0UQgn+o9930ZXYJZ
+	QOU5DfzlKh7VDZdt+vcsJt2yfjfm+gk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VUvN9dWT;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7346E43D0D;
-	Tue, 23 Jun 2026 16:14:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEC91F000E9;
-	Tue, 23 Jun 2026 16:14:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782231259;
-	bh=PcajKOa6/fzwx6pWaVxtdohrAAfHL26/qCXeO5E8rLc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VUvN9dWTAFZGuCKtcfMvwtECLwgU5Wn05mBuXFWgGS2j0291eyLug/KqLvXNurhj/
-	 8XotdQA07OI7UyAE1bzQQth+XawZek8UmEXl5zi6EpiYijhaMUlUJJvhJFaRD104BV
-	 WSewTcfsySn74qg/SifAN6imZ0ebWGBZX9eMMD5P3Up66ERqjHY6jHDFS9zow2Whvo
-	 EH9CmPWwa04RWZUyBQ6oqDohYdic1xUJ9pxNV4PSDsEqsyvdBuzfIV+aHFobf9FdME
-	 gCMk4kdb3Ug2lmPiMTQaaDPOtCOcdeMdsSuEkgncoxS9U/PjwQFvHs1W+y7sglXYOl
-	 cOVui2PvK+BAg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: tarunsahu@google.com
-Cc: Ackerley Tng <ackerleytng@google.com>,  Jonathan Corbet
- <corbet@lwn.net>,  vannapurve@google.com,  fvdl@google.com,  Pasha
- Tatashin <pasha.tatashin@soleen.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  sagis@google.com,  aneesh.kumar@kernel.org,
-  skhawaja@google.com,  vipinsh@google.com,  Pratyush Yadav
- <pratyush@kernel.org>,  david@redhat.com,  dmatlack@google.com,
-  mark.rutland@arm.com,  Paolo Bonzini <pbonzini@redhat.com>,  Mike
- Rapoport <rppt@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  seanjc@google.com,  axelrasmussen@google.com,
-  linux-kselftest@vger.kernel.org,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  kvm@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [RFC PATCH v2 06/10] kvm: guest_memfd: Add support for freezing
- and unfreezing mappings
-In-Reply-To: <9huztsqtmihs.fsf@tarunix.c.googlers.com> (tarunsahu@google.com's
-	message of "Tue, 23 Jun 2026 14:36:15 +0000")
-References: <cover.1780676742.git.tarunsahu@google.com>
-	<48777f4749fa43d5648085dbb2037aa99c144a88.1780676742.git.tarunsahu@google.com>
-	<CAEvNRgFEHciT3T9y+qEYRvXhDwfrggoU7Rm=f9hT3OrV+wgpNQ@mail.gmail.com>
-	<9huztsqtmihs.fsf@tarunix.c.googlers.com>
-Date: Tue, 23 Jun 2026 18:14:14 +0200
-Message-ID: <2vxz8q85mdyh.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf22.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YhRj2pAr;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf22.hostedemail.com: domain of lkp@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782231529; x=1813767529;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SFi46IF8yalXzd16nCzIQcS7FPO5l+ORfyWSuo3aTco=;
+  b=YhRj2pArjFqYlTGlFFZzJAUHykagXyfOfW7gXEr6CZ06yZi3rUWVxAL+
+   Kui6QEP4g4JG/NrsUIczzcwoYUxgYzKNSgZIV/NYVCDGLUT1GyZwjWENq
+   kHRG+QJ7Suy55hB5850kSDixquaBNcXxgv5aNmFIVunS4RCthsMSGOZG1
+   9jMeBaDha6tg6/Ld03hOk4CmYb/WhPr/VCIVKAo6w4qg/4NvjNu9EYrey
+   iOqhQ5y4LBhDmxNhZu32jbVWeC02p3GR9eFtSii91ccnznC3Ti2J8Yprq
+   DecjgED7qJ8tUhHPAA3yrotVl+ttShntYpbKzzsLlfF0RmlWvztzgpw4q
+   Q==;
+X-CSE-ConnectionGUID: MVU+Ho+CTWedu8s68rWNlw==
+X-CSE-MsgGUID: +y+mDuw1TASSfEEDxiN8ww==
+X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="94097752"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="94097752"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 09:18:43 -0700
+X-CSE-ConnectionGUID: I16HtoYWTq+aZtMBuje4iw==
+X-CSE-MsgGUID: LEQN8IzHT7+niBMXxLJabA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="249672676"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 23 Jun 2026 09:18:40 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wc3pc-000000002hV-1Zpf;
+	Tue, 23 Jun 2026 16:18:36 +0000
+Date: Wed, 24 Jun 2026 00:18:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, ljs@kernel.org, riel@surriel.com,
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+	jannh@google.com, sj@kernel.org, ziy@nvidia.com, balbirs@nvidia.com
+Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
+ before return device-private pmd
+Message-ID: <202606240042.ffPsEXVc-lkp@intel.com>
+References: <20260622130651.23359-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-HE-Tag: 1782231260-94450
-X-HE-Meta: U2FsdGVkX18ANt8vRmsGIOFge/59JH4LQC7BeU1nmfz2WVxUzJuVH5qqrgQUkwqxj/5dr5Ih54qxIHSZDemsl5mjrDrG4JJhUyJB6Ad2Evbcs9Mt+QYpf7ThuLLiuci+kVIJ0wdznTaE9tJKGiLQQNhcxaNtRGNvyFHJn3gP5FdtpL6rU6kZ4B39Kg9CVmuSVQqv2r6ot7fIFcghO0ymx17J/Jh/60WG7oFOEafGDz240VCHfw/y93fMuBfax6/+n85aXir/mDzE/3PfHoBVFJMLOXRWNyjX93IEYF6yvYbvIeMP6LdAoaFLe55sgUvr+oRYSMjT2fGBAzU/JVCHiwcxijCkg8q7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260622130651.23359-1-richard.weiyang@gmail.com>
+X-HE-Tag: 1782231529-502928
+X-HE-Meta: U2FsdGVkX1+n/eA9A5RUFs1CdthxKlxEuxMBM5aj8XektY3ppgcRMD2QHytcFrD/fvLVyWcVmvQ63ompBgRdfhKidNJHlMgTSpiLobc8Md4gHX16X5H5YJ9GRPuPJ42SohFW8nFOBT1Wefic8n9mPEI59XlGbhWNdys1kp/5yXgwWqwcQcB05+O8n3hDSFvn+SgwUVPzngBjpp4xAF12DP0+tEsCLrH9snFqyPiuoIBLl8r0mU80NHnhc75P+DRleVF/mfhFlzrQ2CMQF/wbxaxS5lC+SLfmGNt8nUj6yhgG4AKCkqHrQYQfGoj11ZQj1t9znB8//LhRUID4BKtwgpTmkwFv7l6oEL2A9WL1QCS4tw41cSjuV0WIPvHV58l41PVbEf9CDR/OX0Q40yBFqBryUVo1FnRp/uEiNf1h89eqB1GtNFnuf3+HBtNmYkE5CV2oDkmlUQaVWmVeVRJABNw3k0nHTxWCovTJY8CyMXcyT5Zy7JBkM3J7Oh9ts/Gh/BWufB9NJPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,85 +100,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23 2026, tarunsahu@google.com wrote:
+Hi Wei,
 
-> Ackerley Tng <ackerleytng@google.com> writes:
->
->> Tarun Sahu <tarunsahu@google.com> writes:
->>
->>>  static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
->>>  			       loff_t len)
->>>  {
->>> +	struct inode *inode = file_inode(file);
->>>  	int ret;
->>> +	int idx;
->>>
->>> -	if (!(mode & FALLOC_FL_KEEP_SIZE))
->>> -		return -EOPNOTSUPP;
->>> +	idx = srcu_read_lock(&kvm_gmem_freeze_srcu);
->>> +	if (kvm_gmem_is_frozen(inode)) {
->>> +		srcu_read_unlock(&kvm_gmem_freeze_srcu, idx);
->>> +		return -EPERM;
->>> +	}
->>
->> fallocate may eventually go to kvm_gmem_get_folio(), so that would check
->> kvm_gmem_is_frozen() twice. Is this meant to catch the punch hole case?
+kernel test robot noticed the following build errors:
 
-Yeah, I reckon you can get away with doing this check only in
-kvm_gmem_get_folio(). Normally you'd like to fail early, but as of now I
-don't see much of a problem. If you drop the check here and fail in
-kvm_gmem_get_folio() you'd end up taking and releasing the mapping
-invalidate_lock, but this isn't a fast path anyway so I don't think it
-should matter much.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-I think either way can work just as fine...
+url:    https://github.com/intel-lab-lkp/linux/commits/Wei-Yang/mm-page_vma_mapped-revalidate-and-do-proper-check-before-return-device-private-pmd/20260623-012838
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260622130651.23359-1-richard.weiyang%40gmail.com
+patch subject: [PATCH] mm/page_vma_mapped: revalidate and do proper check before return device-private pmd
+config: parisc-randconfig-002-20260623 (https://download.01.org/0day-ci/archive/20260624/202606240042.ffPsEXVc-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260624/202606240042.ffPsEXVc-lkp@intel.com/reproduce)
 
->>
->>>
->>> -	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE))
->>> -		return -EOPNOTSUPP;
->>> +	if (!(mode & FALLOC_FL_KEEP_SIZE)) {
->>> +		ret = -EOPNOTSUPP;
->>> +		goto out;
->>> +	}
->>>
->>> -	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
->>> -		return -EINVAL;
->>> +	if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE)) {
->>> +		ret = -EOPNOTSUPP;
->>> +		goto out;
->>> +	}
->>> +
->>> +	if (!PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len)) {
->>> +		ret = -EINVAL;
->>> +		goto out;
->>> +	}
->>
->> There's some reordering here. Why not let the validation happen like
->> before, then check kvm_gmem_is_frozen()?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
 
-There is no reordering, if I am reading the diff correctly. The diff is
-somewhat misleading. The kvm_gmem_is_frozen() call is added at the top
-of the function, and then all the later checks are in the same place but
-get a goto out (and hence a full body to the if block). So the diff
-reads like reordering, but there is none.
+All errors (new ones prefixed by >>):
 
-It would be very neat if scru had a cleanup.h style scope-based locking
-function, but on a quick glance I can't see one.
+   In file included from <command-line>:
+   In function 'check_pmd.isra.24',
+       inlined from 'page_vma_mapped_walk' at mm/page_vma_mapped.c:283:11:
+>> include/linux/compiler_types.h:699:38: error: call to '__compiletime_assert_406' declared with attribute error: BUILD_BUG failed
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                         ^
+   include/linux/compiler_types.h:680:4: note: in definition of macro '__compiletime_assert'
+       prefix ## suffix();    \
+       ^~~~~~
+   include/linux/compiler_types.h:699:2: note: in expansion of macro '_compiletime_assert'
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+     ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:40:37: note: in expansion of macro 'compiletime_assert'
+    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                        ^~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:60:21: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+    #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+                        ^~~~~~~~~~~~~~~~
+   include/linux/huge_mm.h:113:28: note: in expansion of macro 'BUILD_BUG'
+    #define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
+                               ^~~~~~~~~
+   include/linux/huge_mm.h:117:26: note: in expansion of macro 'HPAGE_PMD_SHIFT'
+    #define HPAGE_PMD_ORDER (HPAGE_PMD_SHIFT-PAGE_SHIFT)
+                             ^~~~~~~~~~~~~~~
+   include/linux/huge_mm.h:118:26: note: in expansion of macro 'HPAGE_PMD_ORDER'
+    #define HPAGE_PMD_NR (1<<HPAGE_PMD_ORDER)
+                             ^~~~~~~~~~~~~~~
+   mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
+     if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
+                ^~~~~~~~~~~~
 
->
-> To align with design. "stop the fallocate call if inode is frozen, No
-> need to go further". I dont have strict opinion on this. I am fine with
-> taking it across punch hole as well to make it more fine grained. But it
-> will no longer claims stop the fallocate call (allocation one is stopped
-> in separate path: fault path) , though functionally it does the same
-> thing.
->
-> WDYT?
->
-> ~Tarun
 
--- 
-Regards,
-Pratyush Yadav
+vim +/__compiletime_assert_406 +699 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  685  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  686  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  687  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  688  
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  689  /**
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  690   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  691   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  692   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  693   *
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  694   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  695   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  696   * compiler has support to do so.
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  697   */
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  698  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2d Will Deacon 2020-07-21 @699  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2d Will Deacon 2020-07-21  700  
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
