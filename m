@@ -4,94 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0445ECDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68C1FCDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA3126B008A; Mon, 22 Jun 2026 20:23:51 -0400 (EDT)
+	id 49CFE6B0088; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7ADC6B0092; Mon, 22 Jun 2026 20:23:51 -0400 (EDT)
+	id 44D216B008A; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D928B6B0093; Mon, 22 Jun 2026 20:23:51 -0400 (EDT)
+	id 33DC06B008C; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B07096B008A
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:23:51 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23FE31C54A8
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:23:51 +0000 (UTC)
-X-FDA: 84909279462.07.1402F4E
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DA436B0088
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:29:08 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76452A0305
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:07 +0000 (UTC)
+X-FDA: 84909292734.03.A2D232E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6D4A91C0007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:23:49 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGcL9jYX;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id B2097180002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:29:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mwd+82e1;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782174229;
-	b=pdZYIRLTE7mYke0erqjULEaRinQKZOjqGyUHlb3IvN7Msw7/WxqzcSCssEfsvayA+9KwKP
-	SI75iPYVKpIGbajEyfwkphH+lUmTiG4WAOqGAG6a7yaxY6vWdBn7tzFehznPKBeCkGb08x
-	yLliVJdjDEqU8YaKza5pV+sIjA06l1I=
+	t=1782174545;
+	b=ZMOdTFzfRUY6D9gP4tiZW6oJwwy73tgmJH64z6Io3wBb0JjkbCqNKMPLW+wN5pJvRyUGbO
+	2IrQKausdnih9WJY27XM3wEIaZe3jkC7aTBiMgT4Le/YrA2LS28VTJT16nlBw/Uyrgd4hl
+	PPsvbZVXIf5oc0fN7v4aSGaWq3ZGpiI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782174229;
+	s=arc-20220608; t=1782174545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YHit9r0IoRMWbFlRiQsg1wNHzJglnuxwq3p+QyJDFZY=;
-	b=SWkBvROp6M5QGT16QW9yXqJ3OQvFfIIHCYyntzOWoOuZEN49ZpDEBhn4/bpH4dZe7Yu3CA
-	amQgff008oKI1M5vCJmzgFWAID+4Mg84BUuD5/UeDu5R1hv+Q6lWmHckIkK9aXdRcHc3jL
-	Ou4sMgbb5M/OUYbM5WNRHZ+LZUvxW2I=
+	bh=eK03vkkuyEwvtYJT6roqYFJxffy2Bhftb2nbg6xVsZU=;
+	b=I78XibiqKA3swx00P5ees86kLvsle2F0XIJU49+8IfsCBmgHwwBYKV4s04fszujR/2Zqr6
+	p1oE3J/jqn6u1iDoz4QdknP1cYrO8Y6tnluVnaqAI3h0FmyJdf5hdUM7MCkCbFkUUW8M9/
+	kOxV4dVK3addse9jmxA/Tj+68P5SOcw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iGcL9jYX;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mwd+82e1;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A337243ECC;
-	Tue, 23 Jun 2026 00:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CFFE1F000E9;
-	Tue, 23 Jun 2026 00:23:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CF9184028E;
+	Tue, 23 Jun 2026 00:29:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D821F000E9;
+	Tue, 23 Jun 2026 00:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782174228;
-	bh=YHit9r0IoRMWbFlRiQsg1wNHzJglnuxwq3p+QyJDFZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iGcL9jYXrRA14FgJKhdYXvQW/0W0QLe4XZcr0d0Qs59PcihXu+134azYTICi0lOlk
-	 MRDU3duuHCQaMZOSZGdhdae8ywcybNLcB4seQOx6fIxF6Uzu5GfQ9Uu9Rg0QTXplPq
-	 c3JB+C9wbNcH5tTYFEcMUa+FsR/zaV0KsNrgFvpXydh0kUMJNKl7uWQAWYp0522BDa
-	 mRKpEK1t3NjGi9h+5SdKxtGdXUsOpNI//cetu+Fgr3sjbIb0yT2ghLqS9M+T5jqncQ
-	 WTC9Z4GberOxNy0bYADldKqRDU4fs8FZl7kAo2fb0mg4VPBKuPR6P8eKZ2FUZsBgIP
-	 wv0UOybOxFlFQ==
-Date: Tue, 23 Jun 2026 00:23:46 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, david@kernel.org, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
-	haowenchao22@gmail.com, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [RFC PATCH v2 3/7] mm, swap: support physical swap as a vswap
- backend
-Message-ID: <ajnRulrxAKnZavOl@google.com>
-References: <20260612193738.2183968-1-nphamcs@gmail.com>
- <20260612193738.2183968-4-nphamcs@gmail.com>
+	s=k20260515; t=1782174544;
+	bh=eK03vkkuyEwvtYJT6roqYFJxffy2Bhftb2nbg6xVsZU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Mwd+82e1EzaV3w22I6l+SlqzIz/Wi1uZWOCYPOu8bbxZOTC3/h16/v+eXyOre5tEF
+	 b0N4/ZT38HIetJhbF6a9c3awp27F3tlQSPhi2TCHkZF2DSN5EJS5LRlflFKXprFJt5
+	 fRW1Npm41jV+UB+r5LQZrwUkxTVmfbnQBo4FYvcbrQ0RCyNJhJKnjvIpQCY9GtJDsO
+	 nY/QMIrx5MYqfgBO5KmZSEM+jFuWT/DXTTf1UitxJ/RYlGQjPjkFdcx2NM+EVkdNCP
+	 ZHgOWlkOsGtSta4t1yn5+JJnt9a2g74DfnyKe7Q+QrGlHrDhvEW2gtVIIeoeib6jSC
+	 691bcbnOt8XbQ==
+Message-ID: <2f4c0914-1459-4895-bc64-345b80afad2e@kernel.org>
+Date: Tue, 23 Jun 2026 09:28:59 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612193738.2183968-4-nphamcs@gmail.com>
-X-Stat-Signature: dchj6mzipb4q6o3qafw391ktjgdc9aoi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260622155913.280355-1-ljs@kernel.org>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Y1cniXBnvQmmPIIYzS5Sh721"
+X-Stat-Signature: bg7aqhym8map3q8nyb4p5makzhmcznai
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D4A91C0007
-X-HE-Tag: 1782174229-786142
-X-HE-Meta: U2FsdGVkX18mHyzTLIiwm11yFdyki088FVarkgnybq2Z50QmpF0CIgUyDJPJVYcCDsl0OnGYZa7JrwiB0bQgQTscIvBW8O2XeQpzpcrl3dNuqjcQbda4O8uIS4G3+89e0r/sBQQjFUHt9QavjgkdX1/R0KCwmJ3gtDu6Tv5pgypl3nU/+8JDfR8YNanFIIPF8WJ2MMyjHe8rqyI4SakdTsmA++z8s2uus0EbpGRJgrnyn0BFKLhp/28phVlBii1lRxUtAB2ecIWEdws9pHiLebnKQ+upV/vNxFSEpXNS89BF0RwEblcTvbIwnM9cPpDgHcR6W5KgZQbQNJWzDTTZPezRrcrD2fAauIJNmh7ClQ46oKWShxhUAbI1tqFyauFu/wwjNxDKCvlNj23zlD3A4qJL7/byFpmTJGP1bGnZjXoaEX0ve75au2jsSGzq6AyqntZk5BXCwhTHOx0fYmV+j9ihdFsc5nlU2JO0mb2J83poIeYZApZtuUhiY4WAlpwH1wdU4yefxmzko1MO7iS3UVognuZHje+oUK9oem+GJimNLQ2cHPfAmlHXvE31luXX8//dwZkYoSUTKtBPocKiH+m7R0XG50YF5m/+anOHErI9WzeNtHkwnxJhO/EoGl8JLGfn4bUV0QUbx/Tv/EJ+zZLjSukRneN3NYRM6g/M3lJsvOi2dd+v2vKrctNd1TKXiSs1zFCID1WSOZaRYkhcvqvUsmUmoNNf58h8fhPm5jcXbjzpWfYIktsSCNvpBK4CYNIQldIo6uT6sLpc+MnLARcLoUfHi583sIbmpD/ej2UERTUecr3ZDAWDcySnDXB43FUOxBANvWllVt4ZnHYAb4jW2Ytm1zUACjcEU3LCZq+MoAZFP60dwnEbeQ5Q0WMWgDhCQsoNDrIOHp/jozeG/zuLeX1Jj9MBgCbeDfdYlFQdBN5uW55nhDCrhJpsDw+MiXEoqxY1Hg0/f0HpUwD
- TZ4zqHHR
- PvPYAsFnqpuDj3ppyoWVgUyDtsYgCykyhEb1xvnoW1izniAYt/BJDw1HmOZfsig/d+Po7x7MmSuNZpaqKp2kM7hGdQgiu6rwgTkubvDHhyV1IBNbUGd3G7EHX5nMyzhcAaOZFJK98bj55mW6s3vRt593ferpVDBbj5Qf1u8Fn5RtxOXp6IEklU9WrTNaexE7CIXqcSmJwDTMDuAA1zfhFV9mViRdf5q49ER+KhWP5qgoqcFFLqmYzOdH1dXQEsffnO6F20QVTbb5GMA6X8qf/wm1HmIrEMXUt85bQEPxQydqovLzC01ndCMmCP+Z8yMfPupepj8BDVLD1x44=
+X-Rspamd-Queue-Id: B2097180002
+X-HE-Tag: 1782174545-923515
+X-HE-Meta: U2FsdGVkX1+2+fVa2BX0EoUUlDj5NsLGHt9lkWYzy3iob7Z0ajPRT9OWJPmdi6A+JPLxhPQTA1FvbQyJHbZsZu5+BQTgdSj1eDeXUxX3l0So7Gfls6V1zVcuMVC/AW8T4YFHW6Ex2hUrHo/tn5nEjCDsb5gNEKaK/IjZwO4H2YQXdWF8ovdjqVKEsV38w/Y5bfMt0sKMf/ytFWcnrH5A3d/+mz/Y/fSUFtkWnJApY3IUoF1tACo8QXKWxFcQRnTitBjh6gn5jHS9LUQPXfmG6tJssHTHgsbxH+ZEgVRCtVLacrsQYHxu3CwKrvzJiwzLymzuOuYcaaccLzTW3NfSeaYvUE01VmDx1K4erD8zYD+FL4Bztahg/Cr+bY6BEF8sT8CPV4f4xJU4QBnuo4HYZOsg9wgYjrbImF56/B4gsVwKzBuW34+VX+RaXHxOxg6jjL/3KJ2x/pPBrrYSJzkbA2lLxZqntTCTecK1DME3UcneL+9BwXjgNyLlow+xZbdZQ6YxhB/T2deCFWa68+wDAkYKxMwWvCd35omFCg9AX9n/nIMHu8UD6AfE9P2x9s4d5tPz6XnrXnhuj5zQQ3H94OYNwFry4TjhOxFXb/XP8M93wDXSAd1X/IKvbcqlUrvKKeHEvuLFxJ9mUm/A9ny6el0qbmw9U4m57sZQs20B8R2dJ8sIRwBZi5pbgqEmtpkKePnY+A+tF06lTvAc6FvLFVIFEDyexARHNmZMISOFB/52bRP6YlS/nC9T9Wvr8n6epjP10WJWXPCN4OYUSdUvyGNhwFBSczjsxH/Tls3ZA8DWxJ0vESj3tqbobhKDobUXi6GgIXe0nXXEI0ilLWNQcFRn5UtE91O4B2roxVmg8XnEbWSOqNS19to8tIYIEIeM0WUDRVZY32gtiZX3j4lLy502ezvyEXzRbgMUXDB2LeJAx8rcWDDUpKRqSK2VxiRP8KE9VIq1RBr55QCbAEb
+ lesSszF1
+ EMK6+UV+Xom4br4sRw4CF6j5jh1GYwCxUNxP1f0uiQZOnYWXQ0ZD96cMhQUR1RJj9aGgypvOY4X2viC4BVq5FGIwj0pa9HYeexn6FmDSBXdEhrZHHfAT5dSaUYBo+p7y3BBSEdCHrksc0Ishk+jkWkjnvTljIQYSObVYgbKNF6rhIFVuP/Gwl7o+iuJW/A1KUwV7Cd++Z7p3YuE9THhCXUFTXiS1qsj6ZUJOCHkvFFFVrjt51d6D3fMhATw5wxlsZtws7LvqKwVpyq1RZU103q3EIvLr3tInrKO/qGOc60iJyIeaqzJmItn9LsX2GMTpgIaq8Kgxees/cAAoDMUap0gEtvCWSSGRsQVH0VxBUwkzw+99xCyDw7srSG+BFR4yeWiK9Wh3nyp2iu9wqRBu0Cv9TV71uLoNBcMgDdP1BOWIQL+2AVvK60Dt3/bLEPlc1PnQdSREQJTnWFEr9ay06loOZsrq1na2qBalU/OD0aYQwl6M38LkeHUpfzg7uhcxU1lrQHyZi5j4yeWReyJk/w2xwdtCyymCvf9wAxYAUbm11Y3UBke1m+7kzb0nKG7aqPpiP7nxSP1DE8aaqMZoUp6rqkG4lh0AauhWS7smhassOLAQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,89 +96,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 12:37:34PM -0700, Nhat Pham wrote:
-> Add physical swap as a backend for the virtual swap layer.
-> 
-> With physical swap backing, vswap can allocate a physical slot on
-> demand when needed: as a fallback for zswap_store failures, or as
-> the destination for zswap writeback.
-> 
-> Each vswap entry's physical slot is tracked via a Pointer-tagged
-> swap_table entry on the physical cluster (rmap back to the vswap
-> entry).
-> 
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> ---
-[..]
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 466f8a182716..5daff7a25f67 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -993,6 +993,7 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	struct folio *folio;
->  	struct mempolicy *mpol;
->  	struct swap_info_struct *si;
-> +	swp_entry_t phys = {};
->  	int ret = 0;
->  
->  	/* try to allocate swap cache folio */
-> @@ -1000,16 +1001,6 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	if (!si)
->  		return -EEXIST;
->  
-> -	/*
-> -	 * Vswap entries have no physical backing - writeback would fail
-> -	 * and SIGBUS the caller. Bail before we waste a swap-cache folio
-> -	 * allocation.
-> -	 */
-> -	if (si->flags & SWP_VSWAP) {
-> -		put_swap_device(si);
-> -		return -EINVAL;
-> -	}
-> -
->  	mpol = get_task_policy(current);
->  	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
->  				       NO_INTERLEAVE_INDEX);
-> @@ -1028,40 +1019,78 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	/*
->  	 * folio is locked, and the swapcache is now secured against
->  	 * concurrent swapping to and from the slot, and concurrent
-> -	 * swapoff so we can safely dereference the zswap tree here.
-> -	 * Verify that the swap entry hasn't been invalidated and recycled
-> -	 * behind our backs, to avoid overwriting a new swap folio with
-> -	 * old compressed data. Only when this is successful can the entry
-> -	 * be dereferenced.
-> +	 * swapoff so we can safely dereference the zswap tree (or vswap
-> +	 * vtable) here. Verify that the swap entry hasn't been
-> +	 * invalidated and recycled behind our backs, to avoid overwriting
-> +	 * a new swap folio with old compressed data. Only when this is
-> +	 * successful can the entry be dereferenced.
->  	 */
-> -	tree = swap_zswap_tree(swpentry);
-> -	if (entry != xa_load(tree, offset)) {
-> -		ret = -ENOMEM;
-> -		goto out;
-> +	if (swap_is_vswap(si)) {
-> +		if (entry != vswap_zswap_load(swpentry)) {
-> +			ret = -ENOMEM;
-> +			goto out;
-> +		}
-> +		/*
-> +		 * Allocate physical backing BEFORE decompress - if it fails,
-> +		 * no wasted work. folio_realloc_swap sets vtable to PHYS,
-> +		 * overwriting ZSWAP - the old entry pointer is only held
-> +		 * by the caller now.
-> +		 */
-> +		phys = folio_realloc_swap(folio);
-> +		if (!phys.val) {
-> +			ret = -ENOMEM;
-> +			goto out;
-> +		}
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Y1cniXBnvQmmPIIYzS5Sh721
+Content-Type: multipart/mixed; boundary="------------7HTyjs0BAWD8GdgzJmGY714K";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lance Yang <lance.yang@linux.dev>, David Hildenbrand <david@kernel.org>,
+ Rik van Riel <riel@surriel.com>, "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <2f4c0914-1459-4895-bc64-345b80afad2e@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Add Lance as an rmap reviewer
+References: <20260622155913.280355-1-ljs@kernel.org>
+In-Reply-To: <20260622155913.280355-1-ljs@kernel.org>
 
-I didn't look through the rest of the series, but are there use cases
-for calling folio_realloc_swap() without calling vswap_zswap_load()
-first? I wonder if the realloc_swap API should take the swpentry
-directly and do the load within? Something like
-vswap_alloc_phys(swpentry, folio)?
+--------------7HTyjs0BAWD8GdgzJmGY714K
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+
+On 6/23/26 12:59 AM, Lorenzo Stoakes wrote:
+> Lance has been doing excellent work reviewing rmap series and has prove=
+n
+> himself to be a great member of the community in general, so add him as=
+ an
+> rmap reviewer.
+>=20
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+
+Welcome, Lance!
+
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 65bd4328fe05..dd963b72c614 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -17024,6 +17024,7 @@ R:	Liam R. Howlett <liam@infradead.org>
+>  R:	Vlastimil Babka <vbabka@kernel.org>
+>  R:	Harry Yoo <harry@kernel.org>
+>  R:	Jann Horn <jannh@google.com>
+> +R:	Lance Yang <lance.yang@linux.dev>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+>  F:	include/linux/rmap.h
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------7HTyjs0BAWD8GdgzJmGY714K--
+
+--------------Y1cniXBnvQmmPIIYzS5Sh721
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajnTSwAKCRCGXBN6rc5S
+1t9nAQCkngTYeGWxrp8gqpHof5x7TV1WsqM4uBEIMrk2WAXI2wD+JWU66F/R7xr/
+HiqHXR5AP3FS0tgNAvMWJStfTiZg2Qg=
+=N6jl
+-----END PGP SIGNATURE-----
+
+--------------Y1cniXBnvQmmPIIYzS5Sh721--
 
