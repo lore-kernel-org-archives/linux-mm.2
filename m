@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D006CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F09ECDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:03:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56E966B0088; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
+	id 2FE966B008A; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FC96B008A; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
+	id 2AFF76B008C; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 435896B0093; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
+	id 1ED556B0092; Tue, 23 Jun 2026 07:03:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B8106B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82D40167096
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:16 +0000 (UTC)
-X-FDA: 84910888272.27.5D672C0
+	by kanga.kvack.org (Postfix) with ESMTP id F146E6B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:03:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B742165AF6
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:03:00 +0000 (UTC)
+X-FDA: 84910890120.14.00243FF
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 81E5880016
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CHN+T5lu;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id B3FDAA0011
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:58 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dlyVYc7G;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782212534;
-	b=b9E1GPFRgqRIrQ/dwSpYZh8OU2QEMcoL3lTZSHDquEWSkdofUeN9xM7sobV6SNCh5jhiWJ
-	oM5lo00vZyzYYbla+bZ8KmUU96aNXdrjY9H/npNgDtuQ1PFac8eWRSdNt1fQZ4mOKnQRRH
-	5HqqRKHh0htnLb0IuagFYrbcKzQB/Fw=
+	t=1782212578;
+	b=BJ8DPPPNTrA1sn1KxHbWRwIrz69oUeau1rA/KIxFrnozGRTMBs7iZ+awALjn/1bT7gsolK
+	Qcy5UuSQvyAktyi212lDEpaVkl4uU09J3sofuZ5ctB1hZkznnxy252pp/E/WvZ7/m3e8ks
+	3u2E+/MRWQog3agO16Ih8mRd04QFV1A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782212534;
+	s=arc-20220608; t=1782212578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJ/TFjGz9/DEinmkZepeeG9TrmCfiFJujx696mgwKjY=;
-	b=II5OWoZHBos2fgMwVcQgpQ54LqjQI/dtVMY/H6N2RnfQmPilOasQYqsu1NqhRAw5PTfOj7
-	P45EZmHyM1o3NsBb2ggkR0fmnCbPf5YH45Z0auGdc/yhil14BF8LOLRI62FkVD4iu5+efK
-	BiswObeFRdS69KmuOY8495nFXQZAWSs=
+	bh=d/ElG25trDLXT4uWjPEZOjtfFQm7and7DsyLONax6iQ=;
+	b=S8I+9o94qC0BgC9t8a1a/UES+beSZaP2H/E2qceKBsF9VwFJ4YzofZoMO4KRKuGbKsUROB
+	qE0kvUBsMOMlnMFs1NHElY2jeHMs+Yhwx04fLjDsOrwwK5BsD4FYp2WRkfCvll/47t+Idh
+	TjIOuQEmIEHQAqrLgyvahDE8CD8Y9Ak=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=CHN+T5lu;
-	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=dlyVYc7G;
+	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAF6A1A25;
-	Tue, 23 Jun 2026 04:02:08 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 54CFE1A25;
+	Tue, 23 Jun 2026 04:02:53 -0700 (PDT)
 Received: from [10.164.148.38] (unknown [10.164.148.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 503EC3FA1F;
-	Tue, 23 Jun 2026 04:02:05 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7A95C3F632;
+	Tue, 23 Jun 2026 04:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782212533; bh=GA3eOKpoCqLuIqNPyhGE8RvBfQeG+XtuuDwgEsGyDMM=;
+	t=1782212577; bh=gGjnqReNbED3UDwNUKA/bNOxEnxJjqfSBvAvUFwdl1g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=CHN+T5lu9uqaWBlfC9XFYIP9gEtNlbd59Y5tDsxyeLKVy1rwTNvHuq9K/lycDrFMG
-	 /eqxhJkf5W/Xu6D5Pff1URRz6EBcV1hauD5rYy6HsUlFaLAxX2pqjusjtxaobEwNKl
-	 Fq8fBa4BNccam4GgZEevNwMdTnmYTM2ziuGYs9so=
-Message-ID: <40576470-e0e0-4e7b-b9bb-be10944f75d4@arm.com>
-Date: Tue, 23 Jun 2026 16:31:56 +0530
+	b=dlyVYc7GDR+VoWyQTKZhpk7itUHypD9D3TGNIaLEKmykY+7rMKI7tS9NhvJwa6h4i
+	 lmUmPU0COJwk3mx6g597g0JvK1FqqwexCOoPMz6Ourm837ktIHoFYuLjwm7ZQDMnpY
+	 wp6wHbkIWdtdKMWIYFqaPo5LsngC8VmPqfcq94s0=
+Message-ID: <6847a972-65d9-47ff-b971-c79544d53957@arm.com>
+Date: Tue, 23 Jun 2026 16:32:46 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/12] mm/rmap: refactor anon folio unmap in
- try_to_unmap_one
+Subject: Re: [PATCH v4 11/12] mm/mprotect: drop 'sub' from
+ page_anon_exclusive_sub_batch
 To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
  ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
  liam@infradead.org
@@ -79,21 +79,21 @@ Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
  baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
  anshuman.khandual@arm.com
 References: <20260526063635.61721-1-dev.jain@arm.com>
- <20260526063635.61721-11-dev.jain@arm.com>
- <645a5246-0f9b-4b93-9483-e6bba35f037b@kernel.org>
+ <20260526063635.61721-12-dev.jain@arm.com>
+ <bce8698c-ae4d-4e87-ab6b-5f4059617a69@kernel.org>
 Content-Language: en-US
 From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <645a5246-0f9b-4b93-9483-e6bba35f037b@kernel.org>
+In-Reply-To: <bce8698c-ae4d-4e87-ab6b-5f4059617a69@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: h8c4dp48fhpta8tjntxoc33n6e7j5j1b
+X-Rspamd-Queue-Id: B3FDAA0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 81E5880016
-X-Stat-Signature: yay8oa1p4ehkjp3qp5jrfzdou93g5cn3
-X-HE-Tag: 1782212534-807879
-X-HE-Meta: U2FsdGVkX1+Goa7N6Yok1mi/OtD6wg+gbCu/BEyd6HN4olVfN/Rje2J+SsEWHpRn1GlnKXsI+7OsyoCmOe1HfXX0xdeiwiceVFDh6A/Ip1TjaO1njAyUglTDJy9c3uo6GoyEmhGaedur+B/13ba18KfH0O/xQbkiI+YiyAPxklsnv867M+OjQe983S+fjJQTYutgdQqOFhLO5y+jF//zYcvWd/m1xW+FBBN1zJ4f6XFSZsr99HoeuHmROVk2l1Y++wYT3kax79FLzkZQuz3XsflJgsfo4/baF8NOEULREa2qWPA7T0g2SDtG8+Txheaho9HCQJmfq+EjKFRkb+PdhgPJwLXpdVSJTW7xfEdkB7Kha7OmJu1nDd0ZgYCgKxEM/A1GPsxG0rjucDnfxbBzAtJT6FlchgxmnMRXCglVLIlF9/k0zsF+HAg74KdW6xCNfPYcLBW46p/KCWVRU+rfU3cDCGZF66JYpSs5Ecjp5pf4S9TsH4f5M0Xd91syl0BgfzPV9Lya/Zzm2RS3GaNrE6i0t2gTSHtLM9OEFVX0XlomYRX8n4xDFFsY3eIhW8BDqZliUJKhdq/SFvYDYS+v5k2/QpY+BH8a8XTFmqvNJi7ei9L2MHg0OmdZAEyEy4jT38MnBopW9NBXSKdMGmTHHASGpH4Ft1hgeET2rAUgJx3AQ2MpOJ1t5BfdlB8QBJCMBIGu/RTVlmDumJA56xiSqfYSSccQNgPzOe/NIEj8WZZfnhNfKiddw9xm1x2Qe+XFdobXnfOYtZmk4QSUR8wQ5R1Yzpmm3DWvVLvZDE4qieUHnq1/Nyb6Fny8TO1C/v6GGb7A5ynPAirVIeZNZ3Qbu7tGL4u93HnLSIC5TzXjlHLefG4NMMXiWqie+/Sbx+KTELQaIWUfXvtvXe9jY3fq7WH/HHfmwCFCXqmbvECKUTn8bSdHmVwHXDv2F14NlaFjDpVXoQRepbXME1u2pFa
- 0fVVTl6l
- ShO34Iv57JmN1SyYmaHcPmFYNAxEhmhjibsB+cJ+LpW+6kn97B+od1AFKjqVpLGrehqo86peXp3mLEKw0J78Kds5mAu8qFRZN3oeiy6uHuShYFVcfu1XJAj+bpo55T1DJvU8et+buWDQjKEtR7WJp+ksvOwTqIveVn+yWlIfwBhU+zwIlxdVbv2HHlOBq21UoEgjO/7im50+aeNR55FCpghJ22Hqmge6w+hDQbKiHZwW5P+crwiAfbkWR51Gj+YY40N5IntBQxhlMU7YHsZxYHy5QIXcCVA74oc9pB5o1giqNRh0IsWxGFElQVJ31lQStoXcePvrqtVMiGy34lYPvOHtbrg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782212578-540836
+X-HE-Meta: U2FsdGVkX1+wF6Y2yNPLfFMLtbUQj44rBrbqZ/Ti1EJIlzn7IRa45LPkabxQd3q4zmQnOk9KsMjHmvHwiJ7+0QfdBhLh3DyAQZ1j15x+50cL4tncbB8vJCLuQ8M9l2VL0h62Kmlwya0gjHPcvxEIT0k7BfcENc7wGfPzwnh1R6kHFb0sEEAbixryP7eeJAB35pJ7ijcvT9zlO8/eUJZDmEP+HPGK39DE6RTiDKmRtArLDC40nhfVL7+O9BP0lbCl1Bp0LHvU66M5WwjL05Kcgt5Lk463/miCyPhdL+5jYw1U5ouHzNWGgNbD+yEyuHR6eJyYKAJgAjoHugHPNKlQO1dmBk21ucuBLIJNiIsmfsd/587FDJog8iSMxrhfTdAxKI/YogYdsPA8Cl30Z39udSyKRSAyDYAEqbeZvKgQPEryVdPHU93jlUKP5sv/BLyC2YoFz1OzMR+yHjWL05MKq1QKIRs4wY/RxAAXboLp3hE3RIgMEzSVQBesJyl9SOFmaZZdHrOgHGKqXpIuOIkIKeGg5+CvKYlWScQSyTojABCSrvqT4wck1pDRQmyHTJuWfyyojRAStYuVExeX8ux6ZE9Hw3xGoziECOg/QJ5hmLrGHRXxx2kIgcTwKIqYddjanAyeNkiw7H5TWa4jhCXkDm4kSCNvRHae24lawuXF6wDpMiwIe4fi2abdCyRNTmtY4JY+psXSnMeFbR7IMBSbtOIUYztPGw+kk0tO9SkbNLqkgVqPM5JC5tYsWlgAgJXJqPhRsXfzB3ivXV5mA59TacV5V8/wR88dK/oF/zu23L2GGoXOJRepsSuDRAm3NoqcLeVLGuNHLDzQ+FOg28QChjPv+gsDgj5ryKaS3H8GNmbmluXKP/cq3AS6fow/RwUSpPS5o886fszeI7AaRMpZ7rcCQS/LFEVj/hTQiAslVw17x15I9RwGHvnic679TQkMEJ/p2kQ/hIeXWHb2Hqb
+ coPzY7ft
+ pW8DdGBXDuqGKfAtdP2X53BX3paJI6Y0MEQIJ9tJ294gfyuHqz/l52+DSq3ypKIWsRYAE1DMSUhWKrn3r/t3XrhZ/SRVxuf2Xi552zExZaMZdsPqNkAV6fOsxoEGxWk6F7vsXLglZtBZNIJUNvl5Sn/ZdUpebP0a/zE/3COthgK32hGDL1thtbmRc0tNwB08v7h2Np0YMPLeJHUUS88nS8bOiDXNAE6ii/CRh/FW0eyckp2/zk/gc2JRAo6eiAtn5L2FtDbvnOWZDqaIhhjFPpKtpTlyEVDTJNFdLwwLzCYZQBUlq9rqUtBJxvFOXp0WwQ3Rkl310fGNTj1rXhoVfOw5H2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,83 +103,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 16/06/26 7:40 pm, David Hildenbrand (Arm) wrote:
+On 16/06/26 7:42 pm, David Hildenbrand (Arm) wrote:
 > On 5/26/26 08:36, Dev Jain wrote:
->> Refactor anonymous folio unmap to ttu_anon_folio.
+>> Shorten the function name by dropping the "sub-batch" context - the
+>> function itself doesn't need this context.
 > 
-> Given that the !folio_test_swapbacked() case remains in the caller, should we
-> make it clearer and call it
-> 
-> 	ttu_anon_swapbacked_folio()
-> 
-> Or alternatively, factor complete anon folio handling out (incl. lazyfree handling)?
-
-Hmm I'll see if this can be done.
-
-> 
->>
->> No functional change intended.
->>
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->>  mm/rmap.c | 116 ++++++++++++++++++++++++++++++++----------------------
->>  1 file changed, 68 insertions(+), 48 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index c0e385882f562..b1639bad8e27f 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2136,6 +2136,70 @@ static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
->>  	return true;
->>  }
->>  
->> +static inline void set_swp_pte_at(struct mm_struct *mm, unsigned long address,
->> +		pte_t *ptep, swp_entry_t entry, pte_t pteval, bool anon_exclusive)
->> +{
->> +	pte_t swp_pte = swp_entry_to_pte(entry);
->> +
->> +	if (anon_exclusive)
->> +		swp_pte = pte_swp_mkexclusive(swp_pte);
->> +
->> +	if (likely(pte_present(pteval))) {
->> +		if (pte_soft_dirty(pteval))
->> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
->> +		if (pte_uffd_wp(pteval))
->> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
->> +	} else {
->> +		/* Device-exclusive entry */
->> +		if (pte_swp_soft_dirty(pteval))
->> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
->> +		if (pte_swp_uffd_wp(pteval))
->> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
->> +	}
->> +
->> +	set_pte_at(mm, address, ptep, swp_pte);
->> +}
->> +
->> +static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
->> +		struct page *subpage, unsigned long address, pte_t *ptep,
->> +		pte_t pteval)
->> +{
->> +	bool anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(subpage);
-> 
-> "subpage" ;)
+> What about "sub_batch_idx" ?
 
 I'll change that.
 
 > 
-> Can be const.
+> This function is rather independent of the rest, so best to send that as a
+> cleanup separately.
 
 Okay.
 
 > 
-> [...]
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/mprotect.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/mprotect.c b/mm/mprotect.c
+>> index 9cbf932b028cf..3357058672016 100644
+>> --- a/mm/mprotect.c
+>> +++ b/mm/mprotect.c
+>> @@ -143,7 +143,7 @@ static __always_inline void prot_commit_flush_ptes(struct vm_area_struct *vma,
+>>   * !PageAnonExclusive() pages, starting from start_idx. Caller must enforce
+>>   * that the ptes point to consecutive pages of the same anon large folio.
+>>   */
+>> -static __always_inline int page_anon_exclusive_sub_batch(int start_idx, int max_len,
+>> +static __always_inline int page_anon_exclusive_batch(int start_idx, int max_len,
+>>  		struct page *first_page, bool expected_anon_exclusive)
+>>  {
+>>  	int idx;
+>> @@ -179,7 +179,7 @@ static __always_inline void commit_anon_folio_batch(struct vm_area_struct *vma,
+>>  
+>>  	while (nr_ptes) {
+>>  		expected_anon_exclusive = PageAnonExclusive(first_page + sub_batch_idx);
+>> -		len = page_anon_exclusive_sub_batch(sub_batch_idx, nr_ptes,
+>> +		len = page_anon_exclusive_batch(sub_batch_idx, nr_ptes,
+>>  					first_page, expected_anon_exclusive);
+>>  		prot_commit_flush_ptes(vma, addr, ptep, oldpte, ptent, len,
+>>  				       sub_batch_idx, expected_anon_exclusive, tlb);
 > 
->>  		} else {
->>  			/*
->>  			 * This is a locked file-backed folio,
-> 
-> Happy to see that function shrink a bit ...
 > 
 
 
