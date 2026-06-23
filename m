@@ -4,97 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3091CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:02:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A941FCDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:07:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA66E6B0088; Tue, 23 Jun 2026 05:02:20 -0400 (EDT)
+	id 6A7C56B0096; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56FA6B0095; Tue, 23 Jun 2026 05:02:20 -0400 (EDT)
+	id 67EF56B0098; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A45D76B0096; Tue, 23 Jun 2026 05:02:20 -0400 (EDT)
+	id 595E96B0099; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B2B06B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:02:20 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 287736B0096
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:07:39 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 03AF0C1E3E
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:02:19 +0000 (UTC)
-X-FDA: 84910586040.30.803BBB8
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B76B320007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:02:16 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	spf=pass (imf03.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 93580166A6B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:07:38 +0000 (UTC)
+X-FDA: 84910599396.30.4676410
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BEECFA0008
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:07:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YoAkfJEb;
+	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782205337;
-	b=CgFOfQoV7WR17DvVNTIGTwqJvCJtD9qEqSaBPiWnny5JWVm1QmRcuGxqzkgFUwyKNQ4Gzl
-	0UFhs+cV2d+sZvJ8Ujhoa5sEkJETLtz7eEWDndYUmUxZ7PqAR2bMPzqZtiAG1iEGSEReFe
-	pDsxtBozn3Hy5CZz/gIbIm8exDSQ4rY=
+	t=1782205656;
+	b=s1Bb7fc7NnNglEI6g+s3EJgMv2M2ZGad99nHuVRjT08RQ5DeQ7NiaAs3zxROD6x7nrq675
+	jWYfBj9LfPxa/Wlhk8WSXb7IZ53Ov8c+A7Z0Q3du13tN14r64ZyiQtnWLnX3wcgeYcMibs
+	DFV+uMia3aa8n42Aeb7KXQgaum6iksY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782205337;
+	s=arc-20220608; t=1782205656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LZ+TZqiuf5HF4ha+0i5puj/5GTQOohP4gsjbpzoMquo=;
-	b=OzHWc03iMbpNeilsTqXG1hi25WGFP2938IukpWDBjT8D/Py50qGcy65tPbyVk6g+6GLHDJ
-	Gi7s+FD4nDFrfOiAaNSh8nLlkc6uPLq8JuQdFVUuPxt3xAYbRtugH/0dbQ8vf87g9589hk
-	H6DuSULAHMKK/I9X/fGpcTJ7KglGdQQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
+	b=trcOiTcwDKvJ2MXx6DgyIzyVf9NMfifpZbOOHigS0Q5IrJ4th7/QQB9VUQCPlrYFcbJnkg
+	Vhkvpno1EOrvDEliwJW+GS4UlaqrbsRyuRqRITu8pdMg/XhCUoJDXQ09MaU+FJy+8+gSE+
+	tZ1BkgykRtQaUP9eSSoOMNBW8ST2t0E=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	spf=pass (imf03.hostedemail.com: domain of zhangguopeng@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=zhangguopeng@kylinos.cn;
-	dmarc=none
-X-UUID: 3740d6f46ee211f1aa26b74ffac11d73-20260623
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:ac3a88ad-107b-4d39-a542-fe20c4c244f5,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:ac3a88ad-107b-4d39-a542-fe20c4c244f5,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:96aa78bb5b78416de3ee6f8223da1cd9,BulkI
-	D:260623164252SOOOWG2W,BulkQuantity:1,Recheck:0,SF:17|19|38|64|66|78|80|81
-	|82|83|102|127|136|841|865|898|1209,TC:nil,Content:0|15|52,EDM:-3,IP:-2,UR
-	L:0,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SP
-	R:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3740d6f46ee211f1aa26b74ffac11d73-20260623
-X-User: zhangguopeng@kylinos.cn
-Received: from [192.168.109.140] [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <zhangguopeng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 1118971230; Tue, 23 Jun 2026 17:02:09 +0800
-Message-ID: <5be54565-00be-4c05-91ca-0825fa925167@kylinos.cn>
-Date: Tue, 23 Jun 2026 17:02:04 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
-To: Harry Yoo <harry@kernel.org>, Guopeng Zhang <guopeng.zhang@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
- <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
-From: Guopeng Zhang <zhangguopeng@kylinos.cn>
-In-Reply-To: <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=YoAkfJEb;
+	spf=pass (imf25.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37d82f3a244so1193082a91.2
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782205655; x=1782810455; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
+        b=YoAkfJEbq97PstEMYyFrmQ8+6q6RLP7kHtPZnqtEqtRlcHHH1ePQth/vxXWIcIAFZi
+         MsHyXM+CpCb44/+x0QghMEkd9g/BaaqFIdnW/kxK1EopCRM2hmeD/ZNgNQNFBuyr2ng8
+         cnA7Y46Jyt/Qz3GxItX+fbgBB3gCKZ/ySee36bSv3bXFq5Ql2MxLHi8EGRpAD8ZdpjIq
+         H0BlTEZSuaFp/f+94GFBp72uEj6vvnp94jeLA6KN1p3hfFqZXi7ZIwy4Y7K+7/w964a+
+         CkYcqgbMSyd/JHNz1tHLPJ4H9JftbMFrw5uk1lEJXu3s4Qs5J3FY4oixBdnEl/EPFkbB
+         Igzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782205655; x=1782810455;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6spHrHgBqIXLs3oShth/eK080eFpchGrRDS7859a1QY=;
+        b=SmT78FmXpyp3k0peREqD0f79Ftm+lk9fF4mA5bISsrFt04Zj+8fdSIdPDwsyx/jg/0
+         jaDrolmU/VRMNoq6qdH7y90PZCS9/xPDZjeA9Zyo9tvzl60mVEcXQ9YmOYWV50s0DTtx
+         ywJGmYR6xD9U6HgwoNskUtpnNcWBt80I0FbwunwU/dlL0JvDfdsLiCmda+eHSdBFBQaK
+         DbXS3FazwV3B4oVYYMRehVBQyqthP14tegMOdAxIlfe4dWc106xWlvWEcT+H02uCffhc
+         aLE2YgSJ4xDzfQHjjc+R3K/1Ymjb1a2N50A4iybMOLayKm4B5xHxEs8KoIjIefOTm7TQ
+         aETw==
+X-Gm-Message-State: AOJu0YwhR2d6tadu7RQsEy2OuwD4j5pqz4Pl+13+e4PMzudKLbobDXdD
+	LzOJMr070hBiQGRFCCUpJtQFB4LfmldDzD1udLTzIgDZAjPEcAzgf7zi
+X-Gm-Gg: AfdE7ckDns3THdjstns59T6qvwpyWSHpqDrGIll3bC2fHndxhg2nJjhTGvuVZ3PGvUi
+	rnlB+K78+SAnr6zQpM3seEiqO+fMZ+15sR3BCq305S5lSGcSIbKH9JherHUdOAi63O1C9zG4pqi
+	gcEQ186I0oDDb+vih0gyF2jSTzKNEnFmEkoLhQhfFvj5jOUT423uR1fI6PMmq4ZJfdckehEgQN8
+	m1nfLQVmQR2vyWctH9IRHPbvfff29pph8Va7vXlfeGlZxjzU2kYVRQr3uUjFuAW8HSEmsgrjEHe
+	fnSnryob0rWZSueOF6UyQweYSgmLGN+/QEDzpwRV6cQQevfOuinrHmi7hoXu+hjDi6W/9eDUnHv
+	jUT6lAMcDiC7HGFQeIbH6xiah37jzAk4wT6f8NayMQ4ceidOLoiX6sXyEsXr2tULonSCr2UJJnI
+	B7Gw3NRXznXisKg0qYqlF7aYCIIA==
+X-Received: by 2002:a17:90b:43:b0:369:7433:2fe with SMTP id 98e67ed59e1d1-37d4d834636mr13010957a91.6.1782205655379;
+        Tue, 23 Jun 2026 02:07:35 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37d15df7424sm12256623a91.14.2026.06.23.02.07.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 02:07:34 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v4 3/3] powerpc: Kconfig: Enable THP_SWAP on Book3S64
+In-Reply-To: <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
+Date: Tue, 23 Jun 2026 14:33:54 +0530
+Message-ID: <zf0lwrut.ritesh.list@gmail.com>
+References: <cover.1781843449.git.ritesh.list@gmail.com> <ecbca3be3fa8bd7e213d013a2ec6ff9a11c6e0d1.1781843449.git.ritesh.list@gmail.com> <CAGsJ_4zxcp-jdnRTn09b8ZfxT0P7suFq3BEpyiUzA2C_iRRUGw@mail.gmail.com> <1pdxybv5.ritesh.list@gmail.com> <CAGsJ_4wFVcNi2h_=wjycYGf2eHBPY-oc8aN=-3Z4wsXnT0+LYA@mail.gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4j6y16cwg1r58g3qehmmqe1qtpi84cay
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B76B320007
-X-HE-Tag: 1782205336-475077
-X-HE-Meta: U2FsdGVkX19hgCRP08OSNtVLshGLNFGzfenHxNiaCdrZAj8r+eTp2vSGpd8piCD2rJ/1UpCurLf47RnHJZpc/zecnDJki/5zZwyjzqpjgb4rMotWWbF6LEm0I467226HKtJSZJ/p/eZBmhzgscxPX66NglZsgqPF//PL40+WUfKo4ahBSS3FtgbMK+KeKbjxISsk9bWepQHMtpdipgleITaB4sYuUCusFvfKNYFZqETsLcXBmCf6R4ix0KIvL6PGJ17Vd/CJycodz8in9MlAr1raX7mRFrSuRtUzm7S9kLUowyucaxiNVTs7mQ9HL3fthwN/BqSICa6j6oKJtZStkDYZbrMI8IeeZtI7gBQUECeCC1hEJq9j2DKZEv22To1rDfYcu06q5B2ersfQwBcNQX+q8F+ARiqxCS+OkpcI8okpwU+KyHFhX8XaP5knegitJiiwHCA+CEgSuiLbp3S/GrLkGB1M+xEudz1y7HSnnMmFLPY8XYyivwhGW4ts4kjOD1AkDKcwqgFm0MON2TTl8ZOsykBYezFwLJYPnHW6SS0gFppHGUNuoVRR2wj5dVBh3qzpMzXhQ3212qm0OhlY6KVSh7G6j8XqBQMGk42fff76Zkw5WCeWvQCIFXK7j9N5XmX99IhLPd7DnfPULcwQWZiJok3b7T7WmrQmWK65F596XmnPjZVm7UwDUORs0pkGkLiolLCANnkyI6KIn/IZ+75GMjNkmjxvuN9kWgYf/Nf8qy8DA7VJwrM+tSw89hixX8Ht1qrVWlKmXyNVEFObo0Rj12oYyq8aHPieZnIZartbyCLg+Cpejp4FK6dKSUhxuVoVEtDR6RuTHGWaQIqtDxHYqRTA/qG5akwfpy6+hiLfY7xMs3WxXcmlygNjjA+SpcsWBlOFKZAnVaANh77ZXk9NacMdCf9enqP1UrJB8kRBZMJiEjPRxG4mD3N3PJfZTgPUhTbaqs9+ADxJXo7
- d3HDpjF6
- JrOMO4YrPs36pF44RdmnjFxKxf7h1QS3YOxMzspiRJ4qyzMDfsZOR7nFkQ41MfePAkuahAWsQaWaDh9/4fwo92OHs9a45eIJXtVF4l7rtN7Igsv52qTjVwMHHqvq3TAPD03TaX6IuVi29TDXagyZTWbdqGQ==
+X-Stat-Signature: 3ntyiq5zuxdnpm7p3fhz7pm37qk15hap
+X-Rspamd-Queue-Id: BEECFA0008
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782205656-726625
+X-HE-Meta: U2FsdGVkX1+NA+PZCTHbqCtRQP5uajLHm5JwKMO7y3JNFk5IAqs5A0OLpTTEBxrVZIfT/0vPJUQcD1e+Iu2K3Fzy+LA7azh7nwJQxaGHhb56blGuhT4pyQU0jjhfi7AFn6yb2RW558cgaS7Fn/h8Z+Owl2QB1SP32QvOJxSmpX9t2/emBrPo9ObQMuYjk27jawERFKAD3grEIvIpwVYBIbTM3w5/y4HZ/gyjyhcejYJPFBJBKojE3mpG1IP9Mbg0eAJdvCPYXSwc6qOTlYmiaYvL24JS7qui8MHeGv5pjBIJsYL3YzX2QSWGPmCvRep2Xk9XOAM8CLHkQ0jCtU96p01TQ95o3kW+tVPUbFgBIUzNPumxSR9xzqUx4AHxem1z0igpu2zBIUWpBo0uL1tP2s4PlIflWwV14MQ0rDQivP/ZDjQN78nYjM13XvYi3B1gPWHBE+WBeHnH2JtzEII0spe5GonyVvlkjxyOyDFkPqWpBPm+7+z1fHTYEa0V3p65pp8mvnJOI1qdAS62qQV/NaRkFHWoDkorKr8IJJH/d1u0B/BsXOOj8USkifKEax1CRWaO/1qHTqtYKfQv/m1iKUuySzjeORgU00SZK5km6jmbzwPK6pKeui54fARIP+1fwr4DDeBwdxkEfMqDDzqkiXtQBiGjobRuAgnAB2xqpGe9GTxE43wuLbu2Gi6+GtovJ3As1+W0CvpbYb2gO6B2wVItlaIIsizOzJwpeIuBt0SuWpLOx5wE6ngBdeYBJpS39EWuYICXl99qXeovOxjKbStISeSq9SrWYWri2qrkl3namlHQ7LIb1hbtvxqqw0rq1k4f05KEdSO9CGgt3n1o5qdPtJkCLJna/dKYo4eiNo5uexf8aBr0Df6q3B9vb2vSvVl+9ukUi9+dz9mASLLtPuc6VW+EZmMMTgrq0lxrxh28F+9jYLMbtaCBxpgQqm39rSmRIlJamL0ZNZctNde
+ 3N+i/BTx
+ 9dUMCvGHOXw2JGskQTl14u7QvWfQDc5EfNuTHa87rIGGNc1TGa7NmAtbgN2xWGAaDaIsVW/Df/hpEoM+cPxf8qHVTCoKABuEZUXCKkAipz881KfpmwnpcbbvfST/BV1xuYW0GuYFh6VfvnPk9HmAjcv9hY8B5edi8O/3DBik23WQ8+B6TJ92A7jp+b+Mq0AAYQQ4G3nmoqxk9Tg2ovr4OjgWYkwO9iNU1RP9RObH0UDwdeI7gWOIItQdEHbHs8xHDoSpSuy9hmElehSPiYcY//gNy/6KQCPKgpB/N0Z9+pM/QZwDcq0//OOT1Y547kl/llCMp1g70mKlip5HhRAhk21KMUTXPXaKkPuLeP+QX36s8qTbM4LSzAV9D85Rq1ueKB582/j8jCP19peJsWizGbTOMT9cNhWPAAEkSVNDsZ8Yra6Xmasq7fuvpBpI5NmawREYH36a/aOxPGluA1ksRCC0Ny0Mso1V3fhImMfQkoO5Pa8pp+nkyhyqP6dRNGM8fDEoYKh/Hy4r0dy41uhU7hcVroTQGfiLZcdR+gMny0GtFcTMYBDlMFAFfhZHeAN99MXWDGG2L/mfa+KGmr+vFsbeAIw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,51 +116,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Barry Song <baohua@kernel.org> writes:
 
-在 2026/6/23 16:42, Harry Yoo 写道:
->
-> On 6/23/26 5:26 PM, Guopeng Zhang wrote:
->> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
+> On Tue, Jun 23, 2026 at 3:12 PM Ritesh Harjani <ritesh.list@gmail.com> wrote:
 >>
->> A patch filename was accidentally inserted into the comment describing
->> the nr_bytes field of struct obj_stock_pcp. Remove it.
-> nit: perhaps add something like
-> "Fix a typo in the comment (target -> targets)"?
-Hi Harry,
-
-Thanks for the review and the Ack.
-
-Yes, I also fixed the "target -> targets" typo, but missed mentioning it
-in the commit message. I'll be more careful about describing all changes
-clearly next time. If a respin is needed, I'll add it to the commit
-message and carry your Acked-by.
-
-Thanks,
-Guopeng
-
->> No functional change.
+>> Barry Song <baohua@kernel.org> writes:
 >>
->> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
->> ---
-> FWIW,
-> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
->
-> Thanks!
->
->>  mm/memcontrol.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> > On Fri, Jun 19, 2026 at 12:41 PM Ritesh Harjani (IBM)
+>> > <ritesh.list@gmail.com> wrote:
+>> >>
+>> >> THP_SWAP avoids splitting of a transparent huge folio into 32 smaller
+>> >> 64K folios (Radix-64K pagesize / 2M PMD) or into 256 smaller 64K folios
+>> >> (Hash-64K pagesize / 16M PMD), during swapout. This improves the
+>> >> swapping performance since all the bookking & I/O submission happens
+>> >> once per large folio. More details at [1].
+>> >>
+>> >> PowerPC Book3S64 could not enable this before because PMD_ORDER is
+>> >> selected at runtime depending upon the chosen MMU. The earlier patches
+>> >> in this series turn SWAPFILE_CLUSTER into a runtime value and introduce
+>> >> an ARCH_MAX_PMD_ORDER upperbound override for SWAP_NR_ORDERS. With those
+>> >> changes, we can now enable THP SWAP for Book3S64.
+>> >>
+>> >> This increases bandwidth throughput with zram backend for swapout by
+>> >> 40-50% with Radix and 100-130% with Hash (Tested by Sayali)
+>> >
+>> > Thanks!
+>> >
+>> > I am curious about the contents of the anonymous memory being tested
+>> > and the compression algorithm used by zram.
+>> >
 >>
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index 6dc4888a90f3..3eedfc4e84a0 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -2039,7 +2039,7 @@ struct obj_stock_pcp {
->>  	/*
->>  	 * On rare archs with 256KiB base page size (hexagon and powerpc 44x)
->>  	 * keep nr_bytes to unsigned int as uint16_t cannot represent the full
->> -e patches/memcg-uint16_t-for-nr_bytes-in-obj_stock_pcp.patch	 * sub-page remainder. Such archs are not cacheline optimization target.
->> +	 * sub-page remainder. Such archs are not cacheline optimization targets.
->>  	 */
->>  	unsigned int nr_bytes[NR_OBJ_STOCK];
->>  #else
+>> I am sure it was derived from your microbenchmark itself which you had
+>> shared here (so repetitive pattern) with default zram compression
+>> algorithm. Thanks for that :)
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d0637c505f
+>>
+>> I think I got your point - I can mention that it was a microbenchmark
+>> similar to yours and not a real world workload test. Is this what you
+>> meant here?
+>
+> Yep. Please make it clear in the changelog what kind of workload was
+> used, as different data can result in completely different compression
+> ratios and compression/decompression costs. Consequently, the reported
+> swap-out and swap-in performance improvements can vary significantly as
+> well.
+>
+
+Sure, I will update the changelog in the next version with more details
+on the benchmark ran. Mainly planning to provide the link to your commit
+for the e.g. microbenchmark code we ran along with few other details.
+
+> w/ that, please feel free to add:
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+
+Thanks Barry for the review.
+
+-ritesh
 
