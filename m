@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF8FCDB479
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 23:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D219CDB479
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 23:16:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 320736B008A; Tue, 23 Jun 2026 19:16:52 -0400 (EDT)
+	id D81636B0092; Tue, 23 Jun 2026 19:16:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F7F96B008C; Tue, 23 Jun 2026 19:16:52 -0400 (EDT)
+	id C955D6B0093; Tue, 23 Jun 2026 19:16:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FE5E6B0092; Tue, 23 Jun 2026 19:16:52 -0400 (EDT)
+	id B366D6B0095; Tue, 23 Jun 2026 19:16:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D67996B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:16:51 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61CE71A0195
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:16:51 +0000 (UTC)
-X-FDA: 84912739422.28.929303F
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 834EA6B0092
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:16:55 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E886314019D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:16:54 +0000 (UTC)
+X-FDA: 84912739548.05.C31EFB2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CC2D540007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:16:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3DjDCPw;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 601D7180006
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:16:53 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxraI1LU;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782256609;
-	b=tOTdtmOT1OoD8lC/TAB2rIUbIavar/6c2WNqczCko1gbhzbktXKI1NndIra4VM5J/P3Ohl
-	nX5PYdps/l+iDm3K6UeKpxtSWoQ+UNeS9Z3Q6RtbOXUtdx1wAkdKda9MBX8KfeL9FvaayU
-	0I8hHuHapukRflHCc9Sr/ZlOtHvFKZg=
+	t=1782256613;
+	b=KBrFpzj7S9g91ezJOhOPYsln2k8tRixb8TCAkGvZNvo21qb9Xc+HQCo9QldtFZxVgRCm80
+	yqIKynMi4uTb/NwYgyzNVzBw1AH6rlOXi33cbw4FBteQH32pJEt8GmTDUlA/P0igm/MNOJ
+	iYr7UEe/sLncGtGOKY3tShJ2OIBT3Qc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782256609;
+	s=arc-20220608; t=1782256613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W7uWOWQBOVdULqmStrHDCiSY4tJX+t5C/ElCnubL7dw=;
-	b=vLnzZlVGXuC0E7rlFtgscPcAsoTmihlvLf+bWXY5Bp6X9ch8JE0XIGqy2Joi4A6IS9riKs
-	ZuwPLCFOwA+MZXT5FTbpZdnjLiZej+XdPxUQgjuVvO4ckocJo464lnIL7DqWiUr5ro/BxB
-	Mg6uHDFa04/j54BuICg2+gS49s+ePpA=
+	bh=WYdK6sbj2tbaU6r5yGrNuJWJq/EwTAP2KOlRZqmz/6s=;
+	b=D1yPnjWYjl5Rw8jVfgh6o69vPzEquNGJn5TKENLo75wlrmc7sY63SZTbLWIzN54BpEdh0w
+	BTF/LV4gwVH/w9ZAWjVbH03wKe4RoQfUlLwqjIJR7pVmCNP8BUUldoQvD3oN/Gh6WElrK7
+	OY2PXb4/R49sAR20fQTEbwJRZm8AfNc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3DjDCPw;
-	spf=pass (imf12.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CxraI1LU;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3EF1360172;
+	by tor.source.kernel.org (Postfix) with ESMTP id 004EF60125;
+	Tue, 23 Jun 2026 23:16:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE0C1F000E9;
 	Tue, 23 Jun 2026 23:16:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4D61F00A3A;
-	Tue, 23 Jun 2026 23:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782256609;
-	bh=W7uWOWQBOVdULqmStrHDCiSY4tJX+t5C/ElCnubL7dw=;
+	s=k20260515; t=1782256612;
+	bh=WYdK6sbj2tbaU6r5yGrNuJWJq/EwTAP2KOlRZqmz/6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=I3DjDCPw0aar3s2XFJEdB/d9KjD8eZdRlx+M/EjkySttlqC9rxvQD5frbGTvQ58Z3
-	 ib/XKy0zISc3G6I0k6DyfIDPYCnDeMXs9JrTyD/lBI5aU+zuo3dJE5IxUrWcdz8/R/
-	 0AI+/t2XetLyDRaT0ElKUwQbW8gy479v2PHUfrQ1uG8ajMBYIQnBGLbc0Vv1zYZY/z
-	 lwvyb8mkEyQtvDFhPpoZQhrl3C2XvY8ptrH7d40WDb/j29FG5ocncyiP5mxct6K8Cp
-	 al1iwRu9jG0gHZBFnOL/x4ELS9oKVfdkN4HnVOVPw1FDkXczZ4pUUXSifQ5wv9nhb3
-	 ox5+mapTR2Xgg==
+	b=CxraI1LUvFrK6wEz24Oe7ikK4UTNccyvnZayxVeY6vh/ClkmuKHn1XP7fvobJum/y
+	 l2P6tQki5T7bdI7OVkkNpr+ry5bUc5gX0yfqFGOpdwelA8C2JfEAfDGTt+iUxIrofr
+	 mZNJL+OjWGaXx518VIH8dYPviLI6UZmEdkP9pbnh/lHFr3yiOQVfkJXCGg8Y7kyoOS
+	 F4K0nQRQVoXw+D1n2RgkqjXcXrttnAPkS7IJM6ZFwG9xo9WHKw6qqxMkB1OTsngKG1
+	 acoK62IvadUTzv0nlZ3G2q0zHF26sYIpYQyZ6zW2SDLJ1fvqtWLnihRsBUJbDngyPB
+	 7mFWCf5AbEdOQ==
 From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 To: akpm@linux-foundation.org,
 	linux-mm@kvack.org
@@ -84,22 +84,22 @@ Cc: baoquan.he@linux.dev,
 	vbabka@kernel.org,
 	youngjun.park@lge.com,
 	"Barry Song (Xiaomi)" <baohua@kernel.org>
-Subject: [PATCH v2 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
-Date: Wed, 24 Jun 2026 07:16:32 +0800
-Message-Id: <20260623231635.43086-2-baohua@kernel.org>
+Subject: [PATCH v2 2/4] mm: drop stale folio_ref_count()==1 check in do_swap_page reuse logic
+Date: Wed, 24 Jun 2026 07:16:33 +0800
+Message-Id: <20260623231635.43086-3-baohua@kernel.org>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260623231635.43086-1-baohua@kernel.org>
 References: <20260623231635.43086-1-baohua@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ow1wabdzy5o1ntagcatf7dxx7gjqrhez
+X-Rspamd-Queue-Id: 601D7180006
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: CC2D540007
-X-Stat-Signature: 531xxd3j5spq3cc6zidg48k73do85fbg
-X-HE-Tag: 1782256609-304424
-X-HE-Meta: U2FsdGVkX1+mevsihmlYQlNTQw3mbGNM21Dmuf1lpfxpnF7fbHo47S66T8E0Auh5pvjvemLFNUWpGNpcEpF+73VuSDNmH7OdHZKbyoQOwF958LvqcuBpV03i2FdAYaipkK8ClXg6MnghpFGY5rfgznbFKvNbsHrNvEc7ZDvv4OlykEOKBJBEAt10zoPUa30uVTx8oGwXk/T7SS2geAfyT+f8fh7Xj/rYVajFAls5CAZJsdMc1mrUJ2USqfjF7jKykz+Up3mE5uPz1VuynzNx6TIFD0Q/OIQlVQFXxEnwLvQku6z5VNGHNsvMxWWJ2jGu37mhGgwIbyoDIaDvjFugpsEiXpqb/UxhJMt7bBmNKY04K4bANBL1b1rAGVUFtqmodNX3IstV0dGDO1z/v93T2R0ZFN/xUantFcKw2CxLC6NUKVyaDz4y9VpUoaExCRUfhh20nozDeDb6+83X8+infEhrgzN6sGhe+uZrFBctJL1VYRd0KPY8CnK4vOu+jXuVEmPPhCjICf8MJ7uuZULghre2VnroV3M8KAWy5W+SfMhF6yXJWIEcI04BxtUXRdBAY0tPWTzwz6smlT90W4WN4BGCPxc2lAqkjq2QrnwR6zF9epTxCrqmOc6V6JeDNU31SrUlNp2dF/c1fo/Cx8EGCvvywLmVdRJXPUV0oL62iP/opOuCbvf2Mk0IZxvL8ITnWgsezVOJOl9SFhsaDhxTcwKl9dJY4q8XbAqtd7Ww08+eC/8UQYJmlL0hMiyrXEc0f5UtaA8YL+pl7jF8YyQlsdXkH/8z4odoLCsKyYcY4pNtU3usckC3BjwIwY0hao/MG+KEyYaImOy8mVUObJjV7nAyCWBlgihjTs9tZWPQQjmgZleRUeWWAvQRuXj6MPxPvGx+juoXxycTde9Vpr4ns6/853YnWFXCxNTyV54W4egXwnlK82LDRVkFhTtaWgz88dN0VweKI1Nbe6D93G0
- GxvbjgBH
- ZnJtddQJqyCbzXPp7u05D6pDO67gfQddJn6bZgd0Cf9HLCKTAEBv6VK1bv3qqTYS424spxQc8tnUG+dmAdXt6CM8iGL8btQhecS+5lDX3kVen405cfYPNt/cbt3x9gPbPOKTEy6CaTS8KCsjZSk8Naw8gkgIoek0uCfkn0741cpWPqz9jvIX1xv6CBFQVIWHU3tylFeDwjBIA9KNHoSwiqG79i0AfB6BeX+JFVpoMnrXZ1YYzJcI31RV4UzA5o5kDmbwTqDAgEep8DjjfKocVN9KIDQ==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782256613-504168
+X-HE-Meta: U2FsdGVkX1/XOjRyNGy8/T9+n3JCdPTXDi+Cg4RwFbGfTNjlUjVfCvI71I6i9BCtVs0jBFjo5sSJwdcOZicfNfv+VMFaOBhpsCoMhMNj5raj/YCjanfunDTu+9fvcp7k8Fhj7WqMlJWzYAUlsfJ8Ml4xD14gM+h3KbbKd0/vD8edU8HsY3B8toVTa85A9ipFCG3iTYyOkY1QXCQwnE8mRndvyX8k0hQkgtPNA360uXG9xH0imf7B8FpBO4/89YOs3Cm1tTYIK9ZgGqDbZoKYyyy0cXJIUJjDOEnM9vPi8HUSwW9SZIxpWI+LaOzWa6ajS/nP5DPm8xsLqUtfF503EXHIEYcPndOVGXfq0HGUKVsk3jf8DCpqdlYUMMffGpDvVIlchVBJvDDe5D1INZGYBspQLHUu68CL10yrWPdPz1tp45rPBMYqYtupTkpSvLYfNFFlZCzAJtIWLMLf8O1VtK3y06TPFM+xnzHU12glSr1LSbVtiS9QQ+UAOYrrpyjM7vGo95DgUmzr/osaqUQB5orgtf7Y/a/d4OjJewPifa7khaAQwsUGXvHMZZ25brvmBVeCczYf7YrVCwwu5iig0QaEFsLwLaqxIRgprvuyygKGgAsSi0KvUaWG58W9QIIFALNucDtTR6tAgWXM5wfu5hkJ5vsJyuZlv1rkhyKC9Ik9X/6kP7iBvMAwkj0p7VqXegkaQsUGgKjOEKkatl1jgsbQcUljLq5xpO0trlK9g3eymBL/nnnkvc3qeKMmNXtNm84Sl+Hc3V8TuRKDdWptl1P++FFY5l4RPsaDqblj/s9JbeXfe/878gLQtHVVdpym+VDgd8+jnJzXVqwm7DbW+NNhqmfJ8vS+7XgT26QT5ss9awbfYD365XUComz1ZO0AjFbsx8EzoVP0oKSU1fxPn0JAGUltI6K9zfuX+1Y0fgrwL7d7nExYhy0vS8MBPQGXrC+YTn4DVaGPZavWPHr
+ hDHL3/XO
+ mCn14oQNiD4UUZgfkfschP7kSnuzL6BDHzNG/do/RAfCXsXcoB0Xu2zONc7Flu6Ien/Ij6cl839R48fo0yeGx/a3XB0qwCmhp77jGaKjLgLif46kavPsKxmkbaSlt6Ba65PTMrsA5rA9HxewDFkTSd7i8kMq/HpK5ZSa1waDqtcTz6ggC6hwCjXNGUbMvfNfR+l2JtVlUXKTzIphXGdvwVL7GY/UnW4s02kRIxmNKnCffxZQqZm1vRQyPRV0A6MSIRH6gr9gWNmYXsENJ1ld02CsW2RNtgek3bykmS+YdTyFFwoANC6NqBXRV/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,42 +107,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We always unconditionally drain the LRU before retrying anon folio
-reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
-are in lru_cache, and use the refcount to avoid many unnecessary LRU
-drains.
+The "we just allocated them without exposing them to the swapcache"
+case no longer exists, as Kairui has routed synchronous I/O through
+the swapcache as well in his series "unify swapin use swap cache and
+cleanup flags"[1]. As a result, folio_ref_count() should never be 1
+in this path, since at least two references are held (base ref plus
+swapcache). Remove the folio_ref_count()==1 check and update the
+comment accordingly.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+[1] https://lore.kernel.org/all/20251220-swap-table-p2-v5-0-8862a265a033@tencent.com/
+
+Acked-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Kairui Song <kasong@tencent.com>
 Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 ---
- mm/memory.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mm/memory.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..f6848f4234a6 100644
+index f6848f4234a6..abd0adcf65f0 100644
 --- a/mm/memory.c
 +++ b/mm/memory.c
-@@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+@@ -5049,12 +5049,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 
+ 	/*
+ 	 * Same logic as in do_wp_page(); however, optimize for pages that are
+-	 * certainly not shared either because we just allocated them without
+-	 * exposing them to the swapcache or because the swap entry indicates
+-	 * exclusivity.
++	 * certainly not because the swap entry indicates exclusivity.
  	 */
- 	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
- 		return false;
--	if (!folio_test_lru(folio))
-+	if (!folio_test_lru(folio)) {
-+		/*
-+		 * Assume folio is on lru_cache and holds a cache reference.
-+		 */
-+		if (folio_ref_count(folio) > 2 + folio_test_swapcache(folio))
-+			return false;
- 		/*
- 		 * We cannot easily detect+handle references from
- 		 * remote LRU caches or references to LRU folios.
- 		 */
- 		lru_add_drain();
-+	}
- 	if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
- 		return false;
- 	if (!folio_trylock(folio))
+-	if (!folio_test_ksm(folio) &&
+-	    (exclusive || folio_ref_count(folio) == 1)) {
++	if (!folio_test_ksm(folio) && exclusive) {
+ 		if ((vma->vm_flags & VM_WRITE) && !userfaultfd_pte_wp(vma, pte) &&
+ 		    !pte_needs_soft_dirty_wp(vma, pte)) {
+ 			pte = pte_mkwrite(pte, vma);
 -- 
 2.39.3 (Apple Git-146)
 
