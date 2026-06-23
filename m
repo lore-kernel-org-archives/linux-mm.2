@@ -4,98 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0F61CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 14:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B774CDB46F
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 14:22:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A31E16B0099; Tue, 23 Jun 2026 10:08:21 -0400 (EDT)
+	id 6A85F6B0088; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A09716B009B; Tue, 23 Jun 2026 10:08:21 -0400 (EDT)
+	id 659086B008A; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91FC06B009D; Tue, 23 Jun 2026 10:08:21 -0400 (EDT)
+	id 56F126B008C; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 697116B0099
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:08:21 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD996404C6
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:08:20 +0000 (UTC)
-X-FDA: 84911357160.13.B3EFBE1
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf15.hostedemail.com (Postfix) with ESMTP id A17CAA0016
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:08:10 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E6046B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:22:39 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B32FD140481
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:22:38 +0000 (UTC)
+X-FDA: 84911393196.01.3DC495B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 9053F8000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 14:22:29 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782223692;
-	b=uaaE1IozUNp2B692q0RK/OVbclw+kPo3wlRujmwcfVu4L3U+x3csHT6M48SDmEK+ype/kB
-	YmfM5qyUeFRCVERyMvA/OF7//XY/kMtllKCWncxOY/n0EfpDWjJ31neZxSS0ntaVjvnNzK
-	+xbYy/amh96n1D5wrJhywg5VdmLCZK4=
+	t=1782224550;
+	b=xtf1j272dZPkQ4urCINtLusZwIaERHRUmCDsy2Oh6CuwiVu8DUuMkjlfwB/a9O3SbU0tCk
+	k+TAmYDB4delOzL9D0GFDjjP7d8JeuljmdxAgTj8Y8PsLhDsvCN2QCQoXLiduKkx/nPK82
+	DMnnzi2Iilvg8K1ky47ypidOXW9Pqjw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782223692;
+	s=arc-20220608; t=1782224550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Kjc0ILl0J/jDwE6Rp8VeaX8HsM6FVKzVv2KZZcpLvE=;
-	b=qtJhmFsSTVMNDUd/Jcj1D0frpF/5gSxbClZlMOihMP9N0wuGOcCBazonAe50HQdVNBubL8
-	z+HgZvazCvai8JdDG6RRHFmymXUCGRi+dAn6YSJceYbpfwgbMvPjZpTMwTmqY43BIVdipp
-	4GXy/k4YggJhyIDX3C7rFW4yQczr2Y8=
+	bh=fbJ30SnwEwUR3e8QYeawvmgbLBk+kjbCq3ADAQydQzg=;
+	b=ve0fJSSzzECrFD4wkk7/SltJBk5Lgg8yswkA5cDPNzyvl2k/Btu2HNIq6s3KOcUVt9OdHo
+	+00FUpyazxDnd7SaZhtRBVgS8fJt3ZVb4G13dAWJw5BACtF9tBBrdBe5wdW5P/B4QyuJ4a
+	KOBNDglKFRnMInruQ6ZdL4r9+UOBxWo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=h-partners.com header.s=dkim header.b=f2mWTIgR;
-	dkim=pass header.d=h-partners.com header.s=dkim header.b=f2mWTIgR;
-	spf=pass (imf15.hostedemail.com: domain of zengheng4@h-partners.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=zengheng4@h-partners.com;
-	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=huawei.com (policy=quarantine)
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=4Kjc0ILl0J/jDwE6Rp8VeaX8HsM6FVKzVv2KZZcpLvE=;
-	b=f2mWTIgRI0OMt+a5DXk7llvGYG+YSSaNqEUOMlOA2s03QZHIYyfSkzRV1Z6b4x+STugLrsIPq
-	3m6oP+Rzqb0N2IaFfkxaKjYTPJucaumO6NrvPZ1nl2cSchKOLvsCKiwkRUAFEbcYKgg7VAPrMAf
-	PHbGQXpQFpA89e2wK8OSTX0=
-Received: from canpmsgout01.his.huawei.com (unknown [172.19.92.178])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gl6BT3pzczcb3n;
-	Tue, 23 Jun 2026 21:59:29 +0800 (CST)
-dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=4Kjc0ILl0J/jDwE6Rp8VeaX8HsM6FVKzVv2KZZcpLvE=;
-	b=f2mWTIgRI0OMt+a5DXk7llvGYG+YSSaNqEUOMlOA2s03QZHIYyfSkzRV1Z6b4x+STugLrsIPq
-	3m6oP+Rzqb0N2IaFfkxaKjYTPJucaumO6NrvPZ1nl2cSchKOLvsCKiwkRUAFEbcYKgg7VAPrMAf
-	PHbGQXpQFpA89e2wK8OSTX0=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gl6BP4B7gz1T4GM;
-	Tue, 23 Jun 2026 21:59:25 +0800 (CST)
-Received: from kwepemf100008.china.huawei.com (unknown [7.202.181.222])
-	by mail.maildlp.com (Postfix) with ESMTPS id 460EE40363;
-	Tue, 23 Jun 2026 22:08:05 +0800 (CST)
-Received: from [10.174.179.37] (10.174.179.37) by
- kwepemf100008.china.huawei.com (7.202.181.222) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 23 Jun 2026 22:08:04 +0800
-Message-ID: <7d46a48c-8805-09e1-4818-807953898fb4@huawei.com>
-Date: Tue, 23 Jun 2026 22:08:03 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wkJmvyRY;
+	spf=pass (imf30.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=fbJ30SnwEwUR3e8QYeawvmgbLBk+kjbCq3ADAQydQzg=; b=wkJmvyRYcFD3fRkfyKwa8m3t+m
+	n8NWc/IW+IFlDBUKitA+2xKjsdqTGoNxB9Nlm6qD4kE4FCpe6Jt0CZqxzKTtthkJoEPw5MZr0xAvw
+	Rzp3RcGEoh3p6n/YRjGwXvK9jdzd6vXMs0d6ShbFC2/dU3ZRwPpy6VrtirW8ALhR//DP+RFCPgRbr
+	8SRtPYM0TyANAisg/ElWKSc8it83cr8rg1BRlmamwbb7nFMzXTlcPrcpqKTNsnY0FMv5EwdtPJnKR
+	JI9cTB6IMXcWKKINYxKlJakAZ8+JdxND2hfRVv7b5tMtWu84leNe6PXZ43zPoF6ejL0l1XxE5WFJg
+	1ta+nKsA==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wc21D-00000006QeY-3tdN;
+	Tue, 23 Jun 2026 14:22:28 +0000
+Date: Tue, 23 Jun 2026 10:22:26 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Watson Wheeler <imnotamilkglass@gmail.com>
+Cc: linux-mm@kvack.org, Watson Wheeler <git@tazy.dev>
+Subject: Re: [PATCH] lib/maple_tree: add missing spaces after switch keyword
+Message-ID: <pbswbs3zreboqwtwqqorjwndrt666xm7obtdy3e6fqamy6tled@r2c57n4ei7iy>
+References: <20260623061730.2024-1-git@tazy.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [RFC PATCH 0/6] mm/damon: hardware-sampled access reports
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>, <sj@kernel.org>,
-	<akinobu.mita@gmail.com>, <damon@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-CC: <akpm@linux-foundation.org>, <corbet@lwn.net>, <bijan311@gmail.com>,
-	<ajayjoshi@micron.com>, <honggyu.kim@sk.com>, <yunjeong.mun@sk.com>
-References: <20260529165640.820-1-ravis.opensrc@gmail.com>
-Content-Language: en-US
-From: Zeng Heng <zengheng4@huawei.com>
-In-Reply-To: <20260529165640.820-1-ravis.opensrc@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.179.37]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemf100008.china.huawei.com (7.202.181.222)
-X-Rspam: Yes
-X-HE-Tag: 1782223690-374397
-X-HE-Meta: U2FsdGVkX1/7sMyDnb3l48ZGlwn1UW4d7uWkrYBy8mKH3tMX9cw528cfzhqDiO83Y0QOZ++0Ajice0iCHSG3DblVZmpFMS/OKyafCeLLP6j864uu5P8Se9f9l8EDejFO9uZFkDnFSbtwExOaU9acoTjRXEjvTyZ7zIjOPObb3sJWXmw7Adwv2owb2850nt80UvLpPvZhIbLBrVLsJwpqLt0XqSk+JB4zRS72CAmL3l3ERemLDxkU8a58rK5KCU/zW0VUCj7VxuWAFJn6xd0FrWIr95SxsR16XGbgtkkoLDP6CH3ZqC+ae8fOI5DAiebRvwn88Wi4iO4ZawDHmlSrYAN0rm/xKw8rcLMQAj7tKcrSgWAiASsqJKORUIT8SryJ+VETFKipG+Q=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260623061730.2024-1-git@tazy.dev>
+X-HE-Tag: 1782224549-43034
+X-HE-Meta: U2FsdGVkX1/gZ0tjQZA1ggoK3diaPox3l4RtZS8WUgZ0c36EOuUrnjR5wm0ITX2WE4wK/jTXmmLfiPVAUmfPZzW7TyxTbpLfVaN97K3s9PowGQnfZQKBV637DhytUN2+9k1IElY4BUebi8sIcVMKUtKkrahKau16hM2u1wV6QYtZ6MteoWdvj+3TF9AlUmEm30budyjnf/b1J2X63VLnaWvD6YvN/3M2THINTXWfCPVWANk0uSzKNvjV+Fnyl9ofaI8amS8d6b033dV/S8OifQ0pn7hadV7slywQc5JYGtaACfgL0wuXXIui0hne+a+ZwwZEfqZSNGVGUd77TDVtFzdR1IHH+RRb33dX+NMjPXT4HRTG0TdceRN80RZvQ+U2U/j0Ssv87tZqnBfYQ/s5VlZl6rmo3dOD53rc/ANrdm4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,50 +78,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ravi,
-
-On 2026/5/30 0:56, Ravi Jonnalagadda wrote:
-> This series introduces a vendor and PMU-agnostic substrate inside DAMON
-> that consumes hardware-sampled access reports through the standard
-> perf-event interface.  Userspace selects the PMU through sysfs (raw
-> type/config knobs), driving either Intel PEBS L3-miss sampling or AMD
-> IBS Op sampling.
+On 26/06/23 04:17PM, Watson Wheeler wrote:
+> Add the required space before the opening parenthesis in
+> switch statements to conform to kernel coding style.
 > 
+> Signed-off-by: Watson Wheeler <git@tazy.dev>
 
-[...]
+Reviewed-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
+> ---
+>  lib/maple_tree.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Ravi Jonnalagadda (6):
->    mm/damon: add struct damon_perf_event{,_attr} and per-ctx perf_events
->      list
->    mm/damon/sysfs-sample: expose perf_events configuration via sysfs
->    mm/damon/sysfs: install perf_events on apply
->    mm/damon/core: per-CPU SPSC ring drain and damon_perf_event lifecycle
->    mm/damon/vaddr: implement perf-event access check
->    mm/damon: add damos_node_eligible_mem_bp tracepoint
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index e52876435b77..529acc056e55 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -6447,7 +6447,7 @@ static void mt_dump_range(unsigned long min, unsigned long max,
+>  {
+>  	static const char spaces[] = "                                ";
+>  
+> -	switch(format) {
+> +	switch (format) {
+>  	case mt_dump_hex:
+>  		if (min == max)
+>  			pr_info("%.*s%lx: ", depth * 2, spaces, min);
+> @@ -6489,7 +6489,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
+>  
+>  	pr_cont(" contents: ");
+>  	for (i = 0; i < MAPLE_RANGE64_SLOTS - 1; i++) {
+> -		switch(format) {
+> +		switch (format) {
+>  		case mt_dump_hex:
+>  			pr_cont(PTR_FMT " %lX ", node->slot[i], node->pivot[i]);
+>  			break;
+> @@ -6517,7 +6517,7 @@ static void mt_dump_range64(const struct maple_tree *mt, void *entry,
+>  		if (last == max)
+>  			break;
+>  		if (last > max) {
+> -			switch(format) {
+> +			switch (format) {
+>  			case mt_dump_hex:
+>  				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
+>  					node, last, max, i);
+> @@ -6576,7 +6576,7 @@ static void mt_dump_arange64(const struct maple_tree *mt, void *entry,
+>  		if (last == max)
+>  			break;
+>  		if (last > max) {
+> -			switch(format) {
+> +			switch (format) {
+>  			case mt_dump_hex:
+>  				pr_err("node " PTR_FMT " last (%lx) > max (%lx) at pivot %d!\n",
+>  					node, last, max, i);
+> -- 
+> 2.47.3
 > 
->   include/linux/damon.h        |  80 +++++
->   include/trace/events/damon.h |  49 +++
->   mm/damon/core.c              | 403 ++++++++++++++++++++----
->   mm/damon/ops-common.h        |  39 +++
->   mm/damon/sysfs-common.h      |   6 +
->   mm/damon/sysfs-sample.c      | 579 +++++++++++++++++++++++++++++++++++
->   mm/damon/sysfs.c             |   3 +
->   mm/damon/vaddr.c             | 267 ++++++++++++++++
->   8 files changed, 1370 insertions(+), 56 deletions(-)
 > 
-> 
-> base-commit: 4c8ad15abf15eb480d3ad85f902001e35465ef18
-
-I wasn't able to apply this patch series to the linux (and linux-next)
-mainline branch, and also had trouble identifying the source of the base
-commit.
-
-Would you mind sharing where this baseline is from?
-
-Thanks in advance!
-
-
-Best Regards,
-Zeng Heng
 
