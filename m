@@ -4,85 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA834CDB470
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 21:17:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D19CDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 21:23:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D94D6B0088; Tue, 23 Jun 2026 17:17:45 -0400 (EDT)
+	id 00E486B0088; Tue, 23 Jun 2026 17:23:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 889F76B008A; Tue, 23 Jun 2026 17:17:45 -0400 (EDT)
+	id F01576B008A; Tue, 23 Jun 2026 17:23:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C6F86B008C; Tue, 23 Jun 2026 17:17:45 -0400 (EDT)
+	id DCAFF6B008C; Tue, 23 Jun 2026 17:23:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54A9D6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:17:45 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D3E0D1C46BE
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:17:44 +0000 (UTC)
-X-FDA: 84912439248.14.0076A99
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DECC920009
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:17:42 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EiiAa4bX;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AA9E26B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:23:42 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BF6C165DDA
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:23:42 +0000 (UTC)
+X-FDA: 84912454284.15.AE7F85F
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 278BAA0005
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:23:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Qx9Lc2W/";
+	spf=pass (imf25.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782249463;
-	b=XZJILtNNGZg+Tvwxj4yeO0FXuGGYnb+MBfDopV5uokzjgeslPaBDQAD2oOck/ylGMrR6c5
-	91pFrzNcC1pGmjlmJWRsZIMEh1ldm4sq87q3LKss4iwuwYXj/8jcNB+hWicqJtpLasp+Za
-	Y6IBjH8pv0bU0UCWNRXKhxQ/kr4lYx4=
+	t=1782249820;
+	b=MbOTZF9OpxAf0BD7SeBhRaK+DujcIZquvlsJAPwCmoQnwwB3Mkb6uEk7/hUqp+JYn6Q532
+	J/K91UBp0NoJfcvMO1uCUzI9Ye3FTW+cDjptNStsMSRpA5F2N2eQbUzpl9+XF0rM7/Cxt4
+	NDwoyTdko1qO5MB1wCY2i4wyXgc0as0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782249463;
+	s=arc-20220608; t=1782249820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p3MOrrXNnFkBZPkEQOlLJbV9bk56PLzLI3wAWmrou28=;
-	b=4JaeCwlALVEjaeVnRpofafaWy15oOSN0sBAb3BDtpWCekHxtvt1aKGzb94M4dU3TQmbAE2
-	tx7GJksvP2YsSyFnsXV1le27YsAmBBWNh/9lJHdwsePY3ck6xt+pOicT09zgwtyTb5ZRVo
-	7kPzU8aV02QQB/OQArGlmaUNOzcl5L0=
+	bh=NbQMjijENoTwEtXKCq9SMLmcNPckarSV38WOLjqdRT0=;
+	b=YaMAk4UTSi2N6JAZNaRartfXlTIIiFGYamjxhVxfN3OcAf2tDctnbhadMzevUPJWG5NHvK
+	TQ9zD11613dw7iJqak1Y3PGWm3fOtK2XPk535ISL+Db8hy42zRa3pLZl3KmqaGpBnDb60P
+	cHYmVQUFN/yspwxVBhhHGVK7StZQ7bE=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=EiiAa4bX;
-	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Qx9Lc2W/";
+	spf=pass (imf25.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 23 Jun 2026 14:17:25 -0700
+MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782249457;
+	t=1782249818;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3MOrrXNnFkBZPkEQOlLJbV9bk56PLzLI3wAWmrou28=;
-	b=EiiAa4bXexlgD2tCzip5KVShTk55r+tRf39OnOz1UwDf/PGoi5WCIozL1Ojag+kyli7rgY
-	OEV/xFU9XpGHPab2WVGmAAE915MwDmFvwZ5vEkdyl4hIoSIbHhkg43Lz6LoYKgzt390LSS
-	SOyFlfHYa8fRWhM6g3neG4A2VnYvU9k=
+	bh=NbQMjijENoTwEtXKCq9SMLmcNPckarSV38WOLjqdRT0=;
+	b=Qx9Lc2W/LK1IuYN7D+Z3isSkqKf5m9WtBOL6EmqBC18yWkr0CfJ05cIEFEgnhnOl4RS5eP
+	+E+hOV72cwN8LISB80FRlOKNG8kkI314rx3YGKIscxGF0KtoQh3X4/AALNEVFLlp/q63jt
+	WzVQU6sfUK5iDIPJiI1Jj56nzj7lrEs=
+Date: Tue, 23 Jun 2026 21:23:32 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: JP Kobryn <jp.kobryn@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-	fvdl@google.com, linux-mm@kvack.org, usama.arif@linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm/page_alloc: use existing highatomic reserves on
- the buddy fastpath
-Message-ID: <ajr3uCOXe9qf9zhT@linux.dev>
-References: <20260623004600.113347-1-jp.kobryn@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260623004600.113347-1-jp.kobryn@linux.dev>
+From: "Ilya Gladyshev" <ilya.gladyshev@linux.dev>
+Message-ID: <b8b444637f51df57762ddebf8ac3c515d3ba2262@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v4 0/2] mm: improve folio refcount scalability
+To: "Matthew Wilcox" <willy@infradead.org>
+Cc: "Linus Torvalds" <torvalds@linuxfoundation.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, ivgorbunov@me.com, Liam.Howlett@oracle.com,
+ apopple@nvidia.com, artem.kuzin@huawei.com,
+ baolin.wang@linux.alibaba.com, david@kernel.org, foxido@foxido.dev,
+ harry.yoo@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ rppt@kernel.org, surenb@google.com, vbabka@suse.cz, yuzhao@google.com,
+ ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
+In-Reply-To: <ajhcia0BKmTS6FQG@casper.infradead.org>
+References: <df26082871b4c65b2bd38d409026237c08572836@linux.dev>
+ <20260608154734.8e4115fde4e2e14a3b6892fb@linux-foundation.org>
+ <fe53d9a75f776a5e002a3375d086c5714f558547@linux.dev>
+ <CAHk-=wjwdbrwUpTiQef5eAd9pfC3bKig9YpXxoHQinssubRh=w@mail.gmail.com>
+ <839a2ea2755fdddf5af773e006237b07c9e261df@linux.dev>
+ <ajhcia0BKmTS6FQG@casper.infradead.org>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: r9qm1e5i87s6q89gan9aq86of97jgyde
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DECC920009
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782249462-94991
-X-HE-Meta: U2FsdGVkX1843ZQkMsVEhb7nQ2zBCwAi0Dfigohk2urOzna5KWVQGX1td9pLGNxHyvYVGXbHGTWGEbLibUQebVMVQm12puJxWbyrB8bPzWlYVjU/DhB6N79nq5ThU/fRuJ8FY4yk1rll3HBZiH3KZy643PipiSRCEL8buDKZUnKtCXQXbjfLdWjUjCwq+rpv5MPKl71rogkgHv2DX525xZvoQwxDAFUd63Q2fQHpBeo3QY6M6p3IVGunJVh+R30F5l5Q0QCh9Y6vBaRLKjHLNmRZc7x6jAWGOuUDB6F4jof66NgUaWDNixbg76nJrdADRSInTDVpCErZz6GEEbdHLm4IQdaSbj1HnDn4+p7QiDr5Lh4KwXek1QirbQMcAzDGvX/nKxbRAVhTKAupkHY13NXxtelrXgE0fGL73uAmPPQEM5DzQtfTaKPvaeUvCZ2xc+kFmLnkdZ8QBJ199l3ZF2r8w/TSHJGVObbUBl3EVYv/6RoAL+ZQGhxLPS6DGwpp/w84zxYY0VhCbRQm9mSQApAfzVwjl7S0EDIGGWvw+jMHSkpvgsxWKYlEoDr58Bt84ElY6P1Ge6btofdQMEKsxRj153X1+apeDJuP1Ypk65nR6G89qqCVHk0L9B3xVnaEcqkg6o+Lw5vs4HsF5IPhVH/7pUKC48HPRoJuD9qEU9h+2EZum3JfHlW5yzEuFZCu3pHyZ1hR8R4vJPgDd/qbaXEbaFw4lStGpqO75Azm/QJsxETq/b2oBHWBP77cU8tQA5EPzWRZS6UY33WjGDs+JHo7ndoz8IIsqX3mUDQ+9DhYXCRHHG/FPNsG9rORWG0EhXLkNEV5hGWUqrimSYeskGxxKpbLT9HOOfYwr7cGJXhx/+cTykcZYrsmyvcvot61/me6NgGc/Nf7ueSZ7fJYkzW4u/gYYCnYOUW+gnM+Yf/MxRBtj657zFidL7nYrn9WrUSKrTLILAl/b1hdoZ3
- jzDVtXad
- 8CXfbGs9eOQpuJYlDyzxYoQh2ADthhezUEbOpe9pbZk2zduDuK+BlNSDD/6wsuLHNGCDUIkR+LLLOUgLVNHNyFXfUHJXjExAQB/RCAIA0xF4GLhF5wEhK3xONcwalrHBe/f0CFdp5IcB0zXWNDFHZS2gaFfAdkWABZ5c4o/zHis5N5eZ58DwmCliWOIvmvgRdipueLEWB0wXEzO5OQmNO7IGP2ohBAst6EZjronF4yDNCdyn4Fkhn51t1SNqm+iZFDdm6
+X-Stat-Signature: jmsj68m7154uer54xjt8ojzgfnm8535z
+X-Rspamd-Queue-Id: 278BAA0005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782249819-17023
+X-HE-Meta: U2FsdGVkX18U7LGXeKu+AXgyJhn4Ft8IWqIrpoKelPot5IiV2lNMVlMKBbl0oBxNL5BuwLRcvnN+7OgTtyePBY6NXqxlhnneSh4UDPS6sKfWD2HuCfwIMIpC8r3CQskBRkDpX75fwVm8Q8diC19e8st1Jk7+MJdJVdpO4KJDFMwquQTda0GMY7/eu5ejOYhLOF6NlSsL+1djJOzMxF3oUkmvO98L4AsfXw8OqxudcmhwdiEthhs2bhre0hjQCrJf+zVNPOxeKGMmsi2FbDuEovzqMv3XSVoq9NapTiOWSkXnjDnLbEiMz16s9tdXGUGkWzrb71bzA/dZ+NsWTXI1riUt+1ekJQl5SmloeuvgLJuSTDLIRcGRHkpb/tYaNKn52CYQ9BNkKvPrC5e9sjNY4ImdBb5h8JmnA1QRkj0xMhiBf2EvvJhb6DtSDXD21J7E8Pih/B59Au81m+LGA7cBBy/GvEUs5KuL0PWkos67OF/0vHREdeh5nSzKch+Wdnzvls3Ip9zBLRi0a/cLGLKH1qjfoOQxLOWa6y+oV3HMCJ/ny6duTUj5tlmHyuVomANhY4Kp7Oi3VpPKbGml2YoaZeJYKiB7neQ8Q6KMto6y4UPp5fznOi2x2o7HQTkGpPwO1HXTnn2bPdataXVBBApj6JpEbFnX4Eg9AlV7iOh+EfeDpNf9212GwY3x85kEfuR+EbvsuEY5dYkY7RjfBVhznd+SqwqXIircDjkinnmjc9uCxVO0X3cdXXPejdjJwbr0I9FYBlNsWnXbMu2UpOTuYjQeNboHyHQJ5HyU64vO8v1YjIdHASwiT826yRwzRL4YGo60axqHNV4X0kokFYUrRZVqlAuupr3GCM5KY9ysYVc4aOCmSGEzJ28OGcrt7Oau3Zwjq8EXwsAg22I8y513OtbaiJW6dCcVXo9N5ucVPqg4ezI0vRn9+Xpt5aHpwG79LqsM9cAQwrsK5ccPloW
+ RnD9n5vZ
+ iZjfSxgiVOvE5OdHc10K0Ave+GXDvIhoPCDTtiDDi8STMEWtsszOghp/Xi6vqMkw51UGpiRot9LWMB3ODLKL4YH7lAvgikc25Sk/+k2g+QiDmldM3e76rqxB0OBUpobRvaDPic7Od4olBLEgumNaPwb2QBvdrqK+f2jT4D2w3TT05zMebuOpo/qWHPcFTNZ4ERYSdFIOOzhREWWlm8oPIbqya9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,34 +100,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 22, 2026 at 05:46:00PM -0700, JP Kobryn wrote:
-> ALLOC_HIGHATOMIC currently provides both access to MIGRATE_HIGHATOMIC free
-> pages and permission to create new highatomic pageblock reserves. This
-> makes it unsuitable for the fastpath.
-> 
-> However, the fastpath can reach rmqueue_buddy() while MIGRATE_HIGHATOMIC
-> reserves have free pages available. In this situation, the allocation can
-> fall back to other migratetypes without trying those reserves first.
-> 
-> Allow high-priority non-blocking allocations to use existing
-> MIGRATE_HIGHATOMIC reserves on the buddy fastpath without growing them.
-> First tighten the criteria for reserving pageblocks so that growth may only
-> occur in the slowpath. Then allow fastpath usage by enabling
-> ALLOC_HIGHATOMIC when the GFP mask describes a non-blocking high-priority
-> allocation. This logic has been factored out from gfp_to_alloc_flags() to a
-> new function gfp_to_alloc_flags_nonblocking().
-> 
-> A UDP receive workload was run with free MIGRATE_HIGHATOMIC pageblocks
-> available in the target zone. Before this patch, the workload did not
-> consume these blocks. With this patch, eligible order-1 allocations
-> reaching the buddy path consumed existing MIGRATE_HIGHATOMIC pageblocks,
-> with no highatomic misses observed. The workload did not grow highatomic
-> reserves and NAPI page-frag allocations remained healthy with no failures
-> or order-0 fallbacks.
-> 
-> Signed-off-by: JP Kobryn <jp.kobryn@linux.dev>
+>=20
+>=20On Sun, Jun 21, 2026 at 09:34:47PM +0000, Gladyshev Ilya wrote:
+>=20
+>=20>=20
+>=20> June 21, 2026 at 7:46 AM, Linus Torvalds wrote:
+> >=20=20
+>=20>  On Sat, 20 Jun 2026 at 11:19, <ilya.gladyshev@linux.dev> wrote:
+> >=20=20
+>=20>  >=20
+>=20>  > T2: optimistic get() [0 -> 1]
+> >  > T2: put page back [1 -> 0]
+> >  > T2: calls dtor for type X, returns into the allocator
+> >  >=20
+>=20>  Which optimistic getter does this?
+> >=20=20
+>=20>  If I understood you correctly, you are talking about the scenario =
+where
+> >  an optimistic getter took a refcount on the stolen page, so the vali=
+dity
+> >  check in the XArray will fail. And this scenario does indeed work no=
+rmally.
+> >=20=20
+>=20>  This "ABA" happens if the optimistic getter successfully gets a re=
+fcount
+> >  on a valid page, so the full T2 execution looks like this:
+> >=20=20
+>=20>  T2: optimistic get() [0 -> 1]
+> >  T2: re-checks page [OK]
+> >=20
+>=20I don't think that can happen. Or maybe it can and we need to add
+> some barriers. The page is always removed from visibility (whether
+> we're talking about a page cache lookup or a page table lookup), then
+> the refcount is decremented. I hope we have enough barriers in place
+> to ensure that the refcount decrement is observed after the removal of
+> the PTE entry or the XArray entry.
+>=20
+>=20But I'm not sure why the folio_put() after a speculative get avoids t=
+his
+> problem; why do we need the recheck to be successful to hit this race?
 
-This is awesome.
+After additional thought, this race doesn't require speculative gets at a=
+ll
+and is more about two parallel `folio_puts()`: one successfully deallocat=
+es
+the page, and one sleeps for a long time and then calls __folio_put() on =
+a
+"logically new" page.
 
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+And as everybody pointed out, this race isn't something specific to this =
+patch.
+So folio_put() was always ready to be called on non-folio objects due to
+optimistic try_get() + put() in the filecache. We only care about calling
+folio_put() once, and nothing breaks with this patch.
+
+So thanks to you, Linus, and David, for helping to clarify this :) I'll p=
+ost
+v5 with more or less cosmetic fixes from the AI review then.
 
