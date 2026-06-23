@@ -4,96 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D19CCDB471
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 20:03:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C2C9CDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 20:06:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 483176B0088; Tue, 23 Jun 2026 16:03:53 -0400 (EDT)
+	id 3ECAE6B008A; Tue, 23 Jun 2026 16:06:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 433E96B008A; Tue, 23 Jun 2026 16:03:53 -0400 (EDT)
+	id 3C54E6B008C; Tue, 23 Jun 2026 16:06:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 324396B008C; Tue, 23 Jun 2026 16:03:53 -0400 (EDT)
+	id 2B5516B0092; Tue, 23 Jun 2026 16:06:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07A546B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:03:52 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 703541C3C6E
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:03:52 +0000 (UTC)
-X-FDA: 84912253104.21.AD6ABE7
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 96F2640011
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:03:50 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=qrn7Niwy;
-	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782245030;
-	b=4UJ7qts1k9yzN/kjlDC7D8JIP4XIEknW3irDoHLrOwWdobTCNGHUa/QShh2WcaPQ4CbL8m
-	wsk+DO86i9KdfwXse+MDPsQb4O50ANPuIfyUOBDdmWRzMSxq4YBKsx6XSbA4iDyZHC4WxJ
-	5S7fO1eG8l1T+0WDBbOMLCt2fClYEfc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782245030;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA0586B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 16:06:45 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 613E84013E
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:45 +0000 (UTC)
+X-FDA: 84912260370.14.76DB1F9
+Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 74053A001A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:35 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782245195;
+	b=BYRkkg7E0qp47T58nYVbyC6bD3bD/6IdcQP+xa3xiBIWJhBOVtGXR3ORql15MLbQGXthoV
+	VCwq4NGEz4cO0PrpLjLu6ELNJs3pogmtRnHsFRFFCdDbkeE/Ghe4Va/YxSJpHQFl+G9RAt
+	NAsBaYMR5UfkxIZA7bAgmgC4JLx5i4Q=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782245195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXELDEspCfpyJMg4+vOKDxU3lUu/ClJJRZ+C4E6jvrM=;
-	b=UkdOh7tXsg8qlb2H1E/vnhq+J2q2SM/BrGjdOArVnZZYWKVIDnbW2Nz9zChz4ZweT8PBwJ
-	o4JqzgieBRt4VJniAcQu57iDJ8Aj6az0Nn5fc4YB0MrJnPCE+6paRrgP+uilj2bcNL1qgy
-	9cZd/XYNFPwDxFfteTamYr5aOt3u4So=
+	bh=s0c+c0GezDF20x3hAeTTFLEap852z6Me2B2PImW6++o=;
+	b=XYeI02wUtUzEczobwmDSbf+dKebvtfMyEZf5jT6pj54CxtXFKaiFAw13ubdfKIRkBUNOaE
+	EGHzgYb+naF8ClwuSLUvmF572sSNb3Xl72T0j13zX+j9xGkL3Gqh4DqZkOkY4T2IChvsZt
+	M+vkbqHMqjTMY6z9iygTy9aR/S8lZYQ=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+Received: from relay.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1863AC02E9
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:35 +0000 (UTC)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC39B1C05CD
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:34 +0000 (UTC)
+X-FDA: 84912259908.26.E4CA3F6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4437A120017
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:25 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782245185;
+	b=urFFyF9RpzQHP7OlDwGByxM29XL8W2XF7Xg5g8vIO0kmollAD3K0zTQdjNK9KQ9THPa7JL
+	0CoqCnJ/QuZFphl3PHedBSaRY5iqHWVb4TFf575isz/NNqfE3SGKHP2WhB/Q/XsQOgZAo1
+	xP10xk2hQBh+pFv2GFvX3w3hlNMTJiA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782245185;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s0c+c0GezDF20x3hAeTTFLEap852z6Me2B2PImW6++o=;
+	b=mFIszUSHmyor1LhehUIorlxu1LYpUOOHM8S6qr+XP89/7QsqaW49mDv/RhR83/qVu08OwN
+	6G1BPkhN9VRDrn8N1wwBfmXxzzrZl1CeRQ0SqsLgHCvwqb37YNgd7ooBlsSCNIZhmnLZ5d
+	qSv4zyFd7FjbwDpyjOlKEQxO98AVdbE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=collabora.com header.s=mail header.b=qrn7Niwy;
-	spf=pass (imf04.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
-	dmarc=pass (policy=none) header.from=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1782245027;
-	bh=LEMNvch+xEu+3Is5PhYgSbaYPcKf+aaNjlvCqRGadLk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qrn7Niwyx9X5/cf6oD0iBsejz56tkf6uuuHGLwSsSOTkXQmRdFr7zA6fWbdRHQxWV
-	 5DgR1oseO7vzVTMkOtPX7QHDNTgesmBT1Mnufn8y6f1pe2ONFut1J1s/dAl05ln7Hd
-	 YWd7Z+NkFvbfsU3AuzmL8raJau21+w9Lcu1n4iP4m1ZOF94rZ63HVqqbCQIXwNkWxV
-	 aqkWJl4FkiZflSqm7yL/YsKw4rLfINNulCO5afB1iUiSvPsf4b3sIwnKh5OMWbOujd
-	 EJ7zdicpVdczoxpYIaL7C54lqEMauhzon34+7VgjNazjlu5cU7C3jbR+QA9e/jMpHn
-	 EFWt+vmwaZ+DQ==
-Received: from fedora-2.home (unknown [100.64.0.11])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bbrezillon)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 0F28A17E02B5;
-	Tue, 23 Jun 2026 22:03:47 +0200 (CEST)
-Date: Tue, 23 Jun 2026 22:03:41 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: "Christian A. Ehrhardt" <lk@c--e.de>, dri-devel@lists.freedesktop.org,
- Steven Price <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] drm/panthor: Check VMA boundaries for PMD mappings
-Message-ID: <20260623220341.7ad4a0e2@fedora-2.home>
-In-Reply-To: <ajrRhpVH6uhOABnV@casper.infradead.org>
-References: <20260623181942.1536598-1-lk@c--e.de>
-	<ajrRhpVH6uhOABnV@casper.infradead.org>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=At2K8OkT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 379584414C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDF61F00A3F
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782245184;
+	bh=s0c+c0GezDF20x3hAeTTFLEap852z6Me2B2PImW6++o=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=At2K8OkTQB8kqxiHpfXww+8Y7Us/giY/uxflP3MKqQzAFolSur8E4EdLzGA1M7byj
+	 3GOtZ7wYAdWJU/BzvTkJ2fh+6hH8RqdzJEnUtk3pePkRjA1nCLUn8Adu4ChfyUe7xE
+	 5Gw0WeVa0rjZXsPfYtQrK0dMMZTyQuBd3SpEOJmVvDQ9HPPxVxh8HRrwqNNa5BEqTA
+	 8qmgxNARZ6CYwJdmFq3UxEBWZ1y+Y0JzpWr48B/w+4fV+uKZkZJuq6asz2Czi3CW/K
+	 Kq6XbxGrnMhvvuacNPFJU4Y9s55IhZ7+SA1YLelkbX8wuEXnYmaZRLoKBDzODr/dOS
+	 goEvZIq0+aK0g==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-697e93b0d9bso342193a12.3
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:06:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/WMEf8kPmtP9uwe0C0XTjlHLJwbsHEe4Q2oPITd9b4o7AscTWZwCochn05oLwHWjfFfeWejRpCAg==@kvack.org
+X-Gm-Message-State: AOJu0YwModX4/6RMSwnZXfC2bV0JWeo8N7fM4nwq7ib/Z9Zt/9SuWLvg
+	UeB2pw/HDzc31693lDajlqvAumy2MA9DA/nt+OKS+2KEhxWlOiu1kL38DaWXIryUxYuZhQJtEOn
+	PI/Dd7vFBkJnVJyxHN/jGr5ngz1IdKd0=
+X-Received: by 2002:a17:907:94c7:b0:bd5:2859:ed0a with SMTP id
+ a640c23a62f3a-c119fa32082mr3741666b.42.1782245183053; Tue, 23 Jun 2026
+ 13:06:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 96F2640011
-X-Stat-Signature: wtgscko1jjbszifz3pmo3tfmbtc1coa4
-X-HE-Tag: 1782245030-244377
-X-HE-Meta: U2FsdGVkX1+fqPplaNRCsO/z3+MtHRm/iPR/QTSrMOEnn4qySw8Umf+gfoQtzme8TKZH4fQIcrxX4djnRXeEtDs9e7oM0/fG4FD/MlLZVGcM04jM+T3beSM4ezx6SjxClGXj2BwrWmtOTwZ7nL8Xcwq3qv4UyddnxHTeY/7/wM1lmsOEB2AedAQBP2L3kflgzTrXAjeVjNmKeRp/uGbNApuELCl2AXv6M4KL3H4KXNRJ8kaQNB9jdqEL2zTnxW7pFFTWRuFavqaelfL5dmQvFJTCDoDmsnN7IDXoh2H1yoRN6L0MP03Gpu/U9jKxsENv9TqtYJVs8JQcQnMTpb/t9+0B+SFv3Q/pPS3KHXwmtCtVeaGHQmm/Yk2tpBTBGSxAFYVkCn7zdo9fswo/O+h664oDoMWqJAafCuyFO8MLZXL+hewnGaOkPcRJoPIbpVcuB4Q9LWxJ0OJQRF4qnFI790z4x4xg2kZG3sG5RBuXwSAIcxjUGXsbjx/Mplc8Dyhom3jYAeJc8R7GI2xwTnPXodRNfuP6LwhMXmuXnihoFLXIGcCde2mblUC31xPf83aOlkjGwyQjDX/W0U/Awrp24eKAz1ElJS6F1QwTZWIWOJJb/nP+6OwFvH50K4npoWGJP385MiNfo7Uj09+OxovuL1iG8ZL7EMCmI/GPcjW0jptvmEcfqLu5hhu6HMxe0eq8BM94JPzk2Xea8zKUL8CGzTRagOJzk4+6b86HlsCqvmueKJIvAHV66MQoCMg8J+yXGUUMWpPcQaojHwkOHTX6/he9lzrsHTEsLk3oM7DNrEAOzNMbNG5K6zEYdzZhOXMSck6tuwx+I4xyCqXhfFvRMyAgs4VRyZc9nFN8D89meBuSWzZO1LhK3s7ZpJJRfaE80zpEmdOGtpsfBYIxE5LPbdkGEoauoQuBkDn0BY2pPKkY2ulyCN3kGQf92vY95gPO86yJe5qlV5P02sQrkmJ
- TGPyGPMA
- BE8EFTggwc5IILEFiRmlnOIGZLrbFJUfOPAPO3nwTHJE+D9f2mG68YrWM8v3Ig9msyTuNEpjkfvo8m0y/8fYmDUHPn8KqHdQ8w4CEoAIri+COxEzdmJEki5qeLAQVZSFVaF85KIB8jsmLthG8M3uT8ffq797ZmjBgUpNWsQygBjgSV496EZBMDFb/k0FkAkcMfkvbj4FWsyxBxipJNvV79fk16nqS55GOCYPJLPmj5IbPQtxp67pQZV48P2Ls25GArXbUYH/qx4raEoyrQt1lcJCHPZd6kLV4Zyqg477QcSv9Oi2xw0MW2DySmpzsimvbIc9ISLx+WFXFt4aUCkMHcVECLdHpxc2zhLTsKUy8EJxRo7CbgfcjNff3bRm+ZfxIRHHux8ZTGWvJygeroQAfxKGZeeSAcPEeQAtEzaa3h9FmK3wJ0p/+NaO46/k0N6x3HJZA9IVpDKHDW+sdA+V26r6AAMAe51lf5ZZZ
+References: <CAO9r8zOQQwDxmHGsRw_9k2eu6r=HU_HiXxbB4cbpwhc1GGgHOw@mail.gmail.com>
+ <20260623185618.1488231-1-joshua.hahnjy@gmail.com>
+In-Reply-To: <20260623185618.1488231-1-joshua.hahnjy@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 23 Jun 2026 13:06:10 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPwHYj284gyyjqnH6Z-NNLLbftKqzoOKycaMzm3+ifSdA@mail.gmail.com>
+X-Gm-Features: AVVi8CfBRCr8pOqLd32ZXICvdYS2E-O7_kRR6ISoNTbshVt_za8XIuRuAYI0wRM
+Message-ID: <CAO9r8zPwHYj284gyyjqnH6Z-NNLLbftKqzoOKycaMzm3+ifSdA@mail.gmail.com>
+Subject: Re: [PATCH v9 3/6] mm: memcontrol: add interface for swap tier selection
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Youngjun Park <her0gyugyu@gmail.com>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	akpm@linux-foundation.org, chrisl@kernel.org, youngjun.park@lge.com, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kasong@tencent.com, hannes@cmpxchg.org, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, muchun.song@linux.dev, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, gunho.lee@lge.com, 
+	taejoon.song@lge.com, hyungjun.cho@lge.com, mkoutny@suse.com, 
+	baver.bae@lge.com, matia.kim@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-HE-Tag: 1782245185-686113
+X-HE-Meta: U2FsdGVkX18UHfBlsUYyC2HtF+Aebrz77Dhu/Fx6o5wXSy0tqH9rLrfk5I7zIxozXvMX59Ai4cFvAU+b4RuZhUVf7MKA2CkaBt4B1ofZ49FlvbazbwfdYOwiH8jhRwBdcZrvbTKaQxXniN70QF6RSYZfwD4ExFhpc5PqMd1II5MvJA6kUDgbZRuwwoq7Y14gWN2zssz66lOQN2Hw4Vj3k4Bx2MGRD6a9f7xaCdOT1Oprpn3sUCJMqabycxKHF/nTmR22GtewLf87r8TRyfuYqT0EZjRO+5We/lNs/F/SyS6PF+ydemqRkoCe6qCA0E0g+2m3CZmQWQaxDKbOKfRISeUgQ0K0cdSWxTfQUDiBDLWVzbWHxqeuWLLF55CQ2NXkJLdgj+6fcCaYth/jg+LOkL0ztwny/Zfv
+X-HE-Tag: 1782245195-875144
+X-HE-Meta: U2FsdGVkX19160tZciKJVJxXDHSb1FFHPkqWcCy3bLQZ7gcXA3yZfd1LJ/dy8oYWuiQni7Ftn5IhqWfiLuxt9Jva2hXdTIE/+zyAf6ExY4+USiqFERCIQsYwoRt2l18dEBi9k2CO708owPYZdQNMnmWxHMVowm1tT6JCo59xBUZ6PXLoZDgpFfhXMGgNKI2UynZxZEXnC1+n5VODyE8iH4O8P2hXaQbuSgY6WIXRofsV11w/BVG0eR2w3PBWzJVzdYjJWaYf2S05IM2s2yBOEDV1kh5fmcJkqowspVwi7vr0VOgH+SJ6N/NW/C8hhxVrIGFuW+UuvTAXouOMv8kb5kUtq9lRnZPYez2OSgePU63V8fiUDH4CJZSu7tibeCvtI3DV3m9//t0KNNfwYoXA6DqYNrkrpjYE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,58 +130,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Matthew,
+On Tue, Jun 23, 2026 at 11:56=E2=80=AFAM Joshua Hahn <joshua.hahnjy@gmail.c=
+om> wrote:
+>
+> On Tue, 23 Jun 2026 11:10:32 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+>
+> > > To get back to the question of how the auto-tuning should work, the
+> > > main question is to which ratio we scale the swap limits to.
+> > > Do we set the swap limits proportional to how much swap is present
+> > > in the system, or how much swap is available to the cgroup?
+> > >
+> > > So if we have 3 swap tiers A, B, C, with 50G, 30G, and 20G capacity
+> > > respectively, how much should a cgroup with swap.max =3D 10G have if
+> > > it is limited to tiers A and B?
+> > >
+> > > This is what I was getting at earlier when I said we have to calculat=
+e
+> > > different ratios for different cgroups, based on what tiers they have
+> > > access to.
+> >
+> > That's a good question. I think the case that is particularly
+> > interesting is whether or not the limits of other tiers should change
+> > when another tier is disabled/enabled.
+> >
+> > So basically in your example, assuming everything starts as "max",
+> > when swap.max is set to 10G, the autoscaled limits would be: (tier A,
+> > 5G), (tier B, 3G), (tier C, 2G). Now the question becomes, if
+> > userspace sets the limit of tier C to 0, should the limits for tiers A
+> > and B change?
+> >
+> > On one hand, it's simpler to just keep the autoscaled limits unchanged
+> > in this case. However, this means that the effective swap limit is now
+> > 8G, which is not great :/
+> >
+> > The alternative is to recalculate all the limits when one of them
+> > changes, in which case the limits of A and B would change to 6.25G and
+> > 3.75G. But I don't know if this will work well if we allow custom
+> > limits. What happens if the limit of tier C is written as 1 (or 4096)
+> > instead of 0? It's effectively the same scenario, but the tier is
+> > technically allowed.
+>
+> I think the one problem with this is that it becomes quite easy to
+> accidentally overcommit. As a toy example, if you have 10 workloads and
+> 100G swap (as in the example I gave above), intuitively setting
+> swap.max =3D 10G for all 10 workloads shouldn't ever cause any contention
+> on capacity. But if you start excluding some tiers from some workloads,
+> you actually get overcommitting on the tiers that can service the
+> most workloads.
+>
+> I am not sure how concerning swap overcommit was, but at least in the
+> memory tiering scenario accidental overcommitting of toptier memory
+> seemed bad enough that I wanted to avoid the problem entirely.
+>
+> > The more I think about it, the more I realize it may be best to drop
+> > the autoscaling thing. I imagine memory tiering might run into similar
+> > issues too :/
+>
+> And that's why I didn't include opt-in/opt-out for any of the tiers;
+> if you have system-wide ratios, there's no need to change the ratios
+> at all, and as long as the sum of your memory.limit for each workload
+> is under the total capacity, all tiers will also not be overcommitted.
 
-On Tue, 23 Jun 2026 19:33:42 +0100
-Matthew Wilcox <willy@infradead.org> wrote:
+I think eventually there may be use cases to opt some memcgs out for
+some memory tiers. For example, limit sensitive workloads to the top
+tier (or vice versa).
 
-> On Tue, Jun 23, 2026 at 08:19:42PM +0200, Christian A. Ehrhardt wrote:
-> > The panthor version is only compile tested because I don't
-> > have the hardware. However, the code is identical to that
-> > fixed in [1] and I have a reproducer for that.
-> > 
-> > No need for for stable backports. The code is new in 7.1.  
-> 
-> What documentation did you need to see to persuade you to use
-> map_pages instead of writing a huge_fault handler?
-> 
-> (yes, you're all Doing It Wrong, please stop, but help us help you)
+>
+> Now, all of these complications aside, I think we might be overthinking
+> a bit here : -) The auto-scaling should just provide some sort of
+> "reasonable" default, the users can always override the per-tier
+> limits if they are unhappy with the autoscaled values.
 
-We tried [1], but couldn't figure out how to make it work with the
-current locking in the gem_shmem logic, so we decided to postpone the
-map_page() addition. We plan to get back to it and implement map_page(),
-but my understanding is that we still need the fault()+huge_fault() as a
-fallback for when we can't acquire the locks we need to service the
-fault. Oh, and BTW, we had just the fault() implementation in the
-version that was merged, no huge_fault(), but this fault()
-implementation was mapping PMDs which led to another issue [2] that
-forced us to add this huge_fault() implem.
+I agree, but it seems like both options are not ideal here. I think it
+might make more sense to not present a default value at all, have
+"max" be the default for all the tiers, even if memory.max or swap.max
+isn't. Userspace can set the limits if they need to. Autoscaling the
+limits in userspace should be easy.
 
-I'm all for improving that, but if I'm completely honest, there are
-times where our MM-related questions are left unanswered ([3] is one
-example), and it gets hard to figure out how to do things properly
-without proper guidance from the MM experts. I thought [2] was one of
-these, but apparently the MM list/maintainers were not Cc-ed on that
-one, oops.
+>
+> In fact, maybe it even makes sense to have sum of swap tier limits >
+> swap.max.
+>
+> (I actually recall having a really similar discussion when I was working
+> on weighted interleave auto-tuning a year ago, on how weights should be
+> set when switching between manually-set limits and relying on
+> auto-scaled defaults [1]. I don't think there's a need to follow this
+> convention, but we should think about what the expected behavior should
+> be if a user manually sets a limit, but later wants to go back to
+> auto-scaling limits).
+>
+> Anyways, I think these are important questions. Youngjun, Nhat, Shakeel,
+> any thoughts from you all? : -)
+>
+> [1] https://lore.kernel.org/all/8734hbiq7j.fsf@DESKTOP-5N7EMDA/
 
-Just to be clear, I'm not blaming anyone here (I know how busy subsystem
-maintainers are in general), I'm just trying to explain how we ended up
-with these new huge_fault() implementations (one being a fork of the
-original implementation) that you were not expecting, but also wanted to
-point out that we've been pretty transparent about where we were heading
-during the submission process, and we didn't get a clear "no, stop
-there!" back then.
-
-Anyway, I'll try to get back to this map_pages() implementation, and
-see how we can handle the fallback when locks can't be acquired in that
-path (I assume this would mean no PMD mapping in the fallback path if
-we get rid of huge_fault()).
-
-Regards,
-
-Boris
-
-[1]https://patchew.org/linux/20251015153018.43735-1-loic.molinari@collabora.com/20251015153018.43735-4-loic.molinari@collabora.com/
-[2]https://lore.kernel.org/all/20260319015224.46896-1-pedrodemargomes@gmail.com/
-[3]https://lore.kernel.org/all/20260319155028.291f3157@fedora/
 
