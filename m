@@ -4,169 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05CF2CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA12CD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:37:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 935A16B0096; Tue, 23 Jun 2026 07:16:00 -0400 (EDT)
+	id C20926B008A; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE706B0098; Tue, 23 Jun 2026 07:16:00 -0400 (EDT)
+	id BAB1A6B008C; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C3246B0099; Tue, 23 Jun 2026 07:16:00 -0400 (EDT)
+	id A71EA6B0092; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 393106B0096
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:16:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8FE921A04B0
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:15:59 +0000 (UTC)
-X-FDA: 84910922838.16.8346D42
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11021092.outbound.protection.outlook.com [40.107.130.92])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B17ABC0009
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:15:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=bSQ7Kjz1;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	spf=pass (imf10.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.130.92 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782213356;
-	b=RawDlko9XQhZiOva6zoVXXlRc+0RaP5fsLpB+2EIeNKsclP8qMr8Dmcti3tEsIVAIyPkEj
-	u80c0LIpBioiCJT/Op7HscGr/3kgQE1GILcNmYAZyy3ELx790p3EANyJ/vZ4fYwaIp4sAq
-	+fEalAcDOTS86JsntaNdzf/esPgmUYo=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782213356;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7738D6B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:37:52 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E547E16700B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:37:51 +0000 (UTC)
+X-FDA: 84910977942.18.B77AC3D
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E1CA4120005
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:37:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="UFaS/IGp";
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782214670;
+	b=acNXOFUWQyRQQXXHmvf8Le5P+ZEySBNjVuTor7Hiz/QEQ/GzpP8P9qDiUeqo3fzt5I0L7g
+	y2iTzwSoRh1dXorNDxejNn1JKXbcQje/KFNMH1r6Xd+hBgAFOHKX6nXD8uLIRcv81u9HB4
+	vlokL6RuzmOA6k29TKmskTJJVXr2gxI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782214670;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aWbNw9AeJfx64sIXztFMGNnMWlJCcIETWjGyFPwDLMc=;
-	b=3JjprdH/3/AjM6MtOWTCLx2SG9f+SZ84FqzWaX4a5nCYyOSTSNpyFXH+Yd8UhwEbDlZqDO
-	T8ekCn8v6g0dmC+CltrocYYhFHcQ1qsLYyobK7jFa/Wu7n+/hOOXO1PyxYxI7NljTN4XPT
-	/wJ1UIm3S58yNS5qsgDVw50+5c9q/AA=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=bSQ7Kjz1;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	spf=pass (imf10.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 40.107.130.92 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MmDAwTweRt0/VrEp9Jt9lm/odpH9FjnOPNggmW4jNARu7H3kqUE6F4FLPq9HfcdsALAWKFkilD7DfXrSesAN6ehWtBf0wN/AqrT0s4AxGmirfjUBEHpiCLCr/rurhMBOe2pHouiDjf+PT/N8Sa8cTOCRjEaYvfqiaEl36AsLMvVFsk7RUR4cvk+25QJwcOTQ7DNdjkpTHvT0A129KNErEexzxRIme/wQFZqXcBOzKLKKIzcFB47TH31jsBuJpXrKWMEdujE74xXjxCe0INPM/ATv1QUrD/H4/2ohe670/v7Bt359lQBzxzmbJrCUDoqK4lON6tMFhvFlCxaQvEd7DQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aWbNw9AeJfx64sIXztFMGNnMWlJCcIETWjGyFPwDLMc=;
- b=E7Fist959hwpJSoAy6p50IMIJ++9krZ5OTGuDuQfkVrMkTHSpkmj8bDlqoeTUXsrLBscn4dlmKLeewSJkQoIiidAUsilSIvzd9zWoOOKffVPqwwLscpgsm/PNWVIHWTZ2cuWjTonDfdqJPLkje61uwrhyB2QKVvtvlfm3OlIdGirsWdpo6U+aLk4CaPnwd96xfXZr2PNmPJ5FwVphG561S4hpy9WK6CFvCGKl5UkFM0i7rRhsfEM8VsCszJC63goQeTzmlQA2cI5glZI1NWgrMVr4guz1gGJel2tfp/cl94v3RAm6OgyRPz4DcQPMyE4Ztc2RlwWHeKRPlxQh9R/jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aWbNw9AeJfx64sIXztFMGNnMWlJCcIETWjGyFPwDLMc=;
- b=bSQ7Kjz1sc0Yi+60tIS+923dxvPhgU0jFfNUeqRp3nXkCBleDgBobghs8hfSSPbQotUd7C3zf/LDeTGAPkLN+KHGoTLtMBFLrgi5X91PLaUOXjROk5XwY6O0zc2zEaP0ZgD5t+qjEpX0GoPPoTdGan2NzOVM9Q/DktRq+g/fUifeuGVslScOpxT6uzUm9hnC8DbOUD2DZxU32/n/5m8KWxDHtZZXWq2DlAIJBj/iTBAQD9joPTWnSUkuMhsAZ8au/0DMEZo8yBglcSXuIs5yMzlDdJ56IhkZ2gP07LtSt4AhvgDeDTlTWOxT7m1dh9tGKm3HpiUWyxzZI8wNs7n1eQ==
-Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
- (2603:10a6:20b:747::14) by AS2PR08MB9974.eurprd08.prod.outlook.com
- (2603:10a6:20b:643::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Tue, 23 Jun
- 2026 11:15:47 +0000
-Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
- ([fe80::bf46:f137:f6d2:5b3a]) by AM0PR08MB11804.eurprd08.prod.outlook.com
- ([fe80::bf46:f137:f6d2:5b3a%6]) with mapi id 15.21.0139.018; Tue, 23 Jun 2026
- 11:15:47 +0000
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-To: Miklos Szeredi <miklos@szeredi.hu>,
-	Amir Goldstein <amir73il@gmail.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-unionfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Subject: [PATCH 3/3] selftests/cachestat: add an overlayfs test case
-Date: Tue, 23 Jun 2026 13:14:50 +0200
-Message-ID: <20260623111533.2285005-4-ptikhomirov@virtuozzo.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
-References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+	bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
+	b=lV+4/SmhxXDlgAtH2/a6hFNBec3tv2kYvzQELWxiB+I9eIvYvYJ2ZE/C9Z/qnW25jvPHCD
+	Cxzen+f8jGwC/LQR1CdHep5bDJ/xHt2qNfI1O5v7kbLC9ZPTjWIpmv/vM41hFW9ySieQhi
+	F3qiHTH5pPW+Y6HTwKxDFmfA9oYkuVM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="UFaS/IGp";
+	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.173 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-84229481d44so2444110b3a.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782214669; x=1782819469; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
+        b=UFaS/IGpkSYYATqHfG5Sk2HSynZzCFwAs1pmksneAKVU1XB/MbekgOGUp1IhK0E+ls
+         yV95vS6FWhQB3I4qDfeJ/Mb1JaNKlSRwgZpX5yK83ocD0fFOL8cOUKSimp35yv0lb1tb
+         BfmDW//Nx4R0YqMolNG4sgoHLrwU1p8gXNR1fDRq9lGFY/+v0lVKE9H+BBuBn7I6Ldnw
+         lhJrqgQGMmIpos8lIc1SBJo2wk2tqcxbycyG8VzMgHA7yHsT14VoPYqlj3KwUW66PBvV
+         SEClgv4a+rkLKf7VkbJJyLvVh8FGlP6mqb9awq7+7QxE2UllzJDuvzF3iz8loNot3oMz
+         YgiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782214669; x=1782819469;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=t/a2x5Ghb20XmVHJR+ek7GnEWJsjkaghf0C6SjAspjc=;
+        b=Wf7X+Ro9iQFPDwQoGu3PWzavj1mtqhpsAiYpy1vfKqtehdXAK0FBnuevQUNkkuFDSk
+         xYgvHWC6cHgq0dyxaqH9Wkw/xUiyw+JMgHFT1+aErw1+/pzg3jdFBeQB1hTIQ3QgfHwC
+         WkeLrgRS/dbmfKhH0siKTO38KrVbytOmlKMMhbE1qOuiYpuHF2KISV8zxKQyuPT6JtB6
+         a9LUrMtLkUO4IiN4c6dtItS/tSIVWketlzLVueRPpO2EXBDpjeJOMTmFpRXn76jDMvaS
+         aNVbODNtjtvl38iCrbtYIuNQK/w+ErSZyAVTm9prFjxvQJClUuvaX/SKiWQ2tQ709Z1L
+         xUiQ==
+X-Gm-Message-State: AOJu0YwmYi6TSM3r65clPb1XPOMm2eX/G9EwIxSAeNev3cOGmt5KetZn
+	dbEmkoN5sWimHhd5IyIGjjacVaQqYnL4k3v+/BU+vTHQa+Op6ieTXvza
+X-Gm-Gg: AfdE7cl3R1QFtys2PmcmFQEDOoLc6nUSc2paQ1/DQApfu+ejENgZIJDwIgh2jd7M79S
+	vkU5LPCCMTQmhG/TSTRswEICMMS/zae3M1xK+Lxzihy/7yo9Q5yPh4E+ol1nsn6pY1JPRvj9S+W
+	A25nI5XOs3TGbXHh9riJXRPz5MmowUnVtiNbTqgLnJkqitGgG7ebpX9j62C3BAl5TrXWnTdoAYU
+	P6H+0FOsqoRuuATW75JzI0pvCm5Pe+amaKddmfra6H+KJ5T9jYL/ZbfJW3f7ru0tBKrQe1AGAJ0
+	PPtRNE8cA/GgMm1IUpVWcY7miRpcpYPjpo+OQmve6QDUvyL3YFZceUfSi46cOjW9JdnvmqBtyqT
+	hqyugJa3YV4+00nWFnWJVMhyz4qfg5E3eeqX2wsws11OcOFGuNjT41MPo1p1l8ueGFlaKqZssqJ
+	JE03HEVZIht8JgJko=
+X-Received: by 2002:a05:6a00:4b51:b0:842:4327:6cfb with SMTP id d2e1a72fcca58-84597123e04mr2464203b3a.46.1782214668486;
+        Tue, 23 Jun 2026 04:37:48 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84564ef4c09sm11953864b3a.61.2026.06.23.04.37.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2026 04:37:47 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Barry Song <baohua@kernel.org>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Subject: Re: [PATCH v4 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS via ARCH_MAX_PMD_ORDER
+In-Reply-To: <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
+Date: Tue, 23 Jun 2026 15:02:07 +0530
+Message-ID: <wlvpwqjs.ritesh.list@gmail.com>
+References: <cover.1781843449.git.ritesh.list@gmail.com> <eda4e51ee9f1270582fbb2823ec5873e769de089.1781843449.git.ritesh.list@gmail.com> <CAGsJ_4yTY8g3M7qmpM7HeUq=E05e7v_QFTzk=2D5Mv3Vj3Usqg@mail.gmail.com> <33ydyd82.ritesh.list@gmail.com> <CAGsJ_4zZBf2dGjG2SF8VkwwaYm-oFpmFEJ+Kx5-DuNk0ez7xbg@mail.gmail.com>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0175.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b7::12) To AM0PR08MB11804.eurprd08.prod.outlook.com
- (2603:10a6:20b:747::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR08MB11804:EE_|AS2PR08MB9974:EE_
-X-MS-Office365-Filtering-Correlation-Id: 156a3111-d676-427c-87d5-08ded118c69e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|10070799003|366016|376014|7416014|52116014|56012099006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	43H5Twf6rOanUvhVDO2+DKp+EHajZQs95QFPHxWvAH/IB8Ezc3VJasP9BHnm5ELMfjDB4Z9rEkcvL7hauUEqPdJtKbJN9Ob6KQ/CMSkfrHcZCTQwwG+xvCcqFh/KtYQHl9eL8ZJoAsewSnyUhvhOofm3FFn4pC9KU96R5ZXJ640iqQAocDcXNSDmPMjqxw0IaU7daqRDgws26T9k0cjA2FxzfkmciXp1gXdzV7y1NkPDNyhmeuKD1xUFT+gG3h05/+wrn+hVEiWGQJNxPUH5ksvjwAauUWoLK0NYGqVrYueXpEve6oRXZcnba7iFnbQqn51J1L+On509+lV5u1BPfbEmbHtznKK90BcBe4VypLulFV+7XtLNM+l3jobmQMWauvwj8plQseLIkieg0BJDfV0V7ua+bjn4sZhSQ0GPRzoCgjm7hRxMuq5tK7t9UMutsyxcWBuEPVdbpa5PKCMYEME1D8ezCqWJUnF932X6uFqpQNAtZN3KQGxZpTJSvX0YJ8eNj66uFcD1fcPFTSL9cWwvrcoB3Cr1k33Fm/ok86XgEvREcuLwZzJA1IDWFFdEY6PiIyTiFQw5vBVThIXH4gY4YfrJdb2nFLcKXMgiFI5f4tcaDHAkR7cB++1BHiTAtBMikwCdeBA4EyxA6HsaMIijUjj3gCUay9kVsGrhtfg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11804.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(10070799003)(366016)(376014)(7416014)(52116014)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TFxABkXIJzCmOUvzkz9qalRd5p6AEmmIJj4prUHJxetFpfgL8piM88Z26+WN?=
- =?us-ascii?Q?5Tkj5hQJCvL8iN6u4tSa31dvohIKa8JVs2mtRZWZh1zCxVm6cFdU/Ygmli4M?=
- =?us-ascii?Q?GfKTf7l7DHnA3KpcF+6NNr+Og5HBQp87g35td6UBNMty6hsqUf9enobGVWvl?=
- =?us-ascii?Q?iZCQJaEMA17rQR7xy224E398SJ2oUsMlLbCT+EBWq2LHROhhC6vBrw0u1hZu?=
- =?us-ascii?Q?BEmKhRtnoWIUPTjGT8OPvcbi+JJDZ/ClK4JM8xSSQyvmTQcWGvt/bYRSnlZe?=
- =?us-ascii?Q?NMVdu4eFBsGE9EmSnmBpHfaKbesEAEBgNtjIorxqyChA4tkzv0cDjHDLLvUM?=
- =?us-ascii?Q?NVUxNT6C8feeWo3cRH66SBdFUoIM9hAK6sMlnkg60X7okWHlZFgiWvrwq7kY?=
- =?us-ascii?Q?JJxBFdtduYpY/Rl77swr3leacLkj24eZxVqEVTmK5ndJK+fM/E7eq3iiP9op?=
- =?us-ascii?Q?CfQKMTf4zoSYARR4+THpn45MdzhfI+qYIqgXL5gqY0RQtwB+4U54EvldCKFL?=
- =?us-ascii?Q?AP/1VFU7WLr5YVbuf7kb5DHowJ6yhaxs2E6AH1EB/89oS6t56znfNoh6Guma?=
- =?us-ascii?Q?etbz4V2jv4757K+aDf+WCtuezfldLgZ8Yj1gBQfhdlIg1UwN2AVvrlS4+TTt?=
- =?us-ascii?Q?aakTHB+yh+ONZnYcGCS1ZQAbhUbBjD4L9x6r84lBQSfDpd1cacJ1khFreq4L?=
- =?us-ascii?Q?MeAem42ggKIR9XlNstykPdEQnCBDUfc2oLxOLfXgNrtLlmScHTfl20u3Tffs?=
- =?us-ascii?Q?Rb82VyvIW/0zZzFNg/6I96O4r6QdmkSE0Ej98T0VbWFuPhPFYGarl2YjDRXj?=
- =?us-ascii?Q?JVkv6MpRF4Zn8otOAU6CUprNHqZp5Q5sOixAH91RuNgcWOXHUOPaua9d4RJX?=
- =?us-ascii?Q?9OyDuBSn5qRNRg2ZtMRLyXqTtI3ppDRM9bDYQBFtjMDkmG0VwrqYI4m9yePC?=
- =?us-ascii?Q?FYrcXzf2XqcWk9POQxex+bMGf346EiUnvOElS+zPvo56MmC0K/3jgUGqma9K?=
- =?us-ascii?Q?LRkm7ohwGiviyk+I8x34epPvzcPAdy4g5mr6hTgLX6tW+x0sFh1gIHowg5tl?=
- =?us-ascii?Q?0bc0eH7anSouXOhMfuz54VFiOmVsvYDitggMZnHVRZDU2YYlsuHqDW3qcBpZ?=
- =?us-ascii?Q?/12VqW/lWFeE+L5ZXWfkNrJU0RsOCK0HXo3nk16XFpzeH/HrNBIdEIbEA+2p?=
- =?us-ascii?Q?zQxBSStRlHj/UXH6Nna6+8vH0GKNYpLKXesFoxxDTRMKpJEixvxHqJlWyydN?=
- =?us-ascii?Q?2WzcV99beEcXVoNUuJzlg25etM58eShav9x1Ph4spp1zcNKZQq4O697BKNFK?=
- =?us-ascii?Q?X7RXvxhyevkl37teoalWKUF4jHUJ95iQ6AEwJSIy3Oe2rbopNTsPlsZTNIWK?=
- =?us-ascii?Q?EBgjAOc34PIRt5TQFmqePm43He8f4GMw2EO0jgKD8Ux/NU6Eh5TfgdyujYYl?=
- =?us-ascii?Q?4Fpk8yiaPnwBnjjGqgNfA1kmxYtou5eVCHPElQ8oOwAk8OX/q0eONzAZPOxG?=
- =?us-ascii?Q?Vwa4xGJnNgWJdJr8SOG9O22Cx3Fm0eYVZLLppAyrf+GgMe/5Z0NOz9PIw3av?=
- =?us-ascii?Q?TkaErls823QgXFS2Msd1pvzFj8FNrZnqNxjNfgg1hTix4ED8l4Q+PsYKOf6D?=
- =?us-ascii?Q?Yufr0sQ9iCLc5zLfE5pIiYNSbw4/StZberwK4GQv19QjEziJ5XfPLUWPZBbV?=
- =?us-ascii?Q?oYJFBeL8Sk5k5zKkzGH5BpYqxNIAWMzuumh5Pb82GKMc/KYBzzbYKG8UZgOc?=
- =?us-ascii?Q?WeoOeGkcv7TFiINdh6aawyQYB7X6FH/SKH+d+866BZy7GXOg4RBMdZJk3iFZ?=
-X-MS-Exchange-AntiSpam-MessageData-1: emT9B4JvF4eaj4T6ynGt/kmh3RX5BL87bP0=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 156a3111-d676-427c-87d5-08ded118c69e
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR08MB11804.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2026 11:15:47.7201
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YeAp9NTVmgNSQLmVx5GkrehbwCcUidFbkabAR+pWJsXHo7AYj3yoCtDxXScHUFWVhzrMKjzxIEOj+zq9eqx+kwqLeMp50vyvdZeN1URRW0s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR08MB9974
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B17ABC0009
+X-Rspamd-Queue-Id: E1CA4120005
+X-Stat-Signature: bakrnxg19u57eu5sih5pk8srsqd1kdn8
 X-Rspam-User: 
-X-Stat-Signature: t7dx9tsni1gu5r4bqk61i6pt1g85dxd4
-X-HE-Tag: 1782213356-975520
-X-HE-Meta: U2FsdGVkX1972/bQOCfT5cNfHjeAQh2YSRTx3UoOGa2GGdiTdWurtoHzQ2Rr8JwMVJPaOSPbCWg/HvuMocwIRcERWu7gLiKRbgVs7Z3zajbApvKmUGlXv69BEGlMxXAdu71zMQTeYpEXoOCofgOCanPCw+UYZ4lZCZgBI+tgOt/1W27rthyS074/XnqMmjm0odGnf7bGjqlEPvwQ9isKiDWLzCqzNuJVdmhXNkjtcM7DJlHpxAycxFfMYHcwb30OtzOFYr2XUitZ3ri/F/myi2DTjVoP//1qQHFLddh1HgM4u8CmTdoxoy6ZfnjK9lfueXoFpF9uZMx+pipvBU+L0R6uY9FgVsfXXyb7cWabmkAoMnqxMYSj7C8+jVA9jpWJ+79mSduI9+Ket3i+F0DngmjReBc3oz1kpRnCbit4ASHl+xY2FQy69hojSW/CnPlFCTFAYMQjzizkBqnbj+LWlL9VEmvnZCwis72IxffSxIAuGrPtauoGUJqm6pQAcDobtsN1dsX8Jc7X6T8tAqhMq3rZIRU4iX3bvwlYp/qt6tOier66tgaaqwquFWCaPI0CLI6b9kEN3ZgOcA7ZrNHn8ZxjCQSX7gvGFuI5wRMyDodf8nkSiZVZik1aFYIfblW6xkqt17GXH322sr18msMDPB19qixCAwqpxUGOXjJRhk3Z3CyWl9+H8DknZGcsdUc6Ulp8KMvqq2EsO68fiK8XXHH207vX3g3Rl23EvB8La9WXwwI/2vEZ6pLIwmaGhEr6u8M2i3F1xEvN4W06ox/+TPj6k62Zx3ZEGh3JyV0iyXpkRATwUgnwcUZ8pMFH+fasgwBDvQ7ZOjmu95ZKxNFYRTSnBygDEggwGlr56CqFqDF5qhpzsRUgPrxcqpJ1zyhM0Dt+14iWa5WZI0xrzGkH5LuqlF2meTe7HsBdNytmVsrT22F6zsbeDVrprxWXwPrT9zrX4dTXyOpDLi6azSP
- 3G2sHxxA
- oydxJ9wG93a0TyqQtsoNtoBeKvyGO46oNSqEKY0v+RMgiJXDXr+/XCqbzGw1SaEYu3IpvKBw1Lx2hQiBw/H3fMBh+yvv5c/9r/0/3pwd+o+cnHHPe8XTeQxk/o7PV5Kw6v079sQoovAlRpDKs3DLonFSvRffoj1IaO4LmqxDVY1NymJ1Ir3G8Hzp0W6LiTpxMd7eE3Ql+ZBGexM7HU+uO7ISJENF90NTxeSn1IcuZecHyCRW5654ShaF+FuS3FPnVuxgb0plPnqhejW75+AU5Ipvm0lj9n2dFW6ARiYCnauC22PLmO7loJcN75n9DyrgYrP4tG2vz7sBGtMBRIwKBjz7fT84uvtG0LvtDj4cZ89Sh+UCwiei6BmXUEaN7wZ/C0fZHopXCLJP0xjRIc9BzBVS9hTmWrOlmm+8UlvJvLq6yXH6D4DZwDD0L9A==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782214669-490182
+X-HE-Meta: U2FsdGVkX1+b+ecXgUx51d7o36Se/VxFjlIKwAWFJGNhSb3uQUvIJuCVfUa7FTQp30b0ezEQoL0aGESw2KZGEMQ1WIhLSYWGboJqJlyDf3nUuCDloub89gguieeV4FDtRuHLLxqDmQ1nmg1I6idylBp6nsAzIcMFSD2F4cU8NBNX9luJdl+p0Xw8YkRT5qZtHNWiukqPK5iVJEdBFOjqbAWV9iYLduEcs2yJimejfSRYYpzlUyvGSnHTjA912tbsMz+fpZ6Evi3Gcyj4jNYmcxpWLt0qB0ZtlFJd2VgOPOtfdHS+tLhV9MT4hmBglZ0pqIVUzdSToa5rsUOLn0wD1OJ1pMWM3yruD5gt64WmahQKlofnSTsIytYKX1LwnYAfKsCMfIfrMKouQ8B1ELWJgOxEDVwwyC5p9B3jdkgkZCcWyhM2LhgwsE4Pgt3wN8C0RB/n12UIvzXNKwmxhwyC+zYj/hNf9wn+Ax5b+9AJx5aftKKPJbagPR6XJAngUS/+ByP7uqLMkk6Ku/i4No8f+J2Cq3Os2eSnTYOzvjHfjVZ7zow4eSXzIut3UOS6Ac71VA2dnlfSdHs+uSG3WPSwriEw/OmXDTWK5HyH984kIaGR1EhSKRgknCyrP+q8Yk2iWAKDqTPyoSeuHr7ttGGKyL7n6QjgNWApodJn2V51UadvI4sj3UHIbh0qVSh6IVYRQAnWt6cQDgMh41WNoJ6gVeKdDeecF3QuUUpyYvgjI0l/7BQ0oUSWLDGKdDXwOfi6F8RmQ8hWOA10fifb/pgJ6TEDmyHNWi5GhzWDRLsDdaXAV5KzkfufFVpoFNqS12rJrrVJaa9n7ygRkxtYlSRv4dmw5UezWBqNHcPIjZmkhvngik2dsgrDiyIvXiGu1HxDwUlqys5kVE99TWrgnIx3kWZ88YM+CXwQr3tWobMy38QdU9fCxeC03hMgarvVsaafkT7o9ZW30pe+pSk/ipq
+ z8XQCOml
+ hnE43UW53pRZ5vo4tNkMKkEk068AuKoXkK+Ulo2cw1ANYfIJaWzPrcfeTYuhD+E8HKXu4OMwXnYG8OAzG2jyQqZpVq7ANC6gb+xE8yuu4JUcsvmwCbnB/CkeimZGWeYNPiXBmxS3/5g2ovyHRGzLMVfbOQ2QYSwJ3D7IS8V7tM0Dkp5XgIn21eAoiGWkaLhvL18QF9qAaYLPJZNS6hjTdGOpj8m08cXwVqW05xLN22wgquP+VCTiJefgXQt/i1ds3E2f3utiuOhOvkTUZ0k5vwSMuI3H3PXyd/wbNftcWd6/EZkSm89Vwu66oZOU+K1IzZs+BFbqpK3WGhQ51d2dCJ+RYtY6O1j4sOLQ1n04s27S9KKQcx9DRmWhbhI4mbX4NQiXHDyy5BaMri6lQWnmBiRA8a5rMSX+AcYm+/Jeyryvb09ppSzKYXN1umCv/DYH8gLHmG4VNe+gVS8fT+Cphofl4H3bBr5LJXr0MvrNgIPjfZrlxj6X2tEm9cnI4m9hYpeyAUsJCA0r0iWiXtdCJGEsu58Qak4JB8fQ4AjKqPEH2ytcQACvjRab2MCe5ZOAyZnZqOpRKcjuzkvU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,131 +116,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mount an overlayfs, create and write a file in the merged directory, and
-run cachestat() on it, reusing the existing test_cachestat() helper.
+Barry Song <baohua@kernel.org> writes:
 
-Also bump NR_TESTS to the actual number of tests run: it was 9 while
-ten tests were already executed, and this adds an eleventh.
+> On Tue, Jun 23, 2026 at 3:05 PM Ritesh Harjani <ritesh.list@gmail.com> wrote:
+>>
+>> Barry Song <baohua@kernel.org> writes:
+>>
+>> > On Fri, Jun 19, 2026 at 12:41 PM Ritesh Harjani (IBM)
+>> > <ritesh.list@gmail.com> wrote:
+>> >>
+>> >> SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
+>> >> allocator code (nofull/frag cluster lists, percpu_swap_cluster's
+>> >> si/offset arrays, next array for rotational device). This currently
+>> >> expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
+>> >> time constant.
+>> >>
+>> >> However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
+>> >> variable which depends upon which MMU is selected (Radix / Hash), so in
+>> >> that case, PMD_ORDER cannot be used to size the static arrays.
+>> >>
+>> >> This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
+>> >> override for such architectures. The memory overhead on enabling this
+>> >> override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
+>> >> default slab padding could cause some memory waste. Also we lose the
+>> >> per-cpu cacheline benefits (for percpu_swap_cluster) because it might
+>> >> cost an extra cacheline indirection overhead in swap_alloc_fast() for
+>> >> fetching si[order]/offset[order]. Note that a fully runtime
+>> >> SWAP_NR_ORDERS was considered in previous version but was dropped for
+>> >> this reason [1]
+>> >
+>> > Do we know the maximum PMD size?
+>>
+>> ARCH_MAX_PMD_ORDER will be 8 on PowerPC book3s64 with 64K pagesize.
+>> PowerPC Hash MMU with 64K default pagesize supports PMD size of 16MB.
+>>
+>> > On arm64 with a 64 KB base page,
+>> > a PMD can be as large as 512 MB:
+>> > https://docs.kernel.org/arch/arm64/hugetlbpage.html
+>> >
+>> > One concern we have is that performing I/O on such a large folio could
+>> > incur significant latency before reclaiming any memory. For this
+>> > reason, on arm64 we initially enabled THP_SWAPOUT only for 4 KB base
+>> > pages:
+>> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d0637c505f
+>> >
+>>
+>> That's not the case on PowerPC. Max PMD size for Hash will be 16MB.
+>
+> Yep. A 16 MB folio might be fine, although I'm not sure whether
+> splitting a 16 MB folio into eight 2 MB folios would help much.
+>
+> For 512 MB PMD-sized pages on arm64, one possible approach might be to
+> split them into 256 × 2 MB folios rather than all the way down to 4 KB
+> pages. That could provide a better balance between I/O latency and swap
+> performance.
+>
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
----
- .../selftests/cachestat/test_cachestat.c      | 75 ++++++++++++++++++-
- 1 file changed, 74 insertions(+), 1 deletion(-)
+Fair enough. I guess this can be looked upon but is outside of the scope
+of this work. For now Radix with 2MB PMD is the default on latest
+PowerPC, so this will be slightly lower priority for me right now.
 
-diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-index 542cd09cb4434..1662d9817c50b 100644
---- a/tools/testing/selftests/cachestat/test_cachestat.c
-+++ b/tools/testing/selftests/cachestat/test_cachestat.c
-@@ -4,21 +4,25 @@
- 
- #include <stdio.h>
- #include <stdbool.h>
-+#include <stdlib.h>
- #include <linux/kernel.h>
- #include <linux/magic.h>
- #include <linux/mman.h>
- #include <sys/mman.h>
-+#include <sys/mount.h>
- #include <sys/shm.h>
-+#include <sys/stat.h>
- #include <sys/syscall.h>
- #include <sys/vfs.h>
- #include <unistd.h>
- #include <string.h>
- #include <fcntl.h>
- #include <errno.h>
-+#include <limits.h>
- 
- #include "kselftest.h"
- 
--#define NR_TESTS	9
-+#define NR_TESTS	11
- 
- static const char * const dev_files[] = {
- 	"/dev/zero", "/dev/null", "/dev/urandom",
-@@ -294,6 +298,62 @@ bool run_cachestat_test(enum file_type type)
- 	return ret;
- }
- 
-+/*
-+ * Set up an overlayfs mount and run cachestat on a freshly created file in the
-+ * merged directory. Overlayfs forwards data I/O to the underlying (upper)
-+ * inode, so the page cache lives there and not in the overlay inode's mapping.
-+ * This is a regression test for cachestat returning all zeroes on overlayfs.
-+ */
-+static int run_cachestat_overlayfs_test(void)
-+{
-+	char tmpl[] = "/tmp/cachestat_ovl.XXXXXX";
-+	char lower[PATH_MAX], upper[PATH_MAX], work[PATH_MAX];
-+	char merged[PATH_MAX], opts[4 * PATH_MAX], file[PATH_MAX];
-+	char *base;
-+	int ret;
-+
-+	base = mkdtemp(tmpl);
-+	if (!base) {
-+		ksft_print_msg("Unable to create overlayfs base dir: %s\n",
-+			       strerror(errno));
-+		return KSFT_FAIL;
-+	}
-+
-+	snprintf(lower, sizeof(lower), "%s/lower", base);
-+	snprintf(upper, sizeof(upper), "%s/upper", base);
-+	snprintf(work, sizeof(work), "%s/work", base);
-+	snprintf(merged, sizeof(merged), "%s/merged", base);
-+
-+	if (mkdir(lower, 0755) || mkdir(upper, 0755) ||
-+	    mkdir(work, 0755) || mkdir(merged, 0755)) {
-+		ksft_print_msg("Unable to create overlayfs dirs: %s\n",
-+			       strerror(errno));
-+		ret = KSFT_FAIL;
-+		goto cleanup;
-+	}
-+
-+	snprintf(opts, sizeof(opts), "lowerdir=%s,upperdir=%s,workdir=%s",
-+		 lower, upper, work);
-+
-+	if (mount("overlay", merged, "overlay", 0, opts)) {
-+		ksft_print_msg("Unable to mount overlayfs (need root?): %s\n",
-+			       strerror(errno));
-+		ret = KSFT_SKIP;
-+		goto cleanup;
-+	}
-+
-+	snprintf(file, sizeof(file), "%s/merged/cachestat", base);
-+	ret = test_cachestat(file, true, true, false, 4, O_CREAT | O_RDWR, 0600);
-+
-+	umount(merged);
-+cleanup:
-+	/* Best-effort recursive cleanup of the temporary tree. */
-+	snprintf(opts, sizeof(opts), "rm -rf %s", base);
-+	if (system(opts))
-+		ksft_print_msg("Unable to clean up %s\n", base);
-+	return ret;
-+}
-+
- int main(void)
- {
- 	int ret;
-@@ -361,5 +421,18 @@ int main(void)
- 		ksft_test_result_fail("cachestat fails with a mmap file\n");
- 		ret = 1;
- 	}
-+
-+	switch (run_cachestat_overlayfs_test()) {
-+	case KSFT_FAIL:
-+		ksft_test_result_fail("cachestat fails with an overlayfs file\n");
-+		ret = 1;
-+		break;
-+	case KSFT_PASS:
-+		ksft_test_result_pass("cachestat works with an overlayfs file\n");
-+		break;
-+	case KSFT_SKIP:
-+		ksft_test_result_skip("overlayfs not available\n");
-+		break;
-+	}
- 	return ret;
- }
--- 
-2.54.0
+>> Also we still need this patch since we can at runtime choose Hash or
+>> Radix MMU. So, the main problem this patch is trying to solve on PowerPC
+>> Book3s64 is enabling this feature w/o impacting any other architecture.
+>> W/O this patch series, we can't enable it, since it gives build errors.
+>
+> I see. If possible, please mention in the changelog that the maximum
+> PMD size on your platform is 16 MB.
+
+Sure. I can do that.
+
+> In that case, the I/O latency concerns I raised may not really apply.
+>
+> w/ that, please free feel to add:
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+
+Thanks again for the reviewing this patch series.
+
+I will re-spin the updated version (with additional details in the
+commit msg as you requested) in a couple of days.
+
+-ritesh
 
 
