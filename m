@@ -4,94 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E29CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 06:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EAECD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 06:19:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 597506B008C; Tue, 23 Jun 2026 02:17:34 -0400 (EDT)
+	id CEFE96B0093; Tue, 23 Jun 2026 02:19:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 548BE6B0092; Tue, 23 Jun 2026 02:17:34 -0400 (EDT)
+	id C79F16B0095; Tue, 23 Jun 2026 02:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4633C6B0093; Tue, 23 Jun 2026 02:17:34 -0400 (EDT)
+	id B40826B0096; Tue, 23 Jun 2026 02:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BEF66B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:17:34 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 644F81203C9
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:17:33 +0000 (UTC)
-X-FDA: 84910170786.19.C0EA311
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B495E1C0006
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:17:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRuB9r/X";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD7A6B0093
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:19:54 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 129AA1C2894
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:19:54 +0000 (UTC)
+X-FDA: 84910176708.22.9C61916
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2A6F38000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:19:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ngwieh2g;
+	spf=pass (imf02.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782195451;
-	b=lYBL7WhknKhrpbnX6hhWE7fhGQNgum48egkJSBBfsPBrxF4x0LpUx6PQU5ZqpZCBQjwEaR
-	lNUP5jNfCPKQq/T7yaF8WKotg7o6eM9KUNjQ1lkJ7lACmzG3kr+8ESSEQa86Z+1cFmYEKh
-	a0cuvk3DVGho2P95exiGpxSsMHAKaiA=
+	t=1782195592;
+	b=mL6x4U71a77g81Y7zADdEktd+6aNS4d5/p/ai93cR+0tKneidcrrCqjANvb4EQtI1rUcBH
+	luDWv2KEv3fMs2ujCgtraPvVlYgxT6atLg4lyJMNgMTNsCo855067a2HJi/c84Q4pWlX2s
+	jF36hVpdzotsYIBlfITOJzZlNrW3n3s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782195451;
+	s=arc-20220608; t=1782195592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wURFcKatuG6Z9PR+jWQVTJNfeJ7Yg+VswIaJSJOM9QU=;
-	b=ayxIGJyt7j7Vyqwev2WDzLkxNbhd3cmDSRWMALnE+ehUFxw4j2aXEhYdMgW+0sCOBGntLf
-	aPCoHUsUBfcxwPkbkTWB7/+AijbIoijRlR8EJ453N3Gx4yQeGvXWukrzwZByl2Ys0oNjKv
-	RJnLP+HKz9U1mhwkjPnq+N23MPVAApY=
+	bh=BbevwidXsiQP7SQ0MevxthNZxWNCXvmcji7X+6yWk30=;
+	b=vkJchI/69mSrLeQo7ApBYSOfN2iO0lyY4ICkN33Jq95MgHOLt55fiVcqDDKfw4/K1y68PG
+	UpCF+nviFCqgwzdKG+5dHExMhKmCKU5wkVxi1d0oAY5YAqnlOzBhY+4P/HKsrvSv81xypH
+	YXWBMrmj5RA3bhHSO6xmFsomKQJvmug=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HRuB9r/X";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 31E0160209;
-	Tue, 23 Jun 2026 06:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF481F000E9;
-	Tue, 23 Jun 2026 06:17:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782195450;
-	bh=wURFcKatuG6Z9PR+jWQVTJNfeJ7Yg+VswIaJSJOM9QU=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=HRuB9r/X5W4McSJjC38ySksYgMQnjNn0tmhZ9k01WwSqfu1rnnyyFx+/q5lhVnqXX
-	 hJjTLEYVFjfj1JunJECgn1C+c/Pq4/lykMIUFKPRhrLBPW2YG3yvI/k16kSvheNJQo
-	 9/idUGBSxH2rkcGJFKs4P+3FFcah/2qjFfRoEnD043nz5uZloeZSX68htRAsBVoWmu
-	 x+kFibYc9sm3zhAqnO8jwX8IrCp6ttGi3qMxhYY6AOzgZ3QJi1cmuryNFincMbd3By
-	 5XhRVKz1GUKh1JwbTa6Nqs5YXjOiHXWJMFQpaacJ0e9OmKZuK52Wjaf7drQ05xJ4dv
-	 aWCUf6rA/TiUQ==
-Message-ID: <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
-Date: Tue, 23 Jun 2026 15:17:26 +0900
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ngwieh2g;
+	spf=pass (imf02.hostedemail.com: domain of binbin.wu@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782195591; x=1813731591;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=OVl0lauamZ9UP82xgjaUBVhU9XMWc3+GnTCVk+DPPMA=;
+  b=ngwieh2g/ibknlakFSLzWJYIsSecsvswIbgB3lERbm2+RIlr0y6Af1dM
+   JXJE8fGaydZMvsffWevfq6MJQyOQBRRoTf04ITpwxyza6fImuRA0CBCWB
+   5NBdXrKHBAaDJkdFjSMX3j8PjX+twqFn/jnO+p3ddGXgQ8Fhlhvvsr64G
+   SkkT2qAkOtWLlMUVLgO4++9QZWwq3X0kHstj+S1Nbo68AEs9x86icpYM+
+   ESHEeX3GlgOYKOMZTi9tbn7by2ciBRzcijc4zgjRP4BVY5vBWiCAMl+bv
+   ImBM1LRmF6ZrsR/k83nAy7Ph6VNcaGUB9W8iLa7FHDdXf53dUMXN/9uWv
+   A==;
+X-CSE-ConnectionGUID: Ln4+7RmfSkas90kJzxYGaQ==
+X-CSE-MsgGUID: REoKvGTzQ5OdklyWa7W73Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="93293815"
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="93293815"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:19:49 -0700
+X-CSE-ConnectionGUID: 7CTGyGSsSQeyst4z2E8mrA==
+X-CSE-MsgGUID: 3FFN9xRISGGDv0urrvE/jQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
+   d="scan'208";a="248279937"
+Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 23:19:36 -0700
+Message-ID: <49cee70e-86a4-46b6-b690-0d48aeb94221@linux.intel.com>
+Date: Tue, 23 Jun 2026 14:19:33 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Harry Yoo <harry@kernel.org>
-Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260623024237.45990-1-qi.zheng@linux.dev>
+Subject: Re: [PATCH v8 11/46] KVM: Consolidate private memory and guest_memfd
+ ifdeffery in kvm_host.h
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
+ chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
+ jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
+ pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
+ rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
+ tabba@google.com, willy@infradead.org, wyihan@google.com,
+ yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
+ suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-11-9d2959357853@google.com>
 Content-Language: en-US
-In-Reply-To: <20260623024237.45990-1-qi.zheng@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------8YsZNEvf73Xski3Cmenrn9FR"
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-11-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B495E1C0006
-X-Stat-Signature: i7kzxctkac4kwfpjpe4equpry6dgf9te
-X-HE-Tag: 1782195451-581498
-X-HE-Meta: U2FsdGVkX1/94drSEa3wjiEMOGhrX7GSJzY6qrOOp8SpPbV8OLJWt3oNLSz1OGYUcP8YU+02HWnFEmcIvjU1Ztn18TpDmSDVPJ3rToPwdt/WLn1GYiC8lBKV/qP/jt2IlH7YQurNpIeDb1l7om9xYRjwDpMOM41ArzGs/3sq1tJQ209yEUJZ6do+l6EPA0J380jYL0lxdOmE3jECxWJ9PbNdkdDljKyU4UIU00ljGnwQWlyaPAETdCh5tFNVt4UCmeGgWs04qjTgfGKfyaNIfDt8oPGD86ewBLEzDyKIhLCJvRauUf68gJ/oT9XOQVdFtNonVGxgDztfL4MYNX2nNaCcCVALOLjEWlR/enEuDozssiy9fQ5QJYlx3ayJaRlVXaOABalBvxcaZ5sksV+neK42LhkE8DNjGTKXxGzoMyvRk10g2z3fQ93QrbTVH0lJT/EcpObPtfTXiVXnP8Kul1BuEoJuIKHNVlypGfqoCMHbta+FFftXPsGEb3C5GYG8+kn+gn3+ZE4OfC4pF6nbem/ow6sZXz31+4/z1CHIjUludvsHdrmsvs7NTmr6JsOByuJYFifvj71LG9UtX9r9Rj72/w3OSmOo4ptkVcoe0a9pbcApe31ou/77f68iTQgUbnVbSHV/x5D0FEsPH6e/KQ+GhLTcfsT522IEgAi6udk2XtFiX3V+EoLl9ydfcrYM2Q4B2wrg3+b6HT74vxbVlPhtPTkxRcPZHqD70nb0hu2j20Fed+BTzcNqZzgmz2ERtoW5o1qX/ZtuucvXk2sIdN6SfAdkWAjuhPfufhDXHXQzKG871gpotgqQ6OPnb++wd7AVsiXQxSSx4FD3s9Fcx+IS0ynURk/UG662pBpkHIqRxtWYhktbC5NwWnewqb3SmZZ6IoiRZt+MIv0GLWiS/J65HRrD/sh7YHIGNuMDz/xGvf9mW2fGyE7ofTvlZK+6JUo6opPmM7kd85IV3Yy
- on1VuYe4
- plQoBJCU5cdnWHdwgwrB2l2HISbivS0lmzxyWcP2jHXxezMdC7zzskXB3PyWPMdUHwplPMzelrN3TZzY2fu5IZiqPSyFxVRn2Ij6w0tF4F8sld/Qnr8qaX5RN5aKhHEtzSoFjQrqqRuYtS2UN9cDS4PzVmxsR80HYWprMaVgxoajfdzyY6Mlx0sRPBbG6lRBXyTMo0ucx9Kwx8lHJGRgD6wwikngfZ2gYtqhEbTXmI5Pp8iX4Q6S5BG3/2Sh+Cx4NWvI7N7jsGti78svfHy7+iK+WhUh/aJ7S/oyzq9/tDbjQOzN7C5M0cStJt6qIbKWlJIToCGjAq5ziXKtBkbJgg7Nailit+Of7pXQu6Y3f5EID/y9TLUwtS514xwVJE6r0Zeq8Yu+MghR2SMo4oZIRaliXnn3zP1UElwMUSbJx41DSo2jNzePSRHV7q22XRRe0Rm95eYWzaNNltGnb6wKNlMMG62A+rNB+O/+rCEC3+YBOZk7lSsPKKdrZqA==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 2A6F38000A
+X-Stat-Signature: wpg99bn7imemfstb34r8ghxegx7xdmb9
+X-HE-Tag: 1782195590-945051
+X-HE-Meta: U2FsdGVkX198edybwG/4kpJK6LBsKAhygL9c7SeIlWTj6GF3At0HS3vmcEJFV4O5dcE8kUrF19h5OOYnoKe/cfzXhdnjv7YAnReQEBVOd5oTpa5ECF4+nQpIUKIzwz1fwhCYNgEb5lCYohyK+Afc1pf7xs2LcbF5G4//2NtLmDBIyvMVjLNr8/jpR6f1qWEQ3O+dnqu1Zh35z9PFD0nvxqriJg22SiekSEO7t2tQdJDsoMIJRg7ovVSQry0GGpiDG0or6yps32PSHOX40poziiT9UP0TbT1V4tdi4YeB/vFHE7ElLHkIttTf/uVmTKaG5VB/3MM/B2h+pY4vXAAw4EQrAoJHB2XcBT3O8vzRxLqYIrNkbHhUA8WCq2YF+HTo/P7jgGNf1WSZc0bjGqreqxgG97sNNzYJMjYDA30onNn616SU6u/1g5EYZ8fSD6GUeDelIENOlYDrljVUPeKrDSRD9WuEbM751C1pkEWuHzJdpaVl7hijVKGnxs1JW1LuYkDe1tLezCyBLpgsw3yk62jUD62DE9VlcI5XS+9WXs0N52rXRzl8JANIJsKKdN6Noj7Q7U8skIDVgqfLtQQjlGtBMtQkZ8tA3gNuHSELL/Knc7pVKXnVcBuJ55Q9swuvA+I+R/7WRn5CevyAk8cXpWb4DeCpl6uXdCw+dl6jjQ500Rukx1Up2iosGzo9GE3/3ZJ14xtsYzLj/WRUMl0BmZLDnvHeH/VBSmyAyC0hSId0DqOszSeZaR6qM/5Sd0Lh3aEEAvh9F7iQXCVgHd+9GNyoNDKwHzquoc1XF4vGVqQByjn1nZq+VGuWJUmUBraYT1Ag0Q6pcbvr4mWMk/SG7fcKyOBVwIDDNLD2yUN2SZYO3gRr+HWV1BcCWXcH7bnjoVrczwq7xBd0iK1QS+45T4Ta8O3PRYtkCzdAwHcB+fFhZc8uoJoaknARyiyjzDoTNv9QS1/Lo3j5xYzdWhx
+ /cdCMntm
+ 9A1oCVR9wxoZzXLnodNi0McvNn0nJ89JGUIJJf6Xv/UR3MoxsWgQ27cZdestuSj78arbrVZdGG7G/oddzqqcsIuaAQ3mYq7epXoLtaLhnyoqvYS6lgO+KjkIGoTgy7mfStA4TVzE9YfqSTZBYXqlyxraxqKYseb7gfcKqTsvTefbuN4UOc9RwPyyp6qng3TZ5DgVIHS0ra3VEjMeHuVoLKIYiFwNOyUnupjhGC76aKwJRfPGWL8aBSFKdq+4LKdiUzhKJZfo7ojPrYraHQ5MRrlblW+ZG9K49Y3T7ha+4F65PlQEvCeMQcCwIk8EoQrK96HGy39vqcJ8PwR9vohuPZZZijg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,121 +134,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------8YsZNEvf73Xski3Cmenrn9FR
-Content-Type: multipart/mixed; boundary="------------ER20SFcEhPfRwGGdTjKgmtqc";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Message-ID: <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
-Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
- reparenting
-References: <20260623024237.45990-1-qi.zheng@linux.dev>
-In-Reply-To: <20260623024237.45990-1-qi.zheng@linux.dev>
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> Move the kvm_arch_has_private_mem() stub and a few guest_memfd function
+> definitions/declarations "down" in kvm_host.h to utilize existing #ifdefs,
+> and so that related code is clustered together.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
---------------ER20SFcEhPfRwGGdTjKgmtqc
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+After fixing SoB ...
 
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-
-On 6/23/26 11:42 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec loc=
-k.
-> The reset_batch_size() later folds those deltas into walk->lruvec under=
-
-> the lruvec lock.
-
-Ouch.
-
-IIRC the user-visible impact of underestimated nr_pages in MGLRU
-was premature OOMs because MGLRU does not try to reclaim memory when
-nr_pages reaches zero, but there are still more pages.
-
-Perhaps worth mentioning in the changelog?
-
-> The page table walker can run concurrently with the memcg reparenting p=
-ath
-> as follows:
->=20
-> CPU0                           CPU1
-> =3D=3D=3D=3D                           =3D=3D=3D=3D
->=20
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages +=3D delta
->=20
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to pare=
-nt
->                                       unlock lruvec
->=20
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages +=3D delta
-
-The problem here is that, while grabbing a reference to memcg
-(via mem_cgroup_iter(), for example) makes sure that the memcg is not
-freed, it does not prevent offlining happening, and reset_batch_size()
-doesn't check whether the lruvec has been reparented, or the lruvec
-is going to be reparented.
-
-> This will trigger the following warning in lru_gen_exit_memcg():
->=20
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
->=20
-> To fix it, add lrugen->reparented to remember the new owner of a
-> reparented lruvec, and make reset_batch_size() charge pending deltas to=
-
-> that owner.
-
-Could you please explain why it is unavoidable to introduce the new
-field and why checking whether the cgroup is dying (and charging deltas
-to non-dying parent) doesn't work?
-
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a=
--a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios"=
-)
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> ---
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------ER20SFcEhPfRwGGdTjKgmtqc--
-
---------------8YsZNEvf73Xski3Cmenrn9FR
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHQEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajok9gAKCRCGXBN6rc5S
-1kURAQCrKB/rsq4mdWtdZZm4JU1WVSaM4LcbuV2X4quEVTJE4gD3XKbfFR+HrWSj
-FKsjLyGg+8QuabxOWILmVsvWQ1DIDQ==
-=j7cm
------END PGP SIGNATURE-----
-
---------------8YsZNEvf73Xski3Cmenrn9FR--
 
