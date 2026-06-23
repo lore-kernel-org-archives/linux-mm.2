@@ -4,129 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50D13CDB46B
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 03:10:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76E9ACD98F0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 04:03:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 168F36B0088; Mon, 22 Jun 2026 23:10:28 -0400 (EDT)
+	id 054F96B0088; Tue, 23 Jun 2026 00:03:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11A306B008A; Mon, 22 Jun 2026 23:10:28 -0400 (EDT)
+	id 006496B008A; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02FD76B008C; Mon, 22 Jun 2026 23:10:27 -0400 (EDT)
+	id E380A6B008C; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF0E06B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 23:10:27 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44FE5140359
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:10:27 +0000 (UTC)
-X-FDA: 84909699294.17.EA75B23
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 57DB220007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 03:10:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="BLl2Ug/e";
-	spf=pass (imf03.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id BC6C46B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:03:17 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 44CC91C5331
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:03:17 +0000 (UTC)
+X-FDA: 84909832434.30.8E7C555
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DF011180002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 04:03:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jtEUwR++;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782184225;
-	b=AK71Y67ph1+8JIPU8iXn1Ke9128jyYqC8lUcrsIcwROKueElaNYavrrEw2F+LWBLS16Eqq
-	JVl5A2ylhrSp+RhbrHn2mXM9Ta6/yL/aJB0YaprtZYNtbNPg7TB5yWRkb30xQUWUdzt7kE
-	GIgDpRWbBe7PmBZjwm+etbs3FgEKEfg=
+	t=1782187395;
+	b=anFkLK1tMg9oz8XHrGcyrGQt0K+2xcQWw2My4ZM+cP/0a/wnCuZl0V7YyQeshyByCeIDlU
+	btU5Z/N4n9R8LbUF0tL/nIRY4VnE6HPdc23hfbzPw8R3C0cjrUvAj6b1m4nfi5pFw4io8X
+	e4HtNQRv2kTbp2tNrWaZxhkvbC71DGE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782184225;
+	s=arc-20220608; t=1782187395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bGyfP2VRYKfSDyHfYs3S33fJgpK5MhBcS7yYBG6G/vs=;
-	b=bVCeb4cW8yy0tJ5XESO62Hd81jbI+9Zq1fjwSSv+eTb/Z3BSnKhgHpxjeYk0W4DWR+m+WO
-	HiA+3m7VpgZ3QBlfJ1B3khEgqjiJcqNvT+exowUOqQKp1lCFmMwXwMPHtFxsxnW5kmyPZd
-	zDUKvDdUFJ9kv6DJ9h2qfiW3Zqaq0is=
+	bh=MDml3DYC5pqWqIgrJTA2AlrjEEywE4UPFgWUZRf3Kqk=;
+	b=QJb3LoDacZ66JpV73mWr0NF5jKm5A/EH+wl+fAFnRgxKn9hjwpC0EwfliWFWHe/pB5asET
+	tQ8ckbYVQ+WHsphyumuCrWoYSqjcZ/tLUGEqXpNXaH0qyjdmMuvzYlB/yWWAYAiBOMlXvD
+	wTAUtgZ3Oc8rKb71bJywTPr1cWL0GbA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="BLl2Ug/e";
-	spf=pass (imf03.hostedemail.com: domain of binbin.wu@linux.intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=binbin.wu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782184224; x=1813720224;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FzB8Fb4p4Mjwmnh7oxOdArQm2a4Bl6t8IOGs1WP0LH8=;
-  b=BLl2Ug/eLj8p1uLirtLSh0KPVKuPz79n9xv/OeDHRYsBU3dRGdmatr3c
-   tj/8RMSbSniF3stF0N267pPq1jw9uhz5HtGN98F3xziJDaDNOxAg3oDxs
-   +dkY7LcQQVMnyDxN9TRKKhRdVyLl2JLPoUbu61nX2dfRAuvcM4Kw+Dix0
-   gLBRYKma7fEnEjgA1GAkBYNPVtUP2R6JfGqNCfMguzDImuXit6BIuT1Wn
-   WICJx03pjJ4Y2JMqj/IbbUnyv5JbPkBbctVOr7/0JhzVzHpuEsTqwl6Cp
-   S0n7v8ant6cu8gMFBAhwNvWtNWabRp/Xz4HpPlGgRmEOac1H84k11MO2b
-   w==;
-X-CSE-ConnectionGUID: 6Ab1vMPYSXm57EgYatenFA==
-X-CSE-MsgGUID: Q25DAH85Rc6OHcDs7d7DUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11825"; a="100470634"
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="100470634"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 20:10:22 -0700
-X-CSE-ConnectionGUID: l6e4mZ83QTiXSvs+mWEwsQ==
-X-CSE-MsgGUID: FX/cqQqIQeCB/GDWGdGDPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,220,1774335600"; 
-   d="scan'208";a="254376571"
-Received: from unknown (HELO [10.238.2.81]) ([10.238.2.81])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2026 20:10:09 -0700
-Message-ID: <1c3d817b-e5d4-47fc-a716-3a8bd941375d@linux.intel.com>
-Date: Tue, 23 Jun 2026 11:10:06 +0800
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=jtEUwR++;
+	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1782187390; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=MDml3DYC5pqWqIgrJTA2AlrjEEywE4UPFgWUZRf3Kqk=;
+	b=jtEUwR++9CvdONakBHMGhE9lnxzbVDtQ8IDS1adEO+vrzKqaJq2lY3WK7aWVETYrqMhcdD86tA0dsKXmSKywUNHO0aGNaYiuJVW2QXCshfYvGfFPracP0KNUtRO9X4VczQEnjzdZ5QCrF4AX7LUNVO31Fb5Iln8lBn2n0NDFRJ4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=20;SR=0;TI=SMTPD_---0X5ShOlu_1782187388;
+Received: from 30.74.144.118(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5ShOlu_1782187388 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 23 Jun 2026 12:03:09 +0800
+Message-ID: <c45653f6-0b2b-499b-aa51-09e934ddf1fb@linux.alibaba.com>
+Date: Tue, 23 Jun 2026 12:03:07 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 06/46] KVM: Enumerate support for PRIVATE memory iff
- kvm_arch_has_private_mem is defined
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org,
- chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com,
- jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org,
- pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com,
- rientjes@google.com, shivankg@amd.com, steven.price@arm.com,
- tabba@google.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-6-9d2959357853@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-6-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
+ muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
+ roman.gushchin@linux.dev, ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260623024237.45990-1-qi.zheng@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: magcqyys8hpuifcm4y3sk89ze3b8gtic
-X-Rspamd-Queue-Id: 57DB220007
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782184224-789086
-X-HE-Meta: U2FsdGVkX18N5XYBfY6kJc5d3377NyhNXPqMTrbfUdfVjjkyK/idmY3tbagsInABD7/ra+A5Lj9/51UIBj9hA1opb87GhCZGnOjM121eOIogwBnIwp77pPytfCop2YvATpkkDxLzVnEMjA7jP7Icch7JXcIZ375CkYukNH4H4YhVpWDZbSNt4p3K6j4/CTFmQHSgQx9zE6liI+5x1ATublrwFU9Fdkzz0pzlHgXqgxcCbPM7/VuwuCSV204uEFTrkEysuAspK4c9vCLZxoMUjilI+CRBqtDaf84CuXqnhvZOtIKnkLyGDD1fCmTwDkqHAGbvDYAHLldiOzmbh+2gVYRPGV1Pf/fSzzWG0Xlu0Hjz0ikilN2L/w0rG1ywCsR1ErCAxvTZVRaYcdonnUn9M5n2z8aFdIGkCGDcj4t8hC7Qkcf6FEA1wnDIX4/ibJm87PDLOhAR4OgCz/VEHMIPwB6Qfan6ET8fDI7BzQ7xtYLuPzhpsw4mqXZRhwQr76gDXZL7eL2Q6V2gW/JavE4hkiJtb7BN+Ohv6I+MoxsuR1AdaWFnYwRI2eLIFmTU5+x+o1tpvcp8vFGW5rs0ZdCaXAjXkjbEsCuB9t8UUWRq+3fFG5nGsaSapWIjshhQjwDi8LL8aTxH2lkpXC2Uhap+cxSER5aMKqEu5yk+me/nj1OniCUM6QlAbLeUsmuq9eVDcs1ZLb62w61RP7eUXJWGgYCC87L2imIzz1n3fkeMClgJQOZf1qofzOA9DFiGjFqm4iRkN1LQ119Ge4yI0AXJIj/Xga8XVcv8pXGkkhBsKOwyPXrf+8stvWTN1xm0OStIM8Hs6wlmVbJOvYA7hajdgbpZwraNJHhsmOT0wwLJeXM1JSwj5abwQu+l08fLQo49Hv7A/uMFM+TM9LZVc5nAESMH48CdxvBhRIis3EmNoaZRpaXhOTDUB+7r+L95iv05239tBVYRgpcXj2xIAzo
- 0h8fA15D
- TzErtTU5BqkZkrKNo7NWCSnezTpNSD4ohQjZtz5UNgNV0CqPie2vkb7tgzJqzVJgAak9n6r2gsCLZKcII7kxD5POOEZoc3sJD5zFp6Tz/PyVCa9R87XJadVi3hxYVh5zQfS36tFe8wswhhYgN6PJXYbETWKMlaGEdE0iqcg75cFFB9A/mDIv/r4tx7hYcnn01zvoKe4FA6yB5QAKhukibxRsS+/FuJEuIeokUSRL1CEhqx0z/VDMH7B/rR64ZXBrO4Yw6l794gZTPbkdgD/XGQO8YDGvHCZSFAxyHxdBFJc+nVvUVQcSVFlePqncABLvxb9u8onpTzpwesak8DKKGXYyTHIRanpCVJv4w
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DF011180002
+X-Stat-Signature: 6fnfifgbkm7z59ucm3dxihrhyceqxx9x
+X-HE-Tag: 1782187393-36225
+X-HE-Meta: U2FsdGVkX1/V5GIiGGOtOsxxWImMqnLUC5lCJl5KJ0h0rUjyH51XbfpFBEUaTWbJrRarWQ/P+ftEkL/WVux9zwKSZn4GN/aFZRQ9uOkmVQ1ksZsMvdjBeGlB4OWHRuu3286IRRwOspbYtvXsfn6VY9uuKgZO1G89eB8u1aA2g2nuR2bFkJaKVyteHf7k3K/x+n4XfDSjCnC4gPB6aGKPa2hG3ayp9zH0q70DSl6u9+tw6o6CZRO1HBCCYxa3Seb04KT/tYElZs7VUJ7c9iZ4DyzlrnKDdlvSBy+2nLjsvvbL0rPe+5cBmEfm+cQ9ZL6i8CAXzHUlHSRtgKbqJKUKJZfSjpTq8sf1lGLl3lLonI7ICByaU8fnftuXDcSyDlypqHinA0vKyvdqg/J9RimfXPDQFjeovaOFrGc5usFfAJ4I7ScCucuEWeOO3cbgKXmpCecf4Re3n5eqosL7r6SLaej+GU0JFcXGNVzpfP3IHJpQiLNlrN/tOrVzr+TrgsUGoJ43M8NzxPK7aDRtGaXRvIlg0FY265rf7RL/Wd+Yr9H/gGMrL7goZ0WifZ6sWSIXrV8MWsANBhI0WDEXu+pkceKU5GndRz+hQb6pqiZJno8+fKphxsc3D2/yjhHPfzH+FCx9/x0v5tG+5GiuazaMqZoyObuQATtFzxo48oh/twjFMyMr6sqxDcUifU5NO1PrzzidtlkSrOiTH4uW2oEpAAzeImix28HcNSnxkZZalEDe3PKPVPp0G3F1zojYrbGPLwR0A6v1YDE75bur1PvzO2ICKUMrmnQMppTHEHScmU7Gc+w+yuMZtbC7yYr6uQ0UoG9vdY2ED0e7Gdxa4roI3EAcnBwTKblPwhdO2jM0deW7JrZtne3FNd5/TfbJRd4PCxl4XyxHvP0BJFYT7xaDaC28WymYjXyjNGc4Hg83ZAWuLrEFwxDdn3mzqAJJlV7VJnnMC1FlsbHasvfmYF1
+ pLpzSUOt
+ zu1fhYTlFDwj3TFwLbChAgOvH70+yUXr5bH6ec69frv2mF3lrKx0GxV4EXqFez8fmYuDuST3V4gp7RJR5sG2w8zngml2XdmtVLUL189+1KUsreDsohKthvui1ak/9i+/9WrVr1zk4atN9yPY8knjd/iqU4V7UWFnSNGHp+VdpsfeUhNCPf5HZH5Esez6SMR3dwLVmxKlzt9/D9PKMYVRMhToowAXRtj7SgHGbd4jvmwMqlJwhQM3j7QxdwJH9c0VQJIXplNdQXIjtjMmlaoX5BsrpGDtyzscuWLrvsOPJsB1/C1igQ6vDgu7PDRQPQi2dJ+kyZWjUtGDiRPxdzc4odt8YMGolEnw7Y2CP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,43 +92,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
-> 
-> Explicitly guard reporting support for KVM_MEMORY_ATTRIBUTE_PRIVATE based
-> on kvm_arch_has_private_mem being #defined in anticipation of decoupling
-> kvm_supported_mem_attributes() from CONFIG_KVM_VM_MEMORY_ATTRIBUTES.
-> guest_memfd support for memory attributes will be unconditional to avoid
-> yet more macros (all architectures that support guest_memfd are expected to
-> use per-gmem attributes at some point), at which point enumerating support
-> KVM_MEMORY_ATTRIBUTE_PRIVATE based solely on memory attributes being
-> supported _somewhere_ would result in KVM over-reporting support on arm64.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Reviewed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
+On 6/23/26 10:42 AM, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
+> 
+> The mglru page table walker batches per-generation size deltas in
+> walk->nr_pages while walking page tables without holding the lruvec lock.
+> The reset_batch_size() later folds those deltas into walk->lruvec under
+> the lruvec lock.
+> 
+> The page table walker can run concurrently with the memcg reparenting path
+> as follows:
+> 
+> CPU0                           CPU1
+> ====                           ====
+> 
+> walk_mm
+> --> walk_page_range
+>      --> update_batch_size
+>          --> walk->nr_pages += delta
+> 
+>                                mem_cgroup_css_offline
+>                                --> memcg_reparent_objcgs
+>                                    --> lock lruvec
+>                                        lru_gen_reparent_memcg
+>                                        --> reparent child folios to parent
+>                                        unlock lruvec
+> 
+>      lock lruvec
+>      reset_batch_size
+>      --> child lrugen->nr_pages += delta
+> 
+> This will trigger the following warning in lru_gen_exit_memcg():
+> 
+> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+> 				   sizeof(lruvec->lrugen.nr_pages)));
+> 
+> To fix it, add lrugen->reparented to remember the new owner of a
+> reparented lruvec, and make reset_batch_size() charge pending deltas to
+> that owner.
+> 
+> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 > ---
->  virt/kvm/kvm_main.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index 1ccc4895a4c26..7b989b659cf82 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -2421,8 +2421,10 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
->  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->  static u64 kvm_supported_mem_attributes(struct kvm *kvm)
->  {
-> +#ifdef kvm_arch_has_private_mem
->  	if (!kvm || kvm_arch_has_private_mem(kvm))
->  		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +#endif
->  
->  	return 0;
->  }
-> 
 
+Looks reasonable to me. Thanks for the fix.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
