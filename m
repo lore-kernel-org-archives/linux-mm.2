@@ -4,85 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 136F0CD98F2
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 17:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E529CCDB470
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 17:12:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9365E6B0088; Tue, 23 Jun 2026 13:12:03 -0400 (EDT)
+	id CE1976B008A; Tue, 23 Jun 2026 13:12:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E8916B008A; Tue, 23 Jun 2026 13:12:03 -0400 (EDT)
+	id C92E06B008C; Tue, 23 Jun 2026 13:12:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D6436B008C; Tue, 23 Jun 2026 13:12:03 -0400 (EDT)
+	id BA9236B0092; Tue, 23 Jun 2026 13:12:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 574616B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:12:03 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6376167231
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:12:02 +0000 (UTC)
-X-FDA: 84911820084.04.7801F6C
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7410316001E
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:11:53 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782234714;
-	b=LjN5JyQ6A3C6Ik+lWOVWZMzRiXS3kKokDNGdkZtuEUAT5girqKIbJjTOSxFVBayGtzXN4u
-	mOMMR0p8zCQ/fj5MTksPLR0yh5K7RP1hzRYqCFCtibOj/ViqQLqathwIBHfyOu21DY91ii
-	9hIWBQOl47pwJ9y65Ehx54+iZGejUEo=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782234714;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9344B6B008A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 13:12:44 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1CB7A1A058D
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:12:44 +0000 (UTC)
+X-FDA: 84911821848.21.A0BB7E0
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6FD82140022
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 17:12:34 +0000 (UTC)
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782234754;
+	b=MQii/Om+1iLBsG5rSj4mUCA7Cdr7iDugmBh2wUkVA53oe60urA1gvaWdC0ctfG7Zu5j3jI
+	dObEOJf4GVAYUCsfxr2OAmGG23gaq5tBnxYC2Ron3ovXxmgEUzQThLmI32Fv32s8hJZVGG
+	jczpLSD4ukQkV2JNtVt7KottrG3VxkI=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782234754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hZVkYOevjL7FlXWA0dHOu3mnPA7zEZjKOe2JRitWsqY=;
-	b=gx4+FP68X9l9lnA6y99AQ5oD44YozDOtlPcdStKy3RIhiIiZJl0eb9vM5kBnBiBCLrlmKH
-	0F49Z8PjnM1q09Lc5SaVaiVjP2WfVjxw+qSDX8c9j6sgV9/xkmVxaa9FpgSzugZetULt/r
-	iUeHtukNoM+dDNV8hzMGZ8AtRv/Wdpw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GqGg8pmM;
-	spf=pass (imf08.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5C0514BF;
-	Tue, 23 Jun 2026 10:11:47 -0700 (PDT)
-Received: from arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 290E03F62B;
-	Tue, 23 Jun 2026 10:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782234712; bh=Dxe3mvHcxdglVG7y4dd4JmaJkVwRDW0juOrCiKYqNmQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GqGg8pmM+4me4s427XLrPiVTIz4+Bk5hJxoH7b02XrTCiKzTMeZEr81wh5odqYxCq
-	 Uvscfxy4Ql2su1sbLaQdBANm5mQCX+XE4vv/H7J5V0E+6hfqZv7oXxs9L287NH/Sgp
-	 RNdKP8gA1DrJD2dJ+px4es/a9yQ+tJYHSGjgwQ4Y=
-Date: Tue, 23 Jun 2026 18:11:46 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Harry Yoo <harry@kernel.org>, ryabinin.a.a@gmail.com,
-	akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
-	andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
-	kasan-dev@googlegroups.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
-	workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
-	anshuman.khandual@arm.com, kaleshsingh@google.com,
-	21cnbao@gmail.com, david@kernel.org, will@kernel.org
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-Message-ID: <ajq-Ukmd9NBruhr5@arm.com>
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org>
- <ajVByfkLbetzA8bB@arm.com>
- <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org>
- <ajltLd6FQg1aMge_@arm.com>
- <78d97371-b477-4230-8690-ac870a7bab3b@arm.com>
+	bh=GQis8KO7+Cr37wQe2wy0qBtYljKSNFAIw/U+lZxu9Bk=;
+	b=jHvoNGIuZ3QqpLNST8NLLpWZnCqliEpGH6nmcp6r0OMwor1wE7YlvmqyZ3f6LctRIdoNHd
+	fYCauBKb74sjijmt/0AOXfPGEeALFTd6l75rmLRY9+24Oa8e5V0z5AJHgMwAcsPOCyXcwx
+	AdHQ0QPn78DGtXlapVJC6dDvfHIGOxQ=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LatViBSF;
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-463f1165e16so166746f8f.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:12:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782234753; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hDixjJnj03GgG0PcplBsq/PIMyuoo8zdjHXSkSOH8pJ7Oz2XIveISWEu2ij3MWhJsR
+         h589/C2SPQgMkrP/yk8jUpA0rbFYCpbwehHVGRs5HCl2LlRyQUdbELgQcEExblLLQuPC
+         HZTeyZyn2Npo/E2mncDCvxMqcWKq5CzDlKVp0bbU6gBJgbx0VDKVtZ2WYRAkqs/ms4wz
+         1dpm2T315FxyBW67/pMIloO2xvvyauykP9xNxgn7Cp5d78VKQjjWfvSt+BPXpNCH7NGp
+         +ba9SDnImAk7OL32C+HYUlbhXdaekMuXkywBKCsMe29vgi/6BA3q6S4b0BMrQYXiblGM
+         2OjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GQis8KO7+Cr37wQe2wy0qBtYljKSNFAIw/U+lZxu9Bk=;
+        fh=i/aoGPUn8XI9veObcOYelgSzrzsavfQ8gYdgr5ewU6Q=;
+        b=b0Rhp1o979Qmxv9WoMiwSuLsbU1y6heeVtGD17VAd/61+Dh6NrDRq4lFekjcwa0BR+
+         +ou0vrZ++eua4Pvq2D3mzwSQeG0gp7r//aGLASTwJrgQbJzTZt/92cWmeEBmoUd2Nw1C
+         ZRplA/TqeWi5OZ02NXzIHzyzdSG8Q9o5t3ekcl4xv5pIU8OXsf8gxSI7rjWUO+c+gGxG
+         sjimfzxEX0VizLm3pYIwqrQ8KN+mHhp3o0YhJ2xIE6w2U2BKhTGBvW4ICchgNvctYuHu
+         gkf2xk23VNFuT4UDoRS8Z/S8nJlxUOpooGy6pG7EF7+N8tU9f94uTja5B/6OVmqWiCKJ
+         424g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782234753; x=1782839553; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GQis8KO7+Cr37wQe2wy0qBtYljKSNFAIw/U+lZxu9Bk=;
+        b=LatViBSFkTXnRslMKXZcgpsIGThoJ1aUCNb1U0ezGQaUeZDMNMzu9jiB29aiCpSNBP
+         rnha+5eoKOptqqBFreplc5p+XqkMgzMF0OMLeq/koqdnc0MLpSc7oqBm19V5wyAVWaQY
+         JwqZ5g//Z3lXVdjzPdSy/9I2Y7a9JL9HVNf+K/9yEPZ+/vv/pzQM+osFv75oLr36NGur
+         FXQytQUVvG9kmqXa1F9eEWjfrDjY3/0gKnz6g/f71fhj21/TDYQQFf1IolEOynjBIvyn
+         N8dYDyi7BdJl39oTJmCXaLEoQXs/p+DOHaU9BQXqYuYrtbI8LrBa647wL8339X4NAmbb
+         3OJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782234753; x=1782839553;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GQis8KO7+Cr37wQe2wy0qBtYljKSNFAIw/U+lZxu9Bk=;
+        b=V877YzIemW8jsrksu6wvC8P6MrAEsGEWjeIrq/Hn69Gz7G4okNXsbDn7EMQ0BnWWsb
+         NyqVrJnevGhlwv+rw5jseX3oIcj76tN1hAnfDIiRF92tLNCJ5vbWliKkFJA5pGS6T9PI
+         oM3FUWMRge60AB8+dabmR+iIUAZx38Uc1NUQf8HPzlJ9I5KQpigg7cTrLwpXaNE6SYgC
+         CzuUXj40Bag0A+RlXy1xalK8UbnQLdc8VsIiqOp1Nn+L9wuHn+mOhWs3NR3IP6nEq5FA
+         8YhCpEbEzSXQhzOWAUxlDGs6JmFz4GdZ3FT1206Cuz32n22g+JqZYl+j5r7EjklrH00R
+         Pzkw==
+X-Forwarded-Encrypted: i=1; AHgh+RrA7BqM6tF5p5A7QYjHGoSMI1rzKTheUmKdPLOvMh21Az2HENJ/zxf8V0ejUwBPcuOW9dZFNqD78A==@kvack.org
+X-Gm-Message-State: AOJu0Yx2DEfaqF2tHj5g9wFSSXIqjOdU7nygRKrZrsWyjrBUvUQgzAfy
+	vQOxuFBW5Ww624DPPeypWjkPR/eT/173Awm/PfS3mrQf9YFt9IE+C/cFUo+o4PnrOGJCa0FsVKQ
+	NMIvzuD5xpxDTT1gkuZe44XLSEErdPEc=
+X-Gm-Gg: AfdE7cmoBnUQrm4sIjKeqJQjP+L7E76sfGOy7hUQ5U53R7ccVf+Yz6K37y4+cdWsziF
+	5hAZqomTw3DE7jD91xKbauaR7EPWyk7m5iUC28qqElQEKQbEb/Ag8Vyuqp9OY8LVUrlSsvQ5sCV
+	Iv0F9DxMh/IDCFCWYe4mpSMSz+La43+Ew+YX9l3rCNfpH5ddITslV/preuovJlluP54xy3lfNUg
+	8Tkqn1g03T1nER6wGajbbLbk3SqknGy9W8wkeJtdNveIyQSuckko6VlwTT/PtXHeiOEZ2KL0jTF
+	gpwy1he5xi/kzLzCKckVUR8/rVQL5Ow0gJdFhNE=
+X-Received: by 2002:adf:f182:0:b0:460:6b0e:a75e with SMTP id
+ ffacd0b85a97d-46506c35d0cmr25528866f8f.16.1782234752678; Tue, 23 Jun 2026
+ 10:12:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <78d97371-b477-4230-8690-ac870a7bab3b@arm.com>
-X-HE-Tag: 1782234713-270157
-X-HE-Meta: U2FsdGVkX19VgdFtFwu+8N/tbuewU1BXfZnbgy7lK9ZLO7xI3M61u0NpEmOKGzg8oes1TMFPysmqccwOrfjvTJCTjOZP46zkvi4st95wgITYYZJqYKsE2hHJ4n6YCQ65AojTndZrB9LffbvUAOzdT+4En1ALDOgBqZeK9WDHbzLSQab6wP1VHdzKDWcEudghQtigEPOdBSpEUuMGs6kmzlKdkC5oqFQRkqveNmuFQfXQffWEK/PlIbqGJgttQ7TpWAkjqKsGLEZaj9cR7IX+gTqYvXmCsTW5jEjmmtD8Ej58r3x1rIFaNhjiagLUg0lCC1mauVm2ULWdTl0pubnj0M9hMBpAf5KYOO4TTcbY1YTI85eY9kLJPA==
+References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com> <20260623111533.2285005-3-ptikhomirov@virtuozzo.com>
+In-Reply-To: <20260623111533.2285005-3-ptikhomirov@virtuozzo.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 23 Jun 2026 10:12:20 -0700
+X-Gm-Features: AVVi8CdfcxG5r5FMFto7l_ai_RfkpnO9NQCVALwgDokVA4D7LTvynw9skPuPn8c
+Message-ID: <CAKEwX=OaKTfNqzwa=djLxZDeBbR1+DKdqDnxdfPfZFKB-K+ECA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ovl: support cachestat() syscall on overlayfs files
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-HE-Tag: 1782234754-617036
+X-HE-Meta: U2FsdGVkX1/qOxw3hFVGtOorIZNqk1emd78y1+HW6pc0M244KXo+gh/p3dgVn12UuR4Q6Ndk327as2wwogzeh9+UAB0Gvvacw63tZkZz5pmIzaQJmB5yISJ7Ip8A3sttUNmJatXHqMsYAQObtN5MCCPahckWkmRarVXJPdKQlYmVBqEy+JU5l3XC0Upn9ZAvrYZlcFIdDXc5y/Qz+7a9lHzylVm6uYTu6c/jWllMD4ft7pDAhRZbCqOTG46o7PqOD5/9SDoSoceZIcFg6nehfmJSs0wjboCCkwlsPVzBowPuGA16dJw6G1dRSEqKqVIRFZBYoUQspeiJmtvbm6TNn4b1dc1ecaWEd/u1VIfnGiHHsc6/UYT2c8OqIQW7eNpRx8tyYLwv9Z6NkU+9A1R20br3sejM1wkDKyqbg/zmxiNxHtSSqe5KQpP4Sn2SIzkuLtI/1bSV+6HIDy4I+w3GzaY1HgKJYwrh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,92 +131,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23, 2026 at 10:32:16AM +0530, Dev Jain wrote:
-> On 22/06/26 10:43 pm, Catalin Marinas wrote:
-> > On Mon, Jun 22, 2026 at 09:42:10PM +0900, Harry Yoo wrote:
-> >> On 6/19/26 10:19 PM, Catalin Marinas wrote:
-> >>> On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
-> >>>> On 6/12/26 1:44 PM, Dev Jain wrote:
-> >>>>> Now, when a memory object will be freed, it will retain the random tag it
-> >>>>> had at allocation time. This compromises on catching UAF bugs, till the
-> >>>>> time the object is not reallocated, at which point it will have a new
-> >>>>> random tag.
-> >>>>>
-> >>>>> Hence, not catching "use-after-free-before-reallocation" and not catching
-> >>>>> "double-free" will be the compromise for reduced KASAN overhead.
-> >>>>
-> >>>> I doubt users who care about security enough to enable HW_TAGS KASAN
-> >>>> are willing to compromise on security just to save a few instructions
-> >>>> to store tags in the free path.
-> >>>>
-> >>>> To me, it looks like too much of a compromise on security for little
-> >>>> performance gain.
-> >>>
-> >>> I don't think there's much compromise on security for use-after-free.
-> >>
-> >> I think it depends... OH, WAIT! I see what you mean.
-> >>
-> >> You mean use-after-free before reallocation does not lead to much
-> >> compromise on security because objects are initialized after allocation?
-> >>
-> >> You're probably right.
-> >>
-> >> Hmm, but stores to e.g.) free pointer, fields initialized by
-> >> constructor or accessed by SLAB_TYPESAFE_BY_RCU semantics after free
-> >> will be undiscovered if they happen before reallocation.
-> > 
-> > Even with SLAB_TYPESAFE_BY_RCU, the object isn't tagged on free either
-> > (or realloc, only if the actual slab page ends up freed). But we don't
-> > get type confusion for such slab.
-> > 
-> > However, without tagging on free, one could argue that it reduces
-> > security for cases where the page is re-allocated as untagged - e.g. all
-> > user pages mapped without PROT_MTE. Currently we have a deterministic
-> > tag check fault if the page is coloured as KASAN_TAG_INVALID. I think
-> 
-> So you are saying that a stale kernel pointer can continue to use the
-> reallocated page, because for non-PROT_MTE case the page does not get
-> a new tag. Makes sense.
+On Tue, Jun 23, 2026 at 4:15=E2=80=AFAM Pavel Tikhomirov
+<ptikhomirov@virtuozzo.com> wrote:
+>
+> Overlayfs forwards data I/O to the real (upper/lower) file, so the page
+> cache lives in the real inode's mapping and cachestat() on an overlay
+> fd returned all zeroes.
+>
+> Implement the ->cachestat() file operation by forwarding to the real
+> file via vfs_cachestat(), the same way ovl_fadvise() forwards
+> for fadvise.
+>
+> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> ---
+>  fs/overlayfs/file.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> index 27cc07738f33b..a7e252a91ea43 100644
+> --- a/fs/overlayfs/file.c
+> +++ b/fs/overlayfs/file.c
+> @@ -518,6 +518,21 @@ static int ovl_fadvise(struct file *file, loff_t off=
+set, loff_t len, int advice)
+>                 return vfs_fadvise(realfile, offset, len, advice);
+>  }
+>
+> +#ifdef CONFIG_CACHESTAT_SYSCALL
+> +static int ovl_cachestat(struct file *file, struct cachestat_range *csr,
+> +                        struct cachestat *cs)
+> +{
+> +       struct file *realfile;
+> +
+> +       realfile =3D ovl_real_file(file);
+> +       if (IS_ERR(realfile))
+> +               return PTR_ERR(realfile);
 
-Yes.
+We're propagating the error of ovl_real_file() all the way to
+userspace right? I think we need to handle this.
 
-> > for this patch, it might be better to only do such skip on free in
-> > kasan_poison_slab() rather than kasan_poison(). Freed pages would then
-> > be tagged.
-> 
-> I think you mean to say, "skip tag on free when freeing pages into buddy"?
+For example, we might get -EIO here, which is unexpected and
+undocumented from cachestat's POV.
 
-No, I meant always poison via kasan_poison_pages(), as we currently do
-with KASAN_PAGE_FREE being set.
+Maybe handle it and just return -EBADF or sth like that (with some
+updated documentations, etc.)
 
-> So that would mean, kasan_poison() will do the poisoning also in the
-> case of value == KASAN_PAGE_FREE.
-> 
-> > An alternative would be tagging on free only with a new tag and skipping
-> > it on re-alloc. But we'd need to track when it's a completely new
-> > allocation or a reused object (I haven't looked I'm pretty sure it's
-> > doable).
-> 
-> That was our original approach, and IIRC we had concluded there was no
-> security compromise. However it is difficult to implement - it has cases
-> like, what happens when two differently tagged pages are coalesced by
-> buddy and someone gets that large page as an allocation.
+The rest LGTM, but I'll let overlayfs maintainers check the
+overlayfs-specific bits :)
 
-Yeah, it's fairly complex.
-
-I think the more problematic case is when we can't detect
-use-after-reallocation and this happens when a page is reused untagged
-(probabilistically, also when the page is reused with the old tag). As
-an optimisation, it might be sufficient to skip poisoning when freeing
-an object into the slab but keep the poisoning when freeing a slab page
-into the buddy allocator. That's where the page may end up in a place
-untagged.
-
-Also for your optimisation to only tag on reallocation, do you have any
-code to read the current tag and avoid reusing it? That's useful for
-kmalloc caches or other merged kmem caches where we can have type
-confusion.
-
--- 
-Catalin
+> +
+> +       with_ovl_creds(file_inode(file)->i_sb)
+> +               return vfs_cachestat(realfile, csr, cs);
+> +}
 
