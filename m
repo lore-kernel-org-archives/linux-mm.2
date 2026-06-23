@@ -4,94 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA940CD4F26
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 05:02:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B32CD98F0
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 05:11:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595A66B0088; Tue, 23 Jun 2026 01:02:29 -0400 (EDT)
+	id AB3386B0088; Tue, 23 Jun 2026 01:11:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FDD6B008A; Tue, 23 Jun 2026 01:02:29 -0400 (EDT)
+	id A64726B008A; Tue, 23 Jun 2026 01:11:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E75A6B008C; Tue, 23 Jun 2026 01:02:29 -0400 (EDT)
+	id 952AD6B008C; Tue, 23 Jun 2026 01:11:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 074B86B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:02:28 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6923D6B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 01:11:18 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66FD814025F
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:02:28 +0000 (UTC)
-X-FDA: 84909981576.27.A74DA16
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3666420007
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:02:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HuC8saHz;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D14EB12039E
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:11:17 +0000 (UTC)
+X-FDA: 84910003794.27.96FFC27
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id ED0A118000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:11:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+kehgXJ;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782190946;
-	b=zvkENaVVbV2y5vYFJ/5MrAbm5W02t31TzSdkRiURPYBGrkq6EGk/rP3sRdTLwEaJlJ80h5
-	czYJ5hIk6Sy8XSYEzOvNmYSiVC1esRkPEDcHRtG5owjcgZxAdIC0I6PDLM1Wnfj/S8QO36
-	g6aOJGktyYszQd0bnRAQIzD9XBiMU+g=
+	t=1782191476;
+	b=NulpzyxIShdteNsDXRKZUimlzNN8X01BqKRO/2zmev7gHpGzoFa9YqgowxpxBbaSeI/B3G
+	bqL9OizltQ8+wE26xhSe8n9yB6GaE+e3ApfLLgULVg0myTKdqmkxbPBqNNnqzWPyz5For1
+	cF1K9ztAv6mIwIcuY4cht99XKK4Srhc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782190946;
+	s=arc-20220608; t=1782191476;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jJpVWCXhXhzN9dpfIh91h7AiToKwgdpZ0Q4+DgKMiXo=;
-	b=dKCo6KJflZ0UcijJRLtLIFgWVDGznE9kAffzz6Np/IYh+VmXWpWVc3M/asdx6cuE8co077
-	YXLirzfy7X/ypEwaTqpF8BunOguHjHi4FBOj6ofK4FqH+OrFF9H0hgcN+2j7tv8arv+nlV
-	EdUg3oxiZU5tlJwZ7Zfqha7bc0a6Tuw=
+	bh=q5Sf1Z9xRL9LWcd2ZET1VjKqMFRzCniZR0mElMq/Kvc=;
+	b=l84HjABaxwPNWYkmBisgrEGyDNkt8MymBmlohhdUYi4rZhY8jsQISrADK1OIaryFFGqltl
+	PwtmY5ZLKwpJtJNoaxZH7o526nuMAdY0hr9fBM9yBkcPbqV3ptBPK4OFfX2L3Z3e/wJ1Gc
+	4gmow3/fgWOfeXiZZG0ryZUlXL0pYmU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HuC8saHz;
-	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9897D1A25;
-	Mon, 22 Jun 2026 22:02:20 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A69713F632;
-	Mon, 22 Jun 2026 22:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782190945; bh=/tf3ua+vKT99+55m2tCLALI+RpDjIfmCrLzHSIvEtUg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HuC8saHzhLFSENYFEE1x41S1sRkkb3fz7XT9b2XPuRDl4SGP1EPkUKZ1/29no1S1n
-	 6ygfCJM6BN+ZVQ+fbSop01/2Y7ev3RT41BJ9Llz54s8acdxivyvEQy2ypkWeyFwnsN
-	 DVF+azu/KTetekBkxbb1pagp+lFxQWb20y2KmTPs=
-Message-ID: <78d97371-b477-4230-8690-ac870a7bab3b@arm.com>
-Date: Tue, 23 Jun 2026 10:32:16 +0530
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m+kehgXJ;
+	spf=pass (imf06.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CC3A644129
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:11:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9FB1F00A3E
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782191474;
+	bh=q5Sf1Z9xRL9LWcd2ZET1VjKqMFRzCniZR0mElMq/Kvc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=m+kehgXJ7IJ9wyrAyKxGHr8VzJe07qU/W8OBvjpMn/5iEYqb/+5sfphIj3lZS702Y
+	 hiGkYLpSsPCndvRe6S8QWWieAf3MLKGo+JvP6M5nIfz1p1BepTYGAptEVwJZ5PxIeP
+	 dtHkl8kcPP9tzWpK0FL6XP1p6hMwCsikohm8IWVxrXr6uxzrMqEwOsbDlR81Ef9cLF
+	 5BWf8DM7KZs66eDqzxX6aj4QM6+mQq1eR7/Sb+VNDoolkty8odjYiGXmw5fokKorCL
+	 k0CWqjXiRcUCWugG8id9MEGY/MoM1Tw8o5TCTKAEtTLQxlBfr2kVHQld8BKG2aY0QV
+	 0nM5lDNwTusVA==
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92213351918so339958185a.0
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 22:11:14 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzEkpG83v6uoyrVITj320c+d2+etETqcFX9jWrMTr8GFwA2Y4bq
+	9bIuoY8sGxeUqv+S0MGY3IRTgcEh+REqJbgs0pd6LtZk7QUN7LCllPfgK2qhyXNIPAutqZGoxPs
+	T4vs6ZZWPtIgYVQ3Q8P1uL3cO/3QPcfk=
+X-Received: by 2002:a05:620a:261a:b0:911:9a7a:8076 with SMTP id
+ af79cd13be357-9266b97e8eamr160228885a.8.1782191474145; Mon, 22 Jun 2026
+ 22:11:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-To: Catalin Marinas <catalin.marinas@arm.com>, Harry Yoo <harry@kernel.org>
-Cc: ryabinin.a.a@gmail.com, akpm@linux-foundation.org, corbet@lwn.net,
- glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
- vincenzo.frascino@arm.com, kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
- david@kernel.org, will@kernel.org
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org> <ajVByfkLbetzA8bB@arm.com>
- <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org> <ajltLd6FQg1aMge_@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ajltLd6FQg1aMge_@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <cover.1781843449.git.ritesh.list@gmail.com> <eda4e51ee9f1270582fbb2823ec5873e769de089.1781843449.git.ritesh.list@gmail.com>
+In-Reply-To: <eda4e51ee9f1270582fbb2823ec5873e769de089.1781843449.git.ritesh.list@gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Tue, 23 Jun 2026 13:11:03 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yTY8g3M7qmpM7HeUq=E05e7v_QFTzk=2D5Mv3Vj3Usqg@mail.gmail.com>
+X-Gm-Features: AVVi8CebkszW_dJseo4N-w7zaazQK_GJnKVeR7lxEzBiOpulB3NIjYM7MC4L4Kw
+Message-ID: <CAGsJ_4yTY8g3M7qmpM7HeUq=E05e7v_QFTzk=2D5Mv3Vj3Usqg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] mm, swap: allow archs to override SWAP_NR_ORDERS
+ via ARCH_MAX_PMD_ORDER
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: linux-mm@kvack.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <chleroy@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Youngjun Park <youngjun.park@lge.com>, 
+	David Hildenbrand <david@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, Sayali Patil <sayalip@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: ED0A118000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3666420007
-X-Stat-Signature: opt5yesjdrrg6rqjmgkxt6x775riq78n
-X-HE-Tag: 1782190946-12331
-X-HE-Meta: U2FsdGVkX18A05Z27Hi3HlYw08ew7bs16QErCRZ8rw397U2hmu7WeP+r2H51vMoks5JgfeuEeA4SQKKcl+nxkcKZuoPKxXYk4Mpi89NRlIth51FKZPZHpQSDgkHrba1NffgX2ruMhTKOx3hW9cwHL8yBMU5Z+uh6s7xVVIJS7833DlOAvmgq8lfnbKJoB1jWWDZZG1iVJjoeV+CMsTcqNhT2lcYLYN8fJ4jQHm25hwfdxuz3nxiGtGcnW0P3HGqmLD2QJiwso/Htw87EYm0hVfdxbRw8XpvpY14N52JG/B4WEgukd8jKsHd+2gw/0+todstrqHpJn5aagmkPfC228DRfZRt3y/rI3tY6lqgTr6mzSWNmLGcV6f4Qp6MHrfWUGv95hQ42EBAGo1mo4ugOnFE7+a/IX3BE/NJpUaZeJaACT5ZoKFupEDKfpbtIRx/3qUQd/W6xLulhGablwdZsEBqErTZzZjb4MpUR0zkTaFnm8JkblMQxsNUABUm2Y0I00oxNRJ+PdsF86imHs/bjiW3r+VL+GprbHnSOxHzPM6zPvptLy12SXNLd1V29FtXTe7HvK8avBmlNnIC2c0qEfl+52byqwxZqst9FYwvsuddJC7QHkcAjCb+Dfbw5POFL7zd4COypFP4X6qlSG5fy6fmXt5KXRh88PVA4V6ecPK805tsk8dnZstoTXVybdZJX+rQs3qxU30V7pYx7qAVhliKYoZJphCZY0RUSeNedfdX2RupROWm+mN2pC+srm/P0HwCpG/GXf1va9wKCzNVpTH2wKmC1sDg5h1MtvR2vtF1GUc6adBhQ41UcldiLwSnPswC6+8/iS6FYTHLZ7nfP1lNYUWDDVDdJHamhkykORfzj4aorkeckxpHG2cG31Hv5rS2LI4ybRALVlrWVWeMqDU2/Tf7Cqviz/rg8PQOftar1XjIIIsNqy/NdhfGznnw5fAjBeKmn0lzO/NvoUZW
- EXAmEdp2
- RqAuk0VNCA75k2CjhhyS3l/eFa0vUjDdQkxgZkk94+FJ9spyWch3a9ZiT7/399VWt/cKwZy891id5N2ANHzFrKg7HoscLuN3g+ILAw69XXbH/9ZCc7QPWxG0vss4WeGtHwBHA6W05KvtO6ecNlZrBJEeSWs/cRlx2uU5GjUk4ELUREDpSsJjJW1isIqcR0CetNhr4tD3jaAz//LRnBtnzUECp3hY8ZIXsObqle2STAhMQmn4+u6B0hZaDQOmtqU7GtVQFA62XHmb0bwr6ounlxuQHYJdmlQcky8R9oIRtez2maE+PeG2+q7/OeGPVLPU5AyZo3rI/YC5thKv0H+nLO8uvKtawyR1MUi7br4hRackhdLE=
+X-Stat-Signature: u7bndaufkjosnetxyixz5tzgqf68tzix
+X-HE-Tag: 1782191475-565798
+X-HE-Meta: U2FsdGVkX19twVj+cj6/FicudLNgtCClZL3n1D9t2b8T/e8GgiiFOq1p0R43/Iq/CJTmFmYyW32y2UXo07luT2NfGYoM7GNyhydH9TC0GrHIGWWUlp9fjHCxDr3Ex6II/OamPl8fGZrlY6TFu1gJEE9doKh0kwxeFu3j9kNEc78xWXs8jrLL6DTzfJzH9B24WlHvbPw/ffZFMpZ7olqyw73H6RMSbpUdWBrCJXfW4F+aCIxSSNLbf6I911fa3MhlF/Xlr9bowOli2HmsNITXZdD1hif+Op62yjl8324msMdKfWWpAkoXWCe+JqJfMi0LgOa82KF30GyoOdlZF141jBaKxgWPwp8Cx1WjDZmdAANcF/XOruYn9GF22IH+lMX+vHXKtRmKu26QRONXEY3gw0dxIVB5HkVJABWAii8k6nipKq2WyX/icgrFFQqCNsTrxEJuoaUpgfjw5A7EHapAAsN+dm4p+bPt5UcI6Dbw5Dd5yX5hmgew1wx3VIUFaTI63H7uv8M00FPrncnoOZQGdsxn42W1Z+H+Sb9GeZHdsJLtejS3n5Eo20Rtqj/33ywUwbAl/7oE+dCBuzKr2hQimXf3wRx8ajtD4PeOAlK3H+HG0Povlb7bMJxcrweFS0ogVxRFhFbm5TOqG/q0V6P788iODm3KNrikZowzkpLk8jLvAfE3ruacE+LK5N5XyseLlp9GcAlSioRo2IfQKYaDdfOCoYNFjuVo9dAGklBjnh9be8yLbNTRGpOnnj5cTKQZfBW1MMnkDRu7YZRXvN4qlxSTfrQLgpX9T0mj6Cefkd0WAHEJWoj3edqOYSJUmgXqW/Vr99Whb0yckaAwCCaUDJFkY7hQPzDeWWJxeitG6R80tePhHI4rKFbxScpIQbtsjBBEMMUCTLEKtJAKluXCCIFGteNpLrL11d2MJttmgV8VoXncJPq/JJ6LVBgeznLd0LfLw2GVBQbZQs9YB/a
+ iH7r1CsE
+ nLr8vXE+npnAbnNIfYsZqRxOepWAlavRiQCWjqB+zE66lX8I0tZ26MsDMI5LMVWSOopyXI2QPzaPbzY7TUFNS64nRyh1GYg1YvVSCi1hOATpMKV4IWdY+X55MpmJyl0j/4Gu8ZxrbQedefOJGZ0pZ4j1ZMQutvvkhYfSdi/sGqlw8kDoZLohxvSpJYANJzPuV+honYGnP9GSnzvTg4Amy6RvAnhEzXmmXjaHI83XW96f4S7lNPMDfUsRZN1iKlAhcZTHOBjrKIKZERpReJlEzJU0+6HqmUogqYf++Gnguf8LyK+v11rgFBVlflQefvHI4Nr9a8tGEOhdYeS7Yp/LwV6+dA3kmWHSTSSSV6nLy8Xk75rQWjy5eiBWxd5MJSQ6EHFK66zevEVGe+7FHN4mb+3uXJliF0pbi8Zxi7/F7zEKbIUByO4YZ+v8qd+SOH5LaUe1F4BMgHnCz66jVisMVUdm0tx0u+3sCKjdw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,74 +108,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jun 19, 2026 at 12:41=E2=80=AFPM Ritesh Harjani (IBM)
+<ritesh.list@gmail.com> wrote:
+>
+> SWAP_NR_ORDERS sizes a few small bounded arrays inside THP swap
+> allocator code (nofull/frag cluster lists, percpu_swap_cluster's
+> si/offset arrays, next array for rotational device). This currently
+> expands to PMD_ORDER+1, which only works when PMD_ORDER is a compile
+> time constant.
+>
+> However on architecture like PowerPC Book3S64, PMD_ORDER is a runtime
+> variable which depends upon which MMU is selected (Radix / Hash), so in
+> that case, PMD_ORDER cannot be used to size the static arrays.
+>
+> This patch provides an optional ARCH_MAX_PMD_ORDER (upper-bound)
+> override for such architectures. The memory overhead on enabling this
+> override is negligible. Even if we make SWAP_NR_ORDERS runtime alloc,
+> default slab padding could cause some memory waste. Also we lose the
+> per-cpu cacheline benefits (for percpu_swap_cluster) because it might
+> cost an extra cacheline indirection overhead in swap_alloc_fast() for
+> fetching si[order]/offset[order]. Note that a fully runtime
+> SWAP_NR_ORDERS was considered in previous version but was dropped for
+> this reason [1]
 
+Do we know the maximum PMD size? On arm64 with a 64 KB base page,
+a PMD can be as large as 512 MB:
+https://docs.kernel.org/arch/arm64/hugetlbpage.html
 
-On 22/06/26 10:43 pm, Catalin Marinas wrote:
-> Hi Harry,
-> 
-> On Mon, Jun 22, 2026 at 09:42:10PM +0900, Harry Yoo wrote:
->> On 6/19/26 10:19 PM, Catalin Marinas wrote:
->>> On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
->>>> On 6/12/26 1:44 PM, Dev Jain wrote:
->>>>> Now, when a memory object will be freed, it will retain the random tag it
->>>>> had at allocation time. This compromises on catching UAF bugs, till the
->>>>> time the object is not reallocated, at which point it will have a new
->>>>> random tag.
->>>>>
->>>>> Hence, not catching "use-after-free-before-reallocation" and not catching
->>>>> "double-free" will be the compromise for reduced KASAN overhead.
->>>>
->>>> I doubt users who care about security enough to enable HW_TAGS KASAN
->>>> are willing to compromise on security just to save a few instructions
->>>> to store tags in the free path.
->>>>
->>>> To me, it looks like too much of a compromise on security for little
->>>> performance gain.
->>>
->>> I don't think there's much compromise on security for use-after-free.
->>
->> I think it depends... OH, WAIT! I see what you mean.
->>
->> You mean use-after-free before reallocation does not lead to much
->> compromise on security because objects are initialized after allocation?
->>
->> You're probably right.
->>
->> Hmm, but stores to e.g.) free pointer, fields initialized by
->> constructor or accessed by SLAB_TYPESAFE_BY_RCU semantics after free
->> will be undiscovered if they happen before reallocation.
-> 
-> Even with SLAB_TYPESAFE_BY_RCU, the object isn't tagged on free either
-> (or realloc, only if the actual slab page ends up freed). But we don't
-> get type confusion for such slab.
-> 
-> However, without tagging on free, one could argue that it reduces
-> security for cases where the page is re-allocated as untagged - e.g. all
-> user pages mapped without PROT_MTE. Currently we have a deterministic
-> tag check fault if the page is coloured as KASAN_TAG_INVALID. I think
+One concern we have is that performing I/O on such a large folio could
+incur significant latency before reclaiming any memory. For this
+reason, on arm64 we initially enabled THP_SWAPOUT only for 4 KB base
+pages:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Dd0637c505f
 
-So you are saying that a stale kernel pointer can continue to use the
-reallocated page, because for non-PROT_MTE case the page does not get
-a new tag. Makes sense.
-> for this patch, it might be better to only do such skip on free in
-> kasan_poison_slab() rather than kasan_poison(). Freed pages would then
-> be tagged.
+>
+> [1]: https://lore.kernel.org/linuxppc-dev/pl1zdksc.ritesh.list@gmail.com/
+>
 
-I think you mean to say, "skip tag on free when freeing pages into buddy"?
-So that would mean, kasan_poison() will do the poisoning also in the
-case of value == KASAN_PAGE_FREE.
-
-> 
-> An alternative would be tagging on free only with a new tag and skipping
-> it on re-alloc. But we'd need to track when it's a completely new
-> allocation or a reused object (I haven't looked I'm pretty sure it's
-> doable).
-
-That was our original approach, and IIRC we had concluded there was no
-security compromise. However it is difficult to implement - it has cases
-like, what happens when two differently tagged pages are coalesced by
-buddy and someone gets that large page as an allocation.
-
-> 
-
+Best Regards
+Barry
 
