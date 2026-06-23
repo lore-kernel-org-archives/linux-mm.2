@@ -4,107 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCEACDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D006CD98F2
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 11:02:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3C986B008A; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
+	id 56E966B0088; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14C66B0092; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
+	id 51FC96B008A; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2AA56B0095; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
+	id 435896B0093; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8711A6B008A
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:55:03 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D1FD120468
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:55:03 +0000 (UTC)
-X-FDA: 84910870086.22.D27E3CD
-Received: from out203-205-221-155.mail.qq.com (out203-205-221-155.mail.qq.com [203.205.221.155])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E4FFF4000B
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:54:59 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=mwgiGPDg;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf17.hostedemail.com: domain of xiaowu.417@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B8106B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 07:02:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 82D40167096
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:16 +0000 (UTC)
+X-FDA: 84910888272.27.5D672C0
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 81E5880016
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 11:02:14 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CHN+T5lu;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782212101;
-	b=YZiURChT2mKzdJ8n0XSR/+phoWC7UZziBD8FOCwdkFVbST7sxPsupHFfMoq9ooMbm79DqK
-	hQiEdek4Fwf4kFThmOqwYbGZn1XveU1Buul8VoC1JUTa0PPjLYxObmK3XKL0YhF8szChNZ
-	JqHUtl15ht2PlyfFKclTZft1EKtgeBo=
+	t=1782212534;
+	b=b9E1GPFRgqRIrQ/dwSpYZh8OU2QEMcoL3lTZSHDquEWSkdofUeN9xM7sobV6SNCh5jhiWJ
+	oM5lo00vZyzYYbla+bZ8KmUU96aNXdrjY9H/npNgDtuQ1PFac8eWRSdNt1fQZ4mOKnQRRH
+	5HqqRKHh0htnLb0IuagFYrbcKzQB/Fw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782212101;
+	s=arc-20220608; t=1782212534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4q88+ttZMviWZpntI44EOp6qd5JvFg5Bi7R2f2PE/as=;
-	b=tsbPRZi2CwI/VEmiiioUBWHVMmN2rBS3ZEl4f2vo9brJe/fYN0hXs2cB4dUWNLOLiunNj2
-	hdwMeX9WQPrGn7xBLuirDTj/sfAoVTkMkUomPDQt7RNn2BMgxspUZftOSlCO1+wnRac+YH
-	zTGwx1mo/1NgI983ck0sjCh+sZAYiV0=
+	bh=PJ/TFjGz9/DEinmkZepeeG9TrmCfiFJujx696mgwKjY=;
+	b=II5OWoZHBos2fgMwVcQgpQ54LqjQI/dtVMY/H6N2RnfQmPilOasQYqsu1NqhRAw5PTfOj7
+	P45EZmHyM1o3NsBb2ggkR0fmnCbPf5YH45Z0auGdc/yhil14BF8LOLRI62FkVD4iu5+efK
+	BiswObeFRdS69KmuOY8495nFXQZAWSs=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b=mwgiGPDg;
-	dmarc=pass (policy=quarantine) header.from=qq.com;
-	spf=pass (imf17.hostedemail.com: domain of xiaowu.417@qq.com designates 203.205.221.155 as permitted sender) smtp.mailfrom=xiaowu.417@qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1782212095; bh=4q88+ttZMviWZpntI44EOp6qd5JvFg5Bi7R2f2PE/as=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mwgiGPDgEyICWYsAjjQ2IFXcPh64q/rnAkz9W60L4x9IEBiNsvHooZaj+m1AI0ic4
-	 DLv6lqycCj3mP1S0Zi7LCh6SzZ/Cg96HtzwY5GlRaqF7Z6FV3+YV6xyQpdQWg+ZALV
-	 sBku/OqHWaiXDbTxmhvMx1hnHNMdYPxYUeG66Vcc=
-Received: from [192.168.3.157] ([115.156.144.140])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id DB30CEEF; Tue, 23 Jun 2026 18:54:51 +0800
-X-QQ-mid: xmsmtpt1782212091tn5pm9rfd
-Message-ID: <tencent_222F50A4CB8E790B93AB90E5109DE13E1A09@qq.com>
-X-QQ-XMAILINFO: OKOirRU4nj6hMqiv/M7N7uFPSUU+cUH9KafDvKjAUKlgZ/b860U6gUDxBB+MhG
-	 V1b989M8wuAge71fRcW+pMYJgmrduR7t73knpWxcCaV/VtDg4qNJV9s0WyECUcSJPlNhY81wJhqu
-	 +cB1ziQb3pWXyfiCHN4trXzZ69/9poI3JZmSKyyH6I3emdJPz6XpzmvI7SKiUDSAr3btNxYJqZkE
-	 lHpEjdYROVZ1gQx4jSe2QBbRIkLWaaqS7WZyM8gwl/PQ15OLGa/m17rEvXWApOwaLLAJrX1JN6oJ
-	 oOkM6FCvdrMqa2/d3slO2X2p3xIBmTI3uKCtU4RgSyLOfYBm9mS5p9r0uFtOEuRvlIaqqxyiwWaV
-	 luD+ujQisVcfjTR3rCyeXFlRwqeWvvGtOdTeAzsT14jbOve2bAPSQZv5J/R3MMpVbdh15FfTlMQO
-	 opXIF8Bt2YsxbumHN8M7pQdvHkrafX4pe+MfzmHRor20tYChUhWHzc4TC7odjuIG3SWp1crwfdPg
-	 AEl9yLXKR/yzKAJeSMwnHgJKpGqNzX3pX6tIb2N76NAOHZQhkSIwn8JwJmIbOF7Qv24vu+CkIl5W
-	 4kcslfQ5uvcb/5e6s9FW2JuD1F6k25OKxDZq424lYnANNaWmzQxKreXCqGmnf63QR9J3FtrtCcy1
-	 J6brugBsWZ1xDjk9UmBAdi5x/rogr+30zFGNnICT8DBYW61KS249/nlHoZi7Kq0LBtc6gesYaYHS
-	 cp2ktfOSQrW+dRoCMUbYWmCn0SswbiUH6oIiYqTzAONEF6hIgMW9iaU3kOWc+V0mbwGuJ4YRjYhS
-	 5GCYszNpwE7XpHZUGnu6/pvsHu8BDIELeb8iwmpSYGTOzPTTtOFntyesl+P27KCyphowN4lpGh8v
-	 A/QC7thBlqWknwwnNppkGvj3zt0h0fcjgtebR16e3XWCwZZau4LEU11jbldnJHTo+mcYSvvdU2+o
-	 KHJTNFRxbDWCJnUe4xvL6G8/wvE9Hi2eRf3OAk9d6GGAILRY4RWwUppubsHeXvf8HxwMkX336OOL
-	 vgeYnRhsQhZsUnuFrlT3sv0KtdByCIPpHZ3zPweQRxl6OPOccqgVbTzYolDfhhhImj1zgjvRyJxD
-	 Y0yvbDj+j5ciqtq50EaTx6YuRj/w==
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-X-OQ-MSGID: <ce01e205-4129-4c97-8b2a-ab129cebf5e3@qq.com>
-Date: Tue, 23 Jun 2026 18:54:50 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=CHN+T5lu;
+	spf=pass (imf30.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CAF6A1A25;
+	Tue, 23 Jun 2026 04:02:08 -0700 (PDT)
+Received: from [10.164.148.38] (unknown [10.164.148.38])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 503EC3FA1F;
+	Tue, 23 Jun 2026 04:02:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782212533; bh=GA3eOKpoCqLuIqNPyhGE8RvBfQeG+XtuuDwgEsGyDMM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=CHN+T5lu9uqaWBlfC9XFYIP9gEtNlbd59Y5tDsxyeLKVy1rwTNvHuq9K/lycDrFMG
+	 /eqxhJkf5W/Xu6D5Pff1URRz6EBcV1hauD5rYy6HsUlFaLAxX2pqjusjtxaobEwNKl
+	 Fq8fBa4BNccam4GgZEevNwMdTnmYTM2ziuGYs9so=
+Message-ID: <40576470-e0e0-4e7b-b9bb-be10944f75d4@arm.com>
+Date: Tue, 23 Jun 2026 16:31:56 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/11] hugetlb: Convert the vmf->pgoff to PAGE_SIZE
- granularity
-To: Jane Chu <jane.chu@oracle.com>, akpm@linux-foundation.org
-Cc: willy@infradead.org, jack@suse.cz, viro@zeniv.linux.org.uk,
- brauner@kernel.org, muchun.song@linux.dev, osalvador@suse.de,
- david@kernel.org, hughd@google.com, baolin.wang@linux.alibaba.com,
- linmiaohe@huawei.com, nao.horiguchi@gmail.com, lorenzo@kernel.org,
- rppt@kernel.org, peterx@redhat.com, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20260617172534.1740152-1-jane.chu@oracle.com>
- <20260617172534.1740152-6-jane.chu@oracle.com>
-From: XIAO WU <xiaowu.417@qq.com>
-In-Reply-To: <20260617172534.1740152-6-jane.chu@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: E4FFF4000B
+Subject: Re: [PATCH v4 10/12] mm/rmap: refactor anon folio unmap in
+ try_to_unmap_one
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
+ liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-11-dev.jain@arm.com>
+ <645a5246-0f9b-4b93-9483-e6bba35f037b@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <645a5246-0f9b-4b93-9483-e6bba35f037b@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: hemswpyyubn9kog1yeysz3zmtdberg4q
-X-HE-Tag: 1782212099-361230
-X-HE-Meta: U2FsdGVkX1/m8IqtlXRujVV0+fOHZVhfV0w1wP83qa7yDEoH+QccJnePtXtDxS7GuuTVX34pR7rncpwbR44SUlgNi1cARXmr3J970PeOItrgNckwTMIYPP4WUWjxOqDrY2FsHHMq8zZkEaxJIFULSd7dV1pGYkIKdDsSghEd4uLm2xFORMZGmcVP59+UdjmTxUYegAgDzHZ+iGaOuC1sljXWN/Fpy+YwVyaFpHxoypArnXSVBFL7w3/DZ6V020PRK2EdWaQsESkQLupG47B1p2FyA3eALVx3qYMSLwgu4oOQ2ZnH+uKs8ZnnH/e0tKERLk84ukMBMMeELX6b231ne6iAPCy4q4wiSeHcLGY2YgUI/VKrG5d5lVM8RRAFo/PcrY+gegcZxKsFI17cBPKgTfwaPLpadWw6Ht0mSdysFFvTNakvmjgpmugJSDTeerXlfLBlV5fnwM5vNhgnsL9pyVy+l+fZPuuSd9Qc3PxdAANbDpX+gQH1ahWmB2SgcikAxakuCRnAMmzaCznog3Do1eSHdQSP18CsuHWM+Pnf0/zo/uex1CDbzoZo+zOGvMQXTc8b47gvJy7sG4khgeCPbummfwqVVxkllpMk8RRbgdLamnvrOVBdMyvAK8UIxMKQyoCADPnoUSisB+53uluBzSXokUxHxKjDPxHY1BSGhi6enkWioFGax2gA8CyPo2ZgUi9erfgynAWvM83qgFtA9gWoiiasZVMvyaBo06f8DtBnbxDX03qN/ooxyksKyjb3MN4V9oo3drjttQTO25oYUh3p6ZybzfNMLA/UPxYWOv0pGedYSK0ROVdL9dq7aVR+F0cwwlgY63qeP0L2mznuuG01DH8DR6ReqrszGy7wE8RGnDAcv6fpzqPXVcO8WiXZw3G5H8McCbuF1soukytlem2WXf0nZfyCHm0JvmGbQiTConEESoao6YwGD3ePtw0qwtQxsbtkhkIpN9dJCUf
- RI8+Gctt
- f6oH6x/oZqQQN39EP3/1YXXU6dqz1dN3w9/4OM1cEFN0pE+V9u6OdGrx4lJzDoM0X26gCR/2I5ivLF3Z4ny5zfoqG6sqpRJO6CGVN7dWJnXTOyUe9rViD1wsh4m4L9vmIS18HPvq3I2MZjlY5EGj7tkg1tmo+qN5pxmxFnkEo8O29P/Vbhg9RmjgRdxdy6M25wSDHQCNLEIhL85zaeqytf6DfNeNXDsH7Kyi1mO7lTxqlNu2qsq+GQtQnF4MGbk1r/Rg7OY7OvOwOzBoKTJBVZ55ez/BsMKjsdi/lziQrevhuoWB9qtYcI/DRatuakyWVYPxM4AZ565hdqTeRXinjm4IWGY1FsqUtzDwmgyBtbfkN4sPEPe2WkU1MN7RznpeAbzXQf8OYTYA6XkMeFOkoD4RaPAmjHP5XGPg9Aqim1ox+pm7fuMskZonvcT51d6rcyMLXhcFJT/gePCH/57rSJ5pNPMgvZcksFIX2bMn6eBF5+AS7TdlDBOidp7jePjrVeCApwYxeQk9IeCMdCcu/jMc/tuJBoHKM8qW4FjVm98H9h1FUoSGfHQQZuq1+ajjgIfw6xJM9So8nTs8EUL0EjQ0mIA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 81E5880016
+X-Stat-Signature: yay8oa1p4ehkjp3qp5jrfzdou93g5cn3
+X-HE-Tag: 1782212534-807879
+X-HE-Meta: U2FsdGVkX1+Goa7N6Yok1mi/OtD6wg+gbCu/BEyd6HN4olVfN/Rje2J+SsEWHpRn1GlnKXsI+7OsyoCmOe1HfXX0xdeiwiceVFDh6A/Ip1TjaO1njAyUglTDJy9c3uo6GoyEmhGaedur+B/13ba18KfH0O/xQbkiI+YiyAPxklsnv867M+OjQe983S+fjJQTYutgdQqOFhLO5y+jF//zYcvWd/m1xW+FBBN1zJ4f6XFSZsr99HoeuHmROVk2l1Y++wYT3kax79FLzkZQuz3XsflJgsfo4/baF8NOEULREa2qWPA7T0g2SDtG8+Txheaho9HCQJmfq+EjKFRkb+PdhgPJwLXpdVSJTW7xfEdkB7Kha7OmJu1nDd0ZgYCgKxEM/A1GPsxG0rjucDnfxbBzAtJT6FlchgxmnMRXCglVLIlF9/k0zsF+HAg74KdW6xCNfPYcLBW46p/KCWVRU+rfU3cDCGZF66JYpSs5Ecjp5pf4S9TsH4f5M0Xd91syl0BgfzPV9Lya/Zzm2RS3GaNrE6i0t2gTSHtLM9OEFVX0XlomYRX8n4xDFFsY3eIhW8BDqZliUJKhdq/SFvYDYS+v5k2/QpY+BH8a8XTFmqvNJi7ei9L2MHg0OmdZAEyEy4jT38MnBopW9NBXSKdMGmTHHASGpH4Ft1hgeET2rAUgJx3AQ2MpOJ1t5BfdlB8QBJCMBIGu/RTVlmDumJA56xiSqfYSSccQNgPzOe/NIEj8WZZfnhNfKiddw9xm1x2Qe+XFdobXnfOYtZmk4QSUR8wQ5R1Yzpmm3DWvVLvZDE4qieUHnq1/Nyb6Fny8TO1C/v6GGb7A5ynPAirVIeZNZ3Qbu7tGL4u93HnLSIC5TzXjlHLefG4NMMXiWqie+/Sbx+KTELQaIWUfXvtvXe9jY3fq7WH/HHfmwCFCXqmbvECKUTn8bSdHmVwHXDv2F14NlaFjDpVXoQRepbXME1u2pFa
+ 0fVVTl6l
+ ShO34Iv57JmN1SyYmaHcPmFYNAxEhmhjibsB+cJ+LpW+6kn97B+od1AFKjqVpLGrehqo86peXp3mLEKw0J78Kds5mAu8qFRZN3oeiy6uHuShYFVcfu1XJAj+bpo55T1DJvU8et+buWDQjKEtR7WJp+ksvOwTqIveVn+yWlIfwBhU+zwIlxdVbv2HHlOBq21UoEgjO/7im50+aeNR55FCpghJ22Hqmge6w+hDQbKiHZwW5P+crwiAfbkWR51Gj+YY40N5IntBQxhlMU7YHsZxYHy5QIXcCVA74oc9pB5o1giqNRh0IsWxGFElQVJ31lQStoXcePvrqtVMiGy34lYPvOHtbrg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,210 +101,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jane,
 
-Thanks for this series — the conversion to PAGE-granularity indexing is a
-nice cleanup.
 
-I came across a Sashiko AI review of this patch series, which flagged
-several issues, one of which I was able to confirm triggers a real kernel
-crash:
+On 16/06/26 7:40 pm, David Hildenbrand (Arm) wrote:
+> On 5/26/26 08:36, Dev Jain wrote:
+>> Refactor anonymous folio unmap to ttu_anon_folio.
+> 
+> Given that the !folio_test_swapbacked() case remains in the caller, should we
+> make it clearer and call it
+> 
+> 	ttu_anon_swapbacked_folio()
+> 
+> Or alternatively, factor complete anon folio handling out (incl. lazyfree handling)?
 
-https://sashiko.dev/#/patchset/20260617172534.1740152-1-jane.chu@oracle.com
+Hmm I'll see if this can be done.
 
- > +++ b/mm/hugetlb.c
- > @@ -5952,8 +5955,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, 
-struct vm_area_struct *vma,
- >          .address = address & huge_page_mask(h),
- >          .real_address = address,
- >          .flags = flags,
- > -        .pgoff = vma_hugecache_offset(h, vma,
- > -                address & huge_page_mask(h)),
- > +        .pgoff = linear_page_index(vma, address),
+> 
+>>
+>> No functional change intended.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>  mm/rmap.c | 116 ++++++++++++++++++++++++++++++++----------------------
+>>  1 file changed, 68 insertions(+), 48 deletions(-)
+>>
+>> diff --git a/mm/rmap.c b/mm/rmap.c
+>> index c0e385882f562..b1639bad8e27f 100644
+>> --- a/mm/rmap.c
+>> +++ b/mm/rmap.c
+>> @@ -2136,6 +2136,70 @@ static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
+>>  	return true;
+>>  }
+>>  
+>> +static inline void set_swp_pte_at(struct mm_struct *mm, unsigned long address,
+>> +		pte_t *ptep, swp_entry_t entry, pte_t pteval, bool anon_exclusive)
+>> +{
+>> +	pte_t swp_pte = swp_entry_to_pte(entry);
+>> +
+>> +	if (anon_exclusive)
+>> +		swp_pte = pte_swp_mkexclusive(swp_pte);
+>> +
+>> +	if (likely(pte_present(pteval))) {
+>> +		if (pte_soft_dirty(pteval))
+>> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
+>> +		if (pte_uffd_wp(pteval))
+>> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
+>> +	} else {
+>> +		/* Device-exclusive entry */
+>> +		if (pte_swp_soft_dirty(pteval))
+>> +			swp_pte = pte_swp_mksoft_dirty(swp_pte);
+>> +		if (pte_swp_uffd_wp(pteval))
+>> +			swp_pte = pte_swp_mkuffd_wp(swp_pte);
+>> +	}
+>> +
+>> +	set_pte_at(mm, address, ptep, swp_pte);
+>> +}
+>> +
+>> +static inline bool ttu_anon_folio(struct vm_area_struct *vma, struct folio *folio,
+>> +		struct page *subpage, unsigned long address, pte_t *ptep,
+>> +		pte_t pteval)
+>> +{
+>> +	bool anon_exclusive = folio_test_anon(folio) && PageAnonExclusive(subpage);
+> 
+> "subpage" ;)
 
-This change sets vmf.pgoff to linear_page_index(vma, address), but
-`address` here is the raw unaligned fault address, not the huge-page-aligned
-address.  Previously, vma_hugecache_offset() used `address & 
-huge_page_mask(h)`
-which produced a huge-page-aligned index.
+I'll change that.
 
-When a page fault occurs at a non-huge-page-aligned address within a hugetlb
-mapping (e.g., vm_start + 0x1000 for a 2MB page), the resulting pgoff is not
-a multiple of pages_per_huge_page (512 for 2MB).  This unaligned index
-propagates through:
+> 
+> Can be const.
 
-   hugetlb_fault() → hugetlb_no_page() → hugetlb_add_to_page_cache()
-   → __filemap_add_folio()
+Okay.
 
-where this assertion fires (mm/filemap.c:862):
-
-   VM_BUG_ON_FOLIO(index & (folio_nr_pages(folio) - 1), folio);
-
-With CONFIG_DEBUG_VM=y, this becomes a BUG() and panics the kernel.
-
-I was able to reproduce this in a QEMU VM.  The fix should be trivial:
-pass the aligned address to linear_page_index().
-
-=== Reproduction ===
-
-Kernel: 7.1.0-rc5-g7ba451f8a24f #1 SMP PREEMPT_DYNAMIC x86_64
-Config: CONFIG_HUGETLBFS=y, CONFIG_DEBUG_VM=y, CONFIG_KASAN=y
-
-Trigger: mmap a hugetlbfs file, then access an address at offset 0x1000
-(one 4K page) into the mapping, which is unaligned relative to the 2MB
-huge page boundary.
-
-=== Full PoC ===
-
-Compile with: gcc -o poc poc.c -static
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/syscall.h>
-#include <fcntl.h>
-#include <errno.h>
-
-#ifndef MAP_HUGETLB
-#define MAP_HUGETLB 0x40000
-#endif
-#ifndef MAP_HUGE_SHIFT
-#define MAP_HUGE_SHIFT 26
-#endif
-
-/*
-  * Bug: hugetlb_fault() sets vmf.pgoff = linear_page_index(vma, address)
-  * using the raw unaligned fault address.  This unaligned pgoff reaches
-  * __filemap_add_folio() which VM_BUG_ON_FOLIO's on it.
-  */
-
-static long get_hugepage_size(void)
-{
-     FILE *f;
-     char line[256];
-     long size = 2 * 1024 * 1024;
-
-     f = fopen("/proc/meminfo", "r");
-     if (!f)
-         return size;
-     while (fgets(line, sizeof(line), f)) {
-         if (sscanf(line, "Hugepagesize: %ld kB", &size) == 1)
-             size *= 1024;
-     }
-     fclose(f);
-     return size;
-}
-
-int main(void)
-{
-     void *addr;
-     size_t hpage_size;
-     const char *hugetlbfs_path = "/mnt/huge/testfile";
-     int fd;
-     int ret;
-
-     hpage_size = get_hugepage_size();
-     printf("[+] Huge page size: %zu bytes\n", hpage_size);
-
-     /* Mount hugetlbfs */
-     mkdir("/mnt/huge", 0755);
-     ret = syscall(__NR_mount, "hugetlbfs", "/mnt/huge", "hugetlbfs", 0, 
-NULL);
-     if (ret < 0 && errno != EBUSY && errno != ENOENT)
-         perror("mount hugetlbfs");
-
-     /* Reserve 1 huge page */
-     {
-         FILE *f = fopen("/proc/sys/vm/nr_hugepages", "w");
-         if (f) { fprintf(f, "1"); fclose(f); }
-     }
-
-     /* Create hugetlbfs file and mmap it */
-     fd = open(hugetlbfs_path, O_CREAT | O_RDWR, 0644);
-     if (fd < 0) {
-         perror("open hugetlbfs");
-         printf("[!] Trying anonymous MAP_HUGETLB\n");
-         addr = mmap(NULL, hpage_size, PROT_READ | PROT_WRITE,
-                 MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB, -1, 0);
-         if (addr == MAP_FAILED) {
-             perror("mmap MAP_HUGETLB");
-             return 1;
-         }
-     } else {
-         ftruncate(fd, hpage_size);
-         addr = mmap(NULL, hpage_size, PROT_READ | PROT_WRITE,
-                 MAP_SHARED, fd, 0);
-         close(fd);
-         if (addr == MAP_FAILED) {
-             perror("mmap hugetlbfs file");
-             return 1;
-         }
-     }
-     printf("[+] Mapping at %p\n", addr);
-
-     /*
-      * Trigger: access address at offset 0x1000 into the huge page.
-      * vm_start is huge-page-aligned, but vm_start + 0x1000 is not.
-      * hugetlb_fault() sets vmf.pgoff = linear_page_index(vma, address)
-      * with the unaligned address, producing an unaligned pgoff.
-      */
-     printf("[+] Triggering fault at unaligned offset (%p + 
-0x1000)...\n", addr);
-     fflush(stdout);
-     volatile char *trigger = (volatile char *)addr + 0x1000;
-     *trigger = 0x41;
-
-     printf("[+] Survived: value = 0x%02x\n", *trigger);
-     return 0;
-}
-
-=== Crash Log ===
-
-Linux syzkaller 7.1.0-rc5-g7ba451f8a24f #1 SMP PREEMPT_DYNAMIC x86_64
-
-[  527.288433][ T9873] page dumped because: VM_BUG_ON_FOLIO(index & 
-(folio_nr_pages(folio) - 1))
-[  527.300642][ T9873] kernel BUG at mm/filemap.c:862!
-[  527.301090][ T9873] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-[  527.301640][ T9873] CPU: 0 UID: 0 PID: 9873 Comm: poc Not tainted
-[  527.303803][ T9873] RIP: 0010:__filemap_add_folio+0xf39/0x1200
-[  527.311913][ T9873] Call Trace:
-[  527.312345][ T9873]  <TASK>
-[  527.312676][ T9873]  hugetlb_add_to_page_cache+0xe3/0x240
-[  527.313414][ T9873]  hugetlb_no_page+0x1301/0x21b0
-[  527.314402][ T9873]  hugetlb_fault+0x531/0x1570
-[  527.315259][ T9873]  handle_mm_fault+0x970/0xaf0
-[  527.316565][ T9873]  do_user_addr_fault+0x60b/0x14c0
-[  527.317434][ T9873]  asm_exc_page_fault+0x26/0x30
-[  527.318733][ T9873] RIP: 0033:0x401fa2
-[  527.326921][ T9873]  <TASK>
-[  527.327245][ T9873] RIP: 0010:__filemap_add_folio+0xf39/0x1200
-[  527.335300][ T9873] Kernel panic - not syncing: Fatal exception
-
-The Sashiko review also flagged a few other pre-existing issues in
-this series that I haven't verified yet:
-
-1. [Critical] remove_inode_hugepages() in patch 9: passing folio->index
-    (base-page index) to hugetlb_unmap_file_folio() which multiplies by
-    pages_per_huge_page(h), effectively squaring the offset and causing
-    the interval tree search to miss VMAs (potential UAF).
-
-2. [High] hugetlbfs_zero_partial_page() in patch 7: Usama already
-    pointed out the start >> PAGE_SHIFT question — `start` is a byte
-    offset but filemap_lock_folio() expects a page index.
-
-3. [Critical] filemap_get_pages() in patch 4: the `if (is_hugetlbfs)
-    goto done` path returns 0 with an empty batch, which could cause
-    filemap_read() to loop forever when reading a hole in a hugetlbfs
-    file.
-
-Thanks,
-Xiao
-
+> 
+> [...]
+> 
+>>  		} else {
+>>  			/*
+>>  			 * This is a locked file-backed folio,
+> 
+> Happy to see that function shrink a bit ...
+> 
 
 
