@@ -4,94 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F1B5CDB466
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 079A1CDB466
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 00:16:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56A1D6B0088; Mon, 22 Jun 2026 20:16:04 -0400 (EDT)
+	id E92696B008C; Mon, 22 Jun 2026 20:16:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51AF26B008A; Mon, 22 Jun 2026 20:16:04 -0400 (EDT)
+	id E42B66B0092; Mon, 22 Jun 2026 20:16:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 409C76B008C; Mon, 22 Jun 2026 20:16:04 -0400 (EDT)
+	id D0B346B0093; Mon, 22 Jun 2026 20:16:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 17B8D6B0088
-	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:16:04 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ED8C40332
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:16:03 +0000 (UTC)
-X-FDA: 84909259806.03.D04BA6D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 01778A0003
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:16:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lyI9QEjd;
-	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id A99DC6B008C
+	for <linux-mm@kvack.org>; Mon, 22 Jun 2026 20:16:27 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 317C3402B7
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:16:27 +0000 (UTC)
+X-FDA: 84909260814.16.1BD5531
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5E9FE4000A
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 00:16:25 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L+duUSYZ;
+	spf=pass (imf01.hostedemail.com: domain of 3VtA5agYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3VtA5agYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782173762;
-	b=seYcy60xhJpfplFxpRk9uiO4d042Kl9v3r/I0pSaFJcPw/x1Vsl26dlfP1biWS0sHrbetK
-	TkCFYxb4ryXGuBsdbZZnnxi2au46PDPV0H/n9FkXMYMZecJztroaD6Ow2xaVKgU+EFGSq2
-	B/I7ida3DS/rFiRXXdMin6PG40p751U=
+	t=1782173785;
+	b=gb3JZShHhoBC+w8IOcOjbWFUe/y+AKqaaGbBXXTUqieFU6VjwnVtQVPlixv/FDAWhKihWk
+	KxOLUgSAu/tY7hRBrOtjJPqOFgJLsZ6Yx8wveRJqz0clYoD3PO23z7MDzpdkz5b7Vses9b
+	XOZLC9QYP7+wa9SWLrmIJTulc5aEaFM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782173762;
+	s=arc-20220608; t=1782173785;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=umsOQ0srOaaouQ1wwMTp3caQiMkiMWPQfAtHOceVpz4=;
-	b=q1LuRpSpZbUnR0o//SPJK9grn881bJBtcOUIrz6hComuQ+Gb/ElQug6ILeVEm+1ORdzloJ
-	JcUKsimHiYMTDVpexQZKV9KNiJJaIiY9nIq96PrM2mQWOWJSeD5CZw6IA28kO/I7nIN8eL
-	7CGUNbc2bS4OLoUxaaqffjwfIU7eevQ=
+	bh=ob/JScNjh/WWoydgNSe9txnAf4hRBZPGssYHA/PqDQI=;
+	b=hsfOs9AjNH420VpGaYRqL0IYf7Glhra3pd9EcukMckkmxGznndvU6J0jhLcfnPN/pEUX8l
+	J8M5rsDUhnYLqR2BHyKNmDwIjfNLilTNsqga00U4ZkbIgcrBXw3kfNWzSWhdbXojoso2st
+	u+/G06x3ZFnXyNA8SG0afNjHX1r9jDk=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lyI9QEjd;
-	spf=pass (imf15.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14F6F402A2;
-	Tue, 23 Jun 2026 00:16:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 989571F000E9;
-	Tue, 23 Jun 2026 00:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782173760;
-	bh=umsOQ0srOaaouQ1wwMTp3caQiMkiMWPQfAtHOceVpz4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lyI9QEjd4fWY0bqzQ1QVAa1Kh4MZf8EHugEiH09pxz0VRDGa1Nt0NVAwe4sKaOnnV
-	 K0iiCX+9AGmhnGp/K2SeAn0b1ensgVgJlUZUds0M9uUHLeYzVMv3an+60FC8k/Z/Wf
-	 HAZOGfDmMO/wSkMCoGtRPKrJV+CS10RWfbDBGIyiK3ThUOxEO/p4CwfDSeqECoeQlq
-	 v5qMyQWIzFYA4CAeVYY0y8iBKlSwltjGbqCJ1k5tkeX1SLUDynqf5LS76n1rEKTuff
-	 Dq+xa+X9HuO8+x/mcYVYaTo9CicpYZ2IRw1yC7bwuA97aK19Zq23RXS0KS2S66QpIq
-	 bcib2jMFj/Z8A==
-Date: Tue, 23 Jun 2026 00:15:58 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, david@kernel.org, muchun.song@linux.dev, 
-	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, youngjun.park@lge.com, 
-	chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, qi.zheng@linux.dev, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
-	haowenchao22@gmail.com, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [RFC PATCH v2 2/7] mm, swap: support zswap and zeroswap as vswap
- backends
-Message-ID: <ajnNWRO7apBq2-kQ@google.com>
-References: <20260612193738.2183968-1-nphamcs@gmail.com>
- <20260612193738.2183968-3-nphamcs@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260612193738.2183968-3-nphamcs@gmail.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=L+duUSYZ;
+	spf=pass (imf01.hostedemail.com: domain of 3VtA5agYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3VtA5agYKCDclXTgcVZhhZeX.Vhfebgnq-ffdoTVd.hkZ@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c0b35fa876so50217105ad.1
+        for <linux-mm@kvack.org>; Mon, 22 Jun 2026 17:16:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782173784; x=1782778584; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ob/JScNjh/WWoydgNSe9txnAf4hRBZPGssYHA/PqDQI=;
+        b=L+duUSYZuXcJcR1qJR7jNkNstVLoQwFiE/gQROxuae16dCFrSH8RfJ16roQeljNOjm
+         dyYAKMQpmmpApGabDlNC4QDaSdgrj+V0BbM+ooaCyHumPyGtwp+EZvRRoKbF8mDNBEWu
+         eZNZn/U4t62qUXJ6+IcvQSGxPzZmPv0MLTC19+kT6PpK2KZ23bkqBzKJEgHHWTr3Vj2J
+         G/HbD8iGlWH09WdTANzgLo4QbdZ65eWQpektTVdE2TqYZX13jshnmLe+WUroyG0+rwgk
+         2YRlv4ZsMXfam6NdnEg9hqJWjKkwvgDZa1/U3cv5jaG0mfg87NZU3CVfStHMJ0joTAlx
+         7uug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782173784; x=1782778584;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ob/JScNjh/WWoydgNSe9txnAf4hRBZPGssYHA/PqDQI=;
+        b=G/0PT2ffmEqhNv+pkEami9TYj0w87EaXc9GNTaygf7BY56JvkN17+PEjNmwR9JxGb1
+         tasa4fYopdmrMLRjRMJXPEeEbg9S+uhzYRlQee0tRJCnni602lSkt1EjQuxNNjv5DFr1
+         SqaoNFjCu8mcG3+eRmHbl9HRvMQvcDjMax0/nVTQ4YBAEvNek+aNAsUccjw8pmgXsPIF
+         ClZAbMe6FTooXZoLhWJlbzsZ1DqjcSgAkVT8btExT25vKyNd5d3RZali9yZZwzlO9nPO
+         /spYHaiVjoKjXGIMqkys2Csj/lnTF8YQQebi5cY43pBMY5Qe0s1a8Nxuia8uVF8WNLzR
+         Jdcw==
+X-Forwarded-Encrypted: i=1; AHgh+Rrdn/MCJTT97haFPU03FcigPa0nMEhiv54KaCicmL02wjCdooPdStxwCsCqqaLTxplD4VJ/dOFBuA==@kvack.org
+X-Gm-Message-State: AOJu0YwwaMXLCwrvQDPsbGvl8aAauQVKiyapaP7o9QiDkvH3uMB5m0GC
+	0R0or/EvtbZnIn9fpcdeaAGHWvpglwrpTQfSFKjorBP/06kF/Fo6OnUTvLH6f6VwxG6bipsS2Mn
+	TfYjX7w==
+X-Received: from plbkx8.prod.google.com ([2002:a17:902:f948:b0:2bd:106:8ad0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da90:b0:2c7:c3a8:560b
+ with SMTP id d9443c01a7336-2c7c3b7a5femr16356295ad.18.1782173782987; Mon, 22
+ Jun 2026 17:16:22 -0700 (PDT)
+Date: Mon, 22 Jun 2026 17:16:22 -0700
+In-Reply-To: <8e53844c-f2f8-4a4b-bf72-f3140c170d43@gmail.com>
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-5-9d2959357853@google.com> <8e53844c-f2f8-4a4b-bf72-f3140c170d43@gmail.com>
+Message-ID: <ajnQVkLvFl_lMuGB@google.com>
+Subject: Re: [PATCH v8 05/46] KVM: Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable
+From: Sean Christopherson <seanjc@google.com>
+To: Julian Braha <julianbraha@gmail.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: kj1foe5f3ozidsofzfmih3fznpu1yr3w
 X-Rspam-User: 
-X-Stat-Signature: 76ebiayau6171yhxunjux16wsgyhot3j
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 01778A0003
-X-HE-Tag: 1782173761-856596
-X-HE-Meta: U2FsdGVkX1+feAO8pXLWlpH9a25yHDJJDHhxVw03SX6tWPP4GYL4rI0obEcDcxqumx4miee3Ok5I/SNF6o9ox+o2pw63dfdX7ROFhnQ1lMX4Hnm0OZYSFnj6Zg7TbnZQAgGWs0FTdvlEc5En69ZOQIcZhZ1wII9BaZ2GhUM9/m4TikF8xaeUDlWsOaCNWyllPaB/aYZ4KkLcODKlBUUPFZiD2PJIZiEwtINEeLRKAKHmXYlbrK+N6IZ6qa46/V1DhbnGuLmXGKob6LjsDWp/uZFzMY5//LPOx1pKmt4wfj841VxsXkKbsauMyCh5GL9P1OBfu/cmlh0u41UXr6oBxt3C5ah032pjF3AiGH7HIpWeyR3Q1HUXJCHkIyFfwSyywhJvsqNUs3fW7ZFqBEDB9Dl67/1TuN3sbxBY4prfYfRExkKbu/I8msdmhyRtprRq+Fl8R6Cb0Usfqlt+bDvGTNtyoGAwvglv9AcJT9FNABPawS+vuUlmYgyQ9NjiutY6rva5AztlSppvSG8GUv2Ar4ISPEZQ2e9HhM30ByCgs/slBjpOKVykF0cw17JAhpkpBvjj+F++rI1sM0wYLt3LW/KdvAmZNTHpmEXE+u07N8yY4qoOBbkbuNYcL1StPg/e2yCbjc3s1e8LpEHvGkNvYljIhRyl+e4G/6arLLAKd28Bj4AxLFOkFWWLhVIuWKBIfo9jUKSchzu4H8dCY1o7XyUT/0vjmycLFOEIdctiDrvKAH0bjpuzzbvS2HPzURCjXCjt96hu4112sJi3AQnEFo6nvKjzNNv5we7Q1Er6C43Ur28G0c8ih8jFd9WJdNJlS2OWzcccuPUbasmAm0CwBcTMJxYZdlv3pgu22xvVn/pAkaRdXwtB32bp2/G6xFqtKkihrAu8ZF2f7OhVTWoDnf49gvSHs8Rca+7DGaydoE2ZD6+vRbFAcjJYH/nV4czsxFJqAEUWQadTuuq6gBD
- bC+qNc0l
- hhSR10oZOisRscdJ5pI7AETTDcHQqCwnlqjQ4ek6uLiZy2AACPN9gPEh29/e2rT82w6wk9RQKZmlbftQrhWK4vqn5vAxrsEhmK9jlVxWA+s436k6pagPAC6+de8mP8O2C+RXD31a49/FojTa7kuwcEeFIVzspwN24FFfaSZc91Hi4xPMd0uBM5osl5HuJ1c8h7ylYnZUPU/9ev3l1QH9D73dCZrVkbEf2MllKvnIfJElwnYMScsQFze/bnXHVZLHFYHH7wLMf02a7Wjf/J5x0UZJXOtspJQiqGcBu3l2QvsZyZdprKQFex7oWuGTbcPy+qZ7FW0wcRNgv5jo=
+X-Rspamd-Queue-Id: 5E9FE4000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782173785-28214
+X-HE-Meta: U2FsdGVkX1+rtncgbxm3OoTglmcftAoskuSTkTlS+F+YRhTiKfQXmRC/Y/AtlORzVgQFBQz6E6/wz5nrFka92MtZwPdLg+RTRE2aUk5hF7xAPrqcvCy+/DrwNh8qPhbanvA8ZcYeEXY2hi1A6aZrG1wYnJP/Alkl9EEKy7SGkvoxgZmI/WNV7/j8LVN0/ZYFSOVdLZlQuBK99mAxIX5XgVpbW+JKDRNn07rGqX3Qt/Gg7fPfcJykIKFpwB2QrZVgJtAFrktBWV5YMB+llWZZGRrIEB1VXUrcsIRIns2J0GAgqtWC2Z9B2U6RDBUgCy278oKtO/rgc87v8+Me7LsgUDTtz3BYYTfS9PFecxQiWMeoFKEpW1jAyA9r6frgwzuSA9DsKBdyQN2Uj152EilqS7Do75k78dtMhDfg+hJKWUDIm3QbOaoRFUmLjBQT/00DvoA/qyGNMQH6wYVX3dfP1QyaqvAfdjOUSJENqnkEWSV42Dh7wzdIEytPBBDzVE2wM59xOkhJoZxr011RQ5woWaXYrZ0jxjsd2Drg7pKlUMFExQJy3U9OgUfOkq4kLI+GP67aBV0roLqsUUd4lrbXjzVCdUkrsbMA+TxvYzSIzYS2mBW8CMXPxFKLBne5wFZc+y+2CBbafVHavjk9nBajZ8lTafHWvIMp6uLX0CGmqGqQAc6J5aqexaS1FDy2QfkrOjm1/mIwn8iREaAtENrjkQnImIxpjZaOEvVmMJzJUTIjeaPHPrXhkrWybqF/mqDHvjvJ7z0f799roLUFIoRFYN0EZWvoA8IfaVMCTBHD6jft6ttQ/9zO17T/Wlg8+Q+ZHNzwGnpJS08igK+40OE1ZgUluLAWUHaU+JqdPYaTvzPDz+GOh4W7I0ANQhZ2RlVm2ua5ynOoCsJwjnDHyjmStGn7vOLQxzFUEJdTpepQ3PoMwiFKkGEMg7a0+SGeR5iCYvUJqah9pSkmYaWxHP5
+ WMfaqpqB
+ JGWe1RnTbtAmp+iWh0swK049SxRPkyS7DtLa/EizDzQQCESJ2wW0ExcMseIcDC3ltwSf4LUvmo+l773yAiKO2NGiQxYZI5HQkGya/qki7Xs7xEr79iRLuakw//KEHskvZME/AKDodtQUvokT+6pSr6FzT7y2+OI1zNU36xj5fnPEqNHTeB+8lywBgfm2fQrEEm1Jzk0XrI5j4uj5NXAsJ3mXiIpTgGjUEZ/5WHkhERNAv+2G5aAYsw0zZmaf8dyfwZ3WrMjX6lx4UNMe37ELuFOo9oeUIUwgikLVC2aLSmZbmkPuOMmRxzYBD71JS90QjafAhVpd4Qcy+SJYdyFT9Fu2xOPiAoNOCBNl1QLPsqhb0n9udkJsv2ODXA46f7Nn1Cn3kVCgB+H3yczWY6GbTi/b1JsLQ5ZzNwTUAMz9qZREO+iz1c6u47T52DkTb0Fk/LfbO1c1MSfxBx/5GHYgOBfqVc4WHCJiVhc4kYjvCDjm2K+L7h5DZ+7Yzayw92fF+YTGx+VP7TBDUq5tXlF1Qk3u4aIkpg0Q4BcQ36mLcVYYQAEoVpvz9I2pHbvlQFhP4UTVaINbJH/KClIUADrxogJ3tLZqoYiQvOoPbMa4UZuuC/t2sgqaxIyhaltIvMKdQ8Fa5uUJRVDPdh6w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,260 +131,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 12, 2026 at 12:37:33PM -0700, Nhat Pham wrote:
-> Build the virtual swap layer on top of the swap-table infrastructure.
-> Virtual swap entries decouple PTE swap entries from physical backing,
-> allowing pages to be compressed by zswap (or detected as zero-filled)
-> without pre-allocating a physical swap slot.
+On Fri, Jun 19, 2026, Julian Braha wrote:
+> Hi Ackerley,
 > 
-> This patch only supports zswap and zero-page backends. If zswap_store
-> fails, the page stays dirty in the swap cache (AOP_WRITEPAGE_ACTIVATE)
-> - physical disk backing fallback comes in the next patch. Zswap
-> writeback of vswap-backed entries is also disabled - the shrinker
-> skips when no physical swap pages are available.
+> On 6/19/26 01:31, Ackerley Tng via B4 Relay wrote:
 > 
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-[..]
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 993406074d58..466f8a182716 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -38,6 +38,7 @@
->  #include <linux/zsmalloc.h>
->  
->  #include "swap.h"
-> +#include "vswap.h"
->  #include "internal.h"
->  
->  /*********************************
-> @@ -762,7 +763,7 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
->   * Carries out the common pattern of freeing an entry's zsmalloc allocation,
->   * freeing the entry itself, and decrementing the number of stored pages.
->   */
-> -static void zswap_entry_free(struct zswap_entry *entry)
-> +void zswap_entry_free(struct zswap_entry *entry)
->  {
->  	zswap_lru_del(&zswap_list_lru, entry);
->  	zs_free(entry->pool->zs_pool, entry->handle);
-> @@ -994,16 +995,21 @@ static int zswap_writeback_entry(struct zswap_entry *entry,
->  	struct swap_info_struct *si;
->  	int ret = 0;
->  
-> +	/* try to allocate swap cache folio */
->  	si = get_swap_device(swpentry);
->  	if (!si)
->  		return -EEXIST;
->  
-> +	/*
-> +	 * Vswap entries have no physical backing - writeback would fail
-> +	 * and SIGBUS the caller. Bail before we waste a swap-cache folio
-> +	 * allocation.
-> +	 */
-
-Seems like this comment belongs in the previous patch, and the other
-comment movement is undoing what last patch did.
-
->  	if (si->flags & SWP_VSWAP) {
->  		put_swap_device(si);
->  		return -EINVAL;
->  	}
->  
-> -	/* try to allocate swap cache folio */
->  	mpol = get_task_policy(current);
->  	folio = swap_cache_alloc_folio(swpentry, GFP_KERNEL, BIT(0), NULL, mpol,
->  				       NO_INTERLEAVE_INDEX);
-> @@ -1416,25 +1422,25 @@ static bool zswap_store_page(struct page *page,
->  	if (!zswap_compress(page, entry, pool))
->  		goto compress_failed;
->  
-> -	old = xa_store(swap_zswap_tree(page_swpentry),
-> -		       swp_offset(page_swpentry),
-> -		       entry, GFP_KERNEL);
-> -	if (xa_is_err(old)) {
-> -		int err = xa_err(old);
-> +	if (is_vswap_entry(page_swpentry)) {
-> +		vswap_zswap_store(page_swpentry, entry);
-> +	} else {
-> +		old = xa_store(swap_zswap_tree(page_swpentry),
-> +			       swp_offset(page_swpentry),
-> +			       entry, GFP_KERNEL);
-> +		if (xa_is_err(old)) {
-> +			int err = xa_err(old);
-> +
-> +			WARN_ONCE(err != -ENOMEM,
-> +				  "unexpected xarray error: %d\n", err);
-> +			zswap_reject_alloc_fail++;
-> +			goto store_failed;
-> +		}
->  
-> -		WARN_ONCE(err != -ENOMEM, "unexpected xarray error: %d\n", err);
-> -		zswap_reject_alloc_fail++;
-> -		goto store_failed;
-> +		if (old)
-> +			zswap_entry_free(old);
->  	}
->  
-> -	/*
-> -	 * We may have had an existing entry that became stale when
-> -	 * the folio was redirtied and now the new version is being
-> -	 * swapped out. Get rid of the old.
-> -	 */
-> -	if (old)
-> -		zswap_entry_free(old);
-> -
->  	/*
->  	 * The entry is successfully compressed and stored in the tree, there is
->  	 * no further possibility of failure. Grab refs to the pool and objcg,
-> @@ -1487,6 +1493,7 @@ bool zswap_store(struct folio *folio)
->  	struct mem_cgroup *memcg = NULL;
->  	struct zswap_pool *pool;
->  	bool ret = false;
-> +	bool partial_store = false;
->  	long index;
->  
->  	VM_WARN_ON_ONCE(!folio_test_locked(folio));
-> @@ -1524,8 +1531,10 @@ bool zswap_store(struct folio *folio)
->  	for (index = 0; index < nr_pages; ++index) {
->  		struct page *page = folio_page(folio, index);
->  
-> -		if (!zswap_store_page(page, objcg, pool))
-> +		if (!zswap_store_page(page, objcg, pool)) {
-> +			partial_store = index > 0;
->  			goto put_pool;
-> +		}
->  	}
->  
->  	if (objcg)
-> @@ -1548,7 +1557,9 @@ bool zswap_store(struct folio *folio)
->  	 * offsets corresponding to each page of the folio. Otherwise,
->  	 * writeback could overwrite the new data in the swapfile.
->  	 */
-> -	if (!ret) {
-> +	if (partial_store && is_vswap_entry(swp))
-> +		folio_release_vswap_backing(folio);
-
-Hmm the above should also only happen in the !ret case, but that's not
-obvious from the code here. I think all of this should go under if
-(!ret), but maybe reverse the polarity to avoid the indentation?
-
-	if (ret)
-		return ret;
-
-	if (is_vswap_entry(swp)) {
-		if (partial_store)
-			folio_release_vswap_backing(folio);
-		return ret;
-	}
-
-	...
-
-Alternatively you can move the check_old code for xarray into a helper
-and do:
-
-	if (!ret) {
-		if (is_vswap_entry(swp)) {
-			if (partial_store)
-				folio_release_vswap_backing(folio);
-		} else {
-			zswap_free_old_xa_entries(swp, nr_pages)
-		}
-	}
-
-Also, I think you can probably drop partial_store and check the index
-directly here.
-
-> +	else if (!ret && !is_vswap_entry(swp)) {
->  		unsigned type = swp_type(swp);
->  		pgoff_t offset = swp_offset(swp);
->  		struct zswap_entry *entry;
-> @@ -1588,8 +1599,7 @@ bool zswap_store(struct folio *folio)
->  int zswap_load(struct folio *folio)
->  {
->  	swp_entry_t swp = folio->swap;
-> -	pgoff_t offset = swp_offset(swp);
-> -	struct xarray *tree = swap_zswap_tree(swp);
-> +	struct swap_info_struct *si = __swap_entry_to_info(swp);
->  	struct zswap_entry *entry;
->  
->  	VM_WARN_ON_ONCE(!folio_test_locked(folio));
-> @@ -1599,16 +1609,25 @@ int zswap_load(struct folio *folio)
->  		return -ENOENT;
->  
->  	/*
-> -	 * Large folios should not be swapped in while zswap is being used, as
-> -	 * they are not properly handled. Zswap does not properly load large
-> -	 * folios, and a large folio may only be partially in zswap.
-> +	 * zswap_load() does not support large folios. For non-vswap
-> +	 * entries this is unexpected on the swapin path: WARN and
-> +	 * sigbus. For vswap entries __swap_cache_add_check() has already
-> +	 * filtered out ZSWAP-backed THPs under the cluster lock, so the
-> +	 * large folio here is zero- or phys-backed; return -ENOENT to
-> +	 * fall through to the phys/zero IO path.
-
-Hmm should we start simple and avoid THP swapin for vswap initially?
-
-IIUC, it isn't really vswap specific. Even without vswap, it's possible
-that an entire folio is on-disk, not in zswap, in which case THP swap
-should be allowed.
-
-I assume it's not common for zswap to be enabled and an entire THP worth
-of pages are not in zswap, so maybe we can add this later?
-
->  	 */
-> -	if (WARN_ON_ONCE(folio_test_large(folio))) {
-> -		folio_unlock(folio);
-> -		return -EINVAL;
-> +	if (folio_test_large(folio)) {
-> +		if (WARN_ON_ONCE(!swap_is_vswap(si))) {
-> +			folio_unlock(folio);
-> +			return -EINVAL;
-> +		}
-> +		return -ENOENT;
->  	}
->  
-> -	entry = xa_load(tree, offset);
-> +	if (swap_is_vswap(si))
-> +		entry = vswap_zswap_load(swp);
-> +	else
-> +		entry = xa_load(swap_zswap_tree(swp), swp_offset(swp));
->  	if (!entry)
->  		return -ENOENT;
->  
-> @@ -1623,16 +1642,14 @@ int zswap_load(struct folio *folio)
->  	if (entry->objcg)
->  		count_objcg_events(entry->objcg, ZSWPIN, 1);
->  
-> -	/*
-> -	 * We are reading into the swapcache, invalidate zswap entry.
-> -	 * The swapcache is the authoritative owner of the page and
-> -	 * its mappings, and the pressure that results from having two
-> -	 * in-memory copies outweighs any benefits of caching the
-> -	 * compression work.
-> -	 */
->  	folio_mark_dirty(folio);
-> -	xa_erase(tree, offset);
-> -	zswap_entry_free(entry);
-> +
-> +	if (swap_is_vswap(si)) {
-> +		folio_release_vswap_backing(folio);
-
-Is there any advantage to calling folio_release_vswap_backing() over
-zswap_entry_free()? Seems like __vswap_release_backing() ends up just
-calling zswap_entry_free() -- and I don't see any vswap-specific state
-being cleaned up.
-
-I wonder if the zswap code should call zswap_entry_free() directly? Same
-goes for the call in zswap_store() above.
-
-> +	} else {
-> +		xa_erase(swap_zswap_tree(swp), swp_offset(swp));
-> +		zswap_entry_free(entry);
-> +	}
->  
->  	folio_unlock(folio);
->  	return 0;
-> -- 
-> 2.53.0-Meta
+> >  config KVM_VM_MEMORY_ATTRIBUTES
+> > -	bool
+> > +	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
+> > +	bool "Enable per-VM PRIVATE vs. SHARED attributes (for CoCo VMs)"
 > 
+> Sorry for the style nitpick, but could you keep the type and prompt as
+> the first attribute in the Kconfig option definition (like the other
+> options do)?
+
+No need to be sorry, I've no idea why I put the "depends" first.  I don't even
+know if that qualifies as a nit :-)
+
+Ackerley, if you can provide your SoB (for Fuad's feedback), I can fixup when
+applying (assuming nothing else necessitates v9).
 
