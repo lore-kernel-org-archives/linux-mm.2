@@ -4,104 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F36F0CDB46F
-	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 09:57:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47377CD4F26
+	for <linux-mm@archiver.kernel.org>; Tue, 23 Jun 2026 10:01:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4E046B008C; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
+	id 3DDEC6B008C; Tue, 23 Jun 2026 06:01:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D25586B0092; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
+	id 3B71D6B0092; Tue, 23 Jun 2026 06:01:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3DA66B0093; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
+	id 2CEA46B0093; Tue, 23 Jun 2026 06:01:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 95C926B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 05:57:41 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 096EF8DE7F
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:57:41 +0000 (UTC)
-X-FDA: 84910725522.18.9FDB81E
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 372101C0002
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 09:57:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CwFbM4bv;
-	spf=pass (imf20.hostedemail.com: domain of 3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 063EA6B008C
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 06:01:17 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A15B8DE8B
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:01:17 +0000 (UTC)
+X-FDA: 84910734594.16.84A53BE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 50DBD140002
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 10:01:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=O9UNZuuX;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782208659;
-	b=GYOjdHAj2BSdnjp82XfK8W0FHQMc9o+cWbhD0/20Vg36OQVN9GqUP4BUdnQg+998Qu8mpu
-	Vm04UC8QXVfne2JxzNMz40sS3JEUUMnCPdXjhkWrFerPJvN8x49edpFaAvM6mRSpu5kYuZ
-	zdFV30oDUWZG/imw3JUJtvsIfgNh+PQ=
+	t=1782208875;
+	b=ZEi2YvG0FP3LrKeqt/KvlxzrA8fh5s1ofHmrgXYy88xRGTQ/fG5STMc/toI6FhwYoLBMoN
+	s32mjwpY3RHR0QPx4QAfyGVrBsgUetqaw2VqF/mEAgOJlsgzV4vPrsl2aUllQ7OHUbLwOr
+	OA6fKGD/NVR291AzYVCokdsp+ZXSWoM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782208659;
+	s=arc-20220608; t=1782208875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
-	b=tX5NktXs1NVISQ1ZJBADfXNzPoPp204LWf5pnkpglfEf8jKb58D4qN5nN/NpBIpRTjUBYf
-	PCr1hfmYcEwlEXMJflKStscrnKTMelL2Cb2rt7aSVzdDvgF00C8+j4/17JJbBreX6RMjXd
-	ZDiAneht0eZKJXcFTACYP4qp1mvsUn4=
+	bh=DtTaDI+6L6cK7pAN6pfdMFBfawMBtcYb6fjhCBZGnw8=;
+	b=dCLbcmtjQtXaNZ2eE0TIzzrHzYqfGMfs9ty7fonRocr7Y8Ou2pDgWzsJbjjQ7vO+kiWHlV
+	0Bac8jxZRLi+T9TwpFlu5Hjpzo8yJHbAouX0xioSrhSKipFefGmLL6CVAGHkNKNwymcYaC
+	Qa9fmWaO7fO7ORzYmm6rrOBo/YSR1hA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=CwFbM4bv;
-	spf=pass (imf20.hostedemail.com: domain of 3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3kVg6agkKCIQ1iz2v0ip2owwotm.kwutqv25-uus3iks.wzo@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-696bf062625so4339330a12.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 02:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782208658; x=1782813458; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
-        b=CwFbM4bvFHSqxPdKXPRUUrdm4jUuAGUZSh4oaHR3VZ16/DzQZDwO/zFtuitE1GHq8O
-         4NcEY4EC7I8RIgLLtJif1T12Icp8q1diGdYBdp2fRh1oFGLmrxSc9HGf1RC1IqevE/Vi
-         aS53QtMjPWG1j6yehwAHmF2YtiQnIC0Wk62AcI6vcd6Sa+d7/FRVUT5ohOd9dDy0ZJPm
-         /pBrrVexHvPfzWLfDPk3+wfQIKOD3nc/eUR9eWb8wrr0MayCy+16705zUffOv/1+Hq1J
-         pa+EU6uMiXMqwxPgvOfmQYPLVmmmgx0SokqdlAQYVA25StuOFlB9KCeehUZxz1TzLO2a
-         OV1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782208658; x=1782813458;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X6h9atGrmwYrKKQwd5mU+K5DW7kaXkRukWRnYNelZbM=;
-        b=FBb/aw1hLUmtDKPprTiE89fyrRAQ8xKbLLmOSSwpmwQDwFX+holpubgtZPJU+jgdyE
-         0YIX9FsLOo9NCKg0CvkxelSjQ3QaX9fqMFUL2u9/AGmqD5mJldV2jdBY/PtDwUBOsZEi
-         LlNraLWuQZei475qFDRDyZW1WHlLvbv1AzlExZm95fku+99w+ZR71sR3TU7lyZ34KUqp
-         segFg3NqZorK0BRIjtHn7xDWToXrvRezBwLY9A3qLXGz0fOQ55RjftPK7czM28+uLokx
-         sD1WNOiZVuv31X9oY4x2NL6wysemQyg7hpqLUsd681RmJ13OyzEntwqDwyA3mRHnRT8g
-         2FSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8HIyVmDOehDrNLB/WIQKm4iuNvcc7HF3RIN9jyB+vHGXCKQvQH6mUAsMchtmi0eOX3Dp803TlCXg==@kvack.org
-X-Gm-Message-State: AOJu0Ywf4azuajwuvqhobBVKpE+i5e2Nvh4lkxzgDzAI1k0oNpuETmmT
-	M+lg+LvmB3N4m1xKyPniP5khV8eRFJZ2LrmQda830OzyFaYQFFKP8u2q+dlGMqZXVkoI9hAdKkQ
-	QkJD8X1z7KceGErQW9A==
-X-Received: from edim4.prod.google.com ([2002:a50:cc04:0:b0:696:edc4:b307])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:2710:b0:697:6b05:e801 with SMTP id 4fb4d7f45d1cf-697dbb38f5emr1011923a12.17.1782208657371;
- Tue, 23 Jun 2026 02:57:37 -0700 (PDT)
-Date: Tue, 23 Jun 2026 09:57:36 +0000
-In-Reply-To: <178220761161.162773.13771896658073176.b4-review@b4>
-Mime-Version: 1.0
-References: <20260622225736.2961438-1-tarunsahu@google.com>
- <20260622225736.2961438-2-tarunsahu@google.com> <178220761161.162773.13771896658073176.b4-review@b4>
-Message-ID: <9huzmrwl37fz.fsf@tarunix.c.googlers.com>
-Subject: Re: [PATCH v4 1/2] kho: add KHOSER_COPY_TYPE(UN)SAFE for phys copy
-From: tarunsahu@google.com
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: cnmxh913o8ejapdu5wbcw3pytpexfezh
-X-Rspamd-Queue-Id: 372101C0002
+	imf09.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=O9UNZuuX;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 51A151A25;
+	Tue, 23 Jun 2026 03:01:09 -0700 (PDT)
+Received: from [10.164.19.14] (unknown [10.164.19.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 69BFC3F62B;
+	Tue, 23 Jun 2026 03:01:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782208873; bh=QssQ3X75aCKMuuN/Bl2WLW7c+ks6QkBQHUfIQL/PJF4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=O9UNZuuX24DFwpJHUI1a0hPd4j3c6Il2S23sHHX82IZjgGUkk2gO4w7np0CzUh4sJ
+	 i/DVZ3/0pBa+MIDakGjwPobFD07nVtPAcd9xtsqhdb5avace5qOXKG3ZdCNgz3Umr+
+	 o4F8nElCEKvwtiSdC7hPyN4dNn9JetgS95I2rZgM=
+Message-ID: <562addc1-b334-4258-b0d2-0154ffed061b@arm.com>
+Date: Tue, 23 Jun 2026 15:31:03 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/12] mm/memory: Batch set uffd-wp markers during
+ zapping
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
+ liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-5-dev.jain@arm.com>
+ <a9483db7-5b13-40ff-8d45-12f40dc97c77@kernel.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <a9483db7-5b13-40ff-8d45-12f40dc97c77@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782208658-616338
-X-HE-Meta: U2FsdGVkX1/eco8bK+msQOtsfkp0pEayM9EWEm/miT1En+syonQ/ZJPqv/v2KR75RPHN+YXHxjlUFnbjio8YmYcDE8fDB3XxD360QK4ZeBgs0KJm/SOORZgBl1aQC1tf9PeuYUiEOhirfA2LMCRTvU+r+sPJnvX1KNeM03K9SOf9FygFxewwzY2Le36yHfBqkOjBAdpRUJGgPmCRe01sQIJV+maAkQw95j5AxgplnJymn8S4INdwtPtiMo2A/7r3Xyviv/7fcBRY7HiRaKA/ObBA02Ffg96xaabQEc3noz6fj/3Ta/45P7gIwVQqewJvS2GiY+d0wSoZJrACqDuVUFIVjyoIDUpL3wnrA6BGIl2/WRdvw6GcCoE4mg+x4+eFsqJL5fcAJRGQEabGd0Il7PHswDvypIo2IAhF9LX6RG3tGP9/BITi1BI7DCI/SMXE4BZ+lQM1t+uhPytTSSq8PF6HvSHMIl90gUmDyybERs8v6j3Q7QZ2y3cgYFegw1hp+8dzqcRKuKOXBI7SEbYGhITCtWjRovqOSsyih3ejPzvGX6rDB5usXbnUSCVyqUDgeIj3gWBsXwQJ92vO+5kKzdY8l2NFyoM7z/d4yXU0vEzsI3hvXqJDBQp7CAtT2DI5FEcqSi5+G9SkDqy7pryT+BkdQN1kWN/ctYO2WqWsuEDlNEh6u0FLc2vqR+uxjepOM8xb+dIDsWoWtxQULIg8ig8NBMRGMhKCS0AgNKVufch5XQblVhjk/qm7p3/P4/7bHPznxyn/CVCnceOYleCjy+wYYNkhil83rHfpNXHKtsRVENx1v80gh6j5eD8rCb7nLpv+NUXFH2JwhlQWNZbWHL2uDsFeswASd1r7b7yRNUYbnnAqOhvk8GGirZY6shNBVIjOYuAKP2qTVjc5rzRsIs3XRYqi4oBjJamZ3ObiYHpJShgKJzxyxEjuZgdAP8qpH9ycAFVvf5pqnhkzcnE
- zwgGsrdu
- aO/MVxeC5IptCrFrsaxSU8moA2uEQQI/ASoMLOBdpqs97+RWK7TBsDa8Lg5fgyrnJLUJDKcYt3jdOJwId91O0v8+P9+XPkL0UQcfxluWNHFy02D8u1j+48+oQl8fiXMJ02xqsxRs0s50DWhu4x7ucVU6Rcg1epUPBobndLcwm8g1j4x17XfRnF3ke5wV22JBlgjOjw8K+hdhgFXTQ7pe8nhfW1u7tPrp3HduFvPzizOUlUaa4yT9NB2BaBwvp5zxTn/oQ8jo2YBN6u42Q9QQ0DgADAspPu6q0TJtjY8wOzSmjOgbMm+sJvUeu2Gdui+c0Yl0p9jxam9FsNlJEJ/KRTvCM/3DBmbCMxhxM3ogmy7FUIQ73PS7XEZw3Qa4t3ERxwm1eQ2Sy/j8Ai/48Zmv9/Z9Km9Eaxbm+4XaGRgYYq9ynZH5gd1KebXi0r3072mlE8/0ayEnBUaKNV3k1W1yZXbPhXEMjN/rewt/SAe4rwRMtL0XnSL5do34xnBK5X4+dUMl26N1IRSj18Y1bZ4soHebOtzYMd/8c16uMEsnUdCMRa0Ma8IiCw/UK79IwZHPyhX2S7KoMJi5PNeyHOoU6JuWjPGHx822Lrstn0qb2u8bbUiryreODbgLZxg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 50DBD140002
+X-Stat-Signature: f4xsgixkft8f4rbja6yboiy34dcg8gj5
+X-HE-Tag: 1782208875-819369
+X-HE-Meta: U2FsdGVkX1/LSRWT7AMwku2pKgI3MBhkV2zrfrUgYoUmstniulJNhdJ7pgR0EjSnOHVjmMZaSbwWXul1/3tJgG+kjPW919uhQdeXjk3UL/Y6oTmaW2prHibRKRiIGHcT6jSBldvzvrwgBIFhhObNcqQjvCHq+CoemZsgrpym7x/E0beQSYfJvBxaZYR5qQBPmB401QC4D4DpqhvimSoaR8W7t6MOeoavpu3lwakL/NqyuaKx4xpxDNUugbupGzHdCVo6IeWAut2W0yUefwgwpuLc9qV4wtVb0wAwwQZh9MGS/IOYk+flWBVIR/Jm60rJn8hqERwNL8ZwDAygjwY530Kl7BVB8HHpK0ZCSqq+bVJya7slSu8Un/yFNVAFlfp8ohBidTBu78e/DVVWCfPzW8T62gnTkJFEM8r5ADnO9YL8lYCG/R5dODneV/wCGj9PN0wRXA7ODgaOAkzLN2uzu9kx3j0QTvhgGc8ABfMjbbb6yMxhDdoxlOpmebjZu33AFWhXKPdxYgQn4b4WzPeMjIyj8272t/7OWkxmViUOjjzY5sFbR+rStMs9lVO5NKcSlxTT1VciuwKuubljbY2rW2j8RyZTBDvLytQwi6qVJ2uQ7ywIO/+y91+Gf7Jhtdjsdx3gbDEkGjpM0kQ2VIaWfjXELEj9j+cgFhBqJxuEkSBgmfQ93phxp6Fq7OvMH/OCap95Dr0vxYhJC5H3d4sK/fIgQ9pM9ynNOq/GhM2eiQJSeQf0VkSTtx1FmqKu3YYngSnT2mX06gIht051MsKdSUNTFES4vnhI78QLoY3mMgBHw8k7ghzzrkM1JB+Kj504e4MIGqHx2uH3UKiGHXQos+u7ANKS7O15B/mkuHeYqCnmPaqgH32a2+20Zgqcxi4ZIcR5X9SZKEJJBOvOI3GTZqaO1YFQt+yFZYwTOBNbzIsxQMGZ1cyNY75z3/Wxm972u/jh6/4Y1cPFAiiaelE
+ zEtiF5HU
+ J3tqn4UJPyCrckEhlDRMHQnnCcZIoKLNSwEpf4F8P8zZ5GmefYjx6Xw3mDRX/BZ/JOBtuS0FDNcn+XJsCEIHHxgVugccditB2z8CLrWmH06eONshkebl1QB9+h11Yn+c7ZuOqgeU/JaIGrYB33rXkPxVmMFex5KWARHghaSihDSY472xBHk8RAsivJVHalqDxoVWAu+0KSAW3v6mE88HCMIcEbAZFao1hcR778GcHViitVJ4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,61 +101,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Mike Rapoport <rppt@kernel.org> writes:
 
-> On Mon, 22 Jun 2026 22:57:35 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
->> Adding KHOSER_COPY_TYPESAFE and KHOSER_COPY_TYPEUNSAFE to copy one
->> serializeable pointer to another. It basically allows copy of phys val
->> of the serializeable pointer.
->
-> Please update the commit message :)
->
+
+On 16/06/26 7:13 pm, David Hildenbrand (Arm) wrote:
+> On 5/26/26 08:36, Dev Jain wrote:
+>> In preparation for the next patch, enable batch setting of uffd-wp ptes.
+> 
+> Avoid talking about "next patch". Phrase it as "In preparation for batching...".
+> 
 >>
+>> The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
+>> that nr through either folio_pte_batch or swap_pte_batch, therefore
+>> batching is correct:
 >>
->> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
->> index 5e2eb8519bda..c1b61d875dcc 100644
->> --- a/include/linux/kho/abi/kexec_handover.h
->> +++ b/include/linux/kho/abi/kexec_handover.h
->> @@ -139,6 +139,17 @@
->>  		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
->>  	})
->>  
->> +/* Copies one serializable pointer to another. */
->> +#define KHOSER_COPY_PTR(dest, src) \
->> +	({ \
->> +		static_assert( \
->> +			__builtin_types_compatible_p(typeof((dest).ptr), typeof((src).ptr)) || \
->> +			__builtin_types_compatible_p(typeof((dest).ptr), void *) || \
->> +			__builtin_types_compatible_p(typeof((src).ptr), void *), \
->> +			"pointer type mismatch in KHOSER_COPY_PTR" \
->> +		); \
->> +		(dest).phys = (src).phys; \
->> +	})
->
-> I'd suggest declaring local variables for the pointers and verifying
-> their compatibility. E.g.
->
-> 	({								\
-> 		typeof((dest).ptr) __dst;				\
-> 		typeof((src).ptr) __src;				\
-> 		static_assert(						\
-> 			__builtin_types_compatible_p(__dst, __src)) ||	\
-> 			__builtin_types_compatible_p(__dst, void *) ||	\
-> 			__builtin_types_compatible_p(__src, void *),	\
-> 			"pointer type mismatch in KHOSER_COPY_PTR"	\
-> 		); \
-> 		(dest).phys = (src).phys; \
-> 	})
->
-> IMO it's easier to decipher this way.
+>> 1) all ptes belong to the same type of VMA (anonymous or non-anonymous,
+>>    wp-armed or non-wp-armed)
+>>
+>> 2) all ptes being marked with uffd-wp or all being not marked (same is the
+>>    case with the pte_swp_uffd_wp_any check)
+>>
+>> 3) uffd_supports_wp_marker() is independent of the function parameters
+>>
+>> Note that we will have to use set_pte_at() in a loop instead of set_ptes()
+>> since the latter cannot handle present->non-present conversion for
+>> nr_pages > 1.
+> 
+> Below you have
+> 
+>> +	/* The current status of the pte should be "cleared" before calling */
+>> +	WARN_ON_ONCE(!pte_none(ptep_get(ptep)));
+> 
+> Could we easily extend set_ptes() to allow for non-present -> non-present with
+> nr > 1?
 
-Okay, Will update in next revision.
-Thanks for reviewing.
+We could have a set_nonpresent_ptes() in general, but then for some non-present
+configs like in this patch, we don't need to change the pfn, while in some
+configs like setting swp ptes in one go (like I do in later patches) we have
+an underlying pfn. So I don't see an obvious simplification with a common
+helper for non-present -> non-present for nr > 1.
+> 
+>>
+>> Rename the function to cond_install_uffd_wp_ptes, and convert the
+>> documentation to kerneldoc format.
+>>
+>> Move the function to memory.c since this has grown too long to be kept
+>> in mm_inline.h, while retaining the inline hint.
+> 
+> Well, for functions in the header you really need "static inline", so it's not a
+> hint and I would just drop that comment.
 
+Ok.
 
-~Tarun
->
-> -- 
-> Sincerely yours,
-> Mike.
+> 
+> However, the move while modifying a larger function is rather suboptimal for
+> reviewing (more like "spot the difference between these two pictures"). I'd
+> suggest moving it in one patch, and thenb modifying it in a second (this) patch
+> instead. You can perform the rename already while moving I think.
+
+So I'll move the function, do the renaming of pte and pteval, do the kerneldoc conversion
+change in one patch. Then batch and rename in the next.
+
+> 
+> 
+> Nothing else jumped at me.
+> 
+
 
