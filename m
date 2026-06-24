@@ -4,91 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D6CFCDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:21:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7F1ACDE001
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0F9F6B00B5; Wed, 24 Jun 2026 11:21:38 -0400 (EDT)
+	id BB4AE6B0088; Wed, 24 Jun 2026 11:23:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE7456B00B7; Wed, 24 Jun 2026 11:21:38 -0400 (EDT)
+	id B64EA6B008A; Wed, 24 Jun 2026 11:23:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C26FA6B00B9; Wed, 24 Jun 2026 11:21:38 -0400 (EDT)
+	id A07186B00B7; Wed, 24 Jun 2026 11:23:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 92F2C6B00B5
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:21:38 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id F3F941C1CD6
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:21:37 +0000 (UTC)
-X-FDA: 84915170634.29.CC235F7
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 55328180008
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:21:36 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C6FE6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:23:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E6040120291
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:23:36 +0000 (UTC)
+X-FDA: 84915175632.24.A8564DF
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0DDB5180006
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:23:34 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HNCXnnkT;
-	spf=pass (imf06.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OO/g13kB";
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782314496;
-	b=H0jejGv3PGmctaZGdWJ5clO8eZvQ27fInllyMcTgFd+bv4CT8c0ciyGAT2xOq37FbiWAoI
-	l1DmgS/9fPmR9kyEonU90VBndhSBzHvFnnKgeXvFT4guuX8H0k1+i5jaEDygVYJY9P8pOs
-	t9oy+Q8Kt7I06bpwyAdJeNydtkpG2R8=
+	t=1782314615;
+	b=7zUBE0yfCZnGX4oW4xgwEnoUdUBBOrxHLdOas5VmUh9z5g5qmXy3+sNF8ubvr1eRdmsINF
+	nFH8O1D4ACPq6ht55AMw8O6K2g7wsSWv/6ADPtmrDjphw0WCxWIhWFxmmEgf9lI/QhbFbp
+	SPaCuyv4zh/I48yCBIjBkZC5tDEoMPI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782314496;
+	s=arc-20220608; t=1782314615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XLPUSysPsLS/lTKrhCAv+kKmeICUhhnEXQzcaQ5iT/8=;
-	b=hN+CG4rO0ZwHxQulzU8JbVVMkwUosxekUdCaQnSSoFpFtjH+OplYlGjlW8jfvPTXWBzPUf
-	cmKIduP549DvE4AbSQblBIJL4upkVCzwWWLj+LU1DFi2nR3UG7Orh/BbvX3ypL9OUiIUqE
-	0VCfT44lp3tu5VFh9pCxVchg1FrF6j4=
+	bh=WU7DP8gS2bWrp9HjVS61UBsZ2iorph10vTjTK+XSa98=;
+	b=PxESfLzAb2ANnIZ41wJfFS578c7qtcxOqCruPgon0PqUW7YqFdhbis3jv+b/6FIpbCLvyC
+	iN1YE6p35obIXAKEGBk4dncK7+vDjqynCMhUCGd9xVh4JYRsxwGuibI+DMKdzydIBrXi91
+	smQhgy9Oozv5PGp7T1VUemHmEPb/PRw=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=HNCXnnkT;
-	spf=pass (imf06.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XLPUSysPsLS/lTKrhCAv+kKmeICUhhnEXQzcaQ5iT/8=; b=HNCXnnkTcOqmURs4era2o+oyPQ
-	R95RjQgQp5Gd46soX4YTZnI5PbWMolzSfvvdQxwIRQBO71SbJtSF20kWYfSBJA4aaq0r4zZ4U0R88
-	RHrr1xF7FY5R57GV3Lt/E/wz6FA8wH5cTJltnIxJHFr6ppD3OGW+n9DAJZ0jMPWJ5qjyChrkjEzmO
-	a/sZ6e59LSjS6zFIMHob8/4mFgm2n5jsaq6nYH5Upamqj1H8mA+MEkcKTBX2fBiqsUXLPwGzfzvBb
-	4OqN27CfeKikgqU3rmspDNJI6ayK2dZRBc+O0jOGnCRrdZKt6h1sU+dxBukVj3FIuXj5TzhSB/UfT
-	4oiuOXZA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wcPPl-002W2H-2I;
-	Wed, 24 Jun 2026 15:21:21 +0000
-Date: Wed, 24 Jun 2026 08:21:16 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, nao.horiguchi@gmail.com, 
-	linmiaohe@huawei.com, david@kernel.org, lance.yang@linux.dev, 
-	akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org, pratyush@kernel.org, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, rneu@meta.com, riel@surriel.com, 
-	caggio@meta.com
-Subject: Re: mm/hwpoison: persist poisoned PFN list across kexec via KHO [RFC]
-Message-ID: <ajvzUg8KK9gtFTYe@gmail.com>
-References: <ajut_LDQGYCShApx@gmail.com>
- <aju5_WjBtagTOSJw@thinkstation>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="OO/g13kB";
+	spf=pass (imf06.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.167.181 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-48d6c621a67so688412b6e.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 08:23:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782314614; x=1782919414; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WU7DP8gS2bWrp9HjVS61UBsZ2iorph10vTjTK+XSa98=;
+        b=OO/g13kBLaUH2+Uy6DuBxCJ/jHLrN3vREY2CK4tvMfnXwE6zRJTIHfn7NMCJLBHfRA
+         Jiq5DRP1mOI1K2wzAZI2ksXmi0YCi1qCjPaHH40gpzl4o/tiHr8e0nI7BqqXu7FseX5F
+         TUJzqOB27bFjjeZBGZ1S5UnPkoUK5nSuJaF1j+apqGXYTnpBxFnWukDAvDnWyXTc1HXt
+         H6nh9ENhOTFMU+ptDQqcrlgu6xMCWKlqljzw7Wze4ktIDJgpvRTD5+xNDBQXGmSM+Bg7
+         cqEQzur0MjPtvO+VUYayqSWfhTSH7Tt55SR1anR3KM0yXEMkE93l1ldLtgq4Bm6LSRD5
+         KHMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782314614; x=1782919414;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WU7DP8gS2bWrp9HjVS61UBsZ2iorph10vTjTK+XSa98=;
+        b=QCHrLAM/R79hf/+85+fCK5Sb1qL67kq4JxAEkGQ+TUQsEg+yxhe32bNTE35uchrZVF
+         eBPD0JYA2pgnmH+O1Z9T83Ri7Am3GhaBk1naadKoxL+orPRghBErRxlDif6z4f5Yi8tC
+         kDqTigC0VHrQM3c4rH0Ydop/Wi/spwq2MqeXM1OpVtXfQUvphmONfxT54tesQtHb1tax
+         P80dTGGAtT0pZ+OfOeYCpFdTL4gD3DrgR620m6NZ8o3luooy/G7PV3YB+Owe2N8IAk9h
+         AXjUD600lAT7twk0fUfNT4A79OcXVqboQnyU5dTC81gqj2gAosKhd7PpQcRYrvF7jOoL
+         aEGw==
+X-Forwarded-Encrypted: i=1; AFNElJ/X8/G7xhkyCN5SUIGK23qTu3ntNLskAJrtcgrMDRm1+mu5W0ZifZiVKWRSalXnb+KSfJhdg6fudQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywlu2yVTN8tn4Mho2YuUwsudDAvIAGfUVEsDGEDtyIVxoZSFpuF
+	g2p4wKldQ+aXTYuJUgoRXXLcgDkaMZSZ/ZrLXK8DagweeaalHwcdMKmX
+X-Gm-Gg: AfdE7cmG+4Owb69X1tpcHtMFxewNW41woIKo38MNyuSUgdgNflin0bk/oeSeMaDI8ZH
+	LG05MVWyjf6qF/cAwu+Uv3HWf3CdGCnWIbjAq14XYs8yEQ1Mwx7nGvcqs/7uBrnwN8q/Yh/2ROF
+	hPoZjO2OcfjefxuIG5Gg4lbM8W0Pcs9Wy3t9rUATqhHUR6O9WqOgJcFO+1+560U5iiNp93glA8y
+	5gM75TtgFdAlKQWKYYg0y/W1jBEsTU+IEbTPPyOQysuglGeQ7wLXVDvkWnnGPEa0EeiIBsPLRU9
+	lWyix0EPNjLDhkD88cRl2qvywGezkKM4yTz+GAET8E80CZu4Tptl2QVweC1LuxokiJxH/hSl+/c
+	KfpW2RlHujGEjuzcqKdOKNkAQSS9O0v4ZJtCTtltzWXPEryG825HNtrGfOYEyNe2oX/9bCmwkol
+	3TpKPdGR7vhS8E1U07933MRRhpYQ4HtGUN4zCasB4YYjs=
+X-Received: by 2002:a05:6808:c185:b0:464:5f3:ed1 with SMTP id 5614622812f47-48f29793dc2mr5618299b6e.26.1782314613671;
+        Wed, 24 Jun 2026 08:23:33 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:41::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-48aebb9f1d7sm9220420b6e.4.2026.06.24.08.23.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 08:23:33 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 4/5] mm/memcontrol: convert memcg to use page_counter_stock
+Date: Wed, 24 Jun 2026 08:23:29 -0700
+Message-ID: <20260624152331.2228828-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260624144348.4117578-1-usama.arif@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aju5_WjBtagTOSJw@thinkstation>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: c384cn5idhecqhxfb8hbd3kuaei78bd7
-X-Rspamd-Queue-Id: 55328180008
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782314496-586504
-X-HE-Meta: U2FsdGVkX19QTcYOV4Aszg1qxBEuQ9uGT8fQrBuGafPW360PrhClK6QgLptAXyB3rrpp+kF42AC3FoLFzskMvmuYFyGYJCs6AquFWI5iNvqyjAlZHdRg2CDak1Cx9QfQrw8rGEazBqZ5nz+huVBgv6OlQR5dSxz3SccQ9x41IDaXBDFBNqXvhUmA3365S7Ta+5OgE5cyG+pGPwypErFLAuRef8hxNGki/RHmh1vVLN9pS6SpmpTCFUMg8weGxWbPqBr9ah+KWLmZGiBJyJ4eewMqA60j2aw7QMCkW8h+U9mzPt0EUQBpGat7Up0QrU8XsgTcZsis19wfn4fN++iRk4k0KXXX26BPMtWHJUAPiG2iVkuHZwgVi5GHhQAhsAmk9b/FsxzpVV4VuITI63zc1zVqLYqapHB/f/XMOupu1pxt6b0iq2m4O51OFRlgiQszrihF+CS6lp28JcO8YURxS9+MchxJ1ze89RG6/SeJkd5pFliatZzDeAQ8EeFgOWUtlDum1LLpdl4Mj12L+DT1Eae851OQHpJTaR7FOeRfbkAZG7akfmom6uMNsdxyg1u33VyLas4vREIelNgrl/3LJM59+TM5vsXVMKSOx8YKnlHj4TKfbdAJ6XeU5VBl3GPWHPkBXhB79jjConKBDlhFQSjrIYJnae18Iri9xh04TrdPUbJT5ODJfvVZ9sttzFr9USBB0wYbDZpdzqVu5iti0s0gZ/oeKikTX16qeLMuT/N7QtnggnYgKkzHqV+qIP2M4nW8I7ATdiG/uK/g9SV4PNvgqRpht2vBMbaiGxztVdfpQyOwcO1uqfTOAoNdLa8E5N/pGDlH5/G6DqFjonlg4U532x7hPgAMD9QXciN1VHR8IOfH7FxYwGOu4DrSJ4qcwpwsvLWJ2OXnSwnz5yrff92omzpz/MnaEKAyxsvtkzp1ItzEHDtyx/jjTjXRm+HSe52bd/r4mbdROVDxJi8
- 50qQeIsx
- nAzfiBQRGjJai8TuWByVOVZf2gjmau514T7XP74cuPvEiuBUiQxxAvJXog4E+mKJgDzoADcTq0xo3oxXX2KUve2Ygsb/MAwL255Zmf5XRvfLlsJ8zR2GwvxxZYy/nczp36Yzk2f+i43KOpDmvitgEnqMYU8g+VApUuyMxfw7HrG3DMf3npZeqg63rAX3JFDsrBcVGJVmP4LtY5OxREIXV7pQsaiERRK3Wrn5LhR5qxEbNRZdXp2dg5Vl7gpFqh3pd2oqUZg4fYNlmrrLDPR5ZdxNJWE28xPBVcbvB11repEXLEs+9AMX9F+b71YDI14mfITGOS6pc1kB3+gE=
+X-Stat-Signature: 7wtqztwh3hoptp3pgin47edpj855f1ps
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0DDB5180006
+X-HE-Tag: 1782314614-858899
+X-HE-Meta: U2FsdGVkX1+FUxL4FB+y24s3KgrXsiQyR0icHLk28koiPsVzd7heICZCR9HoTd2EqH5WLmSgzIldw40spOZOylQBMTd1MKPhJQLh6d+IRWqngsG7IBSTVakRw36xg4mF+IZEFR8lhGlJi+a+zQPizRbmtCY57qCVD/czlKCKcvNtw6uBF3nPQLRQzZzyqrZVmg95vGw745Wm9J0OrcUTbBqR0AyBRwP85yLzbnvz4XsmGaeeEwRBCEByuxbfoytBuSyLeLTnGVSmeM6ztNifXQmEtTXHHq9eNR+FxsE2jBDTjjrTmfzyPjjeQzb24do72ifKq27LY88Snb8lKUbOcfs6mTROEk7348BT+7cyjD5PfYSnNpmqx5ZpX1fZGo31zi9fBhTkzjyNndF8qO0haK/6DPHRrn/0czXPItklDdyRaw17ODdHk4s/sRnQ3KOKa0s3HMSjT3VsbssfP3+goPy/gkkZEOXGM6lU2r2P/g+4QNtRsBltmmkbIcV9iGVyPZpLp5GBU0HFhksQp8HCXoHnGWvWxddfe5Mg6r/9VQeAwjO4Md2nLklnyWA2v492cqNSKlN84QBtMpk+o7q+b+vKwIFzmODAUdE9p1j3AmraJujRhNHyxxhXncaP6CeH7eaK/yWoc2h9Xp3MHsrt+S7oaLHvgqb3E2YexdJ5fphpEfyoB9N6+SgNW1FpLdN9XDuSZlyw49vfc4Mg4d/vj/P8/zwuVdoZPH+5vR8HLjqDc0oYkfYF7KxLqgEaeVZAajQjr69X8lpPU98ZmOUJWudz2qOmLFILWbNSTz6lA0d+tVXw7bqf4DK8trWzlNHPeSQiV7G6wARiebZFb7ea8I92/YzsOcVMXKU/50VJuHZF6KerUfTq3ihUOWxvKGkVg3bqzpblmV9WAoJziqynyLzQ4CCwbRAFRziEqDHb8NRTi7E9LO9EvynMgR8b8sRzBafyeC3254+Ioe6NRfz
+ r7nOsiw+
+ YfCD6ZWzVbNq5sGR8QzmcLtdRV7neNewCv4dc+vpMfM3vkBHNgbvt9xz9lFd2hfAIfFaC4nxLrdZeSHTcb6Ve9SafOemIaTz73gO+UudUtCzKHweQL1eqcPM2ReLiZA7remQAhbli1TRgD2GU0nW1KU5rFeEX3skMtRJD2rweSjddLg8iTgY/L5126sW3hoMowrpNZ2oEKb/cdPjumem241FCQRRKCJMGNQDEDgL4Rttwa4Qacpe3xaT/9t5fyDUkRnDBHA5j0Q6XxWx4pNYGmyJPWi6WAGdsVEaseAVu9ppLOrezAIv+qAQxsYTk+mBCAg36T7SYl/wAIchNxNVpanV38b1hDPOw6xurh+BCQdxNgx/R4hGcppMJKXHvw69lmLLUYbOieBKhrMPDCXcBRpSwMWbQ3TEbIhsHX9MSPseeTUN50pn8aquRKgvApNwQKX3lmti153NmayWY1rD9OaaZko+UFDpkDcbUCNiAxSYbY1XNHzqrjEdzl6JMR7E9SOiHhBstsNf/C/51vWj65qcddR2BKWE3eGrO0JZjpzLHbeo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,78 +131,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Kiryl, 
+On Wed, 24 Jun 2026 07:43:47 -0700 Usama Arif <usama.arif@linux.dev> wrote:
 
-First of all, thanks for the review and topics raised!
+> On Tue, 23 Jun 2026 11:01:22 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 
-On Wed, Jun 24, 2026 at 01:04:19PM +0100, Kiryl Shutsemau wrote:
-> On Wed, Jun 24, 2026 at 03:39:38AM -0700, Breno Leitao wrote:
-> >   * Consumer: early in the next boot (fs_initcall_sync, before the
-> >     buddy allocator has handed anything out) it restores that array
-> >     and re-runs memory_failure() on each PFN, re-offlining the frame
-> >     and rebuilding the full hwpoison state (PG_hwpoison, counters,
-> >     HardwareCorrupted).
+Hello Usama!!
+
+Thank you for reviewing the patch : -)
+
+[...snip...]
+
+> > @@ -2595,7 +2596,6 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+> >  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> >  			    unsigned int nr_pages)
+> >  {
+> > -	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
+> >  	int nr_retries = MAX_RECLAIM_RETRIES;
+> >  	struct mem_cgroup *mem_over_limit;
+> >  	struct page_counter *counter;
+> > @@ -2606,36 +2606,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> >  	bool raised_max_event = false;
+> >  	unsigned long pflags;
+> >  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+> > +	unsigned long nr_charged = 0;
+> >  
+> >  retry:
+> > -	if (consume_stock(memcg, nr_pages))
+> > -		return 0;
+> > -
+> > -	if (!allow_spinning)
+> > -		/* Avoid the refill and flush of the older stock */
+> > -		batch = nr_pages;
+> > -
+> >  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+> >  	if (do_memsw_account() &&
+> > -	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+> > +	    !page_counter_try_charge_stock(&memcg->memsw, nr_pages,
+> > +					   &counter, NULL)) {
+> >  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+> >  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+> >  		goto reclaim;
+> >  	}
+> >  
+> > -	if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> > -		goto done_restock;
+> > +	if (page_counter_try_charge_stock(&memcg->memory, nr_pages,
+> > +					  &counter, &nr_charged)) {
+> > +		if (!nr_charged)
+> > +			return 0;
+> > +		goto handle_high;
+> > +	}
+> >  
+> >  	if (do_memsw_account())
+> > -		page_counter_uncharge(&memcg->memsw, batch);
+> > +		page_counter_uncharge(&memcg->memsw, nr_pages);
 > 
-> fs_initcall_sync is not before buddy hands anything out - buddy has been
-> live since memblock_free_all() in start_kernel(), and every initcall before
-> this one has allocated freely. So this is recovery, not prevention: you may
-> be running memory_failure() against a frame already in use, possibly by a
-> kernel allocation.
+> This needs a transactional rollback. page_counter_try_charge_stock() can
+> succeed by consuming memsw stock and charging 0 new pages, but the
+> memory-failure path unconditionally uncharges nr_pages from memsw.
+> That turns a failed allocation into a real memsw usage decrement.
 
-Agreed - that wording was wrong. It is recovery, not prevention, and running
-memory_failure() against an already-allocated (possibly kernel) frame is the
-not ideal, but, still better than what we have today.
+Hmmmmmmmmmm....... I'm not sure.
 
-> Two windows are missed entirely:
-> 
->   - memblock allocations between setup_arch() and memblock_free_all()
->     (page tables, mem_map[], percpu) can land on the bad frame.
-> 
->   - The kernel image itself: KASLR picks its location in the
->     decompressor/stub, long before any initcall. The next kernel can end
->     up running *on* the bad frame.
-> 
-> So I don't think this should be a memory_failure() replay. The frames need
-> to leave the next kernel's view at the memory-map level, before memblock
-> and KASLR.
+At this point in the code, we are either (1) using cgroup v1 with memsw
+and charged successfully, or (2) not using cgroup v1 with memsw. So I'm
+not sure if this really is unconditional, we're just distinguishing
+between cases (1) and (2) by checking if we're using cgroupv1.
 
-Agreed, this is the ideal right approach.
+Or is your concern with taking a charge via stock, but uncharging with
+a hierarchical page_counter walk? If so, I think there's a case to be
+made here with just simply returning the stock. I just wanted to keep
+it consistent with the original memcontrol code, which only used
+stock to fulfill charges, not uncharges, since this could make the
+stock grow without bound.
 
-> > Possible solutions
-> > ==================
-> ...
-> > 
-> > 2. e820 / EFI memory map (E820_TYPE_UNUSABLE). Tempting because the
-> >    frame would simply never become RAM (no allocator race at all).
-> >    But: it is x86-only (no arm64 equivalent in the same mechanism;
-> >    this series is tested on arm64);
-> 
-> (+Ard. I might get some details around EFI wrong.)
-> 
-> This isn't accurate, and I think it's the right direction for EFI
-> platforms. EFI_UNUSABLE_MEMORY is honored on both arches today, no new
-> consumer code:
-> 
->   - arm64: reserve_regions() marks non-usable memory nomap.
-
-Is it true for non-UEFI arm64 hosts?
-
->   - x86: do_add_efi_memmap() maps it to E820_TYPE_UNUSABLE.
-> 
-> And it closes the KASLR window for free, because the image is only placed in
-> EFI_CONVENTIONAL_MEMORY on both (x86 process_efi_entries(), arm64
-> randomalloc.c). So the bad frame is invisible to both the allocator and
-> KASLR, which is exactly what fs_initcall_sync can't give you.
-> 
-> There's also LINUX_EFI_MEMRESERVE (efi_mem_reserve_persistent()) -
-> cross-arch, reserved pre-buddy in efi_init() - and looks otherwise fine, but
-> it's parsed too late to keep KASLR off the frame.
-
-Thanks, I am wondering if we piggy-back on this EFI_UNUSABLE_MEMORY (or
-something similar), than we don't need to use KHO at all, basically just marked
-the page as EFI_UNUSABLE_MEMORY at poison time, and rely on kexec to avoid
-passing this page forward.
-
-Thanks for the discussion,
---breno
+What do you think? Thanks again for reviewing Usama, I hope you have a
+great day!!!
+Joshua
 
