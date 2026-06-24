@@ -4,113 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A766ACDB471
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 12:35:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFAECDB47F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 12:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E2E66B008C; Wed, 24 Jun 2026 08:35:34 -0400 (EDT)
+	id 29C6C6B0088; Wed, 24 Jun 2026 08:43:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7945F6B0092; Wed, 24 Jun 2026 08:35:34 -0400 (EDT)
+	id 24D506B008A; Wed, 24 Jun 2026 08:43:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AA176B0093; Wed, 24 Jun 2026 08:35:34 -0400 (EDT)
+	id 116436B008C; Wed, 24 Jun 2026 08:43:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 458E46B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 08:35:34 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB49C14034E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:35:33 +0000 (UTC)
-X-FDA: 84914752146.23.1A7ADFF
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DFA308000D
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:35:31 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fH4rj74o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E10916B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 08:43:28 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 559041C5A02
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:43:28 +0000 (UTC)
+X-FDA: 84914772096.08.026A7A9
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E52BE120007
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:43:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=uI9xqQqj;
+	spf=pass (imf29.hostedemail.com: domain of axboe@kernel.dk designates 209.85.161.54 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782304531;
-	b=3lpOJHZ8qZsX7Qv/tw/m51wPLq98s+sENgiHAuCeWewPmwlTtN7gprO3NPVGP8wLPpmFL8
-	WIRh6PcPixw0Q7AQ+rwW6JDeFdrEnvKHKFl0yAdIFC6gopLNcgNeRjFVbw8Ux9VI8pOgVi
-	kZ+5YdrZbFxLyseL0mbwdREzssiSk4Y=
+	t=1782305006;
+	b=IY/b313euzDnisrx1+tYLZ68sgYPjDcrEM55sFDm4tKm+Z8O2NrkNpC96UK7sXrgp3kC7W
+	5odhOk1MiS8AH4UQ8UndclXXVG2Q7GzkUc1pbjAPjla0LLkThrSD4ebv0kRFlvd10GyR5Z
+	6A8OJmqHdbTANmGjxWK+0yYRTF5edm4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782304531;
+	s=arc-20220608; t=1782305006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=xPDpBmKtPUywZjFdZYdiGW+cb6iQbByKydMzv17TTi4=;
-	b=YpAP7Ly6/mrZ13+TBKz0OKmxdrf3eaxAzqoCmnX1aRz2WtAopbM7fYWef8drsiLNtw2SGt
-	kjF677Wzex7YgfRgWRRCx9u4fVIVmowhGs3p46DSYp93yjVHF3QJq/cEEF9jRCmMO62ORx
-	WFI+Wxr2M4BnMMPxMKypa765pyuOK9k=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3vBqNWysPNQvqkzsE4GQXCpY5+Q5GT/QhxmkZJrUXw8=;
+	b=tj2ZYzlxNfGtMYo1O12ZJaGhU4diPeXbVZgryZTHQJJF+/pDWgTheJELLWeuhphO7WccLp
+	wWwWrQ5yofesvYnSN+zuaYftRNQ5NlcVfo6TTGlCMpyzYBUuq314668A4Fnt30TM+iEwcd
+	OM79KZNwZ+cTghHdnT8p2ItGqCdoZNg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=fH4rj74o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-806449d108aso11735277b3.2
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:35:31 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel-dk.20251104.gappssmtp.com header.s=20251104 header.b=uI9xqQqj;
+	spf=pass (imf29.hostedemail.com: domain of axboe@kernel.dk designates 209.85.161.54 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
+	dmarc=none
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-6a0edfe29ecso596812eaf.2
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:43:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782304531; x=1782909331; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xPDpBmKtPUywZjFdZYdiGW+cb6iQbByKydMzv17TTi4=;
-        b=fH4rj74orjAnYT9VJaaa/ywYtQrXmBwdFvaqs5i0I6Tvb2WFCPPDz4tv/uNNQZb6m5
-         llrW3t3wMBwvRMevz+HjpYs1dRV7sySejh5o1m01MDuKC94O+YvkKdPoeyDoMqoQ+Duk
-         ulHJA+9J1pJjFJFm254o8K+jxwlUe5Nrqf2T6UE1Twvl5WyjKeBv6hgZMy9HGJ1NeoZl
-         O5uiQooPBp2/ZSRq03Uh1Hsee9+hmoEyvXCIAMHm7gnbVcj1CB9mXyzNvgxvBkoMZm+J
-         C/JlVMJCt5D2Nec30A9Mwzl4vxWO/I6VaxksustHlZs1DD4sRF0DusT7krt7JGsNdOSo
-         KpXQ==
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1782305005; x=1782909805; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3vBqNWysPNQvqkzsE4GQXCpY5+Q5GT/QhxmkZJrUXw8=;
+        b=uI9xqQqjpONXbYyReMUWHaxKDGjqn+qQrt4/Rh9b0BobtMlaF0D6FSDBabI9T7fPZY
+         MD0h4Fgne9E2B2QKgGDjt+rTEDDxcuFT2Cs4GoRyXhWcns1Pg+5Y/rbOo9whDyWXCz4N
+         xkaKg06mrZFLhhZdPRq+1fW7lE7CVm/dblPdTcwJQn7LcqE8Ps3YYWNmyJ2siC1Q/E+x
+         YZ8QyYJNPNUXVpM42SAfy1p/boh6wCLnai3EFHcM6hHXPohpxufZjZ4dAErRdb/uLbB+
+         XKPqGpzAp3y+JmRAKXvgNzKyhqZ5lLy3mfsLBnc+J9v5fqq8/FWy5OQg9kuz4l5Jq5MK
+         r3DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782304531; x=1782909331;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xPDpBmKtPUywZjFdZYdiGW+cb6iQbByKydMzv17TTi4=;
-        b=Dp+4TuO6DTcezoBsHlSVWV1TTKfU2ZQZBSmM8rfo6MEHRmZIo3C8u/fPwGEpo5+j9j
-         PuqHv9W+WpSnYwgPhDRW7SJX90oDBWcgP4AS+t7XcPMf2DpLlUistbnkzHTfurT9QlMw
-         Fjah/quzfiwBIqm8dP8IeVTfkf82khqdcQtOckaAhg1eXsvV/lE0foJQkqTJvGCRBHt4
-         yVUOj49Qnrz6xjCm2iDHFJHpS0Fmw4Ze3q8frHZrozNQV8oeCdoEl2RQM2/6gtd0Xh1S
-         8m0AjKkT+trQjJe4kZwXWgldOr5iQTkWEpLnouBw5HS1lxQHsVJJTFVH9ApSXj2KcD2Z
-         I2hA==
-X-Forwarded-Encrypted: i=1; AHgh+RqRNW6yvYXFE44z3k3ENwnkTdd4eipUCbsLz7QsXmUSOOudTxvuAnLA92rdaxqQXFosw2dPSXzJTw==@kvack.org
-X-Gm-Message-State: AOJu0YwT1S+rITzay+6osZwTOc5As4qEG4T5zulsQuQ2pQGgQoZm0fyf
-	tJ6JedXiw9ywDmRhE1J+dCWgjQMWR7NoDe2xgt72U5pBn+01/c0pnE37
-X-Gm-Gg: AfdE7cnEmwftngDwb0IaHZLnBK0+aTJmx8TGrzMBhAG1w3987jrjbRKwll9m0sV7DeN
-	1XRdPWktKXfosiUdggBmG3OGJXF1G++INS4AQmjUZ9wpaoi9NdH6zxN9T3Zg5+d5X8vIYD0S/Ir
-	ZXl5h/r2re6grByrzVRj/O98uoDI6oz0kEoCeZhwKGjphmRQLUIL3QaJgki43cX6BLrkNJVaI+M
-	/P47OAkhGb6387SR+VGbLUlyU5MeJnmo2lS1WraY47kwHGgFMg1DfDtS6t+oHekJCqRroppfa0g
-	dMLU7NBsr7sj6y9LVFKJPyzLW6H5tm0J27+sREZDuktOI4/R5wNcCbKGG+FHFxa7GnsHQaMxbd8
-	T+Xn+7m9OtC/X7W4I1aGEZbNK9CI5pBJAYdLYxza9PaV+Bmbf+m5h3mzniLFP1Q7pkKRJqMzFLN
-	PEr/cXGvwR8GxQmEGc2QNWNlB/eg==
-X-Received: by 2002:a05:690c:3341:b0:806:5a1c:d892 with SMTP id 00721157ae682-807f5633ca1mr28141257b3.47.1782304530790;
-        Wed, 24 Jun 2026 05:35:30 -0700 (PDT)
-Received: from Dev-Null-MSI ([2a0d:3344:52ac:a808:98a4:4381:be45:536f])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8025c97032esm58728607b3.10.2026.06.24.05.35.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 05:35:30 -0700 (PDT)
-From: Yousef Alhouseen <alhouseenyousef@gmail.com>
-To: willy@infradead.org,
-	jack@suse.cz
-Cc: shikemeng@huaweicloud.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Yousef Alhouseen <alhouseenyousef@gmail.com>
-Subject: [PATCH] tools/writeback: parse help before importing drgn
-Date: Wed, 24 Jun 2026 14:35:14 +0200
-Message-ID: <20260624123514.7822-1-alhouseenyousef@gmail.com>
-X-Mailer: git-send-email 2.54.0
+        d=1e100.net; s=20251104; t=1782305005; x=1782909805;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3vBqNWysPNQvqkzsE4GQXCpY5+Q5GT/QhxmkZJrUXw8=;
+        b=EtPclJhNIpGJwUjjWSfw7ND99cJ3AaHRL9/0TBUxZLSLslht2us+0KAaMd95Pm2ss/
+         OkT0WOVNzawwKao08UXVegGZQf/pMc23rCCqpgdJwZlw99JaS3GC83iQDrAosSDIw6K2
+         WfZn8AJV5bOEVhalTz9AbDSa0OwxLpE80iwaAGX2Gw14ZeFZnA83+O/sxaFvWTlf1ITc
+         MaJn3Zez7FlDryc+2UxjkNRq2fkryr9/YwFMyn6dEHCYHi6sh9j/th2CSaTHppbTCg+H
+         caTpMt6VTCEJOR1c6duIGHDlLBqHPsmUPaMAbVUNiPnnYxwo7j91kbwhgwsm+Z524oeD
+         uEXg==
+X-Forwarded-Encrypted: i=1; AFNElJ9EtT7ohSy7F7YlTgHSvNSTIVPU4GpiPgXNMAw08N3uPlKa/Es+3EbIGo9sBxP7J46zoK7ONowPwQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz6ENoz/Ve4xZDYime6z+MJMlwClr4a5O/hWZfpRA7Sf3hxrcBr
+	rg8UpLCim3YjxijgC22zyCAbrL5Y/gnOS+whKLNBpXv9NqKgoDuXkL7xNGP+wjUpaT4=
+X-Gm-Gg: AfdE7cnLLD+ju3ajJNjVwEBfY4osizQ+8vgAK2IJ3aJTyPFbc2WsNSOBJkgDYf2vE/7
+	nbxNKN5lsBaMtANq73Raiqk8LK//SPvo1Ali1n3hhNIknhLLnueiJzYMmqVrHLta6ZhXXijsaHx
+	+MO1yJ/1BlmsMv4pn6eVWtZKjCkp6XgtU7imJ3ewb2rXr/nD6KKMsMLoq6LcyaFmzvnyD4WgI8c
+	w+VUJu3+uX/uaXb8TuEt0sLNAQ3/+BzEFNDI7QT/5eq5kRW4zVK7uh6+1J5Y4nqNwGwGSKIEW91
+	XlhSgpfcLgKOA9slLOhyjRC4MikXRqCFCtODWrUmEPlf2N4aQdbGd2mUkD+1VXClpVlRc21gBo+
+	is+Pv8+p+CEESiPWZkvEnogw7pE+knjmbHnLywqhNVT4KGHiC4tou4Xw5vlImt7Vpmv2sHj4d4d
+	jmq6G9U3pFaihwUj1AEjvF9M9MJo/y7U57dqxlYoMX9ahDBsEgsjnOVIgDHDrL1vjHYHepjx0=
+X-Received: by 2002:a05:6820:2110:b0:6a1:20d6:ccd9 with SMTP id 006d021491bc7-6a123020da0mr1995384eaf.49.1782305004833;
+        Wed, 24 Jun 2026 05:43:24 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472f0464a6sm10164438fac.15.2026.06.24.05.43.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jun 2026 05:43:24 -0700 (PDT)
+Message-ID: <34d48fb5-4952-4a48-b92a-f189bc3edd0b@kernel.dk>
+Date: Wed, 24 Jun 2026 06:43:22 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DFA308000D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/8] blk-cgroup: remove queue_lock nesting from blkcg
+ paths
+To: yukuai@fygo.io, Yu Kuai <yukuai@kernel.org>, nilay@linux.ibm.com,
+ tom.leiming@gmail.com, bvanassche@acm.org, tj@kernel.org,
+ josef@toxicpanda.com
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, bhe@redhat.com,
+ baohua@kernel.org, youngjun.park@lge.com, cgroups@vger.kernel.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <cover.1780621988.git.yukuai@fygo.io>
+ <1c739fcc-5132-4cb2-bf34-cec94de26509@fygo.io>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <1c739fcc-5132-4cb2-bf34-cec94de26509@fygo.io>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4nz6mrs78xh9mjx1dn9cnyuybpfn4rcn
+X-Rspamd-Queue-Id: E52BE120007
 X-Rspam-User: 
-X-Stat-Signature: jbwt849bcphwk1u4z9yz46iytcup3b1z
-X-HE-Tag: 1782304531-131372
-X-HE-Meta: U2FsdGVkX18TyLiZZa72kdfaWrp21wArEA7HZVmNEYBBWcs2uM813NoOsiLE8UES3g6nWeRRElgMzTBAashk0wPjx8yawU0S2mpDNXhPFrwVLMdOt+o4d2HLDRVML7RdbQJPEJQfYhHhH9A70Ni8QnKjzy+kbIGJpwV63USmWJFXB287VdXbw313nePPj3umL3gV95h/8O49QJhdOU+mU3NMvLdhNNRr0wQBH+vdx543Tt5yGHK92sbP9Ikavkz2McsNE5imVf/ghm8MaA+qD3wKAwCjUdMfq0LJLbj8bDpJWkDRcwtcDNq0ArZ+pF/XYG3c6GTcCyyxQy8r+JxVEPrebxSrzYuZAL73madUY3EdXKZiKXDHqjWZgMbfGshCFM3LLuo9SDZepxMqk3kdU+6yyo6AExTrYqxb9/967CwD0Q8iiGBbM2Q+3SjsS4TBzfoZqMBDa2G+VYh0zlolRnLA5hr0ezmaIVc9riw13GNLe4tOy9WwrPuUfFfAotlzCGuK/wmxrAQ0tvq4B5LjeRr02HIc/lq7/Hga9/ey/rMbEvi92AGXci1Cf/rMZGPkjCowbYgqTx1YdWAHw8sKm+OsjscO4M29EW7u72TtoFcceshmIZC82Uz+EAJl7MnL53g26HLEbSnYSgm2MlJji9+UAW+mfuBKHG11FjJTL2Ot/co+BpU38A2YxhrlRRRFTBTzvwChjdmZcV3BZpGerQtqxoTa3LFdWm1rlX2t38xrKzwkQCKIXmRlj6GMCgxCN0tCQRBr902GSTZds0TIlnl0kflqn/S4jt75gDG8FbeNtzjRwyMgO6LTAF/6EidlCKn7P0m68bk5OMaWZr7Fm5KIUNyTk79SRPtshNeb6MF/jksDIJIkr0eqKbPPhCDDGFKdgCH31oUKqcfCFKgseZEnzTuLrkhyWUz63CXxnnEQXLQa75rVsP5RI7XbpGfAiRJEY4U3C/DrGQXhS0b
- VKX49QY6
- +xu+lS3Q64culmcmVnG6JqzsrSybbPiDUJvgk4C6+IPPk2K+DChmrnAFsrRaUw7ZUbZe2N94V683g0Dm3CdHxmOY/SJb0DbZOH82NPUki021idADliYUQlDl6jL1Pj/yZZqqNKJ0RMc4cuW7tPuVuXCDUo1eoIjgd7xrM9WaXhgTT9EjobJyyEQbNXG7KIJxg+UQb1G84LDbLxPkVzZAYo5y3vqhCRvNJyjzgUq8KOTE7m/CToZW7DYIyJd+s5tAG2x+sr9rfF9n5JBU5euwdC4rs0CIhhdGCydvgv4IQtIWdAbWibjgAmTCj9HSQrAZiT17tOHtEUEyoMm1IAPOoHYRlgQvMEwF22p+h9n8lg/4ewnOw6mSNnLKTUMXCu/S9FxPqobAhdbXMfY8pfyeauNMp99vnwLOMYQapJm7oC4sI6IJnq4Bq2rq77ADUjvfwGgHpqnI08F1girllHVDaAwfpbk+ZKYXeV6qfS433zs/hAy5k/s0VZfiP5egMN7nFdDd22y4qEplbLMAJMC2phKilHg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782305005-384564
+X-HE-Meta: U2FsdGVkX19r3Ow/4mjUnbTgUrTrol2yHFXJAwK+UWshVJPyRIZunglkUhFDXeyW4vk32ZsJMQE76ObAe/mTtFyIAMEZZ/iDM4Rvxlntr7i6Wdg4GC1SNYoXZTIefbNo0QUJejMcBU5SowWa45ayJcJmc1oI2cwi0hZcKSNrqcNbSjosbgQbHAb/SjDD7yh6qC+3O0rHe/YsfvoGsY9C2GYodKXi6HHLpadjWBYjOqZUkLJo+3jdLPn3+g4wF7GqwCWewGmgDtuuybXZsnXEGG+MfGyJDDlGWXD4OnjVbONaijxOrh1iw2UFVq1B3+Or5fljHK8/uMfQB0IjO3h+3RMCD5sv9y10aeU4UMww8m3Lkx0spPxQIipIdUHJvlbbvC1NiPZ8bwl+xeb0c29EW9r8y+GnWVT2/ZMAG9X+8p29TQKjHPTkCWohTc6QiqNXZeKNQBH5IAep89DF8exjE+t/TftEmr1OHEf4WESRt81LHuErd4Fd1gzMBGO9MpRGzYS0/Tsi6nFST+/UNhslnTMKlaSdtTOh2xxcVagjb3j0g3rMHwmgkVAO5x4qCHk2cBXRpnEi7YtqWCQV8+RjOtIVHUI2RLkJ8fVtwV7BY4BbKC/YXcvDzsH80TZ98nTDjhcgGsaWgeCaQgoCuq1XWTGz1sBTyfjqg7WdO/1VHbGrtj0Wb7k+X6XRogRm1VA7ZyWoAv3XuXUpqZqhHCw+V2r9tr0ku5oW3tKJ2ApMXkEw08B/xkFIXTlVL+IrZLWeSy0j/st5Z2qTNF4pfHyTmS+Nhi1NPItzlKG/ZiDaEPuFP6aFfXVB4rtCCE4rYYuNl/FnnyvmGRwPXSOP31s7EfG2JYfpVsXgOscuPrYHpn/WP2u20vLb6pu8m55yf9tM6bnR3tWIadRF3SfVZVD/EY/+IOfpKlPUEcUua/U7hlPSlj7ChYr9fRC9OWEzKjM2JYqdxxqG+uKlkZUFPjo
+ rOaXTD1C
+ xrXrE4veHssd+5+8eQrzTkJGs/GMFLkSGemad29Uh8bvY3WXkE3l5TU8SoRYg8iM7G7chDjUn0Jn0A2XhyVhcxnOiXejWvuWIgSUyV8GWx+ZqaWr4LkFB4CAMmNBZlB/ZkmtJIUU9lYIB+Wfe36WG0vFyaOYZp7TWCqvpvnPXNc9/a+oFkDhxcDLaWv5mpcm3dgfQdUL+G0sDaPyv8Cww1MRL/KEP3w3F/smBB1ttv/Y0mKKBTznhWJQsQsQBESUOGqVz6aOhpQLmYcWR5L+r94/lgzfL7y2wv2HqCRLFjI8cbXne66acNQSyDY3Z4QMl2/s+FzsK3W08/ETIUpbdhZ/6flrQkmK7q/FiwBKNyf9/z4yUgtSm0HL1llEyggI5P+kLKgarau+8AYHMr5S2CHuhZx6f37VQrPJsTglinXfm4arVcveC9bOWj4Oxm6EAi/Frrm3lAgUZr9A1lcl6CqrMbw0Pj0YDs8V1jAqwRuKrAmffhZ1J1D7/0ChtEqb3ynmf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,52 +127,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-wb_monitor.py imports drgn before argparse can handle "-h". That makes
-help fail on systems where drgn is not installed, even though the script
-does not need drgn to print usage text.
+On 6/24/26 12:57 AM, yu kuai wrote:
+> Friendly ping ...
+> 
+> This set can still be applied cleanly for block-7.2 branch.
 
-Parse arguments before importing drgn so the help path works without the
-runtime debugging dependency. While there, fix a typo in the help text.
+Not sure how you checked that, because patch 3 very much needs some
+manual attention to get applied. I have applied it now.
 
-Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
----
- tools/writeback/wb_monitor.py | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/tools/writeback/wb_monitor.py b/tools/writeback/wb_monitor.py
-index 5e3591f1f..e09e00ee2 100644
---- a/tools/writeback/wb_monitor.py
-+++ b/tools/writeback/wb_monitor.py
-@@ -14,7 +14,7 @@ backing dev. For more info on drgn, visit https://github.com/osandov/drgn.
- 
-   dirtied(kB)       Amount of pages have been dirtied.
- 
--  wrttien(kB)       Amount of dirty pages have been written back to disk.
-+  written(kB)       Amount of dirty pages have been written back to disk.
- 
-   avg_wb(kBps)      Smoothly estimated write bandwidth of writing dirty pages
-                     back to disk.
-@@ -25,9 +25,6 @@ import re
- import time
- import json
- 
--import drgn
--from drgn.helpers.linux.list import list_for_each_entry
--
- import argparse
- parser = argparse.ArgumentParser(description=desc,
-                                  formatter_class=argparse.RawTextHelpFormatter)
-@@ -41,6 +38,9 @@ parser.add_argument('-c', '--cgroup', action='store_true',
-                     help='show writeback of bdi in cgroup')
- args = parser.parse_args()
- 
-+import drgn
-+from drgn.helpers.linux.list import list_for_each_entry
-+
- bdi_list                = prog['bdi_list']
- 
- WB_RECLAIMABLE          = prog['WB_RECLAIMABLE']
 -- 
-2.54.0
+Jens Axboe
 
 
