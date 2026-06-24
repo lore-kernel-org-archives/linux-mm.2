@@ -4,175 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE40CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 16:41:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B3ADCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 16:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9EECB6B0095; Wed, 24 Jun 2026 12:41:33 -0400 (EDT)
+	id 53A9B6B008C; Wed, 24 Jun 2026 12:44:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C6266B0096; Wed, 24 Jun 2026 12:41:33 -0400 (EDT)
+	id 4C4576B0092; Wed, 24 Jun 2026 12:44:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DCE36B0098; Wed, 24 Jun 2026 12:41:33 -0400 (EDT)
+	id 38DF86B0095; Wed, 24 Jun 2026 12:44:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 59DFE6B0095
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:41:33 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B00A2C19DB
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:41:32 +0000 (UTC)
-X-FDA: 84915372024.21.CAA9DD2
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011046.outbound.protection.outlook.com [52.101.62.46])
-	by imf20.hostedemail.com (Postfix) with ESMTP id AA5471C0012
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:41:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Mgd8T2vf;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782319289;
-	b=C2a8ghxwXcKHOpnsYLPP/ldXqqWDcyQ1mQFr9QqKeKa1yxYXBwlQ1cq1goD+8bEn+X81l2
-	Vd174/xrJt/e/NA8zfJFPfrooychO3Nfbi3mACEC2/FkXjlJ99ZCTC1MZlhQITZwYkj8gn
-	0A3SoYMPrxlEQSg477uOOOyS3YFAdDI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782319289;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0AFE66B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:44:26 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C1FA1A03E9
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:44:26 +0000 (UTC)
+X-FDA: 84915379332.05.EBE4875
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 894AD20006
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:44:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c4KpaYcG;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782319464;
+	b=8RvznfGBNYdkb4YNPjqmirpf72/bnHp14RvJR/n/Oa84+ARIg3yW8rvaBkmNXnZNybVH0q
+	x1SpnZzjXXbT/+co7ZKGPdaz8RY2J1/tjgZ0hfKEiZlpXlUt771zv2nViYOWj4OC9cTQw5
+	5coWlYRv56wnS2fTBm1EXpx5X1f0nuQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782319464;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IQC348/jjnpm3YhjFL5l5N3hsD6rHo9Z+kSh6eQelBQ=;
-	b=paVnBukYJPjKdHtKDEMxTFGzGa/po6DREjx79lXfzcVhsxOupvAWSoh+jREyFAV2uCS+3y
-	DrLfodYw0ZM5rYB4Dv9SFgigsceKY9gn9Kl+B7kSfIAgzJPg1hiQq5qnWC/M1tkYNK4maj
-	8NFvE1YAXiUZkuANp7G9Im68aAlr1/8=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Mgd8T2vf;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of Pankaj.Gupta@amd.com designates 52.101.62.46 as permitted sender) smtp.mailfrom=Pankaj.Gupta@amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o7gUQ3CT6u6eCvDIDUebPekqJOYuuDwwI7Q7gucdVscb+qhgxx6S9U4NHkpnWdO9ThdLP4mROGxYh39ARu1qtzww47kvVzcTm3wxKKbLZSlYz/V8Ihz2FqnT06+hP1XBOxUKK/5BzjdulWjUUBmDNjLAwLF86AcdccGb8UCQuWvoTxbFg8YkMIC3PxvJ6QFb1JAK9FjN2CSzOkoWgz9le3zeSoQ+ko/cLXyrURwJ/KppaNpWCeiSxpLm+yP+TZRRUF5UByZHoFGCrcZ0SkqR45sh1Je8WSUyoHnMQNvutrYNdIrNuNIOGZnD5/OFfZdWHqK6xZepKCgQLsh2MDVpOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IQC348/jjnpm3YhjFL5l5N3hsD6rHo9Z+kSh6eQelBQ=;
- b=Xrrhfmtccn3rDeSAKiPY2Qo7FCs291NbWWpjT/UCJSY1nbfw6DllJ+VWNw8bD/65TpPaEMJDCrwQld9hulgr3IhpIXuxasbPXraeSHrACslgVmsI+a26ciUcZxVwX3tItp/lJ1mc2VJ1GaI9pQykSrrcSYcTSxMt4EW9o6wA+nUKcu6VHyLFmvYExI1DWCQ3oLtsi4gtocb+8fvSqbReZ9oBhXu6FHoakuvJVjhS/VvT7vQB0C/1Rwg1bID3Pis+Ta4yvVmjIQwGnNidCs0Gy2dOsyIN6JZgMSKbFf1+oxWcel/cYNEQCCY9GltAAYYTFZwvkUFQCpdNrUn3FofcZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IQC348/jjnpm3YhjFL5l5N3hsD6rHo9Z+kSh6eQelBQ=;
- b=Mgd8T2vfrWwJSQNCOfZ8ZlJ8dcif7jpPMsZRksM9BczmoblF4sM8eY9vucAsRZBKA5oF2A3OP8KjNcG138ibM5QxbTvryiHoPbFuY9fgX9JXu1l32v2fhvqf13A2ZB/rJmZWFD/UXDUsFUWlW1K236oKKmTLYKoLJRVJ7QGjoTg=
-Received: from CY8PR12MB7433.namprd12.prod.outlook.com (2603:10b6:930:53::22)
- by SN7PR12MB7854.namprd12.prod.outlook.com (2603:10b6:806:32b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.20; Wed, 24 Jun
- 2026 16:41:23 +0000
-Received: from CY8PR12MB7433.namprd12.prod.outlook.com
- ([fe80::faae:d638:bdc9:4bf6]) by CY8PR12MB7433.namprd12.prod.outlook.com
- ([fe80::faae:d638:bdc9:4bf6%3]) with mapi id 15.21.0159.012; Wed, 24 Jun 2026
- 16:41:23 +0000
-Message-ID: <5d3aa51c-d582-4989-a9f3-e46c95dcacb7@amd.com>
-Date: Wed, 24 Jun 2026 18:41:14 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/9] mm/memory_hotplug: add
- __add_memory_driver_managed() with online_type arg
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
- gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
- djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org, alison.schofield@intel.com,
- Smita.KoralahalliChannabasappa@amd.com, ira.weiny@intel.com,
- apopple@nvidia.com
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-5-gourry@gourry.net>
-Content-Language: en-US
-From: "Gupta, Pankaj" <pankaj.gupta@amd.com>
-In-Reply-To: <20260624145744.3532049-5-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0209.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::16) To CY8PR12MB7433.namprd12.prod.outlook.com
- (2603:10b6:930:53::22)
+	bh=Nf45tH+DZxDmO3Xa8ocD4s3OrE54bf3xPt2q+j677fQ=;
+	b=Vd3aWAPsRTmp3QiuS3cwaO/SEbvB0pPcVOI6wVrFWarJNAKrULbsAJRtu/+x3WTjsC3pRP
+	ZLXkCrbm2oMCq9z3EmRgPvjLxr7phvufTfhTbhe83vCYsDM3UwGu2WW4DOQjGU7wnFitJu
+	LlpNaIHli1N0JLcMzdMoOLjf4hQ2qlg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c4KpaYcG;
+	spf=pass (imf13.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <120367a5-0a3c-40ba-a821-f46f8494ef85@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782319462;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nf45tH+DZxDmO3Xa8ocD4s3OrE54bf3xPt2q+j677fQ=;
+	b=c4KpaYcGLpCl50YxEoCnwFd4Lo6D9bMArzTKSQ6bqq7KH+Es0YpHgnF8/5t9/egp5Qikeq
+	UP7tnUOU72oz76r6+m98C/WFMvQd7o0fM4iDOyBu+UOp4P5jHBbzTYhEZcqCeFT3ZBFQsE
+	z2SzxS1mc4zxpdgiDD8ceOUNzqKqKVA=
+Date: Wed, 24 Jun 2026 17:43:56 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR12MB7433:EE_|SN7PR12MB7854:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb6c6b04-6a26-44ac-288e-08ded20f6cad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|23010399003|1800799024|366016|6133799003|3023799007|18002099003|22082099003|4143699003|11063799006|56012099006|20046099003;
-X-Microsoft-Antispam-Message-Info:
-	c+X/T02gLuMr3K0hHvzaDK+WYJCWpj6KdDvO8L6keb/m/JXGHGTgsj/kqrfOmT7hKfIIAUMnkqdvtGU8N+JZlGXWZN9M6SYWLCt5/vN886jberfhPrEY2va4QubAe+YKNPjENli9cKndG3N1L5qRsCnvU9vqQRi5qVSHPNA3445DeDEwx6G950ClwIAQM/Ci4TbW1ENKwuNdqDweoMXsO7FtJxx5Vk8vsjia/rJrhHouBEKTrpacPdbXGG+b3C7upC9SOpcFJRUe+b4x+AMXr9h0uxTKkgRQ6EFIjxpdIhD4K24tL/iT3XNRWeab9AVBUFLDLVa6zXU6yWjlRPbEaJGZXhbT77eNpUAqaG+zFDI8x9LPNMvCfebiPxSs40RZEqYLKlQ56VyDmodbRhWMqkUywA91JI6GHnsd48V/vcBpRdPXgAGFKp0wksrqVsAUwN1cGQhPQJCs2wGZVApJMh5BySKKToKTGv1ZQlfyenRLA9CxiTmaq/kZuEtJZwlANGZ0BR+gCZHHdn5zFqnPrn4MA431bzQy/85RCLmRTYwdhBGKfoWESuL1JOJoUiyCvWhYu6W8mgMZq5Z8Pb2yxxd1Lx03gURsSYiRwZQEecP3dFmwIxbpm+r5QyuqJSmvt+YnJfbKjTpvFyLwck6TvlOgPcPeeP5TSB15bii+ktI=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR12MB7433.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(23010399003)(1800799024)(366016)(6133799003)(3023799007)(18002099003)(22082099003)(4143699003)(11063799006)(56012099006)(20046099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?alhQUndhWFJPYkxwaGprRm54eHlqTTRnNVFCajRWQTBxNTVlVUJrS01jdHIr?=
- =?utf-8?B?MWVTbEMxdkhqMUZFZ1ljbldROGdLcjhDZ1dnMVpzT1VvS1NodUd6bFdYemI3?=
- =?utf-8?B?R2l1aW9QQ21Mait3L2pjZU80SHdqUFk5bDZkR0RsakxOSjFxcE9PQ3Q4ZlZO?=
- =?utf-8?B?eXVUWk9DUEc0YXBScGp2Ry8yWmVrNXVOK1E4MWlBOXN6Z1hidVEvUHJQUFFL?=
- =?utf-8?B?L0ZQdGxQU3VhQXhNM3BQSWNDcyt3THRKM0ExajdncVBheUhLYVVUWW9rNEc4?=
- =?utf-8?B?YWEzR2NLay9EZDcra0t2SVE1endFTmdZQWd6TjZXcHUzZmRBNWNkTGRxb09m?=
- =?utf-8?B?dDRReDRTdmxGOWhaZ2VyVXBseFBpNUxGaWRoWXZMZTRUOVR2RVNTc0E0V3ZN?=
- =?utf-8?B?T3ZtK0FVS0p3OVE1UlhGaldBTlZIN0ZWY1ZpN2Q0SDY3NDdSeHMxT0pCYUI3?=
- =?utf-8?B?KzJzWHJFOERnR1NjcVFHYTJMWDUyOW9oMHpYd25QTnNnVGFMbmo3bjBQUTNL?=
- =?utf-8?B?T3lhRE0xeFg1TURMdTlaUSs2T3J2UGxMOEp4a1g0d1lvbVYzcFl4VGl5dE1y?=
- =?utf-8?B?MDd5eFp5SWZzSy95dUhUVTFmTG9XTGhtamlTaWYvTHBab0FKUzNaNTh3ZlIx?=
- =?utf-8?B?WUFkRzlmdkg3VzlRVXgrSHhlRTFVK0hZN1ovQnkxY3JhOUV3c2NGL2tOclQr?=
- =?utf-8?B?blNXd1lYRXg2ZnFMeU9tYzdNOXhTdENRbUZZek93ZVJya01pcjlXeFpWV1hF?=
- =?utf-8?B?RkQyaWQ5MWU5TGRBV1VWY1hmOVJ4a20vTlppZ3IzanZvbTdFM3NqNGtIM1ZU?=
- =?utf-8?B?NUdxVnJHSUtuZFN5RmN1aFlRK0F2WU1yQUVUTnlDc2FReld6UWJ3V256eFc0?=
- =?utf-8?B?Y3Y2RFdVSU9LTU1qeVBnOG1aZlg2UGFSY2pHWGp4aHE2ZFQ2djV5a1hkSW9N?=
- =?utf-8?B?U0pZRG5RMytrNTdXNGZKNExCSVhCVGZhODN5RlNNeTgveEtteVhUQktCTFE4?=
- =?utf-8?B?THU2emNoVHlvR2VJa1BxYXBpYWEwZDlnczlHNnF3UlNUcStJV0RtMHliaUk1?=
- =?utf-8?B?bjRGSEFPc05FalhoeGxXLzFWa3BYZllCcUdVT0NGY2tsbEpqem03WWVvN3k5?=
- =?utf-8?B?RGpKUnJVbStUVjczWk0raE9BS1k3cHBpbEllQ0lCRWtRTFU4eUM2WHhDcjYv?=
- =?utf-8?B?SVdLbDJPdW5pRjl1aURscXp3VmlEZVRpQzIrRCthNnh1WWRCQTUwSjIwVkdU?=
- =?utf-8?B?QnV4Tmtia01ZbXlKR3ZWY1VwaSs4THkzdE1BaUpKam1HTDd4ckJ5Y2JsNjIr?=
- =?utf-8?B?WUcvNnZCWUVJdnYvekV4MmRFa3lxMVppRzV1dkhZTU4zNWtQMlBKZ0xldFJB?=
- =?utf-8?B?dzU5dTdIS3h1ZzdTSW0yeGh3RVI5bUlUN0h1ZDNwVzZjamQwVm9hZkpGeWpH?=
- =?utf-8?B?akVZVXJxclU3VDB2dUdHUGI0MHBWeXFuUGdZT3RUODVNNFUvbG1FNW1QQ2R3?=
- =?utf-8?B?U1NseFBJUm02TVpCWXdjMTFlRWNSVTVXWHgwRnF3WDRoRFlkclNRNHlxSW5J?=
- =?utf-8?B?ZzVvR2JWTHdyeVFQa2QxTkE0QzVkVE1FSlF3VFJRZ1Blek1vWTRDNVFjeERY?=
- =?utf-8?B?b2lSRFdkRm85Vng4VVozQWJycFdIQnhTYWh2Wmhhd2VoNXZHWFZjbFNHczlK?=
- =?utf-8?B?RVdHZUJjMlV6THRLV3BveDRrTXZaTWJ1WU5QckY5VGx1WG1ZU1JrOVJvMnpz?=
- =?utf-8?B?bFNsMTQ1alIrdjExakFOWW9zR3hvdEVYNUpMNEx0OTBZd0pHcWNidGJ1UkRJ?=
- =?utf-8?B?S1hzMEYzNHh0aXNBNkJSc1RkNmRIQW5HdlZEWXFRS0NnWDVJMlNvUi9ndGNQ?=
- =?utf-8?B?RzlXN29MRFgvZE9LbHMxYTdxZVVVUzgrWWdha1lWcXNwQ05pbXpNMnBucCs5?=
- =?utf-8?B?UmxpVDBHRVJuT0JGekpoWVFIOWlQa3lsT3RDVVB5RGdkekdnbStoaGpJSmpl?=
- =?utf-8?B?ZUFXK3BHaEExcW9OZE96aWJtUitHZVhRc1dKQTVFTjhhQ0pOSHNaU3ZRWlZn?=
- =?utf-8?B?a3U5UUFQRjFNWjh2eVBGRDVlaE5PLytwbTJITVZXMEZqVGJiVHV4WG5aY25n?=
- =?utf-8?B?ZlRIckxDd1czZDl4MnlXbnFMeVUyRlFSanZHOERVeXRnZFpLUThDYm1FaDl3?=
- =?utf-8?B?MVJvRWVTTGhUamRpRXZUcnY1RFVqVU9Qd3FQckJWRWJtY0YwbW9EZzQ5bnVo?=
- =?utf-8?B?RVpiQjdMVUZKRjZ2SHl3bkVwdC81WGFqY25TK0pDdzc4Tjh5eVJlSUhPa0Rh?=
- =?utf-8?Q?d/Z6Yerzu1/rmAi1qL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb6c6b04-6a26-44ac-288e-08ded20f6cad
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7433.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Jun 2026 16:41:22.6887
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OiF1zzel0zrx4RpHLrwN1XRA3wcuh+twNapi2oW8Q3GrRmw5Vuh4TnGEg8ZRWA/kYOXALgmLMCZwVD6BPSjNow==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7854
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AA5471C0012
+Subject: Re: [PATCH v4 4/5] mm/memcontrol: convert memcg to use
+ page_counter_stock
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam.howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, cgroups@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260624152331.2228828-1-joshua.hahnjy@gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <20260624152331.2228828-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: tm9q3ba6u1kjzbjbkfj967xf3gbttd3c
 X-Rspam-User: 
-X-Stat-Signature: ue6ygs3qcefxurxmdgop7fubdqiprwwc
-X-HE-Tag: 1782319289-536983
-X-HE-Meta: U2FsdGVkX18Z0stiyct42uR8UZRwFXzQL4kBHKYx/7LWOssqRe64c6MmSNe0nC1UiHX7nII3p39ogz5naYjHcIyXXWyRpxiMJz7k9fLadZLa/2aGYDVil8c5vQX0pi7zjGSN8sC64Om2sTqifWNfQNcD2i+/E5SUSGzuynH5T5LgFxWgr1plt8Yeg9iVXiDdX2dzUriG0qU48Gpt5TeExXXp3ZffNuHdC2jHkPIxA86FXFLgO58UabPYGdseOufU3NKvBR7f+ReG0/Vzfy5FfcbZ2Jzxk4r550dkICQdOS7Tp9Cmw9ulM1X02GGqxmhccqGCuXbXpL6VG7xsaVDf2oR6P7KFaclRbIXa7vZOrYeTxKtfZq5LmsBs9JVfTqxcsY640LLCiR51wCZnEIiOM7lSdMHHuQIGp0Tk5ND4PzKHkwgZk/925M8JdVPyrB/khBupVqP9f9Swl5c9C3a5InPTR9iuqe84twHGmdi67dIUE93XvswAzkKZ99XFUfpNzjcJmxUeMiyqpsy1W3LduzJNPeg/5IRZBFm3JMXoO5OvpGdoY82NoxncPGaRhgtsKdKcgFJPGqs8kg3anjXUjzOrdkMlpvEu3gUkSULe4f7v5zJ0SdYL0KPDLR0fsOoMP1IlCxhUC7KXuo8PFZkqY6YToSZQkdDbEz25jqmN+0HGA02VwdW7IZXM7dXnX2AAuUwbriA4FZYWQE/vjJvjR+IS1w/c5/5IUWKh2WXDVNf2eZUT29LnYtgbvbpCmdpvPNBSuVK1lAincUtTYQxGgtP17YElJzqp2W3rPoVDED12PTyb6xXidXtFmepjfyEO+5gv8aEXczL5V238IBCdvZFMInLJB4+arNJgbCgRHyRTsnlNCD6TjkmsunHfk/2KjyD2Q+VNNXif1qGjNdQOdW/ctatYmzlN2DxUCTFH9OLzHh5bxcSCuEl4WQZOtbyQ4vBfA33gejouCZYbSsU
- pLkgB60e
- AuoVha1gs1ZKa1AEwxAAYiqnvlHDvCVcUY7sw/+l6Sl/L/vhaazEFRbFwbI7ihJ7Sh6oHwqp4gJCSzF+JJvu0OKedslBzNHDhQhlTvbnv/ghyvk4bqt5ND2sbthgPqnRkZYXgnAzmDw8rKCluO95Q5O4ecA9VXsuwuPfUTz/ur7OVNGMFuK8wNfUCYXO+tmuvHGGqWYbEcB+3FTKqfaWQMMvSMIFFeft8YupwFdOsWQzfPsu4WZPV27EB43aggCcM0yDx8kVXIw3PkKle31VB2ip5D7YlsLtfYZLAjXROjeFJbo+C+Bzl6nvIf7igFP1AdDjmngT2QWNyDR6BBzGCbsfUPpNv6HhdTh47vF9yNJsYpm/RR5xOfBKtQ31THGPta6LRZ+qWrxVR2qnZlNkABpsMoMOYngsmtz6vClNmA3FouaxhayIBV/j428INgNnfvXMCp8yLLgSYU85jvrg56T+2T1mRTMlnELWn5sValoWTqcdDabw7KlfScuxIWJxdoAtWmB45M4iwdqjek2Nv7SPDPhJ0L22aPEc2LciYuJVFG4paVr8CemZo9Q==
+X-Rspamd-Queue-Id: 894AD20006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782319464-239414
+X-HE-Meta: U2FsdGVkX1/8bM4IjMkoy9tiS4kglrlEpn24HDpnkLvaNPmOSMa9t45n7gGRPzYwxd0kuiW8M6gmuBTT1CfdktsVkfQujAz1Cwdfu1TTnDe42gNs6eHY3E4LymRgKSiYlX5VY6SfD177qQwL4U55ktGpJQVV2UsK8Y3rp/rlVTstrIZL9gQAh/9aSBadQjo7So0BPN0x7OaKydYtxJE6hwT3bshsBCUU/3gGequF4H75yYpW805EaT6lfw0lay571Iw3YRRLZteKh8jOSyV3YnX8QUuHh3XdKPv+DEl6km3xJR8aYdf1WR1TK+9fu1NetlsHCkFd1rxU3saEjH49fQYleShy04OCDY4ERWHwGun9xNK8Sexv03nvBLe6F7s0lE+dT7Vq4Z2+06YB6Jg9a2aHWTpicnDDmFdnPjhubcIyY2gR0Ue26D6hqyT5b6uSPL/XPr53ZBojJUtGk5Lxy3TuRCXSxBWcP1B3Wav0UjYn6pWKnNO932CKMqRmqbMdrHUf53usnb5X12doE5qhqhOPkF4mdw9cqU1MpToa6M2aUYaX4q8f6EUSsAMWURI6KWW8EwGu7ofSgKX79hn540SuibZi74dMqryqgTc92ZCfbwIF9bSZGlxIzZoN6eLgFpERttk5L8G0SD1PoQFowipSp4zFPzdwsVcOzbvFmZ50OcM1daefEhXi/6K6XFKvU2V9YoHdXKHf3eDxUMYuhK1iHBqHte0P0T0RsFOaP7Mlb/co3C9iBMIb95AIKDQw3zc7yUPlDkQJc9J+UYQdlZeft6LkhvFZonzynuPJichlb/1OAivXocHzcBtEGx5Cg3UQUdC8yfj2q+2XfRARshwCoS2oTZoKtoOpls98NoHDzIZozmyVNodDEP42vbfHMIzdEJfqcpCtgTM86fX2vdtkm0XQs3CXMZ14V2Aom+TdteWrQfd0saB8Ae25YqvhlzXLFl47UflgK8MzZ6i
+ 24CLn4kO
+ kxsay/1Bzsbr2PUAKTEQqfVh2nrpXEjjOCywPpNlGlVnb/S+yxRDVvvIPEUlFbX842iUkU9YuqgbX4bi5q9bcJY6NnjcY5k+jJKfms6ulPTU02tIj0QZu8FX8C8NsBW6ZLgfySXNO+5rS6CzgjdBqv/FPnTpT3ZjoEEep6XVZDQ62UxPgAlChaVQtVmLdj2chbgUkZeU162/6cJBPzwEAAKpU4QzP0ojK2HEBsiob3eDeyrlrw30BVbk1I2erL7YdXwIaMeR0uwQz7OadFdYA1VV0Upmy2W5CVn+cZAYcvzk/IcittKIVh/BVbyEHfyGGrfgYTbvgW8DqfqBChmSD/80W6PaqdCDn+L0vf9j8atB8O5g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,191 +98,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-> Existing callers of add_memory_driver_managed cannot select the
-> preferred online type (ZONE_NORMAL vs ZONE_MOVABLE), requiring it to
-> hot-add memory as offline blocks, and then follow up by onlining each
-> memory block individually.
->
-> Most drivers prefer the system default, but the CXL driver wants to
-> plumb a preferred policy through the dax kmem driver.
->
-> Refactor APIs to add a new interface which allows the dax kmem module
-> to select a preferred policy.
->
-> Overriding the configured auto-online policy is only safe for known
-> in-tree modules, where we know the override reflects a different,
-> user-requested policy.  We do not want arbitrary out-of-tree drivers
-> silently overriding the system-wide onlining policy, so restrict the
-> new interface to the kmem module using EXPORT_SYMBOL_FOR_MODULES()
-> rather than a plain EXPORT_SYMBOL_GPL().  Other in-tree modules (e.g.
-> cxl_core) can be added to the allowed list as the need arises.
->
-> Refactor add_memory_driver_managed, extract __add_memory_driver_managed
-> - Add proper kernel-doc for add_memory_driver_managed while refactoring
-> - New helper accepts an explicit online_type.
-> - New helper validates online_type is between OFFLINE and ONLINE_MOVABLE
->
-> Refactor: add_memory_resource, extract __add_memory_resource
-> - new helper accepts an explicit online_type
->
-> Original APIs now explicitly pass the system-default to new helpers.
->
-> No functional change for existing users.
->
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->   include/linux/memory_hotplug.h |  3 ++
->   mm/memory_hotplug.c            | 61 +++++++++++++++++++++++++++++-----
->   2 files changed, 56 insertions(+), 8 deletions(-)
->
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index f059025f8f8b..d3edeb80aadb 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -294,6 +294,9 @@ extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
->   extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
->   extern int add_memory_resource(int nid, struct resource *resource,
->   			       mhp_t mhp_flags);
-> +int __add_memory_driver_managed(int nid, u64 start, u64 size,
-> +				const char *resource_name, mhp_t mhp_flags,
-> +				enum mmop online_type);
->   extern int add_memory_driver_managed(int nid, u64 start, u64 size,
->   				     const char *resource_name,
->   				     mhp_t mhp_flags);
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 494257054095..a66346def504 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1494,10 +1494,10 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
->    *
->    * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
->    */
-> -int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
-> +static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
-> +				 enum mmop online_type)
->   {
->   	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
-> -	enum mmop online_type = mhp_get_default_online_type();
->   	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
->   	struct memory_group *group = NULL;
->   	u64 start, size;
-> @@ -1585,7 +1585,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   		merge_system_ram_resource(res);
->   
->   	/* online pages if requested */
-> -	if (mhp_get_default_online_type() != MMOP_OFFLINE)
-> +	if (online_type != MMOP_OFFLINE)
->   		walk_memory_blocks(start, size, &online_type,
->   				   online_memory_block);
->   
-> @@ -1603,7 +1603,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->   	return ret;
->   }
->   
-> -/* requires device_hotplug_lock, see add_memory_resource() */
-> +int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
-> +{
-> +	return __add_memory_resource(nid, res, mhp_flags,
-> +				     mhp_get_default_online_type());
-> +}
-> +
-> +/* requires device_hotplug_lock, see __add_memory_resource() */
->   int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
->   {
->   	struct resource *res;
-> @@ -1631,7 +1637,15 @@ int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
->   }
->   EXPORT_SYMBOL_GPL(add_memory);
->   
-> -/*
-> +/**
-> + * __add_memory_driver_managed - add driver-managed memory with explicit online_type
-> + * @nid: NUMA node ID where the memory will be added
-> + * @start: Start physical address of the memory range
-> + * @size: Size of the memory range in bytes
-> + * @resource_name: Resource name in format "System RAM ($DRIVER)"
-> + * @mhp_flags: Memory hotplug flags
-> + * @online_type: Auto-Online behavior (offline, online, kernel, movable)
-> + *
->    * Add special, driver-managed memory to the system as system RAM. Such
->    * memory is not exposed via the raw firmware-provided memmap as system
->    * RAM, instead, it is detected and added by a driver - during cold boot,
-> @@ -1639,6 +1653,7 @@ EXPORT_SYMBOL_GPL(add_memory);
->    *
->    * Reasons why this memory should not be used for the initial memmap of a
->    * kexec kernel or for placing kexec images:
-> + *
->    * - The booting kernel is in charge of determining how this memory will be
->    *   used (e.g., use persistent memory as system RAM)
->    * - Coordination with a hypervisor is required before this memory
-> @@ -1651,9 +1666,12 @@ EXPORT_SYMBOL_GPL(add_memory);
->    *
->    * The resource_name (visible via /proc/iomem) has to have the format
->    * "System RAM ($DRIVER)".
-> + *
-> + * Return: 0 on success, negative error code on failure.
->    */
-> -int add_memory_driver_managed(int nid, u64 start, u64 size,
-> -			      const char *resource_name, mhp_t mhp_flags)
-> +int __add_memory_driver_managed(int nid, u64 start, u64 size,
-> +		const char *resource_name, mhp_t mhp_flags,
-> +		enum mmop online_type)
->   {
->   	struct resource *res;
->   	int rc;
-> @@ -1663,6 +1681,9 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
->   	    resource_name[strlen(resource_name) - 1] != ')')
->   		return -EINVAL;
->   
-> +	if (online_type < MMOP_OFFLINE || online_type > MMOP_ONLINE_MOVABLE)
-> +		return -EINVAL;
-> +
->   	lock_device_hotplug();
->   
->   	res = register_memory_resource(start, size, resource_name);
-> @@ -1671,7 +1692,7 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
->   		goto out_unlock;
->   	}
->   
-> -	rc = add_memory_resource(nid, res, mhp_flags);
-> +	rc = __add_memory_resource(nid, res, mhp_flags, online_type);
->   	if (rc < 0)
->   		release_memory_resource(res);
->   
-> @@ -1679,6 +1700,30 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
->   	unlock_device_hotplug();
->   	return rc;
->   }
-> +EXPORT_SYMBOL_FOR_MODULES(__add_memory_driver_managed, "kmem");
-> +
-> +/**
-> + * add_memory_driver_managed - add driver-managed memory
-> + * @nid: NUMA node ID where the memory will be added
-> + * @start: Start physical address of the memory range
-> + * @size: Size of the memory range in bytes
-> + * @resource_name: Resource name in format "System RAM ($DRIVER)"
-> + * @mhp_flags: Memory hotplug flags
-> + *
-> + * Add driver-managed memory with the system default online type set by
-> + * build config or kernel boot parameter.
-> + *
-> + * See __add_memory_driver_managed for more details.
-> + *
-> + * Return: 0 on success, negative error code on failure.
-> + */
-> +int add_memory_driver_managed(int nid, u64 start, u64 size,
-> +			      const char *resource_name, mhp_t mhp_flags)
-> +{
-> +	return __add_memory_driver_managed(nid, start, size, resource_name,
-> +			mhp_flags,
-> +			mhp_get_default_online_type());
-> +}
->   EXPORT_SYMBOL_GPL(add_memory_driver_managed);
->   
->   /*
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+On 24/06/2026 16:23, Joshua Hahn wrote:
+> On Wed, 24 Jun 2026 07:43:47 -0700 Usama Arif <usama.arif@linux.dev> wrote:
+> 
+>> On Tue, 23 Jun 2026 11:01:22 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+> 
+> Hello Usama!!
+> 
+> Thank you for reviewing the patch : -)
+> 
+> [...snip...]
+> 
+>>> @@ -2595,7 +2596,6 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
+>>>  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>>>  			    unsigned int nr_pages)
+>>>  {
+>>> -	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
+>>>  	int nr_retries = MAX_RECLAIM_RETRIES;
+>>>  	struct mem_cgroup *mem_over_limit;
+>>>  	struct page_counter *counter;
+>>> @@ -2606,36 +2606,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>>>  	bool raised_max_event = false;
+>>>  	unsigned long pflags;
+>>>  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
+>>> +	unsigned long nr_charged = 0;
+>>>  
+>>>  retry:
+>>> -	if (consume_stock(memcg, nr_pages))
+>>> -		return 0;
+>>> -
+>>> -	if (!allow_spinning)
+>>> -		/* Avoid the refill and flush of the older stock */
+>>> -		batch = nr_pages;
+>>> -
+>>>  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+>>>  	if (do_memsw_account() &&
+>>> -	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+>>> +	    !page_counter_try_charge_stock(&memcg->memsw, nr_pages,
+>>> +					   &counter, NULL)) {
+>>>  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+>>>  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+>>>  		goto reclaim;
+>>>  	}
+>>>  
+>>> -	if (page_counter_try_charge(&memcg->memory, batch, &counter))
+>>> -		goto done_restock;
+>>> +	if (page_counter_try_charge_stock(&memcg->memory, nr_pages,
+>>> +					  &counter, &nr_charged)) {
+>>> +		if (!nr_charged)
+>>> +			return 0;
+>>> +		goto handle_high;
+>>> +	}
+>>>  
+>>>  	if (do_memsw_account())
+>>> -		page_counter_uncharge(&memcg->memsw, batch);
+>>> +		page_counter_uncharge(&memcg->memsw, nr_pages);
+>>
+>> This needs a transactional rollback. page_counter_try_charge_stock() can
+>> succeed by consuming memsw stock and charging 0 new pages, but the
+>> memory-failure path unconditionally uncharges nr_pages from memsw.
+>> That turns a failed allocation into a real memsw usage decrement.
+> 
+> Hmmmmmmmmmm....... I'm not sure.
+> 
+> At this point in the code, we are either (1) using cgroup v1 with memsw
+> and charged successfully, or (2) not using cgroup v1 with memsw. So I'm
+> not sure if this really is unconditional, we're just distinguishing
+> between cases (1) and (2) by checking if we're using cgroupv1.
+> 
+> Or is your concern with taking a charge via stock, but uncharging with
+> a hierarchical page_counter walk?
 
+This was my concern. But I re-read the page_counter stock invariant,
+and the stock-hit case is not an undercount? Consuming stock transfers
+already-charged credit to the pending allocation; if the later memory charge
+fails, page_counter_uncharge() discards that consumed credit from the
+hierarchy. That should keeps usage equal to real charges plus remaining stock?
+
+> If so, I think there's a case to be
+> made here with just simply returning the stock. I just wanted to keep
+> it consistent with the original memcontrol code, which only used
+> stock to fulfill charges, not uncharges, since this could make the
+> stock grow without bound.
+> 
+> What do you think? Thanks again for reviewing Usama, I hope you have a
+> great day!!!
+> Joshua
 
 
