@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A9ECDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 20:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2460CDB47F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 20:19:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA6A86B0088; Wed, 24 Jun 2026 16:15:02 -0400 (EDT)
+	id 5BE516B008A; Wed, 24 Jun 2026 16:19:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B57BF6B008A; Wed, 24 Jun 2026 16:15:02 -0400 (EDT)
+	id 56F046B008C; Wed, 24 Jun 2026 16:19:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F9BB6B008C; Wed, 24 Jun 2026 16:15:02 -0400 (EDT)
+	id 45D5A6B0092; Wed, 24 Jun 2026 16:19:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B0236B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:15:02 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 02ECF8DD17
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:15:01 +0000 (UTC)
-X-FDA: 84915910044.06.3A06C5D
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1C2496B008A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:19:44 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8556C167408
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:19:43 +0000 (UTC)
+X-FDA: 84915921846.02.757B825
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 01E101A0008
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:14:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="m/31r4lU";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf06.hostedemail.com (Postfix) with ESMTP id C3483180003
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:19:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IilsfYkB;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782332100;
-	b=gGdtFfnp/6LbY7IcG7YAu/hL7U/sp0GJztHSQ13Bl7gtY7F24igCwp2sMxtKQdtoJgFtH1
-	TiDoSVnueWgEYLflR36STRYmWdVTl8n8uiHGureIsvGnw/6GnyMoXBJCBepUTnJcsDxjr+
-	fJ1zkL7UAS7POIa07vt67aAJ5lPUfsc=
+	t=1782332381;
+	b=OcgZCQYsoOMN6qqgMkDhc1NM4yAL7sZlEKQOknJWyG4Au1OST5LqlHH/9WKfWxEUoP3Z29
+	TGxH7JoccsMw4CzaknFgApZvjfAc6Q4cmxGAdB0T6yv5zGnLdc949xZ+Lwwdh3M26sDEOC
+	6HhMvXseJv1wVyDuFgJA2IteKMBnv0I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782332100;
+	s=arc-20220608; t=1782332381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YF1E9A9j95RYF32v6gA/V22KvXKXCKGMa1Pt37MWNeg=;
-	b=s3+Xn1lJLC/UxdoLVQuwnYS0olfkDxW53U32XK59BVvMtwlUST6RNjvspCAtcDB1jFq7xM
-	IzEhXQRlaMllr4jvZHvvwmOWnMiQ2m8ojfthX0aDWw0wI7+2+fVx5NQ/WW6dEIZeJJXQAE
-	GRJyNM9S039sIpdgANgOL6rFwKzqmlg=
+	bh=UkcFBmck2UzEImYlqiPL0rz+GkuiHZU3oHSEblXkohs=;
+	b=azX38UomsJUBPj7CKQpzjnas0WznBJi2kB6Y6KSAVhvPwiwJQ6Gj6o0NfVxWi79QvRRztp
+	HVKLAkehmGHdxxB6KQbLO91uIR3750ZXDkfW7ofV5m6xNEutdufErX7xkJ6mlzBDKblFy3
+	+ulgZn4mpjP5/fSRBB0LRNXVhjNyF5s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="m/31r4lU";
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IilsfYkB;
+	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 205B5443AB;
-	Wed, 24 Jun 2026 20:14:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF311F000E9;
-	Wed, 24 Jun 2026 20:14:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782332098;
-	bh=YF1E9A9j95RYF32v6gA/V22KvXKXCKGMa1Pt37MWNeg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=m/31r4lUWdbeEfzdyGYpyGj8SbO06MuTV7Q1+9m+BqdEt1g+/oFlfFdJXa6o8by84
-	 776pwrVBnSkVMfCnuWeKYOol0K28OPkgR72Nr8/QhwIQ5HTFnzN0j3q0pT85gt31Mx
-	 Z8D8Uqs/5LAiR/SqyxV8GguVfm9rOFUemekpn14U=
-Date: Wed, 24 Jun 2026 13:14:57 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-Message-Id: <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
-In-Reply-To: <20260624082359.2869-1-richard.weiyang@gmail.com>
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 9936B4090F;
+	Wed, 24 Jun 2026 20:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645391F000E9;
+	Wed, 24 Jun 2026 20:19:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782332380;
+	bh=UkcFBmck2UzEImYlqiPL0rz+GkuiHZU3oHSEblXkohs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IilsfYkBqbhSvEAS0iD6jQmR7LnM1114G9hWZnjYMZMkaxSl3j3n+Gq47Z5TwjHdI
+	 TDEeQ6BEprTbfGt4uTb7uNstXvj/OeNCpryGg/21+fJB0zlNx/gZ1iQdpkrHgSJbLY
+	 3M9aaX3YaD6GbcRDNoSWAvwvqmGtBS4WWmpxsz9vMdU9YY2xLurA8tHxsNUa+CbBIh
+	 qdpQtLRM4mKf5pr8H24N3ELG455uAOVxbDx08moxg92S9CNsinBLf/bP0ybjZz33m7
+	 8WaJ9Zhn4SVmvsSALnPMI8U3EFI5qcjJgv29nCUs44QU72dhDOUoHrB1+LppdHodrs
+	 frHv8EUKyNO7g==
+Message-ID: <b71f08a7-c767-4551-8e74-bc37aa1b028b@kernel.org>
+Date: Thu, 25 Jun 2026 05:19:25 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/4] memcg,slab: kmalloc_nolock() fixes
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+ <DJHF7S039QNX.KNVMFISSMLMU@gmail.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <DJHF7S039QNX.KNVMFISSMLMU@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------Zlek49xErrqEW3E7sgpVdAin"
+X-Stat-Signature: 7atmewgfh3nxtziobnw4pd15cp8hh8hn
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 01E101A0008
-X-Stat-Signature: jjjftum7z6u3kaf9w46aytgj7qm5p1ra
-X-HE-Tag: 1782332099-289398
-X-HE-Meta: U2FsdGVkX1/6GoowWPLDK2jMGqqxkKXjCzoWOLFCAMF7Mmg2i/zaZuMhp3QZC40EjAf4X91mBTwKqbElfXtmue0UH8C6TtSoOE/dY8Z/ewvxwnDnS8wguzyXiNW+LiIKHYhTRmMEzTnDiTnlQEFaO7gqnGs7Zrff5OGGtU0Han+HFkC2idmERFy8aQOtZAUGol7JLqGoulqYKCsUiCdlutcD4LY2KsRao5Z350fRNKuqJN7xh4gGeHpcxMtmmZsZpitlp5nyHo//HzuykKF5Qu5ATxp6h34KW6oUFVZVTHWPvA2sMdV4wDN9jmjRVdCiq4ZQMgm1aQo2IxG0RSMfJ3y+CUDj9ViaVDr830XfZHZDdYqkAoLFKom6rVKzi4dedAP7iKdSZxyiOxrMfnGuR0IR9YqWCsZ3g/YimDmyUPOt8jvAmng3nvB6u2PZKN6iw4aP58HVDd+GhkIT2uTiwspXal6cr++aMKa+j2sKFqv8owLeX00ehJZ2cZVxstmFDnxckSh2WrwOG9eUvRbtQV1DAb1H3gnTR32CcW5TFIwfLm0AjTeu1m/y/0tC3jiQJspDJfTHcEu1BBA41Z2MgFCu/qH5/YQBmPE8ZGKqd3nCLOgF0eZ7Y++b8ZXrF/UQyedJ6iaTAPeoeIIYyWsqF+HwuzFSc253/DKEs3pSOUKkC0OimJE9XNP+U+gluE0YdxDU708b0tsY1nE0LvRnB6KyUqrNBSn1oYE6ENWsgTUD3B86ljlmCeuP5xCL6oOwbLfSHgt4lyP6MiLjG+VM+HtbgmPqQecWQBQKb3KSomQeak7nqul1uIF0W4ZDH9C8M9wR/3Z1lxG/7izwjMC4vMAPZAFJC2oRLLigCVW4dgf/lWgjKIzcQdFkAF2+NyXORr8flRZCW9AgRaZG4gZksL0FYhKoH0uIrT2D3KUAs8UKAag0I0j31bN4zZVD/kOTcjbONo5CAUbP22p59c1
- j3cjJZAE
- iqXvfHdrE0jkFxiVyIyGcLic+MdvixQVV9RCLeycbhRJIg9CKOTSuwQa92rYTZQ5h0Dsj0SGDX8tLXUXkJNRdDlQW/jgH5uVTGcdIHBtSVjSoISZrqgS3T81pLKVncJrAGptmsen/eC3SilqdlrunMpasFCAjMewwhIbDHwF6Pbb632siswvCbO13YgPTWh3Xj+0EgjHLCfnniRY8Rpy8z5OU/RS9EC3avm3oPCV2Z+bQb+HaKk7dn8dJjEmqs+VlLNKwspFCCx1gmak1p7+W5nxvtEECkkr8kBKv8G5YgETtBtGFEB1hKIQGamgFPu48h6TXas2ZjW/yNiSyFGbEizL+M6i17nJVu0RXkQqSG3ihK15hpN/8CS/KvGChpN7DDJap/y7J16GGmImbewKkjYpHeyaETHMat0JSOSLSl0Ic3eRub2EiyFafZpk2zrtM6wjx
+X-Rspamd-Queue-Id: C3483180003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782332381-483466
+X-HE-Meta: U2FsdGVkX18+/c1EDpXPW8FYYWeCHdpFB5vHC9LUUw61w08rwloWXDdSxcNKUeWlQAvlsWGJKzOaGQc/SPLRkn4iQTEKgv+lyZFDYinbxTMKHz+CqOHsMkpmIWipXVk2hFXcPUGdR7kvfa48vYbioAi7zPEZyZznvrT5dW6RvAC2etZzOgfGYWdYELNhthkRiFz9ErD1X/cnw1sv8DYT7yRmRlP5kmN2If0Z7+NQl+lDU81OBj4w/Ucgi03AYavVLSRn8gs/0blMuaHKMpmQi0WrIBMBZ70MHCYlbEzXxsszDaEhX/gtPLHa3KRDUl0Ci1PuPdUFiawAndBgofWuOJTnn+fozk6+Q6UCrHBuOHVEYPBf3P1orYbs3QXZ+XwQluaxpd6v29HX3SO/JnyQ2HymMp5+5FOijGLnB2C12ejlJjqTYi1kQzxr08HedrRrKHJndgUt7qKQTjzvBdmIPaTqss42mlszFNpqxlTP/gPIZWAbWpdWKll7hl5dh0eEQg7VL+C6xoMJCd9vJnacjssrUfBvzEA2FqpUI5Jjl3garZB24V8DrDAxBrzSjWD0x4aMZudi7mY4fZgo9Y5jbZ9NyBEF1prxwXaEZhnG0BZcHaQo/+6gKLAs1onHo63F8SEHPUuwZhIBUbmjpSHrOEzTZUIjPQQ+eCoq8SXFZq0w28b/fo4kbqO8a+DhF5ySnZm0gt1+rqLtMg6HKzX8Jo7S+wlyeYznEOpMndxfVvVDKF4nuFeNo6rYaqPsS2ygGTor7xjR90vf+yq0Qu4z6CGwlLTuNI+gq39cFZrnG2/RPMo1KoHWo4I2l/2rvapEZOQJku/OPwHtiAQQ0DcTRVPLKgnpDtz6tAycEDqY2mPK1VHBbKWrWDcxevVa0fSMqiuYw/Epv6WV5dwdPlojICpsfE1JcVW9XfNxE49qoHjaImnvCW+RbAjKNQCi4sa70c644Lw6umDx6FvIDUz
+ fVvPOaJ3
+ R4NQqeSZj1rseBApzbHw3fHKBJQqezvhm4Wz/P4FVuWLH/3cXDRu87q2igAlCH3Y2PcQ+fVdlcqgkPMSgJVmdAnPi0LpCB9WGRnTjVoRXpYK2KyFFCa6omO+KheXz1Wrzumfmcdy4OKyMLCR+ZCVa+b2Bc2TEbNOKYZgupUOaK2CLftG2wJE/mUm5I7EewbCj2MvYEmL3eZRDpYOE+o45ePOeOe5BTaAcnccWvn4NTBupWRDCTsLTC40erjtwjBwmty/UU9B2gs73qxyABlxaoHveXBvUofR6qwOY6BosHAX7C257zixgLWqdlot/06K37oEvt90wD6gTCmzidFIBd+aUynqi9ZMQmB6ZGAA4eGfM7nFuB8bmLaOKHYQphgKiXSHlS8oXNQ5gQZdwKhFbIyxPPocDdN5MWbWg9ELgXSNxS3bZIRkLVZCWfa2iFWlLYbUzv82EuvZe/gnR1hcCCPkjywyXtKWFGz3bxr0iTGnJlKyvqg7D833om/scwpyuo7zjxVQH9VlXQ6Bl00TLs2VmVKk051NBH0BdwpAbOOSvjWIzLd4qv8uKw9Bwr3VD9+BHFTlPJIiceL4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,48 +101,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Jun 2026 08:23:59 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------Zlek49xErrqEW3E7sgpVdAin
+Content-Type: multipart/mixed; boundary="------------kzqmt7N2n4K0yCl8bLirR5xJ";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Message-ID: <b71f08a7-c767-4551-8e74-bc37aa1b028b@kernel.org>
+Subject: Re: [PATCH RFC 0/4] memcg,slab: kmalloc_nolock() fixes
+References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+ <DJHF7S039QNX.KNVMFISSMLMU@gmail.com>
+In-Reply-To: <DJHF7S039QNX.KNVMFISSMLMU@gmail.com>
 
-> The kernel test robot reported a build failure on the parisc architecture
-> when expanding HPAGE_PMD_NR in check_pmd().
-> 
->    mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
->      if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
->                 ^~~~~~~~~~~~
-> 
-> The config [1] in report link shows neither TRANSPARENT_HUGEPAGE nor
-> HUGETLB_PAGE is defined. Then trigger the BUILD_BUG.
-> 
-> Fix it by define check_pmd() under CONFIG_TRANSPARENT_HUGEPAGE.
+--------------kzqmt7N2n4K0yCl8bLirR5xJ
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-hm,
 
-#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
-#define HPAGE_PMD_SHIFT PMD_SHIFT
-#define HPAGE_PUD_SHIFT PUD_SHIFT
-#else
-#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
-#define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
-#endif
 
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->  /* Returns true if the two ranges overlap.  Careful to not overflow. */
->  static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->  {
-> @@ -145,6 +146,12 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->  		return false;
->  	return true;
->  }
-> +#else
-> +static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
-> +{
-> +	return false;
-> +}
-> +#endif
+On 6/25/26 1:30 AM, Alexei Starovoitov wrote:
+> On Wed Jun 24, 2026 at 6:11 AM PDT, Harry Yoo (Oracle) wrote:
+>>
+>> Bug 1 was reported by lockdep, and bugs 2 [2] and 3 [3] were
+>> reported by Sashiko.
+>=20
+> ... and in fixes for sashiko complains sashiko finds more issues.
+> I don't think it will ever end. I suggest to fix realistic scenarios
+> instead of one out of billion cases that sashiko think is plausible
+> but will never be hit in reality.
 
-I'll leave it to others to decide if this is the most appropriate fix.
+But we can trigger debug warnings for the first two bugs fairly
+easily with slub_kunit. Doesn't that count as realistic scenarios?
 
-Sashiko had an off-topic complaint about the surrounding code:
-	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+(Ok, I admit that the last bug was purely theoretical, and would not
+ have bothered if the fix was not straightforward)
 
+You might argue that it's not as urgent as we might assume
+(e.g., it's okay to not fix them asap or backport), but I don't think
+we can just ignore them.
+
+It might be bit harder to cause an actual deadlock than to
+trigger a debug warning, though. We can discuss that [1] [2].
+
+> The chance of server crashing
+> due to cosmic rays are higher than such bugs.
+
+I'm not convinced that it's the case.
+
+Well, I don't know what are the chances of calling kmalloc_nolock()
+in NMI, or within slab or memcg (via tracing), and that is an important
+factor here.
+
+>> To BPF folks: do we need to backport kmalloc_nolock() support
+>> for architectures without __CMPXCHG_DOUBLE to v6.18?
+>=20
+> nope.
+
+Thanks, that was what I was hoping :)
+
+# The discussion
+
+[1] Bug 1: freeing a slab object via kfree_nolock() or draining
+the stock in kmalloc_nolock() happens very frequently. The objcg should
+have been reparented (which happens upon cgroup removal, which is not
+too rare) at some point if the objcg stock or a slab object is holding
+the last reference.
+
+Can this cause an actual deadlock? That depends on the chances of
+calling kmalloc/kfree_nolock() in the middle of reparenting (see
+reparent_[un]locks()) or objcg list manipulation under objcg_lock.
+
+[2] Bug 2: You should exceed memcg limit to invoke
+memcg_alloc_abort_single(), but you don't even have to be under
+memory pressure to exceed that. (yeah, I had to modify the
+kernel to implement a fault-injection-like-feature to trigger this).
+Unfortunately, you cannot reclaim memory in unknown context when you
+hit the limit. This should be fairly easy to trigger.
+
+Can this cause an actual deadlock? That depends on the chances
+of calling kmalloc/kfree_nolock() within the slab allocator.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------kzqmt7N2n4K0yCl8bLirR5xJ--
+
+--------------Zlek49xErrqEW3E7sgpVdAin
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajw7zQAKCRCGXBN6rc5S
+1vouAQCh/9K0kC43Qqi/NglK+SA4uEYxDJKy+mVHY1nJ74W2dwD9EPoXul5oeRjb
+Ss+SQ/ewNmWISbYG47kjTqE2cnJ8rQ0=
+=8pG+
+-----END PGP SIGNATURE-----
+
+--------------Zlek49xErrqEW3E7sgpVdAin--
 
