@@ -4,88 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C01CDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:21:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F0CCDB481
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 080A16B00A7; Wed, 24 Jun 2026 10:20:40 -0400 (EDT)
+	id 0868A6B008C; Wed, 24 Jun 2026 10:23:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F259E6B00A8; Wed, 24 Jun 2026 10:20:39 -0400 (EDT)
+	id 037596B0092; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E14A16B00A9; Wed, 24 Jun 2026 10:20:39 -0400 (EDT)
+	id E699D6B0098; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3916B00A7
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:20:39 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A327120390
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:20:39 +0000 (UTC)
-X-FDA: 84915016998.08.F08B488
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BB7BD6B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5929B1A032E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:16 +0000 (UTC)
+X-FDA: 84915023592.07.CD85DEB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9B3FB180002
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:20:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3bN8dry;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7BD1618000B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9lupM8B;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782310837;
-	b=gt4PvOSGshNGq98wgZDR5BRlWTzsfDsv8F8F1+BEEMGRc3scFPSlApiDXkAVgzW6LiKPV+
-	710BXKFCVjR5FYKNc3kYeHV+UVKm7hSKdWPHVXZnlsrymVloyI3p0uOHqqczqvJeeZg+e0
-	7UHCAyFMrPGSCVXr/YdQpHiRdMprdfM=
+	t=1782310994;
+	b=Rfa9UANJjYLPtvDHOsqMCSXIOqMtkQpFHJ8beTRSMyfRXfCSW+Cj/Qjjek8/h5Kgs0z2jA
+	RdE9MrqLF9yoSrCQi8rMmu1i649jv0q9v1NqQS5FJlEGvURbh9VK6iitaS2h8meG3SPJ82
+	QOZQZmsim5tMN6ok0Rx35cKQPrhfIb0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782310837;
+	s=arc-20220608; t=1782310994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ylwB5zdu1NHhRReJOXLk7elKhlAtTFYQ/4nqZ6xirqs=;
-	b=wsRb+U+OXwzRqj/zKA9ECYoyLGXZ8ZUrx9jXVkLy/Gixhd84EgOumgG8BFNDZa1vmqgysG
-	QtpQqdkySbT4gEw9YmfirE3TGliKbP+ib8PJxl5yruya43HqXFN7WL9GuIm2aF1shtAYtY
-	G9ZBjPSb9x12hafUm3sRHplpbxmSTNM=
+	bh=WLMupxBZwRCVLTY4WQy1mEXLNBRM5yd9s6atKbpiNdA=;
+	b=Uow0u0+CgfYnMRyZBGwv/oSrkr4vAwVpbrMRa7hFDb110ATGZR7je4BycZ0+P6aE4MSclY
+	Z+d5VcsYx632vgB4WS+JQvgejgDnwUooSeVc7CT95YVz9ZK5Wd9dzMho8tsHtm1xVJQEzO
+	mZM+8q6M0Q2U5kxWaBJEai2aqXSk1p0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b3bN8dry;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9lupM8B;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3C9F6601FC;
-	Wed, 24 Jun 2026 14:20:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6E91F00A3F;
-	Wed, 24 Jun 2026 14:20:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 06CA560018;
+	Wed, 24 Jun 2026 14:23:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2FD1F000E9;
+	Wed, 24 Jun 2026 14:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782310837;
-	bh=ylwB5zdu1NHhRReJOXLk7elKhlAtTFYQ/4nqZ6xirqs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b3bN8dryW7lpe9N75LEbz7v99EVRjLVRpRFWHC6iUyCR64+VbmlHXGZVPxt1agkNI
-	 pVXmot8z5C1u1EwNwEnjop1lpMEnfJSpdKivn3TXJ/Rjadr4UgozMuOLJSbCFgXK8a
-	 lkbU3EAF+O1+NrMRjynA3Iq9hEONjQ0Ue8SoAvGjNjEtKtUPJdR1JTtnbUjL/UamoN
-	 IBU1v6WMZ5TlA8Lc2Iy+rQSzkkyeZfUBEnDPqjhTN0LIaOOA2D20EeoP+KpsJ5sqTI
-	 +OzsxhvEXYBB4UdrBinAPPIKzZclbjJiBr0pzsRZ5+K9EhQaClqtyjtYsXkEAv136q
-	 io4+K8JKMk5Hg==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH 11/11] mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
-Date: Wed, 24 Jun 2026 07:20:07 -0700
-Message-ID: <20260624142008.87180-12-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260624142008.87180-1-sj@kernel.org>
-References: <20260624142008.87180-1-sj@kernel.org>
+	s=k20260515; t=1782310993;
+	bh=WLMupxBZwRCVLTY4WQy1mEXLNBRM5yd9s6atKbpiNdA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=R9lupM8BqHwWQQJwtSAxanv9TtiBCcbXoNuIy9jKW6PLooFAcWnTLJpMoUqpY5266
+	 gtW4PlqhNPp0r5p84RQtOAminT1CAE13dfKyhoRLTgOhjny7oRuNsHxlOgcVb37veZ
+	 r2bWDAyp6hvbq6l2OShzKnEnxTfVtDFzB7JilMpyUADoN7G94kO4S6W/yuUmV2fuTe
+	 0IeRxhHbpqCi5ciw4lC2MU8WOjXoPN7XGuV1/EziPbXkY0XDo+y+KnR1Iy21QZywgF
+	 r/wlqH3IOnsY6weKIp+63FTaDlZ0yLHwDCKO1wQ/KjNG1W1Kp0EeYPSlN4pbrjmftO
+	 kJZJW/l5P8Ecw==
+Date: Wed, 24 Jun 2026 15:23:05 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Xuewen Wang <wangxuewen@kylinos.cn>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: fix data-race in folio_batch_count()
+Message-ID: <ajvkK-vcVzgll2Tm@lucifer>
+References: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9B3FB180002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
 X-Rspam-User: 
-X-Stat-Signature: borw6fnkzkzaruhd5ud3caffx8cbk57q
-X-HE-Tag: 1782310837-782304
-X-HE-Meta: U2FsdGVkX18fLR6XacdKE4YjOcddoafEgw+7qL+3ZfShLAqVprCh45RTvHNTLIVJ/3//YAt0ozEAYfwu8X9oWz1yrHNXEg2/3sLYWTi8iu+lc5YEqjylFDOheGJyL0zvDr9BCX64Xw93Jz+96RHrga/hC158w6zhu57kQS7Fcd11qNYO3GQZMf8bKEhbRzp1bNvgTnNCUp/akWjTcFMrGHmAo9/MNcM1gXjtx/HxUrtpHBzKd2G14gpokQM1L6Ts7xU2KQeeensEtMgsfQ6m9ldyld2X8xKmgWhM7PC7dOnN/fjwqWG7Twd4blgzP5bCWasyssocnf5dGEFFtHiWS2RVT9Gr2BKVlsUyklXoPlNxuVv6vBe0B1P+7Buulc+LyJV4RB0I7s1yCNdoPSJqor5SZh7R+NM0S6lCaGcz2RmJt9zxs5DXvxd4yrcH/MtC80vyPznVVo4ajr4KkMdgjukTp8NfrLg9AR4f6cgbMZh6HaCk15EPnSWBnyPLwlguWDYSymP22iAEmoSHzQ5H37LxU+TfE4GZNxrQEoTKh+oQvfgEzfHHOLSpJzOgZ2PHiN8OtCGtxZCloo7fhwePQakuqqowANvnzMXsH01aNBJXPg2yOJtxWRFyVn36RbqzI6edpC4SGQmbKMljK+kuqzFwTB7B2mkk4OU3yt6ae8zfl7o4Ig4+Ap09FvF0EYbtVfXP8Dsazu4xP8dU7jYL8DrfyNEDtoko7B++kQeJ4x02YP8jcd1JpqimTb75zOFflmyldy3XG/vGHWqQy7rfRzODAPL8ROuJUki2C/gNCw/+mra1NK0XjyTMWQk6rbSxlYSURG4blkCTFCDXkIA20KRy8Ee9FXQgs33FrwCy9GP48duDxuusfyf6quNscgUmyApk2Alg/DDGywp2E0WAyjtDjLd6YBv3H6mFMBXhBTSHIJzXttCqRLeGlfSjLsGKrYsC7ZN5YURuXlzUO0z
- TG9PYKFB
- 8PGnWqrxrtQT5Ijg2cAhhw/KWY+RhKGGMrhK4JkY6s+htdU8anjCo6dZS9QXITTGq/HPImuEdrT70eTYbBu5SjGrKl9DSxB11aIWK1EHlwgVUIl9Hu1aJSF76ztVVLJjNXsoEHkhepuJ0LmBN69YbmJn77WDg3rLhUzS2bZRCGiwrk1x2dtBnm1vUYZkEzxy+z5Pr3wVAFDyO0lUAAFaW4FAHJ7rq19kW4yZhS98sKx5PbmemK+Ih8cnebFeo74sP5lckQ2c0Xq7bzN2SDVyiXeRKPw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7BD1618000B
+X-Stat-Signature: 5ratkpum7sttwp9ek1cohd7by537y4jx
+X-HE-Tag: 1782310994-88755
+X-HE-Meta: U2FsdGVkX18W9XOtvtKkdIban7EvjabvEahBcryYoDakDh83XQgAuKM1r4NtiyAAZTUf2jRj4XRbndCRa0LFdKaHVwfxXtRGOnwjDzJqojP0RZdGrWGlPWjvRA/fvZQSM8AhvAdwcfSZozGOss9k1+GQx18H28XeXqOKQterwX3vfvA5SmtkW2dxyutBlpaGtTiG3ZU+5amx66dNJCsicyGs7P07o/VWLRjzYUp5ZFlE/mwLNRvdTHGH5OCPTvZkkt5iHr+TMuMFHtzq4MKDiuGA/XMnVPNrtC8hkOfmq0AahkMUAIxaXV9acN0jX+cetVDqWBztj/XiZ+5NbQWQnbYCAGNqCX2I6H8OoayNS+DgqUOg5jf+QC6RIXOQSGGuObkVKFP8PAEk4Lezjmrr5maDmSMzhRLKMO+RKyNwMMBSIQ+keN58z5D+Vz1ZraIZ41+UfCnJoqNWi+XkTgF9PIEGohj16BDAz6+dqWMOKsweiK8D7bVZwK0JqO2QqfTHvPSa2/Oiz2tqJaTLtdPsqO59eQEHFnKbfdfWegThAjsEzPzUhSCi/Hgb8hkHOCOgc1KB8DdaRySPAUHo3PLN/frHPaBOuaeo2e24V2v0cuM+3dCl54MgBuaoDkbCu30CLchLGzpUsleiY3H6Je8GTYkUDcFkDmzXkuzcj0PUkjyADuFWj6zfuYFj6Mdwwmd/BxqsZ/yaSDXE1CdiRuxbTn/3+c7fp7vX0ZR7hGzWD8KruQ7ZIPVOAsA4K2ryAbzk81zi+f+04mbFEWNFYD1b8S/9kOr3Uh6bub0foFD9qc3JeQ4FzxLkIOn/HbfUON40b0XOMSN4KfnlsfHIm/YIpayHBf2DxZDsuDlKNy69ujl/0MmohUFUH9ENbLV1Fp+H9CboIHPeK5oRf+AxljtGYEIVv2Y4jEaVM4fMVCjIh9+8vZYHbKs04uT6ZJqe09u7FEui2wA0ZUVmDDK7Jjp
+ izwDBrai
+ pPYJ37w+ZOT8FczsA3htpHqVn3RWtDRowzOT9vEikv+ua912L3J1CC/SB7Glfk8a+4X8/CKOfbOP2/rUPm2s23VZY1ktND5Cwl9G39RZ/UVLN/ZarWXj9VVKlFJkkO1nAq2xLqBei2glAXr0m1QL2/Mgmq0DQ1Ys3BR+VAdYCL69RYiLucVMOux28tjFvQO/lB/1fkpaxMsPc4yWW21mbotBYMwRNqjTKQD/femyCgiSpIbmd9Og48ExaGtzQf6mM3+NovxdWq3AICfc7aN1BFAKnLHQpkv06PM3oWamcV10upCU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +91,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_probe_{add,rm}_dirs names a variable for damon_sysf_probe
-as 'attr'.  Probably a trivial copy-pasta error, but it makes the code
-not pleasant to read.  Fix those.
+On Wed, Jun 24, 2026 at 05:26:06PM +0800, Xuewen Wang wrote:
+> KCSAN reports:
+>
+> BUG: KCSAN: data-race in __lru_add_drain_all / folio_batch_add_and_move
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Where? A syzbot report? A local run? Please specify.
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 92de341827cab..9f9262c9b99ba 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1075,7 +1075,7 @@ static struct damon_sysfs_probe *damon_sysfs_probe_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_probe);
- }
- 
--static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
-+static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *probe)
- {
- 	struct damon_sysfs_filters *filters;
- 	int err;
-@@ -1083,22 +1083,22 @@ static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
- 	filters = damon_sysfs_filters_alloc();
- 	if (!filters)
- 		return -ENOMEM;
--	attr->filters = filters;
-+	probe->filters = filters;
- 
- 	err = kobject_init_and_add(&filters->kobj, &damon_sysfs_filters_ktype,
--			&attr->kobj, "filters");
-+			&probe->kobj, "filters");
- 	if (err) {
- 		kobject_put(&filters->kobj);
--		attr->filters = NULL;
-+		probe->filters = NULL;
- 	}
- 	return err;
- }
- 
--static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *attr)
-+static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *probe)
- {
--	if (attr->filters) {
--		damon_sysfs_filters_rm_dirs(attr->filters);
--		kobject_put(&attr->filters->kobj);
-+	if (probe->filters) {
-+		damon_sysfs_filters_rm_dirs(probe->filters);
-+		kobject_put(&probe->filters->kobj);
- 	}
- }
- 
--- 
-2.47.3
+>
+> write to 0xffff98fe74c015f8 of 1 bytes by task 45153 on cpu 2:
+>   folio_batch_add+0x30/0xe0
+>
+> read to 0xffff98fe74c015f8 of 1 bytes by task 45175 on cpu 0:
+>   folio_batch_count+0x0/0x10
+>   cpu_needs_drain+0x253/0x430
+>
+> The write side is a per-cpu local operation (folio_batch_add on the
+> CPU that owns the per-cpu batch), while cpu_needs_drain() reads
+> another CPU's per-cpu batch without locking. Reading a slightly stale
+> value is harmless -- it only determines whether to schedule a drain,
+
+Then why are we adding a READ_ONCE() in such a core helper?
+
+> and a subsequent check will catch it.
+
+Where? Which check? Be specific.
+
+>
+> Use READ_ONCE() to annotate the read and prevent load tearing, which
+> also suppresses the KCSAN warning.
+
+Tearing on a single byte? Which architecture tears a single byte?
+
+I think you're actually more concerned about the value being optimised out on
+assumption of it not being updated elsewhere right?
+
+But acutally you're not, because everybody else uses a stack variable or _their
+own_ per-CPU value?
+
+Only cpu_needs_drain() is the odd one out right?
+
+>
+> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+> ---
+>  include/linux/folio_batch.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+> index b45946adc50b..1e31e058e19d 100644
+> --- a/include/linux/folio_batch.h
+> +++ b/include/linux/folio_batch.h
+> @@ -53,7 +53,7 @@ static inline void folio_batch_reinit(struct folio_batch *fbatch)
+>
+>  static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
+>  {
+> -	return fbatch->nr;
+> +	return READ_ONCE(fbatch->nr);
+
+This isn't free, you're breaking optimisations here by doing that...
+
+It feels like the wrong level of abstraction, but actually I think every other
+case is either stack or per-CPU _on its own CPU_ (please check), in which case
+we _can_ suppress the check here but I think best done with data_race().
+
+And see the kernel bug bot report, you need to add:
+
+#include <linux/compiler.h>
+
+Too for that.
+
+>  }
+>
+>  static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
+> --
+> 2.25.1
+>
+
+Thanks, Lorenzo
 
