@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE68DCDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 04:15:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14077CDB470
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 04:30:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CC266B0088; Wed, 24 Jun 2026 00:15:09 -0400 (EDT)
+	id BE3516B0088; Wed, 24 Jun 2026 00:30:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77C746B008A; Wed, 24 Jun 2026 00:15:09 -0400 (EDT)
+	id B944D6B008A; Wed, 24 Jun 2026 00:30:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 692BE6B008C; Wed, 24 Jun 2026 00:15:09 -0400 (EDT)
+	id A83006B008C; Wed, 24 Jun 2026 00:30:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CCBA6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:15:09 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BCFD164CD2
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:15:08 +0000 (UTC)
-X-FDA: 84913491096.12.2E482FC
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4D2781A0009
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:15:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GaP209XP;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 71F9D6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:30:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF778120213
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:30:09 +0000 (UTC)
+X-FDA: 84913528938.18.623B73F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F12AC18000B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:30:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CVZbVwtt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782274506;
-	b=VI+hzPy2ujc5PwqxRGXK4W4RjuiwFXcX54aXiwkmnE1AjVwiL0YaQsC27eXnZLY4FtfcCY
-	IOQRDPK3gao5IEhfCh9ECB2bSF3ngFXPBOHA+cXZZcxqC3SbPVQVqH+nTo4E0TyFxhMcPd
-	InHYh5ojXa8Pnl39aI2/bya5U4aTEB4=
+	t=1782275408;
+	b=wFvuKU7ALdi2wpotqm/mS0p2/PmRkI+eycucxvgSGYjrLC4Oq23Osmc0J2fc96be8KKRpW
+	cl0XPfry7Dm8SNXzca9L3mQB8qWvc2nePSnCUkPFmAn48qEGDApLck4IdEe63FyBqWWcCs
+	QzhG46YLoWtcix5jGYLTJ2cgN89hxwA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782274506;
+	s=arc-20220608; t=1782275408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P5mg+QmunwOCQlPQb38qcZsLDKLxbI7GfqzqEdvUheA=;
-	b=JNCL/AaWrwfKA/jv4mpb6IzgzJpmcdLMcAVi/anr8DaBSMAAbZRhPms4lc6523lrr7lfpc
-	9qkDS+FLk1pL+chYGHXH0mgLRrhX7RGzailGOUqOy/uOn5g2zkv4CeRrhLV3bNsOtUHQln
-	eFJqZceZ0Jxbp/0up2RfWGjOZJChPro=
+	bh=Bx/kebHPPgs2d60g6aifmIll7j/E5MvaYrxUaKwgJoE=;
+	b=XvWZZ3phHt4aV7xbqARjEHwrUIaEbn9Y+jFeA1+2SEkXKA4BERiMu9rE1y0Vdp+1gTmqhR
+	saHHjl3qrfVEcFWoLBN0cNZ8i47HAhbU3VgWUbVKADuMdVQocsbEBh1aA9tXag7nktRE14
+	BpjZVrUWRsXYhH2Sq/90hVP1u2cXKQg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=GaP209XP;
-	spf=pass (imf19.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8A4201758;
-	Tue, 23 Jun 2026 21:15:00 -0700 (PDT)
-Received: from [10.164.148.38] (unknown [10.164.148.38])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C92303F836;
-	Tue, 23 Jun 2026 21:14:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782274505; bh=Rt+dMmjfl+HECVstGcDntP8qmPQ3Au9mMljeDbocBoE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GaP209XPOmNK0pP342ZcONRM7jF9d/ZFio8I1JCPA5GBq70ARBEkb+C24Fq6kM4NY
-	 nVKD8Lfn51GoeWLXQJPJoqxgi/esOQIqhMW9JUng8alESW7BHHqjqirY97ZkyhEhSP
-	 OcHOCcYjKGVzSYAXUFE3Jhp/cxRvk6oGBlNumAzo=
-Message-ID: <f5927785-d5d3-4e64-bbac-220d40718a1f@arm.com>
-Date: Wed, 24 Jun 2026 09:44:49 +0530
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CVZbVwtt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EBC4642B99;
+	Wed, 24 Jun 2026 04:30:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6E41F000E9;
+	Wed, 24 Jun 2026 04:30:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782275406;
+	bh=Bx/kebHPPgs2d60g6aifmIll7j/E5MvaYrxUaKwgJoE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CVZbVwttm33JAE2R5U+7rIIovPr+pcOzHmnUiYpLBy+hKo+eomEmEpVRViqMBUftD
+	 DquBiOLUzumiPCVhuOEw/HomSr+u+fomZqF7Nii8DBIyXxSO1ivA2HmrO4QHSDKYtm
+	 5fErW3qpg9A18UgVUnqQQbsOTSrX3+5OX26PG9Lm6GWmL1AVxrDmGz4lKYwU3O/1Bz
+	 Byb0EebmigTmmE+M3bDrccOMB71XVXQ5cAazxOn91qxuvrVRQ4pRU2iiEHDSh22d0X
+	 NX65MrUsL3EY8aphU06Qguv+oesGp5b1LVe0KCQdX7i1y9FKV0pw2cMoBipVAwQzpH
+	 bHR+8sGjQLpoA==
+Message-ID: <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
+Date: Wed, 24 Jun 2026 13:29:57 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] kasan: hw_tags: Add option to tag only at
- allocation time
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Harry Yoo <harry@kernel.org>, ryabinin.a.a@gmail.com,
- akpm@linux-foundation.org, corbet@lwn.net, glider@google.com,
- andreyknvl@gmail.com, dvyukov@google.com, vincenzo.frascino@arm.com,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, skhan@linuxfoundation.org,
- workflows@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kaleshsingh@google.com, 21cnbao@gmail.com,
- david@kernel.org, will@kernel.org
-References: <20260612044425.763060-1-dev.jain@arm.com>
- <b1502a60-09a1-4699-886b-93d041de7023@kernel.org> <ajVByfkLbetzA8bB@arm.com>
- <2208123f-8a51-483b-aa93-c35d8d053d25@kernel.org> <ajltLd6FQg1aMge_@arm.com>
- <78d97371-b477-4230-8690-ac870a7bab3b@arm.com> <ajq-Ukmd9NBruhr5@arm.com>
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+ <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+ <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+ <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <ajq-Ukmd9NBruhr5@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------uturwecWcQieFOXdAi39JCaI"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F12AC18000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4D2781A0009
-X-Stat-Signature: fq7nwjukbgyee9mqr76ng99gfcggeheg
-X-HE-Tag: 1782274506-894760
-X-HE-Meta: U2FsdGVkX1/yWulqCXBszt2pXeyzKgp6rezKUoxXXr4RLNkiOmcRiB9OvEbfCaRbqXuZ8KSGVKW4S1TxCQkit0a3JWe+qASQuDgErTD5jcKEje2yLVBX8cHsxGFOONk1acfp2dKxHQGxDCjul6V5jMpOkKD2CdFBwbFlCOisrI1RxbCwirKPgnZa8YsDgp1lcGp9yTEIhzvJVzezy0LSdMggwXG1MgKnbeROUn2AmAktM05XtRUORugHaU/DN/JJMpgiyjm4bqX4K/Z9haOIob0KPNpZZDTAJvMFmUvqOjvDhJy6rjL9y6Ww9MNqCB+PZibsEXjI3J/UaClazUBoWJBjliowvRRKVqkivJJbgLTHm/o3iKTiUTan5QhFi6YjTRmDsj/kbwNv2U1rAEk/XWjBePYs/1xprVy/yr/YZAlhAb0rFlUh3mG3vTdz7UrUMVASJYiI771BLvche6C75vMzZ27ii+BBF/K0qOI2IibXujCKT/qz5OXWzOIoKUzMebUdUnN2t3Kb066vClBk6ajqyjSA9/3jLt0a+q5ECoRCRdoS0xffquXZ263ddXG286mjz5mF55PhLcE0HZCCn4Zms/1Lv0kM4GTW+TIkvVgwmIfAUn8a5nzkFM92VmgLpWVq3A07nXeQDZEZ1HV9YcMHdznbs72azPcf9L9bGZNRQ/KPy/IOuihxBVzRm0uxTsj4YGn4KuIuwzDBisTtHb/Qvx9jZpnbKaAujjhYH03ZQtz8UAd+mPUolDC0Fz5xMpLjS0pwS4hKumA5w5igWobt2CI/MS49dayI/lqNxLgrs3Q+CAUFnKQ+H8bQNllxNiNdH0eHJ/L6bWIn/mpVfyIJatUd4dfh/lIrBF7D9+ANaeBoOfpD+7DjobitpD2jtz2o3RROjDFqKWOwJ2GxhL3ukbDK1AGxYs2yTesPouXEYXZBjA9GQB7a3yLmo7mbYHvwVuqLUfxCZif3rU6
- E7qeTPCP
- fR2i0wmKmOXtS7C9J7dYvDturj8l9bR5K1ElJtPbxoL0DVMDX2IfMtt0uCTwLTI0nT+dW/3Q4xQm9gc1mxSPGxUgNO8RueRB4t66I8eW8/qfHNKoYJeDj0g7iwtZYfDLMG65g9nbIGgw9Etk0zIq3ipjatJEvYcg7cJbqSdvectkngpklSLNXogucrZD9OGIOrqW8SIsGXrLlu6lj8INLVzL36Eo2CO0cMxDBTmpi8LoEdmDkfIfbhQE7HYUavWt+fDlv9U0LlYxRYRW30LKl2W80Z87lrYwPJbiyVEJw82Q4mx3Mt4aFOXqjQrPXbNogiaG0f2n6cvkO8F5Md5hY/batI5wkK8xgd+ItgJDMAqVCYhg=
+X-Stat-Signature: j16egp5zffogqrrjcmzzez7ireimc49p
+X-HE-Tag: 1782275407-760970
+X-HE-Meta: U2FsdGVkX1/8yTvSvidK6d/84IzEJxDL3yHJzF5Nxyly3uwBnuHEf4kvbq502IeQQZK1eV5kNpouSJW3XUkHwIGISTD8cFu64VD50buCZKZAOpRNk/bE9+0844RISqGab0SL01WJ/5pK5JIK/6U7mOJns44+ilMXoCQ8lsUmEHk9e9FqhzvdzOTfS47zBiFILCfgfm6ubrqC5CYEc0ptUrX8wD7XX422AOZTjZpYUmASGHOFNnFmjzec/eFSBuGI7ZUQtKUAFK65JlsMZbbhLzG0mDplI4c/QQl/5Xj/jV26pm7rV3+Kw85i/GFu7PDVyjfvtt80SxpmfXo7ccVQT6fjRaMHUvPmRDvx/zf9DubbtJObmmwGOCdiCYxr6fi1zTLF90/0NuQx1g+Q0ZQGfXsmpr0ZTv18Csd9YyDNc2j7HhrKHw5IOTyUssCS4mXx7b23fWXSVRmE8VZAJ5fzRErZUSRiBV+KfBe4WdaZ1/BClJjGwnepLOL3oV7hCDn2alzorW4pdr844DVJXKQYmXa485wuMDMaOq8BT5URBIj74CvDQFsPTH2aAVb4/TBd6/gGsVJBpFepu0FwCZlobk5Eh5pJNyxRNkZcWyMbD2FN+mY2DKzrj9QwwFv3Sdoog/uE8iOrliY41A+FvXj+B6Rqjek8hjEinsFUCmOrp3xCssYPdF3F0LW5llb2f3vAFFlFRu2QW+IR99A5WvKTiJ10Fh2LDmxNGlX7Cars0vvNeFTJZCD9v9bNtS5QWIPnax5QkTULg5dEBA0grgMtd3REufGO3lelBd4XY+xm0Rg6gWUy1YterKjcAv2k4TcsokaLE3YWfNGsggUqnzFZtcWEyIN629rdsnT3VUBI4inntayhb+FkVZXOGxsphuh12fxVoho48E0Z24k0b3nDwbbHcPHT9xpjuLc9n7ZTqohSIgCJUJasiXhGEMRaa5eokaDx5sJ/49ETJHjIkLK
+ qxdp3pZe
+ DWiQJlpb/+Cbe/U/L7Q4MOdY/GC27OAuQpYb0CGZsLKtb1n0D/KEwsK0cg+E7czmxJFFnlbZ1KOnEVL0pdjTk8qReVzpIH3NndXYtTs248enjDUnG7weaav5PxjTsv/rHPt2/fIvM/DuGnSEpST8LayzTmAarr6vkvEGuFUaSQJANBxjUo01CRgkLZBoQREoDOmuDMOnh96qGS6Y7+6NlLesG1puWcYiRPJXul6cDSYhE8mWBc56tSSdOBXvQ9ZJm1atDqTV5QRNYv3f3FUGirEEVWu9oBHVO4FeZ8w4I8Uqaf1NlDd0mi1PgKZxgIhF1CbiQlTENNc1F+nHv03gqO2OYajA2YErG3zDpQQDcn27HPhwmYVTC+2tj0gY6qt47lwrGitZR6o4AfPIkJzI8UwDMexqAO4h69yzlrIJ29g5fQjbQs2pDZjkMHWK7pw4BMTnH4nmvXFvqtI8ctEXfcWuRDd7Eijx7Gv/C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,104 +103,221 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------uturwecWcQieFOXdAi39JCaI
+Content-Type: multipart/mixed; boundary="------------6zyhzDgflNVOdEnJMoPRLwzN";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Message-ID: <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+ <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+ <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+ <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+In-Reply-To: <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+
+--------------6zyhzDgflNVOdEnJMoPRLwzN
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-On 23/06/26 10:41 pm, Catalin Marinas wrote:
-> On Tue, Jun 23, 2026 at 10:32:16AM +0530, Dev Jain wrote:
->> On 22/06/26 10:43 pm, Catalin Marinas wrote:
->>> On Mon, Jun 22, 2026 at 09:42:10PM +0900, Harry Yoo wrote:
->>>> On 6/19/26 10:19 PM, Catalin Marinas wrote:
->>>>> On Thu, Jun 18, 2026 at 10:35:15PM +0900, Harry Yoo wrote:
->>>>>> On 6/12/26 1:44 PM, Dev Jain wrote:
->>>>>>> Now, when a memory object will be freed, it will retain the random tag it
->>>>>>> had at allocation time. This compromises on catching UAF bugs, till the
->>>>>>> time the object is not reallocated, at which point it will have a new
->>>>>>> random tag.
->>>>>>>
->>>>>>> Hence, not catching "use-after-free-before-reallocation" and not catching
->>>>>>> "double-free" will be the compromise for reduced KASAN overhead.
->>>>>>
->>>>>> I doubt users who care about security enough to enable HW_TAGS KASAN
->>>>>> are willing to compromise on security just to save a few instructions
->>>>>> to store tags in the free path.
->>>>>>
->>>>>> To me, it looks like too much of a compromise on security for little
->>>>>> performance gain.
+
+On 6/23/26 6:14 PM, Qi Zheng wrote:
+> Hi Harry,
+>=20
+> On 6/23/26 4:18 PM, Harry Yoo wrote:
+>> On 6/23/26 4:16 PM, Qi Zheng wrote:
+>>> Hi Harry,
+>>
+>> Hi Qi!
+>>
+>>> On 6/23/26 2:17 PM, Harry Yoo wrote:
+>>>> On 6/23/26 11:42 AM, Qi Zheng wrote:
+>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
 >>>>>
->>>>> I don't think there's much compromise on security for use-after-free.
+>>>>> The mglru page table walker batches per-generation size deltas in
+>>>>> walk->nr_pages while walking page tables without holding the lruvec=
+
+>>>>> lock.
+>>>>> The reset_batch_size() later folds those deltas into walk->lruvec
+>>>>> under
+>>>>> the lruvec lock.
 >>>>
->>>> I think it depends... OH, WAIT! I see what you mean.
+>>>> Ouch.
 >>>>
->>>> You mean use-after-free before reallocation does not lead to much
->>>> compromise on security because objects are initialized after allocation?
+>>>> IIRC the user-visible impact of underestimated nr_pages in MGLRU
+>>>> was premature OOMs because MGLRU does not try to reclaim memory when=
+
+>>>> nr_pages reaches zero, but there are still more pages.
 >>>>
->>>> You're probably right.
->>>>
->>>> Hmm, but stores to e.g.) free pointer, fields initialized by
->>>> constructor or accessed by SLAB_TYPESAFE_BY_RCU semantics after free
->>>> will be undiscovered if they happen before reallocation.
+>>>> Perhaps worth mentioning in the changelog?
 >>>
->>> Even with SLAB_TYPESAFE_BY_RCU, the object isn't tagged on free either
->>> (or realloc, only if the actual slab page ends up freed). But we don't
->>> get type confusion for such slab.
+>>> Maybe this should be placed before "To fix it...".
+>>
+>> Thanks!
+>>
+>>>>> The page table walker can run concurrently with the memcg reparenti=
+ng
+>>>>> path
+>>>>> as follows:
+>>>>>
+>>>>> CPU0                           CPU1
+>>>>> =3D=3D=3D=3D                           =3D=3D=3D=3D
+>>>>>
+>>>>> walk_mm
+>>>>> --> walk_page_range
+>>>>>       --> update_batch_size
+>>>>>           --> walk->nr_pages +=3D delta
+>>>>>
+>>>>>                                 mem_cgroup_css_offline
+>>>>>                                 --> memcg_reparent_objcgs
+>>>>>                                     --> lock lruvec
+>>>>>                                         lru_gen_reparent_memcg
+>>>>>                                         --> reparent child folios t=
+o
+>>>>> parent
+>>>>>                                         unlock lruvec
+>>>>>
+>>>>>       lock lruvec
+>>>>>       reset_batch_size
+>>>>>       --> child lrugen->nr_pages +=3D delta
+>>>>
+>>>> The problem here is that, while grabbing a reference to memcg
+>>>> (via mem_cgroup_iter(), for example) makes sure that the memcg is no=
+t
+>>>> freed, it does not prevent offlining happening, and reset_batch_size=
+()
+>>>> doesn't check whether the lruvec has been reparented, or the lruvec
+>>>> is going to be reparented.
+>>>>
+>>>>> This will trigger the following warning in lru_gen_exit_memcg():
+>>>>>
+>>>>>      VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>>>>>                     sizeof(lruvec->lrugen.nr_pages)));
+>>>>>
+>>>>> To fix it, add lrugen->reparented to remember the new owner of a
+>>>>> reparented lruvec, and make reset_batch_size() charge pending
+>>>>> deltas to
+>>>>> that owner.
+>>>>
+>>>> Could you please explain why it is unavoidable to introduce the new
+>>>> field and why checking whether the cgroup is dying (and charging del=
+tas
+>>>> to non-dying parent) doesn't work?
 >>>
->>> However, without tagging on free, one could argue that it reduces
->>> security for cases where the page is re-allocated as untagged - e.g. all
->>> user pages mapped without PROT_MTE. Currently we have a deterministic
->>> tag check fault if the page is coloured as KASAN_TAG_INVALID. I think
+>>> Peiyang tried doing this [1], but it doesn't work because
+>>> ss->css_offline() is called before clearing the CSS_ONLINE flag.
 >>
->> So you are saying that a stale kernel pointer can continue to use the
->> reallocated page, because for non-PROT_MTE case the page does not get
->> a new tag. Makes sense.
-> 
-> Yes.
-> 
->>> for this patch, it might be better to only do such skip on free in
->>> kasan_poison_slab() rather than kasan_poison(). Freed pages would then
->>> be tagged.
+>> Right.
 >>
->> I think you mean to say, "skip tag on free when freeing pages into buddy"?
-> 
-> No, I meant always poison via kasan_poison_pages(), as we currently do
-> with KASAN_PAGE_FREE being set.
-> 
->> So that would mean, kasan_poison() will do the poisoning also in the
->> case of value == KASAN_PAGE_FREE.
-
-Yeah sorry I wrote two contradictory things above, that's what I meant too.
-
+>>> I also considered using mem_cgroup_tryget_online(), but that only
+>>> prevent
+>>> the memcg from being freed. It's doesn't prevent the offlining.
 >>
->>> An alternative would be tagging on free only with a new tag and skipping
->>> it on re-alloc. But we'd need to track when it's a completely new
->>> allocation or a reused object (I haven't looked I'm pretty sure it's
->>> doable).
+>> Right.
 >>
->> That was our original approach, and IIRC we had concluded there was no
->> security compromise. However it is difficult to implement - it has cases
->> like, what happens when two differently tagged pages are coalesced by
->> buddy and someone gets that large page as an allocation.
-> 
-> Yeah, it's fairly complex.
-> 
-> I think the more problematic case is when we can't detect
-> use-after-reallocation and this happens when a page is reused untagged
-> (probabilistically, also when the page is reused with the old tag). As
-> an optimisation, it might be sufficient to skip poisoning when freeing
-> an object into the slab but keep the poisoning when freeing a slab page
-> into the buddy allocator. That's where the page may end up in a place
-> untagged.
-> 
-> Also for your optimisation to only tag on reallocation, do you have any
-> code to read the current tag and avoid reusing it? That's useful for
-> kmalloc caches or other merged kmem caches where we can have type
-> confusion.
+>> I think checking CSS_DYING under RCU and grabbing the lruvec
+>> of the first non-dying memcg should work (this pattern is already
+>> used where we use RCU to guarantee memcgs are not freed).
+>>
+>> If we do not observe CSS_DYING flag, it is safe to charge deltas
+>> to the lruvec because RCU guarantees that reparenting cannot happen
+>> under us.
+>>
+>> If we do observe CSS_DYING, we can walk up the hierarchy and charge
+>> deltas to the first non-dying memcg.
+>=20
+> Checking CSS_DYING looks feasible, but the rcu lock alone cannot preven=
+t
+> reparenting. We should recheck CSS_DYING after acquiring the lruvec
+> lock, otherwise we might run into the following race:
 
-I don't have it, but should be fairly simple I guess. I just wanted to
-keep it simple for now.
+Haha, actually, I was thinking of checking CSS_DYING under both RCU and
+lruvec lock. (because that's the pattern)
 
-Anyhow someone needs to first test the current patchset to get some
-numbers, we would be wasting time on this if no one gets an improvement.
+>   CPU0 reset_batch_size              CPU1 memcg teardown
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D      =
+        =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>=20
+>   read !CSS_DYING
+>=20
+>                                      set CSS_DYING
 
-> 
+Oh, I thought the entire critical section is covered by RCU.
+(I see lock_batch_lruvec() you suggested below doesn't do that)
 
+Isn't RCU enough to prevent reparenting because RCU guarantees that
+all readers who read !CSS_DYING complete before reparenting?
+
+Now I'm confused. Is it strictly required to check CSS_DYING under
+lruvec lock? CSS_DYING is updated outside the lruvec lock anyway?
+
+>                                      memcg_reparent_objcgs()
+>                                      lock child lruvec
+>                                      move child to parent
+>                                      zero child nr_pages
+>                                      unlock child lruvec
+>=20
+>   lock child lruvec
+>   charge stale delta to child
+>=20
+> So it seems lock_batch_lruvec() should be implemented like this:
+>=20
+> static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+> {
+>     struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
+>=20
+>     rcu_read_lock();
+> retry:
+>     while (memcg && css_is_dying(&memcg->css))
+>         memcg =3D parent_mem_cgroup(memcg);
+
+Isn't this loop unnecessary as spin_lock_irq() -> check CSS_DYING ->
+goto retry does the same thing? (of course, we need to fetch the parent
+memcg before retry then...)
+
+>     lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>     spin_lock_irq(&lruvec->lru_lock);
+>     if (memcg && unlikely(css_is_dying(&memcg->css))) {
+>         spin_unlock_irq(&lruvec->lru_lock);
+>         goto retry;
+>     }
+>=20
+>     rcu_read_unlock();
+>=20
+>     return lruvec;
+> }
+
+Thanks!
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------6zyhzDgflNVOdEnJMoPRLwzN--
+
+--------------uturwecWcQieFOXdAi39JCaI
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajtdRQAKCRCGXBN6rc5S
+1mQJAQCZYifwIBTlnCeUcd03aopvWuwmzmAOsss6kYgehOkUVwD/ZlbG/Gvdr702
+Qh5RSIeU+ZTGtg5iX6Bl3y1ErVbhfwQ=
+=8thM
+-----END PGP SIGNATURE-----
+
+--------------uturwecWcQieFOXdAi39JCaI--
 
