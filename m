@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0EB2CDE001
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2612BCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:18:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCD606B00AB; Wed, 24 Jun 2026 11:17:09 -0400 (EDT)
+	id 1BF3B6B00B3; Wed, 24 Jun 2026 11:18:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA59B6B00B1; Wed, 24 Jun 2026 11:17:09 -0400 (EDT)
+	id 196616B00BC; Wed, 24 Jun 2026 11:18:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A941E6B00BA; Wed, 24 Jun 2026 11:17:09 -0400 (EDT)
+	id 0ACFE6B00BD; Wed, 24 Jun 2026 11:18:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 872AB6B00AB
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:17:09 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id F396FC1AE7
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:17:08 +0000 (UTC)
-X-FDA: 84915159336.24.0EEED70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4F1E720009
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:17:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AR11iw+k;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DD2606B00B3
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:18:46 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6BF2F8D9AE
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:18:46 +0000 (UTC)
+X-FDA: 84915163452.23.8250D06
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5DD2940006
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:18:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NyWSt8ap;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782314227;
-	b=NLE/m3bQATC6g828JLekmcqxWB9YQYIZYdJSGcJIX2AztDFwj0MqjVGB8h4qBw92j43M3M
-	YrnpChSCSV58fpbN/X/kpMZXL4yA9uPHZP9j8SrInqc+xcMaprwf9ml8XtdvP80n4i1Sty
-	ZD+kv+GbFCBHmjgoJvsTk1UtG/cs7hw=
+	t=1782314324;
+	b=irHlC2LRX2rGhPODwE6WZEC+3FL8dZzKGH/keThiZV2bwUjoptaf/MEeiXLAGieuWHzQwA
+	NALOrodAtKgUVxfvgU07FZithCUIoZqyOlqEi6XGE4NT8qUvtI95XV+UEwumZL6mUdqolo
+	/p5V9pRFOupp6Rmn/RHcH8IIBtep30g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782314227;
+	s=arc-20220608; t=1782314324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3pkskQ2++eDyNw2xnVvM9ZHICcQFK/ShGMe6urYxz4Y=;
-	b=MjSit117GD4naqyKlIFHfmovOsjnY5dlgFvxE4EgQV2K5Uo1ETtz+9k9lL/i02RWK08hqn
-	cv+lKPJrhiO2C84SsGs9fTHBPisB58eUEkN7OKm5Icg4b8W9MxcGQK1pFkZ0X69c/uCr84
-	mRh3vqDYBLNu5wriCoKLpAqrX8FTaM8=
+	bh=eCfveZ37ayRh458SUb8Vvs7csErWvvnNaK/RVVo+5fA=;
+	b=HSyxElB7ZJYEDwuRUYfZyEvpIayd/aavSkdiCYJFCZJZZHJS3kth+btkkMI5y6/47OAD+j
+	S2UIidVZev+IJlLPSAXMxhW4voyWn0UAoUguD2sRv5F+Da7z3MuiNQzlcPrJ8O1+5Y/33D
+	/mPrxF45G1bMHaEG261wS4apFhCr+Y0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AR11iw+k;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D189460018;
-	Wed, 24 Jun 2026 15:17:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EF61F000E9;
-	Wed, 24 Jun 2026 15:17:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782314226;
-	bh=3pkskQ2++eDyNw2xnVvM9ZHICcQFK/ShGMe6urYxz4Y=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=AR11iw+ko1EXT45M5uLTzAPEvSIeSa2yGRu91808JZKaUqpY4V/hmPR/siLDNhkWM
-	 3ANzx8JIV652LAnnPJOdBJFp/okW2Ym4CyaG/H5AqxNFpS/k3yp4SEmMNK3D2PZByY
-	 xnPAVKULx20atCcrnF5n4OSOuwDCpZD90KSZgwd/2BzN0p1KF87CHHyHc2D6fn8InM
-	 19VbNQagtJ7FdIKq86FaXexq/l6msAVFf9R5++IN/U5bCcX/xf8Z/tbvqUmfZd60U9
-	 w9NaIGmLCzVoSriIHaWhPlF2nTWjePGJeQdjDhJxGy+KhT6e8tz/jWZpVEiTGG5ZSx
-	 FET55wtSnO7cQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Breno Leitao <leitao@debian.org>,
-  nao.horiguchi@gmail.com,  linmiaohe@huawei.com,  david@kernel.org,
-  lance.yang@linux.dev,  akpm@linux-foundation.org,  baoquan.he@linux.dev,
-  rppt@kernel.org,  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  rneu@meta.com,  caggio@meta.com,  kas@kernel.org
-Subject: Re: mm/hwpoison: persist poisoned PFN list across kexec via KHO [RFC]
-In-Reply-To: <da460b26bef42152bf23d395f845503ad8eedc4d.camel@surriel.com> (Rik
-	van Riel's message of "Wed, 24 Jun 2026 10:44:20 -0400")
-References: <ajut_LDQGYCShApx@gmail.com> <2vxzse6ckqfg.fsf@kernel.org>
-	<da460b26bef42152bf23d395f845503ad8eedc4d.camel@surriel.com>
-Date: Wed, 24 Jun 2026 17:17:02 +0200
-Message-ID: <2vxzjyroklxt.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NyWSt8ap;
+	spf=pass (imf04.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <cfdb8620-ea55-4226-98bf-d006820e6270@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782314322;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eCfveZ37ayRh458SUb8Vvs7csErWvvnNaK/RVVo+5fA=;
+	b=NyWSt8apc46t06T04zMNhMchtk3k4ctFbVCiL9c2mP9xyextgm4eGNBGZRMVtokC/pbQ24
+	vU3kdqTh4LXr1cjm4Jsn6oIw3SoC6+9ZfRZnNtDC+QkC0X8TGfqVxfmzeu+69fJRhGzIhQ
+	iIJdk2xZx2BxIFCIz9q4ErwI9vRQK1o=
+Date: Wed, 24 Jun 2026 16:18:38 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH] fs/super: skip non-memcg-aware nr_cached_objects in memcg
+ slab shrink
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: brauner@kernel.org, jack@suse.cz, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+ linux-mm@kvack.org, hughd@google.com, boris@bur.io, clm@fb.com,
+ dsterba@suse.com, linux-btrfs@vger.kernel.org, cem@kernel.org,
+ linux-xfs@vger.kernel.org, hannes@cmpxchg.org, riel@surriel.com,
+ kernel-team@meta.com
+References: <20260609123047.1948242-1-usama.arif@linux.dev>
+ <ajrHa_JGxQvCMf8t@linux.dev>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <ajrHa_JGxQvCMf8t@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: jujpc314e817wdszbnik9h4yitw5cgxx
+X-Stat-Signature: fbo6993ya1zr9eur5qxnmd4wffwb6fbp
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4F1E720009
-X-HE-Tag: 1782314227-205119
-X-HE-Meta: U2FsdGVkX1+LFzozXr7djobLk8C5HzEZrhsWO/QMBipHhmLNtsmIoRWdkP0vFa+FKfyBK4eKqoQgQHmftxWtDpk3uplSvjMY19R4TQv6LqfIA2qQ2F9D4NIzeNMdp8ENpfN4Xb8qhEsWFH/Df4whhAdD9T+tjIq5bmfwvbEzS0oPKdHNcxZhbL9iuDUw4C/IZFTcFtwjAX7iyVOtT9WHCC8s8YSNtkvjSjH7GpH+cYUNr9wuzqNJPM1zRVxENcF87YZVJwf0tZtg/NO4KpBoEQyD9M2pUQ7iDjW3RJC9heRtYf1yyRrec+xGpI01aV96Oo8g1MsVHURLwmcX9mjjSbRIhaLqR/gEo4N1sATfUv4LKA9qI4RxRqMYSdSMPMPPdfKO//92VfrJBlWNq6wFmoRkS1POB/sQ3YyaeqamrdByamJNmTDyo4gIkVUVdZ2wCeoaMq84ysjYgFPSdn4X5c96zCe+UXHjviOhIDYhbPfSjoqKUmND3J+s88lW8jai9Y37sRuTwLaOlF6XaF91dlIeVvr9C6E63Yo/SebqGAeLEhORmNKHF+VcRp/+MqKuiaqhrR8TSJCs0Upcn7kOeOadOYFpB0jXhGjk/I4hznuhzVG7t7tGeC5z3H9RWJB3+0HCmm+wAoVJodncJf+vnND+jrtzJGJJWOO5WJiA2s4u4S3rBLunlrYzT4fPtjWgjGD/cWqJoRRECrHdqBgE8Lff0q1R2D8Lbnd1mk+SS7QEacfHYxnyF6X7SXXIqp54+0+6zhAooD/eM++BZb6A2YjNKUNquYC9BGW8LZWqjHAc9JTfistAtxUz1VgRaN8TeLZJozyREtcCI5RSNb5LuN9YE9qGIsgc+oeCZWH2u45TwSmhJVqr/eIM1qNeY9gys+x9P370p3zoMdPYmTYZhOa4LbV4JMinPUeBUEE80igmAolbGB6wHtKq8BJwSQSzM30/ValOEZFc4yVkhbk
- 6GlqNoM0
- RKRsK45YJKfuHwcvAInaM3NGqS3rztvN8aID7FW1JHxBAWq+r3fxUA/3PWgzyzYxO1uMcMONA6nlvxOh7SUppYijAVLU4K+zLWavRH6+hor1Fr92JMEcA23AqgBT4naXvVfjMEtJzCXnMQtPlSrTtd1pfzhjp3z+weBNMY1fq/eNCZA1rmFChmL5g2wUHe6u2sT8Grt03R77RjIKl0Ps4Rp24Oq/gKRjmRP4t6vD9qfW/ozbv7xBBwEwaLVJiq0HRnF/ZhRSbL9kfaQ+/YrFM+b4Jw+XzV8D10Njqo0ZtIB6u3oM=
+X-Rspamd-Queue-Id: 5DD2940006
+X-HE-Tag: 1782314324-8675
+X-HE-Meta: U2FsdGVkX180fsDcJ6dDK7L+A6TFNp+PfWetF9uc8EIyzj6+H6KrrcSAVKjmg7UQ2HXuKKZw6qDUzyMcAxG1JOj8fWsZ9DWnrQ2dgXc5JntLv43Iu1xc+QHBi1IkhiJa3y6thmH9vWQ+t5jOZ4WuCWBoeZyMIduzlc0ca+fzr+xjntheE+l6ndogNQ8IJFjt6PkYiaroOTuLMDp/zeyF+ohiLXhd1WUD/OyS1UaA+tZCLhNEKhAVNNInX11TTueL9DG2ujmBNFisisDv/fExNG3UnAe+gMdtjGPlm2l3xnnPJEdTLCmn/nS0wSzT8YPTz+yPDLsxtoeSBTVewiCpW/cjgwR1kjAXQeIaQ3kvEPS0U0Pphz2tj13CWmvA6Bz6X6O+qWjbHWn3m+FWg+rK23lrzqm/5DJ9em5T9piKw3ry/yc2tj/CKKp37syrJ09Ykc/xYK5B1pk/EbBTFaIm/IAYPHsLsRw6nLRbPGzJe4yK3pQKHSwLrmPRIYt2NcW0wke0+OiAceovL7dkfHHzgVY0+CYVHwCqMCLtHm71ST1yd8NuSp4Pa8MsDU8cVKk1VvNyQDmakdGB9XJrsGq0Yy9FUYe+NfRTlnvg7nMhi9A7ldkzzQWWCiWSmKzwg6g1xJxmFMxdhU6arUIFtySeaMhvl6Aj7N44mfVuXIipgAlCV5wRujPqFnJV9llWvcFKW8J3VWErBScBaNEZ7cIer7N8Ul3vuH13w4VGIjwZBRDLeKD1suuWuhP9wqJkvTM8BqeTW5GUQ93sWYAtjpTERIyp2fWZcWUmS+SuDwQnWc9lLJxrAilqfS//2lHwzSx8C4mUEIeicd++kUWm8bVMkJz5DYY8nzerP1ztDBbqenM+T2uA+Yeyoiz0nFHON2EfgOwKBiIxJRsE9ckWqp/gn2/95Jz7tmQVNZJ1QxLwasLPzxFAW5iMhO9JPV7XYXLX+QjsJFjs02Mt3NM/Kl5
+ LU0AF7rT
+ V1ot/jk8qf7o+KnErDLs/PB64YZc/1iGutfryQ/zGErsGfDX8w3w29WH4Vp2MIiLHEk5Br9Y6GIHy2D8XZycYamZsoMK6++oSU1fDNBAO6iKJwzr5rGEgHGEblMpkTltx23YaXxiyp8fP0ZHEivh6ov3vtLOlLvInNaLpWy20/2ghkb1KfZm9GvU5VOX53g2IqhiLFn7B7jdCkJVXiKQrCHJPUJtrgm8W0iFPD1xT1pGDZYxx8LbiNaMU9jNfwT4KMHZoHMbqr35hhdNNeQzjfC0dECutt9yYyrDm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,69 +95,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24 2026, Rik van Riel wrote:
-
-> On Wed, 2026-06-24 at 15:40 +0200, Pratyush Yadav wrote:
->>=20
->> Also, what happens on cold reboot? If the HW does not remember bad
->> pages, won't the kernel be in the same position? How does it know the
->> bad pages on a cold boot?
->
-> Some modern server hardware will simply unmap known
-> bad pages from the physical page map, so they will
-> not be exposed to the OS after a cold reboot.
->
-> The hardware keeps a log of uncorrectable memory
-> errors somewhere in memory, for example in the SEL.
->
->>=20
->>=20
->> >=20
->> > This PoC
->> > =3D=3D=3D=3D=3D=3D=3D=3D
->> >=20
->> > =C2=A0 * Makes hardware-poisoned pages survive a kexec, using KHO (Kex=
-ec
->> > =C2=A0=C2=A0=C2=A0 HandOver) to carry the poison list between kernels.
->> >=20
->> > =C2=A0 * Producer: hooks num_poisoned_pages_inc()/_sub() - the single
->> > =C2=A0=C2=A0=C2=A0 chokepoint for every poison/unpoison event - and re=
-cords each
->> > =C2=A0=C2=A0=C2=A0 poisoned PFN into a vmalloc array that KHO preserve=
-s across the
->> > =C2=A0=C2=A0=C2=A0 kexec, described by a small versioned "hwpoison" su=
-btree.
->>=20
->> More of an implementation detail, but with vmalloc array, what if you
->> have too many poisoned pages?
->> >=20
->
-> If a very large amount of memory is broken, you
-> should probably just repair the hardware.
-
-"large" is relative. On a 2 TiB system, if you have 0.5% of pages
-poisoned (I have no idea if that number is realistic), you have 10 GiB
-of memory poisoned, or around 2.6 million pages. To store all their
-PFNs, you need around 20 MiB of memory.
-
-While not too large, it isn't trivial either.
-
-I think static data structures like vmalloc are likely not the way to go
-here especially when we have better things like KHO block or the KHO
-radix tree.
-
-Between those two, what is more efficient largely depends on how many
-pages you'd typically see poisoned and what their locations tend to be.
-That I think we can dive deeper into when we take a closer look at the
-patches.
-
->
-> Page poisoning is good for localized memory
-> failures, but not for failures that extend across
-> much of a memory chip.
 
 
---=20
-Regards,
-Pratyush Yadav
+On 23/06/2026 19:08, Shakeel Butt wrote:
+> On Tue, Jun 09, 2026 at 05:30:47AM -0700, Usama Arif wrote:
+>> The super_block shrinker is registered with SHRINKER_MEMCG_AWARE because its
+>> dentry and inode LRUs are memcg-aware (via list_lru). But the optional
+>> ->nr_cached_objects() hooks that the shrinker also drives are not memcg-aware:
+>> btrfs extent maps and xfs inode reclaim operate on filesystem-global
+>> state, and shmem's unused-huge shrinker walks a per-superblock shrinklist.
+>> None of them filter by sc->memcg.
+> 
+> I see the underlying objects whose count is returned by ->nr_cached_objects()
+> hook is memcg charged for shmem and xfs but not for btrfs. Do you envision
+> there might be a rare scenario where we have a lot of memory charged to a memcg
+> consumed by objects which ->nr_cached_objects() tracks and that memory becomes
+> unreclaimable due to this patch?
+
+Hello!
+
+Thanks for the review.
+
+For XFS, xfs_inode is SLAB_ACCOUNT, so a memcg can have memory charged in
+XFS inodes sitting in XFS' internal reclaim state. But the current callback
+does not target that memcg: xfs_fs_free_cached_objects() calls
+xfs_reclaim_inodes_nr(), which walks the mount and reclaims
+XFS_ICI_RECLAIM_TAG inodes without checking sc->memcg. So non-root memcg
+reclaim was only getting an opportunistic mount-wide reclaim pass here; it
+could reclaim the target memcg's inodes by chance, but it could just as well
+reclaim inodes charged to other memcgs. This patch removes that cross-memcg
+side effect, not a correct memcg-targeted reclaim path.
+
+Those XFS inodes are still reclaimed by XFS' own reclaim worker, which is
+queued when reclaimable inodes are tagged and requeues while reclaimable
+inodes remain. With the default xfssyncd_centisecs value, that is about every
+5 seconds. The root/global superblock shrinker path also continues to call
+the XFS callbacks. This will keep the memory reclaimable.
+
+For shmem, shrinklist_len counts inodes whose tail large folio could be                                                                                                                                                                                                                                                                                                                                               
+split — splitting itself doesn't free anything; it just lets normal page                                                                                                                                                                                                                                                                                                                                              
+LRU reclaim the truncated tail. The folios are on the memcg-aware LRU and                                                                                                                                                                                                                                                                                
+will be aged/reclaimed there independently, so skipping the split from                                                                                                                                                                                                                                                                                   
+memcg context just delays the split?
+
+or btrfs extent maps, as you note, these objects are not memcg-charged.
+> 
+>>
+>> The mismatch shows up under memcg-heavy slab reclaim. shrink_slab_memcg()
+>> calls do_shrink_slab() once per (memcg, NUMA node) pair for every memcg
+>> whose bit is set in the per-superblock shrinker bitmap, which on a busy
+>> host means hundreds of calls per reclaim pass. Each scan queues the same
+>> global shrinker work item that's already kicked from the root path.
+>>
+>> Because btrfs/xfs global count is typically non-zero on any in-use filesystem,
+>> the returned total stays positive even if a memcg's own dentry/inode LRUs
+>> are empty. shrink_slab_memcg() therefore never clears the SB shrinker bit
+>> in the memcg bitmap, so subsequent reclaim passes from the same memcg
+>> re-enter super_cache_count() and pay for the global counter walk again.
+> 
+> What is the main concern? Is it the amount of CPU wasted or are we over
+> reclaiming or reclaiming from unrelated memcgs?
+> 
+
+The primary concern is wasted CPU. On the busy hosts where I saw this,
+hundreds of memcgs all repeating that walk per reclaim pass is what made
+it visible in profiles.
+
+Another concern is misattribution. Reclaim from memcg X ends up
+reclaiming another memcg Y, which could have an affect on Y and
+won't provide proper isolation.
+
+>>
+>> Restrict ->nr_cached_objects() to the global shrink path (sc->memcg NULL
+>> or root). The memcg-aware dentry/inode LRUs keep being counted and
+>> scanned per memcg as before; only the global fs-specific hooks are skipped.
+>> The root/global shrink path still drives those hooks; only their
+>> invocation from non-root memcg slab reclaim is removed.
+>>
+>> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> 
+> I am fine with the stopgap but it would be nice to have proper memcg awareness
+> in xfs and shmem callbacks. For btrfs, I am not sure if it makes sense to memcg
+> charge btrfs_extent_map objects but at least to decision to skip memcg reclaim
+> will be inside the fs callbacks i.e. nr_cached_objects.
+> 
+
+Agreed that this is the right long term approach. If the preference is to move this down to
+the fs own callbacks instead of fs/super.c, I can do that in the revision as well.
 
