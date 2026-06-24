@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F353CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 16:13:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66D3DCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 16:24:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56AD56B0005; Wed, 24 Jun 2026 12:13:34 -0400 (EDT)
+	id 29C906B009B; Wed, 24 Jun 2026 12:24:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51B226B00A0; Wed, 24 Jun 2026 12:13:34 -0400 (EDT)
+	id 274326B009D; Wed, 24 Jun 2026 12:24:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4099B6B00A1; Wed, 24 Jun 2026 12:13:34 -0400 (EDT)
+	id 163B06B009E; Wed, 24 Jun 2026 12:24:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C7DD6B0005
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:13:34 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E3E2A02FC
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:13:33 +0000 (UTC)
-X-FDA: 84915301506.26.0C55D0B
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf03.hostedemail.com (Postfix) with ESMTP id A64AB20007
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:13:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fa3J2SOh;
-	spf=pass (imf03.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E52656B009B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:24:29 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 697A01203EF
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:24:29 +0000 (UTC)
+X-FDA: 84915329058.24.1123A13
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 8EEE0C0014
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:24:25 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qFHnevJg;
+	spf=pass (imf10.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782317612;
-	b=zPEIQTy7SJQOnWK+bMDQhJBxkSL/3JD8tjjZ4HhhtaQ/xadcoiFrNMWarYK1z3n/yRNwCZ
-	dLJ4v5KWcl6AB7pJ452yCWTxh+UbCtp1PiexLzdQa7wJMDfGeRxbNraMq8X+7tcstsyz18
-	TraA+0GSWyb5+BBVZUSFy9E7C2ZmV7g=
+	t=1782318267;
+	b=ptuS1Wpx/Nkb+xTQJ6PlVN5p3JCF3Ld/Hab7cmdcvGi39apXs3NbGbq2dPGVt8qhO43Fhq
+	NQBUlhk4SjXOPYtL6T3wwr0KzFeYsWJZPQSqLapEXxN234r78VLnoRDvS4Hmc3GOjfWM9U
+	wB5BKy2A0BIao+3w80NfhdJrZkaHUN4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782317612;
+	s=arc-20220608; t=1782318267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m9aVF+G3OXPyZ/vcAkXPeyAs2FuDRWvwGyzee9qXB9c=;
-	b=fDhXLwOVh74szOiGAeOdnmCCmuq2pwfzvHeqCBKQbmUpAWR1doLEArkdEW14eiTw+TeHBO
-	ORCyIhA28A8kjKzHEsJkhcezVkE3+Qyw89KIXdnab2caWOXUGismHsZJv3aJQl/lc6Vuur
-	B+70s7mItXmkqfCvi5xvVoA/RKUcM/0=
+	bh=oCSclJsOHXGUR9PPnNQt/KSxQU5CDN7d+xhXrFSXdFQ=;
+	b=SNvEnUoB/Lyrgdq8cPrdAEhDZrqheOrCGjp38HZO1vAoNTnnjOCF7+xyrljFuxtCE1mDvT
+	zdfUSskUkadJiJKFKYZQsuonBkD9/QL4WQ66U55d7Xlwmit91RHX1+aOh/qRKVO42LENhb
+	H3e1GDgVvImGIJ7vEpylN1HKgHowTvg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fa3J2SOh;
-	spf=pass (imf03.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=qFHnevJg;
+	spf=pass (imf10.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782317609;
+	t=1782318259;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=m9aVF+G3OXPyZ/vcAkXPeyAs2FuDRWvwGyzee9qXB9c=;
-	b=fa3J2SOhvillti8Liv5ZP1niw3sCiypVHde+AiPnhIfoN4KtMBponRsJ4fCdvD4pujO0m2
-	ebvOAK1vccQyOHILjsjOpsvJAhyrY7vw5BUfQ9hzM5FDRyqDH4v4Cj0zl+XPIrcg7yjeF5
-	jTaznLi8uMLZFrFPe/3m2rvQr5i7Yvs=
+	bh=oCSclJsOHXGUR9PPnNQt/KSxQU5CDN7d+xhXrFSXdFQ=;
+	b=qFHnevJgDyc87ZrZY47VjxEqXA89BZaLQJxeubOA8i6wlCnoxO1zxlqexltOhiSP1mJ1B7
+	otStABHF1E7ajWjm02PBOzJDLYTFmB365svZ3sgHi6JJ9ZFyOhdWfqGltg8SQnpX4PCV4w
+	VoKCdKXbZAf/1znIe0ErC4bci6VBduY=
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 24 Jun 2026 16:13:13 +0000
-Message-Id: <DJHEUV09YHKE.1YVJWE38NM8U5@linux.dev>
+Date: Wed, 24 Jun 2026 16:24:16 +0000
+Message-Id: <DJHF3BKSTZ8M.15Q62P3TSDLVH@linux.dev>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
  <vbabka@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
  <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Muchun Song"
@@ -81,25 +81,25 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Vlastimil Babka"
  "Gregory Price" <gourry@gourry.net>, "Alexei Starovoitov" <ast@kernel.org>,
  "Matthew Wilcox" <willy@infradead.org>, <linux-mm@kvack.org>,
  <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>
-Subject: Re: [PATCH v2 02/13] mm/page_alloc: some renames to clarify
- alloc_flags scopes
+Subject: Re: [PATCH v2 03/13] mm/page_alloc: unify
+ __alloc_frozen_pages[_nolock]_noprof()
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Brendan Jackman" <brendan.jackman@linux.dev>
 To: "Suren Baghdasaryan" <surenb@google.com>, "Brendan Jackman"
  <jackmanb@google.com>
 References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
- <20260622-alloc-trylock-v2-2-31f31367d420@google.com>
- <CAJuCfpGagFf4RaCNJqu4Y1oqOXXOWSkP1UGuT9LA-9EbDN4Njw@mail.gmail.com>
-In-Reply-To: <CAJuCfpGagFf4RaCNJqu4Y1oqOXXOWSkP1UGuT9LA-9EbDN4Njw@mail.gmail.com>
+ <20260622-alloc-trylock-v2-3-31f31367d420@google.com>
+ <CAJuCfpE28TqZy2k5-X1ZEdd0HhTuc5i7+0kyxX5nXH4j+5JVfw@mail.gmail.com>
+In-Reply-To: <CAJuCfpE28TqZy2k5-X1ZEdd0HhTuc5i7+0kyxX5nXH4j+5JVfw@mail.gmail.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: A64AB20007
-X-Stat-Signature: 5qacssz4h5rf4998zxetq89kdbheor8d
+X-Rspamd-Queue-Id: 8EEE0C0014
+X-Stat-Signature: gqtxj8mr4ydmg8txuz8hfibd4y1qzjwn
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1782317611-747663
-X-HE-Meta: U2FsdGVkX18J/lXkDCXAX6OzhJf+fP5hvecccHBKZyLK5vTsNezJAwf8xja3vW+2oNerhHOrCbaVBxz8uwHMZo7w2+2KitBh6POxNRYDrJtjG8MY2ijSyJG9rfjBBdaoekiVh9MojnXhLE9AimKlfb8723pZLwrIYJXrDv8e1pXrjlCtiBJkZghYOzIDTiGzJ2U7Y1YIB7wZ8fX7vEXnwfyxiowsrqonvyzrQSiARaaduJFTXM9eEeSaf2B/48S58IEj0KpXWOGuEfjA30xypdwRCE6bLUxmz+6yqan/rlQ7dXIhwswFQcadWejaRNa7hXWsJMw61j6PW2Kq0Pa3KndBz3pUtrAhs+s0ZsO1j2b9BPheTKT8MMl9uT7RNUpgiAfuSR6IYi+pHSfwlqZwoI0r4EMek8SsAhOW1smLZJQrBd2nJKLrlOcuyd6sBQdC25KC9ThEhGhHadQXTbHoN5zBVGhSSnc2juxyZxf7rhMhLmouKNAvDVZlSt+4CEWtMZ2h2QphIuYnaiSZaDxbMxDUuf6Ft1vGMouT6qryr6oa6WeILxUawDglTLy6q9cyrZxnHuoHiDahOwOeEylw2t3P+czrSFOQQ2m24BQ3j0gU0ftE9SdWiISzurfk+7uzCcanTP0vTHGF64Pb8udCR9tMkTbiTr1lmYadf6d3kxq7Qx4N3UQIqpRXQD00DggNcvFrwH+zg4B9jVJL84F9eLReYGrKBkRUqjasV0EFIkXXr2ER1roWscswc2BtzerjhVKotEgY6wGtbmGKPbmji+icZuBUYgkhmoXXBRAAKHPhhkyoCPNQEXGxvCfJVqoZlpTbKS7XD+fxKqBNK6b92qtomg6AdzqH9ZIiEF4KFZUD1eafhWjVE8MWjtKnTRnqBERNWmJ2ch97zYfI4EZqIEE22emwpL+83K8Qc04qEDOSPqALFdjWQGerBQMqN7a4CtKDScMxpVH1jNG1npy
- 0wOdSo+n
- OFNNdO7P7T7vv5NgVNPHnbSAPyPy/T6fPhVlpb9o7ksRxLN9WtRoYqr4dQBSQPoHFXeABxRXY2llKFa1SAm9v6gpmz0vxUxybPYRcnD9icj3h5w85obA2SBlraMC6tmWgG9FYyyRmhIEQyNimC4Kjtd/FMW9Fy4miATY6RgDokoCytCwh796akTskkYkTekQWyQAmuHUYWFEG7b5nWgLOs8/uDInxZGXUh1WT60mm55XGA4T5qJEbHnxyV/baNO/Ddt4pRDCQzXQkV5+xLtjdtKLHx0ZHsNlrOPk8D4gY2eS2wnaEiD+wLp0trCxIbDkyGD8qBR1IzYsbjhNXJw1WfuD1V2pE+7nJnadE1PL04k4u2Xtb5bIuO5JWCKwuyIrxBhuv
+X-HE-Tag: 1782318265-189217
+X-HE-Meta: U2FsdGVkX191gWpkCNSPedSwfMo0HJEIpRxu9Y0aaz19ZOYTLTPePc7jiYPsqO2BZ6itLYX2L9ZefToEw81PwHmYLd70pR+k/+nn6JImZ2hOi4I/fV9EQ5okSkWoJyFFggQOZxF+TRE/RI4bLEZg0xi4MnJUvYPpFyMrS/uVcbOt9y/qd1/MiDEt3tHIkNQCVnN8r9grgyD8qspB1fK8hK9lDdz7boG1ww7QPP1EfMEqR1EeSJnDNJYVynhCbz5utYwLw2EwsoQkyOLNQYjcRqhKmKUCsCclYUmGDfEcwthcNqPfl8zIKnRyzb8ym44bbYm5LeoIXnK27kVvbhcfSUHXH2ATqj5Yq1xq5r4ekshzibRFQXfDfDzujY5VI++ezMLDQlG0lzZx7R8yV3cmA25jtq2BeYNuqeRK41lMoukIifJ1VEummuwl/v6ig5knnJyYIc/XdS80k0ur8+SIwlEKLJV5cNdO9tTkudEKMgxNF2VtoGtKtpxqHT5fQr1SVQLOUFr546Tv3lPG6dDk8RfthbDT8NOSm66AiCTOUIb+vUxL1nnuZ1LYqQdMtrOZOC9jnF91/4IpXfLa4E/3skmtovH6+kg5P9LKgqG1NbpEUMzMAVBeLhYzhOhTVey7z+OmniaEXY3hDmzskPaHmvtUoha2qu0rqtdwdeoF4HZi7RGD/Ydd7Ef1M6BEkYYIlbMb6I6ycKLFR4vEuefpDKn1DtnK8VyWCqdJNkEJe5lPogQeSD6YJdM+sIaFoLKV6ZQz+s4353+SGbykDHMFUjLWjGmBowB3UM2gJcIY82ZiUy/sxH/RPNKjWkb4lbf3LuRbcatJaqUG/82EzkFKkkpinPhmRcwF2Z1LRLhb2WxooIurcK5o8mXA/XL1WH7z8OJuja8jZ3QEx8tZ6P2XsRMelDKLKZf69karxXpK7rpu1Xh/xoYLi6loGk35ylwnZUjvtVHyx6QOjwhqC2u
+ z7ZvmpS0
+ E2OZJrRp4DaqvsB5pAy7EDUhTJLbM/OLBR0rthx3OpQQGRBBYQAX6Z+wX3SnlSXdPn5lijc60IsIGaXCLKpNZQqggkCjUt4tdesdLvFfIVfCqe80Y59NZ733m4xfFkx0diM64BOYWf5ZlbUO+rcCQPsImBjYhLDgjEoQqBDIx+r6RmBymRNnFHdsbu4yZnzTwwbRTEYZxfzzmIn7f/1PQu/lkiOD9a80/pBgIvvpoq/Zohb9HQ7kFVPqxS7UwuPrte9Ptj785tbWsNNyUs1y2rc5J+uc4L/Nsi6dklm0Q9Us7WHF9p7ZU9VpgAnLqSDU4TtyGXm/KZMiVWIeEqaZOZJppgxsjPtP4OysZikjjMj4ELlriGhSrX1KN0Dvzs++0xh+H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,44 +107,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jun 24, 2026 at 3:03 PM UTC, Suren Baghdasaryan wrote:
-> On Mon, Jun 22, 2026 at 3:01=E2=80=AFAM Brendan Jackman <jackmanb@google.=
+On Wed Jun 24, 2026 at 4:00 PM UTC, Suren Baghdasaryan wrote:
+> On Mon, Jun 22, 2026 at 3:02=E2=80=AFAM Brendan Jackman <jackmanb@google.=
 com> wrote:
 >>
->> It's pretty confusing that:
+>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
+>> main entry point function is significantly different from the normal
+>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
 >>
->> - The slowpath and fastpath have a totally distinct set of alloc_flags.
+>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+>> exposed to mm/) and then turn the nolock variant into a thin wrapper
+>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+>> how some of the wrappers in gfp.h do).
 >>
->> - gfp_to_alloc_flags() sounds generic but it only influences the
->>   slowpath.
+>> Rationale that this doesn't change anything:
 >>
->> - prepare_alloc_pages() is generic in that it sets up the
->>   alloc_context, but the alloc_flags it generates are only used for the
->>   fastpath.
+>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
+>>    the new alloc_order_allowed(), alloc_trylock_allowed() and
+>>    gfp_trylock.
+>>
+>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+>>    previously in the nolock variant:
+>>
+>>    a. Application of gfp_allowed_mask; this only affects early boot, and
+>>       only flags that affect the slowpath get changed here.
+>>
+>>    b. Application of current_gfp_context() - also only affects the
+>>       slowpath
+>>
+>> 3. The slowpath itself: this is now just explicitly skipped under
+>>    !ALLOC_TRYLOCK.
+>>
+>> Ulterior motive: adding an alloc_flags arg to the allocator's
+>> mm-internal entrypoint can later be used to do more allocation
+>> customisation without needing to create new GFP flags.
 >
-> I understand you want to clarify the usage but this particular point
-> seems to be an implementation detail. IOW, if tomorrow
-> __alloc_frozen_pages_noprof() is changed to use alloc_flags when
-> calling __alloc_pages_slowpath(), would we be renaming it back? So, I
-> would suggest keeping alloc_flags as is in prepare_alloc_pages()=20
+> Looks like a nice overall cleanup.
+>
+>>
+>> While adding this flag to a bunch of places, create ALLOC_DEFAULT to
+>> avoid a mysterious literal 0 in most places. alloc_frozen_pages_noprof()
+>> is defined above the alloc flags so just leave that as a slightly messy
+>> exception instead of trying to fully reorder mm/internal.h for that one
+>> case.
+>
+> Moving the whole alloc_frozen_pages() block down seems simple enough
+> and would avoid special-casing this.
 
-I would say yes, we should rename it even though it might mean having to
-rename it back later. IMO it's very useful to make it clear to the
-reader that they also need to look elsewhere to find the slowpath flag
-logic, without them having to notice this rather odd detail of
-__alloc_frozen_pages_noprof().
+Yeah... when you put it like that, I don't actually know why I was so
+intimidated by the prospect of moving a handful of function
+declarations!
 
-But, yeah I guess prepare_alloc_pages() doesn't really care that its
-caller is only using the result for the fastpath so I could see the
-rationale for keeping the arg as alloc_flags...
-
-> and its callers.=20
-
-...  but for it's caller I really do think the rename is necessary and
-doesn't really have any downside? Especially once alloc_context gets an
-alloc_flags field as it does later in the series.
-
-> The rest LGTM.
-
-Thanks as always, I appreciate the review.
+Anyway in the v3 I'm creating a new mm/page_alloc.h so this will happen
+as a side effect of that.
 
