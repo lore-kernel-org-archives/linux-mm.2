@@ -4,100 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDBE4CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 22:46:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 322A7CDE000
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 23:00:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9358E6B0088; Wed, 24 Jun 2026 18:46:25 -0400 (EDT)
+	id E87726B0088; Wed, 24 Jun 2026 19:00:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8E5F36B008A; Wed, 24 Jun 2026 18:46:25 -0400 (EDT)
+	id E11836B008A; Wed, 24 Jun 2026 19:00:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D4646B008C; Wed, 24 Jun 2026 18:46:25 -0400 (EDT)
+	id CB22E6B008C; Wed, 24 Jun 2026 19:00:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0D76B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:46:25 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BDF761404AF
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:46:24 +0000 (UTC)
-X-FDA: 84916291488.21.2F918B8
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4BF071C000B
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:46:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OVBfjWm6;
-	spf=pass (imf20.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782341183;
-	b=n0UScFzvjynut3qYNZFwsxtB3oWx5EwLsFX6Y6LmHb1OItJk2dPugSaZ8yqo0gni3dgWZ+
-	NTuE0AuAYI8GHCiNfEcCdKJ+zvsAI4GXC+NUvGvaNxwh4MP56iPwsfhk8naShiey1egT2D
-	yGXrYCccyEYTW7GRihBeyyUA/F0F6cw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782341183;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A61D46B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:00:38 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0823FA0481
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:00:38 +0000 (UTC)
+X-FDA: 84916327356.08.B969E93
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E4F3240021
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:00:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CKPE/LQt";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782342035;
+	b=YdVnK/YWJMDGSWwKe6T/KyprHv1Mj9btIgyMZeIJixuGwupdvFYpkVLE7O9IUpKZKYxAoj
+	3veioy1gZvwkQ6V/mmU9O2HpF3lEy/O0cVNByMeAdyDqOwq1CXsxfFsQ2+Fu762HE79Ebw
+	DBodG8MwJdYgvD7SnuVUhh9gtCA/OyA=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782342035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+WSGY9dLQqNnAkibDsXbEsLCclNK7cqzQS11//tCqts=;
-	b=gg7s7R8GbbsUQEhxhqMTO9jMeNnJQemNcccZdXYFUxktP0KMvdRO6SSKv54ZCOkTt2XYZn
-	gIBsoMIslgQG06/GG2qy04Wwqm7qajIRmgK+7Jdc3l7jK1eCvOkNltTUsXKYZuXAi+ttLg
-	rxMIcHrCFQmseHUEPe8DGK8crozXPdQ=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OVBfjWm6;
-	spf=pass (imf20.hostedemail.com: domain of ihor.solodrai@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=ihor.solodrai@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <c49b1499-6aa0-4e17-8385-cd2bcd2220cc@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782341177;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+WSGY9dLQqNnAkibDsXbEsLCclNK7cqzQS11//tCqts=;
-	b=OVBfjWm61Bc+yXLepbLjwQPfA3qFP8rMq8DkKs3GXVAh9Ey29S8biSK5f8/BfiPVrDlPAn
-	iBNooDbv4hvTX9pTW2u5Dxp+1BQA0dCnHq9yAKkqZbtZcth2iItIUy05fJrpW+Hrl1sW+8
-	t1VBV1v+HzU8s1z0BJlnqa5NqceWHrE=
-Date: Wed, 24 Jun 2026 15:45:15 -0700
+	bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
+	b=jXOdnCgXteeoOP3GS80QRRMk1OmPC+M62gRz4SkqzEuZIJ1z07xTBKVm1Uphfr3FZTzduj
+	OTePM75qpp6xMIACRcIgTBeb7ZcmpG7W6QCMS+tzX4nRvHwIP8p4Do+6Cy0kPvxyo1Tee8
+	3sT8C5PTDWYc3uQEyzYWvVUMznIULWQ=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="CKPE/LQt";
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf27.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=ackerleytng@google.com
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-139a5f4ca15so1825046c88.1
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:00:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782342035; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GieMwQ8W5HpQR1QhEm+qEJ9tpwCZkKUW2dyE+Hr9nXU2FCCjgiBfRyMY4Bp92oCRd/
+         uv7meh3ozORbAn/kwFaW5ZmNWXSyq4BMia+iEUtHWMEy3cs1hFZRdCKtaioAbgoAjp3W
+         1m1jYE5wQrMRQFPH1Io9EWNaEA9XKhT3IVe5B1Sif/uspwzXxDRWYGkf1xng0In49RQU
+         UsakZ1iahA2issSjEkU8WsnWPF2zlOLPPov682OthSTW0fwmzuzSX8AHbZJsVswNugHk
+         nBxCxGWYJGzJXKiW5BSa8iV93z77JvXGa+2VH8OI7G9yOBrPsxmj5krT+irt2zi3eJP0
+         E6Ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
+        fh=MQn2nfe5tKyDgtg8YzcPoB8frqxKvwkDbZMddiLEaHw=;
+        b=Qo+3jVd+AdRDB2z6dMDkuKtOtGIkVtSayKjDTl1gelNSPbeIpPWHbntUIeB9ldEBZS
+         vE8QbB97ZGgMcqw+a8OlY5fWTpGpZl5JI+y9yJzMj0KylNf3I0z42v8PhxE9HhIXpU6Z
+         QwgNfhJxm8FmWSxeqIaIOeItfcUp/KkXySZF79kbV1DYWfD/Gvt+EQK2DoEo4y1AceK2
+         mZNss6s9wnK6WziQOmsnGkTCK43ZGJRrJWyvPNmeNORaRvS2JKnknTuC+FlwKBnFxRju
+         aaMq7MhYorzJw0kXCgVt2iydGBUHe1qZSM6YRQgD6Raat7sfgh3wbOebsHyUbPPt0jAa
+         XEfg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782342035; x=1782946835; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
+        b=CKPE/LQtJbMoG/VmTvHxx9QRi9yT2cT6CHEo0DShsyPyjeHVmSNrKsAeZz0m9ZXBj6
+         HAltDaDoRNUPAbBhEZ/4KyUa+OtMSmAsPJ27SpDTj9M0Fo42kCN0EggaO5SvqNbQrzaK
+         454kVj7Skw3nqkUD50FYg1Wvh1fR/bq3cFGh7raF0wOY8nkhsgcCRiNci6lbCn81X3DM
+         zot8Ll+0Grezu9KgOhKXFnfhrtiW+RgbrHk+cls91VJe5uOWft8tSUso9W0WHBXIKAzM
+         jEVtKLG56+qqTp625JomyJhiUh9uSK6/u8Rd2TLMj/8mszFb7wpCtXsKiIO2UWTRXNE6
+         T5/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782342035; x=1782946835;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uiDSxDdQCuoFNlxYLhHEIwl1aJFHoLPbVFXDv4LT02c=;
+        b=quQGN9aHHKPPU/llDuSlT4/apGD38N2GHEoApkE6eZDHJWH4JLDjDZS59xNzrD52Zt
+         Ka9s4/AfItK6fsmpRGO+CDMpI46247gDDPKOEKsjm6K19tH/JJODUHzzrZwIGvBPxJ4s
+         VGNYWZ/NtgZxV/DtbZQW6Pi0269jSY+C72Y1IbJOt8xHVnCOIVWlbggUrslvTzaY6IRa
+         fd1jF/uzBeeKwyiyVhwVlpCnscIRRnGSQfWR4KqzYLm1uE6MuYKyHIJA+5oLlirTf8Xk
+         toWhJAQWrz6edCgT/XMosiCIBZtjcHN513H4Il3N35QJtE2krXIKI6l+0IQh8PDRIZoB
+         zLMQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/cxL+Pa9vSZxYLo381CjVeeyhuQQ7fXz2Auv2Hx9lw5uujdRmWvfg2MFUwd30fhgmaKjpKwKixag==@kvack.org
+X-Gm-Message-State: AOJu0YwSiqyFZ7khPDYN+lCF5ru+Yv/yVWNXQGHj8+4bQLeOvGSf3wis
+	bMxfm2qnmgj5l9HElcHuyATJeU76gnFonZVqv0fLYcd/o4DVVi2dmkpjqZwHRDfJRUsUkbrHobr
+	1uWy8fXb1DSbvQFiYi4wDwSTysaTYFoz2lrYKFrwV
+X-Gm-Gg: AfdE7cmXM63WMkLuxc9ktWU//DI5uvvT3Dr0fXWvsnlUKTMInH8vdWnG08u0BiUlcfV
+	CzDvcX8sG2l5CniTZ3HNi4DeOnRHtphKgz5r3Pu9LFvQz90egAs+JsgNYr4kqQwyxusHSNq+7q1
+	ZHZxDSUgSxlH3y32rCWOIVG/A4GpvtV36oJPlVNhPRHaPsu+V8rukFpf2IFYXdHk3F8HNKUyiHL
+	4NVvAT02geSFMrOR9Ox7MT83TWnw8nxBe18YbxznB5PE/MaDNuY6DdwclINDNI0Ge5EVizCqiBV
+	2Zh/tPzwZ04v4JIkdfrgBfDrbeIGz6IO9VtWdzKaI3BmjHSwkJ9RuuxCVvgK1h/Lzsf3sQ==
+X-Received: by 2002:a05:7022:160a:b0:139:cf4f:3b80 with SMTP id
+ a92af1059eb24-139dbb1250dmr40215c88.34.1782342033417; Wed, 24 Jun 2026
+ 16:00:33 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 16:00:32 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 16:00:32 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ajxasFBzp_9KnQLq@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
+ <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com> <ajnf5Z9nWZxoLS4x@google.com>
+ <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com> <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
+ <ajxasFBzp_9KnQLq@google.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
- under 5-level paging
-To: Borislav Petkov <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@intel.com>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
- Andrey Konovalov <andreyknvl@gmail.com>
-References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
- <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
- <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
- <3207a706-354c-4e9d-ba53-dded1abb1842@intel.com>
- <20260618183815.GDajQ7F-bqTHnrakoi@fat_crate.local>
- <87643862-e32e-43c7-8c81-7186f30059ea@linux.dev>
- <20260624025732.GDajtHnB1Jc21kQnl_@fat_crate.local>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Ihor Solodrai <ihor.solodrai@linux.dev>
-In-Reply-To: <20260624025732.GDajtHnB1Jc21kQnl_@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Date: Wed, 24 Jun 2026 16:00:32 -0700
+X-Gm-Features: AVVi8Cd6MsvMJuk5LYLyYsxDOenZ5WDyms3uLYv9lo6HnpeNhZqAtHcdl1tcM3o
+Message-ID: <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: ca8b6q64c7isr8s537ykeezni1p9m6cp
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4BF071C000B
-X-HE-Tag: 1782341181-612385
-X-HE-Meta: U2FsdGVkX18lj2kq3/0c35X5062ayj1Tvf42QvYHhoLili5hhI+K2eg/rtk/StCAY0xqiQgcDrhzeDPXOuoWbHnAcX14/xL77KVEqFrvy4X7hK5dCakfZ0o1SRBgo2DGJa6awiNhEv03J1roiAmo+BdxgZ4Qa1gWTnnR+KgYv6e/959fC480mWoF/TUIecbD38Kz08w3OpPNIEQULC2NQxo71/4A1OeC514QsBA7LjRP6EUCchFQ7SXeLUYfuRZCYSQZBzn2qohv9acwwuZeMEKJU9ftkrS3gbd4WRlRmeDwUMSKnlT69BPo/hD5BoRJSN8Zv9UQ/VVtwHGg0Z84s0UjRVRpBLTiTr6x9UuEk1yQGtV92/RLKTVnDjqkrrjBazKMTUudUc3hBVHyakf6F9OhmEoUXQ9O5jYiOiBG7yGpJq5CNK5hLM6UkRsHXVdX6il+Q7Uu+wmwp8ruvX+nlnf+YIw2S8X4QJvJsrZ8X9MZyaPj1eWj0mgPrhJI7+jrVEQaxjC8sEgPuncTy/CA4eh1E/zRLeKpytxMAmf9JiF4XaYqffPnot2GGjttH4N0M3L4oP82yMWQEKla7U9eccVONtyFBal/+fZOd1P1TlPzEJG05d/xuP/+UUd2hJxgHeE19PFsTQ0XpjABt5d6uBrR2wUPEBoCJyT4Yrsuy36YHtNFgnL4/a0oheI1t+QF9E/IEpSz2x61EpLOvegZczPOv0oPsALohr4rLJmKzeai7Cexq7Dzx5thkfgPLnC6p6WzqSkLUGrpqxjrg8zo4T7CCFsYjZ99AEPs/dcXva4kJ1TForBfMRY+x0CAAk1voy1ujGskcji5Dli/X3HtG1L1bGNJ5TgtjEIaGPzaCmzK0f7vHom9i1i+t1G5eIzSVOdJSbVqamWtJ3b+cM7tTvk/ClFyaEUQSC7HO97CKxmzLJk34Rzn3hIzW3krYs6Y33yyiDSdpoxGytBg5n/
- +LUvP9zg
- g1oNlkKGGzQPVmm7inyaN2W6SNHqgzxlKvvyJg7a43AmVwwuJOYc6134Gu5G8hwXQjHCJ/X53EJeiHhWg7+YHbzSsmCX8f4Y15ROL6EYG8sI3tGI/+u+ec9XZbhMPV1Z4L0ZfhW44rwo3BD28VMMqSRUFR9UwdHcimfZfVjkz+R2W2dp+ZyxlQ7cs5OeCIbZCtQsAL/tbkX094+FeacDrs7smif5/BDMHQuj49w8QfVYEcAJY81s4EsXR4qBcx/8AMejqN39kHvEeBcsjOtXbtyAtUi7BMxeefCRU13gkAylqH6YD32VJkvE0uQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: E4F3240021
+X-Stat-Signature: dq16k4mgpkwfgq1widakk9aqsk1u46xp
+X-HE-Tag: 1782342035-843047
+X-HE-Meta: U2FsdGVkX1+6i6Dm7PeSyfWa9id3ML5CDOiI3HLZcIoaiYOdZGzsQfcSCqeN4HRhhzrSMky1OYfnY8Kdl0GYEKAP+DdESPLlQ8ctI4QIpjcU5QzzS6NeA+cxva0ijSaHvWk8EWBx+kF5CTmlVcr9BVhhKqqI47mhWwS5Py5SAgwi9XENVlmRO9WVagc5ZFy0Z9KRaUS2L8gnBag8+IrMQHz/I4NakbA0XIz4xyanP9A4wod9LCYNQihhTmdipy3lRkJ7c064MWUi1KZAr2LQPYnU+hJPI/Bt3OLAEvr+Olq9kEBCgmlp+DEaXOq0Z9lnAT0JIIWF1fcMc0MymLLPJv/IbfnHANO6JvOW+Ns0sRulycI8Nz3662sH+5Z1Uu6oOOyTcWqPmffU3r825UruCsxNCeQA36kztW6svP3NSOv8IsT+v0um8hRPwm9CUEQq9ezvjW40J9UmS0B/9dKXXrBLeTDggQU9RO+0JocF0WtoSPcv+8dZnzVIPZhOvHFscQU+cCF5hqb7V9t7rUDmrA1Bm3/0GLaLBDMIUTy9UdtpOdfx4khlbAUy3X5n2VwFAyfytEWaxyQVQi6a89vN1+8+cc1etFBAvX3/38wP8UK5Qh94BocUd0cJ6JeseRCX76k7odZunfnsKtA53gRs0dKrNrFZX2GMDM+twdwVLvRgeFtL9Lmt/gg02i/e2jxth3Q96r+jqjJamxZ5mNC1SXDktHbrHf8Y9jziYrdv4NnfigdVn2NBGAvLmfGEj3W67MXIuNdXsmDcbyZA2d4hGgSW00fL/18DeuD4ph9XBC8zNSAUa6xjXFREphPzYBHheNORSy8KWG4PxoU2vpz5P6rTjxwOdXp/k9wJ0fSVACsF0sx5y3WAunrnwHjZ3ovTrHk9Sm76auNAOEUiR9YRWQKMnpmv4obLuERKMXZ4cqE+qbJAS8d0tzuCq9ZlfNsXFuFo5HDCYyA0AcQPHmK
+ RfT1Ay5Q
+ GPfNhNdGRvpmhb6mSsg29KxTP0Yp6aQHpWbxR19qjPlEO8uAebKZWuoLT1jWlhi6qFCpofeo/9oTrlrdjC/ekzULt4IQbqdMtdpyjH6fVmy5TBbK1cJ2DiQL4SQX+YK/1Uh6EF6VjW6FxXyGZsEHgHXIpr47eqFSyxhUve42MFj24uFtGdyuL3b59WdVXq8C014awpZHOYdKNp21ofuHpHLDdV+HW00bkfQXawItzphpaQroZWd2ND5eu53n+d+ew1+deUs74VNn6Xr7m4gv62DjRVzQBxE6mcQZfbgwGcsGgWd/fFXNTGe93+87UWaEKaxwpK9byhYvshEJ4Sq1U6A4UijMEwoWHODx7vSSzdpH9F07QtHaGW2LkLzZ8k0nDje+jbPXWNOMPdxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,219 +166,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/23/26 7:57 PM, Borislav Petkov wrote:
-> On Mon, Jun 22, 2026 at 05:29:12PM -0700, Ihor Solodrai wrote:
->> On 6/18/26 11:38 AM, Borislav Petkov wrote:
->>> On Thu, Jun 18, 2026 at 11:12:09AM -0700, Dave Hansen wrote:
->>>> On 6/18/26 10:09, Borislav Petkov wrote:
->>>>> On Wed, Jun 17, 2026 at 03:13:33PM -0700, Ihor Solodrai wrote:
->>>>>> So my question to maintainers is what approach seems best?
->>>>> The CPUID stuff is being rewritten currently and it should address your issue
->>>>> too. If not, then we need to rewrite it better.
->>>>>
->>>>> Can you reproduce with this set applied ontop:
->>>>>
->>>>> https://lore.kernel.org/r/20260528153923.403473-1-darwi@linutronix.de
->>>>
->>>> Thinking about this a bit more... If Ahmed's series does fix this, I
->>>> think it will be accidental. It still uses identify_cpu() and also does
->>>> a memset() of the new c->cpuid structure in addition to the old
->>>> c->x86_capability structure.
->>>>
->>>> I'm not knocking Ahmed's series by any means. It just probably won't fix
->>>> this issue.
->>>>
->>>> In a perfect world early_identify_cpu() and identify_cpu() would either
->>>> get consolidated into one thing. Or at least become two discrete things
->>>> that initialize two completely disjoint sets of data. That way,
->>>> identify_cpu() wouldn't memset() anything.
->>>>
->>>> Isn't that the _real_ fix? Instead of trying to hide the inconsistency
->>>> when good data is blown away, we stop blowing it away in the first place?
->>>
->>> early_ is only on the BSP and you want to scan all CPUs.
->>>
->>> AFAIR, the last time I was looking at how we scan the CPUID leafs, we do have
->>> cases where there's blips in time when cap bits get disappeared to be
->>> rescanned again. The toggling of MSR bits which control feature flags is one
->>> thing that comes to mind.
->>>
->>> But I'm with you on the consolidation approach. I think this is what we should
->>
->> Hello Dave, Boris. Thank you for the input.
->>
->> I tried a slight refactoring of the identify_cpu() machinery to
->> eliminate the memset(x86_capability) from the boot cpu, and it fixes
->> the splat that I reported.
->>
->> identify_cpu() is split into two parts:
->>   * identify_cpu_scan() - the top part, up to and including the
->>     generic_identify() call
->>   * identify_cpu() proper with the rest, no memset here
->>
->> Then (gated on x86_64) identify_boot_cpu() *skips* the
->> identify_cpu_scan() call, only executing the bottom part of current
->> identify_cpu(). We can do that because boot cpu already did the _scan
->> part in early_identify_cpu(), when interrupts are still disabled.
->>
->> One caveat: get_model_name() is moved from generic_identify() into
->> identify_cpu(), otherwise it wouldn't be called on boot cpu. Same for
->> c->loops_per_jiffy = loops_per_jiffy; - it's moved to the "bottom"
->> identify_cpu().
->>
->> The behavior for secondary cpus is unchanged: identify_secondary_cpu()
->> calls identify_cpu_scan() then immediately identify_cpu().
->>
->> Please take a look at the diff below and let me know if this is a good
->> way to proceed. I don't know exactly what I'm doing, so concerns and
->> corrections are welcome.
->>
->>
->> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
->> index a4268c47f2bc..4a655109cacf 100644
->> --- a/arch/x86/kernel/cpu/common.c
->> +++ b/arch/x86/kernel/cpu/common.c
->> @@ -1978,8 +1978,6 @@ static void generic_identify(struct cpuinfo_x86 *c)
->>  
->>  	get_cpu_address_sizes(c);
->>  
->> -	get_model_name(c); /* Default name */
->> -
->>  	/*
->>  	 * ESPFIX is a strange bug.  All real CPUs have it.  Paravirt
->>  	 * systems that run Linux at CPL > 0 may or may not have the
->> @@ -1999,13 +1997,12 @@ static void generic_identify(struct cpuinfo_x86 *c)
->>  }
->>  
->>  /*
->> - * This does the hard work of actually picking apart the CPU stuff...
->> + * Rebuild capability set from CPUID and re-apply the forced-cap overrides
->> + * through generic_identify(). This *should* run with interrupts off, otherwise
->> + * an interrupt handler might see the capability bits cleared.
-> 
-> And yet it doesn't run with IRQs off. So that comment doesn't need to be here.
-> The point of the whole exercise is to not disable ugly interrupts in that path
-> at all.
-> 
->>   */
->> -static void identify_cpu(struct cpuinfo_x86 *c)
->> +static void identify_cpu_scan(struct cpuinfo_x86 *c)
->>  {
->> -	int i;
->> -
->> -	c->loops_per_jiffy = loops_per_jiffy;
->>  	c->x86_cache_size = 0;
->>  	c->x86_vendor = X86_VENDOR_UNKNOWN;
->>  	c->x86_model = c->x86_stepping = 0;	/* So far unknown... */
->> @@ -2028,6 +2025,19 @@ static void identify_cpu(struct cpuinfo_x86 *c)
->>  #endif
->>  
->>  	generic_identify(c);
->> +}
->> +
->> +/*
->> + * This is safe to run with interrupts on.
->> + * The boot CPU can run just this from arch_cpu_finalize_init(), because
->> + * the scan part already happened in early_identify_cpu().
->> + */
->> +static void identify_cpu(struct cpuinfo_x86 *c)
->> +{
->> +	int i;
->> +
->> +	c->loops_per_jiffy = loops_per_jiffy;
->> +	get_model_name(c); /* Default name */
->>  
->>  	cpu_parse_topology(c);
->>  
->> @@ -2154,6 +2164,17 @@ void enable_sep_cpu(void)
->>  
->>  static __init void identify_boot_cpu(void)
->>  {
->> +	/*
->> +	 * The boot CPU's capabilities were already scanned by early_identify_cpu().
->> +	 * Here identify_cpu() only finalizes them.
->> +	 *
->> +	 * 32-bit still needs the full scan here: it sets X86_BUG_ESPFIX (via
->> +	 * generic_identify()) and the no-CPUID cpuid_level default, which the early
->> +	 * path does not.
->> +	 */
->> +#ifndef CONFIG_X86_64
->> +	identify_cpu_scan(&boot_cpu_data);
->> +#endif
->>  	identify_cpu(&boot_cpu_data);
->>  	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
->>  		pr_info("CET detected: Indirect Branch Tracking enabled\n");
->> @@ -2178,6 +2199,7 @@ void identify_secondary_cpu(unsigned int cpu)
->>  		*c = boot_cpu_data;
->>  	c->cpu_index = cpu;
->>  
->> +	identify_cpu_scan(c);
->>  	identify_cpu(c);
->>  #ifdef CONFIG_X86_32
->>  	enable_sep_cpu();
->> -- 
-> 
-> Ok, thanks for that, that's a good first try. I did poke at it a bit and
-> here's what I think should happen:
-> 
-> 1. The part which initializes struct cpuinfo_x86 up and including the memsets
->    should be one function called init_cpu_info() or so.
-> 
-> 2. Then, generic_identify() should be merged into identify_cpu() basically
->    turning the latter into a single function which does a generic CPU
->    identification both on the BSP and on the APs.
-> 
-> 3. #ifdef CONFIG_X86_32
->         enable_sep_cpu();
-> #endif 
-> 	that gunk should be stuck into a function called identify_cpu_32() and
-> 	you'll have at the beginning of it
-> 
-> 	if (!IS_ENABLED(CONFIG_X86_32))
-> 		return;
-> 
->    and then you call that function both in identify_boot_cpu() and
->    identify_secondary_cpu(). This way you streamline the paths and drop all
->    that ugly ifdeffery.
-> 
-> 4. When you do 3. above, you should be able to move this gunk
-> 
-> 	#ifdef CONFIG_X86_32
->         set_cpu_bug(c, X86_BUG_ESPFIX);
-> 	#endif
-> 
-> to it too. And now everything is nicely encapsulated and straight-forward.
-> 
-> 5. The above will allow you to have the init_cpu_info() only on 32-bit.
-> 
-> Oh and, looking at the ifdeffery on identify_cpu():
-> 
-> 	#ifdef CONFIG_X86_64
-> 	        c->x86_clflush_size = 64;
-> 	        c->x86_phys_bits = 36;
-> 	        c->x86_virt_bits = 48;
-> 	#else
-> 
-> you could probably add a identify_cpu_64() too. Or maybe the init parts should
-> be called separately init_cpu_info_32() and init_cpu_info_64(). You probably
-> need to see how it looks like when you write it.
-> 
-> Oh, and each 1., 2., ...step above is a single patch. This'll make the review
-> very easy too.
-> 
-> How does that sound? Willing to give it a try? :-)
+Sean Christopherson <seanjc@google.com> writes:
 
-The instructions are quite detailed, thank you.
+> On Tue, Jun 23, 2026, Yan Zhao wrote:
+>> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
+>> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
+>> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
+>> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
+>> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> > > > > index ffe9d0db58c59..56d10333c61a7 100644
+>> > > > > --- a/arch/x86/kvm/vmx/tdx.c
+>> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+>> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>> > > > >  		return -EIO;
+>> > > > >
+>> > > > > -	if (!src_page)
+>> > > > > -		return -EOPNOTSUPP;
+>> > > > > +	if (!src_page) {
+>> > > > > +		if (!gmem_in_place_conversion)
+>> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
+>> > > > without the MMAP flag, the absence of src_page should still be treated as an
+>> > > > error.
+>> > >
+>> > > Why MMAP?
+>> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
+>> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
+>> >
+>> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
+>> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
+>> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
+>> > > initialize the memory.
+>> > Do you mean using up-to-date flag as below?
+>
+> Yes?  I didn't actually look at the implementation details.
+>
+>> > if (!src_page) {
+>> > 	src_page = pfn_to_page(pfn);
+>> > 	if (!folio_test_uptodate(page_folio(src_page)))
+>> > 		return -EOPNOTSUPP;
+>> > }
 
-I'll try it and will send a separate series as soon as I can (likely next week).
+Yan is right that with the earlier patch "Zero page while getting pfn",
+folio_test_uptodate() here will always return true.
 
-> 
-> If not, I could try to find some time and do it myself but I thought you might
-> be willing to try it...
-> 
-> :-)
-> 
-> Thx.
-> 
+Actually, this is an alternative fix for the issue Sashiko pointed out
+on v7 where userspace can do a populate() (either TDX or SNP) without
+first allocating the page, with src_address == NULL, and leak
+uninitialized memory into the guest.
 
+Advantage of using the uptodate check in populate: if the host never
+allocates the page, populate doesn't incur zeroing before writing the
+page anyway in populate().
+
+Disadvantage: Both TDX and SNP will have to implement this uptodate
+check. guest_memfd can't check centrally because for SNP, for a
+PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
+firmware will zero and there's no leakage of uninitialized host memory?
+
+>>
+>> Another concern with this fix is that:
+>> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
+>> folio uptodate before reaching post_populate().
+>>
+>> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
+>>
+>> > One concern is that TDX now does not much care about the up-to-date flag since
+>> > TDX doesn't rely on the flag to clear pages on conversions.
+>> > I'm not sure if the flag can be reliably checked in this case. e.g.,
+>> > now the whole folio is marked up-to-date even if only part of it is faulted by
+>> > user access.
+>> > Ensuring that the up-to-date flag works correctly with huge page support seems
+>> > to have more effort than introducing a dedicated flag for TDX.
+>> >
+>> > > > Additionally, to properly enable in-place copying for the TDX initial memory
+>> > > > region, userspace must not only specify source_addr to NULL, but also follow
+>> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
+>> > > > 1. create guest_memfd with MMAP flag
+>> > > > 2. mmap the guest_memfd.
+>> > > > 3. convert the initial memory range to shared.
+>> > > > 4. copy initial content to the source page.
+>> > > > 5. convert the initial memory range to private
+>> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
+>> > > > 7. do not unmap the source backend.
+>> > > >
+>> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
+>> > > > to explicitly opt into the in-place copy functionality? e.g.,
+>> > >
+>> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
+>> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+
+Yan, is your concern that userspace forgot to update the code and
+forgets to provide a src_page, and if we keep the "Zero page while
+getting pfn" patch, ends up with the guest silently having a zero page?
+I think that would be found quite early in userspace VMM testing...
+
+>> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
+>> > kernel to detect this mistake, similar to how it validates whether source_addr
+>> > is PAGE_ALIGNED.
+>
+> The alignment case is different.  If userspace provides an unaligned value, KVM
+> *can't* do what userspace is asking because hardware and thus KVM only supports
+> converting on page boundaries.
+>
+> For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
+> request would then be making assumptions about what userspace wants.
+>
+
+Also, +1 on this, what if userspace, knowing that pages are zeroed on
+allocation, actually wants to rely on that to get a zero page in the guest?
+
+>> > Since userspace already needs to perform additional steps to enable in-place
+>> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
+>> > intentional seems like a reasonable burden.
+>
+> I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
+> just wen up with code that does:
+>
+> 	if (in-place) {
+> 		src = NULL;
+> 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
+> 	}
 
