@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1692ACDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2F2ACDE002
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:12:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD5EE6B0088; Wed, 24 Jun 2026 09:12:06 -0400 (EDT)
+	id 3C4516B008A; Wed, 24 Jun 2026 09:12:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5FAD6B008A; Wed, 24 Jun 2026 09:12:06 -0400 (EDT)
+	id 3757F6B008C; Wed, 24 Jun 2026 09:12:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C026B6B008C; Wed, 24 Jun 2026 09:12:06 -0400 (EDT)
+	id 23BE66B0092; Wed, 24 Jun 2026 09:12:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 93B5E6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:12:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 016E1120370
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:05 +0000 (UTC)
-X-FDA: 84914844252.12.04F9B5F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 44FEF40014
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfSQ2JUb;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA4046B008A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:12:10 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 872AB1A0309
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:10 +0000 (UTC)
+X-FDA: 84914844420.10.ADE8D80
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C99B9A0005
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRDmLMFL;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782306724;
-	b=69samca7eCkjKfI4pp2oOuBR/OQ2WJ5JQb995rXZKc18rdR0QynCTqvVctkRNp2sAkRjhV
-	8o0d/kxRbtcMspD+LtwojPtjXWAg7lbkSMB8qIcrKE/K9gBtNHenibwCtpcWcWeYXyNxiH
-	nurLBgs0gR/OYKg9Nt7Y/zHmwtWrq6M=
+	t=1782306728;
+	b=ATX9OAWzZ9xFVl0Gw2UFJGd/1Ose7PpJI52+/NIfn3PO9DnuaCsr1GeeOiYFv0m3wXddH+
+	KM+iV15gRtFwJUHbFETEUo4stN3FpXKsnt0jTW/lCjrKztUyI7TD3D0ZHPx6mi8Pgaiavq
+	ucHkZAX1hHUKBeRZz3K7fX9yDm8m2rI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782306724;
+	s=arc-20220608; t=1782306728;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7H6w+2jY/f6FuMYxVOvZHmer+ikNgecUTmJ2xQG7VNI=;
-	b=DKLY7/3GQZwlSqLyyAD15/K7zws3IhILgkCgDYWSBwFQr5JEdF0VP5xDmZ2kiUHs1sT7QI
-	aNipdW0W9JHxBa2be4FZOxz6dru2Cf1ADAzO0Vpp7KqY4HQEjL+0Ud0ysuQ1X8irxrRb1K
-	0yk3QM09/sDqcxlqIeYbVBNQb5J6o+4=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=p9Sz4g8DRTMzN+c2HzV4SHb1s9SDfxqT7aAYZmS3o8M=;
+	b=6mh/V75qqtOImzUc/vFECVnzRm62TMtVXpW9R5Utywpe6u9A/oyFCg7X4SxO0W1qLN694z
+	CeSo70EiNZyxddE10GlnIVVpErdkE9q4zHOMlQVy0J7Hr47q8hg4WJ572Q7px8wJzhO6DC
+	65ZTCksrvJR1vR72hrY0HvtBHSETKtU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jfSQ2JUb;
-	spf=pass (imf11.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cRDmLMFL;
+	spf=pass (imf15.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A597760018;
+	by sea.source.kernel.org (Postfix) with ESMTP id AD7B5415FD;
+	Wed, 24 Jun 2026 13:12:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65E41F00A3A;
 	Wed, 24 Jun 2026 13:12:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2DE1F000E9;
-	Wed, 24 Jun 2026 13:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782306723;
-	bh=7H6w+2jY/f6FuMYxVOvZHmer+ikNgecUTmJ2xQG7VNI=;
-	h=From:Subject:Date:To:Cc;
-	b=jfSQ2JUbJgnkNkzGlxGTJWufs8jewQhqySJsyXEr6f2bz6OIPbF27kPc9YfBJayl0
-	 HB/6Pd5iCPMOXdHI6BFfndarPuxQPTNseXaoH41ku9bD+i9FGPtkCzSOAv4KaC6qep
-	 I5mAkcpnvwVRHEaHYwDurvEsrXtZ40JNsZK6/Lm0wOPaPzj0EDjCejAdlgBURf++s7
-	 8chQRbB03Ks5yGrh44kl1TN0WepN76vdD/o3vmI9Xf7O49tuop23xpvyZPzM3sFn2Q
-	 uMO614azVJ+xEzRM42mLsdUK01cSn3E0nwZPZrImzYY00DuyGCT6sA9fcZ61Gs8Bvz
-	 2cJYpa+1Znf0g==
+	s=k20260515; t=1782306727;
+	bh=p9Sz4g8DRTMzN+c2HzV4SHb1s9SDfxqT7aAYZmS3o8M=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=cRDmLMFLdsEEOk1HgcrUPYgfXy2J0WVajmVYeSPtRIhlSocPvOSqdG6Ravz8Njok+
+	 zA2dzg2BeNbjfWRyt9krdYrkKwwgRm8t7w4yIe+9/gs9ffVjea0tjeolyLDCCpJJyR
+	 DdmL6mUohi8/pFWGRk45vuJ+RbPrHgHRSr1DQ42xn0+8RWhFaWq63XoX/n5UmwzSNq
+	 Ilq1lc2i48TkqDQw3h270CSyIUPct9xQCBKaY6Dp+ligFYI+HlZSDXxs1BxjNIPn4Y
+	 apVn5JRfBVwqM7vYEgspmeXBG6q5zqHL3KVvsyeQ1AQokTSonVzQLfkfYWxl88GKNE
+	 k1Ftt1y5BNVhA==
 From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Subject: [PATCH RFC 0/4] memcg,slab: kmalloc_nolock() fixes
-Date: Wed, 24 Jun 2026 22:11:37 +0900
-Message-Id: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+Date: Wed, 24 Jun 2026 22:11:38 +0900
+Subject: [PATCH RFC 1/4] mm/memcontrol: do not drain objcg stock when
+ spinning is not allowed
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDMyMT3ezcxJyc/GTdvHwgma2bllmRWqybbGluZm5qbGRhbm6sBNRaUJQ
- KlgDqjFYKcnNWiq2tBQCHyxi0awAAAA==
-X-Change-ID: 20260624-kmalloc-nolock-fixes-c97675328773
+Message-Id: <20260624-kmalloc-nolock-fixes-v1-1-fdf4d17351dd@kernel.org>
+References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+In-Reply-To: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
 To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
  Roman Gushchin <roman.gushchin@linux.dev>, 
  Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
@@ -84,14 +84,14 @@ To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
 Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Stat-Signature: kfafpyys7sorimsbok8wn8yh11pd4dqg
-X-Rspamd-Queue-Id: 44FEF40014
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782306724-901769
-X-HE-Meta: U2FsdGVkX19zFB0nMUsH+4ASY1SB7Yr42kgsBnb0Sg/ZzVxXArrQo3Emyv5lEHU22KnmEjaCec67rXHTMmsIDaRUX960oQHtiPQG+I0563Qqu1EDe7MIMZd+kEzLM+96yk8A3I08Y8CtFp4D6mq8yezeEt7I+hYVhYbriwvVWSlIh69dTuXLuy736g2WWShzuMHro8yM+Dks2itZIF5/VHsLdnB3sBItXBhdqDeEsFvgmFGixeru3/On4YQJemL58QOuDHispoPoargiMMKlZTOrly6hIGhpuABdsPtmbd8z60pSH/JXvpKB/goWou2ONqlY3eMJ+cXBwMQWHWwyQS9ldv8eJNAxugAyvJiNcnVppScKFjAl/vRHOq1nbG13QTwD+fN6AoDZY/z7sfj8V9p3AcyK7Efjt3RC+8nHevWRJYEj5fXyWFCkeucn5MSNC/eaXZoDZZ/vF0+TNRZDqkg3qWh/hNLpyIO1IXf9e/DlGKzhKdDswlE3hQnGMo1jm9nJxvoiEAyn1Rc1uymN0VbO1XK+UvHzTK81fGiU5EqcYP1c0V16UvHYsqq1BYx9kgycTni9gWRsTLl0FDmss4HgnC1CjpdmHuxUe0lgoskPSqXz/ukn81NTHFLCDWMLTJL4ROzLMDSNFhQjDZ4DX7dYBphc6RjuCtn6Yb+7tCzMgOIx/aUDLGbC7XQX68P7bwNWM69E9z/MnNjRuoOqxU3T/8EalROe6cyHZ+Znmxl0Mz0KPn/1z3JgFUzPcWDoX/RTje5a78kgb5HORaxWGYD1lJ+bcaCbPOj3dylx6tH4Gv0az5f6qKo0YpBLSSUcyqHFLdplmAgqPQscND3FIsZlS2wcAL6958OMcCRTTUgZ1WOBT6Yruwl728nkka7CP9CXmg+bZyYatUWfn76zHVhIMZRm9q7Q6l10xSNQlCLsotzk9lsUmfE2tO5gnNIYGrw9L00BY/OFuHjUafV
- dxP5LM+P
- wFz6AR5UOcfMiDVkG9TDtT5Tyh8UcnE1m+bAlQXYGVHtLBhJdgnccuuZvGFLyvN8Vii59z9rrWoTIKozR4jr9OdYeoMchcvoehg27LkiRdNAHAYOZ9sltT4ZLAWxlkC92ZtGZxGFR1d89NMvsFlqcOhWfVoywR0qqZCYiTQmxJnWUyq3vmCm2ssKMytYIUBaUpGtpC1rBQYYzTuwcVw06No9z/ztp3uwqIVOjy2DQZ27XB5h27OUyD1pY1ZBb1iolDd4/SU+XUVcrTMRyVSCNwa/+loH9mQKPcQrk+jw5F99Ex6BdaafS4OhgYuO2AT9yQYqQL32JJZXubOpDE9UXmwqURW2vYrkGGjHi
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C99B9A0005
+X-Stat-Signature: 765s9eewmsfgzju84tztcab95j8ebugj
+X-HE-Tag: 1782306728-856722
+X-HE-Meta: U2FsdGVkX19lNVt7NTJzWIdrQ73b3a3ZW3PnpN8uOX3EPmar0O2dcABckaOyehH/d9IX8OUuhuqWdX5L3VA9BaRhrTXfqJ3XX30G9KhXaW1uEIzVfokJhlHpKHXkJLJ4+20Zpk3M7gbrD+CbRwlVvftIqn+ey6+mM6DYoqJHQVzXmZbPBB0Gxlr189sikzLXCHgIUpM2Xu6AzNkkTmx7wz3lFhu5YqZanZibTX1ifp6/wycvFs4NxHC6SQthpwZhakq0wnA4DIwynNr2d2JEZvGHkg2MOBIFl0zcEQnMTTMIR499LjL5j8oOKGd1WzVlQnpqU+XSjd4rlcIeZwcjEy1g/kErFZ83cxM3ORrum8Udizbk1KuLmUEfDjLaTDaIdrPZg7VCIgbOg4VlMjtDej0yoX9mn78HyLH4aZmvIg6kJov1LXss4NhQVziHzMz5mjcrg+VOz/jWVSlSvNdGO1Vfe5AC1PhfWNnYia4bbGREwXpfUFWmOZsGOKrF5gyOXIhhqNp0qJOQcWBkpveNnBv/ir8ppeyWX4459QY3FwyyX4Z7zVyRs8sljzx20OZNA3Ycu0SWCZv6P/xDtIQNqulZXE9YGi1eqtTGQTizRvfe9sTZGHhl6n00NuihtAAwC9QcsmcmIQNxAsaGn5jPKjmkrJtjnb9mL26hwn6Cs5YNIylAHARR89+P+yrrcgqFmtLcNZQRf1cQoyRlkJPRJVCFSXtrM3XdYYgyXT81yQWc4JXgbRBkMcnBxBVP9hmvEU3+QxRuf85T0j6DqGhhkvnEgEIaMg7njBR/KNMxlr2KcsGErf55uZc0wuHArxWbhrceGP1rdvfTBNgg0AY1Pf/ks3agxTV8boehuUvjvHVkRsvbD4sqo+hBfXTefFUh12gPTy/7wcQY/BclSh8hu5VfVCV7vZP/XAaVNDvjbbjBOMCTaqpVwIhE33drul25GGwRyG1CZ5VZNoX1WmV
+ fj/hUFbg
+ I8WFoNgyhhTiSLVg50eq3Bt6UIxnsyfW0yfsfHJ9qJHukNQA0F+BQ/iOlG2IA8XaX2b4w+XXARhfjcJ/zupkAnfHsU5RtM4RBRkZeBTBMgYX+r4GBLrCpheXMsPk963Sea2Tzo/CKicJp2u/zGyDofVZ0FrfSJ/a9/XUkcqhLqIIixYadb9UPug35rxxhiRAOkEmGBYg4NYdpUPSGriXRHBOcnlml2ARU+CqOcpIrX4+bNrlGNG6SfpiKPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,91 +99,284 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Apologies for posting another series during the merge window.
-But these are bug fixes and there are other features that need to be
-rebased on top, so...
+When kmalloc_nolock() drains objcg stock, the stock might be holding
+the last reference to the objcg. Since obj_cgroup_release() is a
+callback for percpu refcount and does not know whether spinning is
+allowed, it is not safe to invoke obj_cgroup_put().
 
-Overview
-========
+This was caught by lockdep on PREEMPT_RT because acquiring
+a sleeping lock (objcg_lock) violates lock nesting rules:
 
-This patchset tries to fix three kmalloc_nolock() bugs.
+  kernel: BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+  kernel: in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 1267, name: systemd-resolve
+  preempt_count: 1, expected: 0
+  RCU nest depth: 3, expected: 3
+  6 locks held by systemd-resolve/1267:
+   #0: ffff888a8165fa20 ((&pcs->lock)){+.+.}-{3:3}, at: kmem_cache_alloc_noprof+0x185/0xa20
+   #1: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x74/0x2a0
+   #2: ffff888a81648598 ((lock)#4){+.+.}-{3:3}, at: trylock_stock+0x118/0x380
+   #3: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: rt_spin_trylock+0x74/0x2a0
+   #4: ffffffff9658a4c0 (rcu_read_lock){....}-{1:3}, at: percpu_ref_put_many.constprop.0+0x40/0x270
+   #5: ffffffff96af11d8 (objcg_lock){+.+.}-{3:3}, at: obj_cgroup_release+0x8a/0x410
+  [...]
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x8a/0xe0
+   dump_stack+0x14/0x1c
+   __might_resched.cold+0x233/0x2bb
+   rt_spin_lock+0xd3/0x410
+   obj_cgroup_release+0x8a/0x410
+   percpu_ref_put_many.constprop.0+0x226/0x270
+   drain_obj_stock_slot+0x27e/0x8d0
+   __refill_obj_stock+0x409/0x6d0
+   __memcg_slab_post_alloc_hook+0xa45/0x1500
+   __kmalloc_nolock_noprof+0x988/0xc40
+   [...]
 
-1. obj_cgroup_put() takes a spinlock in the release path
-   when it is holding the last reference.
-   (This needs some thoughts from the memcg folks)
+However, this is illegal in !RT kernels too because the objcg release
+callback acquires a spinlock even when spinning is not allowed.
 
-2. A spinlock may be taken in the following path and may lead
-   to deadlock:
+To fix this issue, fall back to atomics when the cached objcg doesn't
+match, but it is unsafe to drain because spinning is not allowed.
 
-   kmalloc_nolock()
-   -> slab_post_alloc_hook()
-   -> memcg_slab_post_alloc_hook()
-   -> memcg_alloc_abort_single().
+This is expected to affect performance of kmalloc_nolock() since
+it can no longer drain and refill the stock and falls back to a
+per-objcg atomic counter (objcg->nr_charged_bytes).
 
-3. irq_work_sync() is called without synchronization for rcuwait
-   (on PREEMPT_RT or some architectures), potentially causing a
-   hang.
-
-Bug 1 was reported by lockdep, and bugs 2 [2] and 3 [3] were
-reported by Sashiko.
-
-To MEMCG folks: obj_cgroup_put() is not safe in unknown context
-===============================================================
-
-I tried to fix the bug 1 in the __refill_obj_stock() path in patch 1.
-
-Patch 1 considers correctness aspect only, and performance may
-degrade because we have to fall back to per-objcg atomics unless
-some else drains it for us.
-
-Ouch, while writing the cover letter, I realized that two paths need
-some attention:
-
-  1. __memcg_slab_free_hook() -> obj_cgroup_put() and
-  2. current_obj_cgroup() -> current_objcg_update() -> obj_cgroup_put()
-
-An easy solution would be to somehow defer obj_cgroup_put() or
-obj_cgroup_release(). I would like to hear thoughts from the memcg folks
-on which is the preferred way.
-
-To BPF folks: do we need to backport kmalloc_nolock() support
-for architectures without __CMPXCHG_DOUBLE to v6.18?
-=============================================================
-
-Originally I intended to fix this as part of this series.
-However, the issue reported by Levi Zim [1] was on kernel v6.19,
-(Thanks to Vlastimil for mentioning this), and v6.18 does not use
-kmalloc_nolock() for BPF local storage.
-
-There are still few users in v6.18, but I can't tell whether it is
-necessary to backport it to v6.18 (hopefully not as urgent as other
-bugfixes).
-
-Thoughts?
-
-[1] https://lore.kernel.org/linux-mm/9bea1536-534a-4a59-9b5f-92389fb05688@kxxt.dev
-[2] https://sashiko.dev/#/patchset/20260610-slab_alloc_flags-v2-0-7190909db118%40kernel.org?part=9
-[3] https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org?part=5
-
+Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+Cc: stable@vger.kernel.org
 Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
 ---
-Harry Yoo (Oracle) (4):
-      mm/memcontrol: do not drain objcg stock when spinning is not allowed
-      mm/slab: handle allow_spin in slab_free_hook() instead of open coding
-      mm/slab: fix a deadlock in memcg_alloc_abort_single()
-      mm/slab: serialize defer_free_barrier()
+ mm/memcontrol.c | 34 +++++++++++++++++++++++-----------
+ mm/slab.h       |  3 ++-
+ mm/slub.c       | 29 +++++++++++++++++++----------
+ 3 files changed, 44 insertions(+), 22 deletions(-)
 
- mm/memcontrol.c  |  34 ++++++++-----
- mm/slab.h        |   3 +-
- mm/slab_common.c |   5 +-
- mm/slub.c        | 148 +++++++++++++++++++++++++++++++------------------------
- 4 files changed, 111 insertions(+), 79 deletions(-)
----
-base-commit: 892a7864730775c3dbee2a39e9ead4fa8d4256e7
-change-id: 20260624-kmalloc-nolock-fixes-c97675328773
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 29390ba13baa..5bb5e75ef5b0 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3316,18 +3316,19 @@ static bool obj_stock_flush_required(struct obj_stock_pcp *stock,
+ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ 			       struct obj_stock_pcp *stock,
+ 			       unsigned int nr_bytes,
+-			       bool allow_uncharge)
++			       bool allow_uncharge,
++			       bool allow_spin)
+ {
+ 	unsigned int nr_pages = 0;
+ 
+-	if (!stock) {
+-		nr_pages = nr_bytes >> PAGE_SHIFT;
+-		nr_bytes = nr_bytes & (PAGE_SIZE - 1);
+-		atomic_add(nr_bytes, &objcg->nr_charged_bytes);
+-		goto out;
+-	}
++	if (!stock)
++		goto fallback;
+ 
+ 	if (READ_ONCE(stock->cached_objcg) != objcg) { /* reset if necessary */
++		/* Not safe to drain since objcg release acquires spinlock */
++		if (unlikely(!allow_spin))
++			goto fallback;
++
+ 		drain_obj_stock(stock);
+ 		obj_cgroup_get(objcg);
+ 		stock->nr_bytes = atomic_read(&objcg->nr_charged_bytes)
+@@ -3346,6 +3347,13 @@ static void __refill_obj_stock(struct obj_cgroup *objcg,
+ out:
+ 	if (nr_pages)
+ 		obj_cgroup_uncharge_pages(objcg, nr_pages);
++	return;
++
++fallback:
++	nr_pages = nr_bytes >> PAGE_SHIFT;
++	nr_bytes = nr_bytes & (PAGE_SIZE - 1);
++	atomic_add(nr_bytes, &objcg->nr_charged_bytes);
++	goto out;
+ }
+ 
+ static void refill_obj_stock(struct obj_cgroup *objcg,
+@@ -3353,7 +3361,8 @@ static void refill_obj_stock(struct obj_cgroup *objcg,
+ 			     bool allow_uncharge)
+ {
+ 	struct obj_stock_pcp *stock = trylock_stock();
+-	__refill_obj_stock(objcg, stock, nr_bytes, allow_uncharge);
++	__refill_obj_stock(objcg, stock, nr_bytes, allow_uncharge,
++			   /* allow_spin = */ true);
+ 	unlock_stock(stock);
+ }
+ 
+@@ -3428,6 +3437,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 				  size_t size, void **p)
+ {
+ 	size_t obj_size = obj_full_size(s);
++	bool allow_spin = alloc_flags_allow_spinning(slab_alloc_flags);
+ 	struct obj_cgroup *objcg;
+ 	struct slab *slab;
+ 	unsigned long off;
+@@ -3497,7 +3507,8 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 				return false;
+ 			stock = trylock_stock();
+ 			if (remainder)
+-				__refill_obj_stock(objcg, stock, remainder, false);
++				__refill_obj_stock(objcg, stock, remainder, false,
++						   allow_spin);
+ 		}
+ 		__account_obj_stock(objcg, stock, obj_size,
+ 				    slab_pgdat(slab), cache_vmstat_idx(s));
+@@ -3516,7 +3527,8 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ }
+ 
+ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+-			    void **p, int objects, unsigned long obj_exts)
++			    void **p, int objects, unsigned long obj_exts,
++			    bool allow_spin)
+ {
+ 	size_t obj_size = obj_full_size(s);
+ 
+@@ -3535,7 +3547,7 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+ 		obj_ext->objcg = NULL;
+ 
+ 		stock = trylock_stock();
+-		__refill_obj_stock(objcg, stock, obj_size, true);
++		__refill_obj_stock(objcg, stock, obj_size, true, allow_spin);
+ 		__account_obj_stock(objcg, stock, -obj_size,
+ 				    slab_pgdat(slab), cache_vmstat_idx(s));
+ 		unlock_stock(stock);
+diff --git a/mm/slab.h b/mm/slab.h
+index 281a65233795..a6b4ac298d08 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -660,7 +660,8 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
+ 				  gfp_t flags, unsigned int slab_alloc_flags,
+ 				  size_t size, void **p);
+ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+-			    void **p, int objects, unsigned long obj_exts);
++			    void **p, int objects, unsigned long obj_exts,
++			    bool allow_spin);
+ #endif
+ 
+ void kvfree_rcu_cb(struct rcu_head *head);
+diff --git a/mm/slub.c b/mm/slub.c
+index 917635203f73..32672a92581b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2488,7 +2488,7 @@ bool memcg_slab_post_alloc_hook(struct kmem_cache *s, gfp_t flags,
+ 
+ static __fastpath_inline
+ void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+-			  int objects)
++			  int objects, bool allow_spin)
+ {
+ 	unsigned long obj_exts;
+ 
+@@ -2500,7 +2500,7 @@ void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p,
+ 		return;
+ 
+ 	get_slab_obj_exts(obj_exts);
+-	__memcg_slab_free_hook(s, slab, p, objects, obj_exts);
++	__memcg_slab_free_hook(s, slab, p, objects, obj_exts, allow_spin);
+ 	put_slab_obj_exts(obj_exts);
+ }
+ 
+@@ -2575,7 +2575,7 @@ static inline bool memcg_slab_post_alloc_hook(struct kmem_cache *s,
+ }
+ 
+ static inline void memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
+-					void **p, int objects)
++					void **p, int objects, bool allow_spin)
+ {
+ }
+ 
+@@ -2946,11 +2946,12 @@ static bool __rcu_free_sheaf_prepare(struct kmem_cache *s,
+ 	void **p = &sheaf->objects[0];
+ 	unsigned int i = 0;
+ 	bool pfmemalloc = false;
++	bool allow_spin = true;
+ 
+ 	while (i < sheaf->size) {
+ 		struct slab *slab = virt_to_slab(p[i]);
+ 
+-		memcg_slab_free_hook(s, slab, p + i, 1);
++		memcg_slab_free_hook(s, slab, p + i, 1, allow_spin);
+ 		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
+ 
+ 		if (unlikely(!slab_free_hook(s, p[i], init, true))) {
+@@ -6215,12 +6216,13 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 	struct node_barn *barn;
+ 	void *remote_objects[PCS_BATCH_MAX];
+ 	unsigned int remote_nr = 0;
++	bool allow_spin = true;
+ 
+ next_remote_batch:
+ 	while (i < size) {
+ 		struct slab *slab = virt_to_slab(p[i]);
+ 
+-		memcg_slab_free_hook(s, slab, p + i, 1);
++		memcg_slab_free_hook(s, slab, p + i, 1, allow_spin);
+ 		alloc_tagging_slab_free_hook(s, slab, p + i, 1);
+ 
+ 		if (unlikely(!slab_free_hook(s, p[i], init, false))) {
+@@ -6398,13 +6400,16 @@ static __fastpath_inline
+ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ 	       unsigned long addr)
+ {
+-	memcg_slab_free_hook(s, slab, &object, 1);
++	bool allow_spin = true;
++
++	memcg_slab_free_hook(s, slab, &object, 1, allow_spin);
+ 	alloc_tagging_slab_free_hook(s, slab, &object, 1);
+ 
+ 	if (unlikely(!slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+ 		return;
+ 
+-	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, object, true)))
++	if (likely(can_free_to_pcs(slab)) &&
++			likely(free_to_pcs(s, object, allow_spin)))
+ 		return;
+ 
+ 	__slab_free(s, slab, object, object, 1, addr);
+@@ -6429,7 +6434,9 @@ static __fastpath_inline
+ void slab_free_bulk(struct kmem_cache *s, struct slab *slab, void *head,
+ 		    void *tail, void **p, int cnt, unsigned long addr)
+ {
+-	memcg_slab_free_hook(s, slab, p, cnt);
++	bool allow_spin = true;
++
++	memcg_slab_free_hook(s, slab, p, cnt, allow_spin);
+ 	alloc_tagging_slab_free_hook(s, slab, p, cnt);
+ 	/*
+ 	 * With KASAN enabled slab_free_freelist_hook modifies the freelist
+@@ -6734,6 +6741,7 @@ void kfree_nolock(const void *object)
+ 	struct slab *slab;
+ 	struct kmem_cache *s;
+ 	void *x = (void *)object;
++	bool allow_spin = false;
+ 
+ 	if (unlikely(ZERO_OR_NULL_PTR(object)))
+ 		return;
+@@ -6746,7 +6754,7 @@ void kfree_nolock(const void *object)
+ 
+ 	s = slab->slab_cache;
+ 
+-	memcg_slab_free_hook(s, slab, &x, 1);
++	memcg_slab_free_hook(s, slab, &x, 1, allow_spin);
+ 	alloc_tagging_slab_free_hook(s, slab, &x, 1);
+ 	/*
+ 	 * Unlike slab_free() do NOT call the following:
+@@ -6776,7 +6784,8 @@ void kfree_nolock(const void *object)
+ 	 */
+ 	kasan_slab_free(s, x, false, false, /* skip quarantine */true);
+ 
+-	if (likely(can_free_to_pcs(slab)) && likely(free_to_pcs(s, x, false)))
++	if (likely(can_free_to_pcs(slab)) &&
++			likely(free_to_pcs(s, x, allow_spin)))
+ 		return;
+ 
+ 	/*
 
-Best regards,
 -- 
-Harry Yoo (Oracle) <harry@kernel.org>
+2.53.0
 
 
