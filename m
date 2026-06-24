@@ -4,120 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12F40CDB47C
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 10:15:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E057CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 10:16:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFAAD6B008C; Wed, 24 Jun 2026 06:15:11 -0400 (EDT)
+	id 6CB1C6B0093; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A700D6B0092; Wed, 24 Jun 2026 06:15:11 -0400 (EDT)
+	id 6A2E26B0095; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 960606B0093; Wed, 24 Jun 2026 06:15:11 -0400 (EDT)
+	id 5B7CB6B0096; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5910D6B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:15:11 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD47DA02A4
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:15:10 +0000 (UTC)
-X-FDA: 84914398380.30.03511FD
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B36CC140007
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:15:08 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CE586B0093
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E4841202EA
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:16:52 +0000 (UTC)
+X-FDA: 84914402664.05.27C3952
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7734714000F
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:16:50 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BqQHRtvC;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=detNAHgl;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782296108;
-	b=0MbFhJxUEnNI0XXLtwaWBSFTkOmIRDiY5Cxk3pWRkJbmkDqAewurBlEkLW2ZbILSSMOsR5
-	lh7G0Uq/NB4RMpu7gCnwoXFrkZ4hbKcmNjLmZIhSYcLkxaeodeLGtbdvmNFTF7FBlxSH7I
-	6Z2YiGc8BeFZi32diRb4YopKv9n1D4M=
+	t=1782296210;
+	b=aBBEGdS7PdpKorVoCGrID5ZIZsuVW8BZ/DvBK3JmecmHVC0fI9phHb1vBKFX/3q0xYInYC
+	Hes6JA6Yk9TYxFKA8DoAaROuKiu0b6tESZoX53kU5SNKh9VcuYY+/ENbnAnSO5w2szvxAI
+	3GsFjSiFC6RuWD3f+hIaEq7verh5N28=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782296108;
+	s=arc-20220608; t=1782296210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KV6fDYDT6hl+QyYHewqH+8z5UlmxqwcZYogbwstjfWw=;
-	b=TCxENLEITRFED/oYAEdYOtF0qjuW7comGrPJlzsFhOKgKBI3a149hHApbE4bcTWn5fDF/O
-	NMKM7mReHBV6OOVX7toFd4c2P+5lDarYq85REkyYwJ2zO5l7JmVVFNoOcBAywUhHpR0LCH
-	5C0KdZUabDNNTtKoAgNfEGUDwkYDix0=
+	bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
+	b=QEMjbhUIJSAFzbuG6jLtuoxrbsrJ+NIgeYclQ9nBhTk4OkLFMwQAjMbHetGnb5jrlPUQYA
+	hE23IMUTSD4m4xaDjJHdPlpnQLFqAnm4IPfQJQQAKTItxSqlGNQrAaniBlJJbOhllXI6Fw
+	YqqRlO4dmYKEm7B9POwzRmjMHON8F6w=
 ARC-Authentication-Results: i=2;
 	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=BqQHRtvC;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=detNAHgl;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c07c67ad9f2so118648466b.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:15:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782296107; cv=none;
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-697b8540279so1363402a12.0
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:16:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782296209; cv=none;
         d=google.com; s=arc-20240605;
-        b=Ozrvwpolgwns69MxGOT0shBZhYTMruNKYsX1FPIAjvn4TEU0nyg5okM3jzsV2d+/qT
-         U0dut6uY1GpR6plNDrhJkG9kaS+dGJC2xjfd0ji4Cu6quMgeoMjBI25x+HwrO9cgYZTj
-         CELoKVqBcAjk1erCrgBACG7PWQCT/Gjl+HsjWqhe0b3ekQ3VnUtYjXIvq8c8RZdKOwTw
-         01jJ8NknMyLtlJgC7e/ParRRaLOxrLMalADZg5nZQeMEv87TsQL3HiYnCMEQQb+b6RdQ
-         UUGRM9jl4H4moFLVZJzATMUUty3XP0N1Rkf2nHyHQFJfT4IRDvdmfsVd7VkxxCCp4qwj
-         izzA==
+        b=ZAghWvs9mAK8H//LP4X878d5BmCYunIK8phkluDfVaZ10ZmYVuEQLITv4aFRtvvpsf
+         nsFHNACbd7ot0yrFv1+v+4azt7WOmBIDK0qlsUocPrUES8ySvH1nIpbJf9c+vK8vJwob
+         9+UZDK3jUmbyVHtInJ9zA6nRD8Ug6SXNW89LqStdP3Tk9U6tbErRKrtQwRyZxROFcMWE
+         FrvQ0F/KhGpD8CBns/lnzBfmWFJ82gilCG6fv95w205RBslKgS8CwD2zTu+SFdB/GEMZ
+         yY/baNm5YEmbOk9ExzDylOI68fycPLS+8m+fEmqBJoiNkAVrm4XXbBisX5Mgm1XuFyn9
+         vymQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=KV6fDYDT6hl+QyYHewqH+8z5UlmxqwcZYogbwstjfWw=;
-        fh=HyfF7IuKtXNFgSJXgciqQRyHnPvRCjzNWQkFXGMKnPE=;
-        b=aejWKVsRlEXJbGKESPz04MwE11jZ/E6QCgRvlSvQnq8IlBpepprAk/QvNJ6foUSIzm
-         FFKwyA/IhWTggosu3p/cDXszTXuwuUAouDxNgSNkzbAjjFUIGbsD83bparrDqyirkwCC
-         MCtrGjtgW6uGuYl9+IYTGk6itXJibILBq2xB65nH3uRNAae7aOSz1YbqqjbcROGR+QFl
-         KliFNATK0BrcSRMAVI8ftphuvDblqiJEze/+eIgPy8Hb4SoRezqXitXVo+BhArNkBxIo
-         sfRO9/lIC3evpC75c7wsdolHGo3vrfpytMhSJ3HarsayjffkKUP7E+cykUiC/AqO8w6l
-         ohoQ==;
+        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
+        fh=jzPJ7i2WSDYmXM7kCesROrJz3dCs/Bnh8UWTGLK4isI=;
+        b=AB94PxMHknDfK3ZEgAmmJzyMWC3njXQ763/06pHumdDeCBS7X5mFNs1GbuFoej6HF/
+         XQwWwOF1d+4XFzMmduXMWxWZHcat3sJRHR7npasIiR1TNV5wEX59A+bd9FgN0xh4iZAr
+         ax8YxfiyKvczNfYRGPury6J/93rQ9shi1HAgF0Ec1WXJq7vRi4pz75pp0fS4rLijK3dC
+         bKv7RSVYI1LvgZk6/dpaSP22Q2WAfVzpruI8EY9R51tKrRUqdW5H65zaHS4Cmi8FnfkL
+         nniwy/eSiki+Sxc8oOlkLRe8m0GePZwwW8AxipQtV0zo2zdm5xwhA/t3PPuQVxg77zbm
+         /QnA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782296107; x=1782900907; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782296209; x=1782901009; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KV6fDYDT6hl+QyYHewqH+8z5UlmxqwcZYogbwstjfWw=;
-        b=BqQHRtvCOHKX8Ecd/Mqbpq0g/do+Z2t9aav6F+I7853DyGVqyZNVZ21Y4DGKOotnV+
-         NuCtX2a2Tn/6bWRbWEuiD82sl0yvzCyoNVUUAbl39yf6we2Mr0BD6MkWRBZEtuiftW03
-         BHEVVmuPW02oYH60Kf0NHGj8lV8dCEb7l/uRBJd4onfB/zbOwrZFvQDlgjGKQ7A4RmWL
-         gvIVocdnlLfjJTdQDJVjmiKgNNiW70VKo7t0eIG5OnR6ZNwU21Fjz6uWMHLkG1Kw5gvi
-         GC0gi2JS8WN738OijYGylP47aPXK0r65GXFxD1YXXJRa/E6SfU17wEDwKu3CseO1lc93
-         C31Q==
+        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
+        b=detNAHgloOuC3uThThDOIW2eI9bBHakkqfHLX2ZmArXyo3uzkRbfIdz2/SxvGllyFj
+         as5awEkZJ/9lg9eDcxldtBHJJxiL5uD2CyVwuV+3BkQSZ/yPaWchybMlnaCXUZw6t1eb
+         Kr/1MXhD4pxF5a6t0ytCCMceHmZtTiVAZiQSo2HJnvT+t96pa/YxZKO+sVhaAy/EvTpc
+         +xRr3XCiSeGEQlw9cQp2O4dJzxXXQMMKEcOcI+NjmwkTn5eRlJfx3j2LH7HRTwayvcIa
+         xvaDVV8Gs1Z1iHhIId7C3OzhnPrGd587cDkTOBMvUi1Ev34lYzAML607up366ulO7kx9
+         lu1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782296107; x=1782900907;
+        d=1e100.net; s=20251104; t=1782296209; x=1782901009;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KV6fDYDT6hl+QyYHewqH+8z5UlmxqwcZYogbwstjfWw=;
-        b=FzHDeshHj8eyzSm29RvSWYlKECMaLO0hBMzOLg9NBujsa35XNbzJnkGJX9pUtvd6E5
-         NHwUb56rVegpzV8JKiWIwL1ua606loRCAZUwuyt+mvXR9FbyQ7mbQgssD9kjVK8Ms1ut
-         J3w9t+Rl8YjflM6CmwKPne/KKt5OGApTPtUNhWIUBa1DT8upFi/jXnCHrl3pzTHD3iNN
-         Xys8Tm05uGHbzu5suYsg9qYoJhvGdhENKFw+OJC9zA4FuiURsdx6MHOYwGcJbdf/M2jh
-         Zz4XVGYrtVzOrRYVY1ZetvlCQkOVrNW0+gQdxweq+ltCZWEo5wq5PPJuXd4wn6pln/HA
-         soLg==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZZaV1AoC09lEDhdJNrkHkP1802IfdpWZC72I+eGJRbLJuMTP4GACCJ1KZUG2IEfz6nNesBfZ7sg==@kvack.org
-X-Gm-Message-State: AOJu0YxWfk4uDD7I7CN4QyaNbUODgrS7sq0t28OlwW5NUcQHpdrmYiGL
-	NbWLw2f/Bg5hT8+PS5GAU5AR79BMzdsAfOUVodWmiQO6HLEGceyyLlAqwgvxGe+khqz/lJQmRDE
-	7m4kvfbBKZ5A8HPu8WDXnFky/Afmc0xg=
-X-Gm-Gg: AfdE7ckER86AH4KMxFkK7hDbpDyLzMmffSe/yE7m+/Yf3iziu/+rf69z8C6qVx/kZe3
-	S0ld0OaKR09dJR5u0QaZKmMgw8OpJ4THPfF0cebemswva9FRN9+dbCtvHBGyZSDCsIFVhX+D8UR
-	PUgBjAw+gYMy3LWI2OGpKiuWQ+U29ZWnv7/8bemPBWEqLK9wgEUzA1aK2PnNHIsWyllQeE6NYFt
-	Uc4Q5YHjB+oXV31DPD3faA1lDPcP+GLjyg8i/2VXNWxL48Qp0049VbYgJohkL9wFgD15uoXVCqu
-	UT5ItSm+kGyevAVPH1fGIhFCI34yo3XMqTGyArwx
-X-Received: by 2002:a17:907:9711:b0:c07:6a7e:3a3a with SMTP id
- a640c23a62f3a-c1030ab2266mr427966966b.12.1782296106768; Wed, 24 Jun 2026
- 03:15:06 -0700 (PDT)
+        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
+        b=QjRrGVYQhtByHLD805i6NQf/klwV5kJStaBzd2wPQTc7n/23LdFeOV10ITbxai2QxL
+         T/UCdJRSW2e4fTNmYTYb56bVC9xM7UfSGKAkna1pwGOD4vqt8wARhwM6znaVwwh7HrOs
+         DyxTnkJQSFYjuaT9qOfBVJYioH25w0cWg0aFQKa5a5bliYBKDYKqUMsmdmVMmG6C2L5c
+         3S45mnDYlwDX7zIJCUqaUExLNjT4uf/uL1mNV9iy/UURjqU66RNZdVQwMiu+eTU36UT0
+         VJcVU6jAfxtAEoBOlNTs7VQ6i2G1QKgk7SZwW6B5EEPLl3dobXKxMm3ut3r9DwaVDMV3
+         qLaQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8mVIWALWDjKjVANJ4AR1CcKGhmdpxPLmA8EF6EbT7cLgrWypzvZdw3DXsLpEF7TTkR62Z6YmCZ+w==@kvack.org
+X-Gm-Message-State: AOJu0YwqqyxVGhsJ5EhV6NqgioXQDbx2A+4PiFBsZmHMDyZW12inHwSF
+	gClWR6QPM4spTorD8FcXpxcw3nNMpqNRrCStq6yMaJWaUc6x64K85zY48Nw1dX2fKyqLOE8JBzo
+	waq8lyznYj+2mmFkoGxXpT9hKUKTFdb0=
+X-Gm-Gg: AfdE7cnKoNS/hJp77iMfWBZPZXnst+rRYF4M4Zv5iGwqQ2Ffpl1Y59zrJsW4KEMUMfh
+	O0mK3dWr1SqC9n5PY2zuLH/qcBhDYpKQWy14/XT9IpulCG6h8vR/bN8lh3JrgHYapKSLcyeyFzD
+	TdiQyFelzhelrAXmXcYmYdHUDMO40eHHt+X4ADBISeUly2VPiMyL6PBCgPYW9VkRe3zUlIwAgF7
+	nKX6o/YgRE1j5dQMIlGkpI11w91xgkLdow6hDO+l/in8eSxWGpM6qXZSrRXRVcTkdyb0UDziLwp
+	rW4Cihwrg0wXhsXDK9BCY2O8nIRG1w==
+X-Received: by 2002:a17:907:c448:b0:bee:19d0:db92 with SMTP id
+ a640c23a62f3a-c10803b52e5mr366822866b.49.1782296208510; Wed, 24 Jun 2026
+ 03:16:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-2-baohua@kernel.org>
-In-Reply-To: <20260623231635.43086-2-baohua@kernel.org>
+References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-4-baohua@kernel.org>
+In-Reply-To: <20260623231635.43086-4-baohua@kernel.org>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 24 Jun 2026 18:14:29 +0800
-X-Gm-Features: AVVi8Cc6WlHWDKL6uE8pLXa5bohzoTjZDSAuYWQguqEUzcOOj0rvUnmnT0wVcI8
-Message-ID: <CAMgjq7B1-wVFCRLrB2A16+oMm2pYead-g6GbryLwGi4yjWitrQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+Date: Wed, 24 Jun 2026 18:16:11 +0800
+X-Gm-Features: AVVi8CcGjG7rTM6Nobr68lWdfX8Fp_VEvlB1uBNZ_hzUUIkKMFN6zCaJgc31nkU
+Message-ID: <CAMgjq7C7xOvwQHOm519CVh58CEt1hm9O1=AsduMPb5op_b3J8Q@mail.gmail.com>
+Subject: Re: [PATCH v2 3/4] mm: entirely remove lru_add_drain in do_swap_page
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>
 Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
 	chrisl@kernel.org, david@kernel.org, jp.kobryn@linux.dev, liam@infradead.org, 
@@ -127,14 +127,14 @@ Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev,
 	vbabka@kernel.org, youngjun.park@lge.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7734714000F
 X-Rspam-User: 
-X-Stat-Signature: 5q9ypmgpt6b6yqoxhdfkpmi1i7etwc17
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B36CC140007
-X-HE-Tag: 1782296108-585300
-X-HE-Meta: U2FsdGVkX19ndmRcD0/cBhmwpium3s7xQhMbSSwITNXRuTAOnHI5B06G0ldLeBo0NfhFa5LuX3vVJBjZzkyreLWri2fZWYxLINkQlAI8rEkX5mBtYp0jhhARG0wf/2+bfV6GrjkNscwhZneYV5fCSHzTzonPKL1RZR6tPJXlnTrBAq3GFO/fAprWP5KcWrsKg886890dtQXPc/HRXemKYlPrmGnoFrg/DT9/dkihr1BuE3W3OlVaMtw0eoB2B2LZTevWsZSDAKFTTj2IyY/H+2yh1m4fnsCXVhLtCo2hgWFhB49PCsFfDtbx8aKqh5mk9z7m6TVQ/pK0z0UvJ1rZwy4P0OY5GFE2GTTBBhEYhdY6Rxela1UpO5Axfm0hhSyRuNl55o0nVQmic/GHyjJme86YDDCC0+Yn0LZTlkT7IU6Py+Sl2bbg6GSl1UYi9eFDLZjPhzkGE800xQFZByOZk43KnE+WywsL2+7LOVYdHKdpwjOl9l78dDRcUKGANGHk+SSjtf6ZajbPxzCIxRvzcNOy7krPNm+2xSskkaGGH3mwdRs9Pikp2i+vihUVHkg+z3wuXvGeKCVvigp2/PML6j7W/NX3D81pjWesvSNnV0opSS3AwFMy5wsHU6WNDHZDxuaYqjvMVkjT9SUwQVF5IVbJ2uaFMYtuFEqxt6mPeg/pdiBvW2PErxUOyNkuySjjCOysvZA589sx7IkMfd59dxg62cAsttSXo7QlebFapQZEdmLkejChfEejScKaaup5KjKRa2gz2e1Zuv+qrXcomta/ft+bIJX2GeZq6c7i1HX6p6fX2gOSnj60P07XBxuBJ2h/cZRsUvICvbB/zhVHyauKEzTkvc/SzLe3AmAolVmrJ2d2G437MazI/vKs5feKV9tgDxYWKdT4hZhp7lmSOed4aOmzLMjfyD/uwmRJxfFOPXBhzQbyitvZAQxlhtrk5Sh59UC/tThHhlG08Mc
- nJpvBlcE
- l6mb4BitI7GUVluQ26L+HRSlQw8JxujNfs20Xxze7UlMwcNG1JFuLcDVuLD9O0Vb1CDrkpMf+SYonu1pQ8o/p6lX+A/l1MHYaoqoeXoou5L+ieyBqEbryKlLHAXehXGXPNmiMd1rYB0W5t2U7lseGA2c3SLg+yQW7FeIt/VhpJW0GmUZIcYGPCpCXyOY4Kpmt8rioEcNXDqk1TS8MRWk0GiDScfxHG0kE0NsMk9KwIAbunI+KaGwSjUZvbLHBvDThuwsc7aP3NdRTIALB0SwOAyTpTZlFe9R3ld6RBm9BDntW5I094Iqd5fxDQQALQzkpidALfrgBDkp6oFhqGg/4YRh7pEavpOkn1ZqyC9OvH+d0aeIQG6IcIB75ddD1vIZaicQNNvhk54WO0NS3Zw8JWHDFm7wOWWB9O2JCwNNcwQWhI1Aq2kPyUtrH/wZr/7396Mpp2SKcXMSncqu0ihfimvoxpKufuyq0cmTn7JEGIsPHdw0zhcLi8bkRZw==
+X-Stat-Signature: j4gxgotu3ct3eb57f3mr8gogojukbw6n
+X-HE-Tag: 1782296210-93618
+X-HE-Meta: U2FsdGVkX1/DmdCVsJBsu+JbZ0qNicHahCpe/uQfOedik4l2L9OarLUxnsjs1YCr8r8MpAkIsFqXvszxtFEy4EDLa6hWOb7P+qIE3+s4wfDDuT3fFnjonJTQobbN5J55nywvuICekL0b6tBzN7q/8/blkTJu8HragHHZYQiXarwQ3uh1GOV3hs0zrVIeVhSe2YUsivDa2uD/19R1ggKV0L+rGvtHOxzoUq7LrrPYfxWwTM5r89637HkidE/YtrZtKH/LPeUkuhB0I9aZBYFVXXhLzKdLAKXRmD9koMISWZFEZwIaf1jA9N5BR93uW4N48mp3amU1sHV/WQ6Qe4qrPJQNgcdvfsu4IYKiZw5NOQd+hZNP1bj0oG6xnRMkJ5JanZ/li0DyOQAWgwQ5Ek7i2LrHA5e3l49ZDYwMbomrDcFRBXG0iO1KmkWTXDMdolzzAF7dX3IcIiYQdWMJdSGOPrehEywlziu+odfrvsgr38jU73kFxvIbvq3qA97pid6BqGE2ce3iw7af5bQGu6p7E4HWznIHEMxY1uNRaMGIoWoT8B8qotZ2mywL0g1/HUNORskmTYq6c7ZZbQRfzmfmjLIjWq5ohJZt72NugsZDN/s7gVRjAn74CS1oqt7kPxllxy8FoUNIaIGke8DzCyJVlIPMh2mGM3banaqrCFkxnbBBgQ2RmeKUeHJJ6PKXA8PvYfm9E0po2Niyxkf1BlfFplvoRG68edUpbeTR6GJBCMlhVue3nDhjFhk8pj/Gy1eF8Gz6csLzezgaNxh6OE9GJ26GpTXuBIFJtbTpbaKE8tbhzdScBrIcCqf37yiDktFHwadnTbJ2EAgXtHt08FaX1sl9cGkelZzBYOeAoUYHMZu6nnApRtDDvEtlx6KAfG/2HyNOVcTgXOmpVRjB5PECvDxHfDngwVexpnSzz3W3X7je2blAv7PIaTtlYyDb8otbf47ib2TWBc/uYNgmByM
+ ERFMzHwR
+ vq8h91vxTfG7lfmBeIpXDp8IW+vz4cO7oLHB9Q+0MH5SrbHb5LHK999efrnu50DpaYySBNH7Xurqhk4AlhNDqlkVaWlZXbEoQ8MQ2l2jU6JmEFLDjCNlWMYF/28nZZDX4cJEjK8hk7lf2jUVy9t+cX+/p+U4/asDvzhSoIImaR27rfQuK7TMEu2bVzi8S246ua6kNh09BwZoFxmO3FmP6XRzsl+BKCobjbhUX+ChlJtlBkYKEnZyHS01+mtMGiZQo6Qduyb7URvNlPePLOv/bVuMeHygshsJy5Es9raQnA64URGJ1DP21/3l80oXUGQf9/T+Hn9FCCt1ebLePOpeFAhKa7oxv9oE/s99vr6t75O89dEhJWQJnGD+sRdmJCDDZK3V3Wcm/YqAviENGj4O9DEapeOhrKBQtQStdV4gQG8GX6s7hjvScqfyzfZW7Manj0QbVTd7CxEKjBWBxHgH2JE7PtslVkF8bYKol5R1tWgzOQkuIixPrWZz0pA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,51 +142,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 7:16=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
+On Wed, Jun 24, 2026 at 7:18=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
 org> wrote:
 >
-> We always unconditionally drain the LRU before retrying anon folio
-> reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
-> are in lru_cache, and use the refcount to avoid many unnecessary LRU
-> drains.
+> We are doing a lot of redundant lru_add_drain() calls in
+> do_swap_page(), especially for synchronous I/O devices. For
+> example, the test program below currently ends up draining
+> lru_cache 100% of the time:
+>
+> int main(int argc, char *argv[])
+> {
+>         int i;
+>  #define SIZE 100*1024*1024
+>         while(1) {
+>                 volatile int *p =3D mmap(0, SIZE, PROT_READ | PROT_WRITE,
+>                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>
+>                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
+>                         p[i] =3D  i%64;
+>                 madvise((void *)p, SIZE, MADV_PAGEOUT);
+>                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
+>                         p[i] =3D  i%64;
+>                 munmap(p, SIZE);
+>         }
+>         return 0;
+> }
+>
+> Folio reuse now relies primarily on the exclusive hint, making
+> lru_cache draining to drop the refcount in lru_cache largely
+> irrelevant.
 >
 > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
 > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
->  mm/memory.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+>  mm/memory.c | 10 ----------
+>  1 file changed, 10 deletions(-)
 >
 > diff --git a/mm/memory.c b/mm/memory.c
-> index ff338c2abe92..f6848f4234a6 100644
+> index abd0adcf65f0..2983a6baf474 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct folio =
-*folio,
->          */
->         if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
->                 return false;
-> -       if (!folio_test_lru(folio))
-> +       if (!folio_test_lru(folio)) {
-> +               /*
-> +                * Assume folio is on lru_cache and holds a cache referen=
-ce.
-> +                */
-> +               if (folio_ref_count(folio) > 2 + folio_test_swapcache(fol=
-io))
-> +                       return false;
->                 /*
->                  * We cannot easily detect+handle references from
->                  * remote LRU caches or references to LRU folios.
->                  */
->                 lru_add_drain();
-> +       }
->         if (folio_ref_count(folio) > 1 + folio_test_swapcache(folio))
->                 return false;
->         if (!folio_trylock(folio))
+> @@ -4903,16 +4903,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>         } else if (folio !=3D swapcache)
+>                 page =3D folio_page(folio, 0);
+>
+> -       /*
+> -        * If we want to map a page that's in the swapcache writable, we
+> -        * have to detect via the refcount if we're really the exclusive
+> -        * owner. Try removing the extra reference from the local LRU
+> -        * caches if required.
+> -        */
+> -       if ((vmf->flags & FAULT_FLAG_WRITE) &&
+> -           !folio_test_ksm(folio) && !folio_test_lru(folio))
+> -               lru_add_drain();
+> -
+>         folio_throttle_swaprate(folio, GFP_KERNEL);
+>
+>         /*
 > --
 > 2.39.3 (Apple Git-146)
 >
+
+Thanks, I saw the previous discussed problem is address in the next
+patch, it's totally fine so:
 
 Reviewed-by: Kairui Song <kasong@tencent.com>
 
