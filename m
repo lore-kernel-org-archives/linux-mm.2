@@ -4,136 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2C6CDB470
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 07:12:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCBCCDB470
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 07:17:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0980D6B008A; Wed, 24 Jun 2026 03:12:37 -0400 (EDT)
+	id C39266B0088; Wed, 24 Jun 2026 03:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06ED26B008C; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+	id BEA5C6B008A; Wed, 24 Jun 2026 03:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA0236B0092; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+	id ADB766B008C; Wed, 24 Jun 2026 03:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C63176B008A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 89ED96B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:17:02 -0400 (EDT)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 478C44022E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:36 +0000 (UTC)
-X-FDA: 84913938312.09.207BE77
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 65E73100003
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aMK7jcJg;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DBF2C1C19D7
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:17:00 +0000 (UTC)
+X-FDA: 84913949400.09.6022C2E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4804CC000C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:16:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ExvJXB+v;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782285154;
-	b=oqG0TbaslsJPVFfyPKS5XPiEFiPbRR5AY+/kdag8hfEPHhCNMNR9/V6UYoA9OqGjZWGZVK
-	YEqf1vU9Obqvzziu0lFzOPmsG/QPuW6TLVEN/BpF+ktbAjLQiR6AMHqRZckgnGt7VE3acQ
-	n0iPbwWiSOg9NgVrgm4cfHfC4KMOgFM=
+	t=1782285419;
+	b=XCFHFM0RemDWDc/OjomYzL4nKqr0WxsZlCFaGD0lvtcKH0NzKq1ExhWNw94yl4G0ttDJoG
+	sj1WzrRZz7owa7tAXJJQY6ikukBeK+Ugu2Clep8OqbxX7+aeZS8XseHeNdqD4jCQOC979l
+	cZYRF7UjoVtaog9Zyoja93H1Lo6INoE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782285154;
+	s=arc-20220608; t=1782285419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
-	b=52LLBLIzuTWJKuYvjjXKl2OQNz3tFDODVyDEltqko2zK1k4LKSNz7gePbC741dD3wFqDay
-	MaG6Mh4Amm6tnGyOb6gkbenUXDE7ZWHqlIJvTWdamM2CjeO8+bHh6JA+Elftg52NrC21ZO
-	xxmj/UTOSJ+dtt67gcUM8PN38LvFggE=
+	bh=usD2Zx500l7YjzZfp5/jLk/wMudEX2pn65qPpLZCvzs=;
+	b=8Js1HM2fpkkzoFvGyT0kj/JRqcgUdVmYzrOxLudiR+Xde+QNLc4kO44/hRlTKIywhJT1GL
+	IycDJ/38xWFyeQ91WoUBpEvxRPeq1oWndpeRu+Oltl2m+DQ4Uu5ltfZ/MHLlqt8m3ZFGkL
+	dSkO7CLt7784Bsuo+8Hk0NN83zEWA9o=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=aMK7jcJg;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4633193af19so509442f8f.2
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:12:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782285153; x=1782889953; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
-        b=aMK7jcJgsUf84iidVgXs2MMy9mqiGycImzWt4flzR3IYjXq1BKnkkobNzd4Zu9FrLH
-         gGhztLykeIFnQgmSpMrpatLgSedQnEyq2+D6l1Na7aKGCzUhK/GmAMdfS19WivJlSZAQ
-         vQBXPX+aJ09wsDriQWUTz+kXd55qjpy4Ns5Ng13v7BgcIOtNWGaJAqXnuFQani95geKh
-         RUPNhCNEgFj0eCnlC806ex3rvu5zTWim/QlMuUdMAqc49tdIcrHzDCnp3lk9EreXAv0D
-         qoPEwa66Mozu6dFS3MCJ7AqS+afAaPlTRKx51P7SUfl3bhsx/nHIrh1MKkGOU+C2hMON
-         RCkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782285153; x=1782889953;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
-        b=U79nOUyR/Bk+DG/SLFWwOk2a5oWJowT2LVUzEDSRJYgBxIpSFoj1LY2B3DdcV/Mf26
-         wi30STzcg0pdm13gIFdghgl/WT9+E5rQD+KqSxiWTvKggxAnMbRkuiLioMgMEZSWWoCk
-         CyGGbOd+Ivp/KObtf7IsLEgSMl1ET96rZE+i7wlD2kBk1jEZQFa9JNEBzQSzAlha78AF
-         pJlA290D85XPidF2pFKOB0ag/MlWp/ENJqmrsT6Xhfq6uBLOm7OzDgkHmpY0f5+Z2TwF
-         /SoJPNoPM/+jXZF6eiaJqfjkKm5AGSNVIqL7t/eF8B6WHmdzrjdGzMqmao9t8q9+TSWF
-         Ad3w==
-X-Forwarded-Encrypted: i=1; AHgh+Rrq5bHVpxd/mejcQ7TGXXzhf6RCJ531joN1qSPCM/Es+BIqtl0nM4TZtIOh9BSzkIcyzhbGZwOQnA==@kvack.org
-X-Gm-Message-State: AOJu0Yzn7cwTqQWcJ6jcmbuONcIVSBEtmuUAG/iqBdrOWMBvmRg0tbDH
-	tt+XlD5RVhrvadZnpHFQqx2HZSqBy7kRG4EiIlJsX/w0LleAQ6w4iI6F
-X-Gm-Gg: AfdE7ck4tgIOORaQ2aSLuBOQ9ttxG57TGsWzmhUFnYNvQHrrUf3DZTZ7Ew9FXAbSbOp
-	kr5otFn9uqKp4hUVgZ9oRAjofNL10F+ejuboM/+XPGrtRbc0PiF9m51/YWpaAOeWuePD1MSE2bo
-	cjyrxRh74uJN9AOaQCXTiflO0lTLF4Q1Z9zgdsCC2+rrqUkMYVupNWQXMgnqhoXwpADaEH9X0C7
-	7rsy4/Cx3jdAtQI6H98dPm8kcHAgaCPpsJ3bhOXXsEiftqANIaQq95LGy489CA1sPkbIgq/ZHQT
-	YKaKVJbTtugWlDLFD/q4n9ttF8eXl2eHviq/tQIw1IG4vAHtPYpFSlqHM5qnKRzwHC0cSFEMI/u
-	rPcF0dJAciOnJRvq65g1eHR/b/fzIpMmqvlf9XIT6yXXuv7MQoKtfACPPDj3YetXf3DR0KIotmL
-	ffDwqz705V
-X-Received: by 2002:a05:6000:4683:b0:46a:1f35:113f with SMTP id ffacd0b85a97d-46a1f35172dmr8359155f8f.21.1782285152523;
-        Wed, 24 Jun 2026 00:12:32 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46c1ee0189esm4296531f8f.9.2026.06.24.00.12.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jun 2026 00:12:32 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: avagin@gmail.com
-Cc: akpm@linux-foundation.org,
-	alexander@mihalicyn.com,
-	axboe@kernel.dk,
-	bernd@bsbernd.com,
-	brauner@kernel.org,
-	criu@lists.linux.dev,
-	david@kernel.org,
-	dhowells@redhat.com,
-	fuse-devel@lists.linux.dev,
-	hch@infradead.org,
-	jack@suse.cz,
-	joannelkoong@gmail.com,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	rostedt@goodmis.org,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	val@packett.cool,
-	viro@zeniv.linux.org.uk,
-	willy@infradead.org
-Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
-Date: Wed, 24 Jun 2026 10:12:26 +0300
-Message-ID: <20260624071226.2272209-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
-References: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ExvJXB+v;
+	spf=pass (imf22.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 96BC560138;
+	Wed, 24 Jun 2026 07:16:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BFF1F000E9;
+	Wed, 24 Jun 2026 07:16:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782285418;
+	bh=usD2Zx500l7YjzZfp5/jLk/wMudEX2pn65qPpLZCvzs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ExvJXB+v5NznZQBp47/Q5VjnJbVvyitW4di3uIhPLvqvcUgc+0z2B60yf1qVsE0dS
+	 BUv2KdmSEXT0OLlTb8OhsHIet/1JuqBI8oXmooSbHRQNWhRjf2s2inpLIvbr2ovr4c
+	 nC2Yfyeld4wL1wfguV0GM/qXAkvtjYMGSZecdQJtU/WvWhxPt/WIGjttI1w4PNzPtu
+	 KL08bQyeWdNhBNaEDoxBC4MtRoVJp6QDVd8JlSY2FdwtUrA6IoMb252Yi8f1etWfUz
+	 uOwWVf3zAuLp4lXfFUnZ18xOrSAT6kc2KDIspAy2xg2jNzcmiAh0VPYoNQurIANxrm
+	 6vXjIg42fhAJg==
+Date: Wed, 24 Jun 2026 08:16:50 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: akpm@linux-foundation.org
+Cc: Imran Khan <imran.f.khan@oracle.com>, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmstat: avoid taking zone lock in /proc/buddyinfo
+ reads
+Message-ID: <ajuED_MZRzDuE3tJ@lucifer>
+References: <20260604134245.1580287-1-imran.f.khan@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 65E73100003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260604134245.1580287-1-imran.f.khan@oracle.com>
+X-Stat-Signature: mesypjzp6jwi94mmwi8f3jikntsob8cu
+X-Rspamd-Queue-Id: 4804CC000C
 X-Rspam-User: 
-X-Stat-Signature: h7zu8iksrmmbc538aauob93ssi939wwj
-X-HE-Tag: 1782285154-125635
-X-HE-Meta: U2FsdGVkX18E7gXEJp5XtUBBZ6Iic7cb1OGyAnirSIciPO/bntuQi48FY/cyiTqNyp7/gjJRiPJYA9SFAYMe6lemnvlcjB/Yru/HYUSIKyk1McY0IlRxVPUpIOF3OTXPyKccob8TYSGvFUh+KAgKv2R1D15f4vPSC5GQBG1D11YpgXMp2yKkmSZoMsPpFnkmVueilsCFrl1n7x1GCDVJ5Vt8/yFnt0n8oIJIFpJWGO4AW+2C3qLjpB7EKV8sK/626gR8zQgu6dg8FXoduVYrcI9Y/VG+ZaBk5KwMKaruYGhuc/khpTCEL6AAgkkW2nAQYSvF6OQQ8+pmluQH/EaZ04g9u4S3FoMlvidBS+fs6eQ25GbnCtDCrZYajsCSSgNa4GsCNqaUJDuhxft68P7h8ukR3fCHAX4We/OZI3Z7f6QCd169EUyXM09Dj/Hf0jKOzuOwzJQzJpzpV22GPmAuAhqf4bEvOFwvrN9ksBfK9Fuk7jY6E2PyLqyF5TUQuydfC9Q8RqLTZgVVgHG7Wtiy2YVFELJalTRJpPGtkkmihERYn9d8aiLerASfvoaBsyLxLKgayDsTGkaAohuD+BVwRXhfzBk5g1YxoHLYxqNoA+lvvFMpkasbWwHdiqqF0jbZXk7BGcpgNCPdU5cb9unYh3Yc0EDJY+U/PPIAmaEbawZY09xj0ht7BfNTxdDy4VIHWmvaxYBmdGLl+fvFEPW30dvnH6FRyo3RQtj3nd8YAgiQSNCcxTZxIzfWCRH7M1meRnXZ32iWjNjFtl6nZOYHd1bLjIQo0N1hgU9yTbNq1hRJhCAwf/zAZPVcOB7bG0MH2/OTorZOhEruz16mPVENP6QulvNaTp/HNvwuds6HRr/dfBowCgcAEN9T8hbLWts3PFZlXLkDIUTgI9b/6JIXftkWJwqFprW1DwrMLhq2M04cWuiiCgdw5mekRnEWyWoDXVbGAmyxdyxYZb4MlJy
- 04xFafVT
- 6vvZn2ck26qc7uL4HhptnW43FXi+CLQFUpc66k2NGZVsD6fJFMSRV8yUFm0T/qt2k6O502S2cBOifoGKqPM1FPA38EdvrN3agfN/YEv7hv1V5HHiOqhLvzT+5QMCKk6zH+J1GrhGAfsWzOhjzyb14cZCSVVyB1H31hReOnMEk1kXoOMKBBvXLvollHsUrpmuuduBnFRqVKf5sws7/Z5TL6iZRf1CN5TunoSkHj8DGyj2GZYPilkKNwsp69IHaEu1VEmSRX9zUQ0VYqmJuLvpYNsBiGewt3hyEDpdH1OsF1+HIR89qzG0aXekCf28fU213B8mfItHRDZLX2mIYM8TJoyWyxs4hJxGKuXEIyvwHJq7ix0pYZP/2EE/Z2PaTXHlOO2cL6guqBCF3SK1abLA02esW4Akel8QE4wXG
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782285419-831279
+X-HE-Meta: U2FsdGVkX1/xpLhsuw41dN8tfRWJISRfsyFzYAulILi2GzNxcUSw0Xb3Tw5AtD/ZQC2sy+eMiT4Z2Yo/Lki0vbKx7siJkQ0U59oaGef7/VV+BQEINeNlapj/xpbjaYhsbnSzlf5AU/xmrKGQb6r5qxzkIeoPJrBCvu92AOmSXG1WK5tElVzyzisK7YwESH/UJ2C9n9Ndyj5/ccdGMlAsGKCk7dnN/hKdNbQNhL8nO/vNiP8sd7QSOTO5kEtQfGGrU8/6gj7s2BptVRF/mUzhcu27cC15fGsTCLTgEHOsWSrxb5646EuAx4yICt4xa7pfx7/VMGOGy1uzn9psDtiynzBMyCnnEsxBM7TZCCRtq47MOLcWgpG9BJzYyF1cITzskLsSgM0wdx9SmTKyVksMQt3qE3Ge2pniD6tClwK1/+JhxOAepFeg0IPXoJZx5hV5LuxvHQVWTH3OylSivxQqR36OQv5dHtCn5jNJMTSogt5ku4lqpbf9E8XMvTU8HUTehMlebHwU8CNhx6xVfsnSN3vEnq4c56+w0BHG29Yo0NByMLGXJh3JqVnswirGKTDMP1uGf/WQdEGLXLnab9C9fBGyzAkbgv9NGDwITdW5z6TmF8qAROB2jd4sFOEO3kU5ecuZUrqAY9pYVF1ErsMjTKlmUxiZ20eI+/7W9/Bam5GVH6bgm7tkO0pyjJKNs/HTH7nrnWxdj8UoJVZLXJ9bgV+ChbwI3tOWDEm28nVjWo+5Rry5Ok3LG2KBTRFFS6d/TPvvAnd2zvJprGYSk6pAk+/apArP+iuWatni52jC8a84uECQRHlcCAXzj6JstrUiOpxEkofXE4LsknKIl5UfPrZyoEgCEdcFp9EOlre7lA+Vp05WoiZ1EhMxGvZAuLYjFmyfABITzMTRXhRqB+2z8BZn15xIGd3HEAPD+U8rLleJML5G8lWMnaLbO7SJRhoaTQqQbqruG0ToatYHS9t
+ c1wBMQQU
+ 9Cy05dkBOPs5+V6r1SqQRAxOxZtkfyf/hn8LbOmWFW+SZbH/bsU+0krfmSMcOoGkWzdFNPn3LRNXehzMPEiUHDGCjSlgJOu6yM4VnTYxqI6M44VYBTiLWh64bPimYxq4Gn0tET8tSLgTrSHFHstebNeOprz2lYBxU7v4KkEWIGl2yIUAsXCcJBfKUjXX84FK0VK8RDOhM4Ia6/k2rzPteoXmPh6FaKghPCpzJ4r9mUks5qvJpB+eyWdDdvJ/j+QrIj1+h5BiYIpWe4RX2sfNXHgDTYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,37 +92,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Andrei Vagin <avagin@gmail.com>:
-> The CRIU fifo test fails with this change. The problem is that vmsplice
-> with SPLICE_F_NONBLOCK to a fifo file descriptor fails with -EOPNOTSUPP.
-> 
-> It seems we need a fix like this one:
-> 
-> diff --git a/fs/pipe.c b/fs/pipe.c
-> index 429b0714ec57..6fc49e933727 100644
-> --- a/fs/pipe.c
-> +++ b/fs/pipe.c
-> @@ -1253,6 +1253,7 @@ static int fifo_open(struct inode *inode, struct
-> file *filp)
-> 
->         /* We can only do regular read/write on fifos */
->         stream_open(inode, filp);
-> +       filp->f_mode |= FMODE_NOWAIT;
-> 
->         switch (filp->f_mode & (FMODE_READ | FMODE_WRITE)) {
->         case FMODE_READ:
+Hi Andrew,
 
-Does CRIU actually rely on ability to do SPLICE_F_NONBLOCK vmsplice into
-named fifos? Or this is merely a test?
+I think this one got missed last cycle? I don't see it in any mm- tree, and has
+a bunch of tags.
 
-If this is just a test, I think we need not to preserve this behavior.
+I guess Imran will need to resend it at -rc1?
 
-I did debian code search with regex "vmsplice.*SPLICE_F_NONBLOCK" and I
-found very few packages. And it seems all them use pipes, not named fifos.
+Cheers, Lorenzo
 
-(On speed: I still think that my vmsplice patches are good thing,
-despite performance regressions in CRIU.)
-
--- 
-Askar Safin
+On Thu, Jun 04, 2026 at 09:42:45PM +0800, Imran Khan wrote:
+> frag_show_print() just reads zone->free_area[order].nr_free, so
+> it can safely do this without needing the zone->lock.
+>
+> Pass nolock=true from frag_show(), so that walk_zones_in_node()
+> can skip the zone->lock acquisition.
+>
+> Signed-off-by: Imran Khan <imran.f.khan@oracle.com>
+> ---
+>  mm/vmstat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/vmstat.c b/mm/vmstat.c
+> index f534972f517de..7b93fbf9af092 100644
+> --- a/mm/vmstat.c
+> +++ b/mm/vmstat.c
+> @@ -1568,7 +1568,7 @@ static void frag_show_print(struct seq_file *m, pg_data_t *pgdat,
+>  static int frag_show(struct seq_file *m, void *arg)
+>  {
+>  	pg_data_t *pgdat = (pg_data_t *)arg;
+> -	walk_zones_in_node(m, pgdat, true, false, frag_show_print);
+> +	walk_zones_in_node(m, pgdat, true, true, frag_show_print);
+>  	return 0;
+>  }
+>
+>
+> base-commit: e43ffb69e0438cddd72aaa30898b4dc446f664f8
+> --
+> 2.34.1
+>
 
