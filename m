@@ -4,89 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5EC6CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 09:55:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67ED7CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 10:03:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95EDD6B0088; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
+	id CF1C26B008C; Wed, 24 Jun 2026 06:03:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9101D6B008A; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
+	id CA3396B0092; Wed, 24 Jun 2026 06:03:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 825B36B008C; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
+	id BDFF76B0093; Wed, 24 Jun 2026 06:03:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 55D536B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCDA4C1732
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:55:47 +0000 (UTC)
-X-FDA: 84914349534.19.ABBA637
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E8D221C0005
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:55:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="VUApR/uB";
-	spf=pass (imf21.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 98DF96B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:03:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 068EA1202DF
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:03:45 +0000 (UTC)
+X-FDA: 84914369610.12.5969769
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 83AD580006
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:03:41 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xy2TlIvR;
+	spf=pass (imf30.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782294946;
-	b=pLV2BRkYTIW+DO/I9YPToTlpHbq7paodyQ43qlNJlaZcKrHSuRjREPMdGLIpPBumB+jP83
-	33sZ9eMwZ5QKvtjDHO0HP1dulrhcPHRXLkQA2HnQqPDvjEXOAcGWXQoYk/IJId4HUqUuh7
-	spZ6n5/tVrVlc6zrVWnl2gv0FA/GPMQ=
+	t=1782295423;
+	b=bOIJzB8NAkYedUbngntTUXpbMqAyw9UJupT05f9R8PUBHen761qXWzukQqtOZo9tb6xfIX
+	kHDZOq1k/Vxd5f7Ee7CAEkWVlNVGXp/iAPtNHJw5Y9UR+vNIvdsXoMmUWM83nPvRM/OsAG
+	rRTkOcpyZElIyJUaNyAt/QUouHV/OE8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782294946;
+	s=arc-20220608; t=1782295423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=oUkW/KEdBAdFt0ECdeaOfS5Jd+P4aZridifd41QEJnc=;
-	b=CVYPkXOMPyKi8INtC+QugqpjaFABpMDxIxZlGPgiSZJDyQdIFOl/swNQSSLP5H+4LyYgIi
-	FvvsXceeDKM/jTsGgD+ax6yMsX/8oSMUIhAt3KwNxsGA//57EbBL6/kK2fiDJP4R+VMwf5
-	se+JbKrQLBGV+ziGf7HGYBZ/O/I+0dw=
+	bh=aS99pPWXTDDfg1auEFFHECROqxRgq/RRv3gP/QFN89k=;
+	b=JCsA/ywE8KbaJc83j13I2iYBT+Uao5sAwVqOe+crmQp60Xzu+2mVpTyrzO5jYmkuuJcKdv
+	G57VusqK8kLO9CbyNLOxaQAHd6vAjJtqNPaxk5ccRBqtbGw6Af6XyF0+xwBierrG3urHrC
+	MAfaFehajEqyAao7Bd9up2/gQmaPRCk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b="VUApR/uB";
-	spf=pass (imf21.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oU
-	kW/KEdBAdFt0ECdeaOfS5Jd+P4aZridifd41QEJnc=; b=VUApR/uBuoCW7Ev5KH
-	+raOi7Z6xmvY+9+9RDM69Elpez01x8QqScwrmjQdN9/WRE+AS4Vhjc1jsl7a1apS
-	xnyaOIxlf/QVI0CI7h55VLupFbFU13JCBsPBjfXoKXrHE9uZofu3xZ45eqOPEO/3
-	9179CoxGbhW5NzLeZHsiU87XA=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3f2SRqTtqDMx0Ew--.31S2;
-	Wed, 24 Jun 2026 17:55:31 +0800 (CST)
-From: fffsqian@163.com
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>
-Cc: linux-kernel@vger.kernel.org,
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xy2TlIvR;
+	spf=pass (imf30.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782295419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aS99pPWXTDDfg1auEFFHECROqxRgq/RRv3gP/QFN89k=;
+	b=Xy2TlIvRM0cd+70T9/TiKfN2mtKNUgZ6wcpld/ak6PynPFvD7aIySFmW1buWLSYMegz+pN
+	by3vtw7wH0sCbPauzW+CSbujFSfd5+GPXuGZAJ1HJkRogRHeBIBM6ivk3Szwhh+Q/PvWYS
+	1nMRQrOBY6LC7D/0zBcxVa88UWZXCAs=
+From: Hao Li <hao.li@linux.dev>
+To: vbabka@kernel.org,
+	harry@kernel.org
+Cc: akpm@linux-foundation.org,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
 	linux-mm@kvack.org,
-	Qingshuang Fu <fuqingshuang@kylinos.cn>
-Subject: [PATCH 1/1] mm/shrinker: add NULL checks after rcu_dereference() in shrinker bit functions
-Date: Wed, 24 Jun 2026 17:55:27 +0800
-Message-Id: <20260624095527.277586-1-fffsqian@163.com>
-X-Mailer: git-send-email 2.25.1
+	linux-kernel@vger.kernel.org,
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH v3] mm/slub: deduplicate NUMA policy calculation in allocation paths
+Date: Wed, 24 Jun 2026 18:00:14 +0800
+Message-ID: <20260624100320.430115-1-hao.li@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3f2SRqTtqDMx0Ew--.31S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCw4fAw1DKrW3Kw1DJFy5urg_yoW5Ar4rpF
-	WDKryDJr45ArnYgw12y3Z8JFyFvw18Ca4rJr92gw1IyryFq3ZxXr4xtFW2vry5Ca4fGryq
-	qa4UXw1q9r1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jw8n5UUUUU=
-X-Originating-IP: [116.128.244.169]
-X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbC6hT4w2o7qZQccQAA3E
-X-Stat-Signature: dsqecxifd7moa7ctxdtdin1g6hqfmosp
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ix3hsefc8pr3n7988rpy9ds41tj4rn31
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E8D221C0005
-X-HE-Tag: 1782294943-20669
-X-HE-Meta: U2FsdGVkX19f/Zcsn/oNwCW1+2hKr5/4/0kfDm2rU8D946y21G4fh0BzPTkyVf10ZU4+IFKNBnrxgVgYUJshJGhgx6Vf/LquxAckxIuOKPgQXj9MWKLsfe8X/NoLGY+Hof5U5HoELirJABiBQrDGG8fp0BYTt7LAsXtM1welse9dF72NJhSOk1h4g24Dhz34DvQQ2CZWJ2+uAbUHRBHYvybfp0yiyCgInZg+IFQ27cBudMlkHz8uY14YxPGkPEM5L9KiZN7aGJ1Zep0SbbgFMK2rtJ91aD+7Vo24RVnyDzS0vH0QRWSxxFp8a92q37usR3uJBWyXS1KtMmrMWBJSlbhGMVTmBigjEJ1KE4aCKf+PjBBJg2ORYuBc1yWhYje9ie/H4cyPqou9BNI/eIDwobHUWzDLQB62p2JRDjEQXcQPO1ItrOvNo57bjetYn1SsCXvl/O+Hw7jLwOYh63UN7mEeL8kZ/uaOjqKvicZmqpf11n5QUx1hR/CTwqDLs4J8GaUJQLbaekrSKrW0fugG2OgsVZcoDatt6/5oV+376xgB7zYGOllDZYIzOmHjPjBe7A+e+KFwH9eS6BmYcggYWhM9w9aFUJodD6EZRwh+HIRctNS0e9/FCiXZiPdYYOfgvXlwmQuOPfiBRZ/1HlAJUGUMqnhO5Fnub5BlstyeJCE54dt5rWGgdSEisyLAYjOr/4O0CsVWYW5yKPhFLaxsLTjG0u8kGkXPIjURZt3PSs3spb6X8aS2lwk0elHaPCtxDAzyJXHE9Nr/S4AoY3F7QAfcIRK/pwJiJOLTvNfT/5j3m+rYTmg4DiLUJx458gh0JGJn+R/Aq2iQMHTWSPTAMG/X6hqMfq3IO+QCmVD1L08HuRchqN7xP/sLWofhV3J0MNFcPJ4GkanZSqyKSrw07Pfvf0tHYKexxtwxXPzN+xIlIPy9G1FzkNeT57duk13+r/q17qYLvQNevBOs6tn
- A68+kQsf
- I5veqjuq/FDUgXQHDyeGnA3KUn02nwEBlFupPeE6PYi4YlBo1RKuUipm3qZNGFhEKR2ZuNz4v5iBb4920EF20veGiE/6JXtRMvQr5dcjWAte/qrViwpMLz3qRd9qQQkB1G1A+bkOoCBQXaoW9PeAeTMZIYhSwk6A84wk+P1pvaKB/Vb1TruU5Xq57Ul1RYoSTyNd8+8S4SpC5oeEDd4jeDU6EIPyptmCqDJPeFfm674X9bu7pUtu3hUDvRt4MGwWLpIx9T3ReGp9LoTNuh0Ln41XGi4N5OqDNLsowOvX547Mmg9HWql1+I1zqwdwwKSX8gdDArM0tBack8UpRt9G2hWcevjjsrxY8nMuJgWtrpjoBgwQW4PbBr4ExWF/Qsp28N4Pb4uQiMDmVRnQ6guSN84XKUEep0WAxTEBBbP0HIl9nWB1o6JgkIMyQHeZpksEFqV92hcrJy9HXHTEy9bnkbEwZxTiRTTb5LzwhC9Gt5K0jisrY4304rS77Xdkz7f2wmwckNQPlQghviH93IfzGvljNAx6vq2uldNNUQZLoXJmNXjKaGiPUbb4skwsCTKWGdGCCoynkk8b43OsNdt95xrfWYg==
+X-Rspamd-Queue-Id: 83AD580006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782295421-331190
+X-HE-Meta: U2FsdGVkX180TPs0dZnkvHS3Bp76J2/wSzXyAldxaPKlMeGRXvNBuzhvuLshLb2jQeVwZw0F+mhRqXiFKsHaXDildrPbM/1/dXvooCLhWMnavk2W8XJl+CNvn2yqRxtpqoxdu/hZ9XRji0tU7aak6vin2qOYP/IODMuZQPYmJy5eDay/kRUX54xOHyruYCb1O2tVNmRoHUxTeFNHMnINozpPd6NdggwUu6rO9MmTCcgCSgxHIEEhzY4Tw3RVxV/jEbSCKiE779RYG+LIWeY24eZ4Jo6AyKRD0tzE9D2zz1WRHcOioQQmTOIJZK/DsbcXkpDLBu5ZDwPiMqitUUWufZG3K4W0eqqhlusbAzXlezV9WX7MSanwRd7X+5gtfb2fXBrp24YDiwL2G+uHAcpreXR1c5BvNM3+J/V4hMeN2VXgZi5snAiU0Xq07n31M0Q4ndbefgnVH/9tCFBKtxCZNcuU7Ih4/DLElA02V84Jk+itFeETV46r/Jy9zrabP1C8TYuD8f8H7pKgT/W5wa/XuMtIbwLMbl3Rv6292EHsGxBKEoWmW2UUB2KWgan89uE4lVcteOEWzG/xqlRD+9FnwIzRGLjjdPSTB88ELeyij6Agpttos+RwD4PHE8my4ENgiJ+lgsUiOsm56SICR+utNNd/z3NxPhcgDq1rpgVzk0UGuzBLr7irvkIYhijQ2n8J0jwCI35UwfWdPf/b+ZIH9Vjy60ZLuemRqPKJ5Ox6EL3qGDXnD2HH4Vfi2T/7MHAI4kdOJvkqhfvV+HbVu5WcoZszMyWuDlNDoEvzH0MsRQ+htbBhnIXzop4uzNtTlCaiZ/0Rv9p9Zn4kg53ncojeYEpGtJ99ULsDjqPRnFHZnnUiQGrAZkmYS8dbK54hXCqazn6uFIIQPgQ8ujpQwxLpmjJDertUme/e4iRWM1V+EXAknL0LHm6Axrj0yMJF5cFYslq2k8wMEPWmkUCOFbK
+ bZJPyPQ4
+ Sspu66TL3oUGfo0kX8RMXNTmOuBJA4tzQ5q50fsKqzgEuDiXZDsxOUydBrG9ULaz5ce4QlTuyu/Get14RauoBfWuOr9OdGz6tFSPh4VdJkG90sGRwPdSRdS/Dz7sG4nMPUzD8WqEwepF+SBLqgs7dQuqlNuAufvp/R2jWwOAdvgjq5z0MyVVGrQyTNKEnjwOjHs1t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,82 +89,225 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qingshuang Fu <fuqingshuang@kylinos.cn>
+Currently, alloc_from_pcs() and __slab_alloc_node() both calculate the
+NUMA policy independently. Since they are called consecutively in paths
+like __kmalloc_nolock_noprof() and slab_alloc_node(), this leads to
+redundant code snippets.
 
-The functions set_shrinker_bit(), xchg_nr_deferred_memcg(), and
-add_nr_deferred_memcg() access shrinker_info fields immediately
-after rcu_dereference() without checking for NULL.
+Introduce a helper function to resolve the NUMA policy once, eliminating
+the duplicated code and reducing execution overhead.
 
-This is inconsistent with shrink_slab_memcg() which properly checks
-"if (unlikely(!info)) goto unlock;" before accessing info fields.
+Also remove __slab_alloc_node() function because it is almost empty.
+The callers of __slab_alloc_node now call ___slab_alloc() directly.
 
-The shrinker_info can be NULL during memcg initialization or after
-shrinker_info expansion failure. Directly accessing info->map_nr_max
-or info->unit[] without NULL validation could cause kernel NULL
-pointer dereference and panic.
+Additional notes:
 
-Fix this by adding proper NULL checks in all three functions to
-ensure consistent RCU protection and prevent potential crashes in
-the shrinker subsystem.
+  Previously, when slab_strict_numa was enabled, alloc_from_pcs() and
+  __slab_alloc_node() could each resolve the task mempolicy, so
+  MPOL_INTERLEAVE or MPOL_WEIGHTED_INTERLEAVE could advance the
+  interleave state twice for a single object allocation attempt.
+  And each retry will also advance the interleave state.
 
-Fixes: 307bececcd1205bcb ("mm: shrinker: add a secondary array for shrinker_info::{map, nr_deferred}")
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Dave Chinner <david@fromorbit.com>
-Cc: Qi Zheng <qi.zheng@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: linux-mm@kvack.org
-Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
+  With this change, the strict NUMA node is resolved once and reused by
+  both alloc_from_pcs() and ___slab_alloc() in each retry.
+
+  This is a behavior change, but it better matches the intent of
+  selecting one policy node for one allocation attempt.
+
+Signed-off-by: Hao Li <hao.li@linux.dev>
 ---
- mm/shrinker.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Changes in v3:
+  * Move apply_strict_numa_policy before retry label to simplify code (Thanks
+    Harry)
 
-diff --git a/mm/shrinker.c b/mm/shrinker.c
-index 7082d01c8c9d..ecde3cc44459 100644
---- a/mm/shrinker.c
-+++ b/mm/shrinker.c
-@@ -200,6 +200,8 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
+Changes in v2:
+  * Use a better function name apply_strict_numa_policy() (Thanks Harry)
+  * Remove almost empty function __slab_alloc_node.
+  * Add a local variable, strict_node, so the retry path in
+    __kmalloc_nolock_noprof() computes the strict NUMA node from the original
+    node parameter instead of a previously resolved node value.
+---
+ mm/slub.c | 42 +++++++++---------------------------------
+ 1 file changed, 9 insertions(+), 33 deletions(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index 62e9cd46916f..ba969ad1db8b 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -4516,49 +4516,43 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+ 	/* This could cause an endless loop. Fail instead. */
+ 	return NULL;
  
- 		rcu_read_lock();
- 		info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
-+		if (unlikely(!info))
-+			goto unlock;
- 		if (!WARN_ON_ONCE(shrinker_id >= info->map_nr_max)) {
- 			struct shrinker_info_unit *unit;
+ success:
+ 	if (kmem_cache_debug_flags(s, SLAB_STORE_USER))
+ 		set_track(s, object, TRACK_ALLOC, ac->caller_addr, gfpflags);
  
-@@ -208,6 +210,7 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
- 			smp_mb__before_atomic();
- 			set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
- 		}
-+unlock:
- 		rcu_read_unlock();
- 	}
+ 	return object;
  }
-@@ -258,6 +261,10 @@ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
  
- 	rcu_read_lock();
- 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
-+	if (unlikely(!info)) {
-+		rcu_read_unlock();
-+		return 0;
-+	}
- 	unit = info->unit[shrinker_id_to_index(shrinker->id)];
- 	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
- 	rcu_read_unlock();
-@@ -274,6 +281,10 @@ static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
+-static void *__slab_alloc_node(struct kmem_cache *s, gfp_t gfpflags, int node,
+-			       const struct slab_alloc_context *ac)
++static __always_inline int apply_strict_numa_policy(int node)
+ {
+-	void *object;
+-
+ #ifdef CONFIG_NUMA
+ 	if (static_branch_unlikely(&strict_numa) &&
+ 			node == NUMA_NO_NODE) {
  
- 	rcu_read_lock();
- 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
-+	if (unlikely(!info)) {
-+		rcu_read_unlock();
-+		return 0;
-+	}
- 	unit = info->unit[shrinker_id_to_index(shrinker->id)];
- 	nr_deferred =
- 		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
-
-base-commit: 840ef6c78e6a2f694b578ecb9063241c992aaa9e
+ 		struct mempolicy *mpol = current->mempolicy;
+ 
+ 		if (mpol) {
+ 			/*
+ 			 * Special BIND rule support. If the local node
+ 			 * is in permitted set then do not redirect
+ 			 * to a particular node.
+ 			 * Otherwise we apply the memory policy to get
+ 			 * the node we need to allocate on.
+ 			 */
+ 			if (mpol->mode != MPOL_BIND ||
+ 					!node_isset(numa_mem_id(), mpol->nodes))
+ 				node = mempolicy_slab_node();
+ 		}
+ 	}
+ #endif
+-
+-	object = ___slab_alloc(s, gfpflags, node, ac);
+-
+-	return object;
++	return node;
+ }
+ 
+ static __fastpath_inline
+ struct kmem_cache *slab_pre_alloc_hook(struct kmem_cache *s, gfp_t flags)
+ {
+ 	flags &= gfp_allowed_mask;
+ 
+ 	might_alloc(flags);
+ 
+ 	if (unlikely(should_failslab(s, flags)))
+@@ -4749,42 +4743,20 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 	return pcs;
+ }
+ 
+ static __fastpath_inline
+ void *alloc_from_pcs(struct kmem_cache *s, gfp_t gfp, unsigned int alloc_flags, int node)
+ {
+ 	struct slub_percpu_sheaves *pcs;
+ 	bool node_requested;
+ 	void *object;
+ 
+-#ifdef CONFIG_NUMA
+-	if (static_branch_unlikely(&strict_numa) &&
+-			 node == NUMA_NO_NODE) {
+-
+-		struct mempolicy *mpol = current->mempolicy;
+-
+-		if (mpol) {
+-			/*
+-			 * Special BIND rule support. If the local node
+-			 * is in permitted set then do not redirect
+-			 * to a particular node.
+-			 * Otherwise we apply the memory policy to get
+-			 * the node we need to allocate on.
+-			 */
+-			if (mpol->mode != MPOL_BIND ||
+-					!node_isset(numa_mem_id(), mpol->nodes))
+-
+-				node = mempolicy_slab_node();
+-		}
+-	}
+-#endif
+-
+ 	node_requested = IS_ENABLED(CONFIG_NUMA) && node != NUMA_NO_NODE;
+ 
+ 	/*
+ 	 * We assume the percpu sheaves contain only local objects although it's
+ 	 * not completely guaranteed, so we verify later.
+ 	 */
+ 	if (unlikely(node_requested && node != numa_mem_id())) {
+ 		stat(s, ALLOC_NODE_MISMATCH);
+ 		return NULL;
+ 	}
+@@ -4920,24 +4892,26 @@ static __fastpath_inline void *slab_alloc_node(struct kmem_cache *s,
+ 	void *object;
+ 
+ 	s = slab_pre_alloc_hook(s, gfpflags);
+ 	if (unlikely(!s))
+ 		return NULL;
+ 
+ 	object = kfence_alloc(s, ac->orig_size, gfpflags);
+ 	if (unlikely(object))
+ 		goto out;
+ 
++	node = apply_strict_numa_policy(node);
++
+ 	object = alloc_from_pcs(s, gfpflags, ac->alloc_flags, node);
+ 
+ 	if (unlikely(!object))
+-		object = __slab_alloc_node(s, gfpflags, node, ac);
++		object = ___slab_alloc(s, gfpflags, node, ac);
+ 
+ 	maybe_wipe_obj_freeptr(s, object);
+ 
+ out:
+ 	/*
+ 	 * In case this fails due to memcg_slab_post_alloc_hook(),
+ 	 * object is set to NULL
+ 	 */
+ 	slab_post_alloc_hook(s, gfpflags, 1, &object, ac);
+ 
+@@ -5406,20 +5380,22 @@ static void *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_f
+ 	 * See the comment for the same check in
+ 	 * alloc_frozen_pages_nolock_noprof()
+ 	 */
+ 	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
+ 		return NULL;
+ 
+ 	/* On UP, spin_trylock() always succeeds even when it is locked */
+ 	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
+ 		return NULL;
+ 
++	node = apply_strict_numa_policy(node);
++
+ retry:
+ 	if (unlikely(size > KMALLOC_MAX_CACHE_SIZE))
+ 		return NULL;
+ 	s = kmalloc_slab(size, NULL, gfp_flags, PASS_TOKEN_PARAM(token));
+ 
+ 	if (!(s->flags & __CMPXCHG_DOUBLE) && !kmem_cache_debug(s))
+ 		/*
+ 		 * kmalloc_nolock() is not supported on architectures that
+ 		 * don't implement cmpxchg16b and thus need slab_lock()
+ 		 * which could be preempted by a nmi.
+@@ -5430,24 +5406,24 @@ static void *__kmalloc_nolock_noprof(DECL_TOKEN_PARAMS(size, token), gfp_t gfp_f
+ 		 */
+ 		return NULL;
+ 
+ 	ret = alloc_from_pcs(s, gfp_flags, ac->alloc_flags, node);
+ 	if (ret)
+ 		goto success;
+ 
+ 	/*
+ 	 * Do not call slab_alloc_node(), since trylock mode isn't
+ 	 * compatible with slab_pre_alloc_hook/should_failslab and
+-	 * kfence_alloc. Hence call __slab_alloc_node() (at most twice)
++	 * kfence_alloc. Hence call ___slab_alloc() (at most twice)
+ 	 * and slab_post_alloc_hook() directly.
+ 	 */
+-	ret = __slab_alloc_node(s, gfp_flags, node, ac);
++	ret = ___slab_alloc(s, gfp_flags, node, ac);
+ 
+ 	/*
+ 	 * It's possible we failed due to trylock as we preempted someone with
+ 	 * the sheaves locked, and the list_lock is also held by another cpu.
+ 	 * But it should be rare that multiple kmalloc buckets would have
+ 	 * sheaves locked, so try a larger one.
+ 	 */
+ 	if (!ret && can_retry) {
+ 		/* pick the next kmalloc bucket */
+ 		size = s->object_size + 1;
 -- 
-2.25.1
+2.54.0
 
 
