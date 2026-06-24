@@ -4,113 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6680FCDB470
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8954ECDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:58:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5830A6B008C; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
+	id 44B966B0093; Wed, 24 Jun 2026 02:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 533E56B0092; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
+	id 3FB396B0095; Wed, 24 Jun 2026 02:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 422E36B0093; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
+	id 338C66B0096; Wed, 24 Jun 2026 02:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 208506B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8847FA0221
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:28 +0000 (UTC)
-X-FDA: 84913902696.12.0B250B2
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B37AF120003
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qgv6xnPX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12B7C6B0093
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:43 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9ED318CCCC
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:42 +0000 (UTC)
+X-FDA: 84913903284.14.6C541CD
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 38041140009
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QtudLKBG;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782284306;
-	b=Rf8MjwxIBLFL0ZSqQkeesV5UnrEc4m14Kt8evXjdVA0xCWdHFBPGFNxPfSNiTvq/9GZTiP
-	67AAa2QvFHQF/ysv3jRNSd5GyU2csU6piimzRL8uaSvJVyELaBQkPVpriA8lhqOsCBe1Th
-	0QQxlyIZ8MRD38AbnI77NgCJYoxBzQ4=
+	t=1782284321;
+	b=lQhtFgya1rBE2hczRfpyL0ogVHueZmeTaRQyO5Qj6f5whfSw0jJhmVErPcuFhnq6rq5y4e
+	Rh4ftjuIbQDdigOrmTHBY/4kWxnenMtuRQJgO5FRf+0o2y4pnBpdsyibRF1uj4mLUzwcn3
+	eGO++RbNuve+V7g5MG5j1pADcCb8FS0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782284306;
+	s=arc-20220608; t=1782284321;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
-	b=KTpCBrOaqzq/FrMaZlHWiBv08V5YBsq1cS196nmLmgNrTLUTK7IP6ont5EraJ6A+rcWG24
-	uG3JzVPH8GFjh/hELyd8xVW7M35DTbi54Fdx+1TEl4a7hGDxcUc8e8WcY5ZJFeqxaPsJEP
-	YY0+23sIzYPpve56IKOYBq4+HS/VO3A=
+	bh=zGLKldePx7r1dzWhJ9pzygXxiTVGhPttEMwGKkjBnek=;
+	b=AB0RDpsjC8L0DXvktoZcZ/LLD4NER7GZw6ShxwMDWxOpDKFQSJL7C6RAlvNnD7zcTCag/s
+	AkSZn2AEGn3Ywe9dE3rGCcoCEJxWpFEGxcnYhWGzMezXjUiLVDLHaQQfCuRN9a5bdKDs9U
+	vU3ooT10duyO3WqQHYQa1sR9exuIT+U=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=qgv6xnPX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-37cae998401so363467a91.0
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:58:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782284305; x=1782889105; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
-        b=qgv6xnPXCwiErzp7aweVx4pop7w+Rx+IwUha4QqTf9pDBr2ycos1xKQdnQHCDaZ2Pn
-         aKn9k1jIGDOJonlLnQh7e0nPLV13e9GZsNfzBo/ocfcbbnuqMHkp1lmFC69l9L7GhKIs
-         1d1J/FNPWLvgTrdG/Yp3FtzA49pgOHLR47viyEL66Hz0WDrywDZzPtWhDlseUH0z+ZDI
-         uszu8r6qGRUo2Te0yY+/MXwt5LUB0ejIzbr4jJ0J8uMn8xMQ4AuKL5GLFWktytMnrTE6
-         aA+QtdXjOrtMfEJf7FAhsUCi9BTfISZLyi8lM7ELaw0qjV1FKY+aHuypBMHZwH9eD4h8
-         /MMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782284305; x=1782889105;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
-        b=X+hoDYMfzyavLjYt1+xPS0wMo92EQlCP3NpXWXrUmZfFploK/R7UfZbw8A+e2sk3Ft
-         RCJ2O4JBFTSa2FelFGac+tve1jMAnWaSZjpsNMbKbZdDARmf4kw9HtYfoxxJLUY3OQpO
-         Qk+dMaIp8mguzu64+2Y6RG90U9IaEbB2IEYztTi6/rGjOh7/Sih/eA1PSagMW5poC6XV
-         AW4iKyFspP+po7cYHtl4Dc0y9HIW2nU3wGCPlQGjNcpt4XXmQPhvs6U57QT85/uUVNjb
-         abtQxeWUg9pXraHlk6iN/7eAUA62BMoXt741SV8AiBZl1kOy69UpOriX+a1Phc/XiCyd
-         UoZQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqMONzZPSZkU5O68I2thvTLc2pLI6QZMspzxeDVEejqcDdD9bv9SIBzNKdniqoJg5KbktRZtZd66w==@kvack.org
-X-Gm-Message-State: AOJu0YyFA9ibnAbZRSk9+1wqSvAG9zN4+OqG+WWuw+72C3WC9H1S08kI
-	rSq9ccR+URjuFiT58o9wK/F/YjVmA5rvvXUYUU5zPzuVXhNYrNdksJwP
-X-Gm-Gg: AfdE7clsBW1m6IiUDMlkoZWlcydaJTpVNsmhqSo76dQs0UWgOFkqdllNwKq0xzmNBhJ
-	HqusRDTfqNk6xBDRAX3cpB2wBIDapSOLkrt68VlBtzGKGYtx+MQH+nWq55l1lxVuHaWmvDeJHUg
-	9hNiMLGUx9XSoqeHPnSb85FH3MKwCxdbv+ZF0Gf4W15/oHbrN5FwanxWuUGt+88wWRbaHWWL0Hq
-	gjZSpPLVC7cGQz4OZd5RZecvttAVwV7Vk5kduDaHYNfYwMuJt49G9brArKUHdWplkhltQ41z0wi
-	6dlQcQBeoCbLRVUW6AsJohhjWiwxK+93EevkQ+QANqStlMZ0c0k4NEba0pex6WEc1f2245vo7qo
-	jKf+Sme8F705TM16JI37dHy0YlUAiEIjUSkxcHBiInZW3odeHiYEcqIWAxbeYEkDsYPH9gaxITO
-	FD0EpV3pDJSWISxMTfseXfAijgktE92yy0T58uA9NgeTIdzaJg3Bxn4i9H2whYvg==
-X-Received: by 2002:a17:90b:4ac1:b0:369:7421:b36f with SMTP id 98e67ed59e1d1-37de462d411mr2084324a91.21.1782284305284;
-        Tue, 23 Jun 2026 23:58:25 -0700 (PDT)
-Received: from localhost.localdomain ([47.72.129.29])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37de3a8441dsm1488142a91.4.2026.06.23.23.58.22
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 23 Jun 2026 23:58:24 -0700 (PDT)
-From: Barry Song <21cnbao@gmail.com>
-To: willy@infradead.org
-Cc: josef@toxicpanda.com,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] filemap: Remove file pinning during fault handling
-Date: Wed, 24 Jun 2026 14:58:18 +0800
-Message-Id: <20260624065818.49975-1-21cnbao@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260622192114.1147198-1-willy@infradead.org>
-References: <20260622192114.1147198-1-willy@infradead.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QtudLKBG;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <5d11c940-a8b9-40d4-9b8f-aa2a9909724c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782284317;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zGLKldePx7r1dzWhJ9pzygXxiTVGhPttEMwGKkjBnek=;
+	b=QtudLKBGcSAIiYOhfSuYwYXrE7BrFJxaCaxmHI66MGPiLwTzNCdy6rqPqA/Gc6gSFyI1sV
+	XaRqukOxZmUafB0N7JgptoH+y3hZuWMdeEq+bCVoyV9EB8jhqIBEloxzHYQeyFIAaSQtDr
+	NwzmO1eYu3cGLE7L//TwrDdw8UjY3bo=
+Date: Wed, 24 Jun 2026 14:58:17 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v4 02/12] mm/rmap: Add try_to_unmap_hugetlb_one
+To: Dev Jain <dev.jain@arm.com>, "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, chrisl@kernel.org,
+ kasong@tencent.com, hughd@google.com, liam@infradead.org, riel@surriel.com,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, qi.zheng@linux.dev, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, shikemeng@huaweicloud.com, nphamcs@gmail.com,
+ bhe@redhat.com, youngjun.park@lge.com, baolin.wang@linux.alibaba.com,
+ pfalcato@suse.de, ryan.roberts@arm.com, anshuman.khandual@arm.com
+References: <ee0d499c-de98-4860-bfd0-0bce0b4c1bdc@kernel.org>
+ <20260618074449.24974-1-lance.yang@linux.dev>
+ <d6259e43-e507-48a4-a048-93b5df2f1b62@kernel.org>
+ <0fe2a584-c633-4f82-8c47-d204e3b39a57@linux.dev>
+ <e64fc2f2-c4a0-434a-8d60-dcb28b99b8c6@kernel.org>
+ <22613c23-612b-4de0-8731-00ad2da63eae@linux.dev>
+ <dcfba95b-8cb0-4fa7-a21f-49b595eb92dd@arm.com>
+ <ae987527-7ab1-4905-b7f4-8fcc3bebdd52@arm.com>
+ <0368128c-664a-40aa-9b37-27768d403795@kernel.org>
+ <82474473-ff96-4ee5-bbe4-3d92c2f8cefa@arm.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <82474473-ff96-4ee5-bbe4-3d92c2f8cefa@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B37AF120003
-X-Stat-Signature: 5pxmcd9mni689tqe88uyi6cprk4ps7nd
-X-HE-Tag: 1782284306-718537
-X-HE-Meta: U2FsdGVkX19flCbF2+mhBN8I//dm6Kmst1MrkAk6fRWhXg90/0JsNBa8gRuUGuNWoi8+4YYHQ95XtO6WwzHzKjt2U+OQg3SoPGR0gzlD04DDdyypIXgowdrk5b9TVmgV+s5ClRtJnbhaIipbfGGIn46wH2sobMGq9u9u8j3t5DgJF5ftTidI1CwB+mgwGOheBg37mrk+crZI4x3ClUxMPUQ+X21Zf2nftykHS0hWIwhm/8XUzSnD1IO41te02MLEv9Ub/oNyxK7eYI6g7t00sfNRlo1PmVqD9AKJ3aEhmPIZvnTtGipFDZxq0KfX8qwoN46D+/PR46lS1kqkLtEkkztiR+RI3Jr7al3pDi7FJ6KMMUe51S90TIE3dfiD3/mtbHbXQEEHhcw5/60mGGbf49/1j6sqRRDM+OTW3tNIk8hZz+IoQlniJLZrhyZD0E7/2EkREjfm41o9dflG6XIpYi/WfTxBY9v3EIqWTsAxyFPNNPydTgIR8W1V9aALwurvSduN3TGswHCwAjDC45NF3CZSBuoVicshcoVrp0WOJ7a+wkXsVNQO4HpjdaXqX5j8IYnyERrFEtFKxH18eU+3MWRNEtC8RP9SPKo/1CsBOHhPaiYr0qBXo7UWKx3l9zc/p0o+aQVYNcMdKvL9PE4EaQqNZ5ko70ZhyqgOeQnmKv1kRc80E7kuBtR2J35Rxnch5UuuyxkdgYc/HZSCw2qf8Zn8p2lDGcIu/Um3XY3Jlg/QwtIVuUYfy8s4/hO6sLD3tX/hQveNdpIcQXOqJJLxdjOmPTJuLmII6WmvEODkk93oKT1KampoMCpGKi7u8NNJ03sud3OCZ3khHDuXa5F1q88p9jICUWX0a1U3pP5beQgFmAcZMIYzgEaf81Wjb5G9AmMbxN5YOD83LAri1MazxvdQNRSnoLz8WTf+wsuHKuvHLXC/RIRY19RwVp1AnqDkH364ycNFXmhQlvhwMd8
- zQT82tiB
- nAcfmCyYx2UPTTWC6Iqo8Ku4sEHa4iskgggKWoI3lPavimaRcjydVlNAP/sAqUVhpBOTiOXfqi0tho0o3Uq+m+ipjWd6YpWXQqUWlB7t2p71c6zTUxYSx2yjbBEPGK+jQn91GAZU/+kbDCR0jXUOP5MYbkw4xNJOkIVcm/LNO6CG8jMzjfHyMp5Q9LZEzTl8SqQYAm0WITnneo54p7cw1cB0EXL+FZ/2FLvkIbc4DWZ/wqW6a/fPLfAe92eZXpfp8CiCK1siy+WlsnpallrMtHAKEMPWEg7WlFlowVugwM9r6nS259wpHB5GbpsHPTFYdEJ6rsyJoRmG9MAy9c6f1RlEsAPNhMnxGEifExfvyJ1eslRo1JY7BLcBE9GHBwdoQiiMIHmR17mkk4sm6DnjReHn5GQsTIHNCYp5LT5twnw7ASAd3EZo6ClXOMQ==
+X-Stat-Signature: bua4bqtz8iscd3mza396jcxbg6k7fuc1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 38041140009
+X-HE-Tag: 1782284320-417573
+X-HE-Meta: U2FsdGVkX1+uGVR5KiBNo/TcIcaHxl0qcmigy/ExuA2fJBqANWFgI2T8AYI72Ujjj1xw3r1fRzQL1DjVKnbSObeNr+pOe06PgYIjPW5kHfdUL5CKVexPpfwnwf0WlQBsBpyCGTPJXIRLEbAe0ha7ua9M3CO02pOiPiKpgzfA9hrTPrCw1oj3CE484QoAg12NZkgnCSfzdxHVeL2eLlZPG1ZpVyEKQgwY2y0j8GvfGZ8XmO8IPtY0cNcwMCDIxSwu1r8FEUe4n6hx49BIWLbzrCFb2reW698+xoxpXjbgcWvNrYc3JKWlulmXrHiv/fzb6lLjtT9o/fDfO8BJIIKAECof67alB8H8W5O/q27XJjrOBCLoqhYaGn4xdBnk5HWnTzrgxfJKwSb4AAFDKEN5KlL3FfW1fFrLKKkdoZM6Vx4BRyiFldhWYgRNd8OBnREu/si0iUKGY75fUkB02D0unVOvYK1xPrae0raiEkdzyEfa9IYjjTQnku9k7+v9G95PkY5vFeSRh+GrHJXHOVR9v6wDNJuWARsmQO5TdOMRbtS8hx14NnD31uGcHMTERXuOLhanhN3DFM+vT36bMvahZxfR9pbDFja/t79Mk9X42etisAXsPoiMk1AChMha+9lKnJsy50m068vFSgAy8cXpilDZwWxLeJojE93BYytgoS1UQCI/lz1pIHnnvpMz8AWf2Vc32cIAVAkRwpV0Fl+ax/X9dxxt1M9KSXgbUlrFpHJ4spYxFwIbKLkgqwi3c2BYGhxDQ8lULBd99yuSfflMv7JTeINqtnaxFFCWM2x/YtHhqPGl5ZD2SaBLDnaa6DGnLyaV6yW55nzHaZF0lmxcbY51Sr4SZE2x0YHod9zXv5HlcwJKbpEmWIqyIskcuaRawfK1Ul1AnwS6wnwW1Jz9McV9Ef8n0w6iP/uewNgR23EJWnADiykbYJJLslJfpttteB7VJjn3Ucn3B0S3ohH
+ RTvv9tV3
+ gbIX5WcD4bjOo7CpKLIqbxATkRli6KkrU5uj6GRkS1Caxk4RicC7I8F/vs15ZzKzPTi2Wu4J3rsLELSmsTtpQwji2XrzXY2datcoJuHvE6Tfj5esXSS4niB/hvSwyLJmCNSqFGrSssiNXiRN+tH7Ar+zMYuUmO4nBVI8zYl/JtbiqOxYPsVJ8/F9Nq3u+q1jySdWpq7P7g8imFkLidCYTyGQvJhSkdZdcNByXB7NkQVEGpSgb8pkUAD9mov8A6LyHXqkv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,51 +105,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Now that faults are protected by a per-VMA lock instead of a process-wide
-> mmap lock, it is far less important to avoid holding the fault lock while
 
-We could have fallen back to the mmap_lock from the very beginning in
-do_page_fault(). And for GUP fault-in, we have always used the
-mmap_lock so far.
 
-> performing file reads.  The per-VMA lock does not prevent operations
-> on other VMAs, nor does it prevent iterating through /proc (see commits
-> 6b4c9f446981 and a75d4c333772 for the original motivations behind dropping
-> the fault lock).
+On 2026/6/24 13:50, Dev Jain wrote:
 > 
-> We will now submit I/O and wait for I/O to complete while holding the
-> fault lock.  This removes the need to return VM_FAULT_RETRY which means
-> we won't fall back to the mmap_lock from the VMA lock just because we
-> had to wait for I/O.
 > 
-> This should result in improved lock contention, although it is possible
-> that some workloads will find themselves contending on the VMA locks
-> due to them being held for longer.
+> On 22/06/26 1:47 pm, David Hildenbrand (Arm) wrote:
+>> On 6/22/26 10:14, Dev Jain wrote:
+>>>
+>>>
+>>> On 22/06/26 1:43 pm, Dev Jain wrote:
+>>>>
+>>>>
+>>>> On 18/06/26 3:31 pm, Lance Yang wrote:
+>>>>>
+>>>>>
+>>>>>
+>>>>> Yeah, looks like this was already there before the split. Should this
+>>>>> be fixed separately?
+>>>>
+>>>> Same bug is there in try_to_migrate_one(), check_pte(), remove_migration_pte()
+>>>> and prot_none_hugetlb_entry() :)
+>>>>
+>>>
+>>> Lemme send a series for them. Main thing is identifying the fixes tag really.
+>>
+>> Thanks!
+> 
+> I am confused w.r.t backport. So currently we just have to do this:
+> 
+> -               /*
+> -                * Handle PFN swap PTEs, such as device-exclusive ones, that
+> -                * actually map pages.
+> -                */
+> -               pteval = ptep_get(pvmw.pte);
+> +               address = pvmw.address;
+> +               if (folio_test_hugetlb(folio)) {
+> +                       pteval = huge_ptep_get(mm, address, pvmw.pte);
+> +               } else {
+> +                       /*
+> +                        * Handle PFN swap PTEs, such as device-exclusive ones,
+> +                        * that actually map pages.
+> +                        */
+> +                       pteval = ptep_get(pvmw.pte);
+> +               }
+> 
+> 
+> At commit c7ab0d2fdc84, try_to_unmap_one() was converted to use the pvmw API. The
+> code was:
+> 
+> 	while (page_vma_mapped_walk(&pvmw)) {
+> 		subpage = page - page_to_pfn(page) + pte_pfn(*pvmw.pte);
+> 
+> Doing a plain dereference. Before this commit, the code was:
+> 
+> 
+> pte_t *__page_check_address(struct page *page, struct mm_struct *mm,
+> 			  unsigned long address, spinlock_t **ptlp, int sync)
+> {
+> 	pmd_t *pmd;
+> 	pte_t *pte;
+> 	spinlock_t *ptl;
+> 
+> 	if (unlikely(PageHuge(page))) {
+> 		/* when pud is not present, pte will be NULL */
+> 		pte = huge_pte_offset(mm, address);
+> 		if (!pte)
+> 			return NULL;
+> 
+> 		ptl = huge_pte_lockptr(page_hstate(page), mm, pte);
+> 		goto check;
+> 	}
+> 
+> 	pmd = mm_find_pmd(mm, address);
+> 	if (!pmd)
+> 		return NULL;
+> 
+> 	pte = pte_offset_map(pmd, address);
+> 	/* Make a quick check before getting the lock */
+> 	if (!sync && !pte_present(*pte)) {
+> 		pte_unmap(pte);
+> 		return NULL;
+> 	}
+> 
+> 	ptl = pte_lockptr(mm, pmd);
+> check:
+> 	spin_lock(ptl);
+> 	if (pte_present(*pte) && page_to_pfn(page) == pte_pfn(*pte)) {
+> 		*ptlp = ptl;
+> 		return pte;
+> 	}
+> 	pte_unmap_unlock(pte, ptl);
+> 	return NULL;
+> }
+> 
+> 
+> This does pte_pfn(*pte), a plain dereference. I am not sure how back I need
+> to go for the backport and do I need to post multiple patches for different
+> stable versions.
 
-Hongru reported that 82 of the top 200 Android applications in the
-China market call fork() in heavily multi-threaded processes[1]. It
-would be good to take existing applications into account, please.
+Yeah ... looks old old old, not just c7ab0d2fdc84.
 
-[1] https://lore.kernel.org/linux-mm/20260623075805.466317-1-zhanghongru@xiaomi.com/
+Stable backport looks kinda messy though. Mainline can probably stay
+as one clean series, but stable might needs separate review per tree.
+Going to be a pain ...
+> And, it is crazy that the bug has stayed for this long and testing didn't find this.
+> Perhaps no one bothered running hugetlb-read-hwpoison on PPC or s390. And for some
+> reason those tests are in a category of "destructive" in run_vmtests.sh, requiring
+> a command line option - and even that option was fixed just now in 3432cbb291aa!
 
-[...]
-> -static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
-> -				     struct file **fpin)
-> -{
-> -	if (folio_trylock(folio))
-> -		return 1;
-> -
-> -	/*
-> -	 * NOTE! This will make us return with VM_FAULT_RETRY, but with
-> -	 * the fault lock still held. That's how FAULT_FLAG_RETRY_NOWAIT
-> -	 * is supposed to work. We have way too many special cases..
-> -	 */
-> -	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
-> -		return 0;
-> -
-
-Does this break FOLL_NOWAIT users? They are KVM on x86 and s390.
-
-Best Regards
-Barry
+Sigh ...
 
