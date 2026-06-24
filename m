@@ -4,93 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D869CDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:12:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFEFCDE004
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:15:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24F06B0093; Wed, 24 Jun 2026 09:12:24 -0400 (EDT)
+	id C2EE76B0088; Wed, 24 Jun 2026 09:15:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD5AA6B0095; Wed, 24 Jun 2026 09:12:24 -0400 (EDT)
+	id BDFF96B0092; Wed, 24 Jun 2026 09:15:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9CA26B0096; Wed, 24 Jun 2026 09:12:24 -0400 (EDT)
+	id ACEDD6B0096; Wed, 24 Jun 2026 09:15:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A62346B0093
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:12:24 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DC0D167031
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:24 +0000 (UTC)
-X-FDA: 84914845008.21.A638300
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5967414000D
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:12:22 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eu00yjuV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FEC66B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:15:23 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 331608D4CF
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:15:22 +0000 (UTC)
+X-FDA: 84914852484.15.EE5C234
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A7EBC80014
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:15:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kz4Q9rbh;
+	spf=pass (imf30.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782306742;
-	b=dmzaDpX7AzSUAua+yEVTvk3SSLb2P3ceyLaNIqIfgYZ2sMwL8L9NOIuYb1NkMYCm0IZixc
-	WL5YtjRzT9OAX4BBXqWsPwyUbGJkVtu97UbPW0VdtU/NLQ7vaGZxuG4cyqUF9gnQTcBFf0
-	YqhtjYRQp66Kis71TebcKMwPaXLiYG4=
+	t=1782306920;
+	b=wmRUQyAzfFptGbI3o0hO4XYrfxtW3q1ApgCL0V/rSNNL2Ok0T2CMmhC7Q7KSTaM9G02uMh
+	i3xtNfjrxGF/zpCQb4deQWuF7X4xWLbRQnd+jCR1rw7TdCUemfRWNn3KF4WWRDJgV3ECXH
+	nmYKSmiG2XxIWy4gJt/RLRvQx5to9qA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782306742;
+	s=arc-20220608; t=1782306920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lvfxPtzoYVrETEzytIgiJXDO6q4wD9otLoJUFguuBTI=;
-	b=FK4e6nzQ8EtyqokcFkPOSQYuEVkIjPc9b4N3xEqzkhlD5bZZ8snuV1ypKJF2u4gRBIB89u
-	Q74QqtmEAibek06c3JuV57xdNR/pup6gV3sghQL8DQJcZtRJOY7uG19NKf+L/65ON8ft07
-	EgMQCxg3NRd/Q8+28ex5Vo75PYDOUG8=
+	bh=Jm5h4EGMu1/G65UxgDlhva2Uqze8a2QIkXsB3xVvPew=;
+	b=NWcXry6v1Ozsyp6Or67p6gKp0dUpgggNv/NC0jnnLJdhmOVvT4/mG2/Znr5JauC/+SvQAR
+	pXZEhugEJdg8IxCg1NbMhb7ygMOv4YCOUNJq39GQ/59kd9qwoiA/DBspxX0+7XaR8GeZFn
+	t61DuJhqI2dqk2hWIgkIh63ridn3x70=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Eu00yjuV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E89966021A;
-	Wed, 24 Jun 2026 13:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2403F1F000E9;
-	Wed, 24 Jun 2026 13:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782306741;
-	bh=lvfxPtzoYVrETEzytIgiJXDO6q4wD9otLoJUFguuBTI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Eu00yjuVHuuYZ7bvilLZYLvl9LR6tdm3Bp17QItdQ5RoopaTaAS35R0brw0AkNO0q
-	 lrMp7IOUR5wQwrcdhBJWfMOqL7yXV/LVEMXG9sBCnd3/ziydWZAdsRZmb/HYY1iHzK
-	 JIh3JrRilhTb6AOop2cWLnMgpoJzRYv2qkD9m6sddfs2WrVpMEEapGgTtD2Ghrwt6R
-	 TNDGP/6TLsrZV/YIvjhFrTdyMe9dhM+IY4kXLhxaIqrs40qAI6oQex7rdhwhv7uBEO
-	 WcJBATJzFKext9+XgKDABSyySRNpr8xoo+DgFFnT23LOnQBQszdW0SJpJDNF6lsoU5
-	 ZOfZAmlbwPBvw==
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-Date: Wed, 24 Jun 2026 22:11:41 +0900
-Subject: [PATCH RFC 4/4] mm/slab: serialize defer_free_barrier()
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Kz4Q9rbh;
+	spf=pass (imf30.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <351a6b67-b394-4c58-aee2-88b6c8089ad5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782306914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jm5h4EGMu1/G65UxgDlhva2Uqze8a2QIkXsB3xVvPew=;
+	b=Kz4Q9rbh7etgj8euhlBLWO3TzYATCTCfu6njur0dxfGVJdMqB9UP/InGWtI0bOGTstOlHl
+	POIMRyO3mRJBT5/BeQDQV44BuugXQiS1AZGuvJ0EWei9+7fme1gtEeTZSwt1IwIDM7n5ZK
+	H6199we71vGASxf1nAZQvllBRzYOKVU=
+Date: Wed, 24 Jun 2026 21:14:50 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260624-kmalloc-nolock-fixes-v1-4-fdf4d17351dd@kernel.org>
-References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
-In-Reply-To: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Alexei Starovoitov <ast@kernel.org>, Pedro Falcato <pfalcato@suse.de>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5967414000D
+Subject: Re: [PATCH v3 1/7] list: Add mutable iterator variants
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Howells <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, live-patching@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-pm@vger.kernel.org, rcu@vger.kernel.org, sched-ext@lists.linux.dev,
+ linux-mm@kvack.org, virtualization@lists.linux.dev, damon@lists.linux.dev,
+ llvm@lists.linux.dev, Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+ <20260622040533.29824-2-kaitao.cheng@linux.dev>
+ <20260622094242.64531b9a@pumpkin>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <20260622094242.64531b9a@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: A7EBC80014
+X-Stat-Signature: pa9n5qjpxoh4hrh8wsbr3zdz9u8rsthd
 X-Rspam-User: 
-X-Stat-Signature: oc89pw7zc87ux56kkjhqw3wqx4kfb9ks
-X-HE-Tag: 1782306742-545278
-X-HE-Meta: U2FsdGVkX1+66ubLRHh5xtkf722pdueqfHnHViY58EUQfdrQyBMTPt6MBAJ2w7s7DS50gfBPQ8Zb2ZD9N+E6ZSd3r5J/573ED5Asy/dvIPmqgXmutXT0cDewo9FNXqM6KmY9CvU1iiY5MQm8M3f5+RF5NifSF79YuysrgC6zodHw3O+vd3NLtwONTBaZSP/nzBY8qxLGNqsEyMF5nK/dE1ta7bN8pMyNfMTi6QcU+reyk8xIPJnY33wnXPIYDnbN11Nb+QbGCsbnC2cTwp8VNL2c1N+Xg5cu2zu0mBhee7DCjEPfonL1/zWgeQ+p3koUlAaE/Xb7t405+n/qcUYr2hpUcI+kKiiLhkKhFl0BfPnYt7nJalbabRowtE/t+pp1262bCdCMHaiArIqsLMKiclXOTjz/2OqkgCuCrESAgd9oEgtXhaKbH6OztcDpeKy+0Pf9PW5/GAx2O1pk4O6bH1Ef/LV3F8XNE6URoV1MRxdEIhIcDCGsI29eKC3Vhn3BzNyQ6n8aXZEarwlmDGnZz6Nq2wNcBXI597lcpwvmpRrk4irbSH5wLr/6oANn0bVlwZBkPOMnnp0LpNF6I7NUkHgMxWMANyj01pTpTRv/vZoAwDp14jae31Qia2k9Rt2GS7D71Ud5NS5jS7f/mj3Io9wVV4vGwAO36+fNvEZ/e+b3PrlePMTj1emM0CCCtqyGdGwlJIX5nb5BjsYJAnKa8AWlhQM64kBcpt+niR3uz4Ti+tJxJyfMiHAxXkIV2AMUd4imX6q2Gt5qV/Mk0yS7+IUgQ9+vHppH8d/VsQBuvCBxOqSlIMo9VnNRZijC8A3MH6BKU4DJBcLykeyVMVt6K8xkMdTYZMK4uHL+h7up7gFWPL5rn1SsEgfOANCqle+YVmey9UvaiECZp+fs0tRNzqnKxi6YAT0S86KEWDpGeF3J38rRjlcxaj/8DWvYzjb4T5tT1glsetaQWtRLSgT
- ErwJGysQ
- hNqhVOdVi+Hqp6UibzcVxbqyAZXufweGcYmVsgQqF/52sXNOcZ1jOQj39+Tr1HMpgUtYXtc/QHhgVEeTTAQhRoB60LgoT+Wg0+BlBsYJuuq/w5FNNofAl5jono6xRzN3XobHS2vez+0Uo0oIgNDFgADBAd4AJs0jcdgSr4rrrWVAnUMSdNWfpkGIU8uH6vaK63faKrQc2jmJiFN2Jw0c60J/NWwJX/x2zan5LQaQrz3vBy1Lk0rcgSxKQFTIdXTsbPdMrpWWtsY3My7n5QeG6X0Fn7zO02mKMHSuPZ6MpRXQCKeSONlbSsTqd90qddQPeT2iW2+bP6KKHDdcQKOWiAGMTqJlESAIC1wEG
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782306918-629974
+X-HE-Meta: U2FsdGVkX18vK4nd3NsRuKEqYvoDodBebDgTs6YKqBMkts3C6f4WGBvQyQIa0epwfxpy17guimZcONcs0FNDHD6TSnCeLDQD3MAoL51b4km6mgN7Re/F+dM2hJwn8J3XrMLurWrDWKLqikaIsfAwkO1ukR60KO1SV3f8fmMHQf8w1T3Bj6FqjM7qeSUZinXH0rIBEV7cEBEG1zOkZsOnLGhIFOptDJWuZMMbLCRRdpAZDFSNjs5CB1iqyojfLPN2LJmYQqt7p5egvtFTrj0soaXfvp0b2m5cdYAWvABcoevUMWGof+0DTUOblUPk768EPZIdEdZb8pPIpR5tyDR8AlXAt5nAjvXGKypHaCj/KUZGis6UkXgA3uKorB2f4HLeZKDiNiSjYJ0JM5y6JHaI6niU1sizxWP0Im9RrT9l4RRUE2wA9OBKF77LsdDZRAZR0OKVlnGnK9PsNbpjKfNVBB83GnIHuI+Q/1pF99k5Gc4VjlB38dcsLO4sok68I1Eo/70NsD1Xm3bTv6hM0uPd1gZ4cr7QlC+MMyNFlnpmJQ2Le/jlMiNmZQr2QUd8+iIf3dh8op2Vz6SCbvYMjxOsXQOQLMvTMUH8yLlzDmhP4/pONkCoYDVkPt7IbfUHKagzGPllhCDz6sJ/SXfTQ9CfjuNYArF6Pq7n+x5n7wfTtT+VLynravUfDzi8bbJJazOo6ICFq2tYO6II6sgLpflEx+2FZu847yuZIHwFbrHMWV+eli9elCsQrkJh5S1qJQmOXFICqQozUj574zPWMgrrMllnknPdwwQ6fcsVYrGXnn74BhPyGNSXAjCkWXWyMR8lvEWyqtKPDPpRY0WEW0hY/9K6pEThSZxS0GvRvC08WiwKDNm/wXh2bpe0XVy4SE9UUvk91Hxv6bgTuE+tHgfFGaXgknKVlkaJFdHSfcRt07hMCqm7FaS5kfGtFtTw+6KGdF8wd0NOCg1r53TBq0l
+ 0EXWajPa
+ gRgSd06ub5xdzJxD6YoiTYNPE07g2WRp7f+44OJhJqNF13Hfqitv4gJqVO0McQpMopY0AcgcSnR+Z5eBERrXgzzcZpIU7viy/C/znqO4yqdX/tqvB+JPzonQCKGnilJZpTsrSHChXe7KgWU6HJnhSl1kyQ9K22hK2bGFNIEGcQ8i3b7S27DoN/eN4JcSwnhBZSqKBERbTB+95Wo106X1xmsC2R3ygZeTvg/gwQFrR/0uPshsNlMynh/fXU4C/AAjwX29vZEEcJCD2mCPdDs/5Sz4yJSJk+Ci+uYNL3aURVyVDZgIblYfpbk4WlA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,75 +117,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-irq_work_sync() uses rcuwait instead of busy waiting in two cases:
 
-  1. The kernel is using PREEMPT_RT and the irq work does not run in a
-     hardirq context.
 
-  2. The architecture cannot send inter-processor interrupts to make
-     busy waiting reasonably short.
+在 2026/6/22 16:42, David Laight 写道:
+> On Mon, 22 Jun 2026 12:05:31 +0800
+> Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+> 
+>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>
+>> The list_for_each*_safe() helpers are used when the loop body may
+>> remove the current entry.  Their API exposes the temporary cursor at
+>> every call site, even though most users only need it for the iterator
+>> implementation and never reference it in the loop body.
+>>
+>> Add *_mutable() variants for list and hlist iteration.  The new helpers
+>> support both forms: callers may keep passing an explicit temporary cursor
+>> when they need to inspect or reset it, or omit it and let the helper use
+>> a unique internal cursor.
+> 
+> I'm not really sure 'mutable' means anything either.
+> It is possible to make it valid for the loop body (or even other threads)
+> to delete arbitrary list items - but that needs significant extra overheads.
+> 
+> It might be worth doing something that doesn't need the extra variable,
+> but there is little point doing all the churn just to rename things.
+> 
+>>
+>> This makes call sites that only mutate the list through the current entry
+>> less noisy, while keeping the existing *_safe() helpers available for
+>> compatibility.
+>>
+>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+>> ---
+>>  include/linux/list.h | 269 +++++++++++++++++++++++++++++++++++++------
+>>  1 file changed, 231 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/include/linux/list.h b/include/linux/list.h
+>> index 09d979976b3b..1081def7cea9 100644
+>> --- a/include/linux/list.h
+>> +++ b/include/linux/list.h
+>> @@ -7,6 +7,7 @@
+>>  #include <linux/stddef.h>
+>>  #include <linux/poison.h>
+>>  #include <linux/const.h>
+>> +#include <linux/args.h>
+>>  
+>>  #include <asm/barrier.h>
+>>  
+>> @@ -763,28 +764,72 @@ static inline void list_splice_tail_init(struct list_head *list,
+>>  #define list_for_each_prev(pos, head) \
+>>  	for (pos = (head)->prev; !list_is_head(pos, (head)); pos = pos->prev)
+>>  
+>> -/**
+>> - * list_for_each_safe - iterate over a list safe against removal of list entry
+>> - * @pos:	the &struct list_head to use as a loop cursor.
+>> - * @n:		another &struct list_head to use as temporary storage
+>> - * @head:	the head for your list.
+>> +/*
+>> + * list_for_each_safe is an old interface, use list_for_each_mutable instead.
+>>   */
+>>  #define list_for_each_safe(pos, n, head) \
+>>  	for (pos = (head)->next, n = pos->next; \
+>>  	     !list_is_head(pos, (head)); \
+>>  	     pos = n, n = pos->next)
+>>  
+>> +#define __list_for_each_mutable_internal(pos, tmp, head)		\
+>> +	for (typeof(pos) tmp = (pos = (head)->next)->next;		\
+> 
+> Use auto
+> 
+>> +	     !list_is_head(pos, (head));				\
+>> +	     pos = tmp, tmp = pos->next)
+>> +
+>> +#define __list_for_each_mutable1(pos, head)				\
+>> +	__list_for_each_mutable_internal(pos, __UNIQUE_ID(next), head)
+>> +
+>> +#define __list_for_each_mutable2(pos, next, head)			\
+>> +	list_for_each_safe(pos, next, head)
+>> +
+>>  /**
+>> - * list_for_each_prev_safe - iterate over a list backwards safe against removal of list entry
+>> + * list_for_each_mutable - iterate over a list safe against entry removal
+>>   * @pos:	the &struct list_head to use as a loop cursor.
+>> - * @n:		another &struct list_head to use as temporary storage
+>> - * @head:	the head for your list.
+>> + * @...:	either (head) or (next, head)
+>> + *
+>> + * next:	another &struct list_head to use as optional temporary storage.
+>> + *		The temporary cursor is internal unless explicitly supplied by
+>> + *		the caller.
+>> + * head:	the head for your list.
+>> + */
+>> +#define list_for_each_mutable(pos, ...)					\
+>> +	CONCATENATE(__list_for_each_mutable, COUNT_ARGS(__VA_ARGS__))	\
+>> +		(pos, __VA_ARGS__)
+> 
+> The variable argument count logic really just slows down compilation.
+> Maybe there aren't enough copies of this code to make that significant.
+> But just because you can do it doesn't mean it is a gooD idea.
+> I'm also not sure it really adds anything to the readability.
+> 
+> And, it you are going to make the middle argument optional there is
+> no need to change the macro name.
 
-However, rcuwait.h says:
-> The caller is responsible for locking around rcuwait_wait_event(),
-> and [prepare_to/finish]_rcuwait() such that writes to @task are
-> properly serialized.
-
-Since defer_free_barrier() calls irq_work_sync() without any locks,
-it can potentially cause a hang as writes to @task are not serialized.
-
-Fix this by calling defer_free_barrier() under slab_mutex and
-cpus_read_lock() and add lockdep asserts.
-
-Now that defer_free_barrier() is called inside cpus_read_lock(), iterate
-over online cpus instead of possible cpus.
-
-Reported-by: Sashiko <sashiko+bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260615-kfree_rcu_nolock-v3-0-70a54f3775bb%40kernel.org?part=5
-Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-Cc: stable@vger.kernel.org
-Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
----
- mm/slab_common.c | 5 ++---
- mm/slub.c        | 6 +++++-
- 2 files changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 388eb5980859..27f77273fabe 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -550,11 +550,10 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 		rcu_barrier();
- 	}
- 
--	/* Wait for deferred work from kmalloc/kfree_nolock() */
--	defer_free_barrier();
--
- 	cpus_read_lock();
- 	mutex_lock(&slab_mutex);
-+	/* Wait for deferred work from kmalloc/kfree_nolock() */
-+	defer_free_barrier();
- 
- 	s->refcount--;
- 	if (s->refcount) {
-diff --git a/mm/slub.c b/mm/slub.c
-index 4a3618e3967e..52c8d3f33782 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -6411,7 +6411,11 @@ void defer_free_barrier(void)
- {
- 	int cpu;
- 
--	for_each_possible_cpu(cpu)
-+	/* irq_work_sync() may use rcuwait that requires serialization */
-+	lockdep_assert_held(&slab_mutex);
-+	lockdep_assert_cpus_held();
-+
-+	for_each_online_cpu(cpu)
- 		irq_work_sync(&per_cpu_ptr(&defer_free_objects, cpu)->work);
- }
- 
+Christian König and Jani Nikula also disagree with the variadic-argument
+implementation approach. If we abandon that method, it means we will
+inevitably need to add some new macros. If mutable is not a good name,
+suggestions for better alternatives would be welcome; coming up with a
+suitable name is indeed rather tricky.
 
 -- 
-2.53.0
+Thanks
+Kaitao Cheng
 
 
