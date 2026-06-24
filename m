@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 848ADCDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:08:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5EDCCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:10:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63C1C6B00B0; Wed, 24 Jun 2026 11:08:06 -0400 (EDT)
+	id 35B926B00B5; Wed, 24 Jun 2026 11:10:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 613C76B00B3; Wed, 24 Jun 2026 11:08:06 -0400 (EDT)
+	id 3335F6B00B7; Wed, 24 Jun 2026 11:10:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 502E36B00BB; Wed, 24 Jun 2026 11:08:06 -0400 (EDT)
+	id 249D26B00B9; Wed, 24 Jun 2026 11:10:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1724C6B00B0
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:08:06 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 97F8F1403CE
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:08:05 +0000 (UTC)
-X-FDA: 84915136530.28.C480DF4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E74A26B00B5
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:10:47 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61A5F1A035C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:10:47 +0000 (UTC)
+X-FDA: 84915143334.22.7DE72BF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B291440016
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:08:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=En82ZQYA;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7FB3E1C0003
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:10:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArSaKsHZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782313683;
-	b=rqumvQ7hjR7Gg3MA4FY2qnfxfmmS1NpCoztjIc5AcBe1OKqb2DcOtzglzyID8KlleWj6ak
-	kol4VSp/mlbR0Szuz9rPwPMF0hwaH6tt/iSeLQx9fG7V+TrscnzaLdW/Bntvb5UK0hazYh
-	BYC1HAt8BET5oUgqvy6Byuz+KG3qt8Q=
+	t=1782313845;
+	b=hRt9KwpmuElxF8X91VUoFlLernuFuMf8aFFP8GK0u1Q11q8r5MXRhXM3MISs0oHE0zso2p
+	qYIN3qr015vkMLQijRuYQ634i3NLv/4oeyO6gMhzUU+qk+D8BucX6T0M0R3rE5nfSNchHr
+	QoDfTeWFkdS4yrSJBaJ0JKrdvFsZPt4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782313683;
+	s=arc-20220608; t=1782313845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ro9Th4ger4jLTg/pNKqSDgmBrLRcJCG1vxIVqovmC+c=;
-	b=smoCXZUlz7HftGEkQEV3zQHbhASJjnhsoRRL1uvMBP6zTRQT7/gljUz6ih6fK5rPodKo04
-	HTfwlQX2NkAmKcV/Tx7SpwhyDKgeV7RApmUznTOM7mwftd7w0I814ya6tOtzeVMJiNPeKj
-	QZcqbHWwuXU1W95P8fOMgxXZZvSIk5M=
+	bh=NlUQtV6rYk7FKhDdMJZ3o48WICN+uQTFGFIwzC3yTEo=;
+	b=U9A6v183BfQDbL27sKXptG4fWPQRSIMyPW8etgDFGENxkCEHBWkMnzJLx8QaQVIGv/LTna
+	VipH2cZGXuY6T7BQurNvb/0jGrjDCLsRq1zN52ZymIw5FSSsDCIXRwnVZwHBVH3bA0lMc5
+	X3/pKtTtDHYcfSRTBsou8Ir3LjRkmXU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=En82ZQYA;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ArSaKsHZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A71C240684;
-	Wed, 24 Jun 2026 15:08:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AB91F000E9;
-	Wed, 24 Jun 2026 15:07:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F2024074A;
+	Wed, 24 Jun 2026 15:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161031F000E9;
+	Wed, 24 Jun 2026 15:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782313682;
-	bh=Ro9Th4ger4jLTg/pNKqSDgmBrLRcJCG1vxIVqovmC+c=;
+	s=k20260515; t=1782313844;
+	bh=NlUQtV6rYk7FKhDdMJZ3o48WICN+uQTFGFIwzC3yTEo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=En82ZQYAA3LUKTp7MwQkYWxetxRa/R/ktEzh0fKi1H9RfNcAjlr9unbq2gY8r7rZh
-	 632LF7U8TfdolAn5JCO/VyAP0f6IHK2+3FLjC0WXIjpdbBCHuo0N6LaImCCEaBRqRw
-	 q+GOKMChF2SgifEBYZ1ryhXY+6pP3Acse7QJn6pTk18aGO1CyoZsLFnK5qKb2dv1p1
-	 XLEJbGBxMe/AOUpBaWDmpQYW7RYyTKL9bEWmMgdg7QBxr5URyZafCC3IUclmm9Lcf6
-	 e2a4G5g9/7vhx/6ed8vXLtpCN7CY9GYxqB/nCqW/ZSVlLlQeleUAxzwP1gWIc7k/B9
-	 jYKVvRWOkPAsw==
-Message-ID: <24ca671b-074b-4d1c-ab50-1143279480ce@kernel.org>
-Date: Wed, 24 Jun 2026 17:07:55 +0200
+	b=ArSaKsHZSqQkrSpM7Kdsx+/KbxnolqM0OwwNDd8CZzpShdHZ0Xs29mMXHn0/O5tOz
+	 NSp6GygGgPmWjmGbywVW6UEGhsP/O5L94yCEuFksLPBvePfWBbgQBtsbENKDOHmyso
+	 fwJathYt4T5m3qlJSYtVcCWpVQZCyyE+OOYCgZxw9SRjUiygI2BLYq/D9ag0cpYKYe
+	 tpbnjgb6ufYJJ8p1SP0CwYlz9CGgS4u2CZlbCw8a4i8xHXQx0EM1dC+QseHp7+Gwhh
+	 TJovu4jh5TZnOVjkKkU9R+47sJbAfvJntFJ27CDMmYZC0ctXVGetOIkclyWjgAdXyr
+	 /IHUliFHUoXWA==
+Message-ID: <8cdd6eb3-1e93-4a77-a187-86b94ef57258@kernel.org>
+Date: Wed, 24 Jun 2026 17:10:37 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] mm: drop stale folio_ref_count()==1 check in
- do_swap_page reuse logic
+Subject: Re: [PATCH v2 3/4] mm: entirely remove lru_add_drain in do_swap_page
 To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
  linux-mm@kvack.org
 Cc: baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev,
@@ -78,7 +77,7 @@ Cc: baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev,
  shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com,
  usama.arif@linux.dev, vbabka@kernel.org, youngjun.park@lge.com
 References: <20260623231635.43086-1-baohua@kernel.org>
- <20260623231635.43086-3-baohua@kernel.org>
+ <20260623231635.43086-4-baohua@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260623231635.43086-3-baohua@kernel.org>
+In-Reply-To: <20260623231635.43086-4-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B291440016
 X-Rspam-User: 
-X-Stat-Signature: cymnde4z4ac5s3tjib8np9mhomobtmd3
-X-HE-Tag: 1782313683-173445
-X-HE-Meta: U2FsdGVkX1+xasjcQWwoE9ij27uKk++TAvKkxTjaPUEtWyfZdZ5HYUd+9xQCY/J0meoALbZ1Hfs02ohuMnQRM6JUrfZEq5f4t82zkrNjnI5scOHyhMN9cHfpyn0b54TwZnPCUw5tkExMb6onksRnTFM/DvP3BTmhPFYhSdyGrYTEGA6giF8s7402Yxd50M3GGbAeKcW4MJfuhW3bjtyv2U6qnEoTxuUzVs3DYv69+i7qwzE/e5M1LW0cGH07AjfXf8WEk01SPKi2zasdAI7ZCe73vep0Ash0Mz2qVubWEfK8TuPpZCf/DLTGr2r39/tit5Y0fbzXgc8oK5BpiKYycC6nDBHXgs4tTydRUt/VtT0tB+4SV47D2MWsQaTycIOtDebx0inoX5LbOb6wxpsJGZyGjNKZuB2RrvlCZep4DCUwqAkdIgmeu4vp7P7B1atlx5vdpwO4wN1FgCCnoioA3vtfmHSWnQawBks6C7JT0ap/diiAgNMxFa3mW3wv9ubzZr12rXo2ssb93cJ3iZyHpmmNDCymJrzPb2K8XynjNBMl4eeALuaJVnOcVYsObhrwCvXVd7p+VLOu1LLb1RTLNiNixC4DDwaQwX9JyKIt5yZTg9j/rId3BtNS4fM/EDt4ZVkQteP+aMSutgDLecCAi/2UlMKCcIFJsW6Ajm2GioQdBWLvCa7D2MWutcZwMaGBxe/TNAyvsINav839vIEWNEpuTtGEK5rUS1oxz+S7RQGlm+83YieaIJWwtIOP8Naqk2JLQfa30+RJPfcA15UBLmgQl3vVqoecBGIlPTN6WiQQmSp7qdWlml9ndiBQoJR6+qizgLb+9WkBBhNUmicV6fgXN0x5mg2A9A/RjW+a9SF7ixw7OXUBlSGOWnQJl2EWl297aBoqkM8wFnb09xaK9pW/9t1Uhw+7ybhH20JS20ituG434uq3LTEhU91rIwhEIga1e54kskXXyh6UV59
- 6GiiJr/F
- qCibeQpw/hnls/giZ5LU3MLXMwE0TD4bCY9hVuVLyLsd/ocrgLk7Iu9dwCGejFX92y/9ZRgPeDth8kvxGr5H7TNP5FQmkM3sria3a4ek2DDiQB7GJvG0Bfyw9TvybYTeXbpCY8uhZi01CC/BFaSSM5Pohin6lxzJqH92AdJc1ZcZHo/JnKMmYaI4fu8NWD1bhtTHYbjqwSutbon7vPNAYct5JkKJZzqDq+yoCDagFUPLKNNYCAGmfsoo/p5QHdgrHJEbZX0UlV25MQzf+JPYuVc6wbT6xq2uGlxaXBasNnMB83WwoPsuVZ/bCEWN1eSiPhefr3ycMN6Kg2hVQMTKQIM7vFOc/ZlhVsn8r
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7FB3E1C0003
+X-Stat-Signature: j3gtmagksqthqroz8hh3obeq7jgb7jwp
+X-HE-Tag: 1782313845-820112
+X-HE-Meta: U2FsdGVkX1+qTZ7EYKV4JUOHjGTfrPfHF4Uh6zruGX5r/Hk6j8PRquWqlegYdWMeTESOeG5TtTH05DsCkItt/HkMiaubBs2XKbEGx1D/1/OBDM+6FmdGAlEsDfOuJ07YN4Qsm/+sfwUb3/m7d0ps/CLk/zXhtaAoo30wMyzKbEC1Jte6XoFRgD3EI4poKH/9mDrpNJ/xx4HsIvJGIcKqf3ZVhnxwvJKaiL6JOFQArjRYhkRtXdI/AJffFQf4iiuFA8DSZFaNiB4V2sJQvjWLC5LXv7To4eK2m7Cn0Q3RL9z7enwYRn0B5ilwxiF1D6IncyV5FkZprai4pJtHzgAm/IgjMgQnbTVmJjdE8NXMkBqzMsloYh7KV9xl4bPYAut60krcbTXWp7SG8TyeT77jZsCxjIe13JoBtvft+V7LWFfLqpmh39VwoS7VU3a0s+lV9Mqa9eT/2QPzPK7ayXLu2XF9jzUrzvcGJfI3ZutdmIoZvfYPtOffwVXFpP+yOiXrlQm+qCqOaQpYVecgx2nwvuvgYl1S8t/vgh5lWMIiWfzvK6iikzqyZdpHx+QzY90v1z8LWrJsJCfjctwfvXUXfFoNpu+jlGeiE3PPyBjhACB4v/Fr7JCa2pSSX7dF2lRf6PugCj++1gNKtuM/6Q83WzTnyFFEEA1fC6grmcDVJGt5XR6eKplgWc6BA+Fbe5TCr7QV2NCoQ1y+/vUwfgS3thzBWzEc2ay2kjDR7/a2u0/M0WqKwoQmNhhHuw4RF33Zbq+6rLcWaehc5dswDUGzqjuGA4ttLVKyQhiXtE7ugvesEwZNjdip9zmrRC+JvQ0E4CXMRo2OaT3nqYajY6l7iMWac7OsC0kkz85/jVKbyJq7fcH3JT3scXMhuSxpJMyhvTEx+zXrAQ8K1vxoo7kDHBbrqNYBJIvbb3XSO1LbjjvyQGoqk2/QjrHaBvtFqStTSNWFARPwNpGZljGrR7D
+ H54jcsaA
+ ukyB+FH5QupmQBS0p/RzSrPDRsDtnhfxMZ0cNKr2O4k6ize4K+L+w76ro4+Q+fx2+lY02dD2AbONbpSyHBlmR1njaNO0UsPBkhcp9eKyMsfolUu9NqZOCEE96O2N9kQPNpIJEQEbmAYgx9s4qrqq56VzzPWrDArlkN7PlzdHik2/9/N4p6kLlVSxx+x4FyQD351cRa1dJejYhYGMIneowi60i0i9yJ4eMOoheHizDiomaCtFLa2Blsr5BysOohiDp05WAQpC+47jg8zlpTNgsQbyT6ppWfG9394zkIk9cxNxZbrdWiQrjQixKsr/xTiXY8bjMFVb7YsXz4J0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,47 +143,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
-> The "we just allocated them without exposing them to the swapcache"
-> case no longer exists, as Kairui has routed synchronous I/O through
-> the swapcache as well in his series "unify swapin use swap cache and
-> cleanup flags"[1]. As a result, folio_ref_count() should never be 1
-> in this path, since at least two references are held (base ref plus
-> swapcache). Remove the folio_ref_count()==1 check and update the
-> comment accordingly.
+> We are doing a lot of redundant lru_add_drain() calls in
+> do_swap_page(), especially for synchronous I/O devices. For
+> example, the test program below currently ends up draining
+> lru_cache 100% of the time:
 > 
-> [1] https://lore.kernel.org/all/20251220-swap-table-p2-v5-0-8862a265a033@tencent.com/
+> int main(int argc, char *argv[])
+> {
+>         int i;
+>  #define SIZE 100*1024*1024
+> 	while(1) {
+> 		volatile int *p = mmap(0, SIZE, PROT_READ | PROT_WRITE,
+>                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 > 
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->  mm/memory.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+> 		for (int i = 0; i < SIZE/sizeof(int); i++)
+> 			p[i] =  i%64;
+> 		madvise((void *)p, SIZE, MADV_PAGEOUT);
+> 		for (int i = 0; i < SIZE/sizeof(int); i++)
+> 			p[i] =  i%64;
+> 		munmap(p, SIZE);
+> 	}
+> 	return 0;
+> }
 > 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index f6848f4234a6..abd0adcf65f0 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5049,12 +5049,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  
->  	/*
->  	 * Same logic as in do_wp_page(); however, optimize for pages that are
+> Folio reuse now relies primarily on the exclusive hint, making
+> lru_cache draining to drop the refcount in lru_cache largely
+> irrelevant.
 
-s/Same/Similar/ ?
+Makes sense, we'll fallback to do_wp_page() where we handle the non-exclusive
+either way.
 
-> -	 * certainly not shared either because we just allocated them without
-> -	 * exposing them to the swapcache or because the swap entry indicates
-> -	 * exclusivity.
-> +	 * certainly not because the swap entry indicates exclusivity.
->  	 */
-> -	if (!folio_test_ksm(folio) &&
-> -	    (exclusive || folio_ref_count(folio) == 1)) {
-> +	if (!folio_test_ksm(folio) && exclusive) {
-
-Hmm, but KSM folios should never have "exclusive" set. So I think you can drop
-that as well (was only relevant with folio_ref_count==1 check IIRC).
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
