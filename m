@@ -4,117 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F0DCDB470
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:55:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC3F2CDB470
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3319C6B0088; Wed, 24 Jun 2026 02:55:01 -0400 (EDT)
+	id B4EDF6B0088; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E3596B008A; Wed, 24 Jun 2026 02:55:01 -0400 (EDT)
+	id AFFF36B008A; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F9266B008C; Wed, 24 Jun 2026 02:55:01 -0400 (EDT)
+	id A15806B008C; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1B9A6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:55:00 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 69E038CD02
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:55:00 +0000 (UTC)
-X-FDA: 84913893960.25.D326D06
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C4C2580003
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:54:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NfjRsGoV;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E6F76B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 102361C1920
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:13 +0000 (UTC)
+X-FDA: 84913902066.03.40A8617
+Received: from va-2-18.ptr.blmpb.com (va-2-18.ptr.blmpb.com [209.127.231.18])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D2C0B1C0009
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=ko+peYdW;
+	spf=pass (imf21.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782284098;
-	b=8ljyis2rmopAeDVEp60VKbKLP3hfZ9T6OIBfuxgzz4VB+Z+wCNFdiyArk8b306OnCCXeZy
-	OdmHMMs2SbQ6BFnfLkM8CTS4JUsEreerw6I3CmL8x/0UeZ7M0JO9ZvIqpjZ+BvUx+jQkDc
-	0Y/DWcE+I5x0R4CAPGbjhZtKdRB4dhg=
+	t=1782284291;
+	b=c8upwimYgsF+l10wkhbvZ8H7j8nD8zm1oLxSS+fUmk1k81YpuBItFSTJ8UaWhX3jAak7L+
+	LgDZoo8ELiaRrCpeskXRcS+YcdK50Pka0Sn8DQzHPRqvkZVbp2DDPVRBhHmMF5z/X5BNt4
+	00MN++0l3AhM7+9vzrY0oVhLTLtlHlU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782284098;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=FgXzFb3dVx+G0VhkHfJ6LeyUsAoRLr+Nz9RsQ6xstwc=;
-	b=P1XfyjKp7zaD13TRGFp+BdHcBJzTeM3yydBtM0RYaqD1mzvXx7EGNRI/Dr8Qkbxz9t3ecE
-	jIuvZ9QtBuoAcaAxfAQBLfjz2zJRZrNrSioJmILA1yEHHTN7axxHI4yqKpRVL9KUaRC8Y3
-	UD59mWIFlJHJYdfcuB8BzKXtyKUFf0k=
+	s=arc-20220608; t=1782284291;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FMKsX1oqr9cJS0GXtzM8Ok+fkwH2kagCOdyTihBZHlM=;
+	b=wqQES9pp+aATqKo0Q5NoIRQafQNk3sD3Q0bHRSTjcenlP5Jzc7KzZweWYnsgxng6gPMVeB
+	GRyNkNLZOpXZd85NgpZHpHi/vj8XaM0ZybkcwrFBSPT8pwbrem9k1fxoqNIcnwblqaNwno
+	/Ek+CRhHJaxkezzVJZSCHyJw5f61wH0=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=NfjRsGoV;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c07ea058c0cso135835066b.2
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:54:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782284097; x=1782888897; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FgXzFb3dVx+G0VhkHfJ6LeyUsAoRLr+Nz9RsQ6xstwc=;
-        b=NfjRsGoVe/ox7ESGSX5RRHARQZPcYb6/Feoez6uRBDXKQmsHOd5kvjFP5VnKBanKEN
-         yPHr5wWNI8FRPBcyvGdxU5fkCTs8R63KwE5kIqxJVBu5htm1YzspOL64hcfnqmNNIFAS
-         /znn8Lb1F/4vCpSwhaFW1Vozh+LW5siKwQw+uIzXMQ5NbvavuXVgaOVp0rWKxw1IcHiK
-         XuYnDn1hHkP2rXTC/UyLnY6SPYcVX1VEj0xhLskrI4X251JwgQSd5d2QG67r6r8mDq2I
-         X0D9q2zxXU6dweYhosxrUmYg4SS0UblhWFjALV+U1nW3UtC3z246CCWNS6ekkGT5e6r5
-         w3sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782284097; x=1782888897;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FgXzFb3dVx+G0VhkHfJ6LeyUsAoRLr+Nz9RsQ6xstwc=;
-        b=JD8d/h5YyXfe+mB4K7nHjK5dBvlIEngEQutY+tbDEQSAhDpcaMBs4QCDAExUpTqJS4
-         aL0AA64w94EWC9O36bIJrHQApQd7Du89adLBzQEbx8SiHIPp9e6JbPaj/qcQi/IkURr/
-         lZL21s+Gf4lccCqxotFj9vgeOc6chk6hRkqDVU5MS/2pxTGnC/3B6Hbxz45w8F6q78ID
-         KtxQU0S+tABd78gREMlc2qzwhsey2HAFVAJzkGM/eCGFAYEqSH6XrBTbrv/WHeXljvgX
-         J+7J5nwXOWrhdrcrRcF32QeLSMXvgmoqxd/+VWSwWbRfyETnSEcY5j9Y1M9Dtcdaciaa
-         Qlmw==
-X-Gm-Message-State: AOJu0YxD3bR7UUFDHtUMYNVCbFtk7cMB+viZAhSDhvdJJFy2szMmBy6d
-	ABekqkzzxJO2QqnuZ6tzjdaVvR42ZbDyWlmlaOfeVf3/OvYuUOaWXsq0
-X-Gm-Gg: AfdE7cnrIBOG2rir/hMKqH9r6Iny3OfzAx3rqXM4468Y4iwAqGWkrswRbQgz24NdSMI
-	KTAti8pEa4FfSA7wNqp7H6/SxInFwU/1ctMtbk/+SzwL0O213WJr0TwSsQvc/vpj518Wo7OIzw7
-	skYCRuGMTaoP8QiQ1RpgCabO+Ah+qwP0Oh2sNRZVNnoInQjoW2iF/s4tYqLF8jgWXmD3hl40yJa
-	OrI+QIAU0905q9C1Wt0NgUXsL/PZjFhksRV4MHtB/rjx0XA9u0KijZ+DwY8bF8kNDae653SgK+b
-	A1bLYiSFiaa7XZaC5Xg774TrQ0Ys4hHpxfOIqH1X6M5tptGOAuipi7nWC8vrT3cYkr9tCkhIkQZ
-	R1irxB6ak6PaJ5stWf9N0ZAiKoNjEJoj+9XDfGK5+HV8IP+qeMvA8js/cQ4uEeaoFn4ygmSPgJE
-	Iz8lYXZvlZrlU=
-X-Received: by 2002:a17:907:e895:b0:bef:db4:296e with SMTP id a640c23a62f3a-c107d00be34mr326784066b.10.1782284096711;
-        Tue, 23 Jun 2026 23:54:56 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c60ac98c9sm606560866b.29.2026.06.23.23.54.56
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Jun 2026 23:54:56 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	ziy@nvidia.com,
-	sj@kernel.org,
-	balbirs@nvidia.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD handling
-Date: Wed, 24 Jun 2026 06:53:53 +0000
-Message-Id: <20260624065353.1622-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Rspamd-Queue-Id: C4C2580003
-X-Stat-Signature: cot1y84uc64tiipsuubzhneb3anrpd7b
+	imf21.hostedemail.com;
+	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=ko+peYdW;
+	spf=pass (imf21.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
+	dmarc=pass (policy=quarantine) header.from=fygo.io
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1782284286;
+  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
+ reply-to:content-type:mime-version:in-reply-to:message-id;
+ bh=FMKsX1oqr9cJS0GXtzM8Ok+fkwH2kagCOdyTihBZHlM=;
+ b=ko+peYdWhkBC6Z2+M+DAnl+DHsw7wlKUYcGNSanD0QdqHL8kOGNHfy5JdHfFOLwBitSHLK
+ EK6pLRNFI2Ud7COX476laUs/Yn9twDwM6BzwU5ay+45/RPsZvLd2zVcfwbj3e8/Oh8o6Qh
+ 51b1/iIv5qImhJBjy9SAtaeR3IiSjddbeFzYvyuiv9VOVVgPqb8e0c6pncmMnr8S7IziS1
+ bRaHq/Eeyn+vdDxSEw1TIBPEMAo4KrGVeqjBoeJepRYhI8QA0h9N/pIA84fxdaAnw/4KBM
+ RdiUXkYUQnjnDCgCUCNCg2y4JhTuJcX8KFuo5Ck1jX6/L9Z0UVAbsh/6OJ/rQw==
+Cc: <akpm@linux-foundation.org>, <chrisl@kernel.org>, <kasong@tencent.com>, 
+	<shikemeng@huaweicloud.com>, <nphamcs@gmail.com>, <bhe@redhat.com>, 
+	<baohua@kernel.org>, <youngjun.park@lge.com>, <cgroups@vger.kernel.org>, 
+	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-mm@kvack.org>, <yukuai@fygo.io>
+From: "yu kuai" <yukuai@fygo.io>
+Mime-Version: 1.0
+X-Original-From: yu kuai <yukuai@fygo.io>
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+26a3b7ffd+12954f+kvack.org+yukuai@fygo.io>
+Message-Id: <1c739fcc-5132-4cb2-bf34-cec94de26509@fygo.io>
+References: <cover.1780621988.git.yukuai@fygo.io>
+Reply-To: yukuai@fygo.io
+To: "Yu Kuai" <yukuai@kernel.org>, <nilay@linux.ibm.com>, 
+	<tom.leiming@gmail.com>, <bvanassche@acm.org>, <tj@kernel.org>, 
+	<josef@toxicpanda.com>, <axboe@kernel.dk>
+Subject: Re: [PATCH 0/8] blk-cgroup: remove queue_lock nesting from blkcg paths
+Date: Wed, 24 Jun 2026 14:57:59 +0800
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Received: from [192.168.1.104] ([39.182.0.148]) by smtp.larksuite.com with ESMTPS; Wed, 24 Jun 2026 06:58:04 +0000
+In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782284098-452689
-X-HE-Meta: U2FsdGVkX1+sWmCZa5Tv8UKpVVg6epaBPBo7CxT5o1Ys48gFhZ+vwbxZapaKAOqRm90jy9cdnDZ1stvODZ8vQKbdc8YPCkdDCTy4K7Lmzofg1+fexn+lH2aFlL8EM5F1a9iryuBu4oPAA//OGJtCi0ApqsaZRtNXGMpiyJHyOBiwdtafnM7H5mXwGSXf/F/IUrN8HUR1HVieUksAkjzdBe2MY6C2ZEKCuzwIl5l/tpV9cn9OsRtvMoE04+0RReC0CpSwERcIKN8l8YTUC038InChk6RQJRLwZzvHD6HJgqzKn/8CI7Dl3qRsP71/BGyqxqGUFKXkzPp0SiPgcE5CVhOdGTGV0pFEk+m+SRMKeFyTG/1i263ILmHkujucXOplgWjBIdwKlnBeeZf8Kaj69w5+MEU4WNz14kcvwFX1uI7+BSYmO0J08m6TlEXCJCssaLFoSeNnmJFTByR2y00UsO60oigHoCjXAwA+hVsRfPXAXwOLxEIAk3/0nBwJ5rDlDcPi7CpmuxDO9+n/2fiaJ7D4oeTSHfzij5ARAEi4MOLbSIn1xQdL5nwsRtkWIJKGFc8VAV1s9vrXfoLrq8XW6ymjRDa25zVFk/yyUMJtO6vlv5myG+9aWAK1p/V4RV6/Yrdob6RZ2adkQHASowtVrEsNi7FnTzWMDvVeOw4ay2IzTaNM3sAWoH+GuKLbKBMGUmW2anPhbpoJ4gZiTAp7wcG5E279fge3ZAUTZVEQl3DY9felsyYd3l+K+bKnv9AtHv8xCb7yi1988o/hAI6kSALyvL9Idlaj5Lva8jFr2KYxGBCMuDsgWXUYHe2lb7ZIwHvUaoQkH4Y8us1+fjdvm78HObtQ7UTFavd8Ej8UE4Wo564Hd9sqOETJVGDOdwyRXGcuKY9wsqKUGOcOgCro9gU/T3PA3xE3u/ql9CpzwITcMmvZ84cjvNNwLdSr3myoM5jXIcZvBX17vnQVJTA
- bgg09l9s
- eG8rGzhTYGUB0jDZm2Okk5ljIGme4UesL4f2zOgXjgaeQz/p7vf7hJ1VPkio3sknw7tuOtpn23eyKLYcKYWbu9BMtkcfe48REuyDnbqpcsC+6jJdiy3L/o9706ay9K2kQEJyiZwGnPc9EBoGfkpUxYYPpwZlpeIddblpLcl1KkEPnDpkHQ7tfM8GINKPsGJMrMqVbOjSlJe8euLpMH2Ug/qq/Bu2HHcvoI8cYB8nOdrqJoAxLnrwY8xv0He1ORy742VSGIfvMZEWc7RQQ0gWfVzW0yB+UDLyJEMjsK8S0t+SgsxaF5tn9qE23YFQjystmkIomMChrbG2X6yeifx5cykQ3ppvbIqAZocFMGBT0fYfmwsHvcjrIyU2wYQ1KA+h0rdpdxnR27cQ0QSaCMmHn//IQgSK8gux0AJEgwt02Ga4Z72yte+oysJDSd974QCq78xkRG/drXusdzWDk4rfqSpX/JtBNJV+5zrgJ+8SwfMRoL4ach29db5EMt25O/NWfW3B/jfaQRlXDoJzRUhBHT3pMsYy9AcrdrVe21nrpyt4+SaBuuno+eZIKrnKuzFHKgrMdVarmjSInayvpecNC6rU4zq0Y+B3kjvWSXPKV9q319NZt0fM7kjoHjP/2K4dIzTYB
+X-Stat-Signature: jw8ewgy95xs1iiquy3mrx5ns6gp6th3t
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D2C0B1C0009
+X-HE-Tag: 1782284290-628332
+X-HE-Meta: U2FsdGVkX1/wLJ/BxbHSsTVKDSsg3yO6Ew+gQ1+qBdLv/Pw+C1nIUE9Ke6dXzkzBiwjIgffGYrb2xX7tAQsUVfbLkTGO89oulL/kxTAAUfggMzdyB/vnibLQtB+Zw4LKB3tHR2TLsPS9qup6Xrqg8K4ZgnrDG3YNftQABi7zGV8u73dsAZ6gy6t3YMBGU+JDj/A3BRls90XUNXNhwLi3dNYi/m4XGsm8PBHp6HSSb76jkE9n+20EWKHKhazGR/OQJOaG3UxeP/uXXArS43gQ9/vQfIJu54YByqbZ/eRpRJjEJ4NJ6dY28beWeoBQpwaT73NYXKT5oBJdgQMC6TbdWHm5R4R5Gq9GPL+sdZogm33hTYi6vGLKMGbMvzsWZpTd/yO06likEm9UNjcJ5OM6MOeb3gZD5Z03ipEKhOCIayRuZrl/bQYqhomVPBrsfltAkGwZjqSlR8Gu/O4Uf/SsbIithEJgtRBtYnhtuFoGq3StM6k0/dT0rUOf3ZYfZvTRAVQdsJR31DZPa2ke+5RJB8sVW1an+nJlf8+QNarLWfvybzh0ml01WoxbY8LgirAw6BDZAVh1foK0KWToPd1NfxGbzzNmW/2lYvRLfEAubsARUprikuCEt7F5W5nihSfo9beXpy40CtlnCwd8w4DQ7HNK+KmFtlj7JMRLHEXbPUiuC7SjZC13MYtYsohJkQCzudqY/d6FpSp49pt7Fbr4SBZAVcgWqgmmruTyZnxcFCdnt5/xWe4S/r86d2Vf+P8VSiMGWfWURIeV99q0EoZJUwL9hdxWpt+QNHFuWnGvd71389W5vGgYtVFkmzxb3xHG7AiyOFFL88D/yDzMNOvvY86XgNCs6ZlTAaDKfi7PqLKeaEazYKA4k7ksiFidAOZ0NPqe+nM8qZHiAzuq5UcMbXDZah5FR/Cm4VJUeuMXyM+r1aC/nrvlsugVU9PbjjxySGpsbYi1J5b5uZJSW1i
+ iiG7Zz1y
+ kjQF8plug1pT8SnCh1l8t8Km4Kl/wntD0NufNr2c3FRiK+2ql+2ZgT0FG1D84gkawGuabQwgTC85fIIemEJAaKmso6eJx6G003egt8FsHWH06+Mmh5j8jmIYTBkaTfyQXyLv4ENhg4V0ghgfMOTDekE2yDa2OavBC6zRtJU/L9Cpnon7ohTUjG50Q/hhRZJNxvA44jVVCOgAKWgiTqYbCQCqEckQiAJTJKmWWdCGMYXPGaE52cori/wS0gT5YvJHwZx3DL/WJgG3wNYhG1uH0tkjyRFD64YZdKZdJBhTfhKCHX1QF2xVESnrcM7JGbw4G+xtO+ZbjaPYng28IKlnUkMKzLn8Ld/9TzP2vRuvRt6u3hfkVEuP3LiPpvQ9DONWT6cisMSyXyYa9sAelknEuHWGnW35zgiKNXU+dyIT6qdLXIH7sLzHhj8RVxPf4XG06qO41PZMsa9fhHQBxiiNtb7RKVFYo2pAVHIH/t7vrqnnxhqfr6JBKT6lFdyvW4sFNn6j0qREoYDsS08z5iOf6LNIqsyCHfVhoutt/q7EWrYuBNAxcbqqIRAuICRpALsYKAPfj/S50cT11xvIMf7+FuKTeFmUro7DySKWoPts1xETgKb2gdDqL5q2FOM1kIOPHbm+4oeNgCTcX1wJaShkE3lTL6J48aIJqE0MgVAzQzg49MdSL7ACa8uzZwYSrG0uJBSIlM36Acn9iX5A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,100 +96,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-device-private entries") introduced the concept of device-private
-PMD entries, but did not correctly update the rmap walk code to
-account for them.
+Friendly ping ...
 
-As a result, when page_vma_mapped_walk() encounters device-private
-PMD entries, it takes no action other than to acquire the PMD lock
-and exit.
+This set can still be applied cleanly for block-7.2 branch.
 
-However this is highly problematic for two reasons - firstly,
-device private entries possess a PFN so check_pmd() needs to be
-called to ensure an overlapping PFN range.
+=E5=9C=A8 2026/6/8 11:42, Yu Kuai =E5=86=99=E9=81=93:
+> From: Yu Kuai <yukuai@fygo.io>
+>
+> Hi,
+>
+> This series is the follow-up blk-cgroup locking cleanup on top of the
+> earlier blkg-list protection fixes, and prepares blk-cgroup to stop using
+> q->queue_lock as the global blkg lifetime/iteration lock.
+>
+> The current queue_lock based protection is hard to maintain because
+> queue_lock is used from hardirq and softirq completion paths, while some
+> blkcg cgroup file paths also need to iterate blkgs, print policy data, or
+> create blkgs from RCU-protected contexts.  This series first tightens the
+> blkcg-side lifetime rules:
+>
+> - blkcg_print_stat() iterates blkgs under blkcg->lock with IRQs disabled.
+> - policy data freeing is delayed past an RCU grace period.
+> - blkcg_print_blkgs(), blkg lookup/create, bio association, page-IO
+>    association, blkg destruction, and BFQ initialization stop nesting
+>    queue_lock under RCU or blkcg->lock.
+>
+> Using blkcg->lock and RCU for blkcg-owned lists/data keeps the lock order
+> local to blk-cgroup and avoids extending queue_lock into cgroup file
+> iteration paths.  It also makes the subsequent conversion to q->blkcg_mut=
+ex
+> possible without carrying forward queue_lock's interrupt-context
+> constraints.
+>
+> Yu Kuai (8):
+>    blk-cgroup: protect iterating blkgs with blkcg->lock in
+>      blkcg_print_stat()
+>    blk-cgroup: delay freeing policy data after rcu grace period
+>    blk-cgroup: don't nest queue_lock under rcu in blkcg_print_blkgs()
+>    blk-cgroup: don't nest queue_lock under rcu in blkg_lookup_create()
+>    blk-cgroup: don't nest queue_lock under rcu in bio_associate_blkg()
+>    blk-cgroup: don't nest queue_lock under blkcg->lock in
+>      blkcg_destroy_blkgs()
+>    mm/page_io: don't nest queue_lock under rcu in
+>      bio_associate_blkg_from_page()
+>    block, bfq: don't grab queue_lock to initialize bfq
+>
+>   block/bfq-cgroup.c        |  17 ++++-
+>   block/bfq-iosched.c       |   5 --
+>   block/blk-cgroup-rwstat.c |  15 ++--
+>   block/blk-cgroup.c        | 151 ++++++++++++++++++++++----------------
+>   block/blk-cgroup.h        |   8 +-
+>   block/blk-iocost.c        |  22 ++++--
+>   block/blk-iolatency.c     |  10 ++-
+>   block/blk-throttle.c      |  13 +++-
+>   mm/page_io.c              |   7 +-
+>   9 files changed, 158 insertions(+), 90 deletions(-)
+>
+>
+> base-commit: b23df513de562739af61fa61ba80ef5e8059a636
 
-Secondly, and more importantly, if PVMW_MIGRATION is set the
-caller assumes the returned entry is a migration entry, resulting
-in memory corruption when the caller tries to interpret the device
-private entry as such.
-
-In addition, commit 146287290023 ("mm/huge_memory: implement
-device-private THP splitting") allowed device private PMDs to be
-split like THP mappings, but again did not update this code path.
-
-As a result, we might race a PMD split prior to acquiring the PMD
-lock.
-
-This patch addresses all of these issues by invoking check_pmd(),
-ensuring PMVW_MIGRATION is not set and checks whether a split raced
-us we do for PMD THP and migration entries.
-
-Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Suggested-by: David Hildenbrand <david@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Lance Yang <lance.yang@linux.dev>
-
----
-v4:
-  * refine subject and commit log based on Lorenzo's suggestion
-  * put pmd device-private entry handling in its own if branch,
-    suggested by Lorenzo
-
-v3:
-  * remove cleanup part, only fix the issue for device-private entry
-  * refine user effect description based on Lorenzo's suggestion
-
-v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
-  * specify the possible error case of current code and user visible effect
-  * besides fix, cleanup the pmd entry handling based on David's suggestion
-
-v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
----
- mm/page_vma_mapped.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index 2ccbabfb2cc1..17dff8aab9f9 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			/* THP pmd was split under us: handle on pte level */
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
--		} else if (!pmd_present(pmde)) {
--			const softleaf_t entry = softleaf_from_pmd(pmde);
-+		} else if (pmd_is_device_private_entry(pmde)) {
-+			softleaf_t entry;
-+
-+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-+			pmde = *pvmw->pmd;
-+			entry = softleaf_from_pmd(pmde);
- 
--			if (softleaf_is_device_private(entry)) {
--				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-+			if (likely(softleaf_is_device_private(entry))) {
-+				if (pvmw->flags & PVMW_MIGRATION)
-+					return not_found(pvmw);
-+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-+					return not_found(pvmw);
- 				return true;
- 			}
--
-+			/* device-private pmd was split under us: handle on pte level */
-+			spin_unlock(pvmw->ptl);
-+			pvmw->ptl = NULL;
-+		} else if (!pmd_present(pmde)) {
- 			if ((pvmw->flags & PVMW_SYNC) &&
- 			    thp_vma_suitable_order(vma, pvmw->address,
- 						   PMD_ORDER) &&
--- 
-2.34.1
-
+--=20
+Thanks,
+Kuai
 
