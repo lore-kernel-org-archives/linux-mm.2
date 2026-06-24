@@ -4,123 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96E39CDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 11:59:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0018CDB47F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 12:04:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 63A1B6B0092; Wed, 24 Jun 2026 07:59:13 -0400 (EDT)
+	id 92BDE6B0088; Wed, 24 Jun 2026 08:04:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EC256B0093; Wed, 24 Jun 2026 07:59:13 -0400 (EDT)
+	id 8B6566B008A; Wed, 24 Jun 2026 08:04:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 500C96B0095; Wed, 24 Jun 2026 07:59:13 -0400 (EDT)
+	id 77F3E6B008C; Wed, 24 Jun 2026 08:04:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F1026B0092
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:59:13 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B93D1C589E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:59:12 +0000 (UTC)
-X-FDA: 84914660544.22.797158D
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 85C10140008
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:59:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I9+kkofv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EF656B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 08:04:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD80B1A02EB
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:04:30 +0000 (UTC)
+X-FDA: 84914673900.01.16AF9A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DFF3DC000E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:04:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gHXfCHHe;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782302350;
-	b=v/8ZdzHff4oZZ5MntHkWu0n0OF6y50Ko/j5g9QsQyQksRsqSu2v5dkpT/yEaUHgQlobmLZ
-	oDMbKeFyJ7AF2Ko0B5gkPrek7DmCFMmXqzmCzjFtnlmET/axFP+UriKFd1tR+DSm/BoALF
-	RWVW0gpSDkimqwI88SxIlv9WUYUPXoU=
+	t=1782302668;
+	b=JklbrsVEgipDp2qW50W7kINiytw05Q4XUn/d5N6AwEwk/PegzRQm+rlQnbG3CDbeJw8Agc
+	LPY2zRTVk9rrjs9K0utoAbslP8PQH0pyP+uaVorKjC5SrY8VA5vKMN5eBm9p50CafNneRJ
+	yj2DUvE/bHvxQcnxgPd/G/yjPDi1Zrw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782302350;
+	s=arc-20220608; t=1782302668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AcnLe+6H7fb08Bv+rWkSEkyMo+WogFkYHLdym+VtEGk=;
-	b=5xqQk5Y1YPHCHa4nQNO6nQRjifUUSlChff9uZxHMQbMCwwtNgfTwyuvoaAb3Q7TvoLkaDx
-	kg5hKMn2K30N7GL/sbBib11aaWIlLuiybkEuzXvZ0kbxyt5o8J7USnKwxAsU5A2hbHQck4
-	SSXV34cxtOmiSGqNAg4nv1t6ey26z6A=
+	bh=bPkGECt5a+DPxd1vxVeft1Ofd1Mb2QRWXAtXqKgxgFY=;
+	b=w6Fx80yyGx2rrO/fZS0JC3dofxS6Gxb9Xsm0OGYYScwuGCmq1eQASbd//6jlkRhUmQvWhu
+	1ehgqIH+51/M2be8bc9oktMb430CefoHuTC5/XvH7ciGIk7Dog6Hc68YWSnuWqeSXKUmHk
+	zMQ34rILflxR3iiegLOIKkBMzojRhxc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=I9+kkofv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-37cae11ba85so701156a91.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:59:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782302349; x=1782907149; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AcnLe+6H7fb08Bv+rWkSEkyMo+WogFkYHLdym+VtEGk=;
-        b=I9+kkofvaDUGqrKqOP5j8lezgCMM78dJilmYfy9eRl4DlQfpLnMBQ2PAoRuNTjBv0v
-         A4c6PGaWMg1BW2NAkEZSugKiVnbWl2SwGMSJ/INle7F0AVE8qObKDy5pDOVfUN8pWZ+7
-         4qLQY82iaOL+6brJE1LkhScIptN3j3pNla7SiVvJ8fj4x+ciRpOiOjeL7WHD4rVtv54C
-         oJwdfu2AmLOtQeDnypSz1VyVFFuQk8gfoESeZsCl9qCkkNOWW+mmOk5Y8MD/GP+DJXaC
-         yH0Ny/aM988cQT5ojz/Ep2njHd8zk5YXISCXD2A7sD6AH1ZcXDFjRauzIPmMEuLIO0u/
-         LAEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782302349; x=1782907149;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AcnLe+6H7fb08Bv+rWkSEkyMo+WogFkYHLdym+VtEGk=;
-        b=bM1hdUgHjoV5hXoVoxu8InDWWS8Kvc0ENpSyCZyxmqj+7ZV/7Pq6vsvYN34+tQQuFS
-         Xv0h52zsRjnR9rVQJtkwfvd18gGe36QwzhKDstJvUufUAoKRAQkkEy+cw6WYrwNmCVXB
-         OiEn0eEX2G8jalYvPK0/BZCKDM8/+knGim7J5G7Xgl/l+7CY+SewiX3y6gG1PzkYwJcV
-         rRo+hrgYFI2ypFUwzL6MvXk4jmLde5mwAl3U2eMTlDBORqzLcmnOXkr7l4+ifVu74tTf
-         zdjutMzRA4G0iAvFPNrjc9jLRgfNU59GN2UAruszHqquqO0V3+aLRGG2IkdVNd2AG2BF
-         awNg==
-X-Forwarded-Encrypted: i=1; AHgh+Ro/xHtXzjaFY+o2cSZ27wy34vxMa3N5MUvnjWKewxUQhoVCpjPfupe1KcPymij8naueULAdT9umdw==@kvack.org
-X-Gm-Message-State: AOJu0YwtfTWAwnhATceZhsL1CmsQy3j0H880dAMu27kqluJynFIT7e21
-	CagvQVeo+sBEtQOlFGXAYZzRJtCtczxLqkngwp+CDWYyq3rmwUHcdHzU
-X-Gm-Gg: AfdE7cmP9hfoRK9JB+hEPk+dSaPiCdVQUmVOeFntf5/udKWUX4rHKoRISaUOA0oMPAc
-	155uZdV5cJqg3q8FkwQUIR4KK3OOP0XQc5nqfpdLGUCFmfhEj42bWBf8KCzyhLUE2OFLK7Eo9Ry
-	XrXb/W2DZsuopRtqaT16Mw9Bfgc6DAqmpWzq+vrB74eORkO0zfq01j3jRk045fAjBkEz45tgPNV
-	5CS313SviksvSnxlyr2FTGrynhuuiyUHPgPa+k9yV9lVIM52Y++ZeqJM9v2pge6TzXuUidhghu/
-	ACcca+0S1kyhTXhT6m3RyAKsbpYN/x26yS5wV5hE5JO4SVV/dksU7jV/m1SPPAyMPsuCFyUxMC+
-	E0w5Ua1vB61VG4Sf2pa3JeonvLsqGMRmlVpKkhT3ci1wG9zJM76OZujGwGubf++zKALJ/sKSg23
-	a/bTo9E0Xm1YOtGTqtzeAmw+lLNdcK9CtTWZ0H9R/DP50=
-X-Received: by 2002:a17:90b:520c:b0:36b:9daf:1504 with SMTP id 98e67ed59e1d1-37de421db3emr3545553a91.14.1782302349378;
-        Wed, 24 Jun 2026 04:59:09 -0700 (PDT)
-Received: from [10.125.192.89] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37de3cf70b0sm2368408a91.11.2026.06.24.04.59.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Jun 2026 04:59:08 -0700 (PDT)
-Message-ID: <057ea303-4c27-1a6e-08de-cce26c699097@gmail.com>
-Date: Wed, 24 Jun 2026 19:58:59 +0800
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gHXfCHHe;
+	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DC66601FF;
+	Wed, 24 Jun 2026 12:04:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ABD41F00A3D;
+	Wed, 24 Jun 2026 12:04:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782302668;
+	bh=bPkGECt5a+DPxd1vxVeft1Ofd1Mb2QRWXAtXqKgxgFY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gHXfCHHeLJJQ6PuTMJDedcKWduFNd1gEpDrfxC0cXvLr5RvXcWyZxrXoRoFE6lDe/
+	 V8PbBKhX2UwYqRfOdXUoEvJIE7gEKC9DZbULo8NEV5jonhC6sOJEYt1FpkLAIziamJ
+	 0MzEgrttDApoOUHyIkn8MwPlAg3nlzwsrudmeVI31yS1rBpRp7+X+5u/5T+z46XBQF
+	 DzCVrbdtlk/JfAzoBJin4OB4j3Oft7evDuvB1Mfazk2ginEgsC1s6Zm6l3buOCILVE
+	 WSyB8LMIZezRNmbwRyUKQw64dUUSRIQIDBK4r4hS2dFCi5FJoFOITjX1Lw2rsV34R+
+	 V9dTANI9rvzEg==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id B3F5BF4006F;
+	Wed, 24 Jun 2026 08:04:26 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 24 Jun 2026 08:04:26 -0400
+X-ME-Sender: <xms:ysc7arJrmQBKPZMF7NHZ9TlaUeRfC4PjdpOQS23Md4llYtcCmRRSIA>
+    <xme:ysc7avSmNCpscXkif3EuUFt60cx2HdrgoSg3x5RyeEQlgt_jllZ7Iu5JP0ivRffkH
+    ZaTLlwhchhcqT45vK4Eq-LNVZkKKrmAmi6c7Uw2gnS2M8Sdn8Db1YU>
+X-ME-Received: <xmr:ysc7ahisMMJgne3yhaqSpWOQ4ZNbxm8yl62DQeRPIf6o2pgVdcBWdavmetlbEQ>
+X-ME-Proxy-Cause: dmFkZTE5F6I5b5uZvzSVxfQlILFYzxEnUbVGpGC0tlOAO1di1xZRoPj+aBYF3ihPNsV6UP
+    AsQyKVi1xXuij4iiy8RU9hvvjU4ZhbyKXvWJNiNOEjkncWPlQrMyOpEMIbuMYzK1VCsIeX
+    9eZQ3E2AsHkRloI8yXz+F1Qm18yX0pJokr8wZNZRv/PI6WIL3IrOdufGjVwdL92BvG070D
+    HFdx6dkj+3BraPT3KjlB8VC957e/+oNNke/zhblgViiIKnDdvY0dmkJzjxY7OOZvLx871c
+    qFoUJQNXHRvl7JVKuYZUpy3de409D0t6W5U1PXw+Wpf8CkWAQazEzW9mKFajAZXDTDgXgF
+    ziYAfEMxaDqzsMOLfO8B0wK4U8VZ2Tgrf8Is76n9WT74HtuNp3l3YCfacvJhIAXn4exZCx
+    mjw74zDmL9XDUxGh8z/7i3ZuV3c0EClGRQ56kwetkYSrOQzQFDQD7fekLoEhJiCGmEPGzH
+    V6/hTquiL6rcojPoHWVT/bnoE+7It2Abm9QcozblpFEK0WKYbjBtcK3IjSlTy0u3dGzJ0N
+    KWq2j6kUxy0mYBSOYltFVhqVIgmq8sN88iUzdsF51Xo+kX6f5Fh9a66uqIDvqn3xOMjghg
+    WLAo8q6zCaLxyK9/P9dswjldKLuAoD0bxnW72YGG5Pt76IIPLaNfHQNmiIlA
+X-ME-Proxy: <xmx:ysc7aooVbHNUJ-MsiwdYS3f7dWmYn035OELV-x5GozNcOjpOgpUACA>
+    <xmx:ysc7agnWsCF1Ski3VuQJTTDgYhIbwTRfDOcBsNK6a0HHx06utPD8Jw>
+    <xmx:ysc7ankraQY02ZSpJR7-e22Rz8ZgnOvEM7gyNZOfEbGyVvGUerNpAw>
+    <xmx:ysc7atNe1BxOJlEwtiRCHC98iLie4dhu3n24xubz2GqtxvUnISMeZg>
+    <xmx:ysc7am7ztHGF47Y0CQURacKtkYtjBjuw4irPf_R8CrP39zqnqgHGIIhY>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Jun 2026 08:04:24 -0400 (EDT)
+Date: Wed, 24 Jun 2026 13:04:19 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Breno Leitao <leitao@debian.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc: nao.horiguchi@gmail.com, linmiaohe@huawei.com, david@kernel.org, 
+	lance.yang@linux.dev, akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org, 
+	pratyush@kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org, rneu@meta.com, 
+	riel@surriel.com, caggio@meta.com
+Subject: Re: mm/hwpoison: persist poisoned PFN list across kexec via KHO [RFC]
+Message-ID: <aju5_WjBtagTOSJw@thinkstation>
+References: <ajut_LDQGYCShApx@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 1/5] mm/zswap: Extend shrink_memcg() writeback
- capability
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
- <20260618044857.69439-2-jiahao.kernel@gmail.com>
- <ajnB8IZrFZwbIr9P@google.com>
- <d0f05c35-457a-4b2c-6faa-7a83d4bdec01@gmail.com>
- <CAO9r8zMgaqP=n6rmhnMU+qhp1Www1Y5kdbLTLX1v=fj_ybHyiw@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zMgaqP=n6rmhnMU+qhp1Www1Y5kdbLTLX1v=fj_ybHyiw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 85C10140008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajut_LDQGYCShApx@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: oypkfkz664o1wzkeqc3ti8jwjju94ctf
-X-HE-Tag: 1782302350-637449
-X-HE-Meta: U2FsdGVkX1+EtVVstY05fTvQ4wy+3+eB9ptwdbLrwZDZUlCzbGnzifb4hiQyloJO9yZcQnzgsdpOuwpJ+d57ULhHIuYwsiJER/HKoKePmf/wQY74mMhb6K3kHOTRiX1qmOVOhvFI3mCwf/Faw9Z5uhQncnHWMeoRFjdp7ZgeMDm7plXJPAr0+DlGmm83VldcsltDThnaeAn/7cKERWdHhhQNdNwCTdCzQgvUABDT9Tl3nla9/Uy0R36Dwl9t825y+KWmxARZ/9xnh1UGlgjhUReVeaTdO9WA/Nl+0a0nmLCGeIYc7oq4tucNG9ttCFuIAH9UcB4f13S0+G0Bp07ny8OEflOQFM05LZ3ErhJjjnJdQE5gRR7iW8h6dj921OGnjq1dYfZu9s4xiTSRpGc635QpQP6RVDGo3sHibkhrkH3zjRIjxhwZW98Oc7EtTNRs0tnBcffQDwB12pdllX+NrC+al6s1n52lYWuIHjAMNXoQEcUVVhUoX57LhQuQJXgIXRPzFzxJyOHMrhKF74gRoZa7bJEujIfwjiYTVQcoezsPd8kAmsDlujzQ4rsRGst3rA+2tdw7u0jJERz2SgJyOgTIRDRWLMSF3DW9fDS9qtLCiJgWMMrTmZTfQ0+TSyNpP2+t1Tjn7F2VCfS4lghrSdYA9yjIdTLVBvCc94i2vu0sgcj2zbWtpRt7qTQlU2fs/zzvEuv2ffdFp724fgcZEHJSvHHx5YSmMf84ktmRcJpBrH049JNPBvEflefhWFg71xHRU410wS3od06++cFg8iuuWSqwOyvD3MLvEhITyFz/pctgnVCtFY1LUnBfJuiQvabHM5yaxxeykASm7EF5tA9dbDTEfZZoswt61V8DB6Thbw+O7vCZFds6JZ26vHUKndVVGMY2vybvZ0Bw7a2Yvh7vdFWn00ZU6+nSljcqOnLnH0zNqKE874cRNu3IlEPKowIpJF2wNYbc/Q+h5Vk
- pjOv89F1
- ZzpNpcOTw8a+GsL8O3HnwQ8SF6tPii1TyUflfbnRaRVSTQ7kDcT0Dv7TVb5lWqy+mBttAAskK3Nmy5cX2HEaRLeoG214/3GSahcvD6VWxGeVSjxn8FYY7DDpo4kewqknI5KoZWYRkLEmE6Vl7IOrx9vSe+hpitA9FL5O5s11Yxv5S9IMLCMgemj9hel/1C6Qr5UInig8GNYbjZyyub6T0vyNkIGN/wmsddojfKbXDGtJGn1nb1L6ddrTzdWoAE3iBjKImYc4TKIgYZfivWu+m+pVR2AUgF0wmwTikZ2BRMs7LcIZEiGjv6UC1bD5yNSAuqVI058+aq/7OLmUbL9+67cvhORCh4TSVNHnd5cCL5EIqoNpKYQuSrk9/cJJY6JegvnmWTlj3pdknv+/+7cvRSdXtYY1nWKlTt10guFevjKnzHgsWiwxgoaEU8LvIt1e2xpCxW9P95lGrvamhSLJCSCCadNGKATbFGvsFsG1Lc79CqaE=
+X-Stat-Signature: rp3zzanpbprd1ijo73omupws7ibz3j9j
+X-Rspamd-Queue-Id: DFF3DC000E
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782302668-97726
+X-HE-Meta: U2FsdGVkX19nnJBrh2jgKAU1R50JdY/s1bix/g9OxzgYnzdimM7c3QL82drzUGQy7zPQC3OSguhJJJaFjlDjxyjFMU0c95HmEIGy/PFPz4IudFBOGwfLws+1llYDf6S37XirWFb0d/nleRvp50EBuKkv8hPGDp7jyJEyhvsEdZ8DxsBRB6oQtN/3M9JL3xxwKw6LB6IsjOOfms7sIDkTYKs8fOMJAg7TpFMQvqbvV401UxfSserq+iWj17PzXh0s2hMuZHbYlpVEpGl/z6ziDEmaOMogHMaIMqjbtcBLDIYTG74PppmYJx2I/fCYZdpeJvUwTbLTNBOi9wPD/n5+LaEcVVFyYTOmzAUi27kHUyoccrXQ5J3Nk6wknaV5PQd/N+wn3la1FijRNbOWxXcpwazeEaQDuHy9tdu55N1rPHJhFX68+9Mdau8TDmHBbI9it49LkvMpkGXBGwIScb4MzJH3CW7xZmy9CIQ200sLom88/vRkHG30klGim2jn/r1WU8QRqCeEkg2YH8OFlhWy6qFakmXEVC/yJC5Icz/0TL6TgQM8WvlWQGGYswXetTvhd4UvJag4aSagXEe9TPZ9AmwYVLhfowUJSZl6hI80HOIcH1KtxUSCVYAiXc+poPxGdv23UVXHwXWtsQApPmGEiAbBJf2uwSbcCBIlS+IS3dWO+Im3Qq3oTjhV+ijWZaJAk2EHKUkWCQ5iO+cZmeonDaQJuoJSr3OyT8i+v/dk1mWrRKhQBicxljirYjsLY5ZdrTdM4awWUvrbwe0qcNnThoq3W4eTc825SbyAQqMOPD0YAE6OwGwQgittYvli66vNaN9n0FQTNu2z88AaHfyMz4hk7oeiVuw9YNKCZHB2yLYMWLgckzyfjrbCk98ae83IhP26e+atX2CLSD3+4E4fDVGbaDAUVS9jiTzldGRI5bzIw9RpEerKRLfgQHhF1Tsf00v2CxTRbap9GeO58dl
+ H8pV5lTM
+ zLaeMOGZ1wQpM29kyVRVuHbVDDyFHg7txW55BdQZ4Hw2RsGIqdz+dlHJJa10/D0/VxXlKElXulh+WOYnSBpzcKqogpE+/KZvszxzkhupJnEPKkmgaTy7mV4EusAbHoNXIqEIegz7vMMyvZ80J3vYD7HNWVBYH5LfPNk3/wCWfOt2EOzuQ7AHGJkRsLWjSFgJZReMLOdOPLtlh/dkhnFr3h6OhoTZdPolmZVatlkLOpU2HinoH0duhO6AAskeR57x0Cz7vfrfc1AQkxTCanbuoMEgaZLHyG4jQVBUa2G1Z9aVi/y/0os8ZW1LsCk5zOmfalUQIitk7Q2+hq3ppgqXwXriSv0Pjs41UShCO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,169 +119,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jun 24, 2026 at 03:39:38AM -0700, Breno Leitao wrote:
+>   * Consumer: early in the next boot (fs_initcall_sync, before the
+>     buddy allocator has handed anything out) it restores that array
+>     and re-runs memory_failure() on each PFN, re-offlining the frame
+>     and rebuilding the full hwpoison state (PG_hwpoison, counters,
+>     HardwareCorrupted).
 
+fs_initcall_sync is not before buddy hands anything out - buddy has been
+live since memblock_free_all() in start_kernel(), and every initcall before
+this one has allocated freely. So this is recovery, not prevention: you may
+be running memory_failure() against a frame already in use, possibly by a
+kernel allocation.
 
-On 2026/6/24 02:17, Yosry Ahmed wrote:
->> My initial thought was that if cold memory is evenly distributed across
->> nodes and we are doing a large writeback, it would be better to balance
->> the zswap entry writeback across all nodes rather than just draining
->> node 0 first. However, since we currently lack a proper metric to
->> represent hot/cold memory (such as age-based tracking), doing this
->> probably doesn't make much sense right now.
+Two windows are missed entirely:
+
+  - memblock allocations between setup_arch() and memblock_free_all()
+    (page tables, mem_map[], percpu) can land on the bad frame.
+
+  - The kernel image itself: KASLR picks its location in the
+    decompressor/stub, long before any initcall. The next kernel can end
+    up running *on* the bad frame.
+
+So I don't think this should be a memory_failure() replay. The frames need
+to leave the next kernel's view at the memory-map level, before memblock
+and KASLR.
+
+> Possible solutions
+> ==================
+...
 > 
-> Yeah let's start simple and go from there.
-> 
->>
->> So, perhaps we want something like this? Please correct me if I'm wrong.
->>
->> static long shrink_memcg(struct mem_cgroup *memcg,
->>          unsigned long nr_to_scan)
->> {
->>     struct zswap_shrink_walk_arg walk_arg = {
->>       .bytes_written = 0,
->>       .encountered_page_in_swapcache = false,
->>     };
->>     unsigned long nr_remaining = nr_to_scan;
->>     bool memcg_list_is_empty = true;
->>     int nid;
->>
->>     if (!mem_cgroup_zswap_writeback_enabled(memcg))
->>       return -ENOENT;
->>
->>     if (memcg && !mem_cgroup_online(memcg))
->>       return -ENOENT;
->>
->>     for_each_node_state(nid, N_NORMAL_MEMORY) {
->>       unsigned long nr_to_walk;
->>
->>       /*
->>        * Cap the per-node scan by the current LRU length. A referenced
->>        * entry is only rotated to the tail (second chance) and may be
->>        * revisited within a single walk; without this cap those rotated
->>        * entries could drain the shared scan budget on one node.
->>        */
-> 
-> The comment here is a bit misleading. It's not just about draining one
-> node. One call to shrink_memcg() should only scan entries once. The
-> caller can then choose to scan the memcg again, or scan a different
-> one. In this case, the caller should iterate all memcgs first before
-> retrying memcgs again and reclaiming rotated entries.
+> 2. e820 / EFI memory map (E820_TYPE_UNUSABLE). Tempting because the
+>    frame would simply never become RAM (no allocator race at all).
+>    But: it is x86-only (no arm64 equivalent in the same mechanism;
+>    this series is tested on arm64);
 
-I have updated the comment. Please see below.
-> 
->>       nr_to_walk = min(nr_remaining,
->>            list_lru_count_one(&zswap_list_lru, nid, memcg));
->>       if (!nr_to_walk)
->>         continue;
->>       memcg_list_is_empty = false;
->>
->>       nr_remaining -= nr_to_walk;
->>       list_lru_walk_one(&zswap_list_lru, nid, memcg,
->>             &shrink_memcg_cb, &walk_arg, &nr_to_walk);
->>       /* Return the unused share of the budget to the pool. */
->>       nr_remaining += nr_to_walk;
->>
->>       /* Bail out once the whole scan budget has been spent. */
-> 
-> The comment is unnecessary.
+(+Ard. I might get some details around EFI wrong.)
 
-I'll do this, thanks.
-> 
->>       if (!nr_remaining)
->>         break;
->>
->>       cond_resched();
-> 
-> Did you observe a problem here or did you just add this due to an
-> abundance of caution?
+This isn't accurate, and I think it's the right direction for EFI
+platforms. EFI_UNUSABLE_MEMORY is honored on both arches today, no new
+consumer code:
 
-The cond_resched() here was just out of caution. Given that both callers 
-(shrink_worker() and zswap_proactive_writeback()) already have 
-rescheduling checks, I suppose we can remove it from here."
-> 
->>     }
->>
->>     if (memcg_list_is_empty)
-> 
-> Do we need memcg_list_is_empty? Can we just check if nr_remaining
-> matches nr_to_scan?
-> 
+  - arm64: reserve_regions() marks non-usable memory nomap.
+  - x86: do_add_efi_memmap() maps it to E820_TYPE_UNUSABLE.
 
-indeed.
->>       return -ENOENT;
->>
->>     return walk_arg.bytes_written;
->> }
+And it closes the KASLR window for free, because the image is only placed in
+EFI_CONVENTIONAL_MEMORY on both (x86 process_efi_entries(), arm64
+randomalloc.c). So the bad frame is invisible to both the allocator and
+KASLR, which is exactly what fs_initcall_sync can't give you.
 
+There's also LINUX_EFI_MEMRESERVE (efi_mem_reserve_persistent()) -
+cross-arch, reserved pre-buddy in efi_init() - and looks otherwise fine, but
+it's parsed too late to keep KASLR off the frame.
 
-/*
-  * Scan up to @nr_to_scan pages across the per-node zswap LRUs of @memcg
-  * and write back the reclaimable ones.
-  *
-  * Since the second-chance algorithm rotates referenced entries to the
-  * LRU tail, the per-node scan is capped at the current LRU length so
-  * each entry is scanned at most once per call. It is up to the caller
-  * to handle retries, deciding whether to scan the next memcg to complete
-  * the full iteration, or to rescan the current memcg to drain its zswap
-  * entries.
-  *
-  * Return: The number of compressed bytes written back (>= 0), or -ENOENT
-  * if @memcg has writeback disabled, is a zombie cgroup, or has empty
-  * zswap LRUs.
-  */
-static long shrink_memcg(struct mem_cgroup *memcg, unsigned long nr_to_scan)
-{
-     struct zswap_shrink_walk_arg walk_arg = {
-         .bytes_written = 0,
-         .encountered_page_in_swapcache = false,
-     };
-     unsigned long nr_remaining = nr_to_scan;
-     int nid;
-
-     if (!mem_cgroup_zswap_writeback_enabled(memcg))
-         return -ENOENT;
-
-     /*
-      * Skip zombies because their LRUs are reparented and we would be
-      * reclaiming from the parent instead of the dead memcg.
-      */
-     if (memcg && !mem_cgroup_online(memcg))
-         return -ENOENT;
-
-     for_each_node_state(nid, N_NORMAL_MEMORY) {
-         unsigned long nr_to_walk;
-
-         /*
-          * Cap the walk at the current LRU length to ensure each entry is
-          * scanned at most once per call. Referenced entries are rotated
-          * to the tail for a second chance, and this bound prevents them
-          * from being revisited within a single call. Retries are left to
-          * the caller, which can choose to rescan the current memcg or
-          * move on to the next one.
-          */
-         nr_to_walk = min(nr_remaining,
-                  list_lru_count_one(&zswap_list_lru, nid, memcg));
-         if (!nr_to_walk)
-             continue;
-
-         nr_remaining -= nr_to_walk;
-         list_lru_walk_one(&zswap_list_lru, nid, memcg, &shrink_memcg_cb,
-                   &walk_arg, &nr_to_walk);
-         /* Return the unused share of the budget to the pool. */
-         nr_remaining += nr_to_walk;
-
-         if (!nr_remaining)
-             break;
-     }
-
-     /* Nothing was scanned: every LRU under @memcg was empty. */
-     if (nr_remaining == nr_to_scan)
-         return -ENOENT;
-
-     return walk_arg.bytes_written;
-}
-
-
-Thanks,
-Hao
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
