@@ -4,137 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E057CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 10:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 204CDCDB47C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 10:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CB1C6B0093; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
+	id DFE336B008C; Wed, 24 Jun 2026 06:21:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2E26B0095; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
+	id DAF1F6B0092; Wed, 24 Jun 2026 06:21:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7CB6B0096; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
+	id CC5166B0095; Wed, 24 Jun 2026 06:21:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CE586B0093
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:16:53 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E4841202EA
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:16:52 +0000 (UTC)
-X-FDA: 84914402664.05.27C3952
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7734714000F
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:16:50 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=detNAHgl;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782296210;
-	b=aBBEGdS7PdpKorVoCGrID5ZIZsuVW8BZ/DvBK3JmecmHVC0fI9phHb1vBKFX/3q0xYInYC
-	Hes6JA6Yk9TYxFKA8DoAaROuKiu0b6tESZoX53kU5SNKh9VcuYY+/ENbnAnSO5w2szvxAI
-	3GsFjSiFC6RuWD3f+hIaEq7verh5N28=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782296210;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A14956B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:21:05 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0E601402F5
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:21:04 +0000 (UTC)
+X-FDA: 84914413248.27.491B6E7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 38A50140002
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:21:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fwMSaeZr;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782296463;
+	b=epCQDX448iwKGw/NC+xZg4FkV7S3SKn1IJ3mWDRAUZWw+ijXma3DCaeTAa6TeLi43Wbx9t
+	cO5RMba/y5Q0D60QRICHXT+VN9O6yK9XLNl1PuvLZgZfys4hMg8aCL7ev1TmuSzWX4I/n/
+	UOfXtb6AoHZS+WIDp3wmWghwydRdLcA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782296463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
-	b=QEMjbhUIJSAFzbuG6jLtuoxrbsrJ+NIgeYclQ9nBhTk4OkLFMwQAjMbHetGnb5jrlPUQYA
-	hE23IMUTSD4m4xaDjJHdPlpnQLFqAnm4IPfQJQQAKTItxSqlGNQrAaniBlJJbOhllXI6Fw
-	YqqRlO4dmYKEm7B9POwzRmjMHON8F6w=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=detNAHgl;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-697b8540279so1363402a12.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:16:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782296209; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZAghWvs9mAK8H//LP4X878d5BmCYunIK8phkluDfVaZ10ZmYVuEQLITv4aFRtvvpsf
-         nsFHNACbd7ot0yrFv1+v+4azt7WOmBIDK0qlsUocPrUES8ySvH1nIpbJf9c+vK8vJwob
-         9+UZDK3jUmbyVHtInJ9zA6nRD8Ug6SXNW89LqStdP3Tk9U6tbErRKrtQwRyZxROFcMWE
-         FrvQ0F/KhGpD8CBns/lnzBfmWFJ82gilCG6fv95w205RBslKgS8CwD2zTu+SFdB/GEMZ
-         yY/baNm5YEmbOk9ExzDylOI68fycPLS+8m+fEmqBJoiNkAVrm4XXbBisX5Mgm1XuFyn9
-         vymQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
-        fh=jzPJ7i2WSDYmXM7kCesROrJz3dCs/Bnh8UWTGLK4isI=;
-        b=AB94PxMHknDfK3ZEgAmmJzyMWC3njXQ763/06pHumdDeCBS7X5mFNs1GbuFoej6HF/
-         XQwWwOF1d+4XFzMmduXMWxWZHcat3sJRHR7npasIiR1TNV5wEX59A+bd9FgN0xh4iZAr
-         ax8YxfiyKvczNfYRGPury6J/93rQ9shi1HAgF0Ec1WXJq7vRi4pz75pp0fS4rLijK3dC
-         bKv7RSVYI1LvgZk6/dpaSP22Q2WAfVzpruI8EY9R51tKrRUqdW5H65zaHS4Cmi8FnfkL
-         nniwy/eSiki+Sxc8oOlkLRe8m0GePZwwW8AxipQtV0zo2zdm5xwhA/t3PPuQVxg77zbm
-         /QnA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782296209; x=1782901009; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
-        b=detNAHgloOuC3uThThDOIW2eI9bBHakkqfHLX2ZmArXyo3uzkRbfIdz2/SxvGllyFj
-         as5awEkZJ/9lg9eDcxldtBHJJxiL5uD2CyVwuV+3BkQSZ/yPaWchybMlnaCXUZw6t1eb
-         Kr/1MXhD4pxF5a6t0ytCCMceHmZtTiVAZiQSo2HJnvT+t96pa/YxZKO+sVhaAy/EvTpc
-         +xRr3XCiSeGEQlw9cQp2O4dJzxXXQMMKEcOcI+NjmwkTn5eRlJfx3j2LH7HRTwayvcIa
-         xvaDVV8Gs1Z1iHhIId7C3OzhnPrGd587cDkTOBMvUi1Ev34lYzAML607up366ulO7kx9
-         lu1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782296209; x=1782901009;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UQK2pBj8BQNKbfOl1F2j9HUPCiXxm1EiTKjrYcnAK4U=;
-        b=QjRrGVYQhtByHLD805i6NQf/klwV5kJStaBzd2wPQTc7n/23LdFeOV10ITbxai2QxL
-         T/UCdJRSW2e4fTNmYTYb56bVC9xM7UfSGKAkna1pwGOD4vqt8wARhwM6znaVwwh7HrOs
-         DyxTnkJQSFYjuaT9qOfBVJYioH25w0cWg0aFQKa5a5bliYBKDYKqUMsmdmVMmG6C2L5c
-         3S45mnDYlwDX7zIJCUqaUExLNjT4uf/uL1mNV9iy/UURjqU66RNZdVQwMiu+eTU36UT0
-         VJcVU6jAfxtAEoBOlNTs7VQ6i2G1QKgk7SZwW6B5EEPLl3dobXKxMm3ut3r9DwaVDMV3
-         qLaQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8mVIWALWDjKjVANJ4AR1CcKGhmdpxPLmA8EF6EbT7cLgrWypzvZdw3DXsLpEF7TTkR62Z6YmCZ+w==@kvack.org
-X-Gm-Message-State: AOJu0YwqqyxVGhsJ5EhV6NqgioXQDbx2A+4PiFBsZmHMDyZW12inHwSF
-	gClWR6QPM4spTorD8FcXpxcw3nNMpqNRrCStq6yMaJWaUc6x64K85zY48Nw1dX2fKyqLOE8JBzo
-	waq8lyznYj+2mmFkoGxXpT9hKUKTFdb0=
-X-Gm-Gg: AfdE7cnKoNS/hJp77iMfWBZPZXnst+rRYF4M4Zv5iGwqQ2Ffpl1Y59zrJsW4KEMUMfh
-	O0mK3dWr1SqC9n5PY2zuLH/qcBhDYpKQWy14/XT9IpulCG6h8vR/bN8lh3JrgHYapKSLcyeyFzD
-	TdiQyFelzhelrAXmXcYmYdHUDMO40eHHt+X4ADBISeUly2VPiMyL6PBCgPYW9VkRe3zUlIwAgF7
-	nKX6o/YgRE1j5dQMIlGkpI11w91xgkLdow6hDO+l/in8eSxWGpM6qXZSrRXRVcTkdyb0UDziLwp
-	rW4Cihwrg0wXhsXDK9BCY2O8nIRG1w==
-X-Received: by 2002:a17:907:c448:b0:bee:19d0:db92 with SMTP id
- a640c23a62f3a-c10803b52e5mr366822866b.49.1782296208510; Wed, 24 Jun 2026
- 03:16:48 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rWm6A27NP93RGF4QPXYr6oPzrQP5LB1h1CZ91ay1T4M=;
+	b=ji+7xh4m3EO66df/MEn6rZNw3A0zShvZRA8xrDoTw/Rt3l0JcQg8QTI3iUOwEbl19h9RPG
+	hdi591097YLX/BClfVPFB2hyKCmYSuTWvO9DzD/yATQKESofGu9/mhi3FtrRW+8Bv4qCpG
+	Q5bwKigEITObrj50xsisvkIsm/VdNDA=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=fwMSaeZr;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf23.hostedemail.com: domain of sarthak.sharma@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=sarthak.sharma@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 84384263D;
+	Wed, 24 Jun 2026 03:20:57 -0700 (PDT)
+Received: from a081061.blr.arm.com (a081061.arm.com [10.164.19.84])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C39083F62B;
+	Wed, 24 Jun 2026 03:20:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782296462; bh=t1VQpQ7laQlNyz9qp87/eLwUQrZSrurLq+w1peXrccY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fwMSaeZrtCiQiDS9fc45B91I73Ow6YRz4gOtLju3Tod6mJWsPs1wYbZYm5mAMALaT
+	 sFQnpYV3t7TTtyDoVkurzfXXHqk19sdyK7kTvPM3H6jiUGj59LWaAUIrs5fYleXf64
+	 SKsJsArwKowZoXIiMmS/e6aNhGu3OHw8yYrEncuo=
+From: Sarthak Sharma <sarthak.sharma@arm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dev Jain <dev.jain@arm.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Sarthak Sharma <sarthak.sharma@arm.com>
+Subject: [PATCH] mm/memory: refactor finish_fault
+Date: Wed, 24 Jun 2026 15:50:47 +0530
+Message-ID: <20260624102047.144543-1-sarthak.sharma@arm.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-4-baohua@kernel.org>
-In-Reply-To: <20260623231635.43086-4-baohua@kernel.org>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 24 Jun 2026 18:16:11 +0800
-X-Gm-Features: AVVi8CcGjG7rTM6Nobr68lWdfX8Fp_VEvlB1uBNZ_hzUUIkKMFN6zCaJgc31nkU
-Message-ID: <CAMgjq7C7xOvwQHOm519CVh58CEt1hm9O1=AsduMPb5op_b3J8Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/4] mm: entirely remove lru_add_drain in do_swap_page
-To: "Barry Song (Xiaomi)" <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
-	chrisl@kernel.org, david@kernel.org, jp.kobryn@linux.dev, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, 
-	nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7734714000F
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 38A50140002
 X-Rspam-User: 
-X-Stat-Signature: j4gxgotu3ct3eb57f3mr8gogojukbw6n
-X-HE-Tag: 1782296210-93618
-X-HE-Meta: U2FsdGVkX1/DmdCVsJBsu+JbZ0qNicHahCpe/uQfOedik4l2L9OarLUxnsjs1YCr8r8MpAkIsFqXvszxtFEy4EDLa6hWOb7P+qIE3+s4wfDDuT3fFnjonJTQobbN5J55nywvuICekL0b6tBzN7q/8/blkTJu8HragHHZYQiXarwQ3uh1GOV3hs0zrVIeVhSe2YUsivDa2uD/19R1ggKV0L+rGvtHOxzoUq7LrrPYfxWwTM5r89637HkidE/YtrZtKH/LPeUkuhB0I9aZBYFVXXhLzKdLAKXRmD9koMISWZFEZwIaf1jA9N5BR93uW4N48mp3amU1sHV/WQ6Qe4qrPJQNgcdvfsu4IYKiZw5NOQd+hZNP1bj0oG6xnRMkJ5JanZ/li0DyOQAWgwQ5Ek7i2LrHA5e3l49ZDYwMbomrDcFRBXG0iO1KmkWTXDMdolzzAF7dX3IcIiYQdWMJdSGOPrehEywlziu+odfrvsgr38jU73kFxvIbvq3qA97pid6BqGE2ce3iw7af5bQGu6p7E4HWznIHEMxY1uNRaMGIoWoT8B8qotZ2mywL0g1/HUNORskmTYq6c7ZZbQRfzmfmjLIjWq5ohJZt72NugsZDN/s7gVRjAn74CS1oqt7kPxllxy8FoUNIaIGke8DzCyJVlIPMh2mGM3banaqrCFkxnbBBgQ2RmeKUeHJJ6PKXA8PvYfm9E0po2Niyxkf1BlfFplvoRG68edUpbeTR6GJBCMlhVue3nDhjFhk8pj/Gy1eF8Gz6csLzezgaNxh6OE9GJ26GpTXuBIFJtbTpbaKE8tbhzdScBrIcCqf37yiDktFHwadnTbJ2EAgXtHt08FaX1sl9cGkelZzBYOeAoUYHMZu6nnApRtDDvEtlx6KAfG/2HyNOVcTgXOmpVRjB5PECvDxHfDngwVexpnSzz3W3X7je2blAv7PIaTtlYyDb8otbf47ib2TWBc/uYNgmByM
- ERFMzHwR
- vq8h91vxTfG7lfmBeIpXDp8IW+vz4cO7oLHB9Q+0MH5SrbHb5LHK999efrnu50DpaYySBNH7Xurqhk4AlhNDqlkVaWlZXbEoQ8MQ2l2jU6JmEFLDjCNlWMYF/28nZZDX4cJEjK8hk7lf2jUVy9t+cX+/p+U4/asDvzhSoIImaR27rfQuK7TMEu2bVzi8S246ua6kNh09BwZoFxmO3FmP6XRzsl+BKCobjbhUX+ChlJtlBkYKEnZyHS01+mtMGiZQo6Qduyb7URvNlPePLOv/bVuMeHygshsJy5Es9raQnA64URGJ1DP21/3l80oXUGQf9/T+Hn9FCCt1ebLePOpeFAhKa7oxv9oE/s99vr6t75O89dEhJWQJnGD+sRdmJCDDZK3V3Wcm/YqAviENGj4O9DEapeOhrKBQtQStdV4gQG8GX6s7hjvScqfyzfZW7Manj0QbVTd7CxEKjBWBxHgH2JE7PtslVkF8bYKol5R1tWgzOQkuIixPrWZz0pA==
+X-Stat-Signature: yhaqrmzw6x9k1651b8dox75mrnwfnsri
+X-HE-Tag: 1782296463-405823
+X-HE-Meta: U2FsdGVkX1/4+4dov5ikz2mkj62uhlaIBSmfcKFV8+mmTP7CPPbbjwA0Mz6RVogtvvOM2kUMxxejzJJsfSsIMMjKYxk44kjjHdD55nmm02YTw9BVgYBWZRUurUJOsQUjFI9fiu2V8WQUQYTcbLmgi+IT+tdLiTSgQsEv9x0fvAzd6+lYirCYKomrzwsIFAKSvEllRyvE0wyObFcYe9COy98wPoJm+5sNbYMpB8LEclrSLoVbKHF5fFYlWYpb83UsNWR9tSTED6vfgHRMFFYa1nlh8voMV1ruxkMSsDTgS/X5PapB6yxbTMfshW8FsHc2kCXDHbTX0+d7ktsLCL29RBy4g5MaklOMkRiHzQRY+qSJSYLsaGFEZVB9Q9o3iloaFWYK/AqjHFSdv7EsHfFvF7fW0kLvlRFdc8XZlLcrTun6MIBt2f+67+7dxb7e9iXeYCw411DXZ8K6uWCOp5cot/8k80peZ9ZRExrhQQkO2D/CSwc1KJ9ZI9CaPZ0P2tLrA2lzokON4/EeAd8rRGSkpwL5zU6xP70SeU3gjj3brA9ZHVabAOacDk2FJ7AnalEfk/Oy2MKkQ0gTEUsYkJYMw3uHErXHt2W2b8PjnnjrvHh6bsGhP8i3ze1vlLNatgz7IdcoSw6TT31vgzRzPc1sSARpFtq5ZDdPIxOD5LabFF+mInV36Dd47Z7W1nYVq3DMyVcNQOdV/2xdO2UNUz/6sofK+kDzApj5S78hEuY2VWs6wglVWcXgeFELqBcy7W970YSXqF3dKMvn4WPyjPtdTESTEuVB1kcp9ytioCYdm12/WoFB5b93bFFB/ok8ZqI8xpapJTU0y7rUDRJyLC7g3410hco6mnvqGRmGyS9r/joTGm7+tqx7nj3fp3bn7o+b96+oMwWUQ0uPKsSTCe+Q6mazvXonQCiaH4Lekdu9WjpIo4CFjPYE0xCUqBQyOiOsJMNAwFj9SnHIEzVbD8o
+ PqFMJ+mu
+ YZhJ+LUPxcryKqmja6GgcWPfKG40SPw1GXhalwO4auwYSE5KeItA36Z1gpg/OI9I+0U41oxnaBpSyXmqQtnZsNNJ5aUMsD76xovcYDVjuipRmCSIwimL9BGcxmFDTBxb7sb+C+QKwKIiaZsm/TcAUvW2BYPaTQ42ClkLICHXX4smY8KkBpT8lBfC33Wo9KpFPauDT3t6eIfjnWlr2IicJkkqSvgeegyCOFUH7VbuatwNz0PLmD4zlxFEcOXW3PAA6Akc7AVsDF2b8N5zeJbVsRrQMO2/ZIMOPUxBbkFLhzH2Epfk9fRL8fsIYMv62zOUqEubP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,70 +94,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 7:18=E2=80=AFAM Barry Song (Xiaomi) <baohua@kernel.=
-org> wrote:
->
-> We are doing a lot of redundant lru_add_drain() calls in
-> do_swap_page(), especially for synchronous I/O devices. For
-> example, the test program below currently ends up draining
-> lru_cache 100% of the time:
->
-> int main(int argc, char *argv[])
-> {
->         int i;
->  #define SIZE 100*1024*1024
->         while(1) {
->                 volatile int *p =3D mmap(0, SIZE, PROT_READ | PROT_WRITE,
->                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->
->                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
->                         p[i] =3D  i%64;
->                 madvise((void *)p, SIZE, MADV_PAGEOUT);
->                 for (int i =3D 0; i < SIZE/sizeof(int); i++)
->                         p[i] =3D  i%64;
->                 munmap(p, SIZE);
->         }
->         return 0;
-> }
->
-> Folio reuse now relies primarily on the exclusive hint, making
-> lru_cache draining to drop the refcount in lru_cache largely
-> irrelevant.
->
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> ---
->  mm/memory.c | 10 ----------
->  1 file changed, 10 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index abd0adcf65f0..2983a6baf474 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4903,16 +4903,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         } else if (folio !=3D swapcache)
->                 page =3D folio_page(folio, 0);
->
-> -       /*
-> -        * If we want to map a page that's in the swapcache writable, we
-> -        * have to detect via the refcount if we're really the exclusive
-> -        * owner. Try removing the extra reference from the local LRU
-> -        * caches if required.
-> -        */
-> -       if ((vmf->flags & FAULT_FLAG_WRITE) &&
-> -           !folio_test_ksm(folio) && !folio_test_lru(folio))
-> -               lru_add_drain();
-> -
->         folio_throttle_swaprate(folio, GFP_KERNEL);
->
->         /*
-> --
-> 2.39.3 (Apple Git-146)
->
+finish_fault() currently has a goto fallback implementation
+where we try to map a large folio with PTEs. If that cannot be
+installed, we goto fallback and go through the fallback mapping
+path again. This looks weird and is tough to comprehend.
 
-Thanks, I saw the previous discussed problem is address in the next
-patch, it's totally fine so:
+Remove the goto fallback implementation and try to map the
+whole folio if allowed. If the whole folio cannot be mapped,
+fall back to single page mapping without repeating the whole
+function.
 
-Reviewed-by: Kairui Song <kasong@tencent.com>
+The cleanup of finish_fault() was suggested by David in [1].
+
+[1] https://lore.kernel.org/all/3684c55a-6581-4731-b94a-19526f455a1e@kernel.org/
+
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+---
+Tested this patch by running mm selftests on baseline and patched 7.1
+kernels. No regressions were observed.
+
+ mm/memory.c | 78 ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 41 insertions(+), 37 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 86a973119bd4..f883b3f3850e 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5666,18 +5666,16 @@ static bool vmf_pte_changed(struct vm_fault *vmf)
+ vm_fault_t finish_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+-	struct page *page;
++	struct page *page, *map_page;
+ 	struct folio *folio;
+ 	vm_fault_t ret;
+ 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
+ 		      !(vma->vm_flags & VM_SHARED);
+-	int type, nr_pages;
+-	unsigned long addr;
++	pte_t *fault_pte, *start_pte;
++	int type, nr_pages, nr_ptes;
++	unsigned long start_addr;
+ 	bool needs_fallback = false;
+ 
+-fallback:
+-	addr = vmf->address;
+-
+ 	/* Did we COW the page? */
+ 	if (is_cow)
+ 		page = vmf->cow_page;
+@@ -5695,7 +5693,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 			return ret;
+ 	}
+ 
+-	if (!needs_fallback && vma->vm_file) {
++	if (vma->vm_file) {
+ 		struct address_space *mapping = vma->vm_file->f_mapping;
+ 		pgoff_t file_end;
+ 
+@@ -5727,56 +5725,62 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 
+ 	nr_pages = folio_nr_pages(folio);
+ 
++	/* Initialize for single page mapping */
++	map_page = page;
++	start_addr = vmf->address;
++	nr_ptes = 1;
++
+ 	/* Using per-page fault to maintain the uffd semantics */
+-	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
+-		nr_pages = 1;
+-	} else if (nr_pages > 1) {
+-		pgoff_t idx = folio_page_idx(folio, page);
+-		/* The page offset of vmf->address within the VMA. */
+-		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
++	if (nr_pages > 1 && likely(!needs_fallback) && likely(!userfaultfd_armed(vma))) {
++		unsigned long fault_page_idx = folio_page_idx(folio, page);
++		unsigned long pages_to_folio_end = nr_pages - fault_page_idx;
++
++		bool fits_vma = folio_within_vma(folio, vma);
++
+ 		/* The index of the entry in the pagetable for fault page. */
+ 		pgoff_t pte_off = pte_index(vmf->address);
+ 
+-		/*
+-		 * Fallback to per-page fault in case the folio size in page
+-		 * cache beyond the VMA limits and PMD pagetable limits.
+-		 */
+-		if (unlikely(vma_off < idx ||
+-			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
+-			    pte_off < idx ||
+-			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
+-			nr_pages = 1;
+-		} else {
+-			/* Now we can set mappings for the whole large folio. */
+-			addr = vmf->address - idx * PAGE_SIZE;
+-			page = &folio->page;
++		bool fits_pte_table = pte_off >= fault_page_idx &&
++				pte_off + pages_to_folio_end <= PTRS_PER_PTE;
++
++		if (likely(fits_vma) && likely(fits_pte_table)) {
++			map_page = &folio->page;
++			start_addr = vmf->address - fault_page_idx * PAGE_SIZE;
++			nr_ptes = nr_pages;
+ 		}
+ 	}
+ 
+ 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+-				       addr, &vmf->ptl);
++				       start_addr, &vmf->ptl);
+ 	if (!vmf->pte)
+ 		return VM_FAULT_NOPAGE;
+ 
++	start_pte = vmf->pte;
++	fault_pte = vmf->pte + ((vmf->address - start_addr) >> PAGE_SHIFT);
++
++	if (nr_ptes > 1 && !pte_range_none(vmf->pte, nr_ptes)) {
++		/* Single page mapping fallback */
++		map_page = page;
++		start_addr = vmf->address;
++		nr_ptes = 1;
++		vmf->pte = fault_pte;
++	}
++
+ 	/* Re-check under ptl */
+-	if (nr_pages == 1 && unlikely(vmf_pte_changed(vmf))) {
+-		update_mmu_tlb(vma, addr, vmf->pte);
++	if (nr_ptes == 1 && unlikely(vmf_pte_changed(vmf))) {
++		update_mmu_tlb(vma, vmf->address, fault_pte);
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto unlock;
+-	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
+-		needs_fallback = true;
+-		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-		goto fallback;
+ 	}
+ 
+-	folio_ref_add(folio, nr_pages - 1);
+-	set_pte_range(vmf, folio, page, nr_pages, addr);
++	folio_ref_add(folio, nr_ptes - 1);
++	set_pte_range(vmf, folio, map_page, nr_ptes, start_addr);
+ 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
+-	add_mm_counter(vma->vm_mm, type, nr_pages);
++	add_mm_counter(vma->vm_mm, type, nr_ptes);
+ 	ret = 0;
+ 
+ unlock:
+-	pte_unmap_unlock(vmf->pte, vmf->ptl);
++	pte_unmap_unlock(start_pte, vmf->ptl);
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
