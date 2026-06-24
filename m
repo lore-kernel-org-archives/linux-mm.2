@@ -4,124 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D9ABCD4F26
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 02:09:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92F75CD4F26
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 02:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 445B56B0088; Tue, 23 Jun 2026 22:09:33 -0400 (EDT)
+	id 5782C6B0088; Tue, 23 Jun 2026 22:58:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F67D6B008A; Tue, 23 Jun 2026 22:09:33 -0400 (EDT)
+	id 52A096B008A; Tue, 23 Jun 2026 22:58:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E51B6B008C; Tue, 23 Jun 2026 22:09:33 -0400 (EDT)
+	id 418226B008C; Tue, 23 Jun 2026 22:58:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0413D6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 22:09:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 594CF8C5A3
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:09:32 +0000 (UTC)
-X-FDA: 84913174584.25.0E226BC
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 54F5510000A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:09:30 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QlrfLDWP;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C106B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 22:58:13 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77B07A01DF
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:12 +0000 (UTC)
+X-FDA: 84913297224.02.4B443A1
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 10ECB100007
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="I/gzYan9";
+	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782266970;
-	b=I42xoa0rdEEc7fqze6y1TiB3WWEs1KRuVHXOiBQHLEgnULw8X+y8MUF/lim8DiLBHfZaQh
-	YIRX81uI4mcvm+fHPzbm495Zovt+FKxjUEZaB1fC4zNaCNJVX2ykseIyN9V7742XP+klo2
-	k51OObbyJkZEdD9pgslrJKOd33XzxUM=
+	t=1782269890;
+	b=zhgI0BI5hRytoRNWGUhkHAjoKzgYu9AwZto8Q6TD207+PnttzxwaW5LKccPZwxTCrhyPMs
+	DaLivoOXQ4iBaCwijdwmTh+9QwjcgWxY3ly/YDnRiNAOPNcYKGyrMf2zs9KzE2kV8vW+zY
+	zAnjIeFweP/9CTsXcCelej01PmRlUI8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782266970;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782269890;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T+Dbr5cCySdCqBqi2ttFxVY6H+Q6f9EeFLzVyFXEO3Y=;
-	b=ylnuKmdDpNAt8Qe5GGL1IWc3wd5GHFocVl88jW/adkb1vo+CWu7A0lr8GfoYXbkNQA6oL5
-	N+MrA/APJ2JU5hP94mt/GX+O9jg0lazYoCUvnKEr5J3KXVQBwsDWW1n/9vIh1RSuawn7bW
-	JFysRCnoU+0MqUIjxPSneWMQkH862Uc=
+	bh=5pumt3ZhtXEP5A7/txAfIN/pYRRHkq0RSi/yjC0QK9o=;
+	b=dnuAEHBG9iBmG2sUQMtV9gYDOPtdnzcEa/QEFjMLssFIwQYJyyX+T2OYTmksuhDgtJeu64
+	PjOhdTKJRzYpam0WrvUkXyxmVIFWlh3PghECcCC9ViGEg08sgkSMWQtu5VEskYGg4hbaNH
+	ZH1T89wk0vU9SOJw4U/l2cPX9CRFMcQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=QlrfLDWP;
-	spf=pass (imf14.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.49 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-befee9e5ef7so58267766b.0
-        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 19:09:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782266969; x=1782871769; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T+Dbr5cCySdCqBqi2ttFxVY6H+Q6f9EeFLzVyFXEO3Y=;
-        b=QlrfLDWPc9nZ1nEpbUWid4Ixab1/17/J2IlBM+5dy+12PZrXbsgRlMYPjgyBR+hQjX
-         feIZ9u9LUnA7HPlAs1Lp7kunrL16friqijIWaG0aNH9v4pL1iOKaddncOC9oj85kUmXv
-         7DuhpsXpPAsVv0KlvM0nYUrJqtkcFT5tNacouA6THbxMwmJHROZAGzJdyVyrwu3LXmci
-         fKZDTocOnB/in075OIrMfpYcfwHNl5jkPPfG3OZ7UeecA41L6E4XfCN4D04p3i5TLEJl
-         OIsqIc6dd29OzCZ+HzzXYSJsiIvlF6Tbv4p4SDEtK4u+ramij2LwL8/IXTg7rBHN0FQS
-         2eBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782266969; x=1782871769;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T+Dbr5cCySdCqBqi2ttFxVY6H+Q6f9EeFLzVyFXEO3Y=;
-        b=kilzvTLlvXc2nT5pL8ZwnubQnkVCky4qcj3XsiDQu40t71b42kknMI1XEaSOFz+T7R
-         tWtjkQUKwOEuuwccD2/Rf8nxCugGPoh/8PHuSpZbdDh3VwFxPC1yFz5MsWH1HpdriNd0
-         KncdOtMdGfLkwr06nWgbedR6Q6gGGkEBkT1yRRLBTP+MMfCfBPE8EvC8QFsAsLp+M/28
-         lGQ+rYSAezq3L+44ixGL9pQSNbUnTbHyenmw813dzmuKbmvtjNFzA6ljfOoXCsMvdcAB
-         QjfXbks659wORmOrzV4LPiHUqgOMHqjtlH1ZG8ocrZJR02G6ggqzMUjB20njYfh5CzVI
-         H9mw==
-X-Forwarded-Encrypted: i=1; AFNElJ+jcA6PD31lMGCyJLDjGlTdSVD1azkS473h5Nqe/3YklraQsVIBmHzMW8pU1J0WihbFPRlIYwOIPQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx60pZfKYEnTG710t/8n9+hIOFgfgvQGWgt1hnAm20wAiIVheVY
-	swgPOHdIWrwcPYxAr5DI1AQvpGxRTt8bpl0niOy83AvZnAaG1jTIncT9
-X-Gm-Gg: AfdE7ckpcinh5jellxcR456bq5d/7j1dR5Tlg/TTFkmPISclU0qq0AT/Lk3rLvdI3I1
-	/mlEQueXasGI9xUOO1zl2nvJKI0TNGFoqRp0+N5UJqZHJrs20+KKkTc0Ls5Px0SAv15Z6a1wabY
-	VwoVazvCvIXCJQT9HCP0PISB9WzosyhS0Z3ti/kX04MS/lHInGTtGYh05Mytgl3U2xMNW1CUmW8
-	A0M/NaHSlbpdMJqN/FWA1Na+92DjiNw+yXIVrfXt5DhEQ8dUBCvDX2njdRnND1HaBOZP3kkrSZV
-	883G812TmbZYV0xMcblAkW6zW6GGAQdLypcighdX4+GCKSD02kxfYSJs/fjIeZQKZvYRhGscv7r
-	tdqVP6P/b6mCuWuP9m8443yYz39ptCCSKSg5iH8gyX+ItE5HCc6z68C7HTPonJNMheFbcC4IWe9
-	YvCgwWqEnHKTsJWUIOj/z/jQ==
-X-Received: by 2002:a17:907:6ea3:b0:c0d:46ca:3ae9 with SMTP id a640c23a62f3a-c119de5e9b5mr42425466b.3.1782266968386;
-        Tue, 23 Jun 2026 19:09:28 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c0c5e998d90sm598331066b.17.2026.06.23.19.09.25
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 23 Jun 2026 19:09:27 -0700 (PDT)
-Date: Wed, 24 Jun 2026 02:09:25 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	sj@kernel.org, ziy@nvidia.com, balbirs@nvidia.com,
-	linux-mm@kvack.org, stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_vma_mapped: revalidate and do proper check
- before return device-private pmd
-Message-ID: <20260624020925.3lbraicwe4uzhn3h@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260622130651.23359-1-richard.weiyang@gmail.com>
- <ajk0N3Aekapljaoh@lucifer>
- <20260622142102.pcmr5pftshj5lvju@master>
- <ajld6RKK02Vi-LxM@lucifer>
- <20260622234518.nnx3r7ckphlxn5vm@master>
- <ajq4_VndR8gwponS@lucifer>
+	imf05.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="I/gzYan9";
+	spf=pass (imf05.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id E1F8640E01B4;
+	Wed, 24 Jun 2026 02:58:06 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8vuomES7BQRE; Wed, 24 Jun 2026 02:57:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1782269876; bh=5pumt3ZhtXEP5A7/txAfIN/pYRRHkq0RSi/yjC0QK9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I/gzYan9dcc6f59zVNBMGNtm/lLomcAVoGlaPz1ae8J6kyyj6uXQmVNPmUw/MN8Vt
+	 p5bGnG2qc2TTMgLuWGwlECt+NhzNaySoj9ZEhew7KRUDjxnqDfZxuzhgYc/lfTMZAQ
+	 116Uk+agAeqMxfWbCdPs/kVQX5hosdAi6J/gUW0npNcbdPjy5Ns78UjY0bWUmY6vpz
+	 iVsjgcNy9rN0DrpdaREln6E/ZT/O28XkiqTEQEc35HCZcTc0ErbuxgdThqxpwJe9B7
+	 EDNMkED9gLY29DO3zk3q7rH5+2duDr2nfOFOdMa/4mIHnMmLddAnIcd2M3HBJSrQWj
+	 jPoENq3LRaqRXeEsgQLTCoViLDi0px8FGlQKTs4nBaj3sxkKEo+1eT5Gxb2wB6YWtr
+	 HWs4w7x4m38HvzPVUJ39gx/WW+JlvEdp68o1HzFrgpCleOBOPD8cJ3sOiEpb8fr7Wn
+	 bhdf9h/R6XvNpMuthunauRLcsrn5zC4MsYHRDn7JnXt4XOiL7EhaOG+cqPFxDU3ZtC
+	 cra+nhHpMGujdSjuHpPQfyZ3lniFLRsAlVTKP4OZc05Ja7N/nZIhjrPQZRe+Lnrr/0
+	 ZWGgX9lFYYgzNR0TNWSdSFkBWL9zKK4A1ATqi+SmQ1irlJkONoopGICFJqeB47j9Hi
+	 xLcF2/yl9isC+GGRCGLjxNYw=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 2A2E340E0031;
+	Wed, 24 Jun 2026 02:57:37 +0000 (UTC)
+Date: Tue, 23 Jun 2026 19:57:32 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
+ under 5-level paging
+Message-ID: <20260624025732.GDajtHnB1Jc21kQnl_@fat_crate.local>
+References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+ <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
+ <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
+ <3207a706-354c-4e9d-ba53-dded1abb1842@intel.com>
+ <20260618183815.GDajQ7F-bqTHnrakoi@fat_crate.local>
+ <87643862-e32e-43c7-8c81-7186f30059ea@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ajq4_VndR8gwponS@lucifer>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: htg5c73187srq45ocogtueo83zgj51i5
+In-Reply-To: <87643862-e32e-43c7-8c81-7186f30059ea@linux.dev>
+X-Stat-Signature: e59ybo73a34349fgixe3fygkh5o3ybek
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54F5510000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782266970-20850
-X-HE-Meta: U2FsdGVkX1+LheilTfVUC87VX+Ilw2kQxP27vIJKfONjk8OrVdlubp8FnTFUc9SU9yB5oZ3h/rR1lk8MeM+Z2WpRVF6ch6lzyiwLNLGvo3eIPiZ+mfSDhsbbk/3NXeQO8+8UWCAyMW3hHgH98ZG7Qh4qBb3bIa7sglRk2rw7OgGmW4gut3Y10PQwtcSUaVbsJsYtMbk5SRkEmkL2kwXqXS+6VLs4ALELMSh3bFaT4lKSk+vr3/tkmCCARavHhNwviwxOPgnkPh1Yqhfg23H+ICxdcLG0daR7PZ7bOfkwEH7ORtmXkjXlYxvLzgZQKbK0tM1fhOPwX+qsr2bFJIrN3HiE1lcO4CKfo79f+exqp+3wTpljK2sxEmETKt3Ce57VeH+KANsJEStsp3biYR4ZnqlMu34hkc0qcCGnXQSq3KexZL+tWyJclvOAGmyvy/X36LSW+eVgRaUyaM7LC43iLnbJZj8eJ7e7AzPf/XhZA2531iBe4aDP7urtD4M4/8aq+iV+nh6XyMhNddAy23QHGjHiKODWEUcuaV+8ZTJjJ9xvrfkGzAGm5Cvs2D8cZXRKqhmw6bxguz+SgsIEV5NtNnD6k31o7N0Q/h+n0pwqYCQX3eaqga9IrwOO66Cohgns7tK0BYcCcw1WacryM7gx/odYrF8LLy/KgjEZRRgfDsFyEUY7WEv2KMlQ1JL9FzlNGzeZjMMeKEdI9uqNYRrv6GsMWu0V9yyqJcwWZ7186ygx5wh/h7M1oPiyQ2NjD4wyfZmJEy0DvODAk/+6wr53EvHvep/dlogl3CP9WIa40+eb4+yYqqGKL27t2sRVkZyWSpjzmK1jPNewLmFDGZV+DH3dz546eYotb7rgqmY3GbNqD4HqIZRxeMncsW2PlLsBdoFQT5WYGGrkIdWApLyNRfnKd4PzlM1MMkcopwr63gs02L+o4+Cgocxg0P7G/c35zLns2JxF9A1Xtda8JqI
- 4VAxzUHy
- iCuC414LScFLaHK8mCxC4sJmRyKc7B5ZyGVvzwZjdwlPRSjYCj4LhRZ6MO35BD20JkiwCp29fibf1NlWKD/pgOhsXkG5Km0EhDoCPv31tnV+ADF6IQZKmCdulkxaLniwyMgBzVynq7ZowHEZwVV7zXn+LVxlHdFjRA8tUSAeaAXtBOPifI3LZ+hl5FBFr7wnBCwTkSf8xxTAckelODuHrS9melHphcaRmxGZk/xZRwU2jOa/rHCaHFA9/IbZ9rJed2gZ0usasXaUS5aIelHBwcVSdRQiehZpbdgyFYKEvB6p4WejaGS06i1jmnU0ALczptUEMKr5m1w5CRbSqN5a7teJtJLNvZF41VuNzknW9qnVEza4oiQGlTupW+PFj9+ZnkyLoMc2qWRawYMFTxQdaSKixefrcFTmX3J5eGVfFxzKsOjOef7Oo0BlpksY8EF9ldz8YjA9YdjyZYLJmrQCIp4Fb6pr9+xW+sRVXx6EFR+iKUnPyvMvd1KsMiK7yOI+SbpVVqahKhnLDuTxrhFl5fzJe90SvueKJbqcECZf68fmZla4EWEXAMMoFEVotC5to7ZgtnbacJuIF/vzb0D6lYJFGOV/PB9ftF9eC0Y5gLakU+DYRr3UEKgUnVA0q/lAiD2KUQUrQ6ccbzR138fal+2k3PowMRgRGmcbNJfu5186bEjUClmcSFsibApkBdjc2DpaacJWxe1koTMzL/ox/Ftq5g+MbNS03ukbq3X0ZIydQIHd/mqPYV347aqglRuIqs5p+
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 10ECB100007
+X-HE-Tag: 1782269889-317629
+X-HE-Meta: U2FsdGVkX1//7mdTbR6NJLNysFLLzm0KPJFCZDB5yWP0BPovwZ0kTrILBwlkdkm9vgU9XnzSes/poEdPJO5RaPCuFvj9KYa33PIcYQsPtzZLnLJTwRnp2qGafttxEkbJC6AGFlmznVk+1ueO8G03wy/hRlaaz4H2Yvo/fH/bFdZdvEmsBdtdRECopTNP4/FAaYa2GJgKo8AzF3sQkWpoFggNqdCNEZu9IiPw1CB96osbwg/rI2DD3IuI+k+uoX48KbS5QKLBQGP5CvBvmg+h6Dx+4elr9E7GhajuPfr/NjE7mY3eQYfAAAZ7My4B6iGsRjBoMH/LqOaz38XV1bs1S1Vc6FBvnYhcGg74DIiVTxfxyOPbGnQ3Q9k4Ph+X1U4+sB2NwDa9ZfU30nVHQ8mA60I5DGiyH2pK7rVRsQIK0ELLADUG2BrkPIOsaPGkvYQJ2G4Hy8/97zQrLb7HvCHpJ+Z2/EFLbkZI4GlmiCd4co78YqJg6NGik2/nJub75oWCUOxJTciI1vir2kDEu9Ky7Q2zk+vrx7U4SAMrb624dTkbSjTGj7/321oj/3IiS+c3sQlcUtvHS2KFZ/PHghtlI13tvbQHzLIU837E28Y3co2+nC9fu00uQVZ/xmAkoab/sS0x8QvWfCJkA3WoKZVCQoZJ6tjNMzMnCpukGQPE+up2IpJHf7iF5DXumZLW+jZrO4NFhdyg4e8otVXdgPYODZAjQYU5jB/XG9XdtnxPvCKtOk+4p1suUmrrXCLslIjvfFfjlgXztBOJDfo4/WLzkVfElEQHIwsR3Xwic1YHH74/7zQtxCgUrv/8VireYMJE52B4jD1HZElZttgZBieAt75WeBHyAud8kL+uBXaYbACoGWUAfc+InkyRnA6ibGE5rA4hqbAMRQyF7bSjifUrPVcJ+dQBkf2tRkXSKOWBpGxG/LK15vmwspvtrtux81rudoVu6i7rkWrjDANTzWw
+ 0b5mWMKc
+ 0KNjtGZ4/a6sAlYHyVOGa/Xe3canfA4bcAjOiZMtEVSRp6umgbqMeTowM+/PpiqAN3F9y3Cx1qMHrilauRDhbURIrThLguiZrpm9x9WbfaB3ocdP234V7BrBqaZtsTAjVd9T4q80GojQg0SabmncBQptsG3VsMC9Yzx4gYN4D7NZfYOGlTC8kXmjSkIkA0xRdWCvkWP12d/PDVQHIieSW1z8jcImpCHCWw8TS+X7X4D+eyFUw3Na7hSwcb53P2VQE2kPacJVciyjTVPYHdbEYFCU17I5dA2o5r6h5nn3skKvdccy1BIyuaXkVaVmb9AlR+b+1XddQkEv0k97g3mwdLGupYmA9DnR4Z0xcASm7qTre8bPDdP3nRyWBnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,142 +120,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 23, 2026 at 06:02:56PM +0100, Lorenzo Stoakes wrote:
->On Mon, Jun 22, 2026 at 11:45:18PM +0000, Wei Yang wrote:
->> On Mon, Jun 22, 2026 at 05:11:02PM +0100, Lorenzo Stoakes wrote:
->> >On Mon, Jun 22, 2026 at 02:21:02PM +0000, Wei Yang wrote:
->> >> On Mon, Jun 22, 2026 at 02:46:40PM +0100, Lorenzo Stoakes wrote:
->> >> >+cc Lance, linux-kernel
->> >> >
->> >> >Your subject line is 83 characters long and is way too detailed how about 'fix
->> >> >device-private PMD handling'?
->> >> >
->> >>
->> >> Got it.
->> >>
->> >> >You forgot to include linux-kernel@vger.kernel.org on the mail, lore seems to be
->> >> >a bit broken atm but in general it's helpful to include that.
->> >>
->> >> Got it.
->> >>
->> >> So usually we send a patch to both linux-mm and linux-kernel? If so, I
->> >> remember is later actions.
->> >
->> >Yeah it's better for dealing with kvack going wrong etc. :)
->> >
->> >>
->> >> >
->> >> >Also is useful to make this [PATCH mm-hotfixes] to make it really clear it's
->> >> >intended as a hotfix.
->> >> >
->> >>
->> >> Got it.
->> >>
->> >> >Some commit msg language nits:
->> >> >
->> >> >On Mon, Jun 22, 2026 at 01:06:51PM +0000, Wei Yang wrote:
->> >> >> For pmd_trans_huge() and pmd_is_migration_entry(), we does following
->> >> >> before return the pmd entry:
->> >> >
->> >> >Sounds better as:
->> >> >
->> >> >	For PMD entries that satisfy pmd_trans_huge() or pmd_is_migration_entry(), we
->> >> >	perform the following actions:
->> >> >
->> >>
->> >> Sure.
->> >>
->> >> >>
->> >> >>   * re-validate pmd entry after PTL
->> >> >>   * check PVMW_MIGRATION
->> >> >>   * check_pmd()
->> >> >>   * handle on pte level if split under us
->> >> >>
->> >> >> But for device-private pmd, we just return after pmd_lock().
->> >> >
->> >> >->
->> >> >
->> >> >	However, for device-private PMD entries, we simply acquire the PMD lock
->> >> >	and return.
->> >> >
->> >>
->> >> Sure.
->> >>
->> >> >Also can you please give some justification here as to why all this also applies
->> >> >to device-private PMD? Right now it sounds hand wavey.
->> >> >
->> >>
->> >> I thought below paragraph explain it. Not sure what justification is preferred.
->> >
->> >Something about device private PMDs splitting the same way THP ones do, in the
->> >pmd_is_device_private_entry() branch of __split_huge_pmd_locked().
->> >
->>
->> Hi, Lorenzo
->>
->> Thanks for your detailed suggestions.
->>
->> I tried to add the justification here, and the following is the commit log
->> after consolidate your suggestions.
->>
->>     For PMD entries that satisfy pmd_trans_huge() or
->>     pmd_is_migration_entry(), we perform the following actions:
->>
->>       * re-validate pmd entry after PTL
->>       * check PVMW_MIGRATION
->>       * check_pmd()
->>       * handle on pte level if split under us
->>
->>     However, for device-private PMD entries, we simply acquire the PMD lock
->>     and return. This is not enough, as __split_huge_pmd_locked() would split
->>     a pmd device-private PMD under us just as it does for THP PMD.
->>
->>     This is particularly problematic when PVMW_MIGRATION is set (meaning a
->>     migration entry is sought), as it causes a device-private PMD entry to
->>     be returned with a different data layout, causing memory corruption.
->>
->> Just feel this is not that smooth. Would you mind taking another look to see
->> if I get your point correctly?
->
->Honestly I'd just drop the whole pmd_trans_huge()/pmd_is_migration_entry() bit
->and say:
->
->	Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
->	device-private entries") introduced the concept of device-private
->	PMD entries, but did not correctly update the rmap walk code to
->	account for them.
->
->	As a result, when page_vma_mapped_walk() encounters device-private
->	PMD entries, it takes no action other than to acquire the PMD lock
->	and exit.
->
->	However this is highly problematic for two reasons - firstly,
->	device private entries possess a PFN so check_pmd() needs to be
->	called to ensure an overlapping PFN range.
->
->	Secondly, and more importantly, if PVMW_MIGRATION is set the
->	caller assumes the returned entry is a migration entry, resulting
->	in memory corruption when the caller tries to interpret the device
->	private entry as such.
->
->	In addition, commit 146287290023 ("mm/huge_memory: implement
->	device-private THP splitting") allowed device private PMDs to be
->	split like THP mappings, but again did not update this code path.
->
->	As a result, we might race a PMD split prior to acquiring the PMD
->	lock.
->
->	This patch addresses all of these issues by invoking check_pmd(),
->	ensuring PMVW_MIGRATION is not set and checks whether a split raced
->	us we do for PMD THP and migration entries.
->
+On Mon, Jun 22, 2026 at 05:29:12PM -0700, Ihor Solodrai wrote:
+> On 6/18/26 11:38 AM, Borislav Petkov wrote:
+> > On Thu, Jun 18, 2026 at 11:12:09AM -0700, Dave Hansen wrote:
+> >> On 6/18/26 10:09, Borislav Petkov wrote:
+> >>> On Wed, Jun 17, 2026 at 03:13:33PM -0700, Ihor Solodrai wrote:
+> >>>> So my question to maintainers is what approach seems best?
+> >>> The CPUID stuff is being rewritten currently and it should address your issue
+> >>> too. If not, then we need to rewrite it better.
+> >>>
+> >>> Can you reproduce with this set applied ontop:
+> >>>
+> >>> https://lore.kernel.org/r/20260528153923.403473-1-darwi@linutronix.de
+> >>
+> >> Thinking about this a bit more... If Ahmed's series does fix this, I
+> >> think it will be accidental. It still uses identify_cpu() and also does
+> >> a memset() of the new c->cpuid structure in addition to the old
+> >> c->x86_capability structure.
+> >>
+> >> I'm not knocking Ahmed's series by any means. It just probably won't fix
+> >> this issue.
+> >>
+> >> In a perfect world early_identify_cpu() and identify_cpu() would either
+> >> get consolidated into one thing. Or at least become two discrete things
+> >> that initialize two completely disjoint sets of data. That way,
+> >> identify_cpu() wouldn't memset() anything.
+> >>
+> >> Isn't that the _real_ fix? Instead of trying to hide the inconsistency
+> >> when good data is blown away, we stop blowing it away in the first place?
+> > 
+> > early_ is only on the BSP and you want to scan all CPUs.
+> > 
+> > AFAIR, the last time I was looking at how we scan the CPUID leafs, we do have
+> > cases where there's blips in time when cap bits get disappeared to be
+> > rescanned again. The toggling of MSR bits which control feature flags is one
+> > thing that comes to mind.
+> > 
+> > But I'm with you on the consolidation approach. I think this is what we should
+> 
+> Hello Dave, Boris. Thank you for the input.
+> 
+> I tried a slight refactoring of the identify_cpu() machinery to
+> eliminate the memset(x86_capability) from the boot cpu, and it fixes
+> the splat that I reported.
+> 
+> identify_cpu() is split into two parts:
+>   * identify_cpu_scan() - the top part, up to and including the
+>     generic_identify() call
+>   * identify_cpu() proper with the rest, no memset here
+> 
+> Then (gated on x86_64) identify_boot_cpu() *skips* the
+> identify_cpu_scan() call, only executing the bottom part of current
+> identify_cpu(). We can do that because boot cpu already did the _scan
+> part in early_identify_cpu(), when interrupts are still disabled.
+> 
+> One caveat: get_model_name() is moved from generic_identify() into
+> identify_cpu(), otherwise it wouldn't be called on boot cpu. Same for
+> c->loops_per_jiffy = loops_per_jiffy; - it's moved to the "bottom"
+> identify_cpu().
+> 
+> The behavior for secondary cpus is unchanged: identify_secondary_cpu()
+> calls identify_cpu_scan() then immediately identify_cpu().
+> 
+> Please take a look at the diff below and let me know if this is a good
+> way to proceed. I don't know exactly what I'm doing, so concerns and
+> corrections are welcome.
+> 
+> 
+> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+> index a4268c47f2bc..4a655109cacf 100644
+> --- a/arch/x86/kernel/cpu/common.c
+> +++ b/arch/x86/kernel/cpu/common.c
+> @@ -1978,8 +1978,6 @@ static void generic_identify(struct cpuinfo_x86 *c)
+>  
+>  	get_cpu_address_sizes(c);
+>  
+> -	get_model_name(c); /* Default name */
+> -
+>  	/*
+>  	 * ESPFIX is a strange bug.  All real CPUs have it.  Paravirt
+>  	 * systems that run Linux at CPL > 0 may or may not have the
+> @@ -1999,13 +1997,12 @@ static void generic_identify(struct cpuinfo_x86 *c)
+>  }
+>  
+>  /*
+> - * This does the hard work of actually picking apart the CPU stuff...
+> + * Rebuild capability set from CPUID and re-apply the forced-cap overrides
+> + * through generic_identify(). This *should* run with interrupts off, otherwise
+> + * an interrupt handler might see the capability bits cleared.
 
-Have to say this is much much better, thanks!
+And yet it doesn't run with IRQs off. So that comment doesn't need to be here.
+The point of the whole exercise is to not disable ugly interrupts in that path
+at all.
 
->
->Cheers, Lorenzo
+>   */
+> -static void identify_cpu(struct cpuinfo_x86 *c)
+> +static void identify_cpu_scan(struct cpuinfo_x86 *c)
+>  {
+> -	int i;
+> -
+> -	c->loops_per_jiffy = loops_per_jiffy;
+>  	c->x86_cache_size = 0;
+>  	c->x86_vendor = X86_VENDOR_UNKNOWN;
+>  	c->x86_model = c->x86_stepping = 0;	/* So far unknown... */
+> @@ -2028,6 +2025,19 @@ static void identify_cpu(struct cpuinfo_x86 *c)
+>  #endif
+>  
+>  	generic_identify(c);
+> +}
+> +
+> +/*
+> + * This is safe to run with interrupts on.
+> + * The boot CPU can run just this from arch_cpu_finalize_init(), because
+> + * the scan part already happened in early_identify_cpu().
+> + */
+> +static void identify_cpu(struct cpuinfo_x86 *c)
+> +{
+> +	int i;
+> +
+> +	c->loops_per_jiffy = loops_per_jiffy;
+> +	get_model_name(c); /* Default name */
+>  
+>  	cpu_parse_topology(c);
+>  
+> @@ -2154,6 +2164,17 @@ void enable_sep_cpu(void)
+>  
+>  static __init void identify_boot_cpu(void)
+>  {
+> +	/*
+> +	 * The boot CPU's capabilities were already scanned by early_identify_cpu().
+> +	 * Here identify_cpu() only finalizes them.
+> +	 *
+> +	 * 32-bit still needs the full scan here: it sets X86_BUG_ESPFIX (via
+> +	 * generic_identify()) and the no-CPUID cpuid_level default, which the early
+> +	 * path does not.
+> +	 */
+> +#ifndef CONFIG_X86_64
+> +	identify_cpu_scan(&boot_cpu_data);
+> +#endif
+>  	identify_cpu(&boot_cpu_data);
+>  	if (HAS_KERNEL_IBT && cpu_feature_enabled(X86_FEATURE_IBT))
+>  		pr_info("CET detected: Indirect Branch Tracking enabled\n");
+> @@ -2178,6 +2199,7 @@ void identify_secondary_cpu(unsigned int cpu)
+>  		*c = boot_cpu_data;
+>  	c->cpu_index = cpu;
+>  
+> +	identify_cpu_scan(c);
+>  	identify_cpu(c);
+>  #ifdef CONFIG_X86_32
+>  	enable_sep_cpu();
+> -- 
+
+Ok, thanks for that, that's a good first try. I did poke at it a bit and
+here's what I think should happen:
+
+1. The part which initializes struct cpuinfo_x86 up and including the memsets
+   should be one function called init_cpu_info() or so.
+
+2. Then, generic_identify() should be merged into identify_cpu() basically
+   turning the latter into a single function which does a generic CPU
+   identification both on the BSP and on the APs.
+
+3. #ifdef CONFIG_X86_32
+        enable_sep_cpu();
+#endif 
+	that gunk should be stuck into a function called identify_cpu_32() and
+	you'll have at the beginning of it
+
+	if (!IS_ENABLED(CONFIG_X86_32))
+		return;
+
+   and then you call that function both in identify_boot_cpu() and
+   identify_secondary_cpu(). This way you streamline the paths and drop all
+   that ugly ifdeffery.
+
+4. When you do 3. above, you should be able to move this gunk
+
+	#ifdef CONFIG_X86_32
+        set_cpu_bug(c, X86_BUG_ESPFIX);
+	#endif
+
+to it too. And now everything is nicely encapsulated and straight-forward.
+
+5. The above will allow you to have the init_cpu_info() only on 32-bit.
+
+Oh and, looking at the ifdeffery on identify_cpu():
+
+	#ifdef CONFIG_X86_64
+	        c->x86_clflush_size = 64;
+	        c->x86_phys_bits = 36;
+	        c->x86_virt_bits = 48;
+	#else
+
+you could probably add a identify_cpu_64() too. Or maybe the init parts should
+be called separately init_cpu_info_32() and init_cpu_info_64(). You probably
+need to see how it looks like when you write it.
+
+Oh, and each 1., 2., ...step above is a single patch. This'll make the review
+very easy too.
+
+How does that sound? Willing to give it a try? :-)
+
+If not, I could try to find some time and do it myself but I thought you might
+be willing to try it...
+
+:-)
+
+Thx.
 
 -- 
-Wei Yang
-Help you, Help me
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
