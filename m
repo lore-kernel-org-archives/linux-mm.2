@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B2D4CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 04:32:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE1CCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 05:15:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EF126B0088; Wed, 24 Jun 2026 00:32:20 -0400 (EDT)
+	id B5AFF6B0088; Wed, 24 Jun 2026 01:15:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C7616B008A; Wed, 24 Jun 2026 00:32:20 -0400 (EDT)
+	id AE5B56B008A; Wed, 24 Jun 2026 01:15:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7066A6B008C; Wed, 24 Jun 2026 00:32:20 -0400 (EDT)
+	id 9AE066B008C; Wed, 24 Jun 2026 01:15:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B6B96B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:32:20 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 70E336B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 01:15:04 -0400 (EDT)
 Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B521E140227
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:32:19 +0000 (UTC)
-X-FDA: 84913534398.16.C2B2DE3
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D42A18CAB8
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:15:03 +0000 (UTC)
+X-FDA: 84913642086.16.2026A9C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0601C40002
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 04:32:17 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OI/OFz9D";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 24BF1100014
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:15:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkij4d+Z;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782275538;
-	b=Vfo/bu/T47RMoDiU/SNmzAUi7iAEDUy72ZN8NtwE4CLL6hyr5jiUrp7yzPTCzmvcQkWQgx
-	fXxkg1IahgnJNhNJJ5a5e1Va1iffr61H0mcnPRjO3FtbS2mH4D3hFjT7S5LXqhquRrJ4ja
-	SEk5NBtxG0b/KKGXYQDXu+oS6u9MzrM=
+	t=1782278102;
+	b=pfM+zRSnsWzOji1U+uCzKHAqMaeUwV4wI0Z0jrYmTp83AhqmycXm+dOBhj4ZKGMCLW8Kvc
+	/etN5D4kwaw8OUHzQHRXe/U2TOx/J9xOq2dVVu4N3sVMcAhzU9oJAlPBXnr4MKdpBMQOLN
+	DAYYXpWQZLKXfL7G/+qPVRFIy4lPWZQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782275538;
+	s=arc-20220608; t=1782278102;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LBhmepcwPAdQionL9hmPZMgzcc89UpJpdK93qrjxZJo=;
-	b=jRARxrVP3zyWBfGnzSnfZ4HCfTR4a4qy9hXKt2e/gL+05bSeXMygUfmXcr4k8sC77TL/GG
-	HkFszeF0EO99j00hJdu0ZFC3wDm8MFMvBP5XpNSui0JjhsttawG7P2thgwQ+/OmFLAa39a
-	55mYhHHHNKtHz1WIZzTvL9k3DcZ59N4=
+	bh=3FcLlaFTZEEPTlBw3SFS4JJgAFhSBO4Tc1WKaDuAudU=;
+	b=nZAe4k+iVAoyoltWxJa/AhNhZDMoIUlxPyd+ccGdzrmVY10pWyoqGMYep0rME7iL1j8GXj
+	TwcJf+tYzkOxQbg9JIzc5yYV82Jx87HZj8l2y934q+3dNEMJAFvBB97ZxC2KL1lfbJuuAV
+	YJTy7bRUUPayPPqUGf4M0OAPo6ovrFY=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OI/OFz9D";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkij4d+Z;
+	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20FA7403D3;
-	Wed, 24 Jun 2026 04:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BA01F000E9;
-	Wed, 24 Jun 2026 04:32:15 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3DE63431C9;
+	Wed, 24 Jun 2026 05:15:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1A71F000E9;
+	Wed, 24 Jun 2026 05:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782275537;
-	bh=LBhmepcwPAdQionL9hmPZMgzcc89UpJpdK93qrjxZJo=;
+	s=k20260515; t=1782278101;
+	bh=3FcLlaFTZEEPTlBw3SFS4JJgAFhSBO4Tc1WKaDuAudU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OI/OFz9DymW+iYnLZeYRRldiKNHw0HgtGF2VlN4i5hyPAVwJe+ax1XsOyElWBq/aS
-	 U7rq4r8fhPlyoIrJydvW6RGcIywyyj2L79UgobqC1ckM/VGQ6caHxeef6n7HGFpIbk
-	 Nhvx2luzsJbOQMsiAHbHXyEjKfKS8Mi/gnI40pLklfLuRoAbrX+F652MWVp2PWrxCI
-	 zk7IEcI1E+Yn7Os6gUiz2tzGST3u4ZEwX49xcKc2AtnbUugo00+Fjrb0MoDCtsx2G8
-	 xjd4GMt6eldAY+RFljA354JxREf70W+lAlFg4CYlgIJwf7SskbkPVPEaVZ36kQcHXc
-	 9Fr0klbnH5fNA==
-Message-ID: <a3393f60-4ada-4768-a369-900350c97cf6@kernel.org>
-Date: Wed, 24 Jun 2026 13:32:09 +0900
+	b=mkij4d+Zq5+2IUn2GsRASxBwcCppuKuM493YtzPPWtyeITZtX9XW7UkXa0y4j5cry
+	 EQK2RBj1/PMUSlEz2hDwOzg1mxv8pfTRGFXP3MM9YRFgWjCtoHYKR6OcF7cPT0Ivuk
+	 U/V0xcjHWNw6raUOamfINjiHygeCip8RxhILk4cP5S2xTQ3ubwHh+nvjOmRzLlMcdg
+	 Z57bL2Doa3965ANLfi5I8Qw6VyQEuSJB77+wMD/p5ep0BMgATrL3dLuJI11lctkuz9
+	 6OtMDzyXGUJyE7uFj8x5LvU1YL7PXTD8kqL5Ve8+050UyCrAzuSwtPcMnTVAFMig+u
+	 ZxgMmXrR54rLQ==
+Message-ID: <0c69b68d-7c67-4d3a-9f90-86a56bc229e7@kernel.org>
+Date: Wed, 24 Jun 2026 14:14:55 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
-To: Guopeng Zhang <zhangguopeng@kylinos.cn>,
- Guopeng Zhang <guopeng.zhang@linux.dev>, Johannes Weiner
- <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
- <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
- <5be54565-00be-4c05-91ca-0825fa925167@kylinos.cn>
+Subject: Re: [PATCH v2] mm/slub: deduplicate NUMA policy calculation in
+ allocation paths
+To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260623110952.411041-1-hao.li@linux.dev>
 Content-Language: en-US
 From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <5be54565-00be-4c05-91ca-0825fa925167@kylinos.cn>
+In-Reply-To: <20260623110952.411041-1-hao.li@linux.dev>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------9edyMpZu0YLeoI6wTH0LWs7N"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0601C40002
+ boundary="------------qdHVbfu1bcJpbrMsGaKoPU9c"
 X-Rspam-User: 
-X-Stat-Signature: e1debd4hiy59zestp7z6ogwqxr6a77s9
-X-HE-Tag: 1782275537-242264
-X-HE-Meta: U2FsdGVkX1/Pslq0Gyhs6zgqH2TXPcqnZ0Yx4xOPq6zrqaagjGiZmMBdLV75TAlRQCm/PR7VyqeX1fyrw8gxkH/GSL1SneRFco6eP/hm8UOrZgwrgeS+Rwn7VRtrW/WQ0vGWhDwtB3ExbHVCIvb6NaprGKiE13YojeMfSclTYrK+PUTB5HjPi+vlI7W+YWY9CWzFQVr092n9upsEcWuCrZJXPccfDgEG8QCZqyDBNHxlIxj4w4tHpMdRvQjd4sYG3Id3UcvMJIwcUYmLlSNbvPCSh8jvrSz9aaDyD4MySKk9EQe6xVd6KKudpSembsfcrKLwRI7kjYNOsU0rHFy/4hSfkTOjBfePC6FYDNpv3lEisrtNxgrlSGfPup7guHspq8ZhF+8zv2zXx7/wCqYsss536WjL2YQnqfUHCU2ExkPAcVYIJCMdPupk8QKxLzrs2cmJTh8NuwiKLA7crRWfs5wbLsc+kA4y3kmo0kuzs3Om6mrMb43qAcfArjgj0fytaIe0N8Ih6/tww44BpjYZCmlC7ahKkRJNCTpni9tWYki3hwsUz2bKttBoXmv/5+Uzad3cYzqOdEfBrX6SCYmnZdrDELlpghalJmItsL2uaaIMuYmVKxwsdZLmmPXiHHnRQ9bODpRdfzNKO2S4qy8Et+ihy93Ok40Wjd8z7xEGSgSBSrh5myA/LBrivgLZMfSFUN2MAecKXhHsMpj0KGPWvN2WT3GzjQCMOmVFKsy7U2oSyui7BCdsQiOdj3ezHUrCFQxMtKZWaYw8old3lP4WrM8iFB4NB9TKmvSOPyUO4W9c7lrH6wIZnknV/Q3eSeM7CLNA2toNUP0r/yDExvM8PL1Bjy+I5JMjZJuulid57LDFtSFo+UiYZ41nPvCaL/8d/hxdkaoOvdhyJOpi6irkQOdtX9ggjAUaSskrFQrSgz7phVUbxNz6UfqBneJyAHst7IO2yLSSGS5Ev9hzHjM
- NS54NKQX
- zHLrMBx9NIeHZVPe+qCLJQvd5ROiza2JiJwqQcnY1Li6EZzfto2fe/l4e3TTqt8HZb+1Di7ut+dcVOrCUhQwqtN7BJ7+zVyGL6IfbohKyZlD6wr6lvzNrTJx4fkSssxZmat2soJb2N3ePIGHbp8Rsm+eicx7QAGLeSnnnrUjetP8UJmajx1soCxcA2XvnkIUJ6oPpZxQ1GzVq1QEldup+OFKPEhEe23GjbsWbm8dXOWyKntOmzq4UoL2M6WJ4azkaCtljGZmSwBe/Qza9LzkumzLB/oYt4KV/L8Z/FUHJ7VRYoCE73UXXiai1oJwlkbaV4Welz4dYgmWPOYobzy3fP+rj2F1UUB3QMykJIzbpRpCoKUnQgdpdVXSXFiaMsyoQhSa8hM/ZaV7GMroI2GUhVTS811p8HLRYffB0QQF/UnSAR5Unby/CO+14JmmRjSP1aEov2VU/WazAgfec7TtuIOHXrDQg6c6iA9M6+K8lN3V+76a4Ed3CZaMxfrX9iJKirimOS10tTeBVtNLWhYb9VSerBg==
+X-Stat-Signature: 1mgw6myo1sdiirghimifzrgdhze4i4du
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 24BF1100014
+X-HE-Tag: 1782278101-486502
+X-HE-Meta: U2FsdGVkX1/LaFofOJsn8oTLDTynYMjrGKlQdN+dFXWt67LIMaWH187/sMLNy9g6NWF0GMOewGreavu+M+pb4DAkI1wUnIN66MSQoX1il685A2EMBfnV0yoH2kJtGBTfUU5tBeBbkHFWSeb5qc6RD5G3/6+BXAhpyqztvNAdv4WktoPWcev/5Z030nwu3c+qSc3NdP6VqAUuCj5AxH2p7RYOkasEJhu6LrDR4dM7WTSclE6Jm1Hp+0RlQZgibzR/o8FXmTYbzKZGglnWlbIicCSRF3jkWEdKEXhrGeKhWVqDnY0JNsvB+04rL4wbtU6jAYC0hp8GhMi9Z9j0MVK9sw03oO7SwQFoP9sFfplwYy4NvohN1/H8CtygfyQFmso0AXtLbPaAmedrJDw27WhQS11nhCHLbZzMNzvXL1yxa0vhMwgxZMjlrOe86biyguGWd8UAjN+wcv7QeuWZ2F9RqHwOBZK2rpzYN7xNCGIP37Hyi6zrWrLZVBuJ6SCUM4Tv56Hp/iWFS5X1jqKJ0SOJDaRY5a1PBcoU3YHFpSKazeSlhL3UeCPqrvm9gwb/YEeTpPpRDYem2qN7r3xfC+lspNYsiGWmhWGxP2y/gTnBxzLfWyOqyaQ+01VR1ln/13k+20ktAAXXiS4e5JIEmg8qR+bFahbN4gMKxB+VxedJppSL/E5jeEMjbeyGX/tKnSSWizkrTFh6LAzok3AL1VdBaONLs+oey1UNRhHAwduInX1XG7tgNT3+uffiDFcP3OxQeLKHKNgsEX9kOWpAMGxehO52AzXrZ2729j+MhQx5mJJVed29g9jge/u/Gtbsn7qow2M9R8qD3FQD3bFV4E3BCs0VPolN8T6hOwOfvrFBAcThlO5V+UYxqZBTglPeI7rVntZFJW52UWcTQtVgLc273UaayS88VKCa6obF9Mtes71YA1AGh4ic+5KlZSALzUHkKrc+7PDDnBNvlYObpPG
+ uA1woXAi
+ Cw8XgKZFl7Kj6IXoVFebouJbiU0OE96oWtMSJGwzT4ngAZ5d9GXG7NtederhRyH0CVT0csG0g8G/VlWumfl6WPzOjkWwaWgkvNejip7XY1uo7ax2PhGxbNlF58t7sFy9tr3zWhZV/xMYPgA8GYWn5vNK//XtIsh+MD3aQ7k9CATivVgyKCrfo/Y36JcNVUBSNUVOXBF+x5wsHhUOKvtpA137lMlitx2HHCW9Vv/J4gcCtGECOOmT2DF7W55/XN9b9iaX+wycPdsxuLAA2o+ljsWcWXKT095aAMdujuwR/YpW6M104K13LQWrBg33O3OiDisgAp3SrMrif5wwW5sEYwCGxulf5OZBc2234IrcHQbBhAKCo43cy+4zi+MhG9cPY7XXcMeShNoNvTm+Zcro5Cup18zlkMNlyIItN5qs6Ogqjs5/3J5k1My9krkq8iD47ODM4Ds6Vq407gDA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,117 +95,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------9edyMpZu0YLeoI6wTH0LWs7N
-Content-Type: multipart/mixed; boundary="------------QRl4NJCYxXXLAPrioGkZRTFF";
+--------------qdHVbfu1bcJpbrMsGaKoPU9c
+Content-Type: multipart/mixed; boundary="------------M9sN5cFnIXP9sHzk0OxtVxgb";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
-To: Guopeng Zhang <zhangguopeng@kylinos.cn>,
- Guopeng Zhang <guopeng.zhang@linux.dev>, Johannes Weiner
- <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Message-ID: <a3393f60-4ada-4768-a369-900350c97cf6@kernel.org>
-Subject: Re: [PATCH] mm: memcg: remove stray text from obj_stock_pcp comment
-References: <20260623082614.81621-1-guopeng.zhang@linux.dev>
- <82703e62-4061-4241-b12b-c46b927cc67d@kernel.org>
- <5be54565-00be-4c05-91ca-0825fa925167@kylinos.cn>
-In-Reply-To: <5be54565-00be-4c05-91ca-0825fa925167@kylinos.cn>
+To: Hao Li <hao.li@linux.dev>, vbabka@kernel.org
+Cc: akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Message-ID: <0c69b68d-7c67-4d3a-9f90-86a56bc229e7@kernel.org>
+Subject: Re: [PATCH v2] mm/slub: deduplicate NUMA policy calculation in
+ allocation paths
+References: <20260623110952.411041-1-hao.li@linux.dev>
+In-Reply-To: <20260623110952.411041-1-hao.li@linux.dev>
 
---------------QRl4NJCYxXXLAPrioGkZRTFF
+--------------M9sN5cFnIXP9sHzk0OxtVxgb
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 6/23/26 6:02 PM, Guopeng Zhang wrote:
-> =E5=9C=A8 2026/6/23 16:42, Harry Yoo =E5=86=99=E9=81=93:
->>
->> On 6/23/26 5:26 PM, Guopeng Zhang wrote:
->>> From: Guopeng Zhang <zhangguopeng@kylinos.cn>
->>>
->>> A patch filename was accidentally inserted into the comment describin=
+On 6/23/26 8:04 PM, Hao Li wrote:
+> Currently, alloc_from_pcs() and __slab_alloc_node() both calculate the
+> NUMA policy independently. Since they are called consecutively in paths=
+
+> like __kmalloc_nolock_noprof() and slab_alloc_node(), this leads to
+> redundant code snippets.
+
+Right.
+
+> Introduce a helper function to resolve the NUMA policy once, eliminatin=
 g
->>> the nr_bytes field of struct obj_stock_pcp. Remove it.
->> nit: perhaps add something like
->> "Fix a typo in the comment (target -> targets)"?
-> Hi Harry,
+> the duplicated code and reducing execution overhead.
 
-Hi Guopeng,
+Nice.
 
-> Thanks for the review and the Ack.
+> Also remove __slab_alloc_node() function because it is almost empty.
+
+Nice!
+
+> The callers of __slab_alloc_node now call ___slab_alloc() directly.
 >=20
-> Yes, I also fixed the "target -> targets" typo, but missed mentioning i=
-t
-> in the commit message.
-
-No worries :)
-It's not a big deal, just wanted to mention.
-
-> I'll be more careful about describing all changes
-> clearly next time.
-
-Thanks!
-
-> If a respin is needed, I'll add it to the commit
-> message and carry your Acked-by.
-
-I guess it's okay to not respin for this.
-
-Thanks!
-
-> Thanks,
-> Guopeng
+> Additional notes:
 >=20
->>> No functional change.
->>>
->>> Signed-off-by: Guopeng Zhang <zhangguopeng@kylinos.cn>
->>> ---
->> FWIW,
->> Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
->>
->> Thanks!
->>
->>>  mm/memcontrol.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->>> index 6dc4888a90f3..3eedfc4e84a0 100644
->>> --- a/mm/memcontrol.c
->>> +++ b/mm/memcontrol.c
->>> @@ -2039,7 +2039,7 @@ struct obj_stock_pcp {
->>>  	/*
->>>  	 * On rare archs with 256KiB base page size (hexagon and powerpc 44=
-x)
->>>  	 * keep nr_bytes to unsigned int as uint16_t cannot represent the f=
-ull
->>> -e patches/memcg-uint16_t-for-nr_bytes-in-obj_stock_pcp.patch	 * sub-=
-page remainder. Such archs are not cacheline optimization target.
->>> +	 * sub-page remainder. Such archs are not cacheline optimization ta=
-rgets.
->>>  	 */
->>>  	unsigned int nr_bytes[NR_OBJ_STOCK];
->>>  #else
+>   Previously, when slab_strict_numa was enabled, alloc_from_pcs() and
+>   __slab_alloc_node() could each resolve the task mempolicy, so
+>   MPOL_INTERLEAVE or MPOL_WEIGHTED_INTERLEAVE could advance the
+>   interleave state twice for a single object allocation attempt.
+>
+>   With this change, the strict NUMA node is resolved once and reused by=
+
+>   both alloc_from_pcs() and ___slab_alloc().
+
+Nice catch!
+
+>   This is a behavior change, but it better matches the intent of
+>   selecting one policy node for one allocation attempt.
+
+Right.
+
+and I think backporting is unnecessary here.
+
+> Signed-off-by: Hao Li <hao.li@linux.dev>
+> ---
+> Changes in v2:
+>   * Use a better function name apply_strict_numa_policy() (Thanks Harry=
+)
+>   * Remove almost empty function __slab_alloc_node.
+>   * Add a local variable, strict_node, so the retry path in
+>     __kmalloc_nolock_noprof() computes the strict NUMA node from the or=
+iginal
+>     node parameter instead of a previously resolved node value.
+
+What about overriding 'node' before retry label instead?
+
+        node =3D apply_strict_numa_policy(node);
+        [...]
+retry:
+        [...]
+
+Otherwise LGTM.
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------QRl4NJCYxXXLAPrioGkZRTFF--
+--------------M9sN5cFnIXP9sHzk0OxtVxgb--
 
---------------9edyMpZu0YLeoI6wTH0LWs7N
+--------------qdHVbfu1bcJpbrMsGaKoPU9c
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajtdyQAKCRCGXBN6rc5S
-1vnvAP9byEYeRrjQ2Dz1Xv7nHkARJWKR43ZTTZCNji2vF2IMAAEAloDAjd2BL2GK
-jiEpldoBcQUH1F0yDwUYGCFqNNuI6wI=
-=MgY7
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajtnzwAKCRCGXBN6rc5S
+1hmZAQCpMLa/7jH2nfIjHaVaIp+A/dL3F0oMT71XHDP4cIBelgD/RcmyWcJXXwlv
+D7cR1bAO7V7rpmLHYB6fToK6qKE9ZAA=
+=wN5r
 -----END PGP SIGNATURE-----
 
---------------9edyMpZu0YLeoI6wTH0LWs7N--
+--------------qdHVbfu1bcJpbrMsGaKoPU9c--
 
