@@ -4,140 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54F36CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:12:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E816CDB481
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:16:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356166B008C; Wed, 24 Jun 2026 10:12:01 -0400 (EDT)
+	id B4D3A6B0093; Wed, 24 Jun 2026 10:16:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 307966B0092; Wed, 24 Jun 2026 10:12:01 -0400 (EDT)
+	id AFE756B0095; Wed, 24 Jun 2026 10:16:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F7206B0093; Wed, 24 Jun 2026 10:12:01 -0400 (EDT)
+	id 9EF916B0096; Wed, 24 Jun 2026 10:16:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E71256B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:12:00 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 60F921C0C7A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:12:00 +0000 (UTC)
-X-FDA: 84914995200.16.D679B00
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 57F641C0005
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:11:58 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m9z3Fw1Z;
-	spf=pass (imf21.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 71D966B0093
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:16:39 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DDD22120394
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:16:38 +0000 (UTC)
+X-FDA: 84915006876.15.B31EBE1
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D8DA68000A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:16:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qZT/aXCe";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782310318;
-	b=fYzmor1X6R++rSlvnkoOP2uo+ZIsQA3zW+nJrXz37ilv7S5bX76zXZyHTE5LMKYU5i52SD
-	7nU/9/a0jJ9JbZrGqzbURViOPphYPDybQvaq1Agg610sC5tOSFipuNqroAkfiRrhI+9wmO
-	tlmXS9NncCgkFGQVh2WryCMGFg50Zpg=
+	t=1782310597;
+	b=cKVvYWTWdWRA3dAHzvujWlFozb9bZ0yR1maHLhrqvyUGmvpqp1S6yZUHb6+DHblVIwsioe
+	JhayTB687QFt4EECMq98Ax7yLl90KhH618oV8Cg23FGA8GPTmN7Zmc8cumPhPIzNbpFisI
+	h/urkJpvL9nvg0+jXhjRx3P4npPh0j0=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782310318;
+	s=arc-20220608; t=1782310597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LG+grWd6UceBYXX1nWiBnDgEaC9++nTof5X97YF4TKI=;
-	b=SeOGghKaV10NR9tRX/VkTM0hKz14ofq3mqMkEUBpPDTMeCf0Ei/yfZp46npe2l8jb/9LAM
-	YJh3jkgdX8Lyx5OQC7dxcmq3kLMuHfYT7BhbhX0R98SyuSaSUhGcKJnlC9klKOz0OLOLQW
-	PA1f/6b4L2LsRN4W8KFdZ2EF26VZWNc=
+	bh=ofp3hEpmgBuA2Xl9gZnye4TILLUrjr4efPci3kviMPY=;
+	b=hmnXeyKEi49L9b89gKykO14hM3TVzWwF+tOKe8EXOFY/xDLuRSs1CNnbvxEmmGcKkJNjSc
+	MtoznxTJJ+WKj/Cj9fmlw4FclpXAKy221TslyrM2YTQJQN3FbBgki/nTa13oKGQYxzwq39
+	/zF+BtY18ycRgUgz2D1bQU+aFporbAI=
 ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=m9z3Fw1Z;
-	spf=pass (imf21.hostedemail.com: domain of amir73il@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-697ce8cfe65so1811626a12.3
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:11:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782310317; cv=none;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qZT/aXCe";
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf02.hostedemail.com: domain of amir73il@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=amir73il@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c0b97e268f3so155526666b.1
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:16:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782310595; cv=none;
         d=google.com; s=arc-20240605;
-        b=GeVnK1B0Za2nZlALbwFMH8CrKtR9pfx4MafzI6ZYYinKbyzYg83vSeBZ9ABoEk0u+i
-         fXYS/cny6VaNbOmlkUGsmLOPajpp79qoIs9gGppRBevYZGDiEbphnZ12WXCFVL9inJcS
-         xRx7t33OTzl7rfgS6nQsnEiCUx8zhHvwJGylx1jKYs2porn+8uWWXFpSPAjrafH3fnN/
-         FAaXpEK4kE2/duzsVniU8kU/KpES3rkqdEF+NflM3qhN7/uvPP4xJcrsLq6WMmKTHYgV
-         6dB0R5DzVjN015zsm1zmOHoUUkMKRWys2u6hecLz4Xw2g25qZSpM1BwQ/Y7QWBL1F+TZ
-         J6RQ==
+        b=WOLkpWd4ZryKhEGYjv4Eg8DKxSpe6/fmhs0dyrY4/cKIf0tZtAobku55Th693rpbsO
+         j8E0pTS1cCAlIy8pPhnFRlBjchXg/xGLomT/4YLrlanjzbxieT3Fd6w8ISX5gyhruwnC
+         bfqBkoDGqmKC6z2EVTtwH20P1cCVnHSactucJn+BIhVRcdENfznIXtk3+t/hI0UGCuY0
+         7IdERwSsp2cOq18l/DOGtR1Wq4n7YWKL2bEeHc0BvZ/RXLHN3Fqm6BMJPKaL8ZIVUeNY
+         +tBbCBCb7yILEnub9sdWWtgGASOmshwHV0Bb4XrApKDfRqYktwxF6MydDLDiNJRM2TW8
+         0fGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=LG+grWd6UceBYXX1nWiBnDgEaC9++nTof5X97YF4TKI=;
-        fh=iqbNv5LS6Z7z8sqqmm1YRGKZ3XVCllHaqSHXiToo5dQ=;
-        b=CHIm2VKZHxs/J2oaegYFBhXfLoXCm/L0gp0SzQNK/Do8d7fE8pVYIq3Fs/gIlPRt5x
-         Iddd9r/0iYtfOSYGxSni89OArGhoY5blpb9LXLTy06GNv7b3crj7YSmsju90Po1VbzGg
-         Yf25qQGMCBg13RVTiQvUUTOYdyf5rzVQ1PavQnmugWXu7D+fgqOWbOWllz7/8Db+qrJg
-         etoT7EUxElLhwS8lIURqvErqZszibC/m05nQxQuzwTl3q1ewKgjZGlRCUqCbCWAeQaxe
-         AViSyPLd24Lu6iF/e7zI77BjJo4WifOGBNe4a908+fzBsAsdRTKH+zUttLF9xnHxssJ8
-         IsQg==;
+        bh=ofp3hEpmgBuA2Xl9gZnye4TILLUrjr4efPci3kviMPY=;
+        fh=pJY7IfDYTOim97sIF877ER2ZpzcIzwQJyzasHfHxYeM=;
+        b=fZmwASuJsmk+q0vK/zwBWYN+cSBkdPfMhH8xPw//UsK/RqrxCoBCloCZw43DpVeAA2
+         YSP0XXWuTxvV9JtVuV69pWQaDmAPM+wJps0uXmBC5fQaSnHJ/VkVG4wGJduXm1IUgvMj
+         riDY4vwQvqzeVRRUL2ykCzyKA5cBD+aOP/xloW0yafXWwbP79ZGR81n+Je9HtR+4jMq5
+         tVJft12ASyOkjNfVV53JNYF6IqpnXWN2W6iN2BIy0jIk6B3wf6iG0GieCdEIw+sZovlA
+         xQs97/gevbEdZZY09ZSlioGY54DI69z8YIaVQCASamVXgLLf05XKKX7heJwyVtyTb78h
+         ycMg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782310317; x=1782915117; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782310595; x=1782915395; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LG+grWd6UceBYXX1nWiBnDgEaC9++nTof5X97YF4TKI=;
-        b=m9z3Fw1ZXpPXo7n2rzY+/zP3WhOTFYRcEf/hC0gisb8sXIXg9PO/ddphwnHN5YodhG
-         HVMk13DhM4aekaVbiioA7y1XQkbWyabZXfD93WeFpf0UHKvpAlmuIxrGnX9NjTi8kIhp
-         sZNhOx3EsdA1EwC63eZz6Y/nvuad5C8a8Hqg+TTjWCmsOW6t+xzxu0Szxp1/DLzL+VAD
-         BKjoUuNE9owrxicG+7IFupKp2i5oMUazPnInqUZXs7nTIZVbQ7l+fUyFBGB0CXq/vhml
-         m4M2fWaANPmp8dICBAlLDpMcXBZUz7TAknPkbOfV+duoCZPEfGE/4y3GwxhsQp/zEGqE
-         hmWw==
+        bh=ofp3hEpmgBuA2Xl9gZnye4TILLUrjr4efPci3kviMPY=;
+        b=qZT/aXCeKH9DeFuVTm9IrN7pGo967Eu24jJ4ia5gRmESAy60KulUfxxYYpTW8MP5pA
+         42/vqDobU7s3OZ+AMyCfmsg5ibFyDL0+AuGUoH9SKCO2+6N1fY1DplkOdx9WipmupNeV
+         v6t7hQCPQYCZU1KlW8BF4+oRiFKoLydHJmPOJ9g0QH55loqBXh2qliqkVNVzJNmCVHg4
+         skQJOs8NW8ZG9VJARrWUGEtf37EeKkmRnEs6wMYy/M5+3bFm5uorkbqZAfeO+Yb3G1wT
+         PhlChzk6686NI/49arWsBQFmZ6SJI16M/nopUTUSEpjRJ6oAXRHHcih1wkZ9z9vLpiSz
+         fBXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782310317; x=1782915117;
+        d=1e100.net; s=20251104; t=1782310595; x=1782915395;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LG+grWd6UceBYXX1nWiBnDgEaC9++nTof5X97YF4TKI=;
-        b=rh2+n2hsj+es2WQGTtnLC/GyCLaRDMtNLIDIIm+gBJAa7NwuEmz2i/lvywocb1WfqK
-         zZAKSl0xSX8EMmpP2NfWtoXgu8PGk3IgcijURZs+mizxmCX14WOv+3kob8y9nNx8hjZH
-         ROvmPQpolPN2AsAHCKpcbrM2POd3/hdPp2WaP/VLs73BEnnqtKoR1+8vAyyiHMhSWsvE
-         q9bdeEfT84pKd8/MgiWiCNouLKa7rzcGaZaQSqcjDNM7k0bYuGkXy/qZ1hxVGl5qf0lx
-         wrA7zTx/WcIT+92h0wTJ9hpHLCkGbUUR8RTly33dnatet4F6mwoo8lEojDSpQ7vy4aIe
-         B8jQ==
-X-Forwarded-Encrypted: i=1; AHgh+RoW6y73qkfYzEkSj2Qfckn30e3EVHetqhjUsjQcrMhcIol6d+P/aW7TdXH+VXqyLxZCJYKTAnXATw==@kvack.org
-X-Gm-Message-State: AOJu0YynyP7ARrsgiZqeP7RRN/NX6C8DoJB4dfopm//RyrAzf8fuBapc
-	JgKJg+EFsRTUW6s0cnHEs8F7isi3wjV8/Nz0VSk3m0MqphoswO5h2qqZ6BQesCTF2+cmIol8ip+
-	8bjdScOYsC1g87eGd2GJw5dMBInGpAnI=
-X-Gm-Gg: AfdE7clZdW4XZTWISnZhcSXM9U1fOYXGd9SkV8aIcDvBQ8LcrQ8fQTUg9ItNrWsMFNu
-	s7CvH2ZZ2VAX5lBQIri43LRuJ0vRJ4zvswrmdGRcPUyJpSfTOmpHJxGJg580oHeXJjHflGB+C0h
-	xsSbFEal5HehANAxB/qLQBn+P5D6hkLg2NXNksrhgFNa7yj0SEQPylR0V4o2l8THOH1FVsgKr53
-	+B8OmKnBXmXnhDOgDY3qzOOL7umuIwNL4I0/13YbLEiVRMmsSMydy+VugnGrPCN1n8BDjM2t8fl
-	KOplHTyo4YQGP3AsHuTDdr6NiTYnLU4=
-X-Received: by 2002:a05:6402:4310:b0:68c:4424:a08d with SMTP id
- 4fb4d7f45d1cf-697f37711abmr1918540a12.2.1782310316342; Wed, 24 Jun 2026
- 07:11:56 -0700 (PDT)
+        bh=ofp3hEpmgBuA2Xl9gZnye4TILLUrjr4efPci3kviMPY=;
+        b=jvq2HZ3blHnMdMWWnTboWk3AuXLnGEVC+V8AZM4a+0ZgEvO5TIVKmbzbfHfLVZsUoa
+         gxfNLb2B8wgEpf360LcAjIXaEsOyvF5ZWORZ2BfU/xFSdF3wI+ykn9eutu+SGrUConib
+         lX/tDqon6re7jumoGiCef7Ne1BQGpM/uLfmWusKfTSp8++hJy66jMk0E5zPQkVcpbHp5
+         LzYve4rAl6xEiU3Z4LchB9CV0nDepO1V8rkoSf1eql567Q2CY32h0R/W+y28Pj+c4FOo
+         2KvWgmehGtGhCa8krblUobRJKKpdGXeLDG9tuwjcCyDe58bSaEFG2orTx8Zp1EAqcb0w
+         NrpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/VP4ZsS6QGxf8r1TtHzyhj3kDjRnG18MDcVS/OVZCEZx1GnXPt8tFm9wRKOI8y7x+8TYZi/7YSlA==@kvack.org
+X-Gm-Message-State: AOJu0Yx719tbR2qvdHnxJBwAA7rjFv/rA9ZCOH09QsJ97/6TLQkZ01VY
+	E41ep46Pw4TSwtmkH9JSYOcjiuLujSXTc2Ml+zsABe2q785ljrf/CTUyqXqQpqA9ZoEZXtMSfX3
+	kt6hjuIfrvsxZLGrqbcQqK9yGera82p0=
+X-Gm-Gg: AfdE7cnVnBr1rqg9U5xws3oX7hVKPxZbFOSosKAjJfjuem0abF6pRrwJsd4Oiqx3BWi
+	k642KPtAR6bl/j+48uceMMmOiVZ0PR8hHw2uJfBHuYdV3Obu5T3AOJjtaNBI3MvAhmyA0KYOv6z
+	Vg+cbCZnBB7Zrr6XP5gfGeB0i16xTVQOym1+qeIK1hLYiqbmzMTTph0O/Q6R2P6jAU/8tzyenMP
+	y0hhJWuqADV8dCypMKV60323nFHEGliSZHzhNvjtT3wkY5l6QPnQ9eILbAyl0Q0M26N+6TqxWQx
+	CC64e4NWMrzvisIhIuBoJGR4awD4yvyT4pt5cW1DQg==
+X-Received: by 2002:a17:907:6092:b0:c08:93fa:2a62 with SMTP id
+ a640c23a62f3a-c119ce79d5bmr206413566b.2.1782310594693; Wed, 24 Jun 2026
+ 07:16:34 -0700 (PDT)
 MIME-Version: 1.0
 References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
- <20260623111533.2285005-2-ptikhomirov@virtuozzo.com> <ajqOyIA8tPQsxfz6@cmpxchg.org>
- <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com> <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
- <5c7e8c24-0981-4677-aa42-9a74b67bac04@virtuozzo.com>
-In-Reply-To: <5c7e8c24-0981-4677-aa42-9a74b67bac04@virtuozzo.com>
+ <20260623111533.2285005-3-ptikhomirov@virtuozzo.com> <CAKEwX=OaKTfNqzwa=djLxZDeBbR1+DKdqDnxdfPfZFKB-K+ECA@mail.gmail.com>
+ <c390081b-7b2e-4b83-9bca-5f93eec6a939@virtuozzo.com>
+In-Reply-To: <c390081b-7b2e-4b83-9bca-5f93eec6a939@virtuozzo.com>
 From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 24 Jun 2026 16:11:45 +0200
-X-Gm-Features: AVVi8CedTisCQc6-w-aWZxlaYwfyFEiId3iuvNUGWT5KiajuyJpqODeKptPkY48
-Message-ID: <CAOQ4uxjoq7VGQ+XHi9TT-Hak-tqiudoG7nRJTsFenbNtZRmvcw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
+Date: Wed, 24 Jun 2026 16:16:22 +0200
+X-Gm-Features: AVVi8Cf8pFFkEx_V7HqzrhdruZGs8cQ3Zufmxz4l6Wlncf8175EfLgSWMtHkhw4
+Message-ID: <CAOQ4uxhPROaeEyYceKNsL5QVwVPkTjGtbRr1P_TYXTA0fHvRoA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ovl: support cachestat() syscall on overlayfs files
 To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+Cc: Nhat Pham <nphamcs@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>, 
 	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
+	Johannes Weiner <hannes@cmpxchg.org>, Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
 	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: 15k6b6zjaozpord8ybsidwm9kjraapqc
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 57F641C0005
-X-HE-Tag: 1782310318-69454
-X-HE-Meta: U2FsdGVkX19PoKXk/gbiQsIO69HpWFlC9R7dLsqqHQ4WRL9p4A2H270Vvtzt7MRrJ0gVKOcdF9ABtFBIXt1Gf43c5zOqKJhYIa4NZvvAB9A/I1iX1Rh3jqM5MEfyMMjxnrqXyAZIM+uh6eu0jL8uauCQf3+4NV2lQYqcT8suje7iv5AKYLiMfxTZfjjlvUJxUdhFn0GftPV3+DF8G2ofIMb7Z6rP9Hyv4t0yFQlMCw8MiNmcgqE/ZARRvXB9fS2rN3tM7C1rh5/4c0P86pc0EQRkHk5u9beSQHv8HFF4R6eP5oVRmeXfxFNDfk4crCXozC4aH171hGDLeUYRAl9Fu5zpbRB7ejOfpvIDxF+QXPpRAIYYcgH79SI/vwMOgsfsb5wSzdZjU49DzkXGHbEP29cauFDIsj5b0XZXXuYgUr1tPMtf4B+PbqXYKQVEEB7rPdN9qWPsbzztm5F5pxOC4N5lvwASaFXxIdoaza39h09BtVanlG1C6YwjjniGgLUQyKelBonGjsVCckXzCfkQW1XHCFUb91/YRgqty//oPdO1EvBtfTshIUe9RAN/sXm5lIyickmZQ0xv4CrehzdG11dxDbd4uvD0kT5bX3gPbHt+ehiVxn4Z0MGfAKWpinshDpa94afTbfYW3VVZiAP/VrKOFlz5L+F1dJyZ4gj9Nj51VYqs+grghtyxONhEGn/n/KIHJMlkvKD1hprN5alsj9UoSoF4hiIdgJUM86lEdE4+Xcy7ketcP9b5SaLcLsHYh0GDgPRimn/HlCUw2mZNesek2Xi8Iub+VoL9eGMuL36aUxWUiKdukGmhMK9vUkYY1WAMZ3WXoN3Ozs8PB/t7kV2Fut2Uxb1/awIobTyjtbrNMkCdiyNSDO4ENBZ0n3e3+1LgIABeX4C07Jxf0zz0L7d8sR8HqBRZLyUcMBe8VFDhvpFfhh4tcMi082fqZdRer5o7uIuQBwZqtjk4Js6
- Qb6o6cJO
- X0HBLlFIN+Yi5ppYZPmdqSBDGSe65Ww/soeVsCAK3xADXCJ6hXoJaI3q8dFQUK01Dw88AbN7XZHld/Qk9CXC+mcpP6I5Wzi6FcFLJztWQ11Sh/AEh8B1DzXQbVdr5AqR6K7KJabKWoQF3mVNm6fO8YDjmTBpEmdJ1plzd6hi7c/M58fCgeSG3zHWwrLAAc+xNZFKsPYh3DdN2zp3keWAbFO89koVe4EG9fTjBtoVXwTrDBUlHvR3b2fdQyf7Q38OZ8DKNGtH6+woKpbPoLND36TR3jd0F3vTdfmQaW5Zi998MMjhCGqbf/ep7YeeDA4hDWsKrEEe0PCu+W6lCSzAbwIp8B6L25lZNeQP4krPuE1SK+y965AUxYFr3fOdVRqpb0rkkfJ+mTgx9zQD01wlJwH9z/vatOmVpJ1/iwUpTNqXdAK7wNrI1IvppHkC0H7tkpQ/rqW6mngYIvnCdqPs4VVRQqQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D8DA68000A
+X-Stat-Signature: utxtjww3spggzrritg6uw3ngg6gqdf5g
+X-HE-Tag: 1782310596-917876
+X-HE-Meta: U2FsdGVkX18IB177EOCdrZPWiB0KN4Csc6ghXs275ul3I8yOZPXNNUIt4a5zpdIe4tok5JmAGi6fsq4dPDQNu0+sCRk/+KGBIQ8pSkQ2uf92CVj3EtiPTSkFk9SQs3QSvJPVoNURW3jS/OKNPS2UEQwyRmMKPhVPLdOAkilQS088HpzbNx9QymGTms7cdnC67yWfZGrPT5wVWKy2IKl4F2n2ZEAutfvSUAsty3MaXXQyHSfc1mztTus/jQuXK970U6kdXJ8eZBKLeyJsvR4Zqzm/CiLm7/7ATlxT6LijdNIwsuBCs+ZBUsY9FDaFoqEHvtWEHvZy34CZKrKFxUBDraSN04x5oAePoYOsYqr+ZoaH+Wo7QoBsfV+UTdfRKADunvJcQ6PChgxB73zINLtY17W7K9hyGFM0iZVP+Yb8VNpGtu1QB480wAPqsGPaQSdWx/AI5BYwieuTPyDIkpfJiU/sQeIO73xyEytyBgH/J4a7QCO9gHM+lW2qmRxYEdlDJzbHvAH8p2ACVYW20PjMnrXxmyChs5X5hFdsSZ9/kLOIFOxxYIuvfDiLZRBeq4mONnT4wknohCBzIo9dG7pKg1GAgPIneX28FWunasY5mMzV6uBNeDQ0nlTLm22E+k2+DKmjT9sqBfSNiQPxFgf3vBhmYJMEdIoUZ/YLjXU5EiIcyiltRiezWB3Aso7RZjIlnjFvxqOLPICLVqhuKdCSxQOa4B7n6bhGYrGOp1EKd7lxt0d2corxqP396QsV/kP3qNRscxlQn/9Te4tiybm8AYPw+yaQR/KtaJAmh+u8zipLi2UIvyknYVOsloFsSckXOpd9T4OQvHM0cVIaRnbDd+mqGtaXtuizU7z90SBK2x9SJ/wgFgc9DAtLY6eYgKnJzf7Wk4yWesORdKk73zuVB+8rCGASbtAFdxs7ntnpzycfuO5rL7bjHbrFy1Vpms7eXm7g8CgOaxjnLF1jwtD
+ RcrUhEtT
+ V1J6b6GyXlvKR7M51UOBmiJmWjwtKP8xDkTiUISCupbJJNCJa3d8kUh4DyPmz3TRF8aew/HaHFZTPG9R7L2dRtFG/6kKlsM8IlPTdlV6uXzx5iPuu8SNdxvsm4Ii7VM/et1EQUlMSz8c+YyF1sJIrWowzkqFwbleFveorctevlV608rypb5gId6P9vCxqzfl3pMwXObSmzUETrKwJxPLz4g8C0K6TtG3Te5m/EJ522v4b59R2+qrZjJ3eGDarm6oNnlz/5SmpIwhFHTjWRn6wiPtmfjQ+Mvz8jdTQnBCg+K3aJnsQFfysZWWElQYaNi3+gtFPkewivYna3IzxdO2k27RCqNzAbkcWrmzwUJCIgrWK1WYapvA9prl0PyOKL/vr+BOwFlUDNkTr25toRJ5VG1qUStE1W5efWgK7yrXR6nyfW36GRlZilR0mcDZPJvBNAOEse5KVJxGABNWgDsGc4vf8JsEM0jv9BlPn0rGmutAvrkZL+vhlxYGfXA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,144 +144,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 1:59=E2=80=AFPM Pavel Tikhomirov
+On Wed, Jun 24, 2026 at 1:45=E2=80=AFPM Pavel Tikhomirov
 <ptikhomirov@virtuozzo.com> wrote:
 >
 >
 >
-> On 6/23/26 17:34, Amir Goldstein wrote:
-> > On Tue, Jun 23, 2026 at 4:55=E2=80=AFPM Pavel Tikhomirov
+> On 6/23/26 19:12, Nhat Pham wrote:
+> > On Tue, Jun 23, 2026 at 4:15=E2=80=AFAM Pavel Tikhomirov
 > > <ptikhomirov@virtuozzo.com> wrote:
 > >>
-> >>
-> >>
-> >> On 6/23/26 15:48, Johannes Weiner wrote:
-> >>> On Tue, Jun 23, 2026 at 01:14:48PM +0200, Pavel Tikhomirov wrote:
-> >>>> The cachestat() syscall reads page cache statistics straight from th=
+> >> Overlayfs forwards data I/O to the real (upper/lower) file, so the pag=
 e
-> >>>> file's f_mapping. Stackable filesystems such as overlayfs keep the d=
-ata
-> >>>> pages in an underlying inode's mapping rather than in the overlay
-> >>>> inode's, so cachestat() reports all zeroes for them.
-> >>>>
-> >>>> Add a ->cachestat() file operation and route the syscall through a n=
-ew
-> >>>> vfs_cachestat() helper that calls it when present, falling back to
-> >>>> file's f_mapping otherwise. This lets stackable filesystems forward =
-the
-> >>>> query to the file that actually owns the page cache. No behaviour ch=
-ange
-> >>>> for regular files.
-> >>>>
-> >>>> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-> >>>> ---
-> >>>> Note: Memset change might be a bit tricky, I moved it to no
-> >>>> ->cachestat() path to avoid multiple memset on nested overlayfs, tha=
-t
-> >>>> means that ->cachestat() is expected to be able to handle unitialize=
-d
-> >>>> cs.
-> >>>> ---
-> >>>>  include/linux/fs.h | 10 ++++++++++
-> >>>>  mm/filemap.c       | 43 +++++++++++++++++++++++++++++++++++--------
-> >>>>  2 files changed, 45 insertions(+), 8 deletions(-)
-> >>>>
-> >>>> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> >>>> index 6da44573ce450..966b6564707e4 100644
-> >>>> --- a/include/linux/fs.h
-> >>>> +++ b/include/linux/fs.h
-> >>>> @@ -53,6 +53,8 @@
-> >>>>
-> >>>>  struct bdi_writeback;
-> >>>>  struct bio;
-> >>>> +struct cachestat_range;
-> >>>> +struct cachestat;
-> >>>>  struct io_comp_batch;
-> >>>>  struct fiemap_extent_info;
-> >>>>  struct kiocb;
-> >>>> @@ -1963,6 +1965,8 @@ struct file_operations {
-> >>>>                                 struct file *file_out, loff_t pos_ou=
-t,
-> >>>>                                 loff_t len, unsigned int remap_flags=
-);
-> >>>>      int (*fadvise)(struct file *, loff_t, loff_t, int);
-> >>>> +    int (*cachestat)(struct file *file, struct cachestat_range *csr=
-,
-> >>>> +                     struct cachestat *cs);
-> >>>
-> >>> I suppose you can't just have it return the real file because of the
-> >>> with_ovl_creds() scope you need during access?
+> >> cache lives in the real inode's mapping and cachestat() on an overlay
+> >> fd returned all zeroes.
 > >>
-> >> Yes, AFAIU in overlay when we use realfile we should always use it
-> >> with_ovl_creds(), even though I don't think there is anything cred rel=
-ated
-> >> in filemap_cachestat(), I still think we should follow the common patt=
-ern
-> >> other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
+> >> Implement the ->cachestat() file operation by forwarding to the real
+> >> file via vfs_cachestat(), the same way ovl_fadvise() forwards
+> >> for fadvise.
 > >>
-> >> note: Actually some places get ovl_real_file() and use it without
-> >> with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read=
-,
-> >> ovl_splice_write. But those look more of an exception than the general
-> >> rule. All other instances use with_ovl_creds().
+> >> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> >> ---
+> >>  fs/overlayfs/file.c | 18 ++++++++++++++++++
+> >>  1 file changed, 18 insertions(+)
+> >>
+> >> diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> >> index 27cc07738f33b..a7e252a91ea43 100644
+> >> --- a/fs/overlayfs/file.c
+> >> +++ b/fs/overlayfs/file.c
+> >> @@ -518,6 +518,21 @@ static int ovl_fadvise(struct file *file, loff_t =
+offset, loff_t len, int advice)
+> >>                 return vfs_fadvise(realfile, offset, len, advice);
+> >>  }
+> >>
+> >> +#ifdef CONFIG_CACHESTAT_SYSCALL
+> >> +static int ovl_cachestat(struct file *file, struct cachestat_range *c=
+sr,
+> >> +                        struct cachestat *cs)
+> >> +{
+> >> +       struct file *realfile;
+> >> +
+> >> +       realfile =3D ovl_real_file(file);
+> >> +       if (IS_ERR(realfile))
+> >> +               return PTR_ERR(realfile);
 > >
-> > Use with_ovl_creds() is a good practice to keep the mental security mod=
-el,
-> > but it is useless if the security check (can_do_cachestat) is not in th=
-e
-> > vfs helper (vfs_cachestat), so please move it there.
+> > We're propagating the error of ovl_real_file() all the way to
+> > userspace right? I think we need to handle this.
+> >
+> > For example, we might get -EIO here, which is unexpected and
+> > undocumented from cachestat's POV.
+> >
+> > Maybe handle it and just return -EBADF or sth like that (with some
+> > updated documentations, etc.)
+> >
+> > The rest LGTM, but I'll let overlayfs maintainers check the
+> > overlayfs-specific bits :)
 >
-> Totally, I feel stupid now that I missed it originally, will move it in v=
-2.
+> Yeh, we probably can use EBADF here instead of propagating:
 >
-> >
-> > Also it kind of makes more sense to check (flags !=3D 0) in sys_cachest=
-ats
-> > before checking permissions.
-> >
-> >>
-> >> Also there are simingly no other file_operations which return "realfil=
-e"
-> >> for further processing, mostly the operation from fsops simply replace=
-s
-> >> general operation with its own logic completely.
-> >>
-> >> Thanks for your review!
-> >>
-> >> ps: Hope overlay maintainers will correctly if I'm getting this wrong.
-> >>
-> >
-> > I don't think this is wrong per-se, except for can_do_cachestat().
-> >
-> > Just be aware that the real file could change from one cachestat
-> > call to the next (i.e. due to copy up).
+> Man cachestat(2) says:
 >
-> I guess the copy-up between two cachestat calls is an equivalent of cache=
- pages
-> being dropped/reclaimed between the calls, right?
+>   EBADF  Invalid file descriptor.
+>
+> not really a bad fd here, but probably close enough not to rewrite man.
 
-I guess so.
+Please don't do that.
 
-> (I assume old pages will not be used anymore and will be reclaimed in due=
- time.)
+Re-read what you just wrote - it is ridiculous
+Because of being lazy to update man page,
+we are going to send a confusing error to user which tells them
+that their fd is wrong, which it is not.
 
-TBH as long as this overlayfs fd is kept open both real lower
-and real upper (post copy up) files are kept open, but the lower
-pages will not be accessed by overlayfs
-expect for the case ofMAP_SHARED mmap
-if this overlayfs file was mmaped before copy up, the
-lower inode pages will remain mapped to process address space
-and then cachestat will return stats which are disassociated from the
-pages accessed by mmap.
-
-This is documented in the `Non-standard behavior` section of overlayfs.rst
-and not a specific issue to cachestat. Just wanted to be aware of this.
-
-> So userspace should not be
-> overly confused by such a cache usage change.
+>
+> I'm a bit hesitant though, since in other overlayfs operations we already
+> propagate, maybe that was by design?
 >
 
-Agree.
+Exactly, plenty of overlayfs operations return EIO for unexpected
+conditions, often accompanied with some assertion as is the case
+with ovl_real_file().
+
+Even though many man pages don't document an explicit EIO error
+code, it is obvious to any experienced sys admin that if EIO is observed
+they should look at the kernel logs, because an underlying subsystem
+may have reported critical errors.
+
+But in general, man pages follow development, not the other way around.
 
 Thanks,
 Amir.
