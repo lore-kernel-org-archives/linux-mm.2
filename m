@@ -4,160 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3614ECDE000
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:13:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB625CDE000
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:15:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F5216B0095; Wed, 24 Jun 2026 17:13:07 -0400 (EDT)
+	id 888376B0093; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A4BF6B0096; Wed, 24 Jun 2026 17:13:07 -0400 (EDT)
+	id 8384B6B0096; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06E396B0098; Wed, 24 Jun 2026 17:13:07 -0400 (EDT)
+	id 7015B6B0098; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C587D6B0095
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:13:06 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D1FC6B0093
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2A064C1FC2
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:03:59 +0000 (UTC)
-X-FDA: 84916033398.19.223006B
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2207220010
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:03:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y7Lu+dMe;
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782335037;
-	b=BT1bWrJq7nk/AFuNr8GZPcT+ESAVocRrvpWmKMHX1VcLWbnDdI9D8/rKFftHyJMuj4K1zs
-	7Nwue8L20sPmWIrd9FDnb3Gb0/iOIjpoyrq1ICna/+h/CQhM2x7csfr5n/iTz2Nw8am3WV
-	+yUT5MbIgXq/vKeEC4wUj340l4S3AxY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782335037;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97D8F1A0493
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:15:00 +0000 (UTC)
+X-FDA: 84916061160.19.95AD68A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 91449A0007
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g78bl4l9;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782335698;
+	b=2IAzyVapNwjc4dvXcVUFRvFUBMV37x/FvJTqPslRmRW7jrglkU/4ZCOJLNTM2HseaGawP1
+	TAOiN2aF30MogE6htTWTfu9/xY2bw3omN6j3apyaUNl26yL7k17WDMwsY+otcY+5cEFGL0
+	h1H0P3vYUflsJM6wQ0ZXfr347cwDWj8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782335698;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JtXqtocb1qS3/K6xnMYZSBV/6kQD50+mfkfO7ut81Ek=;
-	b=2rERmzyGt/D1yeKFokp5+uvyNriy04KAdLHRNx/rCJ4RIKi1EWYXWwWdzxqsHCcbtTKPpL
-	0jrgSEmxWdBty46OjrjpnrdeYYZ7GYfJENNVoj33JrWEC7GproYSDJrjE8ut9c3x7yIhGG
-	ZpXU8d+8hzpgVsCoTJpAR7wi5GLssHU=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Y7Lu+dMe;
-	spf=pass (imf03.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1363fe80fe8so3034389c88.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:03:56 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782335036; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IdABEgyxweLmhWwv55qXLSthCqREzmFdzXsMdIVI29fB2z2EAhZoD4/6sy2W3BRoeS
-         rXXRMFVZu9YgKX3qXQhPlHPMCXbPbsQmAwAspdSW55C/sHEshzjF3STS+pz3vCxLXWD0
-         5iTjP6HSRUxVaGObbufQ9k5Vt3g7R8t1QULxRpGFxn8E2B+j9+CsAe/m1Xws8icMeOXe
-         yNvVXfr0mWOurUPv1fRRZrjN86duYE4YHGQmY2QfyUKe1TiDiVhp0xLekbJa5v+8s1A2
-         77yHgZ5fFlZE1Uo05Cv1c/Kk66tyBwtWpuWPq7g/3x75qs747qRRR+L78TGLU/Yjhc/K
-         aNHg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=JtXqtocb1qS3/K6xnMYZSBV/6kQD50+mfkfO7ut81Ek=;
-        fh=2GYSkv2UGO4q/ORlJwkN6WPcplPpVB8SRM69w301ny4=;
-        b=gA107tWQKdDHrXvBEw49vnfROfQeXFEauPpZCG96cBsbgo/MSTQBmuewxhVIHehJML
-         hRs+xInLKxTgWccccVnj8xXurdPFD6lAZha+er0hbX4w7jXBzk1Qu/djJFULbsACStil
-         vovYaMQ8qvlxKo7J3z6TVwelkUeFR42Uyj5SmWNtwg6P2j0Xt7yAlCbDTnqYBLOPb4wf
-         CsHJzUrsrxR7A4PKemEF5Q6GS82KvTJzIjkzUZOqX0L8wkyPNqHP+eB+kHxeOJdcuzt9
-         y4WmcC4v/2LoHIrbU8UDWi3TQy/lYFFgyaX8YBnwWkAxKbthZRxmL9t4QUVTVmLkAibg
-         LtiA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782335036; x=1782939836; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JtXqtocb1qS3/K6xnMYZSBV/6kQD50+mfkfO7ut81Ek=;
-        b=Y7Lu+dMeCbQb5c9RMYUKKVH5FazmAmFwWgA61G59S5I6W7RBCjA8dqRYwMA9YCoTc4
-         00w5KnSV7NSiVzN+TrcDvs44Ds5vo2o8HRKRWF5HTFOZJJL6TI9Yq9bk9cEWDju3ec7N
-         qGT99D5o+5/VP1Y13z3PRTl5+MBJ0M1dfo9SWO8+T23Ia/9H1RTFJEi5UNOBO77nl3bo
-         YHeoHeQIvsF3Pi50uyMreOW7bbI2sL0biVLacm3oTJOHNjfAE7DQRoiZPvB/2ST7o1Nr
-         Ir8YQ9sOMwQZjbMZjVcmZrneGsGR40bQFtJWuu/DR43T+NlPVlKwqRzd/xjBzIQlTiLs
-         SV6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782335036; x=1782939836;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JtXqtocb1qS3/K6xnMYZSBV/6kQD50+mfkfO7ut81Ek=;
-        b=Qe92t2t845lEUcB2GxGX7Jd01XA1tLPTG2iXZeI09x9k6q3izZC1FuCbsn6Zw1KlWd
-         h6RbmV258hjkH4yQP0N5Pl22hAB0dweCV5pHoSR/InYsQRHQOnpBBGRcUTdq/grhpFlv
-         Jx94H/TYjLvj8/GVOG0W1DXgXy89EWrkFynQ427b4MXkSNKPocMkpS3j0deX1SZvqUyY
-         2I2zMRSqemnjtxvPVZGg2XK7Vcb/mt90AM9f0MfFmRTxVoeghkLpMK58G4GV3gHdKIvJ
-         R8ryS8FEliaLdosOf6Wvk9gI99RZWvoWpmwUt0j9dgpBC5aOX043pL/EfTwa73ps9e3q
-         0aGw==
-X-Forwarded-Encrypted: i=1; AFNElJ+Jczznx40C5L3bKY5HEyoRn5m74ZKvKUNDvjdnRsjkS/yoTq20G+ByknGdOWbnXN3WaXhusA5wXg==@kvack.org
-X-Gm-Message-State: AOJu0Yz+7YR/MwN0isID6QAetlCuEepDv7JqM+RIBdOSXDvRJs7dp3DN
-	q0cyA8D538SFW2KOXTc8VU/xMeNY+f6+EZNyu/xb6qtINm7xgtZDKtsjGPVygyEU48gU0dcZDVf
-	C15lhQm5OLXU/yKY6XQChOhTJ8EUA17PavpW/bOcX
-X-Gm-Gg: AfdE7cn+qR1xRPXKvdcJyhxcHsArFaDRyZs1NAZzkP86v/rqzcACmVInpb6wxdjADr0
-	nTnzXK9ipEaZLYFis9g79ONUCZApiMRTWOm4+QVvA5B26JnO6Hb9fMU2IbYfrNORJUJx9S03XCz
-	rexW67/K9h1PIwT+qpkie12gqxgh4pkCzpW9v+zB13VV9p+sZO6ZhnprqHa7mFzDO5VUrGugD0t
-	fHbAWz4McE1gmcWZnM5jrlldjXUnGA0tvyt7dxCaWvh6wa2vTbC+uO9eXmCC9kh1bufZptJVx9i
-	Mh5UcwbNCSqLuUhb4TnTv3H1myZiMk7ehQO/Aa5HFH442/j84W8TPCm8T8Q=
-X-Received: by 2002:a05:7023:a57:b0:139:d82f:2fd6 with SMTP id
- a92af1059eb24-139d82f32c6mr811137c88.22.1782335034214; Wed, 24 Jun 2026
- 14:03:54 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 14:03:53 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 14:03:53 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CA+EHjTwLPCvZJgPv=8u3pgp+kwEwQbsXn_13FL3xUbJ7HRfXzw@mail.gmail.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-13-9d2959357853@google.com>
- <CA+EHjTx2xKjheiW5VzHw_TdWFUqdJqfgu=dOPa=_yaYBMY8uyw@mail.gmail.com>
- <ajnRxuJ19OzZ8zJC@google.com> <CA+EHjTwLPCvZJgPv=8u3pgp+kwEwQbsXn_13FL3xUbJ7HRfXzw@mail.gmail.com>
+	bh=eCeZ8VqU84ruB94EwEJi8lpH01CxpMqlEj5VMxy+6kE=;
+	b=5bnVoLRfoL7Lxqw8kr+DIH+Up3JhoezOPtCXL//MHgf2+vBxJEOZ+HLWHFOOh6c0s2uLV/
+	Y/UUP0bBpYA4QiISp2puZ1NfwSfu8l/ro6K/6uDvNF2JXbeJB0GwwzH6rFP05oGCtaBcPG
+	+wVK2TnpMQ6Hu250iWMwL1dGn/t0R4I=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g78bl4l9;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C3A774351E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E0C1F00A3A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782335697;
+	bh=eCeZ8VqU84ruB94EwEJi8lpH01CxpMqlEj5VMxy+6kE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=g78bl4l94FFAYvnTYyk5UndiKA2HKHVuiWRjeSq0reQseTZMqOJJnDyaa52VAMXAH
+	 f3amUaMLJ38cXmbKd/amTF4m6eYpGbA0L4iNLy2VKur8C7Kswm3mACGQfXwdgCqzKH
+	 9AAugfS8Cn23hFR5St6jXC/BqSCAneviHyPplYdDtNMv8+gTuUfUq7HK/tJDXNirk0
+	 5tu8fK8wwhw7Oju0PuoKs+LKcabyaGYFVP75eLA7ffuo+9eMvBwogjx64yyFsAE8yl
+	 k9gHQW3KN0sfmYH6EmlwlrtWUq6y6yP+mOBwKSYpNQbPBRHoAyhAM2MhiRv5j73OYP
+	 90NQqH5oyyAlg==
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51780bbc560so2960051cf.0
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:14:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/IASUg3O6eM/C3XEoeQ0btut6aYcLun2wgVjDM+Wg/GnzWF1pSRagt6Xky1Ew/v2stsYDwkrCz5g==@kvack.org
+X-Gm-Message-State: AOJu0YzYDyxdaSS39QcTDjnupZp9tEz61SkvUXR+jECuwspHaI8BS10R
+	4pTr/KNZkNk1rUHK4NzrBJLRwyZvkBUkTn7ITZ+pCbswQaZzDNGtRa/yBKEMwxG4jBdXDjU+c6r
+	heWzlX1nfw7CIU1CSoW0TM6ACFlLrfi4=
+X-Received: by 2002:ac8:5a48:0:b0:516:cd8d:c7fa with SMTP id
+ d75a77b69052e-51a51be25demr128513661cf.39.1782335697092; Wed, 24 Jun 2026
+ 14:14:57 -0700 (PDT)
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 14:03:53 -0700
-X-Gm-Features: AVVi8CdCAqwoqTik6utb0yHbQZV7yiwfOGNo-KA9dUnC-gGzh63Sika6JXlmCvk
-Message-ID: <CAEvNRgFDcwXAx0YYZOGzA+adVhtMLXaR6KkYtW=p4xL-Hp4pjg@mail.gmail.com>
-Subject: Re: [PATCH v8 13/46] KVM: guest_memfd: Add base support for KVM_SET_MEMORY_ATTRIBUTES2
-To: Fuad Tabba <fuad.tabba@linux.dev>, Sean Christopherson <seanjc@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-5-baohua@kernel.org>
+ <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
+In-Reply-To: <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 25 Jun 2026 05:14:45 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
+X-Gm-Features: AVVi8CeWvGIPxeEZEtS2Z7zPM1_yMqbR3QHPGVgy4UGVB05PBeiFaRzILIH_fqE
+Message-ID: <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
+	chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, youngjun.park@lge.com, Kairui Song <ryncsn@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: p4w31yaucq1t3ca4j39m4ebkipkttw8s
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: grk6a11in95e49kpysedwnxutdxcyazm
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2207220010
-X-HE-Tag: 1782335036-22626
-X-HE-Meta: U2FsdGVkX1+NN9S5QACS5t9aVaB/wexVFcyd4v/29UhLtGwO0wfpLf/ZoN3qh7xrnWnTzCFBTOJXY9fnKREzaMMCRhsZr3kDmbqlUXn0xzsCmAssS5DVsUDfl7RnZclzAZcZpzsocfu7s2q7rBmhlBFTnWGzzNp+QrcofsfNY64bF75qAJ2VqVuuIK8ws45F9gGScglu1edSHbYOQBqiLRVD6Ck3sM/uoZN5GXmZ7BQxcGfOM4Wr6aPT6IxwajuMHz5YD/6PPD/75robGV6008wJiORCNZCRUDG+ibNDAjjJeeqYmjsxDS8udNJI9Hzrl05K0sMbJWNG7lVom1/Yp6kWBKHcNMwu/35fnI/mCt6mbCptvtV7Dkmbeo7DUbWqyHvi0USPDT/crLWXDWtuyTUZIaOD4V+nOEe6Rq7ZSO2Pv/s3ikJfSEWANbzcmivECeMrNexzH/B/eIXo9rWczFbsTJ2VZ+K+JUCghoGCoSaUAMmb7HJ5YcyKCv823xnxZRxLfB0/U+x6+JPrnXU44xPrzqZlUjn+g3n52jirAjCbBPp4yuElZbCOe3pRMP48wSmTpOKc6l6pVbbFd0jRFDZI0szYhlPcbTT28HAZ3u7dand1gQiGZWFKjfYkMsAzcSTpnW+A9h5ZpQQoPvl8gg964LGi2nefN/906jAeH91DYtFKhb7BWM9kCgIBXFydq8Pg1UBj07TbbN32HDJQeslErTMvCiwWrl4OztZ6Mwu9Tn2Jm8phDjyrAIlmHrruMuD/ATAQizwNiUkesydbJ6zke4Vplku73kw03bMLrhYIkH4FWPztrRKfayA7M1sRCFUyGhDuYUgNa+COuE9plxzTx05XF1YhRXNbJErg8UtcqbE3lHR7uWJUgHa7aj2PbRHLwLYv4zArSj76YCxCBbRbT1oOEVhomPmE1KgNSjfcdZrU1/LEuIFK5Oi8n4Z15F7/meE03h3vjRC8oeZ
- DBiswaT+
- BPdJP0L9k9fqC6WmdIqcsz65PUDX+vJQLqCDcHlGQvaC1+T+0xy/edXVGcTSPoFYESwaxDmY7N6PW+8jqbmatEtxuSD5Q5H4yMQv5EhbfvWob+TBmB4ssGWtd3z058Pzi+FC9t4snOVhu8TmMYF1U16G/XCY/zMYu2IPrrBadZiKWeb7DcaEg0/GxFXTy+JMIbdUurYR8+aPGwZRKjWeXEbyTkxaYBitqpR/SqrFCd00cuD9OXOFA9ecPihG/nelyjukC0MbTsrF9qzOoySnCzaTiK/RUDB6XjlyHfIiREpS2GWlVcrAgKmCbzfTTxjEbddQYcC6QxxqoHHYAiXv7zoidObfAs/11g07hx6CD4TexkTlT3fDFqCgsnOhuWengwYrIHy5/V64at3EhpjeLfpAqCw==
+X-Rspamd-Queue-Id: 91449A0007
+X-HE-Tag: 1782335698-741852
+X-HE-Meta: U2FsdGVkX1/+QtwkoIteC6X4c/shBGE/YOPJuNZLMnhanlQXo9x2+SjqBaPlx0CERCt7J5YYoTNTnMbbRE47lpg/INjQ9EkgciAR1M/cXo8EQ4blXffmU7uZ7JKQw/dCqXDxJOGeYhtFLQtyK0xvPsqu/N2ra+ojqUm7zJmJ8XYwaZk0H9jrNlA1PB7Adun++GjrwAt4PlARFDFGwOz7Q/QtKHWgGP2nJCCftyHF6d5BgZegjeQi6dz8DDVUcdoKNdxuZqh0h5q7sg65erSXdk+iOkVu/1T+4rXxUFfMRzF+IxcLR5R10kSJ/MHoUKSowi141HkxI5wNY+Gy47RRHE+SMITnGSnJp3+8QBNJnlarpDUPwKAO+OLIT3aAwzbZXTLeuRwJwhcnuhBenJP+QKiCtMwy2Qg4ZsdtGwe/R7s0cSO1WB4sXDxfHfOyocGL2dzJyvU+pWqp+/cBBOqabj+t71UOXfwV7A9aT+Z4z+dkijbaE45XktDIyR5fRtP2u+4PZUkF0HoHgXP+nt+kMZsoabK56hBtfkxM2HUM7hknDIh+cFPMwg0Z58bPy0CIMdaZYmcfvwywuVVzBsARHeqGYbS1RmRC6Uygy05noIoASuvFD8chy++w0b803Z5F36FNAVVOXR1bPnvvVnD13FobwAxz2RxYMpx/OqPJtOUXdrCMJDLG2cqFyfcVqOLnt/Q1UGo9cpf/3w1/DSi+lC0QnQUU5X5POrMbGf5Jr6DaR1PbHZZamQJqtIUwVYoO3GxXxIzwv7qpP7Un+DjNCwtPNbUttBIJz4dnZzBIF5gGWOR0JfFWgZMcCzVY732/1YfC055IyGDg8acXadik7Lx5Ye/sOyRuQsqYGpFSzd2IYc0n4CFXXhJ7BxRb/2CgYfEQPw5hFuKpSaeapti1aIzn/LyE4JIGJymIr2LAWuJTsh09AhFZlBeCp8tme5SuFcdHH92EMOVhVWZZQe2
+ qyesbBj4
+ 1377j+Gql0hbXedYht42dd3sEJa48JzhOGpvI0gwSzCg1ujJGq2IczZTa0hXGCp8RnBVE6WKwwMTLB91aSFmoXpiBn6JiTElENMYZvNJ5DJAPJoOiDCtBxjNSdyITJrUZ4bdt+zNVOhEZvzC8ifDm/P90rgROZ8H9KsEd75cX8Acshw9cMiqunr1xYlQ0Z4dOeiWbDESJYSMVUGCa3OKaMucptbH/hMlaEdNErR/Fswfaqx3fomHyWgDshefkzU6QPWUHLxd1ipqTDelIuJDth1NPz3/BP3fp1puNXOzxfmq7+Dopu7vppS1wlcALS0SkGp8BOJtO38BCyHCKGURhrGJ6nKjKtOHpMWQfQeHwSfrmlh8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,41 +107,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fuad Tabba <fuad.tabba@linux.dev> writes:
-
+On Wed, Jun 24, 2026 at 11:20=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
 >
-> [...snip...]
+> On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
+> > Originally, we unconditionally called lru_add_drain() for write
+> > swap-in page faults. This might drop the reference held by the per-CPU
+> > LRU cache if the folio happened to reside there. However, there was no
+> > guarantee that the folio was actually cached on the current CPU.
+> >
+> > Now that lru_add_drain() has been removed, we have lost one
+> > opportunity to drop a reference held by the LRU cache. We could
+> > instead incorporate that possibility into the condition evaluated by
+> > should_try_to_free_swap().
+> >
+> > Suggested-by: Kairui Song <ryncsn@gmail.com>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  mm/memory.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index 2983a6baf474..14577c67c61a 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5087,8 +5087,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >        * Remove the swap entry and conditionally try to free up the swa=
+pcache.
+> >        * Do it after mapping, so raced page faults will likely see the =
+folio
+> >        * in swap cache and wait on the folio lock.
+> > +      * Assume non-LRU folios may be queued in the LRU cache, which co=
+ntributes
+> > +      * an additional reference to the folio.
+> >        */
+> > -     if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags)=
+)
+> > +     if (should_try_to_free_swap(si, folio, vma, nr_pages +
+> > +                     !folio_test_lru(folio), vmf->flags))
+> >               folio_free_swap(folio);
+> >
+> >       folio_unlock(folio);
 >
->> >
->> > Note sure if it's user error on my part, if I'm applying this to the
->> > wrong base, but I found a build break here on patch 13:
->> > kvm_gmem_invalidate_start() doesn't exist in the base tree. The
->> > function is kvm_gmem_invalidate_begin() here. The rename
->> > (190cc5370a8b6) landed via a different merge path and isn't an
->> > ancestor of the stated base.
->> >
->> > Patches 19 and 20 have the same mismatch. Fix for all three is
->> > s/kvm_gmem_invalidate_start/kvm_gmem_invalidate_begin/.
-
-I took Sean's patches (off-list) and tried to combine it onto my
-existing state. (I'm using b4 [1] to manage these series and I didn't
-know I had to manually update the base-commit. Will try again next
-revision.
-
-[1] https://b4.docs.kernel.org/en/latest/
-
->>
->> Ya, Ackerley used a slightly older kvm/next to send the patches.  I at least was
->> testing against kvm-x86/next, which does have the rename.
->>
->> Other than noting that this should be applied against the current kvm/next, I
->> don't think there's anything else to be done?
-
-Should I base v9 on kvm/next, or kvm-x86/next?
-
+> Hm, in wp_can_reuse_anon_folio() we'll try dropping the swapcache ourselv=
+es.
 >
-> Agree. Sorry, didn't mean to be nit-picky, but this really threw me off :)
+> So I wonder if we still need that handling ("If we want to map a page tha=
+t's in
+> the swapcache writable, we ...") at all?
 >
-> Cheers,
-> /fuad
+>
+> Ahh, I see the problem now:
+>
+> commit 4b34f1d82c6549837b2061096dea249e881a4495
+> Author: Kairui Song <kasong@tencent.com>
+> Date:   Sat Dec 20 03:43:35 2025 +0800
+>
+>     mm, swap: free the swap cache after folio is mapped
+>
+>     Currently, we remove the folio from the swap cache and free the swap =
+cache
+>     before mapping the PTE.  To reduce repeated faults due to parallel sw=
+apins
+>     of the same PTE, change it to remove the folio from the swap cache af=
+ter
+>     it is mapped.  So new faults from the swap PTE will be much more like=
+ly to
+>     see the folio in the swap cache and wait on it.
+>
+>     This does not eliminate all swapin races: an ongoing swapin fault may
+>     still see an empty swap cache.  That's harmless, as the PTE is change=
+d
+>     before the swap cache is cleared, so it will just return and not trig=
+ger
+>     any repeated faults.  This does help to reduce the chance.
+>
+>
+> That changed that behavior such that we *must* now always fallback to do_=
+wp_page().
+>
+> What a mess (I didn't ack)
+
+So it seems we need a patch before patch 4 to fix the missed
+swapcache freeing on write faults, because the write bit has already
+been cleared by the time the folio is mapped and reused?
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 14577c67c61a..e8fc5a86f6ea 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4752,6 +4752,7 @@ static void check_swap_exclusive(struct folio
+*folio, swp_entry_t entry,
+  */
+ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ {
++       enum fault_flag fault_flags =3D vmf->flags;
+        struct vm_area_struct *vma =3D vmf->vma;
+        struct folio *swapcache =3D NULL, *folio;
+        struct page *page;
+@@ -5091,7 +5092,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+         * an additional reference to the folio.
+         */
+        if (should_try_to_free_swap(si, folio, vma, nr_pages +
+-                       !folio_test_lru(folio), vmf->flags))
++                       !folio_test_lru(folio), fault_flags))
+                folio_free_swap(folio);
+
+        folio_unlock(folio);
+
+
+Best Regards
+Barry
 
