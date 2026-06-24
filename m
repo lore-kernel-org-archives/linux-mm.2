@@ -4,123 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EF5CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:00:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 966E9CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:07:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF0EE6B009B; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
+	id 7ACF46B0088; Wed, 24 Jun 2026 15:07:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA14F6B009E; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
+	id 786146B008A; Wed, 24 Jun 2026 15:07:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D90A26B009F; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
+	id 69B3C6B008C; Wed, 24 Jun 2026 15:07:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2086B009B
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FEFC8DF5A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:00:24 +0000 (UTC)
-X-FDA: 84915721968.20.4747831
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 152D31A000E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:00:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="dxkro/eu";
-	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782327622;
-	b=6kIZ9dZIVUVLM8B+Lcncl9La9yHK6PpNiZPEAanw+MNp7OABBdnAscjQKPwVLIHQor2m73
-	y94+eKaZxU+TkL7vSm1Zw/QlhyNFim9HeVweIhNUR5KTe1qgBq24mpKpIHVHnMOcdEpKIu
-	zGD8nkxNTiyaF8eABcrae71dkMlkeJI=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782327622;
+	by kanga.kvack.org (Postfix) with ESMTP id 400066B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:07:10 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CA5851C5D95
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:07:09 +0000 (UTC)
+X-FDA: 84915738978.28.30DF919
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B711018000A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:07:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s3ac2fEa;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782328027;
+	b=iPIl3Je+RVvl3wP4X4f72bF/C7+CqAhCH3xJB6hS4es8so2uJodCtdl0lsI+JXiExbcpdX
+	vnuc7t0pzjjkxW6j/8/vvNiKeOhqI95GFGXnq5h47kLWBx6d4yqmXWTT703RXYfEECGqsp
+	NCxC6jzO6JocBSkR76V28HrZ/FQ7pBw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782328027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
-	b=hppEBK59O7ilEf8isPPOKsxKToHze9iEgFc5sEgNqvNOBIzEJFPGOy3QLTz1mv7FY5sVB/
-	pvSv58rk+BPp+EBbcwZYdCtzX+aQ/mdvIyLsARMI/E0SADoxht322AoYz4dUbUUgkFEU+L
-	ExMginNXXVDqKS5XOn28uDWrLmAb2dc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="dxkro/eu";
-	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso9065ad.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:00:21 -0700 (PDT)
+	bh=62RtAAMdOG7011x74VLOvyQrp7SFTtUxM8XkYksByVQ=;
+	b=Bw8rvV4fZV7jWxCG/55R7a0nsmWv6fC2HwddFXGlXlKJ0lkoZO5rO8YfEd1s8L3oMZm2q8
+	WmIKrRDUZhDFAom9q+nGr3nfFPsWXMOwCVGFFJZeYP/kIIw8w1dV3KjEpd2Rd3RU9iBOG4
+	GDe9I5fBT0nSaaNbW8qPX2gqBHwnG7A=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=s3ac2fEa;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-490b613a17bso13768775e9.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:07:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782328026; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ACSlTvn5Z/Wk8ov0cUQSxqX55mTM1nrYki8LQQEmo9VQt7coQS+1QAAeLberFsfzGH
+         /2zlMpksSL0glqpK2/u8y9u0TeQMegSc1xpsW8Dg5prqUlfRpzHlgGjMH/poV9C5iCWe
+         BjwXV5AbTxDkTzok41tQq1QUIlK74ivSzBG0/ZAZvr64dFoDarxOfL+FYCRou6Ix9Mq1
+         0Tjdl64pq55JXLmkrjtG+r9ATKwRb9Bcyulgr3O3V0DcjHu6v0v+7CGLn7TRds9LYQIK
+         5Mqzt54XXMpTpKtNMqcG7ph5s+/ywqrwaMhuCIuBYK4IbON4/PGnaCVwQ82EqmQJ9Dyz
+         +S1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=62RtAAMdOG7011x74VLOvyQrp7SFTtUxM8XkYksByVQ=;
+        fh=MhQ1ULO+W/XpxvM25x8nJOir+9Yaj8sZLbzIlLPfLaU=;
+        b=eTDrN/SYAXHysbNU9NA16Jrrdw+Po+irSr4JU8Xmf5/uCMOESFyUl46OuD3GDT7i6H
+         TzJfN93fObXxiABP9walwV2Hb0CIVG3VtaFifJOhW9FmBZ3rkOUcITBajJGzntP5PCUN
+         si2txY6jzwzApx/ilDRb4S/X3eqkcXrbmGURmXfdEWQfn5dmB4wDUyuyw8P0+R0inbUE
+         NMKhADch1HUWjEkr397qGsPLbBhzbRwhi5S2LDQ4JwsEHzGMGm+wX3kSSStskRh167CC
+         T+YF0b8hsGJfsvQQr7SO5jLIyOQg9cIyH3/wg9PURYvf9TL3nt+oKjYJ6213RiwOLI4E
+         v85A==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782327621; x=1782932421; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
-        b=dxkro/eucXdHeDAUrhYpX3cuL+b3n+Yjw6eEi5kYRASIjXwUq2LSA7ERjcuWNgx1Ph
-         WnfT4N4NVZXqnlAliOV9QyZFOkKujj3D0fFf2PLt3Tp1JjI34/L7W1kh4oApksskfpRn
-         vENfj9sj1h0D2+Vj866ps8MHGOeQHxA+SwSLwdhC6hfbs/5wakGIsju+IelUpaCBuHAN
-         7b1TFUWuktvdKa0ll7hhwZ1aDJZ9i7Kx+ktEcXdaYc6ghs7SD0P2KfSe7ScWnyksLZXH
-         srADetVDo0rz1yNJ+4FhOh5DPKGmfKoOs9r6csdt4tfqVS/wayyDWTlwMxYO8j+erjdZ
-         LXPA==
+        d=gmail.com; s=20251104; t=1782328026; x=1782932826; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=62RtAAMdOG7011x74VLOvyQrp7SFTtUxM8XkYksByVQ=;
+        b=s3ac2fEaR0kdpHcsR+m9MjOMCeCVpwVW4AantqzPBvsFV2D+rz7DheOA7wL6Luy2XJ
+         +uJNpjSyf4gRS6j1ckV0fvjt4bd4qvSB8Q7jr4ZxchbGkIG56Hl0pP6wPZfGxDnknM4S
+         ANNUe89XL4YsxrXngdrtTfO8oj/uu2pZp3WVYvFCmPGLZhJ09YctMbKcX9gNfRe7jSey
+         m/bceeV9N+spslmZtNIDs2n3gpQoid6YMTaEWSxwjJSaNlztbGO0DshAfZ2LWoRKJgvX
+         FH9k1Yam1Nf/Yk75JiI8TLxJHp5ztL/+mZmxgo7Dg3nyHTFmTK3Hg1RXYcBD/4E/p8sU
+         m5jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782327621; x=1782932421;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
-        b=r9fEZcWWiqiidoooxiUPxOplsHAYhDrb4x/j3F8/bYWGwaRDthjPFJaMUArvf9AWwe
-         u2UdmPLrPzh0z4xD+qcysMnHu6IYFCJY8VE7fz+hyL8UNir3q/HHGWy4NHORPm52t63O
-         YhDzcdQDCl/5sMro42OPIOuwkh93ucJoE59ZY7qrxlLzlnPi/auvOXt44EKViGuWfTFK
-         rwiY2XMuuJ66U11AlOEI8EX36vWw+qRXMleLUPZjDMs7igRbORFskMc9NUrqBTYdFTY7
-         235tYJzK644xL00KU+nmYUSpEZSS4c0wuPfXVvTZUlp+iTPkTIbr1nKDc8LGscsy7Uin
-         Uh+g==
-X-Forwarded-Encrypted: i=1; AHgh+Row2ybJLGRtLhMlh1JeALhbJW54Moh2WoPXPKw85l2tCJpR5t8h5r8GMASLUMXn9bB+F8pP+/L7Qg==@kvack.org
-X-Gm-Message-State: AOJu0Yx2qjbdiA3BhV+tNLA0geDdbtkRBQ3N0ADyr9jDk4/DzoagpoWs
-	EuHRpGuFf6PEKRXjko2UrLS43ghNqFFES4LfTT0vBfb4u0WdOEBBc6ceFSLZsRUmPA==
-X-Gm-Gg: AfdE7cnys6CuLqs6n7ekV+I/5pb3JnSwS0ORR14x74fjgGS7rX2fO3z1cYpZVkYnXmE
-	tjx+iMUANK/gPxKYF5L48D+L7cWrdlzIjjReXerqllDKbIZQGFXMTlvEwaQxSGs0ah0wxcO6XTb
-	T2Ru1OWJRNf0g/rKON1yGWmnXWPLpGii+4Rupe2uE98X7fHkgrVJXhW4fHSFO7g+DCPWd8ohV/3
-	nadPpdB6+V69o1E3oX2ae+jlAnygcdH9hKyuaO3pjIHmho9oF4PKoOCiQgMFgowqn3haOAzvwYH
-	pLbqRq7m7C6YYCP4rNyDaWI1E4yhHgEYGcaP5ZIjQpODqDlOD4hcS2I+fPbbENfL7g+gz5RwtLg
-	7sLMYNyuvwcgKw2NIEc7hoGRl3OZtRyNj5CajOGE3OHSgpRi3XNwPGSCuku9CeEZQ1fOapJRgAX
-	iwsS3U/9GB4A0AsxQg1XMSvbdXY5WVo5+kW9KMRPNUpZdPQCT/31p21DLRAEvTygt47agMk/5f8
-	VI/Cw4S
-X-Received: by 2002:a17:902:c952:b0:2ba:6518:e4d8 with SMTP id d9443c01a7336-2c7f77b6733mr402135ad.20.1782327619882;
-        Wed, 24 Jun 2026 12:00:19 -0700 (PDT)
-Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a40d23ccsm3593388b3a.36.2026.06.24.12.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 12:00:19 -0700 (PDT)
-Date: Wed, 24 Jun 2026 19:00:15 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev, 
-	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vipin Sharma <vipinsh@google.com>
-Subject: Re: [RFC PATCH 3/4] dma-direct: Add API to preserve/restore
- allocations
-Message-ID: <ajwmXYOW080zVRLw@google.com>
-References: <20260505002737.2213734-1-skhawaja@google.com>
- <20260505002737.2213734-4-skhawaja@google.com>
- <aiceKYmc323G7tBs@google.com>
+        d=1e100.net; s=20251104; t=1782328026; x=1782932826;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=62RtAAMdOG7011x74VLOvyQrp7SFTtUxM8XkYksByVQ=;
+        b=rtgYCEEX4aXjcnQWmnS7V2R2SBmsg3Q1Y3QKbAO3XKHapLxhBPdmglFA64/2iQp0W8
+         eaoF2K0N3Z04etmH46DgC0Z/MZs8dc9Z90JY2kaxYzoMhu57TwsmgiQ/hfZwc4K+RTis
+         JCQFbS1ouJB2vbO9qC1zzbcgCoDEGL8iffcc5+2SIqfIoe0kYFYAeOTR0+MT0wus6BJo
+         FVwbiNvCtCxNG+rsiBlLf9Vvsdk2GGDrYA/7iEslPy/Bl+0GYDbCUuWvQK+9gxG8ZdF3
+         WMOFjZQCa+NtpLd4D0RzbyBo/TpKRXMgvnJpeQgPZWqdirPDCZXfyfag/6+J0jNnbo9S
+         /jcA==
+X-Forwarded-Encrypted: i=1; AFNElJ+ctK2m4g8D9ymWjwDAe/s1KM6xbrHWbM+8FNzK81Q6dA4NfbmoNuOQmwG7nFMMdJINw4RUWB91lA==@kvack.org
+X-Gm-Message-State: AOJu0Yyj0jBnNE15wuS8inZMDS5+ISXWWfvUd6fOSXyGMKavsc4oL1zb
+	wZMtQaeoZIOaj14Uee7ZnQ0/XNt5Hs8+fAuk4s8vzWABIzOWf+aHfSPRIe0MeZtgMLNvxx4Gx98
+	OP9sSDH1mKA+UW7mUf4a9iNQ70YiBIN4=
+X-Gm-Gg: AfdE7cmxjhm/o+Sd6DKiM6p+ZEAhVG1Y6CIqaQIKqucZ4/IS8lwjzYo4VNRKPhrpoGb
+	dUrvaQYM1OmmuKSPctl/JV0PbzD5dOmD4Hca4Q0cG//w7NzuoGd39a3ruHyvwyZ1gXiF8E1uS/F
+	AWGHCOnsLPq9qzytuzQ/2XjiFjG6scG+4TTKgTnh2oRZp8GtrOKABw+ilAoI02mXUNx7qURSie7
+	aUU+1M6aVf6gwzvSZnQo8X/0fGYVbO7nxx1dLciCQs4cilaZkD4Chgn47CmLxwCX1hyUdSf7SJH
+	LoolFkR4+sl5/jhR+o70Gfmpq2BHVvLa1S+2R3k=
+X-Received: by 2002:a05:600c:a51:b0:492:379c:32ee with SMTP id
+ 5b1f17b1804b1-49249083c09mr358068975e9.6.1782328025896; Wed, 24 Jun 2026
+ 12:07:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aiceKYmc323G7tBs@google.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 152D31A000E
+References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+ <20260623111533.2285005-3-ptikhomirov@virtuozzo.com> <CAKEwX=OaKTfNqzwa=djLxZDeBbR1+DKdqDnxdfPfZFKB-K+ECA@mail.gmail.com>
+ <c390081b-7b2e-4b83-9bca-5f93eec6a939@virtuozzo.com> <CAOQ4uxhPROaeEyYceKNsL5QVwVPkTjGtbRr1P_TYXTA0fHvRoA@mail.gmail.com>
+In-Reply-To: <CAOQ4uxhPROaeEyYceKNsL5QVwVPkTjGtbRr1P_TYXTA0fHvRoA@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 24 Jun 2026 12:06:54 -0700
+X-Gm-Features: AVVi8Cef9aZmI2zHP0TU9bg-9tvoxUc7Rq0PSUmFsfd-hngauFECj4f6N_uHz4Q
+Message-ID: <CAKEwX=MedyK8aDM=oe=Hbzo77mJOEp0Pmo0u8N4HhvikosVbSw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] ovl: support cachestat() syscall on overlayfs files
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: fiierqfqdtfh7kqturbqyg3crz7rdzfy
+X-Rspamd-Queue-Id: B711018000A
 X-Rspam-User: 
-X-Stat-Signature: a88jyryrwzpm9qxbtjiwzyo41j3njgiu
-X-HE-Tag: 1782327621-505772
-X-HE-Meta: U2FsdGVkX18sI9Ll/yJEI8phiMy8+hny7xJ1TMimues3WMA78Rm+nWjVGH9mRl0Q+Fn7zMUMJ+daFF0wBRVlTQ2uGh/4thWblUfeXzX/VHtUXeM06xqOgdBXvU2Rmb2wZZIdMNuNLyee2TfWFVve3ZdaMBTc6IRm2YAfVAGhywYVAZNC3ZmagiBn9qXEE8kE77NXRx/engFsNSL7OkVTR9iqVzXwDwxobTpdYv3lMNa7f+vB9OPNWTK1ARQ9qJnsM75kXhY0bo2YdbqOqwTidYMSAHgGIBFL3gXfBgQr5Zh9jgt2A3/jQ4ciSqsISds/yvQst/b/Io63FYKIo8NDlllGnQ6OsazRhodRK7N5WB/lq2EuzF3RatxxAwcojSTqWCqNn1lgkpKhK/RW1C6ZQSDXko/LHrvciq7eJvd5j4C8BTM/2RXL2PBwOflkWNmKelH0/mwfz5pY6mTRiD09zps1HRDsMxIS3N+Q6HHzBSgcxLa9Dnxq8p1HWnyqEGrKeMrzqmFEKRvGFgvc1bNC0RKSeEJuzHJPVZzxZLyfGK/lJhSfkPXqt311F4HR/mVZn6h6HH8l4cfE93PGKh3CIqhXw9SSrl8768UsL+Hc3e6KRt6wXxm1qNZ2XAA/2eJh900DmT3zT3Q9XdXQ7aY+OFsIkMLwsuGrrqA4h5UBMfpKz94feTbcJW++oHbzjO70HnfzZAFajrNRciVdMc1ZgWeOflMngZsRcIVybGnW++/KeNCQzRzabDNQJxkn4HTgt2pLaoUCgUf2Lsl21roLi2HKbw+axw5xsZD2zfMJgJLPe+WxZZQVQfQI2czcJmOa4wXajE9aYfveb/JThLWRg+pQeZglZI03UGAj1LNUM94QL7Qb5zscfHjgfOEIKjMN7Yv99jMcapIrk2B+fs/2CmHFz8URTRuwwIEPLG8+Euug2MJtzMgnFq2hStlE/T/pXfzCJIN+fJajRtxiUFi
- IHB9o0Ke
- XUGpqdLHVo5tzZt0XuLiqXPgACpHjG7Hp1mWHmxml00hCmeqsRMK+WpskSHCcD0WdNr4M7fE60oERToMxr7t1SB6fY+Zqf6ymTX3FpA4+Bm8RN+Ac98I9GvpCYHtqYsdxzf9c/ucHGpuxAHQo6jdmABLmYJvVD+V/fbiBZ41KwNrnGWQgsyw6cCK2ROC/8qkDe3d1LzcajLBG6TZDRTuD2K1xBOXy66ldUEQsUCAaJAepVwKrXhA0H6pykQhuKeBWco7GaJuudIfdieAUmg32HxLa+skBRH1j7+UVy2RtrKWx1R2q1Jo21KK07ni/mYfP+k4TEnUISE673aTjfLrfPdQ595nlx8r3eSVk
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782328027-27657
+X-HE-Meta: U2FsdGVkX19uk/On1XNzSwIeTVQ5SMsI6NNBgnl3yO+EgUq9hmck/vknuZrbU4j29AKOhZ4pU8UTz2qjScVezQQJ1/VSKGnuFjN7qQB83a8J760MC7Gg2sEXbxnHbulLst3lO/mDkt7ce/KnZuc8A00p3ufGP9sqHcwG+Fd6wiU7psPAF56lv65Y6BSPeyIVR17m/hFUgMLYlrJ5j43SlWCzGO4Ezor4QUVN9YYuQb+V82ut2dQ1LchxatMcUIaKduSfOXc7JMeXp35LYdblgABZYTS2tKDtgAPiUtpw/PvExloAoFwsNmr+EULjsKMjZLtMgTDiC8R0sL3k3Od+xcK2kdXKk8hz6u8RNO7mDZu4NLWZzehz0Ht51E5EQVpxiUWXJcX+xQkxgyg/2Kx5TBKRpQlW4NjnftcI99i9EyHdtx1AtTkPzjcrFW56xryhYGx6Ntb3LK82+5CFwInKnfQnnJ5NBKc4+O2UlRR9sXqPw4sm6l+/M3qKty8nLl78e+AM9JNi1gODwzJcBst8vrq9k2Lfnz3/QDqLZiHBoKLArzKupwfQUUk+6e79MogxoqvpWxCEJGDnlfy6L1W1ky3tCObllW/qHs4cfwpO4fpRTQGYziO5oTJ1KFo/fN8ZZngeIieFEoVUyO7i9HodWhwHqe1/zTaCGrOb1mPl2fOE3CNWMzV/rxRdiHCr3weyqJRncEKm9OXF61PI2ZVgbbbMVirZ6CEWMWF2Xb5sgQUsgN5cHdrpEv22fmRr8sKgxDAUPsEuxUHytlMae0f7v3FNg7dLWRJ7/gwqMONTA5myhm1Cl9bSZRXfHRxGGa5P1RcMyqOIgC2rdltc8DAPIDJYTgkli3V9W04mcFbopDVXZMuiOlScFFMGKWLjXptaIPv0VpGjGePlphRGfRDO8s4v7cdxa+yQb4bW8XbuhfQM4BHjDpDJbBDIMHdUO7GiNa1T3/HCWI/pkQS+gC+
+ bOZjVBYm
+ 3tpo7W+NwSo978Miga5ErdwLCklSaxUEC8NoUcOi5NHV9CWGmnqJwFdAp/oaIGPA0FnNTpLQIPZflNgq0+wDKtX//rFF0YZ/F3F5zfR/Wl368VwWYuMz2VpbtwdafQvgLuQnZeqDrH6duuEUtLw2xWd3e6M+Tzx4sT3v/ZDmRxF2qfKcIbHkSDkzwLi1bk+ZM3njnoEtuCRj8rPVr7Jf2s2hSgRnHiVy8Z4KMjMeYda0MRmHiSBWLVAnrAiSIJKRRKL0ESDigauE0ADIPr5qgzVU8qglRefG1p2GgDRt5RtBaeqasAVKe+HoeEe7gI3N0Pd6LaHkAIyQvQ2oacq/r+puEAj9LN3zFNDGCdsE7pzb2rdwF3O8oLZkeoaOJLW3I9kOrC4JzW0knePrdO3GmOnCBe5z3Wbl/X8IQTQhScIkmCzb5Ll/YlX2TTBxJkME6INsYg7VxbsfHMkWDZWFR5Aqvi+FKuz37Oz5+z0t/ebF69YA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,262 +144,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 08, 2026 at 07:55:21PM +0000, Pranjal Shrivastava wrote:
->On Tue, May 05, 2026 at 12:27:36AM +0000, Samiullah Khawaja wrote:
->> Add an API to preserve/restore the DMA direct allocation for liveupdate.
->> The underlying memory is preserved/restored using KHO. During restore
->> the memory is setup based on the device configuration, gfp flags and
->> allocation attributes. Once restored, the driver can use the usual
->> dma_free* API to deallocate the restored DMA allocation.
->>
->> This API will be used to add support in dma_alloc* APIs to
->> preseve/restore the DMA allocations.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  include/linux/dma-direct.h |  29 +++++++
->>  kernel/dma/Kconfig         |   3 +
->>  kernel/dma/direct.c        | 163 +++++++++++++++++++++++++++++++++++++
->>  3 files changed, 195 insertions(+)
->>
+On Wed, Jun 24, 2026 at 7:16=E2=80=AFAM Amir Goldstein <amir73il@gmail.com>=
+ wrote:
 >
->[...]
+> On Wed, Jun 24, 2026 at 1:45=E2=80=AFPM Pavel Tikhomirov
+> <ptikhomirov@virtuozzo.com> wrote:
+> >
+> >
+> >
+> > On 6/23/26 19:12, Nhat Pham wrote:
+> > > On Tue, Jun 23, 2026 at 4:15=E2=80=AFAM Pavel Tikhomirov
+> > > <ptikhomirov@virtuozzo.com> wrote:
+> > >>
+> > >> Overlayfs forwards data I/O to the real (upper/lower) file, so the p=
+age
+> > >> cache lives in the real inode's mapping and cachestat() on an overla=
+y
+> > >> fd returned all zeroes.
+> > >>
+> > >> Implement the ->cachestat() file operation by forwarding to the real
+> > >> file via vfs_cachestat(), the same way ovl_fadvise() forwards
+> > >> for fadvise.
+> > >>
+> > >> Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+> > >> ---
+> > >>  fs/overlayfs/file.c | 18 ++++++++++++++++++
+> > >>  1 file changed, 18 insertions(+)
+> > >>
+> > >> diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> > >> index 27cc07738f33b..a7e252a91ea43 100644
+> > >> --- a/fs/overlayfs/file.c
+> > >> +++ b/fs/overlayfs/file.c
+> > >> @@ -518,6 +518,21 @@ static int ovl_fadvise(struct file *file, loff_=
+t offset, loff_t len, int advice)
+> > >>                 return vfs_fadvise(realfile, offset, len, advice);
+> > >>  }
+> > >>
+> > >> +#ifdef CONFIG_CACHESTAT_SYSCALL
+> > >> +static int ovl_cachestat(struct file *file, struct cachestat_range =
+*csr,
+> > >> +                        struct cachestat *cs)
+> > >> +{
+> > >> +       struct file *realfile;
+> > >> +
+> > >> +       realfile =3D ovl_real_file(file);
+> > >> +       if (IS_ERR(realfile))
+> > >> +               return PTR_ERR(realfile);
+> > >
+> > > We're propagating the error of ovl_real_file() all the way to
+> > > userspace right? I think we need to handle this.
+> > >
+> > > For example, we might get -EIO here, which is unexpected and
+> > > undocumented from cachestat's POV.
+> > >
+> > > Maybe handle it and just return -EBADF or sth like that (with some
+> > > updated documentations, etc.)
+> > >
+> > > The rest LGTM, but I'll let overlayfs maintainers check the
+> > > overlayfs-specific bits :)
+> >
+> > Yeh, we probably can use EBADF here instead of propagating:
+> >
+> > Man cachestat(2) says:
+> >
+> >   EBADF  Invalid file descriptor.
+> >
+> > not really a bad fd here, but probably close enough not to rewrite man.
 >
->> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
->> index bfef21b4a9ae..d92852942c6c 100644
->> --- a/kernel/dma/Kconfig
->> +++ b/kernel/dma/Kconfig
->> @@ -265,3 +265,6 @@ config DMA_MAP_BENCHMARK
->>  	  performance of dma_(un)map_page.
->>
->>  	  See tools/testing/selftests/dma/dma_map_benchmark.c
->> +
->> +config DMA_LIVEUPDATE
->> +	bool "Enable preservation of DMA direct allocations"
+> Please don't do that.
 >
->Nit: depends on LIVEUPDATE?
+> Re-read what you just wrote - it is ridiculous
+> Because of being lazy to update man page,
+> we are going to send a confusing error to user which tells them
+> that their fd is wrong, which it is not.
 
-Agreed I will add this.
->
->> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
->> index ec887f443741..c2b98f91900a 100644
->> --- a/kernel/dma/direct.c
->> +++ b/kernel/dma/direct.c
->> @@ -6,6 +6,8 @@
->>   */
->>  #include <linux/memblock.h> /* for max_pfn */
->>  #include <linux/export.h>
->> +#include <linux/kexec_handover.h>
->> +#include <linux/kho/abi/dma_alloc.h>
->>  #include <linux/mm.h>
->>  #include <linux/dma-map-ops.h>
->>  #include <linux/scatterlist.h>
->> @@ -307,6 +309,167 @@ void *dma_direct_alloc(struct device *dev, size_t size,
->>  	return NULL;
->>  }
->>
->> +#ifdef CONFIG_DMA_LIVEUPDATE
->> +int dma_direct_preserve_allocation(struct device *dev, void *cpu_addr,
->> +				   size_t size, dma_addr_t dma_handle,
->> +				   unsigned long attrs, u64 *state)
->> +{
->> +	struct dma_alloc_ser *ser;
->> +	int ret;
->> +
->> +	if (!kho_is_enabled())
->> +		return -EOPNOTSUPP;
->> +
->> +	if (IS_ENABLED(CONFIG_DMA_CMA))
->> +		return -EOPNOTSUPP;
->> +
->> +	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
->> +	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev))
->> +		return -EOPNOTSUPP;
->> +
->> +	if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_ALLOC) &&
->> +	    !dev_is_dma_coherent(dev) &&
->> +	    !is_swiotlb_for_alloc(dev))
->> +		return -EOPNOTSUPP;
->> +
->> +	if (IS_ENABLED(CONFIG_DMA_GLOBAL_POOL) &&
->> +	    !dev_is_dma_coherent(dev))
->> +		return -EOPNOTSUPP;
->> +
->> +	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
->> +	    dma_is_from_pool(dev, cpu_addr, PAGE_ALIGN(size)))
->> +		return -EOPNOTSUPP;
->> +
->> +	ser = kho_alloc_preserve(sizeof(*ser));
->> +	if (IS_ERR(ser))
->> +		return PTR_ERR(ser);
->> +
->> +	ser->page_phys = dma_to_phys(dev, dma_handle);
->> +	ser->force_decrypted = force_dma_unencrypted(dev);
->> +	ser->size = size;
->> +
->> +	ret = kho_preserve_pages(phys_to_page(ser->page_phys),
->> +				 size >> PAGE_SHIFT);
->
->Should this be `PAGE_ALIGN(size) >> PAGE_SHIFT` OR
->`DIV_ROUND_UP(size, PAGE_SIZE)`?
->
->Otherwise, if size is small, say, size == 64-bytes, we preserve 0 pages?
->
->Also, IIRC, even with PAGE_ALIGN, preserving just the requested pgcount
->is not enough because buddy allocator allocates in order-N.
->
->For e.g. if a driver requests 20KB (5 pages), the buddy allocator
->fulfills it with an order-3 block (8 pages).
->
->Now, if we only tell KHO to preserve 5 pages, the remaining 3 pages are
->free in the new kernel. When the driver eventually tears down and calls
->dma_free_coherent(), dma_direct_free() will call
->__free_pages(page, get_order(size)), which will attempt to free all 8
->pages, causing a double-free panic on the 3 unpreserved pages?
->
->Should we be preserving exactly 1 << get_order(size) pages as per buddy?
->Same applies to unpreserve, and restore.
+I don't think we're being lazy here. It's technically more work to
+handle errors and updating documentations :)
 
-Agreed. I will update this and also make sure it is covered in the kunit
-tests.
->
->> +	if (ret) {
->> +		kho_unpreserve_free(ser);
->> +		return ret;
->> +	}
->> +
->> +	*state = virt_to_phys(ser);
->> +	return 0;
->> +}
->> +
->> +void dma_direct_unpreserve_allocation(struct device *dev, u64 state)
->> +{
->> +	struct dma_alloc_ser *ser;
->> +
->> +	if (!kho_is_enabled())
->> +		return;
->> +
->> +	ser = phys_to_virt(state);
->> +	kho_unpreserve_pages(phys_to_page(ser->page_phys),
->> +			     ser->size >> PAGE_SHIFT);
->> +	kho_unpreserve_free(ser);
->> +}
->> +
->> +void *dma_direct_restore_allocation(struct device *dev, size_t size,
->> +				    dma_addr_t *dma_handle, gfp_t gfp,
->> +				    unsigned long attrs, u64 state)
->
->Are we relying on the caller to pass same attrs? So, a buffer with
->non-coherent attrs can be mapped with coherent attrs in the new kernel.
->Could this cause side-effects? Should we check for such driver bugs with
->a WARN here while comparing older attrs with the newer ones too?
->
->Coherency breaking due to subtle driver bugs is very painful to debug :/
+I'm more concerned with undocumented/unexpected behavior (error type
+in this case). -EIO was an example that I saw in ovl_real_file()
+itself, but I'm not familiar enough with overlayfs to know if that's
+the extent of it.
 
-Hmm... this is interesting. The dma_alloc API relies on the caller to
-have consistent attrs accross allocation and free. But when updating
-kernel where driver could have been updated, we have to be careful.
+But I'm OK with just updating the documentation with a simple note
+that other error maybe propagated from the underlying fs, if no one
+else thinks it's a problem :)
 
-Agreed.. I will handle this properly by making sure that the new attr is
-compatible with the preserved attr.
 >
->> +{
->> +	bool remap = false, set_uncached = false;
->> +	struct dma_alloc_ser *ser = NULL;
->> +	struct page *page;
->> +	void *cpu_addr;
->> +
->> +	if (!kho_is_enabled())
->> +		return NULL;
->> +
->> +	ser = phys_to_virt(state);
->> +	page = phys_to_page(ser->page_phys);
+> >
+> > I'm a bit hesitant though, since in other overlayfs operations we alrea=
+dy
+> > propagate, maybe that was by design?
+> >
 >
->[...]
+> Exactly, plenty of overlayfs operations return EIO for unexpected
+> conditions, often accompanied with some assertion as is the case
+> with ovl_real_file().
 >
->> +
->> +	/*
->> +	 * Remapping will be blocking so return error. The preserved memory
->> +	 * might be already decrypted in the previous kernel, but the decryption
->> +	 * call is not guaranteed to be non-blocking so return error always if
->> +	 * decryption is required.
->> +	 */
->> +	if ((remap || force_dma_unencrypted(dev)) &&
->> +	    dma_direct_use_pool(dev, gfp))
->> +		return NULL;
->> +
->> +	/*
->> +	 * Encryption scheme changed between two kernels and this might cause
->> +	 * issues if device/driver is not handling it properly.
->> +	 */
->> +	WARN_ON_ONCE(ser->force_decrypted != force_dma_unencrypted(dev));
->> +
->> +	/*
->> +	 * arch_dma_prep_coherent() should make sure that any cache lines from
->> +	 * the previous kernel, if the device was coherent previously or cached
->> +	 * mapping in this kernel during init are not problamatic for
->> +	 * non-coherent allocations.
->> +	 */
->> +	if (remap) {
->> +		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
->> +
->> +		if (force_dma_unencrypted(dev))
->> +			prot = pgprot_decrypted(prot);
->> +
->> +		arch_dma_prep_coherent(page, size);
->> +
->> +		cpu_addr = dma_common_contiguous_remap(page, size, prot,
->> +						       __builtin_return_address(0));
->> +		if (!cpu_addr)
->> +			return NULL;
+> Even though many man pages don't document an explicit EIO error
+> code, it is obvious to any experienced sys admin that if EIO is observed
+> they should look at the kernel logs, because an underlying subsystem
+> may have reported critical errors.
 >
->Should we be kho_restore_free-ing on all these error paths?
->We only seem to be kho_restore_free-ing on the success path.
->Same for kho_restore_pages.. if we return an error here, we don't
->restore the preserved pages? Are we leaking those too?
+> But in general, man pages follow development, not the other way around.
 
-This is purposefully leaking the memory here. This is because during
-liveupdate, this device could be using this memory and freeing it means
-that this might cause a memory corruption that would pretty difficult to
-debug.
+Fair point.
+
 >
->> +	} else {
->> +		cpu_addr = page_address(page);
->> +		if (dma_set_decrypted(dev, cpu_addr, size))
->> +			return NULL;
->> +	}
->> +
->> +	if (set_uncached) {
->> +		arch_dma_prep_coherent(page, size);
->> +		cpu_addr = arch_dma_set_uncached(cpu_addr, size);
->> +		if (IS_ERR(cpu_addr))
->> +			return NULL;
->> +	}
->> +
->> +	*dma_handle = phys_to_dma_direct(dev, ser->page_phys);
->> +
->> +	/*
->> +	 * Cannot free the restored pages on error here as these might be in use
->> +	 * by a device with direct allocation in the previous kernel.
->> +	 */
-
-
-Check this comment that explains the logic behind not freeing. I think I
-will move it up.
->> +	WARN_ON(!kho_restore_pages(ser->page_phys,
->> +				   ser->size >> PAGE_SHIFT));
->> +	kho_restore_free(ser);
->> +	return cpu_addr;
->> +}
->> +#endif
->> +
->>  void dma_direct_free(struct device *dev, size_t size,
->>  		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
->>  {
->
->Thanks,
->Praan
-
-Thanks,
-Sami
+> Thanks,
+> Amir.
 
