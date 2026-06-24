@@ -4,102 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB625CDE000
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:15:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B19A3CDE000
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 888376B0093; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
+	id 91C156B0088; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8384B6B0096; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
+	id 8CD4C6B008A; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7015B6B0098; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
+	id 7E3E06B008C; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D1FC6B0093
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:15:02 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97D8F1A0493
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:15:00 +0000 (UTC)
-X-FDA: 84916061160.19.95AD68A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 91449A0007
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g78bl4l9;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 593FB6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C85CB1203DC
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:28:35 +0000 (UTC)
+X-FDA: 84916095390.14.A035BC5
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E433A16000A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:28:33 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gQo8gjXl;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782335698;
-	b=2IAzyVapNwjc4dvXcVUFRvFUBMV37x/FvJTqPslRmRW7jrglkU/4ZCOJLNTM2HseaGawP1
-	TAOiN2aF30MogE6htTWTfu9/xY2bw3omN6j3apyaUNl26yL7k17WDMwsY+otcY+5cEFGL0
-	h1H0P3vYUflsJM6wQ0ZXfr347cwDWj8=
+	t=1782336514;
+	b=l5eNZ/6iyUe4I+auQRfGgbYbrT+KbB0uNeZ4aVaTK+q9FZgi4+TCgUtVCFWb2npxiMXQkk
+	S7lLMJEYXIPiCq9Lk+m9k5H/utJAvC2l6KZ9nJ6snAVzJpcApZ/SXchO72J5TrnAFiRpac
+	wAubS2ljSJqeZB1pn+yZITfOkIw2Vpg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782335698;
+	s=arc-20220608; t=1782336513;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eCeZ8VqU84ruB94EwEJi8lpH01CxpMqlEj5VMxy+6kE=;
-	b=5bnVoLRfoL7Lxqw8kr+DIH+Up3JhoezOPtCXL//MHgf2+vBxJEOZ+HLWHFOOh6c0s2uLV/
-	Y/UUP0bBpYA4QiISp2puZ1NfwSfu8l/ro6K/6uDvNF2JXbeJB0GwwzH6rFP05oGCtaBcPG
-	+wVK2TnpMQ6Hu250iWMwL1dGn/t0R4I=
+	bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
+	b=ELALU5O1fgGfuw9RgtUP1UEqxpkXo5Yv+6Lp4MJJfp4rAhzBZnRquk+R+eXkdRUlxpjS7u
+	qzo+4NZo3DRQJZ/pWRrWzupA0uuewy0fimmWg7cyyglwPXl/yGXrD1RDizXZRspE5PwdDx
+	xO3I3Mmbc/0kdbaoUqOYZnQeEtAzgCs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g78bl4l9;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C3A774351E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E0C1F00A3A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782335697;
-	bh=eCeZ8VqU84ruB94EwEJi8lpH01CxpMqlEj5VMxy+6kE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=g78bl4l94FFAYvnTYyk5UndiKA2HKHVuiWRjeSq0reQseTZMqOJJnDyaa52VAMXAH
-	 f3amUaMLJ38cXmbKd/amTF4m6eYpGbA0L4iNLy2VKur8C7Kswm3mACGQfXwdgCqzKH
-	 9AAugfS8Cn23hFR5St6jXC/BqSCAneviHyPplYdDtNMv8+gTuUfUq7HK/tJDXNirk0
-	 5tu8fK8wwhw7Oju0PuoKs+LKcabyaGYFVP75eLA7ffuo+9eMvBwogjx64yyFsAE8yl
-	 k9gHQW3KN0sfmYH6EmlwlrtWUq6y6yP+mOBwKSYpNQbPBRHoAyhAM2MhiRv5j73OYP
-	 90NQqH5oyyAlg==
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-51780bbc560so2960051cf.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:14:57 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/IASUg3O6eM/C3XEoeQ0btut6aYcLun2wgVjDM+Wg/GnzWF1pSRagt6Xky1Ew/v2stsYDwkrCz5g==@kvack.org
-X-Gm-Message-State: AOJu0YzYDyxdaSS39QcTDjnupZp9tEz61SkvUXR+jECuwspHaI8BS10R
-	4pTr/KNZkNk1rUHK4NzrBJLRwyZvkBUkTn7ITZ+pCbswQaZzDNGtRa/yBKEMwxG4jBdXDjU+c6r
-	heWzlX1nfw7CIU1CSoW0TM6ACFlLrfi4=
-X-Received: by 2002:ac8:5a48:0:b0:516:cd8d:c7fa with SMTP id
- d75a77b69052e-51a51be25demr128513661cf.39.1782335697092; Wed, 24 Jun 2026
- 14:14:57 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gQo8gjXl;
+	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-922ff615c14so156336285a.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:28:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1782336513; x=1782941313; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
+        b=gQo8gjXlpg6jIy2J06CeGb/CnGmUlq4CUK1S75nE9UhDbkpPLuRwZVB+9Mh+4Zk+Eh
+         WkUjl0o5E+I4y4XqlmAYTI1JQOkDg2+9Bi72yW09aEYMZT0SqXlcW827hKUK8OBYVcFx
+         TLKjkjpJeX3uNybnSOHeKLZ4BvMFkAY+pK2PRXBLMFN71JSA3FMvm6OniNyqSlaJiMH3
+         UzMWs7gkG69YYGzZAx/diRM1CgqqMwJyWG33/JfwV8exOEwPatNJ00AThyRx7zRN3H+3
+         t2h6IxsgM7uTp4NPZwnoqS8OiZSGWzUzfwKm1hWcfWrx4I9CFROppJnzQhmDsJKxkEvT
+         bDWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782336513; x=1782941313;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
+        b=LU25zdIw42fWLxJweY2QKJyxxZn1zqSCp9+4x7KWKdUmXg9t4bmpnfnZAg/2/tRAEq
+         iz01c8Lk3+4zkx8+L5zBtuSvjMygdu9x78Z54EaR8lXjNjujY1IbXxhc+Cw0bVadXYre
+         UTyMjIUi8M+tdvcbeR7hmae7VytBioGRwq3REFtupNdbAOB3lD7Qkf6yOKgnF7GV06Bf
+         vaFl2GMS3px+2tDxY6sc5xTwurQOXPua0BAaColYWEJmsbmjzaHjb3d/mP4WbfnvVBxd
+         rYvJ/29o+tWm84jN2q0W9r8tZwvnQ7dagybX9UvMTNgTKSAHpc9OjUxToqP8p8bT1c2U
+         /EMA==
+X-Forwarded-Encrypted: i=1; AFNElJ8He7JV03PNtmPSyMBluDVSI3Gr+X+GGxqtIXvqXA+c0yVTTmU/kz2Va1ACnRBchbGNt28wg3BPcQ==@kvack.org
+X-Gm-Message-State: AOJu0Yxukx9wieEXxtxaYXn6d939c0E9sqscPVnoFFf7QlAhnJLTgTRO
+	J8uHcx2HCCSQMnL3Jy6odxQb/nY/SaBKQEzOtd1BFzyJMJqGWU1XWoIjJD7bpOrgJGde7tvAsJI
+	GzQMY
+X-Gm-Gg: AfdE7cmxSX11YPPRZLxJvHuqqOJzzZiIhVShxw3q6rsVtG0F2dwTkEuLgeAWUw7tdhu
+	TWCt+93wWpc4nFaKdnFRPXjW1XD5JOI6c2dCw9Ggd5fguvFAK/mbQS2rkYg3Skt6FN6s+YWf+UG
+	7La+r43zIutPr6fKtKjk7Zd6/yHQpEbTZUICKoFJBLJAp7voKBniwXUZVSA/O0PZ6Uv6woI0g7L
+	Az8tJpUQZUiqJ5k+DsQJkvK8R/15Kn/tgI//DMDPpjYAebhxKOmurSXhbQUnFre8ayt0ZMN0y0I
+	2Rg8UcRPUyBlTUlhry9n8Sc08wTOAkZO6oGvGBWdqRMnk6ZYLNKKWy96FoMWFd6ZWNo3hqsRLeO
+	dHRezlUifQntrMAPSnJnlaxyFrW0pZ/ic3K9E3qF93JqeenUc1sgIPJ6+EjMjc+ymJiCWLxcLgX
+	QnaFWk/u89F624QOWqY2aQgwkzNoJkYYrfrXxtQaQ/koe6tKIUWBGwMhnMXpT+Z0ccsDQP
+X-Received: by 2002:a05:620a:c45:b0:915:abc4:b570 with SMTP id af79cd13be357-9277ea2e6e2mr831365785a.48.1782336512781;
+        Wed, 24 Jun 2026 14:28:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-925fd39106asm630817585a.7.2026.06.24.14.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 14:28:32 -0700 (PDT)
+Date: Wed, 24 Jun 2026 17:28:27 -0400
+From: Gregory Price <gourry@gourry.net>
+To: sashiko-reviews@lists.linux.dev
+Cc: nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, david@kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v5 8/9] dax/kmem: add sysfs interface for atomic
+ whole-device hotplug
+Message-ID: <ajxL-5d3JUArPRyo@gourry-fedora-PF4VCD3F>
+References: <20260624145744.3532049-1-gourry@gourry.net>
+ <20260624145744.3532049-9-gourry@gourry.net>
+ <20260624151122.AFE551F000E9@smtp.kernel.org>
 MIME-Version: 1.0
-References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-5-baohua@kernel.org>
- <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
-In-Reply-To: <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 25 Jun 2026 05:14:45 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
-X-Gm-Features: AVVi8CeWvGIPxeEZEtS2Z7zPM1_yMqbR3QHPGVgy4UGVB05PBeiFaRzILIH_fqE
-Message-ID: <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
-	chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com, 
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com, Kairui Song <ryncsn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: grk6a11in95e49kpysedwnxutdxcyazm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260624151122.AFE551F000E9@smtp.kernel.org>
+X-Stat-Signature: 4wrj8wogrchd3addeiwm6p13gqo14son
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 91449A0007
-X-HE-Tag: 1782335698-741852
-X-HE-Meta: U2FsdGVkX1/+QtwkoIteC6X4c/shBGE/YOPJuNZLMnhanlQXo9x2+SjqBaPlx0CERCt7J5YYoTNTnMbbRE47lpg/INjQ9EkgciAR1M/cXo8EQ4blXffmU7uZ7JKQw/dCqXDxJOGeYhtFLQtyK0xvPsqu/N2ra+ojqUm7zJmJ8XYwaZk0H9jrNlA1PB7Adun++GjrwAt4PlARFDFGwOz7Q/QtKHWgGP2nJCCftyHF6d5BgZegjeQi6dz8DDVUcdoKNdxuZqh0h5q7sg65erSXdk+iOkVu/1T+4rXxUFfMRzF+IxcLR5R10kSJ/MHoUKSowi141HkxI5wNY+Gy47RRHE+SMITnGSnJp3+8QBNJnlarpDUPwKAO+OLIT3aAwzbZXTLeuRwJwhcnuhBenJP+QKiCtMwy2Qg4ZsdtGwe/R7s0cSO1WB4sXDxfHfOyocGL2dzJyvU+pWqp+/cBBOqabj+t71UOXfwV7A9aT+Z4z+dkijbaE45XktDIyR5fRtP2u+4PZUkF0HoHgXP+nt+kMZsoabK56hBtfkxM2HUM7hknDIh+cFPMwg0Z58bPy0CIMdaZYmcfvwywuVVzBsARHeqGYbS1RmRC6Uygy05noIoASuvFD8chy++w0b803Z5F36FNAVVOXR1bPnvvVnD13FobwAxz2RxYMpx/OqPJtOUXdrCMJDLG2cqFyfcVqOLnt/Q1UGo9cpf/3w1/DSi+lC0QnQUU5X5POrMbGf5Jr6DaR1PbHZZamQJqtIUwVYoO3GxXxIzwv7qpP7Un+DjNCwtPNbUttBIJz4dnZzBIF5gGWOR0JfFWgZMcCzVY732/1YfC055IyGDg8acXadik7Lx5Ye/sOyRuQsqYGpFSzd2IYc0n4CFXXhJ7BxRb/2CgYfEQPw5hFuKpSaeapti1aIzn/LyE4JIGJymIr2LAWuJTsh09AhFZlBeCp8tme5SuFcdHH92EMOVhVWZZQe2
- qyesbBj4
- 1377j+Gql0hbXedYht42dd3sEJa48JzhOGpvI0gwSzCg1ujJGq2IczZTa0hXGCp8RnBVE6WKwwMTLB91aSFmoXpiBn6JiTElENMYZvNJ5DJAPJoOiDCtBxjNSdyITJrUZ4bdt+zNVOhEZvzC8ifDm/P90rgROZ8H9KsEd75cX8Acshw9cMiqunr1xYlQ0Z4dOeiWbDESJYSMVUGCa3OKaMucptbH/hMlaEdNErR/Fswfaqx3fomHyWgDshefkzU6QPWUHLxd1ipqTDelIuJDth1NPz3/BP3fp1puNXOzxfmq7+Dopu7vppS1wlcALS0SkGp8BOJtO38BCyHCKGURhrGJ6nKjKtOHpMWQfQeHwSfrmlh8=
+X-Rspamd-Queue-Id: E433A16000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782336513-136024
+X-HE-Meta: U2FsdGVkX1/+pbtXV5PXhgV7eKyp82eIoUWlvxCjXbQ3lMN36kpySyTmOwu6dyiXy/3h2tFsXsoJybXXYo5vUKKk59ycHJPb50ytgDXaZOtcfOPd2enIS/IZR1WDaiSyoam+CZMJpBQDIL/PAA+OAABXiC9zdJXQeDEnKG6FC2PWLSSiHP4Dn9+V0P1AMAnDQpd58MQrLvagcXbUrDP7bDDbb/puzcvITGZmsRBYlUj7+e4Ox7xl4kjWF560YunGeDsqYC2H4N8bBOOHYwFte5mTQkF+6V2hyBHcnLunaz4ujpAfr+apkbtzBHXYOy9mXeJ12KLgvcS2uziAb+KIBONyoUikcFWqI0hOIWZfs+hQjgGe7NBQevYMu+Nlhtj+3dWJx+sREIKxjkiefT1tx2jF0eJx3WIu0NqoKSsq8v4S8ixJb3Lk6Tm2yIoMWtx3D2iaR5hXVLZVe2GRDy3fEd/Knuu19x/n2GLaewKSG0M2K5NDRk6j+HD7TyaNnA6/KPT1/+8TsVOS/MRUuEYhKj+STCQNUXraYjwNvp7MC1bNDF/vD/bc0yGXlK3ZzKXd4L8H9BZ5Qj42oVHhZmD+WYQ/+vxD1XH5PpdY+yOGUZsblzE70qUb4HqO3u/NbXoAfiKhH5WjXsOowjY3Zo5TGWaidj8HUK48o4YWd+wKBMOPb6POAJ/+JHjTVWjXBmVEdWHn8TI78qLdNhhoUxg3fHXap4XPfBlXnveotLA5/33Ez9wD4C62nzyf0xlHXVkpbOOuq2VvlXg9GTtLHSjnzMpSPNTyPlr+zvAimf2JTIsV4SLJ3kxYA9MLuOY6Q02M7P5JXUdHLJgGCB4pNGXmc8QYULDkoU0CYBI+RyoVehWUeGrVyH0mStnDX/gly7Fk07Brrb+n9QtgKUMOfuiLYow+miPGp3draed/+kiOVq9Se0MaYnE7jF0Mpk9WfgCUyFz9exWiTvtV74d3/dn
+ SOdKXqMd
+ ls8r5CqhtaQIIfp3jXlPJ4Eivh1RovIKw/gxFlXFdRCZ1pZZR/LvcY39rN3FEIrjysbmK9LMUrPVK1lKPpVmXD3SY+ckJWDKlfxQD48aWAQHmdDiQPJWemAhRExPZHKjqf15mGvBflNJhmX21hlhHJPg2LQszEwVRdj3zK7oIcxqP5wPMw8TMFADB+I8ulmQU7AefSASDr4DXUfOMzZ9b/98Gib/DYxT9Z3enQ14FxmvBTzfRVSjJhHPHNaulkVCmH9r0zHAF2qEDTRagrvqyc9tc2d8OfQ8G91xrG0cU3xXp4PhlWi6+kpZ0AW65JZSAc9jodm0SA2aB3+O9VZN+IRr6TvUeogNbO3kzmuVLMWMP02HXK1o8nodNORQ7QoTd8T3R9kokvWmKHR66lLRDKWSdcpgRMTRZo0mz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,115 +120,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 11:20=E2=80=AFPM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
-> > Originally, we unconditionally called lru_add_drain() for write
-> > swap-in page faults. This might drop the reference held by the per-CPU
-> > LRU cache if the folio happened to reside there. However, there was no
-> > guarantee that the folio was actually cached on the current CPU.
-> >
-> > Now that lru_add_drain() has been removed, we have lost one
-> > opportunity to drop a reference held by the LRU cache. We could
-> > instead incorporate that possibility into the condition evaluated by
-> > should_try_to_free_swap().
-> >
-> > Suggested-by: Kairui Song <ryncsn@gmail.com>
-> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > ---
-> >  mm/memory.c | 5 ++++-
-> >  1 file changed, 4 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 2983a6baf474..14577c67c61a 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5087,8 +5087,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >        * Remove the swap entry and conditionally try to free up the swa=
-pcache.
-> >        * Do it after mapping, so raced page faults will likely see the =
-folio
-> >        * in swap cache and wait on the folio lock.
-> > +      * Assume non-LRU folios may be queued in the LRU cache, which co=
-ntributes
-> > +      * an additional reference to the folio.
-> >        */
-> > -     if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags)=
-)
-> > +     if (should_try_to_free_swap(si, folio, vma, nr_pages +
-> > +                     !folio_test_lru(folio), vmf->flags))
-> >               folio_free_swap(folio);
-> >
-> >       folio_unlock(folio);
->
-> Hm, in wp_can_reuse_anon_folio() we'll try dropping the swapcache ourselv=
-es.
->
-> So I wonder if we still need that handling ("If we want to map a page tha=
-t's in
-> the swapcache writable, we ...") at all?
->
->
-> Ahh, I see the problem now:
->
-> commit 4b34f1d82c6549837b2061096dea249e881a4495
-> Author: Kairui Song <kasong@tencent.com>
-> Date:   Sat Dec 20 03:43:35 2025 +0800
->
->     mm, swap: free the swap cache after folio is mapped
->
->     Currently, we remove the folio from the swap cache and free the swap =
-cache
->     before mapping the PTE.  To reduce repeated faults due to parallel sw=
-apins
->     of the same PTE, change it to remove the folio from the swap cache af=
-ter
->     it is mapped.  So new faults from the swap PTE will be much more like=
-ly to
->     see the folio in the swap cache and wait on it.
->
->     This does not eliminate all swapin races: an ongoing swapin fault may
->     still see an empty swap cache.  That's harmless, as the PTE is change=
-d
->     before the swap cache is cleared, so it will just return and not trig=
-ger
->     any repeated faults.  This does help to reduce the chance.
->
->
-> That changed that behavior such that we *must* now always fallback to do_=
-wp_page().
->
-> What a mess (I didn't ack)
+On Wed, Jun 24, 2026 at 03:11:21PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] The protection against deadlocks during driver unbind can be completely bypassed if the underlying memory blocks are manually onlined via the core memory sysfs, causing state desynchronization.
+> 
+> commit fa89899811083ada324ea3db8204b1c135005af5
+> Author: Gregory Price <gourry@gourry.net>
+> Subject: dax/kmem: add sysfs interface for atomic whole-device hotplug
+> 
+> > @@ -348,20 +490,26 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
+> >  #ifdef CONFIG_MEMORY_HOTREMOVE
+> >  static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
+> >  {
+> 
+> [ ... ]
+> 
+> > +	if (dax_kmem_state_is_online(data->state)) {
+> > +		dev_warn(dev, "Hotplug regions stuck online until reboot\n");
+> > +		any_hotremove_failed = true;
+> > +		return;
+> > +	} else if (data->state == MMOP_OFFLINE &&
+> > +	    dax_kmem_do_hotremove(dev_dax, data)) {
+> > +		dev_warn(dev, "Unplug failed, resources leaked until reboot\n");
+> >  		return;
+> >  	}
+> 
+> [Severity: High]
+> Can this deadlock during unbind if the memory state is desynchronized?
+> 
+> If the device is configured with auto_online_blocks=offline, data->state is
+> initially MMOP_OFFLINE. If a user manually onlines the underlying memory
+> blocks via the generic /sys/devices/system/memory/memoryX/state sysfs
+> interface, data->state remains MMOP_OFFLINE.
+> 
+> During unbind, dev_dax_kmem_remove() will evaluate
+> dax_kmem_state_is_online(data->state) as false and proceed to call
+> dax_kmem_do_hotremove() instead of safely aborting. This attempts to offline
+> the blocks while holding the device unbind lock, bypassing the intended
+> deadlock protection.
+> 
 
-So it seems we need a patch before patch 4 to fix the missed
-swapcache freeing on write faults, because the write bit has already
-been cleared by the time the folio is mapped and reused?
+Pulling this feedback onto the list so you know i'm not going to address
+both pieces here when it comes back in the next version.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 14577c67c61a..e8fc5a86f6ea 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4752,6 +4752,7 @@ static void check_swap_exclusive(struct folio
-*folio, swp_entry_t entry,
-  */
- vm_fault_t do_swap_page(struct vm_fault *vmf)
- {
-+       enum fault_flag fault_flags =3D vmf->flags;
-        struct vm_area_struct *vma =3D vmf->vma;
-        struct folio *swapcache =3D NULL, *folio;
-        struct page *page;
-@@ -5091,7 +5092,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-         * an additional reference to the folio.
-         */
-        if (should_try_to_free_swap(si, folio, vma, nr_pages +
--                       !folio_test_lru(folio), vmf->flags))
-+                       !folio_test_lru(folio), fault_flags))
-                folio_free_swap(folio);
+1) dax/state and memoryN/state can become desynced.  We can't do
+   anything about this without a memory notifier that prevents this
+   desync by disallowing memoryN/state toggling for those blocks.
 
-        folio_unlock(folio);
+   https://lore.kernel.org/linux-mm/20260114235022.3437787-6-gourry@gourry.net/
 
+   this unfortunately breaks existing userland tools.  I was told to
+   drop the notifier path and explore deprecation at a later time.
 
-Best Regards
-Barry
+2) What I will address: if state=UNPLUGGED we can safely proceed,
+   otherwise we'll simply fall back to the old remove_memory() behavior
+   where deadlocks are still possible.
+
+   I'll add comments that address this.
+
+~Gregory
 
