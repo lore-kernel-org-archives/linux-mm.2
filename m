@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C50FCD4F26
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 01:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E22D6CD4F26
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 01:33:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6F756B0088; Tue, 23 Jun 2026 21:20:43 -0400 (EDT)
+	id 810B66B0088; Tue, 23 Jun 2026 21:33:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1F106B008A; Tue, 23 Jun 2026 21:20:43 -0400 (EDT)
+	id 7C1AC6B008A; Tue, 23 Jun 2026 21:33:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C34636B008C; Tue, 23 Jun 2026 21:20:43 -0400 (EDT)
+	id 6D9176B008C; Tue, 23 Jun 2026 21:33:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 94FCB6B0088
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:20:43 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05F3E401E3
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 01:20:43 +0000 (UTC)
-X-FDA: 84913051566.10.A1D458B
-Received: from r3-20.sinamail.sina.com.cn (r3-20.sinamail.sina.com.cn [202.108.3.20])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 22A5E8000C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 01:20:39 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="D/728wxh";
-	spf=pass (imf30.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.20 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46CC36B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 21:33:33 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BEC5165CBE
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 01:33:32 +0000 (UTC)
+X-FDA: 84913083864.19.B6010E4
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B445340007
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 01:33:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="abwr/AD8";
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782264041;
-	b=C3JLAc5izYLbpoRxczwDFRRFNRCqkdjwQoeLLh+lQFiezWxomsv5BrX9oqveFtTSNZj3H+
-	YCp/0KqRfV8ifqXNUCTPvUkcr2l9E/Y/3bKUly7mN8X3HBvIT2MFBduSgSB3inmKJqlzMe
-	1d8EFxbPXaQlW+vqAj8+YhKd40KtFaQ=
+	t=1782264810;
+	b=zy51j1T/oSggAtabJxAvwzZv64dQAocbF5jB5M3RwcexHEfJ+CiRDrImyoPxOb4eBhnpBi
+	95VjnYwGRxtE7OzuIV241DLR6lSw/QLgmmAwOz7EU+bP9aIjWsDh+biRqk7uoOaPb5ZkS6
+	N+FDDpNW011aaHMzfOnILfsEPEw0GTo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782264041;
+	s=arc-20220608; t=1782264810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZwPjOiQhIsO80JzngIza/FZ2n0oxv+sciICtuqSosXk=;
-	b=eULz/1rsvyDMTO8U0Ifv9UP1g5Uw/Sf42aOmmNVUn+1/F4RAT06DCuj4IrHd5qr2JZ6y1h
-	oDxSv2gOriPPzmiQmrbJUUFC3xOJKn2mgv54Iv5/1IBUimbCgXn1Ty+ebEgoKMLKxhdAG1
-	/IPm+UhFEDSkqeYIiKEi1kpgKfPQfkA=
+	bh=mOg8LkKs733xmlAKwFCLPd9WcpZag1FHz/doRiCKuQs=;
+	b=gx0uFSaY/jkb9xC+TVOYrLy/nqNI3DZr6L+zPbzUKLw5TCDEj/ehG0U4ttJNDvttIzEB7j
+	ha3q0u5wLhT8k4wa7iO7pqxvKEbgYsgPYiAINeWetqKqFQa2IHGdRNHDOLoHMloj7f+v4s
+	yxHS0JDGc8rQfvAe8k2ATmiVjhbFdU8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b="D/728wxh";
-	spf=pass (imf30.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.20 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1782264040;
-	bh=ZwPjOiQhIsO80JzngIza/FZ2n0oxv+sciICtuqSosXk=;
-	h=From:Subject:Date:Message-ID;
-	b=D/728wxh71d6JT6LfLy1AAZfNYtZ5QQNE1FbWHg8htAHUru9LsW/vQqyEVOr0awbk
-	 ivZ7xeVUcY1QKyxRInHYKNxVwoyBWEjCzWcNqhEqVXsosJWEGyEu3DZ1ylBWDxktYt
-	 pMFVHSSLR28OwkEn2axtv0rXf5pJnABNEwvZFkHU=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6A3B30E200006131; Wed, 24 Jun 2026 09:20:36 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 222894457036
-X-SMAIL-UIID: D00542BA1DE445BF9B70230553DD5312-20260624-092036-1
-From: Hillf Danton <hdanton@sina.com>
-To: Dave Chinner <dgc@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Matthew Brost <matthew.brost@intel.com>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Subject: Re: [PATCH v6 1/2] mm: Introduce opportunistic_compaction concept to vmscan and shrinkers
-Date: Wed, 24 Jun 2026 09:20:25 +0800
-Message-ID: <20260624012027.194-1-hdanton@sina.com>
-In-Reply-To: <ajnA83DxAFqeJ-sv@dread>
-References: 
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="abwr/AD8";
+	spf=pass (imf01.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wyj6m34dtkpst5gbjdco9fg1z9zi1eos
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782264806;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mOg8LkKs733xmlAKwFCLPd9WcpZag1FHz/doRiCKuQs=;
+	b=abwr/AD8vQqSwbq2irwDX2GN/P3JNdPfgkgjBL9KjFbvMJECnelvvWbegzVFbt/XYO6T5B
+	3op63GPNqAcGng+pSEPtPkyb/b18jT3E4jbtRnfYg64C96kOKRcC5ly80bXbWuLOGIflZx
+	1iPQB14pcZR3tadYbDppjCD2+DMXBY8=
+Date: Wed, 24 Jun 2026 01:33:24 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Hui Zhu" <hui.zhu@linux.dev>
+Message-ID: <40a6017455ce039225fc331940be6cb27d13bc3e@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH] mm: avoid KCSAN false positive in page_to_nid()
+To: "Lorenzo Stoakes" <ljs@kernel.org>, "David Hildenbrand (Arm)"
+ <david@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Liam R. Howlett"
+ <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
+ "Michal Hocko" <mhocko@suse.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Hui Zhu" <zhuhui@kylinos.cn>
+In-Reply-To: <ajpehMzABvNh1wN_@lucifer>
+References: <20260623074157.578113-1-hui.zhu@linux.dev>
+ <97f2c4ad-c302-424d-a7c8-fdfa0fc0d811@kernel.org>
+ <ajpehMzABvNh1wN_@lucifer>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22A5E8000C
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782264039-243184
-X-HE-Meta: U2FsdGVkX1/+J5K9r3eWz5navYrcg1nJympPVdHmYmrF3vI2jHlZJc9CLiOoxo6yAkuzfZM7ckx+rdIR17CF6yg59K+eGwjZj4RMHS6oQP/axmPhCroiyr7Z9hM62sHcBSOkNUtyCaFlmq3X2n7zUHpWBrawdRjDpruqFjoDeLc2HgU7rjcMCU4PC4GYz+7FgrH03RLYUr9IjjK4p/ZLDi4kBNAiSXlbQOo2VBj9yi5WD4UsyTqoDi3aGRL9QiKaAR0bm2dN22OzFLGjZeLeGgMoEev4LDZgBPLNnXuO23pa17tzyblltrS2B5AoL2e+UTLgwoAZx/6foPS8gm0VKsn8S/XxzSB7AA5dSzBeskIr/Otn9UtcoMzTuV+83htha9D9/YB/7f7yMdMknEdJzglMcUh+Zm5n1XD70tPHrF+rd98B/BOwstd+lFnxoEk2IHFKW8UkHas/8neNrMdYxYAlxOBxAdzvSyWp9b/qZ3bNMjeTir/RDX9ZOk+2gqLKMOX7WtGhI5MgDgxpncqHJuKz0zUlli2zzx6kU45uZ6PPMiZ7nyxHmM7nPUrs8t3bH5hX0k9PvjKYMRNzaGLA/5VAB36EC+jj6H3tnNmw/4qnk31/P2ZFHjwM5dt1cMT3COQ2H+ege+Ba1XsZxZ9K0X+CWi7h6rxDqKGHyC5ENfkUtVr48w9e7B88NW/OAsQ6wVbxBxQziDZgE+1nVv8wdQh6xSGjn592y6L4yPUFNVu1HEyy/ReVIGTGcb5auxp5sT25WouyoxzP6L2++vYddzASsPLnAM/vuJho8ArjMYgzINVA51n6gnizHRzIRdLBpUT2r3NmncBiBvAxoIxOQGbh+b+lET+ajApS7OP8x18AHkUmOnQYctapKMuAmMYQL9p6sROUsxXbpLMR18E9gY62JL+Aio6lxrvCLBrL9qGIObE81CXCWDUZE2WSeqQVVBkTTBvk4iIjCpVJWKp
- 7Lm5poAN
- Lx8uxI9qDts74gzFzS1iY1v/QGgxb9C/ZdGbQZZAB/mbiQLGOK4FxReht4xql3FpOA/Ts9XKvRPua/YPssToHqoWOaXgkvbz2Guh5IGXau+101ZLxferkU4WPo8mf4MpIRxiqYBqmfDIZm20pAjFd2siQ8zfjRdMsabDmhMhbAVKxLwSVytay27+3kN3On2ZHJSryU8e5b2RpVj5qzS7CC3U9wVi+b6f01CN4tRCZ+l5d5kwPRk7SX+dfo0OxYXaqHyIm7tdUP25CB21//LGaf14Z1bE5vZ6avmragoQXC2tzD5EhYQRfXL+mOAr77h7YTiqELG1xEKGYVd25dJK0r9zKnWbbj8V1FiQqxVVBNQrRWVg=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B445340007
+X-Stat-Signature: umukg99weniqnwxtzchnhxx7unb1fsd6
+X-HE-Tag: 1782264808-207010
+X-HE-Meta: U2FsdGVkX1/0AB0r1ZL6autZPLg3D9nkRz8ranSQ2fSoN0hfbmcOVU6i69xhXm1PHOggc4Qb8aG/eNxyWL9APYNNzcMWb5B3lgOlwNnwT2+TNLlnUPWMPq+DNJnJuRc80cRlJVMl5BiG11jluBsjwWI2z63ko2fLKpqJ9/1JXx2nv2eOd7iMU+EHJYG9Ekn8z0VsJzypVKqC13bve3uuG93w+jir5CP+SO6yWeD4b1Wy5kRbguNZVSJRtTVaESyhDybK7y5cb/Jw+tEUZgNx/wk85DLX52UqnlzviPaig78UOnmobUzkr/URIG5USdQDtenpu1fvDqtYEfMkb9NTA48wE15p/gd0UkbTvx8XhQRWTmFCG/w9R4I9QyE1E0FOEx9PjqpFX2JNHxRFTf+RoV/m1rFfGz/bYxUbtcYQtwQZSvkG/niBKpHy9iCr2dbLxBMqeJBq0/3dTWMyK6c1/Rmh1M2LYC1RGP+IFZR0M5opGHJGCbIsqBiMGxyXpOUh7o14UQ4HSQKVFd9hONgo8YN/irbUI2AIDmMOu3qlFwvKAHFnhXk5Y+7TJANI8BY4r6GDg03Rfy2wxkX7g+30NNt159ouOyIDt5FmAWExQjuqTmfReI628y2aUz2RmUudouMtNIhGAuVXxQZ5WkBpzyf3Fq9DDdZKBAPoud2djc06zgjA/OL4C3sjKYFI1Hf8S98kfcDEp5doAQ2SC60yoB/hx7QaE9WDZKNzBgRNyoAu096pO3GSlf6jgrPx8f8P7COwrws6HviS6dhXnbeWIKAq4JepHEr+uWV7F1uu++bUnfiZvJ4gLE+6ZCq3SzReE3JdY6Y/7DXTbEPG/vp0oF0na+wB+loURRJEoxqNxzoFztQG0l4QdkVj+0jUjWriwSJIirMKPEmUaPbZnmG53vy3IuB5oUlyfNiUWRmgXDSu4fo6BqrkZmlfCmBV6YSWBLm6IjQIWDduxredEwl
+ xV/arbdL
+ pxkh+/3VqXkpWj/TQ5YNuRN+rpgzY6h8sM5FjahGX/nlqS2fX61PgnpY55rz3fnhqcjDJ66lgXwn0ZKjJVEhnVvx6ZKya+Qfom4EluS8x5HkzZCi2tbp3aCZ2IA0DvdhsNfe8wAfXvGAbnxEDiXfilCys44Kq5s2MdQ1/igZu265qajiJR6BNw01krDOF60zjjFQMVDjn31tCeZcUgL1HO+0sayHo0Chk2BDzQHXEbUoW9FdcgFTbax4OvozX7g1Eg2i9sW3XYPFMhMDaxUdfGEwm34XBkLqm2WWpz8W5aFjntOlH9mzDUTba6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +95,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 09:10:43 +1000 Dave Chinner wrote:
-> On Tue, Jun 16, 2026 at 08:22:17PM -0700, Matthew Brost wrote:
-> > High-order allocations using __GFP_NORETRY or __GFP_RETRY_MAYFAIL
-> > are often opportunistic attempts to satisfy fragmentation-sensitive
-> > allocations rather than indications of severe memory pressure. In these
-> > cases, reclaim may invoke shrinkers that aggressively destroy working
-> > sets even though reclaim is unlikely to materially improve the
-> > allocation outcome.
-> > 
-> > Some shrinkers manage expensive backing or migration operations where
-> > reclaim can result in substantial working set disruption despite the
-> > system having sufficient free memory overall. This is particularly
-> > visible in fragmentation-heavy workloads where reclaim repeatedly tears
-> > down active state while kswapd attempts to satisfy higher-order
-> > allocations.
-> > 
-> > Introduce an opportunistic_compaction hint in shrink_control that allows
-> > kswapd to communicate when reclaim originates from a high-order
-> > allocation context that may be fragmentation driven rather than true
-> > memory pressure. Shrinkers may use this hint to avoid destructive
-> > working set reclaim while still participating normally during order-0
-> > or stronger reclaim conditions.
-> 
-> To be honest, this seems like another "push a hint through to the XE
-> shrinker" mechanism under a different name. You seem so focused on
-> fixing the XE reproducer that the -systemic problem- that -any-
-> high-order folio demand causes is not being acknowleged.
-> 
-> e.g. we use high-order folios extensively in the page cache these
-> days, and there are -many- cases where memory compaction driven by
-> high-order demand cause significant performance regressions for page
-> cache performance. To date, every single person who has wanted to
-> fix the problem they are seeing has effectively attempted to -turn
-> off compaction- via GFP flags.
-> 
-> I've even done that myself inside XFS to work around kvmalloc()
-> issues with a lack of GFP_NOFAIL support and doing costly high order
-> allocations that fail and trigger compaction before falling back to
-> vmalloc().  However, these issues have since been fixed in the
-> kvmalloc() code, such that it now does the right thing for most
-> calling contexts (i.e. tries high-order kmalloc() without triggering
-> compaction, then fall back to GFP_NOFAIL vmalloc()). This has made
-> kvmalloc() more performant and better behaved for -all users-, not
-> just XFS.
-> 
-> This is not sustainable - we need compaction to be robust and
-> performant in the face of high-order folio demands, regardless of
-> what subsystem is generating the demand.
+>=20
+>=20On Tue, Jun 23, 2026 at 09:59:45AM +0200, David Hildenbrand (Arm) wro=
+te:
+>=20
+>=20>=20
+>=20> On 6/23/26 09:41, Hui Zhu wrote:
+> >  From: Hui Zhu <zhuhui@kylinos.cn>
+> >=20
+>=20>  KCSAN reports a data race between page_to_nid() reading page->flag=
+s
+> >  and folio_trylock()/folio_lock() doing test_and_set_bit_lock(PG_lock=
+ed,
+> >  ...) on the same word from another CPU, e.g.:
+> >=20
+>=20>  BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio=
+_gfp
+> >=20
+>=20>  The node id occupies a fixed, high bit-range of page->flags that i=
+s
+> >  set once when the page is initialized and never modified afterwards,
+> >  so it can never overlap with the low PG_locked/PG_waiters bits touch=
+ed
+> >  by the folio lock path. The race is therefore harmless: page_to_nid(=
+)
+> >  always returns a consistent value regardless of how the read
+> >  interleaves with the lock bit ops.
+> >=20
+>=20>  Wrap the flags read with data_race() to tell KCSAN this race is
+> >  intentional and benign, consistent with how page->page_type is
+> >  already annotated for similar packed-field accesses.
+> >=20
+>=20>  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> >=20
+>=20How did you discover this?
+>=20
+>=20A syzbot report? If so please include Reported-by, Closes tags.
+
+This wasn't reported by syzbot - it was found by our internal
+fuzzing CI on a KCSAN-enabled build of our downstream tree (based
+on v6.6.121), triggered by a multi-threaded mlockall() fuzz
+testcase.
+There's no public bug id for it, so Reported-by/Closes don't
+apply here.
+
+Best,
+Hui
+
+>=20
+>=20>=20
+>=20> ---
+> >  include/linux/mm.h | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >=20
+>=20>  diff --git a/include/linux/mm.h b/include/linux/mm.h
+> >  index 485df9c2dbdd..122d3b39369f 100644
+> >  --- a/include/linux/mm.h
+> >  +++ b/include/linux/mm.h
+> >  @@ -2296,7 +2296,14 @@ static inline int memdesc_nid(memdesc_flags_t=
+ mdf)
+> >=20
+>=20>  static inline int page_to_nid(const struct page *page)
+> >  {
+> >  - return memdesc_nid(PF_POISONED_CHECK(page)->flags);
+> >  + /*
+> >  + * The node id occupies a fixed high bit-range of page->flags
+> >  + * that is set once at page init and never changed afterwards.
+> >  + * It cannot overlap with the low PG_locked/PG_waiters bits
+> >  + * that folio_lock()/folio_unlock() concurrently update, so
+> >  + * this data race is benign.
+> >  + */
+> >=20
+>=20>  Do we really need this excessive comment?
+> >=20
+>=20Agreed, just delete it. For a trivial benign data race it's a bit muc=
+h, and the
+> commit message can cover it off for those who are curious.
+>=20
+>=20>=20
+>=20> + return memdesc_nid(data_race(PF_POISONED_CHECK(page)->flags));
+> >=20
+>=20>  In memdesc_zonenum() we use ASSERT_EXCLUSIVE_BITS.
+> >=20
+>=20>  Can we do the same here inside memdesc_nid?
+> >=20
+>=20Also agreed
+>=20
+>=20>=20
+>=20> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> >  index 69daeeab7fe8f..76d3bb54be844 100644
+> >  --- a/include/linux/mm.h
+> >  +++ b/include/linux/mm.h
+> >  @@ -2290,6 +2290,7 @@ int memdesc_nid(memdesc_flags_t mdf);
+> >  #else
+> >  static inline int memdesc_nid(memdesc_flags_t mdf)
+> >  {
+> >  + ASSERT_EXCLUSIVE_BITS(mdf.f, NODES_MASK << NODES_PGSHIFT);
+> >  return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
+> >  }
+> >  #endif
+> >=20
+>=20>  --
+> >  Cheers,
+> >=20
+>=20>  David
+> >=20
+>=20Thanks, Lorenzo
 >
-Because a) compaction works only when there are enough free regular pages
-available, with nothing to do with shrinker directly, b) both order and
-gfp are checked in in_reclaim_compaction() in addition to checking
-__GFP_NORETRY and costly_order in __alloc_pages_slowpath(), I think
-individual shrinker can have more option by repeating similar check. 
 
