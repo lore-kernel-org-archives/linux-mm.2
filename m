@@ -4,117 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39ECECDE000
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 22:15:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 157A1CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 22:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 988F86B0088; Wed, 24 Jun 2026 18:15:37 -0400 (EDT)
+	id D23EA6B0005; Wed, 24 Jun 2026 18:25:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 939DD6B008A; Wed, 24 Jun 2026 18:15:37 -0400 (EDT)
+	id CFC016B0088; Wed, 24 Jun 2026 18:25:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 802E86B008C; Wed, 24 Jun 2026 18:15:37 -0400 (EDT)
+	id B9D0E6B008A; Wed, 24 Jun 2026 18:25:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D7126B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:15:37 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A49C71C327D
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:15:36 +0000 (UTC)
-X-FDA: 84916213872.14.5F63F69
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 60FDB140018
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:15:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pgkxISqk;
-	spf=pass (imf09.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782339334;
-	b=H2Xp0A3nPYf0jV9HhtWnJyQLuHLSU89glwv0caD/8hr6mMNvFbpoWk5c2AfTa2Oq8xVbuh
-	9CH6b+yEKtt497249WkT7YQOjynE106KDaG/EW463SAM305HuC5DRU7jvjhU7++FwXSUIM
-	reS9dLdQvT6k7gvYHmHEffMZmJEqmj8=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782339334;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 882C06B0005
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:25:50 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DF2E51404EE
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:25:49 +0000 (UTC)
+X-FDA: 84916239618.16.746DA2A
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E9E8F4000B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:25:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QNhmJw0j;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782339947;
+	b=kU++WEwxJTBlNl4M9SpAZ5QD7WGTXKcpZDzTHCVKl+reTzPvSnohpFZgDDjn3qWtZNmI9L
+	oYSPqTg4NYBo+M4ATiy5XWDI7r/J+xaBC4bYb0g4miEcA+blaBaFGQAmGKvO/u58bYn2D3
+	QYb20/VH+YhnqkfmRqHTspKVASK87mA=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782339947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JTved+2n5OUgjpOg4aL+yVrwBIU3TvLKdoqzJjN5hf0=;
-	b=JqgL5CGH55eduAsTtjJ1QlRu1NvLD3C7Z86ice9ZdVLpm88ZSfplTNvuuzbEhHAS2L9JV7
-	rTJzBkoC9IoEbrfaY5S5pPtR0lM6tqmQM5rwIXqHvYK2m8Y2VWHVgmZ72Awi6xPcuN0q+c
-	Sag9ZcHryHj2YD8eBUdUOIOu/QUUO3Q=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=pgkxISqk;
-	spf=pass (imf09.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BCE81713;
-	Wed, 24 Jun 2026 15:15:28 -0700 (PDT)
-Received: from [10.57.27.206] (unknown [10.57.27.206])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4FCE13F836;
-	Wed, 24 Jun 2026 15:15:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782339333; bh=Zy6wS1CmTg71IZaipoH1Pua6+GxzQf18bdCRG9CVKh8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pgkxISqk+UnvbctXNJ7fahDtPBCViPNfu0FOGoLRACNCDY+2+edt1Ym7Q6jZaU5eF
-	 xZ6UIQ/RZcCBaoh+OHuhGqoeenQ+VSPHAeXKNHOVzovazo/PC8I28EO/mXIuBNRPkX
-	 mZUMOdYfgk0kHLRkc5ilHe6ukNb/Ts7PF+8JQzT0=
-Message-ID: <1ec93c21-5831-4b18-b6a1-3e429f58c1fd@arm.com>
-Date: Wed, 24 Jun 2026 23:15:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 15/46] KVM: guest_memfd: Call arch invalidate hooks on
- conversion
-Content-Language: en-GB
-To: Ackerley Tng <ackerleytng@google.com>,
- Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org,
- jmattson@google.com, jthoughton@google.com, michael.roth@amd.com,
- oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com,
- steven.price@arm.com, willy@infradead.org, wyihan@google.com,
- yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
+	bh=RU91htVYuTl4zBdXuu6mQj5pUyKWdyfCeWXJbQ/VXGM=;
+	b=sWYffw3s9UrY0c4I0IG1nbHPlk07g/oBdIc4HlvF50TMloxdZSCHgPMUNfrCBklDE6utis
+	TZFGLy0jXnYY3JSyNTvdc1Hg+aDUjQs42FZ7XYP/PqsUMeveQGplSD/Ww9mQKHGieqYiuo
+	KH8IaVswIae1gJY/3oT/aV3xkpG76wo=
+ARC-Authentication-Results: i=2;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=QNhmJw0j;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf17.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1363fe80fe8so3137608c88.0
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:25:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782339947; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EY+6gNyz9GpXKck/pEo5Y+inTRspT6klT7rLqFyRwNgEUyrH7ffKsb5qv6gJxINcD2
+         6H4Wyanv0iQ8SkQOKSVas8o3IwczWcTW8QciQjfRmLwYYVD4nKnCJwhqhpyuqcy7B/QU
+         6rD2R49L+KH1wsB2R1vaVeatejGry5Nr6xMycs4lV3KbqEzCTueaK0TVtJuEj57eXyxC
+         cqEuV8njtqTou44xAbEN8m/S7YhLXVo03gajd++bR4hHGUvu3gHDBpMkdmJVCgFeT7TH
+         y1Xp6sAeOJdgUYoBWQe2fPEvsZL7ZH6UCSpGMPARJOVc7hh8plKrEJtFXzAB4nXeZOxV
+         GZyg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=RU91htVYuTl4zBdXuu6mQj5pUyKWdyfCeWXJbQ/VXGM=;
+        fh=GQ5K2jEk9UXksRjcJl0KPndN9pDRJqVmvgpv6Ddngu0=;
+        b=c4TZEcKhztB7Rl9y++9Ql+xw03h/545f32OCRq8zYvkE9K+oOBCSBp23WUu1XPkxLm
+         wA65urzZgVbfKLsyZBIOvzFcIW82DU4qGLXPibF9frSr6AtTwGeg+LQTzErkru5bzNAw
+         lx+i1BIVx1bQhUTXKeZx+BY16HHtUfyg7WCMoqqTygkiFKIVYWrvPEvb+Y6bUpynVPjA
+         xnYcs58OU0jVBntrNAmoVjqcINCYr8FgTJ7MB52jTvwaeIPu7r2TPo3oP+ExI7pL5TMq
+         M3ay5UwzuDnLkCrzctjb9wsYrUpJIoRoV8Cuaw17eCbNPS3Y3lzllvpbUUuBOa7qiNlF
+         Q8wA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782339947; x=1782944747; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RU91htVYuTl4zBdXuu6mQj5pUyKWdyfCeWXJbQ/VXGM=;
+        b=QNhmJw0j64rAjq+eF2l8K6bV/Td0pfZnO1G1VqwtWyp51uYBEwktJL45Se285ELOdH
+         X9PE4/KG+0FLeICkNxebw/SikRoRz+l1W2TjSsvCmsiUyFV92nZ58d4XcohN1nMWBHfE
+         y2rj0ncsW49gaoEwVh2CP2y4Cert8OCPw+verPcTs6ci8B0bhC1U3YhZH8Sd95rsdcWC
+         YG7b78ghf2GtYXHVkYSNTxcbFkFjyooNFtUlYikT3ae65akWtvLdFUg2moUcjbqmBnXC
+         W1Ztyz+guPCPmUZPeJlumW10htWARylUFr1xDa0OnwtKwxaWMPd5jQZXwPrYfHz1i3ZP
+         SFdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782339947; x=1782944747;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RU91htVYuTl4zBdXuu6mQj5pUyKWdyfCeWXJbQ/VXGM=;
+        b=Z1/Gbw/NCev2WTs2S2VkdeqofwOut3Miau+xwN6kPFkDp6eVN1daGnZqeO6N0r/Vni
+         8YZp0YOqcQXOdKC/PZHCafDYkSOzyon4z5f9GnXrN/uQ5YOq8W0euH9GMMoY4na2IxAk
+         k/mSDQGRnrg6ThnyGrCkjyJKcS6P4PUZl7UvDW9f1O1aaSPJGMgyBe8Rk2DxIqh4hXRK
+         rnhJKiMoVtwpXeTLK2ov/SqashStg/KK7E89Z1JmkkZ8GHXPFbhCf9z0iS1QY2SEaI9B
+         eBDgwmzZwM4teHKNcwpU3WfZBzx+oUlCxf5GQb9DRKHQ1dZlem3PppCJbFb73F35xOo+
+         lflw==
+X-Forwarded-Encrypted: i=1; AFNElJ+vebOBoo1CPvpNAR9zJW5g95WN5vueko8/ExA9eQ/ZttMelzZ0Zc/fXJlnxxsEdUd0+2d2B357dw==@kvack.org
+X-Gm-Message-State: AOJu0YxtA+oy1DN77bZXaNAHMpzN5oK/4cJyg/rMfcS5FU69ZA0UBmfh
+	lA0QmWwBPYBgY6YzxRvv1346MyQDs/Dw6RzAI/BwZHn1E1h9MSzAHdsX2bjtK5RthJhS/xZsx/3
+	tM9hD0rHypN+I8nKU0jEp2G5OT/GpNJr/ACl8WB62
+X-Gm-Gg: AfdE7cmOQRSjc3Ac8PDKevBhjzVavI0+ZqDLquO/ob+W1ow5flUfdv5w6rIVoNV5+BV
+	jKE+EvTcQ5HAOfOwUeYx1aqLt84/ChrbAwNfW/mo1bgTDm9wVoujSusBFDVgM5DTcWMyGEP78Mi
+	qO8qvfeDWsVb1jM3kSp67nMuVn+STWvL2MAnaPLTgBcdy4MOISja+hjPNciCuWcYyVelDD1P5u3
+	8SO9iSLJaHw1NCtp2DmIdvkOCGkrTdxQaklzGjdIJGFt34p+uBTERIDhG6Lor+7z8cmjWeqUNY7
+	fS/hBq6hkdp9pnXUmtIFGW9y7qnpjXELJ+U7r9sdubahRDXTlBhtmchTnyJE3c6WmnLj2w==
+X-Received: by 2002:a05:7022:906:b0:137:e6a9:b998 with SMTP id
+ a92af1059eb24-139d0c99607mr4114854c88.31.1782339945380; Wed, 24 Jun 2026
+ 15:25:45 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 15:25:44 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 24 Jun 2026 15:25:44 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ajwMYCSrPlxg-Fok@google.com>
 References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-15-9d2959357853@google.com>
- <CA+EHjTx+3U++dnhGEkwh2SO82xMugAvvJ9ee1O__sxZCKL_X5A@mail.gmail.com>
- <ajneQVLriUshjFIO@google.com>
- <CAEvNRgGX3GkazCWM=6y9YLgn=YemXuG==Oo+L58cac1Fd86_TQ@mail.gmail.com>
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <CAEvNRgGX3GkazCWM=6y9YLgn=YemXuG==Oo+L58cac1Fd86_TQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com> <ajwMYCSrPlxg-Fok@google.com>
+MIME-Version: 1.0
+Date: Wed, 24 Jun 2026 15:25:44 -0700
+X-Gm-Features: AVVi8CexQH0jh1eCpdBx_tPh-SkjHNyZ1QVX7X8uuwzX2_PG5elQvyIsXuHuijg
+Message-ID: <CAEvNRgE8HZDOnexMJeim6TjmxGG1AUXFY2+HH1YyKB=aM6D-DQ@mail.gmail.com>
+Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+To: Sean Christopherson <seanjc@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: kbmndesyp5x6bxm8dmneq8f8d653icwk
-X-Rspamd-Queue-Id: 60FDB140018
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782339334-979203
-X-HE-Meta: U2FsdGVkX1/4t3/xOv4twAHvP/qT4jptdYX7GG+ZmoeD+RNvOD/dIz41fgJRznEHFUeifOji4ZsNsQKTO/OPnuKrb71gdLzeQnhVTLhI5pQMkr+EBH/l9e58BWT164CFFso5s87Bpz3XncB5Niz9km68AlP+hIePtxQynALpRUltmH3yfxYGPMCrn8Qj9CIG2dZv0IGvvALoWOjEk6fq7516wDBFucXe6xrAZLaqlIDS9gQVBqocd76pt5KAmDkPY/jAIU/wdnFpiuhrsObrdTWKQpMAXNo29vuxi8PhESdlkPryDnzqiYj3pODhSK1ggXU4w9WEMJBEOkWZbbo1S+r2AJXJw+XscIyn39kFIoAOogu757+i9NuxAwu6qLHK0ZtUIf4qD9diocT1dKYjb0mh/n6QkV+HKB+49cs6PyhAopr2XjP6RjuBXcziWkAo3ZHpESGW4x0/Z6sgpSwNGy8zm4InmP0XKEsVB8ykePsRRpC5ZnwXRnsXA9tXMHLTNtvZ1s+06ltlbuvFD1NGPLdae2kLfyf24kHc68inUTgdAlKo4IpkyuDvUCUWAerzZXF4yEFVsIi8wai1gzAh8SRKkIVOIS4qjalSHzdz6x2WiHFX8S9hQWJb1dy31LQMt9pR5PEkt1+71cNPMzlN/FjDXh+uco/HlxmADzgUHtYqjy/ZU8CYOlQMswn7wvH7hNUPTldzO9DB8VMAYpcAj+cVf48gu7LRpTsBAGdZFvnoDeV8m40wPIcqSm1GtsTp1E7+tNeDvWJlJQt6MvCoRRXceCyajr6zLwA1hoHkRcbIrjfVWIDwKGpkakFYDAgQ2eZgBJ/ybYD6LEVxAWHBnB+XlEaqWRxMnYr1zYOoOLRwJgLUJuza/UAgPKcTADDQPS7LfjiPMyTt6RqXpwO0xY4/ESaOi6ADPvzJQ2vbQP5/MduDcGD9o+31KZzpsKzbBFrU9nwgNuUcedAYnWB
- gpg+4L9A
- gNZ8jX0OVS9UcUIk9XfceUe3rp+VZ5zrxwtTk4q+TAUoLQEp9UWEAHVTRFZKte7eBTly0vuSJoMYVHNJy4rVX5iSxBRsSVUnLfXN9G7cUXc43gTMw811iQbK70SCB/vDF3dLkpsa1Lhg1XPYsY60uxi8Jv7oUJgjbiXCSD8iZhtZo6X9soj3oskbUAG8r7BEASkCnx3abF43sMOfeSnfK/dfJEv/kyLw3jnNRaRw92uu+031mTNtJQr9EirrJQw7E3iXbeAXPSgPbXNEmkfy+wHmi2hc9sBTrkdEzEPiHFUEhDX6t9LFiY0peU6U+ZIGXMUzYmfbbx7yyWjw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E9E8F4000B
+X-Stat-Signature: mojk75hqkd1d7y5s4e7odbquoqgg6d18
+X-HE-Tag: 1782339947-856728
+X-HE-Meta: U2FsdGVkX19tQwvHuaJn9uNkWPLY9A9aBoWyi1eRnuRI31QjKDtWdppZy2Yio0FxaHUibpeqHHYP+vqbhukR/hYHbXzEZiEBWjbV6OTp7S2nPhnxXagNS/1hof93gAftrseElotyLuh6AIzkalun3kSA4FqYRrWfO4CQDOJOcdgifsbG41aicy0HU8kF9tZCrw8wk74QiRGIwoTt1xL8HBKDd43NkaO+OtG58rXJkrqfP+Nt7ZD1+qhKD+KLcEUrxOxLs+wodJ1q2aYvif8RL/y1S4lOPtaL5ytuaPbxBeAbgGPeUuydVgFyQa/tzIgTdNkjOS92rcW37w0UeWrhPrwqgEtovSN6yExTnyrzVLVPo+MDJwLC61+vE48urfCrbAK9Dx1XEoSDChf2Pv3zJsHx/scBuCZEEhFeH6XlGs/N35tzRdWvDmq8pRobLr+DlkbHD6LvvMUR9qn2Aywr8dVNBfflPokeCBScVHIUGj14ygEvFltlDQ0qdZK12c9eGJoRc2MrkPGl5AZOwkyfd5lzMAkuNHgob4wNvHExaRP1KfO87wSQs4+SuA+3tXhPuhMDibwe5cPXaOl8VI7/xhC5M0Tq49dOwlbIc6KydLj7zGwjTL6WS1sv8rNNYHi+ynSDvykaXIuverZXXSCxPqeai4Ry/IWXaxJ2FpIh9m3umz8qRE8v/LVHj2LEEIfiKbByBC56Oe96h00muLX95KvAQk/s2nCTxtmivSnlAGVIBSnUukprrQXxflYW18FSQ+WLoNPUGqCM3O3xSixjHSEb6w19g7gm5wNGwRi7iyYKkRDZGuukQXjv+JX/gIzPuQ28UKgATzqlGnCnN6oDHuYhRG9oIXTQIBE3bJ8dF7RjKgUbDJ6/onIvT7IR0sgrugDYhK1yXo/Gxb8Zg+PBR6dJ7NsStyLsVBGsptv59Ai1AdXdZi8rVD+TRC5LJIprCm2z3LdgS8zkMxP51Z5
+ RDqIB6ai
+ BKB1MdzwyEWprNT+m6DWcDjU6b4NDgvpty8bdP4CqmV7/fPbiksvaMJCm2DX0Sk4q4XlD8GfhrkXV6iiWnIHWSpkrHT3PWZCNU1nm5CHAo3O+jW46pFUdhCe62Ulbf+3zXy9YuO1nxI+FkyXNOxF4cXooUKM8liAqyoXfmhbuqlMR3IShkihPPNBfMY2StWrJcBPiKCGR61fQsMGlOYAPpFJuYXokpyIfljmIqiyioQhbFZtyc6PK0P3OvCVw9PKNXTdMbrdwpEg6gz4ZXCrqrkvSuqKuwpS5TnNrUR3pEhefRbnJ5V4rcS8cy8ed8nFSPWMC5Ntok/weyO6pku1NiMGTvflGeiR+cntezMGSm3LlRPwPn7s4yLiH6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,254 +165,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24/06/2026 18:46, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
->> On Fri, Jun 19, 2026, Fuad Tabba wrote:
->>> On Fri, 19 Jun 2026 at 01:31, Ackerley Tng via B4 Relay
->>> <devnull+ackerleytng.google.com@kernel.org> wrote:
->>>>
->>>> From: Ackerley Tng <ackerleytng@google.com>
->>>>
->>>> When memory in guest_memfd is converted from private to shared, the
->>>> platform-specific state associated with the guest-private pages must be
->>>> invalidated or cleaned up.
->>>>
->>>> Iterate over the folios in the affected range and call the
->>>> kvm_arch_gmem_invalidate() hook for each PFN range. This allows
->>>> architectures to perform necessary teardown, such as updating hardware
->>>> metadata or encryption states, before the pages are transitioned to the
->>>> shared state.
->>>>
->>>> Invoke this helper after indicating to KVM's mmu code that an invalidation
->>>> is in progress to stop in-flight page faults from succeeding.
->>>>
->>>> Reviewed-by: Fuad Tabba <tabba@google.com>
->>>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
->>>
->>> Coming back to this after working through the arm64/pKVM side. My
->>> Reviewed-by here is from the previous round and the patch hasn't
->>> changed, but I missed an implication for arm64.
->>>
->>> kvm_arch_gmem_invalidate() is now called from two paths with the same
->>> (start, end) signature: folio teardown (kvm_gmem_free_folio) and
->>> private->shared conversion (here). For SNP/TDX that's fine, conversion is
->>> destructive anyway. For pKVM the two need opposite content semantics:
->>> conversion must preserve the page in place (same physical page, the point
->>> of in-place conversion without encryption), while teardown must scrub it
->>> before returning it to the host.
->>>
->>> The hook gets only a pfn range with no indication of which caller it's
->>> serving, so arm64 can't give the two paths the behaviour they need. It
->>> would help to signal intent on the conversion path: a reason/flag, a
->>> separate hook, or not routing non-destructive conversion through the
->>> teardown hook.
->>>
->>> arm64 isn't here yet, so this isn't urgent, but the hook is gaining a
->>> second caller now, and it's cheaper to leave room for the distinction
->>> than to change a generic contract other arches depend on later.
->>
->> Crud.  It may not be urgent for arm64, but it's urgent for other reasons that
->> I "can't" describe in detail at the moment, and even if that weren't the case, I
->> think we should clean things up now.  More below.
->>
->>>>   virt/kvm/guest_memfd.c | 41 +++++++++++++++++++++++++++++++++++++++++
->>>>   1 file changed, 41 insertions(+)
->>>>
->>>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->>>> index 433f79047b9d1..3c94442bc8131 100644
->>>> --- a/virt/kvm/guest_memfd.c
->>>> +++ b/virt/kvm/guest_memfd.c
->>>> @@ -607,6 +607,42 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->>>>          return safe;
->>>>   }
->>>>
->>>> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->>>> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
->>
->> Not your fault, but kvm_arch_gmem_invalidate() is badly misnamed.  It's not
->> "invalidating" anything, it's much more of a "free" callback, as SNP uses it to
->> put physical pages back into a shared state when a maybe-private folio is freed.
->>
->> As Fuad points out, (ab)using that hook for the private=>shared conversion case
->> "works", but not broadly.  And it makes the bad name worse, because it's called
->> from code that _is_ doing true invalidations.  For pKVM, it may not even need to
->> do anything invalidation-like.
->>
-> 
-> Thanks, I also didn't like the naming of kvm_gmem_invalidate(),
-> especially when conversions also calls
-> kvm_gmem_invalidate_{start,end}() and those do different things.
-> 
->> To avoid a conflict with patches that are going to have priority over this series,
->> to set the stage for arm64 support, and to avoid avoid bleeding vendor details
->> into guest_memfd, as if they are core guest_memfd behavior (only SNP needs the
->> "invalidation" on this specific transition), I think we should add an arch hook
->> to do conversions straightaway.
->>
->> Unless there's a clever option I'm missing, it'll mean adding yet another
->> HAVE_KVM_ARCH_GMEM_XXX flag?  Hmm, especially because IIUC, arm64/pKVM doesn't
->> need a callback for this case, only the free_folio case.
->>
->>>> +{
->>>> +       struct folio_batch fbatch;
->>>> +       pgoff_t next = start;
->>>> +       int i;
->>>> +
->>>> +       folio_batch_init(&fbatch);
->>>> +       while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
->>>> +               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
->>>> +                       struct folio *folio = fbatch.folios[i];
->>>> +                       pgoff_t start_index, end_index;
->>>> +                       kvm_pfn_t start_pfn, end_pfn;
->>>> +
->>>> +                       start_index = max(start, folio->index);
->>>> +                       end_index = min(end, folio_next_index(folio));
->>>> +                       /*
->>>> +                        * end_index is either in folio or points to
->>>> +                        * the first page of the next folio. Hence,
->>>> +                        * all pages in range [start_index, end_index)
->>>> +                        * are contiguous.
->>>> +                        */
->>>> +                       start_pfn = folio_file_pfn(folio, start_index);
->>>> +                       end_pfn = start_pfn + end_index - start_index;
->>>> +
->>>> +                       kvm_arch_gmem_invalidate(start_pfn, end_pfn);
->>>> +               }
->>>> +
->>>> +               folio_batch_release(&fbatch);
->>>> +               cond_resched();
->>>> +       }
->>>> +}
->>>> +#else
->>>> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
->>>> +#endif
->>>> +
->>>>   static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->>>>                                       size_t nr_pages, uint64_t attrs,
->>>>                                       pgoff_t *err_index)
->>>> @@ -647,7 +683,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->>>>           */
->>>>
->>>>          kvm_gmem_invalidate_start(inode, start, end);
->>>> +
->>>> +       if (!to_private)
->>>> +               kvm_gmem_invalidate(inode, start, end);
->>
->> E.g. instead make this something like this?
->>
->> 	kvm_gmem_set_pfn_attributes(...)
->>
->> Hrm, though that wastes folio lookups in the to_private case.  So maybe just this,
->> assuming pKVM doesn't need to take additional action on conversions?
->>
->> 	if (!to_private)
->> 		kvm_gmem_make_shared(...)
->>
->> Actually, if we do that, then we don't need a separate arch hook, just a separate
->> config.  It'll still bleed SNP details into guest_memfd, but it'll at least be
->> done in a way that's more explicitly arch specific (and it's no different than
->> what we already do for PREPARE...).
->>
-> 
-> pKVM needs some arch guest_memfd lifecycle functions that
-> 
-> + for conversion, doesn't do anything,
-> + for teardown, resets page state (IIUC it'll be reset to
->    PKVM_PAGE_OWNED (by the host))
-> 
-> So I think we need different functions for those two stages in the
-> lifecycle of a page with guest_memfd? What if we have
-> 
-> CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES, which gates
-> 
-> + kvm_gmem_should_set_pfn_attributes(attributes) and
->    .gmem_should_set_pfn_attributes
-> + kvm_gmem_set_pfn_attributes(start_pfn, end_pfn, attributes) and
->    .gmem_set_pfn_attributes
-> 
-> CONFIG_HAVE_KVM_ARCH_GMEM_TEARDOWN, which gates
-> 
-> + kvm_gmem_teardown() and .gmem_teardown
-> 
-> SNP:
-> 
-> + .gmem_should_set_pfn_attributes = sev_gmem_should_set_pfn_attributes,
->    and sev_gmem_should_set_pfn_attributes returns !is_private
-> + Rename .gmem_invalidate and sev_gmem_invalidate to *set_pfn_attributes
-> + .gmem_teardown = sev_gmem_set_pfn_attributes
-> 
-> TDX:
-> 
-> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES
-> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_TEARDOWN
-> 
-> pKVM:
-> 
-> + Disable CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES
-> + .gmem_teardown = pkvm_gmem_set_pfn_attributes
-> 
-> Suzuki, does this work for ARM CCA?
+Sean Christopherson <seanjc@google.com> writes:
 
-Yep, that works for us. For CCA we would :
+> On Thu, Jun 18, 2026, Ackerley Tng wrote:
+>> When checking if a guest_memfd folio is safe for conversion, its refcount
+>> is examined. A folio may be present in a per-CPU lru_add fbatch, which
+>> temporarily increases its refcount.
+>
+> Under what circumstances does this happen,
 
-+ Disable CONFIG_HAVE_KVM_ARCH_GMEM_SET_PFN_ATTRIBUTES
-+ Disable CONFIG_HAVE_KVM_ARCH_GMEM_TEARDOWN
+It happened 100% of the time in selftests. Perhaps it's because in the
+selftests the pages are almost always freshly allocated and so the
+lru_add fbatch isn't full yet? (and that the host isn't super busy so
+lru_add fbatch doesn't get drained yet).
 
-In the future we might utilise the gmem_set_pfn_attributes call back.
+I've not tested without this beyond selftests.
 
-Thanks
-Suzuki
+I don't think we can depend on workloads to drain the lru_add fbatch?
 
+> and what alternatives are there for
+> userspace to work around the issue?
 
-> 
-> This way,
-> 
-> + The if (is_private) check doesn't leak SNP details into guest_memfd
-> + .gmem_make_shared doesn't stick out without a .gmem_make_private
-> + .gmem_set_pfn_attributes, .gmem_prepare and .gmem_teardown are aligned
->    conceptually as lifecycle hooks
-> 
-> + I think the private/shared check for prepare can also be folded into
->    preparation.
->      + Preparation perhaps doesn't need a should_prepare equivalent since
->        there's no iteration and getting the gfn is just doing some math?
->      + In another patch series?
-> 
->> E.g. this?  There will still be a looming rename conflict, but that's easy enough
->> to handle.
->>
->> diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
->> index 9ce5be7843f2..8aead0abd788 100644
->> --- virt/kvm/guest_memfd.c
->> +++ virt/kvm/guest_memfd.c
->> @@ -648,8 +648,8 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->>          return safe;
->>   }
->>
->> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
->> -static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
->> +#ifdef CONFIG_KVM_ARCH_GMEM_FREE_ON_SHARED_CONVERSION
->> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end)
->>   {
->>          struct folio_batch fbatch;
->>          pgoff_t next = start;
->> @@ -681,7 +681,7 @@ static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
->>          }
->>   }
->>   #else
->> -static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
->> +static void kvm_gmem_make_shared(struct inode *inode, pgoff_t start, pgoff_t end) { }
->>   #endif
->>
->>   static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->> @@ -729,7 +729,7 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->>          kvm_gmem_invalidate_start(inode, start, end);
->>
->>          if (!to_private)
->> -               kvm_gmem_invalidate(inode, start, end);
->> +               kvm_gmem_make_shared(inode, start, end);
->>
->>          mas_store_prealloc(&mas, xa_mk_value(attrs));
+The thing is, the refcounts don't come with a label of who added the
+refcount so we can't really return a different error for lru_add fbatch
+presence. All folios get added to the lru_add fbatch even if they're
+unevictable and eventually not participate in LRU.
 
+We could make userspace try fadvise(POSIX_FADV_DONTNEED)? I think that
+has other problems, and this kind of makes userspace have one more user
+to guess. Userspace already needs to check if the page is pinned for
+DMA, and if it's not pinned for DMA, userspace already needs to retry
+because of other possible kernel users...
 
