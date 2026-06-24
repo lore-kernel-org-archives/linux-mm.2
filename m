@@ -4,86 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F0CCDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 555BCCDE002
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:23:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0868A6B008C; Wed, 24 Jun 2026 10:23:17 -0400 (EDT)
+	id 4CC986B0098; Wed, 24 Jun 2026 10:23:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 037596B0092; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
+	id 4A46A6B0099; Wed, 24 Jun 2026 10:23:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E699D6B0098; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
+	id 3BB376B00AF; Wed, 24 Jun 2026 10:23:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BB7BD6B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:23:16 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5929B1A032E
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:16 +0000 (UTC)
-X-FDA: 84915023592.07.CD85DEB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7BD1618000B
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:14 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1185B6B0098
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:23:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8267A120195
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:30 +0000 (UTC)
+X-FDA: 84915024180.01.E06543B
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7FBFF18001B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:23:28 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9lupM8B;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C5WHhDy7;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782310994;
-	b=Rfa9UANJjYLPtvDHOsqMCSXIOqMtkQpFHJ8beTRSMyfRXfCSW+Cj/Qjjek8/h5Kgs0z2jA
-	RdE9MrqLF9yoSrCQi8rMmu1i649jv0q9v1NqQS5FJlEGvURbh9VK6iitaS2h8meG3SPJ82
-	QOZQZmsim5tMN6ok0Rx35cKQPrhfIb0=
+	t=1782311008;
+	b=066wpRjd8GOPLc2J1YRLI4fPNXfyWBwOllxL7gxulGUFk0FgP4DCOS2kXr+QX+ytcy4pmJ
+	aal4+IK6MlyKMzt3dF5IdOyNQSP8w7f7zklaAiLJnawAdDUVLkHAXA8ZqANMJ4VF96BZPp
+	Io7pcpksEnMarm4VloNQ4kj9ueYBQ0A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782310994;
+	s=arc-20220608; t=1782311008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WLMupxBZwRCVLTY4WQy1mEXLNBRM5yd9s6atKbpiNdA=;
-	b=Uow0u0+CgfYnMRyZBGwv/oSrkr4vAwVpbrMRa7hFDb110ATGZR7je4BycZ0+P6aE4MSclY
-	Z+d5VcsYx632vgB4WS+JQvgejgDnwUooSeVc7CT95YVz9ZK5Wd9dzMho8tsHtm1xVJQEzO
-	mZM+8q6M0Q2U5kxWaBJEai2aqXSk1p0=
+	bh=Per6MI6n5CBZ4jce2Yah0coKW3mXxHCaIKwWKmwmsgQ=;
+	b=QU4lOSSDpOswKlR1VTSNxlDtWmgsPZAQfUc6rY7m2LIWjbHrUtUl95RRn1ZZFbGF6MWc3+
+	h/dY0p5MEiUi9zVi1oSczQGlCQCxTYb7BrI51bxwhnGaSN1FwDvTZMu9q5Xjjb4MsvaKGP
+	c2zLJP5LjWrKFv5vu4y3WTjJLY+9lco=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R9lupM8B;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 06CA560018;
-	Wed, 24 Jun 2026 14:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2FD1F000E9;
-	Wed, 24 Jun 2026 14:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782310993;
-	bh=WLMupxBZwRCVLTY4WQy1mEXLNBRM5yd9s6atKbpiNdA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=R9lupM8BqHwWQQJwtSAxanv9TtiBCcbXoNuIy9jKW6PLooFAcWnTLJpMoUqpY5266
-	 gtW4PlqhNPp0r5p84RQtOAminT1CAE13dfKyhoRLTgOhjny7oRuNsHxlOgcVb37veZ
-	 r2bWDAyp6hvbq6l2OShzKnEnxTfVtDFzB7JilMpyUADoN7G94kO4S6W/yuUmV2fuTe
-	 0IeRxhHbpqCi5ciw4lC2MU8WOjXoPN7XGuV1/EziPbXkY0XDo+y+KnR1Iy21QZywgF
-	 r/wlqH3IOnsY6weKIp+63FTaDlZ0yLHwDCKO1wQ/KjNG1W1Kp0EeYPSlN4pbrjmftO
-	 kJZJW/l5P8Ecw==
-Date: Wed, 24 Jun 2026 15:23:05 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Xuewen Wang <wangxuewen@kylinos.cn>
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm: fix data-race in folio_batch_count()
-Message-ID: <ajvkK-vcVzgll2Tm@lucifer>
-References: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=C5WHhDy7;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-4629051c946so786348f8f.1
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:23:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782311007; x=1782915807; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Per6MI6n5CBZ4jce2Yah0coKW3mXxHCaIKwWKmwmsgQ=;
+        b=C5WHhDy7lRvhnToAzrYPxqGuV8zPPpoKMnXTKEZnAITwltyY3HLip5CELJmL7S3bWr
+         fO6zd14PLUn+3kmxR9qqA6+WEwa2u4gXhX9z+h4OlXmw0TAfaIJfgAw4xKGAS/YIWwRC
+         ZAFBZsMablnzg8lE/IISa5eZweVSsYrlySn4yCwPaXvffnMsPAKGpa6Eg4IgpxNBeg7U
+         OiAZ8TjQf2gAlzROU7mb7OIISShM2g9Jjmr6737EGLef+UHBL8EdQzU/gwmjLF5VffWC
+         B8OICnaPNeqCMd86o5VgK/6cV3sUY8n7nZQ5YSeYEjRZzCYCz8Tq+OYS9yhvhLfBjrjQ
+         bHwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782311007; x=1782915807;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Per6MI6n5CBZ4jce2Yah0coKW3mXxHCaIKwWKmwmsgQ=;
+        b=HD1ZmTTIpEIisjEKPIRaASiM357vwEJfb2l07ICceg3uQ3FaceoDxuxIIrIqfYaYql
+         x/5DBc63LHMjgp3COL8proMiFKJi5ySgP1lUL3uveVHSiE2Yt5oTGcoUTaeHXr7366ii
+         KhJ9AiIffzvrtKkm/8wkAQNc14W83IrwAV75R+1616HIV1OLul0+xFB9R9XwOWhpP2Yr
+         ooJkj1efz3YkbE6WbmQCB59SVJtn6JTjlNojqXmhGMd28iilKfQ2cw7kBTlA/z6XQHwx
+         OIPNbSbU5jcQeq56MvMzHumuqdBRHGhac1kWvr4S0MHjpteSgAT9vZd3Oo4hZhi7fJ4m
+         HlSg==
+X-Forwarded-Encrypted: i=1; AHgh+RoluOHGSjrqPSNFSM/G7LlUlPORxPpuyjC6jX07hVpW5gMvMRjCKEfs0h5CiMj5CCJhKIPSKvqa2Q==@kvack.org
+X-Gm-Message-State: AOJu0YxJVsRNeTS+kbpMYAEQb2QLrfG5mOoXJdemmxMmvcnMihNLpH8Y
+	j9i/cVxwOtqCG6EqwW+LJxpbMMfOd19hZwjGoMgJZtD+xp6iVrOoAPSU
+X-Gm-Gg: AfdE7cm5bL/i19XiFiCpzLIbKAW95UTSHt2d+L63PDrh0pQKb0pioRLVd6l74O256ng
+	i1pY/0Ok5ysSlf0y70kC6vRz69nsiXXOZ3ZeTu3LEzsLq+d0rJAQG1/tA2Y14PXaeD7X4xYYvqc
+	u8lpZHBoNxZwRuDMIREI6GHEyvsPPHlAc6/QZ1mWB7CcLs7lfGo8z443Wj1/ss+Yglsdpouvfg8
+	qrmxrRS4zyAkIqKRJQtxsgxJ5oYEvhuAF9u3DFqxvOtPP4bqSTK+/lKMKZp4ykgdqrYm6lb74SM
+	HTtpjf2K/QSEbvj4zHyCogdnD3f9mmmrXMJpDPfv+vZTme095er7Ri1wEqBHgxz604dRuGXay3e
+	W2JsGzwKY2o7UiqtxTWDfEnMZOfmrKyllOn6QUIxDr8TbXnhNVOJQZd9ZDmjSOUlOU5N7w7jLko
+	YSgaQhmVaT/FdJoZcFxwFj8FcuN+/fqvbMmXbhiMDwa50oDilPAQ==
+X-Received: by 2002:a05:6000:471a:b0:460:2e53:a6f6 with SMTP id ffacd0b85a97d-46d04583b35mr1261972f8f.12.1782311006854;
+        Wed, 24 Jun 2026 07:23:26 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c221d9405sm8183744f8f.22.2026.06.24.07.23.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 07:23:26 -0700 (PDT)
+Date: Wed, 24 Jun 2026 15:23:24 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Kaitao Cheng <kaitao.cheng@linux.dev>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Jens
+ Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Alexei
+ Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Paul
+ Moore <paul@paul-moore.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David Howells
+ <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>, Randy Dunlap
+ <rdunlap@infradead.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>, Philipp
+ Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, live-patching@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-pm@vger.kernel.org, rcu@vger.kernel.org, sched-ext@lists.linux.dev,
+ linux-mm@kvack.org, virtualization@lists.linux.dev, damon@lists.linux.dev,
+ llvm@lists.linux.dev, Kaitao Cheng <chengkaitao@kylinos.cn>
+Subject: Re: [PATCH v3 1/7] list: Add mutable iterator variants
+Message-ID: <20260624152324.3def88ce@pumpkin>
+In-Reply-To: <cf8467c7-b98f-44a5-9cf9-60b43b5da711@amd.com>
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+	<20260622040533.29824-2-kaitao.cheng@linux.dev>
+	<20260622094242.64531b9a@pumpkin>
+	<351a6b67-b394-4c58-aee2-88b6c8089ad5@linux.dev>
+	<cf8467c7-b98f-44a5-9cf9-60b43b5da711@amd.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 7FBFF18001B
+X-Stat-Signature: jjdh1o4topfbgtfoss11wpi1dexgwbt6
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7BD1618000B
-X-Stat-Signature: 5ratkpum7sttwp9ek1cohd7by537y4jx
-X-HE-Tag: 1782310994-88755
-X-HE-Meta: U2FsdGVkX18W9XOtvtKkdIban7EvjabvEahBcryYoDakDh83XQgAuKM1r4NtiyAAZTUf2jRj4XRbndCRa0LFdKaHVwfxXtRGOnwjDzJqojP0RZdGrWGlPWjvRA/fvZQSM8AhvAdwcfSZozGOss9k1+GQx18H28XeXqOKQterwX3vfvA5SmtkW2dxyutBlpaGtTiG3ZU+5amx66dNJCsicyGs7P07o/VWLRjzYUp5ZFlE/mwLNRvdTHGH5OCPTvZkkt5iHr+TMuMFHtzq4MKDiuGA/XMnVPNrtC8hkOfmq0AahkMUAIxaXV9acN0jX+cetVDqWBztj/XiZ+5NbQWQnbYCAGNqCX2I6H8OoayNS+DgqUOg5jf+QC6RIXOQSGGuObkVKFP8PAEk4Lezjmrr5maDmSMzhRLKMO+RKyNwMMBSIQ+keN58z5D+Vz1ZraIZ41+UfCnJoqNWi+XkTgF9PIEGohj16BDAz6+dqWMOKsweiK8D7bVZwK0JqO2QqfTHvPSa2/Oiz2tqJaTLtdPsqO59eQEHFnKbfdfWegThAjsEzPzUhSCi/Hgb8hkHOCOgc1KB8DdaRySPAUHo3PLN/frHPaBOuaeo2e24V2v0cuM+3dCl54MgBuaoDkbCu30CLchLGzpUsleiY3H6Je8GTYkUDcFkDmzXkuzcj0PUkjyADuFWj6zfuYFj6Mdwwmd/BxqsZ/yaSDXE1CdiRuxbTn/3+c7fp7vX0ZR7hGzWD8KruQ7ZIPVOAsA4K2ryAbzk81zi+f+04mbFEWNFYD1b8S/9kOr3Uh6bub0foFD9qc3JeQ4FzxLkIOn/HbfUON40b0XOMSN4KfnlsfHIm/YIpayHBf2DxZDsuDlKNy69ujl/0MmohUFUH9ENbLV1Fp+H9CboIHPeK5oRf+AxljtGYEIVv2Y4jEaVM4fMVCjIh9+8vZYHbKs04uT6ZJqe09u7FEui2wA0ZUVmDDK7Jjp
- izwDBrai
- pPYJ37w+ZOT8FczsA3htpHqVn3RWtDRowzOT9vEikv+ua912L3J1CC/SB7Glfk8a+4X8/CKOfbOP2/rUPm2s23VZY1ktND5Cwl9G39RZ/UVLN/ZarWXj9VVKlFJkkO1nAq2xLqBei2glAXr0m1QL2/Mgmq0DQ1Ys3BR+VAdYCL69RYiLucVMOux28tjFvQO/lB/1fkpaxMsPc4yWW21mbotBYMwRNqjTKQD/femyCgiSpIbmd9Og48ExaGtzQf6mM3+NovxdWq3AICfc7aN1BFAKnLHQpkv06PM3oWamcV10upCU=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782311008-470846
+X-HE-Meta: U2FsdGVkX19pgrauXWktga/53X3oLvBEKUzSg0ue5GpgOMIgTulrbaGJzZbVgK3X4tFrbTAyzKPJnpDxuTSxp9o6GTFA9YgAobXPG95xe7rpIMU3ZgYvRiBEkn3YlVoOVvUZiY0Su8J6KOHXy6k1p1NNLUFm2fu65uArNfPgPv/qeQ98vrZAORyNHzwHHVIyN97t8nPgYd7kwTCPo/lDB5jtfldqiYqOhlcKmBuKDnl5jhVq6olMT2T1YN6C2gmxi7S4SKak8cOECu65XHxGZP8NbJnnrnFpXdsmySlX4r721tAyhOAKL7B2VK5UyMXk60nKPg4XPMVUFuS24AlYJWT+5dXOMOBM71csky2p+eXwDbOFtLZnHOmEMtjCouQaMzxIIHATQWZuw4Lcv1JW3vOpSigyjTWeksW+Q8J/GrG30tYdpIivNBSLtYmkw91QltljsFsB6Twol3mZAliq4UPDG8CYvwttkeZmINHW16XkkYbipbuc/bmOO5Yflvhw7XtRO+sOivxdLA3U3vFB4KM+oy62gFM+RqyfH/EBawgYLp3BOcn4F6Mw3ei7FecBDsLrK3zQamBlEbjk/4MX/BnQb00CrnaT/F657ozqXgpG5o2D5uCkUEAuGlIpcGV7VYAVhzs+87n4tbm6nQ/IL++NvoDBwfX96HGQxGRXZNwIayV6UQejgfcgu6R9AfuJHlJtYKftCwR+EdCNFuWpUkMHKYV5UtiLMNboIEouACF5MOQqB3/CjwruMUZ087cpAZwRgpu3sSJSZzdMiod3q4dF+Lay6E6xQFxpx3rmVZjmR6B9NQl0buDZIMQ+wz6vRqyfmAeR7epZZBrNBpWAzQ4G/lfYukhiLf3QaxhseWmmgI+DonO4E6ql9NU7Or42PmWoomSVEZ0M7t4UqeQ1oPy34W/nGt954+kFLp1mKYcVeTdeB5iqpHpzyLm/C1XXWOtuNlxy9rslbIRFebl
+ iPmznv3n
+ C2Q79hZjercD/yufna0xsyR/nVS7T+zo28vThlDJbAg18gy9pm8SPcmjp2oT7IFz3XYMfIKOMwcFEgqkQrh8glEBuinZg9/Dusfiw83HOwqygsV8UKgSIrgxqudRzJXnNvWUEIIib8rp5gWR5Bbm1hkxgfDZb2kv0awTWE6aodJO4+f/Mdig2JZn79MwaCMjhLOs2Wdh09m4MizpBHla9b/eIruZNNYKN6CKjqwdA3caFH0vf2wQnBOWBwa+jUOATWn9Hu1foRB9eSLc/7RdNP5Le0WBu9JJ2lc/c7l+fpngH3f5AWhWEj67e5qJ85K5rEceT4M1Yy92GuV8S8aIz8cuo65l1Wpg5cTWplo0kcldHVihm3nLssokqLQ3KtPiedVTJLpoVGp40X29bGQhOxrdn3FLXXLsBjnA/Vp6t3ghDbWi4aUGxoNlbuTk1xLmgvYJEiBhug5tIewsrKQhNSe+/vgTDuvIrt44R2rWaYLFCN5FsmRMM8A7+oYgD/LBSREkZTcDmc7uRMO4l2AHZAYNGNV8V7zlc+yJK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,81 +147,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 05:26:06PM +0800, Xuewen Wang wrote:
-> KCSAN reports:
->
-> BUG: KCSAN: data-race in __lru_add_drain_all / folio_batch_add_and_move
+On Wed, 24 Jun 2026 15:23:47 +0200
+Christian K=C3=B6nig <christian.koenig@amd.com> wrote:
 
-Where? A syzbot report? A local run? Please specify.
+> On 6/24/26 15:14, Kaitao Cheng wrote:
+> >=20
+> >=20
+> > =E5=9C=A8 2026/6/22 16:42, David Laight =E5=86=99=E9=81=93: =20
+> >> On Mon, 22 Jun 2026 12:05:31 +0800
+> >> Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+> >> =20
+> >>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+> >>>
+> >>> The list_for_each*_safe() helpers are used when the loop body may
+> >>> remove the current entry.  Their API exposes the temporary cursor at
+> >>> every call site, even though most users only need it for the iterator
+> >>> implementation and never reference it in the loop body.
+> >>>
+> >>> Add *_mutable() variants for list and hlist iteration.  The new helpe=
+rs
+> >>> support both forms: callers may keep passing an explicit temporary cu=
+rsor
+> >>> when they need to inspect or reset it, or omit it and let the helper =
+use
+> >>> a unique internal cursor. =20
+> >>
+> >> I'm not really sure 'mutable' means anything either.
+> >> It is possible to make it valid for the loop body (or even other threa=
+ds)
+> >> to delete arbitrary list items - but that needs significant extra over=
+heads.
+> >>
+> >> It might be worth doing something that doesn't need the extra variable,
+> >> but there is little point doing all the churn just to rename things.
+> >> =20
+> >>>
+> >>> This makes call sites that only mutate the list through the current e=
+ntry
+> >>> less noisy, while keeping the existing *_safe() helpers available for
+> >>> compatibility.
+> >>>
+> >>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+> >>> ---
+> >>>  include/linux/list.h | 269 +++++++++++++++++++++++++++++++++++++----=
+--
+> >>>  1 file changed, 231 insertions(+), 38 deletions(-)
+> >>>
+> >>> diff --git a/include/linux/list.h b/include/linux/list.h
+> >>> index 09d979976b3b..1081def7cea9 100644
+> >>> --- a/include/linux/list.h
+> >>> +++ b/include/linux/list.h
+> >>> @@ -7,6 +7,7 @@
+> >>>  #include <linux/stddef.h>
+> >>>  #include <linux/poison.h>
+> >>>  #include <linux/const.h>
+> >>> +#include <linux/args.h>
+> >>> =20
+> >>>  #include <asm/barrier.h>
+> >>> =20
+> >>> @@ -763,28 +764,72 @@ static inline void list_splice_tail_init(struct=
+ list_head *list,
+> >>>  #define list_for_each_prev(pos, head) \
+> >>>  	for (pos =3D (head)->prev; !list_is_head(pos, (head)); pos =3D pos-=
+>prev)
+> >>> =20
+> >>> -/**
+> >>> - * list_for_each_safe - iterate over a list safe against removal of =
+list entry
+> >>> - * @pos:	the &struct list_head to use as a loop cursor.
+> >>> - * @n:		another &struct list_head to use as temporary storage
+> >>> - * @head:	the head for your list.
+> >>> +/*
+> >>> + * list_for_each_safe is an old interface, use list_for_each_mutable=
+ instead.
+> >>>   */
+> >>>  #define list_for_each_safe(pos, n, head) \
+> >>>  	for (pos =3D (head)->next, n =3D pos->next; \
+> >>>  	     !list_is_head(pos, (head)); \
+> >>>  	     pos =3D n, n =3D pos->next)
+> >>> =20
+> >>> +#define __list_for_each_mutable_internal(pos, tmp, head)		\
+> >>> +	for (typeof(pos) tmp =3D (pos =3D (head)->next)->next;		\ =20
+> >>
+> >> Use auto
+> >> =20
+> >>> +	     !list_is_head(pos, (head));				\
+> >>> +	     pos =3D tmp, tmp =3D pos->next)
+> >>> +
+> >>> +#define __list_for_each_mutable1(pos, head)				\
+> >>> +	__list_for_each_mutable_internal(pos, __UNIQUE_ID(next), head)
+> >>> +
+> >>> +#define __list_for_each_mutable2(pos, next, head)			\
+> >>> +	list_for_each_safe(pos, next, head)
+> >>> +
+> >>>  /**
+> >>> - * list_for_each_prev_safe - iterate over a list backwards safe agai=
+nst removal of list entry
+> >>> + * list_for_each_mutable - iterate over a list safe against entry re=
+moval
+> >>>   * @pos:	the &struct list_head to use as a loop cursor.
+> >>> - * @n:		another &struct list_head to use as temporary storage
+> >>> - * @head:	the head for your list.
+> >>> + * @...:	either (head) or (next, head)
+> >>> + *
+> >>> + * next:	another &struct list_head to use as optional temporary stor=
+age.
+> >>> + *		The temporary cursor is internal unless explicitly supplied by
+> >>> + *		the caller.
+> >>> + * head:	the head for your list.
+> >>> + */
+> >>> +#define list_for_each_mutable(pos, ...)					\
+> >>> +	CONCATENATE(__list_for_each_mutable, COUNT_ARGS(__VA_ARGS__))	\
+> >>> +		(pos, __VA_ARGS__) =20
+> >>
+> >> The variable argument count logic really just slows down compilation.
+> >> Maybe there aren't enough copies of this code to make that significant.
+> >> But just because you can do it doesn't mean it is a gooD idea.
+> >> I'm also not sure it really adds anything to the readability.
+> >>
+> >> And, it you are going to make the middle argument optional there is
+> >> no need to change the macro name. =20
+> >=20
+> > Christian K=C3=B6nig and Jani Nikula also disagree with the variadic-ar=
+gument
+> > implementation approach. If we abandon that method, it means we will
+> > inevitably need to add some new macros. If mutable is not a good name,
+> > suggestions for better alternatives would be welcome; coming up with a
+> > suitable name is indeed rather tricky. =20
+>=20
+> I don't think you need to add a new macro for the specific use case that =
+people want to modify the next element of the iteration.
+>=20
+> If I remember your numbers correctly that is a really corner case and kee=
+ping using the existing *_safe() macros for that sounds perfectly fine to m=
+e.
 
->
-> write to 0xffff98fe74c015f8 of 1 bytes by task 45153 on cpu 2:
->   folio_batch_add+0x30/0xe0
->
-> read to 0xffff98fe74c015f8 of 1 bytes by task 45175 on cpu 0:
->   folio_batch_count+0x0/0x10
->   cpu_needs_drain+0x253/0x430
->
-> The write side is a per-cpu local operation (folio_batch_add on the
-> CPU that owns the per-cpu batch), while cpu_needs_drain() reads
-> another CPU's per-cpu batch without locking. Reading a slightly stale
-> value is harmless -- it only determines whether to schedule a drain,
+IIRC currently you have a choice of either:
+	define               Item that can't be deleted
+	list_for_each()	     The current item.
+	list_for_each_safe() The next item.
+There is also likely to be code that updates the variables to allow
+for other scenarios.
 
-Then why are we adding a READ_ONCE() in such a core helper?
+Note that if increase a reference count and release a lock then list_for_ea=
+ch()
+is likely safer than list_for_each_safe() :-)
 
-> and a subsequent check will catch it.
+list.h has 9 variants of the 'safe' loop.
+The bloat of another 9 is getting excessive.
 
-Where? Which check? Be specific.
+It has to be said that this is one of my least favourite type of list...
 
->
-> Use READ_ONCE() to annotate the read and prevent load tearing, which
-> also suppresses the KCSAN warning.
+	David
 
-Tearing on a single byte? Which architecture tears a single byte?
+>=20
+> Regards,
+> Christian.
 
-I think you're actually more concerned about the value being optimised out on
-assumption of it not being updated elsewhere right?
-
-But acutally you're not, because everybody else uses a stack variable or _their
-own_ per-CPU value?
-
-Only cpu_needs_drain() is the odd one out right?
-
->
-> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
-> ---
->  include/linux/folio_batch.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
-> index b45946adc50b..1e31e058e19d 100644
-> --- a/include/linux/folio_batch.h
-> +++ b/include/linux/folio_batch.h
-> @@ -53,7 +53,7 @@ static inline void folio_batch_reinit(struct folio_batch *fbatch)
->
->  static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
->  {
-> -	return fbatch->nr;
-> +	return READ_ONCE(fbatch->nr);
-
-This isn't free, you're breaking optimisations here by doing that...
-
-It feels like the wrong level of abstraction, but actually I think every other
-case is either stack or per-CPU _on its own CPU_ (please check), in which case
-we _can_ suppress the check here but I think best done with data_race().
-
-And see the kernel bug bot report, you need to add:
-
-#include <linux/compiler.h>
-
-Too for that.
-
->  }
->
->  static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
-> --
-> 2.25.1
->
-
-Thanks, Lorenzo
 
