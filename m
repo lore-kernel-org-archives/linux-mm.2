@@ -4,100 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F8D0CDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22E0ACDB47F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:25:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC8586B0088; Wed, 24 Jun 2026 15:24:48 -0400 (EDT)
+	id 036176B008A; Wed, 24 Jun 2026 15:25:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D52CE6B008A; Wed, 24 Jun 2026 15:24:48 -0400 (EDT)
+	id F287E6B008C; Wed, 24 Jun 2026 15:25:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1C9F6B008C; Wed, 24 Jun 2026 15:24:48 -0400 (EDT)
+	id DEFCE6B0092; Wed, 24 Jun 2026 15:25:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B4556B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:24:48 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D59758DF3F
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:24:47 +0000 (UTC)
-X-FDA: 84915783414.05.993BAA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E050A100003
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:24:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDbyk8rM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B47E66B008A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:25:15 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42C491C5DB4
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:25:15 +0000 (UTC)
+X-FDA: 84915784590.25.781D91F
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 0315F8000A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:25:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r4QcG6mh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eI4FJn9x;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09mNOUvu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+86KRCmp;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782329086;
-	b=LyNqh2Eesd2H+qMpTCvkqV172fDJCBfMzqAggyTvvoRFXHqLzLaYS/PFXh7NMV4INcJuhc
-	fU41u5qI/k5/TLVfwSh7ksF00aFCA/CsxWXIr4v4TNGaTcN672BJysV7TkM1iUC96it/NQ
-	zh2pnz8L5lPb/SanQ1/cnaslKo0/DlY=
+	t=1782329113;
+	b=t7XOkayotEsWLl0ZC5x/oTtFl2OXJ6N9C2cxIgfJvW/fsI/for40Uff4aOU5hDRtsiJFa2
+	DjKuFe66VGI7q1+6RiSE7RdSBDiw00lhNIu6bDpThSDVvH3uMz/tYUrUbmbHW0WuhJeMx7
+	sROMQi0Xgzqe5E5K4OA4zWu4PaeN90Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782329086;
+	s=arc-20220608; t=1782329113;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d27DgNQsN+CsnP9Zk8I5Mp+avnswqCUuCjEURt6x23c=;
-	b=Rq0oS9CtVzOblCHGNCpXYOuHnbCaFF7HVv5kIFabqDi8eVMsBNXhEZIutS8lQ+Sxprlqwq
-	2CMMVI9YBRpq2kj16MCi5LXK6wIRF0rlQNFTXUqLD6PlT+K7WGQNq9jf7ibpeNWckr0IIe
-	ap+fHPW3CsTbKdmh7TPBs+ZR8uM/Koc=
+	bh=ZZIGhBG/8Lw0a5tTbCrM4WR8Uy8BiutNW2JHz4dPgbo=;
+	b=up5gVl8a5sBeWJ1o04bdJ1hdj/+BO6euF7zhYug3pWYTIfqNQHelFigtP/OK1C6xdoX90N
+	Wgh/6frTPWgIUaj1O8myozhivFoxX8ppiLM023uN8B9bRqiTdoJJm41w63J56waWaKuU+B
+	Qza0qO+HMqIY+X34QxmGu6MIZMvmVYQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDbyk8rM;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 10FE04174B
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:24:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BCB1F00AC4
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:24:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782329084;
-	bh=d27DgNQsN+CsnP9Zk8I5Mp+avnswqCUuCjEURt6x23c=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=aDbyk8rMtarmceGCbNi6zD0fVVdav3ub46yYMunT0oBkkKKteB96Nmz2iVYyu8yPe
-	 EWW30oE0JRoxcOK4eLI+ljLIA/yMQmLMHxUFHVb77jq+Z2UIh8+Gv33FHaTzGg7fKA
-	 RRYyE59uU++QzkxiG5r1Qw92XJzWQY2YIhx5PoerO/D+0545WTIfY9DkPYEJEKlUFh
-	 /R+dWgKaBfRaH0jai+DfGlCMgnyl0/yQSpBvnGj/zNVLOdBgpfwVLqkzFlVm75+98Q
-	 bYNYubR6E+pH7l9w+8H5hLGyCW3cp+BbRKEfjbxJ2e4hMk57rMwnTqDAUwuIXCk2hj
-	 EDJ6fJ9auv/6w==
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8de88d06509so2188526d6.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:24:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Ro5havKizgOkfH4h362Emx9iGnqvBVPsyrWTPqZIWw35x2nHK940Yr1iC+DgMHleauGhp7SSI+0gQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxb0wK98AXpVh1zfc8FPmc1EFIzn3vf3G/vYT//+8Ab3phkudmd
-	fhtXxWseLAHX2jtGPEeR7DRFRqUB3G3pKoBBjrVhzQF6V79C1FtxZPTWNrqm5qRhPFn8EM4uqaY
-	FEvHwxw4c9MsmjYoGJy6pdRieM0QAMjM=
-X-Received: by 2002:a05:6214:2f0b:b0:89c:6692:1d83 with SMTP id
- 6a1803df08f44-8e63b747140mr30595736d6.3.1782329084276; Wed, 24 Jun 2026
- 12:24:44 -0700 (PDT)
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=r4QcG6mh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=eI4FJn9x;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=09mNOUvu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=+86KRCmp;
+	spf=pass (imf30.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6EBF56DCFB;
+	Wed, 24 Jun 2026 19:25:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782329111; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZIGhBG/8Lw0a5tTbCrM4WR8Uy8BiutNW2JHz4dPgbo=;
+	b=r4QcG6mhdA8RArfyr4RzLWsdZ62VMaOWod0jhxVp9yJa0FkBdGbZ7182pbjEKU1vLvNOfN
+	TuEV8c15lQ2a3ntIDq1xo2PVMGzpPE/uQhBPUUr22yhG396lFk1gtEDG/Z90+RazgtM65f
+	SPoSMq3abg3N+IzeKD3OQLY0S8BQ1WE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782329111;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZIGhBG/8Lw0a5tTbCrM4WR8Uy8BiutNW2JHz4dPgbo=;
+	b=eI4FJn9xIGiHGPE2bT0os6X6lTIxKgs42HDiqUq4Q1bpsA8PSNg8dQMIvQEeosXc03CXUg
+	Jp/N53lPqM1kLxAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782329110; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZIGhBG/8Lw0a5tTbCrM4WR8Uy8BiutNW2JHz4dPgbo=;
+	b=09mNOUvueboSyfPMk1LHBeagcrzoNimbuBgvMPdkbkArCJCh2V8waJjdsa0Iqajatb7DMB
+	sbUJqxWI3QBvCH1g7vyjwV5tC7mPL2LdzCzFYvLjLSRSEbSEBrSHmt6F4AfBgge8ir5/g9
+	KknEBm5nsRArZOmomeiUnl4xB6C9QqQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782329110;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZZIGhBG/8Lw0a5tTbCrM4WR8Uy8BiutNW2JHz4dPgbo=;
+	b=+86KRCmpXaXmybCmX7a4NNPEFUzGMdP/BaPoVfzJfUnyt/wNa9en2f7WoEodOpSt7wu9kK
+	dSQ83Z715QD4BpBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 78D19779A8;
+	Wed, 24 Jun 2026 19:25:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Z4J7GRUvPGrIXgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 24 Jun 2026 19:25:09 +0000
+Date: Wed, 24 Jun 2026 20:25:07 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Usama Anjum <usama.anjum@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Samuel Holland <samuel.holland@sifive.com>, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+Message-ID: <ajwuKpSnElvwIyhC@pedro-suse>
+References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
 MIME-Version: 1.0
-References: <20260624075700.751467-1-alex@ghiti.fr>
-In-Reply-To: <20260624075700.751467-1-alex@ghiti.fr>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 25 Jun 2026 03:24:32 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xM=WnFO-OuwVude-DQ_UkaCi_zF_bXBP9Li5+ZPNy0VQ@mail.gmail.com>
-X-Gm-Features: AVVi8CexeTETlk8RBMzOXYlxK8Mur4P2kN4NGwePBFZa-lhIjuNaxGvTMMrgLpo
-Message-ID: <CAGsJ_4xM=WnFO-OuwVude-DQ_UkaCi_zF_bXBP9Li5+ZPNy0VQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, yosry@kernel.org, 
-	nphamcs@gmail.com, chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
-	mhocko@suse.com, kasong@tencent.com, chrisl@kernel.org, usama.arif@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E050A100003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: uh48xbixrdmcdwsexa56f7wzgf81ngw1
-X-HE-Tag: 1782329085-809846
-X-HE-Meta: U2FsdGVkX19PWV3OkUcq5y3laPgMMT5FzQmbwt1nW4eQ22K6Tpm8djoazLlGyBVcj3R7mLnveasjzM9CdXg+rBFb634UhUjxtW0fY7HVkyyYEEJklYJM2Kjy4Q7R7SeIO3+RWeyG0A0x26CTDQ0+CeiIof27Rs0RSlTws4cXby5Cav8rlOkpkctcUaWrbk825pxad979h1S2C4MXS7MPX8gQRU7eKjvFH899HQIaXLNfK8JQsS9owQf48rO64CdWQQR8qzV+rU6HtyC0oTSP85xPTm7r7s4wkDR59iUbd4l3f8wLDbZiu2Vcr/dKPT5W7bJD4t7qntwdicIrr/TnUcFLl4i2mogVc5IfBYdowFfs0EJpIkafyUyyx6msp0a7JWfSMywiO0KeyLSl/YIj7sV9J6X3CotkmoYswREsBW/L/Y0jcR9WfKti4pFc2sI55eTPOc6ZiPX4hZPig/j5ScBIBbektGdOofMjRrEf/H6m/rTMaH52tFLJI+COaTYdlzlTzAs/4SOkvlAPoLc4oiC6uj7dzItgv4P1aOkpXPDJsYckrb7CE+vTJsGUpG1bYQbviU0RKkCv7Z9GYSll67sENoFsC8BNG9Miyma3gtiRtnREvv9yVgZirGa5ekfcxAlL8dD4JHOo20VgMhQGR5vVtgzoeYwhMDm+z2aJiNo5r/0/DKWQv68RHXcP+S6ZxnglGNId//r44R9SwdylR4bO4sdaC/YJvupiKYtEkPQNNBqKVpTvRYAOV7aVM1HICjvhslsrGSs/2C8eCjoWFpihRQvcQ7L995Ne+BMu3fjIeKT9ISAjJNgqYO0MZAG+ZTQuZajRZJbnxnk7sc7MArA1+zQJlKighWD6CRl/5gOX/I9gGZcBMFXI43093979pp4pk8SDhGwAXz4Tiyc54L7YDCDXj4RQ6L245eVmonfeQagse4USZzqd0Qx2RtzIeblZ0/Q2teEPEqih1+8
- 7yy0FkKt
- c77ju8ViX9lb1swA2VprZlrJD2Xj+eckiVrz5UpDvX2gLEHDNOJabLSKhP4XgIPM76lCYokvS0r2WPBEaPBKgYV3L/n45QokDj5uZisG+2wE8ifs/18DqYqVTfxJV8FuDofeEs551YzZ2z6VEOUrrdClBtFLKWkF0UWhpdpTZv3lX9FP/NCiEz8epqbURcuuN84eTjQPF4cIPQs293Il5KgbpOHydmjEUEFWn+iW/9HF4mMMzvUTLpfpiokjR0d3/7PizUZQwHBSt4QO/ttRry2QQrDEemVdZz5qEx6NwP0lB74XwWgkifKzG2g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0315F8000A
+X-Stat-Signature: 37zhotxuapkgrjz9kxj3w5d6ge57oi8r
+X-HE-Tag: 1782329112-852182
+X-HE-Meta: U2FsdGVkX18EvwFvFHjlmwlPAw9WWuV4+BXvTw+PTbmj+xhS6gEipdiHsuYo83WMCC+OSHQgqEP1w1uz5fbX+cuCGEDbLuAXuicDn8jiaN79KGOhJtivJvbGnrVh6K/0BenFuDnP0R8qKA1ZvlNTiGvygo498OUVC52JQLIlL/s6854aQGYrj954NRQ5Yd0YyzPUpQ7LkVsZ/CbOq2/HeaKyonZWKA+rNXnYO3lYQ9z0xT5UmH0r45d90CL+rDvdOF+lrvgUa0bfZH1oL7uXqjWDJDgY7wJqidgo60IXpt97zrCGaal2QX6YkkUVj0HvQ7mg2/WJe7cUlSkKPXaGmvxwNDd0PdnsSoPwq3//oSJKe/IpX2e0HFLowa7GsGLniluPZeIwmKpmFdTAgYpWOn+OD5Ctel4cEwd4z/rMWlfOHr8lMd83T5m1ppuuRugvSus9F/bxZT+dPvEzQh6CAQZaEE/gwz+gXopG5mejRD8gxSEJ0D1DTRryrkrpCQfLAyJCXIr10mw90A67afM9It1gDnV62BfCmq6Bfm3YYYN5Yh4YEW7vAyMshhbfFyGoE8NUiMrZ161oBQhbQW2OZ0g3dAfoLk1xDOHj3zq3CqbXGblC84buN9AAzglJ+Mk2D2G999EEZzoJDtgclpx61acbEoFKwMP1EsAEV7Ofhw5m5s7GOkrwRU9yK9zCZQOj90D1rBEl39Eaw1huVfc3l7FqyaKFaRLbSAEIquSII5RdLo766sOyliylTeUOzWNPeene5EqpdHNIM0YzWQXyXD1L6HX2hGs0GZjVGC/G0/ls7BxpGwrAoyE8c4KpbbC9RuvTp9hkcdekGGCe1YkFUDCYOYQ+lY4ys1hirTOzXE1P81qBcpnuZZrJ94R5DQx7NpnD3W55NPdDjQD9i4Bu8FNBLiVv4lQWT88lkjx5hc0u71elBrt6IpVYPkmXZM/YI7OYUs4XfWuUjRzCD8x
+ YDHM/Mqh
+ MmH1DyT658L1IKDrMA/Ib9nDrr+Zm3pvLbQKenypUTZfWrJTDDi0VtCgWNl/Tt2QoDnT/PDpvWtkLRxr6E5D4SOx5KwZLHIv+aDikxRqXHN7gqnBstBEmRZffiiTBpHAbZeJjssvXYg+dZUIQeCQ7hBV90b0FX2Q74t31Gfazj37oA4n0cs0Ct9MENYmaQlgNXaTO5m+ztE4/WnEHiq+Sqv2jC0Rwc7kQ1fNj97oP/Z28pz4cyNnEmH2gbahgQbQu8za40R7niyPSEhrx7IFf57qd/KnMeA2Ksnpp0MHZjed41VqFS8gaOvztm9AjaCKfr3dqj58rn9DYw/wQ4l2zrYJoXvTPSKeDurOMUf497WxB5cUNVx+w+NEebgOiJ48x6HSo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,254 +135,152 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 3:57=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr> wro=
-te:
->
-> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
->
-> zswap is the same kind of in-memory, synchronous backend as zram, not a
-> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> swapin_readahead().
->
-> Here are the results from bypassing readahead for zswap too: it was
-> measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, shrink=
-er
-> off, on Sapphire Rapids and 3 iterations.
->
->   768M memcg (sustained swap thrash):
->     metric                 mm-new    + bypass    delta
->     build time (s)          405.0       341.7    -15.6%
->     zswap-in (GB)            79.5        53.0     -33%
->     zswap-out (GB)          144.8       115.6     -20%
->     swap readahead (pages)  6.79M       0.45M     -93%
->     swap_ra hit (%)          72.1        89.9     +18pp
->
->   1G memcg (light pressure, build not memory-bound):
->     metric                 mm-new    + bypass    delta
->     build time (s)          177.7       176.0    ~same (no regression)
->     zswap-in (GB)            10.2         7.5     -26%
->     zswap-out (GB)           27.7        25.1      -9%
->     swap readahead (pages)  1.07M       0.08M     -93%
->     swap_ra hit (%)          68.6        87.2     +19pp
->
-> The gain is from no longer prefetching pages that are pointless for an
-> in-memory backend: readahead inflates anon residency and thrashes the
-> page cache (file pages get evicted and re-read), lengthens each fault by
-> synchronously (de)compressing a cluster of neighbours, and adds
-> compression traffic when those extra pages are reclaimed.
->
-> Bypassing swap readahead for zswap therefore makes sense.
->
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->
-> - This bypass originally comes from Usama's series that implements
->   large folio zswapin: while working on improving this series, I noticed
->   the gains I got only came from the bypass of readahead.
->
->  include/linux/zswap.h |  6 ++++++
->  mm/memory.c           |  5 +++--
->  mm/zswap.c            | 11 +++++++++++
->  3 files changed, 20 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> index 30c193a1207e..b6f0e6198b6f 100644
-> --- a/include/linux/zswap.h
-> +++ b/include/linux/zswap.h
-> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->  void zswap_folio_swapin(struct folio *folio);
->  bool zswap_is_enabled(void);
->  bool zswap_never_enabled(void);
-> +bool zswap_present_test(swp_entry_t swp);
->  #else
->
->  struct zswap_lruvec_state {};
-> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
->         return true;
->  }
->
-> +static inline bool zswap_present_test(swp_entry_t swp)
-> +{
-> +       return false;
-> +}
-> +
->  #endif
->
->  #endif /* _LINUX_ZSWAP_H */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ff338c2abe92..5aa1ea9eb48a 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4827,8 +4827,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         if (folio)
->                 swap_update_readahead(folio, vma, vmf->address);
->         if (!folio) {
-> -               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devic=
-es */
-> -               if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-> +               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devic=
-es and zswap */
-> +               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
-> +                   zswap_present_test(entry))
->                         folio =3D swapin_sync(entry, GFP_HIGHUSER_MOVABLE=
-,
->                                             thp_swapin_suitable_orders(vm=
-f) | BIT(0),
->                                             vmf, NULL, 0);
+On Wed, Jun 24, 2026 at 03:09:08PM +0100, Usama Anjum wrote:
+> Hi all,
+> 
+> This is a direction-check with the wider community before spending time on the
+> development. This picks up the idea that was raised and broadly agreed in the
+> earlier thread (Ryan Roberts, Lorenzo Stoakes, David Hildenbrand) [1].
+> 
+> The problem
+> -----------
+> Core MM code reaches page-table entries by raw pointer dereference (pte_t *,
+> pmd_t *, *pud, ...) in places, implicitly assuming a single, uniform
+> representation. Sprinkling getters wouldn't solve the problem entirely. The
+> problem is one level up: the *pointer type* itself is overloaded. At each level
+> there are really three distinct things:
+> 
+>   1. a page-table entry value (pte_t, pmd_t, ...)
+>   2. a pointer to an entry value, e.g. a pXX_t on the stack
+>   3. a pointer to a live entry in the hardware page table
+> 
+> Today (2) and (3) share the same type - pte_t *, pmd_t *, and so on. Nothing
+> distinguishes a pointer into a live table from a pointer to a stack copy.
+> 
+> A pointer to an on-stack entry value and a pointer to a live hardware entry have
+> the same type, so the compiler cannot distinguish them. Passing the stack
+> pointer to an arch helper that expects a hardware-entry pointer compiles fine,
+> but is wrong - a bug class the type system makes invisible. It also blocks
+> evolution: an arch helper may need to read beyond the addressed entry (e.g.
+> adjacent or contiguous entries), which only makes sense for a real page-table
+> pointer, not a stack copy.
+> 
+> The idea
+> --------
+> Give (3) its own opaque type that cannot be dereferenced:
+> 
+>     /* opaque handle to a HW page-table entry; not dereferenceable */
+>     typedef struct {
+> 	pte_t *ptr;
+>     } hw_ptep;
 
-Basically, I have been seeing the same issue recently. If the
-readahead swap entries are also in zswap, we end up doing the
-decompression during one page fault, but then need another page fault
-to fetch the page from the swap cache and install the mapping. In that
-case, readahead may not be beneficial.
+I don't love typedefs that hide pointers.
 
-On the other hand, if the readahead swap entries are not in zswap, the
-situation is different.
+> 
+> With this:
+> 
+>   - a stack value can no longer masquerade as a hardware table entry,
+>   - a hardware handle can no longer be raw-dereferenced,
+>   - cases that genuinely operate on a value can be refactored to pass the value
+>     and let the caller, which knows whether it holds a handle or a stack copy,
+>     read it once.
 
-For example, suppose we fault on the swap entry for address 1 MB and
-readahead brings in the entry for 1 MB + 4 KB. If both entries are in
-zswap, readahead does not seem like a good trade-off. However, if the
-1 MB + 4 KB entry is not in zswap and would otherwise require storage
-I/O, then readahead can be beneficial.
+Just a small passing comment: how about doing it differently? like
 
-So I implemented a rather ugly fault_around-like mechanism in
-do_swap_page(). At least with page-cluster =3D=3D 1, I am seeing a
-performance improvement, as the readahead folios can be mapped
-directly and do not require a second page fault.
+typedef struct {
+	pte_t *ptep;
+} sw_ptep_t;
 
-It is admittedly quite ugly and is only meant as a proof of concept :-)
+or something like that. Were I to guess, referring to a pte_t on the stack
+is much rarer than all the pte_t references to actual page tables. But maybe
+reality doesn't match up with my guess :)
 
-Subject: [PATCH PoC] mm: enable do_swap_page fault_around
+> 
+> The overload becomes a compile-time type error instead of a silent runtime bug,
+> and converting the tree forces every such site to be made explicit. This gives
+> us a framework where the architecture can completely virtualize the pgtable if
+> it likes; and the compiler can enforce that higher level code can't accidentally
+> work around it.
+> 
+> It is opt-in by architectures and incremental. The generic definition is
+> just an alias, so arches that do not care build unchanged:
+> 
+>     typedef pte_t *hw_ptep;
+> 
+> An arch flips to the strong struct type when it is ready, and only then does
+> it get the stronger checking. This lets the conversion land gradually.
+> 
+> Beyond fixing the latent bug class, this abstraction is an enabler for upcoming
+> features that need tighter control over how page tables are accessed and
+> manipulated.
+> 
+> Getter flavours
+> ---------------
+> While converting, it is useful to have two accessor flavours at each level:
+> 
+>   - pXXp_get(hw_ptep)        plain C dereference (compiler may optimize)
+>   - pXXp_get_once(hw_ptep)   single-copy-atomic, not torn, elided or
+>                              duplicated by the compiler
+> 
+> Keeping them distinct simplifies the conversion and avoids re-introducing the
+> class of lockless-read bugs seen on 32-bit.
+> 
+> Example conversion
+> ------------------
+> Most of the conversion is mechanical.
+> 
+>   -static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+>   -		pte_t *ptep, pte_t pte, unsigned int nr)
+>   +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+>   +		hw_ptep ptep, pte_t pte, unsigned int nr)
+>    {
+>    	page_table_check_ptes_set(mm, addr, ptep, pte, nr);
+>    	for (;;) {
+>    		set_pte(ptep, pte);
+>    		if (--nr == 0)
+>    			break;
+>   -		ptep++;
+>   +		ptep = hw_pte_next(ptep);
+>    		pte = pte_next_pfn(pte);
+>    	}
+>    }
+> 
+> The bulk of work is this kind of rote substitution. The genuine work is the
+> handful of sites that turn out to be operating on a stack copy rather than a
+> live entry - those are exactly the ones the new type forces us to surface and 
+> fix.
+> 
+> Estimated churn:
+> ----------------
+> Half way through the prototyping converting only PTE and PMD levels:
+>   77 files changed, +1801 / -1425
+>   ~57 files reference the new types
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
----
- mm/memory.c | 95 +++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 95 insertions(+)
+Right, the churn would be very unfortunate.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index c00a31a6d1d0..1db79f45a575 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4736,6 +4736,100 @@ static void check_swap_exclusive(struct folio
-*folio, swp_entry_t entry,
-         } while (--nr_pages);
- }
+> 
+> So the line count will grow once PUD/P4D/PGD and the remaining call sites are
+> converted; expect meaningfully more churn than the numbers above.
+> 
+> Introduce the type as an alias, convert one helper family per patch, and flip
+> an arch to the strong type last - with non-opted arches building unchanged at
+> every step.
+> 
+> Open questions
+> --------------
+>   - Is the type-safety + future-feature enablement worth the churn?
+>   - Naming: hw_ptep/hw_pmdp vs something else?
+>   - Should all five levels be converted before merging anything, or is a staged
+>     PTE-and-PMD then landing others acceptable?
+>   - Do we want the two getter flavours (pXXp_get / pXXp_get_once) at every
+>     level?
+> 
+> [1] https://lore.kernel.org/all/a063f6c5-2785-4a9f-8079-25edb3e54cef@arm.com
+> 
+> Thanks,
+> Usama
+> 
 
-+static void do_swap_map_around(struct vm_fault *vmf, struct
-swap_info_struct *si)
-+{
-+        struct vm_area_struct *vma =3D vmf->vma;
-+        int nr_around =3D 1 << page_cluster;
-+        unsigned long start =3D max3(vma->vm_start, vmf->address -
-(nr_around - 1) * PAGE_SIZE,
-+                        vmf->address & PMD_MASK);
-+        unsigned long end =3D min3(vma->vm_end, vmf->address +
-nr_around * PAGE_SIZE,
-+                        (vmf->address & PMD_MASK) + PMD_SIZE);
-+        unsigned long nr_pages =3D (end - start) >> PAGE_SHIFT;
-+        unsigned long delta_pages =3D (vmf->address - start) >> PAGE_SHIFT=
-;
-+        pte_t *ptep =3D vmf->pte - delta_pages;
-+
-+        for (int i =3D 0; i < nr_pages; i++, ptep++) {
-+                unsigned long address =3D start + (i << PAGE_SHIFT);
-+                rmap_t rmap_flags =3D RMAP_NONE;
-+                pte_t orig_pte, pte;
-+                struct folio *folio;
-+                struct page *page;
-+                softleaf_t entry;
-+                bool exclusive;
-+
-+                if (ptep =3D=3D vmf->pte)
-+                        continue;
-+                orig_pte =3D ptep_get(ptep);
-+                exclusive =3D pte_swp_exclusive(orig_pte);
-+                if (!exclusive)
-+                        continue;
-+                entry =3D softleaf_from_pte(orig_pte);
-+                if (!softleaf_is_swap(entry))
-+                        continue;
-+                folio =3D swap_cache_get_folio(entry);
-+                if (!folio)
-+                        continue;
-+                if (unlikely(!folio_matches_swap_entry(folio, entry)))
-+                        goto skip;
-+                if (folio_test_locked(folio))
-+                        goto skip;
-+                if (!folio_test_uptodate(folio))
-+                        goto skip;
-+                if (!folio_trylock(folio))
-+                        goto skip;
-+                if (folio_test_ksm(folio) || folio_test_large(folio) ||
-+                        !folio_test_uptodate(folio))
-+                        goto unlock;
-+                if (exclusive && folio_test_writeback(folio) &&
-+                                data_race(si->flags & SWP_STABLE_WRITES))
-+                        exclusive =3D false;
-+
-+                arch_swap_restore(folio_swap(entry, folio), folio);
-+
-+                page =3D folio_page(folio, 0);
-+                add_mm_counter(vma->vm_mm, MM_ANONPAGES, 1);
-+                add_mm_counter(vma->vm_mm, MM_SWAPENTS, -1);
-+                pte =3D mk_pte(page, vma->vm_page_prot);
-+                if (pte_swp_soft_dirty(orig_pte))
-+                        pte =3D pte_mksoft_dirty(pte);
-+                if (pte_swp_uffd_wp(orig_pte))
-+                        pte =3D pte_mkuffd_wp(pte);
-+
-+                if (exclusive) {
-+                        if ((vma->vm_flags & VM_WRITE) &&
-!userfaultfd_pte_wp(vma, pte) &&
-+                                        !pte_needs_soft_dirty_wp(vma, pte)=
-) {
-+                                pte =3D pte_mkwrite(pte, vma);
-+                        }
-+                        rmap_flags |=3D RMAP_EXCLUSIVE;
-+                }
-+                flush_icache_pages(vma, page, 1);
-+
-+                if (!folio_test_anon(folio)) {
-+                        folio_add_new_anon_rmap(folio, vma, address,
-rmap_flags);
-+                        folio_put_swap(folio, NULL);
-+                } else {
-+                        folio_add_anon_rmap_ptes(folio, page, 1, vma, addr=
-ess,
-+                                        rmap_flags);
-+                        folio_put_swap(folio, page);
-+                }
-+
-+                set_ptes(vma->vm_mm, address, ptep, pte, 1);
-+                arch_do_swap_page_nr(vma->vm_mm, vma, address,
-+                                pte, pte, 1);
-+
-+                if (should_try_to_free_swap(si, folio, vma, 1, vmf->flags)=
-)
-+                        folio_free_swap(folio);
-+                folio_unlock(folio);
-+                swap_update_readahead(folio, vma, address);
-+                update_mmu_cache_range(vmf, vma, address, ptep, 1);
-+                continue;
-+unlock:
-+                folio_unlock(folio);
-+skip:
-+                folio_put(folio);
-+        };
-+}
-+
- /*
-  * We enter with either the VMA lock or the mmap_lock held (see
-  * FAULT_FLAG_VMA_LOCK), and pte mapped but not yet locked.
-@@ -5121,6 +5215,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-
-         /* No need to invalidate - it was non-present before */
-         update_mmu_cache_range(vmf, vma, address, ptep, nr_pages);
-+        do_swap_map_around(vmf, si);
- unlock:
-         if (vmf->pte)
-                 pte_unmap_unlock(vmf->pte, vmf->ptl);
---=20
-2.34.1
+-- 
+Pedro
 
