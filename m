@@ -4,94 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB241CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 07:12:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2C6CDB470
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 07:12:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 923CC6B0088; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+	id 0980D6B008A; Wed, 24 Jun 2026 03:12:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D4386B008A; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+	id 06ED26B008C; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C3DD6B008C; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
+	id EA0236B0092; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FA556B0088
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C63176B008A
 	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 03:12:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7D921C52AA
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:35 +0000 (UTC)
-X-FDA: 84913938270.01.EA8401E
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 19C5A40007
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pScYdSzc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 478C44022E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:36 +0000 (UTC)
+X-FDA: 84913938312.09.207BE77
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 65E73100003
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:12:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aMK7jcJg;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782285154;
-	b=iY77ciM3TC8CX/74M82keDxNDrKpMeftMGCOtJ1Q3trK4FV4Ewq3Lj41oZ2YGzzomCbhjO
-	5G/alY79mVRkTPZmncJL2b8y12CJSjTOknFTqKKohKwNv95Q1tlAHwjR0dT2ravTI0AdzQ
-	JbWkuetE+a9XnUi05TnL6onvNswjgfU=
+	b=oqG0TbaslsJPVFfyPKS5XPiEFiPbRR5AY+/kdag8hfEPHhCNMNR9/V6UYoA9OqGjZWGZVK
+	YEqf1vU9Obqvzziu0lFzOPmsG/QPuW6TLVEN/BpF+ktbAjLQiR6AMHqRZckgnGt7VE3acQ
+	n0iPbwWiSOg9NgVrgm4cfHfC4KMOgFM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782285154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3DE60QhT/9TIkbnwdBa1IYV0upZCsNlOd11TX3mGeBc=;
-	b=auhGtbgeoFcDllz6G4hwM/OPwgsigJhFQ1j77cNiljfNCe1hxBR2kvF89K9U3kGUR93qRx
-	Lss5W5XkmBLpi0DnQ94Gm/psQZ1bsuhGrwzBwjo4U0jLUB2A4oujhApQ86+mRnvtuxU3tX
-	S8p2XDlUqrNd9tsH0YAunt/l91GZmLU=
+	bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
+	b=52LLBLIzuTWJKuYvjjXKl2OQNz3tFDODVyDEltqko2zK1k4LKSNz7gePbC741dD3wFqDay
+	MaG6Mh4Amm6tnGyOb6gkbenUXDE7ZWHqlIJvTWdamM2CjeO8+bHh6JA+Elftg52NrC21ZO
+	xxmj/UTOSJ+dtt67gcUM8PN38LvFggE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pScYdSzc;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <1d638906-6d64-4e57-a181-4b77683652b5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782285148;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3DE60QhT/9TIkbnwdBa1IYV0upZCsNlOd11TX3mGeBc=;
-	b=pScYdSzcoIw3LlQrsqm+dUGApjLrnkhSSXhR1XjT1wGHtRCn/M2UQoPA4bLfm86WJM8meV
-	1R2FvGl5DomnILpB8yR1P7mDDh7+OGUJzF0fF/Zz/aWq4vuHcahfQuJU9xVagqILwo7kJJ
-	UmAflc10g9+6wE4vQbEC0rBAQaPpjAg=
-Date: Wed, 24 Jun 2026 15:11:56 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=aMK7jcJg;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4633193af19so509442f8f.2
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:12:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782285153; x=1782889953; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
+        b=aMK7jcJgsUf84iidVgXs2MMy9mqiGycImzWt4flzR3IYjXq1BKnkkobNzd4Zu9FrLH
+         gGhztLykeIFnQgmSpMrpatLgSedQnEyq2+D6l1Na7aKGCzUhK/GmAMdfS19WivJlSZAQ
+         vQBXPX+aJ09wsDriQWUTz+kXd55qjpy4Ns5Ng13v7BgcIOtNWGaJAqXnuFQani95geKh
+         RUPNhCNEgFj0eCnlC806ex3rvu5zTWim/QlMuUdMAqc49tdIcrHzDCnp3lk9EreXAv0D
+         qoPEwa66Mozu6dFS3MCJ7AqS+afAaPlTRKx51P7SUfl3bhsx/nHIrh1MKkGOU+C2hMON
+         RCkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782285153; x=1782889953;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VhG9FcF945Re4Q58PUpr7BwlsxWpmlT6fgah9/vT28s=;
+        b=U79nOUyR/Bk+DG/SLFWwOk2a5oWJowT2LVUzEDSRJYgBxIpSFoj1LY2B3DdcV/Mf26
+         wi30STzcg0pdm13gIFdghgl/WT9+E5rQD+KqSxiWTvKggxAnMbRkuiLioMgMEZSWWoCk
+         CyGGbOd+Ivp/KObtf7IsLEgSMl1ET96rZE+i7wlD2kBk1jEZQFa9JNEBzQSzAlha78AF
+         pJlA290D85XPidF2pFKOB0ag/MlWp/ENJqmrsT6Xhfq6uBLOm7OzDgkHmpY0f5+Z2TwF
+         /SoJPNoPM/+jXZF6eiaJqfjkKm5AGSNVIqL7t/eF8B6WHmdzrjdGzMqmao9t8q9+TSWF
+         Ad3w==
+X-Forwarded-Encrypted: i=1; AHgh+Rrq5bHVpxd/mejcQ7TGXXzhf6RCJ531joN1qSPCM/Es+BIqtl0nM4TZtIOh9BSzkIcyzhbGZwOQnA==@kvack.org
+X-Gm-Message-State: AOJu0Yzn7cwTqQWcJ6jcmbuONcIVSBEtmuUAG/iqBdrOWMBvmRg0tbDH
+	tt+XlD5RVhrvadZnpHFQqx2HZSqBy7kRG4EiIlJsX/w0LleAQ6w4iI6F
+X-Gm-Gg: AfdE7ck4tgIOORaQ2aSLuBOQ9ttxG57TGsWzmhUFnYNvQHrrUf3DZTZ7Ew9FXAbSbOp
+	kr5otFn9uqKp4hUVgZ9oRAjofNL10F+ejuboM/+XPGrtRbc0PiF9m51/YWpaAOeWuePD1MSE2bo
+	cjyrxRh74uJN9AOaQCXTiflO0lTLF4Q1Z9zgdsCC2+rrqUkMYVupNWQXMgnqhoXwpADaEH9X0C7
+	7rsy4/Cx3jdAtQI6H98dPm8kcHAgaCPpsJ3bhOXXsEiftqANIaQq95LGy489CA1sPkbIgq/ZHQT
+	YKaKVJbTtugWlDLFD/q4n9ttF8eXl2eHviq/tQIw1IG4vAHtPYpFSlqHM5qnKRzwHC0cSFEMI/u
+	rPcF0dJAciOnJRvq65g1eHR/b/fzIpMmqvlf9XIT6yXXuv7MQoKtfACPPDj3YetXf3DR0KIotmL
+	ffDwqz705V
+X-Received: by 2002:a05:6000:4683:b0:46a:1f35:113f with SMTP id ffacd0b85a97d-46a1f35172dmr8359155f8f.21.1782285152523;
+        Wed, 24 Jun 2026 00:12:32 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46c1ee0189esm4296531f8f.9.2026.06.24.00.12.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Jun 2026 00:12:32 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: avagin@gmail.com
+Cc: akpm@linux-foundation.org,
+	alexander@mihalicyn.com,
+	axboe@kernel.dk,
+	bernd@bsbernd.com,
+	brauner@kernel.org,
+	criu@lists.linux.dev,
+	david@kernel.org,
+	dhowells@redhat.com,
+	fuse-devel@lists.linux.dev,
+	hch@infradead.org,
+	jack@suse.cz,
+	joannelkoong@gmail.com,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	miklos@szeredi.hu,
+	netdev@vger.kernel.org,
+	patches@lists.linux.dev,
+	pfalcato@suse.de,
+	rostedt@goodmis.org,
+	safinaskar@gmail.com,
+	torvalds@linux-foundation.org,
+	val@packett.cool,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Wed, 24 Jun 2026 10:12:26 +0300
+Message-ID: <20260624071226.2272209-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
+References: <CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Harry Yoo <harry@kernel.org>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260623024237.45990-1-qi.zheng@linux.dev>
- <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
- <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
- <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
- <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
- <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 65E73100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 19C5A40007
-X-Stat-Signature: r8zbfmqwp67m5aufjyx6nkhqm41wpemj
-X-HE-Tag: 1782285151-529282
-X-HE-Meta: U2FsdGVkX185/KOtBB58u4F0Y3FxmHgLpUBaQQZw4zjoE2sS/VpHOkdxda/W6pm+R4k9l3u00BOhmbVznTJozaICtG4sgNr5gfMFKZchWsiiNUW9MJU5iFsrnYNmaQYabqpuR8UWMVCrHaOGQ5ylt6UlpYv573Zsut1PXpGzKZ3lo4U5jYfHHJHH55c40JIdCsPe7G/IdFdkV2qifqT8PVBu4EJAL+02YEXJbDmz8X4W2UAHdMqNFxm9F2TN0IPieBt9K7n7hwFo2ul96kXyGd/185HPtnr1HP4hdqIf1LuKZWzfq+XNoZ/6WkcjMcJ7fA+H7i13JbyLD9x72RLvc4aq0foMZ9Ks0KpauuDRqjLW+2jclAA7r72K88b29V4fnwo59ZqbbYEZPfFqSrTj82JjwS++8uHZjwlFOUgUQO8QArZEstyAKLKW96jPoKpEvLXBv0Y6vMAUAbXsZN3oCYhilHkQNer24ak0UTsK0hED/J0ST8KE/IcuHxgWIyPgkZ6FzWx6JAe6YQKiYcxeDhfdsPZi3NFdpqv4Hy83fQUCgFoGReJ1JKgLEB+k15mc2y6UVRczhIE2DVLolqItxBlz7DLyOZVt2lpIbTEqsZiy3K+BP0qyVI13cYaVNAH5pt+fIxvpZuxHUHst/j/LhcW8LpvpSK5TBW20VpmPAkzCzJHrY52W8zFbOclw2dKuMxMycrFkubMM07Z7khHgAR5xC5+Pe0ooOkz5RLacAf40yxTsxDq0j9b6K7xHQxHBCnL9sTPMe52w29hr5qA5hfcYO7qo9cl8JxKxjJ9SBI6cPObNoe5MxkCxg5sI5siw7cl/Irwtl+MwY+MPOQVw8p2YOag0vbYPv0xUQxZdaQadL1IbhqU/nUSKEGzYpJJmuIp6+ScW1trAeBikzb1g+b8YU/UteBYqfW9QfETrsfrzpPYSueFJ1vlcmWEMzkTOjDlKUMoMF1n7cyYdl4V
- 961eW7lk
- Z8VNmqQs6H6qCYSvPwV+QyZCIlN2RnJXI6bL3fm4oT9pE+aajMQIksK1KsPy5scOCmxYWXPM7GE8rB+kq06GLCXtLNbB3TFJ9tIjaaO77bHgqUPR7EBVlr1BI/545dw4IFUH7AMzIQmHnsHmUsHUhMF0LqlCGlOa24bUnjHBmIP0B0No3Qw0mDK3isQICsaI8grZQp2utipqP6ORa28/aTqzvjY6psEVI8kI/A3DNEdlQqUs=
+X-Stat-Signature: h7zu8iksrmmbc538aauob93ssi939wwj
+X-HE-Tag: 1782285154-125635
+X-HE-Meta: U2FsdGVkX18E7gXEJp5XtUBBZ6Iic7cb1OGyAnirSIciPO/bntuQi48FY/cyiTqNyp7/gjJRiPJYA9SFAYMe6lemnvlcjB/Yru/HYUSIKyk1McY0IlRxVPUpIOF3OTXPyKccob8TYSGvFUh+KAgKv2R1D15f4vPSC5GQBG1D11YpgXMp2yKkmSZoMsPpFnkmVueilsCFrl1n7x1GCDVJ5Vt8/yFnt0n8oIJIFpJWGO4AW+2C3qLjpB7EKV8sK/626gR8zQgu6dg8FXoduVYrcI9Y/VG+ZaBk5KwMKaruYGhuc/khpTCEL6AAgkkW2nAQYSvF6OQQ8+pmluQH/EaZ04g9u4S3FoMlvidBS+fs6eQ25GbnCtDCrZYajsCSSgNa4GsCNqaUJDuhxft68P7h8ukR3fCHAX4We/OZI3Z7f6QCd169EUyXM09Dj/Hf0jKOzuOwzJQzJpzpV22GPmAuAhqf4bEvOFwvrN9ksBfK9Fuk7jY6E2PyLqyF5TUQuydfC9Q8RqLTZgVVgHG7Wtiy2YVFELJalTRJpPGtkkmihERYn9d8aiLerASfvoaBsyLxLKgayDsTGkaAohuD+BVwRXhfzBk5g1YxoHLYxqNoA+lvvFMpkasbWwHdiqqF0jbZXk7BGcpgNCPdU5cb9unYh3Yc0EDJY+U/PPIAmaEbawZY09xj0ht7BfNTxdDy4VIHWmvaxYBmdGLl+fvFEPW30dvnH6FRyo3RQtj3nd8YAgiQSNCcxTZxIzfWCRH7M1meRnXZ32iWjNjFtl6nZOYHd1bLjIQo0N1hgU9yTbNq1hRJhCAwf/zAZPVcOB7bG0MH2/OTorZOhEruz16mPVENP6QulvNaTp/HNvwuds6HRr/dfBowCgcAEN9T8hbLWts3PFZlXLkDIUTgI9b/6JIXftkWJwqFprW1DwrMLhq2M04cWuiiCgdw5mekRnEWyWoDXVbGAmyxdyxYZb4MlJy
+ 04xFafVT
+ 6vvZn2ck26qc7uL4HhptnW43FXi+CLQFUpc66k2NGZVsD6fJFMSRV8yUFm0T/qt2k6O502S2cBOifoGKqPM1FPA38EdvrN3agfN/YEv7hv1V5HHiOqhLvzT+5QMCKk6zH+J1GrhGAfsWzOhjzyb14cZCSVVyB1H31hReOnMEk1kXoOMKBBvXLvollHsUrpmuuduBnFRqVKf5sws7/Z5TL6iZRf1CN5TunoSkHj8DGyj2GZYPilkKNwsp69IHaEu1VEmSRX9zUQ0VYqmJuLvpYNsBiGewt3hyEDpdH1OsF1+HIR89qzG0aXekCf28fU213B8mfItHRDZLX2mIYM8TJoyWyxs4hJxGKuXEIyvwHJq7ix0pYZP/2EE/Z2PaTXHlOO2cL6guqBCF3SK1abLA02esW4Akel8QE4wXG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,229 +141,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry,
-
-On 6/24/26 12:29 PM, Harry Yoo wrote:
+Andrei Vagin <avagin@gmail.com>:
+> The CRIU fifo test fails with this change. The problem is that vmsplice
+> with SPLICE_F_NONBLOCK to a fifo file descriptor fails with -EOPNOTSUPP.
 > 
+> It seems we need a fix like this one:
 > 
-> On 6/23/26 6:14 PM, Qi Zheng wrote:
->> Hi Harry,
->>
->> On 6/23/26 4:18 PM, Harry Yoo wrote:
->>> On 6/23/26 4:16 PM, Qi Zheng wrote:
->>>> Hi Harry,
->>>
->>> Hi Qi!
->>>
->>>> On 6/23/26 2:17 PM, Harry Yoo wrote:
->>>>> On 6/23/26 11:42 AM, Qi Zheng wrote:
->>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>
->>>>>> The mglru page table walker batches per-generation size deltas in
->>>>>> walk->nr_pages while walking page tables without holding the lruvec
->>>>>> lock.
->>>>>> The reset_batch_size() later folds those deltas into walk->lruvec
->>>>>> under
->>>>>> the lruvec lock.
->>>>>
->>>>> Ouch.
->>>>>
->>>>> IIRC the user-visible impact of underestimated nr_pages in MGLRU
->>>>> was premature OOMs because MGLRU does not try to reclaim memory when
->>>>> nr_pages reaches zero, but there are still more pages.
->>>>>
->>>>> Perhaps worth mentioning in the changelog?
->>>>
->>>> Maybe this should be placed before "To fix it...".
->>>
->>> Thanks!
->>>
->>>>>> The page table walker can run concurrently with the memcg reparenting
->>>>>> path
->>>>>> as follows:
->>>>>>
->>>>>> CPU0                           CPU1
->>>>>> ====                           ====
->>>>>>
->>>>>> walk_mm
->>>>>> --> walk_page_range
->>>>>>        --> update_batch_size
->>>>>>            --> walk->nr_pages += delta
->>>>>>
->>>>>>                                  mem_cgroup_css_offline
->>>>>>                                  --> memcg_reparent_objcgs
->>>>>>                                      --> lock lruvec
->>>>>>                                          lru_gen_reparent_memcg
->>>>>>                                          --> reparent child folios to
->>>>>> parent
->>>>>>                                          unlock lruvec
->>>>>>
->>>>>>        lock lruvec
->>>>>>        reset_batch_size
->>>>>>        --> child lrugen->nr_pages += delta
->>>>>
->>>>> The problem here is that, while grabbing a reference to memcg
->>>>> (via mem_cgroup_iter(), for example) makes sure that the memcg is not
->>>>> freed, it does not prevent offlining happening, and reset_batch_size()
->>>>> doesn't check whether the lruvec has been reparented, or the lruvec
->>>>> is going to be reparented.
->>>>>
->>>>>> This will trigger the following warning in lru_gen_exit_memcg():
->>>>>>
->>>>>>       VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->>>>>>                      sizeof(lruvec->lrugen.nr_pages)));
->>>>>>
->>>>>> To fix it, add lrugen->reparented to remember the new owner of a
->>>>>> reparented lruvec, and make reset_batch_size() charge pending
->>>>>> deltas to
->>>>>> that owner.
->>>>>
->>>>> Could you please explain why it is unavoidable to introduce the new
->>>>> field and why checking whether the cgroup is dying (and charging deltas
->>>>> to non-dying parent) doesn't work?
->>>>
->>>> Peiyang tried doing this [1], but it doesn't work because
->>>> ss->css_offline() is called before clearing the CSS_ONLINE flag.
->>>
->>> Right.
->>>
->>>> I also considered using mem_cgroup_tryget_online(), but that only
->>>> prevent
->>>> the memcg from being freed. It's doesn't prevent the offlining.
->>>
->>> Right.
->>>
->>> I think checking CSS_DYING under RCU and grabbing the lruvec
->>> of the first non-dying memcg should work (this pattern is already
->>> used where we use RCU to guarantee memcgs are not freed).
->>>
->>> If we do not observe CSS_DYING flag, it is safe to charge deltas
->>> to the lruvec because RCU guarantees that reparenting cannot happen
->>> under us.
->>>
->>> If we do observe CSS_DYING, we can walk up the hierarchy and charge
->>> deltas to the first non-dying memcg.
->>
->> Checking CSS_DYING looks feasible, but the rcu lock alone cannot prevent
->> reparenting. We should recheck CSS_DYING after acquiring the lruvec
->> lock, otherwise we might run into the following race:
+> diff --git a/fs/pipe.c b/fs/pipe.c
+> index 429b0714ec57..6fc49e933727 100644
+> --- a/fs/pipe.c
+> +++ b/fs/pipe.c
+> @@ -1253,6 +1253,7 @@ static int fifo_open(struct inode *inode, struct
+> file *filp)
 > 
-> Haha, actually, I was thinking of checking CSS_DYING under both RCU and
-> lruvec lock. (because that's the pattern)
+>         /* We can only do regular read/write on fifos */
+>         stream_open(inode, filp);
+> +       filp->f_mode |= FMODE_NOWAIT;
 > 
->>    CPU0 reset_batch_size              CPU1 memcg teardown
->>    =====================              ==================
->>
->>    read !CSS_DYING
->>
->>                                       set CSS_DYING
-> 
-> Oh, I thought the entire critical section is covered by RCU.
-> (I see lock_batch_lruvec() you suggested below doesn't do that)
-> 
-> Isn't RCU enough to prevent reparenting because RCU guarantees that
-> all readers who read !CSS_DYING complete before reparenting?
+>         switch (filp->f_mode & (FMODE_READ | FMODE_WRITE)) {
+>         case FMODE_READ:
 
-Oh, I think you are right.
+Does CRIU actually rely on ability to do SPLICE_F_NONBLOCK vmsplice into
+named fifos? Or this is merely a test?
 
-I forgot that offlining is executed in the rcu work context.
+If this is just a test, I think we need not to preserve this behavior.
 
-Let's walk through this again:
+I did debian code search with regex "vmsplice.*SPLICE_F_NONBLOCK" and I
+found very few packages. And it seems all them use pipes, not named fifos.
 
-cgroup_destroy_locked
---> kill_css_sync
-     --> css->flags |= CSS_DYING;                    1)
-     kill_css_finish
-     --> css_killed_ref_fn
-         --> css_killed_work_fn  <-- RCU work !!     2)
-             --> offline_css
-                 --> reparent memcg
+(On speed: I still think that my vmsplice patches are good thing,
+despite performance regressions in CRIU.)
 
-So while holding the rcu lock, if CSS_DYING is not observed,
-css_killed_work_fn() will not be called until rcu_read_unlock().
-
-So lock_batch_lruvec() can be implemented like this:
-
-#ifdef CONFIG_MEMCG
-static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-{
-	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-
-	rcu_read_lock();
-
-	/*
-	 * The memcg can be NULL when the memory controller is disabled.
-	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
-	 */
-	if (!memcg || !css_is_dying(&memcg->css))
-		goto lock;
-
-	do {
-		memcg = parent_mem_cgroup(memcg);
-	} while (memcg && css_is_dying(&memcg->css));
-	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-
-lock:
-	spin_lock_irq(&lruvec->lru_lock);
-
-	return lruvec;
-}
-#else
-static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-{
-	lruvec_lock_irq(lruvec);
-
-	return lruvec;
-}
-#endif
-
-Does this make sense?
-
-Thanks,
-Qi
-
-> 
-> Now I'm confused. Is it strictly required to check CSS_DYING under
-> lruvec lock? CSS_DYING is updated outside the lruvec lock anyway?
-> 
->>                                       memcg_reparent_objcgs()
->>                                       lock child lruvec
->>                                       move child to parent
->>                                       zero child nr_pages
->>                                       unlock child lruvec
->>
->>    lock child lruvec
->>    charge stale delta to child
->>
->> So it seems lock_batch_lruvec() should be implemented like this:
->>
->> static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
->> {
->>      struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>
->>      rcu_read_lock();
->> retry:
->>      while (memcg && css_is_dying(&memcg->css))
->>          memcg = parent_mem_cgroup(memcg);
-> 
-> Isn't this loop unnecessary as spin_lock_irq() -> check CSS_DYING ->
-> goto retry does the same thing? (of course, we need to fetch the parent
-> memcg before retry then...)
-> 
->>      lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>      spin_lock_irq(&lruvec->lru_lock);
->>      if (memcg && unlikely(css_is_dying(&memcg->css))) {
->>          spin_unlock_irq(&lruvec->lru_lock);
->>          goto retry;
->>      }
->>
->>      rcu_read_unlock();
->>
->>      return lruvec;
->> }
-> 
-> Thanks!
-> 
-
+-- 
+Askar Safin
 
