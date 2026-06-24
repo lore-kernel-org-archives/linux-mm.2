@@ -4,102 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC4CCCDB470
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A341CDE001
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:43:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F8E6B0088; Wed, 24 Jun 2026 02:28:01 -0400 (EDT)
+	id 255C66B0088; Wed, 24 Jun 2026 02:43:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD05C6B008A; Wed, 24 Jun 2026 02:28:01 -0400 (EDT)
+	id 206CB6B008A; Wed, 24 Jun 2026 02:43:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E156B008C; Wed, 24 Jun 2026 02:28:01 -0400 (EDT)
+	id 0F56B6B008C; Wed, 24 Jun 2026 02:43:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D8736B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:28:01 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1371A1C5439
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:28:01 +0000 (UTC)
-X-FDA: 84913825962.23.EE1C9B6
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3EB06C0002
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:27:57 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="3/XqOd78";
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D28366B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:43:37 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48989120253
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:43:37 +0000 (UTC)
+X-FDA: 84913865274.05.17A4AE3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf16.hostedemail.com (Postfix) with ESMTP id AA592180003
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:43:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hvIUXPzF;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782282479;
-	b=mAKJyS9qsWLu7lbxd/05gqP+ShbQg20mNCBYyIaykt3+B6vx1/AR454KtaJBqLMsU6Tnp5
-	kZpFXQoZ0lGLuu1+RxZcTt/gohsVDelW/CrqRB+MIdfLrSf0qXGaXkLKi6etTxPQq/l6Le
-	1CoZkZ6JsYaIzhZZoq7Q5MSKEUrMqnQ=
+	t=1782283415;
+	b=OY8Gatu6aT035xuTlnsk+kDgBB74N/GQ9BXzugRU9w+gWJkdSgg17Xf87fFpKb/ngy3XtN
+	5HUo8zjABsrESkIKeQ760mHvmeQuZ/dQMyQ/iNbINtwVkQkxLgR9cjom8UmKwMTFyv1eXW
+	K67Q6hA9TTH7D7ln5ldVHEMc+5LUZVA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782282479;
+	s=arc-20220608; t=1782283415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XIQMxi+VmNpqEYVSNXBtfgzCwL1hzxwmRPCxW01i5vw=;
-	b=2KTACalCiINAYVBf+B4f6E3fnlrGJ2us+7SmzJw1S8b5WO2tYYBPKUrWGTioaWA6qQxBlX
-	tfbmK2OcnXUhzUUJOYhCxZ4huReKd42Fq5yjoGmtWaZuAy0ff5vkG5/wmqHjNUXCWD5llN
-	VpRucWxjix0zNpPFVDCsNMpExz6z/Ck=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=LBc+B9hMUbp80adeHNCnHuVhVcwZgTKMjA43V0xglYg=;
+	b=Ge+kMrLXe5TWeD3OyVn8nlaDh8A5G7g8B3W+bg/LKmtTHREzh8sjmsi7fd3k56WZ+PSIB9
+	3K0AOzjF2sHKLMAqp84R/78iViTfBwjPTFdmPDbVR+V6Q8JyQSVzGmErDCVbstbJfgCwz+
+	GrQkNhe45bHReI4SwGALIjAhrWSFx00=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="3/XqOd78";
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=XIQMxi+VmNpqEYVSNXBtfgzCwL1hzxwmRPCxW01i5vw=;
-	b=3/XqOd78KQkFXPSCYb8U3UQnA1Oax63SaGYRK6uId5wnqwFUn3qeWMhPA/1FJpoly9cE7WzPb
-	dOGMg+bH5TZb5fb53obTGURGa3sekzOFfhBLZd0vK/RzDdnBAGf6B5STdECnkkdeRtgTVQkOM8l
-	c9oqJQh6wwA/29G+XvMgjF0=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4glWwL2NHHzKm5S;
-	Wed, 24 Jun 2026 14:18:42 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1DE324056C;
-	Wed, 24 Jun 2026 14:27:50 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 24 Jun 2026 14:27:49 +0800
-Received: from [10.173.124.160] (10.173.124.160) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 24 Jun 2026 14:27:49 +0800
-Subject: Re: [PATCH 2/2] mm/memory-failure: remove redundant initialization
- for hw_memory_failure
-To: Igor Putko <igorpetindev@gmail.com>
-CC: <akpm@linux-foundation.org>, <kasan-dev@googlegroups.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<ryabinin.a.a@gmail.com>, <glider@google.com>, <andreyknvl@gmail.com>,
-	<dvyukov@google.com>, <vincenzo.frascino@arm.com>, <nao.horiguchi@gmail.com>
-References: <20260623114743.4565-1-igorpetindev@gmail.com>
- <20260623114743.4565-3-igorpetindev@gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <aed29a0b-9be5-4c38-f6f8-ec0986238aa3@huawei.com>
-Date: Wed, 24 Jun 2026 14:27:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20260623114743.4565-3-igorpetindev@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.124.160]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hvIUXPzF;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782283415; x=1813819415;
+  h=date:from:to:cc:subject:message-id;
+  bh=S66rB3G/Ir4h7R1MR1yYlN5jdw1782v1j22LxL+eeto=;
+  b=hvIUXPzFMF4ZZDerWjqKUUjeNF9j7XVmNT9tq8x7hXLAbDNChtkol3vd
+   UzK/iBCcTKKZZQkowW82un94Vv9P578ZQz0GfG49ZEJTvHB0WRv9NHnZf
+   jbhqJECLSMqIhz9aaJpko0nxXExZE+h73vTtlPsEtH3Gsl9O4Cg/dnNfT
+   7qZ7mF1bzlA8Cf/KzzZdfzVW4g1ei9K4N346xHRBIDL7xVxrfUOE9QEIR
+   uoTh4l1Hu1+l0S6w66k33ysUUvyRwUzEmn9UwjbSAXjJk/aomm9EQ/AsS
+   GaapSfJU63sRB0LkHIMBGIwGKyh73zNDFDj8pIhN7z3xK1mDorkFPR4Oi
+   Q==;
+X-CSE-ConnectionGUID: O9U+olBZSae8tTxippdjtw==
+X-CSE-MsgGUID: xaRZX+7XRnK6BXCuJolx0Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11826"; a="93395451"
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="93395451"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2026 23:43:33 -0700
+X-CSE-ConnectionGUID: tNThZ1yXTxaz/GlK+t9ABQ==
+X-CSE-MsgGUID: CaV2eLCeTeyBwpGXrV8Dxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,222,1774335600"; 
+   d="scan'208";a="287876518"
+Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 23 Jun 2026 23:43:30 -0700
+Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wcHKa-000000003Ad-0Rsw;
+	Wed, 24 Jun 2026 06:43:28 +0000
+Date: Wed, 24 Jun 2026 14:42:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ amd-gfx@lists.freedesktop.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 4e5dfb7c84012007c3c7061126491bbc92d71bf1
+Message-ID: <202606241414.J3MBjGDP-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3EB06C0002
-X-Stat-Signature: swgwr5wt6fgigp9qkgcok1okyg3eh3h7
-X-HE-Tag: 1782282477-721875
-X-HE-Meta: U2FsdGVkX19zUyms7boFXSLWw4JtajbhnoJl7znJJJY2pqgecE5TO71UbuGVGjE0oZUXdO0DcGAWbFFUVj7/hIdQnMDQmd3+b1opqbg+Jq8fcjPgzMR/gC4j4fsec/1c9pQu72Uy2SsjHsleVzIYjtP0zTpmFx33S/Mi6zjJUyBVUmz6om7TSwoKhGedRSV8/3e5GaDoyigixMklWz5lv038JHfgdmjA/REpphgB3t0bo6LH2MLltrOrkCyj420mPGZmaJ+0da+2xhUhrrlX8GJP6X2uhNQtFLTc7THew+rumlUJ3l7O5IynMHT0G44Hp01tezYz55C9c4AZxU4DLxRGH2RW571fO/5Ct9dVlqHGebOQ+TmZ0aDI55+w6Ceg8ncCnJnOUSZ0+e1uBOCF9AsMYsO/7rpuGeJoqdycld7b9x6SHwl99Jz5PNHzVaqrdvsxedm5FFWq9M/jD67RZJpgO8JveleQuqg+hbXA3qAqtOyQkUEfjCLjaSw6moCTFBR25F5QQNTruZRSZ9jAqjr3TGO06vKbRmfp9/bQMry7hO0NvPJy2f9TLliv6swm5MzOFXYUqsvuNReKqexIFl5UGwlwFNIjvuV9Y0AiA0Vxb2OTUOfmWtakhWAuA9r2WUvlkhy3EqgVNUFEZ0VJS341rJX0aWTljpSgD7Xn4m3+3FufLG62O8sLzbqHxHCkG6ozse3NuDD1Wf3Eqr6v9pvxUkqjW/jaFLzu+5naHOv9k+qg+jI5oPGs6OAnve13KaDf0W/c0v7H97J/6WpQJGhxOsD1WT1wjLb4SpSDsZm3+NOKA+wkYN0bByNt+DLZ6lkThpqyYMucMY/O4/P5V/tOtleUQXCpBXza5ijFiYIqJEKqRh/dIdWo3H+db8Q89zdcYm1RGDyidYkw3PYGFcbEl+Bg02qEuDiw/PGfuSl53sXzh0xRNW9m0cW1bEDiEs1qt2txi/BIrybwRxK
- d+s98dkh
- AR9uKn8eUCfIw8D2Rs61Z/oDY8MFDdN4oBhEaJupUfjHdBxmv7OxjPX6boW6laJNIpRBP/X8a3ZmvVwWrlJN1I9ozuDNSA3tmi2g1JXXifbyF70afqDdTYSdxCia+RiRN2ORRmKClPHxcoSkJ6rhHRvMgjTGWGiH4+ur4P0fmqXwNULzigkCPJtX42dSypIqS2Q2coHkcTAA84g10d0d4sVS1KJMX7iu63FMu/6niTEmF0ATmlEyI8e0TDZr4IsbZa+ACKReB+oty38Dnw78IRt4n8qBf28WT5q4p5Ntszyq4zqmK/6gHIh4aA+BIBEXbkSxu45nI66nwsP37Gih5gV7fmDjv+Dlb+TgJeS6ylO8xEI1wZD0Rm09Urd7Fy/MjVURJ0mtcS71gejQShoN7oj+4uObq4Tk68XjMVxstSD18kwk2uk4iQnnMyb3GmMm+DJTr
+X-Stat-Signature: wnamnw18qt9ejh93q9t38giirwa7yigo
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AA592180003
+X-HE-Tag: 1782283414-31012
+X-HE-Meta: U2FsdGVkX18kmJ+0PUYNgAhMybVcWBE7sIuBCiagOiT3V1up28v5EV8cz/EFczMyKytAMrjeT4zQR+StILZSycimnUl0o+HBaWCzxz50IGS447PVEqJHc/BzG8Z/CuzcJtmqGOlTt6NLnCZciHwI4LHyHqGbNtjK2E7xCT6s3JksI8L89g1IlPxDGcp1p3mjFeL8c6DOmamTpSZjhlPD7SoW0qHGmD5DIGKSyR0QIXXctX7ILu+TY4pSS7HAuJTMdbCp4g9V15P25jTG5RWEnSKjm4f+3mCumWZRxf5y36I2/FmQSrNUyATD2VZKmDp26lPfam3Se+KMxh1eljhyCKGZhlQdxTfibLUzKZJsTbgPTWgj0DdmDoe7rMaOPXksP9RcduB38xYiB8w4lEAuZYYsxt98x26f/sT884Y6Ey5SljrO38GrxTyR5usi7xR/AzJpJq/161vYGfSbhWAchQB3m/R0JBy+/7//HEsHiyfB4efMcruWVK76Y1z40E7gwgAoYLnlF4F19MagCYpyXD0VnrYsa9xNuvdSJMcMejc3F1ctKbbsYlangtJP2ifvB5txs6QodUvISb/rA8nvUCLJ1QZN6coQJoJ/Ir58P/w/OixzKmGxe2PB/qKJZ9dNF6GHH8ymYVtDyijqNGs8Hz9FWwdLpAj222otWDcbCn5meKSdzTYBB6FLLB7ifujME5rAWaOarPlD7lntKy89wDbWBJVhPCMhbWJ8x3pIQW4lIEuN/jjJuDhs6nj8QMuV8LUYRkBfioamGpemx37VKq9/yuX+LJxX2vyQrJXu0wtByGJT5AU5vzu2HQkfh75P6wusbPHDNcDWg47Re8xasZpM2szQbz5CaKsZwXvc2RLyCkchAr5/gPIOtjozTc6EYEJ+tHHGzL3gf/9KJgijHPWDeLps0o7/WrR0E10QLq59EgCl2ZA+xL07ZtVT919NqpLUz15XPDqfIFn8den
+ jHBbOj5Q
+ R5U8s2jKjX3j0nEUNp0CS1epZFSagYOOHDgCMWdBd9Ej3p6jNnIdmXAwvH4V+ufHKxQNEArD41GZOGprlklDLIDH0Zv0C6/5TSfNFJtVQCsiW8p7nV0Z4QU4A4ZoP8n0J//mmpxjp+dN2afqY9qpqh8+OZK6VnkHn4kfiqr5VNjz8Q05oBqTWuCbGsP+JVf//gMKgd2gq8BEdhftv0oTsShoFIi1DOk78WukR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,16 +102,348 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/6/23 19:47, Igor Putko wrote:
-> The static variable 'hw_memory_failure' is implicitly initialized
-> to false. Remove the explicit initialization to follow the Linux
-> kernel coding style.
-> 
-> Signed-off-by: Igor Putko <igorpetindev@gmail.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 4e5dfb7c84012007c3c7061126491bbc92d71bf1  Add linux-next specific files for 20260623
 
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Error/Warning (recently discovered and may have been fixed):
 
-Thanks.
-.
+    https://lore.kernel.org/oe-kbuild-all/202606240749.ZFFiISB2-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202606240753.kYjobJVl-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202606241110.iUga5vVw-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202606241320.9gDd2s75-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202606241431.L9VUbAKp-lkp@intel.com
 
+    drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/tests/amdgpu_dm_connector_test.c:120:1: warning: the frame size of 1384 bytes is larger than 1280 bytes [-Wframe-larger-than=]
+    drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/tests/amdgpu_dm_connector_test.c:120:1: warning: the frame size of 1388 bytes is larger than 1280 bytes [-Wframe-larger-than=]
+    drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/tests/amdgpu_dm_connector_test.c:120:1: warning: the frame size of 1424 bytes is larger than 1280 bytes [-Wframe-larger-than=]
+    drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/tests/amdgpu_dm_connector_test.c:120:1: warning: the frame size of 1696 bytes is larger than 1280 bytes [-Wframe-larger-than=]
+    drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/tests/amdgpu_dm_connector_test.c:120:1: warning: the frame size of 1696 bytes is larger than 1536 bytes [-Wframe-larger-than=]
+    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.o: error: objtool: amdgpu_vm_handle_fault+0x97: sibling call from callable instruction with modified stack frame
+    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.o: warning: objtool: amdgpu_vm_handle_fault+0x12d: sibling call from callable instruction with modified stack frame
+    drivers/gpu/drm/amd/amdgpu/amdgpu_vm.o: warning: objtool: amdgpu_vm_handle_fault+0x140: sibling call from callable instruction with modified stack frame
+
+Error/Warning ids grouped by kconfigs:
+
+recent_errors
+|-- arc-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- arc-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- arm-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- csky-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- i386-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- i386-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- loongarch-defconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vm.o:warning:objtool:amdgpu_vm_handle_fault:sibling-call-from-callable-instruction-with-modified-stack-frame
+|-- microblaze-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- mips-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- mips-allyesconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- openrisc-allmodconfig
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+|-- powerpc64-randconfig-r052-20260624
+|   `-- drivers-firmware-imx-se_ctrl.c:WARNING:invalid-free-of-devm_-allocated-data
+|-- sparc-randconfig-r133-20260624
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-..-..-..-amdgpu-amdgv_sriovmsg.h:sparse:sparse:static-assertion-failed:amd_sriov_msg_vf2pf_info-must-be-KB
+|-- x86_64-randconfig-003-20260622
+|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vm.o:warning:objtool:amdgpu_vm_handle_fault:sibling-call-from-callable-instruction-with-modified-stack-frame
+|-- x86_64-randconfig-072-20250919
+|   `-- drivers-gpu-drm-amd-amdgpu-amdgpu_vm.o:error:objtool:amdgpu_vm_handle_fault:sibling-call-from-callable-instruction-with-modified-stack-frame
+`-- xtensa-allyesconfig
+    `-- drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-tests-amdgpu_dm_connector_test.c:warning:the-frame-size-of-bytes-is-larger-than-bytes
+
+elapsed time: 941m
+
+configs tested: 278
+configs skipped: 4
+
+tested configs:
+alpha                             allnoconfig    gcc-16.1.0
+alpha                            allyesconfig    gcc-16.1.0
+alpha                               defconfig    gcc-16.1.0
+arc                              allmodconfig    clang-23
+arc                              allmodconfig    gcc-16.1.0
+arc                               allnoconfig    gcc-16.1.0
+arc                              allyesconfig    clang-23
+arc                              allyesconfig    gcc-16.1.0
+arc                                 defconfig    gcc-16.1.0
+arc                   randconfig-001-20260624    gcc-15.2.0
+arc                   randconfig-001-20260624    gcc-9.5.0
+arc                   randconfig-002-20260624    gcc-15.2.0
+arm                               allnoconfig    clang-17
+arm                               allnoconfig    gcc-16.1.0
+arm                              allyesconfig    clang-23
+arm                              allyesconfig    gcc-16.1.0
+arm                                 defconfig    clang-23
+arm                                 defconfig    gcc-16.1.0
+arm                   randconfig-001-20260624    clang-19
+arm                   randconfig-001-20260624    gcc-15.2.0
+arm                   randconfig-002-20260624    gcc-15.2.0
+arm                   randconfig-002-20260624    gcc-8.5.0
+arm                   randconfig-003-20260624    gcc-15.2.0
+arm                   randconfig-004-20260624    clang-17
+arm                   randconfig-004-20260624    gcc-15.2.0
+arm                           sama5_defconfig    gcc-16.1.0
+arm64                            allmodconfig    clang-23
+arm64                             allnoconfig    gcc-16.1.0
+arm64                               defconfig    gcc-16.1.0
+arm64                 randconfig-001-20260624    clang-21
+arm64                 randconfig-002-20260624    clang-21
+arm64                 randconfig-002-20260624    gcc-15.2.0
+arm64                 randconfig-003-20260624    clang-21
+arm64                 randconfig-003-20260624    clang-23
+arm64                 randconfig-004-20260624    clang-21
+arm64                 randconfig-004-20260624    clang-23
+csky                             allmodconfig    gcc-16.1.0
+csky                              allnoconfig    gcc-16.1.0
+csky                                defconfig    gcc-16.1.0
+csky                  randconfig-001-20260624    clang-21
+csky                  randconfig-001-20260624    gcc-16.1.0
+csky                  randconfig-002-20260624    clang-21
+csky                  randconfig-002-20260624    gcc-9.5.0
+hexagon                          allmodconfig    clang-23
+hexagon                          allmodconfig    gcc-16.1.0
+hexagon                           allnoconfig    clang-23
+hexagon                           allnoconfig    gcc-16.1.0
+hexagon                             defconfig    clang-23
+hexagon                             defconfig    gcc-16.1.0
+hexagon                        randconfig-001    gcc-11.5.0
+hexagon               randconfig-001-20260624    clang-20
+hexagon               randconfig-001-20260624    gcc-11.5.0
+hexagon                        randconfig-002    gcc-11.5.0
+hexagon               randconfig-002-20260624    clang-23
+hexagon               randconfig-002-20260624    gcc-11.5.0
+i386                             allmodconfig    clang-22
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-16.1.0
+i386                             allyesconfig    clang-22
+i386                             allyesconfig    gcc-14
+i386                 buildonly-randconfig-001    gcc-12
+i386        buildonly-randconfig-001-20260624    gcc-12
+i386        buildonly-randconfig-001-20260624    gcc-14
+i386                 buildonly-randconfig-002    gcc-12
+i386        buildonly-randconfig-002-20260624    gcc-12
+i386        buildonly-randconfig-002-20260624    gcc-14
+i386                 buildonly-randconfig-003    gcc-12
+i386        buildonly-randconfig-003-20260624    gcc-12
+i386                 buildonly-randconfig-004    gcc-12
+i386        buildonly-randconfig-004-20260624    gcc-12
+i386        buildonly-randconfig-004-20260624    gcc-14
+i386                 buildonly-randconfig-005    gcc-12
+i386        buildonly-randconfig-005-20260624    gcc-12
+i386        buildonly-randconfig-005-20260624    gcc-14
+i386                 buildonly-randconfig-006    gcc-12
+i386        buildonly-randconfig-006-20260624    gcc-12
+i386        buildonly-randconfig-006-20260624    gcc-14
+i386                                defconfig    clang-22
+i386                                defconfig    gcc-16.1.0
+i386                  randconfig-001-20260624    clang-22
+i386                  randconfig-001-20260624    gcc-14
+i386                  randconfig-002-20260624    clang-22
+i386                  randconfig-002-20260624    gcc-14
+i386                  randconfig-003-20260624    clang-22
+i386                  randconfig-003-20260624    gcc-14
+i386                  randconfig-004-20260624    clang-22
+i386                  randconfig-004-20260624    gcc-12
+i386                  randconfig-005-20260624    clang-22
+i386                  randconfig-006-20260624    clang-22
+i386                  randconfig-007-20260624    clang-22
+i386                  randconfig-007-20260624    gcc-14
+i386                  randconfig-011-20260624    clang-22
+i386                  randconfig-012-20260624    clang-22
+i386                  randconfig-012-20260624    gcc-14
+i386                  randconfig-013-20260624    clang-22
+i386                  randconfig-014-20260624    clang-22
+i386                  randconfig-015-20260624    clang-22
+i386                  randconfig-015-20260624    gcc-14
+i386                  randconfig-016-20260624    clang-22
+i386                  randconfig-017-20260624    clang-22
+loongarch                        allmodconfig    clang-19
+loongarch                        allmodconfig    clang-23
+loongarch                         allnoconfig    clang-20
+loongarch                         allnoconfig    gcc-16.1.0
+loongarch                           defconfig    clang-23
+loongarch                      randconfig-001    gcc-11.5.0
+loongarch             randconfig-001-20260624    gcc-11.5.0
+loongarch             randconfig-001-20260624    gcc-16.1.0
+loongarch                      randconfig-002    gcc-11.5.0
+loongarch             randconfig-002-20260624    gcc-11.5.0
+loongarch             randconfig-002-20260624    gcc-15.2.0
+m68k                             allmodconfig    gcc-16.1.0
+m68k                              allnoconfig    gcc-16.1.0
+m68k                             allyesconfig    clang-23
+m68k                             allyesconfig    gcc-16.1.0
+m68k                                defconfig    clang-23
+m68k                                defconfig    gcc-16.1.0
+microblaze                        allnoconfig    gcc-16.1.0
+microblaze                       allyesconfig    gcc-16.1.0
+microblaze                          defconfig    clang-23
+microblaze                          defconfig    gcc-16.1.0
+mips                             allmodconfig    gcc-16.1.0
+mips                              allnoconfig    gcc-16.1.0
+mips                             allyesconfig    gcc-16.1.0
+nios2                            allmodconfig    clang-20
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-23
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-23
+nios2                               defconfig    gcc-11.5.0
+nios2                          randconfig-001    gcc-11.5.0
+nios2                 randconfig-001-20260624    gcc-11.5.0
+nios2                 randconfig-001-20260624    gcc-9.5.0
+nios2                          randconfig-002    gcc-11.5.0
+nios2                 randconfig-002-20260624    gcc-11.5.0
+openrisc                         allmodconfig    clang-20
+openrisc                         allmodconfig    gcc-16.1.0
+openrisc                          allnoconfig    clang-23
+openrisc                          allnoconfig    gcc-16.1.0
+openrisc                            defconfig    gcc-16.1.0
+parisc                           allmodconfig    gcc-16.1.0
+parisc                            allnoconfig    clang-23
+parisc                            allnoconfig    gcc-16.1.0
+parisc                           allyesconfig    clang-17
+parisc                           allyesconfig    gcc-16.1.0
+parisc                              defconfig    gcc-16.1.0
+parisc                randconfig-001-20260624    gcc-16.1.0
+parisc                randconfig-002-20260624    gcc-14.3.0
+parisc                randconfig-002-20260624    gcc-16.1.0
+parisc64                            defconfig    clang-23
+parisc64                            defconfig    gcc-16.1.0
+powerpc                          allmodconfig    gcc-16.1.0
+powerpc                           allnoconfig    clang-23
+powerpc                           allnoconfig    gcc-16.1.0
+powerpc                     asp8347_defconfig    clang-23
+powerpc               randconfig-001-20260624    clang-17
+powerpc               randconfig-001-20260624    gcc-16.1.0
+powerpc               randconfig-002-20260624    gcc-16.1.0
+powerpc               randconfig-002-20260624    gcc-8.5.0
+powerpc64             randconfig-001-20260624    gcc-16.1.0
+powerpc64             randconfig-001-20260624    gcc-8.5.0
+powerpc64             randconfig-002-20260624    gcc-11.5.0
+powerpc64             randconfig-002-20260624    gcc-16.1.0
+riscv                            allmodconfig    clang-23
+riscv                             allnoconfig    clang-23
+riscv                             allnoconfig    gcc-16.1.0
+riscv                            allyesconfig    clang-23
+riscv                               defconfig    clang-23
+riscv                               defconfig    gcc-16.1.0
+riscv                 randconfig-001-20260624    clang-18
+riscv                 randconfig-001-20260624    gcc-13.4.0
+riscv                 randconfig-002-20260624    clang-18
+s390                             allmodconfig    clang-17
+s390                             allmodconfig    clang-23
+s390                              allnoconfig    clang-23
+s390                             allyesconfig    gcc-16.1.0
+s390                                defconfig    clang-18
+s390                                defconfig    gcc-16.1.0
+s390                  randconfig-001-20260624    clang-18
+s390                  randconfig-001-20260624    gcc-8.5.0
+s390                  randconfig-002-20260624    clang-18
+s390                  randconfig-002-20260624    gcc-10.5.0
+sh                               allmodconfig    gcc-16.1.0
+sh                                allnoconfig    clang-23
+sh                                allnoconfig    gcc-16.1.0
+sh                               allyesconfig    clang-17
+sh                               allyesconfig    gcc-16.1.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-16.1.0
+sh                    randconfig-001-20260624    clang-18
+sh                    randconfig-001-20260624    gcc-15.2.0
+sh                    randconfig-002-20260624    clang-18
+sh                    randconfig-002-20260624    gcc-9.5.0
+sparc                             allnoconfig    clang-23
+sparc                             allnoconfig    gcc-16.1.0
+sparc                               defconfig    gcc-16.1.0
+sparc                 randconfig-001-20260624    gcc-14.3.0
+sparc                 randconfig-001-20260624    gcc-8.5.0
+sparc                 randconfig-002-20260624    gcc-14.3.0
+sparc                 randconfig-002-20260624    gcc-8.5.0
+sparc64                          allmodconfig    clang-20
+sparc64                             defconfig    clang-23
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260624    clang-20
+sparc64               randconfig-001-20260624    gcc-14.3.0
+sparc64               randconfig-002-20260624    clang-20
+sparc64               randconfig-002-20260624    gcc-14.3.0
+um                               allmodconfig    clang-17
+um                                allnoconfig    clang-17
+um                                allnoconfig    clang-23
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-16.1.0
+um                                  defconfig    clang-23
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260624    clang-23
+um                    randconfig-001-20260624    gcc-14.3.0
+um                    randconfig-002-20260624    clang-17
+um                    randconfig-002-20260624    gcc-14.3.0
+um                           x86_64_defconfig    clang-23
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-22
+x86_64                            allnoconfig    clang-22
+x86_64                            allnoconfig    clang-23
+x86_64                           allyesconfig    clang-22
+x86_64      buildonly-randconfig-001-20260624    clang-22
+x86_64      buildonly-randconfig-001-20260624    gcc-14
+x86_64      buildonly-randconfig-002-20260624    clang-22
+x86_64      buildonly-randconfig-003-20260624    clang-22
+x86_64      buildonly-randconfig-003-20260624    gcc-14
+x86_64      buildonly-randconfig-004-20260624    clang-22
+x86_64      buildonly-randconfig-005-20260624    clang-22
+x86_64      buildonly-randconfig-005-20260624    gcc-14
+x86_64      buildonly-randconfig-006-20260624    clang-22
+x86_64      buildonly-randconfig-006-20260624    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-22
+x86_64                randconfig-001-20260624    clang-22
+x86_64                randconfig-002-20260624    clang-22
+x86_64                randconfig-003-20260624    clang-22
+x86_64                randconfig-004-20260624    clang-22
+x86_64                randconfig-004-20260624    gcc-14
+x86_64                randconfig-005-20260624    clang-22
+x86_64                randconfig-006-20260624    clang-22
+x86_64                randconfig-006-20260624    gcc-14
+x86_64                randconfig-011-20260624    gcc-14
+x86_64                randconfig-012-20260624    gcc-14
+x86_64                randconfig-013-20260624    gcc-12
+x86_64                randconfig-013-20260624    gcc-14
+x86_64                randconfig-014-20260624    gcc-14
+x86_64                randconfig-015-20260624    gcc-14
+x86_64                randconfig-016-20260624    gcc-14
+x86_64                randconfig-071-20260624    gcc-14
+x86_64                randconfig-072-20260624    clang-22
+x86_64                randconfig-072-20260624    gcc-14
+x86_64                randconfig-073-20260624    gcc-14
+x86_64                randconfig-074-20260624    clang-22
+x86_64                randconfig-074-20260624    gcc-14
+x86_64                randconfig-075-20260624    gcc-14
+x86_64                randconfig-076-20260624    clang-22
+x86_64                randconfig-076-20260624    gcc-14
+x86_64                               rhel-9.4    clang-22
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-22
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    clang-22
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-22
+xtensa                            allnoconfig    clang-23
+xtensa                            allnoconfig    gcc-16.1.0
+xtensa                           allyesconfig    clang-20
+xtensa                           allyesconfig    gcc-16.1.0
+xtensa                randconfig-001-20260624    gcc-14.3.0
+xtensa                randconfig-002-20260624    gcc-14.3.0
+xtensa                randconfig-002-20260624    gcc-16.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
