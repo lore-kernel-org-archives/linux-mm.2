@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B19A3CDE000
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89228CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 21:29:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91C156B0088; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
+	id 59BBA6B008C; Wed, 24 Jun 2026 17:29:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CD4C6B008A; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
+	id 5727C6B0092; Wed, 24 Jun 2026 17:29:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E3E06B008C; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
+	id 4B1196B0093; Wed, 24 Jun 2026 17:29:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 593FB6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:28:36 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C85CB1203DC
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:28:35 +0000 (UTC)
-X-FDA: 84916095390.14.A035BC5
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id E433A16000A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:28:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=gQo8gjXl;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BC936B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:29:16 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AE3DE8E676
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:29:15 +0000 (UTC)
+X-FDA: 84916097070.23.F7FECE6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id ABC661C0004
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:29:13 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlW+ElBv;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782336514;
-	b=l5eNZ/6iyUe4I+auQRfGgbYbrT+KbB0uNeZ4aVaTK+q9FZgi4+TCgUtVCFWb2npxiMXQkk
-	S7lLMJEYXIPiCq9Lk+m9k5H/utJAvC2l6KZ9nJ6snAVzJpcApZ/SXchO72J5TrnAFiRpac
-	wAubS2ljSJqeZB1pn+yZITfOkIw2Vpg=
+	t=1782336553;
+	b=pjWRjoKgooGvAx2HxZ8c9iv8ICG8AzFypuMaqh3U+uOa8baYktyKtQq9PnWIYEmMDftTIw
+	t56jQ5klgNf8TJu1y3P0HcpSX1zo+aca2GZbKE+pxfaZ5tOQwUNWCeJHJWErBd+8aZACH7
+	G4IpQls9DO4ncVZzjWUexqJa5BzYCwg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782336513;
+	s=arc-20220608; t=1782336553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
-	b=ELALU5O1fgGfuw9RgtUP1UEqxpkXo5Yv+6Lp4MJJfp4rAhzBZnRquk+R+eXkdRUlxpjS7u
-	qzo+4NZo3DRQJZ/pWRrWzupA0uuewy0fimmWg7cyyglwPXl/yGXrD1RDizXZRspE5PwdDx
-	xO3I3Mmbc/0kdbaoUqOYZnQeEtAzgCs=
+	bh=+fw9DmPAWeJgCq05tqq5cJv32HfUi3ZZuoZn+hQY1KM=;
+	b=yvXdO/ts+12+dGeZOwakwceZUFGsMVPhqUsz4OgQfv+CvmG0NfqM6aGPq7wdwtnW6LEOqo
+	+wYJBBwZhnvB8uOlxcvZ74gYrJOTC/QQnVZ1jQcO7v01SanZawPVdyC3nOhG5zukK9uOOo
+	2cuzhGexedry2uKlP3UUj4Knpuy78Sw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=gQo8gjXl;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.180 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-922ff615c14so156336285a.3
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:28:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782336513; x=1782941313; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
-        b=gQo8gjXlpg6jIy2J06CeGb/CnGmUlq4CUK1S75nE9UhDbkpPLuRwZVB+9Mh+4Zk+Eh
-         WkUjl0o5E+I4y4XqlmAYTI1JQOkDg2+9Bi72yW09aEYMZT0SqXlcW827hKUK8OBYVcFx
-         TLKjkjpJeX3uNybnSOHeKLZ4BvMFkAY+pK2PRXBLMFN71JSA3FMvm6OniNyqSlaJiMH3
-         UzMWs7gkG69YYGzZAx/diRM1CgqqMwJyWG33/JfwV8exOEwPatNJ00AThyRx7zRN3H+3
-         t2h6IxsgM7uTp4NPZwnoqS8OiZSGWzUzfwKm1hWcfWrx4I9CFROppJnzQhmDsJKxkEvT
-         bDWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782336513; x=1782941313;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O6KvGnSeke+GyyXEP/Bx0FGRYD1wjPR1HoPpU93wagg=;
-        b=LU25zdIw42fWLxJweY2QKJyxxZn1zqSCp9+4x7KWKdUmXg9t4bmpnfnZAg/2/tRAEq
-         iz01c8Lk3+4zkx8+L5zBtuSvjMygdu9x78Z54EaR8lXjNjujY1IbXxhc+Cw0bVadXYre
-         UTyMjIUi8M+tdvcbeR7hmae7VytBioGRwq3REFtupNdbAOB3lD7Qkf6yOKgnF7GV06Bf
-         vaFl2GMS3px+2tDxY6sc5xTwurQOXPua0BAaColYWEJmsbmjzaHjb3d/mP4WbfnvVBxd
-         rYvJ/29o+tWm84jN2q0W9r8tZwvnQ7dagybX9UvMTNgTKSAHpc9OjUxToqP8p8bT1c2U
-         /EMA==
-X-Forwarded-Encrypted: i=1; AFNElJ8He7JV03PNtmPSyMBluDVSI3Gr+X+GGxqtIXvqXA+c0yVTTmU/kz2Va1ACnRBchbGNt28wg3BPcQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxukx9wieEXxtxaYXn6d939c0E9sqscPVnoFFf7QlAhnJLTgTRO
-	J8uHcx2HCCSQMnL3Jy6odxQb/nY/SaBKQEzOtd1BFzyJMJqGWU1XWoIjJD7bpOrgJGde7tvAsJI
-	GzQMY
-X-Gm-Gg: AfdE7cmxSX11YPPRZLxJvHuqqOJzzZiIhVShxw3q6rsVtG0F2dwTkEuLgeAWUw7tdhu
-	TWCt+93wWpc4nFaKdnFRPXjW1XD5JOI6c2dCw9Ggd5fguvFAK/mbQS2rkYg3Skt6FN6s+YWf+UG
-	7La+r43zIutPr6fKtKjk7Zd6/yHQpEbTZUICKoFJBLJAp7voKBniwXUZVSA/O0PZ6Uv6woI0g7L
-	Az8tJpUQZUiqJ5k+DsQJkvK8R/15Kn/tgI//DMDPpjYAebhxKOmurSXhbQUnFre8ayt0ZMN0y0I
-	2Rg8UcRPUyBlTUlhry9n8Sc08wTOAkZO6oGvGBWdqRMnk6ZYLNKKWy96FoMWFd6ZWNo3hqsRLeO
-	dHRezlUifQntrMAPSnJnlaxyFrW0pZ/ic3K9E3qF93JqeenUc1sgIPJ6+EjMjc+ymJiCWLxcLgX
-	QnaFWk/u89F624QOWqY2aQgwkzNoJkYYrfrXxtQaQ/koe6tKIUWBGwMhnMXpT+Z0ccsDQP
-X-Received: by 2002:a05:620a:c45:b0:915:abc4:b570 with SMTP id af79cd13be357-9277ea2e6e2mr831365785a.48.1782336512781;
-        Wed, 24 Jun 2026 14:28:32 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-925fd39106asm630817585a.7.2026.06.24.14.28.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 14:28:32 -0700 (PDT)
-Date: Wed, 24 Jun 2026 17:28:27 -0400
-From: Gregory Price <gourry@gourry.net>
-To: sashiko-reviews@lists.linux.dev
-Cc: nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, david@kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v5 8/9] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-Message-ID: <ajxL-5d3JUArPRyo@gourry-fedora-PF4VCD3F>
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-9-gourry@gourry.net>
- <20260624151122.AFE551F000E9@smtp.kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GlW+ElBv;
+	spf=pass (imf20.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A530544274
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:29:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88FB11F00ADF
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:29:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782336552;
+	bh=+fw9DmPAWeJgCq05tqq5cJv32HfUi3ZZuoZn+hQY1KM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GlW+ElBvaYXDwUWG39y8Hs/HblbdgMluslHHNzdDhOQbE/m6WZdBI22M03qiL41yr
+	 3q36T41Gkh+Fi7UpAdlk2ofq9SV3wHzrr8/VKP8Ewitzl/Gb4Dz/IiMKeFxLj/Dgrb
+	 /gjRwwB3UB7ao6tybIAtK3EcM2tjSAYQUbeFFzo1E9M7gLVYQEVhOMpjfO2s02/hR5
+	 nTO51t97ng+URdQEp0X2QZbt5Jdl1++srVD/4MYjutcbej8Mb8lA/maUiZESUXarvo
+	 iSkJoF8Y4IKLpY+Yr6wxwRcjzqWF8g+vrYv8oZOR2ACORjNr76VgOw0yeaXsf9lTcf
+	 ySnvueno4gA5w==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8dc09919aa2so25024266d6.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:29:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RqEkIWOtSOIHBl4ewax1jeUY49/HqtFaBus+E6CKXEN4y+Z1zsv4P0OcULBq6a3sIviN/lrv0Xreg==@kvack.org
+X-Gm-Message-State: AOJu0YwXDUqmDL+Gkr5hw6T74lvwzvQ0mA51VscHRBBMAmnYffeVppbR
+	jA9XsWBTmvqceC7iyNU22B+YtMhRaHts93Zx/wZyYp4CSBuz76ybfGlChRmH7HG/busp7/s7SBu
+	IHiWlrxVKDhe0pnKmzWUTTV5a021LO+U=
+X-Received: by 2002:a05:6214:1245:b0:8a5:104b:e37b with SMTP id
+ 6a1803df08f44-8e5313082b6mr81132146d6.42.1782336551793; Wed, 24 Jun 2026
+ 14:29:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624151122.AFE551F000E9@smtp.kernel.org>
-X-Stat-Signature: 4wrj8wogrchd3addeiwm6p13gqo14son
+References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-3-baohua@kernel.org>
+ <24ca671b-074b-4d1c-ab50-1143279480ce@kernel.org>
+In-Reply-To: <24ca671b-074b-4d1c-ab50-1143279480ce@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 25 Jun 2026 05:29:00 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4yy_YjAwFpNhq4pXrDQHifiG+zxe5kb1mmxAYnAeyAhGw@mail.gmail.com>
+X-Gm-Features: AVVi8CeQR0co_0xzQ4UKjL7F70KnP-mWU7JOqr7t3Uoutvxy6EYuOU9a4F5CWUg
+Message-ID: <CAGsJ_4yy_YjAwFpNhq4pXrDQHifiG+zxe5kb1mmxAYnAeyAhGw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] mm: drop stale folio_ref_count()==1 check in
+ do_swap_page reuse logic
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
+	chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com, 
+	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: ABC661C0004
+X-Stat-Signature: zc3srpu7jap1njb3wjaotnin6guxzkzn
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E433A16000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782336513-136024
-X-HE-Meta: U2FsdGVkX1/+pbtXV5PXhgV7eKyp82eIoUWlvxCjXbQ3lMN36kpySyTmOwu6dyiXy/3h2tFsXsoJybXXYo5vUKKk59ycHJPb50ytgDXaZOtcfOPd2enIS/IZR1WDaiSyoam+CZMJpBQDIL/PAA+OAABXiC9zdJXQeDEnKG6FC2PWLSSiHP4Dn9+V0P1AMAnDQpd58MQrLvagcXbUrDP7bDDbb/puzcvITGZmsRBYlUj7+e4Ox7xl4kjWF560YunGeDsqYC2H4N8bBOOHYwFte5mTQkF+6V2hyBHcnLunaz4ujpAfr+apkbtzBHXYOy9mXeJ12KLgvcS2uziAb+KIBONyoUikcFWqI0hOIWZfs+hQjgGe7NBQevYMu+Nlhtj+3dWJx+sREIKxjkiefT1tx2jF0eJx3WIu0NqoKSsq8v4S8ixJb3Lk6Tm2yIoMWtx3D2iaR5hXVLZVe2GRDy3fEd/Knuu19x/n2GLaewKSG0M2K5NDRk6j+HD7TyaNnA6/KPT1/+8TsVOS/MRUuEYhKj+STCQNUXraYjwNvp7MC1bNDF/vD/bc0yGXlK3ZzKXd4L8H9BZ5Qj42oVHhZmD+WYQ/+vxD1XH5PpdY+yOGUZsblzE70qUb4HqO3u/NbXoAfiKhH5WjXsOowjY3Zo5TGWaidj8HUK48o4YWd+wKBMOPb6POAJ/+JHjTVWjXBmVEdWHn8TI78qLdNhhoUxg3fHXap4XPfBlXnveotLA5/33Ez9wD4C62nzyf0xlHXVkpbOOuq2VvlXg9GTtLHSjnzMpSPNTyPlr+zvAimf2JTIsV4SLJ3kxYA9MLuOY6Q02M7P5JXUdHLJgGCB4pNGXmc8QYULDkoU0CYBI+RyoVehWUeGrVyH0mStnDX/gly7Fk07Brrb+n9QtgKUMOfuiLYow+miPGp3draed/+kiOVq9Se0MaYnE7jF0Mpk9WfgCUyFz9exWiTvtV74d3/dn
- SOdKXqMd
- ls8r5CqhtaQIIfp3jXlPJ4Eivh1RovIKw/gxFlXFdRCZ1pZZR/LvcY39rN3FEIrjysbmK9LMUrPVK1lKPpVmXD3SY+ckJWDKlfxQD48aWAQHmdDiQPJWemAhRExPZHKjqf15mGvBflNJhmX21hlhHJPg2LQszEwVRdj3zK7oIcxqP5wPMw8TMFADB+I8ulmQU7AefSASDr4DXUfOMzZ9b/98Gib/DYxT9Z3enQ14FxmvBTzfRVSjJhHPHNaulkVCmH9r0zHAF2qEDTRagrvqyc9tc2d8OfQ8G91xrG0cU3xXp4PhlWi6+kpZ0AW65JZSAc9jodm0SA2aB3+O9VZN+IRr6TvUeogNbO3kzmuVLMWMP02HXK1o8nodNORQ7QoTd8T3R9kokvWmKHR66lLRDKWSdcpgRMTRZo0mz
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782336553-338599
+X-HE-Meta: U2FsdGVkX1/6PZTl0VJRNmmV3Pw0M4V+daXCbmBv438t0fGfJaw1k45tutRUQVzZQHnyZZdVh/Bbdv2lq/yP+FkJw8//sM7WRxfBCNpcvRShskNPKee+KMIkaKdcOIy5DlUQCeHccvLQKiQfMSNya2dtoHwcBI9b3549+7VgIdmIH1wp+6xsO9y4quYX0cSkIu+tQ6bvlqxZ/i4owEB7ntrCSlGL4wC6c2FXDDScGs5x2ZjAPX0SiGzkyae2EmKm26yAjLng8s8+nZtgevE5rVlH9kEhNvjV3TlWjqoPSWpCsSceIZ8Y7tipPtNCwcP97KxUHJqyBoFLhzKC4RZSIFpsugTzuzSgh2RAxzTG8auX4lR/S68d23WYOGvpjZCsD8wfu35GhIp7UKEDvfqgise5l4NqIATW9z3ymEh+CmlSnX83MCbWZmk+TMGEzdgDBiFg6VdY67Nr/I7lMvPcB5hsgOTzdxA70UT6Fglr9FFbCZZ97Vb6x4f8eQlZyQgDeBtDvHTOjbN/9KLKTjJEh33hJlb7F7R+iqH6zx/9VmVOQfrEyu15WX1jEO3c42FlWeehFcrUX37DSsjyxhpbuffqu1U9MzQhOEFJzjGuwxX7GSXr20quGWPpoBhdSu99UkiCQlb/UAL9KA+PFHRrJpWXOlTAYhANZcIqni4cCdw7bKvtExZsK9IM3e6Kfym/MIviObhvRsFIERHmmQ8IkwOhtH/3wQe3CiamRJaauaYagQiF9S3xY1kEaqBAimd2vXosdMmoApKEzSo1A+vUB5mg/3N9j0DIyow0n/3D1W4fimofgPp1Jt5h6sFCvbcLVckjcOxQjVTe7zD0KYZYAxlg5HYOHudWWb7Lc4wGXW1zXaLNkty6TpnLkBhRC7X6Gc4cQXTPat/6EuuCMCTJWl9xd/mQbmj46jFEDxGmoQh9JPaCtnPM8vCz5JRySkJCOIbrdVt8gdLg1SDY5dQ
+ Wn942ci6
+ u1ZBkJr/2Hafz1H0L7+/OgqItGCiGx24mdGUqhQPY4P/IUZ61fjlUaz/vHF7HFwWml/WRUQAFFhC82MeXZplekTuEpHeN8gChYb4ltKhNgjwVvpG89TcpkGTrwSFreFemwnM+G4ltkQoRHPF4dNyEiVnHL6LGem9s6lwuwAeiVvT+vRGlbMHT18DJnOdYzHSVRfHpPoLzMDMUp1cm4uP0bFGbWLyEocu1vdf1H7ISzpUEJ9+se+8PQa8JU8fedpoHZmlUECEFqArjg6ZLdLYwSiVHsR3EHWCEl9DQxEc58BsJp4T0TnVZrQ0AyZP9rxsYHzsaxBcU1qk6O7GmrEUTJUrlqwvnaCpjN7E8padFQCqZVCTxr5x4b0uyXZzDdej2xm45
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,63 +108,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 03:11:21PM +0000, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [High] The protection against deadlocks during driver unbind can be completely bypassed if the underlying memory blocks are manually onlined via the core memory sysfs, causing state desynchronization.
-> 
-> commit fa89899811083ada324ea3db8204b1c135005af5
-> Author: Gregory Price <gourry@gourry.net>
-> Subject: dax/kmem: add sysfs interface for atomic whole-device hotplug
-> 
-> > @@ -348,20 +490,26 @@ static int dev_dax_kmem_probe(struct dev_dax *dev_dax)
-> >  #ifdef CONFIG_MEMORY_HOTREMOVE
-> >  static void dev_dax_kmem_remove(struct dev_dax *dev_dax)
-> >  {
-> 
-> [ ... ]
-> 
-> > +	if (dax_kmem_state_is_online(data->state)) {
-> > +		dev_warn(dev, "Hotplug regions stuck online until reboot\n");
-> > +		any_hotremove_failed = true;
-> > +		return;
-> > +	} else if (data->state == MMOP_OFFLINE &&
-> > +	    dax_kmem_do_hotremove(dev_dax, data)) {
-> > +		dev_warn(dev, "Unplug failed, resources leaked until reboot\n");
-> >  		return;
-> >  	}
-> 
-> [Severity: High]
-> Can this deadlock during unbind if the memory state is desynchronized?
-> 
-> If the device is configured with auto_online_blocks=offline, data->state is
-> initially MMOP_OFFLINE. If a user manually onlines the underlying memory
-> blocks via the generic /sys/devices/system/memory/memoryX/state sysfs
-> interface, data->state remains MMOP_OFFLINE.
-> 
-> During unbind, dev_dax_kmem_remove() will evaluate
-> dax_kmem_state_is_online(data->state) as false and proceed to call
-> dax_kmem_do_hotremove() instead of safely aborting. This attempts to offline
-> the blocks while holding the device unbind lock, bypassing the intended
-> deadlock protection.
-> 
+On Wed, Jun 24, 2026 at 11:08=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
+> > The "we just allocated them without exposing them to the swapcache"
+> > case no longer exists, as Kairui has routed synchronous I/O through
+> > the swapcache as well in his series "unify swapin use swap cache and
+> > cleanup flags"[1]. As a result, folio_ref_count() should never be 1
+> > in this path, since at least two references are held (base ref plus
+> > swapcache). Remove the folio_ref_count()=3D=3D1 check and update the
+> > comment accordingly.
+> >
+> > [1] https://lore.kernel.org/all/20251220-swap-table-p2-v5-0-8862a265a03=
+3@tencent.com/
+> >
+> > Acked-by: Usama Arif <usama.arif@linux.dev>
+> > Reviewed-by: Kairui Song <kasong@tencent.com>
+> > Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > ---
+> >  mm/memory.c | 7 ++-----
+> >  1 file changed, 2 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/mm/memory.c b/mm/memory.c
+> > index f6848f4234a6..abd0adcf65f0 100644
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -5049,12 +5049,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> >
+> >       /*
+> >        * Same logic as in do_wp_page(); however, optimize for pages tha=
+t are
+>
+> s/Same/Similar/ ?
 
-Pulling this feedback onto the list so you know i'm not going to address
-both pieces here when it comes back in the next version.
+will change to similar in v3.
 
-1) dax/state and memoryN/state can become desynced.  We can't do
-   anything about this without a memory notifier that prevents this
-   desync by disallowing memoryN/state toggling for those blocks.
+>
+> > -      * certainly not shared either because we just allocated them wit=
+hout
+> > -      * exposing them to the swapcache or because the swap entry indic=
+ates
+> > -      * exclusivity.
+> > +      * certainly not because the swap entry indicates exclusivity.
+> >        */
+> > -     if (!folio_test_ksm(folio) &&
+> > -         (exclusive || folio_ref_count(folio) =3D=3D 1)) {
+> > +     if (!folio_test_ksm(folio) && exclusive) {
+>
+> Hmm, but KSM folios should never have "exclusive" set. So I think you can=
+ drop
+> that as well (was only relevant with folio_ref_count=3D=3D1 check IIRC).
 
-   https://lore.kernel.org/linux-mm/20260114235022.3437787-6-gourry@gourry.net/
+right. will drop !folio_test_ksm(folio) in v3.
 
-   this unfortunately breaks existing userland tools.  I was told to
-   drop the notifier path and explore deprecation at a later time.
-
-2) What I will address: if state=UNPLUGGED we can safely proceed,
-   otherwise we'll simply fall back to the old remove_memory() behavior
-   where deadlocks are still possible.
-
-   I'll add comments that address this.
-
-~Gregory
+Best Regards
+Barry
 
