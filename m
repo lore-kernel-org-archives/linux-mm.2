@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EA11CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569A7CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 13:54:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 32BE46B008C; Wed, 24 Jun 2026 09:52:34 -0400 (EDT)
+	id 245CD6B0088; Wed, 24 Jun 2026 09:54:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DBFA6B0092; Wed, 24 Jun 2026 09:52:34 -0400 (EDT)
+	id 21DF16B008A; Wed, 24 Jun 2026 09:54:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CC126B0093; Wed, 24 Jun 2026 09:52:34 -0400 (EDT)
+	id 0E8046B008C; Wed, 24 Jun 2026 09:54:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA0D66B008C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:52:33 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 666E01C1893
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:52:33 +0000 (UTC)
-X-FDA: 84914946186.17.9BE0128
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 644B54000A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:52:31 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=joK+Q83Y;
-	spf=pass (imf07.hostedemail.com: domain of abarnas@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=abarnas@google.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CBACE6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:54:44 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4430C14039E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:54:44 +0000 (UTC)
+X-FDA: 84914951688.30.7FBCCE2
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 3B14B1A000D
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:54:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A3cqOeH+;
+	spf=pass (imf19.hostedemail.com: domain of abarnas@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=abarnas@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782309151;
-	b=0l5q1WbVBgHninHsQEzxHm9kGcJEbnBLcQ8X1+gu9P61XHslx53MUfspGvcNWJ8zofpgkW
-	KBj7+7A6yUb1AqzC244DbVeNrxnwN1kKiS+t2Kqv+5Y3+US+OBqW+6useBsuq5+T9Wkc4B
-	6Ei9Bn8TQu1LzWUuauIWST0vfWIsJEI=
+	t=1782309282;
+	b=Vi6waMtUwx1a43uRE8w7aR9tGQY3tGX8B4LmuBKgrBYCTS1ijYUoGDUglPy/e+l5sa56Ro
+	7JadPYyjJBiktm6ISwTHqgeflQAfFExeCBt2QusMOwc8ZstT14qwIzNcc0cJCnvmSf/3UW
+	V37XJrm8Sh1BooI/i0fcyCqS7yEzj4M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782309151;
+	s=arc-20220608; t=1782309282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H9fHKpp0hsSkHZoVgpfSSRVfUXpN+LFN7Jx/OE3znng=;
-	b=hzjEjRxlr2TeQDkUwYUKmWRV2CHN26ZC+via/M9LAXrvDefN+fE6q/8+Rue3DdNhDezNGn
-	j3qF0bTAMWR2ErnLrJABcGrujdyTZ/FGYi97GqdzQn1TdLSX/zn8ronW3MSTXgC5dKtaPa
-	qjkgnbug/Hf5rv1dK0aHGNi7g7Exlzo=
+	bh=GZV9AIpiCFVK4tdxG3Z8tFEyC+qJoxAahhaSiAUDsyI=;
+	b=H/hR8ozph22nZJRJdDcGMWIWz8QpJaFtykdCGTUgeandXWi0dmWhKLcceW8TeZVjFB6cak
+	2usYDouCgees5+zvU45hU+V+gt+ViQcMoT7UXZRbT1E1j05yL0veU2bNAdfKn11AcTLp8E
+	EWG13f0EuAXEW7Q9BiTEWwbfZ4LrN4Y=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=joK+Q83Y;
-	spf=pass (imf07.hostedemail.com: domain of abarnas@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=abarnas@google.com;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=A3cqOeH+;
+	spf=pass (imf19.hostedemail.com: domain of abarnas@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=abarnas@google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4924f8db066so6281885e9.2
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:52:31 -0700 (PDT)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-46cbe01d4b6so368320f8f.2
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:54:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782309150; x=1782913950; darn=kvack.org;
+        d=google.com; s=20251104; t=1782309280; x=1782914080; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=H9fHKpp0hsSkHZoVgpfSSRVfUXpN+LFN7Jx/OE3znng=;
-        b=joK+Q83YCr9kiaW4i727468n/7y/Mb0lFLlXnO0wmj2MhZoRSUiNnzKd9DTeXZLBOM
-         IbXANGrKvGVfq6QMSqbv2PCQpNdSVbrR4SdbR5RfwEVaGkypsJp7Vs4czmI4pc8I08IV
-         DsRQmcqsNIOgGt1NvouaBhZwrPP0ZseZffV/WCrjSRfkutMbfgbHG8NapeBBI7ABGaMD
-         72MJX+9MzVbdcTx6iVqEKkKaktgAwlrx3Qw6WzgqhG7HXbeQJF5L5MZaWCBcd3tg36CB
-         yfB6j50LVhsHUWLFGrnKJaFoXBgD+5sLkZwOErW7tkg2nEeFI0lyyO3gA1YbxH0KHK4B
-         D0oA==
+        bh=GZV9AIpiCFVK4tdxG3Z8tFEyC+qJoxAahhaSiAUDsyI=;
+        b=A3cqOeH+Eqk5g6ITJyowOrRQK0JOQ5R3md37VK12EAwZblgYkfGr2K0zammLbn1G1S
+         +zgwp7txyMJLEs0dVRmwt7NsqOJyyGHuQFifATuf2HYf6L45kpaE4KbJViheGcU96PoA
+         7TdjBlKPyRwUMLMyIgtrAgMWUSFtbKfC4bb/WzgelMZy6bS893/PdIwO0sgn+upn/k69
+         TKu8H7vJ+QZdG2vVi9ajFLmiOz5zmT2sI8j6K07VdDRQN7IdxndMP8tyz2vY6v5NaHvK
+         E++66DPGE9+KBarKjo4J60UP2AJq0dQ7h9BbjQujH8XHFQRkgsRJVK5NjcovX+Pt4sl8
+         HBzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782309150; x=1782913950;
+        d=1e100.net; s=20251104; t=1782309280; x=1782914080;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H9fHKpp0hsSkHZoVgpfSSRVfUXpN+LFN7Jx/OE3znng=;
-        b=Gg7wZs8Oi4UtiaU+o4ezFAwAWJ0IaDICnvckBtyoXYWXRdKqTiTELnjc7Ln5RbqnYb
-         8MqFTVNXaefB8paKp8bshlEqUdRkeCHwKeeFvrgqz1e8abiHp6LvvnjRArH1rcQi+sjE
-         w/S05lL2FNpUa86NIl/k7j5y603ejtL6/5Iimn7zOKcMbTRWxkbd4inSOxog6gfttnUp
-         MYk3aXKj9260bhTpV9F4ZgTGfaLfoFGKkFcy+zZbp8lepcnJksyGcdvXvS5Jc8eDRZ9w
-         PIJPhYID59a2eJRFp4MchZ5sWnMGvUn+IbkHnDtOS8woZtrZCdBAu5wsDRWqQuBmrFK3
-         q1Zg==
-X-Forwarded-Encrypted: i=1; AFNElJ9qRl/Xq4YEk6xMr6gbO/k9ba7nfvj+hg/YP+efAOmPUf+vmvMWzDQlXkQ/ST2yjP3U4yItYPRgHA==@kvack.org
-X-Gm-Message-State: AOJu0YwA8pIBwCPMTo22YkcpqxbHfLRwMGXnf0tQmmSZJUtb6TWm70uO
-	ysZXeKtaU66V4EayHu1a65UWVssZFqhdnQ3072ax55LUO2mpRzlOfJD0+RyRIWPm8w==
-X-Gm-Gg: AfdE7ckQ4jNLHpskbVdsFUlAjsbtBGV+5cMteY5cRdZ3rz7m458N38dfBiZqQZiM5aD
-	RGnngiJOQ4+x9mZCWB3De0opGMyQ1+VxDdsPCojPppVgddBL/+NqtVgBzLNczLFI0CoqOCx8Wty
-	DPu/IyLHs+gCbzNy4XJghsKkxl0C2zGg3uoLDDA8xFBk1BJp/JZvpmA/lYLTl9tKDG2UfWEx4/u
-	1NuOQhBlmaJ91ZweTh8aypbfLQ28J0BIg0nZ4uqa2wnxf7rccXC4mrBszR4PPRIzTE2ylLGewmN
-	E9iz+c3gDO3ZxnEs1rjVEJL3jjGQbuKeE7bNu2TqcS7PmSMcS6igrZZ/Ti7G8AkGYRyoZAaSTXp
-	qNTjNgod3tk2GdJJ5+00RruL4OVWsE8LSPkxgumYWY9T8bmYdfp/o/nkuVlqxdLgYsM6sr1Bcdh
-	a9UcqxZ/RaVAH1QfEUQ/r9C9HSyDaBJ0JKKe9yL/kGdRxNH/k=
-X-Received: by 2002:a05:600c:8b71:b0:492:59a0:4a65 with SMTP id 5b1f17b1804b1-4925b3802a0mr117077955e9.27.1782309149240;
-        Wed, 24 Jun 2026 06:52:29 -0700 (PDT)
+        bh=GZV9AIpiCFVK4tdxG3Z8tFEyC+qJoxAahhaSiAUDsyI=;
+        b=i+0JFrPzmcWkO7UWT8Etrbv45dHiXKlmRrv1QX+9XHrqH9nbgoUhRtj1ELi9042Oeu
+         VezQtcMSg5gNMYgPJj/2YzZ2KANPf8l4s8K+2oHusmhhMkzFKwc9O8vaYDiBbSHGNuOF
+         JrhJta19FhA8F91p8/k4f04FZzZaU5yElwCoLJdnZ1ooSYHDR4IxfEV0pZLEWCmqOQwt
+         t1z9ETxb2w1ZtmsP/1jDOiTeOYyulKivh186skJFVVW9H9ykju1jaSPyB1k/ioIufBLQ
+         yN7Nm0cbARxgHLXL+JIsfRc83q/Qw0ZsI9KheT9bJ8735h3/7v60UQ9YsWmlB47yB+9u
+         FgVg==
+X-Forwarded-Encrypted: i=1; AFNElJ8fynhK3hawaTG/LErYR1A6KDX3K9X4U0/MRgKrAhxqf3NYTYFngj6Zy/6eELzY+uHGLHkRzmHajw==@kvack.org
+X-Gm-Message-State: AOJu0YwAJdtHs2H8TtAIsftrKuO2+OvM7n2YYQTKiW6rXeFLvkc8ie/e
+	/1o8nL9UYQ0feqRByfXzgFw11dak0IPTjUvUDudIzbR47ACF/ebGBta20mHd/jAxfHS9BdMwhZ0
+	LrTGEaA==
+X-Gm-Gg: AfdE7cnQ92UK31RQKRxIZyX4WXVuNKMvaugSg32yAKJo58O4L46z5iNrmNc7wY8cmE3
+	Wkckb9FHUa1TxQmM+3sXID99UjBaXNiFb7WpVI4+UsIpui30NwgzQN7zSjwUeDDKnGcWxcrCIlp
+	3FMPECvoA6nAMYMu5+B6K/d/Syj3t/7oJ93FiGfc2NHxM0uIGe6qTo9jUctO3mSCGEJfT7BasBO
+	5jVzygYGrTQSBaBAp61AUd7eo+dweaHFqQd2pMK89VbevkBCOJd06OFXuVtMg3nTwaHanmsR/F/
+	7QtpWLg8yADGldW/nmPdP/bwlL+p8uAp+21l1uyG5BYbh3ra2xeB5+/yBfAABHZhWx2+fPLT5al
+	tuI16sEfcnq/4cRO+kx/KTm2LfLaNRlMdlCGTIl5X9R7B5UxXU7la2vk0L0Bs4hl7zc2Kms5MlS
+	P3k4Y7CsXU3LUb26W1EXAevVNHAzhCMcWwiChj+fAqcMBM1kj5faLv5RjmcQ==
+X-Received: by 2002:a05:600c:3b17:b0:492:62d9:4e57 with SMTP id 5b1f17b1804b1-49262d94ef2mr19529165e9.2.1782309279820;
+        Wed, 24 Jun 2026 06:54:39 -0700 (PDT)
 Received: from google.com (97.113.76.34.bc.googleusercontent.com. [34.76.113.97])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492494496cdsm341827885e9.10.2026.06.24.06.52.28
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926064f0d8sm49968305e9.0.2026.06.24.06.54.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 06:52:28 -0700 (PDT)
-Date: Wed, 24 Jun 2026 13:52:25 +0000
+        Wed, 24 Jun 2026 06:54:39 -0700 (PDT)
+Date: Wed, 24 Jun 2026 13:54:35 +0000
 From: Adrian =?utf-8?Q?Barna=C5=9B?= <abarnas@google.com>
 To: Ryan Roberts <ryan.roberts@arm.com>
 Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
@@ -101,26 +102,25 @@ Cc: linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
 	Ard Biesheuvel <ardb@kernel.org>, Christoph Lameter <cl@gentwo.org>,
 	Yang Shi <yang@os.amperecomputing.com>,
 	Brendan Jackman <jackmanb@google.com>
-Subject: Re: [RFC PATCH 3/6] arm64: mm: fix restoring linear map permissions
- on execmem cache clean
-Message-ID: <ajvhGajVO_GFlcrY@google.com>
+Subject: Re: [RFC PATCH 2/6] arm64: mm: allow huge vmap permission
+ adjustments with bbml2_no_abort
+Message-ID: <ajvhm2aRQJPhRGW7@google.com>
 References: <20260611130144.1385343-1-abarnas@google.com>
- <20260611130144.1385343-4-abarnas@google.com>
- <402e247d-1eb9-4842-ba9a-712a3bb9b438@arm.com>
- <751c564b-d6c3-4bd5-a269-e3de89e8cf13@arm.com>
+ <20260611130144.1385343-3-abarnas@google.com>
+ <07ab8b6f-cb58-4f8c-af7e-c99c2fb8933a@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <751c564b-d6c3-4bd5-a269-e3de89e8cf13@arm.com>
+In-Reply-To: <07ab8b6f-cb58-4f8c-af7e-c99c2fb8933a@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 644B54000A
-X-Stat-Signature: w6w1bkkb4uefgehmj764t54s1ncnznts
-X-HE-Tag: 1782309151-659077
-X-HE-Meta: U2FsdGVkX187wSQRMCmJKXFzgsay4y2HLQB0UAI+wt21yrSb+YeljzOpWFBZW/r5nDzVpmyfzOfZsulnKRIP5qa3z4IJnD77G7uJBls0fy8hdPKZJC4oQhGtVHFbBLp+PGFcuTMnAn1fw5M79uy9K7iTcmX5JC6X1SiR7TgSQGitpcxbVsadBSxLWZJqAkmFSxKU53luCaa6Uuixc6wd01BEBqwIAZ0WAt922fe1j2Ln1ZwhVN+9gpWqPE8iwZDwC7UrcNNMUEoiU9ZDSy2C8JBe+FW77Y1iN688S8FyADfb0Z3Sd3GIUtQjyC9cy5Yv44v5lJKh77xEauFtGevHwY/kuDLRKey97QnffmceNIRBhDAEP3YzfEx5KIaMsQpkgKmaIETgzNjXTqpKVQ71Pju7QlVipU7qLeDlfbk3T3GDeX5TdTRLGu/QH60sx+SvvrCPMBAWarr2cvkJ/BUWZ2XnjONNozK8ER78tDQpWicld59LGrJpXrrHqQ53QtojT/G5UoYYWLsyMRgfKnKdU8urd4OISbFKwurdCHl5Zupkb51M/3UZEDE6w+LqzyvBK45cyDnTM6PzHuZ/A/5LTM4Uz4uyIP+r5RSnowlJbSyhosMFEJ3NivZSQ77I/dJO5mddK5H2cYt1hAJvC2CB6Sj4CtBHHIB35kO3T99vEXjzjVmyP3Hl2i0pszlz/YFyoU3bbiaITSufSxGnxiuZsIWyEVxiiCZPrx2Q3MKxGeP+Cs8HfilKh6InBukDUXgwsLF1jHFWvbp78a8jfrZQsuZnunUqkSd0IzhL10i4I6eyIFfoQCKEb0DIPfm5hE8wgyPaelZlNscogLgpjw5zduGdyhJzna9N3N5wEX5xvFzWTW/nNBenXFLEw5GQz57wYqWtH4M/ccSP46walDDuqZU7LFowTh8GANTValerRaSYCeZzZZ9Nonkxu1T6K+13fX8b/gmh98RJjtH5J2P
- dgR4Qw6B
- ojNNqPif3Y1sfY4Elm59gGnqUA2xMYuZd71NfA13xT+OCOS672Pb+L/78EMgRAQNglase6KepaCAX//wLcclBGT1EzgUb7Oj4nzUQfoxz3+fG7v6eK2UbNTxoOdWFzL5AQEmNv8jnxBGheaVBb6eWTETzyQK76ZnOufyxDzU+T29JfQkaqXeQxglB2CuH2T0hmpt08c83CLyQNpKkG8d9X28lW8AnaUa3BjVLJZgRxjJnFQio9eRL6BOxF5xQfIJFhrS05vVZwhQc1FAMelvQg390RGAiwDmnRhU4mDq0hn4SamNlcj9DtC9Z09X9qThS+Zrh7HKP5cgAh4PM02NiR8Eq6cGAvYeBHwO+oPRrsurOreBgJ9jA+v4X88FPL6gbynQvBKhnFK4HMRmFoWybeGO3OoXt4gkbrJ1SxjU5Uk3S5gF5Iq9c+Z8nvbTVfRbBMllN4fLqxdsks/CQ8TuPA4b/3rNc/Bl4QrehWQ+Um+2wRa1wzax4W0V4azIkb4xFJuL0
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3B14B1A000D
+X-Stat-Signature: y9yasscgo45qj4b4j6z9qcs6xrcrfq63
+X-HE-Tag: 1782309281-643416
+X-HE-Meta: U2FsdGVkX1+mXG4WpLw6NEIhI7QvIfd3lLdq8pjnI5NkukXVFEeud0LO/OIK3jdFC3sk2WhbdDUOx0YCocyrHIW/94KLwieOJXEskLnBUwrQ3hrWq0Z63HOKhQzoqdagynOTLag0GAu/FFruAXxeup5rjSFuFzXu/ws8Or3TspwxjyAC+GtrLDIVz90rLeGlKALPZGBMVaMQxbojQDcfiKqC0D57jVgyrMhRvSnhkS77cSWqIEsF4U2DbhWTWLKSBlJ0l3sFMj4TA7RMk91YM/1renYLF7duoI++mlsmsxc25zjSFLrQQ/pKwCv5Ryl+V/HlmZJXILK9gfDZGjKrJwGcrzfhxZrt2sc+NKlkCiPm5JmfByQlmah67+GxXy69fZCXp3UQFLTrcYQc87taPnMxPojuOI9aVu7wg0yUc2ZwLYchlTIIY3PuUsZPsgatpX/KG2VpC9rySxStq5ow6gluGTpxG/HgfRQkYy4bm3YOCduYDTMBxFQAntg14nHl4T4PgUVdznsBplraO7+uog5xrMWHCfwODKG1sLognSkg4kPhJ5zXp7qdco7AD73Jj4fkHagREUHB8Pew9DrIc4fGwY7p7QCFK2byTtCjWc5PwaEDEH+MRZHmnvaIc6dRyH/Up0jNv5/wZfu6lOhh8CHdPXbjeYhv6E97HD0QhdHXpzYPKMRWQ1t3ofq7tXYp4rKiT9MQpLCmqooR+IVA8+4E86vuBgDbQkI/LcWcSt42xUebkrlESpdM3C2355l5RA65DaXMaMZ3+6JfWC4/JuEig8dU9B4B7GuaCNxGrBeCTI/0JBkQr9GGQfWHMSNokuzUt48AaBAQT6jRhbhpKzw13LOtvYoKu7nlm7pmUQ+iEzXrCUrAjQJ0tiDZqn9T5fXPXTOcZQF1q7KlME3j9t5EaD76sOPXe7C1t5ldMhO4540UY6a1Y0SkpAF4XncMm3OaGPXxpd6xiutSqz6
+ /U8wknrc
+ eV0njj224UwStJ/aSFSnMlz4mVqsTEusGx1nRVz2eqAtQkbewrvgw7wGZeY9aQSb/vt0nYz/Hf23qp+wVxR0l25tHZdzMk5tzh/vDI6ZkkPwHX7pRfbqySCQDovYzEcoU3a4d5e6kiBbiPlnJB7MMOaDBVNPdaRteK6ixT1ztvZ/fT4uIzwuVN1bvGJVSJ3yMdO82cB0QK2LjLNWrnWI5NoXjeCOyuF7+5Q+IsS1YaPaty55m++9yivr+icz6owaFJRl8hkkSW3aTpMwSGCePADc24S8uWU/lZPgzOwWaNPCbTmrrb4uYcS3y+xgMAF5Sunl23fPKok38xRluEaWVOo/J9dQ5UfY1olxvFtSfTi29SOoc33nbfRVOoSifORsjnFA1O3Qz6CRnX8GeFER/FP55sropwRl/wMF54PpHZ2UI6CJgcvVRcIMzud1DvMrNisCSFFGMo7f9choS0mow9dVFNulaOisjB0F74cwa4AyWgVO0mQSweorBfSAFGvFaPUCm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,111 +128,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 19, 2026 at 09:33:18AM +0100, Ryan Roberts wrote:
->On 18/06/2026 16:05, Ryan Roberts wrote:
->> On 11/06/2026 14:01, Adrian Barnaś wrote:
->>> Strip the read-only attribute from the selected memory range when
->>> restoring the linear map after an execmem cache clean.
->>>
->>> An execmem cache clean is performed when a cache block becomes empty
->>> after unloading a module. When making the memory valid again, the linear
->>> memory alias must also have its read-only attribute cleared.
->>>
->>> Without this change, the linear memory alias remains read-only even
->>> after the execmem cache block itself is freed, which prevents subsequent
->>> allocations from writing to that memory.
->>>
->>> Signed-off-by: Adrian Barnaś <abarnas@google.com>
->>> ---
->>>  arch/arm64/mm/pageattr.c | 17 ++++++++++++++++-
->>>  1 file changed, 16 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
->>> index 88720bbba892..eaefdf90b0d5 100644
->>> --- a/arch/arm64/mm/pageattr.c
->>> +++ b/arch/arm64/mm/pageattr.c
->>> @@ -239,6 +239,13 @@ int set_memory_x(unsigned long addr, int numpages)
->>>  					__pgprot(PTE_PXN));
->>>  }
->>>
->>> +static int set_memory_default(unsigned long addr, int numpages)
->>> +{
->>> +	return __change_memory_common(addr, PAGE_SIZE * numpages,
->>> +				      __pgprot(PTE_VALID),
->>> +				      __pgprot(PTE_RDONLY));
+On Thu, Jun 18, 2026 at 03:21:24PM +0100, Ryan Roberts wrote:
+>On 11/06/2026 14:01, Adrian Barnaś wrote:
+>> Remove the protection against huge vmap permission adjustments on
+>> systems that support the bbml2_no_abort CPU feature.
 >>
->> This is not sufficient to convert an invalid entry to valid. As well as setting
->> the PTE_VALID bit, you would also need to clear the PTE_PRESENT_INVALID and set
->> PTE_MAYBE_NG.
+>> Splitting live kernel VA section mappings into page mappings was
+>> restricted because it could cause TLB Conflict Aborts. This forced
+>> permission adjustments on memory allocated with VM_ALLOW_HUGE_VMAP to be
+>> rejected, resulting in performance drops (e.g., when enforcing rodata=on
+>> disables huge mappings).
 >>
->> e.g:
->>
->> int set_memory_valid(unsigned long addr, int numpages, int enable)
->> {
->> 	if (enable)
->> 		return __change_memory_common(addr, PAGE_SIZE * numpages,
->> 					__pgprot(PTE_PRESENT_VALID_KERNEL),
->> 					__pgprot(PTE_PRESENT_INVALID));
->>
-
-Thanks, I will fix that
-
->>
->>> +}
->>> +
->>>  int set_memory_valid(unsigned long addr, int numpages, int enable)
->>>  {
->>>  	if (enable)
->>> @@ -362,7 +369,15 @@ int set_direct_map_valid_noflush(struct page *page, unsigned nr, bool valid)
->>>  	if (!can_set_direct_map())
->>>  		return 0;
->>>
->>> -	return set_memory_valid(addr, nr, valid);
->>> +	/*
->>> +	 * Execmem cache uses this function to reset permissions on linear mapping
->>> +	 * when freeing unused cache block. On x86 it makes memory RW which is
->>> +	 * desirable. On ARM64 set_memory_valid() just change valid bit which
->>> +	 * leave direct mapping read-only so use set_memory_default instead.
->>> +	 */
->>> +
->>> +	return valid ? set_memory_default(addr, nr) :
->>> +		       set_memory_valid(addr, nr, false);
->>
->> Surely execmem should just be using set_direct_map_default_noflush() if that's
->> the behaviour it wants?
->>
->> I think that the current implementation of set_direct_map_default_noflush()
->> doesn't undo the effects of set_memory_nx() / set_memory_x(). That might be
->> worth checking?
+>> The bbml2_no_abort feature (which mirrors the architectural guarantees of
+>> FEAT_BBML3) ensures that changing between table and block sizes without
+>> following a break-before-make sequence will not generate a TLB Conflict
+>> Abort. This hardware guarantee makes it safe to allow dynamic permission
+>> adjustments on huge vmap regions.
 >
->It's also worth mentioning that set_direct_map_valid_noflush() has "noflush" in
->the name, implies it doesn't expect/require any TLB flushing to occur. But the
->implementation will perform tlb flushing for any case that is not just a
->invalid->valid transition (which for the existing impl is the case when
->valid=true and for your changes is never the case - see __change_memory_common).
->
->But execmem doesn't do any tlb flushing so it looks to me like it actually
->requires that set_direct_map_valid_noflush() handles the tlb flushing? All seems
->a bit fishy and probably warrants a cleanup to make things clearer.
+>FYI Linu Cherian has a series that renames bbml2_no_abort to bbml3. I think he's
+>planning to post at -rc1. Would be good to rebase this on top once merged.
 >
 
-I think that the clean approach would be to have the `set_direct_map_default`
-function (without `noflush`) that does flushing as needed (like the current
-one on ARM64). I am not entirely sure but x86 seems to handle permission
-faults gracefully while on ARM64 those would cause panics. Is that correct?
-
+I will keep an eye on next releases.
 
 >>
->> Thanks,
->> Ryan
+>> Signed-off-by: Adrian Barnaś <abarnas@google.com>
+>> ---
+>>  arch/arm64/mm/pageattr.c | 22 ++++++++++++++--------
+>>  1 file changed, 14 insertions(+), 8 deletions(-)
 >>
+>> diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
+>> index 358d1dc9a576..88720bbba892 100644
+>> --- a/arch/arm64/mm/pageattr.c
+>> +++ b/arch/arm64/mm/pageattr.c
+>> @@ -157,23 +157,29 @@ static int change_memory_common(unsigned long addr, int numpages,
+>>  	}
 >>
->>>  }
->>>
->>>  #ifdef CONFIG_DEBUG_PAGEALLOC
->>
+>>  	/*
+>> -	 * Kernel VA mappings are always live, and splitting live section
+>> -	 * mappings into page mappings may cause TLB conflicts. This means
+>> -	 * we have to ensure that changing the permission bits of the range
+>> -	 * we are operating on does not result in such splitting.
+>> -	 *
+>>  	 * Let's restrict ourselves to mappings created by vmalloc (or vmap).
+>> -	 * Disallow VM_ALLOW_HUGE_VMAP mappings to guarantee that only page
+>> -	 * mappings are updated and splitting is never needed.
+>>  	 *
+>>  	 * So check whether the [addr, addr + size) interval is entirely
+>>  	 * covered by precisely one VM area that has the VM_ALLOC flag set.
+>>  	 */
+>>  	area = find_vm_area((void *)addr);
+>> +
+>>  	if (!area ||
+>>  	    ((unsigned long)kasan_reset_tag((void *)end) >
+>>  	     (unsigned long)kasan_reset_tag(area->addr) + area->size) ||
+>> -	    ((area->flags & (VM_ALLOC | VM_ALLOW_HUGE_VMAP)) != VM_ALLOC))
+>> +	    !(area->flags & VM_ALLOC))
+>> +		return -EINVAL;
+>> +
+>> +	/*
+>> +	 * Kernel VA mappings are always live, and splitting live section
+>> +	 * mappings into page mappings may cause TLB conflicts if bbml2_noabort
+>> +	 * is not present.
+>> +	 *
+>> +	 * While bbml2_noabort is not present disallow VM_ALLOW_HUGE_VMAP mappings
+>> +	 * to guarantee that only page mappings are updated and splitting is not
+>> +	 * needed.
+>> +	 */
+>> +	if (!system_supports_bbml2_noabort() && (area->flags & (VM_ALLOW_HUGE_VMAP)))
 >
-
+>nit: no need for the parentheses around VM_ALLOW_HUGE_VMAP.
+>
+>With that:
+>
+>Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+>
+>>  		return -EINVAL;
+>>
+>>  	if (!numpages)
+>
 
 Thanks,
 Adrian
