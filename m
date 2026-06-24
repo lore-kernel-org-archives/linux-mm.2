@@ -4,160 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80596CDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 20:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 212ECCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 20:50:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BD546B0088; Wed, 24 Jun 2026 16:44:16 -0400 (EDT)
+	id AE5A06B0088; Wed, 24 Jun 2026 16:50:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46EB96B008A; Wed, 24 Jun 2026 16:44:16 -0400 (EDT)
+	id A969E6B008A; Wed, 24 Jun 2026 16:50:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30F486B008C; Wed, 24 Jun 2026 16:44:16 -0400 (EDT)
+	id 987206B008C; Wed, 24 Jun 2026 16:50:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 069296B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:44:15 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 832FF140405
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:44:15 +0000 (UTC)
-X-FDA: 84915983670.29.9B3A01E
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 7C937160008
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:44:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="rW39Z/Mf";
-	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782333853;
-	b=4vzBONp7TV9joM/w1jNGlDhS+GtW5vjQCL6IcJW2SRSLgpckQl3wr8NPZqErNbrcQPSotk
-	rxxV/JJwrcBQaX+X2Q3GjXujJ27fYoCgYHOTqGIv+vHUBRVfOwm44rG07Fb7OnxyFJSZrv
-	Wg1UfkBE826UJ1kFCKp1xORuOIvEUuY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782333853;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 71D866B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:50:06 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 06ECE167389
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:50:06 +0000 (UTC)
+X-FDA: 84915998412.01.54255E4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4CA5C120005
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:50:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j66JsQBM;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782334204;
+	b=59I0bZbOYxXewyTAbrc0YwlB42gsj86NOp17tVwfWsU1JtdWKqnHtJvhNsEf4hseJj8R7R
+	amElfUVtLo4jNMdNS70/SBpde6rnqECELfFReEFj+sUqIOeyNAc8bhyqoHhDlr0i/cfcwu
+	OnQAV1/n15yLet+cA2Kd8ktdyZ9tISA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782334204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
-	b=3niDGQBcH3e0TDiTArqVbdZYRfdRuekeOk8x3I8sj/+ugZG8ZYYe6akP97HetcdMOM9VMV
-	sUgUSuvV9IzWH97ykckamGK1XWMdQA/cVfb5IBHUvyy0Vdg+XnH9Cs1Zmrq8FCqcGBJtAb
-	TexR5PKzSB2ubkwNaiGHMLJSehdu/20=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b="rW39Z/Mf";
-	spf=pass (imf08.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-13810b63a1aso402101c88.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 13:44:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782333852; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IoMrMJ/MQED8SafE1TFn2AbjV+RipczOpddTxGnOOmfcwUa4u0W+GoJ06XlVJwjr8G
-         tb0XwDx2i6wxxzXrJn3rUW6MRyzntICQ4VP4y16eU+0/1wWZBXxTf+M+4XIt/vPwzER3
-         2C1Ru1m7t3f3ilQR7oXlgjBNuCvucMVtyd06sl3oCSMelqzZJ85avBPwiyHq4uXeWWFg
-         me7LDtZhfzKA0E52zLfS8GjjI/+LFwXYpEPrzGpyNIX7zwQDsWiA9ubJA0USzyzkJH+5
-         XRAb+9qYgePw+yEb08B4ifBRjuvjm1l9TeTm86RyZOGR41ZgPgxsKVOLsievKbniuVs1
-         vI5g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
-        fh=pv0TxH0sdZeYVfJb1VIssjR2MFkEqMkjs+j8HFm9iXM=;
-        b=QhDBLfMyfF5EuO4GHrrG8VA91VlxjviN7iHXqGul3yMi9CRfVxclmL6GfbBgF8ADFT
-         gFjhpFKECecFRg/4RJszu9mpw/YblK48ME+2KJoofuoULS9HsgxI1luscc94A2/P8QgD
-         ityrOAqPW4usIZT9P56CS0aa3yLqD03o/XjdZDHsAeMB8YVK9uz1udVLZyFqeujF9+Ak
-         rhTI1GssVqdn1G6MdZnOPDYcB4tlCCBINANfrFJSTg4D38HuNJ+X4PedtDqOw0xq/OEN
-         thRd6mi8azfXDdGTbNjtYya5K8tfoY4KjpMGYHfjfR/ch+ZQwKuHqGIul3LL2yO9E+VQ
-         xAQg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=mt+5vsX/ekVrYMgwH57dH0T4RbSG+uoxTYLUskkE9Z8=;
+	b=14px3EMz3lXee5x0cWWkLAIkLvA0ZAIYS67W6Z+5Csd3vnczIrVSO3RBj78JdOWOp1YnX1
+	zxkiOZARn4wzK2sMfLddnrEoLq575yNFKSNOeXDr2LIxTISWDOSW0phd8dDU3JOb7W4baE
+	JeSKsb3Q48O05TQNTj4sMuh855rd3lQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=j66JsQBM;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6AD7340A7E;
+	Wed, 24 Jun 2026 20:50:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7001F000E9;
+	Wed, 24 Jun 2026 20:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782333852; x=1782938652; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
-        b=rW39Z/MfY+kBf8rH727iFFRGBQuTpdc3qW+OHbBX1P13jTneuSNcIzzS+VI4zhMWiF
-         CzcLMykOOZWr4fKPVDMVwEa2a2VFjSOTcJxEeyzAzXCZCAOekAPJq8BLeO/2Deu9H6P+
-         6owwo9huXB9cwv88cScBzJHf7srhC/6amhSZjHC2hzDcVMfvVTuca6nVvvDd8R/tjSSt
-         YLofq0cYB4NG2ebYOH+xk84mH+qQC3tEO1GSwEQLtDyJGoV0jsujox6R2Drcttp/pCCW
-         tjyYHwPrEKtDTEyGA0tbN9VJk/YWRPHtKWz1i/4uDCLFH6mZv98HRmOzmoApHtS8R0if
-         /r2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782333852; x=1782938652;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G5/9dkbJhmiJkcsjBrae3PYSyLuk0zvc0a2KRC6LUH8=;
-        b=kjFo5+0B1kaOAPquYFerDJnrIlnzWNQ2IOw5YuR5hjAALUGHx2nQxBS3jSCSWHhUBn
-         kvqjF0u02VHXBnhFpNTcmyxsPJ6hTsBEI0IK7LX4YpsYc3d/zTAegqEkBCSNpsdeISMW
-         s6zrTh91dzDYHZG0N29Sfg+QAzIZWCW2pfd8NcEw2ItL383rXn1ZfEdbh5j+p+AuEfFt
-         0vwz8vx1pFy6t4sUg4JQtfVy4vdcvhhxJ5ImpjgpE4earYKxD71MyRmDLh1bDaLYVrYr
-         ns2U+7Lcw21naLR4zY0Ls1K15NcbKGa3+TS62PE8cEx8qyWg/+361QpkqprgMqVQ4Iq5
-         ciTw==
-X-Forwarded-Encrypted: i=1; AFNElJ+feYDxU4ZEFWNhIMohcGPicJkwF9S/07w8rslHajL85j2i82bW2sYYCntbgnykCtRBXQFQSMJUxw==@kvack.org
-X-Gm-Message-State: AOJu0YxiyVA/9zRXyeYGPvno2XurgqzCYWaYu2+plBoJD+PHK0mT0enX
-	oDM5zLe+QWge04dPfcosoO6fCGYbNgLrW02Ln+zcl1Nh3ULymuYdogfiMMWV1DbFKhkp6lO17q4
-	98PyjF9AuSnDeDsMcoo7K0Kh94nxVQkt1T9N4sDZm
-X-Gm-Gg: AfdE7cmJXh7FI7Zd3o6fRI6LRDop1rREpHcrtpZq9opbwM/aX8YPtCS67qCWlOzYmK6
-	gTiflH7cBSWnSSyYVYw2B32xhvsgINkXMgnziJI/YyNhr7CLV65WmOIKUmALZNvtIeAu1zz6gi0
-	mqHQlSm6dWFrX9Izp+oJyUKUHEY0xuTCFuDn13+E0FkR3gRXpvTS9qbp29lMSb9nLG90ZJpeGAz
-	+D5UtJCrzFzIqG6caoh2KC+27CUAxHSGugPGF3FZMeiam7AcnpvRBOQ/9PhzJXRmYZtwxJXyE4r
-	Xt/wGrOnWv98omyYihYcRvESbViJ45Cxeiq4C3uAE3v4GJjo9AWoWYW1zhs=
-X-Received: by 2002:a05:7022:e995:b0:137:eda3:e5a9 with SMTP id
- a92af1059eb24-139ad711637mr14297421c88.28.1782333850616; Wed, 24 Jun 2026
- 13:44:10 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 13:44:09 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 13:44:09 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <2ef455c3-a3f5-4ba1-86ea-b96416d163ce@linux.intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-10-9d2959357853@google.com> <2ef455c3-a3f5-4ba1-86ea-b96416d163ce@linux.intel.com>
-MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 13:44:09 -0700
-X-Gm-Features: AVVi8Cc-v85YTGgbOrOpBNr09aOMCIpUVvlduJvADSpw08YaAcwUxrqW73F-Zbs
-Message-ID: <CAEvNRgFYpTAi+F8iF_m3mQnP_hB+DWN1oTnhEQ5WWxduX2D5MQ@mail.gmail.com>
-Subject: Re: [PATCH v8 10/46] KVM: guest_memfd: Wire up core private/shared
- attribute interfaces
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7C937160008
+	d=linux-foundation.org; s=korg; t=1782334203;
+	bh=mt+5vsX/ekVrYMgwH57dH0T4RbSG+uoxTYLUskkE9Z8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=j66JsQBMFPs41v9dNwhtsaZf3xJtm/qweu7T3hqT3ZyF41juOU4ndrACbcRVqcjZL
+	 dSN0uceGGNpUbqclvZD/XfLshUX76h/TegbdmR/p82Ockzg25IzACznehVpcXk86pp
+	 lHITeEX+0UC7kjKAAQRbgOjH20YNg9VNUFQJPMXM=
+Date: Wed, 24 Jun 2026 13:50:02 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Amir Goldstein <amir73il@gmail.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Nhat Pham <nphamcs@gmail.com>, Johannes Weiner
+ <hannes@cmpxchg.org>, Shuah Khan <shuah@kernel.org>,
+ linux-unionfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 0/3] ovl: make cachestat() work
+Message-Id: <20260624135002.09ab1f9387eb4708b0707175@linux-foundation.org>
+In-Reply-To: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: nssudyn64riu1ixe1zkof8oxipenp5fc
-X-HE-Tag: 1782333853-954973
-X-HE-Meta: U2FsdGVkX1+FLA/AJrbhVLkXROi94L9ZEyzoG0msKpDXpnkDybZS2SHKZPiAtDGEGbwbcpdNsootfZqEgdvwI/byUTmU44/oZLW2Lqu/Jg30ISf7mdG8Gt7pJAB/ZXF33YdwKBwsaC5i0Gna1lsyF9xkEK1NKPRW19TpfjYRn6NZPn2/8m0s6IzVhqxABWlRwb91xQ1ficQyEHk3ZJCj+F7moNTLzE0VUS+B0LoeyVeu0T43r9ptTKo8qm3bwlgR1sHG+NQRJWo2zrEahlKj9j5xbX1s/c69qaG56b7CwWqdxvcdG/5CkDZ4+kfTFkJNgNDF4D1Txx4e6arE954HGOlykAXChObW5qXZNjj3JL5X8uwmI2fwHlLkvxHnG/q84/zEiEmkERDILc5VADM/vX9Q0O6lWKYlRWKLOwQX/nB7xzoeb5xq0SYWTsLXRAXnk848XcdUv9bADP2EG2IfZ+UXCS1cqJdYeZrl28azMpWUWB6w1XYCcFQEcaKjhJhogsNwf3qtmj3VHgKupkJh9UQ3z+tHl/T7b560eO8zFzj5/jrcVP5y4SP9uQPtpVCJadoZp5d+ZtFH+9IhXIIV9pHLQjFo5ebPpURcncRFIYE8BsVZ77F/6u1u8wlxG0U/4D5Rd/WmhUz9CDba6L9W9ww6fc45LqITXceWk5kLLpYpVMsOfxiQqeB4XvXdFleHZHi3LuZMK58rYoR/jCIghX64wikcxQt3Ur4OhDAIgGrSjZEB8e0opTbm7im9NjLNGuBjYxgJ58rNsEEqrvS6iegTyWRlkiqPOQieaIbuMjef1r9kb4d+6lphLJ7OcE5/KvlZMKHovBOLkyhEGWUUwmPy8Y9KkeHGei5YdkV2b92iFal7eNDgJFGtm7+TMinVVJ0ZXstbxjX6megB9Gx6e8TilfFkwCpyp5QY7mz92t8l8AZAi2vgwZtz02iQmZ8i9iUV9g1YrxFXJO/nXFd
- UqxXN1pK
- ySYPs7RIQ1hT+bgalzBRzxGdT3LK+mmxrbKpn87IBT1/HdYrnzkkHB6IOn/im+U/ud/BCYs2bOKuCMSRviSrioovHAW4asr/cPf/OyP6pzzGcs68Q/GPbMgmEX5bRp5p/2hV63ukeOu2PNUaLhvqDVR86lv+Qro/K+mwujkE0Ux+24v7i7PFzaZbpHYVZ1jGXFz64tqp8m6xjuqsJ6ZCFSjS3tporzaRjo3S4FAdmoF9lPp3b4wJaQb6ZZVeU4W6cNcebGUhHjrYjP/CueoYrwDacWjQO3kUSkMuIUqJOmK/1eYOGXQdZMpCVIegpLg+ZjjdsJ8Leeplty4ZyYxJU6IeZjonJz7o6QJY+USNPf/u2EMayW3pvkReMnLUYBelD3BmNuT4YjZtsDj/pHwiTqUkVGQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4CA5C120005
+X-Stat-Signature: rh36dsmbbpznepmrdy6zswc3grh9ikgt
+X-HE-Tag: 1782334204-894081
+X-HE-Meta: U2FsdGVkX1/kY/1rgP3m6AgVFqOT7DoaLLyfsoZiDuCSa55on79B7J3NjCFSfjugD2QBI5cS0fMTlt4h7fhut+sXyKi8l5e4gLlit0rvYy5DaoZxR6gBpHmBA/ItKhb6JMzFXSVTfjmXMfTXC5fppIbOM6ZKiUOssm6142d/6C8Q+5ZnnrCu/T2fGv2RtJLyC/Jk6VFE//GFdaZm0wee8BJmGNjaF7QToG28cx5J/Mx/CY/gZ9lvFXgymlyFhQngx5b22e7pvJzY1fswlKjWswveeXAkX1avnU9Bdl+jo5lNx0ZswXaT0QOP6RBfHZFfeXCTa7dMQ2nKtpoeUy5Jzhh6pf+2T+F92hbp19Iu6uMLoPAQ7RhkKDJTQ8XdyCRsl1+DFGsqnDfyNQ1iiPsyd+wI9yAJ3pY0wKHHMbECaIi1vzQg0WPMGLg6w9OIqMW2pnNszevgeeAPUdX4nC7Ct5R2pgspG9O2lF5d1YbKUnsPR7KGyYHZCiQrjiSqUAoIYN0JbqZwAvv6Rrjyilb0l6NbgrdC4tZ2gg7mocwYnpUJWy7fUAGJxuATU9G1uykE8I7m/8H/8J1wsyK7wuvC3O79R66dearercz8NxoehXfduAzYqz+t577PAVxUGBtwPNeirBPEXX6H3dOKTnlErqGlubQBJRC4YszCOeCVrRhvLx/ftbXJNkfQ2trVNGjKUrS5YHkjzJqK6StpSJn9ECyYoySy+4xi7u0fhHalE74e1tMTOOOUDZL82O6Ikne+pF7CYIYj6OSf9yrlv56Os1wygXtS5m1nmsx/MG7MHvyI6YCNVeOMafCR7/FwK3TDCZO8mBp1NGpkax62wDJUQcM5WZtlJypVboZqFH7PL5uVq+Bsx65aiJwx4ODZfMtOXvee5EN8dtXa/nPqRtaahdg1YwFgA9CR2kSBRNoC8PmkISRuS3TyXa1jqCW5LFmE6RUvDVV3MeztM3fg/pj
+ m+MIY8gw
+ oWX7LbTMXxyb9h21cIpJdGX+Q+tYQI0om1YuyIHbY+LeXhgAO1A7nC+Fw0dD5+30zCxWbHIAAgQmsa5G5IYxZRaMZXhSuQGCDyg1eY5T7q1NmG8wXHFzSAHAeH52DcT07hCk0Zvf8i6PE5g8wqIHD765jSL0nkFhvijdfvM3ugABR60z+Zk+D67dpSpH7x8YUSaUy/qjA7JrIbnhNWy5GBvkNYZ3S0JAoy6a/zjJ2DPR1Z9IhhGrIuMch4skchwYBz0eaYvZSRwNov7MiIb/za9QCHsv5RX8Go1IP+R6C2+W+Nz7QI+u/GSLKPh3fVmdmc+6dsZP+voMOOUTxI0tKuimOiuRSJXEoQIj9PHef3y7V3Py7TZOeDH6R0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,48 +95,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Binbin Wu <binbin.wu@linux.intel.com> writes:
+On Tue, 23 Jun 2026 13:14:47 +0200 Pavel Tikhomirov <ptikhomirov@virtuozzo.com> wrote:
 
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
->
-> [...]
->
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index bca912db5be6e..e0e544ef47d69 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
->> @@ -926,6 +926,24 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
->>
->>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
->> +static bool kvm_gmem_range_is_private(struct file *file, pgoff_t index,
->> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
->> +{
->> +	struct maple_tree *mt = &GMEM_I(file_inode(file))->attributes;
->> +	pgoff_t end = index + nr_pages - 1;
->> +	void *entry;
->> +
->> +	if (!gmem_in_place_conversion)
->> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
->> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE,
->> +							  KVM_MEMORY_ATTRIBUTE_PRIVATE);
->> +
->> +	mt_for_each(mt, entry, index, end) {
->> +		if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
->> +			return false;
->> +	}
->
-> Patch 1 noted that "Ensuring every index is represented in the maple tree at all times".
-> So I think the queried range should not be a hole in the maple tree.
-> However, there is a inconsistency: in patch 1 kvm_gmem_get_attributes() explicitly
-> checks for holes, but this patch does not.
->
->> +	return true;
->> +}
->>
+> We were using cachestat() for our internal Virtuozzo cache related tests
+> and I saw that test behaves wrong on overlayfs, syscall returns all
+> zeroes instead of any meaningful cache statistics there. Let's fix it
+> similar to what was done for fadvise().
 
-With Sean's suggestion for patch 1, I'll update this one to default to
-the "init" state if xa_to_value(entry) is NULL.
-
-Thanks!
+Thanks.  Sashiko seems to have a found a couple of issues:
+	https://sashiko.dev/#/patchset/20260623111533.2285005-1-ptikhomirov@virtuozzo.com
 
