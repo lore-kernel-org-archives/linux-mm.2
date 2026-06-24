@@ -4,162 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA33CDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:18:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03C39CDB481
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:20:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1685C6B0088; Wed, 24 Jun 2026 10:18:51 -0400 (EDT)
+	id D04586B0096; Wed, 24 Jun 2026 10:20:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13FB56B008A; Wed, 24 Jun 2026 10:18:51 -0400 (EDT)
+	id CDA7D6B0098; Wed, 24 Jun 2026 10:20:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02E156B0096; Wed, 24 Jun 2026 10:18:50 -0400 (EDT)
+	id BF3BE6B0099; Wed, 24 Jun 2026 10:20:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8B496B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:18:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A16C1C5BF5
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:18:50 +0000 (UTC)
-X-FDA: 84915012420.09.5B24565
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1FBBBC000C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:18:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jNDtnmyH;
-	spf=pass (imf22.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782310728;
-	b=N1nsfoIcqF0nTnlBn+NT5H7q0pQhcGY6k7jxK+rap30VWdkj/5Tk7ByT6n2RiQbSKAcdjG
-	6hDePwGPi42NEEHv1sSoqNhz6LTGg8kRFc9mb5gYEa5zvAJOqwIXgZ+O2nuKvP8eoHyHgr
-	uOphIZmeVmrQJ1kNnmG8KVyVblV4gnQ=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782310728;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BEFD6B0096
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:20:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EF8D1A0360
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:20:22 +0000 (UTC)
+X-FDA: 84915016284.07.D546074
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 7E32F1A000B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:20:20 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PAgkz+O/";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782310820;
+	b=1FL+01/ywuoPJ1C6k/3aEWMZ2TynlRKiA0GwglZrUuwjLFCy+x8dQDO1y/N6iGklG6Rqsd
+	G0nVYH39pIfJ/1MA7W66JeU/ekOFfdmtD4WwVMn9j8aI+hg6e30AQgWZTrxYKR2u/z/tel
+	wUla0LhoxROzTjVNLwxFJ1QePLV+KXo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782310820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-	b=ThYnDzCScsTvOKlIlq9QHwPExlVPVPOi6IgbGKBv10MJKS0CT7gSaz81hKlpSbgcivv34S
-	rqDEOJKOYoiuFrN/RFsLQ5xo5Yt4a2K0vk7p7IXcSwQSGTjJGUxX5RMoN3TaPl6odllS9a
-	cYXcX9JQYvDQHLMhHJmL093I1nXGc18=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=jNDtnmyH;
-	spf=pass (imf22.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-13810b63a1aso2568432c88.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:18:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782310727; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fioGqmkdK0R5r2Wnx1VyU6nimVyHVm28QFXsEj/r7KI9GfFoqrX/rowI1adCwiuUj4
-         Q9Uwz2ZrZgVOof9AtjSD2Lpd+Xv5j0Al1bKm+LWlIVQ/9nYCEfeElZrysTr1yOSYzzcq
-         C7GXLuP/Lq3UHkrN0FsYTRMMspEZbbD5GlUtu6qqeXictW+wNvTJF4kraPwJrJsBM86R
-         Drkbt+2HwkdGUHbX5CMG8B/9aBlmeGVy3NynElLl+PymDNiNEkrcxWxfQc7VcwllUmFQ
-         jWuZYxJ82AgTzOcgfCepalUda9mwuPnWFXf12mRtJHfsVbe4AHiOpH7538YeGS/a3WbG
-         cJrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        fh=9pG/vbJqkvfaeHaQkUC7AgSvD6kCGk72/GUIcjhMuRw=;
-        b=H0dYWhaKpB3jX9IivS0dSHHkRGh7Z15sDmCG6M3TY+fmDnSrpCFn6L3GwM08E/AJWY
-         uevlneHAkSmzfizlwlpsmtgyvXD3vtrSOgYLM5aArQIT09awLVovFHYOgT2H5SRq8N8O
-         rSEWcXE6y2teCOZoWrhL0MD0gdiLAanNe4iCkNVrgcq8nensL7NbWceccx7misBEAxmy
-         IhU/H1T0N4u+ICTVawur8IkifOjHZtn08vh9cZEh1Wpf2tVqjaL1oYsKv14XtAuONv+o
-         +JSsYtSLlXXMuFAOtOkAiUnIpiPCqDlf5ttGWP/bUxtiNoAussWXM8P5U/UaXrHnMw6M
-         dlhw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782310727; x=1782915527; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=jNDtnmyHHkEMbT0pe7NasB2WsZA0KbKs0BL/BmYg0gTXNSo4O9pyZBNwSIS4kDL+vC
-         qzLJ+NtGHZ5y9wO9a2WmSyMsAZlpuAI7wJLDfvW1YG4CBy89AZMexrQNgv19NWEj6ZfQ
-         wNqVB/1NSnZ3GqEAdANK57eudIoJrpA6Q8AbPU0fki5Z/LKrE0I9APtLoE6FNjXGNXRB
-         GBx/uExi32oyy906DG0x//bv5hdLAEWDm933CBvRs9K5BP/SmEFJ8GLUOKBKSkfmEv4l
-         /38vxkpatA++35YJiTgpFsaLPn8GnRSCTZjYfgr2mCx7k0dHYm+9mLApsUPVD67T3nVQ
-         bbpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782310727; x=1782915527;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ucZ6vleVNv7XMe9m+p1ud+LWxJsaO5xEtX2/mrf+WGU=;
-        b=X9AksNbX68klcW66xKYQwrIlrbxxGPOCgWMDw5pTxrd9fXGZdV2mXOgnTEhNF2V1cZ
-         eRCNjhY3SqUfx//vfOLJ+quavOCcHzMeXC1bIB85Br57S7HvH1D2v7TQTNzyir3+931O
-         VXneTUga3Z02C6I9SvGWhHTXaWCdt26nMpyf9gioWhmmwCIZ9gGOVE/9dcIXCLTazQLj
-         1NI2560+hBBuZBCDgT7WRGXEvqaIA0lNI1bDBjAZR6M+kcAAVQjJ8NpI8IxnL53nXUTD
-         aWp1DRKPLmoxXXH+902YoBkT55bpVlY1CgsF0yc7DlPPFzjTldobh97gQvltsf8vIiFB
-         youg==
-X-Forwarded-Encrypted: i=1; AFNElJ/6CID/Bz5+ajH04KVcm2giJLf3TO6j2ty7ISgyX2JGh+L/tp/0Hdbv34X/3cK7XSING6CV5o7a4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzFUFCzxiM/YJ732ELyOeAdjlJg8Dhu5TyBZhFhjoRNChATF5Qa
-	6Q/HFhcs+5mJpGU1qJ2tidlV0O9dU4b63aZ2wSN7MVGtBEy7aUBGuFoIOcoHnTK59NEfIIJyiQV
-	Z8EyzrzN8B3tUOC+E4FxlYqAX9icspN15TuUMBQuJ
-X-Gm-Gg: AfdE7cnZ/ydM4TXEjLDLU9KbolT7bP/C7oDyjAbV5CzmLqqkA1eBnEEvjcCH1QkSnRa
-	9kHjIv9wd20QRnJNd/eSGcCCEykBjQtOTbomXHarswGxmXq2aJiY287WA6jJw9qMxs7PHV3Hki+
-	Woy1nq/1qtgWWIgzO9w0/425NKTw0z3N0SNZCv/RPzTz/SNSwFRxtRnBJ88Rp7rDOcHfPdoEUzB
-	FG+KvWiC3NaVCmioSA5KuBA6lUwcC+y0g4jyHy0ZEA5lUJkhvqK2f5kYSmQKPph4E9Cod5w8laC
-	23WA/M3nl0pEun8trf/lcSs2zlig
-X-Received: by 2002:a05:7022:43a0:b0:12d:de3e:86a8 with SMTP id
- a92af1059eb24-139ad72bfe4mr15983384c88.38.1782310725876; Wed, 24 Jun 2026
- 07:18:45 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:45 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 07:18:44 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-8-9d2959357853@google.com>
- <CA+EHjTw6x-mxDnJjnhE-6SV73tMrb0paKDTtOC2j6zJ1fXZDLA@mail.gmail.com>
- <CA+EHjTxu32nQ+vPV7Zmcw76_-V4g2_g=P_UzRnnO2dP1PFO2ww@mail.gmail.com> <3ec15992-2a29-434b-8c99-8b86bfcf007e@arm.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DJajJ6C8GLY+N9uEH7jpwp8hPpWryUvttF8AzRaLQYw=;
+	b=6Tkw0PVcUtAXVefbtp847xJMgOXkvtjUXDqBMJpme3fUmhP5Icujxr/3hgZVsEQfRLCzYv
+	g4ctR+Y2SWNDw1bsbYWhaGwH8AbSCPr366jQ5pqBsElC+GbzWNp/MQyh0+y1QwhXIanBI8
+	u2JMLXVnmLzod/4GVLHNa5pz8QKM7MY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PAgkz+O/";
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id C786560018;
+	Wed, 24 Jun 2026 14:20:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951341F000E9;
+	Wed, 24 Jun 2026 14:20:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782310819;
+	bh=DJajJ6C8GLY+N9uEH7jpwp8hPpWryUvttF8AzRaLQYw=;
+	h=From:To:Cc:Subject:Date;
+	b=PAgkz+O/7OxDk2fOT0fUDrXFwnePUhWrU3gVf2PYiU7jxZI3dX88PVVKb+XuGGhdS
+	 4jIKiEulixFT3gs4wizds4JiGYKtYGw7IYmh6O8oO+oQRaCvL6oa/dcpK3l2m+sas4
+	 ABL/ND6fZvexkg+/mX4bK9Ja29jYPc0/g0OjJsWfKouVEEbM9aiLnPt3FOnpIIdspK
+	 WXW3MwJR5faCndTkPeU5PfGvW0P0vQkP+CVO9yaS/2mP87T0K8fy0P/7AX6OeNcnPE
+	 IpTJq8R3nvL3BDEpsnOh3SPqDnhKUmNDoU4pG3mH0AlJqjGMcY8fRqmAtNRUp3gwmN
+	 ReGKHg8zw+8JA==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 00/11] mm/damon: update, optimize, and clean up doc, tests, and code
+Date: Wed, 24 Jun 2026 07:19:56 -0700
+Message-ID: <20260624142008.87180-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 07:18:44 -0700
-X-Gm-Features: AVVi8CeUzt8nV1nzvS6dw32sjloWQ_ALAuG02W0rgNOvY8pSNnpach_kfV-0O1g
-Message-ID: <CAEvNRgEKB0FhD=qhyX=0m2o+d02Jz6n6njdbFmjyiUpK3Up-4Q@mail.gmail.com>
-Subject: Re: [PATCH v8 08/46] KVM: Provide generic interface for checking
- memory private/shared status
-To: Suzuki K Poulose <suzuki.poulose@arm.com>, Fuad Tabba <tabba@google.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 1FBBBC000C
-X-Stat-Signature: 6mmb4c9u6h1oen48m6x483qryhjti969
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7E32F1A000B
+X-Stat-Signature: o47ftdwmk636azj1y5k5khrhh3b4sj56
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1782310727-547081
-X-HE-Meta: U2FsdGVkX1+Lan9TF+XwYcr+KZA8DcdJ0YKCYCduXx+5H94gvouSgV26ASLFeNQei4Jn4HAyqjxQqZGrvwzHCt5+L3N8qli59N88cKfRDCqGETY0s0nAu5nCa66YSuGaxToPFd7i6IFh5IzDOl7dwE95tNLCqV4h2fsou/25/aBVeSJS7Vq7dNDz1X8Lv62RZQRCiVy3r60XgUQjRvEOjYLUGfxhkuF1cJkuvENXEvprTgi+/5cTsyekz7+pAMyhao/x53Pmj5KeQuY9DB8JpTdb8NSNykbB0AmuxmSFm8RdtgIE7WDqKOORurM5+nuU6mmf3ytzvl3t5myF+px8bFyeKIQl6eaIDWzSO9CxbNgK5qMqgvlhch5Uc4QTEGur5YAIGotWtCUaBa6mbrNjejeCv6dS4UlQVZbS2+p+n1x/6EWG9DcrGEeQfGOzS5prDqQZRTZoNaJ32+S1sh4Dj8DwTFdR0NXEN0Xmx/5/Sml14+FmA6HOaAc380wbwIDuQS+Bmo8Z0dbId+2W2hYx46WFl3IMNqEvOENed58jZyO+IrfpuaJU00qyKcvm7gKd1/BqHMAy4cTNYUoWVDwAgWVOgee5fLYFYGIKrcUqU/xgPyGH1Wz6iL5pnRSVD7AKWPRRgxfTZBOgoCIb3CHpUBfcnA086/p94cGCKScK55aT2JYiKJIREiZGvVh1WkxRewAaYdKk0ZQTgm+yi9hwsKQqMsWoOGeZ56aqkFHhwutzf/n8rpUpcU5eBncSAnvcq/BIEWT/Dugza0ULEwEsEw8DL5YtBluMNaum0PqRhNbxCfOui1b0sKU70jCA3tyIIBYXLALrKGCsSjUn4dO0PTr48CVbpG4ob4siECtEYPXTJPjrA57Sv2pYHZfwqOckOul6gnWUUzYC8Ruv746qdJVypGVP0laY/1k8Ud229WFkwiMXeDUwww0gF1w9W3Sq6hL+MZnQ2UJ4dlYP3r/
- +kXYwz5E
- 6H5hlBEYCFprpTYY6a1TFC+AZMmPGJ/HugSAmQhWm1fDFHIgr3TKhzIzkiqvAkopcocS+jY+zwck1Eo7BnbWxCt7pjoyi+w3mwUJOjILXRn7cBIHeMV1EsFuxud9eqhrLQf+TB8fp1EG7Eqlfk1rWjuA6g6l4yRTtn0QJj/DXpE3HZ6GJ1jq/Q2ZgKi9cat9p+1Mpm3y+oGCiiU18rfujNK8cLZ6eQU7qYM9pG31VR1anT1zW1bYZQwujIor09Us4lojFEB5Bpfyy1D26gJJ5Q3FvyjnZG01VOJFLk8HnOV1E9tgt9zoN6bOZpBKlaATusfnhIOCjPvcKUZbKYbR0bAj2lF+McttshRzZgVJnOeEoI0d8E3QPMZAQbJf9bSFoTFWCViuwfuGtYlIdyG2Xp59mPw==
+X-HE-Tag: 1782310820-469735
+X-HE-Meta: U2FsdGVkX18pe8oNMKoxAov3kMIEOZgrzPnYCzzSv8kP7ZcMWTYpvR9iJgkFDB7kkXgTXoZ4gg+rc4ptFBAzpEtrv+yt9k+qOXWuPdDnjF9YNoH45Q95kmgWBrM7ajKRaH0sv0qzDg2nLux5IeEg+NVt/6+KW4+zHm1h9gv72SvsJaO/Ny+6Q8CJocN4+J8U0eC5Ow6dwgDct+a17qLXNj/jy8QiS5TVBexgL4LtP1rK2Uwax2pAe8/knjdqS9OCbE3s5UnmCRbtKzmb4yN3xIoBPUrLvdnAuVtCCZMU2SNrgmsOcsTfiglQKg8sgG3Wmfe4O2xTAXQCfALxTRLMW+L6rwv/RLy6/q0tlo2/uNPE7Ey8qNQ5TvxM8DnyvMtKyJCJLE1J3h3PggfMv1bPlUE4kN9uj/mY3rn7qWnLFUcN3R9s684kOwJXwGqC3l8MPlRjIImAjR1KIvEAt1xEbsPsvx1/OieAeoxiLCDNYbLyMkTsjhPMyDgktMQ+xpz+q25MWl0LzaQX1KzTnIqGHYRdqdg3NCdB6O6U0Dzvpdo1BhQQd6vjILKxWUoV+aQhhRGhs++UJZuWZkD6g/Ruaj7aKTZngpwGrsTOMkT7VWaysscIE8IknV3tcukyvbgRJWNxCG8g+J88fJn8qqWYKjiWFv5aiV6UKQNYGDGueO9G7YuhA3s8kISokeNgp96MnjeOD8oV6yC3uXfQQU+aspaX4Hu7vABlMgrQd5iJdmFg9psYkiZzEV5TzVhbuWpukB1Uu5dL7oq+wLJwrQJWRU8QTysyp6f/JGZeF6Kr+tjStwbWuVOwyI3CY7CEiDWVUHY2f8n4Z9h4jmCxQr7DFaF1G825jAbwQvkiu67ev/wojvwqUC2Nzh3Zj7dO2rYfA4t2FQUv8YY3zELcJEaBfvI2N/SJkgz2Zeb7agjw6qVoAN7PafekQ0K72F0mB8MW2UO6H0hBawTdq3H9oSc
+ E30fALUs
+ iovBjpfHyfZZT58XotLwoJCNktQx+qOF9S9WU3OymbbEecZTYOZVX5hj3y8EtdPlO3UIF3ehMYvqYos1F2zRePF9rm5YwC+y7bFI9w1SkRrX6tofvFR5Y0FJTR/mgjnDKGnSvd+qhTPZOAN7tB/p7NKe3GbOO+u5dBwX1oN/17QnnSJiSsKBdUcVN2k1SuaFzC5td/WrPgCU2w39UQPbEQq67dw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,89 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+Patches 1 and 2 update the design and ABI documents for recently added
+DAMON features.  Patches 3-7 add or update more unit and self tests for
+DAMON to cover recently changed or added functions and sysfs files.
+Patch 8 optimizes damon_commit_target_regions() to skip unnecessary
+adjacent ranges setup.  Patches 9-11 clean and fix up recently added
+DAMON sysfs interface code for readability.
 
->
-> [...snip...]
->
->>>> @@ -2546,7 +2546,7 @@ bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
->>>>   bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
->>>>                                           struct kvm_gfn_range *range);
->>>>
->>>> -static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +static inline bool kvm_vm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>
->> Should have read the Sashiko review first, but where is this used?
->> It's not used at all in this series...
->
-> See below:
->
->>
->> /fuad
->>
->>>>   {
->>>>          return kvm_get_vm_memory_attributes(kvm, gfn) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
->>>>   }
->>>> @@ -2557,6 +2557,16 @@ static inline bool kvm_mem_range_is_private(struct kvm *kvm, gfn_t start,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE,
->>>>                                                    KVM_MEMORY_ATTRIBUTE_PRIVATE);
->>>>   }
->>>> +#endif  /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>> +
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +typedef bool (kvm_mem_is_private_t)(struct kvm *kvm, gfn_t gfn);
->>>> +DECLARE_STATIC_CALL(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +
->>>> +static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>> +{
->>>> +       return static_call(__kvm_mem_is_private)(kvm, gfn);
->>>> +}
->>>>   #else
->>>>   static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->>>>   {
->>>> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
->>>> index 6669f1477013c..8b238e461b854 100644
->>>> --- a/virt/kvm/kvm_main.c
->>>> +++ b/virt/kvm/kvm_main.c
->>>> @@ -2627,6 +2627,20 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
->>>>   }
->>>>   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->>>>
->>>> +#ifdef kvm_arch_has_private_mem
->>>> +DEFINE_STATIC_CALL_RET0(__kvm_mem_is_private, kvm_mem_is_private_t);
->>>> +EXPORT_STATIC_CALL_GPL(__kvm_mem_is_private);
->>>> +
->>>> +static void kvm_init_memory_attributes(void)
->>>> +{
->>>> +#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
->>>> +       static_call_update(__kvm_mem_is_private, kvm_vm_mem_is_private);
->>>> +#endif
->>>> +}
->
->
-> Here ^^ as the static call update ?
->
->
-> Suzuki
+SeongJae Park (11):
+  Docs/mm/damon/design: update for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP
+  Docs/ABI/damon: document probe files
+  mm/damon/tests/core-kunit: test damon_rand()
+  selftests/damon/sysfs.sh: test multiple probe dirs creation
+  selftests/damon/sysfs.sh: test {core,ops}_filters/ directories
+  selftests/damon/sysfs.sh: test dests dir
+  selftests/damon/sysfs.sh: test all files in quota goal dir
+  mm/damon/core: reduce range setup in damon_commit_target_regions()
+  mm/damon/sysfs: split probe setup function out
+  mm/damon/sysfs: split out filters setup function
+  mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
 
-Thanks Suzuki, it is used here. kvm_mem_is_private() was and still is
-the function used to check if some gfn is private or shared. Hence, in
-this patch, the usages of kvm_mem_is_private() were not
-updated. Instead, kvm_mem_is_private() is now set up as a static call,
-and the static call is hard-wired to kvm_vm_mem_is_private() in this
-patch.
+ .../ABI/testing/sysfs-kernel-mm-damon         |  40 +++++++
+ Documentation/mm/damon/design.rst             |   2 +
+ mm/damon/core.c                               |  22 +++-
+ mm/damon/sysfs.c                              | 102 ++++++++++--------
+ mm/damon/tests/core-kunit.h                   |  21 ++++
+ tools/testing/selftests/damon/sysfs.sh        |  70 +++++++++++-
+ 6 files changed, 206 insertions(+), 51 deletions(-)
 
-In the later wiring patch, all the places where attributes are looked up
-are updated all at once: if conversion enabled, take gmem route, else
-take VM route.
 
-kvm_mem_is_private() is special in that the if-else is done at KVM load
-time rather than runtime, and I believe that's for performance reasons
-since this is checked quite often from the KVM fault handling code.
-
-Buut I think perhaps Fuad was referring to kvm_mem_range_is_private(),
-which is indeed not used anywhere. Binbin also asked about this, I think
-we should drop kvm_mem_range_is_private(). My reply to Binbin is at [1].
-
-[1] https://lore.kernel.org/all/CAEvNRgGbBcrX5Fw3vNTsTOBNC=Ypi=9-S07674yPxLU9i4akjA@mail.gmail.com/
+base-commit: 197a7eb91f786e5deeb1dfea35076c01ebd37ce0
+-- 
+2.47.3
 
