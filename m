@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FF8ECDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 00:19:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A65BCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 00:20:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1DF8F6B008C; Tue, 23 Jun 2026 20:19:31 -0400 (EDT)
+	id 4EFFF6B0088; Tue, 23 Jun 2026 20:20:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18FFF6B0092; Tue, 23 Jun 2026 20:19:31 -0400 (EDT)
+	id 4A0536B008A; Tue, 23 Jun 2026 20:20:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A6CF6B0093; Tue, 23 Jun 2026 20:19:31 -0400 (EDT)
+	id 3B7256B008C; Tue, 23 Jun 2026 20:20:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CDD546B008C
-	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:19:30 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 23671C063F
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:19:30 +0000 (UTC)
-X-FDA: 84912897300.14.A772837
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 939B01C0002
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:19:28 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WN6LjFO/";
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 17FF26B0088
+	for <linux-mm@kvack.org>; Tue, 23 Jun 2026 20:20:51 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7ABB5401A4
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:20:50 +0000 (UTC)
+X-FDA: 84912900660.13.8900441
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id ED70140002
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 00:20:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOAZrTnZ;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782260368;
-	b=ZcMIq+Oo4R8NyvfeuHXu/RhMm5N8c1xVnaH1f0maWc1xLQMieVaubvEMn6j/BS9kyDDe83
-	ODBaEcLnWQIF4+igEZs6Gxl+MG5BlIAv6oASZQ1GDYyJh0DibD06vt+1GOPpRfXjS+yMtX
-	PfmOVZ4UxTUgBrlWxp/XkbBbdnniLfU=
+	t=1782260448;
+	b=pUk5km+WXeOByRCsAK5koNHGKY60O7d2B9Tby20Pzz8ND6DYWLf7dZaCQa3TVJa0jNvU5h
+	cVWQ30A0YFP5lTCLD+VrpHx2XauyF6hcN2SdD/JkidNLagRSMltbujFfx43E4jThDLizTZ
+	IyDDGScbS3h1p8ymjGcR0B0LJ3yDqSs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782260368;
+	s=arc-20220608; t=1782260448;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mCzkIn1Rve748otyKAzYdv6wrefG3cqLC7ZgTsMh0Ww=;
-	b=cAa8FUwjgmcnRWyVt6nJqeoBWHMrfSYAB1naWUUoceqfRMoLhKMjEFlBup1ttXPZgmlYWV
-	B56YsvfRt+Vb4B63EckYSwDoqlaxmvSXVnCufTcA81VRoiUu9DFvTE3U2VyhrhpTIfy1T/
-	CfJYSXNJwSoilQsngCXh87ax7SmrMa4=
+	bh=kDNg5qVV08yzWrQjBlrIqqisNfsb2IhndBrBJGg+5W4=;
+	b=N1Rpc0VFCx+62HpwXSg5wwvMkPDpWz8s02ZkQ69S19+RYe+aPRC4yWgL5HmcMODrCRKanY
+	t/c8JCw2F4EZDwSIIrErX6UD6zJ4/13lezfOus6pJWV6czIy+Y+AuR7rRqWdkseQNuarrr
+	m9RYWU6jhSz07WsboMZAIkV9VHTagn4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="WN6LjFO/";
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOAZrTnZ;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 861F541800;
-	Wed, 24 Jun 2026 00:19:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1106A1F000E9;
-	Wed, 24 Jun 2026 00:19:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 307B660172;
+	Wed, 24 Jun 2026 00:20:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6A31F00A3A;
+	Wed, 24 Jun 2026 00:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782260367;
-	bh=mCzkIn1Rve748otyKAzYdv6wrefG3cqLC7ZgTsMh0Ww=;
+	s=k20260515; t=1782260447;
+	bh=kDNg5qVV08yzWrQjBlrIqqisNfsb2IhndBrBJGg+5W4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WN6LjFO/uhwj0LRfTYUzHdjaYyyTAvL4aMYJkh0qS7/Xc8YUEYTi/HueS7SkS62ah
-	 EeRod9UUp0EshEhszB7Dk/oyI/6xaa0+sGLI+vBbF++NoPCda8pbVOjOkH2keKD7vl
-	 Y9icHJSXQasKI33yLb8BmvBsckMVCO9boZ4JseLTi2KyswJZIzB5TeMVi/PmUjDYm3
-	 pZXeuswBMKX7jVINHZyICWYvr06UoONIrhwF/DBlydtcLnpiqr+qUVjkojbLRcKQx8
-	 Qy4uRUod1cdB6Di32YKd69abaIYRE0dpkzwZfrp+yR1gZGyd5u06uhAmKNVjjFrMgZ
-	 Wzt52tzI/+pSg==
+	b=QOAZrTnZIE5z7P/X/uoUb09VFIqQs78MFh01OBUyxReUzFIMjL7phg+LvbnU6i4DE
+	 /9RChsOZze9l9kT5SR818AGN7xFvH7ZOmAM47H62mLalZYgRIxh1j9iP6kJyJTOZ8R
+	 3OkXKMFybN+Sy9Jmma/U0/QCTSjVwjDcCouLqtWHomNiqG8Zwyrfj12O+oqTRanzbt
+	 9WveQqXTozHsolmtlMuCo5tL6ZbAyD4XQn6OG71iJyMbHBfsQt/sIlwTjXtvf7+nqj
+	 WEaVmtuMijdSuFdMu2CX7iVReqQRs1/XK+nPu1LNqXGNdFGkRlFSCykUiEcUYnBYxE
+	 ZeUWTA1LjPa6g==
 From: SeongJae Park <sj@kernel.org>
 To: Igor Putko <igorpetindev@gmail.com>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -77,22 +77,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/kasan: remove redundant initialization for kasan_flag_write_only
-Date: Tue, 23 Jun 2026 17:19:11 -0700
-Message-ID: <20260624001911.77632-1-sj@kernel.org>
+Subject: Re: [PATCH 2/2] mm/memory-failure: remove redundant initialization for hw_memory_failure
+Date: Tue, 23 Jun 2026 17:20:36 -0700
+Message-ID: <20260624002037.77770-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260623114743.4565-2-igorpetindev@gmail.com>
+In-Reply-To: <20260623114743.4565-3-igorpetindev@gmail.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 939B01C0002
+X-Stat-Signature: 4dhs6i3xaioxup4oxc7n9fu9id74ex8b
+X-Rspamd-Queue-Id: ED70140002
 X-Rspam-User: 
-X-Stat-Signature: 4edsby5iftsgougtrgcrz1kpbwwrchct
-X-HE-Tag: 1782260368-403322
-X-HE-Meta: U2FsdGVkX185QnWeEKrzzi6sSzGBkr9cMz30b5JXAT56XDVlJ3Qo3YoYtvKS+Kyt8067Ghl29aW5efpJcvnz9nAJIbCm7Owb2F2r4XtZpaUcwlFXzvTyyWNXE9Kveol48L0ajF3xebbAmit3r+bkulU/ASKVVIqy3iam7nOaumPbY60yS6Zhc4757Z8dQtIiq5fgfmtXqWV+BnSQz7a6gGGKaVJpcVv6VUv/tfmm//IBPOWeoNeI1y10tpIvY5r+4sPCKRCrWpzbw3cX13LjhvqvFFHnz5bINAUmzBQa2dEfx/fBq2LqcLaaR69ME7ku3sLOLcFzwQ3OlwLm2Q2bMe1LSkuvLIgKNvnuTBKPUxXom4IuBfxyTiXyhqp70mOCovwNH358kiuFaU6njvNN4bVRqX7pngHQCdwdoSYKhdW1UNumQ9E0mKA6tTMdUMmffWcKQEAXo46u0fZRUTxne/1XbH+BwmiJOmbp/I+hII5IeYXIYzj7fs+BYBHKpBtr6kwAGH9ovZ1CqRczsyRA5RHvkIlolx6qT+xtZiZfFiUl1wP8us91+IydzP/ebKh7jI9xIejEZYrATsnYrIzrRAjaqcVSLUe5G9E31idR/VWdcbZt8l9PM6bSBTJyADUiBxpjfuHNbzcB0zIfA5s+tAALgGLKzjZo4XelCGKvSTYAU3zJZscLo4ixCqcS8o4dIiCFkQbo+G0L7VSJULoGycrCHp04PUTH06TqTilSQfuB9GjWCH89/Gw4PW/a1Efe2bJ8FLIz1UPzW8WqLbs4O9xsIzW7aRzne2XVeHpR1PhFmpfNAnjNjpKB0nfo83gCgWSCowDtrnKAxOA6q+GyfN22gCA33xt5zD3UPnwwsZjOXuQudbCbA6GnJV+FmSqDXQq55X1svaY/OM77zLclHSYJV404qSl0g4nlnx464QDoar2UlRXNrNIVV8ya46OA3+BS4A78NxwXMMCTNvC
- kNRMFus9
- kSS9iuJBoj3eopOyJ3P4M7Nh0GX8H/bjD+XRXRtElYTFOqWr41lNDWf4nZImsyU9WjE5BVKOhSh5beaKdJoY8enWZ5AmVgtH87phT1Lo7GVPl17XKuXrl4E+F1Q0Zc9rxY7NwuAWe0i4AxgK0Onqt2ykcrH7JYtWOPLci6Rj7r5Nz5i/Q9SFINesovGS6TSaPq/zf193kivqUTq5pd1My97ocspYcHb/OkLKdbakw3v8pdsotCMB5g7FwExKxCJ2nn1UXVIwOf8HFwEVYoFaBcgVGYcsziyknkCrj6SU6kdIPVctgn3mpMinb5DJIvTu2uyM6pyah3bdKiG/eEK3wjMztAztHWp8mfPZvbyOUK2HoAVxByL4gAIqE6wRM+Fxvm/YD
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782260448-246911
+X-HE-Meta: U2FsdGVkX18vnwKXQu6J1jcJRX5gq/7IsAskNnE87Xzzhr/ORABaOFbqAmEggCCakbm4EwJsQrBxsrG5+0q/88lF7JeeOr/x00RrlUx9rzMlKdrusQf1f2I+fThiJM+qtyNqAm8Vomlrmcwe1Jbz80YdhGLcNmmb7l3yF0bI5ymvJNc22fGTdyHyjXiot5Rnb6usHLBqMmPFOD4xbfyclfHMJn/xdvIKPM8wzzzRlMXtBF7CEXIAZOVxJ0jAOsZT3oMqX3+ocuEVyC6g/BFrLW04W8wk7AZ3tpwuUiOUG9vWNM9oqYLe8JVmn7WXKrI/0aYEc5P57qZjgi8Q3pAA7a5NjHN8gaFTAFDcdHhVPBBNA7LaJlFugTZw9QagnVb6rjuy1aC/7CE6MTvlhRrH3JXSKSJGW+yKRnKrK8NMwx9eoj36A6dWP8Hk028+SwoTfkkVP29U8LgrJGbvtfZlEXLs9OcFKG5xyJEYpsQO7/Y8Qf7sCYWQfOoUCrTVVMM62uMXNuWGFuMgyivJjyVzeO5HDYM+0Vm32WOdjAqviuPGQlzmDFsgQcYsXVYDeKZzzgr1z16IpLXMT7z8glwdpWU1Nf0yrqevbLBQRv33+XmOlb6ngSaL2GWLy+FkMoa3Z2NEg8R0PasVCPqvoj7gzlFqOiY8o0SRx3kmyGzayaDpfj++jeoNm2JnPViZu0sghAwf+FwcepIRNQyAx418yJpEO6ZS0tYoVBt7zUQ1clUCqUGBBATGq/aYM8L6CC9VJtA/hXOK0AK31Iwszvfj8vGvcTOQcZuIAkvdtn0IfNhkXegsgg7fm0QR703aDyf14lMGaPzfxsVxbfZUYu4nyKgt6sl3Te6Kz51BLdasi443HWZH6zh+30DK40xniXO01qNnFNfX0KTzGQbEuJSW74R3WsAt9oGaW/F0ougp/Mr9z0Kh6VIFIoejdSmzTQW4Q4P7pR9Lar7Ig6mi4o2
+ u8NlyV4J
+ vGJcnHuceaUpiMK+EGhK/u6I+yN3lIGU/M7CLHV39GVcR9kV3W00X2tamwcQ6C5oTsc5ZIdqPAMOl9a3Wp2MTQmqK7NgpEoVgME1uJHTVNhP1zYji9tITmW/6XKIP/p7MeBZCGu0voZyapjgULg7zbFqZESx550HGgJjwnJTThp0utBITaAxhM1VIR9EBpLoORpocjcaNlFMsjI3JMNUw/IDcYl8idXGqumzghlQVyKzjIGwld0ttjfjuA8PWDCMv0DyAEsLMy6qUpf9XrlZP93iSS0IbwGWtYv/WoAi4j+H1bGrm7Vf2b1479XmseZt2NZ/PcMsPCDcWXZF+YVuvNQzk/P4izKfsWHBeq2WmXsTrid0bhyFnNj1SaZiHFbmGKy7v
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,9 +100,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 14:47:42 +0300 Igor Putko <igorpetindev@gmail.com> wrote:
+On Tue, 23 Jun 2026 14:47:43 +0300 Igor Putko <igorpetindev@gmail.com> wrote:
 
-> The static variable 'kasan_flag_write_only' is implicitly initialized
+> The static variable 'hw_memory_failure' is implicitly initialized
 > to false. Remove the explicit initialization to follow the Linux
 > kernel coding style.
 > 
