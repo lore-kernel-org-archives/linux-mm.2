@@ -4,103 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3A9ACDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 23:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63138CDB47C
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 23:45:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D67F96B0093; Wed, 24 Jun 2026 19:11:10 -0400 (EDT)
+	id EA4036B0088; Wed, 24 Jun 2026 19:45:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18DC6B0095; Wed, 24 Jun 2026 19:11:10 -0400 (EDT)
+	id E55096B008A; Wed, 24 Jun 2026 19:45:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C072E6B0096; Wed, 24 Jun 2026 19:11:10 -0400 (EDT)
+	id D44456B008C; Wed, 24 Jun 2026 19:45:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D6DD6B0093
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:11:10 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2ED048EB7C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:11:10 +0000 (UTC)
-X-FDA: 84916353900.24.CFEB337
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4A2D3A0003
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:11:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KvJF0O4e;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A76E16B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:45:49 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F10EA04A6
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:45:49 +0000 (UTC)
+X-FDA: 84916441218.25.0F6CB6E
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A5D7420002
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:45:46 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=TYGxauwL;
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782342668;
-	b=ZJNaf1t6+XdkEeTFTqfFrPXpNParA+O2xAlHugohDvyVOpQVApIU7Lm/EZQoVIMMejlCYo
-	pBJP0+NXL+Ynwq+RfkDXrb6mv4I+JPsYc6xQU1WWGrJ3tiStWLvrw1f3plxsaOVjfM+PAo
-	Kax2J1PKZJEhGB43ZyQl0OuWwAtHpt4=
+	t=1782344747;
+	b=DhlM7hnlgHGsQFKEhjt+xEz3sLR/PamvA+dViI+keASdieMB+2VBf6ojtDlcqIUCGRgRMc
+	7uz0e/w0XinmfCPiXo/Zj/vElzdAbHlbq57bfWUxWwAIUA55JXBrCgqKEbXpiErdy4P5PR
+	odEuqRvhhDm54oF3+qH/5FzcPDEiOWk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782342668;
+	s=arc-20220608; t=1782344747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tKAaXJoaieAVE8AH168vYoAqWKzDSB5PAxL21Dc9tvA=;
-	b=PGokll4XD1kRoZMQ3iWRRrEpk+C9X5HKRI1PlQldUvOhDe2QBosmZiOqGFldbkr92T+n64
-	rRY6NMftKuqr7gyJckYRlgi9al/Wq0tm5v5+/0mEWhgq2wfIun5HlMaTL+xriJ/NWdAf3/
-	wR0NIrnKVzyIZ9W5UM4SpB8NyqueNWU=
+	bh=oAac3YjQlgOMQMiCgcb6pkychBKZy76MaByQWH987zE=;
+	b=2LMqeI2AR+82KaRq0lE0D1Gw0eB3kzgKGh+bdMg83HSxEUPUgODlrIAWToUAWfIacNJ5Fy
+	idmyqar9qPhwR/06Cgukr7tkR1Zb2VD5sjGBMhw8i+gb7CWcpiUpOnUlVtsePV7fC0vq9j
+	GUN9mQu9mYaNIAb7ezaATaJ3GPY3+Pk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KvJF0O4e;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 359CD441C8
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:11:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099081F00ADE
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:11:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782342667;
-	bh=tKAaXJoaieAVE8AH168vYoAqWKzDSB5PAxL21Dc9tvA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=KvJF0O4e+olV2hKgBbt39dJWVzKcz02OxfSxjWy13p1Xm244jRcKwU28/p0+EDHub
-	 oKds/xNua1IQ7qfUygKmw4LCikXVcnfsp26mdlsEituoQofJkuv+GfaHbAR3N6GTvA
-	 6WeCNPGefYOd4pB1IPLft5iOtCXxeOaD/F0yY1aRnUJlW7jUieyrcgqTbeq7LtO9sF
-	 48RXgHYs0Dy0J/+bONa14qZXwisAZtu/FJqfb1q9rv93270vHyOMuheg5wQF0dg6+C
-	 wc5du/43K7d31R5M3wt4RhkLB8bZCUR6ZvvUYz+Zs1LvdJ5DHJX4y3FjiNlxIJjIAh
-	 f+BOShdB5G2dw==
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8e59f64471eso11994396d6.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 16:11:06 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrL3L3bo3zmqakzFglcenuwWbNn8fkcAs1sjkYew0MX5372Bu6Y7ZDzIBuCxEhlvlrXFr53dxCIeg==@kvack.org
-X-Gm-Message-State: AOJu0YwRwnTj0UQkZI+/7HDxP9B0IqgVvKOQ5L1FAGEPWZKf94xWZ6sA
-	J0YyzNkcMy3JnFlit3JElBHFUk+Iudu/GG8XXGdBBQntR4EOSz24KjNO7+qC9kmN0FHD5krZ1wz
-	pmfUFpJRZVg4ajB2FPDcmX0xxUWA/Q8w=
-X-Received: by 2002:a05:6214:3016:b0:8ce:b018:8a03 with SMTP id
- 6a1803df08f44-8e6da33b9f6mr3148356d6.27.1782342666425; Wed, 24 Jun 2026
- 16:11:06 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=TYGxauwL;
+	spf=pass (imf03.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 43D6F40E01B4;
+	Wed, 24 Jun 2026 23:45:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id KwMQDZbVK0C1; Wed, 24 Jun 2026 23:45:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1782344733; bh=oAac3YjQlgOMQMiCgcb6pkychBKZy76MaByQWH987zE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TYGxauwLfdo1Q7NMaI4J2T7E5GF2+BqiAzGbYKN6cW/HZ0KVE8B0IVJqwQswl/mLE
+	 BGSk69A3nl5rn+L6TtA3VEs1OOvmFCR5WNHtbVv6Bf7iOYD/RrDV7Qejgvc5OcQoU+
+	 ygIRfEB1DB39Pq6uE9Wl3O7x3r0+4Cvjw2OByOTCDyUVB1xYQCpd9qK3IppN26JC2W
+	 Z61oauNBSaO/5tOLKLUpjDY4dqCkPYGyQavXdANJ0VLs3Iq+/TFYA5JfEZTBoB2ygE
+	 xh3/mysyW5dAvkLAh4Ycc9B0fV8J3lLAFoRgTLZ7TeysW8HNjwfx4QNCblJn9TmaDw
+	 6ZD5XQZ4114jyimGg7mGrrUOZO+wwCP4l7JSAVuqXyNuv/W33vqHHrdSlj/fVI68Z7
+	 t5qpUc2gl94SdxTARX5VNj+Kg5L9cAv+cGa/WrqypA1SA49PHnhCaKmX3/Kgfuv8Hj
+	 VM0w8PNufH6GWtm8Pk8oQSlJTAIQetKrHgRudmcmFV2f+/lF24v9hMyBXiG/u87FUl
+	 +rcNE5eY19s0xOit4REP8D98cRVqij5WGYo7I6HG91oPy1f8EDS6pix5a8Zsw87gmp
+	 SnVV6nV18aShaIUfpEp5LVNVPx9tXeB+LhXeThPf8zc1YLwYznnkW0V9qtb5d1d+f3
+	 bPr8v/i116dDdc66nE4IbWLg=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::1a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id B317840E00BF;
+	Wed, 24 Jun 2026 23:45:13 +0000 (UTC)
+Date: Wed, 24 Jun 2026 16:45:10 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: Dave Hansen <dave.hansen@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>, bpf@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>
+Subject: Re: [PATCH v1] kasan: Fix false-positive wild-memory-access on x86
+ under 5-level paging
+Message-ID: <20260624234510.GHajxsBgG62PHgEZa4@fat_crate.local>
+References: <20260610175651.647515-1-ihor.solodrai@linux.dev>
+ <326b85af-c41a-4387-90a0-60720111934d@linux.dev>
+ <20260618170913.GBajQmOQyOiBLqopUl@fat_crate.local>
+ <3207a706-354c-4e9d-ba53-dded1abb1842@intel.com>
+ <20260618183815.GDajQ7F-bqTHnrakoi@fat_crate.local>
+ <87643862-e32e-43c7-8c81-7186f30059ea@linux.dev>
+ <20260624025732.GDajtHnB1Jc21kQnl_@fat_crate.local>
+ <c49b1499-6aa0-4e17-8385-cd2bcd2220cc@linux.dev>
 MIME-Version: 1.0
-References: <20260616031309.3036234-1-haowenchao22@gmail.com>
- <20260616031309.3036234-3-haowenchao22@gmail.com> <CAGsJ_4zjuSnR4K5DS0A6yDaZkvBz-9ODNxr3Yo5_0O53MosiQg@mail.gmail.com>
- <CAOptpSO7rLHOCYXgp6sFjbWMD5tf_iK6B5NNrHWb_CU-tuVmpA@mail.gmail.com>
- <CAGsJ_4zmfXg_ub913S_uYeziU+mj_+Cks5iS22oTRRt2Y3LYyQ@mail.gmail.com> <CAKEwX=Og51dvN9PsH9dhVHTU=CQk5oRHwJTiu9mN9Bn8uLnx0Q@mail.gmail.com>
-In-Reply-To: <CAKEwX=Og51dvN9PsH9dhVHTU=CQk5oRHwJTiu9mN9Bn8uLnx0Q@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Thu, 25 Jun 2026 07:10:55 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xj1SvosfZwOuki14gYPJ4VLs9qLmabYzKKtgxQR0fy+g@mail.gmail.com>
-X-Gm-Features: AVVi8CfquNwlq855nAy5L06lz2Q9n2PyTo_AYlPE9Mg-bsWXjJdtfwZes3hS3l4
-Message-ID: <CAGsJ_4xj1SvosfZwOuki14gYPJ4VLs9qLmabYzKKtgxQR0fy+g@mail.gmail.com>
-Subject: Re: [PATCH v5 2/4] mm/zsmalloc: drop pool->lock from zs_free on
- 64-bit systems
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Wenchao Hao <haowenchao22@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Minchan Kim <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Wenchao Hao <haowenchao@xiaomi.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: qbe7k8ymsggo73f69bmi6ubx3nee85i8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c49b1499-6aa0-4e17-8385-cd2bcd2220cc@linux.dev>
+X-Stat-Signature: b81zogiixckm8kqfhcw899z6fpsr38ju
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4A2D3A0003
-X-HE-Tag: 1782342668-537831
-X-HE-Meta: U2FsdGVkX1++xucYVdg6THacKIBDTUFv8svjTqEjKzbghYKmAdJB3BydsxPvlNgDjrZu0EDtL+0U046Dkn+pxfduAOnQp3pu+bNeggznMxNEgf87UlQfVcKLfs1pTftEzwk9knBVGSLFOz9tgoJf1KLQMQ3qi6VJ+SXbe3V4LXx0AA/kcOfPvvji1YV+aiokgiKHvLncfMt3kCLDJObPMDyJwPMq0OEhDBoC/e4lN71J9n1Y4AH6wowHBAhp4xYwhtTnc1RjhWLVWh+LMI7i+uJEfJck0AtGxZLtpE8Q98NgbQ4yfpZ7ffXLWm0IsYeez4o1UhcNPzVN3mMU2lqz96V/nDXAm6Z86sPES6VBE7JdPKHcRK5U3Wchx4uF43QW2u9jleiPXcK1JhZhwbw4fkDDj3wvnCaWVwGdWn2NXzzpxWvLt962LHxDXbYKleHiosRyVucUVrpYGXFyKC3WxqF7AjkndW3hYlW4C88XXr4ccBh5pM2EwG8qjcJFpaflKkQabga0v7nrPVniPt4TZYqUolIRNDnEN6Cs0LgzOaAh+/kh1iwBmWqjum8MWfXZv/Pi43m15GQqEHGkqhE0o9MvsHWXclRXWMyAX+16JM4KapMJwdeMMf/nfe9+cNidGCQiE6oQVEGqbi94YN6TW5V2QXifAp7QbIqE38WJA2pUAeTA1gAcrR7bCbCftDYJ4WEEIvMVBGqzRq75HkaDkZyrAE6lvBsyHMG9NftyzFy3jXOC7CqS0tOL2El9MmBdjXrXRWycUMeIZJH88Zw0+MT/6vm60/SqqBSXslngZAotUqQX3BwGbEeCTN8puy7PpK1MJR9NkUNa4xKmfCHdGhl6aL1cMjgheeNuxH7llAtjOt7AIyt02mZpuswRSFtSA3QSayo5eHveHppjABa29hCI7ckgluG53j6Es2XWbjNozFwdWhngpC+37RYD7cdZA1WIJr+7ls/4jf3E7WE
- opjm8Xlj
- t6nQAUoBa3kF5eGc370mx2RrklDxggqqL7mdbJS9b+pcMu2cW5PCyKiTiz/bcxELwajCiDIBT7rNQjayywY8JLBdzglykIUhIR8/3twaAMclt+WcMoYuiMfKCfYQSSm8Wt0jFtAt2/lgWHM4fcJaK42p1YnjAVosVfU+AeU+0hdkRG/9pHSdxe48SJS30RYWUYyy9Vi3gSt0hB4WPvj+dLicupy6gJ0fPQ0ubGrm7qKzSs+y6hes+UoT0mcgYzaon/MNpw3jY93o+qQUi8yif8sWbOh3d4x9mIvw27futX2dYu9e+w/9+O0b5Qfmxvq/4vEeJlDejtBD8Hi1u4Sixe/o82aZLhZ4/ablmUrzX71YMIAS6CJGMZcYkfU9UCxW58h5j7Ec4f8mw4KEk9j3wgFscSemwSETG0Vb28KmqAOUje7EFidjzKC7KhTN+jOGnL9mnytAOMm+LByQ=
+X-Rspamd-Queue-Id: A5D7420002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782344746-967225
+X-HE-Meta: U2FsdGVkX1+cMiLvE8eb+wa3OBTYh6r46k0Oj/JI+szVH1aygrErVZwulzGQjmMi8S/of8c8M53MJqGRpZuCKhUBCmat5be5zO/9HsPfqWIoW2Q26MQpMkZgHsiwJ9qW4yrxzNN0EvWO872b5EPNQARNp+VmZysLdwXKD+tU77ceIeMunZ/r0PPTusQYcLQfH6VU2synwMLNszcVbIqTCwGE7PViJPJIIcKwq1WcMjqSl0Gq/0dcNham6QUJo3eseEdsX+BK5xasWO/j4OpocSPXZkYttG5vR/J+5zNM2QCf87Ly9zjQU/XWrX+jrWpsJwLHlPJb8s1viIRvF7bnOPzMrGcvLkAIR7swFGhfMFabSK4icZm27UoNXFF8GKmr+ODctgOgrjMi2upjA/C4GEc7IeSPe0quJVcIHJnqrKJdGgSOrdRFmx9X6rah6OB+H7QZcz0z7dzBuded+Z2sA2UFpIyMv4sPWJtN4XEyW2jOgfDYPV95iEjvqXCV+Zs3J6h1q5tVY1yLUBuvPGqBoFfz8Wg7aryZ2eNhwRlEyrEye7TgUjiwTSoYQ1jp8fooNQnLr6tmiH+6X4cHI1kaluOwSDdvP2D0GmPK6sNvWhF3PfLA9FmjECdQVvDiDSc7EibcGw7HmdePCeAzlre3e12x6AA7LsnYoh+nlj0qZ5dkNkef7qHnwebxtolytnZ3pizSmY+b1NB+sh8K4VnNAmFsSXCYsx1lYZB40L4fupILTec57P5059TuC+dUBV9IQl6xTcoEjsdvGxncPc5atC7bX/asoG9X6PYZ5hKslDs1eYndxvUkpatXDNJ+g46PCMZMGN5loCY2iqsIBdS9f1MQkab1sXkH+hNWEM823PZFxBMYTYil5WCD++Q9RrNYhNszW1+jrElyGPw8ewRkqY9Z3CgBktS80BFTj3WgTYbbgZXTu9Q0S1QQiwQkRXEnrV67cUgPY4U5RNIGW3o
+ 35ZgqzBA
+ P7hDD6Prc39QRB5nyb65z4v7Y4XGjeftX2QW59bA/4SQlnlrOQr5WeAiRa3vlWryNgbW+b4pbDnHCQmphbkj+EGT+mBNpIVqkcVohS3Jyftm+g3GUeMSZbNWDQcqxSzOG81+X5uCKC2rHvIpuy5JxMrunKyis2qqdVWU8yojMXeyqCDGuXtxzCtCDOSa1Kg6CiwY1wLHKq+R1zCh4Ts7AYp/b/uPJD1xRMjz8k66qyKWKVswRz9gNHgrNkmbZ3v4xCAW6H9qfMhQZeo1L6RHyx1NTuAvMCfjVdX5TC/nZe2K20cUUKhG/7P/QjXorblB9dsbFngkn8jDXbR71HM1iwTNUst7Gx4PyxHR/eIhukkSBA1jGsj2Zxk2Hpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,20 +122,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 6:39=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote=
-:
-[...]
->
-> get_and_lock_obj_class()? :)
->
-> or obj_class_get_and_lock()? - there's swap_cluster_get_and_lock() as
-> the precedent.
+On Wed, Jun 24, 2026 at 03:45:15PM -0700, Ihor Solodrai wrote:
+> The instructions are quite detailed, thank you.
 
-Nice, that sounds much better to me.
+I hope... the devil's in the detail as always so I might be talking a lot of
+crap too, as usual. You'll know better when you start poking at the code.
 
->
-> Anyway naming is hard.
+> I'll try it and will send a separate series as soon as I can (likely next week).
 
-Best Regards
-Barry
+No worries, take your time.
+
+And ofc, if we decide we need a fix for stable, you could make a one-liner be
+the first patch which maybe which disables KASAN inline  when 5level page
+tables have been detected. Or something to that effect.
+
+And then the last patch will remove that fix.
+
+That is, iff there's even a need to have something in stable. I don't know how
+widespread kasan inline is...
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
