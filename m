@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66273CDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F409CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:58:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0CF4F6B00AA; Wed, 24 Jun 2026 10:58:05 -0400 (EDT)
+	id D79626B00AC; Wed, 24 Jun 2026 10:58:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00A3B6B00AC; Wed, 24 Jun 2026 10:58:04 -0400 (EDT)
+	id D29B46B00AE; Wed, 24 Jun 2026 10:58:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D78F66B00AD; Wed, 24 Jun 2026 10:58:04 -0400 (EDT)
+	id BF2186B00AF; Wed, 24 Jun 2026 10:58:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AA4B06B00AA
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:58:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C860C1A25
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:58:04 +0000 (UTC)
-X-FDA: 84915111288.30.F2564C5
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4051418000C
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:58:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="QTplfu/E";
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 85E3C6B00AC
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:58:06 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F222F4031A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:58:05 +0000 (UTC)
+X-FDA: 84915111330.11.0370826
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 282A5140007
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:58:03 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gkwC0J+B;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782313082;
-	b=dINzUiUYK4rdH811y7ZKRaM1e3APXNX551lxQTOjTDdxWrPwMUSOTZvXFCYwDJ74UN9cbY
-	uTA61KjIZdI5hwdKwPpcnYAe8IEC+C437nJxu3qC4zb6cXUZNpaJdrCZVh8OtNplLoFSga
-	90fIKW8obQlAKkFLbaoHdVEXf4Zvq4g=
+	t=1782313084;
+	b=zm1uavKY5yNlrTAw/0VVlPRPbFE8b6uJXbDUWw+75J/EnokZdYWFDuAbgHtoThsZBcLD4F
+	PxU/esEvzAMAie0J2NsqhpKRHyCIInnQOHmqs0v/EfrYuXuCZqurfmO2fhtRNva09GMMZO
+	P1B3UTQT1U76GUbO+fMI4qj1e9/BjQM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782313082;
+	s=arc-20220608; t=1782313084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zb2DpzIiqwLq7NyM2oLUvxWd/WuB3n7pHvXvXxwOytE=;
-	b=CBms6XtZSfuDBwqHKtBj6725ZzvHsJXhe7PZu8c+ZahByVeoYZ/ueYx0eiQHKN/WKhtjhC
-	xEsR0B3uobd6mXEqafBa/ybPiS7ht6dH5ifzGFPd0D7I0r1nxTF6KYvR4uDrZa5ZZ9BgiH
-	vg8yZRztqWw6Uts/o4W7tdDb4WEnNUs=
+	bh=p+5ae8LUmAy5WSGBFjad2biDCNPqlKGypmJhGythNzI=;
+	b=na1GNLR4SX8GqSz2WQuTzBkKZVxy2bsSFpIDa+rFYtcZmrmGmJFj9bK/blhoHYUL5sAkTe
+	be8TJb/YKHYCpS7uNSo10Zttwh69PlDP5bYSY2X69TsOL4r3ysEK8zF27UZM/W3LQdMo1N
+	pHtfEhsICVpRKd6ep7iGf9O/pvMa1sU=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="QTplfu/E";
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.175 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=gkwC0J+B;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5177945a22eso7806901cf.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:58:01 -0700 (PDT)
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-519f6a10d9bso7348671cf.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 07:58:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782313081; x=1782917881; darn=kvack.org;
+        d=gourry.net; s=google; t=1782313083; x=1782917883; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zb2DpzIiqwLq7NyM2oLUvxWd/WuB3n7pHvXvXxwOytE=;
-        b=QTplfu/EL7+CuZn+1oc7t7mZ1H4AD8XbMBE6eLOifvSgtrhgf9RLdMRNc2oyqk+D2S
-         +R03Wv3bGD4I2R2+HNvrnPp0mJAT0dE4ijwGG2nm7Hu1poCWVFhB3tMoiJngepowS4Ei
-         7fgsbMPcKA5RcP33SImjV/deNyW9Wf3ygq2i1dxUt3ZxQVmlMx1+VZOGRMXex3ia+WF2
-         EmFG09lVXpwjDmJRGJW2Vhwm9LAtIwJEpb+NCtmtWhW5kIevLuLjnSa96cnS8Nboz913
-         lQGBEnhSkDwiDOlw6rHqInh3CS6x/fPBqUg3yM1K132Ni/j+EUyCATSgMyOvYX0mXk/m
-         iraQ==
+        bh=p+5ae8LUmAy5WSGBFjad2biDCNPqlKGypmJhGythNzI=;
+        b=gkwC0J+BYqxrARcqJbxaldtRKG2ZHKWliflgndd1Tt6YBrc0GKH+CZ4HpN6zAPXz7J
+         hAcE4ONsU0WsAT0VQTsItNruqJpYso9B6I0n4Yv++wpfkDOFob//WPPxUCTGrcRFNw8/
+         prBnIGBPtvWjAz9PMBs6I5xLcq/l09p6pKmeiQ4qHAfi+svFwUvTCtCbIW6Ry2+xT6z+
+         AlGQL8RuxWyhv0st5+SSUVMK0YKewAfTNl5DKo0432z0Rq2vu63J+Rj8xuJrWWh5OtI+
+         0IubdkHaDdKN/NuMqx6NIX38j9Oxc1VOTFMTviLyfBpjZy70ZsCTTr8FiVmrB1lB22WR
+         ipgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782313081; x=1782917881;
+        d=1e100.net; s=20251104; t=1782313083; x=1782917883;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Zb2DpzIiqwLq7NyM2oLUvxWd/WuB3n7pHvXvXxwOytE=;
-        b=CmF/ffusJth+7/S0A1s71o3vWqEfgq+ttbZ9nrxZwQvAq8fcsyTxg1U/v5iWjSiq3f
-         6tfeVqBYalJRxB5hW264YlPFmOyjoF5miKuOBHcRj/6llKfEqUlTGeMgZn8sU/yzCsOn
-         DBnSoLzSksnHf4vbRVunJxnHDUv4f9+dM+bLc7JrVD0maqPOy+Nof638Jmm4Do6uIS+z
-         g6xe/F8k92OXLX5ht/QdWQxkyzeUKJFOaMU5BH2a0G8Tsy5lf6VKTgxF0lTvb70sRwUk
-         X5/g7enQzMxK7AmkU81sWZlwLH4yt+o/DCwNSLz67twVXBqPPq5yKgjNAqBxScZHCfHT
-         dC0Q==
-X-Gm-Message-State: AOJu0YyPSyw63w1vQmJsy6YUHOPbl9165xRw/KhsNcktwF5SbFwQleqa
-	E/FJpkSw1Sdb80zotYYkqdyVHbeUrKffCRk9YRw7r/CgD31ibSq11mp4bUtdyxg3yKxy7tZ/4jU
-	5G25e
-X-Gm-Gg: AfdE7ckolj/Ftul+df/mF5kXFQYVoHQaKvqCIW2T8qHtQwKGZJDzqxlJipoA2YpKj0B
-	9sMx9G+7TUKTOU2qFcP85xrrtJqqGvss1R3KXzjqnW0HfVJ0OV5vFJWe4bppnxV/d3bnIwtVWOz
-	sw2z/eRaLx1Jo0lngvVAcKvnl5b08HsrrqlqMin61Qr0gW90h2uOpaAX6IMfwZm0zrv4YcR/OX4
-	vp6RDh81zovCv5p+aFUH4qAPG4Tfq29ozNs6Tls17BtLFykvba6oQ6Q60dlgTO9WCyjJj7kN1g7
-	JRyopvXM1eEr6+HYtMNeDrIl+DSq8+0TuoiLZhla6UmephF0bAOCgs8V3gfakF4+9OG6w2UGyD4
-	hSNWb6jzwv5c+ZBk15iSW/h3bhEfG9odB9hCK+ylp6sURAQ9psaKk9oMAOKOOgNlTMXEVzEjTf+
-	Exa7+kY008WfLPbHnhnOZZxSGW3lCtwOWmVIc1SZ7ct1Oa/C/nwt191FfK9tjDSrNvrJlDgXJ3G
-	g==
-X-Received: by 2002:a05:622a:130f:b0:517:675f:3eff with SMTP id d75a77b69052e-51a61d30f45mr54054471cf.10.1782313081085;
-        Wed, 24 Jun 2026 07:58:01 -0700 (PDT)
+        bh=p+5ae8LUmAy5WSGBFjad2biDCNPqlKGypmJhGythNzI=;
+        b=RkRFac4DrhbMylikFHma61FEhzn/jWBchN10ELAMiZZcLWfHK2NPjJSZsFzfM/LkHf
+         gpPF9eBCN3x8bt0vdDicsfCWMOuez/eCCuMeLMpMpsP4t80j2dJal8tX5Bfh10Cr/2Gt
+         NJXVeTutQtxghmqiE+aLmDhF1LbIqIhx8PraXTnNPtZHDkiPKkgMQ8KynzLmAjhOuJ6+
+         Ysp5IdJiJpVr6yK1BiX/R/Qq06mk/PtNa9/OgAFSVwWgOepjbP+2MH/eK1nZoaiTuWYP
+         zaYh8OwbSdJ/h33xjMglZz/iqH1N4gSYU0ysc8a29XQFA30Dv5LfhWpIDL/HI41NZ75G
+         u90w==
+X-Gm-Message-State: AOJu0Yx7Joe64L8bfDBa6sSimU1WVDoxmdapl07au8FPeTUVx0CPMm0f
+	/GAw6H1+1p84lstlfwALJfBTUBED4rJXummcofiLcie/er6Iudt4Z6189WTA2FW6B3P6AHRAT9v
+	t/e+g
+X-Gm-Gg: AfdE7cmvisRVv29qeUkRASx+N4fgG+6Nlj9L2sc1Wa8D3yrcbjk4UXF5l1oC7MwlBQX
+	Dp6kcNlif//xi4eIEkLxXRe//nBhmOhLoSLrBQIUvdM7+9xovOVZ24BfupBojxZ/dwOK9/VXhqk
+	DTFOy09G6Ad7yBrnENCK5qsYdE/3gOOhmu8p85nYwv8Kh7Oa4ukqPHrUL26MiJN42Wa8Za6nJxv
+	DbtjB3XHxFmfZyEo3qUquzboElK6r54VsLHMjy9FxuH1DUx7Jb1cBQa7G356EbDKETMjPaMUI7c
+	nj0XT3aq/2wpyiLhLhL1Oku5HlN7fIMgpW4OnkJVTudxgTGKHG/Y8qctZJCFf4D2DyAIxsR+R/M
+	mLKxRvcZdGefj/d0NNbKVL79QIbBzxEQTcoviCALvbx4WWIHaHm/lTl6lZTn+pKMQJveUk83Urz
+	XM5IrRMHq9L7B5z4d76br7oRsJHsq6pgwpsYZ8NZ5cqoClHzhQidSe/Fp6G3bCZK2sJxAUSU+f/
+	w==
+X-Received: by 2002:ac8:5fd4:0:b0:516:e74e:cc51 with SMTP id d75a77b69052e-51a61f3444dmr55235611cf.51.1782313083037;
+        Wed, 24 Jun 2026 07:58:03 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51ae8ee7sm49502301cf.24.2026.06.24.07.57.59
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51ae8ee7sm49502301cf.24.2026.06.24.07.58.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 07:58:00 -0700 (PDT)
+        Wed, 24 Jun 2026 07:58:02 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org,
 	nvdimm@lists.linux.dev
@@ -120,22 +120,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Smita.KoralahalliChannabasappa@amd.com,
 	ira.weiny@intel.com,
 	apopple@nvidia.com
-Subject: [PATCH v5 3/9] mm/memory_hotplug: export mhp_get_default_online_type
-Date: Wed, 24 Jun 2026 10:57:38 -0400
-Message-ID: <20260624145744.3532049-4-gourry@gourry.net>
+Subject: [PATCH v5 4/9] mm/memory_hotplug: add __add_memory_driver_managed() with online_type arg
+Date: Wed, 24 Jun 2026 10:57:39 -0400
+Message-ID: <20260624145744.3532049-5-gourry@gourry.net>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260624145744.3532049-1-gourry@gourry.net>
 References: <20260624145744.3532049-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gftywodx9dsqfty475x4y313xxg6gaiq
+X-Stat-Signature: aemuqfd9zwwfg4fiw1izbjqhkzmynj3r
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4051418000C
-X-HE-Tag: 1782313082-916485
-X-HE-Meta: U2FsdGVkX18LwSyzA/CoIZpXpN5xnAnF6stg1ttRUUds42YexTnby/ZFawOq63cfghslcWHJGrLSIWfZpjfbtrUmo/vMN63Ss5FJPSRgSPAw/+J95iiMI61/zv2T5jEq4C1iHZ3853nmIRi/hI6rNvopQ/O0rzxu3zRLei3oART5g04CsQS3n48Oiolfp46wHZ+muqa1LWYCuNFSta7CiHL/fSPNHOXjmtvUm00N5+97K5vbT1Th8LojuPrjClI6OfwuxpuUwFBcJ3xYZLEp+kA7uB0yzAH8jtKtdbyzKHqMnUP5/Pep4o1LF2r4c7qw7G1q6rasC97tYd9n3BTM2As+AbzrZj0eqknl4221e3HZurVGYe5x7O+CeXtbeA5vXcqmroXbDLiQCK43m6J7sAoX4ioGtce8LulHEa3xKpuUW9xDHE7N+kAB6lc93fapL6VYU49LF53Bef5CC+nuJPOXNjpOuuR09XFOpX58uD/Zhtc+35ByVcemamTgKQGGoZ3AatRxWhHNPiJm5ySkgJH6A5F6KyPPQxc6LGAg7P4eKrAgeGr8+Omivj7RIEm8KHhC5CMkhzDp1V/jc9oUtbi0ajHDV9Uh9/QcGLloZeotwuTScB0UhXmlrg2JUVAM8sD3vT106rP/iJQUfDtro8jwQEhk7N0Inz7Sesty4pAWy1PVfZt5leOPwmJH83qhiv0NGurhmC3zVLzIbnD5lXs9YPv6b6bLhPXg5FvUTHWPl472xe3hmNayeETA4Krxb1XdNPEJSBKbdNZoH0fI1Te6cb3AUDzdHu/cu6kIF292y584dnaZ6R+taxZbsq21uReOspX8wG3OTXNRl58/I06HlmHlj4z0RWEHFVyrBUOVfk9LhEf0JPNeM3i+wC0An8HvlyhjUBLPoLamsh+Mi4AgrZT6reVT/47Pc6iikIPLixIIb3JS18kgkJDKlBYT3U7h1MdW1Ay8TBnowSL
- QkT3dOHH
- Mgo8njCz/lp2tSR9DYqTOjQ7T7oV16olXKQ/pZEwXcrMgS9jGkwMBBPUUEqdYMD35l7PGygAI1GygK8ghjpw+ihyEYpJwAWibfbSUumddzUBVGv4zN/AdbGk6qTPaHXZQqW0R1Cg43i/Qy0CpCLLw/SZ/075G8/ZQgWIFbuqduYowSXGsQFlY3XDB70e7xOjCjuSewHs1x/DamivQ97ybKd7Ipb/zYiWZxkRcor1XPbTmB6B0ZWl0js/Uvy9hRNdQIqIKzPea3JyT95wHMpaBHbQjlKpwHObeBmVv8+C4Fv0rUwTFyzax721T0j3dUSxrOTpVVkcx/6Z+btEegy7MJpWUn9flipVo18mLSRIj+iNgU0qxU21W2Nm2FQ==
+X-Rspamd-Queue-Id: 282A5140007
+X-HE-Tag: 1782313083-531787
+X-HE-Meta: U2FsdGVkX1+66rmRZb083iSnOcuwxOhSd2+4Dtiv/U38a2cVXqLFXvRFkGp3UP1XLmwuvHaNhwVCe9syCm3gFwYwNat/UDUUYQHGQKyl0FEolcnh+6ShSGdC2nA98mthbTfTKSBbSPRcWpDMIuuOgEkYuxpRMxWughRjgJvhZgv1Nb7VnUtfmzYI0o9ImXjDYYw0CeX33clRCdG03QYMLkYhkwn5Yv+Dz7nKRFIZ/PJ4ScjXayKSeaFNFxq8x4N/9hL6dieMhvqefoij+jVPmkPvrnJXYj7hntdtl5GB67ERVZHeawpodNAsoPjRiUa9dSVqSKqFVGXgXw76I8xWEGeYAuuf9S2Spr467DT3c04+DfLDr6GPXyCnZbScRMEwwyk8r7h8Q+8P8mtDu86LM52O+cgEHIPHTduSIl37gCPNP7cfBr2wZ1D4EaMUIo6SQYNlLBatW0NN1c2iuTY3gl8UgObf3Kwpe2/xl5sa+mGsqhGz28+MBeB0Q65KDsqEbP8CkwtKj5AxEokEZ6oIEgWdUmgHMRRt3QYzmefVeNjHLXFGBEeIYu9PMxCCcQFcUrc5p/WXTIkzAhDFBf2fBEXVi+BRrZUMmsk2zWrBak5bt+jBEmfk4REFbNkD1Pvh1I03Llfq2751PiTN8TTD0nSHxG70hW+QyMScLMXu3x9rrrFTBz4yrv0mEBUBFqhoXRJVMpV87n2EH8gJUvOmXoRDdBDk3tiyHRrHp3QXiYE02XjPXPwrLN4ha+goPTjMxubYIMaGa/ZFqW0C/FyxNg9OYFq+3U9UJxvNWMXL2mqW63nPenlFbsaCh8SM0lZh+Jfx+AkG0o6muyn2cQpeiyDl9wLWnkwMs1ez0h5ZRvTyXwAof5ZuDN4yr/fLyJh5g4TPeJG/HzrC9FSck6lRPmJLeQR9BVsm+J5vJBY7BVBIzIzovpUsYJ9WN+WZJYIAf6Nlpomb++Hb1lin2YS
+ +ubO5T13
+ 3w1hFbWaB3kJtzQYyWMK74dcXgV+bHqO2/jlbSzTB08jHo99BXeIF6uM+IHhfR7RB3g+Z4qSn4niJn7ayVqVFQqPqYnzJxKMF4RY/vHkbawghqxVm18hovMhXGPNJpM1RismJWOIXJrmbFuFsAbDEZe8HP6kQdZXGT/wY2Ecp7ooCq3s61q4sDnnQz17doxZAGDZHY1TRLUvNqaF9IiJMrrTRCKNQLswQrdg3oD4O576PapavZv0elNQFQah/BhY5Kq+C30NODDGjw0se7S1kx5CKD2nOuhnofpWwatK8EIv6w+POSFrEtBEUuYAJXSTvdkeU0TFn0cO2PoVQUj/48bqr7kOmSYVc3otzgq5qTTiSzySFNVHZFqlWUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,53 +143,189 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Drivers which may pass hotplug policy down to DAX need MMOP_ symbols
-and the mhp_get_default_online_type function for hotplug use cases.
+Existing callers of add_memory_driver_managed cannot select the
+preferred online type (ZONE_NORMAL vs ZONE_MOVABLE), requiring it to
+hot-add memory as offline blocks, and then follow up by onlining each
+memory block individually.
 
-Some drivers (cxl) co-mingle their hotplug and devdax use-cases into
-the same driver code, and chose the dax_kmem path as the default driver
-path - making it difficult to require hotplug as a predicate to building
-the overall driver (it may break other non-hotplug use-cases).
+Most drivers prefer the system default, but the CXL driver wants to
+plumb a preferred policy through the dax kmem driver.
 
-Export mhp_get_default_online_type function to allow these drivers to
-build when hotplug is disabled and still use the DAX use case.
+Refactor APIs to add a new interface which allows the dax kmem module
+to select a preferred policy.
 
-In the built-out case we simply return MMOP_OFFLINE as it's
-non-destructive.  The internal function can never return -1 either,
-so we choose this to allow for defining the function with 'enum mmop'.
+Overriding the configured auto-online policy is only safe for known
+in-tree modules, where we know the override reflects a different,
+user-requested policy.  We do not want arbitrary out-of-tree drivers
+silently overriding the system-wide onlining policy, so restrict the
+new interface to the kmem module using EXPORT_SYMBOL_FOR_MODULES()
+rather than a plain EXPORT_SYMBOL_GPL().  Other in-tree modules (e.g.
+cxl_core) can be added to the allowed list as the need arises.
 
-Signed-off-by: Gregory Price <gourry@gourry.net>
+Refactor add_memory_driver_managed, extract __add_memory_driver_managed
+- Add proper kernel-doc for add_memory_driver_managed while refactoring
+- New helper accepts an explicit online_type.
+- New helper validates online_type is between OFFLINE and ONLINE_MOVABLE
+
+Refactor: add_memory_resource, extract __add_memory_resource
+- new helper accepts an explicit online_type
+
+Original APIs now explicitly pass the system-default to new helpers.
+
+No functional change for existing users.
+
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- include/linux/memory_hotplug.h | 2 ++
- mm/memory_hotplug.c            | 1 +
- 2 files changed, 3 insertions(+)
+ include/linux/memory_hotplug.h |  3 ++
+ mm/memory_hotplug.c            | 61 +++++++++++++++++++++++++++++-----
+ 2 files changed, 56 insertions(+), 8 deletions(-)
 
 diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 7c9d66729c60..f059025f8f8b 100644
+index f059025f8f8b..d3edeb80aadb 100644
 --- a/include/linux/memory_hotplug.h
 +++ b/include/linux/memory_hotplug.h
-@@ -316,6 +316,8 @@ extern struct zone *zone_for_pfn_range(enum mmop online_type,
- extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
- 				      struct mhp_params *params);
- void arch_remove_linear_mapping(u64 start, u64 size);
-+#else
-+static inline enum mmop mhp_get_default_online_type(void) { return MMOP_OFFLINE; }
- #endif /* CONFIG_MEMORY_HOTPLUG */
- 
- #endif /* __LINUX_MEMORY_HOTPLUG_H */
+@@ -294,6 +294,9 @@ extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+ extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+ extern int add_memory_resource(int nid, struct resource *resource,
+ 			       mhp_t mhp_flags);
++int __add_memory_driver_managed(int nid, u64 start, u64 size,
++				const char *resource_name, mhp_t mhp_flags,
++				enum mmop online_type);
+ extern int add_memory_driver_managed(int nid, u64 start, u64 size,
+ 				     const char *resource_name,
+ 				     mhp_t mhp_flags);
 diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 6833208cc17c..494257054095 100644
+index 494257054095..a66346def504 100644
 --- a/mm/memory_hotplug.c
 +++ b/mm/memory_hotplug.c
-@@ -239,6 +239,7 @@ enum mmop mhp_get_default_online_type(void)
- 
- 	return mhp_default_online_type;
- }
-+EXPORT_SYMBOL_GPL(mhp_get_default_online_type);
- 
- void mhp_set_default_online_type(enum mmop online_type)
+@@ -1494,10 +1494,10 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+  *
+  * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
+  */
+-int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
++static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
++				 enum mmop online_type)
  {
+ 	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
+-	enum mmop online_type = mhp_get_default_online_type();
+ 	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
+ 	struct memory_group *group = NULL;
+ 	u64 start, size;
+@@ -1585,7 +1585,7 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 		merge_system_ram_resource(res);
+ 
+ 	/* online pages if requested */
+-	if (mhp_get_default_online_type() != MMOP_OFFLINE)
++	if (online_type != MMOP_OFFLINE)
+ 		walk_memory_blocks(start, size, &online_type,
+ 				   online_memory_block);
+ 
+@@ -1603,7 +1603,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 	return ret;
+ }
+ 
+-/* requires device_hotplug_lock, see add_memory_resource() */
++int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
++{
++	return __add_memory_resource(nid, res, mhp_flags,
++				     mhp_get_default_online_type());
++}
++
++/* requires device_hotplug_lock, see __add_memory_resource() */
+ int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+ {
+ 	struct resource *res;
+@@ -1631,7 +1637,15 @@ int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+ }
+ EXPORT_SYMBOL_GPL(add_memory);
+ 
+-/*
++/**
++ * __add_memory_driver_managed - add driver-managed memory with explicit online_type
++ * @nid: NUMA node ID where the memory will be added
++ * @start: Start physical address of the memory range
++ * @size: Size of the memory range in bytes
++ * @resource_name: Resource name in format "System RAM ($DRIVER)"
++ * @mhp_flags: Memory hotplug flags
++ * @online_type: Auto-Online behavior (offline, online, kernel, movable)
++ *
+  * Add special, driver-managed memory to the system as system RAM. Such
+  * memory is not exposed via the raw firmware-provided memmap as system
+  * RAM, instead, it is detected and added by a driver - during cold boot,
+@@ -1639,6 +1653,7 @@ EXPORT_SYMBOL_GPL(add_memory);
+  *
+  * Reasons why this memory should not be used for the initial memmap of a
+  * kexec kernel or for placing kexec images:
++ *
+  * - The booting kernel is in charge of determining how this memory will be
+  *   used (e.g., use persistent memory as system RAM)
+  * - Coordination with a hypervisor is required before this memory
+@@ -1651,9 +1666,12 @@ EXPORT_SYMBOL_GPL(add_memory);
+  *
+  * The resource_name (visible via /proc/iomem) has to have the format
+  * "System RAM ($DRIVER)".
++ *
++ * Return: 0 on success, negative error code on failure.
+  */
+-int add_memory_driver_managed(int nid, u64 start, u64 size,
+-			      const char *resource_name, mhp_t mhp_flags)
++int __add_memory_driver_managed(int nid, u64 start, u64 size,
++		const char *resource_name, mhp_t mhp_flags,
++		enum mmop online_type)
+ {
+ 	struct resource *res;
+ 	int rc;
+@@ -1663,6 +1681,9 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+ 	    resource_name[strlen(resource_name) - 1] != ')')
+ 		return -EINVAL;
+ 
++	if (online_type < MMOP_OFFLINE || online_type > MMOP_ONLINE_MOVABLE)
++		return -EINVAL;
++
+ 	lock_device_hotplug();
+ 
+ 	res = register_memory_resource(start, size, resource_name);
+@@ -1671,7 +1692,7 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+ 		goto out_unlock;
+ 	}
+ 
+-	rc = add_memory_resource(nid, res, mhp_flags);
++	rc = __add_memory_resource(nid, res, mhp_flags, online_type);
+ 	if (rc < 0)
+ 		release_memory_resource(res);
+ 
+@@ -1679,6 +1700,30 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+ 	unlock_device_hotplug();
+ 	return rc;
+ }
++EXPORT_SYMBOL_FOR_MODULES(__add_memory_driver_managed, "kmem");
++
++/**
++ * add_memory_driver_managed - add driver-managed memory
++ * @nid: NUMA node ID where the memory will be added
++ * @start: Start physical address of the memory range
++ * @size: Size of the memory range in bytes
++ * @resource_name: Resource name in format "System RAM ($DRIVER)"
++ * @mhp_flags: Memory hotplug flags
++ *
++ * Add driver-managed memory with the system default online type set by
++ * build config or kernel boot parameter.
++ *
++ * See __add_memory_driver_managed for more details.
++ *
++ * Return: 0 on success, negative error code on failure.
++ */
++int add_memory_driver_managed(int nid, u64 start, u64 size,
++			      const char *resource_name, mhp_t mhp_flags)
++{
++	return __add_memory_driver_managed(nid, start, size, resource_name,
++			mhp_flags,
++			mhp_get_default_online_type());
++}
+ EXPORT_SYMBOL_GPL(add_memory_driver_managed);
+ 
+ /*
 -- 
 2.54.0
 
