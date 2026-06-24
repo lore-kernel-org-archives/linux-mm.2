@@ -4,78 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C736BCDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61873CDE002
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 15:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1C0E6B00B8; Wed, 24 Jun 2026 10:59:06 -0400 (EDT)
+	id 593816B00A0; Wed, 24 Jun 2026 11:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCC3C6B00BA; Wed, 24 Jun 2026 10:59:06 -0400 (EDT)
+	id 543DD6B00A1; Wed, 24 Jun 2026 11:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A971D6B00BB; Wed, 24 Jun 2026 10:59:06 -0400 (EDT)
+	id 40BF36B00BA; Wed, 24 Jun 2026 11:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EF6E6B00B8
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:59:06 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01414C17DE
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:59:05 +0000 (UTC)
-X-FDA: 84915113892.08.3ABE9D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 20F2A180006
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:59:03 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=or1meLht;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A3176B00A0
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:02:22 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A9ADD403AB
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:02:21 +0000 (UTC)
+X-FDA: 84915122082.26.17C2ACF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E131AC0016
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:02:19 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nf8cEsUY;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782313144;
-	b=gLS2qF7FC2NRs/1vy1fUzn4Yl+lL041L7jP2DJ/HDKCcKFog6y4WvN9DNtLJjwFY5dbNZt
-	BAq73lP/JR4bN946ksFXG2mpvKJJCMLexAWuYMyNKXab7p7wuqnsQuyc5nkLbwKZM8uyJK
-	FmixsBT7EHe8orsvIK7+s9f0xp5ZN1E=
+	t=1782313339;
+	b=DcImQ8sMRj41LQkyNZgoi2uERykUoL4jbzlRYOODap2s3vSxdNYT7j0mBwQ6xz3Uv4oElP
+	JGKjcqkNSwrndUgoVf97DKqelTgLyZVrt8IShc6iLfp6Aqsf7ydBtMWg9U+0bTQ54U8bGi
+	OKIHBBLTl7QRuJLR/wWbOVNO0b4M+zQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782313144;
+	s=arc-20220608; t=1782313339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A7Zra2DC/SjAzfu14QInVXQE1b9FL7wyAOkZas/Tzpo=;
-	b=gDnOgA/S41LsVS6BybPEzqrd1Us+FMMSc6EucP9Sbb/+7i4Hm6QfN4GSyIczf4RXcxO9ZX
-	XyoDWPQr/O043wk63hNwk9fD1d+h+QPbgZI47j7Z5RXQFw1ZTQ2rnlrtouvdyVPBHriz+s
-	W4UwjhrvVNkyNBEX9SixbHITse0KQNQ=
+	bh=7yNq2vBkCmiLK8SAIQ+jzcwpnXFjNgI+aL8xlQvqyg8=;
+	b=XFGokx+bbVmjJdk7ixpbnFI+NgPWqmaaCJhKoP1rN9jQZZMkL0RbgS0z7Z3e9L+hiQ/VE2
+	9MtbjpDQunGV6AyUKWd+8ebMcbD1HBJXKyDug8JWRMBuxzixwqsIfwTPIpw4dfu/s9MV8J
+	z2OCURSY3dHYA52nvrP/ZpPvYGhS5lM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=or1meLht;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Nf8cEsUY;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5332243921;
-	Wed, 24 Jun 2026 14:59:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13511F000E9;
-	Wed, 24 Jun 2026 14:58:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 64AF260018;
+	Wed, 24 Jun 2026 15:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D11901F000E9;
+	Wed, 24 Jun 2026 15:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782313143;
-	bh=A7Zra2DC/SjAzfu14QInVXQE1b9FL7wyAOkZas/Tzpo=;
+	s=k20260515; t=1782313339;
+	bh=7yNq2vBkCmiLK8SAIQ+jzcwpnXFjNgI+aL8xlQvqyg8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=or1meLhtDcCuNkUq36sAapMVjJdTDs4HJxfOQqEFdBpVvFlCHH+AomXPIXsmCnK2z
-	 pq0ey6DIp/5q23UtD4xXezg382Y++9bRkl0BLB0vP3YR6nOe1lbdLh6SXfs3kGdmPY
-	 cJC5ttYdxg9sNHh+nXfTYoLLl+LNb6hjl15GWrIoWRGY+o3BupGa1gPujhMEYb9DZN
-	 vkKVCiGzsYMBlqcy93yS5/n3s9fcHDrfJB6GLEk2iqFy3LHLRA3IcOgPyVsxMRX7sI
-	 803nztF9X1IxroKsWrcUUMTPMUfiakrjph90GS8vN+h9WtbSQV6CeAqIi+ScZbMzQM
-	 CqHGVYzWmsSvg==
-Message-ID: <3523f142-778c-4efd-9675-3c68b33e7e3d@kernel.org>
-Date: Wed, 24 Jun 2026 16:58:57 +0200
+	b=Nf8cEsUY6l4N1GQ18fTWQsQFh0KEOFmRVygqi7Pd/aVo0tbVvp0RYxAOg6RNvQFqE
+	 NcoZhf0FgoeX+tO/jdkIWGfVWuGDor7dxXcXZmU8Td0EPFZqASTVMPotp9BszbNKd6
+	 uno05vQuD3bB34Eb/w/gD/BfWAIg9pK0z5KTxHSm6MxIYG4ACzoIzmP8cjwcTXIYvP
+	 LU6b2IYUssfZXnBVJvGv/q7JnzcNaaBh7PesdBPITJsvgHV0jR5bB4nFU6hd7b40ah
+	 ThWJhjJ4sf+QhGyNF4n7QFmbFMOkakaQDfZjdbJrYe1YSisNlt0fHTgtlB7tbtekjJ
+	 UUmMGxu2nnvDg==
+Message-ID: <bf2bbffa-dc68-4a3e-a8e6-1ad57c10255b@kernel.org>
+Date: Wed, 24 Jun 2026 17:02:12 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org,
- hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com
-Cc: chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, chrisl@kernel.org, baohua@kernel.org,
- usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260624075700.751467-1-alex@ghiti.fr>
+Subject: Re: [PATCH v2 1/4] mm: avoid unnecessary lru drain for
+ wp_can_reuse_anon_folio()
+To: "Barry Song (Xiaomi)" <baohua@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev,
+ kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org,
+ ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org,
+ shakeel.butt@linux.dev, shikemeng@huaweicloud.com, surenb@google.com,
+ usama.arif@linux.dev, vbabka@kernel.org, youngjun.park@lge.com
+References: <20260623231635.43086-1-baohua@kernel.org>
+ <20260623231635.43086-2-baohua@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260624075700.751467-1-alex@ghiti.fr>
+In-Reply-To: <20260623231635.43086-2-baohua@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: dyp6h9opc3ojps4dsxyq6esjuhc6uxy4
+X-Rspamd-Queue-Id: E131AC0016
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 20F2A180006
-X-Stat-Signature: exn7dutdah7ffewxdeax98a6rqbgyda9
-X-HE-Tag: 1782313143-283726
-X-HE-Meta: U2FsdGVkX1+cG1c1He+whNL6EBcc2koIHyzFWgmI5se6OjVtdJhlhBdW36NrMDRxo5sKpweLgXkLBd98qq98tWaPtFWTSPBZtbH6F9vzL/h9R+coKJREvIdklR26PJ71RgW/duij/PLcm50RJZnQcsGehnjkkJjNmciJowV4rGgPCwt0lKTHdoIPd7F+db3aEHAaBHYBWT3lgXhf7K5SxdgqRXhemlImF/D3VsTqGEPFxYIMBQ59KPgJ7XzH2qV2590FhBealmmBjIDJ4ZBnhjzsDs3Noje2n0Q7IebhpUTeEt3Ga1x7gHZDVe0bl9LgoG5T45AnO2ZHJdJKikdpemWS6MsLLv0LqXYarSDbCzMwZk2TQTIhSu/Rs01oBopf8q0gqd2aW+a7DQbyuf7ILOn9fOUNFpJMn/VYNCcUwZ08MfAYyEaPAraAtyLBDgOwXEjQ6n5weXgORwaI3L20QeoUZnJVxHgBP1iqSM6lo3STB8SJDhuYv7PSrPf9CpUDG2n4eHpur0xIO0kCPF9cxAQFkr7oqisg1L9mAe34LNp1cKU4kysfR9dZK0w2ww3Ln2RTImQ32q/7swuCyow8x8y0Lry0v50kvzlTY0QqhLJtfyXYcFgf0XkDjDZTzfDsXzXzwhm+Nirs6D2CzehIT//RjjXLvFvb2Gz7FCnNrvsB754qg3ws4d1WmSSrFRSHGgZwijL5ek+xIbQVFn9tCHxjrOzr697dtqcIRVmb26PCzCUtixft8mgWqaGmDXvz+6VDxFhQwMAhHosATHJ31E1raQmEhQ9zs2Gov56jVf7uZ/bOzqULOqf3BFLhoaGdAD1g4Nsbl8jQBjzuK3xXFK58MtZBTdifEGcN9QdyTj3Y6bihEdAJUBL4zVfN9BOnEPn9cq5niRz49RuR0UGm0t7TsObk0cU7kBofgK50ZxsszQnr8zxmgiQEELeIUhcAYEHd+pk6/0Fo9KbLCC3
- N8An7j5p
- mhN1XWKtkvoNDivKhr8UbQpNZk0xHXT6JwZ6wKkr++nVw8Hrr0Egw8FkgKFUdqFMYC9Yg6oLgbA3TvX2ZsqlgHV4QhRWo866Knq2pgv/oyXGQPfIXym3/qfRPFkzqPCkYXqh0yQw6bMFyQA+M/NBpGdCPGFd7ZoQnW+CM83zQGrNSxDXZ9W01lLMYldh1kfRZgVQGwC3/n1N24WjFU3rZWHKZD7bwNlqkko/FGtQgy+R1aNVktg12ceM/quAcHn1Pa/F7oYYB/INyqxQ=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782313339-446871
+X-HE-Meta: U2FsdGVkX1/DEzq8yFaF99TS8BrmY9OmjW8ReavnZpyvUX66JJNiQxJlBCgQPWfS4NI+F4aGUV4s9UM7QiXcBMuEAt1GK8EbeZSiWSuRcKi252N0iI2qbX09pEo6T00v7CZmFygUiFLZF8vrVFjwotgeC8MpFZtEIDuisrvuDlJ6Kxiiz+AUf14fqIXInzp1g1GKPagi79Fb4s6SE8e5Xk18at8hRQh37B230VxGI1AsxGKx/yzb+SqMdtFkkjB7DjtnwppHkLzynCWzMZV39DJ70pl2undXjTU+lS7DcNRc/I5gSyHJRqLTAdnmjKjKwd2XJs0vsHr5TAPEEx7vTTErUYv2MJMkhEbwf39sNrime8HSmKa/eQAF3uTxZ7BIsDW02R8gQRgm1tW8qfkEmeArHzSD5lvdzJixqR3GBnb0GqUM/fd7O+PElBLRmoPGoERSkMMiBFM4wkyVL3ASoVA/FB2zdaq68BVVypgDlgE4lbirlrQSX1A6l3Ikpy9SiXaKH60mhVRYChiUB1pgDdM83PSQTw1TJeWNFLQStk3zoYXpFXi8LJlaw3cgNZk4EBZAQwLXykTLVtkSsmwEYG0/XENpgbATBNUblkJ8N9r8wh87NpjgKAUPYYHTITVDl5GJD6RBSk6KNknOzjG66YYjwxOybvpuAUtZC6D5mnL5EPuMGN46Pc6jfosWG0oa2yVdrtCt0n3EYb3f3w0qU4BDdFEJfjjr5BHbCLHdZ5Uy/JgTAM0uw1a55N66KVkruyPQ0gXAlW8tH76msV2Gwk3HFVTIjS9HTs66PteRCV7eqjbA3lK4AeT0BNWOabd2C7//K5XEszz1KrBWd3/Fkb1PUNyxTm+5mvArbluQmv5gjjlplEjO+Vuq7EJUb33ATGdNFDbIY53qI/7pSnbe5ZyDAMK1uaJTQb79PtcGc/fUjy6iD9NO7Xe9pTRUwMDqhB80eObN7rhPgzhr1qJ
+ eqOFiuB/
+ RxDj0nbbTy7qo9KKECD/cNaVq2W0BRXDxzDjY8cfbN1qLVtzgO2zxBDgULLM9oL+vDE/2CQZNgnIzCE9HPX5jlwWY4iT7MgNLzXf8UuvaBUm5gTarxeX9oItsqXLwiTO1sdevgJ5bbwOKx2HnkcOP/D0B5a35AivOLB9U9ucZaXHb+fw5a4iFx++9I/PK2d6/TqIpkGTMjEd1aL7vl+kNjh9JMyul7xsccckZaECUYzuNU3WrLHj1IZJu8kjeRUMuUdN69DKIP5258HNFQqp1vdAGorI/CqGVgb6l/3E3t2UAqWhmJcClbxZQUKIMV0ESG+6RlE5gF2UplOA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,64 +143,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 09:55, Alexandre Ghiti wrote:
-> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
-> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
+On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
+> We always unconditionally drain the LRU before retrying anon folio
+> reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folios
+> are in lru_cache, and use the refcount to avoid many unnecessary LRU
+> drains.
 > 
-> zswap is the same kind of in-memory, synchronous backend as zram, not a
-> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> swapin_readahead().
-> 
-> Here are the results from bypassing readahead for zswap too: it was
-> measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
-> off, on Sapphire Rapids and 3 iterations.
-> 
->   768M memcg (sustained swap thrash):
->     metric                 mm-new    + bypass    delta
->     build time (s)          405.0       341.7    -15.6%
->     zswap-in (GB)            79.5        53.0     -33%
->     zswap-out (GB)          144.8       115.6     -20%
->     swap readahead (pages)  6.79M       0.45M     -93%
->     swap_ra hit (%)          72.1        89.9     +18pp
-> 
->   1G memcg (light pressure, build not memory-bound):
->     metric                 mm-new    + bypass    delta
->     build time (s)          177.7       176.0    ~same (no regression)
->     zswap-in (GB)            10.2         7.5     -26%
->     zswap-out (GB)           27.7        25.1      -9%
->     swap readahead (pages)  1.07M       0.08M     -93%
->     swap_ra hit (%)          68.6        87.2     +19pp
-> 
-> The gain is from no longer prefetching pages that are pointless for an
-> in-memory backend: readahead inflates anon residency and thrashes the
-> page cache (file pages get evicted and re-read), lengthens each fault by
-> synchronously (de)compressing a cluster of neighbours, and adds
-> compression traffic when those extra pages are reclaimed.
-> 
-> Bypassing swap readahead for zswap therefore makes sense.
-> 
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
 > ---
-
-[...]
-
->  #endif /* _LINUX_ZSWAP_H */
+>  mm/memory.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+> 
 > diff --git a/mm/memory.c b/mm/memory.c
-> index ff338c2abe92..5aa1ea9eb48a 100644
+> index ff338c2abe92..f6848f4234a6 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -4827,8 +4827,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->  	if (folio)
->  		swap_update_readahead(folio, vma, vmf->address);
->  	if (!folio) {
-> -		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
-> -		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-> +		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
-> +		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
-> +		    zswap_present_test(entry))
+> @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct folio *folio,
+>  	 */
+>  	if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+>  		return false;
+> -	if (!folio_test_lru(folio))
+> +	if (!folio_test_lru(folio)) {
+> +		/*
+> +		 * Assume folio is on lru_cache and holds a cache reference.
+> +		 */
+> +		if (folio_ref_count(folio) > 2 + folio_test_swapcache(folio))
+> +			return false;
 
-This should really be abstracted into a reasonably-named helper that can live in
-swap code.
+I'm not keen on making this function even uglier, so no, not like that.
+
+We have the earlier "folio_ref_count(folio) > 3" check.
+
+In which scenarios can you trigger this such that we would care?
+
+If the answer is "I don't know" there is no reason for a change.
 
 -- 
 Cheers,
