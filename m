@@ -4,155 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6AB1CDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:08:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B143FCDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:10:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 873626B0088; Wed, 24 Jun 2026 15:08:11 -0400 (EDT)
+	id 7DE916B0088; Wed, 24 Jun 2026 15:10:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84AA16B008A; Wed, 24 Jun 2026 15:08:11 -0400 (EDT)
+	id 78D086B008A; Wed, 24 Jun 2026 15:10:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73CA66B008C; Wed, 24 Jun 2026 15:08:11 -0400 (EDT)
+	id 67E8E6B008C; Wed, 24 Jun 2026 15:10:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CDBA6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:08:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B52D5120460
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:08:10 +0000 (UTC)
-X-FDA: 84915741540.09.267F014
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B108D40010
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:08:08 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YB3qlBE9;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E5DD6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:10:48 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 872E5A0401
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:10:47 +0000 (UTC)
+X-FDA: 84915748134.05.D9089A5
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A6C792000A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:10:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gCDig9RV;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of tabba@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782328088;
-	b=8VAdU+KwLj4dxTPVqRhrtm56u5K2Qose2g4cNI83nWZyYZGxnuz7n3ziZt2P5EqdubnJwA
-	KCYUpPXvX3bCXtj4gU/wRqVwCCu2DFvE05iKFTIr78tSupM/CHoV3Ll7MWt7e+TfhUnTgg
-	D1lP+gVRT0/YbOjoyUF6kE1/t1ob/k8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782328088;
+	spf=pass (imf13.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skhawaja@google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782328245;
+	b=5UcV0D2b2+Lhbyr/rSs2RkO+4PdwcWyNNwvaiPyxzFE53HWtGOzE8pIOD04iIu0JlPLdQi
+	GtENyDDtNNGHt8PfX1sXNaN3qa6/nVKu+PAVoriuhqujU2hnkKx0sUiSS/GUTAEr87l7NH
+	XvhztO0BsFoiHMPUiE4PEJrSoWWPkNM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782328245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-	b=meANBjTXjYW0u6F/xSvBM1dLYhLMikXPQ2mja6lDdQ4nlIJcyC0GtCxdZVeXwuvb36dWHI
-	XB3J7i5ldcGYtCxFiHHDik8n971Xc92fOFC3DNrGHxlNfuIiQWVtb6yUHDDEsZkhCmnRCs
-	GNLnbM4STh0W/19ZVFPkTZLiypjvneM=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=YB3qlBE9;
+	bh=zeRIelXWCkeQ/dWoO1Ec0xhONeA3LFt7A97Ox2lp8yI=;
+	b=WJ7afUa17fhbe4kDhPdrPyYbwtWV2tAgHypAnnOz9kvb+dlyxIPD5kxhwJAWpoKv3xGOL8
+	4c0NJG2tvCu7iKkIvggfe5Y+7HVastp913dOcu6Iz9M7fnYWCvDyV/C/lzxu9ZPsvCPF1m
+	cQx+KI6x8BoNJVssOybnlSPd78qbpH8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=gCDig9RV;
 	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of tabba@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=tabba@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177d1ff061so53011cf.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:08:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782328088; cv=none;
-        d=google.com; s=arc-20260327;
-        b=MGZDxiJnpKq//vCL4EqJB9il+f1e6ld9cRUxCutvxD5pVb//FWsx9aBxdDbBwBQM9h
-         +5goAsp9qHIkkidcPue5Jeh8uSKfoeDpLdYPwcdz9lldwvDIWN4UTJdrwK5IuIOPsVGT
-         JTG/5qXNnC23mRKOx4abCisJDrpbk5xMZ18sCUoEDTU01Joknqd/ZGMBM9MBmyeE26eO
-         DS43cz723rblI2ZWHqj9H/oeVNXPiTSH+/rv12ZwBH+XKMvfvUUnQYtBkPg/V/MFWjoF
-         kDCTTozfIO36LCYJx2pKrzC/fr/uUdx9xH+EhVGxRwMulgZ3tZookFQ3I5GCpPQ82QOZ
-         1hvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        fh=zCos85Mp+UHp9pAtgTFB9b3H2c8gujvMwW/AJIokHNE=;
-        b=GFSlmn3YwV6IRQkVwb1teedSWzbhg517fTuWUN7JK5kH3rnD9RT3G8TtHPIM5PWXPg
-         C5OdOPoYO3VjYuaaPeD6WF9FaXNwP8nFShbr4ezTroctSm+6Kf/Lksrm4UkQcT8tRAiz
-         ztnRH3E1Cu1TQRNr7a9fhCFTmucSuZqyKAh1wIT7/0gH+20KRPodxjFmQAq8NPK6OVCH
-         M3FsQTpnG7WPYi490RCXmELjjdlycOFi6F8HxuSvaxNuWxak4T3wOfwVCMdqm8be7pah
-         xFSbzz3hykFp6b30NNPNC0GnZ9W4OBM+B/r/d1Cf/o6cJSf5SDckeeSbSlXfpMMzVh/x
-         vGvg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	spf=pass (imf13.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skhawaja@google.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c73cefe192so8945ad.1
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:10:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782328088; x=1782932888; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        b=YB3qlBE9KTnLMRD4Iq7hQ5a16Lzncl9Joz3g6foWYQpP/e6Wr8kR0z4izUaTiAUGxh
-         JJiAssD0xMXIoJa4UaxO5QDIIF6cbCCyU1GggX2Exz3o+rW14DVdxwgHA3AQvN8b08xJ
-         cxAdLQAZFFPHm9Du4QRBNR7oCtT6CxyMz1+xWK/wwL1WZprwM3EWBjcD4QQxbO8X37kg
-         Jjcag9bU79qGvuUKCKV0/BdPz9dX2ApdqelknVkV5A5CAkRhZfemSLjLu9TW/uFapUK2
-         ndkhQ0qF48qP+hCcR5D2kY1sirGMiob5uSB2HHq9Fa8c9e+BbUPaW3vzab73xAzGmX+0
-         cleQ==
+        d=google.com; s=20251104; t=1782328244; x=1782933044; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=zeRIelXWCkeQ/dWoO1Ec0xhONeA3LFt7A97Ox2lp8yI=;
+        b=gCDig9RVD7r1Nx/VWvCq3FMjYFcOzKQ4eqolLPmRsmCsZQCjLdj32+PWKrcrrcDEJ/
+         TdQjKyWDB/+lxZ9uYLtdgkyq5+lNOiogU9KE7xPAMhxC0WMMklvnzYN+IgMDA2pXX83s
+         rZzk5kiNsyi2K+bmhmOPNpGD7Ww/2JqUTxjaOvpnjGETfCxJ5IyB9ZKyLNYs0f3T77t7
+         DA+dOdPkB6QjcBpkLDNX4l4nS6PYZ78IER/ojELcenqukLb5iOahq9g5fYKRRx1ObnIS
+         bxCivuzD3+10OTxerONDoeB+o2C/uY9jMnxfI9ROPueXPU6sr242LFD53LIpK7l0EGoe
+         Ai0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782328088; x=1782932888;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=TYok/yKaRGCFgGghY1Qu2/NCTVWG+h4PYN0XraBeOm8=;
-        b=G0Qdv+CdwTqxfJLumBcr2Lh2cBkyhbhMWuBE6NNfYnVS4PPPt6CsQUzNUdJQ0WDJUO
-         E66vs/vpeN97sAj3drhVIfo534KWOTCQS1Pi/N0gkaAFVrUbw9R+aM/2WB47dGhbG0TU
-         E+n+ZgRHUpcaAU7jah4fsJY/Iqqg1LlUmpG+T3PCjubvf2uqKPpLm/pOcrgpfDCBN48y
-         C2FJWH0V8FyCKSErxOHop5sM0PGVjBRK6ESFAG34TiEt9DojYRECpVhUGrkPQSVCzChN
-         7tSLQNSjdsuFZkQe0js74uAk5C48gVw+lvj/n4mm7QFx9bK2kKk4GAz2aL2xFg8aZRHH
-         sFzg==
-X-Forwarded-Encrypted: i=1; AFNElJ8B4rCkDiIaV+Of+nsq99sPlwCzYPdd0g2ouPh6GN81QXrBM1H0LX+2KdDGe6kEeyOVc+DWtKzUfw==@kvack.org
-X-Gm-Message-State: AOJu0YzP8bpjcOegjMwQguEOLqoLhLPIbfSL0XdJrBzmAUJ8L+13SLrd
-	ksmipMRcAw6hMod7ruWPNWjlbZEK+eDkdmVbf8ooasJ5lvpM8Rj5fEZ5tqxPQwZjUh8gpUgjE9Z
-	UXOe3+rFM1rxR2lCUzrgNj3DrUVFzxWNyBNF49Sld
-X-Gm-Gg: AfdE7ckk207NdKp2lFwMxYGWLy+DJRoGN89fHoqhDCmUO1+9/lhoUUqztZLK2HOD1Gi
-	CB7/zeqILVC1KQA5BmFJ4ms3f0pSVuXtdcEPJfZOV8h6ntFDfWhQQCqhnPc5ahb1UHq+vIHYFrc
-	HjpvMb3LzKCTJ636txsvtbbD4TzCp/Cdn+egbgxmdohBFMoHmCPPO4V3Vj5d2O1jxpOzEcmrx3Z
-	4LiPPEt+2GBduzTPJ8DBLEwktLiDPE5CQK1CQbePmZyrdkewVRbwBicF5YCiglM3/0l41i71A==
-X-Received: by 2002:a05:622a:aa89:20b0:50f:b69a:f4a8 with SMTP id
- d75a77b69052e-51a6ec225f4mr979921cf.7.1782328086856; Wed, 24 Jun 2026
- 12:08:06 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782328244; x=1782933044;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=zeRIelXWCkeQ/dWoO1Ec0xhONeA3LFt7A97Ox2lp8yI=;
+        b=hSoXHejgzeN4etaPc9hZvBnaxPVm8Q2fcbGWKONtTbPsSVCkdQ+2+KzZmRYKZUQUhl
+         0Zclhn9qLbgDk3Q99rSkmUmLUZTZQ+DYLk3khLQ+XF5EhKm0yeTkMD1sSK51FwN6QMhQ
+         e+/H8C0x6oZBrwFLoR9PVFE5bn2/ZjXRyWCv4pRqnAAO7Si6FE9/M9oIdyOZKP3UIKKM
+         ltiEUmylp5XZloUfGmMYFFW0cU+ViQZDfppVCarRUhu4wooUNVmeN8lm6jOvs/vZzH3a
+         FPJDIFgCWpe/Is1/M7BN/s2CUZGYHQ49TgkAhj7cmBFtxJGjO/98aqqK3M6b1bgkNGi0
+         a7KQ==
+X-Forwarded-Encrypted: i=1; AHgh+RpC5N2oH+1aYV8zuFQz/ox2tOEERvn12uhtenneWGJ5+SXmWFPk5SpvlnEtgsztv3n7vPj0kVNcxg==@kvack.org
+X-Gm-Message-State: AOJu0Ywcs8e2xQihUqolgONmT6ZjPrOTKi7kmIWtrAEZNq4n/GfeLh+W
+	xd3Zvj7u7RE3DcLc0BfJLRhBM1859taGCAHNB2J+vjX8+hV0kd9zTAoo6X+Kthpuag==
+X-Gm-Gg: AfdE7cn466ub0eHiypRq77giE8DY0Wxy3OnPuaqZU7AwKuYyuJVtyAOkgXefJyPvYRj
+	A9dLWAGmc6KnhaajV3HP59Oxe0DGLrJjCS9vy15UzyuY9/j4hYwAUyxs4y/KPEQe1JWfV2zbcbp
+	3BM6ThbzuDMnGJG2MzRM1Agewl68jokQYndiuLsT1FGPqH/EfIxhE9PdamDnL0qghI1J0rIq8Nv
+	H3bhCh0e5+0ouwWGTwY4AMFzjEPaIwZGWEwEI9AhnH7fndz2WesuxwiU1soNYbvtbY+jVjKg4l/
+	wMD1xEw9LAY18oyMb6do8nmNVT4PIq6rceoe54+ERFJWUOCfmeqft3KNEqu4P+Ov/z1WoA3U1xb
+	zIEjTx0xHh3w1weCs7DaU2DI9Uyp6k4PPHQsl6HUHnvkj8ZMVPeetY+cqt2fMqiEKoRBIdSjNKq
+	jAvufZrPVHQkV9x6YUyWBFaIxp2JbV3Yn4Ld7W1dqolsW4cCvrh/gkX/tGR9+flgUgr/miEqEsK
+	r6Q7eaS
+X-Received: by 2002:a17:902:d50c:b0:2c1:ee6e:be1c with SMTP id d9443c01a7336-2c7f78d26e7mr319365ad.26.1782328243785;
+        Wed, 24 Jun 2026 12:10:43 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a40ee417sm2715140b3a.40.2026.06.24.12.10.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2026 12:10:43 -0700 (PDT)
+Date: Wed, 24 Jun 2026 19:10:39 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [RFC PATCH 2/4] dma/pool: Add an API to check if DMA allocation
+ is from pool
+Message-ID: <ajwpcdIXEeFj-uUr@google.com>
+References: <20260505002737.2213734-1-skhawaja@google.com>
+ <20260505002737.2213734-3-skhawaja@google.com>
+ <aicFes0uxUFQAduC@google.com>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-28-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-28-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 24 Jun 2026 20:07:29 +0100
-X-Gm-Features: AVVi8Cd8t5YxMdE0Ng1SGfAxSm9nIleavoz2HxsrURbnpplSd_eJ9V_CBlxTVmc
-Message-ID: <CA+EHjTwoMC3iZ=NVLCX7eypj3gwV4Ja4gLMoWsCwbXTd4980Vw@mail.gmail.com>
-Subject: Re: [PATCH v8 28/46] KVM: selftests: Add support for mmap() on
- guest_memfd in core library
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B108D40010
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aicFes0uxUFQAduC@google.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A6C792000A
 X-Rspam-User: 
-X-Stat-Signature: f337oyzi9bhsbybohfe959383pr57g1w
-X-HE-Tag: 1782328088-679406
-X-HE-Meta: U2FsdGVkX1+MlWas25OHBHVfAeEN6e+kXzd7HTW54C/QBLbLURS0DDSHlEFC1f1fOx8dz7Pexm7SJG0FtgN2BSs7BYk6PVgp92A5MJ4UFR25f6MnfyJ8HH0g+23JRK2NWMwHb0kzAIicvVW452VrWrj6T/fgo8oTeJtBeSwtVCREvSR0f/eHywDHAUdt/hWOUU8JXx0y8SiyEmrq5a4sLus/8ySYqcVWD4NlR6Doto8cWcG8VmJq6o1Q/l3Wuj/EMSxEaUTfACjYzaVoIaHf2iIKN7I0746RxKko+bpqNPnj+arZGV2GRzfTqUD0V0fEqZkH287Al64Coi4OGiJD2CFDWrvyZWMqa10maioS/NGY8gTzio9BeHzZgielC3/wM8cLVTywcS2/uUt6oFXSeJM4uvxJG4BEsJneN8SjQjhvFiG+qSFrgmPZcVhZlCHjnZ1nbAN+RC5P7q05xkvS2dS8c3692nnX43vs2Ne7d/8mtHwc3V4vm8LL9zeaZQ4WTIp7BvlvsNyIYMCT+OdvpJCi7CPMosGt3y8FqcKahV4UTTuVtLDAF7iX2hivghYulOVR+9Mxv+37z7D8GVo76TaayH/9+c015jxDIJ/e79v25qwrqzYKQUKbcCDR6sA5w1VlgQXj32RjCG5WLzj+38VJFIHHkQmcvMghObm5Ab3yy0gqGPWrZbE847+bCxO+3Qu+EHujmdOFnJcM04tdfAG1wNs24x9S4daaExFHLfm7cDVvb2X6RwIDHNSY62+3w759NiWy5Obwe8QR3gCj0vpHVJibLKvzib3ZUppv7svEF+eq+NINEDhehvLqPObgkeIHTDEi7bEDJCbzjA3CdsJoRp3iQ3rXQUvZ4I91YpWllnNmR7achHjVITg+iJjaB8LoXeGSiDLWIu9kXFWyouJpG0TzeCcPxyxFcmsM5GZuddY/DUcCea+2GDoojYxNOncL2Zss6Vpd9efnLhp
- jabzi1QO
- RVMFl9XSUXA9+JOxwNt6P/Nb11dxShxUui6Z2J8tDuxLDWdnRk+gQn5zSjddF7hlKiccsoD3VcI/5GLIJlNGnuz50aftJrq5RIjEeh8I31WvqNX+cs3dMLrrldDMCTRg11019mriHvfmSoEl+wB1Lkq7QcJm4zuB00+Gt+Q+R/uUWY/Y5Vxeq6bYgaMSwbBk9BL/rN7N8ky10z0iGYbRcaHyIiJ7RwY02u95x+xX3wyB4XCrJdZfW2p/Ntgi2xSb8LK/nwRtu7iZv0Y7yLiDzg1n3CgaKFMqLXAKTBSSJsJhtoHyUbSeLnentf4QKm/fyMZlOkgZWUJ7/gy8=
+X-Stat-Signature: xrnw1k4xki19ikdkpz7ngamccz34i4pw
+X-HE-Tag: 1782328245-829440
+X-HE-Meta: U2FsdGVkX1/4x9NL8mz/mpuXKfGS0ubCruiveXVQ7cy8kWHezYlZfwn6JeTyiXQhd9zgk1T9MMICAX1r+kEScAFGjXEH2KGmperzICfx/j+Yy/gr96vcnx1S3lNMfSNwRDtbn/7oDJA0P573KrCbGE1uOxZyVu5lvbQ+rzzPTQGaahxj0a8/jXI1Ze9k61E/sqPHGaFQlxacqqxax8zuvUE69VVWIfFaxJ5nEWnOQTxWFW9tpFxlGROtoM/1OTvTfBVbeBmMJeGnxFaQZ3Qk2sf8+xELNGKLXl3bFlgG443fNo38ywk39t3TrJiN3UwR/g+LGZGW25Ew87aajWl0yphXX0t41+C637SccLKK3yzK9Z2a40rP9JiC51dQTnwqoTj8vBpUyKCiaPb3lirkVPR1p3INwQ0k2w0Q9h/jjB+KVoDtzBSazpFCJrfYs+68R4q8Ifqw0X6yl2ysHORANPiQSDjvYw3rF9rU1Ta5a0ZHBeMwCIX8fduD1+vqUJiYGyBp9eC3YcB8fSfSd+q1YLzwd8zOuVIFRZldjmU4R3vANceGTHH7GZ4uEtK3dXZPrlnRhb0uFZTl71AQ1O+XMrX4VSDm7VEjKv39H+HSti3ijxcQzb1ZWmgYvVEtiHLB+0etukkHCZt/tK4R4Lt8qZ6uAgc0x06iKfdt3RJanKlcyATcnhjtk+pAhW7AXw5op/vPcFtBxOy6u8RZaEmeWYS99hVN141xv1dbeFXSwOmB30z/yvFZgiDqJhigQdPUwq4nf4ThLjUjAYFcNib40rNqR9mSGTcJKZXfISbORMrZZSjGBEDDGIhwaMaUukUlMdJTCBJfwHhRpS2X1nKwSjR+QxASEuGoWNl1qWNCneCJu9/2hpvY8LCVBQuUdtPxtF8JHgjUVVVGPMPfz1pPa7aDdp8m/TFbiLePxJAhghBW0ajZ5KTpCrInJl93udXMMozcvy7B88uHrkfZ1fF
+ PogZqrPT
+ LUeZT14Y2VpgB/VUByiTmm2l0/AL+/r1Y24WFYIiUAc/AVIu90MLqJLpkORFueOECW4INO6pnPD/aXUJX+cSYnGk6eybzn2xPT2GjcQlq/pwQvJUqbR8fLVOCsHA47BwwQhyn2gZwjfAAc+nW+xmwWBuuHKuqV90m2VNd2Jf1OCl0o5fpvl2XSKRztO2H7D1WOfVf3T1nPiBr+DouvG1AFZebw4ofy+8GLqg6mcwioIhFN5kBfknPlzewVfL0dOf20xF8D9AGpunjqMT+g7MJM6iYCDaNbQOttCkdNGI950TNJbpjkMLcIJ1xvu/aESORTsDzwEICIxFMszFvoVYwE29TBqMds3sR5o7xeHTgYCYSk7564smIn1fA078pIjORYrjH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,156 +128,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
+On Mon, Jun 08, 2026 at 06:10:02PM +0000, Pranjal Shrivastava wrote:
+>On Tue, May 05, 2026 at 12:27:35AM +0000, Samiullah Khawaja wrote:
+>> DMA allocations can be done through DMA pools, add an API that can be
+>> used to check if an allocation is done from a pool. This will be used in
+>> the later commit during preservation of DMA allocation.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  include/linux/dma-map-ops.h |  1 +
+>>  kernel/dma/pool.c           | 13 +++++++++++++
+>>  2 files changed, 14 insertions(+)
+>>
+>> diff --git a/include/linux/dma-map-ops.h b/include/linux/dma-map-ops.h
+>> index 6a1832a73cad..6a0bc4ea2467 100644
+>> --- a/include/linux/dma-map-ops.h
+>> +++ b/include/linux/dma-map-ops.h
+>> @@ -216,6 +216,7 @@ struct page *dma_alloc_from_pool(struct device *dev, size_t size,
+>>  		bool (*phys_addr_ok)(struct device *, phys_addr_t, size_t));
+>>  bool dma_free_from_pool(struct device *dev, void *start, size_t size);
+>>
+>> +bool dma_is_from_pool(struct device *dev, void *start, size_t size);
+>>  int dma_direct_set_offset(struct device *dev, phys_addr_t cpu_start,
+>>  		dma_addr_t dma_start, u64 size);
+>>
+>> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+>> index 2b2fbb709242..32ce4d6d7683 100644
+>> --- a/kernel/dma/pool.c
+>> +++ b/kernel/dma/pool.c
+>> @@ -307,3 +307,16 @@ bool dma_free_from_pool(struct device *dev, void *start, size_t size)
+>>
+>>  	return false;
+>>  }
+>> +
+>> +bool dma_is_from_pool(struct device *dev, void *start, size_t size)
 >
-> From: Sean Christopherson <seanjc@google.com>
+>Do we need struct device here? It seems unused?
 >
-> Accept gmem_flags in vm_mem_add() to be able to create a guest_memfd within
-> vm_mem_add().
->
-> When vm_mem_add() is used to set up a guest_memfd for a memslot, set up the
-> provided (or created) gmem_fd as the fd for the user memory region. This
-> makes it available to be mmap()-ed from just like fds from other memory
-> sources. mmap() from guest_memfd using the provided gmem_flags and
-> gmem_offset.
->
-> Add a kvm_slot_to_fd() helper to provide convenient access to the file
-> descriptor of a memslot.
->
-> Update existing callers of vm_mem_add() to pass 0 for gmem_flags to
-> preserve existing behavior.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> [For guest_memfds, mmap() using gmem_offset instead of 0 all the time.]
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>Nit: we only ever pass 0 gfp_flags to dma_guess_pool, should we instead
+>name it: dma_is_from_atomic_pool() to be more accurate?
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+dma_guess_pool() goes through all of them when passing 0, look at the
+prev logic inside it and how it is used by the dma_free_from_pool(). But
+you are right they are all atomic, but semantically we want to check
+whether it is part of any pool so lets keep it as is. WDYT?
+>
+>> +{
+>> +	struct gen_pool *pool = NULL;
+>> +
+>> +	while ((pool = dma_guess_pool(pool, 0))) {
+>> +		if (!gen_pool_has_addr(pool, (unsigned long)start, size))
+>> +			continue;
+>> +		return true;
+>> +	}
+>
+>Nit: The loop looks slightly ugly, can we have:
+>
+>struct gen_pool *pool;
+>
+>for (pool = dma_guess_pool(NULL, 0); pool != NULL; pool = dma_guess_pool(pool, 0)) {
+>	if (gen_pool_has_addr(pool, (unsigned long)start, size))
+>		return true;
+>}
 
-Cheers,
-/fuad
+It is a basically a copy dma_free_from_pool() without the free part, so
+keeping the style consistent.
+>
+>> +
+>> +	return false;
+>> +}
+>> --
+>> 2.54.0.545.g6539524ca2-goog
+>>
+>
+>Thanks,
+>Praan
 
-> ---
->  tools/testing/selftests/kvm/include/kvm_util.h     |  7 +++++-
->  tools/testing/selftests/kvm/lib/kvm_util.c         | 27 ++++++++++++----------
->  .../kvm/x86/private_mem_conversions_test.c         |  2 +-
->  3 files changed, 22 insertions(+), 14 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> index d4c104cb0418f..0cacf3698b259 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -700,7 +700,7 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
->                                  gpa_t gpa, u32 slot, u64 npages, u32 flags);
->  void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->                 gpa_t gpa, u32 slot, u64 npages, u32 flags,
-> -               int gmem_fd, u64 gmem_offset);
-> +               int gmem_fd, u64 gmem_offset, u64 gmem_flags);
->
->  #ifndef vm_arch_has_protected_memory
->  static inline bool vm_arch_has_protected_memory(struct kvm_vm *vm)
-> @@ -732,6 +732,11 @@ void *addr_gva2hva(struct kvm_vm *vm, gva_t gva);
->  gpa_t addr_hva2gpa(struct kvm_vm *vm, void *hva);
->  void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa);
->
-> +static inline int kvm_slot_to_fd(struct kvm_vm *vm, u32 slot)
-> +{
-> +       return memslot2region(vm, slot)->fd;
-> +}
-> +
->  #ifndef vcpu_arch_put_guest
->  #define vcpu_arch_put_guest(mem, val) do { (mem) = (val); } while (0)
->  #endif
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 9b482778f7379..d5bbc80b2bf1c 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -978,12 +978,13 @@ void vm_set_user_memory_region2(struct kvm_vm *vm, u32 slot, u32 flags,
->  /* FIXME: This thing needs to be ripped apart and rewritten. */
->  void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->                 gpa_t gpa, u32 slot, u64 npages, u32 flags,
-> -               int gmem_fd, u64 gmem_offset)
-> +               int gmem_fd, u64 gmem_offset, u64 gmem_flags)
->  {
->         int ret;
->         struct userspace_mem_region *region;
->         size_t backing_src_pagesz = get_backing_src_pagesz(src_type);
->         size_t mem_size = npages * vm->page_size;
-> +       off_t mmap_offset = 0;
->         size_t alignment = 1;
->
->         TEST_REQUIRE_SET_USER_MEMORY_REGION2();
-> @@ -1055,8 +1056,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->
->         if (flags & KVM_MEM_GUEST_MEMFD) {
->                 if (gmem_fd < 0) {
-> -                       u32 gmem_flags = 0;
-> -
->                         TEST_ASSERT(!gmem_offset,
->                                     "Offset must be zero when creating new guest_memfd");
->                         gmem_fd = vm_create_guest_memfd(vm, mem_size, gmem_flags);
-> @@ -1077,13 +1076,17 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->         }
->
->         region->fd = -1;
-> -       if (backing_src_is_shared(src_type))
-> +       if (flags & KVM_MEM_GUEST_MEMFD && gmem_flags & GUEST_MEMFD_FLAG_MMAP) {
-> +               region->fd = kvm_dup(gmem_fd);
-> +               mmap_offset = gmem_offset;
-> +       } else if (backing_src_is_shared(src_type)) {
->                 region->fd = kvm_memfd_alloc(region->mmap_size,
->                                              src_type == VM_MEM_SRC_SHARED_HUGETLB);
-> +       }
->
-> -       region->mmap_start = kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
-> -                                     vm_mem_backing_src_alias(src_type)->flag,
-> -                                     region->fd);
-> +       region->mmap_start = __kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE,
-> +                                       vm_mem_backing_src_alias(src_type)->flag,
-> +                                       region->fd, mmap_offset);
->
->         TEST_ASSERT(!is_backing_src_hugetlb(src_type) ||
->                     region->mmap_start == align_ptr_up(region->mmap_start, backing_src_pagesz),
-> @@ -1129,10 +1132,10 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
->
->         /* If shared memory, create an alias. */
->         if (region->fd >= 0) {
-> -               region->mmap_alias = kvm_mmap(region->mmap_size,
-> -                                             PROT_READ | PROT_WRITE,
-> -                                             vm_mem_backing_src_alias(src_type)->flag,
-> -                                             region->fd);
-> +               region->mmap_alias = __kvm_mmap(region->mmap_size,
-> +                                               PROT_READ | PROT_WRITE,
-> +                                               vm_mem_backing_src_alias(src_type)->flag,
-> +                                               region->fd, mmap_offset);
->
->                 /* Align host alias address */
->                 region->host_alias = align_ptr_up(region->mmap_alias, alignment);
-> @@ -1143,7 +1146,7 @@ void vm_userspace_mem_region_add(struct kvm_vm *vm,
->                                  enum vm_mem_backing_src_type src_type,
->                                  gpa_t gpa, u32 slot, u64 npages, u32 flags)
->  {
-> -       vm_mem_add(vm, src_type, gpa, slot, npages, flags, -1, 0);
-> +       vm_mem_add(vm, src_type, gpa, slot, npages, flags, -1, 0, 0);
->  }
->
->  /*
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index 1d2f5d4fd45d7..861baff201e78 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -399,7 +399,7 @@ static void test_mem_conversions(enum vm_mem_backing_src_type src_type, u32 nr_v
->         for (i = 0; i < nr_memslots; i++)
->                 vm_mem_add(vm, src_type, BASE_DATA_GPA + slot_size * i,
->                            BASE_DATA_SLOT + i, slot_size / vm->page_size,
-> -                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i);
-> +                          KVM_MEM_GUEST_MEMFD, memfd, slot_size * i, 0);
->
->         for (i = 0; i < nr_vcpus; i++) {
->                 gpa_t gpa =  BASE_DATA_GPA + i * per_cpu_size;
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+Thanks,
+Sami
 
