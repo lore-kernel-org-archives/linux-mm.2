@@ -4,119 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DCD0CDB47F
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 18:59:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EF5CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 19:00:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6C506B0099; Wed, 24 Jun 2026 14:59:29 -0400 (EDT)
+	id EF0EE6B009B; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1CE86B009B; Wed, 24 Jun 2026 14:59:29 -0400 (EDT)
+	id EA14F6B009E; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E73F6B009D; Wed, 24 Jun 2026 14:59:29 -0400 (EDT)
+	id D90A26B009F; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72A416B0099
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:59:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E428F1A0443
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:59:28 +0000 (UTC)
-X-FDA: 84915719616.10.08FAC60
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 1921040009
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:59:26 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ogE0yRue;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2086B009B
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 15:00:24 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FEFC8DF5A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:00:24 +0000 (UTC)
+X-FDA: 84915721968.20.4747831
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 152D31A000E
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 19:00:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="dxkro/eu";
+	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782327567;
-	b=hbTL7QqhOGGkIDMYWNrCreqWElzVMH3xoHqW9CVthiCVr2xqtpKOqt0PQoRsKN+vJWWFOB
-	+Y+SdVR5WoGthXerEXUutN6Yp0j7j/vu7DBs7TOHqjAtN2v5zfj1KWNzegvSc3N58eyTkN
-	oTbidOIk/FW38wzlDdEieIwK17M3yV0=
+	t=1782327622;
+	b=6kIZ9dZIVUVLM8B+Lcncl9La9yHK6PpNiZPEAanw+MNp7OABBdnAscjQKPwVLIHQor2m73
+	y94+eKaZxU+TkL7vSm1Zw/QlhyNFim9HeVweIhNUR5KTe1qgBq24mpKpIHVHnMOcdEpKIu
+	zGD8nkxNTiyaF8eABcrae71dkMlkeJI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782327567;
+	s=arc-20220608; t=1782327622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pT11NgXcnMUuSA5mrycomy1NHWdVYPAjx4vn9wcSoDQ=;
-	b=L6BOkFOuxEGEyCfncAqfwhyYAp3PvApgeaRgUHntRd0gMmDuJZJZhlI/EQQXawsvJloqho
-	kFzfQHkZRiwui1iovDmAxo9YD8snjCqIySUutQDS8MyXETQ5s92zXSv/Ymb2icRjVT0l7z
-	+hjPqt3rco0TPDyeGMaski75dEVf57U=
+	bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
+	b=hppEBK59O7ilEf8isPPOKsxKToHze9iEgFc5sEgNqvNOBIzEJFPGOy3QLTz1mv7FY5sVB/
+	pvSv58rk+BPp+EBbcwZYdCtzX+aQ/mdvIyLsARMI/E0SADoxht322AoYz4dUbUUgkFEU+L
+	ExMginNXXVDqKS5XOn28uDWrLmAb2dc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ogE0yRue;
-	spf=pass (imf07.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.173 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51a13ceb03bso16258671cf.2
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:59:26 -0700 (PDT)
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="dxkro/eu";
+	spf=pass (imf19.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2c6b7bd4e8dso9065ad.0
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 12:00:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782327566; x=1782932366; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pT11NgXcnMUuSA5mrycomy1NHWdVYPAjx4vn9wcSoDQ=;
-        b=ogE0yRue0ssqpn3VlgH0YgdTV96AmbXaeE3zTOOwYAud24Qln88TM4SSDhfvd0rh0i
-         7BLwB7BYksuHmbQW5+iTs+aJw8i13iAjAKDMrXcDzUc89KJaX3nUdTBSNnVcTBMWwZ2/
-         Sv1FNcBxMeNZoXicgnxRlONb75wK/GVt8ZxTK5h2rERGka9jOTo4rvISQQvcwgiE8m2M
-         f9GViPcxgSNb07xNjoCerwvfCWryw/KDUoZ6pxAS9kaGSGHIPIf+ifn9OSnYzhghZj9p
-         ucpQR7+m/RUtIcc9v7Klh5u9h3Hn52v7wGMNxQw4KlS4NagbDZ3d803JewcoSJMeD3T+
-         hY4g==
+        d=google.com; s=20251104; t=1782327621; x=1782932421; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
+        b=dxkro/eucXdHeDAUrhYpX3cuL+b3n+Yjw6eEi5kYRASIjXwUq2LSA7ERjcuWNgx1Ph
+         WnfT4N4NVZXqnlAliOV9QyZFOkKujj3D0fFf2PLt3Tp1JjI34/L7W1kh4oApksskfpRn
+         vENfj9sj1h0D2+Vj866ps8MHGOeQHxA+SwSLwdhC6hfbs/5wakGIsju+IelUpaCBuHAN
+         7b1TFUWuktvdKa0ll7hhwZ1aDJZ9i7Kx+ktEcXdaYc6ghs7SD0P2KfSe7ScWnyksLZXH
+         srADetVDo0rz1yNJ+4FhOh5DPKGmfKoOs9r6csdt4tfqVS/wayyDWTlwMxYO8j+erjdZ
+         LXPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782327566; x=1782932366;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pT11NgXcnMUuSA5mrycomy1NHWdVYPAjx4vn9wcSoDQ=;
-        b=gbqP1RebNgYi22uQTo3cz4SRIIKKpWeK+Q/o48AqxvrSybfLCKBGeNXQ3aV/c2sawR
-         GH1eZTTGE1SXTVig9tkUpl+gOKskvnS9gDNhkuUmQ4Lrn6DYNwMetSmixEeq1a2EYwTa
-         LLWVrQdNfcSVxqv+CICKdUwOepdonyejNkhCVPgogL0/qwXWDJuvkpzNhAIDAKlvKeX3
-         n0dV+O7pOgyU7ljtR6unWGDTaULFY7dCNbC5daNebK6n2zQqaorV5D1ARp6GcLGAUnWE
-         SbivCHPMDrRScIrUskZBPqMvTXJZ0GA/jBTcFjjZ2/khRan/Ztz668z+zjSEzbPO6EZQ
-         7HsA==
-X-Gm-Message-State: AOJu0YzBL3DVfNjPiJ4qRrlqFh0TpgzIx6EMOUiU+xMc8g0YT1MABY4b
-	eeZMVuNlEjqjAGhprMhogRiJGIzokOUfjWm+912qem7ioXX+2hBAmpLXt3cFiTDjXv8ciKAJGw5
-	MwQF0
-X-Gm-Gg: AfdE7cnqWMv5j7zRfgTMdOi/V+CEqIZl7bRtu41BbN5PilWELoqt8piQn53ljPjc8mw
-	nroeoUVOPWF5Szl/TsmQNScEZ8jg5as+mN4jTAamxzEKaYgcyvW055n4rrE+wjV1xho67a53pCL
-	lVG6gVeFoTHEGlVp5tizg/suuR4DrBBgAp0BkGHjHC3r7OJCGJ7uwecn2GZn0HyQYfg3du0mFiG
-	+TdASUN5NV7V7CQlBTN8gGJihcWwQAk4ZQVbchyrURr44q/IA6B0HyBXv2+8xgTjbbs5agzVfKe
-	El4TFwC7u3Wy0U9M00J+vPH76u8OYNzao1LjnFUIrWp8Va1ktqZGRK4B2PmoEBIdR2UgB1bhscC
-	UZGQC77oWIvr5kbHB2TOthVzdQuMSdEmwes7zOTMcQBNTP/nlas/v8k8JDuFaA4Xd+rXeuhLnD4
-	aM+FTjbhnY7keqYppKlgUAdvkO97A6YYeyN78X+GAmgPVfakbVxKam7GsLk81kxPtScWwz
-X-Received: by 2002:ac8:5ac3:0:b0:519:5836:2f04 with SMTP id d75a77b69052e-51a61af8223mr67843231cf.8.1782327565960;
-        Wed, 24 Jun 2026 11:59:25 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f018898sm161022456d6.7.2026.06.24.11.59.24
+        d=1e100.net; s=20251104; t=1782327621; x=1782932421;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uyPzc/lVYNWutlEG7aHFYV3dkzH3OXj7mqtnKUaIHcc=;
+        b=r9fEZcWWiqiidoooxiUPxOplsHAYhDrb4x/j3F8/bYWGwaRDthjPFJaMUArvf9AWwe
+         u2UdmPLrPzh0z4xD+qcysMnHu6IYFCJY8VE7fz+hyL8UNir3q/HHGWy4NHORPm52t63O
+         YhDzcdQDCl/5sMro42OPIOuwkh93ucJoE59ZY7qrxlLzlnPi/auvOXt44EKViGuWfTFK
+         rwiY2XMuuJ66U11AlOEI8EX36vWw+qRXMleLUPZjDMs7igRbORFskMc9NUrqBTYdFTY7
+         235tYJzK644xL00KU+nmYUSpEZSS4c0wuPfXVvTZUlp+iTPkTIbr1nKDc8LGscsy7Uin
+         Uh+g==
+X-Forwarded-Encrypted: i=1; AHgh+Row2ybJLGRtLhMlh1JeALhbJW54Moh2WoPXPKw85l2tCJpR5t8h5r8GMASLUMXn9bB+F8pP+/L7Qg==@kvack.org
+X-Gm-Message-State: AOJu0Yx2qjbdiA3BhV+tNLA0geDdbtkRBQ3N0ADyr9jDk4/DzoagpoWs
+	EuHRpGuFf6PEKRXjko2UrLS43ghNqFFES4LfTT0vBfb4u0WdOEBBc6ceFSLZsRUmPA==
+X-Gm-Gg: AfdE7cnys6CuLqs6n7ekV+I/5pb3JnSwS0ORR14x74fjgGS7rX2fO3z1cYpZVkYnXmE
+	tjx+iMUANK/gPxKYF5L48D+L7cWrdlzIjjReXerqllDKbIZQGFXMTlvEwaQxSGs0ah0wxcO6XTb
+	T2Ru1OWJRNf0g/rKON1yGWmnXWPLpGii+4Rupe2uE98X7fHkgrVJXhW4fHSFO7g+DCPWd8ohV/3
+	nadPpdB6+V69o1E3oX2ae+jlAnygcdH9hKyuaO3pjIHmho9oF4PKoOCiQgMFgowqn3haOAzvwYH
+	pLbqRq7m7C6YYCP4rNyDaWI1E4yhHgEYGcaP5ZIjQpODqDlOD4hcS2I+fPbbENfL7g+gz5RwtLg
+	7sLMYNyuvwcgKw2NIEc7hoGRl3OZtRyNj5CajOGE3OHSgpRi3XNwPGSCuku9CeEZQ1fOapJRgAX
+	iwsS3U/9GB4A0AsxQg1XMSvbdXY5WVo5+kW9KMRPNUpZdPQCT/31p21DLRAEvTygt47agMk/5f8
+	VI/Cw4S
+X-Received: by 2002:a17:902:c952:b0:2ba:6518:e4d8 with SMTP id d9443c01a7336-2c7f77b6733mr402135ad.20.1782327619882;
+        Wed, 24 Jun 2026 12:00:19 -0700 (PDT)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a40d23ccsm3593388b3a.36.2026.06.24.12.00.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 11:59:25 -0700 (PDT)
-Date: Wed, 24 Jun 2026 14:59:20 -0400
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org, nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
-	gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
-	djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
-	akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, alison.schofield@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com, ira.weiny@intel.com,
-	apopple@nvidia.com
-Subject: Re: [PATCH v5 0/9] dax/kmem: atomic whole-device hotplug via sysfs
-Message-ID: <ajwpCOSGapenRPsu@gourry-fedora-PF4VCD3F>
-References: <20260624145744.3532049-1-gourry@gourry.net>
+        Wed, 24 Jun 2026 12:00:19 -0700 (PDT)
+Date: Wed, 24 Jun 2026 19:00:15 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, iommu@lists.linux.dev, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vipin Sharma <vipinsh@google.com>
+Subject: Re: [RFC PATCH 3/4] dma-direct: Add API to preserve/restore
+ allocations
+Message-ID: <ajwmXYOW080zVRLw@google.com>
+References: <20260505002737.2213734-1-skhawaja@google.com>
+ <20260505002737.2213734-4-skhawaja@google.com>
+ <aiceKYmc323G7tBs@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260624145744.3532049-1-gourry@gourry.net>
-X-Stat-Signature: xpdy8i7z6n9mie9wmqeorn1ibwwes94j
-X-Rspamd-Queue-Id: 1921040009
+In-Reply-To: <aiceKYmc323G7tBs@google.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 152D31A000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782327566-469508
-X-HE-Meta: U2FsdGVkX18jEl9PmgCfCNmQZlH+sUHHOfRLiHJry3WtFifxcSJq24OkLUmKOVeKmGHSDSGUicfAij46JOZFdwtLWIAzpUBHxY8+/uRgNL4nA1OXEr+d44RU8vwoGYl7V0JLGstw0kv4ePTp6TDIXPnF6NJKLVsBICtegHv6kqb3mssWLzFO7Ufx6pD5F9y4YWwMr7hIPyLE1F7l/q+cnrYUMcHMfajzGjzATr4Ad9VUGimVyDNDUbeAqEIN0cPIfpVEgLob/tYAdpFL51wRPK2jnj/VRvg748UcRD1tDcqwfBtJcrvyDBnO9cMnc9ZgM4cn18PlmpdJaNIysqV8San3YuGERvbyQEEP6QlUiK35siFd6Ex6abcGH6drQZdemELHCF/ZEwi03Zqd2ucD9iNVkXStkvF5Bq2N/a3sQ2GzV5Mieq08AQLS8KqBPLsVSmOBi+e6BGsoXg5oH9wUgpF4Jsc+S5/ilqqrMUmxV1/koeJT6u8/9DLYJfCp/wZSvaMwKflTzY4I1vndeyiRQMThAP6ygpqgUkg3QgG6bZIDl03cMXFwSYj2lipJTC2IYNJ/lO6X+j2Sr/N+0py2GlmS2EhaXmZOS8PW6Pf1nUFFM0gmX8vLFJFaqPu0J17kOh4B7S3+5cC8H8wlAZ1ZwF0xasom98DIRooSZG9xwZWqDWipU9ZZR9ov8PRpIeeK7ggqN5RfNxgRBEZtjf4BKe4aMZndsSCZgJYnPT+X1Vc0R06BWcdsJPrZ+CniB0bE3F3SNT374Tl/YKUTRswXaoXSTa+57VsJZAQZdv2F0qEttVd8u6TTn66lAL+sP7T0nN22iRNCIBVE3hryb3bHvYk9empLCzM+NussHqt1/idEvry/+FGwwa31rrdh6WpoXnYWAhfMD+8K1seJvaM83NAcq8qfvflkike8n0YdPBtDOBNkfKDbHMys2BagfGCdx+XvnYn/1/SO2O8Pssh
- gnV7VFno
- exVLzKB7iJJ+1veiWpcTwxmWDIPpsmd5UXh6c+PlemUqu8/nOUUeJkf+0dBz7oh2l/rezpQIXMTvkfEDxWWYNKvtwTi7nbuMS47lri80j3NWt+jjfj2SWC6ZS/FgnMxPxN8GCJc7li7Q+2nh84byqrBrgdXobT/7ijrLGRRecA2y8Z+i28/MfBmjxjfLSxYIldo+E+EM4DaAGPgfvza84S4P+NCabWVnWRI/lFJluzegv642c4oJ0YhJ0XRoIrEVORo2gfIusSAEv6sWxRKNbfSjaJityXkSYSIy02Rd7YRg1hFBq7aX5762PxQ5D/maPMs9xjOKmJDhu91MZQhi/ejXJvM9fMDmhzq6d
+X-Stat-Signature: a88jyryrwzpm9qxbtjiwzyo41j3njgiu
+X-HE-Tag: 1782327621-505772
+X-HE-Meta: U2FsdGVkX18sI9Ll/yJEI8phiMy8+hny7xJ1TMimues3WMA78Rm+nWjVGH9mRl0Q+Fn7zMUMJ+daFF0wBRVlTQ2uGh/4thWblUfeXzX/VHtUXeM06xqOgdBXvU2Rmb2wZZIdMNuNLyee2TfWFVve3ZdaMBTc6IRm2YAfVAGhywYVAZNC3ZmagiBn9qXEE8kE77NXRx/engFsNSL7OkVTR9iqVzXwDwxobTpdYv3lMNa7f+vB9OPNWTK1ARQ9qJnsM75kXhY0bo2YdbqOqwTidYMSAHgGIBFL3gXfBgQr5Zh9jgt2A3/jQ4ciSqsISds/yvQst/b/Io63FYKIo8NDlllGnQ6OsazRhodRK7N5WB/lq2EuzF3RatxxAwcojSTqWCqNn1lgkpKhK/RW1C6ZQSDXko/LHrvciq7eJvd5j4C8BTM/2RXL2PBwOflkWNmKelH0/mwfz5pY6mTRiD09zps1HRDsMxIS3N+Q6HHzBSgcxLa9Dnxq8p1HWnyqEGrKeMrzqmFEKRvGFgvc1bNC0RKSeEJuzHJPVZzxZLyfGK/lJhSfkPXqt311F4HR/mVZn6h6HH8l4cfE93PGKh3CIqhXw9SSrl8768UsL+Hc3e6KRt6wXxm1qNZ2XAA/2eJh900DmT3zT3Q9XdXQ7aY+OFsIkMLwsuGrrqA4h5UBMfpKz94feTbcJW++oHbzjO70HnfzZAFajrNRciVdMc1ZgWeOflMngZsRcIVybGnW++/KeNCQzRzabDNQJxkn4HTgt2pLaoUCgUf2Lsl21roLi2HKbw+axw5xsZD2zfMJgJLPe+WxZZQVQfQI2czcJmOa4wXajE9aYfveb/JThLWRg+pQeZglZI03UGAj1LNUM94QL7Qb5zscfHjgfOEIKjMN7Yv99jMcapIrk2B+fs/2CmHFz8URTRuwwIEPLG8+Euug2MJtzMgnFq2hStlE/T/pXfzCJIN+fJajRtxiUFi
+ IHB9o0Ke
+ XUGpqdLHVo5tzZt0XuLiqXPgACpHjG7Hp1mWHmxml00hCmeqsRMK+WpskSHCcD0WdNr4M7fE60oERToMxr7t1SB6fY+Zqf6ymTX3FpA4+Bm8RN+Ac98I9GvpCYHtqYsdxzf9c/ucHGpuxAHQo6jdmABLmYJvVD+V/fbiBZ41KwNrnGWQgsyw6cCK2ROC/8qkDe3d1LzcajLBG6TZDRTuD2K1xBOXy66ldUEQsUCAaJAepVwKrXhA0H6pykQhuKeBWco7GaJuudIfdieAUmg32HxLa+skBRH1j7+UVy2RtrKWx1R2q1Jo21KK07ni/mYfP+k4TEnUISE673aTjfLrfPdQ595nlx8r3eSVk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,13 +128,262 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 10:57:35AM -0400, Gregory Price wrote:
->... snip ...
+On Mon, Jun 08, 2026 at 07:55:21PM +0000, Pranjal Shrivastava wrote:
+>On Tue, May 05, 2026 at 12:27:36AM +0000, Samiullah Khawaja wrote:
+>> Add an API to preserve/restore the DMA direct allocation for liveupdate.
+>> The underlying memory is preserved/restored using KHO. During restore
+>> the memory is setup based on the device configuration, gfp flags and
+>> allocation attributes. Once restored, the driver can use the usual
+>> dma_free* API to deallocate the restored DMA allocation.
+>>
+>> This API will be used to add support in dma_alloc* APIs to
+>> preseve/restore the DMA allocations.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  include/linux/dma-direct.h |  29 +++++++
+>>  kernel/dma/Kconfig         |   3 +
+>>  kernel/dma/direct.c        | 163 +++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 195 insertions(+)
+>>
+>
+>[...]
+>
+>> diff --git a/kernel/dma/Kconfig b/kernel/dma/Kconfig
+>> index bfef21b4a9ae..d92852942c6c 100644
+>> --- a/kernel/dma/Kconfig
+>> +++ b/kernel/dma/Kconfig
+>> @@ -265,3 +265,6 @@ config DMA_MAP_BENCHMARK
+>>  	  performance of dma_(un)map_page.
+>>
+>>  	  See tools/testing/selftests/dma/dma_map_benchmark.c
+>> +
+>> +config DMA_LIVEUPDATE
+>> +	bool "Enable preservation of DMA direct allocations"
+>
+>Nit: depends on LIVEUPDATE?
 
-Disregard, there are a few unaddressed Sashiko comments, I'm just going
-to respin this.  Will wait until after the merge window closes for v6.
+Agreed I will add this.
+>
+>> diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
+>> index ec887f443741..c2b98f91900a 100644
+>> --- a/kernel/dma/direct.c
+>> +++ b/kernel/dma/direct.c
+>> @@ -6,6 +6,8 @@
+>>   */
+>>  #include <linux/memblock.h> /* for max_pfn */
+>>  #include <linux/export.h>
+>> +#include <linux/kexec_handover.h>
+>> +#include <linux/kho/abi/dma_alloc.h>
+>>  #include <linux/mm.h>
+>>  #include <linux/dma-map-ops.h>
+>>  #include <linux/scatterlist.h>
+>> @@ -307,6 +309,167 @@ void *dma_direct_alloc(struct device *dev, size_t size,
+>>  	return NULL;
+>>  }
+>>
+>> +#ifdef CONFIG_DMA_LIVEUPDATE
+>> +int dma_direct_preserve_allocation(struct device *dev, void *cpu_addr,
+>> +				   size_t size, dma_addr_t dma_handle,
+>> +				   unsigned long attrs, u64 *state)
+>> +{
+>> +	struct dma_alloc_ser *ser;
+>> +	int ret;
+>> +
+>> +	if (!kho_is_enabled())
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	if (IS_ENABLED(CONFIG_DMA_CMA))
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	if ((attrs & DMA_ATTR_NO_KERNEL_MAPPING) &&
+>> +	    !force_dma_unencrypted(dev) && !is_swiotlb_for_alloc(dev))
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	if (IS_ENABLED(CONFIG_ARCH_HAS_DMA_ALLOC) &&
+>> +	    !dev_is_dma_coherent(dev) &&
+>> +	    !is_swiotlb_for_alloc(dev))
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	if (IS_ENABLED(CONFIG_DMA_GLOBAL_POOL) &&
+>> +	    !dev_is_dma_coherent(dev))
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	if (IS_ENABLED(CONFIG_DMA_COHERENT_POOL) &&
+>> +	    dma_is_from_pool(dev, cpu_addr, PAGE_ALIGN(size)))
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	ser = kho_alloc_preserve(sizeof(*ser));
+>> +	if (IS_ERR(ser))
+>> +		return PTR_ERR(ser);
+>> +
+>> +	ser->page_phys = dma_to_phys(dev, dma_handle);
+>> +	ser->force_decrypted = force_dma_unencrypted(dev);
+>> +	ser->size = size;
+>> +
+>> +	ret = kho_preserve_pages(phys_to_page(ser->page_phys),
+>> +				 size >> PAGE_SHIFT);
+>
+>Should this be `PAGE_ALIGN(size) >> PAGE_SHIFT` OR
+>`DIV_ROUND_UP(size, PAGE_SIZE)`?
+>
+>Otherwise, if size is small, say, size == 64-bytes, we preserve 0 pages?
+>
+>Also, IIRC, even with PAGE_ALIGN, preserving just the requested pgcount
+>is not enough because buddy allocator allocates in order-N.
+>
+>For e.g. if a driver requests 20KB (5 pages), the buddy allocator
+>fulfills it with an order-3 block (8 pages).
+>
+>Now, if we only tell KHO to preserve 5 pages, the remaining 3 pages are
+>free in the new kernel. When the driver eventually tears down and calls
+>dma_free_coherent(), dma_direct_free() will call
+>__free_pages(page, get_order(size)), which will attempt to free all 8
+>pages, causing a double-free panic on the 3 unpreserved pages?
+>
+>Should we be preserving exactly 1 << get_order(size) pages as per buddy?
+>Same applies to unpreserve, and restore.
 
-The rough shape of things should still hold w/ prior feedback.
+Agreed. I will update this and also make sure it is covered in the kunit
+tests.
+>
+>> +	if (ret) {
+>> +		kho_unpreserve_free(ser);
+>> +		return ret;
+>> +	}
+>> +
+>> +	*state = virt_to_phys(ser);
+>> +	return 0;
+>> +}
+>> +
+>> +void dma_direct_unpreserve_allocation(struct device *dev, u64 state)
+>> +{
+>> +	struct dma_alloc_ser *ser;
+>> +
+>> +	if (!kho_is_enabled())
+>> +		return;
+>> +
+>> +	ser = phys_to_virt(state);
+>> +	kho_unpreserve_pages(phys_to_page(ser->page_phys),
+>> +			     ser->size >> PAGE_SHIFT);
+>> +	kho_unpreserve_free(ser);
+>> +}
+>> +
+>> +void *dma_direct_restore_allocation(struct device *dev, size_t size,
+>> +				    dma_addr_t *dma_handle, gfp_t gfp,
+>> +				    unsigned long attrs, u64 state)
+>
+>Are we relying on the caller to pass same attrs? So, a buffer with
+>non-coherent attrs can be mapped with coherent attrs in the new kernel.
+>Could this cause side-effects? Should we check for such driver bugs with
+>a WARN here while comparing older attrs with the newer ones too?
+>
+>Coherency breaking due to subtle driver bugs is very painful to debug :/
 
-~Gregory
+Hmm... this is interesting. The dma_alloc API relies on the caller to
+have consistent attrs accross allocation and free. But when updating
+kernel where driver could have been updated, we have to be careful.
+
+Agreed.. I will handle this properly by making sure that the new attr is
+compatible with the preserved attr.
+>
+>> +{
+>> +	bool remap = false, set_uncached = false;
+>> +	struct dma_alloc_ser *ser = NULL;
+>> +	struct page *page;
+>> +	void *cpu_addr;
+>> +
+>> +	if (!kho_is_enabled())
+>> +		return NULL;
+>> +
+>> +	ser = phys_to_virt(state);
+>> +	page = phys_to_page(ser->page_phys);
+>
+>[...]
+>
+>> +
+>> +	/*
+>> +	 * Remapping will be blocking so return error. The preserved memory
+>> +	 * might be already decrypted in the previous kernel, but the decryption
+>> +	 * call is not guaranteed to be non-blocking so return error always if
+>> +	 * decryption is required.
+>> +	 */
+>> +	if ((remap || force_dma_unencrypted(dev)) &&
+>> +	    dma_direct_use_pool(dev, gfp))
+>> +		return NULL;
+>> +
+>> +	/*
+>> +	 * Encryption scheme changed between two kernels and this might cause
+>> +	 * issues if device/driver is not handling it properly.
+>> +	 */
+>> +	WARN_ON_ONCE(ser->force_decrypted != force_dma_unencrypted(dev));
+>> +
+>> +	/*
+>> +	 * arch_dma_prep_coherent() should make sure that any cache lines from
+>> +	 * the previous kernel, if the device was coherent previously or cached
+>> +	 * mapping in this kernel during init are not problamatic for
+>> +	 * non-coherent allocations.
+>> +	 */
+>> +	if (remap) {
+>> +		pgprot_t prot = dma_pgprot(dev, PAGE_KERNEL, attrs);
+>> +
+>> +		if (force_dma_unencrypted(dev))
+>> +			prot = pgprot_decrypted(prot);
+>> +
+>> +		arch_dma_prep_coherent(page, size);
+>> +
+>> +		cpu_addr = dma_common_contiguous_remap(page, size, prot,
+>> +						       __builtin_return_address(0));
+>> +		if (!cpu_addr)
+>> +			return NULL;
+>
+>Should we be kho_restore_free-ing on all these error paths?
+>We only seem to be kho_restore_free-ing on the success path.
+>Same for kho_restore_pages.. if we return an error here, we don't
+>restore the preserved pages? Are we leaking those too?
+
+This is purposefully leaking the memory here. This is because during
+liveupdate, this device could be using this memory and freeing it means
+that this might cause a memory corruption that would pretty difficult to
+debug.
+>
+>> +	} else {
+>> +		cpu_addr = page_address(page);
+>> +		if (dma_set_decrypted(dev, cpu_addr, size))
+>> +			return NULL;
+>> +	}
+>> +
+>> +	if (set_uncached) {
+>> +		arch_dma_prep_coherent(page, size);
+>> +		cpu_addr = arch_dma_set_uncached(cpu_addr, size);
+>> +		if (IS_ERR(cpu_addr))
+>> +			return NULL;
+>> +	}
+>> +
+>> +	*dma_handle = phys_to_dma_direct(dev, ser->page_phys);
+>> +
+>> +	/*
+>> +	 * Cannot free the restored pages on error here as these might be in use
+>> +	 * by a device with direct allocation in the previous kernel.
+>> +	 */
+
+
+Check this comment that explains the logic behind not freeing. I think I
+will move it up.
+>> +	WARN_ON(!kho_restore_pages(ser->page_phys,
+>> +				   ser->size >> PAGE_SHIFT));
+>> +	kho_restore_free(ser);
+>> +	return cpu_addr;
+>> +}
+>> +#endif
+>> +
+>>  void dma_direct_free(struct device *dev, size_t size,
+>>  		void *cpu_addr, dma_addr_t dma_addr, unsigned long attrs)
+>>  {
+>
+>Thanks,
+>Praan
+
+Thanks,
+Sami
 
