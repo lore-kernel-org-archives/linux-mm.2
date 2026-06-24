@@ -4,105 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B2FECDE003
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 09:26:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5EC6CDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 09:55:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0BDDA6B0088; Wed, 24 Jun 2026 05:26:22 -0400 (EDT)
+	id 95EDD6B0088; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06EE56B008A; Wed, 24 Jun 2026 05:26:22 -0400 (EDT)
+	id 9101D6B008A; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC8606B008C; Wed, 24 Jun 2026 05:26:21 -0400 (EDT)
+	id 825B36B008C; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C19976B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:26:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2B9E7402B5
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:26:21 +0000 (UTC)
-X-FDA: 84914275362.30.B42A210
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 296CEC000A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:26:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 55D536B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 05:55:48 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BCDA4C1732
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:55:47 +0000 (UTC)
+X-FDA: 84914349534.19.ABBA637
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E8D221C0005
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 09:55:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="VUApR/uB";
+	spf=pass (imf21.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782293179;
-	b=oeTqMLJCsNhCtp7nKLpPHQh8UW5U4auKSrwxnTa+KMIMRtiqlfqEyfQUtvYDRGPplleY6e
-	dkbDxKoZ4+L/QMc/7Ua/jCuCLExQqIVgfihBP+ETgH7kHi1k5GgCFpiHWq3Gyp4CEUoQLC
-	0k6N+h7B1w2LLSS92bCyCRtKDz/UnbQ=
+	t=1782294946;
+	b=pLV2BRkYTIW+DO/I9YPToTlpHbq7paodyQ43qlNJlaZcKrHSuRjREPMdGLIpPBumB+jP83
+	33sZ9eMwZ5QKvtjDHO0HP1dulrhcPHRXLkQA2HnQqPDvjEXOAcGWXQoYk/IJId4HUqUuh7
+	spZ6n5/tVrVlc6zrVWnl2gv0FA/GPMQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782293179;
+	s=arc-20220608; t=1782294946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=WA9PChKbSpGYwzSxdJjqcQqkAg89EZoWIzjvWgWqJ4Q=;
-	b=Ftc9442AKAEF0YweW64FfvRAG8esTlzFJr7jyWOPMPXgQaVkataef3eXVqCgk+xv71Tm1k
-	NdO+6gnOV8DcfkRNSVCiBgmilWKo3NPiwVNyhU/S44ltEVM57DbK0Y1qqZsKzeaHDVHVu2
-	/MsN2Z7RdGXscxy3I4JCuzbhoUPc6UI=
+	 in-reply-to:references:dkim-signature;
+	bh=oUkW/KEdBAdFt0ECdeaOfS5Jd+P4aZridifd41QEJnc=;
+	b=CVYPkXOMPyKi8INtC+QugqpjaFABpMDxIxZlGPgiSZJDyQdIFOl/swNQSSLP5H+4LyYgIi
+	FvvsXceeDKM/jTsGgD+ax6yMsX/8oSMUIhAt3KwNxsGA//57EbBL6/kK2fiDJP4R+VMwf5
+	se+JbKrQLBGV+ziGf7HGYBZ/O/I+0dw=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn;
-	dmarc=none
-X-UUID: bd2fb2fe6fae11f1aa26b74ffac11d73-20260624
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_UNTRUSTED
-	SA_LOWREP, SA_EXISTED, SN_UNTRUSTED, SN_LOWREP, SN_EXISTED
-	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
-	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:6763ffaf-b635-4b57-bd6f-c9015ef85d01,IP:10,
-	URL:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,AC
-	TION:release,TS:-35
-X-CID-INFO: VERSION:1.3.12,REQID:6763ffaf-b635-4b57-bd6f-c9015ef85d01,IP:10,UR
-	L:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACT
-	ION:release,TS:-35
-X-CID-META: VersionHash:e7bac3a,CLOUDID:d43ccca23dc672e1d1517885b93eba7d,BulkI
-	D:260624172613TWL0RJG6,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:1,IP:-2,URL:0,File:nil,RT:nil,Bulk:
-	nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,B
-	RE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_AEC
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: bd2fb2fe6fae11f1aa26b74ffac11d73-20260624
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 411350629; Wed, 24 Jun 2026 17:26:11 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v1] mm: fix data-race in folio_batch_count()
-Date: Wed, 24 Jun 2026 17:26:06 +0800
-Message-Id: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
+	imf21.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="VUApR/uB";
+	spf=pass (imf21.hostedemail.com: domain of fffsqian@163.com designates 220.197.31.2 as permitted sender) smtp.mailfrom=fffsqian@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=oU
+	kW/KEdBAdFt0ECdeaOfS5Jd+P4aZridifd41QEJnc=; b=VUApR/uBuoCW7Ev5KH
+	+raOi7Z6xmvY+9+9RDM69Elpez01x8QqScwrmjQdN9/WRE+AS4Vhjc1jsl7a1apS
+	xnyaOIxlf/QVI0CI7h55VLupFbFU13JCBsPBjfXoKXrHE9uZofu3xZ45eqOPEO/3
+	9179CoxGbhW5NzLeZHsiU87XA=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3f2SRqTtqDMx0Ew--.31S2;
+	Wed, 24 Jun 2026 17:55:31 +0800 (CST)
+From: fffsqian@163.com
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Qingshuang Fu <fuqingshuang@kylinos.cn>
+Subject: [PATCH 1/1] mm/shrinker: add NULL checks after rcu_dereference() in shrinker bit functions
+Date: Wed, 24 Jun 2026 17:55:27 +0800
+Message-Id: <20260624095527.277586-1-fffsqian@163.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3f2SRqTtqDMx0Ew--.31S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCw4fAw1DKrW3Kw1DJFy5urg_yoW5Ar4rpF
+	WDKryDJr45ArnYgw12y3Z8JFyFvw18Ca4rJr92gw1IyryFq3ZxXr4xtFW2vry5Ca4fGryq
+	qa4UXw1q9r1UZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jw8n5UUUUU=
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 5iii21xldqqiywtou0bp/xtbC6hT4w2o7qZQccQAA3E
+X-Stat-Signature: dsqecxifd7moa7ctxdtdin1g6hqfmosp
 X-Rspam-User: 
-X-Stat-Signature: pfqt5shsqpzcx7wrf1yiq1w5df49ibpu
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 296CEC000A
-X-HE-Tag: 1782293177-334851
-X-HE-Meta: U2FsdGVkX1+fUrVmigTluOTbC0t3ABnN9U9Q/I/MgECdYb9SCyDqH/6CdIlJRHnxPnqOO9Wr0C10RfnekVGYJtBAvP8vC96cHXVd/dNDLGttbg3/9zN/wbZ+VvwWH+VPw8F4KW0/T8OH5sAsxwexF8jtdql4MXduVKppz7Us2VeAKEgHmqAFreWDye2p9OReM4lH7ymV8AB64hqE8DRA5JOJRxON0Cbeu+mn+l8EH6uQoaNfRmJrrCjbMiEhYoRM1QmC1kx/dhsjSVsqgTX/ChlqRFPriC9WjTjSrjPBLSA8pqEo7dFtPgOGkS6Agj3QZZL0V1MAsmUhXRYTUSFH8jCnX5N24yUCPxxfj33kzZpztE5PqttvoX2eJQa4L4+pl2p+YKTPDU8n0wW9CaUJFoTN1biix0vLOqHAFQfHbKBY6hQas+9xw7r0HN1sLz/J7p31gizNsV3TNnVleu4Hs5/TNUtaknZ1L9JAc8kZbeOHPl6mveO35Zgyq6NxXx9oDM//XbJwVBB9bnvwyy+IzHaRbsfXNf727pUToo9xw5ilpYaKJmKpOHo4ptIpe+BX9LuFFoTdUqF71oBO+GLNCyAvONuaMU/XNzJGiTzw0Jyha/HoEOvuEFNTMeSY/sd+z8cRtaA3UWV10dMxWlr+aEA54yu7w6b6lsuz6VmEMBvNIXtJ+euRCUrYUOv4Wi3nSWN8XfUE9v9tVjvwQlkEg34MqiDhzoIT2jbxc7FzIQYJ8ljec7iWjkLfx1+uooh4HawKk2uKrH95AQ8wfTPtC1gkXlgS+njzOBeUCVwGwFc7HIt1mSUoNgjFfIdbk43ZDw9H+3QjcNbN8urUBxoDs60ZzjQxsVrPbDVND3h6u5773nSZ8n2v6p+iypN9OpBZzis8DoScOT4wQ90CEeicVQvCrprS2l+pMT+svoHBqRllDrtI/RXTV7m52kHmVCoOwPzV8d6FPvrOi2KQXDU
- c85fw/fU
- itBRjfm6bzOt6a4EcumwgvggXpDeV1mxJjZMWZ2WIVKBvC+Y=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E8D221C0005
+X-HE-Tag: 1782294943-20669
+X-HE-Meta: U2FsdGVkX19f/Zcsn/oNwCW1+2hKr5/4/0kfDm2rU8D946y21G4fh0BzPTkyVf10ZU4+IFKNBnrxgVgYUJshJGhgx6Vf/LquxAckxIuOKPgQXj9MWKLsfe8X/NoLGY+Hof5U5HoELirJABiBQrDGG8fp0BYTt7LAsXtM1welse9dF72NJhSOk1h4g24Dhz34DvQQ2CZWJ2+uAbUHRBHYvybfp0yiyCgInZg+IFQ27cBudMlkHz8uY14YxPGkPEM5L9KiZN7aGJ1Zep0SbbgFMK2rtJ91aD+7Vo24RVnyDzS0vH0QRWSxxFp8a92q37usR3uJBWyXS1KtMmrMWBJSlbhGMVTmBigjEJ1KE4aCKf+PjBBJg2ORYuBc1yWhYje9ie/H4cyPqou9BNI/eIDwobHUWzDLQB62p2JRDjEQXcQPO1ItrOvNo57bjetYn1SsCXvl/O+Hw7jLwOYh63UN7mEeL8kZ/uaOjqKvicZmqpf11n5QUx1hR/CTwqDLs4J8GaUJQLbaekrSKrW0fugG2OgsVZcoDatt6/5oV+376xgB7zYGOllDZYIzOmHjPjBe7A+e+KFwH9eS6BmYcggYWhM9w9aFUJodD6EZRwh+HIRctNS0e9/FCiXZiPdYYOfgvXlwmQuOPfiBRZ/1HlAJUGUMqnhO5Fnub5BlstyeJCE54dt5rWGgdSEisyLAYjOr/4O0CsVWYW5yKPhFLaxsLTjG0u8kGkXPIjURZt3PSs3spb6X8aS2lwk0elHaPCtxDAzyJXHE9Nr/S4AoY3F7QAfcIRK/pwJiJOLTvNfT/5j3m+rYTmg4DiLUJx458gh0JGJn+R/Aq2iQMHTWSPTAMG/X6hqMfq3IO+QCmVD1L08HuRchqN7xP/sLWofhV3J0MNFcPJ4GkanZSqyKSrw07Pfvf0tHYKexxtwxXPzN+xIlIPy9G1FzkNeT57duk13+r/q17qYLvQNevBOs6tn
+ A68+kQsf
+ I5veqjuq/FDUgXQHDyeGnA3KUn02nwEBlFupPeE6PYi4YlBo1RKuUipm3qZNGFhEKR2ZuNz4v5iBb4920EF20veGiE/6JXtRMvQr5dcjWAte/qrViwpMLz3qRd9qQQkB1G1A+bkOoCBQXaoW9PeAeTMZIYhSwk6A84wk+P1pvaKB/Vb1TruU5Xq57Ul1RYoSTyNd8+8S4SpC5oeEDd4jeDU6EIPyptmCqDJPeFfm674X9bu7pUtu3hUDvRt4MGwWLpIx9T3ReGp9LoTNuh0Ln41XGi4N5OqDNLsowOvX547Mmg9HWql1+I1zqwdwwKSX8gdDArM0tBack8UpRt9G2hWcevjjsrxY8nMuJgWtrpjoBgwQW4PbBr4ExWF/Qsp28N4Pb4uQiMDmVRnQ6guSN84XKUEep0WAxTEBBbP0HIl9nWB1o6JgkIMyQHeZpksEFqV92hcrJy9HXHTEy9bnkbEwZxTiRTTb5LzwhC9Gt5K0jisrY4304rS77Xdkz7f2wmwckNQPlQghviH93IfzGvljNAx6vq2uldNNUQZLoXJmNXjKaGiPUbb4skwsCTKWGdGCCoynkk8b43OsNdt95xrfWYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,44 +94,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KCSAN reports:
+From: Qingshuang Fu <fuqingshuang@kylinos.cn>
 
-BUG: KCSAN: data-race in __lru_add_drain_all / folio_batch_add_and_move
+The functions set_shrinker_bit(), xchg_nr_deferred_memcg(), and
+add_nr_deferred_memcg() access shrinker_info fields immediately
+after rcu_dereference() without checking for NULL.
 
-write to 0xffff98fe74c015f8 of 1 bytes by task 45153 on cpu 2:
-  folio_batch_add+0x30/0xe0
+This is inconsistent with shrink_slab_memcg() which properly checks
+"if (unlikely(!info)) goto unlock;" before accessing info fields.
 
-read to 0xffff98fe74c015f8 of 1 bytes by task 45175 on cpu 0:
-  folio_batch_count+0x0/0x10
-  cpu_needs_drain+0x253/0x430
+The shrinker_info can be NULL during memcg initialization or after
+shrinker_info expansion failure. Directly accessing info->map_nr_max
+or info->unit[] without NULL validation could cause kernel NULL
+pointer dereference and panic.
 
-The write side is a per-cpu local operation (folio_batch_add on the
-CPU that owns the per-cpu batch), while cpu_needs_drain() reads
-another CPU's per-cpu batch without locking. Reading a slightly stale
-value is harmless -- it only determines whether to schedule a drain,
-and a subsequent check will catch it.
+Fix this by adding proper NULL checks in all three functions to
+ensure consistent RCU protection and prevent potential crashes in
+the shrinker subsystem.
 
-Use READ_ONCE() to annotate the read and prevent load tearing, which
-also suppresses the KCSAN warning.
-
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+Fixes: 307bececcd1205bcb ("mm: shrinker: add a secondary array for shrinker_info::{map, nr_deferred}")
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dave Chinner <david@fromorbit.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: linux-mm@kvack.org
+Signed-off-by: Qingshuang Fu <fuqingshuang@kylinos.cn>
 ---
- include/linux/folio_batch.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/shrinker.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
-index b45946adc50b..1e31e058e19d 100644
---- a/include/linux/folio_batch.h
-+++ b/include/linux/folio_batch.h
-@@ -53,7 +53,7 @@ static inline void folio_batch_reinit(struct folio_batch *fbatch)
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 7082d01c8c9d..ecde3cc44459 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -200,6 +200,8 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
  
- static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
- {
--	return fbatch->nr;
-+	return READ_ONCE(fbatch->nr);
+ 		rcu_read_lock();
+ 		info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
++		if (unlikely(!info))
++			goto unlock;
+ 		if (!WARN_ON_ONCE(shrinker_id >= info->map_nr_max)) {
+ 			struct shrinker_info_unit *unit;
+ 
+@@ -208,6 +210,7 @@ void set_shrinker_bit(struct mem_cgroup *memcg, int nid, int shrinker_id)
+ 			smp_mb__before_atomic();
+ 			set_bit(shrinker_id_to_offset(shrinker_id), unit->map);
+ 		}
++unlock:
+ 		rcu_read_unlock();
+ 	}
  }
+@@ -258,6 +261,10 @@ static long xchg_nr_deferred_memcg(int nid, struct shrinker *shrinker,
  
- static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
+ 	rcu_read_lock();
+ 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
++	if (unlikely(!info)) {
++		rcu_read_unlock();
++		return 0;
++	}
+ 	unit = info->unit[shrinker_id_to_index(shrinker->id)];
+ 	nr_deferred = atomic_long_xchg(&unit->nr_deferred[shrinker_id_to_offset(shrinker->id)], 0);
+ 	rcu_read_unlock();
+@@ -274,6 +281,10 @@ static long add_nr_deferred_memcg(long nr, int nid, struct shrinker *shrinker,
+ 
+ 	rcu_read_lock();
+ 	info = rcu_dereference(memcg->nodeinfo[nid]->shrinker_info);
++	if (unlikely(!info)) {
++		rcu_read_unlock();
++		return 0;
++	}
+ 	unit = info->unit[shrinker_id_to_index(shrinker->id)];
+ 	nr_deferred =
+ 		atomic_long_add_return(nr, &unit->nr_deferred[shrinker_id_to_offset(shrinker->id)]);
+
+base-commit: 840ef6c78e6a2f694b578ecb9063241c992aaa9e
 -- 
 2.25.1
 
