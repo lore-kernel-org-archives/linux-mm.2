@@ -4,126 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1F3CDB479
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 18:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80217CDB47F
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 18:37:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 503F06B0088; Wed, 24 Jun 2026 14:24:08 -0400 (EDT)
+	id 71CAC6B008A; Wed, 24 Jun 2026 14:37:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DC1A6B008A; Wed, 24 Jun 2026 14:24:08 -0400 (EDT)
+	id 6CD626B008C; Wed, 24 Jun 2026 14:37:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CD956B008C; Wed, 24 Jun 2026 14:24:08 -0400 (EDT)
+	id 5BDAE6B0092; Wed, 24 Jun 2026 14:37:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D6146B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:24:08 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D3E514044B
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:24:07 +0000 (UTC)
-X-FDA: 84915630534.08.0C1CE9B
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9A13540005
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:24:05 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cYAJhkuB;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 2DEDD6B008A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:37:05 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8DD80140453
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:37:04 +0000 (UTC)
+X-FDA: 84915663168.15.64A523D
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C95631C0011
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 18:37:02 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QzZpiOE9;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782325445;
-	b=s5mFDSoWd0ANV3NTLEu0VO8s53p873IIqJ5Y+fC0Qq6iL/NKcdwhJ9lQICmhkXp2k2LDkb
-	Y3kcS0osNzPPMbNFgHP9IdOYlqJ+l+yHY3KXsRdfTsFex3d7JLK2slwbFPcCXEEyu9OLN2
-	+zXWxyjs/Z5qbGQKeLhBX6hhSCcOaqg=
+	t=1782326222;
+	b=A9qrOyQauFfhxrcUkO9VADzXtww7PoqsTeWKdE58CeOUFcDclKk+BLPSW7mY4U1IXAKfno
+	I1quoOBQpVduaH1AXrsh8BOiLKR//68V4hxrG7hB0vPVCn3lGUq6avJrhB4o9HJ1JdfQc2
+	/GDa1HBGp7ia+lNvK1tqD4Jv7g+AaAA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782325445;
+	s=arc-20220608; t=1782326222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FP6al2QbtqiBNwNbl9L6yaRaxgcZf//eTD2veoNh+pw=;
-	b=mGE70KnAuBGpEAZDBAciQWWsGhbPcB9+o6wykngBSAaXZZyD6azFZFOjhLofGF7BD+v8ey
-	uawO7xjGyARkeH1q6cdqKQ0FudGU4zNEmzx+dAZzwxWuQRLbL2A41y/4dB5W7QufoSQ5z5
-	PA1ol1PHSQJDK1PRFqHwYH/cAQS9J7c=
+	 in-reply-to:references:dkim-signature;
+	bh=zbWIs/KwOpEaTVlvMb/98rnTZb76+gA0HeQzfXkUtFM=;
+	b=GzI/hzbJ+tCicnqowsTZsuX2WIlnWGW6BrTUF4wNYkPWCzIeRz6l7weHhXMw5vvzcWKO0i
+	p/je45mO3sXwzXjPDEnzgJSFgEpl5kkHY8ivFd1EsZAPai5RZtCULVaQo2BhjfjkI0vQ/t
+	HZrnRqkaqAJI/FWMiR3TAKIiz3AJDGo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=cYAJhkuB;
-	spf=pass (imf17.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=QzZpiOE9;
+	spf=pass (imf20.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7e6d991991dso1109355a34.3
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:24:05 -0700 (PDT)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-447a81776e9so676809fac.0
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 11:37:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782325444; x=1782930244; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FP6al2QbtqiBNwNbl9L6yaRaxgcZf//eTD2veoNh+pw=;
-        b=cYAJhkuBx572sD4jGvhlLsqLYMrkpX9PNknGVX5zkB7dbyBAPcWgM5dtWOw4Jf7vNu
-         3DxRfS/1ACSzK9t5Z/HCWmAU/dTtRTpEKMvp3ErouUXoAm/ER7Utt4rVbG5rETf6X0kE
-         s859bSlmY5KvUHlmnf8tgyP4PCj5NJp0bSeAinI7mTpTaIntVcqVKkktuJ0LBfBeS33n
-         54L+i5pYQ2y51V2rSNPub4SVMSAzlHpK2u9icy7V9dMm5JDUxH8Tdeff5N/lHbJ1SAaT
-         3auWyE8y9TfzqNnKtXa3s/YogL/kvnYjaLZsyUEK67QQ+PcWblNjMB9MJkxlXz3T9p0v
-         MUYw==
+        d=gmail.com; s=20251104; t=1782326222; x=1782931022; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zbWIs/KwOpEaTVlvMb/98rnTZb76+gA0HeQzfXkUtFM=;
+        b=QzZpiOE9h6EulV7Y/t2o4ylX4pfKU8ARZMYW8rj8joi0igA+V8xOWlvRIRTSIp0KXI
+         oPwiwQnjELDfLFOH3Oa5Y/JC7bw3a7raCqxludTQzo0GzFihPVG6EseIQKuFRuyBSfN/
+         1v3tc/rHD9dYBA//UmzLACSV/pjYZkyK9HjScco4M/Jik3GevsLfRm1TI4+jKI8Cj7t/
+         wDAAiZB9IRRnPetITvnp+LsxBESdwD+ZGB1W6rqFOEZKFz7tKg9xjZaSk2yNmgYLsWC8
+         zkUoQ/jnwgKMUzVGwCiWBPXJgmRkvK9ziFHuQh8KfGjm6tJHTN436NGO5xEd160kL74H
+         5hUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782325444; x=1782930244;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=FP6al2QbtqiBNwNbl9L6yaRaxgcZf//eTD2veoNh+pw=;
-        b=pvD9zUWJhWMImPD0cKEyrqi59pVkaUrRs47kUlfMMx9BL5BpcRm7T3Z8YOv+eY00HO
-         Ii6LEtzZ6dg93FnVkRFKLrfMbyurPXqU1sKZFhru7FTzplgi8T4H7XnjF08sOBYjWQK7
-         Ti2uqcZnNVpX/ZDl1crHLMc+rhP4wVggUQauIaLjf4E/yxxbONhJK3QYgalKpdpASdng
-         +B/Vk+Q0g3Itc9WKNQxC8Lbc2HE2nHD2MO/8G0m8nOrSlV/ag76fiTccHHfYNtVRFpX/
-         lKkCMdQ6TVjnQJfPeaKvyytZY6cKy9hC0T8my9g6jZz9S9/OJ/PGjUveEIc/u/r1evnz
-         ywTw==
-X-Forwarded-Encrypted: i=1; AFNElJ+6gkcNlPj5jFdzpGtcAVwFR3vROrkQjwQA+q189rePbv7Azej7MW8QQWPiT6KZbILEC+QWZNO26g==@kvack.org
-X-Gm-Message-State: AOJu0YxFEe5z6mkcNo91T8g/+qprc9PAFQFlV8onL331Aq/sIrq+mGP5
-	7eF1QxB1ManNLX0wxyG5VMXqqhkXgoQWNRc7CqHCb0FSqfaZN8x6MEZ6
-X-Gm-Gg: AfdE7cktOoiFQ8E0RjZfzjGPup5DyuxMRrl5UgRJPwN6JIBU1VaOw6QiutfIPOw0c1k
-	ARL9N2t2g7ahslUS4h8LtgyXjsSrCViZOSL+zgtYU+3/U5EKoVgZ71MrzZKgWF1RtqeDrbrD/O5
-	Emb4DZoOJwPjrvwZKblFpKNzERBVfJrlZcgnPtNacCR54jdCEnOLg5ANVP4itW6s/VHngWrD7yO
-	Sg+PyI321iHdu9aG5Bnqxm3xMHXjeNY29HKM6JMcMdzgnVkRBzADsIJskpyKtRSuChCuGZPhqwh
-	8SmLoekAugNIIAnidL6eZ6o0mg71ov0Q+VROVXibyNbasBt6kjL3t4A4lO5RI7OkREKzhLKb8cv
-	cZUr5gDfjC30R8QjcLURh2yEanGSKr4bo8ym/WNwQ5BkNjHpVbgvp2PHop5dycZx6iw3PE1kl1S
-	jVZbFUYnmKvX4wEIyuiG0od83ynVq/RHsf99ZH5JdIqzM=
-X-Received: by 2002:a05:6830:4409:b0:7de:5612:d420 with SMTP id 46e09a7af769-7e986c7513bmr4005787a34.18.1782325444557;
-        Wed, 24 Jun 2026 11:24:04 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:4e::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e9442e98e9sm11837257a34.25.2026.06.24.11.24.04
+        d=1e100.net; s=20251104; t=1782326222; x=1782931022;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zbWIs/KwOpEaTVlvMb/98rnTZb76+gA0HeQzfXkUtFM=;
+        b=dRR8/FTKADIOTQmdihPhKUnmpEFT+vE7dkN/Douw2dMxxLjvIEkplLPqAkn82L5wFS
+         LBEwwbgmeIvtHY9oRPTzFt7AWRyKPcr4LrdgF6rMfi1o+VP/3tXcRRgGiNTrvMP7hZ0Y
+         u+4stlebM+Jtz6jaw1Zf1kI/r95aJPNytBYIob+O/QMmH/8eAYqNkF7uzeql+wBtiLJn
+         XULzUxunXURT3DJIiN/Fy6UypJFyJJ2SxxrxhCxCfzwORTxEs/FevZsvpQQwX0hmkMCS
+         hUr16PxotBtEoUSlVSN3HcjLpu3bvhKNeZlpPypTHr/21CZxQ8cdPBqt0h4HV/JEVtzK
+         rOow==
+X-Gm-Message-State: AOJu0YwBEbpAI83uo0kl99z0zqpDe6bN1Y/2uRgiQsYGawi9AZXRS+ag
+	js7XpzxYT5NAmjEVOaf7kx71Sy1AmbB962DEbyTCRK7CQ3wjqnttOmFhqCXSAQ==
+X-Gm-Gg: AfdE7cl4dYIRHuFvOVXwjH121DMOSazBPdlpF4yvyISDJsdQadTLRxjPtKBeeV5VRkC
+	xgNR6iEzqmuxuMJKhKpgBxwR2ihrHvOqxI80o1EHpJ3eexgYw/oOSxvcYFZ2Y8nNyVazWuVukXx
+	TQYkgRzctZw4fyJGwMJXDKcxNjUkA+TjST2lrdtJSCjGOL6w8RJG21CY8F7qjmCyp6XCeTqZ5mH
+	8gmNcztAhuak7UlOt/WPhI1b5gyPZxOa6LbP1nEaQnhOV0CTDcEKnofyVjD6Fduprn693RaSO5E
+	AJsu33JXhfzIQmprkiWL6TVc3UWvtP8xOqPgH4sV137MR2bYxwAl2TymkXv39AtIC6Xt2VGQ4UC
+	EII4p6Kc6qgks6Hqnf/keE/4JiGUDYitVsAAXiob38zLk3yOV8B/WImhfbcg2GfGP+nKTEm4uDQ
+	ewpLI2PuJ+oq7smd9In9KMkWJJWNn8pPN1MA6tcHgHww==
+X-Received: by 2002:a05:6830:6412:b0:7dc:dd19:7f69 with SMTP id 46e09a7af769-7e97949c243mr6906170a34.17.1782326221861;
+        Wed, 24 Jun 2026 11:37:01 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:7::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7e944252015sm11789254a34.18.2026.06.24.11.37.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jun 2026 11:24:04 -0700 (PDT)
+        Wed, 24 Jun 2026 11:37:01 -0700 (PDT)
 From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Usama Arif <usama.arif@linux.dev>
+To: linux-mm@kvack.org
 Cc: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
 	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
+	linux-kernel@kvger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v4 4/5] mm/memcontrol: convert memcg to use page_counter_stock
-Date: Wed, 24 Jun 2026 11:24:01 -0700
-Message-ID: <20260624182402.962094-1-joshua.hahnjy@gmail.com>
+Subject: [PATCH] mm/memcontrol: remove unused for_each_mem_cgroup macro and cleanup
+Date: Wed, 24 Jun 2026 11:36:59 -0700
+Message-ID: <20260624183700.1152742-1-joshua.hahnjy@gmail.com>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <120367a5-0a3c-40ba-a821-f46f8494ef85@linux.dev>
-References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: deeoq5hfjzt8azkfgmui79aq44f6dksm
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C95631C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9A13540005
-X-HE-Tag: 1782325445-645553
-X-HE-Meta: U2FsdGVkX1/FE0sWsmSB/WOT3AdAuLdz6/8iXqHmCoByz1TVjTLJZiVQZTrmEbmHXYqYTXET4qx0ufI6vQif01wPtBk0p5Vuo8vD6Gkper4aPsw0JFcRSns62iXgU4V4Sez1ZTt5t0xwrQfgwWcoALcmf+2HjbSyqgLGHEvnLDFyaoAxd9+tFD/KxuP63phPNz61lcziG9ibomcvSa2UEY0RqVi0j5H31rOmNLiGmGFDzuDiACvL4sZN+9MoYg1tjO8wOTuuqdx8y04n9TdsPp578R8d0dTK207xf9PCJQIpcDiSIX+FarmoQ21X/etr8ddSsUARjPRArkWELBuZSOCcuOOym4plGxqcZgsLGhTFLZJns5gZH07kb27h5VMhwBXcodhXCU/+Rtp1pqmzvhSRSrt3FF7nCsmzzmJDgs04FjRncir0B7IjdcwfRDDKLfY9Ufle1RxE7iYojb1jiTRcD7b05MqjUE/g7Oe8mgUt1BT37a+gt3/UhCx2y+r42pCeZPhXWltfiDgefdVBJX3Oq0prnwe2pFCmabmhtk3E9h8RLXKvJD0aP2pNCFFK7r3qxT79fAciZTfNuYMETx1zpFTTgpGMHlzZWq0351ZtD9O+sV7c+ZS4S+bZEOy6eVu5aae1vpmt5vw/BnO+WzgC7AmGHd4Oo4O0IYgWo8+QfWQVmf+9MSjlz+ICnn0rJEp7u+oEWI8CF+2zvsnDqsCkVUoKDyy1ww5fKogxxgeG0nZTBw1+aRiRsUJKVGSwhvsjC9tEh4UnO8ZRjY253NCY6d3MkAmV9rK/k86KA+XC/k34oETPoCw9CEa1kekZT36sGMrC+M6XV6auA339WhFC6LwnBnH0Rx76aIiD+mXnbpVt4iaorXRV02wikutYW3y35XJsKkcORp+1csa7ni4TtjSlI11VPs7B47CMPyeK/2VgG9F/VzEj6/vRxGxtf7hh6QhVNHbu/kONhKI
- 1KwJ3qNa
- nkeR40e7u46u0VEOqUJv7vNFjwD428JJc4SM8AM4HAMvsohvofTKzCJglFaLpybsFJ89TeJNqI5rWsGwDrqJxaOuT0OmPKa9rhBSozO4djuj1j/X0igYnBRx9liUiqwbQ3vlj2ake3+/BXkvHBihn+0FoRtlbizvJC7TVVyuM9swOaFsrMMqeLXsw6B9Fq4HEQdlb8rDsHPzInh8uYj3o7BHPnMtH23BzzGadUYgbjJJMgT5/tS8m0Xufc8iYQ/BxMKngdR+2AdJKpvNlY1jwjpO/tOVRR9Stfe/yJ4Yha9XFbBriaGQcxy3U+qciiImoaIDirQUUyCBaxkXniqxTa4ZKjABvKHHANU17p6medoEtfUx5agjYQ41ACE5BK5jrz+pe88DPMcOS6HA/AcGSKT5HFkNI0eXyPBtsqxPjnF54BUZAxfM7WVVH9akuFFCdVqwKRj+7QEapg+grK9OinS4cdLyuIP35kNE9qWggV/rDp1U+adMfisKwrSbmKTtkdGW3upKBLCaGZyJD6f/MHoLKfdxeR8tqCpTlvK+QUTHu2to=
+X-Stat-Signature: 61y4jum5uhqnsuznqktnsn7sc1zapqdy
+X-HE-Tag: 1782326222-910348
+X-HE-Meta: U2FsdGVkX1+5Eik0tkKnKq0+qZp1Sim7Rq5yul9r+tSSIAcBcbg/Mkth+v16raff1zFeWxLYIwvb9ZMuCPFKM2F/wafao4S0VkbtyHeK4Afn96VVZ4h5gG5dhoSbdQ06ckaw/65HqiQqKP/+1tjj7EW8VoABliE863oHfvNd4fyXt8dxhCDyXq3liBp1Qs7h9JMu1aeSVdpsz0aJq3bwHSKSddqn3ZWj0pUOOdgBWxcZAZjfd6q0kiisWQXMdmOkU4CjtedE/MRVJ6IadF6IJLpwIt1AYKMRgbXw/UhNFwpZohRLz52RexnnnFiAiqgk8pXQsLKZ6xJV9kdSA41ZghUNZLRy1fIVp/E0N2vu5wwsApTumTHvyfKkYoGdHJfhNQ+QjBAvDgXTb/Yf8Bs4tY5ZdFxWL5yorzOQDZXcOIyAtFbPnzEduZBJ1fZv4ExpRf2ih0zKreIV0Y/30W3JsoU4jsvlHDkvYi1QA4DkGsgs7FG+G1KGwY1+ooohrX8igNr6OfpTnYnYQmqflpkGke+ptOvEzdQhu+0YyHlK48khDtkzNmuLtNtS9fyhoR3lEGrq89gL8XHzgZpRjbvoj8qBTLRGAOpSWsmMe7W4ROm1C8XqV5fb+ZFDagAYDw2NHFQTi1Wmj2bukTKFKcL1BtWsiA2lPoIw/1rBwj8BGezsU5Mr2M4618a3qVCk8cWzR66VA45zWrWoE2IoRjF7X0aipK+XSgR8+zwAplALVPE3cPCiYtDKXhfv3Fh4Paj62YpUWINYpKmhwwtcSnenNHyqqTCsWShBlBWUFmbEcv/EOvWeO6zhEscqz/knPSmIl0t31ZREWRIFevpQ89EqeJU1T1pRLfbzIImtql5GObADys7NHmfl+oMwmo0rlci6k0SXz2pu+cVLqkRyPkql+ErbldDDLqRR1tLd9awbwtOEi98mWlkvnRvJ45sPO3fsSUP4XzyeMhKgNNi5txl
+ M3zJk7ms
+ zxyFOyraO6gp+Ggu+QlwY6t/KLbC6dtinGNy2dyafxBB4sTh6gz+SaSdIDiqVvSUOCbJ0zH0/0UCL1laltT2dZK01GLW8jzqOFlwMbeCkJ4trrlvM3uSWSKZrT813uL9ywGbjdqh6/52FRSL3q/ckK+Lb6PLOxrncTu9DAccgVJTbttaVWXiIrLzH0XI71AjNtgtLvvMRK0KW3Z+E0pxosrAjCV/oFS0U4H3cErIQizdL6yfx7RsmT3UFkmkmdnKrVzz4ZW2PdAM2LZezDbGNNl+jg0aHDpq5zm4PXHfLfT/T9pmIvsNSFtM/Wd1A+TenS4HeoZgLG/YZqnqrrhstic3CHOhXnMrtUS3V5jPFuWUUzyhJmpy0YWLrLv0NpILavVnPBrON2Afovn5TELmccrWhYClbM91K6sEsitTI8zvKlXWpO1ySc40YrZXbFcnmFRf/Mww5+F14Jre+RARRn4hNUkxsidzEgOhwzZ29nQdeWXz8j/cZzCAwPbdmqZNv+VORBPlO0t4p3iKIJ69PQht/e5lxRPnIMqVBscPVEriWdOs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,95 +120,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 24 Jun 2026 17:43:56 +0100 Usama Arif <usama.arif@linux.dev> wrote:
+Commit 7e1c0d6f58207 ("memcg: switch lruvec stats to rstat") removed the
+last caller of for_each_mem_cgroup back in 2021, and there have not been
+any new callers since. Remove the macro.
 
-> 
-> 
-> On 24/06/2026 16:23, Joshua Hahn wrote:
-> > On Wed, 24 Jun 2026 07:43:47 -0700 Usama Arif <usama.arif@linux.dev> wrote:
-> > 
-> >> On Tue, 23 Jun 2026 11:01:22 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-> > 
-> > Hello Usama!!
-> > 
-> > Thank you for reviewing the patch : -)
-> > 
-> > [...snip...]
-> > 
-> >>> @@ -2595,7 +2596,6 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
-> >>>  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >>>  			    unsigned int nr_pages)
-> >>>  {
-> >>> -	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
-> >>>  	int nr_retries = MAX_RECLAIM_RETRIES;
-> >>>  	struct mem_cgroup *mem_over_limit;
-> >>>  	struct page_counter *counter;
-> >>> @@ -2606,36 +2606,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> >>>  	bool raised_max_event = false;
-> >>>  	unsigned long pflags;
-> >>>  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-> >>> +	unsigned long nr_charged = 0;
-> >>>  
-> >>>  retry:
-> >>> -	if (consume_stock(memcg, nr_pages))
-> >>> -		return 0;
-> >>> -
-> >>> -	if (!allow_spinning)
-> >>> -		/* Avoid the refill and flush of the older stock */
-> >>> -		batch = nr_pages;
-> >>> -
-> >>>  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
-> >>>  	if (do_memsw_account() &&
-> >>> -	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-> >>> +	    !page_counter_try_charge_stock(&memcg->memsw, nr_pages,
-> >>> +					   &counter, NULL)) {
-> >>>  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
-> >>>  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
-> >>>  		goto reclaim;
-> >>>  	}
-> >>>  
-> >>> -	if (page_counter_try_charge(&memcg->memory, batch, &counter))
-> >>> -		goto done_restock;
-> >>> +	if (page_counter_try_charge_stock(&memcg->memory, nr_pages,
-> >>> +					  &counter, &nr_charged)) {
-> >>> +		if (!nr_charged)
-> >>> +			return 0;
-> >>> +		goto handle_high;
-> >>> +	}
-> >>>  
-> >>>  	if (do_memsw_account())
-> >>> -		page_counter_uncharge(&memcg->memsw, batch);
-> >>> +		page_counter_uncharge(&memcg->memsw, nr_pages);
-> >>
-> >> This needs a transactional rollback. page_counter_try_charge_stock() can
-> >> succeed by consuming memsw stock and charging 0 new pages, but the
-> >> memory-failure path unconditionally uncharges nr_pages from memsw.
-> >> That turns a failed allocation into a real memsw usage decrement.
-> > 
-> > Hmmmmmmmmmm....... I'm not sure.
-> > 
-> > At this point in the code, we are either (1) using cgroup v1 with memsw
-> > and charged successfully, or (2) not using cgroup v1 with memsw. So I'm
-> > not sure if this really is unconditional, we're just distinguishing
-> > between cases (1) and (2) by checking if we're using cgroupv1.
-> > 
-> > Or is your concern with taking a charge via stock, but uncharging with
-> > a hierarchical page_counter walk?
-> 
-> This was my concern. But I re-read the page_counter stock invariant,
-> and the stock-hit case is not an undercount? Consuming stock transfers
-> already-charged credit to the pending allocation; if the later memory charge
-> fails, page_counter_uncharge() discards that consumed credit from the
-> hierarchy. That should keeps usage equal to real charges plus remaining stock?
+A comment in mem_cgroup_css_online has also been out of date since 2021,
+when 2bfd36374edd9 ("mm: vmscan: consolidate shrinker_maps handling
+code") open-coded the for_each_mem_cgroup iterator. Update the comment.
 
-Yes, stock-hit case just does some math without doing any actual
-charging. It's stuff that was pre-charged before, so we're not doing
-any undercounting or leaking any charges.
+Finally, 99430ab8b804c ("mm: introduce BPF kfuncs to access memcg
+statistics and events") added a second declaration for memcg_events to
+include/linux/memcontrol.h, duplicating the one in mm/memcontrol-v1.h.
+Let's clean that up too.
 
-What do you mean by "consumed credit"? From what I can see
-page_counter_uncharge --> page_counter_cancel subtracts from
-counter->usage, which should be the real charge + hierarchy walk.
+No functional changes intended.
 
-Am I missing something :p please feel free to let me know!
-Joshua
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+This is intended for the next release cycle. Thank you!
+
+ mm/memcontrol-v1.h | 6 ------
+ mm/memcontrol.c    | 2 +-
+ 2 files changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index f92f81108d5ed..d3ed5b93290fb 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -17,14 +17,8 @@
+ 	     iter != NULL;				\
+ 	     iter = mem_cgroup_iter(root, iter, NULL))
+ 
+-#define for_each_mem_cgroup(iter)			\
+-	for (iter = mem_cgroup_iter(NULL, NULL, NULL);	\
+-	     iter != NULL;				\
+-	     iter = mem_cgroup_iter(NULL, iter, NULL))
+-
+ void drain_all_stock(struct mem_cgroup *root_memcg);
+ 
+-unsigned long memcg_events(struct mem_cgroup *memcg, int event);
+ int memory_stat_show(struct seq_file *m, void *v);
+ 
+ struct mem_cgroup *mem_cgroup_private_id_get_online(struct mem_cgroup *memcg,
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 56cd4af082326..e171fe36b0711 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4216,7 +4216,7 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	/*
+ 	 * A memcg must be visible for expand_shrinker_info()
+ 	 * by the time the maps are allocated. So, we allocate maps
+-	 * here, when for_each_mem_cgroup() can't skip it.
++	 * here, when mem_cgroup_iter() can't skip it.
+ 	 */
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
+-- 
+2.53.0-Meta
+
 
