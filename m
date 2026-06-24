@@ -4,91 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC3F2CDB470
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:58:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6680FCDB470
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 06:58:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4EDF6B0088; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
+	id 5830A6B008C; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFFF36B008A; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
+	id 533E56B0092; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A15806B008C; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
+	id 422E36B0093; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E6F76B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:13 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 102361C1920
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:13 +0000 (UTC)
-X-FDA: 84913902066.03.40A8617
-Received: from va-2-18.ptr.blmpb.com (va-2-18.ptr.blmpb.com [209.127.231.18])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D2C0B1C0009
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=ko+peYdW;
-	spf=pass (imf21.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 208506B008C
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 02:58:29 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8847FA0221
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:28 +0000 (UTC)
+X-FDA: 84913902696.12.0B250B2
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B37AF120003
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 06:58:26 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qgv6xnPX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782284291;
-	b=c8upwimYgsF+l10wkhbvZ8H7j8nD8zm1oLxSS+fUmk1k81YpuBItFSTJ8UaWhX3jAak7L+
-	LgDZoo8ELiaRrCpeskXRcS+YcdK50Pka0Sn8DQzHPRqvkZVbp2DDPVRBhHmMF5z/X5BNt4
-	00MN++0l3AhM7+9vzrY0oVhLTLtlHlU=
+	t=1782284306;
+	b=Rf8MjwxIBLFL0ZSqQkeesV5UnrEc4m14Kt8evXjdVA0xCWdHFBPGFNxPfSNiTvq/9GZTiP
+	67AAa2QvFHQF/ysv3jRNSd5GyU2csU6piimzRL8uaSvJVyELaBQkPVpriA8lhqOsCBe1Th
+	0QQxlyIZ8MRD38AbnI77NgCJYoxBzQ4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782284291;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782284306;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FMKsX1oqr9cJS0GXtzM8Ok+fkwH2kagCOdyTihBZHlM=;
-	b=wqQES9pp+aATqKo0Q5NoIRQafQNk3sD3Q0bHRSTjcenlP5Jzc7KzZweWYnsgxng6gPMVeB
-	GRyNkNLZOpXZd85NgpZHpHi/vj8XaM0ZybkcwrFBSPT8pwbrem9k1fxoqNIcnwblqaNwno
-	/Ek+CRhHJaxkezzVJZSCHyJw5f61wH0=
+	bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
+	b=KTpCBrOaqzq/FrMaZlHWiBv08V5YBsq1cS196nmLmgNrTLUTK7IP6ont5EraJ6A+rcWG24
+	uG3JzVPH8GFjh/hELyd8xVW7M35DTbi54Fdx+1TEl4a7hGDxcUc8e8WcY5ZJFeqxaPsJEP
+	YY0+23sIzYPpve56IKOYBq4+HS/VO3A=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=fygo-io.20200929.dkim.larksuite.com header.s=s1 header.b=ko+peYdW;
-	spf=pass (imf21.hostedemail.com: domain of yukuai@fygo.io designates 209.127.231.18 as permitted sender) smtp.mailfrom=yukuai@fygo.io;
-	dmarc=pass (policy=quarantine) header.from=fygo.io
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fygo-io.20200929.dkim.larksuite.com; t=1782284286;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=FMKsX1oqr9cJS0GXtzM8Ok+fkwH2kagCOdyTihBZHlM=;
- b=ko+peYdWhkBC6Z2+M+DAnl+DHsw7wlKUYcGNSanD0QdqHL8kOGNHfy5JdHfFOLwBitSHLK
- EK6pLRNFI2Ud7COX476laUs/Yn9twDwM6BzwU5ay+45/RPsZvLd2zVcfwbj3e8/Oh8o6Qh
- 51b1/iIv5qImhJBjy9SAtaeR3IiSjddbeFzYvyuiv9VOVVgPqb8e0c6pncmMnr8S7IziS1
- bRaHq/Eeyn+vdDxSEw1TIBPEMAo4KrGVeqjBoeJepRYhI8QA0h9N/pIA84fxdaAnw/4KBM
- RdiUXkYUQnjnDCgCUCNCg2y4JhTuJcX8KFuo5Ck1jX6/L9Z0UVAbsh/6OJ/rQw==
-Cc: <akpm@linux-foundation.org>, <chrisl@kernel.org>, <kasong@tencent.com>, 
-	<shikemeng@huaweicloud.com>, <nphamcs@gmail.com>, <bhe@redhat.com>, 
-	<baohua@kernel.org>, <youngjun.park@lge.com>, <cgroups@vger.kernel.org>, 
-	<linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-mm@kvack.org>, <yukuai@fygo.io>
-From: "yu kuai" <yukuai@fygo.io>
-Mime-Version: 1.0
-X-Original-From: yu kuai <yukuai@fygo.io>
-Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26a3b7ffd+12954f+kvack.org+yukuai@fygo.io>
-Message-Id: <1c739fcc-5132-4cb2-bf34-cec94de26509@fygo.io>
-References: <cover.1780621988.git.yukuai@fygo.io>
-Reply-To: yukuai@fygo.io
-To: "Yu Kuai" <yukuai@kernel.org>, <nilay@linux.ibm.com>, 
-	<tom.leiming@gmail.com>, <bvanassche@acm.org>, <tj@kernel.org>, 
-	<josef@toxicpanda.com>, <axboe@kernel.dk>
-Subject: Re: [PATCH 0/8] blk-cgroup: remove queue_lock nesting from blkcg paths
-Date: Wed, 24 Jun 2026 14:57:59 +0800
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Mozilla Thunderbird
-Received: from [192.168.1.104] ([39.182.0.148]) by smtp.larksuite.com with ESMTPS; Wed, 24 Jun 2026 06:58:04 +0000
-In-Reply-To: <cover.1780621988.git.yukuai@fygo.io>
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=qgv6xnPX;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-37cae998401so363467a91.0
+        for <linux-mm@kvack.org>; Tue, 23 Jun 2026 23:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782284305; x=1782889105; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
+        b=qgv6xnPXCwiErzp7aweVx4pop7w+Rx+IwUha4QqTf9pDBr2ycos1xKQdnQHCDaZ2Pn
+         aKn9k1jIGDOJonlLnQh7e0nPLV13e9GZsNfzBo/ocfcbbnuqMHkp1lmFC69l9L7GhKIs
+         1d1J/FNPWLvgTrdG/Yp3FtzA49pgOHLR47viyEL66Hz0WDrywDZzPtWhDlseUH0z+ZDI
+         uszu8r6qGRUo2Te0yY+/MXwt5LUB0ejIzbr4jJ0J8uMn8xMQ4AuKL5GLFWktytMnrTE6
+         aA+QtdXjOrtMfEJf7FAhsUCi9BTfISZLyi8lM7ELaw0qjV1FKY+aHuypBMHZwH9eD4h8
+         /MMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782284305; x=1782889105;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=y0Um4hH99oeJ48BWDhTuqgCjMj39PG5+rvU6cG4OaeI=;
+        b=X+hoDYMfzyavLjYt1+xPS0wMo92EQlCP3NpXWXrUmZfFploK/R7UfZbw8A+e2sk3Ft
+         RCJ2O4JBFTSa2FelFGac+tve1jMAnWaSZjpsNMbKbZdDARmf4kw9HtYfoxxJLUY3OQpO
+         Qk+dMaIp8mguzu64+2Y6RG90U9IaEbB2IEYztTi6/rGjOh7/Sih/eA1PSagMW5poC6XV
+         AW4iKyFspP+po7cYHtl4Dc0y9HIW2nU3wGCPlQGjNcpt4XXmQPhvs6U57QT85/uUVNjb
+         abtQxeWUg9pXraHlk6iN/7eAUA62BMoXt741SV8AiBZl1kOy69UpOriX+a1Phc/XiCyd
+         UoZQ==
+X-Forwarded-Encrypted: i=1; AHgh+RqMONzZPSZkU5O68I2thvTLc2pLI6QZMspzxeDVEejqcDdD9bv9SIBzNKdniqoJg5KbktRZtZd66w==@kvack.org
+X-Gm-Message-State: AOJu0YyFA9ibnAbZRSk9+1wqSvAG9zN4+OqG+WWuw+72C3WC9H1S08kI
+	rSq9ccR+URjuFiT58o9wK/F/YjVmA5rvvXUYUU5zPzuVXhNYrNdksJwP
+X-Gm-Gg: AfdE7clsBW1m6IiUDMlkoZWlcydaJTpVNsmhqSo76dQs0UWgOFkqdllNwKq0xzmNBhJ
+	HqusRDTfqNk6xBDRAX3cpB2wBIDapSOLkrt68VlBtzGKGYtx+MQH+nWq55l1lxVuHaWmvDeJHUg
+	9hNiMLGUx9XSoqeHPnSb85FH3MKwCxdbv+ZF0Gf4W15/oHbrN5FwanxWuUGt+88wWRbaHWWL0Hq
+	gjZSpPLVC7cGQz4OZd5RZecvttAVwV7Vk5kduDaHYNfYwMuJt49G9brArKUHdWplkhltQ41z0wi
+	6dlQcQBeoCbLRVUW6AsJohhjWiwxK+93EevkQ+QANqStlMZ0c0k4NEba0pex6WEc1f2245vo7qo
+	jKf+Sme8F705TM16JI37dHy0YlUAiEIjUSkxcHBiInZW3odeHiYEcqIWAxbeYEkDsYPH9gaxITO
+	FD0EpV3pDJSWISxMTfseXfAijgktE92yy0T58uA9NgeTIdzaJg3Bxn4i9H2whYvg==
+X-Received: by 2002:a17:90b:4ac1:b0:369:7421:b36f with SMTP id 98e67ed59e1d1-37de462d411mr2084324a91.21.1782284305284;
+        Tue, 23 Jun 2026 23:58:25 -0700 (PDT)
+Received: from localhost.localdomain ([47.72.129.29])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-37de3a8441dsm1488142a91.4.2026.06.23.23.58.22
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 23 Jun 2026 23:58:24 -0700 (PDT)
+From: Barry Song <21cnbao@gmail.com>
+To: willy@infradead.org
+Cc: josef@toxicpanda.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] filemap: Remove file pinning during fault handling
+Date: Wed, 24 Jun 2026 14:58:18 +0800
+Message-Id: <20260624065818.49975-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <20260622192114.1147198-1-willy@infradead.org>
+References: <20260622192114.1147198-1-willy@infradead.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: jw8ewgy95xs1iiquy3mrx5ns6gp6th3t
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D2C0B1C0009
-X-HE-Tag: 1782284290-628332
-X-HE-Meta: U2FsdGVkX1/wLJ/BxbHSsTVKDSsg3yO6Ew+gQ1+qBdLv/Pw+C1nIUE9Ke6dXzkzBiwjIgffGYrb2xX7tAQsUVfbLkTGO89oulL/kxTAAUfggMzdyB/vnibLQtB+Zw4LKB3tHR2TLsPS9qup6Xrqg8K4ZgnrDG3YNftQABi7zGV8u73dsAZ6gy6t3YMBGU+JDj/A3BRls90XUNXNhwLi3dNYi/m4XGsm8PBHp6HSSb76jkE9n+20EWKHKhazGR/OQJOaG3UxeP/uXXArS43gQ9/vQfIJu54YByqbZ/eRpRJjEJ4NJ6dY28beWeoBQpwaT73NYXKT5oBJdgQMC6TbdWHm5R4R5Gq9GPL+sdZogm33hTYi6vGLKMGbMvzsWZpTd/yO06likEm9UNjcJ5OM6MOeb3gZD5Z03ipEKhOCIayRuZrl/bQYqhomVPBrsfltAkGwZjqSlR8Gu/O4Uf/SsbIithEJgtRBtYnhtuFoGq3StM6k0/dT0rUOf3ZYfZvTRAVQdsJR31DZPa2ke+5RJB8sVW1an+nJlf8+QNarLWfvybzh0ml01WoxbY8LgirAw6BDZAVh1foK0KWToPd1NfxGbzzNmW/2lYvRLfEAubsARUprikuCEt7F5W5nihSfo9beXpy40CtlnCwd8w4DQ7HNK+KmFtlj7JMRLHEXbPUiuC7SjZC13MYtYsohJkQCzudqY/d6FpSp49pt7Fbr4SBZAVcgWqgmmruTyZnxcFCdnt5/xWe4S/r86d2Vf+P8VSiMGWfWURIeV99q0EoZJUwL9hdxWpt+QNHFuWnGvd71389W5vGgYtVFkmzxb3xHG7AiyOFFL88D/yDzMNOvvY86XgNCs6ZlTAaDKfi7PqLKeaEazYKA4k7ksiFidAOZ0NPqe+nM8qZHiAzuq5UcMbXDZah5FR/Cm4VJUeuMXyM+r1aC/nrvlsugVU9PbjjxySGpsbYi1J5b5uZJSW1i
- iiG7Zz1y
- kjQF8plug1pT8SnCh1l8t8Km4Kl/wntD0NufNr2c3FRiK+2ql+2ZgT0FG1D84gkawGuabQwgTC85fIIemEJAaKmso6eJx6G003egt8FsHWH06+Mmh5j8jmIYTBkaTfyQXyLv4ENhg4V0ghgfMOTDekE2yDa2OavBC6zRtJU/L9Cpnon7ohTUjG50Q/hhRZJNxvA44jVVCOgAKWgiTqYbCQCqEckQiAJTJKmWWdCGMYXPGaE52cori/wS0gT5YvJHwZx3DL/WJgG3wNYhG1uH0tkjyRFD64YZdKZdJBhTfhKCHX1QF2xVESnrcM7JGbw4G+xtO+ZbjaPYng28IKlnUkMKzLn8Ld/9TzP2vRuvRt6u3hfkVEuP3LiPpvQ9DONWT6cisMSyXyYa9sAelknEuHWGnW35zgiKNXU+dyIT6qdLXIH7sLzHhj8RVxPf4XG06qO41PZMsa9fhHQBxiiNtb7RKVFYo2pAVHIH/t7vrqnnxhqfr6JBKT6lFdyvW4sFNn6j0qREoYDsS08z5iOf6LNIqsyCHfVhoutt/q7EWrYuBNAxcbqqIRAuICRpALsYKAPfj/S50cT11xvIMf7+FuKTeFmUro7DySKWoPts1xETgKb2gdDqL5q2FOM1kIOPHbm+4oeNgCTcX1wJaShkE3lTL6J48aIJqE0MgVAzQzg49MdSL7ACa8uzZwYSrG0uJBSIlM36Acn9iX5A=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B37AF120003
+X-Stat-Signature: 5pxmcd9mni689tqe88uyi6cprk4ps7nd
+X-HE-Tag: 1782284306-718537
+X-HE-Meta: U2FsdGVkX19flCbF2+mhBN8I//dm6Kmst1MrkAk6fRWhXg90/0JsNBa8gRuUGuNWoi8+4YYHQ95XtO6WwzHzKjt2U+OQg3SoPGR0gzlD04DDdyypIXgowdrk5b9TVmgV+s5ClRtJnbhaIipbfGGIn46wH2sobMGq9u9u8j3t5DgJF5ftTidI1CwB+mgwGOheBg37mrk+crZI4x3ClUxMPUQ+X21Zf2nftykHS0hWIwhm/8XUzSnD1IO41te02MLEv9Ub/oNyxK7eYI6g7t00sfNRlo1PmVqD9AKJ3aEhmPIZvnTtGipFDZxq0KfX8qwoN46D+/PR46lS1kqkLtEkkztiR+RI3Jr7al3pDi7FJ6KMMUe51S90TIE3dfiD3/mtbHbXQEEHhcw5/60mGGbf49/1j6sqRRDM+OTW3tNIk8hZz+IoQlniJLZrhyZD0E7/2EkREjfm41o9dflG6XIpYi/WfTxBY9v3EIqWTsAxyFPNNPydTgIR8W1V9aALwurvSduN3TGswHCwAjDC45NF3CZSBuoVicshcoVrp0WOJ7a+wkXsVNQO4HpjdaXqX5j8IYnyERrFEtFKxH18eU+3MWRNEtC8RP9SPKo/1CsBOHhPaiYr0qBXo7UWKx3l9zc/p0o+aQVYNcMdKvL9PE4EaQqNZ5ko70ZhyqgOeQnmKv1kRc80E7kuBtR2J35Rxnch5UuuyxkdgYc/HZSCw2qf8Zn8p2lDGcIu/Um3XY3Jlg/QwtIVuUYfy8s4/hO6sLD3tX/hQveNdpIcQXOqJJLxdjOmPTJuLmII6WmvEODkk93oKT1KampoMCpGKi7u8NNJ03sud3OCZ3khHDuXa5F1q88p9jICUWX0a1U3pP5beQgFmAcZMIYzgEaf81Wjb5G9AmMbxN5YOD83LAri1MazxvdQNRSnoLz8WTf+wsuHKuvHLXC/RIRY19RwVp1AnqDkH364ycNFXmhQlvhwMd8
+ zQT82tiB
+ nAcfmCyYx2UPTTWC6Iqo8Ku4sEHa4iskgggKWoI3lPavimaRcjydVlNAP/sAqUVhpBOTiOXfqi0tho0o3Uq+m+ipjWd6YpWXQqUWlB7t2p71c6zTUxYSx2yjbBEPGK+jQn91GAZU/+kbDCR0jXUOP5MYbkw4xNJOkIVcm/LNO6CG8jMzjfHyMp5Q9LZEzTl8SqQYAm0WITnneo54p7cw1cB0EXL+FZ/2FLvkIbc4DWZ/wqW6a/fPLfAe92eZXpfp8CiCK1siy+WlsnpallrMtHAKEMPWEg7WlFlowVugwM9r6nS259wpHB5GbpsHPTFYdEJ6rsyJoRmG9MAy9c6f1RlEsAPNhMnxGEifExfvyJ1eslRo1JY7BLcBE9GHBwdoQiiMIHmR17mkk4sm6DnjReHn5GQsTIHNCYp5LT5twnw7ASAd3EZo6ClXOMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,66 +118,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Friendly ping ...
+> Now that faults are protected by a per-VMA lock instead of a process-wide
+> mmap lock, it is far less important to avoid holding the fault lock while
 
-This set can still be applied cleanly for block-7.2 branch.
+We could have fallen back to the mmap_lock from the very beginning in
+do_page_fault(). And for GUP fault-in, we have always used the
+mmap_lock so far.
 
-=E5=9C=A8 2026/6/8 11:42, Yu Kuai =E5=86=99=E9=81=93:
-> From: Yu Kuai <yukuai@fygo.io>
->
-> Hi,
->
-> This series is the follow-up blk-cgroup locking cleanup on top of the
-> earlier blkg-list protection fixes, and prepares blk-cgroup to stop using
-> q->queue_lock as the global blkg lifetime/iteration lock.
->
-> The current queue_lock based protection is hard to maintain because
-> queue_lock is used from hardirq and softirq completion paths, while some
-> blkcg cgroup file paths also need to iterate blkgs, print policy data, or
-> create blkgs from RCU-protected contexts.  This series first tightens the
-> blkcg-side lifetime rules:
->
-> - blkcg_print_stat() iterates blkgs under blkcg->lock with IRQs disabled.
-> - policy data freeing is delayed past an RCU grace period.
-> - blkcg_print_blkgs(), blkg lookup/create, bio association, page-IO
->    association, blkg destruction, and BFQ initialization stop nesting
->    queue_lock under RCU or blkcg->lock.
->
-> Using blkcg->lock and RCU for blkcg-owned lists/data keeps the lock order
-> local to blk-cgroup and avoids extending queue_lock into cgroup file
-> iteration paths.  It also makes the subsequent conversion to q->blkcg_mut=
-ex
-> possible without carrying forward queue_lock's interrupt-context
-> constraints.
->
-> Yu Kuai (8):
->    blk-cgroup: protect iterating blkgs with blkcg->lock in
->      blkcg_print_stat()
->    blk-cgroup: delay freeing policy data after rcu grace period
->    blk-cgroup: don't nest queue_lock under rcu in blkcg_print_blkgs()
->    blk-cgroup: don't nest queue_lock under rcu in blkg_lookup_create()
->    blk-cgroup: don't nest queue_lock under rcu in bio_associate_blkg()
->    blk-cgroup: don't nest queue_lock under blkcg->lock in
->      blkcg_destroy_blkgs()
->    mm/page_io: don't nest queue_lock under rcu in
->      bio_associate_blkg_from_page()
->    block, bfq: don't grab queue_lock to initialize bfq
->
->   block/bfq-cgroup.c        |  17 ++++-
->   block/bfq-iosched.c       |   5 --
->   block/blk-cgroup-rwstat.c |  15 ++--
->   block/blk-cgroup.c        | 151 ++++++++++++++++++++++----------------
->   block/blk-cgroup.h        |   8 +-
->   block/blk-iocost.c        |  22 ++++--
->   block/blk-iolatency.c     |  10 ++-
->   block/blk-throttle.c      |  13 +++-
->   mm/page_io.c              |   7 +-
->   9 files changed, 158 insertions(+), 90 deletions(-)
->
->
-> base-commit: b23df513de562739af61fa61ba80ef5e8059a636
+> performing file reads.  The per-VMA lock does not prevent operations
+> on other VMAs, nor does it prevent iterating through /proc (see commits
+> 6b4c9f446981 and a75d4c333772 for the original motivations behind dropping
+> the fault lock).
+> 
+> We will now submit I/O and wait for I/O to complete while holding the
+> fault lock.  This removes the need to return VM_FAULT_RETRY which means
+> we won't fall back to the mmap_lock from the VMA lock just because we
+> had to wait for I/O.
+> 
+> This should result in improved lock contention, although it is possible
+> that some workloads will find themselves contending on the VMA locks
+> due to them being held for longer.
 
---=20
-Thanks,
-Kuai
+Hongru reported that 82 of the top 200 Android applications in the
+China market call fork() in heavily multi-threaded processes[1]. It
+would be good to take existing applications into account, please.
+
+[1] https://lore.kernel.org/linux-mm/20260623075805.466317-1-zhanghongru@xiaomi.com/
+
+[...]
+> -static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
+> -				     struct file **fpin)
+> -{
+> -	if (folio_trylock(folio))
+> -		return 1;
+> -
+> -	/*
+> -	 * NOTE! This will make us return with VM_FAULT_RETRY, but with
+> -	 * the fault lock still held. That's how FAULT_FLAG_RETRY_NOWAIT
+> -	 * is supposed to work. We have way too many special cases..
+> -	 */
+> -	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
+> -		return 0;
+> -
+
+Does this break FOLL_NOWAIT users? They are KVM on x86 and s390.
+
+Best Regards
+Barry
 
