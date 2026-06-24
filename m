@@ -4,96 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA4D1CDB481
-	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 670EACDB479
+	for <linux-mm@archiver.kernel.org>; Wed, 24 Jun 2026 14:45:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D35D26B0098; Wed, 24 Jun 2026 10:44:10 -0400 (EDT)
+	id 436BD6B0093; Wed, 24 Jun 2026 10:45:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0D716B00AA; Wed, 24 Jun 2026 10:44:10 -0400 (EDT)
+	id 40EF86B00A1; Wed, 24 Jun 2026 10:45:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFE116B00AD; Wed, 24 Jun 2026 10:44:10 -0400 (EDT)
+	id 2FDDF6B00A4; Wed, 24 Jun 2026 10:45:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 972396B0098
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:44:10 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D8736B0093
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 10:45:18 -0400 (EDT)
 Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0A748C1A98
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:44:10 +0000 (UTC)
-X-FDA: 84915076260.21.9F0081A
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 49158180004
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:44:08 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="L+y8/CCL";
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 91FC38D795
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:45:17 +0000 (UTC)
+X-FDA: 84915079074.21.EDA3A6C
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4DE8780011
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 14:45:14 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=SfAnQDLj;
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782312248;
-	b=sKzLm1AtVl9r8HUcMpbKkuQ/MehCqXr6pp3mEKXMxTFo5dJC0lQYevCu8A7/NbV5jLM9a1
-	ZERm20LJXwESzjfWUUYnQn2ZKNhHMU5lLEeZ2JG+1vetbEqlaC2h6653lKQGOT3JPELNQS
-	ZELC6nSxnU0qkmV3sFVibiszGl3YpLs=
+	t=1782312315;
+	b=mw8ESH67900JlGDTh69GOpqyTZ+QJH74B9dxg6x2ajmewUdkJFgNuXr2eAUgYlhcfp6HCW
+	HMttDtcKLaQScDce11xOxl5w3B3K1KR5AosKEOQ6YPRoZCNtt3G4raC4vrZReGGAcJDo0W
+	1D5OynYX2hwehmVH4XHU/Lm1c7v3w84=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782312248;
+	s=arc-20220608; t=1782312315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6PGmacesfs5D7l88/LYc0Jj+8T2MBmH/nLSbNfGqkXo=;
-	b=61WJABSJ6+sUUedTHxBXymMNSuPh6FgDm08y0Ad/v6OxSaMdums0F0aCLwcRso5MH7/gsM
-	dFHjX3kgXZIZ7IYgoTkJ1pzO4g3fXLmwBhCAiQadcK/JkM8j7o6uaUNQGnHTRiB6oo8dtd
-	3esBhvxxUAuh+2byqb+9qvJjbN0WKHo=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="L+y8/CCL";
-	spf=pass (imf24.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782312246;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6PGmacesfs5D7l88/LYc0Jj+8T2MBmH/nLSbNfGqkXo=;
-	b=L+y8/CCLptX4rVDt3mUoH2+z/RlxAGGHesMozRiYtc51iD7ksQVhnoE3wpcIBGe689UFWh
-	4yunwbmU7mx07/KO2uHSgFjCW1VeVNqq/ChP07BM7crn76c9ZQ5ONb5EPN1phEoWDwFzGd
-	a+zjUTd4M/8w0y69tl8+2i93Wt+JjeQ=
-From: Usama Arif <usama.arif@linux.dev>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 4/5] mm/memcontrol: convert memcg to use page_counter_stock
-Date: Wed, 24 Jun 2026 07:43:47 -0700
-Message-ID: <20260624144348.4117578-1-usama.arif@linux.dev>
-In-Reply-To: <20260623180124.868655-5-joshua.hahnjy@gmail.com>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wVHL6dNX3n7r+4CMxQlhF34InM0ZtmF2WvKJot0jDCY=;
+	b=ocTIsvc3FLxsL7V+e6Ol2qwAYHJsX701f+/2fnkAoOYM1780F0LCyL5bWMUX7CcKI9Tbwy
+	Z9jTNvRP/L8TI+Brge/FtiEwEvJzx5AG6HWtOb40lOSO/6q5+pYXzLCJzsfiEilI6iJ6U3
+	SZYM0Y29axyfMsr8Qx/Zr8XA5T5O+R4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=SfAnQDLj;
+	spf=pass (imf02.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=wVHL6dNX3n7r+4CMxQlhF34InM0ZtmF2WvKJot0jDCY=; b=SfAnQDLjyks4iVnfjPMSmwBwcE
+	pI6O0c3Mm9qB2rzbC/gbho6xWZUqwzDU2x1INjpfNAT9SFAcZFuZ/zcv5lO0zd0i6AM5VVML3tird
+	jr+ZzFY1nRGYKurHINka7k2ah+jijis6cIePNgJ+kT+k7T67C76SRJg7zUXFCJLIkOIGcM/8wY3nK
+	BxE3JMWV9McHNXFwwGCAAVq1ripEwsaoDSZrdB4tVCI8XssJ3M/YcMtbW1V2UFlOHrbMtiJDPAvDn
+	JY1BK5K56JFe4nhCAAQpRyEipz71TaJL547OD5Odj4GJI6F7xYLU4dLQMqoDrK4fPjeb6pOx0xEb/
+	0seyqxtw==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wcOpw-000000005xR-1YWm;
+	Wed, 24 Jun 2026 10:44:20 -0400
+Message-ID: <da460b26bef42152bf23d395f845503ad8eedc4d.camel@surriel.com>
+Subject: Re: mm/hwpoison: persist poisoned PFN list across kexec via KHO
+ [RFC]
+From: Rik van Riel <riel@surriel.com>
+To: Pratyush Yadav <pratyush@kernel.org>, Breno Leitao <leitao@debian.org>
+Cc: nao.horiguchi@gmail.com, linmiaohe@huawei.com, david@kernel.org, 
+	lance.yang@linux.dev, akpm@linux-foundation.org, baoquan.he@linux.dev, 
+	rppt@kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org,
+ rneu@meta.com, 	caggio@meta.com, kas@kernel.org
+Date: Wed, 24 Jun 2026 10:44:20 -0400
+In-Reply-To: <2vxzse6ckqfg.fsf@kernel.org>
+References: <ajut_LDQGYCShApx@gmail.com> <2vxzse6ckqfg.fsf@kernel.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: iookw79sj1c9ujqxnyh7uqsrzt4ig9r6
+X-Stat-Signature: apr4hqiupk9jsqnbbigs3e6uuyu3cdi7
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 49158180004
-X-HE-Tag: 1782312248-238905
-X-HE-Meta: U2FsdGVkX195EKOUWXyfVxBinkG/lFhLZcFXbvkOdhPe9kgJCBF1PWghF3FQOm+tC4+z3LSm19YMjXHaaIvRhQchQJagbVR3wcEUiih51hcFzVkhP6A9Jj6+iWr1X4FCb52le+dFIW8ebdrk74xPeJiVKLe92KUtlOWsemjJN8UKRxEF9YUIL0Rm3GZrMJYagAD6juOb4yfSnQBiuO5Ggs/67cJtE5/rKwQNs/PAoWwfs33E1DAPK15IIl9qeiYMdlTuM7vdnuuXjdp0uDpdiri/o7YboHwaGnWISF5WYAgAd3pO/0syiuZQmp+U8HvTvQgw6ShHmcUXmJM1/+P0jjdbt/EONBpUWGkWn/6ZHL1qZd/psMmsIvj5tQFuStUnGlZ32SmRiqsi3AuuRiDDcNqzW3RHxC2CSgJrVFClThfJcFt6fjee0Wrq6kcOGlfCRnkKyReVBKlZxDuk1GHd7IrdeEcisCHrHnoILtpuLhdMMZy1xhb/8Wj1MkrQNIQ0PHdFlwFkJhOI7wtMOGpCsiQ4UI0wMkqTunRxbsBnzuPaiMY+PbPDkSM+/VbfvrNMxeCnpnesD8tRa0bFwID4n+y+9IasfsiPkwyE86lCFxvKr+qBzsbqAqp1HBrqE9vnmkTsqUBM6JCAjRCBlWmrhpLvGniDAxTdtdHEVKyCbDmcvWpj6ww48bizATA/op3Wm2LZd0yBZZKlzFvmybk+q8eM1h6rrf6zvPr5WxW3vdQZneGbci7VAl0qhKOFtN4IAyPDQmnruG3lzXGD02fWYdxwa1bHYLQIjNh0l7F5uyMD3aJklkRfDcvN+wybj+qYwxUk/T0L8NU6C8vf7PErlUx3x8Vobl0XXZcAkvukpZ6HdTY2vRyhpShGpAORLaAN+z8bz3IhcLHqO/zkLv35eNHpEAdVXVEyYzqvFg/1asXUAOatyvFZyf6ioLP3L+h6hnGT6pfgSnanPLKSxMl
- fHUicjBm
- CEJ41tYFgP4kXDZpy0V4uByJlyUBlggVDBDA0auCDgtxtYj5moydLU7UeN1wc2X2qPk0q/AVeLMD3olPTLn8O7576wy3JTEDqzP61Bs4ES9fV1QhVd5LAxN0Wz55vAU8gNStBZTWF8eBb3l8ovoJPGfkiUI5fc4u+ZFrVjQ7ZXXRE6Poo5efJ6/bYSx88QB8kRs1WK5zDj6TfBBxU4qLE2gupYA8N8eNVBJPNGchDWTTmEOM55+saBxFKaDpkP5158VNpz5THJL1a/Pq5kr6uHIZUBKW8UUJw9xhhwBAVqX0Rt6t3POvm1mjuhjG7kCECcLsAZvxtGUIp6yHNevyEokHiblm7VKAkXKQm5u80io5KLb0NEpvhs5E2cPQjoeQfiSVIR/d2XYiJ1F9JUe878l36qA==
+X-Rspamd-Queue-Id: 4DE8780011
+X-HE-Tag: 1782312314-891998
+X-HE-Meta: U2FsdGVkX19MAWyXSHrpeeIzzy6rtCop5+2Pk8f57Tbxo2idCH5dL9sDvPbIMR9Qr9yIJz6uDdJneKGZRUn2ZPaSHVX8fvf/3Y7IBiRrKzQ2lQfDpFqdgNSvM6nuWhXRoboHTV3KxVcPTIQB+lp/UqAjcniatSGiS3xEgCKtNAduHeW+I36DvM6CbPK3ZRIF1gF4uK6FZ66neWTsoroPJgpUJWUXVT4ffyXkAd0j15W7Bsqh0fAL9c3ouSo3vQOSx6Jb7Hmct/hB/NQIr/pIta8smG5KbqhJrTeAc0tXqbaroqIgBlu+VNGjYtSkytrBMw3ROzX89BNjd6Hwebh4xT9LxDd+t05F/WGPMtYYTPK6eqEgkpKR1Mk6JleJsuCgudkeMfiftDbrg7nq79mIVoXVt8paR+ciBM+ictKAL/Y/0QlgmaeXgLIPG1aGYUgw54fpqyxlWYnKnXYLEdxzf6egfTh2WqFNN5JHm00KuuQXZ+Fb6ZE+qPzwyBF1fB4xG9mEf5quU0d1eoiUkVPLo+Aw10pPjr+czfGjUfCoaAr1xMu5AvFkHwW8Sikoyb3152sk0y+iSKaLjpi3RSvASP4JXujuKL2OlLsNjW1WQ4Fl89zQgwsqH/Gb0Aw7rNRruCAXLq9FCylhfod9McDh08dfnQB+j8n2d53397U7EZu9rmLfNe0EaRmln7AeYmrpN3nIypJvbVGDMEtvmDZqwVnkqqKMUASIyHdf2Hr7bA5GWpWJA07EgEVc4TofzAXiv91/C9b8OImlOHi1KqRSqKX6RyPgudJ+SxfP0k2ht0iDJ+A1EiKjMq41bOWx9e/GDE3MWhEDJeoqluFn/83BsyxZz+hra7OgoiE5B/kH/OxMZucTQcoIf+F79QFUVPi4/XCeXenFUu07Uj0c2auW9SOzwqyK1yv7vwByu8Rqx2RBJTWTWJfSvBRIPPIk4oIelfL0dE0PwAa9CVUu6Oo
+ 4ssCfILq
+ KbF7GEBlKKRKrjGKp1vZn85nt/VYp6/1rXyJGa21+yOJYBIA4Yt/iumFfTkA2cRIAaUAcrJqEZkEuEGL9+cvhLHrRzh1C7qcOqrNim9NksvVGHApABWzRPCKaunt80NuFHoHrg4dRad2ahmE1iozVDiGwMET25ir9SWoLHc6SDPTw3BLpkbSvlK+1tuuhv8ACF0qcK7AHa1pcA2RLZjZW6dkULfWQrlAL3hd40BC/9SYxny1jXcvAcDyw9ZB05EftxFQS2O26WjlLNHG7MjFQ36AUyJjzj9YZB41W481L6/zAejc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,255 +122,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 11:01:22 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Wed, 2026-06-24 at 15:40 +0200, Pratyush Yadav wrote:
+>=20
+> Also, what happens on cold reboot? If the HW does not remember bad
+> pages, won't the kernel be in the same position? How does it know the
+> bad pages on a cold boot?
 
-> Now with all of the memcg_stock handling logic replicated in
-> page_counter_stock, switch memcg to use the page_counter_stock for the
-> memory (and for cgroup v1 users, memsw) page_counters.
-> 
-> There are a few details that have changed:
-> 
-> First, the old special-casing for the !allow_spinning check to avoid
-> refilling and flushing of the old stock is removed. This special casing
-> was important previously, because refilling the stock could do a lot of
-> extra work by evicting one of 7 random victim memcgs in the percpu
-> memcg_stock slots. In the new per-counter design, refilling stock just
-> adds pages to the counter's own local cache without affecting other memcgs,
-> so the original reason for the special case no longer applies.
-> 
-> Also, we can now fail during page_counter_alloc_stock(), if there is
-> not enough memory to allocate a percpu page_counter_stock. This failure
-> is rare and nonfatal; the system can continue to operate, with the page
-> counter working without stock and falling back to walking the hierarchy.
-> 
-> drain_all_stock and memcg_hotplug_cpu_dead also now use the page_counter
-> stock drain variant, which uses remote atomic_xchg to retrieve stock
-> across CPUs, instead of scheduling asynchronous work.
-> 
-> Finally, as a side-effect of separating the per-memcg stock to per-
-> page_counter, the memsw and memory page_counters have independent stock.
-> This means that the reported memsw may transiently be lower than memory
-> usage if the stock for memory and memsw page_counters go out of sync.
-> 
-> Note that obj_stock is untouched by this change.
-> 
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> ---
->  mm/memcontrol.c | 87 +++++++++++++++++++++++--------------------------
->  1 file changed, 41 insertions(+), 46 deletions(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 306658fd55512..846800917af49 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -2269,39 +2269,36 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
->  		queue_work_on(cpu, memcg_wq, work);
->  }
->  
-> +static void memcg_drain_stock(struct mem_cgroup *memcg, int cpu)
-> +{
-> +	page_counter_drain_stock(&memcg->memory, cpu);
-> +	if (do_memsw_account())
-> +		page_counter_drain_stock(&memcg->memsw, cpu);
-> +}
-> +
->  /*
->   * Drains all per-CPU charge caches for given root_memcg resp. subtree
->   * of the hierarchy under it.
->   */
->  void drain_all_stock(struct mem_cgroup *root_memcg)
->  {
-> +	struct mem_cgroup *memcg;
->  	int cpu, curcpu;
->  
->  	/* If someone's already draining, avoid adding running more workers. */
->  	if (!mutex_trylock(&percpu_charge_mutex))
->  		return;
-> -	/*
-> -	 * Notify other cpus that system-wide "drain" is running
-> -	 * We do not care about races with the cpu hotplug because cpu down
-> -	 * as well as workers from this path always operate on the local
-> -	 * per-cpu data. CPU up doesn't touch memcg_stock at all.
-> -	 */
-> +
-> +	for_each_mem_cgroup_tree(memcg, root_memcg) {
-> +		for_each_online_cpu(cpu)
-> +			memcg_drain_stock(memcg, cpu);
-> +	}
-> +
->  	migrate_disable();
->  	curcpu = smp_processor_id();
->  	for_each_online_cpu(cpu) {
-> -		struct memcg_stock_pcp *memcg_st = &per_cpu(memcg_stock, cpu);
->  		struct obj_stock_pcp *obj_st = &per_cpu(obj_stock, cpu);
->  
-> -		if (!test_bit(FLUSHING_CACHED_CHARGE, &memcg_st->flags) &&
-> -		    is_memcg_drain_needed(memcg_st, root_memcg) &&
-> -		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
-> -				      &memcg_st->flags)) {
-> -			if (cpu == curcpu)
-> -				drain_local_memcg_stock(&memcg_st->work);
-> -			else
-> -				schedule_drain_work(cpu, &memcg_st->work);
-> -		}
-> -
->  		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
->  		    obj_stock_flush_required(obj_st, root_memcg) &&
->  		    !test_and_set_bit(FLUSHING_CACHED_CHARGE,
-> @@ -2318,9 +2315,13 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
->  
->  static int memcg_hotplug_cpu_dead(unsigned int cpu)
->  {
-> +	struct mem_cgroup *memcg;
-> +
->  	/* no need for the local lock */
->  	drain_obj_stock(&per_cpu(obj_stock, cpu));
-> -	drain_stock_fully(&per_cpu(memcg_stock, cpu));
-> +
-> +	for_each_mem_cgroup(memcg)
-> +		memcg_drain_stock(memcg, cpu);
->  
->  	return 0;
->  }
-> @@ -2595,7 +2596,6 @@ void __mem_cgroup_handle_over_high(gfp_t gfp_mask)
->  static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  			    unsigned int nr_pages)
->  {
-> -	unsigned int batch = max(MEMCG_CHARGE_BATCH, nr_pages);
->  	int nr_retries = MAX_RECLAIM_RETRIES;
->  	struct mem_cgroup *mem_over_limit;
->  	struct page_counter *counter;
-> @@ -2606,36 +2606,30 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  	bool raised_max_event = false;
->  	unsigned long pflags;
->  	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-> +	unsigned long nr_charged = 0;
->  
->  retry:
-> -	if (consume_stock(memcg, nr_pages))
-> -		return 0;
-> -
-> -	if (!allow_spinning)
-> -		/* Avoid the refill and flush of the older stock */
-> -		batch = nr_pages;
-> -
->  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
->  	if (do_memsw_account() &&
-> -	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
-> +	    !page_counter_try_charge_stock(&memcg->memsw, nr_pages,
-> +					   &counter, NULL)) {
->  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
->  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
->  		goto reclaim;
->  	}
->  
-> -	if (page_counter_try_charge(&memcg->memory, batch, &counter))
-> -		goto done_restock;
-> +	if (page_counter_try_charge_stock(&memcg->memory, nr_pages,
-> +					  &counter, &nr_charged)) {
-> +		if (!nr_charged)
-> +			return 0;
-> +		goto handle_high;
-> +	}
->  
->  	if (do_memsw_account())
-> -		page_counter_uncharge(&memcg->memsw, batch);
-> +		page_counter_uncharge(&memcg->memsw, nr_pages);
+Some modern server hardware will simply unmap known
+bad pages from the physical page map, so they will
+not be exposed to the OS after a cold reboot.
 
-This needs a transactional rollback. page_counter_try_charge_stock() can
-succeed by consuming memsw stock and charging 0 new pages, but the
-memory-failure path unconditionally uncharges nr_pages from memsw.
-That turns a failed allocation into a real memsw usage decrement.
+The hardware keeps a log of uncorrectable memory
+errors somewhere in memory, for example in the SEL.
 
+>=20
+>=20
+> >=20
+> > This PoC
+> > =3D=3D=3D=3D=3D=3D=3D=3D
+> >=20
+> > =C2=A0 * Makes hardware-poisoned pages survive a kexec, using KHO (Kexe=
+c
+> > =C2=A0=C2=A0=C2=A0 HandOver) to carry the poison list between kernels.
+> >=20
+> > =C2=A0 * Producer: hooks num_poisoned_pages_inc()/_sub() - the single
+> > =C2=A0=C2=A0=C2=A0 chokepoint for every poison/unpoison event - and rec=
+ords each
+> > =C2=A0=C2=A0=C2=A0 poisoned PFN into a vmalloc array that KHO preserves=
+ across the
+> > =C2=A0=C2=A0=C2=A0 kexec, described by a small versioned "hwpoison" sub=
+tree.
+>=20
+> More of an implementation detail, but with vmalloc array, what if you
+> have too many poisoned pages?
+> >=20
 
->  	mem_over_limit = mem_cgroup_from_counter(counter, memory);
->  
->  reclaim:
-> -	if (batch > nr_pages) {
-> -		batch = nr_pages;
-> -		goto retry;
-> -	}
-> -
->  	/*
->  	 * Prevent unbounded recursion when reclaim operations need to
->  	 * allocate memory. This might exceed the limits temporarily,
-> @@ -2731,10 +2725,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  
->  	return 0;
->  
-> -done_restock:
-> -	if (batch > nr_pages)
-> -		refill_stock(memcg, batch - nr_pages);
-> -
-> +handle_high:
->  	/*
->  	 * If the hierarchy is above the normal consumption range, schedule
->  	 * reclaim on returning to userland.  We can perform reclaim here
-> @@ -2771,7 +2762,7 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
->  			 * and distribute reclaim work and delay penalties
->  			 * based on how much each task is actually allocating.
->  			 */
-> -			current->memcg_nr_pages_over_high += batch;
-> +			current->memcg_nr_pages_over_high += nr_charged;
->  			set_notify_resume(current);
->  			break;
->  		}
-> @@ -3076,7 +3067,7 @@ static void obj_cgroup_uncharge_pages(struct obj_cgroup *objcg,
->  	account_kmem_nmi_safe(memcg, -nr_pages);
->  	memcg1_account_kmem(memcg, -nr_pages);
->  	if (!mem_cgroup_is_root(memcg))
-> -		refill_stock(memcg, nr_pages);
-> +		memcg_uncharge(memcg, nr_pages);
->  
->  	css_put(&memcg->css);
->  }
-> @@ -4080,6 +4071,8 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
->  
->  static void mem_cgroup_free(struct mem_cgroup *memcg)
->  {
-> +	page_counter_free_stock(&memcg->memory);
-> +	page_counter_free_stock(&memcg->memsw);
->  	lru_gen_exit_memcg(memcg);
->  	memcg_wb_domain_exit(memcg);
->  	__mem_cgroup_free(memcg);
-> @@ -4247,6 +4240,11 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->  	refcount_set(&memcg->id.ref, 1);
->  	css_get(css);
->  
-> +	/* failure is nonfatal, charges fall back to direct hierarchy */
-> +	page_counter_alloc_stock(&memcg->memory, MEMCG_CHARGE_BATCH);
-> +	if (do_memsw_account())
-> +		page_counter_alloc_stock(&memcg->memsw, MEMCG_CHARGE_BATCH);
-> +
->  	/*
->  	 * Ensure mem_cgroup_from_private_id() works once we're fully online.
->  	 *
-> @@ -5502,7 +5500,7 @@ void mem_cgroup_sk_uncharge(const struct sock *sk, unsigned int nr_pages)
->  
->  	mod_memcg_state(memcg, MEMCG_SOCK, -nr_pages);
->  
-> -	refill_stock(memcg, nr_pages);
-> +	page_counter_uncharge(&memcg->memory, nr_pages);
->  }
->  
->  void mem_cgroup_flush_workqueue(void)
-> @@ -5555,12 +5553,9 @@ int __init mem_cgroup_init(void)
->  	memcg_wq = alloc_workqueue("memcg", WQ_PERCPU, 0);
->  	WARN_ON(!memcg_wq);
->  
-> -	for_each_possible_cpu(cpu) {
-> -		INIT_WORK(&per_cpu_ptr(&memcg_stock, cpu)->work,
-> -			  drain_local_memcg_stock);
-> +	for_each_possible_cpu(cpu)
->  		INIT_WORK(&per_cpu_ptr(&obj_stock, cpu)->work,
->  			  drain_local_obj_stock);
-> -	}
->  
->  	memcg_size = struct_size_t(struct mem_cgroup, nodeinfo, nr_node_ids);
->  	memcg_cachep = kmem_cache_create("mem_cgroup", memcg_size, 0,
-> -- 
-> 2.53.0-Meta
-> 
-> 
+If a very large amount of memory is broken, you
+should probably just repair the hardware.
+
+Page poisoning is good for localized memory
+failures, but not for failures that extend across
+much of a memory chip.
+
+>=20
+>=20
+>=20
+--=20
+All Rights Reversed.
 
