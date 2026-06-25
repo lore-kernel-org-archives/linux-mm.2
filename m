@@ -4,142 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE84BCDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 06:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFF85CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 06:32:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01F5F6B00A6; Thu, 25 Jun 2026 02:17:42 -0400 (EDT)
+	id AF0646B00A8; Thu, 25 Jun 2026 02:32:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F12556B00A7; Thu, 25 Jun 2026 02:17:41 -0400 (EDT)
+	id A9F7F6B00A9; Thu, 25 Jun 2026 02:32:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E01406B00A8; Thu, 25 Jun 2026 02:17:41 -0400 (EDT)
+	id 98E6E6B00AA; Thu, 25 Jun 2026 02:32:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B2BCC6B00A6
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:17:41 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 32EDB1405DE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:17:41 +0000 (UTC)
-X-FDA: 84917428722.23.FFA3611
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D7326180008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:17:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qbcZ4cUo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YkCJXl0Q;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n5GkZTym;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SxiLqY4c;
-	spf=pass (imf24.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 704D56B00A8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:32:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E0DB61405EA
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:32:42 +0000 (UTC)
+X-FDA: 84917466564.07.C59E620
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 12E2B40005
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:32:40 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EUb9A7bf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782368259;
-	b=3r0HH0HkkwDAehs3H9k0c3A/BYySo+eynQKNhWDEOZ/6kz/HlNIAiIx7ASFmwpf1BUbhH+
-	O1xOFBWvWjQyzq0rETwtdfl+yes2wY5PqY8dmRBj9UGjtj8wS4eDhfd9KBXlyPKBUrCSMF
-	sEf3Wu2fUCS1TJX92oLM2mGLJSrr0Ww=
+	t=1782369161;
+	b=NS3Mu2q+3KddwreavfsOe6U5I8uaE9zzD80SiExVIYf6zTfSRItWx3ILg1ErxueVlS3R8a
+	2F5Bi5kXcuExfDoCSrKHhQ0N2lQxGVCe+zV5prdGxmygxxcu5eye6hGmbEcwFqGkoGC4HN
+	01YCEdwGT0vk3rXWm14iyMzcaczzpn0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782368259;
+	s=arc-20220608; t=1782369161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lsDZDuDxKlvNW8EPVPGqWeW6c2wLvDVP/aYJ1SGOw1s=;
-	b=cxrhbtS1UzNlI2+EyUUYbBmE7g1jgJqTNOeWHy0l9lb2xuX2o2hNR5PhyidYV/qYHmIqHh
-	U2P337SkG3LIP+RmVJhMFptdpPUbZmYXYdpNok59RfYO6be547Xz6NOL0JAU/3R7Rh40qT
-	4ROzrhAHaNhgTRqbBh0xwRPB1qBzlfA=
+	bh=PA++kEo6Y4a1roRSn0w8MGq4LueGE2Q8Z1qFuXhLmFY=;
+	b=Otz3lRF9gJSCq45JW73DgNt7yPQaCeOUK9cmK+cXpVMQtx1A9vi3dJw8D+JNY3UC70WzME
+	cfBAHjh5lTyqExVNElmk4RaAkCz43UB0Jx8/MS8DRVJoxCkOYhcd5xpBT9qNrWOQe0t3nq
+	+m9oyn8xGRTH4cOc2EuXfYAkmAPfIsk=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qbcZ4cUo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YkCJXl0Q;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n5GkZTym;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SxiLqY4c;
-	spf=pass (imf24.hostedemail.com: domain of hare@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=hare@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3017271833;
-	Thu, 25 Jun 2026 06:17:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782368257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lsDZDuDxKlvNW8EPVPGqWeW6c2wLvDVP/aYJ1SGOw1s=;
-	b=qbcZ4cUoNNNrBS8sol12QF8a20XBCri1pgE/tbEdP9ig/UFZv6rgUEzcBD7fEqjllibg/M
-	2DamV6U48sRwmzWWHVtfG5yBHYzRzIrN4YjYuL+/AZ/KZYMdJnh7KqsYUnsiNmlqVqw+sd
-	xs8bhKwszOVTMgmzHEbqt9qbD0w9zis=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782368257;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lsDZDuDxKlvNW8EPVPGqWeW6c2wLvDVP/aYJ1SGOw1s=;
-	b=YkCJXl0QMcZ5eO9Wh0jGxv+7rTwJYQzwe9ARpYn0YEXCxC4d23jhg0GVTLww7bCO2z3BAO
-	DxQ5Hxdo5cGHW9DA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782368256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lsDZDuDxKlvNW8EPVPGqWeW6c2wLvDVP/aYJ1SGOw1s=;
-	b=n5GkZTymO0+yOwrypTZxvOLlmvqBerJvEj15XaIGob78rgtYBHPQ1psIEuTOvqOsRNcc3t
-	ohqU2GpqweS7euy88WjypV8xCKCpPj4fJ5M7hInIC9kC9l8FefQfnH7SkHxPDLO4KU+es9
-	tjCrQN6zsPu1BSEV2Uf6LN3Wm+Fmorc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782368256;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lsDZDuDxKlvNW8EPVPGqWeW6c2wLvDVP/aYJ1SGOw1s=;
-	b=SxiLqY4czk0sQSzuZDu3RT6Wr3/E4Up9OPuVaJflrlwJbTYsGooecfrd8fqUtk8oos1KTM
-	3Fc5qxS9lcGZmaAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B2A4779A8;
-	Thu, 25 Jun 2026 06:17:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uH2uEP/HPGp0PQAAD6G6ig
-	(envelope-from <hare@suse.de>); Thu, 25 Jun 2026 06:17:35 +0000
-Message-ID: <8e42587a-d614-4259-ae6b-5bca1479b425@suse.de>
-Date: Thu, 25 Jun 2026 08:17:34 +0200
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EUb9A7bf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0FD6540497;
+	Thu, 25 Jun 2026 06:32:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E0521F000E9;
+	Thu, 25 Jun 2026 06:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782369159;
+	bh=PA++kEo6Y4a1roRSn0w8MGq4LueGE2Q8Z1qFuXhLmFY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=EUb9A7bfT8o3xC2ShcbPTp3AtLHchbnUhfWwHdlOwyZsh3St007Q/Xs0YRAbPpKMY
+	 quqEr/j0IjbouRsTm4EzGkODpqMQTtJIMICXpGO2ruBvW4jAmZTV9OQQmreCW6B/LL
+	 2hjww5y4aG2w4n4zEJkJvE59uvTx1GZ+tQdMC0iuUPFE77eIsmlPuhnN3P5FLaikDK
+	 CKpMhUfVTeOhWw1gKsN7DO48KZu5kwK0n6c8RyHM68a/nWcZZdTJKXzkatR9dUNk1S
+	 Wcu+7PER42343ww7e8KP/ZMkfl7nTJUeHXjWOkZDSnaGx5KICtS9mw7NbNERuQrru0
+	 LRMnEHeeSYw4g==
+Message-ID: <1d78e1c1-0cdb-435e-b278-670bce9148b3@kernel.org>
+Date: Thu, 25 Jun 2026 15:32:17 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/9] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
- gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
- djbw@kernel.org, vishal.l.verma@intel.com, dave.jiang@intel.com,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- shuah@kernel.org, alison.schofield@intel.com,
- Smita.KoralahalliChannabasappa@amd.com, ira.weiny@intel.com,
- apopple@nvidia.com
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-9-gourry@gourry.net>
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+ <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+ <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+ <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+ <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
+ <1d638906-6d64-4e57-a181-4b77683652b5@linux.dev>
+ <b5c85cea-5daa-4690-ac41-a6f5aebd1555@kernel.org>
+ <f18bf1b1-ccf7-4d77-9389-07311d2d1613@linux.dev>
 Content-Language: en-US
-From: Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20260624145744.3532049-9-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D7326180008
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <f18bf1b1-ccf7-4d77-9389-07311d2d1613@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------uktpT6dUCb9cs0xThB17O4X2"
 X-Rspam-User: 
-X-Stat-Signature: d1x5bmgr6k7cdepdpoi5ahhjmjghqkip
-X-HE-Tag: 1782368258-803323
-X-HE-Meta: U2FsdGVkX18Ttn7b6LXi/PNkSBbIbfzv26LQFksbbNHJcPU9284yZO3X8z6hhVcw623zwtNeCj6zzJ5y0TyWn2jUxME3P+4bsSV32zbclHC2nvX4zwMFI3ZK9g98NWwJFF9xS3wut/dJhVsSorQPmbH9e/4TVO4R1SzxlZMz7Sy8IlFP4Ces+96hJefMGY6dN74wnDab4laW+8hzcs4jLlzBClrI+6gSCrFgdMOVgDlM6YlmFi0O2F9hN0uelpMoMDzaAN59eDvC7Z4xtXdMJQrIetQD7WkMgy9WTXPe/ysr2EkkZaUAZeY5k42urxudfXUlPXyt6PxF8hcIk0PBspOMuz9eI8LCk2xxzuKFX4sh/lLP4TAJGHjKfWo/KdH76ucZVPffhztfVjOsRwj2iDOXQx4CgMo2MP7fOyupX/3WPFAiiPkxT5dwL56pMXY5KtytsXbq9z4dVqii2gYPtFd1Mp54v4Ft5NjLLfwZl0zlUgIFKv7v6zCjeV/v0xwlWJSgoSdBhkVvLGMSP1hXOndCkNlBg/s9xn9EAWMX98XTphq9l5mz+MTD8PnmkDF4CI58gHOdw3e8cNSLyVxzSuGO4vP8zdkpwVJ7Bstv+WPnjSHEOy8PdvMcrWewMSANdSEJH0g1TKgflusTP0JcvZ8S+k98XXsqxio2fXxTW642kaMh0XbT3JBlr1NBRyk4NUsFvje3M8/0U528y1PzOYJjK0ul76kdJrhsV8QZSTGTQGEVLMhhSVo12II7JSHV1/jYg0Lxy/Ygi3kZ7xIf0n01iYQZxgZ1nIhvRbxAZQgYIejv7S2qnEqTPLOfJo7rfb9S7XKJGdlEfIFliGNCnVZEqVR4HAMKb+RLsKDRDSmbB0MhqPsfD3IXtV5lIfSYACgR1bx0JXkQ4s2W68r0+ldnDj3WU3Hho8D95FElRJIiApa5tr9kDil7G167GRFpjaT5gxx912ll885zxAO
- jKOOeeVW
- DDGYMN0Jx+iJ3LUxx9d7MipnHTKfRiteq+DI8XREwyANX1TBM6wRP/JXnptULZk1+CQbVuk5cRa4SvxXFJRtH0hvAJQgApB1ykN54hVtBUEYdKC13X8ny/aqoDNx/ipv1u46h72XhUvs7n0y1ClrLFcfIkMgoiiNeYBbf9pYpRbDHrLFKgxlMkbPgLse6bBmAVXO7OwbXa8IXUxXlHTkPT9YYdq9KigcSC50DVAj6/5Zl5YYjCaIocmbt9BbEHPM/JRC9CtX8ykgfF7d+3BibNCCxTbEyDrl5giF6tlTcfHLe/vA/mvNNCT+xiYISFL6XbZIcTNbO/+Uzw1w/lQRvnz+l6cVOXj9fkLKEpzkPPW9jlxZBrzjObLefOOT1rxw43z6NZQa1kFogbCFttfO+wnj9O4Ft6bB1rrNH
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 12E2B40005
+X-Stat-Signature: kz8b6jo65nb1ph3mfmtfyow5hkd1kyzy
+X-HE-Tag: 1782369160-915267
+X-HE-Meta: U2FsdGVkX18zx6flsfpDyjoZqmR3L71BaK4rszPMWGq/xJCU17mQbh17ZaU0HrLUgwPHRzjOhoGeE0YYt4012FMXAIRvpE4eS3C1E1O4KrcJqPCofp02dBPaFr+w68Ya2WEKJdQ52DLk9EWwkfdAdZmIkUZ7p97Ul23LLL1is60wB8pM/oYosf/NGTRpFnGLODHKcYSF6GI6P8335gSn89P7u665hktnCC/9RGiF1x8GkdauTpD9dJgedLaHwniqJyVfdYq+I+cAcR+iw+WPFlcHZVtx+fTpK6cZQTL/agqClWA/p8RuTg32YNiYYEdTe0/m+NYAfEF68wnNu5YSURi7mCL3fXiFjwSn5yFDB5EkZwtF0wzXjBo3BUR/xdNDkJbNVXrvRMXCPtu12huTscFiyar+OHrx9jxpSnN+rrhbNZvXMPwGt6UebyfmVabEbwkSM7vAux2DOA+60Szi40D1u8h0Po4KfF/5Qdrq9bScywKQ3fzjAdTgydE1TIV/OY4XmRTbnkWJlIgCysweZCnJ9+PTvPVYoY3/kBW3g4R4FdskZ62yobCZ72KidddWA82XujELMdekc1BVyZIGdXbfBGIDAJBIaZM1FYA0TAbJWxS/JHN78dBRbiI7v9mLAsCHUCqoSh2eHBgi3NsBZ42ondn8ElVd6SZdITP5bhYMRzM16l8Sn76dawh/GipPq2gg1K3ULXz60ZZFEm1T7Z3vTZ5Zv1ghy6Y6GjaZi9IGxOcr/0uFQl+ZJiqGDrJYSAp7+nVuv25Q6IFPVj+5/UP2mpDDJUehzKBn7u16TZRAsixXN+bgEeCYye7q8SEq3u1RjLxSLAuz09l99anXvYnX4ZOZePjC7rAhSD1OWY176hquZvq8zBksa2+S2XOF0UW95dgmM3+pumFNymcb3SOAlTAcHT568MpwdtiSA/7cz4xmg6WHAfM6zCH3HrjceYpnjT5G9/g8Rujc1f5
+ xJqgQTKq
+ DZ8yQsXeqwQai4bbnkimwv6wKht/yOrLIjVwRZVDfbxH7wrrYUa0HUT0+Weo8KruRrbgEhBGNTC+rWEz+Vq/Ua5ejQLQH0PPJvKY4alav7wr9YgEzABtHacCGGSVCcyo+qn8zkzRO9n010vuC9X+HRYvhjWu2O2p4UFBNOKUdsS3HS3XUi2qt3NFS0mMaHge+0+FhTJOJ5cQCascjkAyLt9ClyVc0gx1YEoXZVK9Z8LKob7weqy5k3OICOop2YbbKpA4nxrQoiiaIIKJDuHx03BflGsvnxSgbMn3G4/ZeZz/8nUI9ZMW8uQ9xRcL/fqC0aqHsDB6NZKjX3DYGoYjsqeq/9U7+TgpxuvO0YarSkuvNOZbBs8xkNd4HtQfUPp3JcKOkHf6VhR1u7WjrhJIBwMM8rvEgJBiHhrEfN3p8YwhhN9hRW1Y4bEDzEL25AAjqHJQ5HXLkE1smke0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,85 +107,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 4:57 PM, Gregory Price wrote:
-> There is no atomic mechanism to offline and remove an entire
-> multi-block DAX kmem device.  This is presently done in two steps:
->      1. offline all
->      2. remove all).
-> 
-> This creates a race condition where another entity operates directly
-> on the memory blocks and can cause hot-unplug to fail / unbind to
-> deadlock.
-> 
-> Add a new 'state' sysfs attribute that enables an atomic whole-device
-> hotplug operation across its entire memory region.
-> 
-> daxX.Y/state mirrors the per-block memoryX/state ABI:
->    - [offline, online, online_kernel, online_movable]
->    - "unplugged" - is added specifically for dax0.0/state
-> 
-> The valid writable states include:
->    - "unplugged":      memory blocks are not present
->    - "online":         memory is online, zone chosen by the kernel
->    - "online_kernel":  memory is online in ZONE_NORMAL
->    - "online_movable": memory is online in ZONE_MOVABLE
-> 
-> Valid transitions:
->    - unplugged                -> online[_kernel|_movable]
->    - online[_kernel|_movable] -> unplugged
->    - offline                  -> unplugged
-> 
-> A device can only be onlined from "unplugged", so it must be returned
-> there before being onlined into a different state.
-> 
-> For backwards compatibility the memory blocks are always created at
-> probe - existing tools expect them to be present after kmem binds.
-> 
-> "offline" is therefore a reportable state but is not writable: it only
-> arises from the legacy auto_online_blocks=offline policy.  Onlining
-> such a device through this attribute requires unplugging it first in
-> an effort to get drivers creating DAX devices to set a default.
-> 
-> Unplug is atomic across the whole device: dax_kmem_do_hotremove()
-> collects every added range and offlines/removes them in one operation.
-> Either the operation succeeds or is entirely rolled back.
-> 
-> Unbind Note:
->    We used to call remove_memory() during unbind, which would fire a
->    BUG() if any of the memory blocks were online at that time.  We lift
->    this into a WARN in the cleanup routine and don't attempt hotremove
->    if ->state is not DAX_KMEM_UNPLUGGED or MMOP_OFFLINE.
-> 
->    An offline dax device memory is removed on unbind as before.
-> 
->    If online at unbind, the resources are leaked (as before), but now
->    we prevent deadlock if a memory region is impossible to hotremove.
-> 
-> Suggested-by: Hannes Reinecke <hare@suse.de>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->   Documentation/ABI/testing/sysfs-bus-dax |  26 +++
->   drivers/base/memory.c                   |   9 +
->   drivers/dax/kmem.c                      | 224 ++++++++++++++++++++----
->   include/linux/memory_hotplug.h          |   1 +
->   4 files changed, 224 insertions(+), 36 deletions(-)
-> 
-That looks good, but question remains:
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------uktpT6dUCb9cs0xThB17O4X2
+Content-Type: multipart/mixed; boundary="------------6ZIs0zsJlyzWHCa3l0yyOpja";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Message-ID: <1d78e1c1-0cdb-435e-b278-670bce9148b3@kernel.org>
+Subject: Re: [PATCH v2] mm: mglru: fix stale batch updates after memcg
+ reparenting
+References: <20260623024237.45990-1-qi.zheng@linux.dev>
+ <e74b0808-3bcc-414d-a037-41e479210cc0@kernel.org>
+ <d97128c0-7d89-4b5c-b891-84f9af702fee@linux.dev>
+ <8a76aefd-629c-41f3-b365-aefd4cc1411e@kernel.org>
+ <7946da94-dc1d-4cf2-986e-466c378665b6@linux.dev>
+ <dfe5d773-2992-448b-a6cb-ef633714a08f@kernel.org>
+ <1d638906-6d64-4e57-a181-4b77683652b5@linux.dev>
+ <b5c85cea-5daa-4690-ac41-a6f5aebd1555@kernel.org>
+ <f18bf1b1-ccf7-4d77-9389-07311d2d1613@linux.dev>
+In-Reply-To: <f18bf1b1-ccf7-4d77-9389-07311d2d1613@linux.dev>
 
-Why do we need to treat the 'unbind' call as a given thing?
-If we know that we cannot handle online memory during unbind,
-can't we just disallow unbind in that case?
-I don't think it's too much to ask from an admin to offline
-the memory first, _especially_ as now we have a simple knob
-to do that ...
+--------------6ZIs0zsJlyzWHCa3l0yyOpja
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+
+
+On 6/25/26 3:11 PM, Qi Zheng wrote:
+> On 6/25/26 12:16 PM, Harry Yoo wrote:
+>>
+> [...]
+>=20
+>>
+>>> So lock_batch_lruvec() can be implemented like this:
+>>>
+>>> #ifdef CONFIG_MEMCG
+>>> static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 struct pglist_data *pgdat =3D lruvec_pgdat(l=
+ruvec);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 struct mem_cgroup *memcg =3D lruvec_memcg(lr=
+uvec);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 rcu_read_lock();
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 /*
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The memcg can be NULL when the memor=
+y controller is disabled.
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * Otherwise, the caller keeps the memc=
+g owning @lruvec alive.
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 if (!memcg || !css_is_dying(&memcg->css))
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto lock;
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 do {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memcg =3D parent_mem=
+_cgroup(memcg);
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 } while (memcg && css_is_dying(&memcg->css))=
+;
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 lruvec =3D mem_cgroup_lruvec(memcg, pgdat);
+>>>
+>>> lock:
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 spin_lock_irq(&lruvec->lru_lock);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 return lruvec;
+>>> }
+>>> #else
+>>> static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 lruvec_lock_irq(lruvec);
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0 return lruvec;
+>>> }
+>>> #endif
+>>>
+>>> Does this make sense?
+>>
+>> Yes, looks good to me!
+>=20
+> OK, this sync method makes more sense as it doesn't require adding a
+> new lrugen->reparente. I'll go with this method and update v3.
+
+Thanks!
+
+Just one thing to clarify...
+
+So, when we check something that's updated _before_ grace period
+(CSS_DYING), RCU is sufficient.
+
+But in folio_lruvec_lock*(), that is not the case because reparenting
+is performed in the RCU work, under the lruvec lock. So the check needs
+to be done under RCU and the lruvec lock.
+
+This is quite subtle :D
+
+> Hi Barry and Baolin, what do you think? Since the sync method has been
+> changed, I will temporarily drop your previous Reviewed-by tags in v3. =
+;)
+
+And hopefully Peiyang would kindly double check v3 still not reproduced
+on the machine :)
+
+--=20
 Cheers,
+Harry / Hyeonggon
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.de                                +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+
+--------------6ZIs0zsJlyzWHCa3l0yyOpja--
+
+--------------uktpT6dUCb9cs0xThB17O4X2
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCajzLcgAKCRCGXBN6rc5S
+1iu7AP9alaQqS1MV8EMiCjRZYb/5uBiLKw0FD420qVXcokWGtAEA37LSbn5gKsxP
+zjfUl7srE5vdhsoYShNZJGI60VhJLQ4=
+=QuH5
+-----END PGP SIGNATURE-----
+
+--------------uktpT6dUCb9cs0xThB17O4X2--
 
