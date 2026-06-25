@@ -4,106 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10BBCCDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:36:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C8D2CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:38:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53026B00D9; Thu, 25 Jun 2026 06:36:50 -0400 (EDT)
+	id 6ED3C6B00DA; Thu, 25 Jun 2026 06:38:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2B006B00DA; Thu, 25 Jun 2026 06:36:50 -0400 (EDT)
+	id 6C5646B00DC; Thu, 25 Jun 2026 06:38:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6A7B6B00DB; Thu, 25 Jun 2026 06:36:50 -0400 (EDT)
+	id 5DBF96B00DD; Thu, 25 Jun 2026 06:38:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A02DC6B00D9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:36:50 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E6571A063F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:36:50 +0000 (UTC)
-X-FDA: 84918081780.28.3E77F7D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 369E16B00DA
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:38:04 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BAF431C4EC9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:38:03 +0000 (UTC)
+X-FDA: 84918084846.29.D47073B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6F48B140007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:36:48 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUW8gAvd;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0FFD420003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:38:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lfka2xAB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782383808;
-	b=8F40h3RO+KXnQ35kR3Nk/KxymJ0M6Se7CgtIpIuVkAAKEFQP0GYJelDhsiPPcRjhfkb0Bh
-	4jYAZmLCKrm+YgTSsicAhKe9/dta9LEIL1XcUn+uA0hjFmd64GypReLDT1qFeidH0AFIEc
-	21BFAxryDd6A5bmuGkXUX8rdpVtAYyw=
+	t=1782383882;
+	b=b+GgmcOLHLhAWlgEdbIbDzJQzHkO09cD95vYna3m2RQA6ZiNpIdOa6EEd9H+xj2bYwzOSj
+	VCqpdY5GDrgEZVgl6M8emVIKdwn3NITnKlQyJ/alGBcCa7seNd6QdttDSnK2NAkSDNjPwR
+	CWyWA2jADv3hutTs6J2xcQo1lLMTNY4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782383808;
+	s=arc-20220608; t=1782383882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWsRc7MdRTfjdlpUKPT9bAJCUmcDDpg9+U9SCGAGjJw=;
-	b=WAarRXha/O+I2nBQCPSBvC3Nfv4h8kVN6opSOOIJMh3BYb+qwd6/4+9mdq0NOdJVjyQRa0
-	Hwp8cysKjYK2cbFKbCL5UKPR6l7JnUyyhRN177gct8MBpNU899diQkVQXEzGEGh3WGhLbt
-	7BEu6pZiBqPKIwZCXCWH3u+1NR8Zfrw=
+	bh=fJ5GdqfFbLqq0HefJ/fPOXSGHIZ3giq6UVgT6Fg0adg=;
+	b=Vm/48mQLwM6ue8AW12dtj/uFNYK3gnrdGsHFZco4PZVgvocgnxfhLx8Hzywqv1dsXBFu7Q
+	qkX6gQtSyN5Wvh9IQaaUhGk08HMlh09jJ87SqH28AZVCzl/5Zyxa3bl2WDduF5yZTlaNMC
+	7xaqDc9vjVmyIkhAysx1qb/NafIBxZE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XUW8gAvd;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lfka2xAB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E728E60018;
-	Thu, 25 Jun 2026 10:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F0B1F000E9;
-	Thu, 25 Jun 2026 10:36:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 87795600FC;
+	Thu, 25 Jun 2026 10:38:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F861F000E9;
+	Thu, 25 Jun 2026 10:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782383807;
-	bh=cWsRc7MdRTfjdlpUKPT9bAJCUmcDDpg9+U9SCGAGjJw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=XUW8gAvdo3iOuxiz+MGgyMFo/1gdypGVQtl8VAOyRISgTiliNCjCdQMQo55HY/AlZ
-	 jocfZlcnMpkhK2DJ0KSAdf6cfoUNqanZWrSL7B95Og/fPszR9mnrpyMElfp6CfoBFI
-	 Dr1UFhBvdGjiC/N9J184kjivsbdlXYklES7rp+Lv9QYqH1B3ox2Vn6kwEwhWbO/Uje
-	 1IEOdgdhPZvJgdfdUyrddAE0/l4v+tutL8Z77OEfDMswxXzsFg8+lzIjc5wgS2rz6v
-	 XtrVTfi+GYksmJKuAB3cHavdtb+OhSCzM+PfI2LQ4tuVBVHT5hcCHmZKhfz2dqcvhR
-	 ikkbp5FTbNJnQ==
+	s=k20260515; t=1782383881;
+	bh=fJ5GdqfFbLqq0HefJ/fPOXSGHIZ3giq6UVgT6Fg0adg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Lfka2xABH4WlCH4+Kcss1VPXGMllQT4xshc3EanCjCi2KvTd4/QdGhadS1atYJxN9
+	 4QkETM0uJkIzS9CERgnRpjWb0kDTrRBCffxgEc9S+X4SoqsI6SLDXzW+/JyjPofaJm
+	 TzK/U7C0PBQwZKaToMx+Vqy0eEdZ0iAeNKWhQHStqLyYV7eGzhVXikwfiMCSJCs7xR
+	 Qiqp57S5pu7nnGzKbPyFYU/5kcXyA2Sr1GQWZC61FlnjjkdAtXq1aGCfXkVIg8Z01x
+	 un+M6OSbEtVRK4P3KbjkTPPG7d2HH/Y9pcfvKMBzmS/vt7xX+4XWEdfBKQBH31mfEy
+	 Uwj5mmyWpXBbA==
+Message-ID: <2252683e-df5d-47ce-b15d-1036bef8d063@kernel.org>
+Date: Thu, 25 Jun 2026 12:37:55 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
-From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
- Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-In-Reply-To: <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
-References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
- <20260623111533.2285005-2-ptikhomirov@virtuozzo.com>
- <ajqOyIA8tPQsxfz6@cmpxchg.org>
- <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com>
- <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
-Date: Thu, 25 Jun 2026 12:36:42 +0200
-Message-Id: <20260625-lehrbuch-gehalt-wichen-1b2f3533efbe@brauner>
-X-Mailer: b4 0.16-dev-d9d01
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2061; i=brauner@kernel.org;
- h=from:subject:message-id; bh=sxA68pq5S5gKI8RjSDeZoQAs04oas8GQddQ+uQZURLY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTZsuyON9+8ekfYzpun2WtXl25LeusVGcrEesFIrew8p
- 0L9j9L9HaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABP57sTwP43riwPH4/RjwnGB
- F2plTv5aH6Uy3Ujpo0vkico9lS2/kxkZ3u14sJ25VDdJ9fwDxV1Wk7uDNMW3T/3DuPXPbj73Ao0
- ARgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD
+ handling
+To: Wei Yang <richard.weiyang@gmail.com>, Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260624065353.1622-1-richard.weiyang@gmail.com>
+ <20260624085756.6598-1-lance.yang@linux.dev>
+ <20260625095728.woikmkxb6gskth3b@master>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260625095728.woikmkxb6gskth3b@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 6F48B140007
-X-Stat-Signature: r647kxi1z3bhy8m9y64omd4ey68548w6
-X-HE-Tag: 1782383808-249876
-X-HE-Meta: U2FsdGVkX18FzL8KoYLRSXI/mrxp0YRgBShCkVtLVfATbFDfkIt1fO7c7bWyUsllWnuUcTtfi+mxEnKjMNb39RfeafAJGXucEIX03jkh6YtJ7Vj+kKe6pF+6z36Ryc55HYwaoHM3GHj5pW/o1F2pc3Dt5sjLpeAlrOevG21zaVFdJ7u2rAzk6g0UJic5xsHFyXJ2v+kX0BUswdtJuFnbCClksIYz2/HGDoMYLINgNhEDbZVtrlQxpv9LdZF8VQKnNGIMtmlonyUSmCBfYGuKOINOjOlgah8U6AvNU5EzW7Yz7evuLd36+8FLERxJZrGBxZWAPwEgEPG+cA39HodRGOZQxClX2r0QxgPUdCWmlZMm2VR2rEL3DaJi0ZublVPTOB7ajQn+ArTjN9IcuixzMnOLQY0PlLPp01v/SmBlGucexdJiy19gKxRdPZixvT60ANxmSnjGokPvTBwaq33aaEekU2cXBmCejswj1GQ8Rv9lKu+galYOkPTHlNRtG9lYU/z0VQPej0zNnup2Hyc22RWwHudRE2qDlcUnHDuHEC0dlsSqeFknW43S4gg14AeAAcmIRoFb89FdTW12BfvqTv7HPKIn9PAaWzWICK1EwdgzAocqMepDjFWw6DJtmE+JFpz+miNaWIb9RzjzIBmfbQZISBucQLaS1NhyI37sccLixfiOcUxaQuE/VRUSopGIEG6eumX1442wQqPVTnBA0IncDYr2loHFlZ1ALl7OPC8gfMWqlnXvUaOECt9inXbp/MnD10/NDmF96cOy5pZQsIh0xRUpO1Z65z5tPp/hyqqnIGY0iyt2/RrpxSYJ/ijVCt+2TC+TsJi3wq7D1M3KxJnHzun9xanOKz7nN+w4mKkvCFGwgph4Mlor4b84cxjdIP4sQRZ54BnKXhq2FOja3F53ENGQ8X5zcUwLIN1YrYc5SW7UHReUFMUt+LkjhhqXS9ICuqp8D5DY6LdAUS/
- z9jBafYH
- lINNX63Lwk17hPrLATWJ0wGzzbu1mJoJnK55Di9v4zHkTSVCPRHZurHJjhcqLpdC07cGV51XAffsl9Dbky8U+TrOaK4N5Yp2e2BG5UE6YLc+4zhN/GXK6p3qkrsAlMLa/2VDcfISy53PIMYojOfpoaZz4vmeBQ8a2iMdG/Dj2abaO8FriVJTW4I502jx8Kz2geWx00C9FbPC2j+uOUtnUGvmU9YW7xoEIN3JTVo9K5t9hQDBh5d1smuCn/W80eOM8Gk3hy2tuctyDW1gwVdTfosiQVGz+SuUf6VB/noAbGfSRvDnzbuZDhxJ6HQHVIP42Hjl8+MhACbQShyEnycCJoudEMu42epoVMafp
+X-Stat-Signature: g9reecj9kz6jkm9cjcnucegoi1bf3euq
+X-Rspamd-Queue-Id: 0FFD420003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782383881-628408
+X-HE-Meta: U2FsdGVkX1/zB2AdUxjMWk/dwut1J+Ex9CsLa7Y9cNprk4kqxzrbhKHAnh96ob9FKifslpsM0OwpLcL/z2H6jcWwDqAzgVkwuHhxzWPjCprPx3gOVNMx2NB+aXDOrj04rmn+M9b17rkBuXmhe91w5JtNzEv1JaAHQnX6OpolFs1lhtctf0v6Mx5KU+fHnW6tM1boKgArUUhhtZhW5dGJSP6HwUg+DgH1BRg6nfnmDPmHnenSDysbxxq9ovzQmIaXFPlte7HixdgoH6XxxxTJ5HBQq7/z6QAo29ePpM4C9XsKFcU+KcRsWxyzyAT2wRZvIFZucWHP9zn+v1PcpvL7a3V9sf9s2MlRsYW7gBiSYK6DOItaQxkVrjrYgkjJa5N467QZxbH4YLSkZn+uOMuIHfWsmgkBfqiH8IxN5gskpjwkPBrTldUUDhc1wMBjxjK4Mwif+JGPJJrearzkx1yb9uA26mXfeZ9exrhXhf0niDFkl+5lamYkgMvA7w6dmO8oH2Hsg+J18ntOHPQ+FnR48uQtysWeXSAbnQ0wbS4ZdS3z19MZjUNJXR58midttMEn9thkO2aWuaFtRapbdNYNz8jLuitaAayWhqrKgYEmHSMmBCuunU8yHSocxInbTK8yoc1WrUHGZ4gZAoKZXbE9WKoLCU6jCd5iDujM4FTTKa7IoG+UY4UqMMjTvpDeznCu8pmkrV8RCsKdN5kOMfQFW/m1AJZYHXYpz9wY8nCKUXQ8UQu/YoacKbGztMB0LnlQ45XQgpqaZLodZ0lqsE/gICigt3wArpWi4pNzsFCSGpgRj6pmgk601JThznXlh0ZiAmYB8zMouoASuCHRFuJ6FpAqbcEQdBovkiWj7kfgPPJhgw6Ses64Bum4Yz9YyiR4eIl0XikPtgVgSYQDgAapQabMnP6XLvxom5ZDCh7jregssVHVIPW+FReDyzR3gOjhi7hSgS2O/DneTqXtmkY
+ 3+3N/ngf
+ 9jJlbsPPrM/DKTMWNUNpf/F2o3CFLn4nkdhnh73C7ArwIp6CdCYSd69XKwtbFbBx8DX5jlnmGOz3UA29f/yqI6FOMp0QxTvrmEemA8riDlv9LE38Evx0a9vCHcM9owarjW0rZVbolPUcl79TTN0+V1Oa1xaIrdI4x3YUeJ7FD14PWB8OQQjAQKr9MQ5gyeU3MWzHQ+WbgSCKAgmywBMq1KmJLp3CTZwKRka8vmGhbOT1ZFDx1i8PM9T1TYUiC3OPFjyUgEGnJL1296axC5tpa7wNPlYkz3d6vJbc1zybx4kz64rupRQxKRufl2eZLYti1nZIuucq2EqoNqeilEirp3cVBHgnie6M5B3yt3k49UguSA3X+yyPofUenx+UA8yx5vd2eBCkstUJUJy0rPPZiqucZbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,48 +142,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-23 17:34:47+02:00, Amir Goldstein wrote:
-> On Tue, Jun 23, 2026 at 4:55 PM Pavel Tikhomirov
-> <ptikhomirov@virtuozzo.com> wrote:
-> 
-> > On 6/23/26 15:48, Johannes Weiner wrote:
-> >
-> > Yes, AFAIU in overlay when we use realfile we should always use it
-> > with_ovl_creds(), even though I don't think there is anything cred related
-> > in filemap_cachestat(), I still think we should follow the common pattern
-> > other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
-> >
-> > note: Actually some places get ovl_real_file() and use it without
-> > with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read,
-> > ovl_splice_write. But those look more of an exception than the general
-> > rule. All other instances use with_ovl_creds().
-> 
-> Use with_ovl_creds() is a good practice to keep the mental security model,
-> but it is useless if the security check (can_do_cachestat) is not in the
-> vfs helper (vfs_cachestat), so please move it there.
-> 
-> Also it kind of makes more sense to check (flags != 0) in sys_cachestats
-> before checking permissions.
-> 
-> > Also there are simingly no other file_operations which return "realfile"
-> > for further processing, mostly the operation from fsops simply replaces
-> > general operation with its own logic completely.
-> >
-> > Thanks for your review!
-> >
-> > ps: Hope overlay maintainers will correctly if I'm getting this wrong.
-> 
-> I don't think this is wrong per-se, except for can_do_cachestat().
-> 
-> Just be aware that the real file could change from one cachestat
-> call to the next (i.e. due to copy up).
 
-I'm really grump about adding a new file operation just for a
-special-sauce system call which is under a CONFIG_* option even. We're
-not going to set the precedent of piling on custom file operations for a
-single filesystem everytime someone adds a new system call unless
-absolutely necessary. This looks like it could just use a new helper in
-fs/backing_file.c that the cachestat thing can call to use the correct
-file.
+>> CPU0: pmde = pmdp_get_lockless();   // sees PMD migration entry
+>>
+>> CPU1: remove_migration_ptes(src, dst /* device-private */)
+>>        ... via rmap_walk(dst) ...
+>>        page_vma_mapped_walk(&pvmw /* src, PVMW_MIGRATION */)
+>>          returns with PTL held for the PMD migration entry
+>>        remove_migration_pmd(new = dst page)
+>>          installs a device-private PMD
+>>        next page_vma_mapped_walk()
+>>          drops PTL via not_found()
+>>
+>> CPU0: takes PTL
+>>      pmde = *pvmw->pmd;            // now device-private PMD
+>>
+>> So when PVMW_MIGRATION is not set, current code can return not_found()
+>> before we even decode the locked PMD as a device-private entry.
+>>
+>> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+>> device-private entries") made the
+>>
+>> device-private PMD <-> PMD migration
+>>
+>> transition possible.
 
+Doesn't the folio lock help here already?
+
+-- 
+Cheers,
+
+David
 
