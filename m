@@ -4,117 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43235CDE009
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 18:41:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3153ACDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 18:49:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 295AC6B00CD; Thu, 25 Jun 2026 14:41:51 -0400 (EDT)
+	id 20A986B00CF; Thu, 25 Jun 2026 14:49:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2471B6B00CE; Thu, 25 Jun 2026 14:41:51 -0400 (EDT)
+	id 1E2D76B00D0; Thu, 25 Jun 2026 14:49:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15CC26B00CF; Thu, 25 Jun 2026 14:41:51 -0400 (EDT)
+	id 0D3AA6B00D1; Thu, 25 Jun 2026 14:49:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E6AF76B00CD
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:41:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 707DD1C16E2
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:41:50 +0000 (UTC)
-X-FDA: 84919303980.09.80420F6
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 48ECF180006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:41:48 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D96AC6B00CF
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:49:04 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 543B81201DF
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:49:04 +0000 (UTC)
+X-FDA: 84919322208.25.C889167
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	by imf06.hostedemail.com (Postfix) with ESMTP id AC19218000A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:49:02 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lK3ExJQn;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	dkim=pass header.d=google.com header.s=20251104 header.b=MUGaXe1e;
+	spf=pass (imf06.hostedemail.com: domain of 3HHg9agYKCFsLNK7G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3HHg9agYKCFsLNK7G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782412908;
-	b=pyBGrVFyWpKhVTyI+PbW4PHMmWkEExbVFmNjguoBkvXmAbijC/zH4P3NYEdtWY5nd4x0XN
-	Ev5FbuI0yn/t5I39Z1JewgdyKI9cBIaxgXNPnQGM4lonjbgZJmNbHKYFE4aQq+88JsRl5l
-	q9QfiINRWRn13XFqlk5fWFYjTBezVic=
+	t=1782413342;
+	b=Y406mVz8t/QeZ5sHzeGLdLkqkhAu7PEsJg/bo74vFrNSGzIwQrFkfbwNMiszHW8dreBSIi
+	k2CVjSd/L718EhuakMML5Xc+R34le/kxq9za2rLQEjcISltQWE4gSOj8iTwzLZa8N6Cb+H
+	+335asNNB+nJXKbCqotAZ05GRCK6lKE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782412908;
+	s=arc-20220608; t=1782413342;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1D9CBgF0HlJq0J3VbKd4okLgUS8bFp8B2vYpuNdfCds=;
-	b=dRbyYmsZKRrq65EYFFUiiSF9weBFPXI8DBxvBWht47NbGeID+ZAgiZwfXtGeYhn79k91xe
-	Ed/nMhLG1MQuyYvOSAUYeb+VgIG8+NDV78yRJdKCpq7Jes9rHc60OBdgqyDI490QN50SX0
-	lGLsNM7e9US6Mh5U5xL2Vh5hjW4fTLg=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8t1slEySKjYRNrpDBCSz0j8EtJbN7SppOvf4s1su1l8=;
+	b=haTCOc3Ym27piPEmij6litrJPdQ/Q4yw7QQsEnadgs/slNya1u99/u7oLZrl+lXPCDmA/V
+	jARN6ZWveBI4sUA40a1T7oNfCO2/z8ozx6UsgEQAFAj9x8htkhzgRxzFKGkKB1j1wmczsI
+	bUHYXzpTDt2R3vRFNpZKJ0Gosgo0wis=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=lK3ExJQn;
-	spf=pass (imf06.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.182 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5178a42caa3so1243011cf.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:41:48 -0700 (PDT)
+	dkim=pass header.d=google.com header.s=20251104 header.b=MUGaXe1e;
+	spf=pass (imf06.hostedemail.com: domain of 3HHg9agYKCFsLNK7G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--surenb.bounces.google.com designates 74.125.82.202 as permitted sender) smtp.mailfrom=3HHg9agYKCFsLNK7G49HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-30c011c7cb9so578483eec.1
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:49:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782412907; x=1783017707; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1D9CBgF0HlJq0J3VbKd4okLgUS8bFp8B2vYpuNdfCds=;
-        b=lK3ExJQn/SlDLo7CL+a7j8bDGvWUWaPzSjIe0LZNKH7uLo02upyrgw7QgFLKVDl2rH
-         u8/xr9j8lo7GLUL4dEjF8LG1EmZYTuG7ri7UhJ25o56ENlD8qWqOMpXzSGgd5083bwGs
-         1zWa6XT60EmxFpphl1NXO7dE4isZ/wxccDZRmVehmsZTg7aUJPfnVHsSvYJkE+VDIvcW
-         NzF5LoB9+hvDjcCojoxFD92aMv+ek/xNAoMBmcOp5v1mU5RUK7phdWN9pg/W9dxqRo4o
-         ksWpWvYDNpuZqy/xDvZozD/L9YdIRUtzXPEB1iWLIp6g8ujhspCDyIuTPCZaJz3q1zEm
-         nUIg==
+        d=google.com; s=20251104; t=1782413341; x=1783018141; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8t1slEySKjYRNrpDBCSz0j8EtJbN7SppOvf4s1su1l8=;
+        b=MUGaXe1eg104TKB/NEi/lwoYBEvlpvZp9uq9S4/qvfi9DxTeiZS15JFdqRZ120O7+g
+         QCjXiiA3xILm5lWlMgEmpRQelNyEKykPLLZNvqdsIodqt1IO3H4dMozAea9x3QwVGfuj
+         h0iPw5RofLB0k9MoQGyUKTgJv4Q6/bFUYY71LmJ9JOOuoxMoLG0mZyXc39XBb2+T3Xm0
+         GaRVgMo7oVcHPMx/XKCZ1Afq8mM+jhsAP21MVPhBb3o6apqvWWp4Rnbyuc4B7od4+vxh
+         pHL7gfrstnLF1ZQhGaCBl31HBYKXL936b/x0JA9p++TaPuC8TyxqvCYhT7wNcH+ToEfL
+         YPVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782412907; x=1783017707;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1D9CBgF0HlJq0J3VbKd4okLgUS8bFp8B2vYpuNdfCds=;
-        b=oRWfZqPvHaswS5VJs8+IYUjIiAtyfi4SFjybyDyRS1nqXHLXuAEE4V+iiWhJ29liF+
-         QCzJknYIBCj8HyjLw9wuW9WC2t4XWBZxagcK3q8kKk0b8owXD31xzFfHzJcUCRkCwjSk
-         eAYOgVxNYi68ilWhsdWDJ3jIuXIiwLMm+o9OIslI21ZduA7Qsc10T/Fk1uVHxiGA0kW1
-         0Q1dugRvQiculP1XrloAz61ey7d0RH25iLEmAbPpsuLnQ3D9j91yi8miEy/qFJ6BW1mV
-         IYH3AB3lV4Gq9/97wxmcGqzAwOzuyVKH7hiCp/KtmxZCtLTMnud1A9zeK8sQ6cZkEgjn
-         wOZQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Qu/IC6NvgZow9rLN31HzQmt9HbYm1HIuycHvj6BdYkGiUGyUu2ZGUv17TM/fbXooav9ae1S1Cow==@kvack.org
-X-Gm-Message-State: AOJu0Ywxm0O+ni+RWZk96xpz02Pdz7a4egOCqWh72i9P3aNe1TiF0K8F
-	gWhzKN/dIR7hbaZudebDwguO/nohHZq/B2TNLXUwambMfLmJcvMobbfnjxjaqtwv5iU=
-X-Gm-Gg: AfdE7ckvMJ//MloH6ODlED0MQ0ceQArpIincbRZjQhRYbSYRaUhuxDwhvMroS5U9Z0x
-	zJ5QHAP/+vgRVUFeYB+GUX9w0yUp/ZZNrxcAJwnwlz2ke3ccUUDV4pWny0lM9W8HxTCvs7VK0nH
-	zcX4aIy1xgp6M8hF6befxBKRdgLZoipqftQeq6YEVIM2b3OGU6whllKsM5xNPI2LnngqCeNqbqp
-	TE3/FBGrRIYrYGVbVC9lQhJWNKW0nJp4jRBdjyxHtC0ok2yxsnMfwQ97jpmFpxDvVYLjqTW4W+L
-	Cw6M3IhgbpxjgJVT86eiAbneH6yqzGRvDgX9t5A9lqSxV7w30UCIpL5L06I6LH49fmaHHhV2E/r
-	k4QLPXKcX9bxP42i6yLqMNcWsSAP+GrGEWrwgAan/DX77LEYpHJZfvH2MOkN+d2ljV5/O21ry0o
-	jYHi/rsPlgOUpJVZ3pG6Gccw==
-X-Received: by 2002:a05:622a:60f:b0:517:7220:b941 with SMTP id d75a77b69052e-51a51b79837mr181525901cf.32.1782412907285;
-        Thu, 25 Jun 2026 11:41:47 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f018011sm193477016d6.5.2026.06.25.11.41.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 11:41:46 -0700 (PDT)
-Date: Thu, 25 Jun 2026 14:41:45 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, harry@kernel.org,
-	muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn,
-	mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-Message-ID: <aj12aVq3he6q7b2C@cmpxchg.org>
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
+        d=1e100.net; s=20251104; t=1782413341; x=1783018141;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8t1slEySKjYRNrpDBCSz0j8EtJbN7SppOvf4s1su1l8=;
+        b=JhVo4dT46YENmFJsY76ZRConTfDUX9AAbKkgo8t6y+2pT6E2jZkJum9AnGSarn5F9H
+         GzmQAt28GEo484ns37FX3pdd/GXO2IAzDkZrzIaf0jeoZr6uZtUeirZBdAjNwFdY692a
+         Soxa6nTTWJYmdujzU9QhnLQYLn87qQqhosDxPXoSnBoNUZc5av/oEVqKHU8MZYD9hDZO
+         z0+BU/sFYeaUDL8ksGw/C8AIK40+vPG42NLJfDLfVtp9aA3Rt0lnF58Tl67paZUk4tGm
+         oxlp5dsWHMIKSodJFU6RkLYoA85n7TIkH+Ag7xISups8My+lwOa25G/qBLc0j/x6JyFr
+         DMrQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp8lvWNSfhaCXT623A5tRfc2dMlagOCwKtTye02eZWg0eacBKGvANCB09PJflTCCAfMYBxBpuSXpQ==@kvack.org
+X-Gm-Message-State: AOJu0YzKwwNKfhSJog7IoGTe8cTbpz8tjyairVbx+1KojoWWtofdAncH
+	5ipU9vONIzTfdEVIFLmHJkAIL2cAln4EJxbKNvpiG0yMfH9okgdS+lKoKem7aLmgleazjHnCBuw
+	OQFAboQ==
+X-Received: from dyuw15-n2.prod.google.com ([2002:a05:693c:880f:20b0:30b:cb5d:6afa])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7300:80cf:b0:30c:52c5:6e3f
+ with SMTP id 5a478bee46e88-30c84fa60aemr4101831eec.18.1782413340821; Thu, 25
+ Jun 2026 11:49:00 -0700 (PDT)
+Date: Thu, 25 Jun 2026 11:48:55 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260625184857.2193482-1-surenb@google.com>
+Subject: [PATCH 0/2] move alloc_tag.c file under mm/
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, hao.ge@linux.dev, 
+	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	surenb@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: eauero8j3iobcn5nxmcwx69hzrhefi57
 X-Rspam-User: 
-X-Stat-Signature: ourbs54iozxjst1qc9yu31rg9ka63wai
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 48ECF180006
-X-HE-Tag: 1782412908-179356
-X-HE-Meta: U2FsdGVkX19yyLqGpBiiX8vjcXGGENmLmwgkfKdTKucTsdZeN2we1Dg9KdEujDDuiokCj1gVLmxXPJr2XNOo6Ekkdd5gMLkBmVRsSzox77Rvvxw94nye8ajN6pLbZgz8+ustmrBksw0RcJCsCS456E5D8tipFFpTvT0uQcYLN6CWrTtxdQ4eych421fY34KxV29rJYjH2kTamEAR7i9QYEoLbMMHC+KrRMbZkbQcCoAfsTI3NjwGk7dr/9p/5oLmH1JAM7Xic9bm78TRl9KHVfUxMBshASQENK76+jNTIC1cQ6jtNl2nG5CT9573rBS/IJCKQ60KV83f3o5UKgax7K+2RiM/3qKXEWr7Et/4XTE06IpxEmWEClrr8hAIYIyfM/WpkpEXzFoWux3Xfgwa0On9qWkFrvlEiwMqLRNi0J000MV4sijyc+FNjgwz7x2R5RDYPsJrJVe9tHBAOE73gsfTX3Mz2Ct9famcquCxY96kexKAEC2BuZ25B/r47VuUSNXQEMAqvIVJIjhBCSWlEdrJRG5vgUJ6CHjxZpN5rLkhYILDn8x47iCt9bzndE/yNqU/IG2jN/EDtxBd20+VgS23J0uQemyAi8nR7uqb7N6B4CNd8lvG/QCEkg1+qw3EVk2eLv8p3WEmSgAEUvMK2M0Ezb+ndFlYeVdQKMPPdwLMCp6VE8Zqy5qHj8tzoR3QrThkb+5gBfNJhbvnCyd5ByYDlRMm7zXJkea9nodR1NFH4BsNzRWqwLY6b6gG+FwD+fIqKNt9IiH1RPeug5fETeMV427ZWQaUvhtugIRpqYmujCpjm+l8iKaFwwC9056n7dkW5tJaYb863wx78Gqv93lURALY2I8kG0hbNfBZ4aYRUvmFHbDOzz5eEfS3HFH/SYmCI4sucOrfhfrtcpnhBPIvrQ01DjRlDlTsQ3pt3YQfNbEm+svO8XBstXIGUjg2WyBnosJnKRhmpyHSxCP
- +Ja7eez5
- RN/+DjTRidb4F1eC85YpwFSa5uct8pHz+FVshXAHcAuysaX/UE5HM0SpFHspldxz1pxyKizBGkJUaFuiZkchvb3I1bfcMdLGl0eKAYveZS9ZvDDYFfAw/5Aev3AIZNZIXdMkqrFDS/gqPHynB6qVXk67yL+fu5HLDPaE3L7oYKkDjIhhvwROEBjal/g4pzZabv0Kh6WBYHEgeJxEXo+PN8Wr0FKeRQ/XcBW8mGfbSAF5jR/ZpBHQNih/kwZN0liFQAzIYekRnd3ZL9MXM0CeV2T3OtSKNjey1GXg4Zoc7jTyFLjl3gF2Vj5KhM8nnNHJ0Rhc9Uo9bzn5xRl/sVvCTJZtKZHYvSSx1MRMaJr6Tr84LaLcd1zTNDrA3wtu54AVqqVYKzATtF4JE7li7fM6E4h7V6WyA/hAiG0zXKRoenbLWkYFmIIg+pkfaVYMRjTBR+eK+0JknNgauDSs=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AC19218000A
+X-HE-Tag: 1782413342-130868
+X-HE-Meta: U2FsdGVkX1+diYumZBcXW7oLXB9+ygOXJ9y4nWF8d50PpP8qADbhdwCEw+y0SAWIXdAhgR1MqqBACQy6PTSiXcczBhyAGPZwS+fc9Hj+mChg6rnFz+YbA5orSgaWUT6UEfR8aMcf3d/YrrfNEP02VbV0S7jJWyoVNk0G1iLAAGLOBvYaIcCAxIRF6w72cgx+s87VPIXiC/jBVwTmc8k3ggpIeTHrq8Y0NbhPDIFt656mQFh/n3wRVkoO01lhyRDPbML+mVLFgdWwcVJ1jZJjWrC+7WZyA17vpdgbPlP6715tMDMJd8pTZQq1+82StxeNv9SwtBcFHx0HzQLlfMGmLjofpyfzKABmR2C97fuSy1itW8dIFBgyq5fcSFCtCnQ35K132hDf0wK8FiU27MogU+T0LZrls+28mOpH7t6I3k0KyFtaYMqReb1Zosb8+oQcciF6lqqixpUWAgiovA7BXqqEI7P1uF9qMGZ91mLvtchyFP7OgX3IKQ0GdQNIbEzAekLPAOkLnicMlacMjooreAG699d4N0g8+2se/LgxcADWXQVH5nD5JN/GsKon1w7x9uuc2ootKYMrcSKtBSrWMtLbGiurLSqIlEYAsH+e2WsiyURn6ztbdBtIaeGZGAVxdUjN5NulD3tF5Wm1FgYKnZ3OQ/TMm5Hv3Ak+AGC3i+DhsxGcacotA9XflHxjuzzKpAjxlrNa+j8RyI6gIbIYfRTkWfQ6P70EZ0Bozkt/TPxMINC99W9Vd5vTTXrpM3I2b8fm3PKyrEjFWZ8SFnLHLuLUPA8piS5HZ891CWbMUy9vMsNaOJk8hpobmm3fmpA0AnOlU70D2JT4aT/dvQ63q+Dr1aqJQb29bOHkKts9LSjldZ1b3CmOeUh7MxFGKm6dDbKBsPC2w9Ppp53b0J27Fa7s0j8xBMkpJWBozhluCrNW2S1MXeB6Eho4Wwka9fL8thPmMTMkklxA7rC0H6o
+ u1R5+hN8
+ 2FVKQEg0O+bB5pUS6JypLPaznfOrxr909I3tLC07a2kv8Sh6VcCDXCqVkMYr5/Pm2o0+RkMPAahSHbNTm4sX6pp8PSS759RMUrpTkLJyxXh9bnLe/uylp48q2H8R4VmNhPYNR0uc08HZPUekHHPDSshN5+LDhnHVgkhgRaHQh7RImZmLzb7iyCGhoeBs9Dv959RTtfOk56Ft1Li12mwUmZhD57U1PSMEf3ofBs/Rf9SXo31M3GWXqdigVvMUtzt6k0wXncSIMSeXLCD8KHqcmICkup49IYibB5vnzXnhumhxrOsefQEQJ7JsViU/c9G3QK72bd6+hGLUfIw8EMoVhDTnJ2ipO+iV6qf36059T7wJKzqdkpOO9RTxv7zKmi+sgRwc8r2NwTT+eEiL9frmbQc+SieQOEpm5mRy7N2WE8Rz9pmuxIpMGjXq6QuLWTyaVbr6ufvoQGitIAwWO4No6rmCi80ExSDYXZEOTn/gwBl1eUkVuPWiOZVptyHWcOZdbK8sdcYSdZX0xjaVap4Yd+iyGngow241Z5AopmRwJ/B+R3kqmXTgS0s1yHLOfTWj3Tfgp7IdVM6ey1qoXXMPbUMS0ra3bGO7mbo+cy5Velk7NME8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,103 +106,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec lock.
-> The reset_batch_size() later folds those deltas into walk->lruvec under
-> the lruvec lock.
-> 
-> The page table walker can run concurrently with the memcg reparenting path
-> as follows:
-> 
-> CPU0                           CPU1
-> ====                           ====
-> 
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages += delta
-> 
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to parent
->                                       unlock lruvec
-> 
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages += delta
-> 
-> This will trigger the following warning in lru_gen_exit_memcg():
-> 
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
-> 
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-> reaches zero, but there are still more pages.
-> 
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec
-> stable against RCU-delayed offlining; a dying memcg redirects the deltas
-> to the first non-dying ancestor.
-> 
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
-> Changes in v3:
->  - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
->    (suggested by Harry)
->  - update the commit message (suggested by Harry)
->  - temporarily drop the previous Reviewed-by tags
->    (since the sync method has changed)
->  - rebase onto the next-20260624
-> 
-> Changes in v2:
->  - update the commit message (pointed by Barry)
->  - collect Reviewed-by
-> 
->  mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 38 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 35c3bb15ae96..1ec8c23c72b9 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
->  	walk->nr_pages[new_gen][type][zone] += delta;
->  }
->  
-> +#ifdef CONFIG_MEMCG
-> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-> +{
-> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-> +
-> +	rcu_read_lock();
+Memory allocation profiling is ultimately an mm feature and now that we
+need to use some internal mm definitions in it [1], the time is right to
+move its implementation under mm/. The move is straight-forward, involving
+just alloc_tag.c file. Update config, makefiles and maintainers as well.
 
-Where is this unlocked?
+[1] https://lore.kernel.org/all/20260622-alloc-trylock-v2-13-31f31367d420@google.com/
 
-> +	/*
-> +	 * The memcg can be NULL when the memory controller is disabled.
-> +	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
-> +	 */
-> +	if (!memcg || !css_is_dying(&memcg->css))
-> +		goto lock;
-> +
-> +	do {
-> +		memcg = parent_mem_cgroup(memcg);
-> +	} while (memcg && css_is_dying(&memcg->css));
-> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+Lorenzo Stoakes (1):
+  mm: move alloc tag to mm
 
-	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-		memcg = parent_mem_cgroup(memcg);
-		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-	}
+Suren Baghdasaryan (1):
+  MAINTAINERS: move inactive maintainer to CREDITS
+
+ CREDITS                 |  4 ++++
+ MAINTAINERS             | 21 ++++++++++-----------
+ lib/Kconfig.debug       | 28 ----------------------------
+ lib/Makefile            |  1 -
+ mm/Kconfig.debug        | 28 ++++++++++++++++++++++++++++
+ mm/Makefile             |  1 +
+ {lib => mm}/alloc_tag.c |  0
+ 7 files changed, 43 insertions(+), 40 deletions(-)
+ rename {lib => mm}/alloc_tag.c (100%)
+
+
+base-commit: 81652c5a65d4ae28e9b18c16ef917a40025c3653
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
 
