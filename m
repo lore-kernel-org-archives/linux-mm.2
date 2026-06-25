@@ -4,166 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD883CDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:28:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2234ACDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EB136B00D8; Thu, 25 Jun 2026 15:28:08 -0400 (EDT)
+	id 07D786B0088; Thu, 25 Jun 2026 15:34:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59C856B00DA; Thu, 25 Jun 2026 15:28:08 -0400 (EDT)
+	id 02E2F6B0092; Thu, 25 Jun 2026 15:34:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48C5D6B00DB; Thu, 25 Jun 2026 15:28:08 -0400 (EDT)
+	id E60716B0099; Thu, 25 Jun 2026 15:34:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 20DCB6B00D8
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:28:08 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 84AC58CC24
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:28:07 +0000 (UTC)
-X-FDA: 84919420614.11.7A330AF
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010034.outbound.protection.outlook.com [52.101.193.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BAC40C0009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:28:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="oxbfiH1/";
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782415684;
-	b=3mectNeCmbMQ1naXxDwAjgG7YsEa3Bk8snSTWbxeUZii5VbJ2kf8g2NLDab0fJVuT2jlf5
-	DwsnK3sGP502v+7WLqtqaRKN0jQXzoGRRVRrCRz31dupqbc0QHMpChUQhev+6mTcEgaJtX
-	L8d64cpRY2J9Nmmf3kdvyGm+ZDX3Igc=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782415684;
+	by kanga.kvack.org (Postfix) with ESMTP id B49BD6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:34:58 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 41A9E1C5C55
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:34:58 +0000 (UTC)
+X-FDA: 84919437876.29.D1FDA31
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 283CD18000D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:34:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=abF9ft4k;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="b Bu/Gwg";
+	spf=pass (imf24.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.154 as permitted sender) smtp.mailfrom=mail@johnericson.me;
+	dmarc=pass (policy=none) header.from=johnericson.me
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782416096;
+	b=bVY9FiBDQzPiV/plq5lDFMJT+0epamK5io9LAHj6aTbYRSxPnqH/q2Sg/qBnuhrzVS0OKk
+	EB3yrqOdtnrsm9hmaQj0fa2qHzPa1rvV19HTBtC3ykjLLg+cEogxASSP+aYE8aN8n3p4yI
+	LM8wC25BZ6B2mYMof/9FVeKQ22jf7Uw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782416096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6w9rw1KRdnQP/6lGbLWWy3lZC+x2MCcYY8CmAO6tW8=;
-	b=vVigBZ6I3UFU2veZtC9O9wo9HJu8wVy/WYEgm9dBZYZScGMGxXFbQvT8hwTdxhnY5s5yid
-	CqN7/olZMFyMB8L7QoXectT0RMzsLRsvIkbXQPevx+SLBPQTAA0IB6pOPJVVTdTznerYxo
-	fMe32z3dIm6LLH6bXk7YblvXMvJV7H4=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="oxbfiH1/";
-	spf=pass (imf22.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.34 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=T0peyKxsyDiwwGj3sDFCUmdjMU9CtNiK/d2M77JWXMtD/tvJH/EgkWBAWj2XU5onYbreRTOs9+1ErZhWkoOae/5cyoc6/esdFEsK5y6hXsJTMQXEqSP2XkXEo/g6xjFxiw3w9duJCmXtu6Itm/lZ+ro8nYQ7WXQe2R+jqLvOyWqYR8qekssaNlYG/X0fufHRUznuSRvzcoRiI8b9uUTkyzw3j+Ux60fe/8hI2QflrAQIpe8urPySzOFS3cqUobnGcqNwoteH6fxIc5ouGdA5giKRX+7t9JzbhvckW10ue2pICUjt/mAgy6ocFI7qi8WX532vx7IMkbXVVuYDmumHtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n6w9rw1KRdnQP/6lGbLWWy3lZC+x2MCcYY8CmAO6tW8=;
- b=XVcLXfrasuNNB5fEqufrFUfA1BzJyIWstsQzgEQUJR3CaqLbbGkQnNFww7YnS4aJ9Pnhow2PScnEEnDu/evn9ERT0/L1DgrDIBUVyp50mtLSumT49Prf/kzgOOnxBE4X2gUpceBLo7kdcYhnto+9HeXAyZI/ksda/WRFLpwCaOBPQKXN44sgcr10US5ultGJ3V9f4XwaBg+mC3tEgg65Zl1x0PS/dTSHrLcNApEk0MMSdhOmFqV5AHFQu0w5jdzhwS00kT6sgnvRn+V+1BincPyzVqNP80QZwLekWMkFlszv4cEr0qMdVeIxWqgXewdwSGMsta4EhJxe6ORjG2ttDw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6w9rw1KRdnQP/6lGbLWWy3lZC+x2MCcYY8CmAO6tW8=;
- b=oxbfiH1/vmR3oKBq02b5LkTHa5G4Fe1rCRs6kSMM7zvQhUzvXYI+MRDR1LDTRoMwkzIKlv8mOmmCEgYmWgnIffsMPb8C/tsSo1ozT+YaJ4ANPmv1criRuXOFiE0bMPBW1wYkrBo897ez8FoVtvLXWXQQfqJD8LCI7A18FQ5T8qSLrEUf67S1FSr6RhaSwwkdGe51Pw/f6V7BRnI5H4UL6h9nNO4UuZEwBLEL27VsbEIDqpIu/DbVFwgETNC2RjlyO2BmaAs08XSJ9rMHD815Q7Qj2EV79DM8UCCyWSoHaudna/YdOYGZhyJW72amRXoIgkcZ5SIQQs+u7ihZ3LzRoQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by PH7PR12MB5781.namprd12.prod.outlook.com (2603:10b6:510:1d0::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.12; Thu, 25 Jun
- 2026 19:27:59 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0159.016; Thu, 25 Jun 2026
- 19:27:59 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Jun 2026 15:27:57 -0400
-Message-Id: <DJIDMIBR7QP0.14KBT460GECAV@nvidia.com>
-Subject: Re: [PATCH v11 2/4] mm/page_owner: add NUMA node filter
-Cc: <vbabka@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
- <jackmanb@google.com>, <hannes@cmpxchg.org>, <linux-mm@kvack.org>,
- <linux-kernel@vger.kernel.org>
-To: "Zhen Ni" <zhen.ni@easystack.cn>, <akpm@linux-foundation.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <20260625043101.338794-1-zhen.ni@easystack.cn>
- <20260625043101.338794-3-zhen.ni@easystack.cn>
-In-Reply-To: <20260625043101.338794-3-zhen.ni@easystack.cn>
-X-ClientProxiedBy: YQZPR01CA0186.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:8b::6) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=h/VJcPO5ZLOadJ5wysEz6lTyDoIeInuqp7ujvz9zGfo=;
+	b=6TOnWZyWKihhX8FxBjdJnSpy+quCvuJ42sTbFUVgnyZDP0MgN8Nt0teRpenVSXbBC5zbed
+	IuSuHrEPD+ixwNH5tstL/FMUDhI0bbcKd3/l8i63GQL/eaZYrJgII5Y/mL+HnRfqhdt+bF
+	qJIsMv8o9PH9pi9YATWkye9432dlkW0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=johnericson.me header.s=fm3 header.b=abF9ft4k;
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="b Bu/Gwg";
+	spf=pass (imf24.hostedemail.com: domain of mail@johnericson.me designates 103.168.172.154 as permitted sender) smtp.mailfrom=mail@johnericson.me;
+	dmarc=pass (policy=none) header.from=johnericson.me
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7DF511400089;
+	Thu, 25 Jun 2026 15:34:55 -0400 (EDT)
+Received: from phl-imap-16 ([10.202.2.88])
+  by phl-compute-05.internal (MEProxy); Thu, 25 Jun 2026 15:34:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=johnericson.me;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
+	 t=1782416095; x=1782502495; bh=h/VJcPO5ZLOadJ5wysEz6lTyDoIeInuq
+	p7ujvz9zGfo=; b=abF9ft4kvzbIc8aYNSRz0Uofgjh8YFqyA9/pM+bt5o/HBqMd
+	4okZovNx0/iizQY8FKft+r2i8DryTUoRxIUAX8ds7Tdok2N24W8xkHwknJpPb1Vm
+	x8r9jNjGCoQoBAfB74vDxL6J7vUTAajWwChf05c2JkGjsqCzPc6cKtq4fZnPVYf9
+	kxzaVf1uT1Y+Koo+WChi2v+2Cmhhm5H5LI8evEH7BN/CvvQsf/JXn3vQ02Tg2qI0
+	JULBVvaoZXoV1hrRj6OcadKW5WX5t/1qDyV4aSKfiKSSq/eLtZNL4e6l5X9fvC8b
+	uzDpUJxuDPTGcT2BOJkKVncZL0xcF8XOGmqrxg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782416095; x=
+	1782502495; bh=h/VJcPO5ZLOadJ5wysEz6lTyDoIeInuqp7ujvz9zGfo=; b=b
+	Bu/GwgzkIw4a0CO1b3uncymfOPA2SJFz7coLMCF7atUUPVfpyY8LP1Vo3w6PgLp0
+	nyPr9wRRn3euyM1NCzW8eF5ndc6+7K0pjC5dFccSVpfSwmmcqybpbFtMxbJqfSbw
+	0D6X7ul5btN1KzCrh9P/97HXMEn5UHb7WJN5GgHcoK10owrE9h4djD5PdpBt/N/4
+	FU7qtgz0mZrZ0+ZxDqBB0X6VbL8HAH0GsHv2ftnNHDW6NnLncBGHtbhUILkF1kY6
+	l7nRx+j+qOIjiS5EXVkTgs9NmS4wTOCNmhCtdUuU8xucAqb3caL+lX+xFV9w49QH
+	M/VohyQemObsOsQeMH7cw==
+X-ME-Sender: <xms:3oI9avA42e-F3q1SrOClqUqWIixerRxW2AEje3rRmqhlFGTUEDipPw>
+    <xme:3oI9agWyc8FIZ_4x3nqthL_THvhl4f8xq3kMCVgtAcBgNHI67aMmTz7HbnzOe44qy
+    CGicPCoVDQnkYVe4oh9jxozeaAfW_uTOtGWpfXQiBdNKU_hCgxYeOA>
+X-ME-Proxy-Cause: dmFkZTGwWfvxyF8Yo/MGgzR2q6tZRih46h6eDc0VHDJ2pRBK5ZLZ7SSxh8USlawBG3Ionz
+    nNzQIKNAseFIJbn9/qEnT2y+FMvZaCwCMcOwyKQPdpm1DZ+ASf5zJ4gKan2cNthkC2xyk1
+    z1TxDOQgUv6eBgvjksuIm72egj4axJgylhP6P2ON/VLtgPckdlJrpTsTBACxLImbcXljbD
+    D9cVHv/FqOWPuuevvbVEd5oUESfnpfVwHpgZXdOCR0WFPH9WnYY7VfQkinAZ2Bhe54I5Ca
+    y+pUtTjBGYbkJzfE9oqtsml4iTEu0b0V45H62UxjgnAhDNxkmwiyntx/Z9GKOwrAfce/R3
+    9mvE62nTjt5a9+aLLjK9LsmHeiMYmBBZW5urTSPEuQ7uuhdNU8RLF28NTmVKHV1C/cmudm
+    BWJZC/FRy7hL4hmt4N/jFjvZlp0lWwRBIj4LnVvE3wwEYQCqfz8dBdZOf8dLYGqUvf/tr8
+    B76qpzExCYCPJj9X0Kf1M+Jzqc0zKoudkh0D47IL4sSs/X1Wml/r+6emBi7OFWL3jLZeBX
+    R4Z4vDfMl9PsBUvkImElwRgxPHSKdUYdrRXcSgLQjYkjV0q+EcuxbcXzkDxRnFAAHRB3Cb
+    ewYDL8Pk/iPOnyjDpVyNatgBrpwZdV5K0lsqOQCfFafWvD6y8y/0tMsdtctw
+X-ME-Proxy: <xmx:3oI9asmTe8ZpTmoKswMGIu_WJAHRQhsWnnlOIIcWJuNJ0-U58aM_7w>
+    <xmx:3oI9antVlQs_UO-pk-WMpU2BhqzYnNWZ6MH4A5FVvhYHtGunFJKscA>
+    <xmx:3oI9anoCkWCOtPaCWyIvQtlLfb9jZvwQzyvrsGIFl7JOkdS2aFc31A>
+    <xmx:3oI9atcUoTee-0n0XVI2QpvkgIB0vJ5M7qGyeVgjjFGZmZP3rZUF5g>
+    <xmx:34I9apnPMV_xMBFsfpM-LU_FXjKvoFWzbXbRiuMH-WAevtXFRzElSmMY>
+Feedback-ID: ieb4144f1:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id BC6772CC0088; Thu, 25 Jun 2026 15:34:54 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|PH7PR12MB5781:EE_
-X-MS-Office365-Filtering-Correlation-Id: fbe86651-0b56-4d7b-38a0-08ded2efdda5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|23010399003|376014|18002099003|22082099003|3023799007|11063799006|4143699003|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info:
-	bhXUqzAbQv90CAySvee0p0NYxtv5ybIK7jpleA4PY0mjbAFYgOSuUz1fLT+GErtX47IltTpd4g6A46fbOH/NemlpNVN6tlGowVOByKGz1Ah8RaZo92LeSzj+LzwFGKGn7KRQ9D79t+4GMUCRRlIT45kCQy3WjHLiw6kHj/z7WAbEkVDwNIgunaCia5G693rT0GW5rn3hSjzD2nWfBVro+s2MxpJ90rFPEcTgpVkCp6lU8a02s9TTVaEl5x36hAtbjv8R6cplklLZiKlWBIfBL2MZ4tJ4eITJyPEcN6hQY6R9ur3YEPyB6b2VjcydbsNwnen66FVto6rDtLwSNvvmaGmecDme3ZMV+jbaWyHZP/bYv9tIpRwa6XpQdzhH0zaT3i1Oy6skW8cmuhrn9nOkasJQnMrF/AP5Dm9ZPeiogqSiCu/H51LuWRn5h6WYmkHI7WgfAt88O0WFz6qvwVc20ZOge928QfPg/C+aBhYRxMeBVe0x8XlVhLtxSAvmAeBqfGh2cBHhJxyP3bLF859RvL5avgtES1n/o5+g3ARmeGsGOc59bSG+4uX6yLbUI4shfmBWLWfa+oBSJtQBWBeRoZgNVZ2tneVxAz+nH4ZrCJA9a41Je1wgf8T9vdlx+7ybQPQElBxJkVc+gFWzZz1XiLCKb1sHKuQEQxPl+Nc1s64=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(18002099003)(22082099003)(3023799007)(11063799006)(4143699003)(56012099006)(6133799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?a1p6K3A5YXJmaFRzMnFrRHlMbUZSdStBM3JvdzRYdG9WS3lVN2ZmdTdWNld1?=
- =?utf-8?B?Y3RBQ1krc0k1RGVUdjZtZmhJbzlIOEg3VlRIakcycytFUnpvWHE4UlBDd3hU?=
- =?utf-8?B?V1RaTVVYTlQ4ZnVVcDk4c0puQU1RT3licUFuZzBCZjlnZTNoYkdobHdmQjZ4?=
- =?utf-8?B?K3hjbExZSWNJMHpsT095OFpoVHp3RU80aU5qc3AzSUZ1emE5djdLQm5TU1U2?=
- =?utf-8?B?ZUpHVDZrM0VEQW9BNWZFUUZpeFhBYndRUW5NZjBickxxaGhUMTEyMnpya2x6?=
- =?utf-8?B?ZzdVZy82endxNmg5bjViTUkrQ0RmNk4vNmdoOXdvUEJnR1R6QjRlK0JxSmx5?=
- =?utf-8?B?Y0t3ZStlemdDdE91Z2VtZk1JM2FwaEZNU2UzTzN4NVMrZ2plcCtDK2lrSm5T?=
- =?utf-8?B?dlZjMnRaTndNdWxMaEJrZnNoMURaalNmWlp4bk5QTDJMcFlPcFZzbzFsaS9o?=
- =?utf-8?B?Mkx1Mlluckg1OVI0T2wxUFR0ajc0dkV5RlpieFdCQU5YUkQvTGRTSTh5YUlJ?=
- =?utf-8?B?Z1VsU0Y4SFRaMXUrU0FkYzdRaSs1N25qb1kzU2JwaGhkeDRxVTQyRGhQZUx4?=
- =?utf-8?B?Y29kL1ZtOFF3RkE4T0RSSEVnK1hpRkg5RkovcVkzTTdIeWFNT3V3RnlaaGZi?=
- =?utf-8?B?V2dCUXROb1lQYWdjc2xiVTh6REM5VWhXSGZEaU8xcW9VRnVHMWpkS1hLckVj?=
- =?utf-8?B?QWRuM3d3QlZCR0lmbjlwTVRTR0QvZmloWFlzTVpqUXZ2T2Nqdk1iNUo5Nnor?=
- =?utf-8?B?d0E3RWdnVFRFNjZWcDhFemhqVU9MdWtBU2FUQXluT0p4Y2kzbHlucDh5T3dh?=
- =?utf-8?B?V0p2Zjg2ajhhZk42dEVXcEN4V0gwWk9VdHJEeVhLRGlJYnYzbVJDY2QzVk5L?=
- =?utf-8?B?TUNYalBIb2xSL2l1bVJCMitDQ2loVFNDS0dCUTRyZGlCYklsd0VQSW1QdXd3?=
- =?utf-8?B?NmovRkdId1phSGFOZ3dMWnFPalJPTFBLY2ppWEtRbmt5RXlhNmZuSEZHWHQ0?=
- =?utf-8?B?WEhobEVETFhqRkU4Nm1iNHZpU09xeldrWDMrSVV3TXF1VlNqb1djR00ycHF4?=
- =?utf-8?B?cVNnSWF0ZlpZN05CRTlGbkR2Mk9LTHRzdE5aWC9lOUlMTzNld1Q2SkxnQ05L?=
- =?utf-8?B?c05RNS9ZUldDSlFQTE1tSHZGTTRJYm9RL3lhcm5FMzFRQjBHVmhPbkhJSVZr?=
- =?utf-8?B?cEtiTWVrWDhuRUtacFlZVWFjakV0bmhBTTBPWG92MHoydXhxbDJTSU53QVps?=
- =?utf-8?B?MENFZFZxZWp2SjNodnZRbW5oeEhtbDNLM0pEbUNySG10dk9pOHZtVUc0QWd2?=
- =?utf-8?B?cXNrbG5zT3I3ektlQ0cyUVc0VW1xYm54dElVa3BnWjhKMFNFaDkzbWkrNG5y?=
- =?utf-8?B?L0NxZkZKc3ljRXNtT2ViYjdzV0RPVWttRC9CYXVPNGFCTU1vYUNvdlhnUXIx?=
- =?utf-8?B?R04yTHdkbW9DdFJiMUV3bHBWMXU0UExLdng2MTZ6bkR5b1ViaUdBSEFaaklH?=
- =?utf-8?B?MnZpcTkrRFdTemhEaVdtU2w3UHI4djNpZUhaNkpCNFltaC9RQS9YempudjYw?=
- =?utf-8?B?RGJ1OHExVGRGcWpTaFVCUHhqdldpVWUyRlZ2QUtBMzhkSFpPdHVoSzdyNng0?=
- =?utf-8?B?OGVqWnhKaVhNWkY4eHh3QytYZkxpcmdxazM2Q0VxbWZjRTdHeWxIVTZyZStV?=
- =?utf-8?B?OFhWbTlZb1VJUHBuK0lpVnJGVGlLQlpsSTE4bXlmenRKWjVzNUJlaGJ1NDFY?=
- =?utf-8?B?Y2JKZERKVzJHY0tES25LWTVaS0ovbDZMRngxTTJ3VHV2c2EwQnpMTjk3QzJz?=
- =?utf-8?B?anM4dG81eloyeHRNOWRjQUhLWWNXbzREbWphNm51aEZyY1VkSW0zYmo0aGMy?=
- =?utf-8?B?OUM2b3EyaE11V1I0N1ZxSWR1ejhGUmgyVFhNMlhSS0tWYWV4NUt5RXV6UDNQ?=
- =?utf-8?B?ZHAwenFxaFJRNldlNHhZYUpOYk9sSTdLcXBwaXdxQ1hXNHppbGE4QkRwUUVl?=
- =?utf-8?B?bTJsSzBNbnZNTFlmd08wYTZyVmFJOVlCc2RDOE1RWW5ORGpkK2p3Q0doelNO?=
- =?utf-8?B?Q1BJdFlIRnorV21HQmtnZUtjb1JwMGloS2Y1aFN5WnhHeDNOSVJPcmplNkwr?=
- =?utf-8?B?eDI0blQ2a3NjM0FLWDdyTHEvaStpUDBWUVZ2TGczZDJjVlJFb1czY2dsUE05?=
- =?utf-8?B?eE9ncjU3SmF0VWJiS21Gei9COU9GK2lkSDRsTzV0ZGk0dlR3NGs0OEgwRkNa?=
- =?utf-8?B?OExsYzRQRW1idnovVFU1Y25vS0pNS2FINTcxYjBDbUJzV2dKazQ1SkljMVkw?=
- =?utf-8?Q?0fhYF1/j1AX6q7N/O9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fbe86651-0b56-4d7b-38a0-08ded2efdda5
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 19:27:59.2161
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L6ldVT3Wo12MRCdwx9XfgOJd3+XxD7237o7yOvOsDIn29g6d613P2PqaDEkjSsnl
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5781
+X-ThreadId: A1dANeNfTnWJ
+Date: Thu, 25 Jun 2026 15:34:14 -0400
+From: "John Ericson" <mail@johnericson.me>
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Farid Zakaria" <farid.m.zakaria@gmail.com>, "Jan Kara" <jack@suse.cz>,
+ "Kees Cook" <kees@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>,
+ shuah@kernel.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>,
+ linux-kselftest <linux-kselftest@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Message-Id: <ea5dc2d9-9a90-450a-bbcc-8ae3429ae85c@app.fastmail.com>
+In-Reply-To: <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
+References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+ <sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
+ <CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
+ <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
+ <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
+Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: uw8t3699jipwwai4bxrkr7u7zbdquuio
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BAC40C0009
-X-HE-Tag: 1782415684-363465
-X-HE-Meta: U2FsdGVkX18s32GfAfl/nQ7JvnpaR19es1msQ3wiNlJmUERfeUd5+dpaKCkUZjZ+G/NbxXs8ssvshimvgwmklnFifdsff1cyGkI0+uDSU0UOG5jafWkVnkTjljwBP3htTcln4ljV48xoyAgOpchTDG/vZHpOYBJK3bcjEhTIoIEBd7doBMgNdgiukkOkA1fmYp/jUZFmqU2/EQniupUrnAnkzbx7zwHhII2CwOcJqQtTpXTINmbvhMN/9aCCoEZcUzZ6Y4uvsTE2zVe1eduKSygfkQuEXd25lf1rdqXjto7FVFHXBQ8x7rtN6e26fYI1QtJW5uAx7vItdxEIY7PeqTll4zPpWPIjpPH69kY/sVg3Fh4iTl/KsyUiVGhtlVXTADgxIy0yI1X0x9HRFQoBGgfGwVSnXT/UVT5f5rvPqis8BWy/Kf8ApFq4NHa3PsayajQv4XhnpLRtnqB+RUBYznEXvCzZWobeV8JAr+uFxKSXxclT4hz8LZOiGxwZo/9voh4eD1igl9TBAh5zuMf7F8XxSlrFwFuT3BWfmKzcCeo99xioBbyLo9nTEwlmKalFqNFpJGoiUFKQ5tWlKmjx4y9z61zjiCEpc3G8j0wFtkydgdhz0iTd9QKzUCLJuKvHAfrkQp6yqlBU4ioJUamu5Scc7S/YiqHMtziShCQ1un1LaQe+E7qbONSGa28ZZ/LzbeloD6BqkZffoc/ugGwsB6bx+U1gRDsqwUWAeBkj4zwRcPdHlgu0MSTz3NY1YMuyfcta9dxuO6ICUcnABV2hqJOCV9CaQpb7/0Xs1X5D4g3p/tU9vloHOhvRagajB5Jz0k1xTCrg4yXnCgG5B7Fx+b7R7IoJZWLSZVj73kqVSbNAStOViMnopJWm35nwsJ1BKqW7esPrZYUzbsYyhg/gNsqU44pVWgt9IeqI1EQ0r8yKXIxBq+G4o/ijJYoyDrvj3XRmxOopYJJFY+b+coZ
- f6Tyru16
- VnGzib6scbpM4gfqm61lCGy4rruBfuRoVYgXWpR04QIc4SsoN8MaWHJ8wd5v+CB6J1d3mnVrQPZ7u8JzycUFvPT2BoRwSHtSCxkJIsosKhQ5ZLOL6fDiDTdAhyy2R92En9vc/I4ywhUL4uV7h55dEycsxSe8zU83t+YtcUkkUQGl5ZbUPXY4pXFJTbuu9H/BshnFDxqRJWBvQsWBWy87iEafdL0s4NreGiDvWVL08Y7UHKT/ckVlP7uXcP7KJQCAkSEOaq8gauUlLSK2bikw8dl7ukZTlWhzFsL/4S6h+dLF3fWS/pTk1Y4NEV1+la8LuFzeujbDF1jHPkFAX0d0yS8lVsXRXKcKyOXHYFvRzDeGr17ebOJj2vinluf5XW5EkPtMt4orY9AAmFSRyVdYECcBzaePXcbwq5PKpFemkbKM4Vgs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 283CD18000D
+X-Stat-Signature: amrjo47qcitdo8kqyfsmkn1fbm8q8ihi
+X-HE-Tag: 1782416096-435952
+X-HE-Meta: U2FsdGVkX18ISoHJDP1UBQzaidtXKYLKtQjdHEJNh/r3S06yAxRuD2tbjHT8ZgcjYQtAI0ddpEPfCWODF5kbTyJCFfrs6Rm+KVLqLVuBAxRawIHMJuZtr/UdumJyCArAFtWCpOhQR0svRMFFOX+j0t0RI4ZnOL43ZNTXh+SxLRgAwNMnK7AZS/HUaVs+af4s6dKA+5DsNXClcGbA090y4CZFl75KHfvHjJPpfRknAOwlPtR6hx08dT2PLjgB0C0pIEs9eyKLWvWsYqmaVffAsyLhM4UmZqSImElgm4Ly1XvbkbmMYMpVT17emuseGnznO1ZuRVq/68LXkTK2/EiJJA2nsH25Fv4Y80NpIiuTkYxnvy/ekiiE0rr0i1axoxw7C6xv5k3OLj4kbXYIbdM3kMS2lhLn8p5eJa27QP0EyoZl+J/CihVoDT821s3mIkriB7ULDEsXNGi+/EqG92qhAson8rrNe7Tvwe2yVEtjM2WlkSfVwJa03JPU2TLGwwiwjjWFF8qFhAW6WiKIjMzKUdxadyWy5ObtYeRLe3jDlPALLhb85knrowlrU8W6+QxTc08cOMCWTtmp0uTcLmfzrAKyKzGEqdCKLf3mT+dY0rCTjQ9EtjclrKag1Mo43rZ9VeVzk7qYwWm1Ud1ZPfprQheu0b708mJT4pm2faAMKfPy/Vfzq2iDvdHckmvgMRNe/jSo5PxP8QHCDNYRPTvk72Zlq2+xYC0Bk15s820xQW4ECdfvF8E+PvL20Nv+YHlowMbZvAhOPpq1wImLrjEuiRAr3HzcdKFPU7cz/XY2v5kMLj0KA22LMEL2O1n1hDuc0hHUxTBZaKOkMoxGm6YaMvqzjztOfJcsfigdWhQfhMRz13lCnB5kFEpi4drSYDtgoyHkEumoZfVRGrWkB85odpSD0qfX0uBv3blAc/PNII3UFaJB1kcazIXr172ekHlzKsKS+wiGfqBlDqU95RA
+ yBSu3zzs
+ qnlPw6Y/zm+S14HZSjuNT6NohfStO9BYWY23xxgkYIKP4cQ7Uc/iIll46cMzAS7WJkulC6oUh+PRnUFvebS+13ZX6E8InOUxpyVR103atXEVfb8Yld6Ga0MjoYgFej8whBivmQP8KYnayPvYn0jC11T8lD5lAFFQYCP8XwZa+/89LxxaV7JR1teGsdAdzMha1kEiX/u5Ry0kfVYoJChst0BZIgYIbBaQbNXamqy8omSYH3B/r/L8NtGjlyphDQxqRPNxVsFn032XgiI0UXauiP749A2LexF0sfoA8hlu23nrNsCBQUkQY1xRMMea1JZf9FDZ/I75Lq2CHGQS2t7iHxdbFiM6R42adXhncycDNEJ1hmUsrQ5U6cDULLkW+jgSMUp/sLEjYR8WzcgCsSAiY+bU+vQyg3lQ6oGVRCMqIOnWwkuRROsHHW6RjJr5SZw1PDzY1eYcF3Y52oCkcSJNhZLXKnuIC51j5RokowbGnBtxvgug=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,54 +138,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jun 25, 2026 at 12:30 AM EDT, Zhen Ni wrote:
-> Add NUMA node filtering functionality to page_owner to allow filtering
-> pages by specific NUMA node(s). This is useful for NUMA-aware memory
-> allocation analysis and debugging.
->
-> The filter supports flexible input formats:
-> - Single node: nid=3D0
-> - Multiple nodes: nid=3D0,2,3
-> - Node range: nid=3D0-3
-> - Mixed format: nid=3D0,2-4,7
->
-> Example usage:
->   # Using the page_owner_filter tool (recommended)
->   ./page_owner_filter -n 0-3
->   ./page_owner_filter -m stack_handle -n 0,2-4,7
->
-> The implementation uses per-file-descriptor filter state stored in
-> file->private_data, allowing each opener to have independent filter
-> configuration. It uses nodemask_t for efficient multi-node filtering and
-> nodelist_parse() for flexible input parsing. Node validity is verified
-> using nodes_subset() to reject nodes without memory.
->
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
+On Thu, Jun 25, 2026, at 4:50 AM, Christian Brauner wrote:
+> Also, we change long-standing kernel behavior which will be very
+> surprising for any userspace that might implicitly rely on the fact
+> that the system loader is used. So even if we were to do something
+> like this it would very likely have to be configurable in some way.
 
-<snip>
-> =20
->  	/*
->  	 * Maximum input length for filter commands:
-> -	 * 32: print_mode command max length is 17 ("mode=3Dstack_handle").
-> +	 * - 32: print_mode command max length is 17 ("mode=3Dstack_handle")
-> +	 *        with sufficient buffer
-> +	 * - 6 * MAX_NUMNODES: worst case for nid list
-> +	 *   Worst case per node: ",NNNNN" (comma + 5-digit node number) =3D 6 =
-bytes
->  	 */
-> -	max_input_len =3D 32;
-> +	max_input_len =3D 32 + 6 * MAX_NUMNODES;
-> =20
->  	if (count > max_input_len)
->  		return -EINVAL;
+Yes that's definitely something that worried me.
 
-Hi Andrew,
+> So I'm not enthusiastic about this. I want this to be consistent.
 
-This needs to be fixed as well.
+For what it's worth, I somewhat wish the `PT_INTERP` field didn't exist
+at all. IMO the ELF spec is very weird for some parts of the same
+headers being for the kernel, and the other parts being for userspace.
+If there were separate data structures (think encapsulated packets) so
+it was crystal clear who was responsible for what, we wouldn't be in
+this situation.
 
---=20
-Best Regards,
-Yan, Zi
+While I earlier complained that our
+<https://github.com/Mic92/wrap-buddy> work-around was likely to make
+some security analyses/policies go haywire, arguably it implements this
+behavior: from the kernel's perspective, everything is statically
+linked, and the program, entirely in userspace, takes responsibility for
+whatever loading it needs.
 
+Put that way, this is less of an ugly work-around than the way I wish
+things worked period in a world without `PT_INTERP`. Dynamic linking
+would be entirely a userspace concern and the kernel would not know or
+care.
+
+----
+
+What about shebangs? It's the same problem, with the same solutions and
+pitfalls. We can also make wrapper executables around them that do the
+right thing, but turning mere scripts into statically linked binaries is
+a bit heavier. I assume the answer is the same, but just want to double
+check before we close this off.
+
+Cheers,
+
+John
 
