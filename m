@@ -4,87 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F664CDB47C
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 02:27:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C182ECDB47C
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 02:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 06E506B0088; Wed, 24 Jun 2026 22:27:46 -0400 (EDT)
+	id 89FC16B0088; Wed, 24 Jun 2026 22:38:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A946B008A; Wed, 24 Jun 2026 22:27:45 -0400 (EDT)
+	id 851336B008A; Wed, 24 Jun 2026 22:38:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E036A6B0092; Wed, 24 Jun 2026 22:27:45 -0400 (EDT)
+	id 7692E6B0092; Wed, 24 Jun 2026 22:38:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B903D6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:27:45 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3C9388EED1
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:27:45 +0000 (UTC)
-X-FDA: 84916849290.20.2C8D43B
+	by kanga.kvack.org (Postfix) with ESMTP id 51F3F6B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:38:56 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF9F61C5F53
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:38:55 +0000 (UTC)
+X-FDA: 84916877430.16.C46A420
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7FFC1140005
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:27:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DbzrAQBi;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 046D720009
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:38:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ni8ZUZgt;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782354463;
-	b=YNQR+B/pwu2insUQiHB6FM9tqERXYcitI6tSzbFlK5SadIMveTwFGfGXuh1K1Pd1rlG5ZV
-	Gg5uIL7fBLB64ObBBrp6YIPMxkvUcIqY1xXlZJI/ZuURMCt7fsdRxM/uhx9hyuaisEMmHJ
-	UqmNCv3I5NPKmtRNRVf3J9Sd80LFJeM=
+	t=1782355134;
+	b=mZ5VxvGfa/02yUn5ALvbOWUKDCShHKl24Jgut07F+JGUZVipwmZBE8R0AZ/THgeLu7DKne
+	KkoO+pKcmeQ6f7930gY7zB8rSOAr6jZKatpqVRDeOaXDOUa3IKiybsK/2QLxZ1s5TEiJIA
+	6R68XLFb1RLj61onfhBVJDmc7IHptyY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782354463;
+	s=arc-20220608; t=1782355134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=opuTRvHJwaMNifPV0It90Ejzc8af5zHdKuBMA/ZMsoE=;
-	b=Ta2/ZNPVD5Yn7LYGNvviIgEO53fYAZFn2vMP/NHSATOtLT54ry9GRPUuxYmp2FTDKCDo8u
-	4L5/8O5f+k+MK/JgLNfe5uHp7GlJoRQ9a+e3AoY0AQw/xdxPsWHkOSZmVCO5A6FdYSmRqG
-	ln12i4SJn+Rc+eKnc5oegp2mlBAj/Ho=
+	bh=E9YM8JWT/zV0dxkBylVBLEp6uyn1ZqPHz+BwASfANyM=;
+	b=LzXemJZSIJ0N4HwpjUu+QM69nrdblJ/IcwvgTW2T8NFCw0NjAOG42INNH1fmwqD45h6zHZ
+	BCeNIeGhYZxf0b9qWJ3CqzUzzFLHWXOEXVG6+BK27I+kof5lQGF3WkOPMiUlcyn0pSjjFc
+	wLKxPpQ8CnagM2BRq6xWI3/U/Q7IA+g=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DbzrAQBi;
-	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ni8ZUZgt;
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0CBD8600C3;
-	Thu, 25 Jun 2026 02:27:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762411F000E9;
-	Thu, 25 Jun 2026 02:27:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 863AA60018;
+	Thu, 25 Jun 2026 02:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E9D1F000E9;
+	Thu, 25 Jun 2026 02:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782354462;
-	bh=opuTRvHJwaMNifPV0It90Ejzc8af5zHdKuBMA/ZMsoE=;
+	d=linux-foundation.org; s=korg; t=1782355133;
+	bh=E9YM8JWT/zV0dxkBylVBLEp6uyn1ZqPHz+BwASfANyM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=DbzrAQBixeyDdXZYzGJi2O4PFVgloKcZNe3AxZgtI1AlqusQDsZjXlyllY+m17gEa
-	 +diFjtgj1hRifJ200up8bY4aCfJGEFXqLWQutj6eetE6r4NV55VWHWxLyoM1KkUuLn
-	 7xehB0AMefpHwMCl2mT0hDtoXveESjv/rxkyr4ms=
-Date: Wed, 24 Jun 2026 19:27:42 -0700
+	b=ni8ZUZgt5tHbZ0pc9+RsSx30MPL0gODbCqF/so7MkjjjkryrP59rNFCxj5ZANDb1O
+	 rnywv/3NlMpDO7w5x8EtKtfDfw0zs+RbYWY9Iwz5JbD15hkNQrX7+uevPxLzaBkiFK
+	 HUPWLZSa44GnlCZ/U6sqYqJKqMcriX4IthM9ox4o=
+Date: Wed, 24 Jun 2026 19:38:52 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Ben Dooks <ben.dooks@codethink.co.uk>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: don't build vm_numa_stat_key if
- CONFIG_NUMA=n
-Message-Id: <20260624192742.afbd255b97d82ecfe7e11e17@linux-foundation.org>
-In-Reply-To: <20260618100614.1321950-1-ben.dooks@codethink.co.uk>
-References: <20260618100614.1321950-1-ben.dooks@codethink.co.uk>
+To: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Pedro Falcato <pfalcato@suse.de>, "David Hildenbrand (Arm)"
+ <david@kernel.org>, Zi Yan <ziy@nvidia.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 1/4] mm: mincore: use walk_page_range_vma() in
+ do_mincore()
+Message-Id: <20260624193852.2a1ac8a187978e4baa75f47e@linux-foundation.org>
+In-Reply-To: <e7244b54-d794-4e46-88e7-69204da2b60d@huawei.com>
+References: <20260618092845.3905740-1-wangkefeng.wang@huawei.com>
+	<20260618092845.3905740-2-wangkefeng.wang@huawei.com>
+	<ajPZlxq5z1hyo1kE@pedro-suse>
+	<42e167b2-5676-45fd-8f3a-738d2f4f6623@huawei.com>
+	<ajP9bQhmvR9OX0VE@pedro-suse>
+	<e7244b54-d794-4e46-88e7-69204da2b60d@huawei.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7FFC1140005
 X-Rspam-User: 
-X-Stat-Signature: kixca8dzmmp1mm4rrhtprfumxewbsw1c
-X-HE-Tag: 1782354463-254622
-X-HE-Meta: U2FsdGVkX1/w0tlmyNthl8+xgF+mSN+JjdG2djYqHzfItfuAz8yqwurFsc1rvjD/G5WVDF4CzpWyvT84WtP4Ox9gtogghXn8vhdqcuSUhEZA9oKsxm24uMyDyndztQ/M2Qpy0gjyIPbn1mv7J/mCXSvyZth9RrxlFod0DljdaMi2E6IcR0aQ/VuM8T8SuZ4sEFQRaL+SM4NoQjJEdicERUeYenvib2z4vGyLzC5Fu346NokHflL1lnx7qqJPJo9/rlxWAfMa5BN4nrfM7r4ZvVRU4gBnGVtUx+/ZFrqkg067N9tItM1md99bI0DSBq61pthVU7t6yY8bn4ZOG4bFFjpm4Omhtf66QpOHxpOWZg81X+K9+oa54WdMEKYyR0fLWACtOvoCzmF+QZ1JbpxrJKrRVIICK2KwPNnbAoYQXqalLqBjWn2Luwtqwe7Jw68/wk5r4/sywxW1cb9YyDYl7N6K6T2yrKt1V6OmjwfwrK+UgoWnei3Cmctr8zZ++Y5fLfKfjpJi1r6Sfp1Fvdrd/1eyAO2xHSefki/dfKWlfkjlqgjvEuB5T6KxTyN/kaNRdAB34sTW0DfpsM4dm64zbpgH5U56VjkDYvuC/PKPKEcE3+xmTjdBLbFVIFsftUD1UM0mcM3M7Xg5m95ADcktBA//c/kIFDC7Ck6FjIa5fHuQWQ5czhswhTp5+0r+n51NC/GT+Vx1s8OKETxlcKdHXTKmXVAIsql+IjCGmcsrCK96PGElINpxPS+9Zgc9VQsRD8A4lUhiXMln71K/cqNVtwNGQQyYsLCeA/5y9Jg5BsbFAiZeU0IlnQvkqhsmMOWUxwgmkv8e6FGKaMe/JZfdSu3gEeMY1UR4niClSxHyQWEn48yqq/r5etWkNl1MpJ77MdypcB7vy33JHDx+ObOVVHdf9Se6KXN7y2vTnhCKEIDXOWHzamukx3IynHu9kU+VAYLcIdmSNoQVMeWoRsp
- 10EKykla
- 5e6eNf5hqH0It1adfmMADrenInB9ZPGIfW0yU5mUN/poHgGFkTpzoJxxB6FwV7892RqiHL4/ANzB+9v4L75bCF6oQOJooEUgK4tGRBYw6ocLgsc3LwwMzP0F1SZ4Y0gEIgN2mUj5L+f7G9aYVXlt9R5h/0EmLUTepJR5wUxe6emTHn3LKy2sMNyALmfwLDXxHrvH+sFyWmEGfzDpnjJmw0WF8u8T67Gq6ef+mgNaZQdKAR8fm+pTJahzoTg/ED+WZnsKjQ4TjaJVmXdmAPXz4CuwbGiIBa2wVNU3EAbBJL/ZnZ3zV/KBQ+P9OhyZBqSUj7OjyWGFHEPCoEG8zDUC6MUzC/yl/F/NCZy4yJxXKXy83eObWBtmxzD0PcDy5/3ZCONgP
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 046D720009
+X-Stat-Signature: i84hrewqu3ugss7x8sm8efum1rnc4fi7
+X-HE-Tag: 1782355133-629224
+X-HE-Meta: U2FsdGVkX19TpEaUFFTOyGpNWuo6SRkAHfz+gWyY7nEW8IYrOLIPpawcf0tCLDcw52yvQRH1hzeTHr1/7PaqvTZE5BJTBhxJjUNo3wZE0fbAIat9rBIPfA4lfqKP9kcdo/YlqbF3oONAsjSa2sd528ryRPqQMiZgLnsZ3zqIsAvPHTHN/KN7l3LkEgSEwFechejMSxNbKnPssKPLWQnK8eHJ6meDI8AwtT5eFOWJwtJYxO5M0CBnWTMQ7x7/3JLauCg5Kp8U71fAKJwF4gDJx0H2ZDX1J8hedL3mdJUxcpc9fQ8pJJw/w3qPXWu0ySVD/sn6b4B+I1ohgd2zPByRv4nrFimvPYXwnshQ7EimWpB+Yf0V6hNVPVTxDldFbotFS/Pam4YG3nXPE4FZ01fP1cfE8zFj/zDJ+gVPmLP0PexR4OlT8V9/1GIInkUbSmreLPxfdrhiWejeItrXEzU23BohCac4Y3/3iRiLqbSKZ3DxYSjsmh1pS9oYimhjNiXQv/RrkDHmNsjogK/ahz5l65yM1WqMK7MTPLkrZrH5yZPbwh6n0ZRob7izFjc4lCsPYEHxNooswK0Ib1LHEs/l7ff206gMWysBW0tcOu9HAVbMXpNHEM5FkmIBFNcSgmyYz/ADdSwpLZCbd1bnel0dhpYCyCbCcDzynmwTdM8ea6D56cCeZvqhG9IQQFbeVSVrLTfdTcDvdEg0fpjoUQAaaMXgg92xxbS7lgpJdZ75C2E1LE9fhlQPWQ3ZaQ5GaEMOqua0KCoeYL6SFd308SEp4m80q/t0jCqkvM0Jd7MGSKeWf4cOg9PaaZr67D+PgFI02cWJl34r7hKfQYsvsIuuCsQpnVoVvCJgKv8r+FYUg/B9n4ZFGf1tY0rovu/CdY0D2xb3oB6YOl8gm+fm0FheiEIIYSnjbbfKWPaDnNh+y8grtRqBQ9EGCporQ89e1bmOVpDGdvvCTDJQ1Csjl7o
+ lFPdIQbG
+ joPa95KTKqfTA++olU1uo9wGhpHd768Wq7QwtmysbICA/nL2srjSLEIPPHW6e/oR51cHlVbf2QF046OorERQLQI0lYmJXRVXUd3veYzPyhjzBhaRueuSS5wtDw6z8YDp9ehKOjX4tPed3DX8sc7n9GGh2OpRqHNhSCLbXFQlQaaJq/fkcHteNdD7TOum27C7OZWf5FBEEOx06eS/rBBeifaGLd8RXH8XMGKzA0VKVKeuXcyFyUYWXEeW9eRFuUGzssxeZcon8kCiJZ2RIMcOGyLFlVKMMhjfx+VFW8KCTKv9oDTVtigsLjMqeDPhMiXjhEYmgm4T+IWhHkOeNuhZ53LAShGRu85MDzLZvJMhJNG9bB8B0v6v83shQ1cz9TR7NJarA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,29 +98,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Jun 2026 11:06:14 +0100 Ben Dooks <ben.dooks@codethink.co.uk> wrote:
+On Mon, 22 Jun 2026 11:23:11 +0800 Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
 
-> The vm_numa_stat_key is only exported if CONFIG_NUMA is set,
-> so avoid the following warning by guarding it in an #ifdef
-> on CONFIG_NUMA:
+> >>>> -	err = walk_page_range(vma->vm_mm, addr, end, &mincore_walk_ops, vec);
+> >>>> +
+> >>>> +	/*
+> >>>> +	 * walk_page_range_vma() does not call walk_page_test(), which
+> >>>> +	 * handles VM_PFNMAP VMA by invoking ->pte_hole() to skip the
+> >>>> +	 * page table walk. Without this check, PFNMAP PTEs would be
+> >>>> +	 * treated as present by mincore_pte_range(), changing the returned
+> >>>> +	 * residency status from the historical "not resident" to "resident".
+> >>>> +	 * Handle VM_PFNMAP explicitly to preserve the original behavior.
+> >>>> +	 */
+> > 
+> > I would rather we amend this comment to something like:
+> > 
+> > 	/* mincore (historically) reports PFNMAP mappings as non-resident. */
+> > 
+> > because we don't need to explain internal differences in walk_page_range
+> > functions in a random comment in mincore. And perhaps attempt a separate
 > 
-> mm/page_alloc.c:165:1: warning: symbol 'vm_numa_stat_key' was not declared. Should it be static?
-> 
-> ...
->
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -162,7 +162,9 @@ DEFINE_PER_CPU(int, numa_node);
->  EXPORT_PER_CPU_SYMBOL(numa_node);
->  #endif
->  
-> +#ifdef CONFIG_NUMA
->  DEFINE_STATIC_KEY_TRUE(vm_numa_stat_key);
-> +#endif
->  
->  #ifdef CONFIG_HAVE_MEMORYLESS_NODES
->  /*
+> Hope Andrew can fix the comments when pickup patches.
 
-It might be tidier to move this into mm/vmstat.c, around line 38?
+I added this:
 
+--- a/mm/mincore.c~mm-mincore-use-walk_page_range_vma-in-do_mincore-fix
++++ a/mm/mincore.c
+@@ -261,12 +261,7 @@ static long do_mincore(unsigned long add
+ 	}
+ 
+ 	/*
+-	 * walk_page_range_vma() does not call walk_page_test(), which
+-	 * handles VM_PFNMAP VMA by invoking ->pte_hole() to skip the
+-	 * page table walk. Without this check, PFNMAP PTEs would be
+-	 * treated as present by mincore_pte_range(), changing the returned
+-	 * residency status from the historical "not resident" to "resident".
+-	 * Handle VM_PFNMAP explicitly to preserve the original behavior.
++	 * mincore historically reports PFNMAP mappings as non-resident.
+ 	 */
+ 	if (vma->vm_flags & VM_PFNMAP) {
+ 		__mincore_unmapped_range(addr, end, vma, vec);
+_
+
+
+Sashiko is OK with your patchset, but it might have found four(!)
+pre-existing issues:
+
+	https://sashiko.dev/#/patchset/20260618092845.3905740-1-wangkefeng.wang@huawei.com
 
