@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2701ACDE002
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07C0BCDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:50:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622A16B00A2; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
+	id B9D7B6B009F; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DF3E6B00A1; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
+	id A8C2D6B00A1; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 471946B00A2; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
+	id 9A0456B00A4; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DEDB16B009F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:50:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6AE3F167630
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 61DAD6B009F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:50:04 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D10031405CA
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:50:03 +0000 (UTC)
-X-FDA: 84917359086.30.7F1C48A
+X-FDA: 84917359086.21.A1F76C0
 Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 009E780003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:49:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9A039100009
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:50:00 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	spf=pass (imf14.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782366601;
-	b=NG5GLfOArsggboitFPoDL3LLfiL5siX//VDBctukq+doa0MYGrx7GaPEq3MK6lUmu1Ix8j
-	ZxYg9loaT2UOYtvPf72wJBLWz2TX8/qSd3SLefRXEPhHN4cTbC5FZ6AJi+JsLUbUZYbSSd
-	mq0Idpp5oiaSI32fu2WKhmUG0HILF6w=
+	b=h3ockqp4VHBWUNF5o50rpT9+1BHZk/qAJL98NVTpqhj7104RrYcNovVlpNsJ06EcZWzVcX
+	sAX4NcS6Tas5ItLkh2p0ap9EHhKh4fOBiefbjinTyRwyI/JM/nNRifeOsnTxB5HeL6rEp7
+	NfNtZTAnMW2+OaKPCPYXDhbAtyo/fS4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782366601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=sVCHEXgX9KdKoxaO4oXTD3YwJcFooeRtrXkXUKJAlWg=;
-	b=hoJlsWMRIHJcnRhxI9UFlQVv0x4ozh2G5eqycKSY/1JcU17v5IibVmt0rqtEyjWTJx8z9q
-	iscuf+dtfh/9Ia1JgfJ8giS1FZS7373rscKmkp1BqQwLFcmAO6SqKR8kd8bXDEHOnhOlw+
-	qhhCUY4D9zuzG38wgBO2JxEZjSJKiK0=
+	bh=KIIyohw3VHuxRrR94sTuX14xsknTZ8n/vvXUwLr+WYs=;
+	b=djSKm6L/XmEdAHxDi/pmHnZXi70/3wjwBIyg1eRkqHclaAbKeiSY223BIpqOz/ONLWBbxZ
+	trNeEf8ij90T4vkLi4H5WpIb/CKfxatUQvCph5teubtWu74c+x15EGah2yu07lqsYgXjuP
+	o0Sc8jlS17AoZMdK7sI4dbnHg7hJslU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
+	imf14.hostedemail.com;
 	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn;
-	dmarc=none
-X-UUID: aef9f1bc705911f1aa26b74ffac11d73-20260625
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+X-UUID: aec745dc705911f1aa26b74ffac11d73-20260625
 X-CTIC-Tags:
 	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NO_NAME, HR_CTE_8B, HR_CTT_MISS
 	HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME, HR_SJ_DIGIT_LEN
@@ -56,14 +56,14 @@ X-CTIC-Tags:
 	SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD, CIE_GOOD_SPF
 	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:f2e0c2af-0b9f-498c-8781-0762bfd59877,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.12,REQID:f2e0c2af-0b9f-498c-8781-0762bfd59877,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:e7bac3a,CLOUDID:99ab6c67cec03f0d7d286831c98c0fee,BulkI
-	D:260625134952RUV7V4LY,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
+X-CID-O-INFO: VERSION:1.3.12,REQID:ce9a07e3-e4e1-40da-9f47-c0e7e04ebddf,IP:10,
+	URL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-INFO: VERSION:1.3.12,REQID:ce9a07e3-e4e1-40da-9f47-c0e7e04ebddf,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:bba3247d4b4b8c0298b9b0b043114bad,BulkI
+	D:260625134951ABU9FVJ8,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|81|82|10
 	2|127|136|850|865|898,TC:nil,Content:0|15|50,EDM:-3,IP:-2,URL:0,File:nil,R
 	T:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DK
 	P:0,BRR:0,BRE:0,ARC:0
@@ -71,12 +71,12 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: aef9f1bc705911f1aa26b74ffac11d73-20260625
+X-UUID: aec745dc705911f1aa26b74ffac11d73-20260625
 X-User: duanchenghao@kylinos.cn
 Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
 	(envelope-from <duanchenghao@kylinos.cn>)
 	(Generic MTA)
-	with ESMTP id 648558986; Thu, 25 Jun 2026 13:49:51 +0800
+	with ESMTP id 1039542748; Thu, 25 Jun 2026 13:49:51 +0800
 From: Chenghao Duan <duanchenghao@kylinos.cn>
 To: viro@zeniv.linux.org.uk,
 	brauner@kernel.org,
@@ -90,22 +90,22 @@ To: viro@zeniv.linux.org.uk,
 	linux-mm@kvack.org
 Cc: jianghaoran@kylinos.cn,
 	duanchenghao@kylinos.cn
-Subject: [PATCH v1 2/2] selftests: liveupdate: Add selftest for eventfd LUO
-Date: Thu, 25 Jun 2026 13:49:46 +0800
-Message-Id: <20260625054946.73445-3-duanchenghao@kylinos.cn>
+Subject: [PATCH v1 1/2] eventfd: luo: luo support for preserving eventfd
+Date: Thu, 25 Jun 2026 13:49:45 +0800
+Message-Id: <20260625054946.73445-2-duanchenghao@kylinos.cn>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260625054946.73445-1-duanchenghao@kylinos.cn>
 References: <20260625054946.73445-1-duanchenghao@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 009E780003
-X-Stat-Signature: q6b6fqijzbu8c9uwdn57mbmejxfprmq5
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782366598-991327
-X-HE-Meta: U2FsdGVkX1+BhPzHvbVUdnTnWAPILf2+LOf2gv8FU1Mh5kaAAFW5hTNIzv9Mr0wgjYNKH4uWZFS6Agd3W06TGXG3qajrSU7zucNUQma9I14oRM5DYjvfck9sGqnfinHQMNFSKnLUgQim9m/Xy6fDmhTdFYywhd+mjsOm2aySt6iXDMSQOLWxjryn2A09hEgO9/G8k5pxiiPlA75sLo3kudXVNuG0W32u/pvG5JitKoo7oJs03YdKy2/aN955rrhO6B62MOJiM4fyWuvTsu1ezNh9qTX5xg1/1tYiFQfA6IIfcJsdbsO/NZE9YmcVl/g1bZ2dmKtrR+UExMRfQxMtHi9LO2Fgh1M3OxGNbn9QnxvGRdOh1X6pAipMKwwl9RQvSxoLM4CbKOlpaxW1pBEkcMnippQaUqP5Eu/CoTjmxP9291JJ405AheYuMVw2B4UPcRstW6ZmGUSBUAXtnQpGZvUmU5bPGybRzmS+vGU9/bfCp4w6zYlM7ppohPfxAKLGaFPAtmwATPIO0+4MCdD/fdJ49RLl8no18ZmeGbnhesr6yCIocImCIWS3gBv2oH+e9kCsdfMLgMF1HxX8dWx/Tw0Lh9lTB45fjdxz1KWYM1TWCesLVsyGPW+vejG9MtwN/9EFQeMVMZdAUHXZGeQX7NZ/OEuw+yhAjhsy3pLO5JJ6TJYNAAIcdR1wkZ+Jm6mCXG2wPmFAX6G+aJj9avfI3/3qB0zJCFD9cmEK/SPEwYqwuITL2DsFcu37ki9LBKjx+7rE/Cci46tJRqVNlnIRLdjoCXKrX5bfQ89LzGQw/Ghm9+P50s278fpaGk0ajiVytQdfDg/IxIp35+Etl7G1QlLRI9irM+QriwSxI+ptEmaVYd3SvUqHkxGxQSDPi3ILDH98UKz/j3cfJGyzuGx4ASM4FeW4bXfcZP0Y+LFPoaz6ypjbeD0w9qmfAhSNnE/1Bh0SUgtPHIUYjZz6FwL
- Hlmtd/u+
- L53TE
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9A039100009
+X-Stat-Signature: sutm3xhtdd7c9sq8hhdmswd16smjix7q
+X-HE-Tag: 1782366600-958256
+X-HE-Meta: U2FsdGVkX1+9gqSJMS46UZBZ2MXRfa4/+gXlryZGRfNuR1acupvKBsYE3RDj2eiM7R4+BThoNM/bXpoI7WyUUsrKvQz1Q9yqGeevGppWyhcfFSZwoxL6kn4RkNxk6VNDn0sihqdc7CqMwkh9RFsEoozsH6APMjGcXG2ih5gtZYJ+0Q0wbIniHsc1VV/ZCphDjV4AX/vzXWmpYzCAMu00sKyJx1sNmHFWiFTYT7RXaqigBvKJf9dBsqEwSQn3LhY8JIC9kN94o9QgI7sGDNqf3FeYuHoixo4xA3eDrA+hoEfuMMiqygzFuqO6fLBYjPcxE987xBQivtg3Ibdg+FH5QccAMtkzqVqgAntoe7TtTysEVP9WSRmCyId4XWnQgVLixAUWEw0uc94KVHi25+KUPm9hOQ+l6NGhA44ZVPkLx8J+Odz9sDfAPbQSqINz3WAxTS7zs+lnEJmMiGmB1KXn61tmeHppm1IHg5e2FjudP+VCQGIbxAxscl894N4Zg2WNtzFy0ue9iXkv+maw6Hja8NOWNtFpO7vLju5yqc9QJSvIWnX7A8wFydym8exrOeB+hSQkyy2xf2Ez5LRBPvtz0N9yYYscUvYwY9t7MF5IupccKyFE3cU/PZG+koDlUUOp6wlf/Zsb3+kstNBp+g/oX+oPSQ7C3lu9Et6VLuhzuyQyOVSI5LSiHZep9NMiEbQ9ONc+P6CQ1vEMpJN/zs+iSPljdpHZo6bAfOXbND1LFNCWjqOYGa+ZAtNN6qtDFYbyZhrExoESXt12hr0/ro1Ask/GBQOrnRK4O0CDUhMZvup3rA/Ih2vHZ7cCRFCUAZKqLEmI62GmGZpt18qr+o8Gx0CPD1Qn5FP0P0jKJFFrNbseJIsRxVYibQlz2a5mUPe2FIAAmQnCQwXelTw+68ric1DbE4x/BjhzX1qSdhu9q55m/OXHyN97GfQcrgpj9oMdd4MPVnIoOEdqsio2CA4
+ LTOB+yGi
+ 2Fjrm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,451 +113,455 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This test verifies the Live Update Orchestrator (LUO) support for
-preserving eventfd file descriptors across kexec. It creates multiple
-LUO sessions, each preserving different eventfd types, and verifies
-their state after kexec.
+This patch adds support for preserving eventfd file descriptors across
+kexec live updates using the Live Update Orchestrator (LUO) framework.
+Userspace applications using eventfd for event notification can now
+maintain their state across kernel updates.
 
-The test covers six different eventfd configurations:
-1. **Empty eventfd** - Zero count, default flags
-   - Verifies flag preservation without behavioral testing
-2. **Default eventfd** - Initial count + write, verifies count preservation
-   - Tests basic counter value retention across kexec
-3. **Semaphore eventfd** - EFD_SEMAPHORE flag, multiple reads
-   - Verifies semaphore behavior (returns 1 per read)
-4. **Non-blocking eventfd** - EFD_NONBLOCK flag
-   - Tests O_NONBLOCK flag preservation
-5. **Large-count eventfd** - UINT_MAX count value
-   - Tests handling of maximum counter values
-6. **Modified-after-preserve** - Count changed during handover
-   - Verifies freeze callback captures final state
+Preserved State:
+The following properties of the eventfd are preserved across kexec:
+- Counter Value: The current 64-bit counter value, including any pending
+  events that have been signaled but not yet consumed by readers.
+- File Flags: The creation flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK)
+  are preserved.
 
-The test validates the following sequence:
+Non-Preserved State:
+- File Descriptor Number: The eventfd will be assigned a new fd number
+  in the target process after restore.
+- Wait Queue State: Any processes blocked on read() operations will be
+  woken up and need to re-establish their blocking state.
+- All other internal state is reset to default.
 
-Stage 1 (pre-kexec):
-- Creates state file for inter-stage communication
-- Creates multiple LUO sessions
-- Preserves eventfds with different configurations
-- Trigger kexec reboot
-
-Stage 2 (post-kexec):
-- Retrieves preserved eventfd sessions
-- Verifies flags and counter values for each type
-- Tests semaphore read behavior
-- Finalizes all sessions
+Changes:
+- fs/eventfd.c: Add eventfd_luo_get_state() to safely read eventfd state
+  (count and flags), and eventfd_create() helper function.
+- fs/eventfd_luo.c: New file implementing LUO file operations:
+  preserve, freeze, unpreserve, retrieve, and finish callbacks.
+- include/linux/eventfd.h: Export new functions.
+- include/linux/kho/abi/eventfd.h: Define the ABI contract with
+  eventfd_luo_ser structure for serialization.
 
 Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
 ---
- tools/testing/selftests/liveupdate/Makefile   |   1 +
- tools/testing/selftests/liveupdate/config     |   2 +
- .../selftests/liveupdate/luo_test_eventfd.c   | 376 ++++++++++++++++++
- 3 files changed, 379 insertions(+)
- create mode 100644 tools/testing/selftests/liveupdate/luo_test_eventfd.c
+ fs/Makefile                     |   1 +
+ fs/eventfd.c                    |  40 +++++
+ fs/eventfd_luo.c                | 250 ++++++++++++++++++++++++++++++++
+ include/linux/eventfd.h         |   2 +
+ include/linux/kho/abi/eventfd.h |  39 +++++
+ kernel/liveupdate/Kconfig       |  16 ++
+ 6 files changed, 348 insertions(+)
+ create mode 100644 fs/eventfd_luo.c
+ create mode 100644 include/linux/kho/abi/eventfd.h
 
-diff --git a/tools/testing/selftests/liveupdate/Makefile b/tools/testing/selftests/liveupdate/Makefile
-index 30689d22cb02..e092e38fa6f6 100644
---- a/tools/testing/selftests/liveupdate/Makefile
-+++ b/tools/testing/selftests/liveupdate/Makefile
-@@ -8,6 +8,7 @@ TEST_GEN_PROGS_EXTENDED += luo_kexec_simple
- TEST_GEN_PROGS_EXTENDED += luo_multi_session
- TEST_GEN_PROGS_EXTENDED += luo_stress_sessions
- TEST_GEN_PROGS_EXTENDED += luo_stress_files
-+TEST_GEN_PROGS_EXTENDED += luo_test_eventfd
+diff --git a/fs/Makefile b/fs/Makefile
+index 89a8a9d207d1..36d568e6cfc7 100644
+--- a/fs/Makefile
++++ b/fs/Makefile
+@@ -27,6 +27,7 @@ obj-y				+= anon_inodes.o
+ obj-$(CONFIG_SIGNALFD)		+= signalfd.o
+ obj-$(CONFIG_TIMERFD)		+= timerfd.o
+ obj-$(CONFIG_EVENTFD)		+= eventfd.o
++obj-$(CONFIG_LIVEUPDATE_EVENTFD)+= eventfd_luo.o
+ obj-$(CONFIG_AIO)               += aio.o
+ obj-$(CONFIG_FS_DAX)		+= dax.o
+ obj-$(CONFIG_FS_ENCRYPTION)	+= crypto/
+diff --git a/fs/eventfd.c b/fs/eventfd.c
+index 9d33a02757d5..9b76cf06135a 100644
+--- a/fs/eventfd.c
++++ b/fs/eventfd.c
+@@ -376,6 +376,40 @@ struct eventfd_ctx *eventfd_ctx_fileget(struct file *file)
+ }
+ EXPORT_SYMBOL_GPL(eventfd_ctx_fileget);
  
- TEST_FILES += do_kexec.sh
++/**
++ * eventfd_luo_get_state - Get eventfd state (count and flags) for LUO
++ * @file: Eventfd file
++ * @count: Output parameter for count value
++ * @flags: Output parameter for flags value
++ *
++ * This function is exported for use by LUO to safely read eventfd state.
++ * Since struct eventfd_ctx is defined in this file, we can access its
++ * members directly here. The function uses the wait queue lock to ensure
++ * atomic access to count.
++ *
++ * Returns 0 on success, negative error code on failure.
++ */
++int eventfd_luo_get_state(struct file *file, __u64 *count, unsigned int *flags)
++{
++	struct eventfd_ctx *ctx;
++	unsigned long irq_flags;
++
++	ctx = eventfd_ctx_fileget(file);
++	if (IS_ERR(ctx))
++		return PTR_ERR(ctx);
++
++	/* Read count with lock (flags don't need lock) */
++	spin_lock_irqsave(&ctx->wqh.lock, irq_flags);
++	*count = ctx->count;
++	spin_unlock_irqrestore(&ctx->wqh.lock, irq_flags);
++
++	*flags = ctx->flags;
++
++	eventfd_ctx_put(ctx);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(eventfd_luo_get_state);
++
+ static int do_eventfd(unsigned int count, int flags)
+ {
+ 	struct eventfd_ctx *ctx __free(kfree) = NULL;
+@@ -411,6 +445,12 @@ static int do_eventfd(unsigned int count, int flags)
+ 	return fd_publish(fdf);
+ }
  
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-index 91d03f9a6a39..d388bd755245 100644
---- a/tools/testing/selftests/liveupdate/config
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -9,3 +9,5 @@ CONFIG_LIVEUPDATE_TEST=y
- CONFIG_MEMFD_CREATE=y
- CONFIG_TMPFS=y
- CONFIG_SHMEM=y
-+CONFIG_EVENTFD=y
-+CONFIG_LIVEUPDATE_EVENTFD=y
-diff --git a/tools/testing/selftests/liveupdate/luo_test_eventfd.c b/tools/testing/selftests/liveupdate/luo_test_eventfd.c
++int eventfd_create(__u64 count, unsigned int flags)
++{
++	return do_eventfd(count, flags);
++}
++EXPORT_SYMBOL_GPL(eventfd_create);
++
+ SYSCALL_DEFINE2(eventfd2, unsigned int, count, int, flags)
+ {
+ 	return do_eventfd(count, flags);
+diff --git a/fs/eventfd_luo.c b/fs/eventfd_luo.c
 new file mode 100644
-index 000000000000..94ef3bc66ad9
+index 000000000000..781d90635c52
 --- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_test_eventfd.c
-@@ -0,0 +1,376 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/fs/eventfd_luo.c
+@@ -0,0 +1,250 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
 + * Copyright (C) 2026 KylinSoft Corporation.
 + * Author: Chenghao Duan <duanchenghao@kylinos.cn>
 + */
 +
-+/*
-+ * Multi-session kexec selftest for eventfd LUO support.
++/**
++ * DOC: Eventfd Preservation via LUO
 + *
-+ * Modeled after luo_multi_session.c.
-+ * It creates multiple LUO sessions, each preserving different eventfd types,
-+ * and verifies them after kexec.
++ * Overview
++ * ========
++ *
++ * Event file descriptors (eventfd) can be preserved over a kexec using the Live
++ * Update Orchestrator (LUO) file preservation. This allows userspace applications
++ * that use eventfd for event notification to maintain their state across kernel
++ * updates.
++ *
++ * Eventfd is a simple notification mechanism that uses a 64-bit counter for
++ * signaling events between userspace processes or between userspace and kernel.
++ * The preservation ensures that pending events and configuration are not lost
++ * during kexec.
++ *
++ * The preservation is not intended to be transparent. Only select properties of
++ * the eventfd are preserved. All others are reset to default. The preserved
++ * properties are described below.
++ *
++ * Preserved Properties
++ * ====================
++ *
++ * The following properties of the eventfd are preserved across kexec:
++ *
++ * Counter Value
++ *   The current 64-bit counter value is preserved. This includes any pending
++ *   events that have been signaled but not yet consumed by readers.
++ *
++ * File Flags
++ *   The creation flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK) are preserved.
++ *   These control the behavior of read/write operations and file descriptor
++ *   inheritance.
++ *
++ * Non-Preserved Properties
++ * ========================
++ *
++ * All properties which are not preserved must be assumed to be reset to
++ * default. This section describes some of those properties which may be more of
++ * note.
++ *
++ * File Descriptor Number
++ *   The file descriptor number itself is not preserved. After restore, the
++ *   eventfd will be assigned a new file descriptor number in the target process.
++ *
++ * Wait Queue State
++ *   Any processes currently blocked on read() operations will be woken up and
++ *   need to re-establish their blocking state if desired.
++ *
++ * File Position
++ *   Eventfd files don't have a traditional file position, but any internal
++ *   state related to the file descriptor is reset.
 + */
 +
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/eventfd.h>
-+#include <sys/ioctl.h>
-+#include <unistd.h>
++#include <linux/err.h>
++#include <linux/file.h>
++#include <linux/io.h>
++#include <linux/kexec_handover.h>
++#include <linux/kho/abi/eventfd.h>
++#include <linux/liveupdate.h>
++#include <linux/module.h>
++#include <linux/eventfd.h>
++#include <linux/anon_inodes.h>
++#include <linux/idr.h>
++#include <linux/slab.h>
++#include <linux/wait.h>
++#include <linux/kref.h>
++#include <linux/fdtable.h>
 +
-+#include "luo_test_utils.h"
-+
-+/* Session names */
-+#define SESSION_EMPTY     "eventfd-empty"
-+#define SESSION_DEFAULT   "eventfd-default"
-+#define SESSION_SEM       "eventfd-sem"
-+#define SESSION_NONBLOCK  "eventfd-nonblock"
-+#define SESSION_LARGE     "eventfd-large"
-+#define SESSION_MODIFIED  "eventfd-modified-after-preserve"
-+
-+/* Tokens */
-+#define TOKEN_DEFAULT       0xCAFEBABE
-+#define TOKEN_SEM           0xDEADBEEF
-+#define TOKEN_NONBLOCK      0xFEEDBEEF
-+#define TOKEN_LARGE         0xBEEFCAFE
-+#define TOKEN_MODIFIED      0xABCD1234
-+
-+/* Counts */
-+#define COUNT_INITIAL   42
-+#define COUNT_WRITE     10
-+#define COUNT_EXPECTED  (COUNT_INITIAL + COUNT_WRITE) /* 52 */
-+#define COUNT_SEM       5
-+#define COUNT_NONBLOCK  100
-+#define COUNT_LARGE     ((unsigned int)-1) /* UINT_MAX */
-+#define COUNT_MODIFIED  25
-+#define COUNT_MODIFY_DELTA  99
-+
-+/* State tracking */
-+#define STATE_SESSION_NAME "eventfd_multi_state"
-+#define STATE_TOKEN        997
-+
-+/* Eventfd verification modes */
-+enum verify_mode {
-+	VERIFY_FLAGS,        /* Only verify flags, no behavior testing */
-+	VERIFY_ONCE,         /* Read once and verify count */
-+	VERIFY_SEMAPHORE,    /* Read multiple times, verify returns 1 each time */
-+	VERIFY_NONBLOCK,     /* Read once in nonblock mode */
-+	VERIFY_LARGE         /* Read once, verify large count */
-+};
-+
-+/* Test session configuration */
-+struct test_session_config {
-+	const char *session_name;
-+	unsigned long token;
-+	unsigned int count;
++static int eventfd_luo_preserve(struct liveupdate_file_op_args *args)
++{
++	struct eventfd_luo_ser *ser;
++	u64 count;
 +	unsigned int flags;
-+	enum verify_mode verify_mode;
-+	const char *desc;
++	int err = 0;
++
++	/* Get eventfd state safely */
++	err = eventfd_luo_get_state(args->file, &count, &flags);
++	if (err) {
++		pr_err("Failed to get eventfd state: %d\n", err);
++		return err;
++	}
++
++	ser = kho_alloc_preserve(sizeof(*ser));
++	if (IS_ERR(ser)) {
++		err = PTR_ERR(ser);
++		pr_err("Failed to allocate preserve memory: %d\n", err);
++		return err;
++	}
++
++	/* Save eventfd state */
++	ser->count = count;
++	ser->flags = flags;
++
++	pr_debug("Preserved eventfd: count=%llu, flags=0x%x\n",
++		ser->count, ser->flags);
++
++	/* Return physical address of serialization structure */
++	args->serialized_data = virt_to_phys(ser);
++
++	return 0;
++}
++
++static int eventfd_luo_freeze(struct liveupdate_file_op_args *args)
++{
++	struct eventfd_luo_ser *ser;
++	u64 count;
++	unsigned int flags;
++	int err;
++
++	if (WARN_ON_ONCE(!args->serialized_data))
++		return -EINVAL;
++
++	ser = phys_to_virt(args->serialized_data);
++
++	/* Get current state and update if changed */
++	err = eventfd_luo_get_state(args->file, &count, &flags);
++	if (err)
++		return err;
++
++	if (ser->count != count) {
++		pr_debug("WARNING: Count changed during preserve->freeze! old=%llu, new=%llu\n",
++			 ser->count, count);
++	}
++
++	ser->count = count;
++
++	return 0;
++}
++
++static void eventfd_luo_unpreserve(struct liveupdate_file_op_args *args)
++{
++	struct eventfd_luo_ser *ser;
++
++	if (WARN_ON_ONCE(!args->serialized_data))
++		return;
++
++	ser = phys_to_virt(args->serialized_data);
++	kho_unpreserve_free(ser);
++}
++
++static int eventfd_luo_retrieve(struct liveupdate_file_op_args *args)
++{
++	struct eventfd_luo_ser *ser;
++	struct eventfd_ctx *ctx;
++	struct file *file = NULL;
++	int eventfd;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return -EINVAL;
++
++	/* Create a new eventfd with the preserved count and flags */
++	eventfd = eventfd_create(ser->count, ser->flags);
++	if (eventfd < 0) {
++		pr_err("Failed to create eventfd: %d\n", eventfd);
++		return eventfd;
++	}
++
++	file = fget(eventfd);
++	if (!file) {
++		pr_err("Failed to get file from fd\n");
++		close_fd(eventfd);
++		return -EBADF;
++	}
++
++	close_fd(eventfd);
++
++	/* Verify the created file has correct internal state */
++	ctx = eventfd_ctx_fileget(file);
++	if (IS_ERR(ctx)) {
++		pr_err("Failed to get context from file\n");
++		fput(file);
++		return PTR_ERR(ctx);
++	}
++
++	eventfd_ctx_put(ctx);
++
++	args->file = file;
++	return 0;
++}
++
++static void eventfd_luo_finish(struct liveupdate_file_op_args *args)
++{
++	struct eventfd_luo_ser *ser;
++
++	if (args->retrieve_status)
++		return;
++
++	if (!args->serialized_data)
++		return;
++
++	ser = phys_to_virt(args->serialized_data);
++	if (!ser)
++		return;
++
++	kho_restore_free(ser);
++}
++
++static bool eventfd_luo_can_preserve(struct liveupdate_file_handler *handler,
++				     struct file *file)
++{
++	struct eventfd_ctx *ctx;
++
++	if (!file->f_op)
++		return false;
++
++	/* Try to get eventfd context - this will fail if not an eventfd */
++	ctx = eventfd_ctx_fileget(file);
++	if (IS_ERR(ctx))
++		return false;
++
++	eventfd_ctx_put(ctx);
++	return true;
++}
++
++static const struct liveupdate_file_ops eventfd_luo_file_ops = {
++	.preserve = eventfd_luo_preserve,
++	.unpreserve = eventfd_luo_unpreserve,
++	.freeze = eventfd_luo_freeze,
++	.retrieve = eventfd_luo_retrieve,
++	.finish = eventfd_luo_finish,
++	.can_preserve = eventfd_luo_can_preserve,
++	.owner = THIS_MODULE,
 +};
 +
-+/* Test session configurations */
-+static const struct test_session_config test_configs[] = {
-+	{SESSION_EMPTY, 0, 0, 0, VERIFY_FLAGS, "Empty"},
-+	{SESSION_DEFAULT, TOKEN_DEFAULT, COUNT_EXPECTED, 0, VERIFY_ONCE, "Default"},
-+	{SESSION_SEM, TOKEN_SEM, COUNT_SEM, EFD_SEMAPHORE, VERIFY_SEMAPHORE, "Semaphore"},
-+	{SESSION_NONBLOCK, TOKEN_NONBLOCK, COUNT_NONBLOCK, EFD_NONBLOCK, VERIFY_NONBLOCK, "Nonblock"},
-+	{SESSION_LARGE, TOKEN_LARGE, COUNT_LARGE, 0, VERIFY_LARGE, "Large-count"},
-+	{SESSION_MODIFIED, TOKEN_MODIFIED, COUNT_MODIFIED + COUNT_MODIFY_DELTA, 0, VERIFY_ONCE, "Modified after preserve (kexec handover)"},
++static struct liveupdate_file_handler eventfd_luo_handler = {
++	.ops = &eventfd_luo_file_ops,
++	.compatible = EVENTFD_LUO_FH_COMPATIBLE,
 +};
-+#define NUM_TEST_SESSIONS ARRAY_SIZE(test_configs)
 +
-+static int verify_eventfd_flags(int efd, unsigned int expected_flags, const char *desc)
++static int __init eventfd_luo_init(void)
 +{
-+	int actual_flags = fcntl(efd, F_GETFL);
++	int err = liveupdate_register_file_handler(&eventfd_luo_handler);
 +
-+	if (actual_flags < 0)
-+		return -errno;
-+
-+	int expected_fd_flags = expected_flags & (EFD_NONBLOCK | EFD_CLOEXEC);
-+	int actual_fd_flags = actual_flags & (O_NONBLOCK | O_CLOEXEC);
-+
-+	if (actual_fd_flags != expected_fd_flags) {
-+		ksft_print_msg("%s: flag mismatch - expected 0x%x, got 0x%x\n",
-+			       desc, expected_fd_flags, actual_fd_flags);
-+		return -EINVAL;
++	if (err && err != -EOPNOTSUPP) {
++		pr_err("Could not register eventfd LUO handler: %pe\n",
++		       ERR_PTR(err));
++		return err;
 +	}
 +
-+	ksft_print_msg("  %s eventfd flags OK (0x%x)\n", desc, expected_fd_flags);
-+	return actual_flags; /* Return actual flags for further use */
-+}
-+
-+static int ensure_nonblock(int efd, int current_flags)
-+{
-+	return fcntl(efd, F_SETFL, current_flags | O_NONBLOCK);
-+}
-+
-+static int verify_count_once(int efd, unsigned int expected_count, const char *desc)
-+{
-+	uint64_t val;
-+
-+	if (read(efd, &val, sizeof(val)) != sizeof(val))
-+		return -errno;
-+
-+	if (val != (uint64_t)expected_count) {
-+		ksft_print_msg("%s: expected %u got %llu\n",
-+			       desc, expected_count, (unsigned long long)val);
-+		return -EINVAL;
-+	}
-+
-+	ksft_print_msg("  %s eventfd OK: %u\n", desc, expected_count);
 +	return 0;
 +}
++late_initcall(eventfd_luo_init);
+diff --git a/include/linux/eventfd.h b/include/linux/eventfd.h
+index e32bee4345fb..703e1a126c4d 100644
+--- a/include/linux/eventfd.h
++++ b/include/linux/eventfd.h
+@@ -35,6 +35,8 @@ void eventfd_ctx_put(struct eventfd_ctx *ctx);
+ struct file *eventfd_fget(int fd);
+ struct eventfd_ctx *eventfd_ctx_fdget(int fd);
+ struct eventfd_ctx *eventfd_ctx_fileget(struct file *file);
++int eventfd_luo_get_state(struct file *file, __u64 *count, unsigned int *flags);
++int eventfd_create(__u64 count, unsigned int flags);
+ void eventfd_signal_mask(struct eventfd_ctx *ctx, __poll_t mask);
+ int eventfd_ctx_remove_wait_queue(struct eventfd_ctx *ctx, wait_queue_entry_t *wait,
+ 				  __u64 *cnt);
+diff --git a/include/linux/kho/abi/eventfd.h b/include/linux/kho/abi/eventfd.h
+new file mode 100644
+index 000000000000..148beac6bcc7
+--- /dev/null
++++ b/include/linux/kho/abi/eventfd.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2026 KylinSoft Corporation.
++ * Author: Chenghao Duan <duanchenghao@kylinos.cn>
++ */
 +
-+static int verify_semaphore_behavior(int efd, unsigned int expected_count, const char *desc)
-+{
-+	uint64_t val;
++#ifndef _LINUX_KHO_ABI_EVENTFD_H
++#define _LINUX_KHO_ABI_EVENTFD_H
 +
-+	/* Read expected_count times, each should return 1 */
-+	for (unsigned int i = 0; i < expected_count; i++) {
-+		if (read(efd, &val, sizeof(val)) != sizeof(val))
-+			return -errno;
++#include <linux/types.h>
 +
-+		if (val != 1) {
-+			ksft_print_msg("%s: expected 1, got %llu at read %u\n",
-+				       desc, (unsigned long long)val, i + 1);
-+			return -EINVAL;
-+		}
-+		ksft_print_msg("  %s eventfd OK: %u at read %u\n", desc, (unsigned int)val, i + 1);
-+	}
++/*
++ * Eventfd Live Update ABI
++ *
++ * This header defines the ABI for preserving eventfd state across kexec.
++ *
++ * The state is serialized into a packed structure `struct eventfd_luo_ser`
++ * which is handed over to the next kernel via the KHO mechanism.
++ *
++ */
 +
-+	/* Next read should return EAGAIN (no more events) */
-+	if (read(efd, &val, sizeof(val)) >= 0 || errno != EAGAIN) {
-+		ksft_print_msg("%s: expected EAGAIN after %u reads\n",
-+			       desc, expected_count);
-+		return -EINVAL;
-+	}
++/**
++ * struct eventfd_luo_ser - Serialized state of an eventfd
++ * @count: The current counter value
++ * @flags: File flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NONBLOCK)
++ *
++ * This structure contains the minimal state needed to restore an eventfd
++ * after kexec. The count represents the current value of the event counter,
++ * and flags represent the file creation flags.
++ */
++struct eventfd_luo_ser {
++	__u64 count;
++	unsigned int  flags;
++} __packed;
 +
-+	ksft_print_msg("  %s eventfd OK (%u reads)\n", desc, expected_count);
-+	return 0;
-+}
++/* The compatibility string for eventfd file handler */
++#define EVENTFD_LUO_FH_COMPATIBLE	"eventfd-v1"
 +
-+static int restore_and_verify_eventfd_generic(int session_fd,
-+					      unsigned long token,
-+					      unsigned int expected_count,
-+					      unsigned int expected_flags,
-+					      enum verify_mode mode,
-+					      const char *desc)
-+{
-+	struct liveupdate_session_retrieve_fd arg = { .size = sizeof(arg) };
-+	int efd, ret = 0, actual_flags;
++#endif /* _LINUX_KHO_ABI_EVENTFD_H */
+diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+index c13af38ba23a..1361b5733f41 100644
+--- a/kernel/liveupdate/Kconfig
++++ b/kernel/liveupdate/Kconfig
+@@ -86,4 +86,20 @@ config LIVEUPDATE_MEMFD
+ 
+ 	  If unsure, say N.
+ 
++config LIVEUPDATE_EVENTFD
++	bool "Eventfd Live Update Orchestrator support"
++	depends on EVENTFD
++	depends on LIVEUPDATE
++	help
++	  Enable Live Update Orchestrator support for eventfd file descriptors.
++	  This allows eventfd files to be preserved and restored across kexec
++	  operations, maintaining their counter values and flags.
 +
-+	arg.token = token;
-+	if (ioctl(session_fd, LIVEUPDATE_SESSION_RETRIEVE_FD, &arg) < 0)
-+		return -errno;
-+	efd = arg.fd;
++	  Eventfd files are commonly used for event notification between
++	  userspace processes or between userspace and kernel. With this
++	  option enabled, eventfd state can be handed over to a new kernel
++	  during live update operations.
 +
-+	switch (mode) {
-+	case VERIFY_FLAGS:
-+		/* Only verify flags, no behavior testing */
-+		ret = verify_eventfd_flags(efd, expected_flags, desc);
-+		if (ret < 0)
-+			close(efd);
-+		return ret < 0 ? ret : 0;
++	  If unsure, say N.
 +
-+	case VERIFY_SEMAPHORE:
-+		/* Verify flags + semaphore behavior */
-+		actual_flags = verify_eventfd_flags(efd, expected_flags, desc);
-+		if (actual_flags < 0) {
-+			ret = actual_flags;
-+			goto out;
-+		}
-+
-+		if (ensure_nonblock(efd, actual_flags) < 0) {
-+			ret = -errno;
-+			goto out;
-+		}
-+
-+		ret = verify_semaphore_behavior(efd, expected_count, desc);
-+		break;
-+
-+	case VERIFY_ONCE:
-+	case VERIFY_NONBLOCK:
-+	case VERIFY_LARGE:
-+		/* Verify flags + count behavior */
-+		actual_flags = verify_eventfd_flags(efd, expected_flags, desc);
-+		if (actual_flags < 0) {
-+			ret = actual_flags;
-+			goto out;
-+		}
-+
-+		ret = verify_count_once(efd, expected_count, desc);
-+		break;
-+
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+
-+out:
-+	close(efd);
-+	return ret;
-+}
-+
-+static int create_and_preserve_eventfd_keep_fd(int session_fd,
-+					       unsigned long token,
-+					       unsigned int count,
-+					       unsigned int flags,
-+					       const char *desc,
-+					       int *efd_out)
-+{
-+	struct liveupdate_session_preserve_fd arg = { .size = sizeof(arg) };
-+	int efd = eventfd(count, flags);
-+
-+	if (efd < 0)
-+		return -errno;
-+
-+	arg.fd = efd;
-+	arg.token = token;
-+	if (ioctl(session_fd, LIVEUPDATE_SESSION_PRESERVE_FD, &arg) < 0) {
-+		int ret = -errno;
-+
-+		close(efd);
-+		return ret;
-+	}
-+
-+	if (efd_out)
-+		*efd_out = efd;
-+	else
-+		close(efd);
-+	return 0;
-+}
-+
-+static int create_and_preserve_eventfd(int session_fd,
-+				       unsigned long token,
-+				       unsigned int count,
-+				       unsigned int flags,
-+				       const char *desc)
-+{
-+	return create_and_preserve_eventfd_keep_fd(session_fd, token, count,
-+						   flags, desc, NULL);
-+}
-+
-+static int create_session_checked(int luo_fd, const char *session_name)
-+{
-+	int session_fd = luo_create_session(luo_fd, session_name);
-+
-+	if (session_fd < 0)
-+		fail_exit("luo_create_session for '%s'", session_name);
-+	return session_fd;
-+}
-+
-+static int retrieve_session_checked(int luo_fd, const char *session_name)
-+{
-+	int session_fd = luo_retrieve_session(luo_fd, session_name);
-+
-+	if (session_fd < 0)
-+		fail_exit("luo_retrieve_session for '%s'", session_name);
-+	return session_fd;
-+}
-+
-+static void finish_session_checked(int session_fd, const char *session_name)
-+{
-+	if (luo_session_finish(session_fd) < 0)
-+		fail_exit("luo_session_finish for '%s'", session_name);
-+	close(session_fd);
-+}
-+
-+static int verify_eventfd_config(int session_fd, const struct test_session_config *config)
-+{
-+	return restore_and_verify_eventfd_generic(session_fd, config->token,
-+						 config->count, config->flags,
-+						 config->verify_mode, config->desc);
-+}
-+
-+
-+static void run_stage_1(int luo_fd)
-+{
-+	ksft_print_msg("[STAGE 1] Starting pre-kexec setup for multi-eventfd test...\n");
-+	ksft_print_msg("[STAGE 1] Creating state file for next stage (2)...\n");
-+	create_state_file(luo_fd, STATE_SESSION_NAME, STATE_TOKEN, 2);
-+
-+	/* Create all test sessions */
-+	for (size_t i = 0; i < NUM_TEST_SESSIONS; i++) {
-+		const struct test_session_config *config = &test_configs[i];
-+
-+		ksft_print_msg("[STAGE 1] Creating session '%s'...\n", config->session_name);
-+		int session_fd = create_session_checked(luo_fd, config->session_name);
-+
-+		/* Special handling for modified session (preserve then modify) */
-+		if (config->token == TOKEN_MODIFIED) {
-+			int preserved_efd;
-+
-+			if (create_and_preserve_eventfd_keep_fd(session_fd,
-+								config->token,
-+								COUNT_MODIFIED,
-+								config->flags,
-+								"modified-after-preserve",
-+								&preserved_efd) < 0)
-+				fail_exit("create_and_preserve_eventfd_keep_fd modified");
-+
-+			/* Now modify the preserved eventfd's count */
-+			uint64_t modify_value = COUNT_MODIFY_DELTA;
-+
-+			if (write(preserved_efd, &modify_value,
-+			    sizeof(modify_value)) != sizeof(modify_value))
-+				fail_exit("write to preserved eventfd after preserve");
-+
-+			close(preserved_efd);
-+		} else {
-+			/* Standard session creation */
-+			if (create_and_preserve_eventfd(session_fd, config->token,
-+							config->count, config->flags,
-+							config->desc) < 0)
-+				fail_exit("create_and_preserve_eventfd %s", config->desc);
-+		}
-+	}
-+
-+	close(luo_fd);
-+	daemonize_and_wait();
-+}
-+
-+static void run_stage_2(int luo_fd, int state_session_fd)
-+{
-+	int session_fds[NUM_TEST_SESSIONS];
-+	int stage;
-+
-+	ksft_print_msg("[STAGE 2] Starting post-kexec verification...\n");
-+
-+	restore_and_read_stage(state_session_fd, STATE_TOKEN, &stage);
-+	if (stage != 2)
-+		fail_exit("Expected stage 2, but state file contains %d", stage);
-+
-+	ksft_print_msg("[STAGE 2] Retrieving all sessions...\n");
-+	for (size_t i = 0; i < NUM_TEST_SESSIONS; i++)
-+		session_fds[i] = retrieve_session_checked(luo_fd, test_configs[i].session_name);
-+
-+	ksft_print_msg("[STAGE 2] Verifying eventfds...\n");
-+	for (size_t i = 0; i < NUM_TEST_SESSIONS; i++) {
-+		if (verify_eventfd_config(session_fds[i], &test_configs[i]) < 0)
-+			fail_exit("verify %s eventfd", test_configs[i].desc);
-+	}
-+
-+	ksft_print_msg("[STAGE 2] All eventfd sessions verified successfully.\n");
-+
-+	ksft_print_msg("[STAGE 2] Finalizing all sessions...\n");
-+	for (size_t i = 0; i < NUM_TEST_SESSIONS; i++)
-+		finish_session_checked(session_fds[i], test_configs[i].session_name);
-+
-+	ksft_print_msg("[STAGE 2] Finalizing state session...\n");
-+	if (luo_session_finish(state_session_fd) < 0)
-+		fail_exit("luo_session_finish for state session");
-+	close(state_session_fd);
-+
-+	ksft_print_msg("\n--- EVENTFD_LUO TEST PASSED ---\n");
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	return luo_test(argc, argv, STATE_SESSION_NAME,
-+			run_stage_1, run_stage_2);
-+}
+ endmenu
 -- 
 2.25.1
 
