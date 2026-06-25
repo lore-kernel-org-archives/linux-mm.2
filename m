@@ -4,125 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86073CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:31:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4569ACDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:42:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AE806B011A; Thu, 25 Jun 2026 07:31:54 -0400 (EDT)
+	id DB8106B00AD; Thu, 25 Jun 2026 07:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 785676B011C; Thu, 25 Jun 2026 07:31:54 -0400 (EDT)
+	id D68B16B00AE; Thu, 25 Jun 2026 07:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69B8C6B011D; Thu, 25 Jun 2026 07:31:54 -0400 (EDT)
+	id C326A6B00AF; Thu, 25 Jun 2026 07:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46F956B011A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:31:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DBF881A0558
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:53 +0000 (UTC)
-X-FDA: 84918220506.20.528830E
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E1A49140006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:51 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJAkYwyH;
-	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A0C46B00AD
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:42:51 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CF74114069F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:42:50 +0000 (UTC)
+X-FDA: 84918248100.16.0A2CAAF
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F18C740011
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:42:48 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzqAtWAy;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782387111;
-	b=s6HwTza5rwCjplxnyYZ15GuEOyhjbBHkqzCC3A80Rr6oTQqjG7Ld7EejlDwJhNzuO8HRIi
-	vmhHI0yjXhK9sc4VX6+rIRAidloJIxy3QqbQs4aEp1I6fLXYa5YmDmdmKWM2vS5eDg6GNG
-	BSfCHYEXQ+qGuzIm56NuZq5uIBIRvCE=
+	t=1782387769;
+	b=OWe3kUjs3wCW8HBIaHg/mxl1sgVnq/sJA0a72YbAvv7s68xT9Qu9ZcbyNsiTiA4KPoMgVm
+	V9iId0onmPYZzuSVEz9fFKiU1WiPgISC6Z03YUXECTUcfkzInyTiiASeRfEy95R6qHLg0N
+	FvCMQGK+WHYlwYgqh39NvmU0FfVw4v8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782387111;
+	s=arc-20220608; t=1782387769;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ok1cwbmp8dJ1uoK/AXAMwxzmJvYss0SZo3EXCeeNnlE=;
-	b=gQBmI0Il3u+j3gAQStk1ucyHgOxjkrrkP7YhtfOpfgibQ9okDZa8DG0u7akySKn1TeViRy
-	nIa0rNuIGQNHIUoAj9CyBRWWeBxtM25OiikKgII3wCd6vQ/2WBycXYTv4HxWpyTdl5V96P
-	59ewGLFqjiJT1nodV+5Kci9Xx+VIGdQ=
+	bh=iIWPblH51guS5xkGlOLDh1Cowk9hcXc97vRIu7QXNA8=;
+	b=7rORZa9i5RWCrbxqyR95I/zc8AsN+5zXIYX9jGqtEtufRcbOb0kiHcNPFjeMWj5HYyZpn5
+	rEM/wWL1ecoKPFkih6W4qWapfw+OZYN1tuW7nOg76pvtd8BrdYPWQofoNuPbab5KUhcCDp
+	7/wYVRpu1rd0BWG04Qjh5nQQeTvIpN0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=MJAkYwyH;
-	spf=pass (imf09.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c85a2c012e5so885233a12.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:31:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782387111; x=1782991911; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ok1cwbmp8dJ1uoK/AXAMwxzmJvYss0SZo3EXCeeNnlE=;
-        b=MJAkYwyHBAprjmq5alv6SoZ/Ab9TOuPtH0ygIWDjkN7Ca2dMd1kwB2XEvMuJdONul0
-         F4pck8qH1n9f7Ls7F6Xs6LxyhV9tAXjBqtTxgVC27u57+UfjjbrY79V4Jw8xIwOHsyWy
-         FiZqEWDOkkITmFIsBFStFzlOKjQcA0ZB1wr3cgZQDYqqCk/A06sEBLcncTZsUBh6htb6
-         KXat37tH1/QCbYWxx8fonlPYjzu4fXED3QN1sSGx/FM8MSyFN3U6gGukFjjBZtBDirDY
-         aw1JStJm8by0HcdT8PfXTJkzMgj2yufgzNNVO3/GZ+nkVNEW6/vmz/+8l3Imgg16dxPA
-         uXSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782387111; x=1782991911;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ok1cwbmp8dJ1uoK/AXAMwxzmJvYss0SZo3EXCeeNnlE=;
-        b=sDRk/3cg/a12w0TPDKR9WOg2krhUL0Z3NMZYn6X4F1eq1SdFA+BaUHilaRKmJ6iLyf
-         5dLdwlKp0oSxdz9N0eqXaIY0pAFMY03IKNwxYg/0yUtbq37jF7e5XmyPtFgQlV165IBo
-         EdKqNfd5Ea602/0Sk9cmAYxvA1ngM/u3LLBqpJsW+l4V3hzgDO6Cxz6s+RHVqDcN1Rgs
-         O6FYC7NNGfIwvtv8eNTZiDXhYEFjBXdbUHdyfOwzZNcMNZsdK1d/sbSWd+piGD73x+y4
-         y0g0H0Pk34Ggzdjn8829vMosZ63xQqrLy88e2uHM/Eqqqj0Xybzy16H0+x1l88Z0lxey
-         EHPg==
-X-Forwarded-Encrypted: i=1; AFNElJ/3ftSUeRfnadMVsGKZNWyNvaDsEKsVrDwb3g0Nmgv3V+8MWFnasJGAoyiOijh5bVxLPW9H5nwO4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzT6oThKiXA1eM0G4p91lHQaZRLB2tM/FnKZ+pjBFNMNUfq4yxt
-	xrFMmu+sU1AchCtncNpUn2mPMxzUadN33rtU7zqS32hHz5hA2OAcns2F
-X-Gm-Gg: AfdE7cmt0XkOOvzvPUCcel7hS9pOgbdb7xB7UU6sd8POqlIr89aOaWEuZxxZEX6egYc
-	cbbMf6gzMlO7aeiGQC01xLQnXKvifDTMGvnDgE/qEptTn1VjoKE5PjJYEEZwaAHk+98iSJ29iqn
-	1ARIVnc6HIVKUM5bc6a8crRuanslQBGB9roCtwWyJXl+h9j4/ukpof11L+NF87qLrkO2vk9hGw5
-	olPw+mPjSFB9MHQIKqSS2y3+eg/d+Ax2h8nYp9E/FHU54zgC9C3UemVdxzgmlN96qEY8vOcEx5B
-	8sfFNoMHC/vnbcaZXic73+NX1C/8MmKhtkEYEIcdt5ReYoTur0bpzrpBWNaZ6NS6XX1G5LXRlRv
-	yj4J8L5mE+QC2ZTw6+bWNYon2U+uK1VjylWGymz+lR5dOTPbmr1n4XOinFNKtGnUEjOiQgNqd4D
-	GRMpbZHmXRVnyn/MkClfZDBJYTt01oigWr
-X-Received: by 2002:a05:6a21:9d45:b0:3a2:f7bd:a9a5 with SMTP id adf61e73a8af0-3bd4afbcefcmr2587154637.38.1782387110797;
-        Thu, 25 Jun 2026 04:31:50 -0700 (PDT)
-Received: from [10.125.192.89] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bd26a52esm1482636a12.29.2026.06.25.04.31.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 04:31:50 -0700 (PDT)
-Message-ID: <1358cfd4-7d3f-1238-e4a8-b2301dc16702@gmail.com>
-Date: Thu, 25 Jun 2026 19:31:40 +0800
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dzqAtWAy;
+	spf=pass (imf07.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782387766;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iIWPblH51guS5xkGlOLDh1Cowk9hcXc97vRIu7QXNA8=;
+	b=dzqAtWAy92LgGrBYUpeYiyI+geAzdk11MZAp61pXhyjOW+4UHgXuszSfFsuexOdLAE7LLH
+	AdcRSiXLKwnKLA5WszKWa+glQK0zPNce2XBAUrvVV1C8k1S/weKOAyR7Xw2a8u8N96JA7c
+	nuXUz7AQcNVD6DOeb49LJs6nv991Wec=
+From: Lance Yang <lance.yang@linux.dev>
+To: richard.weiyang@gmail.com,
+	david@kernel.org,
+	balbirs@nvidia.com
+Cc: akpm@linux-foundation.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	ziy@nvidia.com,
+	sj@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD handling
+Date: Thu, 25 Jun 2026 19:42:35 +0800
+Message-Id: <20260625114235.40611-1-lance.yang@linux.dev>
+In-Reply-To: <20260624085756.6598-1-lance.yang@linux.dev>
+References: <20260624085756.6598-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 1/5] mm/zswap: Extend shrink_memcg() writeback
- capability
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
- shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
- nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
- <20260618044857.69439-2-jiahao.kernel@gmail.com>
- <ajnB8IZrFZwbIr9P@google.com>
- <d0f05c35-457a-4b2c-6faa-7a83d4bdec01@gmail.com>
- <CAO9r8zMgaqP=n6rmhnMU+qhp1Www1Y5kdbLTLX1v=fj_ybHyiw@mail.gmail.com>
- <057ea303-4c27-1a6e-08de-cce26c699097@gmail.com>
- <CAO9r8zMmnYkXocZ9Fb9DL_rdAHt5xtT_FLMxJD1bHcM3B4wTFw@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zMmnYkXocZ9Fb9DL_rdAHt5xtT_FLMxJD1bHcM3B4wTFw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E1A49140006
+X-Rspamd-Queue-Id: F18C740011
 X-Rspam-User: 
-X-Stat-Signature: p5hhtubaxbzpnjzd47gsotpwushn87si
-X-HE-Tag: 1782387111-705732
-X-HE-Meta: U2FsdGVkX1/TS6uHvGTUkZKwGTxSOczNZp3haMr+1bIQ9zhBz6qgokaRPLtKfO2NS9l+p0tJVCO7oyf8cZPaKdK1COwVe3PduzVa0iUuWwdBZhcMuj+9VhRNfrYJack4yISdlTBKLrSqPYQwFR7mBCTdBvPactOr92QLybZPX/i2GIx4cthc85eKyVPgmOSC9GD15gXPbAaB8pIfnwtBD6OOe/nF/TLl20TqGjc7ze+BeN0iFAGKAxbfp3NP7ikIAM+50DTvNWg5ICB65vQC/CYhI8/IMgAGNVH2T4/DbDofDGvE0gGBR33dmuzCiKCoSJTj9NQ1uopLxO45pTCUsirWgA6qhMBS/g236XTvx/vK5DUuntECWQR0Hnjp+ivWfK71vQKFsRObzIyjfDuDTyVAJUbGLbb58e/dmvTNCe1O6685AlZ2RQmFVmq63JRvZeFimdQn0vyxmuOQmSupJ5xZrTNkWro4YEa81uiOAPYpq+pNqYDBs/YjYMxwWY8UA0h4GJl0R2G6dBzzjm467RUA/XHHBNy0dW12bsQgjUEsSbEId7Orn0mvb7BkA9kuF3qRxqw8BfwhU1n8o2l/q05J9ipjLLtHEpyXKXP0s9IzYNWyk8Peq6gItvsp3fAgXtlvVr0t6kFmtd1DOyCM0t25Q5xS4iMrFUm/RYApWI6wpOigybTwiZPKWKIhHuUSYOmLxpoLpfUPhDimlDl7dFW9ggSzYD9Af0ZWJ3Rrx4LoHSx+i+KBxGjKHzS/zoaqRrkQMUKAdgy7iImUey/2lU9aAtfi1SRrCJzInWvSzRO5cgYy74jbEDniIpDsTmdZlA6EBe14Yy3Qcg4yDLBcyQ9x3LtM92Bbm8rzkU397cPN9t5EFf8bDnD/OUmh3dYyA2rwfPrJlunGLk5m4X7NwL9kwWQoAlETztLAj37p+4fIjYu9pLoaeDKQmucKXgaXLt+ZIKF/BTb265l2fmz
- 0G+dl3pr
- c+4UcypTfo6nwaUSuCtRh+LxOO5FwL4V0DdJU4MkGhYEJRD8m7/UKh9BtYRDaXZDpHuJEWksRFAVgHua7LLq6oPzsufbN23xWuZw9bo2+OmOmC2uEvMcIZkTLu4vbgjKjE+/cBMYrQToceIGR5b+T9QQjnNKNwktmXbGIESTh8YzMlua1GSIH4BnVIGpYMbwS0ktFbzOOdtQaACqAXF7J7Aam6eFKGdAKz2tdZCYfH6ZFnGqkUAhoazx7eDVGSeeUoPS+fRBrxQCu64rKjq1j8xKBN5RPKWiR8JmslSS5MwBcPWLjdTvXOnQTh1lyOi10HF91ZcEE9eGmJw5KJb8YGP3cDxrL+V4LLLHlg1xpXsTMT+3dBNgeegQNuxXAbFc2dDqCVBdjXKPp5d9WlRUFiaA+492czSP6abedPi4NsUqwJ78bj83VTz6BzNekFFKORJR2nKSmQs0wXGgax2HVWRVf2WbskX9tOJ3XIKSoLOlc0ok=
+X-Stat-Signature: jztbbytqdk8nzmscja5bndbtgyrqmup3
+X-HE-Tag: 1782387768-29808
+X-HE-Meta: U2FsdGVkX19GGFhk6ZuLqg7r6J+IMwH8kpSDJlBhnDZ7dLDfi1+6hXQEF+Sz5mJc/f/m9wK3zbDGYic77CaD/x76+Pxi9dDoya/6bDpdjlFaD4Hxqgg/dMpXAW5vHYcgSltEr34V50pLyV7RIX8WMyYaC3sDp54X2rQBVxwdqU8rx+Q0xCgcgiSNzzP1lSsgCcizHhNkRX7EY4/o2F98EkMbBdEwUJTOZl7nj+Xpl5lgFoXlPzuJKtb4dwe5jmkppd6Dz523QB3lDthlKz6mAirA0mINEZPkBvbEzoqW1NlVj3yMK4fhJ9LgTgtc/MAxu/qRlIZoe4XxPURYNrwqle1jvbXEWnSHoeBBED4Q1E3dcjPq07/4CqUPkEuWQi8SBgq8sqYqcG7tmnkzMX53PRJw/5YAbOeOHzJO3aanR9TJuXx/19dMYvfsmRTDnxhJZEXWwPxDbf+CbaLkq6mLeuxAO55oE3I9iM4txzZE0zlO98FT7bocdvSiZRUvBEdyGom5Ah/NAK8IniiuCBoKy1vHrH8huSDFVdOurJb6AT+FMfAIs5jqxzswJ1IYKuiFiw+Zl5M0E7y0gMPQVjiA2tK6XKts4KxAfvRNQALedoUxl8C2nMo0rtvFm5uG0LHodCRTO35NR8fbB+XTzL/JHb+jFgCUMs5EQvuxZLWskOfcBv4diGIAcutlyorCGmKMG5OL8wjMHR5hCos8PEFL4kDSftyptMCqKm4an6fLkKFKk/0RafmydmICDKDunFpNVb5eJjLsa7ADZz1T9eC+oufJqNvkJQGGiU3DdmNYx6aepUgFphHOWlMd1bT+Xy02RJOK9DWPhYMih0OXZjx7M0og0314toyb9VvGFKHYzNPDOpNgiRHGGm0gZt1ompn85Tkh2Hrz2JolPbd59wok0GzXF0Uvx5iYxFZ0LovEGR1cduxMo4K/MWrzjU3hfEKKIuDi5T+adGIH4kz2Nwp
+ In6Shwij
+ onFRtkoQVi1HhTmNfI1QPFz7dm+7XDwc4G+O91JFmxD16DH0lHrCYPga1iwut2AguOWHF2d49+/ULpk84/YeQsaXRtESNHZCOGpYULfIx7drF6DIMBOxwuyJy7NVtgu/X7MQrcdGKQvgLtLalYCyyqvZJp9idpdsaGtoIgTz4rVoipOsHKrLcbR9zdgZNVoCvUn6Sww8OIWWDrmTxKLPVAuouRD4SKFfQhY7HKpduXSqHov2RX6Uo7KGSgkZHemZy35jnKJsYaNmZZW7YIpfjJ08l72S6x7UJXM5fEj8SfGWueZmDCjZ/+G/lvFeXhWJt7ssJmge7AeXw5W9pkO+OYCroF5MGBubeUICToGXSmI2rGa4N1UYXL4XhF8YsMdqpT2ZyiZjAKB9p8LhSBbbef3ar/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,92 +102,200 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+On Wed, Jun 24, 2026 at 04:57:56PM +0800, Lance Yang wrote:
+>
+[...]
+>>
+>>Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+>>Cc: <stable@vger.kernel.org>
+>>Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>Suggested-by: David Hildenbrand <david@kernel.org>
+>
+>Shouldn't we add
+>
+>Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+>as well?
 
-On 2026/6/25 00:57, Yosry Ahmed wrote:
->>
->> /*
->>    * Scan up to @nr_to_scan pages across the per-node zswap LRUs of @memcg
->>    * and write back the reclaimable ones.
->>    *
->>    * Since the second-chance algorithm rotates referenced entries to the
->>    * LRU tail, the per-node scan is capped at the current LRU length so
->>    * each entry is scanned at most once per call. It is up to the caller
->>    * to handle retries, deciding whether to scan the next memcg to complete
-> 
-> Nit: "whether to scan another memcg to complete.."
+No need to resend. I think Andrew can add this when applying :)
 
-Will fix in the next version.
+>v4 mostly follows Lorenzo's comments, code bits included. Feels only fair.
+>
+>>Cc: David Hildenbrand <david@kernel.org>
+>>Cc: Balbir Singh <balbirs@nvidia.com>
+>>Cc: SeongJae Park <sj@kernel.org>
+>>Cc: Zi Yan <ziy@nvidia.com>
+>>Cc: Lorenzo Stoakes <ljs@kernel.org>
+>>Cc: Lance Yang <lance.yang@linux.dev>
+>>
+>>---
+>>v4:
+>>  * refine subject and commit log based on Lorenzo's suggestion
+>>  * put pmd device-private entry handling in its own if branch,
+>>    suggested by Lorenzo
+>>
+>>v3:
+>>  * remove cleanup part, only fix the issue for device-private entry
+>>  * refine user effect description based on Lorenzo's suggestion
+>>
+>>v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
+>>  * specify the possible error case of current code and user visible effect
+>>  * besides fix, cleanup the pmd entry handling based on David's suggestion
+>>
+>>v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
+>>---
+>> mm/page_vma_mapped.c | 20 +++++++++++++++-----
+>> 1 file changed, 15 insertions(+), 5 deletions(-)
+>>
+>>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>index 2ccbabfb2cc1..17dff8aab9f9 100644
+>>--- a/mm/page_vma_mapped.c
+>>+++ b/mm/page_vma_mapped.c
+>>@@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>
 
-> 
->>    * the full iteration, or to rescan the current memcg to drain its zswap
->>    * entries.
->>    *
->>    * Return: The number of compressed bytes written back (>= 0), or -ENOENT
->>    * if @memcg has writeback disabled, is a zombie cgroup, or has empty
->>    * zswap LRUs.
->>    */
->> static long shrink_memcg(struct mem_cgroup *memcg, unsigned long nr_to_scan)
->> {
->>       struct zswap_shrink_walk_arg walk_arg = {
->>           .bytes_written = 0,
->>           .encountered_page_in_swapcache = false,
->>       };
->>       unsigned long nr_remaining = nr_to_scan;
->>       int nid;
->>
->>       if (!mem_cgroup_zswap_writeback_enabled(memcg))
->>           return -ENOENT;
->>
->>       /*
->>        * Skip zombies because their LRUs are reparented and we would be
->>        * reclaiming from the parent instead of the dead memcg.
->>        */
->>       if (memcg && !mem_cgroup_online(memcg))
->>           return -ENOENT;
->>
->>       for_each_node_state(nid, N_NORMAL_MEMORY) {
->>           unsigned long nr_to_walk;
->>
->>           /*
->>            * Cap the walk at the current LRU length to ensure each entry is
->>            * scanned at most once per call. Referenced entries are rotated
->>            * to the tail for a second chance, and this bound prevents them
->>            * from being revisited within a single call. Retries are left to
->>            * the caller, which can choose to rescan the current memcg or
->>            * move on to the next one.
->>            */
-> 
-> Nit: Make this more concise since it's already explained above.
-> 
+Never mind my race comment below. Obviously missed folio lock there. My
+bad. Don't have a caller like that. Nothing else jumped out, so:
 
-Will fix in the next version. Thanks a lot for the review!
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-Thanks,
-Hao
+Cheers, Lance
 
-> Otherwise this looks good to me, thank you!
-> 
->>           nr_to_walk = min(nr_remaining,
->>                    list_lru_count_one(&zswap_list_lru, nid, memcg));
->>           if (!nr_to_walk)
->>               continue;
+>
+>Hmm ... looks like there may still be a race here ...
+>
+>Current code picks the branch from the lockless PMD value:
+>
+>		pmde = pmdp_get_lockless(pvmw->pmd);
+>
+>		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
+>			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>			pmde = *pvmw->pmd;
+>			if (!pmd_present(pmde)) {
+>				softleaf_t entry;
+>
+>				if (!thp_migration_supported() ||
+>				    !(pvmw->flags & PVMW_MIGRATION))
+>					return not_found(pvmw);
+>				entry = softleaf_from_pmd(pmde);
+>
+>				if (!softleaf_is_migration(entry) ||
+>				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>					return not_found(pvmw);
+>				return true;
+>			}
+>		}
+>
+>But after taking PTL, the PMD may already be a different non-present PMD
+>type:
+>
+>CPU0: pmde = pmdp_get_lockless();   // sees PMD migration entry
+>
+>CPU1: remove_migration_ptes(src, dst /* device-private */)
+>        ... via rmap_walk(dst) ...
+>        page_vma_mapped_walk(&pvmw /* src, PVMW_MIGRATION */)
+>          returns with PTL held for the PMD migration entry
+>        remove_migration_pmd(new = dst page)
+>          installs a device-private PMD
+>        next page_vma_mapped_walk()
+>          drops PTL via not_found()
+>
+>CPU0: takes PTL
+>      pmde = *pvmw->pmd;            // now device-private PMD
+>
+>So when PVMW_MIGRATION is not set, current code can return not_found()
+>before we even decode the locked PMD as a device-private entry.
+>
+>Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+>device-private entries") made the
+>
+>device-private PMD <-> PMD migration
+>
+>transition possible.
+>
+>set_pmd_migration_entry() can replace a device-private PMD with a PMD
+>migration entry, and remove_migration_pmd() can restore a PMD migration
+>entry back to a device-private PMD when the new folio is device-private.
+>
+>Maybe decode the locked softleaf entry first, before the migration-only
+>checks? Something like this on top:
+>
+>---8<---
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 17dff8aab9f9..97babd408dba 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -249,10 +249,18 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 			if (!pmd_present(pmde)) {
+> 				softleaf_t entry;
+>
+>+				entry = softleaf_from_pmd(pmde);
+>+				if (softleaf_is_device_private(entry)) {
+>+					if (pvmw->flags & PVMW_MIGRATION)
+>+						return not_found(pvmw);
+>+					if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>+						return not_found(pvmw);
+>+					return true;
+>+				}
+>+
+> 				if (!thp_migration_supported() ||
+> 				    !(pvmw->flags & PVMW_MIGRATION))
+> 					return not_found(pvmw);
+>-				entry = softleaf_from_pmd(pmde);
+>
+> 				if (!softleaf_is_migration(entry) ||
+> 				    !check_pmd(softleaf_to_pfn(entry), pvmw))
+>@@ -266,7 +274,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> 					return not_found(pvmw);
+> 				return true;
+> 			}
+>-			/* THP pmd was split under us: handle on pte level */
+>+			/*
+>+			 * THP pmd was split under us, or device-private PMD
+>+			 * changed under us: handle on pte level.
+>+			 */
+> 			spin_unlock(pvmw->ptl);
+> 			pvmw->ptl = NULL;
+> 		} else if (pmd_is_device_private_entry(pmde)) {
+>--
+>
+>Anyway, that stuff is getting kinda messy now. Feels like it really needs
+>a cleanup on top before it bites us again :)
+>
+>Cheers, Lance
+>
+>> 			/* THP pmd was split under us: handle on pte level */
+>> 			spin_unlock(pvmw->ptl);
+>> 			pvmw->ptl = NULL;
+>>-		} else if (!pmd_present(pmde)) {
+>>-			const softleaf_t entry = softleaf_from_pmd(pmde);
+>>+		} else if (pmd_is_device_private_entry(pmde)) {
+>>+			softleaf_t entry;
+>>+
+>>+			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>+			pmde = *pvmw->pmd;
+>>+			entry = softleaf_from_pmd(pmde);
+>> 
+>>-			if (softleaf_is_device_private(entry)) {
+>>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+>>+			if (likely(softleaf_is_device_private(entry))) {
+>>+				if (pvmw->flags & PVMW_MIGRATION)
+>>+					return not_found(pvmw);
+>>+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+>>+					return not_found(pvmw);
+>> 				return true;
+>> 			}
+>>-
+>>+			/* device-private pmd was split under us: handle on pte level */
+>>+			spin_unlock(pvmw->ptl);
+>>+			pvmw->ptl = NULL;
+>>+		} else if (!pmd_present(pmde)) {
+>> 			if ((pvmw->flags & PVMW_SYNC) &&
+>> 			    thp_vma_suitable_order(vma, pvmw->address,
+>> 						   PMD_ORDER) &&
+>>-- 
+>>2.34.1
 >>
->>           nr_remaining -= nr_to_walk;
->>           list_lru_walk_one(&zswap_list_lru, nid, memcg, &shrink_memcg_cb,
->>                     &walk_arg, &nr_to_walk);
->>           /* Return the unused share of the budget to the pool. */
->>           nr_remaining += nr_to_walk;
 >>
->>           if (!nr_remaining)
->>               break;
->>       }
->>
->>       /* Nothing was scanned: every LRU under @memcg was empty. */
->>       if (nr_remaining == nr_to_scan)
->>           return -ENOENT;
->>
->>       return walk_arg.bytes_written;
->> }
->>
-
+>
 
