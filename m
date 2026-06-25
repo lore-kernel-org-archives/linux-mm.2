@@ -4,94 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1905CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:18:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D05CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:39:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C3A86B00AE; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
+	id 2A2796B008A; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99B856B00AF; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
+	id 254386B0095; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88A6A6B00B0; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
+	id 1412D6B0096; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61BB56B00AE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id CDDD16B008A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:39:09 -0400 (EDT)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E00AD165D7C
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:18:00 +0000 (UTC)
-X-FDA: 84918790320.01.550B778
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E7C6FA0007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:17:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=araeRisd;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C0B51C0E37
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:39:09 +0000 (UTC)
+X-FDA: 84918843618.01.72C12BC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2137E40005
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:39:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NwRAVRXu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hqJZSBG+;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SaBVehSy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="0rYclu/v";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782400679;
-	b=osp4haeo+73P53Q31cLnNvWhaxKpEhoZSkldaDCKig6weGfc2szcihr0pJ9NHJ5Ym8y3fU
-	BnluLeXYUVb+ybm0m0jpfWwhTAdwLQmdIvvABaBaZPqvYyhvm7ia5vyJbKhftjqgsttPJY
-	rFrNaBapyloYtTBjGNVf8PBrnufK44A=
+	t=1782401947;
+	b=EZ3tFBbBo+GPqyMhQd+hJ81YPtWZHL36fUpUzmKbNz3vaeYmCo6VQcV3aAsd0QmmzjBWeP
+	GqZDsV5/xfBUU1dyarcrlJUlBGHXK3VpAqz6e9sJoCVoyb+6sujyh5c8K+zUuU2y8DrYpl
+	wAqxWmwbhPwX6+Pj/GV0Qr4X5fNnk3g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782400679;
+	s=arc-20220608; t=1782401947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=0abFjDD7MeWR8jXMZ2j0zCKAbj5uTG1W2qlcF8YqFc4=;
-	b=N7N5y+vyHH7YX4X4jV71+ztt5xkmFrZN10xvxcAiPwjrsN32iMRXs95WgvtGjJ6FWH8b4q
-	mZRio8+Fk4Gmn4diWYr9oi9v+VKzYWmK68TS0EmRaLvihxJHRxRG9IlLX/vbN1TXprR5RC
-	xWy8VrSDJOCFiyJvLiui3f8Jw/A1fA4=
+	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
+	b=pPOYBd222Sp6aaxhmt39KGjONEZIcMVyFF53JAemADThr4S6VoWhpvFy6JzHJo3yfcbT7a
+	sNffgXbFenJyv0tAow4nbHcYCGnRdWthxwCDFvlCBhpNFoaCV2AIuumG4qdf28JmsDeJaT
+	VM2oNDb+UtyzV1OBeOlgU0CXG0VZFqU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=araeRisd;
-	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782400676;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0abFjDD7MeWR8jXMZ2j0zCKAbj5uTG1W2qlcF8YqFc4=;
-	b=araeRisdZjkkXDB5B5YHuyjgxiM3QgILhTA3HYQM2YO4riqCwXB16muACRB18zccxmj6HB
-	uk5sdyKDreRF+CYXqUsePISuTN1byrhnIsvTqYnq8CpyfVWyZlNIte2FgGzk+V6kjepyj3
-	1MUTcDj9eg6EsdVDrA1sykzJH9DqGZo=
-From: Qi Zheng <qi.zheng@linux.dev>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	kasong@tencent.com,
-	shakeel.butt@linux.dev,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	harry@kernel.org,
-	muchun.song@linux.dev,
-	peiyang_he@smail.nju.edu.cn,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	ljs@kernel.org
-Cc: linux-mm@kvack.org,
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NwRAVRXu;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hqJZSBG+;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SaBVehSy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="0rYclu/v";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8EE0D71C28;
+	Thu, 25 Jun 2026 15:39:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782401945; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
+	b=NwRAVRXutpXL/pdBgzbmyaYn4uUz1RhaPMZl2P2XObe0JzP7opZP48clrsGBdO/sQLMmwm
+	9dOmMalIjTzOa8I/ci3wKXhKZmiqN9tljD0OfuEOAEzPm1th8LZlHkWU+PIB7yVoT4HKRv
+	Pvkq3Oc8qU2sLrynhJ2AKMbM99eq028=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782401945;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
+	b=hqJZSBG+e8rDq7//e/0MGt3NNk9o0QiRh0VCPaH5bOMkmTSIKAZHMSseJkjU472br+6XLr
+	ghNqhbvDKt02GpAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782401944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
+	b=SaBVehSysMnqbJJQlnJuef9R/gjK3tLrl64AB6Tb25BC9SWcTMFTVCXaDuI1vqObtLswb+
+	s79GV8xJLTDKMvhvMhD+J544aMGzE6JQF35qpbvutr8GiWjyDAF2tdVAB0TRqHZAthqQOI
+	ucjmzUFsI6w9CZxa+W/6o7gWzT+giXM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782401944;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
+	b=0rYclu/vu2zoQTYtbYtT/46cwy08fQTH5uJ0FqbiMoyPwr7w1ZwPIvdpKRF9Y9L9hLbk49
+	CBKS986j/lCshnDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 984D6779A8;
+	Thu, 25 Jun 2026 15:39:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dJWvIZdLPWqvWAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 25 Jun 2026 15:39:03 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Jan Kara <jack@suse.cz>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Pedro Falcato <pfalcato@suse.de>,
 	stable@vger.kernel.org
-Subject: [PATCH v3] mm: mglru: fix stale batch updates after memcg reparenting
-Date: Thu, 25 Jun 2026 23:15:54 +0800
-Message-ID: <20260625151554.55105-1-qi.zheng@linux.dev>
+Subject: [PATCH] mm: do file ownership checks with the proper mount idmap
+Date: Thu, 25 Jun 2026 16:38:53 +0100
+Message-ID: <20260625153853.913949-1-pfalcato@suse.de>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 6y43nwxykj1hsn16eyejgfrds4r5h99g
-X-Rspamd-Queue-Id: E7C6FA0007
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2137E40005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782400678-67344
-X-HE-Meta: U2FsdGVkX18CnIFCWJgX6//aw/a/mAYCZwgygEG9BzgOsIq7psNP7ScF7L2D+01022mkOWi7QLBIhmPXroTaMIYC0YlVH9l3+KPvS+q6xQ3PiHBPXD6NgmV6HnVuWL04GxkTxp6am+B8f/GRGDe16NCzrSWBD1LRvu6Pj807C1/Mkr1qKKkyQnmeX5f85yI+DZUHRSpyI/A+zL1lXG2HFEVHyw+tP7NAzVhjhf4dfYBcKfv/4ThVvx1pg0GiaX/YnTiFrzy6WjHcKx7CvLycLcmBM8sljZcTmXp330l0DEm6E6xLqntsXEiVOO16gWCSkjbRB76xpmc4nYq5TyF0YbHPE+ikkfZOASdZJSa+LOn9IkY9y6Xi6lQszGm802lw2ptuoiUP/h4HNpw3uWLwN4ywhdi3Qhl0KtLg45N8mSZ+COwrnXlQn0oH4r2yqHL3pGJo4RyKKbdA+yPKnDWruVobXmM1DH2ABUOP1GfgxTuffEvY5pEHEBUAmCI+cjCrpcEL7BZ0p9GYWBYLNMCHY5+BoNqjmioQxF6Ch3XIYXJIwrp1slt9HnE2huQ7qDVUGdGXQ13gTTBBOEypGdGhOuTTSSU6eVqQLwniuMzJvWFns5sJ6X94Vpv+O5fGklBNLfcHMOKciidtC/RSrNaK+J5dabNj0ogiSurpfj3RFUgyIfJY8PlLU36P47xzdhP0LmRYWVKa6gUVFOZ1rt/kxZQw3egQ8pdtGy/k5gCjXV/0q82a7qg5Jnh7ikvgdirUOtY6X5a8Qt1UCzlFsQX1lPBQ/i9V3kkNDp7NUAR929LT3TmNV8rVfsiiksgpRTzKoy4StFixEeV32dXSUDVbmPRY6pcnal2FLPGTuk0xZbVNXgrndOEW2c0n7Ji7PG63yzqmfHtnKOSN1cM537avEQRB9Si3yw5zsUNbHTaCmkQkLGPkkUbq84g8ZJct6f0mlbEmTf0/CmuNTPQ42QA
- JZivLN12
- iYEmK/3SowGWjdOaxHmEGrXKz1evTKigFoUFoijWk2nGAhmkvYzoUGLdSzP6GnQxet7ejcuOVRet0No2Kv51goyQ+AyZrlyH5YyFf66/9bYFWEC1JilLw8455X8KfM2CBXYxi71Vb7P0/iiCHX8UQGnoHEH1EviiGofB2axv0nxscuHFlE/veTbWGBuo8pdgO1SLkTt2lo5QrrG5Jk0h+1hEbIEWBhyachu3UfX0ZKREj1KMKZqMIrEfbsg==
+X-Stat-Signature: 5i3hq55s1yn5ha6qzn8bj79gysqwbz73
+X-HE-Tag: 1782401947-718960
+X-HE-Meta: U2FsdGVkX1/qnvrsxid9Pi3aK2EX7mjFPWY4RURqkhGbxWVFr3b42ZsnN8smyldUgmHK4xiZ1KYHcVNluUS2denEtpl9ZDXt11ds4lG87xjx25BIMxDkZvEib/cJxm+BQhNZFghy5pOyJXYkarUzdTPdnrLVajypwqrbg03k1CYUwjmdtHyIG4HMU5PyNcCbrC7u1Fu6ok3u2f3CzzuzoJMUtcwhM39K9mB0R7CgULuzF0qs2CmWNCgU5texNHqEZ0ZeuVVdUfap3dFNqrH+/BRoe8IR84VWYCCY904khg0tkht16yiFqNWh7wUi3cWPCexWwiE6XqTxxPEPjU2NMsBfjSDBOxL0bt1EtRhLdc5orxDtYwXtnI3YMGzWQziwLvPH4LnGBhPvhbO5DoHC1KFeylQsbl2fTeqZnIeZfBcbtqb4gdyO7WWo1rqIxmDxSI4VUc7rxrV4Zna+iOe8Zs1pg68AgFJ64Ia2nThsZkjb+cr7HYNR26do5NuGHYBQMyL/UK3ltw8CosmZODstGCYtq6pFw/sunQq3NCfoVp51wlbPFf9U0zbWx6MnL+lF27Xic2QVFZfry8KjiSUruzF37e8gOAw8RvQGuVXzLyG7nox97InG9m2iwdjy3P0QYgGD92/EAQm/czE9Qns6q2K8eya3pNkALYpmEpj4UDvD8qZJXn1vsX2PDW++Yssdb5ahvflCtgR2aNXHWcXp6023OnJsuDXZ5IXoX5mpgXxWgPikhsxwepgz6iyHUM3PsO/rkChuYuTFG9xp2DYz+peikswqahZFKLr3a8puqzJeYiZRGPUof/+fhte7emIcGlOjXugVej8Q1gr49OGNmau6nvPPkOEb6QAnrGvJy1Gkd9lCkVcdf7sGwuYktmLWQz0I/Jy54+W3KEJMtGqh2QbWemqLzQa4Xl8L91qZC42/DVeA6r7NPDCbOcC0S4Lq1+i5zgYmWb7ZMWZEDAq
+ O3XWRkp4
+ eUkBKLwZsnyLqJYw6qbUeKWiYTiugnYWNfGTa+OIkNoxCvmjO/uiK678sS7j+3pf9kjpgKMWBrZJL1CEvIOOUQvroE7jNRAX9F0O6eBRSlYf9k0b5Fm/r75peJcSR6pmOpxntlSOG6FkcaYpsyc/8lH13wWhpPXSJfhZ+Zk3sxYtvHRQBNkB56ySAjIAScQMGScASarQVMy4Z5iPR85CUUB4Wxejpqquj7rAzOoWhJJsFGGm2vaoh6ytdIFQ2oNeXfKb+EmKO9+s6HGyQFhuL6ZKqdRT6V1FUC26r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,152 +135,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+Ever since idmapped mounts were introduced, inode ownership checks
+(for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+done against the nop_mnt_idmap, which completely ignores the file's mount's
+idmap. This results in odd edgecases like:
 
-The mglru page table walker batches per-generation size deltas in
-walk->nr_pages while walking page tables without holding the lruvec lock.
-The reset_batch_size() later folds those deltas into walk->lruvec under
-the lruvec lock.
+1) mount/bind-mount with an idmap userA:userB:1
+2) userB runs an owner_or_capable() check on file that is owned by userA
+on-disk/in-memory, but owned by userB after idmap translation
+3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
 
-The page table walker can run concurrently with the memcg reparenting path
-as follows:
+In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+idmap internally, but it does not need to be the case on e.g a 0444 file
+where even the owner itself doesn't have permissions to write to it.
 
-CPU0                           CPU1
-====                           ====
+Since this is clearly not trivial to get right, introduce a
+file_owner_or_capable() that can carry the correct semantics, and switch
+the various users in mm to it.
 
-walk_mm
---> walk_page_range
-    --> update_batch_size
-        --> walk->nr_pages += delta
+The issue was found by manual code inspection & an off-list discussion with
+Jan Kara.
 
-                              mem_cgroup_css_offline
-                              --> memcg_reparent_objcgs
-                                  --> lock lruvec
-                                      lru_gen_reparent_memcg
-                                      --> reparent child folios to parent
-                                      unlock lruvec
-
-    lock lruvec
-    reset_batch_size
-    --> child lrugen->nr_pages += delta
-
-This will trigger the following warning in lru_gen_exit_memcg():
-
-	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-				   sizeof(lruvec->lrugen.nr_pages)));
-
-And the user-visible impact of underestimated nr_pages in MGLRU was
-premature OOMs because MGLRU does not try to reclaim memory when nr_pages
-reaches zero, but there are still more pages.
-
-To fix it, make reset_batch_size() check CSS_DYING under RCU before
-flushing the pending batch. A non-dying memcg keeps the original lruvec
-stable against RCU-delayed offlining; a dying memcg redirects the deltas
-to the first non-dying ancestor.
-
-Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
-Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 ---
-Changes in v3:
- - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
-   (suggested by Harry)
- - update the commit message (suggested by Harry)
- - temporarily drop the previous Reviewed-by tags
-   (since the sync method has changed)
- - rebase onto the next-20260624
 
-Changes in v2:
- - update the commit message (pointed by Barry)
- - collect Reviewed-by
+I noticed there are a couple of call sites in fs/ that could perhaps be
+cleaned up with the added helper, but I'm skipping that for now for brevity's
+sake.
 
- mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 38 insertions(+), 7 deletions(-)
+ include/linux/fs.h | 5 +++++
+ mm/filemap.c       | 2 +-
+ mm/madvise.c       | 3 +--
+ mm/mincore.c       | 3 +--
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 35c3bb15ae96..1ec8c23c72b9 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
- 	walk->nr_pages[new_gen][type][zone] += delta;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index d10897b3a1e3..50ce731a2b78 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2444,6 +2444,11 @@ static inline struct mnt_idmap *file_mnt_idmap(const struct file *file)
+ 	return mnt_idmap(file->f_path.mnt);
  }
  
-+#ifdef CONFIG_MEMCG
-+static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++static inline bool file_owner_or_capable(const struct file *file)
 +{
-+	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
-+	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
-+
-+	rcu_read_lock();
-+
-+	/*
-+	 * The memcg can be NULL when the memory controller is disabled.
-+	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
-+	 */
-+	if (!memcg || !css_is_dying(&memcg->css))
-+		goto lock;
-+
-+	do {
-+		memcg = parent_mem_cgroup(memcg);
-+	} while (memcg && css_is_dying(&memcg->css));
-+	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-+
-+lock:
-+	spin_lock_irq(&lruvec->lru_lock);
-+
-+	return lruvec;
++	return inode_owner_or_capable(file_mnt_idmap(file), file_inode(file));
 +}
-+#else
-+static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-+{
-+	lruvec_lock_irq(lruvec);
 +
-+	return lruvec;
-+}
-+#endif
-+
- static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ /**
+  * is_idmapped_mnt - check whether a mount is mapped
+  * @mnt: the mount to check
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 5af62e6abca5..58eb9d240643 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -4704,7 +4704,7 @@ static inline bool can_do_cachestat(struct file *f)
  {
- 	int gen, type, zone;
--	struct lruvec *lruvec = walk->lruvec;
-+	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
- 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
- 
- 	walk->batched = 0;
-@@ -3285,6 +3319,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
- 			lru += LRU_ACTIVE;
- 		__update_lru_size(lruvec, lru, zone, delta);
- 	}
-+
-+	lruvec_unlock_irq(lruvec);
+ 	if (f->f_mode & FMODE_WRITE)
+ 		return true;
+-	if (inode_owner_or_capable(file_mnt_idmap(f), file_inode(f)))
++	if (file_owner_or_capable(f))
+ 		return true;
+ 	return file_permission(f, MAY_WRITE) == 0;
+ }
+diff --git a/mm/madvise.c b/mm/madvise.c
+index cd9bb077072c..77552b03d318 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -336,8 +336,7 @@ static inline bool can_do_file_pageout(struct vm_area_struct *vma)
+ 	 * otherwise we'd be including shared non-exclusive mappings, which
+ 	 * opens a side channel.
+ 	 */
+-	return inode_owner_or_capable(&nop_mnt_idmap,
+-				      file_inode(vma->vm_file)) ||
++	return file_owner_or_capable(vma->vm_file) ||
+ 	       file_permission(vma->vm_file, MAY_WRITE) == 0;
  }
  
- static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
-@@ -3779,11 +3815,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
- 			mmap_read_unlock(mm);
- 		}
+diff --git a/mm/mincore.c b/mm/mincore.c
+index 296f2e3922b5..c8757c5085bf 100644
+--- a/mm/mincore.c
++++ b/mm/mincore.c
+@@ -227,8 +227,7 @@ static inline bool can_do_mincore(struct vm_area_struct *vma)
+ 	 * for writing; otherwise we'd be including shared non-exclusive
+ 	 * mappings, which opens a side channel.
+ 	 */
+-	return inode_owner_or_capable(&nop_mnt_idmap,
+-				      file_inode(vma->vm_file)) ||
++	return file_owner_or_capable(vma->vm_file) ||
+ 	       file_permission(vma->vm_file, MAY_WRITE) == 0;
+ }
  
--		if (walk->batched) {
--			lruvec_lock_irq(lruvec);
-+		if (walk->batched)
- 			reset_batch_size(walk);
--			lruvec_unlock_irq(lruvec);
--		}
- 
- 		cond_resched();
- 	} while (err == -EAGAIN);
-@@ -4867,9 +4900,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
- 	walk = current->reclaim_state->mm_walk;
- 	if (walk && walk->batched) {
- 		walk->lruvec = lruvec;
--		lruvec_lock_irq(lruvec);
- 		reset_batch_size(walk);
--		lruvec_unlock_irq(lruvec);
- 	}
- 
- 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
 -- 
 2.54.0
 
