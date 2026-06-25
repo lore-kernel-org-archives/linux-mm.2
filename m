@@ -4,101 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962E8CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:24:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0BACDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:24:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 776ED6B0088; Thu, 25 Jun 2026 10:24:34 -0400 (EDT)
+	id 7288F6B008A; Thu, 25 Jun 2026 10:24:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FFD76B008A; Thu, 25 Jun 2026 10:24:34 -0400 (EDT)
+	id 6D8E06B0092; Thu, 25 Jun 2026 10:24:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C9DB6B0092; Thu, 25 Jun 2026 10:24:34 -0400 (EDT)
+	id 5C7986B0093; Thu, 25 Jun 2026 10:24:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 283DF6B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:24:34 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B27E94013E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:24:33 +0000 (UTC)
-X-FDA: 84918655626.06.F33FD8D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2FD111C0007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:24:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nIUhv7+C;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3165C6B008A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:24:39 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6E4F14014C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:24:38 +0000 (UTC)
+X-FDA: 84918655836.07.6717B21
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 12AF2160007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:24:36 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJNNTNUN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782397472;
-	b=3nKJfZ1ppoc64/ygpTuqux65Tx8C+I1ROIivtDPYKS66rrBSldyToMSSuUVpiGiENUfSSl
-	+LEs3GOF8ljVQTs5p4ptNZ46W9PeeBhHL45ml1FjwsYq524UzfTdiuwwxXIlBJipG0qc1p
-	jxXFcVTzhfD7mifyLlFDPXh11wu6uDA=
+	t=1782397477;
+	b=gqvN/IlQ+7hc19PR3jTT/0CFtDjVl5ga1Fbn1U9TaiTQ1rRDC/81Y4FAZlLmgaYn8on+1D
+	ihNmDf2narE51+ELSiroK9tp5AS4zmI/bgUBR70slnoTCLUpR/NYmMeJlzLLxTwYp8/z3s
+	rlNh9SxJBP8HZko8hNvUi9LPmR0T67Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782397472;
+	s=arc-20220608; t=1782397477;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=LZrmGHo3vflvh1oEeSShAdbEXA+TKacvFO2pVZr+qWo=;
-	b=NbAr/X1kGV5sncND55mCJeBzcWmQMkytdzH9jNCFZCLfbeOepZbFCZtJJeaMCH6aNHynFK
-	D21+ZLEWCNW/k+UY4kJTdl5N5qPOJd0IjxnfY1zqPwfTxDnxfj8UflKqN9pyXSBNFQz53r
-	D1cHnuQMtH/wKUS24Y9TFfUjmJRxUNY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0ZqcZeO9nNSHPkQcuZ0tph2LYz0rFmJSVYYnP0TkDSI=;
+	b=ikWXhnUaGJxqNx2epYqrj7B84gAUFqE8oEZkZDK4Fjp3AGwtHa6x0PfPoc+6vlVvKSIBEe
+	Bo0l8/ecJLlnb6KYpIfP4UZrpVmlq+ZIsk0/bRQqorW71M/6CWAYnDnSkXufd4BGh0INA0
+	6KjtpOyjDfzozHKDyQJFX+AvZnudCyw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nIUhv7+C;
-	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GJNNTNUN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 836A6600C3;
-	Thu, 25 Jun 2026 14:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E131F00A3A;
-	Thu, 25 Jun 2026 14:24:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 326364046C;
+	Thu, 25 Jun 2026 14:24:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578451F00A3D;
+	Thu, 25 Jun 2026 14:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782397471;
-	bh=LZrmGHo3vflvh1oEeSShAdbEXA+TKacvFO2pVZr+qWo=;
-	h=From:To:Cc:Subject:Date;
-	b=nIUhv7+C8biL1usYwmhv0V2C5fEWQ1cND8G5CDAa+tzyP3ZfsNzmqyV3F/4qInD/a
-	 FVGGWpQJiLeVueVbTK+oPwFmOmDNKChtSaANHgnd6FP0wqUH0/Qe0Mp8jMfDogYKUf
-	 zdn1mGgjwDF1tFnxTtpJgPxTzEB3Wy7Q8mc8OQiFM9GVENLCRehlO3cNzVkxfvYk1r
-	 swKx80fMe3iUaS6DUdeg3VgLLDMRKzgNwFzcpnejgE3bmMtL/0/RacN3jAawkktqmh
-	 +H2KUzGmn/srKA8+9GKHQpN61CKFx+3NwGV2cATlkic5oG7V3P97TVC7fM3ZvVEN7/
-	 LNCIGw0NIUHag==
+	s=k20260515; t=1782397476;
+	bh=0ZqcZeO9nNSHPkQcuZ0tph2LYz0rFmJSVYYnP0TkDSI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=GJNNTNUN2WnwnpZnBi0cCWrZ4IQnySWFA5U5S/yWC7ytYgQcC7fu9tgp0zY8/Pvld
+	 3cbTwf1w1v+gaM7bc10spVuvhUl3fiyVzRskIpqcFDaaZ2PHX6ox1R5xmMeX2xZA5Q
+	 QmzoPhN/e1HsOWXqdaRItKXqJC7uehez8nQPa9nU3mt0IzZzmVgOGe/nuWF1gT8Xl5
+	 xcsbrnV9psTyQVOXDyIJwSPmOePfl6167h8mgqG9HpDpLQxllOrXVE5kvkdH9tB3BV
+	 yKyibOthItlltAh06EHTnSUG3rVByaB/6/W5bXm7x/ji2Ewvz2HMGi0CIYsn660q+K
+	 LPGqA+Lp0qAEw==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
 	David Hildenbrand <david@kernel.org>,
 	Jonathan Corbet <corbet@lwn.net>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	Michal Hocko <mhocko@suse.com>,
 	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.2 00/11] mm/damon: update, optimize, and clean up doc, tests, and code
-Date: Thu, 25 Jun 2026 07:23:45 -0700
-Message-ID: <20260625142357.103500-1-sj@kernel.org>
+Subject: [RFC PATCH v1.2 01/11] Docs/mm/damon/design: update for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP
+Date: Thu, 25 Jun 2026 07:23:46 -0700
+Message-ID: <20260625142357.103500-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260625142357.103500-1-sj@kernel.org>
+References: <20260625142357.103500-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2FD111C0007
-X-Stat-Signature: 8c5pubkc7w97f664u7awy5st8gtt3uts
-X-HE-Tag: 1782397472-844374
-X-HE-Meta: U2FsdGVkX1+Xj7u3rQ2Pz8u4tUnRWCbl2IP7Q2ApoXyHNuRYf47MecEG8H83eyWhl+m6SSXBbElJoAEgK8apWAMPbDWR9VJnmCo9Eb+x+b04mfU9W+OLG8lC5KeyZawFswNM5/keByTQpXuQzHOJTIaO1O9bT6wivOcDCL7pM7KZSl4CT0HZ/FYobRLfvqeLby+if7P4je1an3pBoj7Xitvs9xLIlcrsvahKRxN2sRwBiO7Os3xlz9QMHA+liygHX4pr+WgLbuJW90GTKkuJ38V/vHiDPHYjWfy7Fq4PQU3eC6qmyOhhAISEk7mh79GUYlUaxaRFahskX39uFrLlaU1G5U8gGrHVTsHdykZUINpcdMtL14yWdlVO0l/LGE5hqkgKy4pLi/i3mh5SHBc9Sj1YqdLRS4HlZAHEdvk2vtUmxEL0Z3C7HgLYPAhsHcX3MYdIIA2OgvY6AAp+DAYOIzMQqTkqYfx/IJmPfakudkdby1ntz2GRZvu+mc4POFSdX86Jtz6Ver0n+9mK2tg1k6XMmoIX4wHpEknrvc6kgR740A+TuYqNTBBHf9hB6jhuyQ13YHfP0f1V2osWKBXDoJ8EIQDVu/v34K7M/W2mCBeCX0Y/b+9fOvprxUGKhdP91dnPudANbAI0Vvcg7sgRcAGdbzrPsrRbIb/GawRRBpPUwYSCArHdpp1L6yVvBgqZGAuY0pKEYUQjpV/dwXc+5nt37NAMd37IZgUsOK9BDnIi16YMKs12BQnkKN0lNJg2Z6gYrMyD61CpiTAOw5dbpsPACkCuqy0S0Lvwd70uN9gtrCQCo1sxzKBgvpOQfcPPCofexYZIGud9Xh3BdSw+6PWI6oFpknyL571JTPjrXSWjcwu/We2QAEV9UyU9STUNis8Ls2o0jlgIQKaIGzCGD93kqC8tPFvoTXbzf9RoVEul6LTQIzHBp6NkwySei4y7WT7SbGZ7vdD2qBnn2YP
- flST13jK
- H3WicbFXlU/kBq7dDv00YQtTLGF5oTwBVutBu8S+LEJqE5mGraDgjy1WdO1tEzWZg9N/d59e546e+HFifq0uMsmejrAut5E3WWEpdRgLeYfiK/JjnH/lBQ7ZpJtUCdIUgW5F+ttd26cYiA/PHVKj3NH3KUQLzM4mVO9GDgfruwCQ/b+e+aQpxEGrfgjncoHZ64Mv5HdackSxkcjDM05RG7P58Z6c9mUyE984Vh2wPa2xWAiw=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 12AF2160007
+X-Stat-Signature: bpb6judgpfru5w4utguhxsxtcr1rhjhj
+X-HE-Tag: 1782397476-414974
+X-HE-Meta: U2FsdGVkX19azVlmjzPAWwuZngZUiODWMe5R6ar4xx7YHOTGt9H8iip6NJRcr7hFTo7gseCZ0FGyWh4I0z/EahTu5sGexXkW77ijgJj13dEhKXOgWy4NrzKwV/mWyZc8eYgW5mpvdJKOW+UHDboH0PHVYeUZl82FIbkTjhq+lqlwHUnCmWlQFLOuzhYR1ycDbQOrdR2hGzWmdnge+yFjPQfhJ2oM7t/L2hKTIGhRaZPeV3QBQ4kQv1rOGuqyNThRQmsxqCuA0x5K7w3a2vZOvisf+sR/zX280CoGK5qWq4/7SlyI8qGPB0WoQy0ggXCpdWY0u5EZilpZS2uOTn/pbeSgniva4CFrukKd9COsR52/RsF7Stkqvc9Gg9NmeeKvsnL+1u7FXq9WhLK2ikzGj3ADWvq69ckBllaRAhLHd69hd38XenRe884J4XDhLmLmtgavXp1wQy1kclse6AljJHhU3HJhGrl38h3/NB79Mwfk4opTJEnMUR985CehBAbE0uuiHAX4Uz91g9ViCeA5MJ5Lb9JJQoad3sGZ0vbrQCWhSdvcdSczDlaJkh6vIrD7giTNTxokouvPqw7O4+cE5xUPJYGHpxFNfLkmvTXqxv9ZL4dq6gvxIqLLUTxifwrA6NdI6ZCGKqK9bVaLMsHfLGqWWAzKFKdv9Qc3IKa4MnUE/4jn2TNpjeNRhoVSSm6Ke/YvfyypN3NEYHuZPchWV46DfUsOnlwTcHrLzePX0cLFUff9jBlTHQuYneeknb/rqdhpWhR262doJDADIYIf3kZqS8kl8qzFaLzCmVLTYi3y7Xk0wfLilMAUV1LQ66y2xS3Gi3FBumV7SpXDgFFaS4Tp+jjSM3W9qIcmc2o1i4IHR1w2UAMJMlpH0WiRT7FGHY18sy6n4UppNn3gKqKCj/74FHqv1EQ2tjpLmG96Rj/4RvM68f+6Aq41zlHRHZvAij1t/GznvNOpR6H15+q
+ yYaKzleW
+ FIS9zsLu0E4fTuIY289Y6IcTfhSQRtx5y8CLoWJWdSYkSVi9BJTFaoDyOrWpp4MllQpYA3+ezAMB0qe7AQRupGR1I3rUNJXsIortY9jr2eqV3P6c7VXiRVSd4VGy8HHtL4AnDslt2NJUH4yfRNrc9C94J+mi0rk9rwfuiS2diznGFfXOQIufePlNfQk3ZEROqSiIpU5I+3VE3DEzg+CPGx+Gpjnloc9W8DcvVr9OU5Pt+7vYvLmm/IQChWo0FMDbL6Qhu2qGDK4AJUBi5gxX52psF5g1dNYL47xss
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,46 +103,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Patches 1 and 2 update the design and ABI documents for recently added
-DAMON features.  Patches 3-7 add or update more unit and self tests for
-DAMON to cover recently changed or added functions and sysfs files.
-Patch 8 optimizes damon_commit_target_regions() to skip unnecessary
-adjacent ranges setup.  Patches 9-11 clean and fix up recently added
-DAMON sysfs interface code for readability.
+Commit 9138e27a3bc3 ("mm/damon: add node_eligible_mem_bp goal metric")
+introduced DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP but forgot updating the
+DAMON design document for that.  Update.
 
-Changes from RFC v1.1
-- RFC v1.1: https://lore.kernel.org/20260625050756.91115-1-sj@kernel.org
-- Document nid requirement for node_eligible_mem_bp.
-- Fix typos: s/memmcg/memcg/, s/geets/gets/.
-- Drop damon_rnd() randomness test case; test boundness only.
-- Fixup dests dir selftest to do real test with correct file permission checks.
-Changes from RFC
-- RFC: https://lore.kernel.org/20260624142008.87180-1-sj@kernel.org
-- Rebase directly to latest mm-new.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ Documentation/mm/damon/design.rst | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-SeongJae Park (11):
-  Docs/mm/damon/design: update for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP
-  Docs/ABI/damon: document probe files
-  mm/damon/tests/core-kunit: test damon_rand()
-  selftests/damon/sysfs.sh: test multiple probe dirs creation
-  selftests/damon/sysfs.sh: test {core,ops}_filters/ directories
-  selftests/damon/sysfs.sh: test dests dir
-  selftests/damon/sysfs.sh: test all files in quota goal dir
-  mm/damon/core: reduce range setup in damon_commit_target_regions()
-  mm/damon/sysfs: split probe setup function out
-  mm/damon/sysfs: split out filters setup function
-  mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
-
- .../ABI/testing/sysfs-kernel-mm-damon         |  40 +++++++
- Documentation/mm/damon/design.rst             |   6 +-
- mm/damon/core.c                               |  22 +++-
- mm/damon/sysfs.c                              | 102 ++++++++++--------
- mm/damon/tests/core-kunit.h                   |  17 +++
- tools/testing/selftests/damon/sysfs.sh        |  71 +++++++++++-
- 6 files changed, 205 insertions(+), 53 deletions(-)
-
-
-base-commit: ada7832345164eed1bbca10543b0c46f13738215
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 2da7ca0d3d17a..9dbace087a329 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -686,9 +686,11 @@ mechanism tries to make ``current_value`` of ``target_metric`` be same to
+   (1/10,000).
+ - ``inactive_mem_bp``: Inactive to active + inactive (LRU) memory size ratio in
+   bp (1/10,000).
++- ``node_eligible_mem_bp``: Scheme target access pattern-eligible memory ratio
++  of a node in bp (1/10,000).
+ 
+-``nid`` is optionally required for only ``node_mem_used_bp``,
+-``node_mem_free_bp``, ``node_memcg_used_bp`` and ``node_memcg_free_bp`` to
++``nid`` is optionally required for ``node_mem_used_bp``, ``node_mem_free_bp``,
++``node_memcg_used_bp`,` ``node_memcg_free_bp`` and ``node_eligible_mem_bp`` to
+ point the specific NUMA node.
+ 
+ ``path`` is optionally required for only ``node_memcg_used_bp`` and
 -- 
 2.47.3
 
