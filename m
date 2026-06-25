@@ -4,130 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D05CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:39:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3631BCDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:40:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A2796B008A; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
+	id 11F826B00B2; Thu, 25 Jun 2026 11:40:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 254386B0095; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
+	id 0CF546B00B4; Thu, 25 Jun 2026 11:40:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1412D6B0096; Thu, 25 Jun 2026 11:39:10 -0400 (EDT)
+	id F02186B00B5; Thu, 25 Jun 2026 11:40:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CDDD16B008A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:39:09 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C0B51C0E37
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:39:09 +0000 (UTC)
-X-FDA: 84918843618.01.72C12BC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2137E40005
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:39:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NwRAVRXu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hqJZSBG+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SaBVehSy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="0rYclu/v";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EA66B00B2
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:40:31 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 50E8C8B432
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:40:31 +0000 (UTC)
+X-FDA: 84918847062.24.8564C53
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7C3E6140007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:40:29 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Kzfzjvgs;
+	spf=pass (imf09.hostedemail.com: domain of 360s9agYKCNAE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=360s9agYKCNAE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782401947;
-	b=EZ3tFBbBo+GPqyMhQd+hJ81YPtWZHL36fUpUzmKbNz3vaeYmCo6VQcV3aAsd0QmmzjBWeP
-	GqZDsV5/xfBUU1dyarcrlJUlBGHXK3VpAqz6e9sJoCVoyb+6sujyh5c8K+zUuU2y8DrYpl
-	wAqxWmwbhPwX6+Pj/GV0Qr4X5fNnk3g=
+	t=1782402029;
+	b=nF39JW3j/lQkmQwatHrXP+gVxxbkONWX7g8WHNq+Od5Yc2Rk4gSQPwutCCOsz4Ka76W9Iw
+	vmH8P/uBDR7/Bs/CYsl6Is0HouhnoY4wWkcl2CFa+I4g4llWgOMPdqAR/QEhcjqJaTpTYf
+	45oCp3ixxBpKuygxPOX3GSihw1IL3Tg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782401947;
+	s=arc-20220608; t=1782402029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
-	b=pPOYBd222Sp6aaxhmt39KGjONEZIcMVyFF53JAemADThr4S6VoWhpvFy6JzHJo3yfcbT7a
-	sNffgXbFenJyv0tAow4nbHcYCGnRdWthxwCDFvlCBhpNFoaCV2AIuumG4qdf28JmsDeJaT
-	VM2oNDb+UtyzV1OBeOlgU0CXG0VZFqU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Itjo2jMjkwhBM0k9+OlfOfXdIDoAWufeDNJNDd1hXfc=;
+	b=mvPOEiBRg68algONEaztWs+KefUwqbLXbEF+mzFws8ylr4H+NXRXJRt+Enf28QqnQhRCP8
+	qf9voM0i9g3GQs9oSpTfby5PKNQqEWlfW064/ykgZo4bww4PnhKN8QNKhwR/hhBhni4XsJ
+	9wcRRzzxP5lFJdxlBhvId5yBSVs5j9c=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=NwRAVRXu;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hqJZSBG+;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=SaBVehSy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="0rYclu/v";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8EE0D71C28;
-	Thu, 25 Jun 2026 15:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782401945; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
-	b=NwRAVRXutpXL/pdBgzbmyaYn4uUz1RhaPMZl2P2XObe0JzP7opZP48clrsGBdO/sQLMmwm
-	9dOmMalIjTzOa8I/ci3wKXhKZmiqN9tljD0OfuEOAEzPm1th8LZlHkWU+PIB7yVoT4HKRv
-	Pvkq3Oc8qU2sLrynhJ2AKMbM99eq028=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782401945;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
-	b=hqJZSBG+e8rDq7//e/0MGt3NNk9o0QiRh0VCPaH5bOMkmTSIKAZHMSseJkjU472br+6XLr
-	ghNqhbvDKt02GpAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782401944; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
-	b=SaBVehSysMnqbJJQlnJuef9R/gjK3tLrl64AB6Tb25BC9SWcTMFTVCXaDuI1vqObtLswb+
-	s79GV8xJLTDKMvhvMhD+J544aMGzE6JQF35qpbvutr8GiWjyDAF2tdVAB0TRqHZAthqQOI
-	ucjmzUFsI6w9CZxa+W/6o7gWzT+giXM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782401944;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=3DH1IpOREXh9R036qQ3fgOrNp9Y/tCMMtgQvXveSOHQ=;
-	b=0rYclu/vu2zoQTYtbYtT/46cwy08fQTH5uJ0FqbiMoyPwr7w1ZwPIvdpKRF9Y9L9hLbk49
-	CBKS986j/lCshnDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 984D6779A8;
-	Thu, 25 Jun 2026 15:39:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dJWvIZdLPWqvWAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 25 Jun 2026 15:39:03 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Jan Kara <jack@suse.cz>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm: do file ownership checks with the proper mount idmap
-Date: Thu, 25 Jun 2026 16:38:53 +0100
-Message-ID: <20260625153853.913949-1-pfalcato@suse.de>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 2137E40005
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=Kzfzjvgs;
+	spf=pass (imf09.hostedemail.com: domain of 360s9agYKCNAE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=360s9agYKCNAE0w95y2AA270.yA8749GJ-886Hwy6.AD2@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8428419982eso2501748b3a.3
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:40:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782402028; x=1783006828; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Itjo2jMjkwhBM0k9+OlfOfXdIDoAWufeDNJNDd1hXfc=;
+        b=KzfzjvgsJpX9Zz3YXkvxofzi55EgsnSIIFIjd496gtFvQpcg28St/CouO3Z0xcbwzh
+         G14a5hzChmBboXqbOAQ9vuwhOSMiB2calFDviZbzMX/ES9Tyx8DxHPVoGQJNT0Kk4mES
+         XuJSnccMfaH5KIpw0zH8RM8PfYUFK77H8kuMF8gi3GXWgKYA+xRaZumfTt/C6mcmuhTD
+         cYsRH9N2jalbg1aepQ5q/Z8jjV4RHTYkwU7fFVJFOaPVdWey2VmyE2JzYY4rQIoGgq0m
+         wCJftOONxnz+QWiaqPGhVkhua6Fnx2kAcsIURQnGanG7R0j5XnwPuSoYlgAUVErItyub
+         g60A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782402028; x=1783006828;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Itjo2jMjkwhBM0k9+OlfOfXdIDoAWufeDNJNDd1hXfc=;
+        b=WnOX56D1eW3jDVIXKAUNnyX87JHXkWbAJS7B8+NsmB+HvDaHMZd72f5WHbMGHS73Ek
+         OmUd6rk7hy/YP82z1QwOQ81UJvhxynU0eoelp0vAUhwx93mgdnMguN64gKRtrBvJUsgz
+         zNqO0AnZlqQtvvyDAQ8f7puKJ+Y0DkayGx6jJkTFP4DwiRuafWVI+10Tq+sthnR/IiYP
+         6U2dSgi3GPAUpvcY+YYuJoWgH5pe9Qgq5bNurmS8wsO1eIwUf35kufRmUbyxeKeVfdRA
+         K/aZlvkgJSkzojcQt8n15HAS3YvOJyZg0UbnNuDKeHSWn/2hgJrHBScRstcVPkHXUS+T
+         VX6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9O8NdpLXvH8DJQVa68+nVEit3FB6kIep8+97FLK1MTsxzW7WEKPXsLEiHOsGhkAWtmpcnqhl4K1g==@kvack.org
+X-Gm-Message-State: AOJu0YwfinaXKSOC1UV6MnbRwKTEFx5tPX7Gnll3/UfCvxws6FfAY3/u
+	N4YlgRXaPaYVIxqAwGSz4Adx+viqWGMHhqySq3xMdaciszXCCCkBR1GuwrlMdR77/DfV1a83sg9
+	agCwTWA==
+X-Received: from pgbdk2.prod.google.com ([2002:a05:6a02:c82:b0:c85:9dd2:d11e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:cc97:b0:3b4:5c6f:cf30
+ with SMTP id adf61e73a8af0-3bd4b25b347mr3615613637.38.1782402027934; Thu, 25
+ Jun 2026 08:40:27 -0700 (PDT)
+Date: Thu, 25 Jun 2026 08:40:27 -0700
+In-Reply-To: <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
+Mime-Version: 1.0
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-18-9d2959357853@google.com>
+ <ajwMYCSrPlxg-Fok@google.com> <CAEvNRgE8HZDOnexMJeim6TjmxGG1AUXFY2+HH1YyKB=aM6D-DQ@mail.gmail.com>
+ <ajx3vmNPRf-M9kR6@google.com> <6ed7d12a-c3a1-4572-8385-754e6d5b8b44@kernel.org>
+Message-ID: <aj1L626RI3Ty_hh3@google.com>
+Subject: Re: [PATCH v8 18/46] KVM: guest_memfd: Handle lru_add fbatch
+ refcounts during conversion safety check
+From: Sean Christopherson <seanjc@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Rspamd-Queue-Id: 7C3E6140007
+X-Stat-Signature: x44g1hiiqzebigygiaqgcow96iwgiawm
 X-Rspam-User: 
-X-Stat-Signature: 5i3hq55s1yn5ha6qzn8bj79gysqwbz73
-X-HE-Tag: 1782401947-718960
-X-HE-Meta: U2FsdGVkX1/qnvrsxid9Pi3aK2EX7mjFPWY4RURqkhGbxWVFr3b42ZsnN8smyldUgmHK4xiZ1KYHcVNluUS2denEtpl9ZDXt11ds4lG87xjx25BIMxDkZvEib/cJxm+BQhNZFghy5pOyJXYkarUzdTPdnrLVajypwqrbg03k1CYUwjmdtHyIG4HMU5PyNcCbrC7u1Fu6ok3u2f3CzzuzoJMUtcwhM39K9mB0R7CgULuzF0qs2CmWNCgU5texNHqEZ0ZeuVVdUfap3dFNqrH+/BRoe8IR84VWYCCY904khg0tkht16yiFqNWh7wUi3cWPCexWwiE6XqTxxPEPjU2NMsBfjSDBOxL0bt1EtRhLdc5orxDtYwXtnI3YMGzWQziwLvPH4LnGBhPvhbO5DoHC1KFeylQsbl2fTeqZnIeZfBcbtqb4gdyO7WWo1rqIxmDxSI4VUc7rxrV4Zna+iOe8Zs1pg68AgFJ64Ia2nThsZkjb+cr7HYNR26do5NuGHYBQMyL/UK3ltw8CosmZODstGCYtq6pFw/sunQq3NCfoVp51wlbPFf9U0zbWx6MnL+lF27Xic2QVFZfry8KjiSUruzF37e8gOAw8RvQGuVXzLyG7nox97InG9m2iwdjy3P0QYgGD92/EAQm/czE9Qns6q2K8eya3pNkALYpmEpj4UDvD8qZJXn1vsX2PDW++Yssdb5ahvflCtgR2aNXHWcXp6023OnJsuDXZ5IXoX5mpgXxWgPikhsxwepgz6iyHUM3PsO/rkChuYuTFG9xp2DYz+peikswqahZFKLr3a8puqzJeYiZRGPUof/+fhte7emIcGlOjXugVej8Q1gr49OGNmau6nvPPkOEb6QAnrGvJy1Gkd9lCkVcdf7sGwuYktmLWQz0I/Jy54+W3KEJMtGqh2QbWemqLzQa4Xl8L91qZC42/DVeA6r7NPDCbOcC0S4Lq1+i5zgYmWb7ZMWZEDAq
- O3XWRkp4
- eUkBKLwZsnyLqJYw6qbUeKWiYTiugnYWNfGTa+OIkNoxCvmjO/uiK678sS7j+3pf9kjpgKMWBrZJL1CEvIOOUQvroE7jNRAX9F0O6eBRSlYf9k0b5Fm/r75peJcSR6pmOpxntlSOG6FkcaYpsyc/8lH13wWhpPXSJfhZ+Zk3sxYtvHRQBNkB56ySAjIAScQMGScASarQVMy4Z5iPR85CUUB4Wxejpqquj7rAzOoWhJJsFGGm2vaoh6ytdIFQ2oNeXfKb+EmKO9+s6HGyQFhuL6ZKqdRT6V1FUC26r
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782402029-717475
+X-HE-Meta: U2FsdGVkX19O15ryD+A3OpKv+zi45UfvZZvj/qfY/p0tOXaGaganCT7XQpPFWkW6WuxfF/RfhqunDmdREB4Cf4NFWjLRc/mPVLvjXo56EcUl3LvDqB6QVPTiRIoVIos5EIPitoF4Jai/954EsTMTu7AiMpvZhK8PFjHZ+gHoOk8zgkwLc6+jnexGy31goxMC9XwGI8RpOV2/pEBcXdJG5YHSo/LnUh5YZEKF7eeBvQKTacrqOakJyilSTQDAiDqpzQOjM3HV/tSW8l+FXMC2nPbfLZLUjf9iTj1zll+8SnlmGhw4KDgWgufludTRS3qxzWs7mha5zymZoEe+6Mt+1UI8cSY/xNpChZWJa4zeky+DNb4snaW2tPFCL7PxA/JPuj0ALt0oHF2jZ1AzXk58S9VSAulvXMr4Egln7qNxhOEGyGXMAc8dAKVpTp4k2XyCqYtaOV+4PRdTPYmoVQiMkJQLaadyd25I1AocZuiau2wQdEVZjYAx5i3EWtYE9RjmJvGy6VVLKfywPLC7vStcNL0oJQx89V6R14JdX3ZJ369JhGyVPVjhF3T8gO+IjySZWNiTNgSnmUXQnOFmnzd1fhaTnBIfz1law5v0JWpms6a/q7h2l9qgTj+NAE6i5NkYMVyWBngUE0hiwIO2Ab/cbr79kGg/IUBrLKRhkor2V7LFzzo0zY32Yr99kAADTJwyMwKSTdD1wRvIFwd/rUyPcf41YeZo0fykXgZ0EwYQAkXqU1j2kgxP2hsyn7b/wAB61auG4rFMfU7JToUtrLG7paPZJMroYEucB207PtHgSHEonkyAGLrxwRWxiiKXlbpczkVZB8E0nchQeT9TjGcPAmzuGCu0RlSO12FTnWz9j8Bx/vHJ+4IJ9ivgpmfRXHGocWN3AkJYUPYiQ/+oSQhQU2h4Tu9vKqOWtdGtLh1yGpSZXllNHRWS5Wnvng+SWAHoL9CYCoseZLreSecMeYe
+ jhJTATkY
+ iEQR+M+cZaPgHqCI5gXR2FlAYhDLbGhUPjPPFcWPmu3h5jxZlwBml+MljBOMw81xaLXysPW+rQZlsN9HbG0VXBaeNRy7Dul8iht5mOsRJ0mIeZPiYx3z4DIS9pazg667gT+7tEn+UkLRLa57SC70KCTzDy7KuFdV+Qvbb47UMzThAVn45S93oysny/Z9WeYXzlGkSkSuNiwZeDdcpTe2NBQPkKnuQhDSHlR5ytRUusdaAPEXrubRl2v/9jSPJv/hzzoi6SaGvc5W8WrGdciPpe/bQfGcaiRUezXK4Ks8gkhYCt40WBj6gs5EAxFgurE5pwbItb1059+SRuRWnWOBUNC4SGw+QI5mYV6f3MuXrFwDsPgTJGWOsU0tXmfDd1FECn+jgz5QXAnW7TzSnsEo6p1mN/8aC/3ZfTI6TbpFrEiIkzM5FNZFlO8VzDqE2xBBYyEfso/pHdj9QnL84ETMlfNXRC5k6KPtv64nr+y1rZXNmyzUHxRTtzFlYMaiMOhCBr0B/sum2ZR3koP+E9yeM5s4XaZaoAwwOQFGto42Qa6V3k4LjdlF0KN67kObqR9AZcw4KrJVOtj/QAgSosVIvtxRZfcDaOcq4MMKp9OtASMjMLAe3viHvKFeWH4MXDgCWThgtuc/Kmf7ozmU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,101 +134,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Ever since idmapped mounts were introduced, inode ownership checks
-(for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
-done against the nop_mnt_idmap, which completely ignores the file's mount's
-idmap. This results in odd edgecases like:
+On Thu, Jun 25, 2026, David Hildenbrand (Arm) wrote:
+> On 6/25/26 02:35, Sean Christopherson wrote:
+> > One thought I had, to avoid the IPIs that draining all per-CPU caches requires,
+> > was to disallow putting guest_memfd pages in folio batches, e.g. by hacking
+> > something into folio_may_be_lru_cached().  But due to taking a per-lru lock,
+> > that would penalize the relatively hot path and definitely common operation of
+> > faulting in guest memory.  On the other hand, memory conversion is already a
+> > relatively slow operation and is relatively uncommon compared to page faults,
+> > (and likely very uncommon for real world setups).  I.e. having to drain all
+> > caches if conversion isn't safe penalizes a relatively slow, relatively uncommon
+> > path.
+> 
+> Yeah, the lru_add_drain_all is rather messy.
+> 
+> We have similar code in
+> 
+> collect_longterm_unpinnable_folios(), where we first try a lru_add_drain(), to
+> then escalate to a lru_add_drain_all().
+> 
+> Maybe we could factor that (suboptimal code) out to not have to reinvent the
+> same thing multiple times?
 
-1) mount/bind-mount with an idmap userA:userB:1
-2) userB runs an owner_or_capable() check on file that is owned by userA
-on-disk/in-memory, but owned by userB after idmap translation
-3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
-
-In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
-file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
-idmap internally, but it does not need to be the case on e.g a 0444 file
-where even the owner itself doesn't have permissions to write to it.
-
-Since this is clearly not trivial to get right, introduce a
-file_owner_or_capable() that can carry the correct semantics, and switch
-the various users in mm to it.
-
-The issue was found by manual code inspection & an off-list discussion with
-Jan Kara.
-
-Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
----
-
-I noticed there are a couple of call sites in fs/ that could perhaps be
-cleaned up with the added helper, but I'm skipping that for now for brevity's
-sake.
-
- include/linux/fs.h | 5 +++++
- mm/filemap.c       | 2 +-
- mm/madvise.c       | 3 +--
- mm/mincore.c       | 3 +--
- 4 files changed, 8 insertions(+), 5 deletions(-)
-
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index d10897b3a1e3..50ce731a2b78 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2444,6 +2444,11 @@ static inline struct mnt_idmap *file_mnt_idmap(const struct file *file)
- 	return mnt_idmap(file->f_path.mnt);
- }
- 
-+static inline bool file_owner_or_capable(const struct file *file)
-+{
-+	return inode_owner_or_capable(file_mnt_idmap(file), file_inode(file));
-+}
-+
- /**
-  * is_idmapped_mnt - check whether a mount is mapped
-  * @mnt: the mount to check
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 5af62e6abca5..58eb9d240643 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -4704,7 +4704,7 @@ static inline bool can_do_cachestat(struct file *f)
- {
- 	if (f->f_mode & FMODE_WRITE)
- 		return true;
--	if (inode_owner_or_capable(file_mnt_idmap(f), file_inode(f)))
-+	if (file_owner_or_capable(f))
- 		return true;
- 	return file_permission(f, MAY_WRITE) == 0;
- }
-diff --git a/mm/madvise.c b/mm/madvise.c
-index cd9bb077072c..77552b03d318 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -336,8 +336,7 @@ static inline bool can_do_file_pageout(struct vm_area_struct *vma)
- 	 * otherwise we'd be including shared non-exclusive mappings, which
- 	 * opens a side channel.
- 	 */
--	return inode_owner_or_capable(&nop_mnt_idmap,
--				      file_inode(vma->vm_file)) ||
-+	return file_owner_or_capable(vma->vm_file) ||
- 	       file_permission(vma->vm_file, MAY_WRITE) == 0;
- }
- 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index 296f2e3922b5..c8757c5085bf 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -227,8 +227,7 @@ static inline bool can_do_mincore(struct vm_area_struct *vma)
- 	 * for writing; otherwise we'd be including shared non-exclusive
- 	 * mappings, which opens a side channel.
- 	 */
--	return inode_owner_or_capable(&nop_mnt_idmap,
--				      file_inode(vma->vm_file)) ||
-+	return file_owner_or_capable(vma->vm_file) ||
- 	       file_permission(vma->vm_file, MAY_WRITE) == 0;
- }
- 
--- 
-2.54.0
+As discussed in the guest_memfd call, we should do this straightaway, i.e. instead
+of merging this series as-is, so that we don't export lru_add_drain_all() only to
+drop the export a kernel or two later, and can instead export the helper to drain
+any batches for a folio (or set of folios/pages).
 
 
