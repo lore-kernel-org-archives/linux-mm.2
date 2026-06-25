@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 064D3CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 02:57:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A990ACDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:01:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8A4C6B0088; Wed, 24 Jun 2026 22:57:09 -0400 (EDT)
+	id 861676B0088; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3B3D6B008A; Wed, 24 Jun 2026 22:57:09 -0400 (EDT)
+	id 8394C6B008A; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A52506B0092; Wed, 24 Jun 2026 22:57:09 -0400 (EDT)
+	id 72A436B0092; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 756096B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 22:57:09 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF9AA1A02A9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:57:08 +0000 (UTC)
-X-FDA: 84916923336.15.74DF78F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 11D9740007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:57:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wUfWXj5a;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by kanga.kvack.org (Postfix) with ESMTP id 39CD96B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C16AC4055F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:01:43 +0000 (UTC)
+X-FDA: 84916934886.16.6CD47FB
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5795240003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:01:40 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	spf=pass (imf27.hostedemail.com: domain of fuqingshuang@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=fuqingshuang@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782356227;
-	b=7ZgPQ7Stt1RWgGx4a8P9Oud49Hg1EzLNNmP17rTX+c4KZonKjjbd82GtKnU6j3k+U8yyFl
-	UNg+X8/6wHN9Dp5y/fz6EvbGXOePjXApvXphxcD5d4K78rCzrfTYauSfA+RuJ4/P0D4kwA
-	WTorX7JpiEoq/FFh2Cwb4mZRShb3k5w=
+	t=1782356501;
+	b=SuooLMfqklpNWonYsrgBBa8kQvXraB5KjQEyoQdq8+Q6y2LuKNnczU93N4Wve1s1DXDlge
+	iJa9t5m8fp/gLwkRIGvr7Xq0cwYPaT9rrf+wAiB7Tr4EbJ2obtjpn9ERbkAUTKUCzMB26X
+	JQTLfg/XyxnHLxYygs8zppH67gOjjjk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782356227;
+	s=arc-20220608; t=1782356501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1VUqMECiZlY9thhbQvmy35ab0ws4JsaGHxxluesab0Q=;
-	b=ohfu2ljzuPAQOt6vlQFBeY50jP5NgYfAK2pL7Xyqq6BWc+ASufUO6RZpRL0lBSBwtRSlvx
-	qhyCTZUaN/TPiqj29EN/sIxvLiq6BbvdgzIo7kQK8jMOc+R6X5Df6aTJ4sAjSkgy2/vZ95
-	uCfgzL5SCFIBRGpm7S3eGQocUz5HBnw=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:references; bh=Rgx9yv9kFKLvzLxPF+EveGQRhav1KDh6KwxpFgiUyNo=;
+	b=BMF8uOqHMOk32TJYGCD0hPWJJt7ab6ehPML3RWEB3Z9RawOWITDLyCxOlE8O6LqQIiXZ7d
+	wk6GAw2zwlC9ruGDPgKEUUDHV6K6zHN2ANRzj4Q12Qz5xbvembFvmrINQivAZGSc1rpfZk
+	2yMMpGecl+WSrS4hpqxV1pdMpa2Mywc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wUfWXj5a;
+	imf27.hostedemail.com;
+	dkim=none;
 	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A7FE843C49;
-	Thu, 25 Jun 2026 02:57:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B1481F000E9;
-	Thu, 25 Jun 2026 02:57:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782356225;
-	bh=1VUqMECiZlY9thhbQvmy35ab0ws4JsaGHxxluesab0Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=wUfWXj5aUF9eoVta8SgZEnnNduNGTOKD5CBkcZw8lAQZ5nDQRfynZOikmNZair0Ja
-	 xXlXcSLqbYwRVFC0GBj35O/iJAfNJHkfNGgjOUcxYCbjg/mRCa74VQbQf+iHrTDgCb
-	 jyvQry5GV5UdWA2ROhhIbcXZti87XuVpMIrNdw/8=
-Date: Wed, 24 Jun 2026 19:57:04 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wen Jiang <jiangwenxiaomi@gmail.com>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- catalin.marinas@arm.com, will@kernel.org, urezki@gmail.com,
- baohua@kernel.org, Xueyuan.chen21@gmail.com, dev.jain@arm.com,
- rppt@kernel.org, david@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, ajd@linux.ibm.com, linux-kernel@vger.kernel.org,
- jiangwen6@xiaomi.com, shanghaoqiang@xiaomi.com
-Subject: Re: [PATCH v4 0/6] mm/vmalloc: Speed up ioremap, vmalloc and vmap
- with contiguous memory
-Message-Id: <20260624195704.5c29c0353163babb721585ca@linux-foundation.org>
-In-Reply-To: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
-References: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 11D9740007
+	spf=pass (imf27.hostedemail.com: domain of fuqingshuang@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=fuqingshuang@kylinos.cn
+X-UUID: 2a4b3082704211f1aa26b74ffac11d73-20260625
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:4aecc084-3774-4156-969a-cd032f522f59,IP:0,U
+	RL:0,TC:-10,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
+	ON:release,TS:-15
+X-CID-META: VersionHash:e7bac3a,CLOUDID:2ddfb8734161c5a7cac1150aa3bc60a9,BulkI
+	D:nil,BulkQuantity:0,Recheck:0,SF:81|83|102|865|898,TC:1,Content:0|14|51,E
+	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
+	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: 92693970FACD448C0E291E3C69F48B9E
+X-UUID: 2a4b3082704211f1aa26b74ffac11d73-20260625
+Received: from node4 [(10.44.17.112)] by mailgw.kylinos.cn
+	(envelope-from <fuqingshuang@kylinos.cn>)
+	(Generic MTA)
+	with ESMTP id 1324888475; Thu, 25 Jun 2026 11:01:30 +0800
+Received: from node4 (localhost [127.0.0.1])
+	by node4 (NSMail) with SMTP id 613B01200BD91;
+	Thu, 25 Jun 2026 11:01:30 +0800 (CST)
+Received: by node4 (NSMail, from userid 10001)
+	id 570EF1200BD90; Thu, 25 Jun 2026 11:01:29 +0800 (CST)
+From: =?UTF-8?B?5YKF5riF54i9?= <fuqingshuang@kylinos.cn>
+Subject: =?UTF-8?B?UmU6IFJlOiBbUEFUQ0ggMS8xXSBtbS9zaHJpbmtlcjogYWRkIE5VTEwgY2hlY2tzIGFmdGVyIHJjdV9kZXJlZmVyZW5jZSgpIGluIHNocmlua2VyIGJpdCBmdW5jdGlvbnM=?=
+To: =?UTF-8?B?ZmZmc3FpYW4=?= <fffsqian@163.com>,
+	=?UTF-8?B?QW5kcmV3IE1vcnRvbg==?= <akpm@linux-foundation.org>,
+	=?UTF-8?B?RGF2ZSBDaGlubmVy?= <david@fromorbit.com>,
+	=?UTF-8?B?Um9tYW4gR3VzaGNoaW4=?= <roman.gushchin@linux.dev>,
+	=?UTF-8?B?TXVjaHVuIFNvbmc=?= <muchun.song@linux.dev>,
+	=?UTF-8?B?UWkgWmhlbmc=?= <qi.zheng@linux.dev>
+Cc: =?UTF-8?B?bGludXgta2VybmVs?= <linux-kernel@vger.kernel.org>,
+	=?UTF-8?B?bGludXgtbW0=?= <linux-mm@kvack.org>
+Date: Thu, 25 Jun 2026 11:01:29 +0800
+X-Mailer: NSMAIL 8.2
+Message-ID: <6l2gs76zo6zf-6l2n5wa2xbvg@nsmail8.2--kylin--1>
+References: 923f391a-d760-4d78-92d4-2e765aa226f3@linux.dev
+X-Israising: 0
+X-Seclevel-1: 0
+X-Seclevel: 0
+X-Delaysendtime: Thu, 25 Jun 2026 11:01:29 +0800
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary=nsmail-6n5dle56xlcu-6n5h502wqo2n
+X-ns-mid: webmail-6a3c9a09-6lqnd20n
+X-ope-from: <fuqingshuang@kylinos.cn>
+X-receipt: 0
 X-Rspam-User: 
-X-Stat-Signature: e1o3y61ay7i9e91sseokz3bi181dgbp1
-X-HE-Tag: 1782356226-212790
-X-HE-Meta: U2FsdGVkX1/dNOh6H5XmycfxcEk5UUZLIrJaNQ3RkoEjXICp+WfsMipTsQKx6t3ZG/jgvM+kjar9l5X7Rz088beFxKboo+yeMdek/yMRFqlaumm2j6i9N+xFDsfVL9WphRx2Tt68Dd5ZaqSJRu/cXZtxTlzMVh9wRIGSjmf7VvrIsfQEfDjKqmVOaNTEiQXDQ/6C/+/05CbOabhX/mtKdNac7MSTI+BKhbuG8S7rShVsC2j1K5wDw9plshOu/shhcXwpgeS6Sy7Rpuf8gtuXAmtijcjDKkLc8U8OHregJwB/MyeiTfvm+s4a9jKatWibWh6XQnX0kTiRRZ6U2YABTlySRcyF36BNl9rcWIaje1+Ua0Xvc7NeEMV+acsuy2vioKBCbxzBJi2QXluIHwnuy+0RDcxotvt0nvgWIbQ4DKIlaLHnTY51zbs1VZDnU5kq3eFEo2Hy9sYrc+ppVWse3aHnZf16jzZL7IZC9tq6JbeJ0ejt0a8vmPjgYX39BxB2POI15xDVKUJJ2GjUsWbHXykQ0cP7jGJtFWxy4x+FSnOFd7spryKTuZj2TKEepJR8NegfA+0QuqsHJo6P412xLVerudnhnaa+bza/7DXm9BysVlwBVBUF/iX0B7u0Uscy8GfVss6KYc+NfJD0hUygCXWY8O821UVj7U3pRLU7klUp0wcSuXmnUhP1dApzXg1jNVLKJEjXiv/TDi6LuQ8/z+ySwQJho/1xSYjYETy9YAcazvF9hFbsxaMfeDxTpJkB4CwM9w+wLK7CTB0sDWnaSBq8IjNDgYs2lHiaH8FwE8VI7vCTuVuz9CY5j/deBv4Gh/q8W4KZ9qSB6WNkcgNxJa5IN0c0YbMOWlcIAmZ/CNJ+Ky/T4anUBH/V9LOxTNMy/nnIs/g933cB8iPZKQEHm4LEqu5U4V1btrqhbW0EBzUHMs8oXpK3Ja/78FJkQSDpuu1mDb8ZIH3P8Bv+bwz
- 8egjD0jI
- IoRoAtI356mm0ZvBrg1S/S3jRnxPLo1OOZ0befLLRJBs5bbIbmoOCGrKnzgUwRMIbZVyEbHAFQ6P3g7lnjtILxu3mExUTLXryDtHCZidBZZiwbPN054ZDD6UvKFz3il8D7ZrmXP2723pa2SBa37jIhfSarDorlQDapL3LPYv9qlSqp6GgQBktROQqgcjYxxe2CnFawnWC1g/9gSzjDu65c+NvK+TqUN3dMkT0tjbNarLG9VgV8fLtrZRvRp91dYVALbUjidahI+S4UjNByftdl5h8HmQKqHwA9Fo1oNybC9MQTQPFwaCQq2MrZnUlkP946xm5RW5UhC/DLdKTGHARa5BVMMMEZshqi42/fP2OC2DLrWIKN9pTKGSmpVOqCBJKVTJjYTbzwjODknlUdvZDdRA1nLhmmDvnrcvynD6t+jEEpnvV3mw+uZ4AOg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5795240003
+X-Stat-Signature: zu59999pw3fb7ytaqkjh3s8w9kazhjbh
+X-HE-Tag: 1782356499-58538
+X-HE-Meta: U2FsdGVkX18MHaacUpygv9xHktDwWD/HHOiLLFGnEFKvf9RUnnoI+grLPjplbGNrutgPcZxl6Y+DIGnt4DORKsvRtGdQH7iMD38kwuo/EbfYPi754lCZ60UWbo6vf0jCNV7cIZXR+IO8qxwgNyMDpOvzL2ir3PVLjbGnWJm4PpdtJyqh7tED1vn+E3BR5vmJ8YKEEaoqaFIRmpUi3cE2nwThCsyZiaGZgOmttZHku2w5wsf0XyKgRa0m5GLAmavAoBzpaO98yp+/mimxUYrQ+OGMOpsG7sNao/4ps00GnOrC9g6qMJOB0d26pYK5G67rDztul9Iubb34aNh45dKUkiH7svS+TU8FVOXyIKyi2rj0noLt+0+N7otbqU2GKder0eizrILxtcXc1sfbC3jII/dDu9WufS8w1bM0+H1Y4ADeC9ZgvEQbR9mzjk5ZWlV4HDsff6XFE/xGQp6lrlpSFqHHxTNOb5pHxNLUIYHKZle1vjKSnQeYubSDkB0bR7QQ/L6pKvo/TVVvLDSUxVy+3aIuRpVppCw7TUpW7K5y07a//JWWKaS0maDKpVg4ZB5etfNU43BOi6eAexZywvTo7ksIpIi727GjMhXSSRqzoxwdwyvslUXJrm5vBoU0/A0dEHOsbplrO9WLmnqDA17OepUK6mrBOgG4EufTDYVVrdbCSTgUKGsfGjb6a/ESKjnLkTxwYUNJWKJqqmGPm5YrcE8uN3jD3wqrOB918lYVSFJXJ4WuVfQZP1yFfF2KnMoqjyZju4oeqeYFn62LcDpuXkCvCt2Qhum6lZR/hMWNDpCJQub01V4EF5Ac02wyLIHJPNGtTWgrrogk0e8pSe3AQQ/+U5yhL4hZ7aXIj8CftgjV8z5YP9Fc+bzl8px9CnX/Ey2BiQUr1vqr2+uLsmzKZ2qBn5ToGs7VMyGt6HlgzD+KD2lyxfipA4A/QPkyRw618qy6a3FsQSv8VUk5oky
+ fIrBYZDd
+ PmCvpWzhMD99r8h5FCVTJCAZu/Rz6B0gEI4FjSAODMgNcZN7BcI0Pn1Ooxm3YpNaR7KSGhM3ILC5lfIJ2j7frccyAIdP3Y7DUoyOXe4ioT1z+GcoaGH6RzdYwoROIIhBhgvPa4g5fyHLoaIpHXBX0OwzOtgVoiU8+ISttt9PSRZL9C6oC4IaHiouFgMStMwSeVa4nvWmMIT3h/SkQy+J1hkQoI9OwkVrpEvELEe3IdQQk4u9oo31IZe8+v18e6sKsu5m/gMIuVCwsLF88Eh2g3563sz+r85bzZ0Jq2dqZF49pROh6G/fBHPtbVxijpNnmeKNVWInTyYDtaRIi/JcrhhJBJA6lt2lmRooAZn3cE1Y3vGlrDMZ0KDYylF6t4dar7z0Her47XAbfSgdlLzbw3rZ1L6TUB+iMbTENzo8tWRMx1UJrZqz2V+GexseAsAUSDah+NVikJ0q25JDABx1smHajQDCvJJADElGf/p64ohO8JBm80Rgbw8t89XvInb9VNleWDhpxkQYKprbIQ1yWsItsbSrhuKFPtBnqn9Et6GimJ3o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +106,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Jun 2026 16:47:20 +0800 Wen Jiang <jiangwenxiaomi@gmail.com> wrote:
+This message is in MIME format.
 
-> This patchset accelerates ioremap, vmalloc, and vmap when the memory
-> is physically fully or partially contiguous. Two techniques are used:
+--nsmail-6n5dle56xlcu-6n5h502wqo2n
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Thanks.
+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6TWljcm9zb2Z0IFlhSGVpO2ZvbnQt
+c2l6ZToxNHB4O2NvbG9yOiMwMDAwMDA7IiBjbGFzcz0ibF9ub2RlX2hhc19j
+b2xvciI+PHA+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgZm9udC1m
+YW1pbHk6ICdUaW1lcyBOZXcgUm9tYW4nOyI+SGkgUWksIDwvc3Bhbj48L3A+
+CjxwPiZuYnNwOzwvcD4KPHA+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTRw
+eDsgZm9udC1mYW1pbHk6ICdUaW1lcyBOZXcgUm9tYW4nOyI+VGhhbmsgeW91
+IHZlcnkgbXVjaCBmb3IgeW91ciBkZXRhaWxlZCBhbmFseXNpcyBhbmQgcGF0
+aWVudCBleHBsYW5hdGlvbi4gPC9zcGFuPjwvcD4KPHA+PHNwYW4gc3R5bGU9
+ImZvbnQtc2l6ZTogMTRweDsgZm9udC1mYW1pbHk6ICdUaW1lcyBOZXcgUm9t
+YW4nOyI+SSBmdWxseSB1bmRlcnN0YW5kIHlvdXIgcG9pbnQgdGhhdCB0aGUg
+ZXhpc3RpbmcgY2FsbGVyIGNvbnN0cmFpbnRzIGd1YXJhbnRlZSBzaHJpbmtl
+cl9pbmZvIGNhbm5vdCBiZSBOVUxMIGhlcmUsIGFuZCB0aGlzIE5VTEwgY2hl
+Y2sgaXMgdW5uZWNlc3NhcnkgZGVmZW5zaXZlIGNvZGUuPC9zcGFuPjwvcD4K
+PHA+Jm5ic3A7PC9wPgo8cD48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNHB4
+OyBmb250LWZhbWlseTogJ1RpbWVzIE5ldyBSb21hbic7Ij5JIHdpbGwgZHJv
+cCB0aGlzIHBhdGNoIGFuZCBjbG9zZSB0aGlzIHRocmVhZC48L3NwYW4+PC9w
+Pgo8cD4mbmJzcDs8L3A+CjxwPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE0
+cHg7IGZvbnQtZmFtaWx5OiAnVGltZXMgTmV3IFJvbWFuJzsiPlRoYW5rcyBh
+Z2FpbiBmb3IgeW91ciByZXZpZXcgZ3VpZGFuY2UuPC9zcGFuPjwvcD4KPHA+
+Jm5ic3A7PC9wPgo8cD48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBm
+b250LWZhbWlseTogJ1RpbWVzIE5ldyBSb21hbic7Ij5CZXN0IHJlZ2FyZHMs
+IDwvc3Bhbj48L3A+CjxwPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE0cHg7
+IGZvbnQtZmFtaWx5OiAnVGltZXMgTmV3IFJvbWFuJzsiPlFpbmdzaHVhbmcg
+RnU8L3NwYW4+PC9wPgo8cD4mbmJzcDs8L3A+CjxkaXYgaWQ9InNpZ25hdHVy
+ZVRvcCI+PC9kaXY+CjxkaXYgaWQ9ImNzMmNfcmUiIHN0eWxlPSJtYXJnaW4t
+bGVmdDogMC41ZW07IHBhZGRpbmctbGVmdDogMC41ZW07IGJvcmRlci1sZWZ0
+OiAxcHggc29saWQgI2NhY2FjYTsgLXdlYmtpdC11c2VyLW1vZGlmeTogcmVh
+ZC1vbmx5OyAtbW96LXVzZXItbW9kaWZ5OiByZWFkLW9ubHk7IC1tcy11c2Vy
+LW1vZGlmeTogcmVhZC1vbmx5OyAtby11c2VyLW1vZGlmeTogcmVhZC1vbmx5
+OyI+PGJyPjxicj48YnI+CjxkaXYgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6
+ICNmOGY4Zjg7IHBhZGRpbmc6IDhweCAxMHB4OyBmb250LWZhbWlseTogTWlj
+cm9zb2Z0IFlhSGVpOyBmb250LXNpemU6IDE0cHg7IGNvbG9yOiAjMDAwOyI+
+PHN0cm9uZz7kuLsmbmJzcDsmbmJzcDsmbmJzcDvpopjvvJo8L3N0cm9uZz48
+c3BhbiBpZD0iY3MyY19zdWJqZWN0Ij5SZTogW1BBVENIIDEvMV0gbW0vc2hy
+aW5rZXI6IGFkZCBOVUxMIGNoZWNrcyBhZnRlciByY3VfZGVyZWZlcmVuY2Uo
+KSBpbiBzaHJpbmtlciBiaXQgZnVuY3Rpb25zPC9zcGFuPiA8YnI+PHN0cm9u
+Zz7ml6UmbmJzcDsmbmJzcDsmbmJzcDvmnJ/vvJo8L3N0cm9uZz48c3BhbiBp
+ZD0iY3MyY19kYXRlIj4yMDI25bm0MDbmnIgyNOaXpTE4OjQ5PC9zcGFuPiA8
+YnI+PHN0cm9uZz7lj5Hku7bkurrvvJo8L3N0cm9uZz48c3BhbiBpZD0iY3My
+Y19mcm9tIj5RaSBaaGVuZzwvc3Bhbj4gPGJyPjxzdHJvbmc+5pS25Lu25Lq6
+77yaPC9zdHJvbmc+PHNwYW4gaWQ9ImNzMmNfdG8iIHN0eWxlPSJ3b3JkLWJy
+ZWFrOiBicmVhay1hbGw7Ij5mZmZzcWlhbixBbmRyZXcgTW9ydG9uLERhdmUg
+Q2hpbm5lcixSb21hbiBHdXNoY2hpbixNdWNodW4gU29uZyxRaSBaaGVuZzwv
+c3Bhbj4gPGJyPjxzdHJvbmc+5oqE6YCB5Lq677yaPC9zdHJvbmc+PHNwYW4g
+aWQ9ImNzMmNfdG8iIHN0eWxlPSJ3b3JkLWJyZWFrOiBicmVhay1hbGw7Ij5s
+aW51eC1rZXJuZWwsbGludXgtbW08L3NwYW4+PC9kaXY+Cjxicj4KPGRpdiBp
+ZD0iY3MyY19jb250ZW50Ij5IaSBRaW5nc2h1YW5nLCBPbiA2LzI0LzI2IDU6
+NTUgUE0sIGZmZnNxaWFuQDE2My5jb20gd3JvdGU6ICZndDsgRnJvbTogUWlu
+Z3NodWFuZyBGdSAmbHQ7ZnVxaW5nc2h1YW5nQGt5bGlub3MuY24mZ3Q7ICZn
+dDsgJmd0OyBUaGUgZnVuY3Rpb25zIHNldF9zaHJpbmtlcl9iaXQoKSwgeGNo
+Z19ucl9kZWZlcnJlZF9tZW1jZygpLCBhbmQgJmd0OyBhZGRfbnJfZGVmZXJy
+ZWRfbWVtY2coKSBhY2Nlc3Mgc2hyaW5rZXJfaW5mbyBmaWVsZHMgaW1tZWRp
+YXRlbHkgJmd0OyBhZnRlciByY3VfZGVyZWZlcmVuY2UoKSB3aXRob3V0IGNo
+ZWNraW5nIGZvciBOVUxMLiAmZ3Q7ICZndDsgVGhpcyBpcyBpbmNvbnNpc3Rl
+bnQgd2l0aCBzaHJpbmtfc2xhYl9tZW1jZygpIHdoaWNoIHByb3Blcmx5IGNo
+ZWNrcyAmZ3Q7ICJpZiAodW5saWtlbHkoIWluZm8pKSBnb3RvIHVubG9jazsi
+IGJlZm9yZSBhY2Nlc3NpbmcgaW5mbyBmaWVsZHMuICZndDsgJmd0OyBUaGUg
+c2hyaW5rZXJfaW5mbyBjYW4gYmUgTlVMTCBkdXJpbmcgbWVtY2cgaW5pdGlh
+bGl6YXRpb24gb3IgYWZ0ZXIgJmd0OyBzaHJpbmtlcl9pbmZvIGV4cGFuc2lv
+biBmYWlsdXJlLiBEaXJlY3RseSBhY2Nlc3NpbmcgaW5mby0mZ3Q7bWFwX25y
+X21heCAmZ3Q7IG9yIGluZm8tJmd0O3VuaXRbXSB3aXRob3V0IE5VTEwgdmFs
+aWRhdGlvbiBjb3VsZCBjYXVzZSBrZXJuZWwgTlVMTCAmZ3Q7IHBvaW50ZXIg
+ZGVyZWZlcmVuY2UgYW5kIHBhbmljLiBSZWFsbHk/IERpZCB5b3UgYWN0dWFs
+bHkgaGl0IHRoaXMgaXNzdWUsIG9yIGFyZSB5b3UgYWJsZSB0byByZXByb2R1
+Y2UgaXQ/IE9yIGlzIGl0IGp1c3Qgc3BvdHRlZCB2aWEgY29kZSBpbnNwZWN0
+aW9uPyBUaGUgY2FsbGVycyBpbiBhbGwgdGhyZWUgb2YgdGhlc2UgcGxhY2Vz
+IHNob3VsZCBndWFyYW50ZWUgdGhhdCBgaW5mb2AgY2FuIG5vdCBwb3NzaWJs
+eSBiZSBOVUxMLiA6KCBUaGFua3MsIFFpICZndDsgJmd0OyBGaXggdGhpcyBi
+eSBhZGRpbmcgcHJvcGVyIE5VTEwgY2hlY2tzIGluIGFsbCB0aHJlZSBmdW5j
+dGlvbnMgdG8gJmd0OyBlbnN1cmUgY29uc2lzdGVudCBSQ1UgcHJvdGVjdGlv
+biBhbmQgcHJldmVudCBwb3RlbnRpYWwgY3Jhc2hlcyBpbiAmZ3Q7IHRoZSBz
+aHJpbmtlciBzdWJzeXN0ZW0uICZndDsgJmd0OyBGaXhlczogMzA3YmVjZWNj
+ZDEyMDViY2IgKCJtbTogc2hyaW5rZXI6IGFkZCBhIHNlY29uZGFyeSBhcnJh
+eSBmb3Igc2hyaW5rZXJfaW5mbzo6e21hcCwgbnJfZGVmZXJyZWR9IikgJmd0
+OyBDYzogQW5kcmV3IE1vcnRvbiAmbHQ7YWtwbUBsaW51eC1mb3VuZGF0aW9u
+Lm9yZyZndDsgJmd0OyBDYzogRGF2ZSBDaGlubmVyICZsdDtkYXZpZEBmcm9t
+b3JiaXQuY29tJmd0OyAmZ3Q7IENjOiBRaSBaaGVuZyAmbHQ7cWkuemhlbmdA
+bGludXguZGV2Jmd0OyAmZ3Q7IENjOiBSb21hbiBHdXNoY2hpbiAmbHQ7cm9t
+YW4uZ3VzaGNoaW5AbGludXguZGV2Jmd0OyAmZ3Q7IENjOiBNdWNodW4gU29u
+ZyAmbHQ7bXVjaHVuLnNvbmdAbGludXguZGV2Jmd0OyAmZ3Q7IENjOiBsaW51
+eC1tbUBrdmFjay5vcmcgJmd0OyBTaWduZWQtb2ZmLWJ5OiBRaW5nc2h1YW5n
+IEZ1ICZsdDtmdXFpbmdzaHVhbmdAa3lsaW5vcy5jbiZndDsgJmd0OyAtLS0g
+Jmd0OyBtbS9zaHJpbmtlci5jIHwgMTEgKysrKysrKysrKysgJmd0OyAxIGZp
+bGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSAmZ3Q7ICZndDsgZGlmZiAt
+LWdpdCBhL21tL3Nocmlua2VyLmMgYi9tbS9zaHJpbmtlci5jICZndDsgaW5k
+ZXggNzA4MmQwMWM4YzlkLi5lY2RlM2NjNDQ0NTkgMTAwNjQ0ICZndDsgLS0t
+IGEvbW0vc2hyaW5rZXIuYyAmZ3Q7ICsrKyBiL21tL3Nocmlua2VyLmMgJmd0
+OyBAQCAtMjAwLDYgKzIwMCw4IEBAIHZvaWQgc2V0X3Nocmlua2VyX2JpdChz
+dHJ1Y3QgbWVtX2Nncm91cCAqbWVtY2csIGludCBuaWQsIGludCBzaHJpbmtl
+cl9pZCkgJmd0OyAmZ3Q7IHJjdV9yZWFkX2xvY2soKTsgJmd0OyBpbmZvID0g
+cmN1X2RlcmVmZXJlbmNlKG1lbWNnLSZndDtub2RlaW5mb1tuaWRdLSZndDtz
+aHJpbmtlcl9pbmZvKTsgJmd0OyArIGlmICh1bmxpa2VseSghaW5mbykpICZn
+dDsgKyBnb3RvIHVubG9jazsgJmd0OyBpZiAoIVdBUk5fT05fT05DRShzaHJp
+bmtlcl9pZCAmZ3Q7PSBpbmZvLSZndDttYXBfbnJfbWF4KSkgeyAmZ3Q7IHN0
+cnVjdCBzaHJpbmtlcl9pbmZvX3VuaXQgKnVuaXQ7ICZndDsgJmd0OyBAQCAt
+MjA4LDYgKzIxMCw3IEBAIHZvaWQgc2V0X3Nocmlua2VyX2JpdChzdHJ1Y3Qg
+bWVtX2Nncm91cCAqbWVtY2csIGludCBuaWQsIGludCBzaHJpbmtlcl9pZCkg
+Jmd0OyBzbXBfbWJfX2JlZm9yZV9hdG9taWMoKTsgJmd0OyBzZXRfYml0KHNo
+cmlua2VyX2lkX3RvX29mZnNldChzaHJpbmtlcl9pZCksIHVuaXQtJmd0O21h
+cCk7ICZndDsgfSAmZ3Q7ICt1bmxvY2s6ICZndDsgcmN1X3JlYWRfdW5sb2Nr
+KCk7ICZndDsgfSAmZ3Q7IH0gJmd0OyBAQCAtMjU4LDYgKzI2MSwxMCBAQCBz
+dGF0aWMgbG9uZyB4Y2hnX25yX2RlZmVycmVkX21lbWNnKGludCBuaWQsIHN0
+cnVjdCBzaHJpbmtlciAqc2hyaW5rZXIsICZndDsgJmd0OyByY3VfcmVhZF9s
+b2NrKCk7ICZndDsgaW5mbyA9IHJjdV9kZXJlZmVyZW5jZShtZW1jZy0mZ3Q7
+bm9kZWluZm9bbmlkXS0mZ3Q7c2hyaW5rZXJfaW5mbyk7ICZndDsgKyBpZiAo
+dW5saWtlbHkoIWluZm8pKSB7ICZndDsgKyByY3VfcmVhZF91bmxvY2soKTsg
+Jmd0OyArIHJldHVybiAwOyAmZ3Q7ICsgfSAmZ3Q7IHVuaXQgPSBpbmZvLSZn
+dDt1bml0W3Nocmlua2VyX2lkX3RvX2luZGV4KHNocmlua2VyLSZndDtpZCld
+OyAmZ3Q7IG5yX2RlZmVycmVkID0gYXRvbWljX2xvbmdfeGNoZygmYW1wO3Vu
+aXQtJmd0O25yX2RlZmVycmVkW3Nocmlua2VyX2lkX3RvX29mZnNldChzaHJp
+bmtlci0mZ3Q7aWQpXSwgMCk7ICZndDsgcmN1X3JlYWRfdW5sb2NrKCk7ICZn
+dDsgQEAgLTI3NCw2ICsyODEsMTAgQEAgc3RhdGljIGxvbmcgYWRkX25yX2Rl
+ZmVycmVkX21lbWNnKGxvbmcgbnIsIGludCBuaWQsIHN0cnVjdCBzaHJpbmtl
+ciAqc2hyaW5rZXIsICZndDsgJmd0OyByY3VfcmVhZF9sb2NrKCk7ICZndDsg
+aW5mbyA9IHJjdV9kZXJlZmVyZW5jZShtZW1jZy0mZ3Q7bm9kZWluZm9bbmlk
+XS0mZ3Q7c2hyaW5rZXJfaW5mbyk7ICZndDsgKyBpZiAodW5saWtlbHkoIWlu
+Zm8pKSB7ICZndDsgKyByY3VfcmVhZF91bmxvY2soKTsgJmd0OyArIHJldHVy
+biAwOyAmZ3Q7ICsgfSAmZ3Q7IHVuaXQgPSBpbmZvLSZndDt1bml0W3Nocmlu
+a2VyX2lkX3RvX2luZGV4KHNocmlua2VyLSZndDtpZCldOyAmZ3Q7IG5yX2Rl
+ZmVycmVkID0gJmd0OyBhdG9taWNfbG9uZ19hZGRfcmV0dXJuKG5yLCAmYW1w
+O3VuaXQtJmd0O25yX2RlZmVycmVkW3Nocmlua2VyX2lkX3RvX29mZnNldChz
+aHJpbmtlci0mZ3Q7aWQpXSk7ICZndDsgJmd0OyBiYXNlLWNvbW1pdDogODQw
+ZWY2Yzc4ZTZhMmY2OTRiNTc4ZWNiOTA2MzI0MWM5OTJhYWE5ZSAmbHQ7L2Z1
+cWluZ3NodWFuZ0BreWxpbm9zLmNuJmd0OyZsdDsvbXVjaHVuLnNvbmdAbGlu
+dXguZGV2Jmd0OyZsdDsvcm9tYW4uZ3VzaGNoaW5AbGludXguZGV2Jmd0OyZs
+dDsvcWkuemhlbmdAbGludXguZGV2Jmd0OyZsdDsvZGF2aWRAZnJvbW9yYml0
+LmNvbSZndDsmbHQ7L2FrcG1AbGludXgtZm91bmRhdGlvbi5vcmcmZ3Q7Jmx0
+Oy9mdXFpbmdzaHVhbmdAa3lsaW5vcy5jbiZndDs8L2Rpdj4KPC9kaXY+Cjxw
+PiZuYnNwOzwvcD4KPHA+Jm5ic3A7PC9wPgo8ZGl2IGlkPSJzaWduYXR1cmVC
+b20iPgo8ZGl2Pgo8cD4mbmJzcDs8L3A+Cjxicj4KPHAgc3R5bGU9ImNvbG9y
+OiAjMDAwOyBmb250LXNpemU6IDE2cHg7Ij4tLS08L3A+CjxkaXYgaWQ9ImNz
+MmNfbWFpbF9zaWdhdHVyZSIgc3R5bGU9ImNvbG9yOiAjMDAwOyBmb250LXNp
+emU6IDE2cHg7IGZvbnQtZmFtaWx5OiBNaWNyb3NvZnQgWWFIZWk7Ij48L2Rp
+dj4KPHA+Jm5ic3A7PC9wPgo8L2Rpdj4KPC9kaXY+PC9kaXY+
 
-> 1. Avoid page table rewalk when setting PTEs/PMDs for multiple memory
->    segments
-> 2. Use batched mappings wherever possible in both vmalloc and ARM64
->    layers
-> 
-> Besides accelerating the mapping path, this also enables large
-> mappings (PMD and cont-PTE) for vmap, which are currently not
-> supported.
-> 
-> Patches 1-2 extend ARM64 vmalloc CONT-PTE mapping to support multiple
-> CONT-PTE regions instead of just one.
-> 
-> Patch 3 extracts a common helper vmap_set_ptes() that consolidates PTE
-> mapping logic between the ioremap and vmalloc/vmap paths, handling both
-> CONT_PTE and regular PTE mappings. This prepares for the next patch.
-> 
-> Patch 4 extends the page table walk path to support page shifts other
-> than PAGE_SHIFT and eliminates the page table rewalk for huge vmalloc
-> mappings. The function is renamed from vmap_small_pages_range_noflush()
-> to vmap_pages_range_noflush_walk().
-> 
-> Patches 5-6 add huge vmap support for contiguous pages, including
-> support for non-compound pages with pfn alignment verification.
-> 
-> On the RK3588 8-core ARM64 SoC, with tasks pinned to a little core and
-> the performance CPUfreq policy enabled, benchmark results:
-> 
-> * ioremap(1 MB): 1.35x faster (3407 ns -> 2526 ns)
-> * vmalloc(1 MB) mapping time (excluding allocation) with
->   VM_ALLOW_HUGE_VMAP: 1.42x faster (5.00 us -> 3.53us)
-> * vmap(100MB) with order-8 pages: 8.3x faster (1235 us -> 149 us)
-
-Nice.
-
-> Many thanks to Xueyuan Chen for his testing efforts on RK3588 boards.
-
-Indeed.
-
-I see Dev had a good look at v3 - hopefully he (and Ulad) (and more ARM
-folks) have time to go through this.
-
-Is there any effect on anything other than arm64?  I'm wondering how
-much testing these changes will really get in mm.git and linux-next.
-
-How is our selftests coverage of these changes?  Is there some existing
-selftest which will exercise these new features?
-
-You diligently went through the Sashiko report against v3 (thanks). 
-Please pass an eye across its v4 report, see if something new popped
-up?
-	https://sashiko.dev/#/patchset/20260618084726.1070022-1-jiangwen6@xiaomi.com
-
+--nsmail-6n5dle56xlcu-6n5h502wqo2n--
 
