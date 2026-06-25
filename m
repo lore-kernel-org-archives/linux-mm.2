@@ -4,117 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F908CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 09:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41385CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 09:03:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 866226B0098; Thu, 25 Jun 2026 05:01:00 -0400 (EDT)
+	id 202D76B0095; Thu, 25 Jun 2026 05:03:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 816D26B0099; Thu, 25 Jun 2026 05:01:00 -0400 (EDT)
+	id 18CA86B0099; Thu, 25 Jun 2026 05:03:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D716B009B; Thu, 25 Jun 2026 05:01:00 -0400 (EDT)
+	id 054116B009D; Thu, 25 Jun 2026 05:03:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46CF76B0098
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:01:00 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C38EF6B0095
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:03:12 -0400 (EDT)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D81161C5EEA
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:00:59 +0000 (UTC)
-X-FDA: 84917840238.20.E0FA52C
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E33D44000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:00:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M02xqOSe;
-	spf=pass (imf07.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2F14E167652
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:03:12 +0000 (UTC)
+X-FDA: 84917845824.20.631AEC0
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4C5A5100002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:03:10 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cOMqfNRz;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782378058;
-	b=hThP6sP4/pfVPhlYjR1y5S4CznrF+HOZ9+lKqssw4FZ30kseasgyLD0/cVcBl3+kt5gL2v
-	IPSj1uMnVqYCuCvISfX0iH+KJz9SXX2uiLWn1bE63i1JztEPVOoy1wfJemzXFhpgsizqC6
-	ZLPNXJYsXrVOCSQVwQSZLGDQEaAv6QM=
+	t=1782378190;
+	b=pdBDtql9I/eJx8JSSmYpxPYqjzXHIp3l6orJ068+xsVxssnGBAemUi/CMqhGOInVe46tZA
+	RIp+GpECTbag6vN/UlmqhiLTKUKq4uI7hobWL/0Ifbcmw+HcFVOG3y/3oEie4RRjABddZz
+	99mJQcuBlR7z8fxi6CpzkCIDC3QhQ7w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782378058;
+	s=arc-20220608; t=1782378190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WfoZGVTsV5t4p+3rbcX8T0LDvzopvkAnF0ng3yDh508=;
-	b=UBUr1r7kBVlu9iAKtgLNT9+6sM83gopPCxxUviMTar471T03FpwWPzjyV9aLJzazjx435c
-	w5S6rJ8WW7QoaOH8NnvsEXobIfWam/hhBGs/JuYB6e6cIJsuZcHITQtz0fETFzvpkoRSUm
-	4bMcKhyTAYnNMzzMFoDg7J+gAGFIO1Q=
+	bh=HBSEPUdUYWVlvar6bWIrKaomQq421L3gUjBqqjys/Kg=;
+	b=UZhdYHqDYTqyzziLQ4rBI2NX+oI3GCbvFEf2lmJhLgnYyQk06iZspesojdrHQMENwV1FQN
+	epIaH7riaTrZ0uG0c3JNEsFmpobXVbDB7xaiLod2UW+sq/5g50MymPj9AdUigHdXaYpJN0
+	mVLZLu/Dne2g9zgNqnlMwLmc0l+fIFc=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=M02xqOSe;
-	spf=pass (imf07.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so14127035e9.0
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:00:57 -0700 (PDT)
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cOMqfNRz;
+	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49249072f03so11159305e9.0
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:03:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1782378056; x=1782982856; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WfoZGVTsV5t4p+3rbcX8T0LDvzopvkAnF0ng3yDh508=;
-        b=M02xqOSebDLkSbwd6Xq0c4NvNRhaYCEl3fESBtFnsYDXw0bNtcAPNXsnKJKIPu/QXO
-         BkLJDmrUrhx98VhvH9BAO9rJyUCjgCKU2V9KM9Y/64N9Z72gvacJ+B61BzoTrt2YxvH5
-         ZBGSA+C3lu62gtdX7KGw55e75yt/yqczZTo9snnCkQIxHfHYxaUipw5V94J5sRPNKMat
-         wsfeESQUyIkV88MbElTKw4SXcCJAtn5LYH3jjAXFNXqWvcRTH0CsKSo+S7EcYgaUBz/l
-         +hXOLE6AvoTflQYKN0lLj7ZsUIGLwyhfkX5JG9q/VTqobiWmBTmWVLt5Jx0d3cms9iAZ
-         lnFg==
+        d=gmail.com; s=20251104; t=1782378189; x=1782982989; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HBSEPUdUYWVlvar6bWIrKaomQq421L3gUjBqqjys/Kg=;
+        b=cOMqfNRz5PM26Yz6LGoDgS8xe1ZXLcZnLfxPqn+DppmP4maaq7z0MAl2gFBKycWFe/
+         g0X54VXf3thIJG1W61POU30Nla+Fs5dwsNjLzaJjB4w4i2MdYipqKjZfapQ7P4BFcVkm
+         5hM8Hkx+XZRrDKD9AnxnpgYfZv7ApLlgsqIl5Sqf04PnXscgjOp2QalEJVuIg6Z3SBGu
+         sBhF55Tan7zqZKVuEUvvlDTjDX/gpNMlpiP4OoZCMliL7bHWZs96x3U7elOmqq7kQPtR
+         KoZ8Jn86vxdlh+W7T/Lk24EGbQeUYSaCLDGRWIFf9JBaK6W9W92kRjMlI7M0bwb8vXHm
+         1UEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782378056; x=1782982856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WfoZGVTsV5t4p+3rbcX8T0LDvzopvkAnF0ng3yDh508=;
-        b=lV13HWz21n2DA7Bu3JwSO5UTTti76bNK9GeJPkW5k4vQRVvzxVW63EwniMkD3aVhVB
-         8HEB1SjSlpvdav8DH+AfjE1f/VspqkYHhtreeDIJw70nQLzJEDBBIiQkqJg/6mTOQs7u
-         8t5tE87bmHcUxCo9eRCWz97rifDqsT+bUBnmhKWVNKyxBi5tD8t4C2W6kzCf5vbxfaoj
-         v0BCqQfByBAAEK+jVeWBKwNYR4neWfJchmuny+d2nvRU7sq3zhkBRGdaxCBWz+bsmyew
-         oBUKqc1r3r7BQgr5Tx2HVWNLF+Pyg8okIjijYZGMsjT6X7vCQkYFMeAC1tBdVLBTVoxu
-         C2Ug==
-X-Forwarded-Encrypted: i=1; AFNElJ+QdRtRpqdll61gDcPkW4hQMGCT2ckrbXzTUXlNZo+MewiWelV9YJUwBcSnH8nGBxScX+1/Ua4QwA==@kvack.org
-X-Gm-Message-State: AOJu0Yzohia193nPDwGiSvKqoPk9DYanzGp0lWtk8qMnLNfZU80k9i5q
-	bhs43VlS5WKcm1fgMQTQIrQ0nuYRZkGo9gyKI2wk6cP+iqK43NKHT9TSkGmNMxg2RJU=
-X-Gm-Gg: AfdE7ck0WmwQRy0OVqJU4LlJ1S6TpLLU8z8dmYCeYCEzg24cHx2spsF7HvP+A/KA0dG
-	SNYm3z+BzqEbv31qN6fC0TfZRkKZyy6Zx8QjBxZPN/EldBruRzoU+hsXhOAcTD9fJqPyQzXWH5M
-	4xFvtbbXm06kEyNUfCc5cCGUPYWgJ36tn4OcafsEAM0j8Kwd0trZZ68vlZpll2Y7BoewKukjj+B
-	qeFSOwcJMawOveWrjB5MyPqLca6YuEuBGhcHL7ngrp3yJXaR5L1m0wkP0w8rUTWb3p+kdG12Sxd
-	kfgmovTDhm/SzOcmRU5W7n/3RlFSpv2gnZ6J7P93SyCIx/iI6XDQgVlyqizWUXda3hpu+smB+Wa
-	e+PU1AZP4do/AnaGtJON9BYd4AtztcWHPb4ov/1gGdouIp9cVXz4jmzSFy5DYxC95y5kalf4SY/
-	L0I/guISstZqQpT3THIw==
-X-Received: by 2002:a05:600c:1392:b0:492:488c:f630 with SMTP id 5b1f17b1804b1-492668b6847mr21727405e9.34.1782378054669;
-        Thu, 25 Jun 2026 02:00:54 -0700 (PDT)
-Received: from localhost.localdomain ([62.77.90.70])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49263f9c59fsm108017195e9.0.2026.06.25.02.00.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 02:00:54 -0700 (PDT)
-Date: Thu, 25 Jun 2026 11:00:52 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, shakeel.butt@linux.dev, 
-	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH 2/2] mm/vmpressure: split v1 userspace eventfd code into
- vmpressure-v1.c
-Message-ID: <ajzsE9WMl84MeBOr@localhost.localdomain>
-References: <20260606114158.3126210-1-usama.arif@linux.dev>
- <20260606114158.3126210-3-usama.arif@linux.dev>
+        d=1e100.net; s=20251104; t=1782378189; x=1782982989;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=HBSEPUdUYWVlvar6bWIrKaomQq421L3gUjBqqjys/Kg=;
+        b=kl1tZX2aTGx6Bj9SvN+1BU6GiC/PM1dPx0B8oAr6P48sE5L5ryKC8BqBcc0aFXytpc
+         /bkdj+ADHOuJo1HFUMVkOSmmdRJuIOpfuJpTyrpW0vtrb+KlNpfUyE/+F6jSvdumDkmJ
+         pbG7C7YzvRr3Hib2/53ZdAmIXLH+JQp3u76JKDigyTCLKjIRmqD1SqSjQ0muDquXj7dQ
+         PXqzdIY0vT1DHNte6x2/vCXfPM1O7MRM6xl4R+Kq3iFD2ImodBFlTEBt8nrNyrK6eV+/
+         cIg3xXWRi8qdUu0Mczxa3qWQg/rin3Lc0cuBs9OCZEkU8SeqJMwqwqyRxVJax1H/IXnL
+         nA9g==
+X-Forwarded-Encrypted: i=1; AFNElJ/vYMQNkn+mxRx5aNkqVq0po0SF8soMWAD1D/li0CFksR196H3+hUAmHk34jGl2nrCTGRB0/rv8lA==@kvack.org
+X-Gm-Message-State: AOJu0YxGr/g+3LMieEDEEuxjX0NOVVTVMhlIFbHE22b813BTaP4eGH2P
+	QvL+8N2pbqvz2vWzHxPz2vkRuuWBVmxVgIbzuCIfq9uS8sc4MxOLcEB0
+X-Gm-Gg: AfdE7ckINt8B7s/gRNWLW/kXVtmUuXZLwwt6M1a+pKL9AbY/PRQ/7j7uJs9WXpjtEU0
+	+N+WGaDQBVsbnKmYb8dtLf8LhPtZABLRLHUc00W3NYzlTIyXP+SPp12eyQV88GeNJ9kBqHwgnOc
+	J5J7kXBp9jbz2n/q75CmTTZH4sMsHg3XyYghpQW71TWHWZkjkusAdDMiWewdE+F4CV/GOvPgq3X
+	Y4eNFTlz8jHo0cIKD62Cw+QZNZyooDWfp+GQAPb5zkHKqVjkS7XJDaK6EOZYl93fGmtueuCbmbe
+	Xi6t8OEG/ngT9MrAIASWK8Tb9WfO4+dta1/xWD7XrEq7yFcSKCedziTJeuphddrO9R1W49jkgTW
+	NUdzle5UMNh4l5QIBUhhWjBMQaePrZkgqx767OwDeqj7hyXOsD+IeDFq2qmoyqelu06sRCPjFk2
+	k9NIw4uRrzGR3H2CD0Wq0=
+X-Received: by 2002:a05:600c:c059:20b0:490:bb3e:30c2 with SMTP id 5b1f17b1804b1-49266885955mr16491185e9.18.1782378187463;
+        Thu, 25 Jun 2026 02:03:07 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-49265975147sm55948915e9.5.2026.06.25.02.03.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 02:03:06 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: val@packett.cool
+Cc: akpm@linux-foundation.org,
+	axboe@kernel.dk,
+	brauner@kernel.org,
+	david@kernel.org,
+	dhowells@redhat.com,
+	fuse-devel@lists.linux.dev,
+	hch@infradead.org,
+	jack@suse.cz,
+	joannelkoong@gmail.com,
+	linux-api@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	miklos@szeredi.hu,
+	netdev@vger.kernel.org,
+	patches@lists.linux.dev,
+	pfalcato@suse.de,
+	rostedt@goodmis.org,
+	safinaskar@gmail.com,
+	torvalds@linux-foundation.org,
+	viro@zeniv.linux.org.uk,
+	willy@infradead.org
+Subject: Re: [PATCH 0/3] vmsplice: make vmsplice a trivial wrapper for preadv2/pwritev2
+Date: Thu, 25 Jun 2026 12:03:01 +0300
+Message-ID: <20260625090303.3796964-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
+References: <83f05c55-efba-4bf5-abfe-d2ab0819e904@packett.cool>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mbkwnm3cz7yyfzkf"
-Content-Disposition: inline
-In-Reply-To: <20260606114158.3126210-3-usama.arif@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: czq1aydem3x9kbh3gq1p19ogzj93uk9n
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E33D44000D
-X-HE-Tag: 1782378057-99663
-X-HE-Meta: U2FsdGVkX1/6IsRWVWa7vgHvu5JBw+nyhqiqLmLTxDaeEMPTrxsArlJMxexV7V36xaThWYul3dLQ288Ut28D2KuTnZ1D2D+Uv0OZub3mFNSRXJDSXGkGJvwHI5vdH2/PtdOvY6lqLdy14rl9m44LvlyAwQ4sub1Ad+Zhzmokeh89bYfC+AvxMA/FToQDZcPvhIqunf0GKn+oL+kKnafPRK5k9qeccrdxbRom1posbd+/GUXJpJhPOTFpAZzDXyK3D9doiJYrYnVnODXnMk4Dd3keZHjvrFAVhu6Xwu38wwBuOCWngUENXSFs1r7NTE3cmakOFyoNlOZg5VpAIFAlg6t/rGqrXcRRAFWI8U3D00byDmRTc/2DyAxMmHQAVw06ZhNVFuVxfmJ+TNJUnCQ2x0frQvwOuRO1mw5+HpnsUzXzenVQnlJROZev2M9XkI4c6afL2ItFGZAyuz2kh15wPcm8WZwGjOwCM66j6sdZumTpkC+UNYN4uE5t5DnBYnI+qcOiVjFFOmNHW9HYIPz+l1jvoGOuXoFN0MNG9EETw8BQy0FBlEYiPT7PAqCLLeibtJXWEz1Wxyk/ajm9cS9Xb23KTFL5o7RJJ5mEa4EpNUA+ZEi6Fp6LL3CyqOsF4SaqFix53MsCFRPvj0ssJKpsIDg5kGTf1zNIjeQJ17jbcPAh7Ylz4hUmW8ju+FynQQ0FlsbYdC7JeyJoX9K8QLQg6gpce3p6E9/Es7+SMgteLDJUuvKinylLMXS8oKFeciUm+IlM8IKgAlYQSccV3o3UC3AjnjZI/pYXr6afnKGZrZc4HpuvvJ45a/uutLmqKpouwOW/4BOe3KOIQG8RAUCUeflHN75VAyOGanB8XFsoFO9eCZcFijQISBJb6AWVJJVDdNFikGfxDG/vPvOeZSJbGkj6eRiWfRAUYX1+b5uZEeHz7vsluFsj44h34vMK3SHtIgPXaJGo6Ol56lEEuJa
- JsEA5jL+
- dkNw0LCCx3hLyjLzYVZFK7QO81mb8Rn3V2hsgQGFokUrcwJQb9ukYhIfoU43V5W+noP4YGvt3z7MX8CSyolpvk2HDiiqWzk46O6OZ2qi0oxOkNltGUqYRdVUrsmHIxhZQnytfjnySU7Nvd9i4yc7uqTvPiD71Xjvg0H8s8f4hmD/lAw0eO5dCnSCbMlRmRp5qD70SVhgFWnNXr6j1S5F0hnS/R0L+rra9WTKwaTtjOaGHqqwxE1+Yd+ZGGdERlAgDMj/EwnzKulxRA2DFiprs+TgwfJJmc/vw0ia9mGiMo51fQseGm6cpJpoUYqSTnMJtAMmOEJMe0dhxZ6DObz9ymk7zTmmD77NxvsWpc2J435zczhLwFD6ZIJ9gqBDn640TGZg4ojXxvS+A5KO4Q0ocpHsxAA==
+X-Stat-Signature: 3e6k43776est38gndecgar97dxa6i61n
+X-Rspamd-Queue-Id: 4C5A5100002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782378190-704432
+X-HE-Meta: U2FsdGVkX1+OwUkABWiX9An6/a93Z7z7gkLE+Ksjeo0JO4YKQ9YlVV8v1sBap1q+/Cvhr9H0j7DxLhExNbZtavHRdWH1j3CRiaJxObmiQO4k+LBblhC+ryqofaZ1c1q4TMW1qFQYIj3frNkX1iMg/BgbVGUfw/cukiGne9SVMNZdz1+064Wax5FQsGb9eMNIWklCfGjmQO1vzbOaC5jeB80DWh+uvmeTACPTaEUdwYGUG6vKWYlkBPpFVhMjhtNlL+PFSJrBbfBYVFX8WCd5kTK/YfPXUdObSmR4A+/VdwrZieQRTnk+NTDBcjNZYuFNSXpaMUi77cawiVpNz/tHukLN/avaSgN8i7jnI6Kcl78CYKOnKCSsXxsxXSlpCQOG9wi008yWCJTXPe7pHGDNU9FIyAt8qfArBYvs9x199wjG5QLqojvOhVCl+8YZ3USbcWAzh58j82Cce0WRTKXNXQ9C7zmo++whM3wLl/RCegPchYKXbDsvkLxSrtx6OYfqp7Qo29go0YRltO2k3iXDBrpxkleQ/pemFqh5dDy2IuNJXe3hGoHm9IDS5hJsFQUTB+e9yMCiHNuPsgHwRjFmNa3jWlmGjwSTQTYecvcWO6XiGHa5coIikdmrWX4tA6tIF2CXIChlPMiRF+plQQHFPG7wiAUrZSpeI7IZif5ARrzX6vZ0qfTFN/rjTsCnT5VTlRqG1ymRyINMbpBojKouIRHKNPekbNyJcaWeSuY+ZeCrSlFiuT3EUB7/UNnQ6ju6FkVeMNalhQmZDe10wO3dkRiVSKshhi8aOElNtn/Ub6leJiVr0H6Gu3MYkGih+wnC5WtP3s7gDXlsgndcmGflMyJXhVedc38YOGXx20GYEocN4FDmJVHZb0igIyGLYzQ2QewsE9k7jVDavv/UxsoGoT9Qz6v+/pP36KhIpZ+M5IiZ326oOmAPc9gwE0qPjHAyQr9oYvllezLVj9LzkUV
+ Y0pJz5Hl
+ 7s4lQvww1MkEjLiGWFwuA0Pf2d4XmHZtbaSQnG1mL927reVwKEjGD0P70HAClVoo45s/kRhCzDcoYyJme9Q3nnnC9nLzJENZUabJEaNVkMBj+x1lND5QfBdafG8f8uj7f9V3tKRwJ6ERO+0RxtYnJoDTV6dzan4oQDzIty9BubOPi/MxNs5MuLzxnoCJC5J3uKge9RIfGUVQmQprecjKxtb5PRnpDElzIXmhrL4o+M60Mh5OLhMy/rjCi43wfjqk7yvtYulUp0rVHuQI0qXmXxN8RvuvsK8LtG5f6WLHr9fHTWFwdSj0J23wdmhzgL4zm670g0NOMTYsMxXJWEJ+Z1DM35OkDN4rA1yQd1lycIPWKqUltGjSPeeEFRfVXmhGDnfcN0gmRNtXSrIu87Kxbgg3LUbD2Ptc5cbSl9v5qkChO+0hP8Y0kRbKVIiFHJKcUnDfWst6duRq8TGlzly6SYF8rcA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,66 +139,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Val Packett <val@packett.cool>:
+> speaking of fuse_dev_splice……_write actually, this series has broken 
+> xdg-document-portal!
+> 
+> https://github.com/flatpak/xdg-desktop-portal/issues/2026
+> 
+> Specifically what happens is that the EINVAL is returned due to oh.len 
+> != nbytes:
+> 
+> fuse_dev_do_write: oh.len 16400 != nbytes 15526
+> 
+> (where 16400 == 16384 (read len) + 16, 15526 == 15510 (file len) + 16)
+> 
+> After reverting the series, there is no error because oh.len 
+> becomes 15526 too.
 
---mbkwnm3cz7yyfzkf
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 2/2] mm/vmpressure: split v1 userspace eventfd code into
- vmpressure-v1.c
-MIME-Version: 1.0
+Please, test v2 version of my fixes:
+https://lore.kernel.org/lkml/20260625083409.3769242-1-safinaskar@gmail.com/ .
 
-On Sat, Jun 06, 2026 at 04:41:34AM -0700, Usama Arif <usama.arif@linux.dev>=
- wrote:
-> Clean up mm/vmpressure.c by separating the cgroup v1 userspace eventfd
-> interface from the shared and v2 in-kernel code.
->=20
-> Currently, almost half of mm/vmpressure.c exists to serve tree=3Dtrue:
-> struct vmpressure_event, the events list and its mutex, the work_struct
-> and vmpressure_work_fn that drains tree_scanned/tree_reclaimed, the
-> parent walk, vmpressure_event(), vmpressure_register_event(),
-> vmpressure_unregister_event(), and vmpressure_prio() (which always
-> calls vmpressure() with tree=3Dtrue).
->=20
-> Move it all into a new mm/vmpressure-v1.c built only when
-> CONFIG_MEMCG_V1=3Dy (following the existing memcontrol-v1.o pattern).
+This should fix this bug.
 
-Thanks for this dissection.
-
-> @@ -283,14 +152,8 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgr=
-oup *memcg, bool tree,
->  		return;
-> =20
->  	if (tree) {
-> -		spin_lock(&vmpr->sr_lock);
-> -		scanned =3D vmpr->tree_scanned +=3D scanned;
-> -		vmpr->tree_reclaimed +=3D reclaimed;
-> -		spin_unlock(&vmpr->sr_lock);
-> -
-> -		if (scanned < vmpressure_win)
-> -			return;
-> -		schedule_work(&vmpr->work);
-> +		vmpressure_v1_account_tree(vmpr, scanned, reclaimed);
-> +		return;
->  	} else {
->  		enum vmpressure_levels level;
-> =20
-
-This return; looks weird, I'd either
-a) drop it or=20
-b) keep it + de-indent the rest of the vmpressure().
-
---mbkwnm3cz7yyfzkf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCajzuPxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AjOzwD8CPiAls60D/6NjUECmaox
-xluxdlgyvBk9WbfRajccL3kBAKTgCpg7umM8qKzTqkSgvxvDl7NuPRftLAYNe9Bn
-9vIN
-=Tc+Y
------END PGP SIGNATURE-----
-
---mbkwnm3cz7yyfzkf--
+-- 
+Askar Safin
 
