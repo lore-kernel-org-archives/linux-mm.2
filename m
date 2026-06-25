@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD10CCDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50328CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:48:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A26A06B00A3; Thu, 25 Jun 2026 03:42:18 -0400 (EDT)
+	id 1CE6B6B00F7; Thu, 25 Jun 2026 03:48:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B02E6B00F3; Thu, 25 Jun 2026 03:42:18 -0400 (EDT)
+	id 1A5BA6B00F8; Thu, 25 Jun 2026 03:48:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A0726B00F5; Thu, 25 Jun 2026 03:42:18 -0400 (EDT)
+	id 0E3A76B00F9; Thu, 25 Jun 2026 03:48:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AEAB6B00A3
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:42:18 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB0C1C289A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:42:17 +0000 (UTC)
-X-FDA: 84917641914.19.D0AB1AF
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9589580006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:42:15 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D81BA6B00F7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:48:00 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 68FAE4059E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:48:00 +0000 (UTC)
+X-FDA: 84917656320.16.950423C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CC920100003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:47:58 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M8wc07r5;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782373335;
-	b=iOflpeEOmB0RoAys5gNaYGUVQ6MrVFVB9el8pSTtw17N0Ue1m3t5SNaBRASZD+87HJWxcB
-	sgOAZts0t239q8p4oZLn/wAYGeS5hbJn0gtTkmoFrEZgdB08zq50PRbaNTRRPzabxZtrSR
-	aczfzPkKXy9u4qx7e/icKqlXRj0Di6A=
+	t=1782373678;
+	b=M1hXnwL55zuXNkiuIKa2DZwTFEKM5UFj3WmVAyHVJ0k0K7kc61coyHb1K7lMcFNDKGJ9AP
+	u3sJtrnntejvvWmwpVhRaSUIZs0rqdvsvwbbWVwxtFCKg32Ln3bisWPBfLmIyZmPYH1u9K
+	CeDQ5/YDz1Rr0M9FLn8fHVf6vubIoIY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782373335;
+	s=arc-20220608; t=1782373678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ysQ1AutjF3HgFCwG/Yl7AaqE4XuoN5VtbHuSzw1G7LE=;
-	b=aIeinCnUpPShKyEKhQypNc5NRMBihPz7D0eura7UTtWd5BSnQB6VrgO+4a7n1/XmHd7G7n
-	PDs1A90+vEqxkq7H1EGZ1zJOrukUEB1op2QSKDgLvmIcNHcki8IgkerpIPG6e9/4HSrVkn
-	XBGmYvVahoqPP/uljFQKJXUVusaxMeU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6EWf8/p3GdUfDsB6KUh8cm6oeky3cDiDHBT1ngph3QY=;
+	b=CFxolg27necYHRUZ3AzskAsu+5ZOSYdgTIS3UOAdncqf/J9OBI7mLnPJKpyh2iW8qGI+KO
+	tkvhN2jUry5slHPgsfmZZzzL8mXjiEWp9tO06I/7GFaK46xFrJltfCIp4moRrV84r+jsam
+	VTM1p5PNcb1lvM+HORjTHEW+RsJWA9g=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B6633EDA8;
-	Thu, 25 Jun 2026 07:42:10 +0000 (UTC)
-Message-ID: <96b9f86a-d127-4e90-8ced-9149719a28ef@ghiti.fr>
-Date: Thu, 25 Jun 2026 09:42:09 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M8wc07r5;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B7B644059F;
+	Thu, 25 Jun 2026 07:47:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629371F000E9;
+	Thu, 25 Jun 2026 07:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782373677;
+	bh=6EWf8/p3GdUfDsB6KUh8cm6oeky3cDiDHBT1ngph3QY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=M8wc07r5i8ikZrrruBZSlFI6ZiEcpaVSmzn3OWpol0NLZBI1Z5CrNHFGkPnYt8ia6
+	 0yRZLA+z+PrGz+DNu7N2dGurP12D8fqbDklIRoDMIN9MnxNb/xG0Qtr/CNTHLtfbMt
+	 k6qHkzc0mpZJz/fqQZxhuM5Yq2+j6xIx+HPfSJ1s8cq3H52rj7KUVdAdBCM9jDkGjy
+	 FrcHzCwya5a6S9SLixuV4k7yJP4ghsZbAlt1OGZaZJ6i1OmvfThZochaaQy9ttk8z8
+	 MgX+UtezYFty2vTwI21NbzRz9Dz7CcjHmoAlN32+tOUYNGH+i+zPKnE5LqgpOT7dO1
+	 Ndm0MibJax02g==
+Date: Thu, 25 Jun 2026 08:47:49 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org, 
+	x86@kernel.org, linux-mm@kvack.org, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
+Subject: Re: [PATCH v2 0/3] mm: __access_remote_vm with per-VMA lock
+Message-ID: <ajzbm6SnoLODUdvF@lucifer>
+References: <20260625015053.2445008-1-riel@surriel.com>
+ <b0d9ce70-ebb7-4b79-9a35-257b69daff7a@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, nphamcs@gmail.com,
- chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, kasong@tencent.com, chrisl@kernel.org, baohua@kernel.org,
- usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260624075700.751467-1-alex@ghiti.fr>
- <CAO9r8zNni28A+9BiDgDTBRuvGTKnqH91kpbpjjeftfnKSeSOJg@mail.gmail.com>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <CAO9r8zNni28A+9BiDgDTBRuvGTKnqH91kpbpjjeftfnKSeSOJg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTFTnLYT8n0uWWP1+V3+HeDTng3vPJpb403+3gIToV7ghLBRdPm1iIkXEa819A0U9GJeAbk/0SWQaLZeodDdMisJy4JcP6+E/lqxzXJARee69TXsFdR81qjglUs7rMNaFmcThNUS6DchZAXSOo4Tu3L/BV+1JsKwK5O7aRhyuaBOOLhshyo9DPNSBI8oLo5p8KiLo/QPm6JCet+nNzQ09HLys42qsjPktVIO1RxzztXWUAQsFXSaHVFgYZ5i42Yti4jxYH5HUi3qwwPYl8NNZyBuUz8o+8+2T4aBekItq+kHncZtLvoQKbztypjcOLUZGqe+0k/yJHI0JCtm37fHNLhbN1aojnz1raY5X9FcaR275rSYYbe8YArQBAdf/EcK1PchMgbr1KB64iBkvBqbmr5YfJ4puXkZ4REGSW5yQqzwoC8bAGOqkFMqZbOuhiMDi5GzoAhghcQVE6pTVfmEndS9rR1+tSOf7EJh1aBZ1yTgbLBe7IRA8gXGkbQGGa2fOgRt/Lhl3MskkkISrMdYBfaIYru8rh5n9wcYLLIVXKW24ZqSSY9uFBFAA7TD3W3ZDbjd70H50xpin/FCxRtEPTUU82HhOP3XOcK38tAtdAJBXtmP0YxEkTcamNi2xLN/BlgohaEEqYZcDHXY9pXjBWGbg681g6tvBRe8kwGTsBiW8g
-X-GND-State: clean
-X-GND-Score: -100
-X-Rspamd-Queue-Id: 9589580006
-X-Stat-Signature: hi1abfhhwrgpksbyzn657wkpdqrfonwx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b0d9ce70-ebb7-4b79-9a35-257b69daff7a@kernel.org>
+X-Stat-Signature: hecxfcfirjz68qddzkk1ttef7ifxak9r
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782373335-404868
-X-HE-Meta: U2FsdGVkX19FGlXB5Q92Fzk7T5HinFGt6hAnaXLI5QqtRwd3sO1jXvqdCh9375T6iO68ucBKOz1rH5F6bz5mTATpg0nm+ovQKiZYAdLRifo1PeoComKnBlWMitis5sxkYxGbcPpUZi/RJRwIXKShTL9OR6gI75NiachbmI9W9buSDapBkyjKtacu0XU3oDb6XB3cb3tqwhiPd6PuwAh4iVvdRXTa9W6L1s2aZuegZcrYg2aPscJUHFwaEMyEoSuaCUuRkBbwprFh4O41esRFxD80IpVnFtTBmwNrrwbN6LIIQoq6j5pLExFDQuAJMfFLzGf+vonUbW7Oz3KmJPhPINuBqFQvGxXGa9fGzEMFvGMbpDjEQ2jnoN7w5vkUqQ878Y5W92NND7J4/13UNPvBVvVhxGCARnIgsGGVq678WcFrhtiNx0C1SOXmEJuc0ae/996MOXlAsgAvjR46jv9pTmn+5LS7wn8m5KsrA3PcYyt/3sVmIOccmbcnP4zuqFlQYoJNaq1Te6RRgeE9QHfVBhi8NCqhyNdSZaOpjuOtIWHJHX8/ypwAjnE5YZg+/pwmOtQsN4pftYGRQxOjn4kCqPEJVC3rMKzAjR0nmwrxvmYjNJAykiMYjggqzamDq04BK6k+T6fxU7RENnrMYZNxqJWxklTcrKnYD3mNTr4CPsFcOLd5dcXkZESjR098aQq2dPW06WKpjNXli03AYAj/PVB9CPlXwTiLBaN25hnHb4jO9LGQAIVIAfd/XP+9Meh4tvkn/57/loG9Zgg6ZyHkA+iTeTW5j1fs0TFXrstctxDMwkXxMYk+5Y6uMlDc2VtGpaktPlJEWwTCsBSlL0IcWM+9cW2D1AGy681DBYS/+RcySN/KyKf2n8/n0TL6eYjCVFhEdv3HMPT5733hp4X2ZBzodYaW10yfVm0xuyZjiOUkrVEa5tYr61915Ta+DCn5jKAmj7oXmrSxqp9OrBq
- FEhe5tST
- HF8WLbevZqS5h1jsc5SEIYAwVe4fgAzne3hC/VCohPlZEtnshgN582y3qMCsyrVu/uOHbASpL+/0dTLo=
+X-Rspamd-Queue-Id: CC920100003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782373678-507969
+X-HE-Meta: U2FsdGVkX1853SZBGCgTpfjt5ibykzBJ3elQtHxgEWB/i0SPS9O1tpzY0VJ81HJVExvI7DSzHZ4LsBkQlhlYrrA9gUQwqsKFdr20gXjEy6WcHgAPQzfBoM2uWveVLqr20cD2Ux6fUlW8tsXk0N4+3k4yqyqwBB2arWp+SwI7aNU86dhLyNxMfHIWTWbd9t3Teqt89EaAxO7f1nMHbPTALaHScbwD3DVkUve03zkbUJPT/jTl8UJ8ngwrhRfS00UTHQNnagg4cgvTUt9Xer5PMTZKKm8SD3+2d0fm7zCwv8d31JMS2OaX+fVLeZ6xcZxz+aPh8yv3aKpelx3j0rD08kgBigHjl3et1q4OFqNb/GSZerHdJc/7t7zUjPkAAO7bWQ0XdbkkNJ338K0ZUdMxzDNf2XCcktvzLwCTgos2uF5XoBoyo/pgBvb4tyqg5I9ziblwQu67qtmwgs+vUWr6y5FsowQBxAXqX5rizq6Ja0Qkk5uN9NtkiO9J8dalDm3aNB/wKpCek/ayYzl6uAQCSLjwruh52Q1YLTahDXdYyEwoe4Ne3ka2A7nrLLxWGzH/KpwVpayM4BDFeGxjrDe2z2c9cS/JEzzvdD5FYzllKS3Bj1XNBd7YCz4MlvYXmMgKXz5e258oD+9zl4NhX2yEMYR//uSdPWms09jC8Em4nmwe7qFIS9QT3CaqRjVbLMkfhpYKD+7qwSlB+qoS8I4SdsRLL54gYfH+d6NKyLt32Z3sGo1T2ozmelPmyXJSlqhO3my1sJsvyERwCgJTILMe1XhGAITO5sLuNeK6AmoUPm8dHfLjqq+EKGQRtObR/Mwl8wvs2bXpn0omcLwx0+jQuq5CwAzpYSaQl1rL/VfY5xwfg7UPz6EEZAYbIfcHdvM3RuCMgcltQIfBnD1NZAG3MqTKn2p75g2oJtA+IccyR1dpU31C+beo1EuN3nKCY8XgEJ+GaHleUty898759NN
+ 9tzH8zjN
+ EWjZ/ZRBGXwRtWy+5tqdgRG3Ot+y69jxEDIfublKZrerwICODKr0hLyCRd7Sszp9H8TKI7IQoHqfPWUO8lDUeGWaVq003l0RFc06+sWtSSgnn3bLywuxhG9Kkl+DA0tMMWOf6JldaiwDeCRRX1BVjl66KGDcU/Vh7d6ePBeNsoV5TROmOP4AY1tnqulv3TVDvmbP7/FzPyXPlZxy2lDN7Gz70vG4VSy1MWU9kUslbHtK2wB6CidmoYq9mQVeUna+xkPyL9xYyA6MuRkCXqGk1FnUxQ0t8mkcsxlUwKUmX5Z94NKk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,149 +95,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yosry,
+(Note that it's the merge window, really ideally you should be saving sending
+non-RFC series until after the merge window closes, none of these series will be
+taken yet and you'll have to resend anyway)
 
-On 6/24/26 20:01, Yosry Ahmed wrote:
-> On Wed, Jun 24, 2026 at 12:57 AM Alexandre Ghiti <alex@ghiti.fr> wrote:
->> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
->> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
->>
->> zswap is the same kind of in-memory, synchronous backend as zram, not a
->> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
->> swapin_readahead().
->>
->> Here are the results from bypassing readahead for zswap too: it was
->> measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
->> off, on Sapphire Rapids and 3 iterations.
->>
->>    768M memcg (sustained swap thrash):
->>      metric                 mm-new    + bypass    delta
->>      build time (s)          405.0       341.7    -15.6%
->>      zswap-in (GB)            79.5        53.0     -33%
->>      zswap-out (GB)          144.8       115.6     -20%
->>      swap readahead (pages)  6.79M       0.45M     -93%
->>      swap_ra hit (%)          72.1        89.9     +18pp
->>
->>    1G memcg (light pressure, build not memory-bound):
->>      metric                 mm-new    + bypass    delta
->>      build time (s)          177.7       176.0    ~same (no regression)
->>      zswap-in (GB)            10.2         7.5     -26%
->>      zswap-out (GB)           27.7        25.1      -9%
->>      swap readahead (pages)  1.07M       0.08M     -93%
->>      swap_ra hit (%)          68.6        87.2     +19pp
->>
->> The gain is from no longer prefetching pages that are pointless for an
->> in-memory backend: readahead inflates anon residency and thrashes the
->> page cache (file pages get evicted and re-read), lengthens each fault by
->> synchronously (de)compressing a cluster of neighbours, and adds
->> compression traffic when those extra pages are reclaimed.
->>
->> Bypassing swap readahead for zswap therefore makes sense.
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
->>
->> - This bypass originally comes from Usama's series that implements
->>    large folio zswapin: while working on improving this series, I noticed
->>    the gains I got only came from the bypass of readahead.
->>
->>   include/linux/zswap.h |  6 ++++++
->>   mm/memory.c           |  5 +++--
->>   mm/zswap.c            | 11 +++++++++++
->>   3 files changed, 20 insertions(+), 2 deletions(-)
->>
->> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
->> index 30c193a1207e..b6f0e6198b6f 100644
->> --- a/include/linux/zswap.h
->> +++ b/include/linux/zswap.h
->> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->>   void zswap_folio_swapin(struct folio *folio);
->>   bool zswap_is_enabled(void);
->>   bool zswap_never_enabled(void);
->> +bool zswap_present_test(swp_entry_t swp);
->>   #else
->>
->>   struct zswap_lruvec_state {};
->> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
->>          return true;
->>   }
->>
->> +static inline bool zswap_present_test(swp_entry_t swp)
->> +{
->> +       return false;
->> +}
->> +
->>   #endif
->>
->>   #endif /* _LINUX_ZSWAP_H */
->> diff --git a/mm/memory.c b/mm/memory.c
->> index ff338c2abe92..5aa1ea9eb48a 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4827,8 +4827,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>          if (folio)
->>                  swap_update_readahead(folio, vma, vmf->address);
->>          if (!folio) {
->> -               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
->> -               if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
->> +               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
->> +               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
->> +                   zswap_present_test(entry))
-> This assumes that if the swap entry is in zswap, then the remaining
-> entries (covered by the readahead window) will also be in zswap,
-> right? While not very likely, it's possible that the remaining entries
-> not in zswap but on disk, right?
+On Thu, Jun 25, 2026 at 08:32:43AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/25/26 03:50, Rik van Riel wrote:
+> > Sometimes processes can get stuck with the mmap_lock held for
+> > a long time. This slows down, and can even prevent system monitoring
+> > tools from assessing and logging the situation, because they themselves
+> > end up getting stuck on the mmap_lock.
+> >
+> > However, with the introduction of per-VMA locks, we can improve the
+> > reliability of system monitoring, and generally speed up __access_remote_vm
+> > under mmap_loc contention, by adding a fast path that does not require
+> > the process-wide mmap_lock.
+> >
+> > This fast path is only compiled in and used when it is safe to do so,
+> > meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
+> > is not hugetlbfs, iomap, pfnmap, etc...
+> >
+> > v2:
+> >  - simplify the code, which should be ok because these copies are < PAGE_SIZE
+> >  - clean up the code
+> >  - fix locking wrt tlb_remove_table_sync_one()
+> >  - hopefully address all the other comments
 
+This is really not sufficient :) you should break out the changes you
+make and who suggested them.
 
-Yes, I assumed locality here.
-
-Indeed, it would be interesting to keep the readahead but only actually 
-readahead swap disk entries. I don't know how this will affect the 
-readahead window (it is computed from the number of PG_readahead hits 
-iirc) but I can give it a try.
-
+If people give their time to review, you should take the time to make it clear
+you've dealt with it.
 
 >
->>                          folio = swapin_sync(entry, GFP_HIGHUSER_MOVABLE,
->>                                              thp_swapin_suitable_orders(vmf) | BIT(0),
->>                                              vmf, NULL, 0);
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 761cd699e0a3..5b85b4d17647 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -234,6 +234,17 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
->>                  >> ZSWAP_ADDRESS_SPACE_SHIFT];
->>   }
->>
->> +/**
->> + * zswap_present_test - check if a swap entry is currently backed by zswap
->> + * @swp: the swap entry to test
->> + *
->> + * Return: true if @swp has a zswap entry, false otherwise.
->> + */
->> +bool zswap_present_test(swp_entry_t swp)
-> zswap_is_present()?
+> You mean, ignoring my comments about not reiplementing GUP entirely?
+>
+> NAK
 
+Yeah agreed.
 
-Agree, the naming is not perfect, I'll change that to either your 
-proposal or zswap_is_entry_present() (or something else), but I'll 
-definitely change that.
+As replied elsewhere, I don't think we need to do that anyway?
 
-Thanks,
+But you _really_ need to respond to review inline so we can have those
+discussions and ensure that you're moving forward in the correct way.
 
-Alex
+Just quietly resending with a catch-all comment as per above puts all the load
+on us to go and check that you've done what we've asked.
 
+On my side, my review time is very limited now, so triage dictates general
+dismissals when the series looks wrong, engaging in discussion will help us all
+move forward efficiently.
 
 >
->> +{
->> +       return xa_load(swap_zswap_tree(swp), swp_offset(swp));
->> +}
->> +
->>   #define zswap_pool_debug(msg, p)                       \
->>          pr_debug("%s pool %s\n", msg, (p)->tfm_name)
->>
->> --
->> 2.54.0
->>
->>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
