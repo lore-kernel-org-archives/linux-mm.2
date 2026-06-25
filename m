@@ -4,80 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C3BCDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B33CDE00B
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:50:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E2626B0092; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id A41CF6B0093; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844236B0098; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id 9A9C46B0099; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 670C06B0096; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id 780F96B0093; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A6BB6B0093
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6B16B0095
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A94BF120285
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3726C1673
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:46 +0000 (UTC)
-X-FDA: 84919477692.03.3AD8C80
+X-FDA: 84919477692.29.637AC27
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1C1EAC0009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Em7Ve6Ui;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	by imf03.hostedemail.com (Postfix) with ESMTP id DA3B620005
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:44 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YaMGx9yB;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782417045;
-	b=ExwnvmFc7JoHecfMmBFaDT1nj1R7l52o+B7JxeIhAO1tq4kNepKt3jo1hUZcwhwQEgTu6I
-	akc1pA0S8VkdHyt591udxsR/2hp520pd+RadzzfvhD4pEn1+LDqvmBG3syTwW47JcX0x9l
-	V6Pue0C11zFUAZPCPbbpv2TmEX1ty0U=
+	b=TpHtu4E36PTFw0zlmu1u2tvth8kGEC8CDxLaflmw97X+kegJNIYmOPo6TZYk2jFqy1a4HV
+	sS/zwIZzg2qd6d2JNZFe5un3sJcjdP9vyu0QQEh+MNs8bKH8tn6CgpjTQdu5vJ6N842Co7
+	09dm++y8SMMmjtu+uL6gpsi7/xAfkr8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782417045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=CsgYxCyG0u4oN4II/H54RJBLRLj2ocC61lpUYcyfB0s=;
-	b=qamiytuTnnLHh5kVVw8hX323S4GbGhft3stU/0D4D1huW++FyqRWLL6SFItxAjlHT5ynsz
-	Q3Wg6uVofXkhFWem6vzVT4nTkgJOxL9SG3Vr+zVpmj3moA4yFbo2b3wWVe+Lsj62no6Uyn
-	HjFcEH5Ti9G31GuxfWs0MesYZTo33NQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2L2hQKeqlov9gdF6mrnS7Hxo22uCqfn3hih+qh45f4Y=;
+	b=uF0/whUlvusG4W3V5z5YBE+aIoEmf4J7I/2gJQgS6XUIRX+GkFFfFDxyi5vZrHXjcej9jg
+	/+03nWz3c3JYnAv107mIDbun3KDF672JdvxkormZSR2g50NA5r2nIzR3Ta6RoosQSYMwB2
+	5OP9mgq5K3+c7u0Tc4iB+1B2C3te3qo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=Em7Ve6Ui;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YaMGx9yB;
+	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=CsgYxCyG0u4oN4II/H54RJBLRLj2ocC61lpUYcyfB0s=; b=Em7Ve6UipjyTdIxC6XaUuOzX8i
-	tZ3SHAoOyy3SYpzrdcywkn4ZuvzvS7Yua1UFqQPyiO9JjqmBiJtbBTbrDYPEyjDHKvUUaL0z/G9Ee
-	kEl3pxbc7lXTQHgHjSWF/9DXCH0Co0QRJj3OH4xrm4tZjVFCPge6GiffpY60wTqt13RFOwPAawQTa
-	DsRCLWW4d81xmhK1uBhL2yyaGHryrrSNyC93dBqi89S4LZHykn4cr6NYTZl1HHvr1046pHMWlYcT4
-	w5ixchXv7xDNy5Ynf4GCfRhQ+l2c7J9gZ45PYmliZyS66m0HKhTHKRD7zCHAPYPzVw6JYP4XgW2aD
-	2VaNr1dA==;
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=2L2hQKeqlov9gdF6mrnS7Hxo22uCqfn3hih+qh45f4Y=; b=YaMGx9yB7K2dFolNNjsqulgDn3
+	wmOV0nw8ac8diVP17zxJzBMde0z5vv5Nk8jrBH7SAVRIsNP/deKgw3rLXO2szXo0bvSk9P5fFAnUG
+	SKXGHDOqOWPsYPupPN1sqJrbVsCNJT1zTG0yAR5DbySyd98rNqO8s/yygBasfJk5Nnf7nr7ysGRmi
+	D6liwymBRm6NqAmfiNbZPsRC16f0LmlSRHC94mFFiSbGDCrvVk4xiylYvkcXrtz0kR3dLrG4s/wx0
+	BLSarnSMoCDJeD/YKYCdJwjGg8tQ/xAq5whQ9tVL6hkfdHBRfwwuChtvZCfKb4w+5kXctLcpe9T1L
+	WHLwA4yg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcq5y-0000000AWXk-1724;
-	Thu, 25 Jun 2026 19:50:42 +0000
+	id 1wcq5z-0000000AWY2-1qQ6;
+	Thu, 25 Jun 2026 19:50:43 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 00/11] Simplify filemap faults
-Date: Thu, 25 Jun 2026 20:50:26 +0100
-Message-ID: <20260625195040.2508362-1-willy@infradead.org>
+Subject: [PATCH 03/11] filemap: Do sync readahead under the fault lock
+Date: Thu, 25 Jun 2026 20:50:29 +0100
+Message-ID: <20260625195040.2508362-4-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625195040.2508362-1-willy@infradead.org>
+References: <20260625195040.2508362-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: DA3B620005
 X-Rspam-User: 
-X-Stat-Signature: nj1udgojy36tdtyixdy46nk85weky9r7
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1C1EAC0009
-X-HE-Tag: 1782417043-904135
-X-HE-Meta: U2FsdGVkX1+BIUU3egQN4gq0TmtTn4VJOL3Pg6rh00krHoU0aFgVkBdmv996BmIrwQGDzJz5uk9JLTyrq9P1+y0ujIRR4RGKD5VEou2CdHwV9+XiDy9g7z0G0p5i14pWsmdw6yWPT/zHxg8rkPqVcAGDaT+wOeZFu/WkpwLKnZW/p5dkWtjBEQq9hvzW85bKZVBoS1pX4Rd1j4fZKbyVfvQTWv93L79HBTNO+gYC0kGwZUJTNtb9wJGZRP1xEQyYWKlHwwGDs5XofyInQ22S1myQp1ISedoiqm1OIbTbgxgQFjH7NQWz5sE2MkYgmuvD2G1oXxdm21UqzbvDP5SqP9xR32al+FxCdsZMpqotCf0xH7aEN60s+5/wmiFfRlz+cxqpNnL5t0XnKZqK3TfDthw89IYLkuGVnYengZEVPcL7/ZuHDRt+YC94m0C92OzHQPJ5KskZk/W/xMm+vEX2y7ePTUuylsVV+OlvJ3z//hrPPaLFwiG0Mz8uRQTNldEDfsl0lHgOE9mu+8Wq6d5Brb3bYQxe5hRsciII05jX5rtkXeSnwuW3vJ4wVN3rlMrhTCwJTtRxSWMd75XOV/+S04id3ZIwnNB0GPgBgmuuWdgbptNJ9T6ORH7yglWt7987Fb0Gr6KumThZaze30+DFdavvs+sWUmCEm1IutKSym0ACP2clm7XR6HmSb37rP+Xvtr+cp/Z8u0g73Hl/7VULZl/IjxMQEZohkTaFa1QS1cM+n68ir8Bl2mURsl4hAm1FkZS4ZUuKT6fcUG3JdPJPkRZqaWjs67qbFULLP19ADSnoo5eb2YLYvVrKBL0ArAYyao37WPrxCPwdBHauaHGtxRQDFfYHn4xk1uRhB3rDxO3rP7KQZNUAqjwTdrpYPn+XffoNnuKvBcC6XVyuR5Oh+UyyPo/obxBN8yhyLnAC4eWzhUrqKqbr/dEzPNZvAAzLIPW/Zkdy4B+jqtVlAG8
- b+x5CHMX
- rzZqxbapyLc9M5afLzn7w+lOSCiG3b20ihtHfS6Mal7NpRsbg8Q3CR5E/M/ptbeqSqfaYSGRojO2HV1oYdrOZh3Qa4c3PyFGEMYBcDQLEtzRCubYCrmrPgnAl2anSW3++1AruSb1k01tIYJENOZnEn5gy8+MMokmNJ/Sw6vFlOx25AtCSOLcBs/i/LOYZTBZ7g9F4XUa2uWknAE8L4wIQ1o41iw==
+X-Stat-Signature: eaxmaiwda85smaaffytx3kdtybq1u8rp
+X-HE-Tag: 1782417044-667742
+X-HE-Meta: U2FsdGVkX19khfigiq5OKgGc9bAjoMl/+FyftRJx6z935pPhNeKQxky856LQYuqw3PoJyqx97qebMq6i2hZQRgISMUYgZ0W4kC2rt77HGA+goBII0GNIh4+BkNlzCP5OiGhgU027b0KtHK4mg3sTXQb77tenr8DCzKXq/2BOdR5oulILV7Wcw+LXDAuLcat6ETbh4ve9M79yORQLtOOWqrpyFKnOwHsH3mUe0Hp8QcKxL0qj6qW3KrDHcpZ1KxzebjTmmgR4oY7voLlVFj4fEuXFDVu5ErEEW18YFIh7grn+VU9XP14h5C6nMq4TU+ud4oTUc8ARH391xZMgwAO6xsU7hnnUHCGZjrRRn3k6D10L2bUUJ53O1xYFij69Tsr02uIggIWrnlloXOMoc5EKXE/GwgEkyArCy2KoX42mSXm7HT7JEHNJDX6MrI1pknB2Em5Yh4WwcoraFP5kHqgDWgdATA71a2MsQb3zWOK72Q+zjGXnbjiQkLG4Z/IP/CxZmbjeqKgdZ6uAEjY2VC8qET4j5VRQNiDtlRMrbm2ZNxTxv8u56IY8VIOJlnQTxykzyNFLCJhgAv+8dvLz9lTQWInL8O3o8+OVhGKPx0V8avGxbNQQIx6zq6Tqou2g+lDy1eTSYQbLvSiWpJcEAQfJJIu5mqiqPD2iSnjaDS485IPfS6J3OrtoL4Al4AedTTu+3S9SgkHa6F9f44DBSj4HZ/hUsk3rKqjKCdiYdJX1JSgfAsakQ7OSmMJlUTXuU14apWVxudPi5w5v2RWyQ7kseIyS45dZ+MvxqfYToXKVdfL3ePuCvmmuyvfler5W1bQ0ZCm79G1RGOTTIqix6y+jjhdVEqKc5vtbyylqzjOKOM20+eBHqpzRKKyOJNQoB9IR5AoN208tzMjR9NhNlAwXaGgrj0WMPiAnWPDUL81lSHYsyUaVS1iMvkRqY8KWk9zyV1hGfBDkT5bsgPOi+7V
+ qFyn1ghH
+ W77YAZQTovCVPezNvsmntbQl+sn0OmjC+/B/uemcIVqW7I4jtvnLVwivGqfOcM/Bx8SwsM7iuAZw0N+DdK16X//IibTWLKOgkSDQjfwTAinGAu1iLr9dxOOcgksvKr/LXYMNR0oSeumpUbCKX73k8lynIfCjMWj+jD8fvP5JZe/898JTrvHiPP/s+KyHDWyjJS/bYAldq5kSpJvalLfFi/Cne19t2WmaVLfWmIgZ86pzeBPWYF5UY392Czb1xlyWcZElEy7cC2/rQUAivEZwZH64fTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -85,80 +87,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a fairly bold and opinionated patchset.
+Instead of pinning the file, dropping the fault lock and retrying
+the page fault, just submit the read while holding the fault lock.
+The priority inversion originally addressed by commit 6b4c9f446981
+is addressed by per-VMA locks, so we no longer need this complexity
+in the filemap path.
 
-First, I think all calls to filemap_get_folio() (and its variants) all
-check for errors.  That being the case, it's fine to stop trying to lock
-a folio if there's a fatal signal.  I just didn't want to introduce a
-FGP_KILLABLE flag ...
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ mm/filemap.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-Second, I'm taking the position that all faults should be interruptible by
-fatal signals, and therefore we don't need FAULT_FLAG_KILLABLE any more.
-There were still places which didn't specify FAULT_FLAG_KILLABLE, but
-they all handle errors being returned by handle_mm_fault(), and I think
-they're all fine.
-
-Third, we don't need to drop the fault lock in order to wait on reads
-any more now we have VMA locking for faults.
-
-Patch 8 actually fixes a bug ... I should probably move it up to the
-front, but I've run out of time for today.
-
-The diffstat is pretty pleasing, as is the reduction in complexity.
-It's not as reduced as I'd like it to be, but it's a few steps in the
-right direction.
-
-Let's see what the various bots think of this.  My xfstests run didn't
-show anything abnormal. but I'm not convinced it tests many of the
-corner cases.
-
-Matthew Wilcox (Oracle) (11):
-  filemap: Lock folios killably in __filemap_get_folio_mpol()
-  mm: Make all page faults killable
-  filemap: Do sync readahead under the fault lock
-  filemap: Do async readahead under the fault lock
-  filemap: Do not pin the file when locking the folio
-  filemap: Do synchronous reads under the fault lock
-  mm: Remove fpin argument from maybe_unlock_mmap_for_io()
-  filemap: Honour FAULT_FLAG_RETRY_NOWAIT when creating a folio
-  filemap: Handle folio locking in __filemap_get_folio()
-  mm: Do not release fault lock while handling write fault
-  mm: Remove VM_FAULT_COMPLETED
-
- arch/alpha/mm/fault.c         |   4 -
- arch/arc/mm/fault.c           |   4 -
- arch/arm/mm/fault.c           |   6 +-
- arch/arm64/mm/fault.c         |   6 +-
- arch/csky/mm/fault.c          |   4 -
- arch/hexagon/mm/vm_fault.c    |   4 -
- arch/loongarch/mm/fault.c     |   6 +-
- arch/m68k/mm/fault.c          |   4 -
- arch/microblaze/mm/fault.c    |   4 -
- arch/mips/mm/fault.c          |   4 -
- arch/nios2/mm/fault.c         |   4 -
- arch/openrisc/mm/fault.c      |   4 -
- arch/parisc/mm/fault.c        |   4 -
- arch/powerpc/mm/copro_fault.c |   5 -
- arch/powerpc/mm/fault.c       |   7 +-
- arch/riscv/mm/fault.c         |   6 +-
- arch/s390/mm/fault.c          |   6 +-
- arch/sh/mm/fault.c            |   4 -
- arch/sparc/mm/fault_32.c      |   4 -
- arch/sparc/mm/fault_64.c      |   5 -
- arch/um/kernel/trap.c         |   4 -
- arch/x86/mm/fault.c           |  18 ++--
- arch/xtensa/mm/fault.c        |   4 -
- include/linux/mm.h            |   2 -
- include/linux/mm_types.h      |  21 ++--
- include/linux/pagemap.h       |   8 +-
- mm/filemap.c                  | 174 ++++++++++------------------------
- mm/gup.c                      |  41 +-------
- mm/internal.h                 |   7 +-
- mm/memory.c                   |  25 ++---
- mm/shmem.c                    |   2 +-
- mm/userfaultfd.c              |  20 ++--
- 32 files changed, 90 insertions(+), 331 deletions(-)
-
+diff --git a/mm/filemap.c b/mm/filemap.c
+index b7ecd03d4fc9..ce115411404f 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3302,13 +3302,12 @@ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
+  * that.  If we didn't pin a file then we return NULL.  The file that is
+  * returned needs to be fput()'ed when we're done with it.
+  */
+-static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
++static void do_sync_mmap_readahead(struct vm_fault *vmf)
+ {
+ 	struct file *file = vmf->vma->vm_file;
+ 	struct file_ra_state *ra = &file->f_ra;
+ 	struct address_space *mapping = file->f_mapping;
+ 	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+-	struct file *fpin = NULL;
+ 	vm_flags_t vm_flags = vmf->vma->vm_flags;
+ 	bool force_thp_readahead = false;
+ 	unsigned int thp_order = 0;
+@@ -3336,15 +3335,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		 * VM_EXEC case below is already intended for random access.
+ 		 */
+ 		if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
+-			return fpin;
++			return;
+ 
+ 		if (!ra->ra_pages)
+-			return fpin;
++			return;
+ 
+ 		if (vm_flags & VM_SEQ_READ) {
+-			fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 			page_cache_sync_ra(&ractl, ra->ra_pages);
+-			return fpin;
++			return;
+ 		}
+ 	}
+ 
+@@ -3359,13 +3357,12 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		 * stop bothering with read-ahead. It will only hurt.
+ 		 */
+ 		if (mmap_miss > MMAP_LOTSAMISS)
+-			return fpin;
++			return;
+ 	}
+ 
+ 	if (force_thp_readahead) {
+ 		unsigned long folio_nr_pages = 1UL << thp_order;
+ 
+-		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 		ractl._index &= ~(folio_nr_pages - 1);
+ 		ra->size = folio_nr_pages;
+ 		/*
+@@ -3377,7 +3374,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		ra->async_size = folio_nr_pages;
+ 		ra->order = thp_order;
+ 		page_cache_ra_order(&ractl, ra);
+-		return fpin;
++		return;
+ 	}
+ 
+ 	if (vm_flags & VM_EXEC) {
+@@ -3414,10 +3411,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+ 		ra->order = 0;
+ 	}
+ 
+-	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+ 	ractl._index = ra->start;
+ 	page_cache_ra_order(&ractl, ra);
+-	return fpin;
+ }
+ 
+ /*
+@@ -3570,7 +3565,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
+ 		count_vm_event(PGMAJFAULT);
+ 		count_memcg_event_mm(vmf->vma->vm_mm, PGMAJFAULT);
+ 		ret = VM_FAULT_MAJOR;
+-		fpin = do_sync_mmap_readahead(vmf);
++		do_sync_mmap_readahead(vmf);
+ retry_find:
+ 		/*
+ 		 * See comment in filemap_create_folio() why we need
 -- 
 2.47.3
 
