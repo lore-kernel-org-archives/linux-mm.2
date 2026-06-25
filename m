@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF377CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 00:20:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79ACACDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 00:28:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B74E66B0088; Wed, 24 Jun 2026 20:20:29 -0400 (EDT)
+	id 630016B0088; Wed, 24 Jun 2026 20:28:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4BD16B0093; Wed, 24 Jun 2026 20:20:29 -0400 (EDT)
+	id 607616B008A; Wed, 24 Jun 2026 20:28:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A62026B0095; Wed, 24 Jun 2026 20:20:29 -0400 (EDT)
+	id 51F3C6B0092; Wed, 24 Jun 2026 20:28:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8393F6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:20:29 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D5EB40517
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:29 +0000 (UTC)
-X-FDA: 84916528578.09.3468C23
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DC166B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:28:04 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3D571404FC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:28:03 +0000 (UTC)
+X-FDA: 84916547646.10.F2F24EF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4B0F310000E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="JkzVG/Si";
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1B20A20002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:28:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VH7yQxsm;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782346827;
-	b=RMmReRrk5Nf5OP73FbfVyEQ5ORWAzEIKxHo+Ya31BAkIb2ShuBBbrI5rQBxEXeyh/bouX8
-	lzJ+oHpofHukbtWbwF4Q/+KvoNapE/UgikEvQsaKBjpMCF5iYndb3dW2N6ZOsRP36xp+lC
-	RR6Hhr77qvbIM0NF/fMurOJuiRC1dUM=
+	t=1782347282;
+	b=4FOQc6K2tebCU5Sa4K7+gtbdWSeH7gRISb7j5MSezgspnTnr1SVHeSXFNW+yaJIhwD9RmD
+	lzl/gjMY575Ivc6QRDcNnSR4sknPnwyjTZ9rtzU4RclwCbt8ygywh1EDWsHiB8cD7F5gnR
+	y/sQDqDayOoRRSjkdfrMng5WZaHBplM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782346827;
+	s=arc-20220608; t=1782347282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ec86U2KYfVPXD0aDv/YEnMaPQl4HFcBkPI8cCMgcWNw=;
-	b=POZ0/MTFhGq36jpH6+GYbc4fg/bweqsyyKLaAVpzc6rA8fOc8XaOpUPCiN4ufGIBNEDAiZ
-	AOi7ZzBa4/J0elgpeJB7/PRLUFmsstSDFDh9cKEVNaNHIWPHrkfegp8KKYSqZZn8NRTW+I
-	TWIJhgM2hFJWllIF+77wjc5O3Pmh8dE=
+	bh=G2j8yE67H/DwH47l2u2y3HxJcEjscsIq3SIq2Unbn1k=;
+	b=dZa/lFp8rz75aGdxVBR0Cus/dF2qIPYGyN3Bbdc3Xu3dpeH4mHPy2HcmQEMlGCNFpIk+yD
+	lOsSOEXMs4WJtvoJGa3vtWeP83M3isNrNrHN3tRYgLdpvXjKcrC0LNqKFnM8wOt9kIqVDb
+	XZBaFngdjgqIkykg8UFqfbYMmhAKJC8=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="JkzVG/Si";
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VH7yQxsm;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5C3DD60018;
-	Thu, 25 Jun 2026 00:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DD61F000E9;
-	Thu, 25 Jun 2026 00:20:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782346826;
-	bh=ec86U2KYfVPXD0aDv/YEnMaPQl4HFcBkPI8cCMgcWNw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JkzVG/SiTfTwQpcZ3j5jeMPHGHyISjbX7lUpSd3X37ddUBqdEb8nrkSgAlBhtHFFP
-	 Jp31Is2+MkNtnbxtjf/KQmAsO/PtbLKFFJoKcllAPb+vXCjYkKj5u2lOeIO1B+4jOC
-	 xurncsVybWurH6HY/R7vzp7Goc7ywjUHnpXx7QsU=
-Date: Wed, 24 Jun 2026 17:20:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Ye Liu <ye.liu@linux.dev>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Brendan Jackman
- <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Zi Yan
- <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/6] mm/page_owner: extract skip_buddy_pages() helper to
- unify buddy page skipping
-Message-Id: <20260624172025.3087e8d574285bfa8d6772e3@linux-foundation.org>
-In-Reply-To: <20260623065234.31866-2-ye.liu@linux.dev>
-References: <20260623065234.31866-1-ye.liu@linux.dev>
-	<20260623065234.31866-2-ye.liu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by tor.source.kernel.org (Postfix) with ESMTP id A0EAE60018;
+	Thu, 25 Jun 2026 00:28:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783851F000E9;
+	Thu, 25 Jun 2026 00:28:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782347281;
+	bh=G2j8yE67H/DwH47l2u2y3HxJcEjscsIq3SIq2Unbn1k=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=VH7yQxsmmHXxzNFpXZqI9MMa09EZNg8M9yW3KmCcj0TKRBakaThJKTiZIaphncxiz
+	 Ax4k10BuicfqTw+s4gIxpCIcfU5EmaR1SZTmT83WgOtpmjcv9Ncm+HiFPdypx5lyvJ
+	 +WlaJFvNi+LTXSq2Tuuu5xmFfRQhSHIjqsy+lsEZLeS7dv7HTPLLeguHg8oDkFiul1
+	 g9Mbx3IRM+XvU0Cqih6BFTU917zcQ1NtAdUaVP65lxU6z19NX0ZYVI9NjrfIHknie9
+	 HHFZ4Cycp34LjKYEmmRMOfFsNabEOaI5wo+7LbPGh/+ig+2kFzuDG4yRLK1Wn/kn2B
+	 e79ZdWLp4pjWA==
+From: SeongJae Park <sj@kernel.org>
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	willy@infradead.org,
+	jack@suse.cz,
+	shikemeng@huaweicloud.com,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tools/writeback: parse help before importing drgn
+Date: Wed, 24 Jun 2026 17:27:52 -0700
+Message-ID: <20260625002752.96325-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260624123514.7822-1-alhouseenyousef@gmail.com>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4B0F310000E
-X-Stat-Signature: cbpnkf1ykcoi5qbfkqy6e9wqfa6y16q1
-X-HE-Tag: 1782346827-600534
-X-HE-Meta: U2FsdGVkX19oP/QcrvmEgAle4gMTnSEHtdJO7rHzTVeGH8hQ+1MbTz7BhDTRzTWAdK9RBTnpixcxu8ivpYZydmUYy6mjEmRr2d7tu22P0W1I294Xb7P56V7zUxVql8YnfVyySAm4L0R+jQf8NcDx0EvVBy6CcqsAUGCSn0PFf0VrTHdEJ5AzLRE91CvtwvHCuJwAooHfOHLbEv3ZEw8oYM2i6VxpiPYbLFIax27gcQJNCle39EGe/G9HmFky6jtULcwDcs4B4Gbqk011HE7BZXBn0tDRsx/sDvHsimauFxm29tKDbWHFl92OqKU5wuXKHRty3H5c8ea4MoTbY8Htx3gZTgJ6jYnMt6vkEMegm4tVrPnq85radg7vSuL+tLCGEPBu86KRuvob2TBZnIuRsAvJTLcsYyIXnv84/HC8eo0wRs0hyhCn+3j7ip1T6PrEUbN4FFb/FixbEkoDYIMfdi6ngSqJQOlPasPMJU76SL4/vqXcWLxn17PZjzTIXBRRkJYz+wPSSv9MDVXo6AkC3kM1DiOoTmE/ALDJIbc/YaPcmVF47ecS1PhBSkDuVq9dAnSJp9FAwr4eDI+42+6y4yitiscpgsDC40+gzcjsXCUUIw5CazT6bIsdTH+pr9W00XrpJ8Gl90qs02xiZ6lx7OOQsP1EurF/hXUdn0FV77aFTD6Pe/ywp+Ri1Aews8tQVQoxuOpRWM5D4J7c/JU1YdLYKUKi8wWZr9A6/+/XkCifLI1B7257nB+uxUcxPvqyBQnMJMzqaPwx9fNnGANJOi/vRRAy8m1oHDgVxXAkwjGp7b4RrJKD8QV2hYBAKhxwtpkwArPLMl44yjKOZaRYLXQygQxOCTr9cLbCMbIVnFn6rsfWtw4aHxMYP+O9XKCBs9nlKiqCE1KhdhPvcWaxmHk1dSwV5o9MBXiDR+TBzhVICJM7jPObMkdnO1vzUVYBKhJJc4cekyV7skvoKvx
- PbAs9jSj
- CfWQWwEBSGtskKA0XMKfdMqG85HMjDaHtykAajI1dTVcESIHOJOvcAYAvzp67GAyiV9ZqI28iSCEXbV9W5/YSgNrwljrRee68cLGGflNI3/16liBVatI75YT7SHRIFhn4nP4WPPYhD8j5DDeSnYJqgsxFMb1e52FJHn2gkoxCH6e0GxRwjBIG3eQ8bxz5f4i2YJz3F0gEmRrqLPRZd0KXhcvEc+BPDqxYTxdypbk9Phwm/T6BnbCVbgKyVym98U5JdvqWD21nFYHj4GaqiI0b427qy7z3k7IXWOkVLr6UQyQZx1MEpyL7xTX2EcOyk5ztWr3S06H2+nm48ZuljUbACwXkzOYgAtNCegtY
+X-Stat-Signature: 8bmwpb1ze65d3sqw9etpihypywces95s
+X-Rspamd-Queue-Id: 1B20A20002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782347281-138262
+X-HE-Meta: U2FsdGVkX1+B50gowZbetfV5o9gNd0AL6vOXkteIlTD7/7X2CFVDbJpmtEn1LxCyav0AWMdZ6CcAg2Dk+FyFWd1bRZeI/nybExeTMhT9GXAYOKAmoOD/Bcit0D14GrQdKhuMMJ3c9C5MR59CQtrDAuJCp82j0VcaImXC6HG17u46FP87Gz8Rr4m40uaAi4AIPwWDCPJYEvD+uk4lGHrJFVIy5AnwEn/LG+jOrIuZY7g/Dp6IBqFZKXriKq3KTcaaiKgwj+ECIr71RFNd4fHD2fzVTjITWl1PF3B9sfHoE7yr4CJA9fWNBYCQaOMqMHYIIiYzI37PdWXG/ilumkwQXrpI7smSgRQYB6tF69ePWa29OLRCb5fEVLR11Yg1Cs+Z51ujfnqzUPj5JAcuRWWgvemFm2BdRyQn/DeQzKYJys8+ZLKFIBF7xG2vTSbDhm9NQRmsAjuXukPsYbDlcOI/3UyOpayxV3NDzl+IXi3g+xMq9M9WRhfs8QdUjKHPHd8nVrahm2y5a3DfjO086UEU5NlaJ/UHBtIv9q1/qULx949uwnV1WPqfoChL8HlvZoQ972nF+UFqqayuNXe1K0i+enFApzTYb7cC3QiQNP35DMh3VmKqKQx1b/gyY27XXxnfkBVm3U5YoDPrw+WUlsq2o1quwVt/PrXSz8dwg73aijYOZirQ23qqeze2ulXSpl4IX0AiZElDCKZuTU1aQTeidWwJhcmPeP/z1AMiy+t/wjiOc86dKtH2oYVxtiatdwkNNEljq5LJyObDdsZeroi9cSS4G4bgM5xULXG1sErxYTvJk80Dsl6xOrWNqjzPlAiUJTAoC8QhUfDVi7InC+HTdfp5aDjXYDLpdRlZVcgdIltvdzbQHArLS/3sa3s+OLvewFpLHcs4cy4UroaNr7kJBEUlyzx+yvMZxCGBuVxTz2aKwgQ6a9hATp0SEeU2JA3dZZ5l76Nzog0NSaFyvg/
+ +gqK2OSP
+ DQfpWuPMjFAtJGmG42k7+mIxWo/sgh8gxD4u4WMF/5UzGXZId7kTMpxlDEXMe+vt+8JwpZlL47SIwAD9O8/whWP2ssdfSwuOt1nsH5or6bgwV59ZP8VzwyQ+j60tocCUTyYOtymzEuERlVAKt5JOXbaLHWDdpzhqDskpQTJld3LmJyPwmNYVkmTUr9tJ/uVcTpggHxQohyjE/OtcKZDAm5dYQ/MvwcfBrNybhigsdrkLFbfg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,28 +95,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 14:52:26 +0800 Ye Liu <ye.liu@linux.dev> wrote:
+On Wed, 24 Jun 2026 14:35:14 +0200 Yousef Alhouseen <alhouseenyousef@gmail.com> wrote:
 
-> Three places in page_owner.c duplicate the same pattern: check if a
-> page is PageBuddy, read its order via buddy_order_unsafe(), advance
-> the pfn past the buddy block if the order is valid, and continue.
-> 
-> Consolidate them into a single inline helper skip_buddy_pages().
-> The function returns true (skip) for any buddy page and advances
-> @pfn past the block when the order is valid; returns false if the
-> page is not a buddy page and should be processed normally.
-> 
-> The old init_pages_in_zone() variant used "order > 0" as an extra
-> guard before advancing pfn, but the continue was unconditional and
-> (1UL << 0) - 1 == 0, so the behaviour is identical.  The comment
-> about zone->lock is preserved in the helper's kernel-doc.
+> wb_monitor.py imports drgn before argparse can handle "-h". That makes
+> help fail on systems where drgn is not installed, even though the script
+> does not need drgn to print usage text.
 
-All looks nice, thanks.
+But...  How do you execute the drgn script on systems not having drgn?  I tried
+to mimic the situation and reproduce the issue you are saying about, but what I
+get is like below:
 
-A [0/N] cover letter is nice to have.
+    $ sudo mv /usr/bin/drgn /usr/bin/drgn.bak
+    $ drgn tools/writeback/wb_monitor.py
+    -bash: /usr/bin/drgn: No such file or directory
+    $ python tools/writeback/wb_monitor.py
+    Traceback (most recent call last):
+      File "/home/lkhack/linux/tools/writeback/wb_monitor.py", line 44, in <module>
+        bdi_list                = prog['bdi_list']
+                                  ^^^^
+    NameError: name 'prog' is not defined
 
-AI review identified a few possible pre-existing issues, if you're
-interested:
-	https://sashiko.dev/#/patchset/20260623065234.31866-2-ye.liu@linux.dev
 
+Thanks,
+SJ
+
+[...]
 
