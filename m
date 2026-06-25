@@ -4,166 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06DD2CDE009
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 18:27:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A0CFCDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 18:29:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B723F6B009F; Thu, 25 Jun 2026 14:27:00 -0400 (EDT)
+	id 780376B00C9; Thu, 25 Jun 2026 14:29:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B238D6B00A2; Thu, 25 Jun 2026 14:27:00 -0400 (EDT)
+	id 731A46B00CA; Thu, 25 Jun 2026 14:29:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9ED246B00A3; Thu, 25 Jun 2026 14:27:00 -0400 (EDT)
+	id 6205E6B00CB; Thu, 25 Jun 2026 14:29:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7831C6B009F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:27:00 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 3981C6B00C9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:29:08 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0DDAB1C5450
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:27:00 +0000 (UTC)
-X-FDA: 84919266600.23.29BCC92
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010009.outbound.protection.outlook.com [52.101.46.9])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 324401C0009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:26:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fi4qdJmH;
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782412017;
-	b=Kvin/CbwdLrAQQTHLjjFycp/VKjqkA2IHgaN63cjp5y2TYPlfZ//TODnTqW1ffooGV4AkH
-	otd6AKs3JCxzhKOar4y1nGiRxH86ammJbTvPyQ4QnlW3QTeaGwFW0e6B2feg6K1BP28Eyw
-	xauYK0FCeS4F8+G8F1uxbCi0dIIP7OI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782412017;
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 98D0F1C5886
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:29:07 +0000 (UTC)
+X-FDA: 84919271934.23.946206F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BDA771C000E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:29:05 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aucTVLfS;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782412145;
+	b=UEFQpGrGtmvnLHppLoMHKeQj/RZcyAIqpahV3/sVfL1Q0cqF0ima6hWldEKkNZ5G6fHebk
+	Ck7cIqB/x0DSOu4HX5edvVx0S5ycIPoMNpLilSqXHN88yLbDsy69RNtpFtRylkxbJL1HEp
+	Rzdi70naSewbpRT7q3qjsGSRbSQJ0V4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782412145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fuwztvLU5nGoOhyPcQkOeYY+w2ohT/S4bIN2BafKmIs=;
-	b=UgSK4DT3LHNFQlUjLXP76+npjgIlMb68zwfqVDDvwSm2YEYwePhs7L9YEujWqN2mEBb6q2
-	jGJf/dvhRkgR0vGgwb7t51wErKdHHkj2jDMhWMx752jLOE47jRz0DuJ5EjTEplbKpjH76t
-	seMzV+4ITqHSYFvzO9QFsxKBH61Q1Ck=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fi4qdJmH;
-	spf=pass (imf20.hostedemail.com: domain of ziy@nvidia.com designates 52.101.46.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=agW43CtSoV5hQnFe1QXxYt55424I20MfjLZN4DoSlUb0ixC1EUbb+bdYg+Wni26sxDB1xKAzOfweAh37yp73gWtWgIqz+/CBL1HNbMZDMqqbKW/TMByLuPribYOZBKfPWHuVUtyCRoPyjKwSUc5Pm4gJHITzaoQEOelRrC/RncAnUqG9r9qdaEN6M4mgS1B1ADKXl/MGkbrK3w1gMob+Wmyu+MBVxmNNaUQc8oaPNc7EQpQGuBepqymcTeUIafz+sxTHrAciiQT0HxTdNQbqtJ5jQbd+MHAxWvOAs5s1w5zTg5aOTktdZNK9Ec9nwsiCUg6zZPLxlkm7inIffAdQ9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fuwztvLU5nGoOhyPcQkOeYY+w2ohT/S4bIN2BafKmIs=;
- b=Fnz+svWzhRkmALahteIXE+lnaQ0wPeNlydeWxNndpgE6p3dQoIN5BgG1i2C0Au/C2Lkwe2BHA2E2AyQHfTp6b8OcX1HAGsYute6a6dOQnpoQapthbA+FHMYr9/M/iZZIYt9u8et/safmNChOd75OIVhilOCSkg44h1QklP8HC1xADFcR6rNdvVsTX0ufls1311S/DzvS/9rLX0STZsAs2NTIJqzzz8SqYWFNJg3aKmB6oR83Y2llTHInIuGVw8XfuL6D6pa/Baa7ayQgsYSqMmt2qKLuxAUl1Ku1xFWSWvxzGoJF0PKgSww5hrNKFL4Ds3aoazDWWPWc7wOZFlWtAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fuwztvLU5nGoOhyPcQkOeYY+w2ohT/S4bIN2BafKmIs=;
- b=fi4qdJmHEeQcHahIcFj+wzLiZ0M5z4Mmr1C6mIJpr8bOpgUs/zptK8saagOwwvmci/5jKm4pNBNPDCLZrE3oWIXACSTnaw43eUsNyW7I5qjpcJ9TjTMNm8OVb4skfJr7K0WW6rNp5Pw4fW0tcKyAVTVYEfVyc3GZX1jPMRShhtE7li3sMAkzi98vvu7ysLPJ/lfIjVpYGd6skMeo4ftjU2ZCpNTPiz4Bwbb0LzM43Rs8TAmYGtgpJNxmLf/72n56+7tFsbSraKdkWzVHDNpddIodlmBeYU8gA6tzo8EDC8IzTSSovtNvth0OaFBdBNcBRrit5chXYyFcLvLJwVuLZQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by MN6PR12MB8541.namprd12.prod.outlook.com (2603:10b6:208:47a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Thu, 25 Jun
- 2026 18:26:52 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0159.016; Thu, 25 Jun 2026
- 18:26:52 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Jun 2026 14:26:51 -0400
-Message-Id: <DJICBQ0OIM2I.3VWL2AQBX12F5@nvidia.com>
-Cc: <surenb@google.com>, <mhocko@suse.com>, <jackmanb@google.com>,
- <hannes@cmpxchg.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-To: "Zhen Ni" <zhen.ni@easystack.cn>, <akpm@linux-foundation.org>,
- <vbabka@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [PATCH v11 1/4] mm/page_owner: add print_mode filter
-X-Mailer: aerc 0.21.0
-References: <20260625043101.338794-1-zhen.ni@easystack.cn>
- <20260625043101.338794-2-zhen.ni@easystack.cn>
-In-Reply-To: <20260625043101.338794-2-zhen.ni@easystack.cn>
-X-ClientProxiedBy: CH2PR18CA0029.namprd18.prod.outlook.com
- (2603:10b6:610:4f::39) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|MN6PR12MB8541:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba2a5f1f-5a9d-4c43-325c-08ded2e75459
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|23010399003|1800799024|366016|6133799003|56012099006|11063799006|4143699003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	fay/kAIWHcjvTkPhNA2SO178EWIkK5PajDpwAHA4or8WQcz83sW48wn6yPS8IJU0dXzr0hQArHwc0ssL2O2JplUe5/QokAo10gCWqdGHVzLYkGjfLw9/e4xmsnmSrWc4RjLVgD/h9aapI4/tudphG6LZAUmwmxALdjCHw544z8LmdztsCeFSp5rkkA08+RK2NuVBcUNbPscd/YxpsaS+QyQf3FrdsQIplceiS27CmBmD0qswzG2fCAUxNLBVXjvaWbYhYlFs0G5vyUI47HPe3BW8lCkQreghcY3aPhBRcGKpFavSPfvYhEqrHZMuIL+Mb564lKjI1OtAVIpEnJQxsv2t23SMtI/xCuDBXujLHlZjjGldv4mqQ+TtyMjCHpajcyKCb0RZSPM3xXQ23256lFoZnLoBC+Bi+9YhBt7Gyeyyoj2hSGFSeAlNkpQ0XOa3CkyvOTdH/FIz7cHu4K4LYgttHkoGHe2FlscA53LE3/51G8rrUI4VktdMtSUakVkYVh9bEF5wLm+oRO93U3MIneuIaPVONdaTIKe2tYGRHFVwYOktlJkIZCUSGoEOrassQjzj0UiqHSpcTEoKHx+oi6MNngTsQIu+NQd8MiUV4jKYtdJ71KCLcWC5Vh0NxZEDpUH4fx8VVOMFEO8oOQAHpwCn4I835IeOHaInLWzNxjM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(56012099006)(11063799006)(4143699003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bWtWYzF6UzdPc3dVQ2g2Yy8yWEF0N215bDBwbUxYMTdpUHBJcHRqam1jOFA3?=
- =?utf-8?B?RGoyYTJmcUd5MjdBTi83YTJTSWhSdUNsY3kyUmhjR0lteHZBK2txMTNXRklw?=
- =?utf-8?B?amswK1c2UHlNRG1FbGVQNnJHVXVJUExNeEJ3SDErZFUzWjFiWEVueVNBbW9W?=
- =?utf-8?B?STdQMUwyU2twOFNjcjc1RUNNZTU1eXFtUis3T2Rady9Wd3NLYm1ZL1BiOTBR?=
- =?utf-8?B?MHdSeE9PNmh4bXdFalhrZEgrZmpjTU9sbDdnald3QjNuMDZnV3VhYldBK1Ns?=
- =?utf-8?B?aVpjUHpjMXZUMEMrZUNLWW9RYUpreW0rdGp5QW53ZGJCd0ZQQ3p3U3F1N2RO?=
- =?utf-8?B?VHY4Qm1CNzBQUkx6M1R3ZnRjVjBxZVgxU0s3RDI5TCt3NzFlQ3lwS0hSeHh3?=
- =?utf-8?B?Q0VaM2JxbWN3RjQzSHdiRFVYYkZlcUxyblRwTnRMeVcrR1Q4Q2Z6UitXUnd1?=
- =?utf-8?B?ZGZWdm1QNEdvUnFNMzc4NHp3d2s4aW9KVUovWGZvbDJmR3pnR0g1U1RVNy9x?=
- =?utf-8?B?STkwR0pqUzB3dXdFSzZpSFowUHk2R2drY3I0U01kcGdwb2UyL3lvbHplN3pD?=
- =?utf-8?B?TnpsR2MrRjZZK2JDSjBrYVZ5b0JPUmJkQnRzQTd1VDlnZmtLSGw1cUZpaVlo?=
- =?utf-8?B?WWhNVGZXSjhISytyRnduZXpyUXlMOGJQNjB4QUpra09BSWpSVDdiMzZhQTNE?=
- =?utf-8?B?ZER0dWUweHVhVXgwZDIzeW5hZ0hlaDhZaWk1NXhWRmE2V3ptSGNLZTJ3c0RE?=
- =?utf-8?B?V29BbzJsalcxZm00TTcrRzh3NExaMDc5cXVSS1U2OTZTb21JMVp2WXRYWHZk?=
- =?utf-8?B?b0hzblN3TUlPUzVWUHJ6bzFCQ0VjZEZiSC9aNFE2UHRSSWQ2SnMrTE9uc0p0?=
- =?utf-8?B?cmx1VE8wQ3lWQ0lyNGhudVkzbHZFNDA4Um5uZTFHanROa2srVDBodmRrcmUx?=
- =?utf-8?B?MHFnRWRwWDkvb01KWnVGT0RUNE9NYitpQytiS2JMWTVNK0RDcXF5bWdCWDlS?=
- =?utf-8?B?M00xVnc3VklDK2l0bEt6NXN3cldGRThrRXdaSkdaU0J2dEdESXZXTXZkTzV0?=
- =?utf-8?B?WnBCUWYyNm9UZ28wa3RkTC9TUUUxTXExNm8vZlJlUFJ0OStxV3dCQWVpQkYw?=
- =?utf-8?B?QXh1cUtvcWRHWmhYalRjaGRaWGVlclRXNUtqRVBTZGdvbDhVK2xML3QvK1Nr?=
- =?utf-8?B?eW4wNnZ2ZGRRZkx2Ryszb2pIZDZNNm9Eb3pGSU04S2lKNk5WYjQrSEQ1SjlW?=
- =?utf-8?B?M0x1RmFHZnUrMTR3RkhiQ0dNUURmYS83Z0VNNDlsaExZUDI4cHd4eXRsTUEw?=
- =?utf-8?B?SFRTcmltZis5VXd1RysyaGJvOGszRUx5WU94bE5SMUlONng3TXJlWm00VWI0?=
- =?utf-8?B?bU1iL3JPdEZMdXVHemYzdnIrcEkveG02azRveFZoQXFOVkNDT1BBYnJjQ0kv?=
- =?utf-8?B?V2I5bmVwZi90aHAwcFFudk1xUGgvK3hHK0ZIUlEwU0NuSU8xdmxsRmZPSG9I?=
- =?utf-8?B?cHdMM0dmcVhMeXlXUFFwckxlaSs0RmJGa2FCY2lHMDVPbXBkb2hjK2dvdHhB?=
- =?utf-8?B?NVBlejhNcFVvQmRtd0R0cG1nZkhISTZTeEtWZFVJSmFaUWozVjA3VXJVQ1lI?=
- =?utf-8?B?d1JlZ2t4MUZoOFVlR1ZiSEhrN2xtNVIzSEZSdFlaUjJNaGE2Y0U5a0hGV0Y0?=
- =?utf-8?B?WjFzSThIbTB2SCs0UlNhRjU2OHFWS2VwL1oxczk1dFBKdEVSOHhPSGxqSjhR?=
- =?utf-8?B?OEtHZWJ6Qmt1WDNLVnlJM0t5Y0VyeVc2S283OWprSlBIVFNXb2tTUzE1TWNH?=
- =?utf-8?B?ZHNjUjJsZzZtUlRYTW5Zb1dIM2ErRUJpNVdEVHlOUERPc25tNE9jWStUNER1?=
- =?utf-8?B?M1lyNlFWeWh0ekdmdDZ2ZzZ4YWFObkk5QWc5Q1VPbXlFYmhFdklQOTRPY2x1?=
- =?utf-8?B?Q3dLVC9jc3M0K1hzejNKZFNhSjJsenF4K0d6Q213ZG1XQkptZHA5SkFvc0NQ?=
- =?utf-8?B?U1ZIYkNJc3dPZCsvM0JGSXN0cjRNL3BNc0lxaTREMTJpTEJqUXYvZ3N1dXBJ?=
- =?utf-8?B?WFFhVDBFYVFqOCt6R2twRk1yTFFZSzVMSjBmNUZEYzZQRG10SVBsSnk2WS9v?=
- =?utf-8?B?RkVrQTZvdW9OMzRybHJLWUlTTVF3cHVwMkpIVW1xa0ppalgzZ0FaZzdWSnZj?=
- =?utf-8?B?aEFMeWNTSDNkVnZDS2hMY2NlR0xSTnRNeGEyRHVBbW5jblJmRWJ4bVhWZ1Bp?=
- =?utf-8?B?NWxOSFkwZmEvellkYlNUUGhiRHBwL09JV2FYSWxUOVpMTENxMGNFMkRRc0N1?=
- =?utf-8?Q?fHvBB611lEq8R+81+/?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba2a5f1f-5a9d-4c43-325c-08ded2e75459
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 18:26:52.8899
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l9HjUTm3iBTfaDxYcWFI8g279D0ICKXWAPw40aKFpXlH9bVq8K8ARV4qFEI/aDER
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8541
+	bh=Gz9FOGPa7qqQY6AQKnjVfyoG9EY2IZ8jwVG5z5C3WNs=;
+	b=uH/6O7GjmkISgYe0KCXXXsJZ/vA0r6rvgvTp3yBOWhn4VVSD4b5YOhIUkhClhqfEBETT4b
+	5kVpb55i7JILnXtWesnS1GXIwkG6xRKOXp9JkuLwFPI1GzkpNQa63r48Oj4TGSa1EhSYxL
+	5siwPHJJtrJ/vmxe/x2bjmdt9Uh/bgA=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aucTVLfS;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D83560098;
+	Thu, 25 Jun 2026 18:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5954D1F000E9;
+	Thu, 25 Jun 2026 18:29:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782412144;
+	bh=Gz9FOGPa7qqQY6AQKnjVfyoG9EY2IZ8jwVG5z5C3WNs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aucTVLfSiI88uOQgXNeZHAfDomgg19wlc87GHYGd6G0AdUvLe5znczySG5wXLXaJx
+	 BGotTj2TypYkC8zXApQLuRCbbi3TIYgr+1X+MqKGfpkiFMfwQ1rZlxc80uaZc6D6tV
+	 R1We3MX22LSUnvhKAN/NFfmfUzDrdiBq0fJEtGl4=
+Date: Thu, 25 Jun 2026 11:29:03 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ "Liam R. Howlett" <liam@infradead.org>, David Hildenbrand
+ <david@kernel.org>, Jan Kara <jack@suse.cz>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: do file ownership checks with the proper mount
+ idmap
+Message-Id: <20260625112903.f961fc41a0b0f8dd1f1a9fdd@linux-foundation.org>
+In-Reply-To: <20260625153853.913949-1-pfalcato@suse.de>
+References: <20260625153853.913949-1-pfalcato@suse.de>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: f4gdzfuwn3dw3tznrsqpx8y7qitd6w5k
-X-Rspamd-Queue-Id: 324401C0009
+X-Stat-Signature: aofsk88r8yeyfqh1ubwq6m3oi55fmoj3
+X-Rspamd-Queue-Id: BDA771C000E
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782412017-532309
-X-HE-Meta: U2FsdGVkX1/QbelWHz7jQu8Tk8WPIAv1DeZeLVIEw3AiW+tlcWBfDRDQ8DHjYyCFvZqMRNcC9MsGRdVT+IK4sEcaTAo3EvWTZ+Zpnk9N3MM1RibIpxJGKBf/ixmlmKMfKrIjZJpDeKiy1uEsAapmgUKDgiEWKAHvMiYV4PZ6DJjaLe9WfS3jIXRpfQloJlW1kpSZYaOkKylcEAqTrV4RBoBBKvKFvyD3YS9ftlDJnzpweqv1SADpGacnPFe7JWBRmwYnSU1h0+r1RrhHaM/jR9nVFJdYpvogy5FzQim0zN1Ed4SbL03pjxKtX/kPeaOoEcJFJkR+6ZnbAHHvnp1cOzVGrjCCgYg86e1CNTmP3ZtS8uLUynU+399UiC5sxElg+G0t0pS/uQeELFaOAoCvtSOGNnXbcPFhStbhkGTdaa0ci2ijtmdALrGVbG0Ex6HaiTW1K3ZvNIX6wo78rKlVDtMG12dn2YD8ydrSodyt++Uzva4Ym/b5JCPlOtkk6DfJRpI4v22+C4Hx/CK6tGQhtXpic/SXCPs3TNwKttwyWDuhXaVfhnSvnE50YemXoQGFCJrajINBU23CsmXnwaut1W0BzGNbUl/u2un8x1gL4pGSB1imGGcH0ZvmDf7IN/owhobtseAyZPFGklpRglN2Tt2w/snHpcbbn7/T9ldszf6eXVNemyfKP4Jo+f3zNnHQ+3ifUtC592JUpvG6jzD4VBUKov02Jg8HjNF+MmjBw+OW2iVo2fRwcGgd+Jlh+ftnLlShuhYqBAZR1yhyqW9FEwMqO/lHOGuOfHqnLcnt8TglgSmPRVvLKmsrCXK1B6/oHuX0vWBSO1kRhE98SfISLL3TWVHvoh4N5Wk2CMrE0MQR+z1UmiMBe6QkA8fLuymgLyQYmDUGZP3AAbomspdtk4QuLURcsOlCX1JeLmT8FlQNcgYUvvDjUsZV1/lqMfWm2Q2VG5VDRU/vZlaNI9n
- tkzJ/0+t
- saReWSYDQuJeUhvFJylYIl8iBDWXYNAUx7c+wyBxNkCfC38tAteW0IFt/GIpuY6/MIAcvErOCfg6rGDk8j0Mlgv+YYwJEE3DafVxVCd/xcAVvQ5OnT4xB05LTQNYt375/HSdR9yfROc8+EqWaHB0KIBLnIUR0P3oEObCQA4kGwmn2sKkkvlGAv3JT0djUMkVUWaGX/209LB9u0lMupxX0hjUCSvywwtEaOe9+LnPF9G5kRA7qyBk5oW4Xg6933KTM/U5OhBbjh7gUw1gc3ErbCAxwvCihAs0wqKTrdrML9Si/LFMzF0CWcG+5GMu6fDe/vKmhjjku3/e0BR5jrGwNU9vozLd/zIL6KYEIhDbJDc2rinhbuw4N6fmsdoGJXQIYRFvg/PgZ0GJYZ93tzpHScSmiYsUH8ooGLnL8jo0MVFrxUZyZiQ6nMaJyIb5lGruoJDhxXujM5x9bUshpt3gUjsv8og==
+X-HE-Tag: 1782412145-484178
+X-HE-Meta: U2FsdGVkX1+12xuWnf8VU0zhGD/9Fs3kGWloFDo5Xw6cdBA5XwQ+1jMyvaw7v8L5TanQOnlPx7hRr4M6CaKfgctqNXbp2H7Ic/EIorSFm0hV82BAJeD9MBWdRbbf5AP1O01PIs/DxX8y8ZF0EEec8aLf1KS7goL1BEWyQWIkpsR31IsmUlnseilYnujiunnqq3m89jevLMV3wiyfPWj5rhxP9lY7ywk84/xrQWmwQ0wLRw7n3hbpM7/COHDlhT6LZv3P3QlHH4/KLPxFIQ+RpPHWJal/aO4lgM+e/q8lCd1CDqgj542GHGknjOCE0oxQ7EWMGfGD2IRWds3XLAese25j06oC5w5OuM9RYxNO8JVM/qPRiRbOiWAem22TDaumqcN6gkfl3S3SRoFvHVNFLFTyjURdT8rynQuAog7uvtMGWa8FF1FuN7xc8BWC2cUFtEfUlocy4zUjr4jqv3BP5E9kVBF+nAjWrPdpUUI16YonxXB6ek3bubEVKyffilN5S26mG0deVHAZcs9AFO4wlsP2wWJMuyDLf1+0k9Vu9m/RWi1pfPBw4LEm66PvSeXBYnPbfgnyAJkUHJSE+WGjYbjdwCXobtucpepp8wctLmMLmNT96jC5wuwziSmMMTmR7/qIUGvq4opg54PPWyONfS0hUdY8i7Xbu0/U0HlpZbPR7B5ik9S/2U59gG3dF3vaVkaWt9M1VZKBzR3Ut7xn6NtbykBlBfYJEanSRP0zrVSjZkurbBee4kMRWfJ3N2cOT4fGqS6c0HjH0GzmjvZYL+2R6q+9UnGvNnQMdpkuM8wmphrHHTtFSfXSHy3WoGHQTA/7J5S3e2Kf34AZiG1DfpA5CKsZk7IpyYsphwCr9Li1/80qFWKEZskSMZnreQroQZCjoGY/vgY9PVLXgM/8DBX/lbhX+OTD+lSeCLe5PX2smQxciH8kPjc6TQqkGc7EJyGUmAMDWegdMhpU3ta
+ /36y50nj
+ a/fca96O3qb/sC58WaxLpIt7Y8ZC372A8j0bzeJA2/8dhyjXAuY38GwvzDbVVVKll1fOC9muUjqmx4z1vtjC7SBvwJccBtrwYhYlNR91kQaLN/FQVnGNxblk5RGabx2/fGAUWBt0b1lHxPpJ5edS3uShQkMVxwcM4D9/6peYMef7xEEo2biyqDi5zFVo80ur85yPKLyS3k+Lkdr2PYkC767NF+uU1Z3WeSn/Z/00CAOEIBGGXWxNX6AiHONYqlFIlz8ud
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,155 +95,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu Jun 25, 2026 at 12:30 AM EDT, Zhen Ni wrote:
-> Add a print_mode filter to page_owner that allows users to choose between
-> printing stack traces, stack handles, or both, providing flexibility for
-> different debugging and analysis scenarios.
->
-> The filter provides three modes via page_owner:
-> - Writing "mode=3Dstack" prints stack traces for each page (default)
-> - Writing "mode=3Dhandle" prints only the handle number
-> - Writing "mode=3Dstack_handle" prints both stack traces and handles
->
-> The default stack mode maintains backward compatibility with existing
-> usage, displaying complete stack traces for each page allocation.
->
-> The handle mode dramatically reduces log size and improves performance by
-> showing only the handle number instead of the full stack trace. Testing
-> shows handle mode reduces output size by ~66% (84MB vs 244MB) and
-> improves read performance by ~4.4x compared to full stack output. The
-> mapping from handles to actual stack traces can be obtained via the
-> show_stacks_handles interface.
->
-> The stack_handle mode prints both stack traces and handles, making it
-> easier to identify pages with the same allocation pattern by comparing
-> handle numbers instead of comparing large stack traces.
->
-> Example usage:
->   # Using the page_owner_filter tool (recommended)
->   ./page_owner_filter -m stack          # Print only stack traces (defaul=
-t)
->   ./page_owner_filter -m handle         # Print only handles
->   ./page_owner_filter -m stack_handle   # Print both stack and handles
->
-> Sample output (handle mode):
->   Page allocated via order 0, migratetype Unmovable, gfp_mask 0x1100ca,
->   pid 1, tgid 1 (systemd), ts 123456789 ns
->   PFN 0x1000 type Unmovable Block 1 type Unmovable
->   Flags 0x3fffe800000084(referenced|lru|active|private|node=3D0|zone=3D1)
->   handle: 17432583
->   ...
->
-> This implementation uses per-file-descriptor filter state stored in
-> file->private_data, allowing each opener to have independent filter
-> configuration.
->
-> Signed-off-by: Zhen Ni <zhen.ni@easystack.cn>
-> ---
-> Changes in v11:
-> - No changes
->
-> Changes in v10:
-> - No changes
->
-> Changes in v9:
-> - Add spinlock_t lock to struct page_owner_filter_state for concurrent ac=
-cess protection
->
-> Changes in v8:
-> - Fix buffer overflow by adding bounds check between stack_depot_snprint(=
-) and scnprintf()
-> - Fix unsafe string handling: use memdup_user_nul() instead of kmalloc_ob=
-js + strncpy_from_user()
-> - Fix strsep() memory corruption by saving original pointer before strsep=
-() call
-> - Change format specifier from %d to %u for depot_stack_handle_t
->
-> Changes in v7:
-> - per-file-descriptor implementation
->
-> Changes in v6:
-> - Remove unnecessary braces in if/else statement (coding style)
-> - Use stack array (char kbuf[33]) instead of kmalloc for input buffer
->
-> Changes in v5:
-> - No code changes
->
-> Changes in v4:
-> - Change from numeric (0/1) to string-based interface ("full_stack"/"stac=
-k_handle")
-> - Merge infrastructure patch into this patch
->
-> Changes in v3:
-> - No code changes
->
-> Changes in v2:
-> - Renamed from 'compact mode' to 'print_mode' for better clarity
-> - Use enum values (0=3Dfull_stack, 1=3Dstack_handle) instead of boolean
-> - Update debugfs filename from 'compact' to 'print_mode'
->
-> v10: https://lore.kernel.org/linux-mm/20260618035750.3724613-2-zhen.ni@ea=
-systack.cn/
-> v9: https://lore.kernel.org/linux-mm/20260525081652.2210206-2-zhen.ni@eas=
-ystack.cn/
-> v8: https://lore.kernel.org/linux-mm/20260520075641.1931080-2-zhen.ni@eas=
-ystack.cn/
-> v7: https://lore.kernel.org/linux-mm/20260515091942.1535677-2-zhen.ni@eas=
-ystack.cn/
-> v6: https://lore.kernel.org/linux-mm/20260511033017.747781-2-zhen.ni@easy=
-stack.cn/
-> v5: https://lore.kernel.org/linux-mm/20260507064643.179187-2-zhen.ni@easy=
-stack.cn/
-> v4: https://lore.kernel.org/linux-mm/20260430163247.13628-2-zhen.ni@easys=
-tack.cn/
-> v3: https://lore.kernel.org/linux-mm/20260428071112.1420380-2-zhen.ni@eas=
-ystack.cn/
->     https://lore.kernel.org/linux-mm/20260428071112.1420380-3-zhen.ni@eas=
-ystack.cn/
-> v2: https://lore.kernel.org/linux-mm/20260419155540.376847-2-zhen.ni@easy=
-stack.cn/
->     https://lore.kernel.org/linux-mm/20260419155540.376847-3-zhen.ni@easy=
-stack.cn/
-> v1: https://lore.kernel.org/linux-mm/20260417154638.22370-2-zhen.ni@easys=
-tack.cn/
->     https://lore.kernel.org/linux-mm/20260417154638.22370-3-zhen.ni@easys=
-tack.cn/
-> ---
->  mm/page_owner.c | 129 +++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 123 insertions(+), 6 deletions(-)
->
+On Thu, 25 Jun 2026 16:38:53 +0100 Pedro Falcato <pfalcato@suse.de> wrote:
 
-<snip>
+> Ever since idmapped mounts were introduced, inode ownership checks
+> (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+> done against the nop_mnt_idmap, which completely ignores the file's mount's
+> idmap. This results in odd edgecases like:
+> 
+> 1) mount/bind-mount with an idmap userA:userB:1
+> 2) userB runs an owner_or_capable() check on file that is owned by userA
+> on-disk/in-memory, but owned by userB after idmap translation
+> 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
+> 
+> In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+> file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+> idmap internally, but it does not need to be the case on e.g a 0444 file
+> where even the owner itself doesn't have permissions to write to it.
+> 
+> Since this is clearly not trivial to get right, introduce a
+> file_owner_or_capable() that can carry the correct semantics, and switch
+> the various users in mm to it.
+> 
+> The issue was found by manual code inspection & an off-list discussion with
+> Jan Kara.
 
-> +static ssize_t page_owner_write(struct file *file,
-> +				 const char __user *buf,
-> +				 size_t count, loff_t *ppos)
-> +{
-> +	char *kbuf;
-> +	char *orig;
-> +	char *token;
-> +	int ret;
-> +	size_t max_input_len;
+Do our idmap selftests tickle these issues?  If not, is it hard to add?
 
-This can be const size_t max_input_len =3D 32 with the comment above it.
+> I noticed there are a couple of call sites in fs/ that could perhaps be
+> cleaned up with the added helper, but I'm skipping that for now for brevity's
+> sake.
 
-> +	struct page_owner_filter_state *state =3D file->private_data;
-> +	enum page_owner_print_mode new_print_mode;
-> +	unsigned long flags;
-> +
-> +	/*
-> +	 * Maximum input length for filter commands:
-> +	 * 32: print_mode command max length is 17 ("mode=3Dstack_handle").
-> +	 */
-> +	max_input_len =3D 32;
-> +
+You could do this as a 2-patch series, because:
 
-Otherwise, LGTM.
+>  include/linux/fs.h | 5 +++++
+>  mm/filemap.c       | 2 +-
+>  mm/madvise.c       | 3 +--
+>  mm/mincore.c       | 3 +--
+>  4 files changed, 8 insertions(+), 5 deletions(-)
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+it touches mm/ but ->Christian, please.
 
---=20
-Best Regards,
-Yan, Zi
+(or I can queue it with Christian's ack, of course)
 
 
