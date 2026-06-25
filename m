@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2494CDE009
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E32BCDE009
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:16:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABA6C6B00CA; Thu, 25 Jun 2026 06:16:40 -0400 (EDT)
+	id 627206B00CC; Thu, 25 Jun 2026 06:16:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A91D86B00CC; Thu, 25 Jun 2026 06:16:40 -0400 (EDT)
+	id 6007A6B00CE; Thu, 25 Jun 2026 06:16:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A7EC6B00CD; Thu, 25 Jun 2026 06:16:40 -0400 (EDT)
+	id 4EF156B00CF; Thu, 25 Jun 2026 06:16:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D7266B00CA
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:16:40 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EF3FD167673
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:16:39 +0000 (UTC)
-X-FDA: 84918030918.09.7773676
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id DE9CEA0008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:16:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTgJGiX7;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F4F66B00CC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:16:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9EE621C6056
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:16:51 +0000 (UTC)
+X-FDA: 84918031422.03.F568E3D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A89AB20007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:16:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDahxdyE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782382598;
-	b=r0kBObHxQSy+Cwe/2mGk1qbXaY4PEXzq2s33WQgxXFG/AcxAHp9xWq4ysRTb/YpGl9KXoS
-	J3LFIcgPAICONt2KsrsxU0wkNteqb3JB5iKdn/Zomvm6GWWCEiG+sHvuAG7fbe93evqr59
-	bkf0VLNSf4QZZSLd1oe1Yi7tTdsug5I=
+	t=1782382609;
+	b=Kd9assKAaJC/QOB08HxH+9YNFgzGs/DDxZMQKuAFGgQKwNVRNZ48myXNaU/7peaCL+L8ZE
+	dNlJDLzUb4BT4mUp8bMiByz0CgSRD8QAQ1BVX2VxWtpGYBlO8bsEgM8iG6wiXMmPkazyjU
+	sErP8wk/SrgmhKRur3irBk9DSMD+XuQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782382598;
+	s=arc-20220608; t=1782382609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CNtLwpUtBCbwlzY1FvJc65Jza7fCnLIGQublYFNRjfM=;
-	b=vtvYpvHCKnRLQJTDdlgI/B4+5uOjnkaoxaxTPFsRj7ERSX9ox6W8PKF23IjJSoQSZiG4V2
-	iYkepYRwEbIkdbyewQSzuLOD7jnXd8iG4HbO3x1pvMRl+7ZTfOzOv9XbSNvovszx/aXTDI
-	Ec1COXiVZ3BRAd2YesNK7HlTa6Y+t6U=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8O/JcjBZQ3xQtjqvTgclv6YtLGxi1HfHwA+PSP64edM=;
+	b=5B2zz6/7vUzz2Qltm0moDzXjj88ea5dSpsTHeTmOw1WYLt+o278UWFuCqxIkkuXfKUx2Xt
+	kK/BT4zwtrr3c4hdmgHxG6+oVyK4HqN8/1APurpshHjAo/sj/AjsC5gYFyPgktwh9T/+CC
+	p5noSJt6GZ1ER6769tVIF+xqj5NkRTA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YTgJGiX7;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZDahxdyE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2E74C41B1A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 115DC600C3;
+	Thu, 25 Jun 2026 10:16:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B981F00A3A;
 	Thu, 25 Jun 2026 10:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070881F000E9;
-	Thu, 25 Jun 2026 10:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782382597;
-	bh=CNtLwpUtBCbwlzY1FvJc65Jza7fCnLIGQublYFNRjfM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YTgJGiX7vpyvr1NvkO81NSfF9NRnSAG4Bm8DJZ7Y2R1T1Cw8wt0gR/PKCFkpXnPb8
-	 FWy6JRJXrznxqNKGvKEY/OWYWpwJR8DaHKi9qLa7wQTNd9IggrblryapVC6sK366ME
-	 8kqh4NT60QYoNd8798HmcKigcLQe4Vq3P3o2tC2la+DlAd2Om8Viun+FT9UHlXyNym
-	 +Ipb+RgXazvoNwvmDp5qLDMA6Wt/bZFCtVZGjQ9meQE5aKM4H/IKPn+Cu8yf2Tfgek
-	 pblBYNYclxI2Jm00S3zcHcXGsTUfwcbM7n7ha6kTtJXkIcg3I0bcrxtjJu0a2AOxce
-	 HkybxcqPNGQMw==
+	s=k20260515; t=1782382608;
+	bh=8O/JcjBZQ3xQtjqvTgclv6YtLGxi1HfHwA+PSP64edM=;
+	h=From:Subject:Date:To:Cc;
+	b=ZDahxdyEQekd/bzPjqDrT4A+zvdixNV9iBKh9MD+EOgKQjvaoVAtbl8z/CGUGaghI
+	 2qcY+9Fyy2NwERfEGAwbtH3y5l0j8t7xR+GLQE/3ZqjKOUtQquNA8v7qQRWuCN9SVW
+	 5jyHMYDSvfI9caLYaJS69+vAk7RPv16+qiNaxiwksNdcA5Q0Q2shcODyBRcGuJOZ6R
+	 7NE5IdXlBgHmvVZgViWXMWEI7jINgwezZK1FU+YzcQo0+gOyUSd84KtW5Jb48isaaJ
+	 +ZhEIegZ7cv09ZkqU+dcZjhDxArflZC12mbxSbcZ4D2sTYOMO4prEYfTSgILeNlg7k
+	 ml8l+c6uqaYuQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Thu, 25 Jun 2026 12:15:08 +0200
-Subject: [PATCH v18 6/8] rust: Add missing SAFETY documentation for `ARef`
- example
+Subject: [PATCH v18 0/8] rust: add `Ownable` trait and `Owned` type
+Date: Thu, 25 Jun 2026 12:15:02 +0200
+Message-Id: <20260625-unique-ref-v18-0-4e06b5896d47@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260625-unique-ref-v18-6-4e06b5896d47@kernel.org>
-References: <20260625-unique-ref-v18-0-4e06b5896d47@kernel.org>
-In-Reply-To: <20260625-unique-ref-v18-0-4e06b5896d47@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKb/PGoC/2XOQY7CMAwF0KugrCcjJ2mShhX3QCwax4WIUQspV
+ CDUu4/LhgJLf+t9+yEGKpkGsV49RKExD7nveFD1z0rgoen2JHPiQGjQFgxYee3y+UqyUCt1aDE
+ 5b9tAQTA4cZhvz7btjudDHi59uT/LR1XN8dzjQEO17OGdBKk8Rh0oNhjj5kilo7/fvuzF3DQqu
+ 9Aa3rVlXQdDqXYRHOK3dkv9cduxRq2aFqNSdTLf2r+0+/zcs/axQpN0MBDDm56m6R/1tkBoYgE
+ AAA==
+X-Change-ID: 20250305-unique-ref-29fcd675f9e9
 To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
  Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -108,32 +110,40 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
  linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
  linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
  linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org, 
- Oliver Mangold <oliver.mangold@pm.me>
+ Asahi Lina <lina+kernel@asahilina.net>, 
+ Oliver Mangold <oliver.mangold@pm.me>, 
+ Viresh Kumar <viresh.kumar@linaro.org>, Boqun Feng <boqun@kernel.org>, 
+ Asahi Lina <lina+kernel@asahilina.net>, 
+ Igor Korotin <igor.korotin@linux.dev>, 
+ Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1545; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=2xO30Rq3QXTxoSgZh5GHqcI6JrKIaWz8NtlqTYC+5S8=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqPP/COqKlKjyz/MXA1Y/ln7gilkEOsT25qZw22
- Rb6scm4wFOJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCajz/wgAKCRD6UCkIqsW9
- 0NcWEAC0tVyWWHIsH7WmwyHeTcRIIcSyA+jVURLu5J0VYFDajTnEyZ+As4AP3z2c3lUdJ6E0orl
- 1PL9KegXdlRowzXbknFM1TtxCHxyv0r1NLU4LirMxIGrPVxVdS2cKzRU8a4gLhBmCdVNre1PZLJ
- 4J/CxV8CpnFJ/NGp7bvsyrmDahOTm3RPr8VYu3NEWzN91Chnzo0WR4N3kHcTCaoaD9N7pfgkfXN
- SnkyJwR/QnqnMekRr2mxSexRHKKesWCkucCw4gV4EU8Ht7NiBUtUbTRN0DxmhQu3fYYAgMGTwh9
- DTTHtgGRJ073AyQSH/+7GS1nCzIoGFt0P0iEq0NlGdJEs7PIOVwNgKAF7Ld7Nw/qp05kjay6rgN
- 2RIMd7ow1N4T0KveKCVRwhxBl6Af2jClTGzCRz2qO1grRMZM23A3Jnn70x713gbn6iSwTCGx0ez
- hCSZQA7KFhlo16eTeqjqI5pcW4TJlgxmjBlxZ3JwaDa6C7Is2kGZb9crSVRNsOIY8nP9tu71pWn
- 6Zkkodq0JN43u0YjJzndrbhsXcoZQHsdTSexPf2zYG3OJ7yV8JfAvw+1cLWuyfCLaztHTz+PRwq
- xSjZ5qf2Tv3i0nNUbnvZoBqU71LWOHzACaLAoOpGekVZMfB9afZne9LP/W13DEjw/HUjuOCIOxu
- gEx8/vZmtx3o8YQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=11367;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=Kxqx8ZW4gVaGOT7HFEVvKQx44SpCGJxylYFj3tYzqv0=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqPP+6wSPxmydKgHbBEePt0Gg326p6wtXQvSG/H
+ AzhylfP836JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCajz/ugAKCRD6UCkIqsW9
+ 0NMQD/4yKfD+BmO15N+wQEQw4buIvUqF3v/Ckhy5wEhno9FQmpV6NMEWMLWdQUg4R4ZTLFZ/Xuw
+ NFq+76ZJa27YnWUBbvatRxOBNe6ZzHHlYqi8M9G1m80ifPywDxliUY7FyVIvjaE8NIZMcrLaqLQ
+ DbKBMx50gtM17Mf4XTHiKWMgmnqIxyVwAUhIVP//2lrsFN99v0EWOBuwSOKkzV7ksShvuYSOr1n
+ tRqP5oTtKdTq8q10+UPFIihB6p4cuPVqYy9is3G3oVCK0ikV299c+pVv7a3+0Eh+2EMRrK5lEkI
+ v8sljfyn4e2BLOxCqoFuob2Qk7QTa3Cdi0PHeFfd41mgJnmhlSBwVwPWFKLuuQyyoYsSHjldL3T
+ G6aBqN8huBXva1NtScVEKel8Tgb4bmBCuaOw14CGYXU8Kw2dFrX+AeewZEh3eL5yVxy18bA3TIe
+ mS5Rw4aRFrs5EA6xI3K9VrVDguX5j6C5s5i5TDFqVlsT77tRdZarCD710FZe+pOJtk/isz2BJXW
+ a4h0dFopOCBkpB4jHVn7yL6M+fxXCjDEGAhc8t53Bq+8ujnyuooSDsRAwb7lk33HnrOCko3qcIT
+ LyVMSCqzaroPfoEnrM41WzdmarLDKJXJk9IWhVQGLc5lrFvxhJnWrnZ4LhORlsZGhOODmCRJiGZ
+ KyCtY2vLzH8wLlA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE9CEA0008
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: A89AB20007
 X-Rspam-User: 
-X-Stat-Signature: ox5weya11uekfycyfr998wtam9oezbit
-X-HE-Tag: 1782382597-101994
-X-HE-Meta: U2FsdGVkX1+BrRSVvQFmCFLbzxd+0dEV65T9fCeFmXSjkDCgi1L7b2juxK5wWkn4oJq+kIKcFyV1MA+yIVh8m1ea6Vfmw4FKlZojW/X5UTx6Lpvfp4niYLIa7S13eo3QQz/elN7GBQ6kaib58GMk+zyUtXGNUDCgxv2CllI2WpQUgM+iQGa6yZJe3Twc406HkRg9rhY5NJOYQZYyyEkmbH/Ovoo/9167LOAzxBxw2xQh+Oxk0Vg5liTbTbsdj4UeGTbnkd/5JsRAIIisQwt/s9AhyCQjnkUzgQk32E/hNNDTXZmA51sneSQnXYVhUykXmh8s6qu/cd3SzdDL3S+ecpzzlk4g+7o8tYFN/SwZj4mMA+cVaN+poPqgZcv+HNDOc37bWexs+d/THoIURLP+xeOTHLJzQFyobQj+o/reKTvXPPZqALNK7DR8hRpka/Krd6JezuX8+1XeBETVj4CaEuqACx/QD2RHZAdK+g4U14lV7V5CIQnAWynP+r5YQoXsgtqJYa/xBipvan7lkbzR3BFuxwuMz4Nr7UtU44vt9KCYLwNzVGsuZHLrkVYz1uRNBBKUp+zSEoc6OEFpcFOvslyLuFsn1VZRI6cIxRRZJUDnAFQKrisD5Wh1tQDMuhwkHAXxS3bH/4GaQn3JunrUgRwEQOAsoRIMj3l/pVRS0AnymIXHz2Fzco6TqLYw4fbtfenwU3A5ZEdwDGQJ7pbv5dt5Q78gTtnQC/hrDVBithrtequs/984fuz5pz/8FEJNTa8sHwv7A+l6TxhHfszYlsM7sLSMUF8+3VxMegTR8n3vI5PxqJyfJvCAV5BZzn3FywaQlP0UMSJAmfA5Ubw/vryW5sk+KFpPtMyuQ+0rqgSs7izBvf18pjqLD1CRzfqbvVZjsjO6I8oeKX93123kyC0EvO+4xmAlPoHn0/K8NN7wojLpoT5v57kO2hZ5aTZUW2gwmxU8utHgzDswjYX
- ICLYTETt
- W7VDeiwU3uhxHc8gVHwmbA1Tk47XSWwo+ybcn2uuOBUlh9JvOjKRTBo/96KVuWA7ATL5x/0Xnen3EDOql51a49TKB3lW5EqzgGPhLSK0Mkcbwmx+UZOhHAEQZz0ggKHOeS5Zwp5pryw7ziPE59BG169hPqUdrhqGJSfoM3XsCv9jMwSrke2Pc1R0MdrgCI7IC8olQtqwyjT8i5YhBPZZVgKs8yZY65Q2EkmtNFFb33awaKUGffp4kag9e28iA6nRjuagd6dLJLRvbcsT7H2em0o8LUCLd8SpC/z7o7eKm7P+5WEZ8vpoFYWwWqw==
+X-Stat-Signature: 1hk7tzinjtkehfhyeuscrqft11yfcddy
+X-HE-Tag: 1782382609-999800
+X-HE-Meta: U2FsdGVkX18r/68h4Xr5JpzJCbH3MqC6+CBE+iB6jZC/Gd5NgQB6OKfymEhd6gBpogy18uBBJLbZP/9khpWoDknwdnStrut77mXjk1FqMwhk4ot8Z7r46QPOJRi4sKm5TQ25HGIUN4MaBZbpAy/x2gV3h2weMAwqlJ564Y2FAEkO8mwoL2fibu5XhJkvsNqSh1xMvTsy35qLA9HfuJNFmV2983Eir9+yHBicrSyXzoLCD+VHAI+nmiVHMXlMh6GAbygOz5PtnJgeT44h71s8fBlE9akmoxzy/sAwmHxDB9sr8dgYCuSlEWz4RFeWpIOma21I92m1h6+VJKHVI9z2zipEWQQ5/WjxcE00iAxQurWV2WUfgxCn/i/0I+zjSuLJcyOSlySy7dkFVIlWUVTf2e6vDdqOB5SavELG37YHopsvLCCfhhLEvjweD5Cp0XW4n0K3RbCSfJnSXYOYHTX1qRxqp8ZR7z1oaf7AZ5X5y4BXMdNBCCyGzG7kfHwwOU7X+AjWLSbFE1pVD0bABbkiPC15zEMsYSBtqa4BE/yd426irKejDG4PwsECRCROB9dxEHPGEGuCzfaA0LTL2gIXM8E5liP2SxKD/A1Yy2ISIVsLDVEobtr1Zk4mf1CrKXXe0h98/kf86s0+kYHHjqgChA5yunAVIDKZM+N0BDBW6NSbENfanjuXJewQGvKHbb4qr9FzZnKP4qOmg0nQr880k1cfis168i9ADsLTA8aqaoGvznjP1dp3Ycz+/otMLNCJ7aCpfZ86nRtDr1HuWVDkZZSvxnN3VNeulMaH2LVU3Sfqg5p2E5Fswc4YkQV2JfanFnu1kjD4Iqbh2Ls2GYOHltoCpZxy4VXXkMJG99KbsgIYBr0hV8R0p7WmY4bpcWYKYr+f5zfYUxB++lF6u4PgOcw4NHNtJLwWvzqBpbqOWjacYV8IdeSyW8pyj4yDsQOB1aYrO+WuTF91ATV5u+l
+ m3qdEH89
+ +GKFQlvEIA2H+mIIqBmjOOGzMEKFlcsJXwybGUu4X4AjOAAOhq4GAvCmDqdUQj6D6ps6iG4XWpON1BDbFQcMNTaF7hoL9i4NN/04t274cTBtvuYdk/YaDSxGKlw+a1psiX3JehPHk8Z6fjudNRIaME1RCqn6Q5Ghn6CP90RTZvN4Q015XJu2wM+6/vZ/XpWOxQCMH5NiK4SFKctv0qFsc86FiTTt34hTSguvLshhx/g3iWwakO6tP0LyiHzKvIy+Pfkm8Qz4l00zaHBXw1237jc8vIXjukU72V3mxIhIW9uWap7Gkz3sZR0Nw3LlDd03pAaNfjhRbQZKsgNv7/uXjJddRj+4OL7Kut9EqXQIrdoDD5+5oZSgsTaPvXfenFxrgzkE6okP+ONXBOtz5tFw290mlLGUTSwRpvWhvgpxYdSGJwZd0sjQDWlwtoPk6VWIKUyrxeAeuPNYwi8NuhCy6wXTDBhzgcPyT6+TD4szafxBjv40CtnCxD4Qx02txI/HS9xIU9PZL5D3QOw/g1NFcoTKPLxA5fLNEvbyBqjfIaI0rbNYtTe+q9cLpDIvT4goY9aiFtn9Nh7QQtcBYR9rs5QJf1ev7I9yffX4ZBYiCEANvx7byCR0fnmT4f6gqhQ9ue9IXlaEUAfkUsnJ5VCrBTFKRincBsAmvY134/+1qpxHC5V2kgz78GGc3S9NwhGiKy82OscV/VyZ9FbDJm7/JHxW0D35aPHC6pXKECBvuyvMcSWqTdjmQR/rjSfw/mt6HcDMSq3XjnFk9bf0Bi3Zb/RKWxDY/SSwLs9vmJgNi31JGyV2PBG8oqeKtX04UF1hpng7LM+h1NXng45G4sCX/MOLrxyo5eT65VEbjeHpLV8LBwOl/ChnDiok6e4/SEUHq7V8innlLDH5+HvDbLDvBRS2OKGiymbwwDKTDNmG17Mc+22rP/3yztmGOt3DzUYssvdGA6rhaNan+MEZPExwYEl0HnX9A
+ hf4krmY1
+ 9xyJHY3iKXwgv3vgxfD1JflTiLRu0dh9qvdLoQSG5s5gMLecUaCcqLynJXldDPKDIS/ZC6liJiutsxOWkkTHciTS5m+vq0pyNrlE9efrG1GdDEdAKx9yg7c19JmfS8LddgMerfCydo7OORSTt1gJgVM2LaMgMulpmYdTk/mtiHr1zaYB2Nr6qYBc3FWqq19gBW06wFCXgKs+M9Ey+SmzlYcjJzerLXJ3b4LLl3N650xLcl0LKadnb99m6Vyb1YrZZ87jIwfaEX0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,45 +151,261 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Oliver Mangold <oliver.mangold@pm.me>
+Add a new trait `Ownable` and type `Owned` for types that specify their
+own way of performing allocation and destruction. This is useful for
+types from the C side.
 
-SAFETY comment in rustdoc example was just 'TODO'. Fixed.
+Implement `ForeignOwnable` for `Owned`.
 
-Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+Convert `Page` to be `Ownable` and add a `from_raw` method.
+
+Add the trait `OwnableRefCounted` that allows conversion between
+`ARef` and `Owned`. This is analogous to conversion between `Arc` and
+`UniqueArc`.
+
+Patches 1-4 implement `Ownable` and applies it to `Page`. These patches
+can be merged on their own.
+
+Patches 5-7 add `Ownable` -> `ARef` interop and can be merged later if
+consensus on their shape cannot be reached.
+
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/sync/aref.rs | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Changes in v18:
+- Rebase on `rust-next` (2026-06-24).
+- Drop the `'static` bound on `ForeignOwnable for Owned` (Gary).
+- Make `Ownable::release` take a raw pointer instead of `&mut self` (Alice, Sashiko).
+- Drop `types::ARef` re-export (Alice).
+- Drop unneeded `#[repr(transparent)]` on `Owned` (Gary).
+- Fix `FOREIGN_ALIGN` for `Owned` to report the pointee alignment (Sashiko).
+- Remove `BorrowedPage`; use `&Page` directly (Alice).
+- Update Rust Binder for the `Owned<Page>` conversion (Alice).
+- Update `pwm.rs` for the `RefCounted`/`AlwaysRefCounted` split (Sashiko).
+- Fix documentation nits: missing `// INVARIANT:` comments, stale `Page` docs, and a stray `mut` (Sashiko).
+- Expand the `use` statements touched by the rename patch to the multi-line style (Onur).
+- Link to v17: https://msgid.link/20260604-unique-ref-v17-0-7b4c3d2930b9@kernel.org
 
-diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
-index fb7466a362741..d0865aeb9371b 100644
---- a/rust/kernel/sync/aref.rs
-+++ b/rust/kernel/sync/aref.rs
-@@ -142,7 +142,9 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// struct Empty {}
-     ///
--    /// # // SAFETY: TODO.
-+    /// // SAFETY: The `RefCounted` implementation for `Empty` does not count references and never
-+    /// // frees the underlying object. Thus we can act as owning an increment on the refcount for
-+    /// // the object that we pass to the newly created `ARef`.
-     /// unsafe impl RefCounted for Empty {
-     ///     fn inc_ref(&self) {}
-     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
-@@ -150,7 +152,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
-     ///
-     /// let mut data = Empty {};
-     /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
--    /// # // SAFETY: TODO.
-+    /// // SAFETY: We keep `data` around longer than the `ARef`.
-     /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
-     /// let raw_ptr: NonNull<Empty> = ARef::into_raw(data_ref);
-     ///
+Changes in v17:
+- Rebase on v7.1-rc2.
+- Reorder patches so that `Ownable` can merge without `OwnableRefCounted` (Alice).
+- Add `#[inline]` directives to short functions added by the series (Gary).
+- Link to v16: https://msgid.link/20260224-unique-ref-v16-0-c21afcb118d3@kernel.org
 
--- 
-2.51.2
+Changes in v16:
+- Simplify pointer to reference cast in `Page::from_raw`.
+- Use `NonNull<Page>` rather than `Owned<Page>` for `BorrowedPage` internals.
+- Use "convertible to reference" wording when converting pointers to references.
+- Fix formatting for `Page::from_raw` docs.
+- Leave imports alone when adding safety comment to aref example.
+- Use `KBox::into_nonnull` for examples.
+- Add patch for `KBox::into_nonnull`.
+- Change invariants and safety comments of `Ownable` and make the trait safe.
+- Make `Ownable::release` take a mutable reference.
+- Fix error handling in example for `Ownable`
+- Link to v15: https://msgid.link/20260220-unique-ref-v15-0-893ed86b06cc@kernel.org
+
+Changes in v15:
+- Update series with original SoB's.
+- Rename `AlwaysRefCounted` in `kernel::usb`.
+- Rename `Owned::get_pin_mut` to `Owned::as_pin_mut`.
+- Link to v14: https://msgid.link/20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org
+
+Changes in v14:
+- Rebase on v6.19-rc7.
+- Rewrite cover letter.
+- Update documentation and safety comments based on v13 feedback.
+- Update commit messages.
+- Reorder implementation blocks in owned.rs.
+- Update example in owned.rs to use try operator rather than `expect`.
+- Reformat use statements.
+- Add patch: rust: page: convert to `Ownable`.
+- Add patch: rust: implement `ForeignOwnable` for `Owned`.
+- Add patch: rust: page: add `from_raw()`.
+- Link to v13: https://lore.kernel.org/r/20251117-unique-ref-v13-0-b5b243df1250@pm.me
+
+Changes in v13:
+- Rebase onto v6.18-rc1 (Andreas's work).
+- Documentation and style fixes contributed by Andreas
+- Link to v12: https://lore.kernel.org/r/20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me
+
+Changes in v12:
+-
+- Rebase onto v6.17-rc1 (Andreas's work).
+- moved kernel/types/ownable.rs to kernel/owned.rs
+- Drop OwnableMut, make DerefMut depend on Unpin instead. I understood
+  ML discussion as that being okay, but probably needs further scrunity.
+- Lots of more documentation changes suggested by reviewers.
+- Usage example for Ownable/Owned.
+- Link to v11: https://lore.kernel.org/r/20250618-unique-ref-v11-0-49eadcdc0aa6@pm.me
+
+Changes in v11:
+- Rework of documentation. I tried to honor all requests for changes "in
+  spirit" plus some clearifications and corrections of my own.
+- Dropping `SimpleOwnedRefCounted` by request from Alice, as it creates a
+  potentially problematic blanket implementation (which a derive macro that
+  could be created later would not have).
+- Dropping Miguel's "kbuild: provide `RUSTC_HAS_DO_NOT_RECOMMEND` symbol"
+  patch, as it is not needed anymore after dropping `SimpleOwnedRefCounted`.
+  (I can add it again, if it is considered useful anyway).
+- Link to v10: https://lore.kernel.org/r/20250502-unique-ref-v10-0-25de64c0307f@pm.me
+
+Changes in v10:
+- Moved kernel/ownable.rs to kernel/types/ownable.rs
+- Fixes in documentation / comments as suggested by Andreas Hindborg
+- Added Reviewed-by comment for Andreas Hindborg
+- Fix rustfmt of pid_namespace.rs
+- Link to v9: https://lore.kernel.org/r/20250325-unique-ref-v9-0-e91618c1de26@pm.me
+
+Changes in v9:
+- Rebase onto v6.14-rc7
+- Move Ownable/OwnedRefCounted/Ownable, etc., into separate module
+- Documentation fixes to Ownable/OwnableMut/OwnableRefCounted
+- Add missing SAFETY documentation to ARef example
+- Link to v8: https://lore.kernel.org/r/20250313-unique-ref-v8-0-3082ffc67a31@pm.me
+
+Changes in v8:
+- Fix Co-developed-by and Suggested-by tags as suggested by Miguel and Boqun
+- Some small documentation fixes in Owned/Ownable patch
+- removing redundant trait constraint on DerefMut for Owned as suggested by Boqun Feng
+- make SimpleOwnedRefCounted no longer implement RefCounted as suggested by Boqun Feng
+- documentation for RefCounted as suggested by Boqun Feng
+- Link to v7: https://lore.kernel.org/r/20250310-unique-ref-v7-0-4caddb78aa05@pm.me
+
+Changes in v7:
+- Squash patch to make Owned::from_raw/into_raw public into parent
+- Added Signed-off-by to other people's commits
+- Link to v6: https://lore.kernel.org/r/20250310-unique-ref-v6-0-1ff53558617e@pm.me
+
+Changes in v6:
+- Changed comments/formatting as suggested by Miguel Ojeda
+- Included and used new config flag RUSTC_HAS_DO_NOT_RECOMMEND,
+  thus no changes to types.rs will be needed when the attribute
+  becomes available.
+- Fixed commit message for Owned patch.
+- Link to v5: https://lore.kernel.org/r/20250307-unique-ref-v5-0-bffeb633277e@pm.me
+
+Changes in v5:
+- Rebase the whole thing on top of the Ownable/Owned traits by Asahi Lina.
+- Rename AlwaysRefCounted to RefCounted and make AlwaysRefCounted a
+  marker trait instead to allow to obtain an ARef<T> from an &T,
+  which (as Alice pointed out) is unsound when combined with UniqueRef/Owned.
+- Change the Trait design and naming to implement this feature,
+  UniqueRef/UniqueRefCounted is dropped in favor of Ownable/Owned and
+  OwnableRefCounted is used to provide the functions to convert
+  between Owned and ARef.
+- Link to v4: https://lore.kernel.org/r/20250305-unique-ref-v4-1-a8fdef7b1c2c@pm.me
+
+Changes in v4:
+- Just a minor change in naming by request from Andreas Hindborg,
+  try_shared_to_unique() -> try_from_shared(),
+  unique_to_shared() -> into_shared(),
+  which is more in line with standard Rust naming conventions.
+- Link to v3: https://lore.kernel.org/r/Z8Wuud2UQX6Yukyr@mango
+
+To: Danilo Krummrich <dakr@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Uladzislau Rezki <urezki@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+To: Björn Roy Baron <bjorn3_gh@protonmail.com>
+To: Benno Lossin <lossin@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+To: Trevor Gross <tmgross@umich.edu>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+To: Tamir Duberstein <tamird@kernel.org>
+To: Alexandre Courbot <acourbot@nvidia.com>
+To: Onur Özkan <work@onurozkan.dev>
+To: Lyude Paul <lyude@redhat.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Arve Hjønnevåg <arve@android.com>
+To: Todd Kjos <tkjos@android.com>
+To: Christian Brauner <brauner@kernel.org>
+To: Carlos Llamas <cmllamas@google.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+To: Dave Ertman <david.m.ertman@intel.com>
+To: Ira Weiny <ira.weiny@intel.com>
+To: Leon Romanovsky <leon@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
+To: Serge Hallyn <sergeh@kernel.org>
+To: David Airlie <airlied@gmail.com>
+To: Simona Vetter <simona@ffwll.ch>
+To: Alexander Viro <viro@zeniv.linux.org.uk>
+To: Jan Kara <jack@suse.cz>
+To: Igor Korotin <igor.korotin@linux.dev>
+To: Viresh Kumar <vireshk@kernel.org>
+To: Nishanth Menon <nm@ti.com>
+To: Stephen Boyd <sboyd@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>
+To: Krzysztof Wilczyński <kwilczynski@kernel.org>
+To: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+To: Michal Wilczynski <m.wilczynski@samsung.com>
+Cc: Philipp Stanner <phasta@kernel.org>
+Cc: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: driver-core@lists.linux.dev
+Cc: linux-block@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-pm@vger.kernel.org
+Cc: linux-pci@vger.kernel.org
+Cc: linux-pwm@vger.kernel.org
+
+---
+Andreas Hindborg (3):
+      rust: alloc: add `KBox::into_non_null`
+      rust: implement `ForeignOwnable` for `Owned`
+      rust: page: add `from_raw()`
+
+Asahi Lina (2):
+      rust: types: Add Ownable/Owned types
+      rust: page: convert to `Ownable`
+
+Oliver Mangold (3):
+      rust: rename `AlwaysRefCounted` to `RefCounted`.
+      rust: Add missing SAFETY documentation for `ARef` example
+      rust: Add `OwnableRefCounted`
+
+ drivers/android/binder/page_range.rs |  10 +-
+ rust/kernel/alloc/allocator.rs       |  19 +-
+ rust/kernel/alloc/allocator/iter.rs  |   6 +-
+ rust/kernel/alloc/kbox.rs            |   9 +
+ rust/kernel/auxiliary.rs             |  10 +-
+ rust/kernel/block/mq/request.rs      |  19 +-
+ rust/kernel/cred.rs                  |  16 +-
+ rust/kernel/device.rs                |  12 +-
+ rust/kernel/device/property.rs       |  11 +-
+ rust/kernel/drm/device.rs            |   9 +-
+ rust/kernel/drm/gem/mod.rs           |  16 +-
+ rust/kernel/fs/file.rs               |  23 ++-
+ rust/kernel/i2c.rs                   |  13 +-
+ rust/kernel/lib.rs                   |   1 +
+ rust/kernel/mm.rs                    |  22 ++-
+ rust/kernel/mm/mmput_async.rs        |  12 +-
+ rust/kernel/opp.rs                   |  16 +-
+ rust/kernel/owned.rs                 | 371 +++++++++++++++++++++++++++++++++++
+ rust/kernel/page.rs                  | 136 +++++--------
+ rust/kernel/pci.rs                   |  10 +-
+ rust/kernel/pid_namespace.rs         |  15 +-
+ rust/kernel/platform.rs              |  10 +-
+ rust/kernel/pwm.rs                   |  12 +-
+ rust/kernel/sync/aref.rs             |  82 +++++---
+ rust/kernel/task.rs                  |  13 +-
+ rust/kernel/types.rs                 |  12 ++
+ rust/kernel/usb.rs                   |  17 +-
+ 27 files changed, 721 insertions(+), 181 deletions(-)
+---
+base-commit: 43a393185e33e573a374c1d4f7ddf6481484ef8d
+change-id: 20250305-unique-ref-29fcd675f9e9
+
+Best regards,
+--  
+Andreas Hindborg <a.hindborg@kernel.org>
 
 
 
