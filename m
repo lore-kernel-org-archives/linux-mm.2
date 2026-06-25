@@ -4,137 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A3BCCDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0E4DCDE002
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:37:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 067B36B00A0; Thu, 25 Jun 2026 04:37:16 -0400 (EDT)
+	id B3EBB6B0088; Thu, 25 Jun 2026 04:37:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 018926B00A1; Thu, 25 Jun 2026 04:37:15 -0400 (EDT)
+	id AEFAC6B008A; Thu, 25 Jun 2026 04:37:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E25326B00A2; Thu, 25 Jun 2026 04:37:15 -0400 (EDT)
+	id 9B9286B00A1; Thu, 25 Jun 2026 04:37:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B23E56B00A0
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:37:15 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1C1AE4063D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:37:15 +0000 (UTC)
-X-FDA: 84917780430.30.F4225C6
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4F72880011
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:37:13 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D4B86B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:37:32 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB27E8FD53
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:37:31 +0000 (UTC)
+X-FDA: 84917781102.11.6A7B63B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 5805C8000A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:37:30 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gMmdoWY/";
-	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGlFrAQy;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782376633;
-	b=I5qDc+0ba0NOII48SjAGy9qQuBeWOaXCxt0HjO7S5MrXEMf1x0J56fEA0KONlGWdsUnP1f
-	yKtadHTH+2sVRP5qzqkxeAzGJEMyF9LKsNeZxebGnPcQTzAvm3Dq1dLGqkWJ8tpGI2Kt7z
-	cjUS0rEQZAR9uWCdmYA7P8cAupZULBc=
+	t=1782376650;
+	b=mighwBCZGF59gDQeIEpIlV0uWwCzzG5bpAjZ7wG3VEP6vglilFaOUUsx/1fe338RWAgWsw
+	u8WvMtnPKNQwjC1lDQZpYADqyU9NJYt+i6nq1dXjIIY6vxB7cRYiKEQ7zW2mxXLHPTlITo
+	q86LblbUJipmVK6jwk4zpxJKRm9pHTo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782376633;
+	s=arc-20220608; t=1782376650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4Vxs0grT+d4GM87KSfFWu+blunYqTUopWsPT4iLI/6Q=;
-	b=Gm712xDD/8TixmaNO4K4toze/muXc0forbocftrwFUwb6Zr0SnN1WhRIhMjShhgemcI6cH
-	ln7zunfMwBvhSIIcKDs5zdEklIZo/7y1Q8t0NhNOB2ItMLWNj8r7yQsqrrkVZty1Pk2vbZ
-	HVC/YO7WBUW+3n7SbupbouvLs+X2dH0=
+	bh=DTHenELavdixkpehBZtgo0+fqBfXPK/qvE1tJsk4MnM=;
+	b=RzcF0I1S+M2bcHyYZ7/YHIKZ3e7bWXLJCTfyZP+Q3SRkEvk0ynxpZOfz1xdoE5v61RCeL2
+	DIduNzAgw97Mj3Zju7HmgEjdOEN+EuFubqNjb08NYTSOYyTKJUKSzYJNNnGzwOjyBch5M4
+	G2oaRR6PAtBV0QLpNPf1iucw1w/oC38=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="gMmdoWY/";
-	spf=pass (imf02.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-46019edc13dso1194204f8f.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782376632; x=1782981432; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Vxs0grT+d4GM87KSfFWu+blunYqTUopWsPT4iLI/6Q=;
-        b=gMmdoWY/LjQb6t1aKUefH+oJ2HDCnxBmdWpqxMIQ7AnmIALubCRaU4cKlRL+sidg1Q
-         gRIm2Ntlg/8etxzVoq6MrKkTWZv6aGMZCXgGNV4LBKn+9i8faxOvxQmo+KVw8msY6nLz
-         GhXr94mI63oQOYX0oBXfmF6Bvqwb5QOz60rkDpbx1JoIRpvFzjlE8ZmOqKo3c0Bmvxv0
-         ZUSrmi05NjJsgMjAVvq3pSmjwlor16gG7xst5UaVQvJ2P5fm1bbnjI7+WGmjg9x9u1Qk
-         UitsVd6hbLRb9uVkTzlbPJvo8pMyAH/hJ00qV+7ZKQcs9U86iWuLd8R0Pjo3+tWynnuL
-         YumA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782376632; x=1782981432;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4Vxs0grT+d4GM87KSfFWu+blunYqTUopWsPT4iLI/6Q=;
-        b=kKnvlcaCx6/nw8YcuUZra7vXgdPS1CDF7TDRkXskZ7JQPx2qWd3eDEBC1p2ioTmjn+
-         UuaE8jW1tsxdoaPHrOhBR7qltNooU0Q02yH3n0DdVfcMjD3YgHVAaRXwB2H3vVREi8A/
-         xj+SBDPKsBYyD7RsZHNjaBSHiaFCH/Y4g5Kcp9nb3GI3sVhtzLHV5HBztZUfDJUxb2FV
-         RIS9/8WC+RLOoDPfxpUKTW6qmAEooCDum4BDF7VsVLQg3yYMKS0sM9wXF8Pp6YkbnGg1
-         jhGckHcxpoNrJKv1eFmGfjLxZjf1QYWPqh0HTjfxnAlV7t5reiYpCtj9TG7bCXe86ANW
-         Og1Q==
-X-Forwarded-Encrypted: i=1; AHgh+RquoUL0l4utpAFGsR8DtlOZTLeyiE+tvZ7JZCR6QlmB9L7iRTBO/IcJAVF3HvMAyMQJKMpjc1N6yw==@kvack.org
-X-Gm-Message-State: AOJu0Yw+M2KZfejCDod+FGLWfz6m3C2ZXK10nYcTlu0iT6QlZ4LL5e1G
-	Zxsu76sGj2czhUmdQvFBCZHTNOKp9vfB/66oKHAQ7csLk+m/nQKSgfLj
-X-Gm-Gg: AfdE7ck+AmJ1yf9lX7B+EiTeqLXRU1yBKXvMZfzElqaKxMTrQnmO/gAlLTozkIvZCyS
-	1bIl8Mymcbbunue5Y2qz7kW30/R+jv/DN8kLGu5x1jAz+UyDmNYxo7hLmf52npalyGFrj83OUH8
-	OivUvrGgScPS7nr0US1xKpk3+wfQJASzVYVTwvEyXo6u8+midKaktoqPhunq0aBCF+T8rvuxrXN
-	g3QJuxQdkO9VhYGnATOLtvqIONXT7uYbwBUm7Ml9PVMdqBKkwzKH0h22IMlWFiHRNF9LFZ+yAmD
-	hnfCJM9UPK7nRzDvWBwRROLJ0yv4tdb/DhXDCnhmqOzY1Yeyd4l7fPwR+lura3DuX0G/MDAWxSN
-	zrlGLTfacljmH6P0NKEn3fNpMJ8kkgiCeY2ngs/OAOJWoam8dWNzmcE0eB1ZniplBdKktVAzgsB
-	4p5yjT8Urq
-X-Received: by 2002:a5d:5e81:0:b0:468:4f81:5aa4 with SMTP id ffacd0b85a97d-46dc026de2bmr2181270f8f.10.1782376631864;
-        Thu, 25 Jun 2026 01:37:11 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46c221d93eesm13786367f8f.20.2026.06.25.01.37.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 01:37:11 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Jan Kara <jack@suse.cz>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-api@vger.kernel.org,
-	netdev@vger.kernel.org,
-	fuse-devel@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@infradead.org>,
-	David Howells <dhowells@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGlFrAQy;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E1EC560217;
+	Thu, 25 Jun 2026 08:37:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930531F000E9;
+	Thu, 25 Jun 2026 08:37:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782376649;
+	bh=DTHenELavdixkpehBZtgo0+fqBfXPK/qvE1tJsk4MnM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FGlFrAQy6E1uz0C3XgqICgDtpY4DNdRjgthseoT8MOaduXl+SL2fHnjmBcTYDYVoi
+	 aahon87kV8Efqxe2wgajqSOfG+M8UjxNNxFsy+F5zI+k++5To0Lok2H3O3Rv1rReCc
+	 4GdaD1AQG03Ev/h+Ut1+huKOcnbWktK3QkMVU8PbwQ/NT4ysLrtbHE2zVbir4hs4P/
+	 NrVHnpV8HVagJwIgz0sIcJXup1HvAIrniYojkT3EXswnjYmA8WlxJbIWl1GTzV1Wo9
+	 uiKQORFPHRADJs5La5tVBgIZquUTMYRVkk8GBfS+6AZVOCWadOU7XYgpssTnjgx/Gv
+	 Xi0QONQ3Fwmug==
+Date: Thu, 25 Jun 2026 11:37:18 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Shyam Saini <shyamsaini@linux.microsoft.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	tgopinath@linux.microsoft.com, bboscaccy@linux.microsoft.com,
+	kees@kernel.org, tony.luck@intel.com, gpiccoli@igalia.com,
+	bp@alien8.de, rdunlap@infradead.org, peterz@infradead.org,
+	feng.tang@linux.alibaba.com, dapeng1.mi@linux.intel.com,
+	elver@google.com, enelsonmoore@gmail.com, kuba@kernel.org,
+	lirongqing@baidu.com, ebiggers@kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
 	David Hildenbrand <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andy Lutomirski <luto@amacapital.net>,
-	Collin Funk <collin.funk1@gmail.com>,
-	David Laight <david.laight.linux@gmail.com>,
-	Stefan Metzmacher <metze@samba.org>,
-	The 8472 <kernel@infinite-source.de>,
-	Willy Tarreau <w@1wt.eu>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	Val Packett <val@packett.cool>,
-	Andrei Vagin <avagin@gmail.com>,
-	patches@lists.linux.dev
-Subject: [PATCH v2 6/7] vmsplice: return -EINVAL for particular combination of flags
-Date: Thu, 25 Jun 2026 08:34:08 +0000
-Message-ID: <20260625083409.3769242-7-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260625083409.3769242-1-safinaskar@gmail.com>
-References: <20260625083409.3769242-1-safinaskar@gmail.com>
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [RFC v2 PATCH] reserve_mem: add support for static memory
+Message-ID: <ajzovhWHcFQZ9d3l@kernel.org>
+References: <20260619062331.348789-1-shyamsaini@linux.microsoft.com>
+ <aje-nY6QbwZP9XLG@kernel.org>
+ <ajyC2eX9MKSU84Z8@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4F72880011
-X-Stat-Signature: kowpdjsxhyxkjdxd7ke6oo4is6yryppn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajyC2eX9MKSU84Z8@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782376633-394143
-X-HE-Meta: U2FsdGVkX1/LB8tHV0LCk+7psoCG/wk2ipr0PV7rKVSOO5xbwbbbNp6s6zAfUcZevArYq7hmOaPvxSVnWLaCEuBMfN0mGi+Dd1OINYt8WXGi20/3yCG/jkdogzgGWwug8g/ljPM0E3MUfTtm/F5lu7iQ8AT4Sl/rrEfy3Zrjt44IJiJRT2lNhLOAouFJFAFa4/ZwZGiJUySUystvDK/C2lG/ATHE1oHL2dgHn0NxZHgB7Z6M4atxnQ5pFAhMVwb1NoDcMMfIljSReszFal67kW0/TZ4uqJ40DL0t0x1yaIFINLtvP7qP2btO/i35BGdaJupuKPODc54Uu3yubz/kN5C1Ip1JjaDdX8nqiz/kzr/x+352+INZ0keL+hbznk8qeD3XH2msedNkKBdcxvfd7ZsOzU1y3nknosuX6Bw2x6+zn4IsjphrSdUYfUO6iuG01PzEjJyRy6qTO6N7R0XIOxyV9X2yOBRgid7Z2eOrRh5ZwgOWo+dv1duSbs+lNdMsYAPoY86KWdrbCPdgWKAcHCgw2rc61uvXAQDDHlIL4Hu09MvK8cou8NkEbsRwlbm5gjrqSPtXvTPZoig3VO6OrZ8WAeIop19L6KNSsGj/PqReorWfvRNIaK5AgPNJ2+jSToTvFRM+ZTdYgpvaxgXGFlQmTX3M3sBO6UmgOsX9thHsJ+mx+owSH3Rl4jwJpdjL3zJsRz5oeM9mWFzMBUXQK3VQHSwSmAVwfmpxVSprp3KmSA1EOG9CrsNRZfpHLICGnSziaAXEL35ALEBkWcMZgYktQZHg9fTwhk0Mx5mx0dmHjLGcxoE3CKyz08GrQiAbdXqjh4HdLK1k2z56UmOdDrJJq+WChXznPQ3ipIVPB2nJSJbZgfkC++kBmfbClmKHW83THqxKV6R3Z5MbkaqnyoGLYszhQtV6nMc1KYT6ygqnu0+a0x1QFrHbbEa6577f4psHBdiMuNpFASjTDRl
- DjoOfsIZ
- Lf/hs9stlGFoYuVwDUB/fpdWI3QSjsz8737G+2l+ftl7AXKD0qFXOxPU3cefBLGPrNwcWcoy6biixV4khp5V8Vx/9MlhR1+vdPhuDGpaW5sD80NqJI/hWPtPnG8f5wKT6PmTEo+2ZwblolOFouYjXbJDsl2ySwN9HUdxaYekV/MQAj05vyWADfJ8iM6shvYcJTPwQtVrX6eEg/zzKRTkyODrDLcOjuG0ao8bWlbVZ1Lg31Bpz8z+nVcCg3wwW/87x6OXwrBoU0ZawgdD1gpNIvwyT9GNwTFVQAnYuX5N6sSACXMZkekTw+QdbObHOPK7Ukr1ZX3WKFaGubs2sdhp1jvayCOz7FB7+HjDpQhsaUjTzSVNu9kuP/Qar1DDqC2Ta6HeGkprqRU5A3ODh4LFh7gNF++5tHM6kRcIJiOtvwSwPD7K7fxgn2oqPcu1wI2pOXmNDMQ215VXnLjuOm9t70vO+CQ/Tk6/EjF7+ywewRuv/7dwpIZ3lmILP4A==
+X-Stat-Signature: bid9hjp4o3bx8b8pqnykn7sz9x63qfb4
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5805C8000A
+X-HE-Tag: 1782376650-253795
+X-HE-Meta: U2FsdGVkX1/YIOC7QvqNIYHcwROl9DHLCe/wy4GQvQUw/rIB7Sr4Jau7OV2oPiqg93esrq+pK2F1tY48oLZ9k6r3Odqwd4GWKENcMttQvUBz/2/O+Xl1zQrOyj2UDSTtp85yr19+yjh5SVGBlKaGsO3Grlc1qjOTND9HyE0RmYbYismMcZVYst8lAY2idaK5g/rAE4m3h1jIwnpCno1KB1DI5qF6DrcRGagTX8ysHXTdsofJ+VsnFKKFOR5wdjbwUFgXVwLNrzUx0WolNTCz6Yyu0cp1jBcdZYMyi4/o++rjEkCFO0hq4EB7k/hIqEjvHThrE98ncoI9a6iIhlZZbKCR1j6xUhWComx8SQ5GSuOYfyQDob4eNIkRRTVoUMf2u7WMS1289w7WDZm/qtaM+K9WTL4tk+I785vwzSIZkE6prfUsVZOsOzu4MNhpf1ihmc1bIC7z+QJdFvR+xpX5D9KmxHsb1j+Fy/QJu96Hg38h3jTmmD3VvB8jp5Hjtn9Dx4JS5BzoXmtkLqGRgKumVTnEe+jqUjSme23yhp6XbFwWBOmIr4y9w1DNFPU8ZAxRU3W8eHzcb9b2XoxTkFhYxx8sf8AfgVBIDEKfLxC7jL5VDAIVXge2ZIE1uLAOmFLNh3OD0FrQZGu2CG6XVb2gU9XUz4bF6spU+kO+2PMt3fayD0ptSB+TlhPp6HPxsRTIMVDWRxJtgGDOMKa4KDwUEnUttxe0kWHd1Kb1DM+lbniSyiv8P/TtUGHQO8eREBXOoTixRrWzmC8AUJxfashEgHpuPbCjlIS3mVJdm265PJ8xI14gycBrSzOUPy+GAOlrwzz2+6e1Tnacu/K59m2hO7CwPIEKCVFnx3vb22XBNJUx76R+9vQUl3avU9uy4/ppKM97+/xInUwUqrlZK5v+7csU3PjXiajDlAh4AUe0LhXj0ZnuXrc+acZZ4IqCRH3hwMvYNRz0pfN5zcyA/2s
+ 8TqbqM9Z
+ S7h+N9dhHrYTSoLd+108HfjqbvqbTSL01aaOCuYQ2Vqp0KMf7kZRndeCpxYR/3sg3M2CRFLkPbJKjapPUdVNXyvlTsjwbRjJiy9KJsNKvct5JK9DZc9BgeYlB5EAEp7O7ASFGMlO6ghtLKK39hWk0Fd1f8s2dO/iCOs4iC28BYp1xARCJ3qwZ9oVEu+hqPlkMrbUEsN7UKDqT/ZRP1o0gbXoKe0Ijz5Zkw4QHRE8jUj+gq1jJvFeg3ClNo99/pdBNTdExBUga1X170p5e+u9DfspVFLt3Qk72VvUSFkxtzETUZTo4qteDkwlAeqs3oZrebNRmWCDoAJ+n5zqomm5en9nSLCuk6pI8qcEVNQXqLLL/rXTNP3V/ndjZfmsyBhoaVzdu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-See comment for details.
+Hi Shyam,
 
-Signed-off-by: Askar Safin <safinaskar@gmail.com>
----
- fs/read_write.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On Wed, Jun 24, 2026 at 06:22:33PM -0700, Shyam Saini wrote:
+> On 21 Jun 2026 13:36, Mike Rapoport wrote:
+> > On Thu, Jun 18, 2026 at 11:23:31PM -0700, Shyam Saini wrote:
+> > > reserve_mem relies on dynamic memory allocation, this limits the
+> > > usecase where memory is required to be preserved across the boots.
+> > > Eg: ramoops memory reservation on ACPI platforms
+> > >
+> > > So add support to pass a pre-determined static address and reserve
+> > > memory at a specified location. This enables use case like ramoops
+> > > on ACPI platforms to reliably access ramoops region with previous
+> > > boot logs.
+> > > 
+> > > Also skip the parsing of <align> when static address is passed.
+> > > 
+> > > Example syntax for static address
+> > >  reserve_mem=4M@0x1E0000000:oops
+> > 
+> > reserve_mem is best effort by design because such hacks as well as memmap=
+> > cannot guarantee this memory is actually free.
+> > 
+> > If you want to preserve ramoops reliably, use KHO with reserve_mem.
+> > The first kernel will allocate memory, this memory will be preserved by KHO
+> > and could be picked up by the second kernel.
+> 
+> ok, On ARM64 DTS systems, we can reserve ramoops memory in the device tree during
+> the warm reboot.
 
-diff --git a/fs/read_write.c b/fs/read_write.c
-index dbd0debc2..b1f71b142 100644
---- a/fs/read_write.c
-+++ b/fs/read_write.c
-@@ -1258,6 +1258,16 @@ SYSCALL_DEFINE4(vmsplice, int, fd, const struct iovec __user *, vec,
- 		bool non_block = (flags & SPLICE_F_NONBLOCK) || (fd_file(f)->f_flags & O_NONBLOCK);
- 		ssize_t ret;
- 
-+		/*
-+		 * libfuse relies on sharing vmsplice behavior.
-+		 * So we detect particular combination of flags to
-+		 * pipe2(2) and vmsplice(2) and return -EINVAL.
-+		 * This forces libfuse to fail back to non-vmsplice
-+		 * code path.
-+		 */
-+		if ((flags == SPLICE_F_NONBLOCK) && (fd_file(f)->f_flags & O_NONBLOCK))
-+			return -EINVAL;
-+
- 		do {
- 			pipe_lock(pipe);
- 			ret = pipe_wait_for_space(pipe, non_block);
+The cc list actually implied x86 ;-)
+Added arm64 folks now.
+
+> For an equivalent ARM64 ACPI platform, what is the recommended way to reserve
+> and preserve that memory across the boots? 
+
+I don't think it exists, but a command line option (be it memmap= or
+reserve_mem=) does not seem the right way to me.
+
+Most of the arguments that were made against adding memmap= to arm64 [1]
+apply here.
+
+If kexec is an option, KHO provides a reliable way to preserve memory
+across boots.
+
+If kexec is not an option, we should look for a generic way to specify
+something like DT's reserved_mem for ACPI/EFI systems.
+
+[1] https://lkml.kernel.org/lkml/20201118063314.22940-1-song.bao.hua@hisilicon.com/T/
+
+> Thanks,
+> Shyam
+
 -- 
-2.47.3
-
+Sincerely yours,
+Mike.
 
