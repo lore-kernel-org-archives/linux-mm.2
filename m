@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B108CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 12:41:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FB7CCDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 12:41:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02C536B009B; Thu, 25 Jun 2026 08:41:22 -0400 (EDT)
+	id B01666B009E; Thu, 25 Jun 2026 08:41:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 003866B009E; Thu, 25 Jun 2026 08:41:21 -0400 (EDT)
+	id AD99C6B009F; Thu, 25 Jun 2026 08:41:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E357C6B009F; Thu, 25 Jun 2026 08:41:21 -0400 (EDT)
+	id 9A1AA6B00A0; Thu, 25 Jun 2026 08:41:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BC1D86B009B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:41:21 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 48EBA12067E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:41:21 +0000 (UTC)
-X-FDA: 84918395562.01.9D26E72
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 73C086B009E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:41:25 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EFFCB9089B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:41:24 +0000 (UTC)
+X-FDA: 84918395688.04.771D0EE
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D95EDC000F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:41:18 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=btca+J6h;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 89AEF18000B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:41:22 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PFTmRcT2;
 	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+	spf=pass (imf16.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782391279;
-	b=Z5aQTjsE080blfvhta9o/HSlmhNb0gR8msgAYTDhObVcLVHubHyMDe+gRN9oDQE8vcxXN/
-	Ew+wGG2BgiCakFCzG8Ge1btWlkHAzCtyDQtUsNrvEUnFphjZEbpkb5BxUC/s6wrGRPvoU+
-	XFxlrHChVEQZzs9FHcrh2EmTNHKegSI=
+	t=1782391282;
+	b=Mcq/v++RVrfYMg8hMj67DVqbH8ShXTBg47RnBBSChlU7MgVuLTJudJA/fRgC310f5nHz4Z
+	MQI/x4q6Bfufvr4hIuFxBoUDPbz/pWkX4vetL7435Y72WDFLamkNPdlw1WWwXUp7ihltIm
+	BOYiiyW2LTZjGyodlgqbffXeqJGl7eI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782391279;
+	s=arc-20220608; t=1782391282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7LYq0ie//aif0rvPoS+W7UvKKsXyfzfR+W5IvevACR4=;
-	b=m8pA33q/daRomC8ZF2Asn8xRrehQvyMj3vvxiLOcjzK6zYWkKdwv5a1BqwtXXT3Os+wcxr
-	LhhcJ1ds+nbWL2aaVUjVPyWeGoSgvxNWdCZRSXkVgtVANSgg7OLLDiuw7tOYmNa1G1GBqp
-	LUKnB82PTiy/od4jNljVn0V6ufbedik=
+	bh=+XEAmt62cfViu7g7Psv9u8HAtVSwsNQJ1sMnC7j816s=;
+	b=VubBZGYOlUdlQL9r8L3D0nFtVh+HNKlfahU8I6dFmbbizMDiYJq+bpo6NBNe/bW3xaiaWX
+	wgdssbKEDJN3a7WsVZnaUgEOSpob9H/yR41ioWEllrsgzlCNRC4QeXjwrIzRaIpykJ2Tyh
+	bH+oiuLdcxuyICYRQL9ptC+dfVnkS4Q=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=btca+J6h;
+	imf16.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=PFTmRcT2;
 	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf22.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3mkht3186638;
-	Thu, 25 Jun 2026 12:41:05 GMT
+	spf=pass (imf16.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65P3mTsT2977902;
+	Thu, 25 Jun 2026 12:41:09 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=7LYq0ie//aif0rvPo
-	S+W7UvKKsXyfzfR+W5IvevACR4=; b=btca+J6h87EV0dixFml2rg/B0a3z7buMX
-	vOghJH8Z2D6ekNIx74mLVh9yDaI22eyVO0VobVvQtZsNwy1X3DB53BDzddGlBU74
-	n1pzozRWII/ORK92qqA7IaSQn2Wfq9/YF/p+6uZr0dhwB46hpbZyQHclEhLUP9k1
-	waKgnci20pxJ4dhWS6m/cocWS+n8vm3xFnOeyuW07BN7SclLBByMVHaCqEZPFIAK
-	8bU4ywlVCVABa32wyT5vGTH82fzm/H2+pQjg8D1uf146LNBeTf1ZP0YnnFSHVfTs
-	3siNufzARjFd8m7hxlut5RSX37GGjCD7Ae+dlS+ix6T3m1yA/BzLA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjhr1n0t-1
+	:mime-version:references:subject:to; s=pp1; bh=+XEAmt62cfViu7g7P
+	sv9u8HAtVSwsNQJ1sMnC7j816s=; b=PFTmRcT2xnXxL4VvT+8zSmz3tCsX/P3Iw
+	xxNdxLtYvYdY0amidPBQ+Ufwpnc0K4rzQlLJq1qi8NzqXHVuBsZqrQwEXJc87zKE
+	dNf8II27Bg7qHoCUwN/O0y6WdJhK/egPWXTjlIVDYlrKew17Mmb1Zz+WXW4LIGMB
+	HmEXlLs8a0py/piTptkv6CxTusk4ecIgkALzFaTuFreh+qVM2WUpRkCFUTBKDTPk
+	XgxUn72osUMJyRxXAWMamkKJquwgfYff3sm1yXZq69eek2zSymQLil973DjAGstA
+	kR8Luq3uxWT163rj7O0Nshsc7/sYAb8LqdkkFmnxSAzofrv8k488w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ewjk4ss10-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 12:41:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PCYbJu002246;
-	Thu, 25 Jun 2026 12:41:03 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ex7vywtr2-1
+	Thu, 25 Jun 2026 12:41:09 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65PCYfOJ014984;
+	Thu, 25 Jun 2026 12:41:08 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ex66ke4rr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 25 Jun 2026 12:41:03 +0000 (GMT)
+	Thu, 25 Jun 2026 12:41:07 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PCexk216187824
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65PCf4jm42074538
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 25 Jun 2026 12:40:59 GMT
+	Thu, 25 Jun 2026 12:41:04 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8F25B20043;
+	by IMSVA (Postfix) with ESMTP id F054F20043;
+	Thu, 25 Jun 2026 12:41:03 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F125920040;
 	Thu, 25 Jun 2026 12:40:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8B98920040;
-	Thu, 25 Jun 2026 12:40:55 +0000 (GMT)
 Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.39.21.143])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 25 Jun 2026 12:40:55 +0000 (GMT)
+	Thu, 25 Jun 2026 12:40:59 +0000 (GMT)
 From: Sayali Patil <sayalip@linux.ibm.com>
 To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
         linux-mm@kvack.org, linux-kernel@vger.kernel.org,
@@ -96,9 +96,9 @@ Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
         linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
         Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
         Sayali Patil <sayalip@linux.ibm.com>
-Subject: [PATCH 1/2] selftests/mm: handle EINVAL when configuring gigantic hugepages
-Date: Thu, 25 Jun 2026 18:10:16 +0530
-Message-ID: <8bfa921e30eb94072685103f6496784aa23bb166.1782365671.git.sayalip@linux.ibm.com>
+Subject: [PATCH 2/2] selftests/mm: fix ksm NUMA merge test for systems with memoryless NUMA nodes
+Date: Thu, 25 Jun 2026 18:10:17 +0530
+Message-ID: <8540b58ef1fdbc2e5cb2f9fe28a2d2a54a5bc6a8.1782365671.git.sayalip@linux.ibm.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1782365671.git.sayalip@linux.ibm.com>
 References: <cover.1782365671.git.sayalip@linux.ibm.com>
@@ -106,40 +106,39 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=I4VVgtgg c=1 sm=1 tr=0 ts=6a3d21e0 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDEwNiBTYWx0ZWRfX9dHpf1x+eo8s
+ w123ciYhiqHI43i+ZlmSgU+eW9pBlCViBys96wsoQumY2yL5yzwlaLsTov8i/iIHc1Wa5aQM3rU
+ CMwHOtHBZlFoFyzux62UGigJKu2WUT0=
+X-Proofpoint-ORIG-GUID: UTuYccX0qVGzHWGUYRAtAphxqDbXL14-
+X-Authority-Analysis: v=2.4 cv=Oph/DS/t c=1 sm=1 tr=0 ts=6a3d21e5 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
  a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=BH8Sa3jHzDjv_dfq7kQA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDEwNiBTYWx0ZWRfX1nVmDDdRv9Ya
- aKQMIG6CeqWls2DhWDooBvBnH9rf1Tvj3U86aJk8eju75M9GgeZekbqYMZ5MbcCz5E/heJbF2fQ
- gJcXtvqLFitVg2zpw5hh2Oogn8kBdDTZ0j9EmGcLk3Ec3jLhHNeUS+u97vQ4fLkRaTqWjDAmA8n
- eG8YOJ4M/5ehobMDozG90QP0l9ThIrr+53qOK0mxwcyBXJDoBqGH33+dF08lfhWiRLOUMKA6tlw
- WGvmIYai1U73+xnCtAOM9pe8YUEDHsO7lnq3RHm+U6zq6cH/mQcDh+GA2cIlw9Xd4cD7mPqzqDq
- yo99ppHH9GKdZo9BoJ+aD+1UHJwQZRCp1EqMdzkDhr9qQVxlyBYp/QujlL/gu/KcmmvlV05CHNy
- shn/ua4Ku74rnduw84CvVEjG8MT8pHljLLvs4xwJr+yy247p9A0PY9QKDd8A4ui70RLIx+5lRKb
- LQYEwNozRFx1aCQqO0A==
-X-Proofpoint-GUID: 0ck7acKIWgQNDdBNXuyFfJ7Rh2vv9q4y
-X-Proofpoint-ORIG-GUID: Fk3ArSV7aga3Sj3uoTWpxyn9NwBwXYQV
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDEwNiBTYWx0ZWRfX6tq/9m+kgMW5
- Y4d/2sIhk9ymXDuFyDBk352ypuPhe1WUdWyMiz6jX7VSgwkVeuuc7a07rmg8tLDg0OZ9wt5Ktoy
- 7mRPusNlvHgXHeXMs/EopsrCVo7Kl+I=
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=scZCP75yIN9AcEXs0C4A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDEwNiBTYWx0ZWRfX0xfCcI6Y2s2C
+ QipyX+LPTIKvTjXdxwbsDKZm4OqqYefzBYz332bGBfHSa13+2uyynwX8njSyxjcqtYKu07eEDsH
+ KfUSKHkBc1Vvnw60xMS/qxh5B7q6tF5ROO7fS2IbVYgpczFOM/CbtyDbupfEpMAbVHuRV/q5DRQ
+ xf3JHaSLpMHVgnW5ELIBEj7+SeQniXncBPqSl49GZ6rdDpPlrZ2OLgcVXYzk8agJuT8J0Gx4eZi
+ A5Z2pBocJtqV4Jc9QSbBE9uDV0S5qCxW7QD3jJoCwVpbHYixgvQ9NFYtaRQQSR9fI18icaxjm8X
+ kLWqghus26RTzaQIc6IXKk3wU7KUPUGRL12y36hmIedNrjFkPL+7encSFgQFVqqvB9D9wjIq5Tw
+ Bq2hqkQPKvch+JogTfLQWZepj5f1MtxPxq91VAKFZj0PEsVwLAOZWZ/5kGwZdVpj1HeitwFa+SY
+ ixO26iXNt2LGVaXAvNQ==
+X-Proofpoint-GUID: MpXcvQGkzhsBhFigEemmFfOma35hu1iw
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-25_01,2026-06-24_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 malwarescore=0 clxscore=1015 impostorscore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 priorityscore=1501
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2606250106
+ phishscore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 priorityscore=1501
+ clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250106
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D95EDC000F
-X-Stat-Signature: 5f7mwyfncdyumcuua778z4tpeop1rn8f
-X-HE-Tag: 1782391278-223031
-X-HE-Meta: U2FsdGVkX18uZyv1mehZsVk4wwRaWucjeobqAYI0rcYMnk+DgckKuJZfrmNcO0bCyKAWAeENmVagUZv3v7N/8W00gSzsRnZpZf1BRH9GxULeHgvbWaDbwkIw6pW+eTs8Pbrgup8D9fyLXKAgD6oZjugTypkKYnFAH7jDE0qSQ68QuuLw0sXLU7eNgMc6nuPkrgp5K5Be9Vhq6/CD7O8lro2dp1fyrFx4uOlwpar88PlecrEtyykzYPkKdmtu/hP2O/x/dx1LLL3gASnyN6ufHizYreZkwhfLzDn5qXJ6Uskwgxnl5RiDX2h/073tCDzDxP+M5x3s9L1HQdmPYKxYmLg6hOcDWQ7xKOLUIPzRFFSZ/8PYLYaaRtDYE3se13q51nDYaiDVfsWb+jsppzBouC/0X7A1tLpxJb6JpuV0FQpbHAQhvqEKJxhtazha6ZVZwTRvGJkfAdN98dmlb/jisS3IUnIttnBpPeMOi5jfute73wcKJRsVEJZizFDaN5gyKga3m7OoHas9CDu3pGvwCMJL1SeLgWNAaaJrJoGfmXXJyvp6hkBGPL1IZtp8aHWcDY0HQMfWob8Q8892dida4uP48F2t8JrW9pCA1tzu6nYYcNBGzPWfapt0o9rqFLylYEI4Nq8L8i4NEL+eeDS/KKxjrD8wVHYG2Lk2iXRMgdvCheS/vB9ri7nd3pj72SCu4PyHhbGVUt48slcaj9uheBO+2WExFE8SgB4THwEOPlLbowJ74sglvce1EeseRS0w+SQ+C/5mpPj/w6e+bksrvr4PDOT0EIJn38W75OQ24YoVo7PX3Bu3G1Zb7U0N5DdLpaTj7LqQGufIt45pgEowPf5OUvWjFCjP3gDPDb+gPzLQ9gQrCrDGCBWnA0aVPkBz9jkf0xk90PwSBygglGXiYBApCqNUk8lVXcSXEhwIBHJsk4NxpQLm4zns8q6GLXscoRm4Nq04moRYV8wj0nE
- b0dNt0fE
- eqsdspRCaWKrtAWTnjTNeTIzZiuicTmdalGfmtdRjJhX5U1hYDoYbEVs9v8++9LYxTT3m8DHrdeetKqz3lWJc1CZgonqwDSlc7u1Pz338Ey/87CB683Hb9oIsytOPxk3YWb/WYZiC+WJIzdy3tJKit7neN69ibIVb5KyggqrDFC9xHvGrlkhinaoFn6p5DT7ro7D2zaB2CL6fdVJg1U5jp0MZnvXGC3dKsnqzwM/faeyAcdEv7gEHO3c/pAWkpaq11iB/tg7h7tCVtOdbAXfnPeJW0pdVdOOfVhrFv0J3OK4eyN6W6GcLwJVRcZVU1fXfn4sgRuhjK9k1gyJGzTKLSVMrcGbW78dge+5mOZstjnWtPJmJ3RhX9D4wYg==
+X-Rspamd-Queue-Id: 89AEF18000B
+X-Stat-Signature: icghr56bd9bf7977fw1o75au886xx8g1
+X-HE-Tag: 1782391282-583484
+X-HE-Meta: U2FsdGVkX19a1VS0GiWvEF+8C4UlzqayOYpZY5cL3UUQ30MlBOom83NtiujQ/1/YIShocmNYNUHfrP3Rq8/lb+VdGjt0moFauuQAhmQT8lOnBz7h/t5iTiyTEX10emekiGcjGshlJo4uW+YaHFJq9d3t+cXKibcE5vFgWXOxncz/jXWtJJjDqKvVwB1X8UD+wmPrw6gK9p8/iFFxuBziI7r1T/bL3FT7uspLwLwYe2PHM2HeMCZSKOGd4YdZg8SEvVdPNIJiCKruPfeAwYdYYhLAokBFYgPe59f1D1Bi339IjggR0fQUucv7F0UFvR3Ua4dqyfUnTNH/mrno1TEm66Oa8Ob2cBswmUUqW54k859a7MqFhIC0qbHUei9HSdU2Svr7GazIIkIhQsMFXaCocv//kTVy9zwFEmfCldZNocvE8OKorvzmfQ+YgZXsL/0MtwpZyv6ZI7hmkmk9hIMv10R4jNiMrWmePQXdZPpCqWPnIt2nVZ7VoHNJcEKSBGLC8d1jDE00CR4L/qdvaBCmxeN+6ZHjSxul3pHvk6SMbcueuW9APogdSmhWc37bJoUjDlnh6tjsdi+0oZevyx3SwzC/+KkeJRMNjZ2ntWLNihbIyoHfzwt3hIXR4rdPSxcQS72bn9PTObKxOk1rcW26plZhEGqaJ+etehUjiFxsqDAvNjS0s0X333nPuah0mLi7nGLcYqutzEXz/vyLzN/ptpF8n8MCD6d3ppRBbkI8iIUMVmFeOa/LVFNX4TGMdDlCbGdRlahKhn1jN95D4qlpUpm+8qFvB0+o4k7ZRJnc6Zr3hw2rAxxJ2+KUzxQ/MbRBb/E7hL9fDZubidaPaQRkQaGn4pzvpzRLkKc9lR7jmM/ipfNuKQ/ABvMLvywdtSewMaanIC477YWrv8nl3++ijC+xHBH9SQ68VVZdJcyl+Yxly8TrKRVoEGtELXgLgsZ5W9V4HB7tzm9oIvngoDh
+ d4USun3a
+ KRofK9UtSk1ze7+yynsRiPsoHwd8ybtGPkC0cZrsikzoAREVL/XXM02AK+IGBAG6KlISr63hnUzN24kvZFXb45qWvvvWnTCiT1h78meNI05RcyCbzUTPFtV9z4iMDa9rvG4bgLbxRO7PMkKTNON2kMgCRG9HNUzpQs+6feqUfKGeYlA+tWhtZCg+Are6MYsNoxutdx6AgDe1pwSAqzJKPACb1xFkQxRvHXtMWU3g0IP6RUlai43qfmZ2vSgFUR9+l/5kEUZNZkmt0AOdNJU9dcQwAMQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,72 +146,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some MM selftests attempt to configure the amount of
-HugeTLB pages of different sizes by writing to nr_hugepages.
+The KSM NUMA merge test allocates identical pages on different NUMA
+nodes and verifies KSM behavior with merge_across_nodes enabled and
+disabled.
 
-PowerPC hash MMU pSeries systems advertise gigantic hugepage sizes 
-but do not support runtime allocation of such pages, writes
-to the corresponding nr_hugepages file fail with -EINVAL.
-This causes the test to bail out even though the failure is due
-to a platform limitation rather than the
-functionality being tested.
+On systems with memoryless NUMA nodes, for example:
+ #numactl  -H
+      available: 2 nodes (0,4)
+      .....
+      node 0 cpus: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+      node 0 size: 14825 MB
+      node 0 free: 1382 MB
+      node 4 cpus:
+      node 4 size: 0 MB
+      node 4 free: 0 MB
 
-Treat -EINVAL from the sysfs write as a skipped configuration request
-and continue running the test instead of failing.
+the test may attempt to allocate memory on a node without memory,
+causing numa_alloc_onnode() to fail and resulting in a spurious test
+failure.
+
+Add count_mem_nodes() helper to count only nodes with memory and use it
+instead of numa_num_configured_nodes() to ensure the test runs only on
+systems with at least two NUMA nodes that have memory. Skip the test
+otherwise.
 
 Before patch:
-   -------------------------
-   running ./hugetlb-madvise
-   -------------------------
-   TAP version 13
-   1..1
-     [INFO] detected hugetlb page size: 16777216 KiB
-     [INFO] detected hugetlb page size: 16384 KiB
-    ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
-    Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-    Bail out! /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
-    write(0) failed: Invalid argument
-    Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
-    [FAIL]
+       ---------------------------
+	running ./ksm_tests -N -m 1
+       ---------------------------
+        mbind: Invalid argument
+        ok 1 KSM NUMA merging
+	Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+        [PASS]
+       ok 1 ksm_tests -N -m 1
+       ---------------------------
+        running ./ksm_tests -N -m 0
+       ---------------------------
+        mbind: Invalid argument
+        not ok 1 KSM NUMA merging
+	Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
+        [FAIL]
+       not ok 2 ksm_tests -N -m 0 # exit=1
 
 After patch:
-   -------------------------
-   running ./hugetlb-madvise
-   -------------------------
-   TAP version 13
-   1..1
-    [INFO] detected hugetlb page size: 16777216 KiB
-    [INFO] detected hugetlb page size: 16384 KiB
-   ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
-   Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
-   /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
-   write(0) failed: Invalid argument
-   [PASS]
+       ---------------------------
+        running ./ksm_tests -N -m 1
+       ---------------------------
+        SKIP At least 2 NUMA nodes with memory must be available
+	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+        [SKIP]
+        ok 1 ksm_tests -N -m 1 # SKIP
+       ---------------------------
+        running ./ksm_tests -N -m 0
+       ---------------------------
+        SKIP At least 2 NUMA nodes with memory must be available
+	Totals: pass:0 fail:0 xfail:0 xpass:0 skip:1 error:0
+        [SKIP]
+        ok 2 ksm_tests -N -m 0 # SKIP
 
-Fixes: 9d07250ea1eb ("selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages")
+Fixes: e3820ab252dd ("selftest/vm: fix ksm selftest to run with different NUMA topologies")
 Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
 ---
- tools/testing/selftests/mm/vm_util.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/mm/ksm_tests.c | 26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
-index 311fc5b4513e..a8f16eef5c7c 100644
---- a/tools/testing/selftests/mm/vm_util.c
-+++ b/tools/testing/selftests/mm/vm_util.c
-@@ -735,6 +735,13 @@ void write_file(const char *path, const char *buf, size_t buflen)
- 	saved_errno = errno;
- 	close(fd);
- 	errno = saved_errno;
+diff --git a/tools/testing/selftests/mm/ksm_tests.c b/tools/testing/selftests/mm/ksm_tests.c
+index a050f4840cfa..d1790b4347d3 100644
+--- a/tools/testing/selftests/mm/ksm_tests.c
++++ b/tools/testing/selftests/mm/ksm_tests.c
+@@ -450,6 +450,18 @@ static int get_first_mem_node(void)
+ 	return get_next_mem_node(numa_max_node());
+ }
+ 
++static int count_mem_nodes(void)
++{
++	int node, count = 0;
 +
-+	if (numwritten < 0 && errno == EINVAL) {
-+		ksft_print_msg("%s write(%.*s) failed: %s\n", path,
-+			       (int)(buflen - 1), buf, strerror(errno));
-+		return;
++	for (node = 0; node <= numa_max_node(); node++) {
++		if (numa_node_size(node, NULL) > 0)
++			count++;
 +	}
 +
- 	if (numwritten < 0)
- 		ksft_exit_fail_msg("%s write(%.*s) failed: %s\n", path, (int)(buflen - 1),
- 				buf, strerror(errno));
++	return count;
++}
++
+ static int check_ksm_numa_merge(int merge_type, int mapping, int prot, int timeout,
+ 				bool merge_across_nodes, size_t page_size)
+ {
+@@ -463,14 +475,12 @@ static int check_ksm_numa_merge(int merge_type, int mapping, int prot, int timeo
+ 		return KSFT_FAIL;
+ 	}
+ 
+-	if (numa_available() < 0) {
+-		ksft_print_msg("NUMA support not enabled\n");
+-		return KSFT_SKIP;
+-	}
+-	if (numa_num_configured_nodes() <= 1) {
+-		ksft_print_msg("At least 2 NUMA nodes must be available\n");
+-		return KSFT_SKIP;
+-	}
++	if (numa_available() < 0)
++		ksft_exit_skip("NUMA support not enabled\n");
++
++	if (count_mem_nodes() <= 1)
++		ksft_exit_skip("At least 2 NUMA nodes with memory must be available\n");
++
+ 	if (ksm_write_sysfs(KSM_FP("merge_across_nodes"), merge_across_nodes))
+ 		return KSFT_FAIL;
+ 
 -- 
 2.52.0
 
