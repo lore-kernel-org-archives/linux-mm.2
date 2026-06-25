@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 546F4CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:17:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1905CDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 15:18:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1379D6B0092; Thu, 25 Jun 2026 11:17:55 -0400 (EDT)
+	id 9C3A86B00AE; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E8AD6B0095; Thu, 25 Jun 2026 11:17:55 -0400 (EDT)
+	id 99B856B00AF; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F41326B0096; Thu, 25 Jun 2026 11:17:54 -0400 (EDT)
+	id 88A6A6B00B0; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C70B36B0092
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:17:54 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A431A0144
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:17:54 +0000 (UTC)
-X-FDA: 84918790068.11.31E096B
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DD9D612000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:17:51 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EYBM9tu3;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 61BB56B00AE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:18:01 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E00AD165D7C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:18:00 +0000 (UTC)
+X-FDA: 84918790320.01.550B778
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf25.hostedemail.com (Postfix) with ESMTP id E7C6FA0007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:17:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=araeRisd;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782400672;
-	b=3pkCypNpQDxxuZ2BbKHWLUxJp5JGjuF2QmL7bDwy95WLWBLJ6QSkcXt9xhHr1DCXKITDiK
-	OCZx/mHPslL9hYotbEBczKxGMu1/j4HVF7pVjAoHX1yTyEJ7TNyx8O1H5k2xu473ujI1OR
-	jnVVlLTUu6mjukSZoBaf+AmIY7YFlg0=
+	t=1782400679;
+	b=osp4haeo+73P53Q31cLnNvWhaxKpEhoZSkldaDCKig6weGfc2szcihr0pJ9NHJ5Ym8y3fU
+	BnluLeXYUVb+ybm0m0jpfWwhTAdwLQmdIvvABaBaZPqvYyhvm7ia5vyJbKhftjqgsttPJY
+	rFrNaBapyloYtTBjGNVf8PBrnufK44A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782400672;
+	s=arc-20220608; t=1782400679;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ho2osq0XeRu7S5voc4mfyO5ITrtAk2DlnfwLQFYApok=;
-	b=AgjdCtqolCWKMQDpMIpIez33tTJx6F0CZpQYah9h6NAhrqL1dti4ZM1yF0pxH6A7wMOd56
-	533yKd3JUxbKjjPrBJYUNa13fsEFUsJDTZG4rg4GA8TnRUYjUE8kBE8Ro0iFoKEsAIH+JD
-	oh9ZjUMPO6R8GKCGbXyymbwzyqmrgbg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=0abFjDD7MeWR8jXMZ2j0zCKAbj5uTG1W2qlcF8YqFc4=;
+	b=N7N5y+vyHH7YX4X4jV71+ztt5xkmFrZN10xvxcAiPwjrsN32iMRXs95WgvtGjJ6FWH8b4q
+	mZRio8+Fk4Gmn4diWYr9oi9v+VKzYWmK68TS0EmRaLvihxJHRxRG9IlLX/vbN1TXprR5RC
+	xWy8VrSDJOCFiyJvLiui3f8Jw/A1fA4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EYBM9tu3;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ho2osq0XeRu7S5voc4mfyO5ITrtAk2DlnfwLQFYApok=; b=EYBM9tu37PTqUUd9H8IHDUvrx8
-	PmU+AM5y1CZBwEsTdHlnZoVjJ+HGCeqexTNPWYy+RXdzCvNJqzX/dqaV+9HkbzOCOmLpwA9H2Q+Ws
-	stTpKBoCBgm0XS9YDt2UsTXfH0UkM+nWo1bC7kw8jCEpTS1ogKS/udgq0wDgwBJiGZHB5Hr2p2sRv
-	AIiK22G7zkdK/yoT+T5Y9Xq2eO4VBNrw9CzHdebe3wmOTEQcwXcXimZknk36ideJRrs4a5rOZgCwb
-	ejbIZm/rybKip5TtQ27O9m1CASXOkOe79fUxwEFcxk805v9IJYSfifU6v/omPQOeAYCkSwyV3lscg
-	6w/4ZOJg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wclpt-0000000A7Ov-0Iwd;
-	Thu, 25 Jun 2026 15:17:49 +0000
-Date: Thu, 25 Jun 2026 16:17:48 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Barry Song <21cnbao@gmail.com>
-Cc: josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH] filemap: Remove file pinning during fault handling
-Message-ID: <aj1GnMERF_j54sFA@casper.infradead.org>
-References: <20260622192114.1147198-1-willy@infradead.org>
- <20260624065818.49975-1-21cnbao@gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=araeRisd;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782400676;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0abFjDD7MeWR8jXMZ2j0zCKAbj5uTG1W2qlcF8YqFc4=;
+	b=araeRisdZjkkXDB5B5YHuyjgxiM3QgILhTA3HYQM2YO4riqCwXB16muACRB18zccxmj6HB
+	uk5sdyKDreRF+CYXqUsePISuTN1byrhnIsvTqYnq8CpyfVWyZlNIte2FgGzk+V6kjepyj3
+	1MUTcDj9eg6EsdVDrA1sykzJH9DqGZo=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	kasong@tencent.com,
+	shakeel.butt@linux.dev,
+	baohua@kernel.org,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	hannes@cmpxchg.org,
+	harry@kernel.org,
+	muchun.song@linux.dev,
+	peiyang_he@smail.nju.edu.cn,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	ljs@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm: mglru: fix stale batch updates after memcg reparenting
+Date: Thu, 25 Jun 2026 23:15:54 +0800
+Message-ID: <20260625151554.55105-1-qi.zheng@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260624065818.49975-1-21cnbao@gmail.com>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DD9D612000D
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 6y43nwxykj1hsn16eyejgfrds4r5h99g
+X-Rspamd-Queue-Id: E7C6FA0007
 X-Rspam-User: 
-X-Stat-Signature: ix8y73ifjrxx1n3zi9n5fyizdjjb84se
-X-HE-Tag: 1782400671-60294
-X-HE-Meta: U2FsdGVkX1+KP0KTm0Jc8/GBtHLHQBW9bnw9SUGbOa7Cl7lYR9gFMOFeeidEiA5ih5wCac9IbFhse3uOQrpxUz4GuSIvXS8o9L/Jt0JNkbPZTG94QQop8q/fs7Me5Q3ZUqigQCCwvadrp0jDhIEWIOX6XEe9qdpGpNOhEdN6IJ8bZuyW0/7Ykd4pm6WP6b1EApSzlXFAQG34LtvxZu2RxqXcE8Ha88NgYO2hKCybhrBT+ODVC8TuqWHuiKpnQzwMMPDMOaXAL4r6dTNiizk7Y10HPp19yorSdyZQg5brUqsjX3/HzKQx59FsjJHSAxxMS1qhvsT+g1/usmLhXVjGGKx/oZyL17TCb0xTpJIvHUAp1rLZxYrSWlov9odfB8NvkfDUJKrW0jF1Dlt1nEgLJEXt82HY/nwNO+5d0W/F9BWAroMX+JDn80XMq/937plzMNmdHJ3S9QBXkz2KogMgwSWurLtzD3LCG/7yQEzIxnVBGgYTnogXFUJRc8tm4tlmdnAVr7cTntRxYrTrCjdxLffCik65edND75e5HMoJ/FVBPS/epWBUcVIcUEFZ9Bj/oPN0vATOwsd7Ju62R7qACJDQEaGiE3a/w4/LvJWwE0dv+nDDVHsdEWV/jt1OBc9NSY3N1vBivub6vE8fG/maA6UUtNiBlK4RLayV1Mqy36IaQ+NegoWa4yUIkqQe9HOlhJmrU5TNMgl1sNcT2AvxSsVTftUepyQRd+/rL3v7VGTWbZ/fODLSUZR29Vrd6wk0DJsZIOBLdDlvBLOHbSH7wVACO8TMcBCYFFcGmGZgD8WFDVHp40ZMbUuXPNzOgrSFJLaK5V2xFuhRiCell1U40uMVbOGlYEClbTVoRy4khxQ3ZzR0i2L4YtyR+sh4PitYJX/ws8/XoBgBbxCtTNWJrHFTn1LYT5yb7vy9ba8fmBp0LSHxBGrIYXRd1yXLkWg44SC7XPelWmAjueXEQfQ
- c03VO3CU
- HTJKiK/HxQ3CLhYWEjjab80I9X88vRVzWIQAD3UxZv2J3waKCLUu9nKxG3TqziPTZIpkkgPFBm5FgNnc0ZRBeRF9t6ht82QAGgfaqM7/lOhLte4tCVJ2XJM4Y6C2BVeRJ1SUbfz7H+A0bpITe6x5uPDx+7eXMZjiBVDUa2ZIzKqueto3GYfDJv4fkDVj1s2CxvUblOOAf5RypOxpZhllt5Uk207fuwRD9m9ftgRnspMAhk/8EirFHesHJ7g==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782400678-67344
+X-HE-Meta: U2FsdGVkX18CnIFCWJgX6//aw/a/mAYCZwgygEG9BzgOsIq7psNP7ScF7L2D+01022mkOWi7QLBIhmPXroTaMIYC0YlVH9l3+KPvS+q6xQ3PiHBPXD6NgmV6HnVuWL04GxkTxp6am+B8f/GRGDe16NCzrSWBD1LRvu6Pj807C1/Mkr1qKKkyQnmeX5f85yI+DZUHRSpyI/A+zL1lXG2HFEVHyw+tP7NAzVhjhf4dfYBcKfv/4ThVvx1pg0GiaX/YnTiFrzy6WjHcKx7CvLycLcmBM8sljZcTmXp330l0DEm6E6xLqntsXEiVOO16gWCSkjbRB76xpmc4nYq5TyF0YbHPE+ikkfZOASdZJSa+LOn9IkY9y6Xi6lQszGm802lw2ptuoiUP/h4HNpw3uWLwN4ywhdi3Qhl0KtLg45N8mSZ+COwrnXlQn0oH4r2yqHL3pGJo4RyKKbdA+yPKnDWruVobXmM1DH2ABUOP1GfgxTuffEvY5pEHEBUAmCI+cjCrpcEL7BZ0p9GYWBYLNMCHY5+BoNqjmioQxF6Ch3XIYXJIwrp1slt9HnE2huQ7qDVUGdGXQ13gTTBBOEypGdGhOuTTSSU6eVqQLwniuMzJvWFns5sJ6X94Vpv+O5fGklBNLfcHMOKciidtC/RSrNaK+J5dabNj0ogiSurpfj3RFUgyIfJY8PlLU36P47xzdhP0LmRYWVKa6gUVFOZ1rt/kxZQw3egQ8pdtGy/k5gCjXV/0q82a7qg5Jnh7ikvgdirUOtY6X5a8Qt1UCzlFsQX1lPBQ/i9V3kkNDp7NUAR929LT3TmNV8rVfsiiksgpRTzKoy4StFixEeV32dXSUDVbmPRY6pcnal2FLPGTuk0xZbVNXgrndOEW2c0n7Ji7PG63yzqmfHtnKOSN1cM537avEQRB9Si3yw5zsUNbHTaCmkQkLGPkkUbq84g8ZJct6f0mlbEmTf0/CmuNTPQ42QA
+ JZivLN12
+ iYEmK/3SowGWjdOaxHmEGrXKz1evTKigFoUFoijWk2nGAhmkvYzoUGLdSzP6GnQxet7ejcuOVRet0No2Kv51goyQ+AyZrlyH5YyFf66/9bYFWEC1JilLw8455X8KfM2CBXYxi71Vb7P0/iiCHX8UQGnoHEH1EviiGofB2axv0nxscuHFlE/veTbWGBuo8pdgO1SLkTt2lo5QrrG5Jk0h+1hEbIEWBhyachu3UfX0ZKREj1KMKZqMIrEfbsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,26 +99,153 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 02:58:18PM +0800, Barry Song wrote:
-> > Now that faults are protected by a per-VMA lock instead of a process-wide
-> > mmap lock, it is far less important to avoid holding the fault lock while
-> 
-> We could have fallen back to the mmap_lock from the very beginning in
-> do_page_fault(). And for GUP fault-in, we have always used the
-> mmap_lock so far.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Your own data showed that this wasn't the point of contention on the
-mmap_sem, that it was the fallbacks that was causing the mmap_lock to be
-contended.
+The mglru page table walker batches per-generation size deltas in
+walk->nr_pages while walking page tables without holding the lruvec lock.
+The reset_batch_size() later folds those deltas into walk->lruvec under
+the lruvec lock.
 
-> > This should result in improved lock contention, although it is possible
-> > that some workloads will find themselves contending on the VMA locks
-> > due to them being held for longer.
-> 
-> Hongru reported that 82 of the top 200 Android applications in the
-> China market call fork() in heavily multi-threaded processes[1]. It
-> would be good to take existing applications into account, please.
+The page table walker can run concurrently with the memcg reparenting path
+as follows:
 
-No.  Collect numbers that show it's a problem.  I'm not interested in
-theoretical problems.
+CPU0                           CPU1
+====                           ====
+
+walk_mm
+--> walk_page_range
+    --> update_batch_size
+        --> walk->nr_pages += delta
+
+                              mem_cgroup_css_offline
+                              --> memcg_reparent_objcgs
+                                  --> lock lruvec
+                                      lru_gen_reparent_memcg
+                                      --> reparent child folios to parent
+                                      unlock lruvec
+
+    lock lruvec
+    reset_batch_size
+    --> child lrugen->nr_pages += delta
+
+This will trigger the following warning in lru_gen_exit_memcg():
+
+	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+				   sizeof(lruvec->lrugen.nr_pages)));
+
+And the user-visible impact of underestimated nr_pages in MGLRU was
+premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+reaches zero, but there are still more pages.
+
+To fix it, make reset_batch_size() check CSS_DYING under RCU before
+flushing the pending batch. A non-dying memcg keeps the original lruvec
+stable against RCU-delayed offlining; a dying memcg redirects the deltas
+to the first non-dying ancestor.
+
+Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+Changes in v3:
+ - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
+   (suggested by Harry)
+ - update the commit message (suggested by Harry)
+ - temporarily drop the previous Reviewed-by tags
+   (since the sync method has changed)
+ - rebase onto the next-20260624
+
+Changes in v2:
+ - update the commit message (pointed by Barry)
+ - collect Reviewed-by
+
+ mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 7 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 35c3bb15ae96..1ec8c23c72b9 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+ 	walk->nr_pages[new_gen][type][zone] += delta;
+ }
+ 
++#ifdef CONFIG_MEMCG
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
++	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
++
++	rcu_read_lock();
++
++	/*
++	 * The memcg can be NULL when the memory controller is disabled.
++	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
++	 */
++	if (!memcg || !css_is_dying(&memcg->css))
++		goto lock;
++
++	do {
++		memcg = parent_mem_cgroup(memcg);
++	} while (memcg && css_is_dying(&memcg->css));
++	lruvec = mem_cgroup_lruvec(memcg, pgdat);
++
++lock:
++	spin_lock_irq(&lruvec->lru_lock);
++
++	return lruvec;
++}
++#else
++static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
++{
++	lruvec_lock_irq(lruvec);
++
++	return lruvec;
++}
++#endif
++
+ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ {
+ 	int gen, type, zone;
+-	struct lruvec *lruvec = walk->lruvec;
++	struct lruvec *lruvec = lock_batch_lruvec(walk->lruvec);
+ 	struct lru_gen_folio *lrugen = &lruvec->lrugen;
+ 
+ 	walk->batched = 0;
+@@ -3285,6 +3319,8 @@ static void reset_batch_size(struct lru_gen_mm_walk *walk)
+ 			lru += LRU_ACTIVE;
+ 		__update_lru_size(lruvec, lru, zone, delta);
+ 	}
++
++	lruvec_unlock_irq(lruvec);
+ }
+ 
+ static int should_skip_vma(unsigned long start, unsigned long end, struct mm_walk *args)
+@@ -3779,11 +3815,8 @@ static void walk_mm(struct mm_struct *mm, struct lru_gen_mm_walk *walk)
+ 			mmap_read_unlock(mm);
+ 		}
+ 
+-		if (walk->batched) {
+-			lruvec_lock_irq(lruvec);
++		if (walk->batched)
+ 			reset_batch_size(walk);
+-			lruvec_unlock_irq(lruvec);
+-		}
+ 
+ 		cond_resched();
+ 	} while (err == -EAGAIN);
+@@ -4867,9 +4900,7 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+ 	walk = current->reclaim_state->mm_walk;
+ 	if (walk && walk->batched) {
+ 		walk->lruvec = lruvec;
+-		lruvec_lock_irq(lruvec);
+ 		reset_batch_size(walk);
+-		lruvec_unlock_irq(lruvec);
+ 	}
+ 
+ 	mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+-- 
+2.54.0
+
 
