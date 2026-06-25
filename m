@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8ABCCDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 056BBCDE00D
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8552B6B00DD; Thu, 25 Jun 2026 06:42:16 -0400 (EDT)
+	id E72EF6B00DF; Thu, 25 Jun 2026 06:43:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 806316B00DE; Thu, 25 Jun 2026 06:42:16 -0400 (EDT)
+	id E241C6B00E0; Thu, 25 Jun 2026 06:43:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71E446B00DF; Thu, 25 Jun 2026 06:42:16 -0400 (EDT)
+	id D3A6B6B00E1; Thu, 25 Jun 2026 06:43:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455E26B00DD
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:42:16 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B75D790027
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:42:15 +0000 (UTC)
-X-FDA: 84918095430.05.3E60BCD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD2106B00DF
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:43:45 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 339DC1675C0
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:43:45 +0000 (UTC)
+X-FDA: 84918099210.17.FDF0D70
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 109EF40007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:42:13 +0000 (UTC)
+	by imf04.hostedemail.com (Postfix) with ESMTP id 852DF40004
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:43:43 +0000 (UTC)
 Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKJynOg1;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jnsQuBr+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782384134;
-	b=e5XKPaR6qmj3Sc8LtckOBD8gQYf9QR9So91Vau0xtLpIo/fG10vMtf8x7t1l8tl2+PkCXK
-	anZsb9n3ftMxzD4kZp1CcfHQl+G8cs9EkySJtcFWt0KeDewBO2Kn0+gWxKjszgMNgA0bJQ
-	XFrwfrbMTbH2FbmqlLLjPw2JYIUWiLY=
+	t=1782384223;
+	b=cmUDbF1Qf2ra9Np7f0pPBf/1T87wdx/pSfDcv3kZoDu04DZPSFOLW8R526d9rG8E2kZXzi
+	e4giADLApnAcCFTQUVQvsyczEST+Df809RHZ3VQPAxXKxNOiVeiNFtU+jUaP46UZC+Rowc
+	Rb6Fuq9s9hBeTasiItWj32mc15cGQwE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782384134;
+	s=arc-20220608; t=1782384223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M+hdF44mAriMWEPKasVyDUzCqOm9ZECGxYcFzR8hX8E=;
-	b=eooV/GGnSSbESgkuncgZtXXAP4gtQxG/eOtf4eBDhKx/3/Ympnp6YSwG/soMwxjvLnHohI
-	mTQmDz+iJD7snFnKwgmkL3i7b7PZEITwqTd4jD67ZTpzjNXYwbivWEApimRJSdSX0C35cG
-	UzWprhzjwCm/tnkt0D3pN572GHUofas=
+	bh=fJDvuQiOU7JiXyJC2kg1d3dB5krLdnpqD440e2m3J7M=;
+	b=AzcYW88wX0Tif2raXJ+F9WSP7cJ9emvaM01KOJaY5z6A78DpDxh7uklI1HTEeyrvmFh8Yb
+	7+6HbF9JApIV6S95cINRP/bLEFACjXBR/jbHbO7+idI8kOVX8Hh1SuQTU9qeL329iuXwrc
+	fdrA7clQLRud7xAscS/I50NWeEKvrUA=
 ARC-Authentication-Results: i=1;
 	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eKJynOg1;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jnsQuBr+;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8774260219;
-	Thu, 25 Jun 2026 10:42:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0491F00ACA;
-	Thu, 25 Jun 2026 10:42:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D15E600FC;
+	Thu, 25 Jun 2026 10:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D178F1F000E9;
+	Thu, 25 Jun 2026 10:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782384133;
-	bh=M+hdF44mAriMWEPKasVyDUzCqOm9ZECGxYcFzR8hX8E=;
+	s=k20260515; t=1782384222;
+	bh=fJDvuQiOU7JiXyJC2kg1d3dB5krLdnpqD440e2m3J7M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eKJynOg1SL3teW0kvvwJeaHW1wK1bz+B+ChirrsSaw/ZNTJVF1MR9afvhvEOb7I6K
-	 gwZt0ZIsLVG9ND2mcQYVCF0XcSdFjTAX5dJHivLSTEBDAvxeEAgCBg78eEZz81qGrL
-	 Y3qKCU3MV2cRsGzraivboSUxCkpdQqYcUxDdO5mlgdC4mgtOFVRji6XdzftEYt9Yeh
-	 bpfE9Rdv4xjlDxlfAfO9LbOVNFNqVZBLZR4IgaGGiLz182rh9xC62UN+XjDAwqqRw3
-	 7KCKdd7ZJd1uS+ZrABmRT0WI29tDzTZCLrCaDmMwlvpauwlEz89sHk6d5Y2llMmXrc
-	 HcWySn1cCuONw==
-Message-ID: <eba3da0f-cb01-4550-85a2-4696d0fbc194@kernel.org>
-Date: Thu, 25 Jun 2026 12:42:09 +0200
+	b=jnsQuBr+FAdh41iDC8stOiyep9XSEBAAUZTGvLkfm4ut7GFRat1rnCO7lYWbNsKDO
+	 nswSbhoAmx/TlD+Qs/7DWmpA2joVbUm9xpnc18US0MnJUXEfTWbJW8qbbYRzqnnzyD
+	 sIXgEQlg7VTvKzVWGAqf2j0xh+yYuwp3NEsZZus2jmUgYzwus9doqhn86aohEjX/dX
+	 DIhzhdXGKLDqCrG5WWRJUxlsjregwEDXAZJKWiSQO/itZrtYWAbcS/g2IXg4TtjbxQ
+	 5wkVh22fQLFWrn3RLwHuetGqbeMPuHHdc4cXJVruGOvxDIk0V5C8W9q8EH3DIj8npN
+	 cUeXfa59mxJmQ==
+Message-ID: <ee0645f9-f55f-4747-a2bd-99cb757358b9@kernel.org>
+Date: Thu, 25 Jun 2026 12:43:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mm_init: don't overlap NORMAL and MOVABLE zones
- with kernelcore=mirror
+Subject: Re: [PATCH 2/2] mm/mm_init: drop overlap_memmap_init()
 To: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Taku Izumi <izumi.taku@jp.fujitsu.com>, Wei Yang
  <richard.weiyang@gmail.com>, Yuan Liu <yuan1.liu@intel.com>,
  linux-kernel@vger.kernel.org
 References: <20260625073941.145014-1-rppt@kernel.org>
- <20260625073941.145014-2-rppt@kernel.org>
+ <20260625073941.145014-3-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +122,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260625073941.145014-2-rppt@kernel.org>
+In-Reply-To: <20260625073941.145014-3-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 109EF40007
+X-Rspamd-Queue-Id: 852DF40004
 X-Rspam-User: 
-X-Stat-Signature: f4sikujkrbs3weetrstkq44txu69tju7
-X-HE-Tag: 1782384133-279633
-X-HE-Meta: U2FsdGVkX18fM832WXa7qR1SybXoMoCJwue6LOUxOPBB4LuMi28EdAu88e05Cy8Qk5B15WSqiYKXwGH0B6sKkJlo02CUE8GJ65h2pBWih/pbHD2YSUVBlOUXsNoFWfzQSKcJI7VShg5BQ/KFPFMFvldlUsbnMv9MaWYsgFStMC6B3QlRVqPjEVC9nqI3RaXn1QqCwCK+1RQ+V4qPySV0A4F9HgZRoG6HI4uuWRITS/81KiW33L4qrS5HcQ+7cP83DdfkwV4SdlCgQuJ342jUKh+Wb1ZYXWw+J/bVGQj2cfuWCqt68mD12FxBHGTfSpNTW2o0YriYfeOX4oXgG8br1uTR4H+JOkB7fjph5QnYcGOB/Opdc+TtaExQVKMop8Y40VL3lZcQ0p5Z2h3pRf//5jze4yWOcWkYm/EzUwbcU2gNriv9N1LQhq/art4HjHypBcddqo2iBotAB3+oXM/z/lpXdMwsLQ5tZ/JKo2HSvCnkmOS+NmTMctCLFKc0628LJfbTK6omhgffYYvJqX2t64zgPP0OJM/WPTT1L9//WetOgQXa3OqamDUSbUkabjdJy59XXWuSJPjwbRbFAobFF9Sr/OYkRMeP0p4es0fRbVl+qujqqBW+2NgNMxv71Arj302kQB035IrH2P0wA++26NxmYtAF9sZiEPomUssPZ/TYS1xcp7An6+oKngpeSnJT58+O8WANxn6wqptF8jbVGP/g6s75rzVxRiS//8W3MMl36dqiANnD1bixmMTzhR0MxXwBYlPg0Vf/W0jdqIrvT+FdQY2dWZF3HawQEmZc0igvty3zxSFSJAePSekBfAjWFweTJ7az+azG2BNBm/s4rvBCCLFhdyR70vpdaWo1idRKXPWoGPC6N9qeLAaElrv84SWV6/r9ROA4r5Nt2vyHQblReuStAzRsyugbauBQz0RbDO1qUSMDtd/ojY2YGcaU4SaMxhqov1Pn96q7TQb
- vIZxzWgF
- WTGthnGayhhtEfeAhna2V+0qUtyucqRXbHGo/QMQ2vDzCFypkGHLIilmQ/ZV9inxAOBgPMihCRAnaHZkNOcMXEmxsdBUtfAmcR7/kWYQkZtB0bcIFPQfDdOqwBmgeqQ9N7oLySRxJpSIfbKVK6cyFhSoE4J0K2xDOuXktO9lNI70xJnO9meJNqbkCQgBt0JrRyoyGeo7A+GrT8qgLQm1ZbQVyMZqyB/SIK6kmsmUxVio7zDus0USMSiFfage5muViZgHcRu9Eib2ceyrgXgDqMPtoPKydlgfxcr2OFEzEYGswzvpQwajZlhhugimm0rErS+oy6uIuXFDv+nVpy5TELx0xTbw6kaocLR+yjx8B6TZ2YSJFa04iQaAWt0BhDEmYE4ylT5srWj1UP08ayIJSzdgtvQ==
+X-Stat-Signature: m1an1zqnhz39cjcca43dkaxwz3dezo74
+X-HE-Tag: 1782384223-742249
+X-HE-Meta: U2FsdGVkX18kiouhAWcE2LIcu7s2nzcJsWDonVTPCtoIGpEbNvGgOAIBveEXTN1xd4QXv4eVH0cRP/3wMriSz9xek/iFlkQg+IgFtONFkRViSMJxmx1oj8DBZpJrpgdmHXvtiJy8XJiqze5tUIYyBdqEKELt7jcoXi3jPi20SgBL9fXpLwx5LNUj2CTXj948n8Basf4xxDMcj9F2H0Tyb1arc6AY7Zc48MnI9/YQWo9xsYOrxWGNaBFUBErku0wZb73MDN/+XRJVYWaXE6AlOcpzn65yfqI048yvGcCCl1Ue0qC3eFkoocB9wVBWHHeipke+4oS/mqKArDMbfGLUxlGrBNZzz0lXrnn7CNbNZs1S4lSEiJLzCs1Zr8JxG3bOhsz+EQVxhbLuADi3eHm7TEp1I63FUJuwPU8B4IGv4HNxJrpHJsNkuyEEg3+QM6bu+Kl+dLXLOcal2/2QXYl6LYWTJMdQDSRHKY9e+S4/6QcXwCHIijpDmVykhH30xyP5UBDunMuhK+uv8I7cLTlqVhMyXpQB6vpKAFVl1b2AYzeyTJJCTKaFyUGpDwkYsc2H0lut0YA6myxItIBIUi5JKEjZQ5ReNpa7YPQvXVtcEOKf9lOrZJTm7l+QeNq0UHNK1raexmth25JQylKqLqtRsMuf6lVng2w5tOdOXDeViVoIuYsb1UdL6kKbtI5I/o9EVy7t8NEfgUcSM27x84XBCZw4EvuF7UQXZzZpo2gJ2L4qmqyxpNtXWUFgeRDawt5P1t5PnSowT6Ji4mo1l2bNA+g/foPRK0su17uEc/2/UgbK5ZJHfwd70ni3zPUieuvoSCe5E9iJpH4xqLM7Svy9YypALUiWr1rlKAFY48N87Z7gB4TGvXTX3HqyKs+//lHAGVk8cKZvH2jQ124tA53fGxxTCgqSprk7qC7TqY+0QE9LhGaHamoNANBfs8JJQgAk6AuNT1eLXWGgtjUsh8R
+ uOm4qB8y
+ sv/EOGmhi3jVHM2TsTWnR14oOu62SeTLY+Aiime7sa3hmKYD2oiGZgIuWjRgwzzQfVRxbuAN35LQ9I2rcmUMSfx87vBh9Sspok8HYOTFsqdu0kvRpvn+BZpyKKP8xBp3BolW/p6uVDu0TnIWvXJ2SeEi2XpAblkhO5b/SnUPRL2MyPI+u1j3nfBz+a069A71kb//ddySk3kat2oLNOwnPp+SGp3pmw2kwFo1SWydjXr4ctpc5+sZWpqAH10/0K/vkMWnWjXynoMmB1gB3jZN0mnFWS0rtpatAHCjfWArytGD6HWi90dsptH3g2aujZ4IOasYIte9UaAk8XKUNsGwkxGgkpsNfFXhBA2J3QFK+R6QImjd4/2kW3VztcWpM9fdQiNf8a/2mH+mAEHzAOR/uDIv13tf9undtQfvhDk7dwRLnVrjxNaGh8DkLbadpt0bHgyvTmQsilbfgARs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,20 +143,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 6/25/26 09:39, Mike Rapoport wrote:
 > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> When kernelcore or movablecore kernel parameters define size of the
-> NORMAL and MOVABLE zones as percents of the total memory or by absolute
-> value, ZONE_NORMAL is clamped at the beginning of ZONE_MOVABLE.
+> When ZONE_NORMAL and ZONE_MOVABLE could overlap because kernelcore=mirror
+> didn't reduce the span of ZONE_NORMAL, initialization of the memory map had
+> to skip overlapping pages during initialization of ZONE_MOVABLE to avoid
+> double initialization of the same struct pages.
 > 
-> However, when kernelcore=mirror the ZONE_NORMAL span is not changed but
-> rather pages from ZONE_MOVABLE counted as absent in ZONE_NORMAL.
+> Since kernelcore=mirror works now the same way as other variants of
+> kernelcore=/movablecore=, and adjusts the span of ZONE_NORMAL, there can't
+> be an overlap between ZONE_NORMAL and ZONE_MOVABLE.
 > 
-> Make the behaviour of kernelcore= parameter uniform and treat mirror
-> just as another way to size the zones.
-
-That sounds just about right to me.
-
-Hard to imagine that any code would have relied on the old behavior.
-
+> Remove overlap_memmap_init().
+> 
+> Co-developed-by: Wei Yang <richard.weiyang@gmail.com>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
