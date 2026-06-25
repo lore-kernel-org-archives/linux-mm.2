@@ -4,79 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32B4CCDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 06:32:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CFABCDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 06:36:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24136B00A9; Thu, 25 Jun 2026 02:32:52 -0400 (EDT)
+	id 10C906B0092; Thu, 25 Jun 2026 02:36:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD4E86B00AB; Thu, 25 Jun 2026 02:32:52 -0400 (EDT)
+	id 0E7B96B0093; Thu, 25 Jun 2026 02:36:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC49A6B00AC; Thu, 25 Jun 2026 02:32:52 -0400 (EDT)
+	id F16A16B0095; Thu, 25 Jun 2026 02:36:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A573D6B00A9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:32:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 13B75405EE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:32:52 +0000 (UTC)
-X-FDA: 84917466984.22.49487DE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5B473160008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:32:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8U5nipV;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C280D6B0092
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 02:36:20 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DB0E167650
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:36:20 +0000 (UTC)
+X-FDA: 84917475720.10.9CB73CC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 56A43C0009
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:36:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APJozXZa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782369170;
-	b=RjwVzRuWNXz2Zt/9S2PQzVfeNdkqtvUvlTgTlHxqS3xLdgxnlQVT6opUnNpHhZ7wmZEEoX
-	rQHA/+BD+QLC4QglgCA6ipaStWynKegr1NUlFmmqQi0BMOZK2pranbt7GLbGuQexAni5Eb
-	45zG2hZkgmuw2fVi820cYJLvxIIq+9g=
+	t=1782369378;
+	b=cI7/suWQ+g/WAQm0IQgMJA441xHb848FiV53Cmnshnwbn1VOTcbRqVzmotUPQQOH0DVSX+
+	esLw9bQao/hZkNiKy19FNeSfq25xf3MbbbSDmuJjr+WxfnwguJmBWj+f3isgeNDMbRMjAZ
+	XIO4y3Zy836QXYjcKMQxc5r7TLc+WKI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782369170;
+	s=arc-20220608; t=1782369378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f/AEKku/ZQdImcC1jUEB+o6t1SbIl/kNAaxzOYgG05I=;
-	b=ulbPdG/aKjv0pKZcbjO/rATIL3TVPv4l4QctfnZFceVQq5XvfP/r1tMzOiDvwdp26bb5Ms
-	uA+kb6rNDu3vLKGEoT1yndkGn0FMyVhvcswVaCX5qqhnqvnwNFaTsgxBmt172myrJtr4C1
-	9B6jH2wX0Zn/9hfVGA6IVVFHEaqfXR8=
+	bh=jOAqiyINFM7BvEx1IqRR602mqf9YbVI7DhcqXxXDijc=;
+	b=cBiJWXBs8q5vUGm+g5O6TDlNjf7bfg1AS5UmA0AnREo/xAhT1OQ7ZHrKrGENITI+9sPMVq
+	MjB2v2UmD0zNmuEVoG2kRcxfMUZNSDeADqhix5fd0Ev4l3GE1Y1/n4CEzEY/SDXFTkWIas
+	c38wkojyy7ya1oyxeS4NkcLZe01wGTc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d8U5nipV;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=APJozXZa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDAE4600FC;
-	Thu, 25 Jun 2026 06:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424561F00A3A;
-	Thu, 25 Jun 2026 06:32:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FF4D418FD;
+	Thu, 25 Jun 2026 06:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436241F00A3A;
+	Thu, 25 Jun 2026 06:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782369169;
-	bh=f/AEKku/ZQdImcC1jUEB+o6t1SbIl/kNAaxzOYgG05I=;
+	s=k20260515; t=1782369377;
+	bh=jOAqiyINFM7BvEx1IqRR602mqf9YbVI7DhcqXxXDijc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d8U5nipVGbibZ8EDMf74Wqs9Mfxu2oApLifwMREzTIXxKzZkE40S03k8O3QtQcyzg
-	 syBDSAbvB+kmTUo7PGcVl2KN6qD1nG4d50+97PjgzxTtiO5K4PW8D19BpYIPDq+coZ
-	 vsvnWlczWbY0iI+HUWqab3/J/0NVbVe9xmQPfii8XqTsOaIVGYobjP2YFjcRC/bmCJ
-	 dDH701Jqni3K3yjyObKXbB1N4kG9DeAglTm3YWRArYj7OcWcJYNfMa/MCursLKrEvx
-	 yLqCVOnVzfE2YrLmFiXZNIw0086btyWO5setQa2ovvpNQI1/qkYJtgEYDGYbi6n8n/
-	 zdA9VnyeJ42sQ==
-Message-ID: <b0d9ce70-ebb7-4b79-9a35-257b69daff7a@kernel.org>
-Date: Thu, 25 Jun 2026 08:32:43 +0200
+	b=APJozXZaP4+cwoR/EeSal3GKX+6x3ob1+AqrEbl5SS37YvzvMh+QkKtFICbTIgUsO
+	 gW7G+XmaXb8Oe84nyPRdNrzKv9Ky+AO0ysPm8aBooPQ+QEMHQ9X92ToFgc9AZfBUFV
+	 tuhxaUot00q3eYnLMdwoYLtefglVDGgs3eLrk7jOvdt8pTuS9lCbbkYThzoRQ37/+8
+	 t4x3p0szb1BIZ40QKAs00+gJ/6S2SsEcP7ZprjyQuXfExFRvy+V1eneDOqfZvI6Ukb
+	 Ou/T8FpUDerxB9DQsBsxy4s34iv5pm9zZjZVASQcj4+w0aVUw8Qb2bAtlBcEWm/Izu
+	 t/SDBY48C5CbQ==
+Message-ID: <d9f0896d-f5ea-48c7-9df9-bbdbc4fc8c0c@kernel.org>
+Date: Thu, 25 Jun 2026 08:36:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] mm: __access_remote_vm with per-VMA lock
-To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
-Cc: x86@kernel.org, linux-mm@kvack.org, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
-References: <20260625015053.2445008-1-riel@surriel.com>
+Subject: Re: [RFC Patch 0/3] mm/mm_init: fix and cleanup mirrored_kernelcore
+To: Wei Yang <richard.weiyang@gmail.com>, rppt@kernel.org,
+ akpm@linux-foundation.org, izumi.taku@jp.fujitsu.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, yuan1.liu@intel.com
+References: <20260623092351.13031-1-richard.weiyang@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260625015053.2445008-1-riel@surriel.com>
+In-Reply-To: <20260623092351.13031-1-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5B473160008
-X-Stat-Signature: oz1n33pcxbygqyz7tkyxfohqa6kerkpt
-X-HE-Tag: 1782369170-636955
-X-HE-Meta: U2FsdGVkX19mCXSL85lkQE/ySOq5Lax1HqukCBKnzz82Wic9D/L6Kuvk4TssETYs1RbOi6RTXVIEDbrRo+sKa7JdLCNsz7NsbYf4EuMN5RE/lpqtKyCvxTMPrabYqMJkn9KUx0YKajrpLdflpr9vQkyMWmXQ4Uwavnu9Q42k1kp8+ewLposUfrz/aBZmSeUpemTLTVIF+Xx6v2XmlN3ybrON251il0KHoY3XekJ00OQT+Q9oc+ozluinixvxX0fZOjxDqSYiHKNG0IdeBWw2n1N3N8Imxn23SRzwzB2T98rMUrknuXCRpj/cylBE5t3yx2gadcqG+CnL5/BdBJxX2XON1zaZNPyFZzSmo4HkSQ3uWKsYdeeRAlzZi7J9cE944GIKr0eU5q9AVADOPRQpRCb4Ni//d2Pw/LEFQcg6To97dsUdg1JzXhbsj1Z8Z0Z+Epz5HIyp87Q8UvwNrW/1cZo+fT9Z6dCrXqM02KCLY/opPrEAKwgNww/+89Atrch4H2W9UnFyPBMUoTP5CnYCGwpv3hbTw8ArCepKmnmmb+QUNFWcUebgeKTCpynnLsktqHYkKqcYeiiRYa5EsOLB8Jol+dZtk7fpufk59PTHmPKfBhFTIEpW+Y9kBf+Lp99S1vuERbdIfjRdN86h7a7Dh9rV4aVY+BgbLzKgoMqd8ynNqw3V+I4gtDM2Xyxe6i64cvlQtcN8MXJoSawJ5iHDMh6yQSS+hS8bGxrCcfA5WvOpWZ+p9oj1NnwHkBvlxcuB1nQfF3V4W+umM6fX7mrWctuR82DlRpHKXPPXb9q65YqQpb3fKsDPmXXYDe8ZlRz3ANgizmWFSbxeBNGex4W/QytT49dMRXbBkTPOscmhQeiKL56cSOTwx7QJHJSnbW8OdjgI2oBXVyY3w9OgTb1NkZWGbaf1Tl0hvePx+hCdHbkFDCkDqxKrP9hdCUpujc6EeZyWY4XdzKAu7wgy/Dh
- Pz4YWUB7
- TqWmXY3mxKepJMg4uGyjImm/RkHrBUJ+UbLrphaCpv+IaWuo4ykbF/zTBGEjVtEtl2T0EGXMfNQ/Y1UEQrYC6rgIUQP75/qrXDxkXrXMb4BlklTWu1zYQaY4iIc8fhOrENwWaOVijefapu5K5sJzbXBk9X8JUkI4/1CcQKMwZpCqqHsGFFcTcyoj3jWF7/nQmwjvy+5jCOgW0gJHG3aCHu1CkKRfM8oX+ZHbGT76AA1eoMP5SBQYrSxZKjDfXsgk/65kPTtdVSW+/dN9ZBbr1VOWmAdPn2A0DV50YFBeZjVFFcLp9azUJZ0YQ2g==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 56A43C0009
+X-Stat-Signature: bgqmh5xjqe1rac1g6zxtk889zoxwude1
+X-HE-Tag: 1782369378-240751
+X-HE-Meta: U2FsdGVkX1/rqkHH3xoXWPgMthlpNUzlVp5M2WhgCOrmtIbXl2t76zHfd9YgbG/skyLsiiL3ckV4uOnB+50YtUlp4E4i7f+Eb4vkrBiKRgkcKaIMGGHhVDyQ4EMCssy8e6MAvy3iOibQH8ms7gzklEg793wstd9V3cSK+0ysThOrc9BXar2YoriqnPXfviNhjBPebCmzGc6snzxtFXbE6FAbPF3q3zkizHp2l5RCr8SiJpejwgRY6dvrL3b0iDvRJQHap8129aKbkEHYqiJsFftJGW5giVb5852kXUPdh9NiWJgHr7yVBTGw0RmQvIiB344fqlaawWlRoS0dJM9eVmOFqjM0Nw83ERkYkfJCTp1wWfSNBBvAqiKmJtjU2FEkaVZkgmeXCEC+nrM3fYBGKpayoBRNqYvkDanl1SJLDTPsjeL/Bx4PUt0zEFF+acRfi79ZpAgiTByJpQJ9nYQKL8eJ1JFlCTwkX+dU0C/NJ8dujYH2eRvAmU4A+3jD5fUb83t3CJzY+ow/gqXhsf8lctk1IApGksZMayGIanyvV2QvjSS7h+cfZxeNHEY1GI2nB/+veIb3Gn0EU4sQyNDbkaESnb+JI+Q7p/tkTZvbPJNfiHH+brT3TZMwLsnycZL5cx3d6QDQpLISWBbFcpldX5p/zJFygOqHTqYorqzQbhsKl2t0cr3CKxZhNSorc68JHCrdoQvdcsrsbUqZcHltVnw3t1yqmBbrb0SE23i6S2TKUrunWABOGO5mrOMGpBrMnlg/Ms771UzpqaKb9yXW7WFTDHY4LMA/X3+vmPv/y+eyau1Do68XaRVzW+/VAns4Iebk5ddp2CLmQX0XHtKtWyc0WBfa1DbbvlC2F3LQgr1Kbtsf12WG3abexP/CRt/dcsShEIrGA7dJ/Siax1c5DhpQL7kJVq1f0OW+IW4wIn6GgD1DgEVfkeuEf4N79oEogaBBh6m/oisUeLIfQZV
+ Uo6WaIv9
+ Qf4cUhzoa4ch6UCJcnhblmhp62BzOSWk+If0Ux/XUOZHOIIIbrCqSSvh4oIpLKwZNkz46PXkG2SY2X7fEQm/BotKLiD+aR6BE1ekEZPPfD2ts4vOWAOYpohYZOT1+OKl9uo+eJ74eBHgXRzqC9A4J+jrQZndsLTfuJp9M0tx+pEHhaSLhBY1IolCfoIeEWzp9b/fQ7usABFLb0q1rVQoQ0NJdNvSPCrfo7+cz4tFl9oM5pqa3UOZGh8HZcVLGTlV3TeRD6kS/43zdNrsztBK2DfjEKXwFxkCMiGSqjZd5/iExuEqZ4mjRqRELvm2b6ZYHX4LYl4e+iOFzz2YrgCuLhwYXJLXsA8gV9pHrdwLmpFCYmednEGPj0CcUKPB4aq8pGMIj7TbC4OiCwV+F0FmT2AKQW0FMIZEfJohWS5ys1/ljdbg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,30 +137,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 03:50, Rik van Riel wrote:
-> Sometimes processes can get stuck with the mmap_lock held for
-> a long time. This slows down, and can even prevent system monitoring
-> tools from assessing and logging the situation, because they themselves
-> end up getting stuck on the mmap_lock.
+On 6/23/26 11:23, Wei Yang wrote:
+> When reviewing patch set "mm/memory_hotplug: optimize zone contiguous check
+> when changing pfn range" [1], we notice mirrored_kernelcore introduced some
+> special case to handle.
 > 
-> However, with the introduction of per-VMA locks, we can improve the
-> reliability of system monitoring, and generally speed up __access_remote_vm
-> under mmap_loc contention, by adding a fast path that does not require
-> the process-wide mmap_lock.
+> While during the discussion and test, it shows current mirrored_kernelcore
+> implementation breaks other memmap_init() behavior:
 > 
-> This fast path is only compiled in and used when it is safe to do so,
-> meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
-> is not hugetlbfs, iomap, pfnmap, etc...
+>   * disturbs defer_init()
+>   * some Movable zone range would be initialized twice
 > 
-> v2:
->  - simplify the code, which should be ok because these copies are < PAGE_SIZE
->  - clean up the code
->  - fix locking wrt tlb_remove_table_sync_one()
->  - hopefully address all the other comments
+> The reason is Zone Movable and Zone Normal overlaps and current logic doesn't
+> handle it well.
+> 
+> As Yuan shows in [2], physical overlapped zone seems not exist in practice. If
+> remove the possibility of overlapped zone, problem could be solved. And also
+> could benefit zone contiguous optimization, IIUC.
+> 
+> Patch [1]: remove the overlapped zone, which fix the above two problem
+> Patch [2]: remove overlap_memmap_init() as there is no overlapped zone, but
+>            record current double initialize problem for reference
+> Patch [3]: remove absent pages calculation for mirrored_kernelcore
+> 
+> [1]: https://lore.kernel.org/all/20260520093457.3719960-1-yuan1.liu@intel.com/T/#u
+> [2]: https://lore.kernel.org/all/20260520093457.3719960-1-yuan1.liu@intel.com/T/#mb0bd07ffd562a5b029f0f07751e580ca339c5b51
+> 
 
-You mean, ignoring my comments about not reiplementing GUP entirely?
-
-NAK
+IIUC, Mike will send an alternative.
 
 -- 
 Cheers,
