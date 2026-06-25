@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C82ECCDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 01:51:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F5EDCDE005
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 01:51:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F1A36B008A; Wed, 24 Jun 2026 21:51:21 -0400 (EDT)
+	id 524386B0099; Wed, 24 Jun 2026 21:51:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A2576B0093; Wed, 24 Jun 2026 21:51:21 -0400 (EDT)
+	id 4F8226B009D; Wed, 24 Jun 2026 21:51:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DFDD6B0096; Wed, 24 Jun 2026 21:51:21 -0400 (EDT)
+	id 34A3E6B009B; Wed, 24 Jun 2026 21:51:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 561D06B008A
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 063A16B0093
 	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:51:21 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D06A81C5932
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:51:20 +0000 (UTC)
-X-FDA: 84916757520.20.1FA8714
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 35DFBA04BB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:51:21 +0000 (UTC)
+X-FDA: 84916757562.26.F450197
 Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 4D5DC1C0005
+	by imf24.hostedemail.com (Postfix) with ESMTP id A307918000A
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:51:19 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=ODj1knlQ;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Lw8qO9J+;
+	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782352279;
-	b=l58XmvD97a0rDscWbBtniS0QBFRmBqt8Ae5D73qZmerunupb6ciTIVy9RH/kUZmaoHgQdI
-	txhEXLKx5m5nFM7rrFVjsH597VG4RF/hSD8P0gde6SXleUvSDs69jH/1YlCdaRtqdn6mbN
-	kfR1hBszRPr/5RVx2b6VmBkafZxkdLk=
+	b=ni3zmLiKk9FHHzKNhuTMn1zlbBwA8Xk5VG+eOQFPK89+d0Zaciz1g56ODfouaObZGnNQkB
+	w/TWlMJN2cMzfJjQXoaeO9US41rrsHObiStGNaeqDUX8iBO9VSMZWNSi0XPyu6Mvye2VPW
+	s2LO/2oqkR8GeAf+YwxXQ0JiXE5T7Mg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782352279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=u9HU7XV4dq9bzcetrDqyjXjgnqFK6qdyibEIPnwFXAg=;
-	b=e3MB9+Y9EoOAppZfJfoUpGCl04cU46JknUUx0rwfGDto1DGeXNY3T3/iWS9MjXcUyzoqVo
-	vOhZ5bvYeWKkFmLRFHvjAG71UpCyA0pew5djQxO0UhD+8MMOQ/FNUUmDNkX89V0IPPyFfz
-	1/OF1Onewi+PVDv8/gJnUBu7l1Eld2E=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MOvX4RZR/pDRt2jv/Wl1jQyJJ9xmvr29K3ndLYIsFzU=;
+	b=x5QQhbV3w6i9Dq9lTFc7lsdr9zM0YpFIL8nKq0i5/HlnF7A1VDLrR96MVBXj4ljmpse8Pp
+	g/SR2KcVuqo7xBJEcuUUEH+TxmbqMSrzB8Z2H7FinfA3YrxIlQhAJdYGwJWFxazRyRU9QN
+	vsCq59MrXJUIdVFr5jvXkxqIr4cwWg8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=ODj1knlQ;
-	spf=pass (imf20.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=Lw8qO9J+;
+	spf=pass (imf24.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc
-	:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	; s=mail; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=u9HU7XV4dq9bzcetrDqyjXjgnqFK6qdyibEIPnwFXAg=; b=ODj1knlQNZAy0yrvLN7Z15LCBx
-	ysHnlztoHQ7aTa7FssgKHAVYUrCSlGDZlIqDSnU6A1FCo4HgVN79HBGSPaJGqsjBs8GpHDZOGDorZ
-	uscMtkjdU+sdyVwn8Udr2eE6h+tQOkvFhE1yp/7DUz/81EBfL83H87eBRNPt3vaLqJ0/tMpm2YUJa
-	8NxufMa51SKQmpUifkTE1lCC+HWUfMrltX3LKjivhDrgWa1i5AWz2RfORFjYoZ38wM/WdmbBXmRb3
-	sUT7AfUFQc6JyYa1VioPYZL/qIpaBdGMHWH6tWUvW0kP0lJJFbzGkGITBG191kWMqnf68ILtPojDv
-	zusnuohQ==;
+	bh=MOvX4RZR/pDRt2jv/Wl1jQyJJ9xmvr29K3ndLYIsFzU=; b=Lw8qO9J+51sc3ejV94J+uUBF77
+	i7PSTDPlbDLBo4HPWJLe7NVcly2/cq+Y0lLIf5IgdGUH/7B6SeAhfF/KZnuGTFnzJsNdF0nU63q3s
+	Rl6DwoYnv8rEwXeds4gdF8pAZxG+c6rY4+FeHNE/ChMZDreKd1s0QxVoaEJ0aoxhsQ0hWxa02TBZC
+	EhahuBq5uDFMyE9faWStsOAHOj4Jdy7AknCm//YAs30IlOMRjLZ1Tu1LTn6Lpoi1cYYeMkxbpHDBg
+	JEDbN1fIIcIU37ZpBIVZISIPKWzMKKGIqyi+B9Bd4k5hhlvFq1jBMr0Sp98xDxtarmu0QJwj+cj6l
+	5GakgaMA==;
 Received: from fangorn.home.surriel.com ([10.0.13.7])
 	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.97.1)
 	(envelope-from <riel@surriel.com>)
-	id 1wcZF7-0000000043x-3LaP;
+	id 1wcZF7-0000000043x-3wAz;
 	Wed, 24 Jun 2026 21:51:01 -0400
 From: Rik van Riel <riel@surriel.com>
 To: linux-kernel@vger.kernel.org
@@ -83,20 +83,22 @@ Cc: Rik van Riel <riel@surriel.com>,
 	"Vlastimil Babka" <vbabka@kernel.org>,
 	"Suren Baghdasaryan" <surenb@google.com>,
 	kernel-team@meta.com
-Subject: [PATCH v2 0/3] mm: __access_remote_vm with per-VMA lock
-Date: Wed, 24 Jun 2026 21:50:50 -0400
-Message-ID: <20260625015053.2445008-1-riel@surriel.com>
+Subject: [PATCH 1/3] x86/mm: use READ_ONCE/WRITE_ONCE for mm->context.untag_mask
+Date: Wed, 24 Jun 2026 21:50:51 -0400
+Message-ID: <20260625015053.2445008-2-riel@surriel.com>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260625015053.2445008-1-riel@surriel.com>
+References: <20260625015053.2445008-1-riel@surriel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4D5DC1C0005
 X-Rspam-User: 
-X-Stat-Signature: 7gq79wk3oetrstn17fadq4akgmq8ic3k
-X-HE-Tag: 1782352279-737253
-X-HE-Meta: U2FsdGVkX1/2XWtT6miRjPGvCVOEkitVSDcTMJ6sQks826E5yWvk6aEPE26+lLXL0ubVADxPdv3myJorjtmVL8GV7Hkis5nC/emDIe7mSMcVZuEDCTpdH87WMvcYpwVoT8Rcq28nYC1VyGIOlL53Jw+4vpP5jZAzcUCFqp1rEgJnNYo5+sKoFX81ZpzkcOcWF0tmb50NJogo0IgzkSGkOLZ/wr2gTTwkGVRorxLQYWmIdT6yNq9lFT7t+Q17wn84/ShEouP3i4Wyz7QlItk1Hz6RsRJRoAgIGzYHvcKxfB0Q5gESSR8TloKExI1DslzCXtkLt84jZqpBfDdG2HjH2lusEofzQiuoij3b4By+WcJRdJ0I4kFIK4B3w2cGRBAdIb4S4gCqJXJWBdMJ1qbUmYIx9H9Shztz6IDrDdcdc5bot8PG4MGjOkwXt3xHPuug009VjvzVqnsZE4nm/XissKPg7b5EoSdFQkaiQaku4YKinxnHDKjJQ/ZVKEWn6qrY9Ok+PKndOf66uO8ENlao2P64+t80SzkasUzhkxZRiTnYq4PDl2Con14DWlIKZlrwZ79IsG2WuJiDiZpy9snj0PDTD95d5waZynRJ87BlfNKUrqZW3LTK9AGQmuWPSJRcTAEZExFG7MFMkxDnrfSZ9perZx3Ioiqp884Wz+3nErW8JdNMbgvYumWCzzFe4RV60UI5z8W+d05uIpMyjctpw7XyzUQcOj0nXWEoH0DfstZ2CxIaOM/uwBb+X2+MTzzs58HsRszxcnjvQY4yyhCwe0jzTtAavdTDD/lI+sL07G3+BvjGEIzV4ROQwrqreO6sZTEpCLldPqDKTbN9F3A4Hcup76jUQGLwhiz8598fBuP/sOL+aUBEJk6Ir+9NqH3qvRa0ZRkCqv+xhI75p5KatfYEBdcx1tHpyps+buqZQy1S9S6JXvcjIkcPUl4XN5NkyWO0xubAJBC+pJnQMnY
- Cdcz3VD7
- 34/qcslK3QVzsg22IW9QfUf7z7m35W1FmSSkveUoZ3h3Frqnv7k83Ag5G+FpQlUVKQu2/D74wMpPRh2bO3cPzisWzBw5c9aYkG+wcr73D85H7APPBXB5peAm3oYlcaJo5prCKcl0JzhILE1bcHD3zZUGygnWevmjERq8qzwWiOqcUKR4eqCkwBTLgHbkklVxinnqB1sKC+RPYY63kVbeDIfkFSFx+29Sre3j+LDsMpSDSHKh+omxefEJRtccLzE9lHvEP
+X-Stat-Signature: 1468izd3pzfkgapcg9w11z9enyim966o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A307918000A
+X-HE-Tag: 1782352279-514952
+X-HE-Meta: U2FsdGVkX1/HzEFYQrdm0nyVfPQOrxWo20A8JXRpGKHDuYXMGJ+is/9r8EUy6EG+Xp9XXSjWNw/7OBMvRwM1231HqJe9R98YKw2dg/EYC0ckiEv+F7XSdvfKZizdBt32hQiC3Fzw3t/2Q5IAcdMJlBloG+iyRwOvP/SeQOIlT3rffPFEbFGebtP82xq/+6tMbFiMEZaIwZPHO1lGfnc16ZTHkgguTzHS77j/8VhwMpgsAJrK4gxVN4BffHq5cdBZZr5hBsQ2YBdinGlhVcqImjoV1b/SDn91/wPYjbMU5xrbOaavcuIvsoO2SgNVB6UJ2A4n3RXDRq5H1V7JXdUUZrXnSsOV+Ecia40HPBVgWqtkcrQvpL3vbMUMqNlqKxhSDt/V6Vszt+0SJfJr/LRYUvZ9zJNoJ4ZeWd/F9FktgPXYM5HQYxu2em+uh43FyW5ozEAjr4IkhVo6A8ah3M8dCpomns08IAHu+QIrcESrwarTRiTij6B43x7ibNT8o0mzA6VBNn2woL3L1EvwE2oLS/l1WNLN5xtVM5sUbOaggPzFK8wFXGqM7b1iB0bcFaNNHkaWjOOt/BMkp6J6Fa6j3H5ZqIJvH0zY6WGqz0RGZ9aaruEVYPN+/DWijtJfxWvT6CpQSXTrMTz94fxhCj8BHKBuKl4PMUtzt4o+s4MGHDH/xXB5BA0HhQxTrarlF6RofZk8u1CZZZflw+ofJI3iBRMc7v3yTfvjS79KJNa/7Oa8PbllGY8Z7jM6mYKtUmlgmIogUGCsxGfUGt7ZxJ27arTPYWC7DxfKjLbpbwiUqpckcy21bz3oaFK8TUqaLdKfGMFPwuVhtlGpAyCr7ZcoYbZqjQ5i5BAIN3gSc3BbRP+g/mjUEP3YmgQUvAvKKHOz9pXGrziI2RHmJZSyOBhImuOz1VumKPfmc+5UeZHx0OFVpJYhYmAs5CLhNpz6w4vynd209on8FVGi6vL2Dmc
+ 3ip3yUEg
+ 2KPXy1nLVIm6dNaxXBVEJLIEwkJmlzMrE3+pcbnQX/GEK0vyJdU7GH3ECkwJHQg31U3IVWvtHf5GIugyeP5Fq8v0RbE3ydiQgNiTIYIbbYCozF83giSMUpv4yHg92dmvO9f12EqgYzB4EqBISJf51XfkMWNhQQwu0p/DjbHSnGjJ+18gJtNwAw2oEue+7fUA/0i8wNXKLj2zQhf7z+Y4xLMM2jOZnHzd4WhTxw7evcCAMzTf7p17txXrryseFEGPolmhbtTG37Vee4ohe4pV8glUuiyGnbOubgFBqJn/LFJmh4NotT8qOJSVAQFFUcYfmlTp7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,23 +106,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sometimes processes can get stuck with the mmap_lock held for
-a long time. This slows down, and can even prevent system monitoring
-tools from assessing and logging the situation, because they themselves
-end up getting stuck on the mmap_lock.
+mm->context.untag_mask is written once, when LAM is enabled
+(mm_enable_lam(), under mmap_write_lock and while the process is still
+single-threaded), and is otherwise stable and never reverted.
+untagged_addr_remote() reads it for a remote mm, and the new
+untagged_addr_remote_unlocked() (used by the per-VMA-lock
+access_remote_vm() fast path) reads it without the mmap lock.
 
-However, with the introduction of per-VMA locks, we can improve the
-reliability of system monitoring, and generally speed up __access_remote_vm
-under mmap_loc contention, by adding a fast path that does not require
-the process-wide mmap_lock.
+The field is a single aligned word and cannot tear, but annotate the
+reads and writes with READ_ONCE()/WRITE_ONCE() to make the lockless
+access explicit and keep the compiler from reloading or tearing it.
 
-This fast path is only compiled in and used when it is safe to do so,
-meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
-is not hugetlbfs, iomap, pfnmap, etc...
+No functional change.
 
-v2:
- - simplify the code, which should be ok because these copies are < PAGE_SIZE
- - clean up the code
- - fix locking wrt tlb_remove_table_sync_one()
- - hopefully address all the other comments
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Rik van Riel <riel@surriel.com>
+---
+ arch/x86/include/asm/mmu_context.h | 6 +++---
+ arch/x86/include/asm/uaccess_64.h  | 2 +-
+ arch/x86/kernel/process_64.c       | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/arch/x86/include/asm/mmu_context.h b/arch/x86/include/asm/mmu_context.h
+index ef5b507de34e..cee710f64658 100644
+--- a/arch/x86/include/asm/mmu_context.h
++++ b/arch/x86/include/asm/mmu_context.h
+@@ -100,18 +100,18 @@ static inline unsigned long mm_lam_cr3_mask(struct mm_struct *mm)
+ static inline void dup_lam(struct mm_struct *oldmm, struct mm_struct *mm)
+ {
+ 	mm->context.lam_cr3_mask = oldmm->context.lam_cr3_mask;
+-	mm->context.untag_mask = oldmm->context.untag_mask;
++	WRITE_ONCE(mm->context.untag_mask, READ_ONCE(oldmm->context.untag_mask));
+ }
+ 
+ #define mm_untag_mask mm_untag_mask
+ static inline unsigned long mm_untag_mask(struct mm_struct *mm)
+ {
+-	return mm->context.untag_mask;
++	return READ_ONCE(mm->context.untag_mask);
+ }
+ 
+ static inline void mm_reset_untag_mask(struct mm_struct *mm)
+ {
+-	mm->context.untag_mask = -1UL;
++	WRITE_ONCE(mm->context.untag_mask, -1UL);
+ }
+ 
+ #define arch_pgtable_dma_compat arch_pgtable_dma_compat
+diff --git a/arch/x86/include/asm/uaccess_64.h b/arch/x86/include/asm/uaccess_64.h
+index 20de34cc9aa6..4a52497ba6a1 100644
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -43,7 +43,7 @@ static inline unsigned long __untagged_addr_remote(struct mm_struct *mm,
+ 						   unsigned long addr)
+ {
+ 	mmap_assert_locked(mm);
+-	return addr & (mm)->context.untag_mask;
++	return addr & READ_ONCE((mm)->context.untag_mask);
+ }
+ 
+ #define untagged_addr_remote(mm, addr)	({				\
+diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
+index d44afbe005bb..55096136de53 100644
+--- a/arch/x86/kernel/process_64.c
++++ b/arch/x86/kernel/process_64.c
+@@ -814,7 +814,7 @@ static void enable_lam_func(void *__mm)
+ static void mm_enable_lam(struct mm_struct *mm)
+ {
+ 	mm->context.lam_cr3_mask = X86_CR3_LAM_U57;
+-	mm->context.untag_mask =  ~GENMASK(62, 57);
++	WRITE_ONCE(mm->context.untag_mask, ~GENMASK(62, 57));
+ 
+ 	/*
+ 	 * Even though the process must still be single-threaded at this
+-- 
+2.53.0-Meta
+
 
