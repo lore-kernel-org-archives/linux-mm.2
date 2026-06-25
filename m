@@ -4,81 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7F7CDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:26:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE97CCDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:28:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D2F56B00DB; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
+	id C7A096B00A5; Thu, 25 Jun 2026 03:28:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484936B00DC; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
+	id C50AC6B00A7; Thu, 25 Jun 2026 03:28:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39A4F6B00DD; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
+	id B66FB6B00AA; Thu, 25 Jun 2026 03:28:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10A546B00DB
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9114A1C5F05
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:26:23 +0000 (UTC)
-X-FDA: 84917601846.30.8250573
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 705BF40007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:26:21 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+	by kanga.kvack.org (Postfix) with ESMTP id 80B0F6B00A5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:28:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F15CA1405A7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:28:20 +0000 (UTC)
+X-FDA: 84917606760.10.A92C381
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 149CC40002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:28:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InHGXEXT;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782372381;
-	b=hTIfzFP+yTHURZqBr0CqsNMbI0zITwmJsH0udcPMvtXqHlafb+jmN/CFWVBktobECDq2VN
-	3Oyo4BA/Ik/9PUykFuY/K4Zz9rNNffMobAJJfiA1sbOjTPlbFiIOnYISbVq5Zwhf1PtAjn
-	dkyWa5MFTVWAgauB/91Wt1tJJ950PEA=
+	t=1782372499;
+	b=rHJo+PoyikykmR1A7mkn+CgGFhWKc992e7erowb4iQJrPFUVm9ZEo00kx7FAZKjXcaeb97
+	hhAnFC5d2GOWXKrUQ/QIZjdiBrqYDSnoSnJ+2kCeZvrxB/0Gf2O3ceTwh/LRLwa+4lY8gY
+	iZ/HP3DhtnaYU64CHE7GSfH+CsO25hM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782372381;
+	s=arc-20220608; t=1782372499;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5rjlpjpln/OQF/MFigzfhap+Q60XqCoGKPkDC4HAvUE=;
-	b=dfSMIEyxemdMM0/kCqa9udr37xfhMqTkpcf90mpo+lvMJXzO/W04HHPv/or316UjWVs+nG
-	E/GBLEhcm9FjxRigfX6z4UwewWlCTF2N8zaRiB7zF5EXboAaf/b1dxuZsvLPJ6j27w+LWH
-	wdVDVmPYl/wb/5qjo2Q5B9uUf1uyg4U=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=P04TvlBD9QP71s0/lKtJ4I0j+WyUYhmTovuk4tkqFWA=;
+	b=UN6i+tJhp5suoIVP8MtMh9HakKffnGHNfE/iI6SbRkNY/gm89eDGlc2u2dRkDRaqApfubK
+	vEyrDVs0mwEF7p73fMA/oxqAqRZEl6jw1Go9KtEWdreHtIjQ7zke6LCGPlOk96g2PivwUV
+	shhZvhV4HRazCVhKBRtOMWtK7F1s9rI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1408A3EDE9;
-	Thu, 25 Jun 2026 07:26:15 +0000 (UTC)
-Message-ID: <2885ebe3-e478-4c99-a48a-606b1db835a6@ghiti.fr>
-Date: Thu, 25 Jun 2026 09:26:15 +0200
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=InHGXEXT;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4419940777;
+	Thu, 25 Jun 2026 07:28:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D931F000E9;
+	Thu, 25 Jun 2026 07:28:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782372498;
+	bh=P04TvlBD9QP71s0/lKtJ4I0j+WyUYhmTovuk4tkqFWA=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=InHGXEXTihcGMuKNaPsHaM/LKQ4QTJEp9gpyWN1aWSAUjqO4NCJZ7yWbdOVmQ8BYo
+	 Z+Q9SESV1VaxGFoLzdczzyupSF0jHeX7kF8516iFMSEv+AtvhwZWKkkSZK7JktCmqz
+	 UBtgE5QHw12ahyF1xVtpUMlA2iv1KuVFLHsAIiJh0cR/g9Y/KVlMGHuoMTnRDYVYBw
+	 8TlCpIfHt9mSWSanPTptt461iTYvWohzy7ivkIhc8eupl9cbgx2M5nETPZHZcs68lX
+	 3i44FElRM6DKTKqU2oL/YhypExW7GN4iW1IVHBwLRyuAanuhS8vVLdTuCwrIxGiVVb
+	 ztCa/vOtx6D7Q==
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
- hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com
-Cc: chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- kasong@tencent.com, chrisl@kernel.org, baohua@kernel.org,
- usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260624075700.751467-1-alex@ghiti.fr>
- <3523f142-778c-4efd-9675-3c68b33e7e3d@kernel.org>
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <3523f142-778c-4efd-9675-3c68b33e7e3d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: dmFkZTFJ9hiieAq68IGhaRrzEV/GZqQjMTTFMZ9hUg41+kNVhP5pDUgvpMIPRxpG7ieDDbHX8JQdlFIbDjXf2uV/O6TwdqbC8kzLMxfDnBVT0M2ZJL1wmgxLisc+LjAEKf3y5umu3w7HQMr1IAGgojIUNAaRyG8B7pllVcQKfMiLy7l118uJiLjGYPd9Hcmx/FJPHDQRAtk87YnGSc4tEyXjou5Kr/xcis5q2kNZzcIoE4OZDdjUnEgYrb2F58jcYJYPpOyH1EJ01UZ0w2UVNV2j6Xtyex2+o25cAWkLl+kBaW93IdZnmggZrR3585Uv81RZH1yjOA8Ug7AEXVOu0MVzu9KbaAE83O3FXOBwC+mah1xk0pzPbUXdPb/Ql//r+PHGofV/sz+uU17U03HGRv2Q7PriIIJTJxtLq2JU9gFHMBhkiVUrOVq7Y6SKuQUOi3aMWChbrdUIK1/KGbHRSU9LCQwdNEN6bS/d9lzT5fQLE5we2NQz0lMzySRFYM0ElULw6jBL6NtdvblK4RVwItt5ggw3PrCwefSpxWwSNTKkAqyPtZpZBElSqnjj/s1AXkzH09TIkryrg3xuwSIN1+ikLcvBHszFeAn+64rN6zHerCdC0bL5NLJeHqe1ujchOP0Kwldk/BljncYv2TnfpJcug/fuGikiBLit0r5s/pSQ+DfjyQ
-X-Stat-Signature: 1exfgf3tg69umka69x5b3kxnrcs9fj9n
+Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for
+ pre-exit before dumping
+From: Christian Brauner <brauner@kernel.org>
+To: David Hildenbrand <david@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, brauner@kernel.org, mjguzik@gmail.com, 
+ pfalcato@suse.de, ebiederm@xmission.com, viro@zeniv.linux.org.uk, 
+ jack@suse.cz, jlayton@kernel.org, chuck.lever@oracle.com, 
+ alex.aring@gmail.com, arnd@arndb.de, keescook@chromium.org, 
+ mcgrof@kernel.org, j.granados@samsung.com, allen.lkml@gmail.com
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arch@vger.kernel.org, Xin Zhao <jackzxcui1989@163.com>, 
+ linux-mm@kvack.org
+In-Reply-To: <20260624145552.70143-1-jackzxcui1989@163.com>
+References: <20260624145552.70143-1-jackzxcui1989@163.com>
+Date: Thu, 25 Jun 2026 09:28:08 +0200
+Message-Id: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+X-Mailer: b4 0.16-dev-d9d01
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13305; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=KUo4NekPNXgv90VG8qkIbf6JzzGOminOB0cX6JdfmA4=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTZ3OhZodjWND3vVla0xtVsvve8slcnlNyQ0xfinPxvr
+ anRkjq/jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlsuMLI8OyGxt5JIVcXhgfL
+ WWWFL61ylt5ybYZG+kllu4NWV1aXXWL4p8zZcvlA+jVHhdBvLSzcDvqtOfEfr4i58tydeT6qYZ8
+ NCwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 705BF40007
-X-HE-Tag: 1782372381-349562
-X-HE-Meta: U2FsdGVkX1+3NbOh8u+J2/lu4FEJN1tmLWgJP6bzxITJ2mSN3AMQWrfxoUm5WZvmNBVVsI2RNzXWcq4UBwuRjkZ7ud3Wj1JiMVlhIqRSaW1v+lyFFNtA/m9KeirrhESI7zlyuIfB0noawYp06Kyq+/ItxS2aD6HhjJ+pkzB7fTaoLw97EPxnQskResTNDDzx8EQxTY8oqsjKOREBF42/cLcL3Gp97maU0OMDnBbQdGtstC23QgZHmh+pCp29UxL7rWbKXFVlcgRN3+2FdYhlaJbCTLDsGhGfFau4kcLWOrK6yxrfEgGroM8+hAE1xMf4Ix6M2xA9kKuvP46eVkB6m80lVPt4GGJ512h8rIOGcO615GxOpuWFcareycBBxzuLae5dk0GCvW+/yk736GLo6yrFnTQoAyseas17t5seRUsIfgznRnXmwZnTYZ2dmMxGE48+K9YQ0ji2xDrt1eW3TvxRdBKZQ1jTZYwLlocTm2TYUtMOc6xiKFNKQRTNQCkis/6k63IPPZN7V1tJzn/mtx5ReZ/0ESR2542kG569w+S1146HhHx71bOK/NzTrnnSa8w3HH2SiXZqK+JtdRWo8I+cqsbdJ524VjFOUE1p89U/S/bZ9rbosi8M/SkkhrH+l34+yajYwjN3hblaP1XfGbzrRDjFOkL6w9a+omQOgowVx4gEawKqIZwc2l3ipMxy7KwvOc8Y/KbtN/BR8ySVVlYewMQ9060XQEK/RJAVs64iEl77ZWWSBp2fv87eOPCz4dRv5j23pbKWUdbxaUTFcg4Js4aNx0Cjmfra7OO2l2PQ8o7uZQRE2OaldVJnMXSo29CWvzBNQK7S6TE5bJtM0Wlu7VwbaVtD60F4o3Jov0BBY5hbc21GcnsVvlHibsaWrcrcvWvBtHKaxsNlShGN/JvHlvEtJ7lAeb0xG49OMFNK45CMedjj5yqM3yOqx2x6rgeHxwevuWNexsk04z7
- dQ/iZuEi
- KV1EzCSTz5PTnmJ8MFKeqgWFp6PqnyDI4ubY5cWVnyTo+ukGwuoFz9q6jNw==
+X-Stat-Signature: 16b65a1pwgpsn7wdp5j46q51ymfkycss
+X-Rspamd-Queue-Id: 149CC40002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782372498-593133
+X-HE-Meta: U2FsdGVkX1/Im2SM0PVjfeJQs9lFaK/9+EJWtFX9lUtp1DLEQgpmVUr3cK7QWG1jOGrAHhoDPKg5xJyhJRncQXya1bpPwJx35jqOdvo6xpr9AkVytjRsV3q997ZIjeD/Rzya05vwITX0/5AkI0svch9aSMMyJ0EEnLyYD0j77C3aQrtSr6otoWuDsLvlNRWlfaNu9M9vUHUdL0+nix8IDJUol7VSgR2ZDHAsvtOD12evqGJFeMO3mKTE+ZYL1GHwUCvqe/0Z/OGAxbvyPtoVxaqkw7k/2HcTVaBIjISBVu07UzrSNluNGLWrQqLeF/RimXd17jxTjBzVD/738GT0JVJ2HZqRvR6ObswtgK022d3kALI9J/w8SWO7SlimllwWubbHVl6vbdn/zVZUFivjVmJUh5hJb4maXLsvmnaQ0Gv3lLcYHyUgcZ6YCbCA/IjmsWDi/VfxB9oc8sfy+8MGDujm6HAVej3JKZtRI8pdP/TNDVVl7POIqxmUx8RhzK0rstRLukk8UlqZrJqpdwMJsovbAXDVB5MNZV+5w2LI6NibXSvoTSDMXE+/SGTtDl+gkXrCgyH5/FLdMDX1eI238iVFbsJJOTkD6vyOTtK+t3PLr5I6n1T5ca496jKM/p4qAhq9uF3MmWtHcSAZkCEW6vjrVlppKePWszLUtsqggAO6s32dMj3XoSM+VyAAuWeBizHint95L7wfizzzvRXAqrIwMhTgp4IXT75jzZW0+hOMo0Wb50vYM28374v4TLrsb21MVC0NnlgaVB5CUoNZpZZNiFHmoRaQXVbFOS1yo2qRgnJOgs9JiGdecHJn5zINeo6K6bd+/TMe+rgIWm1amFhvXNI8sjT8PECSWwuUzkDnR1gfgAlNbC9HdK52jDcNqSZYXi8wWoOqZBetQ1rS3Z5GpGsX2i5jc2paEb5DkGUzjAYzgLf0I03mntaQQDSQGzdldhVGzPuyRb8TzEi
+ WV0PQ4t9
+ B45QMDiOwbovxMCU0w+qZem+ntFvAGBmxSRPrtaXwnxXXW/0lGYPA1PQeBRU9hVeats5/aa7pvOOA1o5i0OVI7AFowcPI85SCNiH+to9igSATrVrcQ8ZrZMSTaFejZH6spYUndh2d1qtCwO8shc2DtPmnN7MWAQBdRC+VV6hMzn+JVubp78XW1QJXcX755oXM05h9pIyLlv4MfNd8tEoJ+3WrFIO461SjMj979C3JBOSKuwgauXgWmNupwhBM45PFRtGp/+305DNuSur5qIS8J9EoYKtKcwt7s7aHLKHkGBhOFX9ChH/ubDZlE5OEMdOyZCU1YB9zaGHQG1zz0EJtT3XfSVGUSIvABoltpt0vNLCeumBm7nxINKTh0CjhG8CbI6pHesxEoNxW1JUZZ5yd/8ZV2jM1KXV0O77PeGK5bH6po+bAkQ0mzTDW8DDYhPhJpnatcUOwk/meRCLZ3RIpghSRnwODHjHm0EexkSR6wWyzYIg8qJCthxgFpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,71 +107,394 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
-
-On 6/24/26 16:58, David Hildenbrand (Arm) wrote:
-> On 6/24/26 09:55, Alexandre Ghiti wrote:
->> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
->> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
->>
->> zswap is the same kind of in-memory, synchronous backend as zram, not a
->> swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
->> swapin_readahead().
->>
->> Here are the results from bypassing readahead for zswap too: it was
->> measured with a kernel build (make -j16) in a memcg, zswap=zstd, shrinker
->> off, on Sapphire Rapids and 3 iterations.
->>
->>    768M memcg (sustained swap thrash):
->>      metric                 mm-new    + bypass    delta
->>      build time (s)          405.0       341.7    -15.6%
->>      zswap-in (GB)            79.5        53.0     -33%
->>      zswap-out (GB)          144.8       115.6     -20%
->>      swap readahead (pages)  6.79M       0.45M     -93%
->>      swap_ra hit (%)          72.1        89.9     +18pp
->>
->>    1G memcg (light pressure, build not memory-bound):
->>      metric                 mm-new    + bypass    delta
->>      build time (s)          177.7       176.0    ~same (no regression)
->>      zswap-in (GB)            10.2         7.5     -26%
->>      zswap-out (GB)           27.7        25.1      -9%
->>      swap readahead (pages)  1.07M       0.08M     -93%
->>      swap_ra hit (%)          68.6        87.2     +19pp
->>
->> The gain is from no longer prefetching pages that are pointless for an
->> in-memory backend: readahead inflates anon residency and thrashes the
->> page cache (file pages get evicted and re-read), lengthens each fault by
->> synchronously (de)compressing a cluster of neighbours, and adds
->> compression traffic when those extra pages are reclaimed.
->>
->> Bypassing swap readahead for zswap therefore makes sense.
->>
->> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
->> ---
-> [...]
+> A coredump typically takes some time to complete. If we happen to hold a
+> write lock with flock just before triggering the coredump, that write lock
+> will not be released during the entire coredump process. As a result,
+> other processes attempting to acquire the same write lock may experience
+> significant delays. Another typical scenario is that shared memory, such
+> as dma-buf, remains occupied and is not released for a long time due to
+> core dumps.
+> 
+> To address this, add /proc/<pid>/coredump_pre_exit node so that people can
+> specify which resources they want to release before dumping core. This
+> patch implements the early release of two types of resources: flock files
+> and file-backed shared memory. Default settings are NOT pre-exit anything.
+> 
+> A temporary bit, O_TMPCLOS, is added to mark vma->vm_file->f_flags during
+> the execution of the newly introduced exit_mmap_mapped_shared() function.
+> In this way, the subsequent exit_files_pre_exit() function does not need
+> to find the corresponding vma through the file to check for the VM_SHARED
+> attribute, thereby reducing the traversal cost.
+> 
+> Signed-off-by: Xin Zhao <jackzxcui1989@163.com>
 >
->>   #endif /* _LINUX_ZSWAP_H */
->> diff --git a/mm/memory.c b/mm/memory.c
->> index ff338c2abe92..5aa1ea9eb48a 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -4827,8 +4827,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>   	if (folio)
->>   		swap_update_readahead(folio, vma, vmf->address);
->>   	if (!folio) {
->> -		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
->> -		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
->> +		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
->> +		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
->> +		    zswap_present_test(entry))
-> This should really be abstracted into a reasonably-named helper that can live in
-> swap code.
->
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index f575d450861e..bc6d3859f874 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1024,6 +1024,11 @@ Kernel parameters
+>  			/proc/<pid>/coredump_filter.
+>  			See also Documentation/filesystems/proc.rst.
+>  
+> +	coredump_pre_exit=
+> +			[KNL] Change the default value for
+> +			/proc/<pid>/coredump_pre_exit.
+> +			See also Documentation/filesystems/proc.rst.
 
-Makes sense, I'll come up with something.
+Nah, we're not doing a separate file for this. That makes no sense
+whatsoever. I've already explained this in the first mail. There are
+effectively three modes:
 
-Thanks,
+(1) dump to a file
+(2) spawn super-privileged usermode helper process connect coredumping
+    process and said helper via pipe
+(3) coredumping process connects to AF_UNIX socket
 
-Alex
+Parameterize (1) and (2) via a command line arguments. I strongly
+suspect you're using some AI tooling so it should be able to figure out
+how this was done in the past.
 
+(3) can be extended by just introducing a new flag value for struct
+    coredump_req. That is also illustrated by previous work.
+
+We're not spreading procfs files. It's terrible api design especially
+for security sensitive changes.
+
+> +static void coredump_pre_exit(void)
+> +{
+> +	struct task_struct *tsk = current;
+> +	unsigned long flags = __mm_flags_get_dumpable(tsk->mm);
+> +
+> +	if (!likely(flags & MMF_DUMP_PRE_EXIT_MASK))
+> +		return;
+> +
+> +	/*
+> +	 * Set O_TMPCLOS of file f_flags if file needs to be closed.
+> +	 */
+> +	if (test_bit(MMF_DUMP_PRE_EXIT_FILE_BACKED_SHARED, &flags) &&
+> +	    !test_bit(MMF_DUMP_MAPPED_SHARED, &flags))
+> +		exit_mmap_mapped_shared(tsk->mm);
+> +
+> +	/*
+> +	 * Check O_TMPCLOS of file f_flags to close file and clear it.
+> +	 */
+> +	exit_files_pre_exit(tsk, mm_flags_test(MMF_DUMP_PRE_EXIT_FLOCK, tsk->mm));
+> +}
+> +
+>  static int coredump_wait(int exit_code, struct core_state *core_state)
+>  {
+>  	struct task_struct *tsk = current;
+> @@ -1100,6 +1121,8 @@ static void do_coredump(struct core_name *cn, struct coredump_params *cprm,
+>  		return;
+>  	}
+>  
+> +	coredump_pre_exit();
+> +
+>  	switch (cn->core_type) {
+>  	case COREDUMP_FILE:
+>  		if (!coredump_file(cn, cprm, binfmt))
+> diff --git a/fs/file.c b/fs/file.c
+> index 2c81c0b162d0..a58ffffcc31d 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/file_ref.h>
+>  #include <net/sock.h>
+>  #include <linux/init_task.h>
+> +#include <linux/filelock.h>
+>  
+>  #include "internal.h"
+>  
+> @@ -527,6 +528,51 @@ void exit_files(struct task_struct *tsk)
+>  	}
+>  }
+>  
+> +void exit_files_pre_exit(struct task_struct *tsk, bool checkflock)
+> +{
+> +	struct files_struct *files = tsk->files;
+> +	struct fdtable *fdt;
+> +	struct file *file;
+> +	unsigned int i, j = 0;
+> +
+> +	if (!files)
+> +		return;
+> +
+> +	fdt = rcu_dereference_raw(files->fdt);
+> +	for (;;) {
+> +		unsigned long set;
+> +
+> +		i = j * BITS_PER_LONG;
+> +		if (i >= fdt->max_fds)
+> +			break;
+> +		set = fdt->open_fds[j++];
+> +		while (set) {
+> +			if (!(set & 1))
+> +				goto next_fd;
+> +			file = fdt->fd[i];
+> +			if (!file)
+> +				goto next_fd;
+> +			if (file->f_flags & O_TMPCLOS) {
+> +				file->f_flags &= ~O_TMPCLOS;
+> +				goto close_fd;
+> +			}
+> +			if (!checkflock)
+> +				goto next_fd;
+> +			if (!vfs_inode_has_locks(file_inode(file)))
+> +				goto next_fd;
+> +
+> +close_fd:
+> +			fdt->fd[i] = NULL;
+> +			filp_close(file, files);
+> +			cond_resched();
+> +
+> +next_fd:
+> +			i++;
+> +			set >>= 1;
+> +		}
+> +	}
+> +}
+> +
+>  struct files_struct init_files = {
+>  	.count		= ATOMIC_INIT(1),
+>  	.fdt		= &init_files.fdtab,
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index d9acfa89c894..99b5f219f7fa 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -3026,6 +3026,83 @@ static const struct file_operations proc_coredump_filter_operations = {
+>  	.write		= proc_coredump_filter_write,
+>  	.llseek		= generic_file_llseek,
+>  };
+> +
+> +static ssize_t proc_coredump_pre_exit_read(struct file *file, char __user *buf,
+> +					   size_t count, loff_t *ppos)
+> +{
+> +	struct task_struct *task = get_proc_task(file_inode(file));
+> +	struct mm_struct *mm;
+> +	char buffer[PROC_NUMBUF];
+> +	size_t len;
+> +	int ret;
+> +
+> +	if (!task)
+> +		return -ESRCH;
+> +
+> +	ret = 0;
+> +	mm = get_task_mm(task);
+> +	if (mm) {
+> +		unsigned long flags = __mm_flags_get_dumpable(mm);
+> +
+> +		len = snprintf(buffer, sizeof(buffer), "%08lx\n",
+> +			       ((flags & MMF_DUMP_PRE_EXIT_MASK) >>
+> +				MMF_DUMP_PRE_EXIT_SHIFT));
+> +		mmput(mm);
+> +		ret = simple_read_from_buffer(buf, count, ppos, buffer, len);
+> +	}
+> +
+> +	put_task_struct(task);
+> +
+> +	return ret;
+> +}
+> +
+> +static ssize_t proc_coredump_pre_exit_write(struct file *file,
+> +					    const char __user *buf,
+> +					    size_t count,
+> +					    loff_t *ppos)
+> +{
+> +	struct task_struct *task;
+> +	struct mm_struct *mm;
+> +	unsigned int val;
+> +	int ret;
+> +	int i;
+> +	unsigned long mask;
+> +
+> +	ret = kstrtouint_from_user(buf, count, 0, &val);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = -ESRCH;
+> +	task = get_proc_task(file_inode(file));
+> +	if (!task)
+> +		goto out_no_task;
+> +
+> +	mm = get_task_mm(task);
+> +	if (!mm)
+> +		goto out_no_mm;
+> +	ret = 0;
+> +
+> +	for (i = 0, mask = 1; i < MMF_DUMP_PRE_EXIT_BITS; i++, mask <<= 1) {
+> +		if (val & mask)
+> +			mm_flags_set(i + MMF_DUMP_PRE_EXIT_SHIFT, mm);
+> +		else
+> +			mm_flags_clear(i + MMF_DUMP_PRE_EXIT_SHIFT, mm);
+> +	}
+> +
+> +	mmput(mm);
+> + out_no_mm:
+> +	put_task_struct(task);
+> + out_no_task:
+> +	if (ret < 0)
+> +		return ret;
+> +	return count;
+> +}
+> +
+> +static const struct file_operations proc_coredump_pre_exit_operations = {
+> +	.read		= proc_coredump_pre_exit_read,
+> +	.write		= proc_coredump_pre_exit_write,
+> +	.llseek		= generic_file_llseek,
+> +};
+>  #endif
+>  
+>  #ifdef CONFIG_TASK_IO_ACCOUNTING
+> @@ -3391,6 +3468,7 @@ static const struct pid_entry tgid_base_stuff[] = {
+>  #endif
+>  #ifdef CONFIG_ELF_CORE
+>  	REG("coredump_filter", S_IRUGO|S_IWUSR, proc_coredump_filter_operations),
+> +	REG("coredump_pre_exit", S_IRUGO|S_IWUSR, proc_coredump_pre_exit_operations),
+>  #endif
+>  #ifdef CONFIG_TASK_IO_ACCOUNTING
+>  	ONE("io",	S_IRUSR, proc_tgid_io_accounting),
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index af23453e9dbd..dfd4717c7e3e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4066,6 +4066,7 @@ void anon_vma_interval_tree_verify(struct anon_vma_chain *node);
+>  extern int __vm_enough_memory(const struct mm_struct *mm, long pages, int cap_sys_admin);
+>  extern int insert_vm_struct(struct mm_struct *, struct vm_area_struct *);
+>  extern void exit_mmap(struct mm_struct *);
+> +extern void exit_mmap_mapped_shared(struct mm_struct *mm);
+>  bool mmap_read_lock_maybe_expand(struct mm_struct *mm, struct vm_area_struct *vma,
+>  				 unsigned long addr, bool write);
+>  
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index c7db35be6a30..0555aaf50001 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1963,6 +1963,15 @@ enum {
+>  	(BIT(MMF_DUMP_ANON_PRIVATE) | BIT(MMF_DUMP_ANON_SHARED) | \
+>  	 BIT(MMF_DUMP_HUGETLB_PRIVATE) | MMF_DUMP_MASK_DEFAULT_ELF)
+>  
+> +/* coredump pre-exit bits */
+> +#define MMF_DUMP_PRE_EXIT_FLOCK	11
+> +#define MMF_DUMP_PRE_EXIT_FILE_BACKED_SHARED 12
+> +
+> +#define MMF_DUMP_PRE_EXIT_SHIFT	(MMF_DUMPABLE_BITS + MMF_DUMP_FILTER_BITS)
+> +#define MMF_DUMP_PRE_EXIT_BITS	2
+> +#define MMF_DUMP_PRE_EXIT_MASK	\
+> +	(((1 << MMF_DUMP_PRE_EXIT_BITS) - 1) << MMF_DUMP_PRE_EXIT_SHIFT)
+> +
+>  #ifdef CONFIG_CORE_DUMP_DEFAULT_ELF_HEADERS
+>  # define MMF_DUMP_MASK_DEFAULT_ELF	BIT(MMF_DUMP_ELF_HEADERS)
+>  #else
+> diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
+> index 41ed884cffc9..b4becbf6c0eb 100644
+> --- a/include/linux/sched/task.h
+> +++ b/include/linux/sched/task.h
+> @@ -93,6 +93,7 @@ static inline void exit_thread(struct task_struct *tsk)
+>  extern __noreturn void do_group_exit(int);
+>  
+>  extern void exit_files(struct task_struct *);
+> +extern void exit_files_pre_exit(struct task_struct *, bool);
+>  extern void exit_itimers(struct task_struct *);
+>  
+>  extern pid_t kernel_clone(struct kernel_clone_args *kargs);
+> diff --git a/include/uapi/asm-generic/fcntl.h b/include/uapi/asm-generic/fcntl.h
+> index 613475285643..360604d653b4 100644
+> --- a/include/uapi/asm-generic/fcntl.h
+> +++ b/include/uapi/asm-generic/fcntl.h
+> @@ -95,6 +95,10 @@
+>  #define O_NDELAY	O_NONBLOCK
+>  #endif
+>  
+> +#ifndef O_TMPCLOS
+> +#define O_TMPCLOS	0x80000000	/* tag need close, temporarily used */
+> +#endif
+
+Sorry, not going to happen. This doesn't not justify the addition of a
+new uapi value at all.
+
+I'm also including various Sashkio comments:
+
+sashiko.dev <sashiko@sashiko.dev>:
+
+[Severity: Medium]
+Is it safe to expose an internal, temporary kernel flag in a UAPI header?
+Userspace applications could intentionally or accidentally pass O_TMPCLOS to
+open(), which might permanently pollute the userspace ABI and trigger
+unexpected behavior during a coredump.
+
+via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
+
+> +
+>  #define F_DUPFD		0	/* dup */
+>  #define F_GETFD		1	/* get close_on_exec */
+>  #define F_SETFD		2	/* set/clear close_on_exec */
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index a679b2448234..84f1ee7f32cf 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1030,6 +1030,18 @@ static int __init coredump_filter_setup(char *s)
+>  
+>  __setup("coredump_filter=", coredump_filter_setup);
+>  
+> +static unsigned long default_dump_pre_exit;
+> +
+> +static int __init coredump_pre_exit_setup(char *s)
+> +{
+> +	default_dump_pre_exit =
+> +		(simple_strtoul(s, NULL, 0) << MMF_DUMP_PRE_EXIT_SHIFT) &
+> +		MMF_DUMP_PRE_EXIT_MASK;
+> +	return 1;
+> +}
+> +
+> +__setup("coredump_pre_exit=", coredump_pre_exit_setup);
+
+This makes no sense. I think you really need to sit down and think about
+a design for this that doesn't introduce state machinery for boot, mm,
+and the VFS in one shot to solve a fringe problem...
+
+
+
+
+
+sashiko.dev <sashiko@sashiko.dev>:
+
+[Severity: High]
+Does modifying the VMA maple tree via do_munmap() during the for_each_vma()
+iteration invalidate the outer iterator? The loop traverses the maple tree
+using the iterator vmi. However, do_munmap() creates its own internal
+VMA_ITERATOR and removes the VMA from the tree. Because the outer vmi
+iterator is not updated to reflect these structural changes, its cached
+state becomes stale, which can lead to a use-after-free when vma_next()
+is subsequently called.
+
+via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
+
+
+sashiko.dev <sashiko@sashiko.dev>:
+
+[Severity: High]
+Is it safe to iterate the file descriptor table without holding
+rcu_read_lock()? Because coredump_pre_exit() is called before zap_threads()
+kills other threads, concurrent threads can still trigger expand_files(),
+which replaces the fdt and frees the old one after an RCU grace period.
+
+via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
+
+
+sashiko.dev <sashiko@sashiko.dev>:
+
+[Severity: Medium]
+Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
+of file->f_flags risks losing concurrent fcntl() updates since it doesn't
+hold file->f_lock.
+
+Also, if a file has duplicated file descriptors (e.g., via dup()), will
+clearing O_TMPCLOS here prematurely skip the closure of the remaining
+descriptors? When encountering the duplicated descriptor later, the flag
+will already be cleared, leaving the shared file actively referenced.
+
+via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
+
+-- 
+Christian Brauner <brauner@kernel.org>
 
