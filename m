@@ -4,106 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86FC5CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D40CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:46:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48F856B0098; Thu, 25 Jun 2026 01:46:17 -0400 (EDT)
+	id E53966B0099; Thu, 25 Jun 2026 01:46:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 467E46B0099; Thu, 25 Jun 2026 01:46:17 -0400 (EDT)
+	id E2B4D6B009D; Thu, 25 Jun 2026 01:46:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 358D36B009B; Thu, 25 Jun 2026 01:46:17 -0400 (EDT)
+	id D412A6B009E; Thu, 25 Jun 2026 01:46:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F00006B0098
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:46:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B2E1405DC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:46:16 +0000 (UTC)
-X-FDA: 84917349552.15.0156C01
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 916CB6B0099
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:46:20 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F09DCC2628
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:46:19 +0000 (UTC)
+X-FDA: 84917349678.14.62D3540
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5B75E180003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:46:13 +0000 (UTC)
+	by imf06.hostedemail.com (Postfix) with ESMTP id 93CE3180002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:46:16 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CuCD6uxV;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fSlbEDU6;
 	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782366374;
-	b=AS6afEcm5QsteSwEgV7Q6yla7m/JYALpGM+aC0+dZyFTfrPEjutUQTGt/GEWpadnuofiWo
-	yvXZVqW8UpR9elZd5vpT6/nLgIb2LkwhHifrtkphpBNIZl5snRIxRNsZGAiLgmoITroJWg
-	PA3mrYuEMdmOz1gFbAHhthixktlXYQY=
+	t=1782366378;
+	b=EfU6ieW6jZRPZ7+B1EwXcuTfr4UO2513KWp+tPauvA6VAWwLmq8DuLD8Y6QsHA05fQuXBW
+	yDPcMLAfV2k0HlMw5XQ3xqxj8FEX/gu26XQoZOIl91deZOvrWGveys6Nj8F7VGN/5IeL94
+	/ie067YoAtNHuoURLq3SUj+66geDOps=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782366374;
+	s=arc-20220608; t=1782366378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w4nACneApVdsGq5YmoklBOc7dc9gZem01m9S3K0KPkU=;
-	b=e5cON/dWlD3xENL8lR6GAqFAfycKy/9WgjyBLQQTy/UBNN+lrL8/HkQWHUoxKwYhrQXWWB
-	OHXvq5wDU7jIjJ8mP435P3/oM2UQgLAaQSeCsXdeCfKL0Il9m7U5pXjHq0icpuay8SrWgt
-	fnUNevSutzpFOD0BbkCl0fMRy3St+Fc=
+	bh=95nWktGXx10LrStBURckjNIxjRBPgTdDtR8JJQ1ti3c=;
+	b=xWaPOv7o0ewVcm4Bq6i5cgYboPnRr8Ox7I3UhkeWL2JztXTH0Z3mMRTLISTJw6B2WFSCbO
+	p5R7oaRVWYCO2dLbT+67alJPUA/ZRGra6Sf/UUBsLzJEmTW6YHC/SZuOtER94ou/et+8vt
+	61HojgKFXA6aO0A61OfJujo3fkVGxIk=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CuCD6uxV;
+	dkim=pass header.d=intel.com header.s=Intel header.b=fSlbEDU6;
 	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782366373; x=1813902373;
+  t=1782366376; x=1813902376;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CF0Qpif2lRz1peTAm1ADsyGmWCzDr80ARjv0mpc3Kk8=;
-  b=CuCD6uxVQb0mhkOt6RtK597qH8G/+cMcKddDqsKEEhz/c6Kbyw+MQKI9
-   DxlyOXtX3T6UasDMeOYIpjQ9NC1sOUdx61FR7cJjYSIB+TRc/Z2Akh0Tl
-   fyW8gL0NZH6VgzoS/vHAF4eePzWAlqi8hlTn7/J6DgqQpoW24ECp6OOWY
-   VxUWOd5pF4gX7OC6LlRYy0bWLii0pRTl+nhmsg5G2iM2MnbgCTM2Z/dXm
-   CF0z7yBBbvVMLZsmJ+TIT5WN2wIvZK9pm0owgRkhncqqJl12VLWsODter
-   5WH/JGXLyYstuCKSkSzOvEAAhXQU4H/L2l75Oj/NuZESjTxkJfXfffA3O
-   g==;
-X-CSE-ConnectionGUID: PAxwsnmmQUaqc78Laeb8+w==
-X-CSE-MsgGUID: FgxworcHQNS2OE8/rgKy5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82121856"
+  bh=0xMLENcuy5XK64XhlRj6nQreCLFTSuOzxNb7Pm80sPE=;
+  b=fSlbEDU6oMhBOv20cOJI04+DaltV7Yl3zANcMGIDifXzibcoS0GhzdF0
+   CSBhs00M+b9vMprEWnDWgxk44da+eMwYE7Ua4fm9cULHSVb5Blno9hoWq
+   Xt0Xdqe6bs7NMcsN/El7R+6dBDS/jIeiRsXFMpNaB/Yi4J/CQ+dENavRC
+   cn9CtPZLtDiDcttc/cssPeWt4857XJdI3UWL4hxz5p1m4rW72phCzu0+r
+   0XqlTHp666/CVSUX+xHkwhs/Jm/CN2xWjsFQEITR/pwYp9lXcThvLJ2Aj
+   nZYn88YNDLws8zQhgf9/g+gHdW9aLN9yBaycclnA9tFuzfTM0WX28j59c
+   w==;
+X-CSE-ConnectionGUID: FxkIRhsmTViw9colMHFAcg==
+X-CSE-MsgGUID: UuwkuCS5SMysiCEc2xClRg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="82121865"
 X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
-   d="scan'208";a="82121856"
+   d="scan'208";a="82121865"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jun 2026 22:46:11 -0700
-X-CSE-ConnectionGUID: TgBe4sbNSImv6HMaVV55Ew==
-X-CSE-MsgGUID: 5iiTdnI/RfaHkbwKTp6RZg==
+X-CSE-ConnectionGUID: Ya1fGO+hSQ2qgsRSNC27zQ==
+X-CSE-MsgGUID: fWctwNGFTbexH2ojKAyAIg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,223,1774335600"; 
-   d="scan'208";a="280543917"
+   d="scan'208";a="280543918"
 Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
   by orviesa002.jf.intel.com with ESMTP; 24 Jun 2026 22:46:06 -0700
 Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wccua-000000003w9-1qFv;
+	id 1wccua-000000003wB-1xiI;
 	Thu, 25 Jun 2026 05:46:04 +0000
-Date: Thu, 25 Jun 2026 13:45:57 +0800
+Date: Thu, 25 Jun 2026 13:45:58 +0800
 From: kernel test robot <lkp@intel.com>
 To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org,
 	david@kernel.org, ljs@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Dev Jain <dev.jain@arm.com>,
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
-	harry@kernel.org, jannh@google.com, kas@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Dev Jain <dev.jain@arm.com>, riel@surriel.com, liam@infradead.org,
+	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+	kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	ryan.roberts@arm.com, anshuman.khandual@arm.com,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-Message-ID: <202606251311.CCKYInqf-lkp@intel.com>
+Message-ID: <202606251341.jfIr1D7m-lkp@intel.com>
 References: <20260625042853.2752898-1-dev.jain@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260625042853.2752898-1-dev.jain@arm.com>
-X-Stat-Signature: 1wcspbe19w163zk78be5ag1rp8b14oa5
+X-Stat-Signature: j6paiett4htpjiwhbe5dy4buo1xjzz3k
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5B75E180003
-X-HE-Tag: 1782366373-6959
-X-HE-Meta: U2FsdGVkX18zDqjVs24w0PmzFk2ZcuqvvGDyS/k57O+6851ADtwottR5kcp07maxX11m/k2KyOOdPLgflM5kFbll7FEUn7hBu6zccb4VQTfKtPLdYU9obkSzISZhifQlCsgICkpkZ8ssW9HoNBioIl7R6zT/8RyWmju+M7PwXmmEdT0jbb0MFCpgo9RhmKFy8vsk1cSgDMIU/h43Sly5tBMcscEqzRt8VFJFUfXnnXT/aB6zznHHIZHWZMyq+RPX5u0YFiHIbzx+aWfbSM5hVgfwLQw385/aJY76fyXQIpotitd1+zUntOoqjHIb/jCOkOTMvQmopVUy82cG3o6aqN7vV+7ZTsp6k5/ram9M1gg77MozDiHbrHJNqqqHj/j+E2OGkvOphGyH9p8hVZtepE+pP5K2kzDqM3wbEViIInu3n8W2VpvU9rcp1+l1uoRj7/IOVyWphVZpFQ9CKFkVnG3hAX1kTI3rxTf3EMsFQdOg+pSXGMbS9Aumna/dXw5/JHTzaL6dUv4dUAIeO9VJZ5n994uue9lEO9MMvDnr2EZAO71is4eEPAUZ7Qy3P1pSRXlYURfBJQYs4583n91apam299c2/i3Wi95gI39/Ro4UtQvwGYXH1rlCLrJMlzNBarkqRMu0bpZeOCO8vyGaSUpRS3YN7xE61ADuw6KLUimhBXd7VAWcwp7ffcK2oQMnSOij/FlPDKgytfTAekQrFzdL3GlEcWUsbRXn1zVs4xfafcIg/ewpwta468DpIQeZxELxu3vgbOr0abSZQcCVI1OxR+rqjfqJvdUuEeerjKASWzbtPJ+K6//CLmZ5e0eEjGNxqYyAFR6eJj2StdhqX/r24O9/pzRLEpbiILmM4ufsx7pwznrSAc08uhWGNwpMC82R7UQtvaeTevrcZqi9HhSwp0wrNcG0bPn26Y4D+F4Es81DJx8BRDBvXRxe9TFtwrj01PhKw4aqQqilbIY
- /wGScS9s
- F4gOAFix42NAOQVOBd8kbgDe8Ut6XkqeP+N4WoVPB90NuF2TxHrz/Th9VK8/eI/LX3Y+w+G463o4EsblNBCo6dGTD2iI7EU0kqmwexLfUZakBJ9ZZwBmlfjqSAre4kVnOQ49KKwnQsAROmOiksZek6+P+AS2XYY+eOP/InS6XnoSoJyVTEkss0nVaLsdQpT8yC/HvYzDJLECjXtYeLZGZ3fQLg+dava9ZzfuS3l0U6Ey09b+LVvt06l7Yx41C5Ngmb05JktOgBcxsyxH25Q+mNzaY4aafQO/Rl4kt6yXryWESBdkLSW17E7WaZBDjdB5bJxXNjDbT4LkM8XcRJHp/NH1AOEjLueOxGaAfAlgSBuvB3ABL94Jrd3o2kWMHZktOx4GWbws/E+sVI+9fuHixk+fXFBBgbSdGbUSziQDFQnoacyNsrmZjYOw0ZA==
+X-Rspamd-Queue-Id: 93CE3180002
+X-HE-Tag: 1782366376-343424
+X-HE-Meta: U2FsdGVkX19G0DO904sE1UfxPKG4AcWEEx9eWPOVwz+pksGaUq31ZPF979SgyWM17V1FLGUgRFzJ8xMhYdD82uPJkScH8j8szf4JZtVZT9UWKGwfSS5q7IPRatBA+UBzzYtbEIb2pFgl0vAeJJthTlWxuzSSu6OEB/JyFVzOpfXl9fB6zMGLaU1px8suylBXckRbBZ2aWq8AeQTBAByg9XgYY9IZBijLdXYtAbmqhOimh9UF7NU49dX/qXncjTYGJ6msKC9UNmnqrJL83vRVTQBjxw8PHMCj1APZFHZHHNN3aezYIIu4QNMM+9i/WzLD0dyMYUA1OSNGxn6QRG+ElxL2AN5s+b/wEUu/TRmaoXz+KhctHlMMK5aaSe7j9L/ZbZM5Z3Qk+OBgGryiYcMmkA202rMZGCx+71UZGX3tuSk0BlXec69rpnA9KC0eRWnAD2Tl2WgRVJptU5iVwwrhBOucy0rvNuq5Pa1D5O07M7KSyxigwLyajK1rDD40TsLos+dJQ2FKwCPP5z3UlBUhmPf5fF2cO58pxBslSENG/FBQ5F7F6LE0Lk9dqgurfcTimNLxwP/PbRQQdFjcBLRkt09NXORVxbg6tZ1aV+EAbOCpst9TOvCnG1IxDnP07IQ9FixMSpCcY0OW1npDT/62YkvkGOD0jWksIlT2hIQXTceXq8no7z9i7bw3va+7ySHiLuzUBKi9kxbJZnQNvuzhY2MbmPHfWL+pHbmWEz1fQTv1u1gb6CONtBCHgdorkO4ys7nOeFCR8M1goquUYnR3Q227QyBzeCFWw8Zh9Upx6lRdVQowbsig7UkCR1KC6XEHW5g7wwrO4oW0MQ2/1MnlTAFTILuvMzx40cihLe/ZaQ5iro/1zTb7bndZMLL6nmCIGYtNuPI2OYNXvd+cGZFKsyDVf4OizLEK1I076X238zrWeqI8ago2g0IzNnSW+cD/UxCKL6q+/ggG1n9BSh7
+ vGtaZtFV
+ tFXEigt6YagvKqK5vdHsZWN6Mf6jj4FbDsGnCQkNKXIZeEeaUNvfUvTXYWwnY5CezMgXlWkvSncQ+vC8zjCxQHcyEAbjPTYwwRg8WL33YY1cEH6ZafLrWnGoE75YCVxMdBE33NJaiEjLMWIq8UeqgALQfckPQZhn9Z3vokZWsfTAfqgHAZ+RPNG3wnjdSlRUhwuhupKgzn1zYPFS6Zj0gJdgkYXty9m8lOwJ/tpQHFz8jpCYJsCpvMisO6QHP1KA9wvP8NNxKPr/zk3KAo9FPEPsHnjUPl53s2474TqbcJE3uabBK48UYWSSSEEsG/FhbONiQrd9JDtoXHpD+a9Ha8xv5HczLZagkUAD7i9hI/YR115678/dBTDYHpd0RMNP601Y9tYdPIJbQ2nMn8QcpBOR3jhNs5RuGYFn8QeKwaJrDDQ/J80X1N7PmuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,23 +121,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Dev-Jain/mm-rmap-use-huge
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260625042853.2752898-1-dev.jain%40arm.com
 patch subject: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251311.CCKYInqf-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251311.CCKYInqf-lkp@intel.com/reproduce)
+config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/config)
+compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 6cc609bb250b21b47fc7d394b4019101e9983597)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606251311.CCKYInqf-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606251341.jfIr1D7m-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   mm/rmap.c: In function 'try_to_unmap_one':
->> mm/rmap.c:2100:34: error: implicit declaration of function 'huge_ptep_get' [-Werror=implicit-function-declaration]
+>> mm/rmap.c:2100:13: error: call to undeclared function 'huge_ptep_get'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
-         |                                  ^~~~~~~~~~~~~
->> mm/rmap.c:2100:34: error: incompatible types when assigning to type 'pte_t' from type 'int'
-   cc1: some warnings being treated as errors
+         |                                  ^
+>> mm/rmap.c:2100:11: error: assigning to 'pte_t' from incompatible type 'int'
+    2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
+         |                                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   2 errors generated.
 
 
 vim +/huge_ptep_get +2100 mm/rmap.c
