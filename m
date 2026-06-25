@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26254CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F7F7CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:26:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1985C6B00D8; Thu, 25 Jun 2026 03:23:12 -0400 (EDT)
+	id 4D2F56B00DB; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16FB66B00D9; Thu, 25 Jun 2026 03:23:12 -0400 (EDT)
+	id 484936B00DC; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061506B00DA; Thu, 25 Jun 2026 03:23:11 -0400 (EDT)
+	id 39A4F6B00DD; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D23946B00D8
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:23:11 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 66C4E1674CC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:23:11 +0000 (UTC)
-X-FDA: 84917593782.26.2C3B8AB
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 450BA40002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:23:09 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	spf=pass (imf17.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A546B00DB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:26:24 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9114A1C5F05
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:26:23 +0000 (UTC)
+X-FDA: 84917601846.30.8250573
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 705BF40007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:26:21 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782372189;
-	b=DChLEaaQE5lJCxw6gkmq4LA3KXVWUXPUS45v3yiv3eqMrlEFaC8HLhREoBJJRma63q4J9T
-	CfqZzVlRFNJTvXBEAA73kjCF3td9+AjNRvciG8bEIfCA7sATA+o/gxiXM11ykB8m5G1NSM
-	wVhmb1P/ETLiStwgYBlibUCvMW4N/8M=
+	t=1782372381;
+	b=hTIfzFP+yTHURZqBr0CqsNMbI0zITwmJsH0udcPMvtXqHlafb+jmN/CFWVBktobECDq2VN
+	3Oyo4BA/Ik/9PUykFuY/K4Zz9rNNffMobAJJfiA1sbOjTPlbFiIOnYISbVq5Zwhf1PtAjn
+	dkyWa5MFTVWAgauB/91Wt1tJJ950PEA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782372189;
+	s=arc-20220608; t=1782372381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=S6/MUdh9neZ3jrA6IgsLgFgrWPcOabzXidh9SQbI8+E=;
-	b=oxzbZ8Cp2JR9q88gvvnYsjVUtm4XDWAMg6ryhWh4wXmX+sIxTcdeEZyv0oOKC5ORzIYxQD
-	SihD1pXiAbXgHg4cPB111wp1vJDegKnh1ULW+fpFvWDjv49nl1FGG/3/LtULD4GQn6wopL
-	pOxvtVzkrAuZnvpQiieSAylC+wbMbLw=
+	bh=5rjlpjpln/OQF/MFigzfhap+Q60XqCoGKPkDC4HAvUE=;
+	b=dfSMIEyxemdMM0/kCqa9udr37xfhMqTkpcf90mpo+lvMJXzO/W04HHPv/or316UjWVs+nG
+	E/GBLEhcm9FjxRigfX6z4UwewWlCTF2N8zaRiB7zF5EXboAaf/b1dxuZsvLPJ6j27w+LWH
+	wdVDVmPYl/wb/5qjo2Q5B9uUf1uyg4U=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
+	imf12.hostedemail.com;
 	dkim=none;
-	spf=pass (imf17.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	spf=pass (imf12.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
 	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7FD1F3ECDE;
-	Thu, 25 Jun 2026 07:23:03 +0000 (UTC)
-Message-ID: <4acb4206-1dc5-4803-afb1-1a940e3fb89b@ghiti.fr>
-Date: Thu, 25 Jun 2026 09:23:02 +0200
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1408A3EDE9;
+	Thu, 25 Jun 2026 07:26:15 +0000 (UTC)
+Message-ID: <2885ebe3-e478-4c99-a48a-606b1db835a6@ghiti.fr>
+Date: Thu, 25 Jun 2026 09:26:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
-To: Kairui Song <ryncsn@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, yosry@kernel.org,
- nphamcs@gmail.com, chengming.zhou@linux.dev, david@kernel.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, chrisl@kernel.org, baohua@kernel.org,
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com
+Cc: chengming.zhou@linux.dev, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ kasong@tencent.com, chrisl@kernel.org, baohua@kernel.org,
  usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260624075700.751467-1-alex@ghiti.fr>
- <CAMgjq7CfMp_7bhDWirUmxM0pFzk6d9in9h6wuHsMoeUu-+TC_Q@mail.gmail.com>
+ <3523f142-778c-4efd-9675-3c68b33e7e3d@kernel.org>
 Content-Language: en-US
 From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <CAMgjq7CfMp_7bhDWirUmxM0pFzk6d9in9h6wuHsMoeUu-+TC_Q@mail.gmail.com>
+In-Reply-To: <3523f142-778c-4efd-9675-3c68b33e7e3d@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: 0
-X-GND-Cause: dmFkZTFSm4vxa+rPJnVGGTFqS5imGRrEGQFdaFNUOkShOTrZeb9R4SBoyv5SJ5DNNb67ObECM1XaEUSb+OiO8QPSMSzwQ9jKfG3z9AtWM+YhYJ//nroeIrPzyJ71WMbaGq8HSPLshVRRa/RrXdNugfPIdARST1IilFx8ydwGP1ju2BX4SKieLXFvelr979qsQnmw3Y4PvcW3l4YOlUcA9vLRNQObwwagVex8jMmyovDpd20Wl2lHUSf/i1HxOotgWoD0U796hGBSlB+u7x7K6cn1bPi6g78UkutBZy8LYJDGtazmr5iKHkaIGnNtrEZ4Na1N39WQJ7Sw3TQfUMBaTANz/eHwcRs0uhNkvkZJNtWXDIQYLoZi+P6tD0/0VfCtEKqo5AO4HTsZFNifT49ECm0tB4s7NL4154LQdKUDv+wEpIWkygw35G3mqtWmZ5n8tiMqHnIIGzBO971mwqaABxsS+x6xYoxFGHWHzuDBkr6Mdf1pGGjAI8YaTzkaYbKm83/UwiqMC/GX28VBAM/ExcIiOB0POuSAG4owXE13PWUSrtvsVEHhg9xb2EhNetujLj4guG0ELXhfYQMBsHy3+V8DDp3V2WuvKIXbjPTzQUZI7Ba6E+nVrvG4OcgwM6DYgHnQRPD4LUxarfJYc4rJwYoxuwAdx+oQkuy+/wEZF0TOY6WuIQ
 X-GND-State: clean
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 450BA40002
+X-GND-Score: -100
+X-GND-Cause: dmFkZTFJ9hiieAq68IGhaRrzEV/GZqQjMTTFMZ9hUg41+kNVhP5pDUgvpMIPRxpG7ieDDbHX8JQdlFIbDjXf2uV/O6TwdqbC8kzLMxfDnBVT0M2ZJL1wmgxLisc+LjAEKf3y5umu3w7HQMr1IAGgojIUNAaRyG8B7pllVcQKfMiLy7l118uJiLjGYPd9Hcmx/FJPHDQRAtk87YnGSc4tEyXjou5Kr/xcis5q2kNZzcIoE4OZDdjUnEgYrb2F58jcYJYPpOyH1EJ01UZ0w2UVNV2j6Xtyex2+o25cAWkLl+kBaW93IdZnmggZrR3585Uv81RZH1yjOA8Ug7AEXVOu0MVzu9KbaAE83O3FXOBwC+mah1xk0pzPbUXdPb/Ql//r+PHGofV/sz+uU17U03HGRv2Q7PriIIJTJxtLq2JU9gFHMBhkiVUrOVq7Y6SKuQUOi3aMWChbrdUIK1/KGbHRSU9LCQwdNEN6bS/d9lzT5fQLE5we2NQz0lMzySRFYM0ElULw6jBL6NtdvblK4RVwItt5ggw3PrCwefSpxWwSNTKkAqyPtZpZBElSqnjj/s1AXkzH09TIkryrg3xuwSIN1+ikLcvBHszFeAn+64rN6zHerCdC0bL5NLJeHqe1ujchOP0Kwldk/BljncYv2TnfpJcug/fuGikiBLit0r5s/pSQ+DfjyQ
+X-Stat-Signature: 1exfgf3tg69umka69x5b3kxnrcs9fj9n
 X-Rspam-User: 
-X-Stat-Signature: rxuy9bz8cw59dqcg9g9qc5kzrxunyse4
-X-HE-Tag: 1782372189-673959
-X-HE-Meta: U2FsdGVkX1+WJeXZLMmaxcDWedyxhCKGOjYhyg4YIxXZQTwhga+XbMTrZkdUG0Q6G10ZBqlPbSe9IBAFyQeWqG2Fdrm4NQs65dC8I97d1BGp8ZHZFcb7xI3V2zCiKuS9YE3/yA4UzWJIyE9PgZndBJgmWXPkRvwQCEWGB55tt8GNcLeoXiVF+eajW8VFR8l0Ibvrq/xE61WQSllc/eT3P7A1gqRGDgy4En/zYJpWXS+p7Sc0UF8aK68qRyIkPVoBYASNuxIEVERgg5huoRBynjEVkmLSzWCdUwmTTUO0OAgx7YB6Ja0avUCLpaSXdIUzBJ5OYrUzhfoIDLPhCpkHdLcAm70s7bcgr/lBotOomIMD5mqcD5wodBh1uploGOayeGkr75FTKkdCJsEbunqTP9mTwyEmIeeISPCFZfArNVs06/Emh2huNbawNv1zEnwqmVkvU1k6T6aSp1alVkWNT3Wu7H0Q5hzy0+NVwypyJnUmy5C5ZrljuSdmh6Swx4bJ9IY6dnSblWmQFB7U94Rd8Tve3uknyOfsYVxF8nmnTdsdKTlCJRMxZWc01o43eUgbImKvXDmpEy4h6sOudprXvtaVrmlmyK7aQ5mM4oAKLTnFxtGp3+Lqcq4IpRpLMNNb5/yPs5VxZCwPTOqjLwmKsWoOihoU6PDlttNdHgvARmlKfPaW3s+h2fKpGozsf/OP8hraGf6kpRmfqkN6wu6Yq4fWouxldd6v0zDfeZlcdeQ0yWKlitqXfTpoz3rzAXcQ8AYoAsbdGEJkn4VejW9PcWZPmXjpHKRY/Tpsg5WH9cIZvzJjtMbxGBE3pk1jVx8tMKF/lDcIeoDNopaIJruduRFbIS4b4/cs0qWvDRpXMFiIlIbA5UqFgiru/CluwEfPP7U1+zBlfMo2gNhaNDfIL6HrQFM0BkwBnik5HG77JlUy4zqOnmTRqyFzqQQnAozKDfALTPUH6fJmzup8ujY
- p6lc909Q
- WhvwwRIg7I/LrVZHhkP5u0hvkQqjew9IETewVIyqWT9SyAn439Dt6GSDaSkAlKDISM5GVox+ZrChF6vwrQk6Jdn2ealH9hLHyZjnD4qNuBdu3kLIReSFxAftEP3We3YpGuRJ1
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 705BF40007
+X-HE-Tag: 1782372381-349562
+X-HE-Meta: U2FsdGVkX1+3NbOh8u+J2/lu4FEJN1tmLWgJP6bzxITJ2mSN3AMQWrfxoUm5WZvmNBVVsI2RNzXWcq4UBwuRjkZ7ud3Wj1JiMVlhIqRSaW1v+lyFFNtA/m9KeirrhESI7zlyuIfB0noawYp06Kyq+/ItxS2aD6HhjJ+pkzB7fTaoLw97EPxnQskResTNDDzx8EQxTY8oqsjKOREBF42/cLcL3Gp97maU0OMDnBbQdGtstC23QgZHmh+pCp29UxL7rWbKXFVlcgRN3+2FdYhlaJbCTLDsGhGfFau4kcLWOrK6yxrfEgGroM8+hAE1xMf4Ix6M2xA9kKuvP46eVkB6m80lVPt4GGJ512h8rIOGcO615GxOpuWFcareycBBxzuLae5dk0GCvW+/yk736GLo6yrFnTQoAyseas17t5seRUsIfgznRnXmwZnTYZ2dmMxGE48+K9YQ0ji2xDrt1eW3TvxRdBKZQ1jTZYwLlocTm2TYUtMOc6xiKFNKQRTNQCkis/6k63IPPZN7V1tJzn/mtx5ReZ/0ESR2542kG569w+S1146HhHx71bOK/NzTrnnSa8w3HH2SiXZqK+JtdRWo8I+cqsbdJ524VjFOUE1p89U/S/bZ9rbosi8M/SkkhrH+l34+yajYwjN3hblaP1XfGbzrRDjFOkL6w9a+omQOgowVx4gEawKqIZwc2l3ipMxy7KwvOc8Y/KbtN/BR8ySVVlYewMQ9060XQEK/RJAVs64iEl77ZWWSBp2fv87eOPCz4dRv5j23pbKWUdbxaUTFcg4Js4aNx0Cjmfra7OO2l2PQ8o7uZQRE2OaldVJnMXSo29CWvzBNQK7S6TE5bJtM0Wlu7VwbaVtD60F4o3Jov0BBY5hbc21GcnsVvlHibsaWrcrcvWvBtHKaxsNlShGN/JvHlvEtJ7lAeb0xG49OMFNK45CMedjj5yqM3yOqx2x6rgeHxwevuWNexsk04z7
+ dQ/iZuEi
+ KV1EzCSTz5PTnmJ8MFKeqgWFp6PqnyDI4ubY5cWVnyTo+ukGwuoFz9q6jNw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,10 +86,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Kairui,
+Hi David,
 
-On 6/24/26 12:30, Kairui Song wrote:
-> On Wed, Jun 24, 2026 at 3:59 PM Alexandre Ghiti <alex@ghiti.fr> wrote:
+On 6/24/26 16:58, David Hildenbrand (Arm) wrote:
+> On 6/24/26 09:55, Alexandre Ghiti wrote:
 >> Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous
 >> device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readahead.
 >>
@@ -127,78 +127,27 @@ On 6/24/26 12:30, Kairui Song wrote:
 >>
 >> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 >> ---
->>
->> - This bypass originally comes from Usama's series that implements
->>    large folio zswapin: while working on improving this series, I noticed
->>    the gains I got only came from the bypass of readahead.
->>
->>   include/linux/zswap.h |  6 ++++++
->>   mm/memory.c           |  5 +++--
->>   mm/zswap.c            | 11 +++++++++++
->>   3 files changed, 20 insertions(+), 2 deletions(-)
->>
->> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
->> index 30c193a1207e..b6f0e6198b6f 100644
->> --- a/include/linux/zswap.h
->> +++ b/include/linux/zswap.h
->> @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
->>   void zswap_folio_swapin(struct folio *folio);
->>   bool zswap_is_enabled(void);
->>   bool zswap_never_enabled(void);
->> +bool zswap_present_test(swp_entry_t swp);
->>   #else
->>
->>   struct zswap_lruvec_state {};
->> @@ -69,6 +70,11 @@ static inline bool zswap_never_enabled(void)
->>          return true;
->>   }
->>
->> +static inline bool zswap_present_test(swp_entry_t swp)
->> +{
->> +       return false;
->> +}
->> +
->>   #endif
->>
+> [...]
+>
 >>   #endif /* _LINUX_ZSWAP_H */
 >> diff --git a/mm/memory.c b/mm/memory.c
 >> index ff338c2abe92..5aa1ea9eb48a 100644
 >> --- a/mm/memory.c
 >> +++ b/mm/memory.c
 >> @@ -4827,8 +4827,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->>          if (folio)
->>                  swap_update_readahead(folio, vma, vmf->address);
->>          if (!folio) {
->> -               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
->> -               if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
->> +               /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
->> +               if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
->> +                   zswap_present_test(entry))
-> Hi Alexandre
+>>   	if (folio)
+>>   		swap_update_readahead(folio, vma, vmf->address);
+>>   	if (!folio) {
+>> -		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices */
+>> -		if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
+>> +		/* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO devices and zswap */
+>> +		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) ||
+>> +		    zswap_present_test(entry))
+> This should really be abstracted into a reasonably-named helper that can live in
+> swap code.
 >
-> Thanks for the test and patch, very interesting idea.
->
->> diff --git a/mm/zswap.c b/mm/zswap.c
->> index 761cd699e0a3..5b85b4d17647 100644
->> --- a/mm/zswap.c
->> +++ b/mm/zswap.c
->> @@ -234,6 +234,17 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
->>                  >> ZSWAP_ADDRESS_SPACE_SHIFT];
->>   }
->>
->> +/**
->> + * zswap_present_test - check if a swap entry is currently backed by zswap
->> + * @swp: the swap entry to test
->> + *
->> + * Return: true if @swp has a zswap entry, false otherwise.
->> + */
->> +bool zswap_present_test(swp_entry_t swp)
->> +{
->> +       return xa_load(swap_zswap_tree(swp), swp_offset(swp));
-> Better check zswap_never_enabled first to avoid a xa_load if not needed.
 
-
-You're right, I'll add that in the v2.
+Makes sense, I'll come up with something.
 
 Thanks,
 
