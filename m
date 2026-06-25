@@ -4,114 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E072CCDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:15:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22741CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 978336B009B; Thu, 25 Jun 2026 03:15:47 -0400 (EDT)
+	id 1B7816B00D3; Thu, 25 Jun 2026 03:19:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 928EB6B009D; Thu, 25 Jun 2026 03:15:47 -0400 (EDT)
+	id 167876B00D4; Thu, 25 Jun 2026 03:19:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 864C76B00A1; Thu, 25 Jun 2026 03:15:47 -0400 (EDT)
+	id 0563F6B00D5; Thu, 25 Jun 2026 03:19:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 56C706B009B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:15:47 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C94EA405F2
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:15:46 +0000 (UTC)
-X-FDA: 84917575092.20.85FD888
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9459980006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:15:43 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vbbvcBmb;
-	spf=pass (imf30.hostedemail.com: domain of fuad.tabba@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id CB7516B00D3
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:19:03 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5A0201A04FC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:19:03 +0000 (UTC)
+X-FDA: 84917583366.30.0C82C42
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 616FE100004
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:19:01 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PqO7Ml3w;
+	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782371743;
-	b=wio2pueUx7dCfFJLjkvrURT04HfyQriiIxIHdU+avf/jpLBt6uwekcLpcR1sI8xeNuZce0
-	joA1p3iealknDaDEXjVTciGs1CMKPqI3e6BjyFKdCjq9ZcBKYzSOrqDof0L3NyKzaLck7D
-	Nd0UD+eq8WxrEPVkPOIN6ZtIYlpf5Ek=
+	t=1782371941;
+	b=EVdfQEZ0ubXiV6zjRmh/2UqDJPudl9ll/xnfLXYLWOLla8RYn90BLwR+DYiI1YXrur0mX3
+	Bji3DDAv6E35JbrSw9Cd7V1TVN4BNxntL/CSFL8H166LwNsCUCZxyK2I2gzai2z2FQQ8B8
+	ppNX+AD4k0rT02zWpkFx65L3/j3kqK4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782371743;
+	s=arc-20220608; t=1782371941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n4l8kEDpwe6ZsvCFof1KiGbqck2t2+CoEwvUDbK1yNQ=;
-	b=BnIrFm5kc+pORy0DV0iDY1+bojBrYRcfv65cse6FYHtOLQg+MXDTtkST3Egh1UECWkNcou
-	xT/sH14ZD9LW7Y9C2aDRRyIvo0zbp7m7UDRKUMdIjgOuJxtfaoV8lKMYGFSJ3bbyrZXkhE
-	cZNyb6uD4jPh4oSVJyw+J6KadfiJfEs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DtqYjf8o+h1s++eJw/fsOV0DeEGdtcrbKOFqYGZRieA=;
+	b=JHJMK/uuBiMBcKMmU4q3v+c7DgQCQwT3gNH63vnAADT1sGe+/4TTcotdqsZxEiu9p4YtVv
+	SUCqT5eCXyVWPi+mSqPpXWW33adYkDVXPAw4r81rwQkkkYdOmxfZoHshKjbpO1BNjnm0Yy
+	UJ0ASpl4T841t/PwnTiRpXuAVRB7vw8=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vbbvcBmb;
-	spf=pass (imf30.hostedemail.com: domain of fuad.tabba@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=fuad.tabba@linux.dev;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PqO7Ml3w;
+	spf=pass (imf05.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Forwarded-Encrypted: i=1; AFNElJ9axRkuCI0HcQv4T4M7p3E1v7iqJlRqazXulX/v0hXqwRirdrxCBK+cYFAnECR5o3cimvsEF7xs3Q==@kvack.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782371741;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n4l8kEDpwe6ZsvCFof1KiGbqck2t2+CoEwvUDbK1yNQ=;
-	b=vbbvcBmbwOIFFos+R0RUat0YTqIxermF8vH32FHejyiKXEut6l0lGXFx2z28dwC2i39xLR
-	aqWUNTZ9CQB4cbWec4kXNRQNVCATWKxgw6k2gRuDvQX+xc8CSTxdt6YgoLbSPTQ/1UHubQ
-	WJ6ohHN4d2EjIqxeP7HEPV29BA79flY=
-X-Gm-Message-State: AOJu0Yzzc2jgwF+Fjfy/F3b7rniSeaID2rm+r0vFY7zZPVj/odL8KM0+
-	3PdA5hIi8fYUUKH6TWp+6PPcHr/492iB7Q03Wh04BGcca9+Z0IXMIErX6BbOU0o7UFBrmgidmeg
-	sPZBvgQ0cyXm5tPh6A3CWaw1mct3vAc/KcUprTdKO
-X-Received: by 2002:a05:622a:1f96:b0:516:cc18:4760 with SMTP id
- d75a77b69052e-51a709958aamr5225201cf.21.1782371725540; Thu, 25 Jun 2026
- 00:15:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-37-9d2959357853@google.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Fuad Tabba <fuad.tabba@linux.dev>
-Date: Thu, 25 Jun 2026 08:14:48 +0100
-X-Gmail-Original-Message-ID: <CA+EHjTxZQf9w+iT11O3+KC-z6Sbg5qCEZ-XCR3=wRnG2k3=Maw@mail.gmail.com>
-X-Gm-Features: AVVi8Cfiom8KyzZV2HmAlpy9PB5CRyn77LPV2Q5_VbhfHk5a3YCLzvyw4gtaMNM
-Message-ID: <CA+EHjTxZQf9w+iT11O3+KC-z6Sbg5qCEZ-XCR3=wRnG2k3=Maw@mail.gmail.com>
-Subject: Re: [PATCH v8 37/46] KVM: selftests: Test that shared/private status
- is consistent across processes
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782371940;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=DtqYjf8o+h1s++eJw/fsOV0DeEGdtcrbKOFqYGZRieA=;
+	b=PqO7Ml3wa+JfLzJlv1ArftxG904CUk8YpV39I/r32sfJPKf8Dh5TmPp4LIGyjUkNT4HLER
+	koF9sKb7na0DZIsLR919G6MgcnoYfz3sQ5G9usEglaOj1Zg6fqSeL6/Wmti0IpRdk2eBFE
+	SXlSyPzwWGsAyMLGryujVQ0+JwwGtSw=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v5] mm: assert exclusive nid/zonenum bits at the page/folio access sites
+Date: Thu, 25 Jun 2026 15:18:30 +0800
+Message-ID: <20260625071830.996043-1-hui.zhu@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: tpqf36q5b6qe19qnhj6gmac96h51oxk4
+X-Stat-Signature: ronaphiy3yn6u9uox5zmgk15rp71d1hr
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9459980006
-X-HE-Tag: 1782371743-955419
-X-HE-Meta: U2FsdGVkX1+hQv+FPdKVp7OAZge9qjGtyNUZ+d3GYU3yqfgQCBvPJcAnxG2ZM09KsPFwlXPPhqIYeMbzaIcV6+/Rzk6T3CHvL550pj8tA8CwCJoHWrbPoyXPNSerZ9mnrQIcFZQ1PFkL35N+tlAZUFJYvZLYFbSwVPi1c9QWBhURIi2r5P5u7mu7k+PHMsUoWYEXGrCxcua5vsV+MxoXK3g5jLn0yz/lZkriP3FxyZzRrrMWtqyWltqAEIYjAuxpJmwhjRHW4q3pwVGFSb7gubp2njV8O6cfbbZt+gRZaTD6CGjE/V3otQiYs49pxoATq/OY9pgf6Kq6HNH/hLNNzX7qvv0Og14uePtQVb3m5r0p4sjrqUVWATWKYYzYg0BjKdMN3hPwe+4QLf3wA3KFiMQTItv8XA5kzR8yuTnm8kmWj68JljFaUnxZewvS3VBd4v3BpIs1uO/AEYj7y40DykkNQ6Z2/wTO4yC+rnsp43ojiF7tQZG0lbAiXQ8gweBFctKo9yIhGN71Jtk4Fcq6rW7THTZK6X3f4IRG+k5Y5/jx/Y8bHIhELqVDf+QMYUihm5elfvrJq6L+SOUq2SWXu1aCS25hLROtTshrC3zguwZFC8qVPZszI0hO46GoYYsAROuOOoxMxRQ92bzoOO+tQoL7K3XQDkSIsVtupcWLFZBYY/5BYAAiqITbonfEAEkShWtIZS8GsxkgcwoDZJPqg9B08LZAyLR1gbL34DEZIqqS14gqMPrC5umu/+p6SVCowQvcNdKZaYNI2iTfFTJO9QZ+CYNNbHqfXr8TJAJxK6gaoG8jKRfvrMQ8SefqC1v3gB1wN97U/uJ6shFEPM5uGP4eZk4KxHjKO2gaFg3TstfqgsfNdLrs+rKIpOiAJvQsC1mXpUqB3oYcoexi5imXx8/0cn575ZBtOw8pc4w99RNYEDlDYmsiqVmhvkG0dqU4a5Y5EFzRkms/L+DDxl7
- qFHeY4Q/
- 7aHdDln6hOHtVLjAlKcR3ElVrvnDqtHsoctyzOsHU6HiMK9izIvpozYap6E4UBVINPc4FVA0Iyl4CbhTYenSrVkC/zhOgFhcjf67mgdFPRIvaeT4riT4/UvpCUB1vS7yibrKEZjiVhzOqGqKTQNaEqXvFyfLvA0qv2ypLB7cb6xkOZ1dvtZJTFR6bMGrdFxbHiEnNMZAgThk9vCQLReRkXGDvmA==
+X-Rspamd-Queue-Id: 616FE100004
+X-HE-Tag: 1782371941-387612
+X-HE-Meta: U2FsdGVkX18SCArNR0LBgQy8+oFBtQd7z/VwF7GUN3aNXrxaw5XUx7OrrzP3etOXaVB38zpJa9KxNbicSr5iwltGbnylYcQ8aqGwwqQOc4p0oyzjI9yPg6Y4QZ0BeI0C3moU8FRDpKP0XhVV4Rodh1HFvIBjbyqmYqFJctoUia6oHCXoGahyUJL4DuWLl67cqsVRggK4xMS+c2LR08xGflB7caVO9hWdRJpJxaBoEWhtqpyBjiBKJ/FF/tFez3K8v/vz5LUVxIH+7eRlJ0y1vjB43MG/aV6Q6mccSi54r8PIIQhUHT1B4lKZ6gX+OjZbXbHK8HcZJsbKcOAPLJMVgPekDlZkZIl4ePdZLKXOXvyY7hWRcE8cnW3Yr1cpJdcRP8ry1BJQsW7IgeX4uAA7lbmxaENz3EmVu57OvXvkNNS32k1xeI4vXsxeelX3iwxbRvOTRkpvmgQ8Ezb3m1Lmv9B867WyfHvlwkaJYcfAg7gKvvHp3wLW641I7WG9SKafRpK0VUfTjgiAAnXQCaCXFgttWSl2OztwCSdmAU9nd0Uc+jUoJXzi5uzs00BGJnawkofS0Q3H/XTcbLnsCsiiSAEsupbeQzdrLio3gMG0eWRUSnmHcxqP5QGly7aZ8tYn2pomwYVNe24ShHqxJqGZsdxiWO7TB3EL62fnXbDG2mNr6VX3pnpTFiaN1PV9Zv/5CiFG61pwxJU5JMSl4rkDcxmtL/JWSAI07HSFIbj3/3uTihccEFXxGNjdoiOiTMtx51zPF+x1AxHcKPEcf+n+LAd5p9knMfKO6tdnXEWWUEKUa7AkAqAqDEYjixiOA+45MctTnR6QQOhU2iD/h930XhVwqCAXFXZI5XkwBcgdEIiHZqvIMZ2IiJMo6LlBzSYff2bzJwsutRPbMzGjx0wHb4yomSMhB4LP10ybOcuMJ58/Y3hzOJ2Xn1NIdhq7eiD2mA4NQ0WLn0OSi049P37
+ 5UxyvwDx
+ glIAyZUmQ5mYTjY0DGzlcRHsDFa5T46t7LCBz/qLDZ2ZF2TIaRmTNw4J2B4GRdUKpsvmpHFrpWiBUQgkxYkwV9hVCUsIbGSD9IufdTXFZV7FENEaFyHYGvcHecDqywPG2TLLjWZLCyBXnuMwt3x9QBZYPMQ5jJelgX96hiybFU7Li8LLjIH9lUvlM8FazR9/OlYClYeow24RVyET0uNjcIEl3zaiaxOZyW653cJB5Als46qhjs0VJvLRj6BM/73cNVrKYurDMOT+TGlY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,187 +98,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Sean Christopherson <seanjc@google.com>
->
-> Add a test to verify that a guest_memfd's shared/private status is
-> consistent across processes, and that any shared pages previously mapped in
-> any process are unmapped from all processes.
->
-> The test forks a child process after creating the shared guest_memfd
-> region so that the second process exists alongside the main process for the
-> entire test.
->
-> The processes then take turns to access memory to check that the
-> shared/private status is consistent across processes.
->
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Two things below, otherwise:
+KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
+page->flags and folio_trylock()/folio_lock() concurrently doing
+test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+  BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
 
-Cheers,
-/fuad
+The node id and zone id occupy fixed bit-ranges of page->flags that
+are set once at page init and never modified afterwards, so they can
+never overlap with the low PG_locked/PG_waiters bits touched by the
+folio lock path.
 
+ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
+checks a by-value copy of the flags word, not the actual shared
+page->flags/folio->flags being modified concurrently, so it doesn't
+reliably assert anything about the real race. Move the assertion to
+page_to_nid(), folio_nid(), page_zonenum() and folio_zonenum(), where
+flags is dereferenced directly from the page/folio.
 
->  .../kvm/x86/guest_memfd_conversions_test.c         | 118 +++++++++++++++++++++
->  1 file changed, 118 insertions(+)
->
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index f03af2c46426f..99b0023609670 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> @@ -2,6 +2,8 @@
->  /*
->   * Copyright (c) 2024, Google LLC.
->   */
-> +#include <pthread.h>
-> +#include <time.h>
->  #include <sys/mman.h>
->  #include <unistd.h>
+On CONFIG_NUMA=n, NODES_MASK is 0 and the old memdesc_nid() body
+folded to a constant, so page->flags/folio->flags was never actually
+read. ASSERT_EXCLUSIVE_BITS() is a real runtime check that can't be
+folded away, so doing it unconditionally would add a pointless read
+of page->flags/folio->flags and a check that can never fire. Keep
+page_to_nid()/folio_nid() as plain "return 0" static inline stubs
+under CONFIG_NUMA=n instead.
 
-nit: include order
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Changelog:
+v5:
+According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
+calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
+ZONES_WIDTH != 0 (for zonenum).
+According to the comments of David, avoid calling
+PF_POISONED_CHECK(page) twice in page_to_nid().
+According to the warning of lkp, switch the CONFIG_NUMA=n
+page_to_nid()/folio_nid() stubs from macros to static inline functions.
+v4:
+According to the comments of Andrew and Sashiko, set
+page_to_nid()/folio_nid() as static inline stubs returning 0
+under CONFIG_NUMA=n.
+v3:
+According to the comments of Andrew and Sashiko, move
+ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
+into the page/folio call sites.
+v2:
+According to the comments of David, remove useless comments and use
+ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
+page_to_nid().
 
->
-> @@ -323,6 +325,122 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
->         test_private(t, 0, 0, 'A');
->  }
->
-> +/* Test that shared/private memory protections work and are seen from any process. */
-> +GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
-> +{
-> +       enum test_state {
-> +               STATE_INIT,
-> +               STATE_CHECK_SHARED,
-> +               STATE_DONE_CHECKING_SHARED,
-> +               STATE_CHECK_PRIVATE,
-> +               STATE_DONE_CHECKING_PRIVATE,
-> +       };
-> +
-> +       struct sync_state {
-> +               pthread_mutex_t mutex;
-> +               pthread_cond_t cond;
-> +               enum test_state step;
-> +       } *sync;
-> +
-> +       pthread_mutexattr_t mattr;
-> +       pthread_condattr_t cattr;
-> +       pid_t child_pid, parent_pid;
-> +       int status;
-> +
-> +       sync = kvm_mmap(sizeof(*sync), PROT_READ | PROT_WRITE,
-> +                       MAP_SHARED | MAP_ANONYMOUS, -1);
-> +
-> +       pthread_mutexattr_init(&mattr);
-> +       pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
-> +       pthread_mutex_init(&sync->mutex, &mattr);
-> +       pthread_mutexattr_destroy(&mattr);
-> +
-> +       pthread_condattr_init(&cattr);
-> +       pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
-> +       pthread_cond_init(&sync->cond, &cattr);
-> +       pthread_condattr_destroy(&cattr);
-> +
-> +       sync->step = STATE_INIT;
-> +
-> +#define TEST_STATE_AWAIT(__state)                                              \
-> +       do {                                                                    \
-> +               pthread_mutex_lock(&sync->mutex);                               \
-> +               while (sync->step != (__state)) {                               \
-> +                       struct timespec ts, stop;                               \
-> +                       int ret;                                                \
-> +                                                                               \
-> +                       clock_gettime(CLOCK_REALTIME, &ts);                     \
-> +                       stop = timespec_add_ns(ts, 100 * 1000000UL);            \
-> +                                                                               \
-> +                       ret = pthread_cond_timedwait(&sync->cond, &sync->mutex, &stop); \
-> +                       if (ret == ETIMEDOUT) {                                 \
-> +                               bool alive = (child_pid == 0) ?                 \
-> +                                            (getppid() == parent_pid) :                \
-> +                                            (waitpid(child_pid, NULL, WNOHANG) == 0); \
+ include/linux/mm.h     | 23 ++++++++++++++++++++++-
+ include/linux/mmzone.h |  7 ++++++-
+ 2 files changed, 28 insertions(+), 2 deletions(-)
 
-Not sure it's worth it, but if you want to silence Sashiko, waitid
-with WNOWAIT might be the way to go (not tested, just from looking at
-the man page). This is though very unlikely, mentioning it since
-Sashiko complained.
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..772bd1fc6fe7 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2294,15 +2294,36 @@ static inline int memdesc_nid(memdesc_flags_t mdf)
+ }
+ #endif
+ 
++#ifdef CONFIG_NUMA
+ static inline int page_to_nid(const struct page *page)
+ {
+-	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
++	const struct page *p = PF_POISONED_CHECK(page);
++
++#ifndef NODE_NOT_IN_PAGE_FLAGS
++	ASSERT_EXCLUSIVE_BITS(p->flags, NODES_MASK << NODES_PGSHIFT);
++#endif
++	return memdesc_nid(p->flags);
+ }
+ 
+ static inline int folio_nid(const struct folio *folio)
+ {
++#ifndef NODE_NOT_IN_PAGE_FLAGS
++	ASSERT_EXCLUSIVE_BITS(folio->flags,
++			      NODES_MASK << NODES_PGSHIFT);
++#endif
+ 	return memdesc_nid(folio->flags);
+ }
++#else
++static inline int page_to_nid(const struct page *page)
++{
++	return 0;
++}
++
++static inline int folio_nid(const struct folio *folio)
++{
++	return 0;
++}
++#endif
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+ /* page access time bits needs to hold at least 4 seconds */
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ca2712187147..1b4336098113 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1274,17 +1274,22 @@ static inline bool zone_is_empty(const struct zone *zone)
+ 
+ static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
+ {
+-	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
+ 	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
+ }
+ 
+ static inline enum zone_type page_zonenum(const struct page *page)
+ {
++#if ZONES_WIDTH != 0
++	ASSERT_EXCLUSIVE_BITS(page->flags, ZONES_MASK << ZONES_PGSHIFT);
++#endif
+ 	return memdesc_zonenum(page->flags);
+ }
+ 
+ static inline enum zone_type folio_zonenum(const struct folio *folio)
+ {
++#if ZONES_WIDTH != 0
++	ASSERT_EXCLUSIVE_BITS(folio->flags, ZONES_MASK << ZONES_PGSHIFT);
++#endif
+ 	return memdesc_zonenum(folio->flags);
+ }
+ 
+-- 
+2.43.0
 
-
-> +                               TEST_ASSERT(alive, "Other process exited prematurely"); \
-> +                       } else {                                                \
-> +                               TEST_ASSERT(!ret, "pthread_cond_timedwait failed"); \
-> +                       }                                                       \
-> +               }                                                               \
-> +               pthread_mutex_unlock(&sync->mutex);                             \
-> +       } while (0)
-> +
-> +#define TEST_STATE_SET(__state)                                                        \
-> +       do {                                                                    \
-> +               pthread_mutex_lock(&sync->mutex);                               \
-> +               sync->step = (__state);                                         \
-> +               pthread_cond_broadcast(&sync->cond);                            \
-> +               pthread_mutex_unlock(&sync->mutex);                             \
-> +       } while (0)
-> +
-> +       parent_pid = getpid();
-> +       child_pid = fork();
-> +       TEST_ASSERT(child_pid != -1, "fork failed");
-> +
-> +       if (child_pid == 0) {
-> +               const char inconsequential = 0xdd;
-> +
-> +               TEST_STATE_AWAIT(STATE_CHECK_SHARED);
-> +
-> +               /*
-> +                * This maps the pages into the child process as well, and tests
-> +                * that the conversion process will unmap the guest_memfd memory
-> +                * from all processes.
-> +                */
-> +               host_do_rmw(t->mem, 0, 0xB, 0xC);
-> +
-> +               TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
-> +               TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
-> +
-> +               TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
-> +               TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
-> +
-> +               TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
-> +               exit(0);
-> +       }
-> +
-> +       test_shared(t, 0, 0, 0xA, 0xB);
-> +
-> +       TEST_STATE_SET(STATE_CHECK_SHARED);
-> +       TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
-> +
-> +       test_convert_to_private(t, 0, 0xC, 0xD);
-> +
-> +       TEST_STATE_SET(STATE_CHECK_PRIVATE);
-> +       TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
-> +
-> +       TEST_ASSERT_EQ(waitpid(child_pid, &status, 0), child_pid);
-> +       TEST_ASSERT(WIFEXITED(status) && WEXITSTATUS(status) == 0,
-> +                   "Child exited with unexpected status");
-> +
-> +       pthread_mutex_destroy(&sync->mutex);
-> +       pthread_cond_destroy(&sync->cond);
-> +       kvm_munmap(sync, sizeof(*sync));
-> +
-> +#undef TEST_STATE_SET
-> +#undef TEST_STATE_AWAIT
-> +}
-> +
->  int main(int argc, char *argv[])
->  {
->         TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
 
