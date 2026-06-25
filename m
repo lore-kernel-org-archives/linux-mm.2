@@ -4,127 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52260CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AF8CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40DF06B00A7; Thu, 25 Jun 2026 10:36:34 -0400 (EDT)
+	id A80A66B00A8; Thu, 25 Jun 2026 10:41:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E6206B00AB; Thu, 25 Jun 2026 10:36:34 -0400 (EDT)
+	id A321B6B00A9; Thu, 25 Jun 2026 10:41:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FC806B00AC; Thu, 25 Jun 2026 10:36:34 -0400 (EDT)
+	id 8FAA66B00AA; Thu, 25 Jun 2026 10:41:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EB91A6B00A7
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:36:33 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6F2CBC029C
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:36:33 +0000 (UTC)
-X-FDA: 84918685866.20.7E31A92
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B0A084000A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:36:31 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vTFzNn4K;
-	spf=pass (imf12.hostedemail.com: domain of 37Tw9agYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=37Tw9agYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5FC176B00A8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:41:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D53B81A015D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:41:28 +0000 (UTC)
+X-FDA: 84918698256.18.67657A2
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E228AC0009
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:41:26 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T/e2pJoz";
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782398191;
-	b=Ks8ffIOeeQtIt+ZrtOispGY0/SJU1r1E9+zuV7WYVPNbODcM78R4mQ8pKgCANsQe3PapWP
-	jFTrssxgconSG9kv/WGBeQ2XFYfBv/F+w3goCqq6nPotXloEnE4BKoLDq6ZfG7iCkQnNjm
-	mvhDhdWrVgeYOxhho9k3uTXKYk8be2w=
+	t=1782398486;
+	b=7+Cdpt9EgKE0hLy+e6eTEwe+FPCCkU5JJP5fLFjWzt/BflPnz54w2h4JoXeycXE/xNVOHn
+	YTcjoEkZ77gvh8w0iEt7kEYJbRda6CDTs7xsqwtyOOFGw1mkPkhYehAGIoEzFDdm/TdyWS
+	PoESREEbXObuo98MrdDjZV7ONyj0Ivk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782398191;
+	s=arc-20220608; t=1782398486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yIUA7CCwzOR/KQalR5wXJaS4YlQ6wVTBXf5qStDGhQA=;
-	b=fUqobYU+wiWjcjkMpNGvpNYrprau/bzS2WdJ2Mbq0+XrtZXDr7S3OwMvOZafxwq6/V7iWM
-	ApZpmD7RkNucFl0DpXQ/JXqvUtD+IN7roRodskbjOxo34qI1nc3lA0FWM9kkjov/OaCEu7
-	aaWw4zkaLikGvnxa7AsDNoZaviuiAQA=
+	bh=slSRypEduuNZ9JgILeAUNdKSkqsw9CkFddos67AsSDk=;
+	b=T7xuOhrD0sJYtQVkcNoV/PWscZOdBWvxiKqn9ffeRRon+15TYficDs0iFiNTefqjX5D4u2
+	iKIQCSzZhI3fycQtywJG8pwySTN+VfKyw+FZ/Qx8iDBAWVBY+mq8pOOQ83ANCYAajNJACC
+	4MSjX3N3EP82BXgK3lguQ9cRaRpuE3Y=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=vTFzNn4K;
-	spf=pass (imf12.hostedemail.com: domain of 37Tw9agYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=37Tw9agYKCLQmYUhdWaiiafY.Wigfchor-ggepUWe.ila@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2c7cfa17fe6so33436355ad.3
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:36:31 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="T/e2pJoz";
+	spf=pass (imf28.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c86307c4e6bso891709a12.0
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:41:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782398190; x=1783002990; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yIUA7CCwzOR/KQalR5wXJaS4YlQ6wVTBXf5qStDGhQA=;
-        b=vTFzNn4Kc2A7Ec8skmoq+Fu0kkO1bvpaP/08oVPPc1bGhKCcsJutuhUmXRrVnsgW0q
-         UrbFNi+BFX+DLYFEAAljH5awX8rm/avacF/ST8Zc3eH1emf1FSD4Nv8yyc1uPzg34AA6
-         lVOTcvpqP0d2t3/VklLt60jxicUc7h/lksP6XwYA7kCm9XITaez8WzTAIymDBq3kDPUs
-         6TSaXYn92wX4pFzQ43qr02Swum7yO8K8rTyi7GYhysGBFTEtYjhLx+bhhhuUfR8dtSrC
-         dIyKzwZbAZ0Tia3o91d9TOjHaA59yl2qaU++LfmgGPZpOl3HmKF1/qRd/DNDngpH/k8T
-         Tjzw==
+        d=gmail.com; s=20251104; t=1782398486; x=1783003286; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=slSRypEduuNZ9JgILeAUNdKSkqsw9CkFddos67AsSDk=;
+        b=T/e2pJozVs7n8zNfTfUsTCJDh2rgErtG4kpBOk45+NDU72dL0Xdy8d20t9hbBQG4CT
+         mtiUFfzZWS8rBfJzmIbcpVxRjba4haPqjxVy7NSPquP01rVwL+eVlxLmyBSMjsoQEoDE
+         NBE3sgkiz/GJjmXNMHSpuQKvLMIAAQdtsm32wReVaEu0tATHy4zI3ZMFxdkL8NYT3Hqg
+         WxI2ux0Bya9K3VOfb5D3cCHWUv5zwO1o4jdwLLAsVRbD7K+mP/o4iyT/Vs0i9RtrwnEu
+         wZcFWMBOulxFsul41ozAh7VbZrINFLLf3pf5EhTzWNqSGcFvOeQy212T1PMHOFDOPo6Y
+         x3OQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782398190; x=1783002990;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yIUA7CCwzOR/KQalR5wXJaS4YlQ6wVTBXf5qStDGhQA=;
-        b=PF+RiCzx8qVcN1ZB0JY7BfP/a1mn7TZv8nKKmgMiZS4zlk5I70x2no+lwobRSI3nJD
-         ZHRmI0b4xLO/SFGwiykeMVefRwf17/xk9xzpwO0vDBuoRPpA2rbUZ3+tfd5FOqdgr0wT
-         z84zxdA7wR4KJGnTkVP9KpUbixah9A1Ktj0YCyxzC6KILHjd2LLOtiNItrgUNhXiVSgd
-         CPFXcVzr/RgilYzUHjrYeZiKdDNdD2bdiFbYTFYHSDYtxr3NoucJStHwT3CL5JVlJWkD
-         BaSOdelcJ3c0EcQt0lyRZCucUA4jXxcyV5TpEOGAx87GZCsf1COYPx6MJ217sImGghF/
-         b3vg==
-X-Forwarded-Encrypted: i=1; AHgh+RrOWPZzWLMbLZpP+Z7n9M8VoLo/BLqCu+bpmZAzfE9Q497RcfRI9GtTF3NMKuqXOW3afAEAnw7VdA==@kvack.org
-X-Gm-Message-State: AOJu0YxgtnUuXdAGuz0aIGhbh8mYvHrrXjh24vYtawYm3Tp9idOZ9vK6
-	Jg7zjXB4OXX2gYo/pzsp7OkmfmqrQgtY2gY66JwS4H87TFh1nOKR23DRjjTw+PGfR3WaeXvdelN
-	L6gMlkg==
-X-Received: from plpb15.prod.google.com ([2002:a17:902:d60f:b0:2bd:a0e6:1a81])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2304:b0:2c0:d91d:c3e8
- with SMTP id d9443c01a7336-2c7fc65423emr29366505ad.4.1782398189481; Thu, 25
- Jun 2026 07:36:29 -0700 (PDT)
-Date: Thu, 25 Jun 2026 07:36:28 -0700
-In-Reply-To: <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
- <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com> <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
- <ajx5Vrz9ma--hrGH@google.com> <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com> <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com>
-Message-ID: <aj087H1UWSFxbShR@google.com>
-Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the default\
-From: Sean Christopherson <seanjc@google.com>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20251104; t=1782398486; x=1783003286;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=slSRypEduuNZ9JgILeAUNdKSkqsw9CkFddos67AsSDk=;
+        b=WFXtLDdTaZVzobe2Q8SOD+n0LDMXQzBRwwxnEcteyrAUFwhLXmMCbD7wN851ruXZXg
+         FG+1U1Im6FDDYdimThRk3tyinp3Zicx2PG65zVHctejp+Haco5WpL38C9L3xdtOoAwiV
+         i02cTM14rLdqtQbsiMW/3iPqDgpyQXspAHUSqfqSZ8F++c7RK8o++ZNya1umBM88Ee9a
+         vDGnipsK0CMqXTxPKJOL4Zyne6lmgZz9fLFNhXRx9uGCb5dy40Sm4dz3P3UcnO0tqbHK
+         gwAur2DTmB9GJhEbLJ3dCZ1mT/QCFrWipAl9x9t+4y7DZzc+rx/kDfe8MAi0UpAvw/Ml
+         UBTw==
+X-Forwarded-Encrypted: i=1; AFNElJ8uDL2jzrrhAYQ/ueE5L5E399yOimwL0arTVWfoKrBSgWMmLNgQnxJ7SnK909H6HLdQK24A65HFrA==@kvack.org
+X-Gm-Message-State: AOJu0YyOLcW5DB502IdCyozUHPBt2wcMtH+xCFciEKh9UoBk+/Xe6QOv
+	eYd7Ky7yf04xHXfM6zNGfhlUPp+Bv+44IMs6rl5PvAkEzc7BujZGP14s
+X-Gm-Gg: AfdE7cnCSJnyqRNewRCZD56oZsTKhGlatZGjJPQNKNFJ/LtCuHI+BYVJ9K4mho1UNl6
+	ZOlS/S7mTACR7DQ+IJWGeDbQfsRPk0XVCCTFItExEfsaqs0UNXTB82HpdyQf5JQt7lzCDQ2niYe
+	eAjA7p5JT8bw7JIzcSqE3y23pIWkUqtO5HxsWHnr6IJV6EnzKh2Yd4dES9+xrSNBV1q3xKEdRJ9
+	SdumWgPscHEeqah/fhWTulNnGLroYfaOQHhr/zLIfRrusubFnPxMEoWehmCtcNTZ3jyYxqmFn0R
+	KVTm8qEFRjTzuNZRNtGQiEk37cjIFmz7BaljTk8DtQ3jns5zyyu3K95D+zJgExfp6ghnz0HO4In
+	x9CpmB0JfhP4wAo+pphVmFMcNqeSjC71KOQQHv0UxO6kM9q8Nssiz02FEenIhH6+1c+gGMc7mTz
+	qfMj55+p8+Mgs2dTa47YSA3LXsbAQkJ1xS0VNNMieQSuRt3MHE
+X-Received: by 2002:a05:6a20:728a:b0:3b9:5efb:cb2a with SMTP id adf61e73a8af0-3bd4ac85f3cmr3409358637.3.1782398485438;
+        Thu, 25 Jun 2026 07:41:25 -0700 (PDT)
+Received: from KASONG-MC4 ([115.171.41.167])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92b96ec739sm1834186a12.2.2026.06.25.07.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 07:41:24 -0700 (PDT)
+Date: Thu, 25 Jun 2026 22:40:50 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Barry Song <baohua@kernel.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev, 
+	chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, 
+	rppt@kernel.org, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, 
+	surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org, youngjun.park@lge.com
+Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
+Message-ID: <ajzm3pHq-wQlLNmm@KASONG-MC4>
+References: <20260623231635.43086-1-baohua@kernel.org>
+ <20260623231635.43086-5-baohua@kernel.org>
+ <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
+ <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: buemuihbu3jj3td6o7bz8ii9cpnf9ny5
-X-Rspamd-Queue-Id: B0A084000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782398191-381638
-X-HE-Meta: U2FsdGVkX1/ZdnNoC4nFXhV3VRaIEXLMkEOoMQpvjlPzzLCqs1iTWSraATghChlvBIRrZDw2VQIyJqHDq3BWwHAM7epNR3+Nz/VrCiPFPnhzk9JfUEVS8H1lqGQzofiFx2fLY2ihVjz1DfN/6fFo4Z8x9IunWWo/D7uD+4xJLqSZT4uA0juNdqi3Av0VsLuUYfSrTYnNq9OwnmrveORcJbGUPrXIF3PWCDcu17F17HZgNwalSD+p7sZ6UjlAFAHKJh4+/9BAR84ckMAvIRiZhxZp+4SvI6f3WQpBoy0rMgUTvKgc/5XyGUv5J5N2tvMaS7qdozZTTTny3Lyc3Nx4N1aepxVDd816SLsGnYLN9f+8ulWcOCewuT8gjdNk537ZJ+n295AsDRCpGQZxD+PbbJSWRMhkKEUyPMLAs8f6g1e25JKEhDqk4ujOAWsSjnrRlA/OvuhrOz8d3uFgu3gZMy5sekL034NxCO27uPY8e2gUwbpfNbZ/jJbaudUQxVd1BvksoeYZHxf20wPZS8SX5H52A8w+EFqAKYCbxjCPcrMnynHTm83rVfog0e9e7WtZjjIVfHaAaC4g8iB7zfC3zkeWF1aTy0SdTdwX1IsnokiWaJujUINJi4EPUbAy77N4RdounmPencQo8jFOcV2IY/1wcjhp+S30F+Rel1zVO6muNA/tiZAClP7a6hgDoGDe5e18w8KTrFrW/HKvzv1Pk9SGvSX5G0VsIhKM4r6J2L9GIOZLShlVrhBovBh4veyOKiKx00f/JPvYuo0FcYv88ni5PtSO07d6UVaNWUxh3DxfGVMXQFmZvaxfw8LBdJdrtUTczjSHPi+pjPqJPhKzmyK2ba4pq1/7IwJsbl8MZO8xs9EJZYkSBwjUzk0T+3OSG87hucT8nfgqyjmhMQ5/NLOHbf7gm87d0yhFpMuecuUBz4kBP6rhBC5+ZWVa/PPzTIkhmuLoTdUADGtpB55
- Jkc5fimj
- aw++5hwKjzKdH4vhtisct9n8wAX9C17H9QxEMCvNfdcMqznFDsqEV2XJQrl0PtHhPGa6FYiPe9+WFRSKSyGh9f55ruI17BV93EdLSfXTYLqd6FlNiZLNo3bk3sj6a56Ifmxuk/8xum+50XgvcNKZFSpkPR+XvbEg7htNyY6mnR7Id8vK8MC7XfklU3Nl9dhX3AmxlMuBtXLVDs2ZSobDJMFNZI4Iv6x6JvarIRhbpgA/d5FhJiZl84VrNZXXaWKelPKv2ycFmkGKQ9uejvjsYdsSsWfvGaXMtC1RJW+XJzWdCk7hKlDMldsL4ChLWpRlFS3mfBUZBa3C4c3uFoZDqAOEpra5aF9hWXveYZ/UQF0I+miFW6fKj2NMx1yGoyGDl2XcSgQQhmMvLIr0P3ZhTLeA+twtAd49EyJj/0mE+Zwj01fJmCnm17zrlB1GQE3/vh83DlUnscbHcyosvVRfd5XIffImlKlZUWNhue2uYJN/Xq+qwG7ktcwwNRFung7N2e0RE/ZyfoIMO/n+Cr1nEeNVxB6UU6huW3SeEZCqslvpOjiygdALgiZ7QQGhk3P2IcBqFSk5+kw53OcvjcBBJb/wxGGlLSg0ffCIgzv7CXdCZfcgFHtHNU9N6aJshSo66NTsgvk3prdQMvt25evofKj4H2fQEpifmRIQJ
+X-Stat-Signature: rdthny88mu8eshyu7cz6hr3k3867r7qb
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E228AC0009
+X-HE-Tag: 1782398486-234473
+X-HE-Meta: U2FsdGVkX1/sHwHpQDSnT2mNAbmYdiHIp1ZUpok7oxxzAJ62liPnZ7nT7KCjPgSKmniYzPnU3k5O6j1QGxKZFlbxZl3jFlW6QtIbs9vhXgUwqyvOlX9b1k8wgI0umNW2xJBAOj2s0SOz5c44VasfnvjqdTIMCA8iUrRaeDFxEf3e1rZX7hlYbEU156v1wUxtCtzERsLjpq6zTWvFcRHdqErDb43J/b2YTwQFYgVzrr9+BYxdCCDKbI7yAY74e00srzajvpI8asLrThJwT9l4iFA/WWaDSch1J/MkBNjvM935u/rDxXppT53Bok5FmvazJmw8qihmof1I3fk8EefoEwGLvhx2BkD8W90Gmi+861b8fnihf4sCocE34tQPwWRxaLix3NGKcYw769Z3SiQIgypgQ5OB2R2rwfDdHP+47C0ZgEEAIGDLfEupuu2XmrXngJUXMVenu/Oj/6JdI7sFm1LGpby/z2Kxnko6MTbODwWbO36rCwfXLIfZyJrhuk+KMZ72IkMXaS+SLjorzLLjEM+d3Pe77YxGLu/gJ1D8+p2RabpVIv1UxcSbyzoQw9aTgLdBaY2hoBCYzuolkfKcORD11jH6t4S7TKvczCOW20T6JnhE0jMJhoVNPR+IsTGJ7881zbdv98WGfnEGCn+xvoyYLcdFfyGVBr5z7uL2Z+gV/02bKHAkkkZMT+CF9Lq5uF8oIIReNdDPTfpqYYWVROPlhivd3pTtMaNhcRKdwUlspVJKCVtFqr0mMsp9AvmtS2JbhoRUVgFSct8HBs0ghEMfn9iJphDz3VyhSSa1eH6hE5ekm2WtK0cmQVwn+lCOMb0q87uSMyaJfGBTU6RAr0T3SSe/8SGydild1cy6E1So7lA1lXPHH6VhV9gRUhSkIKn1EDecgNoBOUyMkik9pKdW54TSY99Yu+/RYfbjieE8PH6cBgNxb7c/GZuXuMQV5cRhK9FRCFzKoIC50Nb
+ dLE9yzGs
+ 0rkRQzV/bMrO4rX6R5B0qnMTGo98blmDZssf6jGjJC1+hfho0xFc5cK8FEil2fCAj+/3FupW7ENT6iNzZxIog8EzSQp76EQB+66ILwnj9go2xn9y7mwii0SlJMNuZDzZVOi93VuP82NEygznSfCTfvktvqO3Mz5Hc18yU51DVd9MQxBHNcqp3fW+h32Y3kZRxMsa8qqyU26JUAIHXzKZ9shHvkJxSMqF9P4yHDt6OFoWqapxyMc0y5RGQVw8SYgWXKjn+7JWXnOEb4vLJNuvbhQp6Rqs0g+ylNLmAIs5AzzAR/EfXapWw0rOGgEDPndBMECsbEXvsbXoh+XEpFD/KeGuni8e5gdcirosyJsPxWF7pcHkAt+2Pnx7LzXTJA7PKY+kz4wh1MTCzL+f7TajvL9gQQviRhrn24wAUjOu8f6NSVCaf6i8emaDTVL3z/Gp5WAqp8mELNr9umDNr0EJSQqgaq5p8KwcoS/gqMMKMWyaNv18eaw32qWWqGET2Ng9rwH20GttAYbhJt6kW9CdADFOJrA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,74 +126,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026, Yan Zhao wrote:
-> On Thu, Jun 25, 2026 at 09:51:01AM +0800, Yan Zhao wrote:
-> > On Wed, Jun 24, 2026 at 05:41:58PM -0700, Sean Christopherson wrote:
-> > > On Wed, Jun 24, 2026, Ackerley Tng wrote:
-> > > > Yan Zhao <yan.y.zhao@intel.com> writes:
-> > > > > With gmem_in_place_conversion=true, userspace can create guest_memfd without the
-> > > > > MMAP flag. In such cases, shared memory is allocated from different backends.
-> > > > > This means this module parameter only enables per-gmem memory attribute and does
-> > > > > not guarantee that gmem in-place conversion will actually occur.
-> > > 
-> > > KVM module params are pretty much always about what KVM supports, not what is
-> > > guaranteed to happen.
-> > > 
-> > >   - enable_mmio_caching doesn't guarantee there will actually be MMIO SPTEs,
-> > >     because maybe the guest never accesses emulated MMIO.
-> > >   - enable_pmu doesn't guarantee VMs will get a PMU, because userspace may elect
-> > >     not to advertise one.
-> > >   - and so on and so forth...
-> > > 
-> > > Yes, there's a small mental jump to get from "KVM supports in-place conversion"
-> > > to "I need to set memory attributes on the guest_memfd instance, not the VM",
-> > > but I don't see that as a big hurdle, certainly not in the long term.  And once
-> > > the VMM code is written, I really do think most people are going to care about
-> > > whether or not KVM supports in-place conversion, not where PRIVATE is tracked.
-> > Sorry, I just saw this mail after posting my reply in [1].
-> > 
-> > I'm ok with gmem_in_place_conversion=true just means KVM supports in-place
-> > conversion, while we can still create VMs with shared memory not from gmem.
-> Or what about "allow_gmem_in_place_conversion" ?
+On Thu, Jun 25, 2026 at 05:14:45AM +0800, Barry Song wrote:
+> On Wed, Jun 24, 2026 at 11:20 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+> >
+> > On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
+> > > Originally, we unconditionally called lru_add_drain() for write
+> > > swap-in page faults. This might drop the reference held by the per-CPU
+> > > LRU cache if the folio happened to reside there. However, there was no
+> > > guarantee that the folio was actually cached on the current CPU.
+> > >
+> > > Now that lru_add_drain() has been removed, we have lost one
+> > > opportunity to drop a reference held by the LRU cache. We could
+> > > instead incorporate that possibility into the condition evaluated by
+> > > should_try_to_free_swap().
+> > >
+> > > Suggested-by: Kairui Song <ryncsn@gmail.com>
+> > > Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > > ---
+> > >  mm/memory.c | 5 ++++-
+> > >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 2983a6baf474..14577c67c61a 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -5087,8 +5087,11 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >        * Remove the swap entry and conditionally try to free up the swapcache.
+> > >        * Do it after mapping, so raced page faults will likely see the folio
+> > >        * in swap cache and wait on the folio lock.
+> > > +      * Assume non-LRU folios may be queued in the LRU cache, which contributes
+> > > +      * an additional reference to the folio.
+> > >        */
+> > > -     if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
+> > > +     if (should_try_to_free_swap(si, folio, vma, nr_pages +
+> > > +                     !folio_test_lru(folio), vmf->flags))
+> > >               folio_free_swap(folio);
+> > >
+> > >       folio_unlock(folio);
+> >
+> > Hm, in wp_can_reuse_anon_folio() we'll try dropping the swapcache ourselves.
+> >
+> > So I wonder if we still need that handling ("If we want to map a page that's in
+> > the swapcache writable, we ...") at all?
+> >
+> >
+> > Ahh, I see the problem now:
+> >
+> > commit 4b34f1d82c6549837b2061096dea249e881a4495
+> > Author: Kairui Song <kasong@tencent.com>
+> > Date:   Sat Dec 20 03:43:35 2025 +0800
+> >
+> >     mm, swap: free the swap cache after folio is mapped
+> >
+> >     Currently, we remove the folio from the swap cache and free the swap cache
+> >     before mapping the PTE.  To reduce repeated faults due to parallel swapins
+> >     of the same PTE, change it to remove the folio from the swap cache after
+> >     it is mapped.  So new faults from the swap PTE will be much more likely to
+> >     see the folio in the swap cache and wait on it.
+> >
+> >     This does not eliminate all swapin races: an ongoing swapin fault may
+> >     still see an empty swap cache.  That's harmless, as the PTE is changed
+> >     before the swap cache is cleared, so it will just return and not trigger
+> >     any repeated faults.  This does help to reduce the chance.
+> >
+> >
+> > That changed that behavior such that we *must* now always fallback to do_wp_page().
+> >
+> > What a mess (I didn't ack)
 
-No, because turning on the param also disallows setting PRIVATE in the VM-scoped
-KVM_SET_MEMORY_ATTRIBUTES ioctl.
+That's awkward, my bad, terribly sorry about this :(
 
-> > Though it still feels a bit odd to require TDX huge pages to depend on
-> > gmem_in_place_conversion=true when shared memory is not currently allocated
-> > from gmem, 
+I sincerely apologize for the oversight and the trouble this has caused.
 
-I fully expect that to be a transient state, and in all likelihood not something
-that is *ever* shipped in production.  Landing TDX hugepages without guest_memfd
-hugepage support is all about avoiding unnecessary serialization of series and
-features that aren't strictly dependent on each other.
+I haven't seen any performance regression in any workload recently
+though, or any correctness issue, perhaps the round trip of
+do_wp_page wasn't that bad. It should still catch the reuse folios,
+just more costly than doing things in-place.
 
-> > it should become more natural over time once gmem supports in-place
-> > conversions for huge page.
+I think we should restore the original check first. We might also want to
+avoid dropping the swap cache if the folio will not be reused, which
+was discussed here:
 
-Yes, and I want to prioritize the steady state for end users, not the in-progress
-state for developers.  Once all of this settles out, I fully expect the majority
-of deployments to only support in-place conversion, at which point the end user
-is only going to care whether or not in-place conversion is enabled in KVM, not
-the subtle detail that it's still possible to do out-of-place conversions (and
-that will always hold true, it's not like VMA-based memslots are being deprecated).
+https://lore.kernel.org/linux-mm/CAMgjq7BDfvNXdWH0cqarsujjUn3i3tDDhDkmSg01TR4h-tDorQ@mail.gmail.com/
 
-> > Besides my current usage, there may be other scenarios where gmem memory
-> > attributes is preferred without allocating shared memory from gmem.
-> > (e.g., PAGE.ADD from a temp extra shared source memory).
-> > 
-> > For such use cases, I'm concerns that the admins may find it confusing if they
-> > enable gmem_in_place_conversion but still observe extra memory consumptions for
-> > shared memory.
+Maybe extracting some common part into a helper can help make this
+cleaner.
 
-KVM can help with documentation, but beyond that, it's not KVM's problem to solve.
-If a VMM *and* platform owner chooses to deploy a setup that utilizes out-of-place
-conversions, then it's on the VMM and/or plaform owner to understand and communicate
-the implications to the end user.
+> 
+> So it seems we need a patch before patch 4 to fix the missed
+> swapcache freeing on write faults, because the write bit has already
+> been cleared by the time the folio is mapped and reused?
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 14577c67c61a..e8fc5a86f6ea 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4752,6 +4752,7 @@ static void check_swap_exclusive(struct folio
+> *folio, swp_entry_t entry,
+>   */
+>  vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  {
+> +       enum fault_flag fault_flags = vmf->flags;
+>         struct vm_area_struct *vma = vmf->vma;
+>         struct folio *swapcache = NULL, *folio;
+>         struct page *page;
+> @@ -5091,7 +5092,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>          * an additional reference to the folio.
+>          */
+>         if (should_try_to_free_swap(si, folio, vma, nr_pages +
+> -                       !folio_test_lru(folio), vmf->flags))
+> +                       !folio_test_lru(folio), fault_flags))
+>                 folio_free_swap(folio);
+> 
+>         folio_unlock(folio);
+> 
+> 
+> Best Regards
+> Barry
 
-And I'm not remotely convinced that prepending allow_ to the param will help
-end users diagnose "unexpected" memory consumption, in quotes because anyone that
-is deploying a stack that utilizes out-of-place conversion absolutely needs to
-understand and plan for the additional memory consumption.  I.e. if the memory
-consumption is "unexpected" to the end user, they likely have far bigger problems.
+Hi Barry,
+
+The problem is more than that, the `exclusive || folio_ref_count(folio) == 1`
+in do_swap_page is also ineffective now.
+
+But that earlier commit 4b34f1d82c65 is kind of meaningless after recent
+refactor of swapin. It was trying to avoid redundant folio allocation
+and thrashing from concurrent faulting process of the same PTE, but recent
+swap table rework already gated that with unified folio allocation. We
+are freeing the swap entry first here, that is effective enough so that
+commit is no longer needed.
+
+So perhaps we can first just revert it, how do you think?:
+
+From 8009328e0782fc22365ef32474bae749beda637b Mon Sep 17 00:00:00 2001
+From: Kairui Song <kasong@tencent.com>
+Date: Thu, 25 Jun 2026 11:44:26 +0800
+Subject: [PATCH] mm/swap: free swap cache before mapping to fix folio reuse
+
+This is effectively a revert of commit 4b34f1d82c65 ("mm, swap: free the
+swap cache after folio is mapped").
+
+That commit was trying to reduce wasted fault and folio allocation
+from parallel swapins of the same entry: keeping the folio in the swap
+cache until the PTE is installed makes a racing fault more likely to find
+it and wait on the folio lock, rather than allocate and charge a new folio
+only to discover the race and throw it away, which leads to thrashing.
+
+That benefit is marginal now. Folio allocation and swapin are both gated
+on the swap entry count in the swap cache layer since commit 02d733a7ec1d
+("mm, swap: unify large folio allocation"). Once the winning fault
+drops the entry count, a racing fault that misses the cache will fail
+the swap entry count check too and back off at the page table lock before
+allocating anything. Note there is still a tiny window with or without
+either patch, but it's already minimized now and should be fixed in
+other ways later if needed.
+
+Meanwhile the earlier commit has a real problem, as David pointed out [1].
+The swap cache reference is still held during the write fault folio
+reference check, so a sole-owned but non-exclusive write fault always
+falls back to do_wp_page() instead of being reused in place. The
+write-fault path of should_try_to_free_swap() is broken too as the
+FAULT_FLAG_WRITE flag is missing.
+
+There is no correctness problem though, only the reuse and cleanup
+optimizations were lost.
+
+So revert it. This makes the sole-owner check effective again and
+recovers the reuse fast path. Also slightly adjust a sanity check
+to be more rigorous.
+
+Fixes: 4b34f1d82c65 ("mm, swap: free the swap cache after folio is mapped")
+Reported-by: David Hildenbrand (Arm) <david@kernel.org>
+Closes: https://lore.kernel.org/linux-mm/e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org/ [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/memory.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..f31d6b8e8c0b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4512,7 +4512,6 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
+ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+ 					   struct folio *folio,
+ 					   struct vm_area_struct *vma,
+-					   unsigned int extra_refs,
+ 					   unsigned int fault_flags)
+ {
+ 	if (!folio_test_swapcache(folio))
+@@ -4535,7 +4534,7 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+ 	 * reference only in case it's likely that we'll be the exclusive user.
+ 	 */
+ 	return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+-		folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
++		folio_ref_count(folio) == (1 + folio_nr_pages(folio));
+ }
+ 
+ static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+@@ -5033,6 +5032,24 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	 */
+ 	arch_swap_restore(folio_swap(entry, folio), folio);
+ 
++	/*
++	 * Remove the swap entry and conditionally try to free up the swapcache.
++	 * We're already holding a reference on the page but haven't mapped it
++	 * yet.
++	 *
++	 * The swap count has to be freed to 0 first so folio_free_swap
++	 * can free exclusive clean cache. Concurrent fault is very unlikely
++	 * to trigger redundant folio alloc, nor will it cause redundant IO,
++	 * as the swap entry count gates it.
++	 */
++	VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
++	if (folio != swapcache)
++		folio_put_swap(swapcache, NULL);
++	else
++		folio_put_swap(folio, nr_pages < folio_nr_pages(folio) ? page : NULL);
++	if (should_try_to_free_swap(si, folio, vma, vmf->flags))
++		folio_free_swap(folio);
++
+ 	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
+ 	add_mm_counter(vma->vm_mm, MM_SWAPENTS, -nr_pages);
+ 	pte = mk_pte(page, vma->vm_page_prot);
+@@ -5067,7 +5084,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (unlikely(folio != swapcache)) {
+ 		folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
+ 		folio_add_lru_vma(folio, vma);
+-		folio_put_swap(swapcache, NULL);
+ 	} else if (!folio_test_anon(folio)) {
+ 		/*
+ 		 * We currently only expect !anon folios that are fully
+@@ -5076,12 +5092,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) != nr_pages, folio);
+ 		VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+ 		folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
+-		folio_put_swap(folio, NULL);
+ 	} else {
+-		VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
+ 		folio_add_anon_rmap_ptes(folio, page, nr_pages, vma, address,
+ 					 rmap_flags);
+-		folio_put_swap(folio, nr_pages == 1 ? page : NULL);
+ 	}
+ 
+ 	VM_BUG_ON(!folio_test_anon(folio) ||
+@@ -5090,14 +5103,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	arch_do_swap_page_nr(vma->vm_mm, vma, address,
+ 			pte, pte, nr_pages);
+ 
+-	/*
+-	 * Remove the swap entry and conditionally try to free up the swapcache.
+-	 * Do it after mapping, so raced page faults will likely see the folio
+-	 * in swap cache and wait on the folio lock.
+-	 */
+-	if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
+-		folio_free_swap(folio);
+-
+ 	folio_unlock(folio);
+ 	if (unlikely(folio != swapcache)) {
+ 		/*
+-- 
+2.54.0
+
 
