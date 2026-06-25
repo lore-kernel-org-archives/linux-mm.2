@@ -4,92 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A1DECDB47C
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B333CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:14:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D57336B0088; Wed, 24 Jun 2026 23:09:52 -0400 (EDT)
+	id EC14A6B0088; Wed, 24 Jun 2026 23:14:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D073C6B008A; Wed, 24 Jun 2026 23:09:52 -0400 (EDT)
+	id E99146B008A; Wed, 24 Jun 2026 23:14:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF83E6B0092; Wed, 24 Jun 2026 23:09:52 -0400 (EDT)
+	id DD70B6B0092; Wed, 24 Jun 2026 23:14:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 960D76B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:09:52 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 232041C5EF4
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:09:52 +0000 (UTC)
-X-FDA: 84916955424.22.647DC6D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 6D7BC80006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:09:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GHLdobnr;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id B33716B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:14:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3782C14056F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:14:19 +0000 (UTC)
+X-FDA: 84916966638.17.3A85D5F
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5165414000C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:14:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kB53I0qc;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782356990;
-	b=ysjkqax/G8KtPF+VvgbBCj3fGSQYEeOwXoQzXiORfmv5FbZT98lETzJ1W3LIyXpKRHp+kH
-	oNm6xfaYiQkdC+BtkYykm6CVFvdN0m6pOD19Di5+AocDtXGzeGDvX4mjbJJVlMoblor9HG
-	4br5X/QIzMnd+n8/lkGqdXkynlmK910=
+	t=1782357257;
+	b=HHkZtBVcQYQ5Q+hE4ZcM0YwT21eIV9gG3AH7kCHZS5T/EbpwJ08WhmKGottna3I5pAWUM3
+	9yW0TLdfmOxfj+qhiCiyqk9vIDsOn9ijlK9cpxE+II+4RtRWIdrSBAi3e6lg/MG9oHcLwl
+	zvJnH013kWuFEEcp+nIPCNL912uFcW8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782356990;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782357257;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0veS0g5fF+whbLGepad1n2C9+nnzZ0GFYK9TZo8pw8=;
-	b=PwaJnIvJmqA9zv/jwkvPUVaadlVW4VZbf73yc+7mSiXoJXFgeZLnDAISMI6T7/pnoAGXC2
-	OL6vO2pX1LBXSbs4vTvOJLlzmcWeLiaB8VerG28JmNE+JGr+RLWgIShcq4lPmvTTJlTZ9H
-	xyRE7HrywaTGLSWXb/30xziPdApPUXw=
+	bh=0i0e5oKK2OJvLmaL3gLiYy0U7eXjRC1fYmOiYFlxlDA=;
+	b=MsEMewAGr03sSA9xo3nv3ZoXZDb/erMpPVvTbEBf1xjDfOf6+lW+Odj+oWv5xq9E641Qtu
+	ZVrr4+w20A09ad0PhodVAvmf+6B0ixaUtdIqarXTMeg1jwdoOvL0jI1dEIKYSNwWey0oX+
+	gu/UflgNv6EqhVY0jy/xRxeO3SaFi/I=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=GHLdobnr;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A194343624;
-	Thu, 25 Jun 2026 03:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030CC1F000E9;
-	Thu, 25 Jun 2026 03:09:48 +0000 (UTC)
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=kB53I0qc;
+	spf=pass (imf09.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-bed19623d6eso264513066b.1
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:14:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782356989;
-	bh=l0veS0g5fF+whbLGepad1n2C9+nnzZ0GFYK9TZo8pw8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=GHLdobnrwqEOu9mc/isAREnl7jRAbh5wy+vtnmCxEZJtPqlEdTfp25iqb9geOaHyQ
-	 TJvrO7dvB4c7xAjQ0V18KgLjpQUWJvTk+CLLPUM3iL/h0NJVG3iY4DQM28F1v2+0fb
-	 yONKAIo9ZFObi3fzZXkfmrLsv2wMIBgfIqgauCB8=
-Date: Wed, 24 Jun 2026 20:09:48 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kairui Song
- <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
- <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, Axel Rasmussen
- <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
- <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui
- Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH v3] mm: assert exclusive nid/zonenum bits at the
- page/folio access sites
-Message-Id: <20260624200948.d4d09c02540db0099e260c00@linux-foundation.org>
-In-Reply-To: <20260625024019.838786-1-hui.zhu@linux.dev>
-References: <20260625024019.838786-1-hui.zhu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        d=gmail.com; s=20251104; t=1782357256; x=1782962056; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0i0e5oKK2OJvLmaL3gLiYy0U7eXjRC1fYmOiYFlxlDA=;
+        b=kB53I0qc73mifbHPHAlHUzcFP4EinesXIH1vlpu1ytemDtoLaxG1ClHrbG5gfliOAK
+         eSfBJRTmeOqBnXkEvECGKi0FaRhydR+LLW5pHWzPjyBXA45t42uqs7U6bPpC2JR34npU
+         X+fiaW8yogSbueh4yC+2vQStnzbVsuR3nwk0pILpcKfPFcp5Sre8a7AQStPO1C2dipcl
+         LHWSCn4wSGJn9awgT5Tx16KU85CO8JJzNI6VWiK+BvDH6l5G53C+IFxVl/Oau0coXVj7
+         lzT/0smzJevq95aukPbFlOfmATyctVbWcBBv7z2Rs/6ldfcijl/oxGTqr8FEZRFyT+cN
+         pPGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782357256; x=1782962056;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0i0e5oKK2OJvLmaL3gLiYy0U7eXjRC1fYmOiYFlxlDA=;
+        b=SMTwVUA5fg5JD2clYIaOdQFwahgtaAzEGpUQz/FkOH5xk4oKBa6x09NT4m2w5LR7Kp
+         DQR8mnMyBZ0A6TbYXW1wHF2jyAHbwWAV20xjiuOdF35sVlxY+Kpc3Z0Tnq04hnM7J0iw
+         mr5kspYKkaTlyarbFE90h8eIGAYXBY3D7NO+LoXG/BejM3r7fzZGfa1M50RvYrMt8rgp
+         jOzHi/Ad6Zy/h4xwhg7+gBOk7eyN7BKmVlrgFb4PWSEvYsTucEWK8FSWFFyQicqR0kWw
+         wJGVgAcv6NKLLVhJdwuQbG3lBy5c/uSaXTvkr9V4ZRnFzMvAp6M9sqIENYjY3s/s7N1f
+         aH8g==
+X-Forwarded-Encrypted: i=1; AHgh+Rqp7MOXuYidrbQVAcJBFyrH4U8TTKUFoiMDS4gK9jhKSGJtPnfpGUX/LyLnLRkuEV7Z8/4b5HAIMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy8DPisCEg4Lm0uZza6A8trduTdXjt9OHZzswiAArhDwwBXVDhx
+	v4TF+cs4vrR6Q3t9sEMF/q12G1+LjlIa7nw+tbudmFnFEpuItw/P8P4q
+X-Gm-Gg: AfdE7cmC76OuwwE7wwTbVWzYBhJ6XxqiTHLbpzjI+11nbdu0pUxKoG8oVB3jw+VgwdM
+	uBEbGH6AcdN481jwKfFTjczDc882+Udi4w2xJQ49/Ew4fB0U4rfcTeOWgpU4tsedBkz3wofewn3
+	BblVLiEi3U1Y+jHKCmSAwlc742rmlU4FkG2pNyjDcc/Yca1R8tUPTZdBNRRJtqWh+eUwJbP6Biy
+	EKxoXOWd1Z86bbez3zRqb6vHLOJdhlP2/wWvAjWrbn6kRGVVJpjrXZV2J8yzaCOjGTxYjmr82ui
+	aTLI4Mv9xyqr9p47wNzoAcIBTR6KWFjE4C7Vbkrx5ecJZ3uz6NHqMwAMtQ+o945klOfOA1Nt1MR
+	enisYRAhDhUnxuzAZp3RBbQzGr7HPHsMMH8g+P4QrezJ6qyHa7V4c9qr723NEvTl6n5LSFE1Qag
+	kkGua93dARBlGSYKK0aq+t5Q==
+X-Received: by 2002:a17:907:969e:b0:c0c:c2c1:63ee with SMTP id a640c23a62f3a-c1205d970dfmr26440866b.15.1782357255516;
+        Wed, 24 Jun 2026 20:14:15 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbed6c4esm79584066b.61.2026.06.24.20.14.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Jun 2026 20:14:14 -0700 (PDT)
+Date: Thu, 25 Jun 2026 03:14:13 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	izumi.taku@jp.fujitsu.com, linux-mm@kvack.org,
+	Yuan Liu <yuan1.liu@intel.com>,
+	David Hildenbrand <david@kernel.org>
+Subject: Re: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
+Message-ID: <20260625031413.shmx6lk5awqfnilx@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20260622022403.16375-1-richard.weiyang@gmail.com>
+ <ajk_l8cT0mIyhs4r@kernel.org>
+ <20260623083507.kg7jmd7ofz3awqmq@master>
+ <ajpQR0hX681OryCB@kernel.org>
+ <20260623092653.yfahsc7kekuncbcf@master>
+ <ajv4KewVYU5YzVea@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajv4KewVYU5YzVea@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5165414000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6D7BC80006
-X-Stat-Signature: t8tocjtb1xjdqknm3ap4955k77krjgux
-X-HE-Tag: 1782356990-988956
-X-HE-Meta: U2FsdGVkX19v+jgs7SQRhMQK6fUcLq96XvoDa3bFD+emcXHXqBLtctt1/hOR7wI+S/m/pLEUF/qJOkNWuHHrCfREixW04NI76klp3Jhip+sutR6kVDQVl87vBReIvRPnDTgmVG/goW6ZhtFY2gPc2B9nYAyGVW5tHluGHe9GDslM1ynbi2VCvShRoxrrS6BIFc4tKMfzSW9g0PmzAnnZhbO/iMxdk/fji5r/GH2vQPw/F1bW5hARGAJX0sFJBCeSKOzb55FPQ/kzHWXZT2wbPqFkUQQzYFun4qT76o9r87EREkwMhYuh8uF6u27lKY9ZUjhSWYKo/pxmX7MhXY96uF1BpkvNw79EUzLdz03EV1Wf+KLe7BpkPQUELg9Z7wR9ynzWUf2iQhuFX4Uy/bR2YG0T5mfRVWkNGma60oYgG/H1gWP7CNpg0Us0dMTL1glcqn89EjULEvldVvV+c9stttdNzw7ibX8m5zQd85hDCLo2C0vIeSMwumQJ6UYa+WnVJW5v+QfMBuPUlA+knjow3t7GVF0aS+fMK9tPU7iJgDPOEKhgO37aWVm6ToMIBH6DYM+/HwVK+98FLQDfzFjQQUExlAiPiRh3k0wslmoDfZ7T5HV5fVoE1dSgfcb+3QBU+uLO1tj9RU70NTLp+NeEg3HoKtDqfMYAOFxnpQi9yomRjDok6mjSnaItvnzHsZhiCb3o0V11UueBx6YYsJyst7vnAEh58GgpwhUM+Ckv0bqQYofG0l4yue7awe8P/14u6EbOUbur/UN4+gQ/cEU+WGWMvnrzIxDHyH20Y2lA/PTHi9jD7pdec1RnSj/J7c9LEsYZfKLClLF3rvITrgE/sLT6KxAdaxJI+vKZ4pFpBUz88XGyPDX6+aFY8uTCjz8rGkO3lNM+S3Lhcva4OMFk2jaLv8iKAX4whKWxzROrSC/WiPO//UuO3IPJ+reBToRfaWtwQ6l/aB2QPo+1iNG
- Z6pxAIo7
- cLZwq4ol/9ksyNqRHCeBV4DWM+MYBcnAT7SAXJknqLYZHjibaJEJ/3R4np+yDOsJ9AAfiocvgO9kpkfc56IhN8oNLuWzQh1ry2d/YZWiK/8guDOGban3d3cg6BG/PZPEoEyA296DFRjx4bnoW1nuLR4TxtnuKUIJPrI+W57lDKHCbd5aEgVLArqykIB4xGSDiAR/ljSAWhBkWj6aaBbNMwZmUF0RuKrGma8545Vcc6pEWXAzC+Vu0UANZjbOli78TizL69RuLvfon5frP87TEA+5DHSTF/YosIGUNU+q8lcRfw5dxAaOGGkSLwg==
+X-Stat-Signature: o783iygfjcbxum6t3dzhpczeu179g6nw
+X-HE-Tag: 1782357257-335263
+X-HE-Meta: U2FsdGVkX1/6Gyy8lJDPEnizV4OeKWNRcFhGxa7uOWqabGTV2H669Kh43f0kTB93wb30TaVQhBI/rxvloYhtDTSEkNkXfInviRZZbsLL/HJj1mXMYBs4PpAXRrAs0Pvxlk3aFLfuOls+rPh3BArE1XYcQKQxev7XS42rNx3h5atEaDJAyoDxK34zxH4HIQ1i79troMm0jEqZawqJoC4ko3IzUff/LPUm6MDB00P4sZWMhffY/W+OfX61tKpqPMGVqQDZA4TVB6Eikeokkm+n+SLd3n+d57KscuY+5koV+ZR72yMJ80NX6MFf7XvPhIlF0XgodMvkxGD7JNyiDDnWj/2gqFrIgMcfnGU+Vp1RI9//odnjTEf0keaZSi8G9Hd0jWFbpMbVjufkfSSnoLu4j89c4ab28DskxW7hv7JGm0W9ksXT1sSMVxmw2/gqP2ZujcbwCADnR5G3tQnvryCS1DcL8e9AhKcu3gzN6Fr/hGsvtxrFJdu48rtdDh7eo4auk4w0uSWNp9RjCNTMM3q2QEoNSVr05C67Wm5DuO8elLdMToUwCdsj2sSp2qv6eMBj35GvrEPZ9iS3KcsHSund8MGzPewu9OulmVPIBIvt1HPmdrsbR3O84eWHtW/cD9s1zqx6VjqJUL6nGNSUFRYIcXY75QY6JO9FWIvrxce9SwqijLkT1FhyBSgVm3c0gWp+5GRG9DXNG10pPvdjI2yq69UG1fBap6lwN2Eje9k7dYoPBJCzX7RgvTi4KNKqtvZrTbZ+P9BTqj5YDWUw/cRcpuF9NZdfV3xC4eCCYhjDl7mYOXDaltEGCFfiQ0EY9032VYqBGtQLa9lifuwWROQNzTuQ5hOmlOwjBdqoRJKsctn82d+C78xhWEKFhafY/a9zPmEy02A0VDVgpnPQlsv9hUqFpbSv5QZ92+24egI+aSv+N6Z7RC+ZNV7lLhKaf8aqJNDz3Gzg6yr+EAp4aTC
+ 92azyxNH
+ ikuUvS4gGpH5vNUYFzCmLgPjkEQTI9gJm4EorrKXBhMtInoDJsH6V/mZMj4qB7XBDN1oPv3i5lnM7q4wBsck5lexHnGFwzvTxbGSfYrp5cVnsnPoAQDTzIVZW+CFytKH/MxkkDmHcSTaFKPBjzhDUMgyag4F0f6c0cMhEcj/f24JGLBi6xanJGoGaMVVb1NI9L+g5BA2/541irXSmAaWECCq/3yw9rtqU1FJ+UAbM7ShI0EcnMw3Mu/Q6e0qeffbnwam0Ai0ZDvlPsrIWErMLPp8bZWCVCE2yo+1SiCaOTIn1B/9iyQdPFgkkga4Jjv96ef2T2Qyci/ljzA4x20dhBfaGJzivqoU8nfcmje3H/w9XMukO5NHQMzOpbzX+4szYN/53TXaJamfrMhjueEnjYtr2gAgfe0PsBxnTQHsyIplipU28SxdrNt9WxZTRUk7oo233S/sG5WHPBmwi30SSMiMqlIxf+o9egmIx5T6vOHJ56QoVI2mLrsXhe1ODZKqNYUUqISDVhovkAbOKE71rsFpmx2eUOq8kKq4DoJa3y4Xu5dlt9cDUtqu5NSIrORlAfaHX7ZJc03W2eMZGMBdoQMWOXMxk6FaWoEXmrvUBYWJ/fq7fEQsom88M0Nz1QwDa5NTbWt5EuhrGTLlRE2WvhJx3Z/MGbbXogM4geE53vKsUb7M1WJVoZaecqPNGRDCquE/opOdiaQhRrgypWLPve+h+3nZUmVYkFZiuzxmakBnNUuyyvECjsGDjKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,37 +126,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026 10:40:19 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
-
-> KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
-> page->flags and folio_trylock()/folio_lock() concurrently doing
-> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
+On Wed, Jun 24, 2026 at 06:30:49PM +0300, Mike Rapoport wrote:
+>On Tue, Jun 23, 2026 at 09:26:53AM +0000, Wei Yang wrote:
+>> On Tue, Jun 23, 2026 at 12:22:15PM +0300, Mike Rapoport wrote:
+>> >
+>> >After I applied your patch, I did some checks to see why
+>> >mirrored_kernelcore causes us troubles. I found that unlike other variants
+>> >of kernelcore/movablecore settings, mirrored_kernelcore creates zone
+>> >overlap for no apparent reason. I did some git archaeology and I didn't
+>> >find a justification for making overlapping pages absent in ZONE_NORMAL.
+>> >
+>> >So I came up with this cleanup:
+>> >
+>> >https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git/log/?h=kernelcore-mirror
+>> >
+>> >I'm waiting for the bots to chew on it before positing the patches.
+>> > 
+>> 
+>> Ah, just the same as I do :-).
 > 
->   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+>I'm going to send my version with your co-developed-by if you don't mind.
 > 
-> The node id and zone id occupy fixed bit-ranges of page->flags that
-> are set once at page init and never modified afterwards, so they can
-> never overlap with the low PG_locked/PG_waiters bits touched by the
-> folio lock path.
-> 
-> ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
-> checks a by-value copy of the flags word, not the actual shared
-> page->flags/folio->flags being modified concurrently, so it doesn't
-> reliably assert anything about the real race. Move the assertion to
-> page_to_nid(), folio_nid(), page_zonenum() and folio_zonenum(), where
-> flags is dereferenced directly from the page/folio.
 
-Thanks.  Sashiko is worried about CONFIG_NUMA=n:
-	https://sashiko.dev/#/patchset/20260625024019.838786-1-hui.zhu@linux.dev
+My pleasure :-)
 
+>> -- 
+>> Wei Yang
+>> Help you, Help me
+>
+>-- 
+>Sincerely yours,
+>Mike.
 
-I'm a bit surprised that these functions even exist on NUMA=n.  That we
-don't have simply
-
-#else
-static inline int folio_nid(const struct folio *folio)
-{
-	return 0;
-}
-#endif
+-- 
+Wei Yang
+Help you, Help me
 
