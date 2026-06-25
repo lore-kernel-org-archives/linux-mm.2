@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A86FCDE009
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A281BCDE00B
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ECE46B00A4; Thu, 25 Jun 2026 16:14:15 -0400 (EDT)
+	id 992186B00A5; Thu, 25 Jun 2026 16:14:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39E2E6B00A5; Thu, 25 Jun 2026 16:14:15 -0400 (EDT)
+	id 8F4186B00A7; Thu, 25 Jun 2026 16:14:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B38A6B00A6; Thu, 25 Jun 2026 16:14:15 -0400 (EDT)
+	id 7E4006B00A8; Thu, 25 Jun 2026 16:14:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F13E76B00A4
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:14:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B248140267
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:14 +0000 (UTC)
-X-FDA: 84919536828.10.949E1AD
+	by kanga.kvack.org (Postfix) with ESMTP id 541496B00A5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:14:17 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C847E8CE72
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:16 +0000 (UTC)
+X-FDA: 84919536912.20.32512DA
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AA85DC0004
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:12 +0000 (UTC)
+	by imf28.hostedemail.com (Postfix) with ESMTP id 49142C000A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:15 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wW34XuLi;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d9owe1jK;
 	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782418452;
-	b=WJZI6HcF545p4yG0mj83l0H+UFT4XXEGGft/jMVv3/q/aCZ8eyxuNMGPfAWupBv3S06d4+
-	zcQZPvmm+bPHw2LNIVyU5Ow/7V8wq1SCyn3wzXP+c7ZrDHbO/RZhtBsKmVrxGIshHcR9h/
-	bFITGyc02GoqxjquqRWp/wjC8EGsCoU=
+	t=1782418455;
+	b=CXieRy4dTc8xn/8Eb4EFTwW+H0I3uL8W/O6/lPFKJx7052yGMk5McFMOXeEAAxPq0ZB3WP
+	b/XY2y3C8/mHaxHcJsWmv9PWVZZspofsNl9lIV3AumMB9MJg7s+wq69EeZ22Gl+O0JYdTt
+	bzspqdxaMLOswRxG9mM2Yq9fo3p5HSY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782418452;
+	s=arc-20220608; t=1782418455;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xtPHeOMkoK9J0uCanVAhrPgdRQ2Kgkwnjz1DQnXps8=;
-	b=4epZS1t2RZ6yCs8iTWRrHibAZsR+5/hjFGvikq2YZ6LIfuPDY81xP1p0me3eOoY68NJyWP
-	mbzYxB0R3qedSagvXnue1MLyGnwyGG1cnnw53TOQoFqnUxv1cinzut3KdBkuCxHbSHHkvw
-	3ZpUkRJKnq1yberUqdaiu1+gR/Qu3LY=
+	bh=wpLunw3505z44O0RkeDkiOGZNGO9r4mN4zq7pVOMb8Y=;
+	b=rjv7Q71dbdLqzfbqaUDzCPEjTgj7mLiU2C0AtRe4VCVUtciCp4GWGMoiiPCgWQ72fKnLGk
+	1AJ9ByQmcw0zl6dQiJyva+bMPiZQOs6yZP1g3Rtv9eASHyZIduGlORAGDYmVRWooVVGa7d
+	J0OPnMWWnujkZ/JyJYqhkrqEj6oLHwQ=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=wW34XuLi;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=d9owe1jK;
 	spf=pass (imf28.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=7xtPHeOMkoK9J0uCanVAhrPgdRQ2Kgkwnjz1DQnXps8=; b=wW34XuLi7X5i6VE7Zhi2l8eU70
-	g+1dl6MomDUPyY4dKtYDOpLn0nM4HrUz3HwRZUlv/2J1G4huyk1OeG3pvaOjHnGTVPJXLYFK6cJ6j
-	0FQx1vuW1QJDdi6SbUCM5dS3v8qykhhK0HVwjRF6TZ0Jv8u/XctBcCi8fwvk700lRWDf7e/R2Y8kH
-	dKw8Vae3l2QziMJZMov1FYwPJ34YzOtoLRNnX5knb1b5grikdzSSO5uovfRUlQ7b5AZkdFs/zUIEW
-	01EBh0WqayZZuGXOUjbswbdqwD1VWeD7UjOifYKamyY2dgrZ0VKidooBtye4MI7R/C0u2S/t+8SZF
-	hfSssnFg==;
+	bh=wpLunw3505z44O0RkeDkiOGZNGO9r4mN4zq7pVOMb8Y=; b=d9owe1jKRYQtd5+XoIbQecr266
+	GRwN6USe7214wSw/8+Rd4vnIXfCVJkAuiEVpKoeeCQRrV977zmjRrJZC7viH1lVAKdZc/eRWO2eEX
+	zfxWulX6IINgN10a6GF30AbFudtHrnH17W6n414AqLj/U06aV8GcQtnaJ2kg1rwCIjLoo59cwbMHi
+	2tC19BGHdqK47RSTpRK8aZjXEGs2ivLG/IhHhy2fxOBB8YAlcyTHpM+EqzScRIVTRs0uZF629I+/u
+	a0GV6HJ9GuAEre24SIXLJLBJNe65H6DlJ3t7GtgBR5ST/MeWaLBF+EgZPWjB06RK1flkBI9aNWfJl
+	DiVc+6oQ==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcq61-0000000AWZ1-1bVn;
+	id 1wcq61-0000000AWZ6-3br9;
 	Thu, 25 Jun 2026 19:50:45 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 09/11] filemap: Handle folio locking in __filemap_get_folio()
-Date: Thu, 25 Jun 2026 20:50:35 +0100
-Message-ID: <20260625195040.2508362-10-willy@infradead.org>
+Subject: [PATCH 10/11] mm: Do not release fault lock while handling write fault
+Date: Thu, 25 Jun 2026 20:50:36 +0100
+Message-ID: <20260625195040.2508362-11-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625195040.2508362-1-willy@infradead.org>
 References: <20260625195040.2508362-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: kfjikid7tjxgqd9cdoyfrhx6oz6te9ue
-X-Rspamd-Queue-Id: AA85DC0004
+X-Stat-Signature: w7s73ne6obckurwd5z75fgqiutzd7jd3
+X-Rspamd-Queue-Id: 49142C000A
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782418452-699145
-X-HE-Meta: U2FsdGVkX1996Ty/9RUitgfoSRorK442vk+kEtvJanRalzCw4F2mDcr7VvkTUS9FtqrwJWsQkycz60biADxOAHUk8vnUdrovUI3SogxA+qxyHX4lKQSnsgwfdF1wE4S1Te2jx2w28SybvUx+h0lIefgTKqXnm5WYYNEv9Qkv4i9kt5TgtwmUnyZz7aCZNUaScKaghofXUbelWODtAqymWIrXv5MOTCKoGJWd588DBQJZNCTCTIFl6ELRNJQY4nW/uMEyTGg7U+LyGCPkwLwBWW4MyVz5M9U3Aspfi7ff9O5lkZFolX6a8Vr7uMxg7l3lOh8Oz/WWj29s8lQZuR74t+0+NlUCpIm8P2zThnYwpu8AmpOeOKDUcqfRLWIWs8zx0oKBZy5WZTNx6ULc2hIcke8iApwfVeLgHHwwEt/VR1wv2DZZAmYu/STuS4Sdvedswqhsg9mUHrLSE1NVrolNgp/TcWIvp2m4nTUfjx47GmYuDT5Z2ArIKTTlhvMjnDjzKqmXS+qoFZd5E2HtEFL6t2tFLL8BAbVQLaWxBU/3pK+5GdfLjmPB3Nd7mUr4s9IUBFPmWCc1/P5ZCTB/UHsS2eOyXVRP790IVy+E8yK4B/x0+whUahyhdqpKrWh/tEbSWxr3iufsNwHScHb2DxPs1z7J+MtoXIL1muWDJKpDFnjqKKxDfkFi72EZpQes94q/eGYaYq2xfTKnJKG2bsaqzdbuD8io2fXohSjEFLpX3lDpwP+GE6OEUA/I6zFHsPc3KIdFMXr74OskYQRYKJuRUoFrRRi8su9QS8LcFFBXafTtvmuhZSi66/dGuYgoRp4BhvsdNIw4zUL5MfRe70OPcM49xg2VFQHMy0i/vTaYpUi669RQgzZmTrjRMXsox79J7aRTETBbScyxQmPEzQxe7meuOyUnJJl9/rizZF9/B2mQYHDxu2OrX0b3nymqSWSNHVELwDkPiD6iyMXh4+g
- sDHUDXGd
- cnb0QFbVlDETUL9sGOnZneInXUyVVlB3cvDCXmeW/ffCV5duH1DCb8U08qvJWIhtiKMJsiUObp+4mBuftYgAiSpXvkDzi9LuDG1z8tdnX+sVCTl1pcxlGh9nZgTVRMyjFFKwZTKWFkAy3WtpV99p8R8Wx9wk/kM+tl+baPraWtj0yPh3FGgR8ORLP4Ds9Q8q78PQ4YhHxVdugh2BTV9YFtgqhsyvE53xfRm/sJnf8VoK7vSaiMNqRt8oHBx2oWhfOf65Xq6+N5Ccvn7NnaKHlVT5lRerkBJufdrUPcAQt5EnvLXLxPlxc2bPiy5yzKhFHzSh/SI4jDqydUiw=
+X-HE-Tag: 1782418455-918668
+X-HE-Meta: U2FsdGVkX191AU/Z4mwEfwwU0GClliGuArWo9xujYOHI+moCj6yRPJ7djRosmlDd2oQjyOl7GWCYTsdjeyCYr5rMrnRteHf26RgbWcKNsbVQh2qvcEjpULMQMdyrLhEOUyusv+plYj3A4PdBtxi/OwXjoc+9PPcYDdsI280/Jh2jCf98OZMQyI8AioX2V8frgXPdipwpkDaQlskhiGgurscqAppdURfyHXXCGwlAkBx5a28kb4/R164FRc9e3V0+Ouv37zKzfVOnMB1PKFlbZHkky0sEzNwXrdUP1rQnVzg7Z8M7yq94U0cIVXevLFxhtTT4ZiLXrqyxqf/umaCDDEN47svEPjdOp+mRTieQ18+AwtKTZF3W8iFvuWeTqToC93vtHNCgoASK0i8M32WpqyOnTjxxLX5+iwBnU3Of39ExkX5NpYbf+A/ETTHB54fzKW3c9+iBrlhAaw46W9GkQAKSArLBXSZZsXchiQPkB2fK6Mjj2P6PztXBjcUTJ8J6uwNRvoyl4b5vTn82KZjbXYjOP7Q1HxSvo25oFlV4WeaH/OgVr6Wv6dSzAqExhtYkirui71wCyG3Ff+un4LGRflP4IxEO6U4sXvmntNrTvOFzB3eSRpQVkz7fmVlYf3jrfvyeClI1FBr0Tt1heZUdQ2kUn20qokhi1gFlgvwBI1N8DlvF2crz7+rRONk/CmdIa5g7/DwxXswpBCCLeQfbnIRi8AhN8W1ubFO0TZdIuBvOpGxDhCIBt/vnARk0oveQhhQlBP5yN1MhbYnZZhrCSVFWSBLUTetuIz0giiAVSba1+DaaLLUrn4aeGt23dEeRhktjoUT77HjuRMR0XTh4OHjNQzYEXCDJlz+kWVIpjSNqmMHFjqWLY1Q9LN9wxHviDzlmv/bvynXC+Q1d2GP64ggGyvIxmkoZJMNcz1H9A9qmfTLap7fvclGjpKnn7zQI4bKazWlFbd4xlfm2nM6
+ C1OKpIjT
+ jJHAnnBvwcdp4twBPLGQfdv7f1igsy8n6zlvN0oOFeUArhm0f8/tEP+j/SCsxZ7J5v6SlgVXQvetiO12TZvGKA5ILynt2y6nLxNQfLqJlZJ7a5LitH3UqnpitiJ7br09CcpABDmeBH2HRA/GnqmMuTZFCvzJ7Gui2nLvExO5BHwSldWDbZw9dH+QLrJsT9MWxc5pFuT1q+OWOajdnwnHAwLNyccZpDM2JT7Gtmv1U2mnih5xfXO65/to0GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,113 +87,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now that we no longer care about getting a reference on the file, we
-can ask __filemap_get_folio() to lock the folio for us, and only call
-folio_lock_or_retry() in the case where the folio is alread yfound in
-the page cache.  That lets us get rid of FGP_FOR_MMAP.
+In preparation for removing maybe_unlock_mmap_for_io(), undo the effects
+of commit 89b15332af7c.  The problem mentioned in that commit (holding
+the mmap_lock in read mode while a second task attempts to modify a
+different VMA and causing subsequent tasks to block on the mmap_lock)
+no longer happens thanks to using VMA locks to handle faults.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- include/linux/pagemap.h |  8 ++------
- mm/filemap.c            | 31 +++++++++++++------------------
- 2 files changed, 15 insertions(+), 24 deletions(-)
+ mm/memory.c | 25 ++++++-------------------
+ 1 file changed, 6 insertions(+), 19 deletions(-)
 
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 2c3718d592d6..53b14f8b6b3d 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -693,9 +693,6 @@ pgoff_t page_cache_prev_miss(struct address_space *mapping,
-  * * %FGP_CREAT - If no folio is present then a new folio is allocated,
-  *   added to the page cache and the VM's LRU list.  The folio is
-  *   returned locked.
-- * * %FGP_FOR_MMAP - The caller wants to do its own locking dance if the
-- *   folio is already in cache.  If the folio was allocated, unlock it
-- *   before returning so the caller can do the same dance.
-  * * %FGP_WRITE - The folio will be written to by the caller.
-  * * %FGP_NOFS - __GFP_FS will get cleared in gfp.
-  * * %FGP_NOWAIT - Don't block on the folio lock.
-@@ -712,9 +709,8 @@ typedef unsigned int __bitwise fgf_t;
- #define FGP_WRITE		((__force fgf_t)0x00000008)
- #define FGP_NOFS		((__force fgf_t)0x00000010)
- #define FGP_NOWAIT		((__force fgf_t)0x00000020)
--#define FGP_FOR_MMAP		((__force fgf_t)0x00000040)
--#define FGP_STABLE		((__force fgf_t)0x00000080)
--#define FGP_DONTCACHE		((__force fgf_t)0x00000100)
-+#define FGP_STABLE		((__force fgf_t)0x00000040)
-+#define FGP_DONTCACHE		((__force fgf_t)0x00000080)
- #define FGF_GET_ORDER(fgf)	(((__force unsigned)fgf) >> 26)	/* top 6 bits */
- 
- #define FGP_WRITEBEGIN		(FGP_LOCK | FGP_WRITE | FGP_CREAT | FGP_STABLE)
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 54997e667246..d1f7efcdeb95 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -1988,7 +1988,7 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 			gfp &= ~GFP_KERNEL;
- 			gfp |= GFP_NOWAIT;
- 		}
--		if (WARN_ON_ONCE(!(fgp_flags & (FGP_LOCK | FGP_FOR_MMAP))))
-+		if (WARN_ON_ONCE(!(fgp_flags & FGP_LOCK)))
- 			fgp_flags |= FGP_LOCK;
- 
- 		if (order > mapping_max_folio_order(mapping))
-@@ -2035,12 +2035,6 @@ struct folio *__filemap_get_folio_mpol(struct address_space *mapping,
- 				err = -EAGAIN;
- 			return ERR_PTR(err);
- 		}
--		/*
--		 * filemap_add_folio locks the page, and for mmap
--		 * we expect an unlocked page.
--		 */
--		if (folio && (fgp_flags & FGP_FOR_MMAP))
--			folio_unlock(folio);
- 	}
- 
- 	if (!folio)
-@@ -3507,6 +3501,17 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 			filemap_invalidate_lock_shared(mapping);
- 			mapping_locked = true;
- 		}
-+
-+		ret |= folio_lock_or_retry(folio, vmf);
-+		if (ret & VM_FAULT_RETRY)
-+			goto out_retry;
-+
-+		/* Did it get truncated? */
-+		if (unlikely(folio->mapping != mapping)) {
-+			folio_unlock(folio);
-+			folio_put(folio);
-+			goto retry_find;
-+		}
- 	} else {
- 		fgf_t fgf;
- 
-@@ -3528,7 +3533,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 			filemap_invalidate_lock_shared(mapping);
- 			mapping_locked = true;
- 		}
--		fgf = FGP_CREAT | FGP_FOR_MMAP;
-+		fgf = FGP_CREAT | FGP_LOCK;
- 		if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
- 			fgf |= FGP_NOWAIT;
- 		folio = __filemap_get_folio(mapping, index, fgf, vmf->gfp_mask);
-@@ -3540,16 +3545,6 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		}
- 	}
- 
--	ret |= folio_lock_or_retry(folio, vmf);
--	if (ret & VM_FAULT_RETRY)
--		goto out_retry;
+diff --git a/mm/memory.c b/mm/memory.c
+index 0124a87c3e81..316c0fcc865b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3701,9 +3701,9 @@ static vm_fault_t do_page_mkwrite(struct vm_fault *vmf, struct folio *folio)
+ /*
+  * Handle dirtying of a page in shared file mapping on a write fault.
+  *
+- * The function expects the page to be locked and unlocks it.
++ * The function expects the folio to be locked and unlocks it.
+  */
+-static vm_fault_t fault_dirty_shared_page(struct vm_fault *vmf)
++static void fault_dirty_shared_page(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct address_space *mapping;
+@@ -3729,23 +3729,10 @@ static vm_fault_t fault_dirty_shared_page(struct vm_fault *vmf)
+ 	 * Throttle page dirtying rate down to writeback speed.
+ 	 *
+ 	 * mapping may be NULL here because some device drivers do not
+-	 * set page.mapping but still dirty their pages
+-	 *
+-	 * Drop the mmap_lock before waiting on IO, if we can. The file
+-	 * is pinning the mapping, as per above.
++	 * set folio->mapping but still dirty their pages
+ 	 */
+-	if ((dirtied || page_mkwrite) && mapping) {
+-		struct file *fpin;
 -
--	/* Did it get truncated? */
--	if (unlikely(folio->mapping != mapping)) {
--		folio_unlock(folio);
--		folio_put(folio);
--		goto retry_find;
+-		fpin = maybe_unlock_mmap_for_io(vmf);
++	if ((dirtied || page_mkwrite) && mapping)
+ 		balance_dirty_pages_ratelimited(mapping);
+-		if (fpin) {
+-			fput(fpin);
+-			return VM_FAULT_COMPLETED;
+-		}
 -	}
- 	VM_BUG_ON_FOLIO(!folio_contains(folio, index), folio);
+-
+-	return 0;
+ }
  
- 	/*
+ /*
+@@ -4098,7 +4085,7 @@ static vm_fault_t wp_page_shared(struct vm_fault *vmf, struct folio *folio)
+ 		wp_page_reuse(vmf, folio);
+ 		folio_lock(folio);
+ 	}
+-	ret |= fault_dirty_shared_page(vmf);
++	fault_dirty_shared_page(vmf);
+ 	folio_put(folio);
+ 
+ 	return ret;
+@@ -5949,7 +5936,7 @@ static vm_fault_t do_shared_fault(struct vm_fault *vmf)
+ 		return ret;
+ 	}
+ 
+-	ret |= fault_dirty_shared_page(vmf);
++	fault_dirty_shared_page(vmf);
+ 	return ret;
+ }
+ 
 -- 
 2.47.3
 
