@@ -4,169 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9C07CDE008
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:12:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89D60CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:18:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C08D6B00F3; Thu, 25 Jun 2026 07:12:41 -0400 (EDT)
+	id 6573C6B00F5; Thu, 25 Jun 2026 07:18:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 671F86B00F4; Thu, 25 Jun 2026 07:12:41 -0400 (EDT)
+	id 608766B00F6; Thu, 25 Jun 2026 07:18:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 561416B00F5; Thu, 25 Jun 2026 07:12:41 -0400 (EDT)
+	id 4D05D6B00F7; Thu, 25 Jun 2026 07:18:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2747D6B00F3
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:12:41 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7EE90A02D1
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:12:40 +0000 (UTC)
-X-FDA: 84918172080.29.ED1BF5D
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012062.outbound.protection.outlook.com [52.101.48.62])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4ACD040007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:12:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="UY4uf/3V";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.48.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782385957;
-	b=rLuGA3CdQ3q0nafIX2Rs4tBWqK7Z7q0/OxBYGzSVm7DbCNCdjaZg8OMAPb8f6codBpXM2L
-	Vmpex/OrwzeYNxi6glZgAOsl5xPh2xJTI+T20kowkLkjOWkndjXq/U6v65PiWdt2uX5yZ3
-	nu9xWbktyB7cijVj/hzkyU2WTsPXRJ0=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782385957;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 229836B00F5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:18:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A40CE1C5EE8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:18:27 +0000 (UTC)
+X-FDA: 84918186654.02.6116960
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7DD274000C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:18:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wZ2fd8KF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qVqV3yoj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wTCRJlAg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iBb7rV6+;
+	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782386305;
+	b=lTDML9tMVaUDsyhdImk0a0z36t0SJMSWZCAdPDrqM8JkYKRpnoSnSj/UJK1QQyf0FuZYT+
+	i5EyP6VB3KgKkxVINmW1fR7casNk5kKQrTHjOfgvPjEkumLDFcj6HWZjRKRjzanq8ZAK7q
+	etDMacQ3Qzq6O6Y9vGRvdMfYuWKtYOU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782386305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8CYPBIXzR592n+h3Pk2QJtmy6IYcxT6NJi/h+xWT3kA=;
-	b=4Tab0LV01DpW8KXIo9Yoq1vNiiy/dg5WBg8aaXtwZ4xxGCx13xBWbufiD3gbV0wwxXDcpO
-	CoY6BcisaLXlRSyng997h6Gx15A5BuKwtHfrgR8Ibcr/VoIXjBl3aloIHTPYEfABiXwk19
-	RLsgDN7cdMunJuHnPXW7VOvVp74VhDI=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="UY4uf/3V";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf12.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.48.62 as permitted sender) smtp.mailfrom=balbirs@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NODjIl51ZYoMrYQEJlD8Jeapju0l0RQHm4vg+uxPWR4gFhNx3FD0qaTeXjtWIGftx8Mdo1VSgKVmCTqva4TtQFNrwEZ2+RAu8Si+Ac/UcoaGKdTNlrWp728+OymqaeXSH2JPXlN7GS1NsGB9kmfjvDbvxAWUycNgHITCK4DnFYgwbcPIg2EPKD3RptTPV8Eta5kRloWEsYYZrrNCBBATwgzgCXOYvvmWiq/NSHC0Qvk7dKuXSLULpOkPTFBIClckdgV4gnh/sUGEvdWjQBZMnSHya2tNexul2y/ePXX3vW2IcJSD3DGxn7FUr9qtb+/vDPFLUuhDFtsWYnIZDPPJTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8CYPBIXzR592n+h3Pk2QJtmy6IYcxT6NJi/h+xWT3kA=;
- b=X+6DNLU0SAOaBjUrMwlmJOewAX8LLtaunmPut2TilqISdVqPFMufcH5Gl2vZuou0UeLXQcqz0PTY+z77Kse6hNHxL/+997QNdFXHBj9vC2w5ttEx5LK3FMaWt0m15vZpUZGQQZYJDnDAKOB9RkAtXJArUWzP9ZEFTiiETjtM/uDWMsTBUAZ3/AP7RO/pKXRdqDAmQWO4jnrYzA13unF8XiEk2cPjD9p8It4c+y3/VUK4Az6CMZI7GAARW+XteEXbSbauByDMU/9SMO4VdbBb01dzNRZBF1fPMxP1OO+PUNMu9U1kVOmki5j6qPkMqNQdJJb2lTWT/1aWpdsY+Se7CQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8CYPBIXzR592n+h3Pk2QJtmy6IYcxT6NJi/h+xWT3kA=;
- b=UY4uf/3VXS7Ch/xX1Hy+qTgITl2KsZxjIdwuuszCuDz/+S5A3Q/j00a3KVSm7ZYKJYUMNq62LPZ0tH5GJ8+/LOkpiHhLifErfg2GqpFiBmKu/wSkEBVDuGORir8qbOetJlSz9DuZ1dX9vFEVpPlyGtN43a4ZLUNHcsIzcyZQ/VIJbVlRRaUundHYTYvsqVMYO3ipkCq2bmVSrvw3UE+SFsINwBI/gVVxZe66U0TrgSJ0VF+NB5a93EEE/J6d5TkdtuJXymseacOzdrkzyghCtGI7o6il176SsxQDzo3ZM2S0UcGaU+pYtd0CB4GkoKQkunLmpoDOxFKkljAD6dYoAA==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by SN7PR12MB7155.namprd12.prod.outlook.com (2603:10b6:806:2a6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
- 2026 11:12:31 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%5]) with mapi id 15.21.0159.016; Thu, 25 Jun 2026
- 11:12:31 +0000
-Message-ID: <38410976-ddac-4848-a4ff-e6a9f7d9c828@nvidia.com>
-Date: Thu, 25 Jun 2026 21:12:23 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD
- handling
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, ziy@nvidia.com,
- sj@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260624065353.1622-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SY5P300CA0056.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1fe::20) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	bh=wS7HCowsUPsGLWq4kYgveK/eXMt5estp4NToKX/ScHA=;
+	b=6IVIeN6REYdmIzSxA+XWYlJtihzM2ZsUu2XBPlb1ITqWqb/ULtLN649j3t++M19Vsqdiob
+	XbmHt5khX2KF5JvFqKeFwHoNlF6pfOf00FIR6pP0RxQvClgiv3N6JWMrqlxR5pyKaZnmqo
+	cho3yOxeA/qx5q5css4f39rqBoQd4sg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wZ2fd8KF;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qVqV3yoj;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wTCRJlAg;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=iBb7rV6+;
+	spf=pass (imf27.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EDD556AD60;
+	Thu, 25 Jun 2026 11:18:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782386304; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wS7HCowsUPsGLWq4kYgveK/eXMt5estp4NToKX/ScHA=;
+	b=wZ2fd8KFs12YXaoDgDl0NtnhKN62mrKoMhgGrw/weqg+h3wlB8q/Dd8aEjxPWUb2OGMr+v
+	eAjPl+q4BR63uNOeFkHlhMmdqopC/8iW0yMzJ63Di4CKR7UNmYiXVvKSL1n+rGE5VKorXW
+	ABHpCJ2iNxH/8ccA3Q1gqp/C926OTlk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782386304;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wS7HCowsUPsGLWq4kYgveK/eXMt5estp4NToKX/ScHA=;
+	b=qVqV3yoj/MOHmxpi18pJgFl0pJu9724jWCJQ2j7UHUxGnOlWZBoGIX1GgwzMjNoPWcr9yP
+	ewm6F23n/PWdxICQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782386303; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wS7HCowsUPsGLWq4kYgveK/eXMt5estp4NToKX/ScHA=;
+	b=wTCRJlAgCUS7GeSCT8K5uava4RfGrbYoUSWbuchy6dU2QVhXtmz7NZcYWp6gut27uO3Kni
+	7zQcotUeL1rElAnYPnAOhMjJ4/LVveXtnWBqF1O+AmtdM0XRKcawuehrU/Gz+eTYFF+gZj
+	Ekj0swLGgBIdQA+w/OeiIOQH8e3pA0o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782386303;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wS7HCowsUPsGLWq4kYgveK/eXMt5estp4NToKX/ScHA=;
+	b=iBb7rV6+Sqd2PpPPtA/KItDvtkDbDc4465Qv1vntUlwNV+mafdIKZ/zB6i+oDekOhhEUsO
+	FjDOyrE5Wk7VwgDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 969EC779A8;
+	Thu, 25 Jun 2026 11:18:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mSuJIX0OPWpLXQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 25 Jun 2026 11:18:21 +0000
+Date: Thu, 25 Jun 2026 12:18:19 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, mjguzik@gmail.com, 
+	ebiederm@xmission.com, viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, 
+	chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, keescook@chromium.org, 
+	mcgrof@kernel.org, j.granados@samsung.com, allen.lkml@gmail.com, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+	Xin Zhao <jackzxcui1989@163.com>, linux-mm@kvack.org
+Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for
+ pre-exit before dumping
+Message-ID: <aj0Mr3e9yt0kU-Qj@pedro-suse>
+References: <20260624145552.70143-1-jackzxcui1989@163.com>
+ <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+ <9105c433-44a7-4e8f-bacb-def93d11a7f2@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|SN7PR12MB7155:EE_
-X-MS-Office365-Filtering-Correlation-Id: af4f5937-0f84-4a48-cd0b-08ded2aaa635
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|366016|1800799024|7416014|376014|56012099006|11063799006|18002099003|22082099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	Q3Ewusi07GuDY1TtPvncyUPvDi7uBLcv8FS8olFLQXInKlYiv9XCRj4IyM2eN90iL37akFubUGMaLYn/Q06kwirRn9rt8oeASMTIpldPF/hFhJKUdAE6KwORMZn2pHoBJuh1vp4fdvSlN8GQiW1axdbw7Qr/czZC91xwHTgRgaelYW5C4FNNRsHmJAAC/9KkknRCFGw83Du+4JupoEb37SyaLKYDRYmu6SgxMphxBfYaaw0G0jC6JgnfG/BrLqBQUNpbTES5wD6CiKOjj6SoXevBF057N2CS9FxEtJl8TVjqz8qO2sqoS0HpGXsV9sLY8Ul9/5VqGH479AlODp0AJpAd9YIe1Fl1xSc5A7myiieftQsYcBY/hcHQLXUWX0FuugzXQv3pc7T0sWGTXLK/awBM3YAP7KOdHaYED6mwLRCd1NQszXqN18WCIbP0RIvwnDld/OyS27u4M/oAFdX+QE/DG83SP4EBnLKo5eWEtddIT01JNqXhoWVAX0jUb6TZnspdq/WWPPICKbjLyVeOBkiMl5k8AmMrtsB/nzmKu3CCY6zF6slM9UqHNdy/GBXPy+r3+ckDrk5vN5HbGxQOR6pD/rUSkSd3VI1gawzIO4NLD9NSzjANMTw8TIwUkr/PmwESwOToJpzEzDY3owY3ZkhTvlp+5VqCCQJa5zbIFvx6WXCYi9qqHFpbe4kyMP6zsIUNcWR9akOtOu5vJ6vahw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(56012099006)(11063799006)(18002099003)(22082099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEZsbVNCK3FlTTVTYng1RjQ2dTVhOVRmVjhoWHdIWHF2eWtoZnRsR1JBQmVU?=
- =?utf-8?B?QlpxL0RzZGtJelhkZmNqMEJlK0tCQ0FpTEVYeHdTQkRJSFp6eWR5cXFyZ1Ew?=
- =?utf-8?B?RzZzcXZPakdYZDlYTEhRZmRYMEcrVkFiL25hSWlIRi9WQU4rU0tZZmpZQTR2?=
- =?utf-8?B?TitxUEhuM1RERUpJeEQyb0Z6UVhMSkZpOVpnNlEySmtCaEdGZ3M0cml2N1Vh?=
- =?utf-8?B?d3o4K1JUZmd4QUh0empVRmQxWnFWeDBUalBjMktYeVdidjl3ZHBrWlZYQStC?=
- =?utf-8?B?TVl3dGhZYmZwb04reGdhdFc1RXlIcWFjZ1FKM2JuNTYwbmg1amkxcStNVW4w?=
- =?utf-8?B?VTVoY3M3dzhvdFRIZEFUUmU1bktWTExndnBRNloxN0RRaVNwcXNiWVZJSzd6?=
- =?utf-8?B?Q1A3Q2hrWnh4M1EvcEVSa0VXNEcyY0pQQmFpNW96ZVJ1cnd4Z0t4cVFISFMv?=
- =?utf-8?B?RnRtdklUM3hSaS9XazIveGpCcmd0MnBCU08rcjUyNmpHUXNCNmExOVlRL3Ez?=
- =?utf-8?B?dVlSU0xuZ2xsTlFBdHhyRm0wbVd1VVI2MmNRQWVnUURqS1pGZ1Y5aDh1bWN5?=
- =?utf-8?B?R3hRNm9hSnQ5U01paGltZ2pGTzlnbEYyMm5YVTE1ZnNuZDFxV0xCZWQ3RjYz?=
- =?utf-8?B?NmN4R3lrTTQzRDVuMmdoeFQvYVhZSVQyaWtmUk9TcjhXSkRjakgrMERWTUpp?=
- =?utf-8?B?bFUvVE95OGFUbldPUk9wTkpSdmlreG9IRzBUWXBaSC9QZW85c0dGdnR1dkJa?=
- =?utf-8?B?LzUzM3Y2VElqdFVKOVhwMlBWMGxoR2h1ekZDK1NIamNqV0UrTjNUK1ZHQUpj?=
- =?utf-8?B?UFh4b091TzVKOW5QK204Zkx2OHlScUw2Tjh5QVU2ckUvTjRVVmxSd2JkTTEv?=
- =?utf-8?B?MzhQUnUrbnhwUE5tRmJ1dXFhQVNOYWgvMnNRdEJJR0FiSHp4bUcyTy84OXRs?=
- =?utf-8?B?NmNJd01UOUxzMFIrU1J4ZjhVQ3F6UWFUV3ZoSUtoL1JwRmJRSXlwcDdxeFVY?=
- =?utf-8?B?UGRRbm5PZ2pPWkpmdUMvRGRHcStVT29sRVRzalU1NkpHaVg4SDZJSjJOY2hq?=
- =?utf-8?B?TDRpYVRRdmdPWndMUjYvUmRPbFhBS1N0ZllmSFN6K2g4TmVla3pZZmQwZ2hh?=
- =?utf-8?B?ZHI3SjBHSUkxRk4wNDcyMXF2eFI5R3lEQVpvdTBZNnRRUnp6dElkMVFYVDdj?=
- =?utf-8?B?cGwxMWtvVWVqUWpzeTY1SDVMcGU2SkJUcmxqdXN0UWdqMzJENnFBNC9FSi9D?=
- =?utf-8?B?Z2tPT2kxMGZWVDJOejZHY08vTk55UXJXcWVvR285MCt4Y0E4WGhCSzNVak1V?=
- =?utf-8?B?a1JTNWx1VU9LdDBLS0g3WVVwNjBHbHl4Y0M2d3RPVWN6TkZTbTU5UXNJMWFk?=
- =?utf-8?B?RFdtYUdYNjdINm1TU0lTbDNGbjRITzFPTWM3TlFwek5VUWY1eFBkcW9NMlBK?=
- =?utf-8?B?TzhvLzdUdllNajR2bFRSandzK0x0RFB3TzdOb1NiUFhUd3Bsa2psNWcvOXZy?=
- =?utf-8?B?bWNpUysvZW00U285VStERVRZNDNCSHJnQ1VnakNjeUo0elNYNi9uaXdiV3A2?=
- =?utf-8?B?QjRyZjN2aS94KzRCbTlFTVFoTEUyVVFUaEpjdlRMMVJuZkViejN0WVd2OTZB?=
- =?utf-8?B?ZkxqSUJlRlFtbExLblQ3enJrYUVaT042c0xtQ3dIc0xNREZlQ1hxM2xYV0U5?=
- =?utf-8?B?Qk5GaWN3MDRjaEZRN3ZQanh1N2o3UjJTemkwNEFlRXBEU1ZTcXJvUE83TEdk?=
- =?utf-8?B?YWFUOVFnSyttVFVkWUtvUzB4bTN5cEhGTGRsd1N2cGdwa1NmbVVHcThsSzg4?=
- =?utf-8?B?cS84a3lramJSVEcycmxSQW5GTElpVVB3TW5BdjAvWkRuOHlPK2RaYmZubXMr?=
- =?utf-8?B?YVZuZUxvUTVDMDNiUTVRYlB4V29XVnZTT1dBa0p3eGQ3RmdJVEZCL1VMRkoy?=
- =?utf-8?B?aUhFVEtRMVZ6Tk5NeENWM0txV0ZIaEQ5eHBPLzdBcnc0RFZ6dW1vLzl1L1Az?=
- =?utf-8?B?UTVHRDBscmFuT1BCbDEybzNtU2dhcGgvcTIrZkdHM3AwUGl3alV1QnNjdCtz?=
- =?utf-8?B?bUxLMjFXRE1nUDRlZHBTa0RIcHpxZTZWQUs0SFZqYkZDeUc4R09NcDhJQTFx?=
- =?utf-8?B?Q3Y2NVk2OXlsTi9QT0VTQzRIUFIwdFpVSktqWUxRU2thODJNRVZ4M0tPL3M4?=
- =?utf-8?B?d0dOSWhVYkhDL1JDNG44T2tWSk5IUE1ML1E5R2FDNFR5L0RnanlqcHdhVE9W?=
- =?utf-8?B?YmRxTWJHNHZ4Wnk3NWZQRzdWYlNMbEhHbXBMc0dRa0ZSSXNpK1FOTmFuYmhr?=
- =?utf-8?B?TjBqVS90OXhQRWF3RTh3eWcyR0Y5UCtLVVl6bUpoWndZM0d3L08yQT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: af4f5937-0f84-4a48-cd0b-08ded2aaa635
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 11:12:31.2519
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DrFEyVLrBSwZ+aQdGYktkGQpWLwCN+fuOwGHpPKec/rxGE6GLtrZ1CIcM4lff77C0iW9qDxZMSiYYylenWhm3A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7155
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9105c433-44a7-4e8f-bacb-def93d11a7f2@kernel.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4ACD040007
-X-Stat-Signature: 79q4cxs9pc6ybxcfhd1a9t73iton9uz9
-X-HE-Tag: 1782385957-554625
-X-HE-Meta: U2FsdGVkX18vyI6Mnc690ZIsM8dm+kqiXFmg07SzILelLutI6B322x3m9d63JMd4HzBMNkBn+x6YwqQQ+YVRmiyVEaDAgwDb+bn1DO5qqgjmvFjaT+rZIkI9W2UNmpo0N0nqiNZumux8HTDIQZiuZ33+JgxdyBm2wPzn0pLU9bt6hTU9AOEp65XoZ3TLJi19t7NrMlLoW4Lbu1tADkcl6AVQJy1JvafSEQer7LkwGWqzxxXUT6LxT5aPtdX4QpNgsMIK0mZ76WIimtBeTAIcJ7MwET07EyQr+x+qM5hqPmkkDksONDZk8U6+oaKnMR3nHC6z2FDCrTNTBHYRKVfLc39Bqba8n6sH5KdElbXu61nIwhwdl+GEzCqxUFq1hxfKY5mPP6B04/3Q4rKL5rv6bX9+mn79q0pZLOOX+rJU1yAzIY2OsgtCGIz8LBC2xDGLFE3fW42cNMNvkZNyQjcua6V+UJkhltO/HzdowFqj4em5AnsirIEmIUPOMR+89qHQN42cuA6Tt9thmasoIYioNE6FEqDfnxL54xBYlff5PK/ukk4pKYjo9wB+p2NQD7UeRIKjcYPvp7xe+t5xLZyZq7Fp58aBgqTafOseSUJl1Pw6dUsHznmy/mEwBJsUdw/gemx63XU0b9i/DNXgG5uE0+5m1xUOSvE5pG4BINf6j49kloNc1FsrCRNjSyDQyeFL2wN6wbgW1f9GMutxGrRLM3dFlw/KIMTuzf8GdOpv/KmjbaL3rftOgnD7xyremOObaoxBr9Z2J6yVmI2E5yDwbig1700u8Xr2C3JTHoBXJN/n6IclUYUFHisixMOofC2Ubhe4XetDvyGCba0rQzwV3Y7gnbxJ2P56VGWcTVxG+nXG4i2aPXIRPsccozl6MbqnvtfC4HKhzuYPk8uB+4NDrBqBgHEGlWP1yTOOVjnNMUToy7UvLBODD2WsPb1vP/mAS9nB3IpzU4uEBafUiC6
- mKNPk+0M
- YveXOAzZXawZnLrPGekNWV9WGcGqsvR1tAv1o5glhtPjNcD4W2Y9rjE1tJOwFbNzB6AedCR7sCGvl5a65lIcfE7Y6RJqxMYwkLu4I19q2m4WxPMmPRCJSd4TPanTCbMd5F0iebt3G9WcYqUsI4D01Iq4EDLYMHWh/TdrNYsbmZSeP/eTIQoy1qNXj2dqjzqmWPb5N2Z/8Ve8WIFWPCW8/LE8SEljhz8NimHyWlJ6d6nvaAlBVDJ2y1zoRH6zkPtJ8HI+iVPdFahZoMHkl6ZbQk6LCh4kMGJQ9pu4yR0b4XBGUOjowFIl7og6pwikWYBlQCJJcCeVHpINApc0z8ZMFngecZQms1StFV7S3b5nGs0dxLYGPfOgQ4gsWkwCOkLg9CJQtCixkZpzjnTS1cKS3iT3VgzEVO3P3L+mBqaTg+a/zFUDTAPrjYkQwaxMN7kF9cv7zAvYa9rilWBaJS2JS/H+/CtyENuaMlY4vhcz+/70ICetqDDxQc9eYTNLfQD52xxnmJRCM8D5LwVzg/g61VlwP50FdSBzL2Pzv1LXRPjj6+qngYUmXchak2n3PwDSF+qY9Ym3Jx9wy1uVpag/H+2QBC5+Euglaxu8T
+X-Stat-Signature: nj9d9nmamaidjy551bqk8nuw9rq7fmzs
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7DD274000C
+X-HE-Tag: 1782386305-397792
+X-HE-Meta: U2FsdGVkX1+IQiu/BXuxVLm+q9OD0cgfK8vObMOSEhN7+KNleugLS+VRQSRixQYAxc4aarTj64fscytGiPA0/UImORlc1ScgWF08mmT+3vIpM0Vg4w8uRtWa6hEsMWXuQhJc9XHj229n1ILYhXO2hXaBs0tbMDRVLM22nPw2LJI9Ogp6zVk3WgwtMOblCmicep3c2xtV7Vz2NXln2vEloyIkvGKgj47OV57tg/khivA10q47//FEHpAQp/YdcEJgF8E1CJ36dRQt3FXXcJ2gnJq5u3CW3SSF8ylP+yOdZ/W+3K9Y5Sy0ADjZpqm+A/PO7KmkMg+OGwX6zicd8A8ojbqhL2Yx5DoPRlk17p7MvtrCawYL4a6c+NVCWvsQ0+KKoyCxqNNzOUBBG0ZgMmEqJq157eGsgKVxPY7fo9EPJ4QVAXxsHqvn56v/uXMsFeegQRfHNxWFQlSMAcKwmu7vH7CzrCfNQPYqgvz0Oh0rxSBCDjVut7Kgeb89pOTGPDL+aQkqjKINsI01O4pMX+naVvRQmE+xxoUpkszn65yffGNonU50cwfyin83HEa6TpcCc0jh/oCpIRXCGZ7AmuwdrU/r+OxeAb3qMAvQoUGCJiff92aTL2eI4qLkHaXsX/XK9TdG5tBXta1rmkbv+/cw0yxre99Q6QSpgM8vnqrpB6hwddZ9dt7BUrEwuP9C8D7ObEpAxlb7scppqBrspRnwMPVApTgDmI61hf71PtueP94a+d0/Awr+Gfy7LJ/erc8STBc8yKezEbskDDBtsioHlyRUmRpGiD2wDZWUPYUyWo83i+RfzM46CPqdgoLe0h2oGQd/U8L9oKwXOZkGcWy9rxhzu1M5/7LrCLYu2/ydn1/KoEs+WER1dC3SeCi8ElcJqNQtaIKYen/bcakJ0qCgqoVMMeC/fq3fAi0/iOS8xrw2Cu/XoJODpIxTml1ImiBQuZ5/zYzZyohQpe8VTbc
+ LVKSbM/4
+ 5FvVvPhl6W8FwSobOj/AjPGOt4SvdWqdVdV/L5mM5GQG//PGszgjiNwuYCvG2Ez8W512I0hnsnlOhK3bq4LcawLQZLR5MgsXSoBmBKsUUHMvpHzOxHnjPnfDVh8/EJ+R/6MuXxxGQ4KuIUoCqWleZyvRGS7AXb1DGP5e+T6pxJgKy1efX2xbVz4JxtL+GIG9aYZ5raaRFan/nefss2b8FXlvGCzabBo3j8AYbdWiOXmuC4ETFH9XmVenn4FMNCW+aYrHuN8uhpYs5oHTuc2i4sI+nB44t7JTLLjaKLLHaq1ew/tcNqBOR1p8hMarSMyG0+RcLVzEh9fsHU6FJuowv/T165EV17lwotcZSh4wNANBX6EW+lVDXp2yGIEIGFJ3ci1DJd1+D3VnriSKwsX+ktNpmsuHtNJx6PvqLRWR8mL1B1Lk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,106 +138,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 16:53, Wei Yang wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") introduced the concept of device-private
-> PMD entries, but did not correctly update the rmap walk code to
-> account for them.
+On Thu, Jun 25, 2026 at 12:57:02PM +0200, David Hildenbrand (Arm) wrote:
+> >> +
+> >>  #define F_DUPFD		0	/* dup */
+> >>  #define F_GETFD		1	/* get close_on_exec */
+> >>  #define F_SETFD		2	/* set/clear close_on_exec */
+> >> diff --git a/kernel/fork.c b/kernel/fork.c
+> >> index a679b2448234..84f1ee7f32cf 100644
+> >> --- a/kernel/fork.c
+> >> +++ b/kernel/fork.c
+> >> @@ -1030,6 +1030,18 @@ static int __init coredump_filter_setup(char *s)
+> >>  
+> >>  __setup("coredump_filter=", coredump_filter_setup);
+> >>  
+> >> +static unsigned long default_dump_pre_exit;
+> >> +
+> >> +static int __init coredump_pre_exit_setup(char *s)
+> >> +{
+> >> +	default_dump_pre_exit =
+> >> +		(simple_strtoul(s, NULL, 0) << MMF_DUMP_PRE_EXIT_SHIFT) &
+> >> +		MMF_DUMP_PRE_EXIT_MASK;
+> >> +	return 1;
+> >> +}
+> >> +
+> >> +__setup("coredump_pre_exit=", coredump_pre_exit_setup);
+> > 
+> > This makes no sense. I think you really need to sit down and think about
+> > a design for this that doesn't introduce state machinery for boot, mm,
+> > and the VFS in one shot to solve a fringe problem...
 > 
-> As a result, when page_vma_mapped_walk() encounters device-private
-> PMD entries, it takes no action other than to acquire the PMD lock
-> and exit.
+> Staring at exit_mmap_mapped_shared(), ... this looks rather hacky ("let's fake
+> munmap and set some magical flags").
 > 
-> However this is highly problematic for two reasons - firstly,
-> device private entries possess a PFN so check_pmd() needs to be
-> called to ensure an overlapping PFN range.
+> We're essentially saying "we don't want (pretty much) anything that's MAP_SHARED
+> in the coredump". And for some reason someone should configure that, that's a
+> rather weird toggle tbh.
 > 
-> Secondly, and more importantly, if PVMW_MIGRATION is set the
-> caller assumes the returned entry is a migration entry, resulting
-> in memory corruption when the caller tries to interpret the device
-> private entry as such.
+> And the granularity ("file-backed shared memory") is completely odd.
 > 
-> In addition, commit 146287290023 ("mm/huge_memory: implement
-> device-private THP splitting") allowed device private PMDs to be
-> split like THP mappings, but again did not update this code path.
 > 
-> As a result, we might race a PMD split prior to acquiring the PMD
-> lock.
+> Aren't there other ways we could optimize this internally?
 > 
-> This patch addresses all of these issues by invoking check_pmd(),
-> ensuring PMVW_MIGRATION is not set and checks whether a split raced
-> us we do for PMD THP and migration entries.
+> Like, if we know that a process is dead and cannot run anymore, downgrade writes
+> to reads (and make sure we block GUP write attempts accordingly), or would that
+> also not be sufficient?
+> 
+> 
+> Another thought:
+> 
+> fs/coredump.c calls get_dump_page().
+> 
+> get_dump_page() will not fault in any memory. So if a page is not in the page
+> tables at the time of the dump, it will not get included in the coredump. Which
+> means, that whether most non-anonymous memory will be included in a coredump is
+> already like playing the lottery.
+> 
+> This is true for MAP_SHARED file mappings and MAP_PRIVATE file mappings without
+> private modifications.
+> 
+> Which makes me wonder: How much is tooling relying on file-backed pages to end
+> up in a coredump?
 
-Should be PVMW_MIGRATION and "us we do" -> "as we do"
+FWIW this mechanism already exists, see /proc/self/coredump_filter. The
+default is bits 0, 1, 4 and 5 (see core(5)), which maps back to no file pages
+being dumped to a core dump, apart from ELF headers (these help the debugger
+trace back the mapped binary to the debug info using the buildid).
 
-> 
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> 
-> ---
-> v4:
->   * refine subject and commit log based on Lorenzo's suggestion
->   * put pmd device-private entry handling in its own if branch,
->     suggested by Lorenzo
-> 
-> v3:
->   * remove cleanup part, only fix the issue for device-private entry
->   * refine user effect description based on Lorenzo's suggestion
-> 
-> v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
->   * specify the possible error case of current code and user visible effect
->   * besides fix, cleanup the pmd entry handling based on David's suggestion
-> 
-> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
-> ---
->  mm/page_vma_mapped.c | 20 +++++++++++++++-----
->  1 file changed, 15 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 2ccbabfb2cc1..17dff8aab9f9 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			/* THP pmd was split under us: handle on pte level */
->  			spin_unlock(pvmw->ptl);
->  			pvmw->ptl = NULL;
-> -		} else if (!pmd_present(pmde)) {
-> -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> +		} else if (pmd_is_device_private_entry(pmde)) {
-> +			softleaf_t entry;
-> +
-> +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> +			pmde = *pvmw->pmd;
-> +			entry = softleaf_from_pmd(pmde);
->  
-> -			if (softleaf_is_device_private(entry)) {
-> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> +			if (likely(softleaf_is_device_private(entry))) {
-> +				if (pvmw->flags & PVMW_MIGRATION)
-> +					return not_found(pvmw);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +					return not_found(pvmw);
->  				return true;
->  			}
-> -
-> +			/* device-private pmd was split under us: handle on pte level */
-> +			spin_unlock(pvmw->ptl);
-> +			pvmw->ptl = NULL;
-> +		} else if (!pmd_present(pmde)) {
->  			if ((pvmw->flags & PVMW_SYNC) &&
->  			    thp_vma_suitable_order(vma, pvmw->address,
->  						   PMD_ORDER) &&
+So the answer to this question is "approximately none" :)
 
-I looked at comments from Lance on "device-private PMD <-> PMD migration" and had
-the same comment as David
-
-Balbir
+-- 
+Pedro
 
