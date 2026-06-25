@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78515CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:08:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B173BCDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 05:08:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D86D06B009B; Thu, 25 Jun 2026 01:08:22 -0400 (EDT)
+	id 39BD86B009E; Thu, 25 Jun 2026 01:08:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5F746B009E; Thu, 25 Jun 2026 01:08:22 -0400 (EDT)
+	id 373026B009F; Thu, 25 Jun 2026 01:08:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74E06B009F; Thu, 25 Jun 2026 01:08:22 -0400 (EDT)
+	id 2899D6B00A0; Thu, 25 Jun 2026 01:08:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 985526B009B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:08:22 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1B788405B4
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:22 +0000 (UTC)
-X-FDA: 84917254044.27.AD8851A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F13B06B009E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:08:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6ADB21C5F80
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:23 +0000 (UTC)
+X-FDA: 84917254086.03.BB5F9FC
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 8DA5B40003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:20 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJRpyT4;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id D5D75140008
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:21 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DXmjOlvo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782364100;
-	b=vuWBQbpkTT5Ja3pSUBVQV3f3c8FyxX+5mk9QG69FhitI7pAIh/cyO379K7jjShNVk4cOiz
-	trROe9veziQmS56J+3XSrAPKZCkQpvIV2Fk5ylk883fLxyCRNBbVr/dQxw1ug+2/LOYdMI
-	d3dNYGGAYORVlxIS8mLa7fgRbV72Xbo=
+	t=1782364101;
+	b=NlGqyVQsrekA+JpRE3zcH0eoxMQYtrr7lHcSnjHyusj4+yreRzGxkV38sDcld13UuEbnqf
+	LTQ3h+m8QjLvsmI3DtwnxS8Zq2y8aU29hXraVXtdx6BeH4XOjTcx0JDjNWvkvdS+knFcxs
+	NesRzTVTbHq44JhN4MKaPXf1sPI03ZE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782364100;
+	s=arc-20220608; t=1782364101;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L4nqp2h8NJB/cbBvBAnNHXHs1MQz+3ybtLtYTB71w34=;
-	b=C1MiCzE/UpD4IN+g/PuPO6uYTHrIu58z3XgKUgguIfsJDokFCwXY+r7bzM168ZIsPxHLcf
-	gqeebt86MLtXKeJKLEsBuUP86nzNJOMFSMr+VgNqITa26rXDGbk1CNdaod2OeyAHt6fBt3
-	JZr1tJwOsC+/CQCZFNjuiSKsvYkfEeo=
+	bh=cdSH2MRv6NGKB8iMyxrijXWFPfgdd88XHA0wpbHvk+g=;
+	b=jJVGFRFsBTG4nMcUev+24//iGC1NInozJ0ddubW2Ehv7bsUZn5J/0nGdKBtDGC3ndE0Zcu
+	wn+YPh8E+IiBqBiy6h1njTNuFgEmIja999wIu3qCOvGM4TOOTEW5rrvTT9FsAUTc6a7bxy
+	WMErMO0XGJLiD+g6mMl+c74vjsJLcp4=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VaJRpyT4;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DXmjOlvo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2D00C60123
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD611F00A3D;
-	Thu, 25 Jun 2026 05:08:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7BA11600FC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:08:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EEA1F00A3F;
+	Thu, 25 Jun 2026 05:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782364099;
-	bh=L4nqp2h8NJB/cbBvBAnNHXHs1MQz+3ybtLtYTB71w34=;
+	s=k20260515; t=1782364101;
+	bh=cdSH2MRv6NGKB8iMyxrijXWFPfgdd88XHA0wpbHvk+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=VaJRpyT44V81xCKSMTidxJDBudtkzs0adTpZz0z6TI6CjpWXHsz4nupNV2nb01PiX
-	 Av2+3po2X7I+mjhqUpmmH4y+mag3GZt0pjo0bPuCxl24jLqnorytIlqbRubMrd/49E
-	 NvosAJTM6cIwR/mkvVhwuDIsCLSWf87ADzaePkwHKbb3sXFXgrRc3rFZ3z4sU2OrRY
-	 23AodH2CxfINTr9tANFA9zzmg6PAdOBc0ctcLVFCrgTYqHwfPgz70RRacHqz2Z7o4r
-	 JXoqvJFqVB0pC7KpbxwQG371NDseDp+ra6eqLNOIdMHGKmkeid0jR6w42PhXgsW6Q9
-	 XXLx3I/bne+Kw==
+	b=DXmjOlvoBSA+R/FxQs4eki71+5iBL+SrEZNBykwv30cCMD2KdzmCY6D13T358GAXk
+	 wFftkkPcL+zHZ2eE3Pc0kB/+XdzIa/bwxB4RPy58lXSKsbVeqUK4sSX91a357wzw1S
+	 QA9eqi5ZqGWwKslc1rpm2jJTtnqCCR2YGFTw9VF4xptS9S9J8468OrBH9rLXaR4PP9
+	 NSSrY+rK2GnT/hYOXqY1IBromG6qcMxS+9ZU7ZoG7C4by7T1MR0CXvhbO5jm11CnFg
+	 Bm44d8jZBJtH38FneAhYjVXu4f6zowXO326b7wP9Qyz0vAUjiFv/isVLApFYgcbnJ9
+	 BUkc0NsbcE0zA==
 From: SeongJae Park <sj@kernel.org>
 To: 
 Cc: SeongJae Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH v1.1 06/11] selftests/damon/sysfs.sh: test dests dir
-Date: Wed, 24 Jun 2026 22:07:49 -0700
-Message-ID: <20260625050756.91115-7-sj@kernel.org>
+Subject: [RFC PATCH v1.1 07/11] selftests/damon/sysfs.sh: test all files in quota goal dir
+Date: Wed, 24 Jun 2026 22:07:50 -0700
+Message-ID: <20260625050756.91115-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260625050756.91115-1-sj@kernel.org>
 References: <20260625050756.91115-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wbbiqe5unq759qeikiyiabkotb5rtsta
-X-Rspamd-Queue-Id: 8DA5B40003
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D5D75140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782364100-857836
-X-HE-Meta: U2FsdGVkX1/RadtmNchndAHfRLCeHOspGfBzCkF+h8xv8OJHEESwg4cauNgOUoj3g2pMs6HX6wl6lrhXNOwcsRcMlJ5AxbQpoHQG8W5fSJh2xsYsF5vyF52h1tbFFhdiP1oF9gv8GRS7BgvQScYJ9Nss4jCV+BmNAP0TU4hO9L5ZKYnLh9axfZRAQqiikEF69fKgH1fZM2Uq2KUZumfxELUmFQuuB9Zler6rkjNTCWQuG7awcq1oQfmpQCxQyovXb0jZa6jnvvO19Y3EME0aTx9Dql7rVUqNJBKIrw44V8GXtvoWo4teZoZFTXhwfwpSNOUAyMK3/W+udA6U1/9tPUCbqSxD03Xq4s0kYqyeotSNh3413HAfx9oVRvyfhEdWve6IYCKM34zgBVuFKDudpUE/EdHvfzkPbgM2OZI9YBSHgrYLC8P8qApniD6cEag/iabtpMbMOTAGD3LIJSA9B93cZtT3UwxQ0rT9qOEDKAL0L6IsAT9hnC0Q6h0K3ouHtDL+vdH3CnuRD/rxtbJagGRZd4bl5ObfNBV7ywPnTg0Bwb4b3tYY6s0mp7U5BNN3i8KkjX55XyT2ehyYP3e09fk2wGyVlNYmCkCj+B4Lea44ZVI5GVNbQ0wXcZzKZuIdgSf4zqtKzCO4t/KKEj/Zm6JYRV3js9t2rAplNgYwsjU92SMcyMJ2ALRDWnIYnlAum/AgM4yiHq3pkkvYnKl/IcQm9TEchPVW66WiERfBgNVsItk4I1+coh9sdnQ+H4XGAOJS1oFq1ZaIy/4KmWShZ11DV8wszJ6x62Vmwr62GnmHL0p5cFyhY1YePeLPHceyZYS0VjP3maCv4Ot7+41CCkcDRPLgEjwZrjprLSwdfzuynKAbDaR0wEmwE1SWw/hJaR+bFJbbJNJD0qafWtETNELBc8lVDRuakIwlsQTplrguyshE5SEbup60D4X3vt2VIqBxoP8utwoBDADbDL4
- WaL2EG6Q
- IC59EHuK/fjh7FBeaW2cwHdrPP1vpCPQdS7Y2FoJ0bPwledy86nj/GL51ZPazJlL0WR2m44Wj4g8v0LMN3pT6VhWqa1Bv7GkMVNJMqkEmKV61v7CEC/gjeSJERMcfeMqi+oMBXtxe3XNB4+LiEj7Y1+7vSiIuJDLpyTQ1Su2qzlzdawvpcsnS7FdikLWpvkItaeIJKAUGy9YO9iaRurINlRXsvxK5SWO5H8dk4Bl1+Mk4nqXDa1aTRVl2VLRN78RB6CV4zjx0X4FzoYiOZqPnUmPiYczINvaN7ojpWmANhVFkMvY=
+X-Stat-Signature: 64rpnf4ohxp7cbsd1kthi9jhim56ndid
+X-HE-Tag: 1782364101-637554
+X-HE-Meta: U2FsdGVkX19/E7a3AFjE4dX+mmjryhopqHwFJ1/JKXeEoD7LqkyfjPXPJSCNZqwK5DJL6T2tVhY4slKBHSJ/r5rHKzyViNidlkHN0yFs1blbASVUwgo5hkwdTrj+OQWa7e92MGKnJ8l9F4HbpSZ53FlDo4F5DhTeSpKM0UwT2YU9Qv9PaqlBGSMzeIolEf4ru0HkpRGAd5zbQ1QWo8ATZeUX3tj2g2Uco6suuX9Kw55vXsvVx/qYknyhWLF6P1HsowZKQQ88yAzgGeLXT6GfB1kxp6rI31EGBKiVBMlYpqFQMDCsjq+smBR/Fzh991uavsK7ngIjGsg7GtbVVUWXZdCdXkVIa0kBdviNUrOeKSuCPyJWmBTlVTfyQFFUecJae3OYm4l64jrJZN8teo4phs9NzYAzd4HrG2CsYdzUcjkzuV7ZiiRGom1CNcH4+E5jHUb5nrukjQC0IWz1Cqa+eRm2GELm/x2mIFsoCRYtdUNCbRgkwza14ytXqk/rMd2LHX0rBxPvpWeA8dW7KRXwi0H0Mjce9yEuILx6L7/OMG2JrHn5LKqbPar7C7OjKCVcnT6ixMu5Fuyy+6skdPK49yOXpFfCCLD7BsCR3IZYFFYmpvv3m1GLw5xscLp7WteFo5BQEfAN+W7d2/HvHicvuLnooj/FTnLZ6Vp76UMyPyt+eZ3Bbu40HOegas09lpvPAj7//A7GHBkRCRfYjEuiKshASEEboMDTxG6AqYReemjn+EhR9WfbqKtUxzcVTO+0QDztTfkiYVhQ3ah62lSVi0BlgZK0W5g0rhZg5W9alcfP0TfsWUWTftQDJjI4a8LgtC2le1zy0zBrSppdnJX+IMaIgsfxSBeCcolWmGLFHxlXxP5ChjfUBpJIL3VRE3Le+K/h6zuX0dWt8TQ1HQuPcyZMuOziHM4+E7IjSYKoaMdrWRaHIzwEaoelolSngcKjaZG/w1crd9QhWvW6/Gv
+ Mr3CDUuh
+ qnaiizjma/Vu2OrA62gqPjbZTDXO4wJ095BCVetN7L4Zmb5brlt+kZ0jAV19jZ6eEpdzstxZsSYmVVQCJwcbB4tnd5MbKSvry+ogod8Aaorv231rhgNgnXOFh3MOrr4OB99AMOznlcaGGcKezS3I9XxSQ6LoubcIHeTbSoPhbioWdjdKArDxYAU1btj5wYA16BkyitgyaAzqTdHNQgkZHElctrBIAH0mQznrdnrQexGaadVuhz79WEdPur2AfmjMBohdtPHOnQTbfccxx+v8eekTSIDVT3pepLLFIUjnthURBRuw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,48 +94,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON selftest interface essential file operations test (sysfs.sh) is
-not testing DAMOS dests/ directory.  Add the test.
+DAMON sysfs interface for DAMOS quota has quite extended since its
+initial introduction.  The test case for that in DAMON sysfs interface
+essential file operations test (sysfs.sh) has not accordingly extended,
+though.  Extend the test case to test all existing files.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.sh | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index 07a33995be852..ffa8413b5ab3d 100755
+index ffa8413b5ab3d..15fb9df928818 100755
 --- a/tools/testing/selftests/damon/sysfs.sh
 +++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -99,6 +99,29 @@ test_stats()
- 	done
+@@ -199,6 +199,20 @@ test_goal()
+ 	ensure_dir "$goal_dir" "exist"
+ 	ensure_file "$goal_dir/target_value" "exist" "600"
+ 	ensure_file "$goal_dir/current_value" "exist" "600"
++	ensure_file "$goal_dir/target_metric" "exist" "600"
++	local fpath="$goal_dir/target_metric"
++	ensure_write_succ "$fpath" "user_input" "valid input"
++	ensure_write_succ "$fpath" "some_mem_psi_us" "valid input"
++	ensure_write_succ "$fpath" "node_mem_used_bp" "valid input"
++	ensure_write_succ "$fpath" "node_mem_free_bp" "valid input"
++	ensure_write_succ "$fpath" "node_memcg_used_bp" "valid input"
++	ensure_write_succ "$fpath" "node_memcg_free_bp" "valid input"
++	ensure_write_succ "$fpath" "active_mem_bp" "valid input"
++	ensure_write_succ "$fpath" "inactive_mem_bp" "valid input"
++	ensure_write_succ "$fpath" "node_eligible_mem_bp" "valid input"
++	ensure_write_fail "$fpath" "foo" "invalid input"
++	ensure_file "$goal_dir/nid" "exist" "600"
++	ensure_file "$goal_dir/path" "exist" "600"
  }
  
-+test_dest()
-+{
-+	dest_dir=$1
-+	ensure_file "$dest_dir/id" "exist"
-+	ensure_file "$dest_dir/weight" "exist"
-+}
-+
-+test_dests()
-+{
-+	dests_dir=$1
-+	ensure_file "$dests_dir/nr_dests" "exist" "600"
-+	ensure_write_succ "$dests_dir/nr_dests" "1" "valid input"
-+	test_dest "$dests_dir/0"
-+
-+	ensure_write_succ "$dests_dir/nr_dests" "2" "valid input"
-+	test_dest "$dests_dir/0"
-+	test_dest "$dests_dir/1"
-+
-+	ensure_write_succ "$dests_dir/nr_dests" "0" "valid input"
-+	ensure_dir "$dests_dir/0" "not_exist"
-+	ensure_dir "$dests_dir/1" "not_exist"
-+}
-+
- test_filter()
- {
- 	filter_dir=$1
+ test_goals()
 -- 
 2.47.3
 
