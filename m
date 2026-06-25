@@ -4,139 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67AB7CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 12:04:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F893CDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 12:07:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 584296B0131; Thu, 25 Jun 2026 08:04:54 -0400 (EDT)
+	id 27CA36B00B5; Thu, 25 Jun 2026 08:07:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55B206B0132; Thu, 25 Jun 2026 08:04:54 -0400 (EDT)
+	id 22CB46B00B6; Thu, 25 Jun 2026 08:07:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44C726B0133; Thu, 25 Jun 2026 08:04:54 -0400 (EDT)
+	id 11C6C6B00B8; Thu, 25 Jun 2026 08:07:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 20C366B0131
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:04:54 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 925241205F1
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:04:53 +0000 (UTC)
-X-FDA: 84918303666.05.49F3441
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DEE4D6B00B5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:07:45 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 626661A05D8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:07:45 +0000 (UTC)
+X-FDA: 84918310890.12.CB4AA2A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CE23B4000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:04:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDjx6JUX;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id BA1ACC0016
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:07:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KDZmqBG2;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782389091;
-	b=77rIEHG9I9Nu2Yo93DEdRFv2aybujeij1/ffYyMJmrcYKYy8r1C6bxJ/e2TXole3QPECKH
-	4gtSVsEIwGSxcShCMlDRTgeD3wzIoPYvCQbqAWf5Ms6ATK42irlMrlgjn4EwqNhp++RvR8
-	8JO5BElIq4WruB6P1ji6QChcw+X6SPc=
+	t=1782389263;
+	b=NSHJ0PjNxvm5MVUXmB+x7GEOYbRarC1epbsQYFuyScfI5vAAzl7JwwV0OLWElvHNenqEz4
+	kRTNr7dWKkhlFVfJai/FIqV+rw3LpczO2CDwktl135TbqsZ4y7lwq3P4o5Vfh9X0fpvMHN
+	oQ9fwrZwLlyvKIc4C3vkjl1nFRAs6so=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782389091;
+	s=arc-20220608; t=1782389263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wYp3f6nJ4mhsWHU1zeYufcd4i+BqeIgNIKCT5UZeKqE=;
-	b=ruldybjLJQxS+umdkfTzgT+ZD6poOXLHloBvVQ1HZuif/DfHuHFLnf1DfZ/V4eNAUlaFYz
-	V0hTfyxM7uAvHDutco1mMxSYEig0gKPLOxhweSrJChAraAhafsQNQQZv7UwP6Zp02mNiMh
-	xrnh4FHxb/QIKOgYce8QdEr+gPAHNSU=
+	bh=hzOWIM48785YXF4+EkAFQi3dSVtrixHEzc/TOh6UnkM=;
+	b=zSipqhUNGPPBbY3UeBXuogqVt5q2x5hS9XfKvHKmbGr5v8xUJ2PNt47p6jreImSUukcOPo
+	xuT6Km8kclmvrgDttEM4BNPGDlDg5bgCv8OirsE2FrVne4Pz4xQz60ff1ROnSCHDMn0+nd
+	8LBBYYmESN5RX6fdiVGNs0luzIhL5hc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gDjx6JUX;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KDZmqBG2;
+	spf=pass (imf10.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A584600C3;
-	Thu, 25 Jun 2026 12:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CFE1F000E9;
-	Thu, 25 Jun 2026 12:04:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 50B24600C3;
+	Thu, 25 Jun 2026 12:07:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B0D1F000E9;
+	Thu, 25 Jun 2026 12:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782389091;
-	bh=wYp3f6nJ4mhsWHU1zeYufcd4i+BqeIgNIKCT5UZeKqE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gDjx6JUX5vHCl3jJU75gq2Qv8StmXRad8Wf5mkcgcT9gOz+Tu72jqJDw/YY3tWFE/
-	 rm1dIXEtfBavqy0B02DGiEgOel7MnfW7Mh3AQbRDMOHCjh1eAR5aAflWCX8YNDmU/e
-	 VfM55sQhYDGH8tyJI3uh6B8LyzYczxcLqjK2WUfQRT/I4Zmlz5X9/+ue0eOjHgYXjI
-	 uYlcwXHYJxipCr2bFM/Df5hsclSn67xHWQ8yu/9ENJsX6+BvgYP1yw8H8fDVRghkn8
-	 RGr6K/bm15rahwvAVBDrkZYbC13Y533qNplm19BpHpr2ELDKiyEPy20x1tonlGVZYh
-	 mnEuZUO9GD5AA==
-Message-ID: <fc62528f-99a8-4759-9880-d56077a0f6ec@kernel.org>
-Date: Thu, 25 Jun 2026 14:04:44 +0200
+	s=k20260515; t=1782389263;
+	bh=hzOWIM48785YXF4+EkAFQi3dSVtrixHEzc/TOh6UnkM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KDZmqBG2siXwFLEI6Sm2qljEbRdd2HnaDa1c+SIy7VYes8nW+jYo4yiomKt9moDpu
+	 HHnqrswZpDGY9vW1YmPtGYEparelZcqK79bL1AJCcjKe340mRooWJZM0hNAv0w1rxZ
+	 5vRimF0BM88IfJ7VPpu/lAXjVLtg3kcqGzP3hYc9NTFFo3ai4ddM+SPQmJdUJgiaK6
+	 KcQ0uwfATmwgG2FEI97wtBkEk3idv5jozP4m8O+ymKllZ+rYTRXU3YCe5EpcSKfRHX
+	 xvbAhwRTHnpac978/L40OsZt8ePDZTedhfnXLHVdpackdCvohA2WeX1r3t3lzJ0dIT
+	 qOFrpXnyWiZcQ==
+Date: Thu, 25 Jun 2026 13:07:33 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH v5] mm: assert exclusive nid/zonenum bits at the
+ page/folio access sites
+Message-ID: <aj0YlpCkGySxt7-D@lucifer>
+References: <20260625071830.996043-1-hui.zhu@linux.dev>
+ <2c4dd46a-4755-4bf5-8f14-2d73eb356e3e@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] mm: move mirrored memory overlap checking to the
- outer loop
-To: Yuan Liu <yuan1.liu@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Tim Chen <tim.c.chen@linux.intel.com>,
- Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
- Pan Deng <pan.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, Jason Zeng <jason.zeng@intel.com>,
- linux-kernel@vger.kernel.org
-References: <20260520093457.3719960-1-yuan1.liu@intel.com>
- <20260520093457.3719960-2-yuan1.liu@intel.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260520093457.3719960-2-yuan1.liu@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c4dd46a-4755-4bf5-8f14-2d73eb356e3e@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: yztyydmzhzb5tamp6sbdhp9qmrxtsuwy
-X-Rspamd-Queue-Id: CE23B4000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782389091-873590
-X-HE-Meta: U2FsdGVkX1/2tetT6k6tcb42GTMbMf/dtGn+naRBnwCI9rKfBK0Q/Wmj35SDZ7tqxHAJGm3ntjpuFKLajdhc9ao8R8jAvQ7vuHFCqW5ylIfAZONDuSQEqppwF21yoNmt7gHS6RsY5qHtRnhJn5Ysuf4LJCfI5a+A9xtv3rDUZxM9gxeEAFKLPuqxC6xTrOGCLvbWUyqs7rGm0IPekmtwAJLxWcdOzGqP4azHsJLE75/UzK/VrXrMigbuN0agM7pHpfYit0HuGpjdNBabhIPTplZe7IM+428z6MUAdesiOMb+3LprXhrzfIiqR0zCjBQjEtEsVs2/2GsYiLFGUNKPL2GNvP+q4MTpbF4qakqtQUYizYsNSR6xUZ72oerVYUtHrF6+sGCB79g1FT9xHVw5Hn04cGKrSxHdujlfQuF+PTJaqXoomh3h+XKJcUD4t635+zMfdlngfT+wzeGc2m3Gfw/xXmIPaj69b1dRFTDdVa3Jp/as6ZD5hcvJ/h2y3j5qHqh1sO5/4rbQJQGo/U4F9eeF6ZQc35ut7O5N6BHb61e4SzZhh6kPKu4a6LJFKocEkDLXzZpt0QR5C9wfq57JCYVQHrQAiztdMRUmqQHBpyveet436bxeOAnRTt+RLSIQgcuO9VSlt9kMByvpKN1zcVt0WzrGa14syrvETFuprRHTC15xb4z9+AaGVwk7p9GVFZ586u5NR4XTXV05WdPPpm5mHRChN7/nypJTCfKeXb3C0LowBccs10B6s2SDyJsmCmXfzWQiaselvbXsdd/71e1ssahSy57G8XSqNDrF5rQElUmRz+qppH/wWlL3eddww6cnlo8et6NZsGhk/SVTMafv+FTskfp0X0W0zZHw62VDH2qLvGpfR+Db59iVy4h7HVO8+xO9EynTGPtiII/mdO/lCTPuePRKcVHpxvaEnZlHGmnQGJh+qu/Z45Yg0RhVOcx5OtKo7qBizS4PYd3
- VJKYHAcf
- uKQ0s4e20KI90QP00kTElJMRPr/r8r6NFHAyofpW2GpoY//mwrDjn0gywI6aOJXQ7irbDluRBp0YeogzS7lxNqFdY2tPRVk31qwuxcMYVGeeZhPDyTSQHp0VWJaTeuKVNP7qzSwRNI8VtfJWoooD4VIbHfnacTp6nz49EwOODFgjoHpVXv+LF2MeIxbPcKrvbujkH0DMV9noVzwwqNZKTAmqltKjey/MQpLsR8wH83DfI8xu8KDCOAFJnEeKVm1zdJHKxzMMDyZzlOH0gnhWmg1Uu3dFJQ1x+qFXmeLhvUk5lutX2TGu0L52nNtlLIp+aFjCLrWbbnoluYmJO2n63QDuEgZRAv4E6H1w+IrybSTCAyCbcbYWVhjGlYwqXojpuWkH8OuYMUmVyn7akR9QK1DALNA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BA1ACC0016
+X-Stat-Signature: guz8mhobzshzgk1wwkqhyaugc4dm1rte
+X-HE-Tag: 1782389263-13438
+X-HE-Meta: U2FsdGVkX1+lB13faHVqRrpqbhZqCV219dCPsLZHY0LNdydBVANBB6JgbBUaXr48wV3ofa+3jCIBBU1PjBW4hVauoMV8L3iMFDFJirEZsnr+0fY5MaimivAvewoc464PS2GVVPohRJ+RtB8NhuTh1gvGSkimkMSKgNk7fVLtAb6OEaPYKrj6JSZ+2jtl66QJHxUXRsQ2rZABkmLX/XKQWns0HNuiGShtVwrrhB5JS54gLjxlibgeoPDBoXqGSK8O85D4WesNjMRYSckq4aI4jfY3i7zS5vPScFyR/+2jFmY7/WzRSOSTrLTxQQ0Ui06wLXh7SLJMB/R/i7dFyGVTs5c9/IgYOz10iQ+RDCxWQFV5+1ujZ4Go74sEr80wW0iaySKMjT/GSB2tjwQ8vr3rIuw4B48K0N7nPt26ZL+0yD0jIltoyGyHF25pbUFSHXNPv9wqnecGYLS/XIZhPfjKv7TkK6pLR9JvUsmPjwBDUPH1roB++YmJIe39FRAOx2Z1CkYf6fLQ8oIcsVn3tuSJa4pf5LBiPh1hgzDCaEwcoQVX/W+DNOLtkKQ6hsE7S9YI6HrIR0fbXNtZ2uQYgC+ukzmwW+OnRrn9MSsja8xzHMS+iqp4JRL29mk2iqsGs8aGiduJ1a1sEaWaHUmZzNmKDfqmeCjf7BT0oEM3qGRE7g76LKfe+CF3XB87NcGtaDWH6bmjmUcUMKmhtlqNV1ywFI7gV/Z8C7PGHpdIS74a3e7O8dUuFmW32Ap/kZ4GxTziYVEFzkpUQ7glMyVVnTk7y5luPJfwy2aSj/QMyX4r3TBZHEv76pnr0HaCQ8YMQDw+uqdK88evSJ4pAyoV34pKfRUQXP3Xo5m73CinzvG/NxaTir/8ThFXDdcZJ8b9XXTbcyIadAGxeoJLP5VJybMoa691MwaKh8Nd3EjLUHKbTNw+yO6N9TJCKIz8be6k5vm+OEb7N6M7c26bIExHaZf
+ CWz159qX
+ a1or8Hm6t51PtG1EpT3lah6LSrt8/yUSikP2TR9zioFqaY9xOhzV/cqnFgG68rRyWjASqSovZNlw4ujjPg5bApz6dRyM3sJ4pfnlc0PDIHp7SUqdJkLBPI03HMrYw9t4kbdxRKwU0G9yPLjlxLZwlroXbmIQa8xD+9yEmMjBOHLhkn/auf2N1SLbCW4kRMKzbqFkO7R/oteZNy5AaJA7eNd2uIKJCvntWhBb9VV9oiEfNYVFsmdBu03PjDJ8+TpdXZKDddga8oiSMdCzorQPU95Zr1pJ2fzevL9MgxwpvVmkw7VXcdlko3Wz9qpDO9ERJzhma90EslZnO0gA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,23 +97,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 5/20/26 11:34, Yuan Liu wrote:
-> Move the overlap memmap initialization check from memmap_init_range()
-> to memmap_init(), and replace the per-PFN check with a memblock-based
-> check.
-> 
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Jason Zeng <jason.zeng@intel.com>
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> ---
+On Thu, Jun 25, 2026 at 01:53:14PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/25/26 09:18, Hui Zhu wrote:
+> > From: Hui Zhu <zhuhui@kylinos.cn>
+> >
+> > KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
+> > page->flags and folio_trylock()/folio_lock() concurrently doing
+> > test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
+> >
+> >   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> >
+> > The node id and zone id occupy fixed bit-ranges of page->flags that
+> > are set once at page init and never modified afterwards, so they can
+> > never overlap with the low PG_locked/PG_waiters bits touched by the
+> > folio lock path.
+> >
+> > ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
+> > checks a by-value copy of the flags word, not the actual shared
+> > page->flags/folio->flags being modified concurrently, so it doesn't
+> > reliably assert anything about the real race. Move the assertion to
+> > page_to_nid(), folio_nid(), page_zonenum() and folio_zonenum(), where
+> > flags is dereferenced directly from the page/folio.
+> >
+> > On CONFIG_NUMA=n, NODES_MASK is 0 and the old memdesc_nid() body
+> > folded to a constant, so page->flags/folio->flags was never actually
+> > read. ASSERT_EXCLUSIVE_BITS() is a real runtime check that can't be
+> > folded away, so doing it unconditionally would add a pointless read
+> > of page->flags/folio->flags and a check that can never fire. Keep
+> > page_to_nid()/folio_nid() as plain "return 0" static inline stubs
+> > under CONFIG_NUMA=n instead.
+> >
+> > Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> > Changelog:
+> > v5:
+> > According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
+> > calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
+> > ZONES_WIDTH != 0 (for zonenum).
+> > According to the comments of David, avoid calling
+> > PF_POISONED_CHECK(page) twice in page_to_nid().
+> > According to the warning of lkp, switch the CONFIG_NUMA=n
+> > page_to_nid()/folio_nid() stubs from macros to static inline functions.
+> > v4:
+> > According to the comments of Andrew and Sashiko, set
+> > page_to_nid()/folio_nid() as static inline stubs returning 0
+> > under CONFIG_NUMA=n.
+> > v3:
+> > According to the comments of Andrew and Sashiko, move
+> > ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
+> > into the page/folio call sites.
+> > v2:
+> > According to the comments of David, remove useless comments and use
+> > ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
+> > page_to_nid().
+> >
+> >  include/linux/mm.h     | 23 ++++++++++++++++++++++-
+> >  include/linux/mmzone.h |  7 ++++++-
+> >  2 files changed, 28 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 485df9c2dbdd..772bd1fc6fe7 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -2294,15 +2294,36 @@ static inline int memdesc_nid(memdesc_flags_t mdf)
+> >  }
+> >  #endif
+> >
+> > +#ifdef CONFIG_NUMA
+> >  static inline int page_to_nid(const struct page *page)
+> >  {
+> > -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
+> > +	const struct page *p = PF_POISONED_CHECK(page);
+> > +
+> > +#ifndef NODE_NOT_IN_PAGE_FLAGS
+> > +	ASSERT_EXCLUSIVE_BITS(p->flags, NODES_MASK << NODES_PGSHIFT);
+> > +#endif
+> > +	return memdesc_nid(p->flags);
+> >  }
+> >
+> >  static inline int folio_nid(const struct folio *folio)
+> >  {
+> > +#ifndef NODE_NOT_IN_PAGE_FLAGS
+> > +	ASSERT_EXCLUSIVE_BITS(folio->flags,
+> > +			      NODES_MASK << NODES_PGSHIFT);
+> > +#endif47
+>
+> This is getting ugly, really. We're leaking implementation details from
+> memdesc_nid() into folio_nid().
+>
+> Maybe just turn memdesc_nid() into a macro where we can just do that check
+> internally? Not the best thing in this world, but better than this here.
 
-IIRC, with the patch from Mike+Wei this patch here should no longer be required,
-right?
+Could also do:
 
-https://lore.kernel.org/r/20260625073941.145014-1-rppt@kernel.org
+	if (!IS_ENABLED(NODE_NOT_IN_PAGE_FLAGS))
+		ASSERT_EXCLUSIVE_BITS(folio->flags,
+			      NODES_MASK << NODES_PGSHIFT);
 
--- 
-Cheers,
+But not sure if it's that much better.
 
-David
+(There's precedent for that form of it in mm/numa_memblks.c)
+
+>
+> --
+> Cheers,
+>
+> David
+
+Thanks, Lorenzo
 
