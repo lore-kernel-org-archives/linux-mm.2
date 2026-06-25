@@ -4,142 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D77FCDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53981CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:41:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 602F66B00EE; Thu, 25 Jun 2026 03:40:14 -0400 (EDT)
+	id 459536B00E5; Thu, 25 Jun 2026 03:41:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA6E6B00F0; Thu, 25 Jun 2026 03:40:14 -0400 (EDT)
+	id 42F956B00F0; Thu, 25 Jun 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2AE6B00F1; Thu, 25 Jun 2026 03:40:14 -0400 (EDT)
+	id 3465B6B00F2; Thu, 25 Jun 2026 03:41:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 24F3E6B00EE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:40:14 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A3E761A04FC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:40:13 +0000 (UTC)
-X-FDA: 84917636706.19.B690A9D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C2EFD8000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:40:11 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNY0gmJI;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782373211;
-	b=inMiqsPUTzX0/CLkNX+D4XunOAp4yvslrUycTQvtXlKQFI82KxqlGJXsphphMu+OXou1sm
-	V3uFtVkjnOkPvsb5r8e8GJr1NS36YycwEquuMGHy9wtIziRgd6c07TTXZlyLD6O8ymdoAY
-	yPuXbxAuF1wMZA3bWb4CEgAAIaXCKjs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782373211;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0617E6B00E5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:41:30 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8B495A059B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:41:30 +0000 (UTC)
+X-FDA: 84917639940.03.181FDF9
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A5CAAC0003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:41:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rNZFQRtL;
+	spf=pass (imf22.hostedemail.com: domain of tabba@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782373288;
+	b=sOQ+u2WgvRhDALvoUQyQQIGdjHs4eTyzJ0Md0wwZafV9Z033+ssZXfRq0CvamFPIB4KdXW
+	dD+5PmK0bnW48wpp2AhulFuf1dxWp/NWXaV8DTXvXixCzWnsd6+jSe8EhqsdMzIaPPGceA
+	3iOVdZ92O/1duY8kRDpJNA3XKX5gdsM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782373288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D0yxXYlC+6ZzOInCXh8esiMObDCmFa28JgIqXqu60pE=;
-	b=5iBzgd5e939lpcAiDRWTTvBDUKRz0cOTO7A9rMxUwJMfYVTszyRWhcehstuS00ism3r5wx
-	lSLjiXBZbbdAuFzc9nhSZR9FWUtYq1PZ7AUZmbygvlHtCQgucPys6KYsOB+qyJyUCJIzdR
-	4sA10G/N/pPRPSfLUE2Y+/tn2AWRAYg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SNY0gmJI;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 15C8F419BC;
-	Thu, 25 Jun 2026 07:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E00A1F00A3A;
-	Thu, 25 Jun 2026 07:40:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782373211;
-	bh=D0yxXYlC+6ZzOInCXh8esiMObDCmFa28JgIqXqu60pE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SNY0gmJIRd8aAsNgBLSo9uATdut1LoqElrTqsbgNwRX34c4pz0dA2LXltTCm5J2jd
-	 GCKHbC/0HGMiLrrlgZ7sJgoYk/hvOlx2FQsSzSGbHdvEvi2Y6fHGEOv+6errkLxuyN
-	 FEG4hWpDHHl+2/TbXpxcGR+W7rPBRxmUm7UluzvbnL7Pv9Fc+0i8btgnVJEZnCPSTT
-	 oXx/29zepKkQnx7lLBxYJuk4hVstAm3j549aahwWIoI7j+zXF7pE6/py3rP9S4IaX/
-	 hYNwq2jhob3kh6PbUWCnnIc6d0oNUzlfu7kXxyZ4x5BAf9EGrZ6nJLQ+SU/c15xN9o
-	 IVgh763KB88WQ==
-Message-ID: <1d8f74a7-502b-43cb-a0f0-1923049aa213@kernel.org>
-Date: Thu, 25 Jun 2026 09:40:02 +0200
+	bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
+	b=lHq+MqK3fQYaZfSIXIORsfmMvaXB5ScXAFbw1Qr+b/knDu3Ec5itMoq5OcyxL0YZq0dWI3
+	3QQgVbLTmdCA0Kq6VPv7SFG5aKZSX1/xxXVQivMPraw5hm97ONdgMV0PdGQ5bi/qsGGkHR
+	wE6Vbv4fRx7iwr513wHz2BBZn46oDAc=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=rNZFQRtL;
+	spf=pass (imf22.hostedemail.com: domain of tabba@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5177d1ff061so144071cf.1
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:41:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782373288; cv=none;
+        d=google.com; s=arc-20260327;
+        b=U6EgGYGnrMEEP74btCo026f7RR2E0uygG88dOKgv746nfQX7eKxWgJiZXVrDMtz9Nz
+         sZjtvj4Z2jR+o7TU/JnxPyB1KMZ90rX/w10rRpCDWXJOs+dHZBk+hncAXNesGgwrKlWw
+         D0pFZXloBzJ1Nbul0QbXhlXPYL7DUDeA8BWTp1JlRIeFiC7AAZTXWKfcu4CX1PJxyjPq
+         9VtoX7quEpf8TnY9ZS4JLjfUYHNURVWoL2jIuA3w0Mr+vp/UezObfBPaYutDJIm7vxq/
+         DgdJ20o1+MyUki9n9xltYtnml8lZVddq8N0IShCnOPbs7cTvvbQ8heKdO3wG6jykI4Ri
+         d3Mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
+        fh=nOlUOZaL77KoR4U4C1KSKj0nyVm9LPywNDejzu/Ccrw=;
+        b=PfZszDsAqLxIAB+AHRS1eVgvk5yM+k4pmjgmSA4iZIJD7QgC37HiVqR2hj2G5Yi7mt
+         y1Dz1fnv7EuSR9moXoo2ylcKqF6Dtmei9bZN4YUe9IqzmTk3pR13a79/Kbm9O0FuJMEo
+         8ytuFqUEU7ukzbSLtG8mRWn9FaEJKZxHerQTq6UjUhjXgcf9ZCT8qpmdxJ9QpsvMFu5w
+         JrXfvu4qLahLVNsBBy/FLji83qrwIowof+q6yKYPWDEDmSunLuZqL3q6OsAEM2i9KIA7
+         OYLWV8rTePTt107J0QXmhsoTjIeZoQpSgd7ZuXerDHaDSNCiIvjZtYm7y3T3V/lg12B9
+         RzMw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782373288; x=1782978088; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
+        b=rNZFQRtLwDOKW4LM+HcbYcwQefIFRnvTauZS9gWxg/O0GQnfjRFiqHYh86KoSQMe/l
+         9OOGBClfWVyS0OxbVo8GtKheBntm8hfjq5UHUmlRTaUzC7QjIjicL5TN5jQjy63S98DQ
+         nDlXLhhPg+JxU3W34Aps6/LVaLzVxeqdZx5brk9Aqoy8ND3fOyR+isD228Dqdx2tvwsu
+         G/eyQa9KDUI67+IDef9eQeEZC0xt0+yTnzl9MNTpgSw0EBK/140R6lGUmjvw7HJpNL6d
+         foQ9e+vBU3GDEYcyHrcTDOAvvG0EvGxknVpfPlwyueSKsJbw2Ou8+BZExHRHEGKs3NgS
+         LVSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782373288; x=1782978088;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=IKDmrHuQqoBYlM3iNILSe07cr8MVKcj1ghLIbtUqfRQ=;
+        b=dizoU7YQTPC0J5SwiXgZLhjsW+yEio+KXvYUTuetKEhuukafTioZ5pKmyofLy+RTT0
+         Hk17IpgW40rcMiPsQHlysinDwrEFW0pMhGy7V/lYX4k0SPMflXylZgo38dXl3Jab1Deu
+         tS+flSzRwn3sZRfTXnbXbShw9TH09qlMl8jVuu0UXlK+lIdW8dtPtAqzst1FPoYJlgIO
+         GsnAhjVWrhvUAJVaooj+Nu0peItZ6oV2vwsooDKz4+J5+P9H0T+JJ6Ra0iR/QGBPaxgl
+         u5cwf9GCDoGdODRlj/yyi3w/B8gTq4OEKCcYtsYWoUNsibMAV4S8vj/lyzhiJ60GrN/b
+         BY6A==
+X-Forwarded-Encrypted: i=1; AFNElJ/GFIJeNq9bTXlqaYNJVIY5oB2Headp0WVPkeVxhA8I+bMjHuzangqskafWvEkk/ZYVdGukHrX2Eg==@kvack.org
+X-Gm-Message-State: AOJu0Yz/vQQVeIDruesPJFreevehomL8+rKFRztxji44WYq5n8WqUF+N
+	p3kqOIJ7pbjkOzNjqVMXklU0InnMphaG3Jq7VFaJm5CWDi3bEft9PHbJoUG8S+5Rr1YJBCP8+Nm
+	Y7sQHUpxORtF1xQGwG/ZppCgQVhtDEh11hScBhdfd
+X-Gm-Gg: AfdE7cnvR6roftZOtGSC6KNgbKT/nsO8xbGVTANvb4WUlt9Hkoaq79znnhpgj3Ahp9l
+	64MwauKm0JmtdrGsBLvxjIqxO2zvTXvZCJ853g1KY+dduUTpw1s4zHJ8qhT4UbdWwrO5ZacFRHf
+	nKcxEn/z/OTgtVxh/qdDMjtOXbpdZnV4+VBkDhTTTD5AUmZ08jJYSjx9ItC69l8lsmWhCh5VV/Q
+	Ebcu3UkSXoSbeBPMgukDg5rDRiCmGo+NBtYU+2P9bAK6qjtuGKDVSawrZIsAzOf0dQbqR1pKQ==
+X-Received: by 2002:a05:622a:120e:b0:519:56a8:2693 with SMTP id
+ d75a77b69052e-51a6ebae001mr6553451cf.24.1782373286970; Thu, 25 Jun 2026
+ 00:41:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/9] dax/kmem: add sysfs interface for atomic
- whole-device hotplug
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com, osalvador@suse.de, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
- vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
- ira.weiny@intel.com, apopple@nvidia.com, Hannes Reinecke <hare@suse.de>
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-9-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260624145744.3532049-9-gourry@gourry.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3c6i8drpn1k8g7xhw377hrxn95php8kf
-X-Rspamd-Queue-Id: C2EFD8000D
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-38-9d2959357853@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 25 Jun 2026 08:40:00 +0100
+X-Gm-Features: AVVi8CdNvXe7DIQJSIUqqBW3OCX6JP2NJsxm61_dCUo-WV2w6fSxq-mU03dKtt8
+Message-ID: <CA+EHjTzEGxZQXPPsY5nynYf6ts+Jt3TBevgLpPVyHDqf4i7RGw@mail.gmail.com>
+Subject: Re: [PATCH v8 38/46] KVM: selftests: Add helpers to pin pages with CONFIG_GUP_TEST
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
+	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782373211-643280
-X-HE-Meta: U2FsdGVkX191tnz0PsDqeOIfLeVbx27SdRxGEy6YvQboB0YkAAPD/BGSI5fXlROecYJqOgPM/y/KFU0+Uoc1uJizlDuz9qpSe3N8N8G/lb33+DV3c9G8hI54mXGyn9IwuU70uxhGTeM99h04KYDtkWuF/TpI0cYCZPNSeLy77RE/OlPFQpXcsdwk8FItB5JpLGWSVT0TRkgtNQhTKOkHLPIGyIpP9I8DNAlFEpPBG3BYJpJYjgYYJMGm+OlSAF6F9cq4PWMBuiWy/ydD74fv8rLA0cv/h4yvNMLe5A4j7F30DRsvseWtpjsrh9tLQbaFCPrYgl45ip9jzcJcdtEzDMADur2WAFB3qH65IyLXRgw19jVYqWYP6CUGGjiHveJKVyNTfPdh25xqsxZJp2eRyuONt0UdDhvmdP91kRid0oK5qkr5+SSw+/PjuO+8NdrqlTQsUN2cCRTxxzl+K4anILClQ2WqZBhDUyPzmgENlUzTKptC6jrdXuldJ0e0jCfKcHQCGOsz4rXmrOo6ctCJaBS31ZbtnGEn7CvfSpkBMSk0W8s2PtVWBqlgMmJl3ObMc0NWliEE+yim9nGEzGuH1aTqW1RSXFqCGl3Rgi8W2QVWU9eV1gO6E2HKgMQcD9XEkk/yQCxiv3yrRe1y7QvVTwLqNrNl53r0QbTAQ5hwT1COrwNV+XDoHsteUY/qSduIv2XJl231GNZIXM5/t2KcjFjYEcDnbnMitl4KlUBUxYdjCRYeGu41CLfUadp5+wEyFeckNlVKHLPLzSHymq2Ne8TbVYGMbtfTLF9E8NkxLXvD+HrYh8Uq0cv9fi95KvM7iZ/PLnTqz5epLZWvbAjt6KCj9POOep1LjWmBrL2F1Xzd9RBO/0k6vTg7JcQpFEdLT1hP0YIKyNGWhBiHc2Bvv8JdHKKzBzukYgEKoByT0jf4OADtc3/n1CLIgEhN8tgKUNwDpXgcLwN6bj1MRKR
- 51h3cCFU
- +ATjI8Zvkj5tMkQrVoEIWA2mQzcfVqAfEfmkBrODL+9NPZR8Zrp3jhLLTfHbE3sNNLZxx4f4YLMNVZZhPg23iXTI+FfLWTaLsbcQkaFI1cNQvK1ON9dYLQR/Wd+wHQ5ao6wFNozy9i6PypALrmoU0/AaKozUBqC9hgxn/KuQnfps32u5WC9eM5nXrnp5Nx5HjpbuS8/zqKmshq84hxxnowDTiN0PZDgiI/3p5yfGeI/Icx0yS170ogRYtGUzrIc2B3PrZyVhlwODtFhPzVzk67L18ZoW7+yD4M9Na0S54aQylRk9/VqQp8Gc17RXdDn4EgSO65OQjuK1m0Sz1inq9o979Ow==
+X-Stat-Signature: c5hzx3ewopjgwud4ab5rrmqwq1u9tyi9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A5CAAC0003
+X-HE-Tag: 1782373288-37999
+X-HE-Meta: U2FsdGVkX1+h+pugNQL2wLC2T1MbLx9O3Z4zFUUZ0VYqP2sXElsu7BtSo6clpVjNuWchiiT1VoEoCFuDF1F9wJgWlZoBR3Bmka5M3cXDpISBRZjHA93eaIfsN2gKu6W8QcOLDj3dLKoEmIQzXekHPZKKj0sYOeEW/v8CXFH293psxJO36eEPIn3LtdmwJ1NNPGdXbRR6ktD5u+tZ5g5aqjLl2ATFZCu0c97E3FJ/8Wv4RXHhVe/odV79yvJlwFCCF7ygz4UE8rl7h3TAQ5b9zfQgUFG+rqPiX4mVZOzWLz0jfDe7q3KBLcz9lvTJRdxgo+S3B4C7a785Zkv+CcBiQWZt4nFiMJrsYFQ/YbbfVg9PireLUe2Db0G/tJb9TvTw+5IcZ+E7CGGawB1AFsLoTv2aAQ/FHPQyy9dGOz7uMoTw2ghBdiLybdyqJA3mvNvQAZ/sSx1v7N9CqTtyeYELl+N9MnNZH/iEtmJtk/GUrdpYHw2dl1skbkd9Q8s5IU6UbrmG/2T7pHTV1XSu04tYsDFPbeCnRrVDTXUz1mXePeX+lFAVIUWinJ1MvyOMjMaW+AnMU8j4HyJmNEqVzRcT92TFJMxKpo7lOhQPCsVvS8Q8uwKwLyORdiklVcghDcacS45s1mwJjseIacjdKsxf3v7axBT7sryQNSXL4ocuCO4YMjztI4RHVW0VWOFayNVpKcTPNzVlC5UITvLENeg77G7vODTLm5w/MSczsYcASWlKVDe8XA5UhoyAAEq2jCB4VnFMQ3alUHRzP/wnGG9wGzQilXVQOECxHfnJmpNAXvmI5GrJSuwaG+BZHVUYKD4u5YRGVg1YCNJ1plGcFotMzu0/cqkqstqpghD0s/mIw3MB0jBWAeQCVaS0bJcWwx5hYFZU0o1yvIDXOo/cTu20WTTOi8pV4pKeb91t3EXPaZQYpu/ajY3IHbmW2i7pgbeMSw3IYCaCSWFluQ0vpBs
+ qJuFtGiR
+ hY31JHn4DjltJ5FL1gf+oEOYdS6ETBNIvpz36Z2xpP2NK0FbmHPtNdRDjl2azmkV/vUZlzxXTv1T/L2nmtGCB3WGwOww4a+VOZEEJENo/aQ+oorO2S+oeeP2zynnigdeYG/6FN/WDc8vvrl4NvEpi/cgDT1Z/n1WjJDN+/FiVad4M2ZoOYqtHFR1GSqA565T0V6qp5HM7Z1fH/aogyCCkEFgyeB2vXTHE7OqBxl28LnBzlDEi+U7MxaZMfTXJaJxuGaWOQSuGIrMVxQPJl24GdzcfNVbhJRYIfl6YppBJb6aRi1LbLqhPPPugmLxucEJTZ0jVUmgKP1U7Jug=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,79 +159,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 16:57, Gregory Price wrote:
-> There is no atomic mechanism to offline and remove an entire
-> multi-block DAX kmem device.  This is presently done in two steps:
->     1. offline all
->     2. remove all).
-> 
-> This creates a race condition where another entity operates directly
-> on the memory blocks and can cause hot-unplug to fail / unbind to
-> deadlock.
-> 
-> Add a new 'state' sysfs attribute that enables an atomic whole-device
-> hotplug operation across its entire memory region.
-> 
-> daxX.Y/state mirrors the per-block memoryX/state ABI:
->   - [offline, online, online_kernel, online_movable]
->   - "unplugged" - is added specifically for dax0.0/state
-> 
-> The valid writable states include:
->   - "unplugged":      memory blocks are not present
->   - "online":         memory is online, zone chosen by the kernel
->   - "online_kernel":  memory is online in ZONE_NORMAL
->   - "online_movable": memory is online in ZONE_MOVABLE
-> 
-> Valid transitions:
->   - unplugged                -> online[_kernel|_movable]
->   - online[_kernel|_movable] -> unplugged
->   - offline                  -> unplugged
-> 
-> A device can only be onlined from "unplugged", so it must be returned
-> there before being onlined into a different state.
-> 
-> For backwards compatibility the memory blocks are always created at
-> probe - existing tools expect them to be present after kmem binds.
-> 
-> "offline" is therefore a reportable state but is not writable: it only
-> arises from the legacy auto_online_blocks=offline policy.  Onlining
-> such a device through this attribute requires unplugging it first in
-> an effort to get drivers creating DAX devices to set a default.
-> 
-> Unplug is atomic across the whole device: dax_kmem_do_hotremove()
-> collects every added range and offlines/removes them in one operation.
-> Either the operation succeeds or is entirely rolled back.
-> 
-> Unbind Note:
->   We used to call remove_memory() during unbind, which would fire a
->   BUG() if any of the memory blocks were online at that time.  We lift
->   this into a WARN in the cleanup routine and don't attempt hotremove
->   if ->state is not DAX_KMEM_UNPLUGGED or MMOP_OFFLINE.
-> 
->   An offline dax device memory is removed on unbind as before.
-> 
->   If online at unbind, the resources are leaked (as before), but now
->   we prevent deadlock if a memory region is impossible to hotremove.
-> 
-> Suggested-by: Hannes Reinecke <hare@suse.de>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  Documentation/ABI/testing/sysfs-bus-dax |  26 +++
->  drivers/base/memory.c                   |   9 +
+On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Ackerley Tng <ackerleytng@google.com>
+>
+> Add helper functions to allow KVM selftests to pin memory using
+> CONFIG_GUP_TEST. This is useful for testing scenarios where some page has
+> an increased refcount. such as in guest_memfd in-place conversion tests.
+>
+> The helpers open /sys/kernel/debug/gup_test and invoke the
+> PIN_LONGTERM_TEST_START and PIN_LONGTERM_TEST_STOP ioctls. Since this
+> functionality depends on the kernel being built with CONFIG_GUP_TEST,
+> provide stub implementations that trigger a test failure if the
+> configuration is missing.
+>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-Can we have this ...
+nit below, otherwise:
 
->  drivers/dax/kmem.c                      | 224 ++++++++++++++++++++----
->  include/linux/memory_hotplug.h          |   1 +
-> 
+Reviewed-by: Fuad Tabba <tabba@google.com>
 
-... and this as a separate patch, please?
-
-Nothing else jumped at me.
-
--- 
 Cheers,
+/fuad
 
-David
+> ---
+>  tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
+>  tools/testing/selftests/kvm/lib/kvm_util.c     | 23 +++++++++++++++++++++++
+>  2 files changed, 26 insertions(+)
+>
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+> index 323d06b5699ec..79ab64ac8b869 100644
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+> @@ -1195,6 +1195,9 @@ static inline int pin_self_to_any_cpu(void)
+>         return pin_task_to_any_cpu(pthread_self());
+>  }
+>
+> +void pin_pages(void *vaddr, uint64_t size);
+> +void unpin_pages(void);
+> +
+>  void kvm_print_vcpu_pinning_help(void);
+>  void kvm_parse_vcpu_pinning(const char *pcpus_string, u32 vcpu_to_pcpu[],
+>                             int nr_vcpus);
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+> index b73817f7bc803..524ef97d634bf 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -18,6 +18,8 @@
+>  #include <unistd.h>
+>  #include <linux/kernel.h>
+>
+> +#include "../../../../mm/gup_test.h"
+> +
+>  #define KVM_UTIL_MIN_PFN       2
+>
+>  u32 guest_random_seed;
+> @@ -639,6 +641,27 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
+>         return pthread_setaffinity_np(task, sizeof(cpuset), &cpuset);
+>  }
+>
+> +static int gup_test_fd = -1;
+> +
+> +void pin_pages(void *vaddr, uint64_t size)
+> +{
+> +       const struct pin_longterm_test args = {
+> +               .addr = (uint64_t)vaddr,
+> +               .size = size,
+> +               .flags = PIN_LONGTERM_TEST_FLAG_USE_WRITE,
+> +       };
+> +
+> +       gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
+> +                                         "Is CONFIG_GUP_TEST enabled?");
+
+nit: should you close this/reset it to -1 after the tests?
+
+> +
+> +       TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
+> +}
+> +
+> +void unpin_pages(void)
+> +{
+> +       TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_STOP), 0);
+> +}
+> +
+>  static u32 parse_pcpu(const char *cpu_str, const cpu_set_t *allowed_mask)
+>  {
+>         u32 pcpu = atoi_non_negative("CPU number", cpu_str);
+>
+> --
+> 2.55.0.rc0.738.g0c8ab3ebcc-goog
+>
+>
 
