@@ -4,138 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AD14CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07778CDE00A
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 10:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35CBD6B00BD; Thu, 25 Jun 2026 06:11:42 -0400 (EDT)
+	id EABFC6B0099; Thu, 25 Jun 2026 06:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 333856B00BE; Thu, 25 Jun 2026 06:11:42 -0400 (EDT)
+	id E84256B00BE; Thu, 25 Jun 2026 06:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FE6E6B00BF; Thu, 25 Jun 2026 06:11:42 -0400 (EDT)
+	id DC1496B00C0; Thu, 25 Jun 2026 06:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E51036B00BD
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:11:41 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 627C140660
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:11:41 +0000 (UTC)
-X-FDA: 84918018402.16.286F482
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 974F9100011
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:11:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=buIBgmKc;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B74F36B0099
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:14:01 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 464151C6123
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:14:01 +0000 (UTC)
+X-FDA: 84918024282.07.1FCE15B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6427640006
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:13:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CzFBk5Tk;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782382299;
-	b=a/rBqxGPJ1yGWbbqoakR3tkX90gXexTVvbdzHbkWV8LxhthguJAkRmR3yFJJ+qVWAJISlH
-	dys4wYBoWEjYDAGqakuiWYDuN2o38zuT7gjEzq9bGdFsEsQN9CmmR4YUQmGHy0vB24sc3J
-	zG6DrO+uLcwCq1oo8tSX5Uz1pQHT4Do=
+	t=1782382439;
+	b=I1F+CS9hzhy5dWWCsfZC8rU9nDSD7MnA7lUDM9l9bku7CXDlWJie0OhgaLTwqVPzfa+JgL
+	/UDz5fKhbvY0bI9VbrpcKD8eoihu9AXHmYsIW1ynZts8CR3RszU0GPagV259aI/t530A0v
+	DnvGPkkAC8kqC3NToRBRDkvBoweXwIg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782382299;
+	s=arc-20220608; t=1782382439;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ELq4DcsgmxsG/xQ7iP6tdp51y3PfpvNXYbA2lrH5JcM=;
-	b=ltcNnCkDKsArYkE3WjG1bIwDfdzqzhSVFBbcAQZSCow4Ebk17kvr7UVaV02PXWIJ4vOVZ9
-	Ryudxc9YQwSkpVWy7aKitZuQxgotVt6290Ljf8lXv2t3qehFWFBzz9/wgWmI5Ska1VzPbN
-	ch2iw9s8Hl/jU3uCx1EdPzkXnvtWT08=
+	bh=4bcArUR5Omfus3wVz5rbf78GOWoL7W/szQeqfimOQPA=;
+	b=25b4FIjXeJ4sVELSxU4yF6ldEqFNJ8FJqSMUQSHdBT3r53xHyaw5I95ntgHWr30EdxUM60
+	kHy427Z65s/XtJ/i3kmT6tbTzpV6kXl5zGjJr6tR9jUMd8UYujeV9/UqEfjrV+QkQlncFm
+	oAGdmBV+oJ683j12vkZulgJ1HhJ7OpA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=buIBgmKc;
-	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-490b9318997so11245865e9.2
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:11:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782382298; x=1782987098; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ELq4DcsgmxsG/xQ7iP6tdp51y3PfpvNXYbA2lrH5JcM=;
-        b=buIBgmKczzKRkySy8nUllHXCQgxM0diyO3yJ5JydyXv5rw8dXmDAjU8Qg6T8CdEwfE
-         mMt8jWnntjA3pvKcOVC/HDjZbqXsF+H8GIMC4EShHX8RQ4LuWL483fx6rXSmfiF3j3T7
-         qkR9Vvrk/Ods8lWr8qkjHqS+14wAYDifZZSz+645eBxpzTSM5PFJAPNZEAFjRF+T6RR0
-         3syXwGVQHRtoPQlUmd0j7M6DSu2wJZl03D0pMQObvL3G1LcmNGTihe/0YPnRcubODJwz
-         ykpY+RFJTgVkXXjfz5EA8qpEGpC547YJz1/vztHeNASr6gbyHz07WvzTCgINKZkmyS15
-         84Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782382298; x=1782987098;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ELq4DcsgmxsG/xQ7iP6tdp51y3PfpvNXYbA2lrH5JcM=;
-        b=qBdVpIwvF2N7KrrxG+K4NL9IKmwd/WXAUEdNCMzhOv9FGS9crveqg5206jtW8xXqh7
-         xhIlb03BjxxxkalyPwd00iLTteSIFG4vcnV3QhyxgEsq+jUMyZG1uci+OFoIyUXxO/jG
-         8Oeff7SopiHnq71jkTknXV0D7u8QFNGon5je2F7Q6Ep6eokayBFdc5I7zMi9D7qPuiVW
-         d4Kirc0zAur6/AGj+CEX/g9cIPntHXIvByFpRCe+/isqmmpGgh1ni2OVWETQ6gfL94dT
-         D/PpJjfDj3lH/JWqxqP5UuWwx040Q0D55GmCioAy3hirzevbcYxAqUTNWP2VyX+6MrpD
-         cnCA==
-X-Forwarded-Encrypted: i=1; AFNElJ8IsjIQ1Ca6mQLYg3LgsWuN3nhVhLxwWn8o2bgnzIqlZ2CRH+xbF4YWPbE+4TwzJMCP4BoLxUlpSw==@kvack.org
-X-Gm-Message-State: AOJu0YxAa3I4E+lR+QBRla7Msb40+lHj5DqPmRtuSnwe/SmC4EZrIt+h
-	2SNC6WUf8VWmbJWuyFNGUdl3AaWcq+4b9RTCvY7Tm7aDvxhZlNdfQsIH
-X-Gm-Gg: AfdE7cl1j8llPb3gK40nLLHn1L9G1yU5hpyGXdZzaX09BRrI0jXgeEbG8J/ZMFIfg0N
-	gVVe+o+74vSvSEI8oO3HrtaHpcJWRJI1v4Oj3bWhoRnlVLqf70GbElLYmMxofUxuLgEL5sDAj7F
-	axpuqRXZTWbHcPPqMqwxEYAhgTOr0qO4OiYDymEDu9RjUkRK+IYb/5zO8L0xu+EH13KIGE2tnKP
-	+B8ifIXiQepW+PEQIV1gFXRfklBBNEhUxo2VpJsLGtIkfB+MJGcn/P0P+gqzREilmFAt1OYATmo
-	flbxsrVygMNLg/SeQFJYboRrR2Xz8eFMjX5CXBqKksyvg6Xv5gxSDDOIpECKYo18wlFp3YV4LjE
-	Hwrt5WFtcp2JFqojNN4TTV8S1jd8fAncVBeYwK+C2gZ8xJ2MKs2sP0n5aoXIUq6Myz0QeWKHtq8
-	U6/rKI4HGR
-X-Received: by 2002:a05:600c:8b53:b0:490:9d1b:f086 with SMTP id 5b1f17b1804b1-49266864977mr24965995e9.14.1782382297752;
-        Thu, 25 Jun 2026 03:11:37 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-4926417f0c7sm59950125e9.14.2026.06.25.03.11.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 03:11:37 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	avagin@gmail.com,
-	axboe@kernel.dk,
-	brauner@kernel.org,
-	collin.funk1@gmail.com,
-	david.laight.linux@gmail.com,
-	dhowells@redhat.com,
-	fuse-devel@lists.linux.dev,
-	hch@infradead.org,
-	jack@suse.cz,
-	joannelkoong@gmail.com,
-	kernel@infinite-source.de,
-	linux-api@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	luto@amacapital.net,
-	metze@samba.org,
-	miklos@szeredi.hu,
-	netdev@vger.kernel.org,
-	patches@lists.linux.dev,
-	pfalcato@suse.de,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org,
-	val@packett.cool,
-	viro@zeniv.linux.org.uk,
-	w@1wt.eu,
-	willy@infradead.org
-Subject: Re: [PATCH v2 0/7] vmsplice: fix some problems in my previous vmsplice patchset
-Date: Thu, 25 Jun 2026 13:11:32 +0300
-Message-ID: <20260625101132.3859505-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <89ea76b3-e956-4232-8180-ee3929adf905@kernel.org>
-References: <89ea76b3-e956-4232-8180-ee3929adf905@kernel.org>
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CzFBk5Tk;
+	spf=pass (imf07.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DDC64360B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084BB1F0155D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782382438;
+	bh=4bcArUR5Omfus3wVz5rbf78GOWoL7W/szQeqfimOQPA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=CzFBk5TkZMfJCyBMVUmeqkh5hScBSRF/jcSCUwp+RVbHyY3s59CKBuig8jP4pz1fW
+	 /uRfGzYhSoMsd/eg1OhdM/rZtSX2rtrpdCJNtivnmOty40fAOJ/1x9Q9f6lwhpCQ3S
+	 QVjp9MfBWG8PQ4E8lkTcmj4uXit/M6YUgHP7hNwLpHiflzY4Bfl29Bh6OIIl7Sp6T5
+	 Z4ufr1klV7cLHylINhsCGioMlUW5mPOJE+bVvQd6Lzm+YfbCcfXcwcErg7h/u4B0Mb
+	 3rolBSqg2ToA+EODYDbqQIGGnq41f3df3o8UfUrge4C2N3RBQ8ue7JvgepeXgYc9le
+	 S7KnitoaRLoKA==
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-929a7eeb0c5so14675885a.0
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:13:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8MXbrjdhb3DLzfAYimkkn0P3JVGI8iNSZMxvQacV76wIEaDbEv+oRFvqEVufUPRXNEwr/IJTvbzw==@kvack.org
+X-Gm-Message-State: AOJu0YxX4f9ncZ4VSbgJQmF120AN5ppWcZaGickiVWPsLJjAaZY9Untt
+	gpalDghCHg549uSiNXoBDMeX/2HfdL/wrNXxXR3Bmmo86loUXqAOdBHk67CRwEH6NfPWJndM5xM
+	T+Mn1WeNudGGtcjSDYSfsi4x7OnxVRRY=
+X-Received: by 2002:a05:620a:6882:b0:920:7491:7362 with SMTP id
+ af79cd13be357-929250aba81mr230338785a.10.1782382437379; Thu, 25 Jun 2026
+ 03:13:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260623125723.2503832-1-dev.jain@arm.com> <20260623125723.2503832-2-dev.jain@arm.com>
+In-Reply-To: <20260623125723.2503832-2-dev.jain@arm.com>
+From: Barry Song <baohua@kernel.org>
+Date: Thu, 25 Jun 2026 18:13:45 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4wF5ZZBbN4OLO_s443NqFTRrV2m468oa_1J+Q-2=nuThw@mail.gmail.com>
+X-Gm-Features: AVVi8CfXAsF0mhFDEHcfpEmZtsf8q-xpjCdIC1iA0aFQPxUvcKzgO1-abrG7b3w
+Message-ID: <CAGsJ_4wF5ZZBbN4OLO_s443NqFTRrV2m468oa_1J+Q-2=nuThw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/swap: rename subpage->page in folio_dup_swap/folio_put_swap
+To: Dev Jain <dev.jain@arm.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	liam@infradead.org, ljs@kernel.org, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, vbabka@kernel.org, 
+	jannh@google.com, pfalcato@suse.de, ryan.roberts@arm.com, 
+	anshuman.khandual@arm.com, david@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: src3865qymuhk54jayggfxi71k4ubxjp
-X-Rspamd-Queue-Id: 974F9100011
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782382299-973511
-X-HE-Meta: U2FsdGVkX19dFVBI12vexp4UPCEXzF146YBApuL9ZcM7tiaj/2VfMjPZShdCUYMnMt4+Sg1A+k8ysSfcr6z1xohWZbpNoVZiGSbEC4fDKlbG4dEe0QXMeLe9hsPSblVN9W1NPqdqFlTCmBhpb0/TLj73943TseXQs2RVfXC3CHTQNDEFjAjJ3+2zDAmYEYhe3c2/7NJ02826gY7+PhdQCVf2l6cKlBECec/KkfT1kc3CWD4eQwHfpzU3jF/weT2GrocYYcofharqqPBoG/6gStI+JLLAcdpFueMzDusnRbqETBAcJqFHehJ0qGSkaQUBaBL9T+Iem1bFrKkGREIKIBvJY5r79BvbXyo2K4X+zabQfO/KrvVNy7z2HUh8XMQbp+lQDoAB1FXyf+Uddg23/TP5rRnd8qgR8mCknjRgmXhSulULkBvaIEFW7hY+kbpymbr0bv3d/laXH/4pS5wYeLjPnMavFZCSzLx8YvGmph14NEwatNjwgWBRyV3WxW51SrxHpkwq/6bYOCV0DUQpmGTF9j5ACLs1+GUbXNqSZXQMBQ+iT93hV+qg1P7vWw936yPACHs4HL4cnKlTcs6jbyzTsSLa9k8my7SRVquI9W7IOO4nezYwtqZviJtSwHrN9K3FmH2rPPQYhPdYGyLc6k4pYA+wZaDnMzg1Cpy21gHVtrABeIIqheH+E5x0P729VL1xC2f3FVX4GCPdRS4Goyoms9OiiGUX3tGqZ4bqRpNv/be8b/IOKcnNZOvICy5JpKoj0J9eHnZGBDalI+6wM3SY/Wc92VSnBQd4pvoqPFKf76+FIkQ/UxqFRp8gtqZwWswmbXw9dqPUT555WWR9+wePR2WHnFNYAz7XKOdfPTUo2EQvKpVhFdJAiceRiZHMICZUpfvn+dJxOfWYOxgpg1F+8rGLmGhIWW2dc0Av6526Q2/KYFStMNnS1vZI6gtT8hkGrjvdoYt/ELhGthc
- Y1x+KOjs
- wclfNR6/Mb1YO23EYuOHSOhabK634zBOAIJZGEpN/4/OGLoe6JbRvJcRHfushmmRVlkmMBf7TEuXCs2WHUk/rrx0Zg0evM1aw0idPZ7IwxLKWtlIuCdKUMvKQnCBFPvIyzYAYjIN0v4lZbWmFG5toEvK3xwpexRzZPrO3ecbc9VaPGz8om+CVZDHqmskfNJZgDUpy8TcNUzZn56aQYiRg6kWt6yvFWkv4LQXSIA6IU0cdVw1l44HmqxJItLE/hbYxZXrmDL8e/qQvnp/BSIBHqBYCdCSHO9yoRzKN5nm8I2ohyLDIGnEl657WyCSLEZYRwkmienbL+2SfGwzmZHYtm1i6AhhR0QKhEz+f1pcr1hYcg6kxQgs4uMHdJs8Qiu1JrONWzDNx65HlUHepA66XzYPV8oaKpTd/W7xzbVqJEqIKOuKFc66VMFB1lgYEzw07BFbCHrfvNa6CtNXlZOsm5ProoqTBPjW5osBnRIW/yy0DFVD/MceJ3h7xFg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6427640006
+X-Stat-Signature: wpg6ti4jpqwhfgefxa5ixcngwbwg1hm1
+X-HE-Tag: 1782382439-833888
+X-HE-Meta: U2FsdGVkX19EJD75ne3kEeKfcVDVqjQej+FdVIGeEB6xmGbkCStbxPLlfk05G+v3x9TF3blu0rkd6b+E6k0iTCXZLsZIeaumfV1Gh2UFpt/0X5WYvvqbdGD98K14xwY7fZ0k5m6vFYGYc78ri8Tk64dHTW73iFYU6CMxNwQQTXjSKQAR2MPPDAA5FwVzDJU7nJaoyOxL4IjHkJ/CaayFOnRrw8WfSQQm7RN4jc7tF0kULJLy/88fsMekHXVOuMCkrhDn5s8HCWXC3nqv+LqAtILhD5CxKDFhOeutcBt4AJjCZq1D0vDdr3XYWHsnUtU99G4G51tJICNMPuxdUPTjYDk+5KTxsDziy9M7GRrMjVZiU7sjzekz92AifFI26fItQEQo5I7aJfYJW6aCaFDhNBwD/WluAcx3NuB2FKrzej/JBlVBzQ1nP72ffmDYsjiP3rIaZlOSbeyxA9UAstEFAWoj41IMikRSb9zJb5IS2MVjL9QiE8qpijCQWXfWY2zds5urU0YGJKWqQT87fV0QeyE6VI1AHQoNyP1BktupYEzVbGNkbTXyS5iL6N/KdSzf8QvB/WNGE8zmnlTowvUr+4XTsvInZhby06e6wv3h9ab6c5X2YyfIECVkVibzrOBj6uOA4mgGXsIpgp7VN8uo++Xwxz755SpVSj5nVsp7Qh4yH3yE4CFkGZMoEAqG728LAVQx7P3sGGdMUwhNhLX14tzlRY2O3mn/Dm6luvcuELdv65NHV06XbCm4mjUYUdxMB/uHhZaU8/6legdk5K0sudRXssmnlRFD2Mgzag4QCN9EeZb5BMyMx8lVeDCt7deFjETGmihLo8qVPunZlPdtPi4kR0qavgUCeX4G8B6e7G0qGn4z36pxEu0XSKR5LqjkdVfLVrHe5dG3DIwNtjpOz/VzXjooc8aRzI/aeXqgykNBCHsfavJJPCANEavsxWCYklNyN5u+X9JryUcktH1
+ /0uXsuCD
+ mhPGmqCvpF2CD8Sxpkqx76v/v9/x25JeosHdaGKCyo/uxTsThNNfN8oq5Srm4kD0bEqg6uhIvWKARstbeo5+Z+3droyfJTIe5qXu6ggYpsFS7tnYD6vXsUwwfmsPQqTBZEL9DjkRKOk+Wv3rbj0JkYYIwaYxIdxFB+ar5n6a25yWHhpQdH5pMXHNp3Nmum6yVZFGg6eCiGrHEctsktm82QUNdWe7fGeskkJnCyahTL1p4KeaWJ9Fu+u/b6Xxzoae2s8hn7gkzqgPdU70uPpjBd04OwTwbiK6OFaDICmt83Smk+53SD3Rc0rgkhj0/6u3ddsXBPEtbBPV474rsdkfP3NdeFGBRusa+f1uR2BUUaoYMeOqCkTgFzhBISib8YBdZaFs81frjt7mP3SSvOuDISyyCOhEShGe3yEKamA+yTzfAqDSYK1qkifYUJble0OzkjN0o
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,32 +106,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org>:
-> I think we concluded that we cannot rip out vmsplice that way at this point, and
-> I suspect that Christian will drop that topic branch from -next after -rc1.
+On Tue, Jun 23, 2026 at 8:57=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> Folios have pages, not subpages. Rename 'subpage' parameters to 'page'.
+>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
 
-I think my patches still have a chance.
-
-On fuse regression: I return EINVAL for particular combination of
-flags used by fuse. This causes fuse to fail-back to non-vmsplice
-code path. I did Debian code search, and I found none significant
-packages, which use same combination of options.
-
-So I think I was able to deal with fuse regression.
-
-On CRIU named fifo "Not supported" regression: it is handled.
-
-On CRIU major performance regression: it is NOT handled. But I still
-think my approach is right. (See cover letter for details.)
-
-(I wrote about all these in cover letter for this v2 patchset.)
-
-So all regressions found so far (except for CRIU major performance
-regression) are handled.
-
-Other option is to introduce some deprecation period (as
-suggested by Andrei Vagin). I can do this, if needed.
-
--- 
-Askar Safin
+Reviewed-by: Barry Song <baohua@kernel.org>
 
