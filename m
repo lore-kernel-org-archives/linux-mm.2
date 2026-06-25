@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E77FCCDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 04:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9E16CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 04:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCC5E6B0088; Thu, 25 Jun 2026 00:55:30 -0400 (EDT)
+	id 7A6C36B0088; Thu, 25 Jun 2026 00:59:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7D306B0092; Thu, 25 Jun 2026 00:55:30 -0400 (EDT)
+	id 77E266B008A; Thu, 25 Jun 2026 00:59:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6BA86B0093; Thu, 25 Jun 2026 00:55:30 -0400 (EDT)
+	id 66E356B0092; Thu, 25 Jun 2026 00:59:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 96CD26B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:55:30 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A58D1C338D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:55:30 +0000 (UTC)
-X-FDA: 84917221620.27.4AD70D4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 648EA18000A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:55:28 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k39ubIYC;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E4536B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:59:48 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE2DF1C5FD2
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:59:47 +0000 (UTC)
+X-FDA: 84917232414.11.DAAAE1C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F39F0A0004
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:59:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fs1Rrmwl;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782363328;
-	b=S2X+6XDdoN6mgadkTXtngm7d6RvK5+sRRNdmIHe3ZwNZp22D7Ib0JVd6sY1WQrk6j2KxHi
-	c7bEog9eZ9D3d0QKl6aL+sii9JOJ/fosjW0BADsjjDPyz55p+r5IC+Aq+27NZTlkv80p2/
-	bHV8aIk9M+vEwX7xaSBCanpxCCekGHY=
+	t=1782363586;
+	b=xAgD8olVgJ5+RrrRlWrf816U2duDrmEuXtgtHUV4/XDz0Z3uiHU8CuQW5zbxNTDQeG02BI
+	dpfvtIYejfIQDLxlglj91gTnHKycU5Gpx6McZCGc6rICUdt3d7Q+95Qr25Mv48ybomgyH/
+	kqPCAua+0P7MA3Qqx45lHg+1tSxBRtg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782363328;
+	s=arc-20220608; t=1782363586;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ik2m8/imiD/kJWsba96vvHBONj+BHsLpIB1uKAUvSoE=;
-	b=Dqy6Uv5TonOP2sP/TcQTSHsDA0ioa78Hp9Pl8smf1Vm/DlNRF6371YqLBKomkYSI832B0A
-	iZNK0oRyeOXcSY/SALOFg90eqb4zqNln+jmNnZJDmXHyr8eb7B0W3eqapVfdjwaB+xnheh
-	KpyW0B3FMR9YRWgyvNrHp8gtLPXcr3I=
+	bh=aTky6QwBgqRfHryRXAJQzaU1/mYoPwfIJItzcOe6/ic=;
+	b=ggV4pj3p4mYGb2wXB82w1ez5xMLRRdH9RAG36h/RnuSxZOiEpXPotXR7bYCD7I7oo+QVYq
+	SlnbgoTxn3vZWCXOj6OLyOThfGJAjAMQ11pmhSIL9VhS2kFoF3ftxVhU2xDMQ95rbqiAOZ
+	XJnKjXp2XUrDR16HLVJ1Wk3TdnIxEQM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=k39ubIYC;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fs1Rrmwl;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C38CD60018;
-	Thu, 25 Jun 2026 04:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0884F1F000E9;
-	Thu, 25 Jun 2026 04:55:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B90F6440E8;
+	Thu, 25 Jun 2026 04:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 234681F000E9;
+	Thu, 25 Jun 2026 04:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782363327;
-	bh=Ik2m8/imiD/kJWsba96vvHBONj+BHsLpIB1uKAUvSoE=;
+	d=linux-foundation.org; s=korg; t=1782363584;
+	bh=aTky6QwBgqRfHryRXAJQzaU1/mYoPwfIJItzcOe6/ic=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=k39ubIYCvKvd6eQOfBEnNPyk3KX3fE6gevVRpWMgPbfWR1BLVKAsluNKxhlK1pVXb
-	 QIaibRPE10O4s8KeF58gh4kYGFWQUMzjQC0tZoPhxJXxwVkMyyUIgq2U/5xpG90TBs
-	 4dgAu526VsIOkRY/RRIRBTPNu0xmZzDmtECm/kK8=
-Date: Wed, 24 Jun 2026 21:55:26 -0700
+	b=Fs1RrmwlPbBS3gpwqsyazcSBwdPzxTBTWMTSlRw2AQQGjs8Jd8T6YoR6wrPbvIES0
+	 RscXu1K5LwfZmRdLb63g5MigtkSccVQYd97/yVzwm44bXbbv1mKwoNBEYiM8YLaXpX
+	 5BVEXh048xpL4e0Blhy6r2VyreWqVFZYqHHNK6zk=
+Date: Wed, 24 Jun 2026 21:59:43 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Zhen Ni <zhen.ni@easystack.cn>
-Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Yichong Chen
- <chenyichong@uniontech.com>, Ye Liu <ye.liu@linux.dev>
-Subject: Re: [PATCH v11 0/4] mm/page_owner: add per-fd filter infrastructure
- for print_mode and NUMA filtering
-Message-Id: <20260624215526.ed20169b440c62d71a3f9d90@linux-foundation.org>
-In-Reply-To: <20260625043101.338794-1-zhen.ni@easystack.cn>
-References: <20260625043101.338794-1-zhen.ni@easystack.cn>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev
+Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
+ CONFIG_TRANSPARENT_HUGEPAGE
+Message-Id: <20260624215943.332f1bdcc99a3b85b7df0822@linux-foundation.org>
+In-Reply-To: <20260625034629.nmgdwl2c4luwod77@master>
+References: <20260624082359.2869-1-richard.weiyang@gmail.com>
+	<20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
+	<20260625034629.nmgdwl2c4luwod77@master>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ojpbaahh17nc89ke31xpec176oxbgmyb
-X-Rspamd-Queue-Id: 648EA18000A
+X-Stat-Signature: wunkwjhixc3d1fa6599nqyg9simccuse
+X-Rspamd-Queue-Id: F39F0A0004
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1782363328-565754
-X-HE-Meta: U2FsdGVkX1864tKl5JJLMZSUwfibxIr251fZFf4avsR5uKmMoKIb+LjP05Kr1Cs8zzzC9+MSrnKF2CcDNemKQz67XAanC6x3wqH4fxqSRb3W6JDeqkEEZ/A+JFtfGisORXSTi8Tf9Z3Hib4F372vouBEpS7YyINuaYAr/dg4YXsXG4rbxnLekyG65UMA+uZjzqoLC1dpf+uAK/bIiYgHBJOYApQANKc5lRcsVGMU/8wndFzVl7XwcG1iZqII4N9Alhc+2XbTPM1YJxef6GtCtA1hYlSgAmObayoFSE6yNeKWVqFniXr/+BD0jS6RfoS6Zgs51zRfaCAEcfgrQ6U6tllib/BYCiM8nqlGZ0njtXdD2QaevOFZ8RUleLjWGuQjbo4YGIaQH+BQXOQE2GgYWo1N3ln3GiY/MA6oMKdA9b010OR2OcGyoyBY/rN9knn/uaYlm6l0r13q0NnOmUC431c7ciQqjItMdG8HUpSNVb8KXO3NeLJvtZAutw4n25VPrbGH9yxR7GoVHM6unlBhJo9Am1ne/9iUVW1+L/4ZwKkQAoqb5cF6i/h2o3ltvElh1Xs7RrQLb5UkqeI2hjncphAlH3CAOwiNxXUya2swJcqEr3o5xoCXRQhrgqUgnBszMco2C+wUEOut7O6fv7lxhW7yYygQ51WYuWMfDe4olVl68bMQSSONCuXADGcrnQL4GHSzU4bQd0RtQhLM8Raxvtxdftts5Hya2ewPCoe5vZtijPduqBaDG2dFIXInpaLu/S9li5rTNhkoyEKQj1f1BqsB775N/R4dO8LchjOkYogacOsOKF+ZpV+9bb94f5XcHW0qBS2Qh1DMJNjpWx8f6IKY/0Oa9nYzfEB9uy6V9plOmpMGu8626waBFhtB86j9oPAMh/fbfRKoju1kA+AFCJbP9bXV1iETaCyNhJz2p8TW7DaSWc+gqoA1PdCN07kdV5sw6toYvxRrvOTLXqR
- T3HiFLHm
- EOSk5+nYaYq7D7qcgArX6fplWg6Wslr7YxD57QrqDBDkQ3GRyip2d1xgmooUIe80Fg/Fs7h7j9K23TiKZ7GFQQRrvF7+osJ+1nc/SfMqott+58Cp4yJK6q5UAcsx3vmByryk7X3Zv2gJVG3bzLAXN6S9mT4xuwyj0LlqPue1Pmsx0AZc5ZLejXaOvG2J9p1o46oxE4aUI9bkGTsrkk4fgce5SfOnsa86N6G0P9bWho2lBAKHYjQt4KYJA1YTKahozTQwd7HUPyT64Ku6CRWZ3KqF7cUnjeGBnvmu34QTdDLa5hfk5dTg4cfdGYIj9VEolHRWqWhHXIsDjzmWDHN8eyoOVajjW5gEqcknX
+X-HE-Tag: 1782363585-851412
+X-HE-Meta: U2FsdGVkX1/hT6bI2EDTNgzbklh0m0GXKGg6UNC4swDAZjYVrU7awf5M0nGWSKfrEEz3EV0XTylGM4kFiDgsA5k5l+jky9qDsq071zREHokCvEpZEK+4qUpe8iaBPiPGxTQFTRWAiqSoER/kdu4T0Rxq6NCwzFTeunP+r6gWdi7sgxQEbr4XcrU51uF1LmPAYaIIgx/XxlGTt6MU6fd5oP870eYbp0S+LvbpBupYVSYyG1ikc4p+wwKmJFFKrkv/OYrgcsNoyap0O0ATrQON3Ug+KkrqXH36rqWFUJmgICCN/Dwj0XJK7ULKCU9vdO8xEVMKTkjcvtuargwCAaR2A7SMzQuMvgDc5kfdxOb2jKmGhxygsDxVGdK6qWLUUJoPUDdx9h1GwOKrJkDVtYwbNcKwTpOl8TOxof4oXbmSyFlKkbU9eH1oIVg5jLWFvYVt0Yb+GTr+KGOzC65dV2O/hjVwpUhCUEjDliTePChsMy9AJoJJsSQm+TSM8D0okgJbf/VUzZtUH2Jjs50HvmG0u51XF+s1JNM/rnUMOJrV5L5v9vdKVayHncz0pyZ5hqBfXUMyaXoK238qJyMjUG4+F8PtCNoBPOUWFR1XBFd6NBLJFbnG7z/i4olXxJH3FegOuo8822tntPtYHPdbyAn+gNKOIi6ORE8KzQLTgmqV45/QeQj22kYqehNXD6zOtHRYcJ5OId1k+YnJhAo2NXc7v1o0athG6/13EQq4OC0T25oQshSSaJ42KAl725v1iyGhzJkn5RCMUD9Hw4S+V2wy1Wq+wk4w8gp+V3gUj0bPEAwW5Y7NS/1HTSqIByrB8/XvJs8Z3bWwfZGKBUQoZc35Y7mWb93bdb60Qak9By8eU5shH1nSzu9x8QhacXWoqB6EiedqU5ATugTtrMNcYSOw87XDKByE1MNwBcfjK5pfUsq6m7XvYUrri5u2VnI9wlTHjjd+AIqG2pyM1MURbk2
+ cqoQQa78
+ w3VXPt7M+CMbGfui+OnTpepVH3xjBilRsPJdqzIWUgOomtaFt6N+1TJDhc87+4OVCrTl/ofa0s42lphjrgpSEf8gYK5uteHClUvD1TiGhXkrCwZfsDDs2wI/aJdzpWp8tA3YJLhzClwd++5VnHp8l5bgNAeS8YL33nqfbbGzKkJcmFCBdgukp6nm1+mwE6PEifp3jGgAuYQs+s8gvjSdZJQ6K6lYegrSCwS2Ppt3oE+x+3Ypp2JfHEWRENEPdXnQWSm48xho7mdv6IDH2J7KCQ/YYYz9q8kudQLrNl9XIcbw2Q0+hkBU+0zEIYA7sy8dOvTUD7ksCa1nvRMnMQChdAVSLfwLG+lABuomaPpTeuctc9E4NXCTcY3wNy9omlQkvjEXNEc90t12i8+bBPpx0ohbcoSnoETXuyJUdFGy06NrVHDQou094LiPn3zWIpPiLRp4P7++6VAViG223igNebENW4mKj2DmGBziRTGLFcaTMyMUWYsOZ0EGiKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,22 +93,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026 12:30:57 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
+On Thu, 25 Jun 2026 03:46:29 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 
-> This patch series introduces per-file-descriptor filtering capabilities to the
-> page_owner feature.
+> >Sashiko had an off-topic complaint about the surrounding code:
+> >	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+> 
+> I see this robot reply, but not see the Sashiko comment.
+> 
+> How can I view Sashiko's commnet?
 
-Well, I assume this work was inspired by your own operational
-experience with page_owner.  There's no better inspiration than this!
+oop sorry.
 
-Review is thin (absent) at v11.  This is typical with page_owner
-changes :(.  I'll add the series for testing while interested people
-check over it (please).
+You can go to https://sashiko.dev/ and search for the email subject. 
 
-AI review might have found a few things which you might choose to
-address.  Please check it out:
+Or append your Message-ID to "https://sashiko.dev/#/patchset":
 
-	https://sashiko.dev/#/patchset/20260625043101.338794-1-zhen.ni@easystack.cn
+	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
 
 
 
