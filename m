@@ -4,88 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAA3CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:51:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFCBCDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:53:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 280376B00A9; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
+	id B38236B0127; Thu, 25 Jun 2026 07:53:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257F76B0125; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
+	id B0F616B0128; Thu, 25 Jun 2026 07:53:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 147696B0126; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
+	id 9FE156B0129; Thu, 25 Jun 2026 07:53:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E06786B00A9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:51:07 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DE8A1676BA
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:51:07 +0000 (UTC)
-X-FDA: 84918268974.17.7B00893
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 920B840004
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:51:05 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp0mOr9q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E7426B0127
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:53:24 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E31791C609A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:53:23 +0000 (UTC)
+X-FDA: 84918274686.01.A061D13
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 213F6100013
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:53:21 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ISji3frk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782388265;
-	b=owx8QgVMo4bI38O+quJWbkBvzwXiYUpck6nmxzXjlEX/wcjXjHmhSHzVYNbTqGyGTrzxX6
-	r5xnOzicwF9LdwoiQnEb9bLbvrSeL4GJL3hFCC6FqS2ZC68WMAYu+L3/JfCHDimdKG4amP
-	mkJnMUD+2KReNGK7cHU+kHn2W09Y2W4=
+	t=1782388402;
+	b=Hb9uRl+kZzObYue5k90n5x0Jynpr83nhSbDOIKLNNGTnPs7vOvmcvJsg4uXaI9bG1OQmtS
+	A1k+vgcQCwrRUsUYEs5+BZpBjm23Bj56n+Cmh5684mX9jHZ5N7E5paRYAIuW/n9y3xGILy
+	jAPuQFBXzvy1OZqLO12mrM7sNGMAors=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782388265;
+	s=arc-20220608; t=1782388402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hh8oiOowWZMfYNh0sdl9wulo1T9jtJmItc3jEmb/BRQ=;
-	b=B3TOqcPjqp36jPiIKtDAIrmbrdDJcTNyu3WkILUGxBS8LwmC8X3OdOuvdB5jdc67deU2vh
-	rcdhur8+aqUWOyIkNYfO2/D0slm/D2di3lLdc3hnI4xW5/E0RuZR9ofzcHdfF1BHqi71ni
-	S3LRsVBZxysVmFKwRKkSGhQL08rbL0U=
+	bh=2oRlQaanIhcQcZCf/uwxGFqg8mEsnAVTMqm1vxeHrXU=;
+	b=5TfNcVDlPLwUa7pH/1osz9OcCQFASMU+jeaf8QF/8EpuCMO/0mWIbctjUXS2EWfihpSCZg
+	0jmd13ovFIhvb4iToO2f0iUvgdHjaaSj6WFfNAWqgKitBBQy9QvIoB2PKcl0batuh7tLNp
+	Jbsp8OPNLLq1Zr8q1sKgr34BMW/1Cf4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp0mOr9q;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ISji3frk;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 212376021A;
-	Thu, 25 Jun 2026 11:51:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48451F00A3A;
-	Thu, 25 Jun 2026 11:50:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 566A6406CC;
+	Thu, 25 Jun 2026 11:53:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6141F00A3A;
+	Thu, 25 Jun 2026 11:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782388264;
-	bh=hh8oiOowWZMfYNh0sdl9wulo1T9jtJmItc3jEmb/BRQ=;
+	s=k20260515; t=1782388401;
+	bh=2oRlQaanIhcQcZCf/uwxGFqg8mEsnAVTMqm1vxeHrXU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Zp0mOr9qz+03Ut2IAL4eKFy70V+zu4xxF7zOUb2dMiEV9vt16RlHbXGQjkMyL9V98
-	 wShk+N+RcCDDFqbuVcE+GTlWWUB6q1XfMc2XScidYrpVb09st/L4PCwBBWDendu9X0
-	 F7Dj5BF3PTUWhJSDXugXl9U7iwka7wnWSEL42l7kmB5WuQxstKUEzBzgYlTiM99Xbm
-	 18LXMeu9fwdI4OXrilzTIh9APTUu428rMcrSgBnx50k9kxyLkWIwAqpSa/aebbjE+S
-	 3VbVWPgLsbImNMrCYd7vX/UFSEICqHmiBmmmz9Wlw9JGo0KMlZ3BX85TVdj03HEp2+
-	 jMaBwadRxBTgg==
-Message-ID: <b23506ad-544e-40b9-a940-66a6d899768d@kernel.org>
-Date: Thu, 25 Jun 2026 13:50:56 +0200
+	b=ISji3frkYd5Fv11tCw0nRVWlXN10RSoUFVewB2TodDuzSIVNkXWEn/nk8Q/LdpoFN
+	 HSYXlKPhzp+d22MbRLj4yE8JV7JKxdp6DJDs8fSSZ4namSLkZGXqOfA+NY+D8B37tP
+	 Q+i8WackGOB1xIB2yyW8MzVA2Rp2DbBnaP1PNqkwlitIiIOmVEoo+oOMK/CaF+cnmc
+	 TDzysx+chWtGVG8Gj2ZcAi1/EfSiS7Cp632tWYP5puumjzOzuXSn3l0fKaS+DjbvQ5
+	 yX1V1ea4vyhkzs5JydCeBsSKkfPqupe68Pl7b6rjbGCa0ZbR+UTyd9vvHfGEGt/nXt
+	 MehV4UPYEQ/Lg==
+Message-ID: <2c4dd46a-4755-4bf5-8f14-2d73eb356e3e@kernel.org>
+Date: Thu, 25 Jun 2026 13:53:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/mmu_notifier: let interval notifiers block THP
-To: Yitao Jiang <jytscientist@hotmail.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+Subject: Re: [PATCH v5] mm: assert exclusive nid/zonenum bits at the
+ page/folio access sites
+To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
- <SY1PR01MB1059616E59F213B6FB4F4E3C5C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+References: <20260625071830.996043-1-hui.zhu@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <SY1PR01MB1059616E59F213B6FB4F4E3C5C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
+In-Reply-To: <20260625071830.996043-1-hui.zhu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rjxcy3sbad5c3ej43goopmisc3ug31ru
 X-Rspam-User: 
-X-Stat-Signature: wx5mihodddteeyyiqzgxeewjymku4hz8
-X-Rspamd-Queue-Id: 920B840004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782388265-128189
-X-HE-Meta: U2FsdGVkX1/VyImOa37LVHBSpjRaNc7WEgYtNFW5O7+s7/u04Yo89q668x8oksCLfupps2Neat3U3+3LuwThvh/ZUBADKnzp5Il1eKNsYsNwz7JQDuHPxbivFGwhndkmKuNkc4OFJLLrfDw1FGtUAGDYPMi2Ue7hL+yHx4nnY965lq8OkrUEgCZ2oCphuNoT/4ttmJYywM2HOv1Hq93EWMocYe6zxj2Uesi747VLGm1LQ5y9eA2WBX+8xSiZ2NagA1ZFa2udeJ2c9GpSz/97M48I1FeSUbje9/bz5nhalbL36uvSJyTfHmQjjCSC+X9k+RCpLB63fjyz976h+OKRGZ4rMFIMKnxZXvYnbP9gVDC2wOPkYuidbpq+C8zbdAGvG9PIHUP9v0YDOgEkRDtRJ2LpiyyhBKwmN3EfefTc6AxIIbEA+eyCYx7GjL3FhWBhu6sTIKZg5HBRhw+0xhut+LMpuOIBCIlKR+kN2h//sjYoHHPi7zWt09i5jaNBl7O3mOJna3rdv8zQVohjsZnAyG8g+r6PrfLFPYXZNakXFFS0umywJ5kUW60tG1JzOgfGcTuHGBFq55YWQZdwevXGZ5FivRHJDnMugNkNUT8fB1sbemQwAKyf3crKBIIIzgsJM5vZuNf0A2MEWNfdcSgAhSU8veaaK9/GKXcu4i9qlxYVO9TWg8ocqSjWXZJKklZpJFQ31Lp6h575zEH52I0WolDNLtx82OCm64TWu9XXkE/h8TIrNPsXkX81qdLNFNX3lDKpv2q9P7eKO5HE5BaSyNU4EExcMPKX16Q9jbICtR4RibwY4aRPt/SDGdCxjXo11n4OU5MlRYDRPaqJGO7lGwu4yOwzA9kwuD2Hy8/lc45MlpgjhD6z/9NdSN3zgLvus8ND3WiQFbKzXzflkGdYeqmFCd22YBHaPa62BQsx5RmP0RdGnxzJK+ZTVKBbEHooptI/hmhNebUtszo92vd
- K+h5IsQr
- FcQ8SHof0WJ4QLyk5Mb2IaWMbSU4eNr3MH8AuqVN/yXaZuP7UO420CJ61dXKvcFzDWygZkbr0oJr2LsazmWMEF6aHgpvaJ4G1QB7G/ERMCPsiwQCbpP5w94fsjESqGahp5FSoLgSCpeC9UTGeJ/b3kzw0+Yrb8Bq+9vhUFKDiZDg9TMrX5R91j0DzrzY2BN1wvE2J6l2/voBDOoyqqfjHdfWJwG9nIw441/ISYlScIFjG3DatYhTCSQ3vX8FVLjUU2Pd+GuOVrgJZHEwaNzw4KA8C7+COWZjLlKE1FZpeZpBNajHITLgfDTxtbA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 213F6100013
+X-HE-Tag: 1782388401-778879
+X-HE-Meta: U2FsdGVkX18zsDZFzyyV4T38TmM5v0p84aOTONWtl085NJ6qNCnSkQp/snJCg0mCqAobvgiatPWAszrtB5ZCbKfFrkev1VOOrfHoheJwUVncYYSKQpXabmSeKC/CP+Cj8urr8fxmY55Z54DnROusY4pELfR6X0/iYr+cycFGBvTDx+aQeSZ6gS8ejzpsYZdlYk+PtpgSc8EGE7omNtuSzpcJc5Gx1gCBMgJeWfpzrA08hSilp83O0duSdIxw1yUVxUm3xZIX0hHcFgoXfDZlM6f1+NtapNe2wlX4wtNK8d8iz96LWUBdOm64/8kyQFOvn2SXb2vZB8mOazm2E+FtCLVbZmKAlftJz0eBpwC0TiAMbD9RB45B9jFiHvXUHo2lbHFA/9YpqsKfQYp8dllLVV++4boHArSwAdVB1OoDbTp8xlFGbr2NFrTsWY0P32o0WVlYLZ+vmr54R+9xB1ys7YNvKyUWxevWf9BHw+tvUwBrKCfGa7UEIEsPfs/bGnCgpAKt6jMvfve1Iq/7Fv+GK0NqWEENrMDmpDc0mseZ0HCrfsdI7vsWLW5l4kmzCeOCz125RKd7wUZWeMd8iOhomGjMuj7W++P0RN+Gz6h3L6zfWgjLabKbDn0bBhm6qViMshVRWrPSep3smtEI6U7QmdfIotYcZ1c5EhPrNIYTRpiWYn46Am58zKRtcdLgYny93Lh6VfWV9yrjwaQP6Flx9ynMRHAKNup32J1w4eIOMGcWBCyZpa+yiorxIXfALc+KVvNJ/Wbf2YQrrCAqP1F7fhgh8biejJU7QyfihsU6E8fuiQmYEx2YiZmr3l7no2gxQ5w+RoKpWEpBj6/dvtm1bxtjEAE/4opZasH13bbOlY+aSwYfBxji7zBsxxA1rweJNXkfQrCfsadEVnR5bosRPEE0yp+ITysMvZC4kgh/0V72U+QXknV8j7i+frBNUpndI7wD96/RR98azFt1Sho
+ KjFcQe+v
+ m4tdlYQ3viHBDeufVyslepZrABIeLX88Qd3AO/PCR8FT9VLWjI0O9QZTHThmd2XKXOJynpBwzZNIGo+iaSYe2QdotgeJ1UHBkPJ9pIs2Eb46S/kmT8ubq9dmPYh4rNEUghNRpYt3NOfJDSDFNbhOkqE+lVHeIRMH5SLrNGSktuK3wGU6bEzT6+WFAJ/Q9q94SWVaqy78th7iCt2eRGK/6mZReGt08O3Lv152LhJ2MaP5Io2gyOd7zGSgD8BHO2Zf7f09Ok/TNIFGohRogryAvBOP2U5tdGEQ8AqB8cZJMkTjwHWUR2hzY08Y14rzMBR5JsSVeVfoAc6ZRg0I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,16 +144,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 12:59, Yitao Jiang wrote:
-> Some secondary MMUs cannot safely tolerate a user VMA becoming backed
-> by transparent huge pages after the range has been registered with an
-> interval notifier. Drivers can observe the page-table layout change
-> through invalidations, but devices without replayable faults, or ranges
-> that must stay mapped,
+On 6/25/26 09:18, Hui Zhu wrote:
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
+> page->flags and folio_trylock()/folio_lock() concurrently doing
+> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
+> 
+>   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> 
+> The node id and zone id occupy fixed bit-ranges of page->flags that
+> are set once at page init and never modified afterwards, so they can
+> never overlap with the low PG_locked/PG_waiters bits touched by the
+> folio lock path.
+> 
+> ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
+> checks a by-value copy of the flags word, not the actual shared
+> page->flags/folio->flags being modified concurrently, so it doesn't
+> reliably assert anything about the real race. Move the assertion to
+> page_to_nid(), folio_nid(), page_zonenum() and folio_zonenum(), where
+> flags is dereferenced directly from the page/folio.
+> 
+> On CONFIG_NUMA=n, NODES_MASK is 0 and the old memdesc_nid() body
+> folded to a constant, so page->flags/folio->flags was never actually
+> read. ASSERT_EXCLUSIVE_BITS() is a real runtime check that can't be
+> folded away, so doing it unconditionally would add a pointless read
+> of page->flags/folio->flags and a check that can never fire. Keep
+> page_to_nid()/folio_nid() as plain "return 0" static inline stubs
+> under CONFIG_NUMA=n instead.
+> 
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+> Changelog:
+> v5:
+> According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
+> calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
+> ZONES_WIDTH != 0 (for zonenum).
+> According to the comments of David, avoid calling
+> PF_POISONED_CHECK(page) twice in page_to_nid().
+> According to the warning of lkp, switch the CONFIG_NUMA=n
+> page_to_nid()/folio_nid() stubs from macros to static inline functions.
+> v4:
+> According to the comments of Andrew and Sashiko, set
+> page_to_nid()/folio_nid() as static inline stubs returning 0
+> under CONFIG_NUMA=n.
+> v3:
+> According to the comments of Andrew and Sashiko, move
+> ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
+> into the page/folio call sites.
+> v2:
+> According to the comments of David, remove useless comments and use
+> ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
+> page_to_nid().
+> 
+>  include/linux/mm.h     | 23 ++++++++++++++++++++++-
+>  include/linux/mmzone.h |  7 ++++++-
+>  2 files changed, 28 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 485df9c2dbdd..772bd1fc6fe7 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2294,15 +2294,36 @@ static inline int memdesc_nid(memdesc_flags_t mdf)
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_NUMA
+>  static inline int page_to_nid(const struct page *page)
+>  {
+> -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
+> +	const struct page *p = PF_POISONED_CHECK(page);
+> +
+> +#ifndef NODE_NOT_IN_PAGE_FLAGS
+> +	ASSERT_EXCLUSIVE_BITS(p->flags, NODES_MASK << NODES_PGSHIFT);
+> +#endif
+> +	return memdesc_nid(p->flags);
+>  }
+>  
+>  static inline int folio_nid(const struct folio *folio)
+>  {
+> +#ifndef NODE_NOT_IN_PAGE_FLAGS
+> +	ASSERT_EXCLUSIVE_BITS(folio->flags,
+> +			      NODES_MASK << NODES_PGSHIFT);
+> +#endif47
 
-Then you shouldn't be using MMU notifiers.
+This is getting ugly, really. We're leaking implementation details from
+memdesc_nid() into folio_nid().
 
-Use good old nasty page pinning. :)
+Maybe just turn memdesc_nid() into a macro where we can just do that check
+internally? Not the best thing in this world, but better than this here.
 
 -- 
 Cheers,
