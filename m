@@ -4,158 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB4A1CDE005
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 00:19:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B536ECDE005
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 00:20:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFD6D6B008A; Wed, 24 Jun 2026 20:19:53 -0400 (EDT)
+	id 977CF6B0092; Wed, 24 Jun 2026 20:20:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AADE86B0092; Wed, 24 Jun 2026 20:19:53 -0400 (EDT)
+	id 928FD6B0093; Wed, 24 Jun 2026 20:20:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 976C26B0093; Wed, 24 Jun 2026 20:19:53 -0400 (EDT)
+	id 7F26C6B0095; Wed, 24 Jun 2026 20:20:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 721336B008A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:19:53 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id EBF571A04EE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:19:52 +0000 (UTC)
-X-FDA: 84916527024.03.8D6FF41
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F2B6B40009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:19:50 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lGyEBDXJ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782346791;
-	b=eJFrb1aInPZuYqJD6tT2xyKRgvRr2mJCFOUjBDT2ghADK269+9hCW6+IVjYjex5zRWPcH7
-	Y5NHTeW6WN7tocmGTF9DynUBau4KoXrfgbMtAYimYxglw3NIhCXyLV7T9f3NfYzJL9uH9J
-	obl6Qbwf5h4sG3FrFpAoloW0DetNjrI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782346791;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 586126B0092
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:20:11 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2DBB1204F6
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:10 +0000 (UTC)
+X-FDA: 84916527780.09.CCE6915
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EB3EE1C0007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAzNOd2w;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782346809;
+	b=hTbChMdXgKlR+UsZWYzmbPg8Ukdqvsn5wrRVJtbKo8Z+w/6wLskonE2l1Aww7Lfqqj2dR7
+	N+4u9cMCqy3XjHxZrCawW2jvBZz5PyCLnbtYuzq/PhqvZ48kw0d/TSXfmhpjpBaHEiM4/B
+	YF61VKY8zT197V+T1JpZwT1go82z41k=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782346809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CdGA3bllvZfq9+oq5ATtnUq0c6NavELb8bI7ZCuFA30=;
-	b=kanWYipjHZwlLTYEksiuYaGAwlhB3jMkYV9pU030ysPP60FEdPHWlmIhoEBKjcE6u01l+3
-	3TqYEdrvzqhM2Y5XOm5tY98/JMtQeiLOuwtURQ/RRtsv+WInF72hvrBeGmjZNTtf6S43A0
-	iZuKrb/INIbGaTBqgwgLULZDzAEE5nw=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=lGyEBDXJ;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-139b914bab6so1871114c88.1
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:19:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782346790; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Wk4NdLU9ocNrJ0vS/pXITjs/GlLsu4qj8N5MQQQFkcCNIcfO3VA2pcrV6zb+PLA2ZV
-         QB/T4L4Q9SqReN96ixksWiMbGITlhotKdjdocxgfnzq3LPmwA1zqgP1n34BoKYJmYmmL
-         QrZAC6aWhljJjbK/tgAN2AgYarNejrBbseC/DS0YaPO6a8laSrXNVjJSUURGWWB2Rg6d
-         43CVPIVBbH13ou+vUEFP4BKBaB5Us8amEN6zNckLIt7TMIQpFrRcRz2E66CqII2ToNQL
-         fTMPn9B9zjyTSVh/stNUK/m0jqSIleYk80bROeueItJZEaoKorWNuTeUYnZ4/N2jsd9o
-         KZww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=CdGA3bllvZfq9+oq5ATtnUq0c6NavELb8bI7ZCuFA30=;
-        fh=lteh8uy3OKLESH7a3uFZLZycbFgpB/YkfdkekhRkmc8=;
-        b=X0ZNmpY5cp7pQ/J4FIHz87Mx77DHdXqyn2rAbU3xIGS5hk1StSOwGhe/vdE59oimec
-         byVrNDKhxWDVeSPUnbpKmsSsCQ0BA//QF8XXTRhw+alRB6wyiEInI9iP+e6fYxK5Ty6p
-         pzbzsP2tiSckxfPrnoOQc1A/mpgKcyWNTOPDTSaa1mfyfNlsCFwVOxzGBzqxq2/QAXMD
-         y5QwDforv1WmDMR1DR7pGFqtSTOjGD5BkEz5LQ/jsSnUjAEO6xghVx/ssCr8FYMZNmWC
-         MbFOXdJ269WG3pHtpBbpfd3scIoTFsl7lkbZomOY5b7W6KM8I4pBTXMfZz4mSfI+JrZ0
-         Fh5A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782346790; x=1782951590; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CdGA3bllvZfq9+oq5ATtnUq0c6NavELb8bI7ZCuFA30=;
-        b=lGyEBDXJaGd97olJETeELtB8pDf9i95mENtCppibFq/Ah1/jCPsQlMsIaqn+6gzOw1
-         qgcq5W1lop4lnY8rNHHuLBZHMCIqcuG5ZMC0y4fyezc4lT12zWWBX4uyvDug46sq1LWV
-         djs7qLyX321Ggyxq0i5KinGdqtoUiZ+KT2PLJK8fHPnPiYmNZUP6bDNNVn1y7op/RqaE
-         2LZcSNiyb44z2CWLp/wv+kJlGHm816In5XZykfVrVKY9qu1j+KT6IxzexCrBkcoOCobM
-         /xNDTxsiEr2HmPJjj6suBH4w/FKg9fr06NL5E6Pd8akOlXSuYsHyVmUlNvq3u6bXR+Gm
-         ntcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782346790; x=1782951590;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CdGA3bllvZfq9+oq5ATtnUq0c6NavELb8bI7ZCuFA30=;
-        b=TcBuCkp7D3aijI+ElZD3QdwUblmlgTRzRNjNKC0Off5CwBM8KAnEAv3c9Je4Y8I4dk
-         PZgZsnnTAtqu2eFP3aO/OfwT22WN8SLiktRP5QlQGvzkmJiPMaBuk6PzxCf72sWCbIox
-         5DBfiUxvUbVQzc20Y5E2l3vukoeeK6skUjao/ajzE9E6CqL9kbSKn67hAWhVFuudRCAm
-         kaQuMgynTGbjvtu8jmE1ES3n2Zwz5r86C5T/s43S1JbSwWMz37z7cMmmST5bCqZ1MoFF
-         ZznOv2kgCrquo12U5RHee/hnT/vXipt559VHqtWb3gHH+NAlw9zKjtjeBCfxCZEU2G1A
-         SPng==
-X-Forwarded-Encrypted: i=1; AFNElJ+EGF9tZw1UdV99P3gUC6PWbEXNFveXsyQuT50CDFdMEau5rE5kpiEEK0s8Lp3CPyLEPLs/+xrlrg==@kvack.org
-X-Gm-Message-State: AOJu0YwIeE/Tok8o1AXm4BCd22xH2Fb68Ij9i4XmnQbg2sQ8vtSyC7/a
-	leZxTk400jIvICVhGFtLtMSQBBc0t3OYtycWTRP03rj/ennSNRp4bkUAWqE4IBF2V4iqU+hglU0
-	0veVIy5riKHN8xgjQmVWfiFYzxNYQTvIwsKKN534q
-X-Gm-Gg: AfdE7cney+/Ad23/0LZDt1pK0WaKCGuL8EOYOW/aMXoVAqioaLK7KUi8ATUuohL3pH0
-	17lU4OMT5aQqlnILJu3ObEXZAKeKQV1xtfjR+MOjNCa2DMblFVTD5PrNXer9A0KxcdeNZljdooC
-	fINEohIXevxJwJprOm/GnGglG6kv6C60utdgYRVWeW+u5ymTHoA3Wma/cDR8qGGyMAphMjhtU1a
-	3Cno1mzOSdD9pG7OJPTLatVLYfD6zZItgUk+kR/stZ7tevxXO21JT2ZjiiPFdUP/vQ06SPbzJV4
-	+O3oPYVG7rhFM2BnOtdSEssmVotBZEpcUbFBeUaJaHbnMpn6S6qEz0AX88Q=
-X-Received: by 2002:a05:7022:611:b0:137:f001:fce2 with SMTP id
- a92af1059eb24-139dbbc564bmr255822c88.33.1782346789006; Wed, 24 Jun 2026
- 17:19:49 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 17:19:48 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 24 Jun 2026 17:19:48 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <9f81ea12-98c4-4ce6-a95e-233851dfe8dd@intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <9f81ea12-98c4-4ce6-a95e-233851dfe8dd@intel.com>
+	bh=GaDTHNyPCuwGlJZtEErsLrra/tP7EwBADY16bGtkFLg=;
+	b=uP+zvxA5RDWdbHl5puW0VI7e5z0XOm/6gvC4K6SlEsDhi7st3vTKPuC44mj/CO8463k9bV
+	D6BCJq0PvCs+iM0Czm+AYw3KFwC8Gr2aFfFMU7Sm//HT0To/HOWQXcl5LpIz2sK222TCZS
+	32uoYsInIdX2qotn6XXF9M3J6R8VkRE=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DAzNOd2w;
+	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E888E44457
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D03431F00A3F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:20:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782346807;
+	bh=GaDTHNyPCuwGlJZtEErsLrra/tP7EwBADY16bGtkFLg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=DAzNOd2wfalPKQKwUMPXu4+xy4pbvkHFDKb+g31Xtt380+pfYj4MIdv0guKnqhxI5
+	 6vXN9SDscGePYOmAkXA4UmcC5XFaP1qGIeaWq1BvHLwScIovSzX/bnLsGAjiWUouGu
+	 rdzACn220InIMJ+zuELrQM6MB83joHc0TwYxs6fbpHErLOsxWFTeJrv2WIXQkZ5jOa
+	 jQ8D0dagDRoY0llwRjg3pOWa/lgZk7GHon45zEegrqDC7Y0+YtMyVcKrRmahHtBa7P
+	 xwhMSgGvUbSwb3LyzAtMGrUZkUKiVi5ifisZHsecYsL9BbR0Fi2wRsX8eGJ8hxg61P
+	 vebkJhycHE61w==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c0c5d170ad4so195153166b.3
+        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 17:20:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/zQEBJz9hICQRTThTQ2mz3HBpYPAFoDPEkP2qjvefePv0aNo+RPy5oKQSRbggZnoG5ffiT78neGg==@kvack.org
+X-Gm-Message-State: AOJu0Yxc4P15nL5/XEIspEsLNvVxtTwnBdYtvPSKYm2SoDxQIBjpgnzO
+	2GVPpw2n2kmvHsiIm7cszbX8c8YiH844ixXd2ybulqSvufdGl768DAAt8lcOCS4Gert67wk0Qfl
+	VX2QUp0NkrY3ZrsQFWwxO3LxIXZGLSyI=
+X-Received: by 2002:a17:907:9447:b0:c06:3880:69fb with SMTP id
+ a640c23a62f3a-c1205d9708amr874266b.3.1782346806413; Wed, 24 Jun 2026 17:20:06
+ -0700 (PDT)
 MIME-Version: 1.0
-Date: Wed, 24 Jun 2026 17:19:48 -0700
-X-Gm-Features: AVVi8CeR8FAzeQAvNnM15yag_GxBRrpO8H44tlQVk9R637S1b27Bxjsp2TDXvkw
-Message-ID: <CAEvNRgHR-6X72fvx-4s+RrsMHohSCBu53bVX4G3x-=XGLnOxiw@mail.gmail.com>
-Subject: Re: [PATCH v8 00/46] guest_memfd: In-place conversion support
-To: Xiaoyao Li <xiaoyao.li@intel.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+References: <20260612193738.2183968-1-nphamcs@gmail.com> <20260612193738.2183968-4-nphamcs@gmail.com>
+ <CAO9r8zPXk2eRbVcEMQDTCH1j-w241h189=p04FenAfKAjkkQtA@mail.gmail.com> <CAKEwX=PT_ABx51--Qv9AAZwkuH+_Wp_TeiUYVQBY=1=SCf1HJA@mail.gmail.com>
+In-Reply-To: <CAKEwX=PT_ABx51--Qv9AAZwkuH+_Wp_TeiUYVQBY=1=SCf1HJA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 24 Jun 2026 17:19:53 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOEceZYXdHTYgt0mtguSxUJSN5J2Bkw-pjrahJ4cZJpZA@mail.gmail.com>
+X-Gm-Features: AVVi8CfGQ0RpYqrGMUl9fqUkWLSmyqqq_AxtQ_wAezMJ7rmI0W4t3fPDgzwvfBw
+Message-ID: <CAO9r8zOEceZYXdHTYgt0mtguSxUJSN5J2Bkw-pjrahJ4cZJpZA@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 3/7] mm, swap: support physical swap as a vswap backend
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com, 
+	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, david@kernel.org, muchun.song@linux.dev, 
+	shikemeng@huaweicloud.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, chengming.zhou@linux.dev, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	qi.zheng@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, riel@surriel.com, gourry@gourry.net, 
+	haowenchao22@gmail.com, kernel-team@meta.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2B6B40009
+X-Stat-Signature: jkhunz43g8pyoagjhx7rapkoogc4qhrn
+X-Rspamd-Queue-Id: EB3EE1C0007
 X-Rspam-User: 
-X-Stat-Signature: 9ttgf3h84ut4ua7mecxpanxsdik8u7o5
-X-HE-Tag: 1782346790-790295
-X-HE-Meta: U2FsdGVkX1/BFyhakGf9nG88gMCTjkosWMBxyWuy/9LREE1+HDFQQ5lZLUId2t2XxMHz4eI4Yj4ruSBmhosRiufCnxyak4b8ra+rDyfVbXPIbIMlfS2nMrhdTwN2jSbycoZ6CmLA/EuobTGTmfnMVvuf8pZRL06h1oDWmFg7jC4Fq+KoH9Hh2GU7M//Dn6CXLzNhCtE5Z8dHp5tHpuIhV0onKInyoJ/NySRHz/uv6IF5dLXo+82x82xK4ShyUqDbIehrVkI9mneUa+hdqGMclf7DMHNido9cMfkWsqNwInyb2li1eiYi0zHSTT4eBMK0tVcRPeRSDnvzbYvRzjy1YAZMjVuhxRnD+JMcq9TI1XQ7CIBJaf5G4L3HQ5ScWVmX4oiE4l+Up3qZmt1VdNi0WzSy6t8tsJvXPuWOuo5AX+D6m7daiEKoHD4sBRpVZNjsknBKe0NgykMt9YlDhy5paKEooOxh0m+NxBi7ATAjXPfmU5Eqg4g7TcgNwft3G1stAziVUvTxvHC3GE3uRR/o/spWKSrpf4Pcx0Cqz89p/uCW1hi3TkPndkRH/ZyH5gdefrYgN/+HL/anp4XbNR1Qx33eIOBY1pOScFhfzNIuZzZ2upWq455dYaSlDIWVXWi9dVC7DXZnrIkS9SzqLa2o9lL45VuEPTrxl1RCnvI9zvoJATVJCzfgVSCsh1ri4D+VJZq64aH4HDhlmjvrn1DM+xeptqZnDo1+Tuu6gwfYPAC/F7drLbD7u6Q3nHpAClaisjBB9xunLFxzJ1wQuoccHQhqbKuMD1wk+Zk8fByl8VQdAfTt4QlT4DVGBxGL0yELfUmFYH1feVs9bwW71N7T8b4mQ7XYS6d1ldygwK6b9zuf2To/hi8qbF0F6X6agYn4SHPqYrJoxWEuvL68rGW7oIZR0EEWAz7vy6gQXfC6+YgAC840fZbEEcsLFIxq4OOoMIC8XXuBIOLCm5i2Pjj
- JFI83i2O
- c0AEE2nveJE59usc2VHjH1rPINHi//oYfWVu9JYWvGExGxbl/ocbMh8L4m0SqTt+f6vElG237vEixNymTzaK1r3JzgHLQAWW63nZsKJbCMbCcgnnCk17GHAPnjXBVCggc6LpDuKrhj0kEH5QdgCcvg2N8zG543ymHznCK2sqfEHY+mctB0gib0ULK2UvO51bCMpdhpeq51ylVWRiynEPm57PwZsHJccqx71gJqGrwyuCnzA8AtO/YPQZNUqEK65PRTyPz7XOqdps8rQtwJzXJNlOENIoFdgq2FmZtHEo4MigDS3eglK+DU45XStqMxsULlugXsVqMYo4am9exD2fTanAKwFmyeW0Gm04bo94wCFfYW5vSYDfecrd4jYWn5bIq/Pr9321c2mdbkOYD5PXBqkZnLw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782346808-292366
+X-HE-Meta: U2FsdGVkX18tHJEHVsZJzCZLDRszZ8MgUoC4tv9Gl43IuSFUdif+pnpmNBIzx7HLLNsPOpnJh+OkAjjfoWXxHvoK+/rBkKzQVIKoXx9JvcukhAK8Ba+KaEykiGNRtUtkCnWY+foI8hUT6VfuJmPfV10YHM45uXprOJkbBUoJWJ7R+oJOz0ZJWLSR+GDq8mMys0rQ0BZDJHTqygWBpjr7A7MQUZPlKlVHeTciRpzczCLL8uaSNmF8vnxUVdp+dXJpU7v947rEON4Boiys+asPGzCSsccH8OPjIWR+ttPS50ltf/Uaz+F7B6k03MSc6SalIuvLu12XoB4YA7QuSCel1kjoM6/jJdg149R5EEex1JHSKde/Iduga0AAzEd13yySHTdjUqfFANQWsWMizHaj4468gQz56y2tgKURHf0Irjah7IRwqJFihnmOtU+kAA9u9xHy8l0r46/JpoNd0inOuNgr0Ggw1kfmftzAGgka/at3tw025ZP8o8CE4i1KdczAKcHu1HGN0NPTaU7U+J/VjPE92EXMP/+Q8ewUEuACtHviafpPcBK64iLj9zVotVK1Z+ksoHrn4ZjQez30/3nwnKTMuTXYDjC9Klu2OayecF9/aEogF4KexUnCuIjXY55jnC/jK1govVK9DQInXD2yeI5wgkwAtNSzBN2HEIb8ALmREgE1DeNg6GeXaMSmOGP9/UUbe5dheti/TwUtjhbWF+hbXTqJyJymtfNDa/hA9NnmrBO1a7ARBMxcgT8jdYjTiTYFzXk+Sc/VBUyHcNpHxsGFol6GGGBoVbqNp6u0lmgMM+l0op6Hs0bP9L/5bumEvxqrcb7byJNyPxnJaP4bb3YbXwDaLOOjd6F9Ol4NxLeSaR2vD3XRqevDRhngzUScwfB+Lh/B1Fok5ZE8ltp/oR/lZgSpMIEVOoTuAn1ifGjGpmpieFtf6xAMGzFvNN/FxeRgCNGMUGNVw2mZ8kd
+ uZf28Nx2
+ ghDLzk0r9TrLicG1NxdvL5z4wMJEWraWJRCtj3VR3cw9egveaHX4xfk2jAVbSZ7r0Sq4b02a3PmsHiPQg8DzfjaGJUfddrOLvqQk0JiijZWSxCv8UBi6RzzM2Hi/ck5nJlpu+H4Sq2fW04HgctIvUbkwFJqpwIB6LRwSqTXPwrGyLq03a/7G0hqSnujUks9DDm016lcreIQM+JA9GgIxweluwj/FUBkUV7J5AAtGkOgdUB7C7bRAnoP8zOt2mVUrMgb6qcRWkTZZkOmyBl5Y/0usOMKQq9w938AJv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,17 +109,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Xiaoyao Li <xiaoyao.li@intel.com> writes:
-
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
->> TODOs
->>
->> + Retest with TDX selftests. v7 was tested with TDX [12], but the setup there was
->>    wrong. Conversions were successful (no errors), but the shared memory being
->>    tested is actually in a completely different host physical page.
+> > > +       if (swap_is_vswap(si)) {
+> > > +               if (entry != vswap_zswap_load(swpentry)) {
+> > > +                       ret = -ENOMEM;
+> > > +                       goto out;
+> > > +               }
+> > > +               /*
+> > > +                * Allocate physical backing BEFORE decompress - if it fails,
+> > > +                * no wasted work. folio_realloc_swap sets vtable to PHYS,
+> > > +                * overwriting ZSWAP - the old entry pointer is only held
+> > > +                * by the caller now.
+> > > +                */
+> > > +               phys = folio_realloc_swap(folio);
+> > > +               if (!phys.val) {
+> > > +                       ret = -ENOMEM;
+> > > +                       goto out;
+> > > +               }
+> > > +       } else {
+> > > +               tree = swap_zswap_tree(swpentry);
+> > > +               if (entry != xa_load(tree, offset)) {
+> > > +                       ret = -ENOMEM;
+> > > +                       goto out;
+> > > +               }
+> >
+> > There's a lot of divergence in the code (in this patch and previous
+> > ones). Seems like a lot of it is to do xarray operations vs vswap
+> > operations. I wonder if we can abstract these into helpers, e.g.
+> > zswap_tree_store(), zswap_tree_load(), etc. Maybe the name is not the
+> > best, but you get the point :)
 >
-> Glad to see you knew it already (I was going to report this to the
-> original POC TDX patch)
+> How about zswap_entry_load() and zswap_entry_store()? :)
 
-Thanks for reviewing!
+Even better!
+
+
+> > > -       xa_erase(tree, offset);
+> > > +       if (!swap_is_vswap(si))
+> > > +               xa_erase(tree, offset);
+> >
+> > Maybe this can also be abstracted into a helper, but I wonder what the
+> > corresponding vswap operation would be. I think folio_realloc_swap()
+> > will have already "erased" the zswap entry from vswap. Maybe have a
+>
+> Yup that's the right logic. We already change the backend to physical
+> swap slot here, so there's no real "erase".
+>
+> > vswap helper that will only remove it if it's a zswap entry? We can
+> > probably do a lockless check first to make it cheap?
+> >
+> > It's probably silly to do this, and maybe there's a better way.
+> > Generally, I think the code would be easier to follow if we abstract
+> > away the xarray vs. vswap stuff into helpers (where it's reasonable).
+>
+> I'm not entirely sure if its worth it either, yeah. Unlike load and
+> store, erase seems a bit asymmetric in the sense that we only need to
+> do it for non-vswap cases.
+
+Yeah :/
+
+Maybe just add a comment why no erase is needed for the vswap case.
 
