@@ -4,188 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE110CDE008
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:00:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F77CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:01:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB17B6B00B9; Thu, 25 Jun 2026 07:00:40 -0400 (EDT)
+	id 65A896B00EE; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B88B66B00EE; Thu, 25 Jun 2026 07:00:40 -0400 (EDT)
+	id 631366B00F0; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A77796B00EF; Thu, 25 Jun 2026 07:00:40 -0400 (EDT)
+	id 521496B00F1; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 67BE56B00B9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:00:40 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D288B1A0628
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:39 +0000 (UTC)
-X-FDA: 84918141798.03.B205F7C
-Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012008.outbound.protection.outlook.com [52.103.72.8])
-	by imf31.hostedemail.com (Postfix) with ESMTP id C36E720019
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=e21l9zR2;
-	dmarc=pass (policy=none) header.from=hotmail.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.8 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782385237;
-	b=ucm45rdLAChay1JJ4CtMWqBuy1iLfIYcSSMCGaGdEfH1uwrnmDj0RpJ6vLVPLJlKxYzVYJ
-	7TaiH4tMAB4IhcGMKYsrUrHvoEG0o2eMW3kQyN2fW1hMPmZm0FGVJNRlN5+9r0dGNlJ7Yw
-	gRKXAgyiaq0S4i+/tTE2BjiJDoeb204=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782385237;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E3226B00EE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4485CA060D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:59 +0000 (UTC)
+X-FDA: 84918142638.20.30EA9F4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 486AC160021
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:56 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iuETgneI;
+	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782385257;
+	b=lNvOXg7q/zKhnXWvDDRXbR6VHJ8HcQ/6xlh7yKs+g5uPpQwCBP7N8NnJyGkbknxgRiLkDi
+	medOVkVU2YRMGiLUnHC2Lw02um7wYvSH2tQdeSm5gkCJG6FCAelBUSIOIGeye7YHGO00OZ
+	i3U+CKupRJuYsamOgrPZwuUWNhUZ1fA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782385257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sTczvt0gPSfN1SkRS2gBttZyynqdIzQ0CvBkdRrStTc=;
-	b=vGRTmkrCyRL1tXH5FaqiZp2r+4ASZ6yx63gMX4LP3l36YgvAl4h4uWIvj6JxabhFHN4rNF
-	dJ5MbKAVl0vzENkbmU02fGJMdJQXACraUlcDbceZAewtklNSocsbU9kYoUUMqTRB42zExi
-	ecUu2k+J1DB4eVi8JzYIau4ddlSh3Mc=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=e21l9zR2;
-	dmarc=pass (policy=none) header.from=hotmail.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf31.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.8 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vfhMZW85VptMRaXlP77injUK4TrgMj/JMN48vfoNlqOI8aj1/zmQimUC2JfrQx/Ol6uO9jHGQXQwSyJzbV0HkSg6rMj2D4Xwy8xi3PkYOJ/VxjQC/qKnULHAQW2jlqkT1IPHKQqv8z05leFWUtYSP+3gobzmBjA8QtzQOsLus/8xjY2egSkZmlaUEnn3s3b6ORY5GB5R+AL5lSnOmjUE9mzu1p0cUmHkFrxwQ2EW9I1pZ1r1K12OpEavdbPpjUrAfl7ewHea0wuYZN4EJAJ2+8gVfWei6Lo+7WalaUrbiZRtM+iK5Kz0bhq+L2VVM/IQLGRUWcSHo/Sbs4zxaqzTTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sTczvt0gPSfN1SkRS2gBttZyynqdIzQ0CvBkdRrStTc=;
- b=cKL6QqUfeHOcoDy3OTiiCCsxTog1zuWt5UaJKcsiLOZTOqS1z+xgge2NkW2FlegU7wuiOdVxwCgU7+LomEaaKaZHCuXXvjJn64HVZNt4SsM3jMqpkutv9Q1inF6j4WkHnC8mTXUx3y2fTi4ozwKJIOa0tBsdVe9h0d3P8q/gj80qyoDnCDwuztsTrfcXgm//TpGc8W4IZMlwXKNhvPcKpg56p1lUpmvjjp4z3BvBbHFr73OkPc2ix3Kyt7FWsWZeOrU3Eegr7YHSxbR1GLGj/DIJLCgv+ZImFQiU4FJq6TbPYH8TOqn3J0dTvHMoPV2LubpwD0oQvYdSEsnx/KkS3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sTczvt0gPSfN1SkRS2gBttZyynqdIzQ0CvBkdRrStTc=;
- b=e21l9zR2V28BdzNQzICu2oIPwBuFvcnvIBXi2AM27nqDELG7Q5NGC4hCwqWj4i2jppUI/nu8NA9ovBOB2w8asLl0SvHMsPbvV4JDNNt63xhGANKP3oPjZlfFkRHL0Y8dI7IRWpSc51Y5onevErrarnNzfxEsu+IjML1m8Nd2640kNa27UKwn9tFboUfEbOvPQ2+hkXx5YYNT+MFpV2XwnFal47OiyQPP0xDoUfgDreRq1Sevb5WMgRVaoOeJDYwEetp0OxrWny2r/hQHxcDapgpyZkyq0q7PblLNBN9+u1p7BXi+59/G1iApbKqQrV/sz6FyFBCfmvfr/ANbgJEicA==
-Received: from SY1PR01MB10596.ausprd01.prod.outlook.com (2603:10c6:10:31a::15)
- by ME5PR01MB10091.ausprd01.prod.outlook.com (2603:10c6:220:24c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Thu, 25 Jun
- 2026 11:00:29 +0000
-Received: from SY1PR01MB10596.ausprd01.prod.outlook.com
- ([fe80::7ab4:1f80:a8a0:7d3f]) by SY1PR01MB10596.ausprd01.prod.outlook.com
- ([fe80::7ab4:1f80:a8a0:7d3f%6]) with mapi id 15.21.0159.012; Thu, 25 Jun 2026
- 11:00:29 +0000
-From: Yitao Jiang <jytscientist@hotmail.com>
-To: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Yitao Jiang <jytscientist@hotmail.com>
-Subject: [PATCH 3/3] drm/amdkfd: block THP for non-replayable SVM ranges
-Date: Thu, 25 Jun 2026 18:59:53 +0800
-Message-ID:
- <SY1PR01MB10596F9476BAA5333F02F5A6BC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
-References: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TP0P295CA0028.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:5::8)
- To SY1PR01MB10596.ausprd01.prod.outlook.com (2603:10c6:10:31a::15)
-X-Microsoft-Original-Message-ID:
- <20260625105953.70647-4-jytscientist@hotmail.com>
+	bh=6edEIK5OpisM73gxjVPNfgaoSxhnFS60m23Q+2YLM+0=;
+	b=go6W830N+eMQN7nhYBnAZfBrTSvfOEpGq3sK+uA/oEIN+FON8INOyKyokULG5wNORbUZ8n
+	I2BS23w3Wmvxk8kf2PlZaFG5bMC56hktGoCV2LHnsR5tNIEyEgwcDJO6Z5wHFArefxi4IE
+	c2dd+407G6XoDhU+3LZKoOa94XcXUQY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iuETgneI;
+	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782385257; x=1813921257;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=vUCknLxuUl+l9swTriiC6ceqP2YAiFjd4mW5kfnFb/U=;
+  b=iuETgneI+y3Xm3DvoBw7pKYuP3wIlgjZNBsLNK/IDFp86CVpFvfzNE4o
+   XT1C9XjFHqe1XQOPphH/r8rFnrxfn2Xe07HzXt23puiTAOJhmPgUlsRTC
+   yflebdbkmYx2KZMUEraP4OjFfVsTy2SZHr4bR1FaEbjtNxPMfsQ6NvlBa
+   LStllOOdu3ID67gah0gZ8tOTCTiyEsWGJaUFUuZoc/AjU0AXJeGkpRGNp
+   32xYuC06qFAYoN24XvMLxDYIyf9Qs55Qjg5Tlvr3+bU9+dhH1rZSQGPlF
+   BUWNXOLW4hknVOuKk+XdliizhZRnvOk5qnWQbwJ7IufpgR+zQWS3Xp/x5
+   Q==;
+X-CSE-ConnectionGUID: JCZEwH7CQouv39YV1vJLrA==
+X-CSE-MsgGUID: p1wm7+6JR2a05mxNMzWBuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="86838517"
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="86838517"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 04:00:55 -0700
+X-CSE-ConnectionGUID: vmMDYz3IR0yKtgcbLjpOxw==
+X-CSE-MsgGUID: owF9N6AWRaOmSHlf6kHSKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
+   d="scan'208";a="254729051"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 04:00:42 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Kaitao Cheng <kaitao.cheng@linux.dev>, David Laight
+ <david.laight.linux@gmail.com>, Christian =?utf-8?Q?K=C3=B6nig?=
+ <christian.koenig@amd.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+ <david@kernel.org>, Jens Axboe <axboe@kernel.dk>, Tejun Heo
+ <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
+ Brauner <brauner@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Juri Lelli
+ <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Moore <paul@paul-moore.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David Howells
+ <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>, Randy
+ Dunlap <rdunlap@infradead.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, live-patching@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-pm@vger.kernel.org, rcu@vger.kernel.org, sched-ext@lists.linux.dev,
+ linux-mm@kvack.org, virtualization@lists.linux.dev, damon@lists.linux.dev,
+ llvm@lists.linux.dev, Kaitao Cheng <chengkaitao@kylinos.cn>, Muchun Song
+ <muchun.song@linux.dev>
+Subject: Re: [PATCH v3 1/7] list: Add mutable iterator variants
+In-Reply-To: <0ed6b5c3-e955-46e2-9fc6-075a0dfd1c4f@linux.dev>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+ <20260622040533.29824-2-kaitao.cheng@linux.dev>
+ <20260622094242.64531b9a@pumpkin>
+ <351a6b67-b394-4c58-aee2-88b6c8089ad5@linux.dev>
+ <cf8467c7-b98f-44a5-9cf9-60b43b5da711@amd.com>
+ <20260624152324.3def88ce@pumpkin>
+ <0ed6b5c3-e955-46e2-9fc6-075a0dfd1c4f@linux.dev>
+Date: Thu, 25 Jun 2026 14:00:39 +0300
+Message-ID: <734f66ca51485ee3ec9788c0eaaead681e00664b@intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SY1PR01MB10596:EE_|ME5PR01MB10091:EE_
-X-MS-Office365-Filtering-Correlation-Id: c1d8599f-808b-4277-0763-08ded2a8f82e
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|51005399006|23021999003|24021099003|16051099003|19110799012|41001999006|25010399006|5072599009|15080799012|40105399003|440099028|3412199025|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8uS0tXjATlovJwRmlYiRe1hijqWvf9h7aEyKjdY94TXaN7GvWFlBnmO5Bwu2?=
- =?us-ascii?Q?8tjW/sg6YXOBWkYax/Q3pHhr4GzyQbhRKJx4wwBq5JFqewEMqzslLxWHYmRG?=
- =?us-ascii?Q?dkFLcvK2eJlzry+Hv+fuBJZfJ78/0r9IT6yPZAOUtMRFtXuTepQwnHFVa6BL?=
- =?us-ascii?Q?IU1wgX8uaTKOB7sxtpILxVy7C2ZSjTIWrfg6bsSZq89dzC7bpcRR4saFoNB6?=
- =?us-ascii?Q?6h69Z/1BOixgk96ieDhXzMHY7QXi6W4QT7jpxVtnsWEhtRg9lfGpJ7QhIFiL?=
- =?us-ascii?Q?xaySSxjDxrlmwgS3zpEsVBmO2PtoGosos9kKv772HpHZk2yx2nneGqn6Z+JK?=
- =?us-ascii?Q?dFzrCzZZrO4sYT+Q4hbqKK66j16QY2cAJvRMd/r3vyi0CzViBh04GsUdyMDB?=
- =?us-ascii?Q?77wH9QGXFLUmPfsSVmuOSb3OlFMFrxIhFVtryUp2JFhUHePdgPhDGMTs6jHC?=
- =?us-ascii?Q?hp7qJC6bQyhNgiFDrrxqoaXhx5ZGmLTv8RFx8hYzqhML6zij3AFCnHOcFgZa?=
- =?us-ascii?Q?x+Ol6Ra9TNX1oCkZjsAyQfTuTC0Y6ZRvUaWbS8NegTn5oU96Un6+BVt6kBdP?=
- =?us-ascii?Q?BvrbaDpx76UTHx46ALTWv7lkb0ZXsEj1eTSW4IgsDPBi1U6CTu4QP/qTj9fM?=
- =?us-ascii?Q?JG64hl/W9mSra4q8J2Og6A8FWnjX/uRPqPpfrDQDpxsMiNHcDoKg6EsFTpTy?=
- =?us-ascii?Q?Qtfvv0kZqingbXPzzYIHcRJHNgnarhlOW8RQUbGDj0AU94Gkot/E4XJOqhR8?=
- =?us-ascii?Q?WKcarTactzEGFA0qq/Pr4a3pYT4TaGQ8tVhOjMzICzmMgO1wMAfGUDJM7apm?=
- =?us-ascii?Q?j6WShZWPmAezVXBDcgdYwB34LRpwbOWLVeCLUaBI1UTsk2nvpwHh0l1/sH7E?=
- =?us-ascii?Q?g4+hgaVa2RcE5B6uhiSB05FlwIi4Zpn/+xA9GVLpMXUfWd7UinPAnUjIeBIU?=
- =?us-ascii?Q?Dr093MkvD2l7uUBjOzHpDrrLNQ9QHMEu/ec96rcK1M8SWWjK4tClSteDPGrC?=
- =?us-ascii?Q?J86Ws/UcPy75SCcsTNIDSMjjhQ=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Rd4kRz/7raU9XZfYF32Ji5qwecWw2rqvSzuAvIR3HC9vmd+V0Kst8F15KiDT?=
- =?us-ascii?Q?PpWWVH5wTI1TfRmekI0V2E4A439XHzBbz1+SNu2VPMhBDzOkrEyhUP46h4x1?=
- =?us-ascii?Q?kII5IzaEapnJrD9Ee9JYD9nMAIgjbbY1Zdr/CnYeSz6VJsbUC2VpdNKrGoJs?=
- =?us-ascii?Q?otVCg/z1Uq98HB55R2rd8+6/0RuEEPoLCroR+FteSi4wCjtIrJkmoWY8t6fx?=
- =?us-ascii?Q?PSBe3ip3CdaT66ZHrZc5ujmqwYGl5CwYhgLM6uCRvfaOgqsw1n/zPxhyUC81?=
- =?us-ascii?Q?ejkZnCCKrfvWxDoFoGFNOqVsrRdqplhtIqgc7AlqutZbExAJ1xsGsaiBP92f?=
- =?us-ascii?Q?E89JSWZOrgb/8msv7+66tUFRyZfF7guFxCe2O36jNZDxQoitDosZRWMs6zgb?=
- =?us-ascii?Q?6++z59pTC7BgnXbpaTwpcgR4bM1ROBrrFCB56EkRv2fVVCo4ygYCE7ENDSZf?=
- =?us-ascii?Q?1vNKUobubPR6nhyX6yyZHh4ccNBm1xpjCrm2gavX4rxU+pp1dJ2TKIyCO3LU?=
- =?us-ascii?Q?4U9SbbMv/lKR5wK5GOq54uXWpgV88YSrameVeDHYPaiT+L5WaUmkBbvQ5MYh?=
- =?us-ascii?Q?Eif7rfUvCF8lldIcFNrXRgGuJk7manwDKaRFhL91+ofh/TBV0q6MxQlEZ6d2?=
- =?us-ascii?Q?XlCE+5NKGtydUVSE4oXqkQvAuyYPl9WDHKxQv3Ez6RHzeyF+qiphE7jD7c7z?=
- =?us-ascii?Q?cT8FU6V6mvb5Q1qmooQ30nlDt+cFE2f92zxI+pqP8v+aXJlmH9jr8WJmpSNE?=
- =?us-ascii?Q?cidYnK4KXOeNhochPhZigdAijh/MR0s7xv/fiCv+xMLFR4nkinm9UJVa4MYl?=
- =?us-ascii?Q?p1nzINQI/YFcQO6mPHYRsKlVpMSH9FKhA7UrlH/8KXlood4bkMfhwrRnTMu5?=
- =?us-ascii?Q?bXYkCbuIXZavlF3AFySyez/y/F3vc8/Rbdjz9bjglmx77D36paVTbcPJRgaT?=
- =?us-ascii?Q?g0pMZm+0Xav8k/dWVWuRe+VA7JHeuvdZgVcwyNK/2z8w6IJgF1oYR7yqQUsO?=
- =?us-ascii?Q?jr+6HAHCsPGElLDUcKWJVPAZow4l6nQycv5ov+lAJtiI+g+336A/r50qcbOc?=
- =?us-ascii?Q?q39rXCShkY6Mklq9Bj6g9ruLtfvStYnDWVX1B437vmk5eQTmzqCArj4eW5X7?=
- =?us-ascii?Q?1Zolk75iFJ/1lxO1OxGk5Nb9X5dBEQMUjO6IpCJED/ZQQeYPiVwgXeLueCl0?=
- =?us-ascii?Q?+sp+pYz4+axSqcTEx4prA6Zi3MDW8SLWqgRcDTfOvnyg6Jzglh7AbD1teaXA?=
- =?us-ascii?Q?PGjuozpZQ/chvz+2oyzH2inpHKeyCpLN3DRwwNOGYbfUICR1uPXuznFKb/85?=
- =?us-ascii?Q?o+xHzDNZUlpP2MPBKE/x+P+XvxPz+yYs00uencd/yfnnfe85f33KoGfnkFFY?=
- =?us-ascii?Q?AEui9VBQez2tEqfw4kHQyqUxGfWB047Ac8o/vD48crtoBD6XCyBYMdQd3aLs?=
- =?us-ascii?Q?WWmVB8RiTYcLsAllJpCY4wz84FiI+QUnfh8Tg4f0OQNaYg+kPRXXoQ=3D=3D?=
-X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-feddd.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1d8599f-808b-4277-0763-08ded2a8f82e
-X-MS-Exchange-CrossTenant-AuthSource: SY1PR01MB10596.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 11:00:29.5020
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME5PR01MB10091
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: C36E720019
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: te7kifnw8s43sc7qd57nyrpw7o6zfnpk
-X-HE-Tag: 1782385236-790453
-X-HE-Meta: U2FsdGVkX1/ueb2lST7ChV3vdqyx2fcH/wYfRL5OI3g5JCAM9L2K/5ybVo6vt3JeUUvk7bh6baAcCxYxcI022MMWMz8v5Z6EESLFiCN2SK25wtCJcXpyC6d++piBE4wZrZWiciBvIgy6Pi//sMO/Gblf/r1mx8r6YSRbGlyFuHnU1RrD7ZEeofjtZEd2cwtjb3Nsudv8/Vz67k6+8Gec3DhCwtywpWCiGwgjnaTepe8yHIZuOxVeA+bZrFSZxwpyWwzpqkmCI2uZUPNEfcL7Sq11UiSQREmuwarBeBFQ1MfywW+ktFuzAQGE0bamz7BIezSX0c6bzawnpm1dPUhz8pJ9O0rMEWdHQEzAIh/eKYD6ZUK9sBTT5vvu+C4tSrG7nH8nE/AGm9r4TszDPygju6nI3tIRARyF5XcL50GqvW649xhnMnbtn+sBcDuzq65DIpVYYu42rLEfq3m7prP8KJLOf0NFcKCZk3doVFZ49N6m1qY0AC9UKKylYPiqAIGxOoClIOCApJBfUL29cZTF1t9cnBfwc0an0av6CtDGwI7YuoOAkFEe4ILZP5pjkxUcpPUMgxx0shlImquwoEhAGUGnBD8Bh+4djvX10xnnMYJxicPo06BY8fp/Gn7PGCE62s35CgJMiUBrdfzXINotbN2Vjdgzsn5yzbJh+oefurJRVHA4q5eC5f/90niwNFxEuJftD/r6bo3nlyhoMWFVB8eN37A0GlARdVbdVzXIV1+qXBmZ6JydaxFBydlp+ab6aMLEvKtIurHBuP+MesPiM1F8ATb/WdnOvRiPQgWv7Zl8/kDTSpFxbE5KB9Cf1dQl66e0InMeohSRgcnEuRbTLqmEhTAmJXrYFsMFda0Jr91gUNo+3I1l1ms64DozoJGZC/wiT4kavezeECAfC1g73z2aSgEBb1Y9Wnbh9LxNSEL5rei/BPo28ZBXQZ3LhDLAj9hdDM3j8kj6SSpuign
- z1AgxhPx
- nrvizHiLG92g1fHvSBXMgeot97ZyphEqL/QwA/ydxObUCdnOeg24WfJ7vAON8mQfOqXJkEE3eKTH+VF6TaiDLVctEwyygu86+76YQk4pNYiZ4vUf5zdHqIKTA88K/P2/w/vw/7/sIaw6OooQy4ZiD9aIIlntMVzbRJYfNOMlBO5chzNXddYc+g0LlC7VBxYJ9qh4IXk2GK9iBft+yAsV87mA250XJX7/k0CnF6GQgsnL30759pTwiQaqFeUiJlfIvjFZ5RSLHy1SmTfcKuv6HeGrMF4NMELqQtA84lSmT3H2cC1FFbW59+yfI1KG6d5FHDcdbEuA71oXIy6DBnop/0/UPcR4a27N9oR3a9fHs5+lXi5He/KtbVopRep75riiuLZ18NA+7W2izzzfK/9/mhzknVlXg/LAA60YYqc4f2uscjaVj6MjqS6yfiNMpWJ3szHj/JJD8kJgyMD06EvXnVwbaY6Kkbx2r0EBMe0bS5f/6AhrugGy6lrykqwyOfR+MrI+Idvi61op8UfA=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 486AC160021
+X-Stat-Signature: 5mcjno9xq8wgznxb5xc6wkqyc7ppq4ui
+X-HE-Tag: 1782385256-22994
+X-HE-Meta: U2FsdGVkX18q4pY+mUdjRHB5f6Qeru00Gr9ZeWaifMn5OJHY1qXDO67R5jfzWE2e7lmwbFLpH1taG6eDDqMli0JxSH8AbIcri7lJ6VPl2cBaajGBhD3IcO2jJzUAIdRI0iKpT2+u13dMQ8rVFxkq4i009lwBRieIufMFXz42XjlCERy2cTKDRE0IcYnApn5iB4SVMj/t0/Dy6iplPvtmjOI8QVrqlw1EU1QiDMMxdUF8mTBP4lS0SVd5UqtdTqhk4GJAO5KbA2pCp84+yRo6CTfID/8Vix7Lnuj6CImJGNM6K6GtIIVcXdmXwCX8nD/dcPb7CJJkFqGMG5hzEmpl4kJdSmLzUgbe0DDVEXtK5eZp/hHT2KxlRgbkZ9cOzbIcD46M5KbYEnyfDFLaddR9wfyiJD7EvYpsm7dk4Bb6CJS+cTh3Mt8qFzNKJVIMso7nYKTCixgSJSxXSarLTktbzX7gn7YU0rL9+NJ+4kqsT/zE5ME0tlOMpRBMoSaZOHGHngDkQYM4QvUtYyfIeWy+jA4hwWzJyPOiOlZRzV7qGZJnpZ+x9waE4GgYjpQRX1wDgwb8sp64Afzx+LXYGUm61WhsvPqW1Q/9ExrJ8/+zICvnMq7RUew6Mz3r2EOYjuMG6PANkCi+j91NRXUMn94hPp30zkQE/8rUzxwSV5DgN6AYmJAh3cNniyMC2nOk9w4TiASPJ5uAWIrgnf3DOphkSrnX3MfOkgJriZdaQ8gMyGRiUq/1W5FY13ISLsDj2anEvrnslgfZzS9IWnqfP07NOj5I2UdanZxaOYSrzcIdvD+f/jYGzHPkoBeYJUK8yEh0oL+xXFu08v258+UvsKsD1Yyc4jtqtPomdv6s50U0ZdE81A8HNQa/pAWEHnCbwf40qPsoqM4upgJk5w6c7ARmzHxz6xGB9o+D/L57HeP4pk/FvXieQf3k7/ys2ifluYk+pUH7DOCfTlmvdPKR+8m
+ jCJRRXOb
+ BxWjDQxRdPpnfGHfFLL8mgNcLlasPWN6EjVO3+5C+5Z/Yq0G6vIKA6rFk6CgtIpwsYkB8Y/hTBP31ZJKYpryOiimYJbMlCQ4tagFs3vShxBiESg3Fo+Bhv6lYs4xr9UXg4KlDdwfe1b9DmbSvsr/zyj8xYKqOG8XZliXJTIfacLSypP2cKzt3rdVwUzJPTflNoqBeEupO3tpRpKPL9lzWcNFYIUE4jcRzNskXHa5iH0z93otZZRovxx3r/F1xgUKK5llKe1K2aVRSdVXH6KEHQO3T6QyrF5ufWvOWPVIHs7CKWtUqCy2qIrMUgXUzIxlsCDu3vKjOEYbaT5FNT0ulpQ4mC6Hir0cC91j6hl2q59Bk6MYJ5pmAXv6Z858u//X6U6D78y0kC74UK5q1yGgCfutoyp0J8SwYbXmnNBupNbspBqNHEr9fv1ZrIiguTdotNbK6V5TadYIGDT1aa2WJbb8cLHFCjnpx2LlMDjHPlmaYqFAxw8XY1tAn8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -193,91 +138,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KFD SVM ranges on processes without XNACK, and ranges requested as
-GPU_ALWAYS_MAPPED, cannot rely on replayable GPU faults after a CPU THP
-remap of the registered VA range. Keep those ranges backed by base
-pages while their interval notifier is active.
-
-Opt those SVM interval notifiers into MMU_INTERVAL_NOTIFIER_BLOCK_THP
-and update the flag when SVM attributes change. XNACK-enabled ranges
-that can handle remaps through replayable faults remain eligible for
-THP unless GPU_ALWAYS_MAPPED is requested.
-
-Assisted-by: OpenAI-Codex:GPT-5.5
-Signed-off-by: Yitao Jiang <jytscientist@hotmail.com>
+On Thu, 25 Jun 2026, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+> =E5=9C=A8 2026/6/24 22:23, David Laight =E5=86=99=E9=81=93:
+>> On Wed, 24 Jun 2026 15:23:47 +0200
+>> Christian K=C3=B6nig <christian.koenig@amd.com> wrote:
+>>> On 6/24/26 15:14, Kaitao Cheng wrote:
+>>>> =E5=9C=A8 2026/6/22 16:42, David Laight =E5=86=99=E9=81=93:=20=20
+>>>>> On Mon, 22 Jun 2026 12:05:31 +0800
+>>>>> Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+>>>>>=20=20
+>>>>>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>>>>>
+>>>>>> The list_for_each*_safe() helpers are used when the loop body may
+>>>>>> remove the current entry.  Their API exposes the temporary cursor at
+>>>>>> every call site, even though most users only need it for the iterator
+>>>>>> implementation and never reference it in the loop body.
+>>>>>>
+>>>>>> Add *_mutable() variants for list and hlist iteration.  The new help=
+ers
+>>>>>> support both forms: callers may keep passing an explicit temporary c=
+ursor
+>>>>>> when they need to inspect or reset it, or omit it and let the helper=
+ use
+>>>>>> a unique internal cursor.=20=20
+>>>>>
+>>>>> I'm not really sure 'mutable' means anything either.
+>>>>> It is possible to make it valid for the loop body (or even other thre=
+ads)
+>>>>> to delete arbitrary list items - but that needs significant extra ove=
+rheads.
+>>>>>
+>>>>> It might be worth doing something that doesn't need the extra variabl=
+e,
+>>>>> but there is little point doing all the churn just to rename things.
+>>>>>=20=20
+>>>>>>
+>>>>>> This makes call sites that only mutate the list through the current =
+entry
+>>>>>> less noisy, while keeping the existing *_safe() helpers available for
+>>>>>> compatibility.
+>>>>>>
+>>>>>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>>>>> ---
+>>>>>>  include/linux/list.h | 269 +++++++++++++++++++++++++++++++++++++---=
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 36 ++++++++++++++++++++++++----
- 1 file changed, 32 insertions(+), 4 deletions(-)
+>>>>>>  1 file changed, 231 insertions(+), 38 deletions(-)
+>>>>>>
+>>>>>> diff --git a/include/linux/list.h b/include/linux/list.h
+>>>>>> index 09d979976b3b..1081def7cea9 100644
+>>>>>> --- a/include/linux/list.h
+>>>>>> +++ b/include/linux/list.h
+>>>>>> @@ -7,6 +7,7 @@
+>>>>>>  #include <linux/stddef.h>
+>>>>>>  #include <linux/poison.h>
+>>>>>>  #include <linux/const.h>
+>>>>>> +#include <linux/args.h>
+>>>>>>=20=20
+>>>>>>  #include <asm/barrier.h>
+>>>>>>=20=20
+>>>>>> @@ -763,28 +764,72 @@ static inline void list_splice_tail_init(struc=
+t list_head *list,
+>>>>>>  #define list_for_each_prev(pos, head) \
+>>>>>>  	for (pos =3D (head)->prev; !list_is_head(pos, (head)); pos =3D pos=
+->prev)
+>>>>>>=20=20
+>>>>>> -/**
+>>>>>> - * list_for_each_safe - iterate over a list safe against removal of=
+ list entry
+>>>>>> - * @pos:	the &struct list_head to use as a loop cursor.
+>>>>>> - * @n:		another &struct list_head to use as temporary storage
+>>>>>> - * @head:	the head for your list.
+>>>>>> +/*
+>>>>>> + * list_for_each_safe is an old interface, use list_for_each_mutabl=
+e instead.
+>>>>>>   */
+>>>>>>  #define list_for_each_safe(pos, n, head) \
+>>>>>>  	for (pos =3D (head)->next, n =3D pos->next; \
+>>>>>>  	     !list_is_head(pos, (head)); \
+>>>>>>  	     pos =3D n, n =3D pos->next)
+>>>>>>=20=20
+>>>>>> +#define __list_for_each_mutable_internal(pos, tmp, head)		\
+>>>>>> +	for (typeof(pos) tmp =3D (pos =3D (head)->next)->next;		\=20=20
+>>>>>
+>>>>> Use auto
+>>>>>=20=20
+>>>>>> +	     !list_is_head(pos, (head));				\
+>>>>>> +	     pos =3D tmp, tmp =3D pos->next)
+>>>>>> +
+>>>>>> +#define __list_for_each_mutable1(pos, head)				\
+>>>>>> +	__list_for_each_mutable_internal(pos, __UNIQUE_ID(next), head)
+>>>>>> +
+>>>>>> +#define __list_for_each_mutable2(pos, next, head)			\
+>>>>>> +	list_for_each_safe(pos, next, head)
+>>>>>> +
+>>>>>>  /**
+>>>>>> - * list_for_each_prev_safe - iterate over a list backwards safe aga=
+inst removal of list entry
+>>>>>> + * list_for_each_mutable - iterate over a list safe against entry r=
+emoval
+>>>>>>   * @pos:	the &struct list_head to use as a loop cursor.
+>>>>>> - * @n:		another &struct list_head to use as temporary storage
+>>>>>> - * @head:	the head for your list.
+>>>>>> + * @...:	either (head) or (next, head)
+>>>>>> + *
+>>>>>> + * next:	another &struct list_head to use as optional temporary sto=
+rage.
+>>>>>> + *		The temporary cursor is internal unless explicitly supplied by
+>>>>>> + *		the caller.
+>>>>>> + * head:	the head for your list.
+>>>>>> + */
+>>>>>> +#define list_for_each_mutable(pos, ...)					\
+>>>>>> +	CONCATENATE(__list_for_each_mutable, COUNT_ARGS(__VA_ARGS__))	\
+>>>>>> +		(pos, __VA_ARGS__)=20=20
+>>>>>
+>>>>> The variable argument count logic really just slows down compilation.
+>>>>> Maybe there aren't enough copies of this code to make that significan=
+t.
+>>>>> But just because you can do it doesn't mean it is a gooD idea.
+>>>>> I'm also not sure it really adds anything to the readability.
+>>>>>
+>>>>> And, it you are going to make the middle argument optional there is
+>>>>> no need to change the macro name.=20=20
+>>>>
+>>>> Christian K=C3=B6nig and Jani Nikula also disagree with the variadic-a=
+rgument
+>>>> implementation approach. If we abandon that method, it means we will
+>>>> inevitably need to add some new macros. If mutable is not a good name,
+>>>> suggestions for better alternatives would be welcome; coming up with a
+>>>> suitable name is indeed rather tricky.=20=20
+>>>
+>>> I don't think you need to add a new macro for the specific use case tha=
+t people want to modify the next element of the iteration.
+>>>
+>>> If I remember your numbers correctly that is a really corner case and k=
+eeping using the existing *_safe() macros for that sounds perfectly fine to=
+ me.
+>>=20
+>> IIRC currently you have a choice of either:
+>> 	define               Item that can't be deleted
+>> 	list_for_each()	     The current item.
+>> 	list_for_each_safe() The next item.
+>> There is also likely to be code that updates the variables to allow
+>> for other scenarios.
+>>=20
+>> Note that if increase a reference count and release a lock then list_for=
+_each()
+>> is likely safer than list_for_each_safe() :-)
+>>=20
+>> list.h has 9 variants of the 'safe' loop.
+>> The bloat of another 9 is getting excessive.
+>>=20
+>> It has to be said that this is one of my least favourite type of list...
+>
+> Hi Christian K=C3=B6nig, David Laight, Jani Nikula, David Hildenbrand,
+> Andy Shevchenko, Alexei Starovoitov
+>
+> For ease of discussion, I need to summarize the currently possible
+> approaches and briefly describe their respective pros and cons,
+> using the list_for_each_entry* interfaces as examples.
+>
+> 1. Add list_for_each_entry_mutable, while keeping list_for_each_entry
+> and list_for_each_entry_safe unchanged. list_for_each_entry_mutable
+> would be used specifically for safe deletion scenarios that do not
+> need to expose the temporary cursor externally. The code can refer to
+> the v1 version.
+>
+> Pros: Does not depend on immediate per-subsystem adaptation and can be
+>       merged directly.
+> Cons: Requires adding a whole set of mutable interfaces, which makes the
+>       code somewhat redundant.
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 3841943da..0d0feba7b 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -22,6 +22,7 @@
-  */
- 
- #include <linux/types.h>
-+#include <linux/mm.h>
- #include <linux/sched/task.h>
- #include <linux/dynamic_debug.h>
- #include <drm/ttm/ttm_tt.h>
-@@ -81,6 +82,26 @@ static const struct mmu_interval_notifier_ops svm_range_mn_ops = {
- 	.invalidate = svm_range_cpu_invalidate_pagetables,
- };
- 
-+static unsigned int
-+svm_range_mn_flags(struct svm_range *prange)
-+{
-+	struct kfd_process *p = container_of(prange->svms, struct kfd_process,
-+					     svms);
-+
-+	if (!p->xnack_enabled ||
-+	    (prange->flags & KFD_IOCTL_SVM_FLAG_GPU_ALWAYS_MAPPED))
-+		return MMU_INTERVAL_NOTIFIER_BLOCK_THP;
-+
-+	return 0;
-+}
-+
-+static int
-+svm_range_update_mn_flags_locked(struct svm_range *prange)
-+{
-+	return mmu_interval_notifier_set_flags_locked(&prange->notifier,
-+						      svm_range_mn_flags(prange));
-+}
-+
- /**
-  * svm_range_unlink - unlink svm_range from lists and interval tree
-  * @prange: svm range structure to be removed
-@@ -112,10 +133,11 @@ svm_range_add_notifier_locked(struct mm_struct *mm, struct svm_range *prange)
- 	pr_debug("svms 0x%p prange 0x%p [0x%lx 0x%lx]\n", prange->svms,
- 		 prange, prange->start, prange->last);
- 
--	mmu_interval_notifier_insert_locked(&prange->notifier, mm,
--				     prange->start << PAGE_SHIFT,
--				     prange->npages << PAGE_SHIFT,
--				     &svm_range_mn_ops);
-+	mmu_interval_notifier_insert_locked_flags(&prange->notifier, mm,
-+						  prange->start << PAGE_SHIFT,
-+						  prange->npages << PAGE_SHIFT,
-+						  &svm_range_mn_ops,
-+						  svm_range_mn_flags(prange));
- }
- 
- /**
-@@ -3763,6 +3785,12 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
- 	}
- 	list_for_each_entry(prange, &update_list, update_list) {
- 		svm_range_apply_attrs(p, prange, nattr, attrs, &update_mapping);
-+		r = svm_range_update_mn_flags_locked(prange);
-+		if (r) {
-+			mutex_unlock(&svms->lock);
-+			mmap_write_unlock(mm);
-+			goto out;
-+		}
- 		/* TODO: unmap ranges from GPU that lost access */
- 	}
- 	update_mapping |= !p->xnack_enabled && !list_empty(&remap_list);
--- 
-2.53.0
+Seems fine, and the original _safe naming is ambiguous anyway.
 
+> 2. Directly optimize away the temporary cursor in list_for_each_entry_safe
+> and define it inside the loop instead, changing the interface from four
+> arguments to three.
+>
+> Pros: Does not add redundant interfaces.
+> Cons: (1) Users need to manually update special cases that use the
+>       traversal variable of list_for_each_entry_safe, the new
+>       list_for_each_entry_safe would no longer apply there and would
+>       need to be open-coded.
+>       (2) Because the macro arguments changes, all list_for_each_entry_sa=
+fe
+>       callers would need to be modified and merged together, making it
+>       difficult to merge such a large amount of code at once.
+
+This won't fly because there are literally thousands of
+list_for_each_entry_safe() users.
+
+> 3. Use a variadic macro approach to optimize list_for_each_entry_safe,
+> so that it supports both three and four arguments.
+>
+> Pros: (1) Does not add redundant interfaces.
+>       (2) Does not depend on immediate per-subsystem adaptation and can
+>       be merged directly.
+> Cons: (1) Increases compile time.
+>       (2) Makes the interface harder for users to use.
+
+Basically I'm against any variadic macro tricks where the optional
+argument is not the last argument. That's just way too surprising, and
+goes against common practice in just about all other languages.
+
+> 4. Optimize list_for_each_entry by defining the temporary cursor internal=
+ly,
+> making it compatible with the functionality of list_for_each_entry_safe.
+> The code can refer to the v2 version.
+>
+> Pros: (1) Does not add redundant interfaces.
+>       (2) The number of externally visible arguments of list_for_each_ent=
+ry
+>       remains unchanged, still three.
+> Cons: (1) list_for_each_entry and list_for_each_entry_safe would be merged
+>       into one, and list_for_each_entry_safe would gradually be deprecate=
+d.
+>       (2) Users need to manually update special cases that use the traver=
+sal
+>       variable of list_for_each_entry, the new list_for_each_entry would =
+no
+>       longer apply there and would need to be open-coded. There are 15 su=
+ch
+>       cases in total.
+
+This sounds good to me, though I take it there's some code size increase
+and/or performance penalty?
+
+Maybe the 15 cases are questionable anyway?
+
+> 5. Use a variadic macro approach to optimize list_for_each_entry, so that
+> it supports both three and four arguments.
+>
+> Pros: (1) Does not add redundant interfaces.
+>       (2) Does not depend on immediate per-subsystem adaptation and can be
+>       merged directly.
+> Cons: (1) Increases compile time.
+>       (2) list_for_each_entry and list_for_each_entry_safe would be merged
+>       into one, and list_for_each_entry_safe would gradually be deprecate=
+d.
+
+Please don't do the macro tricks.
+
+> 6. Make no changes, keep the current logic unchanged, and close the curre=
+nt
+> email discussion.
+
+I like hiding the temporary stuff when possible.
+
+
+BR,
+Jani.
+
+--=20
+Jani Nikula, Intel
 
