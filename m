@@ -4,119 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C222FCDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:46:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C9AFCDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C0706B0088; Wed, 24 Jun 2026 23:46:36 -0400 (EDT)
+	id 663F86B0088; Wed, 24 Jun 2026 23:49:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A8F6B008A; Wed, 24 Jun 2026 23:46:36 -0400 (EDT)
+	id 614276B008A; Wed, 24 Jun 2026 23:49:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ECCD6B0092; Wed, 24 Jun 2026 23:46:36 -0400 (EDT)
+	id 52B6B6B0092; Wed, 24 Jun 2026 23:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 12B9B6B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:46:36 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7AF9BC248C
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:46:35 +0000 (UTC)
-X-FDA: 84917047950.30.2502FDF
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 96A681C0008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:46:33 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YeuckZMN;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 274C46B0088
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:49:18 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A94D31C5F50
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:49:17 +0000 (UTC)
+X-FDA: 84917054754.10.F1CA839
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D7849140002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:49:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EjYOgoZJ;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782359193;
-	b=YDtyQBK4JtHX/SLv5cfgon5odLWDo5eLf1mVke772MRk+HXFaoGwLg6kPsK/fK4HG618lH
-	FKL4O9rrNJ/lh/Hsw+WfVjw1E0Sb3YSqnqHB8/IvoG6bLXNNqAkZFmsADn6p6a2Et5S4IW
-	Zfe5poxPPqjSBdWkLqKDQHk0R8yXZ8g=
+	t=1782359356;
+	b=lugjW/wTh8tFrKO7K4styj/qgUL3aSfLe8JFO5xKFlyNb8JykTlhKOImdZKwTHqGkI7srv
+	PjKtbAHtOHE0N26YPmSCULG6zbiTCSmICPyQMoivVmoNlMp6LdJ5FX3pKkCHOHVgaEO0KL
+	9cGFGFSi6s4ooqvZRTS4lx4/AiDurss=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782359193;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782359356;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fdSm9PR81lhsu8o5UUFEaL/HA7IWicBe0MyvL3qf01Q=;
-	b=zAzMU6pQjN6ATomt5w5zvtkMDV3Kpxz5WDFvNvN5c2i1/Fcl7CUmHvAi7eByBfQU+UF2zz
-	nrLXAqB+rAsiUWR1mHoCcxeltcfTYWyPsTk9VJzr/lJN65Sfl2uBZxggEjhpuXmLlE7Z6E
-	DB43mvA4b018r0hs1x0A0BWIvkvD77g=
+	bh=TB55hGeTEaEWWjKg63Nolm76nvhbpFQ166U+vfAH/sQ=;
+	b=uTpbW0Z4+tY4gInHaPTh7nzFlXup2L2fltohtiP9O8qH/dmrd7BTDf5GRVh9H5/95X+iqm
+	Anj2RAiMwqmy7zQy1n1T2pKReTNCjYwc6Ztzz27jyiY75/qWw82dTRGxd3o11wtLOAWg7g
+	lDza6Oa21GVknT7Fk1Hi+WznY8+RCl8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YeuckZMN;
-	spf=pass (imf18.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bec3ffb95dbso307842166b.0
-        for <linux-mm@kvack.org>; Wed, 24 Jun 2026 20:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782359192; x=1782963992; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fdSm9PR81lhsu8o5UUFEaL/HA7IWicBe0MyvL3qf01Q=;
-        b=YeuckZMN+yDnp7KZP/bMMpz290w9PxX0SWMfgTkiKo4l4LUbifXLHfxHZni9rXBmcq
-         EaQuTqdbwfPuFL3LCXSuOMFoJm+k78QHj8LurVy/51cNKDUTFlSOdJuY152UiH/KdR5O
-         1KNxKNsZ2ClXk/yx8nmlguO7uf++bVaCUdTp/TBJfSbKKim4wRdHac2WigwAA2HJrlI0
-         LNSau3EG+lxIc7ECK56ZlCgi6am0TlYgvEKtFHwdtUBBWZfmB3ouO5G+Y+cH0hET9rMr
-         YrTf4DoVOuT7MLTD2CZhc0O04jwhHaCLhSUGw2385wODFbAEWCV4Jj0f45ThoOILB1A9
-         KJ6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782359192; x=1782963992;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fdSm9PR81lhsu8o5UUFEaL/HA7IWicBe0MyvL3qf01Q=;
-        b=TE61fYvc59YdtzwYLXyJo5LAlcC+gzuEsR2m7BGeycPuPviE6399xZQf9tCw8DX+Pi
-         rN0/0UGW2sNQ+jwctG+W0dJVBSnl1VCdGPpObi+g1FAlVWoSJ+qbAvOHz4RDMq8KCB8M
-         2R1i3sXu9MAXBcLtKQfJPyGlTDTGc5Q6Kbatx8C7MHAvZ3dHAr0YyR712FMxCCgxdRdd
-         pX3l49gSTGg6KfuGuCuP1d4GKbBP03kKSazczi5NwIXOMJyjZ+RjTdqM+0T1j5g8WXIf
-         7FzdZO194Qvn3NPzP7AiSsjQYtfov75Yj53oMOSTOHD1vc1LxmjFdU9iSpQqeJXXY0hs
-         yQmQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rrl42tWmLXATKFW74ypHUxFnRs8/7+4BOGxlyz4IM+bEJQNdR9wLrfur5JhAS6d0or7sleoRuQycA==@kvack.org
-X-Gm-Message-State: AOJu0YyWJyLVRpa8In7U+NGZdx/WTBuMrGeGX6TEulMOClKEuRU3y2tt
-	PkxDn7qBy5DsR75M02E2ztRT5ZoohQLoIYvcedwUbRrVU/0p2fahV5XW
-X-Gm-Gg: AfdE7cmFzqP+TNNjy3+YNFZhOTMAhZPQRxxvv7oUSYf4VLnR210GHI5Q8YOewJN+5aR
-	2T/OwsaSo+/P+mjvrmtl5/8TGhh1yQFWyHbnjSlbVk+8C0L4J4fl/zN9PsA/OEs3+kx6Oet5Gex
-	mN0fmO1i4FJtqQvrR0bfqLLqy/+JR1b0yQBPmk37e/QTg2a5hkG4kZX4NPNFmxjZX5v7EotEdTx
-	zdHXDLV9LEQ0zsB/o70N0CrIKJAZNsNV6JvWo7JOWAl52oeZQuD5kSMAEAsglxh6zahET3SX1M8
-	IVhOlgvetetNLA3u+IrBGt5mYEjcNZ/ILnjpkgTO+Aw1pQ4WSn3BcpTPu1aHkF+q4yvLV/JRTnT
-	47P+lUwRzA9cJ1MsZGZMM8IdgGFDfrK8H8rQwVJ/ZVb9+cWBxjh7xnM9jNEAuM33HeiQv7XWCLy
-	pCVNVvm9gfyFk=
-X-Received: by 2002:a17:907:c8c4:b0:bef:90af:6ff1 with SMTP id a640c23a62f3a-c1205f67271mr25397366b.31.1782359191956;
-        Wed, 24 Jun 2026 20:46:31 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbbe8125sm87909966b.19.2026.06.24.20.46.29
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 24 Jun 2026 20:46:30 -0700 (PDT)
-Date: Thu, 25 Jun 2026 03:46:29 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org, ljs@kernel.org,
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
-	harry@kernel.org, jannh@google.com, willy@infradead.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	lance.yang@linux.dev
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-Message-ID: <20260625034629.nmgdwl2c4luwod77@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
- <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=EjYOgoZJ;
+	spf=pass (imf23.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=TB55hGeTEaEWWjKg63Nolm76nvhbpFQ166U+vfAH/sQ=; b=EjYOgoZJF1DaphSsqHQkxzbvMm
+	JxC+ITiMCsI3tZBmHFxPrIpY8zmCRURbPiPRMnfdfBJ0FCj/UFJcsYf64lXHDIbexZg/SsDptgntQ
+	x8oIyGdroeUAEHsbIaw30u/Dnr0gQgWS5Zbm/wFI6RdShqQAr69+aMAHkTUMo7dCm7YrQXkoialYh
+	XoVSIPL3JD2rI84PzMe7Izg+kVcAB3InQe2WCLz+0NrzJ/2ryOfVJbs3MQinHk84yILWSVd7vv+u0
+	r7RlqIWSE6OL+2/Ibnfeyemx4czyPzuJetrNQxe/puP2g6CBy16inzIA0i9uDLu6DaE2ZyDpNZsNb
+	WthJAepw==;
+Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wcb5R-00000009DBG-42Ok;
+	Thu, 25 Jun 2026 03:49:10 +0000
+Date: Thu, 25 Jun 2026 04:49:09 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Yu Qin <qin.yuA@h3c.com>
+Cc: sj@kernel.org, akpm@linux-foundation.org, damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/paddr: remove folio_put from
+ damon_pa_invalid_damos_folio
+Message-ID: <ajylNXBqzSY0ffoI@casper.infradead.org>
+References: <20260625012201.2937854-1-qin.yuA@h3c.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: bymgt1ujf7e7ypcc48fi4gtxyu3gixkn
+In-Reply-To: <20260625012201.2937854-1-qin.yuA@h3c.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 96A681C0008
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782359193-407807
-X-HE-Meta: U2FsdGVkX1+tI4qXe4f7ZwdKX8aeYfyeVbhKI/4OxO/a9BKdUAg/tmywhbqO6NmmkVywNeWkvtQlw/GJUJgvenvOAQtUqu1ZSvW4yfD6fgLIrw9v8vAj5RL3a0lnADwqdEf5qV4K73mPex1nFKxOq+zq8bYNenlTbmNICcO1x80h1ryuyhn58wGTY/bUJjtgrtqK14+mbRxyC+HdXgErQDAGkknIrVUNbiPP+HoN8BbEYIeLvA8teVjaDukE8n8cog05AoR0UoXmMyBQJmk9yYA7XwFbZoq0/jzCbhE7hXUBn5GYmrUN5dbr41NAZMj6pHmkY/plJWxSvW8uWwIc094dXmNG0IElZxdQvFrJfKWSLNVPEflSzY55sIkjpn/ov+qXFbKy7wI7W5mJd/oJJRxaHyuJy74OSdnnAeJa4LL8a4i8/cR1pQ01Q8bbZOT1/HEcVyrcXVQ0nYFwbBzR3IvGBCyUus6oLBF25eRxyyUSVMdm8a+UweIArQnV+zXPr71ctfB+UProHw0H0TfJYN0Ja0z/IXwneujqEduFXXSd9wkBPdFUatSQBaNMXidK/Nygcm+CAKM87SjoJZ6v021+a4fHLnwbaeBBwz+v3m0KQkvuDuB3dRFju0ZKi85kNQYaA07LQ+OzmylhCmZ/sPgIqmeJwi56pOH0GuptZhtaySlaN3ZIPVQnip4GYkDX7fGz+vttPgDtiW7Kn3F13TZW/AF9MDKYYe2aEsHGT52wDv7reR6Av6JqCVTXE7PId3kbG6BW4xwMbNoRd4SX+++7mVxxvtnDuzuA0VGak96FmRSvwesmf11ZQ1oxM/+X2MCM76efZBLK29BLDoFDlq5cbHKasyf8/U18xwhpLs2oHmal621TO7t9t/juXFfwTCpianeZqepV4gr3qvEkD8IkGLFiFkZDCMKekyz7Zfd13UxumJOKyut8Eov3AAPm3O4jXiqYpuiKD/1LAF0
- qyrt8jsF
- k7vItbRkZPTz/HOkkBjOCmJaf1S5Rx1+16aX2VcAW9J377oni0Fq+joxug0bsHRJdvXwmMEuAMgs6HZmvkTJmj9v2NsfisMYO8JIyfivemoBwYCLURrbh6JXeZL2LRdceSzJxULL5tiqIg2TNLLY1BUt0Ef5wdIOuJbfmSPDKezPRokDtbGHhnaexP+TnEAnUaDj2MYk7nw1doSh0Eil00Yq8HHk3DjsMcCg2LWnELcuumcA9Hxn9uk0IJVnr+PL+gQiRI3PB4k8WY7Hka2wtWjEeOJ/yBAkGs6mNEoEDISk2rO1fz593DDPLbt1ztKrbmnhVxtxX08CTaakhE/9oiBNfbnf3WfxrnT6ps2rM6ygNEFqfwQv43XUR0+qu/s5/kIuegdk4mEUrOz0y2IhNhkMi72ftrA/bjS9hnD3u05i6d2ReGbCbwxtuSz3644h0Qa5qCQgekojul3rHA8N0mrDQBQ1QxwfUf/+aQCZsd0gv9fzy7XiGoKWDiw8BiCVQ9gIeHFyE9rPU6sGukfH6GFuiicpG5Ba/U5tLbhWow40HLzcw/kTwiV+HEpzZ7dV38hIdHlMN9rqKFzccTxVYFwj1BUdMbD7a4LVwHjAf9m8DG5p0HXDm8TIWd5pIU0/IHoQmVVcISUqOG6WxlJhIU/eCjcC2dAD5NUt+lKzP62ElxDfUv4I1GmSWd58dyesNsTPTNMsBKGXBtRB3nJS5dtpGw1dQDERM5nxACSL9Rm4ofMPL13IRDYhDxbOJ3ughaTw+WlEBrlI+zi8WqHBqgw4gfvsF86kgEDVwo0sxTbB5bug=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D7849140002
+X-Stat-Signature: 7bdxsmsgbrufgjq8xfpc8groge1fn1zp
+X-HE-Tag: 1782359354-799076
+X-HE-Meta: U2FsdGVkX1+cxIv6EKtVeiqYSr73AR8jERRLikQreeEPbkWmsjmFFnFFAIA65nz1dOulpAeW5zx4YGO1GjDAEjwlF11YV21vDUyWuOv6E0Enuty5T8zkbamUZagjWz0pI8ldlKI5IFxCrdjJ5vgKWbUY6DTnN+G5xgm6hXTDEgWuMoIBzduXn06EW9VF+nzrTXw2pZNapPzqk0BlBgASO03UfB4pOE3fHFiN1jGhPou44R12XHQwrooET0tlwgu9GR/bBNsPFILtuu4JITQCv/lE4VUqpwDmwY3TBfeAo6xXRdbqxpRkNF8TOcMPhZizPaRUOJTvv/FC+n5nitM8pQ6+SQpJt6aIj9gBobAFjLY7ZlVLehyE6Azrz/Y7CY0t/gWY2lLs/pbJhZgn6U9M24ZJ5NIWlDslkiOY5o6DuVN1dLqk03hTpMfXSDiQOGHMigQ5t65QWkT6qwQn/BCD4I2O6xFpLWQYLXpvlv3EqLLNQbtJKlv2Uhv8xq/RzxgyGffbtx6xC8C71fQtY1fNij7y5mOhCGBgbXbWPWgWl6+FxBHDC/PZOsj9nHnz402QLXJ2WzfCUxF9n3MGLPKIBOgRv+rYxICmGYibPbhzamzXAl3D2tJCdtfLxNEr28t84f5BeNWKF/ztLyw9sbgJJOmNzEVX1PGl/6uObPp3wT3JJqySqa7iCtu/vTqsSJMK0RmivelLihdRZZqB+QPIIo82zVw7HN/YktcjmK/io8pnoVscBHcoilth27tWrRzRIktqOcEsSXumxvk7PHSLinziiZUgkI1iV60i8eS03MXhvKeZqfZnRRu9ZERi/VRJno+eUj6+D+mPTKgrmCudYtm70xYEamW8U0PYoL8pIxLVAz/nN/BsCTqM6HDANN2+/UgxoXrnlqVJusGu+LB4G3GJBJkHxFRKC7lyYSCkvHBPuZ2wK/PjwUY0rQi9yS0JkbYt71Y6Vtfv+aHro+3
+ vUiHBv8V
+ ztBHQ/JCj1eMqo5erUdTe4jHw+PsgCfinz5zdDtL8VNBsaqQiOzosEzzTLgGMjrvh0M2p1dCy6OdsvDybFeg5aYSfoMNR0Yo9CKKjLvWxz8vm+L2JxN4ZchwEeby9EAESpF6H52cxBEXAJvpD6XqoRddCorhbje3XY2D8vgGH6gPwlEMgWN0kmuqrSOTlHv1QZMttBO/m94mp1/HpYhspQTq/RmTAZ3QonAdvs3OTwsjofsonyaGQ+FC1L2TvRwQXihU/IBsT6Fle6xm42UxXPGT7VnSd219voKueo2/LyXztlXtF0q3QjY2JwLFI8BIoIkyn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,56 +89,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 01:14:57PM -0700, Andrew Morton wrote:
->On Wed, 24 Jun 2026 08:23:59 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
->
->> The kernel test robot reported a build failure on the parisc architecture
->> when expanding HPAGE_PMD_NR in check_pmd().
->> 
->>    mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
->>      if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
->>                 ^~~~~~~~~~~~
->> 
->> The config [1] in report link shows neither TRANSPARENT_HUGEPAGE nor
->> HUGETLB_PAGE is defined. Then trigger the BUILD_BUG.
->> 
->> Fix it by define check_pmd() under CONFIG_TRANSPARENT_HUGEPAGE.
->
->hm,
->
->#ifdef CONFIG_PGTABLE_HAS_HUGE_LEAVES
->#define HPAGE_PMD_SHIFT PMD_SHIFT
->#define HPAGE_PUD_SHIFT PUD_SHIFT
->#else
->#define HPAGE_PMD_SHIFT ({ BUILD_BUG(); 0; })
->#define HPAGE_PUD_SHIFT ({ BUILD_BUG(); 0; })
->#endif
->
->> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->>  /* Returns true if the two ranges overlap.  Careful to not overflow. */
->>  static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->>  {
->> @@ -145,6 +146,12 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->>  		return false;
->>  	return true;
->>  }
->> +#else
->> +static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
->> +{
->> +	return false;
->> +}
->> +#endif
->
->I'll leave it to others to decide if this is the most appropriate fix.
->
->Sashiko had an off-topic complaint about the surrounding code:
->	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+On Thu, Jun 25, 2026 at 09:22:01AM +0800, Yu Qin wrote:
+> This boolean function called folio_put() implicitly. Remove the put and let
+> callers handle it explicitly, making the get/put pair more clear.
 
-I see this robot reply, but not see the Sashiko comment.
-
-How can I view Sashiko's commnet?
-
--- 
-Wei Yang
-Help you, Help me
+I don't think this is a good change.  It's perfectly fine to have a
+function which always puts the ref that is passed to it.  Rust can do
+it, for example.  I do wish we had an __attribute__ that could be used
+to warn both the compiler and the user that this was the model being
+implemented, but GCC doesn't have it yet.
 
