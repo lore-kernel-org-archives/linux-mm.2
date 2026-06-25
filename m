@@ -4,133 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A22FCDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC62DCDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 665A06B00DD; Thu, 25 Jun 2026 03:31:29 -0400 (EDT)
+	id AB26F6B00A7; Thu, 25 Jun 2026 03:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63C336B00DF; Thu, 25 Jun 2026 03:31:29 -0400 (EDT)
+	id A8AE16B00E3; Thu, 25 Jun 2026 03:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 553536B00E0; Thu, 25 Jun 2026 03:31:29 -0400 (EDT)
+	id 9A07D6B00E4; Thu, 25 Jun 2026 03:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 30A5E6B00DD
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:31:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B31941205D8
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:31:28 +0000 (UTC)
-X-FDA: 84917614656.06.50A6483
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BEFDF180003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:31:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OQn7gs5v;
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782372686;
-	b=F0p3Y/VEsFGFtORcsymcCvHiQWazfU/KBmiVJPIhCY+w5CZ3xJgzzuqie3P0kB64pC17pQ
-	V/kGBoTqp3+iuZiT/HHS7m6MET1sQ2bgn+CsXZ5pP+cts9gRd/4KTR+Z5ni0SdyTBciL6u
-	d0uJfEgdCcgUCgx0w8U1ypVfjqXcHDY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782372686;
+	by kanga.kvack.org (Postfix) with ESMTP id 6897A6B00A7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:34:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE7E41205C8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:34:52 +0000 (UTC)
+X-FDA: 84917623224.10.3D8387A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 474A340003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:34:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I4423O0F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782372891;
+	b=LU+kY0M46GTJU5xK4gHE8Ibap2eZ1NqYINgMjAwqdYSYaPt8YWgH1kLjKkmvYfI7dke6hq
+	OQIKi776Ma8LtvzUpiO+PTomuU/t1XgjYjRZ19Sg2WDdCeeSMCdrE+YUfL/dVlOr0kynzQ
+	4avc2n71xoYatLhj40ga+WbKMx8VhOQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782372891;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kmk5iye4ZLJubb/NNFsRnqtpnOsNy5rDxz85TFxoSQg=;
-	b=Ck9HKIVbJGxzqDqSkw5Peiaf1Frq12EtiqATV2yIm5jRQsQerkbQ8eUsrUVNCbum5z0pys
-	ss7p+BO5u8HEdlZT+v+cTQZvgU1TiU8gQYRHjDHy0bPZKJt3BK1ju8WwLwoWD2BqeaapAB
-	1R+kVNpuRB20epicTGApcGYGfvG0hZM=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=OQn7gs5v;
-	spf=pass (imf16.hostedemail.com: domain of ekffu200098@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-6611669cd16so2196667d50.0
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:31:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782372686; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Qs/g0PptcbOYHR6I1tSZ0XLk00haWLfnfww81yKsBFwIoGdrhh7ci10In3K4wKLKVV
-         aOBjIY+p2Ilpf96TzAgy/Y0LqFOYXpdRlCRvDyxGTL4d4xQtf9kJQdd5fzxjCsJU6WiI
-         QyPL84iGKJmj7RVlPM8+FHa0BQ0H63/Wc8+/3uQEBYb6PRMnXnwOc7xOC50ykCLtxiev
-         O97lYWnZN6JDersFh1Lrb7cdemQyaq3tCndI0mIW2n0XOnJKRK3bHB2LVUBX2QLP7yPZ
-         vZi0loMxK0VaAhSkiSa+gt8WCklEr7XEZVzyHkiG+/fwOF+SIdkHfgiUxkdUY8yJNcya
-         TBOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kmk5iye4ZLJubb/NNFsRnqtpnOsNy5rDxz85TFxoSQg=;
-        fh=jbUPc1CNrZQHgW3WsD+N4amLe4HDKKHOVMbWGX/OJy4=;
-        b=d4RuraawOW+G9z9+dJ9IwSE/JjHB/AslFY5a2s7kct3XyOkhnrkL1n0C21sfoSxKvo
-         sdwC7kvEcbnGLmHCNs0LqzPxMrpACt4zW58gZEO8IXFUE/8R22FW5REci4w1nU3HaE2W
-         vW9voWzYjAoDUYJsNNz5m+25sZodtJnXhbABK+Bs3Xh1rqZQtkfko9DuSWLSNXvEsTle
-         cgxQMbu+pMHJHwcNYv85ql23qZmsXB508bDdhi27/Pc0lm0G1nZUWiAa4Ky5LcZfuav3
-         l3Nl7ZM6retQ7fJeuQvcedHu5/ofVEEy4k1Zy/9g31bc8YgtF2QnoESKnQvyBbg4Q3ku
-         aGDw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782372686; x=1782977486; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kmk5iye4ZLJubb/NNFsRnqtpnOsNy5rDxz85TFxoSQg=;
-        b=OQn7gs5vigw/n56244EON+aF9A6r755b2rQKC7XpR1dnKftl1QAhAkoGOLjiYSQWHV
-         zSui5/jl99PSCtdM2AE5i7IWgdFcdMb+OcnOIC5iM1b8PXlajZkqY/NHZ2imC+kSEiuK
-         bUXfi95GLgwAbriviLrkgLGVziYGz6jmYDwlRaIPMUoGVrtC93BsYYF5J7AC8k4QSdM9
-         wod/cvXIMx3NDYQLE3KlAhUAgOXweQ8zFDigVcf+UvR23yXRZO7xcu6SXk1x7PAAG5a0
-         bYtzjQDgK7kzRTfxsE/XjLtt4uHK9AeyTbBMNhyVlM5g/e3pRH5TnJ26IUZT/FqKEKbq
-         VlBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782372686; x=1782977486;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kmk5iye4ZLJubb/NNFsRnqtpnOsNy5rDxz85TFxoSQg=;
-        b=fU40O89eEDz/M160d1w+edqNCEVumNuD97wuJDkQnw95q4Xq7dyAcg44n+FE0CZdeQ
-         6e0vlDsBO9HqTw2rQClxpxt+z1ZYc20fOpvBo3NM+7W542TEFghVlgJCcwkHeZrsshC2
-         kf6pQUVh9Ikz5fWM6ig3hqrczrO4DT7Vrrl15+7DXarq9JA3aZDQ3f7G34uFgwVwGESp
-         UX0TvExNfTub4+fEzvDx5oleKPfAv33y67xXnANVfADRxXBUl1/6Q/EXfur4nzupm3KP
-         SQ+AfH/bRFR51FcKqzaXe9oL/LZ9GUsOlH7TCPCJlTS95Wic5htv4adS849EDCOlC6qR
-         SZWQ==
-X-Forwarded-Encrypted: i=1; AHgh+Rp8eGwTJwMGkxtG+0GuCCQiQgZLXI/5y4zBYQnnaH/ubSLuU5j1ZC/VBmX1HmHt++sltB1Sh9q3xg==@kvack.org
-X-Gm-Message-State: AOJu0YzN23ygk6X0XWTFns2GKysYoazirDb1f+XyNqCj1i0uyZIbISei
-	BRuliVGM9V+6h6mthl9BDpIWoceRGbJmFWCFa28dvXW2KQwR6CLF54EPR7qg6TCRMplaQDKDJ2V
-	QEwYByR47YbLyOfhGks2JX+RQvwhEi3E=
-X-Gm-Gg: AfdE7cm7NxjDAS5orn4MNgJiRBnR+SoWT6NjcTvBJJL9tabytnVgCshShv1ZkySi8kH
-	u1v34yZ//84L5qzve0GHMWLHQ2QEvab5GmafRFpJhBw2RWXSiGDFddqjOXhMbpk74po9EFhYHu6
-	Vy9UN/Kki76l4bNvwIe9wQ+s9govmlisc7GBvzO7WoAI0JS4ebIahOXARn3aSjdKjEz7j2li/jX
-	OSWkaBOUp/LxwbbDtrA9pbvBXtgn21jLVrxutBaR4333J0GKo+DTw6R1dE7DePmISaLMw==
-X-Received: by 2002:a05:690e:b4a:b0:660:3f57:9fc4 with SMTP id
- 956f58d0204a3-66487c6ff3dmr1015598d50.28.1782372685809; Thu, 25 Jun 2026
- 00:31:25 -0700 (PDT)
+	bh=qRb3MnUN3VjO7bBEhywHSCzijVBfvOMnSiPoJgkTs+c=;
+	b=RUSbOFbegpVlu6C2iyfaEm/K3W0Ne0XQiPp6jntsl34+1UJJFFvNBMVxTJnYpogNfgOZhk
+	5OiT3x2b4SdLlFRPBrg4aIIKdgFLEXqww1r1M+misuKnAibZVnquSKXFKoOItVcmGeXmvo
+	EA9iaNGWM3kx7aDtJqByAEDykDDNM34=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I4423O0F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B7EFD60217;
+	Thu, 25 Jun 2026 07:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6091A1F000E9;
+	Thu, 25 Jun 2026 07:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782372890;
+	bh=qRb3MnUN3VjO7bBEhywHSCzijVBfvOMnSiPoJgkTs+c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=I4423O0FLhecJlTbI9wKC/+pcMVgisapgapg2UsxIzaOUAa4Qz511qWJ6BjGeXtat
+	 YCiEwbySNK1Q6EaVCYPKJ3ihJg5NpvUSepWJcfG5FQ0Yu0VjrmHmaOL7zfdeR3BzoV
+	 VIYZWAjNCNGGffmW/SxZIqBaNSWLtF7c6WOV5jKBW5PWRz/dJtzi0WcSgGp9oVxKQp
+	 UEdeDOJWnpmtWLudaSLDtAIYinLS0s1WJ+sWVNtbBBFSG7FeAsIT1fpPHgvh3rC67F
+	 6z+TOExSo7rBLZsDcSZf9RfqSIOm/lb8tZ5fp5JABOWO3lw0GZoAaFdXa/r/WdZOpy
+	 sIJ6pDZAWBrgg==
+Date: Thu, 25 Jun 2026 08:34:42 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
+Subject: Re: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the
+ per-VMA lock
+Message-ID: <ajzUCZSRU3h_UdjR@lucifer>
+References: <20260625015053.2445008-1-riel@surriel.com>
+ <20260625015053.2445008-3-riel@surriel.com>
 MIME-Version: 1.0
-References: <20260617163919.2544899-1-ekffu200098@gmail.com> <20260624204030.3c8baa67713b6ca1d537baba@linux-foundation.org>
-In-Reply-To: <20260624204030.3c8baa67713b6ca1d537baba@linux-foundation.org>
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Date: Thu, 25 Jun 2026 16:31:14 +0900
-X-Gm-Features: AVVi8Cf16h4yiA49dDNq8I7QKdcvkwxM5V6_GYgQOYh9RMn1uG-9O3yjxShLOm4
-Message-ID: <CABFDxMFi9e-GgC8scDmhOt7AgEUsqxgJfsg8V=A=yGxFj69DMg@mail.gmail.com>
-Subject: Re: [PATCH] arch_numa: remove redundant nodemask clears in numa_init()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: rppt@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9fg7sbpojmcq9hopt3yeiykn9ou7ybki
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625015053.2445008-3-riel@surriel.com>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BEFDF180003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782372686-195010
-X-HE-Meta: U2FsdGVkX1+CfNPOhk9bgSCKOJaJ5VZDF6EuT9jZVAaajhPhJuvPnUGTlNus5+TC3nJV/3mLqryvnRZ39mWyOiBv/m2zNx/zLQ9F1e1vrpIenyps0ivTsv9xb8gj0eRPzXQyXmYP6Cayt+Qd7V76jA+ozrfW72wP0jqv0iNH6dXJ798okKtjBVuIMDUZ16cnzB8812qO4+2xYwgkoUognWw04ftTDaHfOu0PKd+FhWd3Z0RBBuyDa1Kii94cAAzpFWvhvY+RgnLakS5NeCqChEsZP41W8xnc0aItNZRHvXPOEnzp23VQcJgjmihEfog1K6mng+ucfIhGSuNy3unwCs3l89FF5oLKJB+ivDQbnbQ8syaxRnLunw7qyJ2wyl0+tnHin8eOVlbzlWd51HXw7kTsBxwBiUX3j8Ll5fp8q2cV2dPByhczu/6G1nAoGhiupAocbse4uR/SrnOmqdzqy0mgJSktxbavHSPAna2n4jEAAtdAZB8QsdMBfDMccgfBSpuwJ8cOO+zl3Hf5qAGDAbfNrOnKkxeXEZAyyRUlB0lFUOCo9HfyCVPVFNM+2aVmTNVfhUj27eouO+gZEnRDlwPD5HZvkI1grVoVRsbo0NFedWoJvaZzcnml3pnhsdseZ4zz9IrZwrJFJ0nCjH6YTfAGTDBXkLwYfOZLO47NqhlQs0uk9xkODGm8djaTdHPQYxSvET88gGmc0IhoQJx+wRe3++damZT8FJ899YaZZ2/BeI9UgFaWgkLNL0W1STe6kdeiFyypeicPk25Vv4Ji9wTGxrqzzpLOrlgbJZvc+sG2e43Qsq2g/5TsLDMh70944p9oi1vt8Ezc7t4cgn+0tNagkbg3MS+qBKrDDF4XBmTPIN2x/uQjrHimySsw3eddp3Pzpb3I85qedRUoflo9HOCO9utb5bCRisSEvR6M1xW3DqggADfUasfsF9II3lf342uuF0YvuqpW9P35jnI
- ga+npC2h
- dwwTf3MpWa9tskPXqcV+DKfuEaSJEIJVSuq3Du7NNF9pP8aliO1hAE1E+Q4YTGRXjbJj6U02e0iXK7ZEHw9HNkZ65n5wLus7LdaBda09IxpcY7gh3OsE3ynuyKAkaPp8vC53ypNnKgWyz0QDyz38hCQEwGSsbzeUSkU4y47ILBDNJtMze+az45muRal+qvEElE38WVi3bAh7N7eB9Fc4BvEEte0+PbYIdbykMqnWY5I7WuO4xF2ykoD/Nbg0SyEUL0xhuXd0Suw1XuXwBvKZeMzqPUH+WRppRbedVxwF0s8sSw5J42opFWaK4J1L94kNmySdyVTkCw6/P2QgNlv9hdakmZwb9ST0GZXahyWITlO+s5tfTTirg32f5rbIMguCq6aybCnqj2cW6/mpOOMPJl0oao/bJ3QALbcwUznm9D+/5NPqY/0IZuyCgTvOzS2OFVTaollSoXD8ZhfgnjpPdRB50T8uaTOo+p0PtKLKSuyjupbNbqNC0gO6Q2EhgRyKWJNe7GECstDgo6hU+14LFHGMGdg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 474A340003
+X-Stat-Signature: sm5mt8k4q55sjcmnqdambtdb7hpmpfsg
+X-HE-Tag: 1782372891-320365
+X-HE-Meta: U2FsdGVkX1+CbsyUDs4o+yqKjmoYkl8QWg47Q1l4ML3jhSRsBWY2ETbzo6a9RD7r5PGFjFy3nDmnp9Rm9BNCy+kzbEhpuypt8viDDIe2CgGzfA4inFLtcaXefqF46GT2Tj+8EL0oakI4rwS9Q623hVONm1klxYSghVmj6jtAnRSUYfwAPJkEXrozF6dxPO/e9BQNqD9k+rW20yVKxX1qA3tEsKK2qqNWVgYltpPoQPTty4Zx9AD0vrB2/rjyxH8EJsAKGrFPzYAYhJKAbEy61v+n3zufv+UZ+gFfFVwJ/+Aj9wYgcY/r97PJGNLAWphJUlXvAsWyJrVy07xKnYPTbgM+r7ACLNY1al6YmiyDtMQrGAinJIQnx8715T7Ti6gkhLVkCmmzyOnZMAPJhBp8OwamL6D6PK/TZeJjWAve9EbTkcaLlPsagVJarOYOlcy631az5jcpL9lx8BrknUi35DGNADDrcqLkmzotRPRRhYiHBIPRPJcZ1YCPNCQ6qcBDFwamvm2LZzh6uv/sYTGZomvVIKxUh0h8fKMFc1hMjjIzE2X6tNqMdy8DcICKzQ4l5Htn9gX7IydDjx2L4MbGeV1CZ1eXK1DFH+7q8DMQS45eSnNkt8MFcKJRAKap/EMD+KoZAETGHRjcSVTSltGq5I9LZYZPc2Ko1gsm5A7ekaz3xawhWgPbaHtISthD3XIWI4hEYY41IOiAEwCF7ZO+meNJ0jVRJX93S71qg2fXnGR4SLPHMa2dPOLk4+Q8j/fIzMlsPFj1MbJ2YdK9c7V5++/hrJ91OhCDkS2OGaYVr18ON7+l8Lil7MmYGzIykc+j/LlIpmegVpb27FuKbBxco/Zn2cOYt/SAQd43CE9luXVS3lyz4hHD0s/UBK468G4i7e1RD/oao5D32Tw/kmVlockeMY9WjnNV0t8n44JM0nUFW0OKfbLzmB+pToignKOUhyNoR3tK3YKhcXjyBu0
+ 6Oroixqy
+ Ylz88eNE6r/HIhhsz4qtBn6x5mlJfkuMwHjodflkyL7uQmTK1RMI1pvbs0T33vVBwJo1INb8UfE+E4HDE4pQwIVEZ1SLTg0oUQeLC98ntBS1Hyj0NrA2S19uL2SMper7XkMWr+VCVnom2ODnTy57fCiZoolfcado2Xn0NfPqNy+9BmyiJqySZCpZ9154wLS62EdCiEDsWAQfoYiIhVJm7lVL4aLWH7m5AHHkzf0q0kfBpbyAkY+uReMC7VeJZCtnv9Eq/wJCzvl7F81rQtUWW3iEFiVGJ1rnyyesJapeLpeHVgpBRQkPo0mQt1M23RQzI/8HKibEv456IqWeTDReA/5dI1StOxJZoAQFodN3ZLA/cU2e22xwoahiZ9K81FVs3+/4Fv3EBBKgLsW+i9Tj6VLj10w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,82 +96,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 12:40=E2=80=AFPM Andrew Morton
-<akpm@linux-foundation.org> wrote:
+Rik, it really would have helped if you'd replied to review :)
+
+On Wed, Jun 24, 2026 at 09:50:52PM -0400, Rik van Riel wrote:
+> folio_walk_start() asserts the mmap lock is held.  For callers that only
+> need to read a single, already-present page, the mmap lock is a heavy and
+> often badly contended hammer.  Such a caller can instead hold the per-VMA
+> lock, which keeps the VMA itself stable.
+
+<newline>
+
+> The per-VMA lock does not, however, keep the page tables walked below that
+> VMA from being freed.  A concurrent munmap() or THP collapse of an
+> adjacent region in the same mm can free a shared upper-level table, and
+
+Yeah I need to update the documentation on this at
+https://docs.kernel.org/mm/process_addrs.html it's more subtle than written
+there.
+
+Firstly you're wrong about munmap() - it acquires the VMA lock of the VMAs freed
+in the range and will only remove an upper level table if the entire range is
+spanned.
+
+And that's the only way higher level tables can be removed.
+
+PTE page tables can be removed via MADV_DONTNEED, but that a. acquires the VMA
+lock and b. frees the PTE page table under RCU.
+
+A THP collapse can happen concurrently, but PTEs are freed under RCU so you
+don't need to do this GUP fast imitating stuff.
+
+> THP collapse (collapse_huge_page() -> retract_page_tables()) frees page
+> tables of VMAs whose lock it does not hold.  Page table freeing
+
+retract_page_tables() -> pte_free_defer() -> RCU
+try_collapse_pte_mapped_thp() -> pte_free_defer() -> RCU
+
+> synchronizes against lockless walkers the way gup_fast relies on:
+> tlb_remove_table_sync_one() sends an IPI and waits for every CPU to enable
+> interrupts, so a walker that keeps interrupts disabled across the walk
+> cannot be observing a table that is about to be freed.  rcu_read_lock() is
+> not sufficient -- it does not block that IPI -- so the caller must keep
+
+Yes it is?
+
+I mean unless I'm missing something here.
+
+> interrupts disabled, not merely hold an RCU read-side critical section.
 >
-> On Thu, 18 Jun 2026 01:39:19 +0900 Sang-Heon Jeon <ekffu200098@gmail.com>=
- wrote:
+> Add an FW_VMA_LOCKED flag.  When passed, folio_walk_start() asserts the
+> per-VMA lock and that interrupts are disabled, instead of asserting the
+> mmap lock; it requires CONFIG_MMU_GATHER_RCU_TABLE_FREE and refuses
+> hugetlb VMAs (PMD sharing maps page tables this VMA's lock does not
+> cover).  The caller must keep interrupts disabled until folio_walk_end().
 >
-> > numa_init() clears numa_nodes_parsed, node_possible_map and
-> > node_online_map, then calls numa_memblks_init(), which clears the same
-> > nodemasks. Nothing uses them in between.
-> >
-> > These clears have been redundant since commit 767507654c22 ("arch_numa:
-> > switch over to numa_memblks") made numa_init() use numa_memblks_init().
-> >
-> > No functional change.
-> >
-> > ...
-> >
-> > --- a/drivers/base/arch_numa.c
-> > +++ b/drivers/base/arch_numa.c
-> > @@ -231,10 +231,6 @@ static int __init numa_init(int (*init_func)(void)=
-)
-> >  {
-> >       int ret;
-> >
-> > -     nodes_clear(numa_nodes_parsed);
-> > -     nodes_clear(node_possible_map);
-> > -     nodes_clear(node_online_map);
-> > -
-> >       ret =3D numa_memblks_init(init_func, /* memblock_force_top_down *=
-/ false);
-> >       if (ret < 0)
-> >               goto out_free_distance;
+> No existing caller passes FW_VMA_LOCKED, so behaviour is unchanged.
 >
-> hm, OK, thanks.
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Rik van Riel <riel@surriel.com>
+> ---
+>  include/linux/pagewalk.h |  7 +++++++
+>  mm/pagewalk.c            | 29 +++++++++++++++++++++++++++--
+>  2 files changed, 34 insertions(+), 2 deletions(-)
 >
+> diff --git a/include/linux/pagewalk.h b/include/linux/pagewalk.h
+> index b41d7265c01b..d0387470d732 100644
+> --- a/include/linux/pagewalk.h
+> +++ b/include/linux/pagewalk.h
+> @@ -150,6 +150,13 @@ typedef int __bitwise folio_walk_flags_t;
 >
-> A couple of driveby questions:
+>  /* Walk shared zeropages (small + huge) as well. */
+>  #define FW_ZEROPAGE			((__force folio_walk_flags_t)BIT(0))
+> +/*
+> + * The caller holds the per-VMA lock instead of the mmap lock, with interrupts
+> + * disabled across the walk (until folio_walk_end()) to serialize against page
+> + * table freeing, the same way gup_fast does. Only valid with RCU-freed page
+> + * tables (CONFIG_MMU_GATHER_RCU_TABLE_FREE) and not for hugetlb.
+> + */
+> +#define FW_VMA_LOCKED			((__force folio_walk_flags_t)BIT(1))
 >
-> Are the other nodes_clear() calls are needed - aren't these things
-> zeroed when the kernel is loaded?
+>  enum folio_walk_level {
+>  	FW_LEVEL_PTE,
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index 3ae2586ff45b..ab1e81983cb8 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -890,7 +890,10 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
+>   * huge_ptep_set_*, ...). Note that the page table entry stored in @fw might
+>   * not correspond to the first physical entry of a logical hugetlb entry.
+>   *
+> - * The mmap lock must be held in read mode.
+> + * The mmap lock must be held in read mode. Alternatively, if @FW_VMA_LOCKED is
+> + * passed, the VMA's per-VMA lock must be held and interrupts must be disabled
+> + * across the walk and until folio_walk_end() (only supported with RCU-freed page
+> + * tables, i.e. CONFIG_MMU_GATHER_RCU_TABLE_FREE, and not for hugetlb).
+>   *
+>   * Return: folio pointer on success, otherwise NULL.
+>   */
+> @@ -908,7 +911,29 @@ struct folio *folio_walk_start(struct folio_walk *fw,
+>  	pgd_t *pgdp;
+>  	p4d_t *p4dp;
+>
+> -	mmap_assert_locked(vma->vm_mm);
+> +	if (flags & FW_VMA_LOCKED) {
+> +		/*
+> +		 * Lockless walk under the per-VMA lock instead of the mmap
+> +		 * lock. The VMA lock keeps the VMA stable, but the page tables
+> +		 * walked below it can still be freed concurrently: a munmap() or
+> +		 * THP collapse of an adjacent region in the same mm can free a
+> +		 * shared upper-level table, and collapse_huge_page() ->
+> +		 * retract_page_tables() frees page tables of VMAs whose lock it
+> +		 * does not hold. Page table freeing serializes against lockless
+> +		 * walkers via tlb_remove_table_sync_one(), which IPIs and waits
+> +		 * for every CPU to enable interrupts; an RCU read-side critical
+> +		 * section does not block that IPI, so the caller must keep
+> +		 * interrupts disabled across the whole walk, like gup_fast.
+> +		 * Hugetlb (PMD sharing) maps page tables not covered by this
+> +		 * VMA's lock and is not supported.
+> +		 */
+
+This is an unreadable wall of text, if it's AI generated please edit before
+sending.
+
+> +		VM_WARN_ON_ONCE(!IS_ENABLED(CONFIG_MMU_GATHER_RCU_TABLE_FREE));
+> +		VM_WARN_ON_ONCE(is_vm_hugetlb_page(vma));
+> +		lockdep_assert_irqs_disabled();
+> +		vma_assert_locked(vma);
+> +	} else {
+> +		mmap_assert_locked(vma->vm_mm);
+> +	}
+>  	vma_pgtable_walk_begin(vma);
+>
+>  	if (WARN_ON_ONCE(addr < vma->vm_start || addr >= vma->vm_end))
+> --
+> 2.53.0-Meta
 >
 
-You're talking about nodes_clear() in numa_memblks_init(), right? If
-so, I think they're needed.
-Because numa_memblks_init() can run more than once during boot, and a
-previous call can leave the maps dirty.
-
-More detailed example, If we first try to set up NUMA from DT,
-numa_memblks_init(of_numa_init) is called.
-of_numa_init() parses the CPU and memory nodes in order, so if parsing
-the CPU nodes succeed but the memory nodes fail, the CPU-node bits are
-still set in numa_nodes_parsed.
-We then fall back to calling numa_memblks_init(dummy_numa_init). Since
-dummy_numa_init() only sets node 0, those stale bits could survive
-unexpectedly without nodes_clear().
-
-> Also,
->
-> #define node_possible_map       node_states[N_POSSIBLE]
->
-> ...
->
-> nodemask_t node_states[NR_NODE_STATES] __read_mostly =3D {
->         [N_POSSIBLE] =3D NODE_MASK_ALL,
->
-> why do we carefully initialize node_possible_map at compile-time then
-> zero it within __init code?
->
-
-I also can't find why we initialize node_possible_map carefully, at
-least for NUMA.
-I'm not sure it's safe to remove initialization with UMA. I'll take a
-closer look when I have time, and send a patch to remove them if it's
-safe to remove.
-
-
-Best Regards,
-Sang-Heon Jeon
+Thanks, Lorenzo
 
