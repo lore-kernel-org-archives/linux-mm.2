@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24B33CDE00B
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:50:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3CD3CDE009
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A41CF6B0093; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id DEB176B0096; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A9C46B0099; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id D9B006B0099; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 780F96B0093; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
+	id CD8766B0098; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3B6B16B0095
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C6766B009B
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:50:47 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3726C1673
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:46 +0000 (UTC)
-X-FDA: 84919477692.29.637AC27
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F6491A029F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:47 +0000 (UTC)
+X-FDA: 84919477734.05.C36049B
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DA3B620005
+	by imf11.hostedemail.com (Postfix) with ESMTP id E112340012
 	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:50:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YaMGx9yB;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JY750gk4;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf11.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782417045;
-	b=TpHtu4E36PTFw0zlmu1u2tvth8kGEC8CDxLaflmw97X+kegJNIYmOPo6TZYk2jFqy1a4HV
-	sS/zwIZzg2qd6d2JNZFe5un3sJcjdP9vyu0QQEh+MNs8bKH8tn6CgpjTQdu5vJ6N842Co7
-	09dm++y8SMMmjtu+uL6gpsi7/xAfkr8=
+	b=2IkUnlSzA+jghPUdMO88+WT7GjMtK30KovoIUPiEx4RR6dFohGLtDp7tjcuKqPZrJWWc10
+	S7ZZVa0ZfTNJ0CvwhO2eXo3xQBixnujHzTqUEtMO4/fVt0OPsJC4tpo9evEH+LmT7S3OKs
+	Nw5nljXMwrGvGpxnDz15nZfAcsiL0yg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782417045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2L2hQKeqlov9gdF6mrnS7Hxo22uCqfn3hih+qh45f4Y=;
-	b=uF0/whUlvusG4W3V5z5YBE+aIoEmf4J7I/2gJQgS6XUIRX+GkFFfFDxyi5vZrHXjcej9jg
-	/+03nWz3c3JYnAv107mIDbun3KDF672JdvxkormZSR2g50NA5r2nIzR3Ta6RoosQSYMwB2
-	5OP9mgq5K3+c7u0Tc4iB+1B2C3te3qo=
+	bh=WQRU47JJNfGVXzF5pXjlArv9LIZyrfeqN5hqqIGQOWY=;
+	b=tbADbtSgHz2FTLBD0WNUCuDb6JACXRPgE/W2OokCA2KXh5h0nzulwIqeL7m7oXG8hX1T33
+	eublcbPv4Ck1I+nAgjsWOWSykktbS7JhdEnm6R0eBUfFfRyQ32vRmRrLMnYjuiTEoolq9T
+	iPlAxrlpdOrpjZc2hJ4EYFU/x1yipmU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=YaMGx9yB;
-	spf=pass (imf03.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JY750gk4;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf11.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=2L2hQKeqlov9gdF6mrnS7Hxo22uCqfn3hih+qh45f4Y=; b=YaMGx9yB7K2dFolNNjsqulgDn3
-	wmOV0nw8ac8diVP17zxJzBMde0z5vv5Nk8jrBH7SAVRIsNP/deKgw3rLXO2szXo0bvSk9P5fFAnUG
-	SKXGHDOqOWPsYPupPN1sqJrbVsCNJT1zTG0yAR5DbySyd98rNqO8s/yygBasfJk5Nnf7nr7ysGRmi
-	D6liwymBRm6NqAmfiNbZPsRC16f0LmlSRHC94mFFiSbGDCrvVk4xiylYvkcXrtz0kR3dLrG4s/wx0
-	BLSarnSMoCDJeD/YKYCdJwjGg8tQ/xAq5whQ9tVL6hkfdHBRfwwuChtvZCfKb4w+5kXctLcpe9T1L
-	WHLwA4yg==;
+	bh=WQRU47JJNfGVXzF5pXjlArv9LIZyrfeqN5hqqIGQOWY=; b=JY750gk4LCQE9BMeS/6rXuW7LP
+	g4sWhM3GrtZUWDg60mcgInrLbdoxAzXip9oN3P7jxv9VphfSLEsaXpDN7joFn2wt5U+hgvMtcGDVB
+	1kShEdOEJC0jSyIrzNjgpv8Je52SwBy5U72UoXlQk3GXKQdJF6zRQzRQP6WhYhzQ2doxx8P3qGPoJ
+	DxH4Sv0b7UrFrilEHV1yZASQZIiCij1uzWruHEAa8MfRd79sgHxNm6lydBSRhFSuWzY323sm0LKce
+	Tx5M5o5u1rJMonTZgCujA/kncss/6qzzdJrk2v/g5bDPnaUJ9xMXndINlGgH9fPuad3wqC9KKzd1i
+	V0+7oKOg==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcq5z-0000000AWY2-1qQ6;
+	id 1wcq5y-0000000AWXx-46qX;
 	Thu, 25 Jun 2026 19:50:43 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 03/11] filemap: Do sync readahead under the fault lock
-Date: Thu, 25 Jun 2026 20:50:29 +0100
-Message-ID: <20260625195040.2508362-4-willy@infradead.org>
+Subject: [PATCH 02/11] mm: Make all page faults killable
+Date: Thu, 25 Jun 2026 20:50:28 +0100
+Message-ID: <20260625195040.2508362-3-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625195040.2508362-1-willy@infradead.org>
 References: <20260625195040.2508362-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DA3B620005
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E112340012
 X-Rspam-User: 
-X-Stat-Signature: eaxmaiwda85smaaffytx3kdtybq1u8rp
-X-HE-Tag: 1782417044-667742
-X-HE-Meta: U2FsdGVkX19khfigiq5OKgGc9bAjoMl/+FyftRJx6z935pPhNeKQxky856LQYuqw3PoJyqx97qebMq6i2hZQRgISMUYgZ0W4kC2rt77HGA+goBII0GNIh4+BkNlzCP5OiGhgU027b0KtHK4mg3sTXQb77tenr8DCzKXq/2BOdR5oulILV7Wcw+LXDAuLcat6ETbh4ve9M79yORQLtOOWqrpyFKnOwHsH3mUe0Hp8QcKxL0qj6qW3KrDHcpZ1KxzebjTmmgR4oY7voLlVFj4fEuXFDVu5ErEEW18YFIh7grn+VU9XP14h5C6nMq4TU+ud4oTUc8ARH391xZMgwAO6xsU7hnnUHCGZjrRRn3k6D10L2bUUJ53O1xYFij69Tsr02uIggIWrnlloXOMoc5EKXE/GwgEkyArCy2KoX42mSXm7HT7JEHNJDX6MrI1pknB2Em5Yh4WwcoraFP5kHqgDWgdATA71a2MsQb3zWOK72Q+zjGXnbjiQkLG4Z/IP/CxZmbjeqKgdZ6uAEjY2VC8qET4j5VRQNiDtlRMrbm2ZNxTxv8u56IY8VIOJlnQTxykzyNFLCJhgAv+8dvLz9lTQWInL8O3o8+OVhGKPx0V8avGxbNQQIx6zq6Tqou2g+lDy1eTSYQbLvSiWpJcEAQfJJIu5mqiqPD2iSnjaDS485IPfS6J3OrtoL4Al4AedTTu+3S9SgkHa6F9f44DBSj4HZ/hUsk3rKqjKCdiYdJX1JSgfAsakQ7OSmMJlUTXuU14apWVxudPi5w5v2RWyQ7kseIyS45dZ+MvxqfYToXKVdfL3ePuCvmmuyvfler5W1bQ0ZCm79G1RGOTTIqix6y+jjhdVEqKc5vtbyylqzjOKOM20+eBHqpzRKKyOJNQoB9IR5AoN208tzMjR9NhNlAwXaGgrj0WMPiAnWPDUL81lSHYsyUaVS1iMvkRqY8KWk9zyV1hGfBDkT5bsgPOi+7V
- qFyn1ghH
- W77YAZQTovCVPezNvsmntbQl+sn0OmjC+/B/uemcIVqW7I4jtvnLVwivGqfOcM/Bx8SwsM7iuAZw0N+DdK16X//IibTWLKOgkSDQjfwTAinGAu1iLr9dxOOcgksvKr/LXYMNR0oSeumpUbCKX73k8lynIfCjMWj+jD8fvP5JZe/898JTrvHiPP/s+KyHDWyjJS/bYAldq5kSpJvalLfFi/Cne19t2WmaVLfWmIgZ86pzeBPWYF5UY392Czb1xlyWcZElEy7cC2/rQUAivEZwZH64fTw==
+X-Stat-Signature: biho7zzw8hbid6r3eyjy5myn6847hq9m
+X-HE-Tag: 1782417044-363673
+X-HE-Meta: U2FsdGVkX18flzkvLOy3+OMn+Kb6rnOVNR2GP9nHTSWORda5dZpTJZmjFxtCmEA7h6gMzTZ964zE4xbBwAr/qbUJ2dw8Eu/pRwh/FURjYXo8mN0J2husDHnNArILN0sm48WotueyYlzVymw+i5ExSMqPW055Zjsz4XYnupXDWBPjytht9j8S8558d1+musJ1+JyCiR2/V79mJ6KvqSt4ZEpUloLggREPKVbKYcAgc5hx5clqxea3yZt4DNfwa2SHd3e2/T8JmF+ot52TKs1fus5LO5REPjrsD5qZJ1Ddww5ndJ830qw42MhZMxbe7zoLI7dNkXKSuWS+N+I9pin4VPQdlwwxPaHCg2uM/7WONEu+WHBGDqDQePwz1HmjdNkjh3VSZlRJQXcS3lnSlfqYtI6jlpuqykbRBsqtonJ0KQGU8ZVu37MVHAX3ggJh5mjNSO9m9hlSXrTUUFrs4rSAZAUJzQbF755TscZWm0WX8SpnJwiKcNX11hPzzy17k1JQLp4LAP2qU9mr9WtbT+950+9gXUKJ/m+wX0YRhWL5KzROwd6Kj1c6D6zXxGyGZB9DqDbpZxCmq609WPrh/KKkg6B8GuSr11HcVzGLI15qGvFZb6fHJ/Mg6AxAae1eyI4jyHvZx+JdHi6J936eM6BlSrUZhdoD28mZLqk32YVS8/tUI0RB9/RtaqLR/4zi6UXJcUCYsh66omfRBN0uLfobSFiVufjK7PCcORzzLG2sHQjNjF1wV1A1YTlhqQj2VrH6LnYpgE573cg029dbdfGFQ/xOuNj1e8SfGSLXrob+WYPodZ8Mb+WSElbI7qf0wwwi76Jqf+RhUzvXeqO+DFx6uNgvBqB5IcTl8DCsx54Alh2/8VsG8n8P6Nt/MbA1hCT4Fc0p/uhoOcOuB7Q/iBTXHcOcFbOcPGtgHa889j9nqTzvJOv5KhsDzqk7JqlxWAdUvqzip8XrMgcu8qotV4r
+ dQqMen+i
+ fBy5g0F157GNfXpdX7OLoZyWpQeHbU2tuIDM+avAwWQXqcUoGSy0VAmujOMnlImUvcblQa/OW8haJ1D2jyRYr/vbdiAl9iPuG35wTR9IyQLdpo1qVBxP7Np7+9yNpOW/j1ilTQZUGiW8Zggk33cmjndLW5zU17TDg7KIwwSQHngxZ93d6ZIc6gghzn0vbQbJbcu2WrWc95mFOc1IPinSEV1KFKn+9h+mgGWKbjC2xrrWD8KugSs4R9wSHGnH5jd5Ct+nm2hh+roHyjutE5DGVjAWLqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,99 +87,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of pinning the file, dropping the fault lock and retrying
-the page fault, just submit the read while holding the fault lock.
-The priority inversion originally addressed by commit 6b4c9f446981
-is addressed by per-VMA locks, so we no longer need this complexity
-in the filemap path.
+All architectures now use FAULT_FLAG_KILLABLE when handling page faults.
+There are a few callers of handle_mm_fault() that don't specify it, but
+I have audited all of them, and they all seem to handle errors correctly.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- mm/filemap.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ arch/x86/mm/fault.c      | 12 +++++-----
+ include/linux/mm.h       |  2 --
+ include/linux/mm_types.h | 18 +++++++--------
+ mm/filemap.c             | 49 +++++++++++++++-------------------------
+ mm/gup.c                 |  7 +++---
+ mm/userfaultfd.c         | 20 +++++-----------
+ 6 files changed, 41 insertions(+), 67 deletions(-)
 
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index 45b99c3b1442..dd9b50676f71 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -1384,12 +1384,12 @@ void do_user_addr_fault(struct pt_regs *regs,
+ 	 * the fault.  Since we never set FAULT_FLAG_RETRY_NOWAIT, if
+ 	 * we get VM_FAULT_RETRY back, the mmap_lock has been unlocked.
+ 	 *
+-	 * Note that handle_userfault() may also release and reacquire mmap_lock
+-	 * (and not return with VM_FAULT_RETRY), when returning to userland to
+-	 * repeat the page fault later with a VM_FAULT_NOPAGE retval
+-	 * (potentially after handling any pending signal during the return to
+-	 * userland). The return to userland is identified whenever
+-	 * FAULT_FLAG_USER|FAULT_FLAG_KILLABLE are both set in flags.
++	 * Note that handle_userfault() may also release and reacquire
++	 * the fault lock (and not return with VM_FAULT_RETRY), when
++	 * returning to userland to repeat the page fault later with a
++	 * VM_FAULT_NOPAGE retval (potentially after handling any pending
++	 * signal during the return to userland). The return to userland
++	 * is identified whenever FAULT_FLAG_USER is set in flags.
+ 	 */
+ 	fault = handle_mm_fault(vma, address, flags, regs);
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..e1ec278205ee 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -682,7 +682,6 @@ enum {
+  * arch-specific page fault handlers.
+  */
+ #define FAULT_FLAG_DEFAULT  (FAULT_FLAG_ALLOW_RETRY | \
+-			     FAULT_FLAG_KILLABLE | \
+ 			     FAULT_FLAG_INTERRUPTIBLE)
+ 
+ /**
+@@ -709,7 +708,6 @@ static inline bool fault_flag_allow_retry_first(enum fault_flag flags)
+ 	{ FAULT_FLAG_MKWRITE,		"MKWRITE" }, \
+ 	{ FAULT_FLAG_ALLOW_RETRY,	"ALLOW_RETRY" }, \
+ 	{ FAULT_FLAG_RETRY_NOWAIT,	"RETRY_NOWAIT" }, \
+-	{ FAULT_FLAG_KILLABLE,		"KILLABLE" }, \
+ 	{ FAULT_FLAG_TRIED,		"TRIED" }, \
+ 	{ FAULT_FLAG_USER,		"USER" }, \
+ 	{ FAULT_FLAG_REMOTE,		"REMOTE" }, \
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b18c2b2e7d2c..1691b61df877 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -1759,7 +1759,6 @@ enum tlb_flush_reason {
+  * @FAULT_FLAG_MKWRITE: Fault was mkwrite of existing PTE.
+  * @FAULT_FLAG_ALLOW_RETRY: Allow to retry the fault if blocked.
+  * @FAULT_FLAG_RETRY_NOWAIT: Don't drop mmap_lock and wait when retrying.
+- * @FAULT_FLAG_KILLABLE: The fault task is in SIGKILL killable region.
+  * @FAULT_FLAG_TRIED: The fault has been tried once.
+  * @FAULT_FLAG_USER: The fault originated in userspace.
+  * @FAULT_FLAG_REMOTE: The fault is not for current task/mm.
+@@ -1800,15 +1799,14 @@ enum fault_flag {
+ 	FAULT_FLAG_MKWRITE =		1 << 1,
+ 	FAULT_FLAG_ALLOW_RETRY =	1 << 2,
+ 	FAULT_FLAG_RETRY_NOWAIT = 	1 << 3,
+-	FAULT_FLAG_KILLABLE =		1 << 4,
+-	FAULT_FLAG_TRIED = 		1 << 5,
+-	FAULT_FLAG_USER =		1 << 6,
+-	FAULT_FLAG_REMOTE =		1 << 7,
+-	FAULT_FLAG_INSTRUCTION =	1 << 8,
+-	FAULT_FLAG_INTERRUPTIBLE =	1 << 9,
+-	FAULT_FLAG_UNSHARE =		1 << 10,
+-	FAULT_FLAG_ORIG_PTE_VALID =	1 << 11,
+-	FAULT_FLAG_VMA_LOCK =		1 << 12,
++	FAULT_FLAG_TRIED = 		1 << 4,
++	FAULT_FLAG_USER =		1 << 5,
++	FAULT_FLAG_REMOTE =		1 << 6,
++	FAULT_FLAG_INSTRUCTION =	1 << 7,
++	FAULT_FLAG_INTERRUPTIBLE =	1 << 8,
++	FAULT_FLAG_UNSHARE =		1 << 9,
++	FAULT_FLAG_ORIG_PTE_VALID =	1 << 10,
++	FAULT_FLAG_VMA_LOCK =		1 << 11,
+ };
+ 
+ typedef unsigned int __bitwise zap_flags_t;
 diff --git a/mm/filemap.c b/mm/filemap.c
-index b7ecd03d4fc9..ce115411404f 100644
+index 12e445a139f9..b7ecd03d4fc9 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -3302,13 +3302,12 @@ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
-  * that.  If we didn't pin a file then we return NULL.  The file that is
-  * returned needs to be fput()'ed when we're done with it.
+@@ -1746,13 +1746,11 @@ static int __folio_lock_async(struct folio *folio, struct wait_page_queue *wait)
+  *     mmap_lock or per-VMA lock has been released (mmap_read_unlock() or
+  *     vma_end_read()), unless flags had both FAULT_FLAG_ALLOW_RETRY and
+  *     FAULT_FLAG_RETRY_NOWAIT set, in which case the lock is still held.
+- *
+- * If neither ALLOW_RETRY nor KILLABLE are set, will always return 0
+- * with the folio locked and the mmap_lock/per-VMA lock is left unperturbed.
   */
--static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
-+static void do_sync_mmap_readahead(struct vm_fault *vmf)
+ vm_fault_t __folio_lock_or_retry(struct folio *folio, struct vm_fault *vmf)
  {
- 	struct file *file = vmf->vma->vm_file;
- 	struct file_ra_state *ra = &file->f_ra;
- 	struct address_space *mapping = file->f_mapping;
- 	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
--	struct file *fpin = NULL;
- 	vm_flags_t vm_flags = vmf->vma->vm_flags;
- 	bool force_thp_readahead = false;
- 	unsigned int thp_order = 0;
-@@ -3336,15 +3335,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * VM_EXEC case below is already intended for random access.
- 		 */
- 		if ((vm_flags & (VM_RAND_READ | VM_EXEC)) == VM_RAND_READ)
--			return fpin;
-+			return;
+ 	unsigned int flags = vmf->flags;
++	bool ret;
  
- 		if (!ra->ra_pages)
--			return fpin;
-+			return;
- 
- 		if (vm_flags & VM_SEQ_READ) {
--			fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 			page_cache_sync_ra(&ractl, ra->ra_pages);
--			return fpin;
-+			return;
- 		}
- 	}
- 
-@@ -3359,13 +3357,12 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		 * stop bothering with read-ahead. It will only hurt.
- 		 */
- 		if (mmap_miss > MMAP_LOTSAMISS)
--			return fpin;
-+			return;
- 	}
- 
- 	if (force_thp_readahead) {
- 		unsigned long folio_nr_pages = 1UL << thp_order;
- 
--		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 		ractl._index &= ~(folio_nr_pages - 1);
- 		ra->size = folio_nr_pages;
+ 	if (fault_flag_allow_retry_first(flags)) {
  		/*
-@@ -3377,7 +3374,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		ra->async_size = folio_nr_pages;
- 		ra->order = thp_order;
- 		page_cache_ra_order(&ractl, ra);
--		return fpin;
-+		return;
+@@ -1763,22 +1761,14 @@ vm_fault_t __folio_lock_or_retry(struct folio *folio, struct vm_fault *vmf)
+ 			return VM_FAULT_RETRY;
+ 
+ 		release_fault_lock(vmf);
+-		if (flags & FAULT_FLAG_KILLABLE)
+-			folio_wait_locked_killable(folio);
+-		else
+-			folio_wait_locked(folio);
++		folio_wait_locked_killable(folio);
+ 		return VM_FAULT_RETRY;
+ 	}
+-	if (flags & FAULT_FLAG_KILLABLE) {
+-		bool ret;
+ 
+-		ret = __folio_lock_killable(folio);
+-		if (ret) {
+-			release_fault_lock(vmf);
+-			return VM_FAULT_RETRY;
+-		}
+-	} else {
+-		__folio_lock(folio);
++	ret = __folio_lock_killable(folio);
++	if (ret) {
++		release_fault_lock(vmf);
++		return VM_FAULT_RETRY;
  	}
  
- 	if (vm_flags & VM_EXEC) {
-@@ -3414,10 +3411,8 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
- 		ra->order = 0;
- 	}
+ 	return 0;
+@@ -3289,21 +3279,18 @@ static int lock_folio_maybe_drop_mmap(struct vm_fault *vmf, struct folio *folio,
+ 		return 0;
  
--	fpin = maybe_unlock_mmap_for_io(vmf, fpin);
- 	ractl._index = ra->start;
- 	page_cache_ra_order(&ractl, ra);
--	return fpin;
+ 	*fpin = maybe_unlock_mmap_for_io(vmf, *fpin);
+-	if (vmf->flags & FAULT_FLAG_KILLABLE) {
+-		if (__folio_lock_killable(folio)) {
+-			/*
+-			 * We didn't have the right flags to drop the
+-			 * fault lock, but all fault_handlers only check
+-			 * for fatal signals if we return VM_FAULT_RETRY,
+-			 * so we need to drop the fault lock here and
+-			 * return 0 if we don't have a fpin.
+-			 */
+-			if (*fpin == NULL)
+-				release_fault_lock(vmf);
+-			return 0;
+-		}
+-	} else
+-		__folio_lock(folio);
++	if (__folio_lock_killable(folio)) {
++		/*
++		 * We didn't have the right flags to drop the
++		 * fault lock, but all fault_handlers only check
++		 * for fatal signals if we return VM_FAULT_RETRY,
++		 * so we need to drop the fault lock here and
++		 * return 0 if we don't have a fpin.
++		 */
++		if (*fpin == NULL)
++			release_fault_lock(vmf);
++		return 0;
++	}
+ 
+ 	return 1;
+ }
+diff --git a/mm/gup.c b/mm/gup.c
+index 0692119b7904..70c94d62fdfd 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1098,7 +1098,7 @@ static int faultin_page(struct vm_area_struct *vma,
+ 	if (flags & FOLL_REMOTE)
+ 		fault_flags |= FAULT_FLAG_REMOTE;
+ 	if (flags & FOLL_UNLOCKABLE) {
+-		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
++		fault_flags |= FAULT_FLAG_ALLOW_RETRY;
+ 		/*
+ 		 * FAULT_FLAG_INTERRUPTIBLE is opt-in. GUP callers must set
+ 		 * FOLL_INTERRUPTIBLE to enable FAULT_FLAG_INTERRUPTIBLE.
+@@ -1571,7 +1571,7 @@ int fixup_user_fault(struct mm_struct *mm,
+ 	address = untagged_addr_remote(mm, address);
+ 
+ 	if (unlocked)
+-		fault_flags |= FAULT_FLAG_ALLOW_RETRY | FAULT_FLAG_KILLABLE;
++		fault_flags |= FAULT_FLAG_ALLOW_RETRY;
+ 
+ retry:
+ 	vma = gup_vma_lookup(mm, address);
+@@ -1581,8 +1581,7 @@ int fixup_user_fault(struct mm_struct *mm,
+ 	if (!vma_permits_fault(vma, fault_flags))
+ 		return -EFAULT;
+ 
+-	if ((fault_flags & FAULT_FLAG_KILLABLE) &&
+-	    fatal_signal_pending(current))
++	if (fatal_signal_pending(current))
+ 		return -EINTR;
+ 
+ 	ret = handle_mm_fault(vma, address, fault_flags, NULL);
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 246af12bf801..77ed5dc4c8dd 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -2666,26 +2666,18 @@ static inline unsigned int userfaultfd_get_blocking_state(unsigned int flags)
+ 	if (flags & FAULT_FLAG_INTERRUPTIBLE)
+ 		return TASK_INTERRUPTIBLE;
+ 
+-	if (flags & FAULT_FLAG_KILLABLE)
+-		return TASK_KILLABLE;
+-
+-	return TASK_UNINTERRUPTIBLE;
++	return TASK_KILLABLE;
  }
  
  /*
-@@ -3570,7 +3565,7 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 		count_vm_event(PGMAJFAULT);
- 		count_memcg_event_mm(vmf->vma->vm_mm, PGMAJFAULT);
- 		ret = VM_FAULT_MAJOR;
--		fpin = do_sync_mmap_readahead(vmf);
-+		do_sync_mmap_readahead(vmf);
- retry_find:
- 		/*
- 		 * See comment in filemap_create_folio() why we need
+- * The locking rules involved in returning VM_FAULT_RETRY depending on
+- * FAULT_FLAG_ALLOW_RETRY, FAULT_FLAG_RETRY_NOWAIT and
+- * FAULT_FLAG_KILLABLE are not straightforward. The "Caution"
+- * recommendation in __lock_page_or_retry is not an understatement.
++ * The locking rules involved in returning VM_FAULT_RETRY depending
++ * on FAULT_FLAG_ALLOW_RETRY and FAULT_FLAG_RETRY_NOWAIT are not
++ * straightforward. The "Caution" recommendation in __folio_lock_or_retry
++ * is not an understatement.
+  *
+- * If FAULT_FLAG_ALLOW_RETRY is set, the mmap_lock must be released
++ * If FAULT_FLAG_ALLOW_RETRY is set, the fault lock must be released
+  * before returning VM_FAULT_RETRY only if FAULT_FLAG_RETRY_NOWAIT is
+  * not set.
+- *
+- * If FAULT_FLAG_ALLOW_RETRY is set but FAULT_FLAG_KILLABLE is not
+- * set, VM_FAULT_RETRY can still be returned if and only if there are
+- * fatal_signal_pending()s, and the mmap_lock must be released before
+- * returning it.
+  */
+ vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason)
+ {
 -- 
 2.47.3
 
