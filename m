@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11240CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 04:42:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01CE6CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 04:50:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA9BB6B0088; Thu, 25 Jun 2026 00:42:35 -0400 (EDT)
+	id EE45D6B008A; Thu, 25 Jun 2026 00:50:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E33556B0092; Thu, 25 Jun 2026 00:42:35 -0400 (EDT)
+	id E95046B0092; Thu, 25 Jun 2026 00:50:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D49636B009B; Thu, 25 Jun 2026 00:42:35 -0400 (EDT)
+	id D84316B0095; Thu, 25 Jun 2026 00:50:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AC3DC6B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:42:35 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 62D60120578
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:42:34 +0000 (UTC)
-X-FDA: 84917189028.29.56099AD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 63D5840002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:42:32 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="i0hVhT/R";
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B057D6B008A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:50:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3A5E51C5D3F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:50:48 +0000 (UTC)
+X-FDA: 84917209776.06.CE79DC8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 77DDD1C000C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:50:46 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=utUUSNLD;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782362552;
-	b=bioHtzeanPtDHpVLUYW8WkoZX5dkeOw7MKj7xPFfYnJn3JHz1FDugADhBJE0E9+yrWrFVV
-	NV+dMaN3hmev20hBimvFhQbVN8k6ngwFO+ZYkzXeyRy/oqoutWbN4pVJO3q0mKkElNIdmV
-	yWTKBAHuenkrl69JyszwBCsJLh3apEE=
+	t=1782363046;
+	b=i/bBjAuCI1fLlASZ/mx816UdTtrIjekojz7TlTI+5FEHCIZnIZ1sXFdTwvnNCNpD+M7qtV
+	WCjSMp8UeeQweYbZpg8kITgY25Bs81I9d3COC3xGKwOSHrbMEonaCohPSVaNyAbuq8dSCe
+	8kpekPx4bSO9hqwtcHj0dfF7eSndUYM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782362552;
+	s=arc-20220608; t=1782363046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CA0sktO++Ow6VRpzdYwlIlbQ5DKIdcDWBy7MYZV0Fsk=;
-	b=ehLpa8W79vQgc4ZKlCKJBha3okcFMzaQ0boIGXpjPs4umdnuAEG45Qwnz/bnzLuDT6nVq1
-	99SfoqiQPOyOrO9GjklTpses3rbgHxzaoBn2Hb+CQG3s6Zcp6gecovdOnH0h6MA7H2LBpQ
-	4orjjBHJqv5j63XMSSeSegchsvrkgoY=
+	bh=9LT6pHrg3af4k7uTIITLPROZsR12hFEV0K3QASvFYsY=;
+	b=Z532xFLllEPtDxXplwW0tINdLD1xZoTSdezndsj5XauLrEdNmCpsjD6mmLvPfuRHFjm4Qn
+	/cOXljd5GP/rskPldCGi5ro0srSV/CvFNsByp8rq2V8jXYegewJtMip+thD6mfiy8sTVYO
+	0nAuW/ZqsXeqKhJ15j6N5PGP8ItnUIA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="i0hVhT/R";
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=utUUSNLD;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AE1B160018;
-	Thu, 25 Jun 2026 04:42:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E311F000E9;
-	Thu, 25 Jun 2026 04:42:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 457DB4338B;
+	Thu, 25 Jun 2026 04:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B777D1F000E9;
+	Thu, 25 Jun 2026 04:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782362551;
-	bh=CA0sktO++Ow6VRpzdYwlIlbQ5DKIdcDWBy7MYZV0Fsk=;
+	d=linux-foundation.org; s=korg; t=1782363045;
+	bh=9LT6pHrg3af4k7uTIITLPROZsR12hFEV0K3QASvFYsY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=i0hVhT/RTreO4fATKMJB2/9g3pPL6K6+1aKqy1vkjPFkSiV2rIS4DOxlirhKwBBDI
-	 EnLEEivh6FnqU/wcSGx29p0ih0BtsRKhw53f2g67FoZwvCS8Sh9/yti+VoLV52WXLe
-	 niklqSXkacwoAn7Tj6t/L7UF9AlLT5MOqGxGCle4=
-Date: Wed, 24 Jun 2026 21:42:30 -0700
+	b=utUUSNLDHyEwcP1q4AAVrRwCjU0+vKgggmUUitgvb2u1qZsgvDWsmmmCGPCfacpN6
+	 qmFGbnRKptNnbtpGFTO6PfkBK2LQyznW0rd1n0CKPfftiQYBkaohf2asHgJRv6Fu/C
+	 e1ElUQqrAvEnJErEVIT/nULYAp+o6jALFOSChfmw=
+Date: Wed, 24 Jun 2026 21:50:44 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-Message-Id: <20260624214230.4aff522ec8fa4a8f1607c942@linux-foundation.org>
-In-Reply-To: <20260625042853.2752898-1-dev.jain@arm.com>
-References: <20260625042853.2752898-1-dev.jain@arm.com>
+To: Zhen Ni <zhen.ni@easystack.cn>
+Cc: vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 3/4] tools/mm: add page_owner_filter userspace tool
+Message-Id: <20260624215044.1c50c765a240f50fdf49189a@linux-foundation.org>
+In-Reply-To: <20260625043101.338794-4-zhen.ni@easystack.cn>
+References: <20260625043101.338794-1-zhen.ni@easystack.cn>
+	<20260625043101.338794-4-zhen.ni@easystack.cn>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sanzrjr89hr95ygpzsb36xqbqbserzyb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 63D5840002
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782362552-236300
-X-HE-Meta: U2FsdGVkX1/85JOvqC0LLGmglp8Jrmf5Z3d+5ZaiNduejIAYX/5HyrFa2erRVf7oNFf8Gt8BvIEoNOQK8qY6vtkjF7lFbdavpTW+ONFU04cGxh4Y+Xn5n81OT2kZ0VR2Ae+Ka3CrVwWDUbFDq5aCItygvzhs0zzUuWsYu9pTFV1DctuNXKWBQrFTe4oUO+qsJ+5QzRGcW8looGgmA1l2r0GmhbQwUU3pwiTK+QX0AcwGCwh6nYLYcENDhVzGia6X57hhb2eRLPtpAs0pWwnaWBSmrmzJiZ2GyBD+kzhXEel6VjEXaz5Xb/oTxDPCZN3iPof0UiBC3l9XzPpuSYQGkhkKIRjm/al2EYQFayB277aHhY/+i5PHcm+A5cQdjIC8G7hEq1NUdszn2y5M0tPbJJE78ct2FSH01CLHqHGLavY8ufx12mYK8CdRzLEJ/3vbgO8MRbyIdlGgbRySwkfmJGbqEIUIhgC/+bS6ZTDVpo1n7nsaPOoYOxM+WwlwkTWV/xjZqg4c4u7aRXNLFAgHcgoM6TWfT902orwJYhY6a8tPePLKo6Zw5tPG3SuBbN3h1IHmD//2MYruv6Zq3KyRGQ+LnMKpysaz79M7RkfUWFjePesnQ3nIFdu8Kp+OKd/ChBFsoDdfqQPJJV/eZ1K9xdUSF1b/xrZYRTQcucJ++nhp8TkjyfWkdjRcaC0aARtuQ0XTo0WKHYN2MDg3cHG5xegyQS5QQed9jNrHGUPLSl0NDsjvbt4WmzmDNiJIMeYHni87MIspZs/QEsLF/GHJzEFabfJpr3vr+YTLKOjCfLPK+ho+hUA1LK7iQP14OvWT7giYydy7OyW7/FdAutn4RW52hDWM2zBZjb7ZmN+krqElmgbipMx5CP4wA4VHUGsn7phwGlc/Ojy9Py0eLY6aBKD4qTalR/i86dHTbHbgS71QAD09T2E0OdFK3J0KksFMGKzQvACLQjksHEJ71mi
- z9saBNAv
- 2OpaTSw/50BLEzhJb7Lp487ftt2FxJoSbbC66qWsRYpbcHOr4Aq4XEqgIePgnmyF3TQq6QNbdxPYcJiXmL1cPcvXxgtQpUBYh8DwY4JI3PIPGbmBGO2hoi2dG+3tUWWlVDXK6G7cP1Ezjn1eDAY/wD/JAVzF3f16b5xIXgUsmazMPef2NlZG3KXCuQqmwQ6ZsdyhrdSJ/YIysGVTdcrI2x5LBbY8zpiyYO8TAtiZAzQ8UOosfPeQpY3zi3sVXxrWACsPgZVyU8Elz2GNf54gn/tbOeBVXOXhjOaPxq26XqXUAF3Wv+l7F6JoIdD3mhmTclODZcl+1B/fWuOZX8V4Ji+oCD2OjBDxnBRRw
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 77DDD1C000C
+X-Stat-Signature: 7jt15t534dawfckkjhrq3cc9pj1773nf
+X-HE-Tag: 1782363046-392109
+X-HE-Meta: U2FsdGVkX19D7bQhfLXzGE3608Lfi4esjruhx9lOIm15mRgKimk+QwlKGBUWaS6rcXIkhsAjpgdU2VrYOdUuVf1YoeilC2BZTM7xL8OaozDW7mFFLOOgF1WEwYM2nqXaVlh1/FbNx3EGJWr+OhZaf1GZFc0OK2OSIdNPJJBWN53iSX62uNob4oyJ0gqTkavGRGPozk1pUvtLlajkcwFtCIfgq9FeUQhFgbsy0IIOBF2F7G7EXphpGRgBBGne/M+GS4iGXh40vrf4VVQ2XG5wYa9NaPOq/DEYkiHgdukRPdLmLZuf72TFvsZm9csWykI4AC++4o8k9mREtss3oebHKW7kPkXN+il5UqYRpAmOdLLCdfvyOUswcyPT4ZzMVymhJHOTEG3M5LufUuwvjwseOSOtGSQ7ecF+eoq7kpfnW51+qxkBpL7W1+/bRjkf0d4ZfWKqq5cObS89htK2MD0wKWIDlMSIFPc394WH7hvzLkr/6/M/cuX6Q/Zmk6IS7JLlAQgCAci1hr5gszi8sMK30KIYz5zD90kw+SpJqr2Z6rIRyZI/bnJGNBFmeJFEmZB1x67nmHxVSidSJSGrNgtxAMonSwJiS76+PgNpJtnqy+5G0BplGwJnB2eldMay2UgjmX1JHlzCr+hFQk/g6S4mtAr5MEIvguJ/NiBjMwD81A7xwWhIcCcAj2cfXFH1ph+CwjXa3vGRTwQP60FjcvWSgnSYz2PbAAqqtmUSicWroi4jzNRjAk7A9iUz14jRtiojVzQwsCrw71ALxo5NOIkV9LGs5jMWCsDw2lwXB7OqjXCmJmsdbcsEvAhcPa+K1uuiWhSb59i/U1lsiq/WBxKs4Eau+r+7BO7F68l2wfGXN0R1p8UTXPKONr7nRkNiVe1I4s9SklND78VKyqeeRCbFShakH3CvzJ0027qbpkvMg3rCw+a5SdpN+UMrXJKLGkEoMAxj0123U15gT/5IEMb
+ 3iqfZM7W
+ GlsULUGQjrCGzdvrIXYWoM5AA9DzZ5AOdbnti0hhz0Aitlc5hNJYcP8FCywJnZ9bHYYjRMQdSssIIJB7fQTQ3OFO9x/u72w+7pYbGX7idXadWkzyuwX/4iz0qwwhpDVyZuhTs8TDfpldfH6hqqpi+cLgoBGtd3vsFc2tVuyBnsksB9VlSUBgQ7JtRqAy+ENSdW6NHUFqurPxUd/gnYnh0orgzVrgi/GUDWYQiwzuEQWxodGGI7zzRYkGcmLvOrtdk2ZBeaxx65/XPQDlN1Xbcmzy+zgpuOqqUlF4izhm0EpAlK9VtkBtEXdPzpKLfpG1HgyjFmqcp+5uNnRSbT0yfDlFl28A8FoNAbPfBQheuorJMc41dhLFECJCw3KhHY5DYA/bdOMAmTNJq4VA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,38 +91,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026 04:28:51 +0000 Dev Jain <dev.jain@arm.com> wrote:
+On Thu, 25 Jun 2026 12:31:00 +0800 Zhen Ni <zhen.ni@easystack.cn> wrote:
 
-> try_to_unmap_one() handles hugetlb folios when memory failure needs
-> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
-> case page_vma_mapped_walk() returns the hugetlb entry in pvmw.pte, but
-> the code reads it with ptep_get() before decoding the PFN.
-> 
-> That is wrong on architectures where hugetlb entries are not encoded as
-> regular PTEs. On s390, for example, a raw huge RSTE must be converted
-> by huge_ptep_get() before helpers such as pte_pfn() can inspect it. A
-> raw decode can select the wrong subpage, so try_to_unmap_one() can
-> install a hwpoison entry for the wrong PFN.
-> 
-> The userspace-visible result is that a later access to the poisoned
-> hugetlb subpage can miss the expected SIGBUS. With DEBUG_VM, the wrong
-> subpage can also trip the PageHWPoison check.
-> 
-> Use huge_ptep_get() for hugetlb mappings before decoding the PFN.
-> 
-> Before c7ab0d2fdc84, the bug existed in the form of a plain dereference:
-> we would check the head page pfn of the hugetlb with pte_pfn(*pte), and
-> bail out on mismatch. This would mean that the hwpoisoned entry will not
-> get installed.
-> 
-> I am not sure what is the procedure on such kinds of very old bugs - how
-> back should I really go?
+> Add a userspace filtering tool for page_owner that supports per-fd
+> filtering with print_mode and NUMA node filters.
 
-I think 9 years is enough ;)
-
-> There are similar old bugs present, in try_to_migrate_one(), check_pte(),
-> remove_migration_pte(), prot_none_hugetlb_entry().
-
-Why now?  Was there some more recent (s390?) change which exposed this?
+Could this functionality have been built into page_owner_sort.c, or
+does that not make any sense?
 
 
