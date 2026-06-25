@@ -4,91 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17384CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 16:56:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB158CDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 17:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C9B886B0095; Thu, 25 Jun 2026 12:56:08 -0400 (EDT)
+	id 14CA86B00BF; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C73296B0098; Thu, 25 Jun 2026 12:56:08 -0400 (EDT)
+	id 1248C6B00C0; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB04C6B0099; Thu, 25 Jun 2026 12:56:08 -0400 (EDT)
+	id 061FC6B00C1; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 989476B0095
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:56:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D7F61A016A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:56:08 +0000 (UTC)
-X-FDA: 84919037616.10.BC3DC56
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 57BD6140008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:56:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hVaBQJKf;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5F976B00BF
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:45:38 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F5161C144D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:45:38 +0000 (UTC)
+X-FDA: 84919162356.06.4DD97D9
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 5B621C000C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:45:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pLYYOBoI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782406566;
-	b=0O0iNbfHtc2IG/xgHSU2TefOIfM5Ej2VhIv4mjpQhiApSUts41QhMGwbYcc7N4VPPzMOch
-	kHLSoyWgM6JPORgQs3SHpK3kQsdSHV1ZZGRp38QJyB/GDJfvnVDAqmiTYZNLOgcke9sStW
-	YPotM0kQ+zo7Bg9rljArXF+KYw6cCns=
+	t=1782409536;
+	b=OAz1dYKfNz00fBZ9z1jZT32yf487Xf4la2mX0pKrB3Mrm8+Tkrq40/m3AWq9iyRMC2qOKy
+	kHH39T/0eCMOKeuAgiYbsq0vqDOId5b8x8XukMADOIgI0bR2XF6wBCmAt74Gp1We/0NmNN
+	oxpY0QZ5n4OX27bCCxqEwnUWTX4KCZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782406566;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782409536;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ca3thQgy3hkYQeLMahjSUA8d4XyPM8+MNN/hTNDelBk=;
-	b=bQJcu9jY2E6oxdPQrUe/ABwvzB7007hgp5hgm80cNeHgB2ckxH6zZVokZVhakaTA2RQQQk
-	ZhsGPpnWeTPs3rIz/g6wjJJNZRWLJGjV9XEtJCyW1TYhelbD9f/pJPvdBjNz6b/W5nluz5
-	tlvZmbszBNyXLgFLA3OgCgXDaN1cFEg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=MPa4NfxGFlsR/0ze8KtpPD8L+IgNM7huYMx2u1xMPgU=;
+	b=fpXmwn7BOg6jZsl/IMThKDt8A4E92n56UYILQmIQKPbXg4K/Vrbtk8CpGx4iYONG+0RLY+
+	ZOZscyiBVNGwKgDpZyui+PxYIDCV+Wj80As9cNSyKwXqJ4+9CFmYly0aERJ9Sa8zc/eX6v
+	l3PtOUCf+bU4eCPY/ePWMSQsIBwLTxo=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hVaBQJKf;
-	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ca3thQgy3hkYQeLMahjSUA8d4XyPM8+MNN/hTNDelBk=; b=hVaBQJKfhBl/asUbbRxclaQcT/
-	wPXd8ws3uSTEzHX/PKkWmbtT8yC1vBqPDnVZThLpb7+CWq3VEnyHoiyg+pWV+zcp3UELv7gBr1iny
-	U9VBrDo3Yku5X/qwFlELKVh1aUZElPPSkZgqCypuy2xnZhi6ddw8xq8Buebbfpi6/rzzQ0Ew9gLKW
-	4+7NCfnEhQLePPXw3nZAZtD2f4EDwEWqrfhyfwOhq5078rufRFgcDlW8FBudwKUmXb09daQFW7PHW
-	CbY3rMNm8I3lJ0469fvXAD0iBb23kxEaQfvxWC2L86Nf+oFVQ1B3ztA4RLmUZyah8xOXegCUR2Jly
-	fV55qiWQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.4 #2 (Red Hat Linux))
-	id 1wcnMk-00000003JNf-0vcA;
-	Thu, 25 Jun 2026 16:55:50 +0000
-Date: Thu, 25 Jun 2026 17:55:50 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Xin Zhao <jackzxcui1989@163.com>
-Cc: brauner@kernel.org, alex.aring@gmail.com, allen.lkml@gmail.com,
-	arnd@arndb.de, chuck.lever@oracle.com, david@kernel.org,
-	ebiederm@xmission.com, j.granados@samsung.com, jack@suse.cz,
-	jlayton@kernel.org, keescook@chromium.org,
-	linux-arch@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
-	mcgrof@kernel.org, mjguzik@gmail.com, pfalcato@suse.de,
-	rppt@kernel.org
-Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for
- pre-exit before dumping
-Message-ID: <20260625165550.GN2636677@ZenIV>
-References: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
- <20260625085018.989584-1-jackzxcui1989@163.com>
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pLYYOBoI;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782409534;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MPa4NfxGFlsR/0ze8KtpPD8L+IgNM7huYMx2u1xMPgU=;
+	b=pLYYOBoIfpAzpj66uxyzMUCl4zexcFVuEE8EPPEsRUbC48gpPtU5iZmzrkbZu0uKIGFWc5
+	qiskz2Avy0pJ+Jek7fLQxhZlUyV0AciVXkbjCAj+ahVWn8Wlj9WQrDHgm5ctbPxFCYyGJE
+	UG35hAFKXIXFQfLepY6g34sFFtBgtRQ=
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH] docs: pagemap: fix flags location, member name and sample code
+Date: Fri, 26 Jun 2026 01:44:47 +0800
+Message-ID: <20260625174447.24292-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625085018.989584-1-jackzxcui1989@163.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5B621C000C
 X-Rspam-User: 
-X-Stat-Signature: hyq59q3oi679kf3pbkqhpeccsb7qdk1b
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 57BD6140008
-X-HE-Tag: 1782406566-112331
-X-HE-Meta: U2FsdGVkX18whJhFr+7enBAykYcje5TvRp+voKVHhYD/EQOWkxQpHJyhyPNxIBpxqHm7gPEfY1b0lMbH76Ol+6A1ooJ8HwSPH2XdEnHVe3lLFAySj8vRUeOJGRqF5cucvXisysThwY7hsrOBU8tqs3ekjXe4YYZGOvLnXOLCbJrgjiNWNJS39/eKZNFSDljhlZMSm63Ec7pawcJTsz/T+sE7NRSiv/MVj84Oq6u98Eun+UPvFtQXht4IN/JY1Q49UbXr471mBCXnq2NZnsX7T4EDDJiiXA1aCBp4ijXt5p02sF+XUJ1zMicYETNhHtAM2RKLYjh27hgQ/tqSefPVNb4tyhz7r9gi3v/rc/YoU4fFKh5DmcxlMSHlg4otAjQowmriMpRE5PSN29wy7l83KcF48KrLCa4RdT0FT95IuPtBlCUq9k7M/jVdV0HfU78bZqVU/YI9bW4zldifi/Zb262I+rO3luCnUgabQea+E9TnLGsMLk0cYZmZ53cG4+m5hRuy1wG9lVPWEx49o9Y+qvuvDZWdayMSC3Jwl0G1gKqSnydmCFj1lPvHGaWzERUA9UI97WId5/kYMUcP2HqW1J/BSHYVvNa4gpnIyIQGJ9R7JEu8c5sAcFXuaOIqoRemQ/7HaY5qBxWQiZCRJyRmnAiq/TbMvIiE8p1zu15v/TWv0MtE1FkittCJaWSF0GEkBdA+hq8zqlvLLR38qouy2kw1n2qF6fc+lG7biMVWvqtiFrzdDZFtUeJK6rtytYcPAMEq0yl+gh/RSCznqhrcLN6pPrZQrUpYXxsXEfzIDI7sGrLAVbJZ84u1SqgpiDFj0F1E5W2Dm7tg3AUV38PwYcV09Kyh245riy2DtFBI86TRSOp4Y3t4UJupsUqcrMoqdUciCRtNuwmqgtbNDW4DRO7zjlAd3zjEz6GUaOIkqT4v78xPrq3egyjVwoTfjQLYxIYpSxgb6grnjRSl5xQ
- ItvOgnhw
- mKGXysaQUJ6d5gMkdagKRCciHznLzReU6PDng1f9qAnAaLJgm28I+MihxM3q9UvRhItpmfLL8ksj319FP9awkgkGop7tHYLULao7YjW7Ku6dR0+QObIy84vLaeP6R69R7Qi1oN83VmqYWOMaCz6kAYQKhYbf+bRhs/VRVHWDjthtzxHFj57fNODCheRawDey/I7nDkjbOuSprVjlchbcZZMvqqk030ZhbWgoUetFq/9cYwopkP3vnIyQ432HJghiVOfkqyAg/n2jqc+sFJ4iwZ1DYdqGjKPD1Xh3JvAIW+w2dP34PjGsYzvV6x3Xsb9TeRHU+5g89ZGlx7o8jKKB4FAmeZy5cbP6EnLZdmPRHKJLK6PgduiLDtf+g9fvR3DEa49Ss43AWH8PCVDRfEkPFDVOmVUVSSEKamLmlruDqvIqxU6aVIVKp1M2DSRoVxp8WI4IVH5qOiD1RUarZAtZEO8R7oVpY57HUUgqRhg9xsgchX9JWvneMruc0iLHNgayw0iFuPKcMx4sqyfBpMYN/YCULK02lKxt8Lj60lCXQbtUAoPba952kryx1ICNQWQWe4eTfLMPr31NV+DSyV7BrGIWMCQ==
+X-Stat-Signature: msh7u3upykcqyq3uuza587ejfdc3mwa3
+X-HE-Tag: 1782409536-950893
+X-HE-Meta: U2FsdGVkX1+GPGs7a9kaI7WFMr0FCeY0soIb9T+LLnNxBT6gPrT54AkIf9hCU/HmqWjcjQr9LT9tvsEt8hycqfVXTeje24FlIaCOiXbuxkY60syHXmwR8ZJ4/5LaVwbrqVpkvizilzyHJ5RZt4d4yaWUij/rgC6Li/mrLWBugF3apuHpMl88ojJtDU/Dj0+erraFJqFg6ImDYLMujzTNQ4e8R00Xyiq0RHxih3poiK5FUuYCSkgYQOzCPyPwIAKNZExj2cQatVjtrBrsVSW640SCrhzwalt49tlBfWSFkUWiiCagYZTq6bb3lPkN4x7+B2X0gIrpZKSQXBN2O7htB7eTyP0th35vZGZpHOwhUYQpeYUDbQGu+/E4MEZa5c1RwhjyBBw5Pv0oggbYLv1Lk+AXNxxEZ48M562pU80DUh1wzu7tvYpmTzm7sjj0OR9w1HCFQm/o8ZIktBjsddE+PzEWNEXccnOFcGDG0mgSHHf32s7quCjrCzHX6wUAWeHzXkQ33n/Bq6Gd6nAWkzOQoC7m1Qe9n4XT+BCDznEw8uE+fpVqnaI36UiTNWg3sAIPZhXRE0KX7c2TrtNQkQkqCdjo7cp903BCTni77XtikpT3OQ5ZF6fDU0VOolNF/qD6BbUiWE5q+XgNgCQ2oJOXDekiwhKN203szrErILQEQC4wuc6skcNduhgJsaVrh9fEWD4Xpa1wiyuipvDhVrofN8QdinUWiEsLw3czY9M7GWV4lIa5P19wMnu5WDjCt1JG7dAS5oT4ljvRjNBOVFo10zj/Q9H1FuYipLUvIDqivK+zQsfwCTn6J+IQqYuApIgcUwyJTKw8iPK081S8jxcURQKdlsmu4hg9ich+EVLeAwmP0mEZ0AzUfdaUF4x+t2q7rNeR9B4NhTxAcJpcL9tVy2ARJne13e7/HfhzAT6VIthYcvFpsos28ub1VAmbVCMbBbpuwako7egaZdZPdQr
+ t5v8N0ay
+ rCe9AY+xKyJ3aOSEsOzGm2l3uxiHAIIRPffRLJ3bed9JTzb2GAHHyU2Q6++c3VQ6WyU/ieb9vhvWrgYPqY1XIxFmJGUMf/Nt5ql9s7/tV1R2+Q0rZGiD/Ed/uz+XaC1Vq6h9Hn7q9rPQPs/+K0myCnn3KGOJREN9xGwsVJJafFiJUSwEPZ9Sj7wjaoK5q2Y02WyPFjWLer+Hup1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,22 +94,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 04:50:18PM +0800, Xin Zhao wrote:
-> > [Severity: Medium]
-> > Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
-> > of file->f_flags risks losing concurrent fcntl() updates since it doesn't
-> > hold file->f_lock.
-> > 
-> > Also, if a file has duplicated file descriptors (e.g., via dup()), will
-> > clearing O_TMPCLOS here prematurely skip the closure of the remaining
-> > descriptors? When encountering the duplicated descriptor later, the flag
-> > will already be cleared, leaving the shared file actively referenced.
-> 
-> Currently, this flag will only be used by the logic we added, so I believe
-> there won't be any issues.
+The userland visible page flags (KPF_*) were initially moved to
+include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
+stable page flags"), and later moved to
+include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
+(Scripted) Disintegrate include/linux"). Upadte the doc to reflect the
+current location of these flags.
 
-What makes you (or whatever LLM you happen to use) think that file is referenced
-only by descriptor table of the coredumping process?  Or that only one coredumping
-process exists at any time, for that matter - and each might hold references to
-the same struct file.
+The member @walk_end of struct pm_scan_arg {} was wrongly written as
+"end_walk".
+
+The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
+PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
+The second one missed PAGE_IS_FILE in the required mask.
+
+Fix them all together.
+
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+---
+ Documentation/admin-guide/mm/pagemap.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
+index c57e61b5d8aa..12ac97d9d277 100644
+--- a/Documentation/admin-guide/mm/pagemap.rst
++++ b/Documentation/admin-guide/mm/pagemap.rst
+@@ -67,7 +67,7 @@ number of times a page is mapped.
+  * ``/proc/kpageflags``.  This file contains a 64-bit set of flags for each
+    page, indexed by PFN.
+ 
+-   The flags are (from ``fs/proc/page.c``, above kpageflags_read):
++   The flags are (from ``include/uapi/linux/kernel-page-flags.h``):
+ 
+     0. LOCKED
+     1. ERROR
+@@ -264,7 +264,7 @@ The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
+     provided or not.
+  3. The range is specified through ``start`` and ``end``.
+  4. The walk can abort before visiting the complete range such as the user buffer
+-    can get full etc. The walk ending address is specified in``end_walk``.
++    can get full etc. The walk ending address is specified in ``walk_end``.
+  5. The output buffer of ``struct page_region`` array and size is specified in
+     ``vec`` and ``vec_len``.
+  6. The optional maximum requested pages are specified in the ``max_pages``.
+@@ -275,7 +275,7 @@ Find pages which have been written and WP them as well::
+ 
+    struct pm_scan_arg arg = {
+    .size = sizeof(arg),
+-   .flags = PM_SCAN_CHECK_WPASYNC | PM_SCAN_CHECK_WPASYNC,
++   .flags = PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+    ..
+    .category_mask = PAGE_IS_WRITTEN,
+    .return_mask = PAGE_IS_WRITTEN,
+@@ -288,7 +288,7 @@ present or huge::
+    .size = sizeof(arg),
+    .flags = 0,
+    ..
+-   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED,
++   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE | PAGE_IS_SWAPPED,
+    .category_inverted = PAGE_IS_SWAPPED,
+    .category_anyof_mask = PAGE_IS_PRESENT | PAGE_IS_HUGE,
+    .return_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED |
+-- 
+2.53.0
+
 
