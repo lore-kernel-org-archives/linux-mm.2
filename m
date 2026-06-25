@@ -4,103 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9525CCDE006
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDECFCDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:53:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6055E6B008A; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
+	id AC5276B0092; Thu, 25 Jun 2026 04:53:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DD236B0092; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
+	id A77106B0093; Thu, 25 Jun 2026 04:53:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5195D6B0093; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
+	id 940E66B0095; Thu, 25 Jun 2026 04:53:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 228C66B008A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BC848FDAB
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:59 +0000 (UTC)
-X-FDA: 84917815038.22.3559609
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 676386B0092
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:53:07 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CD0CB1A05E9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:53:06 +0000 (UTC)
+X-FDA: 84917820372.26.1BA9906
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D6107C0009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mit2xoCJ;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 194DC8000A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:53:04 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny3+96Q8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782377457;
-	b=nnBj9t+T3ML27acMtYzl0Jnwr+hm/EmfagyRsZ/wdBVBshZLWzIXy1qF/esd7RqQ3PJvIR
-	rXmrDBo+CJahMdDCkhBWCmrTDzqtPXYLBuzp1ioe21TCU6GqRvexe3jG/VfMMFl3jpkMs7
-	SoT4o7UfwISnihuAMtVPbs4LBZVeuXw=
+	t=1782377585;
+	b=JVSnNGujdQHZ8dL7VLZ9s9OFY+9xrbarv4zZWp8MJuClqVZCkr5Rw/8yVIaEAwg5kI1sCy
+	+TsOznKLp3l2NUEhZBKEa1ZDwNgSRumAgdy4SsOg0J3fpXlRTSS60bMzbZwgVKiCBUv9W+
+	71U8uQiL/jw3/HBervQ+8ZXyVmt8R+4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782377457;
+	s=arc-20220608; t=1782377585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2OPM2QsERty8ncczG0J+oScu2vAmciLsKe1D4GkLBlw=;
-	b=q1XGIn7dvaeNgBwsTJ61VD3EvAK3FSyuFEiL6HHwIIoSKBaS+FjhiQ9YBSC92Qfcrvk1vi
-	JGf4XQKZrrjJn4NNl09eicqluZMaFmyEI72xPaXH8BJ/V7f0uXuUAA1ZE0zoQFqqDzzSH7
-	IrILMuYyl22fj3FobkdvnUqWd/9vbwM=
+	bh=MLx3IBHsPMEa3ayTkaqgtzXNiSbpIZDnD6UXI7qOc/Q=;
+	b=nKsLWXw57YMyJY0gKpQr68fJrpkkgNuCOfJ470Twm9XkaDFNHIZa6AKwaO14sTbq+xSGfF
+	GfaXHpEuZDIkpMDHtH6143BbXcx0iV+Gt99HScvN3qD38t7qNvO/vGh2IA5r8opVoYZr5J
+	ajA3uoLi99VxamK4khOCf1PVh0qIC18=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mit2xoCJ;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ny3+96Q8;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D8AA60217;
-	Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD931F00A3A;
-	Thu, 25 Jun 2026 08:50:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 93E4360217;
+	Thu, 25 Jun 2026 08:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D2E1F000E9;
+	Thu, 25 Jun 2026 08:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782377457;
-	bh=2OPM2QsERty8ncczG0J+oScu2vAmciLsKe1D4GkLBlw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=Mit2xoCJBPEjBNx0LAYKxG3Cj3APh7/SkQ5Ko2v0NtcvZNcFPqpYoQiAvNwsLX1tJ
-	 U4Jn66pXvAalZ5osrav9nyxvrhb19PCq5cEWHWKt1VkLezWyVh+RKC7P0R6Xx5KY5X
-	 hdlsN6mDxbF8Ice+x5WO7sgORA5SEFX5gzDrGBBiOyqplfaogfRLMOcZwwWWRdenwH
-	 q4iq+BpK5UyGIAfO5gUXEUnGUqDVDAEZUAjiTrJX/W8ahqugi9vBKJUe/wYnsWtXr0
-	 vfbIK6qTPpk9/tJY05vcccFsN1HiQMHZzc0uy0VckYBNpOOd3YJzAa9OXd0BQdxyPT
-	 2U/RCre0IQP4g==
+	s=k20260515; t=1782377584;
+	bh=MLx3IBHsPMEa3ayTkaqgtzXNiSbpIZDnD6UXI7qOc/Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ny3+96Q84XPcCILi6zX0gD+uw6+B2onPQCRtSd94xIALW4x+1pz1jAXGYuSpe5uRU
+	 kT8K3wa/nBCOVwLhPm2PE1QnbPsgxN2yDKIs2SbjQyS/CmbY2mHJeAXUydlf6HQrd9
+	 tv8YQTwsFAp9YegUovy+L8nuAPBey+FEiM8kxUGn7Rud32dQy3bxGX95ZJ7j8dY0Sf
+	 9058YtrCPLgvYbYb/gUnkq01D8rGket2i1b8du1tCtfOFR4uwlyRY4k4FP4s66O0Cx
+	 CttFwV8o8o6MOBWjypnoXMdXyPtx+W3BQNgnK7MU4nwNfvfpZEEeiXEqxNZKwzNbwB
+	 NT9iz09mRBrVA==
+Message-ID: <4f43c837-0f9a-4302-a3d7-f252d84ea390@kernel.org>
+Date: Thu, 25 Jun 2026 10:52:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
-From: Christian Brauner <brauner@kernel.org>
-To: John Ericson <mail@johnericson.me>
-Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>, 
- Al Viro <viro@zeniv.linux.org.uk>, shuah@kernel.org, 
- linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
- linux-mm <linux-mm@kvack.org>, 
- linux-kselftest <linux-kselftest@vger.kernel.org>, 
- LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
-References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
- <sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
- <CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
- <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
-Date: Thu, 25 Jun 2026 10:50:52 +0200
-Message-Id: <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
-X-Mailer: b4 0.16-dev-d9d01
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6562; i=brauner@kernel.org;
- h=from:subject:message-id; bh=YWjLajG3jUSlfnNHIHqvQH7npOW2FoDppQt4WSwGrdY=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTZvH4nE7tbujU0/s/WsOh44XiL7RvXiPQUNz/+taiyQ
- fEY95kFHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5JsDI0NwWeqnwedgvs+Nf
- NPVn5cp2q1b41m/SMf/y3mmPSf0FU4b/iYxZEdvvRB0RLM7ZqLxfvfPybl4Oya6D7IEKjqvPfdj
- ODwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory: refactor finish_fault
+To: Sarthak Sharma <sarthak.sharma@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R . Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Dev Jain <dev.jain@arm.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260624102047.144543-1-sarthak.sharma@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260624102047.144543-1-sarthak.sharma@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 194DC8000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D6107C0009
-X-Stat-Signature: y5fg74uygk6a8ymq71fq9k8obkfwo3ic
-X-HE-Tag: 1782377457-445077
-X-HE-Meta: U2FsdGVkX19Qdhs/BRF76VnWE7SG6soCJHt/me02hGQpdnVAp94tvCMjiKERmu0DOa1mWGw9MEy8N2HZ7tJaNNJO8auroX0E+DnNSOEU821/oGTS6qM5/AtLcbdn//Rh7xOqjbUKJ65ed7nJtLgpfv6IqVPcO2Pv3xJUrT6PTlJtvs61lZyy9IOjTnsAfYDN4+8AxwT/jU9FIgO/5FCzWIATr9+JaXyBsO2VS93ssYh1OkKvKDKVL5GqZHvRFZI0SLiHGAhm4AdQKiWdxJa26CNH3reW2VQJFCqimaaMDsfBkGb7wgP6dYwm2czOsu+sTVEY/6kxalubM/vK6Sial74sEoK2lwYlu1yvZGZhq0Sd1dT/lqng4WyMksewiTWwhwyGOZH6Bgy5N9d4guma0gCVFqfBsLtUdMQsEIBbNHZbf57MGqQVPscaZ5UEXJK5tgIIia7/+nG9EQu63cAAJk7zLjQsUQEQICTnq18z2JzyAb6q6TWJMkqFFUCS9m295ZqzyAOrYQjfCqgaO+GTpIzBGJHxG4cvnbm9gD7fF84Sty4/4J/MN3sOeAviuIN3d6trNgXVTQZpepd9wex30EHqnTMe3T1n5g68ZZMbtXGwczPXto/3FSkx8tA+nALX3WLt6m4x4VHJQcsosdjhFE8gkjMKM3Fk1HcDJcE5qjrEpwsuqVDmzZIxjKm+U64yZSPFHVnbxSkArZyakbfkPS9RC8PLG54yCCRhj3NaYilWciVdrV++bFoBxu2r3ZkAU9pY2gFVvCdTN6GH6BG7P+UpdSgm8nRKirCPN7LYmF0yet7l3ueHdwW/yZ8LmEXGMIMVZ19div7f+Yij9T3Sx/gb4WBdU/vYlRxi1BV5nAzOQZvnYO9KWx77nFS54n/4HLysf0cn/5egvPXtAVsBrZOaEodMbUIj3Xi9EURjCI66zSLQdZNfp/s9GiLOsQ20GkmaVi+uS6h2SxmR2O0
- fosCUQ0t
- PXGDmwp/SM33mCAtA4xSqDfpA1JPiNqycHyNV62nN6eUATAyOtqk4CA98d3bkkuiUpbszdzbXPfjAQc/oEZkgHDpGh5NlK4fq1i3ZLdlsrRx2pFVWMCP5a7/dCOK//eVwhlUXikSnSx+4AfhWsbpzE3M1yxEfMOK9gX9sAWPPdLoPERKvNppuQcwvoB8AsiCOztZnYs/Cy4L87OyScFpjZLuvohp9TS/LLp3+bFNqjN7XWWrVeGkLia+cqHUaTxzjNspyONousLClygKSlxhcDrfdPFaFZn+VJpxg/gMEoXRIZjLsbBAfEYYdLp060lMwvJXEoK1Xd9B1l3xFQPru2mFfe5V/HOvC+kgb6CQW7wfsDUm2qRC27p11FH1++EmIfqcQffcOy6NA6iHgb3Be08JZdiUu1PcaPYL3Go09xlLY6dHqf/szqabik1qLgOdJId9zzjI/ZWeTZSi8XyPfNVwEz/KIGbvQTKr2rVEYHVojfXhPbuTEfdbYrirU2PiU8ubVUMHgeij/GVU=
+X-Stat-Signature: 3m4ongw1yuqgsgy34iygcp5pasc9yjtd
+X-HE-Tag: 1782377584-228466
+X-HE-Meta: U2FsdGVkX1+i+Ot2gbSI2sKoRkc0jgcJ7Zgi+51I6TCAlxV12fLDChHG1p4PfSbPR3iAEvnNCv6epkQwtoMdHfTx5kOItdA+YTvl5ugnx5biX7stDcG6nfzOQbbatpFPPTr9pbVwQizSNvX+Qf5+OgE9c4pWQk06PWIRMarogfz5JWqHiX9l6Dca8GA9HEkKX8jaKd8FObAHS0mlw5PLMoubdhdO+1jcMHmvIQgSThs8hlkRbC6uWbp801ULYLpKHZq/D/3/c0MH5C29NojrHmIJX6ET4yFSeyui+zVUUDpblcxXOIVQiqnpRjAa9YD236b4xHbS4/qasVpjMWWWB5XEhWsR8S+zr8gsXAHXni2iyaOMqFsSfDFpeHmaG3O5gADuejVpM0IcM1If5YB1me3NsLxyuvAPVIhR8P4Uagmr116yuyaHID7E32qstfQ86IsgS9bx4b6vsm+D6FZX/61Y5Dmc5VzCf5rFpwZDJncz/nW72Xru86+okT7bCw6wEB6Vs/R2+79LE3Q4aq37cpZRj4ftmr7y8Ut7GPt20vR8mvDK2AxCWsgKS8lznDoZJLNK4a1E00wh67CBV9mr46+DXyaNhOmLbiaci4b8BcvFLPgOLaBQMmDo0jgQSS60OSYMimuciUANaOytPDJwW9HEYNH3Wy5QB4KjFBS5F8pz6ZRpzPavz9bb4couu4eb+fggz9KpLqGsWu2Zq/qFKc0wnSuaac4ghKEWkocuX9VixklH/UOZUPxYy3G6sz2MaB3fV3NgS3CyzI15+NI0GT6bSYHBk64nVurbf9ZIgkuzdzNXXT7MhfVTRwBOQJc8V1evJ76UUUr4SsbenXf86qg9BmuDa3Z8a6/QIFE3sMnIArV+9LOZ6rPGI2jw4j9VTzL5LH5BZ9+tFiGnOxB54wpmJ2uwhR6muGZKWr+QNwNXUeppAjVf1zVmyfk8VBcsUsUsyNhRhh35nol/txr
+ ylRf/BvS
+ Rggz425gqXxAET5I+JxQ+QRIqi++z9YCbJCc9dkmu5g13kVetVv5xb/4fN8kdgBkwiNlzcIdlvsE7svn9eifB3CLLs6+3Q7vk8YgmbGYM3krG/lJsxPa7IkxWxqe/Q4pk92aGP5LwhgGDHNKBSgT3MH7ewB/e9ZByj4mL32fDzJiYHf63vZ3crTdAipkwZbxz9cipRLtYyJVPLIyTfXrqMN+aXZVVEsqp/deBHAlTSoP4iHVBLa1PBtgZGnRxHiXb9qka5l2J3i3QsycFobf9IpAVdsLEtEjUElUz2TgGVjeP+0rBnnt4OZotIu+OJhTNnR2Q3NKZCAZOPCX4XMLeXRaSHkUDRk6isvA6RZL8TSb8owJivo4BlDrS6/IkdNjGb1WR3BC5MIudWlA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,137 +141,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-22 17:08:55-04:00, John Ericson wrote:
-> Hi, I am another Nix developer, and have participated in some LKML
-> discussions in the (recent and distant) past, and thought I should weigh
-> in here too.
+On 6/24/26 12:20, Sarthak Sharma wrote:
+> finish_fault() currently has a goto fallback implementation
+> where we try to map a large folio with PTEs. If that cannot be
+> installed, we goto fallback and go through the fallback mapping
+> path again. This looks weird and is tough to comprehend.
 > 
-> On Mon, Jun 22, 2026, at 1:15 PM, Farid Zakaria wrote:
+> Remove the goto fallback implementation and try to map the
+> whole folio if allowed. If the whole folio cannot be mapped,
+> fall back to single page mapping without repeating the whole
+> function.
 > 
-> > On Mon, Jun 22, 2026 at 3:40 AM Jan Kara <jack@suse.cz> wrote:
-> >
-> > Having put forward the patch, I'm clearly biased toward thinking this
-> > support should exist in the kernel.
-> > If I had to think to strengthen my argument would be that the kernel
-> > should not be imposing how the interpreter is found on userland.
-> > Finding the interpreter relative to the binary would be useful for
-> > package deployment scenarios similar to app-bundles beyond systems
-> > like Nix -- which is the originating reason why $ORIGIN exists in the
-> > dynamic linker.
+> The cleanup of finish_fault() was suggested by David in [1].
 > 
-> Yes, the idea of making "relocatable software" is not a new one, and
-> indeed it is why `$ORIGIN` is supported in the RPATH etc. in the first
-> place.
+> [1] https://lore.kernel.org/all/3684c55a-6581-4731-b94a-19526f455a1e@kernel.org/
 > 
-> Most of the programming model for writing relocatable software is fixed
-> at this point. For example, /proc/self/exe made it much easier to look
-> up arbitrary stuff relevant to the current executable. It is just some
-> initial entry point stuff (the ELF interpreter, and shebangs) which is a
-> glaring exception. Those should support `$ORIGIN` too. There is no good
-> technical justification (that I can think of) for some but not all of
-> these supporting `$ORIGIN` --- either it makes sense everywhere, or it
-> makes sense nowhere.
-> 
-> (I suspect the only reason it didn't happen was pure inertia/Conway's
-> law --- easier for whoever was excited about `$ORIGIN` to change the
-> glibc loader than the kernel.)
-> 
-> > To me, the gap is that prior to systems like Nix, the idea of wanting
-> > your dynamic linker to be part of your app bundle was not necessary
-> > but Nix models the dependency chain down to the loader. Such
-> > functionality would be even more correct for these other bundled
-> > solutions as well, making them portable across userspace glibc
-> > versions for instance.
-> 
-> Yes, exactly. Traditionally people thought "eh `/lib/ld-linux.so.*`
-> doesn't change too much", and decided relocatable software that
-> nonetheless hard-coded that absolute path to an unknown system-provided
-> ELF interpreter was good enough. (Or if they weren't good enough, they
-> went with static linking, but that imposes other costs.)
-> 
-> Now there do exist purely-user-space work-arounds, like
-> https://github.com/Mic92/wrap-buddy, but they are quite complex, and
-> involve various patching trickery that is likely to scare a lot of
-> security analysis tools. A kernel-based solution that allows clean
-> declarative expression of intent with `$ORIGIN` is much more elegant.
-> 
-> > > In particular the
-> 
-> I think it is good to see what Conda does as documented in
-> <https://docs.conda.io/projects/conda-build/en/stable/resources/make-relocatable.html>
-> and consider why relying on namespaces vs good old-fashioned relocatable
-> isn't good enough for them either.
-> 
-> (I don't doubt that Conda would find this approach more robust than
-> their sedding tricks, and prefer to use it where possible.)
-> 
-> The short answer is while all of us in the build system space love
-> sandboxing during the build, we don't want that to lead to *requiring*
-> run time sandboxing of the built artifacts. For example, we can
-> certainly arrange sandboxing so `/lib/ld-linux.so.*` is the one that
-> some executable expects now, but every time that executable is run, it
-> *must* be run in a root filesystem where `/lib/ld-linux.so.*` is the
-> loader it expects.
-> 
-> If you have multiple programs that (for whatever reasons) expect
-> multiple different loaders, all spawning one another, it would
-> potentially incur quite the development cost to ensure that they all do
-> the proper unsharing to make everything work.
-> 
-> Relocatability recognizes that whether or not namespaces exist, in an
-> "open world" scenario where we don't know how the software we are
-> writing will be combined with other software for deployment downstream
-> in different ways, it is easiest to adopt an idiom where different
-> things can be placed at different absolute paths, at the user's
-> discretion, and so conflicts are always avoidable.
-> 
-> > > Anyway I'm pretty sure Christian will have more educated answer than me but
-> 
-> Waiting makes sense, I am curious too what he will have to say.
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
+> ---
+> Tested this patch by running mm selftests on baseline and patched 7.1
+> kernels. No regressions were observed.
 
-The arguments I have heard from various people so far are:
+This goes into the right direction, but I think we can do better.
 
-(1) Userspace would be able to clone a random chroot to /woot and run a
-    binary from it without having to set up a complicated sandbox
-    effectively making dynamically linked binaries more like static
-    binaries in a sense.
+For example, we know that we always have to fallback to a single PTE with
+userfaultfd (incl. not mapping a PMD-sized folio by PMDs).
 
-(2) Quote:
-    "If you debootstrap/dnf a chroot to some location in your
-    home dir and try to run a binary from it, that it tries to load the
-    libraries from your /usr is a pretty unintuitive and not at all
-    useful behavior."
+Let me find some time to play with this myself.
 
-(3) Quote:
-    "[Various remote execution things run in locked down containers that
-    disable userns, which makes the sandbox impossible and hence our
-    builds wouldn't work there."
+-- 
+Cheers,
 
-I'm discounting "Oh, userspace already allows this so why not the
-kernel.". I think that's generally a bad argument. Kernel and userspace
-aren't really alike in that regard.
-
-The userspace ORIGIN concept is guarded behind AT_SECURE. The kernel has
-to enforce the same rule. That means the loader now depends on the type
-of binary. I think this is a rather serious issue.
-
-First, it creates confusion in userspace what loader is used. Second, it
-means anything that any build/chroot that uses AT_SECURE binaries now
-has to use the sandboxing solution anyway or risk that some binaries use
-the system loader and others the chroot loader.
-
-Ignoring AT_SECURE, LSMs likely will need a say in whether that ORIGIN
-thing gets honored or not introducing yet another vector where this can
-be overriden or ignored.
-
-Also, we change long-standing kernel behavior which will be very
-surprising for any userspace that might implicitly rely on the fact that
-the system loader is used. So even if we were to do something like this
-it would very likely have to be configurable in some way.
-
-This makes this all ripe for malicious loader injection attacks. And we
-need to consider this possibility.
-
-So I'm not enthusiastic about this. I want this to be consistent.
-
+David
 
