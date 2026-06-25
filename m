@@ -4,84 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EBC4CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599E9CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:54:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 381476B00FB; Thu, 25 Jun 2026 03:50:07 -0400 (EDT)
+	id 33C7E6B00FC; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3588E6B00FC; Thu, 25 Jun 2026 03:50:07 -0400 (EDT)
+	id 313AC6B00FE; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2495E6B00FD; Thu, 25 Jun 2026 03:50:07 -0400 (EDT)
+	id 22C5E6B00FF; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4C36B00FB
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:50:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 67D151C32DE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:50:06 +0000 (UTC)
-X-FDA: 84917661612.12.D195291
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A2939100003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:50:04 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SG1WT17A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id EAA9E6B00FC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:54:27 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E24E1C33BE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:54:27 +0000 (UTC)
+X-FDA: 84917672574.25.A6FF698
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9A7D120006
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:54:25 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzCdDwJa;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782373804;
-	b=5+w1xFoUPu0+8O11JiRmi0DRcNuwyJRCes6SiA8sZo/bS/ss3FLDtge27AMXUG1fDrg0gC
-	sypkRk4K2rsA12RdKzEZ3+6VAnwpRdnr3cpJ/QL3dYLs4vh75inEBGudscNmYiMJTqPZK5
-	TpftbuWpxNcQpahs4bVHoz+xYi5cS6s=
+	t=1782374065;
+	b=NkDpxjWkWRNLdBxGfFsiE2rHBWtCM9Gi/X8v17O4CDsJaDx+H+Ms1ZeosNh21wdXDDBoH4
+	VtbHMJwXQsAwWZ78LeIZ/DsMSBl40tyX/bvfmLp0PnDGfTLCDzCfgZxMlF/aPgWz5Ltk2R
+	ASsWdVvVxgpxPRpMoiZBNxWsnNno/wM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782373804;
+	s=arc-20220608; t=1782374065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3mjvDm6wc662Q3j5xc6LNyuyos/WPV/sprSHNbnLMDY=;
-	b=IGze4BwHE2Ngf4I+1cx7wDhVGYFnYIkAMNLMbIaFs1fxl++J2bscBMBHKRIhggrnc0ZZc1
-	Y8ldmrUzNmAWyxbgHoKwStbTNnV6VAXpEXGLkimrR0xO5tCM9afDwWEF7uKgSo8XGiyna/
-	Wcw6WBCriC0fPWtZsoY61ZjCm7uwyRw=
+	bh=WU+cwzv11oA1r4PZBo7/cWtaeUDfFADOwM24rd5Wf4E=;
+	b=HTavc5lukXI1g8AfIC6KVLMfE1Rw7KtuXQS0Zb9oPVWl1/33vrMlidY2MUto3HZ9tmGOqm
+	ciozi31pc4Ii12L5aqQyDwON7w6pcezlxglm96kmriAOAX3grbbhSyuTniVnSDTA7I87pi
+	NJ1uWnLTSMijgeLKkqjLvrTQcOE20Sg=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SG1WT17A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzCdDwJa;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E50460217;
-	Thu, 25 Jun 2026 07:50:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780981F000E9;
-	Thu, 25 Jun 2026 07:49:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C1D2E4190E;
+	Thu, 25 Jun 2026 07:54:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D0E1F000E9;
+	Thu, 25 Jun 2026 07:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782373803;
-	bh=3mjvDm6wc662Q3j5xc6LNyuyos/WPV/sprSHNbnLMDY=;
+	s=k20260515; t=1782374064;
+	bh=WU+cwzv11oA1r4PZBo7/cWtaeUDfFADOwM24rd5Wf4E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SG1WT17AXH8H0rBfsv8gpBfHL8MfVexRe92YQELgaeGghMfk6UU7i/qi+DOwjV4Uj
-	 93Ojq9qtIuVps3MoODxWL5pKNGNlY9SxjJ6pSoIhGv1Si1QXBDjfnqSyH4EOmHjslN
-	 EIYlUrMFZk3X8KcmcyXR6fqSKRl+jEOZmi5Ksg7Kp2kzLdjIHFc/zY7AeWGhAq2s87
-	 Jrzkm+2iIAoLDgCTCp0Xddc2HXewVRKofU2fNQcpZjQm/yOfxcE76fejz+885oPU6H
-	 amN8pNhDuScXBv3XqRf0Bizynr/SqIjrHF0ym1fdEKbQIPIq/St65i656qyfXcHZe9
-	 PS8wbC71cNomQ==
-Message-ID: <c29f90c6-2075-43e8-8f0d-0d6718a0f124@kernel.org>
-Date: Thu, 25 Jun 2026 09:49:56 +0200
+	b=UzCdDwJaMRxT6Ty9dADQAfJYjrRCDDsxaL9K5BGYHTqPC3Y2IxTqkLlkB3sja1m4a
+	 bfprmOkTsujYkG+v7SThudFa0sqX2htXOGFfvC08rNrNtOImKwhlXWd+/B3HRsQwYV
+	 g7466d4qhvzZ3u/1T7TG1ecvxubZ72BjEbDFGObYvbsYMt+904cMY0y3SpFFlXYoHJ
+	 WNkO4QNAjplhqOrNGWwlZfu+PZnplMloPU/T3jVLvHK/nTMuITCjvoWouhfs/hub6x
+	 5VJ2xntNkzgBTwkXkUOZA2q1SaU5SC/NIYhYM/vVJHwa9wxqSnRBSGIhggzZE8f174
+	 FH6lZpWGsxS3g==
+Message-ID: <a4fe8ba6-2ecd-4bb9-95a9-27f9f1e87d2e@kernel.org>
+Date: Thu, 25 Jun 2026 09:54:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-To: Barry Song <baohua@kernel.org>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com,
- baolin.wang@linux.alibaba.com, dev.jain@arm.com, kasong@tencent.com,
- lance.yang@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, ljs@kernel.org, npache@redhat.com, qi.zheng@linux.dev,
- ryan.roberts@arm.com, shakeel.butt@linux.dev, weixugc@google.com,
- yuanchu@google.com, zhaonanzhe@xiaomi.com, ziy@nvidia.com,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@suse.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org>
- <4aa8350e-712f-4380-b3bf-2ff06cf2a35d@kernel.org>
- <CAGsJ_4xR0Ge707s8JAfd5Fw10+U+25_nuBGuVayx9qnxR+NnGQ@mail.gmail.com>
+Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+To: Dev Jain <dev.jain@arm.com>, kernel test robot <lkp@intel.com>,
+ akpm@linux-foundation.org, ljs@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, riel@surriel.com,
+ liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <20260625042853.2752898-1-dev.jain@arm.com>
+ <202606251341.jfIr1D7m-lkp@intel.com>
+ <2fd3688b-b4d0-4a2f-8d49-4d4b9c512c66@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -128,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4xR0Ge707s8JAfd5Fw10+U+25_nuBGuVayx9qnxR+NnGQ@mail.gmail.com>
+In-Reply-To: <2fd3688b-b4d0-4a2f-8d49-4d4b9c512c66@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A2939100003
-X-Stat-Signature: yugaxrz6wjhyjx95tq8yqo8dpiiucdh4
-X-HE-Tag: 1782373804-114978
-X-HE-Meta: U2FsdGVkX18LVAd1wfkzAwJfSKH7kd5VpelOZ45xbdl7WNixZzro6v8wZ9pVyohOqRU/YYLKycYnnlD8Oh4YD5G3WGzNW8yYW/wRUSncYrznah1S/ypUeAG23JsqonFTH6s83c9twx0nrXRYJtmG5/swGAUqgvtAuusTeqJD9ojS9eP6abcFERL16gaJHYJlEqUNIjmPlQLALt6gTGF3KcyzI/Ix7qbwO24PtamvEEciAZAvpzu3lrnUqczHkYbX+npL2bQjrT+x06saWUQw2oIjYxP5HXDeDkfkbyA0GlwPzIOKv9IysohU9JjBNjSOyv4M5j5LXlNylvBhr3L/2d4UNVt3+IkOYHp7uw+PUhDk7Qx6pCpqt0zJ3WL7GBs05eBv9rfQzQcQDAid844fd7hgg9l9aXppYXYwJsXx3ToB9Olf20ry5abqiuLrfFrLpgKz+SoSHgBBxS/lHGAMdg+tgsB6gVHeT2M56KN5GRvttVNctIfsdBhxmecRO7SRILERCOA3TW6f/heSV5ws3pjLGG4V6T/jdWAMxm4cNCja4AMu8lwjFHDCYm2FSBpCxsn2/1bPmqsQh7ztccCziZDcszcT2si6nI2UcrnxVngRJ0N3y1EzvxXdXMAWpqWybX8Y7u5//gMW9ZUrYiTYsihF0HuLPySkerppTNubI//taw0Kcvfn6ZmDLFQn+HPBrCgM05n8RRQCMDrWgpcMrK627TYm7nSbFnijDR+Wt/SsVRGkHAGlzAjDmOrP+ogMxY4b/6DH2DIytct5CpHG/SqZ82uquCt5UaERIGGYLpa/SBeSP8qA6GrvxKrZedz0UyguUDWVm9X8W6Y4WjPRn+i4TUjUbBVf/TiAzFrjLJuTxjgURqpgHO6zFcNpBAQDrP1o8es2/sLebFraHei6sEvoSlMsoWYtirKbSxiFW4VxBzZVNXB8cAOZCNZq/k/poiAOr+nvEHKVlAI+vy2
- m/lPXKe2
- 1zoOzkrDtjYh2LbaJzf6FRv7Sx9qP4Fh5fdFmvLvsm0UeH9OXHpB50uKBcPDf8001FRPiBFl4tGIPF1YaZU5ey80ITqdh856+r2FrjUEOJGSqGpPoagwP4f4hgYfX9bezrBQrwe2+XD7zq3mHJL16si5UmwRo+DlgIgLxPa7o5Lm5OzwFpNgG/QB7qDQse7U61xkxf6nUlO+kdwF9eDwVDZCPk0qZaUUS0ZAsMBZ8FELOg1ek2sfUduE8x8yGVCo+mDmX
+X-Stat-Signature: x8895eimy3wtb5dkrq1de9dww9a8973o
+X-Rspamd-Queue-Id: 9A7D120006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782374065-380813
+X-HE-Meta: U2FsdGVkX1846CHD+CKrps3PqUiyNRBA8NyBVivxPcX3yN6bZhqnFItEd2XCGl6Kas8NIuJ/FN1hEbNcslSVMwTRopn81hbvek4twLfT1QzUmHR4TOAKbUEuF7OyDMRp4mpesg1O04+hd9vbESm6NtfmgXQcTm6FAP/6HrE96/XeDGm7PX8OgU7Of9cT+jQ2r959mEQhV8jQj8xSfEmZvoinCT7zcuZ3G8aY3eta4nvA3jt90rp3A3pcRbnantiJkwKVSeHjtfKfBLzUmEIA5hx4M7ZwDJepRw8vRotuuZ7NaWbrPnmwiISVhDla9TdsQoQf+9x1IITL1440xAtVqJnujRIGUPTWvkwF5/QTZ/DuDTTR/1aewzOF2b6mUI4sdBHSxeZbow/vGfABKff4QPXIRymbEnqHBAWpwEPCF8LLowt59ywgGO7GbVGpUXR6snUdZYiCaSQ/QxFBBycMest3EH6Lgryz/LteL4C/MHxtc7GyFLbeWhSVbahks3jKkPoIA4tZl21WeUWxAo5oh+ntgvjugklqHo80AEiagvQq1Z0Q4kuRVPsVj0QIdhxaKRRTqqVbb3voF1tBIhuQdWGsBbfmS6W+pM92/4uw6goWmCq7/lr0FGjaOUH+AnDoyWW7M9gg+tPgnHGbfAojqQ9cc0lK+ztaNaRBlHWlg9YNxV5fM0l1B9f4gyxke4NSXH1YIXIE2g1TRACFyOw4S45xAWfxYx2w6XupopGf6MwYIz2tCfTQ4Ts1WPnTKo9Mkr/4tPxaG/YhKep61MkM6iYZE/e3C1WowdI8ZnKB3KHBbAUBgMy9c4wkIVtIbMb+iPjHQyPPwJ0eL6N2KppKTh/bZAqSCn9zOGCvcxn9pUIIz7WVcrYywfaVi2ygqDQU7qXmbcyCiQEQL/HG4urZW+TSwQ7OfCr3kKWEFxGdjwKUFYNdD4kR4vG2cRjzHjeJyy/4bTKOucmFpq3Vzwg
+ LRtyCh01
+ 46/HZeQRh+IXsW5ytk/sI3RQ9ThZJhjNqenudRSLnftUhO974Y7aFL5LYNeEazsxO0BV9z0eq1+V81rA39QtLRLOtekYDUeTuzgM2iQoNKUIKy5v99JW6OMVPCIW3Ice1GhE2z/O8mg8f+ty1U0IQS2uDpH14dm1gaQGPBhF2r9aLy3F0bTWfqelO3dF+FwCLxUq3eJvgdgcWKrWdu+asfoB2ii9EMuTn6Iqu3DGiRRJ29q1JZtFFJsN5lT6PtjAIl/ylZBDHimxT3vy+egMI0O+FO3OFHFVhc3jszMplnjxYTt9ZcGAkY1TqlFs2SFrmynG9kR5iffhPvEvmGC0GZ5EIVdUvzWDy+kaoeSpdcGbE2xQ3omIcqf5Qsq8puDsKCfgKU53IoeFxMhRReUHnyvIm1NZW4LuMluMfBsYEU4QZY1t03d6xkd78EzUXHMCrJZmOy6dOLCbJFb2IveLL7YqiakG9MLaXXJdyxQ5NK2Wc8bWjvwSrDAj3fg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,52 +142,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> But now I wonder whether we would also want to check "is there any free swap
->> space", not just "is there any swap".
+On 6/25/26 08:59, Dev Jain wrote:
 > 
-> I don't quite understand you. get_nr_swap_pages() returns
-> nr_swap_pages, which increases or decreases as swap is allocated or
-> freed. I guess it just reflects how many swaps we currently have
-> available?
-
-Indeed, I was confused by the function name it's "free swap pages". So all goof :)
-
 > 
+> On 25/06/26 11:15 am, kernel test robot wrote:
+>> Hi Dev,
 >>
+>> kernel test robot noticed the following build errors:
 >>
->> Essentially, try returning -E2BIG if there is the chance to swap out after
->> split, and  -ENOSPC / -ENOMEM if a split wouldn't help.
+>> [auto build test ERROR on akpm-mm/mm-everything]
 >>
->>>       }
->>>
->>>  again:
->>> @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
->>>       }
->>>
->>>       /* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
->>> -     if (unlikely(mem_cgroup_try_charge_swap(folio)))
->>> +     if (unlikely(mem_cgroup_try_charge_swap(folio))) {
->>>               swap_cache_del_folio(folio);
->>> +             return -ENOMEM;
+>> url:    https://github.com/intel-lab-lkp/linux/commits/Dev-Jain/mm-rmap-use-huge_ptep_get-in-try_to_unmap_one/20260625-123050
+>> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+>> patch link:    https://lore.kernel.org/r/20260625042853.2752898-1-dev.jain%40arm.com
+>> patch subject: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+>> config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/config)
+>> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 6cc609bb250b21b47fc7d394b4019101e9983597)
+>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/reproduce)
 >>
->> Here we wouldn't have the information whether we could charge after a split.
+>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>> the same patch/commit), kindly add following tags
+>> | Reported-by: kernel test robot <lkp@intel.com>
+>> | Closes: https://lore.kernel.org/oe-kbuild-all/202606251341.jfIr1D7m-lkp@intel.com/
 >>
->> So that would require a rework to signal this more cleanly to the caller.
+>> All errors (new ones prefixed by >>):
+>>
+>>     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
+>>          |                                  ^
+>>     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
+>>          |                                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    2 errors generated.
 > 
-> Yep. The tricky part is that mem_cgroup_try_charge_swap() cannot
-> return how much swap quota is available in the memcg. Do you prefer to
-> add an output argument to mem_cgroup_try_charge_swap() to expose
-> that
-That would probably be cleanest, if that is easily possible. We would want to
-get memcg maintainer feedback on that.
+> Weird that I need a stub. This should do:
+> 
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 2abaf99321e90..4661f88eee55b 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1261,6 +1261,16 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+>  {
+>  }
+> 
+> +static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+> +				  pte_t *ptep)
+> +{
+> +#ifdef CONFIG_MMU
+> +	return ptep_get(ptep);
+> +#else
+> +	return *ptep;
+> +#endif
 
-@memcg folks: we'd like to know whether splitting a large folio would make
-mem_cgroup_try_charge_swap() succeed on a split (smaller) part, to distinguish
-"there is no way we can swap out anything, don't split" vs. "we could swap out,
-split".
+Without CONFIG_HUGETLB_PAGE, folio_test_hugetlb() == false and the compiler will
+never end up actually linking this function.
 
-What's the best way to obtain that information?
+So probably you can just let the linker deal with that
+
+pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
+
+
+If abused, the linker would complain. In you case, the compiler will optimize it
+out (and be happy) and the linker will never start looking for the symbol (that
+doesn't exist).
 
 -- 
 Cheers,
