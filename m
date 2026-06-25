@@ -4,121 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76FCDCDE008
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:20:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D73CCCDE008
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 463566B00F7; Thu, 25 Jun 2026 07:20:43 -0400 (EDT)
+	id B41A36B00F8; Thu, 25 Jun 2026 07:21:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 438B56B00F8; Thu, 25 Jun 2026 07:20:43 -0400 (EDT)
+	id B18CA6B00FA; Thu, 25 Jun 2026 07:21:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3283F6B00F9; Thu, 25 Jun 2026 07:20:43 -0400 (EDT)
+	id A30366B00FB; Thu, 25 Jun 2026 07:21:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 01FD66B00F7
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:20:42 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4F207120666
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:20:42 +0000 (UTC)
-X-FDA: 84918192324.13.D433BFA
-Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
-	by imf11.hostedemail.com (Postfix) with ESMTP id AF48240002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:20:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=j+fUvyNt;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AE616B00F8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:21:31 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A4AA1675C4
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:21:31 +0000 (UTC)
+X-FDA: 84918194382.09.F1EC713
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0A848100015
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:21:26 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hR+WW9gI;
+	spf=pass (imf05.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782386439;
-	b=MzIXI6ffPboDcoMl5ck/cBR7upZwf56v2i7eHzA+en/M+S7BfKhI9BDWHHHzVtWOKyKCAX
-	DGUTvPHBaj+Ve8Ysu/kMBZt/1ZJW7kOD+Hm1LGoyEoiJahXkvmAgSlR8jgT4hge7pr6CDJ
-	ZXmpFPbM4WDS0Uo3NxjwtbjHHHf0EVg=
+	t=1782386488;
+	b=v3aiTksI35dEZGIB7BXVPuiPnMCJtnHq15gxhQH/wGN7Pef8Ja67XsqfKsJZD63G/eVEuu
+	Q8ssqk5s8VCc96wkVV3v2VicJRq15PrHr5JjXGC55C/sN32aeWviB5cFkd+Q+oe6zAZc24
+	Rd5dlE48tBn8DEqBE3zf04zhacAMgGw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782386439;
+	s=arc-20220608; t=1782386488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFk5c/1jNSMQLdFUSaHagIMvPm2hmWCfIn7xWSUzENg=;
-	b=P6AHxGFAGaRVMtGqk6X6ALw/L9wD0vKtH0vYCrw4U3zcTehog8fGlpvGZuYs91qrLRJis6
-	Uy4DBkkWeJ03iy8iqRgodhXCwZnnhDj6exlzS7Vd5LXyP2tFmVxpsLb+ElspZj1DJ/66iv
-	V7s24uFQR7xvuwRpp+mJhKOpUUz/U0E=
+	bh=jAMw0WFN0U7V7evmhPHKbIT2IAgGFjbUT+BVVUGge8s=;
+	b=Xky7Jgvc3kAUGfKmC4K08fzb4Gof110lmRKbFvZpswyoLUHPxqw/avq+q98ON+MMJa5anr
+	ZRfxEqS1hF3egGNVR/rluyfccGyB/fqYL9h2/YLImx60OCRYEBYQZZUzAaZRQ8koxZqyiZ
+	HxQvrVUECLva97jHSXCDqpPovgJMsY0=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=surriel.com header.s=mail header.b=j+fUvyNt;
-	spf=pass (imf11.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
-	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=JFk5c/1jNSMQLdFUSaHagIMvPm2hmWCfIn7xWSUzENg=; b=j+fUvyNtxzAZ/qnLIU0qO9PFEV
-	BQxm5FHxb+olPWFNqAoGztRBjQuvVnOpQnKwGyVS7XFKPAlM1uLEnC5mOk1fQ0YZGayJ5Jpek1+Ll
-	bAgYlL0PqqZeMDqKlbBmfVht5QHbJ3W2p/cRdK4TNWEiOcztdU8Dmm1M6vTwNLU6vou3stgzFz+C4
-	HmfUTPmunViN+bsbWtI2pEtCwM9Taabq4OSy+ujrbz3LXauDgofGfnS6+GA62rT06aumDUbfFaROF
-	+8+4ALPbVvAIAwDIyLdlhfqNHTxUAQfXEOMJ+lQjyPqBBw9Y4fpMRBJuVtlFAhMwvjdm4ysoCbGq4
-	4UaWS68w==;
-Received: from fangorn.home.surriel.com ([10.0.13.7])
-	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <riel@surriel.com>)
-	id 1wci86-000000001j0-1X3u;
-	Thu, 25 Jun 2026 07:20:22 -0400
-Message-ID: <610d1c95a2f9131d5c018304f9a90afb33e8a032.camel@surriel.com>
-Subject: Re: [PATCH 2/3] mm/pagewalk: let folio_walk_start() run under the
- per-VMA lock
-From: Rik van Riel <riel@surriel.com>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin
- <d@ilvokhin.com>,  Borislav Petkov	 <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andrew Morton	 <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Suren
- Baghdasaryan	 <surenb@google.com>, kernel-team@meta.com
-Date: Thu, 25 Jun 2026 07:20:22 -0400
-In-Reply-To: <ajzUCZSRU3h_UdjR@lucifer>
-References: <20260625015053.2445008-1-riel@surriel.com>
-	 <20260625015053.2445008-3-riel@surriel.com> <ajzUCZSRU3h_UdjR@lucifer>
-Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
- keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
- eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
- Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
- lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
- dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
- mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
- gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
- r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
- WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
- 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
- Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
- +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
- g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
- KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
- fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
- 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
- G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
- okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
- TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
- cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
- omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
- QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
- c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=hR+WW9gI;
+	spf=pass (imf05.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=jAMw0WFN0U7V7evmhPHKbIT2IAgGFjbUT+BVVUGge8s=;
+	b=hR+WW9gIb2huIy52YgGEmqoLuxHxrNZZonc+KFdrPEaVQfA/Qs6wt/AFrpiR83W0fgJl/XLso
+	9tvdrHNOJ/Ymn71n6+5W/i7uJX+q2ob+4Yn+2DyhENl6zM9UBfY63X9PDqTytVIPDy0y7V8Bncp
+	2DhvKCLCHg2b8yxFH5gntv4=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gmGNc2zVczLlVM;
+	Thu, 25 Jun 2026 19:12:16 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6B38C40565;
+	Thu, 25 Jun 2026 19:21:22 +0800 (CST)
+Received: from [10.174.178.9] (10.174.178.9) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 25 Jun
+ 2026 19:21:21 +0800
+Message-ID: <c9ddee42-143a-4957-adf1-b302504a14cc@huawei.com>
+Date: Thu, 25 Jun 2026 19:21:20 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] fs/proc: fix KPF_KSM reported for all anonymous pages
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
+	<ziy@nvidia.com>, <luizcap@redhat.com>, <willy@infradead.org>,
+	<linmiaohe@huawei.com>, <svetly.todorov@memverge.com>, <xu.xin16@zte.com.cn>,
+	<chengming.zhou@linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20260622091539.836531-1-tujinjiang@huawei.com>
+ <93e9c643-f6fb-4377-ac5a-d91e203ad1a6@kernel.org>
+ <601fb5dd-18e1-4a6c-bc99-dc2a655240e2@huawei.com>
+ <6e39171c-8333-463d-9ea6-db331965d2c4@kernel.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <6e39171c-8333-463d-9ea6-db331965d2c4@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.9]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: 0A848100015
+X-Stat-Signature: h568wx9zqaehiwdcg1um4w43o8i8arid
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AF48240002
-X-Stat-Signature: bcmwmg1napt3ijtgw9qjoui1zehdrq8s
-X-HE-Tag: 1782386439-269855
-X-HE-Meta: U2FsdGVkX1+1tQigVWbYBgI/cpxnJN8CV2UQmhl3Sd3JTTaK+Cfj1Vr8jaGPK7U9tNE+TYu/znltYzXlgWrtUusINay3xNBrUBLtWIDDpEg4sWVYqLWCEdwgKSDsLnTD6jNdl+GURxglrQV7IyY7huKBkg4hKMeLZK4CkmIFFOenDcO1GTb3OGeT0hSRoO4draJDsMVFJxLcHw6NzFSHOtDCuixqNWKHWj48NErLYeclISjMKXT5cTjrvNlVWeBwv8HzDgg989wTV46KtkOaEnElrphLRGbT6NMW9bUw+kyZC+6z9zj6MKQmUIjkSYfAgIbR2qFIsxrehnsyV9zm4EO1gfOqkYLB4DcO+hKNoeK7cNd3IrSjj2h/JTb6J08gZ+K5vuiRAbut3zZEkYqD6HZDyRjhPSieG58+wmRWzeikPgmpIJmwjWcpVr9MGcScnjaBw8rwQr/5dyCTd0DII8dbdBEAm/gev5WOt/ZyLedG9TfO9DHOaj/VQqbF/0YXvE154yfWTzWh0U113oWGJueUF+J0/n/suH5cya+uirak9K/F25nSSQZuP0wWBglZdI/rsR+gUHTCNWnlvZGEnIWV+CVmwEWXasRO09dgYY8xXSQsIKSOONQl9GT/M8c3aGH+BI0UeigQZ54bZiIWwOodDRLNxOJWPK7dqfr8tPlXwPNTtGmIjWz9ah4Ln+KvaTS0sL6rCo+bw5c3gXl86qV82jXJQY7BaY+fnAvOL9nq6wL7L78Ockcjk4dTZXBC1b3HcQid1oxCA/00a+pcJSuL7BCourKi47JO5IIeLTzCjXlfb+Z3FaS7/qscxWnxoetV0bDlbTKilLm/AySwY77GpB1yJrv/+EffgvqXdtVNFY67z7TmXGLCcyyTTDE2d/D0FYsSDGEF3e/y6WM2wsbXiGJXFEvqjF86LhsTyyaDFjAcfz+NbhyzOWT9sIFuFg4VL4SXg0nEv/do+4L
- zWwWp2PR
- 5VBaPJ+aFUHLCMhzQmJzXIjfp/JbWdJ7lPcGxXo1MYG1qGmj7uHIQtApisXlECiBX5POVFlSmgdpZkTXtr5MXYdesfJJRrBsl0GI/pqfoD5Cg5J1uxqbUh42meRW9YgfRmEcqDLJp5XRyZNVBZ4roAvOXL6rXZxTKVia5SKR/uBJJHtMVp1sfCrACx4lB17KahZLD//sqyDDml0Gpb14sAnMJ4BpIafmu9RlpTxPrFGLv65A53hQBKWQjU6ZEEZflsHvKw601iKT7T88iCFSmMU8ezDSI/BiBiEuKpr4dvX7Da+jzDLhjfT3oG0OvBbT9umO5q1F+lY6Pa/Tu+7FGA0Sx6LIejERLHXMW
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782386486-856116
+X-HE-Meta: U2FsdGVkX186rN65KfD6Q8fpl4xX2P3TTA5irJcal0+cK/7JbKn8c9hOAnc+/RZdjaPy7/RrwA+Iysp1PutUx12PXsZ8D1FIi5BhbBLpbnwrZQKtTe6ztqFqMFypDLtmkLH40bKzh7pL517ZfeedXr47uzP2JP+bLHjWvB4vsntlvpYDI3E/imIbeTd5KkaHBm25ljmSk3WPoeONlBZ6/UN+lVbhZlnF8L2lop1aMpP+XWyNtE4WFNo9p/GMigRcCW/Q/SxBhZaeEle0QJz0j1WNvxNiQc5S4px+3W9QA/sby1GLZzwoYEa8R1XeConRTH2k0BHvPU8+FFBZ63H22Sx1A/XeCKY+M0GnPftDHzg/g4CWfBcSlENZoxFMrLJNn94fWupCCO2dVDCzY3S8fUUvNfxrRo6GytYAVHmbcSjbqhX9XkI3SElrArE7SeE/72KwJeYQD9NoYixrbtGgdM2WZAMlNJhfruG0u9vmNWWTbfLJUnlWqb1zXfG7eMpPNrLr0ZydL0hqjpmPZsorYMHLVtlpOraIslllG5sELSbv//7Zzw5Y8rMWoG74fbxHPh5tTU2qZA7NyLZY0jjsepizldCIFT6JgygpSSzHCd6jL00rMIPFgznALU//U3hzWcVtnbNDIflwCeJDgeHMFQshjX5pZTInvdYzAmdgJkve/zKEc7e3T1nt5JZRvfo9rKYxch2PIzpRy4aZLKxYPnMJ3th7EKt6Ozme7Si6R5a1e9NaOUHqbZiVzo/BmUIP/V3yj9XHH5iHyNR1sU4EITRXkdYo3T8upQB/LipRXrrRUw0fp2+hcTxNdoUVfVdrw47WRKiWgRlLcCBM9GpJInxgbQyi6GK7ILLxds+iCT9OJDpD+3vvcSRaItNrOtLT/mL4htnp/jEVzdnOK9QysnwiNsQW4jwEgaFMjY6WM0FxTEPqnDNYTFTN0AOxor35bWeElSQ4EnWedKdm+Dz
+ gDVA51iM
+ uO8B1MZ+f+DrBk7nulg7XXviB+Sd3G5liOXS+63JyXBVJQj4gU2oamFFBmiTWKBKgn8dMscdLJf3YaDIXaRWpX1nHlWXpVKyUOOdkv3yFg09JwcO9vwPl+wJ1tpzPN3MjkW2u5AIFjj2ahwTy3IQwrq9S1qBwUe+iuyT+5rGeEiJhnS7FH6yj7AgPY0kfG4YSOtaGNFa1GGKHi39/DnkFAyBfZBrCPkmgRltDrJvQ2USC5Oy8NCWopjXTO73CivZEnkXDA2xZsAoY8X8O2lyHvMTT1CV4S8rhDeVSXlJKZeYbzGPUMHeSfTMMtqLzUfhbAp8/7iSFPrMhhgoUxAb4qYU6yQ1dwCnOusrvWd6+gpHxo3cDfrYdnatk/rboRIVWtwkjGMhqQdtNc4gaIgHiAalDnw2SLLGGFr5e
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,76 +103,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 2026-06-25 at 08:34 +0100, Lorenzo Stoakes wrote:
-> Rik, it really would have helped if you'd replied to review :)
->=20
-> On Wed, Jun 24, 2026 at 09:50:52PM -0400, Rik van Riel wrote:
-> > folio_walk_start() asserts the mmap lock is held.=C2=A0 For callers tha=
-t
-> > only
-> > need to read a single, already-present page, the mmap lock is a
-> > heavy and
-> > often badly contended hammer.=C2=A0 Such a caller can instead hold the
-> > per-VMA
-> > lock, which keeps the VMA itself stable.
->=20
-> <newline>
->=20
-> > The per-VMA lock does not, however, keep the page tables walked
-> > below that
-> > VMA from being freed.=C2=A0 A concurrent munmap() or THP collapse of an
-> > adjacent region in the same mm can free a shared upper-level table,
-> > and
->=20
-> Yeah I need to update the documentation on this at
-> https://docs.kernel.org/mm/process_addrs.html=C2=A0it's more subtle than
-> written
-> there.
->=20
-> Firstly you're wrong about munmap() - it acquires the VMA lock of the
-> VMAs freed
-> in the range and will only remove an upper level table if the entire
-> range is
-> spanned.
->=20
-> And that's the only way higher level tables can be removed.
->=20
-> PTE page tables can be removed via MADV_DONTNEED, but that a.
-> acquires the VMA
-> lock and b. frees the PTE page table under RCU.
->=20
-> A THP collapse can happen concurrently, but PTEs are freed under RCU
-> so you
-> don't need to do this GUP fast imitating stuff.
->=20
-> > THP collapse (collapse_huge_page() -> retract_page_tables()) frees
-> > page
-> > tables of VMAs whose lock it does not hold.=C2=A0 Page table freeing
->=20
-> retract_page_tables() -> pte_free_defer() -> RCU
-> try_collapse_pte_mapped_thp() -> pte_free_defer() -> RCU
 
-One issue here is that while we can safely read
-the old page table under the RCU read lock, in
-the middle of a THP collapse there is no guarantee
-that the old page table points at the process's=C2=A0
-current memory.
+在 2026/6/25 14:39, David Hildenbrand (Arm) 写道:
+> On 6/23/26 03:37, Jinjiang Tu wrote:
+>> 在 2026/6/22 19:45, David Hildenbrand (Arm) 写道:
+>>> On 6/22/26 11:15, Jinjiang Tu wrote:
+>>>> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
+>>>> when KSM is not in use. As a result, tools misclassify all anonymous pages
+>>>> as KSM merged.
+>>>>
+>>>> In stable_page_flags(), if the page is anonymous, then use (mapping &
+>>>> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
+>>>> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
+>>>> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
+>>>>
+>>>> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
+>>>>
+>>>> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
+>>> Right,
+>>>
+>>> #define PAGE_MAPPING_KSM       (PAGE_MAPPING_ANON | PAGE_MAPPING_ANON_KSM)
+>>>
+>>> Which we later renamed to FOLIO_MAPPING_KSM.
+>>>
+>>>
+>>> Before switching to manual flag checks, PageKsm() translated to folio_test_ksm()
+>>> that checked whether the values actually matched:
+>>>
+>>> ((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS) == PAGE_MAPPING_KSM;
+>>>
+>>>
+>>> This only affects /proc/kpageflags (well, and hwpoison inject on a weird testing
+>>> interface), so it's not really that relevant for real workloads (debugging and
+>>> testing).
+>>>
+>>> So not sure whether we should CC:stable. Likely not.
+>> /proc/kpageflags is generally used only for analysis and is unlikely to be
+>> used in production environments. I found this issue due to I was analyzing
+>> pfns allocated by which stacks are KSM-merged. So I think it's unnecessary
+>> to CC:stable.
+>>
+>>>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>>>> ---
+>>>>    fs/proc/page.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/fs/proc/page.c b/fs/proc/page.c
+>>>> index f9b2c2c906cd..cef8ded97610 100644
+>>>> --- a/fs/proc/page.c
+>>>> +++ b/fs/proc/page.c
+>>>> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
+>>>>            u |= 1 << KPF_MMAP;
+>>>>        if (is_anon) {
+>>>>            u |= 1 << KPF_ANON;
+>>>> -        if (mapping & FOLIO_MAPPING_KSM)
+>>>> +        if (mapping & FOLIO_MAPPING_ANON_KSM)
+>>> Wonder whether we should just do
+>>>
+>>>          if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+>>>
+>>> To match what we have in folio_test_ksm.
+>>>
+>>> (although I doubt we would reuse this flag for other purposes, likely
+>>> it's more future proof to check it like that)
+>> Both are ok. The following check has checked FOLIO_MAPPING_ANON,
+>>
+>>      if (is_anon) {
+>>          if (mapping & FOLIO_MAPPING_ANON_KSM)
+>>      }
+>>
+>> So it's equivalent to do
+>>      if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+>> or
+>>      if (mapping & FOLIO_MAPPING_ANON_KSM)
+> As I said, matching precisely what we have in folio_test_ksm() is clearer. We
+> don't have any users of FOLIO_MAPPING_ANON_KSM outside of page-flags.h for a
+> reason :)
 
-Khugepaged could fix this in one of two ways:
-- zap all readers with an IPI, and use that as
-  synchronization
-- make sure the old page table's PTEs point at
-  the individual pages inside the new PMD
+Indeed, I will send v2.
 
-Right now khugepaged does the first.
-
-Relying only on the RCU read lock to read the
-page table could result in us seeing old page
-table contents, that no longer point at the
-current process memory.
-
-Unless I'm missing something...
-
---=20
-All Rights Reversed.
+>
 
