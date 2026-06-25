@@ -4,90 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC38FCDE009
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:17:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E38CDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:23:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A86896B00AE; Thu, 25 Jun 2026 16:17:42 -0400 (EDT)
+	id BCB026B00B2; Thu, 25 Jun 2026 16:23:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5CCA6B00AF; Thu, 25 Jun 2026 16:17:42 -0400 (EDT)
+	id B7CF66B00B4; Thu, 25 Jun 2026 16:23:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 975216B00B0; Thu, 25 Jun 2026 16:17:42 -0400 (EDT)
+	id A92F56B00B5; Thu, 25 Jun 2026 16:23:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 704706B00AE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:17:42 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DA46CA02AD
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:17:41 +0000 (UTC)
-X-FDA: 84919545522.01.6E8BBA0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 36FE620004
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:17:40 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 82FA46B00B2
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:23:10 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13F5C1C0DC6
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:23:10 +0000 (UTC)
+X-FDA: 84919559340.11.B4CD5AA
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 6BD762000F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:23:06 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="B8tC+7/Y";
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t2yafPs0;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782418660;
-	b=VA4FoGqayiJrvFGpgkPTSxmq6EBIuzzI8jWb6ZKtpgFnLyxn3kAvmcXaPuYQrbX5qlOrP6
-	QkEs5CB0MUyEBDM6unu+srEqd5Mi5FpskAfD/t6fonmMWZTu6hwwxwC1Jhx1C0wzoCtCCo
-	wztm44fYEJGOateAS8e9OAKwhogU2jA=
+	t=1782418988;
+	b=fyfXoAZScpGETrXc1KWLHSuTB1kUsSzTDNifwMZIvHPqajUxKNMuqAofzKp6Jkr5rA7FeT
+	62pR7DDlG+fTlI8xZEBn6o214ihyPc2CcKfFMOChhVgccqx56Hd8tVHIOCJqyXNKc5cZHW
+	S6P+dOTt51Ui2wcxE/2Ornstf7dV/l0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782418660;
+	s=arc-20220608; t=1782418988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f3fZrNlOuQ3bmippvymiqUka8ZXELB1zwP/Z4jmtZxQ=;
-	b=QiNwa9aoMhQ9N8gsktjpJFrVgRSqUlRBpY2uKnKd6DtrF1QsoUG0+Wp9INIwKPlaIriG+Y
-	vI2bjoBW3hsiIZl8ipzGuJhEtCjV9roAhLgEZApoWmZSd7X57ca3lt2vuZ5YZIv3ze0PLr
-	jQCP4CC8cXvMVQhjF2ThGfRojQ1ko5w=
+	bh=4666zdLjJLZrpvKtSAgWM48xKMLs0ArCqLFSxNE1+L8=;
+	b=F7MbcUWSmUWs/CmzvTlobT1651eVK4/q7yXydouyRVBDJL8aLnm5CaN6Pqu6K/8dybTVGA
+	tFhzsDLqDt0epAV4fkVbfV/4Zm2RBeg6g+dqa1BAOsOjok+fhTGjHVX4opTRBlZYrzx3kn
+	+AKMywIcI6s79z0F0I1nfnC/yOvhuNY=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="B8tC+7/Y";
-	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AAB5A60098;
-	Thu, 25 Jun 2026 20:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C6D1F000E9;
-	Thu, 25 Jun 2026 20:17:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782418659;
-	bh=f3fZrNlOuQ3bmippvymiqUka8ZXELB1zwP/Z4jmtZxQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=B8tC+7/YZb8RcTEoQ/5cWlPL9lj5H6f2CzNa02Mv0pY93VfgylwXhnsWBfbEJdZqP
-	 u5Wlo1R4fT7HuUxAQVjQGf3NptkLZ0KOA8+dRa+wrLuF/0CkWtj86OTo4Twipu/6+L
-	 NWCkxmdJHc/dRXsQKJXwz8vKsnVSjfjFP83NmX7A=
-Date: Thu, 25 Jun 2026 13:17:38 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Vitaly Wool <vitaly.wool@konsulko.se>
-Cc: Jens Axboe <axboe@kernel.dk>, Damien Le Moal <dlemoal@kernel.org>, Keith
- Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>, Sagi Grimberg
- <sagi@grimberg.me>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo
- <harry@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, linux-block@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-mm@kvack.org, Vitaly Vul
- <vitaly.vul@partner.samsung.com>
-Subject: Re: [PATCH] mempool: optimize mempool resizing
-Message-Id: <20260625131738.b7c10540e5c598cc9b60e19d@linux-foundation.org>
-In-Reply-To: <20260625194915.387663-1-vitaly.wool@konsulko.se>
-References: <20260625194915.387663-1-vitaly.wool@konsulko.se>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	dkim=pass header.d=linux.dev header.s=key1 header.b=t2yafPs0;
+	spf=pass (imf31.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 25 Jun 2026 13:22:51 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782418983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4666zdLjJLZrpvKtSAgWM48xKMLs0ArCqLFSxNE1+L8=;
+	b=t2yafPs094NOh1WTpNMPZTHY/qli/6qioi0s7PHyfGYLLwRVTq1sRqEpQA07Q1fIM1NRmV
+	C51OX/DEP2PPFJOPcZteAcOzhct1bqnJbnUqVRgwjpViy8GrrkUXRkdPqV/DdX1HOwcwUj
+	HNlmU7yFsgzQO3IBaUfW4U00RtqcGRc=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, 
+	baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	hannes@cmpxchg.org, harry@kernel.org, muchun.song@linux.dev, 
+	peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+Message-ID: <aj2MsQ3tF0ACCCGi@linux.dev>
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 1ty7df5w18y3yrcg199uf5dff4gwg7oy
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 36FE620004
-X-HE-Tag: 1782418660-597506
-X-HE-Meta: U2FsdGVkX18qdw1V7sgbUT27SZVwylqoLtlyQIXvNms+vNoiWW+kO5EftJTm48hGeucj9SSvuHZkl7SVZU42IwB5RsLYuYwOFstNltbGTFX6JuYuX7fdkd6cvZzghDfdbSB7iEcwSIIpgJEhafvWmDRXIc+d7fKsmJqrjiF3sgNyPPICNpYD4xiyI6zzcalNfvhtNKZ8jf4Vf8t3sGWEr65fffRUdaTri87Ft0IZk/T8rUX045FvNIEaR6oIMSPNBA+gUO85BkBgBx//FHcYP0Zx3R5nf3nAZoNMYKuW8kpdA6/NqL7bCdTq+lMmnO8D0JwFyiB0ckLFKCV877HbE4Je1xIqFklYU2W/4lJ7MSQVgxp2XhFaEIB7uBYD8hdIAqw6MLJBjO+CqizUrx/MNzSwN7hIH+iJfMOp8NXAuDX9DJxeAzOqRraxL5ug8ft9rVZqdnG/Ztd/jtx9ozPjU6rvQk/yJBdVZESXVB47fRN4Rp63vKjcmp/WHtv6pn/HeNz0HqQNTUAP8NZrN9junwY7+CMPVtxYmo3Z7HOBSacoQNm4meGM86Rh3B5IVSRTBnX+wTIPvFRykSFu5EXb/8ODVtuLBqQkMJxoVhkGOG0zw7IBNzlcDXCMCW7YGlji92dFWH+1DSG8WQQGVEI0iE3glmxjF3l+x772vAxCKBz3JXauNZMgEmw0ab4V2LpqE1GrQv/I43AgqMvR2GMn818h4GymotmH3dVJh1aRfitunrCCbkbgIbzBesAmhO10h03M4wK8nG6gVAylc9u9VYkxBDFT5jk6aME3ZgmcOBsK3GOpG48E647OX/eKZBxVyJ6bN1Uo3iYJqjWlp5/hsgd5JRkiaKrBoaImoDbNFQI0PBH0N5zRGwRDX/JiltOhVeKQG8YP8MbZNMnXCmXZW3C8U+URC7G7n+o2RPpQaEkEuv32sbwVsqOd5ZNoHrAjUoT0bQNSbC5/OFxJK/3
- BPLJQhsL
- n+2oeaervqjYAetjpB4n4k3UBdmS4DcviETgYEKbn1Hp8WhyDSIq3QGqRjY0+tBljdaa+ZFx2SVY2C0mc/VfSlLdWL3VSkq3F0V1urgUhTWBWAzyzB6zK8HWsVTGbE+cVNlpXjJZaq9wCRnJar1b3aSFsxezGsC3M3FZyHgmjZHX6lJjcNoLxCWQ7c1ZBIsLF04+YJwq5qr5HkTBLBhNn+nBUE4L2Qowo7fzOvrmtM4fkpfE1gstLMeXZF/5mMLkWuE2Ntxd+R/0oSEn4aJtUDHvNYdLJPkzfidf0eO0LN99Ik8JDi0j9rDzT4H2IvxqmoPnNwmttLBu3pI0sQIzCmDcTeA==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 6BD762000F
+X-Stat-Signature: dwafhwpckfscgyu57aknoki7ezhk7h4e
+X-HE-Tag: 1782418986-904115
+X-HE-Meta: U2FsdGVkX18uqX5W2foVU9Jivayn4I/csftwdbLmZOVJ8t5nSSTbQKCRVYBIa1zfGTUK5jfukWicT9V75aZUpgG3ElbXqp5LWWvkIw54ZTB2ybGoQnxaBGnZ9thMltGkERTbAP5m5+QJKQkXHw7x4EGb89VBWpHC6FOqXUUsk2p00VDcddnP6/hJNpW6rH1jJYw0+tlOdQQFhj5tUY6WCwFY5j1oeSrvk3V6Fv7BrmDvuZh7PaEDE6/ZGMNdvr/+U2OrxVtOLOrZtQjvDyqe922YQ3Ivam3BkQT+TW+HAOF255Azp03+zlULjkGdCUCTv+3XPSm74xglZijVAE05cgKQY5V3L5Nj2We7K3Rg88IjaMFYvPkCuod5pAAK49tXbBmgRoL9N3bZL6h13v/NgeFsPFdDVVqF1cFT5sR/inaVnOhoRtzx7dXhlFBqxe90AWkj517FXU0eJ1ry90anOPWaJcNN5k6q+07VP5k5qpoSuiuoA75W2wPhZuWNN/CHpG5oZjKzIGsiVwzyyZF7cVul90jd0nbq8XsZEJE+Qel7RsVrcfklY5NnpklI+4suPg0YZSkcQroTow6wICzi7GRH67aq945jh3YhOjtjmSDbIogvvuBrd5bZrdKfoEZRkKXOye+zkc3s1ZIidEuvZPtaO5OC7xw7mWw/8dGaMGIxVRstauRe3yD+pCK/ae84OX/N2aKHyS3G+cm2dDARiwigaVifsptQtyr5eBAtbyjn8bsqQFYGSF+m9ZV5B9l3s3p5IynC4PtDAVNm6XNVeyVZZ3KXF3fnezw8QjHRkQqKvA4mI5cO9n3Z8E9jeODVSlnPngdfhukfTXe2X5Vh4jzwsdZL8EeaTYFOvOnaim2diw9NQx0QbCC3CVObluqh5W1hOhOsnq4f9cpcG2xerQ/GTNZbPQx6AzhbeBTdpZhw3gSbV6rjzn0NfvLnKYBm6FMNnYPsl5zaqF8NYa+
+ vk8Bmil6
+ KiDmC+1nFnFw9oi1cYkeIMalMBGIyUOv7hbVssajTHyDncEUhlVhi9c2KbJj+IDPrbGD59zNJokoIvSHh26iEmFjHKPF14HXsyqXkN4KcwRqUigu+SBtqSyFO3JaTz+vTyN5taFsEh+K4Z0Q8Oo8LfT1AjKpqcfp+qKGULPf+6vJ1gEnlVE27W4w8/yxXoB5M/sfI/M/ixXySigct9BIYMra5QFiAyeS89nJInVNVF6bYhF4IHfpez3fJiS8LV6pPzhac
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,59 +91,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026 21:49:15 +0200 Vitaly Wool <vitaly.wool@konsulko.se> wrote:
-
-> From: Vitaly Vul <vitaly.vul@partner.samsung.com>
+On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Resizing mempool to a bigger size currently requires a new allocation and a
-> data copy to a new larger elements array which doesn't go well with the
-> idea of having a fast and deadlock free memory allocations during exreme VM
-> load.
+> The mglru page table walker batches per-generation size deltas in
+> walk->nr_pages while walking page tables without holding the lruvec lock.
+> The reset_batch_size() later folds those deltas into walk->lruvec under
+> the lruvec lock.
 > 
-> This patch introduces a new parameter max_nr for a part of the mempool API,
-> which denotes the maximum size of the pool. With it in place we can avoid
-> any allocations in mempool_resize() since we can either grant the resizing
-> request or reject it basing on thr maximum allowed size of the elements
-> array. For those few users of the mempool API that actually use
-> mempool_resize() it is a clear upgrade because the maximum number of
-> elements is known upfront.
+> The page table walker can run concurrently with the memcg reparenting path
+> as follows:
 > 
-> Derivative APIs (like mempool_init_kmalloc_pool()) are mostly left intact,
-> substituted by the new mempool_init_kmalloc_resizable_pool() API where the
-> pool is actually meant to be resizable.
-
-Thanks.
-
-It would be helpful to have a description of what inspired this work. 
-Presumably there is some observed problem in nvme or in zone-blockdev
-use?  Can you please describe the problems and also describe what
-effect the patch had upon them?
-
->
-> ...
->
->  int mempool_resize(struct mempool *pool, int new_min_nr)
->  {
->  	void *element;
-> -	void **new_elements;
->  	unsigned long flags;
+> CPU0                           CPU1
+> ====                           ====
+> 
+> walk_mm
+> --> walk_page_range
+>     --> update_batch_size
+>         --> walk->nr_pages += delta
+> 
+>                               mem_cgroup_css_offline
+>                               --> memcg_reparent_objcgs
+>                                   --> lock lruvec
+>                                       lru_gen_reparent_memcg
+>                                       --> reparent child folios to parent
+>                                       unlock lruvec
+> 
+>     lock lruvec
+>     reset_batch_size
+>     --> child lrugen->nr_pages += delta
+> 
+> This will trigger the following warning in lru_gen_exit_memcg():
+> 
+> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+> 				   sizeof(lruvec->lrugen.nr_pages)));
+> 
+> And the user-visible impact of underestimated nr_pages in MGLRU was
+> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+> reaches zero, but there are still more pages.
+> 
+> To fix it, make reset_batch_size() check CSS_DYING under RCU before
+> flushing the pending batch. A non-dying memcg keeps the original lruvec
+> stable against RCU-delayed offlining; a dying memcg redirects the deltas
+> to the first non-dying ancestor.
+> 
+> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> ---
+> Changes in v3:
+>  - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
+>    (suggested by Harry)
+>  - update the commit message (suggested by Harry)
+>  - temporarily drop the previous Reviewed-by tags
+>    (since the sync method has changed)
+>  - rebase onto the next-20260624
+> 
+> Changes in v2:
+>  - update the commit message (pointed by Barry)
+>  - collect Reviewed-by
+> 
+>  mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+>  1 file changed, 38 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 35c3bb15ae96..1ec8c23c72b9 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+>  	walk->nr_pages[new_gen][type][zone] += delta;
+>  }
 >  
-> -	BUG_ON(new_min_nr <= 0);
-> -	might_sleep();
-> +	if (WARN_ON(new_min_nr < 0))
-> +		return -EINVAL;
-> +
-> +	if (new_min_nr > pool->max_nr)
-> +		return -ENOSPC;
+> +#ifdef CONFIG_MEMCG
+> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
 
-Seems strange to return -EINVAL if new_min_nr is too low, but -ENOSPC
-if it is too large.
+This is memcg specific function, move this function next to similar functions
+like lruvec_lock_irq. Also put irq in the name.
 
-Also, (pet peeve), ENOSPC means "No space left on device".  If this
-errno ever makes it back to userspace, the operator will be running
-`df' and wondering what the heck happened.
-
-Also, AI review had things to say:
-	https://sashiko.dev/#/patchset/20260625194915.387663-1-vitaly.wool@konsulko.se
+BTW have you checked other places where lruvec_lock_irq is used and if similar
+kind of situation can happen?
 
 
