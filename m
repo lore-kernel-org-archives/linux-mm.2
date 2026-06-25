@@ -4,99 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B42DBCDE00E
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 21:59:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B87E3CDE00B
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 22:50:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75ADD6B009B; Thu, 25 Jun 2026 17:59:06 -0400 (EDT)
+	id 5B2D46B009E; Thu, 25 Jun 2026 18:50:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70CFD6B009D; Thu, 25 Jun 2026 17:59:06 -0400 (EDT)
+	id 58CC16B009F; Thu, 25 Jun 2026 18:50:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FB4F6B009E; Thu, 25 Jun 2026 17:59:06 -0400 (EDT)
+	id 4A2656B00A0; Thu, 25 Jun 2026 18:50:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 211516B009B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:59:06 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3C2E8402E1
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:59:05 +0000 (UTC)
-X-FDA: 84919801050.05.310698C
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 934544000B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:59:03 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OdHe15fi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of 3pqQ9agsKCD8tpvsbwqboebhpphmf.dpnmjovy-nnlwbdl.psh@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3pqQ9agsKCD8tpvsbwqboebhpphmf.dpnmjovy-nnlwbdl.psh@flex--souravpanda.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 225D86B009E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 18:50:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7E8C14030B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:50:49 +0000 (UTC)
+X-FDA: 84919931418.25.53FA622
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 91DAB100007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:50:47 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mNBN0j7G;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782424743;
-	b=s7U7JMmXZPxfwrbu/mbqwz4+6zEzz0Sq1BuAr8E6zpFe+YluX2jy7c+IrqM9MtHKxQ5ikp
-	azM4mOc4hs+PhxvVk4tf3LGGggwIcs3XkszF9R8yTjOHHsE/hGKtFVb9eqUvShm+pTC23T
-	BBesIaxjYm85hekVkeXYbrnkqfQThdw=
+	t=1782427847;
+	b=kZw/RfBFI0cqgCPs1PW1hlRA+R01D0+e5PWI+2N5yHwO12wJ/EdXpwrRHEx7pqDz9c8fV3
+	7r6jm5GaG/0Ekr6mfNSeL9ZN0EI9+ViACW9wIZ05Tk1VaHTBrGbw5yuS3vg5H6Nnk+kngZ
+	DJu4t65hUM9Op3OoemMt0g0mNwOrZZw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782424743;
+	s=arc-20220608; t=1782427847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=d2PbcE6YHaWKPSTOJuBDMS6/xM75stA7GMJ8h7+fVys=;
-	b=dhwYM+XduMKU9JlvwYCSW1wtEXGf5kkNoJXe0+HcFUO0+V7D84RKneZfCVv8SSlaPNQZQy
-	yva7Nt5vhj1D0S5+JrIaA/4r9NHlazX9yajTGbbiO2mjCj8rduT0RVhpR9/EE1euODq9aT
-	QJG8FQ48Us+IxzGwiDPL5Wn2TH8zqsk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dxugoFo5bqWGfuAQPpw10nJpdmlXTDTiQ5GmXQgQaLU=;
+	b=rtlSpS5mQQscSIKxxVqdVawjAW7gdUSYEQIUVszn7glV78xc5pSNTAcPXQk0MVlqAIRLhX
+	4gG789J0X40OZXsT/JSo/QuKggs6de2J1caPkfmyC8EgmzoWPRBp7iqez/TKAErayiQ+A+
+	9K1hNUu5FAZ8/1WhfRCbBLPTt8rpDvA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=OdHe15fi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of 3pqQ9agsKCD8tpvsbwqboebhpphmf.dpnmjovy-nnlwbdl.psh@flex--souravpanda.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=3pqQ9agsKCD8tpvsbwqboebhpphmf.dpnmjovy-nnlwbdl.psh@flex--souravpanda.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-84531eaf8a8so308993b3a.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:59:03 -0700 (PDT)
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=mNBN0j7G;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A46940870;
+	Thu, 25 Jun 2026 22:50:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190451F000E9;
+	Thu, 25 Jun 2026 22:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782424742; x=1783029542; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=d2PbcE6YHaWKPSTOJuBDMS6/xM75stA7GMJ8h7+fVys=;
-        b=OdHe15fit5I4OsQGeRuiJC/xdtfJIbvDDziLl+ydwoI8S0/bp6xN4OxiwGYoB7hqHH
-         ltH8D6a06X5G2SGzlwuBVb/MsExjoDwKjL5H3Oxj7TExJSRUYc/f7sej+1dUSgM3Fl+Q
-         qtdH3J5ZvUkRU9iTg3mBq7vuQvUtZaRy/5mNkkV6SWClcyVg6klvT4qy8xw5tUaYpgxx
-         C9ZrEXIMMBOiaFSi+pXL33jODUWDx+XqHj2myZe00zvMDbFlEgMznsvd/A11VRf1HB5X
-         E3J7n1LTcFmruM3X8ZOUUwAAv2rPkEx+qDhzUmQF1PKZcIhx9+6WVkVtWobM4xj4YaGo
-         +6aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782424742; x=1783029542;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=d2PbcE6YHaWKPSTOJuBDMS6/xM75stA7GMJ8h7+fVys=;
-        b=fxtgOdT1VKohyOZifNxJOSx0qzy+VwY86IvvZVKmhhiQ8WEjdUjTc7In8KhdmoiOh/
-         hebL7WooDDeIjrVAIS6OSi+PHUxM56gAfMlYpft++4GIugR1aHzph/bUH5pe1lnEw0kN
-         kiBwTg2Lb5bwRqruOUkg9cAuAaRGEtD8QjipAILsdS/u/ErFF3Os2nbHVCUBT5/9sZcr
-         CLH1gly2HmCq9fBzcwKYDvgmxtbfpgALh7Jp7lckAdqGj0llUXfV8+NWbBEtXaGfibzM
-         A+KlZpoEeWKEFpR2GBibFef6UYKOKDyt8ZSHRohu8D2b+zt45D1YaMcF82TnCDOfdLK4
-         mD+A==
-X-Forwarded-Encrypted: i=1; AFNElJ/T12wGGkweFxtoHB4QyxFcHg1gCD0jeZJcnH8t2ZYEFsBrT6330kywI2Aehmx9nVJA0/Ur8AgE1Q==@kvack.org
-X-Gm-Message-State: AOJu0Yxzb0rEj+hQ+l/RncpDowMy2IkkU6iodIYH0RG81IESvDq0vqsB
-	1pfE+JMsPtXyePbhWax/S3mBl6dRmIWV4EHIQuhhcO515h3xOtPQre0JxF5FiY4p5KxixS9Vyh4
-	vw3IevTCc4Bo3SWy0Ee39tDLvfw==
-X-Received: from pfwz36.prod.google.com ([2002:a05:6a00:1da4:b0:845:aa6d:92ea])
- (user=souravpanda job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:2989:b0:842:708f:39a0 with SMTP id d2e1a72fcca58-845b39e15ecmr4983540b3a.8.1782424742033;
- Thu, 25 Jun 2026 14:59:02 -0700 (PDT)
-Date: Thu, 25 Jun 2026 21:59:00 +0000
+	d=linux-foundation.org; s=korg; t=1782427846;
+	bh=dxugoFo5bqWGfuAQPpw10nJpdmlXTDTiQ5GmXQgQaLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=mNBN0j7GgpctvyjQ2w5f06YNcCpyBHNU/r3g5vXcwPiMNl//R/ET/M9fG0Fjkx33u
+	 2nYBBjFz1uqrRpWFg2M47qQerTeWwfuyFTo1qA1zaoASYMy+5e1RjrXVTNqku7lXwu
+	 Ipu97B2gCfWaxtsESsQrF7qElwx+XkqOvebxDNRw=
+Date: Thu, 25 Jun 2026 15:50:45 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Brendan Jackman <jackmanb@google.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, "Harry Yoo (Oracle)"
+ <harry@kernel.org>, Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
+Message-Id: <20260625155045.b1e2262c552e5a5e0116f884@linux-foundation.org>
+In-Reply-To: <fbe1e70b-2a33-4db0-b390-3841c1a84522@kernel.org>
+References: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
+	<DJ9KK3Z7BPYU.2HDB5IVO6Q40@linux.dev>
+	<DJD06ZZOC9IR.33KCFLM7L4267@linux.dev>
+	<DJD0X2R79SVW.1XM7FV4REYCHS@nvidia.com>
+	<DJD12YR8S99G.1I43PSHB77TA2@linux.dev>
+	<fbe1e70b-2a33-4db0-b390-3841c1a84522@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260625215900.2151690-1-souravpanda@google.com>
-Subject: [PATCH v1] mm/hugetlb_cma: support percentage-based hugetlb_cma reservation
-From: Sourav Panda <souravpanda@google.com>
-To: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org
-Cc: david@kernel.org, surenb@google.com, fvdl@google.com, gthelen@google.com, 
-	souravpanda@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 934544000B
+X-Rspamd-Queue-Id: 91DAB100007
 X-Rspam-User: 
-X-Stat-Signature: zx33a7bcybq45fqoobffm593sdmcyzjk
-X-HE-Tag: 1782424743-145384
-X-HE-Meta: U2FsdGVkX1/nwGAL5cCdA8oA4yAaVPieb9AYqu4G0lMXPmDvStEl6T2WIH9+FBJdGx06faT0c8hbpa1InQbKzPRcVvPr5A6/U7SGC/uNfIRAu5vNK8cLSuTWHs2E/JaS8EFiVt1RdjQWM4vqXg+TkQmp9k1PKYBr3ROkpwc+Ce1zyIOK75iMtBKuYqzwrwThmpYthdp2e4ZSaqJEXOwFEFY3uC3kCow0MXhpfXxSXie6v5lAZeX2DGGqr7YUOWvh02l7hBzFlsYjfvQoBvX6SIvIMVTFIpghxh9l0NLh8j4QCR1WjIRYqWw1/ugggq4FDFgOpvPqMkEV4H6/9+TM/OCMFNMQv4WKXqLXBHBCinXB5L+pNZt5Y6FNWxl4H5T+qnCqECm6skWYmFOExqU1FJFqBqA2g6aBHlfq8foBnOXf+DUAKSh5dIGoIROsV2536hAEFOgwPTJ3RSF6i4hdUkPfSUNM1qjF6c608AfghVOhVkTFOmEi7L0XZuCN5bqDIJQtcl7dSfK50UirsR0KU1xDPxNwTOGrpO9Zs1FkTT3l+TV0FHTD1/siVqHBlBk4eSYgJ/neATGt6TPu9pKprVa0GV+dIRXeXZ59YtIbY7I27V7Vz4f1iBYWChzpYfwGJFIxcjrX9Xmnx0KuMalWLKmsWPt9g78nypzWz+pbWCe/M1XoRYX27QWxe5qeSrcxfgBVvHvA+7wSlexUxPcztvQh/t7TXmRFjKZsq5Gj+T57HZYulAYxIMwnpkRmd9q84JzVex5INKHR+slqd3vdVN3yzgcs1/wpJDibQtyWY9vHrVw+7kPBIOjghBaP3tHJR9TcMy20uZz5vtaPYdUjUWJfYm22x1Jy4X+pKHO2tZlbmmjGcnUkwwejJABdefLHJJt/ROQ6GFT/4PptYWpa4roxkR3b6hUoXHpM0ZGqK1Q25YJdwcQqPsIZAUnG2S+dE6PM4n49IaRmvOU0QQv
- N93u4Fba
- COnqe2D+s7R3d0tnuwuVREp+wmdDDyesL7u4w0tS1Jej6TDXQZ83N7tAKvGApuamo9Gq7WvHlru2Rhq9Ev4DSGOZ2eFaSl8BpeL89DX35rXDnSC8ifCKyq1WY1SRZl9zQEJqEQiPk5iWX8XMbMhNXHXQBBrM1qll6jStgNClOrr3MnxXVPfyWMqtJeSk2J5rDBA3S/idG++lbdSnzqRpvIJ86l75cX3Jmf24Jht/q4lQ/R6jHxz9ruGFPLBJMyf4WIGKlcuKRjjP5q2cK66HZCdEEHMriLPrHyWTLIvK6H3VKZjZ8n9hFeSbg/eflvzBy0I0WNf1iXLcPS0kAV1h+U/+9kPEsg9lGRxvrMzQvlWkd1q9E8F1aOmQMqPs4IEFIGvSqBDU+70G9jqrUhLswjgcVJBn67qfjFgydyPA95q8YSBluUp1euZIgNNEtL00eh1Sx6zwXjLMbZ39/S2hMOBA2R9podomgM+YTrbEgRuZdbbwHqNbd49xqxd7pKgOM9vMRnnFi7nWsxUMlLIFVBhP4Ee+k3PQS3+C0NcLDDOnW0622spL26CmrAiCHZuduiNK0gyQqVNqSPTEFmz0q9yiBpvhCG1joXNUAJmlbHE7QYOl0oy+3ZORmbgMV4XslS1gz
+X-Stat-Signature: 7xa91kb11oap3szk4q8rhf9who7tk4xe
+X-HE-Tag: 1782427847-334638
+X-HE-Meta: U2FsdGVkX1/8de1LcJgx0aGa+jgB+uUfiP/vrpk1I4HWOGLYlhBEhA4uh1Rv51yEXO0sunKYqNq+DeqnGfQ9HX45qEawfVkjnaCuHl6VaRZ3Qzexbvg4/Uel5GRl05WUpzrm1tr+/zkPHxzLXgCCA9qaIAu7AX2Mb6O7FmcEyblof7lf/Vj1E5XCNOWXNsK4CDUrrmbMiGvjE4CXXtV/cNn6/l2mEXwW2zpMdPXapPDPT+agzq0WqD9S7S1uQBHtWU4EghfwBmTdl9ZUtnCWh0jQefxkq6LkiRKwz6jAVWzrXckHqREuV6W5FLVDxf3pvkOKQ8dsLYMXD3kEb+IQWMAGAd1qtBRXZVMRFkEhKutKarpIyW3bW8H8beetoNRs2EXWaQpg0Bs6cfmKABvYLhVepTkqg5aP3Av37nHJWkEqtrQ9WV5LDtNYnFZPM1WyeT1sI/864DcJ+9jxjo5TterZF9gOsgYhQGRCnJOk10xbEpweNxS/6gELU1czhwkPL0GK0+yLh1kcWfhhTpuYIi6OJHhGwUrIb868ysNXgSX/KmucKArdCtAYhFUL+pe9taXLRB8f/H4/E5RKzmGyB5LRuZ4JA6Ys+hJrdy/5/hDg1UV+HVw79mJ2mHLC2LQBQSxr7EfC/CRz9rBJVLg9GxPsFXFqe5Gmp1XyTuPHqmK5fu/xd+TtEDjYi+vJl6FZJptaAmQFNRBk5V/8XEqXj8pvZ01PqVzHPg68zBi5xIOBC19m2ipSgC05EBK1F9g1yf7payKt8dG59aJZ1wugqOQvd9njSn0XooWTmHDzCjppknO/7JuU7mfJH9MN+CntInV3iPaupbGqm+sff5c77vrzGWyy6XFMZIZ54OXJX6kAzeyBFLa3Sa2mHJTYkQli+koJ7LHxxb2pbFHFUD+rBShAqqTtmYfg5SGT4E9m1fWpJBY6J+vs8pbKKgERJl2d0LUEBoBrGdwuBexTC3j
+ HxqJO0ND
+ G9IugV8DMhYJqmaSWZcXh6z8CBjUqdKDUAGadQJF1xz/kB6O0KKzpc8S83gzBLCVvit7+6FsDURhHHapo+QA/cJAc4sIj6/ne5WbYG4zOKzzMYQvXYPvBiC2Z8CKet+sX5qDXntjiu4B5JQOvQWto0ISti67lU7E96FY9WS8ErlelQg8rDVyauHnk0HqMhvCtudkeuF+k5tgR+qXIilii8VSb5H83Dr86YxSuwAocdC/UrU/8pBpgQz3sWtY80gOLus6FBjIRJw1PPze+Q+i893o259h+mr6cS7/IpeIb+UCPdaW5eVK6QJcxVKijgVn1kNyx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,170 +98,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, hugetlb_cma reservation only supports absolute sizes (e.g.,
-hugetlb_cma=2G or hugetlb_cma=0:1G,1:1G). This can be restrictive in
-heterogeneous environments or when deploying common kernel command lines
-across machines with different memory capacities.
+On Fri, 19 Jun 2026 16:53:41 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Add support for percentage-based hugetlb_cma reservation (e.g.,
-hugetlb_cma=20% or hugetlb_cma=0:20%,1:10%).
+> On 6/19/26 14:34, Brendan Jackman wrote:
+> > On Fri Jun 19, 2026 at 12:27 PM UTC, Zi Yan wrote:
+> >> On Fri Jun 19, 2026 at 7:53 AM EDT, Brendan Jackman wrote:
+> >>>
+> >>> Hi Andrew,
+> >>>
+> >>> This one didn't make it into any of the latest mm-* branches, is
+> >>> anything blocked here?
+> >>
+> >> It is in the quiet period, no patch will be picked up until -rc1 is
+> >> out. If yours is not picked up then, feel free to resend it.
+> > 
+> > Ah, I thought mm-unstable didn't care about merge windows. It got
+> > updated 2 days ago, but now I realise that's probably just coz Andrew
+> > was updating mm-stable and then rebased onto it?
+> > 
+> > Thanks for clarifying.
+> 
+> We're targeting for mm-unstable to only have material that is already upstream
+> at the end of the merge window.
 
-The percentage is calculated against the total memory (for global
-settings) or against the node-specific memory (for node-specific
-settings) using memblock APIs during early boot.
+What they all said ;)
 
-Signed-off-by: Sourav Panda <souravpanda@google.com>
----
- .../admin-guide/kernel-parameters.txt         |  7 +-
- mm/hugetlb_cma.c                              | 81 ++++++++++++++++++-
- 2 files changed, 82 insertions(+), 6 deletions(-)
+Officially (and for good reasons) we aren't supposed to add new
+material to linux-next until -rc1 is released.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 5a05b48d1684..846940ce2858 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2064,8 +2064,11 @@ Kernel parameters
- 	hugetlb_cma=	[HW,CMA,EARLY] The size of a CMA area used for allocation
- 			of gigantic hugepages. Or using node format, the size
- 			of a CMA area per node can be specified.
--			Format: nn[KMGTPE] or (node format)
--				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]]
-+			The size can be an absolute value (e.g., 2G) or a
-+			percentage of the total memory or node memory (e.g., 20%).
-+			Format: nn[KMGTPE] or nn% or (node format)
-+				<node>:nn[KMGTPE][,<node>:nn[KMGTPE]] or
-+				<node>:nn%[,<node>:nn%]
- 
- 			Reserve a CMA area of given size and allocate gigantic
- 			hugepages using the CMA allocator. If enabled, the
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 7693ccefd0c6..b4f8bbe4c62d 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -9,6 +9,8 @@
- #include <asm/setup.h>
- 
- #include <linux/hugetlb.h>
-+#include <linux/memblock.h>
-+#include <linux/math.h>
- #include "internal.h"
- #include "hugetlb_cma.h"
- 
-@@ -18,6 +20,28 @@ static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
- static bool hugetlb_cma_only __ro_after_init;
- static unsigned long hugetlb_cma_size __ro_after_init;
- 
-+static unsigned int hugetlb_cma_percent __initdata;
-+static unsigned int hugetlb_cma_percent_in_node[MAX_NUMNODES] __initdata;
-+
-+#ifdef CONFIG_NUMA
-+static unsigned long __init memblock_node_memory_size(int nid)
-+{
-+	struct memblock_region *reg;
-+	unsigned long size = 0;
-+
-+	for_each_mem_region(reg) {
-+		if (reg->nid == nid)
-+			size += reg->size;
-+	}
-+	return size;
-+}
-+#else
-+static unsigned long __init memblock_node_memory_size(int nid)
-+{
-+	return memblock_phys_mem_size();
-+}
-+#endif
-+
- void hugetlb_cma_free_frozen_folio(struct folio *folio)
- {
- 	WARN_ON_ONCE(!cma_release_frozen(hugetlb_cma[folio_nid(folio)],
-@@ -100,14 +124,27 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
- 			break;
- 
- 		if (s[count] == ':') {
-+			char *next;
-+
- 			if (tmp >= MAX_NUMNODES)
- 				break;
- 			nid = array_index_nospec(tmp, MAX_NUMNODES);
- 
- 			s += count + 1;
--			tmp = memparse(s, &s);
--			hugetlb_cma_size_in_node[nid] = tmp;
--			hugetlb_cma_size += tmp;
-+			tmp = memparse(s, &next);
-+			if (*next == '%') {
-+				if (tmp > 100) {
-+					pr_warn("hugetlb_cma: invalid percentage %lu for node %d\n",
-+						tmp, nid);
-+					break;
-+				}
-+				hugetlb_cma_percent_in_node[nid] = tmp;
-+				s = next + 1;
-+			} else {
-+				hugetlb_cma_size_in_node[nid] = tmp;
-+				hugetlb_cma_size += tmp;
-+				s = next;
-+			}
- 
- 			/*
- 			 * Skip the separator if have one, otherwise
-@@ -118,7 +155,17 @@ static int __init cmdline_parse_hugetlb_cma(char *p)
- 			else
- 				break;
- 		} else {
--			hugetlb_cma_size = memparse(p, &p);
-+			char *next;
-+
-+			tmp = memparse(p, &next);
-+			if (*next == '%') {
-+				if (tmp > 100)
-+					pr_warn("hugetlb_cma: invalid percentage %lu\n", tmp);
-+				else
-+					hugetlb_cma_percent = tmp;
-+			} else {
-+				hugetlb_cma_size = tmp;
-+			}
- 			break;
- 		}
- 	}
-@@ -144,8 +191,34 @@ void __init hugetlb_cma_reserve(void)
- {
- 	unsigned long size, reserved, per_node, order;
- 	bool node_specific_cma_alloc = false;
-+	bool has_node_specific_param = false;
- 	int nid;
- 
-+	for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+		if (hugetlb_cma_size_in_node[nid] || hugetlb_cma_percent_in_node[nid]) {
-+			has_node_specific_param = true;
-+			break;
-+		}
-+	}
-+
-+	if (has_node_specific_param) {
-+		for (nid = 0; nid < MAX_NUMNODES; nid++) {
-+			if (hugetlb_cma_percent_in_node[nid]) {
-+				unsigned long node_gfp_mem = memblock_node_memory_size(nid);
-+				unsigned long s;
-+
-+				s = mult_frac(node_gfp_mem,
-+					      hugetlb_cma_percent_in_node[nid],
-+					      100);
-+
-+				hugetlb_cma_size_in_node[nid] = s;
-+				hugetlb_cma_size += s;
-+			}
-+		}
-+	} else if (hugetlb_cma_percent) {
-+		hugetlb_cma_size = mult_frac(memblock_phys_mem_size(), hugetlb_cma_percent, 100);
-+	}
-+
- 	if (!hugetlb_cma_size)
- 		return;
- 
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+mm.git has the mm-new branch which isn't included in linux-next so
+after MM is all merged up I start working through the backlog which I
+accumulated during quiet-time and merging some of it into mm-new.
 
+Backlog was ~1700 emails this time.  Most of which gets skipped for
+various reasons,
+
+This particular patch looks nice to me.  Code is cleaner and the change
+reduces page_alloc.o's .text (x86_64 defconfig) from 46571 to 46443,
+which is a good sign.  So I'll add it, along with a "needs more review"
+note.
+
+Thanks.
 
