@@ -4,119 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37D35CDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:00:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F3ECDE007
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:03:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07DAC6B00C4; Thu, 25 Jun 2026 03:00:46 -0400 (EDT)
+	id 1BCE96B00A0; Thu, 25 Jun 2026 03:03:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0555F6B00C6; Thu, 25 Jun 2026 03:00:45 -0400 (EDT)
+	id 194536B00A1; Thu, 25 Jun 2026 03:03:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAEB66B00C7; Thu, 25 Jun 2026 03:00:45 -0400 (EDT)
+	id 0AD906B00A3; Thu, 25 Jun 2026 03:03:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B49DC6B00C4
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:00:45 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 23255405F0
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:00:45 +0000 (UTC)
-X-FDA: 84917537250.03.49EFD41
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 3A68640005
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:00:43 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rJw1YcM+;
-	spf=pass (imf17.hostedemail.com: domain of tabba@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF61B6B00A0
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:03:53 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0D49A1205B3
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:03:53 +0000 (UTC)
+X-FDA: 84917545146.11.E4A6B66
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 22D7C4000F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:03:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mQOByaBx;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of tabba@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782370843;
-	b=4IShriJ4cUp9BdMbc5mTzJSS5Xhoz48XPpfJDvj20NrKVUFXYAgJT9Ja0j0koQwnEHFStQ
-	qKHMX+EhJR/nPbam1epLZumhzbeqBf6QSzPaRX4h/DWvBsppKdpFdzrS39b5gCeppd6DIp
-	o4BtLMOvwR4i3r/gaAW8EGPLCw7053c=
+	t=1782371031;
+	b=QEoEwUJF+X5PE17cQORPzlX0nHflFiz6Tk0u/pSQnvKM9f5rln8T+izw3KSD5WG7M4IE/t
+	RpBC6wuhXxX1hPixgAgn1OAwxBspjHXYEYXstnH3EhnYB1c3GJGZiRzrJLbPwaZvaVNrIV
+	ZpYVyTRa/JxreHn9pW6HGbvHaJu05nQ=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782370843;
+	s=arc-20220608; t=1782371031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7itwZj77OJzx0Nbk553L+ihvDTrBn0KieHsapLPAjLw=;
-	b=w9ggDgbSj38PznEWuXHKxxcadsPHF2wCep+5RL8CSfqh1NKQCw52sfClVtH70po1t43b5K
-	WEoj/zmLph+StDZeY2YUBBjNC3yHdCV4hXFANwqts4iKne8l7IhihRUUg66qmTCSvvQwRk
-	zh2bFEH0IDSsbw53y4UBgyNDeDBjmUk=
+	bh=cxrlZg8b53cTZGaXTuMmmJujU2vJAW9nQq1QLfM1210=;
+	b=ZjNJAIszLO7JdBhOwJuLhC5iBGLRjGdbfw0cVomRZZb//uYoOy83gJ3Qxu/VzPxDL1kL62
+	qUEmidGhRqDpauLviXuz6eqYD7YCA9oB2Ezl1Cv3ZjCbmeYnrqTj7ZOCvtdOsiOfXJsa0d
+	IJtJ+F70X0tGycZbt5zQq2CZxFslTs0=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=rJw1YcM+;
-	spf=pass (imf17.hostedemail.com: domain of tabba@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-519ed52bcc6so181411cf.0
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:00:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782370842; cv=none;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=mQOByaBx;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf12.hostedemail.com: domain of tabba@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=tabba@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-5177d1ff061so135371cf.1
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 00:03:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782371030; cv=none;
         d=google.com; s=arc-20260327;
-        b=C4RmS/3DVpioMl58pTeMup3FYRh9SutiMpgjjqPfgLCEhkt8SH7A2VXo4TKg0RAQR+
-         ygHZIn310P1GLQZFWvtPDI95oQysc4H+zZjHacVFdtGayk7kFtwPQSlsvrPPNffyZeHp
-         qF/2xyCDJKfqYN5JRsBKvuTOx5OpviR8nLNR0QWKj3LGMoUogCgewwzALnC/cGVXO74u
-         op1w4dSa1Hkf/y72atVLSRk+1VWejqo/1CAlB7J/zs/BxcAneskwJKOzr7DcCL7X11Fo
-         RWsqelgDiS1axYkOTbULhG+iUad/LpswR20dyj80aAzWlV2dTV5b/ZnZGNyBMcFpIVd9
-         f1WQ==
+        b=E/5oHqE+nxIWjO2Awxd8II1B5mjqzGxULq1SSSor/rURL6mlVMNTw3xveBbm+/KDN1
+         sETM+VNN9Xn2/GjhvrV14pgdZYMvwblvKQ6Avd/ZA8QOEx4VCNsI/163/y7R5lFLyffS
+         elmi/JHXmxoigsRNC/k6zg87Hj1sO7Wa8pQloklkdJoPqGjoAatEaUmWNBht04H4RI7f
+         8QStyofXSpLbxEqxAziAMMRatCe/loYs0uY6UJ3OPK9r9Yef6iZpPspUeosdUBrRMBOi
+         ndxjMvLx0XTzk7OHdb98sf2OHSjUW02oYQ2HqESmPtZcFmyyKL4CLG5dC9z2Szbmt33B
+         BnoQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=7itwZj77OJzx0Nbk553L+ihvDTrBn0KieHsapLPAjLw=;
-        fh=TW+Sao0rn8mrTVbAB884wcLSrJ1tya3BH//tKSQFiJM=;
-        b=GycjIRXP2dckhb14xTkiUfhr8xnTvy7buTg1BVOPRtWK7cY5/pucXtZHEj0gTIau78
-         VNCL2iHhVMxo0/AhuoQDIVuTtveJg8Rl/h/xRrLw33mtBRpOnY+XU+1kxf4jtXxI9Hs+
-         BZvg4vbljKEVH7R17eNmKilKs//jiQRkdUCTKpnsvO3ReNBOrSRWmeOhYR7lZTomIhgV
-         ZlJ4dWDt1EQKPPm0KyYwyaLEZAiRNBLr1t/VXxg4927pDd75CFmj7Q4aPGOb2utvGGoF
-         PSIUrgKPf1y9d7KAvV6OP6Q8kNhxqIPikv/Q0d18jqCFBDl0i+ulcqpIHsvaEFC4x+ak
-         /StA==;
+        bh=cxrlZg8b53cTZGaXTuMmmJujU2vJAW9nQq1QLfM1210=;
+        fh=dWe3kWuDg2LsD28htc5EkJXvHOspD1lLVtAoyGnveGg=;
+        b=RGAVcZnjYfb7jHF4+7Mb8ruy4JB1tU9lTFwfIhLWi8ZNSkkWvuwfIX5bRmAoO2PiPE
+         0yYmr4YfQQybFIbEF28WBTqi4PASZ2qrnj/g/KfQTx2te6jDtD7kiGNR8uq7LeDHAUf+
+         GNmu+adQcukS36PtGlQ2wj4a15NBaY6O4jMmynIeLVewvnRkXHs3UAS2lVWceAR6384/
+         d9AvYOjp1YlQq8YM4Sh0wyMcUsw4LTZSi0rIUX+aW+I2HNSOsvzZH6Sqsu/Vd4CyylBn
+         oC4sb+DKZ6CHR3PUQ9IzKvMmDd9AcrEjgSRZxBZ13ayS/HKTYzq+bLAMJ1sVrUyctz19
+         OHRw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782370842; x=1782975642; darn=kvack.org;
+        d=google.com; s=20251104; t=1782371030; x=1782975830; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7itwZj77OJzx0Nbk553L+ihvDTrBn0KieHsapLPAjLw=;
-        b=rJw1YcM+ryUr14iR6zI22WLxbQeDZdVhaweLh75ipraeEMvJr3XhNoIFvM5HvgTLHc
-         VPZbnjacYNLkIwsMBxOOrAV65ckaFI2sLli1UtJNzLSYdvC4cu+qHSRcH7B4yff6xmSj
-         iQzFtHMjTds9xfkpQ8vZ06wfaRMY2qV/mbPM9lYEUPu3dP/K84NeStNAAGGsYJkBifPI
-         hNsskRviN5k+RgSQAWQe3++mz0MPdJnX2t10yTQXhHP4HfaacU+fXkUI4vfH8z3fh4qD
-         2KFj2VepPxCBQoA7s2zuTMNerYCDJt2MeT+4seaSgzqdD9nOil9RiDrjL6nfCheRn1Sc
-         xhpA==
+        bh=cxrlZg8b53cTZGaXTuMmmJujU2vJAW9nQq1QLfM1210=;
+        b=mQOByaBxPTIS4T1244bICrc0GPvdjb5kclYipdx6ANvTeD+SxxeFoyWTSwG0w2wv6f
+         XCn5n7YhxJ7KKtD/RFCnaUCsE8AN004iIC6buR+XXkR0O1PTzVyWHGiGkF2oyIpPgjUO
+         yY+IT9nv6CQRMAOZYUu4SMkROlNAv1cmRy+2I5eZTO6TwmP/BrMj00xLhKN3TemgyubG
+         UlvnnahXTX82yN1a2UnbCGVb6LCgUVp7/NZQiMAFFWcw9ENjza5rfmC3JCAf/wM7jfB0
+         7U8ESyfcZn6TqZotqr3ip/iiYhNCnPHexooBYBiaOQ1oQ37iIpGwGT0Wmq/+5fOd/Yh2
+         Ht5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782370842; x=1782975642;
+        d=1e100.net; s=20251104; t=1782371030; x=1782975830;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=7itwZj77OJzx0Nbk553L+ihvDTrBn0KieHsapLPAjLw=;
-        b=HGW2QFO+GfAB8CHtA8wuLlrL3DUVKHuv47zXVwqkD4oFtZY5zkpVR4DY3r07hPy2bo
-         j3JnaC1uOQUcpv6ymEv83hqv+EZWnte+EjY+Fdq0DiGagjPbZIDQiham0SVpumO3718d
-         lnCWu5+mNL/Af+TXmsVMlHgy+S7FXL7zYfulD2dEch82bowl9Q0s6LJXkSJt1PtuNJBw
-         zN1Zvt5/qqgN5G6UFGJRHUD9ZWgMsb5XfKSEPFVpTacwJupoKyYDuYmss6X2Rt5g/Mfo
-         B0UKMAS705Bp0X3RACeouVA9xiyHsHqvAOjkq+zipu7qOS20ZnRTQ77pzh+SWzF45vkr
-         xepQ==
-X-Forwarded-Encrypted: i=1; AFNElJ97fwSBa5lcg2IaVxF7GC4NoTF4Td5N6ugRlx1m6dM/7qgffrZaCUyGMAfHysxsz6SmVjxHXUmiuA==@kvack.org
-X-Gm-Message-State: AOJu0YwoB8WPqaqze/cJIEOGAtgISl3nANToHsXlCF1vgJ21lUbgmgqK
-	WzEzOxMgoDTQw5P7eBZCffHdO2YegXPVAeTgFR+sPGJIji35nXyRQJODqhPdqIFYB1EaFPWeKsD
-	beVO0zAi4pEb285NLnqhBCerRI+kmpsPcVUfpu8oS
-X-Gm-Gg: AfdE7cn5EEffxAXlJVaz0R4ENdg9EDMuBgqisnLvrBawECJHQO1Bya7ia/4lSA/+4xG
-	STm8DIiVXuq1k2OPOgeaSSuIPpNzu5Alu5kFbNtpBaMqvhumpvCXF83BbSxfZvnF2roJdSCZKf6
-	LX+KI+sRCEMvskL+mAakXha7fx7KpbMleOwlwHP4Zq212ctQajzxVbLhBiske/l89fR3d+hXpdp
-	+41Pbe8djnluG5xmen0+FPq8RiKhmGL5bDUGdyu3Y8oVNJvA32fbLIB9XuApAfyH9r8KARS37do
-	gKw75s2d
-X-Received: by 2002:a05:622a:53c4:b0:50e:5eba:cadd with SMTP id
- d75a77b69052e-51a6e9b5655mr7053121cf.2.1782370840588; Thu, 25 Jun 2026
- 00:00:40 -0700 (PDT)
+        bh=cxrlZg8b53cTZGaXTuMmmJujU2vJAW9nQq1QLfM1210=;
+        b=A4oFsGG5kJSn4/EP5nCQmU/L9flR7btyRgH8XfgxDs+JDy00Vq2/oMntQF6KcJqFhc
+         epvgqQ4NAnJUe4dYJlbG0pRMBhwlMF67BTYnXDVutC8hQqtR8JYEy9mA4JwXOXGNTnRa
+         re+9k9OG4azQGx1zjpcYUTtj/NY1hX4nyIf731rXRB4NhLsCiB3sLVPHXhdGZmHdebQH
+         Xwot63PzRxXaAZiweSh1NtR2nRi8WViLyIcGgXWLy5X/uwyoqjld5Dwpsyej3OLH1z9Y
+         29jLRiweQlbDkmMsFN1oXbl111X839V65eVaYbZZuaDbu8zCRQ9/TkYb7yqLr+gVJdGe
+         EBFg==
+X-Forwarded-Encrypted: i=1; AFNElJ8V8ux6vfm9ItlUijl7+i4JzppE4OIx0rnKG9E5t1Om2M8J1eq96XxwFqSPPoewZ866bQ7gblXHCQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywse743vHt6B2VxacNZs/YIUrtojp6goP7yUPq62r3vxBh4IPr2
+	7ObddP7ib2NoAU6V6bvFkvm1JZq+SBlE8B2iheVuO4BdjXfpl8tct/oWV8xjwiTQODIf8jdZuBM
+	h1ysHnR4MpImStJAx1yl6dk2A2KYfVOjVm+wFFcv6
+X-Gm-Gg: AfdE7cnOL1Qzjgb1yiXmC5jA+uNVeHq7EqkdbJev+kTfGELdtbS/ghGwE9vLg3ykk5H
+	n+wDOvKHA0pnaXgqBsFPWuADee6trucZLSrpmXUAbjdHL1dnH2U4MikZm0xrB4NIJxJNuRgBHYI
+	L297krZD9jzqursB+9gqGgs7ZfEZj2YtzVpN54TygxXwWLvNv9DTqH6wAyjVoaNcjaVP51waV/T
+	j4eu/9CckJxaQfIkBM+uYVnzSMpCkBM0y9yBFmHJCnXcDucG3/H4GX47FQVZQ1kMU3XHxO0Lw==
+X-Received: by 2002:ac8:5913:0:b0:50f:b69a:f4a8 with SMTP id
+ d75a77b69052e-51a709566ddmr4167481cf.7.1782371029299; Thu, 25 Jun 2026
+ 00:03:49 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-34-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-34-9d2959357853@google.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-35-9d2959357853@google.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-35-9d2959357853@google.com>
 From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 08:00:03 +0100
-X-Gm-Features: AVVi8Ce3XGRWH9AR3rw80vlHynjgwNotwUVdlcJvIAaDUMJb2MBvPhhdMigDY2U
-Message-ID: <CA+EHjTzR9r97Brau5KMmUf7UZvevmhpCKhTEt-9wT=0YXFLpFA@mail.gmail.com>
-Subject: Re: [PATCH v8 34/46] KVM: selftests: Test conversion before allocation
+Date: Thu, 25 Jun 2026 08:03:12 +0100
+X-Gm-Features: AVVi8Ccml7uePn0yWr7psf-IlIIJeOhhOzFV38YDt7BElEVA1ysUJR_9AnFc0ro
+Message-ID: <CA+EHjTynteewQUd4VTobSypO=oFObYSBLZ_xyK-CGNSRNcrViQ@mail.gmail.com>
+Subject: Re: [PATCH v8 35/46] KVM: selftests: Convert with allocated folios in
+ different layouts
 To: ackerleytng@google.com
 Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
 	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
@@ -145,14 +145,14 @@ Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
 	linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: b7s99p7k9wjxfko9kj8kqezjurm8f1dd
+X-Rspamd-Queue-Id: 22D7C4000F
 X-Rspam-User: 
-X-Stat-Signature: 3u1qrcu655e3zesx5yq15pon9o5mb7kz
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3A68640005
-X-HE-Tag: 1782370843-770648
-X-HE-Meta: U2FsdGVkX18GbyJaeb/BUI3dfb60HMh/Ywjqrt/qKYRHsGToykotSi5XXPWQEvNa7iWxj6z/36bXNHtztACBfhGbgJ7J7pog+JXWw6xJL3JuTRXwk7COxUh4ojJO6pm64UqRTID4oaKFEY4zPH7BTzzlHHLXbxAEWrd1pv6uPLFBQA0AZJmy5FocGXPkqXT3DRUZ8q3LkiPYF1HvYE0ClG3UITJddovNqdAFI9dUsYdqFUziTcMZT3XOSfPnXFn8hKCp2PDV6wqqclZNplP+yPlreKifFZw2bfe0PwBzXdeyPeMr2pg2KZlvM+jc7LuPS306PT0gCcJPMDwSHYP+EJtJ2WcF4XB2VEx23G2aIRZ2rFwISc4rir0yfi1PdoKpAoiHuvt/OPUgGRdVi4OrJvV7SSK7w+vO/41Dm9Qflqkj3NwYipvFK+II3o4IhmfNZ8C+QiXrFhmfv4SUWGXubm+nP1cTqoVmAFUevWkXn6bL8LfZ7FibeaKHjKc/yWxLrDZMTbBzkwmD7tdUQn5BohkbuQDUq3BPeNjmDvvEevu40lBo+u3jqFtfkgGDpkE3i/H5STVWHqk2nqfZQqJ0LO05ZllGRT+WeMKSuEhWbrTEPg3zXSX4ao1W6FQiasRW9L3CSV16jPfWRPzewM/5XfTZmrv9EhEg9GOqwNHGvHg25CODkpF/VL4czy8Fn4wgFUymUvp/OM/q7Sk3zhl4Ll1JG+m0AVbKJrMcc7v0wvsk1yUEvmDWR0DDPh33eA44tjhBeLd9QaN3R5o1S87E4hJ5BxUV2dmJqbbobOUjIWXaqTl7GVC9FeZ2U925+rzBKEhi7dthEScRanhiRL6DEKhMHLQhls8D0XUkwOi1BEuiEkYH6wmdcqtH1Ph+480g4V4ZcDy+Mv9IxEpp+jtRbo51eLH7guUAuNxZQQ+35pj+YL3zzlcW6izU/F4cziWn54PtD3lWGXurY5whxw4
- rUp+rckw
- 5g4hiANWhHMJQTm6GypXzi09SdhYYqp2/CwNPUdw+sBoZNCqQevDkBiSjq//Mg7ZZRc7/KPTGQwa/S0gwAusIsXhoRjhGRczl6zkMcO+GzITn13eqpbyJmM64T07Qhm0EcAMDkLKaLq5u5+yMi2gngT4x7V2eFn6TZLHLdJr7SKAjLYVPQ/v5LsJChUmZVDAyISwHSK7AhJA4PrNbbjv1XQ7cCdC6H6oFKPDnd1ycOXwKZbRkAOrcENJJAwLAV5w3RSegVhcSxu+Z7E4G4dd15rs5mI3xgbidzK8G
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782371030-83364
+X-HE-Meta: U2FsdGVkX18HVzzQ+LPu1piUvPFqj4iHL8BQ6EZpK5CAwrmp/SHRdZ4ePQiXzzQzmJVcglHL8azeXd/ApHTYLRz1MnZWAiCM00DojU1gGquIYJg5LuqalmQo2baPBrwt7XVoPYdjwcSEfOTBDKfThDQP+vJLkaehhAy5dMSOUeWbNIOiJ4l981W4hE1WhmOJY5IJ1QOBGGcKFgPbH4I9CF85iHATPFzUTe7RSfwlnSSumOrb2FIEqlqA5Iy308pdh0fxm9mupc0CHKrnRTRhT1jxfEiqBDoPZWYfAJcoyFDGzkq3deyF2+dOGJITM6/wI1ZTc23NhvJGYDrx+EANAtYpNC+RR4msmOGUNVSRL4SrSGsoWc6xyvumgyQL4tG5Cd5OOF7Nq/adg1siZKJlmAgrI8kA2WoSbTrEo+rKhNRlmfMOk8Ix6rp2G3FpCaaI1QWHcXBSHRIiVr0HC5TGPveJRvrP8Uv/Ve8mK4ronBB36bF3kDH5uaxo3S6D+Q6KVNpX3cnvjl5+uBpooVyTIg66XGu+6ZIdmRCAKbKtu138LzBGHkNBeKpVzeke4PtALARqQzZI7a3Nf/HGbEZuEtcs1dJJvfTq7nPnf57fkmUyFumaPjNvezi+m6h3ayZlQJT+sV3ChdmXcq9bE/mWsvSx623HWoky+090lZqawr0Tctd/BiyftcK4Vkop+UqPJKzmileaauWp2KDWCf50A0DOnbbR8JuhGsup26SvkX/mLJgNlf1Vut6Fei3L1PYmvbhnTyT7i3nnkgcF6AIlLmSgyA9axbmhlhTlG2y/pndcT4M6o3YGYldLSermUKTrgup4CnX2J+cq4TKrcF6OlZQzwar3jxxGJ/uJGyS+ICA5PZcda5rwvnX9xDr0detkoDh0BX7XlX9fLVKuXJd8MeL94gNDamqsuectvKE9MThcMAID2mJdcYODQbiXTC+D2rb4E7dOAFbZCyN/U/D
+ a8DNdqGb
+ ha/HqCVF07Tyj8Bku8zvN9/f0vNgnWKn58fav3g+UWe3fNFM6PnoqxYsg0u3kiRI6gVGMtREV8w5rmPFXdC4ValrwEHUMfv4ZQB0SZDZhqQWo4p9SZ9UhTRW5wJBll0FgqQrEp64TP4lpAcYyoK+ASqmiIKRdtewaTyeOTQWybJZhzJl1IQmJ261+MpcwXBJZxo1QflHsqEtp21aRm2mKT47MsdF508+OVHMUL0eyWk7fEL5/7seVoDz5wWdZvnyzS77O6JhSA9eWW+RPx6HfhCMQXAPCTo1xVdjF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,16 +165,12 @@ On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
 >
 > From: Ackerley Tng <ackerleytng@google.com>
 >
-> Add two test cases to the guest_memfd conversions selftest to cover
-> the scenario where a conversion is requested before any memory has been
-> allocated in the guest_memfd region.
+> Add a guest_memfd selftest to verify that memory conversions work
+> correctly with allocated folios in different layouts.
 >
-> The KVM_SET_MEMORY_ATTRIBUTES2 ioctl can be called on a memory region at
-> any time. If the guest had not yet faulted in any pages for that region,
-> the kernel must record the conversion request and apply the requested state
-> when the pages are eventually allocated.
->
-> The new tests cover both conversion directions.
+> By iterating through which pages are initially faulted, the test covers
+> various layouts of contiguous allocated and unallocated regions, exercising
+> conversion with different range layouts.
 >
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 > Co-developed-by: Sean Christopherson <seanjc@google.com>
@@ -186,29 +182,45 @@ Cheers,
 /fuad
 
 > ---
->  .../selftests/kvm/x86/guest_memfd_conversions_test.c       | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
+>  .../kvm/x86/guest_memfd_conversions_test.c         | 30 ++++++++++++++++++++++
+>  1 file changed, 30 insertions(+)
 >
 > diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 8e17d5c08aeb8..b43ac196330f1 100644
+> index b43ac196330f1..0b024fb7227f0 100644
 > --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
 > +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> @@ -265,6 +265,20 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4)
->  #undef combine
+> @@ -279,6 +279,36 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
+>         test_convert_to_shared(t, 0, 0, 'A', 'B');
 >  }
 >
 > +/*
-> + * Test that even if there are no folios yet, conversion requests are recorded
-> + * in guest_memfd.
+> + * Test that when some of the folios in the conversion range are allocated,
+> + * conversion requests are handled correctly in guest_memfd.  Vary the ranges
+> + * allocated before conversion, using test_page, to cover various layouts of
+> + * contiguous allocated and unallocated regions.
 > + */
-> +GMEM_CONVERSION_TEST_INIT_SHARED(before_allocation_shared)
+> +GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(unallocated_folios, 8)
 > +{
-> +       test_convert_to_private(t, 0, 0, 'A');
-> +}
+> +       const int second_page_to_fault = 4;
+> +       int i;
 > +
-> +GMEM_CONVERSION_TEST_INIT_PRIVATE(before_allocation_private)
-> +{
-> +       test_convert_to_shared(t, 0, 0, 'A', 'B');
+> +       /*
+> +        * Fault 2 of the pages to test filemap range operations except when
+> +        * test_page == second_page_to_fault.
+> +        */
+> +       host_do_rmw(t->mem, test_page, 0, 'A');
+> +       if (test_page != second_page_to_fault)
+> +               host_do_rmw(t->mem, second_page_to_fault, 0, 'A');
+> +
+> +       gmem_set_private(t->gmem_fd, 0, nr_pages * page_size);
+> +       for (i = 0; i < nr_pages; ++i) {
+> +               char expected = (i == test_page || i == second_page_to_fault) ? 'A' : 0;
+> +
+> +               test_private(t, i, expected, 'B');
+> +       }
+> +
+> +       for (i = 0; i < nr_pages; ++i)
+> +               test_convert_to_shared(t, i, 'B', 'C', 'D');
 > +}
 > +
 >  int main(int argc, char *argv[])
