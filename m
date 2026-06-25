@@ -4,133 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71F77CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21332CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65A896B00EE; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
+	id AD7A66B00F1; Thu, 25 Jun 2026 07:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 631366B00F0; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
+	id AAEDA6B00F2; Thu, 25 Jun 2026 07:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 521496B00F1; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
+	id 99EA56B00F3; Thu, 25 Jun 2026 07:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E3226B00EE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:01:00 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4485CA060D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:59 +0000 (UTC)
-X-FDA: 84918142638.20.30EA9F4
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 486AC160021
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iuETgneI;
-	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 68D886B00F1
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:08:26 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F29091C60B8
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:08:25 +0000 (UTC)
+X-FDA: 84918161370.23.4C486B8
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DCB15A0003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:08:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iRdaiodj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9xL1LFzS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iRdaiodj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9xL1LFzS;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782385257;
-	b=lNvOXg7q/zKhnXWvDDRXbR6VHJ8HcQ/6xlh7yKs+g5uPpQwCBP7N8NnJyGkbknxgRiLkDi
-	medOVkVU2YRMGiLUnHC2Lw02um7wYvSH2tQdeSm5gkCJG6FCAelBUSIOIGeye7YHGO00OZ
-	i3U+CKupRJuYsamOgrPZwuUWNhUZ1fA=
+	t=1782385704;
+	b=XojXIxQzDryfBueZB1lUSMTpdZZ8aJ8cypr2wwHancTI/S59RZzdRP/CFtYaWxkr7CEWOy
+	lU0HqBBLvvQAu3FQi2+swtqTFxinL3zFKS8rdkZFM0DO5V//6wU4ZmYb6P8o7JFs6AXUwu
+	8rVefLxIgcq2UBObqSH7psqABS7f9Ag=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782385257;
+	s=arc-20220608; t=1782385704;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6edEIK5OpisM73gxjVPNfgaoSxhnFS60m23Q+2YLM+0=;
-	b=go6W830N+eMQN7nhYBnAZfBrTSvfOEpGq3sK+uA/oEIN+FON8INOyKyokULG5wNORbUZ8n
-	I2BS23w3Wmvxk8kf2PlZaFG5bMC56hktGoCV2LHnsR5tNIEyEgwcDJO6Z5wHFArefxi4IE
-	c2dd+407G6XoDhU+3LZKoOa94XcXUQY=
+	bh=mwkdMTiWvugHzs6IrfwENFnQsqfzh/B/fPgY7/p+aqg=;
+	b=Z6c26QQ8bqu4HQckDL4Xt1C4dAEWfK4ydYWZB/982O8vDxRnjfscAvweRRYE+nu3np4Hnp
+	JYERrSjXOPoVuZn6b9foecdymQBnEH+OtUXWxKzbyTGLwJj0WnquvnfAQ4Wb/XR3TgF0Ir
+	6pzqKT+2n/cu5Wfu35Dd/0mD03iozJw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=iuETgneI;
-	spf=pass (imf08.hostedemail.com: domain of jani.nikula@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782385257; x=1813921257;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=vUCknLxuUl+l9swTriiC6ceqP2YAiFjd4mW5kfnFb/U=;
-  b=iuETgneI+y3Xm3DvoBw7pKYuP3wIlgjZNBsLNK/IDFp86CVpFvfzNE4o
-   XT1C9XjFHqe1XQOPphH/r8rFnrxfn2Xe07HzXt23puiTAOJhmPgUlsRTC
-   yflebdbkmYx2KZMUEraP4OjFfVsTy2SZHr4bR1FaEbjtNxPMfsQ6NvlBa
-   LStllOOdu3ID67gah0gZ8tOTCTiyEsWGJaUFUuZoc/AjU0AXJeGkpRGNp
-   32xYuC06qFAYoN24XvMLxDYIyf9Qs55Qjg5Tlvr3+bU9+dhH1rZSQGPlF
-   BUWNXOLW4hknVOuKk+XdliizhZRnvOk5qnWQbwJ7IufpgR+zQWS3Xp/x5
-   Q==;
-X-CSE-ConnectionGUID: JCZEwH7CQouv39YV1vJLrA==
-X-CSE-MsgGUID: p1wm7+6JR2a05mxNMzWBuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11827"; a="86838517"
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="86838517"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 04:00:55 -0700
-X-CSE-ConnectionGUID: vmMDYz3IR0yKtgcbLjpOxw==
-X-CSE-MsgGUID: owF9N6AWRaOmSHlf6kHSKg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,224,1774335600"; 
-   d="scan'208";a="254729051"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.126])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 04:00:42 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Kaitao Cheng <kaitao.cheng@linux.dev>, David Laight
- <david.laight.linux@gmail.com>, Christian =?utf-8?Q?K=C3=B6nig?=
- <christian.koenig@amd.com>, "David Hildenbrand (Arm)" <david@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
- <david@kernel.org>, Jens Axboe <axboe@kernel.dk>, Tejun Heo
- <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Juri Lelli
- <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>,
- Paul Moore <paul@paul-moore.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, David Howells
- <dhowells@redhat.com>, Simona Vetter <simona.vetter@ffwll.ch>, Randy
- Dunlap <rdunlap@infradead.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- linux-ntfs-dev@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
- io-uring@vger.kernel.org, audit@vger.kernel.org, bpf@vger.kernel.org,
- netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- kexec@lists.infradead.org, live-patching@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-pm@vger.kernel.org, rcu@vger.kernel.org, sched-ext@lists.linux.dev,
- linux-mm@kvack.org, virtualization@lists.linux.dev, damon@lists.linux.dev,
- llvm@lists.linux.dev, Kaitao Cheng <chengkaitao@kylinos.cn>, Muchun Song
- <muchun.song@linux.dev>
-Subject: Re: [PATCH v3 1/7] list: Add mutable iterator variants
-In-Reply-To: <0ed6b5c3-e955-46e2-9fc6-075a0dfd1c4f@linux.dev>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
- <20260622040533.29824-2-kaitao.cheng@linux.dev>
- <20260622094242.64531b9a@pumpkin>
- <351a6b67-b394-4c58-aee2-88b6c8089ad5@linux.dev>
- <cf8467c7-b98f-44a5-9cf9-60b43b5da711@amd.com>
- <20260624152324.3def88ce@pumpkin>
- <0ed6b5c3-e955-46e2-9fc6-075a0dfd1c4f@linux.dev>
-Date: Thu, 25 Jun 2026 14:00:39 +0300
-Message-ID: <734f66ca51485ee3ec9788c0eaaead681e00664b@intel.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iRdaiodj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9xL1LFzS;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iRdaiodj;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=9xL1LFzS;
+	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 82E8376152;
+	Thu, 25 Jun 2026 11:08:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782385702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwkdMTiWvugHzs6IrfwENFnQsqfzh/B/fPgY7/p+aqg=;
+	b=iRdaiodj8qDBymIYoSzwBEVI61jLDNU5NLg2M+6WXFXyOEzuENdABASAeFX4wTBraZzWu1
+	B35DDE5XDhG8A7DoulB8e4VYfMwXlFrGVpi4SfA9y66+ro069gR74z0jX8OaV6HzEKUsB6
+	2z/h2ERdQ1AZHKRLJrQw8AjpuxkLYkc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782385702;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwkdMTiWvugHzs6IrfwENFnQsqfzh/B/fPgY7/p+aqg=;
+	b=9xL1LFzSm3A0Jjgc4VfxgObjF02/JzMB4Qp81cThxnbaR05ExOIqz/HVJHSRn45z3pYzp9
+	ZmouQBHI0RZeXzBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782385702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwkdMTiWvugHzs6IrfwENFnQsqfzh/B/fPgY7/p+aqg=;
+	b=iRdaiodj8qDBymIYoSzwBEVI61jLDNU5NLg2M+6WXFXyOEzuENdABASAeFX4wTBraZzWu1
+	B35DDE5XDhG8A7DoulB8e4VYfMwXlFrGVpi4SfA9y66+ro069gR74z0jX8OaV6HzEKUsB6
+	2z/h2ERdQ1AZHKRLJrQw8AjpuxkLYkc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782385702;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mwkdMTiWvugHzs6IrfwENFnQsqfzh/B/fPgY7/p+aqg=;
+	b=9xL1LFzSm3A0Jjgc4VfxgObjF02/JzMB4Qp81cThxnbaR05ExOIqz/HVJHSRn45z3pYzp9
+	ZmouQBHI0RZeXzBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C8BA779A8;
+	Thu, 25 Jun 2026 11:08:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VjL6GiUMPWrVUwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 25 Jun 2026 11:08:21 +0000
+Date: Thu, 25 Jun 2026 12:08:19 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Muhammad Usama Anjum <usama.anjum@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Anshuman Khandual <anshuman.khandual@arm.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Samuel Holland <samuel.holland@sifive.com>, linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: mm: opaque hardware page-table entry handles
+Message-ID: <aj0JU-AzsEQBOiQ1@pedro-suse>
+References: <74182e50-b54f-4d2d-a27f-3a59a538d6bc@arm.com>
+ <ajwuKpSnElvwIyhC@pedro-suse>
+ <66310292-f618-4497-bcaa-2a4b1240566c@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66310292-f618-4497-bcaa-2a4b1240566c@arm.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 486AC160021
-X-Stat-Signature: 5mcjno9xq8wgznxb5xc6wkqyc7ppq4ui
-X-HE-Tag: 1782385256-22994
-X-HE-Meta: U2FsdGVkX18q4pY+mUdjRHB5f6Qeru00Gr9ZeWaifMn5OJHY1qXDO67R5jfzWE2e7lmwbFLpH1taG6eDDqMli0JxSH8AbIcri7lJ6VPl2cBaajGBhD3IcO2jJzUAIdRI0iKpT2+u13dMQ8rVFxkq4i009lwBRieIufMFXz42XjlCERy2cTKDRE0IcYnApn5iB4SVMj/t0/Dy6iplPvtmjOI8QVrqlw1EU1QiDMMxdUF8mTBP4lS0SVd5UqtdTqhk4GJAO5KbA2pCp84+yRo6CTfID/8Vix7Lnuj6CImJGNM6K6GtIIVcXdmXwCX8nD/dcPb7CJJkFqGMG5hzEmpl4kJdSmLzUgbe0DDVEXtK5eZp/hHT2KxlRgbkZ9cOzbIcD46M5KbYEnyfDFLaddR9wfyiJD7EvYpsm7dk4Bb6CJS+cTh3Mt8qFzNKJVIMso7nYKTCixgSJSxXSarLTktbzX7gn7YU0rL9+NJ+4kqsT/zE5ME0tlOMpRBMoSaZOHGHngDkQYM4QvUtYyfIeWy+jA4hwWzJyPOiOlZRzV7qGZJnpZ+x9waE4GgYjpQRX1wDgwb8sp64Afzx+LXYGUm61WhsvPqW1Q/9ExrJ8/+zICvnMq7RUew6Mz3r2EOYjuMG6PANkCi+j91NRXUMn94hPp30zkQE/8rUzxwSV5DgN6AYmJAh3cNniyMC2nOk9w4TiASPJ5uAWIrgnf3DOphkSrnX3MfOkgJriZdaQ8gMyGRiUq/1W5FY13ISLsDj2anEvrnslgfZzS9IWnqfP07NOj5I2UdanZxaOYSrzcIdvD+f/jYGzHPkoBeYJUK8yEh0oL+xXFu08v258+UvsKsD1Yyc4jtqtPomdv6s50U0ZdE81A8HNQa/pAWEHnCbwf40qPsoqM4upgJk5w6c7ARmzHxz6xGB9o+D/L57HeP4pk/FvXieQf3k7/ys2ifluYk+pUH7DOCfTlmvdPKR+8m
- jCJRRXOb
- BxWjDQxRdPpnfGHfFLL8mgNcLlasPWN6EjVO3+5C+5Z/Yq0G6vIKA6rFk6CgtIpwsYkB8Y/hTBP31ZJKYpryOiimYJbMlCQ4tagFs3vShxBiESg3Fo+Bhv6lYs4xr9UXg4KlDdwfe1b9DmbSvsr/zyj8xYKqOG8XZliXJTIfacLSypP2cKzt3rdVwUzJPTflNoqBeEupO3tpRpKPL9lzWcNFYIUE4jcRzNskXHa5iH0z93otZZRovxx3r/F1xgUKK5llKe1K2aVRSdVXH6KEHQO3T6QyrF5ufWvOWPVIHs7CKWtUqCy2qIrMUgXUzIxlsCDu3vKjOEYbaT5FNT0ulpQ4mC6Hir0cC91j6hl2q59Bk6MYJ5pmAXv6Z858u//X6U6D78y0kC74UK5q1yGgCfutoyp0J8SwYbXmnNBupNbspBqNHEr9fv1ZrIiguTdotNbK6V5TadYIGDT1aa2WJbb8cLHFCjnpx2LlMDjHPlmaYqFAxw8XY1tAn8g==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DCB15A0003
+X-Stat-Signature: n91u9un1eosogj1k6745kh39nu97e9in
+X-HE-Tag: 1782385703-951100
+X-HE-Meta: U2FsdGVkX1+cd30/x+zYFRsfyk3eVd3VvU6/throaXF/TLNpM1st3eR3e2jMJWAchYwyWGJYpmE7y6zkm520gH2+6kxViXzBXAOj0+O+LMSrOEvizA+29grVPq1pkYW+IuYc6Ky5gWjgC8Nlm4dQlik0kaN16GK9rs4b1l4fhgtYciMPivKwjXAK3sFSBkeqgdUER+6hgQgB5V/uQkEeVnooDPJMBGKw2dGFgI90IX2zMdKDFDCb8yKUwYrSpl2CVJC37LojTvUX42ihUx+3AJNw+th+j0aS4xhTQBSAr1OrGSMcSqK2CMGiQ0/WTzdztAXkD9Ni41kTsRmu8WjwgPn0aB1w4Kd0sca6FVOl77CatyREWIHNcJdASsCnMvcNFsQJwPjDN/xIzEsa+mny1zqnneD1kdiscq5r6UTTA2oK4Tn/GElufo1LS8za+zVvefewye7GV6NR23vogSpFMvaxtEg4Ovs5bVxkyghq7Tsh0poKJyYE22ZFIx9RwRhZblF7K4bG1nqFs5FfWTZ/HCKzhhAb8uLZ6rjP8d63L8TKXCtY/kIDN6uglnOJ+OHc1z96bkz09LMUr2814NamHPaKvFrFaoAH4lhmMMocsQLQv3F27UkQomdpkgrw61P9fCgZMyOvOCI3I0UXMH8DngcMymZjNciquvxPxg9kF9vZs9m/R7X/aTwsIfbvPcuyyhZCvo0HfaflRBAWucsWk6fgDK2rwe27myBQyoyhdeJxdj2DbAd6PzuTvY04ywpOmqx3iH3Yj6LG09GbMJXl0dWO34Sa4wLoVXw7sjtpCGsaolFsLrENPVvt1ZV7SqdT9iERmeldzPDCGEcClHiqKZR/5jmI2Q7CEa2E/aA67fGToMUw55L9oSg5bqq9h37hUqqNiAg5iJMvEaHZNWihdCeJmhSlKyaDYzvadoeABaKiKu8WecxPul0sGUWVYXfykHyrk1034MQhfb9B+er
+ /FEWlnpf
+ ByJTxgkcY3K3Tpek74qEdzE/6JC/ePyOCIpofTETY7s+z9aWrNC8MTbT08NNSwBlxwN7CldmNkSYSpurWepIpkGd/nFYwcAjCSmaWPffmKfzhm0Sz8zqtjNjzQiBYysIX5aul79gTjDAT9jLhapWcaNx4TSW1vYHDscokjY1LFp3os6DlWE6vKR6FDFFdOKcGvageeSsVvSZPBUqyseJOnReBnSkSQUd/r2Vol3AxM/C2AtcYwKUo2b9ROKDXGKZjBqysyb8qKBXT7UQftkmRc4wrselPeDYe/0zAB40uer8mtZ5oloAdvLEK1w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,256 +136,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026, Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
-> =E5=9C=A8 2026/6/24 22:23, David Laight =E5=86=99=E9=81=93:
->> On Wed, 24 Jun 2026 15:23:47 +0200
->> Christian K=C3=B6nig <christian.koenig@amd.com> wrote:
->>> On 6/24/26 15:14, Kaitao Cheng wrote:
->>>> =E5=9C=A8 2026/6/22 16:42, David Laight =E5=86=99=E9=81=93:=20=20
->>>>> On Mon, 22 Jun 2026 12:05:31 +0800
->>>>> Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
->>>>>=20=20
->>>>>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
->>>>>>
->>>>>> The list_for_each*_safe() helpers are used when the loop body may
->>>>>> remove the current entry.  Their API exposes the temporary cursor at
->>>>>> every call site, even though most users only need it for the iterator
->>>>>> implementation and never reference it in the loop body.
->>>>>>
->>>>>> Add *_mutable() variants for list and hlist iteration.  The new help=
-ers
->>>>>> support both forms: callers may keep passing an explicit temporary c=
-ursor
->>>>>> when they need to inspect or reset it, or omit it and let the helper=
- use
->>>>>> a unique internal cursor.=20=20
->>>>>
->>>>> I'm not really sure 'mutable' means anything either.
->>>>> It is possible to make it valid for the loop body (or even other thre=
-ads)
->>>>> to delete arbitrary list items - but that needs significant extra ove=
-rheads.
->>>>>
->>>>> It might be worth doing something that doesn't need the extra variabl=
-e,
->>>>> but there is little point doing all the churn just to rename things.
->>>>>=20=20
->>>>>>
->>>>>> This makes call sites that only mutate the list through the current =
-entry
->>>>>> less noisy, while keeping the existing *_safe() helpers available for
->>>>>> compatibility.
->>>>>>
->>>>>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
->>>>>> ---
->>>>>>  include/linux/list.h | 269 +++++++++++++++++++++++++++++++++++++---=
----
->>>>>>  1 file changed, 231 insertions(+), 38 deletions(-)
->>>>>>
->>>>>> diff --git a/include/linux/list.h b/include/linux/list.h
->>>>>> index 09d979976b3b..1081def7cea9 100644
->>>>>> --- a/include/linux/list.h
->>>>>> +++ b/include/linux/list.h
->>>>>> @@ -7,6 +7,7 @@
->>>>>>  #include <linux/stddef.h>
->>>>>>  #include <linux/poison.h>
->>>>>>  #include <linux/const.h>
->>>>>> +#include <linux/args.h>
->>>>>>=20=20
->>>>>>  #include <asm/barrier.h>
->>>>>>=20=20
->>>>>> @@ -763,28 +764,72 @@ static inline void list_splice_tail_init(struc=
-t list_head *list,
->>>>>>  #define list_for_each_prev(pos, head) \
->>>>>>  	for (pos =3D (head)->prev; !list_is_head(pos, (head)); pos =3D pos=
-->prev)
->>>>>>=20=20
->>>>>> -/**
->>>>>> - * list_for_each_safe - iterate over a list safe against removal of=
- list entry
->>>>>> - * @pos:	the &struct list_head to use as a loop cursor.
->>>>>> - * @n:		another &struct list_head to use as temporary storage
->>>>>> - * @head:	the head for your list.
->>>>>> +/*
->>>>>> + * list_for_each_safe is an old interface, use list_for_each_mutabl=
-e instead.
->>>>>>   */
->>>>>>  #define list_for_each_safe(pos, n, head) \
->>>>>>  	for (pos =3D (head)->next, n =3D pos->next; \
->>>>>>  	     !list_is_head(pos, (head)); \
->>>>>>  	     pos =3D n, n =3D pos->next)
->>>>>>=20=20
->>>>>> +#define __list_for_each_mutable_internal(pos, tmp, head)		\
->>>>>> +	for (typeof(pos) tmp =3D (pos =3D (head)->next)->next;		\=20=20
->>>>>
->>>>> Use auto
->>>>>=20=20
->>>>>> +	     !list_is_head(pos, (head));				\
->>>>>> +	     pos =3D tmp, tmp =3D pos->next)
->>>>>> +
->>>>>> +#define __list_for_each_mutable1(pos, head)				\
->>>>>> +	__list_for_each_mutable_internal(pos, __UNIQUE_ID(next), head)
->>>>>> +
->>>>>> +#define __list_for_each_mutable2(pos, next, head)			\
->>>>>> +	list_for_each_safe(pos, next, head)
->>>>>> +
->>>>>>  /**
->>>>>> - * list_for_each_prev_safe - iterate over a list backwards safe aga=
-inst removal of list entry
->>>>>> + * list_for_each_mutable - iterate over a list safe against entry r=
-emoval
->>>>>>   * @pos:	the &struct list_head to use as a loop cursor.
->>>>>> - * @n:		another &struct list_head to use as temporary storage
->>>>>> - * @head:	the head for your list.
->>>>>> + * @...:	either (head) or (next, head)
->>>>>> + *
->>>>>> + * next:	another &struct list_head to use as optional temporary sto=
-rage.
->>>>>> + *		The temporary cursor is internal unless explicitly supplied by
->>>>>> + *		the caller.
->>>>>> + * head:	the head for your list.
->>>>>> + */
->>>>>> +#define list_for_each_mutable(pos, ...)					\
->>>>>> +	CONCATENATE(__list_for_each_mutable, COUNT_ARGS(__VA_ARGS__))	\
->>>>>> +		(pos, __VA_ARGS__)=20=20
->>>>>
->>>>> The variable argument count logic really just slows down compilation.
->>>>> Maybe there aren't enough copies of this code to make that significan=
-t.
->>>>> But just because you can do it doesn't mean it is a gooD idea.
->>>>> I'm also not sure it really adds anything to the readability.
->>>>>
->>>>> And, it you are going to make the middle argument optional there is
->>>>> no need to change the macro name.=20=20
->>>>
->>>> Christian K=C3=B6nig and Jani Nikula also disagree with the variadic-a=
-rgument
->>>> implementation approach. If we abandon that method, it means we will
->>>> inevitably need to add some new macros. If mutable is not a good name,
->>>> suggestions for better alternatives would be welcome; coming up with a
->>>> suitable name is indeed rather tricky.=20=20
->>>
->>> I don't think you need to add a new macro for the specific use case tha=
-t people want to modify the next element of the iteration.
->>>
->>> If I remember your numbers correctly that is a really corner case and k=
-eeping using the existing *_safe() macros for that sounds perfectly fine to=
- me.
->>=20
->> IIRC currently you have a choice of either:
->> 	define               Item that can't be deleted
->> 	list_for_each()	     The current item.
->> 	list_for_each_safe() The next item.
->> There is also likely to be code that updates the variables to allow
->> for other scenarios.
->>=20
->> Note that if increase a reference count and release a lock then list_for=
-_each()
->> is likely safer than list_for_each_safe() :-)
->>=20
->> list.h has 9 variants of the 'safe' loop.
->> The bloat of another 9 is getting excessive.
->>=20
->> It has to be said that this is one of my least favourite type of list...
->
-> Hi Christian K=C3=B6nig, David Laight, Jani Nikula, David Hildenbrand,
-> Andy Shevchenko, Alexei Starovoitov
->
-> For ease of discussion, I need to summarize the currently possible
-> approaches and briefly describe their respective pros and cons,
-> using the list_for_each_entry* interfaces as examples.
->
-> 1. Add list_for_each_entry_mutable, while keeping list_for_each_entry
-> and list_for_each_entry_safe unchanged. list_for_each_entry_mutable
-> would be used specifically for safe deletion scenarios that do not
-> need to expose the temporary cursor externally. The code can refer to
-> the v1 version.
->
-> Pros: Does not depend on immediate per-subsystem adaptation and can be
->       merged directly.
-> Cons: Requires adding a whole set of mutable interfaces, which makes the
->       code somewhat redundant.
+On Thu, Jun 25, 2026 at 11:50:28AM +0100, Muhammad Usama Anjum wrote:
+> On 24/06/2026 8:25 pm, Pedro Falcato wrote:
+> > On Wed, Jun 24, 2026 at 03:09:08PM +0100, Usama Anjum wrote:
+> >> Hi all,
+> >>
+> >> This is a direction-check with the wider community before spending time on the
+> >> development. This picks up the idea that was raised and broadly agreed in the
+> >> earlier thread (Ryan Roberts, Lorenzo Stoakes, David Hildenbrand) [1].
+> >>
+> >> The problem
+> >> -----------
+> >> Core MM code reaches page-table entries by raw pointer dereference (pte_t *,
+> >> pmd_t *, *pud, ...) in places, implicitly assuming a single, uniform
+> >> representation. Sprinkling getters wouldn't solve the problem entirely. The
+> >> problem is one level up: the *pointer type* itself is overloaded. At each level
+> >> there are really three distinct things:
+> >>
+> >>   1. a page-table entry value (pte_t, pmd_t, ...)
+> >>   2. a pointer to an entry value, e.g. a pXX_t on the stack
+> >>   3. a pointer to a live entry in the hardware page table
+> >>
+> >> Today (2) and (3) share the same type - pte_t *, pmd_t *, and so on. Nothing
+> >> distinguishes a pointer into a live table from a pointer to a stack copy.
+> >>
+> >> A pointer to an on-stack entry value and a pointer to a live hardware entry have
+> >> the same type, so the compiler cannot distinguish them. Passing the stack
+> >> pointer to an arch helper that expects a hardware-entry pointer compiles fine,
+> >> but is wrong - a bug class the type system makes invisible. It also blocks
+> >> evolution: an arch helper may need to read beyond the addressed entry (e.g.
+> >> adjacent or contiguous entries), which only makes sense for a real page-table
+> >> pointer, not a stack copy.
+> >>
+> >> The idea
+> >> --------
+> >> Give (3) its own opaque type that cannot be dereferenced:
+> >>
+> >>     /* opaque handle to a HW page-table entry; not dereferenceable */
+> >>     typedef struct {
+> >> 	pte_t *ptr;
+> >>     } hw_ptep;
+> > 
+> > I don't love typedefs that hide pointers.
+> Nobody likes them. This is the only way so that by mistake stack pointers
+> don't get reintroduced. Its also hard to catch such cases during review.
 
-Seems fine, and the original _safe naming is ambiguous anyway.
+That's not true, you could have:
 
-> 2. Directly optimize away the temporary cursor in list_for_each_entry_safe
-> and define it inside the loop instead, changing the interface from four
-> arguments to three.
->
-> Pros: Does not add redundant interfaces.
-> Cons: (1) Users need to manually update special cases that use the
->       traversal variable of list_for_each_entry_safe, the new
->       list_for_each_entry_safe would no longer apply there and would
->       need to be open-coded.
->       (2) Because the macro arguments changes, all list_for_each_entry_sa=
-fe
->       callers would need to be modified and merged together, making it
->       difficult to merge such a large amount of code at once.
+typedef struct { pteval_t pte; } sw_pte_t;
 
-This won't fly because there are literally thousands of
-list_for_each_entry_safe() users.
+and
 
-> 3. Use a variadic macro approach to optimize list_for_each_entry_safe,
-> so that it supports both three and four arguments.
->
-> Pros: (1) Does not add redundant interfaces.
->       (2) Does not depend on immediate per-subsystem adaptation and can
->       be merged directly.
-> Cons: (1) Increases compile time.
->       (2) Makes the interface harder for users to use.
+/* only usable by arch code and whoever wants to interpret these
+ * types */
+static inline sw_to_ptep(sw_pte_t *swptep)
+{
+	return (pte_t *) swptep;
+}
 
-Basically I'm against any variadic macro tricks where the optional
-argument is not the last argument. That's just way too surprising, and
-goes against common practice in just about all other languages.
+and so on... Also, see Documentation/process/coding-style.rst 5) typedefs, it
+explicitly warns against pointer typedefs.
 
-> 4. Optimize list_for_each_entry by defining the temporary cursor internal=
-ly,
-> making it compatible with the functionality of list_for_each_entry_safe.
-> The code can refer to the v2 version.
->
-> Pros: (1) Does not add redundant interfaces.
->       (2) The number of externally visible arguments of list_for_each_ent=
-ry
->       remains unchanged, still three.
-> Cons: (1) list_for_each_entry and list_for_each_entry_safe would be merged
->       into one, and list_for_each_entry_safe would gradually be deprecate=
-d.
->       (2) Users need to manually update special cases that use the traver=
-sal
->       variable of list_for_each_entry, the new list_for_each_entry would =
-no
->       longer apply there and would need to be open-coded. There are 15 su=
-ch
->       cases in total.
+> 
+> > 
+> >>
+> >> With this:
+> >>
+> >>   - a stack value can no longer masquerade as a hardware table entry,
+> >>   - a hardware handle can no longer be raw-dereferenced,
+> >>   - cases that genuinely operate on a value can be refactored to pass the value
+> >>     and let the caller, which knows whether it holds a handle or a stack copy,
+> >>     read it once.
+> > 
+> > Just a small passing comment: how about doing it differently? like
+> > 
+> > typedef struct {
+> > 	pte_t *ptep;
+> > } sw_ptep_t;
+> > 
+> > or something like that. Were I to guess, referring to a pte_t on the stack
+> > is much rarer than all the pte_t references to actual page tables. But maybe
+> > reality doesn't match up with my guess :)
+> We want to fix the current usages and future usages as well. sw_ptep_t can work
+> for current usages, but it'll not force the new code to be written using correct
+> notations.
 
-This sounds good to me, though I take it there's some code size increase
-and/or performance penalty?
+I don't understand what you mean. pte_t is a perfectly correct notation,
+it's just currently maybe too ambiguously overloaded.
 
-Maybe the 15 cases are questionable anyway?
+> Apart from different types, another benefit of hw_pXXp would be that
+> it'll become an opaque object which only architecture can manipulate. Hence
+> architecture can decide howeverever it wants to manage them in certain cases.
 
-> 5. Use a variadic macro approach to optimize list_for_each_entry, so that
-> it supports both three and four arguments.
->
-> Pros: (1) Does not add redundant interfaces.
->       (2) Does not depend on immediate per-subsystem adaptation and can be
->       merged directly.
-> Cons: (1) Increases compile time.
->       (2) list_for_each_entry and list_for_each_entry_safe would be merged
->       into one, and list_for_each_entry_safe would gradually be deprecate=
-d.
+That's already the case. pte_t is fully opaque apart from the little fact
+that you can declare one on your stack. Introducing a different sw_pte_t
+would further reinforce that. And if you want ways to find raw derefs on
+pointers, we can simply slap on __attribute__((noderef)) (available in
+sparse and clang) on those types after sw_pte_t is introduced and pte_t
+is unambiguously a "hardware" PTE.
 
-Please don't do the macro tricks.
+I dunno, I'm not convinced that changing around ~450 files is worth it, and
+_if_ we want to do something like this I would strongly prefer the way that
+is less churny.
 
-> 6. Make no changes, keep the current logic unchanged, and close the curre=
-nt
-> email discussion.
-
-I like hiding the temporary stuff when possible.
-
-
-BR,
-Jani.
-
---=20
-Jani Nikula, Intel
+-- 
+Pedro
 
