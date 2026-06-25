@@ -4,80 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 599E9CDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:54:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4538DCDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:56:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33C7E6B00FC; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
+	id 05AB46B009D; Thu, 25 Jun 2026 03:56:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 313AC6B00FE; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
+	id 00CBD6B00AA; Thu, 25 Jun 2026 03:56:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22C5E6B00FF; Thu, 25 Jun 2026 03:54:28 -0400 (EDT)
+	id E662B6B00AB; Thu, 25 Jun 2026 03:56:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EAA9E6B00FC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:54:27 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6E24E1C33BE
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:54:27 +0000 (UTC)
-X-FDA: 84917672574.25.A6FF698
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9A7D120006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:54:25 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzCdDwJa;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C39746B009D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:56:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E7631205BE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:56:55 +0000 (UTC)
+X-FDA: 84917678790.24.A4AA7C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 94ACB1C0005
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:56:53 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sx5k9p5v;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782374065;
-	b=NkDpxjWkWRNLdBxGfFsiE2rHBWtCM9Gi/X8v17O4CDsJaDx+H+Ms1ZeosNh21wdXDDBoH4
-	VtbHMJwXQsAwWZ78LeIZ/DsMSBl40tyX/bvfmLp0PnDGfTLCDzCfgZxMlF/aPgWz5Ltk2R
-	ASsWdVvVxgpxPRpMoiZBNxWsnNno/wM=
+	t=1782374213;
+	b=eo+D7SR+OnG6/5rxYbZRe/s/bomuecea663vEV9qRhObIPrk8lVBvYWoYbBuRwfuJeUIkH
+	dM/jnJkvsdNTI631h84CM76huJqUvS+JPkPD7rbI3Jimst9PM+leGGbHFtGaMIB296G2Xh
+	+zjlKj4Z5HHlVsQlItWm1PN1XplHkmY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782374065;
+	s=arc-20220608; t=1782374213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WU+cwzv11oA1r4PZBo7/cWtaeUDfFADOwM24rd5Wf4E=;
-	b=HTavc5lukXI1g8AfIC6KVLMfE1Rw7KtuXQS0Zb9oPVWl1/33vrMlidY2MUto3HZ9tmGOqm
-	ciozi31pc4Ii12L5aqQyDwON7w6pcezlxglm96kmriAOAX3grbbhSyuTniVnSDTA7I87pi
-	NJ1uWnLTSMijgeLKkqjLvrTQcOE20Sg=
+	bh=OkLdmWeXxP7Oi0BCM7+2L8XOA1JIZ57KBqhE89bZ8/s=;
+	b=JEuV9i9YeJRhhZCcf0D/n+e6BkE+YewnnZElpLTp61PG1fu2qNKnS+muU/wf40+TLPqfIW
+	9hJWhoYSWVIwaIheLYeRSIPkw6kOFXMSDbC+7GOB+tEv0LUBrvY6eIJANzi3czVCc1cCqN
+	dgKn6BNlBmA5vKMUpriTWz1ZCqbkYK4=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UzCdDwJa;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Sx5k9p5v;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1D2E4190E;
-	Thu, 25 Jun 2026 07:54:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D0E1F000E9;
-	Thu, 25 Jun 2026 07:54:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 22A9E60217;
+	Thu, 25 Jun 2026 07:56:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33AA01F000E9;
+	Thu, 25 Jun 2026 07:56:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782374064;
-	bh=WU+cwzv11oA1r4PZBo7/cWtaeUDfFADOwM24rd5Wf4E=;
+	s=k20260515; t=1782374212;
+	bh=OkLdmWeXxP7Oi0BCM7+2L8XOA1JIZ57KBqhE89bZ8/s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=UzCdDwJaMRxT6Ty9dADQAfJYjrRCDDsxaL9K5BGYHTqPC3Y2IxTqkLlkB3sja1m4a
-	 bfprmOkTsujYkG+v7SThudFa0sqX2htXOGFfvC08rNrNtOImKwhlXWd+/B3HRsQwYV
-	 g7466d4qhvzZ3u/1T7TG1ecvxubZ72BjEbDFGObYvbsYMt+904cMY0y3SpFFlXYoHJ
-	 WNkO4QNAjplhqOrNGWwlZfu+PZnplMloPU/T3jVLvHK/nTMuITCjvoWouhfs/hub6x
-	 5VJ2xntNkzgBTwkXkUOZA2q1SaU5SC/NIYhYM/vVJHwa9wxqSnRBSGIhggzZE8f174
-	 FH6lZpWGsxS3g==
-Message-ID: <a4fe8ba6-2ecd-4bb9-95a9-27f9f1e87d2e@kernel.org>
-Date: Thu, 25 Jun 2026 09:54:18 +0200
+	b=Sx5k9p5v665BEWYXTxcVC05749Bo32HMTyJnP22MWIscfGJRosgdU4N4F3+X2x0Af
+	 ouRSAUStQ1CzNOywznEuK8Iwoe/YO8uA08/oE2kxQEIFDO8cXz3L/Z4pqABaQqk97m
+	 0OkcRXML+4r5jCn31IloBPUwpKgaMfRv3D/Etz+yF+CIe8VKXQzQc407nRE6ETSIR5
+	 1B+OMnpIEkfKlm1267ul9r9YUnU+yBTrokB6ECiwSKPqecAXYLZKZsHgqMtAj2GvIE
+	 PZBm3l7NoGsfpclQ57vspDvPMY+CYXe2O7zsDrfOPO4j9a6Z4sHGWIfRi2geCmKoYU
+	 V0NrO+POW9FCw==
+Message-ID: <ca31c254-504f-4857-bec7-10b8c2de94ed@kernel.org>
+Date: Thu, 25 Jun 2026 09:56:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-To: Dev Jain <dev.jain@arm.com>, kernel test robot <lkp@intel.com>,
- akpm@linux-foundation.org, ljs@kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com, stable@vger.kernel.org
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org
+Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
 References: <20260625042853.2752898-1-dev.jain@arm.com>
- <202606251341.jfIr1D7m-lkp@intel.com>
- <2fd3688b-b4d0-4a2f-8d49-4d4b9c512c66@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2fd3688b-b4d0-4a2f-8d49-4d4b9c512c66@arm.com>
+In-Reply-To: <20260625042853.2752898-1-dev.jain@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: x8895eimy3wtb5dkrq1de9dww9a8973o
-X-Rspamd-Queue-Id: 9A7D120006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782374065-380813
-X-HE-Meta: U2FsdGVkX1846CHD+CKrps3PqUiyNRBA8NyBVivxPcX3yN6bZhqnFItEd2XCGl6Kas8NIuJ/FN1hEbNcslSVMwTRopn81hbvek4twLfT1QzUmHR4TOAKbUEuF7OyDMRp4mpesg1O04+hd9vbESm6NtfmgXQcTm6FAP/6HrE96/XeDGm7PX8OgU7Of9cT+jQ2r959mEQhV8jQj8xSfEmZvoinCT7zcuZ3G8aY3eta4nvA3jt90rp3A3pcRbnantiJkwKVSeHjtfKfBLzUmEIA5hx4M7ZwDJepRw8vRotuuZ7NaWbrPnmwiISVhDla9TdsQoQf+9x1IITL1440xAtVqJnujRIGUPTWvkwF5/QTZ/DuDTTR/1aewzOF2b6mUI4sdBHSxeZbow/vGfABKff4QPXIRymbEnqHBAWpwEPCF8LLowt59ywgGO7GbVGpUXR6snUdZYiCaSQ/QxFBBycMest3EH6Lgryz/LteL4C/MHxtc7GyFLbeWhSVbahks3jKkPoIA4tZl21WeUWxAo5oh+ntgvjugklqHo80AEiagvQq1Z0Q4kuRVPsVj0QIdhxaKRRTqqVbb3voF1tBIhuQdWGsBbfmS6W+pM92/4uw6goWmCq7/lr0FGjaOUH+AnDoyWW7M9gg+tPgnHGbfAojqQ9cc0lK+ztaNaRBlHWlg9YNxV5fM0l1B9f4gyxke4NSXH1YIXIE2g1TRACFyOw4S45xAWfxYx2w6XupopGf6MwYIz2tCfTQ4Ts1WPnTKo9Mkr/4tPxaG/YhKep61MkM6iYZE/e3C1WowdI8ZnKB3KHBbAUBgMy9c4wkIVtIbMb+iPjHQyPPwJ0eL6N2KppKTh/bZAqSCn9zOGCvcxn9pUIIz7WVcrYywfaVi2ygqDQU7qXmbcyCiQEQL/HG4urZW+TSwQ7OfCr3kKWEFxGdjwKUFYNdD4kR4vG2cRjzHjeJyy/4bTKOucmFpq3Vzwg
- LRtyCh01
- 46/HZeQRh+IXsW5ytk/sI3RQ9ThZJhjNqenudRSLnftUhO974Y7aFL5LYNeEazsxO0BV9z0eq1+V81rA39QtLRLOtekYDUeTuzgM2iQoNKUIKy5v99JW6OMVPCIW3Ice1GhE2z/O8mg8f+ty1U0IQS2uDpH14dm1gaQGPBhF2r9aLy3F0bTWfqelO3dF+FwCLxUq3eJvgdgcWKrWdu+asfoB2ii9EMuTn6Iqu3DGiRRJ29q1JZtFFJsN5lT6PtjAIl/ylZBDHimxT3vy+egMI0O+FO3OFHFVhc3jszMplnjxYTt9ZcGAkY1TqlFs2SFrmynG9kR5iffhPvEvmGC0GZ5EIVdUvzWDy+kaoeSpdcGbE2xQ3omIcqf5Qsq8puDsKCfgKU53IoeFxMhRReUHnyvIm1NZW4LuMluMfBsYEU4QZY1t03d6xkd78EzUXHMCrJZmOy6dOLCbJFb2IveLL7YqiakG9MLaXXJdyxQ5NK2Wc8bWjvwSrDAj3fg==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 94ACB1C0005
+X-Stat-Signature: 6kmiyrifc5ekpqsgefjsqqfkqbrg4bis
+X-HE-Tag: 1782374213-270474
+X-HE-Meta: U2FsdGVkX19KcVTbPrDZKsav8j0jxtYZtNhWEMBWbQN59SbPOoLWu8jIj7yutUCAM25SAGg3iciQQUo6kFeajItzARpANP0984PDpIN62+Wjtg5+zoUmECXc5xEupFcuLUHxNALMVS9ygyMOdw6anGvZ9QyYMV+G5drgIoYD67Pplsm/YxODpuUV5QX5iNvlZlnBXBNYzxKe726H6bdu3oW598Hf60uXReLBXoxviyuiHHqXj6dBNl+sZBtyBdXfGS+nbnn1C646qysAgiOt2KFW0ztRpcNZVheoES4V0NxxaP38eazYxiAOd0heD+b+h+dEi7a2zYujL2ag5i5avofy/qE3vDpwXjlamgpvxZDgLePtxNEZWePexEk8sgVwNZwns9nCOIxY2t74tVvkDpBrl3hDvu+Lec9xECknMLkgDz1YaeKfGbEPFc4Tec/78ie9cRzdztpmgV8oNaxjLGrtOxtTIjuEyYdVmJvq3uagXOb+h1cAzgUtDGpxQstTLMKMtRAByaasU/cXnq7oZQ+Y4j7M3DdEDnFGE63+gC8pHbwvqepjmhMxhL6I+m/bhiyEoXXIyGlTvRfXT9HMxFsq7Dt0HVkpzF7gJ4qBNZVeLAOcgu1+U9X4axtGeSVAaZfyLYU4/1U3w4XuzWZ/eJ+T3HPDdYV00RqZdA1HquPujI3pb9KikRmIPGjLDfPFRuRYHkjH4sLE5sHBrtJUv733/RMXfrWbjK7GT0mwXfBZ0WK5Xeqrnb51pErI7cvvKXXaVw2KABcnvB3mh2gSSMW4bCNPuAXTrIi8PjmizVfYEn/GH/9ajXXQRLslwWwOPmVr88d3FDNNrgAc1ilZG1BX9QBPvdVnzHtgpk83v2nW/MByhQW4rWlAUCPQJ/vRoD8RSuXJIbHmyN6eCIuP4hTTbjyUlZGNGwLM4Bl9XN/cAo4yvdWs/Q9SnxpaAxMniw/Uw1tFk/aMx5lSJQd
+ xqiMaJnH
+ /42CJZnbdMqKLvbrBEZ3MnBooi+AQ2BD+0FHTjAXfTi/1k86D5sCi/HTAHpMc6ni1R3qCnuRsfwURNmwEt9uDQsheRgVkOFZNqLtCrHlE2ZHL0zhWODmScbdFGdvdgQTH/dBIwUw894VKaIKzNtxeXgpKdKwi/QhbiLAzJ8uW06F6ew9pTXSyTcfkQWTZqDXouavnOf1JPGdUwym6Qo+R8HQS/5+R+wrM6uQpkgfY8oH2tG0syKx7yw6MdoImEzkzEKC05GTAsj6+cL7YMWWAzOp5oyERJ+/zyEsyM2JWhJmCMMS33CCpJXNfZwTRCJeQjSqK5/tQUVZk2PaMmEy6uMuVaeOdBpO8p6e/JI5IjSmWgie0bbB/9lTMKZ9biUjTJxZgHy5nb4Mu6X8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,67 +139,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 08:59, Dev Jain wrote:
+On 6/25/26 06:28, Dev Jain wrote:
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the hugetlb entry in pvmw.pte, but
+> the code reads it with ptep_get() before decoding the PFN.
 > 
+> That is wrong on architectures where hugetlb entries are not encoded as
+> regular PTEs. On s390, for example, a raw huge RSTE must be converted
+> by huge_ptep_get() before helpers such as pte_pfn() can inspect it. A
+> raw decode can select the wrong subpage, so try_to_unmap_one() can
+> install a hwpoison entry for the wrong PFN.
 > 
-> On 25/06/26 11:15 am, kernel test robot wrote:
->> Hi Dev,
->>
->> kernel test robot noticed the following build errors:
->>
->> [auto build test ERROR on akpm-mm/mm-everything]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/Dev-Jain/mm-rmap-use-huge_ptep_get-in-try_to_unmap_one/20260625-123050
->> base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
->> patch link:    https://lore.kernel.org/r/20260625042853.2752898-1-dev.jain%40arm.com
->> patch subject: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
->> config: hexagon-allnoconfig (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/config)
->> compiler: clang version 23.0.0git (https://github.com/llvm/llvm-project 6cc609bb250b21b47fc7d394b4019101e9983597)
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260625/202606251341.jfIr1D7m-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202606251341.jfIr1D7m-lkp@intel.com/
->>
->> All errors (new ones prefixed by >>):
->>
->>     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
->>          |                                  ^
->>     2100 |                         pteval = huge_ptep_get(mm, address, pvmw.pte);
->>          |                                ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>    2 errors generated.
+> The userspace-visible result is that a later access to the poisoned
+> hugetlb subpage can miss the expected SIGBUS. With DEBUG_VM, the wrong
+> subpage can also trip the PageHWPoison check.
 > 
-> Weird that I need a stub. This should do:
+> Use huge_ptep_get() for hugetlb mappings before decoding the PFN.
 > 
-> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> index 2abaf99321e90..4661f88eee55b 100644
-> --- a/include/linux/hugetlb.h
-> +++ b/include/linux/hugetlb.h
-> @@ -1261,6 +1261,16 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
->  {
->  }
+> Before c7ab0d2fdc84, the bug existed in the form of a plain dereference:
+> we would check the head page pfn of the hugetlb with pte_pfn(*pte), and
+> bail out on mismatch. This would mean that the hwpoisoned entry will not
+> get installed.
 > 
-> +static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
-> +				  pte_t *ptep)
-> +{
-> +#ifdef CONFIG_MMU
-> +	return ptep_get(ptep);
-> +#else
-> +	return *ptep;
-> +#endif
+> I am not sure what is the procedure on such kinds of very old bugs - how
+> back should I really go?
+> 
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+> Applies on mm-unstable (d17fe8a046a2).
+> There are similar old bugs present, in try_to_migrate_one(), check_pte(),
+> remove_migration_pte(), prot_none_hugetlb_entry().
 
-Without CONFIG_HUGETLB_PAGE, folio_test_hugetlb() == false and the compiler will
-never end up actually linking this function.
+Yeah, we should handle all these cases properly. Can you send fixes?
 
-So probably you can just let the linker deal with that
-
-pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep);
-
-
-If abused, the linker would complain. In you case, the compiler will optimize it
-out (and be happy) and the linker will never start looking for the symbol (that
-doesn't exist).
+Using ptep_get() on something that's not a PTE entry is shaky on some architectures.
 
 -- 
 Cheers,
