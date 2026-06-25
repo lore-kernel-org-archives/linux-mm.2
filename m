@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB158CDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 17:45:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DE1CDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 17:59:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14CA86B00BF; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
+	id 787DB6B00C1; Thu, 25 Jun 2026 13:59:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1248C6B00C0; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
+	id 761016B00C2; Thu, 25 Jun 2026 13:59:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 061FC6B00C1; Thu, 25 Jun 2026 13:45:39 -0400 (EDT)
+	id 64F896B00C3; Thu, 25 Jun 2026 13:59:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D5F976B00BF
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:45:38 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F5161C144D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:45:38 +0000 (UTC)
-X-FDA: 84919162356.06.4DD97D9
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5B621C000C
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:45:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLYYOBoI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 36A816B00C1
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:59:58 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9F1AFC111D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:59:57 +0000 (UTC)
+X-FDA: 84919198434.13.5A81A0D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CCF8540003
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:59:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TTMDYN1M;
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782409536;
-	b=OAz1dYKfNz00fBZ9z1jZT32yf487Xf4la2mX0pKrB3Mrm8+Tkrq40/m3AWq9iyRMC2qOKy
-	kHH39T/0eCMOKeuAgiYbsq0vqDOId5b8x8XukMADOIgI0bR2XF6wBCmAt74Gp1We/0NmNN
-	oxpY0QZ5n4OX27bCCxqEwnUWTX4KCZg=
+	t=1782410395;
+	b=Xv/SBzSnolooeNlUkOGAdWkXJzye5Y75LnJ9eGFMLA4FJjk3Ac4OlBesdwiaCtodY4IgC2
+	+zoozQ1NJOQ36AYaSs3sbAPCaMZk1ozjo1gfZIrFmIiVtRa9xITpziJ9qYvfkO8H06qTuN
+	wl0AwDctXtWKVNTqKAQYZZI/Uc6fPL0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782409536;
+	s=arc-20220608; t=1782410395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MPa4NfxGFlsR/0ze8KtpPD8L+IgNM7huYMx2u1xMPgU=;
-	b=fpXmwn7BOg6jZsl/IMThKDt8A4E92n56UYILQmIQKPbXg4K/Vrbtk8CpGx4iYONG+0RLY+
-	ZOZscyiBVNGwKgDpZyui+PxYIDCV+Wj80As9cNSyKwXqJ4+9CFmYly0aERJ9Sa8zc/eX6v
-	l3PtOUCf+bU4eCPY/ePWMSQsIBwLTxo=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=maBD18wndqrXXyxBBamm4qyhPlaRjOfTNx99c6xaonU=;
+	b=iw/4BrTFfPYi9/A7Y27XL+Yd0T9IqDGwYxcynbmByPUt2pbdpwbEr7XeThj72FyC4F3N/E
+	BN3mnHtOxUjnbmhXB0Wl4AYFD6vBPxIMrwgvwoojWNVk+vd5+irkPG0N/6ytnuUUM4AGT5
+	EYe+XysQQcirlcYAsvNbua5pGaSin8I=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pLYYOBoI;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782409534;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MPa4NfxGFlsR/0ze8KtpPD8L+IgNM7huYMx2u1xMPgU=;
-	b=pLYYOBoIfpAzpj66uxyzMUCl4zexcFVuEE8EPPEsRUbC48gpPtU5iZmzrkbZu0uKIGFWc5
-	qiskz2Avy0pJ+Jek7fLQxhZlUyV0AciVXkbjCAj+ahVWn8Wlj9WQrDHgm5ctbPxFCYyGJE
-	UG35hAFKXIXFQfLepY6g34sFFtBgtRQ=
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: linux-mm@kvack.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH] docs: pagemap: fix flags location, member name and sample code
-Date: Fri, 26 Jun 2026 01:44:47 +0800
-Message-ID: <20260625174447.24292-1-zenghui.yu@linux.dev>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TTMDYN1M;
+	spf=pass (imf04.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 42365601D9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:59:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE301F00A3F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782410395;
+	bh=maBD18wndqrXXyxBBamm4qyhPlaRjOfTNx99c6xaonU=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=TTMDYN1MkkiCADF5OAf4cZrCoUDfwifR422d8+QUrPyQw0rVIiKYDRPTUtFo018mb
+	 3AgXhKV2s6rgWMQTwbqzwm1SKkhgZji7SC/ToLKqDy8v3jiRibw6XpZ/HRqmGaN3Rz
+	 MquNL3HIL6/1yTI9U9CPYfqGwVH8b3oQo3TJVe3pn6Ek4zLT/Ix8JwcqyyHiFcVWQH
+	 NtPtIfYsPr/hS+G8Y5CjOfOfFYn6cGHBFhWgPEqBNcDkELDYtorFIcPksmvq2u1+se
+	 QAWrRCB/agz+NJZ1RnpUMEGyYo0mCyeM+oPt+tGg7PHqGzLOQZ0QR+bjOzq/sLuw8Q
+	 QUVKkL1QDZ5rQ==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-c0e12cb1d90so7821966b.2
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:59:54 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrU3Kxn0joVL6nsRqGFui3L1MrsV8Q+kize1DlYNvdprESwtdM3KjgsIWPEGQKpQlKLN/B3LyZysA==@kvack.org
+X-Gm-Message-State: AOJu0YzVWNR1jZrU/GmNrUeQSiUZL5MR9esnLAMMBV27ra8k2c6NeS/a
+	FVGMKrLjGzLBzO+n1RRk3H7CnycZccQCG6inewjl/C3ECITAfJbGv+r3FjzqE5AY7cG52m0vwlu
+	S8eK9xk5tau9u4BSnXRVLo0uO6Q7iVxY=
+X-Received: by 2002:a17:907:9722:b0:c0c:c98b:c379 with SMTP id
+ a640c23a62f3a-c1205e6d95cmr237202266b.14.1782410393872; Thu, 25 Jun 2026
+ 10:59:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5B621C000C
+References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
+ <20260618044857.69439-3-jiahao.kernel@gmail.com> <ajnGTt8tkbAWX8Oc@google.com>
+ <0916e673-861f-b472-7417-afbffbcc98ad@gmail.com> <CAO9r8zPSZLaqLXw87V3q4tZa8WD7xCympKqfLMLB+o-++GksJQ@mail.gmail.com>
+ <91297bc0-268c-e9c2-57ae-6066eee5df2f@gmail.com>
+In-Reply-To: <91297bc0-268c-e9c2-57ae-6066eee5df2f@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 25 Jun 2026 10:59:42 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zOYgjbuG5i+LrCcMK764nVpOS+muo-5Q45ZFdiVus-dTA@mail.gmail.com>
+X-Gm-Features: AVVi8CdO4P-Ec9VD50shnHTdmKHFyCt4FDu6VKnLqYJ_-pw3WTO4T2Njs4-xTgc
+Message-ID: <CAO9r8zOYgjbuG5i+LrCcMK764nVpOS+muo-5Q45ZFdiVus-dTA@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] mm/zswap: Factor writeback loop out of shrink_worker()
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CCF8540003
 X-Rspam-User: 
-X-Stat-Signature: msh7u3upykcqyq3uuza587ejfdc3mwa3
-X-HE-Tag: 1782409536-950893
-X-HE-Meta: U2FsdGVkX1+GPGs7a9kaI7WFMr0FCeY0soIb9T+LLnNxBT6gPrT54AkIf9hCU/HmqWjcjQr9LT9tvsEt8hycqfVXTeje24FlIaCOiXbuxkY60syHXmwR8ZJ4/5LaVwbrqVpkvizilzyHJ5RZt4d4yaWUij/rgC6Li/mrLWBugF3apuHpMl88ojJtDU/Dj0+erraFJqFg6ImDYLMujzTNQ4e8R00Xyiq0RHxih3poiK5FUuYCSkgYQOzCPyPwIAKNZExj2cQatVjtrBrsVSW640SCrhzwalt49tlBfWSFkUWiiCagYZTq6bb3lPkN4x7+B2X0gIrpZKSQXBN2O7htB7eTyP0th35vZGZpHOwhUYQpeYUDbQGu+/E4MEZa5c1RwhjyBBw5Pv0oggbYLv1Lk+AXNxxEZ48M562pU80DUh1wzu7tvYpmTzm7sjj0OR9w1HCFQm/o8ZIktBjsddE+PzEWNEXccnOFcGDG0mgSHHf32s7quCjrCzHX6wUAWeHzXkQ33n/Bq6Gd6nAWkzOQoC7m1Qe9n4XT+BCDznEw8uE+fpVqnaI36UiTNWg3sAIPZhXRE0KX7c2TrtNQkQkqCdjo7cp903BCTni77XtikpT3OQ5ZF6fDU0VOolNF/qD6BbUiWE5q+XgNgCQ2oJOXDekiwhKN203szrErILQEQC4wuc6skcNduhgJsaVrh9fEWD4Xpa1wiyuipvDhVrofN8QdinUWiEsLw3czY9M7GWV4lIa5P19wMnu5WDjCt1JG7dAS5oT4ljvRjNBOVFo10zj/Q9H1FuYipLUvIDqivK+zQsfwCTn6J+IQqYuApIgcUwyJTKw8iPK081S8jxcURQKdlsmu4hg9ich+EVLeAwmP0mEZ0AzUfdaUF4x+t2q7rNeR9B4NhTxAcJpcL9tVy2ARJne13e7/HfhzAT6VIthYcvFpsos28ub1VAmbVCMbBbpuwako7egaZdZPdQr
- t5v8N0ay
- rCe9AY+xKyJ3aOSEsOzGm2l3uxiHAIIRPffRLJ3bed9JTzb2GAHHyU2Q6++c3VQ6WyU/ieb9vhvWrgYPqY1XIxFmJGUMf/Nt5ql9s7/tV1R2+Q0rZGiD/Ed/uz+XaC1Vq6h9Hn7q9rPQPs/+K0myCnn3KGOJREN9xGwsVJJafFiJUSwEPZ9Sj7wjaoK5q2Y02WyPFjWLer+Hup1I=
+X-Stat-Signature: 78upptd6cner6j6bn61k8rtmdts1k7zb
+X-HE-Tag: 1782410395-943382
+X-HE-Meta: U2FsdGVkX1+CubLAeb1+3CfY1e1Zr5DPbMWQ4nmgqLx8H4Q4gjDOOjTlPqj1rttOU4tzwUSsmEXXfuwIuMkcsHzbAitBJvjLaVr0NLOvgN/ScM0UKjBiUV0WwxuPDcWUzBOAn9oQU/7X9b6TYwTXiy4tFUCFuxcJa7qZVG/MB9uAYuABVA7XX3bnhDod1P5iIAMoVlPOJgZK9D5G2843Zn/BwPwUMt8Uhn0hzFx5Ov2yi9gDf3r4jd36mt1M6UWoc97pT5lrXp4kqO9mJmIMe2jeEJFE3ZkW6pNoEItMsmEbw30YWL4KWjRWmWoQuiuwa/s9DIud3tELlSPH0RWxVkMLscgLXllHpMOgOPWPUGtjkcbYZuFu742cEHUO8vEiVUBd1vn0eQPRk/RbZRTzJpffRv2AekW7z1/bpMbMuO8+Mbhqk06jHBM+yxNJxbtFBF5cJDAAjbT/uN0r/d16KPw2ocgGvXdD2Mll5Ty/ZIjOAaP2gLVMxu6+Qf1/Dwkqi8KzC+WJ5tnhOgSzpq2/sidw49Zujpp9k5Z0Ql2vwdBYWY4xa8/xoFqAz8yAmCWBW2YxoeqWo93xaUkUmSufloZeI0fem9uE95MgrpSfHRHy6xiONiZwqah3jPo7uQnjJOyPdwiRl4B0wfG2K91MRKnSUMvako72NkeeiwjMZ1AP9/4WQa/qWJAezbtqZ32Qv9lSOtfub8y2C8f0mPZEuYRdtP19IrSV+dGmuSkVY54R8oCR1KrWqCKvjLTrz/rJB8P1BbCpSN0CQHRqKoBQrP8Rbtt0cN9WT59ysjf+ulPdMkGz72HpOQYhQJhbWFMPYp4n7rUTX8GOPon2P942GgZxjznSyNvhYO9EQP2PgymOu3QDILa4j7A/14wqsR0bNqJf+2BrVbOf4h8XrgELDLKkqoO3ArxnfzUrpKLB5tuNxQKfIwYP/j9RxZYqr80xjU2i9YTCZPQ0AuPjX9U
+ PEF5mt9o
+ xHzIflB/Td07eODWEbz/wUCXpq4k4g8V0K9ZJabpKeRQfgJB9YsXGiP4UTlZ7oceHJK+I+ry1lbnrjDkj0FsSIvsL19dA+0qTCxvXLONHnyRPqTIMTohWah/sOtMIAt39/B+avfZ1dySUqtnPlW0rMcsYKfOIOcZ1OsSjM4wvMIV8B3OvrzyUC8kljxGgF7QeDDEjcgo38tezDVnR9X+VQRJomM+u2uawPOwRt4IGO5opFcm9o0p3fospLKbG5bdeYpMDHuMr+H2vBANLSj4x3mE/S4y4dzihLhXv3DmohfasGyuubSqzuRudnc11/9tOc20m5sUUfb4Igct1mGFNzuYr6XYiTuJesoiv8sAv7PU+sSrFlsNgyiyhnVWEVIn6Lw5gAXO0JsTiG9QOq8tAfct3kw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,68 +106,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The userland visible page flags (KPF_*) were initially moved to
-include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
-stable page flags"), and later moved to
-include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
-(Scripted) Disintegrate include/linux"). Upadte the doc to reflect the
-current location of these flags.
+> >> static long zswap_shrink_one(struct mem_cgroup *memcg,
+> >>                    struct zswap_shrink_state *s)
+> >> {
+> >>       long shrunk;
+> >>
+> >>       shrunk = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+> >>       if (shrunk == -ENOENT)
+> >>           return 0;
+> >>
+> >>       s->attempts++;
+> >>       if (shrunk <= 0 && ++s->failures == MAX_RECLAIM_RETRIES)
+> >>           s->stop = true;
+> >
+> > Do we need 'stop' or can we just return a value here to indicate that
+> > we should stop (e.g. -EBUSY)?
+> >
+>
+> Perhaps we could return -EAGAIN instead of -EBUSY? This would align with
+> the semantics of the memory.reclaim interface, which returns -EAGAIN
+> when it reclaims fewer bytes than requested.
 
-The member @walk_end of struct pm_scan_arg {} was wrongly written as
-"end_walk".
+Hmm but -EAGAIN tells the caller to try again, while here -EAGAIN
+tells the caller *not* to try again because we exhausted all retries?
 
-The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
-PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
-The second one missed PAGE_IS_FILE in the required mask.
+> >
+> > I think splitting the shrink/retry logic over 2 functions makes it
+> > more difficult to follow, so yeah I think fold
+> > zswap_shrink_no_candidate() into zswap_shrink_one(). Then the callers
+> > only need to iterate memcgs (depending on the context) and call
+> > zswap_shrink_one() for each of them.
+>
+> So, something like this?
 
-Fix them all together.
+Yeah, something like this :)
 
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
----
- Documentation/admin-guide/mm/pagemap.rst | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> /* Track progress of a memcg-tree writeback walk. */
+> struct zswap_shrink_state {
+>      int attempts;
 
-diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
-index c57e61b5d8aa..12ac97d9d277 100644
---- a/Documentation/admin-guide/mm/pagemap.rst
-+++ b/Documentation/admin-guide/mm/pagemap.rst
-@@ -67,7 +67,7 @@ number of times a page is mapped.
-  * ``/proc/kpageflags``.  This file contains a 64-bit set of flags for each
-    page, indexed by PFN.
- 
--   The flags are (from ``fs/proc/page.c``, above kpageflags_read):
-+   The flags are (from ``include/uapi/linux/kernel-page-flags.h``):
- 
-     0. LOCKED
-     1. ERROR
-@@ -264,7 +264,7 @@ The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
-     provided or not.
-  3. The range is specified through ``start`` and ``end``.
-  4. The walk can abort before visiting the complete range such as the user buffer
--    can get full etc. The walk ending address is specified in``end_walk``.
-+    can get full etc. The walk ending address is specified in ``walk_end``.
-  5. The output buffer of ``struct page_region`` array and size is specified in
-     ``vec`` and ``vec_len``.
-  6. The optional maximum requested pages are specified in the ``max_pages``.
-@@ -275,7 +275,7 @@ Find pages which have been written and WP them as well::
- 
-    struct pm_scan_arg arg = {
-    .size = sizeof(arg),
--   .flags = PM_SCAN_CHECK_WPASYNC | PM_SCAN_CHECK_WPASYNC,
-+   .flags = PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
-    ..
-    .category_mask = PAGE_IS_WRITTEN,
-    .return_mask = PAGE_IS_WRITTEN,
-@@ -288,7 +288,7 @@ present or huge::
-    .size = sizeof(arg),
-    .flags = 0,
-    ..
--   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED,
-+   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE | PAGE_IS_SWAPPED,
-    .category_inverted = PAGE_IS_SWAPPED,
-    .category_anyof_mask = PAGE_IS_PRESENT | PAGE_IS_HUGE,
-    .return_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED |
--- 
-2.53.0
+While at it, I think "attempts" is really the number of scans, right?
+Should we rename it? Maybe "scans" or similar?
 
+>      int failures;
+> };
+>
+> /*
+>   * Take one step of a memcg-tree writeback walk driven by the caller's
+>   * iterator, and fold the result into @s, the retry bookkeeping shared
+>   * across steps. @memcg is the iterator's current memcg, or NULL once
+>   * it has wrapped around after a full pass over the tree.
+>   *
+>   * The function returns -EAGAIN to signal the caller to abort the walk
+>   * after encountering the following conditions MAX_RECLAIM_RETRIES times:
+>   * - No writeback-candidate memcgs were found in a memcg tree walk.
+>   * - Shrinking a writeback-candidate memcg failed.
+
+Orthogonal to this patch, but I wonder if this can be simplified. I
+wonder if these two conditions can be replaced with "shrinking a memcg
+that has zswap entries failed". The "no writeback-candidate memcgs in
+the tree" case seems like we should abort right away instead of
+retrying?
+
+Nhat, WDYT?
+
+>   *
+>   * Return: The number of compressed bytes written back (>= 0), or -EAGAIN
+>   * once the retry budget is exhausted and the caller should abort the walk.
+>   */
+> static long zswap_shrink_one(struct mem_cgroup *memcg,
+
+Nit: zswap_shrink_one_memcg()
+
+BTW, the existing writeback logic has been broken for a while now when
+memcg is disabled. I think we constantly hit the !memcg case and run
+out of retries. Not sure if your patch changes this in any way, or if
+you want to fix that while you're at it :)
+
+>                   struct zswap_shrink_state *s)
+> {
+>      long shrunk;
+>
+>      /*
+>       * If the iterator has completed a full pass, update the shrink state
+>       * and check whether we should keep going.
+>       */
+>      if (!memcg) {
+>          /*
+>           * Continue shrinking without incrementing failures if we found
+>           * candidate memcgs in the last tree walk.
+>           */
+>          if (!s->attempts && ++s->failures == MAX_RECLAIM_RETRIES)
+>              return -EAGAIN;
+>          s->attempts = 0;
+>          return 0;
+>      }
+>
+>      shrunk = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+>
+>      /*
+>       * There are no writeback-candidate pages in the memcg. This is not an
+>       * issue as long as we can find another memcg with pages in zswap. Skip
+>       * this without incrementing attempts and failures.
+>       */
+>      if (shrunk == -ENOENT)
+>          return 0;
+>      s->attempts++;
+>
+>      if (shrunk <= 0 && ++s->failures == MAX_RECLAIM_RETRIES)
+>          return -EAGAIN;
+>
+>      return shrunk;
+> }
+>
+> static void shrink_worker(struct work_struct *w)
+> {
+>      struct zswap_shrink_state s = {};
+>      unsigned long thr;
+>
+>      /* Reclaim down to the accept threshold */
+>      thr = zswap_accept_thr_pages();
+>
+>      while (zswap_total_pages() > thr) {
+>          struct mem_cgroup *memcg;
+>          long ret;
+>
+>          cond_resched();
+>
+>          memcg = zswap_iter_global();
+
+Do we still need this helper? Or should we just keep the memcg
+iteration open-coded?
+
+>          ret = zswap_shrink_one(memcg, &s);
+>          /* drop the extra reference taken by zswap_iter_global() */
+>          mem_cgroup_put(memcg);
+>          if (ret == -EAGAIN)
+>              break;
+>      }
+> }
 
