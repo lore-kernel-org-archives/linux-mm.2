@@ -4,105 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6F8CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9525CCDE006
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B3B36B0088; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
+	id 6055E6B008A; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7914B6B008A; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
+	id 5DD236B0092; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A2D86B0092; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
+	id 5195D6B0093; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F0836B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5E521C5DD7
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:55 +0000 (UTC)
-X-FDA: 84917814870.23.3904A68
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 275C518000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=k6dtMMJ4;
-	spf=pass (imf24.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+	by kanga.kvack.org (Postfix) with ESMTP id 228C66B008A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:51:00 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9BC848FDAB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:59 +0000 (UTC)
+X-FDA: 84917815038.22.3559609
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D6107C0009
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mit2xoCJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782377453;
-	b=LPhVYakQEMtOFz7/LTk1jfPcdyh7NuY6DCLBM1jCYhXlA603srK8xtSAKm1RqvKyGvBRd+
-	Pqqe5aY2AcD/6e3Lt0nFERCswy5o+2REKjWaqj9P50ZjGq2L++FPVHh9rkckPdPye8y4TG
-	GYEAFckYrlFbD1OWPhZDPtumMDxnncw=
+	t=1782377457;
+	b=nnBj9t+T3ML27acMtYzl0Jnwr+hm/EmfagyRsZ/wdBVBshZLWzIXy1qF/esd7RqQ3PJvIR
+	rXmrDBo+CJahMdDCkhBWCmrTDzqtPXYLBuzp1ioe21TCU6GqRvexe3jG/VfMMFl3jpkMs7
+	SoT4o7UfwISnihuAMtVPbs4LBZVeuXw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782377453;
+	s=arc-20220608; t=1782377457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwl9BXYyih4rkHzUa6Zl9OdrIWhLlRb0XmAM4mKHrgk=;
-	b=V1x84l8p51PtwPzzUFGKkW8k7C+UpJbqoWYLTVlEK9eNLn9HXX26aaXJiLLR9UhWkmwEQI
-	k1FnVWOed04UJwk3XcseY8Qtf2fJ9gwVGOtJpZYEvBr/nEkdoKBeaHykotbdoszY6zU2PH
-	IN8QzTFKxuvKpUQ43faRvI6S/Ss4yFg=
+	bh=2OPM2QsERty8ncczG0J+oScu2vAmciLsKe1D4GkLBlw=;
+	b=q1XGIn7dvaeNgBwsTJ61VD3EvAK3FSyuFEiL6HHwIIoSKBaS+FjhiQ9YBSC92Qfcrvk1vi
+	JGf4XQKZrrjJn4NNl09eicqluZMaFmyEI72xPaXH8BJ/V7f0uXuUAA1ZE0zoQFqqDzzSH7
+	IrILMuYyl22fj3FobkdvnUqWd/9vbwM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=k6dtMMJ4;
-	spf=pass (imf24.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=dw
-	l9BXYyih4rkHzUa6Zl9OdrIWhLlRb0XmAM4mKHrgk=; b=k6dtMMJ4LK2GLoXivM
-	TjYxLQ5b1e46NMyHE28KqJqU45H+z6U70sBcxzOM01mejqoQxZLgX/H95UbQrBag
-	+0Jfs2ByY0IURORbJCILBincxULrNqhYkkXVCNFwsZCvKZOc5FCxSUYd7V2J+y/v
-	gd91mMEsiJEWRd6ugZsmWh3nY=
-Received: from zhaoxin-MS-7E12.. (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgDnLwzK6zxqNeJOEQ--.60795S2;
-	Thu, 25 Jun 2026 16:50:19 +0800 (CST)
-From: Xin Zhao <jackzxcui1989@163.com>
-To: brauner@kernel.org
-Cc: alex.aring@gmail.com,
-	allen.lkml@gmail.com,
-	arnd@arndb.de,
-	chuck.lever@oracle.com,
-	david@kernel.org,
-	ebiederm@xmission.com,
-	j.granados@samsung.com,
-	jack@suse.cz,
-	jackzxcui1989@163.com,
-	jlayton@kernel.org,
-	keescook@chromium.org,
-	linux-arch@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mcgrof@kernel.org,
-	mjguzik@gmail.com,
-	pfalcato@suse.de,
-	rppt@kernel.org,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for pre-exit before dumping
-Date: Thu, 25 Jun 2026 16:50:18 +0800
-Message-Id: <20260625085018.989584-1-jackzxcui1989@163.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
-References: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mit2xoCJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5D8AA60217;
+	Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD931F00A3A;
+	Thu, 25 Jun 2026 08:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782377457;
+	bh=2OPM2QsERty8ncczG0J+oScu2vAmciLsKe1D4GkLBlw=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=Mit2xoCJBPEjBNx0LAYKxG3Cj3APh7/SkQ5Ko2v0NtcvZNcFPqpYoQiAvNwsLX1tJ
+	 U4Jn66pXvAalZ5osrav9nyxvrhb19PCq5cEWHWKt1VkLezWyVh+RKC7P0R6Xx5KY5X
+	 hdlsN6mDxbF8Ice+x5WO7sgORA5SEFX5gzDrGBBiOyqplfaogfRLMOcZwwWWRdenwH
+	 q4iq+BpK5UyGIAfO5gUXEUnGUqDVDAEZUAjiTrJX/W8ahqugi9vBKJUe/wYnsWtXr0
+	 vfbIK6qTPpk9/tJY05vcccFsN1HiQMHZzc0uy0VckYBNpOOd3YJzAa9OXd0BQdxyPT
+	 2U/RCre0IQP4g==
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgDnLwzK6zxqNeJOEQ--.60795S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKw1DGry7Kw1rZFy3CrW3KFg_yoW7Wr1xpF
-	WrKa9akr1kGr1Utas7tw18XF10krWfAFW5urn8Ww42v3Z8Cw1fZr1fKFWY93yDArna9w4j
-	qr18ta4UCr1qvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR7PEsUUUUU=
-X-Originating-IP: [124.77.128.91]
-X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC6AzX4Wo868yfCQAA31
+Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
+From: Christian Brauner <brauner@kernel.org>
+To: John Ericson <mail@johnericson.me>
+Cc: Farid Zakaria <farid.m.zakaria@gmail.com>, Jan Kara <jack@suse.cz>, 
+ Kees Cook <kees@kernel.org>, Christian Brauner <brauner@kernel.org>, 
+ Al Viro <viro@zeniv.linux.org.uk>, shuah@kernel.org, 
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+ linux-mm <linux-mm@kvack.org>, 
+ linux-kselftest <linux-kselftest@vger.kernel.org>, 
+ LKML <linux-kernel@vger.kernel.org>
+In-Reply-To: <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
+References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+ <sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
+ <CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
+ <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
+Date: Thu, 25 Jun 2026 10:50:52 +0200
+Message-Id: <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
+X-Mailer: b4 0.16-dev-d9d01
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6562; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=YWjLajG3jUSlfnNHIHqvQH7npOW2FoDppQt4WSwGrdY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWTZvH4nE7tbujU0/s/WsOh44XiL7RvXiPQUNz/+taiyQ
+ fEY95kFHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5JsDI0NwWeqnwedgvs+Nf
+ NPVn5cp2q1b41m/SMf/y3mmPSf0FU4b/iYxZEdvvRB0RLM7ZqLxfvfPybl4Oya6D7IEKjqvPfdj
+ ODwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Stat-Signature: 6dgu7pfmu6ja4p6rtn6yk4hscyddqehs
-X-Rspamd-Queue-Id: 275C518000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782377451-776154
-X-HE-Meta: U2FsdGVkX19jRmqmt2KOOdCLg4T2/Qn+QGepb8AB2cdEAHqLP03H7/D9EnSSUug3vFji1qCaWpDMZis3CTrL8vTv95S3UKOVybYk0ihTcTbAZaKMJNhRmeReoIcR+76VeknYJg/hFcWuP9SGWCubwlOC3pyB+U47dlqH6y8KfGEEJ9F1PJvDLzdLLBReD0G00rEsQaYtnzgxVi3ZuifcId0eIQk/SY5Hvvbi26OQ4ZrqVEfM0b2SNyQGjLpLO2AvMer98sndC0kCXXqakeVhO1tjcm/TJeTGY92H2JAASqvgC1Zhk+MXdSZ2nod5tSaTDWIxMGsJwIuQW9qajKLE/4RRABtqhUdOPpyAp5XLIZpRX3wVNg1w/LBayejRKo6y5UpHpqaK29QpKjCkrjZ7yqN8ekX+Qc8EY7kFx168BYlGOD4gvyUKpD8OOiiXpsIhIOolyJe497e9bY/cnUCpSnI5XAD8e3fUVkIRq0ToFYTe8Qm/8fCsD7w3T6mE56M/KiBYAfCbbW8a4KNFJ/dVU/QcEankIjv/nrDXZFtW9XiHDmBsjHbnBLivtKQMWatl++Hb4Fi8KnAN7mJGJ3NZuDFZXoV9ziM1hlOYUV2+6dAb3cXZT4voQ6qw4OMgkS679jxam1PHId2cghyEx7f+e4oma2erKGz0Z6r/0Vhn7lFARoertiKGy/75TDDsuNCmhVLdfFdPwrcvTUIxtrWecmnFHzxKWb7Ag/Opaq/lYEubRoaXU1i5PK2GRLrCHW2+cP9zgfS54uOZjer3xniOm5rGSUlijKlpYW6sBVcC90IzarhO0Tb+zR+nmKoMJlxCnBJXOPIqQS3wfANdL5f7lvNakENHrTBLuYfKnG9wTLcw1nKOOA8j1sv8HiV01jftrC2ZvW8yB+H3QwYJuuj7uiLTOeTgc68m3VDFS44MDO3bZBDGMUlH+G6jTPChbtQVvjvHopH2RhFCjRyJXw6
- vTyblvqF
- k0TnNV42N7wZhgjvD1hQUXLUgn/1Vr9gb64ruumMmzJbkTXo5Kv4hm1wRWlKPqureUCc3Z5w8aIXpBvOmyIlkFhNm5sgBbBhJn3LPidJEGXYQpw4WzTYvfSE/sYfMiu3p8sI4+JM2VBgSi/Us9tfLSa0qc+Q22maIeruQLt4H4sD1jI5aBS+GYRrINXISznMpdyE7wKg7YrNRgJtciVaqTm9v35pEnDRNylo4pcokRJ5s2JzgBKYFqQrhhm4tTYS0aM3d5iLJlKfk9A4lmtUeyKbzRiJQoWBTesJexgwY8eJZY/h4JKPPtbzBR7QjmY0igWBXKWJrHk0Lk9cKHgmIJzbrAW69hY7pffY/ZNazNh2/oqNqegdA5lxeARRD0ntVIeUBqwWiuzQPUqCwkjKv2s0uKcsFK8yv1Xe7c//uQcWKfOL2Rtf2ZY8QMaYt99IN02eemcGHwfHfyye7bxssy1ykH0zTaTvWYB4rgtpPVMV6bb37hLtpIuWb+rfCScVMaFDDUBVTWmPbBwAx4iiZRFo2ABw7kjAw8SeUOxUh5+2fvaFkG+EvKQxXbXYFFx3q/owuQyI/QGyiVvWOI93zsg9ZNA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D6107C0009
+X-Stat-Signature: y5fg74uygk6a8ymq71fq9k8obkfwo3ic
+X-HE-Tag: 1782377457-445077
+X-HE-Meta: U2FsdGVkX19Qdhs/BRF76VnWE7SG6soCJHt/me02hGQpdnVAp94tvCMjiKERmu0DOa1mWGw9MEy8N2HZ7tJaNNJO8auroX0E+DnNSOEU821/oGTS6qM5/AtLcbdn//Rh7xOqjbUKJ65ed7nJtLgpfv6IqVPcO2Pv3xJUrT6PTlJtvs61lZyy9IOjTnsAfYDN4+8AxwT/jU9FIgO/5FCzWIATr9+JaXyBsO2VS93ssYh1OkKvKDKVL5GqZHvRFZI0SLiHGAhm4AdQKiWdxJa26CNH3reW2VQJFCqimaaMDsfBkGb7wgP6dYwm2czOsu+sTVEY/6kxalubM/vK6Sial74sEoK2lwYlu1yvZGZhq0Sd1dT/lqng4WyMksewiTWwhwyGOZH6Bgy5N9d4guma0gCVFqfBsLtUdMQsEIBbNHZbf57MGqQVPscaZ5UEXJK5tgIIia7/+nG9EQu63cAAJk7zLjQsUQEQICTnq18z2JzyAb6q6TWJMkqFFUCS9m295ZqzyAOrYQjfCqgaO+GTpIzBGJHxG4cvnbm9gD7fF84Sty4/4J/MN3sOeAviuIN3d6trNgXVTQZpepd9wex30EHqnTMe3T1n5g68ZZMbtXGwczPXto/3FSkx8tA+nALX3WLt6m4x4VHJQcsosdjhFE8gkjMKM3Fk1HcDJcE5qjrEpwsuqVDmzZIxjKm+U64yZSPFHVnbxSkArZyakbfkPS9RC8PLG54yCCRhj3NaYilWciVdrV++bFoBxu2r3ZkAU9pY2gFVvCdTN6GH6BG7P+UpdSgm8nRKirCPN7LYmF0yet7l3ueHdwW/yZ8LmEXGMIMVZ19div7f+Yij9T3Sx/gb4WBdU/vYlRxi1BV5nAzOQZvnYO9KWx77nFS54n/4HLysf0cn/5egvPXtAVsBrZOaEodMbUIj3Xi9EURjCI66zSLQdZNfp/s9GiLOsQ20GkmaVi+uS6h2SxmR2O0
+ fosCUQ0t
+ PXGDmwp/SM33mCAtA4xSqDfpA1JPiNqycHyNV62nN6eUATAyOtqk4CA98d3bkkuiUpbszdzbXPfjAQc/oEZkgHDpGh5NlK4fq1i3ZLdlsrRx2pFVWMCP5a7/dCOK//eVwhlUXikSnSx+4AfhWsbpzE3M1yxEfMOK9gX9sAWPPdLoPERKvNppuQcwvoB8AsiCOztZnYs/Cy4L87OyScFpjZLuvohp9TS/LLp3+bFNqjN7XWWrVeGkLia+cqHUaTxzjNspyONousLClygKSlxhcDrfdPFaFZn+VJpxg/gMEoXRIZjLsbBAfEYYdLp060lMwvJXEoK1Xd9B1l3xFQPru2mFfe5V/HOvC+kgb6CQW7wfsDUm2qRC27p11FH1++EmIfqcQffcOy6NA6iHgb3Be08JZdiUu1PcaPYL3Go09xlLY6dHqf/szqabik1qLgOdJId9zzjI/ZWeTZSi8XyPfNVwEz/KIGbvQTKr2rVEYHVojfXhPbuTEfdbYrirU2PiU8ubVUMHgeij/GVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,120 +108,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 25 Jun 2026 09:28:08 +0200 Christian Brauner <brauner@kernel.org> wrote:
-
-> > +	coredump_pre_exit=
-> > +			[KNL] Change the default value for
-> > +			/proc/<pid>/coredump_pre_exit.
-> > +			See also Documentation/filesystems/proc.rst.
+On 2026-06-22 17:08:55-04:00, John Ericson wrote:
+> Hi, I am another Nix developer, and have participated in some LKML
+> discussions in the (recent and distant) past, and thought I should weigh
+> in here too.
 > 
-> Nah, we're not doing a separate file for this. That makes no sense
-> whatsoever. I've already explained this in the first mail. There are
-> effectively three modes:
+> On Mon, Jun 22, 2026, at 1:15 PM, Farid Zakaria wrote:
 > 
-> (1) dump to a file
-> (2) spawn super-privileged usermode helper process connect coredumping
->     process and said helper via pipe
-> (3) coredumping process connects to AF_UNIX socket
+> > On Mon, Jun 22, 2026 at 3:40 AM Jan Kara <jack@suse.cz> wrote:
+> >
+> > Having put forward the patch, I'm clearly biased toward thinking this
+> > support should exist in the kernel.
+> > If I had to think to strengthen my argument would be that the kernel
+> > should not be imposing how the interpreter is found on userland.
+> > Finding the interpreter relative to the binary would be useful for
+> > package deployment scenarios similar to app-bundles beyond systems
+> > like Nix -- which is the originating reason why $ORIGIN exists in the
+> > dynamic linker.
 > 
-> Parameterize (1) and (2) via a command line arguments. I strongly
-> suspect you're using some AI tooling so it should be able to figure out
-> how this was done in the past.
+> Yes, the idea of making "relocatable software" is not a new one, and
+> indeed it is why `$ORIGIN` is supported in the RPATH etc. in the first
+> place.
 > 
-> (3) can be extended by just introducing a new flag value for struct
->     coredump_req. That is also illustrated by previous work.
+> Most of the programming model for writing relocatable software is fixed
+> at this point. For example, /proc/self/exe made it much easier to look
+> up arbitrary stuff relevant to the current executable. It is just some
+> initial entry point stuff (the ELF interpreter, and shebangs) which is a
+> glaring exception. Those should support `$ORIGIN` too. There is no good
+> technical justification (that I can think of) for some but not all of
+> these supporting `$ORIGIN` --- either it makes sense everywhere, or it
+> makes sense nowhere.
 > 
-> We're not spreading procfs files. It's terrible api design especially
-> for security sensitive changes.
-
-The coredump socket approach is easier to implement because it allows for
-interaction between the server and client, enabling the customization of
-protocols. However, for the coredump file method, I can only think of
-defining "r" and "R" through core_pattern to release flock and file-backed
-shared data in advance. I'm unsure if this is feasible, as it changes the
-original definition of core_pattern.
-
-Regarding the coredump pipe, there is also a lack of a mechanism for the
-pipe program to notify the coredump process, so it might still require
-adding "r" and "R" at the end of core_pattern to indicate this, allowing
-the coredump process to handle the early release on its own. I'm not sure
-if my understanding is correct.
-
-Even if the coredump pipe program obtains the file pointer from the process
-that generated the coredump, it cannot reduce the reference count of the
-file (which I understand is a very bad attempt). Since it cannot decrease
-the reference count of the file, the early release must still be performed
-by the task that generated the coredump. Given this situation, it seems
-that we indeed need to use core_pattern for marking. I've thought for a
-long time about more suitable solutions, but I haven't come up with any.
-
-
-> > +#ifndef O_TMPCLOS
-> > +#define O_TMPCLOS	0x80000000	/* tag need close, temporarily used */
-> > +#endif
+> (I suspect the only reason it didn't happen was pure inertia/Conway's
+> law --- easier for whoever was excited about `$ORIGIN` to change the
+> glibc loader than the kernel.)
 > 
-> Sorry, not going to happen. This doesn't not justify the addition of a
-> new uapi value at all.
-
-OK, if I use it at last, I will not put it in user header file.
-
-> > +
-> > +__setup("coredump_pre_exit=", coredump_pre_exit_setup);
+> > To me, the gap is that prior to systems like Nix, the idea of wanting
+> > your dynamic linker to be part of your app bundle was not necessary
+> > but Nix models the dependency chain down to the loader. Such
+> > functionality would be even more correct for these other bundled
+> > solutions as well, making them portable across userspace glibc
+> > versions for instance.
 > 
-> This makes no sense. I think you really need to sit down and think about
-> a design for this that doesn't introduce state machinery for boot, mm,
-> and the VFS in one shot to solve a fringe problem...
-
-I'll get rid of the attempt to add a new boot-up argument for this feature.
-
-> [Severity: High]
-> Does modifying the VMA maple tree via do_munmap() during the for_each_vma()
-> iteration invalidate the outer iterator? The loop traverses the maple tree
-> using the iterator vmi. However, do_munmap() creates its own internal
-> VMA_ITERATOR and removes the VMA from the tree. Because the outer vmi
-> iterator is not updated to reflect these structural changes, its cached
-> state becomes stale, which can lead to a use-after-free when vma_next()
-> is subsequently called.
+> Yes, exactly. Traditionally people thought "eh `/lib/ld-linux.so.*`
+> doesn't change too much", and decided relocatable software that
+> nonetheless hard-coded that absolute path to an unknown system-provided
+> ELF interpreter was good enough. (Or if they weren't good enough, they
+> went with static linking, but that imposes other costs.)
 > 
-> via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
-
-When executing this traversal logic, we have already acquired a lock, and
-the process has been frozen. The traversal logic goes from start to finish.
-Are you sure that this approach could still have issues?
-
-> [Severity: High]
-> Is it safe to iterate the file descriptor table without holding
-> rcu_read_lock()? Because coredump_pre_exit() is called before zap_threads()
-> kills other threads, concurrent threads can still trigger expand_files(),
-> which replaces the fdt and frees the old one after an RCU grace period.
-
-Since the process has already been frozen, shouldn't we not need to consider
-such concurrency issues?
-
-> [Severity: Medium]
-> Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
-> of file->f_flags risks losing concurrent fcntl() updates since it doesn't
-> hold file->f_lock.
+> Now there do exist purely-user-space work-arounds, like
+> https://github.com/Mic92/wrap-buddy, but they are quite complex, and
+> involve various patching trickery that is likely to scare a lot of
+> security analysis tools. A kernel-based solution that allows clean
+> declarative expression of intent with `$ORIGIN` is much more elegant.
 > 
-> Also, if a file has duplicated file descriptors (e.g., via dup()), will
-> clearing O_TMPCLOS here prematurely skip the closure of the remaining
-> descriptors? When encountering the duplicated descriptor later, the flag
-> will already be cleared, leaving the shared file actively referenced.
-
-> [Severity: Medium]
-> Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
-> of file->f_flags risks losing concurrent fcntl() updates since it doesn't
-> hold file->f_lock.
+> > > In particular the
 > 
-> Also, if a file has duplicated file descriptors (e.g., via dup()), will
-> clearing O_TMPCLOS here prematurely skip the closure of the remaining
-> descriptors? When encountering the duplicated descriptor later, the flag
-> will already be cleared, leaving the shared file actively referenced.
+> I think it is good to see what Conda does as documented in
+> <https://docs.conda.io/projects/conda-build/en/stable/resources/make-relocatable.html>
+> and consider why relying on namespaces vs good old-fashioned relocatable
+> isn't good enough for them either.
+> 
+> (I don't doubt that Conda would find this approach more robust than
+> their sedding tricks, and prefer to use it where possible.)
+> 
+> The short answer is while all of us in the build system space love
+> sandboxing during the build, we don't want that to lead to *requiring*
+> run time sandboxing of the built artifacts. For example, we can
+> certainly arrange sandboxing so `/lib/ld-linux.so.*` is the one that
+> some executable expects now, but every time that executable is run, it
+> *must* be run in a root filesystem where `/lib/ld-linux.so.*` is the
+> loader it expects.
+> 
+> If you have multiple programs that (for whatever reasons) expect
+> multiple different loaders, all spawning one another, it would
+> potentially incur quite the development cost to ensure that they all do
+> the proper unsharing to make everything work.
+> 
+> Relocatability recognizes that whether or not namespaces exist, in an
+> "open world" scenario where we don't know how the software we are
+> writing will be combined with other software for deployment downstream
+> in different ways, it is easiest to adopt an idiom where different
+> things can be placed at different absolute paths, at the user's
+> discretion, and so conflicts are always avoidable.
+> 
+> > > Anyway I'm pretty sure Christian will have more educated answer than me but
+> 
+> Waiting makes sense, I am curious too what he will have to say.
 
-Currently, this flag will only be used by the logic we added, so I believe
-there won't be any issues.
+The arguments I have heard from various people so far are:
 
-Thanks
-Xin Zhao
+(1) Userspace would be able to clone a random chroot to /woot and run a
+    binary from it without having to set up a complicated sandbox
+    effectively making dynamically linked binaries more like static
+    binaries in a sense.
+
+(2) Quote:
+    "If you debootstrap/dnf a chroot to some location in your
+    home dir and try to run a binary from it, that it tries to load the
+    libraries from your /usr is a pretty unintuitive and not at all
+    useful behavior."
+
+(3) Quote:
+    "[Various remote execution things run in locked down containers that
+    disable userns, which makes the sandbox impossible and hence our
+    builds wouldn't work there."
+
+I'm discounting "Oh, userspace already allows this so why not the
+kernel.". I think that's generally a bad argument. Kernel and userspace
+aren't really alike in that regard.
+
+The userspace ORIGIN concept is guarded behind AT_SECURE. The kernel has
+to enforce the same rule. That means the loader now depends on the type
+of binary. I think this is a rather serious issue.
+
+First, it creates confusion in userspace what loader is used. Second, it
+means anything that any build/chroot that uses AT_SECURE binaries now
+has to use the sandboxing solution anyway or risk that some binaries use
+the system loader and others the chroot loader.
+
+Ignoring AT_SECURE, LSMs likely will need a say in whether that ORIGIN
+thing gets honored or not introducing yet another vector where this can
+be overriden or ignored.
+
+Also, we change long-standing kernel behavior which will be very
+surprising for any userspace that might implicitly rely on the fact that
+the system loader is used. So even if we were to do something like this
+it would very likely have to be configurable in some way.
+
+This makes this all ripe for malicious loader injection attacks. And we
+need to consider this possibility.
+
+So I'm not enthusiastic about this. I want this to be consistent.
 
 
