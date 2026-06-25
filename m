@@ -4,168 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EBB9CDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B0CCDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 19:49:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 39A656B0088; Thu, 25 Jun 2026 15:39:24 -0400 (EDT)
+	id 50ED06B0088; Thu, 25 Jun 2026 15:49:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3200D6B008A; Thu, 25 Jun 2026 15:39:24 -0400 (EDT)
+	id 4BF1A6B008A; Thu, 25 Jun 2026 15:49:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1E84D6B0092; Thu, 25 Jun 2026 15:39:24 -0400 (EDT)
+	id 3AFAB6B0092; Thu, 25 Jun 2026 15:49:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E48BB6B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:39:23 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5BDFB8CD7E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:39:23 +0000 (UTC)
-X-FDA: 84919449006.29.4520B2B
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010027.outbound.protection.outlook.com [52.101.85.27])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 765B540003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:39:20 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ofQUhgUx;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782416360;
-	b=BqJrycnReeWZJKa2ZCOeWhd7C13ysfKmkDbThiTMSLY00CKXvwWXhS/gRk8RsiF4gEVlwz
-	fpjPF1V4d1OO4r8zlIajsL9iOoF34jQi/tmsTHub27Onju0QQANmJSVE6Tb/kVhjRsZ7qp
-	bFkEIBwk0CsNGcmSLCHM2d1LBMD+jZ8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782416360;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 072886B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 15:49:32 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 612001C1C5C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:49:32 +0000 (UTC)
+X-FDA: 84919474584.23.279AB75
+Received: from mailrelay-egress5.pub.mailoutpod3-cph3.one.com (mailrelay-egress5.pub.mailoutpod3-cph3.one.com [46.30.211.244])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0342E18000E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:49:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=MINZwvd0;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=A2GsQQfL
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782416970;
+	b=v52akgiove4TdygUjGBLCMvdNBxwnNXlhcB3sz32Soh8UlQ3UnZmgS4JC9C5mS3DAI4VQh
+	yY2Dq1rGCFD+okn/ZW3Ianb741Qy/BQBXH2c3S+CF/VvGlrVfEjVJ5F91SYF3F5xqTvKT7
+	+VJjsnjs65Ux2gWCpExXa8Tfrim+TVU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782416970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8feXrMBtpkQVYwGFK5wI1XRp3CObZt5XsZlgI25RUwQ=;
-	b=MZBn5wlGILOYcZO70GLDJaaHW4tukRLcIvgGzQq+wfJirbSJaqSGBaartPJvYku0N5lbvr
-	b6W6yX6WAfvBUFvdzAIlBXLdc5A5yJexWDYlzxy4Bx2TIeaea9Kthw2N6Q8Nw9cwcdsnL5
-	xs2EyoMTPjjyyRNAIKxdIGYZC5wi/vs=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ofQUhgUx;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf01.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DxGRRVM/ombrB9EESt7d2cQ5jcUYaM1yDwuZkVC3G6BGfhFq0qbJdzx+HwV0crg9w6ipzLr8mfsXCZDxIiXdtkCX+P8HduQylppckLaTWDMq3Rh4jwcGqtNtQv6elRtc2jXQpXSD1UiQ7My8FjDIyi3wD8hVISfxFxBYNysinYHtbX/NXuXShsQzOz0ps/i/6vKXJl+AhCwlLgCFkWwHA539zl7NUuR4vOLyiuuTP/gsvoMaFOGrH5R/kzGCy1krao3YguLrtC+V7zRmdjN39VJK7DPADmk/QaY9v99HF8ZcX2tRIZMUCT3st7EBrbvBMZvvDGfMsWR7sDQa+xZ9Sw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8feXrMBtpkQVYwGFK5wI1XRp3CObZt5XsZlgI25RUwQ=;
- b=fCF24HLBH/UQOgEENJ3QQ6wz9T6QJcYWDM5DmjbtIYMhoR3aHjPjFAbC6AzA32RZvxdNwXWQsbq9Owgeln1bwqGowGMDaEFkSCGd5K02xZ9SK2/2GKlcwVKuc4KRDziYBdKpgn1wXOWLk4v2rS45UknB2UUJmc+SuVVC7wauXy2ij1ymmyiOg2GrspwjtCPii7hSH8TqXtpKk2M9SamXYMhEbAcBMEvDbW052x9lIB+HRVsfxAKX7T69dQcvfYc57WnHCbcXx2F5ScG03CCV1u69XDtRueS3biOprMheG5hg6mVA29beEKemqBBiZW1LFRU46J7HsqjacpD+JL0uXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8feXrMBtpkQVYwGFK5wI1XRp3CObZt5XsZlgI25RUwQ=;
- b=ofQUhgUxtQ4/tjIRwbPNjAApMCGnuqUIA/Je6ySfwAOt8W/gECVs+4PMLtlgaQANlDtHNKfR/wtLpUXErN/rFGjPB7ge2SV4vbjLERIV20TpeHqpIlcp5uCLJRkA2jKlDu3Ji3M0UPP6F3+YfuEahruYTYtiF9xbwmLqmGAIeWULDhv8bGfi3H4R/2OU/F9Nj85S07LqxrT3vqxX4Y5ezwYZT4FJrn6ob1H+Grl1uzDGpCYPLKtQ2CV5S3UEbGAm0znOUKdq8AzXeBf3+JyZsEW25bikYhgCqIXzGgDnYKn+Xv41XbVkxld+Db5c2OqAOTgB586bkFarFyG5HB38RQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by CY8PR12MB7436.namprd12.prod.outlook.com (2603:10b6:930:50::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.16; Thu, 25 Jun
- 2026 19:39:16 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0159.016; Thu, 25 Jun 2026
- 19:39:16 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 25 Jun 2026 15:39:14 -0400
-Message-Id: <DJIDV5DKIKAV.1D2ELFPGLIOSP@nvidia.com>
-To: "Wei Yang" <richard.weiyang@gmail.com>, <akpm@linux-foundation.org>,
- <david@kernel.org>, <ljs@kernel.org>, <riel@surriel.com>,
- <liam@infradead.org>, <vbabka@kernel.org>, <harry@kernel.org>,
- <jannh@google.com>, <sj@kernel.org>, <balbirs@nvidia.com>
-From: "Zi Yan" <ziy@nvidia.com>
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
- PMD handling
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
- <stable@vger.kernel.org>, "Lance Yang" <lance.yang@linux.dev>
-X-Mailer: aerc 0.21.0
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
-In-Reply-To: <20260624065353.1622-1-richard.weiyang@gmail.com>
-X-ClientProxiedBy: BLAPR03CA0018.namprd03.prod.outlook.com
- (2603:10b6:208:32b::23) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=m4MCUcDOc2byyVN+sA2eSmtkMViFdmPHXyLdmgmeAEI=;
+	b=ktgNvf+EC4/wjyaxGfeFE92hFJyeT7CBMuW0O5oXFmehFnJ9VrOpdJOeFb+CF0ZqpBQDWy
+	Qawfc77Z1dRLCUB2h8NO+1wD/RWm29XeMmdG9Re04g2CLLUGONmwXxwJEhNbuEbTirYKSb
+	FYcV3tVxcLZWKjnaevUnU787gAwQYpQ=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=konsulko.se header.s=rsa1 header.b=MINZwvd0;
+	dkim=pass header.d=konsulko.se header.s=ed1 header.b=A2GsQQfL;
+	dmarc=none;
+	spf=none (imf06.hostedemail.com: domain of vitaly.wool@konsulko.se has no SPF policy when checking 46.30.211.244) smtp.mailfrom=vitaly.wool@konsulko.se
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1782416967; x=1783021767;
+	d=konsulko.se; s=rsa1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=m4MCUcDOc2byyVN+sA2eSmtkMViFdmPHXyLdmgmeAEI=;
+	b=MINZwvd0J/0d93f+jOHD4CnUt9y+MfQJdIU3xUZTpDp2Sv0ZyB2rvvir75/1yvQvGAX6ROeT9VMdA
+	 ZRjUesdDCEuSB6PcrC1FXZtIKun0NqAkwgTLSuSdISFnqfoBHAFFEN6MBHY8+ijUQsBCCEUE5pTg31
+	 aMrnitwBHHWcpo23ZsEUp/lqLAIPJ90lXAX3JqU2JzGs6syafvm3jIqpFWuTQvuSy7YqhYEEA7eHns
+	 CS+BJAhqlfpxR9kFZY7ZhEwOSENFUNyaWW3gJ1Mzd0qnbZg7HSd+MewARIq658bdk8WtiHjlGh1eah
+	 8nSmRmxP36Fzk9/fgbfqJxZkGAntIXA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1782416967; x=1783021767;
+	d=konsulko.se; s=ed1;
+	h=content-transfer-encoding:mime-version:message-id:date:subject:cc:to:from:
+	 from;
+	bh=m4MCUcDOc2byyVN+sA2eSmtkMViFdmPHXyLdmgmeAEI=;
+	b=A2GsQQfLv3hKNaeoyeJKVdWiNWzdpYjMZFIsiZLmpwi4LcYEb2bIUtFZFdAa0Eer8QVu0i8fx/8Yq
+	 M/bUlozAQ==
+X-HalOne-ID: f8861944-70ce-11f1-8940-314137fccf3e
+Received: from localhost.localdomain (c213-102-77-204.bredband.tele2.se [213.102.77.204])
+	by mailrelay2.pub.mailoutpod2-cph3.one.com (Halon) with ESMTPSA
+	id f8861944-70ce-11f1-8940-314137fccf3e;
+	Thu, 25 Jun 2026 19:49:26 +0000 (UTC)
+From: Vitaly Wool <vitaly.wool@konsulko.se>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Hao Li <hao.li@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	linux-block@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	linux-mm@kvack.org,
+	Vitaly Vul <vitaly.vul@partner.samsung.com>
+Subject: [PATCH] mempool: optimize mempool resizing
+Date: Thu, 25 Jun 2026 21:49:15 +0200
+Message-Id: <20260625194915.387663-1-vitaly.wool@konsulko.se>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|CY8PR12MB7436:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb293914-c08c-4f6e-0eb6-08ded2f170f5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|7416014|11063799006|56012099006|22082099003|18002099003|921020;
-X-Microsoft-Antispam-Message-Info:
-	lxPygt/faqCvIN+XcLbPtYd9Qgfc5WxMYMZ+3LqcBRgv5qgN9byWhlZTYDX3rFxsYoJ2nAbGYtdrGnsNNPefVX45axSeNkLI4OYmt/Ak3yXop/+4y61qDZnLHXQ8YByAf2rIn+V0IK1hFL5YHTF5mwSUgr1iYroOdSnDuyQzSp0zeCtSMgBK2ZofBWLNTZhcyo4lkyUio77//PkSst7LMxjjPwG8hqgx18GMP42MK1y9Z+BRUEj8GbqQjjIgSBzGWo1Y5JmXZE9PusJ8gFRpJiGGanvlVNqiVWGZVmN2qar7B6Xiny9cBLn9WF+oMtMT7BAY8/EAt0CO6YDUYVTAOMbpu3HUiuKRzQrA11LF43PGTIwCN7JCDgPJf8HHJ8dvwD/u8OHifRIRoi+fqv7sh07y1T0dytIXAiSSEz6mFrArmoO4N8u9BttKTk3YmHtQ3pqh/Yp/DEzYthHACJAXSC4Dk8cC6aVyd5zwNyfGTTQbuPcnd/wNrHFgGMEGddoPXFn6eJIwlWoYl0a3fuM77UrdoXw1vv6s5MeJPNC7SRGQSYUsHsTmzC5yPcAZ3ktfFpwp6kTzy+PJpfpnwvWPkxFFB87x1hzsnWI0b8sbz8R10cb252VotON6fsjtegh+LSBSYR9AJAEVt/KGbRxe7xgJ9X75EPfI7aB5YAd+q/Sv8Wr1ADGerVZaGmd26HUZ+N+dVjrg2NaHNB5P3DINdQ==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(7416014)(11063799006)(56012099006)(22082099003)(18002099003)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QVFkYW9PR1NYd0hEZHZYZCtGdTBwK0VvOEtLNUw2dG5adDhVaUdWSmlGa2d4?=
- =?utf-8?B?RTdPeXg0UmFqVWhVZlAxQjlEakFqdGVqNldaTVEyaS9YNW1NcUZRVGZhTDhk?=
- =?utf-8?B?STloU21OL1RCeDJkWm1zVldySG8rcmU3L3Z3TkE1Zys0WDlCa3duc2dDdVFJ?=
- =?utf-8?B?dEtoY2IrMTdwZFNzb21rU0RSVmM5ZmFwMzRyR0dhZTFUbDJmcXdWcTNCdEJF?=
- =?utf-8?B?eDZIL1hKK3RVanNDSCtpdTdJcXlzWk9NajRtUGd5TUlOR01YbUw0UEdEbXdm?=
- =?utf-8?B?NVFPQkxZUGQ0N0ZmdUVWdXZBUWcyMWZFVHQrSUplN21Zc0JlYlJyR2xqUzJk?=
- =?utf-8?B?b01WVW1wOTkwOEpiUks3dkVrc0JhR3Mza3BMTDN6QlQzWXhacGZQK3liRllh?=
- =?utf-8?B?NkthQ2pTSWtZYlZ3dHhPSVRkYXB2SVJsTUl2cEQ1L3pTRmlta3VJUzNXWUlk?=
- =?utf-8?B?ek00WDAreEFsdVY1Mm1tWElwZWI4RVhtVER6eTNEYWYxTkgyVXZiYVp1enFk?=
- =?utf-8?B?KzRmSGU3T3JMWHhVc09NNURkSzl3cUhtRkNoSXVXN3NZeXFRZ2lUdjR6M2xO?=
- =?utf-8?B?Q2llOFdHaE1GTFRUTDZld0lNbVBKek11OTM2eHJGakY2NER5MnNBeEJ0cTZu?=
- =?utf-8?B?NTlRSWdyajdwa0V1b093NVlxdVYzMXUybklMT1JyaDhNNmU5YlVvVTNJcTJr?=
- =?utf-8?B?eUtGZlBvTjZZRUlRYzBvS1N0L1QxeWFVcEFqWGVVQkFVNGcvWG4xbE5RTkJj?=
- =?utf-8?B?eDQxVnUxQmw5T1VSdVNhaTFtbWRYK3lXZ01ucHV5cU02TUcxQmZZUkRuZ2kw?=
- =?utf-8?B?WWZvbklvNEpaYkVQV3phOG1MT0tEV2U5QUZCdElCNUdCSE01amhpVHdrenND?=
- =?utf-8?B?WXhJdmxTbWU4d3JGUlFxRURRWFlKWmlOZUl2L0VYcWQxOFZIQ0xiMDJWOWZ2?=
- =?utf-8?B?NnFCeWNKdkl3K09sRUQ3TTFIcVJNeWZqNHBJb29vUjQrMW9KSFVQeS81Zk4z?=
- =?utf-8?B?ejVpeUR1T3lGM2YyRUY0a2JoZmVLcTJPNDFnbjBmMHRwWDR2aFRPTHppV3Ri?=
- =?utf-8?B?NENldzdMakJOM3JXTXcvM1NwYk5RekkzR3R0QTAvSWR0RXc4TmtKeFF2M2hS?=
- =?utf-8?B?cGJpODBrSGRWaFlIV0RaSzg2OTZEb0JaTURkTSt0T05vL21za0M4UnVROGRi?=
- =?utf-8?B?RGVPVzl0bG1sT0FrdDJQWFJjUHFKSHVNelRoQit2aWlpcDJGcTd5R3pNRTc4?=
- =?utf-8?B?VzNkeFlvTWRQek5jNXpTcHF6SWVNaHNkdlBhLytZNjU4cm1uTUhuVllmTmJ2?=
- =?utf-8?B?ODAxVW4rWWkxL0prVUc4bXc5Y04rUTFEUUQ5b1RwZXo0ekRPWHM4VnVKZS84?=
- =?utf-8?B?cHhvRkhobHhsVnlPSVk3VndicDRkMlpwY1JsVHZ0TUV1M3NxcysvT0lXMnlh?=
- =?utf-8?B?Z1pvbzBwTDNlKzh3YW9xVnozZWhpZnB2T3N2aGlaQks5NjVmc0hEK1lVK0ZY?=
- =?utf-8?B?L3ZaWG01d1hLdTF0Z1VPVFVDbFJ1djJ5RFpjUmN4dDJYS011VFl3QVdSaG1u?=
- =?utf-8?B?YmFpemYwZk5CUlJsQy93cVNGenFyb0ZWbkw2MVNPb2ZseTZBbEhDRDNnVWJC?=
- =?utf-8?B?R3BNRlBIRXQvOUtoTGxNdUtzbVR3YU92d01JSW9PRVhIZmlDYXI1b3NyUEhZ?=
- =?utf-8?B?K21kVzQxTkcxNTZpaGNzMTBibldWVjVnN1Fmdi9hOU4wZ2FXL1dPNllSbzZk?=
- =?utf-8?B?aFhUQ2VVaVZydStNOFo2ajBoU2tqcXUra1JlOGRDUUtwNmVobjF2RzFMRXhl?=
- =?utf-8?B?OWordUlBSzk0VnNvWFV2Q296bnlOb3RORFhSVzJxUWkwNXBjT01qb1FJQ3V4?=
- =?utf-8?B?dEJmSCtLZFJiNFVBWHJVK29nN2JySWxLeGxrWDI0ZXRwNzRiZ2VaazVxMzg2?=
- =?utf-8?B?MEFxcGd5aFErSFNld2dzb295VGdwaHk5NUU4MTg5Y2g2UHJFVFNrblE4a3JT?=
- =?utf-8?B?cEsrN0lHTVMreFFHV1BId3NPME0wMEhLekVvOTMwT2N0aHZ2bGh4WnpaRlBX?=
- =?utf-8?B?bmJSSXg1VFFBeGh2VkxZWlkzYWtYOXZzVlE2N1dNMjIxZTVQc05tZUVJL01H?=
- =?utf-8?B?UWVPT2RPZkZkUWQ5QWVMZEdiYTY0Z1hzMW12am1BKzdJZ010Z25icjZlbUpK?=
- =?utf-8?B?Uk5Pd3h6RlJDWEcrTjVLN0ZvY2Fnb1Yza0JhblhEY0hUelRXSmdORkwvY3l6?=
- =?utf-8?B?alpmRGxuckZYSm0zYU5LSHF1R3hQVGFPL2Y1QTlnZkpBRHZ6Sy81TkpYOXhH?=
- =?utf-8?Q?JbL/ZrwZhCfH9pwwuq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb293914-c08c-4f6e-0eb6-08ded2f170f5
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 19:39:15.9225
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ps8GHCag5xQBlsDJMtBR3OXO/B/9iOf30qHcRGoJGQ2YamSb+gKfGaTo1QNLi5Q2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7436
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0342E18000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 765B540003
-X-Stat-Signature: yyk3jcp3u5boz79qh6rribdce8xspnhs
-X-HE-Tag: 1782416360-977855
-X-HE-Meta: U2FsdGVkX19FQruzwGq5n46S6jdfGo37ovBlmkrBNYSlBB6L/qsqXfHk2NfGWEIq7J3uOfY1zUcZm2NZSvlp+cIDCGyc+deL82mDALJaNmIkKhBs0tq4jL332b0oksUiKcnZV5E5AVdf7tE6aR59XmXgqCFQ+ZweBYUOvdZdIY4A78NrUNwNyU7lnBpE933WJdBej4kXSbJ9xjVKkL6TYnA9BR+WprNP9376mkig1AQpJ3UUNf9K95KsfZ+trWfy1WHAtNOjHERATbfRkEZTXx2WrI29U7NuTUWRSGv8PWvQo7AsR2b0MfoMuO7moXdvWiyKZEt7z9CHCeTLKkfOn//PpB0gMxatvDKRHXoFYE8e+7LXZ+IfmOFdX9K+Y3i5PHUcANavadaoNNDMLQnFiWbJvhvkTFom8iCjxFJWFbDRcvLYU7yvBcqWAzc/JvzpREavi2edOyBZ4t16s+7y6GtrzfJAIEa5ZGcJ4gDN1XyRDgnnAadg74eFUjDSAhVZO+o6W2XjbBIR2abbj8WGnm+wpkcMvaL9xab3+yvC7+Y3XZvgdQvNyxxlSju3i5ftZjxWNH3FCzw+UkXJLSsMVe3TzVUflrqiMzTKybeSmDHIdwhh2gLqbf1wn9w3MmYUKAQHqs554PfRpxE65JdiOeSvJaYlHc2ijSu5/ttfA1Dp8OqJjk1+MWUvnzn4yvlDNhuZl8s3fv4NPV1vohn2FdprIt1zLVJ8hhClkpbXAOjmwot0HfgNucUhsfedJSIrpewaO0vqdkGjMe3rxZbUSkGSjQ+7eg5FZHkp0gSLDPdUmjV9WpjVcschZ+Cu3aO73wqTGzc2L2XfcFxhrxGFOkCTCVil/VwCOsi9ebBcmjcqMRJu/YBG8mSwr0wJTikpaM8qojOdI+T+GoLhGrWBENStt2wZ7vFfT8ee39ELD4T2SVhtGMY73zMofj1GESUkzxyrARP/oG2u1HtEw54
- Q6juY/DV
- XhQuSm3EkIGkmFqp8/neEUMwovQ/Pguk11Sbn9hJHl03HHxk0O/xoPuWoAldOpJaNEJKds5NAU4QUZayEIsg4KUt2FNe6rIVP9TzhGcksUA8VpPIMPrST5OmK1Uw4B2P6avyei8ajGA41BeJFSwjBsLVm0zU007exPpbc7d8FMb3pb6PL8KGhxlVORGMiSPGZjK8O0Xx1wRjsX+9QAg4Dke0Q4G8jL04tAhjbIYR6PQD9L1VvcyW7mvOsK6zhcgZY0q2mSVBIeiSa/KAC4XC0qBZr2FvvMIzOskhwFb4CJ607Liv7WSxjv1chKunpDnW6yn4Hytey9X9UHii8IPCfqhme1x1OeUrULzKZsUaLMukZxJajDpoEoCVj87e9MKJ67aIv5YRF9BIAbWrpebPOuGab8poZfcGf+FVK8JistNAGMWnfVFvwM7dTuwGMgG61bjwatfjN2cH4nHFNLdRD9z4mFmQOs1zJWZmKKD9q9G+Re5MDnSMCbJvX9aGRieKofERVYdOA5AKCK0zHYqe4RFi7ns4/Wq862eqDHg/h3ATQ9J3ilfzZumU0SLF3POW67Y+2
+X-Stat-Signature: sxwhzxuxez5axxss84othoc9hdrpuwxy
+X-HE-Tag: 1782416969-936127
+X-HE-Meta: U2FsdGVkX1+2x8SMrwPdX4oLnsTHD6wj1Njf9LASQcpWSKLixUXYSgK7HR5jxYGXM2J6vYqjGKOe82+OuTygkAVEHx/WIfFc4h4MWSrF16SYL9OyBdp01o5W3Hi7vm+0O1BTieBSkFUK0Ib5mRqS+pzrAaxa/Co31qTv0plee/wJnGqizaRZ1W2RmBpUGj/9M79SYld6muj16FWUIEr/U/bY5pFl7sPR2kRGEIUN2QajHwOegad7iTpWsIohdMra7QAOs/QXUidPydcAr9LdMc+EZnAAPScbfLhI4dNUMuPz/cgZj+d/TRQjjjBY8YS77s2lHd5iz95OvigunM1QJ3WlG8hUSXb1A0TGuUKUcmdsKVVg7Vvsjd4CJ8CsCkSoRpZHZHEqxJ3sNa0JsB8823AMlOgNoHSZDGAv2jnH1uLWFPG90KiK04Am0omKfgJh2PczVo/pFF3WI+JK43XnfrtYYMQ2bQvV2dc08JyOtthOC4sxo2hTPXypWidkdJBni3EpbcsHWK6p1e6vLUSkKMuzQGLm+uvzeoJy/p8MXkHmU/FduwxYZ/bG4sx8ierSGZrsjb4lXsGFWEVL9MDx+OqUUGyquIXVXQZ3YjNRUf0wThiQCpSEm7WlFxws9vwJFdwCHmxEn2tVxowyQmOigal6l5KEli/j03/ZBTlqGYBOE5D0XX9pnYyLE74fvi6LeGdqgPJZaCy5XmqNR7jSLIP3HWnuFgT0kWJiwplSk1+rI+UnUbez7YsK+Q3cCu1HbBkkFovlsdJ7EtDxxdva7Js9b5zJEP+FtXU/evD1IGB2baz9hTtW+lK6uzQmNAIACQycS5JyQPhp0F40QZKl7DkKp+ayQ5OSdfRDyf1zT8Up2QynrGXzqhPVnZDfZokLh4+TTTi5R1dCaagsYvH24wC8SwmYULtlUzCe2i/5k5nwqfIRdGbRmt0KCF/NOZRVOn37kJ1SxUGQlYk9z+N
+ QIlIw1Zc
+ c0pXBptdrZhmav4ahty/j7M9jacmmu4UaPrR7BMpRWwtAREuaY57gw1U+bsp0shMBKDUr0K3Vvxl+7d4SglAkbZHSNJH4qRVQyEfW2GI6bei/BWf59SevgCpB5dJMWzPkvYWv5GUAmUjwl+uyclPzcJbqqx0htrOoXj/D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,78 +108,281 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Jun 24, 2026 at 2:53 AM EDT, Wei Yang wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") introduced the concept of device-private
-> PMD entries, but did not correctly update the rmap walk code to
-> account for them.
->
-> As a result, when page_vma_mapped_walk() encounters device-private
-> PMD entries, it takes no action other than to acquire the PMD lock
-> and exit.
->
-> However this is highly problematic for two reasons - firstly,
-> device private entries possess a PFN so check_pmd() needs to be
-> called to ensure an overlapping PFN range.
->
-> Secondly, and more importantly, if PVMW_MIGRATION is set the
-> caller assumes the returned entry is a migration entry, resulting
-> in memory corruption when the caller tries to interpret the device
-> private entry as such.
->
-> In addition, commit 146287290023 ("mm/huge_memory: implement
-> device-private THP splitting") allowed device private PMDs to be
-> split like THP mappings, but again did not update this code path.
->
-> As a result, we might race a PMD split prior to acquiring the PMD
-> lock.
->
-> This patch addresses all of these issues by invoking check_pmd(),
-> ensuring PMVW_MIGRATION is not set and checks whether a split raced
-> us we do for PMD THP and migration entries.
->
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-p=
-rivate entries")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
->
-> ---
-> v4:
->   * refine subject and commit log based on Lorenzo's suggestion
->   * put pmd device-private entry handling in its own if branch,
->     suggested by Lorenzo
->
-> v3:
->   * remove cleanup part, only fix the issue for device-private entry
->   * refine user effect description based on Lorenzo's suggestion
->
-> v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gm=
-ail.com/T/#u
->   * specify the possible error case of current code and user visible effe=
-ct
->   * besides fix, cleanup the pmd entry handling based on David's suggesti=
-on
->
-> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiya=
-ng@gmail.com/
-> ---
->  mm/page_vma_mapped.c | 20 +++++++++++++++-----
->  1 file changed, 15 insertions(+), 5 deletions(-)
->
+From: Vitaly Vul <vitaly.vul@partner.samsung.com>
 
-LGTM. The discussion from the patch history is very valuable. Thanks.
+Resizing mempool to a bigger size currently requires a new allocation and a
+data copy to a new larger elements array which doesn't go well with the
+idea of having a fast and deadlock free memory allocations during exreme VM
+load.
 
-Acked-by: Zi Yan <ziy@nvidia.com>
+This patch introduces a new parameter max_nr for a part of the mempool API,
+which denotes the maximum size of the pool. With it in place we can avoid
+any allocations in mempool_resize() since we can either grant the resizing
+request or reject it basing on thr maximum allowed size of the elements
+array. For those few users of the mempool API that actually use
+mempool_resize() it is a clear upgrade because the maximum number of
+elements is known upfront.
 
---=20
-Best Regards,
-Yan, Zi
+Derivative APIs (like mempool_init_kmalloc_pool()) are mostly left intact,
+substituted by the new mempool_init_kmalloc_resizable_pool() API where the
+pool is actually meant to be resizable.
+
+Signed-off-by: Vitaly Vul <vitaly.vul@partner.samsung.com>
+---
+ block/blk-zoned.c       |  6 ++--
+ drivers/nvme/host/pci.c |  2 +-
+ include/linux/mempool.h | 18 +++++++---
+ mm/mempool.c            | 75 +++++++++++------------------------------
+ 4 files changed, 38 insertions(+), 63 deletions(-)
+
+diff --git a/block/blk-zoned.c b/block/blk-zoned.c
+index 6a221c180889..5d31597f2fe6 100644
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1918,8 +1918,10 @@ static int disk_alloc_zone_resources(struct gendisk *disk,
+ 	for (i = 0; i < disk_zone_wplugs_hash_size(disk); i++)
+ 		INIT_HLIST_HEAD(&disk->zone_wplugs_hash[i]);
+ 
+-	disk->zone_wplugs_pool = mempool_create_kmalloc_pool(pool_size,
+-						sizeof(struct blk_zone_wplug));
++	disk->zone_wplugs_pool = mempool_create_kmalloc_resizable_pool(
++					pool_size,
++					BLK_ZONE_WPLUG_DEFAULT_POOL_SIZE,
++					sizeof(struct blk_zone_wplug));
+ 	if (!disk->zone_wplugs_pool)
+ 		goto free_hash;
+ 
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index b5f846200678..eaa4804ab3c3 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3349,7 +3349,7 @@ static int nvme_pci_alloc_iod_mempool(struct nvme_dev *dev)
+ {
+ 	size_t alloc_size = sizeof(struct nvme_dma_vec) * NVME_MAX_SEGS;
+ 
+-	dev->dmavec_mempool = mempool_create_node(1,
++	dev->dmavec_mempool = mempool_create_node(1, 2,
+ 			mempool_kmalloc, mempool_kfree,
+ 			(void *)alloc_size, GFP_KERNEL,
+ 			dev_to_node(dev->dev));
+diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+index e8e440e04a06..8b950efded18 100644
+--- a/include/linux/mempool.h
++++ b/include/linux/mempool.h
+@@ -18,6 +18,7 @@ typedef void (mempool_free_t)(void *element, void *pool_data);
+ typedef struct mempool {
+ 	spinlock_t lock;
+ 	int min_nr;		/* nr of elements at *elements */
++	int max_nr;		/* max nr of elements at *elements */
+ 	int curr_nr;		/* Current nr of elements at *elements */
+ 	void **elements;
+ 
+@@ -38,7 +39,7 @@ static inline bool mempool_is_saturated(struct mempool *pool)
+ }
+ 
+ void mempool_exit(struct mempool *pool);
+-int mempool_init_node(struct mempool *pool, int min_nr,
++int mempool_init_node(struct mempool *pool, int min_nr, int max_nr,
+ 		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+ 		void *pool_data, gfp_t gfp_mask, int node_id);
+ int mempool_init_noprof(struct mempool *pool, int min_nr,
+@@ -49,15 +50,15 @@ int mempool_init_noprof(struct mempool *pool, int min_nr,
+ 
+ struct mempool *mempool_create(int min_nr, mempool_alloc_t *alloc_fn,
+ 		mempool_free_t *free_fn, void *pool_data);
+-struct mempool *mempool_create_node_noprof(int min_nr,
++struct mempool *mempool_create_node_noprof(int min_nr, int max_nr,
+ 		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+ 		void *pool_data, gfp_t gfp_mask, int nid);
+ #define mempool_create_node(...)					\
+ 	alloc_hooks(mempool_create_node_noprof(__VA_ARGS__))
+ 
+-#define mempool_create(_min_nr, _alloc_fn, _free_fn, _pool_data)	\
+-	mempool_create_node(_min_nr, _alloc_fn, _free_fn, _pool_data,	\
+-			    GFP_KERNEL, NUMA_NO_NODE)
++#define mempool_create(_min_nr, _alloc_fn, _free_fn, _data)	\
++	mempool_create_node(_min_nr, (_min_nr)*2, _alloc_fn, _free_fn,	\
++			    _data, GFP_KERNEL, NUMA_NO_NODE)
+ 
+ int mempool_resize(struct mempool *pool, int new_min_nr);
+ void mempool_destroy(struct mempool *pool);
+@@ -102,6 +103,13 @@ void mempool_kfree(void *element, void *pool_data);
+ 	mempool_create((_min_nr), mempool_kmalloc, mempool_kfree,	\
+ 		       (void *)(unsigned long)(_size))
+ 
++#define mempool_init_kmalloc_resizable_pool(_pool, _min_nr, _max_nr, _size)		\
++	mempool_init_node(_pool, _min_nr, _max_nr, mempool_kmalloc, mempool_kfree,	\
++		     (void *)(unsigned long)(_size), GFP_KERNEL, NUMA_NO_NODE)
++#define mempool_create_kmalloc_resizable_pool(_min_nr, _max_nr, _size)			\
++	mempool_create_node(_min_nr, _max_nr, mempool_kmalloc, mempool_kfree,		\
++		       (void *)(unsigned long)(_size), GFP_KERNEL, NUMA_NO_NODE)
++
+ /*
+  * A mempool_alloc_t and mempool_free_t for a simple page allocator that
+  * allocates pages of the order specified by pool_data
+diff --git a/mm/mempool.c b/mm/mempool.c
+index db23e0eef652..4675405c0bd8 100644
+--- a/mm/mempool.c
++++ b/mm/mempool.c
+@@ -207,7 +207,7 @@ void mempool_exit(struct mempool *pool)
+ 		void *element = remove_element(pool);
+ 		pool->free(element, pool->pool_data);
+ 	}
+-	kfree(pool->elements);
++	kvfree(pool->elements);
+ 	pool->elements = NULL;
+ }
+ EXPORT_SYMBOL(mempool_exit);
+@@ -230,22 +230,22 @@ void mempool_destroy(struct mempool *pool)
+ }
+ EXPORT_SYMBOL(mempool_destroy);
+ 
+-int mempool_init_node(struct mempool *pool, int min_nr,
++int mempool_init_node(struct mempool *pool, int min_nr, int max_nr,
+ 		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+ 		void *pool_data, gfp_t gfp_mask, int node_id)
+ {
+ 	spin_lock_init(&pool->lock);
+ 	pool->min_nr	= min_nr;
++	pool->max_nr	= max_nr;
+ 	pool->pool_data = pool_data;
+ 	pool->alloc	= alloc_fn;
+ 	pool->free	= free_fn;
+ 	init_waitqueue_head(&pool->wait);
+-	/*
+-	 * max() used here to ensure storage for at least 1 element to support
+-	 * zero minimum pool
+-	 */
+-	pool->elements = kmalloc_array_node(max(1, min_nr), sizeof(void *),
+-					    gfp_mask, node_id);
++
++	if (WARN_ON(max_nr < 1 || min_nr < 0))
++		return -EINVAL;
++
++	pool->elements = kvmalloc_array_node_noprof(max_nr, sizeof(void *), gfp_mask, node_id);
+ 	if (!pool->elements)
+ 		return -ENOMEM;
+ 
+@@ -253,7 +253,7 @@ int mempool_init_node(struct mempool *pool, int min_nr,
+ 	 * First pre-allocate the guaranteed number of buffers,
+ 	 * also pre-allocate 1 element for zero minimum pool.
+ 	 */
+-	while (pool->curr_nr < max(1, pool->min_nr)) {
++	while (pool->curr_nr < pool->min_nr) {
+ 		void *element;
+ 
+ 		element = pool->alloc(gfp_mask, pool->pool_data);
+@@ -286,7 +286,7 @@ int mempool_init_noprof(struct mempool *pool, int min_nr,
+ 		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+ 		void *pool_data)
+ {
+-	return mempool_init_node(pool, min_nr, alloc_fn, free_fn,
++	return mempool_init_node(pool, min_nr, min_nr * 2, alloc_fn, free_fn,
+ 				 pool_data, GFP_KERNEL, NUMA_NO_NODE);
+ 
+ }
+@@ -296,6 +296,7 @@ EXPORT_SYMBOL(mempool_init_noprof);
+  * mempool_create_node - create a memory pool
+  * @min_nr:    the minimum number of elements guaranteed to be
+  *             allocated for this pool.
++ * @max_nr:    the maximum capacity of the pool
+  * @alloc_fn:  user-defined element-allocation function.
+  * @free_fn:   user-defined element-freeing function.
+  * @pool_data: optional private data available to the user-defined functions.
+@@ -310,7 +311,7 @@ EXPORT_SYMBOL(mempool_init_noprof);
+  *
+  * Return: pointer to the created memory pool object or %NULL on error.
+  */
+-struct mempool *mempool_create_node_noprof(int min_nr,
++struct mempool *mempool_create_node_noprof(int min_nr, int max_nr,
+ 		mempool_alloc_t *alloc_fn, mempool_free_t *free_fn,
+ 		void *pool_data, gfp_t gfp_mask, int node_id)
+ {
+@@ -320,7 +321,7 @@ struct mempool *mempool_create_node_noprof(int min_nr,
+ 	if (!pool)
+ 		return NULL;
+ 
+-	if (mempool_init_node(pool, min_nr, alloc_fn, free_fn, pool_data,
++	if (mempool_init_node(pool, min_nr, max_nr, alloc_fn, free_fn, pool_data,
+ 			      gfp_mask, node_id)) {
+ 		kfree(pool);
+ 		return NULL;
+@@ -338,9 +339,8 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
+  *              allocated for this pool.
+  *
+  * This function shrinks/grows the pool. In the case of growing,
+- * it cannot be guaranteed that the pool will be grown to the new
+- * size immediately, but new mempool_free() calls will refill it.
+- * This function may sleep.
++ * the pool will be grown to the new size immediately, but new mempool_free()
++ * calls will refill it.
+  *
+  * Note, the caller must guarantee that no mempool_destroy is called
+  * while this function is running. mempool_alloc() & mempool_free()
+@@ -351,11 +351,13 @@ EXPORT_SYMBOL(mempool_create_node_noprof);
+ int mempool_resize(struct mempool *pool, int new_min_nr)
+ {
+ 	void *element;
+-	void **new_elements;
+ 	unsigned long flags;
+ 
+-	BUG_ON(new_min_nr <= 0);
+-	might_sleep();
++	if (WARN_ON(new_min_nr < 0))
++		return -EINVAL;
++
++	if (new_min_nr > pool->max_nr)
++		return -ENOSPC;
+ 
+ 	spin_lock_irqsave(&pool->lock, flags);
+ 	if (new_min_nr <= pool->min_nr) {
+@@ -366,45 +368,8 @@ int mempool_resize(struct mempool *pool, int new_min_nr)
+ 			spin_lock_irqsave(&pool->lock, flags);
+ 		}
+ 		pool->min_nr = new_min_nr;
+-		goto out_unlock;
+-	}
+-	spin_unlock_irqrestore(&pool->lock, flags);
+-
+-	/* Grow the pool */
+-	new_elements = kmalloc_objs(*new_elements, new_min_nr);
+-	if (!new_elements)
+-		return -ENOMEM;
+-
+-	spin_lock_irqsave(&pool->lock, flags);
+-	if (unlikely(new_min_nr <= pool->min_nr)) {
+-		/* Raced, other resize will do our work */
+-		spin_unlock_irqrestore(&pool->lock, flags);
+-		kfree(new_elements);
+-		goto out;
+-	}
+-	memcpy(new_elements, pool->elements,
+-			pool->curr_nr * sizeof(*new_elements));
+-	kfree(pool->elements);
+-	pool->elements = new_elements;
+-	pool->min_nr = new_min_nr;
+-
+-	while (pool->curr_nr < pool->min_nr) {
+-		spin_unlock_irqrestore(&pool->lock, flags);
+-		element = pool->alloc(GFP_KERNEL, pool->pool_data);
+-		if (!element)
+-			goto out;
+-		spin_lock_irqsave(&pool->lock, flags);
+-		if (pool->curr_nr < pool->min_nr) {
+-			add_element(pool, element);
+-		} else {
+-			spin_unlock_irqrestore(&pool->lock, flags);
+-			pool->free(element, pool->pool_data);	/* Raced */
+-			goto out;
+-		}
+ 	}
+-out_unlock:
+ 	spin_unlock_irqrestore(&pool->lock, flags);
+-out:
+ 	return 0;
+ }
+ EXPORT_SYMBOL(mempool_resize);
+-- 
+2.39.2
 
 
