@@ -4,122 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96F35CDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 16:18:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2438ECDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 16:39:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4CD596B00B9; Thu, 25 Jun 2026 12:18:26 -0400 (EDT)
+	id EC18A6B00BB; Thu, 25 Jun 2026 12:39:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A55F6B00BA; Thu, 25 Jun 2026 12:18:26 -0400 (EDT)
+	id E99166B00BC; Thu, 25 Jun 2026 12:39:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BD566B00BB; Thu, 25 Jun 2026 12:18:26 -0400 (EDT)
+	id D87246B00BD; Thu, 25 Jun 2026 12:39:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F87E6B00B9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:18:26 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 724CC1666EF
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:18:25 +0000 (UTC)
-X-FDA: 84918942570.02.DD285F7
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8AF5040002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:18:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s+c6XcZD;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A93506B00BB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 12:39:54 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DDC0C09C4
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:39:54 +0000 (UTC)
+X-FDA: 84918996708.26.5CE5585
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2D4CD80008
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:39:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iilwFDfn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782404303;
-	b=KcDMQRJLQi3AMecJGwn+l4PRrli4yj3B2Iqy0YyBlAcPZEINK8uX/d9Qnb74DXvIoR2dNy
-	fmYooYa9N/1W8dISCZ0EnHFjqedhnw9fGKQZ/d/MbxbrUv/DnoCFD7+IN9ms6qTLcuJkzz
-	pbL6EU6DLHlbNE4JNv/Vh0bSR5TrQCg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782404303;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782405592;
+	b=kyn25xhTcSXKcHDb+93e11bWi1rsblmbigIIsmzWJDganLp73tZ80K+X6J0l5C4vokp3mj
+	aIdC/zL3QMI8YtEb7Y8+82RG7+/rKnhfAGUyYi3fYlOy4Qn+CK4+yGcg5pPMx1nkOuQhze
+	s5E72qzX9/2S2TUaF+C4aLVYh9wxcg8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782405592;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uqHpmuK4pkMoXE019QC10uQ8T4IH5rkVaD+e94INi8Y=;
-	b=3EBm+kKyXw+s6qzNI/i/L24NKsIGg8FoVl2zVKzkUy7P8ZbA11cxr2PE9yOjv8RMtpjJv0
-	NfPuC78EGBXtd6VjyMwgQ/y13pM90k3adPyXAHV8LBtT6T1q718z9EXO653CdTdZYCL59K
-	I5O/1fY3T3LaZ2se0UE2BE77E3/mTsA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=s+c6XcZD;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	bh=om44/un4X7gR8LEdF/8afBXQ9SCkGmWgSkZBjmUY6f4=;
+	b=trwk0x7KvBr+vpFkhuGU+svFx4EllAAALxM+kaWb1KuebaV/ZDTOMj2rxNOQ4ZfLJLgoxt
+	CzoAfeFsThT4GwNnj5IUO80lA/4y+GJV1NDbY5I9toihGbvTHHOBvaqp3IonmFfCd8W9FH
+	Kp60ElG8T0boyPidZwKiMc1GDFB7apk=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=iilwFDfn;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf02.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c0c5d170ad4so405325366b.3
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:18:23 -0700 (PDT)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-46cbf263113so1974537f8f.1
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:39:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782405591; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LMB0rYoQoqgs29u4cXXUFigy+A3i/EI+7u6juUEZ6LD5YIcj/EmmD5gwe3Vvli9f5+
+         GmTYkue4MHvhqjdGru+4uKKQZXALq11MPXmqXeFdw8iui/niHkko09MSonooNjMyS75l
+         3jhvmPA+v+VLR1c7GM/8NN+3yApaMypPvVfwIyWn4IdsZeZpQGdw5IuzmgvRx6Jrjry9
+         ORoRjWb8R8WzLFmXcaFPiVnCULy+yfKgEqiPfjfHWp06SRyW8EEXo7sI7kVIKaIBtZmL
+         urHeCtZh7BbfC78HKMOHWamtlPanL9BOWGSK0xP68iRxD/+kMtjd0GOxKGYmMwP6B485
+         iu1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=om44/un4X7gR8LEdF/8afBXQ9SCkGmWgSkZBjmUY6f4=;
+        fh=98PUK8Z+f3sSJp7Hg68gQ/Nl31RyQIrCcqtnaEWWkEk=;
+        b=jRnhZHu7zXmTsjqW8kQcOtTHqw9YyXTwBulLe+JZWgOC2IQy75lRIzYlnlPHD5uA5T
+         ZP94UjFDrs+3SFfn8hJSQ+Mf2fBEAitYVLpcW+TR37HjinR56pzoVGExCpz+CsHcAHid
+         1zfLin0NIb/sZ2lUw2KCI5PSLubP45cn1C/Mi90Lhb2/p/f9pxkzgY4yQYxwWIchqu5r
+         5gHEfX8fR9W7wRv8s/KGHDuFRQkbBBseB2GtTq36N7kqWV6HIjrPy/SXsmanH92pX6vd
+         WCcc4Re+uOEgUZ1iq8Cm4wMiCopMumW/NK68OXgWpPV5zGLUhKXZs5EsXTxwOUVW+5gO
+         EqVw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782404302; x=1783009102; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1782405591; x=1783010391; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uqHpmuK4pkMoXE019QC10uQ8T4IH5rkVaD+e94INi8Y=;
-        b=s+c6XcZDbaYLQUKIJ9yV2FxmZO5r3MazqQ1K4tcNZNEVfGUJr1FD8wxp6dCva8tUuz
-         oDV0zCi0dqDK8TRnrQM9tdind7D6hvLrCaOXsIDP2sb3rsVz3YEesVkJ8yHYnbWBmwiw
-         juxd+QPctdMDFNWZ+XofdrPJ4+LtaQaT5VpJegFbH6B+deaRrIbIE4nqPWJRs/J4oaEN
-         P8Od/zx3JIfGDh9OSxvLMfPIdlOdtsqo2JhxatYpGaJw37NzJXBr0c1aMZE2ABxnCp0W
-         +9eyKRf8UBknF7WXDWvIfstW7PbXJ2AGiarCuQ31FZepSfC/I3Wyq8hHI77siszN4kLx
-         zBug==
+        bh=om44/un4X7gR8LEdF/8afBXQ9SCkGmWgSkZBjmUY6f4=;
+        b=iilwFDfnxpKIbA9/ap7wsIwAWT48iC/piSZXQ4/rDB8wtV4EKjwSOtMocRfia+nimQ
+         FiBRUNBKAPnT/TdNMPxuUcKiGo6iHKinsbNoyRAqvuvb4fpkuprwv8A6tToIKkxa5ZzE
+         M+Q+In4pWOGBufz+iRpQCx73cSX+gVoSO/TSwHMouFZLmaiX12OZGrO67sEsrnUIx8fm
+         lLijDjbcfFa/xWb8hVRghWeUE9sp64Iu9O2+8cVjt4P9nPD7Ks3fFVeFaz4cD+dryRvz
+         Y/lRnHLtpsiAum0h4mGon25PZ06nebLj51hrU4jfGvIcCJDQ9YFIlldnGrplPzqDKbbQ
+         bW+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782404302; x=1783009102;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uqHpmuK4pkMoXE019QC10uQ8T4IH5rkVaD+e94INi8Y=;
-        b=aFhVM5ETYrSlya5IpFAClYLbDJZccR0Olws9+BBrXDHsdC/WIqhqiqRGeJNFuqiMjI
-         hs1upPBz9GiSitoVHjFUndawXdos/QuP8SW/Eq5sXUX3/QAO9Koal33slvGy0vt8p+t8
-         47YhG7gUGLzYfPR2g8y22HXsCLM2vcEMhkJq74icLlrNJ4H9awVihgTTPV0hcaIddeKL
-         MvCKajDLlqm2luvuDzwSUU0Jae7FjUW7Bwa3UbPr034bDizVPCr3CgzNB2ElSSLY3V/b
-         J/WmVJc/fJS3EAzgCydrnnncunXWsVA/T6Q365INr6w9c46A422DWfoHUb+geizeInZK
-         eidw==
-X-Forwarded-Encrypted: i=1; AHgh+Rrwl29ICeNcm4ghIknm5xVMOHUTWjzGilddPSL3KWEtWGOcdvitiz8FwLsW51EVdgvycRSroaNpDA==@kvack.org
-X-Gm-Message-State: AOJu0Yz/e0GID4TJdH8594movrQpqQcuZtYVYQVkXh3BQa3aYgI55xD/
-	exM1N3Ffxx9+m2S1+h/++jodL8VuhOBefxmG15lDEMsQnPsL9eVA8hU1
-X-Gm-Gg: AfdE7clHrHnuuhdmfKMnAk8cTRcGVe5I5klSn+ZhfdrDa0/EvybXjBRi/ouvptLI9Fr
-	hZCbBQE42k4lX9oGM26Ju+KnHjZvVAsOPVrZulH0mzMLcM2Pey5x3lYI4kOuz5ATeuSl7o1M0Ol
-	cg8bd2ezgM6hkndSkLz9l+XOsj5hGB7neE3i4UKeO1DeUMCeo1aJm0ZhqPklzdBWhRymJenGLes
-	MVR3/8E9UBo5rCJRdWWx6CbhcHKPI92eVldujqU88cTxwfcwHyBXwSvR2qqzAOGEgfV0hsGXFBA
-	pI/y+bsD6+CaOSKD0j9yL/Q4e6eUlj4uiOC65yfmBtJpCZ94PppAKP+1H0gN6IkdhKTCeiMraBw
-	K25lFvnz+5LaxRhky44sriS4SjZti5/QXEOHl4dJawBeUOJInPzIwQheZHpQhyFaWUHqQ3FVrko
-	IqEh70oC4te6cJLlujio+XRg==
-X-Received: by 2002:a17:907:969e:b0:c0d:8c04:92d0 with SMTP id a640c23a62f3a-c1206187628mr260188666b.49.1782404301596;
-        Thu, 25 Jun 2026 09:18:21 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbe5f249sm221917566b.50.2026.06.25.09.18.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 25 Jun 2026 09:18:20 -0700 (PDT)
-Date: Thu, 25 Jun 2026 16:18:20 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
-	akpm@linux-foundation.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	willy@infradead.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, lance.yang@linux.dev
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-Message-ID: <20260625161820.bkxl23ugqjd6tcld@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
- <aj0vjdBN-oNMI2yI@lucifer>
- <c66f4bec-0933-401b-bf2f-a1b2e256023f@kernel.org>
- <aj0zDKEJV35V4kMD@lucifer>
- <dd395d30-acf2-4467-8b30-cdf2532f585e@kernel.org>
+        d=1e100.net; s=20251104; t=1782405591; x=1783010391;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=om44/un4X7gR8LEdF/8afBXQ9SCkGmWgSkZBjmUY6f4=;
+        b=m/GtNCb+QZUSoq+N2O0lVi8h2d0ubnq5AZdID++3+gH5RjpLjqn0Lm3yMRxEbOzYaS
+         d2C3VAt+IhqFu1C40FD7BUl5CNt1OsLi+V6P14C8Ye64Qqoo6mst+p/UVk3uIXx5JP+H
+         VwEKpOHyDXVWKPQjB6p5lYUSroCl6nHYAszvrJ+q9et5Ow5tdpoXD70I1ntGzwP9FTSV
+         HelyGnv6iOHVOdlOyp9vzelS/cv0r7b1FtZ7SNnNcM+eUQ4Ikzijf/2CBrZsLTTdiq0V
+         CfAh+HO+B6gdh7anrRVWAznMHIhI8fPbW6IHhZ7tbCUnDxNC0ifVb3o0zafKIvtqxHSx
+         yoVg==
+X-Forwarded-Encrypted: i=1; AHgh+RqrnvvlQgTX8IXbRTicLNFU10uZLV6QLhLT2vw56jKn+NMrCT9R23DSip77VxWNPaM0MaNY9WJ0TQ==@kvack.org
+X-Gm-Message-State: AOJu0YxE5/JoQCk8TVInX9Lq4pjbIpQurTbneMlpv9WqM64Jlu1/co72
+	KvT3QRuibUaAxI75dad6OEslZ9duH+4M/dtHBa0itOuBFnn0uCrfGA6TWNFNOsfcaq39VGEYdFn
+	CGLswjakC9PlbTbxNdjWxFwR64d9vMeY=
+X-Gm-Gg: AfdE7ck/+hhiwndB3MbR5YMKPlhFa8GbRcXIv1178dX/y1SIyhr/VYZfd/kN0qGly83
+	sqoWcXgadx8AAi+q2aqZFAQB1wbDZOVZwv6MytmS5IcR4AHv/epPI1G5sW4czIOgIdflLQhc1bX
+	TqCH1wCX2b1vE6rztvSbVkVRoApHj+sizVHtm/Xa6TjutB6t/pLgLTimiHt5aEInHrBTuRF9MmG
+	ViM8FUqiIxU3MU5J6GQEc1cxotZs8KLNAMvJ1Z87l5fgnHV6lzqD/w2/AM7dcyq38nl5AqSmfWM
+	VtntkqglXsI3gcOgLYqbpvbnj2ZS
+X-Received: by 2002:a05:6000:5c6:b0:46e:765d:78aa with SMTP id
+ ffacd0b85a97d-46e765d7e1dmr1673937f8f.2.1782405590672; Thu, 25 Jun 2026
+ 09:39:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <dd395d30-acf2-4467-8b30-cdf2532f585e@kernel.org>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: 757yomkq6naffrwcnabufjg8xa14tc4w
+References: <20260624075700.751467-1-alex@ghiti.fr> <CAGsJ_4xM=WnFO-OuwVude-DQ_UkaCi_zF_bXBP9Li5+ZPNy0VQ@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xM=WnFO-OuwVude-DQ_UkaCi_zF_bXBP9Li5+ZPNy0VQ@mail.gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 25 Jun 2026 09:39:39 -0700
+X-Gm-Features: AVVi8CdSpZj0pyK8kl2IMfovt5NIB2l5dmrkirClMBDJOdPSR5LdM8Ue4OUgOL8
+Message-ID: <CAKEwX=Oew86XUYYT49MWo27DnbEpZCnPn7+Kc-uQvavHBpf9XQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: bypass swap readahead for zswap
+To: Barry Song <baohua@kernel.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	yosry@kernel.org, chengming.zhou@linux.dev, david@kernel.org, ljs@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com, 
+	mhocko@suse.com, kasong@tencent.com, chrisl@kernel.org, usama.arif@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8AF5040002
-X-HE-Tag: 1782404303-21615
-X-HE-Meta: U2FsdGVkX19+Mvnt+/jQMsJUAKZloMhJ9/W4uBuvC/y3+7yovB3wrYKVySz0z7/AXRQ8IVf3eJWGEhiicbQbUjorhKm2hbnA0yYrN+aRbZeOIGsV1x4Ey7Kk7KoWzdqC3jh8VXiC5HgkwcuVTaGSVQv63eje4vw4VAMWpQUFS9JRse1BnC54jSeYOYz1qsh4kcsRbIPKX7bqHOXhOW15yCyxsmpYVC46VxhEJawtCzRaSnXuvBwOb/jb74cNFT4GEsQ39ammLKPAvhJyWkdKTtPS/bhVjK4UJEclnNEROLOuO5iwb2G92KnsakWf9VgguFj9PDqY0YFTjcFqSXgZesjGuPWpt5s3jl0jpOtkLqXFJ1PUCicPIuybFKfQduGWVYifWS2vgbL5wQuoCiXHQOmGk4gUzTsNnDCyVIrN585cI2F5aqP+Log8PTwVHlOJIHUg8R5sIULyTR5dCbPiWvRhY7eskva18N+ZMTnvsXeoKeDMTQ89EEmOMW8W3j3P0OImBq8G0/HB+eJp1121NB9sGKmI34ewKXs+G4FKSyTqiKiRNqhF9/EDieZzLLhylfCvwP9gjVQsF/i4LfxEsk07GZPxJVVoWexSUxfVCvyldemxXTHQK1D3CCs9PyIpsMFRfMXbNFAMJcRACdmN1wj6NcEB9s5/arjR7LHgbC7RemAeVT9tI8eei7eni4ue3DXMwyo8uuoYt9JuycY6LTwRsnHCiC8/I32elurPMfgXkl19LY9EoN/7stmNXXSGUoTrzdBLXeGt6VWl3Cuc3CvUcL3Mwj6syhEY2htzviHbSOOyOHtTcUeX1SGo3SQbKBNWLq1gFhyYR2rvE/gEh6MKc93diRMARYxgY5MLRrrHJEf5FpiK5qG+C6JIlbwIZJ3zxZb/Hprfboit/jZtbBgXSYwZwcWRrhqosSJu4ysh9RuCqiOon4tekzeW76p8zeBmXzFLMxkdKUiE5jJ
- br/vy+l3
- 22YkOlopqLHjAjmDqkH5qys21zFjZ0hCelAdySeHtfjSzQIoPMMlI0zEjDmQ0bl4rJnbxM3JOOudgM+JOQX+qEu4Tnf26sTiXiM47L7l71zkIAvEPao3DPtiqePS7dlK+GFFt4jJo+0XYPxTafcTU2PVGo5dCwVH9ysRZ0KawYb/xEPuU/xOp4XRkuYj+kr6Yo2hhEIOUl/Clrm7k5c6xsilZqMLShtVswMvKykWuMAYVp0gRN2wiOOt8LyvMV/hBBImx/5uyy3DqikeBNk+cO3pd6MbK0ulDCYYBuGTab7t3vqoAHipWfPWZc5BmIjl1UFH888pA7gBDtTdpew3cCgORS7kqHLKmlCeIF2+0lB4t2nbYUIqlc0gBG/olqTm/LgCLyPrN38XDBwgrNXXNd+skIA5aXs8NY1AX7RRJK7MxptHMd8GMVwRkW5Hz9+y+w9NPg6H8mRd9SyPy7bBKnI0EJxQVhMP4K2OUTTId8kxl2dSEuprdLQA/5z76V345GPx2yNZckg2ZhxNX9PcIVfALWRAKCS9SP1A19auuVJ+LR5MuV5AooGUgGJt+SDbqGeG1s4eVwagM8Vmeshrjqbm9A9pJK2FBRuWfeQTp10PMn9JHO+OkupmchQ6qxHwuJKasA3VGFmbR2lpAzXTtd6BHn3zxYOpKWIHa7SWuSJTYi7UCH/Dn1mq3gSLDz769zB4uHE1IZOaC6rDQEvOwDM2sK2h3ygE097mf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2D4CD80008
+X-Stat-Signature: 4dnrgdnj8njp5qa4nady11inohj163tc
+X-HE-Tag: 1782405592-711819
+X-HE-Meta: U2FsdGVkX1/pUyhZxfgBGZ4Sh8EDLqNCD5Udpw+v4b4hhsQCT9TC2d0+9ozeEEmh/HkgnnQWwLG13tjIqOcbDMK1KmD6KJBkyQaIY+Bn1VCB4cGmTgHceZH2XsHDkEONqM3SNa0zhb/K8qZrzJ5tmbTWPULSraF75/HSAjRVxRv70iry2IEeVx6177dn5xwIGILpoUAaPU1MobfzKWnM5kMf/8T6CM/6TqBT/IWsUgwuoXj+EzlIlvTeP/lp/K/vf/voNXtRbrWvIEHkvWeSO1o65qn14tvwhtaDBB6/mbXCTDxlHi7ZLuaYM56RTqV59V8h9VbF/O7KDdBMi/ugFdKX86ZTrZAIJkH7Ew89sWxlr0qsXEmd2JCg/h4L+g47mooaW4/CFB+4txb8OWD+Z0zY7hrV0QCtA5yBlEu5iiFNeu6JOSqLU6VlQjsOc86OpY/Psw/BgzpoJeJ1HREtDvQfw6XJILYbuNcgekpnWFoJlLoH8uRYi8Crxi6j1j1FMQjihk+xTj60qTZ5kEMqr2n99vd00PBcBF7SFddaknWXQGB5pQlCcBwXhM0Ui932kan9CDROqoPNohCOSxMit1PB3KOQT4199+nVrHBv1DAbvID1+LjQAVFeEA37Atcjh09G+ZtrgrWtdkTXWxKwALpIp7uBqPE+aVqmmjwd9xqAQsB7gdBTx9IarIFSBzbh1tXsnIwlnuhuQMiWEKCqvgcZcTnERwsYkqusOAzwdJxeQowKSY+kdR+64e0ULxRzNoGYPkCiV1sQRKdeLltiNk79A7b72s/SDLNEVodEHg2utPMlCJPgNADxYvZapCOtSI7NxHa+eK1Cm7Fwh58BnEWHMB2ZRcbGX0LKa5D6vj8oTiNZbaWQ3vxxzmk/QKwisqBNdu1cTeU/TzYDq6PwscEvdbpAhwyHBUkfQTvA5dTFyJRsiYDo9f9mDRTIjCgQ1hQ5XNY+mMv2OkleK/W
+ VHateh00
+ eMsfWorY8cZUbP5Zt2KVeM3W5eaXs0Y5RJ538MMBR1VLjePdO2irqEGePKsYCJjeBL7a8Fd3xkqaJU7mbgLHP/I0m+FnS0+3zeW6McvrJ2vaX8JrSIfz48Cv7XfDdHpXKpc1WhRdMzIPYJAC7AQTI/utvcj8I1rrcJPZ2y5LOL0g+n06MJG0FrTls9NKg6m/vzh+haUANEYaaSZ+HCCWIR46xvxL4Mc9gEgvw5QtiiSnATfF4br34BxlrhYnMqxfKsu6Xxb9PqvC3Hb6FLzZl0TcB8aX6ifg62A9a5xGWXlySJ5vZZyXUWUP+6G6zgAIvaf7SJKLvg3QjgbrPpuO82gvWpoaXu9FPlsf2PJJAYQUXFnyua3mKuumeOUWTR+ZLbGxRy06P0FnA0rhcsVXoi4tRJ9nKbXrL2oOXlBywHS+5eDk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,50 +141,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 04:30:33PM +0200, David Hildenbrand (Arm) wrote:
->On 6/25/26 16:02, Lorenzo Stoakes wrote:
->> On Thu, Jun 25, 2026 at 03:49:59PM +0200, David Hildenbrand (Arm) wrote:
->>> On 6/25/26 15:45, Lorenzo Stoakes wrote:
->>>>
->>>> Let me first say that I absolutely hate that we continue to support museum
->>>> piece architectures to the point that we have to make changes in core code
->>>> to accommodate them.
->>>
->>> I wonder why we shouldn't be able to trigger that on other archs with
->>> !CONFIG_TRANSPARENT_HUGEPAGE ?
->> 
->> I think this should just use CONFIG_PGTABLE_HAS_HUGE_LEAVES, since that's the
->> property that literally defines whether check_pmd() makes any sense.
+On Wed, Jun 24, 2026 at 12:24=E2=80=AFPM Barry Song <baohua@kernel.org> wro=
+te:
 >
->I stated earlier (when motivating a proper cleanup of this) that I detest
->pmd_trans_huge(). And yes, like I did in foliowalk, we should just check for
->IS_ENABLED(CONFIG_PGTABLE_HAS_HUGE_LEAVES) instead.
+> Basically, I have been seeing the same issue recently. If the
+> readahead swap entries are also in zswap, we end up doing the
+> decompression during one page fault, but then need another page fault
+> to fetch the page from the swap cache and install the mapping. In that
+> case, readahead may not be beneficial.
+
+You're playing with zswap? Nice :)
+
+It does feel like we're leaving some obvious wins on the table with
+zswap here, so any ideas are much appreciated :)
+
 >
->Long story short: Wei's fix needs work, upstream is fine.
+> On the other hand, if the readahead swap entries are not in zswap, the
+> situation is different.
 >
+> For example, suppose we fault on the swap entry for address 1 MB and
+> readahead brings in the entry for 1 MB + 4 KB. If both entries are in
+> zswap, readahead does not seem like a good trade-off. However, if the
+> 1 MB + 4 KB entry is not in zswap and would otherwise require storage
+> I/O, then readahead can be beneficial.
 
-Ok, I didn't notice this is caused by my fix because pmd_trans_huge() == false
-and check_pmd() skipped, but the newly add code doesn't. So I should merge this
-with the pmd_is_device_private_entry() fix patch.
+Yeah I can see the edge case you and Yosry brought up here. As we move
+towards supporting multiple swap backends in the same system, that can
+certainly happen. I'm hoping that locality will bail us out - pages
+close together in virtual address space hopefully have similar
+lifetime, access temperature, compressibility, and will go to the same
+swap backend, etc. - but who knows :)
 
-And should wrap it with CONFIG_PGTABLE_HAS_HUGE_LEAVES instead of
-CONFIG_TRANSPARENT_HUGEPAGE.
+What if we still follow the readahead logic, but at each slot in the
+readahead window, we check if the entry is owned by zswap or is of a
+sync-io devices, in which case we skip the readahead...?
 
+That way, we will still submit the IO work, but spare the ones that
+require synchronous decompression work, which might affect latency...?
 
-But one more thing, I took a look into the robot test config and notice
-ARCH_ENABLE_THP_MIGRATION is not defined either, which depends on
-TRANSPARENT_HUGEPAGE (where pmd_trans_huge() depends). This means
-pmd_is_device_private_entry() == false on this test environment.
-And in theory it is false if TRANSPARENT_HUGEPAGE is not set.
-
-So check_pmd() should be skipped too? Hope I am not too silly.
-
->-- 
->Cheers,
 >
->David
+> So I implemented a rather ugly fault_around-like mechanism in
+> do_swap_page(). At least with page-cluster =3D=3D 1, I am seeing a
+> performance improvement, as the readahead folios can be mapped
+> directly and do not require a second page fault.
 
--- 
-Wei Yang
-Help you, Help me
+Hmm so what your proposal buys us is, if we're already doing readahead
+(synchronously), might as well install the pages in the window into
+the page tables? :)
+
+Could you explain to me how does this improve performance? If the
+pages are needed, we are transferring some work from future page
+faults to the current page fault. If the pages are not needed, then we
+are just wasting cycles right?
+
+>
+> It is admittedly quite ugly and is only meant as a proof of concept :-)
+
+Dw, arguably it's easier to reason about with everything open-coded ;)
 
