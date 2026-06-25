@@ -4,142 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A521CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12E33CDB47F
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 07:22:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2B2F6B00D5; Thu, 25 Jun 2026 03:22:12 -0400 (EDT)
+	id EB7A76B00D6; Thu, 25 Jun 2026 03:22:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDC2F6B00D6; Thu, 25 Jun 2026 03:22:12 -0400 (EDT)
+	id E8F356B00D8; Thu, 25 Jun 2026 03:22:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA2B36B00D7; Thu, 25 Jun 2026 03:22:12 -0400 (EDT)
+	id D810C6B00D9; Thu, 25 Jun 2026 03:22:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ADA756B00D5
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:22:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 39EF61405A0
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:22:12 +0000 (UTC)
-X-FDA: 84917591304.11.2310E24
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6860DA0008
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:22:10 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y1/Dnajf";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0BF6B00D6
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:22:52 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 28207C2046
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:22:52 +0000 (UTC)
+X-FDA: 84917592984.25.BA32E0D
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EABA5180008
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:22:48 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782372130;
-	b=7cw3DmQS6nnBoXOXdbCyTch2Rek9MCLeRnepduk3VhXPPthWNaiu0M0W7dX/V4PCwuMK0f
-	pv/K3517uy1AK+tPQ7ytgN+SEwQ6xfxJQUb7kcftsjNZwqo9H5DQ3+RemlqphYOwjHbRvR
-	Erck1dOmA/BqaW5CPc1+PqL8eFmvSIk=
+	t=1782372170;
+	b=NJ5LcdlKuiQem8kIaL5tFUzKUEf1gA/95TcnfJpsWEyeiEQVYqpQlmsF/DEjzXb0qu8vgC
+	PXzkQ8bwdxWPy2wj5OM1IbShwTPDl3L2IP/q13yuaF2kzdm8OdTglQO4fOgBDuLwc+ab1d
+	byA5MHOJPQteF87lzM7lydow6chfogs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782372130;
+	s=arc-20220608; t=1782372170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OFch8xfYafXAxet82DZba+2m8gYlLknO0OujKt7NZU8=;
-	b=z8qtYRQJB56amM/fuNueWYvGozC8q2W1pBalalQq7FtyVe4ZeEGKl5SEkMvwTXOJ/tduKo
-	QBT+Kw72y5d2rfPrurzzjnDn/0IfprTsRzJv+Mrd2PLlnz8uZtw8cUmjuyx5j2u+FO9wQZ
-	SyEXGpEvEyFBVe4vJIJpjqjQIjpBmA4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=mbffOdO5wrCVWJw7fueYyW02jsmfD2OaFdt8gpgX19c=;
+	b=tn+ibFUyMQnG4EcgXpTqnIUVpaUVrOArvnmI/bTNdhJ1AfrOg+9Bu7FRH8fndg4Q5DYESq
+	RUk+kRWoChmt6QJdwUQ2PQTI2foTOFWK+YMtCE5Mv4HLGTbzSiH10vC5dvttvMmVRVoEJR
+	l/SI2xvEvqlUc7wM1GucjvNpCElxwYM=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Y1/Dnajf";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97D5543439;
-	Thu, 25 Jun 2026 07:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1B1F00A3A;
-	Thu, 25 Jun 2026 07:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782372129;
-	bh=OFch8xfYafXAxet82DZba+2m8gYlLknO0OujKt7NZU8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Y1/DnajfmCFs/nmgeNGooZrEmihPfwdDYtZEIaqyu/23g+wBwgzpb2VuENF2Ln3ZN
-	 0rm7jVv0gQjOqBKrPMNHaWe8NQSkJFD/2f8lMfGBJQsd8KtaCRSmF7+Jo0q5ZZCoq6
-	 0r7VZ+QZ5uPU4B0MOsMQudeo/MtrTDiE20LbucC6fvJlJblVMgQqJwTNJNQXzb4xaW
-	 g9BKHnrybQm5FD7vMD5YfnItC5vJFOOAMd/fQ4CPJjLeUWzVdI88BSquX9SHdgyAt9
-	 H2j6zb7Oy/qpyDAT09MlSreaTMUcKg2PNSqBqGlZJYQA5/5iwOmu+94hZiQCg/7SkV
-	 UnaEu/5Jfqifg==
-Message-ID: <d48feca1-0203-43ff-bd66-6243291a51ba@kernel.org>
-Date: Thu, 25 Jun 2026 09:22:01 +0200
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf24.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+X-UUID: a6ada5dc706611f1aa26b74ffac11d73-20260625
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:3ca0d9f9-5d02-49d5-b644-8d4b2df7f031,IP:10,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:5
+X-CID-INFO: VERSION:1.3.12,REQID:3ca0d9f9-5d02-49d5-b644-8d4b2df7f031,IP:10,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:5
+X-CID-META: VersionHash:e7bac3a,CLOUDID:a98d19fdf128406f6b84af0f6212bf82,BulkI
+	D:2606242154552XWL5CDE,BulkQuantity:4,Recheck:0,SF:17|19|64|66|78|80|81|82
+	|83|102|127|841|865|898,TC:nil,Content:0|15|52,EDM:-3,IP:-2,URL:0,File:nil
+	,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,D
+	KP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_FSD,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a6ada5dc706611f1aa26b74ffac11d73-20260625
+X-User: wangxuewen@kylinos.cn
+Received: from [10.211.134.243] [(223.160.131.156)] by mailgw.kylinos.cn
+	(envelope-from <wangxuewen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 614373274; Thu, 25 Jun 2026 15:22:41 +0800
+Message-ID: <b21d7d5c-5cce-4ddc-9974-a8731da788cf@kylinos.cn>
+Date: Thu, 25 Jun 2026 15:22:37 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/9] mm/memory_hotplug:
- offline_and_remove_memory_ranges()
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org,
- nvdimm@lists.linux.dev
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
- driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
- kernel-team@meta.com, osalvador@suse.de, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
- vishal.l.verma@intel.com, dave.jiang@intel.com, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, shuah@kernel.org,
- alison.schofield@intel.com, Smita.KoralahalliChannabasappa@amd.com,
- ira.weiny@intel.com, apopple@nvidia.com
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-6-gourry@gourry.net>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260624145744.3532049-6-gourry@gourry.net>
+Subject: Re: [PATCH v1] mm: fix data-race in folio_batch_count()
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260624092606.1083449-1-wangxuewen@kylinos.cn>
+ <ajvkK-vcVzgll2Tm@lucifer>
+From: Xuewen Wang <wangxuewen@kylinos.cn>
+In-Reply-To: <ajvkK-vcVzgll2Tm@lucifer>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z1z5wrrefrkrwzeep84dduzagfgotrau
-X-Rspamd-Queue-Id: 6860DA0008
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782372130-260395
-X-HE-Meta: U2FsdGVkX1+0hzqN1nC2RqbUiaF4FNnfJOQnjCZ8AlH0Uba9kf24LnPFKxTl1f8lLA29mD/P1T5zGW256m4QLNFgg0rSS50twJFZp/I7ILtZH7FfWk0i3NKIG5Zy15h1rwKDK+OZ4OFRLz9ii3bUW/fUCMZdje8r1OMs49p1/2ipyRCiGv5NVvnbtMl/9crpVXMZHsn6M14yhRBgzqcMLHTjXIrv0NBZpBzO+KphOk3L/Ela7EkcHyb1YhY4A0j9Rssga4dKtLTjsZycxHpUA/bK8bXQakwFUrs+kAPQLnANCIbhz5wC4wUq39ZiB3AQT1Q72xdDWAy+0PDoMfrqEL/KIFvkxQ6IwQVKpbqDOvQyugUZDyMbWEjNVxuQyxQYHCMHp2N5lzldx8KU4GYnx7i4P7nujO2Z+VQrCKHsxpTkub8QKYG3+wf6b2beydy3TqrXNVjMab+RCNVpWFcxXs4E9AIhfQJyKKBmtPcCCQUr4UALIc3qK3Z1v+tZaH5C8u+j1SyiQxBajKFXfRB69ONrQ4RE/4mj3J8v24tJwBLpXhHJmxMlH0At0ySBN/ij+UfH35BkYpvr30wyYgoLvN0ZQvp87hqPMeP1A23pmmkwuOUj62uv1biKij1Nje6f8UazKtqn11tnWb6CGcgADJ+/BHC6MOrqcbXpzGTQnzZQPOLe9YQNovb35fpv+2ZNdlcEf9658f172Jg4x/5Q5NL1S6wwi4j/avO4N2H3Zx6KBwGNnDs6oMAL8p3kWDN4/AD8xdhvkS7QT1IVJGdc4z80i8rYBHqVm/scypK+QfmraB9lo+Wx4bFJ+KnpBN2WCCnux8mpcAmoAh77yCTYjXtSGOm82nsFKfG5tIH0VpptKN1M+honYhtmlTkG9ZUhdeUT5djPwWw2YQ06P3spnEnuOoBaM1J5tGIp+LqFIawLCwxmBBhMx4vVrxu1uvBONq69D5l3wG37w7qrGu1
- ilwQndSB
- D/F8/svxXuO2+o6fcZLJl1jQk5kf1/nsl1Ee2h7PiiXWtSwCuESLHdsQcNsoXFhJP8LMuYPbloMo3LhrQgh/keE7aOWbW6He7HkVkTOVk1xriKCeCU/92t7h2NSgoFE6ZtsrizZH8ZRyXcyitsSMoCNcqoh+9vgcCTCPLNTxajUvihYs/MiCGM2ek0WhennMebDEI1YwubDbIC8jzgXTCDfSmFUUKaJdr/ND9tDyyhEUFqAO3KLTJoOYEiYmsQKAdGofGUk7Y0D7iCA6gubhUCgJvWUMehk1A9URz3tHuRu4Cq+iBUU5wsPMczRnaPXbPg05xev6HNB1KcwheotfF1AEWliu68fvolyQ8iXMEDBTWc6wlARXYyLiP6VrWW0eRrkfwrdCIyB9huww=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EABA5180008
+X-Stat-Signature: zngb436g7ymcyqhmwj87ne8hqbsk4cyx
+X-HE-Tag: 1782372168-734518
+X-HE-Meta: U2FsdGVkX1804ytkk2C9xLnX8ztkxIkQ2pafSMwWdEwt2/3yduu7t0Go4wFFZcwpx7voA1d8VCbaz4P5Kxlxhuu8OI2AFio9jmkGXRfAfvH/GfRiMmcWZegOT/C2oMFSPjvpHbSHpYQj86lGMBXjWIO/knGC0+06wOEWSkIESHX97XlML9aW39hmJZVUDQFL0YJXeGSBRR5nd3OsYRv92qv+m+DOvtrBS+Kz7Rmib/6kqvUIf4Esd7YXdqfTxLUyZV3bL/C69EsB6s+brpAVMicfP+jXzrkRluRsehXEHO+13BZ9C6Q3ytik3pEKYQi2/4wUsU3Ol+YLeRqJpCZD7OB7MJFew5Kxe+A8UKCdqpPoTe/KbPiOaOgxhRFIhYHQfWGP3NRyKwe1uHj2nihcWYpbgRYNSB0hocNbqSVnUsd09j/qMVvlFRp5zfISPKGr6/MokeW6GAtGNjqAdVtdfrBk2ENgGcqrSjcGk6h6xKVNoxOZ7+YjgqxvpyCmCsKNIs8M1ZvMqf2hwZ00BR1kI9g19hV97jcxln1tVXDFLGbpLbRWKMJd6byeY727suTbJxrEVxOJJ7h5dXNVeye8JNZD5kfxBksYVZh3BFCAYOJLkbvUlMS4F76VSDT/Ms99fLSsMVsvNruwaYhlJJ4OAquMYL4DyrE9+pBu574ZCc9AkN+cLOJnBjeLREORSp5LwVrwsb6VXj9OO6GfPjeGetgdL4zYk2SeDfHIRtloKFeENALXwXz5xseKLgAMDzLT5SH7e1gbc/g0UXITMsZhu+uoFGCETxIKMHS3ZLQ8IwADNFuVoYFM5lY+it2IR3QFjK+htYyqz3Y04KSnxQWgiRDR1ho6R0zBBc82nzgcOWSGCvZJ29Cxt+WLyI88NJ1hcvoWE4SzLHSxEkfHfG6DUhhcdOqKDj+2d3kp4wSoXtoGVEoSRM6819w36iJJGOwMlUZ/6eFYawPlZ37Fgap
+ 7hlXmy4i
+ vUEP9Z8DXLPZnNssa7wxVUr+qYkzU0PQsPFfq0ji5/vyU+IlqBqe1Re3GgmcawXPsUk/3UsKWNhbWDMacPleI2y/ZcjzYqZNoqfl+7VRlGFC5m0euqWaV3iSwsMulQKsrWIPg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,210 +100,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 16:57, Gregory Price wrote:
-> offline_and_remove_memory() handles a single contiguous range.
+Hi Lorenzo,
+
+Thanks for the review.
+
+This was not reported by syzbot. We found it via internal KCSAN
+fuzzing on our downstream v6.6.89 kernel.
+
+I will send v2 shortly with the following changes:
+
+- Use data_race() instead of READ_ONCE() in folio_batch_count(),
+  as you suggested. READ_ONCE() is unnecessary for a single-byte
+  read and would impose overhead on all callers.
+- Move the annotation from folio_batch_count() to the actual call
+  sites (cpu_needs_drain() and need_mlock_drain()) where the
+  cross-CPU race occurs, rather than affecting all callers.
+- Also add data_race() to need_mlock_drain() which has the same
+  cross-CPU race.
+- Add comments explaining why the data race is safe.
+
+Looking forward to your review and suggestions on v2.
+
+Regards,
+Xuewen Wang
+
+在 2026/6/24 22:23, Lorenzo Stoakes 写道:
+> On Wed, Jun 24, 2026 at 05:26:06PM +0800, Xuewen Wang wrote:
+>> KCSAN reports:
+>>
+>> BUG: KCSAN: data-race in __lru_add_drain_all / folio_batch_add_and_move
 > 
-> Callers that manage a device composed of several ranges (dax/kmem)
-> currently have to call it in a loop, which gives up atomicity.
+> Where? A syzbot report? A local run? Please specify.
 > 
-> In addition to pushing rollback logic into the driver, the lack
-> of atomicity creates a race condition between system daemons trying
-> to manage the same resource:
+>>
+>> write to 0xffff98fe74c015f8 of 1 bytes by task 45153 on cpu 2:
+>>   folio_batch_add+0x30/0xe0
+>>
+>> read to 0xffff98fe74c015f8 of 1 bytes by task 45175 on cpu 0:
+>>   folio_batch_count+0x0/0x10
+>>   cpu_needs_drain+0x253/0x430
+>>
+>> The write side is a per-cpu local operation (folio_batch_add on the
+>> CPU that owns the per-cpu batch), while cpu_needs_drain() reads
+>> another CPU's per-cpu batch without locking. Reading a slightly stale
+>> value is harmless -- it only determines whether to schedule a drain,
 > 
->    - Manager 1:  Offlines memory blocks.    Removes device.
->                                         ^^^^
->    - Manager 2:  Detects offline memory blocks, re-onlines them.
+> Then why are we adding a READ_ONCE() in such a core helper?
 > 
-> Add offline_and_remove_memory_ranges(), which takes an array of ranges
-> and processes them as one operation under a single lock_device_hotplug():
+>> and a subsequent check will catch it.
 > 
->   - Phase 1 offlines every block of every range.
->   - Phase 2 removes the ranges only if all ranges are offline.
->   - If any offline fails, the whole operation is reverted.
+> Where? Which check? Be specific.
 > 
-> This gives callers all-or-nothing semantics for the offline step, so a
-> failed or interrupted unplug leaves the device in a consistent state.
+>>
+>> Use READ_ONCE() to annotate the read and prevent load tearing, which
+>> also suppresses the KCSAN warning.
 > 
-> This also resolves the battling managers race - the second manager's
-> operation simply fails when the block is destroyed / cannot be onlined.
+> Tearing on a single byte? Which architecture tears a single byte?
 > 
-> offline_and_remove_memory() becomes a thin wrapper that passes its single
-> range to the new helper, so the offline/rollback logic lives in one place.
+> I think you're actually more concerned about the value being optimised out on
+> assumption of it not being updated elsewhere right?
 > 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
->  include/linux/memory_hotplug.h |  7 +++
->  mm/memory_hotplug.c            | 94 ++++++++++++++++++++++++----------
->  2 files changed, 74 insertions(+), 27 deletions(-)
+> But acutally you're not, because everybody else uses a stack variable or _their
+> own_ per-CPU value?
 > 
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index d3edeb80aadb..7f1da7c428dc 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -267,6 +267,7 @@ extern int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  extern int remove_memory(u64 start, u64 size);
->  extern void __remove_memory(u64 start, u64 size);
->  extern int offline_and_remove_memory(u64 start, u64 size);
-> +int offline_and_remove_memory_ranges(const struct range *ranges, int nr_ranges);
->  
->  #else
->  static inline void try_offline_node(int nid) {}
-> @@ -283,6 +284,12 @@ static inline int remove_memory(u64 start, u64 size)
->  }
->  
->  static inline void __remove_memory(u64 start, u64 size) {}
-> +
-> +static inline int offline_and_remove_memory_ranges(const struct range *ranges,
-> +						   int nr_ranges)
+> Only cpu_needs_drain() is the odd one out right?
+> 
+>>
+>> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+>> ---
+>>  include/linux/folio_batch.h | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/include/linux/folio_batch.h b/include/linux/folio_batch.h
+>> index b45946adc50b..1e31e058e19d 100644
+>> --- a/include/linux/folio_batch.h
+>> +++ b/include/linux/folio_batch.h
+>> @@ -53,7 +53,7 @@ static inline void folio_batch_reinit(struct folio_batch *fbatch)
+>>
+>>  static inline unsigned int folio_batch_count(const struct folio_batch *fbatch)
+>>  {
+>> -	return fbatch->nr;
+>> +	return READ_ONCE(fbatch->nr);
+> 
+> This isn't free, you're breaking optimisations here by doing that...
+> 
+> It feels like the wrong level of abstraction, but actually I think every other
+> case is either stack or per-CPU _on its own CPU_ (please check), in which case
+> we _can_ suppress the check here but I think best done with data_race().
+> 
+> And see the kernel bug bot report, you need to add:
+> 
+> #include <linux/compiler.h>
+> 
+> Too for that.
+> 
+>>  }
+>>
+>>  static inline unsigned int folio_batch_space(const struct folio_batch *fbatch)
+>> --
+>> 2.25.1
+>>
+> 
+> Thanks, Lorenzo
 
-Best to use "unsigned int" right from the start and use two tabs to indent.
-
-
-> +{
-> +	return -EBUSY;
-> +}
->  #endif /* CONFIG_MEMORY_HOTREMOVE */
->  
->  #ifdef CONFIG_MEMORY_HOTPLUG
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a66346def504..7d56e0c6ede0 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -2429,58 +2429,98 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
->   */
->  int offline_and_remove_memory(u64 start, u64 size)
->  {
-> -	const unsigned long mb_count = size / memory_block_size_bytes();
-> +	struct range range = { .start = start, .end = start + size - 1 };
-
-I prefer this more readable as:
-
-struct range range = {
-	.start = start,
-	.end = start + size - 1,
-};
-
-> +
-> +	return offline_and_remove_memory_ranges(&range, 1);
-> +}
-> +EXPORT_SYMBOL_GPL(offline_and_remove_memory);
-> +
-> +/**
-> + * offline_and_remove_memory_ranges - offline and remove multiple memory ranges
-> + * @ranges: array of physical address ranges to offline and remove
-> + * @nr_ranges: number of entries in @ranges
-> + *
-> + * Offline and remove several memory ranges as one operation, serialized
-> + * against other hotplug operations by a single lock_device_hotplug().
-> + *
-> + * This offlines all ranges before removing any of them.  If offlining any
-> + * range fails, the entire process is reverted and nothing is removed.
-> + * This provides a fully atomic semantic for unplugging an entire device.
-> + *
-> + * Each range must be memory-block aligned in start and size.
-> + *
-> + * Return: 0 on success, negative errno otherwise.  On failure no range has
-> + * been removed.
-> + */
-> +int offline_and_remove_memory_ranges(const struct range *ranges, int nr_ranges)
-> +{
-> +	unsigned long mb_total = 0;
->  	uint8_t *online_types, *tmp;
-> -	int rc;
-> +	int i, rc = 0;
->  
-> -	if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
-> -	    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-> +	if (!ranges || nr_ranges <= 0)
-
-With "unsigned int" this will be !nr_ranges.
-
-Wondering whether we would WARN_ON_ONCE() here.
-
->  		return -EINVAL;
->  
-> +	for (i = 0; i < nr_ranges; i++) {
-> +		u64 start = ranges[i].start;
-> +		u64 size = range_len(&ranges[i]);
-
-Both can be const.
-
-> +
-> +		if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
-> +		    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-> +			return -EINVAL;
-> +		mb_total += size / memory_block_size_bytes();
-> +	}
-> +
->  	/*
-> -	 * We'll remember the old online type of each memory block, so we can
-> -	 * try to revert whatever we did when offlining one memory block fails
-> -	 * after offlining some others succeeded.
-> +	 * Remember the old online type of every memory block across all ranges,
-> +	 * so we can revert if offlining a later block fails.  All entries start
-> +	 * as MMOP_OFFLINE so blocks we never touched are skipped on rollback.
->  	 */
-> -	online_types = kmalloc_array(mb_count, sizeof(*online_types),
-> +	online_types = kmalloc_array(mb_total, sizeof(*online_types),
->  				     GFP_KERNEL);
-
-Is "mb_total" really more expressive than "mb_count"?
-
->  	if (!online_types)
->  		return -ENOMEM;
-> -	/*
-> -	 * Initialize all states to MMOP_OFFLINE, so when we abort processing in
-> -	 * try_offline_memory_block(), we'll skip all unprocessed blocks in
-> -	 * try_reonline_memory_block().
-> -	 */
-> -	memset(online_types, MMOP_OFFLINE, mb_count);
-> +	memset(online_types, MMOP_OFFLINE, mb_total);
->  
->  	lock_device_hotplug();
->  
-> +	/* Phase 1: offline every block in every range. */
->  	tmp = online_types;
-> -	rc = walk_memory_blocks(start, size, &tmp, try_offline_memory_block);
-> +	for (i = 0; i < nr_ranges; i++) {
-> +		rc = walk_memory_blocks(ranges[i].start, range_len(&ranges[i]),
-> +					&tmp, try_offline_memory_block);
-> +		if (rc)
-> +			break;
-> +	}
->  
->  	/*
-> -	 * In case we succeeded to offline all memory, remove it.
-> -	 * This cannot fail as it cannot get onlined in the meantime.
-> +	 * Phase 2: Remove each range. This essentially cannot fail as we hold
-> +	 * the hotplug lock . WARN if that assumption is ever broken.
->  	 */
->  	if (!rc) {
-> -		rc = try_remove_memory(start, size);
-> -		if (rc)
-> -			pr_err("%s: Failed to remove memory: %d", __func__, rc);
-> +		for (i = 0; i < nr_ranges; i++) {
-> +			rc = try_remove_memory(ranges[i].start,
-> +					       range_len(&ranges[i]));
-> +			if (WARN_ON_ONCE(rc)) {
-> +				pr_err("%s: Failed to remove memory: %d",
-> +				       __func__, rc);
-> +				break;
-
-Do we really want to break? I'd say, just warn and continue, and fake rc == 0.
-Something is seriously messed up already, and we partially removed memory. There
-is no clean rollback possible.
-
-Similar to __remove_memory(), ignoring the error because it offlined it already.
-
-> +			}
-> +		}
->  	}
-
-In general, looks much cleaner to me, thanks!
-
--- 
-Cheers,
-
-David
 
