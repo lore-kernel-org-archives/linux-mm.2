@@ -4,136 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE9D7CDB466
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70CE9CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3B326B0088; Thu, 25 Jun 2026 04:28:23 -0400 (EDT)
+	id 4A7E86B0088; Thu, 25 Jun 2026 04:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEC386B008A; Thu, 25 Jun 2026 04:28:23 -0400 (EDT)
+	id 432376B008A; Thu, 25 Jun 2026 04:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADC586B0092; Thu, 25 Jun 2026 04:28:23 -0400 (EDT)
+	id 3477B6B0092; Thu, 25 Jun 2026 04:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 866736B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:28:23 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E1D2CA05AC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:28:22 +0000 (UTC)
-X-FDA: 84917758044.22.C7136CD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1210C40007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:28:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vv/BFSEI";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 01E9B6B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:34:50 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 575868FE19
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:34:50 +0000 (UTC)
+X-FDA: 84917774340.15.1F8E594
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9CFA6100007
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:34:48 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TbCetUme;
+	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782376101;
-	b=TK7QUOCgpkB33hTCQN3l0gh3UBkOF+hQOrHjdfRDR+Cx5rU/8JcLct1ZumyN/PeoC6h7v+
-	uZRrKt8rla/OST4qo+kWRYXFn92peP+A9gEVrZ0PQLVEAyzyIjxoA85YwpwHGhy3ja6j3B
-	fKUG4e4LmAj/k9ObHIfgXWt/FpwhOQc=
+	t=1782376488;
+	b=uqeFwpovIAbHvu5/8G9sAP5SKw2TzVcvyEv5r51d3NJUP3yv6CIxZbNq6fq5bfYNYTwyeP
+	wkI6C4ghsxRljj0OTSxRMIPVqRocefDk7qEUreS8xjAlw5ayArA0YvXpTuxFV8ttrjFXoQ
+	NC7rwTh+qX5osYjKGzi/ssvGaNXwuME=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782376101;
+	s=arc-20220608; t=1782376488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=egKHugauFVcD2XmzNTTw3d2qyTB8B7rTgdVmFNmqNrg=;
-	b=ZFjpSFN5A2IItzXbXpU9YHtkostnCPLohNUoIN+2I91e+VoGj6Q8TRVV3mBonSGbTtZbhJ
-	+h6ZZTN6B9CDvFUFwmNmBvkMrgNQ6D41X2sZq6UVjVbBqVhiJDUmcWi/mhTdNv9P15aRuD
-	a4tyz7Dr0SiDHycadT8n02PGVjFzkGg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=cwuPvDSXXbiyOTdpO1yF6fW9CB9apWEc+I7V+XWMZf0=;
+	b=AsZvNE9mS4WD004qneyyaNAesp/wH3nwZRG6DpIdGVy7zhYm2zduLvE6Wals3WtS0sfw3a
+	IVqE0D6CUjRMOfF9YvfwAGyi2qEmnThKz84jEUrKSd3yzRv+zDLbp+1qi0Wu3GxBA96Bfu
+	iAxwnnUGTtzUF1pXjSuE+3zbX040d+s=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Vv/BFSEI";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 503CE4071D;
-	Thu, 25 Jun 2026 08:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1395E1F000E9;
-	Thu, 25 Jun 2026 08:28:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782376100;
-	bh=egKHugauFVcD2XmzNTTw3d2qyTB8B7rTgdVmFNmqNrg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Vv/BFSEIrXCF8hk5q6CGRIvgWvOV5dQsjW4VlCOMp/qdSdxk12UM4sQxtefRbTzOp
-	 QdXuqVGkYsFyLEwaNMZag5GRtXKhEo8ddH4seU+ZQbFr4eI/RZwrVn0nrHd8cMr8Al
-	 hQGiJp1NVjM/TA4fwEyDEMewqt8B9VGV1NsEvo9G/Zbb6vVJV5UN2EZlr7XWRJpOco
-	 +VQoEcH1OlXNI1jpeU76sFyrYPyzIAS+aGyItEhL1vfE6sdJ36CvFo/azd+A8TfX4x
-	 Bru//XwEltp7BC/88i5rhtt3Op8hWVaFunUX/pAWuHTU+hoxF9iYMfsoqOtj42gs8M
-	 P+Prj8fBTAaLw==
-Message-ID: <237cdb97-5abc-4c89-a0cf-1a961425f947@kernel.org>
-Date: Thu, 25 Jun 2026 10:28:15 +0200
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=TbCetUme;
+	spf=pass (imf05.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4629d80fa08so1808333f8f.3
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:34:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782376487; x=1782981287; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cwuPvDSXXbiyOTdpO1yF6fW9CB9apWEc+I7V+XWMZf0=;
+        b=TbCetUmeEnrDWt0d8nuHvjISrdCAKz5oMeLGY0qhfrVC7fhxEnxVE5AADEa7Je4Q//
+         nU4h533dvxW2QzNOWfd5hU1KsBQ6MmbEjeZ1wlwqdOvT024yZdfU+Epfgjm83Ij12caH
+         gNU7VaFUWX5MMiX6EfPZjeuJCmseSOfgXZpMtcdqCtKuLTNGzgzZIUW7ysX6eqTXIVC+
+         YtUBqYdqzv8wZ+TZyZ5IBJLsYKm54jTvXxH2A5A+RKeANcmnWcSnBpzpxqsA//AJcRLr
+         RNy6BfmMVKgJmImL8G5ZXP3kd1DyIjT4y8wfCdAFGqZDtuWhNI+Y/PxbMMb4MmgllIbP
+         aaDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782376487; x=1782981287;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cwuPvDSXXbiyOTdpO1yF6fW9CB9apWEc+I7V+XWMZf0=;
+        b=AxoKJCnkBgbYHXFm/zHD9u3VZX8DHXc8POZx4e50n0O0W/GWIzAQlx7TzTA1/g/E+a
+         TSIhcInVQqRsmuVhOjaZCGVh/6pWHdXthygahzsQh9XNaP7iQ4Uiw4w9t32JJQR5WUb4
+         TlMg3/vLGJwlWD5EwEGHBG0kKdv5oPjxHDA+X6QFX4cpfbZ0iXY7rFhgfH7EHiWt89wE
+         7jcJdo+nq6HNW715wtZP5Vv6wUzpeYIgiMcBSjvCHoO66qrAJbV6bDv10OliE086udkg
+         QkHu38Mzbz5XfrJOx0JXcfkicmra3BMo82gdfWEJb480RHsz3T/1K1VrCcbgRPYtTiVK
+         p9IA==
+X-Forwarded-Encrypted: i=1; AHgh+RrgtwuFZ6EREae8cudFdEwACPbQvR4jYpvDJzQ3lbvj1csHRgiCkEfvWWD7mVw3nXynvwA7X0ug/Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw2QECKWVWXE0l7jAkXpPwb4CQleEkSaVPN5yDRlGZHN+M+yx6o
+	ax8r/vzVmrPcm5S3zV+0YCTCckSK8Ouar5JI5E1iOoSyskmdnR+xhrf8
+X-Gm-Gg: AfdE7cnPlSHHuKo//EDHui50/M1+heA30ISczaw1PyMJDrmciIrpbvgUC8A+3koRt0m
+	3T2Umb3Y4FvEsUoL35bWNPAGnO0jXwd1+2dbt0aVwtEfmS+z0qZQ8UcfmfpfaaQYuW/TbcTny1A
+	SBFEihussWlo1RpNS6yzPYZuWBtklnA3aQEqKTKnYSImRs7Iaemd6HG/dC6U9YQQlSQGRcb+b7O
+	g/YmQiSYcWtlc936e+zXiLlysmr/K2kNNCNZtHlmLlWmeaTI56nImJQe2YhamCbYlekF+2qI8N5
+	Rf/z5jn/JP2V2GuMLYmoAHHsG4MJT93eRFJNy9Q1kqtQquBJuFwO35vkBZ9WucjrW5sM+CWQQ/T
+	2rCQ/YBQaJ/7GMLmFfW8sHyL1Q8y7G4xD19fpmFCXSxeFXKAWZb89udQvL2GQuHVYqdoXeaZiDM
+	zVgbq7V1zV
+X-Received: by 2002:a05:6000:2f8a:b0:46d:d6c1:8383 with SMTP id ffacd0b85a97d-46dd6c18494mr1746107f8f.44.1782376486646;
+        Thu, 25 Jun 2026 01:34:46 -0700 (PDT)
+Received: from localhost ([212.73.77.104])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-46c221d998esm13183555f8f.24.2026.06.25.01.34.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 25 Jun 2026 01:34:46 -0700 (PDT)
+From: Askar Safin <safinaskar@gmail.com>
+To: linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-api@vger.kernel.org,
+	netdev@vger.kernel.org,
+	fuse-devel@lists.linux.dev,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Collin Funk <collin.funk1@gmail.com>,
+	David Laight <david.laight.linux@gmail.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	The 8472 <kernel@infinite-source.de>,
+	Willy Tarreau <w@1wt.eu>,
+	Joanne Koong <joannelkoong@gmail.com>,
+	Val Packett <val@packett.cool>,
+	Andrei Vagin <avagin@gmail.com>,
+	patches@lists.linux.dev
+Subject: [PATCH v2 0/7] vmsplice: fix some problems in my previous vmsplice patchset
+Date: Thu, 25 Jun 2026 08:34:02 +0000
+Message-ID: <20260625083409.3769242-1-safinaskar@gmail.com>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org
-Cc: riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <20260625042853.2752898-1-dev.jain@arm.com>
- <ca31c254-504f-4857-bec7-10b8c2de94ed@kernel.org>
- <614e89a8-5108-4ac1-bdf8-fecca48bd91b@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <614e89a8-5108-4ac1-bdf8-fecca48bd91b@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1210C40007
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 5yo9ocmmctm69dykys63e91j93km4rx5
-X-HE-Tag: 1782376100-213822
-X-HE-Meta: U2FsdGVkX1+lwyDW10EHt2OnusldY2LS9T68PJ8fkdf2WgbxEeiNSSZR/9Gty/k1FxZByO94g4MOMRF1ey7IsMhiWODcRbZo4d3xfu1ShE8Kfh6KKVNbdCOKE/GFsSi1DNXxuS1mIMVe4If/UpmUgcqGESFAGzMs6cMwyhemJF+8g5Xg5gLA5k8wowCJVQU5G4tEgD5jwvrYyvbFloMI3D/V+/DMNV7n0JzOrWoLkQDUVRdG2Y82sD09sBuZugXgR7x4LiMUXk5tip/9fqBS7i4Cgx4SIOZZvZRXMy/332aRYSHzXedEbw+cViC4dNDKiZ96kkKM/KFjoAuYVQyCc+s1dpNx7uNTcPiNEbJEsi5nCoJePQt4hO8X3PNtzs+PLrbGZtF8+esnS/V5D+5qtHvmSGO/9Yyq1MukFDd6B3iL91lQYX1Riurn1EJzkXic7Gb6+lIZdW64/1O4rKFe6jRUaQ6E/3fV2Ctz8jzoIlwKSqpc6mBfcfuTfkLTqAaRTkYcC7R+RmpmycwJoi2akEFoQ9P6wSUOWYL8vSOudI6PKI+XBvWBIk8pfspj808Pf4ZpONeWqJ37A0Ckz4SWaI9m/s0BVIIPSk5TXVWlWi8FVFHEuPoAevhhnsG4AR0YgYpMumo++NjPi5jYAtybJMLVyM1WFhmzkK80MbvW7tznmkdzkblqCB+tNosaJ+iVk1rTIxn23Dc4CndEwiyVVzV1vylmFiVD5ACvi/JYl+pQMhtR5mfDsmIVt+gDH+lwhHCvHdoetkZTcpd2kjSGsfv7H8sgx099SVIfQeLwrnYMrNpPBN5ojcqxAl5n7ljSveYDAVf/DKb6OyPo4PWfa+s0uXCypZ47qu+oyM2yOeWZzoiM+vRl/XHjHkJmRsZ0aYqUWvWHGjNtSrbFj3UiUupoFQ8gk3h/Bh/pvApdlzga/5gAe5mLgJ5E28ZKCRqU2nwu8oYEdvRdPVXq0Pt
- 46H1nB5l
- QL1yeTlWG5CkPkJC1MScUTP8ObaHX6AmZ2Omuf9zXYPGMZ6vU614UCR1g0MSys7YnuhUhOhNFLVR/qZPdegrTMkE67j4dRiEG414vaX0E0qeesP0Q+HC/5stcHyhk2zpJKQmLgFzhYzUhCzorwS0QY4fxog9TO1Q0ynP4fz7mHC/dP3LQmjYFKRs6M91KuRevsmijxuOUzRro9tYn/6a9yiiBsaVEj4rwXA0EZ0IzMrG9exbj5x9M2kUECQ7K6eL5SSqXf/5i8yy5gMWtChA/nplzz7+rCsE/0yuwdTHefaE4CfkRYtGu3c2kjIVzBa3Ma4sc8079wTtRAk9X53pfbbK1JHxabRvP2SSVmzPg9n52XAcLrkJPn4pu2jL2A3RsfNe2ZYTXuSwM2Yg=
+X-Stat-Signature: ua9b9kx985xa338z3px663adxb5sehns
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9CFA6100007
+X-HE-Tag: 1782376488-572881
+X-HE-Meta: U2FsdGVkX1/aLEnFSdKoueYwYit7TWyAtKJh6UZ6VYJO3m6Qoxj8N7eBaJ/8BI3K4lEEVsnUNkKXsxFc+cyid3uBcEHfXd2V7UaDkwj25wQzOV10li1sihOpzxbZsVUdj7oFotM93jFb7RLsFlFyr3VYuYtDj6D772oDcD8qHUKSaBT2QIBrM+swCXAaS2BoUvYAM0PsQh72L17gXK3aGBiEsSmYIRHeRTziFDDUAo5zz48xiraYj1DkKGXn8KHNcHgbj3WjDQ3WSPirFELGQHlcQ02U8LrUtW4P6kN1qLTBzUguDPdeI2tXaPfE2WAX7bqNU6vf+rcSXv40vn/jAIMkMWhw7tL4OZyOVJLzL45PeddQVs1qyBs+hgiccw5A+dRkLMY7DBHvvCaJZN7nHB5Eqkj5mU1tU7xKokeICMaFzEBVyayLvhi1UBa1XeF+0wpn9sPxSfCWvgQCNNOUjrmINdVukwAAl6h/HmBJMjxZvCeFyNFrkqtnBFTRTOu2zQd/y/v+4r4ZQkWfaU2TuFvNsHUBf4/H2CoT+BhF/HjGETkxLBWE32dCwqq3BkpENvwd2SGQwYNOW/y61MBGDJUvoP4YKZOza3OLepbrebJyqW2mq0HS5sjvjhIswZIwVscmwmBVj6N6iL5CyS26DbCv2Fac9CAMir7B/Xf8WdSj/qc/hw4wQukLixKVFmclSV9A28WOH/M/lshnVmAu070HWfiRTNIdDoo3T0qvCdUtebnYkxPvMrElvotv9cE7DNXCXqNhefCxkMrHWWvedetbh5yA/FDB5OzlcAy4+zW9F0W07VX1lZWgXpFXQ+YAWBfhsojvan8ZLMF4B195Qia/Kf5tZ7L6OKF1ROI2AIjVFQgtTiIugx5JKKsBsECp4xqProl1LJT6+PHg1DIoWMkpfeUEHRezCK20Wzg7Vcg4YgodOgC60EZvkiueK/SW1d5J4/RyLaqJTaSX19X
+ IhueGo16
+ KZIUGJ5oGL3HJ7qQb/x1HGu9/gPyC+gttg5U4v3IGVL0O4D8gzbje1s0Dg4TH3/QBZPm/pkqM3VkJHxSEkqSZXC71Ze3Y18OBWEX3ZS04/pY0b7win3hce//+XJOztxkDkGxxKIjTpPVifB9qcxmaXZt8GnLBVKltHBfvXYR3s+zmEEuDUmNFEUZwM812HT8V115noP86/6m2z/28DAlkP5tmaY+hbtQJ13myD/LE2KWlHpQ2D+jn8sWyH5coNIedp0maEXRgi17topBMnWfHe+Ek1QE46j0PcwmayFyKBuKVnGa5/+YSzbs/Cr2hMzUNvz5T3QHYLWvYe0k/R1dsR3DygcvggRoXUutnXKQeeIQohdSZuYHLkkhNERkRZFLI2piG+I36S5nbECdKrl4RJ3IN5TwAiXRsfDS29MUEeAxctTW6ueTLkANZH2LjCf+Rxb2VhuuVZV0xY3ec4aaQ+MvYhPkDuC2Bv9q8loujkFVf0/A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,65 +139,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 10:03, Dev Jain wrote:
-> 
-> 
-> On 25/06/26 1:26 pm, David Hildenbrand (Arm) wrote:
->> On 6/25/26 06:28, Dev Jain wrote:
->>> try_to_unmap_one() handles hugetlb folios when memory failure needs
->>> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
->>> case page_vma_mapped_walk() returns the hugetlb entry in pvmw.pte, but
->>> the code reads it with ptep_get() before decoding the PFN.
->>>
->>> That is wrong on architectures where hugetlb entries are not encoded as
->>> regular PTEs. On s390, for example, a raw huge RSTE must be converted
->>> by huge_ptep_get() before helpers such as pte_pfn() can inspect it. A
->>> raw decode can select the wrong subpage, so try_to_unmap_one() can
->>> install a hwpoison entry for the wrong PFN.
->>>
->>> The userspace-visible result is that a later access to the poisoned
->>> hugetlb subpage can miss the expected SIGBUS. With DEBUG_VM, the wrong
->>> subpage can also trip the PageHWPoison check.
->>>
->>> Use huge_ptep_get() for hugetlb mappings before decoding the PFN.
->>>
->>> Before c7ab0d2fdc84, the bug existed in the form of a plain dereference:
->>> we would check the head page pfn of the hugetlb with pte_pfn(*pte), and
->>> bail out on mismatch. This would mean that the hwpoisoned entry will not
->>> get installed.
->>>
->>> I am not sure what is the procedure on such kinds of very old bugs - how
->>> back should I really go?
->>>
->>> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>> Applies on mm-unstable (d17fe8a046a2).
->>> There are similar old bugs present, in try_to_migrate_one(), check_pte(),
->>> remove_migration_pte(), prot_none_hugetlb_entry().
->>
->> Yeah, we should handle all these cases properly. Can you send fixes?
->>
->> Using ptep_get() on something that's not a PTE entry is shaky on some architectures.
-> 
-> I can send the fixes blaming the commit till which backport is relatively simple. The bug will
-> still remain before that, where we don't even do ptep_get(), just a plain dereference, if
-> that is fine. Probably no one is running pre-2017 kernels.
+This patchset is for VFS. Of course, it depends on my previous vmsplice
+patchset ( https://lore.kernel.org/all/20260531010107.1953702-1-safinaskar@gmail.com/ ).
 
-The issue is that we would have to analyze in which cases exactly it would cause
-problems, like when migrating prot-none hugetlb folios on s390x, where
-pte_present() would not work as expected.
+I fix some problems in my previous patchset.
 
-I don't think any of us has time (or motivation) for that detailed analysis to
-make some odd hugetlb cases happy.
+1. Fix problem with CLASS(fd, f)(fd). See first patch in this patchset
+for details. This is probably not so important, but I fix it anyway.
 
-So I'd say, let's just fix it in a simple way and be done with it. Use
-best-effort Fixes: but rather state in the patch description that this was found
-by code inspection and that the actual effects are unclear (e.g., pte_present()
-misbehaving on s390x), and using huge_ptep_get() is just the right thing to do.
+2. Change "unsigned long" back to "int". See second patch for details.
+Again, this is probably not important, but I want to fix this anyway.
+
+3. Fix that LTP vmsplice01 bug.
+
+4. libfuse relies on sharing vmsplice behavior. So we detect particular
+combination of flags to pipe2(2) and vmsplice(2) and return -EINVAL.
+This forces libfuse to fail back to non-vmsplice code path.
+I. e. we fix libfuse-related regression [1].
+I did debian code search for regex "vmsplice.*SPLICE_F_NONBLOCK" and
+I found no other packages with this particular combination of flags
+except for fuse itself. (Okay, other packages are fio and stress-ng,
+but these are merely testers.) So, I think this is okay to return
+EINVAL here, breakage will be minimal.
+
+5. Set FMODE_NOWAIT for named FIFOs. CRIU relies on ability to do
+vmsplice(SPLICE_F_NONBLOCK) on named FIFOs. So, I fix this CRIU-related
+regression [2]. But there is another CRIU-related regression, which I do not
+fix [3]: CRIU behavior in splice mode becomes so slow that splice mode
+becomes useless. I personally still believe that removing vmsplice is
+right thing to do. Other option is doing nothing. Yet another option
+is to implement some deprecation period [3]. Let other developers
+decide.
+
+See patches for details.
+
+Please, run that LTP vmsplice01 test again.
+
+Notes:
+
+- I want to repeat: I change behavior around SPLICE_F_NONBLOCK.
+Previously, vmsplice ignored whether pipe itself was opened as
+non-blocking file. Now it is not ignored. And in my opinion
+new behavior is better.
+- vmsplice(2) now is in fs/read_write.c . It is very similar to
+preadv2 and pwritev2 now, so I think it belongs to fs/read_write.c now.
+
+Please, review this patchset carefully. I'm still new contributor.
+In particular, please, review that do-while loop, I'm not sure I did
+everything right.
+
+Tested in Qemu.
+
+[1] https://lore.kernel.org/all/CAJnrk1Y9egYizkx1H9K0cqxSYuB+7vLvQbV7Tf4C5eHFqnnC-A@mail.gmail.com/
+[2] https://lore.kernel.org/all/CANaxB-zK5q=Xw6UZTmeFtXsDZjUsPkFk=p485m-wtNTBnf4hgg@mail.gmail.com/
+[3] https://lore.kernel.org/all/CANaxB-xUrLQYGiRJZc4Boi+KX=0TJSWymErNovANVko20fMDVA@mail.gmail.com/
+
+v1: https://lore.kernel.org/lkml/20260606061031.3744880-1-safinaskar@gmail.com/
+
+Changes since v1: fix fuse-related and CRIU-related regressions (see above).
+
+Askar Safin (7):
+  vmsplice: open-code do_writev and do_readv
+  vmsplice: change argument type back to "int"
+  splice: turn wait_for_space flags argument into bool
+  pipe: move wait_for_space to fs/pipe.c and rename it
+  vmsplice: make sure we don't wait after writing some data
+  vmsplice: return -EINVAL for particular combination of flags
+  pipe: set FMODE_NOWAIT for named FIFOs
+
+ fs/pipe.c                 | 23 +++++++++++++
+ fs/read_write.c           | 71 +++++++++++++++++++++++++++++++++++----
+ fs/splice.c               | 19 +----------
+ include/linux/pipe_fs_i.h |  2 ++
+ include/linux/syscalls.h  |  2 +-
+ 5 files changed, 91 insertions(+), 26 deletions(-)
+
+
+base-commit: 8d86fcfc2857d64af85f5c87c193c25655c970af
 -- 
-Cheers,
+2.47.3
 
-David
 
