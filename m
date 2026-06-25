@@ -4,111 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDB1DCDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 09:11:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 706E5CDE002
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 09:11:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3C5C6B008A; Thu, 25 Jun 2026 05:11:07 -0400 (EDT)
+	id 633406B0096; Thu, 25 Jun 2026 05:11:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AECE06B009D; Thu, 25 Jun 2026 05:11:07 -0400 (EDT)
+	id 5E3DB6B0099; Thu, 25 Jun 2026 05:11:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DE2E6B00A1; Thu, 25 Jun 2026 05:11:07 -0400 (EDT)
+	id 4FA056B009B; Thu, 25 Jun 2026 05:11:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 75A6A6B008A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:11:07 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9F6740646
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:11:06 +0000 (UTC)
-X-FDA: 84917865732.14.6D25F2C
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D1474A000A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:11:04 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=JdqxJYsp;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=62906d379=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=62906d379=dipiets@amazon.it"
+	by kanga.kvack.org (Postfix) with ESMTP id 27CD66B0096
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 05:11:11 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 96FA01A05FE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:11:10 +0000 (UTC)
+X-FDA: 84917865900.18.14DA363
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id CFD8C80006
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:11:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0rd3Hq8;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782378665;
-	b=vJ0EtHfJ12hI0E03iLFASqEvyHir91eyRxCx/6f4+ih2ePBwTjBZgNIqEHn2g65u5s0yGu
-	WH9zFYMXlLrLr0H/hHFP2SDImLO4BpNbxc8kzuwCPGsiUlnI4/5CftK1pF/Y7D/xIPQ0md
-	L9zdwq/ABazeoDTJ8iETTkwscGrx/24=
+	t=1782378668;
+	b=t+bKaQdC/mhjf3Mihs9bH7rQgsvqUOQ6d9CFi/yYkKUIXZ4aiLKjDozOWGlQiXeuejoL/P
+	cUfHlQL4DP8BNj8fdIGJuZk8DvJn3/qaBNCLq4zJM3r06cG4+cODWBNyjV/h81zNHg0to+
+	bT1+ygTGMW7YavyWMmTjfV/43CEIVZg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782378665;
+	s=arc-20220608; t=1782378668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oE928MWpjpguJbmMgOw+gSkPCYeo6lVM91/zGpnGPn4=;
-	b=m7QinfkBtGTu7HO/NaJ6o1Xeula7nYUGXPalSRzpySqr4uOIxj3K7zdsyyrItDx//1wOXI
-	FbktOGmBFp3nbGiDGQyCXybMF99DAnEWsr/K8Upi3RXnkuGc5VOLVWe3eDqjJAy97Emq+S
-	ycDKLLxiybLk11qTFnFtOQIRosNR04Y=
+	bh=w/sutQTxrkpg6/YMIZU8opSDaoNh05pdMby8e5mXodQ=;
+	b=uqZgb9/f4z4etZ1zpT9HhiSy4vs8eztUa/rRSCqM0IB5J7zPQl4A0hS2977GT6nhTYlck1
+	uoPWL2JrVXkisdBeckLNRB3Y/7ploFsCR7WXLoVoqLfux4QhCt7WfzKk0yyZkwgZMVkjw8
+	tQnDNkDk7y5cJq+erKvzBTTvq5UGtbw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=amazon.it header.s=amazoncorp2 header.b=JdqxJYsp;
-	dmarc=pass (policy=quarantine) header.from=amazon.it;
-	spf=pass (imf15.hostedemail.com: domain of "prvs=62906d379=dipiets@amazon.it" designates 52.26.1.71 as permitted sender) smtp.mailfrom="prvs=62906d379=dipiets@amazon.it"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.it; i=@amazon.it; q=dns/txt; s=amazoncorp2;
-  t=1782378664; x=1813914664;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=oE928MWpjpguJbmMgOw+gSkPCYeo6lVM91/zGpnGPn4=;
-  b=JdqxJYspKNXeA1OD4UdLrFwIBaqNtaBf7KkMRp8E9VqonFQ7wqPf/JJz
-   Kff+Qv1HBYXzV98dbH29J1Nwce7rszoB/Z767H8Uif1rkKChD4MlMZSNt
-   qS5KLiW8ZlppQWuuDHl5N8BQY1T3KQ/O0Yo8pgCD++zTibTIAt/0P3cOw
-   3yRBYeYR9cVVT20hG9rDTHmAdYMRfseViMBGQygNNFnQ75cI/ESSO+kLk
-   la/FDDawATRAJdcNR/uy+xtPDrosVl1nDpuSyL2RAStDXSRFotu63KQWj
-   3K8l4pKciYEKc8i06t51sYp2vFuzOjynxMtbw1kWIOd7pS8trYAg7U92j
-   g==;
-X-CSE-ConnectionGUID: BHvSDaCTQDGldW/+GkcQGw==
-X-CSE-MsgGUID: T6GC85OPQZqEzuE/bVyVkw==
-X-IronPort-AV: E=Sophos;i="6.24,224,1774310400"; 
-   d="scan'208";a="22495960"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 09:11:00 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:9509]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.37.116:2525] with esmtp (Farcaster)
- id 53b71abc-ee40-4912-bc3d-4b91185244a3; Thu, 25 Jun 2026 09:10:59 +0000 (UTC)
-X-Farcaster-Flow-ID: 53b71abc-ee40-4912-bc3d-4b91185244a3
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 25 Jun 2026 09:10:59 +0000
-Received: from cdd-dev.amazon.com (172.22.139.101) by
- EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.43;
- Thu, 25 Jun 2026 09:10:58 +0000
-From: Salvatore Dipietro <dipiets@amazon.it>
-To: <hch@infradead.org>, <ritesh.list@gmail.com>
-CC: <abuehaze@amazon.com>, <akpm@linux-foundation.org>, <alisaidi@amazon.com>,
-	<blakgeof@amazon.com>, <brauner@kernel.org>, <david@kernel.org>,
-	<dipietro.salvatore@gmail.com>, <dipiets@amazon.it>, <djwong@kernel.org>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-xfs@vger.kernel.org>, <ljs@kernel.org>,
-	<mhocko@suse.com>, <rppt@kernel.org>, <stable@vger.kernel.org>,
-	<vbabka@kernel.org>, <vbabka@suse.com>, <willy@infradead.org>
-Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order allocation
-Date: Thu, 25 Jun 2026 09:10:37 +0000
-Message-ID: <20260625091039.24501-1-dipiets@amazon.it>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <ajvc7fSDngyx0X5j@infradead.org>
-References: <ajvc7fSDngyx0X5j@infradead.org>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n0rd3Hq8;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 61543600FF;
+	Thu, 25 Jun 2026 09:11:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79A11F000E9;
+	Thu, 25 Jun 2026 09:11:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782378668;
+	bh=w/sutQTxrkpg6/YMIZU8opSDaoNh05pdMby8e5mXodQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=n0rd3Hq8UXydvt8y0GFa1ngVOYAY3si0zXLn/WcE1kmSJidgdkN4Ztp+BDfqBHGus
+	 iGbF/STWqCa8w6YsvBW740mJtwdt4fLL3dMxRvt17IHur3M0Xxpt9DuLx3eFEprzGW
+	 ZcJ1mftxKRknK5TkTmjiR4rVC1S+JhbzEuQfc46XQtZ8pryFdQMt3t9EaNW71Uxw0b
+	 WjNiF/ntKLtDjXbNakPN+1bqkG2k/Y9T+TdFLMtaCMsIzVqAOxh/4hA71BQjErW+Di
+	 64THDw8NvDG72UgOu9GVIU6kfwKebCaZT0yPxgdkZfVhwyKIEAFQm//3XjmHN+4OPE
+	 qoKR5Ymnu+4kg==
+Message-ID: <fdcf9684-56cc-4389-a845-c53386171974@kernel.org>
+Date: Thu, 25 Jun 2026 11:11:04 +0200
 MIME-Version: 1.0
-X-Originating-IP: [172.22.139.101]
-X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: D1474A000A
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Docs/mm: fix documentation warning for GFP parameter in
+ kmalloc_obj, kmalloc_objs and kmalloc_flex
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Jakov Novak <jakovnovak30@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ linux-kernel-mentees@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260619113622.11712-1-jakovnovak30@gmail.com>
+ <20260624184856.55fe055b85e17ed2c6572182@linux-foundation.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260624184856.55fe055b85e17ed2c6572182@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ua917hh3izt5csp73bx7fokzj7odmtqr
+X-Rspamd-Queue-Id: CFD8C80006
 X-Rspam-User: 
-X-Stat-Signature: 631srwwpprenobe68q4gyt9j9obxsi4b
-X-HE-Tag: 1782378664-814286
-X-HE-Meta: U2FsdGVkX1+Q7i3xgTZ22DvrdRyveC1Bhk/9CsEF3S3MBnzdjOrP2i7dl0tq0uBiyoQ6R2JPMgOWUcOqR9qtPuJi4Cam+PnWgjImm+iU23cqxILF7bPeiqOPDtQNHsVr6EtZP9wmOuTZ5QO862uygMG7yZa/xIcT6rGhPZLtKNlyMZ0VQMuEmrjP5Wxkr2vVuOyNYlSH0FcfaECIypMy9R0clDmO84GsVvajp2QQFEESm7qYHxwnWqPK7Mcgt2kmNcLYANxTpGXkUeuJ447i5kzjOv0qAhOb4EUc8t98gE27Zua7HtTBxhqCDW6lva0t8dmU7Quwg1X0XWjs5V77+M5eKTiHZeT48xKynIi+rWP8VVsgglYh1+5rDSsCSakpMZvdjX2lF2MOjQoDiWQtXgO7ctM9uBOYmCxKXn6rdQxsqjxBGlMrTIjcwSMFi5U8Q9CBQLemnQgIdzCUNy38GpRFP1bVnXlpP4w3624+fq5edaqynuUsxkjS4A2vuKOgnBqpCM/PptSrr5FKO8fRvmiGdcWEQ9mcxzQlVoHgU8V1oneh2/WaXKoQRLeanutnQzk54sKSgXYP0zjS3VjFzG8YzsmK9oOqAQ/lr+r9E1jhyFUKq1V20S0tvQDefYJm8SH/EHGYNL8pzrngkxx670R1mPl8HFBnmkg9m2pB43omKfvexaxFRdaZf3+VCOOUE231RqKW9ukzubQgEgGzyRB4rEiwshEIXFnsltV9X5usS7GcJLtm+6gXDx7OGD/eiZJRNlFRl/EY6A6MgbVcSmYi21fb9yNvgdg2HE7KmY9ViV6ZNN12DcI7Q4kp6MwNt+MVoPhE6z/2Wtd/DdYd9gBZOFmz1FpTdusoBZttChZ6F7C07wrXzqpSeLJqIAqgqB4bNn5qMvOqp8nESc3VQnUo7rQDZ5OO4E6qnabZoe/K/n8GX01ToYU86jGPZ38qZuCz/UZUaObVHYyuk55
- q1fbBvMj
- EI2zaQyMxjfLTcSjktF/ZaSk+BE6Q8QMKUjmQz/2wzX6gQv0c+StB2X/BL0c2R7sImk3xFO7UR1X72YWc7aSMmI6RTV0XWUiTvGMXGU1DBp0bDsCU9Fa1+cTfzoFLGPOdCpPJMKhynt6NJzAGwVc2Ud2RaUMXZxEVveo6QuR4F9WYryaxhVWsB0JAy07BzAao5PgM7vMntJKltNtAEQjQ0f80mduyWAfZcJWbPOATYRis2XCZ1YO46HdOgNTUAHND3TVxlKkjtBk/T+pScrbE1LrzQCx0LR5nkHsCYpdPY0CdDalxrmnxqMHVk3c+I3ED7nmxmNLWu9GTRlqOzmpL8NRDUam+A6q2TJ8KiS5Ym+nqhH5aEj3X3BpbgTy62KbHMDrCVFC5qZxxKE4dRWKM4T2S6VM2rkRnJDUa2peszG7rYoMtSP5pJDVaw10dLNxWY33ImOvzD8sZ3Qpq9n5yReG/l14zeHAPgGhXLeVHG5/za0L3uzg/gu3VhtjDv4nVTVrImnsxp8vTZ4h4l4RNGbp3ppdAc/l3kYIjvqvh5IWRXe9B85N6zMtLxfhBCZZEvDo4thi94OpbJv2ZFzXrBMT3+BKCRUcDL+0wcgSu4Jedo8vOcuxAHiGlIhrg/tp/fklxl3xNpoEfU5hEYHzt7oqQmGacXYzQ0qfkAEoj2mGqdEg=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782378668-547351
+X-HE-Meta: U2FsdGVkX1/tzjIDVgjqn7lAVqFvaQvfsPDPMc4iCyXFiV0RFJAHT27NXTXlkeI22WZzpdkdvxB/cbT5yafuhTz6RUzqo7FWQxfz26N0BThBEfzFmCHZK2DJ8xzV/H6We3Zm7aOjyohkYoXwvACtuaTgggQ4N2bhlQ+xFL3kHcTEVUagZAGBn8oPyJa34grv5u8oWJJycNZWmfmzQeLB3/ivNGf/Ami96XaMtyqSs2d+J5rVTqlNdUW3KEqvMo3SGZmN9OvBTJEuUjqIbZsKEBmBBVAgVPW+VN4lU0IH0fkmrHPJa24tsjrXx7kg04U3I1glVQlgMk7m6YZcHpjmotlO5l1uO7fGNz/hfbKhPibK/ZIoM3K7g6nz16cnqI2mM9K9dm4V1ej+Z8egKFx3gopPkzePP9Dl0OC6d6UPTIRxM6qcqz6Lb6hx74LlYSzoDAvJPi2AylrO2L3EKB8nnddtJN+xJ4H7zSaBLniRaB6QhLGR7GAYm8CeopWwvk4tqJAOXELg4s48YGVN1+CFCpBpmBXNNrREaKGYDQ/+PAm52DVE8Lqn8yHahrG+JlnOuuTm1i+eRxBaXLr7VnPrS8O3VZfITPB9/0TFS+WY8bdjNh8fQvCwHOL1clt7gJFc8HwVCQNEdYCQWRYZpNmBZ4mwsZXCq6D6oM4tRypMwjj3KxTNj4jieqWS77AYjlPNFwDTeLX4jS4RJI2YJDpTl4LtQ5vHRJ6Sb/gpACAzQUaoWqqZowopg1GEyMUCm1KgLyNwfvxhKgW1yenxmvAJXEnk4hQcL0Cjm/oGF8OhUdamTjFvStOBvxXSoYJePXtZouQ3NEAXJGnNGreBQOFLrghmvP+X9XYDGSaK18qsnfTPMnw4P3UpVGQzCIHLXdw9wE6iEi6YCk48ApMBBfojNYzuxDy/q8ntm+x/bygtVCpRYsWZY7aw4qpNAqKwk7H48X+SuJBn0dG4LNa5XqT
+ nXwVEz/N
+ t0glTzMfeocZr65oWY6XRMwz59kj5hVaIwudPzqI16cev4Iwx7+GL7HqZJvefzJUoH3Nx2mlXourn0IwhTqGRE1J9vM9msT3Y78JTPLVwA+jmveaLzAxxwLshnEkqVOiD/hFcK8QEVOwrUTuGsmuxb9f30qVhjx9u36GrCZ/eZHKJYCmrIfIe/FcDOWT5s6jDgVezcl+Rtm9+HSJ8b+UsRs/B8uoiQtwvjUd8GLiX3D/plCjsA4771qgf06qstjfDcoRcOyuXIcqnQUnx6ojT5eTGGmObxRqq1X44DMp/hvmqCCksBzZQjBbZAcuSLlpwHQbEje5HBO1xH44=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,34 +138,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-T24gV2VkLCBKdW4gMjQsIDIwMjYgYXQgMTI6MjE6MDBQTSArMDAwMCwgUml0ZXNoIEhhcmphbmkg
-d3JvdGU6Cj4gU29ycnkgYWJvdXQgdGhlIGRlbGF5LiBJIGRpZCBicmluZyB0aGlzIHRvcGljIHVw
-IGluIG9uZSBvZiBvdXIgaW50ZXJuYWwKPiBleHQ0IGNvbW11bml0eSBjYWxscy4gQW5kIHRvIHNo
-YXJlIHNvbWUgY29udGV4dCwgTU0gY29tbXVuaXR5IHRoaW5rcyB3ZQo+IG5lZWQgYSBiZXR0ZXIg
-bG9uZyB0ZXJtIGZpeCBmb3IgdGhpcyBwcm9ibGVtIHJhdGhlciB0aGFuIHBhdGNoaW5nIGNhbGwK
-PiBzaXRlcyBhbmQvb3IgcGxheWluZyB0cmlja3MgbGlrZSAtIAoKVGhhbmtzIFJpdGVzaCBmb3Ig
-dGhlIHVwZGF0ZSBhbmQgZm9yIGJyaW5naW5nIHRoaXMgdG8gdGhlIHdpZGVyIE1NIGNvbW11bml0
-eS4gCkkgY29tcGxldGVseSB1bmRlcnN0YW5kIHRoYXQgdGhlIE1NIGNvbW11bml0eSBpcyBsb29r
-aW5nIGZvciBhIHByb3BlciBsb25nLXRlcm0KZml4IHJhdGhlciB0aGFuIHNwZWNpZmljIHBhdGNo
-aW5nLgoKCk9uIFdlZCwgSnVuIDI0LCAyMDI2IGF0IDEzOjM0OjAwUE0gKzAwMDAsIENocmlzdG9w
-aCBIZWxsd2lnIHdyb3RlOgo+IERvIHlvdSBoYXZlIG9pbnRlcnMgdG8gdGhlIHBhdGNoZXMgZm9y
-IGVhY2ggYXBwcm9hY2ggYWJvdmU/CgpZZXMg4oCUIGFsbCB0aGUgcGF0Y2hlcyBpbiB0aGUgcmVz
-dWx0IHRhYmxlIGFyZSBzaGFyZWQgd2l0aGluIHRoaXMgdGhyZWFkOgoKdjEgKG9yaWdpbmFsLCBp
-b21hcCBjYWxsZXIpOiBUaGUgb3JpZ2luYWwgUEFUQ0ggMS8xIGluIHRoaXMgc2VyaWVzClJpdGVz
-aCdzIHN1Z2dlc3Rpb24gKG1tL2ZpbGVtYXAuYyk6IFNoYXJlZCBpbiBSaXRlc2gncyByZXBseSBv
-biBNYXkgM3JkIFsxXQpNYXR0aGV3J3Mgc3VnZ2VzdGlvbiAobW0vZmlsZW1hcC5jKTogU2hhcmVk
-IGluIE1hdHRoZXcncyByZXBseSBvbiBBcHJpbCA0dGggWzJdCmtjb21wYWN0ZCBiYWNrZ3JvdW5k
-IChtbS9wYWdlX2FsbG9jLmMpOiBTaGFyZWQgaW4gbXkgcmVwbHkgb24gTWF5IDZ0aCBbM10KClsx
-XSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MDMxOTM1MzUuOTk3MC0xLWRpcGll
-dHNAYW1hem9uLml0L1QvI204YzNkYTFjOWZiOWU5YzY2ZDRlOGIxODQ5ZGU4MjRiMGVjZjM3Zjll
-ClsyXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MDMxOTM1MzUuOTk3MC0xLWRp
-cGlldHNAYW1hem9uLml0L1QvI200YjkwY2YyODBmZjBlZmNmMTc4ZGZkOGQwNjhmMWRlM2IyNjJl
-MjhhClszXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA0MDMxOTM1MzUuOTk3MC0x
-LWRpcGlldHNAYW1hem9uLml0L1QvI20yMjk3NzM1NTUzNWE0NTk5MDg0YTUxMTA0YTRkZjgwNmQ0
-OWM1M2QxCgotLQpTYWx2YXRvcmUKCgoKQU1BWk9OIERFVkVMT1BNRU5UIENFTlRFUiBJVEFMWSBT
-UkwsIHZpYWxlIE1vbnRlIEdyYXBwYSAzLzUsIDIwMTI0IE1pbGFubywgSXRhbGlhLCBSZWdpc3Ry
-byBkZWxsZSBJbXByZXNlIGRpIE1pbGFubyBNb256YSBCcmlhbnphIExvZGkgUkVBIG4uIDI1MDQ4
-NTksIENhcGl0YWxlIFNvY2lhbGU6IDEwLjAwMCBFVVIgaS52LiwgQ29kLiBGaXNjLiBlIFAuSVZB
-IDEwMTAwMDUwOTYxLCBTb2NpZXRhIGNvbiBTb2NpbyBVbmljbwoKCg==
+On 6/25/26 03:48, Andrew Morton wrote:
+> On Fri, 19 Jun 2026 13:36:22 +0200 Jakov Novak <jakovnovak30@gmail.com> wrote:
+> 
+>> Subject: [PATCH] Docs/mm: fix documentation warning for GFP parameter in kmalloc_obj, kmalloc_objs and kmalloc_flex
+> 
+> Thanks.
+> 
+> "mm/slab: ..." would be a better subject.
+> 
+>> Date: Fri, 19 Jun 2026 13:36:22 +0200
+>> X-Mailer: git-send-email 2.54.0
+>> 
+>> Compiling the documentation currently gives the errors:
+>> 
+>> WARNING: ./include/linux/slab.h:1100 Excess function parameter 'GFP' description in 'kmalloc_obj'
+>> WARNING: ./include/linux/slab.h:1112 Excess function parameter 'GFP' description in 'kmalloc_objs'
+>> WARNING: ./include/linux/slab.h:1127 Excess function parameter 'GFP' description in 'kmalloc_flex'
+>> WARNING: ./include/linux/slab.h:1100 Excess function parameter 'GFP' description in 'kmalloc_obj'
+>> WARNING: ./include/linux/slab.h:1112 Excess function parameter 'GFP' description in 'kmalloc_objs'
+>> WARNING: ./include/linux/slab.h:1127 Excess function parameter 'GFP' description in 'kmalloc_flex'
+>> 
+>> This effectively omits the GFP parameter from the current kernel
+>> documentation. This patch marks the "..." parameter with the previous
+>> description of the GFP parameter along with an "optional" tag in
+>> parantheses.
+> 
+> "parentheses".
+> 
+> I'll assume that Vlastimil will be processing this patch.
 
+As Harry pointed out, Randy already fixed this, since then it's in mainline.
 
