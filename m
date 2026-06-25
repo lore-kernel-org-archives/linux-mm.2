@@ -4,122 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7173ACDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 13:36:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AD07CDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 13:45:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FCB56B0088; Thu, 25 Jun 2026 09:36:32 -0400 (EDT)
+	id 7BD456B0088; Thu, 25 Jun 2026 09:45:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D46A6B008A; Thu, 25 Jun 2026 09:36:32 -0400 (EDT)
+	id 76F7F6B008A; Thu, 25 Jun 2026 09:45:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4216B0095; Thu, 25 Jun 2026 09:36:32 -0400 (EDT)
+	id 685746B0092; Thu, 25 Jun 2026 09:45:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 288936B0088
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:36:32 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E310A0115
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:36:31 +0000 (UTC)
-X-FDA: 84918534582.22.59FEBEA
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 3C5348000D
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:36:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GVyAP0qa;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 439736B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:45:36 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C14E5140129
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:45:35 +0000 (UTC)
+X-FDA: 84918557430.23.A68C729
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 392E3140013
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:45:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KGnA5QDG;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782394589;
-	b=fTsWvKE3ULs69gOQJKguV0oFRBfKWnQPhHgDuz4fNWdG32dIAGpJc2lQZSBwf/d/0lcFwm
-	k+nNiocnzVzK3IG/w+nRZUnbmGyY18U2ZJu3aEOCFOW/fEWXns1cnmWe+wk5cwuYCw+dhO
-	Wa5DpBW5vnzwfARzd9l7NUa6CzbwLK8=
+	t=1782395134;
+	b=YCl9vPh257Zcx/yAyV6onkvVqLKLr0RCv6+HjR3lEvJkH5sRW3bblb1vs4NjrUxhi5Utfu
+	7EjLABeyp+ZsYDnYYaS0Y4J+9s/TwZm0Dh+FBQMED4vmAqh2jGUXxKnTCb4nmIPqfcnoGU
+	Y3jDLH3CgtGQ26LE0XUzPc2zAHgtP5k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782394589;
+	s=arc-20220608; t=1782395134;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ALlzMSFTkD2qwY6cH7Q83YaJoqNCS+acziBP11A7pe0=;
-	b=uF1yZZhoHqRRADHpzdciXtk14RzV1D43gvH/djVakh5zT4FPyQmsS6kTbbbfGSMEwejPxn
-	frDFlcFqTudPXzywvueB0hnRb9gGkkRaJUsy7yLcjck6BpPjNjZxbGyvH8jmtCI3eA615y
-	UsPyLbXPouLyf37vsurqVGKhrMMn2NI=
+	bh=MQgm/0xUjnC2uKkCTFkFQ7HDUhhiNYBzn6GFhSGt9ZI=;
+	b=yJs1igODMIGxQ1QOyXu83sZXZXa4OHWRZTEedbTHqyV9ZIJj1/Ehh1CDN6/EjD770QYDv5
+	0BKdt9UjAQUyM3/i5qOsVZInOPFO+j9FeTS6MxvAEV6P5aab7r17NVatOc8l1BhtS+emKM
+	eeamyLUbN3AOsnI4rTPI/BREwKs0yPM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GVyAP0qa;
-	spf=pass (imf02.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.53 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-8ddd7bad263so20801616d6.2
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:36:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782394588; x=1782999388; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ALlzMSFTkD2qwY6cH7Q83YaJoqNCS+acziBP11A7pe0=;
-        b=GVyAP0qa4KdaV8qk1PNyfkM1M53nvpMjf+t4keBG3t0t6z935tQMoFTP5qgM5mC85S
-         B4nm3o78q/OXPRbT39OGI4xTCt9O1DgPzZaHKV3jW7ukcaS2WU3lDeASD1DG5+32U1tw
-         mfCD5TWZByy/8lYtnZzKuJMnQyE+JOFN1Orn97IJ9OHfPlnlIrYLHbL5lQdGsb3BUCZ7
-         2u0uIDmn9EoB2Cle0R6QvxYFqMvm/IMQsAO0w3kKEa7L2meQA+9xXKMdXRJRtyzowR84
-         mUACxpGafDq/gplH4UtIHp7zLjU1VKzlL3h476h/iPACzsk/Pw2AHYyxvx3OGdgRVxWL
-         nOLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782394588; x=1782999388;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ALlzMSFTkD2qwY6cH7Q83YaJoqNCS+acziBP11A7pe0=;
-        b=sMKfuDePnS39ajWWcw7t04Zj0YUFuXJSPGf+PmJ+2th6DQXn8f8Fn99DTTkXO2UQJP
-         kd8WaQuKLCgxKVyG8HfDpuOAWEREKqPSVwedRI+jnQjO2C/KeVd+NvLlCrquJJKe5HMS
-         dmmqxfT4AiRsiTsIFV72LoQ0OKoc7qU9sET82ziEuodrHJh36eB3o/1WRbAsc2dnyc+h
-         NSvn10KHMtT7NO5M2L6Rtk/oLkYiw1gCwPJhsQSkaNhwZpy0KWOi5LF5t1iPIHcSoZUN
-         idrJrF5z3Jfan7Mg2tWqitnrantOSty9z1Rk63JJgbuKFSZeoAKuxFaeyywOxhgNj2UA
-         HRrg==
-X-Forwarded-Encrypted: i=1; AFNElJ9qvBCkf60Rb2T8Nq9CoA5XHjJ88AcK54fJsyNspM9hZjjiGKRbDe8bdfRKvmqRuBjahK+QAbnXOQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx8v1LeJ5pwRBDRiGN7hRGDZwkrpiNxeiCSPFGnx7N1Ti4oTRqY
-	JyaUkGR+HkxvEssjbrkfOiBMlpQ46clodhe6yVmS9nDtR/Hr8a6/BvqD81Hqhd2ifFw=
-X-Gm-Gg: AfdE7cmUxtmxCbDpxeclnWe2G7SxcHDMsrOTDXTspQ12obqKGe1snf9tWgPmBmEyqTW
-	XouDASYokWftbqp+nme9nqXTcyl0HoTgQePases02gSj5RmQxQ4DOnQ3PyDwEY976qfeJRVcNpv
-	jSDedXbl8qsxjSMA7phm2BskGZ593I1PBiyNkYM9J2nBqXhypSjzGy2u4Yqawhd6ZYu66nq3xIe
-	hypzHjlDFIyQk4Se9TCC+7DU68++EKLpdWGBhR80xnnXir6MA0VjHXM3kzp5NEH/ZrUxUuOG1Nh
-	AG/W//EF5lWiQbrpYcRfuk/YjqBWxtnE1H7PzsbhwFhYyjZBd2AGUU38h/lcSLepC0DgmmDq8kf
-	UrBNNvx9HSjMbL6dOxSmXQIqCYo7z5STT9PaqT5eOSWox15/1v3690lGhhI1ChPYZl8EKKRtF8E
-	sG44aLb+gkThs=
-X-Received: by 2002:a05:622a:180f:b0:519:51a9:fc84 with SMTP id d75a77b69052e-51a727cb368mr33707201cf.41.1782394588132;
-        Thu, 25 Jun 2026 06:36:28 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a51b12242sm69457131cf.29.2026.06.25.06.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 06:36:27 -0700 (PDT)
-Date: Thu, 25 Jun 2026 09:36:23 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Barry Song <baohua@kernel.org>, akpm@linux-foundation.org,
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com, kasong@tencent.com, lance.yang@linux.dev,
-	liam@infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, npache@redhat.com,
-	qi.zheng@linux.dev, ryan.roberts@arm.com, shakeel.butt@linux.dev,
-	weixugc@google.com, yuanchu@google.com, zhaonanzhe@xiaomi.com,
-	ziy@nvidia.com, Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-Message-ID: <aj0u12N_GzGtQT6K@cmpxchg.org>
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org>
- <4aa8350e-712f-4380-b3bf-2ff06cf2a35d@kernel.org>
- <CAGsJ_4xR0Ge707s8JAfd5Fw10+U+25_nuBGuVayx9qnxR+NnGQ@mail.gmail.com>
- <c29f90c6-2075-43e8-8f0d-0d6718a0f124@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KGnA5QDG;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AF48A600AE;
+	Thu, 25 Jun 2026 13:45:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA26B1F000E9;
+	Thu, 25 Jun 2026 13:45:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782395133;
+	bh=MQgm/0xUjnC2uKkCTFkFQ7HDUhhiNYBzn6GFhSGt9ZI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KGnA5QDGaoY8BJI8guQ+6hdBNoRkYIFOa/L7h/05sUKpKoU34O8rde5GdjZFCUkmS
+	 9E4SrxlHnWdbSaKU5ucf+b68LhbnMoGzDpvRju52YFKXh27oMdjhXyIiAwTipo1GU4
+	 HgiZeHTSkVZUIdPbtXPnonok2QjuIvs/lXsZnyRuHkVke2hdzV3waEUNXFRaR0A6iu
+	 ToZk5v29H6YT2bQzECzX4SDgRGe2TJYBeZKugFfCYKg7hQZsB0zSD5DJ0/XCGPoc4H
+	 IfQvxFcMsVBQ+LglB0e4vr5CFYO1D6eqAwdZXXN3QEPTpHXgKlHW2uqzxZa4QwVefN
+	 mTcnp64eDawYg==
+Date: Thu, 25 Jun 2026 14:45:25 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com, 
+	liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com, 
+	willy@infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	lance.yang@linux.dev
+Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
+ CONFIG_TRANSPARENT_HUGEPAGE
+Message-ID: <aj0vjdBN-oNMI2yI@lucifer>
+References: <20260624082359.2869-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c29f90c6-2075-43e8-8f0d-0d6718a0f124@kernel.org>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3C5348000D
+In-Reply-To: <20260624082359.2869-1-richard.weiyang@gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: c3kz7z1r7mujesmgtcffbt1q9i3di4fm
-X-HE-Tag: 1782394589-3565
-X-HE-Meta: U2FsdGVkX1/E5vxQQ/CWeoop7ZUzIvFTrDLvUrZ5CFqxhMULZ2jK9MbAkOygqCcAiV5frzchD0Q77fIASdIvB+9BYpqFbEU3WR8hkLhASEZauG+4K+AephSiXZwxjKAvURQenbBMRq+gZn3DvxIkJWs3Z5GlYXMue6kEXILz9o4bIiU8Sgbz5u+vi63mPZoNdDeo5cdSuVsdTKBc/pSA2v9LN+3XQfP5Plo1RTL6O4y7Z/sSJZGnvInRD+LqClc5K/YFHYUuG8aCgBwjRfrMVoOxMd1GPMk+3RHojdp6LoQ/7oLok5V2L3rXuDOoNdfZI4+ZSVM1+kEwwCmJbOW2E/rScWG8FKGLRbcBHR6ERSBLxf3iubGNaW6+atDWS2SDOhN8fjlpjquiyxOa4ZtwUYgPEYw5SQwXWMpUi5NpfJucWroSl25CIOefh9SqpByvLovvTIHqKgURV/NiBFUawViBRwMOmdjfeI1XMiQmLWhW+BPF4wgolJsJbpQMq+D9E1wy7s1a9dvcErsi/NJRGR4q9+u5Ryy57q7kqhbfYgA7aWyoaS5V33guX7X/qPV+twF+WbKIjXlnDWfT0tr/DcGhfNKJ+GL43u7qfgK3r8MDNx5NtTqDaqOWYNVF2Y9eh/f2zY2m2l/WvnkuPqxDt8CtS9wykyxvkMWKo5MnPB9A3z6nEQ5jbJGv//S3GLKeZwnvFHjyWZMoYCOaBcyF37Z4rdc3eUOTBdvSBHsZsaWAl41o65//HegyUaCB8eHNAgfSJH0QXMmZk5Rypsr71l+mz37h5jS4hVeVCvOI9xdXDiztozpRErJJlyu443fce0gLHbs/t4o/0sb9nbGE+VNp4VMurg991jJJXJS2EhEpTWwXfkJH4ZqH1md6KnisOiU8weX3Q99lwg3CSPyZlL7Am1mUq2eaSeK8BVFxCnptCkE4WRptr2e5eCz3MB/DaIQGAGMHXmk+MMjH+QZ
- OXE4gkOZ
- pZJbV55JfvGdCdZWictjAfzJ9ueK1xPXgy6nSLyFZRH4JUHo758N/7jOU3fl83wtl8WaVYSzO31/mTFDWddph5USnX/vENEJPOyB33IhNcIEsRUYwSynsTu9WaunM3+yBdFnW9hSgWm1JJGBMh/RrXXnm5iCc6qgs5ux8QDUERiZ3SrKXKfEiG+uZijpHTFl5LUzLnaQ9ueU8Gyh9efaxVCctXS2LFihij1i55j5ioT5u8GEUgxpagg2wTc6nGa8ER6kprJURtTIPyqaouOS97RoTSlRWMaPaEHyKhIYi3yBya1odJQbx7SLDGjwOuuHCPF/BaRHbzFbucLiYGGht/3xRXqdgt11L1I0AlZQsJ0+zIEIholF+8bnSRCEsuwG+R/Hhltx2sr/5LuOERslXREmGLg==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 392E3140013
+X-Stat-Signature: z6f689stiq6aee4om64r5zd1oks9h7r7
+X-HE-Tag: 1782395134-590142
+X-HE-Meta: U2FsdGVkX18BRXBGc8D3TbQTPJjEwLbBTZjyqF2Mxoe/djbcCJrThEf+T6GEBoHaPJYG/HuFHuQixBVgSUe+sQydtA1qkL5HIPpFIfRDfVfAWMPrKomnAghB9q9iC4noYfLNPhTEKzA1ue5P7AXWScGaPCPjLvYtT/Brkr5QEBePTzKHiDIifEZEDGdpioKKJyepXs4QAeSsKfAkN++EfBuLtTkHF0+5itgqX8DRDQaHw3QBdJD4BUOD8DabysPAXMCbLL/GgCwxxhv8WG/+IkqWThpjgo3oPicTAcVCO9LDWgctxsCGKJFdBbcxgGQD1qNL7BPbJbCm+kmnxpeXTtisL2UNAxYkTluPoUbfOATHllVkCpJPH+qjx2+qGxzMg4LttNI26bSxFogrHFAJwLmsCQd4isy8rzs2Co66F8ELmAdkny9hCvxovysyv+vzz7Prp21+VV5NrTuSAxLiiYKiNjvy+2EZDO+P1guNxN/opaAY1Gyz08YtCPatC3+BAOQGHJ+TJATU4iamdPXyhoEywc1uZuMeXbPPuGno/WozJ8nzaKV8lmgQXU2j2Mo34O6r0FNCu/Pgaz1PXj9SS/z4vL7D6YhMURnI8YkM5Ba9QqqvuLFopjpRVVWni1/xP/BFl75JNM8MwYeVIL5Z36TDOT7BSo6eH9isFf6E9lUIhDUt7lTWvL3moWk4+9F/EZ6m9vFwvevdJpC+hkaTwmRCL9IZX+Xm/BIRgcHhb7cwuBi3YuJoflQbcyDAQ1r9p+iz7SQYqFC9cyEjLt19lVe9tefReloSghIV1eNfQ0mCnbaOd3yJ6+S7fIwUSWQjPOUwJZizrvyLLjOGhCSUUrOFX7uSw5polnI/jXwSkuAd/7X1raRKtp0GzXRwpH044dlH2xvxk8s7lx8n89NRCheV3gzfIKqnw066eyG94E9gVInXuXQjERWKkV1cugEb9pyu3yQapUBEO8CPafL
+ 8Vc7Z0E9
+ +DI6Fi770wC7Qdu6ib2GWgEqF3Wzd4687GeDMdN5afhqVDN7CE0+w+DaUEe/+qtsQ3LQpvm4oQlNE6YfPO4suSV2UqYbAnfZy1t9Fjk/0px42b6MOCLeVAmJs8B5oA2Vxk+90DbC9T0DEDtUJfs8Bvft4EalK5Twchhftwlubo0q7YFKYkA+389Dw1eF5LZ16NUKCIlZhC16JrBUJp0dbyyvyDiwDHdkYNB4ZerqDneV7DQ0Iid+YJyf/pThUT0RRueCYE908iPfOIdlOXABjmJVwqzvSJf9FgxgWMZr4DkwaHmTu15E0PT24N6TyS4IqZp0Z5zV4nZxTa1ODHN7DDnQ2tvqk8VnTaZDq5XQrXV7emrKa/1FbvVR+vnQo21CD+KRthCA+2iGJDBYX7AfV0pu4kOh1wFIy2l07GBwX7A7xc+EDuBjlz2LOGrnrIxLdYPdWH43s2CkFIzcfaeWv/5r4fOAgny+By6VF/4sFXpjMNlrCVx7ln0Cqn7crP3Tao6hV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,66 +93,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 09:49:56AM +0200, David Hildenbrand (Arm) wrote:
-> >>
-> >> But now I wonder whether we would also want to check "is there any free swap
-> >> space", not just "is there any swap".
-> > 
-> > I don't quite understand you. get_nr_swap_pages() returns
-> > nr_swap_pages, which increases or decreases as swap is allocated or
-> > freed. I guess it just reflects how many swaps we currently have
-> > available?
-> 
-> Indeed, I was confused by the function name it's "free swap pages". So all goof :)
-> 
-> > 
-> >>
-> >>
-> >> Essentially, try returning -E2BIG if there is the chance to swap out after
-> >> split, and  -ENOSPC / -ENOMEM if a split wouldn't help.
-> >>
-> >>>       }
-> >>>
-> >>>  again:
-> >>> @@ -1769,11 +1772,13 @@ int folio_alloc_swap(struct folio *folio)
-> >>>       }
-> >>>
-> >>>       /* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
-> >>> -     if (unlikely(mem_cgroup_try_charge_swap(folio)))
-> >>> +     if (unlikely(mem_cgroup_try_charge_swap(folio))) {
-> >>>               swap_cache_del_folio(folio);
-> >>> +             return -ENOMEM;
-> >>
-> >> Here we wouldn't have the information whether we could charge after a split.
-> >>
-> >> So that would require a rework to signal this more cleanly to the caller.
-> > 
-> > Yep. The tricky part is that mem_cgroup_try_charge_swap() cannot
-> > return how much swap quota is available in the memcg. Do you prefer to
-> > add an output argument to mem_cgroup_try_charge_swap() to expose
-> > that
-> That would probably be cleanest, if that is easily possible. We would want to
-> get memcg maintainer feedback on that.
-> 
-> @memcg folks: we'd like to know whether splitting a large folio would make
-> mem_cgroup_try_charge_swap() succeed on a split (smaller) part, to distinguish
-> "there is no way we can swap out anything, don't split" vs. "we could swap out,
-> split".
+On Wed, Jun 24, 2026 at 08:23:59AM +0000, Wei Yang wrote:
+> The kernel test robot reported a build failure on the parisc architecture
+> when expanding HPAGE_PMD_NR in check_pmd().
 
-It's technically doable, but is this worth the bother? The remaining
-headroom is less than a large folio. You can split this one, but you
-cannot even swap out all of its subpages anymore? From the cgroup
-side, we don't need the limit to be obeyed this rigidly. We overcharge
-temporarily in other places if it's convenient to do so. A fuzz factor
-around the limit is acceptable.
+Let me first say that I absolutely hate that we continue to support museum
+piece architectures to the point that we have to make changes in core code
+to accommodate them.
 
-But if you still want to do it, here is how:
+It's not unreasonable to ask retro people to either use older kernels or
+make a downstream fork.
 
-The page_counter_try_charge() in __mem_cgroup_try_charge_swap() walks
-the hierarchy upwards. If it fails, it will store the first level that
-failed against its limit. You can do the mem_cgroup_margin() math
-against this counter to determine headroom. An ancestor *could* be
-more restrictive, so you need to finish the hierarchy walk to the root
-and use the min() of all the swap.max - page_counter_read(swap). Then
-return that in a return argument from __mem_cgroup_try_charge_swap().
+People having to think about this upstream is so incredibly silly. As if we
+don't have enough work already...
+
+Anyway, with that said...
+
+>
+>    mm/page_vma_mapped.c:142:13: note: in expansion of macro 'HPAGE_PMD_NR'
+>      if ((pfn + HPAGE_PMD_NR - 1) < pvmw->pfn)
+>                 ^~~~~~~~~~~~
+>
+> The config [1] in report link shows neither TRANSPARENT_HUGEPAGE nor
+> HUGETLB_PAGE is defined. Then trigger the BUILD_BUG.
+>
+> Fix it by define check_pmd() under CONFIG_TRANSPARENT_HUGEPAGE.
+>
+> [1]: https://download.01.org/0day-ci/archive/20260624/202606240042.ffPsEXVc-lkp@intel.com/config
+
+I think the fact this wasn't detected for 4 odd years goes to show how well
+tested stuff on this arch is... (unless this is a very unusual
+configuration at least).
+
+>
+> Fixes: 2aff7a4755be ("mm: Convert page_vma_mapped_walk to work on PFNs")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+> ---
+>  mm/page_vma_mapped.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index 17dff8aab9f9..4aac94d9e8a9 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -136,6 +136,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>  	return true;
+>  }
+>
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+
+As per Andrew, this should be CONFIG_PGTABLE_HAS_HUGE_LEAVES I think.
+
+I don't like that CONFIG_T..HP is taken to mean 'anything to do with leaf
+page tables'. That's a mess and one we should unwind.
+
+So don't make it worse, use CONFIG_PGTABLE_HAS_HUGE_LEAVES.
+
+>  /* Returns true if the two ranges overlap.  Careful to not overflow. */
+>  static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>  {
+> @@ -145,6 +146,12 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>  		return false;
+>  	return true;
+>  }
+> +#else
+> +static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+> +{
+> +	return false;
+
+Should have a WARN_ON_ONCE("bug in stupid arch") or similar here ;)
+
+> +}
+> +#endif
+>
+>  static void step_forward(struct page_vma_mapped_walk *pvmw, unsigned long size)
+>  {
+> --
+> 2.34.1
+>
+
+Thanks, Lorenzo
 
