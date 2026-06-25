@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1A26CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AAA3CDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:51:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8A2C6B00BF; Thu, 25 Jun 2026 07:47:36 -0400 (EDT)
+	id 280376B00A9; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C62286B00C0; Thu, 25 Jun 2026 07:47:36 -0400 (EDT)
+	id 257F76B0125; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B77CB6B00C5; Thu, 25 Jun 2026 07:47:36 -0400 (EDT)
+	id 147696B0126; Thu, 25 Jun 2026 07:51:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BF456B00BF
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:47:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 14C4C14069F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:47:36 +0000 (UTC)
-X-FDA: 84918260112.27.81A5A1C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E06786B00A9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:51:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4DE8A1676BA
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:51:07 +0000 (UTC)
+X-FDA: 84918268974.17.7B00893
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 60E4420002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:47:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5Vm4Dz0;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 920B840004
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:51:05 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp0mOr9q;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782388054;
-	b=FlyKwvXvXlXwCZP5rqT92B75mqL5PU5JW1WFcpd0F8QIE575O0J94DhqEBeMT6NTyktwNP
-	haWAzTQ1+5QYN4xaNreN5TVompdVZXzD3SQPu27mw/MU+oYyDQP5fXGbODn7FMdXmGN9Ru
-	KJa31SnYyWHcJdaUZPhv3Y0RdMfq8WQ=
+	t=1782388265;
+	b=owx8QgVMo4bI38O+quJWbkBvzwXiYUpck6nmxzXjlEX/wcjXjHmhSHzVYNbTqGyGTrzxX6
+	r5xnOzicwF9LdwoiQnEb9bLbvrSeL4GJL3hFCC6FqS2ZC68WMAYu+L3/JfCHDimdKG4amP
+	mkJnMUD+2KReNGK7cHU+kHn2W09Y2W4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782388054;
+	s=arc-20220608; t=1782388265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lp9WB6zXi8E2sTZp694xYWZZj+zJNQ67XHQgfj0Z/o8=;
-	b=QeNcobqkh47OPirE4w7iyqZHjr+9wMlXYKXeLxxfKdA1PSe+F+BS4vhHjDDkODceU8KpXj
-	7aXzrGAI6bnUP+/jyZ2OsGRS8xler0IS8OtOT7w4uXYZMLkDVQC0d/tTAbX/J91GSPM/5v
-	/OYf5u5zdxE4BOseaPmCRiO2FIP4ZF4=
+	bh=hh8oiOowWZMfYNh0sdl9wulo1T9jtJmItc3jEmb/BRQ=;
+	b=B3TOqcPjqp36jPiIKtDAIrmbrdDJcTNyu3WkILUGxBS8LwmC8X3OdOuvdB5jdc67deU2vh
+	rcdhur8+aqUWOyIkNYfO2/D0slm/D2di3lLdc3hnI4xW5/E0RuZR9ofzcHdfF1BHqi71ni
+	S3LRsVBZxysVmFKwRKkSGhQL08rbL0U=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G5Vm4Dz0;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zp0mOr9q;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EE1106021E;
-	Thu, 25 Jun 2026 11:47:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B4F1F00A3A;
-	Thu, 25 Jun 2026 11:47:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 212376021A;
+	Thu, 25 Jun 2026 11:51:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B48451F00A3A;
+	Thu, 25 Jun 2026 11:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782388053;
-	bh=Lp9WB6zXi8E2sTZp694xYWZZj+zJNQ67XHQgfj0Z/o8=;
+	s=k20260515; t=1782388264;
+	bh=hh8oiOowWZMfYNh0sdl9wulo1T9jtJmItc3jEmb/BRQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=G5Vm4Dz00Z/WLyF8vee9vI6yArVVZqfevw4mjzc3wX4tYDj+DouC6+0eeQLgfB03H
-	 x2jAUEEpx/TBBsYrCT376J3HvRA1EzqIWgal0oyWDYQ6DD3pmUV+VlpkMm/DR8HeqO
-	 7O7OdjZ6cKAEES2+cqf1mfUzHFYwePzNC+2GqSiA68T9O6m1JwsKrqaLwfUZ/AbH5I
-	 o62zOrANcxlik21ipb5n71ccrMDxphD0BksXrXd4lk7BtftRXoLCuZkKl/n8I3hJz0
-	 UR0RrkVhQyAlcMPjuoAhH3ejl1q/Saw984qzf2c45g9y2Bb2JokMEchZI7FS7dYewe
-	 zyN/Lek5/TJGw==
-Message-ID: <d462612c-508c-4682-a776-92f4f4a40e28@kernel.org>
-Date: Thu, 25 Jun 2026 13:47:25 +0200
+	b=Zp0mOr9qz+03Ut2IAL4eKFy70V+zu4xxF7zOUb2dMiEV9vt16RlHbXGQjkMyL9V98
+	 wShk+N+RcCDDFqbuVcE+GTlWWUB6q1XfMc2XScidYrpVb09st/L4PCwBBWDendu9X0
+	 F7Dj5BF3PTUWhJSDXugXl9U7iwka7wnWSEL42l7kmB5WuQxstKUEzBzgYlTiM99Xbm
+	 18LXMeu9fwdI4OXrilzTIh9APTUu428rMcrSgBnx50k9kxyLkWIwAqpSa/aebbjE+S
+	 3VbVWPgLsbImNMrCYd7vX/UFSEICqHmiBmmmz9Wlw9JGo0KMlZ3BX85TVdj03HEp2+
+	 jMaBwadRxBTgg==
+Message-ID: <b23506ad-544e-40b9-a940-66a6d899768d@kernel.org>
+Date: Thu, 25 Jun 2026 13:50:56 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] mm/mmu_notifier, drm/amdgpu: block THP for GPU user
- mappings
+Subject: Re: [PATCH 1/3] mm/mmu_notifier: let interval notifiers block THP
 To: Yitao Jiang <jytscientist@hotmail.com>,
  Alex Deucher <alexander.deucher@amd.com>,
  =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -86,6 +85,7 @@ Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 References: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
+ <SY1PR01MB1059616E59F213B6FB4F4E3C5C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
+In-Reply-To: <SY1PR01MB1059616E59F213B6FB4F4E3C5C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: a77eotknkwwo7bg1pypi168a3ajh8ej5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 60E4420002
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782388054-356933
-X-HE-Meta: U2FsdGVkX18uuTFMaRAkthTViQXGaoo/UuLq3NWQgk31R/ZxeW2aO1AgTrqtVtogFr9DudKWSYsTCGlFQzZSEC9UnULqxL8UqJVgd534CQr2N0/zt0Bye/JAUqVMk0OqZDWmlOPNnUScFC432QwuszdDjQxRARbWfu9t9FB0o6vShexoQoilVDVeen0uPKfX0d12zQlaIojDQBlczU16EdHfPw4UQeejRnjyisgJP8rTwxkKnLjit6xpFdWVOzmH+PJp1cBGSBELGSfldPHau9PaPizMm3JBdHl3sbgvhpSFIXJpeTewoXDE2adMcd+VQV+TvhibkXQJpHt1bIXFxIHTjMvhzVD4FKRE75aM/NSUtgnQMzOayAkxZxwmry25GZHdeWuVK6BdA5Ne9s2sC+odxEnj+NZaPIfVWYPnKTC7UXImJ3lyj0vkSNShivW1Eh07OvVuBfWcN8iv1OKH1VOdL0CubqjnTuQ24tcXQ8VevjBfEzSgh01QyGEF1GOzxUD8hnzwDrgre9Lxwp1Exh53NX3dA0Zz9t722UUjZzJUttp0toaRhsp9/+74sdvJfHCCQ0x1nkLJGE+fm83erw2ZQFD58J+0+/IPHIkjsnV0VdRGHKI+V3AgEqcQrkTi1jlhfd6OLECs39dWe1+53FSmHCNwPRAxwxrxJ8riYThdkwMIpLNk2w2DxIXuEShiuXQlqF5DpG85q4uDWzv7WE3DiLF4uq0FoGQgisYA5/TF47cSVAhCcdRWVouzFtTNphuB6GIiaisWu+AfNemn2pfopovc3zyKQ7ZXR5NpbdJk1l4bEUaQokTLnWpt5DYY2V2cWxdFXOzCDsYmuHkkO5QsLzIFL6Zv6F23MnYX+lF5urj+umLkl7aRQmhfwuiEAmHu6iqMrqjLSIpUO1f2sIq4C+r96pakm83XhNp1Y9CXrTMe0T8rfp8x0T2MdXCFzAvOeV0MElpjdAfoj6V
- RqNLA5sv
- jUtc4e1KA+EfZhU86RhH32LwmlhvJwypnxwjwLhvrWEtd2YiTIApVKeWQWtvC23L48b/n+z48PCSQUSZPuTaeTRzcSubDXVHxJfRaTFIKiMYzFR4Qa+c6Wcl3nRXtOw8H7GJubLxUYQsvr6vz8YKbS/JN3f+L9uhidHV2sYqONbIzUnQ3Jk0yq/5bm6bvdJOc/5CFIm2+a885PqyGQdlkaQmFVfwXGZ6pJ06peEsn91Eu5a3NfB4yPdfG/rlqkfNNahJ0YaxzISoefyNHs2uxOSOhsPYMjQ/4j/xSR/yNlZOwd9Bfc6tGLrM1wA==
+X-Stat-Signature: wx5mihodddteeyyiqzgxeewjymku4hz8
+X-Rspamd-Queue-Id: 920B840004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782388265-128189
+X-HE-Meta: U2FsdGVkX1/VyImOa37LVHBSpjRaNc7WEgYtNFW5O7+s7/u04Yo89q668x8oksCLfupps2Neat3U3+3LuwThvh/ZUBADKnzp5Il1eKNsYsNwz7JQDuHPxbivFGwhndkmKuNkc4OFJLLrfDw1FGtUAGDYPMi2Ue7hL+yHx4nnY965lq8OkrUEgCZ2oCphuNoT/4ttmJYywM2HOv1Hq93EWMocYe6zxj2Uesi747VLGm1LQ5y9eA2WBX+8xSiZ2NagA1ZFa2udeJ2c9GpSz/97M48I1FeSUbje9/bz5nhalbL36uvSJyTfHmQjjCSC+X9k+RCpLB63fjyz976h+OKRGZ4rMFIMKnxZXvYnbP9gVDC2wOPkYuidbpq+C8zbdAGvG9PIHUP9v0YDOgEkRDtRJ2LpiyyhBKwmN3EfefTc6AxIIbEA+eyCYx7GjL3FhWBhu6sTIKZg5HBRhw+0xhut+LMpuOIBCIlKR+kN2h//sjYoHHPi7zWt09i5jaNBl7O3mOJna3rdv8zQVohjsZnAyG8g+r6PrfLFPYXZNakXFFS0umywJ5kUW60tG1JzOgfGcTuHGBFq55YWQZdwevXGZ5FivRHJDnMugNkNUT8fB1sbemQwAKyf3crKBIIIzgsJM5vZuNf0A2MEWNfdcSgAhSU8veaaK9/GKXcu4i9qlxYVO9TWg8ocqSjWXZJKklZpJFQ31Lp6h575zEH52I0WolDNLtx82OCm64TWu9XXkE/h8TIrNPsXkX81qdLNFNX3lDKpv2q9P7eKO5HE5BaSyNU4EExcMPKX16Q9jbICtR4RibwY4aRPt/SDGdCxjXo11n4OU5MlRYDRPaqJGO7lGwu4yOwzA9kwuD2Hy8/lc45MlpgjhD6z/9NdSN3zgLvus8ND3WiQFbKzXzflkGdYeqmFCd22YBHaPa62BQsx5RmP0RdGnxzJK+ZTVKBbEHooptI/hmhNebUtszo92vd
+ K+h5IsQr
+ FcQ8SHof0WJ4QLyk5Mb2IaWMbSU4eNr3MH8AuqVN/yXaZuP7UO420CJ61dXKvcFzDWygZkbr0oJr2LsazmWMEF6aHgpvaJ4G1QB7G/ERMCPsiwQCbpP5w94fsjESqGahp5FSoLgSCpeC9UTGeJ/b3kzw0+Yrb8Bq+9vhUFKDiZDg9TMrX5R91j0DzrzY2BN1wvE2J6l2/voBDOoyqqfjHdfWJwG9nIw441/ISYlScIFjG3DatYhTCSQ3vX8FVLjUU2Pd+GuOVrgJZHEwaNzw4KA8C7+COWZjLlKE1FZpeZpBNajHITLgfDTxtbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,24 +151,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/25/26 12:59, Yitao Jiang wrote:
-> Hi,
-> 
-> This series fixes a THP policy problem I found while debugging
-> frequent ROCm GPU failures on an AMD Radeon 780M system during ML
-> training.
-> 
-> Some AMDGPU/KFD user mappings are registered through interval
-> notifiers and cannot safely tolerate the backing VMA changing from base
-> pages to a transparent huge page after registration. Userspace can
-> still apply MADV_HUGEPAGE or MADV_COLLAPSE, and khugepaged can also
-> collapse the range, after the GPU mapping has been registered.
+> Some secondary MMUs cannot safely tolerate a user VMA becoming backed
+> by transparent huge pages after the range has been registered with an
+> interval notifier. Drivers can observe the page-table layout change
+> through invalidations, but devices without replayable faults, or ranges
+> that must stay mapped,
 
-Huh, why? As a memory notifier user, you must be prepared from memory to get
-unmapped+remapped at random points in time.
+Then you shouldn't be using MMU notifiers.
 
-What is the precise problem here? How are you handling THPs at registration time?
-
-Letting arbitrary drivers make THP policies sounds like the very wrong approach.
+Use good old nasty page pinning. :)
 
 -- 
 Cheers,
