@@ -4,137 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36645CDE001
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:30:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4591CDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 14:35:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1905E6B0005; Thu, 25 Jun 2026 10:30:43 -0400 (EDT)
+	id 9147D6B0093; Thu, 25 Jun 2026 10:35:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 140676B008A; Thu, 25 Jun 2026 10:30:43 -0400 (EDT)
+	id 8C5B36B009F; Thu, 25 Jun 2026 10:35:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 057CD6B0092; Thu, 25 Jun 2026 10:30:43 -0400 (EDT)
+	id 8030B6B00A3; Thu, 25 Jun 2026 10:35:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D09FE6B0005
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:30:42 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34AFA140164
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:30:41 +0000 (UTC)
-X-FDA: 84918671082.16.F30DE1E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 42A1440014
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:30:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XlsK7Ou1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 55F576B0093
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 10:35:12 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C230614010A
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:35:11 +0000 (UTC)
+X-FDA: 84918682422.20.17D4F02
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E872240011
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:35:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dSkFo9kQ;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782397839;
-	b=41W+Wswc9tw8DkWtVzIgLej05oNXLU5H21dWOEftIc1l1JKJUtokiWL6+vQmK/5+sbPPSP
-	A5SHKZ6J6rIBzmFBwPPTiZunaH5+KiKDQOQRDaevUURi8Vb4cxcAF5EKaLzNBEa/AXUGGA
-	/b/ba9/n9+qttI05NJaxQ4lALowRgxM=
+	t=1782398109;
+	b=70ti0QAnWy9LFlAvAH/wZb9db4/Web9sfgJIfK3GwjN4DM7oMMOikDH3XLUy5QDi+g7guV
+	zxbYkJk2XYegv9CAxteovEanVOCGdr9E1jRQ6KImmWgL7K5riS4pg2b/tyoLhPJ1S4ZZYT
+	PHLYA6qy7ip30U6m8E01T/tddtgv9ts=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782397839;
+	s=arc-20220608; t=1782398109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IJTjD5JnnvNb3nU1EXqFs2iHgmAV6xZmN6yWC5ICfM4=;
-	b=H7GTWHv9VFJua4Zqh4L0TAw0oVKkCmoxudbntf035DC50FKs4F1VI8r8QWvDP38T4QcAE7
-	NgTmjI1pH8yboiRfAzHViSTVYdPLPK5ySzyDBw5vV++KKHWIOd6PBpg+mnUn1QmS9RtDEm
-	UeOi2IkVjy6fUORxcO9sSZniDKwVFJY=
+	bh=+wFD3Z4KVfOMxeGD6x7jzXk02QR7lT8SFbTHg6iLim4=;
+	b=qVjG2H507nqqt44/iaTRQmw7mjxc0xMevWbk5CoUWjps0onvl6SAZdBktz+OEPlEUvx+He
+	LNwKlHotzIFaOTUXi8+Fw5Mm8kOaI+5g3oMUAS46BzyYaJ350Dkp4kjZbELrH16KYYEG1c
+	z4jEKedHp2fhFCHInJb4gHByB3Iwslw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XlsK7Ou1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dSkFo9kQ;
+	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7BD27441F3;
-	Thu, 25 Jun 2026 14:30:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436311F000E9;
-	Thu, 25 Jun 2026 14:30:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B9C3600AE;
+	Thu, 25 Jun 2026 14:35:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2141F000E9;
+	Thu, 25 Jun 2026 14:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782397838;
-	bh=IJTjD5JnnvNb3nU1EXqFs2iHgmAV6xZmN6yWC5ICfM4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XlsK7Ou13WOHjZC+4GA700k0nIyJiBpToQLJdjaFrzsznBTBslPsKtyEx7F7omgSU
-	 pXPiKTknGAY6CWQTjAsEf4ebie9pTTJq5TuVVkg8gQcOnyoBfP2BAX4IdCB1y2nUjb
-	 OU7/LwHWDg4nNF59SL8GC2u3qo7GmnJ05gfDZbozE6jyHvdYNNh7jvRHXIEDX9sMRY
-	 wbdFC4qtN3l/a4Cs6cQdyWl048Bd1TU9tkdtiBbzIgRclX1lS3/5Te5c1nixsqeE/H
-	 N7It1VibnL3v2PJoX388ynZ1fN+lvXAIOyMFvNNF3lB/pg6jbXhlhp7XtgS5+iS9UD
-	 xPzlOPAENy9ZQ==
-Message-ID: <dd395d30-acf2-4467-8b30-cdf2532f585e@kernel.org>
-Date: Thu, 25 Jun 2026 16:30:33 +0200
+	s=k20260515; t=1782398109;
+	bh=+wFD3Z4KVfOMxeGD6x7jzXk02QR7lT8SFbTHg6iLim4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=dSkFo9kQ3Duzy2coh3AZjrEanzktsml4PVsc7hhHjx1E46Ls/rB7T/4b1kY6c7yoj
+	 7ZBQBzD53BnNlicytToBhMtxxPK5TYaZOHCcR9e9eukQP/Dl7ANuvxGn5RKTEfhZMx
+	 z/GAedQVwFV/4/ehgROjCN1hEsZfs0/eizpu72Y2JVGQTVCpV2VHinDyHkqhO1xJMZ
+	 jMuWmvBwYPvZcTQYD5XaawdgS7FVaBuCNI3sjw/sQH2L83/GgM2RkSA0V0a/iCG5di
+	 HI6Ke0ZKefHf1ZVEL62tkz2IqQHRIUG7ZgLfOHlqotSCEBctcfI4bp4hOzCyBR9GUq
+	 6yy2gcnTDKf9A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  kexec@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  linux-pci@vger.kernel.org,  Adithya Jayachandran
+ <ajayachandra@nvidia.com>,  Alexander Graf <graf@amazon.com>,  Alex
+ Williamson <alex@shazbot.org>,  Bjorn Helgaas <bhelgaas@google.com>,
+  Chris Li <chrisl@kernel.org>,  David Rientjes <rientjes@google.com>,
+  Jacob Pan <jacob.pan@linux.microsoft.com>,  Jason Gunthorpe
+ <jgg@nvidia.com>,  Jonathan Corbet <corbet@lwn.net>,  Josh Hilke
+ <jrhilke@google.com>,  Leon Romanovsky <leonro@nvidia.com>,  Lukas Wunner
+ <lukas@wunner.de>,  Mike Rapoport <rppt@kernel.org>,  Parav Pandit
+ <parav@nvidia.com>,  Pranjal Shrivastava <praan@google.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Saeed Mahameed <saeedm@nvidia.com>,
+  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
+ <skhan@linuxfoundation.org>,  Vipin Sharma <vipinsh@google.com>,  William
+ Tu <witu@nvidia.com>,  Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v6 03/12] PCI: liveupdate: Track incoming preserved PCI
+ devices
+In-Reply-To: <ajBgj_aSuzMZG47e@google.com> (David Matlack's message of "Mon,
+	15 Jun 2026 20:29:03 +0000")
+References: <20260522202410.3104264-1-dmatlack@google.com>
+	<20260522202410.3104264-4-dmatlack@google.com>
+	<178144432039.1257322.9644414453415904478.b4-review@b4>
+	<ajBgj_aSuzMZG47e@google.com>
+Date: Thu, 25 Jun 2026 16:35:02 +0200
+Message-ID: <2vxzechulmcp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
- jannh@google.com, willy@infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, lance.yang@linux.dev
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
- <aj0vjdBN-oNMI2yI@lucifer> <c66f4bec-0933-401b-bf2f-a1b2e256023f@kernel.org>
- <aj0zDKEJV35V4kMD@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aj0zDKEJV35V4kMD@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 42A1440014
+Content-Type: text/plain
+X-Stat-Signature: u9fqc5jagh5ayunum1r3jk8r9k8ftqfh
 X-Rspam-User: 
-X-Stat-Signature: di1j739yaop1qzr4iboqu6tujrbeumm5
-X-HE-Tag: 1782397839-288463
-X-HE-Meta: U2FsdGVkX19BdpfWmLQpsDIxOcIPp7Xh8Es2rba9hiFBoiX/3MS97mbzR+HfQTuPbmkN9vzEAM6x+m932AO0Xzwoqn9J1hEaxT3zdFTQxiPfls+jedeS6B2GuJl2ni0pGI2UlfOgEBW+j/Elrpcuj2KvMqaz0dDGO778IrL7zmAsl3oHVH9xrabxsc15uASuT3r1vAwCylJMCg1IH3JgGbKPrgNuCp41dLITciRiq5zi+LXZBlq0asOXni6HTauRoL1E1YaSnz6SxZCGfe6SdYI4UV8ADMEcRvoIH1lYta2nXK5icLQa0oxroxIfOxQUxhrYJovGhed2n/HDTYdUGVXKqAzbP2TbJscnhOKoxJVkTn2PDCyW21QCOjVz+MNcQ92GAbp2twxwpF2s10a70GijQ/1XsuRrghsz517cCqjWRrAzQnHZvuQkgRlqviUKiuX6LDby5epEyekaLYG9OQmqyS8AEaRY821/L7htPB/u/+T1wej0VH0EssSMz2Jm++rGh9+/um1tt0G/sREcyqZ1or/kTjwrHpOXjpvu8SM9AcIHF6V3Lsen1JTdWYrn/s8JTQW7EsBk1knoQMdfcx0OJFA5tkFqGm+E4zVZEDKTCQ2wynxRG4dHxUR5LMm2ZrWtWga3S+I+kgV0Fs8pqURTFxmhl1NUh+SE88IRlgGHFxo8FL+c35g/vrH1ZgO4uEFzPOmLyfIS1o6EbiiG0EG7xWekO4JfqSdSichPZcOxnO7q4d/G9QRtgy3ysEASMjuUqv535r1OU11WeaZeFbpnOGxyKduSCdLFwmh1jPNPxSfDA2QZEsoBpYzj8vAXHLSqF6sIpHMvQ0qfwFucX1fSQ77TAaQF1t7XpWtyphle2uXT1exXsTqDFy/uZ3upU49tQAxNY6VITcbthAvsjfI1m4KtQKTg53xd9xJDFuONGoMWXlx5/ZExH7S3YB1kfMWkz0e4isG0G3GxJlT
- 5OvxIlxZ
- h9JFk5AcEyAR71FZVJhAyzmyP/ah1Syw3LFt0117fD78MGcr3qGJhJgbOsluyQzhSOxJXOstOhZdqPkkkvoS0EMlPtVuClIXjTo5SUoAh+j1MgeTD1XSL6+bDASW/fL8QKTLVOKhOpp+3C+ykROXGZzaSlDb1rRXG/yofqlBNUrZAFg5WQk93rlJX/BuYtxOmsila4lcAC9iHbh0w1SpOjxSiII0iW5EmK/07BKRrEn1Yzr5HEfpu/GhbAFxn6xF99XarRKsE2zXekKu5RdnMuyZgf5t+xRwJ5Ajc1xK03hHnmzoW0dCM6qSt49jyqMGOw8uVTKt3h1J5pirlGb26wvgFHFYzcj+nrL9kGaY7GRSYATC0fZ1KwvlgH5762v14oaZ6
+X-Rspamd-Queue-Id: E872240011
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782398109-993377
+X-HE-Meta: U2FsdGVkX1/ltqmjNK1mSiO74vUFtfL46ajzalwcwhKFVWrPAjVznU9kv03cjlpV/IpWBWV5Ro1uGeVaQSVDKIUlOgb7ZNjc5P0eElK6gFSuyZeAcdtdDbDJsx/6dtYl6AYNM/gdu3Jxb/9vIin89SzTmUbo2e8Lnd0HjiNJNGLxyXRm2fuPXerHqYgDKsjmWmKvIyMnkTVx09OQ8aep2yUP/svCXZZgMqrMavAdn+BLKqB8/IxrQBo1k1tGU57gbmMAczuh2yAylA9gTiE+MQ8iEsI5SPTqMGOtG2oNGyS2PLBpxIIvhARaUE5KLRh4xbR363blG7nA5GlJuCkBSeEOXEgPWC5ZCKHW3TYZ2Km6B37dhANk4dqotGK6oVyH6TnIh2pH6JlqO6cozvI7aYHQRc0ZffvMg0i8N93loJqGXDsaxriMX3pixj/AuBiTaCUkv4jfKbC8UDRi1Gz1TfQWwSQqSWK4f2G42oPmWjFk1roJ5yqGTfOaqEaHWetKVvEXPSqLFaRxttx6zZRes02FzAk/gsc6U7NhMbd0ao6ML3hErE6Xy5xknUy8ryif5YuIzFF1XgYHmXvgdAs8BMK9pr0f2AW1p/rOgvUYO78GBInwN49g14+jSTGHTHOLlPjvf6Daf3pvMyvWzvlJY8r1RNYzRAK8hnu+4NStbPVarhYMmpHEPEPZXntT/5Sr+DSTPVuT/KiVLFpGY1DqG3t4H4aRrgU/MP9lQFwWP3aVEn5Z2eZm8LnjRZmpA3mnooF1D96FpZ7vc9C/ljrtRBTCQKgcsGckSiSq9oL9NWtje184BrRyzZZJRfZVcVYWC1tQB2TULvQaWuk8gSFoD4BCDt34hDT3VA0PaJVB0LhbtsLzd8GWbvusW2aLH2aF7Fy3401a1hjAqbSldJpwWBs73TxCA75rHNIF5NuZk1R7+rB6tpRMMRFOg6LStkzM/+yTcyMlgOj2/Vj1Vr9
+ QHiIcKGc
+ WhXvXI0WiCxDhm9NkRM/9cfa9SuG2Saame7CTO8a0FBkrRGEzPkT4maPPbflRKZdYrM0dHYZkiLeeCwbe4biVm+cVeuedRr1AYNe3uBM1ggODztR/14KSV7m6p31Kau0DGZ2sk24PjrI2w3eKVrgYiHClNXbFmloCFY0rRAG5dNZF2RofGGe4qGcFMgzrI/KBNumGDosjCywlTbNc0QbKVhSEyNh4tAY4QgZ8HkNY2svgPT0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,28 +108,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 16:02, Lorenzo Stoakes wrote:
-> On Thu, Jun 25, 2026 at 03:49:59PM +0200, David Hildenbrand (Arm) wrote:
->> On 6/25/26 15:45, Lorenzo Stoakes wrote:
->>>
->>> Let me first say that I absolutely hate that we continue to support museum
->>> piece architectures to the point that we have to make changes in core code
->>> to accommodate them.
->>
->> I wonder why we shouldn't be able to trigger that on other archs with
->> !CONFIG_TRANSPARENT_HUGEPAGE ?
-> 
-> I think this should just use CONFIG_PGTABLE_HAS_HUGE_LEAVES, since that's the
-> property that literally defines whether check_pmd() makes any sense.
+Hi David,
 
-I stated earlier (when motivating a proper cleanup of this) that I detest
-pmd_trans_huge(). And yes, like I did in foliowalk, we should just check for
-IS_ENABLED(CONFIG_PGTABLE_HAS_HUGE_LEAVES) instead.
+On Mon, Jun 15 2026, David Matlack wrote:
 
-Long story short: Wei's fix needs work, upstream is fine.
+> On 2026-06-14 01:38 PM, Pasha Tatashin wrote:
+>> On Fri, 22 May 2026 20:24:01 +0000, David Matlack <dmatlack@google.com> wrote:
+[...]
+>> > +	}
+>> > +
+>> > +	pci_info(dev, "Device was preserved by previous kernel across Live Update\n");
+>> > +	dev->liveupdate.incoming = dev_ser;
+>> > +
+>> > +	/*
+>> > +	 * Hold the ref on the incoming FLB until pci_liveupdate_finish() so
+>> > +	 * that dev->liveupdate.incoming does not get freed while it is in use.
+>> > +	 */
+>> 
+>> How would that work? If finish is not called FLB stays around until the 
+>> next reboot.
+>
+> True... I think if the PCI core trusts drivers to call
+> pci_liveupdate_finish() then we don't need to hold onto the incoming
+> reference here.
+
+That was my point when I was arguing against refcounts on outgoing FLBs.
+This is very easy to abuse, especially when we are talking about device
+drivers. And this refcounting mechanism makes the FLB no longer
+file-lifecycle-bound, since now it is entirely up to drivers to decide
+the lifecycle of this data.
+
+I have been thinking about this a bit more in the last couple days, and
+I wonder if we are doing this right. Here's an idea I have been thinking
+of.
+
+We should make live update a first class citizen in PCI. Instead of
+patching in liveupdate via the liveupdate.incoming field, and letting
+drivers figure out when to use it, we should separate out probe and
+retrieve paths entirely.
+
+Probe and retrieve are fundamentally different operations. While they
+may share some common initialization logic for the _software_ state, how
+they interface with the hardware is completely different. I think mixing
+the two will result in driver code being more spaghetti by having
+liveupdate checks sprayed out all over.
+
+This series doesn't add support for any drivers, but looking at some of
+the code we have downstream, I see this problem. The liveupdate code is
+all over the place in the driver and it is very hard to wrap one's head
+around how the device is actually retrieved.
+
+So I think PCI core should track preserved devices, and if the device is
+preserved, it should skip the probe and wait for retrieve. Retrieve does
+the full initialization of the device. This fits in with the LUO model
+as well. You can make retrieve a callback of struct pci_driver and do
+some wrappers to talk with LUO, so device drivers don't directly
+interface with LUO at all.
+
+We should do similar things on the shutdown path. Shutdown is a
+fundamentally different operation from freeze, and so we should separate
+them out as well.
+
+This solves the lifetime problem as well. When PCI core is initializing,
+it knows for sure that no retrievals are going to happen. That's because
+none of the drivers have registered yet. So it can safely access the FLB
+and initialize its state. After that, drivers can register themselves
+and start accepting retrieve() calls. Once the last driver goes away,
+the FLB is freed automatically.
+
+I am sorry for suggesting a big refactor at v6, but the early versions
+looked good to me at the time, and I only thought more deeply about this
+when trying to figure out how we can make the lifetimes cleaner.
+
+What do you think? Does this make sense?
 
 -- 
-Cheers,
-
-David
+Regards,
+Pratyush Yadav
 
