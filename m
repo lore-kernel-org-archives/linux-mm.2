@@ -4,155 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E0ACCDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:58:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC266CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:59:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 135926B0092; Thu, 25 Jun 2026 04:58:45 -0400 (EDT)
+	id 7C7176B0093; Thu, 25 Jun 2026 04:59:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10CD36B0093; Thu, 25 Jun 2026 04:58:45 -0400 (EDT)
+	id 79DB46B0095; Thu, 25 Jun 2026 04:59:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 024E66B0095; Thu, 25 Jun 2026 04:58:44 -0400 (EDT)
+	id 6DBA86B0096; Thu, 25 Jun 2026 04:59:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BAE466B0092
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:58:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07918C2A4B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:58:44 +0000 (UTC)
-X-FDA: 84917834568.29.94BB330
-Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1DB668000B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:58:41 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nDj1Ojoy;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D72A6B0093
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:59:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F66514063B
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:59:24 +0000 (UTC)
+X-FDA: 84917836248.09.D8B7EA0
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9625040002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:59:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rIWImfn1;
+	spf=pass (imf17.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of tabba@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782377922;
-	b=IX2Gef2wFderBmR5Ba+6KmoMezYKsoHXQCY5bNB13XThL4oHDKMlRPaPFTCQ9kOVThat1L
-	RTpwOGe2OjYLEZwta1HBAV6+uCB23aJ4jpJZwXHV2hpodt+yiG8DCsz1pge5RSzJyPVcZK
-	pHpItxfbBqS/5aGp7+zAQmrsYpduiok=
+	t=1782377962;
+	b=xElibgOzvqChg4ccvsKfh4jfjhXD5L77OkHhUcHpxG3/MRdEQW9jDmHm8sOklKZ4nNOEjT
+	OdkVJFRh9D9UNn6qe1xXFLehEvl4YoKRpT/UpJlDT5blMNrEIDzTjD8XcM0OaB2sUqsNQX
+	CG9zoJhXjmY7KV65goK6Fe7dOcvFAdw=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782377922;
+	s=arc-20220608; t=1782377962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WlALM42viJ6jSZuQC8WWXMFlP84OGAnUizlvgeGuSiM=;
-	b=y6rYpjuszA5ZWvV7U8J0bwOnM5hhGyFrW5dlAPniyZZUNZiAuRHAFtTNeIK0KxhDkZYB0H
-	yGVxTix7E/dLS5tgAuV5wyKHSvd2eQf0difzzJjKIPRemav6CnP4YGGlGJq3/orqsrKPea
-	rLcfoZaEEr8RNhTywC8M3E5iZzABj3w=
+	bh=ayDPNFOFXpj+MdeVK53rLbaYH55hRDE9sJZFXFRNc5g=;
+	b=6ifFEJJzr7T7WiL0/9qZE6CuUrp3xjZr+8U1hwfqPU8b9drZfZHMXbSHvLnYSt/RR/U27d
+	xUY9boXZ8JGhlKSwBgIyTh87WFf7LgXooDzQEsIjKQQnwuqymioGZpthjzZbTfxhBDQpYq
+	49JAC1hQG0m3mTK0U4iAUGw4Sy4niEo=
 ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=nDj1Ojoy;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rIWImfn1;
+	spf=pass (imf17.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com;
 	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf02.hostedemail.com: domain of tabba@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-519ed52bcc6so212551cf.0
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:58:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782377921; cv=none;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-80a8c249e2dso3048527b3.0
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:59:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782377961; cv=none;
         d=google.com; s=arc-20260327;
-        b=lB85kOBdoJwPligmEyvG+eo0iZSQx3SnNrKIw+PwEsaGjk3YNWA0apEB2hb4UowVRX
-         Yx5b4vBk6k7umVCWKedTkp8GiY1KNjI3DHb0l8aDHnv+YYpzR2XhfTmhqBXouieQ3t/D
-         KGycuf7nasmLsVLaQG3ba2KguPcg9ZmDXBwHPAlX2Gg6FoM9w4XL6RFQwcXbJ9/cmRt1
-         8ZVqIkqGS+iQiZTbFjhDonQfL6GZ7ZxNDJ0xm94xZbq03+K1PK7Ku72Yt45rs+ekBszA
-         QxEO5YtWScehdjEWOJLJbRP4bcTSVP+K4Va+HJTnX1IoxgD0c7DbstVTlYEZa28VfWlb
-         BSFg==
+        b=a+zj6jFdAHY4mrQYA5SA0/I/JyA+2vOFHU43DmAdnlZLusnL8woyuKjnVqgvds5l2R
+         5bAVeKA0XYeFZHS/PDb4+roxvwEY+Z0XGLtzlqNc3wDcWXSLzJlCCzI9Tu9c3NgNIQRU
+         bLdM/R/Vkg2w7sWmp9qhN2W//HyHAUHi38bYRpnO8KC6RiUQh6BO6B0QFkYciXxv+HO/
+         L9N9vM8DemVaQGb3aU0v+176AUlUJKgJ1mOOR1MTBP0m8ibFO4w6SdRapGmKjzF6TMxX
+         xwyjGNxvubeeVydrlITb+GjZ9tHfT8cE8Kks1rO5WuouD0kpn95sYKJ9fNppkczD7In9
+         lrCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=WlALM42viJ6jSZuQC8WWXMFlP84OGAnUizlvgeGuSiM=;
-        fh=TJyGgcza/Aqibo6kLYsDYchqGbzAqxklsYnYrPcraqM=;
-        b=nQvZx5D0pcC14Vl8JQympLwdYcsTVALyW36JaG0CvvsSJ3fH4v8RxhNTvNPWI08Etw
-         f5NJmeZvbwarwxOXxu+TKAAhjw2xyZsN6p+LTnHdsJmiJ0kXQ2BStXRcab+i8WgOm07V
-         HQr7I4d84Vhec84l3iH3gV5uifqPHz95B1tGv0exdFtulX5ZxaA9cofeExvuxGyYdyvd
-         39uo0cSXJSSxBfnkOrySy4C8Jwf0D/LRd/CR0A3M5WHNkkuLS0eEiTFsTU3z5EQFUkyR
-         Dh+n72WAAWOt+eMzlLGANzdDRFNMoQjpDF7/r8OGo6n3AOFbFWNeiKZgIMJRjapWTWZY
-         m7WQ==;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:dkim-signature;
+        bh=ayDPNFOFXpj+MdeVK53rLbaYH55hRDE9sJZFXFRNc5g=;
+        fh=lU8voJ3Cr46ei+nRu6xDNfnlGZ7rEcu+dkMmiFY+QOc=;
+        b=G/A3u+Zb5YCxZk7GOlLl+eMd14eknewQ9IU51hFW370Ox/owyYoseE0oEcPm7C91nw
+         UGi/gk4zKGsG/tzyMt32RhhHQEEEUlsYHuIOzERshRIJ/OXOnUWkLT3EvLOapKOW1IWB
+         6DSMoXNON2kUNcI+c5VIDd2xIIV9ZPXwyVh0f2rg3ILe0bCCSM+E1tptVZ5AVG0ccRTu
+         GAKA3ZUpSytSDtEEpHQv1j9P/YDrbhRaEmM255OOkJ4wzaodqZsKcQi1JoKeoam/MQQE
+         tZRlj1+a9ulVcnE6Q+2g/eUR25SG44DPngc2B70x/QTh+YDdWbi55DPJ88wXst3rjRxp
+         /GHA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782377921; x=1782982721; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WlALM42viJ6jSZuQC8WWXMFlP84OGAnUizlvgeGuSiM=;
-        b=nDj1OjoyTKLcSVrjxFZczL1r0m9XQLmJJwljaDnBVd77bs0EMZOEMAZcojgkaoPLSN
-         +pPfVNMQykV0xbyjbJPqnAF30Fb/qEocCegLciO16BXev+l3wgmCeEPz3sr+ZdmLUFyu
-         coQ4am4V+WzxliyBItIjXhQ7DF/GpcC0C+A4duevCkqdaw8qZ0vAUGgMonDD5Y0y9+sK
-         di1EVHOhWQj4SnW+6c/woKWun3UBCdn7SEgU3Y/KLAJwfgA6TA/l16XSvFznWHfRX4bw
-         y9GHD6Vo4FPcuxzjK12UTaNVjczt/24spoB5u53NBgynei8KAKrFLmDMPpAMWy0h/QYG
-         KiVw==
+        d=gmail.com; s=20251104; t=1782377961; x=1782982761; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=ayDPNFOFXpj+MdeVK53rLbaYH55hRDE9sJZFXFRNc5g=;
+        b=rIWImfn1tGX5m66I4jXEW5dRgw0xawpKWonNkwCgx4Kwxsgncu8xr75zbXOR7TBV5S
+         5SANbOe1Su/2WiZbO11l9hbzDntqTQfCdrutFjRk97VwksfJMdrYqWPQGdpy9KlcxOCb
+         o2tmEZyaGBjE41Q0sJjBR+tw//CqQVpV6Juj0zCm3wf8kikUl3k7jyTWfF3Sh2RzVFAm
+         F4cSNurZzG6IuiowmpOcbthUjn94O32BFtSCmBT8YrJdVUVYTR+9SP0EVw396coWWJNT
+         KjuOhWo+Fpv3L2MbF+dykLwXllURCs6SfhKF2WrIl6YR1t5APG3Yqw/SycuYL0zjkJR2
+         yLEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782377921; x=1782982721;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=WlALM42viJ6jSZuQC8WWXMFlP84OGAnUizlvgeGuSiM=;
-        b=Fv8JCG2pBKP8W+VhuI6Zl6IaWym6HvzhBCEacCgZPa6joZY8wniCv/B12XfF0rWGu7
-         gGR2zFJbQnGUEmru2SRb+7KLpkcIHeA9ucKFkjxcTrq9H/EhfmSZ00uGZjx0VzXOkw0Z
-         XyKPakNVZYm+QSy87DGBG7ot8R8sGjhAdxD1MGoiuVDQrWQVkfJMovH6qs8xnQCG3t+I
-         SasOMxsiwXgCLkRtqkl6419LV3heZqM7GoeNIUu9wcT5GhoDJ5CqjLdw+n/JMY0j7F8v
-         9aIT3PC8froPIYVWQMtlriEgcihd70G7jaEcey86fQflu8u6rpBEPy9F4geNELBsL5tx
-         934Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+NBaukGgUnvHysppdiaSDtjWMnDKxGnnQjte1sYVVcFcjzBMTneSeXaSeSX7HU/mblGxQvUFxsAw==@kvack.org
-X-Gm-Message-State: AOJu0Yxe+V37Q9TYeabhNVfQprOl80KBoz0PJAsXI1zVPmMoj3orNFvG
-	MgCpi+sZJ7TbBGk7L7iwPec8igAa4dsv3IiEUbbWoXKptpPR+01NU5hEUp87WTYW6xorGwmvXuI
-	YlAExf71FlnA6uLTOBs94XUJaVZK/VUfgWUG0Mh8r
-X-Gm-Gg: AfdE7cktjan4M6n6sIi/1Zn/yIn5x/tUWEWSXJe/+gvovIlZV029ycIoJ5+diEB7WdM
-	n0Kn5H3BgbPPKorg9j7/pcvwgoyc7ynbLSjCpVkdnJVdOzCDpSpOaxVhKi0G2G9AxK4co2qgAw6
-	sz25kMk5H+h2lBsL7gYIiypQgr7bS5j/qlLaeiWzgPVqE1Hfm8Vf0B2TTAiEaZQjfglppr/4Nvy
-	GV58fyRNl4esVHNyS83Jo//k9lkXJq8zuLbqXi+lHkswmjbvKL+j7Kt7A8rXZLD26weXReNuA==
-X-Received: by 2002:a05:622a:4d99:b0:516:4f62:85ec with SMTP id
- d75a77b69052e-51a7097cdf7mr6284681cf.17.1782377920655; Thu, 25 Jun 2026
- 01:58:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782377961; x=1782982761;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ayDPNFOFXpj+MdeVK53rLbaYH55hRDE9sJZFXFRNc5g=;
+        b=S53fLu6NGze6xFWGGCBNeehwLyhvsUsBf7K4SAHVXz3eBnpj0z767H6Wv3Gt8x0v8Z
+         HX8rvt9Ky821yxTAWun2CiGUgISgrHVTaNUSHzDQ+TAQ39hvD+sH1tpC/L3ZznZh47oE
+         TmYRQtnUyXisGtRQpPZ7sIJEos1wDk6XjUZF6mmin7ae3rxYjxlpODJ/7U5I89WgOqEo
+         EABAu4dUoqx5hNVuGo41rTwhRd51X+xcohi78QnxosHZBHcJGQ+AjZcrAUxkFt+qdM1h
+         cpc7XK9smoNmHlPXfW2s+/+rjesaIEhterf0o2jpl4QJjPhR1JiL0ir8lqF3OdrT+eDS
+         BYAQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7xIxz80wNY2f1X2eRK/Xc0B80DbSKd+Qc6kUfXSVdCdVN5+OF6EHc+kaqiidsaRQgYar+0Z9XxA==@kvack.org
+X-Gm-Message-State: AOJu0Yy9XaVcOR/uNSH94kuVizLCKT4Yw2bgse/Pr0jzOtLq0BuVShuR
+	PPYx/931z6Rmqm32aHvceoPxKvbbhU8R3plqLhVA4LBxD5lTdBECfocbUHZ9iVinzRxpp30r7n5
+	OmnSiIAhj/Bwj5IbCOsnDPodL/+gvTF0=
+X-Gm-Gg: AfdE7clDJAZIfMKbSip6RPo9kJetW0GAQ54bTSJyTsGhofY9bnFrywVI86E1uJSaFlp
+	g1EyLS6pFqZ7FnDtS8nbQPIOWBDjrILogJOSsMD1Gr1brOLUUNJD+qrkyjCZrtJJGEIqdaEfqQw
+	CVFl0tvCVjI02Edzi63vQhkLH04fwlIkbuBQPamQPYTa7nsNr0+HoUHMPi7ni3t2JZqaIgyZgYh
+	Al5wKVgSDd0ez9Pvq7M4jRa2jXTvwNvK+h3hSyBTv+xl4/iWDgwUvXtOcKth+aj3d24OpOacA==
+X-Received: by 2002:a05:690c:2704:b0:7ff:1d08:f0c with SMTP id
+ 00721157ae682-80a69ca0a0dmr15520557b3.8.1782377961489; Thu, 25 Jun 2026
+ 01:59:21 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 25 Jun 2026 01:59:20 -0700
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Thu, 25 Jun 2026 01:59:20 -0700
+In-Reply-To: <20260625002752.96325-1-sj@kernel.org>
+References: <20260625002752.96325-1-sj@kernel.org>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-41-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-41-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 09:58:00 +0100
-X-Gm-Features: AVVi8CfUfIb60mScgDza3EFRj37-Gqen4zYG94Wyqg-j1BEdnIuc7f71TPLwtRQ
-Message-ID: <CA+EHjTyOX8Ewj1pc0-OJr9So5=wOQPUUvJeQEC1a7=0OODEAHA@mail.gmail.com>
-Subject: Re: [PATCH v8 41/46] KVM: selftests: Provide function to look up
- guest_memfd details from gpa
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Date: Thu, 25 Jun 2026 01:59:20 -0700
+X-Gm-Features: AVVi8CeZVxZNreEFB2OgBmQNU7k2b8APFm4PSSOX7AkzrTqdOzpyInmyouNwIQs
+Message-ID: <CAMuQ4bVEuQY1T=i2pFQCa4CwJHRVn7_PDTofB4nPMHdSU=KkFA@mail.gmail.com>
+Subject: Re: [PATCH] tools/writeback: parse help before importing drgn
+To: SeongJae Park <sj@kernel.org>
+Cc: willy@infradead.org, jack@suse.cz, shikemeng@huaweicloud.com, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: sfbk114bwrfpaq4ps57accw5tm31wf68
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1DB668000B
-X-Stat-Signature: wuujmitts5at13art7b5pmmkwrr8wms9
-X-HE-Tag: 1782377921-179641
-X-HE-Meta: U2FsdGVkX1+0NgmfPOYywkF2CM+4bJ8+FG2VTZwDKjL2YVuES4z4IrpDvwndyE8KB7QhkfVw36UXYTbYfHhkQL4WQfJpQvlUhV1eyTG4hSAACtmCtwla4sQxthHOtVI6hkVTkyBXqBQnbzNctbkSin9ohvtSXK9n9o+HwXpYcuUJV0XdRiyGxOLlR2xLuK5x+MGK9wpqUYTvjyu3VCPCj55xOwHgaNQWlFyuP7p+LRtgUpr/2JxVvWneCCwQGxe+OEO3reqAFCovr+vP+n2m4G7BU/9Pw0xqMPNvFIsAfN8ZBsTClGsEQFvUSHY+qRuQC+H7zCaUJ8UebqegwWriTNnWC8W4kna7wbqWfdBpiaCaDqjzC6BS4S1/hluXJ0+z1wpErzaAjv46sveJ2Nsn054/Pas8ifQzHhDdmtct4yWnTugISHszfufb1mDmZWgzcM9Ix9I7ADqznPJH6RhmCiRlv1qUMNeKDBdhKyWt20F74yHQSm/0n+QpCsZcnntCsRMBgFF1a2Zbjf4DuDksVirhTKd4EA6L3MA8DOO/9+QcSlVKIZ3BoJOCceQFg3fzhmVkXIN2LrdLT0tvyNCCaX1FkzFscnSClf6qRf9qd2Cgomqi3m/1Cg2YAgl/9AelkhTOX8ARQ2dDpARP2vWExUmZWI0Ad8hIjXCo1GkhA2qDCSuFOYhlKDDuyDVQUuuY3qDJWMB1AMyNT0FFWXdyIpdUgKeDLS2eEBDPZ1FQfcEUijsAWqBCyiOoMIkvIVMcLMnXxjwe5rTr2msqLHoInynORraWdqrHMtbpwkOrANINmnEgMKJ1y3h/uLxQb8mOQtzMVPfqcY9N1KXzGFSWK3TA3DQEaATkdh6O3X+5Ul2TfXn0ZWWpktNKtAM1kxlAPDpWQb/BcjJ4XQ4ON7rUNgQK6sSGhjvk4m20XLhlFw1EsQAc25uo0U0gOHVzYIu16ATC15rsccKly88KrI/
- ShFXPYYj
- kKwT+ifQ4b6RevP8q7siHgxf492tdicH5MMzB1gGKfxHULXYHglcJC9YY+zNwf2pJ+qprlHPWfD8XWfaahV6XssKU0FW9Q0eTA+ERjbhIvte13ZLSIKUvezKdr+kw8Dw3B1AMYmr1gTfwcMf0nJrIXliTWNmF9fEyEZrGhZPd3JlBfz1KkQA4ICvpYV8ICVGn0ukzD0Fnc2Ji8obVjnfrlIhg3qkwnKOu54x56x4lp9xVFeMVi5gux7631ziFw/Gs0UCcAH2UUAb3zXluiriM6P8YzuhDFjWXqloVX4gH2/7TTx/NuTQkJ/cjGJY3Owmqhhsygf0f7ZphCHQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9625040002
+X-HE-Tag: 1782377962-731719
+X-HE-Meta: U2FsdGVkX1/I/es3G0b+wEBpCbHSJHwmLw1sNglwa1X/vfQS3Am4R5clM1qajgkqkuS8B7Ztaa8gwdfjULLmViIq1BB5OzilRTmH6t9KppPkhjVopPB7IR5XR/vUmxeRmnkpwixeEsmTQ148ZooPkrzXINk2YRs/L4Nk24JrYvw7OVqgif5//Ak3l2lSRQd3c1/N2zx3VE9x7OauGZd+jnuVTBFPPu3WJXIgw5QqN9RWC/mHKpdLTdIMQPNrdzgVrznwoUFq8HRvCAw6RZiJJAJTiL+8qutkPzOyaZL4GQpzMJa48mKcTz3Nl4U41tWEyChTBrNo6g2tW78f9pvf+PV2FqVuoyTa6SpDxERNe/LAFqpwfBfkDWsz7GXSxVTTY75M8qL8AAbBdGdpneIb4wXWJNCZrNXTXxIp3ay3WaOfkBPE/rxu3bTygMkb6hdf0uHpwOb//AF6nlSvZ+RYe9jAcvrrn+mzkvVriuIf+S07k7lMDK7f5wsUBd1mfXpZ/WIoq8g3xJ3eRatyuWiXOzl3H+PpjDgAM8i9NqO5X5Y0POQUg446XUilrVSEL/TidjZXf6Pou2Nk4i0b28EQ1ThGPrsXUjLZWxeWAQjvL7U2qJnLcxK2RtG8S4xeLnSr5xaufOGTnQYOoaGE9yRHtMdQB6L56BEWpkYAnmJ5lIHymwzZhMvUsw+IcL323HCvKwZVjBIhu0T8vC8OgQiVHDPd9PoETnUB7nCXuh02vPZDRrQ9QvIBGNFEe7B5ID0aa+vlHkGMRXeul1oIOzDgdwJfymKH3WJTSTnOM/N6SWUP94cIpmMQf0pL9tXgBUBbUAL8N7ApwdHuYzodah2CDCUYzSg7qZiqfmE89dp6pHngC0OY55KR3TFfilU+ialRpoRnJTwWaXk2uDb5w4PorLY9nc/uBIQdbNVE4AykiZWadv4vRZjP3Asr6+wRZ7cuyvOqEBNJmwmmfbT57D9
+ 0E7M8q0e
+ 6XROjBst5+lSXKR+C2jdc3byDKlzKbPYkbsb+f5oyTUJd/N+JLR+ORmPf76QanOMA/xrkSSzk8CJQKm2jsuWyMgYqvjAuR61YABZhES1TXqrFMN4EH82X2If2FVZK1D1Lh27KGWi30XfypMxhjs+4rV1lg3dU+2jhbAMEKEQOnHw8hBiZT0HfuvacvZSLYNHQkjOM87qcfOndn0Z73KO8yMKWTedyd1vFWBurOIxi1UR/uSyBK3Oyac4VByhLGiK21xxw4eomjXKeHlIuk3lKDXdHfnWbqa4sVaYFxBW9O1SkJr+krtekBtaMg5dZXyHPYInSa2nEJvRlxVBaIiXk+mqxSQQPdl4DRv+Dg0AgujIUqMROXbbdKSWpkiUJ9NnhNFR36M6KQ1tH6ugvvvMvnibJDd2Ri+UTAbbBul2aN4B/0lxkXG9c5N1I8dnryE79AFMVAlh4PXVvQ7DlFaKLi2hEhA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,115 +139,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> Introduce a new helper, kvm_gpa_to_guest_memfd(), to find the
-> guest_memfd-related details of a memory region that contains a given guest
-> physical address (GPA).
->
-> The function returns the file descriptor for the memfd, the offset into
-> the file that corresponds to the GPA, and the number of bytes remaining
-> in the region from that GPA.
->
-> kvm_gpa_to_guest_memfd() was factored out from vm_guest_mem_fallocate();
-> refactor vm_guest_mem_fallocate() to use the new helper.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Hi SJ,
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+You're right; the normal invocation path is through the drgn launcher,
+so the no-drgn case I described is too narrow to justify the patch as
+written.
 
-Cheers,
-/fuad
+Please drop this patch.
 
-> ---
->  tools/testing/selftests/kvm/include/kvm_util.h |  3 +++
->  tools/testing/selftests/kvm/lib/kvm_util.c     | 37 ++++++++++++++++----------
->  2 files changed, 26 insertions(+), 14 deletions(-)
+Thanks,
+Yousef
+
+
+On Wed, 24 Jun 2026 17:27:52 -0700, SeongJae Park <sj@kernel.org> wrote:
+> On Wed, 24 Jun 2026 14:35:14 +0200 Yousef Alhouseen <alhouseenyousef@gmail.com> wrote:
 >
-> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-> index 79ab64ac8b869..3a6b1fa7f26ef 100644
-> --- a/tools/testing/selftests/kvm/include/kvm_util.h
-> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
-> @@ -428,6 +428,9 @@ static inline void vm_enable_cap(struct kvm_vm *vm, u32 cap, u64 arg0)
->         vm_ioctl(vm, KVM_ENABLE_CAP, &enable_cap);
->  }
+> > wb_monitor.py imports drgn before argparse can handle "-h". That makes
+> > help fail on systems where drgn is not installed, even though the script
+> > does not need drgn to print usage text.
 >
-> +int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
-> +                          size_t *nr_bytes);
-> +
->  /*
->   * KVM_SET_MEMORY_ATTRIBUTES{,2} overwrites _all_ attributes.  These
->   * flows need significant enhancements to support multiple attributes.
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-> index 524ef97d634bf..0b2256ea65ff9 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -1305,27 +1305,20 @@ void vm_guest_mem_fallocate(struct kvm_vm *vm, u64 base, u64 size,
->                             bool punch_hole)
->  {
->         const int mode = FALLOC_FL_KEEP_SIZE | (punch_hole ? FALLOC_FL_PUNCH_HOLE : 0);
-> -       struct userspace_mem_region *region;
->         u64 end = base + size;
-> -       gpa_t gpa, len;
->         off_t fd_offset;
-> -       int ret;
-> +       int fd, ret;
-> +       size_t len;
-> +       gpa_t gpa;
+> But... How do you execute the drgn script on systems not having drgn? I tried
+> to mimic the situation and reproduce the issue you are saying about, but what I
+> get is like below:
 >
->         for (gpa = base; gpa < end; gpa += len) {
-> -               u64 offset;
-> -
-> -               region = userspace_mem_region_find(vm, gpa, gpa);
-> -               TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
-> -                           "Private memory region not found for GPA 0x%lx", gpa);
-> +               fd = kvm_gpa_to_guest_memfd(vm, gpa, &fd_offset, &len);
-> +               len = min(end - gpa, len);
+> $ sudo mv /usr/bin/drgn /usr/bin/drgn.bak
+> $ drgn tools/writeback/wb_monitor.py
+> -bash: /usr/bin/drgn: No such file or directory
+> $ python tools/writeback/wb_monitor.py
+> Traceback (most recent call last):
+> File "/home/lkhack/linux/tools/writeback/wb_monitor.py", line 44, in <module>
+> bdi_list = prog['bdi_list']
+> ^^^^
+> NameError: name 'prog' is not defined
 >
-> -               offset = gpa - region->region.guest_phys_addr;
-> -               fd_offset = region->region.guest_memfd_offset + offset;
-> -               len = min_t(u64, end - gpa, region->region.memory_size - offset);
-> -
-> -               ret = fallocate(region->region.guest_memfd, mode, fd_offset, len);
-> +               ret = fallocate(fd, mode, fd_offset, len);
->                 TEST_ASSERT(!ret, "fallocate() failed to %s at %lx (len = %lu), fd = %d, mode = %x, offset = %lx",
->                             punch_hole ? "punch hole" : "allocate", gpa, len,
-> -                           region->region.guest_memfd, mode, fd_offset);
-> +                           fd, mode, fd_offset);
->         }
->  }
+> Thanks,
+> SJ
 >
-> @@ -1662,6 +1655,22 @@ void *addr_gpa2alias(struct kvm_vm *vm, gpa_t gpa)
->         return (void *) ((uintptr_t) region->host_alias + offset);
->  }
->
-> +int kvm_gpa_to_guest_memfd(struct kvm_vm *vm, gpa_t gpa, off_t *fd_offset,
-> +                          size_t *nr_bytes)
-> +{
-> +       struct userspace_mem_region *region;
-> +       gpa_t gpa_offset;
-> +
-> +       region = userspace_mem_region_find(vm, gpa, gpa);
-> +       TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD,
-> +                   "guest_memfd memory region not found for GPA 0x%lx", gpa);
-> +
-> +       gpa_offset = gpa - region->region.guest_phys_addr;
-> +       *fd_offset = region->region.guest_memfd_offset + gpa_offset;
-> +       *nr_bytes = region->region.memory_size - gpa_offset;
-> +       return region->region.guest_memfd;
-> +}
-> +
->  /* Create an interrupt controller chip for the specified VM. */
->  void vm_create_irqchip(struct kvm_vm *vm)
->  {
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+> [...]
 
