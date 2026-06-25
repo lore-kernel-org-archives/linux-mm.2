@@ -4,76 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BF13CDE008
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:00:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28F72CDE008
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B3D16B00A4; Thu, 25 Jun 2026 07:00:29 -0400 (EDT)
+	id E96966B00A5; Thu, 25 Jun 2026 07:00:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08BF26B00A5; Thu, 25 Jun 2026 07:00:29 -0400 (EDT)
+	id E6F466B00A7; Thu, 25 Jun 2026 07:00:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBD396B00A7; Thu, 25 Jun 2026 07:00:28 -0400 (EDT)
+	id D36696B00A9; Thu, 25 Jun 2026 07:00:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B4AC16B00A4
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:00:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B0842C2C4E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:27 +0000 (UTC)
-X-FDA: 84918141294.19.DE84DC1
-Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012066.outbound.protection.outlook.com [52.103.72.66])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A2CB580009
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=nex6zWBo;
-	spf=pass (imf30.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.66 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A47146B00A5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:00:35 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24EB71C340E
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:35 +0000 (UTC)
+X-FDA: 84918141630.12.CCBF9D6
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012069.outbound.protection.outlook.com [52.103.72.69])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 23B8840002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:00:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=hotmail.com header.s=selector1 header.b=aVizIMNR;
+	spf=pass (imf17.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.69 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com;
 	dmarc=pass (policy=none) header.from=hotmail.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782385225;
-	b=kgncAA6ztIGOPY0TsNeLpcE8r2YllM8zgk0Nm0jQJIPYSynPR200ZJCjgTnK+qcfj9ZANP
-	xWxZKNgr+ZYQgRApZ+WK86TaF2GBUGK6Up/e0iZS86i9c53w6sKuFmYUbWU9bHxS5Uc/Ap
-	xpWuFR9uSUeHCoSCDM/cEN4bO2mQARs=
+	t=1782385232;
+	b=v5B5rWW8281lSv0zZd5tzbLATCrKkSsvY/bvkYToKnXXAJdXpc2+g7fCb83hl9T5M+znOC
+	WkoNti+ndkAWt78EUJE/FmN+0ZZ0pjsMiP1Fe6uSPDYCNpluHcJH6s7u0Ad+mv2cEmpgoW
+	YY1/GWBPMUO3JMTyC0o8who5gYIvTPs=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782385225;
+	s=arc-20220608; t=1782385232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sVTmeTxHiegFhlV/zbgQO+KuD+NdJGCyEKzeWEW1y7o=;
-	b=lkgMVzt+nhHu6jliyWM+VfuzrefOxu2V9lqmdm3UYyErU4WQoS0hyKN0b3q5KRmL3+aqWf
-	IFNk0EGeoWKrDuEQwoofM2gX0sQ1ofeSNOLwCtKLUqElr5iCUoNNMgHxHnU65jJI2QTdoN
-	1OMl23JmaIkIWHzbfMunNavh6nBPzDU=
+	bh=plP1Mpcw8Xprc2kCb50fb6i+G2ud9L4zxpNqy85Ru2s=;
+	b=cJ9CHfIp72B8Z7Izrwc9iwkwe0SZySLgzaX4HizVShZQf26m/8FvSRQ4c3o8OJcHtY/pWr
+	JwXIWmQcIFXcVmnO3PjvhzNRCpuf1/ybEZFEbWd8RrPXVVwLw/2Qb2a9msDBrsWTpI4Pza
+	k1FMpBKlgI9gPcLdv8FXTEViujpbnaI=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=hotmail.com header.s=selector1 header.b=nex6zWBo;
-	spf=pass (imf30.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.66 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=hotmail.com header.s=selector1 header.b=aVizIMNR;
+	spf=pass (imf17.hostedemail.com: domain of jytscientist@hotmail.com designates 52.103.72.69 as permitted sender) smtp.mailfrom=jytscientist@hotmail.com;
 	dmarc=pass (policy=none) header.from=hotmail.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=czJG21nxbuEqRDjMKpwvaz2Pw3olRrpv0g5JQzCZ+kgYROMIRIxkWgyZH+g+epIdANVVpx02mTwpkBeAweqMXQHEz3Y4N6DfUkc/uKYyFdroD+g/BdyRItIC013xoPyW69o0u7obuvXNOtchl4GoCKmJ4YUyFoWwa3+I26wWicvf7bPis1AFsdDQqOaW7wGGqq9Hia9KGTD7HDVV/2newX77ccGNFn81sIudcHHYxVgXLJoAyOZxnXGeuNuBefGUMFXkbgg81CK1CnUyQg8uYx1WPL3GFKuAsOmtOKYqTPK5NoMZLeJw6JRHVsYs+eBVdY1Xwm2JifMs9jIgwMSQZw==
+ b=YEO7EncGJYNZSnRs5y91M6C3aWGgC3F6WWGKnJsyJ/Fektq0SJunmJBtkVvs9jhOkYYISwAt56A7LEdW2VYrtwhRM4ReX/B4uAZ6U3+dELpj2gYt7NNVX7e+ygdUfLh4y4vBxkP7UIyeM+oUrxLvZugV/3S8qI9H20YnFwZhfPl1kwlMIBstYjv4G2nbh4ABt2Rk162J2vukqdomnBPnhcS0TiY6dpclcF0sbun0Z4mApEr4uXJwZ0ztxHc1AYHd31wy0hxON8Mh+YJkZW8zH9l87EDtxjfsJqs+PTBMt006PvgXxTPfHOM3IxYgVZxSrPEMGoaq4wfErbPcyJHXag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sVTmeTxHiegFhlV/zbgQO+KuD+NdJGCyEKzeWEW1y7o=;
- b=Vc+wPtRWWD/IgvwRbJrkavSgiz2LnM2PB6NBatnyhfdIM4+sTU+jy2H8vEWVMrzblOb31LOKHMGCM7Wjree22GMdJVIDBTbHlSj5lXzz/Y53Jr8alMxBWRPvn2u6QnTp3vku/TQwCJlqnYpr7u0DorE2Mj7TqrOD1SMo8jUwwMJQzqVC8k5BnQwz13CRDEUqn+CuP5y3ZbS7pwLyC1udDkhFcbZFdVLXDEfQXzHQrgGszUjRPpcUQHUXrsyVgVSlM0pRZmXp9AcOjwzrOx7AiLAiJb7cFrvJVZbz4UMXzfqzgpDcprCN6dbdBQhI9gLpSboJowLshXZLYBF81pdrYQ==
+ bh=plP1Mpcw8Xprc2kCb50fb6i+G2ud9L4zxpNqy85Ru2s=;
+ b=bmI15q5Ma9kr68pgxUBY6ugCC3SOgdiOIJNK7nEHknVxWepx/3W5FLt6BnGViG5sDulN5OKRR2L7hc0Mnqxr02tle7yjOPh9Shgbsf/5xIB8QnMmNFS3adTp19XAcC0Vqj/TGhhDeTxXF4LkCPCPEE62qdCeCLZ5TBp6m+UGfO3AbL1wULGiaZHTTyRe4R1zhxvTfIxT3U2exmm3fXNEyhdFw88NPCzCKrrb+Q6o+3eKPrNuRLwwd3/L0P8Dsn9B729Q7UeucjqvBq0xmlWJUfrkxmiQOhjv83pgod+BEJ+4KK0CfHfDSOrGIq4X2yifIzgyt3LOuJDhUOCMLcJx9g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sVTmeTxHiegFhlV/zbgQO+KuD+NdJGCyEKzeWEW1y7o=;
- b=nex6zWBoKqn2RXar9PSpHiQxKReOpTFAFd9dVUrzsydOKNMiQ+z0z0MtfdoCWpV3PfoAti6/KLvyAhPNqNchAo87uQl3Kg9gmG9Bn6qZGwNQn82u/hTUh9KRbC/y9ufZtCACiWZbQlE7IgbDu8CniAMxke9EPchAyYc7eELNSljaeA7A58VnpUv7BGw0H/OraXxBd4733AeRPTBni0N39I3026Urkm9Cbx7JCrFp+sy/iAls8dbl+rpo1ozdNfdAP3MU0Qwo2gbhAWR7Nm2gtPBs4VALwyOs7DzGNbZQRsUIT6aeNhRZ0pKaJyouuQ6naqHKlndaD6r1dzMlupExaw==
+ bh=plP1Mpcw8Xprc2kCb50fb6i+G2ud9L4zxpNqy85Ru2s=;
+ b=aVizIMNRA35D2OumtdZLWb57RZvrAcBUVu2m7Q6ZOk7Y+AD6J6VkXYZAW7ZEN0xfBHqZ+ICKYyUqC0JpSoZD81bOHkN+Qi3S4k00qjfLSs4YaMjY9R1PnLtQi5uM14NpNet6i4qq6kuz7W5lQH4zYb6S6kEiJ+DTOvWtev2rXrVdPC8uxUJqbh2VAa0LYoqyTakdiPg27jHHT7NxCpAZJAI6KUsa+p+RP2i0ISU1TI6hXR4pdR3yUPQ2p9AJuCiNUo0h3RHOBehANMjwPMqqqB5eRYYtrrWFXPNS9Ac1iJ1H7PRAy4VAGLxjdANj9v2PGFXye+oYn8MWFrfcPYrOjQ==
 Received: from SY1PR01MB10596.ausprd01.prod.outlook.com (2603:10c6:10:31a::15)
  by ME5PR01MB10091.ausprd01.prod.outlook.com (2603:10c6:220:24c::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Thu, 25 Jun
- 2026 11:00:15 +0000
+ 2026 11:00:22 +0000
 Received: from SY1PR01MB10596.ausprd01.prod.outlook.com
  ([fe80::7ab4:1f80:a8a0:7d3f]) by SY1PR01MB10596.ausprd01.prod.outlook.com
  ([fe80::7ab4:1f80:a8a0:7d3f%6]) with mapi id 15.21.0159.012; Thu, 25 Jun 2026
- 11:00:15 +0000
+ 11:00:22 +0000
 From: Yitao Jiang <jytscientist@hotmail.com>
 To: Alex Deucher <alexander.deucher@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -101,10 +101,10 @@ Cc: Zi Yan <ziy@nvidia.com>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Yitao Jiang <jytscientist@hotmail.com>
-Subject: [PATCH 1/3] mm/mmu_notifier: let interval notifiers block THP
-Date: Thu, 25 Jun 2026 18:59:51 +0800
+Subject: [PATCH 2/3] drm/amdgpu: block THP for HSA userptr notifiers
+Date: Thu, 25 Jun 2026 18:59:52 +0800
 Message-ID:
- <SY1PR01MB1059616E59F213B6FB4F4E3C5C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
+ <SY1PR01MB1059636EEFF3E5C5156F899B8C0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
 References: <SY1PR01MB10596EB75463208A8E1EBBA0FC0EC2@SY1PR01MB10596.ausprd01.prod.outlook.com>
@@ -113,80 +113,79 @@ Content-Type: text/plain
 X-ClientProxiedBy: TP0P295CA0028.TWNP295.PROD.OUTLOOK.COM (2603:1096:910:5::8)
  To SY1PR01MB10596.ausprd01.prod.outlook.com (2603:10c6:10:31a::15)
 X-Microsoft-Original-Message-ID:
- <20260625105953.70647-2-jytscientist@hotmail.com>
+ <20260625105953.70647-3-jytscientist@hotmail.com>
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SY1PR01MB10596:EE_|ME5PR01MB10091:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3cfdcb8f-e8e5-4d6f-997f-08ded2a8efd1
+X-MS-Office365-Filtering-Correlation-Id: e1ae0c4e-dede-4a14-b197-08ded2a8f402
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|8060799015|51005399006|23021999003|12121999013|24021099003|19110799012|41001999006|25010399006|5072599009|15080799012|40105399003|12091999003|440099028|3412199025|1710799026;
+	BCL:0;ARA:14566002|8060799015|51005399006|23021999003|24021099003|16051099003|19110799012|41001999006|25010399006|5072599009|15080799012|40105399003|440099028|3412199025|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rtr/33E4Tlga1SP3euEJEbI/qQsQTdSFHxQrnl6C9zBYDSzd+3KZeeKDMfNO?=
- =?us-ascii?Q?x8xw1LIqiQ31kZ2kVqyDfkgKFd1pyiEQizT20WcOObGGNfdaP/2RAOtUw6xM?=
- =?us-ascii?Q?70DwTDMmwsOeWbgjJ/oGGvUwWwXuUHWBYT6rLlPLMtEscD1vR+Nx7P3LXxZQ?=
- =?us-ascii?Q?mMUUCKe9PyDAS61+ksKS2QMB65iykTzJCWd+pLJN6JKTFj0uJHoXD0Hp2F9i?=
- =?us-ascii?Q?9l+G10qzNptsP/HGtVKtr05DrFYdHowoieeBV5YxVxlmyGNQ8FiJ5gLV+Q+e?=
- =?us-ascii?Q?dO3Byc53674lgu7+gr9MdoGYLiLgcd4nt1y75yvE4Nue5ac6zdV9eQVlI4vg?=
- =?us-ascii?Q?pF7HXYZN3hg87zwoG40dcWySAYmPbbCdPQhdpUzQW1mcihA1kN1LLwHYWATC?=
- =?us-ascii?Q?KV8Tzvh63Ln7RLzkmxkEiTmmYXuPAGEHt6/YXLRBo/Fm2VbnpkohntEWhg4k?=
- =?us-ascii?Q?F2aGzqC3FWvB4w3BtIVSZAS8agDWiY1Zjlk+s4sPmzdBNJ5Oo2AxgJkaZTZO?=
- =?us-ascii?Q?WFvdOwcnTdvpnWzp8b2kxPfa5jFYr4hAS+dwusqiP82TulUYnUw7rHJutt0n?=
- =?us-ascii?Q?064RCvsIYARz3Wd7Sjk3gUer78Ua9rRgrxwClqp2P5i7qf9ns3+HIlFZQNNG?=
- =?us-ascii?Q?Iky6PRrzpypv3NV3/bZWnq11rHOpDiVun76nz6aAb6/jpa90zC0bnpg7VAao?=
- =?us-ascii?Q?3BYzGtXGPdrgJ3lcNh745UeqQMgZmM8aejGVlC9P0BIkYbpyAo8LMt65H+QD?=
- =?us-ascii?Q?V83mT2ve8oZOLE2/sLaCqftGu+Ae9GcU9ak8oAuuORS1MortyCEHnL267Fl/?=
- =?us-ascii?Q?PZE6tS4c+A889sNx1nz0Q8HGpYJbn3JAbosy+eBV3qa6E5H5DNJngenllEG3?=
- =?us-ascii?Q?lPf4umKLWoIsshyqk/Ney79NIjPICdTSlZbEVqWQOHuY6HtHeIZCOhG9Nzk8?=
- =?us-ascii?Q?z2SugfYXOhExMQji8lNBzPiAtojk0cb4t5oZJfWantJpOxRudk+AFo6gKWJF?=
- =?us-ascii?Q?fZWfgTxlhaXxWspeVXXruHAtAqsBH+9XkhiidLFaLX0RBcC00QPP+40qPzQ/?=
- =?us-ascii?Q?l8GXmInL?=
+	=?us-ascii?Q?fP0jNFORvB7y/LSRAH20Wxj20lQdoZBmRv/v/OFwrObdWUWoxE9DPudQJQH+?=
+ =?us-ascii?Q?CtrHwYycoI8K7BuL83ZugdhoZ3R0PhtsbWnrdt5HZt04XcRlS/FnsrnoalXy?=
+ =?us-ascii?Q?TsrRylve53IWqkTpKa+aHiWECU7opPkaWRk48/K73aldh3pKte/CQSAvHTda?=
+ =?us-ascii?Q?CTQKuzPnw3X2Jlrb+kUGU2V8aG8xzkVakANMYFMz3MAIy6DIJqx2uTYknI9u?=
+ =?us-ascii?Q?8QLqYf/f7QNSOM2YGelaQ6/1zL0H0sVCRC8wulR6HgyBWIpqkyzCA7aYY4Zh?=
+ =?us-ascii?Q?0n79BVvQy7SUmXnwZkqrbA56DxqQSYnuebtwfV1+zPUhD9o08pH4CH+eIcWm?=
+ =?us-ascii?Q?e7UEPcFTmzawXk6WjhQtOb/dNBhir40H+FP4hyhRlV+7H4fISuO8SpgMADtK?=
+ =?us-ascii?Q?q+nsnyJQqrKouCq5CNZFMPeu2+dXiwAdHqFDCtfxYF4nxRDtVgtYG9yjRBH+?=
+ =?us-ascii?Q?83tqzSQrNfHB6n4bUt6DFDxBf0+KbNKrbGxlaQuB2ebN3IBHJ994Sp8gGf7B?=
+ =?us-ascii?Q?Vpc2Pcd8r3aeiYn32yaHs89oUKumk+jv1wo7062bHVmdcBOv4IbKkmcsIyoR?=
+ =?us-ascii?Q?8uKEeozh6FSn481Ak7+rILvAN5N66IaeB75vtD0F3I3QgSskunnoV9sMLwHq?=
+ =?us-ascii?Q?oh4155LO8ppZ8SydfwH5Ob9/fhxH3XvpJYz2UkdvmeRyrWc+3ZioNPPQXax1?=
+ =?us-ascii?Q?cX10uja44qlrovGHQK1g7FMNYNrRbTJ5LMj9Gzf/IWCe/794piLvZPIiN8iC?=
+ =?us-ascii?Q?zxe6GxKoLPTqTRTMHa/loD6Uq6A4umXqaGRAwp10cik3OPEaunO5AIXNpEEQ?=
+ =?us-ascii?Q?PgBxii4hfE4+478ARhQC1mJpOCATHBIU9xmW/Kdj4lCooBQp/BjSA2KjPwbL?=
+ =?us-ascii?Q?CghJHsk/ASefXGpd8cAHwgUGBBxFSQ0LCUNDagfzgLwT6ZFyyq2Ov4fXByaD?=
+ =?us-ascii?Q?4uFvfbWxM5xUHbbGq4v8MoK+RuwBp6g2S541I+F2PAgtcNbNqY++nkw4w7GO?=
+ =?us-ascii?Q?Z3JpbAU6sUdpkn9Qxr6ssfJ/ug=3D=3D?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PQ6cpxrd9p10o1ZdCDnb4lptrPPllEjmGj6Ppa7Nq81qIos3kdEmXSE2Hgn/?=
- =?us-ascii?Q?gOFObMW2fTXIFEq8VKg7GoG/2ObUBlFVar2XjZ6c2Fpi+JMtqGV6vop96P8v?=
- =?us-ascii?Q?kBwJaqlKdsVmf5UQ6f/j6rKeFNuVVbZyQCApPWCVK5KdZ7SkQIgiwUmDS5z7?=
- =?us-ascii?Q?Kom0owwiomcuTo9ByN0WRp3QGro5uQW5wXQOsjgyqCDzeD1DJovRGrVYBd3N?=
- =?us-ascii?Q?KdiQ0H5Ts/hQBjIl8FOr5AD7bnxEjIhuwgqsf2mfgV90G6GKCUrysKc46y7k?=
- =?us-ascii?Q?4qI9J+y3mbb+TAOgrxJDyGGsoyMTMnrPS99KuYm5wpnNmecJCVQjWYXT/7NM?=
- =?us-ascii?Q?PXjp/tk4qCDGNEIvO1pgJmQ32xyotuKwC6mf4ZsjQm+NdN0T+mtHCSj7mHTM?=
- =?us-ascii?Q?sIPAbA3CmkQnympgF8NipA+pxVk2X01kFSZhkttpER9rTlCCZv3qQR3c3OEL?=
- =?us-ascii?Q?TC8Z5tUQyyKlRWsfNuJZPJ7nCkmle68cQJo4t0dET5+nNdjhBwKvdz8g0QYS?=
- =?us-ascii?Q?tDC2x1rUQyWlTqnjD6v8uEDU2Xb1b5dJC2b0BcQPJV7mck14r2adlBk6WMji?=
- =?us-ascii?Q?pn/KkAYNQ9cC6EcRuNPgFIUWRb0jXD83UqMziIWJClNpBgmgzCHiwCfxKN3S?=
- =?us-ascii?Q?doxtbBG9d0xfyOeocCFpcrYQblc3LVHXFaDNtFO3A5H3btgJ+F9NB+iNj2A8?=
- =?us-ascii?Q?Yknr1izbnrKFo5xmL/N7n02kJb8ePguo09j6UUHuHtbrski1gaoNlW797d7p?=
- =?us-ascii?Q?cHv0fIweUMpf30DpxPo47xqSfnA6Zr7Mh/p4Md+LRGtcuzGWh5OIu6rWnrZs?=
- =?us-ascii?Q?hao8h8Db6fBSzjqfiSxKZ56mcXJr8/04yT5dBDMxmjdWWOpvG3D/nWia0lc6?=
- =?us-ascii?Q?3hSkruiXVEY6xwVnR/+1iiEhz5K9IkR7GnPm/EMK1c+z8aaNGIYHBfa+oSHz?=
- =?us-ascii?Q?m3dynDfs4ZrNtHAwA7IlDcJeOxBhPzp262urPL4NhZBikYJyDdK+5wZ6zYCT?=
- =?us-ascii?Q?FPkdRE2V95JHa6aHF+aMnocqNBYSXnG54sgQ99zTjsSj1pcE87MsoQMiL/hX?=
- =?us-ascii?Q?R6Kt5A0dkSRwQacq1yWsz+1+z81PTtmf4iJ5isxshvop320BFcYctPi9PMSg?=
- =?us-ascii?Q?F8r3/0LOEYEaW/Mj0VnHS2IU2gvhZilxdoit8UtHnwDGLslurpYI0bvbJA3E?=
- =?us-ascii?Q?EUWuQBAmVX7n2mDW9A6m9nWFvWY4WmyQc1cMxQSZ4lP7A9VRoeWutFTDB3Cg?=
- =?us-ascii?Q?R9tHSzdmxdaS9eYVSDP5b3rwIjsV1Kbmjlr9TZhbBChRILboa/2fGqIkn6fp?=
- =?us-ascii?Q?mbhaZ+l9VnvXAxL4A5q08YOhza7E4hcZhQC2ryf9bA5LBgw7oJaECC1Bp6Vu?=
- =?us-ascii?Q?2UcWu9ZNu9ELQGGWLeNPQrtAcyirEnpeqRfaujbWGIn93od7B0n5sZ6H0gY6?=
- =?us-ascii?Q?vmeMMWJEMvm25dmouzdPQnpeVAz/NHA6gx28CK1BTF/gxqiFGMzuiw=3D=3D?=
+	=?us-ascii?Q?XCWtRY+TcNXCqXQf/tnak73lP8IG4xRteO4xFB+Vcf5UCDAestnIAJlRwHyw?=
+ =?us-ascii?Q?Uu8brPtVLnShsRqwiND3PSNeZff2COCduYxHds0+NCNF/5s11daHMBJRrEUV?=
+ =?us-ascii?Q?UHc/aoEXUrxmCkxwDX5RZpDI33yNDnaivvI4HMtX2jl718VzRhj1NOmWriFg?=
+ =?us-ascii?Q?Z+9lOmfe9V/PX1ab+VnVo3WIPQNcovhJcE89z/Sb9gJ/l4w4lAURi3PM5wD9?=
+ =?us-ascii?Q?S9gmVxOnD+huCOM9YvJU56XOPKtD5+1oNlVcJVg0CRIDBPBy9D7zAh2+3FJZ?=
+ =?us-ascii?Q?faKz9Pyz0tdnGp8Uic7TMZGQidrWtEMIYjO7fTtbulerS7tKeMBFYPiFGOM6?=
+ =?us-ascii?Q?eCOhdA7S3Q6bYYR8D8zdcCglX+L3KmjDHk4BZKv2poVUoVWJ3Krng8aLFxVH?=
+ =?us-ascii?Q?gACYzhoq0bPl4d+hTjnSAc3+wdhHCBakdt/NTlWZrqdcZ2ALA1KNfITXxr/Y?=
+ =?us-ascii?Q?ZZjaR/6yOelAsncHzTcgx49TlXc5ARFGT+r69XeSXwe+0DveKVitQJfkb/Os?=
+ =?us-ascii?Q?nWENhc2pcEAJ58vF7PoKMS47R+n/bxHy+9cpgpKuGKixpDsNxL/HIBFhr2vN?=
+ =?us-ascii?Q?9j/SGJZgO6m+kYa+QzY8qKzclJLW19H4eKYOTnPb/48JpS1nJVVOkjF7uXpw?=
+ =?us-ascii?Q?5CAiYqXCJVsDqj+BFLU9lrDmN5yA7GwhMwV6pnoD6zQgAfzaMwRHiSYzBlqp?=
+ =?us-ascii?Q?rL38bZ5ke/P8T0WBUAbe6yiVuXH4GnzwYGqd/fJGrogHH+fnBHuLvxUcROnI?=
+ =?us-ascii?Q?SFg/iSTWclodq1qQFQJv1oWfLHKlcBDMEIAF5EJlJyM/7gjJLv1N9l4pVs7o?=
+ =?us-ascii?Q?eG4kRpaTZl+k3drssPZ1trYTNsCokm3T+EmlvEUJ0JSdZ7LcPiaqRmQVy7JS?=
+ =?us-ascii?Q?079qkRAMm6YTTh5UqVAznKh6y9WlDC4OPPaEKV0PuXi/o3kH+e56FRTDxpOF?=
+ =?us-ascii?Q?W6z6Y3SmG2ZEx8HOE/hjAJldWYhFlXXjweLE7zSoRQGyz+/2C00EvtHd5Z2/?=
+ =?us-ascii?Q?P5sm9PLw9aVrYz4hIXEVQbEfW5ubk8P0lGAWYA71KFjY0HWkkUcE82C02ZBP?=
+ =?us-ascii?Q?LvJLEzcYzfdBf86TDn7TSP4Iy7UdI4co0tSxmLcxBqd7B/a9J3f+qzfwdfFR?=
+ =?us-ascii?Q?9da3zGRktHbShpIL03xxn+5Ie6w2m1+8CxrgwqltMtOlmC8mkyraELtANjU8?=
+ =?us-ascii?Q?BFZCt9sT2EkShB0ZDVqdiX8HbdAFcTXtF7Hkph4hkfMmWnmbNrvCjOr2On+4?=
+ =?us-ascii?Q?v5FqINWq4bgd5BobcdGgw88mWuFeWVEapL41VO/r/8srgNJQJIQFBGoDPhFw?=
+ =?us-ascii?Q?jp/8/D8Kwq8WF5Ugs5Z5F6oR70aBKWdXeGqzyPbhFK3ECrFcceYNob8oBuuY?=
+ =?us-ascii?Q?32rvUyNwiqbyco0gakm6vFxNlUB07MJB7MChntq2OwGivd6TseDWFGCrUY/R?=
+ =?us-ascii?Q?4WSykx4ANOXa+iqgmaBydz5lqyOJrqkyYXrisiUB+nfl+JOT5QrZ0Q=3D=3D?=
 X-OriginatorOrg: sct-15-20-9412-4-msonline-outlook-feddd.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3cfdcb8f-e8e5-4d6f-997f-08ded2a8efd1
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1ae0c4e-dede-4a14-b197-08ded2a8f402
 X-MS-Exchange-CrossTenant-AuthSource: SY1PR01MB10596.ausprd01.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 11:00:15.4497
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2026 11:00:22.5044
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
 X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME5PR01MB10091
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 23B8840002
 X-Rspam-User: 
-X-Stat-Signature: e5wc9mut3r4c1r9tmbpkhe76sgcracwm
-X-Rspamd-Queue-Id: A2CB580009
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782385224-532338
-X-HE-Meta: U2FsdGVkX19aEXmaAf4qq/l7RLjeRJBJwWMcce/+CiZjwhbUxPyflbqJ9NLJHGtJ3+hi5zyExkajAByHm9SeSyNIW6IQzO/FOi76+o/UJjkyxp29UfIQigIXpTNrGdxi0te86u8R5u7R4pOVcpCHVyzHAr/CVhNQnz8zoXxfQSvsaewByZ3+uy1uKmRncLWRGot1OKkZpn3IDMq3IclOQ+qkqoi9bm3vtOsSDMHuAb2kLH+dPUzwk6kjxTYpNX6JbI6DtSTfqahaWcwifdw2brm+SgYfGdFXKR+rkxQmNyg1064la9fNH8rDLmcgv8N7nKvJlx1M+IqJ9iq0QPa1ip7b+zQ2zTdXvBkshGOz7nSNVdvk8Mp1B+NXxrEimuON/0RiZyS0QOmHArSMDnKbwiRzLFF0ErCa0GGmt8Zjgu4d9Tizx86FO1XXXwo/lbQ0wTZyysDzfN61XtkD0HtrXEumtPXksOHsrnlA+8sHFOImkNUqY8hoCjxMr6qpaR3HTyUDKf3+VRoWdWRblm/0wtCVFdOE7jhomNX+HIfgy+kMX+ehqCEgxeXHNhbGeixDFaQcUMkpqNVrBrIC7BFBTSIzjbU2pAYtTlrp/Z5rab9quF9GoG+tz/7EXyLLS6v6WfoMgxIwGNbP4FDgcjuDBw9zWFsm5MdTIpeCAny5msRA/YcvWdC7pW3qHktdt4pyVa2ET5PEwG4HSKR6O2aNa4GmU5c34dYqKM8Pzf1aspiQ+epsWYuqbD5e+0MKNkzxJbBt3B/A8fejYHBStMhT6SzQbvzKMjkhd0B8+Dp3R3mTxHk75rt+kneDjqG5QU8f+53pfx99YX+Vkh8npG0Q66zV3TxW/QRn2VXzRNFShC11w6l1bIf/82RB6Ff11OA6TWJ7beY01uo/kiQ4sz6ZBgXPBD0iBKyOSl/9uw4U4+UKyYToTzoJtOdUtyzcvnpm8HaU8eAjbuxoboJNaEK
- JNvuPhjb
- Bz8WBybVz5xU1CUZ5efQ8pPlfY7XHHE/xTccd81mTkLu6sslFD2ezFHraGCBAsF3k3fKxqDPnIrliNOP9U/pU7ceEOZpmRakOSdd/buXtDRkoLe9mrxK8M7f129jKKrdGW3gfl/rZY8Vt2MuElFfr83kDNS02UaqflFSULFeW6vXp+33i9ZNGYacEfJIJJ5WUgCBaBY+eX4P3YKDorLt18TE7Q1/NI1neZDS55MJ+dCRyngXEPGbqJL8tXvmhYvb2fdZqGP2SoPGHELplQLhPJwfRHzKz0wLfyaNMblNgZRuV711ds6GSTFSVzUtja3QeDa6bHqAbYnKerKcx/skTDgLe4HNmO5GT34UWfKUgzaBHiegVUR0PPV9YXAQMNM7I2ijy7cpzqkHnX7HFgj9R7oPXUkYMef+i+KuI6bq0XLF+qGQiq48ua2pRkUcDzxDj9ZPUC0wKS2cMwT4rgfhDNoK1d6c+U4FTJhwaDJ4RUyyaRFF++7JlvsDhJNKyu2LS5nJ/BJg7NePEuEdYghmsOGQ86jMpem6ClV7tJQqfL85zwvB/3seP8ji4VA==
+X-Stat-Signature: yrf5u9oba896ghfoquxfws6puzromtww
+X-HE-Tag: 1782385231-187203
+X-HE-Meta: U2FsdGVkX19ocODBVOc8auOi4W4IQAT7StEwvVxTKyfj630gYi4lqgdJD+C0XUAaotb5YM5hzfOaoMVJV+uqkc+SFns4sIUzKfhIKbLOkk8ZMfZyhQwZV8h67EaLCZs1Aj9QYKBfEXx9UkzuxkHWQDGdElyXLULMNTx2VfhG30twhPUWcxRUWlu5TIowyXba26wrkjuMcjtPenscektr42VwThGEGTqyZl6PySwfO+8WokVpaifCFZXZnlh1EJoSuXiMG+DravLK3rVbhTaT9nIl029N8lZ6FpRpd1hKLV18IhDYU1S/MfgGVfGz/hDqXtpoLnFF1VRa81HE/mpq+Hk/9OqAbfuzsd7Oc4OqIC3gY7ZUdXiwjy+9FhZjiE5Gk2PN94UgKEnhA1moCde4skZooNqLG4LakQEj5dsCbBt3qiQm3wHfCu/NqgbECkg4iiMD6f9GcPLHw+kIMm+EwMyNLdIo65vrEYwHVPL4a66WyUdJs0UNc0qFpUpryOmkPR7JG5IVcUdZyhjp19Jh2AGiGs+p4KgaglwQHQQPdtgHXV3l8+Cr8lLg3XFXElLWY/x+FHyWmQP0dgjaFfsSmvGzPXRH3J47FW5wQ/WDZFV5UVSPaI8hZE73YrLTXkf9AlsdGG10eYrVWZzYxkFSbxOocaQFLYkR3HKkVFHxkHhxlbhCbWZLxHozmx/oooxndjEbiNFg24SrsLk/BJcMKa4S18u1T2EcT7X/0OET77ASDZ+t7Tyh++CxsyEWVTgRWRCA4a2BI76vfwNOZrh6w7Lm27r8pHDQrnivn7mO/Ef5bd42ldFZJ/fvcvfAdZdHVpCrhb2wJ2XyNOIeXexbYoQwpaPBhoDkRjUgyBdjpAf2O93tSLt8wKb+3qPNXJC/fXO5rztDhWv3FtkWpDlCJGKFMd5NBrT2C7ODbf/vuCiIKqi4iSWDRkGv/KGL+ao/+gC5jWmOfoVY8neiaVV
+ QSLN8Xkb
+ ZKSb6tEJZ38frQhe2p+3c4yoTO4RUp8s8EmTMVGh7jv6pIlHGe7CugbyA2o2wJLLts77kPNEc+pzMaoonDVaP6O/GKJmRPyy6YT+48ILkP0xhETl/Rk0ccMYqI41JLjjTKwr+f0H6xQZjSFjdLQPiNMv8gvgDNg9aigOlKmzss0BYPigeW7SMzJ7QnDB9+O6OT0noqS6cNw20I9EFuR5DGQx/CuNtZFww8oo/4mP/JPHT+Ml84OXu6+MHxlmM6fYrBQ4m8P2+H+nWYIikyHXeZsxRV6qVpa62fFIyHBdJKeYgAEjIq+SCg9M8AdXYLlftTYMLlTb4MiAUGYZ/yQMW4wmn+Vf2FpXZN35R2n/JfEyAYiFdU+9FMu4dZVhU18D6vqI0vLSDNGya6FBlhmEHdB6fVsqBn+4h5xdfxi37yvmdQd6jNV6HZC7OjHYvFscEHwPJWq5ygd6z42fOHg8alo59QJYDTuK+1tUGwB42GaOrRBfW2wDSd5s1fVY7MxrM4Dyen9zZPJin5ulQ79ormIx0WE9jEMfXxSsBrc2Htb7QjVQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,405 +193,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some secondary MMUs cannot safely tolerate a user VMA becoming backed
-by transparent huge pages after the range has been registered with an
-interval notifier. Drivers can observe the page-table layout change
-through invalidations, but devices without replayable faults, or ranges
-that must stay mapped, cannot necessarily re-establish coherent device
-mappings before later device access.
+HSA userptr buffer objects are used by KFD compute queues. On systems
+where the GPU cannot reliably tolerate a CPU THP remap of an active
+userptr range, allowing khugepaged or MADV_COLLAPSE to replace PTE
+mappings with a PMD mapping can leave later GPU work failing
+asynchronously.
 
-Add MMU_INTERVAL_NOTIFIER_BLOCK_THP so a driver can declare this
-property when registering an interval notifier. The MM core then marks
-the covered VMA range VM_NOHUGEPAGE and clears VM_HUGEPAGE while
-holding mmap_lock for write. A later MADV_HUGEPAGE on the same active
-range is treated as an ignored hint, leaving the MM-owned nohuge
-policy intact. MADV_COLLAPSE already rejects VM_NOHUGEPAGE VMAs.
-
-This keeps the policy in MM code instead of requiring device drivers
-to edit VMA THP flags directly, and it only affects opt-in notifier
-ranges at registration or flag-transition time.
+Register HSA userptr interval notifiers with
+MMU_INTERVAL_NOTIFIER_BLOCK_THP. GFX userptrs keep the existing
+notifier path and do not opt in.
 
 Assisted-by: OpenAI-Codex:GPT-5.5
 Signed-off-by: Yitao Jiang <jytscientist@hotmail.com>
 ---
- include/linux/huge_mm.h      |   5 +-
- include/linux/mmu_notifier.h |  28 +++++
- mm/khugepaged.c              |   9 +-
- mm/madvise.c                 |   3 +-
- mm/mmu_notifier.c            | 204 +++++++++++++++++++++++++++++++++--
- 5 files changed, 237 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index ad20f7f8c..3dae515ff 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -489,8 +489,8 @@ change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 			__split_huge_pud(__vma, __pud, __address);	\
- 	}  while (0)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
+index 99bc9ad67..c0b36164c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_hmm.c
+@@ -44,6 +44,7 @@
+  */
  
--int hugepage_madvise(struct vm_area_struct *vma, vm_flags_t *vm_flags,
--		     int advice);
-+int hugepage_madvise(struct vm_area_struct *vma, unsigned long start,
-+		     unsigned long end, vm_flags_t *vm_flags, int advice);
- int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
- 		     unsigned long end, bool *lock_dropped);
- void vma_adjust_trans_huge(struct vm_area_struct *vma, unsigned long start,
-@@ -694,6 +694,7 @@ static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
- 	do { } while (0)
+ #include <linux/firmware.h>
++#include <linux/mm.h>
+ #include <linux/module.h>
+ #include <drm/drm.h>
  
- static inline int hugepage_madvise(struct vm_area_struct *vma,
-+				   unsigned long start, unsigned long end,
- 				   vm_flags_t *vm_flags, int advice)
+@@ -130,16 +131,24 @@ static const struct mmu_interval_notifier_ops amdgpu_hmm_hsa_ops = {
+  */
+ int amdgpu_hmm_register(struct amdgpu_bo *bo, unsigned long addr)
  {
- 	return -EINVAL;
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index a11a44eef..4accfb65f 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -293,8 +293,16 @@ struct mmu_interval_notifier {
- 	struct mm_struct *mm;
- 	struct hlist_node deferred_item;
- 	unsigned long invalidate_seq;
-+	unsigned int flags;
- };
++	struct mm_struct *mm = current->mm;
++	unsigned long size = amdgpu_bo_size(bo);
+ 	int r;
  
-+/*
-+ * The interval range cannot safely be backed by transparent huge pages while
-+ * the notifier is active. The MM core owns the VMA policy change so drivers
-+ * do not have to manipulate VM_HUGEPAGE/VM_NOHUGEPAGE directly.
-+ */
-+#define MMU_INTERVAL_NOTIFIER_BLOCK_THP BIT(0)
+-	if (bo->kfd_bo)
+-		r = mmu_interval_notifier_insert(&bo->notifier, current->mm,
+-						    addr, amdgpu_bo_size(bo),
+-						    &amdgpu_hmm_hsa_ops);
+-	else
+-		r = mmu_interval_notifier_insert(&bo->notifier, current->mm, addr,
+-							amdgpu_bo_size(bo),
+-							&amdgpu_hmm_gfx_ops);
++	if (unlikely(!mm))
++		return -ESRCH;
 +
- #ifdef CONFIG_MMU_NOTIFIER
- 
- #ifdef CONFIG_LOCKDEP
-@@ -347,7 +355,20 @@ int mmu_interval_notifier_insert_locked(
- 	struct mmu_interval_notifier *interval_sub, struct mm_struct *mm,
- 	unsigned long start, unsigned long length,
- 	const struct mmu_interval_notifier_ops *ops);
-+int
-+mmu_interval_notifier_insert_locked_flags(struct mmu_interval_notifier *interval_sub,
-+					  struct mm_struct *mm,
-+					  unsigned long start,
-+					  unsigned long length,
-+					  const struct mmu_interval_notifier_ops *ops,
-+					  unsigned int flags);
-+int
-+mmu_interval_notifier_set_flags_locked(struct mmu_interval_notifier *interval_sub,
-+				       unsigned int flags);
- void mmu_interval_notifier_remove(struct mmu_interval_notifier *interval_sub);
-+bool mmu_interval_notifier_range_block_thp(struct mm_struct *mm,
-+					   unsigned long start,
-+					   unsigned long end);
- 
- /**
-  * mmu_interval_set_seq - Save the invalidation sequence
-@@ -637,6 +658,13 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
- {
- }
- 
-+static inline bool mmu_interval_notifier_range_block_thp(struct mm_struct *mm,
-+							 unsigned long start,
-+							 unsigned long end)
-+{
-+	return false;
-+}
-+
- #define mmu_notifier_range_update_to_read_only(r) false
- 
- static inline void mmu_notifier_synchronize(void)
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 617bca76d..a9b05e716 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -445,11 +445,16 @@ static unsigned int collapse_max_ptes_swap(struct collapse_control *cc,
- 	return khugepaged_max_ptes_swap;
- }
- 
--int hugepage_madvise(struct vm_area_struct *vma,
--		     vm_flags_t *vm_flags, int advice)
-+int hugepage_madvise(struct vm_area_struct *vma, unsigned long start,
-+		     unsigned long end, vm_flags_t *vm_flags, int advice)
- {
- 	switch (advice) {
- 	case MADV_HUGEPAGE:
-+		if ((*vm_flags & VM_NOHUGEPAGE) &&
-+		    mmu_interval_notifier_range_block_thp(vma->vm_mm,
-+							  start, end))
-+			return 0;
-+
- 		*vm_flags &= ~VM_NOHUGEPAGE;
- 		*vm_flags |= VM_HUGEPAGE;
++	if (bo->kfd_bo) {
++		mmap_write_lock(mm);
++		r = mmu_interval_notifier_insert_locked_flags(&bo->notifier, mm,
++							      addr, size,
++							      &amdgpu_hmm_hsa_ops,
++							      MMU_INTERVAL_NOTIFIER_BLOCK_THP);
++		mmap_write_unlock(mm);
++	} else {
++		r = mmu_interval_notifier_insert(&bo->notifier, mm, addr, size,
++						 &amdgpu_hmm_gfx_ops);
++	}
+ 	if (r)
  		/*
-diff --git a/mm/madvise.c b/mm/madvise.c
-index cd9bb0770..c7cee4fcf 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -1416,7 +1416,8 @@ static int madvise_vma_behavior(struct madvise_behavior *madv_behavior)
- 		break;
- 	case MADV_HUGEPAGE:
- 	case MADV_NOHUGEPAGE:
--		error = hugepage_madvise(vma, &new_flags, behavior);
-+		error = hugepage_madvise(vma, range->start, range->end,
-+					 &new_flags, behavior);
- 		if (error)
- 			goto out;
- 		break;
-diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
-index 245b74f39..852a5682b 100644
---- a/mm/mmu_notifier.c
-+++ b/mm/mmu_notifier.c
-@@ -581,6 +581,49 @@ int __mmu_notifier_invalidate_range_start(struct mmu_notifier_range *range)
- 	return 0;
- }
- 
-+/**
-+ * mmu_interval_notifier_range_block_thp - check if a range must not use THP
-+ * @mm: mm_struct to check
-+ * @start: start address
-+ * @end: end address
-+ *
-+ * Return true if an active interval notifier covering the range requested
-+ * MMU_INTERVAL_NOTIFIER_BLOCK_THP.
-+ */
-+bool mmu_interval_notifier_range_block_thp(struct mm_struct *mm,
-+					   unsigned long start,
-+					   unsigned long end)
-+{
-+	struct mmu_notifier_subscriptions *subscriptions;
-+	struct mmu_interval_notifier *interval_sub;
-+	struct interval_tree_node *node;
-+	bool block_thp = false;
-+
-+	if (start >= end)
-+		return false;
-+
-+	/* Pairs with the store in mmu_notifier_register(). */
-+	subscriptions = smp_load_acquire(&mm->notifier_subscriptions);
-+	if (!subscriptions || !subscriptions->has_itree)
-+		return false;
-+
-+	spin_lock(&subscriptions->lock);
-+	for (node = interval_tree_iter_first(&subscriptions->itree, start,
-+					     end - 1);
-+	     node;
-+	     node = interval_tree_iter_next(node, start, end - 1)) {
-+		interval_sub = container_of(node, struct mmu_interval_notifier,
-+					    interval_tree);
-+		if (interval_sub->flags & MMU_INTERVAL_NOTIFIER_BLOCK_THP) {
-+			block_thp = true;
-+			break;
-+		}
-+	}
-+	spin_unlock(&subscriptions->lock);
-+
-+	return block_thp;
-+}
-+
- static void
- mn_hlist_invalidate_end(struct mmu_notifier_subscriptions *subscriptions,
- 			struct mmu_notifier_range *range)
-@@ -933,13 +976,69 @@ void mmu_notifier_put(struct mmu_notifier *subscription)
- }
- EXPORT_SYMBOL_GPL(mmu_notifier_put);
- 
-+#define MMU_INTERVAL_NOTIFIER_KNOWN_FLAGS \
-+	(MMU_INTERVAL_NOTIFIER_BLOCK_THP)
-+
-+static int mmu_interval_notifier_check_flags(unsigned int flags)
-+{
-+	if (flags & ~MMU_INTERVAL_NOTIFIER_KNOWN_FLAGS)
-+		return -EINVAL;
-+	return 0;
-+}
-+
-+static int
-+mmu_interval_notifier_block_thp_locked(struct mm_struct *mm,
-+				       unsigned long start,
-+				       unsigned long end)
-+{
-+	struct vm_area_struct *vma, *prev;
-+	struct vma_iterator vmi;
-+
-+	mmap_assert_write_locked(mm);
-+
-+	vma_iter_init(&vmi, mm, start);
-+	vma = vma_iter_load(&vmi);
-+	prev = vma_prev(&vmi);
-+	if (vma && start > vma->vm_start)
-+		prev = vma;
-+
-+	for_each_vma_range(vmi, vma, end) {
-+		const unsigned long curr_start = max(vma->vm_start, start);
-+		const unsigned long curr_end = min(vma->vm_end, end);
-+		vma_flags_t new_flags;
-+
-+		if (vma->vm_flags & VM_NO_KHUGEPAGED)
-+			goto next;
-+
-+		new_flags = vma->flags;
-+		vma_flags_set(&new_flags, VMA_NOHUGEPAGE_BIT);
-+		vma_flags_clear(&new_flags, VMA_HUGEPAGE_BIT);
-+		if (vma_flags_same_pair(&new_flags, &vma->flags))
-+			goto next;
-+
-+		vma = vma_modify_flags(&vmi, prev, vma, curr_start,
-+				       curr_end, &new_flags);
-+		if (IS_ERR(vma))
-+			return PTR_ERR(vma);
-+
-+		vma_start_write(vma);
-+		vma->flags = new_flags;
-+next:
-+		prev = vma;
-+	}
-+
-+	return 0;
-+}
-+
- static int __mmu_interval_notifier_insert(
- 	struct mmu_interval_notifier *interval_sub, struct mm_struct *mm,
- 	struct mmu_notifier_subscriptions *subscriptions, unsigned long start,
--	unsigned long length, const struct mmu_interval_notifier_ops *ops)
-+	unsigned long length, const struct mmu_interval_notifier_ops *ops,
-+	unsigned int flags)
- {
- 	interval_sub->mm = mm;
- 	interval_sub->ops = ops;
-+	interval_sub->flags = flags;
- 	RB_CLEAR_NODE(&interval_sub->interval_tree.rb);
- 	interval_sub->interval_tree.start = start;
- 	/*
-@@ -1034,32 +1133,123 @@ int mmu_interval_notifier_insert(struct mmu_interval_notifier *interval_sub,
- 		subscriptions = mm->notifier_subscriptions;
- 	}
- 	return __mmu_interval_notifier_insert(interval_sub, mm, subscriptions,
--					      start, length, ops);
-+					      start, length, ops, 0);
- }
- EXPORT_SYMBOL_GPL(mmu_interval_notifier_insert);
- 
--int mmu_interval_notifier_insert_locked(
--	struct mmu_interval_notifier *interval_sub, struct mm_struct *mm,
--	unsigned long start, unsigned long length,
--	const struct mmu_interval_notifier_ops *ops)
-+/**
-+ * mmu_interval_notifier_insert_locked_flags - Insert an interval notifier
-+ * @interval_sub: Interval subscription to register
-+ * @mm: mm_struct to attach to
-+ * @start: Starting virtual address to monitor
-+ * @length: Length of the range to monitor
-+ * @ops: Interval notifier operations to be called on matching events
-+ * @flags: MMU_INTERVAL_NOTIFIER_* flags
-+ *
-+ * Like mmu_interval_notifier_insert_locked(), but lets callers request
-+ * additional MM-owned policy for the interval while holding mmap_lock for
-+ * write.
-+ */
-+int
-+mmu_interval_notifier_insert_locked_flags(struct mmu_interval_notifier *interval_sub,
-+					  struct mm_struct *mm,
-+					  unsigned long start,
-+					  unsigned long length,
-+					  const struct mmu_interval_notifier_ops *ops,
-+					  unsigned int flags)
- {
- 	struct mmu_notifier_subscriptions *subscriptions =
- 		mm->notifier_subscriptions;
-+	unsigned long end;
- 	int ret;
- 
- 	mmap_assert_write_locked(mm);
- 
-+	ret = mmu_interval_notifier_check_flags(flags);
-+	if (ret)
-+		return ret;
-+
-+	if (flags & MMU_INTERVAL_NOTIFIER_BLOCK_THP) {
-+		if (length == 0 || check_add_overflow(start, length, &end))
-+			return -EOVERFLOW;
-+	}
-+
- 	if (!subscriptions || !subscriptions->has_itree) {
- 		ret = __mmu_notifier_register(NULL, mm);
- 		if (ret)
- 			return ret;
- 		subscriptions = mm->notifier_subscriptions;
- 	}
-+
-+	if (flags & MMU_INTERVAL_NOTIFIER_BLOCK_THP) {
-+		ret = mmu_interval_notifier_block_thp_locked(mm, start, end);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return __mmu_interval_notifier_insert(interval_sub, mm, subscriptions,
--					      start, length, ops);
-+					      start, length, ops, flags);
-+}
-+EXPORT_SYMBOL_GPL(mmu_interval_notifier_insert_locked_flags);
-+
-+int mmu_interval_notifier_insert_locked(struct mmu_interval_notifier *interval_sub,
-+					struct mm_struct *mm,
-+					unsigned long start,
-+					unsigned long length,
-+					const struct mmu_interval_notifier_ops *ops)
-+{
-+	return mmu_interval_notifier_insert_locked_flags(interval_sub, mm,
-+							 start, length,
-+							 ops, 0);
- }
- EXPORT_SYMBOL_GPL(mmu_interval_notifier_insert_locked);
- 
-+/**
-+ * mmu_interval_notifier_set_flags_locked - update an interval notifier's flags
-+ * @interval_sub: Interval subscription to update
-+ * @flags: MMU_INTERVAL_NOTIFIER_* flags
-+ *
-+ * Update MMU interval notifier flags while holding mmap_lock for write. When
-+ * enabling MMU_INTERVAL_NOTIFIER_BLOCK_THP, the MM core first updates the VMA
-+ * THP policy for the notifier's address range.
-+ */
-+int
-+mmu_interval_notifier_set_flags_locked(struct mmu_interval_notifier *interval_sub,
-+				       unsigned int flags)
-+{
-+	struct mm_struct *mm = interval_sub->mm;
-+	unsigned long start = interval_sub->interval_tree.start;
-+	unsigned long end;
-+	int ret;
-+
-+	ret = mmu_interval_notifier_check_flags(flags);
-+	if (ret)
-+		return ret;
-+
-+	if (WARN_ON_ONCE(!mm))
-+		return -EINVAL;
-+
-+	mmap_assert_write_locked(mm);
-+
-+	if ((flags & MMU_INTERVAL_NOTIFIER_BLOCK_THP) &&
-+	    !(interval_sub->flags & MMU_INTERVAL_NOTIFIER_BLOCK_THP)) {
-+		if (interval_sub->interval_tree.last == ULONG_MAX)
-+			return -EOVERFLOW;
-+		end = interval_sub->interval_tree.last + 1;
-+
-+		ret = mmu_interval_notifier_block_thp_locked(mm, start, end);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	spin_lock(&mm->notifier_subscriptions->lock);
-+	interval_sub->flags = flags;
-+	spin_unlock(&mm->notifier_subscriptions->lock);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mmu_interval_notifier_set_flags_locked);
-+
- static bool
- mmu_interval_seq_released(struct mmu_notifier_subscriptions *subscriptions,
- 			  unsigned long seq)
+ 		 * Make sure amdgpu_hmm_unregister() doesn't call
 -- 
 2.53.0
 
