@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B77CDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC42ACDE001
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 11:31:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A92E96B010C; Thu, 25 Jun 2026 07:31:08 -0400 (EDT)
+	id 784886B00A2; Thu, 25 Jun 2026 07:31:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6A406B010D; Thu, 25 Jun 2026 07:31:08 -0400 (EDT)
+	id 75C176B00FD; Thu, 25 Jun 2026 07:31:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A8126B010E; Thu, 25 Jun 2026 07:31:08 -0400 (EDT)
+	id 671696B010D; Thu, 25 Jun 2026 07:31:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 726146B010C
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:31:08 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F04C0167689
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:07 +0000 (UTC)
-X-FDA: 84918218574.09.B644C9C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 319E66B00A2
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 07:31:11 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B54FCA0615
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:10 +0000 (UTC)
+X-FDA: 84918218700.10.2411D2D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3533A140007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dVeTUjoU;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0992B40005
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 11:31:08 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AD0tpk2Y;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf11.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782387066;
-	b=vF70D5dC2Tk6Dq4EWAeT+k+lmi+bmvno3RbmzF1GnABRGEMNkocprpm8nHjmbk+i1oDl1h
-	KcBuTsFuxwgt1yha/e6UYES1wWaHd2sPxN7ZDJYWrQphQ378cdAdT/DRXkc5Kbqomz4TvS
-	63USVLm5Y2xj3dXcd5R3bm9tuXBAGyU=
+	t=1782387069;
+	b=2gG3hycyE3Xr/Njs4nyhDE4/uRanxB80YloA7w0Cu/4LcrygoKP8BCcDJUluZfLDS9BSZL
+	u+znwlkcq/+MGmKLQdDYwkb+5d4h8TnWS8TqrjbbiOP8gyMxNReLqymInN4V2NsIGwPdcN
+	asDhuo0VCPtfopSIwNfB1J5zB/QQCTs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782387066;
+	s=arc-20220608; t=1782387069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=SSWPqL14BLonbO7R0VQVr7FBG/mp5EpHUIIbFs7w2GY=;
-	b=zOOqa8iShMZYn62DZy0MwxsvfoUiWWaqhcdSJPK5lOC9Er5MdCM0IACEkAzGDvmOcBBjjQ
-	+UKA21yVnwRcGjfBfhMm/osTyKkRCSQK4im9RgfgHwEmM0Xn4dDte0rReKwtSRuTWiODi4
-	Wli+OMgvNV7wBgwc4kDMerBMqtm6iCQ=
+	bh=J8zGE6vhMIdiOYpUeFjL4QjBRkO2+prBeARLGT6x38c=;
+	b=ESPT1twnULQN8YLcrbB/WMs7AOsDlOPpdXR0DL4m3VIAZmaMiMwgldKrx0gSDyQlun6AiS
+	l6a0Mm8VePcFKU6jS3QgHl2qvrpQcAW5ibtyhi9yP0LGc49yvsyV2JSXeEcZx/pMJSzcN+
+	KSQctj23xqzd81q8PyjGYNZ+CerL52c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=dVeTUjoU;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+	imf11.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=AD0tpk2Y;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf11.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8A139600FC;
-	Thu, 25 Jun 2026 11:31:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB8D1F000E9;
-	Thu, 25 Jun 2026 11:31:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D1CD60018;
+	Thu, 25 Jun 2026 11:31:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D411F000E9;
+	Thu, 25 Jun 2026 11:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
-	s=korg; t=1782387065;
-	bh=SSWPqL14BLonbO7R0VQVr7FBG/mp5EpHUIIbFs7w2GY=;
+	s=korg; t=1782387068;
+	bh=J8zGE6vhMIdiOYpUeFjL4QjBRkO2+prBeARLGT6x38c=;
 	h=Subject:To:Cc:From:Date:In-Reply-To;
-	b=dVeTUjoUtZCTcyovj301zVADU3PsNZUParU1TttfxbsI2VquFxi0Q0+nrLR6o1XvF
-	 6DGTJQ+Zpdw5DGyiXaAtaCxJHV/LYp7aPHjEzdIjCk0mImqNLpzDhRtGhkzg7ujPZO
-	 ZOiWwLpltB4+JL4BJWkgDE8DIsf9vp4zXRit/ti8=
-Subject: Patch "mm: add atomic VMA flags and set VM_MAYBE_GUARD as such" has been added to the 6.18-stable tree
+	b=AD0tpk2YQyRS/PV6tv2eRek9LHMQilCufzo421N1O78gRffbeVSzmWdaYhZX9LJxR
+	 cGIpeRiwy7XOST5h7L2SSmEAIevuuq44V+dYiGxThFF2eHBq0TS+tM4isYqt4GZEfP
+	 e300NZ+wbi15m+eF1kgvTkAoRQH6FiqohOBtBqnk=
+Subject: Patch "mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one" has been added to the 6.18-stable tree
 To: akpm@linux-foundation.org,avagin@gmail.com,baohua@kernel.org,baolin.wang@linux.alibaba.com,corbet@lwn.net,david@kernel.org,dev.jain@arm.com,elaidya225@gmail.com,gregkh@linuxfoundation.org,jannh@google.com,lance.yang@linux.dev,liam.howlett@oracle.com,linux-mm@kvack.org,ljs@kernel.org,lorenzo.stoakes@oracle.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org,mhocko@suse.com,npache@redhat.com,pfalcato@suse.de,rostedt@goodmis.org,rppt@kernel.org,ryan.roberts@arm.com,surenb@google.com,vbabka@suse.cz,ziy@nvidia.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 25 Jun 2026 12:29:47 +0100
-In-Reply-To: <20260515124218.151966-4-elaidya225@gmail.com>
-Message-ID: <2026062547-laundry-raking-aa16@gregkh>
+Date: Thu, 25 Jun 2026 12:29:48 +0100
+In-Reply-To: <20260515124218.151966-7-elaidya225@gmail.com>
+Message-ID: <2026062548-dining-quail-c025@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore
 X-Rspam-User: 
-X-Stat-Signature: 36suopc9httyn5oono7iwyru8s46skpk
-X-Rspamd-Queue-Id: 3533A140007
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782387066-725060
-X-HE-Meta: U2FsdGVkX18RIJeUrjjvPoLDnAisLg92h2PIkbpPz8UDqvguaKiwwrMoQdvHHFdYHm/hNUK9LnsMwoZEVaORVlB9AEScqnrFsX0YyqPAHBc/4PIduy6doc1kwuH5mou0A3GOTAMYeuf+QvTdCIXFYlKHRr+0zR6+SBkHUdWR9UofLUKsDZA5hxKDLDpF4+ZtEN0BPUmEhG+bA8LLdNbmyzZQSWfL2a0QeQfOyZoTh+dlUHvDXBwVVVgioYMc5F3ebK9oArliqRgL1Kxzmi6SFuE0P45nDjU+EFbGMq6b5bzDFgF4oEGlnxqWALjIJ2T8sKXQuNhHRKPB+dNwuapLNjbtq68g6o3CIE+MAE9QLQGFf0RFyUDxDqpB98kgcreryDImWHRVcHX7EYQzFv46jwyz3fDSaNG5k1RvAIHp7LTFoB4VRJPMpnc8k3YkXROr+znzhJaFlxle5jpAzQQ8dCgvEC5NeP5snwtnv0Xw7lG3KcDkGmhYRGhvwW9I1D7tNRkNYXGBZuC4zRJcQJz2PnfiVvY01ZO1hN1nHBW93aSXIv8Ab71xsacYgo7d9IFSFwSyK09TzjYSE2TE/50wfE3PET8rRoob+QJkvikcPElUMTC9ymDAwbGIe18XqSgQS42he1t0yAtS27cAOh7Tn8DJY+Td8szQQBzWXVbjXWYqjsexdKxvI5eFsprV1Z4owsd006D11ShJdar78tfLZxjmcsbe7c4ivy/nQ0tF0urHOCkThM/HoFUJFhBBS537/Xn/sYCGojAPtgfwIDrAzWadnchEznGrpD1SSL3oXzAKQwdaAA2RXf6/SgWR0luHz65ACrYdws7FFqyIU9FLvlJ1M3Ble3Rms9xQdvF6jxtODcKZCPxYN1Jy+0ls33iB86oyIw72HThjd4gIIH7qXOr3ht7wJ7WCsS7m9Y7KpllTBkp37kH8hn7I+Nvn1LAmOZ2DX+7s/znmoTDqz8a
- EmLjKlq9
- W0y+ioXsLCMo7nFHgB4UedXzR+NJrzr4wX/+VEkHCdY7NnJ3MUJhm9IlDdtM+yTFIVzHRlhXVuUZGodAD4i32VIeVlXX4+ccLVKEVmXeZPICSNisztou5uSinTh8HQTgwATZ+tJZo73tUCsTjUZz4OV/dGghjhbQ8wsGDCtFG0NgtxupxQOnKP7tu3s/5jaD52a7suc41+s0EFgODbaXlotRQ4yj2bh2H0zzDsJ+d6avtmorxau6tAFryHpUuzTxvklM+3IuP8jhSzyAssF8CufXDSO2hMvBLH8Vgs9As78Rx2UjUNfPzRcyfnPJjqymiZubcL6zye8TVQvSn7hZiARaKaaNW/J/6vK4xDkdZSpEC6Rr5Ismk/1/hXbRl0fQkjyzf1l91NzSwzEh/oaSvmBIRpPH/YoYCMc6i0f7jp4Xvl0IAVdwM8ymG67sgnWCWZJJdUrzb2SGnDA+xr4ioWtCIg97jcbtWt1z0Ve03dOUCmHoAQHTkK/BR1UKNMhvUTStz6CNrFOS+ua95pvIn8LtuMWHrz/yZilnxsu58dBc17fwbgMCjn0yeBX5UmN1bVQWcBf7sfz7EOsc3KQH3wCxVz5gcG4JM7yqYBlwhkJFTGHJzWshM1u3ttxGnEPWDZvaO/4CltACDsrC+qtU/AWAQ7IgdKOQF4wPCwocYTCBnp51JLp78kNZxA6ym/azFArLc5cP+gexHJofObh9RVBL6HnRmNdjV6UcYWAtqAtzaM/0WhfUMsrvhIu5q8s+6ChwmqkT5jzQ4GSxTghmUQLPMgsry1/JuLKqV9e/ad8GSagX/gwfGcuu6hi4DutFUDNV/b0rkYC6KjUYozCYGo49uIBxRG9bMSbf3GJ0WkQY+JcWaJq/VZHa4SNjpJBjuqSoJI8STWDSFstItn+3Z8V+nFVWOuESJ9lixlGrnZey5Vl5SkzUMGR9oGW4zZnLp38x9npIukrrIhD+ftgy09aG2yraj
- Zb5NM5gi
- JCaV8xLAENmlPQS7DIMh663pYYeMUeWHpCe2tCg4OX3/tsRXggjdlw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0992B40005
+X-Stat-Signature: zjowx5yfu9fyzjbr6ho68aesjfjiyhyc
+X-HE-Tag: 1782387068-619488
+X-HE-Meta: U2FsdGVkX19znuF3aJQzVkZ+wEUfvImC1tDv++3FTTdHkhmKU/FeXY4mq4c36GqbxT1JKl8wBsosr7eagKTzS5wLtPCrpLQjzeFzVoyoPvASTXgIe0xnIrrpUKRF0UthdjCuhOEfpPAchTuoywnnY0QnCJ2OTo4ZoOERK1g/HAQwfiJCq83j3o0j5jDTMeDxJ8lDukN4RQ7c+EzaKYL7p+2znIqMxfy2HSQsGLPTS8Qt0mJ0tLnfA2T7fraYrywMxVqoSPveswaCM1BHFXl1ESCNMUfY03Ov3NVdK9XBAuFWJL+ZIWWkBo72kAPgyWHo2usw3DMr2jOsVJiR03BlWZiDlBEag10eCK8LnEbrii7P7LoMe3+Jb3VhANe+mqwnY+jhgg7xavJ5x4xGXsOdbLcS9VoG3ncZFyNmfNov5IbWKXwOs7HplbWUR9iOlzDP8zzZmIyHrISn8H3ATz74/Ck+H7GBtBErjHzp6RohpeAQMDRVvUfyx32P/tUbRmf/os9pZHvN/yEXERS0zaAEJWl5220sDEbD/gegubuDSGVe6cqbYcLqzEkcFUeYd25C3XB3he0eY51Bs6gPIekP4paPMR1vPWYU/yFwtMPvt+5QttnTcMF2ANbSlmyfByAQXpZFJJTWw0AZDxDdoDP3dQIuwgxLa9m1ZzGDPo5PPwumYk5Z5Eg1mRn71/ynuoMpvTuT+hsfIuXMnq4BH4Tvc/i5C5YS7To0f6NlrKV+1gJ0eJDOv0h/lPg9mnM2T9wQXVZdevl4qAuSod7umVvVT0Q4fcd0kGyjOBHNNCeE69TGzCv5LZ9MBLodOy/yWuckoNBwmvgqd8HYRs5/XU5xbLcumOZ+y3q/aAmUJbVFLiVbxPRkQT1A9fN5T3kWipOLQ1mDvnKnzzYbRWfqKFFtMGeHeaZdQp1GanM7P9TGQbZMK06cZaWtEXr7HJMXJKHRHCKj/ZtJbXu12GCoCgU
+ eeK7HcDz
+ jQn/rhJ8IwRw7JngivbIgM4EA+h68JsSac9zOz02IgiIQalf441bvINx6MfxTYfIG5La9gUyO7/6XOutWXz3klZi2qYVKGnQznggDE097qoB+bRmRk5/XykntIkimOo5Cr9FkMzkQp8ZLjRoRp6HtoOPJUfVU3mYG8qR38TC4Dfiu58b439ZXq89yy2unNv4nykFouXAxZ9gQN84ta88KCkvyCZBQkwxvtky2nIGHSBKoRH6RvOc1E3fdmtciWUQcHXswZBxgoxwAroF2CTTzoxW+sUffBsLSMQGGkwjfOZ+RAJYpt3fZqME9opC4IIzWGniOkWSJY2ehV6b7GvU1bG09Tr6JAlHNtV2XraCSfmoL9B2AhXW2Wv0Vn8kKNXMoyDLQVmciGfnieJSNuN72hE7C+7qQ8ReVTmoEiKJvj+P90Q15yiclvRKXyH5gQmTRJt/i52Tv+WxK5ywIklsV4XzxhLyibjRUwasMPZvazmAiXmlvuv3NU+l0nLzLeccoTqCMZrxC8XaHZoknq+6boz6C0Gy1V9KbbaS+oUSfuRDhKGULH1i5JjKDAdLqBvZYx7CTN7HUJV76a1ZNP2RSdgM4E5QE0Pyi96hx0xObr3LTK6RuBTej0iEcDuSS7Cwpyjv4lIUYN2GX5jbv6iGr/+O7dLg8qMBITCKBPxRf9QCMJJRsl6NulMWcxGrPaLv8slidQzIpXs/thhn/axYDkrm1z7vuTYwibm8TEL89v/ynLuejyfuXkc1Jen1+7qd/DSdXzl6BJEohAZ2rS3Qgiy9HkfbCSXbi3F5gWtNLfHH4rYWombgEsQ3LvSL6DZLXjRtCOAuUQHIgWCP8toJyrMeT7YHr8/4/gJ69hZRU0zgwByIwJQRSpLv85OibeDBcVXpkbltvVp46H1bDp03MIKGPZmZ2NHOC4qlpaVnyMa8y4rTGaaSwDtCEiaXYQmri5Rwl1LyTq9dFbp9XcmrWaZzmwtWZ
+ qsiqanQm
+ /Up4zAy7A0UMNfOeB1xHI8EQnhJdr3XTmin1liYVplP5rDyV0eyeOA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,53 +93,64 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    mm: add atomic VMA flags and set VM_MAYBE_GUARD as such
+    mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one
 
 to the 6.18-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     mm-add-atomic-vma-flags-and-set-vm_maybe_guard-as-such.patch
+     mm-introduce-copy-on-fork-vmas-and-make-vm_maybe_guard-one.patch
 and it can be found in the queue-6.18 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-247749-greg=kroah.com@vger.kernel.org Fri May 15 14:05:33 2026
+From stable+bounces-247752-greg=kroah.com@vger.kernel.org Fri May 15 14:05:45 2026
 From: Ahmed Elaidy <elaidya225@gmail.com>
-Date: Fri, 15 May 2026 15:42:12 +0300
-Subject: mm: add atomic VMA flags and set VM_MAYBE_GUARD as such
+Date: Fri, 15 May 2026 15:42:15 +0300
+Subject: mm: introduce copy-on-fork VMAs and make VM_MAYBE_GUARD one
 To: stable@vger.kernel.org
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, ljs@kernel.org, avagin@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>, "David Hildenbrand (Red Hat)" <david@kernel.org>, Lance Yang <lance.yang@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Jann Horn <jannh@google.com>, Jonathan Corbet <corbet@lwn.net>, Liam Howlett <liam.howlett@oracle.com>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>, Ahmed Elaidy <elaidya225@gmail.com>
-Message-ID: <20260515124218.151966-4-elaidya225@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, ljs@kernel.org, avagin@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Pedro Falcato <pfalcato@suse.de>, Vlastimil Babka <vbabka@suse.cz>, "David Hildenbrand (Red Hat)" <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <baohua@kernel.org>, Dev Jain <dev.jain@arm.com>, Jann Horn <jannh@google.com>, Jonathan Corbet <corbet@lwn.net>, Lance Yang <lance.yang@linux.dev>, Liam Howlett <liam.howlett@oracle.com>, "Masami Hiramatsu (Google)" <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Steven Rostedt <rostedt@goodmis.org>, Suren Baghdasaryan <surenb@google.com>, Zi Yan <ziy@nvidia.com>, Ahmed Elaidy <elaidya225@gmail.com>
+Message-ID: <20260515124218.151966-7-elaidya225@gmail.com>
 
 From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit 568822502383acd57d7cc1c72ee43932c45a9524 upstream.
+commit ab04b530e7e8bd5cf9fb0c1ad20e0deee8f569ec upstream.
 
-This patch adds the ability to atomically set VMA flags with only the mmap
-read/VMA read lock held.
+Gather all the VMA flags whose presence implies that page tables must be
+copied on fork into a single bitmap - VM_COPY_ON_FORK - and use this
+rather than specifying individual flags in vma_needs_copy().
 
-As this could be hugely problematic for VMA flags in general given that
-all other accesses are non-atomic and serialised by the mmap/VMA locks, we
-implement this with a strict allow-list - that is, only designated flags
-are allowed to do this.
+We also add VM_MAYBE_GUARD to this list, as it being set on a VMA implies
+that there may be metadata contained in the page tables (that is - guard
+markers) which would will not and cannot be propagated upon fork.
 
-We make VM_MAYBE_GUARD one of these flags.
+This was already being done manually previously in vma_needs_copy(), but
+this makes it very explicit, alongside VM_PFNMAP, VM_MIXEDMAP and
+VM_UFFD_WP all of which imply the same.
 
-Link: https://lkml.kernel.org/r/97e57abed09f2663077ed7a36fb8206e243171a9.1763460113.git.ljs@kernel.org
+Note that VM_STICKY flags ought generally to be marked VM_COPY_ON_FORK too
+- because equally a flag being VM_STICKY indicates that the VMA contains
+metadat that is not propagated by being faulted in - i.e.  that the VMA
+metadata does not fully describe the VMA alone, and thus we must propagate
+whatever metadata there is on a fork.
+
+However, for maximum flexibility, we do not make this necessarily the case
+here.
+
+Link: https://lkml.kernel.org/r/5d41b24e7bc622cda0af92b6d558d7f4c0d1bc8c.1763460113.git.ljs@kernel.org
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Cc: Andrei Vagin <avagin@gmail.com>
 Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: Barry Song <baohua@kernel.org>
 Cc: Dev Jain <dev.jain@arm.com>
 Cc: Jann Horn <jannh@google.com>
 Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lance Yang <lance.yang@linux.dev>
 Cc: Liam Howlett <liam.howlett@oracle.com>
 Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
@@ -154,69 +165,113 @@ Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Ahmed Elaidy <elaidya225@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |   44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ include/linux/mm.h               |   26 ++++++++++++++++++++++++++
+ mm/memory.c                      |   18 ++++--------------
+ tools/testing/vma/vma_internal.h |   26 ++++++++++++++++++++++++++
+ 3 files changed, 56 insertions(+), 14 deletions(-)
 
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -501,6 +501,9 @@ extern unsigned int kobjsize(const void
- /* This mask represents all the VMA flag bits used by mlock */
- #define VM_LOCKED_MASK	(VM_LOCKED | VM_LOCKONFAULT)
+@@ -539,6 +539,32 @@ extern unsigned int kobjsize(const void
+ #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
  
-+/* These flags can be updated atomically via VMA/mmap read lock. */
-+#define VM_ATOMIC_SET_ALLOWED VM_MAYBE_GUARD
-+
- /* Arch-specific flags to clear when updating VM flags on protection change */
- #ifndef VM_ARCH_CLEAR
- # define VM_ARCH_CLEAR	VM_NONE
-@@ -843,6 +846,47 @@ static inline void vm_flags_mod(struct v
- 	__vm_flags_mod(vma, set, clear);
- }
- 
-+static inline bool __vma_flag_atomic_valid(struct vm_area_struct *vma,
-+				       int bit)
-+{
-+	const vm_flags_t mask = BIT(bit);
-+
-+	/* Only specific flags are permitted */
-+	if (WARN_ON_ONCE(!(mask & VM_ATOMIC_SET_ALLOWED)))
-+		return false;
-+
-+	return true;
-+}
-+
-+/*
-+ * Set VMA flag atomically. Requires only VMA/mmap read lock. Only specific
-+ * valid flags are allowed to do this.
-+ */
-+static inline void vma_flag_set_atomic(struct vm_area_struct *vma, int bit)
-+{
-+	/* mmap read lock/VMA read lock must be held. */
-+	if (!rwsem_is_locked(&vma->vm_mm->mmap_lock))
-+		vma_assert_locked(vma);
-+
-+	if (__vma_flag_atomic_valid(vma, bit))
-+		set_bit(bit, &ACCESS_PRIVATE(vma, __vm_flags));
-+}
-+
-+/*
-+ * Test for VMA flag atomically. Requires no locks. Only specific valid flags
-+ * are allowed to do this.
+ /*
++ * Flags which should result in page tables being copied on fork. These are
++ * flags which indicate that the VMA maps page tables which cannot be
++ * reconsistuted upon page fault, so necessitate page table copying upon
 + *
-+ * This is necessarily racey, so callers must ensure that serialisation is
-+ * achieved through some other means, or that races are permissible.
++ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
++ *                           reasonably reconstructed on page fault.
++ *
++ *              VM_UFFD_WP - Encodes metadata about an installed uffd
++ *                           write protect handler, which cannot be
++ *                           reconstructed on page fault.
++ *
++ *                           We always copy pgtables when dst_vma has uffd-wp
++ *                           enabled even if it's file-backed
++ *                           (e.g. shmem). Because when uffd-wp is enabled,
++ *                           pgtable contains uffd-wp protection information,
++ *                           that's something we can't retrieve from page cache,
++ *                           and skip copying will lose those info.
++ *
++ *          VM_MAYBE_GUARD - Could contain page guard region markers which
++ *                           by design are a property of the page tables
++ *                           only and thus cannot be reconstructed on page
++ *                           fault.
 + */
-+static inline bool vma_flag_test_atomic(struct vm_area_struct *vma, int bit)
-+{
-+	if (__vma_flag_atomic_valid(vma, bit))
-+		return test_bit(bit, &vma->vm_flags);
++#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
 +
-+	return false;
-+}
-+
- static inline void vma_set_anonymous(struct vm_area_struct *vma)
++/*
+  * mapping from the currently active vm_flags protection bits (the
+  * low four bits) to a page protection mask..
+  */
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1479,25 +1479,15 @@ copy_p4d_range(struct vm_area_struct *ds
+ static bool
+ vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
  {
- 	vma->vm_ops = NULL;
++	if (src_vma->vm_flags & VM_COPY_ON_FORK)
++		return true;
+ 	/*
+-	 * Always copy pgtables when dst_vma has uffd-wp enabled even if it's
+-	 * file-backed (e.g. shmem). Because when uffd-wp is enabled, pgtable
+-	 * contains uffd-wp protection information, that's something we can't
+-	 * retrieve from page cache, and skip copying will lose those info.
++	 * The presence of an anon_vma indicates an anonymous VMA has page
++	 * tables which naturally cannot be reconstituted on page fault.
+ 	 */
+-	if (userfaultfd_wp(dst_vma))
+-		return true;
+-
+-	if (src_vma->vm_flags & (VM_PFNMAP | VM_MIXEDMAP))
+-		return true;
+-
+ 	if (src_vma->anon_vma)
+ 		return true;
+ 
+-	/* Guard regions have modified page tables that require copying. */
+-	if (src_vma->vm_flags & VM_MAYBE_GUARD)
+-		return true;
+-
+ 	/*
+ 	 * Don't copy ptes where a page fault will fill them correctly.  Fork
+ 	 * becomes much lighter when there are big shared or private readonly
+--- a/tools/testing/vma/vma_internal.h
++++ b/tools/testing/vma/vma_internal.h
+@@ -145,6 +145,32 @@ extern unsigned long dac_mmap_min_addr;
+  */
+ #define VM_IGNORE_MERGE (VM_SOFTDIRTY | VM_STICKY)
+ 
++/*
++ * Flags which should result in page tables being copied on fork. These are
++ * flags which indicate that the VMA maps page tables which cannot be
++ * reconsistuted upon page fault, so necessitate page table copying upon
++ *
++ * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cannot be
++ *                           reasonably reconstructed on page fault.
++ *
++ *              VM_UFFD_WP - Encodes metadata about an installed uffd
++ *                           write protect handler, which cannot be
++ *                           reconstructed on page fault.
++ *
++ *                           We always copy pgtables when dst_vma has uffd-wp
++ *                           enabled even if it's file-backed
++ *                           (e.g. shmem). Because when uffd-wp is enabled,
++ *                           pgtable contains uffd-wp protection information,
++ *                           that's something we can't retrieve from page cache,
++ *                           and skip copying will lose those info.
++ *
++ *          VM_MAYBE_GUARD - Could contain page guard region markers which
++ *                           by design are a property of the page tables
++ *                           only and thus cannot be reconstructed on page
++ *                           fault.
++ */
++#define VM_COPY_ON_FORK (VM_PFNMAP | VM_MIXEDMAP | VM_UFFD_WP | VM_MAYBE_GUARD)
++
+ #define FIRST_USER_ADDRESS	0UL
+ #define USER_PGTABLES_CEILING	0UL
+ 
 
 
 Patches currently in stable-queue which might be from elaidya225@gmail.com are
