@@ -4,116 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BB98CDE00E
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 21:21:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35AE7CDE00E
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 21:28:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DFD46B0005; Thu, 25 Jun 2026 17:21:11 -0400 (EDT)
+	id 0F6636B00BF; Thu, 25 Jun 2026 17:28:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 290D36B009B; Thu, 25 Jun 2026 17:21:11 -0400 (EDT)
+	id 0CED96B00C0; Thu, 25 Jun 2026 17:28:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17FF86B009D; Thu, 25 Jun 2026 17:21:11 -0400 (EDT)
+	id EB34C6B00C1; Thu, 25 Jun 2026 17:28:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D99B36B0005
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:21:10 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E7738CFBC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:21:10 +0000 (UTC)
-X-FDA: 84919705500.06.779BD8B
+	by kanga.kvack.org (Postfix) with ESMTP id C4E466B00BF
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:28:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 496E714025C
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:28:22 +0000 (UTC)
+X-FDA: 84919723644.27.EC2904A
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8ED63180006
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:21:07 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=LGdYDv07;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=e1tX3Oxb;
-	spf=pass (imf06.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 98FA618000F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:28:19 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=bhsprzAC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EOp3vwcy;
+	spf=pass (imf16.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782422467;
-	b=xN2BIMyRZXcaP2PJODeudHpNq4MiHGT9qCAOXp3nQrs8eorkJp03WeVKlt6fxSxZeUwi38
-	+GTAzGw7qVJZ9eM/uEODlqeu3BvAgIeSX3b6FQd0ONP2xDdA25wtRfD2kkZ1uGt7ZP8j1G
-	yulEPgXAVPtVKCmWIdt8+w01T35e7wM=
+	t=1782422899;
+	b=UejNz1UabMt5YmcBSE8UVHWsyzQw97vAaX4nR8haWcO1n6LSmzmOa68gfpp/B6LyAEiUr1
+	GaKSVrb+z9ISLAALJ6V0jFozrWc8vi9gdHGfu/jObDZqHFfLZv8GKCo1xQ5mJ3uJ+BxyxA
+	Kk6CCGWHL3JRrFSN+PpE2ttYxQeWLm4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782422467;
+	s=arc-20220608; t=1782422899;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rDBSl4oSawDBGp4EE+DhIVEqti8kBgTQJq6hOPS71dw=;
-	b=w1tfxRXTHeySSRZKplcqqJL7xyCN0XIocUrfd1BXZkRELzYMD/35Z+HjGAVLGldhBWSMtb
-	ELPfJAcyCgnkC5f/EfW6RpQWVKnKPjHCPxVHzrgXj5yFLfMkqjXS3FjaEA6odzO+at1y2r
-	y0ASf2p/KofwzWfJtlogeGG9/199qgQ=
+	bh=QS7UHeLZQ8FUPa0FNvzQZRUxB4HFWhnIDFIBp7tIS6w=;
+	b=wayYb6JQBYGaFREv92ZMQFz+yxpwmIgdij872Q/86hxG+Xy2G/KW53Cun9F96t9PPe+81y
+	NWHSwIIDNwKm5x+gbrj3ZuZ20JdTlEXbnyb6woMvWQrT2N/+HPSEXBF3Ud90rMNnLGH2aW
+	GfSEq4Ua7gecsBurK6U2Fj2VUV3K0qY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=LGdYDv07;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=e1tX3Oxb;
-	spf=pass (imf06.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=bhsprzAC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EOp3vwcy;
+	spf=pass (imf16.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
 	dmarc=pass (policy=reject) header.from=qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PFePAE2801847
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:21:06 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65PJkb1J3388125
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:28:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=rDBSl4oSawDBGp4EE+DhIVEq
-	ti8kBgTQJq6hOPS71dw=; b=LGdYDv07oS3smIKoER9m6aduJXoqyAnh/EuRW3kA
-	k9kaipZ92UNfdZJ9bGDoJzFMkst66AkQlf7OQ9jbNHqbXgG5hoWI76fUW5fg0EfB
-	uOPqdHmZ5VKXVCGliDVqK8213HJKz0pS7lI46qjIJrvAdB6Nq5RsydPtA9h+Fhnu
-	9rn/HLeRCC8jAX8XGK/NT0PUiQi2eJ20yI58Ka7ybIj2+wk+H/jGgpBdlPZufoNR
-	NXw0Il+lEgWaTB2M8SqzYh/noCHeXIOHwka24jPeiZF+dDuwf9Lba9kpl8z7x1TQ
-	UY7CUtiBhHw7UogJZfO6jhG67aoj+uP9STZGsztfTXwmUw==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f0uhmmb1j-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	QS7UHeLZQ8FUPa0FNvzQZRUxB4HFWhnIDFIBp7tIS6w=; b=bhsprzACOGqjhen2
+	Nt0Y5lU8ib3eUGl3WmeWVM07S3w1G8hoBh7Y8fPitS0YnTc0muQRKdkKq1BXYeDN
+	ZmFG8f4rtiZ7RuSDvVBMw8iIlbF1S37lqzaUCrcwYPdKAHq5W7j1KhgiQ00wERwM
+	tDlGXG91vHqjZk5bsDPLOgCEROI7TLmCpZE+ujqzl8tgHzvTv5o6R8pbvc95Gl6j
+	czOU/9bOCDde4vuD/yxKzWVT87G/ML0UcBgGzvvN2i4Suad8HOj786YyuDcmNthZ
+	cKYisTflEGgBPVROWcQmWVnqWnWUY+76GkPUb63dfqinaESZoUrUP/qtxHn5J4pW
+	T/Zkuw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f1askr99w-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:21:06 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30c0a27ad86so180575eec.0
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:21:06 -0700 (PDT)
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 21:28:18 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c8a940e76so349269eec.1
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 14:28:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1782422466; x=1783027266; darn=kvack.org;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rDBSl4oSawDBGp4EE+DhIVEqti8kBgTQJq6hOPS71dw=;
-        b=e1tX3Oxb84WAOCKAddbloLpN4GPrGp6MlcDjzD0+j/Ukf478p0N89YEWWXs6PPYb0i
-         GBASU6DM/OvD7VipbQaCEPTmL9AQpPFWg6ehNhiO042q4/2u00z3gZFQ8vl55tkyYhZi
-         hmfslTuspIMm5Pp1q6q7PLzFjXo0CkSzKJn7+uicLjw7k+cmeX4HS7sK3RLv+u0RDIJ4
-         buQCJMwzS4xRxfcrQZbvlgDo94c6iaEmmaDi4yMUPBtj4lv7U7ArXS2ssp4shSB+tMdv
-         mf5loFw0nAr6A+BkHE79OdCyeOs6pw8R/PPltY5qbh+Tio9wTGMSybEmp3pVr3/iYXbs
-         Mt/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782422466; x=1783027266;
-        h=in-reply-to:from:references:cc:to:content-language:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+        d=oss.qualcomm.com; s=google; t=1782422898; x=1783027698; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=rDBSl4oSawDBGp4EE+DhIVEqti8kBgTQJq6hOPS71dw=;
-        b=PpM5MPiKupJCfBXazZXU+myx6tGUGyMoDGjOyQz0AbyFV2H/Sx02fwoUSaV+CVK4qp
-         RJsfgr+7wsWMUcVyu1SmIe24gjWRfqtFNT1KOt/rbz7f/8Z3hwfOrOs2KDRzK7AvxPzo
-         vksEy1BHI3dXpA8sYKYn1EhQYwybPen1NexHeZrAXa9BuNfENRHR5eKkK+3+hChqFoo+
-         fs3RP2QKB9nK1zttCtvbCPrxqH1IZ7xAYgeKU6yMFvCCiTtqDAC8YkAF9n2k+6RHNaUI
-         Uxyg3MEsMotdkqsRix/OA9Dx/NapqgVQotCylGKn+5fLvVaGRij3LSl3DF4KCX7Jb5IO
-         jeIg==
-X-Forwarded-Encrypted: i=1; AHgh+RqhQecwJH1JkzYOVv4ybTXnuzKVAK36oiKTlDVwmz7lzxAmaDEgBOQ1ixQTz3vyrhUxK8AJQGHeRw==@kvack.org
-X-Gm-Message-State: AOJu0Yzjccj/udeHlgQ91hGgpFtKZaiteLvjy182/++EgSBTiiiqAVan
-	WMZlG/YTuI98O7AYDu7HQnzQ4jD6WAeNhtXC7u6LGjgBdU+b6gh3PJ3RAFwcKoW6aXE4Dec7uXP
-	WbhAlUyiVzAljt7uWQBEF8qRGGtYtkChgWC/tswMQAZsxxYEdxJsiuQ==
-X-Gm-Gg: AfdE7cnKf5TBQ0SL/4tugoRdndqOffvhv98rq4C+dP/1P7m8zery45rkb1fQsGJqT9O
-	keDBo//xk+c6rUw7vInZ8k8FzxTgS1hzLDJt7wAuOc/tsxflv56KFEBCeo3sjzG8xqUgvu+kMcn
-	ONnTQPkWOdM24R0za9tGgbTVsWdcF+jh0Om8q/Yhh6r750A8S7Dl4ywdox49PQP5iXvJu9qldV9
-	URyZ06wUizhg5UdNcSnz3TNf2+F7CCzhARO9FQpTiAfd+4uEO5STj0+0W7PuARoXTvamOoq6S7I
-	WO+8BvsoBGdEB76bkff8pMIyYul+ta3ZIVFsPXJOrjOFjNp/A4v23Dr58v43JZlIxgmxPt0pBtR
-	56NEZifFWs+pcLnDw/rIz+Q8DDs4ax0wAa+eb4sz9
-X-Received: by 2002:a05:7301:3d0d:b0:304:eaa8:11ea with SMTP id 5a478bee46e88-30c85124ae2mr4280805eec.34.1782422465515;
-        Thu, 25 Jun 2026 14:21:05 -0700 (PDT)
-X-Received: by 2002:a05:7301:3d0d:b0:304:eaa8:11ea with SMTP id 5a478bee46e88-30c85124ae2mr4280734eec.34.1782422464116;
-        Thu, 25 Jun 2026 14:21:04 -0700 (PDT)
+        bh=QS7UHeLZQ8FUPa0FNvzQZRUxB4HFWhnIDFIBp7tIS6w=;
+        b=EOp3vwcyarUMYhoPCiBhTd5sNRKXQ1RGRIylmOFd2gJMCllm8jVmGSKSqxVYESoaZ1
+         OU0yYqGbuFaPMHNCEXx+Im/KbL+QoLrbIln0ckxOzJVv+yRT2wLmoZUJnB7DeRrwRniC
+         Ks335OuaGXUN+ts0GKNUeQU3mBjmOrUnylhNc9O8XMXwHf5VPRpT39ZqXKDY15vwt/2n
+         kkHKWNz36VRlJyQX7BrgNEZT3GGUamUg/7IMiarWleo8hstVEH7AOj0WKZlkojZVAtQ1
+         o5QlwRFt2ZJnspmXCBYcli6AjtCxaDeUGijooxTvHX3hO6MsInwB9YV9PZHepha+/gM4
+         fvoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782422898; x=1783027698;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QS7UHeLZQ8FUPa0FNvzQZRUxB4HFWhnIDFIBp7tIS6w=;
+        b=GhTQcJkPObat+IeYW/AeI+IlBGu+lDLnTrvEl+tp/kzHuoUSMQOWqdSz32g6EzUXeN
+         YW6NpW7U22e1ooZh9A1LcjK1mzH4cwiNih9y4AOwzUx0ONt35XdPzLtbh27EBX/dSj8k
+         SkX03jQ8ELNnqGuhEI8B7IqlOaesAtpFefSzEnsqTc+XbmLHe93rhStrJQ5TNhkKOm+X
+         t4o08j9X82mfenQ2NFy+4oOMsPb8qwNFgtBHXidmB+JymtED97UYz3dLfo4QxFjPfnSV
+         9kKEz/wwvD55htA8dn0f2dZ/874hiN0FMYevhldmdq7c+sbBrxIYNZPOC5yfdyvJbEZb
+         tfMw==
+X-Forwarded-Encrypted: i=1; AHgh+RqwMqE31cduYwA3JcTv8y3WlSnitW1sUKUe7jGCGdEy7Zlj1yZpa+KJ2TL+eRxhNyCSmRWXoMDUaA==@kvack.org
+X-Gm-Message-State: AOJu0Ywa4nw1Dq4YLVf6FvYqLFGvlF+MrGNZ9Xsi0QfAu8yLy8IO6hPF
+	v/3UUT+38rtzBoeeglp1tHdFRc/DVB6IG5bzxmlS2a0Kt9gfSCOCZSWUO+g02reOW7MP3ClmoYs
+	EBJBDcWZcGW2KX3n/sPjGfLJuyQDdi/1f6nI3RKeCM5YjEZYUZ+Hx4A==
+X-Gm-Gg: AfdE7ckNZu+Boo6/b91KPwpb9dPXIheY+iVXoQklTWFITmU6W0NnLQiG5vPMPs3phCo
+	Z1dOyAy7ElPn5jjFbNziwahAq43lu4rAJBB4IYml6lVEK6JcVauV15LiLFCxWfuvMYXEi48zkVL
+	ZVY9/T3/Nunq52GQZHiTAyvmHVGA/0R73h5WD5hK1UUfpJeCL5zS7hVC+Pr6ueX6xmr86LxRWoy
+	Q3sLdSn9onwgx/5vuUbUJPYc/pamMkBT3gND11EQsQlOmnOSM0FfRjVrJdB2k7FtflKTRTL6IXa
+	b3Fy69EP3u6z7Akxjxh3JpO7eAnJ6WEwtGf9xztAV3vIdV716odr9pn1BXaZQekwibnBpSgX4kz
+	x8H0k/kmeoPDXrRolh4Sjb9rrX3d0MOzOqSYtgvWW
+X-Received: by 2002:a05:7300:d021:b0:30c:536e:3a8a with SMTP id 5a478bee46e88-30c84b7208amr3993381eec.6.1782422897690;
+        Thu, 25 Jun 2026 14:28:17 -0700 (PDT)
+X-Received: by 2002:a05:7300:d021:b0:30c:536e:3a8a with SMTP id 5a478bee46e88-30c84b7208amr3993332eec.6.1782422897093;
+        Thu, 25 Jun 2026 14:28:17 -0700 (PDT)
 Received: from [192.168.1.4] ([122.177.247.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4c9dafsm14601833eec.1.2026.06.25.14.20.55
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4ca21fsm12718751eec.6.2026.06.25.14.28.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 25 Jun 2026 14:21:03 -0700 (PDT)
-Content-Type: multipart/alternative;
- boundary="------------2EH0m31DC62N9So0VslS4ncf"
-Message-ID: <0a55626c-1875-4835-b58e-e27e78bd0737@oss.qualcomm.com>
-Date: Fri, 26 Jun 2026 02:50:52 +0530
+        Thu, 25 Jun 2026 14:28:16 -0700 (PDT)
+Message-ID: <5285b561-d610-43d7-af76-ba5da19e70ff@oss.qualcomm.com>
+Date: Fri, 26 Jun 2026 02:58:06 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 00/12] mm/vmalloc: migrate vmap_area indexing from
@@ -143,42 +144,42 @@ References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
  <ai3kkIpaR0aT_6q5@casper.infradead.org>
 From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
 In-Reply-To: <ai3kkIpaR0aT_6q5@casper.infradead.org>
-X-Authority-Analysis: v=2.4 cv=cqerVV4i c=1 sm=1 tr=0 ts=6a3d9bc2 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=/mmxY0Z96yNuczEkiZ583g==:17
- a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=r77TgQKjGQsHNAKrUKIA:9
- a=QrJ9IbtdTVaOtOl6jMIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=JfrnYn6hAAAA:8
- a=QPyj9Y_XUGObnuAi2IoA:9 a=QHwtYfj8MSqCnlJB:21 a=_W_S_7VecoQA:10
- a=bBxd6f-gb0O0v-kibOvt:22 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE4NCBTYWx0ZWRfX2xrx20rw+EHe
- drae1PnYY2N4Op3eL7vAwZAsWqeJlVNfhqY2C1dg1+CaxoSOj7Y2drD72d8sz+lCyQRFnZ1+Dz7
- hzGSOIVN5KI1AOc6kozeWLy/WBPi+YqPYTxwC27z+L/mJLLZeJ9kkUkv9t/rL8/ZAfOAeY78DrQ
- VZtMDUBaXfL8hUtxtQflfBcFikuGjXhgZVvmWARSzbbhBYccRN4SNHSISqX7w2kfL46A6eGcz0B
- aapfn5hP/odFAA8Jeg3Njs86bhHlqmv/ylzyGNALihKxO4+93yiawBKgiVUZYEROuIoj+tMcKiW
- 8yNcuxawsRQZ66Iyo+dafl/DCj0UCRnxIaqoHePbOgsZn7Xmb9LgiJDD9CivQlB3cRPd2O2BtGL
- p2vTpJfp0fkTHDfU1puJ60UnjAUH1zNQ9Wny6OAITjqrpuQgDKMCq6CIOuOeu+XgsKAabkk2fbu
- TfsfA3OBZ7rWsmJqIdA==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE4NCBTYWx0ZWRfX+Yro7IjJh/fq
- 2XJpXN2tL81v+lVLUpi+kZmSSZqhBJBNtKeJlxex+aS0yGFLmyJm2YemietCHemphY1WNcjiAML
- ikfPvFS5Pvaog9A89dy3UxZ8prZAt4M=
-X-Proofpoint-GUID: u3SjPJRSR0oy3cQ7c6CpLIIBr1Z_--Sv
-X-Proofpoint-ORIG-GUID: u3SjPJRSR0oy3cQ7c6CpLIIBr1Z_--Sv
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI1MDE4NiBTYWx0ZWRfX5PA33/frZluD
+ lJ3r6bySe5+Onrz+go5PuqBW9apUI4EqJggXvGQYMsAdtbzQc35LYcKGpeGHfEpWV4gDs+GPii8
+ 5ZKI0lDFIgKkOKBo2cSJNG2GWzJun0M=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI1MDE4NiBTYWx0ZWRfX4AGBQC0Ajqan
+ GNGRx2wyvf29WkkY5dMXemwReLl04ftA6BYcDU6cit9fYBTK2vwK5QJI6xZrjOqCAy7JyAnXorl
+ gmp+bv9O9aq4Y0iv1Qp8FxRhTBti8qG6/6g6Cpd7QUhX6FIA1+sLPe56XMVBZmT5yB3qQVpTyJz
+ OAilRakTjpuP8LPG0JYYWqj5SS3wn2NCoIM/WHl0l0yyF/+qgJrYVG0p2tNR/xBGogL9WUvRR/p
+ guWofkrygAu8f6RK3xN82f7YZwu5jFDTx1Fbm3xr1OnyQzXuFYNko80dFB3yL8GI/Lg1sTL8IyU
+ NIMkcXjV6pycfIXp/QnNbwFmji9aQFE6K3kUbZxvIky/uMnfgK919i70IqyU7NifF30k86NELlp
+ I2RmOVa4QonfoOAH7/26aeOX5jtxx3lfiHnvn0rVcvEK3cUeLwq36/lFpnRBC65C3YAZYF3YXpZ
+ i+UQup5SjP5xbFGpNnA==
+X-Proofpoint-GUID: HusUyC95aKj_dZLtBnt3JhX2OJIids2y
+X-Proofpoint-ORIG-GUID: HusUyC95aKj_dZLtBnt3JhX2OJIids2y
+X-Authority-Analysis: v=2.4 cv=AMxnnMPh c=1 sm=1 tr=0 ts=6a3d9d72 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=/mmxY0Z96yNuczEkiZ583g==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
+ a=QrJ9IbtdTVaOtOl6jMIA:9 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
  definitions=2026-06-25_02,2026-06-24_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 suspectscore=0 impostorscore=0 spamscore=0 adultscore=0
+ suspectscore=0 adultscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 spamscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250184
-X-Stat-Signature: muk1pfj87t6iu13zdbr4acbozca1qcty
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606250186
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 98FA618000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8ED63180006
-X-HE-Tag: 1782422467-251633
-X-HE-Meta: U2FsdGVkX1+wN5FmO1KxLpJs6Nlew2YSX/Z6N2ijBknNM6LBTNWvOneR/iaBPSn1i/SIH/KnGfXTNd2ugair2q4XPbmJ6kNcuAgEvylD6XoRl+f3NJM7KsdHtpYkwawnMcl3ePBHLz08EHnmxN6BCxZj4tqk2KKWMbfxm+vUoiAgntHJL2taTRmNmdyBAMedJnC8Oolv3ifj1MObZ7RmP4m6Gm8/UQNAoh1oLa5IIPDnOmCvGerUPOL6hrp9daL+C10fmlsshLJKqpQFJyitTKak4WvuadoMgmtzWrlABHr7dQeuWYrd9WY1gn3WuBPq2a3qFXNzrUT0S+rXy/nt5BiW7vMCqfe3Se3ebyJnn3EO0RIfATDzVOLv4Lub5QpiQPYm2soSV0xr68EObTyyzYGfjvzjCtJRuSyMSxoG2Fm7Rgv5Jnbu7aDumx/8V7QW6TKvjGLhFLWUifYd83NFcQQVYJctVAxL3QcE2Wd5vLIddWzEBcSQXYCp7m4Pb+ZRIKCkjGpqWVwH4z0+nfwVUwZmc64FgE8CR9nKhcckxtH9i/3/pAZkdQ0EsYXlT0JKq9N5P7aOSypemqXBAm8US5cEQ/VoxTl7Q18Oh+kSdkY19Q0+9TRw/xirGYamed/gRQDrLynE4xMzu/3Aw1mmHP+VAck3uILyw36mcRWhJRrsEMVxyFHJXb+a/8e/lDrWZIq90POvBFXsAyIC1bsm2m8+VfLlFtYA/+3JbVVX15v/vQBDzTU0qFG5Mjeh1ecsNsbCdc4b4VfXWAx2Fq36IuQDuduncsGrIWcwvOULlQDQCWfRZJms+hJnnv9Y6ue65/7Jp/LIQRlvyJO6yDB1SbmLdPahvnIBftPKNAAV35qHfl+Gx4AC0szjOuQShZkcLU/20tKab2GnHzwY03y5IF759WEz7E6YvC8qYWogBaOC1gysOrjtgysDoNFnKevhT1MD2WMN0XudxTWtdUj
- 9WtY23/A
- kmcKlVKg1zN+0PuLJq2+6SFgOJGhsIsaSXds4DSiisrKlWFVW27pE100OhZlleH/GsaJV9b2AnYsCrKgUlbnc1MCRZ6ZdKkMbdZ+8h6XMxGnNv90r5Z/LqrrCyXZQ8LGf7t5qNiSJNLjgYI3+NhPcYR5nVOI+AX2TCW4Na04qEzHmiS/Af+hlOzmW2kd7kwwQzML7PzUf141PpaGuGEtVyt/10Lwx92pye3ja4pSbpx5b+CkSu1xULnVsWsLwo2HkcV/5j7TsdH98AytbKAYpjdCM0+0ZdA4LrWyx8g6YWt9j5Ud+7a9Eus3XooOZrqKuXra2gUTD90K+vUKyXTInCcoLnFRcoU9u35P7rIkH35hxIcQ1YXQ4DMENQFHpk/5sQ8DegXMOt5djCqKmKC/BtcqEsZfFyQ0lqmCtOpsEAvIo1cV7dMCuR5cGmGlS5JqH2dUz/bYIX4tiFI+htupC1kc7+/uOi4vCA9mclvM/Oi7zHAfYXnzjT2FRbyV4o9e7Gsdl6+zcADolri/MRQCIZDx/t4eie3BiefYfij3SNNIXLRdbCWlx1rRiISYIBnonw5wEYXZ+p8JLC2qsev4kjl7JAaRLQ4oYeTRhH1xE7+I7mPFvyASSVQF+Svf05NFid26D+tdod5W08A101fdmUauAepFT9nYdcLVQ6cIhM3IliER9x95VNLuzHkdU7uJZlgOc0hBJJjvmKN8QED1aUFIJw4L4WevXzXWD3hg/DhCT8Nh7CszOS0nv378Fda17XPouz5PIyt0lzw0MMr7vtv3UFvc1FIIZ6ce14yNix6Mv0qlE2DBtGKguxg==
+X-Stat-Signature: qqjj1nx8fep886cuyqzjfbjrcfq41h13
+X-HE-Tag: 1782422899-645061
+X-HE-Meta: U2FsdGVkX19/O2z1Q8LgaFNDCTZoKSzF8lZTY2o3KPjpx/O++w5v/HUIg9+ggLSAmH3t5RoPKjVNzDwaQIWY1iruu4fEcRz5JilArm1WM0RiCFCa5LnCeIiOVutK1q8tV4nD7RfQ5Szrgy+Ou+MTJEIwNWyMIXc1d9IdAq+68WZePOR2UF51JNm/6Gl1tqtu0OZ0XgyUfBydwQ2Robc2bSIdtdnd/Loon9pKh+rohLqNAg7xbQVIxb979FMPuUDNUo6Cc+FPdT/3pKgXXo3Mfzv9sBvGxhdJ4x/qyAHW2YhqyAb8jHhtaFoxfKspHi4JPe4vzm3ihNWyD3+DHD4AXfNwEwF/3MjT3T3SOLwQef3S7re1287UGSEyfXWzrgJSj6Z5TdlETgA+i0naOqBQnt1b1X4JwY7MWNc3ZlX0r6jRlcTjzUXTMYsggBHV9YBrARnMGcwb9ISzv9NZ3U5ACgeMs8TJtrqvRj1B8gVN7B/IsiUCIoD0Dm2JziNW8aAngUUzFIMCr34PXLPRsMD6jRQYROuGY+duAASMAEjE0yvAwUfHsNp40jODeKB/VLwv88JwmrpG/QxHr79TEBs5+dtCz9GQTLVlmg0goDVx2iHzx5gCqVU9v0xVq/3Xr/YTuBJFDT630YQvJpxaAl6wuLUGhPbKezetWLZZupuHwfXVBGUHt+TmrFTd5YuUxLlrXFHheOIdY+2hXx1D7f7Doy4kmVqZ/AInsN93VCJiNAYt/yhguNBfRnpESheVMWpWg2pThsGsawCwZgyX08rVc4cM4uTOls4GKs0TPEZSv0Ckqi76xybvlY/hVnlh35HEmtpGH0TQ1rJkNgUG+8geYcFTkLifFGZNXOpJQsbe3E77EvN3zDS6fkgGHZge0zeCZFRlKkDM6SeYtmppu2sKjOkTyRI4jfHup3yK6dRxfPxlJBrDJ0fHtZwaFzGeAqHJc4S6kez7Q8bJhd9Jjjz
+ ycZzEdGL
+ H0mVNE0j8Ioh9C9gux9kwEWysaWMXq8jSx4BvOQARxSUJW5TtAv7fUPlQ9b9Ij0M6SW5hlsbVB1hCJTSrbGcsd4FqeqcrgLN6okajCPSUjnJV/WBTENCF8V9TmjcP+kucS1rwTiePrlmTqh/GFYWbNBZndBDk0XYvaP0DnavxdmqpWTUiPBJCiUlqHu9IZlg99rRW/6QR796U69UaF8/wORfyIs8VE4Q+vk0I02eybj7X/LvpUcL9RFcQSOve4GHtfg5+048ta0exiKprElvTI73W2zSPncy0reTBQekRnGM4azlMxCDomOUnvmHmm1LU1ZJYlHL/YKb9AoRKbYhTWIymhFVs1bCJux14sj9E3E9qsscHAUY4vL8rky0NfDWTguN9OfQog+0yoSAiZZ6vehs/XsE629Fjl99FUx3BPx6C2UgbJfV+GShQECTQsuM/gL1chRTqgNcPcyWgSY4Z27cuPoZucB4jSxvUvdswk0gN9JAeX2h9YP28cPatnp4woFnQHVjVW3k4zWUgS7d5Y2wOajpwWE896oXwj+F7cVUz43RE0es+RXDDOWFI1Vhryobe+/AFt8HHUP3nbp/ZGVKTSQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -186,10 +187,6 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is a multi-part message in MIME format.
---------------2EH0m31DC62N9So0VslS4ncf
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
 
 On 6/14/2026 4:45 AM, Matthew Wilcox wrote:
@@ -200,84 +197,28 @@ On 6/14/2026 4:45 AM, Matthew Wilcox wrote:
 >> maple_tree (notably the per-process VMA tree in mm/mmap.c), and
 >> the underlying reason is a structural mismatch between rb_tree and
 >> range tracking:
+> 
 > First, and most importantly, I love this.  The maple tree is undoubtedly
 > the right data structure to use for this purpose.
->
+> 
 > What I don't understand is why you maintain a separate "free" tree.
 > It should not be necessary any more, but maybe you tried removing it
 > already and found a performance problem?
 
-Thank you Matthew, that is very encouraging to hear :).  The maple tree's
-native range primitives and built in RCU support do make it a much
-cleaner fit for vmalloc than the augmented rb tree was.
+Thank you Matthew, that is very encouraging to hear :).  The maple 
+tree's native range primitives and built in RCU support do make it a 
+much cleaner fit for vmalloc than the augmented rb tree was.
 
-You are right, and I'm going to remove free tree next patch. Allocation will
-use occupied maple tree which will walk the gap space of the
+You are right, and I'm going to remove free tree next patch. Allocation 
+will use occupied maple tree which will walk the gap space of the
 occupied index directly.
 
 The concern that motivated keeping the separate index in the RFC was
-lock contention separation. Uladzislau had originally structured things so
-that the alloc path could touch the free tree while unrelated readers could
-access the occupied tree without blocking each other. Your follow up explanation
-of how the maple tree's RCU contract makes a separate free index unnecessary
-is the key insight with MT_FLAGS_USE_RCU set on the occupied tree and
-call rcu deferred vmap_area free, the same contention reduction is achievable
-without maintaining a second index.
-
---------------2EH0m31DC62N9So0VslS4ncf
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html>
-<html data-lt-installed="true">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body style="padding-bottom: 1px;">
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 6/14/2026 4:45 AM, Matthew Wilcox
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:ai3kkIpaR0aT_6q5@casper.infradead.org">
-      <pre wrap="" class="moz-quote-pre">On Sat, Jun 13, 2026 at 10:49:42PM +0530, Pranjal Arya wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">vmalloc's free/busy/lazy area tracking is one of the last remaining
-augmented-rb_tree consumers in the core mm allocators. The rest of
-mm/ has been gradually consolidating range-keyed indexing around
-maple_tree (notably the per-process VMA tree in mm/mmap.c), and
-the underlying reason is a structural mismatch between rb_tree and
-range tracking:
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-First, and most importantly, I love this.  The maple tree is undoubtedly
-the right data structure to use for this purpose.
-
-What I don't understand is why you maintain a separate "free" tree.
-It should not be necessary any more, but maybe you tried removing it
-already and found a performance problem?</pre>
-    </blockquote>
-    <pre>Thank you Matthew, that is very encouraging to hear :).  The maple tree's
-native range primitives and built in RCU support do make it a much
-cleaner fit for vmalloc than the augmented rb tree was.</pre>
-    <pre>You are right, and I'm going to remove free tree next patch. Allocation will
-use occupied maple tree which will walk the gap space of the
-occupied index directly.
-
-The concern that motivated keeping the separate index in the RFC was
-lock contention separation. Uladzislau had originally structured things so
-that the alloc path could touch the free tree while unrelated readers could
-access the occupied tree without blocking each other. Your follow up explanation
-of how the maple tree's RCU contract makes a separate free index unnecessary
-is the key insight with MT_FLAGS_USE_RCU set on the occupied tree and
-call rcu deferred vmap_area free, the same contention reduction is achievable
-without maintaining a second index.</pre>
-  </body>
-  <lt-container></lt-container>
-</html>
-
---------------2EH0m31DC62N9So0VslS4ncf--
+lock contention separation. Uladzislau had originally structured things 
+so that the alloc path could touch the free tree while unrelated readers 
+could access the occupied tree without blocking each other. Your follow 
+up explanation of how the maple tree's RCU contract makes a separate 
+free index unnecessary is the key insight with MT_FLAGS_USE_RCU set on 
+the occupied tree and call rcu deferred vmap_area free, the same 
+contention reduction is achievable without maintaining a second index.
 
