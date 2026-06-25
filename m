@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 501B6CDE00B
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AA35CDE009
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 20:14:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E85E6B00A9; Thu, 25 Jun 2026 16:14:23 -0400 (EDT)
+	id C2A756B00AA; Thu, 25 Jun 2026 16:14:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D196B00AA; Thu, 25 Jun 2026 16:14:23 -0400 (EDT)
+	id BDBB06B00AB; Thu, 25 Jun 2026 16:14:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43AC36B00AB; Thu, 25 Jun 2026 16:14:23 -0400 (EDT)
+	id 9B8846B00AC; Thu, 25 Jun 2026 16:14:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 19C216B00A9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:14:23 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4910C1A01F7
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:22 +0000 (UTC)
-X-FDA: 84919537164.19.5B9E812
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 704206B00AA
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 16:14:24 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0130E1C13B3
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:23 +0000 (UTC)
+X-FDA: 84919537248.06.F2D9D88
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B21FE120002
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:20 +0000 (UTC)
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6A0D2120002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:14:22 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="D/epA+V7";
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="H0/9J/8r";
 	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782418460;
-	b=2V7WISkkSF+d+iJYTGoWwfnXO/x/gEv9aBpVUXzT9EsGBkQSA4cKxqtTucA0+1jW3sCnTk
-	MB9EGu+D1DdFVS3g6Zg0Jz9joZi08A1Jx7ooiWUUApQBZfAu10cMjfnjNr1cPs4lbKMSgH
-	6kzOvozmlmiULqhvv9xSqKJvaAJRFtw=
+	t=1782418462;
+	b=2Ax0wv+MrfXDCB6nRSKne2oZuqonamQyYWRojAbYwZrUfOIqsn80Lxm9D8D9sAIFQqWdg8
+	5Qvmkif7ZNBh/viN0HAAvdM/jIkMOUOF/RQs3aOF3z3jmU8KhOCXje44/wFEWqdkJ5vgn7
+	t7Hkx9H2ySmp9g1gODzr1ltEiI7I9to=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782418460;
+	s=arc-20220608; t=1782418462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t96ioeKVh+URwncAcyewKA61MVuS3Y2+HlJwL87XcMc=;
-	b=7myDbD9lVZM2jEKo80AMSLAX24fC8pXuLFmymkpPdaE71aTxJzK6DEuvJIkNYEsdymhW5I
-	jvaS1A+YLF6cpx4+enQoXjLwO1qbx0wWsdUAgJGaIl8e5Xo3V/QckQzpBWTQvCtHi1lMgQ
-	E/8ZC+VAur9B8ZHM2LJo6+kHvmUFKXA=
+	bh=mSdMxtuMp+EW9zU+QIpMH97UVAInFWLbbVKuTTE9mF4=;
+	b=HnYRHLykiknA8pVvM42NBNS9lvNS7J3ZJO+hhk0YvnogyqXbzUvPqSHgEIezOVTJ4MOzov
+	Ohb8f77D+Dc4AZEihTcECgjxn5Og4eV/gSx0t2VaGo3Kw/QX1qhgjS4/sGuWUZsPmgTCun
+	ebKBCY8xJ2MtZ7Qc5eZ/LrR6q3iYD3k=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="D/epA+V7";
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="H0/9J/8r";
 	spf=pass (imf29.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=t96ioeKVh+URwncAcyewKA61MVuS3Y2+HlJwL87XcMc=; b=D/epA+V75l+e0ajsNhOSm1iyQg
-	1hzE69/MFpdBn7lBCCyUHpU1ayAlCQot9jdI3rYkE5v9mkdfSTp89TQfkNeyX7Y70U+1Kh5oEEhKz
-	i2lbscRvwZ7qbIeb5g1tjrwHRcMPY38jWKTf3BGJKOHrN7lnrq82DZGKmg3cZKp2dJT/8stp0CBou
-	1S5GlQPKS5WxZ94Ax8AZPrGzi+qKfrh2TqU9CN8k4KXaS+keeoNJJfln6vkxvOlHcSoP1sLC1KIpM
-	bZRd6EfjFaq/ZHt3q1bVqiBtgLQ94zE26YUyHlkXaBGqeF1csvB5xBgywzm0Py0wONVwfVUBE0A1x
-	+ukj6hew==;
+	bh=mSdMxtuMp+EW9zU+QIpMH97UVAInFWLbbVKuTTE9mF4=; b=H0/9J/8ruBfzNgtdLA1yItD5dD
+	5ui3wOYYxgYTew78IWS91FEQ5oX8bJsfW66unlDoXUFMWyz4FDL4Xp+07TiOP0hsNHpJBIRgxyj82
+	6S0ycgp/jSD+A7OOn3UGDiWFSRoSnKcB3mk8R/vPV8D3muSk3el99aNN6FLIHtciaQE/9Px2b0Kb7
+	qNGXmQW+1+ttAx0zCUnjPTzlfgYdv9OhnClc4jPC076qSnDODU4Gqr8SybqWRHbrk8bfoXc5Otpak
+	vWRk/VMdxqBlciSWaZuSOX2I6YUONxOT3oE+JveviHiGtHb6VU+dxY6wYXa7UlH4rpVeUjRPmusPi
+	n2MRi60Q==;
 Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcq60-0000000AWYw-46fX;
-	Thu, 25 Jun 2026 19:50:45 +0000
+	id 1wcq60-0000000AWYr-3DyL;
+	Thu, 25 Jun 2026 19:50:44 +0000
 From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 To: linux-mm@kvack.org
 Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 08/11] filemap: Honour FAULT_FLAG_RETRY_NOWAIT when creating a folio
-Date: Thu, 25 Jun 2026 20:50:34 +0100
-Message-ID: <20260625195040.2508362-9-willy@infradead.org>
+Subject: [PATCH 07/11] mm: Remove fpin argument from maybe_unlock_mmap_for_io()
+Date: Thu, 25 Jun 2026 20:50:33 +0100
+Message-ID: <20260625195040.2508362-8-willy@infradead.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260625195040.2508362-1-willy@infradead.org>
 References: <20260625195040.2508362-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: h3fhnnkhcbxpbi4pbecuw3i7yg5b3q77
-X-Rspamd-Queue-Id: B21FE120002
+X-Stat-Signature: kpfp1f5suogfw8kuobyjwxw4xmegwz3s
+X-Rspamd-Queue-Id: 6A0D2120002
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782418460-673152
-X-HE-Meta: U2FsdGVkX1/6hhRO9J0FqlDJDNBlrxj/0is5yirPujXKcHMQ0hzQydM4dvAeDFd6t2xbtjGDPh7jXmvjCakZyrD3t8g0w9URstByS9ZcG7T8qMeeTm9Jf/vK7dKxXLu3vLZ8GHM15NTyXp0Gylw4AmgVKCp3yUWCD1fnQAAX/ejjhKRsfxF+A6re58NXTDCWbGsdrbUmWH/TmnPqMrWB41yYIszu6/x2XgN2MDbt/EqEx0Cj2EsrQEMSErUsoFQxHSllP/Gif9IbLWgYmBfW7M3kFzKkxUf+WDiIKATUKpipcH3UeD10pmvA7ceVOavC72idTxsWFhR+puXMEga2AjRpdLgca4wjtdWs6KBk0Np8b7BpU8yEy/Fen5fjvL/FxMz0Khi01ek0AjU6YJm/ltB+exmU7SB1xftTor8mW/ICSod0smtx/uPR9ryhTmskoFB7UFyXrg5lctKatWBcDZTDTLpuwFFH509BCqH1w+BdNahqMcSKbw54hvDkdmXN+eQWWr5srBhmhtmh34LpSApjX5cJgHYUSmJxzDNz7xJTicZrUA211v5wspUGZDVD/lIYiDOw86EngrGsadVOBTkLKJxYEbmegcRfofBccKYGNlMI12mNht/xTyfEyUd7+1dGT51MuFDF04HhmLp34BukdC/PpOMGbuGG0m7EsbT/XdH+uTblB9pI1H5AXjg5JHQaTag6+niw4hbeTnA7qcoVYmS/RmuY1XNlSytdcXPK+3XAGmEq9ZE05p8540UxGB/wRKKX5NQIY5XE2Ipoizq7U1j4oQg7fn2tE4BFrfekhxcRZyF3hObs/zlUNid8o+MJ+bgH2Sn7f7JPW5jBEKaibJmyeehVTw3wP1B7Fy2yobpJic9FgEtRWViPUlCcloTLX+dA3w8Z0LXjhe9vll2OWW7SE15qLH7otx9p/rh4siQ345E5i1+CtKkURphOs3VtezgISe5sTEIZjHW
- saxH3Fep
- 6TU59fnPdLml3Gu3izmwenUIla8c4YY6BIMHEesldLbedbiJ7dnmOlm0MZcBTI3SDmP9kFM0gjIVrpm4cKzUNKFs/LGh1nPEQR3m4ouKg06WYbLjBmlO8DfQEkBrCeifj6GVYUAC6y7V76rp5D+aR0/URixpHRXt+Jl8k5392tpzBJ1bQobwSYW47oi9J/aLtEeW/6MbwMW4lPsgngP2rkjLMuudURjOPHomzL1EK/lKT0TNdaF//T2+GiTr1TFLSqIFyYkBbTz3qo7/lxn+0cATrWA/FnC3vSK9jCHHxVH0l458=
+X-HE-Tag: 1782418462-889385
+X-HE-Meta: U2FsdGVkX19c5QXrwdQ2T9svx86xJIdxyXbN++zM2ldow3iKERFKvBkiN3GMSWCu5GFh5INcwy2g1eRkiNhj85E3cfu+Oq4+bP14MEapreeiaoxR70pNiM3nXo7mk7PSXTfEfpWWYkpXI9/PyD4SWxqCbY8CoQYUUm6zEdM6Ebl8kF1WYnaDPqnEvY305Bb+Iy+IeE/n7eLWVbBO8TaxruWjzqDJyBBXB5aoFl02XZxwimRW50NI0Xcaunrm8H6H/jd4ka9ubxBF4vuBpv3WkMDNT/m7mPI2vdbh5Nhz3+g+klIBhTEzVM48LJtXFoz6SwxbqdKpU63N9F7W9w4oXM36YDwfCosVkZvnBOdSfhHMg4+sS3HdumMxjPSqipM9lC1cgaDsaX2YYiJ0SMf8Vnt70nDQc+p8TSaVQ5Ekb7zE9/FCKyfypQ9fBRzltFqcT6pfQHquaPwulGZ8jtI5PvbzLIHLyRQ0tBeaDOLL8AbLMzHK9atV2fa5KVnyGfMwEXSaZsniTgxMnvN5Zgrw8tvdShpSsaP+z1+G7LvRBmZ56nkTiGS0wEdtiYtBb2YwQyIBGKxCNF1BRbSuY7bSFIMDc0EWNAtafI5/OTPB9XurxikOLEZF+ba64qfRc117VAJisryr9l0Gfj24C0uBRA0mx/0b/QNkXmAQboI9wrAu2McBWlCCwnE5UkvCJz4i62nP9db3cI69UHutI6kJ8MxUS807CDjZzauKEeRHY7Cc0eXrD/Q9qD4jvucy77b42AeB5BHqtCgoTrT9U27uPZ3SjbaPiLxkyPKEePMBNwlFLblQEMo2LGsltFjesWU8SNDVRoewSKBmrbljLk9pGXxUUB3Myzcm5m9weD/lAQj+1HV56RkSNLp2WMRak0hhQVlHfbz3OTkc0RJnelAnAL7K33/onU/kJfixm1KS0532plaKivVrr6GDNy+znVHqpg/fybSwIjzGatEU16s
+ /ZJV16Qo
+ cicGJsAGRuhXAQJBRzXCIU1OxOQD+/LEprG10z8dzpSZ93yFb7J3HYHJfSsd/k7da8ooMzlKq2dms0ak3rsK9sUkoFGrjPYBL4qi5YY00qeEAw8JQwRq+MIgte3+QNypWy93TXIP1vBZ4T1U9IboxKRFChJ2iIDZ4wf0uDEWPy8rSrxYBwiE2n6tgvNeABSfCp4ttrXLT7RVqo25vaP53BieGtEqSHjWYBdGB32CcH9cnS0ezRdJLM4k5fKyTwAhqzmJNR5V7JXDwjzmZ+Nfv0rO1H0DG0qoqJtasxVysPKaBN3A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,47 +87,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If there is no folio in the page cache, we allocate one.  Unfortunately,
-the GFP flags that we use allow sleeping, which FAULT_FLAG_RETRY_NOWAIT
-wants to prohibit.  However, the FGP_NOWAIT flag will forbid sleeping
-and so we can return VM_FAULT_RETRY in this case.
+Both remaining callers pass NULL, so we can remove it.
 
 Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 ---
- mm/filemap.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ mm/internal.h | 7 ++-----
+ mm/memory.c   | 2 +-
+ mm/shmem.c    | 2 +-
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index b504e3e37836..54997e667246 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3508,6 +3508,8 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 			mapping_locked = true;
- 		}
- 	} else {
-+		fgf_t fgf;
-+
- 		ret = filemap_fault_recheck_pte_none(vmf);
- 		if (unlikely(ret))
- 			return ret;
-@@ -3526,11 +3528,14 @@ vm_fault_t filemap_fault(struct vm_fault *vmf)
- 			filemap_invalidate_lock_shared(mapping);
- 			mapping_locked = true;
- 		}
--		folio = __filemap_get_folio(mapping, index,
--					  FGP_CREAT|FGP_FOR_MMAP,
--					  vmf->gfp_mask);
-+		fgf = FGP_CREAT | FGP_FOR_MMAP;
-+		if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
-+			fgf |= FGP_NOWAIT;
-+		folio = __filemap_get_folio(mapping, index, fgf, vmf->gfp_mask);
- 		if (IS_ERR(folio)) {
- 			filemap_invalidate_unlock_shared(mapping);
-+			if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
-+				return VM_FAULT_RETRY;
- 			return VM_FAULT_OOM;
- 		}
- 	}
+diff --git a/mm/internal.h b/mm/internal.h
+index 181e79f1d6a2..d88a00cbea4c 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1273,14 +1273,11 @@ static inline unsigned long vma_address_end(struct page_vma_mapped_walk *pvmw)
+ 	return address;
+ }
+ 
+-static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
+-						    struct file *fpin)
++static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf)
+ {
++	struct file *fpin = NULL;
+ 	int flags = vmf->flags;
+ 
+-	if (fpin)
+-		return fpin;
+-
+ 	/*
+ 	 * FAULT_FLAG_RETRY_NOWAIT means we don't want to wait on page locks or
+ 	 * anything, so we only pin the file and drop the mmap_lock if only
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe92..0124a87c3e81 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3737,7 +3737,7 @@ static vm_fault_t fault_dirty_shared_page(struct vm_fault *vmf)
+ 	if ((dirtied || page_mkwrite) && mapping) {
+ 		struct file *fpin;
+ 
+-		fpin = maybe_unlock_mmap_for_io(vmf, NULL);
++		fpin = maybe_unlock_mmap_for_io(vmf);
+ 		balance_dirty_pages_ratelimited(mapping);
+ 		if (fpin) {
+ 			fput(fpin);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..878eaacc009f 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2656,7 +2656,7 @@ static vm_fault_t shmem_falloc_wait(struct vm_fault *vmf, struct inode *inode)
+ 		DEFINE_WAIT_FUNC(shmem_fault_wait, synchronous_wake_function);
+ 
+ 		ret = VM_FAULT_NOPAGE;
+-		fpin = maybe_unlock_mmap_for_io(vmf, NULL);
++		fpin = maybe_unlock_mmap_for_io(vmf);
+ 		shmem_falloc_waitq = shmem_falloc->waitq;
+ 		prepare_to_wait(shmem_falloc_waitq, &shmem_fault_wait,
+ 				TASK_UNINTERRUPTIBLE);
 -- 
 2.47.3
 
