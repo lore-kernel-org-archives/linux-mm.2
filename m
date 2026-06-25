@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A030ACDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 01:42:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C60A5CDB479
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 01:47:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AB1606B008A; Wed, 24 Jun 2026 21:42:17 -0400 (EDT)
+	id B0AFE6B0092; Wed, 24 Jun 2026 21:47:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A66A36B0093; Wed, 24 Jun 2026 21:42:17 -0400 (EDT)
+	id ABBB66B0093; Wed, 24 Jun 2026 21:47:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B1396B008A; Wed, 24 Jun 2026 21:42:17 -0400 (EDT)
+	id 9AC4A6B0095; Wed, 24 Jun 2026 21:47:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BC476B008A
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:42:17 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFF9A4053B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:42:16 +0000 (UTC)
-X-FDA: 84916734672.06.5A7AE3A
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 258D9120007
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:42:14 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=RsI3p3W9;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf29.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 738506B0092
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 21:47:22 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E889C8C7C5
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:47:21 +0000 (UTC)
+X-FDA: 84916747482.29.1E3C11B
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf20.hostedemail.com (Postfix) with ESMTP id DDEB21C0002
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:47:19 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X1MO0u0w;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782351735;
-	b=UbH0Y7opp0Z2Y3oR0nwWnUmVkD++PGVt1C4xLOgXyUitndRaHC2UIKOJA1/moj2CeYdY6u
-	QYHJe91qXytbjtA20X6Ja4Op+B0Ybh+Jy8VL1fIqkWfTVbZResZouLx2LQ6lGFFbSLb9sG
-	G2JAZcQES8gMw4ErKe/QmCXD5yvATCg=
+	t=1782352040;
+	b=yq70aqrBG4e0RJHTxKyr1SfrEVONnZ2PvYpXo9+0MpU9Hvm3XJ/8VqdqjpLFFi/6F20pDy
+	jUsgd6jX2K5o1BtGuHJkElpfAv0/0itZQSgLJRmzH1X9sRaGd2DAaWITwVKhjmxLoEmu+X
+	SsKv5kP2ImwpJS4r+Ge9JuLhzf0rRQs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782351735;
+	s=arc-20220608; t=1782352040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R9YZdvvngxcUtp6hqFhBEeGgAlTFhxNj0jj5VAyk9NE=;
-	b=jUdX2XicXevWbfT4xNQDkSvQgeVfOB/ana0yaVjf0+u2BffRSuD/RBwavyXDXzroyb8cQ2
-	m42+EGGqGl4vwnge8trsWIKYLCXImgVeHffR7tVkHfMj/4hKzCMyQ4Q515O1pnY2zlSCU4
-	0mtm2W3TYxTrYxl52jmIxr9mHsEaRBk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OM4i1907t/VVrIa2X1MtyNtXBmmD94pG1xktaQRqS5Q=;
+	b=zrpW/ppGW88LviveUbcJ/woiUcLJY16hYyKWDWFwlRaiw2vcyEjs7gKT6oaz/hQyI6u9eX
+	BvlavFNpoLt6KHYvpNj1qs2SN3F/PVgMo3RF02aBOTnAYqs9WXxnuIOcD04RiQEI7WGgRJ
+	2pUNp63oe2+HIQwcz2ywejXL4ZqPVGg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=RsI3p3W9;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com;
-	spf=pass (imf29.hostedemail.com: domain of shyamsaini@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=shyamsaini@linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1152)
-	id 94BBD20B7166; Wed, 24 Jun 2026 18:42:09 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 94BBD20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1782351729;
-	bh=R9YZdvvngxcUtp6hqFhBEeGgAlTFhxNj0jj5VAyk9NE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RsI3p3W9mw9+E4CmCmsQxQXq2R4z9L0WJxqdFRti7Hs+ajZex5t6lCfkSE/OIEVAI
-	 1OIVFnLVrMUKurbFgAdWtLYMmuGsrmJYjWnJBdAskBjJEJE/wQtr15fw8k3wUtVgRW
-	 3OpFhz4evVHJYTCo84xP6P/B7yj6UwQCnNSFVYZg=
-Date: Wed, 24 Jun 2026 18:42:09 -0700
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rppt@kernel.org,
-	akpm@linux-foundation.org, kees@kernel.org, tony.luck@intel.com,
-	gpiccoli@igalia.com, bp@alien8.de, rdunlap@infradead.org,
-	peterz@infradead.org, feng.tang@linux.alibaba.com,
-	dapeng1.mi@linux.intel.com, elver@google.com,
-	enelsonmoore@gmail.com, kuba@kernel.org, lirongqing@baidu.com,
-	ebiggers@kernel.org
-Subject: Re: [RFC PATCH] reserve_mem: add support for static memory
-Message-ID: <ajyHcT2CnKkADfWP@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260618224018.117978-1-shyamsaini@linux.microsoft.com>
- <2vxzpl1hmmgn.fsf@kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X1MO0u0w;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf20.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782352036;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OM4i1907t/VVrIa2X1MtyNtXBmmD94pG1xktaQRqS5Q=;
+	b=X1MO0u0wVQcI1pkWaKgsuytkFRDqu6nTu9+WiX6i4JpO7LuL81AffECVu/YzneqtyqFHsN
+	TtUDVoQHcjBRWFLInXO19xYJtJbUeD4mt7VJwxSzvKoBgQBSgPmf+A8hNnWSsagCU+rXvn
+	cDkVcFvQbvvE8AaJ3B9McvINX3oWmdQ=
+From: Ye Liu <ye.liu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>
+Cc: Ye Liu <ye.liu@linux.dev>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] mm/page_owner: fix TOCTOU races in lockless page state reading
+Date: Thu, 25 Jun 2026 09:47:03 +0800
+Message-ID: <20260625014708.87386-1-ye.liu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2vxzpl1hmmgn.fsf@kernel.org>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 258D9120007
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 63inx6qrg89jymqt9j9dqwksrt6uf91x
-X-HE-Tag: 1782351734-580789
-X-HE-Meta: U2FsdGVkX19UYGZ3/+D4OmmXnzrMV5LSxLMZBoFXSrYfcLN8NPNZtvc1q6Jx5V/aBBUa0MP4BhalWmFBl2YCEUEsJ1rMVBGoH6qkgOMbyM+hmvHaMsXxpV92kcd1bZvmXli31AJszpPTKOMxNpHlVG4gH+4ILDjlKfbtyuyl41Bhgivwg6Zrl3DYSRbIvxvvaNCdFIKdt/8Ei017IKgIqy4yocIF/D3u1wzARSNPdXFNx8+Uim9qhPcI81ZS8LcdHXexBLyMFkNLVJSyFbY7eZUZZu4U/WS8gyEB7/mUAQA7g4d1C9pToAfhfvEsiR64/EvVd0fvhBDEgWQTX52765R/hl1tRqLNg7xyaNYa+n8te/ElXH/l706zLvdjLS/WQFC63sLH/g5stVnXz2KaDl2VXfyT3RHzzW9h1IpL+ZEEFFXrIRiCtZQC6pM25lYTnlsahN7CbMun6+UtljMvasPibwij4ZZ/3pcIO1XLWnYS9ElS+jvUXj+MPX03IhbttLIHBvnTxY2ZKXqjupgcXVGZCI6lWGH2SveQHyOzCg9wtNtNodsgX3ZxyjdUDMOcFOTqq14uFwPQDOoSvdmFukT6ZojNS2orsKsLiGzuBs9ZyRgf3g6Bg3q8ivI7B4Kix8QEwyXfv7qq7qSxbzw4ekyNiW3iqglNzRNjaxtI5ZTF7vZiVhAGcyX/WBFAKCkn3jF+EKG/vhQrhEJN0vuYHDIbyuUYPuOzx2IHod2AcAx/q3UHzuFPKRAVFUkOUUr6rJikqSF/VaTb8pckewGR+abGT632qAIWefdDT+DAu+CcADTmjAshA2Xve0b6jpY2260WEMInGMUeGvVrf5Phb1TD57ZZLCzqd0AwH2KtVVY7zdWNEP+6eQO0U9e5qyJ7gr1zfEURUnB0JPjUCzaeKAOzgzOCHDlhc2qT/gqpaRnbT6Qg1NOzynb2L3nsgNnLgrmRFO5dUwaYLy4kH9k
- zmNJzu0/
- JU8YNtI2C3ddKpIzWMlEVXEvLjXynQlIxswmWcO1czL0VdjNfymIMWspslMXVWMw+n3vhj9ULgb/Lv4XqxqPfBMzCHeyt3HkPTEzGsfyCrEBt514tLObSwpaaNqzoGuBU2p/2i3XDC2ZD2pp7Q5/sWYqyGkP0kn/30t6COZGV3ArI934m1E96lWhr6muT12KaHB2uipe/BiD0ZD2QTv0xQ1AmQp8Vvr3LaErWZ/C/tHDGlmMmCjRWd7tVUFKRDaFe5sQQn8Z7wJvr8O+v/U61AFU1M7WXzxXnkaxGTZdFsIOLRjfZSxLem34r9Ua5Enc2cKTnOdT45JyQO0MSIKS5wwlEcKeVUR0aysG6gNlbQ4XoVYhd6nfDalhxaxW26bagahPA
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DDEB21C0002
+X-Stat-Signature: yca5x3gm9hidbm63h6bia1tinxu3ydxg
+X-HE-Tag: 1782352039-447944
+X-HE-Meta: U2FsdGVkX195GcK3xvRDDgIKZ51EFE9JlSIvVtJOOh3ElNN2SHjVnhOh7b5Seg+ptNa2Cn0vvYzyx5Zt3RM9wiECuCs+YMetAvF8nehKbUHUX0nPclZfS8xNvAU+LA/pWtX2BS2ZJRm+SpkaNcbl2SdGFmdwcSJiRRZXbxhVaaJzBSys2fe5WdAVqLDIcFLAMe5xjjGBt5aIHQUue3dtfSPQfqlWhTUPbyZO3c0YgofunrnXRAOrar5AiZrdvMBO6HEP5kmw49lVZmfQPazfBYNqc6CmRyd4SahqqhV1FSU6JFWZGBQXxrnCBaZxFLUUnplo0NXJr5BbM4+ed5zexSP3Xr+uKJT1IyqY43w95Nv6Z0FTOwQ8evWLLzMCiAUxJIX5V+zAH0cAIWNR+1+lD3EhqVhpmR2SY71qoATutVtoT50YUdtcqJliKXZHGQszQ94ltdjOPA5iX8Gi50Fy36I3vutrBouQebEAmLBSLqRznvIVMl89YQNFr31iVNfyqoSl3fgc0+C18TS0mkOhQ1YjuqxRWse6Nm95hD3t356GZ3QXzqji/rH/Nt+t15XMwyOVWj/+A021ng65mAgyVLEIZ2d+zGDk/wlH0apX0rOnzDlhEYX1NjBG4hE8Bp9mXYruRL6x+HUOXpWVr6wdPHePkbaA5YTxhVq1ZZ9sou9kQ2UeJpSWKVvdqyi8f/Fdifd89onu/Ig+8bBhaXXsvxKPxr9YLp3mm7yZ/3dJlY2Ih37OLp23HHSpTa5Y0uSn7QRQ6YkkBEfCZ7ShD9zkuqN+DZHMnUOx2IZzZy5Ac0SnHyK2NcKicwDCL2UpIMPska498s8uCstW1wwBo8pxjGybkXZCi4cYMq0X/zU/vT+3TNCc9gwF+w4lQe6NjPf9MCjTum6hc9ulUR3AhVBN+OGFIFi21Yc+bi3tTh7hkhLYSLwuex/OKfzB5x4Vp24rOK7vsH9QClHVcgdO0Cm
+ +MIN1Tn0
+ PI2bCd5iLILfLwQG89cszX1NNYMVp4SPiqx7E6QLozMY1q/0OAfjH2W8h419zpIS8lpP6dTiBLC6fbJ2Zepzk2HwbD5xmJCiUXxYCt0hNxaggleOs3bpWmLAuNkHl4S6yLD1Ig3BGPjDDHJTpZflfnlF0rIDhCicgtqFfVSptaW1jPUATRmPf986qad+6r5JhxUmvIbZVACWWpSLq3xh8bYAnHUCx9yLtzGIUXUOzK56xpJsclFUmGWyO17wgGczCNsLrfu8ivLBEQKdVejGGIlBoWwebssnW74gaJAdSvET1mHoZ5ivtVTOJparcf2CBLQYuj9+zUFS9S+QGvljiuhs6RfYEmgNsby6Oa9MiVVAIels=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,48 +91,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+Fix two TOCTOU races found during review of [1].
 
-On 23 Jun 2026 15:10, Pratyush Yadav wrote:
-> On Thu, Jun 18 2026, Shyam Saini wrote:
-> 
-> > reserve_mem relies on dynamic memory allocation, this limits the
-> > usecase where memory and its address is required to be preserved
-> > across the boots. Eg: ramoops memory reservation on ACPI platforms
-> >
-> > So add support to pass a pre-determined static address and reserve
-> > memory at this specified address. This enables use case like ramoops
-> > on ACPI platforms to reliably access ramoops region across the boots.
-> 
-> Doesn't memmap= do exactly this? How is this different?
+page_owner reads page state locklessly by design. In two places the
+code reads the same metadata twice — once as a guard, then again as
+a use — and the page can be concurrently reallocated between the two:
 
-yes, but memmap is not available for ARM platforms
-There was an unsuccessful [1]attempt to add memmap support for ARM
+Patch 1: buddy_order_unsafe() in skip_buddy_pages() can return garbage
+if the page is allocated between PageBuddy() and the private read,
+causing the PFN to skip past a pfn_valid() boundary.  Clamp the
+advance at MAX_ORDER_NR_PAGES.
 
-> I always thought the point of reserve_mem was that you _don't_ have to
-> provide an explicit address, one is chosen for your machine
-> automatically.
+Patch 2: PageMemcgKmem() in print_page_owner_memcg() re-reads
+folio->memcg_data and triggers VM_BUG_ON assertions if the page
+became a tail page or slab page.  Use the snapshot taken at entry.
 
-ok, but I am not sure if that was the only intent. 
-> >
-> > Also skip parsing of "align" parameter when static address is passed.
-> >
-> > Example syntax for static address
-> >  reserve_mem=4M@0x1E0000000:oops ramoops.mem_name=oops
-> >
-> > Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-> [...]
-> 
-> -- 
-> Regards,
-> Pratyush Yadav
+[1] https://lore.kernel.org/all/20260623065234.31866-2-ye.liu@linux.dev/
+[2] https://sashiko.dev/#/patchset/20260623065234.31866-2-ye.liu@linux.dev
 
-By the way, RFC v2 for this change is already posted [2] here
+Ye Liu (2):
+  mm/page_owner: clamp skip_buddy_pages() PFN advance at
+    MAX_ORDER_NR_PAGES boundary
+  mm/page_owner: use memcg_data snapshot instead of PageMemcgKmem() to
+    avoid TOCTOU VM_BUG_ON
 
-Thanks,
-Shyam
+ mm/page_owner.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
+--
+2.43.0
 
-[1] https://lkml.kernel.org/lkml/20201118063314.22940-1-song.bao.hua@hisilicon.com/T/ 
-[2] https://lore.kernel.org/lkml/20260619062331.348789-1-shyamsaini@linux.microsoft.com/
 
