@@ -4,155 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9194CDB47F
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:47:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB6F8CDB466
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 08:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE13C6B0095; Thu, 25 Jun 2026 04:47:38 -0400 (EDT)
+	id 7B3B36B0088; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8426B0096; Thu, 25 Jun 2026 04:47:38 -0400 (EDT)
+	id 7914B6B008A; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 981E26B0098; Thu, 25 Jun 2026 04:47:38 -0400 (EDT)
+	id 6A2D86B0092; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 70E4A6B0095
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:47:38 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EFE178FC9E
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:47:37 +0000 (UTC)
-X-FDA: 84917806554.19.45E3253
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0FD4C14000B
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:47:35 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AB6QFmYk;
-	spf=pass (imf23.hostedemail.com: domain of tabba@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782377256;
-	b=EOGO8010pgKQaWU9TVEDy25TS8GRWb06VLaIQhwr/K3Ei+zG69lLdzDx1bFaXWoTLo7a0A
-	TC+87AacN97qjYQ8XNBTAoyKavFtPPzOwuIAqmtDZNi+axoBdPfHfrhI5ev+7tEKg/Yrsb
-	fzKlKAW1hTJP79Eo5LvQUlYx8TJxCDc=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782377256;
+	by kanga.kvack.org (Postfix) with ESMTP id 2F0836B0088
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 04:50:56 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5E521C5DD7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:55 +0000 (UTC)
+X-FDA: 84917814870.23.3904A68
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 275C518000D
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 08:50:51 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=k6dtMMJ4;
+	spf=pass (imf24.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782377453;
+	b=LPhVYakQEMtOFz7/LTk1jfPcdyh7NuY6DCLBM1jCYhXlA603srK8xtSAKm1RqvKyGvBRd+
+	Pqqe5aY2AcD/6e3Lt0nFERCswy5o+2REKjWaqj9P50ZjGq2L++FPVHh9rkckPdPye8y4TG
+	GYEAFckYrlFbD1OWPhZDPtumMDxnncw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782377453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
-	b=Ri+nY1KuNLwJxvXs2eZkGvXDuRj1YHXDnEaOF031YXyB7ydNxL5/fNE0z/ybSBkHnk2ZZI
-	qId+mAOk/NScHiQX6oVoV7S2Rrgoyd7o+CoFFYJ6XtybdkPxY7luoKZWgkckUOrfvLOcF0
-	VY9XiNxvQGle8ieBEVSHCiquiQYpRjk=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=AB6QFmYk;
-	spf=pass (imf23.hostedemail.com: domain of tabba@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=tabba@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-51765331535so153731cf.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 01:47:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782377255; cv=none;
-        d=google.com; s=arc-20260327;
-        b=q6C6vsbi2X5gKz86ftzBZi6OGGXqVVYc399BpglmvoB0kKmD++tfdCes2UbISexPgZ
-         2j2s19PtD0qLzF0+majzPGWVQy9TNS7lFxlEjtD5se8f7jkBpnAMMUHw3PMwXMiVIxWe
-         WmUl8ldaxIFh7oQu2mciGutGi8UlHZUEQ+R7Ty0y11ZBSeRqzIW05uPDa0031ag1krFY
-         TS7PrEmIyPmP7piszhc2g2seAt4rCQXhUUUyD7vhzXSwbqVt2N3g7H8vsCmcdFQXFcZ9
-         rHWqALTDXuHaxSc2Ab5pCO8ZmfAMjggs5R1Y7c+sK/hE+v4/zpSSPXlYsQwV489Gtvrf
-         nY2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
-        fh=OPvqzZRYA6Pk2CcjmW+GYdszV5azx3qHDJH3bn4AFAw=;
-        b=J3XNk7L3hip0fuZusJ+YT9XYSxY5TKXcVoVO5Ddi2WkpG4a08n/4sp27ZAbMx9BC2h
-         buy5YE89s+0SSC5aPpX5i4mkd29G3JveLj3u2sE0vncwWcwqqAJUTAa0F+fhQSx3P2vA
-         T31URzV4DOBFV78SXTDU5c24OhmGCtL87+44RJhgBwDUGICv6TNe3V4ekE1mMPxukVZy
-         /rUdnebWeqW5tJEuphKYzs9XhxB1VB9zOe0FuxO23kZo1QwJNQC3PGIpH8D/V49FSjLK
-         rfaA3FwFHVu78aGqg1bo4cMYNg4TykRdz6mGL2jq6KjKQeTdMs0graVWLehMip84eGVs
-         gR9Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782377255; x=1782982055; darn=kvack.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
-        b=AB6QFmYk9m4/5ZTPuqjD4qg34c+SYPCpehSvx2DSpF1ODN3uOHhUh3XNqFqTezEJ6g
-         TDJKmqLialbfL3mC92CIc2RHN+5pYHXt+eENlR6CHT2khWquHSwYXmxHtSaiPXco33ir
-         MjUskjAsbbe/NfEM05/rsQy6u8b0EgL/vMOuSHEE0/7t6u266W5GT3R73pzacGIuNVEt
-         U93sZInXcvRQynN+Gzhb69BPnFyPek4d5EoQkEz4idO3iAbd5ADBPsAfK/YuFZn+XqaQ
-         jp6SPQfcOygT2ABJx11vh+2eyf/HWV2m4MFwWu4nzmFTgGa7MuQYywM6aklvkCe8xc0n
-         lvug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782377255; x=1782982055;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=L1P9iL5yW4BU9W6Dd1onnqzvZzuIUKT6XldZibc3Vyw=;
-        b=PozO1wFJtBN86aj78D37Gw7OMatsW6jT34ITkfqvu63iUVgWfyYEUnBzh2nMUtZ9iZ
-         nCjghvjMAegEz3sQUU1c1D9VyQdMelb5LNrzzV46nKqt9wayXRYng82cL86EGF903B4+
-         i3x33F8ya0Z2UdQDHtp4fRqeJJbkhwLuUgi11bMIIxrsCtuBpSkD8+CWWXJYcnJwDgAZ
-         EismwNJJyQJv2go7/xbFjR+pWbllTLW6NaNwmV0Uf3IWJyrFmynz7axkdx92ofx1PXV2
-         ksF69jFTRNSK5vyEl3qu3cbeX2Xa7teiDEZdKx1majMgdO2zxfEafQsPUXPJidxB2Cnz
-         3Vgg==
-X-Forwarded-Encrypted: i=1; AFNElJ8FgPdCo7Ntp85tgVIIOM9eZoNbPxjiMaqVwBJ108E2PbuSGU5TBoLIzWa9DuDtRCKHlvXdflBfZQ==@kvack.org
-X-Gm-Message-State: AOJu0YxF4kZfrOP8+CCce4oc2FM6lBNfe8H765m7FOqMne2IUJUKwulW
-	CkQvXaws63iOhOn/qSEUP+yB1sJA/i7NzgM7eCEb5qSIZeVOutMdjBAv3nLoE8eCHmW71sZTAL6
-	jH7I9x4ogAKTMXRC0voe/ylHs2SyhJ/EXiH2WVZsm
-X-Gm-Gg: AfdE7clfpEQFSPu2PGhczGvtdHlqrk4akl9PWYCqoZ+lgY9YliNR0fBbOvKyHINs/66
-	8LK5zgdGPI2UWuczgswh8PJZqnRLVKyYpgEhycZSqbYGcmT6T6H+aMJPTEptc1YL7Q9L8hsl+NK
-	f3lzJiaG6wQX//EggPGhyVT6+SH8LZXhpv0r/JQkPSIhEhB/QTbkZ2Fem29l62DQl/yyZW44HJ2
-	r3WlnPMbfdZNQSK/aRZpLjfGANswOw+uEEJ5fT9EQ1RGL/44G/NOwy6Hb0S+ByP2CV3sBoV2z42
-	XuG32+Mc
-X-Received: by 2002:a05:622a:250c:b0:516:d25f:f038 with SMTP id
- d75a77b69052e-51a6e9b48c8mr8613301cf.10.1782377254458; Thu, 25 Jun 2026
- 01:47:34 -0700 (PDT)
+	bh=dwl9BXYyih4rkHzUa6Zl9OdrIWhLlRb0XmAM4mKHrgk=;
+	b=V1x84l8p51PtwPzzUFGKkW8k7C+UpJbqoWYLTVlEK9eNLn9HXX26aaXJiLLR9UhWkmwEQI
+	k1FnVWOed04UJwk3XcseY8Qtf2fJ9gwVGOtJpZYEvBr/nEkdoKBeaHykotbdoszY6zU2PH
+	IN8QzTFKxuvKpUQ43faRvI6S/Ss4yFg=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=k6dtMMJ4;
+	spf=pass (imf24.hostedemail.com: domain of jackzxcui1989@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=jackzxcui1989@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=dw
+	l9BXYyih4rkHzUa6Zl9OdrIWhLlRb0XmAM4mKHrgk=; b=k6dtMMJ4LK2GLoXivM
+	TjYxLQ5b1e46NMyHE28KqJqU45H+z6U70sBcxzOM01mejqoQxZLgX/H95UbQrBag
+	+0Jfs2ByY0IURORbJCILBincxULrNqhYkkXVCNFwsZCvKZOc5FCxSUYd7V2J+y/v
+	gd91mMEsiJEWRd6ugZsmWh3nY=
+Received: from zhaoxin-MS-7E12.. (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDnLwzK6zxqNeJOEQ--.60795S2;
+	Thu, 25 Jun 2026 16:50:19 +0800 (CST)
+From: Xin Zhao <jackzxcui1989@163.com>
+To: brauner@kernel.org
+Cc: alex.aring@gmail.com,
+	allen.lkml@gmail.com,
+	arnd@arndb.de,
+	chuck.lever@oracle.com,
+	david@kernel.org,
+	ebiederm@xmission.com,
+	j.granados@samsung.com,
+	jack@suse.cz,
+	jackzxcui1989@163.com,
+	jlayton@kernel.org,
+	keescook@chromium.org,
+	linux-arch@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mcgrof@kernel.org,
+	mjguzik@gmail.com,
+	pfalcato@suse.de,
+	rppt@kernel.org,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for pre-exit before dumping
+Date: Thu, 25 Jun 2026 16:50:18 +0800
+Message-Id: <20260625085018.989584-1-jackzxcui1989@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+References: <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
 MIME-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com> <20260618-gmem-inplace-conversion-v8-40-9d2959357853@google.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-40-9d2959357853@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 25 Jun 2026 09:46:57 +0100
-X-Gm-Features: AVVi8CfgbrnQMIfXiVsNJJJ0xVsuAP4drBRXl96LSWEK0lsp_b9ZqLBB6cNHuVM
-Message-ID: <CA+EHjTxw-28BpsSbPTyuhBEMSzzJa=AWMtrT6Bw=3P+SfBKvLA@mail.gmail.com>
-Subject: Re: [PATCH v8 40/46] KVM: selftests: Reset shared memory after hole-punching
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, willy@infradead.org, wyihan@google.com, 
-	yan.y.zhao@intel.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: fhs8rn4u5mmad7uep5utzuuaysxyqf4e
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PigvCgDnLwzK6zxqNeJOEQ--.60795S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKw1DGry7Kw1rZFy3CrW3KFg_yoW7Wr1xpF
+	WrKa9akr1kGr1Utas7tw18XF10krWfAFW5urn8Ww42v3Z8Cw1fZr1fKFWY93yDArna9w4j
+	qr18ta4UCr1qvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pR7PEsUUUUU=
+X-Originating-IP: [124.77.128.91]
+X-CM-SenderInfo: pmdfy650fxxiqzyzqiywtou0bp/xtbC6AzX4Wo868yfCQAA31
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0FD4C14000B
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782377255-790094
-X-HE-Meta: U2FsdGVkX18BpimHV0lHMMfnd2EmVLbiHjovlF7hKR76Hdkqvt+VsHNmlMeCL4yThDuM3ftvgo8wyO/r5zH8Bk3YvEaui13mnTmgA2VPpio0RvN4U3vx0iXS0CS75brLd5fC/HvFGy3NyYWFoJzfPRIJrCeAMvdVXXHCahIwQ+buDGLNcw1An+1Y6HXF5vfeeYr+N36Fa13gh+/WDPrVTS4DfLXdDEKKvdopYh3wVtZLtd6Njaq4v/oYx+l3SGUwDIx1z/sc6SMNmrfCev1TlGl5qCBIrLzfxzBKnA+9DOqFqZxOsEjDOrH010QpGGM3++fCEDS0NIWB9RSJT7ZRnIKLoamuKdz3xtP8oM+R5dlStiQXZiAj9t+abfCROtKBatIfKC1zTHkzfryE7a6Z6w2vxAbCy+iVJzVlUwuiD+R5z/V4NuOa0YoHioCtwehW/GiekZiO2f5/guh87buH0ZazQaQ2ZZbf0DcSSTTw9p3hvNxdnwdRGW2/XP9Y7DW4fd31i7RlyGianOokg+EHNROqDHXu+n1IsnmUFerewjwYpOwaiuk5x6oeGKdBoL3uSNoV90UbBla3A2h1/MEf3GueoIPoCWXAdTDMopFvYiqCG6UpsXbwA8NINw9xrnLj/FHcyHcUJg5BIWOYqq7q0NoghBnrwYHv8fcUBNFF+BXbroBKPEJla3iYFzkms2g5Shai0es44G4M3KJDrTXFlLsSaVr//qZsKIajtc8TuC+V95NlGPii3SVvwRzB7aeAQ8Pv1JDo+zzjghL3GFP+mOI7L+C/kPHsR3yPjtoyiMN4V7lq1xxupjyNSXTL32p/qv8O9gaU8zsVS4z9HvwsdymCBrNMaejUTdBhF1v8WfppCUE4+wRrxTeX9Z8jo9SDfIahtKugYlz8iXVTQcGAAc4el79Y0dEKcuTlag22exKHX0b17vTv3wj8IGq1NuBGuiggQHNf2JZWXpDTCTt
- Xt6DmkOj
- Yp1b16lbMEA1N9fy0H3S7TVNEdLOVAsV9yQshr9VzifmeIScA0YtzGBVa3saqieGjg64CYByxs3+PdB2LRt4PmcHy5WcsBk4+wpIFed7a4OpqCk0fz0cp11DIfQESXn+f5BHYGiDNHu7PL+GmYXB8dVOcGnsHcstsVroPwze5m0oIdHpAxRtV+0B+jV8GPKJIJ1+Y5ew1XOV0OvLJZKbAK+JbkDAemda0RIrhlaPNQBfJi38C7eyU+qwsLDx6lHGAsiDKrqDxytS6/jkcrj6hNL98+b65URjRj1O4
+X-Stat-Signature: 6dgu7pfmu6ja4p6rtn6yk4hscyddqehs
+X-Rspamd-Queue-Id: 275C518000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782377451-776154
+X-HE-Meta: U2FsdGVkX19jRmqmt2KOOdCLg4T2/Qn+QGepb8AB2cdEAHqLP03H7/D9EnSSUug3vFji1qCaWpDMZis3CTrL8vTv95S3UKOVybYk0ihTcTbAZaKMJNhRmeReoIcR+76VeknYJg/hFcWuP9SGWCubwlOC3pyB+U47dlqH6y8KfGEEJ9F1PJvDLzdLLBReD0G00rEsQaYtnzgxVi3ZuifcId0eIQk/SY5Hvvbi26OQ4ZrqVEfM0b2SNyQGjLpLO2AvMer98sndC0kCXXqakeVhO1tjcm/TJeTGY92H2JAASqvgC1Zhk+MXdSZ2nod5tSaTDWIxMGsJwIuQW9qajKLE/4RRABtqhUdOPpyAp5XLIZpRX3wVNg1w/LBayejRKo6y5UpHpqaK29QpKjCkrjZ7yqN8ekX+Qc8EY7kFx168BYlGOD4gvyUKpD8OOiiXpsIhIOolyJe497e9bY/cnUCpSnI5XAD8e3fUVkIRq0ToFYTe8Qm/8fCsD7w3T6mE56M/KiBYAfCbbW8a4KNFJ/dVU/QcEankIjv/nrDXZFtW9XiHDmBsjHbnBLivtKQMWatl++Hb4Fi8KnAN7mJGJ3NZuDFZXoV9ziM1hlOYUV2+6dAb3cXZT4voQ6qw4OMgkS679jxam1PHId2cghyEx7f+e4oma2erKGz0Z6r/0Vhn7lFARoertiKGy/75TDDsuNCmhVLdfFdPwrcvTUIxtrWecmnFHzxKWb7Ag/Opaq/lYEubRoaXU1i5PK2GRLrCHW2+cP9zgfS54uOZjer3xniOm5rGSUlijKlpYW6sBVcC90IzarhO0Tb+zR+nmKoMJlxCnBJXOPIqQS3wfANdL5f7lvNakENHrTBLuYfKnG9wTLcw1nKOOA8j1sv8HiV01jftrC2ZvW8yB+H3QwYJuuj7uiLTOeTgc68m3VDFS44MDO3bZBDGMUlH+G6jTPChbtQVvjvHopH2RhFCjRyJXw6
+ vTyblvqF
+ k0TnNV42N7wZhgjvD1hQUXLUgn/1Vr9gb64ruumMmzJbkTXo5Kv4hm1wRWlKPqureUCc3Z5w8aIXpBvOmyIlkFhNm5sgBbBhJn3LPidJEGXYQpw4WzTYvfSE/sYfMiu3p8sI4+JM2VBgSi/Us9tfLSa0qc+Q22maIeruQLt4H4sD1jI5aBS+GYRrINXISznMpdyE7wKg7YrNRgJtciVaqTm9v35pEnDRNylo4pcokRJ5s2JzgBKYFqQrhhm4tTYS0aM3d5iLJlKfk9A4lmtUeyKbzRiJQoWBTesJexgwY8eJZY/h4JKPPtbzBR7QjmY0igWBXKWJrHk0Lk9cKHgmIJzbrAW69hY7pffY/ZNazNh2/oqNqegdA5lxeARRD0ntVIeUBqwWiuzQPUqCwkjKv2s0uKcsFK8yv1Xe7c//uQcWKfOL2Rtf2ZY8QMaYt99IN02eemcGHwfHfyye7bxssy1ykH0zTaTvWYB4rgtpPVMV6bb37hLtpIuWb+rfCScVMaFDDUBVTWmPbBwAx4iiZRFo2ABw7kjAw8SeUOxUh5+2fvaFkG+EvKQxXbXYFFx3q/owuQyI/QGyiVvWOI93zsg9ZNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,75 +110,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 19 Jun 2026 at 01:32, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> private_mem_conversions_test used to reset the shared memory that was used
-> for the test to an initial pattern at the end of each test iteration. Then,
-> it would punch out the pages, which would zero memory.
->
-> Without in-place conversion, the resetting would write shared memory, and
-> hole-punching will zero private memory, hence resetting the test to the
-> state at the beginning of the for loop.
->
-> With in-place conversion, resetting writes memory as shared, and
-> hole-punching zeroes the same physical memory, hence undoing the reset
-> done before the hole punch.
->
-> Move the resetting after the hole-punching, and reset the entire
-> PER_CPU_DATA_SIZE instead of just the tested range.
->
-> With in-place conversion, this zeroes and then resets the same physical
-> memory. Without in-place conversion, the private memory is zeroed, and the
-> shared memory is reset to init_p.
->
-> This is sufficient since at each test stage, the memory is assumed to start
-> as shared, and private memory is always assumed to start zeroed. Conversion
-> zeroes memory, so the future test stages will work as expected.
->
-> Fixes: 43f623f350ce1 ("KVM: selftests: Add x86-only selftest for private memory conversions")
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+On Thu, 25 Jun 2026 09:28:08 +0200 Christian Brauner <brauner@kernel.org> wrote:
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
+> > +	coredump_pre_exit=
+> > +			[KNL] Change the default value for
+> > +			/proc/<pid>/coredump_pre_exit.
+> > +			See also Documentation/filesystems/proc.rst.
+> 
+> Nah, we're not doing a separate file for this. That makes no sense
+> whatsoever. I've already explained this in the first mail. There are
+> effectively three modes:
+> 
+> (1) dump to a file
+> (2) spawn super-privileged usermode helper process connect coredumping
+>     process and said helper via pipe
+> (3) coredumping process connects to AF_UNIX socket
+> 
+> Parameterize (1) and (2) via a command line arguments. I strongly
+> suspect you're using some AI tooling so it should be able to figure out
+> how this was done in the past.
+> 
+> (3) can be extended by just introducing a new flag value for struct
+>     coredump_req. That is also illustrated by previous work.
+> 
+> We're not spreading procfs files. It's terrible api design especially
+> for security sensitive changes.
 
-Cheers,
-/fuad
+The coredump socket approach is easier to implement because it allows for
+interaction between the server and client, enabling the customization of
+protocols. However, for the coredump file method, I can only think of
+defining "r" and "R" through core_pattern to release flock and file-backed
+shared data in advance. I'm unsure if this is feasible, as it changes the
+original definition of core_pattern.
 
-> ---
->  tools/testing/selftests/kvm/x86/private_mem_conversions_test.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> index 861baff201e78..289ad10063fca 100644
-> --- a/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> @@ -202,15 +202,18 @@ static void guest_test_explicit_conversion(u64 base_gpa, bool do_fallocate)
->                 guest_sync_shared(gpa, size, p3, p4);
->                 memcmp_g(gpa, p4, size);
->
-> -               /* Reset the shared memory back to the initial pattern. */
-> -               memset((void *)gpa, init_p, size);
-> -
->                 /*
->                  * Free (via PUNCH_HOLE) *all* private memory so that the next
->                  * iteration starts from a clean slate, e.g. with respect to
->                  * whether or not there are pages/folios in guest_mem.
->                  */
->                 guest_map_shared(base_gpa, PER_CPU_DATA_SIZE, true);
-> +
-> +               /*
-> +                * Hole-punching above zeroed private memory. Reset shared
-> +                * memory in preparation for the next GUEST_STAGE.
-> +                */
-> +               memset((void *)base_gpa, init_p, PER_CPU_DATA_SIZE);
->         }
->  }
->
->
-> --
-> 2.55.0.rc0.738.g0c8ab3ebcc-goog
->
->
+Regarding the coredump pipe, there is also a lack of a mechanism for the
+pipe program to notify the coredump process, so it might still require
+adding "r" and "R" at the end of core_pattern to indicate this, allowing
+the coredump process to handle the early release on its own. I'm not sure
+if my understanding is correct.
+
+Even if the coredump pipe program obtains the file pointer from the process
+that generated the coredump, it cannot reduce the reference count of the
+file (which I understand is a very bad attempt). Since it cannot decrease
+the reference count of the file, the early release must still be performed
+by the task that generated the coredump. Given this situation, it seems
+that we indeed need to use core_pattern for marking. I've thought for a
+long time about more suitable solutions, but I haven't come up with any.
+
+
+> > +#ifndef O_TMPCLOS
+> > +#define O_TMPCLOS	0x80000000	/* tag need close, temporarily used */
+> > +#endif
+> 
+> Sorry, not going to happen. This doesn't not justify the addition of a
+> new uapi value at all.
+
+OK, if I use it at last, I will not put it in user header file.
+
+> > +
+> > +__setup("coredump_pre_exit=", coredump_pre_exit_setup);
+> 
+> This makes no sense. I think you really need to sit down and think about
+> a design for this that doesn't introduce state machinery for boot, mm,
+> and the VFS in one shot to solve a fringe problem...
+
+I'll get rid of the attempt to add a new boot-up argument for this feature.
+
+> [Severity: High]
+> Does modifying the VMA maple tree via do_munmap() during the for_each_vma()
+> iteration invalidate the outer iterator? The loop traverses the maple tree
+> using the iterator vmi. However, do_munmap() creates its own internal
+> VMA_ITERATOR and removes the VMA from the tree. Because the outer vmi
+> iterator is not updated to reflect these structural changes, its cached
+> state becomes stale, which can lead to a use-after-free when vma_next()
+> is subsequently called.
+> 
+> via: https://sashiko.dev/#/message/20260624145552.70143-1-jackzxcui1989@163.com
+
+When executing this traversal logic, we have already acquired a lock, and
+the process has been frozen. The traversal logic goes from start to finish.
+Are you sure that this approach could still have issues?
+
+> [Severity: High]
+> Is it safe to iterate the file descriptor table without holding
+> rcu_read_lock()? Because coredump_pre_exit() is called before zap_threads()
+> kills other threads, concurrent threads can still trigger expand_files(),
+> which replaces the fdt and frees the old one after an RCU grace period.
+
+Since the process has already been frozen, shouldn't we not need to consider
+such concurrency issues?
+
+> [Severity: Medium]
+> Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
+> of file->f_flags risks losing concurrent fcntl() updates since it doesn't
+> hold file->f_lock.
+> 
+> Also, if a file has duplicated file descriptors (e.g., via dup()), will
+> clearing O_TMPCLOS here prematurely skip the closure of the remaining
+> descriptors? When encountering the duplicated descriptor later, the flag
+> will already be cleared, leaving the shared file actively referenced.
+
+> [Severity: Medium]
+> Similar to the issue in exit_mmap_mapped_shared(), this non-atomic update
+> of file->f_flags risks losing concurrent fcntl() updates since it doesn't
+> hold file->f_lock.
+> 
+> Also, if a file has duplicated file descriptors (e.g., via dup()), will
+> clearing O_TMPCLOS here prematurely skip the closure of the remaining
+> descriptors? When encountering the duplicated descriptor later, the flag
+> will already be cleared, leaving the shared file actively referenced.
+
+Currently, this flag will only be used by the logic we added, so I believe
+there won't be any issues.
+
+Thanks
+Xin Zhao
+
 
