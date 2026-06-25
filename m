@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89266CDE000
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 13:51:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B624CDE000
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 13:52:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72FAD6B008A; Thu, 25 Jun 2026 09:51:51 -0400 (EDT)
+	id 275356B0092; Thu, 25 Jun 2026 09:51:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 707006B0092; Thu, 25 Jun 2026 09:51:51 -0400 (EDT)
+	id 24C126B0093; Thu, 25 Jun 2026 09:51:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CF686B0093; Thu, 25 Jun 2026 09:51:51 -0400 (EDT)
+	id 13B896B0095; Thu, 25 Jun 2026 09:51:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2532F6B008A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:51:51 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D0A3887E5
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:51:50 +0000 (UTC)
-X-FDA: 84918573180.14.1181D01
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CD92514000A
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:51:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iS231uLX;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E9EF16B0092
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 09:51:58 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 756BE40130
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:51:58 +0000 (UTC)
+X-FDA: 84918573516.27.E1F40C8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CB5042000F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 13:51:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hLAC/xFF";
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782395508;
-	b=vpjC3rVORGk4tlJk5WHnVF/lXTTet92J+LIltpeWmqt8x5KJgoYr2MyuYB9K8J2HXN+FCB
-	XroytU8GDEAEChbbKJoztUChiOZV2hyrQRKoPjqhqoh/ViySU9FTJuvtzb11HB1JFigf4c
-	Zn1nnYrVi9a87lwvdk/gwTbaqAZ29is=
+	t=1782395516;
+	b=Z6s96DDRzinxOV/obIAXCjNgOkXpEXYJvQkMk1xJyXDlH9nKZUcQ4aEpgOYcmjH+S6mD9B
+	SrS8QW2dO9PPbb13kJ9G1H8rVpcJ0cOoT4fChIJM5t+44keUPaEFSb1fGYithtRlC9QEKA
+	xRd27jPUeNGoj9QZo9IlqEHPT/cZ0fM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782395508;
+	s=arc-20220608; t=1782395516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aKYJf6dgXdgamkqA4Gs/PyiillXu8yFih4YnbHcGiuM=;
-	b=5K96F6bWTKt2Hnurr9QiunQ2O8LVd8CgiUoDQBXxO0mIxoQpx7AeZNh4Z79oPaITG61pba
-	lBDEb2h3/WtVbznKaL6V4UerQHx5xukWccwml8ltYHYkgSLugD1IYxPHY8dY7wVYj9seuv
-	zYZIv7txZLdtqeCd8LwG41c+1ywsi9o=
+	bh=Ua5RN1s2i/OqK90Ydax/XI8pp/DaZSEnF259m5rP1ok=;
+	b=KzE42Yh28OtOJcHgMkmrbwATTPxcB/N8vLAJzfDvqJCI529f3axWtXB+T+iCExta4Di1pq
+	SWayY9oAvKTrH4YqBTW8Z8fHjtxDJRfh3+DDGdZLrQIjNCoiGqLrJGpYiegiYdgk1KFCLa
+	TkXxL3v+2mqrWCOiwVTzCESZ5+5GUA4=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iS231uLX;
-	spf=pass (imf23.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-9157d3f2098so205197185a.3
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 06:51:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782395508; x=1783000308; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aKYJf6dgXdgamkqA4Gs/PyiillXu8yFih4YnbHcGiuM=;
-        b=iS231uLXCedGnd/FP5a2gafQcoKMgqEA6J9bZtG9nW3uKMItV31yIKUWZi3xbk6IXb
-         Ne6X1BixKUB9EOjVgWienvlOXNWGeD5R0bnuvvWMlGGK3j8NQgOo0qhNULbTDqW9HaqX
-         EmdoezpLSY0E0RQHpnto9PcS05ZSdxc9EPTCjd9BNZBZpJC9FJT0r5M5UjYDoFnLkt1R
-         fI5Hk7qXUCJJeA7Ib/vnM6jkc0OV8etuPFO2HLQ+7cMlikMiiAJ91O5iwbQdrctoGuy1
-         MRmS1xG6jbgW0YQdn+eGVdUVePt25nhxCtQEobD7Ct5Rf+nwMSIk6RH10T0JBHGFgpbE
-         2XcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782395508; x=1783000308;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aKYJf6dgXdgamkqA4Gs/PyiillXu8yFih4YnbHcGiuM=;
-        b=XEYeGH5tgi3aieFC1uqxVEcyTruFY50NRKXUbzzZvTal7jQpqTlLnRGia0KteMBbV5
-         JkWKlnI6vvTnmuhGwiKTi9cH5W9W1ZNTwQ9DECpqP3h5ObiQvOyl6X5+8j36gbeaXFvX
-         WucloUxtu/X5DzJG8T6le9gcppl+le98ZuGiDU0dEH5OkZWsURIuQ82AzpdTKDtXhaOe
-         LUXkkbHklin4ZezVryEmJKaOJClhfV53M/k0GBXXi5NY1DCtLHZ2hL5MZjWUsrBJ59gW
-         SWd0i7Hx3P2vWdmUliEjsnuPO0JCgH5WhvLsLiL9lssB+z19WEy4hn0VHTHB96nZdxZo
-         UlNg==
-X-Gm-Message-State: AOJu0YwzVFmqPqI9Qjxir8X+WRQkPEeFW3IdeAxdoUOVKHtU8pGOcQEC
-	P/XhtwKJswgWZAyY9Obi/ylXp20ayEQI6FI5YlwF2g3RtoiE8cHNYjVJsEo2UzuKpEMzZQeINXq
-	3RZZl
-X-Gm-Gg: AfdE7cn6cpOvq7of8axBmc86oXO82S7RcyW1L0uLSpshEdo/9jmYX6iqoDVUQm6LJAb
-	JUZvw0aY61w97zdTfLGtJgwQND3tK4olfqjr+mfqBi1Mb9HbWj53q0NeUoCbikEIQaT5X1xTWEp
-	jrxXVcSk8NipkWmgML0GPVdz5Dp+NruoOR6Rge9/T9EzPwUn4xp1OGg6DzEA0CLeHtv3hd5XLFE
-	HQ5CYKSffLagaI1Ug1BmvKrUxMY3ec1U3knzc7TtWAVHAHYF9z6bT9bM+qIakyoj8zRrCWPFPcq
-	MffuXhyaz32OtrGzeugaEb4q/Ix1+HOpV9MHWO0XcLH5HJEBb6HWrO1JQrcaWqK6CJeqh3EA1XN
-	cckUI6RhPKy0n5vRGsjENlIHE3WM/ikfimUayL1Zw2IhfEhW/8oV7PgLy6JrTFBqLRR5ttXczaA
-	xHhKp7OAMqCP+D0Q62qbHRzLuvPi3M6W4tLocToY229EbWf5mp6F12SPpkg6ZvfGLoOVeqbEcRP
-	VRKjx0=
-X-Received: by 2002:a05:620a:2887:b0:91e:7a20:3cc9 with SMTP id af79cd13be357-9293d5b247dmr385793985a.52.1782395507830;
-        Thu, 25 Jun 2026 06:51:47 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f5ff5e6sm180208286d6.12.2026.06.25.06.51.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 Jun 2026 06:51:47 -0700 (PDT)
-Date: Thu, 25 Jun 2026 09:51:42 -0400
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kselftest@vger.kernel.org,
-	kernel-team@meta.com, osalvador@suse.de, gregkh@linuxfoundation.org,
-	rafael@kernel.org, dakr@kernel.org, djbw@kernel.org,
-	vishal.l.verma@intel.com, dave.jiang@intel.com,
-	akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
-	mhocko@suse.com, shuah@kernel.org, alison.schofield@intel.com,
-	Smita.KoralahalliChannabasappa@amd.com, ira.weiny@intel.com,
-	apopple@nvidia.com
-Subject: Re: [PATCH v5 5/9] mm/memory_hotplug:
- offline_and_remove_memory_ranges()
-Message-ID: <aj0ybgV7n0pqXF0b@gourry-fedora-PF4VCD3F>
-References: <20260624145744.3532049-1-gourry@gourry.net>
- <20260624145744.3532049-6-gourry@gourry.net>
- <d48feca1-0203-43ff-bd66-6243291a51ba@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hLAC/xFF";
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D360B404DA;
+	Thu, 25 Jun 2026 13:51:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0381F000E9;
+	Thu, 25 Jun 2026 13:51:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782395515;
+	bh=Ua5RN1s2i/OqK90Ydax/XI8pp/DaZSEnF259m5rP1ok=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hLAC/xFFt77m/QH4NX/S+W/YIkDM7I31jYy4HEpODyQ7eKNB4pM+vSlAQGv5gP51l
+	 0Uf5hYOwsydgCtvUmTXcZmg4Oc6wVJbXews0b4QDQL+5oBRgIjTVaBPk5cKjr7Y6HB
+	 hlheiHQACCufWXeBzVxxCZZpeHclT8DHTjj/xn8SFgKwTf0NPmVZP943rctl2KID6C
+	 qr8QXMafCyZYG8JoQtjEJHkY+TC1uhJ2gJBpV6DFxL30KaW9FkhgggntHgFRgdKF83
+	 C//pawojA1lu7mn1d6Ycvr/82jN/UIivBk0x+L9Yyf3WAEwfQ2+uVPpbqSKGyn+DOf
+	 6I4ZFh8uVKgcA==
+Date: Thu, 25 Jun 2026 14:51:47 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
+	jannh@google.com, willy@infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, lance.yang@linux.dev, balbirs@nvidia.com, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
+ CONFIG_TRANSPARENT_HUGEPAGE
+Message-ID: <aj0xd4kOfY6wxGmY@lucifer>
+References: <20260624082359.2869-1-richard.weiyang@gmail.com>
+ <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
+ <20260625034629.nmgdwl2c4luwod77@master>
+ <20260624215943.332f1bdcc99a3b85b7df0822@linux-foundation.org>
+ <20260625064102.tcmvrctcqibl54yr@master>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d48feca1-0203-43ff-bd66-6243291a51ba@kernel.org>
-X-Stat-Signature: 1ysjsfueu48diigeh7gqbshw83gprr56
-X-Rspamd-Queue-Id: CD92514000A
+In-Reply-To: <20260625064102.tcmvrctcqibl54yr@master>
+X-Stat-Signature: 1hg5eo9qcunbfbgsdj5owhfm3x7gw5y6
+X-Rspamd-Queue-Id: CB5042000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1782395508-827624
-X-HE-Meta: U2FsdGVkX1+Hk6W9sykOjSzXVYJ6eyWGeZNA0zPNVzUJs4weO4R8bcH+foJriPaOg+A4Kx4ZiOwXvIyMj0XvX2knEWi6jz0tUoy6Lsj3RykpMEjKqs1Ry1d3k0B9v9zzRD8Y+or4gWvG4RMExW+AhZr1EgDqrna+MtK6bhckyhApuKuS4e0+f/M9yxI+gm1RA1VvaAYuZNW7nbkgkF8MmDTNR92bYnpWuFcYGkFAIYuUJZtwI6RepoW9tyBEV2N5XE/SGg3W0MYf8G5KRBBmaOC4mANEZXpjZ+WS0h4vG5rqkQe75+oTuczWmWuBm61FzTsJE1MQ2MS7aSmYxeMqbmdHwmjZxINd81r1THK5PjY36eFBeViA8q5t8mdtlc/Jm+MeKz3Y9KXysoeW2X7TU5ylpNKTsmByKfbFJPAxYJDZysnmafjT56b3yoSE6fiYYypXzjXanSZlumV1E4QXUSpHOnV8VbRLhNGgW/fRd2hSeLDQXFDSGQ0KHjd8gloz2nX2wmqzJ6TCWb3FjqCw87I7dkkmOXb5YO6x5RwWqLv5r3QFFajnjdpXqlJeVrv3M5g7xmNJyd2TcvvZBbvg3v/m18aqnuP/STcnkio7siY6p4zEnvOqS8JOAbeBH2kCm7SPgkY/NGWWOIDXvs56YPzoi7M8juEPBKih6tkqJCRdP//37ALPfFf2qr+UALvn9JTONl1spRjXlsPMdhyCngU3NnEN91/RazWj0bUzWK9d6moMR2k/NR0F15qbEDQpOSSjn/raK9bSvdgjKL1jMfN4nKkd4mBAgTjGQtGETZzU1XdpQGGbbsx+QkyvQTOXcLv+7q7a+/EaGjXysvvFonxG7uD9daLq0db+UvsDfvSdVlKwvSGV3pPny83/+0nppDHMSLnUu5rJ6pEGPsbP+X+m8Wr0dLBJOVJZWBXKw9rw6efOhDR2ffNxI9RtOH7YWCGuOdgAFQX+BckB1U2
- +k9gJLQK
- teEpFdumI5w64dcOVQpSKB8DUKvx7d2JVtZrXi+Cj2JQOEehhKAx1VFjDiTfmZcZRgfTzp8n3Ic8xuboL2yD2nB4xwcxcWX161/bawqcNj3SbPTxnR13naeqj6Wu1T7pTSyMrFyHkjSpwq3I7DOCXUaqsb1uFcC0bvw4Q8P+VvXd+ceK+Rk8jDr3OITXkL3/LHeJQvR5y99zNee8LhAyZQFxAiD6cWwylN5Dls54gg0o939hYKD9UhRuWN8EJF9gS3006IsdisP5hJZFHmeMZLrP+937fF/3skdd0+5MliZws2WZ3/o048aSwskXtjwhAIaWHx10OytARjIYO+dnAFS368hNgn3rkLJJLpQv6ApZ49HVu1SfQRUZqQ9IrDa3ePZDp
+X-HE-Tag: 1782395516-151741
+X-HE-Meta: U2FsdGVkX19EHv5UQdSpYdopWmHGV2OdL8lwyrJouj6YhRHt2r2+9d0GihM9NfBlWvRZBelb0UexcMAbdBV+I/yPiYW+/pTAQf4qxmFqcDT4IuifS680tBhohdMfj5Kv3IVLshFc17dDI7Y01Kl/8x73xfF4ZGYrHuNOzYEzBpPdychkR1QaH3kkDGWylZJlz0f3m2cCuZ6+XlMxNmxye80KxZxnCMWVvswrZVo8LE/th0Ts8uZ3ysj+QkC2eljR3MwhmYT6FEEXoX7P/gH9+LORFGyWvWRPf8FCabv45rgHFilaUIagZ5/3FY0Sfb6w6Z6X4BEpR0Lt0ZBvcw/6c3t25cPDTelyQzWgGOeJrDPSsp178NAazlquKYxMFb9Juvn2ch395HHGcdZBN1Tp+9Jl1LmLcCyg+/fnGXCTuibJ5Zo2SLtwUS/4z2ewWS5nMlbuOMPN0kLltbVfIkj6FoHujkRiTlo2Jl/ZCU/Co81FAikKtT+q1L4c6vCKWK0/zkgotf3nqSvDQiu+WUQkek34uZhD+qOUoyAHahZF5a/63fgByhAIOSXK2WygizO3b08qffego+VWEyiGm42yBFX95We1vAGQNlMUrxDJ4qEtnHoa5k6FSfkRThcd0SmT77SVG6jjdWotkhxIGfIht6FGk25mJdXayEVrW04BFHE6eqSpoRIoOKhQ73SnalA95OKgYIX1HkirbqkkU3TtfXLlVdh9qlAHbGX1xAxymL9dpWv+YrFoFQtp1gCYcKSlLYuJSgb27am1hxJq3xKJ05V+UivxMzcf8+vl/KL5bcuRkPlRfnFtnoGEF7hV3duPZekF/ZNJVhxhBnF1cV0MTdCuBLLPrdWwnBjpg6tyJZ3DCZkfMgrikIQzPDGcAW46nvwjjqTUSoqnrPxQjWpei4VXzJMoJPV73g8KCDbzLcXwjS4veZ5j4Mnev3c8LObf6lLZDTfR4+fSc0S7Y+X
+ OczhSfuu
+ Pk0OG+2iD/rc08Cc8rkCTy1yUHntlWdTMbNH42EOsK7r6nzAYmy5rDaehFqYWY4hiU4v9w9fhFsI7n3er7VmksKOYznNFGv+99RoiGhAHfee0959YdqduW7dVV0GmBBY4qxgACaty4F38/IU0WAspbAP/EQGS/UVPt/wHcAP4SzuUcTeXORomUDHuehbHEuDFFNBrtpoV04cSlp+OZFpHGh+rrPUdKmBs+tWoBr+RTap9i2zyq7aXU+EnsUiBF3c9EbP8yBEJtbdqGGjxsgfppipkYTuQpDm5UPCmC4nD5wsm7YULaS+fvIOqIjOa3wdG1R2KxT+Opk3AIGTVypo6Vut3fnLDBZ+aHhAby4TX/Isvv4C8GfPk+relM8YPeGigqWV7UONwz3aYtz+bQ5Vl5QuXQIFbS3Xx1QNxOBt4luMRTN/UmBPh+WhXTVSuvPetXGiobnKou0BtUh63Thv+OZLWAuCBIjIexvjrvXTKs5W8yh9OhY6qWWAng5YBYIVKenRu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,85 +98,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 09:22:01AM +0200, David Hildenbrand (Arm) wrote:
-> On 6/24/26 16:57, Gregory Price wrote:
-> >  extern int offline_and_remove_memory(u64 start, u64 size);
-> > +int offline_and_remove_memory_ranges(const struct range *ranges, int nr_ranges);
-> >  
-> >  #else
-> >  static inline void try_offline_node(int nid) {}
-> > @@ -283,6 +284,12 @@ static inline int remove_memory(u64 start, u64 size)
-> >  }
-> >  
-> >  static inline void __remove_memory(u64 start, u64 size) {}
-> > +
-> > +static inline int offline_and_remove_memory_ranges(const struct range *ranges,
-> > +						   int nr_ranges)
-> 
-> Best to use "unsigned int" right from the start and use two tabs to indent.
-> 
++cc Roman for Sashiko discussion
 
-ack, ack.  need to reprogram my brain to two-indent style, i keep doing
-this reflexively.
+On Thu, Jun 25, 2026 at 06:41:02AM +0000, Wei Yang wrote:
+> +cc Balbir
+>
+> On Wed, Jun 24, 2026 at 09:59:43PM -0700, Andrew Morton wrote:
+> >On Thu, 25 Jun 2026 03:46:29 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
+> >
+> >> >Sashiko had an off-topic complaint about the surrounding code:
+> >> >	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+> >>
+> >> I see this robot reply, but not see the Sashiko comment.
+> >>
+> >> How can I view Sashiko's commnet?
+> >
+> >oop sorry.
+> >
+> >You can go to https://sashiko.dev/ and search for the email subject.
+> >
+> >Or append your Message-ID to "https://sashiko.dev/#/patchset":
+> >
+> >	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
+> >
+>
+> Got it, thansk
+>
+> This one mentioned two things:
+>
+>   a. page_vma_mapped_walk() return without check
+>   b. whether __split_huge_pmd_locked() would split device-private pmd
+>
+> For a., it is being fixing at [1].
+>
+> For b., to be honest I am not 100% for sure. If a device-private pmd could be
+> file backed, then this looks like a bug.
+>
+> Balbir,
+>
+> Would you mind taking a look at the second comment raised by Sashiko?
+>
+> [1]: https://lore.kernel.org/linux-mm/20260624065353.1622-1-richard.weiyang@gmail.com/
 
-> > +int offline_and_remove_memory_ranges(const struct range *ranges, int nr_ranges)
-> > +{
-> > +	unsigned long mb_total = 0;
-> >  	uint8_t *online_types, *tmp;
-> > -	int rc;
-> > +	int i, rc = 0;
-> >  
-> > -	if (!IS_ALIGNED(start, memory_block_size_bytes()) ||
-> > -	    !IS_ALIGNED(size, memory_block_size_bytes()) || !size)
-> > +	if (!ranges || nr_ranges <= 0)
-> 
-> With "unsigned int" this will be !nr_ranges.
-> 
-> Wondering whether we would WARN_ON_ONCE() here.
-> 
+I continue to dislike that sashiko does this.
 
-Seems reasonable.  Do we normally WARN when callers send dumb arguments?
-Seems like sending -EINVAL is sufficient?
+Series with... interesting use of AI :).. are already taking up more of the time
+we reviewers don't have... but interrupting existing review to mention random
+stuff is unhelpful I feel :)
 
-> > -	online_types = kmalloc_array(mb_count, sizeof(*online_types),
-> > +	online_types = kmalloc_array(mb_total, sizeof(*online_types),
-> >  				     GFP_KERNEL);
-> 
-> Is "mb_total" really more expressive than "mb_count"?
-> 
+I think the better use of time here would be for Balbir to perhaps ask AI to
+examine all cases where a PMD device private entry might crop up and to check to
+see if there's any other bugs similar to the ones we've encountered before?
 
-No, this was mostly my way ok keeping try of what was being moved around
-while working it.  I will change it back.
+Given Sashiko is very token-constrained, I also wonder whether this feature
+wouldn't be better disabled (or maybe have the ability to turn off
+per-subsystem?)
 
-> >  	/*
-> > -	 * In case we succeeded to offline all memory, remove it.
-> > -	 * This cannot fail as it cannot get onlined in the meantime.
-> > +	 * Phase 2: Remove each range. This essentially cannot fail as we hold
-> > +	 * the hotplug lock . WARN if that assumption is ever broken.
-> >  	 */
-> >  	if (!rc) {
-> > -		rc = try_remove_memory(start, size);
-> > -		if (rc)
-> > -			pr_err("%s: Failed to remove memory: %d", __func__, rc);
-> > +		for (i = 0; i < nr_ranges; i++) {
-> > +			rc = try_remove_memory(ranges[i].start,
-> > +					       range_len(&ranges[i]));
-> > +			if (WARN_ON_ONCE(rc)) {
-> > +				pr_err("%s: Failed to remove memory: %d",
-> > +				       __func__, rc);
-> > +				break;
-> 
-> Do we really want to break? I'd say, just warn and continue, and fake rc == 0.
-> Something is seriously messed up already, and we partially removed memory. There
-> is no clean rollback possible.
-> 
-> Similar to __remove_memory(), ignoring the error because it offlined it already.
-> 
+In a couple other cases the 'also consider' stuff actually took a bunch of time
+unnecessarily and I felt they interferred with the series landing.
 
-This seems reasonable, will change to warn and continue + return error.
+Given the time constraints we all work under, it'd be better not to add to
+workload this way (having to figure out if the points are valid are a time drain
+in themselves).
 
-Sashiko actually pointed out there there's a corner condition here with
-offline rollback, so i needed to tweak this chunk anyway.
-
-~Gregory
+Thanks, Lorenzo
 
