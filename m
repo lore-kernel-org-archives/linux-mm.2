@@ -4,101 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A990ACDB479
-	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:01:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5145ECDB47C
+	for <linux-mm@archiver.kernel.org>; Thu, 25 Jun 2026 03:02:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 861676B0088; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
+	id 3F71E6B008A; Wed, 24 Jun 2026 23:02:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8394C6B008A; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
+	id 3CDB16B0092; Wed, 24 Jun 2026 23:02:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72A436B0092; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
+	id 2E3E76B0093; Wed, 24 Jun 2026 23:02:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 39CD96B0088
-	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:01:44 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C16AC4055F
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:01:43 +0000 (UTC)
-X-FDA: 84916934886.16.6CD47FB
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5795240003
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:01:40 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of fuqingshuang@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=fuqingshuang@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2D3B6B008A
+	for <linux-mm@kvack.org>; Wed, 24 Jun 2026 23:02:21 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 843DF1C5CF7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:02:21 +0000 (UTC)
+X-FDA: 84916936482.17.D11C0ED
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0193A140010
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 03:02:18 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f3XfhSe6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782356501;
-	b=SuooLMfqklpNWonYsrgBBa8kQvXraB5KjQEyoQdq8+Q6y2LuKNnczU93N4Wve1s1DXDlge
-	iJa9t5m8fp/gLwkRIGvr7Xq0cwYPaT9rrf+wAiB7Tr4EbJ2obtjpn9ERbkAUTKUCzMB26X
-	JQTLfg/XyxnHLxYygs8zppH67gOjjjk=
+	t=1782356539;
+	b=H/ejIoTApgxrD1EpUEdYepjDO4mVVT+h1/s7514HOpYirsnGOP8usX+pNeyQXzGM11S6K9
+	ITWOj6FOc2L34j9IVzG0rS5iKhwARw71N8XlNyIhFrgvdtBHZgYs7bELwhtknLQG7Yuphy
+	S0qkv+wxw/Uj1l5WTPlS1cv/2Yq7sYY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782356501;
+	s=arc-20220608; t=1782356539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:references; bh=Rgx9yv9kFKLvzLxPF+EveGQRhav1KDh6KwxpFgiUyNo=;
-	b=BMF8uOqHMOk32TJYGCD0hPWJJt7ab6ehPML3RWEB3Z9RawOWITDLyCxOlE8O6LqQIiXZ7d
-	wk6GAw2zwlC9ruGDPgKEUUDHV6K6zHN2ANRzj4Q12Qz5xbvembFvmrINQivAZGSc1rpfZk
-	2yMMpGecl+WSrS4hpqxV1pdMpa2Mywc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=bg7TU7hDzDNv/08FHHH/On04xmb+0Xhy9JCW39bnqOs=;
+	b=J/rlFUzZY/pnwPuq/BCyf3ByVl/dw0Z9JgO5R3JfzgIpI8HxD4xIMdcFlbYVymoKdfxBqY
+	DRh/k83cl43570SusV5LPSQvg+61XCNMUM80aUabf4v1kKJLlmrcJWjPm8bLQPyU2qhVUY
+	LrVst0+X/hBjUOXyHAUQwfH4fAIYpnk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of fuqingshuang@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=fuqingshuang@kylinos.cn
-X-UUID: 2a4b3082704211f1aa26b74ffac11d73-20260625
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:4aecc084-3774-4156-969a-cd032f522f59,IP:0,U
-	RL:0,TC:-10,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:-15
-X-CID-META: VersionHash:e7bac3a,CLOUDID:2ddfb8734161c5a7cac1150aa3bc60a9,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|83|102|865|898,TC:1,Content:0|14|51,E
-	DM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA
-	:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: 92693970FACD448C0E291E3C69F48B9E
-X-UUID: 2a4b3082704211f1aa26b74ffac11d73-20260625
-Received: from node4 [(10.44.17.112)] by mailgw.kylinos.cn
-	(envelope-from <fuqingshuang@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 1324888475; Thu, 25 Jun 2026 11:01:30 +0800
-Received: from node4 (localhost [127.0.0.1])
-	by node4 (NSMail) with SMTP id 613B01200BD91;
-	Thu, 25 Jun 2026 11:01:30 +0800 (CST)
-Received: by node4 (NSMail, from userid 10001)
-	id 570EF1200BD90; Thu, 25 Jun 2026 11:01:29 +0800 (CST)
-From: =?UTF-8?B?5YKF5riF54i9?= <fuqingshuang@kylinos.cn>
-Subject: =?UTF-8?B?UmU6IFJlOiBbUEFUQ0ggMS8xXSBtbS9zaHJpbmtlcjogYWRkIE5VTEwgY2hlY2tzIGFmdGVyIHJjdV9kZXJlZmVyZW5jZSgpIGluIHNocmlua2VyIGJpdCBmdW5jdGlvbnM=?=
-To: =?UTF-8?B?ZmZmc3FpYW4=?= <fffsqian@163.com>,
-	=?UTF-8?B?QW5kcmV3IE1vcnRvbg==?= <akpm@linux-foundation.org>,
-	=?UTF-8?B?RGF2ZSBDaGlubmVy?= <david@fromorbit.com>,
-	=?UTF-8?B?Um9tYW4gR3VzaGNoaW4=?= <roman.gushchin@linux.dev>,
-	=?UTF-8?B?TXVjaHVuIFNvbmc=?= <muchun.song@linux.dev>,
-	=?UTF-8?B?UWkgWmhlbmc=?= <qi.zheng@linux.dev>
-Cc: =?UTF-8?B?bGludXgta2VybmVs?= <linux-kernel@vger.kernel.org>,
-	=?UTF-8?B?bGludXgtbW0=?= <linux-mm@kvack.org>
-Date: Thu, 25 Jun 2026 11:01:29 +0800
-X-Mailer: NSMAIL 8.2
-Message-ID: <6l2gs76zo6zf-6l2n5wa2xbvg@nsmail8.2--kylin--1>
-References: 923f391a-d760-4d78-92d4-2e765aa226f3@linux.dev
-X-Israising: 0
-X-Seclevel-1: 0
-X-Seclevel: 0
-X-Delaysendtime: Thu, 25 Jun 2026 11:01:29 +0800
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=f3XfhSe6;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of kaitao.cheng@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Message-ID: <0ed6b5c3-e955-46e2-9fc6-075a0dfd1c4f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782356535;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bg7TU7hDzDNv/08FHHH/On04xmb+0Xhy9JCW39bnqOs=;
+	b=f3XfhSe6G7brFNVp6GZqjOXNU3vcFca4poUFfkwgVZymI1EYtq9zeoyJzoopay7HWx5JvC
+	E0YJXxuEv9p9ioc24zHIhHD7MfpA8W6eQqa3vo59Vdd3bvTmswHZxeWqPUReOxJ21Oxizv
+	nnsvKa6R3D4a+gLxizvgKiVabRJ3kcE=
+Date: Thu, 25 Jun 2026 11:01:21 +0800
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary=nsmail-6n5dle56xlcu-6n5h502wqo2n
-X-ns-mid: webmail-6a3c9a09-6lqnd20n
-X-ope-from: <fuqingshuang@kylinos.cn>
-X-receipt: 0
+Subject: Re: [PATCH v3 1/7] list: Add mutable iterator variants
+To: David Laight <david.laight.linux@gmail.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Jani Nikula <jani.nikula@linux.intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Tejun Heo <tj@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Peter Zijlstra <peterz@infradead.org>,
+ Ingo Molnar <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Paul Moore <paul@paul-moore.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, David Howells <dhowells@redhat.com>,
+ Simona Vetter <simona.vetter@ffwll.ch>, Randy Dunlap
+ <rdunlap@infradead.org>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Philipp Stanner <phasta@kernel.org>, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ linux-ntfs-dev@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+ io-uring@vger.kernel.org, audit@vger.kernel.org, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-perf-users@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ kexec@lists.infradead.org, live-patching@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-pm@vger.kernel.org, rcu@vger.kernel.org, sched-ext@lists.linux.dev,
+ linux-mm@kvack.org, virtualization@lists.linux.dev, damon@lists.linux.dev,
+ llvm@lists.linux.dev, Kaitao Cheng <chengkaitao@kylinos.cn>,
+ Muchun Song <muchun.song@linux.dev>
+References: <20260622040533.29824-1-kaitao.cheng@linux.dev>
+ <20260622040533.29824-2-kaitao.cheng@linux.dev>
+ <20260622094242.64531b9a@pumpkin>
+ <351a6b67-b394-4c58-aee2-88b6c8089ad5@linux.dev>
+ <cf8467c7-b98f-44a5-9cf9-60b43b5da711@amd.com>
+ <20260624152324.3def88ce@pumpkin>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <20260624152324.3def88ce@pumpkin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5795240003
-X-Stat-Signature: zu59999pw3fb7ytaqkjh3s8w9kazhjbh
-X-HE-Tag: 1782356499-58538
-X-HE-Meta: U2FsdGVkX18MHaacUpygv9xHktDwWD/HHOiLLFGnEFKvf9RUnnoI+grLPjplbGNrutgPcZxl6Y+DIGnt4DORKsvRtGdQH7iMD38kwuo/EbfYPi754lCZ60UWbo6vf0jCNV7cIZXR+IO8qxwgNyMDpOvzL2ir3PVLjbGnWJm4PpdtJyqh7tED1vn+E3BR5vmJ8YKEEaoqaFIRmpUi3cE2nwThCsyZiaGZgOmttZHku2w5wsf0XyKgRa0m5GLAmavAoBzpaO98yp+/mimxUYrQ+OGMOpsG7sNao/4ps00GnOrC9g6qMJOB0d26pYK5G67rDztul9Iubb34aNh45dKUkiH7svS+TU8FVOXyIKyi2rj0noLt+0+N7otbqU2GKder0eizrILxtcXc1sfbC3jII/dDu9WufS8w1bM0+H1Y4ADeC9ZgvEQbR9mzjk5ZWlV4HDsff6XFE/xGQp6lrlpSFqHHxTNOb5pHxNLUIYHKZle1vjKSnQeYubSDkB0bR7QQ/L6pKvo/TVVvLDSUxVy+3aIuRpVppCw7TUpW7K5y07a//JWWKaS0maDKpVg4ZB5etfNU43BOi6eAexZywvTo7ksIpIi727GjMhXSSRqzoxwdwyvslUXJrm5vBoU0/A0dEHOsbplrO9WLmnqDA17OepUK6mrBOgG4EufTDYVVrdbCSTgUKGsfGjb6a/ESKjnLkTxwYUNJWKJqqmGPm5YrcE8uN3jD3wqrOB918lYVSFJXJ4WuVfQZP1yFfF2KnMoqjyZju4oeqeYFn62LcDpuXkCvCt2Qhum6lZR/hMWNDpCJQub01V4EF5Ac02wyLIHJPNGtTWgrrogk0e8pSe3AQQ/+U5yhL4hZ7aXIj8CftgjV8z5YP9Fc+bzl8px9CnX/Ey2BiQUr1vqr2+uLsmzKZ2qBn5ToGs7VMyGt6HlgzD+KD2lyxfipA4A/QPkyRw618qy6a3FsQSv8VUk5oky
- fIrBYZDd
- PmCvpWzhMD99r8h5FCVTJCAZu/Rz6B0gEI4FjSAODMgNcZN7BcI0Pn1Ooxm3YpNaR7KSGhM3ILC5lfIJ2j7frccyAIdP3Y7DUoyOXe4ioT1z+GcoaGH6RzdYwoROIIhBhgvPa4g5fyHLoaIpHXBX0OwzOtgVoiU8+ISttt9PSRZL9C6oC4IaHiouFgMStMwSeVa4nvWmMIT3h/SkQy+J1hkQoI9OwkVrpEvELEe3IdQQk4u9oo31IZe8+v18e6sKsu5m/gMIuVCwsLF88Eh2g3563sz+r85bzZ0Jq2dqZF49pROh6G/fBHPtbVxijpNnmeKNVWInTyYDtaRIi/JcrhhJBJA6lt2lmRooAZn3cE1Y3vGlrDMZ0KDYylF6t4dar7z0Her47XAbfSgdlLzbw3rZ1L6TUB+iMbTENzo8tWRMx1UJrZqz2V+GexseAsAUSDah+NVikJ0q25JDABx1smHajQDCvJJADElGf/p64ohO8JBm80Rgbw8t89XvInb9VNleWDhpxkQYKprbIQ1yWsItsbSrhuKFPtBnqn9Et6GimJ3o=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0193A140010
+X-Stat-Signature: bdmkpwrepkqmx17yijfmdki3e8ibxd86
+X-HE-Tag: 1782356538-139259
+X-HE-Meta: U2FsdGVkX1/MSIMq3PGJk9C4wX8OyIEx/nyNyMnldueweVzcRoGgxydOwhzryGgnneSBgIr7NvB2KimUQWyHzp7076dvEi0yWb/lguZSUb0gCx0XHoVdFD/iXHJPEZcSBf5L40fNIjkmGtcQ9fTx2SYUjbnDyirFPfSxjYbHupbBTbAEFxtgyBO+5h8/8XAJZNL/hgak2+Bx8LjcZwJz3JcEQKbGDFMtIfDSBDclrNKHouhpfEe6Q4uibCEGOmXj0mHb98sRRWia5n5LsZXxiuVhSvLGS/xIdLfnjpqvwFb7jRh2cYVmmDYg8+3SRzDYWPLRk37heED+/MU5AxZIWAv6zCAWbnvh4os9a5vYkVp4F2anS/do8D7E0kKSf0agTzBxfk5SXKZni9z/x45dJtI2mxyQCMS/yil/O0ahaWKk9q1Am67y68Glgv1MpKvX1DX17cNmmwYg5o8TBmJZb7CQEFW0Tt4yVA5D2DP66ZisnT0yva4mNATzulabQ79ju+6ltd0JcHnE431MAFNn8cF1f6aNVZVmSBAi2JqX99aYfpCt+LsDzUqga4wYBbal7sycqjzDhNEVV3JVJqyGLxPXBYJALta+4yAX/bihlbLngsEmDjTfPGSUAeZzssoNmneJv6vyiTLwcPXISrzPoZMKDNNcTw71l/r/O9fBbiOffStx2vfaYrAO99C2d0/2OS0xZAtaorEf6VeGzb+OAtpLVVAIHzAmN5wPqKmjJqG39akFz/gRU/9Rvq2grCuOZiuNkoUsxKqE6VCi9GC7RHdtyI25B76Qi0r5TvGKSyjmXvA2KYysPl4IaO6GpmjYacxWdRDkMsax7rG9BIMhEEmkipWCpq/CRffSj9uR9YKEpBFrlSOx16oaJfp1P7lqxy0HIpFKJZYo/hxiHPPlzizkzojtK+I+JBvlnX9GjKUig3Z6nZ48E3Qrig9PEFnhZPT5c9453IuFoFupJc4
+ Lm4/s3oi
+ strXckkHtNQfjFr+8dRaC+27tkp+Ovhe9ye2y9aeLWdg8QOzRnL+HSug0rslhqqqEqWQc1oXtMlEfNaMN8h/S6lxt0o0MyxF8BYa/wFbN0Zj690SUmLkJNb9KQc211r6+4+dkmhtkzxzvDB+ZldyMZOd9+306Byh70JgY/3b0BQQPqRMgfS2VXyAeFveEppETVXF5tRyOFZIJvvZSIzwhiRihlPXI7xs9466eQ4jeLtvfOp0pOINVBKPa+Yjmgm9TpejsSTIvz3AsuODcO6LS82MfeyYrEFb72SomT9YB5YPl3ql+IeOSynoVI3Kxv7wwqXnub6O5WD0SkPtFm2gcAqj4ag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,146 +123,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This message is in MIME format.
+在 2026/6/24 22:23, David Laight 写道:
+> On Wed, 24 Jun 2026 15:23:47 +0200
+> Christian König <christian.koenig@amd.com> wrote:
+>> On 6/24/26 15:14, Kaitao Cheng wrote:
+>>> 在 2026/6/22 16:42, David Laight 写道:  
+>>>> On Mon, 22 Jun 2026 12:05:31 +0800
+>>>> Kaitao Cheng <kaitao.cheng@linux.dev> wrote:
+>>>>  
+>>>>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>>>>
+>>>>> The list_for_each*_safe() helpers are used when the loop body may
+>>>>> remove the current entry.  Their API exposes the temporary cursor at
+>>>>> every call site, even though most users only need it for the iterator
+>>>>> implementation and never reference it in the loop body.
+>>>>>
+>>>>> Add *_mutable() variants for list and hlist iteration.  The new helpers
+>>>>> support both forms: callers may keep passing an explicit temporary cursor
+>>>>> when they need to inspect or reset it, or omit it and let the helper use
+>>>>> a unique internal cursor.  
+>>>>
+>>>> I'm not really sure 'mutable' means anything either.
+>>>> It is possible to make it valid for the loop body (or even other threads)
+>>>> to delete arbitrary list items - but that needs significant extra overheads.
+>>>>
+>>>> It might be worth doing something that doesn't need the extra variable,
+>>>> but there is little point doing all the churn just to rename things.
+>>>>  
+>>>>>
+>>>>> This makes call sites that only mutate the list through the current entry
+>>>>> less noisy, while keeping the existing *_safe() helpers available for
+>>>>> compatibility.
+>>>>>
+>>>>> Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>>>> ---
+>>>>>  include/linux/list.h | 269 +++++++++++++++++++++++++++++++++++++------
+>>>>>  1 file changed, 231 insertions(+), 38 deletions(-)
+>>>>>
+>>>>> diff --git a/include/linux/list.h b/include/linux/list.h
+>>>>> index 09d979976b3b..1081def7cea9 100644
+>>>>> --- a/include/linux/list.h
+>>>>> +++ b/include/linux/list.h
+>>>>> @@ -7,6 +7,7 @@
+>>>>>  #include <linux/stddef.h>
+>>>>>  #include <linux/poison.h>
+>>>>>  #include <linux/const.h>
+>>>>> +#include <linux/args.h>
+>>>>>  
+>>>>>  #include <asm/barrier.h>
+>>>>>  
+>>>>> @@ -763,28 +764,72 @@ static inline void list_splice_tail_init(struct list_head *list,
+>>>>>  #define list_for_each_prev(pos, head) \
+>>>>>  	for (pos = (head)->prev; !list_is_head(pos, (head)); pos = pos->prev)
+>>>>>  
+>>>>> -/**
+>>>>> - * list_for_each_safe - iterate over a list safe against removal of list entry
+>>>>> - * @pos:	the &struct list_head to use as a loop cursor.
+>>>>> - * @n:		another &struct list_head to use as temporary storage
+>>>>> - * @head:	the head for your list.
+>>>>> +/*
+>>>>> + * list_for_each_safe is an old interface, use list_for_each_mutable instead.
+>>>>>   */
+>>>>>  #define list_for_each_safe(pos, n, head) \
+>>>>>  	for (pos = (head)->next, n = pos->next; \
+>>>>>  	     !list_is_head(pos, (head)); \
+>>>>>  	     pos = n, n = pos->next)
+>>>>>  
+>>>>> +#define __list_for_each_mutable_internal(pos, tmp, head)		\
+>>>>> +	for (typeof(pos) tmp = (pos = (head)->next)->next;		\  
+>>>>
+>>>> Use auto
+>>>>  
+>>>>> +	     !list_is_head(pos, (head));				\
+>>>>> +	     pos = tmp, tmp = pos->next)
+>>>>> +
+>>>>> +#define __list_for_each_mutable1(pos, head)				\
+>>>>> +	__list_for_each_mutable_internal(pos, __UNIQUE_ID(next), head)
+>>>>> +
+>>>>> +#define __list_for_each_mutable2(pos, next, head)			\
+>>>>> +	list_for_each_safe(pos, next, head)
+>>>>> +
+>>>>>  /**
+>>>>> - * list_for_each_prev_safe - iterate over a list backwards safe against removal of list entry
+>>>>> + * list_for_each_mutable - iterate over a list safe against entry removal
+>>>>>   * @pos:	the &struct list_head to use as a loop cursor.
+>>>>> - * @n:		another &struct list_head to use as temporary storage
+>>>>> - * @head:	the head for your list.
+>>>>> + * @...:	either (head) or (next, head)
+>>>>> + *
+>>>>> + * next:	another &struct list_head to use as optional temporary storage.
+>>>>> + *		The temporary cursor is internal unless explicitly supplied by
+>>>>> + *		the caller.
+>>>>> + * head:	the head for your list.
+>>>>> + */
+>>>>> +#define list_for_each_mutable(pos, ...)					\
+>>>>> +	CONCATENATE(__list_for_each_mutable, COUNT_ARGS(__VA_ARGS__))	\
+>>>>> +		(pos, __VA_ARGS__)  
+>>>>
+>>>> The variable argument count logic really just slows down compilation.
+>>>> Maybe there aren't enough copies of this code to make that significant.
+>>>> But just because you can do it doesn't mean it is a gooD idea.
+>>>> I'm also not sure it really adds anything to the readability.
+>>>>
+>>>> And, it you are going to make the middle argument optional there is
+>>>> no need to change the macro name.  
+>>>
+>>> Christian König and Jani Nikula also disagree with the variadic-argument
+>>> implementation approach. If we abandon that method, it means we will
+>>> inevitably need to add some new macros. If mutable is not a good name,
+>>> suggestions for better alternatives would be welcome; coming up with a
+>>> suitable name is indeed rather tricky.  
+>>
+>> I don't think you need to add a new macro for the specific use case that people want to modify the next element of the iteration.
+>>
+>> If I remember your numbers correctly that is a really corner case and keeping using the existing *_safe() macros for that sounds perfectly fine to me.
+> 
+> IIRC currently you have a choice of either:
+> 	define               Item that can't be deleted
+> 	list_for_each()	     The current item.
+> 	list_for_each_safe() The next item.
+> There is also likely to be code that updates the variables to allow
+> for other scenarios.
+> 
+> Note that if increase a reference count and release a lock then list_for_each()
+> is likely safer than list_for_each_safe() :-)
+> 
+> list.h has 9 variants of the 'safe' loop.
+> The bloat of another 9 is getting excessive.
+> 
+> It has to be said that this is one of my least favourite type of list...
 
---nsmail-6n5dle56xlcu-6n5h502wqo2n
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Hi Christian König, David Laight, Jani Nikula, David Hildenbrand,
+Andy Shevchenko, Alexei Starovoitov
 
-PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6TWljcm9zb2Z0IFlhSGVpO2ZvbnQt
-c2l6ZToxNHB4O2NvbG9yOiMwMDAwMDA7IiBjbGFzcz0ibF9ub2RlX2hhc19j
-b2xvciI+PHA+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTRweDsgZm9udC1m
-YW1pbHk6ICdUaW1lcyBOZXcgUm9tYW4nOyI+SGkgUWksIDwvc3Bhbj48L3A+
-CjxwPiZuYnNwOzwvcD4KPHA+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTRw
-eDsgZm9udC1mYW1pbHk6ICdUaW1lcyBOZXcgUm9tYW4nOyI+VGhhbmsgeW91
-IHZlcnkgbXVjaCBmb3IgeW91ciBkZXRhaWxlZCBhbmFseXNpcyBhbmQgcGF0
-aWVudCBleHBsYW5hdGlvbi4gPC9zcGFuPjwvcD4KPHA+PHNwYW4gc3R5bGU9
-ImZvbnQtc2l6ZTogMTRweDsgZm9udC1mYW1pbHk6ICdUaW1lcyBOZXcgUm9t
-YW4nOyI+SSBmdWxseSB1bmRlcnN0YW5kIHlvdXIgcG9pbnQgdGhhdCB0aGUg
-ZXhpc3RpbmcgY2FsbGVyIGNvbnN0cmFpbnRzIGd1YXJhbnRlZSBzaHJpbmtl
-cl9pbmZvIGNhbm5vdCBiZSBOVUxMIGhlcmUsIGFuZCB0aGlzIE5VTEwgY2hl
-Y2sgaXMgdW5uZWNlc3NhcnkgZGVmZW5zaXZlIGNvZGUuPC9zcGFuPjwvcD4K
-PHA+Jm5ic3A7PC9wPgo8cD48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNHB4
-OyBmb250LWZhbWlseTogJ1RpbWVzIE5ldyBSb21hbic7Ij5JIHdpbGwgZHJv
-cCB0aGlzIHBhdGNoIGFuZCBjbG9zZSB0aGlzIHRocmVhZC48L3NwYW4+PC9w
-Pgo8cD4mbmJzcDs8L3A+CjxwPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE0
-cHg7IGZvbnQtZmFtaWx5OiAnVGltZXMgTmV3IFJvbWFuJzsiPlRoYW5rcyBh
-Z2FpbiBmb3IgeW91ciByZXZpZXcgZ3VpZGFuY2UuPC9zcGFuPjwvcD4KPHA+
-Jm5ic3A7PC9wPgo8cD48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNHB4OyBm
-b250LWZhbWlseTogJ1RpbWVzIE5ldyBSb21hbic7Ij5CZXN0IHJlZ2FyZHMs
-IDwvc3Bhbj48L3A+CjxwPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE0cHg7
-IGZvbnQtZmFtaWx5OiAnVGltZXMgTmV3IFJvbWFuJzsiPlFpbmdzaHVhbmcg
-RnU8L3NwYW4+PC9wPgo8cD4mbmJzcDs8L3A+CjxkaXYgaWQ9InNpZ25hdHVy
-ZVRvcCI+PC9kaXY+CjxkaXYgaWQ9ImNzMmNfcmUiIHN0eWxlPSJtYXJnaW4t
-bGVmdDogMC41ZW07IHBhZGRpbmctbGVmdDogMC41ZW07IGJvcmRlci1sZWZ0
-OiAxcHggc29saWQgI2NhY2FjYTsgLXdlYmtpdC11c2VyLW1vZGlmeTogcmVh
-ZC1vbmx5OyAtbW96LXVzZXItbW9kaWZ5OiByZWFkLW9ubHk7IC1tcy11c2Vy
-LW1vZGlmeTogcmVhZC1vbmx5OyAtby11c2VyLW1vZGlmeTogcmVhZC1vbmx5
-OyI+PGJyPjxicj48YnI+CjxkaXYgc3R5bGU9ImJhY2tncm91bmQtY29sb3I6
-ICNmOGY4Zjg7IHBhZGRpbmc6IDhweCAxMHB4OyBmb250LWZhbWlseTogTWlj
-cm9zb2Z0IFlhSGVpOyBmb250LXNpemU6IDE0cHg7IGNvbG9yOiAjMDAwOyI+
-PHN0cm9uZz7kuLsmbmJzcDsmbmJzcDsmbmJzcDvpopjvvJo8L3N0cm9uZz48
-c3BhbiBpZD0iY3MyY19zdWJqZWN0Ij5SZTogW1BBVENIIDEvMV0gbW0vc2hy
-aW5rZXI6IGFkZCBOVUxMIGNoZWNrcyBhZnRlciByY3VfZGVyZWZlcmVuY2Uo
-KSBpbiBzaHJpbmtlciBiaXQgZnVuY3Rpb25zPC9zcGFuPiA8YnI+PHN0cm9u
-Zz7ml6UmbmJzcDsmbmJzcDsmbmJzcDvmnJ/vvJo8L3N0cm9uZz48c3BhbiBp
-ZD0iY3MyY19kYXRlIj4yMDI25bm0MDbmnIgyNOaXpTE4OjQ5PC9zcGFuPiA8
-YnI+PHN0cm9uZz7lj5Hku7bkurrvvJo8L3N0cm9uZz48c3BhbiBpZD0iY3My
-Y19mcm9tIj5RaSBaaGVuZzwvc3Bhbj4gPGJyPjxzdHJvbmc+5pS25Lu25Lq6
-77yaPC9zdHJvbmc+PHNwYW4gaWQ9ImNzMmNfdG8iIHN0eWxlPSJ3b3JkLWJy
-ZWFrOiBicmVhay1hbGw7Ij5mZmZzcWlhbixBbmRyZXcgTW9ydG9uLERhdmUg
-Q2hpbm5lcixSb21hbiBHdXNoY2hpbixNdWNodW4gU29uZyxRaSBaaGVuZzwv
-c3Bhbj4gPGJyPjxzdHJvbmc+5oqE6YCB5Lq677yaPC9zdHJvbmc+PHNwYW4g
-aWQ9ImNzMmNfdG8iIHN0eWxlPSJ3b3JkLWJyZWFrOiBicmVhay1hbGw7Ij5s
-aW51eC1rZXJuZWwsbGludXgtbW08L3NwYW4+PC9kaXY+Cjxicj4KPGRpdiBp
-ZD0iY3MyY19jb250ZW50Ij5IaSBRaW5nc2h1YW5nLCBPbiA2LzI0LzI2IDU6
-NTUgUE0sIGZmZnNxaWFuQDE2My5jb20gd3JvdGU6ICZndDsgRnJvbTogUWlu
-Z3NodWFuZyBGdSAmbHQ7ZnVxaW5nc2h1YW5nQGt5bGlub3MuY24mZ3Q7ICZn
-dDsgJmd0OyBUaGUgZnVuY3Rpb25zIHNldF9zaHJpbmtlcl9iaXQoKSwgeGNo
-Z19ucl9kZWZlcnJlZF9tZW1jZygpLCBhbmQgJmd0OyBhZGRfbnJfZGVmZXJy
-ZWRfbWVtY2coKSBhY2Nlc3Mgc2hyaW5rZXJfaW5mbyBmaWVsZHMgaW1tZWRp
-YXRlbHkgJmd0OyBhZnRlciByY3VfZGVyZWZlcmVuY2UoKSB3aXRob3V0IGNo
-ZWNraW5nIGZvciBOVUxMLiAmZ3Q7ICZndDsgVGhpcyBpcyBpbmNvbnNpc3Rl
-bnQgd2l0aCBzaHJpbmtfc2xhYl9tZW1jZygpIHdoaWNoIHByb3Blcmx5IGNo
-ZWNrcyAmZ3Q7ICJpZiAodW5saWtlbHkoIWluZm8pKSBnb3RvIHVubG9jazsi
-IGJlZm9yZSBhY2Nlc3NpbmcgaW5mbyBmaWVsZHMuICZndDsgJmd0OyBUaGUg
-c2hyaW5rZXJfaW5mbyBjYW4gYmUgTlVMTCBkdXJpbmcgbWVtY2cgaW5pdGlh
-bGl6YXRpb24gb3IgYWZ0ZXIgJmd0OyBzaHJpbmtlcl9pbmZvIGV4cGFuc2lv
-biBmYWlsdXJlLiBEaXJlY3RseSBhY2Nlc3NpbmcgaW5mby0mZ3Q7bWFwX25y
-X21heCAmZ3Q7IG9yIGluZm8tJmd0O3VuaXRbXSB3aXRob3V0IE5VTEwgdmFs
-aWRhdGlvbiBjb3VsZCBjYXVzZSBrZXJuZWwgTlVMTCAmZ3Q7IHBvaW50ZXIg
-ZGVyZWZlcmVuY2UgYW5kIHBhbmljLiBSZWFsbHk/IERpZCB5b3UgYWN0dWFs
-bHkgaGl0IHRoaXMgaXNzdWUsIG9yIGFyZSB5b3UgYWJsZSB0byByZXByb2R1
-Y2UgaXQ/IE9yIGlzIGl0IGp1c3Qgc3BvdHRlZCB2aWEgY29kZSBpbnNwZWN0
-aW9uPyBUaGUgY2FsbGVycyBpbiBhbGwgdGhyZWUgb2YgdGhlc2UgcGxhY2Vz
-IHNob3VsZCBndWFyYW50ZWUgdGhhdCBgaW5mb2AgY2FuIG5vdCBwb3NzaWJs
-eSBiZSBOVUxMLiA6KCBUaGFua3MsIFFpICZndDsgJmd0OyBGaXggdGhpcyBi
-eSBhZGRpbmcgcHJvcGVyIE5VTEwgY2hlY2tzIGluIGFsbCB0aHJlZSBmdW5j
-dGlvbnMgdG8gJmd0OyBlbnN1cmUgY29uc2lzdGVudCBSQ1UgcHJvdGVjdGlv
-biBhbmQgcHJldmVudCBwb3RlbnRpYWwgY3Jhc2hlcyBpbiAmZ3Q7IHRoZSBz
-aHJpbmtlciBzdWJzeXN0ZW0uICZndDsgJmd0OyBGaXhlczogMzA3YmVjZWNj
-ZDEyMDViY2IgKCJtbTogc2hyaW5rZXI6IGFkZCBhIHNlY29uZGFyeSBhcnJh
-eSBmb3Igc2hyaW5rZXJfaW5mbzo6e21hcCwgbnJfZGVmZXJyZWR9IikgJmd0
-OyBDYzogQW5kcmV3IE1vcnRvbiAmbHQ7YWtwbUBsaW51eC1mb3VuZGF0aW9u
-Lm9yZyZndDsgJmd0OyBDYzogRGF2ZSBDaGlubmVyICZsdDtkYXZpZEBmcm9t
-b3JiaXQuY29tJmd0OyAmZ3Q7IENjOiBRaSBaaGVuZyAmbHQ7cWkuemhlbmdA
-bGludXguZGV2Jmd0OyAmZ3Q7IENjOiBSb21hbiBHdXNoY2hpbiAmbHQ7cm9t
-YW4uZ3VzaGNoaW5AbGludXguZGV2Jmd0OyAmZ3Q7IENjOiBNdWNodW4gU29u
-ZyAmbHQ7bXVjaHVuLnNvbmdAbGludXguZGV2Jmd0OyAmZ3Q7IENjOiBsaW51
-eC1tbUBrdmFjay5vcmcgJmd0OyBTaWduZWQtb2ZmLWJ5OiBRaW5nc2h1YW5n
-IEZ1ICZsdDtmdXFpbmdzaHVhbmdAa3lsaW5vcy5jbiZndDsgJmd0OyAtLS0g
-Jmd0OyBtbS9zaHJpbmtlci5jIHwgMTEgKysrKysrKysrKysgJmd0OyAxIGZp
-bGUgY2hhbmdlZCwgMTEgaW5zZXJ0aW9ucygrKSAmZ3Q7ICZndDsgZGlmZiAt
-LWdpdCBhL21tL3Nocmlua2VyLmMgYi9tbS9zaHJpbmtlci5jICZndDsgaW5k
-ZXggNzA4MmQwMWM4YzlkLi5lY2RlM2NjNDQ0NTkgMTAwNjQ0ICZndDsgLS0t
-IGEvbW0vc2hyaW5rZXIuYyAmZ3Q7ICsrKyBiL21tL3Nocmlua2VyLmMgJmd0
-OyBAQCAtMjAwLDYgKzIwMCw4IEBAIHZvaWQgc2V0X3Nocmlua2VyX2JpdChz
-dHJ1Y3QgbWVtX2Nncm91cCAqbWVtY2csIGludCBuaWQsIGludCBzaHJpbmtl
-cl9pZCkgJmd0OyAmZ3Q7IHJjdV9yZWFkX2xvY2soKTsgJmd0OyBpbmZvID0g
-cmN1X2RlcmVmZXJlbmNlKG1lbWNnLSZndDtub2RlaW5mb1tuaWRdLSZndDtz
-aHJpbmtlcl9pbmZvKTsgJmd0OyArIGlmICh1bmxpa2VseSghaW5mbykpICZn
-dDsgKyBnb3RvIHVubG9jazsgJmd0OyBpZiAoIVdBUk5fT05fT05DRShzaHJp
-bmtlcl9pZCAmZ3Q7PSBpbmZvLSZndDttYXBfbnJfbWF4KSkgeyAmZ3Q7IHN0
-cnVjdCBzaHJpbmtlcl9pbmZvX3VuaXQgKnVuaXQ7ICZndDsgJmd0OyBAQCAt
-MjA4LDYgKzIxMCw3IEBAIHZvaWQgc2V0X3Nocmlua2VyX2JpdChzdHJ1Y3Qg
-bWVtX2Nncm91cCAqbWVtY2csIGludCBuaWQsIGludCBzaHJpbmtlcl9pZCkg
-Jmd0OyBzbXBfbWJfX2JlZm9yZV9hdG9taWMoKTsgJmd0OyBzZXRfYml0KHNo
-cmlua2VyX2lkX3RvX29mZnNldChzaHJpbmtlcl9pZCksIHVuaXQtJmd0O21h
-cCk7ICZndDsgfSAmZ3Q7ICt1bmxvY2s6ICZndDsgcmN1X3JlYWRfdW5sb2Nr
-KCk7ICZndDsgfSAmZ3Q7IH0gJmd0OyBAQCAtMjU4LDYgKzI2MSwxMCBAQCBz
-dGF0aWMgbG9uZyB4Y2hnX25yX2RlZmVycmVkX21lbWNnKGludCBuaWQsIHN0
-cnVjdCBzaHJpbmtlciAqc2hyaW5rZXIsICZndDsgJmd0OyByY3VfcmVhZF9s
-b2NrKCk7ICZndDsgaW5mbyA9IHJjdV9kZXJlZmVyZW5jZShtZW1jZy0mZ3Q7
-bm9kZWluZm9bbmlkXS0mZ3Q7c2hyaW5rZXJfaW5mbyk7ICZndDsgKyBpZiAo
-dW5saWtlbHkoIWluZm8pKSB7ICZndDsgKyByY3VfcmVhZF91bmxvY2soKTsg
-Jmd0OyArIHJldHVybiAwOyAmZ3Q7ICsgfSAmZ3Q7IHVuaXQgPSBpbmZvLSZn
-dDt1bml0W3Nocmlua2VyX2lkX3RvX2luZGV4KHNocmlua2VyLSZndDtpZCld
-OyAmZ3Q7IG5yX2RlZmVycmVkID0gYXRvbWljX2xvbmdfeGNoZygmYW1wO3Vu
-aXQtJmd0O25yX2RlZmVycmVkW3Nocmlua2VyX2lkX3RvX29mZnNldChzaHJp
-bmtlci0mZ3Q7aWQpXSwgMCk7ICZndDsgcmN1X3JlYWRfdW5sb2NrKCk7ICZn
-dDsgQEAgLTI3NCw2ICsyODEsMTAgQEAgc3RhdGljIGxvbmcgYWRkX25yX2Rl
-ZmVycmVkX21lbWNnKGxvbmcgbnIsIGludCBuaWQsIHN0cnVjdCBzaHJpbmtl
-ciAqc2hyaW5rZXIsICZndDsgJmd0OyByY3VfcmVhZF9sb2NrKCk7ICZndDsg
-aW5mbyA9IHJjdV9kZXJlZmVyZW5jZShtZW1jZy0mZ3Q7bm9kZWluZm9bbmlk
-XS0mZ3Q7c2hyaW5rZXJfaW5mbyk7ICZndDsgKyBpZiAodW5saWtlbHkoIWlu
-Zm8pKSB7ICZndDsgKyByY3VfcmVhZF91bmxvY2soKTsgJmd0OyArIHJldHVy
-biAwOyAmZ3Q7ICsgfSAmZ3Q7IHVuaXQgPSBpbmZvLSZndDt1bml0W3Nocmlu
-a2VyX2lkX3RvX2luZGV4KHNocmlua2VyLSZndDtpZCldOyAmZ3Q7IG5yX2Rl
-ZmVycmVkID0gJmd0OyBhdG9taWNfbG9uZ19hZGRfcmV0dXJuKG5yLCAmYW1w
-O3VuaXQtJmd0O25yX2RlZmVycmVkW3Nocmlua2VyX2lkX3RvX29mZnNldChz
-aHJpbmtlci0mZ3Q7aWQpXSk7ICZndDsgJmd0OyBiYXNlLWNvbW1pdDogODQw
-ZWY2Yzc4ZTZhMmY2OTRiNTc4ZWNiOTA2MzI0MWM5OTJhYWE5ZSAmbHQ7L2Z1
-cWluZ3NodWFuZ0BreWxpbm9zLmNuJmd0OyZsdDsvbXVjaHVuLnNvbmdAbGlu
-dXguZGV2Jmd0OyZsdDsvcm9tYW4uZ3VzaGNoaW5AbGludXguZGV2Jmd0OyZs
-dDsvcWkuemhlbmdAbGludXguZGV2Jmd0OyZsdDsvZGF2aWRAZnJvbW9yYml0
-LmNvbSZndDsmbHQ7L2FrcG1AbGludXgtZm91bmRhdGlvbi5vcmcmZ3Q7Jmx0
-Oy9mdXFpbmdzaHVhbmdAa3lsaW5vcy5jbiZndDs8L2Rpdj4KPC9kaXY+Cjxw
-PiZuYnNwOzwvcD4KPHA+Jm5ic3A7PC9wPgo8ZGl2IGlkPSJzaWduYXR1cmVC
-b20iPgo8ZGl2Pgo8cD4mbmJzcDs8L3A+Cjxicj4KPHAgc3R5bGU9ImNvbG9y
-OiAjMDAwOyBmb250LXNpemU6IDE2cHg7Ij4tLS08L3A+CjxkaXYgaWQ9ImNz
-MmNfbWFpbF9zaWdhdHVyZSIgc3R5bGU9ImNvbG9yOiAjMDAwOyBmb250LXNp
-emU6IDE2cHg7IGZvbnQtZmFtaWx5OiBNaWNyb3NvZnQgWWFIZWk7Ij48L2Rp
-dj4KPHA+Jm5ic3A7PC9wPgo8L2Rpdj4KPC9kaXY+PC9kaXY+
+For ease of discussion, I need to summarize the currently possible
+approaches and briefly describe their respective pros and cons,
+using the list_for_each_entry* interfaces as examples.
 
---nsmail-6n5dle56xlcu-6n5h502wqo2n--
+1. Add list_for_each_entry_mutable, while keeping list_for_each_entry
+and list_for_each_entry_safe unchanged. list_for_each_entry_mutable
+would be used specifically for safe deletion scenarios that do not
+need to expose the temporary cursor externally. The code can refer to
+the v1 version.
+
+Pros: Does not depend on immediate per-subsystem adaptation and can be
+      merged directly.
+Cons: Requires adding a whole set of mutable interfaces, which makes the
+      code somewhat redundant.
+
+2. Directly optimize away the temporary cursor in list_for_each_entry_safe
+and define it inside the loop instead, changing the interface from four
+arguments to three.
+
+Pros: Does not add redundant interfaces.
+Cons: (1) Users need to manually update special cases that use the
+      traversal variable of list_for_each_entry_safe, the new
+      list_for_each_entry_safe would no longer apply there and would
+      need to be open-coded.
+      (2) Because the macro arguments changes, all list_for_each_entry_safe
+      callers would need to be modified and merged together, making it
+      difficult to merge such a large amount of code at once.
+
+3. Use a variadic macro approach to optimize list_for_each_entry_safe,
+so that it supports both three and four arguments.
+
+Pros: (1) Does not add redundant interfaces.
+      (2) Does not depend on immediate per-subsystem adaptation and can
+      be merged directly.
+Cons: (1) Increases compile time.
+      (2) Makes the interface harder for users to use.
+
+4. Optimize list_for_each_entry by defining the temporary cursor internally,
+making it compatible with the functionality of list_for_each_entry_safe.
+The code can refer to the v2 version.
+
+Pros: (1) Does not add redundant interfaces.
+      (2) The number of externally visible arguments of list_for_each_entry
+      remains unchanged, still three.
+Cons: (1) list_for_each_entry and list_for_each_entry_safe would be merged
+      into one, and list_for_each_entry_safe would gradually be deprecated.
+      (2) Users need to manually update special cases that use the traversal
+      variable of list_for_each_entry, the new list_for_each_entry would no
+      longer apply there and would need to be open-coded. There are 15 such
+      cases in total.
+
+5. Use a variadic macro approach to optimize list_for_each_entry, so that
+it supports both three and four arguments.
+
+Pros: (1) Does not add redundant interfaces.
+      (2) Does not depend on immediate per-subsystem adaptation and can be
+      merged directly.
+Cons: (1) Increases compile time.
+      (2) list_for_each_entry and list_for_each_entry_safe would be merged
+      into one, and list_for_each_entry_safe would gradually be deprecated.
+
+6. Make no changes, keep the current logic unchanged, and close the current
+email discussion.
+
+
+Which of the six solutions above do people prefer?
+
+-- 
+Thanks
+Kaitao Cheng
+
 
