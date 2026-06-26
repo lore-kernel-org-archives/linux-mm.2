@@ -4,117 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70EC6CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 03:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB19CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 03:40:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22F5A6B00C9; Thu, 25 Jun 2026 23:33:41 -0400 (EDT)
+	id CC5986B0098; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DF316B00CA; Thu, 25 Jun 2026 23:33:41 -0400 (EDT)
+	id C9D3D6B00CA; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A8F36B00CB; Thu, 25 Jun 2026 23:33:41 -0400 (EDT)
+	id B8DDA6B00CC; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CC4EE6B00C9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 23:33:40 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 401CD140317
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:33:40 +0000 (UTC)
-X-FDA: 84920644200.01.5245F1C
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 197CA160006
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:33:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lpdVZb7d;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id 8576E6B0098
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F2AC58D484
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:33 +0000 (UTC)
+X-FDA: 84920661546.21.3DCEADE
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B5729180008
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:30 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=reozai8T;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782444818;
-	b=lbaxjEPX6Y1vVXUBk3PMTJp76q3zI19eO2ElxcbtB6zc72LQVHzjPvm7CZEboOX8rzDmeG
-	+FHrYOt8Z1SpGXdbDzI3vByI6PujlhemxBDux34sL2E60je/GblewxXYq2U4SI34gX2V59
-	36bQJkxutDo2mwLMUpZ7ckK88xU2fAg=
+	t=1782445231;
+	b=3v59z9LeUJQJSNfJmFQJxboao852iUYhnHIbqtq7/mpqPuHD0EYOAzvFW85t+h16B1vgGg
+	AJoMsa4y+WrAiuC3AEzTWs/RE7AJvdabqXWSkl0LCIidsdcZccCi0ro5x3miL7tH08uy8P
+	46ft3RsnW8xZkPj+CLhM9AQSaX7GdBU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782444818;
+	s=arc-20220608; t=1782445231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0HCGQZ57BsFjU/yjnNeadFJo2JebiPKo37EWE7E6eNU=;
-	b=tRxkQ9Vj3dsIqVvxYs+PFAyqKIHa1K8mR5UPsMqyp1wAzyXxj8EoQ/iXl5urRFbUCAzaji
-	56nt2nHhtbTpDy5k2GKRyM5SGCDVRdHy0COVrLcfck7JxmIFrMMZJ7gvHQG3jf/w3Rip6E
-	TwO6lbn1QxJnAPySSRKYfMZj/K9vuu4=
+	bh=QuVdpRIguPMFSlXQhOOtEgFq7gSJAyQxVrZOCwx3KkM=;
+	b=skvrdJuhoWRNBeGartUcH2khY2Tv2VxwyG66EjmTKdHM8EZQTlVWeNDwujPfUGaib2jsF5
+	eYBVlX7iEfRlgdeoRfMloPzB+sE2Hh7LAXnZdCuGi9qhPPnK1lUqL5E4YVM/qt1wMZwhzE
+	vUB01XVrtLLarvJWop/gFKUl0lVFPvQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lpdVZb7d;
-	spf=pass (imf08.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=reozai8T;
+	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
+Message-ID: <28f75d0d-de54-43a1-b46a-fe3dd1188929@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782444815;
+	t=1782445228;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0HCGQZ57BsFjU/yjnNeadFJo2JebiPKo37EWE7E6eNU=;
-	b=lpdVZb7dYZBVQfZG9ALV8QZZPn5pCWrHjojmjbeGjIU4iPSQOMA0ewkkkcghYLsUKx63Fm
-	FoGY+IQM4XOitUE4lPfMPkCtzcm8hmMBnJ7uP/l4sNIDU4BIqK3VLTQRPgIQLuwoydkHzj
-	J4haBNrsxLdlCOvXEsR5ZnsgyWgo3Nk=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 3/5] mm/migrate: use huge_ptep_get() in
- remove_migration_pte()
+	bh=QuVdpRIguPMFSlXQhOOtEgFq7gSJAyQxVrZOCwx3KkM=;
+	b=reozai8TTI24Te6z59/Idhy/4ExwpoKf76qZ/QygeLqLnuQaqt+53ywcl6JtzSMN8/yEoT
+	hNSB+NcGUreDFseQjyBqyhDgwgmftLUFFTH0OhkVJxOrWUydco42qggU6eqoewmaEhomQR
+	lfwAoz3mnILobNZHkWC1MDxCAkqScBY=
+Date: Fri, 26 Jun 2026 11:40:03 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH 5/5] mm/mprotect: use huge_ptep_get() for hugetlb
+To: Dev Jain <dev.jain@arm.com>
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, mel@csn.ul.ie, nao.horiguchi@gmail.com,
+ ak@linux.intel.com, j-nomura@ce.jp.nec.com, pfalcato@suse.de,
+ dave.hansen@intel.com, tglx@kernel.org, jpoimboe@kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, david@kernel.org,
+ liam@infradead.org
+References: <20260625112955.3254283-1-dev.jain@arm.com>
+ <20260625112955.3254283-6-dev.jain@arm.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260625112955.3254283-4-dev.jain@arm.com>
-Date: Fri, 26 Jun 2026 11:32:03 +0800
-Cc: osalvador@suse.de,
- akpm@linux-foundation.org,
- ljs@kernel.org,
- david@kernel.org,
- liam@infradead.org,
- riel@surriel.com,
- vbabka@kernel.org,
- harry@kernel.org,
- jannh@google.com,
- lance.yang@linux.dev,
- kas@kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- rcampbell@nvidia.com,
- apopple@nvidia.com,
- ziy@nvidia.com,
- matthew.brost@intel.com,
- joshua.hahnjy@gmail.com,
- rakie.kim@sk.com,
- byungchul@sk.com,
- gourry@gourry.net,
- ying.huang@linux.alibaba.com,
- mel@csn.ul.ie,
- nao.horiguchi@gmail.com,
- ak@linux.intel.com,
- j-nomura@ce.jp.nec.com,
- pfalcato@suse.de,
- dave.hansen@intel.com,
- tglx@kernel.org,
- jpoimboe@kernel.org,
- ryan.roberts@arm.com,
- anshuman.khandual@arm.com,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7E9EBE58-C2D0-44F4-8797-D8077E26AFEC@linux.dev>
-References: <20260625112955.3254283-1-dev.jain@arm.com>
- <20260625112955.3254283-4-dev.jain@arm.com>
-To: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260625112955.3254283-6-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: gd5puii5ggk3i9pufijr8y4rtfkca45w
+X-Stat-Signature: p79irdhz9pt1wpg1zgdb6u6rruygh4sw
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 197CA160006
-X-HE-Tag: 1782444817-826989
-X-HE-Meta: U2FsdGVkX186iTdcY1CgYK9R9cQT8fS+0ShdF/uso4cvaxI9i4brPBKOeDmcu43+tswTSEAnwwPFO7JMylVELBe5f6RR6JIH/QV3XDqWkryVFIiK6lfmC0VqY0CiVwF53dkhRQEdE4in5Oi+FkjYJzsks6JlnNkPJ49vIzinGrCZKyNuoKv1nbVMtUopvKQdvJy1IQqR3AfbxU0hC+OCgrr7E/a/R4QvmZEy7/pGy+TkMKxRZySIYQMd62j19naeCP7YcRyt7HnH7mI5D4W0//8W6xrQ3zSMnWG1Je89qIua56HBuXlN0fNRWva5W/NSdAJvOst5cSpXgZ+QKKu+yhfvrf2TI5To7Os+l5/uX6jFrHvrRL6pjXWsbrj6Tz3Rla1vIlRTAWTcHWZmH+VMmjm81CHssBq510ppFJJhvOEjfvRUzD5gw30BKUa4Td6zANg5iTDCV32D4L38tvI2zBeC+UNH3e+xEtHcgn61+asbeSp2B6zqBQvqZwzjyGVFQtqp0ZHfUbSWkl9buZn44eYQyF+fcpaN00msB9FBtpj+QevqutK+PgXnHxa8uU0Y3aYB3075FaoI7/MvS552uyumSFpgZy2VL8G6wcuqli3LaQDXyjgis/doOuCyoLmYOtUzQIY/jwJzUJuyoL52JCmOxEX6/PPIV+2Di0evgobUEdO5cxb2bhkISjjezrMQlns3SM6P2IwuzOtj3V9VMWsM450cwh14RgDnVGq8/c58owJs/2m9UDAI5eReYIrjSksUz412pMn93iQNQOmIzKGPBurmIPVErwMpXyZKKj43CkmQKEgIgZZpt12UhNRg0q92YdUUYEPCjM6Aw0FtA7v1wrV8EWBcPrhWesbWr9pmOPuM8qfImEKVOrb/NQ+TMWIohj/cJzORKx7AQJm7nC59oyYY8ef7OophvX1GChOlJSf44Zt7YMQA20/ZBAcAdjCJvb16E2b8mF2TMPs
- 2zL66GOf
- VHT80/GOp2wwnHjA5PFLl2kDHpyYsnLgkPPeDHKxT5mwPIV+fD9T8Ei0/YTt11trkPe6Ti31dbzpvNz7mkPVb2+OhmIsGsSVGipJLG5hPuOrm7fdDEyePR6+pvn+BgiV3KZVc7EhNNkhROqJRZ0+sDm8VWeGDsVEb/2gZfS3r5Wo+RkP56/tiNRYdMfZySJ3onNtzcQoMJRfSEk1Nik9U+sXDAeNGx3XjpzNiisfk77t+K6/Myh+VokYjgh8NJMjZOtOt9JOIh+MRSZixo6mCAsDSxNwmJ9KLhSV1Qz4l2Tq3pvbyNzO9F/llnE/g+jokuWD4j2l6ZUvekAjY3+UbPt1VQdgxwPplBe9hQitKm5+K6L03DbKncA2w9oMYiCQRzyxs3iLLSHufvHUgbwGHmMXrmk/SflwaS1VnHWuuIN5mwhl/hufwSIIsO97cWOYn2mVR
+X-Rspamd-Queue-Id: B5729180008
+X-HE-Tag: 1782445230-941464
+X-HE-Meta: U2FsdGVkX1+xUBIZdqXLTlzuiHQrefJztjfxqdk3eE37DXta27AWsN351x9xfmOIEFE5xT3xH82cRAEBBfu+uDMM/riwRgjYMRJ0Bt7Y7TO2sxwobfDXtnaSTXfoJRJvGJuzGtw9/8QStYNMGi6G/bQVkZHp6aU4CRlaj1ynNY+7BHhsYW3IggYQ3Xs0LXKGLaLWw8xbGYvS+eo2T8qKRQ9HkZOWvl5cqjSOQtEF2ySUmp4Nuaucm4vd1w4icRBbWidj2dTE1a/KdEOEgY2Q1sAlKH8EjptzA/1QtqcLk9JydHYLsAOO7hpGxCPR5ZoBFvwpJv/LTAdCaSAAkg1vN6GgkVXgm0FUNv0JNEUR2uU4LezB6zDc8Zv8Ld2DAb3aJvBDtaAMktW6TkwJY4gNEV/E3iyHd8SCHjjrHKM4fCo6VqOVCqcPP67QEMT0Nu4skC6v75d2ZhI4hFgNrcKLOoK0irSVw5c9jyfWujUrluzhICnJFOEf+xSQ5g+RQRjS+uA0XZcHTKmUuDNhKbTD8zCZyT3pEGU5lqboRaePEs7kjEtthykqcNd6yWk+BA7ccuf25P2UNSdSWzOj9IThWtGnjtpVYPKosi7i9S3kREl87kIySAZTzv0ooc6UN2W+Fxp+G4x8eUe9OjRyCxgUhYkA1wEiMS8gGO4OhyvSaj59haguTqXw0VcphZdcMzMK3Km+4Z6uZFKm3Zqio7Dy+kK7KxGbBt1djCY+ycu35gvlU5gzJT79vOa/9voZdgdzouOVZq3G6qdsSthgjSaF3Hym46E0Xz+9nSZ9CpszU1EzsCnCI2yJyM15GkRIcldK1rI1C4Z8PmnQco2cmiL2SBhDHL6rig5SqsWRUdaIHaeG1ynkYldHP+skc99QMHZjzZRmzZ0YMcVyresWcaOSwpkfpJfO73skLNGqXZHaRcG6zAmVprTh9/GOAcwMdCYi4GT14HSbiFWdFhoNlL3
+ 490Q8DGr
+ vWrFHvHex6CllFzlE1YxKewv6lNxOOp+iickoDj6cMofx0cq5fYqGGeBK3mdStvFfxUBzYGESWmpuWKbMRGTqW0vLzH5wVy/fgIqFqfZR1hb48kByJB8i5qcQa8X8gmz1GXKFEA409zvCNKmYOokSTxI8Z9hxnUm7/KjdVKYEOIplPWKuPOxRD8etbnkyLrj8d8h8i1wg7tpHRVow72SEjv9wY8EATU9M0FyOozgtyZOz4AcNW8WDZHWNQuYuDy2L4MLHm4i18Mjoi4PaHI0syDwyaRD5UVx1mnI/qpPUTBuPKx236JEZ/xZ69ouS5gBpcwPgZYrb9f9as5iEugqrEkDEsfW6K0Dwjfyldii7Oi/q5ntM2pG9irdRmI8iP8CpAO6mK72K2cu791az4nLfg1L3Yl50MVeYaJ7wyuK+o3+FYCI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,36 +100,75 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-> On Jun 25, 2026, at 19:29, Dev Jain <dev.jain@arm.com> wrote:
->=20
-> remove_migration_pte() converts migration entries back to present PTEs
-> after folio migration completes. For hugetlb folios,
-> page_vma_mapped_walk() returns the pte pointer to the hugetlb folio in
-> pvmw.pte, but the code reads it with ptep_get().
->=20
-> On arches which provide their own huge_ptep_get() to dereference a =
-huge
-> pte pointer, accessing via ptep_get() would cause pte_pfn(),
-> pte_present() etc to misbehave.
->=20
-> It is not clear whether this has a trivially visible effect to =
-userspace.
-
-We are dealing with migration entries here, so the issue mentioned =
-shouldn't
-be a problem with any of the architectures. Semantically speaking, we =
-definitely
-should fix this.
-
->=20
-> Use huge_ptep_get() to dereference a huge pte pointer.
->=20
-> Fixes: 290408d4a250 ("hugetlb: hugepage migration core")
-> Cc: stable@vger.kernel.org
+On 2026/6/25 19:29, Dev Jain wrote:
+> prot_none_hugetlb_entry() is the hugetlb callback for the early
+> mprotect(PROT_NONE) PFN permission walk on x86.
+>
+> The callback passes the decoded PFN to pfn_modify_allowed(). For a
+> hugetlb callback, the pte pointer refers to a hugetlb entry. On
+> architectures where hugetlb entries need huge_ptep_get(), reading that
+> entry with ptep_get() can make the permission check use the wrong PFN.
+>
+> Use huge_ptep_get() before decoding the hugetlb PFN.
+>
+> Currently there is no path which can trigger a bug: huge_ptep_get() is a
+> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
+> But use the correct helper anyways.
+>
+> Fixes: 42e4089c7890 ("x86/speculation/l1tf: Disallow non privileged high MMIO PROT_NONE mappings")
 > Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>   mm/mprotect.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/mprotect.c b/mm/mprotect.c
+> index 9cbf932b028cf..23779632d18bf 100644
+> --- a/mm/mprotect.c
+> +++ b/mm/mprotect.c
+> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
+>   		0 : -EACCES;
+>   }
+>   
+> +#ifdef CONFIG_HUGETLB_PAGE
+>   static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
+>   				   unsigned long addr, unsigned long next,
+>   				   struct mm_walk *walk)
+>   {
+> -	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
+> +	pte_t entry = huge_ptep_get(walk->mm, addr, pte);
+> +
+> +	return pfn_modify_allowed(pte_pfn(entry),
+>   				  *(pgprot_t *)(walk->private)) ?
+>   		0 : -EACCES;
+>   }
+> +#else
+> +#define prot_none_hugetlb_entry	NULL
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+This is very strange, because we defined a stub as NULL for a helper
+function. How about  the following diff?
 
-Thanks
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 9cbf932b028c..4d8c1551fbce 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -716,7 +716,9 @@ static int prot_none_test(unsigned long addr, 
+unsigned long next,
+
+  static const struct mm_walk_ops prot_none_walk_ops = {
+         .pte_entry              = prot_none_pte_entry,
++#ifdef CONFIG_HUGETLB_PAGE
+         .hugetlb_entry          = prot_none_hugetlb_entry,
++#endif
+         .test_walk              = prot_none_test,
+         .walk_lock              = PGWALK_WRLOCK,
+  };
+
+Thanks,
+Muchun
+
+> +#endif
+>   
+>   static int prot_none_test(unsigned long addr, unsigned long next,
+>   			  struct mm_walk *walk)
 
 
