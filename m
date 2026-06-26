@@ -4,134 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56444CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDA0CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:16:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F50E6B0096; Fri, 26 Jun 2026 04:14:04 -0400 (EDT)
+	id 6ED7B6B00A2; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0CD716B00A0; Fri, 26 Jun 2026 04:14:04 -0400 (EDT)
+	id 6C5E26B00A3; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F26B96B00A1; Fri, 26 Jun 2026 04:14:03 -0400 (EDT)
+	id 5DC9E6B00A4; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C469D6B0096
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:14:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 373301A0375
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:14:03 +0000 (UTC)
-X-FDA: 84921350766.21.9CFC155
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 737ACC0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:14:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WR+M1DMJ;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D2C76B00A2
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 836A8167546
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:16:42 +0000 (UTC)
+X-FDA: 84921357444.11.3142C4E
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf28.hostedemail.com (Postfix) with ESMTP id ACA6CC0004
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:16:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HK7C2gdC;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782461641;
-	b=i9C3/3g7VyodFxiJrDFnSFH8dKdSWahHEurld9vsYTRrRaYlG3YuIrhQJJ/cqvcb3iDvQ6
-	vpf7x9LFpKC8fIR/WRfLuDBvOatW52YRyrQhrRGwbrX26Du+LuQ7tLxyj9zvGtyze9SP1N
-	v1xQsPfFVim8UNNmTh4peig+gGqziqc=
+	t=1782461800;
+	b=ZLe2oS5p/RKektuJyTgFjN9MTZ6VMk/cjzK40UPi1+8pFxPpcYhxk/u5vxVyGkB4DRJMBM
+	Be4QdoB+S0DuYKn7mb60AI+Fpv+JTYhUsfn0i62jeDtmmLMhn3A0/KwfdjzLZbbwlc+qm1
+	jv0C/iRU2VohjIUhdQcICkHDGngowcg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782461641;
+	s=arc-20220608; t=1782461800;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JxHcRJ/uAa2Q++f+570ob3TPntbfaPHmCgZ1Tbd71eM=;
-	b=FkH6dAzcNnA8QXg5qBgvM69WD5lw6Lk3ey4wgGIjs37/QXV54crqRF1ewMSsD29ezysSLF
-	yjiF6W4GQHAb7FDRVcmkhbyMKbygDbbUJioXVu6ZzSlVy3nbFwMxd4z5yugR4ol2rRsH0E
-	2CEeUsoXzxZCBqLk65gB7sCIF0vWRwQ=
+	bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
+	b=ee5WVU34sBfAILDfBRvYkR/E85iwzNjGh0W1C6AgwjhC8Thq1wdueImLyaBUPbn2Wqz3f0
+	Hq0m6QUdGZxO5hsXTdot0Y8AyjScDfYRXezbLXaD0gZD36LzDufXorIXtr1SCzW1+ndyeX
+	mDY/2UabiJ5WMokzJ8LSgGLIbwpKkX8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WR+M1DMJ;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDE6660098;
-	Fri, 26 Jun 2026 08:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B9F1F000E9;
-	Fri, 26 Jun 2026 08:13:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782461640;
-	bh=JxHcRJ/uAa2Q++f+570ob3TPntbfaPHmCgZ1Tbd71eM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WR+M1DMJgMM4t2+ge79esnF02O9RFDzaN6Hg8/fc7y546zi/NwZiYes6VYI3/aBQZ
-	 6+Cw59NKIvzfa1B4ozxZkKbjLc7j6HSSYkNPdvMHm/WwrLhlD5u9pyfmcL0iADABaB
-	 0k7M86I1isVsPIC/MaNzA3UC2A+FUq4nADUmz7WVOj0d7V9Yq8Xvfmajw9/fdd05cm
-	 xlI/KfbpzFD5DqWZ+Yj7UZzacj+kd6zs8xhQtc8COgTHV2DdXtZYq8rB7rSxanFLXF
-	 rOtRMkHz3+SHSsoE129fOsCYrbYAdXchLobLPk4zHJuj+nXEJL1GhbDfXtv74uhd5A
-	 pheE1SPsjoetw==
-Message-ID: <a63b7138-617f-46de-96f9-e56528aee3aa@kernel.org>
-Date: Fri, 26 Jun 2026 10:13:53 +0200
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=HK7C2gdC;
+	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49263703c6eso6497505e9.0
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 01:16:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782461799; x=1783066599; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
+        b=HK7C2gdCCJDi3ZQocGVj6PzC4XBEJ7maZUpkvRIZpSK4vC9VmUJuLcHgzotn8Tc8kz
+         vvCY72eCEBUndstD/a8AKvvTMqClDKbXKpnk0z72Id6yBVJQbjQya1qm8bacM+lfXji2
+         ZD7QnIWrFffiNgkncPypn2/y3c6YbducDWe2w33Wd+GI27yJcrU9wDpT8jY7ftDzRKMC
+         I6uFF4nUE7PfIOnWF7yGwrJ0TSJl2/NiVTGN4WxVsWwdGtngIpq1Xp6psKmsawighCvg
+         fHaj2O21WIiJr2yyUN4s+MSYKPpbyfD7VwtLDN/igYzvPKONIohhBYNGXw0QkmzG9nxo
+         6f5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782461799; x=1783066599;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
+        b=s9G8s6qVeWx5ilZxZu0ZJx9YaeTr2ppishrNWz1cgkXPQOGB+ugqpPU0je3g8pHva1
+         iAPCpoBrkP3HuWZ7JLHgrqbHrorHm4odJs3+6VCjde+w/JfOGrCA1KAvoUz2GbMNXBx7
+         WuFk0X5NdMBlhazC2d3cBXMpC6Irx/IeHzB9A2pErStaHamyPOwOYmCeZGn2syKhK85U
+         FBVg2v/BbSSQnb8eQL0xkadxVrxN/EEoNmHCnO93ao511mgHT1dM9Hn7ttl+BOQs4viO
+         xXURKzExlCFArcQpdY9Yxvy16gVwb8m2TCkfUmy7DzgFmwKiZxPvHdSBjU6C0Oha0kxi
+         AFIg==
+X-Forwarded-Encrypted: i=1; AFNElJ8CpdoeSArKLxSJ5oqdH9JmD5zki5p7mJh99P8lAe1N7V33Ajnk57t3nR6vW57cQ39eACO5MPxrpQ==@kvack.org
+X-Gm-Message-State: AOJu0YwT52QVox2VCl8x2xP9HGTRtWYIQOgrI7rzmkK9wZQ6cYvwrKej
+	kI2uSTDZ02w26byoFPC4B337QtydAecLFeepmNEddKTNurtr5lfwYgnU
+X-Gm-Gg: AfdE7clkN0ZQ9elej4n6uL//5y70kAFRgrqnuvnta0JllK41uIi8svqvSCpmnaHfzNd
+	nezYFMwgbrvlANVq3eJ73sd/W9ypRjDeBYs+zL4dHIaA2neGNXmNr/pBDf/xAt/5bRZKnngOK73
+	dUlBxut+9GkKiS0pavP1Nnea9uVOjawaKHkBb7rqoMQzOwULdtyH6cafwiLcnQ7uUvjApccV2yR
+	QN+tpBjLYmE4pmYinUFBTfTXpyZsy083yL45L/OqZAe/KHHDwlIANvQfQk5sGx86wxWyiggkS70
+	e1X5DfFAe0N8MXFtzSX1mQ01s6tw4UCY59BatA1y6XWK93gEJlGKEnYq6mKmp/piD3yGFzPS0DU
+	YXTRbPOejABNGeQAhMei8A67feAStrrtBxmL2GYmIlMep3nOvHbxDtR8R4DTAoBb9nxHjTw3kCL
+	4zgUTFf7Zi+KML8OA1OdSsJc7rxyfXO+No1a33Xj14aXHa0kb6sQ==
+X-Received: by 2002:a05:600c:e547:20b0:492:40f2:4d78 with SMTP id 5b1f17b1804b1-4926685ffd3mr60370715e9.2.1782461799049;
+        Fri, 26 Jun 2026 01:16:39 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268fef710sm106993125e9.7.2026.06.26.01.16.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 01:16:38 -0700 (PDT)
+Date: Fri, 26 Jun 2026 09:16:37 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: "Zach O'Keefe" <zokeefe@google.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ David Stevens <stevensd@google.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, Will
+ Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+ <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, Kees
+ Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+Message-ID: <20260626091637.484ee07d@pumpkin>
+In-Reply-To: <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+References: <20260424191456.2679717-1-stevensd@google.com>
+	<da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+	<6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
+	<dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+	<CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fs/proc: fix KPF_KSM reported for all anonymous pages
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- ziy@nvidia.com, luizcap@redhat.com, willy@infradead.org,
- linmiaohe@huawei.com, svetly.todorov@memverge.com, xu.xin16@zte.com.cn,
- chengming.zhou@linux.dev, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20260626013252.2846774-1-tujinjiang@huawei.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260626013252.2846774-1-tujinjiang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: u55uknrb75x3uguf8h1q11d9dg6hnoho
-X-Rspamd-Queue-Id: 737ACC0005
+X-Stat-Signature: x3rs9dz6qinye8my3okaxae39jm8bo9s
+X-Rspamd-Queue-Id: ACA6CC0004
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782461641-117067
-X-HE-Meta: U2FsdGVkX19/CxUwsAyYeoTdhjmooxOefEpvJODvhAckiSER0OgjYajKFCrl8r7KIZcVfTnpi1XeewxkABkI1LFUHXMvrNgi8GMA50gLg3F7IwFYhNW/1ax/dUMdbw0ZIzwmJUQfIyfX04ljesMwyzSG0nzAgDp7L/uBK9DWYBkC10XHqAuekpk/H+FYrjRIV1ajYVEMtVWWZIsUUpzeeMi0GTAoHTAd1EzoYmxN6E93X536uwy0emqz//FbRRZHjEQo0Om77L4mf0RmKIMw3aTPVXQxUZiMUVWvrW+Q/tKm0QxR1Ca45PR6rxbWILE6DwvCo5blUUfxmZ9nVsUZm/l8X7uaCRDcxvb2aQYQ6OAIP0T3cqJRzRPLP0zo7nO1mzbBwx2SJoS7ePAyMV42iURhKU7O+0IVemvturmdOGiSjz/q8wO0vCZVn35JoUODH48h0P7FDkPvxZjTJo72FnHiHzUmZ4EndX88mqEaQAcNtltdCaoIshYh9hW6X1CyudH3a8mgqPd+Jy6v1kdm920aQ4FRo8kMYCi+rD8Hl6oEGI5aLmixivIKL6MVRFsuomJnkD0TmFVL9qKfrqviRmRMV/76B6uG7IpNTsX90H1ab4VMMjOSB5wNXYzO6M0NfSVTVrZd2wH55r7wUt2VTA7/YsIEPtXO3se8rTTOTxGrByYVid7gw/8t9IMqhmCF8gceHWudw0cJODBiMpNrl6qhyt8Rhit36LNqQPTpkxmHqLjYElHYm7J27cLJ+gVLLVai0EVW3dzNidtQzL9/5EbmThRSfHj6moDzJ0lJYJCozCBu5pdP1Q0dTSMUqo93M61fJrTwI0Il60DeDSo7NqckoWKcQT7ubrCLlvmG6XK1pS87magVc9uHx9Hg1Dgz5AH2dyfQIbvPG3vMwKUE91Y/k7BC+uyjgsC368dFurXPnGc0pyRf6oGFBFeHxzBbeg6fi2/yHgdzrRVKqXy
- Edbaoips
- TFKDlLUgJzqpxCzqbAv0cJmlKTRiy69lxlpYBXX6LkTWE4wRvmApuWDL3wnfuxnuMA7aqdD+ZAU2IOJTMelxIoXrz7SlNjxgPP4DjlGuvZjhyis1WjIE2BIocAucT5eyZTmeE1NjvMYDDs4ud0Y/EDp1gjcjiXpjZ4+JOoYE6nj1a1LFrYphso0cs3GlH3kN9glWMC69zFywkr7QCd+rRIb8o3qowtVpECMqYMCUyH+RAfoU627TONEHRKy4VybdxF3PPr0lZYiMVm22lrfOfrvhipGyBLqjYBfW7LwGK/w7PO+txecsG5L9BGD+s8i7282htenZA0dFfph/apYHaGXgOswhAEapxvxAk
+X-HE-Tag: 1782461800-781343
+X-HE-Meta: U2FsdGVkX19UwssYhuMymw3PJWckul6sofSBf2R1sTTVRicol1LlfJO8xIxkm6dWmhQbvjJ7t3MZc0lC2Sz5zcmCl9O6t/PbL5RGSESvZkOnBlyS4FN4qd/Dj4F1NTlmVGsrdNLb+B6B9wrHgJCdpX9lF5TQhl1+Cp0+K8wyGL0B+548fQn4BRYvxV90Ct/0lwAKkRr64KBfYH2pXI9wLmtJueMfwsVcCoOAUgesgurSqPyJHgzrVvjeuH7s1tORZCnAIm2GhDDRCawekwZ16QQy0NpjNpsO4smLHP2nYh+wGNYVNneAkUIjmP+yojz6WNZqbazxGj11hdPxekGKVsbBHfoNr3lQ6Ee8qXS+uBPz9jHuzXknSpCrExnFOBvrUcAXQoMMjY2WVHV0tZvXX4EL9C1Igl9n7xqh402c8Zm9PGNz5z77c3z+R2knG5Aoys3B+vAH4Y5cGmGZ3kTRn47OiNMH0ZYrljaH7rTy7k0Kx+C0jboRNGI/vZNOXzwiusnQooakhWZQrl91jyaTKqEfuA4t8IxSJ7Uw7NFv4rWsv86u6ldShubnQTGqcObsOEdfEK0Gt94bVKgy36cWPIV/gy8aW0fD4/fSdnnZdO6TbPhjwGzOZhAYYmr9lkwaksRip+LBhBh+aHFWFCx0u5XngyVUataAefxoas0iWWj4MMIV8iH8UOf9DQ2kR6KY55INO4CefWothyY0P3/jdIwiqCCpdd+++FqRMjS71Wx44HVEMc6LqTBfcX9wRlGgp9kYnPSNWmgN8g8sE9M1a9CunTeGvNMCpyfck/wnUYGnUA1D3cPVIFOiXm5rzsxsEPQrSZ92y50mvYzaehLCQ45hwRyTHvBICsh9OPqjRbHaNyRvcJVh1Pdsc23J+/3w3F70T57fS7FZKQsQobZHUAbuXDUB2zCIdE0iuVpS3QfLpYWBOql47Ost2IQkxGIFzJ9/icLhSUJvXezMMgj
+ gV+r58KN
+ NcFzwYvnMfWCTb3s3J6ur4cqIFKBRqTlFEbvNQD4eW7LtscqeltcICcK4Du3/55qw9bDFoL2F03/2+B2Xi3HDDOL7KiLQSt10HMdnzNlDTcRO8VRmY2sTIxqpbOeXF5WqJNMVK3oT52Y3Ti3EKQnb31GecimwKA7eDv2c1pc5qqgMf/X7XRocmfwkWBspRvnz3eYtF3aezpTeD5dbJyLTSMYOeZiViAGXFHw3yGc8ZYJPunrWHGzYEDxb23KnXizmHsepVdhL7r/DuM7ZV6EtT3XyEry9lewUQnL+D/EhFy6eNK/+LRW3mQg73M2J/cT9pO0syWvlQk6lnQF2+QSBcFXPySXonsrHKT340/jrRSyweO04Mpr/aawKFoy2x+T5dfMdix/74/y30Fb11hjsic7dG/D2etC/AJphMeA0lJHAN0lJj/P3JrXm4t/sMbTl1SQwyofR1ChGI0QkyHlXyUJ56uWURK72/6qQjrgrYFaqszI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,31 +134,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/26/26 03:32, Jinjiang Tu wrote:
-> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
-> when KSM is not in use. As a result, tools misclassify all anonymous pages
-> as KSM merged.
+On Thu, 18 Jun 2026 07:50:26 -0700
+"Zach O'Keefe" <zokeefe@google.com> wrote:
+
+...
+> Dave,
 > 
-> In stable_page_flags(), if the page is anonymous, then use (mapping &
-> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
-> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
-> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
-> 
-> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
-> 
-> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
+> Necroing this thread, as the potential aggregate savings continue to
+> stand out for us on the datacenter side (whereas David is motivated
+> separately, from the consumer device side).
 
-With spelling fix
+What are the other kernel memory costs associated with each thread?
+While thinks like ps used to assume it was just 4k, it won't be any more.
+Even for user threads many things that used to be per-process aren't
+any more either.
+But just the task structure and FP save area are non-trivial.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-And I'd appreciate if someone could look into cleaning up the code to switch
-back to folio helpers now that we have folio+page snapshots.
-
--- 
-Cheers,
-
-David
+	David L
 
