@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45441CDE00B
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:46:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FE38CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 73C0E6B00F9; Thu, 25 Jun 2026 20:46:24 -0400 (EDT)
+	id 30C446B00FB; Thu, 25 Jun 2026 20:55:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7136C6B00FA; Thu, 25 Jun 2026 20:46:24 -0400 (EDT)
+	id 296556B00FC; Thu, 25 Jun 2026 20:55:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 651316B00FB; Thu, 25 Jun 2026 20:46:24 -0400 (EDT)
+	id 186A36B00FD; Thu, 25 Jun 2026 20:55:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 42B796B00F9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:46:24 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E31816B00FB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:55:22 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BD3D51402FE
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:46:23 +0000 (UTC)
-X-FDA: 84920222646.29.5A6132C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0A91F80011
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:46:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ttuUkkW9;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 746DE1C242F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:55:22 +0000 (UTC)
+X-FDA: 84920245284.29.BB134A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BEBD620005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:55:20 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AhNEfsFm;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782434782;
-	b=BdNtN+mbw11f1D79jnutQGKnwIzz/mc9q5p2XtEM6woPjFurj5Y7Xh4Ew47GfBK1GpCKdG
-	YGoiYns3bum/xSilPrCH6y1O9IW9IH+/xe3NQdqCjlJNgHxnQZ8ZVlU9gJuxCxtmoiS0xQ
-	v7BjRpHkK6Neu6HfDf1P5Ur8gEPRH+8=
+	t=1782435320;
+	b=njRJM6pwntt7J8rZ3WWKzebU1A8OzXSvjm+lXguEmZGrvDzk14Y/YiYV9I0Z1vzKn5n29I
+	tBQWj7uxrTeU2Zd5Fm8rMrZO+3goLZNISkgtK97o8acfnlVNQrMsgdtNIwEqJy1fufbpXP
+	Yzlt75lOTzCKDupeboJbbgoybfVEas4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782434782;
+	s=arc-20220608; t=1782435320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aVwnJDGi7HOXHyeM0jNjwmLxXliLE7L625+/NqaYxmg=;
-	b=2UTklTgNyiCY7NrdEIY+WTjGrR4QZwGHE+syqFKIRVAwBd7Rm43ixufpAlPcR2bOgmgfvV
-	Xsql3nrnejsHOS2DM3o+vQRYTnkoOEaASZ0AP+yv+GHdOTOjfR9h9K58diLpRNTBr7+EaS
-	/jnNJNtfP0ylTkepMvPx4RDfuYtyGfw=
+	bh=gAiyQmyQj1R9+q0zENY7sPgSGoLOh0EnuwizhQfIl/Y=;
+	b=p1kOUiXA8yGy0RPZvMUJMdjmlxwet8VWziDxe2Gn1aiY+90XBYT8tWOm5O8617AOrLt0rb
+	DpJ4lWZ43hNan3uDCKL8sT8FgWt+asYZggVPEYAtjfoZNrl87qdaaM48NKHF/dp/oIG5C5
+	sCgcEHVZJ+ZEJy7daaGZk0rcAlppLOg=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ttuUkkW9;
-	spf=pass (imf02.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AhNEfsFm;
+	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 746FE60098;
-	Fri, 26 Jun 2026 00:46:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 903801F000E9;
-	Fri, 26 Jun 2026 00:46:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C623D4178B;
+	Fri, 26 Jun 2026 00:55:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517781F000E9;
+	Fri, 26 Jun 2026 00:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782434781;
-	bh=aVwnJDGi7HOXHyeM0jNjwmLxXliLE7L625+/NqaYxmg=;
+	d=linux-foundation.org; s=korg; t=1782435319;
+	bh=gAiyQmyQj1R9+q0zENY7sPgSGoLOh0EnuwizhQfIl/Y=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ttuUkkW9XB6RuZTLYjeJ/3uTYeXRf6yq0egZXdrkILgAmZizyGc15vX5NyM2XHWzD
-	 tb2k1YiKgsHTU9XgApnhlqlUXzoIYDtrltk0/8s1pLM+JAaHAVeY8PIo2wZL+iaNvF
-	 qR60k0TTyAaXwmuUmEv88320MeMUOpwVNwW8AI7A=
-Date: Thu, 25 Jun 2026 17:46:19 -0700
+	b=AhNEfsFmx67rHeiLL+T94BMFTgF6Q7hVh990FIfGh5uc153zE4LuyC1AeFPGn9OOS
+	 /NY5xr+An6611Ay7V55cHYIm1EFBTvzHXMbf91PpmDO9Q7+WmEMcXFF4VoPBUCtoHp
+	 GEI77BU40OZj5syt5TizBcQy+6yT6Wn2pmXsIwe4=
+Date: Thu, 25 Jun 2026 17:55:18 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>, David Hildenbrand
- <david@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Muchun Song <muchun.song@linux.dev>, Mike
- Rapoport <rppt@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- Ritesh Harjani <ritesh.list@gmail.com>, "Aneesh Kumar K . V"
- <aneesh.kumar@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Mike Kravetz
- <mike.kravetz@oracle.com>, Michal Clapinski ? <mclapinski@google.com>
-Subject: Re: [PATCH v4 00/19] mm: Refactor bootmem gigantic hugepage
- allocation
-Message-Id: <20260625174619.45d7b772b69b7b54b7f3bae1@linux-foundation.org>
-In-Reply-To: <20260612035903.2468601-1-songmuchun@bytedance.com>
-References: <20260612035903.2468601-1-songmuchun@bytedance.com>
+To: "Zi Yan" <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Brendan Jackman" <jackmanb@google.com>,
+ "Vlastimil Babka" <vbabka@kernel.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Harry Yoo (Oracle)" <harry@kernel.org>,
+ "Gregory Price" <gourry@gourry.net>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/page_alloc: drop flag-conversion "optimisation"
+Message-Id: <20260625175518.d5b4a051cca43f03b1666a00@linux-foundation.org>
+In-Reply-To: <DJII6XRAZ7K1.26C7HGGRAE5IW@nvidia.com>
+References: <20260615-gfp-pessimisation-v2-1-65f1319e6818@google.com>
+	<DJ9KK3Z7BPYU.2HDB5IVO6Q40@linux.dev>
+	<DJD06ZZOC9IR.33KCFLM7L4267@linux.dev>
+	<DJD0X2R79SVW.1XM7FV4REYCHS@nvidia.com>
+	<DJD12YR8S99G.1I43PSHB77TA2@linux.dev>
+	<fbe1e70b-2a33-4db0-b390-3841c1a84522@kernel.org>
+	<20260625155045.b1e2262c552e5a5e0116f884@linux-foundation.org>
+	<DJII6XRAZ7K1.26C7HGGRAE5IW@nvidia.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0A91F80011
-X-Stat-Signature: fufbo5xfuc5apht64md56ro9nrh8ohoi
-X-HE-Tag: 1782434781-727338
-X-HE-Meta: U2FsdGVkX1+EB+DWpg92BPnF8wI15aKDyJpk/dTZ1SY3tTpEkIhP5AMQD/G+9wixHO6GIGMvF9oMCjwylPMKv/B9YIaAPw+foQh6iNSTtEQSpwBZdEXL2If4gL4qs8ODpM6T9iy6kwn4ZXDAL8PMFpVGJxjdisYWVM3apC2GFn2HHEo8Hs/IA5IEFtkz+vdUcRXurcN3FclpD5XXzcd+9aUwqHVNk9bVO/EfAcfuw0HygDY1oy/elbAyTuu/AYc7uolt970aTl6STu/VvQSsO2BSNZqU/DASR9Nq82ltG3J34LrkAljMaX+PiOaKwlGDrVqsmW5g8IhBy1DRhBd+WhdbFKiz6+bnMDrQkSOJ9DJ8NcamBeeGRjhkPy613sH2RRJNmBgjZk9o72SXR0ZMmwNqNdAnG4Q1CPZlCYNN7UBWaElCDsnegiaqlE+Zs++OMEeV6kNQMcwdkIBULqdbx7DxeAkuLXOE82es/RRt727WTkKb2GP3P5Rcv8XoCRvTz/XUCorvN/7wwgQJc+2kvRxEVapNWDEd0sHoW77GOtvQOHOUfaO/27mVgEx6CKrHvH+HWQOdTknT2nvcuO/sOdYHh1dDYEno93b+AlX2Y0wtnZwKyiMFFdoPvyLUPmA98QIWJrkUWeXJ7imY5dk4CQBrvfeylxWC1vshEOd/qYIKkx6d8L462gAufmJ7hnuyRigtkU+GC6NDD2J/R7vEu8SNIRyF0hZrUN0zLOvdR83o7mK+JHIdM1Nxi62fmquSQF72/YgHttTpsmjM1rpOBHH30wcJnAAKI8jscy5f3QTVCSdyYRaupPW0aE5WC7puf0dwbXQTXTff6OFa+euSp/S0oPOZrnuoD+V8blypVEqvWz5KL075s4wT4LmVj6/wJ1e+1ahnaU3a1iBJtAC2FgqIAfVIwv7fOiW70R4AreNGXDYDWKaszcI5QdOzLyKAbygeqLH/J87AW3PKTH4
- NtViOTD9
- LYk0pDpjPCykRhavai/86uKW5jglm2qntgbXMUFkow3B/1cz5RdDrUQ5rHWN/ejVQwYpobZmwCC6lYSqrztWIXxJ62kJFNdcfC8BCtkboAE3QJIqtaYgIFS8CBhEjZMLUE1U3BhV+Pymy6uqc4LcFve2ErM5UEN2Gf7pQf/pSVLzpdxjgEViBSF+zgSaq5LWMtKQiP3sq1iX2lD1lpxubGf1JNcOvZWXs/kEFO/Ld5Xnezht1LIyHlCpDDrCOaDFgbJHzAVrX64gRMTMO05ohcB7nWD1s/QM9Akaz64b5y/5nCdkYFpJ/9EasHvM4C5RYoQg+08oXnk/0p2dgk03kFpi0ab3SpJ99iiAiOOIwL6Jp04CAGWnflywbFg==
+X-Rspamd-Queue-Id: BEBD620005
+X-Stat-Signature: yrqtdukzdmhsnkx5yxmkiqa1p5wr53gu
+X-HE-Tag: 1782435320-32336
+X-HE-Meta: U2FsdGVkX1+7G5O7LlfP0CNsTGgHYtyUZiwr9i8aa0d2Aqo1/P28NxswMTs/ZaoWp+h28hvhJ8kcp+WdHKsaBho/8/0h+fgB4ClY6F7S48cXxHYz8PrhfTsWt9Qt+4CqZR7HwSW+2g+4u5DopH8iDi3qaSB5cmw4hsXKtcICH2D0ERP72JHWUtlvGl8ejx6EMWGxNLg4XG5NHHR1+lHsBGx9YTlgydW5s0atA+3SMQ6JB6huRmpai4WAcCmqJUFozlxNgni8AOdKPs3GU8h9nhNuB/uZ5Lc7urISBgxAuibl9yEVe0Kmww19BmoXiOI3gdK8i/yN260BhOwCPQHNPR3SY+kGyS2XNmffnakNt6ViyWgB67exkMJWrFMZ8xzER7QbwQam6YXzEmj+Pkpaf5rj6ZUTay6VAOrCLotWGNAm690GbGtmD8GV+/AbjCSorXhM3HNP6HRjsuptRqS8kGsuWRuEAK31OUqUOZSxxFrj7iBehrA05F/+dTLk9ZNtRST4IgSCIa1+1QyGg9mA4mwngCv2odfVrdBjIFS43wFwGUM+3hkvo3FWu6H61bmVh66A8wOsgf8nahD3V6lISSKZZtRruXta5suTd9fFDbxV5wS/NowmzhyivKVDyZmVa/dv4ty7gdlBttJaLSqMwHq1AYvOEbHylucI7CmLe+yn4qJQzygIL9xElgEOUXAdBgnql1ybmCRZ1DnbNxN5/utDTtU0vyqqJsrRaqFI4xJP9IFRsUi8vOACSH1dfYTGbepsuVJUGojUufRInUy7gFnuB17N6iQas9hXo52396p2IXqnk9jaalgY96VSpZjX7VMfwEc4ilwnbG6oAg/BNjl7v8oC/TBgFj9MC6TAKhL3b/0D07gqyGyLevCNTykd8JN8GfAh8gH78FxEcVfs99mqQQPurInHncmRlq8CUaSwABwA/dSVO2/EJsixH/chUfKEQus3Sqd0AhRKYbb
+ vbTCYr6s
+ nnhpQr8JbdA6sBqDwcvFlU+CTLqJGKED+dutWxzi/Jsx4IvrlRZFDp41dtXL396I53PpStxiWvDmJEZ9br+oGygIgkjmI5AiWaENhndcIEjvRfs91UJ1dKrAhxgpSIl6oBAXlvtQGoE+Wgt1kK5CroijpW0YiAdtg4f3JuGLCOjt344xmQ5kV2Bx1f/A2YAMlsZ7jk5c3epINX/3qZYd9U478uS0NIoluKxAvh2Y8Cz+3PHhZOlteRtwOFDZYJMFqNeSVo4O5b22xNdIZ44FFoOuNlcIbiuJqtwLiUrrWhPYW4qRbjPq1oOm+v25zx/IzWR7Uk4MmkH6wO2pfy0/eIy7IPw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,44 +101,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 12 Jun 2026 11:58:44 +0800 Muchun Song <songmuchun@bytedance.com> wrote:
+On Thu, 25 Jun 2026 19:02:43 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
 
-> This series is split out from the earlier larger series "mm: Generalize
-> HVO for HugeTLB and device DAX" [1]. It collects the first 19 patches of
-> that series as a standalone set of fixes and preparatory cleanups around
-> bootmem HugeTLB handling, sparse initialization ordering, and related
-> vmemmap setup.
+> > This particular patch looks nice to me.  Code is cleaner and the change
+> > reduces page_alloc.o's .text (x86_64 defconfig) from 46571 to 46443,
+> > which is a good sign.  So I'll add it, along with a "needs more review"
+> > note.
 > 
-> The first patches fix a few bugs found while reviewing the existing
-> code, including incorrect bootmem HVO handling, wrong vmemmap
-> registration arguments, a powerpc compound-vmemmap tracking bug, and
-> too-late initialization of gigantic bootmem HugeTLB struct pages.
+> It is actually well reviewed[1], but Brendan forgot to add tags in the
+> original patch.
 > 
-> The rest of the series reorders early memory initialization so the
-> relevant zone state is available before sparse and HugeTLB boot-time
-> setup runs, then simplifies the remaining bootmem gigantic hugepage
-> allocation path and removes code made obsolete by that rework.
+> [1] https://lore.kernel.org/all/DJ9KK3Z7BPYU.2HDB5IVO6Q40@linux.dev/
 
-Thanks, I added this to mm.git's mm-new branch.
-
-
-As requested, I dropped Michal's "mm/hugetlb: init tails before
-init_migratetype" from the mm-hotfixes-unstable branch.  Michal, can
-you please review and perhaps test [01/19] "mm/hugetlb: fix boot panic
-with CONFIG_DEBUG_VM and HVO bootmem pages"
-(https://lore.kernel.org/20260612035903.2468601-2-songmuchun@bytedance.com)?
-Thanks.
-
-
-I added cc:stable to [01/19], as CONFIG_DEBUG_VM is not uncommon.
-
-
-I added this series as-sent.  This means that the four cc:stable
-patches won't be offered to -stable maintainers for 2+ months.  If you
-feel that some/all of them should be upstreamed earlier than this,
-please let me know and I'll make the necessary reorganizations.
-
-
-And thanks for checking the Sashiko report.  Dang thing ;)
-
+Yep, thanks, I saw.  I added your r-b: because you anticipated the
+alloc_flags_nofragment() change.
 
