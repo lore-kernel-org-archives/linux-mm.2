@@ -4,162 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F0F5CDE00B
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:07:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 716B4CDE002
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:08:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D0DF6B00A1; Thu, 25 Jun 2026 20:07:30 -0400 (EDT)
+	id 5ABFC6B00D9; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 559246B00A3; Thu, 25 Jun 2026 20:07:30 -0400 (EDT)
+	id 583B06B00DA; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423216B00A6; Thu, 25 Jun 2026 20:07:30 -0400 (EDT)
+	id 44BE16B00DB; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CCE36B00A1
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:07:30 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DC0440332
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:07:29 +0000 (UTC)
-X-FDA: 84920124618.16.D6837F0
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 799C94000B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:07:27 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cZzbppWf;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 13E736B00D9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C23A4032E
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:08:30 +0000 (UTC)
+X-FDA: 84920127180.14.9EC8B9C
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010032.outbound.protection.outlook.com [52.101.56.32])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A5E6F1A000B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:08:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C9G88KP9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.32 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782432447;
-	b=CBGOrNA3QliQMLTBw19+S1dnzYVFW3pUPIRqH+GBXMxt9kroh7k83/pWxxdgStf9C6mVjM
-	+AdsOX5+45UOShamBDy9rwt8GJTNMySjuOWfR+dorp9LsB/fv9CT8dUeJb3kAG6HiVhy6n
-	D3ivc0QgmtTlVZNbajpzuSJTxM1/eTs=
+	t=1782432507;
+	b=lEXCXYYfEE6ibkLaTff6/fyvqK+EKJ2Bd807xiMZS7djK6X969jthX6JPcmJPl9axLt8dl
+	q0nyj0uH9Ed8fNvtaCnBFs92J2DsjyHLGonqoHKN5PNo3AB282XwaVX1BbUSeocvhrXCTx
+	zTYgaF90jWW+Kt7BstkrdyPmN91IvAY=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782432447;
+	s=arc-20220608; t=1782432507;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NNd8RQ2oAjOine6lO9TBbPn3RS+xKH28gpFKike5xvo=;
-	b=m5kbSO6VYCSAlW8rfBaTtk3wwbTIIrSqGHE8xo9S1VZfUR4NnMnNafC5SWQVkY/Ce1TW6L
-	vO9YxWr5Adxedn6Esq+8RbenptUn57+m1hMMZfxxw95lfINvBfaOkeGr4A+BdwOUdi6LCY
-	KJX+ys89IeIdfrapUPJ7p3XPI6v7rKw=
+	bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
+	b=ldy3BLy2Pr9URcIFCOQxCG/sHbatCntZ1eZN5T8405y5yWgoUNXFvmza2wOf06dnn4qiGj
+	9+FrKQLDG6IcvkyTXoHzuKqkWQxrquFgIHdzmJ2RxzSpa523eUjgDirzudAYa7Ioia7QFA
+	FZtclGXVFc61TkQl0Dz0yy7xRggkrjA=
 ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=cZzbppWf;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf12.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.42 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1384ebe7a10so1017923c88.1
-        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 17:07:27 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782432446; cv=none;
-        d=google.com; s=arc-20260327;
-        b=WWouaN4R7CWmlwRigri8Q4ZVHw32MtYR2lL8I0PJQJLvCmtF0j7sKcQ30egpQ9nRGM
-         dtAuk/CN1O8A4hKVcUM2S6uZo0sMZZUGw+Tq7g5nP2bwk5w7/snhdMvkU5/XfbKDXMeO
-         8+lZ0T/4UEF/CNpmKm5/CnXNIH9T0+3xvoMOdYFLOmY4UlkKXn84XkVOPWHUs9U92pN1
-         IFSzgqP5lQQJ4j8Tq8mhS4CM4gUY08r/VMXMzfQv+0jVntwzEN5+OB+7mqloRJ7Bb7jv
-         LAub/NL0soTrbR2q9QtaDMLDgnr8sH4U6xghHVbxUNSIihBZAVWvystxQFH+y0SK2TuB
-         hOaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=NNd8RQ2oAjOine6lO9TBbPn3RS+xKH28gpFKike5xvo=;
-        fh=OU6d5nh+fZsPWZ8uFKGrm6vXNErwimEc0+OKFkKnaOU=;
-        b=LIT4Q6Zm0HjgXf+e281ogHUHred1Fbgw9M1Zxy22Rbj18mCTwdWOYKpIwTciyNK7QM
-         Hgkah9yzlo9q/6fbA9zyXBEw3foivH3s47oSX8wf/4v1ulZUbShAVIo25AN8U72YF5/P
-         BQ5WYrxGJtx9qcoaNTJdpkODVxbloVLwb+7AdVKx/fGOzGcwjrxHxYX2hjBeKamMkV0h
-         lm26u7xj1ka4dEhcO0Nz6GmGbqM6McvPVLeT7y86wuXx9MOTI3qHQwkSbACTB6/NaIvN
-         EXdyd39Ui4iKC6dDAhom/+38Jyhr0R1Z+T6Fmx5fWoJJNC4peWDMqCFbgLYqbW6QcM1z
-         Zaag==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782432446; x=1783037246; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NNd8RQ2oAjOine6lO9TBbPn3RS+xKH28gpFKike5xvo=;
-        b=cZzbppWfPtCh5uF+7XlCQiQT4g88Ixf88EN4lAMxq57bLt7qDRJc0LJGaeHnBl+58+
-         W/Xm+wek5tkwYVFtDSMCdhpnI0zW5Ue78X83lu0sARUwZeKRBN01Z36MDMXxMHz9Uf8G
-         W4/u3DSnQd1kOKgbPSE2vyOiX8MhPPwWPLFbFlQK7Fpc4Z/3+u9QkTPLluRrwTfybizO
-         2G9kMyezcSoHx3nNBf+Rw42g7jsJi0ELjI6Tk+gfxLJkSeSwVo4OUe0fY+UPXC0KMr3V
-         fBhkIx2Whjm4LPY3zkhT2vZAlRacYGfh7vTSCm2Ww3ID2E65G5Ah5WumnAkelP8y3xMN
-         x2fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782432446; x=1783037246;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NNd8RQ2oAjOine6lO9TBbPn3RS+xKH28gpFKike5xvo=;
-        b=PvNfSsE+pzgL8WX68tUZeq8xjEfA8f0wQukoOb5OYhRR7rT+by4Y29g6ce5JI4YWJJ
-         Iyd092BmW30xg2P+VpSHKjqKTp4z8zgtv2xuSdt9AXTpxrGF1JgVA3DsKvRD57GkNQ4L
-         R9sBucEC1FytMzXLOmH/32xvTKBCIFDIDQaN1SUQYTLOUcMxoCGMzdIm3ga3AdYiegYB
-         dEt/jQWy8zTHYzUSeYrSBGXrgPQNalCamr3HmhWSnWY0ZXG3gjbnXlRFlTKZuCJaMt36
-         /TogEzvtWj05F7Ew0XwzvCfRSpL5j8Pfk4RAKT4kwrrFggH0vJKjQaOqBxkvAP2XHbgE
-         1Cbg==
-X-Forwarded-Encrypted: i=1; AFNElJ9chBJQLWefZSsd4HEqsK+mr8GySK//N2pDZXMaHXzvqqEmdHbiiTSmhsQFvd6CGfy/WgwwbcydXQ==@kvack.org
-X-Gm-Message-State: AOJu0YyJi1ZaXQgxCJlbi2CNkX4SWjqCZ1XHFxaCFo82GA7YdGK3Fl57
-	sj0ty2XV4eu+ZfdsR9DkCPDmpjuhKJ+mecSI8/HWuuA9MEFJpOxmTxjicSkLk7BT3oSDjkjXWBN
-	40d1aJkL3utW2qhPOKxOcKNrQdJPMcq7FKhCP0CCC
-X-Gm-Gg: AfdE7clV7Vk8lj2/07WyHYmuDGu/vOn3H86re9rKVKL9fbfmxj5Ff30COo3wzcvUf1E
-	G25aVQRrAmrBIeaklOJtgHklpuv0gQCIevp1Vdn5oSXpgt5WURCXV25/6qWFt+klQ/D7Pa3utNc
-	hq9pS7eisR7s8hW07xCxvX7++EjFJksWv+EtUsm579Yfk/hSBbmtcV/Srd2fNlZfSpLGpUE320+
-	ow6tkTqOEPE+nRbOJkmm5cvi52D3XzPJnYO9H9CN6gQX95ePyFI7nzCsS7dDnyQuAlAI7lWEF6N
-	0L1nUSDF50XYreFN4VbjEeg1rCOTCaPs/ux2fd3qKGKZGNCU9Ix/RpoRJQA=
-X-Received: by 2002:a05:7022:43a4:b0:137:f49d:3388 with SMTP id
- a92af1059eb24-139dbb5b144mr4108872c88.21.1782432444996; Thu, 25 Jun 2026
- 17:07:24 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 25 Jun 2026 17:07:23 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 25 Jun 2026 17:07:23 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
- <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com> <ajnf5Z9nWZxoLS4x@google.com>
- <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com> <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
- <ajxasFBzp_9KnQLq@google.com> <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
- <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C9G88KP9;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.32 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H5orqPTnownDwAvG5f9ttu81lrrshyLSo8x/LZtSyIZ2xcy4xtJJb/nR/0SIjv9jrfTlPc5hE9cchXEnnTo2WBLqWJqpvTqYAPDoNjjnlJ06/QccwwpS8Qx8906dBTen3W1CPLniNQPj3AuFfSab8vd6MHKF4coGHgYJ19hSnmJXtLin+Cf8NUvgtKqHqidxLuqOmZHvB6e2IpGOXbrKvXU/alSQGUlc9RsYiLctni8Zlsd4jSfGXjwjsHMa1lTr4tlBMheM5adL9xkHIHULNNp5rEkRv9l0eqFG7q7zYVY49HoYhSGoHquoZXqHvN2uL00lj4mg4U4HnqTCYP5z3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
+ b=RkDNvTya12nE7bhgjxr5Jbphm3r+SOb66vicYyYU0BM3601Dshr1n9seDL7QORIGJvfn3bf+YGkGH3lfB2xb/G25bMpqZVMa0jirfXaDL7w0LsZsSu4CfylUMmZQAFB/Mo7tXLWrLele6oQW4bWjWuKsvGw5j8pSK5LcAnnocYaecy5LEjPb1+gj+OZMgRdL0MkvUfB4lBsKxUsCcPVFDGrl9XW8zoL1U7JgbBeBkfdN92wRrlvoDQrn2DbsV3gaDx6lyOsHChXkF1XFY1sA3RCtA5KK/RjMvnhkNbQMO916+tooWJXAttsEs4i6G724CT7/XxdE63inv4MXZZkOxg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
+ b=C9G88KP9M6NCdrbur9wSUwBFNlLV3CFXhdjXms5IavRu/XF9pNuDNnFlSLhHgBrhxnNU5hewVXwUmGfoa7WTlZrEKuCtpyYuqd0kGicNoYYk9ntFDLwn91LTsAzchZtmj4BqVZh6PPqzCgIPU9eXldAT6O+BF6RURINLYlMXR3stRdtTGF2jHJcFGYqE8KYYKw/Rrt1v32UG3MxkvZcyzXx2eKnOHhdv8WWrt6amffhjYyZvhmTSv/aVRjLlOs8R/6U1gjvQzx5sCNbkTJSpxrbMnEVjNIi1opVXu+CyFt+siD7BMHoUQuoZEpRSC5IqVNCQqipIFuV2zMsHwo/Wgw==
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
+ by DS2PR12MB9589.namprd12.prod.outlook.com (2603:10b6:8:279::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Fri, 26 Jun
+ 2026 00:08:17 +0000
+Received: from CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
+ ([fe80::89e3:6df0:de90:8dfe%5]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
+ 00:08:17 +0000
+Message-ID: <0ed9b9ea-6294-44e4-896a-36a1541ebd47@nvidia.com>
+Date: Fri, 26 Jun 2026 10:08:10 +1000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
+ CONFIG_TRANSPARENT_HUGEPAGE
+To: Wei Yang <richard.weiyang@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev
+References: <20260624082359.2869-1-richard.weiyang@gmail.com>
+ <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
+ <20260625034629.nmgdwl2c4luwod77@master>
+ <20260624215943.332f1bdcc99a3b85b7df0822@linux-foundation.org>
+ <20260625064102.tcmvrctcqibl54yr@master>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260625064102.tcmvrctcqibl54yr@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY1P220CA0045.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59e::14) To CH2PR12MB5001.namprd12.prod.outlook.com
+ (2603:10b6:610:61::18)
 MIME-Version: 1.0
-Date: Thu, 25 Jun 2026 17:07:23 -0700
-X-Gm-Features: AVVi8CeCYnzA1y3pJSgcOnrMDG9x7K-8H5mOt6-X5dtowJ5-kK2ahwrJyY06kZw
-Message-ID: <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
-Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
-	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: y7oa4hxxg9owzkkzmf6oc1c7wbzbew7w
-X-Rspamd-Queue-Id: 799C94000B
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|DS2PR12MB9589:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6a955c0-fe86-4cd1-e05b-08ded31705a3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|56012099006|22082099003|4143699003|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	1PAM2pVEWDB9xoFhHbR5/1rJ2sqqiFg8FfGew9UpAZembfsYn7bksyKtN1xIB5rJQbDR+NywOp5rdLT8lG+mynxNn8QT5oPXmR9pNQdZWb/NniosGmFTG06azx3/BHmv6IihKtfCXkEjziaqQPHiP14dAgSVqL2YFuM3BRIVwcXtDbduDhkGSj6usntKizbYxViZYMIQyEGA5DlbrW3ZY5gltEhi56CQCOonbsesuOcBcE13I3ewjcOFxfnAvwlB51/chAWG+7h1Xxz1ls08lr9mzHSQmY2g5EhaTv9MuApGGTa/gE1JqUUkN8NWW2/xBt+DTa5UCMImcn0PhnPAHlWnjZdUXLzPorrF8LdaCPxO62uWAIN22rrSTwK47uzKhowiasQApkS/GKLQHz8j8dV6Vas6XsVAujSannP9jVVF97tNk4TMRXugdMEZ5bTJdY765vOlImRfqdyv2jpnVAiAsaavx86vuVJM2CTL9D2G7jzm5h1askt9nty6L8ptLlNTnWM3+KeNUB/NrCDhUER+iP2H6wjCSxNKKxw//FoOY4jCmtyMV9FfWsdAc3I/XDSWp8AO4xg6ptiUDMZfMEMJ5hu3NMh7xkKnGR+pKDsSIrQ5RIK+lEoSf9aA3CleBHkDvzIOzU+uPQrWduox2GGgk+J713DRXD/1ueapFLg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(56012099006)(22082099003)(4143699003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YU93NnIxNDdnMlVDOGErL0R5TzlSRmFGTVJtQlBCS0lYbjdPT25oLzBJWnhh?=
+ =?utf-8?B?MVZFVVRuanBvTXo0OGhZRlp1M0xoVnVxQVBkZHBmcHB3UlNsd1VVa3hVTWE4?=
+ =?utf-8?B?bUtwK1JCZlBRd1hIRjBwYzMxNlVNc3pMYWJ3eERxdGhOSTAwbkZ1ZDYrcWdt?=
+ =?utf-8?B?dHNMa25qelJxY0NqVUhnZGFIWnVmMStQdGtoVzVmYmI2WVliditpM3lhRHJE?=
+ =?utf-8?B?OXhuQ2VTVlRKdW8rL1YxUHdNMnNYZENSZ0RTZ0xXbUs5anNIYmd5Q0NHZ3Ez?=
+ =?utf-8?B?c0RFenJsSlcwRllkOTBZcWhhYWNRZkg5TmhHTHBiQ1QvNWRjcGY4aUxEZ01o?=
+ =?utf-8?B?WVZFTjhmQUI0R0RyWkduazZvYXRDK1RDS2xWU0Q1THZKREs0dkFCU3JpVEJn?=
+ =?utf-8?B?M0crL0FDTDJrd2svWXEwTE1JZW5LRHVuZUlyMm5HR0hWSnBTbVdORHZoV3JR?=
+ =?utf-8?B?RXNzV25tQU1QdTUxV3VaZUdoZVZnUGR6UzlRR2Y3Z2RaZ3VzU2lLTEVScU1Z?=
+ =?utf-8?B?aGo2c3IwS1IrUjkvRC9kZm9xOGMyUWZoMytzSFJ2cytIZ09pUVdBN29WU25m?=
+ =?utf-8?B?ZWxJYnlQQ2gxMHdBN1UyWnowd2pwdzhyZE9jNUhRTGlyRTlCZW13dkhYRm4x?=
+ =?utf-8?B?ZkJob3psMWZTNW5MWllnN1Zkai9YRktzL2wySjdNZHg4TGVjVU4rWUMyc3RL?=
+ =?utf-8?B?ell4em9oTW9QMGlCYm5OODB1TG0vbW1NbzlIYUNURHI3QTFyRzZqWEdPUlVk?=
+ =?utf-8?B?N3g1ck5OdmdJYnFRL05UYnJodjE3cEx3RHRLU0grMU9ncDlsT2xGSFRQeGFU?=
+ =?utf-8?B?OWZFTE5id01UUFNLbDlscWRqeUs3bCtUelFwRUR2WkRJSzJkNm4wdlhRcENT?=
+ =?utf-8?B?a1JPOFQxR3BnVk9hanNDVXowZ1lWZlAvY3NlVFA0ZlFFZFhKT1pBNUJrd3dw?=
+ =?utf-8?B?OUs5bnV0QVRvQ21WYmQwaHJtTjI5NlBINkJHcXJaUENlSmhkZkhIamoxY0ky?=
+ =?utf-8?B?TFQzdXUrV1JwaUljT3VuRndDU2QzZ0s4UzQzVkQ5N0l1cXRwNHdpTHZndW0r?=
+ =?utf-8?B?Qno5REQyUTZBb2RoUWVTdlh2VklvSFN0d005ZnptbEtOZUVuMzV1N0laOXdW?=
+ =?utf-8?B?OXNNZmQ5a05TaGhZcnY4NUhGRzlxMTEyMjJOUWV4S2hyZ2ZuNkh0aTBNVURF?=
+ =?utf-8?B?U1Z5NVhaUTFMREV6L01KaEVyVXo4N1lpU2lnUFQvYW5ZL3k4ZTB5TGI2cjMx?=
+ =?utf-8?B?bEJWdzhhdjREVXYrZFdtd1lBZzl3SHBwUGpqUjVKSnF6SmlEWFlnRUtDSW1W?=
+ =?utf-8?B?MWI0U094L2ZKV2s1OTN2SWtpL1lNOUdudU91Z243UDB4TTVvVzhad0JTVm5t?=
+ =?utf-8?B?elhCbjRnbVgxQnlEQ3MxWnFUQ0Q1Q2VnaGYzMnRYZVltUHJqd1NybVErbDgr?=
+ =?utf-8?B?U1N1SUVwTkVvamUvM1lTMkNaWlprYUg3UVJvRjJpZ0VvV1R5L3RTcXRCWVhX?=
+ =?utf-8?B?R3psYitqSmJYS2crQUs0YlJEQStHOVIxQ3FRMkQ4ellITXpoRXpQVTlRREF6?=
+ =?utf-8?B?UDUrdjNqeFUvL0RDUzRZbEtSOWU2UUp4QjhsbVJyZzMxcUhLbmlnbnhncHpx?=
+ =?utf-8?B?MWd2VVJIVlA3QzZnbkZjb1Y0WXlGMGJnQ0kvWERZdTZSNzJOUHRxeFRIVkFa?=
+ =?utf-8?B?TTU4NkF3a0laT1pKOGxuWUJLZHJrY1ZGaWZydmNzT2tkdzB6cU1XOFpsR05m?=
+ =?utf-8?B?dkJGZXRZWWR6Q05WcndvNmZCd0dPM0cybjRMZ2p5OUgzSjFJUXUwWDd1Rjg4?=
+ =?utf-8?B?YW9aNFJsZmZJYnR2endTOVd1bSttL05laDhUenlJWVZ4S3hzN05qRUF4Q0oy?=
+ =?utf-8?B?aDVKc1htaDRWWmRLWUEwQTlnMDIxbDRtam1yWHRWSDhBSUwrNUJocWZTRWpw?=
+ =?utf-8?B?dzNUbVpQaWpwNkd6L3UycGUzbTNSeEdwWUF4OFRpNVYybTY4SWRUVVZOVlNZ?=
+ =?utf-8?B?bEUwSEl4ODlkK0VhcmVpeFF4bHZseUFsOHZMTUtxVTNseW9FaEd4SjkxKzlC?=
+ =?utf-8?B?K0xCU3kxUnBsdmgyYmJBMVhNWFpoTEhpd2JPNmJQdVVBMmJQNTZZUTc4MGhH?=
+ =?utf-8?B?VFlzZ0pvN2lHSUVUdnlOdDl2MFJlL3J2OEs5dEh1VlJ5VWtRRVFrQnl2Uko4?=
+ =?utf-8?B?cnFsanYzVHBGdGFoVTZPQkk1cUl2aFBHb2RzTmlHMUUwY2ZSdlllK3p3Qmx4?=
+ =?utf-8?B?VHhRRk1EallWd0g0UDEzbG5jQmRqZUwvQjJBVVdnVDlHaWdNcDAyREkyYk5V?=
+ =?utf-8?B?VmlUK3pHaU51N3l3RDVIUmZRMW5NV0FIYlJnaC9XMENEM0ZEalpJZz09?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6a955c0-fe86-4cd1-e05b-08ded31705a3
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 00:08:16.9999
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: IYcgpzVH2cpBSdmO8QoqV2CvQvgPKzE5bgDbwG+ibJrDXPvKiUpsjWEaGb2hsrBSTyHo7fBuqDUc/4W1hnEJaQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9589
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782432447-263992
-X-HE-Meta: U2FsdGVkX1/JoKuQmbdd8O/xW1Ght+0zV1Uqy73t88+MSCdmG9uP+GK+vk8vxkLJDIrO9d7NS+W8hQfdti+YJFvkpPWNs9iml/9yM/+EKD6JMAyawctgYG/aN+G/qBz4FfhoHJAuE8jmVLl/QlKv9pyDYvkwCwtovEc/lXP4A3uRZXiFld7E+HU4zriZVDEgcKQt0AR2VDW5zHUOYKR+U70QeLxRdpnwISuaDKriRSABC9Bn7U7ivRYqb3j2Un0JieA/bh7rydUEjgutkMBgIguO0Vi9wDQ+81xTj8GmMS7E9iVX4Am5z6UtYJL7sLPIqtcPusVRE64apbBMA4Ix65FIqBE6TcJOqr7271WBOtLZwgfV5hshDubwSDwCTSFiqp7dxx+KIN+XmJHunV2rk/oWWbwG0MN82KIQWHO0dSYK54iPzFombMAPiT5B+0zgeupEDE/T8LWEgIcfPY14UPPD5cG9844qETdE3107pr4b7A1sVC6+nvFfRa7n27C1UlvyDG7ZZrui3SjS2+7JXKqfZQSwlPZrb63DrawMkKfUqbmK66YdM0oH5llKrLSCjxCO0/AEUQkgZdphg7MKGi71KPuLiuOHFbfIfWx24eC+tX5x1BWpTzM8B128jWzI1u78u7R4+t0fqOvAaBYmVg+lPB1QO3TW04oD+GjcIDuDPSbByUx/vHXcFC7i+ZsRODp/dLhU/3zN1bz4gBkvPn4h86p7sRqkTQGDqU1kYCYPQgdU+xM1NCLhQInjWGWlGfrJt1dqL0v0yBu2SN6Ac7PCBcFQrsyfk7lmFXGz9eXmTNqK584LoKhMqN+/BHzW0eyN2mqUWHOM0Y3ejSGqcki5Rn/mHnErt1GqYSYwf3qQ8lqxVi59hTaW0yyc4YH3C7ct6Bo80g/aGP0B+3icKj0WKWGvt2jXQVUaknUtD/LMEPZpK+EhXyLyaGC4GxYygOr3UGxiQHJvKDIlwQ4
- Cy0ef59g
- PzErUZTAx+snbWIh1FC/1o3lNYBl4dFOb62RN218jhXEFOzmsZgaEFjbZKhU5r3VRI6wdnbUUNTEFbup0SDkUJTKZuUKWx8jNcYCG97CvAlk/63uqPdfoNwH4Fowqg+MelkZ8/8bnq81sfIuLcpfjmk4SLJrVJnmOyNUnLLjYgx2ff+t7XjvljkqpFeHLWgzNx11N9eo9o+euYQU2y4uBPML08QpCqy8ou5zUyQW+ObJl8tpfirFvw3FhE2CX8kjQ9Or04/wq57sQda0MMMlrStB/aDQ2aV3l9ZPTzs6z3wKLz9lNLpyuJr0aht/RF05EAPp+Zq6OkMTFwM06wp1dFegUEDPez8qbQXiOEvxBLWFZgsRPFVjBX4eRIYuRNQfRDx1jHCPYrIGijFBDyJSnRr/BO8Y5KHyNPLc+
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A5E6F1A000B
+X-Stat-Signature: ap7m9qucmqq6o4p3iokamufmpmn8ky8b
+X-HE-Tag: 1782432507-603388
+X-HE-Meta: U2FsdGVkX18ttHra8dUWr7yM8p4FMg4U8m44yMr2Pt3uebktBkV89jmGoqjEVVGezbakf+YtMElxIPMSJQV4E3iG+Wmxblv3vlnhAktNDNk4eR9myEmvi7itULWREIjlOBf0/0npvc36EbsIciPVKT+Ug8AOvI7MJAHMNZKTU6lyyAz2eHstWVq7Rw752ETaUX5O3Fx1DWkqatR5TPdgXXrAtZjHh9oQbEswe1VhoXuP5jMAMpLuOu57aH4C8wr4FCE+Dcu6QONBSsb8557/ND0TGioS+GIZ+uYt0hO0AmPClpb1eRN3c8LeS/YZsSmTG1gR8sNEehORMdS75C60WNx1jQ9zUwvLRe0fqDMWIyhPO6SvEsKyossoEw0n7Pqhqcksqypf5Ytws9PLCxupEjwlxmAhIQnNU0O7BdTax19TJ8cQc1YTE1R7qhB5jgKr7AwwkW9oE4arHiz7QxODIA+BXXi2pj2Rxih+A1fGjN4BsMvzJyRaHV5XTupCo9nMQ8QndwiL2L+Um03TENb3quQ4OF9zXWopchrnSDSAlW83TRpy1yZSdi0b9EJDazw2QBx1PIehV5n8N4g5fc4/Q5rEOUPMDvUNK3WzUYKjDqav2G4jnkIdig+FsCD+DWVTzjE+rjLfZaykofsMGJR33RIYdcwKRfWMMyJmlvyX4yFau9g0jQFY9J4d3EbvMpSMTEHBNUWGfYpvuP2aAaT0yKTD6YX0Ky1qEl/AFWUQU4CIuQrekAhPMZlNpScOqzylM0rTKOpZ63tDHQq2Wl2ptaNwckkk4Je2fEXz9CEG8MlBZ8QtyGzZ7yMG/j9Bsp4FEjTpEIi9CzfTQ7KDGSHSBULFHMvt5y5G9BNIrUS7aVjLm7Xtcc+L13OyQSwe270/6fCpOx7II14LMtNwDbF/AHYzLQbUG8Y4dkzbfyJXo0booZFFL9TmOI3l8hcwOMrv6Tqdi6oyntatlJVxATj
+ JrOdhUmh
+ vbJYZh2fnjc5vYCRhVGlEk0CCoazQXozuodyjRJpwLR9LdfJFfAbKDUXVJPOqFBeFDV80F3qg9OjUjXaJ8L+xECDIHzthnxuC3k2Myk2SKAfbkOn0nsyZzLnuNkW5M6XoQL5zU5h28bqtwlSkvcU70NrVkd1qUb4ICdFUHsDRnnu75rOFvp209rjzkzc6LCypTMv/BIm+hgA+nb+qL8frt1/Tcn9P4P0WtbcmYHBmz4joFmcsP1aBhBx2+Tq5SJloDIqJmvR8u16ghRpSXjNMaqwsQb9wwggEHLGyUDkLDMQMxZ3AdpttHUYHgaEQQghmI086T2KXoQLKi+J+cV9uH7vSSRVGqzJ6oa9Qcua9vdynabwLM/PR1RA4TKo15WXg3o4FqUp/VuZyOs8lAawk6L3WETViWq6bwLxjCGveGxWflaBxHpVSFu9E01tPorFw/kelZNNSrioWe+WiaudyRXIqad7OHZu2PyIK6ycQyiCxltjGEWLhqoVVdSL4WcY7RmWNC7HrTyRIKTWTYR49AoyDaWF29xMb9rt73eGF3BZ0yugN2iywJ0IaiEzUSErvnd8nNRD0ksIMK4w3qiWuaS0oulEheumsHD+ZAsqW5u6Ks4Wb0Ig9FvlwS3kc/JM4nWA56U8ZjkaoCng0v+keb8kSUNZI1e2vgD0d
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,187 +177,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Yan Zhao <yan.y.zhao@intel.com> writes:
-
-> On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
->> Sean Christopherson <seanjc@google.com> writes:
+On 6/25/26 16:41, Wei Yang wrote:
+> +cc Balbir
+> 
+> On Wed, Jun 24, 2026 at 09:59:43PM -0700, Andrew Morton wrote:
+>> On Thu, 25 Jun 2026 03:46:29 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
 >>
->> > On Tue, Jun 23, 2026, Yan Zhao wrote:
->> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
->> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
->> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
->> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
->> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
->> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
->> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
->> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
->> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
->> >> > > > >  		return -EIO;
->> >> > > > >
->> >> > > > > -	if (!src_page)
->> >> > > > > -		return -EOPNOTSUPP;
->> >> > > > > +	if (!src_page) {
->> >> > > > > +		if (!gmem_in_place_conversion)
->> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
->> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
->> >> > > > error.
->> >> > >
->> >> > > Why MMAP?
->> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
->> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
->> >> >
->> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
->> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
->> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
->> >> > > initialize the memory.
->> >> > Do you mean using up-to-date flag as below?
->> >
->> > Yes?  I didn't actually look at the implementation details.
->> >
->> >> > if (!src_page) {
->> >> > 	src_page = pfn_to_page(pfn);
->> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
->> >> > 		return -EOPNOTSUPP;
->> >> > }
+>>>> Sashiko had an off-topic complaint about the surrounding code:
+>>>> 	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
+>>>
+>>> I see this robot reply, but not see the Sashiko comment.
+>>>
+>>> How can I view Sashiko's commnet?
 >>
->> Yan is right that with the earlier patch "Zero page while getting pfn",
->> folio_test_uptodate() here will always return true.
+>> oop sorry.
 >>
->> Actually, this is an alternative fix for the issue Sashiko pointed out
->> on v7 where userspace can do a populate() (either TDX or SNP) without
->> first allocating the page, with src_address == NULL, and leak
->> uninitialized memory into the guest.
+>> You can go to https://sashiko.dev/ and search for the email subject. 
 >>
->> Advantage of using the uptodate check in populate: if the host never
->> allocates the page, populate doesn't incur zeroing before writing the
->> page anyway in populate().
+>> Or append your Message-ID to "https://sashiko.dev/#/patchset":
 >>
->> Disadvantage: Both TDX and SNP will have to implement this uptodate
->> check. guest_memfd can't check centrally because for SNP, for a
->> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
->> firmware will zero and there's no leakage of uninitialized host memory?
-> Another disadvantage: the uptodate flag is per-folio. What if the folio
-> is only partially initialized by the userspace especially after huge page is
-> supported?
->
-
-Good point on huge pages!
-
-The uptodate flag on the folio in guest_memfd means "this folio has been
-written to". As of now (before patch at [1]), this happens when
-
-+ folio is zeroed on first use by userspace
-+ folio is zeroed on first use of the guest
-+ folio is populated
-
-When huge pages are supported, the folio can't partially be initialized?
-
-On allocation, if any part is shared, we split the page. The parts are
-separate folios that have their own uptodate flags.
-
-On splitting, if the huge page is uptodate, the split pages will also be
-uptodate. If the huge page is not uptodate, the split pages won't be
-uptodate, but that's ok since they will be marked uptodate on first use.
-
-On merging, the non-uptodate parts have to be zeroed and then marked
-uptodate. Any parts that are in use would have been marked uptodate
-already, so there's no overwriting data that is in use. I'll need to
-think more about when it's safe to zero.
-
-I'm still on the fence between the two options
-
-1. Using uptodate check in populate to reject src_pages that have never
-   been written to or
-2. Always zero before populate
-
-but whether the uptodate flag is per-folio or not doesn't affect these
-two options in terms of fixing the leak of uninitialized host memory,
-right?
-
->
->> >> Another concern with this fix is that:
->> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
->> >> folio uptodate before reaching post_populate().
->> >>
->> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
->> >>
->> >> > One concern is that TDX now does not much care about the up-to-date flag since
->> >> > TDX doesn't rely on the flag to clear pages on conversions.
->> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
->> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
->> >> > user access.
->> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
->> >> > to have more effort than introducing a dedicated flag for TDX.
->> >> >
->> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
->> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
->> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
->> >> > > > 1. create guest_memfd with MMAP flag
->> >> > > > 2. mmap the guest_memfd.
->> >> > > > 3. convert the initial memory range to shared.
->> >> > > > 4. copy initial content to the source page.
->> >> > > > 5. convert the initial memory range to private
->> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
->> >> > > > 7. do not unmap the source backend.
->> >> > > >
->> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
->> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
->> >> > >
->> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
->> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+>> 	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
 >>
->> Yan, is your concern that userspace forgot to update the code and
->> forgets to provide a src_page, and if we keep the "Zero page while
-> Yes. Previously, it would be rejected after GUP fails.
->
+> 
+> Got it, thansk
+> 
+> This one mentioned two things:
+> 
+>   a. page_vma_mapped_walk() return without check
+>   b. whether __split_huge_pmd_locked() would split device-private pmd
+> 
+> For a., it is being fixing at [1].
+> 
+> For b., to be honest I am not 100% for sure. If a device-private pmd could be
+> file backed, then this looks like a bug.
+> 
+> Balbir,
+> 
+> Would you mind taking a look at the second comment raised by Sashiko?
+> 
+> [1]: https://lore.kernel.org/linux-mm/20260624065353.1622-1-richard.weiyang@gmail.com/
+> 
 
-I see, didn't realize previously it would be rejected because GUP
-fails. GUP failed because it wasn't faulted into the host?
+device-private pmd's are not file backed
 
-That's kind of orthogonal, I don't think GUP fail leading to rejecting
-populate was meant to help userspace catch these issues. GUP would also
-fail if the user did mmap(), write to it, unmap using
-madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
-
->> getting pfn" patch, ends up with the guest silently having a zero page?
->> I think that would be found quite early in userspace VMM testing...
-> I actually encountered this during testing this patch.
-> I update most code path to follow this sequence. However, still some corner ones
-> for TDVF HOB, which are less obvious and harder to update.
-> The TD just booted up and hang silently.
->
-
-I think this is just the life of a close-to-hardware software engineer
-:P no errors, got stuck somewhere, root cause is some unitialized
-thing.
-
->> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
->> >> > kernel to detect this mistake, similar to how it validates whether source_addr
->> >> > is PAGE_ALIGNED.
->> >
->> > The alignment case is different.  If userspace provides an unaligned value, KVM
->> > *can't* do what userspace is asking because hardware and thus KVM only supports
->> > converting on page boundaries.
->> >
->> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
->> > request would then be making assumptions about what userspace wants.
->> >
->>
->> Also, +1 on this, what if userspace, knowing that pages are zeroed on
->> allocation, actually wants to rely on that to get a zero page in the guest?
-> What if 0 uaddr is a valid address? :)
->
->> >> > Since userspace already needs to perform additional steps to enable in-place
->> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
->> >> > intentional seems like a reasonable burden.
->> >
->> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
->> > just wen up with code that does:
->> >
->> > 	if (in-place) {
->> > 		src = NULL;
->> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
->> > 	}
->>
+Balbir
 
