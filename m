@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8189DC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1E8C43211
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6559F6B011F; Fri, 26 Jun 2026 14:22:35 -0400 (EDT)
+	id 962216B0120; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 605866B0120; Fri, 26 Jun 2026 14:22:35 -0400 (EDT)
+	id 911D56B0121; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F6866B0121; Fri, 26 Jun 2026 14:22:35 -0400 (EDT)
+	id 801146B0122; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 296556B011F
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:35 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7D7C21A0558
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:34 +0000 (UTC)
-X-FDA: 84922884228.15.525B441
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 7831A1C0011
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ch3HFNkA;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F2596B0120
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABD3A1C33C8
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:35 +0000 (UTC)
+X-FDA: 84922884270.25.066500B
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CF061A0004
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:33 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ymd84ctr;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782498152;
-	b=KRC3sOcBp1zTerh55v50u2R4uCqx/Xqx19EpoQbyhZGmnlZVErMBMP7RuiFQRYX3prrAm9
-	MzWq3CrCBMvWG2z1qmmVx4rB/DZbAId5qD3qJNDZsYEfva2bs+7s9TGd5o7bND1gs6Mz6O
-	dmzfj8GN5SSq6bY2/wN/liZ9ikk/QGE=
+	t=1782498153;
+	b=BOJtDVvoJhI/evogjMtoRPskAxc72FC06GnlbdReWN4jnktOgeIVVHt2KAK9oF/QnQMF/6
+	l4G6bVoK/4QmiAELrt0XHnoMYolafqfxAEg9mW1bhEXiFFwaBrZyGg/BOFWKoFjx1I0zdW
+	yv3/dhENxOhb4njIi5c1TUJDA5QQfRQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782498152;
+	s=arc-20220608; t=1782498153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PHIivcOAmzPrQ+dHMiG0qPloG+hsppnhGlUdnRB5nw4=;
-	b=lrHg58yQRuBMWkFFdyS0tdN4Qq0qFh2jxlRrVhQLFZvQzsZiJ2y/Gu0ynSiJ1b9Kg3VIDM
-	B200vOBoRBBqrXxc/E6OG+jIei0pQqNbxBctwvjFao/z/ZfD2aJ0lsvstMrmT+HA9uJi3e
-	gxA21VNykdFdAdEjqxuaGo8XWQK2FAY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
+	b=rHxNsQPEovnzExjwTSDdrBOB4wUsL+E7mMJ89mOmdNrIV3y7a3XW0o6F5ttROxPbUrOqWT
+	ICOJcc6fRi9w56EYzjMWORup7ft5c6sFzyygat/WSx+1RrR+9ViYlrtAMR/1C9dZlsSN0F
+	IjXStKFjPCBXcABjI7vAi249qu0XU84=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=ch3HFNkA;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-923220bf1d5so122426085a.0
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:32 -0700 (PDT)
+	imf25.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ymd84ctr;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8e608e02bf0so11452266d6.1
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782498151; x=1783102951; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PHIivcOAmzPrQ+dHMiG0qPloG+hsppnhGlUdnRB5nw4=;
-        b=ch3HFNkAmURU5LsTIO9X9RnDGd341Ghu50gV7/VCY+d4lSkiXL5dH7/gSf8FG/49BY
-         PmqUxVmK/AeimfdHUQcQp1GIGWbZKVbjM8cl1EM1ZetFbM01NKd+DWE7wwGcSeAQAfPO
-         FJWU2H0hp83ZP/tklBJUFaog9PwBvGQBmy80IST+lAx9IblYVCBixZ4yu/LG/VY6cdJX
-         Ld0+XbzfxkTUptVbZoKW+8Dohfmu+7q7DHdt/5AtU1H3EUQUVsFoVMCpTDx7xxLWokwy
-         9NwxqPiAaIL8YUiWdK5KYY02Ej8oJm4jdoADPwuRhYR/ewbsJ1JVw9PhsttMPImT1nWD
-         Opnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782498151; x=1783102951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=cmpxchg.org; s=google; t=1782498153; x=1783102953; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PHIivcOAmzPrQ+dHMiG0qPloG+hsppnhGlUdnRB5nw4=;
-        b=JEsTalfpskEQWluvCMy+7PRt5bgi1N9aSWRmOcfBHcie0Iwm0rdvShSG4FOLwpPhaR
-         CdGcdg68Kezra7CwCN+AsFy83wLpIBgYiUBePcJWv9/JbhCEiYjOxCqnInN37dCQ9+r/
-         8dimNHemEMjlnlpnHQdD0iYKfaqK6gTdM103PUvjkoFoIxm3ibRp/UD2iLFcYI8wYkTQ
-         K8WJk0C4P6flng5ZxGMtjBBeX8lvJHgoSL4WBTFeCk/JoIPtopDgCT+/26X7wCTuk5cw
-         CuISvY7TyXidMhqIJbw6oAP2/iKAp6YrzqczEo1WHlhGMMCYTCw12LkECRys22uvP6Mt
-         8OnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+UGW0khH2csUVbb5mtagZoAGsVz//gX2SR8gXZwElAtegIAxVjIHdTVbUfmMlVvUEvEIgb/bflbw==@kvack.org
-X-Gm-Message-State: AOJu0Yx3waFpnZz9v4FNo7ukjLXsl8l6rzP5KGhAAnJdcewLYDxBehHk
-	hbFOfMrI5sl5LeDDUMKroVeIzC4cb83pfv6dbyGsh456IIr7j60Lw2QJjDKAEO8vZHNHMfKx12L
-	svTBS2qE=
-X-Gm-Gg: AfdE7cnKKvIYDYXIhlqRApXNjaSofJD+zw41JKNdBKUnTN59egj/gK7U7JunHSHpAFN
-	X63DpfTy93JgtOqitVpWTUGl/IuxlKetK0vio1xyl4/H32zYGhEkJZWd13kv3Mh/IKVCvYCzgqL
-	+QAfZ5f9CC6C5liKw+iySpwc/THkKF0+Q09wDqAxLmt4hjlUZp1DAwj/o3fgzf211Bho52drlg+
-	Vt9idsYu+fNKyGFoiqzgAcvoQDPoO6kI94C4ue+fhXVybMghZeGdjtkxWzqyDaPlJ88EERtnU/B
-	Afuu2PWDt1KZPzkIoEBPjhhk9H4Y9f17/jBfMSPufg7dFNGwI4zUodHpV2VUBQmF0sdhGGIQMko
-	SbnJ683Rl8+PjVGKk42oaoyXSSd78DljgCMWlJLreQND6a1abNQFVF8DVHNYmqgv80KzUx8imBd
-	BHy0KVDebSRb7aG4J/k1SlCA==
-X-Received: by 2002:a05:620a:628f:b0:914:7b4f:cf5b with SMTP id af79cd13be357-9293b85ca70mr1189843385a.16.1782498151358;
-        Fri, 26 Jun 2026 11:22:31 -0700 (PDT)
+        bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
+        b=Ymd84ctr3wv6PT1MSxMm0Z1jHZ8R9sJKORJ3h8fbnn255g943gxt+X6wIG0W+NK323
+         dX1jowa0BjJOy61H/OipofCQCcs8GdSHi/CArsUfPOUSfq5N0TDx3lExkqsvmIjFjBEb
+         kJ5Y2jUSpr2EtJTmTNlZnTXMps30I+7L/GAnJiEHfFU5SxUUsAilF0N0IClTyNGCyvxB
+         eOLW5N9Z7nr+1WRZZASAxxzGFFfq40lbsN4YXSz4vies2TARoc1DH0dZjxEzN8bMQ0S6
+         suZYzjVSgHHl8UBT+TbfhDHKaLho3cOK/142GeyQtfYa5jxM5f8KFUGpV/A+sIX9esqE
+         OGZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782498153; x=1783102953;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
+        b=LlCOLabob5qucwasDoOI/MzwGzrU3evl28oLa++0RcIlFlGEsVeYEaLD2Hm7zWiyeE
+         U+e/12a1/CyQq7VwjxikAFUx4VRViv0GAtYLKTMHuRlwAZVLl/eEdKaIOPjm7TyPMSTB
+         1NDlwnXUuT/e93A3+T8uf4eKyvKkbwfqwY14cA/tjRDleDSJitP2bjf7UUS5gy8z0wZi
+         kbo7aKp78U0sFkEXMXJiopwriewwW6PyMLQ7IimCP/COSmzBoZw+NFQRRQYtM3hGcwrZ
+         g1sbirA4aEZ1MM2QSQsBlwYiAv/KVA488q5Jf11wV5t3aFIcx1fTFQfE3Rh90Ape9x/m
+         RzIg==
+X-Forwarded-Encrypted: i=1; AHgh+Rr8CBGlANNgZBnDaw4eTXhDLLubjAOLZfOoqvaLa5iGHqbNoTtjDDQv1eSyRJDEZHBRLk0pvD97Bg==@kvack.org
+X-Gm-Message-State: AOJu0YxmU+/GsMagADHBnjhibICZvchQkAonrTADF7h3eU5E0czG6Uve
+	H+C5AMJU1ekhvmIEGe0ux8G7kSF2W72LSyqZ0EeOm0smyUs18/iF/QQUlEPUINCfHaI=
+X-Gm-Gg: AfdE7cnUXQvTpH5SZu9DAqlHY2bhYSamgBUo/SmjT+HWk3du3uUgEUWkjkn0QH2jtK/
+	MwJkxGclZkhjHD1jDtTy83zTt09ZG1Wz9X7DB/HEFCe3ipwK9dCqM/BZhHeAsyDPpmZ/gSn0eeo
+	rNzSaS7jYfUzqrTAPLJivxaWeRgcM9YdEYd8Iyk40psGg7Q20dnCMtx0opxy3Y4JC3wuBNyb9wB
+	pbhK00C4wuEI7XFzkwdaC2SPw9bqva+q1ukp5npB1nEN8KtdDuiLzpLr5gT7wyTPXtRdtbBiPvh
+	nKT6QrlNfCNuGMK7aY+RSqOr/VoFhc3qkyW5wdNGzqqkOgerAFb0EiB7/o2sNWkUuDJXgzaZHF8
+	75Ux3eM1Zpou90rBTISGLUCgqiwhdF1GQ8Y96UIHWMuvvdSj5agXD5NxBuwkUjmEt/sRqZJQsd8
+	hKP2U6OK4ynp4=
+X-Received: by 2002:a05:6214:40a:b0:8ca:2559:8886 with SMTP id 6a1803df08f44-8e6d88d9babmr138437776d6.13.1782498152835;
+        Fri, 26 Jun 2026 11:22:32 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-925fd390e76sm1225544785a.3.2026.06.26.11.22.30
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81fcb55csm217910836d6.34.2026.06.26.11.22.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 11:22:30 -0700 (PDT)
+        Fri, 26 Jun 2026 11:22:32 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -103,20 +103,22 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/4] mm: fix reclaim storms in defrag_mode
-Date: Fri, 26 Jun 2026 14:21:16 -0400
-Message-ID: <20260626182215.1107966-1-hannes@cmpxchg.org>
+Subject: [PATCH 1/4] mm: page_alloc: __GFP_FS lockdep annotation for direct compaction
+Date: Fri, 26 Jun 2026 14:21:17 -0400
+Message-ID: <20260626182215.1107966-2-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626182215.1107966-1-hannes@cmpxchg.org>
+References: <20260626182215.1107966-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: b4fnm6dmzmephwz6tpkfi3387hp1rqxx
-X-Rspamd-Queue-Id: 7831A1C0011
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CF061A0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782498152-284728
-X-HE-Meta: U2FsdGVkX1+4yR+rGa591fU1HsiKCd94aqYyEGEkVUwYSz9UJBJrEPSQ/RYzTEq7vDUFh58Z8jgVOaS7nKKxZIDSPmRXzP9qLVOxi8PlivbXEguDryo/1OfAwwyT8iPeNolAZ7E6pi2w+Bdeq60KVqgD6f3RsPZkQKAHPLh8D4/XqjZAuYWkWg8e24udTzzTSZbn2di2ND9yW+yNUJSIEI544S4xoQUzAQYcMtTlxNRAZjP1SBGM3YGuITVGEgEkPt+CU+ymlke7A9NK0v5l/wGed3Jj1zUbzABPlE82f+0UYDFiD95a2N86/iKoWG999celSKMwRSlmIyAGBR5D6nvccT1JPwYi2evcohFVcs5Bd2zfCzcAkp7B9T81Gslh1Sn97i18oVOkStEb6se/2L0JxJsBU0tclGst1BBFBjGd14JIhTRuHj1U4KXxiQcJHPY8nUJIb0Y3TZuutJ4I/UmO0+WWeM333uK7QhpXTKZV43zvtEmo9566tiTbBErcm6cBWNsWY60yKWKvmJ2Wc7hUCJ/fQAGsaFQvudaPRfwzTOVjherLgpJ9hjCoP5tqqyTVEHPRZUW0Nsr37U3vKCAesCMHN3gVKQku1Ha5w7uWAiH7lvFUDOrrcrv9BWlIp2MDz+b71sIMrMvzyyR/6bWVMnFumwH0kb6mUFW7ZBsEB0juA6bpf3AKEAIEY+vSpjs6uOTeXo87ITFvsJbB/iY8yjeaCr/Ty4Cs02UFuTV/o5T/37kwqjPuF8pQRqLbIifsXj5BrIKoTN15kST55rC2vRa1Lpw6mp++B8kXzmvml7bzi1FFRracHTTs0SbFCx/SqEchp8Tfu5VXD6a4MQ+qC+1G9Tnk56LlBW3470mJ7NXihXsY6sEbwCyNUCcfs1cAsJd7bYuOSdc52HObikEINzAGxGCAYNCzEGt4RqkC2tQQyydeK8xltCIIfw0APBGkV6wivEHdj+fFH9+
- hIJOJQJ/
- P3Gu9odTxBGTGRmnradHj2+7MhMsmde94ybCiUaKUDBaPspmPvtkTbOvqxMqPZZeJsQ4Amn3BwEVuOoymObJ5g/MIUofcd70zgylSmChWfkIV4GzUR0bR51gLcwXpuDGF4v5u/QjB14rlNq88azhYJwEVp6BMvQOS9tm/nKylBEdCEmMhLgOCkw//GtMG7FYv2RcSpFGvl9gUn/PtaunyGYY8Uum0iGhguzpYIIoXbPcZxZ5x9dwDdUuxuY5usRQhw29SJB7pX6r23ihP6MWvQapYTUniVri+WbwPVK9oyG7xCzzL7+/cz6udwJcv0ofzI+TEGCfPqPnVSE3c24gHGY34LoOqU6saACkPwrJNgkyS2vAO3WxHsKteiquJ4hOHst+eF+yZ7b5IK8LoFbLrykN7/1i3yITozGQK
+X-Stat-Signature: onc86xs199qwod3irytii96aygyqc6ox
+X-HE-Tag: 1782498153-139719
+X-HE-Meta: U2FsdGVkX1+Hooekg3OdsfMJiDt4fcYE1NBizSAt/jZ/ntc06KPoL1uxUdoNidaoFVIjig1rrT10S1WvTXnxqGlvY38+R03HCQTUdESlfr54V46rW2f3ivJUs6bsk7eU7iX9+97eDtCSplGg4WKM14/zXIpkHNKV0SOwtZUYAjVEfAt6znfILtzOlFbPSZPyYMOpVmlCITs6SPjlSZu12hyKQUCZb7vQGLBH/fUzZ3aF9Ig+FWw3KoBJ+3AXhKtrmyDz3m1+5Py/6+Co930oYx+h81K/IgG9yYkK66KgNkXlX35yowpcnjHvOtZ2KUozRM5O9MBHoxTP/6uy/r0asI00664pWNgtzpJtr+RrbH9aPtXMv2dm6S+vETI1F7DdLXezc6pbGM3vL9bOAXxBm7WURP6AHMo4nTgDDeNDgbcRyw4av9ZW5x8feLPgKxczIZestTG6r9REWTdOlzazzTysgygJq/j7eBuq5hiWcslKaxH/MZ5sCWsTwQvwdV+Y3JpKYUFMrGnW91zK2DIZf04mCbuOFDQM+jMF0+CzraZfSbrynWmPgXJQ1srDzvdRtDa2kAQOQ93YjzFL8RgSiBnwtGO0iFw+nF/lK46WrkVUvdSUDhJdId56zldETmvhT3gSlww7PBK8za+SMAzk4j9cA8riN/z/hE8CiGHn05zjm72asfVhbXvaewSbGcOiwtZ1bYkkUkmoqHXMvL0zhSarKLC1G4gHhInezgQJ7N5AcvCtwXRULlgIRLbHGPTJxyy7R484DcT1kLvlGU074keQxLvdchdgHzPnr9iUTogvrhoJgukugvnXdmA0tDLS4zGB2aChgMd+viL6vUOWwLD/0U3MxpvPAfecR2otreXWstbzTJVR7zhzqQz9anJVTZdy5Qf08eEvbQ/gz21x0dY2ys0Kk6L+rCLLyssq7UEvLz+SjxWMkiQtV31R2EGvjAXkwhWlih7mf2xijO9
+ r7tyzFI8
+ M8hhaYOyknr0LdQrIrNP5VVjc5lwBJ83y4aRAC7dF1fQjFy23l6DBpfR2XRgq9+Z+AtCZMbIUpPPgaeqBOxxNd88R6du/toyzGka/SpjiScNl5pUioBJFtYsCOJIFiDN6TyDLM/yE+M1CabrkzsL/p3ycOs6fVuNI41aVryCEI7xezxuIQ5AcbDe1dmmgWvGVkK9B8nyccj3bap7alKKebGATpwqE4lW1KFMVf+AMF3EsHuPqgUit+msd1EKnDZIuYqTilZbL8CUDsGOWeXvsDUlpu31v3AyXqWesP2ftCgHFOwgLjzEtB6a6pR8h2bSZEKadFiFUfT1Q+xGNQcgx1e0rhsjFqflg9b8ZL6FjwYYMrWTodnHmTapu7onoDATRKaCF6jFcMdGb63KYSiYRihNjFJpKa7+SNIaz4kmuvfTxPVidm9/i88SHpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,31 +126,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-As we deployed vm.defrag_mode=1 into Meta production, some workloads
-regressed with recurring pressure spikes and swap storms (which in turn
-triggered userspace OOM rules on pressure and swap utilization levels).
+A subsequent patch will have some order-0 allocations participate in
+compaction under defrag_mode, to stave off extfrag events.
 
-Tracing pinned this to non-movable requests spinning and reclaiming
-unproductively when kswapd/kcompactd are overwhelmed. Direct reclaim
-predominantly frees up pages in movable blocks, but those requests
-cannot use that space under defrag_mode rules; and it is unlikely to
-free up whole blocks incidentally for __rmqueue_claim() to work.
+Since this is a sprawling expansion of entry points, and compaction
+can enter filesystem paths, add lockdep annotations that catches
+__GFP_FS passing errors.
 
-This series fixes it by making non-movable requests participate in
-pageblock production in the allocator slowpath.
+Direct reclaim has had this annotation for a while, and since reclaim
+and compaction are usually used in conjunction, this is unlikely to
+unearth old bugs. It's more about future proofing and peace of mind.
 
-That requires some small-ish adjustments up front in the allocator and
-the compaction code: three prep patches and the fix last.
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/page_alloc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-The series has been in production against one of the affected workloads
-for two weeks and restores the OOM kill rate to !defrag_mode baseline.
-
-Based on mm-new (2026-06-22).
-
- include/linux/compaction.h |  3 +-
- mm/compaction.c            | 68 ++++++++++++++++++++++++--------------------
- mm/internal.h              |  7 +++++
- mm/page_alloc.c            | 59 ++++++++++++++++++++++++++++++------
- 4 files changed, 98 insertions(+), 39 deletions(-)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f..cb422505c6ef 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4152,12 +4152,14 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ 
+ 	psi_memstall_enter(&pflags);
+ 	delayacct_compact_start();
++	fs_reclaim_acquire(gfp_mask);
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 
+ 	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
+ 								prio, &page);
+ 
+ 	memalloc_noreclaim_restore(noreclaim_flag);
++	fs_reclaim_release(gfp_mask);
+ 	psi_memstall_leave(&pflags);
+ 	delayacct_compact_end();
+ 
+-- 
+2.54.0
 
 
