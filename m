@@ -4,135 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4774AC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:47:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A6A2C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:48:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130DC6B00A9; Fri, 26 Jun 2026 10:47:16 -0400 (EDT)
+	id 8D6706B008A; Fri, 26 Jun 2026 10:48:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 108A36B00AB; Fri, 26 Jun 2026 10:47:16 -0400 (EDT)
+	id 8AD866B0093; Fri, 26 Jun 2026 10:48:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 020016B00AC; Fri, 26 Jun 2026 10:47:15 -0400 (EDT)
+	id 7C6776B0095; Fri, 26 Jun 2026 10:48:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5AB6B00A9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:15 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 429B5404D1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:47:15 +0000 (UTC)
-X-FDA: 84922341630.16.166D039
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7CEA7C000A
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:47:13 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LFfOHfxm;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E5CB6B008A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:48:48 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE9991617B8
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:48:47 +0000 (UTC)
+X-FDA: 84922345494.24.98FD798
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E7F42C000B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:48:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AULFV8Br;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782485233;
-	b=hWgCm37I8sTV9NfyPDi354NdIbX/NAtsKOawprNwFF3B9TYYEHB64Ty9tYsefkD/LTy+UO
-	+lk+30EL9mMGPyAuzkTwlX04eUseOLA0/t6em9HNFI0MUg31tlE69TRKfCnB59aoK9fGTe
-	2Zm0iDPJvafnB1jePjQtUTPJSYAKIq8=
+	t=1782485326;
+	b=ey9Ep24kE2e1QXe01yt8rtO8B+kjydU8xFSVZirGzXpfmnT5nC8MI0NCoQpjN4EOwSWlt6
+	cMLN3IRw4VKwd+aL3m+MKs2zSOzh+nwa9R+TALmqCt4ycQaYRRE8ftn+dcAeMDzNx4IIVP
+	KLb5RUhZgpWaLhyYdPYLN6c80cwMKH4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782485233;
+	s=arc-20220608; t=1782485326;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ki/UMMGltgdJJNZZHuMQ1eeElpSKdZAz+X4n32ee4Sg=;
-	b=7aUDS+6rcZK2ybIkr1UlUH+MClePiToHPWHsYVtFfQTZ36ZdBFbIz4ol70YuBk6SOCuitl
-	SseoAyRsp9v3THdD2wa3T1BNqR6IKwhOecPti7rzD25i7N8jQjSZXf9I+CaCiDMmVKWLko
-	ilNMecKfB/VUNkm3DivwO8GqzBSeSkI=
+	bh=+d/7ra1oyDy8FyFgz7QVlu1h97UzmlQOCBPgAiPibmc=;
+	b=ziZo3GeMoDosHiw5XGXDuDZAaffvWCD5JQSy3iwjCnVflwRyqIv2zEJ4ghVhNu8Sjc+06B
+	/0tXirvcbAWkAOyE0tKufOxRgS7jgOXS9k9r/0aA25cg65vu9xu6tP0o9hsgyTYaFHvKw+
+	tSDXTt0cUptscZU+GEBGZ63AbBTFIa4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LFfOHfxm;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1A78A600C8;
-	Fri, 26 Jun 2026 14:47:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097211F000E9;
-	Fri, 26 Jun 2026 14:47:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782485232;
-	bh=ki/UMMGltgdJJNZZHuMQ1eeElpSKdZAz+X4n32ee4Sg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=LFfOHfxmieWWkk8tk89ez8N+O1bhMB9T7qUnxqZ2qRIFn0EXrSyZjFVdAPJGRZUf7
-	 aUl+5F8ltNbv14mjQOGGNfskrEJXWjMjLlbIlpnku0K73bFPqXeFm4Cl0LiFZD2K0Q
-	 DQ8NAnFpsWt8puQqsQWc0A8f/brOsYMyJ0sB1TlFAB8HIteCwilzvtxRNBmZKqIZX6
-	 o2PIGjXmOoHTjOeAyB8bRO4jiEwAG3q1z6IkJ48GpB6aLQmC9HjZXOKngpnUorG3nk
-	 JGeFSNvyheVWSoz5e2CNekfye0rint6Ec2qaIiGna18bMOTjqBw2c9fnP3rhHezDba
-	 FTgjP3GD6F+iw==
-Message-ID: <511c2e7c-0305-4917-a639-e8e9e8710903@kernel.org>
-Date: Fri, 26 Jun 2026 16:47:06 +0200
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AULFV8Br;
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782485323;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+d/7ra1oyDy8FyFgz7QVlu1h97UzmlQOCBPgAiPibmc=;
+	b=AULFV8BrKKN5qg0eXAyY3S0T2tsj5sBo1qe/+rhSgEyOxk9IOmvtAZUZSNWFEoOeIp3+7J
+	uV28C/FVYwy93EHn91SRI/KiWMilogWBQ1OobydKjwgkM0LhkmLCxXEV2u1wbtqmXx1RP9
+	yYiaj/nFzo6K/GXun1dSd3ogpt8KI+E=
+From: Usama Arif <usama.arif@linux.dev>
+To: Sayali Patil <sayalip@linux.ibm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Liam.Howlett@oracle.com,
+	linuxppc-dev@lists.ozlabs.org,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [PATCH 1/2] selftests/mm: handle EINVAL when configuring gigantic hugepages
+Date: Fri, 26 Jun 2026 07:48:34 -0700
+Message-ID: <20260626144835.3759976-1-usama.arif@linux.dev>
+In-Reply-To: <8bfa921e30eb94072685103f6496784aa23bb166.1782365671.git.sayalip@linux.ibm.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] docs: pagemap: fix flags location, member name and sample
- code
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- corbet@lwn.net, skhan@linuxfoundation.org
-References: <20260625174447.24292-1-zenghui.yu@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260625174447.24292-1-zenghui.yu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3smnixxt6hitbnc7k8knf1ksyhybgsc8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dse8heu5s43wd87ktrdwj6tar4trqa53
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7CEA7C000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782485233-285944
-X-HE-Meta: U2FsdGVkX1+fayt5GJgDy5wvuy7XBkqyRKpgZKOp+Smasq3GMYhtLvD1ReaiFC316cVHjjtFr1Yyv3Nkizp3qwL24XyGUgofK8iANTDKO6n4bdKjRx3DvHI7vbkuebi1iTHqg3gFsAL7DPa/I94zw9yN59HlUc3rAHnU0cQxAybYZt5hYYn1DXxnPedCYFvOMmdpr9YI2eHVxyF3ui/yZNY3dzYTqQcLNsI96lWvzulXsV5D534+Wp2cYdBZ3mGPNgr3Uch+KKKVBUKgKvyCuXQNcd9L7PiwEODhO8a6r5zFyKCMxSo8NVP/lGkSVqoelZ0CYhOy3f8IuzRqETGWPe3z8toxOXVdFJEmgTadFqEEOwIrYxNL7H0ULSiSQYgpBIHfXOgVS2BNlK6te3PRWvluR10pz402DS4r+BV/gFtDzIcS5c6IArn1k1Uu3vwpaTCNTz0Os9GYbX+bvOj1T4OMn0fKujaY54UemJihNGamm39myYRY+3hsLBoRNZYuN6OTZztj9ePrNfVe9pa/iUPxo2oxnrzCqfKGuLHF+3C8gCGdyi2WiXCefX2oa0XU7kUTwJlAG9IIdeAITXHObzmwhJBSsAhezolwOciETxurBTJInGZzxW/9LjnKSL6mzuV1LR3WQw6B5oQOurWgh7wy9OTO0YmySUxRCxKrbvyxJxkmLQHeYeRbYLk8jcpK/r4+/w4eXNDapuhuYOZHt4DhDxfsQVDa8OTbCQ/K69Obid6v46TtJNmxATwjHDN8NHSSjbDu7QsqAGXlZX5gzlVQD1JoZBG8A4iSJG/DFc3Lc/L7UacxXGVj7iJijVUx93mlqbXjrZbGjC/pSlsM+TmUF4k/0wna1ijqemnIeqBVCenwCxtzfqC4xukVtKae7HW0VI0VFol4efuJ8RyXxzYjB2yyDepsQ3Ui+EmFipTCS2Qiq68n/BELze/7RFWl+mtvL9DIfUvT6e5+oRR
- Vv+3wIJY
- pwdvcxsWS7W8qu74BphcM3SRQ8LfVsUNLXuJAdRJQ9DsUckv1cIrEkmQXyAiSnHKA5wmKlyeZ1aeqp68+tne3EeB4tuNZ5uk/FD1egA6oWNuFVPDJKMWyikt+sMuD3NUBPpmN2NZfRP0ZAb8o57iY147QYcj8rT8yw9P/lNlqb270guMdQrH77SYn3P3/2Oy9z6CjR5Qp8hh3fRMQfBvr9Kb3UQgWcxBo5kpj+DQZfCKJni6B+LLOYcu2LKOP2DF3+AdX
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E7F42C000B
+X-HE-Tag: 1782485325-741436
+X-HE-Meta: U2FsdGVkX1+LISIThgw/0Zr3jLYk0gwsIf49LAWCY2EarATytprrsuFZwFG0fm04f58qAwRJpCSkeQyOv9QXXGn6pT2zrTFfvYn8Q6Tm3sHoCvIPCncGbD4nMEgvoSbSbDd6aLv8zeFJvvVnr92ucAKHXQEZzOTkXNRDCxM+n+VdlEC30bYXCsfuRXXV9kSBRZLl8KpqDM+iUam8o8RVnENDQfepTyjVjgDkVDZLcK6U5Po1MjhMbgTLgaklUQgDRrHN9/CEdQmG/jk25le7TvQY7u4SqjP6Smk/JjPLpczhaLtuyv7HxWs4Zm5ulRRwuMtyrU/H/98kTqiyNMmG53g7im8hT9K6fOV1YcQ/ZaLPrZ9U67h+cNGiVKmLEDT2d3BMh3u+6T+Y+p4NAHybTI5P/7SlvcUrZKlRCivKM0i77xunYmoX21O+ySwppkbdtbBkaHbZfkBrKxS2b37yaaCDO4dFGxReu0lNsfIC6quygqhuB+T4BfugqutYGqUYLZhGPEWF/J40y6H9W+XLmHCaiTqd6jl322UvlGtbOG0kvyvHJjre8Afy7wUEm/f1eobsZ9qWw2K6HmXQQ3cS7VLNeSxt6Q+tT1zUvdHUISDcc/Ayhhx3CROA8gwGULRJlWECvpDTyLrpd8NqpeFNoLgB+2Mo6WbB7yi/8nugp/Z1TQ/kknNTSBER8tvrPyHgXfioIezcFWIHJaHP3c7P7xHFlC2gAQycwQD2UX2PP0UbLuufhnSR/4i5wJGudKpi/leoiu3hE8gtjPY9CKdbBEcbeA9JIzIdkslvMNYzIxI+6QRf+7wWUrDVmAsyhHg7uH5JDUtoBE0khnXV1a9ngqr7HRmD6FhXcQvxFPrWiPrZPU+iyd2qjYjcLhhdhGjp/HI3Cp2rKsMI14SmDrFltG6pqRSsBrxRIStpsaAdqv30tPUPf8Y/Npnps/3oAfGcxBZRaO+EqqOhDT7+iyw
+ kIEXqZR8
+ w4FXyryzzuVJaaL00crGNP5u1U3oY9+VOQJ2J02w8UpS5ygauM4sfmLGtGv57WAZ8Rt9WfEgnwAYNYS2IjsXZoTDjzgjmijvmyzdvIqRv60Huw+sMwlWWlHHhAS7axZzLrXW7z6H8HtKUnO5hy/mdRuKeb2WItAWLw+aqNlmkmydKafAc41MunDF8u3ogWVfPfgibNVpBu+6WtDM9C35+xDLU00/nz8msVi9lka/5n5IhehuE4I6tiY2akyQJVcBVVGSUUI/y+sPuaEHR79fuLRZbrGHEUEVn2EpNxz8ygobgUig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,48 +101,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 19:44, Zenghui Yu wrote:
-> The userland visible page flags (KPF_*) were initially moved to
-> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
-> stable page flags"), and later moved to
-> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
-> (Scripted) Disintegrate include/linux"). Upadte the doc to reflect the
+On Thu, 25 Jun 2026 18:10:16 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
 
-s/Upadte/Update/
-
-> current location of these flags.
-
-Ack
-
+> Some MM selftests attempt to configure the amount of
+> HugeTLB pages of different sizes by writing to nr_hugepages.
 > 
-> The member @walk_end of struct pm_scan_arg {} was wrongly written as
-> "end_walk".
-
-Ack
-
+> PowerPC hash MMU pSeries systems advertise gigantic hugepage sizes 
+> but do not support runtime allocation of such pages, writes
+> to the corresponding nr_hugepages file fail with -EINVAL.
+> This causes the test to bail out even though the failure is due
+> to a platform limitation rather than the
+> functionality being tested.
 > 
-> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
-> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
+> Treat -EINVAL from the sysfs write as a skipped configuration request
+> and continue running the test instead of failing.
+> 
+> Before patch:
+>    -------------------------
+>    running ./hugetlb-madvise
+>    -------------------------
+>    TAP version 13
+>    1..1
+>      [INFO] detected hugetlb page size: 16777216 KiB
+>      [INFO] detected hugetlb page size: 16384 KiB
+>     ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
+>     Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>     Bail out! /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
+>     write(0) failed: Invalid argument
+>     Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
+>     [FAIL]
+> 
+> After patch:
+>    -------------------------
+>    running ./hugetlb-madvise
+>    -------------------------
+>    TAP version 13
+>    1..1
+>     [INFO] detected hugetlb page size: 16777216 KiB
+>     [INFO] detected hugetlb page size: 16384 KiB
+>    ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
+>    Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+>    /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
+>    write(0) failed: Invalid argument
+>    [PASS]
+> 
+> Fixes: 9d07250ea1eb ("selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages")
+> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
+> ---
+>  tools/testing/selftests/mm/vm_util.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+> index 311fc5b4513e..a8f16eef5c7c 100644
+> --- a/tools/testing/selftests/mm/vm_util.c
+> +++ b/tools/testing/selftests/mm/vm_util.c
+> @@ -735,6 +735,13 @@ void write_file(const char *path, const char *buf, size_t buflen)
+>  	saved_errno = errno;
+>  	close(fd);
+>  	errno = saved_errno;
+> +
+> +	if (numwritten < 0 && errno == EINVAL) {
+> +		ksft_print_msg("%s write(%.*s) failed: %s\n", path,
+> +			       (int)(buflen - 1), buf, strerror(errno));
+> +		return;
+> +	}
+> +
+This makes write_file() silently succeed for every EINVAL, not just the
+gigantic-hugetlb setup case. Several callers use this helper for writes where
+EINVAL is a real test failure, for example drop_caches or split huge page
+setup. Those tests can now continue after a failed setup and report misleading
+results.
 
-That makes sense.
+Please keep the common helper strict and ignore EINVAL only in the hugetlb
+path that is probing unsupported gigantic page runtime allocation.
 
-> The second one missed PAGE_IS_FILE in the required mask.
 
-Hm. The description says: "Find pages which have been written, are file backed,
-not swapped and either present or huge".
-
-But doesn't that mean that
-
-it should actually be
-
-	.category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE,
-
-Because
-
-	.category_inverted = PAGE_IS_SWAPPED,
-
--- 
-Cheers,
-
-David
+>  	if (numwritten < 0)
+>  		ksft_exit_fail_msg("%s write(%.*s) failed: %s\n", path, (int)(buflen - 1),
+>  				buf, strerror(errno));
+> -- 
+> 2.52.0
+> 
+> 
 
