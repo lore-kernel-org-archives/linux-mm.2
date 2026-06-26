@@ -4,129 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDA0CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:16:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A34DCCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:17:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6ED7B6B00A2; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
+	id 8762F6B00A3; Fri, 26 Jun 2026 04:17:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C5E26B00A3; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
+	id 84D156B00A5; Fri, 26 Jun 2026 04:17:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC9E6B00A4; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
+	id 73F476B00A6; Fri, 26 Jun 2026 04:17:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D2C76B00A2
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:16:43 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 836A8167546
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:16:42 +0000 (UTC)
-X-FDA: 84921357444.11.3142C4E
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf28.hostedemail.com (Postfix) with ESMTP id ACA6CC0004
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:16:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HK7C2gdC;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 43C246B00A3
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:17:27 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4A7801C618F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:17:25 +0000 (UTC)
+X-FDA: 84921359250.07.1C5AC21
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 94998100009
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:17:23 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRPKxo0R;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782461800;
-	b=ZLe2oS5p/RKektuJyTgFjN9MTZ6VMk/cjzK40UPi1+8pFxPpcYhxk/u5vxVyGkB4DRJMBM
-	Be4QdoB+S0DuYKn7mb60AI+Fpv+JTYhUsfn0i62jeDtmmLMhn3A0/KwfdjzLZbbwlc+qm1
-	jv0C/iRU2VohjIUhdQcICkHDGngowcg=
+	t=1782461843;
+	b=XVsHGrPY+OwKw54etPf19UmwW8NcAISuQYgMVVqPmYGMNKS+AyiAst9Pmi7s1lOCnTIVL6
+	Gl9h+Z5A8/33NnpHY9BoQKmkAlHsHGBXArtsWWHQnq8g0bpXGPuyMKh+rFNSRvo54ryFLC
+	wsa/RKZL5FDuxu36nGTFab1iy26K/uM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782461800;
+	s=arc-20220608; t=1782461843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
-	b=ee5WVU34sBfAILDfBRvYkR/E85iwzNjGh0W1C6AgwjhC8Thq1wdueImLyaBUPbn2Wqz3f0
-	Hq0m6QUdGZxO5hsXTdot0Y8AyjScDfYRXezbLXaD0gZD36LzDufXorIXtr1SCzW1+ndyeX
-	mDY/2UabiJ5WMokzJ8LSgGLIbwpKkX8=
+	bh=/AnaYuc4P67ER2npVfM1Eb7butqeY9jqtcroJ08g3DQ=;
+	b=Z7RpVEsiocKJ/TDXKIdkVQI8sjWQZxK7nxjPgzacZ68WBgYZNyx+yt/58nJGAx7cGGLoRR
+	jQP94uIOrQHl2ArwvS6uTc4XeYP3VmZPTIFutt76eCFtnL9L4YKbw9aKyxJyhCdBw4o7Ny
+	R/UcN6a1XQJha+B5iosfwKkvaHDfT9M=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=HK7C2gdC;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49263703c6eso6497505e9.0
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 01:16:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782461799; x=1783066599; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
-        b=HK7C2gdCCJDi3ZQocGVj6PzC4XBEJ7maZUpkvRIZpSK4vC9VmUJuLcHgzotn8Tc8kz
-         vvCY72eCEBUndstD/a8AKvvTMqClDKbXKpnk0z72Id6yBVJQbjQya1qm8bacM+lfXji2
-         ZD7QnIWrFffiNgkncPypn2/y3c6YbducDWe2w33Wd+GI27yJcrU9wDpT8jY7ftDzRKMC
-         I6uFF4nUE7PfIOnWF7yGwrJ0TSJl2/NiVTGN4WxVsWwdGtngIpq1Xp6psKmsawighCvg
-         fHaj2O21WIiJr2yyUN4s+MSYKPpbyfD7VwtLDN/igYzvPKONIohhBYNGXw0QkmzG9nxo
-         6f5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782461799; x=1783066599;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=G63b5nYObYU0Y4sNpYQEyJ95BJJfMv5+6+UUn5+s5qA=;
-        b=s9G8s6qVeWx5ilZxZu0ZJx9YaeTr2ppishrNWz1cgkXPQOGB+ugqpPU0je3g8pHva1
-         iAPCpoBrkP3HuWZ7JLHgrqbHrorHm4odJs3+6VCjde+w/JfOGrCA1KAvoUz2GbMNXBx7
-         WuFk0X5NdMBlhazC2d3cBXMpC6Irx/IeHzB9A2pErStaHamyPOwOYmCeZGn2syKhK85U
-         FBVg2v/BbSSQnb8eQL0xkadxVrxN/EEoNmHCnO93ao511mgHT1dM9Hn7ttl+BOQs4viO
-         xXURKzExlCFArcQpdY9Yxvy16gVwb8m2TCkfUmy7DzgFmwKiZxPvHdSBjU6C0Oha0kxi
-         AFIg==
-X-Forwarded-Encrypted: i=1; AFNElJ8CpdoeSArKLxSJ5oqdH9JmD5zki5p7mJh99P8lAe1N7V33Ajnk57t3nR6vW57cQ39eACO5MPxrpQ==@kvack.org
-X-Gm-Message-State: AOJu0YwT52QVox2VCl8x2xP9HGTRtWYIQOgrI7rzmkK9wZQ6cYvwrKej
-	kI2uSTDZ02w26byoFPC4B337QtydAecLFeepmNEddKTNurtr5lfwYgnU
-X-Gm-Gg: AfdE7clkN0ZQ9elej4n6uL//5y70kAFRgrqnuvnta0JllK41uIi8svqvSCpmnaHfzNd
-	nezYFMwgbrvlANVq3eJ73sd/W9ypRjDeBYs+zL4dHIaA2neGNXmNr/pBDf/xAt/5bRZKnngOK73
-	dUlBxut+9GkKiS0pavP1Nnea9uVOjawaKHkBb7rqoMQzOwULdtyH6cafwiLcnQ7uUvjApccV2yR
-	QN+tpBjLYmE4pmYinUFBTfTXpyZsy083yL45L/OqZAe/KHHDwlIANvQfQk5sGx86wxWyiggkS70
-	e1X5DfFAe0N8MXFtzSX1mQ01s6tw4UCY59BatA1y6XWK93gEJlGKEnYq6mKmp/piD3yGFzPS0DU
-	YXTRbPOejABNGeQAhMei8A67feAStrrtBxmL2GYmIlMep3nOvHbxDtR8R4DTAoBb9nxHjTw3kCL
-	4zgUTFf7Zi+KML8OA1OdSsJc7rxyfXO+No1a33Xj14aXHa0kb6sQ==
-X-Received: by 2002:a05:600c:e547:20b0:492:40f2:4d78 with SMTP id 5b1f17b1804b1-4926685ffd3mr60370715e9.2.1782461799049;
-        Fri, 26 Jun 2026 01:16:39 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268fef710sm106993125e9.7.2026.06.26.01.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 01:16:38 -0700 (PDT)
-Date: Fri, 26 Jun 2026 09:16:37 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: "Zach O'Keefe" <zokeefe@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- David Stevens <stevensd@google.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>, Will
- Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>, Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
- <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra
- <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, Kees
- Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-Message-ID: <20260626091637.484ee07d@pumpkin>
-In-Reply-To: <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
-References: <20260424191456.2679717-1-stevensd@google.com>
-	<da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
-	<6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
-	<dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
-	<CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HRPKxo0R;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2897860098;
+	Fri, 26 Jun 2026 08:17:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB4E1F000E9;
+	Fri, 26 Jun 2026 08:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782461842;
+	bh=/AnaYuc4P67ER2npVfM1Eb7butqeY9jqtcroJ08g3DQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HRPKxo0Rr3pbVCWT//XwS+W4dEPHI6hqcz1BIoaq/8A0qT653i2ccP8D1Qww3C6ky
+	 ZHc7iEGKxZLeGyTypJxFtRlnjb/2M3CM0cO28M2puxzKI5v4P4mt6TjFKzFE4BuSSP
+	 3IO6sBs03lpsURbOoVFbQFXSE4G53T0ZCSQqMnfI7+P433zwNCUWHBb0QTdHYJe35W
+	 YayvavbbDgufFAFMzARoxcEMsGrUUxi2pIUkGdpv6gts0HDwuhPomEWmife+pLGAB2
+	 i13ajRFu0ZeqIkoJ4iqrcwwv4xJ8mOBrtEYhSQCsxbEIHTCi5bD/4ggAtjwxoJqcPR
+	 5Q8Yh24sykFlQ==
+Message-ID: <04ea3e05-5b83-4c2d-8759-67c544a7b484@kernel.org>
+Date: Fri, 26 Jun 2026 10:17:14 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: annotate data-race in cpu_needs_drain()
+To: Xuewen Wang <wangxuewen@kylinos.cn>, akpm@linux-foundation.org,
+ liam@infradead.org, ljs@kernel.org, vbabka@kernel.org, jannh@google.com,
+ pfalcato@suse.de, chrisl@kernel.org, kasong@tencent.com,
+ shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
+ baohua@kernel.org, youngjun.park@lge.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: x3rs9dz6qinye8my3okaxae39jm8bo9s
-X-Rspamd-Queue-Id: ACA6CC0004
+X-Stat-Signature: abodywqmci3brhhpj71fkoxkot5zb459
+X-Rspamd-Queue-Id: 94998100009
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782461800-781343
-X-HE-Meta: U2FsdGVkX19UwssYhuMymw3PJWckul6sofSBf2R1sTTVRicol1LlfJO8xIxkm6dWmhQbvjJ7t3MZc0lC2Sz5zcmCl9O6t/PbL5RGSESvZkOnBlyS4FN4qd/Dj4F1NTlmVGsrdNLb+B6B9wrHgJCdpX9lF5TQhl1+Cp0+K8wyGL0B+548fQn4BRYvxV90Ct/0lwAKkRr64KBfYH2pXI9wLmtJueMfwsVcCoOAUgesgurSqPyJHgzrVvjeuH7s1tORZCnAIm2GhDDRCawekwZ16QQy0NpjNpsO4smLHP2nYh+wGNYVNneAkUIjmP+yojz6WNZqbazxGj11hdPxekGKVsbBHfoNr3lQ6Ee8qXS+uBPz9jHuzXknSpCrExnFOBvrUcAXQoMMjY2WVHV0tZvXX4EL9C1Igl9n7xqh402c8Zm9PGNz5z77c3z+R2knG5Aoys3B+vAH4Y5cGmGZ3kTRn47OiNMH0ZYrljaH7rTy7k0Kx+C0jboRNGI/vZNOXzwiusnQooakhWZQrl91jyaTKqEfuA4t8IxSJ7Uw7NFv4rWsv86u6ldShubnQTGqcObsOEdfEK0Gt94bVKgy36cWPIV/gy8aW0fD4/fSdnnZdO6TbPhjwGzOZhAYYmr9lkwaksRip+LBhBh+aHFWFCx0u5XngyVUataAefxoas0iWWj4MMIV8iH8UOf9DQ2kR6KY55INO4CefWothyY0P3/jdIwiqCCpdd+++FqRMjS71Wx44HVEMc6LqTBfcX9wRlGgp9kYnPSNWmgN8g8sE9M1a9CunTeGvNMCpyfck/wnUYGnUA1D3cPVIFOiXm5rzsxsEPQrSZ92y50mvYzaehLCQ45hwRyTHvBICsh9OPqjRbHaNyRvcJVh1Pdsc23J+/3w3F70T57fS7FZKQsQobZHUAbuXDUB2zCIdE0iuVpS3QfLpYWBOql47Ost2IQkxGIFzJ9/icLhSUJvXezMMgj
- gV+r58KN
- NcFzwYvnMfWCTb3s3J6ur4cqIFKBRqTlFEbvNQD4eW7LtscqeltcICcK4Du3/55qw9bDFoL2F03/2+B2Xi3HDDOL7KiLQSt10HMdnzNlDTcRO8VRmY2sTIxqpbOeXF5WqJNMVK3oT52Y3Ti3EKQnb31GecimwKA7eDv2c1pc5qqgMf/X7XRocmfwkWBspRvnz3eYtF3aezpTeD5dbJyLTSMYOeZiViAGXFHw3yGc8ZYJPunrWHGzYEDxb23KnXizmHsepVdhL7r/DuM7ZV6EtT3XyEry9lewUQnL+D/EhFy6eNK/+LRW3mQg73M2J/cT9pO0syWvlQk6lnQF2+QSBcFXPySXonsrHKT340/jrRSyweO04Mpr/aawKFoy2x+T5dfMdix/74/y30Fb11hjsic7dG/D2etC/AJphMeA0lJHAN0lJj/P3JrXm4t/sMbTl1SQwyofR1ChGI0QkyHlXyUJ56uWURK72/6qQjrgrYFaqszI=
+X-HE-Tag: 1782461843-670694
+X-HE-Meta: U2FsdGVkX1+VYh8T8WLmKVl0XaDWhL6frthgGib2VuQ4bnfnRU0b4hwDl376KGUH7Cyi4TZNy5xiDhs23qig/lJqMRqa5nqKAoPWRWhTkwKYNo1UY+zgo4ttu6j0IVnAEFEaf9tWaVhDjGteALao3OCQf0gfCMhLmQ5H+AiJj3QXcfuLxvlMVutl1O+GIvRojnEzMnMf02iVqQZ6qmiY54230q+1DbIFkrew/qzfZnVxqKYEAAFgS7yvXDeIQLOSqFI3Oa6G6WCFIWzM8DYz/U/Q4/sgS4sJdyhioJN0o8JAF9JEgsYKOs7F4O/PYUzWwnOxE8uKLBE1WIpewz0msfMKw+xqmNuoiBTLXW2rSdebIVnmha6zqJfpRviEeusiuk+VI3B8xhSvk5K0LC93dysDZDXmbW6G+lVVUntEntsp4kf1Sjfbr39hEPF/UZRJ5WI6hhYftGa1DfDCoA3KFhZQ3qk4g47tEImxkneYk7PAV8i8lBT2yAm0E3qPiTxqd0UIMySrggN3Rp8c+/Gnl48PE1F/rWnbjZmHbT6hpsY2sD2mqEwNLFOL4ZBxkfJlLQ/yGuEuKsFZwSXUimW/nb0exrDY/vjgmgm2qA/NwzYG3PQCFJi9sc4xwEbtLYA8YKtEh2ul06NsMiGtQtEcsuGyJXTPdeM+asK9XuH1KjKW7CyR2Vd44F34/PdvPDU2KrUzejv/HLw/w09IJBipgkKPQRjnxFiYxF/qj1lH4H0siuiv0/pqzTuJi7KgmgTd7GqbYW4I1shAzV5R1QJ6dOEYdriH2AnYwFvZhGEdBBpkDjVbrY95t9cpRUvP5gXHZYieLxYgrVzEL5gNHU0+WQPRhbObsKcHRLlNYOpYsNrABKiQltthpREZ9aZ5xvs4e7MUlqxRh8um0/LuPGvdxpsmt53v6Hy0cf1942ZbhDVtWD7rCl36lAtZZNbXwKJNy4ge1+AXcDDQrdRtlnn
+ RU2eWuhj
+ EQt0q1E3fa7AJsJMvWLdCrV3QYZsbEmMLZhBj/+D7vay/LL7eAXYF+u5nSME3md97yyQbdPBh6gW6XYzyb+/4SfD35BItLR9sDRQ1dib/HEtg8P7Of6hMCabgNkofjTaPuN/fkqsMwAv2HZR8OoUTnh14zkTjZ3daiIjamTCWDgDR6JewE0JS3IeO89jM1C3Kbza6eTtNMk6O7LZFOLgZvnwTX28vznEp+SAmCVO0T5gR9Gt3PNoheF1sXqDXYLIk3wXrGSpN+M4uYfVTFsoig6HLTu7wL0dUnTaYcn7hIY7zmtlS/RcP5/uMNLg42mJDTi8VldRRAJQy5d4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,21 +142,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 18 Jun 2026 07:50:26 -0700
-"Zach O'Keefe" <zokeefe@google.com> wrote:
-
-...
-> Dave,
+On 6/26/26 07:37, Xuewen Wang wrote:
+> KCSAN reports a data-race when cpu_needs_drain() reads another CPU's
+> per-cpu folio_batch->nr without locking, while the owning CPU writes
+> to it via folio_batch_add().
 > 
-> Necroing this thread, as the potential aggregate savings continue to
-> stand out for us on the datacenter side (whereas David is motivated
-> separately, from the consumer device side).
+> Reading a slightly stale value is harmless -- cpu_needs_drain() only
+> decides whether to schedule a drain, and the next iteration of
+> __lru_add_drain_all() will re-check. Use data_race() to annotate
+> the intentional race.
+> 
+> Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+> ---
+> Changes in v3:
+> - Wrap the entire || expression in a single data_race() instead of wrapping
+>   each folio_batch_count() call individually, as suggested by Pedro and Lorenzo.
+>   This is equally effective and more readable.
+> - Remove data_race() from need_mlock_drain(), as it is now covered by the data_race()
+>   in cpu_needs_drain().
+> v2:
+>   https://lore.kernel.org/all/20260625065153.1581419-1-wangxuewen@kylinos.cn/
+> v1:
+>   https://lore.kernel.org/all/20260624092606.1083449-1-wangxuewen@kylinos.cn/
+> ---
+>  mm/swap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/swap.c b/mm/swap.c
+> index 588f50d8f1a8..46ea207e0624 100644
+> --- a/mm/swap.c
+> +++ b/mm/swap.c
+> @@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
+>  	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+>  
+>  	/* Check these in order of likelihood that they're not zero */
+> -	return folio_batch_count(&fbatches->lru_add) ||
+> +	return data_race(folio_batch_count(&fbatches->lru_add) ||
+>  		folio_batch_count(&fbatches->lru_move_tail) ||
+>  		folio_batch_count(&fbatches->lru_deactivate_file) ||
+>  		folio_batch_count(&fbatches->lru_deactivate) ||
+>  		folio_batch_count(&fbatches->lru_lazyfree) ||
+>  		folio_batch_count(&fbatches->lru_activate) ||
+> -		need_mlock_drain(cpu) ||
+> +		need_mlock_drain(cpu)) ||
 
-What are the other kernel memory costs associated with each thread?
-While thinks like ps used to assume it was just 4k, it won't be any more.
-Even for user threads many things that used to be per-process aren't
-any more either.
-But just the task structure and FP save area are non-trivial.
+The indentation is a bit suboptimal now.
 
-	David L
+Would read nicer as
+
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8c..5958e6fdd3593 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
+        struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+
+        /* Check these in order of likelihood that they're not zero */
+-       return folio_batch_count(&fbatches->lru_add) ||
+-               folio_batch_count(&fbatches->lru_move_tail) ||
+-               folio_batch_count(&fbatches->lru_deactivate_file) ||
+-               folio_batch_count(&fbatches->lru_deactivate) ||
+-               folio_batch_count(&fbatches->lru_lazyfree) ||
+-               folio_batch_count(&fbatches->lru_activate) ||
+-               need_mlock_drain(cpu) ||
++       return data_race(folio_batch_count(&fbatches->lru_add) ||
++                        folio_batch_count(&fbatches->lru_move_tail) ||
++                        folio_batch_count(&fbatches->lru_deactivate_file) ||
++                        folio_batch_count(&fbatches->lru_deactivate) ||
++                        folio_batch_count(&fbatches->lru_lazyfree) ||
++                        folio_batch_count(&fbatches->lru_activate) ||
++                        need_mlock_drain(cpu)) ||
+                has_bh_in_lru(cpu, NULL);
+ }
+
+But I'll let others decide :)
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
