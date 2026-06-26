@@ -4,98 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C43FCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:42:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB2C7CDE010
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:44:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50D626B009E; Fri, 26 Jun 2026 00:42:50 -0400 (EDT)
+	id CB2166B00E3; Fri, 26 Jun 2026 00:44:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BEE56B00A4; Fri, 26 Jun 2026 00:42:50 -0400 (EDT)
+	id C8A8C6B00E4; Fri, 26 Jun 2026 00:44:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ACEB6B00A5; Fri, 26 Jun 2026 00:42:50 -0400 (EDT)
+	id BC75F6B00E5; Fri, 26 Jun 2026 00:44:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 06ED66B009E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:42:49 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64C861C2283
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:42:49 +0000 (UTC)
-X-FDA: 84920818458.30.2921690
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 71A1F1C0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:42:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Omt1UEns;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 876E66B00E3
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:44:23 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB704C1A53
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:44:22 +0000 (UTC)
+X-FDA: 84920822364.26.9F5559A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3AED41C0003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:44:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LC0Whhqb;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782448967;
-	b=1EVbNUKR51b5p5L19t+jRPg7NqRSr/VIOS6QSg3TKboEMVKOwOYCmcqvTvEN/42zIkXc8o
-	+E1/+64UMklwgYOPtPns9dqg6TpcdR5D3GXf6hFbg7s0k8quExEYitV1TN55Ad2Kf4wADO
-	EXrL1cQT7a/JYw3G1w6W+1H/Vqbi7LM=
+	t=1782449061;
+	b=Q6yIH5uQUXMYxRElAmktDXMbAXel2SpQtkWCDk9Fggj1XyA2ayeO8DMu5vpZzdO3JxdjI4
+	NZkGcfO2hL5nJN5ywXMw3sBiuzjBwIWEssR9LTTktD3e9pAZWdfUpwlELC51FwcH8B2J2J
+	T9WP3jLhdAGiplFqfJYKa2FC9pJXQzU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782448967;
+	s=arc-20220608; t=1782449061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0zPIH/xNB/JkteHgy2QtBeL6oUek9C9A8mya468P5WQ=;
-	b=Fh0bW7KjIFgIe0Eh9SJzrnUrOPuv5xZcL7W2fzb18TZcl6qWbxXP5RCw+ancM0qt3FQgQi
-	usb2AN2yUhlM5LC9c2q9Cf2MBzThgugEH3k0a3TfczD/JmzvkjfeyYgWZ/0NzYnXb6ASIH
-	GFiatjLOvinFsZcjRy0cMZ3dAU/cZPs=
+	bh=Cze1Qa+nUCNkuh98Ig4KQ8ORjyuPr/owezKtaxE/ZO4=;
+	b=7qolmRFTWrYnp5iN4aAJ0z9ATNSm2D7BhodFoYUSE0ft1va7anstMm/zXI8OJ0zbfNDdYo
+	1VGoLzLEdV5MpDD8x+akSS22JdxS5HwkFQsSnOFOD3ZfBrDlMcJiDIEafok16fqA/rUOcn
+	Ufd0gr6yKw2jOT7xxcJ14r82RrIAY1o=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=Omt1UEns;
-	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7FB82BCB;
-	Thu, 25 Jun 2026 21:42:41 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 32E823F905;
-	Thu, 25 Jun 2026 21:42:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782448966; bh=jm0W1HK2v0EV8GOom2wsH9OJKWlaesJ9dgMzcyqKEhw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Omt1UEnsa3O5EvFoZTeggyk3IRsLZKvm39+Eue4aqJ688x9dxZQxFhgZP2iqXBRdu
-	 Tut8EOm7Ii0Hh7/X8+sGBUI9N3GlJPjexaQMMvkOFgR24mPipoVbKBJYImtyINRVJ4
-	 J7rt0tcmQ8vm0K7Fsxz0+HGMUfd8yHUcse9/Rzh0=
-Message-ID: <3875df90-760e-49c5-ac18-c43fc7ede133@arm.com>
-Date: Fri, 26 Jun 2026 10:12:35 +0530
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LC0Whhqb;
+	spf=pass (imf18.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CF5043C24;
+	Fri, 26 Jun 2026 04:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C525B1F000E9;
+	Fri, 26 Jun 2026 04:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782449060;
+	bh=Cze1Qa+nUCNkuh98Ig4KQ8ORjyuPr/owezKtaxE/ZO4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LC0WhhqbdrDLIPT0IU57lhF1a1Jgdd3D6pnqyHHEwKIgTo547QF3ZwMODuLA6RAKG
+	 d20e09AECLe0sM8wijsIwtXk0CYNJyKDbgS+DGlYit/hPmiaOqjRcHSFKQ3kBaLn1Z
+	 w9No/6u/gYzd+LSSDOXt9hz8AxoPEeJFYlNr6Ov8tMUmTbeaqXe+xmY77HqFRDCejp
+	 71yFj43ijpubQB1FQgK7lFm3GjdYvujYMnAMlu4RT4hNOfkXmWaEdOnIvJZuxrIr0h
+	 XyNsgYwzjsaFiG30759W5To9BLmPdnOuvd87cdPA0P11CbxQqmXuskWyy+rf4qxeik
+	 zmu/jBCDgI9mw==
+Message-ID: <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+Date: Fri, 26 Jun 2026 13:43:51 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] mm/mprotect: use huge_ptep_get() for hugetlb
-To: Muchun Song <muchun.song@linux.dev>
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, mel@csn.ul.ie, nao.horiguchi@gmail.com,
- ak@linux.intel.com, j-nomura@ce.jp.nec.com, pfalcato@suse.de,
- dave.hansen@intel.com, tglx@kernel.org, jpoimboe@kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, david@kernel.org,
- liam@infradead.org
-References: <20260625112955.3254283-1-dev.jain@arm.com>
- <20260625112955.3254283-6-dev.jain@arm.com>
- <28f75d0d-de54-43a1-b46a-fe3dd1188929@linux.dev>
- <c807eac2-7b72-4b16-b4bb-b7241d35a991@arm.com>
- <A7E52D3B-8673-49F9-89F4-06FB2165FF06@linux.dev>
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+ <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
 Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <A7E52D3B-8673-49F9-89F4-06FB2165FF06@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: z317dm6rwimy75t1gjix9meb4i67yx1x
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------fcwqKtIO63ZLewB9aZtXCNcM"
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 71A1F1C0005
-X-HE-Tag: 1782448967-796699
-X-HE-Meta: U2FsdGVkX18Sxf6t5mtPg+m7iTb5aZlHW46XamlpUG/YapPhU5HWvL5aKFFIZgGnBGO4XIRH/SYNDBi9eIU/RSWb6GpMrEaIpEQb23VLlZhwhBuDQoWT5UGF4pP0wVVq5okXPpbkUBUSwGHcSnR3zB87isZNlc+A038zM5UChEB38SISSiJhWVn25Pe5fNCG8sKLqjy+SEQneG9k9Y5MHSGwMXK0XqkxBM5Wy2uu3/un4q9u9GyZs3VOIeH438P5hVtrIRvfKPTb95Cw4VxnE2ud+FXYlHIYcaUPYbuZb3px3/ZL+bzH/DELWXEEauKOT6/ERvS+rXI2fk4pHO9p44KOr/ox+xrtBOGDYWBJpGtkMsIYj50+w3Djzthh8mD7Zppr2orzZMIj0mTo+RlEi9XUgm70b8Dpd4kCUcV6TPEGiOTYZXjAnZRMqc1cbwdpQKp02CyIJqLwIbkOEGDc7As8kyi/jQ69gs0AeHFeE3imsJ6lciQQhzTi+dgw3b3eUtHX4nzwFLIC0j+6/RQESrBB4huUiux0omRwlFsgg8wTDwI6rAhLd4ep2mhN7P/30uXxsNN1P2lGsTRx5rrPTGFVei7iNUAeCwyXRYg2DYZP1HO1bvWx6GOHtDGe2DG7ypbr7q0gHaoSdBm8g+8tPoxxsEk8/QkG192U0N56BeBlUlBhi8es42FLKBdNULnJPWDz5DbQLnynTqZpi7vtfHEhRF6TSWNuIiys+3iamENXuqI1y7HxCUo8w0R2JC4bD4HsVUA8u7REbaqWKEvd1PkDVwXKxgMObZfGdKjDDWl0kCkCxxFnD/wHCxcgWwmEO8xLrtRqMZG5olAI7z64WQPKN765b4tGee393Ym1s+EEM7p5maiDATbhEKQgyPMQ0gUZy7S8bRRU4nTeXw1ikKYokTzhLqzI4rUxwoKSI/1bTMcwW67wBHav7joUdf1mHH/4OeGVbeRWTW77x6z
- ylRHjMv3
- 9/qfpsR6bqXRSvUBQoLp0RBy7iS3v5SAwa1YS8RFJITYJi5b4MDv7lSA9mNSFlouNER5amRJy878aew9TQarSVb22UZTJfKkbBweN5U711TLvYF7QLZMVHKWTIod6bDrZRQ8Kp6N4Xo9/uY96d80h2S8h7UmXLwrUwbp2V+RgvguYeNQdbLpgw7/sS0wV/7xVgWE/9ZMZJRkDE8o+gVhgDfpfjaGu/1lw+Wrytp//2IApbZJLpX62es+6/yA+HMNpL9MJjvVsVNKUDszNuViRHKkb6Jsxrh2rdA9arEpDCLOQbPbIDGwvkzVcnSJinDHkTDd0vH0umbritvgwSX58z4WhEY+WDftj00E/Tp9haKZN90BKSAlrXVDwbKeGKJBws31oyGaslBT66xSYwYKrZl/haNAWH1z+UQA3
+X-Stat-Signature: 56s1msczgcr5484qi99sfb5h5k846cq5
+X-Rspamd-Queue-Id: 3AED41C0003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782449061-844323
+X-HE-Meta: U2FsdGVkX19UWgLs0fhWa+OYce+Ryt1ZGRAedVjVLSx9l2Gy8E8zUQyA19ld/jkdbt0QX6kXal9q5oMz78nC7Qld2wo9dJjGIwIzaNm+u0fFAYUlefib8rWaWH12CxF4sSyuNIbYItroDiR2L6IOCNzMdD7orNEBVNoPZgYXYXfyixMpPONbUdCvY8FbKr9iUXaS3E1kCwvVYc/x1uhWfl3MlmkaNq3EH4u1a1+xdOKTEViC6dlJ43lFX8LjzewWMfKFv1o3OpLos7jx4I6OkxwOXIfpTdhZdQb6nEpSkUJp2u4cTyJY3CuGUsP+9kox9kohp9oBAvA9nXE9xrQhNuy63ufyxjoeEZ8cEcsKN9+WW1ueQHB2kP3ETPCwiotJY59eKigV4oBQC/tbPFGD0Cm2BAznsXTveiPzGPI53E2xpQGImrmMdH9v2mBiFex1kt5xV5EsthQ3AH3fm1ZPgWBFGGstUOWxogWqpn8rCBDj0zKjmlIEpqFquJhFyFnokpt6LCo4VmXUXpgBlGR4CUoYfegVyb0fDe6MPwUWWPQy+ZVr6XWMpDEleDEoli2MdEdxv1POOFvZ0cjs1FMMEjt1loJlrRUKUEGAqAZ5bWRk/rwNoQCWg9MAabRAIUa4bjMQRb5pBL4tYd4tBr1t0XmM48ArN8rdXNDofhyBnYN1KmcoeWS01pBSr83q/SfWAACbZrTgbHGauy/hbU9KO64cspOZ8Kwd/RZIwlsQL6K7+IqvZgMjkOKAil6GX6rPIF6JuKAFIuVZhCBNa1xA32xVgRdBRfaSUxlvZroZRq080ouP77hZlwHUach1OSYyGDQT7lGpPQXhU473POyutA8jLToDNeHz1troZ7sncl/6/LmUcLirc2KndzrahFUIkRyMV+VhSu+lNOGKlZUXhm9NOXHvLpsepg92QA91HbFmK6P0lqAZOZcD+lfqQFGx4AzIvPjPqdMJH28fgxG
+ GsVXw/I4
+ Nrs0hKp+d0vwNyiQrCmZgIfRgrdWxuqi8h0ZI/d7vjFBfqVCuTS18tYCcpkL9yRT30T6p19iqUhd3N06aoOBjjMVNKC5cDR9PAnGzPH/1sPkbOJcpxJdXU5SVHcfKlW1WZ330r4dz/bDPWd81ENvlD2Eq9fhRIahkVlqsvr9HEln4omoW2QOMlf4vmIPCr2tqGB19Aj9VLqvM+P7FbZnDFEY3RGHcWsP5n/xOS4xalLyXZXnafujm1YJQtOGdUWZqXIjPBa5XQ2OKnFvcVt3gw2JYuKC3hn5fLNdRDzljl5XFwxGDhi6TY/n/UkvR9Z3JV3SS+YtFaNbfZdYeXnyffkqHF83zbRchmBkpJ52T/XE9IfWNikxzoTfWtr2IhdOEsuwxOcC3PkawdNZbcovoPEj/DcoS7Pjo7kTakd8mwHJkJJsgMXtWd1/wTNRq7Wz2FQYKac4xRLHfhjGuriuBgywTOT9fu0JHO/zxL9nmM5ndS8GCFdHu3PsDo0f1dzt4KCSxYzpSusWTyiSRFbdfKZfHWt+A0xVIeuYI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,101 +100,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------fcwqKtIO63ZLewB9aZtXCNcM
+Content-Type: multipart/mixed; boundary="------------VRdUl5kGxsFl2YszOtn90VkD";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
+ peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
+ ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Message-ID: <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+ <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+In-Reply-To: <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
 
+--------------VRdUl5kGxsFl2YszOtn90VkD
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On 26/06/26 9:51 am, Muchun Song wrote:
-> 
-> 
->> On Jun 26, 2026, at 12:08, Dev Jain <dev.jain@arm.com> wrote:
->>
->>
->>
->> On 26/06/26 9:10 am, Muchun Song wrote:
->>>
->>>
->>> On 2026/6/25 19:29, Dev Jain wrote:
->>>> prot_none_hugetlb_entry() is the hugetlb callback for the early
->>>> mprotect(PROT_NONE) PFN permission walk on x86.
->>>>
->>>> The callback passes the decoded PFN to pfn_modify_allowed(). For a
->>>> hugetlb callback, the pte pointer refers to a hugetlb entry. On
->>>> architectures where hugetlb entries need huge_ptep_get(), reading that
->>>> entry with ptep_get() can make the permission check use the wrong PFN.
->>>>
->>>> Use huge_ptep_get() before decoding the hugetlb PFN.
->>>>
->>>> Currently there is no path which can trigger a bug: huge_ptep_get() is a
->>>> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
->>>> But use the correct helper anyways.
->>>>
->>>> Fixes: 42e4089c7890 ("x86/speculation/l1tf: Disallow non privileged high MMIO PROT_NONE mappings")
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>>   mm/mprotect.c | 8 +++++++-
->>>>   1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/mprotect.c b/mm/mprotect.c
->>>> index 9cbf932b028cf..23779632d18bf 100644
->>>> --- a/mm/mprotect.c
->>>> +++ b/mm/mprotect.c
->>>> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
->>>>           0 : -EACCES;
->>>>   }
->>>>   +#ifdef CONFIG_HUGETLB_PAGE
->>>>   static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
->>>>                      unsigned long addr, unsigned long next,
->>>>                      struct mm_walk *walk)
->>>>   {
->>>> -    return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
->>>> +    pte_t entry = huge_ptep_get(walk->mm, addr, pte);
->>>> +
->>>> +    return pfn_modify_allowed(pte_pfn(entry),
->>>>                     *(pgprot_t *)(walk->private)) ?
->>>>           0 : -EACCES;
->>>>   }
->>>> +#else
->>>> +#define prot_none_hugetlb_entry    NULL
->>>
->>> This is very strange, because we defined a stub as NULL for a helper
->>
->> I was following pattern elsewhere, search for ".hugetlb_entry" in the
->> codebase and you will find others doing the same.
-> 
-> Okay, I understand why you want to do it that way, but I would still
-> recommend not following that format.
+DQoNCk9uIDYvMjYvMjYgMTE6MjcgQU0sIFFpIFpoZW5nIHdyb3RlOg0KPiBIaSBKb2hhbm5l
+cywNCj4gDQo+IE9uIDYvMjYvMjYgMjo0MSBBTSwgSm9oYW5uZXMgV2VpbmVyIHdyb3RlOg0K
+Pj4gT24gVGh1LCBKdW4gMjUsIDIwMjYgYXQgMTE6MTU6NTRQTSArMDgwMCwgUWkgWmhlbmcg
+d3JvdGU6DQo+Pj4gRnJvbTogUWkgWmhlbmcgPHpoZW5ncWkuYXJjaEBieXRlZGFuY2UuY29t
+Pg0KPj4+DQo+Pj4gVGhlIG1nbHJ1IHBhZ2UgdGFibGUgd2Fsa2VyIGJhdGNoZXMgcGVyLWdl
+bmVyYXRpb24gc2l6ZSBkZWx0YXMgaW4NCj4+PiB3YWxrLT5ucl9wYWdlcyB3aGlsZSB3YWxr
+aW5nIHBhZ2UgdGFibGVzIHdpdGhvdXQgaG9sZGluZyB0aGUgbHJ1dmVjDQo+Pj4gbG9jay4N
+Cj4+PiBUaGUgcmVzZXRfYmF0Y2hfc2l6ZSgpIGxhdGVyIGZvbGRzIHRob3NlIGRlbHRhcyBp
+bnRvIHdhbGstPmxydXZlYyB1bmRlcg0KPj4+IHRoZSBscnV2ZWMgbG9jay4NCj4+Pg0KPj4+
+IFRoZSBwYWdlIHRhYmxlIHdhbGtlciBjYW4gcnVuIGNvbmN1cnJlbnRseSB3aXRoIHRoZSBt
+ZW1jZyByZXBhcmVudGluZw0KPj4+IHBhdGgNCj4+PiBhcyBmb2xsb3dzOg0KPj4+DQo+Pj4g
+Q1BVMMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgQ1BVMQ0KPj4+ID09PT3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgID09PT0NCj4+Pg0KPj4+IHdhbGtfbW0NCj4+PiAtLT4gd2Fsa19w
+YWdlX3JhbmdlDQo+Pj4gwqDCoMKgwqAgLS0+IHVwZGF0ZV9iYXRjaF9zaXplDQo+Pj4gwqDC
+oMKgwqDCoMKgwqDCoCAtLT4gd2Fsay0+bnJfcGFnZXMgKz0gZGVsdGENCj4+Pg0KPj4+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBtZW1fY2dyb3VwX2Nzc19vZmZsaW5lDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC0tPiBtZW1jZ19yZXBh
+cmVudF9vYmpjZ3MNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAtLT4gbG9jayBscnV2ZWMNCj4+PiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIGxydV9nZW5fcmVwYXJlbnRfbWVtY2cNCj4+PiDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIC0tPiByZXBhcmVudCBjaGlsZCBmb2xpb3MgdG8NCj4+PiBw
+YXJlbnQNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVubG9jayBscnV2ZWMNCj4+Pg0K
+Pj4+IMKgwqDCoMKgIGxvY2sgbHJ1dmVjDQo+Pj4gwqDCoMKgwqAgcmVzZXRfYmF0Y2hfc2l6
+ZQ0KPj4+IMKgwqDCoMKgIC0tPiBjaGlsZCBscnVnZW4tPm5yX3BhZ2VzICs9IGRlbHRhDQo+
+Pj4NCj4+PiBUaGlzIHdpbGwgdHJpZ2dlciB0aGUgZm9sbG93aW5nIHdhcm5pbmcgaW4gbHJ1
+X2dlbl9leGl0X21lbWNnKCk6DQo+Pj4NCj4+PiDCoMKgwqDCoFZNX1dBUk5fT05fT05DRSht
+ZW1jaHJfaW52KGxydXZlYy0+bHJ1Z2VuLm5yX3BhZ2VzLCAwLA0KPj4+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzaXplb2YobHJ1dmVjLT5scnVnZW4ubnJfcGFn
+ZXMpKSk7DQo+Pj4NCj4+PiBBbmQgdGhlIHVzZXItdmlzaWJsZSBpbXBhY3Qgb2YgdW5kZXJl
+c3RpbWF0ZWQgbnJfcGFnZXMgaW4gTUdMUlUgd2FzDQo+Pj4gcHJlbWF0dXJlIE9PTXMgYmVj
+YXVzZSBNR0xSVSBkb2VzIG5vdCB0cnkgdG8gcmVjbGFpbSBtZW1vcnkgd2hlbg0KPj4+IG5y
+X3BhZ2VzDQo+Pj4gcmVhY2hlcyB6ZXJvLCBidXQgdGhlcmUgYXJlIHN0aWxsIG1vcmUgcGFn
+ZXMuDQo+Pj4NCj4+PiBUbyBmaXggaXQsIG1ha2UgcmVzZXRfYmF0Y2hfc2l6ZSgpIGNoZWNr
+IENTU19EWUlORyB1bmRlciBSQ1UgYmVmb3JlDQo+Pj4gZmx1c2hpbmcgdGhlIHBlbmRpbmcg
+YmF0Y2guIEEgbm9uLWR5aW5nIG1lbWNnIGtlZXBzIHRoZSBvcmlnaW5hbCBscnV2ZWMNCj4+
+PiBzdGFibGUgYWdhaW5zdCBSQ1UtZGVsYXllZCBvZmZsaW5pbmc7IGEgZHlpbmcgbWVtY2cg
+cmVkaXJlY3RzIHRoZSBkZWx0YXMNCj4+PiB0byB0aGUgZmlyc3Qgbm9uLWR5aW5nIGFuY2Vz
+dG9yLg0KPj4+DQo+Pj4gUmVwb3J0ZWQtYnk6IFBlaXlhbmcgSGUgPHBlaXlhbmdfaGVAc21h
+aWwubmp1LmVkdS5jbj4NCj4+PiBDbG9zZXM6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2Fs
+bC81QTlFOTI5RDgyNzE3MTAxKzEyZmNmNjQzLQ0KPj4+IGVmYjgtNGI5YS1hNTNhLTFlMjhj
+Yzg5NGYwYkBzbWFpbC5uanUuZWR1LmNuDQo+Pj4gRml4ZXM6IGYzMDQ2NTI2MDllYSAoIm1t
+OiB2bXNjYW46IHByZXBhcmUgZm9yIHJlcGFyZW50aW5nIE1HTFJVIGZvbGlvcyIpDQo+Pj4g
+Q2M6IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPg0KPj4+IFNpZ25lZC1vZmYtYnk6IFFpIFpo
+ZW5nIDx6aGVuZ3FpLmFyY2hAYnl0ZWRhbmNlLmNvbT4NCj4+PiAtLS0NCj4+PiBDaGFuZ2Vz
+IGluIHYzOg0KPj4+IMKgIC0gcmUtaW1wbGVtZW50IGxvY2tfYmF0Y2hfbHJ1dmVjKCkgYnkg
+Y2hlY2tpbmcgQ1NTX0RZSU5HIHVuZGVyIHRoZQ0KPj4+IFJDVSBsb2NrDQo+Pj4gwqDCoMKg
+IChzdWdnZXN0ZWQgYnkgSGFycnkpDQo+Pj4gwqAgLSB1cGRhdGUgdGhlIGNvbW1pdCBtZXNz
+YWdlIChzdWdnZXN0ZWQgYnkgSGFycnkpDQo+Pj4gwqAgLSB0ZW1wb3JhcmlseSBkcm9wIHRo
+ZSBwcmV2aW91cyBSZXZpZXdlZC1ieSB0YWdzDQo+Pj4gwqDCoMKgIChzaW5jZSB0aGUgc3lu
+YyBtZXRob2QgaGFzIGNoYW5nZWQpDQo+Pj4gwqAgLSByZWJhc2Ugb250byB0aGUgbmV4dC0y
+MDI2MDYyNA0KPj4+DQo+Pj4gQ2hhbmdlcyBpbiB2MjoNCj4+PiDCoCAtIHVwZGF0ZSB0aGUg
+Y29tbWl0IG1lc3NhZ2UgKHBvaW50ZWQgYnkgQmFycnkpDQo+Pj4gwqAgLSBjb2xsZWN0IFJl
+dmlld2VkLWJ5DQo+Pj4NCj4+PiDCoCBtbS92bXNjYW4uYyB8IDQ1ICsrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrLS0tLS0tLQ0KPj4+IMKgIDEgZmlsZSBjaGFuZ2Vk
+LCAzOCBpbnNlcnRpb25zKCspLCA3IGRlbGV0aW9ucygtKQ0KPj4+DQo+Pj4gZGlmZiAtLWdp
+dCBhL21tL3Ztc2Nhbi5jIGIvbW0vdm1zY2FuLmMNCj4+PiBpbmRleCAzNWMzYmIxNWFlOTYu
+LjFlYzhjMjNjNzJiOSAxMDA2NDQNCj4+PiAtLS0gYS9tbS92bXNjYW4uYw0KPj4+ICsrKyBi
+L21tL3Ztc2Nhbi5jDQo+Pj4gQEAgLTMyNjIsMTAgKzMyNjIsNDQgQEAgc3RhdGljIHZvaWQg
+dXBkYXRlX2JhdGNoX3NpemUoc3RydWN0DQo+Pj4gbHJ1X2dlbl9tbV93YWxrICp3YWxrLCBz
+dHJ1Y3QgZm9saW8gKmZvbGlvLA0KPj4+IMKgwqDCoMKgwqAgd2Fsay0+bnJfcGFnZXNbbmV3
+X2dlbl1bdHlwZV1bem9uZV0gKz0gZGVsdGE7DQo+Pj4gwqAgfQ0KPj4+IMKgICsjaWZkZWYg
+Q09ORklHX01FTUNHDQo+Pj4gK3N0YXRpYyBzdHJ1Y3QgbHJ1dmVjICpsb2NrX2JhdGNoX2xy
+dXZlYyhzdHJ1Y3QgbHJ1dmVjICpscnV2ZWMpDQo+Pj4gK3sNCj4+PiArwqDCoMKgIHN0cnVj
+dCBwZ2xpc3RfZGF0YSAqcGdkYXQgPSBscnV2ZWNfcGdkYXQobHJ1dmVjKTsNCj4+PiArwqDC
+oMKgIHN0cnVjdCBtZW1fY2dyb3VwICptZW1jZyA9IGxydXZlY19tZW1jZyhscnV2ZWMpOw0K
+Pj4+ICsNCj4+PiArwqDCoMKgIHJjdV9yZWFkX2xvY2soKTsNCj4+DQo+PiBXaGVyZSBpcyB0
+aGlzIHVubG9ja2VkPw0KPiANCj4gVGhlIGxydXZlY191bmxvY2tfaXJxKCkgaW4gcmVzZXRf
+YmF0Y2hfc2l6ZSgpIHdpbGwgaGFuZGxlIHRoZSB1bmxvY2tpbmcuDQo+IA0KPj4NCj4+PiAr
+wqDCoMKgIC8qDQo+Pj4gK8KgwqDCoMKgICogVGhlIG1lbWNnIGNhbiBiZSBOVUxMIHdoZW4g
+dGhlIG1lbW9yeSBjb250cm9sbGVyIGlzIGRpc2FibGVkLg0KPj4+ICvCoMKgwqDCoCAqIE90
+aGVyd2lzZSwgdGhlIGNhbGxlciBrZWVwcyB0aGUgbWVtY2cgb3duaW5nIEBscnV2ZWMgYWxp
+dmUuDQo+Pj4gK8KgwqDCoMKgICovDQo+Pj4gK8KgwqDCoCBpZiAoIW1lbWNnIHx8ICFjc3Nf
+aXNfZHlpbmcoJm1lbWNnLT5jc3MpKQ0KPj4+ICvCoMKgwqDCoMKgwqDCoCBnb3RvIGxvY2s7
+DQo+Pj4gKw0KPj4+ICvCoMKgwqAgZG8gew0KPj4+ICvCoMKgwqDCoMKgwqDCoCBtZW1jZyA9
+IHBhcmVudF9tZW1fY2dyb3VwKG1lbWNnKTsNCj4+PiArwqDCoMKgIH0gd2hpbGUgKG1lbWNn
+ICYmIGNzc19pc19keWluZygmbWVtY2ctPmNzcykpOw0KPj4+ICvCoMKgwqAgbHJ1dmVjID0g
+bWVtX2Nncm91cF9scnV2ZWMobWVtY2csIHBnZGF0KTsNCj4+DQo+PiDCoMKgwqDCoHdoaWxl
+ICh1bmxpa2VseShtZW1jZyAmJiBjc3NfaXNfZHlpbmcoJm1lbWNnLT5jc3MpKSkgew0KPj4g
+wqDCoMKgwqDCoMKgwqAgbWVtY2cgPSBwYXJlbnRfbWVtX2Nncm91cChtZW1jZyk7DQo+PiDC
+oMKgwqDCoMKgwqDCoCBscnV2ZWMgPSBtZW1fY2dyb3VwX2xydXZlYyhtZW1jZywgcGdkYXQp
+Ow0KPiANCj4gVGhlcmUgaXMgbm8gbmVlZCB0byBhY3F1aXJlIHRoZSBscnV2ZWMgYmVmb3Jl
+IGZpbmRpbmcgdGhlIGZpcnN0DQo+IG5vbi1keWluZyBtZW1jZy4NCg0Kc3RydWN0IHBnbGlz
+dF9kYXRhICpwZ2RhdCA9IGxydXZlY19wZ2RhdChscnV2ZWMpOw0Kc3RydWN0IG1lbV9jZ3Jv
+dXAgKm1lbWNnID0gbHJ1dmVjX21lbWNnKGxydXZlYyk7DQoNCnJjdV9yZWFkX2xvY2soKQ0K
+DQp3aGlsZSAodW5saWtlbHkobWVtY2dfaXNfZHlpbmcobWVtY2cpKSkNCiAgICAgICAgbWVt
+Y2cgPSBwYXJlbnRfbWVtX2Nncm91cChtZW1jZyk7DQoNCmxydXZlYyA9IG1lbV9jZ3JvdXBf
+bHJ1dmVjKG1lbWNnLCBwZ2RhdCk7DQpzcGluX2xvY2tfaXJxKCZscnV2ZWMtPmxydV9sb2Nr
+KTsNCg0KcmV0dXJuIGxydXZlYzsNCg0Kc2hvdWxkIHdvcms/DQoNCmlmIHRoZSBtZW1vcnkg
+Y29udHJvbGxlciBpcyBkaXNhYmxlZCwgaXQncyBlcXVpdmFsZW50IHRvOg0KDQpyY3VfcmVh
+ZF9sb2NrKCk7DQpzcGluX2xvY2tfaXJxKCZscnV2ZWMtPmxydV9sb2NrKTsNCnJldHVybiBs
+cnV2ZWM7DQoNCi0tIA0KQ2hlZXJzLA0KSGFycnkgLyBIeWVvbmdnb24NCg0K
 
-Okay then I'll update v2 with the below diff.
+--------------VRdUl5kGxsFl2YszOtn90VkD--
 
-> 
-> Thanks.
-> 
->>
->>
->>> function. How about  the following diff?
->>>
->>> diff --git a/mm/mprotect.c b/mm/mprotect.c
->>> index 9cbf932b028c..4d8c1551fbce 100644
->>> --- a/mm/mprotect.c
->>> +++ b/mm/mprotect.c
->>> @@ -716,7 +716,9 @@ static int prot_none_test(unsigned long addr, unsigned long next,
->>>
->>>  static const struct mm_walk_ops prot_none_walk_ops = {
->>>         .pte_entry              = prot_none_pte_entry,
->>> +#ifdef CONFIG_HUGETLB_PAGE
->>>         .hugetlb_entry          = prot_none_hugetlb_entry,
->>> +#endif
->>>         .test_walk              = prot_none_test,
->>>         .walk_lock              = PGWALK_WRLOCK,
->>>  };
->>>
->>> Thanks,
->>> Muchun
->>>
->>>> +#endif
->>>>     static int prot_none_test(unsigned long addr, unsigned long next,
->>>>                 struct mm_walk *walk)
-> 
-> 
-> 
+--------------fcwqKtIO63ZLewB9aZtXCNcM
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4DhwAKCRCGXBN6rc5S
+1g0jAP4gPmEfwbi90g27GCghV+IzxczoQOCOWa20F/P8O/GaGQEAz9q0GcAIPYvQ
+X1vtqvldrANXaQpzeDsROAQOZoUadAo=
+=taly
+-----END PGP SIGNATURE-----
+
+--------------fcwqKtIO63ZLewB9aZtXCNcM--
 
