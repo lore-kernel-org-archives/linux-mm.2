@@ -4,90 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F66C44500
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:46:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4774AC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:47:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E00CA6B00A7; Fri, 26 Jun 2026 10:46:19 -0400 (EDT)
+	id 130DC6B00A9; Fri, 26 Jun 2026 10:47:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8896B00A9; Fri, 26 Jun 2026 10:46:19 -0400 (EDT)
+	id 108A36B00AB; Fri, 26 Jun 2026 10:47:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D14F36B00AA; Fri, 26 Jun 2026 10:46:19 -0400 (EDT)
+	id 020016B00AC; Fri, 26 Jun 2026 10:47:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8026B00A7
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:46:19 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2D283C21F9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:46:19 +0000 (UTC)
-X-FDA: 84922339278.14.52D9694
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CA5AB6B00A9
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:15 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 429B5404D1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:47:15 +0000 (UTC)
+X-FDA: 84922341630.16.166D039
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9DB6280009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:46:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S2MSO6vQ;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7CEA7C000A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:47:13 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LFfOHfxm;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782485177;
-	b=YlPPVLb4fmHPiiWLNtm77N67W6iomZP8fxRjEpW13594uE8jSaDrfANO1HsdG/FCrt1ss7
-	9VXN7YdMmvmdlhBDFs8GfL8lKRJjkW/cyfeew/xTQU40Dscm7RXOUFoZFx7Rw+DCyrpG+F
-	sPM/6q42JkiwXgQi9JaD6FxpEop0aNM=
+	t=1782485233;
+	b=hWgCm37I8sTV9NfyPDi354NdIbX/NAtsKOawprNwFF3B9TYYEHB64Ty9tYsefkD/LTy+UO
+	+lk+30EL9mMGPyAuzkTwlX04eUseOLA0/t6em9HNFI0MUg31tlE69TRKfCnB59aoK9fGTe
+	2Zm0iDPJvafnB1jePjQtUTPJSYAKIq8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782485177;
+	s=arc-20220608; t=1782485233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fZdQLtSd1MgDJ2accO5uxk2HAc7yukzOgkqYkqEi5Q=;
-	b=V18y2P5v2Ux/EP1NRAxpMB2miDUMX4g+B/HwO/sd9GEtz8b2U17dz00G61bXX/Lu9lxnjY
-	Xzn/h3olQGyO57lfiicqBaDXg8lnw8ZHo4DkeCc4mZRUcA+c0ycntOPX/T4rnpwqbaoeqr
-	4OknMwBZtFq4QVbcB6anVm+LhnXBS7U=
+	bh=ki/UMMGltgdJJNZZHuMQ1eeElpSKdZAz+X4n32ee4Sg=;
+	b=7aUDS+6rcZK2ybIkr1UlUH+MClePiToHPWHsYVtFfQTZ36ZdBFbIz4ol70YuBk6SOCuitl
+	SseoAyRsp9v3THdD2wa3T1BNqR6IKwhOecPti7rzD25i7N8jQjSZXf9I+CaCiDMmVKWLko
+	ilNMecKfB/VUNkm3DivwO8GqzBSeSkI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S2MSO6vQ;
-	spf=pass (imf30.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LFfOHfxm;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0F99F600C8;
-	Fri, 26 Jun 2026 14:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843771F00A3E;
-	Fri, 26 Jun 2026 14:46:15 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A78A600C8;
+	Fri, 26 Jun 2026 14:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097211F000E9;
+	Fri, 26 Jun 2026 14:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782485176;
-	bh=7fZdQLtSd1MgDJ2accO5uxk2HAc7yukzOgkqYkqEi5Q=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=S2MSO6vQYMhCKGFwJNZwz24C4Wg+wu13oRJhd3WdYlk9FRawmhpmfDxxCdcixJ+Do
-	 9AKfui952AR3leG7SuLiFOa+P3S6LNR9E034nwW1K4ulED9TQ40fcN/mL6P8X6L78a
-	 3BK4soroM8Pjnl69VBogFVHWJqvSIVQR2v4tLqIoVZu0GMEJAFeLfZ3dCJlkVP+kYp
-	 Vz+Sbe2jc2rZevEz6jSuGrzMTJKdTZmZjjQE9eZsjn/ERL4bjIzgpa+gmgkm8Y1010
-	 RIlrJ9B8aCe5zX4G5oRNZ+sTRd4pZ/J/cSXKHV59Q6/KtHXtg3Ygt6L7BpV3PBqE1M
-	 6loYGlvRd2oWw==
-From: SeongJae Park <sj@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	jiayuan.chen@shopee.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shu Anzai <shu17az@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/damon/core: split a fraction of regions when nr_regions exceeds max/2
-Date: Fri, 26 Jun 2026 07:46:02 -0700
-Message-ID: <20260626144603.86521-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626085851.70754-2-jiayuan.chen@linux.dev>
-References: 
+	s=k20260515; t=1782485232;
+	bh=ki/UMMGltgdJJNZZHuMQ1eeElpSKdZAz+X4n32ee4Sg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LFfOHfxmieWWkk8tk89ez8N+O1bhMB9T7qUnxqZ2qRIFn0EXrSyZjFVdAPJGRZUf7
+	 aUl+5F8ltNbv14mjQOGGNfskrEJXWjMjLlbIlpnku0K73bFPqXeFm4Cl0LiFZD2K0Q
+	 DQ8NAnFpsWt8puQqsQWc0A8f/brOsYMyJ0sB1TlFAB8HIteCwilzvtxRNBmZKqIZX6
+	 o2PIGjXmOoHTjOeAyB8bRO4jiEwAG3q1z6IkJ48GpB6aLQmC9HjZXOKngpnUorG3nk
+	 JGeFSNvyheVWSoz5e2CNekfye0rint6Ec2qaIiGna18bMOTjqBw2c9fnP3rhHezDba
+	 FTgjP3GD6F+iw==
+Message-ID: <511c2e7c-0305-4917-a639-e8e9e8710903@kernel.org>
+Date: Fri, 26 Jun 2026 16:47:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] docs: pagemap: fix flags location, member name and sample
+ code
+To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ corbet@lwn.net, skhan@linuxfoundation.org
+References: <20260625174447.24292-1-zenghui.yu@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260625174447.24292-1-zenghui.yu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 3smnixxt6hitbnc7k8knf1ksyhybgsc8
 X-Rspam-User: 
-X-Stat-Signature: na19kueb6xuoj7bqootxipo9pbs75spk
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9DB6280009
-X-HE-Tag: 1782485177-868197
-X-HE-Meta: U2FsdGVkX18/IO7A+WUvGrEaXP1vVJ/b6cqiNQpHcLCRctszfxcZ8mVQTQFrdpxUuqGkA5ybcFdBQUaquNYONNYN3JINI3Gc3dfHgfXsQJ3vCu/Std10twizWsOsTlvFZ4qRseo6MFcc06tPWzrYIRhKjetg69/fTSodEvac/1JBWI4eGNnlH4NNs0UO6dFHsMIx5jc7SUC65clSEBgEcE6EimPyzPFQqWtF7MMvQ0/9iUoYDHy1MqPMQ9NHIUbuhADTZR+NeiS2RgYzh2FFDzIoHJn0U+xoBU8XjiawT6bxLvNVuxrMYI/XBH7bMP42nIGdwFAdyVawwhJ863fOzjvufXxEK6SXlMjGrI4vU/fX9Cw57S3l7XXmjbheHAo0qfew4JJG/Y6e5pRgoLZqLf9saK9G6rcAX5OeZpzY9WSpYwf59/eKqOZiLdD8RUgTATkVjOYiht78pev0+qUabJpSG+9hTAqJMuzzMrE3OnfvV+WnrgPwgwV4/2GgiXQ0i0z5jWXa5Md+iIpE9FLH+3xd/d3TQj7Nxet9BCeAukCw3DSM72MOmXudL6nSTAKKyR2n3UJhlW2wezvSg3e6+5yS+vGUtoCR6Gjhql80Yoe6RrNWIA7mXDxSn0Lf3+VddtzIuAIQWGqbyXeWmPp36LqevmIXRctCKHWXJRL4qGqxq2/DCCTbwR2rzeLWIxTnDBPoEt6jtcVOx930H8e8jTNTb+7mGwD04F5RnScJtbusO/S//eTxcvCaglnYmQjTnI27CD7GZIras58r1O/B31d5wbE/JQo8+yhLojqIhUSWku2nKbK4SpubBBRw1uJkcap0ABaUC0iXuitQohXL1Tsrq+PhiYaQEvThG/QxlPxXaeRiSYgazi5h6aSP3TFYxqeTHsENMOXH5ZF/ilss8pvjOT0QDwESCkR9AykaoRuEduJ2irGGJFCLAKbr7xqwfbYSdXhH6zW8iyrCwOq
- GqGegF7I
- 6+AqbKOGH2BK5FGH9qBDUkJ1IwuOjG2xrJS8BR787FfmdF1YPmM3qMIN2A7W980LTFuc9+FuVZVU51O4oqP34BbbZDCEuwAvF5C+sLBSAYp+dsyQP/YaMmY8ndGVUy8PqfBm092KiAVrCUXVbdAaEPufgmqA/m9E3eeiy/nUpwdsgkWXgvTKvyNdNP4h7ppUc8yV5aQGkak48HLDr/yqAfMEEDcPm41MffzQ5SbF735jAXArGdxJ4M4a4V/W0enDxxS89Ipoav52Xo80D5VXY8+7g05PUjTAg7b6Xdq6NCYIyhozVC4CbLmx2Q8M0wBQq6HjwDi0jvOi7+IXfbalm4aFncg==
+X-Rspamd-Queue-Id: 7CEA7C000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782485233-285944
+X-HE-Meta: U2FsdGVkX1+fayt5GJgDy5wvuy7XBkqyRKpgZKOp+Smasq3GMYhtLvD1ReaiFC316cVHjjtFr1Yyv3Nkizp3qwL24XyGUgofK8iANTDKO6n4bdKjRx3DvHI7vbkuebi1iTHqg3gFsAL7DPa/I94zw9yN59HlUc3rAHnU0cQxAybYZt5hYYn1DXxnPedCYFvOMmdpr9YI2eHVxyF3ui/yZNY3dzYTqQcLNsI96lWvzulXsV5D534+Wp2cYdBZ3mGPNgr3Uch+KKKVBUKgKvyCuXQNcd9L7PiwEODhO8a6r5zFyKCMxSo8NVP/lGkSVqoelZ0CYhOy3f8IuzRqETGWPe3z8toxOXVdFJEmgTadFqEEOwIrYxNL7H0ULSiSQYgpBIHfXOgVS2BNlK6te3PRWvluR10pz402DS4r+BV/gFtDzIcS5c6IArn1k1Uu3vwpaTCNTz0Os9GYbX+bvOj1T4OMn0fKujaY54UemJihNGamm39myYRY+3hsLBoRNZYuN6OTZztj9ePrNfVe9pa/iUPxo2oxnrzCqfKGuLHF+3C8gCGdyi2WiXCefX2oa0XU7kUTwJlAG9IIdeAITXHObzmwhJBSsAhezolwOciETxurBTJInGZzxW/9LjnKSL6mzuV1LR3WQw6B5oQOurWgh7wy9OTO0YmySUxRCxKrbvyxJxkmLQHeYeRbYLk8jcpK/r4+/w4eXNDapuhuYOZHt4DhDxfsQVDa8OTbCQ/K69Obid6v46TtJNmxATwjHDN8NHSSjbDu7QsqAGXlZX5gzlVQD1JoZBG8A4iSJG/DFc3Lc/L7UacxXGVj7iJijVUx93mlqbXjrZbGjC/pSlsM+TmUF4k/0wna1ijqemnIeqBVCenwCxtzfqC4xukVtKae7HW0VI0VFol4efuJ8RyXxzYjB2yyDepsQ3Ui+EmFipTCS2Qiq68n/BELze/7RFWl+mtvL9DIfUvT6e5+oRR
+ Vv+3wIJY
+ pwdvcxsWS7W8qu74BphcM3SRQ8LfVsUNLXuJAdRJQ9DsUckv1cIrEkmQXyAiSnHKA5wmKlyeZ1aeqp68+tne3EeB4tuNZ5uk/FD1egA6oWNuFVPDJKMWyikt+sMuD3NUBPpmN2NZfRP0ZAb8o57iY147QYcj8rT8yw9P/lNlqb270guMdQrH77SYn3P3/2Oy9z6CjR5Qp8hh3fRMQfBvr9Kb3UQgWcxBo5kpj+DQZfCKJni6B+LLOYcu2LKOP2DF3+AdX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,67 +140,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 16:58:37 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+On 6/25/26 19:44, Zenghui Yu wrote:
+> The userland visible page flags (KPF_*) were initially moved to
+> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
+> stable page flags"), and later moved to
+> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
+> (Scripted) Disintegrate include/linux"). Upadte the doc to reflect the
 
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> 
-> kdamond_split_regions() returns early when nr_regions is above
-> max_nr_regions / 2, leaving internal access variation inside a large
-> region undetected.
-> 
-> Such a layout is common with damon-paddr on hugepage workloads or
-> damon-vaddr on processes with a large anonymous mmap.
-> 
-> For example, with max_nr_regions == 1500, a target may end up with
-> 799 small alternating-temperature regions plus one large region that
-> absorbed a uniformly-accessed range during an earlier merge:
-> 
-> H:hot
-> C:cold
-> 
->       r1     r2     r3                 r800
->     HHHHHH|CCCCCC|HHHHHH|...|HHHHHH..........................|
-> 
->     nr_regions = 800  >  max_nr_regions / 2 = 750
-> 
-> If a cold subarea later emerges inside r800:
-> 
->       r1     r2     r3                 r800
->     HHHHHH|CCCCCC|HHHHHH|...|HHHHHH........CCCCCC.............|
-> 
-> The small regions cannot merge with each other (different access
-> counts), so the budget stays full.  r800 cannot be split because
-> nr_regions > max_nr_regions / 2 causes an early return.  The cold
-> subarea is never discovered.
-> 
-> When nr_regions is above max_nr_regions / 2 but still under the
-> maximum, split only a fraction of the regions instead of returning.
-> One region in every 'max_nr_regions / budget' regions is split, where
-> budget is the remaining room (max_nr_regions - nr_regions), starting
-> from a rotating offset so different regions get picked over time.  The
-> fraction shrinks as the budget shrinks, so the region count keeps
-> refining while approaching max_nr_regions smoothly rather than
-> overshooting it.  An unnecessary split is reverted by the next
-> kdamond_merge_regions().
+s/Upadte/Update/
 
-Looks good!
+> current location of these flags.
 
-Thinking loud.  After this change, some users might surprise because the number
-of regions became higher than before.  But it is still under the contracted
-maximum number, and they will show better accuracy.  So I believe this is a
-reasonable improvement rather than a breaking change.
-
-Thank you for this patch, Jiayuan.
+Ack
 
 > 
-> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> The member @walk_end of struct pm_scan_arg {} was wrongly written as
+> "end_walk".
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+Ack
 
+> 
+> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
+> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
 
-Thanks,
-SJ
+That makes sense.
 
-[...]
+> The second one missed PAGE_IS_FILE in the required mask.
+
+Hm. The description says: "Find pages which have been written, are file backed,
+not swapped and either present or huge".
+
+But doesn't that mean that
+
+it should actually be
+
+	.category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE,
+
+Because
+
+	.category_inverted = PAGE_IS_SWAPPED,
+
+-- 
+Cheers,
+
+David
 
