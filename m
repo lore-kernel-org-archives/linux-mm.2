@@ -4,136 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBEACDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A395ACDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:13:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACDC26B00EB; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
+	id 496546B00EC; Fri, 26 Jun 2026 06:13:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA4DF6B00EC; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
+	id 420F66B00EE; Fri, 26 Jun 2026 06:13:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BD596B00ED; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
+	id 2E9256B00EF; Fri, 26 Jun 2026 06:13:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AF616B00EB
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4C261403C4
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:08:03 +0000 (UTC)
-X-FDA: 84921638046.30.0E9439E
+	by kanga.kvack.org (Postfix) with ESMTP id 02BB46B00EC
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:13:04 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 73CA41C6247
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:13:04 +0000 (UTC)
+X-FDA: 84921650688.18.56B5384
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 37CCD40005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:08:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mJ93/Qt9";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id DD67E180015
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:13:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkUmBur+;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782468482;
-	b=r5GJibQb1lAJyyLolt6x5Jqa/s7ah7OYkAYvotunr+EQiBJ+0TiHFVDFYi8Qshi2pqO3sM
-	mDjG6eBodpSq+pZZcq6q1Y/WFRfjTsychQKlMJBsYtI+9bZbwWUVMVUCAyqj4HZsl2wGIF
-	xI2dgU2DQ+VudsdSrq5gnOu0GpQQaOc=
+	t=1782468782;
+	b=0BCUEVTtj1f3n/LXiS58O/rrhmShU8koIjIqfRPVngr/O/gQp7cwqbLE6lS5qrbt/2DJgC
+	Te8qMm0dQIuLGo2fNz9IFihChVwQhFdHp/xPOY3U6PwBKe8RbrvJQgm8EEH1petjA87wlX
+	eS9/7l3Mj3yWh6tcOiJ6tEpjM6KXxyc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782468482;
+	s=arc-20220608; t=1782468782;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rVGr/ryTaEsmh1iE16XC+HpiEurnbEy3UUdTQoKGaK8=;
-	b=5Hn5Xec4RYprF1Lcc2Kodn7jeMvrntr9GB8XXgffnm8UT7ZB2XFqQZlLXPliuNBAC4qQ2U
-	BcKTa3/zl8EwUPC0vBssyd8jLldDQGANK+Szv53svymWTtB10yK97XtfsUREhdcjd7wlle
-	ItM3Eotx+tqbipqhGNZAlF+Bfy5SJs4=
+	bh=TLiF915NfwLlVsSq/4aXT/wvHW5AzhlVslUyqSeMDmY=;
+	b=ULN7oIb+LAEt4GB/GrzuaynQaXPXQid3hd5mqRYiS8znxbBuMBxqwQHX6W0LosIQ0TC1Mk
+	kBYZnH1a9/2gIEyyKZ7m5lpC0oW/w9Ajymja40S8941tH5o31qvy9NdpH6WPBNRtvQsJap
+	WGCqLiPrPj71t1ihT012rpsy2FCz08I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mJ93/Qt9";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IkUmBur+;
+	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D1F660098;
-	Fri, 26 Jun 2026 10:08:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBD21F000E9;
-	Fri, 26 Jun 2026 10:07:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 601F260098;
+	Fri, 26 Jun 2026 10:13:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452731F000E9;
+	Fri, 26 Jun 2026 10:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782468481;
-	bh=rVGr/ryTaEsmh1iE16XC+HpiEurnbEy3UUdTQoKGaK8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mJ93/Qt9HnoekLP+fpKQIJLYhT2quZwR+UN1au0ly3DRbWZsYooFWq084kQy7trfW
-	 G5XyGa6A1TN99l+j9BNRvqF2io1f1Afs4LUkzS9y/vKZQ8da6fs3pULX8E7his20+X
-	 9gbeCVKQbbJUbc0Am+G8Oew7AkXPUO3C4XWXay5YSW+B0SiblDo+X04ls6Hv0QUVPk
-	 7mYpSw66WWRhreMuvVC2hOfnzi7tnsiYm3ps1Y7eVXgwteIVqsO0otZWqOAFg/oRDZ
-	 1SHEdRiWXspF824EtSdaJPlLSwUxe8csJ6XcZw+yNoaEO9NME+iL01CG+jIfrhAiV1
-	 QrWYN1YdF4XBg==
-Message-ID: <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
-Date: Fri, 26 Jun 2026 12:07:56 +0200
+	s=k20260515; t=1782468782;
+	bh=TLiF915NfwLlVsSq/4aXT/wvHW5AzhlVslUyqSeMDmY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IkUmBur+hR2C7H5r5OY8FChnTsJXdoIDefxQHV1RUUXO5CD358HNgpdA3jZOhIf+M
+	 h93FSBaZ0HcQjofz07UgDyXxGhvrwXxNxgVeIGA5GGbMEc/AHwhRliI23hrzzWlU9m
+	 fGGQ/1UqVLk4j0a2A75w5Wt5JOogseZcJe5EEVVVUwGGGrgdpghvh0dVJG0GXgmEoU
+	 fQEGz39TXu8huP1maFinuCvz4dfLfGgmDcmb+yLMrv4OxMAqgygFEha8Juz9CEK/fa
+	 ynr26K/mv+ZKn8IaaJceAyduIRqlRP+5bRU7cTU4CHsAC09EenWR+8ksHDNNXn7cYf
+	 ZZU0XF01VKxaA==
+Date: Fri, 26 Jun 2026 11:12:53 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, david@kernel.org, 
+	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, hao.ge@linux.dev, 
+	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
+Message-ID: <aj5QBtJcphPElczI@lucifer>
+References: <20260625184857.2193482-1-surenb@google.com>
+ <20260625184857.2193482-3-surenb@google.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD
- handling
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
- harry@kernel.org, jannh@google.com, ziy@nvidia.com, sj@kernel.org,
- balbirs@nvidia.com
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260624065353.1622-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: bahpwg9qjgcnrr5rzj5kuk1b7fn5cd6z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 37CCD40005
-X-HE-Tag: 1782468482-225143
-X-HE-Meta: U2FsdGVkX1+DBdQRCMcOYIfTUKD5m3N40/UNyUYhfw8vrJH4QGO+NDe3mfGzW4qCUvpOuyLklMPdGB72TfUvzpH9a5A6t9V5jubq3CvU9X6aa7dwxBYQrRpH9mqW+GDNsqbfi+8afpFmit2UcObnevr+qakCRskfBozR3BGTuCXYx7DlpQs4hXFxTjqeigzqU/wa6EhY4S3wIgChseKCNAWP90jvsCPwobayPoG0be2Uj5f85OHxGXmRyhnOBmA4dNWODqVwADy3cT0spYrSgloXK0xqiCKKngmmBeTGL44Rmwv6wSxM/mfwQzSsV4jfzchXgGCVzVhefQZ43j5ceZaCXrLHMjlHlGOv1JS06sx+2bZZS11xkulx8Q7TRtb5f2aUtRcX3mwulUmyVu3Xro9weoLlUiDA8CiBYKWLTzH0a4aMX7ohqfravCoFOGa6AMFUdFZGGiLQjgjZ0moxHjLbLPdMPLaoxeeFlTe9ptfqQVewVKmatNV4+lFtgy2tvFDUPVJgnqNLUtX0vgfeM2nMJmqRuxQfP8SAF6EP15h0kQ2wDq0swwY2Z3/NpU8t6AdIszlK9UFJWdvbVoUDCejiz2bnAd3A4MbfxSpVvDM/+xMD2uPXNgMGL/uj15H7uzr3IPh45XoxVZD/WxAnJOx33YvrBVfaShHA1gHE0Tv07kuUnwVvqoN+7wg87bLcdWC7xotzY9Wt8xeAdPXevOQXaYIVre7ZCbb2jDSnEJzZobNOSMKrnds75OJcGzRx/CMJ0iTw2pGlbrA9a+OBD1DyMaBjj+cmV/vTNlOWBcqjkmKXKo2VNJvP9sOk7Tz79opU7Ma+rHZzhlhKT4s1SE1SlhHgoCH47yFM+pz364YRyEnY6ifB/zeVrkmssqqqBVuD+xar0RgL7ccLR0ettMl12ov5avtBH4IIk0K+SlkcA89c3MHG5op+uAX3w5yU6y67IwGs2BoGRlONbGW
- wJyjmi2O
- y7reIwJsRFqLYngdMyptP7W9ZoGMjZSjpxkui4o4S9upe/heR7TDcqJwO6LyN0DGb4T4XEMkP52xQy/ouCXaqMQ7fkzNokBp77iPqxQpMXSDwfRIf9AMq/b7nX6QJjxmvTJdTCJfvoDAoUTjgeHKw+TfM/NlK1TKpRvwOhndp2KK09CngtdXMDYPPNAyqpTrH8IpHZxngMpH/A7lqehiOyCBX8e+C/af/ar8PgUT2+3zwSLVmeVtRpVGQjr2xTSlXwMdAOvfLSKw5xDtx3qcxQO80ynodow2F0sluZ8JvMPESxR2BA95muyLkjgNUvABD8ukWDv7Y5ePrWpy3uqyppcWzp6XkSC9deY+jR8F7oDshhhh9EVcJU+VtNSa3IvvsjBRyXknCy6ULFsmIu6EJbJjc4ZX/SUf2BSHcglAtgiayNgjRPdFWUV7R8vG5YHcNsED1kW0/yQ2g0Ig=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DD67E180015
+X-Stat-Signature: j3fnmanr8mximnrh11sjyz17mc5j1ihr
+X-HE-Tag: 1782468782-564680
+X-HE-Meta: U2FsdGVkX18yt3FPOEJvJFLYStioQ1fSYt8oyGofvwAod0s8w2i9ObBqv4ef6HNthX/T9/quH0X69QYlGsFpL2fkVsoP4G+Q0EMj3eg0GnW0Bb1abZ9cfZLvjoFBjO2kvHAEB1ICYNasaDvb4S6wmrkelEdtYGJzWPm+asu5C8MWc4kO5yffwWssKc9xFGI8zvh3Zh8GDvp2VAN7unv1lqk2QsHXkzjdWgY0XocStHxNRHzG69j98OWs6FQDE12K5VWNaw0T2WPvGeoXSfL4jGNzmZ4jV7t1AT2uvZiCW/Xgu483Qmyn3tahJ0z1xVGUmTQ20zVKYj3qqAaaF+axYUtr8hEFAOQ5xFSAyd0r9rzhL782ig3vpmdbDLrLBrcO3Kq02/u3oh4T3dGSKZbkqeNgIZ1psTg/NSy/vsYgYOXEMfgApAWpESIkk9euI+Ivb2I78SEOSPKDeur0LWJgLG66ZPr+O3Sok3621UGBcGGfDPJM+Mcbu5ihq6p33tcwyc2uxJPrH7oQTl8y1ZjI/ILmxbzp1OeNiaCXetZ0q/1v8dtZ53rKi9XChOGV3Z5L97E+kmHTSXwThlUz292Pv6T/Rj/ExdnLLtaIeyaCzKg8CRjiYlcrTxbEO2ORW2P+shh4QPi7BonLAStZyMkl9HZXEdyPA13qu117pgib458kZtL/zdQVNGXXOaeDBEkSwo4Fp8qqzhkY4biKOEHgT9xkPoQm5yqIMIZqKbV+Zx1ToUppO3jnTfayLpglr400NtsdRkQx3Y5lgNHpRXn8ruKE+ZYHiqzZXbUJKYgSY9sJk1v+l6VfEzI+l/AymQGxy7jXklG8iwDpZ61GI0UOiKsxk0nmqG2QiryOOtOqG1v6kkrofZEHHvoSqT0aZH164pyWlhnHVUrrf7H5mP2hz8GvdKJ2rSBeLY2cKpDUpHgQcdX8Xs0+BulG0FGVO4hQVqbOakSuCruwKhSXiby
+ GyYhrQ6s
+ QvNy9QegWM4wtfWz7tG85Z+o+HkptM41eCrI17p/PiFBsxzuMjBxGO6nBaF0q3GNpNAK5yoKqrQSok5UFsYg21r0FkGbFW6JqPS810RmATncnXlMP8tWipZiXNkfZHho058VP4H0anuqn+ircBUswTXVZ2UHTIHaNMICM/sUgi4yhQCetBTLTJOeYanCGeNLwskWxuRSh7eQwAajiw+J9/Kx5TrlMmfJ3KtpIGrXgkELL9bHnkYE8iNvhDk019WdjQO+yVny46xPAOm2EKPHmk82FcdrP2knFNueWrBKbpBEIEr6TRmeTELTn5Uqj2Q/IKTbn0EGSBgK5OwE++jMC2wTVPOxkBEmqJdoqoffQEyrE2C3TxH0lmvB9I2vynRZcDh7NHzKgTjvMdWpoL7Di/emE5+Ux7q2Ck7hC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,192 +92,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 08:53, Wei Yang wrote:
-> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> device-private entries") introduced the concept of device-private
-> PMD entries, but did not correctly update the rmap walk code to
-> account for them.
-> 
-> As a result, when page_vma_mapped_walk() encounters device-private
-> PMD entries, it takes no action other than to acquire the PMD lock
-> and exit.
-> 
-> However this is highly problematic for two reasons - firstly,
-> device private entries possess a PFN so check_pmd() needs to be
-> called to ensure an overlapping PFN range.
-> 
-> Secondly, and more importantly, if PVMW_MIGRATION is set the
-> caller assumes the returned entry is a migration entry, resulting
-> in memory corruption when the caller tries to interpret the device
-> private entry as such.
-> 
-> In addition, commit 146287290023 ("mm/huge_memory: implement
-> device-private THP splitting") allowed device private PMDs to be
-> split like THP mappings, but again did not update this code path.
-> 
-> As a result, we might race a PMD split prior to acquiring the PMD
-> lock.
-> 
-> This patch addresses all of these issues by invoking check_pmd(),
-> ensuring PMVW_MIGRATION is not set and checks whether a split raced
-> us we do for PMD THP and migration entries.
-> 
-> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Balbir Singh <balbirs@nvidia.com>
-> Cc: SeongJae Park <sj@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> 
+On Thu, Jun 25, 2026 at 11:48:57AM -0700, Suren Baghdasaryan wrote:
+> From: Lorenzo Stoakes <ljs@kernel.org>
+>
+> The alloc tagging work is really mm-specific, so move alloc_tag.c to mm/
+> and additionally update the MAINTAINERS entry to place it within memory
+> management and port over the Kconfig and Makefile code to mm.
+>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+
+LGTM (obviously :P) so:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
 > ---
-> v4:
->   * refine subject and commit log based on Lorenzo's suggestion
->   * put pmd device-private entry handling in its own if branch,
->     suggested by Lorenzo
-> 
-> v3:
->   * remove cleanup part, only fix the issue for device-private entry
->   * refine user effect description based on Lorenzo's suggestion
-> 
-> v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
->   * specify the possible error case of current code and user visible effect
->   * besides fix, cleanup the pmd entry handling based on David's suggestion
-> 
-> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
-> ---
->  mm/page_vma_mapped.c | 20 +++++++++++++++-----
->  1 file changed, 15 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 2ccbabfb2cc1..17dff8aab9f9 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			/* THP pmd was split under us: handle on pte level */
->  			spin_unlock(pvmw->ptl);
->  			pvmw->ptl = NULL;
-> -		} else if (!pmd_present(pmde)) {
-> -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> +		} else if (pmd_is_device_private_entry(pmde)) {
-> +			softleaf_t entry;
-> +
-> +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> +			pmde = *pvmw->pmd;
-> +			entry = softleaf_from_pmd(pmde);
->  
-> -			if (softleaf_is_device_private(entry)) {
-> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> +			if (likely(softleaf_is_device_private(entry))) {
-> +				if (pvmw->flags & PVMW_MIGRATION)
-> +					return not_found(pvmw);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +					return not_found(pvmw);
->  				return true;
->  			}
+>  MAINTAINERS             | 20 ++++++++++----------
+>  lib/Kconfig.debug       | 28 ----------------------------
+>  lib/Makefile            |  1 -
+>  mm/Kconfig.debug        | 28 ++++++++++++++++++++++++++++
+>  mm/Makefile             |  1 +
+>  {lib => mm}/alloc_tag.c |  0
+>  6 files changed, 39 insertions(+), 39 deletions(-)
+>  rename {lib => mm}/alloc_tag.c (100%)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0948dc573744..3cf3cf2311e2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16704,16 +16704,6 @@ F:	mm/mm_init.c
+>  F:	mm/rodata_test.c
+>  F:	tools/testing/memblock/
+>
+> -MEMORY ALLOCATION PROFILING
+> -M:	Suren Baghdasaryan <surenb@google.com>
+> -R:	Hao Ge <hao.ge@linux.dev>
+> -L:	linux-mm@kvack.org
+> -S:	Maintained
+> -F:	Documentation/mm/allocation-profiling.rst
+> -F:	include/linux/alloc_tag.h
+> -F:	include/linux/pgalloc_tag.h
+> -F:	lib/alloc_tag.c
 > -
-> +			/* device-private pmd was split under us: handle on pte level */
-> +			spin_unlock(pvmw->ptl);
-> +			pvmw->ptl = NULL;
-> +		} else if (!pmd_present(pmde)) {
->  			if ((pvmw->flags & PVMW_SYNC) &&
->  			    thp_vma_suitable_order(vma, pvmw->address,
->  						   PMD_ORDER) &&
+>  MEMORY CONTROLLER DRIVERS
+>  M:	Krzysztof Kozlowski <krzk@kernel.org>
+>  L:	linux-kernel@vger.kernel.org
+> @@ -16758,6 +16748,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+>  F:	mm/
+>  F:	tools/mm/
+>
+> +MEMORY MANAGEMENT - ALLOCATION PROFILING (ALLOC TAG)
+> +M:	Suren Baghdasaryan <surenb@google.com>
+> +R:	Hao Ge <hao.ge@linux.dev>
+> +L:	linux-mm@kvack.org
+> +S:	Maintained
+> +F:	Documentation/mm/allocation-profiling.rst
+> +F:	include/linux/alloc_tag.h
+> +F:	include/linux/pgalloc_tag.h
+> +F:	mm/alloc_tag.c
+> +
+>  MEMORY MANAGEMENT - BALLOON
+>  M:	Andrew Morton <akpm@linux-foundation.org>
+>  M:	David Hildenbrand <david@kernel.org>
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 8ff5adcfe1e0..3762015522c3 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1048,34 +1048,6 @@ config CODE_TAGGING
+>  	bool
+>  	select KALLSYMS
+>
+> -config MEM_ALLOC_PROFILING
+> -	bool "Enable memory allocation profiling"
+> -	default n
+> -	depends on MMU
+> -	depends on PROC_FS
+> -	depends on !DEBUG_FORCE_WEAK_PER_CPU
+> -	select CODE_TAGGING
+> -	select PAGE_EXTENSION
+> -	select SLAB_OBJ_EXT
+> -	help
+> -	  Track allocation source code and record total allocation size
+> -	  initiated at that code location. The mechanism can be used to track
+> -	  memory leaks with a low performance and memory impact.
+> -
+> -config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> -	bool "Enable memory allocation profiling by default"
+> -	default y
+> -	depends on MEM_ALLOC_PROFILING
+> -
+> -config MEM_ALLOC_PROFILING_DEBUG
+> -	bool "Memory allocation profiler debugging"
+> -	default n
+> -	depends on MEM_ALLOC_PROFILING
+> -	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> -	help
+> -	  Adds warnings with helpful error messages for memory allocation
+> -	  profiling.
+> -
+>  source "lib/Kconfig.kasan"
+>  source "lib/Kconfig.kfence"
+>  source "lib/Kconfig.kmsan"
+> diff --git a/lib/Makefile b/lib/Makefile
+> index f33a24bf1c19..44f6538533a9 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -197,7 +197,6 @@ obj-$(CONFIG_OF_RECONFIG_NOTIFIER_ERROR_INJECT) += \
+>  obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+>
+>  obj-$(CONFIG_CODE_TAGGING) += codetag.o
+> -obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+>
+>  lib-$(CONFIG_GENERIC_BUG) += bug.o
+>
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index 91b3e027b753..5737a504efbb 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -320,3 +320,31 @@ config PER_VMA_LOCK_STATS
+>  	  overhead in the page fault path.
+>
+>  	  If in doubt, say N.
+> +
+> +config MEM_ALLOC_PROFILING
+> +	bool "Enable memory allocation profiling"
+> +	default n
+> +	depends on MMU
+> +	depends on PROC_FS
+> +	depends on !DEBUG_FORCE_WEAK_PER_CPU
+> +	select CODE_TAGGING
+> +	select PAGE_EXTENSION
+> +	select SLAB_OBJ_EXT
+> +	help
+> +	  Track allocation source code and record total allocation size
+> +	  initiated at that code location. The mechanism can be used to track
+> +	  memory leaks with a low performance and memory impact.
+> +
+> +config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> +	bool "Enable memory allocation profiling by default"
+> +	default y
+> +	depends on MEM_ALLOC_PROFILING
+> +
+> +config MEM_ALLOC_PROFILING_DEBUG
+> +	bool "Memory allocation profiler debugging"
+> +	default n
+> +	depends on MEM_ALLOC_PROFILING
+> +	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> +	help
+> +	  Adds warnings with helpful error messages for memory allocation
+> +	  profiling.
+> diff --git a/mm/Makefile b/mm/Makefile
+> index eff9f9e7e061..4fc713867b9b 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+>  obj-$(CONFIG_EXECMEM) += execmem.o
+>  obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+>  obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+> +obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+> diff --git a/lib/alloc_tag.c b/mm/alloc_tag.c
+> similarity index 100%
+> rename from lib/alloc_tag.c
+> rename to mm/alloc_tag.c
+> --
+> 2.55.0.rc0.799.gd6f94ed593-goog
+>
 
-This is extremely hard to review given the existing crap handling here. I'm
-really sorry, but it makes my head hurt (I'm not kidding :) ).
-
-It's completely unclear why we only have to check for a subset of the cases
-after taking the lock.
-
-Could we simply extend the existing migration pmd handling and leave the
-!pmd_present() case for pmd_none()?
-
-That leaves no question to "which transitions are actually allowed", including
-"could we accidentally assume something is a page table when really it isn't".
-
-
-So what about something like the following?
-
-The "thp_migration_supported()" is not required when checking for
-pmd_is_migration_entry(), as that defaults to "false" when not compiled in.
-
-Untested:
-
-
-From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Fri, 26 Jun 2026 12:03:40 +0200
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/page_vma_mapped.c | 29 +++++++++++++++++------------
- 1 file changed, 17 insertions(+), 12 deletions(-)
-
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index 2ccbabfb2cc17..ed2a23a90e8dd 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 		 */
- 		pmde = pmdp_get_lockless(pvmw->pmd);
-
--		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-+		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
-+		    pmd_is_device_private_entry(pmde)) {
- 			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
- 			pmde = *pvmw->pmd;
--			if (!pmd_present(pmde)) {
-+			if (pmd_is_migration_entry(pmde)) {
- 				softleaf_t entry;
-
--				if (!thp_migration_supported() ||
--				    !(pvmw->flags & PVMW_MIGRATION))
-+				if (!(pvmw->flags & PVMW_MIGRATION))
- 					return not_found(pvmw);
- 				entry = softleaf_from_pmd(pmde);
-+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-+					return not_found(pvmw);
-+				return true;
-+			} else if (pmd_is_device_private_entry(pmde)) {
-+				softleaf_t entry;
-
--				if (!softleaf_is_migration(entry) ||
--				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-+				if (pvmw->flags & PVMW_MIGRATION)
-+					return not_found(pvmw);
-+				entry = softleaf_from_pmd(pmde);
-+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
- 					return not_found(pvmw);
- 				return true;
-+			} else if (!pmd_present(pmde) ){
-+				return not_found(pvmw);
- 			}
- 			if (likely(pmd_trans_huge(pmde))) {
- 				if (pvmw->flags & PVMW_MIGRATION)
-@@ -270,12 +280,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
- 		} else if (!pmd_present(pmde)) {
--			const softleaf_t entry = softleaf_from_pmd(pmde);
--
--			if (softleaf_is_device_private(entry)) {
--				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
--				return true;
--			}
-
- 			if ((pvmw->flags & PVMW_SYNC) &&
- 			    thp_vma_suitable_order(vma, pvmw->address,
--- 
-2.43.0
-
-
--- 
-Cheers,
-
-David
+Thanks, Lorenzo
 
