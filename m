@@ -4,94 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63113CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:15:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0967CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:40:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 202BD6B0088; Fri, 26 Jun 2026 03:15:37 -0400 (EDT)
+	id 7B1476B0088; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D5EE6B0092; Fri, 26 Jun 2026 03:15:37 -0400 (EDT)
+	id 763546B008A; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115276B0095; Fri, 26 Jun 2026 03:15:37 -0400 (EDT)
+	id 67A396B0092; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DA41A6B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:15:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37A1C403D8
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:15:36 +0000 (UTC)
-X-FDA: 84921203472.29.1F3D41D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6798C100007
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:15:34 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxwOaYpa;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 37EA46B0088
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 999B7403DE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:40:40 +0000 (UTC)
+X-FDA: 84921266640.15.E60F4CA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 11C5540007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:40:38 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1ZMsLYo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782458134;
-	b=Ps9DAvQxX7RuXMYRq1I0FrD/dFGocLXigYh38J6Rwb+VcLf4CijVTshRu7L6x0a4m1JkVo
-	FUE/Yf9Tp87pdMmwQHkJFTew6edqyRbzIV3yEWwV3O0XbVodwHVGfU++i+BlUQAvdjDxCc
-	hSaLEzxYpDgzMmPMYiMUZ7KtN/RBkr0=
+	t=1782459639;
+	b=la//uyJneQc13+D/bBp0NCofR4aaVWKBtWaxWNukTFCS59T6y7SHKrpLkcUtnRUW4NVbdL
+	jdkrtZuU7rUfzRtC2fH3msDPf4MfrcTo18/sGi9cz6sESef1V3XJzXBybJqxCXGwSLqqZP
+	/3byyIInI1bLgOTg/VGVKzf7TFimhoQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782458134;
+	s=arc-20220608; t=1782459639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3lVxdm0Ep0/M2ZYIKTC77sSAb+8Ja64CITv1+WKNFCo=;
-	b=NZpO4DwIn1PVwNrVTsD5+P1DJVIZSyz3YHPPIYLfUl/qn8tbadyE+8lh8ChllhsZtjZfRv
-	dw5LMfV58veByei2xvUN/yvG3W973vxMhL++kMePsN+EfIdv9FqnC855ZdLkWm3uaZaPdx
-	BXB8eV6vC/qy6jKmOFVrharjtOO/Klg=
+	bh=Vh5mum4CE2iVLYNUmthPz0ghYxYQ9IfsJDxe2k3e6D4=;
+	b=GNrbU64ycZbBq8CSv7bKm7AA2R66nAYEvV+qde6hTh8TbxeL2jMAT1FmOn0dWM/2MKY8iM
+	0G4iX76+wkSf00yzGQs5QGWOoTAQztF1inFgy5uAlIh+vqC7iqQdEoUMI+WEkzhLdMJ5bo
+	8QwwhC6b5iuSRSPenOLzi1zDdFoCp1c=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OxwOaYpa;
-	spf=pass (imf14.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1ZMsLYo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 85FCF419F5;
-	Fri, 26 Jun 2026 07:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B840A1F000E9;
-	Fri, 26 Jun 2026 07:15:29 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8EECD60122;
+	Fri, 26 Jun 2026 07:40:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C5B1F000E9;
+	Fri, 26 Jun 2026 07:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782458133;
-	bh=3lVxdm0Ep0/M2ZYIKTC77sSAb+8Ja64CITv1+WKNFCo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OxwOaYpaqmr2aOcT0SoHP1REiLiNj80JROVsNPvrfmy/4xobxnTZ8DFNS8aLhzsG2
-	 pc1JYInzhAEN2BaPLK5IIiAOHveUeNvdS1h9ZGykqqnp5ZGjRF3zukUH5/xWpDaG4a
-	 RLnkTDu6Q+3/Z+sAuJ4XlXT4mNqSWDTTOVDsTtQi8inuy+EB/yIT2FcP2ihzw3bZqr
-	 j+iVV5RthEeDUHnj51btEokTNkIRCnngT+INPOu+UcePKVCbVPX4EZKw+Tlt7lv3My
-	 3mwPy1OWlmkE3FxK8W0FsHXg9gLrC5vSd88rLK6Wzytl3VcjKiIyKvITr5gkqr/kZ9
-	 26sUDDbQD9wjA==
-Message-ID: <dc5e47af-1434-4e43-8ca7-f90de3dc3f63@kernel.org>
-Date: Fri, 26 Jun 2026 16:15:24 +0900
+	s=k20260515; t=1782459638;
+	bh=Vh5mum4CE2iVLYNUmthPz0ghYxYQ9IfsJDxe2k3e6D4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=T1ZMsLYoxOYdOSMC1j6XLXQrF7Koh+Ep+37Dhnig/mQNK73ByqK9b+hjxl0U0hFyA
+	 lK0DFjUZ63+L/1G9QE2v+z6Sa0Bl3pRpERY02mPEup5nczZV56aGjINoIr7opsMcRp
+	 gay4lEBm1gI9fHdTLsDWxaaAdxwLFnpdsz1RimoI6rt7ECUvlQMGNQfIlvg5dvL0NO
+	 feN7WpQC/WZTez6noyl6oFhkz1zivUJcfdQyZLKnE53PX8dQj+mKTOmL/LEDUGOHDh
+	 q9lNGJNkO840NMXj/8D2ZcinyRX1gcDx13ZbCjEuUtBTlNisJbNq0UFXNTO3Tf+5k4
+	 xNX/hin5yVzNg==
+Date: Fri, 26 Jun 2026 10:40:32 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Taku Izumi <izumi.taku@jp.fujitsu.com>,
+	Yuan Liu <yuan1.liu@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/mm_init: drop overlap_memmap_init()
+Message-ID: <aj4s8DvCQ0jE2H_y@kernel.org>
+References: <20260625073941.145014-1-rppt@kernel.org>
+ <20260625073941.145014-3-rppt@kernel.org>
+ <20260625095846.4e2tl3fbduc24erg@master>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------m7QUOiwKcAfVY02vm0zfaXUG"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625095846.4e2tl3fbduc24erg@master>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 6798C100007
-X-Stat-Signature: dpibik7ihhf8gpiujcg91fkckq5jikfn
-X-HE-Tag: 1782458134-99256
-X-HE-Meta: U2FsdGVkX19e89Gwq5O+wWpPOeQ3FqCWywb5heP761jEducjO7z9pK3sIfJqjVoDBr0VBYsRRJkJ1A9fpgYXj0QTKymBNaeTEhFRTRA0x0pmmBWbmfffzlnUCV3MrqmOiLyfvyMHsnj+2xcCtuuQfSD2e9yt3b8/d+2qI3utMY9JUPKgbwNdpR6XWWzZHUQsh/IdAPCt9PnT7VX5DZTQ1n0mF8dWqDw/KUMeSFyO46h1XwhnJqiUyO8At+1tUt2+cJ2jzjZJkKu7G+3PpbSmSJ15Cn5FqbT8dEOnYM+y+J3NT+oDGqQ/ddkCY1osbM9+c9h8jDWJO5wggIBiQ/RmniRdBTDFKNJYeX18Wrcon8I6NINlCNdnICJIEkWuEdKf6DmjFwQIjgUHN43NK/2j4lW2/AP/Hqq7d4F0XrrZtiDfIOwTHzpuunkRXAV9xWTfB5/e6RsuaJvGEpnHWg4P8VjEOzEMG7VXwvuIKwi1WxT/o7My2jJQ4DfIkBWbdBElyyfACinCve9s/Fwxts6hQXasytESO9rC8KMvE8Hm/GLRPqyvHSbPw2sZouYBcLJuT5724ewjEOEGhCIka9IHro6rOwDVKG8jJwWwbwwErhhcw3acrmcAAdqmQuiNhAJFpF3K/qiEmTYO42s9VgiJbIfLh+H73ih2gFxbLXiPA/26fWC4mNokiTkmnLmRqtmsBPXtAMgdSY1en+HzeeHHuVEq5C51PpwZ0GF5JFIhfvEiuE2A8TtOC6ZpMLN6CBHAj9CGUJeIdALXbLIKhWRm49zJu1cppWmThMakRMDVSrgcazW1TAiwUsBEXpZnSGNtVTZosSkckM3IljWEKj5dbzawTuCfA5xL42IP6u2qIMbUrKHLv0vdE3zBEDeYYotwen7eU2nixjNU5CrBHsRfjlk2Sl9uF6Ov7y4lJcPRKBVpi2cT2fgRaXzea2/3gN27KKw/eIzyvNeYgc+roy0
- fW6OMSqZ
- sVbZVtXDCYW6TY3dNYWTexJVpTCZComY2j1LfOGBnX8hnvzbcENw4dIQJa8MrI81/d26qL+Jf0r1253vGFHi4EA4WxPFyqH6E4IWYu7XhVx6LoN7ch5gjBgGNFalXy6lb5PU70//Buo6F3vzrnilPhkZUU07PlqmuhYPG4yg8KxDk3eZ5RSulO02LZhOTiHGCZ9KUSDFyjV6cB7zTzwHai6w6qoM3STpm2eU0EeuPsDftLPJeYfs9b9F4MCBruSW2/wtSXj3c/sGOvnuLozsNhDsRh/BiKXHhXCpQi+k1g8pEg662EqRPxnVvGSgwLkv/FLHD2G3JKuBw21HGQjCfH2dgOO5uBDVe/JxWnCOdqit8ch8jU+og/99dnbFDW36KiS8HgT43Tbe8Q6gjBXaYALLoSxFpl2msB0V6GuUfttK9aU73vRs5yg7JSvxIWUgcK2wN0cnLVE8JJa1bIxWKLHGpLairUfPgfNBhTlbvVfWSddGKUrFdLyvMmw==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 11C5540007
+X-Stat-Signature: 1m5rw3ig6maanyku6bgaoqaaqeg49awp
+X-HE-Tag: 1782459638-306605
+X-HE-Meta: U2FsdGVkX1/WxE7tBNJ7CdWyOy8K4Krk+zqj4PrwtIXjMVC5WiVjxspDiipaSX0aQSSLN1G6DYGuha4mG4dPUvxw53VkA8UHgK9JzxRRj41fr4jwFYSJD7FIyM1OcZgwfEKqi2WoqZ6h7zH7OAZnED3O+AbZyHPyuxPF+jnmQPGOdj1RZ7gSzuSF+YrP5htGxm9CLEY1uzikPu7Bm/N7GBIQX5yQ3z7ItmWJixyVu74RgBdumS9TOe8uYAlnnH03nvB4xRoEZq1UctJczIwxVxRkEEN+Qh0CrP2jVirWui5+ZYPq2eunKXuwjTtdvLZ35boHFlReoEOsy9oy8XKzW0F3FZoO9m0gXoVI2Y+dDJoCo958Iff1AQXsylMrvInu3VqCkGzFXGKipYhS8f3YLZ6uAKaPWgRhHl7d3lfjLS6Y8Pn8d91o9UrxVZwT6sD3P2Ay0pAv5acB/LSWC9IipHfK99v5IFTSoTug7EvyuO0AjQ0XhlAHfi3EoVU8K0QMeTUKXPcIah6/IuozErAs54/7jll7QWZa7ZsJUsW7bFvgw/w7pcuSeXn+z8mHmPlx0k/6TTWgwHK8E+UawlruL3hc6D4IJJ0cgw/UcMr7cUg0+vhDjdKQKH94s4bTwuJGOfzRu0MWFeg6R7dfge3qXoRlH8+rbII4A0ycr/fKGZAVViSblsF3sr4s+G7H3QEPKBsIc3S0TNX2SC5+AkX3eEYiA3oXMNggJ1+xLVMEaJWxKDQHJ+Gd8bF+37O6obJIx5fH4ce91p/xfWyPYd3o6b29SJzcZ/vllMMzU0RRZi2R1vnoGgQJ8DnQLKrmHzs2DTGcV9LZO9PIuPwzo5iZTD72tZBL4SRwtaBm6kMngrPoNOPkZDuuidHJOEOq5JgplJlXkbDOdqr18SvdNVqfdZz3UOBxDdUWd/jSUanuL+UzeAgAtGk4IB4kDgAH/lJsMk8OOizYXAXcLB5z3Yf
+ R/oi+h84
+ PihB/sO6E52mmuLBid74juHGjdsJ6t8wreiexDf0zyVEO9SUtqPnTeQoLpqWPESghSXF+iF4x/NIg4oRRB6Fila8VPRjsy2+V0ypI/DxyzuN1gbUACFyqZhFxYH3BqKnUae1mo+PdyfGmrpBcQ4LX2ji4kVd0iTGU70CCVl6UxU6ZqfzGvL8XRHWKJSkZm2oM6xloyb/xFPWZhJIFXvQS3BakvR/lJGSylu758ic45stKJHGKEe+j3V88UsTle1cOARL3YXwGyI5fO2zTLDIA7AuQjBQTHDigZuHPd82kHZBJ75pHjWsWO01920A7wJzkDQPWqHcCEg+uVWCQlBxDhBM/whmlk7eujjCh5xJ9bEbmB+6msSgQ6NE2ZADflbcNd6Yumy98I197i7eZ18U7mf7+Vs5fe007z/e8ZRlnwGWFURY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,114 +94,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------m7QUOiwKcAfVY02vm0zfaXUG
-Content-Type: multipart/mixed; boundary="------------5KW8ae2yJZ4W4qD8pteHlVMf";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org,
- david@kernel.org, kasong@tencent.com, shakeel.butt@linux.dev,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Message-ID: <dc5e47af-1434-4e43-8ca7-f90de3dc3f63@kernel.org>
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
-In-Reply-To: <20260625151554.55105-1-qi.zheng@linux.dev>
+Hi Wei,
 
---------------5KW8ae2yJZ4W4qD8pteHlVMf
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+On Thu, Jun 25, 2026 at 09:58:47AM +0000, Wei Yang wrote:
+> On Thu, Jun 25, 2026 at 10:39:40AM +0300, Mike Rapoport wrote:
+> >From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >
+> >When ZONE_NORMAL and ZONE_MOVABLE could overlap because kernelcore=mirror
+> >didn't reduce the span of ZONE_NORMAL, initialization of the memory map had
+> >to skip overlapping pages during initialization of ZONE_MOVABLE to avoid
+> >double initialization of the same struct pages.
+> >
+> >Since kernelcore=mirror works now the same way as other variants of
+> >kernelcore=/movablecore=, and adjusts the span of ZONE_NORMAL, there can't
+> >be an overlap between ZONE_NORMAL and ZONE_MOVABLE.
+> >
+> >Remove overlap_memmap_init().
+> >
+> 
+> Do you think this is valuable to mention the double init for the overlapped
+> range?
 
+Not sure I follow.
+We had this weird overlap_memmap_init() exactly to avoid double init.
+ 
+> >Co-developed-by: Wei Yang <richard.weiyang@gmail.com>
+> >Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> >Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> >---
+> > mm/mm_init.c | 24 ------------------------
+> > 1 file changed, 24 deletions(-)
+> >
+> >diff --git a/mm/mm_init.c b/mm/mm_init.c
+> >index dce9dc9f2302..6f0a71ccca30 100644
+> >--- a/mm/mm_init.c
+> >+++ b/mm/mm_init.c
+> >@@ -783,28 +783,6 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
+> > 	__init_deferred_page(pfn, nid);
+> > }
+> > 
+> >-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
+> >-static bool __meminit
+> >-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+> >-{
+> >-	static struct memblock_region *r __meminitdata;
+> >-
+> >-	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
+> >-		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
+> >-			for_each_mem_region(r) {
+> >-				if (*pfn < memblock_region_memory_end_pfn(r))
+> >-					break;
+> >-			}
+> >-		}
+> >-		if (*pfn >= memblock_region_memory_base_pfn(r) &&
+> >-		    memblock_is_mirror(r)) {
+> >-			*pfn = memblock_region_memory_end_pfn(r);
+> >-			return true;
+> >-		}
+> >-	}
+> >-	return false;
+> >-}
+> >-
+> > /*
+> >  * Only struct pages that correspond to ranges defined by memblock.memory
+> >  * are zeroed and initialized by going through __init_single_page() during
+> >@@ -891,8 +869,6 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
+> > 		 * function.  They do not exist on hotplugged memory.
+> > 		 */
+> > 		if (context == MEMINIT_EARLY) {
+> >-			if (overlap_memmap_init(zone, &pfn))
+> >-				continue;
+> > 			if (defer_init(nid, pfn, zone_end_pfn)) {
+> > 				deferred_struct_pages = true;
+> > 				break;
+> >-- 
+> >2.53.0
+> 
+> -- 
+> Wei Yang
+> Help you, Help me
 
-
-On 6/26/26 12:15 AM, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> The mglru page table walker batches per-generation size deltas in
-> walk->nr_pages while walking page tables without holding the lruvec loc=
-k.
-> The reset_batch_size() later folds those deltas into walk->lruvec under=
-
-> the lruvec lock.
->=20
-> The page table walker can run concurrently with the memcg reparenting p=
-ath
-> as follows:
->=20
-> CPU0                           CPU1
-> =3D=3D=3D=3D                           =3D=3D=3D=3D
->=20
-> walk_mm
-> --> walk_page_range
->     --> update_batch_size
->         --> walk->nr_pages +=3D delta
->=20
->                               mem_cgroup_css_offline
->                               --> memcg_reparent_objcgs
->                                   --> lock lruvec
->                                       lru_gen_reparent_memcg
->                                       --> reparent child folios to pare=
-nt
->                                       unlock lruvec
->=20
->     lock lruvec
->     reset_batch_size
->     --> child lrugen->nr_pages +=3D delta
->=20
-> This will trigger the following warning in lru_gen_exit_memcg():
->=20
-> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
-> 				   sizeof(lruvec->lrugen.nr_pages)));
->=20
-> And the user-visible impact of underestimated nr_pages in MGLRU was
-> premature OOMs because MGLRU does not try to reclaim memory when nr_pag=
-es
-> reaches zero, but there are still more pages.
->=20
-> To fix it, make reset_batch_size() check CSS_DYING under RCU before
-> flushing the pending batch. A non-dying memcg keeps the original lruvec=
-
-> stable against RCU-delayed offlining; a dying memcg redirects the delta=
-s
-> to the first non-dying ancestor.
->=20
-> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
-> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a=
--a53a-1e28cc894f0b@smail.nju.edu.cn
-> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios"=
-)
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ---
-
-besides some nits mentioned elsewhere in the thread,
-the approach looks good to me, so:
-
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------5KW8ae2yJZ4W4qD8pteHlVMf--
-
---------------m7QUOiwKcAfVY02vm0zfaXUG
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4nDAAKCRCGXBN6rc5S
-1vJdAP41DQ/Adn/NHl8DrlVUlhHpdYGNd+BlOc6FRwocVOTrGQEA/zSmKeZqWesI
-TcJfcwrQQoZKB/v7BJGNTnJRLM7YEg0=
-=xY2b
------END PGP SIGNATURE-----
-
---------------m7QUOiwKcAfVY02vm0zfaXUG--
+-- 
+Sincerely yours,
+Mike.
 
