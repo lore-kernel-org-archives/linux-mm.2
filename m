@@ -4,102 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82F29C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:09:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F51C43211
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:11:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55C976B010C; Fri, 26 Jun 2026 13:09:44 -0400 (EDT)
+	id A43FE6B010D; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50DB16B010E; Fri, 26 Jun 2026 13:09:44 -0400 (EDT)
+	id A1B5A6B010E; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44BA66B010F; Fri, 26 Jun 2026 13:09:44 -0400 (EDT)
+	id 8955B6B0110; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 154C86B010C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:09:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CC2D8ED2B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:09:43 +0000 (UTC)
-X-FDA: 84922700646.21.8094FEF
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 621D66B010D
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C075CA0324
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:11:39 +0000 (UTC)
+X-FDA: 84922705518.16.E69C63B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BCAA918000B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:09:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UEqtGlIn;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0E093C000D
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:11:37 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lKKCG/0y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782493781;
-	b=wRjYhdNWyLpuCrHhmIbfnZthZ5QKR8BZRRu9ZQQpv3BcWL8fS1XZKLQJjodFw9wPcm2ylc
-	UingQHhsCIAgu0QD6t6iHr7/uyBfwAlllufQYIUdiomxtPbj+2FR1KA0NpODCtsYKaeATT
-	BiPhwZiVQ4KfyyjJ1oqqKJunr72ewW4=
+	t=1782493898;
+	b=CATc3WVfOiWqjcWerh+RDvClQ7KUIxx59GAt99E2klltgPh95qwLXreSlmng5VGR6ZM4GM
+	rGaEx4SBbdj9GsO7wj0975SdnCAKEh1dBWvQK4xZ8r0uEkrQslf4O+iCpHwuy3Qqxff0ym
+	RYa2eUfu7mbIxfNEvAqZeco0xOjhDoU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782493781;
+	s=arc-20220608; t=1782493898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yHkZooWF8Ur28rAu1FbBgAaf/eWl4Mro8CPDk/C5t70=;
-	b=YifrJNFQ0TboaU7+P1gNjwoQIoYBjU6jxB9CaCZpewVf4fa9dRjj2/86v3yWpMtyqFg/UA
-	t5kI51e/d4SrTKLtGcSjxQxxSyy20a2HbccPMbU1YWV8RiSxw7tKm9Abk8BW0Gc/rzlERt
-	X1sZHuX3Ll+7zYK/hStortJC4A5U/2M=
+	bh=M1TSg3m88zL9U7ax0KrJL2CCGkfVpyIHBvazIemMV5c=;
+	b=I8UV1/hQQ5fx+GqBOqwi5jj2+GKDoZhcaV/VIzG+vePnWWXqMm50hvFIQD7F1uthFaO/uy
+	htfXZY5l6jqeKpNs6ZPuxfrbrV5lU20qIJqjEZKrCCbdLFzpJf1aShudCuLkCstg5TghJb
+	Y6aOF65wTwefyXuJteOx5rGfMV3b2gc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UEqtGlIn;
-	spf=pass (imf16.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lKKCG/0y";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 400FF600E1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB5211F00ACA
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:09:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D3E1600C8;
+	Fri, 26 Jun 2026 17:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89EE1F000E9;
+	Fri, 26 Jun 2026 17:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782493781;
-	bh=yHkZooWF8Ur28rAu1FbBgAaf/eWl4Mro8CPDk/C5t70=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=UEqtGlInS/nNXROmRFoFqBWzjp/Utzbrjc+IMajKfak8UQw1c5V3mQdBgEE5rr9wa
-	 fgOo5QypchemewqU1PTnzTv1iuc1Z4Ue39X6hPnTAQOY5PzKEZf2zka2V9gKGxv/i0
-	 Jfb8xCs7t9oClbUbACgTbpw/RbTh/Wd5GWaUBQ+kGzAnJlLAVk8bUwnLxLs+BY2yjw
-	 MgeWCI1+8d21MtxRXnI65AepWQwx0yHlMD5wzW37Dx6Xv05l9vbDyARlcI2ayKx2pC
-	 AEBOIYcl+mKFH48ip3fVm5RpG1IhHLcIvRHJIUZFeVKN7PdfVJYAjerwtd99mwnViw
-	 qUxY3DXj0SBbA==
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-697763eeafcso2015769a12.3
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:09:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrqDtHOIBH5zePTnanPGN8824DDKXN4UjUQNpNCeaUSp7T8LqOxNdbvtJy+qkeQXB4O3GqJsiHtNA==@kvack.org
-X-Gm-Message-State: AOJu0YztjaILb3DwciR5wyRr8y62qB3BIz0N7t0kBvA1ecsmSLsMEQW8
-	HGJZgSiVaeNUgUokIRutTU6ti+PdH9x0sj+u/cbi45sTaPQKexMsCnSTpE1hZcmxDQQYFhUAQF/
-	7qmj/LZM6B0APGEBIq2ulC+87QPTsvkU=
-X-Received: by 2002:a17:907:c48b:b0:c12:34f0:f7c3 with SMTP id
- a640c23a62f3a-c1234f0fa0amr79606766b.54.1782493779839; Fri, 26 Jun 2026
- 10:09:39 -0700 (PDT)
+	s=k20260515; t=1782493897;
+	bh=M1TSg3m88zL9U7ax0KrJL2CCGkfVpyIHBvazIemMV5c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lKKCG/0yHKC9L57TsKeQCQ7hpezVrAD50Shli5YkrEriDnPnkxMUX1GsztZ4ACfVs
+	 0xlD9FmOUH/iaD+VQm4ll8fVmRalcWXJBaXNbIDG1WCMZwjOYjHQ7kRMbi6mqPLE/H
+	 GdGk56ZM93qNgQizn75ELcyu4Z5+sqbEKjqI7k04LKr4l6b0tSRlf2GTcpluIVYs0e
+	 ezI9goimgZyRTWIPUcev8VQS/fIyioWct4jaJIGslxcaC5mR7jjXVvo1vZrNKG13qZ
+	 d+voLCSPev5s0kTRt0EUw5pvAPXYkbg6Fi1A6Ta/1IpEzbNygVjXhKJE0ZebhaVhlQ
+	 UlQHNbIyqu6qA==
+Message-ID: <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
+Date: Fri, 26 Jun 2026 19:11:33 +0200
 MIME-Version: 1.0
-References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
- <20260618044857.69439-3-jiahao.kernel@gmail.com> <ajnGTt8tkbAWX8Oc@google.com>
- <0916e673-861f-b472-7417-afbffbcc98ad@gmail.com> <CAO9r8zPSZLaqLXw87V3q4tZa8WD7xCympKqfLMLB+o-++GksJQ@mail.gmail.com>
- <91297bc0-268c-e9c2-57ae-6066eee5df2f@gmail.com> <CAO9r8zOYgjbuG5i+LrCcMK764nVpOS+muo-5Q45ZFdiVus-dTA@mail.gmail.com>
- <f1cd1ec9-48b0-1b03-0514-6c9958f3c77f@gmail.com>
-In-Reply-To: <f1cd1ec9-48b0-1b03-0514-6c9958f3c77f@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Fri, 26 Jun 2026 10:09:28 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com>
-X-Gm-Features: AVVi8Ce7xUNuZRw0D1P7C4xZVj0W7f5nf0PB5oHQs8hdjJ7b2fS6Xj-vyiTnFw8
-Message-ID: <CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com>
-Subject: Re: [PATCH v4 2/5] mm/zswap: Factor writeback loop out of shrink_worker()
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: nphamcs@gmail.com, akpm@linux-foundation.org, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+Content-Language: en-US
+To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
+References: <20260625230029.703750-1-shakeel.butt@linux.dev>
+ <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
+ <aj6re83IC84lkFL0@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <aj6re83IC84lkFL0@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0E093C000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: BCAA918000B
-X-Stat-Signature: mszg7tf5t3onja86t7sej649hnbr9w7a
-X-HE-Tag: 1782493781-78910
-X-HE-Meta: U2FsdGVkX18ucIeLWhSkJSoq8F8LeZho/vp1aCRAg0HWDmBtRWrr2T0YgsUpamsu4WLoFwB9Z1Vi0fh+8+dsnLfNe7ECwCRkwJ07uDOhg1KDxTBY+5BDhyFuu2Kl6FiUdPxWRiza2T9CI7QA2OkH4TLc59BXLTkmkdWwFVq4xpfcodCCp9s17+0HdbReU0ENvGQpw5ko9oP1x6cORhcwgU3Muf+A7If6vZR5KfuYqAL8wWJeUcZ4awWTOOfuHJ4wedu88S/e5meQgHqGOwWErqM7k+fJukeqgM4Y6dfgh4ZJxf0KWZSbCgPAym3Ve1K3LJelfJbT20nLcnpc38P/uWxvdmeE8lwJffHphHb1rNJPBuaOe2Xx5PZSHD/S0XDIgw4u8vsh2SpLATFBn1hr110ZlTA95ZUil/56DMNU1O0PMVUsYvPXrFyENVdyRuG1fR3c8bSCdE8TPn3hMtAneLQo3a+XHeZR63+UD77ef8ZMdliUudA+exm4EnvjCs2RBfkJnzgLuNvnniDOc8TUqUkauxGmJlA+hUtRNN8O0cTgh8vG8lquWJm/J8RuMjD3Nt5Ju/ES/SqxSWC8q0UIRmNArqaAWZqCXNaWPmtlujMjbrH5gp/Yk7UXiZgUEfk8mOCpA3WezDW4KVvA2cJmv5sry6UFrJm6nVu6iq/mQu5uAGZvVQFVIlr3qjtMlSKjLkiOrQXAaKzXUKF00aN3D5rQMF4kv/EY5Wo7FtaRFwtn4+5JYRlQhBfjbRB6bI+1mbWOQD0T4jylMddDtWLEEEcDC7/B8dOUjmKM/JDdCj5PTk9l4bUAAEZaokpW1vA5fr5jlE3uJyNVXQuSk/C/biEV2oV66Lw1H5YWGV5BSupJ4FKTgLVapQpJ4RiWkMTW75k0INNzArsUy0W4GhaNvMKnaLfbQP/j5oHqNfCicZoMySYQj+P5vYZKz+1qyxRGhB4GgSlqpxUDFkdBN0p
- JICgcEpy
- invwrDZEXnQ6mBk7NseV3a89AzhEwVbJyYOVZL3KzXY+W83+S3ftN8ja5YQ+9eMZaNKlXQgsCvsB7bvxpoHOb6/01y1AgOakAbIBFCQbk7eTLfxSRFkbnybhomy4gY9IqaEJdL1F7n6dip6aax4+sf+IiwjDUGxfUaymts/kncOFgwkMm0qqAoeCqcb/Vp183bijdnIpY+HFExc2HD/EQ5952luvxuSm13zl06fEfqD9n5tSvAQeiTcqIt/ZuFTIZZqegCPWAj3Nu0SDbk0r/pYNjhvDGhCviG0Y67cMRx7HkFGm2Po5C4FlujT+5GXy2C301/ss43NvvQX9FXdZ909Yl874TT16mpN5FAYNiLnZXs6+MzBrQajdI4yFaPwzDRwWz8Xr4m4W2JZ3fBVm3+iWgzA==
+X-Stat-Signature: 1fwd4imw5k4hsgzotww7333k4farbpsq
+X-HE-Tag: 1782493897-832670
+X-HE-Meta: U2FsdGVkX1+LFb6O5kJM/EDHJ5RZ2fSIdkAupdkKXrbDsjaFuwqBHELYbO2fYVRP1iB3Xty8Izy8qUShf3Gi0nmscgXwCa66RHLAX5emLT3CNWIG7P0mPl7y7AwEA4J8I9qM7FVO289wILweLGxhJEWfSh0ohteHBawM/pDdR9AiIs8vf9i2IssWCYt1Jvuex6oCfsbXNeJ6bfu3IsywTkgsjuFjTIahN4b6DsGFICgoBbA8dfkIAGdDPByF+XLHTZ18TvzxjS/Q+rFtyopGvnybrdwIRPA+Qw3mlwS9JmZndpUkC/bAYi9dlJCdp8mO56AwDyXfKyixmLCvppRXQ+wYa4/JxvbAAEExF5qMayGcp44YGAy+d7fY3lLwFAaspQwtyXxLBDdvice6owYFebDMdGHZpUDVtWucwWV6AR8l1LWM9UF4dsCGROvwt+HDPBh7KL+YZPKMdik3qsRNhy0DmbEjrWuYZiiWdHveiy1ilaNAUhkwzD8VEFv6MLtX/YtFCN4v+P9pv9XBgn/ZJS9tYUTt1ShEESp14hF44JbzOL8vzwVh/x9kbDROtPI4N+nvLULp4y3kzZkZtGKT0j5V3aWQrB9mQdGrt4/ScrMPB5zCd8jfWGhiJeFwvThpKk4VSD3RtGbxeg1oeNYFrajSaebXiYC0BIwLFlaSnyjDrnlQPaMDZCrDJO8yxNdOmoiYFODHmoSZr4drIkKE6PS91LJhfoYb1UNezGT2I65kKYII7Ms3OTh1SNsvVQABae2k3Vp8xw8vmDcuORfKVHw9+H7Gxz6RBzwvvGPbeMwpOh4biApzqSzD0JeGdKnW+hvQd3MqxgptU+PcJjpN4G3CNvpBLK4ZrEJ+filcHablFN73VYFfoCItQsg4/iGrQHLQpOXpoPpfkR3lrf3C19ZY7m80DRyYrjkd/c5SDGxJGwf1TIiP9jpgYY0cXBVKPyWXyWBaM1V4TOn9yqb
+ Pv1Ts8rK
+ JIxXmojH5zZIUz7o+vs25rHBzsi30zLc2BCsjn1y8UK8Fw3QpYQ2J7+l4phNgg2X44VIhASvsjUPa7mZyrgZc+rG6y1jqg6ExmzE+JIMbiNDPFS7yjXaNeAvv9e0YcEmOZ1DPr0mejIt2mJ5qtxiu4cfEV0zcwkQ0dn2bChVxBqW3SerN0zD3b4JRCjiDhT/mk8u3S8St5dlRd9JDswNUmQC6PWSo2RgmUr6xVCfbejKyoYonSpADDJWLAD7CR2Ct1KTYKPGPA3Nb7KZ7AyIzUJH5oGcCx1SKLLS9/BH3r3+oEqebQl4QezcSOrz2+LkhCrRPNG1XsKdytMAG6+Nbd37nspjbwFaYPF35
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,193 +139,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >> /*
-> >>    * Take one step of a memcg-tree writeback walk driven by the caller's
-> >>    * iterator, and fold the result into @s, the retry bookkeeping shared
-> >>    * across steps. @memcg is the iterator's current memcg, or NULL once
-> >>    * it has wrapped around after a full pass over the tree.
-> >>    *
-> >>    * The function returns -EAGAIN to signal the caller to abort the walk
-> >>    * after encountering the following conditions MAX_RECLAIM_RETRIES times:
-> >>    * - No writeback-candidate memcgs were found in a memcg tree walk.
-> >>    * - Shrinking a writeback-candidate memcg failed.
-> >
-> > Orthogonal to this patch, but I wonder if this can be simplified. I
-> > wonder if these two conditions can be replaced with "shrinking a memcg
-> > that has zswap entries failed". The "no writeback-candidate memcgs in
-> > the tree" case seems like we should abort right away instead of
-> > retrying?
-> >
-> > Nhat, WDYT?
-> >
->
-> Perhaps something like the following is what you had in mind? I've
-> drafted the implementation below to make it easier for Nhat to compare
-> with the previous behavior.
+On 6/26/26 18:49, Shakeel Butt wrote:
+> On Fri, Jun 26, 2026 at 01:22:09PM +0900, Harry Yoo wrote:
+>> 
+>> Hi Shakeel,
+>> 
+> 
+> [...]
+> 
+>> > What happened: a KMALLOC_NORMAL slab's obj_exts array (used by allocation
+>> > profiling / memcg accounting) is itself kmalloc()'d from a KMALLOC_NORMAL
+>> > cache,
+>> 
+>> Usually KMALLOC_NORMAL caches don't need obj_exts array, but yes,
+>> this could happen if memory allocation profiling is enabled.
+> 
+> Yes, we have enabled memory allocation profiling fleet wide.
+> 
+> [...]
+> 
+>> 
+>> > Fix it structurally by removing cycles of every shape: serve the array
+>> > from a cache strictly larger than the one it describes whenever it would
+>> > otherwise come from the same or a smaller cache.  Every reference edge
+>> > then points from a smaller to a larger cache (here kmalloc-1k's array
+>> > moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
+>> 
+>> This will fix the problem.
+>> 
+>> But this will waste memory as we need smaller obj_exts array
+>> as the size gets larger.
+>> 
+>> We should probably create a new kmalloc type to avoid cycles instead?
+>> (needed only when memory profiling is enabled, though)
+>> 
+>> That would also prevent recursion even further.
+> 
+> Yes but I assume that would add kmem caches even for users not using memory
+> profiling. Anyways, I think that is a separate discussion. Am I understanding
+> correctly that you don't have any concerns with this approach?
 
-Hmm I think if we pursue this it should be in a separate patch or even
-outside of this series, ideally with numbers/proof that it's not
-introducing regressions to the scenario that lead to its introduction.
+Umm, the memory waste is a concern?
 
->
->
-> >>    *
-> >>    * Return: The number of compressed bytes written back (>= 0), or -EAGAIN
-> >>    * once the retry budget is exhausted and the caller should abort the walk.
-> >>    */
-> >> static long zswap_shrink_one(struct mem_cgroup *memcg,
-> >
-> > Nit: zswap_shrink_one_memcg()
-> >
-> > BTW, the existing writeback logic has been broken for a while now when
-> > memcg is disabled. I think we constantly hit the !memcg case and run
-> > out of retries. Not sure if your patch changes this in any way, or if
-> > you want to fix that while you're at it :)
->
-> Yes, I'd be happy to do that. However, would it be better to submit a
-> separate fix patch or combine it with this one?
+Minimally I'd now want to only do that size bumping when allocation
+profiling is enabled. Ideally that means both configured in and not booted
+with "never".
 
-A separate patch. Feel free to send it with this series to avoid
-conflicts, but probably as patch 1 as we'll want to CC stable on it.
+We probably should have done that already in 280ea9c3154b2. Because AFAIU
+memcg-only obj_exts array don't have this issue (or maybe they do have the
+[1] issue? Harry?). But if memcg-only should keep avoiding the same size
+bucket, it can keep what it was doing and only memalloc profiling would do
+the strictly larger thing.
 
-[..]
+Suren's input would be also nice to have.
 
-> /* Track progress of a memcg-tree writeback walk. */
-> struct zswap_shrink_state {
->      int scans;
->      int failures;
-> };
->
-> /*
->   * Take one step of a memcg-tree writeback walk driven by the caller's
->   * iterator, and fold the result into @s, the retry bookkeeping shared
->   * across steps. @memcg is the iterator's current memcg, or NULL once
->   * it has wrapped around after a full pass over the tree.
->   *
->   * The function returns -EBUSY to signal the caller to abort the walk when
->   * either of the following occurs:
->   * - A full pass over the tree found no writeback-candidate memcg.
->   * - Shrinking a writeback-candidate memcg failed MAX_RECLAIM_RETRIES
-> times.
->   *
->   * When memory cgroup is disabled, the iterator always yields NULL. All
->   * zswap entries then live on the root list_lru, so NULL is treated as the
->   * root memcg and shrunk directly rather than as a completed tree pass.
+Thanks!
 
-I think this chunk should be moved above the code returning -EBUSY
-when mem_cgroup_disabled() is true, and probably made more succinct as
-it should be obvious.
+[1] https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
 
->   *
->   * Return: The number of compressed bytes written back (>= 0), or -EBUSY
->   * when the caller should abort the walk.
->   */
-> static long zswap_shrink_one_memcg(struct mem_cgroup *memcg,
->                     struct zswap_shrink_state *s)
-> {
->      bool disabled = mem_cgroup_disabled();
+>> 
+>> > No slab can be self- or cross-pinned, the tear-down recursion is bounded
+>> > by the number of kmalloc size classes (it terminates at the large-kmalloc
+>> > path, which carries no obj_exts), and profiling/accounting coverage is
+>> > unchanged - the array is still allocated, only relocated.
+>> > 
+>> > Reproduced on next-20260623 at the same geometry: churning
+>> > kmalloc-512/kmalloc-1k under vm.mem_profiling and then shrinking leaves
+>> > kmalloc-512 with thousands of unreclaimable objects without this patch
+>> > (8056) and at baseline with it (847).
+>> > 
+>> > Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+>> 
+>> Perhaps Cc: stable? v6.12 and v6.18 are affected.
+> 
+> Ack.
+> 
+> [...]
+> 
+>> > -	if (s->object_size == obj_exts_cache->object_size)
+>> > -		return obj_exts_cache->object_size + 1;
+>> > +	/* compare object_size, not the cache pointer (partitioned kmalloc caches) */
+>> 
+>> This comment is no longer relevant, by the way.
+>> 
+>> "compare object_size instead of cache pointers because there can be
+>>  multiple caches of the same size" doesn't apply anymore.
+>> 
+> 
+> I will remove the comment in next version.
+> 
+> Thanks for the review.
+> 
+>> > +	if (obj_exts_cache->object_size <= s->object_size)
+>> > +		return s->object_size + 1;
+>> >  
+>> >  	return sz;
+>> >  }
+>> 
+>> -- 
+>> Cheers,
+>> Harry / Hyeonggon
+> 
+> 
+> 
 
-No need to store this in a variable AFAICT, it's a static branch and
-it's clearer to just call it directly in both call sites imo.
-
->      long shrunk;
->
->      /*
->       * If the iterator has completed a full pass, update the shrink state
->       * and check whether we should keep going.
->       * With memcg disabled the iterator always yields NULL, so fall through
->       * and shrink the root memcg directly instead.
->       */
->      if (!memcg && !disabled) {
->          /*
->           * Abort if no writeback-candidate memcgs in the last tree walk.
->           * Otherwise reset the scans count and continue.
->           */
->          if (!s->scans)
->              return -EBUSY;
->          s->scans = 0;
->          return 0;
->      }
->
->      shrunk = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
->
->      /*
->       * There are no writeback-candidate pages in the memcg. With memcg
->       * enabled this is not an issue as long as we can find another memcg
->       * with pages in zswap, so skip without counting it as a candidate.
->       * With memcg disabled the root LRU is the only target, so we should
->       * abort if it has no writeback-candidate pages.
->       */
->      if (shrunk == -ENOENT)
->          return disabled ? -EBUSY : 0;
->      s->scans++;
->
->      if (shrunk <= 0 && ++s->failures == MAX_RECLAIM_RETRIES)
->          return -EBUSY;
->
->      return shrunk;
-> }
->
-> static void shrink_worker(struct work_struct *w)
-> {
->      struct zswap_shrink_state s = {};
->      unsigned long thr;
->
->      /* Reclaim down to the accept threshold */
->      thr = zswap_accept_thr_pages();
->
->      /*
->       * Global reclaim will select cgroup in a round-robin fashion from all
->       * online memcgs, but memcgs that have no pages in zswap and
->       * writeback-disabled memcgs (memory.zswap.writeback=0) are not
->       * candidates for shrinking.
->       *
->       * We save iteration cursor memcg into zswap_next_shrink,
->       * which can be modified by the offline memcg cleaner
->       * zswap_memcg_offline_cleanup().
->       *
->       * Since the offline cleaner is called only once, we cannot leave an
->       * offline memcg reference in zswap_next_shrink.
->       * We can rely on the cleaner only if we get online memcg under lock.
->       *
->       * If we get an offline memcg, we cannot determine if the cleaner has
->       * already been called or will be called later. We must put back the
->       * reference before returning from this function. Otherwise, the
->       * offline memcg left in zswap_next_shrink will hold the reference
->       * until the next run of shrink_worker().
->       */
->      while (zswap_total_pages() > thr) {
->          struct mem_cgroup *memcg;
->          long ret;
->
->          cond_resched();
->          /*
->           * Start shrinking from the next memcg after zswap_next_shrink.
->           * When the offline cleaner has already advanced the cursor,
->           * advancing the cursor here overlooks one memcg, but this
->           * should be negligibly rare.
->           *
->           * If we get an online memcg, keep the extra reference in case
->           * the original one obtained by mem_cgroup_iter() is dropped by
->           * zswap_memcg_offline_cleanup() while we are shrinking the
->           * memcg.
->           */
->          spin_lock(&zswap_shrink_lock);
->          do {
->              memcg = mem_cgroup_iter(NULL, zswap_next_shrink, NULL);
->              zswap_next_shrink = memcg;
->          } while (memcg && !mem_cgroup_tryget_online(memcg));
->          spin_unlock(&zswap_shrink_lock);
->
->          ret = zswap_shrink_one_memcg(memcg, &s);
->          /* drop the extra reference taken above */
->          mem_cgroup_put(memcg);
->          if (ret == -EBUSY)
->              break;
->      }
-> }
->
->
-> Thanks,
-> Hao
 
