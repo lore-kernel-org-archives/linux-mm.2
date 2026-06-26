@@ -4,156 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3ACDCD8CB2
-	for <linux-mm@archiver.kernel.org>; Wed, 10 Jun 2026 12:28:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82C96C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 13:23:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B7016B0005; Wed, 10 Jun 2026 08:28:23 -0400 (EDT)
+	id 508296B0005; Fri, 26 Jun 2026 09:23:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 267FC6B008A; Wed, 10 Jun 2026 08:28:23 -0400 (EDT)
+	id 4B9186B0088; Fri, 26 Jun 2026 09:23:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F5A6B008C; Wed, 10 Jun 2026 08:28:23 -0400 (EDT)
+	id 3CEBD6B008A; Fri, 26 Jun 2026 09:23:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0127D6B0005
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 08:28:22 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9A4831C2192
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:28:22 +0000 (UTC)
-X-FDA: 84863930844.28.D3D6379
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010007.outbound.protection.outlook.com [52.101.61.7])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 79C2F8000B
-	for <linux-mm@kvack.org>; Wed, 10 Jun 2026 12:28:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 12F8D6B0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:23:28 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA9921C6369
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:23:25 +0000 (UTC)
+X-FDA: 84922130370.10.75B91A9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id ACB0680002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:23:23 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PB04Gie6;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of shivankg@amd.com designates 52.101.61.7 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1781094499;
+	dkim=pass header.d=arm.com header.s=foss header.b=aTQKqclQ;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782480204;
+	b=EOR7CBZqCsPKPiZqRiEj5MIKW0p9kutOpjnjfmrJcfpciEzy1fbETrkXNVZJ0OhFKSRsR1
+	SiQ2U9Itnh4o852l1JRWlu6ULEyZhGzx1rpaXYlx1XaIRBTx50aUdw6yqVo7A9wvhqYHmV
+	iBbQ3rGNtHfB5kPCp1FaZlTAwKAlBw4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782480204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n5M9n6qDhAxsk+X7Y1Hj6xb3m+sIGhZYHr8FSdbaKfs=;
-	b=c1ctSBRzlBETlsHqnXIMZMRz5A2afEmeunm3jy5d+hcxwquBhWYNr9+pg6NBUoMKzy58wq
-	Db6HpspjuioDSLvNrblriEfevUIolOROYAmd4BejRVrTenU6wxA9D5M3ukxNcKUazRCF+3
-	4JGpRNXvzGGY5+0De77A+tbg/LD0o9Y=
-ARC-Authentication-Results: i=2;
+	bh=CtXlg3YxEAyeFBY59TYGUP8iUHZDPwsjspbYVny1m4c=;
+	b=GMnPeD3fSpQ8J9g7aIHcuHOIHYIUkMXEZ1pKx0yGrvBPJtKCJj9JfpMBphjaFKv/q+3gBU
+	G26a1svCtFRp8NT6fbmX4RX81/UT+Ufnnw+4crphFouwIvzm+F9Z8YAn6AMWX/rZHVbrFY
+	NqY8/4waU1WnCncv2t9V6P57wtzISiE=
+ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=PB04Gie6;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf02.hostedemail.com: domain of shivankg@amd.com designates 52.101.61.7 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1781094499;
-	b=ezZnHsg+jb/qlrn+DKBGZjheX5wp3viwbvVppU3q+lLaWIvEIKXk7mvfmxJIzaENqTmgo1
-	cdLzAgWI+7QM+gPOsHDow4YK3Fwi905HSuX2vE0QJuWHf2r5sp3eMyI1+2FAWfodz+wQCT
-	m2aqMrCXtjodiMd8N8kK7Lke8GVBf6A=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vibl+r+JRgBPAr171PbqM0suHmaaAGaa7TaacP2cVAeeyo/Vbhd7p+prilmihPwQ+7YdrgVshkow2l5ZGaRjLzFc/O4ZxFuGnPsz90KNLDf2gVF9dnG2AJ7Yv6h6vUpVfDZoOaNN0VZqrii3cIh4jrPixaOfGnQOY5vNRl7RhA8HBa8LiOCS5bM2aKoqZYVTge/lXmv9rhR+XgJhTGU1edq4+2hzjwYpGf4Xf1GOrlivWdsh3MQsxSbQ27NYr8eERJgaLBIQO/e1kJ0PLOpgwcAou8ohUTfGxGHe0mfxlgqvke8W9zBm3oEgZiVFK8aVGGUjf9MmzpcbL4RrXsSYGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n5M9n6qDhAxsk+X7Y1Hj6xb3m+sIGhZYHr8FSdbaKfs=;
- b=lkccx2jzGnoK+uyVX6Lt8T8bxMcV/abAfBWC4wfO6NeCsQJfA6kRyb2iQzyrAuY0nEAgSFpPfXZaAbYFhhEocPSq8OY0vVNaqKzNN1DlURm3v8YGwxq+0/6gfyfYYynlg5U0YRH6Cr4xKIK6X7/Bpe2ImcvWhi97/JyqXd2XoG2pL57VpGo3lBaygU0CDJNwKw9XadDNVcotQ63nEX81Ub4lDN1fT8ZbHjPPHDE7m+n7xsuoYRnPg7U1tf+UvF2f5/K1K+GzG5UJixjlEkOPpQMLkXksawB1rLvmQPE4ykDaOsuxgSVspwDw1ptNdjNmYXo3KBj0AwYNBhvRq5Tgog==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gmail.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n5M9n6qDhAxsk+X7Y1Hj6xb3m+sIGhZYHr8FSdbaKfs=;
- b=PB04Gie6lvKLNlxFAxy/XkGfCtt1w6XTsguKzuJ20weMK6mrYJRx91d8GNUJItoqHYZ/qTmTc/b7fqRdXUJPkvAdZwMFXy/vnCTU/4ZDoUzZyeMfWKDmh0ZL4X/dklz32jCMPeV7gMyd568D/crBUGcAZrMrDy3QkAQ5msnzbG4=
-Received: from MN2PR15CA0042.namprd15.prod.outlook.com (2603:10b6:208:237::11)
- by DM4PR12MB8452.namprd12.prod.outlook.com (2603:10b6:8:184::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.13; Wed, 10 Jun
- 2026 12:28:07 +0000
-Received: from BL02EPF0001A104.namprd05.prod.outlook.com
- (2603:10b6:208:237:cafe::8) by MN2PR15CA0042.outlook.office365.com
- (2603:10b6:208:237::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.12 via Frontend Transport; Wed,
- 10 Jun 2026 12:28:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL02EPF0001A104.mail.protection.outlook.com (10.167.241.135) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Wed, 10 Jun 2026 12:28:07 +0000
-Received: from kaveri.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 10 Jun
- 2026 07:27:55 -0500
-From: Shivank Garg <shivankg@amd.com>
-To: <kmanaouil.dev@gmail.com>
-CC: <Frank.li@nxp.com>, <Jonathan.Cameron@huawei.com>,
-	<Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>,
-	<aneesh.kumar@kernel.org>, <apopple@nvidia.com>, <bharata@amd.com>,
-	<byungchul@sk.com>, <dave.hansen@intel.com>, <dave@stgolabs.net>,
-	<david@kernel.org>, <djbw@kernel.org>, <gourry@gourry.net>,
-	<hannes@cmpxchg.org>, <jhubbard@nvidia.com>, <jic23@kernel.org>,
-	<joshua.hahnjy@gmail.com>, <kinseyho@google.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <ljs@kernel.org>,
-	<matthew.brost@intel.com>, <mhocko@suse.com>, <nathan.lynch@amd.com>,
-	<nifan.cxl@gmail.com>, <peterx@redhat.com>, <rakie.kim@sk.com>,
-	<riel@surriel.com>, <rientjes@google.com>, <rkodsara@amd.com>,
-	<rppt@kernel.org>, <shakeel.butt@linux.dev>, <shivankg@amd.com>,
-	<sj@kernel.org>, <stalexan@redhat.com>, <surenb@google.com>, <tj@kernel.org>,
-	<vbabka@kernel.org>, <vkoul@kernel.org>, <weixugc@google.com>,
-	<willy@infradead.org>, <xuezhengchu@huawei.com>, <yiannis@zptcorp.com>,
-	<ying.huang@linux.alibaba.com>, <ziy@nvidia.com>
-Subject:
-Date: Wed, 10 Jun 2026 12:26:54 +0000
-Message-ID: <20260610122652.129407-3-shivankg@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260609161742.phipg7eid3yy4j7f@wrangler>
-References: <20260609161742.phipg7eid3yy4j7f@wrangler>
+	dkim=pass header.d=arm.com header.s=foss header.b=aTQKqclQ;
+	spf=pass (imf02.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E66EF1570;
+	Fri, 26 Jun 2026 06:23:17 -0700 (PDT)
+Received: from [10.164.19.14] (unknown [10.164.19.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ACEA63F632;
+	Fri, 26 Jun 2026 06:23:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782480202; bh=nb4rFe3Q3YhM3Qx4t4fYGfUdPmERHrvA3QR5e1Bgchs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aTQKqclQjcgTkbNI4MumvFvF1LbJskNozCfFLIsoNnWnqeI0E2opjFTOglwCnW/5s
+	 gHI3Xv8ss7i1SM+cK0FhKuJ5VaYRtmMsTiNT3ugLPzlHOsEMNrz9P/ugc9GqfDVzay
+	 zUTxuwmrdRA0ns2koM7wqjGkpjQqXPcPMk1XhL2w=
+Message-ID: <e6d1b813-0893-458e-9d58-8d3a9bd979c4@arm.com>
+Date: Fri, 26 Jun 2026 18:53:10 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A104:EE_|DM4PR12MB8452:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3097c9d-f895-4089-a8c5-08dec6ebb9fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|36860700016|7416014|376014|82310400026|1800799024|11063799006|56012099006|18002099003|6133799003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info:
-	/6CcQT15UMYu6eUWLSpzzgqEVKPI5+SIKYl7nl5iqTAXZHXUSYuntQlw8AsWMqVN6+z1QE6Fa3o2rSC2FjkW7gTihSoVo3CZufayrEm7bR7jFfEqoKH/xHYpXBObmHnIf4d+qMYYg+Iy478Utunxi0PSGjvTJ8HQwtj7eOYx+Ba9gGfcC7GBNdZa9UXIZFcx0hRnSxk+Ez/7TtH3VenikakgfnzT6Z/yE+kFY7G4hUwZNVMDExz5f8NpWBW/8Kd+SwSntsywEPyyWk+3E2SRaYSKB0FyeZkuSClqmXuD/oFnnWGtWNSQRaA7+E15xRFNccimFP/vSjYPKRPlT0KbcDIDilcdm5ggv8rStluKmcYBwMKzXwfV6gQt+oCA/Hfm6OAg4/lwKXrJw04y9pyXy9+H4snYLw8Enq8ZYi5szB8Uu1Umn5JS2vDGHCl8nV9jvZ0xqBBCSQVV+MtDhJYJgVbXEahOF1vYrrBeHcQBXJa8otCQTgsYoFQ9E7CGIjwS0tThETRjCJ5/j+1K9q7v/sSKmmOMu4wWBO7x5fz4WHhMGAl9KSihn6VBt9I8bi6kqvMnkWqA3OjG2S0b27u00ronn2hlIztmGtbkrca8WcPOiJUR7FQPWKqWj0cbew4/0e9q++6HdIURYJzdKwwjwI9X01KxVzsZ/Bi3nYblN2Ps1I2evt2Dbyxhc8vrxNfuDfa6QDm+4oWhYBY7aiPpikFY/NeJPHKuALuO4tjR7L8=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(7416014)(376014)(82310400026)(1800799024)(11063799006)(56012099006)(18002099003)(6133799003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	ewXR1Fgfw5e/uuPGb0i5IPu7Jq4eUo/3unhIYhNP7BZ38qX1bcHmFk6M1nphsYFMwvb+GignrpkOUS0YGlOMwfC2PQtHelDN1BCSrw/wxqk+CTAl7mbJbjZ8efW5b2OC7UEJFfAOyn2Xuu+u8JLCX4A3Hs4W0WIjQaAZH9bS9ROvtmXCquD7dSDs+EcQ4IDH4QxaMFATWuovbDFWF8UKk1tkrMQ1QvLeV/2M7k/8HsGMG1erFn38cxIamrMB9fIall/5OXo9GpilYqGMJ4+WS+QrbFoxGkdAHGFZgj/HZQvj+jNnAOfXLRgVRsB8pnaQRiStX94l5m60swKZJOd0HhgzEN1g4QqiglGgcvR+LD3FGefkvbs3onNDuYeGqut4ASsiyr+D6mrliAvCWWnuBcD2j+tsLCCTtRoAyDr3C8x8PGOcYtSoA/PKYitNorHf
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jun 2026 12:28:07.2652
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3097c9d-f895-4089-a8c5-08dec6ebb9fb
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A104.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8452
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 79C2F8000B
-X-Stat-Signature: dnay5t75bhwu1qrj37umfec7tne86w4g
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: Lance Yang <lance.yang@linux.dev>, linmiaohe@huawei.com
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+ ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
+ apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
+ jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ stable@vger.kernel.org
+References: <20260625112955.3254283-5-dev.jain@arm.com>
+ <20260626074855.97652-1-lance.yang@linux.dev>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260626074855.97652-1-lance.yang@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: c3j1ynxbfpmwrh8hrnzy4z9urj4y59u8
 X-Rspam-User: 
-X-HE-Tag: 1781094499-763072
-X-HE-Meta: U2FsdGVkX1/wF5+U7TiWdB4HuFrf5pJ/rA0JVeYbc7bl6TnpbAtql0IPtugwu3yoV646LW7OKyfmoqdFv4lM4kooMV1UESYW43153WmfmgBYwAS/pjT6K08iNCkE/Vr6Kud9nclHUNg3f9SaDbKLN2SdRcgIDgfEfBUtf4Y/jeGap5GC8XuFji6Hqimy8Z9Wtm7to6oRws1Tql3XfBVLrhdp4+XWXw9mV8HwJpOY3NMqsGvqC4PSwgqMOtn1Er8mn1nvlYKCSHEQnlFkzJDFSi/bvjRbaghF8/qbXE66JHXydWV88QY/E4+4NPrSu6NxeDFJHY0VhE2x+eA+RYi/x7ghCYHF5As4FKXzhwP5Ek1cYOktd4im5+fQfvveTK0bZF5Y/UsTYw2wrzUeSlzRFgqMNGvTeQDPa5sRwxL3bIqGv7SLyekzPZVJ6dRRxQIxqPFyM+jKAna53BZ41Ng5mWfd/hSZL0yz8CO/mdI5Vxj/YbtGr1pf8pVAkJPBsJ2Cz5KX70xNo41LWyde2Sh1E0TmqXltpHDPA47j1ElOUuA6IQG2Ew4SUkffbclL3AB7lB7G0RGKqcjf62uMQl7A74wsyjXz95GB2cDmFiHh42JXRq31sU9vYmafMWvdl6xL4ZgEGOxnzpkirCuRxnuOVPtv35LAUWWJUfV4xE/wTZBgWujvxAvHpFwY4F9vRAfJvt659KmX/EmuXjA01G1tJaMvf5vCQHuSVhQTwX1f2s6FTxAjIswi1Ag4qeloNDDFHw42RHrjkzaF5Nh+RvxCVgcrTdqq/6GkC2lEsqYToPE919g6Hc+g46ZQuvAtJNqZujRFbvE72GJkg/504c38+Z5bRWcAsT+ofcSBLsvLsf4q6sbcP/7USyyvTA9XNrrVY0L6VPq6GY52+CTDSk/s1fqg515wrZJ9GiNac45zIU3tdkSO8JjhiJX+Ga1k0m96gCRHF/p0x/OQYQmfgJa
- HgCBNIv4
- AP5RLlIwbcwv2uT0K45k9sJYz8FwXxrzWbqMum9a5xf87G4YOiiVdqXDYl6pvPBwZlCV0+NjblqD1S/or5LAE+et8o5PukOE7DWPMpy9a78mrFkck0Ok05PVKXxfwUnj8GAFkj5CbIxCVSyTM1JxBpBgdmetb3fHMK76KXZ3oQXdXBZSvnauj23pbCNhmRmVevrlGhkYVkfx3OK17dR/d+JqZOzcwd02ITsC1dDOrXrlY/8/+eVTAXd9QYhBkX7TX5R0sybmkQJkR2/5qG/Ks9oKuZbpAMtxWq30lTQ8XBnl3i2X+RDtFDe3kvVyICummM28rElCjeg/6KoiqqB0q+cQkZj8hvP6n5QZ7FSrFcLZqYDQVLLYoi3hmhf/fpFwErwk5fG8O1+rBWN5mEnC8RTsCzjBBW1QRHb2higlpNnOq7m0W+yyY2Wec4DJ2f4jVs9nBGSJKq3QRFmL7EbqO2Jioxwdmw5qOPQtvxA4kvjoDVmqW16z7QJ0IiNskSQIQfQyE/mlpazMDWWIe4quZOyinDCBogpYFOlMkPblfS220V5QqprJHwBn9gcSgZjGh2Q1cNWDeV2YgMyie2FvR+sEJoQ==
+X-Rspamd-Queue-Id: ACB0680002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782480203-207123
+X-HE-Meta: U2FsdGVkX18ufNH82n3VyhV+Y/O1Wqe7UVaaYi1MJAWF1+KzPdoD6OmlXUlz7HmpnqL+GyDe1VqI+J22M6LINpKzsRHETR1eM7GcsyBvsBXki/9Wvy9f5DBCb3Ut4Db/sp+bWj4HlISe/I3yywcnxRHLlSQWMTE6xO7h4D02NAPIdBjo8lXSqGWcG8Sr0iZugu3Kdru7dq1GCYU0OplEOxe2J2iiQ+2d5QCp5EX02RZdqVzXpZneGa1ftAntbqVbJD4S/BXuPVzLjvcjCBq5R7b1EDv2HxQxsHdaojuEXfu3hyvmbJCDiijIlHKe3IccFCdMhYfDBs8q8ffy4LYvS7jic/k4qh2tLSAYtt64P6BPGJyiVL3J0LmyWcIuwbr0KaGwQBkrq8qOIw2m/GAZZ1oI32M7UG8rd/u8XIOUl7vttUqWcMfftMFaO71PTb52Y25cB6hlCwwnPaJS4CB6JzqFWwi4VR7005U2wxXcax0Hnb4jVARgOIBo42H/T+86YGTkzT6eNFmkqhQX7JknRm10W3CtDUwo+qsh7k4R0fuLFbHNaMjup/uFZODfqpSFyyQlVo+srLOp57jNlZ2RBVkkoiji+IUlMtUba2mdUEruMo3z/0BzJp+/3N8E8wa42d+eJUZVvgqodoIxsvJBkThH53Snu7ZTUrKuigf9TN+elI8WKl3f5pQAW7GV4QU+teZR4A76kU0YbGNd+w8Gmm1aO/KoWDnSz0tKd5HgDGrCcn+gGvMBKXw0hBR2Agr9kRt7ech9VMXJpvuk3nUIoqmm7DEamqwOc87EKOwIohk1IIdq3Tm4UiSfantPtxr/abpSJgHQiAiOAzp/V8hQFEMDZc938x1+FC+juaGNCFIZdxVgfAJX/4TV/kqOn2jThbHR1A1eUJ+YHAaQcxFZ8XMxO9ziJ8yeKkXv8c5YHv3ikihbh9WkMFRG4T31FCn/qscie1rdVGTZ2dvTJeQ
+ OrmtT/Kk
+ w9omzcergn4el/VKgb40VGTqKL6q43T1ZH2O3Dt6CVglojyUOu1JXBqWIX0B/kHphiUwqD/ldaJK3kR/jD6BKjbSM+P/UaMVm2SX4FHFdbwmerjb4wzlj8f/21WNVY2SJBXIif5vigsR1u+ml70WT9aEuF4xp5QEG8NMATO5quw1agNhnFkPUGi3NggBVbeBgohc9YwOjQM/cmefj9ap0BGWn4fRHlCMkc59dNCK1VwBtRDC6Enw2QsugksVpbbSFckm9xjgVtiIbIab1SyYvTsonNLCNiFEHVwyu4Onw5g4Jn27v4fLk6UyqiKIxomIA3QedpjbI4T63Lu4fsYC8jO8Bp3E3hJzcbnfzZgw/We7AMGgAaJUd4rLr9nz5oLQep641lqo/NU3Tle/2wdPVR+veGaePH4hDRxWAmjSHqmPaczkuOe8+cnMPkkAei00UujTB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,175 +100,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-...
-> I'm still testing, but the initial implementation I wrote with
-> DMAEngine had too much overhead because of the sgtable allocations
-> and the conversion between kernel scatterlists to device descriptors.
-> So I entirely bypassed the DMAEngine API by directly passing the folios
-> lists to the driver.
+
+
+On 26/06/26 1:18 pm, Lance Yang wrote:
 > 
-> I know it depends on the use case. If you just want to offload with no
-> latency requirements, then DMAEngine is fine, but if the goal is to
-> achieve high bandwidth with minimal latency, then it's a problem.
+> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
+>> check_pte() is the final validation step in page_vma_mapped_walk().
+>> It reads pvmw->pte with ptep_get() to decide whether the entry maps
+>> the PFN range being walked. For hugetlb VMAs, that pointer refers
+>> to a hugetlb entry.
+>>
+>> On arches which provide their own huge_ptep_get() to dereference a huge
+>> pte pointer, accessing via ptep_get() would cause pte_pfn(),
+>> pte_present() etc to misbehave.
+>>
+>> It is not clear whether this has a trivially visible effect to userspace.
+>>
+>> Use huge_ptep_get() to dereference a huge pte pointer.
+>>
+>> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>> mm/page_vma_mapped.c | 8 +++++++-
+>> 1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>> index 2ccbabfb2cc17..18e1d341f463c 100644
+>> --- a/mm/page_vma_mapped.c
+>> +++ b/mm/page_vma_mapped.c
+>> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+>> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>> {
+>> 	unsigned long pfn;
+>> -	pte_t ptent = ptep_get(pvmw->pte);
+>> +	pte_t ptent;
+>> +
+>> +	if (is_vm_hugetlb_page(pvmw->vma))
+>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>> +				      pvmw->pte);
 > 
-> Another example, if you have to do several independent copies of 256 or
-> 512 4KiB pages in a short period of time, there will to much stress on
-> sgtable allocations.
+> I think check_pte() can pass a wrong address to huge_ptep_get() ...
+
+Won't this be handled by rmap_walk_anon/rmap_walk_file - they are the ones
+performing the rmap traversal and passing address to try_to_unmap_one/folio_referenced_one
+etc ...
+
 > 
-> Another problem for low latency is DMA mapping.
+> Not sure that is wrong in the first place. For memory failure,
+> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
+> folio. In that case, pvmw->address need not be hugepage-aligned.
 > 
-> Anyway, I need to collect more numbers. I will try to share my insights
-> with idxd asap.
-
-Thanks, looking forward to those insights and numbers.
-
-An IDXD specific implementation is good for experimentation, but
-for upstream path, I think this would be hard to maintain and add duplicate
-logic. The cleanest approch is the DMA_MEMCPY_SG API. So, a single offload
-driver can drive any engine that implements it. dmaengine_prep_dma_memcpy_sg()
-submits a whole src/dst scatterlist as one transaction, which cuts the
-per-descriptor setup overhead that dominates for 4KB pages.
-
-I've added a patch for dmaengine_prep_dma_memcpy_sg(), Could you look into
-wiring up device_prep_dma_memcpy_sg hook in the IDXD?
-
-This will keep it generic and address the bandwidth/latency problem for
-small transfers.
-
-Best Regards,
-Shivank
-
----
-
-From d60e4dcd58552cbc6c7ecee37df9e216ab0c5a4f Mon Sep 17 00:00:00 2001
-From: Shivank Garg <shivankg@amd.com>
-Date: Sun, 17 May 2026 18:19:10 +0000
-Subject: [PATCH] dmaengine: add DMA_MEMCPY_SG transaction type
-
-Currently, a client that wants to copy N (src, dst, len) tuples call
-dmaengine_prep_dma_memcpy() N times, allocating N independent
-dma_async_tx_descriptor. The provider has to treat them as independent
-transactions, even when the underlying hardware can program them as
-one descriptor group with a single completion. This overheads
-are dominant for page size like 4KB.
-
-To reduce this overheads, add DMA_MEMCPY_SG and the matching
-device_prep_dma_memcpy_sg() callback taking paired src and dst
-scatterlists, plus the dmaengine_prep_dma_memcpy_sg() inline wrapper.
-The provider walks both lists in lockstep and retires the whole batch
-as one async tx.
-
-This API was removed by commit 0cae04373b77 ("dmaengine: remove
-DMA_MEMCPY_SG once again") for lack of in-tree users. The user
-this time is the page-migration copy offload driver.
-
-Suggested-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Shivank Garg <shivankg@amd.com>
----
- .../driver-api/dmaengine/provider.rst         |  7 ++++
- drivers/dma/dmaengine.c                       |  1 +
- include/linux/dmaengine.h                     | 36 +++++++++++++++++++
- 3 files changed, 44 insertions(+)
-
-diff --git a/Documentation/driver-api/dmaengine/provider.rst b/Documentation/driver-api/dmaengine/provider.rst
-index f4ed98f701c9..fc3cab78e61a 100644
---- a/Documentation/driver-api/dmaengine/provider.rst
-+++ b/Documentation/driver-api/dmaengine/provider.rst
-@@ -175,6 +175,13 @@ Currently, the types available are:
-     ``glReadPixels()``, which might require a verbatim copy of a huge
-     framebuffer from local device memory onto host memory.
- 
-+- DMA_MEMCPY_SG
-+
-+  - The device is able to do  memory to memory scatter-gather transfers.
-+
-+  - This takes pair of src and dst scatterlists and retires the whole batch
-+    as one async tx.
-+
- - DMA_XOR
- 
-   - The device is able to perform XOR operations on memory areas
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index 405bd2fbb4a3..665e00a96c8f 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1197,6 +1197,7 @@ int dma_async_device_register(struct dma_device *device)
- }
- 
- 	CHECK_CAP(dma_memcpy,      DMA_MEMCPY);
-+	CHECK_CAP(dma_memcpy_sg,   DMA_MEMCPY_SG);
- 	CHECK_CAP(dma_xor,         DMA_XOR);
- 	CHECK_CAP(dma_xor_val,     DMA_XOR_VAL);
- 	CHECK_CAP(dma_pq,          DMA_PQ);
-diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-index b3d251c9734e..9378e7a7803a 100644
---- a/include/linux/dmaengine.h
-+++ b/include/linux/dmaengine.h
-@@ -50,6 +50,7 @@ enum dma_status {
-  */
- enum dma_transaction_type {
- 	DMA_MEMCPY,
-+	DMA_MEMCPY_SG,
- 	DMA_XOR,
- 	DMA_PQ,
- 	DMA_XOR_VAL,
-@@ -824,6 +825,7 @@ struct dma_filter {
-  * @device_router_config: optional callback for DMA router configuration
-  * @device_free_chan_resources: release DMA channel's resources
-  * @device_prep_dma_memcpy: prepares a memcpy operation
-+ * @device_prep_dma_memcpy_sg: prepares a memcpy operation over a scatter list
-  * @device_prep_dma_xor: prepares a xor operation
-  * @device_prep_dma_xor_val: prepares a xor validation operation
-  * @device_prep_dma_pq: prepares a pq operation
-@@ -903,6 +905,11 @@ struct dma_device {
- 	struct dma_async_tx_descriptor *(*device_prep_dma_memcpy)(
- 		struct dma_chan *chan, dma_addr_t dst, dma_addr_t src,
- 		size_t len, unsigned long flags);
-+	struct dma_async_tx_descriptor *(*device_prep_dma_memcpy_sg)(
-+		struct dma_chan *chan,
-+		struct scatterlist *dst_sg, unsigned int dst_nents,
-+		struct scatterlist *src_sg, unsigned int src_nents,
-+		unsigned long flags);
- 	struct dma_async_tx_descriptor *(*device_prep_dma_xor)(
- 		struct dma_chan *chan, dma_addr_t dst, dma_addr_t *src,
- 		unsigned int src_cnt, size_t len, unsigned long flags);
-@@ -1091,6 +1098,35 @@ static inline struct dma_async_tx_descriptor *dmaengine_prep_dma_memcpy(
- 						    len, flags);
- }
- 
-+/**
-+ * dmaengine_prep_dma_memcpy_sg - Prepare a scatter-gather memcpy
-+ * @chan: The channel to prepare on
-+ * @dst_sg: Destination scatterlist
-+ * @dst_nents: Number of mapped entries in @dst_sg
-+ * @src_sg: Source scatterlist
-+ * @src_nents: Number of mapped entries in @src_sg
-+ * @flags: Dmaengine flags (e.g. DMA_PREP_INTERRUPT, DMA_CTRL_ACK)
-+ *
-+ * Submit a batch of memcpy operations described by two scatterlists as
-+ * a single async transaction. All segments retire as one tx with one
-+ * completion.
-+ *
-+ * Returns NULL if the channel does not implement this operation.
-+ */
-+static inline struct dma_async_tx_descriptor *dmaengine_prep_dma_memcpy_sg(
-+		struct dma_chan *chan,
-+		struct scatterlist *dst_sg, unsigned int dst_nents,
-+		struct scatterlist *src_sg, unsigned int src_nents,
-+		unsigned long flags)
-+{
-+	if (!chan || !chan->device ||
-+	    !chan->device->device_prep_dma_memcpy_sg)
-+		return NULL;
-+
-+	return chan->device->device_prep_dma_memcpy_sg(chan,
-+			dst_sg, dst_nents, src_sg, src_nents, flags);
-+}
-+
- static inline bool dmaengine_is_metadata_mode_supported(struct dma_chan *chan,
- 		enum dma_desc_metadata_mode mode)
- {
--- 
-2.43.0
+> @Miaohe
+> 
+> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
+> page_vma_mapped_walk() passes that size to hugetlb_walk():
+> 
+> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+> {
+> 	...
+> 	if (unlikely(is_vm_hugetlb_page(vma))) {
+> 		...
+> 		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
+> 		...
+> 	}
+> 	...
+> }
+> 
+> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
+> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
+> calculating pmdp:
+> 
+> pte_t *huge_pte_offset(struct mm_struct *mm,
+> 		       unsigned long addr, unsigned long sz)
+> {
+> 	...
+> 	if (sz == CONT_PMD_SIZE)
+> 		addr &= CONT_PMD_MASK;
+> 
+> 	pmdp = pmd_offset(pudp, addr);
+> 	pmd = READ_ONCE(*pmdp);
+> 	...
+> }
+> 
+> So for that case, pvmw->pte is calculated from the aligned addr, not
+> necessarily from the original pvmw->address. But check_pte() passes the
+> original address together with pvmw->pte:
+> 
+> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+> +				      pvmw->pte);
+> 
+> arm64 then uses that addr again to choose ncontig:
+> 
+> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+> {
+> 	...
+> 	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+> 	for (i = 0; i < ncontig; i++, ptep++) {
+> 		...
+> 	}
+> 	return orig_pte;
+> }
+> 
+> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+> 			   pte_t *ptep, size_t *pgsize)
+> {
+> 	pgd_t *pgdp = pgd_offset(mm, addr);
+> 	p4d_t *p4dp;
+> 	pud_t *pudp;
+> 	pmd_t *pmdp;
+> 
+> 	*pgsize = PAGE_SIZE;
+> 	p4dp = p4d_offset(pgdp, addr);
+> 	pudp = pud_offset(p4dp, addr);
+> 	pmdp = pmd_offset(pudp, addr);
+> 	if ((pte_t *)pmdp == ptep) {
+> 		*pgsize = PMD_SIZE;
+> 		return CONT_PMDS;
+> 	}
+> 	return CONT_PTES;
+> }
+> 
+> With a tail address, pmdp may no longer point at pvmw->pte, so
+> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
+> 
+> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
+> can walk past the CONT_PMD entries, and possibly past the PMD table.
+> 
+> Should check_pte() pass the address matching pvmw->pte, sth like:
+> 
+> ---8<---
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index 406fd50bbd8f..58463493bd3d 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>  	unsigned long pfn;
+>  	pte_t ptent;
+> 
+> -	if (is_vm_hugetlb_page(pvmw->vma))
+> -		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+> -				      pvmw->pte);
+> -	else
+> +	if (is_vm_hugetlb_page(pvmw->vma)) {
+> +		struct hstate *hstate = hstate_vma(pvmw->vma);
+> +		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
+> +
+> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
+> +	} else {
+>  		ptent = ptep_get(pvmw->pte);
+> +	}
+> 
+>  	if (pvmw->flags & PVMW_MIGRATION) {
+>  		const softleaf_t entry = softleaf_from_pte(ptent);
+> --
+> 
+> while leaving pvmw->address unchanged for page_mapped_in_vma()?
+> 
+> Cheers, Lance
+> 
+>> +	else
+>> +		ptent = ptep_get(pvmw->pte);
+>>
+>> 	if (pvmw->flags & PVMW_MIGRATION) {
+>> 		const softleaf_t entry = softleaf_from_pte(ptent);
+>> -- 
+>> 2.43.0
+>>
+>>
 
 
