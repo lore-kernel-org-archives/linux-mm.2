@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971F0C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47860C43211
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67B9C6B0121; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
+	id 543B86B0122; Fri, 26 Jun 2026 14:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 653C66B0122; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
+	id 51AC96B0123; Fri, 26 Jun 2026 14:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51B0F6B0123; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
+	id 4097E6B0124; Fri, 26 Jun 2026 14:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 27B4E6B0121
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 03A436B0122
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:39 -0400 (EDT)
 Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84A9F164E65
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 727D314049A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:39 +0000 (UTC)
+X-FDA: 84922884438.05.945CA8F
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AE2D91C000A
 	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:37 +0000 (UTC)
-X-FDA: 84922884354.05.F1BF8C6
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 54B441C0003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="cKN/iAfc";
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=gmTu8ZLQ;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782498155;
-	b=WxEywDBjRV7mLB2UcnnXKUWbXB+wtQnMXHyRlBxkKP+MZvLZ4ID6y6sthfKDZ66wRM7A9v
-	UsKP4ngwxPM7nXK8aoMBbjjOgantM2X9Utav5h1N/30dQrdZwEWqf18IKpSODR358UWep3
-	9uGqUhQiKZaOrB7RD+YNr66d/7fLClY=
+	t=1782498157;
+	b=pXVIiUNavFZSKnHY18xZFmmcdCMwDNDBuwRBrYB9SmvwzRx4TtM+7qugvj3YjXbTDvvjZN
+	kUSqzHxA+1RlXBsSZH+u4PaRtHPTQ8TYhZEW+jFuPkKBwCmnUWgoUh5f3LsgONHJFVNaT4
+	bVV99FrUCXPFrnYKEFOnBBD43qIfyEU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782498155;
+	s=arc-20220608; t=1782498157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
-	b=iAzOLjEh6UVNYE8vOyGsgsQH8PkLbxUZalnHUI0ab1X/rYAnPMx/ITVstEDC9lpW87L5WS
-	8hY0dkIL4Tx2BJBW2eQkhKX4xdsvPmpJx9btFdWWQZfK02ruukY4jeCNb4JG/k37Y9mVjs
-	IMWp3REuNqBOV0e6roHTIdpUsJ3p8Bs=
+	bh=wzgs5H0Grhs1ueQiwh3lj+d4hLeKAITZ3jKxY2kFgsY=;
+	b=YgSvzk++x5FPQMkLErgfNY7pYSiYY8J7qSxLMgwMFaW7jQcWuvgWAK/hrIw4Z0GGhMrQLr
+	k4KZi866vFfj7v5njjYsnF1/KE28znwczI2fN+8egiGRSDfvIqcWdIXBdhVrt39QBRQQwr
+	YV5OrvGzosCIWek4TDPxeZwyowCg4QE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="cKN/iAfc";
-	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=gmTu8ZLQ;
+	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92213351918so163030485a.0
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:35 -0700 (PDT)
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92b2c2ea7ebso49489485a.2
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782498154; x=1783102954; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1782498157; x=1783102957; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
-        b=cKN/iAfcpqV2EkwvzdpbwYkl6Sw/cwSDD0aWbRkuWgd6ZRq2jg+EWFNLwPyshSAA0Y
-         RMhB0YVQ41kV6+B1YNBmaAjNmE3gPwY2TajyxiXCbha/+751yVm2aGb46mZlPUNcCPNU
-         1x8Hs+YMjnxIOKYewvNmNP68haMgACE5w/AaybYQeInWaXM+5OYw4ceJMCBVBiy3FhV4
-         WVxZJJKNLXSBr9FH8micqXo+XrD0IMiUUKI2LNC/vPxO6d2fiVpYp0f9TSotzxpIaGpA
-         GNTw1jw1UkRdxuif0zqas+pIS3p3QHXWP5cFr3HQXmqMYhgjzO/QftUdWIAsm3Z9OIhp
-         P6ww==
+         :message-id:reply-to:content-type;
+        bh=wzgs5H0Grhs1ueQiwh3lj+d4hLeKAITZ3jKxY2kFgsY=;
+        b=gmTu8ZLQLBNR1QNBA3ZI/ylq6gpuQC4fTOwp/dUNCGGIHyn9aaR5HjK4xcNdwrebab
+         EHvtGHvUNu2qO90yBMbjSDZ4eAskvypjYvPVTf3d42da8VuFW6YRIj99KjPK7xm7vxMt
+         zklEKE1xrbMJS2BDP9F1LjNig7NhZCcpgGuVpv6uEgC7WGmAQPxyrx65gtIsT2ExSLDR
+         zcpsL1ntFCR9rXRFVFHkFcp393NEpzBMLokrmzCDSC6KRibdc/hd42OwVk1XQPjL6Ywt
+         C4UqQZ2mzTHEoQ0y+AmttANZn1OCc4zhbFDAUmE+oHEi3PBjynz7CCHM96QvS5LtNdPq
+         AwmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782498154; x=1783102954;
+        d=1e100.net; s=20251104; t=1782498157; x=1783102957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
-        b=h0tSsCpgye/s+CpC4MGsVxMa9+dMN1ymKwexZQjzNgKVpd+mn/en7npIU2z1qxAXg/
-         Lne6Xhv8rFaO1RWuehimXNBLZ/CJz0wGalTw8xiy/cfG4GElN2qpeB5UU+Egy+o/hVIw
-         DZTuuzj0HkC+dYEceiOyN7f0rHsSNuZZfhr5/ulyoDefzQjubrQz9gZKKDx6q3ovH//N
-         JNojWR50pnIIOYNxSMRJ0L7X8QxbUVSZSdPyL2KMJE/UVfyfEdc/Zvw/euQbhdD8qOIX
-         wUpRB1NGu7rNNqB7Q/4nYWecWNUpUzIaLqawK9ZVs5SE+VcnIt9V1MCUnlvo6e9lsvvy
-         6VvQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/tDYrt9wWew6mu4HcdPDMF9IktblvCVu65bb6+MuvIEjn5uo6NvKo1/hxrSIp2B4i7fsuiva2+KA==@kvack.org
-X-Gm-Message-State: AOJu0Yw709yLS83YGyNk1Rg0lPN0d9AqCsb1zXyoEFs3pFplaYhQ66h9
-	mOL9DjNWIMWKAFt9r9syWfIECjrLVr2CeFlIQEXf9elmSCF92ECAftzo2Z7VcsNTIfw=
-X-Gm-Gg: AfdE7ckxon7ce4qBbH86IAqGZ7IMhYp59zmQZF6KNO37vnXJk6kZIvTk2nOrPFmE2+Q
-	HY64E7n+GXZ9BP1z+uwcqt6bfihDhsggRAIcgr3SCjUXht4AzGxt6hHslSOfAlYnUabgklTGaez
-	U84vx+AxPi5qo+jOWCH4Ky7cCqlMs8ukuCDnktrmYwa2DH330NP40yVfC1FWADLu9tiQIvbhvBO
-	ADEcZibBkbxOoDbOMkrP2Z72cyN2mgDdghgkSxQJNZXybpFmm66MZmDuzVE82aT3/EstzQcK0cH
-	bU66cXKt9dTzz1vSTnXGG7TDBDANZp/dLzBrEdl6oXlxhvJM8/mOe5m23rO0gTd9miie8Apem3d
-	6ZUXjIvnu8LzRuZwWGH7xxam17/9GbRH32c8VyynS5p45eOKyfTrMGjmDzJRLd6C/c2EaoalcIl
-	1ZnlRHGiomoJg=
-X-Received: by 2002:a05:620a:370b:b0:918:4137:6be with SMTP id af79cd13be357-9293d0b9ef3mr1327199985a.53.1782498154411;
-        Fri, 26 Jun 2026 11:22:34 -0700 (PDT)
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wzgs5H0Grhs1ueQiwh3lj+d4hLeKAITZ3jKxY2kFgsY=;
+        b=qpw0ysS0x/gEWverfTQHbzDS486lZo+U1g8ABCG7UFj/OnRDc2rf7EbvsAZU9LAqNc
+         OherwZTN30fG1FIFJCmSg95ANXHzdO2vgcJsJIwRQjW426DRARSR+tln06VYLlBrhP40
+         /yE1qVMDdAbGuDD77HizfrAccin2N98jf2Q35gpsn8Z98wNYAB/XAynymuzGqPw7f+df
+         ksNVldz3iqICbrYkXTawkcwRjbwn4CA5eMiOGpNPvGJ8AdIi7xfIK9150MW8I1WfN4mk
+         jG/m7jZ4i8PXWxSFsayBgJW8E3FDjkk7m+OwjmTB/Tfq7791IxyrCl16DaBm1l91WTyp
+         iRkw==
+X-Forwarded-Encrypted: i=1; AFNElJ/ZkcpufeA1LPQQrub1XkmvWUv/ZgfLTdJj5PejxD2SjEYRCVKM2OwT5ZiGnD+ZZBafb8DeNJAoJg==@kvack.org
+X-Gm-Message-State: AOJu0Yw7ZCO/vZx6oKWzoc+7A2RU9mvsI/oGByyrlKXUAh+0DGyG3/Rs
+	DnBg/Jhj2j4Zt4am4YzmKy5eLMr+WDCkEPzZ8peueZQC+8065VLSLGknCSbjYmgzv2I=
+X-Gm-Gg: AfdE7cnAdRpcPr9Icx0zaPxN5lbJwxke+iRzo+Kbsg7/ZZnhVS4OUKeFFPMnw0PTEKD
+	r/Kafk41uQiY2zEFF3BQ26ED9/2onAG4Z3PSfimxf6+ciucbYC4g9EeYSqSOupHfrGM6xEFhfLn
+	9fKJdmasjDIfORg62QeRN7gNliEDrn5xf9qyN/ZY/oqwZAiAWi7+1mNOunn/e8mbYVJ1xTf51Yz
+	hgoF/5idXNkMsWkl/9iXHpXn2DYI8GqA5b+hi8iTPTtX/sVKS4ip/kkkc5rsWoU4ZsxCJmh0rsn
+	gHZOsYkEQv0jfPGPxKS9xXN59NmXTqWWu9E0Pnc2cLx9EsFMV1FsZkEoKXC3MYS5zrL7ixWbbaM
+	4Snug/AnNBlJV4mQjVAzX+THV/ae6IY1N7goVZAK/lD0k6D0dvs14KPQEGfPQimhO1BDbtT6uC7
+	SzTZ/g2J2jF7E=
+X-Received: by 2002:a05:620a:6491:b0:92b:32d4:4af5 with SMTP id af79cd13be357-92b32d46470mr307992685a.5.1782498156661;
+        Fri, 26 Jun 2026 11:22:36 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92600c7aae6sm1227611085a.44.2026.06.26.11.22.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92ac2e0026esm206754585a.10.2026.06.26.11.22.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 11:22:33 -0700 (PDT)
+        Fri, 26 Jun 2026 11:22:35 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -103,22 +103,22 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/4] mm: compaction: support non-movable compaction for pageblock requests
-Date: Fri, 26 Jun 2026 14:21:18 -0400
-Message-ID: <20260626182215.1107966-3-hannes@cmpxchg.org>
+Subject: [PATCH 3/4] mm: page_alloc: move capture_control to the page allocator
+Date: Fri, 26 Jun 2026 14:21:19 -0400
+Message-ID: <20260626182215.1107966-4-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626182215.1107966-1-hannes@cmpxchg.org>
 References: <20260626182215.1107966-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: epz1hknm1n85cryyz5oe96zg5f8tcu19
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 54B441C0003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782498155-835594
-X-HE-Meta: U2FsdGVkX1+1h0jmtNQw8qp57KrrOf1/ieQSH74RpCRpBQNtDIrxM3EECHsJJGeUTQKB7dLJpXJAx6qPTZr2RKroNHcbDjAjQhCv9lCBEtZ5szNSQjrbbty3lL+jASqLrrL12dRPdDsJX6/NdbZEZVv1qod+CFZa+s+l/5KsSmr0EXRvNvv/u6gilVkiuORIMLPw4sPnQH+McBJbVUXA3oO9MYxAMLhXrjxjavzTenRxctIIRSDZuHmNb/z7oOUIEI5fk+0O8540KSDJcCTwgMcqZbExui9BdDsxzcElpuPzjMGP5b2Eh6FrK1EKnaPHT8b+DYZskNUsbhjES8wXD7pqXHMdry93l5Po26MypVF/o1XnPPelstjOUolyLn4U3pggmw3U0qySO2n1iPEsAe8ORGv9/qZmvddt3Vk8/4ugj2yxPO/BE+mqw38/D/Wkr0OomMaU5/wW0qaCD1n8kXSttEClwMKEzPSqV/lhGZ7olMtOhFu8K+IZ9RaM5rEqTtQphoia5RghiJMfkuEeccG0hXD0umiZIN8rHAKY2HUmotmVpPDoTWPuatTm/6+5doX+UoQLsd67rqame562r6ah9i2cC5QiDn6G2/U995GhDCikO6P1I9X5SViCw2oie1hUUt5k8su2EGl9rKlU+tZ+uW9eZbJGcwkYjkWJxOnKd0MRJcCe3JpWeExXtHiDh6/eqkuz9aRfnDB+wnP2hvFGslax2g6/5PigZA3unUcRuy3Zp4x52wT9Id5fc3fDVQLcdEr0bYuVivOBKBSG7ZeAQQjQQQSRf6focbX/WSiDF7/pZJHJsciR4Fk39EXQ3/AcymdVcb4V3IYlCkvS2G9yDyFVrigIBc4FTOGBdnQrbcvkxUMIZWpuvdd5eUEieBJ4hSXbb81X9mTVRnHQdi+Fq1axkr5okaZ4ZzoeYidcwdPsV9RUCtbg3f9FCpW6WJRd7/PrmNVe63HOqUX
- dJOL2OF+
- u/xztuQfS+drC4ACZE6wmWvEMAnUoInHj3k0uObIjfKv0uiDmcQj3JjlZSwP83sy4QbCXEdxGmcpUI6DSVeSWPqlUybMSW6HvcOrNaKLc0nE46DLdEpKgDLA7ybvgpJvLPWoRYRgNouEInBODaynUl85DGV+FL7CAjJgOMR+yOT+F8JazWvtAnA3NjkbDMWBcmviLI1okXXM92krAPQYhG7GjO3NgChW5tLRhTRzBOCjlMr0QcCNu2p/Se0SU1w+Nj8FAY2XTg9eVQCTc7r+Ks3/QCZYdF1SauWvg0HRyRsOk5gZ7Hd8R8qHDYXHKOJQvC3aQJuZJ5DxLV10LwA+ufCg3e7KfBkwsWLuRwiOf6Zl6IlsNfs4/pKYDCYNyxe74WvGt
+X-Stat-Signature: popgm7t1u39k9ottqpczno6jeyurqac9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AE2D91C000A
+X-HE-Tag: 1782498157-508473
+X-HE-Meta: U2FsdGVkX1/h43U+On/r5fItOTK/GU1GC8Ir7XbsGtngT2pC/NMRbQhqjfP9R909oVbnrG81swDHktjGVNnTKmqNxqkDVjZi6NdmlNRPaF1xNehsZF5f0o9w73cYD1Oq/5RHMeHpj0DyKtOE5rL9b6Id9/P6RtfYarM2ROnsOA7k3UwestyQ/kryeolxduZMuejxIqG/8IWpoZnHEB76s3icSDcRCxWt4eT3Ml9O1dkKUFjUDqx8nlDBbs2SaEbNXJ3u74Pewi9gSWf4fgC+shlEE1oyS3aMHmw7XW3gcdWVno2m0Unu+fQyDnYBJ/Kz4p08JBwaKdYCL42ZFVAA0VxDBfdTzN+L2Iyb7iPWidpznqYHSB9aiKAxjn7rn+vEbkBQEtcZdSt9p+ZHOhn5ceSLwlBGXqWqo7Y42GIrMzl0Fcjl24buYb5G5DbWGEl7fumJoEz47ELuzer92QBg0u3bMQ0AwHwVWyRl+IlPS8gg/5EjZoAPeoP2d5KCTYyd098L6TXZku8/LgNwObMphYck9YZWSS7NpaO618J6Vy1mQ2mUwPnWSqUxPw2Z81zQhzCROUcMuucODchke2+nwwMp/5+/ye6Zpa2nTDucSRq3L2YDAfPJvGXYbcMss+RJIG/x3FG7JoozolExIV/dJox2HVjYuXdbonFuAVJywqJ78UPi5Axf3CdMbuwvbieCszkGnGzeZOoskf/om5skN+yvzvx2bMGM2mJ+PNVf3vbUPGRpbTGRSG3M5AoXfEVsKumBwtTaHefn/Yas26VWlWULYanl8aRaKqGco4aKaNPwgZ5ozaL5uM/6GvBGI4Prv6ziGiI6Dkc+w5ZZKFVw7/T6GODS4oUepfn/miRyuMSNUu5StRu7NLXUybdWdUdrhVJxjzrZnF/SIa4q37GrC0Zv76hhx/p9aBe85hAtDmsTv4ngIS1819wkozDnqfGMbfo6tS57O6MBdQPZTZ1
+ r/dugloD
+ BJAOQwf21lPPHsi0bNM5CQXhComuxI2sqr6fKcaOQYC3kfBvkv47CX0YR2o/hIsuFqKFpO4NHdsLr/XMNmA0TXfwx6CM4WvjnVSZ3cPehpvY8nox9JzldOPQNXE1jxuMohQitT0gCe29WI3fVNbBS/ZpqNbKYxuji2qZvPiUvYSxLRlc9LWQvZdzPaBI1tuhEsopI2xtS/J1owU2lMGjgoJ19syMi97Oru23BLfiMlKZinriadeKEiblstiDU2OdR7iwfpgftQO+9jWvrB3NOouP6q4TGC5Uv8hygttNOjtVae9bH6AcjRj+Plr779YMwRbNLaL/feB/Q02u7JoPMjzkgRxT1vGxMynBJKrIEfTZ2WPuQLGN4aA1VECbncP81wWPgn+zaPp9gRvay+NF/xQMvCgMBc3FZUVcpZXu8P6fdLASHm8LiMt01JA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,93 +126,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While trying to fix a reclaim storm in defrag_mode, I noticed that
-non-movable direct compaction is extremely inefficient.
+The compaction capturing code assumes the allocation request order
+and compaction target order are the same. That won't be true once
+defrag_mode promotes sub-block allocations to pageblock-order
+compaction: compaction targets the larger order, capture should
+remain at the original allocation order.
 
-When searching for space to evacuate, compaction only allows blocks of
-the same type as the incoming request. This is to prevent migratetype
-pollution, where a small non-movable request frees space in a movable
-block and provokes the allocator to fall back and pollute it.
+Move the per-task capture_control to the page allocator, so its
+fields can carry alloc-side information that compaction's
+compact_control does not. Pass the capture_control through
+try_to_compact_pages() / compact_zone_order() instead of a bare
+struct page **; compact_zone_order() sets capc->cc while running.
 
-This protection is reasonable on one hand, but the downside is that it
-makes non-movable direct compaction nearly useless: if we get the type
-annotations right, by definition there aren't any movable pages inside
-the non-movable blocks it is allowed to scan.
+task_capc() now also checks capc->cc to handle the new
+not-yet-running state.
 
-With defrag_mode, the goal is the production of whole blocks, which
-are essentially type neutral: __rmqueue_claim() will convert them
-wholesale on alloc. This makes type mixing and pollution a non-issue.
-
-Fix the pollution gates to take the requested order into account, and
-allow whole-block requests to scan blocks of other types.
-
-The only exception is CMA blocks. That type is sticky and these blocks
-cannot be claimed to other types. Continue to be strict with them, and
-allow only explicit ALLOC_CMA requests and kcompactd to evacuate them.
+No functional change.
 
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- mm/compaction.c | 35 ++++++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 7 deletions(-)
+ include/linux/compaction.h |  3 ++-
+ mm/compaction.c            | 33 ++++++++++-----------------------
+ mm/page_alloc.c            | 23 +++++++++++++++++++++--
+ 3 files changed, 33 insertions(+), 26 deletions(-)
 
+diff --git a/include/linux/compaction.h b/include/linux/compaction.h
+index f29ef0653546..66a2f70e9e01 100644
+--- a/include/linux/compaction.h
++++ b/include/linux/compaction.h
+@@ -58,6 +58,7 @@ enum compact_result {
+ };
+ 
+ struct alloc_context; /* in mm/internal.h */
++struct capture_control; /* in mm/internal.h */
+ 
+ /*
+  * Number of free order-0 pages that should be available above given watermark
+@@ -92,7 +93,7 @@ extern int fragmentation_index(struct zone *zone, unsigned int order);
+ extern enum compact_result try_to_compact_pages(gfp_t gfp_mask,
+ 		unsigned int order, unsigned int alloc_flags,
+ 		const struct alloc_context *ac, enum compact_priority prio,
+-		struct page **page);
++		struct capture_control *capc);
+ extern void reset_isolation_suitable(pg_data_t *pgdat);
+ extern bool compaction_suitable(struct zone *zone, int order,
+ 				unsigned long watermark, int highest_zoneidx);
 diff --git a/mm/compaction.c b/mm/compaction.c
-index f08765ade014..7df3a85d43af 100644
+index 7df3a85d43af..c2701bf1d04e 100644
 --- a/mm/compaction.c
 +++ b/mm/compaction.c
-@@ -1381,12 +1381,33 @@ static bool suitable_migration_source(struct compact_control *cc,
- 	if (pageblock_skip_persistent(page))
- 		return false;
+@@ -2791,7 +2791,7 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ static enum compact_result compact_zone_order(struct zone *zone, int order,
+ 		gfp_t gfp_mask, enum compact_priority prio,
+ 		unsigned int alloc_flags, int highest_zoneidx,
+-		struct page **capture)
++		struct capture_control *capc)
+ {
+ 	enum compact_result ret;
+ 	struct compact_control cc = {
+@@ -2808,35 +2808,22 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+ 		.ignore_skip_hint = (prio == MIN_COMPACT_PRIORITY),
+ 		.ignore_block_suitable = (prio == MIN_COMPACT_PRIORITY)
+ 	};
+-	struct capture_control capc = {
+-		.cc = &cc,
+-		.page = NULL,
+-	};
  
--	if ((cc->mode != MIGRATE_ASYNC) || !cc->direct_compaction)
-+	/*
-+	 * Background compaction produces blocks for the zone at
-+	 * large, with no particular allocation context. Allow all
-+	 * block types, including CMA.
-+	 */
-+	if (!cc->direct_compaction)
- 		return true;
+-	/*
+-	 * Make sure the structs are really initialized before we expose the
+-	 * capture control, in case we are interrupted and the interrupt handler
+-	 * frees a page.
+-	 */
++	/* See the comment in __alloc_pages_direct_compact() */
+ 	barrier();
+-	WRITE_ONCE(current->capture_control, &capc);
++	WRITE_ONCE(capc->cc, &cc);
  
- 	block_mt = get_pageblock_migratetype(page);
- 
--	if (cc->migratetype == MIGRATE_MOVABLE)
-+	/*
-+	 * CMA pages can only be taken by ALLOC_CMA requests. For anybody
-+	 * else, vacating a CMA block consumes free pages the caller
-+	 * could have used, and produces free pages it cannot.
-+	 */
-+	if (is_migrate_cma(block_mt) && !(cc->alloc_flags & ALLOC_CMA))
-+		return false;
+-	ret = compact_zone(&cc, &capc);
++	ret = compact_zone(&cc, capc);
 +
-+	if (cc->mode != MIGRATE_ASYNC)
-+		return true;
-+
-+	/*
-+	 * Prevent small unmovable/reclaimable requests from polluting
-+	 * movable blocks through fallbacks. Whole-block production is
-+	 * exempt as the allocator claims and converts these.
-+	 */
-+	if (cc->migratetype == MIGRATE_MOVABLE || cc->order >= pageblock_order)
- 		return is_migrate_movable(block_mt);
- 	else
- 		return block_mt == cc->migratetype;
-@@ -1974,12 +1995,12 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
- 		return pfn;
++	WRITE_ONCE(capc->cc, NULL);
  
+-	/*
+-	 * Make sure we hide capture control first before we read the captured
+-	 * page pointer, otherwise an interrupt could free and capture a page
+-	 * and we would leak it.
+-	 */
+-	WRITE_ONCE(current->capture_control, NULL);
+-	*capture = READ_ONCE(capc.page);
  	/*
--	 * Only allow kcompactd and direct requests for movable pages to
--	 * quickly clear out a MOVABLE pageblock for allocation. This
--	 * reduces the risk that a large movable pageblock is freed for
--	 * an unmovable/reclaimable small allocation.
-+	 * Prevent small unmovable/reclaimable requests from polluting
-+	 * movable blocks through fallbacks. Whole-block production is
-+	 * exempt as the allocator claims and converts these.
+ 	 * Technically, it is also possible that compaction is skipped but
+ 	 * the page is still captured out of luck(IRQ came and freed the page).
+ 	 * Returning COMPACT_SUCCESS in such cases helps in properly accounting
+ 	 * the COMPACT[STALL|FAIL] when compaction is skipped.
  	 */
--	if (cc->direct_compaction && cc->migratetype != MIGRATE_MOVABLE)
-+	if (cc->direct_compaction && cc->migratetype != MIGRATE_MOVABLE &&
-+	    cc->order < pageblock_order)
- 		return pfn;
+-	if (*capture)
++	if (capc->page)
+ 		ret = COMPACT_SUCCESS;
  
- 	/*
+ 	return ret;
+@@ -2849,13 +2836,13 @@ static enum compact_result compact_zone_order(struct zone *zone, int order,
+  * @alloc_flags: The allocation flags of the current allocation
+  * @ac: The context of current allocation
+  * @prio: Determines how hard direct compaction should try to succeed
+- * @capture: Pointer to free page created by compaction will be stored here
++ * @capc: The context for capturing pages during freeing
+  *
+  * This is the main entry point for direct page compaction.
+  */
+ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+ 		unsigned int alloc_flags, const struct alloc_context *ac,
+-		enum compact_priority prio, struct page **capture)
++		enum compact_priority prio, struct capture_control *capc)
+ {
+ 	struct zoneref *z;
+ 	struct zone *zone;
+@@ -2883,7 +2870,7 @@ enum compact_result try_to_compact_pages(gfp_t gfp_mask, unsigned int order,
+ 		}
+ 
+ 		status = compact_zone_order(zone, order, gfp_mask, prio,
+-				alloc_flags, ac->highest_zoneidx, capture);
++				alloc_flags, ac->highest_zoneidx, capc);
+ 		rc = max(status, rc);
+ 
+ 		/* The allocation should succeed, stop compacting */
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index cb422505c6ef..9dee1c47e795 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -718,7 +718,7 @@ static inline struct capture_control *task_capc(struct zone *zone)
+ {
+ 	struct capture_control *capc = current->capture_control;
+ 
+-	return unlikely(capc) &&
++	return unlikely(capc && capc->cc) &&
+ 		!(current->flags & PF_KTHREAD) &&
+ 		!capc->page &&
+ 		capc->cc->zone == zone ? capc : NULL;
+@@ -4146,23 +4146,42 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+ 	struct page *page = NULL;
+ 	unsigned long pflags;
+ 	unsigned int noreclaim_flag;
++	struct capture_control capc = {
++		.page = NULL,
++	};
+ 
+ 	if (!order)
+ 		return NULL;
+ 
++	/*
++	 * Make sure the structs are really initialized before we expose the
++	 * capture control, in case we are interrupted and the interrupt handler
++	 * frees a page.
++	 */
++	barrier();
++	WRITE_ONCE(current->capture_control, &capc);
++
+ 	psi_memstall_enter(&pflags);
+ 	delayacct_compact_start();
+ 	fs_reclaim_acquire(gfp_mask);
+ 	noreclaim_flag = memalloc_noreclaim_save();
+ 
+ 	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
+-								prio, &page);
++					       prio, &capc);
+ 
+ 	memalloc_noreclaim_restore(noreclaim_flag);
+ 	fs_reclaim_release(gfp_mask);
+ 	psi_memstall_leave(&pflags);
+ 	delayacct_compact_end();
+ 
++	/*
++	 * Make sure we hide capture control first before we read the captured
++	 * page pointer, otherwise an interrupt could free and capture a page
++	 * and we would leak it.
++	 */
++	WRITE_ONCE(current->capture_control, NULL);
++	page = READ_ONCE(capc.page);
++
+ 	if (*compact_result == COMPACT_SKIPPED ||
+ 	    *compact_result == COMPACT_DEFERRED)
+ 		return NULL;
 -- 
 2.54.0
 
