@@ -4,122 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1BE9C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D245DC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:45:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91D636B00A8; Fri, 26 Jun 2026 14:43:35 -0400 (EDT)
+	id B917A6B0131; Fri, 26 Jun 2026 14:45:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F52F6B00AA; Fri, 26 Jun 2026 14:43:35 -0400 (EDT)
+	id B68AE6B0132; Fri, 26 Jun 2026 14:45:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A976B00AB; Fri, 26 Jun 2026 14:43:35 -0400 (EDT)
+	id A7ED86B0133; Fri, 26 Jun 2026 14:45:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 564E06B00A8
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:43:35 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B65D71A054C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:43:34 +0000 (UTC)
-X-FDA: 84922937148.16.5EA10B1
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 9A050C0009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:43:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=JcXe40sE;
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 801B16B0131
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:45:08 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0AC58A055B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:45:08 +0000 (UTC)
+X-FDA: 84922941096.07.D1B06B9
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9CAEB1C0003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:45:05 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rCkkpNgR;
+	spf=pass (imf21.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782499412;
-	b=JkwmewUU44LQNvgHMZ0AI3lcnjk4BSwbSaQmGXVJxw5olKS6S/MXeMG769Wg5xEodQe84n
-	abQyKUb63JUTzowlGwLAJAaM8d6iwFa7Z4R9krNth6Lxw1ZnMKLBmAoOEbKyG1aS0noh0g
-	qi9iMHaU5Sfc6gsfxQh2qekx6K5VDRo=
+	t=1782499506;
+	b=IUKr4j5PqvJQA6qA7jTqDVZbMeOrnBELbWTmiVRBsHL8q8vHZQjLZTx7xR08TWkEi1+9Rs
+	lPfuJjPDNd/NJBGLdustc3f2XL4sgflhalwkQXXH8ee3ggKne/AR4HFVzPJuixPJlCCiuc
+	b+1hOW6glEAxkoFYoesJi0uQYkHmAAY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782499412;
+	s=arc-20220608; t=1782499506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FIb2IG4OsYtmUwXVg/x7Qwra2DOFpR91A8rDyQolB1I=;
-	b=XiNlz63w/3BKrU5/mD2d/szPLNDzhhsjN3405vWSSoUG+jROskQ+G7Ye2IWlYTGpeqsOCf
-	KNeNl19FBGD0yyGvVxjwH/kbWG5XrlT3uCgCbhtbHT0VFjIrGLM5bKroPK3bh8hZsyCOT8
-	bM4R9UndF4H9f17pYFnWvYd/hkACG9Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pXfz95SCfqpAGTXTM22nCcCkrLwtMVyLAFRGqD9/R68=;
+	b=JNZ8X5mNJcpbWQIoH8SsbwCifYR4qkiEKNe/2TQzfD+rcWeEK2704XBzhTlJYPvx++hRq7
+	LE+T7G1+dXk9u68/EeBEiU5g/G/Mca3x6TJZ8YVfoZHTRSVoAJHj8G5sR/B42XG5IuH0K1
+	OMM7Sssy6lLvGz3cCLDPJhCvY6UvnZU=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=JcXe40sE;
-	spf=pass (imf28.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-519f6a10d9bso6862711cf.3
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:43:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782499411; x=1783104211; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FIb2IG4OsYtmUwXVg/x7Qwra2DOFpR91A8rDyQolB1I=;
-        b=JcXe40sECyuUMjqdm6NbZy5Xya4H9FW1vtHUKwbLAHUc04qkNF+PPaGJymbf9aM8na
-         ErP9zfwHlsFBCn9f8X0zRgDadOY9ogO+trNB9IlWmpfHhfLi/W5jBMlcM7f3S/CYxZoC
-         iKH2dVyWTK/kmE1ipSzJiYNLhKn5+0m0TSJr5D822KlNb48Ia68nh2HGkHZ3Spfi4Jyw
-         ECWxCAgrnyT4uJJJQeWMv6lmaiZCoKD8INNIoM+tRHDl09cDv9/tC2erQkva8chEji4I
-         um6A8Y9czoCwbeZUQTaDe+xU9qhSuihXbTC4iZYztDwqMJYBJApMxIMrVdSz4BrGoq57
-         KOAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782499411; x=1783104211;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FIb2IG4OsYtmUwXVg/x7Qwra2DOFpR91A8rDyQolB1I=;
-        b=ZQPrwTe1e14zDWOEwFWVLFW9AJiLY6iN/rLp0PkaICiwo821Gg9SlztzG+jbQcCO11
-         IKmZxF6ZfFkqgjFL3Bs3AtIyTagUGwmI2S0nLMwwvVRkLBL5AscotQgjxQfPZjSTHhMT
-         Hq2i7BZZRnkr7JOS9nMyf3l5d11pQwcdISVwIg4EvKvAmp0ZTzoeGtI9fOCGzR04lnKH
-         Q0EWHmGvevbl1fiM7OuRVZcpJGmUbxGMr3UcATKInF1FmdVrWehvSGPJvMN9Xel7gYe7
-         BpciPehUgsvAkIrjcrj/q7C1QtK5X2sKs5EH/smfSXU+hgGDz3GXc4rkt9WySKPvKhie
-         XHcA==
-X-Forwarded-Encrypted: i=1; AFNElJ8ALfE67zixRvuoFid6aAWHZvN8qQvEUnQoh5GDnniKlbIhdkACNu146Xvld1XzYUlJCWIAuY+CvA==@kvack.org
-X-Gm-Message-State: AOJu0YwdHrpsIX6jb36rz+9Iob7MX8UKJLajda+47T1ofh/FdyYLRCxF
-	RsYvblCInpb49JVNH7Ba9pguo4rI+cB0up+GPU5KNY9G0I3VHx+EzWIjRGWzysGJwaQ=
-X-Gm-Gg: AfdE7clL6XOZsF3y8WO7UyV3wR8ABbLJWjuUzbOB1Uv8bFSOUTd53LwG5RvfXVplTvD
-	w+nCZX9ITF8dt4ODA4AWQHePFiNVsqeFyuk/zAwftwrPtUx97whtBkWnBo8JrYrZxl4IINdPYvF
-	IRCXs9RpuY2oza2HX1hEmFmVRePAQn4000ZiyCvDZ3eCf+1a8R6A+aKxggOlOy+36Z7o44ampmG
-	9+cac76m1bhIp0HhbjZhX9/mJsLcbFiWGE5cmPm665kpoM0l2uIkUkPcwVcfv1skg3K9wpROWvC
-	AZ27VBg5jxlJ6uwYMaCA6ZH6wFJ69jEZ8BzmaZ1PpPBg1ztbMXlyEEaKSYskLUVfsDeBTh80wiA
-	VT2iDSGnzRhscFZkQRWo3QV2Ffh29lnMAWy20kvfhOiLG6J26zswKHqPj8AZXufTcSEqg1HsuYk
-	5KD3HPdab0AWc=
-X-Received: by 2002:a05:622a:4291:b0:517:6435:c4ce with SMTP id d75a77b69052e-51a72822e58mr113839771cf.49.1782499411509;
-        Fri, 26 Jun 2026 11:43:31 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7f6fc013sm219113666d6.18.2026.06.26.11.43.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 11:43:30 -0700 (PDT)
-Date: Fri, 26 Jun 2026 14:43:29 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] mm: page_alloc: fix non-movable reclaim storm in
- defrag_mode
-Message-ID: <aj7IUVdXgqDG6w34@cmpxchg.org>
-References: <20260626182215.1107966-1-hannes@cmpxchg.org>
- <20260626182215.1107966-5-hannes@cmpxchg.org>
- <DJJ707PKYUZS.3VQ58AKYG0XNP@nvidia.com>
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rCkkpNgR;
+	spf=pass (imf21.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJJ707PKYUZS.3VQ58AKYG0XNP@nvidia.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782499503;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pXfz95SCfqpAGTXTM22nCcCkrLwtMVyLAFRGqD9/R68=;
+	b=rCkkpNgRbPKTMh5ghU7gP1QHoVHwrUQAtgfbn/tkckfAk8T5z3lWQ3Aa61b/t+fr6gcacZ
+	zEuPbRh3LhHg7B7V/LMLhsdugPoR+5bwih7kkpq0IPFXzhX1f5vVursbicP5+PJv1qUy81
+	m/16HAyhCMIPS2Bfb9qIEnmBTObIwkA=
+Date: Fri, 26 Jun 2026 18:44:58 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
+Message-ID: <bb1cb750157733f897df2e261cad3d5c42acc172@linux.dev>
+TLS-Required: No
+Subject: [PATCH v5 0/2] mm: improve folio refcount scalability
+To: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
+Cc: "Linus Torvalds" <torvalds@linuxfoundation.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, ivgorbunov@me.com, Liam.Howlett@oracle.com,
+ apopple@nvidia.com, artem.kuzin@huawei.com,
+ baolin.wang@linux.alibaba.com, foxido@foxido.dev, harry.yoo@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
+ rppt@kernel.org, surenb@google.com, vbabka@suse.cz, yuzhao@google.com,
+ ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 8mgrrsmxp39oaqwh4s6de8hp6g79h7ab
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9A050C0009
-X-HE-Tag: 1782499412-659519
-X-HE-Meta: U2FsdGVkX19Pf162uBvVPsq15vLzc6GhCMYdb81haS8fL8Jx3TWCuljzgSVowZkLCFGQEi9Vi1LEkcP/CjI4YxJsEmyLm4RnCW1ifUmnX8A4fXq0tIpu9ohukWb7UhzzeG2IvgXfsKjKbvqYKXe9r6Qc8NOqq+JTmm/xrHj4ML/2seUPDEXAFmLdOEXfU20PXJg4Y8W2MLSnFXXabiU7EcO7PElMCgODZYijbEciphKciatNWDX8mbo1MfDTSAUTkOgw8vMlfsHJRL0xnatCXvLmxb+ON4KknSUAr0I85Uxdp3MtkJ/4MCrqLS/7Gm0UDBLa7GI3bK+u9crLsdNtUii/XBYEQhQ2cl2CzDbY6hGUDAHvjLKC+P5tmWc4IlGxIHS99ovIkQUPe2ABPpLVH6FHhRm4DF/bAx5+DZMDxAM7jVPIixa4dMidmhXIGU/gnzhzoDZKJCthiVxtvTn9yMZJY/eLkDDqXHLb0e571VXZSBaF1Fe1mR5QDIdeaKNh37tkiY6Lmr1p6aG3VU5koI4a7pGGjjL7JLgrKRDE40RvsqsjZ/5CT5pF6Z8ulRsUa3B/Iu5v1IXCzQxYgSYSKnkOijfHU6WcrEcv1ITZC8DQFW+MMB6cpKDd1vV/tV6SX3+ixRV9VN2XHSB0jvyb1uiwhMJnYVPCGGNZqq3eBLg8b08W+dWpuzf/UBLOoLN6JEZrbR9Zboc9lkdAQgUfmfrDbcxrkaJxmoxujj1lKnaljaL+O4egKY8ibgmfpkJUK1EUKdqgLbw3bw07oyfeV1sSDkHrtteQGhiu1J6rBWztuwdUF/lR8dk7vOzEL3I8/rAUeB9BrsZmfLxlUZbPtRXHVHb8Kx0Zy2TMkop3zqKPXeE/JaTQRq39/9qrf9D9U6mUax2LSO56COvhVSJ0iE21Cbso41UaO2AviyH63VTvpZqb5xAHoDb0PWLkQlxOdQq9VOI+YUl5nrS8DTx
- ZLEELkyv
- x3oML1pbmmiJNJfQyPpH9YdNVgFsKCCQ6d7PSRfQ199VexR02sdRMvJXNzRVLkTpvFNEbC6CW2aWIlqg0z0ypbnE2shn8TSuA6R2yTBos5cHh9t3VLrOIsBM3iaHxWy4VR8MjCx7e/0MnM9l1+Jb1o8D6Z8wupJ8yAJkpJhVlnn9CpIWa68hGpullWMZxDRr/TUcs0rcjgcogojeFjMGSDbJKAoCwR2QMmO/bSbEKaOefl7TebWY1pF6QUhk/jUSjudnsXfefcQzam1BYlvVNf2G8gQl9J9neELmMCCRqQTbMmUc34k+94sSnLXVc42psuvr49ZNhZAd7sLYrRMLy1w3jxEcMyhHqN2wwYnJLG3OKlt/a3B5+uPib6CDFVcg3xcapYHqSFATtM9oUY3+v3bgDxu/ao+Jvpdfoc4eFzTc03BnPqyw5IVhH+frONZTJrmj1JX35Caoj/cs=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9CAEB1C0003
+X-Stat-Signature: j5e6sdknj18h6fn1isnax9yfdzq1csk5
+X-HE-Tag: 1782499505-978110
+X-HE-Meta: U2FsdGVkX1/uXJADhZUQOUb2Q10ClWniVEOf6kfjmoCQemI/juYxbjfk+b2kY11003pr4NvTRFkEXaMrm9VtkLuBzfVncIEQSWfR9qsTuWaaF6bIbILuA6gqnRK0nrTkc7rsb5Nv0CwDHGN2UUlSeoFIa67wc2UuQwUBFJstdoEtNnqjBEmr6joYBJwCEaC3CmstuiDwfW8Ssi78Nqq3eSENEs5RWrE6ok+rc+Sc4TjM3ITBxR1+zfmvSU9aOd35d2W07WSYN+N42CuOk6qc+AOI6kjJpdBrw6MY+NGmIFHJqrZfQ4k2JDcYJm6EqE7K8fQiVgXjIAU7m8RLLz0k7WmR/pEO2/zQajbqbhKTbgFyS5lLDqNJEZnAhilNbjWHeI1vAOKxXMpeigdSxCqbCmgF32l7ugteYUaKnfAHWYLKFt6pXy981J5WBexpuT3FpfpHUsqqQn84jjJCVDYmzbpJmup9wPztrMNhlTLeCH2g+k9nMriS+Kqgk/ovFJS22j4/TNRs/Vhkyn1yHMOlG5V3CwLuZhiwIE9W88C6vkSOFa7BA6KKGTpKyrOS7Hfu+6ffJu/EicTp7cX2TxCRdnKsLePKDvxICcohQaR+kc2YL2swBktzyJup88DTBw8LZ8LWrrPCearAYggYTMCguxP9J3Ug6lrH6IajhGeImJHrD7PJYgEOcyfJARfKH/F6aFPWLeg8mj5tIVpVQy5jUrm9JlAmL/9FEPOMpHQx5aT0UO0/+3e3iwUBSLFOj7GslzoxzRsZSJ8ZhgaKtKDd7TLEbyJMFPnswjJomBPIZqkLgaNe7pFV9648Ms7Gj0kI95w6DiHFZU4lz0fGSsHKDy5cmuSu4x+QkCBzjl7yxeKDWDmSf6iYb0MztHP64AsOnnJS2Dw9hfkKr6dyO5GP9IbsUfTktAQKznWax6W99J3DvtERa5CRPH1qzI0/tNuaxAzK0j1JY4NcI61R9hA
+ ZY9jqJlq
+ VeMasbEBMgfSFR1z5HWSrp1RVXVNWSMCI4kSjR6FKPIoBebxl4qkesZUZPBBkAGtZqxoNHSqg8dZqifZB57WNsv4la3J6DM/g8ufEmCegTzqG5W9Hi3iQnYMA0/qpTjEUcM4Pg2EZyWg0HCtnefFIiJurh9V7FQUIZXAikFMrYq8tAPAiEqOCQvJv4zg0NUYHuvo4VNwE6jfcm1HAOIVNGlPuLAQOVCEahiqMzmV7bXjAc4WD/WBVZ+AviqHDqjYLp4EGFOHiggf9A4/mA/WMf/GZ1JyrtD2S6WDequN5W5tDgZQpeu3DMtsAi5gCby1rzMD/sTe6IL0VjrW9g4Cl9xaGlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,49 +91,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 02:29:24PM -0400, Zi Yan wrote:
-> On Fri Jun 26, 2026 at 2:21 PM EDT, Johannes Weiner wrote:
-> > As we deployed defrag_mode into Meta production, pressure spikes and
-> > excessive swapping were observed on some workloads. Tracing confirmed
-> > that this is unmovable/reclaimable requests spinning in the allocator
-> > and direct reclaim, causing excessive amounts of swap.
-> >
-> > The initial plan for defrag_mode was to rely on kswapd/kcompactd to
-> > produce blocks, and if those are overwhelmed under high pressure, let
-> > the allocator fall back (__rmqueue_steal()) after its retry loops.
-> > However, that retrying results in more reclaim on some of these
-> > workloads than we'd hoped, sometimes excessively so, spurred on by the
-> > !costly order conditions in should_reclaim_retry().
-> >
-> > The storms are dependent on the request type. Reclaim will inevitably
-> > make room in existing movable blocks, since that's where the LRU pages
-> > live. So if movable requests retry on reclaim, they make progress.
-> >
-> > When non-movable requests spin in reclaim that isn't productive. They
-> > cannot use the individually freed pages, and the process is unlikely
-> > to accidentally free whole blocks to meet the ALLOC_NOFRAGMENT bar.
-> > They spin and overreclaim excessively, which tanks performance and
-> > triggers userspace guards like swap exhaustion or pressure based OOM.
-> >
-> > To fix this, send non-movable requests, regardless of order, into
-> > pageblock reclaim/compaction. This way, they help move things along to
-> > meet the ALLOC_NOFRAGMENT bar. After this patch, the reclaim storms
-> > and excess OOM rates are no longer observed in production.
-> >
-> > The longer-term plan is still to have all requests, including the
-> > movable ones, help make blocks to spread the cost of defragmenting
-> > more evenly and fairly; combined with proper watermarking to reduce
-> > allocation latencies in the common case. However, doing this naively
-> > unearths scaling and concurrency limitations in compaction that need
-> > to be addressed first. Promoting just non-movables for now is the
-> > minimally viable bug fix for the above issue.
-> >
-> > Fixes: f38356df6474 ("mm: page_alloc: introduce defrag_mode")
-> 
-> Should be
-> Fixes: e3aa7df331bc ("mm: page_alloc: defrag_mode").
-> Since I cannot find f38356df6474 in the tree.
+This is v5 of the series, with no changes to the core idea:
+- Fix missing BUG_ON checks on the sub_and_check APIs
+- Replace BUG_ON with WARN_ON_ONCE
+- Fix virtio-mem incorrect page unfreezing (inc -> init)
+   (Note: This would be caught by the WARN_ON checks during testing.)
+- Do not loop for an additional cycle during CAS reset
 
-Oops, indeed. I managed to pull that commit from the old development
-branch I still had locally.
+Original cover letter posted below:
+
+Intro
+=3D=3D=3D=3D=3D
+This patch optimizes small file read performance and overall folio refcou=
+nt
+scalability by refactoring page_ref_add_unless [core of folio_try_get].
+This is alternative approach to previous attempts to fix small read
+performance by avoiding refcount bumps [1][2].
+
+Overview
+=3D=3D=3D=3D=3D=3D=3D=3D
+Current refcount implementation is using zero counter as locked (dead/fro=
+zen)
+state, which required CAS loop for increments to avoid temporary unlocks =
+in
+try_get functions. These CAS loops became a serialization point for other=
+wise
+scalable and fast read side.
+Proposed implementation separates "locked" logic from the counting, allow=
+ing
+the use of optimistic fetch_add() instead of CAS. For more details, pleas=
+e
+refer to the commit message of the patch itself.
+Proposed logic maintains the same public API as before, including all exi=
+sting
+memory barrier guarantees.
+
+Performance
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Performance was measured using a simple custom benchmark based on
+will-it-scale[3]. This benchmark spawns N pinned threads/processes that
+execute the following loop:
+
+``
+char buf[]
+fd =3D open(/* same file in tmpfs */);
+while (true) {
+    pread(fd, buf, /* read size =3D */ 64, /* offset =3D */0)
+}
+``
+
+While this is a synthetic load, it does highlight existing issue and
+doesn't differ a lot from benchmarking in [2] patch.
+This benchmark measures operations per second in the inner loop and the
+results across all workers. Performance was tested on top of v6.15 kernel
+on two platforms. Since threads and processes showed similar performance =
+on
+both systems, only the thread results are provided below. The performance
+improvement scales linearly between the CPU counts shown.
+
+Platform 1: 2 x E5-2690 v3, 12C/12T each [disabled SMT]
+#threads | vanilla | patched | boost (%)
+       1 | 1343381 | 1344401 |  +0.1
+       2 | 2186160 | 2455837 | +12.3
+       5 | 5277092 | 6108030 | +15.7
+      10 | 5858123 | 7506328 | +28.1
+      12 | 6484445 | 8137706 | +25.5
+         /* Cross socket NUMA */
+      14 | 3145860 | 4247391 | +35.0
+      16 | 2350840 | 4262707 | +81.3
+      18 | 2378825 | 4121415 | +73.2
+      20 | 2438475 | 4683548 | +92.1
+      24 | 2325998 | 4529737 | +94.7
+
+Platform 2: 2 x AMD EPYC 9654, 96C/192T each [enabled SMT]
+#threads | vanilla | patched | boost (%)
+       1 | 1077276 | 1081653 |  +0.4
+       5 | 4286838 | 4682513 |  +9.2
+      10 | 1698095 | 1902753 | +12.1
+      20 | 1662266 | 1921603 | +15.6
+      49 | 1486745 | 1828926 | +23.0
+      97 | 1617365 | 2052635 | +26.9
+         /* Cross socket NUMA */
+     105 | 1368319 | 1798862 | +31.5
+     136 | 1008071 | 1393055 | +38.2
+     168 |  879332 | 1245210 | +41.6
+               /* SMT */
+     193 |  905432 | 1294833 | +43.0
+     289 |  851988 | 1313110 | +54.1
+     353 |  771288 | 1347165 | +74.7
+
+[0]: https://lore.kernel.org/lkml/cover.1776350895.git.gorbunov.ivan@h-pa=
+rtners.com/
+[1]: https://lore.kernel.org/linux-mm/CAHk-=3Dwj00-nGmXEkxY=3D-=3DZ_qP6ki=
+GUziSFvxHJ9N-cLWry5zpA@mail.gmail.com/
+[2]: https://lore.kernel.org/linux-mm/20251017141536.577466-1-kirill@shut=
+emov.name/
+[3]: https://github.com/antonblanchard/will-it-scale
+
+---
+
+Link to v4: https://lore.kernel.org/linux-mm/df26082871b4c65b2bd38d409026=
+237c08572836@linux.dev/
+
+Gladyshev Ilya (1):
+  mm: implement page refcount locking via dedicated bit
+
+Gorbunov Ivan (1):
+  mm: drop page refcount zero state semantics
+
+ drivers/pci/p2pdma.c               |  4 +-
+ drivers/virtio/virtio_mem.c        |  2 +-
+ include/linux/mm.h                 |  2 +-
+ include/linux/page-flags.h         | 13 ++++++
+ include/linux/page_ref.h           | 68 +++++++++++++++++++++++++-----
+ kernel/liveupdate/kexec_handover.c |  6 +--
+ lib/test_hmm.c                     |  4 +-
+ mm/hugetlb.c                       |  2 +-
+ mm/internal.h                      |  2 +-
+ mm/memremap.c                      |  4 +-
+ mm/mm_init.c                       |  6 +--
+ mm/page_alloc.c                    |  4 +-
+ 12 files changed, 88 insertions(+), 29 deletions(-)
+
+
+base-commit: 51cb1aa1250c36269474b8b6ca6b6319e170f5a5
+--=20
+2.54.0
 
