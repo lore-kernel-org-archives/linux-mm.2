@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0017BCDE010
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:55:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2886BCDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:55:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4F066B00A7; Fri, 26 Jun 2026 00:55:03 -0400 (EDT)
+	id 54F2C6B00AA; Fri, 26 Jun 2026 00:55:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDA406B00AA; Fri, 26 Jun 2026 00:55:03 -0400 (EDT)
+	id 5001A6B00AB; Fri, 26 Jun 2026 00:55:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA30B6B00AB; Fri, 26 Jun 2026 00:55:03 -0400 (EDT)
+	id 3C7026B00AD; Fri, 26 Jun 2026 00:55:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D1F16B00A7
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:55:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1E3C8A0383
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 179E06B00AA
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:55:04 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 858474039A
 	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:55:03 +0000 (UTC)
-X-FDA: 84920849286.09.B5F8963
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6B432A0006
+X-FDA: 84920849286.04.A42979B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EED8440003
 	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:55:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VPa5z2g7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XPwjl1zH;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782449701;
-	b=vxvVpOof24nErL+tKqUDZcJ5B0Pf6DFX9tUbTHijaZOYJSkcBuYQUVYvsW//Yj9Tqn81xO
-	OeF4KUKIyjeWL3bOFGMWJAv0i8zSklIdzupMasdlJ4edenDhv3wgnI/m6ESuoJdo2MTp5S
-	O9ymLFlA74U9Qb7NZmZlf/2UqbFPh3I=
+	b=F+HrluJ0oxKzUGQ9i6WzJeCasAEnsZ0bZ1r0qhEb2qpJYcu73amCPoAEqQYzm8btW+4/mr
+	W8oddoRBwbuZFkyjF9o7kxNL702tbXJfBwaz6iyfG8zS3EOFh62PsqeMvXryUc6N/qwjE+
+	dIQBaLSAOI2u6vXia1XnQvtiPLowUxU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782449701;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lP6UpwKkwuz9M05E3M2QCHhODdwvMMvuytw4RMj9Ay8=;
-	b=AsCJOW4npbPA0tmEAn6A/RClQykWT5aB/CoMq53Uhuo+F2RIcBY7hH29LlQxwQzkAesy71
-	T1tXrAKD3LaGN+6B+0LENk2TAilp84pum75GtWUZjcBDmY2Mt76554N2x+wgOEcWGke5Et
-	xihrSrmiWLXDY8RhgR78lLDu4PLZFX8=
+	bh=aqCS10w29HCUyyDrQgMhmUaKtaZBHTQiO8fdKXN5pqU=;
+	b=d0nj6UEOpXIiX4BhGUt4P4pNwFMViChhj+SXgHbnCYvgamvAY2U/KVuOhW5ge4CF9wC5Dy
+	mC8MzL0MzGlV741FoAeUpWCK0mXTtpHB6UbPQ4/us/+YbaeW7y42NZxf2hGJvyjw9o83se
+	/USm+eF8hl2N1/53vlyOhiWQlzDo82s=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VPa5z2g7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=lkp@intel.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XPwjl1zH;
+	spf=pass (imf17.hostedemail.com: domain of lkp@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1782449701; x=1813985701;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Ph97+QbvBbcufChYnurDSohcP22hoOVDdPb4UCqhVjo=;
-  b=VPa5z2g7kw2VtQmhCrN6qgdAjj7rpjcF6kEJamaBEHCGSzaG6xd4WhOT
-   CWwFojJdIw1T03mb10MWwDtFsd0mXePnvpF8cSNTUVUF9vPaSgJeZIvHf
-   0MkRzc+eZKuY61kEkg8RenPICupab0Y3J5L247XE7Xia24PabBEtpLpq8
-   xVmtPkqYOEOp2UapVrHQUqar4yGSAGt41IqaTMnrYI5EWHxdO23s64pKj
-   99iWUGMqAmgDqTiwQTAJv3rz4/Z2kMNRNmOYoMgun+oZi58ce6EYzAHK/
-   oXUmQ4MJTB/gi5i1k8Y639hH4Viehe4cgZYZ3Gm4LU8sihNSRow48JbC6
-   A==;
-X-CSE-ConnectionGUID: xtm3PT1ZRu6GMa7RqnEY6Q==
-X-CSE-MsgGUID: iilsepOzTeedtCn9TIsPXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="100675481"
+  bh=u3b1STjl4yzzFtELpqEEALpMDyw71hALYZ6LVdfVQ8k=;
+  b=XPwjl1zHxQj3lKAX7//4mGN+dGGD7AC5SPyjW3Sf4hmyjU36oPXpIoGm
+   OxEZy0QZMtMvwy0Zn/GZBbzmqo1RzzgttWs+pNnEc5BXAKFioRHkyUOce
+   w7z6oURHQ2SqNgBTGgcrDM93Hs46KoOoHCQubX5I5JhSOCVOvmd6etYMh
+   huOa44hlwBfNwZ1YPsY8DXxA1vmThwJ4WSHwugmlG6lqGJ/CLEhLXD4fz
+   uc/Y4FPNOECcdUV7t/15Dw4x7K9KbRSp6GeJteMnm+NHtGV+td/LqtXWF
+   VCP6+3uuZ1ndK0Zj0fzvJB3jnoT+ESWEsuzaivIIFQOkce3qYwMXA336/
+   Q==;
+X-CSE-ConnectionGUID: BULy5uzhQmWw+fYkRl60qA==
+X-CSE-MsgGUID: vZ5pJbqHR82XOhNnQv1E6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11828"; a="83378626"
 X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
-   d="scan'208";a="100675481"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 21:54:59 -0700
-X-CSE-ConnectionGUID: MA5R9x/gT4O7EFxpR5rVbQ==
-X-CSE-MsgGUID: usDeWcdXRIKMfkGZAwT0qA==
+   d="scan'208";a="83378626"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2026 21:55:00 -0700
+X-CSE-ConnectionGUID: PnRCxRIdRAud59V/9KWdQQ==
+X-CSE-MsgGUID: FUOmsUQ9S9e+AvWQsoG2nQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,225,1774335600"; 
-   d="scan'208";a="251894018"
+   d="scan'208";a="250841154"
 Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by orviesa009.jf.intel.com with ESMTP; 25 Jun 2026 21:54:54 -0700
+  by orviesa008.jf.intel.com with ESMTP; 25 Jun 2026 21:54:54 -0700
 Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wcyaY-000000004mL-3RQw;
+	id 1wcyaY-000000004mN-40QC;
 	Fri, 26 Jun 2026 04:54:50 +0000
-Date: Fri, 26 Jun 2026 12:54:38 +0800
+Date: Fri, 26 Jun 2026 12:54:39 +0800
 From: kernel test robot <lkp@intel.com>
 To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
@@ -95,25 +95,25 @@ To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
 	linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	Hui Zhu <zhuhui@kylinos.cn>
 Subject: Re: [PATCH v7] mm: assert exclusive nid/zonenum bits at the
  page/folio access sites
-Message-ID: <202606261253.X4CwKZZJ-lkp@intel.com>
+Message-ID: <202606261257.rnknH3QK-lkp@intel.com>
 References: <20260626032012.1049667-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260626032012.1049667-1-hui.zhu@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6B432A0006
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EED8440003
 X-Rspam-User: 
-X-Stat-Signature: peq6k7ubitm9gd1rdn4k67ek85f9e5zt
-X-HE-Tag: 1782449700-953554
-X-HE-Meta: U2FsdGVkX1/yWGD+EKH1iWzRqwSglWIEr6doADHSVQiLd+SvOVwq4iRi6WIfUVA49SOaB2eiArJVkkiLOAnb4lbVm/25Kgy7ekRKhg3lCn5NHP5VMMFNDokzyd+HWlkLxsPtwzD7FUWRRpZmGmdn6VeRr3TGEz2l8kTyzqDzOIfVbL1PkDGOsuEvg7evIiYqB4a4jeqYDkQoDKjZZTK2nR6Wl3PN4TdAtsh057NPDp5ZpVY+To1pn6md7ylzYEHkCMpgkNck9aZpJG1d1bNHa5KBdoKQV+BCm4KZrrVFHwAXZUNgoGoULIS+SuM7vC3s0hIHG+6r56g0lzhMSH9kJmAtQ4BNJJjA8J5hUwsHMSbWcX9gmQG1VF+mXO056ZlmCL+z7k0Utv3DZ4hxViYt/FbVQ76xTBURuU2do1acd8trZpsadlaZjntjAbiKNL8Ik2DpxXdflKaekm6+zMzFOCpjjGYI85KKHMn88g56bBvVJIYNlt3aDfl0P4+2L7WIDVAe/AS3PqBF45WCyr+yC98oG7XyTliyXyC7R7xXtPZxEqRvAK7DOucYBBSwGzpckKeQCmrY9QbBOHN2smLWwFTdLDI/1nSBBmH0+YPv/1npdUUXRO0QgMkqpc+yW33iFWyhxnEB/7XUZW1xLUKJdld/yNlbGaq2h3UOBoJqHLOSY7lS4hhvG2I2wieF6mMfEpmOSI4MBtlP9rUNHLlgmMJqBTLMPnHqQywmM2vMgCO5XVtZsiuk2Bk+4HLw2lauAlWUgcMtjIiCifzlvORKTr8yCcmE7KkqXpIn50ZHTuJ/JPlVli1w79hkcfQ3KnqPHNyCRoNANIL5HffRUeJ9R9YYmxGbH7az7YeiVo/pS3SAyn/JVnO5o+U5Cf7B9xTIPoJ9p1euxctJAe/dY1jYFrMt9yHHQzykb0Y0+qYD9eMvu8aA/igMlaVmYbHMU5RGM/DDEy0qL4qha9JJnZE
- Q6piUw9l
- 3uSWs3K5ahMm8bxO+sjx66ZMdgCYIX+S28NFGgn0c0WfPwglkvp19eX+SlEWUDZvlXwU9fpmynpbSn3AqCTEOu5JLAX8bBslwqT7x2MdiNzEngElmJCsWy++RHP/HUpl2PxqP1hFfuHqGKsW1FMNScQRf5N7uCgWfkAJb4q5O3w+uuMQeEnrT9Y4/cv/gZoIzJSwZTvxNdL7oNEeYAWusjZ8dGW/FLbjfLawcr7WtnDJHB/XRvpUjYHlFDluhehxtXAxL0Es2pr5kiMwInacqhcyLaAbhVs1f0/8BLN+HB3Y+b8kLVIaUAHPNO2hq3XUA8QB2PLPJlorA4B0=
+X-Stat-Signature: buiba15o84a1998b8fw8sxc6m3c11fk5
+X-HE-Tag: 1782449700-624060
+X-HE-Meta: U2FsdGVkX1/zsyT8uskTk7mAT2B2PBCY/iPrXL1f/585Jv7/IDsE9UlhxS4GYMI/cwlqfNZwURahl0yiTgLvDNdf1jyUhgo1wSgm4DAo3UDNpHAfQB5V7q4+MURFKzaZQkE7CNGnc+RnIQQ7eibc1i8AuXi1ydB1LTcHprQscV1nxk+MbRGJFGAyJ/D9V8XcmPH3HALF9mlpCAyK+HER7itlLAM8YkrSKd276ET0XvA5/ERYLE4qEFJyHvq1v2hzTykV6Fd2SqSKpkiw8li4g5ZaGAOQBirqd8ZrBStlZB5+ChNLsCU9WqqESOMzhWEW/H0pOuqGAht8LAljKFHeLS1/4dFBMBwbBOSRAykTW9A+v9FeZ82+ul5tSntt7aDaScU9hoosy2WDfFSbKKhDGKsIbsZQJIbogNxmEiEkYtvHcL1ew6xHBVxO/qMszxmbB8dbZ3tcg0xK/ZopgwnzkKeHKQRfmoMx+67Tu2L8d45KAj5xIndRLpPoQ411yaRl9LVYXCWgOy3kI/+Gs74TKjLang/k8wxLJeVoeEF9dAr5mW5DyGcvaa6D3nGwx+DIbwv5yYADJFBHwiTkq/7XritJprwo0enSLMhHkyZgIT33520k/ogKZA9kMBQze2+u7KTrHcx1AaqPkLCVAQie8wXzm1/dtRZMIOqHnLp6ZU+ogC1HPK1eLwQeU5yDRnTNVwvU8d3XxMbcL2RfJVM5fZhkUM2auKGEYZhFDXDu2LJ3WmFpG+G9ubR2ILs09OAgR+2fAHV53mdwOnTS6LZwsoHA4BrWT5fmdBVg6kwGh5PE0y4UwmcrBoCj9a0JPOwgHqT0ENV7RImPQZq5cTXhQ8WNrTXey3Nwf97taNbMtB3BmPhXQL8X8cY5HJm3LovnYNj3z+cQAOgJO3zvUiFyzfZ3+TGQw8BxF9vrl34mBwilBDC1ZJJB2fSg3yUHdzMADJexwV356/lxpaRKKqt
+ OLjuwiCy
+ pTB71LS3SPR065EMGHrbvwPQ4f4T4YdcwbJgHrbbQ92BPybvPnatbHAxYfvFTwJ/NfvD6N//i0frdQk7Xlsq6QiGSmoseWjOZ1cS2KhT/A4Ng3pTarZ+tiuQd6KFPYdLLvRwVFmXisfmogReQ7HIAGeorX7vRT0d4E0Nt8jVfmk8WMG5VeiNkvtQE8DCIEeZw0oCwH/8PXsjZnTgncjF6LxyK5/5TaX9+Qg6xJDbktJNIfFN08I0eTbCHNFY7iyeYfwUm7+rbo3qLKH6aOFNRIrel9iMIMK9A3t5zVBFB9OuUT5pgdV1fLNjfadV1o08laJYmHjSBIrV6ycU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,84 +131,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Hui-Zhu/mm-assert-exclusi
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260626032012.1049667-1-hui.zhu%40linux.dev
 patch subject: [PATCH v7] mm: assert exclusive nid/zonenum bits at the page/folio access sites
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260626/202606261253.X4CwKZZJ-lkp@intel.com/config)
-compiler: clang version 22.1.3 (https://github.com/llvm/llvm-project e9846648fd6183ee6d8cbdb4502213fcf902a211)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260626/202606261253.X4CwKZZJ-lkp@intel.com/reproduce)
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260626/202606261257.rnknH3QK-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260626/202606261257.rnknH3QK-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202606261253.X4CwKZZJ-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202606261257.rnknH3QK-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   WARN /zdci/src/lkp/lib/log.sh:131:in `log_warn': /opt/cross/rustc-1.96.0-bindgen-0.72.1 doesn't exist
-     from /zdci/src/kernel-tests/lib/debug.sh:164: kbuild_log_warn
-     from /zdci/src/kernel-tests/lib/kbuild.sh:3371: export_rust_path
-     from /zdci/src/kernel-tests/lib/kbuild.sh:3361: export_compiler_path
-     from /zdci/src/kernel-tests/lib/kbuild.sh:3840: invoke_make
-     from /zdci/src/kernel-tests/lib/kbuild.sh:4022: make
-     from /zdci/src/kernel-tests/common.sh:202: redirect_error_to_screen
-     from /zdci/src/kernel-tests/common.sh:210: redirect_command_errors
-     from /zdci/src/kernel-tests/lib/kbuild.sh:5680: make_prepare
-     from /zdci/src/kernel-tests/lib/kbuild.sh:5909: test_kernel_build
-     from /zdci/src/kernel-tests/lib/builder/base.sh:442: builder_execute_build
-     from /zdci/src/kernel-tests/lib/kbuild.sh:6419: compile_one_config
-     from /zdci/src/kernel-tests/lib/builder/base.sh:88: builder_compile
-     from /zdci/src/kernel-tests/bisect-test-build-error.sh:102: main
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:21:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
+   In file included from include/linux/pid_namespace.h:7,
+                    from include/linux/ptrace.h:10,
+                    from arch/nios2/kernel/asm-offsets.c:10:
+>> include/linux/mm.h:2: error: unterminated #ifndef
        2 | #ifndef _LINUX_MM_H
-         |  ^
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:23:
-   In file included from include/linux/writeback.h:13:
-   In file included from include/linux/blk_types.h:10:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:8:
-   In file included from include/linux/cacheflush.h:5:
-   In file included from arch/x86/include/asm/cacheflush.h:5:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
-       2 | #ifndef _LINUX_MM_H
-         |  ^
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:9:
-   In file included from include/linux/memcontrol.h:23:
-   In file included from include/linux/writeback.h:13:
-   In file included from include/linux/blk_types.h:10:
-   In file included from include/linux/bvec.h:10:
-   In file included from include/linux/highmem.h:10:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
-       2 | #ifndef _LINUX_MM_H
-         |  ^
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:13:
-   In file included from include/linux/pagemap.h:8:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
-       2 | #ifndef _LINUX_MM_H
-         |  ^
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:5:
-   In file included from include/linux/swap.h:13:
-   In file included from include/linux/pagemap.h:17:
-   In file included from include/linux/hugetlb_inline.h:5:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
-       2 | #ifndef _LINUX_MM_H
-         |  ^
-   In file included from arch/x86/kernel/asm-offsets.c:14:
-   In file included from include/linux/suspend.h:9:
->> include/linux/mm.h:2:2: error: unterminated conditional directive
-       2 | #ifndef _LINUX_MM_H
-         |  ^
-   6 errors generated.
-   make[3]: *** [scripts/Makefile.build:184: arch/x86/kernel/asm-offsets.s] Error 1
+         | 
+   make[3]: *** [scripts/Makefile.build:184: arch/nios2/kernel/asm-offsets.s] Error 1
    make[3]: Target 'prepare' not remade because of errors.
    make[2]: *** [Makefile:1390: prepare0] Error 2
    make[2]: Target 'prepare' not remade because of errors.
