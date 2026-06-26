@@ -4,90 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9C6CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:42:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4263CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:47:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD8DB6B0116; Fri, 26 Jun 2026 06:42:22 -0400 (EDT)
+	id 77E636B0118; Fri, 26 Jun 2026 06:47:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB1D86B0118; Fri, 26 Jun 2026 06:42:22 -0400 (EDT)
+	id 755CE6B011A; Fri, 26 Jun 2026 06:47:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA15C6B0119; Fri, 26 Jun 2026 06:42:22 -0400 (EDT)
+	id 6444F6B011B; Fri, 26 Jun 2026 06:47:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 991206B0116
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:42:22 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 260971C24AE
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:42:22 +0000 (UTC)
-X-FDA: 84921724524.30.2B33994
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 75880140009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:42:20 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lugqbHiO;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3964E6B0118
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:47:25 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9954C8DB89
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:24 +0000 (UTC)
+X-FDA: 84921737208.16.6C5A73F
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D70F4C000D
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:21 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=iD7nxymC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=TmCc7Eb+;
+	spf=pass (imf28.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782470540;
-	b=AD1VjzEdBjTmH2MEvlyojQLjpVx0D0UXESEh7aNn6D8aAmvR5QWaWww/1mDCaw7wG2snId
-	XrtOhdtcJgbaSnnHmTNIJt+LLZJYnh6Da6lpveaKvm9zzE6C1UjZOXptMtWo5Qd03WHR4c
-	7k9Aa3lQGektTJt2ik+FQIbowKhxlrA=
+	t=1782470842;
+	b=W1VEhNh5o0GkvI6FzuG/sbu2uqxt3unS/s3QQHNrtlPOqtCokzHbAIudim2UU5APp2P0/g
+	u32k6DKDVgT4kB81QZCG5EVSrmmNL5eFj9jjg0khTYhCUQQmfzhOVxqxphBFa1tQg/Cm+B
+	Q+0ahmrWA3I13bV4Sa4cQQtdLjBVuIA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782470540;
+	s=arc-20220608; t=1782470842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z7InqrhYDZxSMwx3T3i/srdxrW6Z6e1Zj0iTt0IoNFo=;
-	b=EmH4KSSqFRlq0PFFavBAfd2KaShzBzH/xs+2m1B9nUP+VP2ydDg+MuhAnLKwZt8NLk3ApX
-	Y2RIwxAIHlXD+NbhFAOuogzbo9PQeTSIYCRsB3Rhd/X0JUunnoXjSeReRdc1/ExFuZi6RC
-	HALfGOh/pltLsUSDrX4S8+t/kLmcvCw=
+	bh=PChBsdJTdy39hlcQc2xrVoLyCX7474bgwLOt0FMf6Ls=;
+	b=PV8reNSNM/6tSd5UEgweoHwKLqhqyGqsQY/vV/F0jVC1055JID4koiP9rS9YxR68pGz8WP
+	vCg109vlrvbMK4o7vvNs84t6XadCUKTZGffHoSUbd2gmHbWbgW0+slvHou/23d8anHE4T6
+	ipwUmv6yg2s72DW4UvEuj50K/rQlgxQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lugqbHiO;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D787560122;
-	Fri, 26 Jun 2026 10:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA221F000E9;
-	Fri, 26 Jun 2026 10:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782470539;
-	bh=Z7InqrhYDZxSMwx3T3i/srdxrW6Z6e1Zj0iTt0IoNFo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lugqbHiOMkQrqlrzp0U15pRPuhDteUk5H7BEdJONshnVNA0CXIbHdRc2edNnUu1E2
-	 7Bi1hgNrF0B2RyqdJ2o81qk8D59rNSdiLSfOwGASJ+k6dO6ysZICDG4octJwRi1nFd
-	 OCEO+fXQ0H5psDRdzNu/4ocXbTBEmFo0pd3a2mqUUxKjrbPMyNeW5GMb7X8X3C4+BI
-	 K666MVGJ99s4fTHO8Cn8/YcNYRWR/6t5sdBx+6ZYFznId8LQntosa/9e+gdDpOHGfe
-	 +23hHPYqeGQeYP76l30eT4T93pbk30s2YwQWI7q/ZuP1QRWmO/QcENqGsH1CiAdeA9
-	 nGiR+WLH7lBmg==
-Date: Fri, 26 Jun 2026 11:42:10 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org, 
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
-	jannh@google.com, ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
- PMD handling
-Message-ID: <aj5XVwsQ4rOLTzr5@lucifer>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
- <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=iD7nxymC;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=TmCc7Eb+;
+	spf=pass (imf28.hostedemail.com: domain of pranjal.arya@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=pranjal.arya@oss.qualcomm.com;
+	dmarc=pass (policy=reject) header.from=qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65QAccFl561276
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	PChBsdJTdy39hlcQc2xrVoLyCX7474bgwLOt0FMf6Ls=; b=iD7nxymCDFJjKejM
+	yeACrs8LlvKBV3jswNLTh9psxaiW925eHUDLfBLMJfzSiROAU3dbupadpJwMvfLa
+	h2JHcUBRcIL8wvD9gun5NNueROnQ/3zkjJ6g1y8vo/nseg2QDL+0GXjQ97XyRfMP
+	bsZrUWOeb6z+nZ0oiTuF6juHHQOHsjTBD5GERvNKQac86Lojqjd0fFuZdM7HUn7M
+	fv9N0L1X39Y6EgYGYMvanQeNvLQlTURU5+7TezrCFUYYyDs0UBJ8xA+A1w6UdTNm
+	WcvliyHGhaxwusIwekR63QIMEPE/otIMFHKdN9UN7hr8tcP6TL6bWCJee12h+wrV
+	YZX6bQ==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4f1fgdt1m1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:47:20 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-30c95b0e22aso2330687eec.1
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:47:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1782470840; x=1783075640; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PChBsdJTdy39hlcQc2xrVoLyCX7474bgwLOt0FMf6Ls=;
+        b=TmCc7Eb+WrUTDmx5HtSWOZh0Qds+yBvMrPqygGDZquVFm6eDZCUUbQhxad33X9SQ1e
+         duh1jiNlhUG/LFesmFUxEaDXeDmKrAubPcvo5ftN8SFRUvqMfZGth9WnnaxPZBhhr2DA
+         aYSs+wEPwfN7xYUhZrxBVQlQ3lQ+06AjOxxgir94sYiSMva0rR3M6mZjSdL5Qt2hx+rJ
+         n1cIq/+pyYlDaze93GMn9GRvDENXo7QmOaAH4FTb6wPkWkgFwoRse6gGX2+pi2C+WwYc
+         qdNEmyz4HMYkcUMcBAfcKpXtcqegRkJBpBMT5JWZRYqeOX7fDxNQSpeaZxg4+rxwyov2
+         eQIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782470840; x=1783075640;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PChBsdJTdy39hlcQc2xrVoLyCX7474bgwLOt0FMf6Ls=;
+        b=K+pN8chh4iqs7jfRqgGhNK8c7R+nNVMXtmkgqxkSWCWoT9Y2CG5YEJhNcj/xvk0Cz+
+         YM+2f6ryAaH4wmeHRDc/3ounSPeaJM+cZo4Upjvh7DniF7cdS1TfEK6mavMW0Ui0tfqc
+         iMBldxHcp2DH2b8yzX/imD2wSOptUNur+xGtoowyQQd13fLdHNuUTI9d76vc6F34RLrQ
+         rdGR4XXf0T7W8VB3sObh9V4xq+wcmwXBc9N4J8YeWQMUzGcDY/jfMqjtRhY4gS0jfIX8
+         KEdHApg6uBd1d9E+Dpt3OkXjB+PKCAvhoBZjIDMndgSrrSFb/L6AKglwIt3tMNkoHdoI
+         Xsaw==
+X-Forwarded-Encrypted: i=1; AHgh+Ro0m/tqMONeHtgMXVh+FOOLu6ouTWxhnuhvmD2KG8h9ksuUbn5fBIS6Lz/fAuqeabTvhf4vf0wN6Q==@kvack.org
+X-Gm-Message-State: AOJu0YwqH0jnmwPe706nPs6xfRsEqrp5wiGui3EqOFeGz09NNc0RGq+y
+	0q15frRel3bjuvckmwzC+jXrdRwqRX/2TNTbR9ouH+mdSiyZ7RjrCnG2u/4aQM3OzKAvavl/stH
+	411+HU2VH34lhIheRtIz7ln/zUN7Omi7dMpuVxtW5bPcBkmfyHwgA9w==
+X-Gm-Gg: AfdE7cmxLTlTmmab2o7nvairLEyR0IyvfgYLG6bmuQdi/1514wknyPaORIN9nyypc8t
+	Yv2cV9ZI8Ri6cn+f8gfDTjGL5C/tWiZ0JzTUsjnfkLQ60OvI2xW+d5UjJWvMiDstR4u+t4PKXI6
+	6WjUO+/qNd0PLb9zYZm+UhV1Li1HZc8x7Bk2oftI49OprjZ7Lw7icUBh20Kj7mPpQQ3kG2mCoYZ
+	a+a2dJZWsSHlzV/qOSNBeJ+bZRHzY308yI9cNN+NcZFpcdVhX0lUmS55OUdFVIe6qa+rfehv6Qe
+	XzMu64p84Plo+hds6RIYB/fTu9yoyhFt2Oe7YkAjqAFkVW36SnsHB7ecQm4LiRgFhkGntrZgvFU
+	afXhNrSTFN2xSH3crKnMmMQPlRW3Eckva5aRr9qF7
+X-Received: by 2002:a05:7301:37c4:b0:304:ab8:f899 with SMTP id 5a478bee46e88-30c84bcdac4mr6511070eec.8.1782470839616;
+        Fri, 26 Jun 2026 03:47:19 -0700 (PDT)
+X-Received: by 2002:a05:7301:37c4:b0:304:ab8:f899 with SMTP id 5a478bee46e88-30c84bcdac4mr6510992eec.8.1782470838306;
+        Fri, 26 Jun 2026 03:47:18 -0700 (PDT)
+Received: from [10.218.25.225] ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c4ca240sm17658216eec.4.2026.06.26.03.47.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 26 Jun 2026 03:47:17 -0700 (PDT)
+Message-ID: <e65e6153-10b4-403e-ac40-10687ea5cb68@oss.qualcomm.com>
+Date: Fri, 26 Jun 2026 16:17:08 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 00/12] mm/vmalloc: migrate vmap_area indexing from
+ rb-tree to maple-tree
+Content-Language: en-US
+To: Uladzislau Rezki <urezki@gmail.com>, Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Alice Ryhl <aliceryhl@google.com>,
+        Andrew Ballance <andrewjballance@gmail.com>,
+        linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
+        Lorenzo Stoakes <ljs@kernel.org>,
+        Pranjal Shrivastava <praan@google.com>, Will Deacon <will@kernel.org>,
+        Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Mostafa Saleh <smostafa@google.com>, Balbir Singh <balbirs@nvidia.com>,
+        Suren Baghdasaryan <surenb@google.com>, Marco Elver <elver@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Alexander Potapenko <glider@google.com>, Shuah Khan <shuah@kernel.org>,
+        Dev Jain <dev.jain@arm.com>, Brendan Jackman <jackmanb@google.com>,
+        Puranjay Mohan <puranjay@kernel.org>,
+        Santosh Shukla <santosh.shukla@amd.com>, Wyes Karny <wkarny@gmail.com>,
+        Sudeep Holla <sudeep.holla@kernel.org>
+References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
+ <ai3kkIpaR0aT_6q5@casper.infradead.org> <ai_LVreyRWx-RDEd@pc636>
+ <ajGQ_WPT3Ra2kPCQ@casper.infradead.org> <ajPDDkV7yqWlhPIh@pc636>
+From: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
+In-Reply-To: <ajPDDkV7yqWlhPIh@pc636>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=API5kwXb c=1 sm=1 tr=0 ts=6a3e58b8 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=O-PE4fd2i0mDks678lIA:9 a=QEXdDO2ut3YA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI2MDA4NyBTYWx0ZWRfX+qfR8/ypdsSP
+ 4FYd+8u21MiGbEgsVsIQREzqRGlPltF8mlBJztgs+wr1cwKSTnT61K+qEEKpvVmg+sRO0ygum0g
+ rpxgAlJQxtVXDT14ZvCVMiYdJST8EXXHlB6Nis3b8zvF11O2SD70KpuV+TkOlfbl6lBKwn7s4LG
+ b67hAhLSleEuBZdsI+sSVgd+ltEk/4Z5h1AKXIn7fhfbsbXQ0F95WOHCSdi/ePKr70qkL3q/9IQ
+ hjhKfEkAVmR/mV8epWPa/7gTH0c4rLbIZURWRLQOBIkmyNiYgddYRdF3sNWm+V/AOW0t4YAFSzb
+ tGVVZFa+h8sHUjYe+wrqSAhVMHJaCCSlGUED5rlYQljQIqxqV8TV+0x5JKh8by1x10E+9y1fKQp
+ ACYShQhz+/eYJcRcCEVzWZTLPd5jtIhtPTEgZrXSbXQRkfSe9bUVciYdcfrfznnabpVmuOR/h+J
+ XfzcQuDrFnKtcmjbs2g==
+X-Proofpoint-ORIG-GUID: wrgTxHGDyK8mMp-GfPTG0jHrOSn8b57O
+X-Proofpoint-GUID: wrgTxHGDyK8mMp-GfPTG0jHrOSn8b57O
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI2MDA4NyBTYWx0ZWRfX9TuwyxXby5de
+ Of7iw4T9nDkdz9Tsoe33sY9latIpIn+3RHvYrovpALwE5HDf9d5GoAILH9YWxnw9b1baMtZweqW
+ 1JBTGMX2feHtgFXeNe/T8rCp8bCA14Q=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-26_03,2026-06-24_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 bulkscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606260087
 X-Rspam-User: 
-X-Stat-Signature: sbt61fwngochyaua64euxa7s1upzhh94
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 75880140009
-X-HE-Tag: 1782470540-554657
-X-HE-Meta: U2FsdGVkX1+3beKZv0Aiwucm0/DbyJtA/jvvJNEWDMDpQaKXUJTPC4RmDFg3EAkNiyKFW47upLECbrs5l4VfhmfzZ6Z7ar3HSmWpvCAbisqkFfqq/7LYm8/ECwJRjvMWZuKH/gPlKX/avdptkLfE9IcJ/ZNFqzXhrcFByJXzWde9bD7nJTFnbvpEqBrBoRflwbqbkS6AJXSOCe7dEfpPYVH10tJ6o/TGyeHyaX0QxPnXXHk4FIZPtDLrUqs7Fmx1w1TPCVgOsLMGLl9OjnEy0OXzfFkKH3vf12UyORlKKnGH0NzdIJAHIdc2RK8RWvMNp/q0BkalsjsPC2sewg2QGVpzKQsMPgtNfb7cQeIeaFF8Q0mmEuuALgNYCLERLYV01UKuAnsaNADvyvZIyKuwjBPO2utUAKRs1td2tPX6CKKQcObSqt3wdfVt4F5+ulB82Vi2LL/mPF2hu4jDA1C76GPQKxW7kdbG7gCnHbuOr+l99yeDCdhyL3LBL2iIU/jH/XdPFAdnvA0TZAFS9b7uRUqxg9/NuCcXT4zz3wKemxCbvh4TpNfqZ5Lwo4lbkiWjZ90BNBrMNhzsomi+dPzTyqx0i/PMDCh/RwcyOlZzNU74IN5ItWoIgtHYzxaLT5dq51yXc5lS0aHiH+phQxfs9JRnR6j9e8+6TRhoE8SHlnxVewwkwk81ZFlQ6ly+SWmEsy/jP72T2pFJcC6P6o1p5XSel+9F1FqsetlShex812ZZ4o0AqL3BKdGSp+LEOc6c63hS6Pd0Xlrl/mZIOAU6+EIJ2WdTYkxUntkuie0OUhTmcLaE64dDzWav1Oxtj7UlCkNpdJmlVnDt7OKoOsU+wPRCiftIw/OQfnE1+/2x3XeaR4oDsaDXMFfkBkdtHEpEIukQ/7vk6DIqef4yaTKNkr08QhUDeP0hJFbXDk82sfub9p7hfaLEBByCDbWe4KohAGMZLDe+d0cE8a18FoY
- I0r3pYzh
- +A8IgMWvqoKPiHWGQuH1yQasiwcj6kfBmx8sTyGvktRqCMcoctPMBT6ufMzGIAfFbIoNHTi6I4hnI/xJ2jhM1WMDxc8XHkwknEiOwOuiizmoHiWY/NFX3Tl5aQJNKjd7yuCP24cow2bKenwVuFqC8tihNqNfDqW8yYHIAj7Y0fXnYDQK8DM2oMOANEdYGBGgt15PTMxPU+MUsIzm+Jw1xUSaDExDymipjjUvyk9/cBQ3hliJflGb+cVTP9NEQrHobsR8/j62eibR9BTlQYcOeht5FM5GynMsLxws0ITcYybg6e2qnFV4gx9awkqbarHAKUp0u3dI+iyjUdb1LR/4xaM4+iOCXSQim+gBBCJ2dhYEIlNpDmfb0oKj/wEEkCS5HmUQxmRD4dyFBCva3u+vjAwdNWPnRRoD7+rzt+o8EYbaUrmOxONDMXhjyNf21gIwey8pj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D70F4C000D
+X-Stat-Signature: rg313o7gr46n3zbwpc9kcwp7yehaxhk5
+X-HE-Tag: 1782470841-347030
+X-HE-Meta: U2FsdGVkX1/Y/STuuFjwGJBEN7euCJg9sAURhKcaDJXS6sIF8xQIgJf8USafkQcpqfQrJUgpVzI99nIrafhu0JWvqKALpoKcOZPQXUfJN4OO1D89e1qu+jfigVPlq55mnfG0o/vpGHYjPqs1BUnwHgE+jZHiaLqqr4cf5HjR3z1bHHcAeOupOrf3M5qz3uJTurHAk0gpOsnan+rLUzojoLS+jPTL+37RBlx4EVqV7BBk9kSme68rUiEpRlhuQsqKDrhLVtJ9fz0oSER4pvw4R6ZqtA9eZsCHwjUeqqI2W4BVSKQe1ApCKpJS5K7RZ4Nnn/KwMsSI0jSkKSSvsXFZe3Hv/VYApPVaSV3JXI8HKnWRQvQxOHFhbdTD50zDQQ81ytkdiHW07P5qLqQN5xqkv1dfmlqSbRAwhnMv+B2eRhQK8IrevrywtIXtdMlWVfjKttxtoTwNrnwuDSW5QV8uHxoN9IX6qNtYAUqrylIWGPWBviY9UaIdXhIs/mspUDJHgkyG/8Yi1rEInc77TdC/xzpf3vaLfArc3QHS6X03S1AhBMxiqIIKG3ITs66PWzspjo/WlDqMV2URAsYNsTwm9XQ8PRGriMP8DTnqTclV18sclZF34WwT8ugL6QfhR6Gv65JE2YV/WxDhh6rNeQfTjjNbREDrT6TIhTrhnGtMPbP/FEfI9F74XIuyECbHeaNYy3e/5tg8wotYS5tTZoMt/HXGzC82k4chkL26y45VXmXTW7ebNsuXZuSg2wk6y8xbhjTe7+jM6zh6uA5x6ca8+WlG3yBEEGzzy1AtL/cpDLClbLkl6XNokq+/V3nvulVXo3ec+nFKJ/KBevvm+bNzHoe8HowfPJYT4DWw3xZjuUFbzmRxide5K/My0cO0rFISYiWuzDaWiz99pHHsDfFftM7cwDJ4estmntedQn8LTp9znzYJxvzGOFCTHBB8hcfeJhzjjMuWFNtBAgeoAtl
+ vBlj/gRf
+ gIaTuU70AFsPVIuG3yKPxQ5gMp7WiHEMJAUKCAuAA/VPlkifB+fS2AO2ClH2FzVNP9m92IGqQM9O78qfI8LCuZtMxl9ybNu/LInT8SyO5+/UMuuPmPGmFFX3EvpvOLpLHsFAB08q9jQpxqhzER1/VxuANU4pst//3SpzM1uYGTv9XjU5smEB1YBcygtQEVxUZOoHk+sK4hbBFc5nFyzedaIHwtnfQkNXDMs3jueQDShmAaiT7wcuypiOX3cHhVA9BIgRdUl9FxkKjuBn0qjIqi63tpKIRpw9Fhe99/VYA9N0sNKvnJ0MYzZN9ekPXRvtbYdSCyMZepNOFExx94MoGdeEXcSHxr4DhFnCsVH/KbmFGlCwc+Fd0XnHO9FD8zLZlGgKGF0VRSPITkQS02WtQ280l6svD5jqLwabRE6A6uxo+bRwSzTuxt9DHxeMnfUe6AHBf8LDHNFaZwS/xNl6+iWDT1x/7qxpMT2lYKSKRorGsur6G/R/zoSJRYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,204 +187,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 12:07:56PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/24/26 08:53, Wei Yang wrote:
-> > Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
-> > device-private entries") introduced the concept of device-private
-> > PMD entries, but did not correctly update the rmap walk code to
-> > account for them.
-> >
-> > As a result, when page_vma_mapped_walk() encounters device-private
-> > PMD entries, it takes no action other than to acquire the PMD lock
-> > and exit.
-> >
-> > However this is highly problematic for two reasons - firstly,
-> > device private entries possess a PFN so check_pmd() needs to be
-> > called to ensure an overlapping PFN range.
-> >
-> > Secondly, and more importantly, if PVMW_MIGRATION is set the
-> > caller assumes the returned entry is a migration entry, resulting
-> > in memory corruption when the caller tries to interpret the device
-> > private entry as such.
-> >
-> > In addition, commit 146287290023 ("mm/huge_memory: implement
-> > device-private THP splitting") allowed device private PMDs to be
-> > split like THP mappings, but again did not update this code path.
-> >
-> > As a result, we might race a PMD split prior to acquiring the PMD
-> > lock.
-> >
-> > This patch addresses all of these issues by invoking check_pmd(),
-> > ensuring PMVW_MIGRATION is not set and checks whether a split raced
-> > us we do for PMD THP and migration entries.
-> >
-> > Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> > Suggested-by: David Hildenbrand <david@kernel.org>
-> > Cc: David Hildenbrand <david@kernel.org>
-> > Cc: Balbir Singh <balbirs@nvidia.com>
-> > Cc: SeongJae Park <sj@kernel.org>
-> > Cc: Zi Yan <ziy@nvidia.com>
-> > Cc: Lorenzo Stoakes <ljs@kernel.org>
-> > Cc: Lance Yang <lance.yang@linux.dev>
-> >
-> > ---
-> > v4:
-> >   * refine subject and commit log based on Lorenzo's suggestion
-> >   * put pmd device-private entry handling in its own if branch,
-> >     suggested by Lorenzo
-> >
-> > v3:
-> >   * remove cleanup part, only fix the issue for device-private entry
-> >   * refine user effect description based on Lorenzo's suggestion
-> >
-> > v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
-> >   * specify the possible error case of current code and user visible effect
-> >   * besides fix, cleanup the pmd entry handling based on David's suggestion
-> >
-> > v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
-> > ---
-> >  mm/page_vma_mapped.c | 20 +++++++++++++++-----
-> >  1 file changed, 15 insertions(+), 5 deletions(-)
-> >
-> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> > index 2ccbabfb2cc1..17dff8aab9f9 100644
-> > --- a/mm/page_vma_mapped.c
-> > +++ b/mm/page_vma_mapped.c
-> > @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> >  			/* THP pmd was split under us: handle on pte level */
-> >  			spin_unlock(pvmw->ptl);
-> >  			pvmw->ptl = NULL;
-> > -		} else if (!pmd_present(pmde)) {
-> > -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> > +		} else if (pmd_is_device_private_entry(pmde)) {
-> > +			softleaf_t entry;
-> > +
-> > +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> > +			pmde = *pvmw->pmd;
-> > +			entry = softleaf_from_pmd(pmde);
-> >
-> > -			if (softleaf_is_device_private(entry)) {
-> > -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> > +			if (likely(softleaf_is_device_private(entry))) {
-> > +				if (pvmw->flags & PVMW_MIGRATION)
-> > +					return not_found(pvmw);
-> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> > +					return not_found(pvmw);
-> >  				return true;
-> >  			}
-> > -
-> > +			/* device-private pmd was split under us: handle on pte level */
-> > +			spin_unlock(pvmw->ptl);
-> > +			pvmw->ptl = NULL;
-> > +		} else if (!pmd_present(pmde)) {
-> >  			if ((pvmw->flags & PVMW_SYNC) &&
-> >  			    thp_vma_suitable_order(vma, pvmw->address,
-> >  						   PMD_ORDER) &&
->
-> This is extremely hard to review given the existing crap handling here. I'm
-> really sorry, but it makes my head hurt (I'm not kidding :) ).
->
-> It's completely unclear why we only have to check for a subset of the cases
-> after taking the lock.
->
-> Could we simply extend the existing migration pmd handling and leave the
-> !pmd_present() case for pmd_none()?
->
-> That leaves no question to "which transitions are actually allowed", including
-> "could we accidentally assume something is a page table when really it isn't".
->
->
-> So what about something like the following?
->
-> The "thp_migration_supported()" is not required when checking for
-> pmd_is_migration_entry(), as that defaults to "false" when not compiled in.
->
-> Untested:
->
->
-> From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Fri, 26 Jun 2026 12:03:40 +0200
-> Subject: [PATCH] tmp
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  mm/page_vma_mapped.c | 29 +++++++++++++++++------------
->  1 file changed, 17 insertions(+), 12 deletions(-)
->
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 2ccbabfb2cc17..ed2a23a90e8dd 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  		 */
->  		pmde = pmdp_get_lockless(pvmw->pmd);
->
-> -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
-> +		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
-> +		    pmd_is_device_private_entry(pmde)) {
->  			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->  			pmde = *pvmw->pmd;
-> -			if (!pmd_present(pmde)) {
-> +			if (pmd_is_migration_entry(pmde)) {
->  				softleaf_t entry;
->
-> -				if (!thp_migration_supported() ||
 
-Do we care about this? Or is !tmp_migration_supported() -> implies you
-wouldn't see a migration entry here anyway?
 
-Maybe worth a VM_WARN_ON_ONCE()?
+On 6/18/2026 3:36 PM, Uladzislau Rezki wrote:
+> On Tue, Jun 16, 2026 at 07:07:57PM +0100, Matthew Wilcox wrote:
+>> On Mon, Jun 15, 2026 at 11:52:22AM +0200, Uladzislau Rezki wrote:
+>>> On Sun, Jun 14, 2026 at 12:15:28AM +0100, Matthew Wilcox wrote:
+>>>> What I don't understand is why you maintain a separate "free" tree.
+>>>> It should not be necessary any more, but maybe you tried removing it
+>>>> already and found a performance problem?
+>>>
+>>> We maintain it in order to split several entities. That prevents
+>>> interfering between allocated data and vmap-free-space manager.
+>>> So in that case one context can easily access allocated data, for
+>>> example vread iterator, etc., whereas another can do an allocation.
+>>>
+>>> So by splitting parts i minimize lock-contention.
+>>
+>> Sure, but there are many ways to reduce lock contention.  One is to not
+>> take locks at all; the maple tree is RCU-safe, so you can read the tree
+>> holding only the RCU read lock, as long as you obey the RCU rules.
+>>
+>> Specifically:
+>>  - Write side has to RCU-free the objects that are stored in the tree
+>>  - Read side has to trylock the objects it finds (and retry the walk
+>>    if the trylock fails)
+>>  - Read side can see a mixture of objects if the tree is changed while
+>>    it is reading, but for any given index in the tree it is guaranteed
+>>    to see one of the objects which has been referred to by that index.
+>>    That is, if the write side overwrites an index that referred to
+>>    object A with object B, the reader will see either object A or B.
+>>    It will not see NULL and it will not see any other object.
+>>  - If the write side stores both object C and object D in the tree,
+>>    the read side may see neither, both, only C or only D.
+>>
+> Some thoughts about it.
+> 
+> Having the tree which is RCU safe is good for sure. We can benefit from
+> at least in the: vmallocinfo scanning/dumping, possibly in the vread_iter()
+> when access to /proc/kcore and other places(which i need to check carefully).
+> But this is for read-only traversal.
+> 
 
-> -				    !(pvmw->flags & PVMW_MIGRATION))
-> +				if (!(pvmw->flags & PVMW_MIGRATION))
->  					return not_found(pvmw);
->  				entry = softleaf_from_pmd(pmde);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
-> +					return not_found(pvmw);
-> +				return true;
-> +			} else if (pmd_is_device_private_entry(pmde)) {
-> +				softleaf_t entry;
->
-> -				if (!softleaf_is_migration(entry) ||
-> -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
-> +				if (pvmw->flags & PVMW_MIGRATION)
-> +					return not_found(pvmw);
-> +				entry = softleaf_from_pmd(pmde);
-> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->  					return not_found(pvmw);
->  				return true;
-> +			} else if (!pmd_present(pmde) ){
-> +				return not_found(pvmw);
->  			}
->  			if (likely(pmd_trans_huge(pmde))) {
->  				if (pvmw->flags & PVMW_MIGRATION)
-> @@ -270,12 +280,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->  			spin_unlock(pvmw->ptl);
->  			pvmw->ptl = NULL;
->  		} else if (!pmd_present(pmde)) {
-> -			const softleaf_t entry = softleaf_from_pmd(pmde);
-> -
-> -			if (softleaf_is_device_private(entry)) {
-> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
-> -				return true;
-> -			}
->
->  			if ((pvmw->flags & PVMW_SYNC) &&
->  			    thp_vma_suitable_order(vma, pvmw->address,
+I agree. The RCU safe busy tree is a foundation that enables lockless
+read only traversal. Will implement it in next patchset.
 
-Overall though this seems fine to me.
+> Switching to gap-based approach requires quite a bit of refactoring and it
+> should be a full switch without any hybrid schemes or mixes. I expect that
+> we remove more code then adding because of some parts will become hidden
+> like lookups/reserving range/erase, etc which is good.
+> 
+> - replacing free_vmap_area to maple-tree gap based approach;
+> - rewriting pcpu-allocator which lives in the end of vmalloc space;
+> - refactoring per-cpu allocator which is also part of vmalloc space;
+> - vread iterator;
+> - vmalloc dump path;
+> - vmap_node logic(use gap-reserve to minimize contention);
+> - and more...
+> 
+> To me such rewrite makes sense if we end up in something structural not
+> just because maple tree exists. The criteria i would go with are: at least
+> same performance level, remove more then add, the design stays at least in
+> same good shape.
+> 
+> There are some drawback i am thinking of. One of them is maple insert path,
+> mas_store_gfp()? First we need to find an empty area, then set-range and do
+> mas_store_gfp() that uses gfp flag for its internal allocation. If we are
+> under spin-lock sleeping is not possible, using NOWAIT or ATOMIC is not a
+> case thus we should somehow pre-allocate outside the lock and store the range
+> without any allocation.
+> 
 
+I am planning to have following approach on this:
+
+  1. mas_preallocate(GFP_NOWAIT | __GFP_NOWARN) + mas_store_prealloc
+     will be fast path. The preallocate attempt will be non sleeping and,
+     if it succeeds, the subsequent store won't require allocation.
+
+  2. mas_store_gfp(GFP_ATOMIC | __GFP_NOWARN) fallback: if
+     preallocate fails (rare but possible under memory pressure),
+     GFP_ATOMIC will make a non sleeping allocation attempt inline.
+
+  3. vmap_retry_list recovery queue: if both above fail, the VA will be
+     added to a non indexed retry list.  The allocator will scan the list
+     on subsequent calls, and purge workers will drain it. This will avoid
+     any leak or panic under sustained slab pressure.
+
+Neither GFP_NOWAIT nor GFP_ATOMIC can sleep under a spinlock. The retry
+will queue provide the correctness backstop to avoid GFP_KERNEL
+blocking inside the lock.
+
+> The allocator operation:
+>  - finds an empty range;
+>  - publishes VA that blocks that range.
+> 
+> those two have to be serialized among other writes. Otherwise two CPUs can use
+> same empty range and both try to reserve them. If preallocate outside the lock,
+> the "alloc" side has to validate that a selected range is still empty and only
+> then store VA to block the range.
+> 
+
+Sure. Both will be called under a lock. Holding both under the same lock
+is the better serialization approach. No two concurrent allocators will
+observe the same gap and both succeed. In the next patchset, I'll
+explicitly add a comment on the lock declaration describing this approach
+in commit message.
+
+> I think it is worth to prototype something to see how it would go. I may be
+> missing something for sure.
+> 
+> Thank you for your input!
+> 
 > --
-> 2.43.0
->
->
-> --
-> Cheers,
->
-> David
+> Uladzislau Rezki
 
-Thanks, Lorenzo
+Thank you for the detailed design questions. This will make upcoming
+patchset substantially cleaner than the RFC.
+
+BR,
+Pranjal
 
