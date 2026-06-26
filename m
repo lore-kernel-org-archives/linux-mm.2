@@ -4,108 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8F7C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD647C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:05:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CDDF6B0119; Fri, 26 Jun 2026 13:56:43 -0400 (EDT)
+	id 4A49C6B011B; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A50B6B011A; Fri, 26 Jun 2026 13:56:43 -0400 (EDT)
+	id 47C6B6B011C; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E22F6B011B; Fri, 26 Jun 2026 13:56:43 -0400 (EDT)
+	id 392D26B011D; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 004B36B0119
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:56:42 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 776E68EE9F
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:56:42 +0000 (UTC)
-X-FDA: 84922819044.17.5EE5A4E
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 934B61A0006
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:56:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="o/O903/4";
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 07B2C6B011B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:05:18 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8376D1A0569
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:05:18 +0000 (UTC)
+X-FDA: 84922840716.05.A344933
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id C924FA0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:05:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RWQRTWo/";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782496600;
-	b=H9HoZOQRtW89VRYjAMhJE1tCFwXQZS7oImgUbv+lfe68FeUFoJ4a8Kw35Ti7ORNP2GYolh
-	JgjimoITYJEvOv9HOiynG7a9nlwlqKWB9tj0KF0Y+fWv7EVeAWWziEyRfmxdVVfTNvd3NW
-	cU3ogm0hzHHa/ZSYAcD9B1OT1e4OVtw=
+	t=1782497116;
+	b=7cD/OFUV3xTR2zTVvVXflC1K6jzw/oaZZsdIAQfw8CiH3IBmsxANtjCej7JnWlTzHBkc4V
+	PtsVxNp86kl1pProsZlp53RMU61hOThpN4VWpydwP/LGOIuZeDsp5HXL+5tImcU8oKCuS2
+	ZIrNgVOuFG/l5eGU+hgXRytTQXo8yA4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782496600;
+	s=arc-20220608; t=1782497116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=T/yDNeENQk5nXiDTD6qUqgk0a5MH4BVfVQczVhaVuoA=;
-	b=kmgZ7YswXgCUqDcCKaEmNX/OMoNyC1WYSCpz2fu8KOoi1f23O0YFY3vciNHhHfl7zZpqaw
-	eVs+gTqtTX1Tgm/DXmV64LkpjHF12zAFeEe2Zs4PvTzU5pfAeo1qNFf+xhpll+cNxkETNU
-	Nra0mvlW1ygExMVTXkj2CfmkN4J7v6I=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fGiMyZB/kEhf07t+JFhkktFDb6T15Rf253lpTmaTVd8=;
+	b=8CAvGCLl/Uh4p4Rr1KPpjEHWdR7TCIJonugRcTqgDWnyyz/iXQrXQmQ6BYXip85e2/rWda
+	+Uw9TvN+bpGU3PDA9B1Ti8eYID/SZcM9q5wJ09kymDOpyUKZKRhb882FzzFYYr9X85Drcw
+	RNZbQ06SqyMhu5OauJDoOpK8A+2DIjw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="o/O903/4";
-	spf=pass (imf19.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=T/yDNeENQk5nXiDTD6qUqgk0a5MH4BVfVQczVhaVuoA=; b=o/O903/4w/EtEg45tOoobMYYDP
-	2a+ZpaDby0ydOjaAFzI3HDvAi75KnNBNfvxOXbAGFMCDRK8kh2fSItbT+tZzkP809++cIwnzv/gF0
-	VDUCVz1bmsUknmz0s7XdE4c+hWsZeBW3fC/RCKj1oXknpgxB6MpvLPSCMHjzHQXubSCyVBsK57JXz
-	MnkVIzaJO6WZtu7fhu0goXbByREjxq84fQRf2FEvGzmTwu1Qmb0mmuuK2ffZ3eeBtlE3ZcrngfhQd
-	NVELMKY2VGYQGgGKLJ/DNWQOog1PyH8+nBhZLh/HUg3BJdnR5ISwx8ycvBFHvz2bWAUdwPWH9bkHg
-	n5Wlzq1A==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wdAn6-0049GT-0N;
-	Fri, 26 Jun 2026 17:56:36 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 26 Jun 2026 10:56:23 -0700
-Subject: [PATCH] mm/kmemleak: skip the remaining scan phases when
- interrupted
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RWQRTWo/";
+	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 348FC601C4;
+	Fri, 26 Jun 2026 18:05:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F171F000E9;
+	Fri, 26 Jun 2026 18:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782497115;
+	bh=fGiMyZB/kEhf07t+JFhkktFDb6T15Rf253lpTmaTVd8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RWQRTWo/O74n4A8v4P+Qyk3xgKStasPuZl6B7LVJ5wjaiALscfqq3SAfKa+w4+OQA
+	 FoXgyKGVvOeF8Z1Vi9qJ5l/MYpAHoPt0ZRQn00vUIcY3HrM82aA4S8UiuPcfaZfZNd
+	 t850CYdcz+VqiDQls9RsFY/JrIa5Xqt2g2YKaZwz4UL2o3bUhBZYGli3c6ubwjL6+0
+	 SkoSXh+vnsLm+eUoMO9GJE3sE4cwTXdr8M7Yjs3X2cqSyVSp5t9lExOaDSXj3b42HU
+	 faUqhcmcq/+zhWKeqTFFQQDtztGavuSbocqtkCrnsmzjBgmWd0ww3MdqT5ikusnD4I
+	 /AI9JO7i8hEQA==
+Message-ID: <10824fdd-0abf-44ad-9a2f-e62aeb669195@kernel.org>
+Date: Fri, 26 Jun 2026 20:05:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-kmemleak_improve-v1-1-d40c7616f64f@debian.org>
-X-B4-Tracking: v=1; b=H4sIAEa9PmoC/yXM0QqCMBgG0FcZ37WDNcbEvUpELP2sP5vKZhKI7
- x7l5bk5GwqzsCCoDZmrFJlGBHWqFNpHHO/U0iEoWGO98dbrITG9GIerpDlPK3XjXF97GtfFBpX
- CnNnL51+eL4fL+/Zku/we7PsX1PKQV3QAAAA=
-X-Change-ID: 20260626-kmemleak_improve-944f76e04da9
-To: Catalin Marinas <catalin.marinas@arm.com>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, oleg@redhat.com, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2072; i=leitao@debian.org;
- h=from:subject:message-id; bh=jUIq0vG+C05UP/DTkd9jKQvB8xrfwJswbYd2kkAvLE8=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqPr1Q09NE00N7Ut2sn7fj4Q5Yc8O/oeXef1jz/
- SRugHPzRjyJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaj69UAAKCRA1o5Of/Hh3
- bSPwD/4weBlccb3jshkAIQwtDS2nutd635NMNywNKDZCdoNpA0I+OTSGbpS1qMZ+5yi9WYFQQy/
- ZliuoO44azXy0hhtHwBc5o11asj4MrMyJNY0H06wZln1puMB4nGYbWEREVOlgQQOfg96iMpFNjG
- mWI4OcKm752HKzWaQjJ/WyPMOTw/XaP9V56mHccLT+mDTYqyc118GbcO8U3EaBc9DZC2Vxtymr8
- NwrziB08OSWev5gsQ64yFQaibhZsV7+chyysGW5Z7ZT3w9H+dLN7Q/bFDbE2+pTmm+q3nkom2z7
- /cYABjWRC1uBDxX7CCgWHLE/X3MOEaqealCAB4tA92tQEpfMXpuK8xUEFpE4OnqlMaVQEoOYXxA
- rIl0K2O9IDjIV2CuvV1zj+0S11djrajJtI3EDfCvcgKx6a5w1P9aiaVsqDSsjNMvXp3FbuPEbKF
- 7uskjJB05GGFTIyB0hOXaHAQnwbCo0Ba2rxtmTe9AlPzrlJYg0fESVBC9C5j8XFx4eSg3RP6vxv
- IY5n/xdF9q/oNYQ72QY9wmRNhRnCptckFFqISr+dzAtoFTf31Avm6L8Set5+lt8D1nwJ4PgdWZK
- odnVd01my7zBX5G9PA3hIhQKEj+zzXuQutOiPIcHLEuv3DiO5TQ8QUUVNIR2+1H5VC0CHDj9tVr
- JfBcO9cUM6Xtl0w==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/13] mm/page_alloc: some renames to clarify
+ alloc_flags scopes
+Content-Language: en-US
+To: Brendan Jackman <brendan.jackman@linux.dev>,
+ Suren Baghdasaryan <surenb@google.com>, Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko
+ <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>,
+ Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
+ <20260622-alloc-trylock-v2-2-31f31367d420@google.com>
+ <CAJuCfpGagFf4RaCNJqu4Y1oqOXXOWSkP1UGuT9LA-9EbDN4Njw@mail.gmail.com>
+ <DJHEUV09YHKE.1YVJWE38NM8U5@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <DJHEUV09YHKE.1YVJWE38NM8U5@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C924FA0005
 X-Rspam-User: 
-X-Stat-Signature: it5zatwogprjqmqpb3ku9u3rk9gzmost
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 934B61A0006
-X-HE-Tag: 1782496600-702601
-X-HE-Meta: U2FsdGVkX19eDWKp1R3bvNwZH+Z+ZVPY/t56+0ubDdqVv5viH47Suys+f1vIfuuL30UXNHfRRiRHPma2g3V+QytTjSayJ/f3hFTqjIMYHkvjjjuhoNxYGP5eQ08Gz/0FkmgvgJEDK5MHQ3zrzX7lIbHIvf7NiioM31/Q+NC/4W/K7rZL0n0JXIc/15DckhK3SvqMeL+8QlP8y55w40qol9bmcqBOoSmwpzqsgyQCNDXCjJJ7fJi/R2QfYxGvZE8DQCeNscaOrUlRZVex5Ay1d9GIpGCPraJMsn8umPv3v7GTYdI49qM7BwuGqfou+zV+gjLBIXyC/cCXoYMLzVEqH+oeJwPkQRRdM2yuD6fgM1yFtV89AfIDNbXnL2nLzCIokSj+cCdwZqr33vMfbmHxUwPJmt9aWgLnkSLEcwwtSHuXi9tyFoAMzVkcJMRYeDmbwWSgKbMuHt0bgjdS3LEY1QPWXR4lC0KfAM0L5QhiOPLdXUFuB1s6fRvfNplHwvhPrrj9r+pg913jVOlF/krv1Jj5uYyhs0cWTMrokLeqbEKxtahi0YGCzuk8zkhw3jvVuhPj7JIPbpzHBk/iKeK/UoEZ/dkUvS1HiWyljM8p+mCPbEkmLIERZkwBE+N1jwE/c4ycoAOohdsViQxOPSO1+m7/aWdzzgjzrCKpWB7g84IbmlrWZ5VsBwboCh1n2KJeFNqjvi1bwJniV2Wu+U3ubK0Gvk4lv8L1YUhlga/EFyfu6r7EAmdk9srH6cBTwb66vgDowGgGjcbmNsBz3o9+f512JMGubNZdjDqoosUsK/RGvQdlfWl//Cpo55krtm05r/g7nSKuseG8Di0NusSOsmAkij2miD0vBC/RoD2hrNAynRTlEK4ZJ1OOb9AFBPnkfwYZYtjs+dOyX8tfnXDT+5r82y0YDScQdxaJfKr4UKIDrH0VdTPsnLJ+T/BHxiTFy4N8M6awHm5DKuInV6Q
- 6gp6cAIp
- OkZZK/im5ZniyynTVWIF4Ya88HwcMphSYGrg/58UBDn76tNqNVGWFei3RqsK7LUFd0JXptmQTbvrMR6qvoKJ1aYoXVyMLd7U/56G0FKJQKgsJC+t/6z0zAlyPEGKpd+CzGau7GVw4RO1qtKIYuhZ2BPjkkRuXAy54Olo03kYBt+Yav2uPyn6tNTjxuVh6sm5OqHfMNUyPTWoqkDx5DtenWdLX6fd6NLAjwglI7GCYtfWnU77QLYi5d2b2OGbj5ZHl7j7ys6jbWh6cH0JGywx1wb+6JEkKC0yMN1jNMXE02J1FqeP8tg1HMGCkxg==
+X-Stat-Signature: ddhzf8cyh4nga7tbamyj1w4659bm9j8n
+X-HE-Tag: 1782497116-501124
+X-HE-Meta: U2FsdGVkX18mSSnCbaVLgeF1SkTrubwo3B2vZWI0PMCiQDZ1XPuDRavP/eafrtf5Vdf25vYUDcys41+hAM1CZ+DcCUNyDk8LbFcdGCUWxzCTeSfUeIOYirXrZRC9u2D1Rw5qqymm2SHwyutDu62S28osurc/Q0hfUehwha3QHTFr9iZgBSdrsnY/9ACRctuMYlMrJ3M/QodmopVwnPttKnh0mYfeSNq68WZHRDA3+flLZb9In6eM5+q8d6aUn+dtrQvXSnG40N4ESDipNNPlMfZYwCXJ+IanixjAp9OPW7BI0QLWQ7CJwwZzxhSX1He/j8PheBaWAsPoiWwOyzvqof3Nu9wIT+cJ+m94gtCC8pTcu/Rk2akMle1U1ShpMMVh6BlWIayNBROmyeNer6CeyTZNUSnkel4HTTCbf6lY2EZw94LLZsRLm/rsay9oTDLwyC4c5beq6mpeUcZXnEGZUHocNJBlWsAEF9qgkuNEfohqfsPNvjUA6Qdw6EIazDlxVp7+TRildeRonsFyO85Wn1JxM6UGrGQ0f8Pilxia/bwSgv1UBoZ3BW/V3p4CXE24FXtmk8CcuP9QZ1gJy0JtrQWztjQWTsLahR/jV/a4QmkTcWWOPnsbMdDF3f+NCFNQylOj4A1IY4ZOJ+ww+BJM/eZcs+GXFWevtrJ+XQJemGz5SgNFCXIZ7ixmQd7aZBWJMp+vpXEUND1GPoJ0UwH62BFenK6Z30fbDrOZTtmkW/R3letSck6Zmw6U7+6w3c5yBWBysTZ6SI9OWjO41N9W4Ye3yZayaaAHoirxxk8KHbkvKPP4JT241iFcEtkqXjUv/d9sEdq+SSFh7iXcf51jR1AfON/EX+BaCA1hFs2AJ9/u+7mykPEEHfSQYuCL1VRK38DLejmS7ajYUfgwGOh9Hv0ZkSyrjaHhcJqbl//kIov42kRlE2WiBB1RrFtWkSHrltIMfunu4wI10KvNXFx
+ KJudnWSv
+ 3GlCNcT95PmBnpjllr8dvk+O5P7AtsN2Cg699wJj5uwn/M/DALC7lxYX526+t40izSb/Iu0lcwLR2bfhVp4O+oNfnXHVrv7RsaqnMUvtZ+coD7Gp/egHS91y2B4msBdzV5WaLTy7r5hreghy4pn8INSXIt32XbfiTlSy6mnXA5aq5p0iylrlixBKRmRMw3oIwmqQZkofqhf+RRP2Fsk9neOaSXQBEOHL0iQ88bupCumJICEq1RjgQPNR/pHeskLAPXaRflXfcroSWlvz76FKkhjfowNgqk0A8tIBcsfYk1Z56zY51EVl3G2l1CdDI8RmNkrORqMOtLl8lG7J5z4QhtOXxkEnlqARbrKaW8/Q5Mva1dGZg1ODyN7PVVQg6Ob0vyCjHC002BSJ8AC+AsmCcwMpeNEh/XHtZF8AkNMQkRUB8myw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,74 +153,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kmemleak_scan() scans the per-cpu sections, the struct page ranges and
-the task stacks in sequence. Each loop now bails out once scan_block()
-reports the scan was interrupted, but the later phases are still entered
-and only bail on their first scan_block() call.
+On 6/24/26 18:13, Brendan Jackman wrote:
+> On Wed Jun 24, 2026 at 3:03 PM UTC, Suren Baghdasaryan wrote:
+>> On Mon, Jun 22, 2026 at 3:01 AM Brendan Jackman <jackmanb@google.com> wrote:
+>>>
+>>> It's pretty confusing that:
+>>>
+>>> - The slowpath and fastpath have a totally distinct set of alloc_flags.
+>>>
+>>> - gfp_to_alloc_flags() sounds generic but it only influences the
+>>>   slowpath.
+>>>
+>>> - prepare_alloc_pages() is generic in that it sets up the
+>>>   alloc_context, but the alloc_flags it generates are only used for the
+>>>   fastpath.
+>>
+>> I understand you want to clarify the usage but this particular point
+>> seems to be an implementation detail. IOW, if tomorrow
+>> __alloc_frozen_pages_noprof() is changed to use alloc_flags when
+>> calling __alloc_pages_slowpath(), would we be renaming it back? So, I
+>> would suggest keeping alloc_flags as is in prepare_alloc_pages() 
+> 
+> I would say yes, we should rename it even though it might mean having to
+> rename it back later. IMO it's very useful to make it clear to the
+> reader that they also need to look elsewhere to find the slowpath flag
+> logic, without them having to notice this rather odd detail of
+> __alloc_frozen_pages_noprof().
+> 
+> But, yeah I guess prepare_alloc_pages() doesn't really care that its
+> caller is only using the result for the fastpath so I could see the
+> rationale for keeping the arg as alloc_flags...
+> 
+>> and its callers. 
+> 
+> ...  but for it's caller I really do think the rename is necessary and
+> doesn't really have any downside? Especially once alloc_context gets an
+> alloc_flags field as it does later in the series.
 
-Jump straight to the gray list scan once a phase reports an interrupted
-scan, so the remaining scan phases are not entered at all. This does not
-change the scan results, it only avoids the pointless re-entry.
+I don't mind either of the renames. It's all page_alloc.c internal anyway.
 
-Suggested-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- mm/kmemleak.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 7fa7124727e36..68a0e30eea1e3 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -1850,6 +1850,7 @@ static void kmemleak_scan(void)
- 	int __maybe_unused i;
- 	struct xarray dedup;
- 	int new_leaks = 0;
-+	int stop = 0;
- 
- 	jiffies_last_scan = jiffies;
- 
-@@ -1896,7 +1897,7 @@ static void kmemleak_scan(void)
- 	for_each_possible_cpu(i) {
- 		if (scan_large_block(__per_cpu_start + per_cpu_offset(i),
- 				     __per_cpu_end + per_cpu_offset(i)))
--			break;
-+			goto scan_gray;
- 	}
- #endif
- 
-@@ -1908,7 +1909,6 @@ static void kmemleak_scan(void)
- 		unsigned long start_pfn = zone->zone_start_pfn;
- 		unsigned long end_pfn = zone_end_pfn(zone);
- 		unsigned long pfn;
--		int stop = 0;
- 
- 		for (pfn = start_pfn; pfn < end_pfn; pfn++) {
- 			struct page *page = pfn_to_online_page(pfn);
-@@ -1933,6 +1933,8 @@ static void kmemleak_scan(void)
- 			break;
- 	}
- 	put_online_mems();
-+	if (stop)
-+		goto scan_gray;
- 
- 	/*
- 	 * Scanning the task stacks (may introduce false negatives).
-@@ -1944,6 +1946,7 @@ static void kmemleak_scan(void)
- 	 * Scan the objects already referenced from the sections scanned
- 	 * above.
- 	 */
-+scan_gray:
- 	scan_gray_list();
- 
- 	/*
-
----
-base-commit: 338a2c2582c8eddbc11cf35463a14a36c051afb5
-change-id: 20260626-kmemleak_improve-944f76e04da9
-
-Best regards,
--- 
-Breno Leitao <leitao@debian.org>
+>> The rest LGTM.
+> 
+> Thanks as always, I appreciate the review.
 
 
