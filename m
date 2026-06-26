@@ -4,88 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D98D7CDE00B
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77EA8CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 03:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D351A6B00BB; Thu, 25 Jun 2026 22:46:30 -0400 (EDT)
+	id 2F4AE6B00C3; Thu, 25 Jun 2026 23:18:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D0D0E6B00BC; Thu, 25 Jun 2026 22:46:30 -0400 (EDT)
+	id 2AD056B00C4; Thu, 25 Jun 2026 23:18:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C499A6B00BD; Thu, 25 Jun 2026 22:46:30 -0400 (EDT)
+	id 195166B00C5; Thu, 25 Jun 2026 23:18:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 989B56B00BB
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:46:30 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1EB1A120320
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:30 +0000 (UTC)
-X-FDA: 84920525340.05.FC018F7
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7323340007
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GnQ4UHJd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E30F36B00C3
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 23:18:10 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6300C1C148B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:18:10 +0000 (UTC)
+X-FDA: 84920605140.24.8901B3A
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8C31440007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:18:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oeeeVHxT;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782441988;
-	b=XjWVv30wY8gEFjyNaM17oIsd8xeFy/we9u5v89lkeFeQ8EAjs/cGlbuSj6xxGMmzceCO0v
-	Gt17bhGdIkw0tBuYlUYPux6Z+Hr7iY5AFTY1duxupUOAhogK9E9Iv3s9OxpHqjSc6JQxKq
-	USx/hQir3M+WP23l+QE+VGbxUxvOfis=
+	t=1782443888;
+	b=wlXUK68KOav8s0aWiRZxxrb+XigQ0p9j50tuCY3T4RVgw8mNkm/F9PN+b5EzUa3a/lXkmh
+	ShnLTeJcv2I8H0Bjfy/0D+zjVNx1eTEEny/H2Bg99anksuxcFXD/l8l9vtlXt/WR+QwhbN
+	AzWV4XyfCg+eATyCoqS15PjfRNGfQV4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782441988;
+	s=arc-20220608; t=1782443888;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=suDFp7risggw2rtoydgo2giehAA74W5ozQAmjOegSsE=;
-	b=RgAvMqzgy0kXzmv8If5M6TFPcNpI/jf3f27qEWxegzIHyE9GeISyG7SNNLl886ZLHUQv/N
-	C35jjino6DFVwScqhqqILDWZM758SU036l0qGScOQiibeDs9j71O3wdx/UpQMOlzrpSWlC
-	z1XcOW1AGZLE0Y0aZ+TXRBitmC5jwoY=
+	bh=OZJmc3takRDK7jQCyQNoqz4XYBQ54vYpzBE2NdGeia8=;
+	b=DqkVVlxFs77Z0b0gR1tbkei+CDDpJFPVr20gjfr7SCOylstQ/wdkFMqkXdTpTpN+FzhlPH
+	+eqtOH9xgy+YHAkN1W1r7Jk1+pDKYOCd2bNXmc7YhTQMszU7JPFFEeh/lKrs8RFEVW6u07
+	fNcJvRdlVp9UMsfTGndifsQ9PMMbV+Q=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GnQ4UHJd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf12.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oeeeVHxT;
+	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <f8516534-3b18-4988-b384-251225755285@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782441986;
+	t=1782443886;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=suDFp7risggw2rtoydgo2giehAA74W5ozQAmjOegSsE=;
-	b=GnQ4UHJdgwwrsGf6BxQRrLYeoKvUTPB3tRA3TJpJsBqXXcW5YlL1dLasdTHj4DvvVixGjw
-	OcRKPM8Qi+i65ld74FbFRBwOkJwODDO9IN/ofSDa3roHGPRqa6ci4ZSJ+vCTB3igCRuqVb
-	RubKS+uHZU5Q3embfL8+xRFAvVi/CkE=
-From: Ye Liu <ye.liu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@kernel.org>
-Cc: Ye Liu <ye.liu@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 6/6] mm/page_owner: drop redundant page_owner prefix from static symbols
-Date: Fri, 26 Jun 2026 10:45:45 +0800
-Message-ID: <20260626024550.25677-7-ye.liu@linux.dev>
-In-Reply-To: <20260626024550.25677-1-ye.liu@linux.dev>
-References: <20260626024550.25677-1-ye.liu@linux.dev>
+	bh=OZJmc3takRDK7jQCyQNoqz4XYBQ54vYpzBE2NdGeia8=;
+	b=oeeeVHxTM1sDNbDtkvWfeWlWL81Q3QugP8nzSEd8pZBSgXF1GGvz6loEWo07SGCgjDI1dn
+	zvkkgZVmV6zYGwHGOd53ypDtk5qJPYupHaWIx+YDFcl2/mIZyVDBjyKowQNpbf/CCz7YP6
+	VfhfTscE5s4qRXV3XgaRUnsRxJx/L4c=
+Date: Fri, 26 Jun 2026 11:17:05 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH 1/5] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+To: Dev Jain <dev.jain@arm.com>
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
+ ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, mel@csn.ul.ie, nao.horiguchi@gmail.com,
+ ak@linux.intel.com, j-nomura@ce.jp.nec.com, pfalcato@suse.de,
+ dave.hansen@intel.com, tglx@kernel.org, jpoimboe@kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, stable@vger.kernel.org,
+ osalvador@suse.de, akpm@linux-foundation.org, ljs@kernel.org,
+ david@kernel.org, liam@infradead.org
+References: <20260625112955.3254283-1-dev.jain@arm.com>
+ <20260625112955.3254283-2-dev.jain@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20260625112955.3254283-2-dev.jain@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: xapat6tkxm4cku76my6kyrq96fs4fe6n
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7323340007
-X-Stat-Signature: e1yq3xyzkx3r3ofrhwukc4bnffqijjja
-X-HE-Tag: 1782441988-191435
-X-HE-Meta: U2FsdGVkX19n6gnyO1+GfSVrzxBMvsHQLkZpqXmqnWSJAoWLytYNeS+7KuMHnszCaK0GoAN0XDngNk+vyGCFiNLvlHtAJZ13ysBj14l7ow5MOLWCHLFOhVIYL/Z+erpeAcB0lNksS9FMjiYVDfETgIAlTAPuTos4TGTXBH3PrmvLK03ZG6A8fUYrrgXWu2lrUrc8w40PjzubI1tO3iPeoUGa8wz/DZdY6FiJjNzcAMJ6w/XHc1a1k01IzupRok/QiXiqT0R3m7RXaJ8XWft/yeiMHHUZKBv12t5PzA6RmjmcjblIGqkoNfkFTRXOJ+KCumzQArPI04PUmAGibvilczM2+wj7lCOpmRe8FChDh9LElLtIOGzc1ZQBz1ZlMhfqcxX1gZESj/Jzg+TfPdGMb6E05bXKSiSWmqPZ98vHotcJ2PgK1NYHH8qIe0xDR1sKGYGkT/JY5IGueiAav1siVn0iOZsQNAtX+wz6Yn1Ydksmou2OF1nTLlGQlgqpGB9r7QzNGkftM/3w8Jntn4AHD8fa+b+crcWbtGIL5jtsx9a+pX8hq3OHo9IoDsQUScZ7dRiHYUdbQxO6/vXBJYfL4GulmhM9+Qmgj0EC8gDU9FEBGwHcWmf9f1RGhq9jHhvMRwqXIJDGcOpPqT5GKTu+zqI+ktcjtT6ZxuxX8n2h4rXZP22etV7b6QPLTLoZBb7N/qOESuUDujC4A7d9aueuTHOIio8Ya1wOYKhUHqHzBjPMTM8imOfEAmKdy4hnGz0S11k8CtUwe9xTkS179aY15gRJlER4I6ln750QcDM1YxL0wzanUzScv0bvREF+msWd8/W3c2ns2KQ5vfxJIUOTH05463CzS7Ujfjs4N+Uz2B/ZtamUdO2Bfit8alMT2JY/SCD6fCHufwZyF/bw7LJMWC5te+6ywFIRjULslf47xANp7xfKhZeNn8SJVUjiEBSpHUHUDTqzKyes9ykvK8Z
- TSWl+Icp
- mspJ4qAS1EJsmXOEnyYm7G9X1guYY7dlxXztwoBmIBgCOkRGG4+ELpr62dsxHiAfhib0cVNDwFsNGdwSzoGJ0efuDctyW8WgoYCopThxBNTQbTXz4SH4wv+lLT1NfQN9wqDbeHJ/c8hAHdLlh12JO8eqHJsHvhZgWXwDA+5CRkZ9Cy17q70aVH8CA1aby3wpBSpFnD6CMPeDUxpGlkFsuizgNJq0amwoznRquPThfx1Sc5Jsp7NSjfqKYHA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 8C31440007
+X-HE-Tag: 1782443888-917323
+X-HE-Meta: U2FsdGVkX1+GhZeGHFRrMoSQfkmPY32MjljVkYPS8Uf+0UwPB0Wz600LB9jcCFEYBgPBc0Z7Vj74pR69/VblDSCjymZgj0WKDhrtjAn44Mz3VBKjPkyv2TIYYRwngHYkLaIC0FaYu03eTNDIELXkaf5jO0B1d9pmV9pChSB8fMfnTIBn2ctJtG+rJmP+3e/UCH2LT6ybliI61QPD4MKrTE7Il8Eb7SdIPts22qV1dGxWj0MMzFIVWpRelpyIIR+voTOgy5G2C36wCmjtr9LN9Sfe8XqKILmVgwvz20hWfJupYi7iRZhwW8HT4UgQCyhD9giprKHkzqkwi85qv8fEeSoDK4j6lSW81WlEyi+L7P9D1DJlkUXcbnDOty17Qwcr0Kiqh92MvJ116yavJ9V0OU+jZykajJtBEd/dIUI+a1Z93JJKc84dvteY2P7S+tKiR+JeiGxC5rzOprw/N+MtFAYh0rP9Whm0ryNwIJhRVm3jpVDVQMqU5+4EELaVmnfYqnzn9Xm4qDUyzFlLeJh2PLPL5HlCOdyFvg1O3XQZls4ThiK9fxUwgEGGM7HRVlRS3hpZUi1guKe55Rl3HUVpsvR/5/O9L+rkf3JdvIKp91ej9LnKu+ogEZK0j5XGL1wOvBNriovBI18YbUI1sHVsaerFwx4g+h0PO2kixqMEHqt28ZXF6hC7GZfgrDMrPfgczTclnNGllDV1GdJLY3SqWRmJBlnfQAiakAZlNk68Y13cN7EfW3XLMvTjbrJ8C5zzZ4v/um9j3gCZ0OROBHTtQ0RvLjJPyxjPSVoVQNxwpyx03dJHhVR3uGNsrbWwFEuGNAiHfaDnWVBkUGiSDWfLZHPA5w4iKmPoDFMedNWCe2T4wkEpa+uZztaR7/IR5mxsxQUAE8etFvShITnOO7fIGTM6W+Zn14jPREOL1mtw0/pkUtGuz2Aqjd9zTcP0/akIlsSeUH7yK/R/woEqueT
+ cGTat6FE
+ 2UTOtXsHGMzjcKJFHRVHeIqY4BJGFLMiviaqzbNcSsnySwaqzuIiy5FUr8VScdmziRL+pMBEjo7CPmKB2/ypDFEaJwHYuBC9s/qzwZPJ7ETb2ke6/DhuN2/Kia4pRZri002yzwDWneu/ZGK5NY0QWqP1kznZAz3bWi+43d5cmWJhOsXRHkeENV9En305pZ4Vk6NzSNNAwP0jsSQfNLYi9eWv76DvM8MQXsVpE9pg9ofn1OG7WTiC6MT08z3Qgeadv3UihnnpQplf5wAd+jy0R+o/lj0qlm1CM+1xVoS1hmGGQFubN5js44i4VH+H18klaBxO7KF6VfICWxNTmM1PcHDFcMqCcLQyj/s5sEvMeKvkJ+25mrBqj/+r6bQ4eOwr2sm8wIt7cx+XIYGDxvWq4mKCcdcWanPTd1JXh
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,127 +98,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-All of these symbols are file-scoped (static) in page_owner.c, so the
-page_owner_ prefix is pure noise.  Rename them to shorter, still-clear
-names:
 
-  page_owner_stack_op      -> stack_op
-  page_owner_stack_open    -> stack_open
-  page_owner_stack_fops    -> stack_fops
-  page_owner_pages_threshold -> pages_threshold
-  page_owner_threshold_get -> threshold_get
-  page_owner_threshold_set -> threshold_set
-  page_owner_threshold_fops -> threshold_fops
 
-No functional change.
+On 2026/6/25 19:29, Dev Jain wrote:
+> try_to_unmap_one() handles hugetlb folios when memory failure needs
+> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+> case page_vma_mapped_walk() returns the pte pointer to the hugetlb folio
+> in pvmw.pte, but the code reads it with ptep_get().
+>
+> On arches which provide their own huge_ptep_get() to dereference a huge
+> pte pointer, accessing via ptep_get() would cause pte_pfn(), pte_present()
+> etc to misbehave.
+>
+> It is not clear whether this has a trivially visible effect to userspace.
+>
+> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+>
+> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use page_vma_mapped_walk()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> ---
+>   include/linux/hugetlb.h |  3 +++
+>   mm/rmap.c               | 16 ++++++++++------
+>   2 files changed, 13 insertions(+), 6 deletions(-)
+>
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 2abaf99321e90..fdb7bdf7645c5 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, struct mm_struct *mm)
+>   {
+>   }
+>   
+> +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+> +		    pte_t *ptep);
 
-Signed-off-by: Ye Liu <ye.liu@linux.dev>
----
- mm/page_owner.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+Thanks so much for the fix! I'm curious, though: why do we
+need to add a separate declaration for this function here?
 
-diff --git a/mm/page_owner.c b/mm/page_owner.c
-index eaccff355cb4..ec9600025127 100644
---- a/mm/page_owner.c
-+++ b/mm/page_owner.c
-@@ -901,7 +901,7 @@ static void *stack_next(struct seq_file *m, void *v, loff_t *ppos)
- 	return stack;
- }
- 
--static unsigned long page_owner_pages_threshold;
-+static unsigned long pages_threshold;
- 
- static int stack_print(struct seq_file *m, void *v)
- {
-@@ -918,7 +918,7 @@ static int stack_print(struct seq_file *m, void *v)
- 	nr_base_pages = refcount_read(&stack_record->count) - 1;
- 
- 	if (ctx->flags & STACK_PRINT_FLAG_PAGES &&
--	    (nr_base_pages < 1 || nr_base_pages < page_owner_pages_threshold))
-+	    (nr_base_pages < 1 || nr_base_pages < pages_threshold))
- 		return 0;
- 
- 	if (ctx->flags & STACK_PRINT_FLAG_STACK) {
-@@ -940,16 +940,16 @@ static void stack_stop(struct seq_file *m, void *v)
- {
- }
- 
--static const struct seq_operations page_owner_stack_op = {
-+static const struct seq_operations stack_op = {
- 	.start	= stack_start,
- 	.next	= stack_next,
- 	.stop	= stack_stop,
- 	.show	= stack_print
- };
- 
--static int page_owner_stack_open(struct inode *inode, struct file *file)
-+static int stack_open(struct inode *inode, struct file *file)
- {
--	int ret = seq_open_private(file, &page_owner_stack_op,
-+	int ret = seq_open_private(file, &stack_op,
- 				   sizeof(struct stack_print_ctx));
- 
- 	if (!ret) {
-@@ -962,28 +962,27 @@ static int page_owner_stack_open(struct inode *inode, struct file *file)
- 	return ret;
- }
- 
--static const struct file_operations page_owner_stack_fops = {
--	.open		= page_owner_stack_open,
-+static const struct file_operations stack_fops = {
-+	.open		= stack_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
- 	.release	= seq_release_private,
- };
- 
--static int page_owner_threshold_get(void *data, u64 *val)
-+static int threshold_get(void *data, u64 *val)
- {
--	*val = READ_ONCE(page_owner_pages_threshold);
-+	*val = READ_ONCE(pages_threshold);
- 	return 0;
- }
- 
--static int page_owner_threshold_set(void *data, u64 val)
-+static int threshold_set(void *data, u64 val)
- {
--	WRITE_ONCE(page_owner_pages_threshold, val);
-+	WRITE_ONCE(pages_threshold, val);
- 	return 0;
- }
- 
--DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
--			&page_owner_threshold_set, "%llu\n");
--
-+DEFINE_SIMPLE_ATTRIBUTE(threshold_fops, &threshold_get,
-+			&threshold_set, "%llu\n");
- 
- static int __init pageowner_init(void)
- {
-@@ -999,17 +998,17 @@ static int __init pageowner_init(void)
- 	debugfs_create_file("show_stacks", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
- 				     STACK_PRINT_FLAG_PAGES),
--			     &page_owner_stack_fops);
-+			     &stack_fops);
- 	debugfs_create_file("show_handles", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_HANDLE |
- 				     STACK_PRINT_FLAG_PAGES),
--			    &page_owner_stack_fops);
-+			    &stack_fops);
- 	debugfs_create_file("show_stacks_handles", 0400, dir,
- 			    (void *)(STACK_PRINT_FLAG_STACK |
- 				     STACK_PRINT_FLAG_HANDLE),
--			    &page_owner_stack_fops);
-+			    &stack_fops);
- 	debugfs_create_file("count_threshold", 0600, dir, NULL,
--			    &page_owner_threshold_fops);
-+			    &threshold_fops);
- 	return 0;
- }
- late_initcall(pageowner_init)
--- 
-2.43.0
+Thanks,
+Muchun
+
+> +
+>   static inline pte_t huge_ptep_clear_flush(struct vm_area_struct *vma,
+>   					  unsigned long addr, pte_t *ptep)
+>   {
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 1c77d5dc06e9f..aa8a254efaecc 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   		/* Unexpected PMD-mapped THP? */
+>   		VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+>   
+> -		/*
+> -		 * Handle PFN swap PTEs, such as device-exclusive ones, that
+> -		 * actually map pages.
+> -		 */
+> -		pteval = ptep_get(pvmw.pte);
+> +		address = pvmw.address;
+> +		if (folio_test_hugetlb(folio)) {
+> +			pteval = huge_ptep_get(mm, address, pvmw.pte);
+> +		} else {
+> +			/*
+> +			 * Handle PFN swap PTEs, such as device-exclusive ones,
+> +			 * that actually map pages.
+> +			 */
+> +			pteval = ptep_get(pvmw.pte);
+> +		}
+>   		if (likely(pte_present(pteval))) {
+>   			pfn = pte_pfn(pteval);
+>   		} else {
+> @@ -2110,7 +2115,6 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>   		}
+>   
+>   		subpage = folio_page(folio, pfn - folio_pfn(folio));
+> -		address = pvmw.address;
+>   		anon_exclusive = folio_test_anon(folio) &&
+>   				 PageAnonExclusive(subpage);
+>   
 
 
