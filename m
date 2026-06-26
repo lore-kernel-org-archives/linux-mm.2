@@ -4,111 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 741C2C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 21:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB59C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 21:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BF126B0005; Fri, 26 Jun 2026 17:26:16 -0400 (EDT)
+	id 719826B0005; Fri, 26 Jun 2026 17:27:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 170386B0088; Fri, 26 Jun 2026 17:26:16 -0400 (EDT)
+	id 6F0006B008A; Fri, 26 Jun 2026 17:27:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05F0D6B008A; Fri, 26 Jun 2026 17:26:16 -0400 (EDT)
+	id 608CC6B0092; Fri, 26 Jun 2026 17:27:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CCCD86B0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:26:15 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 493CF1C3516
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:26:15 +0000 (UTC)
-X-FDA: 84923347110.27.40D5CAD
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 8131FA000A
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:26:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eZKk8+cZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of sanan.hasanou@gmail.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=sanan.hasanou@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 37D286B0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:27:14 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E49B1C6639
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:27:13 +0000 (UTC)
+X-FDA: 84923349546.24.B40F517
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DA9BD120007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:27:11 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lAVLLKfN;
+	spf=pass (imf29.hostedemail.com: domain of sanan.hasanou@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=sanan.hasanou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782509173;
-	b=rn9ehAX9vGo7Jb4iE0E3kJVcOIzORmjOsaCROJT5OVg+mClNhfnwf2fL1naIzfIRjmCB/j
-	TbNQbPVnyQ/pK2FeA5A5Ho4DEnh99hlKFm3IMHirZUVfTqfISeOHUyhTExssepwvdgurx6
-	SIkNhk4Tv7KLuiKw0gSX0L9Z/i1D6Lk=
+	t=1782509231;
+	b=Om4L499WzwIRkWfGS0QifHKdkjNgvfPbtjrtIeG/tsoUpFydPPGvF6nRR58v6ANbtTNPWE
+	pxuiaVE1ORB66GHlMuThR+/b1V3Aqf5pRtVLfK8hKrqdWRs7bHJ214O5d3X+2TsPtHP3Bt
+	OhqBySIq4QhvpS9f3Hr67RUdSMi+VmQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782509173;
+	s=arc-20220608; t=1782509231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=OnwdaukFZGHXEjH/UlhCaXFzrTOBU2ErYEjAMkT0NPc=;
-	b=izwntAhhuc78IeHAZ3LXZ4Mg4+Ugv2NJo2mmKEk0kcRcbbbNlmuzvsx2rCNH7hNp4h6m+B
-	qM9SVdyIP5amhvxuzWl/6xvHuGnj31UOYoxDXibDIIT8n1ovoiCOEk9Ja393lZT9NvNlq4
-	hdbqJWxWIdbm8ytsCImY/8/v1kjHw6s=
+	 references:dkim-signature; bh=5ANKtTi3WQ+Pt+De4BIcKbzPHYx1XgOjTrTXFWr/ENc=;
+	b=VaepbHGa0prmvX3xTJ8q8dzfq8oDl79+u2giEmOjUiil26s7brYe/qUqyicZoyz3CquV0z
+	4arq+13u3pQM/c8/NkVRY7SW/I5BptJgdAXL+UfdXHmlBtWdAIWNanmKKnVfnLo4zihvAI
+	6jq3iOOmLR8pH5kLWMWhvJPrTOgws7c=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eZKk8+cZ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of sanan.hasanou@gmail.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=sanan.hasanou@gmail.com
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-96721790a03so32067241.3
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:26:13 -0700 (PDT)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lAVLLKfN;
+	spf=pass (imf29.hostedemail.com: domain of sanan.hasanou@gmail.com designates 209.85.221.170 as permitted sender) smtp.mailfrom=sanan.hasanou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5ab02fb66easo40622e0c.0
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:27:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782509172; x=1783113972; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782509231; x=1783114031; darn=kvack.org;
         h=from:mime-version:content-transfer-encoding:content-type:cc:to
          :subject:date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=OnwdaukFZGHXEjH/UlhCaXFzrTOBU2ErYEjAMkT0NPc=;
-        b=eZKk8+cZTiHZppqD1aAdtQ2Hr/5HXkhjBRAl4lwIicnayPwoUsBRzFrZFiLlw2BitF
-         eNY9f4IAfARkKiJKCEmWg+xnmf/1/e1vmqzQtrg3fU+V26RpXwfuW45w/Rzw/gLHOGi0
-         3gz5GZAtwuHxaSrjs/cwb22KrnA77MR5nUtJWpr5zAIFEwQt2OEWA0IkY6ypTTlR33cl
-         V9swOQ+G7/eEMv5W/Pzmbxm84+OjbqMfARIPDPaXpEoa9+V1dgM6osL39uDaCtXh/RjP
-         zS1tr6PcD4AKsHTDE3Oy78vfNjpIaMaS+3Xr7dVZMfeidKTQrbWPltBleLhGyChwrmk2
-         8y1Q==
+        bh=5ANKtTi3WQ+Pt+De4BIcKbzPHYx1XgOjTrTXFWr/ENc=;
+        b=lAVLLKfNM9Jw8i8Rsfkk0raNVD5H78RGSVFsoHXXru7XRPXS9MHc5P0sx/k/in2jUt
+         YNm2mRn3H0Kxs4F+NPiD2BxgFvGPnag2W02qazD1uB/1wPVa/iau0Hl+FyObzqpe5rNq
+         vemK/i8kHM/egaWcENDpPH7KzG6Dsr6IQMw/b/ya7I7c+QWiVnAMClqxZQ9K3ZJfEQ+V
+         hjlQktGnbJLIrB/blANbW2eU0ftln0Pt5OOcQmMDe5FAgXsDsW3FJXx1IObcs5CSO881
+         AsAYP+c2r8uiT/FkRRwST4mAmp2M3X9mwyZQgpX2EdmY6ICcz02tisqY2zpKHphoQ+f8
+         kt9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782509172; x=1783113972;
+        d=1e100.net; s=20251104; t=1782509231; x=1783114031;
         h=from:mime-version:content-transfer-encoding:content-type:cc:to
          :subject:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=OnwdaukFZGHXEjH/UlhCaXFzrTOBU2ErYEjAMkT0NPc=;
-        b=aQPapfvv4xPdRm+GsdzDAFcN3lDgj00rKE30VCiMVgxtg9Z56fRNosFpGxINxMR4KF
-         KkI/PldaiERG1tpEw0wDTzQVXReJP+W1aIKo49qi266aO+0XXWjeBe03mofnEQOhW2G6
-         hyfW1bJ8CbT8jeky05W0b27DqdptqMK+fHcGjT6gXA1pd6d8PqwWAnUH0osdlb0CL8MB
-         aJdNJQChlLS1gD0b6Ey5F8e+TvGlJexlFucNl8bvynP3Plmf7tA52RDYYjoxSZLk+BX6
-         L4UvOXAZrej6SQ6EfScl9F45NYI8WD7N5kGkM5gb2qXirfpsDx1roskclrMVdOm3YP1q
-         STsg==
-X-Forwarded-Encrypted: i=1; AHgh+Rri0NNUzDj5G94Q7cPrfV3aTRxW1rp2B6IE6OtQ4mdKeUkWx9+QessZv/PGhy4wIJzykRXbXEsL+g==@kvack.org
-X-Gm-Message-State: AOJu0YzOFcTj3uP81WCgd+p+8xeINUsRVSSK3E9HxoHa5azMe+fXbNDB
-	Ot8y+cH9i44EvhQ+BFPk9vpasDT0kn1EyxCFQiRPoAqWp3XFKRJGuMf/
-X-Gm-Gg: AfdE7clKNcMBRZkueDZBXxsM6av8PH1eaR42at33RuKZUVkwqr6Veq4rDVvj5BHqhr5
-	wsGOBkVjFzUBqGhZBdUBVpD3g+7VKFYP6t3kYaB9z99iQqidjg5byYcVPlRESigqCLUuadgQFgu
-	s9gLLvQnUAwIbV6dOCoHHIKBGYzGSERm4IzdSjCKo0TDARsTJ5YPwyFBV2I+ysKsAPGZgOIH9Mo
-	0ebw8bZyaEXQSlTqcDVm1RjL+kjOBP2i+7D7nJ9xmCy3ojqSxQ0xF2CbmODe3xaCq/rrKCzBfZL
-	9qSGwxkr88reJGWAb10D+L7P1/fTUv3/DAMehU86022JJlYrydMLK4w7ut61ttZc5hVB4/MyiR3
-	fkqIKvicAaBuJFC7x4Iac09xO9iBT0XL/jtyFldyiyva1SSHxbIgdPyu5ov2WM1o6nq+N23S1MV
-	1sHLBFeTNPotleuysSz18gD3879LTdEu4i92Iwfcli6xpZSPJ7y55+WqffaDD97tWqqXyrdX2QR
-	sTEmnxjog+X
-X-Received: by 2002:a05:6102:1489:b0:637:30f8:5cd5 with SMTP id ada2fe7eead31-734368cc7f7mr1403865137.8.1782509172572;
-        Fri, 26 Jun 2026 14:26:12 -0700 (PDT)
+        bh=5ANKtTi3WQ+Pt+De4BIcKbzPHYx1XgOjTrTXFWr/ENc=;
+        b=So+Tv23vTIeh2MwmvSr+ddDcL0Gjs3rV8v5jB/xBcxYnzMx/wf8FGU2HphdGTjje25
+         HlBoeb+eb4tw141+tq7JYv1kONbk98P3HvzrIm47IBUYCoLcLyI374zRYKWCT9mJThlb
+         qXMK4wZ3WzSP24Foor/9c5dtxlkI5ih3QDyB0LjrAMsBuyy0PdcGTYBZm2FKL2M4Sdm9
+         8e6Q/VteYr3IU6yYythLMUxBRAVEYcKAHrUDJY6RWaAQIAagR3enODNBNzAFwQb/K+Hb
+         ZxZJSIDqKjmdzVXpyDMQmVREiKO2y0kpD1mdHL3lb+Gx76erqZJZ7P89FPDIPU167A3/
+         7cHQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rqkf06Bny9eDGg378fQqfWQeM5N3LY+y8xlj+h5lLvjqhqU8R8tEZUoyCBkpyDoTylYmKuPkVBhMA==@kvack.org
+X-Gm-Message-State: AOJu0Ywu9OeyV452Fb1kqUGeI6qkx8sGLvFV5AFjYqgP+ZjIlRaaF/pI
+	dmHm9psl4kde1SRHKU55qR50273Eg2oRcr3Mgn78sIjJ3CL4AuEO5Ux0
+X-Gm-Gg: AfdE7cnpJFH+bP0+u2XO7TJ16p+H2jwoAndGNWBya4TOIvg9d8bpBTGZmTZZePptj7Q
+	XVPuWngii5QAgmJpeTnAB68dhmIXfNl7aBHsevL0MV0DWVwonj/wTg84oMziSyyTufROwjR6+0w
+	KRWXPcpbqiQ23SQeMqwuvjVIGEi2aGF5CoFVtthXGt4e2DUDHeJyLPl+p4kSqcG3PP/xNTFWR6H
+	gGUhySA9NYoYxXibmj4joKoMBtK0hg8Ohl042uhtNLoOZdQFH0nsB5ZaEmojF1nqtpoJo/y1Viu
+	hz5rZD3iLBnpy5somxzdCtPYJOuGZzswA/Hy8BlcYeWtYDEtjcYn6OwNDFSuCT3OWllr6SiGXkK
+	bZ6t9GrQBgesm8G084gi9iSi5PtJMlo6ZjJYRxWtdr+wybsWUvZT0qc5vdg/UNzEv89NEyH/qD4
+	5sHrV8RqJLfbabArSVWb81qxF9kP1h9eCc61Y8Qxe0PhxttxEY791NOCR3sxTJT8GhFFnNLMa/6
+	q4t902R11hmK5z+8wFap24=
+X-Received: by 2002:ac5:c7cd:0:b0:56f:8cf9:33c8 with SMTP id 71dfb90a1353d-5bd69d7efbcmr1211421e0c.2.1782509230862;
+        Fri, 26 Jun 2026 14:27:10 -0700 (PDT)
 Received: from [192.168.10.115] ([132.170.207.48])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7356a630fc4sm1898104137.12.2026.06.26.14.26.11
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5bd790c4949sm1844279e0c.15.2026.06.26.14.27.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 14:26:12 -0700 (PDT)
-Message-ID: <6a3eee74.68f6b9bd.2e7afb.801d@mx.google.com>
-Date: Fri, 26 Jun 2026 14:26:12 -0700 (PDT)
-Subject: invalid opcode in __get_vm_area_node
-To: akpm@linux-foundation.org, urezki@gmail.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+        Fri, 26 Jun 2026 14:27:09 -0700 (PDT)
+Message-ID: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
+Date: Fri, 26 Jun 2026 14:27:09 -0700 (PDT)
+Subject: WARNING in usb_free_urb
+To: vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Cc: syzkaller@googlegroups.com, contact@pgazz.com
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 MIME-Version: 1.0
 From: sanan.hasanou@gmail.com
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8131FA000A
 X-Rspam-User: 
-X-Stat-Signature: aukp48shbxp96bxk57uoz8y8se7j9xb1
-X-HE-Tag: 1782509173-657526
-X-HE-Meta: U2FsdGVkX1/W7mqLJzvspq73aEGh4zg47QcVrEAMPFj4uebxgiwQDD3tbo+gqlry8kKOqNHf2ujyxTmYyLH+vAexnJBRZtDH7E9ifUXV+GqrJMkcJzqiSvMMVdU5cP+18RUWWUx1WMEknHiUHyNOrvEdwtMYjEZSYmj5TIXj9hnnhs/VxIcNE7J2wfAEYZvuaUjQz3B/q4OIrfbE8nIYQp5UP557JAvlh9NAkHhVzTYqvi6xKgA0cYbkEidi1/zqPihyj1pYcQW1h4GFx/qNa5gGakrNY2qxIWcmWUNB3gNFI+jphaDlZOD7ZmeWp2N6Mweyr6dzqJAvo2spC+62ACd8k27infRT71OyEf1Hg3QVhftLGkyhLMvB9Q5AVqTq2KQoDLbZPuliF8YaYPnJcTFVLS/On6+QoLtGCbwSssLoWDokjt1sc5FG1D8N7DNA5hXdgvQgbtrSBAZ6dVJtVgck8TnYDmnD9IjsgxS2ciH2wfIMn/feyEacaXFauEXtQmcK1tquZVklJKLXEj7CJoXVlCpUnkCpNlpfJqanE6x/mADaquswZ5inNQN/RZ1vrNCXXJYLWE33WBOB2MhrWEqKttguU+seKE0brf8LDSRdk6APOiDSa+0Pv9a4pgMvJysSvvIjRnIUZXPjsY2j8HWfH3oFFMs/7qbMejXYRC6xct7lgkb129Xf7wDXXMoR45byQM9BKmpNz/vg8O0MHyDvhSZBBUJL4KmmSA3PAp7tXSbzvy4FShv3BASg2r++tWGJoyZUjVQA3pLap2wVP7PFebEIP6oFLw8gvwljeH/n/DFIrHGMLiIATP6ik5VbDMY4IU5HRcFCz0tV4akTHpfy2aYErugUiDI+kgk4lIAbCFTMTi43nGTtLgST4dlKurIk0gZPyh9ye2NOVGyOZGXpHx//NsYoTRGA5MjFJvYYz/rYAFI/6UmueucpJLFKv1KPh8HuuE6yru1K8yW
- M1FBo8wB
- 08inkix7amVCaUNgH85FvpdP81ZUdz3/n37eMX4Ead5szZIyiY5KcdxmzepWNKBkzaVZtAmh2ioX/dUDsTRq23uRDp6laRKwowyp2JoStmxlJXmx7nIoYrsrpzaBb+xnT0vd8gW6/QEi7xNQH49mZ52N5tXDyKz+b+PtFgjvNz9lcwsd9IK3V8dsUNgZWezheVLgHPwKcaa8CVLo/1awvur70czbg/yqVMrVKRgWn/L0mTfiMs2y7QP5KSXH9YT6MvBQTOBXKoPFy8Eoent/WPUeFLDGjYPVa/k1FWyGhPXOgj/dMgEn3mltmERhkm+OT2F825uoHUVaRczcI3M8ukV3G/tThYjcmR7NNoFlj1ghxAk9U6QYXaabYvx5AKLBCHeaOqfXPDhYlW5FxfS8mBcv6EPSnFUjioF0GT0HssuQUVlcIZE9iiRXeCW9HfqPev4/fCc/cbLZbhxuDKW2+d4/tVhCQvPz0CxKZ15cPRKh4BzDmcSlRqtvZgw==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DA9BD120007
+X-Stat-Signature: aysk9nftgctxuiwjbdnernhdhnjposq9
+X-HE-Tag: 1782509231-231455
+X-HE-Meta: U2FsdGVkX1/GVKS0LpzyoM3O1wQzCLlvIkZAX9oJRdGobQJk/j2NFEtYh2L4jVf4pXhh0kDS1UUTQ+c4FsJD9IhkleDwJIQCs+BHUwGtp4SH7BXZbJcWqFWATYRlgHqt4NeVlEfsSN0lxYShEJZVfwYTQNJ7pGIScZgPDWuafN9FcpCCjvluTrNXYZXzyAcLUbgDgg9m0VEsfiK1WkEguXRJslW7m1YcKPpyOhcwl5ArfNRKAMutb9xstByNAeSLuU7ChF8f3Epa6TGkfPSMJpl/DMniKz49JfpBKFWyVvZZJmx1a3sipaEllDzM+awI6Ms1MDxFzNm715ut6wWXHqQhREu3bJaoVinIgHH/hyrGjqKZtDGSx6SKvtg5g7yBii49LF1kPUqrv9UXh+/XsKLHCbOk6qpooePyMw94w/Ou/PDz2pmEMCoZvLLJyAjB/MewXFB1l+NpZNrXjw3Xnfuqa6VFQAxFIlBCHL3DlNYBE4cdvTiG3dJiGptyltgCANERY66hc2TlaPWV7An15YzxrYCIDiPlaQmF9FYoqQcjiLepD20x2wwSJf57LWeYx09HwrR8hS0rsgDP7UlDlb5+pRoCd4RmTJrOaNrkbe0Xcvpph7tu0J42o2sn8QxpllspTQdVjcJ6Kid56vUyjiqsJ7E5cN6NIE7Nz21p4sF8mGLPkYAKwNOu2XC3/Sqr2CMa0ZEml2odTKvUPc44ofDvB5Dq3143n16o9uW3T+habzTCIVmivSCODUktnAqKxL2BvM4MowWrNcXE2JqE9x6mrL1Xp0n3c7KUIW9WVLEN4hsjdxKbcYpfmTYBiX73rSSugdPpwKd1295eFLOs6jJxrwhh5MFaU+vNqOG77chCTmHLABGtQjvzW6VskkpMk7oX5Vl1QI7HwkdT4zJ+l8csPYx2xFXY8A5yc1+ojPr26xAmwbSqV3EZIw2HImzoPK0nhCjCQFewPq0Bdp5
+ Zc66vU7T
+ 9dvM8YzOW9pMkQNJlzPxlDHEYLAc1LdrjyYU8/kIUif5SNLLfx7uLIPCDxZUINkC2p5G9sfb0nNUHIi2wcMKP+DSLo6VxL5Xguw7klhP7Rd3gniRaPTRievkfM0AmliTfWjXHyK829YHNJKpWScHiKbUCaGpxV+twwE0GhgqhS/xP2UDpYMyGeCBFL7qPAhCtJNW1eg+WmNK14qTmDkMDL7oG2chmoINP7zkE+5O8gF58G1GlixT+1up8unpBSoLeTEgmkCA2Y0kes8oaIbwVrob+t1JqZITQtV/b9N8IQoRdmGZlol1zGjVgteddFBiV2e28jUxSy3wRJ1Y2bCTmIYXx4kF1TRgKy3b0fFQ/taOf9RyNQeTprctBDKfJHIYQp+SqqQa/0EuwHPwUDK8hQAjw2/DEQ4lyJnkX8s1cRfr3YJGs4GXWPiRw4jOIfI93zLiTc2bVa26IFzyNkjBw1/HA9Au4CWYy/8Pwe6z/koO6wOyqB6DCHS9ODw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,88 +122,128 @@ Good day, dear maintainers,
 We found a bug using a modified version of syzkaller.
 
 Kernel Branch: 7.0-rc1
-Kernel Config: <https://drive.google.com/open?id=1SkS9U2y8MGrnaXhjJJI5n5SymSSMyYnS>
+Kernel Config: <https://drive.google.com/open?id=1zJHAs5GUroGFBkxAlzfDaWAd_NVPZTfJ>
 Unfortunately, we don't have any reproducer for this bug yet.
 Thank you!
 
 Best regards,
 Sanan Hasanov
 
-UDPLite: UDP-Lite is deprecated and scheduled to be removed in 2025, please contact the netdev mailing list
-Oops: invalid opcode: 0000 [#1] SMP KASAN
-CPU: 0 UID: 0 PID: 11561 Comm: syz.4.66 Not tainted 7.0.0-rc1 #1 PREEMPT_{RT,(full)} 
+179683 pages reserved
+0 pages cma reserved
+Memory cgroup min protection 0kB -- low protection 0kB
+------------[ cut here ]------------
+!PageLargeKmalloc(page)
+WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317
+Modules linked in:
+CPU: 1 UID: 0 PID: 12317 Comm: kworker/1:4 Tainted: G             L      7.0.0-rc1 #1 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
 Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__get_vm_area_node+0x34d/0x350 mm/vmalloc.c:3212
-Code: be 01 00 00 00 48 c7 c7 c0 95 66 8d 48 89 da e8 39 7b ad 02 49 c7 c7 ff ff ff ff 48 8b 5d d0 e9 7c fd ff ff e8 a4 ed a7 ff 90 <0f> 0b 90 0f 1f 40 d6 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 41 55
-RSP: 0018:ffffc90026d56630 EFLAGS: 00010246
-RAX: ffffffff821e820c RBX: 000000000000000c RCX: 0000000000080000
-RDX: ffffc90011a4b000 RSI: 000000000007ffff RDI: 0000000000080000
-RBP: ffffc90026d56678 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: fffffbfff1db024d R12: 0000000000000000
-R13: 0000000000000022 R14: 0000000000000200 R15: ffff888025c3c4bc
-FS:  00007fc6f9c366c0(0000) GS:ffff8880dc0a8000(0000) knlGS:0000000000000000
+Workqueue: events request_module_async
+RIP: 0010:free_large_kmalloc+0xb3/0x160 mm/slub.c:6352
+Code: 25 00 00 00 ff 3d 00 00 00 f8 0f 85 a6 00 00 00 c7 43 30 ff ff ff ff 48 89 df 44 89 f6 e8 45 d9 fc ff 5b 41 5e 41 5f 5d c3 90 <0f> 0b 90 48 89 df 48 c7 c6 b7 4c 72 8d e8 cb e8 08 ff eb e4 90 0f
+RSP: 0018:ffffc900028e76f8 EFLAGS: 00010287
+RAX: 00000000f0000000 RBX: ffffea00019a5c00 RCX: ffff888067550001
+RDX: 0000000000000000 RSI: ffff888066970000 RDI: ffffea00019a5c00
+RBP: ffffc900028e7710 R08: ffff888049c40603 R09: 1ffff110093880c0
+R10: dffffc0000000000 R11: ffffed10093880c1 R12: ffff888066970000
+R13: ffffffff870bc0f1 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880ef136000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f071644d660 CR3: 0000000069586000 CR4: 00000000000006f0
+CR2: 00007fba7e4bf008 CR3: 000000005776b000 CR4: 00000000000006f0
 Call Trace:
  <TASK>
- __vmalloc_node_range_noprof+0x373/0x1500 mm/vmalloc.c:4024
- __kvmalloc_node_noprof+0x509/0x7c0 mm/slub.c:6739
- bucket_table_alloc+0x69/0x380 lib/rhashtable.c:186
- rhashtable_insert_rehash lib/rhashtable.c:470 [inline]
- rhashtable_try_insert lib/rhashtable.c:637 [inline]
- rhashtable_insert_slow+0x1b92/0x1f00 lib/rhashtable.c:650
- __rhashtable_insert_fast include/linux/rhashtable.h:794 [inline]
- rhashtable_lookup_insert_fast include/linux/rhashtable.h:970 [inline]
- fdb_create+0xd24/0x13d0 net/bridge/br_fdb.c:411
- fdb_add_local+0x13e/0x410 net/bridge/br_fdb.c:446
- br_fdb_add_local+0x5d/0x90 net/bridge/br_fdb.c:977
- __vlan_add+0x630/0x2a10 net/bridge/br_vlan.c:335
- nbp_vlan_add+0x24f/0xa80 net/bridge/br_vlan.c:1343
- br_vlan_info+0xff/0x460 net/bridge/br_netlink.c:705
- br_process_vlan_info+0x600/0x890 net/bridge/br_netlink.c:768
- br_afspec+0x39a/0x5f0 net/bridge/br_netlink.c:836
- br_setlink+0x271/0x800 net/bridge/br_netlink.c:1135
- rtnl_bridge_setlink+0x5b6/0x7d0 net/core/rtnetlink.c:5534
- rtnetlink_rcv_msg+0x77a/0xb60 net/core/rtnetlink.c:6967
- netlink_rcv_skb+0x206/0x460 net/netlink/af_netlink.c:2550
- rtnetlink_rcv+0x25/0x30 net/core/rtnetlink.c:6985
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x811/0x9c0 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x847/0xb50 net/netlink/af_netlink.c:1894
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0x5a5/0x900 net/socket.c:2592
- ___sys_sendmsg+0x224/0x2a0 net/socket.c:2646
- __sys_sendmsg net/socket.c:2678 [inline]
- __do_sys_sendmsg net/socket.c:2683 [inline]
- __se_sys_sendmsg net/socket.c:2681 [inline]
- __x64_sys_sendmsg+0x1a6/0x270 net/socket.c:2681
- x64_sys_call+0x17a2/0x2900 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x11c/0x810 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fc6fb9e3b6d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fc6f9c36018 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fc6fbc55fa0 RCX: 00007fc6fb9e3b6d
-RDX: 0000000000000000 RSI: 0000200000000040 RDI: 0000000000000004
-RBP: 00007fc6fba87c3e R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc6fbc56038 R14: 00007fc6fbc55fa0 R15: 00007fffd78dbe70
+ kfree+0xae/0x630 mm/slub.c:6437
+ urb_destroy drivers/usb/core/urb.c:25 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96
+ em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
+ em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
+ em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
+ em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117
+ request_module_async+0x5e/0x80 drivers/media/usb/em28xx/em28xx-cards.c:3457
+ process_one_work kernel/workqueue.c:3275 [inline]
+ process_scheduled_works+0xae1/0x1800 kernel/workqueue.c:3358
+ worker_thread+0xa0f/0xf70 kernel/workqueue.c:3439
+ kthread+0x37d/0x470 kernel/kthread.c:467
+ ret_from_fork+0x507/0xb90 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:245
  </TASK>
+
+<<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
+
 Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__get_vm_area_node+0x34d/0x350 mm/vmalloc.c:3212
-Code: be 01 00 00 00 48 c7 c7 c0 95 66 8d 48 89 da e8 39 7b ad 02 49 c7 c7 ff ff ff ff 48 8b 5d d0 e9 7c fd ff ff e8 a4 ed a7 ff 90 <0f> 0b 90 0f 1f 40 d6 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 41 55
-RSP: 0018:ffffc90026d56630 EFLAGS: 00010246
-RAX: ffffffff821e820c RBX: 000000000000000c RCX: 0000000000080000
-RDX: ffffc90011a4b000 RSI: 000000000007ffff RDI: 0000000000080000
-RBP: ffffc90026d56678 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: fffffbfff1db024d R12: 0000000000000000
-R13: 0000000000000022 R14: 0000000000000200 R15: ffff888025c3c4bc
-FS:  00007fc6f9c366c0(0000) GS:ffff8880dc0a8000(0000) knlGS:0000000000000000
+CPU: 1 UID: 0 PID: 12317 Comm: kworker/1:4 Tainted: G             L      7.0.0-rc1 #1 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: events request_module_async
+RIP: 0010:free_large_kmalloc+0xb3/0x160
+Code: 25 00 00 00 ff 3d 00 00 00 f8 0f 85 a6 00 00 00 c7 43 30 ff ff ff ff 48 89 df 44 89 f6 e8 45 d9 fc ff 5b 41 5e 41 5f 5d c3 90 <0f> 0b 90 48 89 df 48 c7 c6 b7 4c 72 8d e8 cb e8 08 ff eb e4 90 0f
+RSP: 0018:ffffc900028e76f8 EFLAGS: 00010287
+RAX: 00000000f0000000 RBX: ffffea00019a5c00 RCX: ffff888067550001
+RDX: 0000000000000000 RSI: ffff888066970000 RDI: ffffea00019a5c00
+RBP: ffffc900028e7710 R08: ffff888049c40603 R09: 1ffff110093880c0
+R10: dffffc0000000000 R11: ffffed10093880c1 R12: ffff888066970000
+R13: ffffffff870bc0f1 R14: 0000000000000000 R15: dffffc0000000000
+FS:  0000000000000000(0000) GS:ffff8880ef136000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f071644d660 CR3: 0000000069586000 CR4: 00000000000006f0
+CR2: 00007fba7e4bf008 CR3: 000000005776b000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ kfree+0xae/0x630
+ usb_free_urb+0xd1/0x120
+ em28xx_uninit_usb_xfer+0x165/0x310
+ em28xx_alloc_urbs+0xf2a/0x1130
+ em28xx_dvb_init+0x2b0/0x4a20
+ em28xx_init_extension+0x121/0x1d0
+ request_module_async+0x5e/0x80
+ process_scheduled_works+0xae1/0x1800
+ worker_thread+0xa0f/0xf70
+ kthread+0x37d/0x470
+ ret_from_fork+0x507/0xb90
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+Kernel panic - not syncing: kernel: panic_on_warn set ...
+CPU: 1 UID: 0 PID: 12317 Comm: kworker/1:4 Tainted: G             L      7.0.0-rc1 #1 PREEMPT(full) 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: events request_module_async
+Call Trace:
+ <TASK>
+ __dump_stack+0x21/0x30
+ dump_stack_lvl+0x2b/0x150
+ dump_stack+0x19/0x20
+ vpanic+0x53e/0xa20
+ panic+0xb9/0xc0
+ __warn+0x320/0x500
+ __report_bug+0x28d/0x500
+ report_bug+0x175/0x220
+ handle_bug+0x9c/0x200
+ exc_invalid_op+0x1f/0x50
+ asm_exc_invalid_op+0x1f/0x30
+RIP: 0010:free_large_kmalloc+0xb3/0x160
+Code: 25 00 00 00 ff 3d 00 00 00 f8 0f 85 a6 00 00 00 c7 43 30 ff ff ff ff 48 89 df 44 89 f6 e8 45 d9 fc ff 5b 41 5e 41 5f 5d c3 90 <0f> 0b 90 48 89 df 48 c7 c6 b7 4c 72 8d e8 cb e8 08 ff eb e4 90 0f
+RSP: 0018:ffffc900028e76f8 EFLAGS: 00010287
+RAX: 00000000f0000000 RBX: ffffea00019a5c00 RCX: ffff888067550001
+RDX: 0000000000000000 RSI: ffff888066970000 RDI: ffffea00019a5c00
+RBP: ffffc900028e7710 R08: ffff888049c40603 R09: 1ffff110093880c0
+R10: dffffc0000000000 R11: ffffed10093880c1 R12: ffff888066970000
+R13: ffffffff870bc0f1 R14: 0000000000000000 R15: dffffc0000000000
+ kfree+0xae/0x630
+ usb_free_urb+0xd1/0x120
+ em28xx_uninit_usb_xfer+0x165/0x310
+ em28xx_alloc_urbs+0xf2a/0x1130
+ em28xx_dvb_init+0x2b0/0x4a20
+ em28xx_init_extension+0x121/0x1d0
+ request_module_async+0x5e/0x80
+ process_scheduled_works+0xae1/0x1800
+ worker_thread+0xa0f/0xf70
+ kthread+0x37d/0x470
+ ret_from_fork+0x507/0xb90
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
 <<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
 
