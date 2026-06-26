@@ -4,118 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9286BCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EA1FCDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:22:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 833186B00D7; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
+	id F1BC56B009F; Fri, 26 Jun 2026 00:22:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8095E6B00D8; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
+	id EF2EA6B00A2; Fri, 26 Jun 2026 00:22:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71FD16B00D9; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
+	id E2FB06B00A3; Fri, 26 Jun 2026 00:22:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C7336B00D7
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D20B01C185D
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:17:01 +0000 (UTC)
-X-FDA: 84920753442.10.66BE5D9
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0887920006
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:16:59 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tU4auLan;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B201A6B009F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:22:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 25044C1B96
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:22:21 +0000 (UTC)
+X-FDA: 84920766882.26.5191AEE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6662F40002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:22:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M0amm3Fn;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782447420;
-	b=nriRv/rFGzC524GLOZ207wcfyY8QeYi2eRo3LOYbOr2WPfrM/zhh63W+4/sfD6Eamb1x5e
-	v791MMRlNEgR8vhT8cIDXYonJzDM2EaRZ75+OQGhC805uWV423aqsbyMf4p+DVtRCqTST2
-	4zTIArTJ5HlV3AJxfeAnhTs5ioYlOWg=
+	t=1782447739;
+	b=fAuuZt32MZmYQx9sQ4riyLtwwwQ+dBPMeALP3INfrnRY7TuoXNr0i5loLi/liw0vY8S16O
+	D78CsqpaZrO2+olJ65cPNNieycYJies5p6E7ODl0qnUb+Buu6Huc11j/u5iDhRZvzxstHH
+	Lu7k+gwn9wupIcF3jaEUN415OUfonFU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782447420;
+	s=arc-20220608; t=1782447739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XOkT4HE4MTvk1wZ4w40cb5pP0zMW5GgLzCncJ/GrFKA=;
-	b=u6KTXwvTvzYn3d8ZvNBmANiG9R+LYzwnnFXPFfAPZtVTTvtpKkS/1nAumkfS2+nP8uT9Cr
-	pjnr/oDnQ6t3oF5YvKVfRJlZ5ZowiJtl/wcLtDkkRADf/Q8X2vVU4cqkjeaYbJ57cY1XhZ
-	WbTLOXDU8pSR3x0p4Sp/sJAl35cLT/U=
+	bh=CreF09zsseqG1KqS3MGVF4hVYNf0WAFIeh6kL8u7eDw=;
+	b=2Pv4ZkcqNknshFS7siq9TSEvd51RJf1n279wf/+0tm3R1Sr7b/8+QTRaUgTIl/BvUuYtSp
+	EUo0FTnpLHiv3k9S3Rkq7WusU40doSh6CF4TUFHMQ1dxUnCF/3/AsK9IM9coedTH50k075
+	WXW8qyMA7Y45MZy+gtNRKUd0UaXc6Zw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=tU4auLan;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782447417;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XOkT4HE4MTvk1wZ4w40cb5pP0zMW5GgLzCncJ/GrFKA=;
-	b=tU4auLanIoznu++bAndccmy95kBQZM3vq3F5BJdIdB3bzdmwcKIzlcD38N7fNciBZ/LSMH
-	FmoUliuhEWquBQUxpNJpE5YaDbsYyNkQL31Ss1/hRuoD6Ntulu0n0evwIVXfNH2VKUj639
-	Q9BDEF4Ep3G7a4GsovfzVtNZszPAUak=
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
-Subject: Re: [PATCH 1/5] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <4619650f-28b5-4fb4-91be-50daa0b4d84b@arm.com>
-Date: Fri, 26 Jun 2026 12:16:16 +0800
-Cc: riel@surriel.com,
- vbabka@kernel.org,
- harry@kernel.org,
- jannh@google.com,
- lance.yang@linux.dev,
- kas@kernel.org,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- rcampbell@nvidia.com,
- apopple@nvidia.com,
- ziy@nvidia.com,
- matthew.brost@intel.com,
- joshua.hahnjy@gmail.com,
- rakie.kim@sk.com,
- byungchul@sk.com,
- gourry@gourry.net,
- ying.huang@linux.alibaba.com,
- mel@csn.ul.ie,
- nao.horiguchi@gmail.com,
- ak@linux.intel.com,
- j-nomura@ce.jp.nec.com,
- pfalcato@suse.de,
- dave.hansen@intel.com,
- tglx@kernel.org,
- jpoimboe@kernel.org,
- ryan.roberts@arm.com,
- anshuman.khandual@arm.com,
- stable@vger.kernel.org,
- osalvador@suse.de,
- akpm@linux-foundation.org,
- ljs@kernel.org,
- david@kernel.org,
- liam@infradead.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <EF014590-F5F0-4B9A-9C6A-C4EAC8187237@linux.dev>
-References: <20260625112955.3254283-1-dev.jain@arm.com>
- <20260625112955.3254283-2-dev.jain@arm.com>
- <f8516534-3b18-4988-b384-251225755285@linux.dev>
- <4619650f-28b5-4fb4-91be-50daa0b4d84b@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dkqi4xkx487cwirq9z33qtboh6cgmcri
-X-Rspamd-Queue-Id: 0887920006
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M0amm3Fn;
+	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 5204040558;
+	Fri, 26 Jun 2026 04:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C8B1F000E9;
+	Fri, 26 Jun 2026 04:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782447738;
+	bh=CreF09zsseqG1KqS3MGVF4hVYNf0WAFIeh6kL8u7eDw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=M0amm3FnZCP52MGG+c868lxtvYBFok+9dsCpP+awjR4HDs8z1wJM7sN3rWJEORAT3
+	 xYkpVw6nzqoNSpZjtEu8f1aItyXzUaULZpCWrHmKE64Q200+MKS5cgK1v3CEesp4bk
+	 PTbYeCOxY/NbiEkjqnjFh0vlD6o2BiGZXYw7P4esth8LG8ishA9mg+KAZ4beOWl1bh
+	 K/dTKHeDUCIcECDKNUiUqw1arDafWCmvXukFyEvg9FanDSk9vq/6bQIHss8OuyduPo
+	 i80kattdA4Oi+ri2KfTgpEaPlQTkerA15dFu4gRM8RgyLBmwWutj2R+R53RWsWv7YW
+	 EHeeItb1IZESg==
+Message-ID: <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
+Date: Fri, 26 Jun 2026 13:22:09 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+To: Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka
+ <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
+References: <20260625230029.703750-1-shakeel.butt@linux.dev>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260625230029.703750-1-shakeel.butt@linux.dev>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------wL0bb3VBv8atswQ8JRXKJEY4"
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782447419-556784
-X-HE-Meta: U2FsdGVkX18RtinAtEuef3oy14vMNTIfb/C/W3we440NzjIUBy6cVo8HeSTqsEBr3OxLn3TnlsISwUoi9/7lya9OrbcJfwCzms8FqjZ/hE/K9cGpedW+6AF1fP0xZIMPDAS99lcVRw1g0U1o+6zQc1u9/e64D57w7VfhasDMyErlF2FcoxPnUMEQlGLiIOqmu6kxSRJM9KBsti22hsiYlXbPVu/WlH2VB0kYediThhZEKQ1KCSeU5TdXCj4+664tB6D1q6GSDb30A4d9lPKZlcZNBM29wTYCozR6G3NHXWwIKv0bJmvuFtM2dRIuIEaAUspHebSJDUDTCJbzQ2tc4GbVqPy6Z+RoxSFN3koBVPf/hhdusT7F4E19EaK1nBRcFiRX6W4uIlrWTtqEbPF9fVDXl+t77rqjsWZpDceGd41S+y3IvFWvmDzKMKlpCv68aSh9egmH4MF+1rlN6E66sAUcSRc0ZebWVfgYDgbtgLg1Oi8lBWWvb48PZfiKgbEfsoVDpvHN7pKDV8E4z5mWSmdZL8tLVhm46wFhCeovx2Z0nS+EyQABSydF+BLEIZT7B6vcHmH/yGwDXj243j6zaBKwlX+A2ekTW5R3JeO3xdxa1NDEYjElaHhB0qkODeJHohZBn4Ts6auAoZoRs13alytuEK0uMsSZfwQzon6D6OOkRsiY/l7Xi7drVExVhr23S3LxdjEdAXbOQiVXTchojoFhF+z4NoLNro8aTXMRxOHGBziOUmrt9n7FWuCay+sOXFMvlZEAY8wSKpAyr9mRogEhrRS+ccmX4mKvtb8LqgWaUKn+k0XAgmWjVQdRwrlhjKAh5Hqgn+TYJdx6S2izyS1Mlhyyfj9KWsDkR89jQKWqJQeko2+uJ5u2vWPgSoyPJSFUaKgMsMVF4SDtTECCVXY8UT+Q+0gnJXhgLGPfexOrPARH1u4rW97YZCojzVivJ05i8phYWaFQkAqptiJ
- QvlDkapl
- DD+3G4Wj5dctvtUwWWXfHxsueFLN6XhUterwuAht9OSrKX8qyIIzzO3ohwLTF7okaEyNLER/M0Z5cRbhFmd213tsZHPbb8/89x7mfMg5+L0ndg+4yhld1b/zuyUNV+MgID/Q5a7lS9RE04cmLaUN5oYVzXG8jwVqC63vrYJrZb0DJw69HY5c6lzai2uDgSeFBYFpObEa9lZ/xhPlqIIzk89doqh/2Rf9lF9UiWUAIBQ5LIaqaGkMwCh+Q7xsedl5PkHNfs8kTZW5F3eg2anQKa/WzD+/I1sk6C36WcP3sdvL2RSo1zg7lNXy2edTst7neCVopOl6omfET94Aia0Hw81lE0BhqPQMj3i0ZZ0dd2TMTav9+cdLY3/X3Tf+nD7r6gfWkv0p6IidCYk0In39HfiDLKIw2JKb5jWbOQ+8OV4ZIYA+vmsLyGgJ3UlnTcQxFuR3j
+X-Stat-Signature: nbgmbn46zq649w5y8adzcqxd78n97uct
+X-Rspamd-Queue-Id: 6662F40002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782447739-76899
+X-HE-Meta: U2FsdGVkX1+JVlqtkDbSqtNrcW4fV6f/MuPqdAc1i3AJbSO0hSjd1UzQrNhEoe9KTFOKsjQO1BC+YhfG3Oj3SR1uUbxRVBgfttDV+BY57yhHakyWDeKYkbl8HaGDeoZ88MIc1FO1V5GZ/dQjnBALarGg+iA1aYBq9UevsZRFUxplNteFQhCDhfZNOWrC94MTSufmc22UwDeiXkpHKQ2mFUb1L8W99A6DOyfTAThdTy67zgV43ImCVqOhIMUDhA2DE5yvc+HHTOIlyJaIiCq1Mi4LsxyLBVoa3Q3PrDntulgohF8e0q7eu/mdGzkydF3sl9r3VZjvQNwuCXR+uY0etuMDgsEznAcu7qNUHgGkht3KRyfMIjhuR25Hc1mWWdjwmWYwd04nmS5ewXlVlwazJYNjylm3re5WHP93BShAUyO3Uhh1ONwvLBCC0BJKo/WOL48if8NMgneLi9Yi/G++v/X5GqzpGZR67GpY862dvXvQJGW+l5Wj1hS3zqOOIehg+Mva1vyD2cU07Jnjs0p7fcVLrToOOkjaFFM0f6OcRLR81CUvZvbl8Zg71CDrmfrufgI8WSCmywbWptFeg1zD324hMawGllWVn5kB5phFc18toZY5P0q3p9eJd2g6PyZx1qVy7CEGriD4CdGSVyThS+UfAlzb0DhVexwYqqdsWA+iEYZtHEBgdMvHS7hP0662azylmdr2h7epnrCsqT/Tka31M0YTTZopdPiGRFGlaKU4xdZzh/H+Iov83lWbW9tZQwJFxpIYnnNQSVdldx3OY78wQdTHShiXxJuCZfDzC/+kUuPgGNX0Ga2B8Tfu3XN/Oz0r8/gi4i/coyTdkYBdqQPubCqeA+z9Oc3RmX9ItT9qVxaE0qst1YSdKdRQ16Cky7nZRahh8NZbJeaw7bddnCEGW4zEz8QF4SDFApzZ8zwes5FpszDJwifIWsAe9oXgeR3JZ7YMgjy5e3PGH20
+ ZgOtww6v
+ wEZNjhJACmf9Zzf24/KkkOINMUIvGtptaDaQUoCNN5xU9lfiL4+vtpHcjMFy/8xQoGtdlJvAKOFOEkBzLpr19COD3lJ/YZa+ilpjD5R+Rwi7ny3iwSjymZk0Df+o5BVaPvWW8R0GKWxLUXwJiqlyXP9o420MAg71ZV+vPiVYY93WSAUoVvoq5HYH/UQVyXdCaTa812Y/NzJ9WWBO9xDBp1aL938/4YcbWLmF385tBFMBi5S08PqIq7nekUO+Qkq4/953hwjYtDLw6QpuBp5KZHX3f1b6JhLvVtr9QVXT1BTKEDbGylM6xjghNxEUNnD0iAy0qWsAByRQMfi+UpqeAjKp/+02fVzM0GA24aBocmioj6e6tCUGphm5LNSgzc3DMgoktMkSn5h/59/sXg/7/w24ecKhVSV1tuHdnMV2iNXvAps6yP6wU4AYLoOvYEqH1z22m7iqG/s6jhmEzEKBMUu7qvsMniXpo3UqgT0dYe1zCrFcLuhlkphVancHjjIwh3jz6G4CF6Kl0X5j4z2l+IVf68DIo9gkPVJNWYRK+e8j86k76gfuv+8p9zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,110 +98,226 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------wL0bb3VBv8atswQ8JRXKJEY4
+Content-Type: multipart/mixed; boundary="------------OFsuQRSRGmFoObXVY94Bu0ce";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka
+ <vbabka@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
+Message-ID: <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+References: <20260625230029.703750-1-shakeel.butt@linux.dev>
+In-Reply-To: <20260625230029.703750-1-shakeel.butt@linux.dev>
+
+--------------OFsuQRSRGmFoObXVY94Bu0ce
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
 
-> On Jun 26, 2026, at 12:03, Dev Jain <dev.jain@arm.com> wrote:
+Hi Shakeel,
+
+On 6/26/26 8:00 AM, Shakeel Butt wrote:
+> A production host in the Meta fleet (6.16 kernel, memory allocation
+> profiling enabled) panicked with a kernel stack overflow while a kernel=
+
+> driver was freeing a resource:
 >=20
+>   BUG: TASK stack guard page was hit
+>   Oops: stack guard page
+>   RIP: 0010:kfree+0x8/0x5d0
+>   Call Trace:
+>    __free_slab+0x66/0xc0
+>    kfree+0x3f0/0x5d0
+>    ... ( ~125x __free_slab <-> kfree ) ...
+>    <kernel driver freeing a resource>
+>    do_syscall_64
 >=20
+> The crash dump shows a 125-deep __free_slab<->kfree recursion that
+> overflowed the 16 KiB kernel stack.
+
+Ouch!
+
+> What happened: a KMALLOC_NORMAL slab's obj_exts array (used by allocati=
+on
+> profiling / memcg accounting) is itself kmalloc()'d from a KMALLOC_NORM=
+AL
+> cache,
+
+Usually KMALLOC_NORMAL caches don't need obj_exts array, but yes,
+this could happen if memory allocation profiling is enabled.
+
+> so the "slab holds another slab's obj_exts array" relation can form
+> cycles.  With sizeof(struct slabobj_ext) =3D=3D 16 and the host's geome=
+try:
+>
+>   - kmalloc-512 has 64 objects/slab -> array is 64*16 =3D=3D 1024 bytes=
+,
+>     served from kmalloc-1k;
+>   - kmalloc-1k  has 32 objects/slab -> array is 32*16 =3D=3D  512 bytes=
+,
+>     served from kmalloc-512.
+
+Right.
+
+> A kmalloc-512 slab and a kmalloc-1k slab therefore hold each other's
+> obj_exts array.  Discarding one frees the other's array, which empties =
+and
+> discards that slab, which frees the first's array, and so on:
+> __free_slab() -> free_slab_obj_exts() -> kfree() -> discard_slab() ->
+> __free_slab() recurses along the cycle until the stack is exhausted.
+
+Right.
+
+> The
+> dump confirms it: the recursion's slabs strictly alternate kmalloc-512
+> (obj_exts in kmalloc-1k) and kmalloc-1k (obj_exts in kmalloc-512), and
+> mem_alloc_profiling_key was enabled.
 >=20
-> On 26/06/26 8:47 am, Muchun Song wrote:
->>=20
->>=20
->> On 2026/6/25 19:29, Dev Jain wrote:
->>> try_to_unmap_one() handles hugetlb folios when memory failure needs
->>> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
->>> case page_vma_mapped_walk() returns the pte pointer to the hugetlb =
-folio
->>> in pvmw.pte, but the code reads it with ptep_get().
->>>=20
->>> On arches which provide their own huge_ptep_get() to dereference a =
-huge
->>> pte pointer, accessing via ptep_get() would cause pte_pfn(), =
-pte_present()
->>> etc to misbehave.
->>>=20
->>> It is not clear whether this has a trivially visible effect to =
-userspace.
->>>=20
->>> Just use huge_ptep_get() for dereferencing a huge pte pointer.
->>>=20
->>> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use =
-page_vma_mapped_walk()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>>   include/linux/hugetlb.h |  3 +++
->>>   mm/rmap.c               | 16 ++++++++++------
->>>   2 files changed, 13 insertions(+), 6 deletions(-)
->>>=20
->>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->>> index 2abaf99321e90..fdb7bdf7645c5 100644
->>> --- a/include/linux/hugetlb.h
->>> +++ b/include/linux/hugetlb.h
->>> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, =
-struct mm_struct *mm)
->>>   {
->>>   }
->>>   +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
->>> +            pte_t *ptep);
->>=20
->> Thanks so much for the fix! I'm curious, though: why do we
->> need to add a separate declaration for this function here?
+> Commit 280ea9c3154b ("mm/slab: avoid allocating slabobj_ext array from
+> its own slab") is not sufficient: it bumps the allocation size only whe=
+n
+> the array would come from the *same* cache (object_size =3D=3D).  At th=
+e
+> geometry above neither cache is self-referential (512 !=3D 1024 and
+> 1024 !=3D 512), so the bump never triggers and the kmalloc-512 <-> kmal=
+loc-1k
+> cross cycle remains.
+
+Right.
+
+> Fix it structurally by removing cycles of every shape: serve the array
+> from a cache strictly larger than the one it describes whenever it woul=
+d
+> otherwise come from the same or a smaller cache.  Every reference edge
+> then points from a smaller to a larger cache (here kmalloc-1k's array
+> moves to kmalloc-2k), so the relation is a DAG and cannot contain a cyc=
+le.
+
+This will fix the problem.
+
+But this will waste memory as we need smaller obj_exts array
+as the size gets larger.
+
+We should probably create a new kmalloc type to avoid cycles instead?
+(needed only when memory profiling is enabled, though)
+
+That would also prevent recursion even further.
+
+> No slab can be self- or cross-pinned, the tear-down recursion is bounde=
+d
+> by the number of kmalloc size classes (it terminates at the large-kmall=
+oc
+> path, which carries no obj_exts), and profiling/accounting coverage is
+> unchanged - the array is still allocated, only relocated.
 >=20
-> For !CONFIG_HUGETLB_PAGE, compiler complains that there is no =
-huge_ptep_get.
-> So this is to make compiler happy.
+> Reproduced on next-20260623 at the same geometry: churning
+> kmalloc-512/kmalloc-1k under vm.mem_profiling and then shrinking leaves=
 
-Got it. We can refer to 5d4af6195c87c6b162b7963e0ad00a214b80d764 to fix
-this warning.
-
-Muchun,
-Thanks.
-
+> kmalloc-512 with thousands of unreclaimable objects without this patch
+> (8056) and at baseline with it (847).
 >=20
->>=20
->> Thanks,
->> Muchun
->>=20
->>> +
->>>   static inline pte_t huge_ptep_clear_flush(struct vm_area_struct =
-*vma,
->>>                         unsigned long addr, pte_t *ptep)
->>>   {
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index 1c77d5dc06e9f..aa8a254efaecc 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio =
-*folio, struct vm_area_struct *vma,
->>>           /* Unexpected PMD-mapped THP? */
->>>           VM_BUG_ON_FOLIO(!pvmw.pte, folio);
->>>   -        /*
->>> -         * Handle PFN swap PTEs, such as device-exclusive ones, =
-that
->>> -         * actually map pages.
->>> -         */
->>> -        pteval =3D ptep_get(pvmw.pte);
->>> +        address =3D pvmw.address;
->>> +        if (folio_test_hugetlb(folio)) {
->>> +            pteval =3D huge_ptep_get(mm, address, pvmw.pte);
->>> +        } else {
->>> +            /*
->>> +             * Handle PFN swap PTEs, such as device-exclusive ones,
->>> +             * that actually map pages.
->>> +             */
->>> +            pteval =3D ptep_get(pvmw.pte);
->>> +        }
->>>           if (likely(pte_present(pteval))) {
->>>               pfn =3D pte_pfn(pteval);
->>>           } else {
->>> @@ -2110,7 +2115,6 @@ static bool try_to_unmap_one(struct folio =
-*folio, struct vm_area_struct *vma,
->>>           }
->>>             subpage =3D folio_page(folio, pfn - folio_pfn(folio));
->>> -        address =3D pvmw.address;
->>>           anon_exclusive =3D folio_test_anon(folio) &&
->>>                    PageAnonExclusive(subpage);
+> Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allo=
+cation and free paths")
 
+Perhaps Cc: stable? v6.12 and v6.18 are affected.
 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reported-by: Danielle Costantino <dcostantino@meta.com>
+> ---
+>  mm/slub.c | 26 ++++++++++----------------
+>  1 file changed, 10 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 9ec774dc7009..48e54d340865 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2124,15 +2124,14 @@ static inline void init_slab_obj_exts(struct sl=
+ab *slab)
+>  }
+> =20
+>  /*
+> - * Calculate the allocation size for slabobj_ext array.
+> + * Size of the slabobj_ext array for @slab.
+>   *
+> - * When memory allocation profiling is enabled, the obj_exts array
+> - * could be allocated from the same slab cache it's being allocated fo=
+r.
+> - * This would prevent the slab from ever being freed because it would
+> - * always contain at least one allocated object (its own obj_exts arra=
+y).
+> - *
+> - * To avoid this, increase the allocation size when we detect the arra=
+y
+> - * may come from the same cache, forcing it to use a different cache.
+> + * The array is itself kmalloc()'d. If it came from the same or a smal=
+ler
+> + * kmalloc cache than @s, the "slab holds another slab's array" relati=
+on could
+> + * form a cycle (self, or e.g. kmalloc-512 <-> kmalloc-1k) that pins t=
+he slabs
+> + * forever and recurses via free_slab_obj_exts() -> kfree() -> discard=
+_slab()
+> + * at teardown. Force it into a strictly larger cache to keep that rel=
+ation a
+> + * DAG (acyclic).
+>   */
+>  static inline size_t obj_exts_alloc_size(struct kmem_cache *s,
+>  					 struct slab *slab, gfp_t gfp)
+> @@ -2147,14 +2146,9 @@ static inline size_t obj_exts_alloc_size(struct =
+kmem_cache *s,
+>  		return sz;
+> =20
+>  	obj_exts_cache =3D kmalloc_slab(sz, NULL, gfp, __kmalloc_token(0));
+> -	/*
+> -	 * We can't simply compare s with obj_exts_cache, because partitioned=
+ kmalloc
+> -	 * caches have multiple caches per size, selected by caller address o=
+r type.
+> -	 * Since caller address or type may differ between kmalloc_slab() and=
+ actual
+> -	 * allocation, bump size when sizes are equal.
+> -	 */
+> -	if (s->object_size =3D=3D obj_exts_cache->object_size)
+> -		return obj_exts_cache->object_size + 1;
+> +	/* compare object_size, not the cache pointer (partitioned kmalloc ca=
+ches) */
+
+This comment is no longer relevant, by the way.
+
+"compare object_size instead of cache pointers because there can be
+ multiple caches of the same size" doesn't apply anymore.
+
+> +	if (obj_exts_cache->object_size <=3D s->object_size)
+> +		return s->object_size + 1;
+> =20
+>  	return sz;
+>  }
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------OFsuQRSRGmFoObXVY94Bu0ce--
+
+--------------wL0bb3VBv8atswQ8JRXKJEY4
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj3+cQAKCRCGXBN6rc5S
+1vFCAP408P+shdyG+3rBPdecFSLmZ0GTZWItn30MBm+FK5kioAEAvexxEMUOs+Jf
+wR7TnHaFUNthkLRlk7E63fdzjD6bUQ8=
+=MqPD
+-----END PGP SIGNATURE-----
+
+--------------wL0bb3VBv8atswQ8JRXKJEY4--
 
