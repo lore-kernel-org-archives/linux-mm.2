@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A13C4CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:14:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D807CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:17:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7703C6B0093; Fri, 26 Jun 2026 05:14:42 -0400 (EDT)
+	id DDEFA6B009E; Fri, 26 Jun 2026 05:17:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 747ED6B009E; Fri, 26 Jun 2026 05:14:42 -0400 (EDT)
+	id D905F6B00CB; Fri, 26 Jun 2026 05:17:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 684736B009F; Fri, 26 Jun 2026 05:14:42 -0400 (EDT)
+	id C319F6B00CC; Fri, 26 Jun 2026 05:17:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FCFE6B0093
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:14:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CDD1E1A03B9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:14:41 +0000 (UTC)
-X-FDA: 84921503562.30.3E07EAE
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8A11EC0002
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:14:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T7Moi+hM;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A14726B009E
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:17:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DCE01C6224
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:17:45 +0000 (UTC)
+X-FDA: 84921511290.02.11534F4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 90E17A0003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:17:43 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiWkV2sF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782465280;
-	b=E8EDt2yt7Ggv2lOSr2y3nEdd5UYkBueCAxVt2pU/fUQfLn+198VJq0QCnqIEGDcXUk8xqF
-	Keow0U2z7LygFeWacISWGozJkIH4E55wFfkICco55cXt1Al/VAl1TR0okmk4XVFUXqnZ/z
-	w+aUHPigZvy9xOh8R1sv188Or791jis=
+	t=1782465463;
+	b=MjMvORrI/XnUjZ1rrV88Oh7mCG8YO7MXmF/C0TyDwt5oPSztpEPK4UP66ZY82m6mKdrUfg
+	pCU0gqJlpkJbphTUUHnH1yj/FMogZgcgy8aR2j7POzaIwtL3O3o5KUjjEiT/3iuBUa1Ppu
+	UdJ6LFBkq8wTpfEtO8UIZfvrN02o17k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782465280;
+	s=arc-20220608; t=1782465463;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGkNXoDW7vkQPBFhvgku7f4WZ/LdspfionMDkNs4wus=;
-	b=akiaPv7S8ffNHIA1E07hl3F/NuFltM1Zf3qXk1i/kcuqKQKyI/X19HHGPIsBRa6r7Y5MT1
-	XtTaNHAS1xuJW8jv9tJYkMeDtX3NDY2CTR5L412Foy34bPqRzKuvRKdi95L1QIt6h2tkIT
-	br1L28sKnmkQHzpvR1d6CTmvY7AXNtY=
+	bh=C8DBmie+up+NarWH2+WBlhhAJ5fRPgc96B/h7YBw/pU=;
+	b=N4+32YRVFOduQ6QcMsO0ZGWjWf4R30mcJc1EezrwW2nVO+xnLMAcTo0sL2TCIrYFhVlIyh
+	6CfYlpVXOqeF75yd15pS8RZbQ1gMckp1KjwzOhfkpEWNA+12aecqSLWwNuNPMIxDI91q0L
+	0iVaZkFqnNxywUQx/RC7HZ4rFlBhf40=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=T7Moi+hM;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <6adeecc1-7204-4d2b-8381-45e13633be57@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782465275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wGkNXoDW7vkQPBFhvgku7f4WZ/LdspfionMDkNs4wus=;
-	b=T7Moi+hM7BpfWhMpIMJR9KVAP0rdMWWq1CBE6ZzZhxMG6sqFmMpykRL2sHculkidiIlFhD
-	aVrhifHc069IM7bStV5KZT3EheUxNmdM+QPc4fhmjhzNIj3+Ii7AeTez66Q0mZwiZMWXsw
-	iqz+Mz1SHIRdfvtcxiXwpqAmVY9TigY=
-Date: Fri, 26 Jun 2026 17:14:12 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MiWkV2sF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0761760098;
+	Fri, 26 Jun 2026 09:17:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304AC1F000E9;
+	Fri, 26 Jun 2026 09:17:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782465462;
+	bh=C8DBmie+up+NarWH2+WBlhhAJ5fRPgc96B/h7YBw/pU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MiWkV2sF9J8NEiwlkaGQQX2NqEUwdX1+BoAi08RxGVDLVidjDUkzK4au2Sky0PMZ8
+	 Va0MY6680ph/Th+nTKDoXCMKrLgEQD05FPF21PCNQKyjl4/QOuCTNxWu44cQ3Cz6Cz
+	 cS+snYlkcv64dbdrmKOMoUlbiQ5AeFx53hDw0gQxuIjkxVqY2nZvHWEXjKr1hhAlGG
+	 8M5CAFdzqbvMVE3wi1z3/G9KbtrcOElXdGgCjBGfCsszAvIPMEXUn/czRn3pSi1Cv0
+	 mnfFepg06CAzYsE8OGAXpZAq7Wsk4zwlJc6kParbF+og3Wp53cB+x8B3QnG8I2RQum
+	 w477IzmlRnGGQ==
+Date: Fri, 26 Jun 2026 12:17:35 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, david@kernel.org,
+	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+	hao.ge@linux.dev, jackmanb@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
+Message-ID: <aj5Dr99W4we3BSLS@kernel.org>
+References: <20260625184857.2193482-1-surenb@google.com>
+ <20260625184857.2193482-3-surenb@google.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-Content-Language: en-US
-To: dev.jain@arm.com, linmiaohe@huawei.com
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
- apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
- nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
- jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- stable@vger.kernel.org
-References: <20260625112955.3254283-5-dev.jain@arm.com>
- <20260626074855.97652-1-lance.yang@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260626074855.97652-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: htwafa8xehd8xu1zxuqesdgiz43wor54
-X-Rspamd-Queue-Id: 8A11EC0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 90E17A0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782465277-946032
-X-HE-Meta: U2FsdGVkX1/Owm34PwD4LnI6pywL6mIabNhUxP+Ax5dpSajcRuA5Ua3IPtewIlbB5Mk/ryxVblKHOkB9lWVxlGAuM6I+ax9zeNhZfQ3HKnk50fjM3+sfyOiOmX1TMg5HAhwBnfVeOoBhlaciX1LGMeYfbcAAfoR9HCqLpMlMCP1iYevJXDQQW3GzEviRBXzSlsPa7Yl31pGimdBon+8NIjGbB1WgBPFZHtOGA+K10PgMTlDkzOfXqfZO1DIwTzCMr2nJTy893bAvbljeVN8LVj8M3bAmUzTL6Rx8xGXUks3smFk44fJ9tK8/WxNXi61bPngKr6fwvwjzJAtd2ipAXx9zJ+KXGPC1UL2qDw+roi1Rmbh0jtYiiT3bDP1FoqcSTSeRyAYOcVx3NhMVuOuMp+QJrH2Gl4f3KLiPm5WY/72BTCfqi2QTWyFLLSFu4FciGITjXwhaluuIq2lvZZTYPII+q42emfAmQEAro8bsdeCDKfhXLs59KCfNKRgKMcfizqiR3Ekgne02HPZiIJTPauZ6ejIHRC//GmZnjhmlfVedgDzPi62Ddgd8SwrPOr/fA/c73iD+kCMpDLVcHW74Cxz+BY3T11H9lqaFAO9AbEJ+/O89Lt0A/hd43ezt7larzNRKZV3LOu3TtsLxrlkZ0Z9+g9o3Cfu5Ivxf5lfjaQLoJUuu2ykJRtLGSoVr1Fyl9HixF9YnaN84bQpHP9v5azeIspO0Qy8NcYZ66Uxw2giWeaqAXYeADpT01Jf2mFJTEqt/enM7L8zfUTz1jWEZT/9M6lOLffCDD6mZB/fI2E80SauglF4vPjI/ne7CquHtiRVUR0gVojssJnUTP7T8oP0vERDWcR/3Ak8L5Xgu26IL5wLEg0DYdmEeKFjRfIQXrWkLLDDCOiSiw6XJt9DBG4GC/hWk25YBEzC6hoIWuCVC/IbB+HXikHtElKQGEw/aocHOE6H48Re03u2S97D
- SbDfXFbd
- 2wTqrEA1unlvZW6zJKvTs+dNlzwVn7mo/QwtBsS4cGrqr8S7WTMmaHZ0WyLoJBH5MYfN9lb8+HgV/xujyBx0eA2wyCndCrgMHMnGSem2cqeCZr0SrNy/43I5Co3V6KgaHjKsCxPfyuQHfDdU0NDWRnB+RWY5+VtAmabyTbrxP8sOM/YW+cI4GnqCbj83rxGOPPzPxn5MJBmtIReM5TTFHxbVGzkyJFiRj7Db3Hzvg37wVfr1sNfEnUTIHXxrsp63qVK7gCJbEZRdZOMTq+lirUPfQtQ6DhB4r4arqdVyzXHO626sujIYyFSsi1erlDj8/b7zo0ktOZ6MhxwBSSIv0RiSDEJyPp/vdfmY4ns0mQdKqiaF4g1GH68mNBgcjqv8sKwoWLKEWkBYRLigMijgS0p3UT4+dZwq0rSpx
+X-Stat-Signature: rnbnw934n8e6tkzin9u6eeqsfmye9en5
+X-HE-Tag: 1782465463-993092
+X-HE-Meta: U2FsdGVkX1/UYcabX+OiDs35TmeKIwWi2UPldRecM5LCtalaZVqynWosRRM8rAPx+X0c3yMyEWpn0ngMbhsZhlJlPAFGNyMhvwibx6O39t3f6gpRgamOuWhVdH3pIJe2bqiXZxv5LTWKSRtSb+1MEmjg4CSMaprZR6hKajHsTE4EqP1q4Iju4MYOItZuIHU4b4HMi+pNWwnQOQLr3FPFUw/EIRigf540e5qymZtDIUQkenHD+RGL1EpCDwApJPgcCEr4rITGcb+KBrf7qnpMAo3tKySOWWidfvjnGVu+UcP8XKfH+m2PxEkphFRtujvJzJ50olyQZa4CNUY74gAPtFbke2HsWpZMNMtKiepOjAkWQEtmZhuzjRj+jZpYHc8C4YA8Sf+C1fW3AIcVKoDdTlFr4dCeDkKLVjF1+4+lBuhnTgWbtEeM2dpLYXTq4K40xcjeKITAN5+/jDj2e7T7PDoqr8xnLoaLm4+sUO1Wn1nia6KHWVOJHxViCgarliZs3bvDTjRn17F0M82f3Velk5TE+XzRl7M6QiDaxoKBzSvlGeRmvSPMLQPp/1amIGw2FaBi7h8f9/sYPebml1z0TNivAMZfqgznDq9v3tPmwrW2rlzy3lmxZX0YuiYKu7EH4ZGpweJn++BSco2sPrNaOAc3aOMkfRTHxymwE4oQx6AiFxhVXb3yVrQTzWP6rLtu1JzcmZr78obRc1Cc8RfQZ1hiUG4P9Op4O4xNIHgih0lVyKdSy2NwAgVKuMmhinJA+MsK75O9u3N6zErpHwd+FkldaPjQepUvzaK6s/NmxYSKH6Uwo2LBpho2v6cdnIIzzFVOOfL44CVBelu/Q3PVmtvsuSogu836A3GuySIbXHWGNaXBYy42rSYmyriVhvmVLJYSbhD//Mtvpwo6pHpI8RDfk8aI5lU8/fPanfHlI/l2NQrsbACt8uR3P3h2j+maOPNx+XGXudMEJqdMbMi
+ K/QNZp4b
+ GZ0EwjfsSJooWlkqhbY4W+YFvdLpGyhyvsdsJLC0jnWm2ucOIyt+1hpp0TpUVg9pBeKyRooHntAv5EwUVFNsrPKLfRDv2bnBCkrFxb5pkLCDOGDRU+J49fhjVr4GEdDLQVl7GsyRaDzl3yz6zL/WuF/0Ca53fOqlyKTsl5kWdj1XShgk/3edn5PJvBGcijr0jJ/xXjXA+fDkqM+7lk8gpjT1b9rvpSmspFODXgSwIkAfFNtmewErtD9c6dCDTEfh0/PcUrc7S+rRGAfZBy+NErZPfCnoOcLC1J7XMKDr+RGozPgQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,180 +93,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jun 25, 2026 at 11:48:57AM -0700, Suren Baghdasaryan wrote:
+> From: Lorenzo Stoakes <ljs@kernel.org>
+> 
+> The alloc tagging work is really mm-specific, so move alloc_tag.c to mm/
+> and additionally update the MAINTAINERS entry to place it within memory
+> management and port over the Kconfig and Makefile code to mm.
+> 
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-On 2026/6/26 15:48, Lance Yang wrote:
-> 
-> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
->> check_pte() is the final validation step in page_vma_mapped_walk().
->> It reads pvmw->pte with ptep_get() to decide whether the entry maps
->> the PFN range being walked. For hugetlb VMAs, that pointer refers
->> to a hugetlb entry.
->>
->> On arches which provide their own huge_ptep_get() to dereference a huge
->> pte pointer, accessing via ptep_get() would cause pte_pfn(),
->> pte_present() etc to misbehave.
->>
->> It is not clear whether this has a trivially visible effect to userspace.
->>
->> Use huge_ptep_get() to dereference a huge pte pointer.
->>
->> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Dev Jain <dev.jain@arm.com>
->> ---
->> mm/page_vma_mapped.c | 8 +++++++-
->> 1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index 2ccbabfb2cc17..18e1d341f463c 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->> {
->> 	unsigned long pfn;
->> -	pte_t ptent = ptep_get(pvmw->pte);
->> +	pte_t ptent;
->> +
->> +	if (is_vm_hugetlb_page(pvmw->vma))
->> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->> +				      pvmw->pte);
-> 
-> I think check_pte() can pass a wrong address to huge_ptep_get() ...
-> 
-> Not sure that is wrong in the first place. For memory failure,
-> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
-> folio. In that case, pvmw->address need not be hugepage-aligned.
-> 
-> @Miaohe
-> 
-> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
-> page_vma_mapped_walk() passes that size to hugetlb_walk():
-> 
-> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> {
-> 	...
-> 	if (unlikely(is_vm_hugetlb_page(vma))) {
-> 		...
-> 		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
-> 		...
-> 	}
-> 	...
-> }
-> 
-> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
-> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
-> calculating pmdp:
-> 
-> pte_t *huge_pte_offset(struct mm_struct *mm,
-> 		       unsigned long addr, unsigned long sz)
-> {
-> 	...
-> 	if (sz == CONT_PMD_SIZE)
-> 		addr &= CONT_PMD_MASK;
-> 
-> 	pmdp = pmd_offset(pudp, addr);
-> 	pmd = READ_ONCE(*pmdp);
-> 	...
-> }
-> 
-> So for that case, pvmw->pte is calculated from the aligned addr, not
-> necessarily from the original pvmw->address. But check_pte() passes the
-> original address together with pvmw->pte:
-> 
-> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
-> +				      pvmw->pte);
+> ---
+>  MAINTAINERS             | 20 ++++++++++----------
+>  lib/Kconfig.debug       | 28 ----------------------------
+>  lib/Makefile            |  1 -
+>  mm/Kconfig.debug        | 28 ++++++++++++++++++++++++++++
+>  mm/Makefile             |  1 +
+>  {lib => mm}/alloc_tag.c |  0
+>  6 files changed, 39 insertions(+), 39 deletions(-)
+>  rename {lib => mm}/alloc_tag.c (100%)
 
-In addition:
-
-Went through all arch code that has its own huge_ptep_get(); only
-arm64 and powerpc actually use addr, and there addr has to match the
-ptep, IIUC.
-
-So I am wondering whether all huge_ptep_get() callers satisfy that
-requirement.
-
-Cheers, Lance
-
-> 
-> arm64 then uses that addr again to choose ncontig:
-> 
-> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-> {
-> 	...
-> 	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
-> 	for (i = 0; i < ncontig; i++, ptep++) {
-> 		...
-> 	}
-> 	return orig_pte;
-> }
-> 
-> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
-> 			   pte_t *ptep, size_t *pgsize)
-> {
-> 	pgd_t *pgdp = pgd_offset(mm, addr);
-> 	p4d_t *p4dp;
-> 	pud_t *pudp;
-> 	pmd_t *pmdp;
-> 
-> 	*pgsize = PAGE_SIZE;
-> 	p4dp = p4d_offset(pgdp, addr);
-> 	pudp = pud_offset(p4dp, addr);
-> 	pmdp = pmd_offset(pudp, addr);
-> 	if ((pte_t *)pmdp == ptep) {
-> 		*pgsize = PMD_SIZE;
-> 		return CONT_PMDS;
-> 	}
-> 	return CONT_PTES;
-> }
-> 
-> With a tail address, pmdp may no longer point at pvmw->pte, so
-> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
-> 
-> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
-> can walk past the CONT_PMD entries, and possibly past the PMD table.
-> 
-> Should check_pte() pass the address matching pvmw->pte, sth like:
-> 
-> ---8<---
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index 406fd50bbd8f..58463493bd3d 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->   	unsigned long pfn;
->   	pte_t ptent;
-> 
-> -	if (is_vm_hugetlb_page(pvmw->vma))
-> -		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
-> -				      pvmw->pte);
-> -	else
-> +	if (is_vm_hugetlb_page(pvmw->vma)) {
-> +		struct hstate *hstate = hstate_vma(pvmw->vma);
-> +		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
-> +
-> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
-> +	} else {
->   		ptent = ptep_get(pvmw->pte);
-> +	}
-> 
->   	if (pvmw->flags & PVMW_MIGRATION) {
->   		const softleaf_t entry = softleaf_from_pte(ptent);
-> --
-> 
-> while leaving pvmw->address unchanged for page_mapped_in_vma()?
-> 
-> Cheers, Lance
-> 
->> +	else
->> +		ptent = ptep_get(pvmw->pte);
->>
->> 	if (pvmw->flags & PVMW_MIGRATION) {
->> 		const softleaf_t entry = softleaf_from_pte(ptent);
->> -- 
->> 2.43.0
->>
->>
-
+-- 
+Sincerely yours,
+Mike.
 
