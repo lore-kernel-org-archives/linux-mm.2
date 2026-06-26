@@ -4,126 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8127CC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49D93C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:36:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48CEF6B00FA; Fri, 26 Jun 2026 12:28:39 -0400 (EDT)
+	id 2EED46B00FC; Fri, 26 Jun 2026 12:36:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 463EA6B00FC; Fri, 26 Jun 2026 12:28:39 -0400 (EDT)
+	id 2C7226B00FE; Fri, 26 Jun 2026 12:36:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37C246B00FD; Fri, 26 Jun 2026 12:28:39 -0400 (EDT)
+	id 1B5BA6B00FF; Fri, 26 Jun 2026 12:36:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ED9C56B00FA
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:28:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 47D031A04BD
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:28:38 +0000 (UTC)
-X-FDA: 84922597116.02.49A33E9
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 70C37C000C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:28:36 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hBELuQ8F;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E6BFE6B00FC
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:36:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6D7691204F8
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:36:05 +0000 (UTC)
+X-FDA: 84922615890.13.AF9E494
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7AEAA14000F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:36:03 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQ3b33Rt;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782491316;
-	b=FBpc+1zURNqJGtZpA4vrUOsRifdQiGr2Hb+6cM2bMDECUjJCKTZ7ijtSvAJ/IwlMfwBIXP
-	00qJBHJc911GjJqp8SzeU/krOvyN4YDdS8Zw6JFfznTuVTwmApmWWo6YBFti7nxNxK8+aY
-	bdCGg+RWlQqnVmZ28SbNdkeEur3Pv9M=
+	t=1782491763;
+	b=p+Ip/cfznuNkO6U8IIgg7IMn8HdT/KY4Pb3uXDSk/kzNPjoQnnUnjXabsnOmwg4sSUs34s
+	zaNE/BWamy8UN3CL3VloREFmJf79xDSnkyKglHzHWLpABRG+m5tQLyDHdnR6NVymPRKkTS
+	ItD/tr1tksCUQAHfwWvZ+uP8PTzNHeA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782491316;
+	s=arc-20220608; t=1782491763;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7yRRCllVxAYk/OchgnjQ6W/17oLwF8I+OCpCxDAKNow=;
-	b=10AoZBP1b9EFD3em8i7Afm1Z2VUaW/Gz7aIBSoIvWBwi7jUXqU+fUq2hLr8QBFRV/PW7us
-	oicKAsooTKE8RLE4gbJUPQ3+zZ+X2LtSVA6QegIg55eL9bcobhpWEoJF/d3Eln27b5sTXG
-	XWgDcIYwlES79q0W6Jdszhkh+c5e0qE=
+	bh=qPvLxcG0grrH18rtYxN/ib3m110h2uI/oSNgSCAF3J0=;
+	b=O8b/REWoXsGdeUO3/yRIQIMKH56JrJxSqWIgQB6S/zWhs/hw05gkwF0KcpMlTe+DtnuvBC
+	NFYb6HLCwjLW2Hc5qpOCirniE84XTWR6qQtbz2SwdhgoBV/T5grNr+IVSPgOcUTy+M61au
+	8+AZb4f7BRX5yoatiT8D4BHqho89e9A=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hBELuQ8F;
-	spf=pass (imf28.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49230a567a9so5981885e9.0
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782491315; x=1783096115; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7yRRCllVxAYk/OchgnjQ6W/17oLwF8I+OCpCxDAKNow=;
-        b=hBELuQ8F3bagsPUQnQ2gp0SYdJowAsLkIlxv6zTudFqJhGc+7CWZ6VM3swAPuHcBHd
-         R6vEmPnp4MhnpybKufp3KSsHgDmDFi4KzIZ3/AhfYQr3q0AmiADo/yX0k2BSvjc7G3ep
-         E3JacGrmnfBN4BkPBvTnUkCf4Y1HRnOGzn5iUu00XSiqZudzwKmbzcZ9AqWAgPrEZiEB
-         otSXrNhqGAIPCxV89wXYwSiR5uoq/63QKEaPKPOp8SutQTBr2hgSTTic1RmdcZgdb4lA
-         7mKUpr95wvM6F8NnepTEwaFyKfwA+qKjn4V+Tv1Qo8P9hgwzPmQYd8GG7HGJIOMFFv/Q
-         /plw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782491315; x=1783096115;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7yRRCllVxAYk/OchgnjQ6W/17oLwF8I+OCpCxDAKNow=;
-        b=O6nqrV5cvdjt9itZhFQkoH7ImyvbMQGF5sB1UkuhHFA+ZHx5jrQSWHEhj3Sj8lYOnd
-         HwHGfQRmzDvSnyp9shN58tsw/nSXuZx7xvBoZGYQHLvXFqN8FlDqERcohlEYpj/vHSi6
-         PaS9wCXYKVRaU8lccgh3kAEEYaGDn7G+UPHOJZSo6kLAzLeBqKiIZ9oJzJVnYb3wyxda
-         kspzyGQnpY/TpT72sSuVZfg0Yt1cdh2A+7fJx+rChQ3LcQ9DGx0HBWphHkfGdDnkIdWp
-         Piu7Hs7QtIT5R+TYrVOy/ucbezx2dauP3bHQaOL6gTFLDP38y/xfjh4fBj9gPjPJ5YI7
-         f2RQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8IdgfvWXF4Iwmi++Q3/Ts06ysAQE+Rxv92NYZEWnpAQoJBXnr15ZQKcw4iyurRO3Zply48OGk+8Q==@kvack.org
-X-Gm-Message-State: AOJu0Yzk6gVECwU8uos1KOi9JvWz2voKdV1cPLVJHayWqYac6OmRIH2O
-	J/AHkDn4xxdFABu/WWeOX4JZBQIu9P5st+dnXVTeI/7vAB7s9iNpMx73
-X-Gm-Gg: AfdE7clue4OZIBjRHHtOyH86CWZ9qJfzOlWltsqpWmagLaIAr3ZV8h7NanlhrAUzZpu
-	D5GnH/q6lGCVHuh1W5FgTdG2jX1JgTfw0fvZcmpSSoLO8asYsPugzT0SUMoDjZiPsKrw/EIRKUO
-	jIwy2RtU+NamHjsW4uhPfBcJR1Rn8Ec6mAWoirpQq5kaZ9MrMHV6H5U5+5jxRT9HhF9dmAguucS
-	0Sa6Nm0IIkWh8IxSFNc6fVZgZHUXS/ZuVg3W6ZHC9mfckoDivRpEz/EmliM2P3aJshSmY9SWxMX
-	0R7iGOImyN1ZyiwanjJ7QTsMnVLh1jOmyKC6v3Ykz50Xo4MwdyhjN+q2/giFyLYKlvMqMofTl5s
-	yu0Luv1vHoORZCBuBAVfvTZCUtI3ekyOk43aIYyHXJFgPH4d89YjSWEF4+hlT/8j0EMINpMfdmd
-	aDOtRw2ykDfQySXWMf0XfWCQu+hbW8Xwz3Vgpya1Yl74eWn4L7xw==
-X-Received: by 2002:a05:600c:8518:b0:492:62d8:2da8 with SMTP id 5b1f17b1804b1-49266884adfmr116414295e9.29.1782491314555;
-        Fri, 26 Jun 2026 09:28:34 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49271465f35sm952455e9.9.2026.06.26.09.28.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 09:28:34 -0700 (PDT)
-Date: Fri, 26 Jun 2026 17:28:32 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Jann Horn <jannh@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, John Ericson
- <mail@johnericson.me>, Farid Zakaria <farid.m.zakaria@gmail.com>, Jan Kara
- <jack@suse.cz>, Kees Cook <kees@kernel.org>, Al Viro
- <viro@zeniv.linux.org.uk>, shuah@kernel.org, linux-fsdevel
- <linux-fsdevel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
- linux-kselftest <linux-kselftest@vger.kernel.org>, LKML
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
-Message-ID: <20260626172832.366deaac@pumpkin>
-In-Reply-To: <CAG48ez3o1Mt59dWdyknh_SEaoi-cHv6pdmix+aOdBy3C0-LkYQ@mail.gmail.com>
-References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
-	<sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
-	<CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
-	<24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
-	<20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
-	<CAG48ez2X1p5Nm2_sU=SK9wUusUO8c3_T-=FGrrOhkm7Kn9Y_7g@mail.gmail.com>
-	<20260626142616.5232c61e@pumpkin>
-	<CAG48ez3o1Mt59dWdyknh_SEaoi-cHv6pdmix+aOdBy3C0-LkYQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQ3b33Rt;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 78EFC41395;
+	Fri, 26 Jun 2026 16:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFC61F000E9;
+	Fri, 26 Jun 2026 16:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782491762;
+	bh=qPvLxcG0grrH18rtYxN/ib3m110h2uI/oSNgSCAF3J0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mQ3b33RtK+P4LPpthlxcWBG+UXAE3+Pvfx34gbD3hy0zZCvd3BErhlyEEukdC9ZmN
+	 iiHyZT8uzmSzPZ5T79YLxLxHO6Wc1Gm65y/BcgLJ3IwN1duRiztdKAHBWeYeTK8XE0
+	 Et6/NBK3v1kPTs6ujv1DHf/46UYsUfr1wN2KRH3QMEH1KvtIBg0DaGQ/c4ESBRAFnY
+	 RUDc4RLKRA/n8eY50ZjBgg6bBbPr1Bu4pS0RdjRRUCeRkMnWOyxRL2ugrI2zWuSC4M
+	 r58dHmNl2BW3NzVSvzhl6QIxOLrM2QNnr9qxOocSrnR7eFsZgr3A9XaOpkRGqRMj9X
+	 tm/ZZBtU0LGJQ==
+Message-ID: <c16bd777-6dfa-48f9-8dc5-2b56bebe67ad@kernel.org>
+Date: Fri, 26 Jun 2026 18:35:55 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
+To: Kairui Song <ryncsn@gmail.com>, Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, baoquan.he@linux.dev,
+ chrisl@kernel.org, jp.kobryn@linux.dev, kasong@tencent.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
+ mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev,
+ shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev,
+ vbabka@kernel.org, youngjun.park@lge.com
+References: <20260623231635.43086-1-baohua@kernel.org>
+ <20260623231635.43086-5-baohua@kernel.org>
+ <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
+ <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
+ <ajzm3pHq-wQlLNmm@KASONG-MC4>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ajzm3pHq-wQlLNmm@KASONG-MC4>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: anywn61hz4bkaxfnin8m7o63p36jbew6
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70C37C000C
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782491316-830739
-X-HE-Meta: U2FsdGVkX1/QYI3iN2GytTzwUebYpryajZrM3mLIc5cHOvQSQfYu1cykrCjEABdujUHgijTLUlC6TqpDev9LgzImVy4UD7Bg9hyLkc5qD9q5pkJNp+XkMz9n+Jui5H3ZJ9r1Tn3vxerEy5U4uEFumkmJgbNBtyY1c5nVhU/crp6Ng9JWDAE3BSvfrVNGZdvbwtadMAQcfJvM5KOaapKeEk2BTgUpNLFsiEg4LwOqzRW6vTJyHCSgaCtfWw+URMMsbrdIUclVMAbed45Mi9bD8r7UjPR/c5ed0Z6gniQH5KWH6qDVfGo/TjX4a+ZNpx5/qFC4SR3busXoF3ayzheyvYyS+rzebWHKxkeM9pg5C1OCLIGMfcw9yYKwpjJZ0b0Xq3hJSn23kwQqTzWCHgR3rrpTbeIjD+YczKeElLorWFCVnicDqi6O1sDsF0T1WL3p+o1saiHJ47OQ9k71vNX8tCL1xMy6EQwRD2BuZzVIFdEUC+6V7EM1saCAJfnDKvMTUU15GN2QXBR40kNSpIT4cHV2aEUBhMYvikiQ51xlcrRAP7Gb8L4MyX6JZpiC+Je1OXjSt1KCZgt29IqGtz3YS5Add8DaENw/EjVBNHJflAZe4DkI6KCxBLMt6LlivD3QGpSph67IcImMgF0Inoo4yEuCt97fYtdq6btcHfe6fPRIDvSF+QZTkMLRN6JyyWTnTr4mWGyqzaLHzUqMm2Rv7fbPeWLnzW7bl4b8nC644tkXvBa6l2q0ZJHFqNwKjcbInB8Gqfhwb/DTuJNnkvTdMoRNWjIXvvGC4nYTm5UBfgwnApSx5BOruAusCZP62zGqz1tlvemF6y5XBhGup9h7gyeDrFOSWTPrBBYnPZbgY0ZhHOY0Y9dNWQscT1kjyZjsGvuaaKFyV4zUyeLIufMuhzgDp7TGBSgM+nKFjxIJG1uDAWc2zZ+WEtEwxlkz9cWRDrGuKdo7GOctDIrWMzw
- C0sbyGfs
- KrwN/7w/Qrw8VFiqfs05/LQjxO5GeLBl3qO7n9OgKjlgISOqlhqyzMoHs6hvLqv5vDoqIcRnHXYNJ+uRxhkAe1E5yiQKqlzU3PpKdfAuQ/y4rtlyVJgnlgprC0LSig3QgcYne2MWiNn9oxIgDgSJc9+Y2HaFcnq62oEKOjeXhOJEUkvicH29UPlIBIyiunB6/P8Rvdj9Iy3e8SqB7Yqq2xDofOu6FrA/5QQZmxsr9CGk4TRd7pIR9H5NNV01cXFW7EKGJ4N6tuAqj+zuOPtG4XRhyiio0qLwX+ZAp8KugHMB+yuINItmbv5LKD3/H5HBr6dQui1QqGdstm+SOSrdqe6uE7VVOJPO5O1cWc+aYSjU6HL7azYG5ScphezFghXnyG5XPtUmHsPDmxj0Hx4dJ+AGID+eeAnElUP5kZCZ4mtL7K/btfPyj3Phbw70h060ye2mvI+y6jmJN9AIhJ6UU2xgjh2uSTwA1/dbBiqJWlCG+xPMINmVhuIbldb3XR0v/6fCZJWSAfC6NCpdLqkVZQgFHmyoCyZ3wxf1RHBw5AiWK4CwGsjkL6me2DrXlH59AATcRYUOIEO9GfBM=
+X-Stat-Signature: z8jj9dkgyhhzrqq6i9y9dotdbcqhi84z
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7AEAA14000F
+X-HE-Tag: 1782491763-653984
+X-HE-Meta: U2FsdGVkX19njEjwlO6mJ7xGjUfESMUoFjVvip3nG8gi7K1n2GeOsCsONvW/XrKFXSuVabavs6OQlAd9u5czq0cBUcFqzK7uVvIrKMibibtCNEdWPDSCEgfepIzU350fBYBQeLloeR8HVyIf8xdp/TMBAEkhEnsz9QaZUDYJcyNAGVKqKxwmig9kXvHeMk8DqCE4yR7gvS/yRVMJF78O3QvXjnIbLsv4gzZzr1QDKiAxq7Am1EN+QHZjFNT5xSr68vvWBrIHFyDoL+1DnkK6Ueo5On/OtQRHIXwr/wouQQqUf15CWObWjFl0hND9Bk+uio6jiWuR0tCFWclClKR8rEAURTiYjgjvReMc2ympjqJB++xhqOK0TnLDlT8Uzp7ZOEuzsrJRlGGYzi928GMU+1CVpuz8qckqTGuHy8qWBqVY2yqXsvKuBjMgMRFE3tKJJA8Vi/icfkAlwmrlWDq3ENtA4kKKyI1ujYJKd1xWYxURPfXCBfa8L+W1pVFiSDw6i++nhmFtLduVR5+FxUjby9uU6hu9yMpyU+nB04eaAruzSIC0vsCi5cwExEORS2fjwmLtwSuEgINK89RT1EmZJ6V7SoeZxtr+8XykqN+HoLhpP5l5DkjrBcYp275FgMH5otHVIzcOwYv54xZq4rb3RoSDnkNuTdd9PneuGW3doZT26RHSsx3UZlZsOG2Hy1ud/O+RcLCkBmp7VlAugEL6rqH8hmv/f3rY1BS23Wswl0D8MKnsDBhbcUOfCuB+Zg6oqWH7McFxgdM+BfdDKdYrvfQnCOQ2DdnU9VfdR8H4HCuaulNjRTKAX7VFzP+X/Er4NJJk6uhkvrDtStQ5REJw6S96yP3ZfNmIvOM/wVR0FxC00PkQqaL6zMsq6Toe7MWDV5teuPYh8n4H9ATxF07zgVJeAZ2I23q2O9FNizwr8ImsDhIvA/t+IibyELSDXXxLk2x32R0oK6FohwqTqAY
+ QKiAcwRx
+ Tvkmrk1YIjPe8iPmhhePeyucwmXKAN012yhlUcuyvI3VbKzk6JtRInqpbKzjPLDxEwN4KIAylgfYNn335aXtwlzfe0QYCqj0Y/WTcYnpBtgAHcV8+7iKUuTK7G7w00V5lwHrHxw4582D76I3u6U0wwPDFdaAenQQyH0sR9A9wXzlF0tjg5b+kE2c7TjbXmhwZ0Ls69fwRFEYCRrx3X6UstWv9PnglzJBGnkzXh5UA0VNAqdrKrTeaXQLiHoJD6dRN+BXsm7sa0JS9M0TdjOgOJV6vHXHgv4SBmfcXL1JupSwMgmIlRRTB6rGgQQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,61 +145,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 15:34:12 +0200
-Jann Horn <jannh@google.com> wrote:
+>>> That changed that behavior such that we *must* now always fallback to do_wp_page().
+>>>
+>>> What a mess (I didn't ack)
+> 
+> That's awkward, my bad, terribly sorry about this :(
+> 
+> I sincerely apologize for the oversight and the trouble this has caused.
+> 
 
-> On Fri, Jun 26, 2026 at 3:26=E2=80=AFPM David Laight
-> <david.laight.linux@gmail.com> wrote:
-> > On Fri, 26 Jun 2026 14:39:22 +0200
-> > Jann Horn <jannh@google.com> wrote:
-> > =20
-> > > On Thu, Jun 25, 2026 at 10:50=E2=80=AFAM Christian Brauner <brauner@k=
-ernel.org> wrote: =20
-> > > > The arguments I have heard from various people so far are:
-> > > >
-> > > > (1) Userspace would be able to clone a random chroot to /woot and r=
-un a
-> > > >     binary from it without having to set up a complicated sandbox
-> > > >     effectively making dynamically linked binaries more like static
-> > > >     binaries in a sense.
-> > > >
-> > > > (2) Quote:
-> > > >     "If you debootstrap/dnf a chroot to some location in your
-> > > >     home dir and try to run a binary from it, that it tries to load=
- the
-> > > >     libraries from your /usr is a pretty unintuitive and not at all
-> > > >     useful behavior."
-> > > >
-> > > > (3) Quote:
-> > > >     "[Various remote execution things run in locked down containers=
- that
-> > > >     disable userns, which makes the sandbox impossible and hence our
-> > > >     builds wouldn't work there." =20
-> > >
-> > > FWIW I think someone also mentioned to me that it would make things
-> > > easier for them if they could build a piece of software in one
-> > > environment and then bundle it up with all required libraries and such
-> > > and run it in a very different environment, without
-> > > container/sandboxing stuff and without static linking. But I guess
-> > > that's kinda niche. =20
-> >
-> > The problem with 'ship the shared libraries with the application' is
-> > that you get all the problems of static linking.
-> > If there is a bug in the library code you can't fix it without getting =
-the
-> > 3rd party to rebuild their application package. =20
->=20
-> Yes, it's appropriate for weird use cases like "I want to run this
-> historical version of the software and its dependencies", it's not
-> necessarily a good idea for normal application use.
+All good, I was just surprised to see a previous optimization partially
+reverted without a clear reasoning :)
 
-That's what LD_LIBRARY_PATH is for ...
+Because it should have removed the handling in should_try_to_free_swap() as well.
 
-And if you want to use a different elf interpreter just run it and pass the
-program name and arguments to it. eg:
-	/lib64/ld-linux-x64-64.so.2 /bin/echo fubar
-Last time I did that I was trying to run non-linux ppc elf program.
-I got part way there, but needed to build a lot more of libc.
+It's good that we are discussing it now!
 
-	David
+> I haven't seen any performance regression in any workload recently
+> though, or any correctness issue, perhaps the round trip of
+> do_wp_page wasn't that bad. It should still catch the reuse folios,
+> just more costly than doing things in-place.
+
+Right, do_wp_page() handles it, after the page was mapped. It adds some overhead,
+but fortunately no TLB flush if we're just upgrading write permissions.
+
+The optimization dates back to pre PageAnonExclusive handling.
+
+> 
+> I think we should restore the original check first. We might also want to
+> avoid dropping the swap cache if the folio will not be reused, which
+> was discussed here:
+> 
+> https://lore.kernel.org/linux-mm/CAMgjq7BDfvNXdWH0cqarsujjUn3i3tDDhDkmSg01TR4h-tDorQ@mail.gmail.com/
+> 
+> Maybe extracting some common part into a helper can help make this
+> cleaner.
+> 
+>>
+>> So it seems we need a patch before patch 4 to fix the missed
+>> swapcache freeing on write faults, because the write bit has already
+>> been cleared by the time the folio is mapped and reused?
+>>
+>> diff --git a/mm/memory.c b/mm/memory.c
+>> index 14577c67c61a..e8fc5a86f6ea 100644
+>> --- a/mm/memory.c
+>> +++ b/mm/memory.c
+>> @@ -4752,6 +4752,7 @@ static void check_swap_exclusive(struct folio
+>> *folio, swp_entry_t entry,
+>>   */
+>>  vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>  {
+>> +       enum fault_flag fault_flags = vmf->flags;
+>>         struct vm_area_struct *vma = vmf->vma;
+>>         struct folio *swapcache = NULL, *folio;
+>>         struct page *page;
+>> @@ -5091,7 +5092,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>          * an additional reference to the folio.
+>>          */
+>>         if (should_try_to_free_swap(si, folio, vma, nr_pages +
+>> -                       !folio_test_lru(folio), vmf->flags))
+>> +                       !folio_test_lru(folio), fault_flags))
+>>                 folio_free_swap(folio);
+>>
+>>         folio_unlock(folio);
+>>
+>>
+>> Best Regards
+>> Barry
+> 
+> Hi Barry,
+> 
+> The problem is more than that, the `exclusive || folio_ref_count(folio) == 1`
+> in do_swap_page is also ineffective now.
+
+Exactly.
+
+If the roundtrip through do_wp_page() is good enough today, we can just do
+
+@@ -4512,7 +4516,6 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
+ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+                                           struct folio *folio,
+                                           struct vm_area_struct *vma,
+-                                          unsigned int extra_refs,
+                                           unsigned int fault_flags)
+ {
+        if (!folio_test_swapcache(folio))
+@@ -4528,14 +4531,7 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+        if (mem_cgroup_swap_full(folio) || (vma->vm_flags & VM_LOCKED) ||
+            folio_test_mlocked(folio))
+                return true;
+-       /*
+-        * If we want to map a page that's in the swapcache writable, we
+-        * have to detect via the refcount if we're really the exclusive
+-        * user. Try freeing the swapcache to get rid of the swapcache
+-        * reference only in case it's likely that we'll be the exclusive user.
+-        */
+-       return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+-               folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
++       return false;
+ }
+ 
+ static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+@@ -5095,7 +5091,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+         * Do it after mapping, so raced page faults will likely see the folio
+         * in swap cache and wait on the folio lock.
+         */
+-       if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
++       if (should_try_to_free_swap(si, folio, vma, vmf->flags))
+                folio_free_swap(folio);
+ 
+        folio_unlock(folio);
+
+But then, one question is whether we'd actually want to try removing the swapcache when
+we mapped the page writable (iow: exclusive)?
+
+
+@@ -4512,7 +4516,7 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
+ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+                                           struct folio *folio,
+                                           struct vm_area_struct *vma,
+-                                          unsigned int extra_refs,
++                                          bool exclusive,
+                                           unsigned int fault_flags)
+ {
+        if (!folio_test_swapcache(folio))
+@@ -4529,13 +4533,11 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+            folio_test_mlocked(folio))
+                return true;
+        /*
+-        * If we want to map a page that's in the swapcache writable, we
+-        * have to detect via the refcount if we're really the exclusive
+-        * user. Try freeing the swapcache to get rid of the swapcache
+-        * reference only in case it's likely that we'll be the exclusive user.
++        * We have an exclusive page that was mapped writable or will soon
++        * be mapped writable (as we are in a write fault). Let's just try
++        * to reclaim swap immediately.
+         */
+-       return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+-               folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
++       return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
+ }
+ 
+ static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+@@ -5095,7 +5097,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+         * Do it after mapping, so raced page faults will likely see the folio
+         * in swap cache and wait on the folio lock.
+         */
+-       if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
++       if (should_try_to_free_swap(si, folio, vma, exclusive, vmf->flags))
+                folio_free_swap(folio);
+ 
+        folio_unlock(folio);
+
+
+-- 
+Cheers,
+
+David
 
