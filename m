@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E86D5CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:09:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0CACDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:26:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCDC56B00A6; Thu, 25 Jun 2026 22:09:10 -0400 (EDT)
+	id 6EBC96B00A9; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7F1F6B00A7; Thu, 25 Jun 2026 22:09:10 -0400 (EDT)
+	id 69CC56B00AA; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A94DD6B00A8; Thu, 25 Jun 2026 22:09:10 -0400 (EDT)
+	id 5DC1C6B00AB; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 81C316B00A6
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:09:10 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB426C1A92
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:09:09 +0000 (UTC)
-X-FDA: 84920431218.19.A110ABF
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8ABA7C0002
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:09:07 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 260706B00A9
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 850EFC1A97
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:26:20 +0000 (UTC)
+X-FDA: 84920474520.30.8276488
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 85DC3160003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:26:18 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IJGmabAB;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782439748;
-	b=YSOzIZTNxv7na7og773t8LH4xDIxs5KyfQCAYliYcfj70DOwjSHiJXW+gNQtKf82bo/q0n
-	glctGTFXISfOXu9cL9k3ReUpMFcyYpRBsz0kk4mH2PZD6cSx5xDbyFGD/rzkMSF9T3DtJ1
-	ojPkTpYeLB9L0y6povUcWNB918oGU7s=
+	t=1782440778;
+	b=OMGSHq4oLzLbsiTp8UdpF8MbJlaTtgTpyvez5S5l4Nq89q4ATgZIuOTdOLUdSSwiKmKyEl
+	6poSKVAFlYcy/sTzZqNEa5ukyexQC2VIIKeevr9fS8X7w4BR/h8ZAZJvWZ8xNBqWb1HBTv
+	nK+ZUqRTII9AiZk5dvr4icsp3AjoklY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782439748;
+	s=arc-20220608; t=1782440778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hnFT67NwC15YemOoHnvrF/QiXkTY5ssZlCnuSTgnkw0=;
-	b=koZlZHVrYVR8Zni9dPZ+CaVm5kU3D+tLDXLCtoxvMIe4gajBLvUA3s/2CcbXC0r4ADDspY
-	srynluevSljfy+Xw/JsNOJJii7eUCr6Cti1l8CRuEo9AYZYtGZO7aU7TdNWGreTbJar31+
-	TQAkKbBcETFK2twv+oiIev8+rVaIt4A=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RxVxgroX3On6H8SMBZy+I5j57FDfvO4So/Vpazbn4F4=;
+	b=M4ZZZTXNfpCjPz4Y31MCCSYfiRgHn5jvXNcVPLGaebOwXommnrEgtrukIKvwF2QcP6a/F7
+	FLS7xp1Eb/1n3eRhJ79oWP2gLhFzAWF40BTPsaILc4X3wwUBxnzdWkBFlxTbXCo9mSK+NZ
+	xUvYB9j14aF9HyAf5AZF014sgqaGL1M=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf28.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gmfHN2s5sz8Xrr9;
-	Fri, 26 Jun 2026 10:09:04 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl1.zte.com.cn with SMTP id 65Q291n7062221;
-	Fri, 26 Jun 2026 10:09:02 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 26 Jun 2026 10:09:02 +0800 (CST)
-X-Zmail-TransId: 2afa6a3ddf3ef4a-cb033
-X-Mailer: Zmail v1.0
-Message-ID: <20260626100902993K04Lc3GM32AnCvCmzGequ@zte.com.cn>
-In-Reply-To: <20260626013252.2846774-1-tujinjiang@huawei.com>
-References: 20260626013252.2846774-1-tujinjiang@huawei.com
-Date: Fri, 26 Jun 2026 10:09:02 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <tujinjiang@huawei.com>
-Cc: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
-        <luizcap@redhat.com>, <willy@infradead.org>, <linmiaohe@huawei.com>,
-        <svetly.todorov@memverge.com>, <chengming.zhou@linux.dev>,
-        <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-        <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-        <tujinjiang@huawei.com>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2Ml0gZnMvcHJvYzogZml4IEtQRl9LU00gcmVwb3J0ZWQgZm9yIGFsbCBhbm9ueW1vdXMgcGFnZXM=?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl1.zte.com.cn 65Q291n7062221
-X-TLS: YES
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SOURCE-IP: 10.5.228.132 unknown Fri, 26 Jun 2026 10:09:04 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A3DDF40.000/4gmfHN2s5sz8Xrr9
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8ABA7C0002
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IJGmabAB;
+	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <41d69217-1263-49bf-906a-8ec84e6ec3b9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782440776;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxVxgroX3On6H8SMBZy+I5j57FDfvO4So/Vpazbn4F4=;
+	b=IJGmabABduP4sFsdxgWiagDoZGsN1Gty6KLeqBQz5lJcnyJTy7PxrtT48EICTwOOeQ1fOB
+	EeIrRiGIw+idFkVTtAqevOW/vztrwyxhh5v4cqGELP1O0ZwG4vRqIYBHfE+X05uaKETI9A
+	eogTHajJcWAaD3WUIo7Dsc31Y3n5fDo=
+Date: Fri, 26 Jun 2026 10:24:51 +0800
+MIME-Version: 1.0
+Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, jackmanb@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260625184857.2193482-1-surenb@google.com>
+ <20260625184857.2193482-3-surenb@google.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dtt5npqtae4nqujrkfyfbufgxgj3rtk1
+X-Rspamd-Queue-Id: 85DC3160003
 X-Rspam-User: 
-X-Stat-Signature: zwywdrd7bh8yq54yeifspa7sze7ig1kw
-X-HE-Tag: 1782439747-54977
-X-HE-Meta: U2FsdGVkX1+n7fyAlUOg0lqgh8Trw8WeTPrly25l2wioFKKpg06Iklv1AR3DnT1Zl81Q6MIA2mYApJURUwy+yojqSESRdPXeYdvg6YOdfZ9di7wwfxKuBFeMXTbwl85JuVJ9caDZxKmTd/VnAs26XWu+WmkD1WmnIyYXZPcYg58O+BtI8SycPCcnFVbZUOvnGuvFNcrHitWPcnWoTsFJSHNPceKkbpq6IUnjMnSwFeuvtWznevtqwPR/JF6Q4PxmVbhIWsv+neCMjAAfoGXr7pApaVH4b029EX5L1/DNzV1xCvd5Dw2q0rUAwNcjS7AyoMjKNV5HfV08SOSJn7FD/duMSWLv6yHeOmwLRNIZdsYZwmszTUIqVjcF3IuOL7TEMVk+DAqwoFhhTQIyuFoaC4HAXl+D8VIMKimngsJvibxk48SPFbCX228sm87+2w7ig9ok+NX+pmdhQFZacS8FQnjzCRZyw2GnLO0ilCuPGChAPOjFL12CNBxjG82WnJCcpWFm1LjbMH1FGDEPWZJyAWLHsVhDQnNm1lAryhrB+6IyXdBwrqBk7G71dowXzJ0N4bR11YLoJWekBqWW9mauQzJy6KORqYwyftJozvktrg2q43nBsZWBmJSm9OM0LJW9MW07vc9McrecjuEU4gZ8ZsI+aaZhrP+gGv9Ed10EiA2MlW92HTUBXAWneyCpMzvxxG5aL0mydyfhWOcNJaO0Z+fstvsb0AbnDGb44DuM0mQlJ8/pfBBRTcVBNAG3LuvVy+OeX3TJQWqNkreT9Z5NITJaB/g3WACoYCtJA7hXxylc1/xYKCT4TgcbF5G3+YLt2/ruxchrcIiXim4QgBhO/cS9V/juvoZx0iL5JuC6ZsDH0w7F4zWpRCkFfYYa6UGEojULaCM51M8k3vXPMOIt/R/1sQeNoKua/MppAYddwc/pSfR18vWXQDZKxd37WFD+Fwxjxtd10kVDXHUfnjD
- QUU6FbHv
- jCy8fZP9zta+duMc7I9IzY2fcRBxUQ0VGEP9J6LmPF29CXuYPH6yyBxkJjzk7uOc1f9io8YImI/HvRE0++vLi0p2iCRRp+7paSbZO7G7xX+/dQdg/u9887gNm/wsevo6rszqeMe+le1DiZa2q5UTZkbKkKh17gofSRsq2lQR/36JyWPFYX1SaqgOJl/OG8CWqIu2BhvLz+nvtZBS3ZzzV5IiA574Ch599gpH+NCkuuKf2MZY=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782440778-417327
+X-HE-Meta: U2FsdGVkX18lzeJ8IPLfnZY4SUhKmw735HUyyhX2POCeIO0uGKw6YbGN8klp8K6yxCu/ucsXWZ1srN61vFg5RVYgSz2ey+BIpTNJoszlYYBMTcyps56cPebcTpXkQv8GMhHOxg8oGGHf/ntsJ12sBNkkbThSqkbfKCYHUbnpOEvRxQfcgjmI/2b1JuwK6paBc7bWKdzK4mqcIjUhfsug9KPvLIMWMtrwGvthuEtonHLn9lMOlP77HGGC1oif901CjajNmnUPi/XlmIhG3FxEYRSRbdKlHmBVt5j29iEG7TwIoO1hlgfcCBO+1VrTC44HIe+LAY0HwpEo8c0YSEi5zFYM4whAIi82t7iLDiWxUhuOjUy1qEacrSt8yCHSIdNyRsDA/rpzCptYHIalZe+m5x7ArP0trQADGNs0LjYKrUANCXPFcrHktOn7vKJuo0Vhl/Pg00JbvVE7OHI/xq++R48TwI5ITjbAC2RFonDv1pB8kaA908kO5TuP09RRE4CALfwT4ceHVmfSnyEHLCDESQ4wUqTaDe9HwI1yvDX7rwgw++xwtyn+2L/tbB40quHsd0Jx68K/z6TdIKi/4lZ3PfrLNIfqsWTJTp5KswpPsLhonxLekt9dLwAZKfmDVhlsbIx4VCRHdxnUHYnOt/qXY5bjUcnfn/Lin4nNHz8N+hW5EjvTf/CYYjvvlzy3Kex47Ya9kCrPCvVLjndHoZp/H2tiCX0Biy12rRG7pBX3vyBiHsR0n8NIfnoTz5mmb7HhT+0eHaOyNmc0tyzTmgQVFymLp8Olp2/7YaNpccfZjRscWTZriUSQmTmP7R31DLuTKZkKPzFQhXDs1ZkT4D1trqvyzzhBM9NHvKoN3q/+pF/gNCIIJPM8d8fiBpDl/XM7WL6JzLfSJ07spxfhY0RJRmmQrsgTwPC1SeptEzlWSLkxoug7T/FpkG0qA71Lkht2jOhm5NlOMOO05sH2yFp
+ 0gkZAR+B
+ THoqV7FydYJAn6OfrFoYW9GMRq5yTPWg3g5acfLeQILoWMKAPZ5KAPn+PNZunIIlMsrqDgtR5teDgqfH9IRYkymFIgyh6lZzCS5wIRbS+elQbLSi05DWf3VViOFsN13Ttso+GEO5t2/bRPCVxSIALlqTm4kL6LUIEaSNAXFybIuMWbezSp1bz1VwRi2EbwEr8wz7SWhBpdT7tveJaqgAIDFB9P1Z24UsI/YMmnnnhQkX5ySVuY0juA5ypne5HpuUSyHuooXgSHpvq25VLITWNp7PywZK2+roF7qkeAkIzDIYSntJ/QhNgJ9rOYAOVROIPsTOcZSDCYXLpzK2u6t3Z0PTlEfBVDNYwcO1XrqwZU1yI21MJepwiDpa3DQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,45 +91,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> Reading /proc/kpageflags for any anonymous page returns KPF_KSM set, even
-> when KSM is not in use. As a result, tools misclassify all anonymous pages
-> as KSM merged.
-> 
-> In stable_page_flags(), if the page is anonymous, then use (mapping &
-> FOLIO_MAPPING_KSM) check to identify if the anonymous page is KSM page.
-> However, FOLIO_MAPPING_KSM is FOLIO_MAPPING_ANON | FOLIO_MAPPING_ANON_KSM,
-> (mapping & FOLIO_MAPPING_KSM) check returns true for all nonymous pages.
 
-"returns true for all nonymous pages."
+On 2026/6/26 02:48, Suren Baghdasaryan wrote:
+> From: Lorenzo Stoakes <ljs@kernel.org>
+>
+> The alloc tagging work is really mm-specific, so move alloc_tag.c to mm/
+> and additionally update the MAINTAINERS entry to place it within memory
+> management and port over the Kconfig and Makefile code to mm.
+>
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 
-should %s/nonymous/anonymous ?
 
-> 
-> To fix it, use FOLIO_MAPPING_ANON_KSM instead.
-> 
-> Fixes: dee3d0bef2b0 ("proc: rewrite stable_page_flags()")
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+I've applied this to my local tree and everything looks good.
+
+LGTM.
+
+
+Tested-by: Hao Ge <hao.ge@linux.dev>
+
+Acked-by: Hao Ge <hao.ge@linux.dev>
+
+
+Thanks
+
+Best Regards
+
+Hao
+
+
 > ---
-> Changelog in v2:
->  * use FOLIO_MAPPING_KSM to match explictly instead of use FOLIO_MAPPING_ANON_KSM
-> only.
-> 
->  fs/proc/page.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/proc/page.c b/fs/proc/page.c
-> index f9b2c2c906cd..7d9387143435 100644
-> --- a/fs/proc/page.c
-> +++ b/fs/proc/page.c
-> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
->          u |= 1 << KPF_MMAP;
->      if (is_anon) {
->          u |= 1 << KPF_ANON;
-> -        if (mapping & FOLIO_MAPPING_KSM)
-> +        if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
->              u |= 1 << KPF_KSM;
->      }
->  
-> -- 
-> 2.43.0
+>   MAINTAINERS             | 20 ++++++++++----------
+>   lib/Kconfig.debug       | 28 ----------------------------
+>   lib/Makefile            |  1 -
+>   mm/Kconfig.debug        | 28 ++++++++++++++++++++++++++++
+>   mm/Makefile             |  1 +
+>   {lib => mm}/alloc_tag.c |  0
+>   6 files changed, 39 insertions(+), 39 deletions(-)
+>   rename {lib => mm}/alloc_tag.c (100%)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0948dc573744..3cf3cf2311e2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16704,16 +16704,6 @@ F:	mm/mm_init.c
+>   F:	mm/rodata_test.c
+>   F:	tools/testing/memblock/
+>   
+> -MEMORY ALLOCATION PROFILING
+> -M:	Suren Baghdasaryan <surenb@google.com>
+> -R:	Hao Ge <hao.ge@linux.dev>
+> -L:	linux-mm@kvack.org
+> -S:	Maintained
+> -F:	Documentation/mm/allocation-profiling.rst
+> -F:	include/linux/alloc_tag.h
+> -F:	include/linux/pgalloc_tag.h
+> -F:	lib/alloc_tag.c
+> -
+>   MEMORY CONTROLLER DRIVERS
+>   M:	Krzysztof Kozlowski <krzk@kernel.org>
+>   L:	linux-kernel@vger.kernel.org
+> @@ -16758,6 +16748,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
+>   F:	mm/
+>   F:	tools/mm/
+>   
+> +MEMORY MANAGEMENT - ALLOCATION PROFILING (ALLOC TAG)
+> +M:	Suren Baghdasaryan <surenb@google.com>
+> +R:	Hao Ge <hao.ge@linux.dev>
+> +L:	linux-mm@kvack.org
+> +S:	Maintained
+> +F:	Documentation/mm/allocation-profiling.rst
+> +F:	include/linux/alloc_tag.h
+> +F:	include/linux/pgalloc_tag.h
+> +F:	mm/alloc_tag.c
+> +
+>   MEMORY MANAGEMENT - BALLOON
+>   M:	Andrew Morton <akpm@linux-foundation.org>
+>   M:	David Hildenbrand <david@kernel.org>
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 8ff5adcfe1e0..3762015522c3 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -1048,34 +1048,6 @@ config CODE_TAGGING
+>   	bool
+>   	select KALLSYMS
+>   
+> -config MEM_ALLOC_PROFILING
+> -	bool "Enable memory allocation profiling"
+> -	default n
+> -	depends on MMU
+> -	depends on PROC_FS
+> -	depends on !DEBUG_FORCE_WEAK_PER_CPU
+> -	select CODE_TAGGING
+> -	select PAGE_EXTENSION
+> -	select SLAB_OBJ_EXT
+> -	help
+> -	  Track allocation source code and record total allocation size
+> -	  initiated at that code location. The mechanism can be used to track
+> -	  memory leaks with a low performance and memory impact.
+> -
+> -config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> -	bool "Enable memory allocation profiling by default"
+> -	default y
+> -	depends on MEM_ALLOC_PROFILING
+> -
+> -config MEM_ALLOC_PROFILING_DEBUG
+> -	bool "Memory allocation profiler debugging"
+> -	default n
+> -	depends on MEM_ALLOC_PROFILING
+> -	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> -	help
+> -	  Adds warnings with helpful error messages for memory allocation
+> -	  profiling.
+> -
+>   source "lib/Kconfig.kasan"
+>   source "lib/Kconfig.kfence"
+>   source "lib/Kconfig.kmsan"
+> diff --git a/lib/Makefile b/lib/Makefile
+> index f33a24bf1c19..44f6538533a9 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -197,7 +197,6 @@ obj-$(CONFIG_OF_RECONFIG_NOTIFIER_ERROR_INJECT) += \
+>   obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
+>   
+>   obj-$(CONFIG_CODE_TAGGING) += codetag.o
+> -obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+>   
+>   lib-$(CONFIG_GENERIC_BUG) += bug.o
+>   
+> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
+> index 91b3e027b753..5737a504efbb 100644
+> --- a/mm/Kconfig.debug
+> +++ b/mm/Kconfig.debug
+> @@ -320,3 +320,31 @@ config PER_VMA_LOCK_STATS
+>   	  overhead in the page fault path.
+>   
+>   	  If in doubt, say N.
+> +
+> +config MEM_ALLOC_PROFILING
+> +	bool "Enable memory allocation profiling"
+> +	default n
+> +	depends on MMU
+> +	depends on PROC_FS
+> +	depends on !DEBUG_FORCE_WEAK_PER_CPU
+> +	select CODE_TAGGING
+> +	select PAGE_EXTENSION
+> +	select SLAB_OBJ_EXT
+> +	help
+> +	  Track allocation source code and record total allocation size
+> +	  initiated at that code location. The mechanism can be used to track
+> +	  memory leaks with a low performance and memory impact.
+> +
+> +config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> +	bool "Enable memory allocation profiling by default"
+> +	default y
+> +	depends on MEM_ALLOC_PROFILING
+> +
+> +config MEM_ALLOC_PROFILING_DEBUG
+> +	bool "Memory allocation profiler debugging"
+> +	default n
+> +	depends on MEM_ALLOC_PROFILING
+> +	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
+> +	help
+> +	  Adds warnings with helpful error messages for memory allocation
+> +	  profiling.
+> diff --git a/mm/Makefile b/mm/Makefile
+> index eff9f9e7e061..4fc713867b9b 100644
+> --- a/mm/Makefile
+> +++ b/mm/Makefile
+> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
+>   obj-$(CONFIG_EXECMEM) += execmem.o
+>   obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+>   obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+> +obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+> diff --git a/lib/alloc_tag.c b/mm/alloc_tag.c
+> similarity index 100%
+> rename from lib/alloc_tag.c
+> rename to mm/alloc_tag.c
 
