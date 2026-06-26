@@ -4,126 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 974EFC43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 20:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E6B9C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 20:33:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47B116B008A; Fri, 26 Jun 2026 16:19:01 -0400 (EDT)
+	id 846DA6B0088; Fri, 26 Jun 2026 16:33:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 404816B0093; Fri, 26 Jun 2026 16:19:01 -0400 (EDT)
+	id 7F7AA6B008A; Fri, 26 Jun 2026 16:33:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CCCC6B0098; Fri, 26 Jun 2026 16:19:01 -0400 (EDT)
+	id 6E7C86B0092; Fri, 26 Jun 2026 16:33:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F12EA6B008A
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:19:00 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DCD5120487
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:19:00 +0000 (UTC)
-X-FDA: 84923177640.14.B9E906D
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 83168A0008
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:18:58 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pie4VFcb;
-	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 319F56B0088
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:33:29 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9FB381C65F4
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:33:28 +0000 (UTC)
+X-FDA: 84923214096.11.F67EBF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C73FD140005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:33:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OW/VYPnB";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782505138;
-	b=uvqzD8NL5ZQNJ/fN75lcNBlEMHJo2A6o218IYSSAnxiR5HCkYgRAPeNq2g+NhCSB+x1DgZ
-	68yWi/JNd/oFzcQHFNS9l2RFlPuVK18WFf/fv7CMFZ4Vlj+x7+24DrSZOMOw0TvGyXf1/t
-	0rPMQs9RbaD9OlpFMOQoFOyoKxTC1ZI=
+	t=1782506006;
+	b=eioto7urQpyEsPsMt0uiXyMDgx++QLqSMequUyWfj7nOxrqyoOxBHy57+RNIimtWS/YEk0
+	oXA4Tw+Ps56lht+3KckVFfkAHfs8jsSRQ7x0/FO53fKMinR0nOje7psRvmt+cl9ZHCfgXI
+	mSMWhzgnAR0JWgTZEmFTvy8mxGicMik=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782505138;
+	s=arc-20220608; t=1782506006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RGjlyDYhehErqYiWQ+JPN847GkKF9E5lFSL9mEIK8Uc=;
-	b=TskYhwfk6LPI6qNzD6Resh4L5VoZ+SZXCZGriZNHsxMoGVIO/WwOY9ktnz0Zyeld4pa0Y9
-	sDZzdZzT2JzbbLG03jmLhP4oL8AZxSurswBSDfxcyxIDJDXHzdElKEs3k9yx9ary21AcXq
-	Z4DtkN8qCIH553LMxe+0jgXWpYhPXmk=
+	bh=so7ATgFGu/s7mYNzZJ+5Ol8L7q0igIYtf2J+vvbHPLo=;
+	b=InFn67jKfWym5xYgh8itIvbwMVCLIbXDPn7CtDMs6A2XgJHPzAwJuZCc/ONE0ebrYbOm/D
+	yZXQAeufxwTb0ahWeuaM3mtA/IM3YTyHdpysEPjN3b/YjGZEdanBcrJONxn3kLib5Dk9E1
+	ye0JJ21dtuscuHluWrfNhz8YLO+VTDY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pie4VFcb;
-	spf=pass (imf15.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.160.52 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-447d86f63c8so646654fac.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:18:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782505137; x=1783109937; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RGjlyDYhehErqYiWQ+JPN847GkKF9E5lFSL9mEIK8Uc=;
-        b=pie4VFcb/3UVTDLaZ7u/mfZr5CF7vYkjayn54YLp5r+NgiRXk/smh0nKxP+ptWktLh
-         4Mauc9MNLU0tJydtilq1Kep3OBrvRRlGtXA936i3VXn404RaOhwIrY60PGt2Hq1+wfKl
-         sUZMcrtz4HjwaVqFt9XpW60p6dpuonRzg+WwmqeDMcJL7Qa1HN0DJSgKXYIvgpzZJoxi
-         +cT32JBcqH/HgFpELLx1FFihoqEoUN9X/ZAD00fNmmuxjemIE5FagGkwA2IIxc7ZUIv1
-         mBJrI5FyyI02VG7PI22ImJMBYaXa387H+3Bks9iuUpfenxDoVE8uslidKy1Kd29iyhYb
-         VfXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782505137; x=1783109937;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RGjlyDYhehErqYiWQ+JPN847GkKF9E5lFSL9mEIK8Uc=;
-        b=lEnDH+WrkVawbf2c0Y0nqkdtvd6BB8S9wZPpAGUFK1JYK9blRYfgDn6VBglToTqUaZ
-         YQM4elQ5rKpnlXPrLExOUqqNPSjCW5FRtrIhmHRUXdH1/AQu1tjLcovnIeo21174Z37o
-         xUBSkXW5tHoJiQjnTvwrp/bRnLB3iFs4+vnqENqr/TYq0s5C3j6c1mdmZvarEMKH80U4
-         4wc/PB8N6r1UAbClXdRFgcIDuushhIqYYg+WmTrULb/GHW5F4oHgcOTAd0nZbWqXW8uR
-         OpAEyIurYpGQ0oYGIBSw7R9estHgg47HgDvTE4fViHELjLpEolsafRElKuY2kabFYq4B
-         Bpug==
-X-Forwarded-Encrypted: i=1; AHgh+RoISjeFCvoiYfAZRofWr5NXYObSiaScGhXquoiCzuGqcgaayRY9mdSW9YJLtXZjEda2HWvpXRX+vA==@kvack.org
-X-Gm-Message-State: AOJu0Yz+YjFUFfg9LAYr0J/xDr3tvcBUumVNVxF0fPnhtyv+wioV9Yq7
-	GxwS7UbieeNxI8/e+4s/6onl8aGQu61/p8ESNQOjafWV9zrRSUBXcfQh
-X-Gm-Gg: AfdE7clKpqFciwuL1B0939XaP/FmCGpYsME929RiuMHIdwSmZZ6nblGlwijfeRU/Vpw
-	3FfUymJ/+P0umE628v9JMnVfnObG/OAo7PxHoex26lKC9Z18OvwG7i6hwhaNpvAgo11q2DAGpuM
-	8p/J87QYhUKTKyA7ensAxsf1BWH02WMNwb8BD/UYblyLPRbfaC9KAsLjNcZug5YAPq1yby5UmrS
-	a13gBI+d53jU9gce8NYbRSHJoF701da/tYisD2cZrAdLG++ysU9z5yOP1yCzA7g5FtemCHEG67L
-	KO5KILFQvCwtLTXvQ7Ty8kpSm5xlVie71o9UpWcxS4zw31kAp3wjS0mUhuSIf6Mt1xVlZSG34L8
-	Y7mO1YWrTZ0LdlgsLfdvLWXaHSl6zidi1hxPcGAVcB8CCsmPRiTYXWG/4b0MgM590VVUYf4HbiH
-	PtqTXMxa/AWRNYjunZKLsEL9pHyx28KWB9M+xudOSxEWE=
-X-Received: by 2002:a05:6870:c0d0:b0:441:d09:7f6 with SMTP id 586e51a60fabf-448119a0600mr7118160fac.4.1782505137237;
-        Fri, 26 Jun 2026 13:18:57 -0700 (PDT)
-Received: from localhost ([2a03:2880:10ff:55::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4472e79af8fsm14027490fac.0.2026.06.26.13.18.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 13:18:56 -0700 (PDT)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 0/5] mm/memcontrol, page_counter: move stock from mem_cgroup to page_counter
-Date: Fri, 26 Jun 2026 13:18:54 -0700
-Message-ID: <20260626201855.2966118-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260623180124.868655-1-joshua.hahnjy@gmail.com>
-References: 
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OW/VYPnB";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BB6D641E5E;
+	Fri, 26 Jun 2026 20:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EED1F000E9;
+	Fri, 26 Jun 2026 20:33:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782506005;
+	bh=so7ATgFGu/s7mYNzZJ+5Ol8L7q0igIYtf2J+vvbHPLo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OW/VYPnBPxPaW41CLCOBkDGD9vSstX/l5cZ+CC5yWBti3j3hRxBdzcSY42pP1k9nC
+	 feLz+ls9IAVRZ1NZDntQw1xJ7ndrwY/Px84uSmBeRF+QTTR4gXkDIh5s3ETXvySBMp
+	 s8lnG9pu2R6JR1W1v5B4qztvFVFxRncg8Y4QQGwpVSe1DYUtHsWPTySCGd9Pi5rK5E
+	 xm+I/Ky1RGS7Q2j/4Vfx64uOoLC5EpPrwlYc3C9SOIVxuPSjpTGlzNjp3wbwIIWl+u
+	 R5CDaKvIvRlvPV77kesQUg7XrxMw23lg4b8lmijRUncxrOBjvFzO9U/wrgaMuI5pFa
+	 HaT6KaZL/04jg==
+Message-ID: <05538f68-c3ec-422d-babb-7427068f79f4@kernel.org>
+Date: Fri, 26 Jun 2026 22:33:19 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/3] mm: __access_remote_vm with per-VMA lock
+To: Rik van Riel <riel@surriel.com>, linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, linux-mm@kvack.org, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
+References: <20260625015053.2445008-1-riel@surriel.com>
+ <b0d9ce70-ebb7-4b79-9a35-257b69daff7a@kernel.org>
+ <5a4ff628c1b947f9cd4da53e1e64b3934a1f2d9a.camel@surriel.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <5a4ff628c1b947f9cd4da53e1e64b3934a1f2d9a.camel@surriel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 83168A0008
-X-Stat-Signature: fxwsg4aabf1zjmur3ayzkjynouwh7xb4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C73FD140005
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782505138-841537
-X-HE-Meta: U2FsdGVkX18uVk3IUcp4PGNkMTaDkAJoNQ5DVU57OX5nt0jcUno2KOLeVPT9DrPDCIosd90UtT7XPwoG+L3D7RPfUa1R1RfFBaBL++ik8IvOKrV+e1e1e1+McEojqNIvV38JT9m0Qq5FuCsJlCZKaEtts7O0okEo4sWz1t7lzQ24wwtCxQ0DmGgbyaG3w+VvqcQVz9EXolTrprb7MWXqVrDbv4h5AlYJvX8EJ8f37D7ZiKjWaBbpdAtikRmE0DboTBXVagyuBLff/M0uZZeixxA268DwKzy/75VtNxZNInPapGedQGFXTYZxP2MVVp0Vntw8/vDLFjyFutK7PvHgVQ/LIXPyJVXQUxfJajeqBUnXpapnh52oU8F1zOvE7md+IZtHzUs28rCt2RdQRFS1e8U+YtgL8EowEovxsEVzf6innPtD7SBoMfZG/pbuU+ZnepiVlJa/biBT19f+5nZGu5w4Her2zBSMUJzUC2AF9pEee7jdnh5L92T8hBoIPY/SCJeZzzy1xJVWJYSM8IphlklH2FiMOgS/NntfmcwdGA8Af9sDYGwH1Bd2TDLQdVri++RyYzAeWfcbIvnHx/TQy26PSEXZ4AsXXRey/Curf281RwYBN0PmLKBebNZLMPBV3Kl3H2MgH6s1L409KbOxrsitmkdLnTP0jWqo2ulmJ5trYxwJY2UeFxM9kKXlRawN+nu6awc5GN0lveZQxjUBfYDwrLpIJzHBgWO/2euV1MM4h0IfgegpNkYRmuKwv5iSjk3zqqCb/7/IOZ+WXEw/vN+Kvvzjr0p5GE8LvieV0uK/o62oHK3rmYVZ11CJuFFyCJ2smPkg42YPL+7boZ6tqMFqo8mYHacbMGRc96CDzO9k6cB0gFwKW16wyFGvjYtJNMsbzI+bPnhxyseRpva4gGyHQlIwwt6n6l+DO1KqUNykWMIqha/PKRyEXNchLjE2TBClwHeG8FTuQ5GotPA
- adxab8QH
- PV9j2wGrX8XYya4EzC8AZ4TyS++oADKawLwXqigABbPgtqqH9pQO9FEXxJbAEftHZauAsER+V7EC3VSKijGC0TEL8tBQCd+Ol/2zFXUTRJ0d1wTIiq1a5OfZ7w71d/xQAylrR0QeQScTpEnjSWW9BVo5vOxI1vjDvWJCmbvCpx1pyJ+mcT3rCFfKDHfCnrotO/w5RIQDXYM2xoUSpoOu3pdUseJzI/oV594vJpWHLGlOZpB6dIvP4/iMcxZrgpBlmahvBoXUe8Q6rCzF9SJPWI1vRbEBppmURe/OxHupW0Mfq9exga6jA6JoXnvRN9+YqXME47Ap+eTTgLSsecvUnD8BftzpzEHfVitAbZRbs42TihzV1QOjokrpUn9E4ma1M9iP1i+vl2NPTubXmNz6I3jgfN6IsM43A96t/91jfndfSVq9XRDW4HhZi2DLTXaInoxEzrHBhRdsALl0zxDf2AwxFPcc1AfB7QNBv5/M0Lp+QUIyibyNBqMgGBbgWRiHZVUbbSkQsJRfxLlsKa1feOwKGBhuVHr+gMPqfnzWqY2lQvkQLR1w/gPkH0XkgfylFzcaFnLAkcZQhLA8Lr3R7x5TAwQ==
+X-Stat-Signature: 3sd5fjs8qfi5hixgq873mwjuqq6iyzsp
+X-HE-Tag: 1782506006-997263
+X-HE-Meta: U2FsdGVkX18GaGZ+glm00SZ2xa58hc3/PUYCTeYN9ttdhH1str5EMNqdQoWWosmjqC7lWkDov1oG/a49TY9Gkg5k6ZxT1dKqKJUTVEO793SMBWrG2qcAXaSxOWqnXBLz02n5Av2akdyts6D5cRXcjzFDf7aMgjkbImNuXFJvyD+kQKEpzEtrHUPr6BKfNFedFsjoN+ol+6FMcJ35ReujIAc4MbkMosQ9D3wd0epYV5WWPxm3StWhvJswf43+LgVGV6TIqsFtL8nKDRk3V3hgce8v/bmsVxPlVlpQU/J7OI5Tw9k8ftxRwT4J77wRkwlo9Puhz+5vKd4GAzJXrJlXuCY2PRsXvrhS3ar6hKtMpUFmQRXbxyu15SzkzFCHKn0RWEDY72UdOaI9/eHTXx3TfggrXJ84TaXWscJK2AsRJcbC/jbj4rNE+qie1En/J5tsnoJ+LbH0FjeF871/siJw4FZG3yqOVI9MNGIHoekmd57g5Zo1nY9tzp6c6DtgsURcktDPi2iEsWos2GRsMPVcMMyegJhqZ75t0bB+v1WLWHfXvy4suz//U621453FyPe4B69wb9+NNsmze690DS28ncUGImw0PgldPwjxGElopkfsMu62CFaOHj4WFdoH6+PFYf83y5TjIPKzZCwfr9oTVYiQ2/JL+/oaD0H6l2Dc/GIxZ3DkkfauQZYGfMhTX9aV6ntSQA4YiZM8Q9ps1uiKdBe33jovW4ocAfOeV+I4QU7UQiO1ejBQWB/ilkFjFLAT+yFSqDtHpOLmNPL4n3q5JICShvfhXUPL9gzvJYLUHmCxxClzvMTtCTwWPlnDGsMkyDyxxuwa4R4oHyZBk+0mNVgpGLrYR8WoXCaBCEPC7k9vSQbb71wTFevGDWYmyAlh00VBP8Rh1EhIxEDWpwOBU54ycUMm7Rzw1d5uYnRRuehFhqsUS5Lt0pjCER7zOr7RPmKU2MkjUYUEO9GlPOZ
+ YFvbFqfV
+ jNte5HTycSrihPTfpDSFpUk3ABkrSc2LU8R7yXvIoJTj2gNa+bRbh3KC0ScGSxEImd1uzbCPdA8IlXcuF8gsw0btHuQw1i7Ex0CxG1mlNXju4p9s3WCrCcYreWePhJwRmalDVCip98AU0K5Q5F3XG8apXtEMWu4yC2xZmdDUC/2pC8sYBNcEUSK3MX18OktM2wQ8P/QMIzYcDQ5Mkp62ay94kj9JY4I9M6lZOuck20Y5QTfLH3xsfcmaOH+8j65KNtU3cT1n9zWwZXhYVdC0+YIy3gQLyaqn4gqzdmxk+Q+4iyt0esLQF1Mx+yFjhAxYLjgmuxJiEhahaDSo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,101 +143,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 11:01:18 -0700 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
-
-> This series is intended for the next release cycle.
+On 6/25/26 13:22, Rik van Riel wrote:
+> On Thu, 2026-06-25 at 08:32 +0200, David Hildenbrand (Arm) wrote:
+>> On 6/25/26 03:50, Rik van Riel wrote:
+>>>
+>>> v2:
+>>>  - simplify the code, which should be ok because these copies are <
+>>> PAGE_SIZE
+>>>  - clean up the code
+>>>  - fix locking wrt tlb_remove_table_sync_one()
+>>>  - hopefully address all the other comments
+>>
+>> You mean, ignoring my comments about not reiplementing GUP entirely?
+>>
+>> NAK
 > 
-> v3 --> v4
-> =========
-> - Reduced memory footprint by 4x, from 16 bytes per-(cpu x memcg) to
->   4 bytes per-(cpu x memcg). Each page_counter_stock is a thin wrapper
->   around an atomic_t.
-> - Removed locking completely and uses atomic operations to use stock.
-> - Removed synchronous work_on_cpu. All work is done via remote
->   atomic_xchgs.
-> - Added a patch to flatten page_counter charging in try_charge_memcg
-> - Split page_counter_try_charge into stocked and non-stocked variants.
+> Do we actually have a path to doing that?
+
+Well, I know what we do not want to reimplement GUP in some GUP users unless
+really unavoidable. And I want that explored first before moving further into
+this growing complexity in a GUP users.
+
 > 
-> INTRO
-> =====
-> Memcg currently keeps a "stock" of 64 pages per-cpu to cache pre-charged
-> allocations, allowing small and frequent allocations to avoid walking
-> the expensive mem_cgroup hierarchy traversal each time. This fastpath
-> offers real improvements, but there is room for improvement:
+> I misread that as more of a wish list thing, not
+> as something we could realistically do today.
+
+I really don't know how you concluded that.
+
+I mean, I know, my English is bad, but it's hard for me to get how
+
+	"Yeah, we're not doing that unless inevitable."
+
+is a wish list.
+
+Yeah, well, ok, my kids treat also a "no" as a wish list ;)
+
 > 
-> 1. Currently, each CPU tracks up to 7 (NR_MEMCG_STOCK) mem_cgroups. When
->    more than 7 mem_cgroups have stock present on a single CPU, a random
->    victim is evicted and its associated stock is drained.
+> How would I go about making that mmap_lock-less
+> GUP a reality?
 > 
-> 2. When one cgroup runs out of memory and needs to drain stock across
->    all CPUs it has stock cached in, those CPUs will drain all other
->    memcgs' stock present in that CPU. This leads to inefficient stock
->    caching and cross-memcg interference under memory pressure.
-> 
-> 3. Stock management is tightly coupled to struct mem_cgroup, which makes
->    it difficult to add a new page_counter to mem_cgroup and have
->    multiple sources of stock management.
-> 
-> This series moves the per-cpu stock down into page_counter which
-> consolidates stock limit checking and page_counter limit checking into
-> page_counter_try_charge_stock. This eliminates the 7 memcg-per-cpu slot
-> limit, the random cross-memcg stock drains, and slot traversal. We also
-> simplify memcontrol code, since we no longer need to maintain separate
-> draining functions or manage the asynchronous workqueue.
+> What are the prerequisites?
 
-Hello,
+Did you actually read at least some of the stuff I wrote in my mails? You know,
+the ones where you didn't reply to? :)
 
-I just want to address a few things that Sashiko raised. I think there
-are definitely some improvements that I can make as Sashiko suggested.
+Seeing a v2 with some weird gup-fast-like looking reimplementatiom (eww) is not
+something I enjoyed at this point. We don't need another set of special page
+table walkers.
 
-In commit 3/5 mm/page_counter: introduce page_counter_try_charge_stock()
-Sashiko raises two concerns.
+We really need someone to look into this with some GUP experience or the
+willingness to properly think the GUP lookup+fault path through, instead of
+adding some creative workarounds to selective GUP user.
 
-"Can the per-CPU stock grow unboundedly beyond counter->batch pages here?"
+I will try to find some time to think it through, but my time would be better
+spent guiding someone (and definitely not someones LLM) to understand
 
-I think this is true. I went back to the original stock design and saw
-that when the stock is greater than the batch size, it just drains all
-of it (since this means we raced). I can add the same check so that we
-never grow beyond the batch size. This should also help with the point
-below.
+(1) which interface we could start with (as I said, a GUP interface where we
+pass a VMA-lcoked / mm-read-lcoked VMA instead of the MM)
 
-"Does moving the per-CPU cache from a single shared stock to a per-page_counter
-stock fundamentally change the memory stranding bounds?"
+(2) which faults we could automatically resolve under VMA lock (I mentioned
+userfaultfd is tricky but the existing GUP call already doesn't trigger uffd)
 
-This is true, and I addressed this in the cover letter. Yes, the worst-case
-upper bound grows by quite a bit, but it is difficult to hit that limit
-since it would require a memcg process to be scheduled on all the CPUs,
-and strand memory there via the stock. Nonetheless, restricting the
-batch size should make this worst-case a bit better.
+(3) whether gup-fast could be reused to some degree, or what it would take in
+order to do that.
 
-In commit 4/5 mm/memcontrol: convert memcg to use page_counter_stock()
-Sashiko also raises two concerns.
+-- 
+Cheers,
 
-"Could this synchronous loop cause cacheline bouncing and premature OOM kills?"
-
-Sashiko is referring to the memcg-cpu iteration we do where we drain the
-stock of an entire descendant completely. I also addressed this in the
-cover letter and that I couldn't really reproduce the issue in my
-testing. I addressed this every version but it seems like Sashiko does
-not read the cover letter :' (
-
-"Would doing a volatile read to check if
-the stock has pages before calling atomic_xchg() help mitigate this?"
-
-This one I agree with, I'll add:
-
-if (!atomic_read(&stock->nr_pages))
-	return;
-nr_pages = atomic_xchg(&stock->nr_pages, 0);
-
-And hopefully we can avoid most of the unnecsesary races (of course the
-value can still change in between the read and the atomic_xchg but it's
-just a best-effort optimization)
-
-So I'll spin up a v5. One thing I'm going back and forth in my mind
-is whether we want separate stocked and non-stocked variants, or if
-that should just happen transparently within the calls.
-
-Thanks again Sashiko!
-Joshua
+David
 
