@@ -4,90 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10EA5CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEE2CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFE7E6B0099; Thu, 25 Jun 2026 22:39:24 -0400 (EDT)
+	id 25A0D6B00B2; Thu, 25 Jun 2026 22:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAE8F6B009B; Thu, 25 Jun 2026 22:39:24 -0400 (EDT)
+	id 20AF16B00B4; Thu, 25 Jun 2026 22:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC4226B009D; Thu, 25 Jun 2026 22:39:24 -0400 (EDT)
+	id 0FA796B00B5; Thu, 25 Jun 2026 22:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 986846B0099
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:39:24 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A7CCC188B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:39:24 +0000 (UTC)
-X-FDA: 84920507448.28.E67B38E
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C4F5F100007
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:39:20 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HlxqWPhj;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D6A626B00B2
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:44:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50EBC1C5F7F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:44:09 +0000 (UTC)
+X-FDA: 84920519418.16.291D1EA
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9043640005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:44:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WlbG/ADc";
+	spf=pass (imf04.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782441562;
-	b=7mX30ejnuliXM3r09YHe8uF9BgNKqE9gUF2efTo+QjIwy3VxOLnVQmoScmbHGaNFLqrpSy
-	UM5zhCM5WPa/cS3d6cvfG323NX5TX/1OkS4aayqP2BDTDD5x68FGH9tCN+xakcN/+zzwkp
-	y7LvM7g3Fa7H7hZFo7SlsDP8mNRJhl0=
+	t=1782441847;
+	b=gtP76mc6sui4fWr2eyqWFsTUiNhtwE7qjIER2/AZDmnMwyKEo9tYYDBuKadm3pnuB9LClG
+	7OcqPzs9551Z8w09zL5qY6tU84+TFlmnQL43MIXT8aWNZyltP3MpYYsRiHI3rub6jyt8aY
+	EAOaz84LUT0qYkddKaA2R3yzuRgtsvw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782441562;
+	s=arc-20220608; t=1782441847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eMiBjpoG5x/PF8SzAf5XymHhBXZlwVkuA+guTc6Tz+s=;
-	b=kJi7R4UqYR9uL6C+VVtSAMmb/aOkgXogUm+XXAa8NznLfbPD/yIlzZsWmRItw/WoyxxLEo
-	V0ve/9SKDElC6HX/aJ35jgWrrZQkSZfDLyZbErzwmEhLmQmWi5XbEftP7Gv0H3YTQ6O/Zo
-	ScF6rsDfNqFMpjgmmTU1R+hrSQ+0uXw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kl5DUTG1z92bRujT2x2JYDXqAErM2eCZgRpvWF3a6j0=;
+	b=A8WbkGe/tgDve1Wfvdn0IeD5sBTORqTSssbh+zpR4SaGlanNkddZEwS2E0L5j93Hm7nz4r
+	/onxWOsO2K+Do24c9C+FHbuMv2GiifiVjoRNgDlDEBZvktDnag92WBylLHnEm0186KT2Oi
+	FYtrDZM9SJA+qDCxTkKi/fNxzfSCzes=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HlxqWPhj;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <dc62c93c-2dbb-40ab-8e3c-2e2b1c9ff0e1@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782441557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eMiBjpoG5x/PF8SzAf5XymHhBXZlwVkuA+guTc6Tz+s=;
-	b=HlxqWPhjhC0j9hY/ieFKCrb9rfUDoIAlwoC+Sk8MOyqCqBiTsnN35cs89wF5SYH1TEWLOi
-	qzU92R1k5+LncMjCk6o3/6qcDbYVn5k6wg7D8VSJCiDmMAkD8vPvVrqWPIfU5iR2Bx+jJI
-	0er9sGgDMCZzJFFnjaiRH1MvAimy1aA=
-Date: Fri, 26 Jun 2026 10:39:00 +0800
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="WlbG/ADc";
+	spf=pass (imf04.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490c0c92cffso3119515e9.2
+        for <linux-mm@kvack.org>; Thu, 25 Jun 2026 19:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782441846; x=1783046646; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kl5DUTG1z92bRujT2x2JYDXqAErM2eCZgRpvWF3a6j0=;
+        b=WlbG/ADcTDYEbiof7GxZ3uj6n0W/R8w67shbZFDwuxKKlDMQJBkTfLOVuVFy+4sQjD
+         EwWX/sdPm4qz51Y3qTchKMjmBNbTyx9hFmev5ZKaG/nNw7b03ouHn5mUZ2ycwmpbfP4P
+         i2wLsL+sWwO5TP/qCEfZtDycnxGM3B7RLTrRLwWhve5JiOsSCijoAUa0ZTvosC3uHSq+
+         q+4Dbp17xkeYNG1TelIa5DOXUb060QalmpGpLbum2zjxDNivBX8TkGoRC+R5WEKxGHO6
+         X4y+EEoJI0HZXfIiH40+SIdQAhExXlDVmxWbh2CsZNEsmcaU9oILWh8yZ4ckNpXwByCi
+         nHcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782441846; x=1783046646;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kl5DUTG1z92bRujT2x2JYDXqAErM2eCZgRpvWF3a6j0=;
+        b=r6hSUq/F9xJQ/MslmGaR8nlP8CW/7wUA4aNodQiyAIN3yei7+vrTG3YnlKKhK8Eor1
+         Kvqg1H+Xhlf+Hm44wnSFOQwDZVtwoi6WvXkbeM1uSTRJJhbxf7dVtgLIikNT/aiDueSI
+         db9GkjEzGLhDfCRuBtj410SNYJ3iESJbla9cvTopnJHzjLhk8bkQgOzLyENfEHIWeLS/
+         WHxoNnERS4mi9tPfcLxrJJLpxfIN4whvTMWQEdWgmVxXjoKl+nm9OvFzhdOhDb5pKe1z
+         W9WXAj+VSrZve6nRn6kW44t03Xyr/5L91ztk/cQDIbg4D+H+lSbt7tzZIiW5SXS9/3mX
+         iXRw==
+X-Forwarded-Encrypted: i=1; AFNElJ+WDmu4hjmbLSX+F7VEMjomgiRVQHfrJz77L4RnXh3IgSeJ4DJP0Lb8ZAtse80uB8jZCgl6Gs/hiw==@kvack.org
+X-Gm-Message-State: AOJu0YxZ6NqF6Wwj2tyQSZdW+ja7xxzyOvLzlroR7+OT/gHlVnYc+h7q
+	xFXqmirQIhwNv1rVjsporkjrQKEq4TvEKf7rClzP62nuveaJT96P7DUt
+X-Gm-Gg: AfdE7ckoiVojxAqwqqJP3NdA/aROjHprSp/l7AeHx3mLBqLIWhJ2qbfnEbPZBWvoAV7
+	g8kzcKEu1dys20vVM0uCGa1J+LOeZSu4Ej+fVao9F+19i8hEEmlPPE9rNEk368UL2zV32wbSQu8
+	v013W/UBSvYc4poUtxB87tlBNdGLEx4/YKRWwsNkCakH1OTNLODYbha+H8r7h5UNveYrjPgRgSl
+	rJzLF9Bm3fTcF1ZtzSGtuFXZASaY6Zlv+0cjEXlksb/ojt5bXVrTenLJY9xNYsf0xgk9ETEVzlW
+	R5aWj8c7b+vvHgUP748yzf/bdVmkZCdGp34r72W3TMsXJu7UqpdHEYlk5lmglKzEskD6lQiJT5P
+	YtA88csfwS1Q09M7x/q2pOtWFAq52jALC1v0y7iS86u6c3RfJS2M2ZMlgbdyo1VqQ40MeKYHfNq
+	KC8pTKDProm2scPXr34LyHkA==
+X-Received: by 2002:a05:600c:820d:b0:490:bcc1:4edb with SMTP id 5b1f17b1804b1-49266884b7emr68105355e9.27.1782441845987;
+        Thu, 25 Jun 2026 19:44:05 -0700 (PDT)
+Received: from user ([104.28.154.196])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46f0db007b3sm1605212f8f.2.2026.06.25.19.44.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2026 19:44:05 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: hughd@google.com
+Cc: baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>
+Subject: [PATCH] mm/shmem: handle integer underflow in shmem_fallocate
+Date: Fri, 26 Jun 2026 05:44:00 +0300
+Message-ID: <20260626024400.67853-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- baohua@kernel.org, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, hannes@cmpxchg.org, harry@kernel.org,
- muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
- roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj2MsQ3tF0ACCCGi@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aj2MsQ3tF0ACCCGi@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: C4F5F100007
-X-Stat-Signature: 9poyrdgq54x8nza7ws41ti48us8pidmz
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782441560-57733
-X-HE-Meta: U2FsdGVkX18t/ZMevztl5X6w5DUz0v5RCWVAKeYyPfq+s7Lz/NuuhnkNsl/rsvNCcQSK3GEKh8jR101mRjmBOIyyaYyNJ1irbRUbZknVMHG5YZT3KOxfpRvVJcBITkTOBwogS2j3NNLHFzXfj8zW5nYi9+LsbuVO9Ej7oS758+Gl+8pzYZ0iwM1NFTSTP6DlOb59lly0h6aeJA9w+b0Rtztf365Yv5UNUaTLv8FIoUDXOX7cx7Di511usRW4f5TCdttcag7FXk+QCXLTPKgPk25yjNqW6+f028dlqI341maDm0C6KP8DisA8pDqs7XXePtq0dWF+Jy2OtRaTI7qsNgOV3m6ll3PpIvZzKSLnqwjI+TLIzJdN5Af08e1giQBqSgl1+L74j0UGFBo0GvPBtAKZnCtosiUa5PB9s4+ul+LKLbTm9ve7sboNw4qc4UALFt5eYFgFGIzlCKPtBPcd3zkMrnwEmW2/6s+VfvQ2mWOIcHWz9LVM/d30NCGC1wSb/Xtpry3tzRTe2OLY4or7NnO58L4WfJAXzjQ06Xue4GrOdpxxt0ve4pCF0kkUMOtJuZTATYkDRjhWsS7aBERt2N7HpzJleUGk6ZS4/JVRC3LWXlDVbWU2Cn9F5HxyG5dbSH1RGXxQcTPjWabK+H39Mwr8Q+W/GJfp+GTFO1DvjxgZ+mVrkw9I2B8TT8leJY40GNx/Fx3vdP/vH493HeUXwFS/uWGO1Z1e5Fh7geg+yee/lnXbsiYeelDL08uFWHMpgIG6/hzIaadwGGxkhuLXnHIv6qWc+J/QO2KVf8TURbFpqvn0c0hdcUPeykAV9qG/xEvM1rr7Em/qA1OJu4BiV/0E0+0LUyZPFp0z0aFJ06/qebtA8t5mjATpKAcUvI+tWDBFnymG9GZtkB7glM2bOTIEUVCnbRrcstv2Waxqt8GzZXmvV43kVqcn3NTNGRHM/+5MwQL1WzSs+4uH1j5
- 1LWYxChl
- G8nwSouDS4CE//w9psGnSv+SQWeKNoWsYcN6ereD8v2VvdPb61kezRCqC+eYa3ddl5M0cfjOyIboDNTr05k174oIEMDBJUdo8c9xukD2io0D5WiA5DEm1UKZZX0WIBCKztf9928Js8RD8AgNKTAZL2fEisDVxnoC4v+i4aVa2C0zBhi4i9MLlFrTJ3XupDt1O+h4QTDwkIAuIr+roPH+ywRr62FzMLCxs0emWbe2Lj1ecd5QDzMDgVoE/JDqT0Tw/rExy
+X-Stat-Signature: 6if6pe4gufdtudegf7qcjbguy46hayku
+X-Rspamd-Queue-Id: 9043640005
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782441847-830116
+X-HE-Meta: U2FsdGVkX1/PjsLROrYY0WbUS5qrqCExq8SRH2Eq5mwAfWw5BWOBo+/iNjqBFmQGLKzB78WObdMvQZL1O9II3FQouJcnog9XuyEyvLtt0TI7b4jfm+aEruFmTnJV9X+jSTA6yRhZpzoGcO1VUAsUzAvvkjLKTSgGK/YsuNoQraywfiYe4tA0zrJRcq/agmgqzmX4GMW0uux7qbgfdsbGQrQMNLfD8POSNzYLnlcF8mkwv6OHkG/8uXGoJuYqYcuVxLtl4GnxZdhOMiuYyYyP+7PMLgiHigqX+sv+XGHtahO2Jhc3DRJIL3pOc2innfDYieead73VRePIGj0xW5fMZLqv1XdZk3uTytZala2vemlxsHyNiPisxI3BtbbZ61A4ryR96oVl4yrrHeXxsk3s0hmrHae5xmevoFjKTy4yDaUuL+BMwBrgCm1NhET5rfG02x18NHOqYAUIH7a1QE5LvyPdSjx+3qS0HWnyrDEz0irpVJSye0JnZCQJAut/yfb7Ieq+bTv4MAihRjCRxslVprCNf2HpohJVzwH1DRQcs9mmlYRb9/ojLphbwuvRjMqR/ioZQ/AvPFCKMLBMwXpyuCEaA8K6AdUttscC6aAhjhtIIHEx60xAYywoy+Vaofa2zwklwZsL99JIS2anuyedaCAvnIKiiLX9643jf/0pvIUGW7yEDsUfDkTypeJynPRMyDF2Vn8GHo9gNSgFsc51sTJp7K0SWfVyUs4WSWY6NZfFvWlvuAxBc+yYVqid35oNipplmrSDg1JWmwProhYA+yqRQstn1RXKAoy/HBR1Im+hm0fqiOpFKeU0Ns8aztrIWmfIFjT1XLy7lkA+vgbYQP1yWAQ8jU9rVljABDvO+g/9zj+QCAxv+od9i7ddW2mKoneSNwdE/phOOTx0WdJL7X1Z8OES7/MF2/vWyYwnqwJE/L4pPHMeMf1MXX8g2zgSEzJ/xhlrSI6BTwr+o0X
+ +wwgvepN
+ eh+iJQevHxXqt4XFXcZEtf4zFBZSVVhLxXMBGax/4Bbqd1+NTUFw63S0OP/QC0y8IDCntrmNUHZjAf1FCku1GPOg7jVpPUMR3dgUlOlOoteq0Kj/j974r7VshENiuPK1GbNQ7Mm6z145pT0zk2q8677CNJX378UFv4YE9PqSOG8N4Sk4R5OAJod10sDKwvhjqBG1duoxepgmt5wTunfe7ebLSdvOVWgfDodqEVNr9demBJnHOxXKiL8f12YXVlgngINBYiAJ4muQUWXx3uOMzPjlkFrmyVXP7jyAXMSjDRuYxAJmlSSCKQL7zgk/Lsic7c3lk5IzU+EdMRbMar0icjyBIXA0jNlcjB5uJXJTC2YCLKRpidBiOlmWH9uK1JpMslWRbSOfEpH3ekw9Xa1T4lT3+DeCCtXSGD7F5Vb2sRdaIHO+gdcxFS//KpRxXAGbxrAAkykH0AXQ7h5ltmFI3pP8urVCJEsBx19s9M+1kR/SlAMw+7k7BnAFIv8LnJUBGsG/V3Tsu/HpKIkwSxI/U6V2xXYoyQYEpzitAX/FMTUdC60/STRvMhHeVd4LQLuB7afti
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,104 +116,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Shakeel,
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-On 6/26/26 4:22 AM, Shakeel Butt wrote:
-> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> The mglru page table walker batches per-generation size deltas in
->> walk->nr_pages while walking page tables without holding the lruvec lock.
->> The reset_batch_size() later folds those deltas into walk->lruvec under
->> the lruvec lock.
->>
->> The page table walker can run concurrently with the memcg reparenting path
->> as follows:
->>
->> CPU0                           CPU1
->> ====                           ====
->>
->> walk_mm
->> --> walk_page_range
->>      --> update_batch_size
->>          --> walk->nr_pages += delta
->>
->>                                mem_cgroup_css_offline
->>                                --> memcg_reparent_objcgs
->>                                    --> lock lruvec
->>                                        lru_gen_reparent_memcg
->>                                        --> reparent child folios to parent
->>                                        unlock lruvec
->>
->>      lock lruvec
->>      reset_batch_size
->>      --> child lrugen->nr_pages += delta
->>
->> This will trigger the following warning in lru_gen_exit_memcg():
->>
->> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->> 				   sizeof(lruvec->lrugen.nr_pages)));
->>
->> And the user-visible impact of underestimated nr_pages in MGLRU was
->> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
->> reaches zero, but there are still more pages.
->>
->> To fix it, make reset_batch_size() check CSS_DYING under RCU before
->> flushing the pending batch. A non-dying memcg keeps the original lruvec
->> stable against RCU-delayed offlining; a dying memcg redirects the deltas
->> to the first non-dying ancestor.
->>
->> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
->> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
->> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->> Changes in v3:
->>   - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
->>     (suggested by Harry)
->>   - update the commit message (suggested by Harry)
->>   - temporarily drop the previous Reviewed-by tags
->>     (since the sync method has changed)
->>   - rebase onto the next-20260624
->>
->> Changes in v2:
->>   - update the commit message (pointed by Barry)
->>   - collect Reviewed-by
->>
->>   mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->>   1 file changed, 38 insertions(+), 7 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 35c3bb15ae96..1ec8c23c72b9 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
->>   	walk->nr_pages[new_gen][type][zone] += delta;
->>   }
->>   
->> +#ifdef CONFIG_MEMCG
->> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
-> 
-> This is memcg specific function, move this function next to similar functions
-> like lruvec_lock_irq. Also put irq in the name.
+In shmem_fallocate(), The calculation of unmap_end
+is done via round_down(offset + len, PAGE_SIZE) - 1,
+so for any value less than PAGE_SIZE, round_down will
+produce the value -1, which is handled because unmap_end
+is a signed integer (loff_t), but later the condition
+(u64)unmap_end > (u64)unmap_start is evaluated, which
+would mean that unmap_end would be equal to the maximum
+value because u64 can't handle negative values, thus making
+the evaluation always true and calling unmap_mapping_range
+function which would perform a TLB shootdown of the file, but
+will be kept by page cache, Fixing it would require removing
+casting the integers to u64.
 
-Currently, the lock_batch_lruvec() is only used by reset_batch_size().
-Are you intend to make it a common function for use in other places?
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+---
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Perhaps we could defer making it generic until we actually have a second
-user. Since this is just a fix, keeping it self-contained within
-vmscan.c might be more compact for now. ;)
-
-> 
-> BTW have you checked other places where lruvec_lock_irq is used and if similar
-> kind of situation can happen?
-
-I just checked and found no such callers.
-
-Thanks,
-Qi
-
-> 
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..33829f296f1c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3633,7 +3633,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		inode->i_private = &shmem_falloc;
+ 		spin_unlock(&inode->i_lock);
+ 
+-		if ((u64)unmap_end > (u64)unmap_start)
++		if (unmap_end > unmap_start)
+ 			unmap_mapping_range(mapping, unmap_start,
+ 					    1 + unmap_end - unmap_start, 0);
+ 		shmem_truncate_range(inode, offset, offset + len - 1);
+-- 
+2.54.0
 
 
