@@ -4,153 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7433BC43211
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27113C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:46:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34CCF6B0100; Fri, 26 Jun 2026 12:43:19 -0400 (EDT)
+	id 048026B009F; Fri, 26 Jun 2026 12:46:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 324336B0102; Fri, 26 Jun 2026 12:43:19 -0400 (EDT)
+	id F3A9A6B00A1; Fri, 26 Jun 2026 12:46:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 23B796B0103; Fri, 26 Jun 2026 12:43:19 -0400 (EDT)
+	id E297E6B00A3; Fri, 26 Jun 2026 12:46:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F06DA6B0100
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:43:18 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 68BF6A0514
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:43:18 +0000 (UTC)
-X-FDA: 84922634076.28.0730CAF
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012010.outbound.protection.outlook.com [52.101.53.10])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4298420006
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:43:15 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=mmHFA1N+;
-	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.10 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782492195;
-	b=aMXIqdlOEOTnV376T2GcvOOubljskTjVu4r4WGZAp09jLJLXpjQHiw4wyzskPFAdUGtQwa
-	ZgSI1/yUJgPBYlfo8tg257JpxiKIiT3dXWso5thpjEvB7CyrAGlF7shD1Jl/vcVSPiz4f5
-	wx+7KI2ufNJSvlj617EEe6/8cd2qGsk=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782492195;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AD5116B009F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:46:56 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3CDD0167954
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:46:56 +0000 (UTC)
+X-FDA: 84922643232.01.816DB0B
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6292880006
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:46:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HOJOa/Ld";
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782492414;
+	b=Cw4IAUEr3GOiLobcstxObP+vaQQ4R+6md/fPSmYx2V1xN6TZ0V0qt6l1NebDh7yQq2NQhO
+	nBd2V9UmHrexDNhInQAxsVEpml5gFw5x6JEq5lJFGnF07dKkK+B4s3eX1A1/Fvwz31nHLW
+	N4EAhhJbzD29cI/s/60SPF3V8yOccrw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782492414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9gY2+6VR2V7S4I9bmKDsSE5Y4LXytlAuGMhaBiyK6Hk=;
-	b=u5BiVQq7F6hIUsrc8PXf4kZdLyFhDMCCvq81tFUWGFZFoO5Kr3kNMzuxoZMm/cB3fXh5HM
-	z/7VWcxrtMvpuTbw8B3VyFcQlqbowoMOUYmFATuiZgpanhgHCWSBbt80AT6BDolLiXMfb0
-	ZxIcEtZMy4wVwC8j4DBEP/ArUtu4mrU=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=mmHFA1N+;
-	spf=pass (imf31.hostedemail.com: domain of shivankg@amd.com designates 52.101.53.10 as permitted sender) smtp.mailfrom=shivankg@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=qMwODhPpSxKcaYTIfiTaNP7LA0kSSAmLshJ0o6ZRdWWf1NL0nFRCeAtU7VgjteAs8huyAWlHwdDq6oxfQhmS1GNE2d9zFX9in2kjPqyUNMzgpM2Bd/DXAzxemqqrtbf9xopwzpPF3gsVMUr5ZsTkpigcGOwaqvbxOMzE9g/UIcMQ6C20ByJgB5mBAKwwm+puPPDPhh/OV6+rOlC6CxMjZClm11dwiExARWMq2rYTZUP3dXb61lU10ndT3sxfehvc2jeA0aERYeNq2QPbJKK+WwAGKWiolCuipCiVMRBLHlsMKmuAEmLTzRyGnJ8nqmlfMNjd4nGjnmBpzPzlgFuTMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9gY2+6VR2V7S4I9bmKDsSE5Y4LXytlAuGMhaBiyK6Hk=;
- b=kt8k3mzQog5oU4mSZvvBov+FSJnvKUEPOxRjn8yVO04Pc7l2ojnDVgm1tqr4Eoc0MOelUuAc6SJ1WzACd+Ul/cv2OLU9P1qSn2hZOkrHKNpkgbAJ2AOZv+jrWBq/tXrSFQn4efYaC+b9rSH4lOPTztiIPmOIQ0Dbt9cIqfJFW9IHINYeeI0JbkFoRAAfXDsF3Nynv1HWF0eraFZcdaYMtN8NmKgTxu9lmq+YG+mkJWH/1oaEVEO9bzhpF8zztOf51ZSQqBJ/NWK3pD/5b/IVV6fFLhutD2LlwRQA7BfdjU8KW7Zvn/jzSKiskU6uOAltPEsqNVmkuNnm30SYtgmy6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9gY2+6VR2V7S4I9bmKDsSE5Y4LXytlAuGMhaBiyK6Hk=;
- b=mmHFA1N+pTEW+7oq8Z5XtOa0vQ1vTgMTeRoSl5tkFLLEp1UiI419IVoMY/IDWXEMZ2pxsk2jmugY/ueQtf1QVQWPqIS0zjI9ERT+6HmOnSATHbZcvd5l3b60dwh5CPbCirveSKmziU+/un/SbfiK1swN4D6+2A8q2E4Xb82MacE=
-Received: from MN0PR04CA0011.namprd04.prod.outlook.com (2603:10b6:208:52d::7)
- by PH7PR12MB7019.namprd12.prod.outlook.com (2603:10b6:510:1b9::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.15; Fri, 26 Jun
- 2026 16:43:07 +0000
-Received: from BL6PEPF00022574.namprd02.prod.outlook.com
- (2603:10b6:208:52d:cafe::77) by MN0PR04CA0011.outlook.office365.com
- (2603:10b6:208:52d::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.18 via Frontend Transport; Fri,
- 26 Jun 2026 16:43:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00022574.mail.protection.outlook.com (10.167.249.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Fri, 26 Jun 2026 16:43:06 +0000
-Received: from [10.252.220.114] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 26 Jun
- 2026 11:43:01 -0500
-Message-ID: <6d477d0b-1f14-4e33-958d-e6a66c647963@amd.com>
-Date: Fri, 26 Jun 2026 22:12:58 +0530
+	bh=FGwxxWe+QCDMvLSkrZ/qxbUzFrLihkdj28Ia6nPKpIo=;
+	b=fNiXvnmfe/gB4xFfTW7eqBPFhisCNkizWrC6McGQDjPX9/x4m0oet1GC4r1MQNo/W3dE2h
+	eProP/+i/AV3twmd5aPiHpsq71xaW5PEd7Oh56swLFnLaTXv8Ug+r+ZwXAmXANsST+kq6F
+	O0nz9vYnU4LD3VLcyziQYl3CVO6R3Sw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="HOJOa/Ld";
+	spf=pass (imf30.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <edee8461-34c6-41e9-ae0c-076380d92ebb@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782492411;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FGwxxWe+QCDMvLSkrZ/qxbUzFrLihkdj28Ia6nPKpIo=;
+	b=HOJOa/LdmSrgdvreMbVWnSMNdFb3o+bICnC0yutu2zdn9Pkw/GFuSzgPpiz7cM9SE0vUsr
+	r4i94ApppN6XHHe2YJvCDyobhQOU+JcFxBpLHC/Wi56ZjAu0xjJ99caDiEm497lv8B3xAi
+	7wLYeYTMD+L51EkeTu3wuwS97CkpL3k=
+Date: Sat, 27 Jun 2026 00:46:38 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/migrate: rename page to folio leftovers
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
-	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
-	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
- Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
- Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
- Hocko <mhocko@suse.com>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Dev Jain
-	<dev.jain@arm.com>
-References: <20260626-migrate-cleanups-prep-v1-0-a95933af7619@amd.com>
- <20260626-migrate-cleanups-prep-v1-1-a95933af7619@amd.com>
- <53e834e9-2cb1-49c1-ab27-2d6b51d50fc0@kernel.org>
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
 Content-Language: en-US
-From: "Garg, Shivank" <shivankg@amd.com>
-In-Reply-To: <53e834e9-2cb1-49c1-ab27-2d6b51d50fc0@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To: Dev Jain <dev.jain@arm.com>, linmiaohe@huawei.com
+Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
+ ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
+ vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
+ apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+ gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
+ nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
+ jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ stable@vger.kernel.org
+References: <e6d1b813-0893-458e-9d58-8d3a9bd979c4@arm.com>
+ <20260626141031.14309-1-lance.yang@linux.dev>
+ <61e9fcf7-02a5-4285-948b-62fba4dcd69c@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <61e9fcf7-02a5-4285-948b-62fba4dcd69c@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022574:EE_|PH7PR12MB7019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6d6a214e-d3d7-426c-33bd-08ded3a1ffed
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|23010399003|82310400026|36860700016|921020|56012099006|18002099003|22082099003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	nXp6nWDJBGA7cXb5E0WW3E3ifmS9nbe+2cqyM9XE4NlihGB9qxlR3Sir+sGLCH68dW2M/EznB+uug6JH1DmszrWdHwHfGHd1fbg2buVWyYnM9/QTjhCu7bNmaSCzI5ycqCZpOyiT8VZsEqAV63e+4rJZggOd+3Al8XrzBbvtDGC2ScNYXBqUQ/TfRyNcY3BP/pWYl4pWPAA+nAdupOCzyBGcIIujdCN9CW2X8hvUTATJWEfuEAKlNP4xd/6ByqUqTP6bEP9dUChOcsxYATm/lRkyNTxZE9c81z9rFv2SnROhqm97PzOwLGBzJR/jqDxAG54OGivbBqjGGbzybNg3s2aSdYWdkxMwnbIhnPTI4QJEAYe0/9tdkxzS/kS0gicDoBQ0dUIBFZeAPCXRneIjc0nLCDJYCQfZ9RBo7IrLCAYPDI+qu3inpf47+9dqVk1QJi9gv4Va8GqvLKiyWLOPYi/oCAOjopxBrxZ07D6s09LlDvpWKycJeCeCqRGDITcnlYv7qnmxMjHp+frmEv7W6jqHk1zyXtg+P4IkkVms/lur4IM7ZcVh4AtItET73Ueoullshz12E5eWLcBkwoUAKaBM5C/59STMMgyKx6VlB8GULRaxkPmvIhfDARmGFwRJzC0an8G6kr0koiAjxZjvdhibbkiFwy2HzGD6s2+lcnkjCQaIMshSANDupII+V9lGvEEBx744jImJrywk3soDZ/S81AKLMqi3w/6kWI+5/unWOnbs2nhkbpDFqpnRMl5l
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(23010399003)(82310400026)(36860700016)(921020)(56012099006)(18002099003)(22082099003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	nSYpHncaXQEP4hU8loCQrfPY7M57+c4XoYhyrAY1Rqvt0SFaXBTjh5718bb9PSj4guH5sx4JXfrUiYrHsIFYo3v1QarNEKtirMVJIGrA8GP5GYiDsBGGIHmMH3mTNNVvJUTU5HTn5/STEVWVPrQZTGrMRxOqyV0EJEBlPR3/GFxiUuvCig+4h2Qf4Dwgn3Kx7wE15ro7loyHZVtFV2Mrn7c0GxxspCPjuGSWB+3P7UHiJsmZYNQosqxroq4AFQTmDaudvFN0kLesdY6VmFlsS3sIesVdg4RzXXFSiKiME+wOmglWAPoyAe7TYSA1ryBYG3i0DZCBTrKb0VPP8+lMRrlaC2PefcQEgFKbkAalpsg8+rjpZCpdaMOnfn7EN3z176IxrLdpSx0XqcoYs1NY9FuD9Pbuz3iqxJDDtCN+9BNF+NDx1i087LVeJSfUUxDi
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 16:43:06.9686
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6d6a214e-d3d7-426c-33bd-08ded3a1ffed
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022574.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7019
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: eodt35kker9mx8gjyiwxxt35t5awmz4p
 X-Rspam-User: 
-X-Stat-Signature: zg4pm458ipas68mjmrpcr9zugxymwjpk
-X-Rspamd-Queue-Id: 4298420006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782492195-353338
-X-HE-Meta: U2FsdGVkX1+GbuW8FIIEfUVBk36ehXoxlkjiRRQuoZTlysF0mKAB1q35L3Lq89RB3ud/UTO2j4kwGUFnkiuoXhm5gbY9eLsiSxH/ywof2o720ZQk1TLO6jU3Lq5JkCvs5I6zdM8/eQv03HvlYDBlj34j1Z8o2uvhFh64/VkFzJrcBSAHfWojVNklaNe3Qcni80NoT3Lmd/e9LIGQZJ/GaLDq8ZyHE276DkFauLnLjW4+5K+IpN7hZeME5OGiBhTS3zxA5tnkRq7sg6dNtvTZo68O62UNiW5/KDS1tk8ZFOAGObf9TCTVrZnQW/V5GrETFgrv/cXqbNRlnr7Y0j8Cvhfe/HrGKqKNaygglSg2FLWZdCKTGdCRrWv+jPhh1uvSV/MqDl8PWSJjpucMYF2X4OaFTE2f6ZpihOlYfP3562qsIgyVSn3I5A0AD18MBE0bZqcDJj50QZEdIuw0Qe2YWhK5fmrQ3W1hOWeQoXfAJH/6VIWSL1GeAnWGkRJNRkHT26HT/pMKCXGSppz6Ty5nhoFvIR0QrWFpmmeGs7YgnF08D6E8y6ekwtwfeBkaix1qcfblAn1Tdr/XN1cbaoXxBD9qGWffv20skkQTUjNevXSdQS1Jc/CsT6EDsQqsV46wanI6mAjQl3+m4aU9mEQNB/FPLBInfJuIZKfdTYaQSesmlSkrUfOzVISeLWoIwpIsdTB5wJHQethzRXQDmi6+bVH5rJxI7Mi8Oij951ouxOMEXP4j7ENIgSM/VlVb7GlkcpuFCC578EndrgnhOL/+YX+Y80ks0Ni0p20cR6E1LisyrSl/ZIA+Df+Jiosu0nSGrVHIYFwS9A6sBHFTnxC0E+ulTjIj6GRtZOATARgbuTJ7mn74TMCqTtLGbsif4SMA/OIkTFr4rcFY/K63On79FYvhZDO1OdGCbDI9JPXaXBUsQ+CY6tJG1ihJIkAFAunHGV1ZALbNUpitGt8uRUj
- 0EFpvBVE
- TUEvb7xYkiLy11feyFLFQ1wow+aTYHUE7nSXWpW1VpAxdAcxjwiF6WtA3cq5PUUQf0HKmrwxM8//hLw3Y7Ign3DOEIRyStn1PeU+KmpuFIvH1cz47mlza5zHDT6W56Ooa427f/IJtxljAsgwkOq56rGcdq2p6/KFY9KYi2/67H/zmYZquCkJ5EYHMHfqZmYt1/lcSqZA2QPNq8mO3mV5tpi7MMjQOAZ75sai/GM4c4ItZMOfDAWxeMxREE3GHIA2P69JcSbWqN1qVjDdsgtwaTdUf26Vkd6h3Xlwd38M3oBbps1oJjQefpCZ7Nxtd2T3pjFhQv8BBPm7U5KYyeqibR3pQmssDItGe1ypQuUztFmNEMlMil0grZoTipQdLgbn2YD59J1YTnGEJFJZvXq60bND33BkcLmmJNgXjM46fbUVGdAnGE0pwcIF5F6wWXL7T+fcY4zQyJJITW4tQixnqxHl7XuSjI9lajFCw830ufAV20G+QfHx10xNZ9D4Sa73tkMGMgwxbP9l4Rue+u5qy3HNwpI24t/THB5dVERVXh3cAyeLeSuMsa3CRfH+9iI/D/f06TjDVEfc19aEyORXBgRC3PpIfs2XMWe4lk4x4Ui9dQLq0aIzNVBLk7rtFVMvm4oOc
+X-Rspamd-Queue-Id: 6292880006
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782492414-297711
+X-HE-Meta: U2FsdGVkX18cShKD2Ehn7Y5njTz1JeBt2X5RIE/+3RyGFBiK+aOdCa1h5PlylwTA5WDokOhf3JxuE9/IXwie1CKlcaMNgwgFN792naViYcer24XlRryVHDPYdu0Nt0JDq6gB0MD52ShUyWfJCAbaz4mKvPT75uQCcNhVdM2mnKNuNjvTl9+DbswT352K2gCao1AS/PRLluhKKABxVR/wxNWsc6jg7HFDySbdn9F0XJCU+zlPYEsuSLOW25oUGqp5a0gdZKDUSn/9wAy+llJzNuBj9gIZLjpjA0flwsalJ59eKKkHbBBJqiYXfix5TkZwa4YqPeNuzTUuGVYKLtbAYOBNYkPiHOK7JKnTHRsTyLEAQgwDmjfhEoxaDz33sEw6uELU0ocaElE2fKmeBzxkiJIErQHN8l0cED/gw2DMqywZDvTubPSFjH6lMeY5jpf1tM1OobA04Lrh2xet3lcdgeeiODptihhlja9vChkyMpiM18gTvVVfwoq8LNUu0xSM5K442YkZqSFinv1Xfhtz3da76n2J4hT4TcmpzR24UUeYUcC4l6gUabkZ2sZsvigHGwWtXkaEFsAtb9CWdRF6tnhsGksdtyTW4yl7gCbggmM1BKJchD7nqmY615TEX1okVWacjlAwW9qlBXMKGRmoRkffCT3eMt8KWI+nQ0r8xDJ3ws58H/e0P/iocmRZyjS5AZALgayE8hGs+BFR0PMQm9xyqgpK7QUlv/jrztF2FgIgf6U7/cvnJpOWjynJxzHLTWe5TsZgFn6e21SI5o1i0YMnJztlnkSAbavF12YytYUcUM1N5Fbz1UFFWoWm/78W+8JUVGRWItmilTFbUQEsEvccpjvj7DWOgq/853ciaw41wiCNgVtVk2ahnPVwrpXVJgsn1CKjwhliEyVWM0zR1CFiIP6RqD6i69ca/tqEV/CA0OrnNH2e2mu6vSl/2fns3nWHd6Jm35G7ytx2/O5
+ TwBVcGYd
+ 7P4pADKVbFPXF6fpnb/7KGIcM3CosrEgtF27HB0L100P8Be6u4gMIhB8Xx0mQtGHFOLrpnjlWLiK10pouFcbezlvdlLtClojxeoHAsXcIiMrfHpdyVMCmRqT10psfXBUwP+ROmULTcp6Fh+YHiXxtXYQ5MWz9hRHFof6vXLKhHfiL5Wm9+X4gTJ1M0bgekuypGx+xdBLaoREYrofl8aJvwKTUGo1FD8gNPUa14QHPHsUf/ze8DRmsrluq3L0E3uW3v0uSnZC34uz43M9rEFTXOtm8iGBCKOIlWtZ1Ks/JwKPbFukiFEHbn4U/XnDxf6P4wTATV6hJ/6CmsKAIP2FpMBGj5mYP+3X1RDMjx3Uj5ttu9U3qFaBmbmaP4XrVKmbLpyFmvbEeoPoFjwQhDpvgZsuFGyPt7sjCpCxH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,64 +102,309 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 6/26/2026 9:40 PM, David Hildenbrand (Arm) wrote:
-> On 6/26/26 11:37, Shivank Garg wrote:
->> Rename migrate_folio_undo_src()'s page_was_mapped parameter to
->> folio_was_mapped, matching FOLIO_WAS_MAPPED naming.
->>
->> Also fix migrate_folio() kerneldoc to say "folio" instead of "page".
->>
->> Suggested-by: Dev Jain <dev.jain@arm.com>
->> Signed-off-by: Shivank Garg <shivankg@amd.com>
->> ---
->>  mm/migrate.c | 11 ++++-------
->>  1 file changed, 4 insertions(+), 7 deletions(-)
->>
->> diff --git a/mm/migrate.c b/mm/migrate.c
->> index d9b23909d716..dd7dbd8d84a0 100644
->> --- a/mm/migrate.c
->> +++ b/mm/migrate.c
->> @@ -884,7 +884,7 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
->>   * @mapping: The address_space containing the folio.
->>   * @dst: The folio to migrate the data to.
->>   * @src: The folio containing the current data.
->> - * @mode: How to migrate the page.
->> + * @mode: How to migrate the folio.
->>   *
->>   * Common logic to directly migrate a single LRU folio suitable for
->>   * folios that do not have private data.
->> @@ -1157,13 +1157,10 @@ static void __migrate_folio_extract(struct folio *dst,
->>  }
->>  
->>  /* Restore the source folio to the original state upon failure */
->> -static void migrate_folio_undo_src(struct folio *src,
->> -				   int page_was_mapped,
->> -				   struct anon_vma *anon_vma,
->> -				   bool locked,
->> -				   struct list_head *ret)
->> +static void migrate_folio_undo_src(struct folio *src, int folio_was_mapped,
->> +		struct anon_vma *anon_vma, bool locked, struct list_head *ret)
->>  {
->> -	if (page_was_mapped)
->> +	if (folio_was_mapped)
+On 2026/6/26 23:26, Dev Jain wrote:
 > 
-> Why not "was_mapped" given that folio is part of the function name?
 > 
-> (it's also not "folio_locked") :)
+> On 26/06/26 7:40 pm, Lance Yang wrote:
+>>
+>> On Fri, Jun 26, 2026 at 06:53:10PM +0530, Dev Jain wrote:
+>>>
+>>>
+>>> On 26/06/26 1:18 pm, Lance Yang wrote:
+>>>>
+>>>> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
+>>>>> check_pte() is the final validation step in page_vma_mapped_walk().
+>>>>> It reads pvmw->pte with ptep_get() to decide whether the entry maps
+>>>>> the PFN range being walked. For hugetlb VMAs, that pointer refers
+>>>>> to a hugetlb entry.
+>>>>>
+>>>>> On arches which provide their own huge_ptep_get() to dereference a huge
+>>>>> pte pointer, accessing via ptep_get() would cause pte_pfn(),
+>>>>> pte_present() etc to misbehave.
+>>>>>
+>>>>> It is not clear whether this has a trivially visible effect to userspace.
+>>>>>
+>>>>> Use huge_ptep_get() to dereference a huge pte pointer.
+>>>>>
+>>>>> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>>> ---
+>>>>> mm/page_vma_mapped.c | 8 +++++++-
+>>>>> 1 file changed, 7 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>>> index 2ccbabfb2cc17..18e1d341f463c 100644
+>>>>> --- a/mm/page_vma_mapped.c
+>>>>> +++ b/mm/page_vma_mapped.c
+>>>>> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+>>>>> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>>>>> {
+>>>>> 	unsigned long pfn;
+>>>>> -	pte_t ptent = ptep_get(pvmw->pte);
+>>>>> +	pte_t ptent;
+>>>>> +
+>>>>> +	if (is_vm_hugetlb_page(pvmw->vma))
+>>>>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>>>>> +				      pvmw->pte);
+>>>>
+>>>> I think check_pte() can pass a wrong address to huge_ptep_get() ...
+>>>
+>>> Won't this be handled by rmap_walk_anon/rmap_walk_file - they are the ones
+>>> performing the rmap traversal and passing address to try_to_unmap_one/folio_referenced_one
+>>> etc ...
+>>
+>> Right, that should cover the rmap callbacks. The bit I was worried about
+>> is page_mapped_in_vma() though.
+>>
+>>>>
+>>>> Not sure that is wrong in the first place. For memory failure,
+>>>> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
+>>>> folio. In that case, pvmw->address need not be hugepage-aligned.
+>>>>
+>>>> @Miaohe
+>>
+>> For hugetlb memory failure we start with the poisoned PFN:
+>>
+>> static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
+>> {
+>> 	...
+>> 	struct page *p = pfn_to_page(pfn);
+>> 	struct folio *folio;
+>> 	...
+>>
+>> 	folio = page_folio(p);
+>>
+>> 	...
+>>
+>> 	if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
+>> 		...
+>> 	}
+>>
+>> 	...
+>> }
+>>
+>> and pass the same p down:
+>>
+>> static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
+>> 		unsigned long pfn, int flags)
+>> {
+>> 	...
+>>
+>> 	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
+>>
+>> 	...
+>> }
+>>
+>> static void collect_procs(const struct folio *folio, const struct page *page,
+>> 		struct list_head *tokill, int force_early)
+>> {
+>> 	...
+>>
+>> 	if (unlikely(folio_test_ksm(folio)))
+>> 		...
+>> 	else if (folio_test_anon(folio))
+>> 		collect_procs_anon(folio, page, tokill, force_early);
+>> 	else
+>> 		...
+>> }
+>>
+>> So collect_procs_anon() still gets the poisoned page, not &folio->page:
+>>
+>> static void collect_procs_anon(const struct folio *folio,
+>> 		const struct page *page, struct list_head *to_kill,
+>> 		int force_early)
+>> {
+>> 	...
+>>
+>> 	pgoff = page_pgoff(folio, page);
+>> 	rcu_read_lock();
+>> 	for_each_process(tsk) {
+>> 		...
+>> 		
+>> 		anon_vma_interval_tree_foreach(vmac, &av->rb_root,
+>> 					       pgoff, pgoff) {
+>> 			...
+>> 			addr = page_mapped_in_vma(page, vma);
+>> 			...
+>> 		}
+>> 	}
+>> 	rcu_read_unlock();
+>> 	anon_vma_unlock_read(av);
+>> }
+>>
+>> page_mapped_in_vma() then builds pvmw for that page:
+>>
+>> unsigned long page_mapped_in_vma(const struct page *page,
+>> 		struct vm_area_struct *vma)
+>> {
+>> 	const struct folio *folio = page_folio(page);
+>> 	struct page_vma_mapped_walk pvmw = {
+>> 		.pfn = page_to_pfn(page),
+>> 		.nr_pages = 1,
+>> 		.vma = vma,
+>> 		.flags = PVMW_SYNC,
+>> 	};
+>>
+>> 	pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
+>> 	...
+>> }
+>>
+>> and page_pgoff() includes the subpage index:
+>>
+>> static inline pgoff_t page_pgoff(const struct folio *folio,
+>> 		const struct page *page)
+>> {
+>> 	return folio->index + folio_page_idx(folio, page);
+>> }
+>>
+>> So if the poisoned PFN points to a tail page, pvmw->address can be offset
+>> from the start of the hugetlb mapping by
+>>
+>> folio_page_idx(folio, page) << PAGE_SHIFT
+>>
+>> Should check_pte() pass the hugepage-aligned address to huge_ptep_get()
+>> for that case?
 > 
+> Thanks! This looks correct.
+> 
+> I can indeed fix this up in check_pte. But in the memory-failure path
+> it has always been confusing to me for hugetlb folios why we are bothering
+> with the tail page. I am sure that area can also be simplified. But for
+> now I'll just do a simple fix here itself.
 
-yes, makes sense. I'll use was_mapped.
+Just thinking out loud: given that huge_ptep_get() already assumes that
+addr matches the huge pte, at least on arm64, would it make sense to
+have a small hugetlb wrapper around it that takes hstate and aligns
+the address before calling the arch helper?
 
-While here, what's your opinion on unmap_and_move_huge_page()?
-It also has local variable named page_was_mapped even though the function
-is fully folio-based. The function name and comments still have "page".
+Might make the rule clearer, and a bit harder to get wrong again :)
 
-Thanks,
-Shivank
+Thanks, Lance
 
-
-
-
-
+> 
+>>
+>> Cheers, Lance
+>>
+>>>>
+>>>> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
+>>>> page_vma_mapped_walk() passes that size to hugetlb_walk():
+>>>>
+>>>> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>> {
+>>>> 	...
+>>>> 	if (unlikely(is_vm_hugetlb_page(vma))) {
+>>>> 		...
+>>>> 		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
+>>>> 		...
+>>>> 	}
+>>>> 	...
+>>>> }
+>>>>
+>>>> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
+>>>> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
+>>>> calculating pmdp:
+>>>>
+>>>> pte_t *huge_pte_offset(struct mm_struct *mm,
+>>>> 		       unsigned long addr, unsigned long sz)
+>>>> {
+>>>> 	...
+>>>> 	if (sz == CONT_PMD_SIZE)
+>>>> 		addr &= CONT_PMD_MASK;
+>>>>
+>>>> 	pmdp = pmd_offset(pudp, addr);
+>>>> 	pmd = READ_ONCE(*pmdp);
+>>>> 	...
+>>>> }
+>>>>
+>>>> So for that case, pvmw->pte is calculated from the aligned addr, not
+>>>> necessarily from the original pvmw->address. But check_pte() passes the
+>>>> original address together with pvmw->pte:
+>>>>
+>>>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>>>> +				      pvmw->pte);
+>>>>
+>>>> arm64 then uses that addr again to choose ncontig:
+>>>>
+>>>> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>>>> {
+>>>> 	...
+>>>> 	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+>>>> 	for (i = 0; i < ncontig; i++, ptep++) {
+>>>> 		...
+>>>> 	}
+>>>> 	return orig_pte;
+>>>> }
+>>>>
+>>>> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+>>>> 			   pte_t *ptep, size_t *pgsize)
+>>>> {
+>>>> 	pgd_t *pgdp = pgd_offset(mm, addr);
+>>>> 	p4d_t *p4dp;
+>>>> 	pud_t *pudp;
+>>>> 	pmd_t *pmdp;
+>>>>
+>>>> 	*pgsize = PAGE_SIZE;
+>>>> 	p4dp = p4d_offset(pgdp, addr);
+>>>> 	pudp = pud_offset(p4dp, addr);
+>>>> 	pmdp = pmd_offset(pudp, addr);
+>>>> 	if ((pte_t *)pmdp == ptep) {
+>>>> 		*pgsize = PMD_SIZE;
+>>>> 		return CONT_PMDS;
+>>>> 	}
+>>>> 	return CONT_PTES;
+>>>> }
+>>>>
+>>>> With a tail address, pmdp may no longer point at pvmw->pte, so
+>>>> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
+>>>>
+>>>> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
+>>>> can walk past the CONT_PMD entries, and possibly past the PMD table.
+>>>>
+>>>> Should check_pte() pass the address matching pvmw->pte, sth like:
+>>>>
+>>>> ---8<---
+>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>> index 406fd50bbd8f..58463493bd3d 100644
+>>>> --- a/mm/page_vma_mapped.c
+>>>> +++ b/mm/page_vma_mapped.c
+>>>> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+>>>>   	unsigned long pfn;
+>>>>   	pte_t ptent;
+>>>>
+>>>> -	if (is_vm_hugetlb_page(pvmw->vma))
+>>>> -		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>>>> -				      pvmw->pte);
+>>>> -	else
+>>>> +	if (is_vm_hugetlb_page(pvmw->vma)) {
+>>>> +		struct hstate *hstate = hstate_vma(pvmw->vma);
+>>>> +		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
+>>>> +
+>>>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
+>>>> +	} else {
+>>>>   		ptent = ptep_get(pvmw->pte);
+>>>> +	}
+>>>>
+>>>>   	if (pvmw->flags & PVMW_MIGRATION) {
+>>>>   		const softleaf_t entry = softleaf_from_pte(ptent);
+>>>> --
+>>>>
+>>>> while leaving pvmw->address unchanged for page_mapped_in_vma()?
+>>>>
+>>>> Cheers, Lance
+>>>>
+>>>>> +	else
+>>>>> +		ptent = ptep_get(pvmw->pte);
+>>>>>
+>>>>> 	if (pvmw->flags & PVMW_MIGRATION) {
+>>>>> 		const softleaf_t entry = softleaf_from_pte(ptent);
+>>>>> -- 
+>>>>> 2.43.0
+>>>>>
+>>>>>
+>>>
+>>>
+>>
+> 
 
 
