@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BCC7C43327
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:47:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C4B2C43211
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:49:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37F386B00AB; Fri, 26 Jun 2026 14:47:06 -0400 (EDT)
+	id 162266B0139; Fri, 26 Jun 2026 14:49:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32F656B00AD; Fri, 26 Jun 2026 14:47:06 -0400 (EDT)
+	id 1138E6B013A; Fri, 26 Jun 2026 14:49:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 246016B00AC; Fri, 26 Jun 2026 14:47:06 -0400 (EDT)
+	id 028B56B013B; Fri, 26 Jun 2026 14:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E02066B0134
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:47:05 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5BCE7A0585
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:47:05 +0000 (UTC)
-X-FDA: 84922946010.01.23DCFB8
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 78DCE20002
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:47:03 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RXfHTpS7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CB8616B0139
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:49:20 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AC627140534
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:49:19 +0000 (UTC)
+X-FDA: 84922951638.20.D56AAFC
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 005B91C0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:49:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XEEyLeew;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3q8k-agkKCJIFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3q8k-agkKCJIFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782499623;
-	b=U+K4xjML/Zzo/5b/CoY3haYqBp5IFfAl18HNk1QPZpTtTJZls9E8nMbsa6FCteXEtCdPEF
-	OIrjIkf15lk+0PGRePcczN2F2ISCL4jgPauDq/6mWxv6W/OffH3lu7aWM4R2OZ7P0k6Xkc
-	Xd2ZqjDYzUzWv2cJb/Zxne61gOjIPJo=
+	t=1782499758;
+	b=0SccVFpwp1iwVZ8kPei72odoyAqq/PVe3ctZUpAcqGKzieA4WcI2QfhxaKP54toqDVBRZJ
+	SaSgc2moj8G2+h8XlxXgW7ak2ie9we3VhkG3YoCAyA7rSMnUCjyj9Qa3oCvUpBOAYcUhaI
+	Q+PhYxJ4D4r4DaaLZI8d+jJmCxLK3dc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782499623;
+	s=arc-20220608; t=1782499758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d89Pw8WhojuHM1Q/i4jkWiFg7OUnGngxwYZcoBgDwiU=;
-	b=DzuhWlXw1AqNPitXkWxffjLhYNSeiudqt7GWw/ZHPEj094oN7kUb673Nqe+J9m4nuGC4Hw
-	eiYfwk8ETsGoNbUSMEBx0kus4E87F4q83sQECwYkjl+jRvUcAAK9MwSFoiBx2tvad8SFNF
-	G4rGLz2WUymUsU14ggMjtGxvmbB+bMQ=
+	bh=6DYOZPc47JqTq3OBvPwgELKvYMpLEHI1RmYpvjUyG3k=;
+	b=wkFcnJAHKdUAcTwRB2gzMQYPOBjd+hW7lb3RbAHjW4x7jdIU6SwkEyVji8Np6IZM6IjxCw
+	mkGY+JB0+9AecZbtJI8wMxTCMUy30zlQdWaYgDhIgKUUNDxSebDcUMANfg6/z6Btef8RmM
+	F+zoz/xCRAW/vJvEK+rZhlPBa9b93C8=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RXfHTpS7;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ilya.gladyshev@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=ilya.gladyshev@linux.dev
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782499621;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=d89Pw8WhojuHM1Q/i4jkWiFg7OUnGngxwYZcoBgDwiU=;
-	b=RXfHTpS70Eq6o9IFUfZbK4HqUVFL7lKg6bSHpox2znXFCPCO2NC6WRm6KFnpFz7gOF6F2a
-	FxLxeYA7GLnPQ+q0mltipwBRfLdH4GJnzYXW+aY3sVuNt9XgGi5AjuLSLXFsHjaBo1IMR7
-	8e5kXsICluR6JX7OzjRHq9BqSzy3eiI=
-Date: Fri, 26 Jun 2026 18:46:50 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
-Message-ID: <42f67f4ea908c862d11ca65aa3da51503bcb0962@linux.dev>
-TLS-Required: No
-Subject: [PATCH v5 2/2] mm: implement page refcount locking via dedicated bit
-To: "Gladyshev Ilya" <ilya.gladyshev@linux.dev>
-Cc: "Linus Torvalds" <torvalds@linuxfoundation.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, ivgorbunov@me.com, Liam.Howlett@oracle.com,
- apopple@nvidia.com, artem.kuzin@huawei.com,
- baolin.wang@linux.alibaba.com, foxido@foxido.dev, harry.yoo@oracle.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, muchun.song@linux.dev,
- rppt@kernel.org, surenb@google.com, vbabka@suse.cz, yuzhao@google.com,
- ziy@nvidia.com, pfalcato@suse.de, kirill@shutemov.name
-In-Reply-To: <bb1cb750157733f897df2e261cad3d5c42acc172@linux.dev>
-References: <bb1cb750157733f897df2e261cad3d5c42acc172@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=XEEyLeew;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf21.hostedemail.com: domain of 3q8k-agkKCJIFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3q8k-agkKCJIFwDG9Ew3G2AA270.yA8749GJ-886Hwy6.AD2@flex--tarunsahu.bounces.google.com
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-697560b83f4so1328009a12.1
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:49:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782499756; x=1783104556; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6DYOZPc47JqTq3OBvPwgELKvYMpLEHI1RmYpvjUyG3k=;
+        b=XEEyLeewyfuZxaTAnLGiO/abWfUGKaGA+WnRs3zzjbN+mG1a3UEaPxdbqmrfkdTO0I
+         wyrHuthYUDxtFQ0o7J8FTYEXDIwO7ld/2VD5TQ6HBIYNnle7PILXBaLxnjvJzNYF9oVI
+         QXGJQvFWu1R7PSwhQLI1sK8iHP63bQB9C0hhxoKI+KEabW+kDxPPfdgyVo6WEe46+vz7
+         I1DKUm9GLNb3nQ9WX7ilSy1mJFCXChxFlmI+YArkjsjDjTxEZfen3BTCYY4u5iEbvKis
+         Iszanv7UkkTklIOrbX4rgePLmP402YuPAgC/TpMTkadVcKd6GIeOBQmgUrNwbfDq8rS2
+         FpEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782499756; x=1783104556;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6DYOZPc47JqTq3OBvPwgELKvYMpLEHI1RmYpvjUyG3k=;
+        b=Mcl0S41UsIliHXcDOcQlm0g7/r1PAIndvgVnDuNkpEG+VkgirNj2oxvHdn3E19J4jj
+         75fjxUA5GQLhsx2PLmPCSk6eFsndmN/YChiCP2NXjuXlmlfQvmGNTw1W2FVkmoPsUo6D
+         bi7nwUwoIqtMQEsdKLwlH6rBoqXF1fsjkHZe5alMRRsgux5b6Mp8adOGbVmq6GEXogBT
+         dj5H1XRmvE9vXKLGyYviQGQJQusXQefruJt0lkk/XgMh+T4ed8Scs4LhTuJUTd3y5PdK
+         d+tRQ+FPM231vYsWRqLeJfuiTFD2EIsX/ZsYLN8tFlve3LGXuMORK7dFVtSdb4x8vqaM
+         kgdw==
+X-Forwarded-Encrypted: i=1; AHgh+Rr7pVGKzFfBy2FRdbDiXY/zmvsByN+qDK7AIkrCFnw42Y8SPXtBbiMcR/gpP8XqcDfx4B5338vIHg==@kvack.org
+X-Gm-Message-State: AOJu0YwPr3zU/F6OvHc955cjVHldDf0ZnhdUc/dUUkXi6E1+hLHxZQ2Z
+	Nc0eJaXUcvjztdMyVdwhu2ksUhNgiSj/DQE2p+MAcBNi3p92lPbtVzpov/jEAAmkF2uYYSbEbre
+	sM4ccNO9M+PtMTgCWIQ==
+X-Received: from edaa16.prod.google.com ([2002:a05:6402:24d0:b0:695:9e2c:a1ca])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:280e:b0:698:3b7c:3b2f with SMTP id 4fb4d7f45d1cf-6983b7c3e1emr618285a12.17.1782499755827;
+ Fri, 26 Jun 2026 11:49:15 -0700 (PDT)
+Date: Fri, 26 Jun 2026 18:49:15 +0000
+In-Reply-To: <20260623105201.3724592-3-tarunsahu@google.com>
+Mime-Version: 1.0
+References: <20260623105201.3724592-1-tarunsahu@google.com> <20260623105201.3724592-3-tarunsahu@google.com>
+Message-ID: <9huz8q81yw5w.fsf@tarunix.c.googlers.com>
+Subject: Re: [PATCH v5 2/3] kho: add KHOSER_COPY_PTR to allow phys copy of
+ serialized ptr
+From: tarunsahu@google.com
+To: Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexander Graf <graf@amazon.com>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 005B91C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 78DCE20002
-X-Stat-Signature: b8r5h9os3w9y71n444fuzfnry4wepm45
-X-HE-Tag: 1782499623-269827
-X-HE-Meta: U2FsdGVkX1/WK6LAdQkoFbnC3KAKgo8+kFamar0+/z4Tde51Adjy2sTT5uCOkVFUc7lLTyi5+V9KmuIwqafIWbIvRK3bYm6dzkTt1hmaKCxbFcMpXkRwrb6K1/o2IPApFbELuQaFERUUBGJ3K+2gnBq7vz5CELYjTXkgL9OFFdfCajyM6PzWI/2MvAhYI+4f+uMCDdQAYSvYvXoPbzH6RK1FhN3h0RR/XLAlMRJmscVOw4GHvcIeshaX2Am5lSaTIOrP27r8LPrMc5Pa0SaOjqvSv9rjCA/VdWz1qikAv7Qka+vghVB5CiQg4U2unB4Qs56liVjSPBBxHw2FACTp+LznGz2GUmiwXZm/zBU8lILXWBlVWgTPSbYyHmUOBr9RhfGKtFxXkXpCqwDrk4ieVd+qxNKd87+VDAvM/DEnsgAzNkhpofO4Bq4Yohj+wADzvkGMjUxqEYulYgdE1CJPd6wVJuE3IczMrT7fLa/TKMa3MikPoF5a0sbj+5vIp/4j5k8uPCfdy3mtKZQqdHfovM1eawB/aO3xt9oBU5PL6srklFhjB0vZpKO8dnaecxRBTwutkcodh0fOOW6Xq57utKMf7D0ABMNyh6ww1LnAm9Emr1oYLaUG7/Zj7Oe7xJf3RqJdkvx5029Ui31lMBFdPd8Oza+KF/LbiE/n1JF69oxgT2Hu5jeyNFiAxeEbIrhervtGMKf2lrhcMQhjzTI40NfkIXA5/ysTK1YQhPgdYV0CnmiCvWLZ380eZUhaHuDwP5ezZQQMdPYsz3/PdmY8i78CQdxFSRaPQ8hjH25JCsFmNu/cCmYu819PYyHNoC+PqaBlGV3lIjxu8QMaL+NREc3bpTactjtAF3tEBLLna80Tzu7zDOyP7+YhMri9MBv+QQwOhaYFd+nzvvp83Nn9dZFUYHw61jHqP39DvmJLfC/MpTpA1bnyPd/7rcOcScKph7z6367N8DSUHqSyUFE
- kjwrOVr2
- lR/99QRISdaGKxxRwTec0VTl3wl7XoJv8mtP2YJ0SSbfJyKOkLRYzSL1aYA6Im6fkwecwI/7mJDxb1/Q/VSK53smPPfzJ0shn7hFSF+jdXb5dd6KUnAXGEfaYy1p+JJszVX6Wt721alRU6BwYJ4tB/qBfOoreGw1FrGP7ZoEWbTo14NRoJZHL8iHusU5IhTwI37v1vNJtpQ9WzENdkLTBoYJzrO8bC6Oh3lI2DfEf8Q4NSnj2wfc/vFR/vF3d15vQRuJ/yegA2cWijTQugaF/rtJ6aVNXRD/oBMWxErvDH0HQ5KCMFP3lFUE5HT9sqTMeE6jf
+X-Stat-Signature: nkgzofmopom4ig4t97p3efob53691w61
+X-HE-Tag: 1782499757-752556
+X-HE-Meta: U2FsdGVkX1+YsDcq2sMlHTcQFDiFefqp13sPqTCUrL3KuKABMr9yZwa3brbyF1V/0aSUDXF1qfa8Iv3zKtcl9WPsbAXmbxZY4dt7Q55ngCmERNw4cOZWX7YJLdd5zQY+OyoyiaVoZXEjH+Ci1GJ0NX7CgLnGSRaLybxOo9vauOGk0Me+6+yVToqaT5f5Kl8n4q8Uc3rtnwF2h5FYHDRnDz+eGvHYtIl2gwX3IiiXLW3p7wtaIZS7Eb+/02FywE4pD0RUrLmXnGuTeDgM2AmpJDkPx/W/xDhuAgNDwdoKh92y0bwVMiFNGZFquBJbHoGY2csenc2e9TfjasOfmd70J0T1Y9WnN+3QDZYKBZhHxUZYRaxlP6dVT/ce3jOHjyup/zUji/TFjTBjgUTJ3J8aWIgi/TSOVjD1XGMBSW8Tm5QRnQ+kmoPGVzepic20LhQ59nNVjG+RpEg1L85zB+MRNaT/MvbHskoa9Wn5wb7DUH/SqvcDFupoAzb5PcRqLwCzdcCMHHeKFdL4WIRuqTnMXiknnfgO8MkM39Q5gUlmdV96VL4jJiJ9i97broAELJ91pepr9bDxbQcm1BQnxXJ9FbntNjvGt7Tk2MfK4JYiarVvw/PupZsBO8/pCUYpfbtD4q5YnOmejln77f05C5r6iuZPFCYXDV5WcP870snY0NK6dqd47q9QcV6o2sLBtBB6H6YIp1ZoTfUOL2ktWSHBtXwsvT7dXDuHu73mfmJ5fZDbkew2+uDUXL+JWRgM8yfSC/8Qw0Ef99qgwOXcRHzKo/DQ7uhARwYSvAwXfVIOKBQVwIRnvSsics5BR9NrYSVbngeWSYua9YQWk8kaxz3LjMJxQIXe4Q1IjPMZDKVgCmWP+jufTL/qeCrH9KKOxdopBgHZ+kN5JSZ/RGoilp5EdGmivN8L9WFcj952z0Jckb+Q3oYfVr5NrUaqD82XmDMne1fBi9ttkaMxPuJYdzx
+ 2sdJ9rkI
+ H6ae8eLtVR7vZyCV4ePBmECexKWlnNrAXQdGFNTu+w6Aqq4q5oDD4g1VJWAAbdiz1NYSscA2Jcwv00nEpM3hf4PjBu/RUAScmDpd/EYSXQ2NLfi8Ee9TSkuwVUIRgHVZM904STmKqsUpxymEUvQgb/lOhd04xu5z1BUGPc9Tz4i/ge1eSqwSDuQ2FYMjSzdi9g1Dn1iOgpyY7I7gwoy4nP9VDa+HM7q+/vcixiiWbczFf8eVJuCoryADw7HSSUvshBxXPV4iF5Qa4xuDv0qKDSyQYYyt0rEWwl9XsPO9b2Wvz2l6NYjwfvUspqyxyxiBQktFnCG8d4VZ5JKLYzm0xzLnZMnxsQewhHJt0G100mu6Sxmv6wl5CjgQyvFEZVwJLIly1H9VFy70z7pyn9SXiA2WJ+wyHYGTr/aXWngXpRf0/xBLksrzPZ7HHezaU0KfT5wgv5BtmUgCBFokLFHn82D54VXb3eptnD8Wgsf+zM+tRS8dkTOEAUqWPJ47cyxfwPygfnOkbBbLUDqD3ZFHqnQoBXzFR7JD9WEwkJsQQJsYsUBW50QlDNDYoujWgQLIJgj4rsCUf2uHDnGhvmtJEp3i+HWO5qW+1p2hk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,155 +109,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current atomic-based page refcount implementation treats zero
-counter as dead and requires a compare-and-swap loop in folio_try_get()
-to prevent incrementing a dead refcount. This CAS loop acts as a
-serialization point and can become a significant bottleneck during
-high-frequency file read operations.
 
-This patch introduces PAGEREF_FROZEN_BIT to distinguish between a
-(temporary) zero refcount and a locked (dead/frozen) state. Because now
-incrementing counter doesn't affect it's locked/unlocked state, it is
-possible to use an optimistic atomic_add_return() in
-page_ref_add_unless_zero() that operates independently of the locked bit.
-The locked state is handled after the increment attempt, eliminating the
-need for the CAS loop.
++mike
 
-If locked state is detected after atomic_add(), pageref counter will be
-reset with CAS loop, eliminating theoretical possibility of overflow.
+As per you suggestion:
 
-Reviewed-by: Artem Kuzin <artem.kuzin@huawei.com>
-Co-developed-by: Gorbunov Ivan <ivgorbunov@me.com>
-Signed-off-by: Gorbunov Ivan <ivgorbunov@me.com>
-Signed-off-by: Gladyshev Ilya <ilya.gladyshev@linux.dev>
-Acked-by: Linus Torvalds <torvalds@linuxfoundation.org>
----
- include/linux/page-flags.h | 13 +++++++++++++
- include/linux/page_ref.h   | 32 +++++++++++++++++++++++++++-----
- 2 files changed, 40 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 7223f6f4e2b4..ea9904a67334 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -196,6 +196,19 @@ enum pageflags {
-=20
-=20#define PAGEFLAGS_MASK		((1UL << NR_PAGEFLAGS) - 1)
-=20
-+/*=20Most significant bit in page refcount */
-+#define PAGEREF_FROZEN_BIT BIT(31)
-+
-+/* Page reference counter can be in 4 logical states,
-+ * which are described below with their value representation
-+ *        state              |         value
-+ * (1)  safe with  owners    |   1...INT_MAX
-+ * (2)  safe with no owners  |         0
-+ * (3)  frozen               |  INT_MIN....-1
-+ *
-+ * State (2) can be only temporally inside dec_and_test.
-+ */
-+
- #ifndef __GENERATING_BOUNDS_H
-=20
-=20/*
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 61a2c9b9b73c..21257559b06f 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -64,7 +64,7 @@ static inline void __page_ref_unfreeze(struct page *pag=
-e, int v)
-=20
-=20static inline bool __page_count_is_frozen(int count)
- {
--	return count =3D=3D 0;
-+	return count & PAGEREF_FROZEN_BIT;
- }
-=20
-=20static inline bool __page_is_frozen(const struct page *page)
-@@ -74,7 +74,12 @@ static inline bool __page_is_frozen(const struct page =
-*page)
-=20
-=20static inline int page_ref_count(const struct page *page)
- {
--	return atomic_read(&page->_refcount);
-+	int val =3D atomic_read(&page->_refcount);
-+
-+	if (unlikely(val & PAGEREF_FROZEN_BIT))
-+		return 0;
-+
-+	return val;
- }
-=20
-=20/**
-@@ -145,7 +150,7 @@ static inline void init_page_count(struct page *page)
-=20
-=20static inline void set_page_count_frozen(struct page *page)
- {
--	set_page_count(page, 0);
-+	set_page_count(page, PAGEREF_FROZEN_BIT);
- }
-=20
-=20static inline void page_ref_add(struct page *page, int nr)
-@@ -215,6 +220,9 @@ static inline int page_ref_sub_and_test(struct page *=
-page, int nr)
- 	int ret =3D atomic_sub_and_test(nr, &page->_refcount);
- 	VM_WARN_ON_ONCE_PAGE(__page_count_is_frozen(ret + nr), page);
-=20
-+=09if (ret)
-+		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BI=
-T);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -nr, ret);
- 	return ret;
-@@ -245,6 +253,9 @@ static inline int page_ref_dec_and_test(struct page *=
-page)
- 	int ret =3D atomic_dec_and_test(&page->_refcount);
- 	VM_WARN_ON_ONCE_PAGE(__page_count_is_frozen(ret + 1), page);
-=20
-+=09if (ret)
-+		ret =3D !atomic_cmpxchg_relaxed(&page->_refcount, 0, PAGEREF_FROZEN_BI=
-T);
-+
- 	if (page_ref_tracepoint_active(page_ref_mod_and_test))
- 		__page_ref_mod_and_test(page, -1, ret);
- 	return ret;
-@@ -270,9 +281,20 @@ static inline int folio_ref_dec_return(struct folio =
-*folio)
- 	return page_ref_dec_return(&folio->page);
- }
-=20
-+#define=20_PAGEREF_FROZEN_LIMIT	((1 << 30) | PAGEREF_FROZEN_BIT)
-+
- static inline bool page_ref_add_unless_frozen(struct page *page, int nr)
- {
--	bool ret =3D atomic_add_unless(&page->_refcount, nr, 0);
-+	bool ret =3D false;
-+	int val =3D atomic_add_return(nr, &page->_refcount);
-+	// See PAGEREF_FROZEN_BIT declaration in page-flags.h for details
-+	ret =3D !(val & PAGEREF_FROZEN_BIT);
-+
-+	/* Undo atomic_add() if counter is locked and scary big */
-+	while (unlikely((unsigned int)val >=3D _PAGEREF_FROZEN_LIMIT)) {
-+		if (atomic_try_cmpxchg_relaxed(&page->_refcount, &val, PAGEREF_FROZEN_=
-BIT))
-+			break;
-+	}
-=20
-=20	if (page_ref_tracepoint_active(page_ref_mod_unless))
- 		__page_ref_mod_unless(page, nr, ret);
-@@ -307,7 +329,7 @@ static inline bool folio_ref_try_add(struct folio *fo=
-lio, int count)
-=20
-=20static inline int page_ref_freeze(struct page *page, int count)
- {
--	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, 0) =3D=3D co=
-unt);
-+	int ret =3D likely(atomic_cmpxchg(&page->_refcount, count, PAGEREF_FROZ=
-EN_BIT) =3D=3D count);
-=20
-=20	if (page_ref_tracepoint_active(page_ref_freeze))
- 		__page_ref_freeze(page, count, ret);
---=20
-2.54.0
+	({								\
+		typeof((dest).ptr) __dst;				\
+		typeof((src).ptr) __src;				\
+		static_assert(						\
+			__builtin_types_compatible_p(__dst, __src)) ||	\
+			__builtin_types_compatible_p(__dst, void *) ||	\
+			__builtin_types_compatible_p(__src, void *),	\
+			"pointer type mismatch in KHOSER_COPY_PTR"	\
+		); \
+		(dest).phys = (src).phys; \
+	})
+
+This is incorrect:  as it looks for type instead of var and adding
+typedef like below throws warning in checkpatch : no new typedefs.
+
+
+
+	({								\
+		typedef typeof((dest).ptr) __dst;			\
+		typedef typeof((src).ptr) __src;			\
+		static_assert(						\
+			__builtin_types_compatible_p(__dst, __src)) ||	\
+			__builtin_types_compatible_p(__dst, void *) ||	\
+			__builtin_types_compatible_p(__src, void *),	\
+			"pointer type mismatch in KHOSER_COPY_PTR"	\
+		); \
+		(dest).phys = (src).phys; \
+	})
+
+OR we can add __builtin_...(typeof(__dst), typeof(__src)), But this does
+not solve the purpose of improving the readability.
+
+So I am fine with the original, as it is more straight-forward to read.
+Typeof(pointer of destination) (typeof(dst.ptr)) and so on.
+
+~Tarun
+
+Tarun Sahu <tarunsahu@google.com> writes:
+
+> Adding KHOSER_COPY_PTR to copy one serializeable pointer to
+> another. It basically allows copy of phys val of the
+> serializeable pointer.
+>
+> It ignores the typecheck if any of the argument is of void *
+>
+> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+> ---
+>  include/linux/kho/abi/kexec_handover.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>
+> diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+> index 5e2eb8519bda..c1b61d875dcc 100644
+> --- a/include/linux/kho/abi/kexec_handover.h
+> +++ b/include/linux/kho/abi/kexec_handover.h
+> @@ -139,6 +139,17 @@
+>  		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
+>  	})
+>  
+> +/* Copies one serializable pointer to another. */
+> +#define KHOSER_COPY_PTR(dest, src) \
+> +	({ \
+> +		static_assert( \
+> +			__builtin_types_compatible_p(typeof((dest).ptr), typeof((src).ptr)) || \
+> +			__builtin_types_compatible_p(typeof((dest).ptr), void *) || \
+> +			__builtin_types_compatible_p(typeof((src).ptr), void *), \
+> +			"pointer type mismatch in KHOSER_COPY_PTR" \
+> +		); \
+> +		(dest).phys = (src).phys; \
+> +	})
+>  /*
+>   * This header is embedded at the beginning of each `kho_vmalloc_chunk`
+>   * and contains a pointer to the next chunk in the linked list,
+> -- 
+> 2.55.0.rc0.786.g65d90a0328-goog
 
