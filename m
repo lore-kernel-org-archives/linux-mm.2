@@ -4,88 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4695ECDE00B
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:17:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07665CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:19:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC44F6B00F0; Thu, 25 Jun 2026 20:17:18 -0400 (EDT)
+	id F147B6B009F; Thu, 25 Jun 2026 20:19:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4E686B00F2; Thu, 25 Jun 2026 20:17:18 -0400 (EDT)
+	id EC5686B00A3; Thu, 25 Jun 2026 20:19:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B63916B00F3; Thu, 25 Jun 2026 20:17:18 -0400 (EDT)
+	id DDBCF6B00A6; Thu, 25 Jun 2026 20:19:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F9B6B00F0
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:17:18 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6C4BC19DB
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:17:17 +0000 (UTC)
-X-FDA: 84920149314.22.7C6A0E2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5BFBC40003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:17:16 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B45256B009F
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:19:43 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3DC241A029F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:19:43 +0000 (UTC)
+X-FDA: 84920155446.15.8F0137D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 80C1740002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:19:41 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrvUaBIz;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gc2i3YDn;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782433036;
-	b=Sua7pydtMT7tpHdTQUOFNyi7tBKO54q+cnlAwseww34rY75sTm57+MrsZD7HU8jkmPhAU7
-	KyU01OqUfpFMRo1CwNBQKjwM+u92CKqgQ5YxUnKJZvOnVTvcz4T5gD8Kt9UwAyStVgOGmQ
-	TfV+3/70AoX1GRuwjTPUxnLkEDsGLZM=
+	t=1782433181;
+	b=ObscdIu68nMws6W+W9tl+GlVHIhiZkd3JTtLJrrQ1hBuxoz3ikf7hTyyhS+Pg2ZS4bpqOM
+	WWbO+MUe02CIHsJpNWqMkOPbkIgBzI1KjVwgTbB0evsM8T47PMQLAOs4muuULFiU/myGOO
+	hR6d0UhyIzMKJTQFXwn4fx4g8lDV9nk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782433036;
+	s=arc-20220608; t=1782433181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sQV3GfOG7VWGJtv7W6ZwKyzWFgMIO6rC7OdU4Z34lgE=;
-	b=La2DnRUCsGmyoSkZW9BqV8liCUDDXBFlg9qnUulxuBzDZND0XTkNy+qkpA/3zmCAbvDem/
-	S+p4TtTEbW+vSZIDFQrVBJPmhedQHa+r6/h4IbyAC4vCUyxMqEDFmOuvIbHC/yEmnLBog4
-	aCczOeociID31qqeyU0V4q5TmeE3HAE=
+	bh=Bdmk6ysU5Vfs4V4qQFRsUc7N0ch9cjdG8d7Ue6lHxb4=;
+	b=7haQCO031AclovEKu5U+1fEXCO/m9lMxG7UwGe1tCiLXdqPN5IqObhD7sLBbH/APSKL0d9
+	vBrFfh4ztou9wTzzoguyTRSg/HPgDpOqdyCdGKDDw5WjzAn0GymSmD+WLMYb4t5tnQL2tp
+	/38MspNsgX3E2rJUeaC+5EW/Wdd7er8=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FrvUaBIz;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gc2i3YDn;
+	spf=pass (imf07.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EBD0F60141;
-	Fri, 26 Jun 2026 00:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78661F000E9;
-	Fri, 26 Jun 2026 00:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782433035;
-	bh=sQV3GfOG7VWGJtv7W6ZwKyzWFgMIO6rC7OdU4Z34lgE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FrvUaBIzRwEe+uBwfCC7oIufVS51AeykE2X0QEdFZSp1HOJZzP1e4BHyYmv0SmjqJ
-	 EU3PUAhRB2BBFMHspLiM2bM44Cg1GpfcKXlbans/6qQudaCQRBKsIlGwfLWBQnXkVX
-	 WhbTJ6A7DFntoc+YdRX3cBh3hzKZzsgDWhEKVwoR18ATJ902hMCh2VyCs9Re4TWd2b
-	 0KLy09RhK5aJPwKGbhx0oUneDF5/b6IzXrdJpMBg9j1lZcR2UJVeiW1fvsKk/Buzo4
-	 4fqJUaTwcLYXp6awVscjY9g4odiBap8t8DIFjGm8Fwhh++HB2DlZAhRTiOoPv0eNig
-	 XI5OgZQmu5OmA==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [RFC PATCH v1.3 11/11] mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
-Date: Thu, 25 Jun 2026 17:16:42 -0700
-Message-ID: <20260626001644.85825-12-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626001644.85825-1-sj@kernel.org>
-References: <20260626001644.85825-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4ii4okgar6pfrpyfhzu5to8ohfmfty7g
+	by sea.source.kernel.org (Postfix) with ESMTP id 986C443589;
+	Fri, 26 Jun 2026 00:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2511F000E9;
+	Fri, 26 Jun 2026 00:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782433180;
+	bh=Bdmk6ysU5Vfs4V4qQFRsUc7N0ch9cjdG8d7Ue6lHxb4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gc2i3YDn1nNLN2uJTB5gYqVdMLQIyTfe2yyigsqFYWWAgcE27LRzzuF3hOWqR2Dco
+	 YxhfgezIy9svp5og64V0G1sqcSfHSJVhfIMUZmNVDfevF/xxhsnJVCKq3IgL8UvEJc
+	 xvfJrQyjlKvQ0fyUj4hXnbwAr/N82rtVKlDdLrdQ=
+Date: Thu, 25 Jun 2026 17:19:39 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Yichong Chen <chenyichong@uniontech.com>
+Cc: vishal.moola@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3] tools/mm/page_owner_sort: free per-record
+ allocations
+Message-Id: <20260625171939.6b920a87159a1cc695ec4de2@linux-foundation.org>
+In-Reply-To: <610C3A89A09303F8+20260612055017.632263-1-chenyichong@uniontech.com>
+References: <610C3A89A09303F8+20260612055017.632263-1-chenyichong@uniontech.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 80C1740002
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5BFBC40003
-X-HE-Tag: 1782433036-767112
-X-HE-Meta: U2FsdGVkX18znlELbAzglOyN74uaiahgOv2DgT6aY/t2Zz32Txi5Me3M0C8nIFtXUStYXHaDsJT4yzwUFpRhCARRiBojSUna9EzPjpxgfF7s3qDyB9Sj7fYLKc29MjmixcpHOSmm73VJxiy+WNDBcsrMSB5X0B76b8i1SrSaEwSFRrKTU1u38LUVLRxANmStp2wiG8W8iXJGwL9kkwHV8o64Xl8fT1NvQMTFNqF1IkT5ji5/4hEmy7DhpbJu9+VXCSsmYgVzF0FPpw0n6VUF2uZ3a9qiXSovJIicAdfUyXZcjnbDIvYucpJ4dnbYvSDqZ4zTAL+GMjQ7ktok/Xz0R6Gmw2T4IfNrHBy6QBWpmkUL9jSuMibpkFRDuoxaWkMiZmx49dOeqpU2CZ4VXI7k4hEc3zGzUEZ59sRlgAmuvnc8sI34Vu5eK7JCacriI1rR0oRE6ynWiLfPud0xvdbqK+3mScLY+290wkSWDU8a5/tdvjzesg+9axlToigGcD2RsTmzmN+K+7HnExXldUJtdMMuv7GAAG4u4yIPtGM7iQ2GTVpxRQ6rX4YHWRoTNzrPpbBtw0PauVrhzFTylIct32JhVyX1mQSrwVL/uDUBE82kMAJ2KY4famkGR20Mtl/8CeU/Ybhzzr0++lVTj7l7IQ6VQSLQkiFSBUXChefwvTyLdMuIUttFJz8rcR4iwRZJvyHqN9lytC6Tl4ZtB6EUROFqfHQ/piQrWHLop//cTM3vUkBY+LiuLbqilKWTRe+INiETPhxvuORgtpIpZHPXyGDbOLsQGJu6/VCRMLRGqQzzq6jJLTgx1u7AkVspD61KT5I6fWNaSKMCcE1lHVhpBp5Oew4TpqGxpGoqllrgVPUeKrNrYlYiHSbem93KWkNdr5fBzbRs9a+zL0sBO2ZiFClz6Vlq/q2vyYbvKulW7wgwb6J/nIijvITfitwytqSkSCMFGj4V65kX8G9VqnV
- 5UU9a75i
- Y8MuseZZQ3JVKOpXWRECmv22O4rY23Uo+Y4XqvknL2dLZHdwCcrMfwneKPEejGBYTtH3XrAwefT9SZlgxa22sjAhJnQEQT32Mhe43PN/2aFAsGcHCOv3xxZbd7Pn0CwUjLN5Nq27iN2chysqsUmUBns5LyQNh90KsQpSq3Uk/xUfOOLc6gEDftCmfzJ/QorEtVVVag18UVRr2Ii5vxXGB3lXqMKc4DqWajaNxuWQ81r3KEYxRlPwcTZ9pcILyID7/icgatraeJiBl/0hfz+54ie/tkQ==
+X-Stat-Signature: zp56pree1rkndb7si53a76g7pnnn1dz6
+X-HE-Tag: 1782433181-108942
+X-HE-Meta: U2FsdGVkX1+eXpfqPmNlleIQcVFgrjyrEFPXdm/mdbteUL8cR3bqmwEliXWXilbF/wlYAPALZ0vxqO4znNKz4HTFVDl/wf8V0SQGIck8RJWiYO538EwPrIroolGO1r4zvirOBlehNkn/pIxsaW7e/xOYA8rBurBrQzvj8cna7A3SjNaYETukTDAXN7iXN0CvsOsF9w1riBYBMH9GHVznkZ1FgyjLcnWk+nBqJCAp+j4Jk99D7C026RWuXXXc60nYjwXaDA1B3LHXmFEgHml7tUyiVdQcHK50aQtanxmA2IMTM7LXvhQBeyMBYG0IwhO7tkgoFKnoEntMYzodi6DXy8ijgPp9NCdiJNslRFOBaeFYKDb7qyQd1BxXAkJH/GfCG8XztVWpy2F9Ux/Tq5CqayLH3joVES56grBygIGpvh6SQYZOtowk/F0sWAVXDC9vzSYH9Y768ET+P+uAKAXWI0wU+gUVgNyP849JFBhNE4Eww9jlExshUkKn/YpUg8ziIJMSLiFQGE8isy8Kviyrv1RNVdXvp8qqll1zMUffb394vp8cyReZzdys89vply6fq20GwLq2NRNKGieF2Cm4ZjFTh9yEMu0+BRe+jzxYZUyLfs6+Ah0Cq6NxVG7/BbbIkxvhcaZDXcJV6HLI63k6LJm4KUqCVHvCVN5H1ftGBlYUkRkC1L3qeJV2CJrT9P4D49NxOMbGdKXfSJMs6p62wd8BQegUbfOc3TmhqWRf8qykxketmpKmbWTZAdtttIAcu+RlVqD0CsmiN//L7vkMb64+hx7ury6b+jIuJ6HhuByRLhxvU1Cg1auu2bfMzSzopic2YYpOCqcl1Ip8rbiZ61RFegnvrjTwqf3OuX+OL6twyRf57b/bOrJo0GmxEwDhsmpUT/dAZx3PKSdVXFFgEOMtYpNxXgAFYrLbJ2nHhtgYWm8tFZThfwX+PGrI6G8o2gLNPa1h+NsnTqpc2IE
+ VgaPMna3
+ +G9yefgyPHWdN6MDdGUEw7qeErxCLO1/CotDSHHakPgfmIJlXdZfRf9ZL7L2GLmQCj8shZNdXGRALyQcHsWwidJdDcTyHPWboKlgGfccOWrHcY4JEWlbXSPicKymT0NKVeKpMWct+GBSuuLeOSegai/x443Aanl5e2K8LQjabnv6kdiH2fJ0X6VDNAUQLMZdl9BZjQQ9HNsP5LYgInVhDC2ksEoQfF878Q50Q+jbAzPC3trZtJa/QNBd6qKOwtB4lsUWfuzjaXeqMdPUbmVZk3VHyGfApTU2LoeFrApOQHtT4qkDyuc/KL6DC5uiNueRQjgmxPNmE0T2Z7HA2NO2yZ8POD5Tp/cjEKyBGl2Z40zthvsuFbJgq1bZGbJNI7gN+SycSF6JWM+dvYb2cddK5DDufBcNL/0FAvG5Vwm5TfIb/Yikit6uTFqBt/XrYVviTLMETart3HtmcSF02SfMKan+WkhWtpnoYCEzM1oOtY+71T3c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,58 +89,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_probe_{add,rm}_dirs names a variable for damon_sysf_probe
-as 'attr'.  Probably a trivial copy-pasta error, but it makes the code
-not pleasant to read.  Fix those.
+On Fri, 12 Jun 2026 13:50:17 +0800 Yichong Chen <chenyichong@uniontech.com> wrote:
 
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+>
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index f3bb146b204df..36d71f1675426 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1068,7 +1068,7 @@ static struct damon_sysfs_probe *damon_sysfs_probe_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_probe);
- }
- 
--static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
-+static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *probe)
- {
- 	struct damon_sysfs_filters *filters;
- 	int err;
-@@ -1076,22 +1076,22 @@ static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
- 	filters = damon_sysfs_filters_alloc();
- 	if (!filters)
- 		return -ENOMEM;
--	attr->filters = filters;
-+	probe->filters = filters;
- 
- 	err = kobject_init_and_add(&filters->kobj, &damon_sysfs_filters_ktype,
--			&attr->kobj, "filters");
-+			&probe->kobj, "filters");
- 	if (err) {
- 		kobject_put(&filters->kobj);
--		attr->filters = NULL;
-+		probe->filters = NULL;
- 	}
- 	return err;
- }
- 
--static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *attr)
-+static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *probe)
- {
--	if (attr->filters) {
--		damon_sysfs_filters_rm_dirs(attr->filters);
--		kobject_put(&attr->filters->kobj);
-+	if (probe->filters) {
-+		damon_sysfs_filters_rm_dirs(probe->filters);
-+		kobject_put(&probe->filters->kobj);
- 	}
- }
- 
--- 
-2.47.3
+(how come so may people are working on page_owner lately?)
+
+>
+> add_list() allocates comm and txt for each page owner record, but the
+> cleanup path only frees the outer list array. This leaks both buffers for
+> every retained record.
+> 
+> Free partial allocations in add_list(), discarded records during
+> culling, and retained records on exit. Return explicit error, skip, and
+> match results from filter_record() to handle get_comm() failures.
+
+Well gee, there's a very reliable way of freeing all the allocated
+memory and there's a syscall for the purpose - exit()!
+
+Really, everything below the "out_free:" label in main() can just be
+deleted.
+
+But oh well, the code does make an attempt to clean up after itself so
+I guess we should set a good example.  Thanks.
+
+btw, AI review flagged another (pre-existing) issue which we normally
+wouldn't care about:
+
+	https://sashiko.dev/#/patchset/610C3A89A09303F8+20260612055017.632263-1-chenyichong@uniontech.com
 
