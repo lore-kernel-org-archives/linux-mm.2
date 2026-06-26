@@ -4,93 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB19CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 03:40:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9A8ACDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 03:50:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC5986B0098; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
+	id D020B6B00CD; Thu, 25 Jun 2026 23:50:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9D3D6B00CA; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
+	id CD9A76B00CE; Thu, 25 Jun 2026 23:50:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8DDA6B00CC; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
+	id BEEED6B00CF; Thu, 25 Jun 2026 23:50:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8576E6B0098
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 23:40:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F2AC58D484
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:33 +0000 (UTC)
-X-FDA: 84920661546.21.3DCEADE
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id B5729180008
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:30 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=reozai8T;
-	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C0CA6B00CD
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 23:50:07 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2570D1C2732
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:50:07 +0000 (UTC)
+X-FDA: 84920685654.05.83585F2
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 08F8D40010
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:50:04 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hOg3vx6x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782445231;
-	b=3v59z9LeUJQJSNfJmFQJxboao852iUYhnHIbqtq7/mpqPuHD0EYOAzvFW85t+h16B1vgGg
-	AJoMsa4y+WrAiuC3AEzTWs/RE7AJvdabqXWSkl0LCIidsdcZccCi0ro5x3miL7tH08uy8P
-	46ft3RsnW8xZkPj+CLhM9AQSaX7GdBU=
+	t=1782445805;
+	b=hz2eZ1za5T18w5tL+/EtWDhMPUzCaehvarvj6NjjY1m/flkdCp40+Z2f2P6XD/Xo59QiIP
+	7M885T87KASjyhzV86X+ryr3UQQc4Q55q7CrhnPYi9mmkvh3KwyqA7CkJEU+lNwaXapVwN
+	W2FyAdf6zSxel3YqdkbdeUbYIxls/9Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782445231;
+	s=arc-20220608; t=1782445805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QuVdpRIguPMFSlXQhOOtEgFq7gSJAyQxVrZOCwx3KkM=;
-	b=skvrdJuhoWRNBeGartUcH2khY2Tv2VxwyG66EjmTKdHM8EZQTlVWeNDwujPfUGaib2jsF5
-	eYBVlX7iEfRlgdeoRfMloPzB+sE2Hh7LAXnZdCuGi9qhPPnK1lUqL5E4YVM/qt1wMZwhzE
-	vUB01XVrtLLarvJWop/gFKUl0lVFPvQ=
+	bh=AEwCP01McVKkFzs5YSXKWYRkZR0LtHlb/C4tjHs60HU=;
+	b=wUBbtxY9j4nTtXJU4kQYPxJS2ok5vhSlGhaoAZdpZwxPdkC6GMMh5nf/XdaFZ3ai6Y7d8X
+	Q6IwHwvxLykSZgn9Po3qm6vfcU9EQkTNcNfiu2nsvz/6tC11OdTiOYVm4rU/qmyKR9g+2o
+	/TqpuQFEDHwEunTI0uR3J+V9S9ADUfk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=reozai8T;
-	spf=pass (imf06.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <28f75d0d-de54-43a1-b46a-fe3dd1188929@linux.dev>
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hOg3vx6x;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+Content-Type: text/plain;
+	charset=utf-8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782445228;
+	t=1782445803;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QuVdpRIguPMFSlXQhOOtEgFq7gSJAyQxVrZOCwx3KkM=;
-	b=reozai8TTI24Te6z59/Idhy/4ExwpoKf76qZ/QygeLqLnuQaqt+53ywcl6JtzSMN8/yEoT
-	hNSB+NcGUreDFseQjyBqyhDgwgmftLUFFTH0OhkVJxOrWUydco42qggU6eqoewmaEhomQR
-	lfwAoz3mnILobNZHkWC1MDxCAkqScBY=
-Date: Fri, 26 Jun 2026 11:40:03 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH 5/5] mm/mprotect: use huge_ptep_get() for hugetlb
-To: Dev Jain <dev.jain@arm.com>
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
- rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, mel@csn.ul.ie, nao.horiguchi@gmail.com,
- ak@linux.intel.com, j-nomura@ce.jp.nec.com, pfalcato@suse.de,
- dave.hansen@intel.com, tglx@kernel.org, jpoimboe@kernel.org,
- ryan.roberts@arm.com, anshuman.khandual@arm.com, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, david@kernel.org,
- liam@infradead.org
-References: <20260625112955.3254283-1-dev.jain@arm.com>
- <20260625112955.3254283-6-dev.jain@arm.com>
+	bh=AEwCP01McVKkFzs5YSXKWYRkZR0LtHlb/C4tjHs60HU=;
+	b=hOg3vx6xYD5XyIJ+WJ/sCCoGoBDrcAq6WxNmMTei3tyeQ50pt7z9DLMlID0PiwESQ65zVR
+	l5fKf5tnZtNDXMx2tjHNvVRuCABmKJ5Ft9OXBttwdBtZaF3eA7SD9EVObVaEvzROubayWH
+	iIRBjQ5GbnNa3evdT/lRRVj0wys+kXA=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 1/1] mm/shrinker: add NULL checks after rcu_dereference()
+ in shrinker bit functions
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20260625112955.3254283-6-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <6l2gs76zo6zf-6l2n5wa2xbvg@nsmail8.2--kylin--1>
+Date: Fri, 26 Jun 2026 11:49:13 +0800
+Cc: fffsqian <fffsqian@163.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Dave Chinner <david@fromorbit.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-kernel <linux-kernel@vger.kernel.org>,
+ linux-mm <linux-mm@kvack.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <305C42A2-1359-4998-A95C-49998B4660DB@linux.dev>
+References: <923f391a-d760-4d78-92d4-2e765aa226f3@linux.dev>
+ <6l2gs76zo6zf-6l2n5wa2xbvg@nsmail8.2--kylin--1>
+To: =?utf-8?B?5YKF5riF54i9?= <fuqingshuang@kylinos.cn>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: p79irdhz9pt1wpg1zgdb6u6rruygh4sw
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 08F8D40010
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B5729180008
-X-HE-Tag: 1782445230-941464
-X-HE-Meta: U2FsdGVkX1+xUBIZdqXLTlzuiHQrefJztjfxqdk3eE37DXta27AWsN351x9xfmOIEFE5xT3xH82cRAEBBfu+uDMM/riwRgjYMRJ0Bt7Y7TO2sxwobfDXtnaSTXfoJRJvGJuzGtw9/8QStYNMGi6G/bQVkZHp6aU4CRlaj1ynNY+7BHhsYW3IggYQ3Xs0LXKGLaLWw8xbGYvS+eo2T8qKRQ9HkZOWvl5cqjSOQtEF2ySUmp4Nuaucm4vd1w4icRBbWidj2dTE1a/KdEOEgY2Q1sAlKH8EjptzA/1QtqcLk9JydHYLsAOO7hpGxCPR5ZoBFvwpJv/LTAdCaSAAkg1vN6GgkVXgm0FUNv0JNEUR2uU4LezB6zDc8Zv8Ld2DAb3aJvBDtaAMktW6TkwJY4gNEV/E3iyHd8SCHjjrHKM4fCo6VqOVCqcPP67QEMT0Nu4skC6v75d2ZhI4hFgNrcKLOoK0irSVw5c9jyfWujUrluzhICnJFOEf+xSQ5g+RQRjS+uA0XZcHTKmUuDNhKbTD8zCZyT3pEGU5lqboRaePEs7kjEtthykqcNd6yWk+BA7ccuf25P2UNSdSWzOj9IThWtGnjtpVYPKosi7i9S3kREl87kIySAZTzv0ooc6UN2W+Fxp+G4x8eUe9OjRyCxgUhYkA1wEiMS8gGO4OhyvSaj59haguTqXw0VcphZdcMzMK3Km+4Z6uZFKm3Zqio7Dy+kK7KxGbBt1djCY+ycu35gvlU5gzJT79vOa/9voZdgdzouOVZq3G6qdsSthgjSaF3Hym46E0Xz+9nSZ9CpszU1EzsCnCI2yJyM15GkRIcldK1rI1C4Z8PmnQco2cmiL2SBhDHL6rig5SqsWRUdaIHaeG1ynkYldHP+skc99QMHZjzZRmzZ0YMcVyresWcaOSwpkfpJfO73skLNGqXZHaRcG6zAmVprTh9/GOAcwMdCYi4GT14HSbiFWdFhoNlL3
- 490Q8DGr
- vWrFHvHex6CllFzlE1YxKewv6lNxOOp+iickoDj6cMofx0cq5fYqGGeBK3mdStvFfxUBzYGESWmpuWKbMRGTqW0vLzH5wVy/fgIqFqfZR1hb48kByJB8i5qcQa8X8gmz1GXKFEA409zvCNKmYOokSTxI8Z9hxnUm7/KjdVKYEOIplPWKuPOxRD8etbnkyLrj8d8h8i1wg7tpHRVow72SEjv9wY8EATU9M0FyOozgtyZOz4AcNW8WDZHWNQuYuDy2L4MLHm4i18Mjoi4PaHI0syDwyaRD5UVx1mnI/qpPUTBuPKx236JEZ/xZ69ouS5gBpcwPgZYrb9f9as5iEugqrEkDEsfW6K0Dwjfyldii7Oi/q5ntM2pG9irdRmI8iP8CpAO6mK72K2cu791az4nLfg1L3Yl50MVeYaJ7wyuK+o3+FYCI=
+X-Stat-Signature: onmiwkk1iorhcihnwntn3o7sihg8whtm
+X-HE-Tag: 1782445804-435492
+X-HE-Meta: U2FsdGVkX1/SFDksTkNNkwsbeLiMkHnRfhsAngv8MRzwyq4PgG+nLtqxzuLQE0WqYlXQE9YFN0T7bTZIYQSCiZzdEACwDSHgt2QEtP35hNWXE+8ofpvuU15QCdGLRhtbb9BI9sMYonruBkBFYvJpngoTVHG0dV2Iq2xYV8ehXBxOMXpWCZEc/dLPB+SZ/czm8zq6cIwdD45KS6qhkQOTvnNo6dWV/Ol99t6v5+hcyfw9VAKEvXUrHNCj70RgFKlGeKyR1x9d6DRezdNzXVKPBN9TAQmqIcuaktoM/aHI+KEcRJXGtd+6hPoJVqRiYAb3xvKXE9Ie+fcziKS05u4A6WJ+BQNoktKnS0HrM+qzfgqIvgfU3vdTTFYKUPzC4ldXerYoa4tGLu0YcQgjSVSiIOBetezfPhT1UGdlaHchVmDZCV4SJu3um+nUnl5AeSDFS4N1R7M9Iu5uK14fmnwYZxfO8nl4zj66e/SG8UDCQYx0/0ZDKOmLLpqcYos9if48R2BF851P1Ek9LK0Fd1FHE4cycSjbfY/Uf7Q+wJvnrxrBH6SKuDZvjSezfL0MZkfRqddhJpa8D9jlvAFjYKewrbpGkHCsbxkMA9qMyTOFjzlg7R01Ood4euFhkuutkwjjV9t4o0CxYxSlf1QeaVopgzomQOQ8KqQ7S0PJveuoQXhaOla2PjHaRoXuJIdKhHXfgjV0HbkomW3UUWqK1iICQhZ2Zx9pl1S0AvVz2Klg/iVRbAAMBvjrTKwRmUtxIc1JmsddXB78GckpVWQwEcLx+MK3edsZcnlhPK9KMKD1D8Jd9u+FHHMytaP0Ro7DeRe1jfVFB32ru5b9thUkIFsiEjFt/bRCyiqIMCOMA3gINWXa76KAXkl8lGujo4bMPupK8UCJ45se/5P2ZC/tf45RB9RpZXnrpb/WmPFK3rmXFDaUUR8WOWn0HiSRJ+TFnngFwhwDX78YRdFMwVC23mR
+ 9cmaspwb
+ byeGl84ew8GwyUhW6LKoUtUYc3foqq9Wf6fABJgWHHf/lxBrdr+bJ8WnQucFjfNUTp9b27/4JH4ChOuDARbFgyB8Ch+xhQ34yOsgucrgaifcaoF/Bwashr/bG+ScVODPyWF5j8ZYKxlSb/vsxAtLeWv6dekzJBV3OgZMkO9Szqq9CDgL7x7Sqwa531SY3Z7c8XuayiCd069Xtw8BEdPmIcae9dSvqUXof2Mm8CRbIUMuFVrH+W2JjhDLtXu0nuDTsLK7InQWa7pWzRzRBfmUUUcsIMYsN1wMhnnId
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,75 +98,32 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/6/25 19:29, Dev Jain wrote:
-> prot_none_hugetlb_entry() is the hugetlb callback for the early
-> mprotect(PROT_NONE) PFN permission walk on x86.
->
-> The callback passes the decoded PFN to pfn_modify_allowed(). For a
-> hugetlb callback, the pte pointer refers to a hugetlb entry. On
-> architectures where hugetlb entries need huge_ptep_get(), reading that
-> entry with ptep_get() can make the permission check use the wrong PFN.
->
-> Use huge_ptep_get() before decoding the hugetlb PFN.
->
-> Currently there is no path which can trigger a bug: huge_ptep_get() is a
-> simple ptep_get() for x86, and the prot_none walk occurs only for x86.
-> But use the correct helper anyways.
->
-> Fixes: 42e4089c7890 ("x86/speculation/l1tf: Disallow non privileged high MMIO PROT_NONE mappings")
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-> ---
->   mm/mprotect.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 9cbf932b028cf..23779632d18bf 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -699,14 +699,20 @@ static int prot_none_pte_entry(pte_t *pte, unsigned long addr,
->   		0 : -EACCES;
->   }
->   
-> +#ifdef CONFIG_HUGETLB_PAGE
->   static int prot_none_hugetlb_entry(pte_t *pte, unsigned long hmask,
->   				   unsigned long addr, unsigned long next,
->   				   struct mm_walk *walk)
->   {
-> -	return pfn_modify_allowed(pte_pfn(ptep_get(pte)),
-> +	pte_t entry = huge_ptep_get(walk->mm, addr, pte);
-> +
-> +	return pfn_modify_allowed(pte_pfn(entry),
->   				  *(pgprot_t *)(walk->private)) ?
->   		0 : -EACCES;
->   }
-> +#else
-> +#define prot_none_hugetlb_entry	NULL
+> On Jun 25, 2026, at 11:01, =E5=82=85=E6=B8=85=E7=88=BD =
+<fuqingshuang@kylinos.cn> wrote:
+>=20
+> Hi Qi,=20
+> =20
+> Thank you very much for your detailed analysis and patient =
+explanation.=20
+> I fully understand your point that the existing caller constraints =
+guarantee shrinker_info cannot be NULL here, and this NULL check is =
+unnecessary defensive code.
 
-This is very strange, because we defined a stub as NULL for a helper
-function. How about  the following diff?
+Thanks for your contribution! I have a couple of quick suggestions to
+help things go smoother:
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 9cbf932b028c..4d8c1551fbce 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -716,7 +716,9 @@ static int prot_none_test(unsigned long addr, 
-unsigned long next,
+- Please take a closer look at our community communication guidelines,
+  as we rely on plain-text-based replies here.
 
-  static const struct mm_walk_ops prot_none_walk_ops = {
-         .pte_entry              = prot_none_pte_entry,
-+#ifdef CONFIG_HUGETLB_PAGE
-         .hugetlb_entry          = prot_none_hugetlb_entry,
-+#endif
-         .test_walk              = prot_none_test,
-         .walk_lock              = PGWALK_WRLOCK,
-  };
+- For any issues you're not completely sure about, it would be awesome
+  if you could run a quick validation yourself before sending out a =
+patch.
+  Maintainers' time is quite limited, so this helps everyone save a lot
+  of energy and speeds up the review process.
+
+Thanks for understanding, and looking forward to your next patch!
 
 Thanks,
 Muchun
-
-> +#endif
->   
->   static int prot_none_test(unsigned long addr, unsigned long next,
->   			  struct mm_walk *walk)
 
 
