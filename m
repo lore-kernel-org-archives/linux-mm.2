@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0CACDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:26:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D112BCDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:27:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6EBC96B00A9; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
+	id C1F946B00AC; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69CC56B00AA; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
+	id BF8826B00AD; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DC1C6B00AB; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
+	id B37A06B00AE; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 260706B00A9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:26:21 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 850EFC1A97
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:26:20 +0000 (UTC)
-X-FDA: 84920474520.30.8276488
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 85DC3160003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:26:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IJGmabAB;
-	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FB2F6B00AC
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B7691C5F60
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:27:53 +0000 (UTC)
+X-FDA: 84920478426.07.C469474
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7D02F20002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:27:51 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dvmQTEAx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782440778;
-	b=OMGSHq4oLzLbsiTp8UdpF8MbJlaTtgTpyvez5S5l4Nq89q4ATgZIuOTdOLUdSSwiKmKyEl
-	6poSKVAFlYcy/sTzZqNEa5ukyexQC2VIIKeevr9fS8X7w4BR/h8ZAZJvWZ8xNBqWb1HBTv
-	nK+ZUqRTII9AiZk5dvr4icsp3AjoklY=
+	t=1782440871;
+	b=pSJvTpN1JTm/kCw229WOxxJ8UnC2MyK2PNyUkIPSxe0FC3nFHGcP3bOH9MCOFq0GYi9cfl
+	UyaPSm2TshWHA3OfEOGipi+dje8Naqk21IzyNUGAOjhZosXlu+0InzyekMTBkPLqff6Ad1
+	BbsrVdYWK58gnPbd6nI5o+nQ3K0ws5s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782440778;
+	s=arc-20220608; t=1782440871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RxVxgroX3On6H8SMBZy+I5j57FDfvO4So/Vpazbn4F4=;
-	b=M4ZZZTXNfpCjPz4Y31MCCSYfiRgHn5jvXNcVPLGaebOwXommnrEgtrukIKvwF2QcP6a/F7
-	FLS7xp1Eb/1n3eRhJ79oWP2gLhFzAWF40BTPsaILc4X3wwUBxnzdWkBFlxTbXCo9mSK+NZ
-	xUvYB9j14aF9HyAf5AZF014sgqaGL1M=
+	bh=h48iMyZJeOBo8mJP1NqWzlLxC6G6uq5RUz9cl4e400U=;
+	b=4nUpx/WkeSSBamPisQwvd2RySEPl3tgenOxWqdD4DHytquI2l/bSwOX1lRJTIi7Dpl8Fwu
+	rTqVsNr8EojZijH1LOReRS4l19QdOrd15tqWggBDHFXu0PH/zMlHWn4Q4xarl+Jce3RP6S
+	Aa71Ove0bgs+Yqm81E29u9OxUsN0IvI=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IJGmabAB;
-	spf=pass (imf08.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <41d69217-1263-49bf-906a-8ec84e6ec3b9@linux.dev>
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dvmQTEAx;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Message-ID: <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782440776;
+	t=1782440870;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RxVxgroX3On6H8SMBZy+I5j57FDfvO4So/Vpazbn4F4=;
-	b=IJGmabABduP4sFsdxgWiagDoZGsN1Gty6KLeqBQz5lJcnyJTy7PxrtT48EICTwOOeQ1fOB
-	EeIrRiGIw+idFkVTtAqevOW/vztrwyxhh5v4cqGELP1O0ZwG4vRqIYBHfE+X05uaKETI9A
-	eogTHajJcWAaD3WUIo7Dsc31Y3n5fDo=
-Date: Fri, 26 Jun 2026 10:24:51 +0800
+	bh=h48iMyZJeOBo8mJP1NqWzlLxC6G6uq5RUz9cl4e400U=;
+	b=dvmQTEAxG5XVvmLYAb9HPsG9G5ggSSpuxSDd7nJhF49Q3rVYDso9H+zUiwWAzS6atUFeTa
+	qZuLIm3ICeB8mEy2FSb0+fsLykYl2eJo+gz4kNIXZ+dkof0bMk05AS39jZVd0ZHrPMV5tr
+	T2tb07g13wox1UbYqeJLskElVUNfOFs=
+Date: Fri, 26 Jun 2026 10:27:36 +0800
 MIME-Version: 1.0
-Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: kent.overstreet@linux.dev, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, jackmanb@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260625184857.2193482-1-surenb@google.com>
- <20260625184857.2193482-3-surenb@google.com>
-Content-Language: en-US
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, harry@kernel.org,
+ muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
+ roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>,
+ stable@vger.kernel.org
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+ <aj12aVq3he6q7b2C@cmpxchg.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aj12aVq3he6q7b2C@cmpxchg.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: dtt5npqtae4nqujrkfyfbufgxgj3rtk1
-X-Rspamd-Queue-Id: 85DC3160003
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 7D02F20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782440778-417327
-X-HE-Meta: U2FsdGVkX18lzeJ8IPLfnZY4SUhKmw735HUyyhX2POCeIO0uGKw6YbGN8klp8K6yxCu/ucsXWZ1srN61vFg5RVYgSz2ey+BIpTNJoszlYYBMTcyps56cPebcTpXkQv8GMhHOxg8oGGHf/ntsJ12sBNkkbThSqkbfKCYHUbnpOEvRxQfcgjmI/2b1JuwK6paBc7bWKdzK4mqcIjUhfsug9KPvLIMWMtrwGvthuEtonHLn9lMOlP77HGGC1oif901CjajNmnUPi/XlmIhG3FxEYRSRbdKlHmBVt5j29iEG7TwIoO1hlgfcCBO+1VrTC44HIe+LAY0HwpEo8c0YSEi5zFYM4whAIi82t7iLDiWxUhuOjUy1qEacrSt8yCHSIdNyRsDA/rpzCptYHIalZe+m5x7ArP0trQADGNs0LjYKrUANCXPFcrHktOn7vKJuo0Vhl/Pg00JbvVE7OHI/xq++R48TwI5ITjbAC2RFonDv1pB8kaA908kO5TuP09RRE4CALfwT4ceHVmfSnyEHLCDESQ4wUqTaDe9HwI1yvDX7rwgw++xwtyn+2L/tbB40quHsd0Jx68K/z6TdIKi/4lZ3PfrLNIfqsWTJTp5KswpPsLhonxLekt9dLwAZKfmDVhlsbIx4VCRHdxnUHYnOt/qXY5bjUcnfn/Lin4nNHz8N+hW5EjvTf/CYYjvvlzy3Kex47Ya9kCrPCvVLjndHoZp/H2tiCX0Biy12rRG7pBX3vyBiHsR0n8NIfnoTz5mmb7HhT+0eHaOyNmc0tyzTmgQVFymLp8Olp2/7YaNpccfZjRscWTZriUSQmTmP7R31DLuTKZkKPzFQhXDs1ZkT4D1trqvyzzhBM9NHvKoN3q/+pF/gNCIIJPM8d8fiBpDl/XM7WL6JzLfSJ07spxfhY0RJRmmQrsgTwPC1SeptEzlWSLkxoug7T/FpkG0qA71Lkht2jOhm5NlOMOO05sH2yFp
- 0gkZAR+B
- THoqV7FydYJAn6OfrFoYW9GMRq5yTPWg3g5acfLeQILoWMKAPZ5KAPn+PNZunIIlMsrqDgtR5teDgqfH9IRYkymFIgyh6lZzCS5wIRbS+elQbLSi05DWf3VViOFsN13Ttso+GEO5t2/bRPCVxSIALlqTm4kL6LUIEaSNAXFybIuMWbezSp1bz1VwRi2EbwEr8wz7SWhBpdT7tveJaqgAIDFB9P1Z24UsI/YMmnnnhQkX5ySVuY0juA5ypne5HpuUSyHuooXgSHpvq25VLITWNp7PywZK2+roF7qkeAkIzDIYSntJ/QhNgJ9rOYAOVROIPsTOcZSDCYXLpzK2u6t3Z0PTlEfBVDNYwcO1XrqwZU1yI21MJepwiDpa3DQ==
+X-Stat-Signature: 1s18yu3gi45oiz7ecruio8zbdhz9den8
+X-HE-Tag: 1782440871-23315
+X-HE-Meta: U2FsdGVkX19HbXOKOln2wkk/8e81FrcgeyQ8wL7XxBP5V5hElEaXCMpJYxhw1hB50qy8gOPbyzIpCAk7UksyPvudr8GHPgUq6MtCIG64sDTTs95GmtjNcmXHWu2LlcmZrxEDcxx8yvGXGYJyzGtWJj0IJYwBA8QE2Xi1QB1FTmBPs1OFAvrRk/wqft8kNSRrDjKjh7cQWteoBpgIUJxvSpVgNzN+Yj7B0iDh/0pFLCqgdYLH2KJUBwzUMcqVqBkHiUx/9O2hIUnXW7L/H6QR9vP7tHgNFyLcP2pE6KcUpj0wd+JOlJN8hRpTNiTQ4ct0M8Goa0Cm1WRfWRRSy6V1NODlafziq3ky8FBz42esyXnSHl+OCT9wS/mr9vZKpaJeOXIQHWD5twW+QKMBsdRC4sb6VMTpi9Fe0pVNiKaY1RwyhRnb9JsYbaPtjLE9HH4VQm7jJvFlcDdFWamPlfByOHozidvt8XWSjA39G1RIhkF7xi5b1vhkumf9jHoP3XowM+IPGOyBZ1rPZAP1lUkhqdvc+CAmJMAReGV6WcFaePjoxV4Qajt0PzAyj1lTb2vtCslkQ9R1u4+5MHuWPgZUe6dHT9WwA6A7/in/3QBR2UvwDWHaKMBHi1SZl3FUFfKHIzKwcqIn2t+5HI5z6QESPCVqmMZmIbZ0y0oJWHsU6MGTvV+63kFsRAm0hR2/biCrHNU9iQSRLaWslJuphTyxkGX8+0NOK8yWYyKTQ/F4QP79hk7eAFF+M8btv0S/76Y3A4MRkNK0DdThmHuAOWw1hdWQWOaigitwm3CsUyxKzMWhcHO+5f67i/j8jrEnlWowbzbqgqLAZEqggP60aa8uLEV04Eg2cppI95WGQcfVyAX4efBr23S40MsyE4GzTYj8yKrbcZ22j+KHFCvfH8A2CDK5NZPONb42UbkIDTe6XdC0CA/r0wNKsqoOI7ZMx0DwAYNJfDnY1ClawVB+4U6
+ KgYC2Yg8
+ kuCDoBqQO8lB51jq23rTweN7JCWu4qSPi8hQ0OXOxvCYgDRKKSH6ulWUYZ85N+P5QD7jWZ/Wt1Wx/lCAeqOkdAkFI2W6EvOMgpfv/FWWed+bqcfYGZdzueu19U+CsmjXnOQsDZzYf4uGfSPNLmvr+HIqCycw2GljEpYwJFqdcYBAUK6wCHDpl+woluNXtJ7h08VYgtLEhCcspgXFV0hlU1ODPUPIGQ6fCWbmthWzet/QUExNBaC9F3cJIcwI7GoZW1wrW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,181 +95,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Johannes,
 
-On 2026/6/26 02:48, Suren Baghdasaryan wrote:
-> From: Lorenzo Stoakes <ljs@kernel.org>
->
-> The alloc tagging work is really mm-specific, so move alloc_tag.c to mm/
-> and additionally update the MAINTAINERS entry to place it within memory
-> management and port over the Kconfig and Makefile code to mm.
->
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+On 6/26/26 2:41 AM, Johannes Weiner wrote:
+> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> The mglru page table walker batches per-generation size deltas in
+>> walk->nr_pages while walking page tables without holding the lruvec lock.
+>> The reset_batch_size() later folds those deltas into walk->lruvec under
+>> the lruvec lock.
+>>
+>> The page table walker can run concurrently with the memcg reparenting path
+>> as follows:
+>>
+>> CPU0                           CPU1
+>> ====                           ====
+>>
+>> walk_mm
+>> --> walk_page_range
+>>      --> update_batch_size
+>>          --> walk->nr_pages += delta
+>>
+>>                                mem_cgroup_css_offline
+>>                                --> memcg_reparent_objcgs
+>>                                    --> lock lruvec
+>>                                        lru_gen_reparent_memcg
+>>                                        --> reparent child folios to parent
+>>                                        unlock lruvec
+>>
+>>      lock lruvec
+>>      reset_batch_size
+>>      --> child lrugen->nr_pages += delta
+>>
+>> This will trigger the following warning in lru_gen_exit_memcg():
+>>
+>> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
+>> 				   sizeof(lruvec->lrugen.nr_pages)));
+>>
+>> And the user-visible impact of underestimated nr_pages in MGLRU was
+>> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
+>> reaches zero, but there are still more pages.
+>>
+>> To fix it, make reset_batch_size() check CSS_DYING under RCU before
+>> flushing the pending batch. A non-dying memcg keeps the original lruvec
+>> stable against RCU-delayed offlining; a dying memcg redirects the deltas
+>> to the first non-dying ancestor.
+>>
+>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
+>> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
+>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
+>> Cc: <stable@vger.kernel.org>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>> Changes in v3:
+>>   - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
+>>     (suggested by Harry)
+>>   - update the commit message (suggested by Harry)
+>>   - temporarily drop the previous Reviewed-by tags
+>>     (since the sync method has changed)
+>>   - rebase onto the next-20260624
+>>
+>> Changes in v2:
+>>   - update the commit message (pointed by Barry)
+>>   - collect Reviewed-by
+>>
+>>   mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 38 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 35c3bb15ae96..1ec8c23c72b9 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
+>>   	walk->nr_pages[new_gen][type][zone] += delta;
+>>   }
+>>   
+>> +#ifdef CONFIG_MEMCG
+>> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
+>> +{
+>> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
+>> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+>> +
+>> +	rcu_read_lock();
+> 
+> Where is this unlocked?
 
+The lruvec_unlock_irq() in reset_batch_size() will handle the unlocking.
 
-I've applied this to my local tree and everything looks good.
+> 
+>> +	/*
+>> +	 * The memcg can be NULL when the memory controller is disabled.
+>> +	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
+>> +	 */
+>> +	if (!memcg || !css_is_dying(&memcg->css))
+>> +		goto lock;
+>> +
+>> +	do {
+>> +		memcg = parent_mem_cgroup(memcg);
+>> +	} while (memcg && css_is_dying(&memcg->css));
+>> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+> 
+> 	while (unlikely(memcg && css_is_dying(&memcg->css))) {
+> 		memcg = parent_mem_cgroup(memcg);
+> 		lruvec = mem_cgroup_lruvec(memcg, pgdat);
 
-LGTM.
+There is no need to acquire the lruvec before finding the first
+non-dying memcg.
 
+Thanks,
+Qi
 
-Tested-by: Hao Ge <hao.ge@linux.dev>
+> 	}
 
-Acked-by: Hao Ge <hao.ge@linux.dev>
-
-
-Thanks
-
-Best Regards
-
-Hao
-
-
-> ---
->   MAINTAINERS             | 20 ++++++++++----------
->   lib/Kconfig.debug       | 28 ----------------------------
->   lib/Makefile            |  1 -
->   mm/Kconfig.debug        | 28 ++++++++++++++++++++++++++++
->   mm/Makefile             |  1 +
->   {lib => mm}/alloc_tag.c |  0
->   6 files changed, 39 insertions(+), 39 deletions(-)
->   rename {lib => mm}/alloc_tag.c (100%)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0948dc573744..3cf3cf2311e2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16704,16 +16704,6 @@ F:	mm/mm_init.c
->   F:	mm/rodata_test.c
->   F:	tools/testing/memblock/
->   
-> -MEMORY ALLOCATION PROFILING
-> -M:	Suren Baghdasaryan <surenb@google.com>
-> -R:	Hao Ge <hao.ge@linux.dev>
-> -L:	linux-mm@kvack.org
-> -S:	Maintained
-> -F:	Documentation/mm/allocation-profiling.rst
-> -F:	include/linux/alloc_tag.h
-> -F:	include/linux/pgalloc_tag.h
-> -F:	lib/alloc_tag.c
-> -
->   MEMORY CONTROLLER DRIVERS
->   M:	Krzysztof Kozlowski <krzk@kernel.org>
->   L:	linux-kernel@vger.kernel.org
-> @@ -16758,6 +16748,16 @@ T:	quilt git://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new
->   F:	mm/
->   F:	tools/mm/
->   
-> +MEMORY MANAGEMENT - ALLOCATION PROFILING (ALLOC TAG)
-> +M:	Suren Baghdasaryan <surenb@google.com>
-> +R:	Hao Ge <hao.ge@linux.dev>
-> +L:	linux-mm@kvack.org
-> +S:	Maintained
-> +F:	Documentation/mm/allocation-profiling.rst
-> +F:	include/linux/alloc_tag.h
-> +F:	include/linux/pgalloc_tag.h
-> +F:	mm/alloc_tag.c
-> +
->   MEMORY MANAGEMENT - BALLOON
->   M:	Andrew Morton <akpm@linux-foundation.org>
->   M:	David Hildenbrand <david@kernel.org>
-> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-> index 8ff5adcfe1e0..3762015522c3 100644
-> --- a/lib/Kconfig.debug
-> +++ b/lib/Kconfig.debug
-> @@ -1048,34 +1048,6 @@ config CODE_TAGGING
->   	bool
->   	select KALLSYMS
->   
-> -config MEM_ALLOC_PROFILING
-> -	bool "Enable memory allocation profiling"
-> -	default n
-> -	depends on MMU
-> -	depends on PROC_FS
-> -	depends on !DEBUG_FORCE_WEAK_PER_CPU
-> -	select CODE_TAGGING
-> -	select PAGE_EXTENSION
-> -	select SLAB_OBJ_EXT
-> -	help
-> -	  Track allocation source code and record total allocation size
-> -	  initiated at that code location. The mechanism can be used to track
-> -	  memory leaks with a low performance and memory impact.
-> -
-> -config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
-> -	bool "Enable memory allocation profiling by default"
-> -	default y
-> -	depends on MEM_ALLOC_PROFILING
-> -
-> -config MEM_ALLOC_PROFILING_DEBUG
-> -	bool "Memory allocation profiler debugging"
-> -	default n
-> -	depends on MEM_ALLOC_PROFILING
-> -	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
-> -	help
-> -	  Adds warnings with helpful error messages for memory allocation
-> -	  profiling.
-> -
->   source "lib/Kconfig.kasan"
->   source "lib/Kconfig.kfence"
->   source "lib/Kconfig.kmsan"
-> diff --git a/lib/Makefile b/lib/Makefile
-> index f33a24bf1c19..44f6538533a9 100644
-> --- a/lib/Makefile
-> +++ b/lib/Makefile
-> @@ -197,7 +197,6 @@ obj-$(CONFIG_OF_RECONFIG_NOTIFIER_ERROR_INJECT) += \
->   obj-$(CONFIG_FUNCTION_ERROR_INJECTION) += error-inject.o
->   
->   obj-$(CONFIG_CODE_TAGGING) += codetag.o
-> -obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
->   
->   lib-$(CONFIG_GENERIC_BUG) += bug.o
->   
-> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-> index 91b3e027b753..5737a504efbb 100644
-> --- a/mm/Kconfig.debug
-> +++ b/mm/Kconfig.debug
-> @@ -320,3 +320,31 @@ config PER_VMA_LOCK_STATS
->   	  overhead in the page fault path.
->   
->   	  If in doubt, say N.
-> +
-> +config MEM_ALLOC_PROFILING
-> +	bool "Enable memory allocation profiling"
-> +	default n
-> +	depends on MMU
-> +	depends on PROC_FS
-> +	depends on !DEBUG_FORCE_WEAK_PER_CPU
-> +	select CODE_TAGGING
-> +	select PAGE_EXTENSION
-> +	select SLAB_OBJ_EXT
-> +	help
-> +	  Track allocation source code and record total allocation size
-> +	  initiated at that code location. The mechanism can be used to track
-> +	  memory leaks with a low performance and memory impact.
-> +
-> +config MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
-> +	bool "Enable memory allocation profiling by default"
-> +	default y
-> +	depends on MEM_ALLOC_PROFILING
-> +
-> +config MEM_ALLOC_PROFILING_DEBUG
-> +	bool "Memory allocation profiler debugging"
-> +	default n
-> +	depends on MEM_ALLOC_PROFILING
-> +	select MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT
-> +	help
-> +	  Adds warnings with helpful error messages for memory allocation
-> +	  profiling.
-> diff --git a/mm/Makefile b/mm/Makefile
-> index eff9f9e7e061..4fc713867b9b 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -147,3 +147,4 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
->   obj-$(CONFIG_EXECMEM) += execmem.o
->   obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
->   obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
-> +obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
-> diff --git a/lib/alloc_tag.c b/mm/alloc_tag.c
-> similarity index 100%
-> rename from lib/alloc_tag.c
-> rename to mm/alloc_tag.c
 
