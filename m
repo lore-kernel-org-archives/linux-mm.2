@@ -4,89 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0967CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:40:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55E1BCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B1476B0088; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
+	id 04A526B0005; Fri, 26 Jun 2026 03:49:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 763546B008A; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
+	id F3D026B0092; Fri, 26 Jun 2026 03:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67A396B0092; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
+	id E2C906B0093; Fri, 26 Jun 2026 03:49:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 37EA46B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:40:41 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 999B7403DE
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:40:40 +0000 (UTC)
-X-FDA: 84921266640.15.E60F4CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 11C5540007
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:40:38 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1ZMsLYo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id ABFE16B0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:49:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A9401203B6
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:49:18 +0000 (UTC)
+X-FDA: 84921288396.18.59D5F50
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1A9DB140008
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:49:15 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H35J3o1t;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782459639;
-	b=la//uyJneQc13+D/bBp0NCofR4aaVWKBtWaxWNukTFCS59T6y7SHKrpLkcUtnRUW4NVbdL
-	jdkrtZuU7rUfzRtC2fH3msDPf4MfrcTo18/sGi9cz6sESef1V3XJzXBybJqxCXGwSLqqZP
-	/3byyIInI1bLgOTg/VGVKzf7TFimhoQ=
+	t=1782460156;
+	b=iV9GdIK3ybLt3MnCDq/YoviUS4tZgDJCI5VujMSs6V8lrFUioCOrXMy1sYIZVgJ2TAqJml
+	Z9tXqFzS2bLbGdEgfSFlKqj1P7oFhwKXXNq8GTD/w7gaRn11vRg9gcKD66nub9ThvZ8EGf
+	MMkRe5lMUOPBmH3SK7fywS9FeFgYDkE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782459639;
+	s=arc-20220608; t=1782460156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vh5mum4CE2iVLYNUmthPz0ghYxYQ9IfsJDxe2k3e6D4=;
-	b=GNrbU64ycZbBq8CSv7bKm7AA2R66nAYEvV+qde6hTh8TbxeL2jMAT1FmOn0dWM/2MKY8iM
-	0G4iX76+wkSf00yzGQs5QGWOoTAQztF1inFgy5uAlIh+vqC7iqQdEoUMI+WEkzhLdMJ5bo
-	8QwwhC6b5iuSRSPenOLzi1zDdFoCp1c=
+	bh=4Saw4kFCjm19eZ20/zw2nrOG00PSR+Clz1dVZWS52fs=;
+	b=Hk7rFaadVoX4lR/atA0LKP7bUhTWvOaH6JlWdO74ox7OaFNzEoIrVsPD1IOaRhlSkOnYpc
+	eYarFEbGxaKdsuCCo2yyOuz+ex28mGfHBHEj8b8MGmTerc40OcIAiaa5zKSmB3WrofWr5G
+	fA3HNvwpCq7Xpw6SRErniEwKnmzBVjo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T1ZMsLYo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8EECD60122;
-	Fri, 26 Jun 2026 07:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C5B1F000E9;
-	Fri, 26 Jun 2026 07:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782459638;
-	bh=Vh5mum4CE2iVLYNUmthPz0ghYxYQ9IfsJDxe2k3e6D4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=T1ZMsLYoxOYdOSMC1j6XLXQrF7Koh+Ep+37Dhnig/mQNK73ByqK9b+hjxl0U0hFyA
-	 lK0DFjUZ63+L/1G9QE2v+z6Sa0Bl3pRpERY02mPEup5nczZV56aGjINoIr7opsMcRp
-	 gay4lEBm1gI9fHdTLsDWxaaAdxwLFnpdsz1RimoI6rt7ECUvlQMGNQfIlvg5dvL0NO
-	 feN7WpQC/WZTez6noyl6oFhkz1zivUJcfdQyZLKnE53PX8dQj+mKTOmL/LEDUGOHDh
-	 q9lNGJNkO840NMXj/8D2ZcinyRX1gcDx13ZbCjEuUtBTlNisJbNq0UFXNTO3Tf+5k4
-	 xNX/hin5yVzNg==
-Date: Fri, 26 Jun 2026 10:40:32 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Taku Izumi <izumi.taku@jp.fujitsu.com>,
-	Yuan Liu <yuan1.liu@intel.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm/mm_init: drop overlap_memmap_init()
-Message-ID: <aj4s8DvCQ0jE2H_y@kernel.org>
-References: <20260625073941.145014-1-rppt@kernel.org>
- <20260625073941.145014-3-rppt@kernel.org>
- <20260625095846.4e2tl3fbduc24erg@master>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=H35J3o1t;
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782460153;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4Saw4kFCjm19eZ20/zw2nrOG00PSR+Clz1dVZWS52fs=;
+	b=H35J3o1t13TjTi237Lp3SqddEjsRv4f4RSM+qpBCWodWmTU01xwsDYze/P7OXfzjcf8x2g
+	L7azLrthFwB7ZdhxgEggy38cPs2ercxpdv9beZWDVQANtMSOQiQChT4wFBsUqAUhMh2/tR
+	dSogqoEyYVbj2LI7Bo0ef8Z4euSG7cs=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com,
+	linmiaohe@huawei.com
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	liam@infradead.org,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	mel@csn.ul.ie,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	jpoimboe@kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+Date: Fri, 26 Jun 2026 15:48:55 +0800
+Message-Id: <20260626074855.97652-1-lance.yang@linux.dev>
+In-Reply-To: <20260625112955.3254283-5-dev.jain@arm.com>
+References: <20260625112955.3254283-5-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625095846.4e2tl3fbduc24erg@master>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 11C5540007
-X-Stat-Signature: 1m5rw3ig6maanyku6bgaoqaaqeg49awp
-X-HE-Tag: 1782459638-306605
-X-HE-Meta: U2FsdGVkX1/WxE7tBNJ7CdWyOy8K4Krk+zqj4PrwtIXjMVC5WiVjxspDiipaSX0aQSSLN1G6DYGuha4mG4dPUvxw53VkA8UHgK9JzxRRj41fr4jwFYSJD7FIyM1OcZgwfEKqi2WoqZ6h7zH7OAZnED3O+AbZyHPyuxPF+jnmQPGOdj1RZ7gSzuSF+YrP5htGxm9CLEY1uzikPu7Bm/N7GBIQX5yQ3z7ItmWJixyVu74RgBdumS9TOe8uYAlnnH03nvB4xRoEZq1UctJczIwxVxRkEEN+Qh0CrP2jVirWui5+ZYPq2eunKXuwjTtdvLZ35boHFlReoEOsy9oy8XKzW0F3FZoO9m0gXoVI2Y+dDJoCo958Iff1AQXsylMrvInu3VqCkGzFXGKipYhS8f3YLZ6uAKaPWgRhHl7d3lfjLS6Y8Pn8d91o9UrxVZwT6sD3P2Ay0pAv5acB/LSWC9IipHfK99v5IFTSoTug7EvyuO0AjQ0XhlAHfi3EoVU8K0QMeTUKXPcIah6/IuozErAs54/7jll7QWZa7ZsJUsW7bFvgw/w7pcuSeXn+z8mHmPlx0k/6TTWgwHK8E+UawlruL3hc6D4IJJ0cgw/UcMr7cUg0+vhDjdKQKH94s4bTwuJGOfzRu0MWFeg6R7dfge3qXoRlH8+rbII4A0ycr/fKGZAVViSblsF3sr4s+G7H3QEPKBsIc3S0TNX2SC5+AkX3eEYiA3oXMNggJ1+xLVMEaJWxKDQHJ+Gd8bF+37O6obJIx5fH4ce91p/xfWyPYd3o6b29SJzcZ/vllMMzU0RRZi2R1vnoGgQJ8DnQLKrmHzs2DTGcV9LZO9PIuPwzo5iZTD72tZBL4SRwtaBm6kMngrPoNOPkZDuuidHJOEOq5JgplJlXkbDOdqr18SvdNVqfdZz3UOBxDdUWd/jSUanuL+UzeAgAtGk4IB4kDgAH/lJsMk8OOizYXAXcLB5z3Yf
- R/oi+h84
- PihB/sO6E52mmuLBid74juHGjdsJ6t8wreiexDf0zyVEO9SUtqPnTeQoLpqWPESghSXF+iF4x/NIg4oRRB6Fila8VPRjsy2+V0ypI/DxyzuN1gbUACFyqZhFxYH3BqKnUae1mo+PdyfGmrpBcQ4LX2ji4kVd0iTGU70CCVl6UxU6ZqfzGvL8XRHWKJSkZm2oM6xloyb/xFPWZhJIFXvQS3BakvR/lJGSylu758ic45stKJHGKEe+j3V88UsTle1cOARL3YXwGyI5fO2zTLDIA7AuQjBQTHDigZuHPd82kHZBJ75pHjWsWO01920A7wJzkDQPWqHcCEg+uVWCQlBxDhBM/whmlk7eujjCh5xJ9bEbmB+6msSgQ6NE2ZADflbcNd6Yumy98I197i7eZ18U7mf7+Vs5fe007z/e8ZRlnwGWFURY=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1A9DB140008
+X-Stat-Signature: uodda8ddwu3gcb5715pun754sbb75q8j
+X-HE-Tag: 1782460155-273651
+X-HE-Meta: U2FsdGVkX18zdqiVF1dvvHE9Mc8q064CAxV7uH3ay9xhYRu0pPzyt8Sn2y3qCGSxijuX2aMlJQb0cgxb9LC4UwhvxUEB//kSfCSglGpr4iE2PzV2U7h+8HoaiTm3PajoX1UeRYbg/OjkU6BrjkVKZrjdMun3e/cqEH/HnSbqU4Y6cSoIkylTtkYnfzTZM/abeFJg6IkIm+x9zKyB+Kc8QBr9mc5J+epU3tYNvMKEn0UhxTleJPOhql9MGyQz1JXIJB3a9fc2Q0fUmWBMfTAaRX+xnbDwJeOc2mjZUPIkPUKY1HyU701F6rTRqSnCeHKexi4RCVQmTm6xffSCjpR/zOHHkMSwyGgvIXgUr3qH30HsfjPblchLk8Z8idNJoUOwljgPtMJ/pBQIVPV4GPZi3drbn++QV+ISXnLttczlQdFw9uKH9X6KENMruAqweNQbNkmyYxYX+ODdSqTWz2RR+6Rgd9JbuDvUO7r2w85WLEFiSkYHWZ3pgmpLisJcEf83BpXPVwS7GDol5etfV+3V3uFD4zKGXLoJw7dufWSLNQ9ZFS/bFHoJUAmBYfUEycHMg2EH1f0QYLdBFYFRdt+PU4YjMHmby9ArTe0FmiwRUZt6CVZevbsGitOARWIoJaLjCK+XxJojnq+aX2gQDvGZrQJqcZz1Z2WoG0nndjSdh/DMB2IN4BQundMsGSiaej7tbriLpwOnYrv6VHXZtEQ91y/1n7JI65djJx92gjGV+AtGanfyoumfRE0k9uKeu/6qheEjrhzgo0EbPhOX9U1gs5AmwZR+WNv4q0pmFt7QAPQn7G5dn7G3WhW/DQRYyiD+9rTC64scD1b8WM+BIZKwJUGBBaVmQiobILL9noJ3LlLPH1cZTAL6Y0fSMbfbzUlDILsL+SahpsFznPL7JdegTIzfIOxBDmj9aOWhPvoqUF2PtSJTEKsPW68wjLqXhl+I3TsM0OnItz3qp7Jc/Ps
+ g2FKZHdr
+ McQnAewxscLjkPM/vpnB31+TYiolZ7wQMw2f0iIp5S8WNdPmkak+3IYpexTuKpai3uuml7+puKSEkm7tPlOBL8HYzXmobdSHydkcvHqoBQ6cbBmLig5pAQVJTpkRBYpNeIFlNW4vOoh0zFZE/K+cjmkGmO638ffqmooOSNkNQxUzEe8zhjC2wcLTwRIcmgnGZGc4/zWGzmmIrTnd53iL/HlPV06EdlCIqVWO+LRA5IDyf0+y+ENVT9dM+2XLXF5AvFzu+vm0AhVOf1kwbfH8pBlGr3U2JV+1KeUCQsrEfduZnljlptvBQpyG4KjNX4kFXkySUqRXjLl5R4/bCqrkGlbZ0daL6jwWkq0WAYJTM+Tfqk9tPiQI1y5TSaJcZiXFPt8bnpyiQEbxcb12YqTlwsS4HANH0f0jX41z/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,87 +121,164 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Wei,
 
-On Thu, Jun 25, 2026 at 09:58:47AM +0000, Wei Yang wrote:
-> On Thu, Jun 25, 2026 at 10:39:40AM +0300, Mike Rapoport wrote:
-> >From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> >When ZONE_NORMAL and ZONE_MOVABLE could overlap because kernelcore=mirror
-> >didn't reduce the span of ZONE_NORMAL, initialization of the memory map had
-> >to skip overlapping pages during initialization of ZONE_MOVABLE to avoid
-> >double initialization of the same struct pages.
-> >
-> >Since kernelcore=mirror works now the same way as other variants of
-> >kernelcore=/movablecore=, and adjusts the span of ZONE_NORMAL, there can't
-> >be an overlap between ZONE_NORMAL and ZONE_MOVABLE.
-> >
-> >Remove overlap_memmap_init().
-> >
+On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
+>check_pte() is the final validation step in page_vma_mapped_walk().
+>It reads pvmw->pte with ptep_get() to decide whether the entry maps
+>the PFN range being walked. For hugetlb VMAs, that pointer refers
+>to a hugetlb entry.
+>
+>On arches which provide their own huge_ptep_get() to dereference a huge
+>pte pointer, accessing via ptep_get() would cause pte_pfn(),
+>pte_present() etc to misbehave.
+>
+>It is not clear whether this has a trivially visible effect to userspace.
+>
+>Use huge_ptep_get() to dereference a huge pte pointer.
+>
+>Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
+>---
+> mm/page_vma_mapped.c | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 2ccbabfb2cc17..18e1d341f463c 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> {
+> 	unsigned long pfn;
+>-	pte_t ptent = ptep_get(pvmw->pte);
+>+	pte_t ptent;
+>+
+>+	if (is_vm_hugetlb_page(pvmw->vma))
+>+		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>+				      pvmw->pte);
+
+I think check_pte() can pass a wrong address to huge_ptep_get() ...
+
+Not sure that is wrong in the first place. For memory failure,
+page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
+folio. In that case, pvmw->address need not be hugepage-aligned.
+
+@Miaohe
+
+For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
+page_vma_mapped_walk() passes that size to hugetlb_walk():
+
+bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+{
+	...
+	if (unlikely(is_vm_hugetlb_page(vma))) {
+		...
+		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
+		...
+	}
+	...
+}
+
+hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
+sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
+calculating pmdp:
+
+pte_t *huge_pte_offset(struct mm_struct *mm,
+		       unsigned long addr, unsigned long sz)
+{
+	...
+	if (sz == CONT_PMD_SIZE)
+		addr &= CONT_PMD_MASK;
+
+	pmdp = pmd_offset(pudp, addr);
+	pmd = READ_ONCE(*pmdp);
+	...
+}
+
+So for that case, pvmw->pte is calculated from the aligned addr, not
+necessarily from the original pvmw->address. But check_pte() passes the
+original address together with pvmw->pte:
+
++		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
++				      pvmw->pte);
+
+arm64 then uses that addr again to choose ncontig:
+
+pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+{
+	...
+	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+	for (i = 0; i < ncontig; i++, ptep++) {
+		...
+	}
+	return orig_pte;
+}
+
+static int find_num_contig(struct mm_struct *mm, unsigned long addr,
+			   pte_t *ptep, size_t *pgsize)
+{
+	pgd_t *pgdp = pgd_offset(mm, addr);
+	p4d_t *p4dp;
+	pud_t *pudp;
+	pmd_t *pmdp;
+
+	*pgsize = PAGE_SIZE;
+	p4dp = p4d_offset(pgdp, addr);
+	pudp = pud_offset(p4dp, addr);
+	pmdp = pmd_offset(pudp, addr);
+	if ((pte_t *)pmdp == ptep) {
+		*pgsize = PMD_SIZE;
+		return CONT_PMDS;
+	}
+	return CONT_PTES;
+}
+
+With a tail address, pmdp may no longer point at pvmw->pte, so
+find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
+
+On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
+can walk past the CONT_PMD entries, and possibly past the PMD table.
+
+Should check_pte() pass the address matching pvmw->pte, sth like:
+
+---8<---
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 406fd50bbd8f..58463493bd3d 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+ 	unsigned long pfn;
+ 	pte_t ptent;
+
+-	if (is_vm_hugetlb_page(pvmw->vma))
+-		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+-				      pvmw->pte);
+-	else
++	if (is_vm_hugetlb_page(pvmw->vma)) {
++		struct hstate *hstate = hstate_vma(pvmw->vma);
++		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
++
++		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
++	} else {
+ 		ptent = ptep_get(pvmw->pte);
++	}
+
+ 	if (pvmw->flags & PVMW_MIGRATION) {
+ 		const softleaf_t entry = softleaf_from_pte(ptent);
+--
+
+while leaving pvmw->address unchanged for page_mapped_in_vma()?
+
+Cheers, Lance
+
+>+	else
+>+		ptent = ptep_get(pvmw->pte);
 > 
-> Do you think this is valuable to mention the double init for the overlapped
-> range?
-
-Not sure I follow.
-We had this weird overlap_memmap_init() exactly to avoid double init.
- 
-> >Co-developed-by: Wei Yang <richard.weiyang@gmail.com>
-> >Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> >Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> >---
-> > mm/mm_init.c | 24 ------------------------
-> > 1 file changed, 24 deletions(-)
-> >
-> >diff --git a/mm/mm_init.c b/mm/mm_init.c
-> >index dce9dc9f2302..6f0a71ccca30 100644
-> >--- a/mm/mm_init.c
-> >+++ b/mm/mm_init.c
-> >@@ -783,28 +783,6 @@ void __meminit init_deferred_page(unsigned long pfn, int nid)
-> > 	__init_deferred_page(pfn, nid);
-> > }
-> > 
-> >-/* If zone is ZONE_MOVABLE but memory is mirrored, it is an overlapped init */
-> >-static bool __meminit
-> >-overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-> >-{
-> >-	static struct memblock_region *r __meminitdata;
-> >-
-> >-	if (mirrored_kernelcore && zone == ZONE_MOVABLE) {
-> >-		if (!r || *pfn >= memblock_region_memory_end_pfn(r)) {
-> >-			for_each_mem_region(r) {
-> >-				if (*pfn < memblock_region_memory_end_pfn(r))
-> >-					break;
-> >-			}
-> >-		}
-> >-		if (*pfn >= memblock_region_memory_base_pfn(r) &&
-> >-		    memblock_is_mirror(r)) {
-> >-			*pfn = memblock_region_memory_end_pfn(r);
-> >-			return true;
-> >-		}
-> >-	}
-> >-	return false;
-> >-}
-> >-
-> > /*
-> >  * Only struct pages that correspond to ranges defined by memblock.memory
-> >  * are zeroed and initialized by going through __init_single_page() during
-> >@@ -891,8 +869,6 @@ void __meminit memmap_init_range(unsigned long size, int nid, unsigned long zone
-> > 		 * function.  They do not exist on hotplugged memory.
-> > 		 */
-> > 		if (context == MEMINIT_EARLY) {
-> >-			if (overlap_memmap_init(zone, &pfn))
-> >-				continue;
-> > 			if (defer_init(nid, pfn, zone_end_pfn)) {
-> > 				deferred_struct_pages = true;
-> > 				break;
-> >-- 
-> >2.53.0
-> 
-> -- 
-> Wei Yang
-> Help you, Help me
-
--- 
-Sincerely yours,
-Mike.
+> 	if (pvmw->flags & PVMW_MIGRATION) {
+> 		const softleaf_t entry = softleaf_from_pte(ptent);
+>-- 
+>2.43.0
+>
+>
 
