@@ -4,172 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 716B4CDE002
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:08:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC449CDE00B
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 00:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5ABFC6B00D9; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
+	id 942056B00DB; Thu, 25 Jun 2026 20:17:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 583B06B00DA; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
+	id 919E46B00DC; Thu, 25 Jun 2026 20:17:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44BE16B00DB; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
+	id 8311C6B00DD; Thu, 25 Jun 2026 20:17:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 13E736B00D9
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:08:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9C23A4032E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:08:30 +0000 (UTC)
-X-FDA: 84920127180.14.9EC8B9C
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010032.outbound.protection.outlook.com [52.101.56.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A5E6F1A000B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:08:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C9G88KP9;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.32 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782432507;
-	b=lEXCXYYfEE6ibkLaTff6/fyvqK+EKJ2Bd807xiMZS7djK6X969jthX6JPcmJPl9axLt8dl
-	q0nyj0uH9Ed8fNvtaCnBFs92J2DsjyHLGonqoHKN5PNo3AB282XwaVX1BbUSeocvhrXCTx
-	zTYgaF90jWW+Kt7BstkrdyPmN91IvAY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782432507;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E3B06B00DB
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 20:17:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE5CF120320
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:16:59 +0000 (UTC)
+X-FDA: 84920148558.03.91B73FF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4EC6BA0008
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:16:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+z1VXpl;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782433018;
+	b=qw0ub4YXtZcyPz/yuNKdS4m3ShekyKcwTO2qN31z+xQoZYY8l9QMxcFoAbQafbkDQyoUEW
+	cdL0qJErhn0j9eklLH0Qf3YeyVNvhuJHzPrOMqBFY6oq8E1pfeEZt/b5n+hG2TftaVT+m3
+	ISJBsGfU/CijztGyA3Y7rL1+yBpWeeQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782433018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
-	b=ldy3BLy2Pr9URcIFCOQxCG/sHbatCntZ1eZN5T8405y5yWgoUNXFvmza2wOf06dnn4qiGj
-	9+FrKQLDG6IcvkyTXoHzuKqkWQxrquFgIHdzmJ2RxzSpa523eUjgDirzudAYa7Ioia7QFA
-	FZtclGXVFc61TkQl0Dz0yy7xRggkrjA=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=C9G88KP9;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf19.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.32 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H5orqPTnownDwAvG5f9ttu81lrrshyLSo8x/LZtSyIZ2xcy4xtJJb/nR/0SIjv9jrfTlPc5hE9cchXEnnTo2WBLqWJqpvTqYAPDoNjjnlJ06/QccwwpS8Qx8906dBTen3W1CPLniNQPj3AuFfSab8vd6MHKF4coGHgYJ19hSnmJXtLin+Cf8NUvgtKqHqidxLuqOmZHvB6e2IpGOXbrKvXU/alSQGUlc9RsYiLctni8Zlsd4jSfGXjwjsHMa1lTr4tlBMheM5adL9xkHIHULNNp5rEkRv9l0eqFG7q7zYVY49HoYhSGoHquoZXqHvN2uL00lj4mg4U4HnqTCYP5z3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
- b=RkDNvTya12nE7bhgjxr5Jbphm3r+SOb66vicYyYU0BM3601Dshr1n9seDL7QORIGJvfn3bf+YGkGH3lfB2xb/G25bMpqZVMa0jirfXaDL7w0LsZsSu4CfylUMmZQAFB/Mo7tXLWrLele6oQW4bWjWuKsvGw5j8pSK5LcAnnocYaecy5LEjPb1+gj+OZMgRdL0MkvUfB4lBsKxUsCcPVFDGrl9XW8zoL1U7JgbBeBkfdN92wRrlvoDQrn2DbsV3gaDx6lyOsHChXkF1XFY1sA3RCtA5KK/RjMvnhkNbQMO916+tooWJXAttsEs4i6G724CT7/XxdE63inv4MXZZkOxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XwD0tfajSsLPSed7WN/n7UmidHs2jHFFrj7GZ7uFg8I=;
- b=C9G88KP9M6NCdrbur9wSUwBFNlLV3CFXhdjXms5IavRu/XF9pNuDNnFlSLhHgBrhxnNU5hewVXwUmGfoa7WTlZrEKuCtpyYuqd0kGicNoYYk9ntFDLwn91LTsAzchZtmj4BqVZh6PPqzCgIPU9eXldAT6O+BF6RURINLYlMXR3stRdtTGF2jHJcFGYqE8KYYKw/Rrt1v32UG3MxkvZcyzXx2eKnOHhdv8WWrt6amffhjYyZvhmTSv/aVRjLlOs8R/6U1gjvQzx5sCNbkTJSpxrbMnEVjNIi1opVXu+CyFt+siD7BMHoUQuoZEpRSC5IqVNCQqipIFuV2zMsHwo/Wgw==
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com (2603:10b6:610:61::18)
- by DS2PR12MB9589.namprd12.prod.outlook.com (2603:10b6:8:279::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.14; Fri, 26 Jun
- 2026 00:08:17 +0000
-Received: from CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe]) by CH2PR12MB5001.namprd12.prod.outlook.com
- ([fe80::89e3:6df0:de90:8dfe%5]) with mapi id 15.21.0159.016; Fri, 26 Jun 2026
- 00:08:17 +0000
-Message-ID: <0ed9b9ea-6294-44e4-896a-36a1541ebd47@nvidia.com>
-Date: Fri, 26 Jun 2026 10:08:10 +1000
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_vma_mapped: guard check_pmd() with
- CONFIG_TRANSPARENT_HUGEPAGE
-To: Wei Yang <richard.weiyang@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: david@kernel.org, ljs@kernel.org, riel@surriel.com, liam@infradead.org,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, willy@infradead.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, lance.yang@linux.dev
-References: <20260624082359.2869-1-richard.weiyang@gmail.com>
- <20260624131457.ac81fbac373f78aa80a516e3@linux-foundation.org>
- <20260625034629.nmgdwl2c4luwod77@master>
- <20260624215943.332f1bdcc99a3b85b7df0822@linux-foundation.org>
- <20260625064102.tcmvrctcqibl54yr@master>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260625064102.tcmvrctcqibl54yr@master>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0045.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59e::14) To CH2PR12MB5001.namprd12.prod.outlook.com
- (2603:10b6:610:61::18)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=L4S838e3r5V3cM54ncDt5yU8BcFFqMQDkA1b0LUKUrM=;
+	b=fN5X7qHF+u8huo9qWKeBaRnEmZuNyNfov7TKPIq9H2AGcdX3ibYqwuBv0IpkZYjygVgv0F
+	A+9th8Qh1Xv+rSp83HyPNEMywmj1B00FLn87gdkeH2CE0q6LzHMN347I4qJIe6fxmopFZh
+	6ALk94+ykIf43Iap3KCdxajLwJ9oFdM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=G+z1VXpl;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 87ECE441BF;
+	Fri, 26 Jun 2026 00:16:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA501F000E9;
+	Fri, 26 Jun 2026 00:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782433017;
+	bh=L4S838e3r5V3cM54ncDt5yU8BcFFqMQDkA1b0LUKUrM=;
+	h=From:To:Cc:Subject:Date;
+	b=G+z1VXplWChwGFpXuL/+3hO0oAuUxNVv2XhM+9q+83bRJSS+iKlhTpICaD6sLK/IZ
+	 IAaXGyY2kTh7ULzNXiwuim86EXHJCeef7KntsLvCWklxefixSnoOIe76VjcLvN8ZQC
+	 li/LN7yYttF+X4VC8buwzS+q+PwcOLJ2UhafH4qaAR7fcbczCHSTTEy/TfDkW1kXPU
+	 W5go1KjlBocjtWAdLPpkFLslFvjaKL9mkauEBfPpDx2NXtYkCkzx5L3lZmsMURc/Ea
+	 wNtzKOc5LZH6p5D8U9E9SPihwmNF/ysS6jHMzXSrycMpbcoctRulGjE2EHP3GHubK9
+	 zjPU4k+mx95aw==
+From: SeongJae Park <sj@kernel.org>
+To: 
+Cc: SeongJae Park <sj@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH v1.3 00/11] mm/damon: update, optimize, and clean up doc, tests, and code
+Date: Thu, 25 Jun 2026 17:16:31 -0700
+Message-ID: <20260626001644.85825-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR12MB5001:EE_|DS2PR12MB9589:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6a955c0-fe86-4cd1-e05b-08ded31705a3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|376014|7416014|366016|56012099006|22082099003|4143699003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	1PAM2pVEWDB9xoFhHbR5/1rJ2sqqiFg8FfGew9UpAZembfsYn7bksyKtN1xIB5rJQbDR+NywOp5rdLT8lG+mynxNn8QT5oPXmR9pNQdZWb/NniosGmFTG06azx3/BHmv6IihKtfCXkEjziaqQPHiP14dAgSVqL2YFuM3BRIVwcXtDbduDhkGSj6usntKizbYxViZYMIQyEGA5DlbrW3ZY5gltEhi56CQCOonbsesuOcBcE13I3ewjcOFxfnAvwlB51/chAWG+7h1Xxz1ls08lr9mzHSQmY2g5EhaTv9MuApGGTa/gE1JqUUkN8NWW2/xBt+DTa5UCMImcn0PhnPAHlWnjZdUXLzPorrF8LdaCPxO62uWAIN22rrSTwK47uzKhowiasQApkS/GKLQHz8j8dV6Vas6XsVAujSannP9jVVF97tNk4TMRXugdMEZ5bTJdY765vOlImRfqdyv2jpnVAiAsaavx86vuVJM2CTL9D2G7jzm5h1askt9nty6L8ptLlNTnWM3+KeNUB/NrCDhUER+iP2H6wjCSxNKKxw//FoOY4jCmtyMV9FfWsdAc3I/XDSWp8AO4xg6ptiUDMZfMEMJ5hu3NMh7xkKnGR+pKDsSIrQ5RIK+lEoSf9aA3CleBHkDvzIOzU+uPQrWduox2GGgk+J713DRXD/1ueapFLg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR12MB5001.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(7416014)(366016)(56012099006)(22082099003)(4143699003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YU93NnIxNDdnMlVDOGErL0R5TzlSRmFGTVJtQlBCS0lYbjdPT25oLzBJWnhh?=
- =?utf-8?B?MVZFVVRuanBvTXo0OGhZRlp1M0xoVnVxQVBkZHBmcHB3UlNsd1VVa3hVTWE4?=
- =?utf-8?B?bUtwK1JCZlBRd1hIRjBwYzMxNlVNc3pMYWJ3eERxdGhOSTAwbkZ1ZDYrcWdt?=
- =?utf-8?B?dHNMa25qelJxY0NqVUhnZGFIWnVmMStQdGtoVzVmYmI2WVliditpM3lhRHJE?=
- =?utf-8?B?OXhuQ2VTVlRKdW8rL1YxUHdNMnNYZENSZ0RTZ0xXbUs5anNIYmd5Q0NHZ3Ez?=
- =?utf-8?B?c0RFenJsSlcwRllkOTBZcWhhYWNRZkg5TmhHTHBiQ1QvNWRjcGY4aUxEZ01o?=
- =?utf-8?B?WVZFTjhmQUI0R0RyWkduazZvYXRDK1RDS2xWU0Q1THZKREs0dkFCU3JpVEJn?=
- =?utf-8?B?M0crL0FDTDJrd2svWXEwTE1JZW5LRHVuZUlyMm5HR0hWSnBTbVdORHZoV3JR?=
- =?utf-8?B?RXNzV25tQU1QdTUxV3VaZUdoZVZnUGR6UzlRR2Y3Z2RaZ3VzU2lLTEVScU1Z?=
- =?utf-8?B?aGo2c3IwS1IrUjkvRC9kZm9xOGMyUWZoMytzSFJ2cytIZ09pUVdBN29WU25m?=
- =?utf-8?B?ZWxJYnlQQ2gxMHdBN1UyWnowd2pwdzhyZE9jNUhRTGlyRTlCZW13dkhYRm4x?=
- =?utf-8?B?ZkJob3psMWZTNW5MWllnN1Zkai9YRktzL2wySjdNZHg4TGVjVU4rWUMyc3RL?=
- =?utf-8?B?ell4em9oTW9QMGlCYm5OODB1TG0vbW1NbzlIYUNURHI3QTFyRzZqWEdPUlVk?=
- =?utf-8?B?N3g1ck5OdmdJYnFRL05UYnJodjE3cEx3RHRLU0grMU9ncDlsT2xGSFRQeGFU?=
- =?utf-8?B?OWZFTE5id01UUFNLbDlscWRqeUs3bCtUelFwRUR2WkRJSzJkNm4wdlhRcENT?=
- =?utf-8?B?a1JPOFQxR3BnVk9hanNDVXowZ1lWZlAvY3NlVFA0ZlFFZFhKT1pBNUJrd3dw?=
- =?utf-8?B?OUs5bnV0QVRvQ21WYmQwaHJtTjI5NlBINkJHcXJaUENlSmhkZkhIamoxY0ky?=
- =?utf-8?B?TFQzdXUrV1JwaUljT3VuRndDU2QzZ0s4UzQzVkQ5N0l1cXRwNHdpTHZndW0r?=
- =?utf-8?B?Qno5REQyUTZBb2RoUWVTdlh2VklvSFN0d005ZnptbEtOZUVuMzV1N0laOXdW?=
- =?utf-8?B?OXNNZmQ5a05TaGhZcnY4NUhGRzlxMTEyMjJOUWV4S2hyZ2ZuNkh0aTBNVURF?=
- =?utf-8?B?U1Z5NVhaUTFMREV6L01KaEVyVXo4N1lpU2lnUFQvYW5ZL3k4ZTB5TGI2cjMx?=
- =?utf-8?B?bEJWdzhhdjREVXYrZFdtd1lBZzl3SHBwUGpqUjVKSnF6SmlEWFlnRUtDSW1W?=
- =?utf-8?B?MWI0U094L2ZKV2s1OTN2SWtpL1lNOUdudU91Z243UDB4TTVvVzhad0JTVm5t?=
- =?utf-8?B?elhCbjRnbVgxQnlEQ3MxWnFUQ0Q1Q2VnaGYzMnRYZVltUHJqd1NybVErbDgr?=
- =?utf-8?B?U1N1SUVwTkVvamUvM1lTMkNaWlprYUg3UVJvRjJpZ0VvV1R5L3RTcXRCWVhX?=
- =?utf-8?B?R3psYitqSmJYS2crQUs0YlJEQStHOVIxQ3FRMkQ4ellITXpoRXpQVTlRREF6?=
- =?utf-8?B?UDUrdjNqeFUvL0RDUzRZbEtSOWU2UUp4QjhsbVJyZzMxcUhLbmlnbnhncHpx?=
- =?utf-8?B?MWd2VVJIVlA3QzZnbkZjb1Y0WXlGMGJnQ0kvWERZdTZSNzJOUHRxeFRIVkFa?=
- =?utf-8?B?TTU4NkF3a0laT1pKOGxuWUJLZHJrY1ZGaWZydmNzT2tkdzB6cU1XOFpsR05m?=
- =?utf-8?B?dkJGZXRZWWR6Q05WcndvNmZCd0dPM0cybjRMZ2p5OUgzSjFJUXUwWDd1Rjg4?=
- =?utf-8?B?YW9aNFJsZmZJYnR2endTOVd1bSttL05laDhUenlJWVZ4S3hzN05qRUF4Q0oy?=
- =?utf-8?B?aDVKc1htaDRWWmRLWUEwQTlnMDIxbDRtam1yWHRWSDhBSUwrNUJocWZTRWpw?=
- =?utf-8?B?dzNUbVpQaWpwNkd6L3UycGUzbTNSeEdwWUF4OFRpNVYybTY4SWRUVVZOVlNZ?=
- =?utf-8?B?bEUwSEl4ODlkK0VhcmVpeFF4bHZseUFsOHZMTUtxVTNseW9FaEd4SjkxKzlC?=
- =?utf-8?B?K0xCU3kxUnBsdmgyYmJBMVhNWFpoTEhpd2JPNmJQdVVBMmJQNTZZUTc4MGhH?=
- =?utf-8?B?VFlzZ0pvN2lHSUVUdnlOdDl2MFJlL3J2OEs5dEh1VlJ5VWtRRVFrQnl2Uko4?=
- =?utf-8?B?cnFsanYzVHBGdGFoVTZPQkk1cUl2aFBHb2RzTmlHMUUwY2ZSdlllK3p3Qmx4?=
- =?utf-8?B?VHhRRk1EallWd0g0UDEzbG5jQmRqZUwvQjJBVVdnVDlHaWdNcDAyREkyYk5V?=
- =?utf-8?B?VmlUK3pHaU51N3l3RDVIUmZRMW5NV0FIYlJnaC9XMENEM0ZEalpJZz09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6a955c0-fe86-4cd1-e05b-08ded31705a3
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR12MB5001.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Jun 2026 00:08:16.9999
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IYcgpzVH2cpBSdmO8QoqV2CvQvgPKzE5bgDbwG+ibJrDXPvKiUpsjWEaGb2hsrBSTyHo7fBuqDUc/4W1hnEJaQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9589
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A5E6F1A000B
-X-Stat-Signature: ap7m9qucmqq6o4p3iokamufmpmn8ky8b
-X-HE-Tag: 1782432507-603388
-X-HE-Meta: U2FsdGVkX18ttHra8dUWr7yM8p4FMg4U8m44yMr2Pt3uebktBkV89jmGoqjEVVGezbakf+YtMElxIPMSJQV4E3iG+Wmxblv3vlnhAktNDNk4eR9myEmvi7itULWREIjlOBf0/0npvc36EbsIciPVKT+Ug8AOvI7MJAHMNZKTU6lyyAz2eHstWVq7Rw752ETaUX5O3Fx1DWkqatR5TPdgXXrAtZjHh9oQbEswe1VhoXuP5jMAMpLuOu57aH4C8wr4FCE+Dcu6QONBSsb8557/ND0TGioS+GIZ+uYt0hO0AmPClpb1eRN3c8LeS/YZsSmTG1gR8sNEehORMdS75C60WNx1jQ9zUwvLRe0fqDMWIyhPO6SvEsKyossoEw0n7Pqhqcksqypf5Ytws9PLCxupEjwlxmAhIQnNU0O7BdTax19TJ8cQc1YTE1R7qhB5jgKr7AwwkW9oE4arHiz7QxODIA+BXXi2pj2Rxih+A1fGjN4BsMvzJyRaHV5XTupCo9nMQ8QndwiL2L+Um03TENb3quQ4OF9zXWopchrnSDSAlW83TRpy1yZSdi0b9EJDazw2QBx1PIehV5n8N4g5fc4/Q5rEOUPMDvUNK3WzUYKjDqav2G4jnkIdig+FsCD+DWVTzjE+rjLfZaykofsMGJR33RIYdcwKRfWMMyJmlvyX4yFau9g0jQFY9J4d3EbvMpSMTEHBNUWGfYpvuP2aAaT0yKTD6YX0Ky1qEl/AFWUQU4CIuQrekAhPMZlNpScOqzylM0rTKOpZ63tDHQq2Wl2ptaNwckkk4Je2fEXz9CEG8MlBZ8QtyGzZ7yMG/j9Bsp4FEjTpEIi9CzfTQ7KDGSHSBULFHMvt5y5G9BNIrUS7aVjLm7Xtcc+L13OyQSwe270/6fCpOx7II14LMtNwDbF/AHYzLQbUG8Y4dkzbfyJXo0booZFFL9TmOI3l8hcwOMrv6Tqdi6oyntatlJVxATj
- JrOdhUmh
- vbJYZh2fnjc5vYCRhVGlEk0CCoazQXozuodyjRJpwLR9LdfJFfAbKDUXVJPOqFBeFDV80F3qg9OjUjXaJ8L+xECDIHzthnxuC3k2Myk2SKAfbkOn0nsyZzLnuNkW5M6XoQL5zU5h28bqtwlSkvcU70NrVkd1qUb4ICdFUHsDRnnu75rOFvp209rjzkzc6LCypTMv/BIm+hgA+nb+qL8frt1/Tcn9P4P0WtbcmYHBmz4joFmcsP1aBhBx2+Tq5SJloDIqJmvR8u16ghRpSXjNMaqwsQb9wwggEHLGyUDkLDMQMxZ3AdpttHUYHgaEQQghmI086T2KXoQLKi+J+cV9uH7vSSRVGqzJ6oa9Qcua9vdynabwLM/PR1RA4TKo15WXg3o4FqUp/VuZyOs8lAawk6L3WETViWq6bwLxjCGveGxWflaBxHpVSFu9E01tPorFw/kelZNNSrioWe+WiaudyRXIqad7OHZu2PyIK6ycQyiCxltjGEWLhqoVVdSL4WcY7RmWNC7HrTyRIKTWTYR49AoyDaWF29xMb9rt73eGF3BZ0yugN2iywJ0IaiEzUSErvnd8nNRD0ksIMK4w3qiWuaS0oulEheumsHD+ZAsqW5u6Ks4Wb0Ig9FvlwS3kc/JM4nWA56U8ZjkaoCng0v+keb8kSUNZI1e2vgD0d
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4EC6BA0008
+X-Stat-Signature: 7gs1zxirfb1sgenek45eds4z3n3fsua3
+X-HE-Tag: 1782433018-278499
+X-HE-Meta: U2FsdGVkX1/VkiwphvLx4/PmKmHjcb7gYdIcIxF0InwTN2Ef3G4+pn0Ii8PWYlDlLAIJ0kgosx5k/LtRXHigg1UXv9FK7Q2IqvNJf3X3/QYxRqUOm5nQo0CG0xYkqVgQC3NdVpMRfGy4LzBd7q4yOMLDwCU5bfRtE30N8oTBuHqU48nb1fY8pndC/jzv4HSGowI2CXzo/aC2mibJc7wu5UBmVM/sPPU3CZcXRLfFXH30rWZTVFFbPJ8kKMc5Ei5V0/Ti0LfHgPqNh07BCwvU2xMgjrkGeviZaUBRV1dxwOntZfxcEohATtNQiiza4PdtTRS+ny0qlZ/6jFw9inU8qliFP6xiJv2Dxw1WYOGvmGCS+JV6WG6+aY1qUTJ3yQ8mB79OoxCrFHex65CzR1YOlosmSK+FSXqkWelk1mtviMk4nsOm2Ds/N4wm4YLy1GKfH6QRwZLIH9pJP8vr9SKkfyQSFte+NWBhSCiNZGkric3GUSmdLYySS+mds5zn6NYQYWhh10ujYqfbZ5iumSPn3btLfS1C4es8KWk9Vi+LhTjHk1H/CzUIXV5hmKAzyloY+o0MycP0pSgRfSsve3ffYFF5pL2EZsqpg81MpRkKRI2hNAVw77oUiPNzzdkrUUUiOp5CvYS11C+XdIOT6hdSMHkGy7U0RuCyM7hmXNQ6RD9mT0krnY3FAfL0f8DeRszls/QC0oQxG4WZEes3tNoF0bkcxSrBR1lUVuXVXPSjTPmL1COYhPX0Q807EPl7bC+SRS9J855reNVJee53SfBst2FcPAFtNnMP+nKj9bh3cXdn4gZAK/NL8k5KUVyI6PzfFftxfwDkYuyB9jUPNENUTb0JaFqhqFn8B5QdKKEqY248RO/tTnztlt2fZJzxUU0jY79dKf31Ko2mY9lzPwiP+M2h1FKj3yiKxsT81gCIG3WGTI+W5bmgIMQPxAhxSmVhDvfLkmxteVcM23/cu72
+ 9qRP9SHZ
+ ElOHKS89QJuADzbAazhXkoQAo7+tb0QE+s0lzDeU05prJ4SqlAab+4Cb3jnZZrVxijcqp13D2FI0lFatx86kibQjF9AJAjN6xsnam7K+CW0ir0XRbIAhzKzOS24pm5fcI+tmeoeKKy4ydBEaMmVxKYnKlqJDvkBR65VlKIgL+m+d8RJS0ZcknLYlUmXPXPU9Zm3MkEa3WZfIIigIKAmX9WbhLhDGA5AAVMWw9k8upLSXorGc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,48 +106,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/25/26 16:41, Wei Yang wrote:
-> +cc Balbir
-> 
-> On Wed, Jun 24, 2026 at 09:59:43PM -0700, Andrew Morton wrote:
->> On Thu, 25 Jun 2026 03:46:29 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
->>
->>>> Sashiko had an off-topic complaint about the surrounding code:
->>>> 	https://lore.kernel.org/oe-kbuild-all/202606240042.ffPsEXVc-lkp@intel.com/
->>>
->>> I see this robot reply, but not see the Sashiko comment.
->>>
->>> How can I view Sashiko's commnet?
->>
->> oop sorry.
->>
->> You can go to https://sashiko.dev/ and search for the email subject. 
->>
->> Or append your Message-ID to "https://sashiko.dev/#/patchset":
->>
->> 	https://sashiko.dev/#/patchset/20260624082359.2869-1-richard.weiyang@gmail.com
->>
-> 
-> Got it, thansk
-> 
-> This one mentioned two things:
-> 
->   a. page_vma_mapped_walk() return without check
->   b. whether __split_huge_pmd_locked() would split device-private pmd
-> 
-> For a., it is being fixing at [1].
-> 
-> For b., to be honest I am not 100% for sure. If a device-private pmd could be
-> file backed, then this looks like a bug.
-> 
-> Balbir,
-> 
-> Would you mind taking a look at the second comment raised by Sashiko?
-> 
-> [1]: https://lore.kernel.org/linux-mm/20260624065353.1622-1-richard.weiyang@gmail.com/
-> 
+Patches 1 and 2 update the design and ABI documents for recently added
+DAMON features.  Patches 3-7 add or update more unit and self tests for
+DAMON to cover recently changed or added functions and sysfs files.
+Patch 8 optimizes damon_commit_target_regions() to skip unnecessary
+adjacent ranges setup.  Patches 9-11 clean and fix up recently added
+DAMON sysfs interface code for readability.
 
-device-private pmd's are not file backed
+Changes from RFC v1.2
+- RFC v1.2: https://lore.kernel.org/20260625142357.103500-1-sj@kernel.org
+- Fix broken sphinx syntax in patch 1.
+- Drop unused counts[] for damon_rand() test in patch 3.
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260625050756.91115-1-sj@kernel.org
+- Document nid requirement for node_eligible_mem_bp.
+- Fix typos: s/memmcg/memcg/, s/geets/gets/.
+- Drop damon_rnd() randomness test case; test boundness only.
+- Fixup dests dir selftest to do real test with correct file permission
+  checks.
+Changes from RFC
+- RFC: https://lore.kernel.org/20260624142008.87180-1-sj@kernel.org
+- Rebase directly to latest mm-new.
 
-Balbir
+SeongJae Park (11):
+  Docs/mm/damon/design: update for DAMOS_QUOTA_NODE_ELIGIBLE_MEM_BP
+  Docs/ABI/damon: document probe files
+  mm/damon/tests/core-kunit: test damon_rand()
+  selftests/damon/sysfs.sh: test multiple probe dirs creation
+  selftests/damon/sysfs.sh: test {core,ops}_filters/ directories
+  selftests/damon/sysfs.sh: test dests dir
+  selftests/damon/sysfs.sh: test all files in quota goal dir
+  mm/damon/core: reduce range setup in damon_commit_target_regions()
+  mm/damon/sysfs: split probe setup function out
+  mm/damon/sysfs: split out filters setup function
+  mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
+
+ .../ABI/testing/sysfs-kernel-mm-damon         |  40 +++++++
+ Documentation/mm/damon/design.rst             |   6 +-
+ mm/damon/core.c                               |  22 +++-
+ mm/damon/sysfs.c                              | 102 ++++++++++--------
+ mm/damon/tests/core-kunit.h                   |  15 +++
+ tools/testing/selftests/damon/sysfs.sh        |  71 +++++++++++-
+ 6 files changed, 203 insertions(+), 53 deletions(-)
+
+
+base-commit: 7221b218afc0bff75d656bb193cb6709737cbbf6
+-- 
+2.47.3
 
