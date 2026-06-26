@@ -4,142 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BCC7C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:12:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33373C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:20:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7276A6B00EE; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
+	id E8DAC6B00F0; Fri, 26 Jun 2026 12:20:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FFAF6B00F0; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
+	id E3E5C6B00F2; Fri, 26 Jun 2026 12:20:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 615936B00F1; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
+	id D2ECB6B00F3; Fri, 26 Jun 2026 12:20:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 365CC6B00EE
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A89638DCA1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:12:13 +0000 (UTC)
-X-FDA: 84922555746.17.3EFC1F4
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DFFBA18000C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:12:11 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQPMbViz;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A1CA96B00F0
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:20:43 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 33A51A04CE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:20:43 +0000 (UTC)
+X-FDA: 84922577166.07.7EC67F5
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 684451C000B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:20:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lORE1EzE;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782490332;
-	b=rklcClwTptQY0ni1CMtz+5MZT+D8XEeDFxaEDxRZG0m5p8Wmw1YGPDQ8djk89yn4K+IwjX
-	+LfmsdkXXLAjHw7iuVryzSXI26tT9EuQQuiuGMTIx1O54hJPA2IqqsHXMRhh5INwqnK4J7
-	7CMsJDKf8k3Fin6i8ZlS1rCdoN29eVs=
+	t=1782490841;
+	b=nkDQEtHUyyYrpwQMITdsDoRH19gPzItvq5lh10Zqp5l++5FUD81+UBegkqqMgayg64yMYj
+	yG3yqIfm/8M9NDasnwZYHvyAmUmscNuJ7PgxuTlJWyNEi9/UzwhjQYd4gv8w617YlJUO50
+	CqU+R7NVGCdYabiZ1IEI9nmIQns1lsQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782490332;
+	s=arc-20220608; t=1782490841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KZmJ5FAUnKSZNe/4tfkRMgIB/pgG0Tmi0diyqJ7nPEs=;
-	b=cq6SM8VpC2Mn/dfsUHpbaSepCsCZd7D+99GEJYJ2VSm5Rt4bTE+B9ws6vNbz7e6/2BShjd
-	/c+omktqsFIxAlse3gc9rCbnQyJKyCEhVWL/VeQzRpIS+u4zm6MWQDCXVk0Lz2Pcam2R25
-	R6isT/CWT0X7XfusOVcnjyoanYYqM1c=
+	bh=4tKsbGrcR78zcHbLWs3JHmwiHpOL5AjwjOIZHc1xSi0=;
+	b=vt34ipvIjMye7+On6cP7+jCiuuAv/CS9UIvIBqNvh2/jPfmQAIXNzAgkrDuS+t122SqHWk
+	IA2EkDgariartI1DRWJ+Sr0t2yaL/EA9IhXth1VMQZdtU+EdtvI2xOrl+CEOzDOMCqKrfJ
+	Gozz+dZhy1zxXJzPaEAYtwsFtNdGv9Y=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQPMbViz;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0958D43534;
-	Fri, 26 Jun 2026 16:12:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BAC1F000E9;
-	Fri, 26 Jun 2026 16:12:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782490330;
-	bh=KZmJ5FAUnKSZNe/4tfkRMgIB/pgG0Tmi0diyqJ7nPEs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BQPMbVizG95hAt/8047HSKMeQsim+Jg7gZG6JWlOOFk2v7B6OBpdBP+YhYY1NSCx3
-	 GNVwZnGNfJa9jQOZP/0NogmebDDudQxIbzRVkdLZN0oSJbt3lhb4SB/N+3k7qseuUH
-	 0qfSfZ5wTixIwfN8D/PDSLS0sTeDvvPBjcOHc9ZRveJrSZLJmF2aech3YvNdhxUk3m
-	 AlRxH7+TtGweQazKzTjqDF2/TESXrCQk28erqSy97CA0cs17xP6XG/Td/1zvpEh6wm
-	 7US4qioeGR6+C816i0glNmbbP+kJFCsmwP4rKzufw1tqVZoailjOJGQNDS7OF0KNAi
-	 Yni2bS24/qA7Q==
-Message-ID: <2e9fefd1-38e3-4561-a7a4-d66b5e9f81e5@kernel.org>
-Date: Fri, 26 Jun 2026 18:12:03 +0200
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=lORE1EzE;
+	spf=pass (imf21.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5ad58f31846so1057654e87.2
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:20:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782490840; x=1783095640; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4tKsbGrcR78zcHbLWs3JHmwiHpOL5AjwjOIZHc1xSi0=;
+        b=lORE1EzEceqCy1A62FIM6WKet/jHK1+w1foRl1sz7tQWFoCPZd7gZulfWemTE2jxL9
+         Gubmct3PpifkC5wq9c5Y+c/Sd4akzastsmfhPOpCmBcWdcPrLgb46lOxnKVrwapdQXuG
+         KyeR2UJQpVDKIPX5uJUdO7Sdfl06PJgkzDydM1Lg5fO/LqvB/+p+mPAhiYi+2VsfF0nE
+         NoKhqowuKKsu0YgSmP1ou8miLdpZ7gtH30lsyaNRSk4yWlms+aXt/CfMS/SP1s6xwPxT
+         +zhR7CeTrYvIm1iH9RM2nLFAR6k9QRC170hSiAjCKg4ybkngezzUc1WRVRsJtsb8MhAj
+         xh1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782490840; x=1783095640;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4tKsbGrcR78zcHbLWs3JHmwiHpOL5AjwjOIZHc1xSi0=;
+        b=cfUZdZEIpRrxgvIvoQXWGDyioAFO+Y37BiWRZyLrmu7C8ECfKZiDEhIQVbk26zQWX6
+         9abgE5ocLamZSYwP3Y93p/L3KwCa8eQhtFR7ygWZrjLgh7ta8Yi4bLJHNChqH3d6gpQR
+         pKM3r0XB7jm5QcSEmvxYrHuo7kHZshIUj6nkknUtEc0bJBu8eewCz8sNgRe2tFDETHQn
+         01iD9cD6tbDm8Cl4jCeMRisuHfLDJ+hRF8egcwscJwn6wxxSPE4Q61ZxG3Pw5tk3M1AT
+         Zvxhm0fsFWyxlJD91SKZKqo5D3MGcvNF0g4C3IuwL+GqAuyfy0ntznpa03K2/OrZrgZs
+         se2g==
+X-Gm-Message-State: AOJu0YyQ3itS2rcX4eGh7V4GtXSVgnGUE7DmVZhptZqdceNnR4jzoq43
+	tD65Ucq6wtFIEe3CCyKHo3TdMNd5T/BbNGrwHEm0h4fb2tEFacGHb5sy
+X-Gm-Gg: AfdE7cneYt3MuxmwxWxmicbTbXbxkZdafBlyZTiOAHSZE4C/XxNM/mLHC2oBmwJYvhm
+	UQZKZzo8qszm9r0gEHSpXLPitALSOYIx51htascz0FMadL7SdAvNDwCD8vzFw6PW3lXWie4I5gH
+	Au2vLuherjVczQt7guF92O13DrFo3aTpmzma0Ma26ar94B68CqwShLhbzf3D8DUGkhySzOtH8i5
+	U1OfHVC4gRFVZtEw504uGmB1ql7MXOYJ2TIxHopZpJp4Iymh1VfqSLztB6jbbW+wuFPWXOnlI6V
+	5EJvwdIj2dVaFg30OZmrYyg606303KfQv/q0CQXy/+D+Pr5zg+tdxLQ8dgtfkGVN5gh+OSzpilE
+	2fXGN8gPKVdymUlmTGj+3h8JYBeA9lKmSnOblnBVezVz5Bsi1Tp3+Hw==
+X-Received: by 2002:ac2:4bc9:0:b0:5aa:71fd:de75 with SMTP id 2adb3069b0e04-5aea94adf59mr297281e87.39.1782490839450;
+        Fri, 26 Jun 2026 09:20:39 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5ad69550ff7sm3611804e87.20.2026.06.26.09.20.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 09:20:38 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Fri, 26 Jun 2026 18:20:37 +0200
+To: Wen Jiang <jiangwenxiaomi@gmail.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+	urezki@gmail.com, baohua@kernel.org, Xueyuan.chen21@gmail.com,
+	dev.jain@arm.com, rppt@kernel.org, david@kernel.org,
+	ryan.roberts@arm.com, anshuman.khandual@arm.com, ajd@linux.ibm.com,
+	linux-kernel@vger.kernel.org, jiangwen6@xiaomi.com,
+	shanghaoqiang@xiaomi.com
+Subject: Re: [PATCH v4 6/6] mm/vmalloc: align vm_area so vmap() can batch
+ mappings
+Message-ID: <aj6m1cFUTlr_DCdj@milan>
+References: <20260618084726.1070022-1-jiangwen6@xiaomi.com>
+ <20260618084726.1070022-7-jiangwen6@xiaomi.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/3] mm/migrate: fix stale list name in
- migrate_folios_move() comment
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260626-migrate-cleanups-prep-v1-0-a95933af7619@amd.com>
- <20260626-migrate-cleanups-prep-v1-2-a95933af7619@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260626-migrate-cleanups-prep-v1-2-a95933af7619@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260618084726.1070022-7-jiangwen6@xiaomi.com>
 X-Rspam-User: 
-X-Stat-Signature: wtfh9eaef9qf5m4kiwye3xnbxmwtqqfz
-X-Rspamd-Queue-Id: DFFBA18000C
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782490331-123943
-X-HE-Meta: U2FsdGVkX19ZuR5ukVM/cAgUdb4hZXcUZv0E4hfpqp110RNqrSg1stqB9W/2cbNSnWnCJHMkWBBGWH9L53Ok+z3KC96weoj6QhYljK/Q5BSRewmEl6NEIcVriYaItNXmLXphNtzUOKaUhRhIqmfNQf5Al/j0R5oYFnK0gVMnwuHb0V2UQuSne04Oi0mzNX1CiqQyWUfduZBR/m5jOpB2ppflrMW2qxllrbz3jvc/UrUe2pUpZeVdfpy6I3zMv/jV4Skm16/Sn8+oXaneT4fDDe1IXWbjXiR2e/WbP3jezVzW+UnxIiws49m/LQ7Fo0oTNe1llGCeorpd2Xv6HlHW3lQF+tXAte4hxOCItJkJO/6NmKGtQ5axSl1Q5OYrcK6YrvNr71pMijElxU2934gC5W4wB7Hln0xk5qKUpAA5ze/QRSNem3XDrCT99VePCzFGcquvTeXyPNE6VPv6QnTbtId65VaRWRadRQsvEusLD0CzIwm1bPEqFRWeW6Pt0yZpDvFLJvOtOrSHIxNl9v6VlYeMwZMwSw096NacuTZhCyfhOqrJFDRAnOCEKzBhHMyrwgAl7lWaKoGjdl+RxPwYCMz2ZaW8PbhzXHX5eS/0YiHfOW9FxPS5jQJykcgyhDNByyS97suCL2F388yXllhwBAPwg0sJr1urYuj4sSMYEdw3xyBzMAq2Vj40bsFq8whjYyKYMtP7TE56SEOb2oiPk0CKjmPkA5e7TS5Gz+OVgLMyq/j8kQd0XrZnSsWS8tGkcyK79m35+tnfa9kH9bU2u/ZU4fjk5HOo2UD4ub4+y9a2DYdSbESM/UHGgLCDpK1g7ZtBY3Fb71rxFZityeO5pAk/i9eNqwvsB9s8cSdcYnJfGhwrGV5MfaaUQtdpUjQbljXuGNCFwQlC0Y3ED3V2BR/NnV99AMoIDcM6E990JK90nW8rSG4XDNejJGTLZOEALvBjze1AHpgSjLpkgsX
- e8ZZoZRo
- rqK63pZDBJCrsa51x+XBh7qAnFiH876Ktlgksv/VI8SKEA3IHYUg76LnkTF2P/g7qIZ4QIFn/wvwogfZXAm0lBlGVzGrm31JRQfL31y6fejr+wVHr9PNCGFSNcgzjkOEEGFnZqINTf0iqd41xAJmzP212MHK+77RUC864MRL65anLeQ9QzSfYbFAbYRfzsYFU7jD1NcF5HqEZRs0UyF1K4MBRYFKy4sFP61MK6xVpf1TTrT+iAGQlM2c68MgmfcO3iACAX4uRTC9BXP8timXdko79Aa+oGWv+MEc5eAAsD875Zz0dqF73ixRGJgfpcjJ0XWCoE08U5I7sstWN2krUpGaPFZWosw5Z+l45b6ZywLD/UfGBiGfXHxXoLX0v4NY4su01tQ6qiCE9UOuXNOooFu8/FrtXeThlTyXVmVGr4lqQd4s=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 684451C000B
+X-Stat-Signature: bs16ys4eppqrsypfynbzys49y5wx5e1o
+X-HE-Tag: 1782490841-862927
+X-HE-Meta: U2FsdGVkX19ytk8vjxFlGVmAE/nCZSdco1c6MtWHeuw2+daqnRlFE1dvcs1Ln8DLByC5xQsXbpHBLU3kvS4GLu601eHT7lS5hIoU8hfjitk7rI8A54Zb4cKZdGBVcZN0JzTRFPPTcqd7fT11r2y4zozj6UT4kPTKtpiEb/eij4J97UoBx87W2MBH3dqWrzB1iCUeyWUu0ocunaS+8BI2pzpl0a/hxUTjq+acoBQ80QdAOKvovrrbTH+uEG5J4C97udL598SBp+NsI6L9EPaaPqRTecMeWKPmeo92j8RE5M1lwKLu8I8oBeczFtQi6UP7dSiIYV8gwlfMNTgQ4DjuJJcboK1+m4ZiCQ6aFe2xCLwlasPy2PDUKVL/kdxjqsfcVcITHABSEx0yOSDa3UMP6lIvyqQKs608Ncu4/H9ETZtgV56eDe58hi/Vqf5/Wz0uLOEFOhudj3kVqPa0lddN3AEIG1SNteI7h+JFW0ERtz2gSfax0b0XnaF4tBlW+2Z4vM6+cX+2gkDeFJHYFN3nqM9huo73js85VmlpgYlDTkC62GA4UeQ6U9kVqgW8n+6H7a1kS1LkiK4hUSKZ2xZVRMTPPntUmBbw353FtEAVFHfRcPL/HuR5HF5rgbsOL0dIWixHkYDPLVu/xHJZWeBqRcfZ6LZas92a1bzyDFEWKvfv4BMvN9fv9SBbZ+FRBoHtNeF3Z1BJPpqFDkNEg+KSkl+BTIdG8d5/mD4oUWyIItSh7NaTCQu6uCqstC4zy1LLxaiADVLiTIcYIH7yrPoe/2ZfOTLIeB1p6yef09bkvHniEzKCywvzfCDv3pGoQHFiUW8KcWaEKDffWMcRLFivHfvQiJ4Wqm5EVPuBnnRyGbwR/2K1TDO5K5uBLYtaofaVhhqW/UsaUfUvOcMZIRw1vUJo58ECcYQUAHCsVSE4fFtE3ivdvN/V/sDIZ2+ANR+BohuwUosr55aNLVyjTBu
+ lMJJE0/n
+ FC0JwqOvibBWA4QAFSFJnVEYy7xrJln6xHVIobYb8FgWVScWd+PZnW4FCCdB9g5aNzEzC55YxI0w1gXj9P7qnsgHsnw4z7yUUxsJD+ATGDxx4ZmxAoCqtAgi1Tp7vtUHtuVH55hpP53MDdDqpwYmIe0+ToOLSVT7rhOI6QSJtQ2eh+2Ke1ppJ/aUfFS+xxgznXCKzXdh1d9fQmSy2x55I8JBZxHDXRQzAaPOz1nekLs3J64pS6FC4jNXsHLo9S3tdQu4AfwEp4ZThrJKVDZPYlpbyR03L0wF6Al1UvuEr6o3V7x5YADT/YFtynFqSq4P8Rsf8GrC19KJf/r64phjZL3zqfbJyaIFZFhhVbftwnlUhlmRn6XxnVlK/vjksKcrQHiJ77CPpQ/Cj75UMl+7dft+oruGLqEgqlcsfVjhTdbK3yWpB/pW8n5V6UHBp9x5ImQLbFpAKVVMIBgzcYH3i3Fle1umRoEnXiOzQqfCAT3K0SaGUlokZvSDN1TngS+xXTS+paipmEWyhlQHPbYgiFDWzN4ePrfOlWE3xDk96H+Na2rxHjf+qBZkrIAwgEH1AVCUIFif0MDrRhzVVvyrjWitZgMyjM0f0PAro70/loDf3vPVAvnQ6onFgn9JPMohgGmQt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,35 +122,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/26/26 11:37, Shivank Garg wrote:
-> The return-value description in migrate_folios_move() still refers to
-> unmap_folios, but that list no longer exists. Update this name to
-> src_folios.
+On Thu, Jun 18, 2026 at 04:47:26PM +0800, Wen Jiang wrote:
+> From: "Barry Song (Xiaomi)" <baohua@kernel.org>
 > 
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> Try to align the vmap virtual address to PMD_SHIFT or a
+> larger PTE mapping size hinted by the architecture, so
+> contiguous pages can be batch-mapped when setting PMD or
+> PTE entries.
+> 
+> Add __get_vm_area_node_aligned_caller() as a wrapper over
+> __get_vm_area_node() to simplify repeated calls with fixed
+> arguments.
+> 
+> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
+> Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
 > ---
->  mm/migrate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  mm/vmalloc.c | 37 ++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 36 insertions(+), 1 deletion(-)
 > 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index dd7dbd8d84a0..84b4c24f9dac 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -1738,7 +1738,7 @@ static void migrate_folios_move(struct list_head *src_folios,
->  		/*
->  		 * The rules are:
->  		 *	0: folio will be freed
-> -		 *	-EAGAIN: stay on the unmap_folios list
-> +		 *	-EAGAIN: stay on the src_folios list
->  		 *	Other errno: put on ret_folios list
->  		 */
->  		switch (rc) {
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index fffb885cb2158..bc9fa93e2bdc6 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3628,6 +3628,41 @@ static int vmap_batched(unsigned long addr, unsigned long end,
+>  	return err;
+>  }
+>  
+> +static struct vm_struct *__get_vm_area_node_aligned_caller(unsigned long size,
+> +		unsigned long align, unsigned long flags, const void *caller)
+> +{
+> +	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
+> +			VMALLOC_START, VMALLOC_END,
+> +			NUMA_NO_NODE, GFP_KERNEL, caller);
+> +}
+> +
+> +static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
+> +		unsigned long flags, const void *caller)
+> +{
+> +	struct vm_struct *vm_area;
+> +	unsigned int shift;
+> +
+> +	/* Try PMD alignment for large sizes */
+> +	if (size >= PMD_SIZE) {
+> +		vm_area = __get_vm_area_node_aligned_caller(size, PMD_SIZE,
+> +				flags, caller);
+> +		if (vm_area)
+> +			return vm_area;
+> +	}
+> +
+> +	/* Try CONT_PTE alignment */
+> +	shift = arch_vmap_pte_supported_shift(size);
+> +	if (shift > PAGE_SHIFT) {
+> +		vm_area = __get_vm_area_node_aligned_caller(size, 1UL << shift,
+> +				flags, caller);
+> +		if (vm_area)
+> +			return vm_area;
+> +	}
+> +
+> +	/* Fall back to page alignment */
+> +	return __get_vm_area_node_aligned_caller(size, PAGE_SIZE, flags, caller);
+> +}
+> +
+>  /**
+>   * vmap - map an array of pages into virtually contiguous space
+>   * @pages: array of page pointers
+> @@ -3666,7 +3701,7 @@ void *vmap(struct page **pages, unsigned int count,
+>  		return NULL;
+>  
+>  	size = (unsigned long)count << PAGE_SHIFT;
+> -	area = get_vm_area_caller(size, flags, __builtin_return_address(0));
+> +	area = vmap_get_aligned_vm_area(size, flags, __builtin_return_address(0));
+>  	if (!area)
+>  		return NULL;
+>  
+> -- 
+> 2.34.1
 > 
+Did intensive random mapping/unmaping, so i have not noticed any issues.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
--- 
-Cheers,
-
-David
+--
+Uladzislau Rezki
 
