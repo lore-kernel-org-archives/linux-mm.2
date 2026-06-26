@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79EA9CDE00B
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:46:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4538CCDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:46:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CBAB6B00B6; Thu, 25 Jun 2026 22:46:08 -0400 (EDT)
+	id 2AD956B00B7; Thu, 25 Jun 2026 22:46:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2A86B00B7; Thu, 25 Jun 2026 22:46:08 -0400 (EDT)
+	id 2844F6B00B8; Thu, 25 Jun 2026 22:46:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 592036B00B8; Thu, 25 Jun 2026 22:46:08 -0400 (EDT)
+	id 173B16B00B9; Thu, 25 Jun 2026 22:46:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 310296B00B6
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:46:08 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAAC116714F
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:07 +0000 (UTC)
-X-FDA: 84920524374.24.346B43F
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0B3D320003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:05 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gGoT6wNJ;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E75A76B00B7
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:46:12 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 71C04C1A97
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:12 +0000 (UTC)
+X-FDA: 84920524584.01.2E14CC5
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf02.hostedemail.com (Postfix) with ESMTP id D50BF80002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:46:10 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MuNcYjPT;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf02.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782441966;
-	b=DtPqHHlCyap3ZTp5zd8fqdVIGrSrw7gra2WxiNWEs8J7BqNvM3YufA4ZOthSdydUKt01pW
-	FImRZJscSXh+nfkxqMbV1GWZPSwPx+1SIdWFYdXYtH8fuoaStqFgEDDVkwZez3F1w98YYs
-	IUYOOQq2FC8VQA03DkOFg2c+TiC9lu0=
+	t=1782441970;
+	b=xMz6a7wDUC79wum40rpuwALerhQVBY/GrcBTJrXm758vX1qKc8zg1EMG1mePJ5so2WQKHi
+	ymAOveIIkfzslU+FTqPQxn6b6NZNvb2sO6FjjnsnWMmgyJlvHN5huwSmDPw8WSDdhN99Sw
+	uH7SpYqVl0lbzyRgKdhRpjT9SKfji00=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782441966;
+	s=arc-20220608; t=1782441970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GvIJsA3YqPuqH4YFKYfsJHGBnY+wCnYdbztz69l5314=;
-	b=GwgvKg0uVpZDI4s6fTOwJEJKYwI1GUzA0czuC7/jOHve9uOqPOOnBn1TEUURRc4Vo3QJxC
-	mWY+NJXaAyg4FLxE+E4acfFOVK6s1wfT+IUU2xcduZhlNh0laLRD92BkvWwIConVk81fyk
-	yL6/AFn2wUO8o6PpRhCVkgAqAlVDO20=
+	bh=0dUyOBnUAmeOV/VpmEyx25JanzSfW2aamrhE6D4NgAk=;
+	b=khY5MKpalDGcX+SwzCMJMAtRk5xDpMa6y6L/8SzjBztSJkLn8Bmg2+ZXRs20X02xlZyM/8
+	kcjw48Ap6sAggn/R702MIxEDO7GFb8ePcKMsA6RaQsKjmnHfTlmF2KIWWUnyIpGXFce2NF
+	cMtjZJRNCGyHIeR+yxhNPAK81VqWg+4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gGoT6wNJ;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MuNcYjPT;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf13.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+	spf=pass (imf02.hostedemail.com: domain of ye.liu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782441964;
+	t=1782441969;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GvIJsA3YqPuqH4YFKYfsJHGBnY+wCnYdbztz69l5314=;
-	b=gGoT6wNJnWEEuS0KISWu6vpmFckqv8DVGTIepePx/OSA9YQav0Y7gHwOp5YMxrsJ9aJywa
-	hlaZNPMdBNGC8Y9bOyx2YMseA3Ffk95gmnP/tCDZdzXktnGRGWFyyQW0Fd1J22gQzXOe+5
-	RsxpH2Z4luSnWc73dc8F4sTXNJIArIg=
+	bh=0dUyOBnUAmeOV/VpmEyx25JanzSfW2aamrhE6D4NgAk=;
+	b=MuNcYjPTB0GgnR9RtSNJrEf2vkrdCPnkRQcySpNJ/NWqNCOdi4qwh0Fm04fcx7tDpdGN7J
+	lvSCzFstf9W0WUx/4VNp4L8WrcXXf4ZGDQBaoyNryyQyqjLQJtBh3Fx15T0HccwW/PYDmu
+	PlOSaHpdxnX2HHWR4b0PrXzZqSgNPE0=
 From: Ye Liu <ye.liu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -70,22 +70,22 @@ Cc: Ye Liu <ye.liu@linux.dev>,
 	Zi Yan <ziy@nvidia.com>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/6] mm/page_owner: extract skip_buddy_pages() helper to unify buddy page skipping
-Date: Fri, 26 Jun 2026 10:45:40 +0800
-Message-ID: <20260626024550.25677-2-ye.liu@linux.dev>
+Subject: [PATCH v2 2/6] mm/page_owner: use MIGRATE_REASON_NONE instead of -1 for last_migrate_reason
+Date: Fri, 26 Jun 2026 10:45:41 +0800
+Message-ID: <20260626024550.25677-3-ye.liu@linux.dev>
 In-Reply-To: <20260626024550.25677-1-ye.liu@linux.dev>
 References: <20260626024550.25677-1-ye.liu@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0B3D320003
 X-Rspam-User: 
-X-Stat-Signature: bsjujeaeygxp13kqhp4ocgm4ipmjuxun
-X-HE-Tag: 1782441965-196048
-X-HE-Meta: U2FsdGVkX19+FJTYaxikveqPYvwrjWspeXvK9qNb1JequPYu7WO6nOnjst26mf9Oe1HwdYYPR/8EnNoiD2zEmwjiSqKj/Dvh2abE5mf3x/i17KkF8JmAObNVDvEOCGta/UY6vK6GiiaOkbvNeP8n2w5yJ5WPnGq+dvYU9omMkg636nj/h+eOd5xHgdUVwVg6xLru28SPlvKFA7P889lvEm9EZ4Z21RQeETvRovtvYXjJz9uRraH3LyRnfUg8BVcAe35QLrB6PotiH5oeE7Otab5h6IkOooBCsC8YBcLY+kKML2VHoFxifJHzfKg1+84cx7CKOmFsVJs++bFNcyiy+PPtNBuev24iD71nY+rQYaz1TuTEC/o1OR9Jh95aGkHFpqRfVV5Jpqr5mKfmE4pjSjVgOSvWUxMsg/xkO3C70O4n9CJnnuP7geRQDJsyMyeNPLaybhLan8ih1sAk4ur2xzB2var1tK7+6dJqBhZhfxjB7qU3h1J+ObHoAyNbp6E3U2oHWgnQyPJch/lYf93iAq04+714h8tz95xTpWqhsXnhy/UcekJxR/Y5Ls02pwwnrWbh5hMCOQUQed8LemDHgmQ0vPP5MrHsuEQiyQ6XoML9VRwE9xYkmH9LUOvpbDasLm9T0WVw2nNfqd7aV572BOMXqZrmJu0MwskDnsYQZJ9Fwkko8JOoinnccfS24AqckcyPJD57OPYSD7Ls9+GnnS3ljRpqv5vT0LP9fw7Wbw8wkLJMa+9gYKRS22y+yqRNOQNR3f9RJJZera+RI0/yuKDaDi2mfb7q4CVt52rmmQMDRJKreuOQlBE30yl8N/IolhEsGmjFgWqotPlUSnxxyJSD0We42xLNT4kC7iruqqZxsJO31ol5NVFzvSjckYKyYbDyb8ytYwH68vwJQb+TtGs+X/k/pdkILIvTF/112rH/nUbq6mMIu8TFXzltohMIKZgR0wobr9SrCEz1Mr5
- MLind4+y
- YV5Y0JdhEkohtH+L7UoZ/ZW8ETueaqQAWRv1DQTYWSOGr/wZxD+tJq54UwSXPYjOtStW8SWONjgtOmeLfH5/3XfcTPykD3mxF2gz6LQuVJk0vZTecPhpMVk9DgicvFSGCTXWkTQN95lIAiOtZiVL8rqZWBQ96AyFswCeVVprlZgsTjdjnTB3Ol6OaFnOHUD9pLzFW+lt12Gv5UIj9lJmRyVEjJ+q8M6GDkf909U9XVi2D2s04B6ZEd/s9QA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D50BF80002
+X-Stat-Signature: 95tiap9t59z7wzsbyy87hh763iyagg9s
+X-HE-Tag: 1782441970-723848
+X-HE-Meta: U2FsdGVkX19tS1gjk2WWK0Pf/sLHzhIc6hEn36cBWsFMOXU6SPpayuwmU7WtN3Cd6+jX3CD427+fb+06UH+4pD677Jp1fSdHkYen4Ya7YbV1wKtnpC5ZFaCfPSIYj7izWAD+rKs4s9P0W83/J4b1N3TghtJvy5jrgHrpWse1mXvYab/cXmlc+QRsiQOEzOeg/ZmMJtrowzNbLU5DkYq6oT2B2FkwX7HeaUJSh32abrYH4Fi98obmKQwI4nZSofmYWHONJLDTnX47CbI7HMEA4/uTam1Jwm496sYp+dVUfJm61487nxZB+1/rvhUTJcQRU1UEs8IWlBjXT+oRnWPrNzHzGI29fMoGVuy6K7NK9tHe0N07Bn7flXDJDxfKKzYXwSN1L05rAbcIwDdU5ZRGVIqhUzwrlIOAmx0ygB3dGFpiZtPpKD+cYO+uPv3YkBys8twdIa4EZZX5sSu3MWodjKHuH+zlajY6TNrHu0DQl/HkJ+LntKelhzpSI+nYN9D8Mgq3sFi58ECzyVH2E5wLCMtaEcAWHU856McDBS4z+AU+60vexZu2KF3JGGn2MhulfiSqPMxCi2/kIav0ckodMcuDuHQ5V1vIIhU/0HvVNG0sXmlGpaJ9Yj7aJbJdfea3KAariFuYuI75TrZt7+c+AEh2VYQn9g442HWJTlBvKDcsyzMZ0jik9MuU3HfSsjwnqvhoncP/QwRJAjVnQ2SUcktG0relKI2PuHPwjZ4QhJv+dw06tHcndCNGVYxWhg3Rhu3T7qj4fT9lql7e6TypzmJtMAeB+aC7yPn/BoToG6wW/2M3+ovLVqHsvKYZvaxqYZdp9NXm5aIrh3QiY2Z+j9612aiy5FQQlb6jflktkyZdn9eFvSUjVeyiGzVnNylSh8TfSIBy292Qsz+d9z4cuXU4S3MyeVKljiFZYQsOcQlNV3N4XfnHXNbNxDGYKrp2WwQUoAPkP0zRb7J7laN
+ ajHSXzKa
+ A05HOxFDVOD3j9BN0LiKY2QSHEzZiHjrE7R6+dKibtJxi4WaDYcWq5OKE3rZ2peuvtWEP71/amYygv7VmQuTV8kpgICPG+sJzrZX3JrjxuzetiAxI66JryJl2HIoHBRxm14CSSfs64LfxxU5xCMWeP+KfU018lpEqy5vaqfcb1xZXM4IRZfAQnhKVaVoWzdWdMXLmzOB7Bmwt42PJV2LqRRFsnuamxTutrk/G9LVsIdHVaBuNowkk8stQDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,114 +93,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Three places in page_owner.c duplicate the same pattern: check if a
-page is PageBuddy, read its order via buddy_order_unsafe(), advance
-the pfn past the buddy block if the order is valid, and continue.
-
-Consolidate them into a single inline helper skip_buddy_pages().
-The function returns true (skip) for any buddy page and advances
-@pfn past the block when the order is valid; returns false if the
-page is not a buddy page and should be processed normally.
-
-The old init_pages_in_zone() variant used "order > 0" as an extra
-guard before advancing pfn, but the continue was unconditional and
-(1UL << 0) - 1 == 0, so the behaviour is identical.  The comment
-about zone->lock is preserved in the helper's kernel-doc.
+The last_migrate_reason field uses -1 as a sentinel value to mean "no
+migration has happened".  Replace the four bare -1 occurrences with a
+local MIGRATE_REASON_NONE define so the intent is explicit and the
+magic number is eliminated.
 
 No functional change.
 
 Signed-off-by: Ye Liu <ye.liu@linux.dev>
 ---
- mm/page_owner.c | 52 ++++++++++++++++++++++++-------------------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+ mm/page_owner.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/mm/page_owner.c b/mm/page_owner.c
-index 2dddcb6510aa..342549891a8d 100644
+index 342549891a8d..ebafa9d7ff07 100644
 --- a/mm/page_owner.c
 +++ b/mm/page_owner.c
-@@ -422,6 +422,29 @@ void __folio_copy_owner(struct folio *newfolio, struct folio *old)
- 	rcu_read_unlock();
- }
+@@ -21,6 +21,13 @@
+  */
+ #define PAGE_OWNER_STACK_DEPTH (16)
  
 +/*
-+ * Check if a page is a buddy page and advance @pfn past the entire buddy block.
-+ * This safely reads the buddy order without the zone lock, which may cause us
-+ * to skip less than the full buddy block, but that is acceptable for page owner
-+ * iteration purposes.
-+ *
-+ * Return: true if the page was skipped (caller should continue its loop),
-+ *         false if the page is not a buddy page and should be processed normally.
++ * Used to indicate that a page has never been migrated, as the valid
++ * migrate_reason values are non-negative enum members (MR_* in
++ * include/linux/migrate_mode.h).
 + */
-+static inline bool skip_buddy_pages(unsigned long *pfn, struct page *page)
-+{
-+	unsigned long order;
++#define MIGRATE_REASON_NONE (-1)
 +
-+	if (!PageBuddy(page))
-+		return false;
-+
-+	order = buddy_order_unsafe(page);
-+	if (order <= MAX_PAGE_ORDER)
-+		*pfn += (1UL << order) - 1;
-+
-+	return true;
-+}
-+
- void pagetypeinfo_showmixedcount_print(struct seq_file *m,
- 				       pg_data_t *pgdat, struct zone *zone)
- {
-@@ -461,14 +484,8 @@ void pagetypeinfo_showmixedcount_print(struct seq_file *m,
- 			if (page_zone(page) != zone)
- 				continue;
+ struct page_owner {
+ 	unsigned short order;
+ 	short last_migrate_reason;
+@@ -339,7 +346,7 @@ noinline void __set_page_owner(struct page *page, unsigned short order,
+ 	depot_stack_handle_t handle;
  
--			if (PageBuddy(page)) {
--				unsigned long freepage_order;
--
--				freepage_order = buddy_order_unsafe(page);
--				if (freepage_order <= MAX_PAGE_ORDER)
--					pfn += (1UL << freepage_order) - 1;
-+			if (skip_buddy_pages(&pfn, page))
- 				continue;
--			}
+ 	handle = save_stack(gfp_mask);
+-	__update_page_owner_handle(page, handle, order, gfp_mask, -1,
++	__update_page_owner_handle(page, handle, order, gfp_mask, MIGRATE_REASON_NONE,
+ 				   ts_nsec, current->pid, current->tgid,
+ 				   current->comm);
+ 	inc_stack_record_count(handle, gfp_mask, 1 << order);
+@@ -596,7 +603,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+ 	if (ret >= count)
+ 		goto err;
  
- 			if (PageReserved(page))
- 				continue;
-@@ -697,13 +714,8 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
- 		}
+-	if (page_owner->last_migrate_reason != -1) {
++	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE) {
+ 		ret += scnprintf(kbuf + ret, count - ret,
+ 			"Page has been migrated, last migrate reason: %s\n",
+ 			migrate_reason_names[page_owner->last_migrate_reason]);
+@@ -667,7 +674,7 @@ void __dump_page_owner(const struct page *page)
+ 		stack_depot_print(handle);
+ 	}
  
- 		page = pfn_to_page(pfn);
--		if (PageBuddy(page)) {
--			unsigned long freepage_order = buddy_order_unsafe(page);
--
--			if (freepage_order <= MAX_PAGE_ORDER)
--				pfn += (1UL << freepage_order) - 1;
-+		if (skip_buddy_pages(&pfn, page))
- 			continue;
--		}
+-	if (page_owner->last_migrate_reason != -1)
++	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE)
+ 		pr_alert("page has been migrated, last migrate reason: %s\n",
+ 			migrate_reason_names[page_owner->last_migrate_reason]);
+ 	page_ext_put(page_ext);
+@@ -826,7 +833,7 @@ static void init_pages_in_zone(struct zone *zone)
  
- 		page_ext = page_ext_get(page);
- 		if (unlikely(!page_ext))
-@@ -798,20 +810,8 @@ static void init_pages_in_zone(struct zone *zone)
- 			if (page_zone(page) != zone)
- 				continue;
- 
--			/*
--			 * To avoid having to grab zone->lock, be a little
--			 * careful when reading buddy page order. The only
--			 * danger is that we skip too much and potentially miss
--			 * some early allocated pages, which is better than
--			 * heavy lock contention.
--			 */
--			if (PageBuddy(page)) {
--				unsigned long order = buddy_order_unsafe(page);
--
--				if (order > 0 && order <= MAX_PAGE_ORDER)
--					pfn += (1UL << order) - 1;
-+			if (skip_buddy_pages(&pfn, page))
- 				continue;
--			}
- 
- 			if (PageReserved(page))
- 				continue;
+ 			/* Found early allocated page */
+ 			__update_page_owner_handle(page, early_handle, 0, 0,
+-						   -1, local_clock(), current->pid,
++						   MIGRATE_REASON_NONE, local_clock(), current->pid,
+ 						   current->tgid, current->comm);
+ 			count++;
+ ext_put_continue:
 -- 
 2.43.0
 
