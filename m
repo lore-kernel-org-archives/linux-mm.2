@@ -4,99 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C34A0CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 06:48:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A80FDCDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 06:56:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82DAD6B00AB; Fri, 26 Jun 2026 02:48:18 -0400 (EDT)
+	id 0764A6B0101; Fri, 26 Jun 2026 02:56:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 805476B00AF; Fri, 26 Jun 2026 02:48:18 -0400 (EDT)
+	id 027D36B0102; Fri, 26 Jun 2026 02:56:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71DC86B00B0; Fri, 26 Jun 2026 02:48:18 -0400 (EDT)
+	id E7FAD6B0103; Fri, 26 Jun 2026 02:56:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ABCA6B00AB
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:48:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A29EDC1A73
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:48:17 +0000 (UTC)
-X-FDA: 84921134634.21.48CD8CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 00BA04000D
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:48:15 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A2eJbEqK;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B1C1D6B0101
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:56:15 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F2021403D1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:56:14 +0000 (UTC)
+X-FDA: 84921154668.09.07F3C61
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1F31C18000A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:56:11 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oE0R1mHt;
+	spf=none (imf24.hostedemail.com: domain of BATV+6a0954e2f3b24d650eac+8342+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6a0954e2f3b24d650eac+8342+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782456496;
-	b=bBHteTN0wyClKGmoFDZ3hgkGgTsDJWWIZME+769vz3u1M8/XkCAoAuuOlurv1ieHGyqOv7
-	43jmLwlgBw0dBJer1luU8qHwJJwm48JZQQaNDhJGt1uCmrpSup3IGWadb1OhYXUB15DIrA
-	lMVRGwJf8vG0O0CLA8qDfGhxPK0J0y0=
+	t=1782456972;
+	b=M+8ZxkRg+60pIFVNuMLsIhsR7vy3p0S0uOzNCF3tWTTboCjWz2ynMgNOGO+okvR4xDrl8X
+	lvufVZ9KPeC5bGLbsYCz4oyERyInoFOzvMe4t6MUN9Kfw37/cXWIUFKFAO6z0KORHgjnPk
+	2ff084snXSpcj54VnrxvTbeIZHx2KaQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782456496;
+	s=arc-20220608; t=1782456972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uFlidB/EPvdxjB4gnuihhulpIfPWIs49Y9PSiqC2FTk=;
-	b=Jm+QZgoQXKoC3sFC6pUhmgCT1qxKESihOC30zkK53spVTeMHZkY+MNf0Kkn7g8PbD7DK6h
-	h9LtsQNGJhJY26UVK8a4i2kEIasI1+fnBO0udvpgaZGd1Syua6WOpTuOJStk5WRTiDaaWD
-	o0kGTz/sDYxD5nhTflMjxm7d942kLOA=
+	bh=qIfqsHd8ihBL61AqZDeOTYBP79ZhHNbdbCAc3Fu49SM=;
+	b=w188ZGHM/p0eHEUvX0HHUTZlhKOATJEVQ20YvnCyHtgc5VNKw5uf19K0geMYlW1pz9DuGa
+	j7k9XksmFwQpkLdR5Ur+uDsfr7X4XGkqju+8L1hjAiYpvGk8IHD92/Qi8CnQUQsWxp4HgO
+	nJWbB3UzSPUZf2lMGt/VCjr3z1f8OJE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A2eJbEqK;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 511AF60122;
-	Fri, 26 Jun 2026 06:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C7D1F000E9;
-	Fri, 26 Jun 2026 06:48:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782456495;
-	bh=uFlidB/EPvdxjB4gnuihhulpIfPWIs49Y9PSiqC2FTk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A2eJbEqKVK2R/anS1yDAZ0BvZ34dEvDixOVE4MHj10aWXJmTRIXxr3qXi4KyPovV9
-	 o9xWBLJYJwzqBMTIS2236JeHHWoL/habvU/Q7A9nEvnfMnb3LWgzWdAL4ilbPU/YvT
-	 ZpurofjqDCQwtV7182y/NbfLyB/cWQHwAAh1TmWPVtWse6d11AwWqbwPZ/WAoChZAw
-	 rzEMZ4+5HNvSYyc5DqCTV2qEqnpmuutpptNoKFYDJLPScRnau3WxBGYAuisVWdEz43
-	 5/JYjuHXIc80EOPN9w0xjkMRE/QSgUlSaC4IqHDSZHA9DNC+LPTabab7zavDcSAUir
-	 j8wLt86GIerKA==
-Message-ID: <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
-Date: Fri, 26 Jun 2026 15:48:06 +0900
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=oE0R1mHt;
+	spf=none (imf24.hostedemail.com: domain of BATV+6a0954e2f3b24d650eac+8342+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+6a0954e2f3b24d650eac+8342+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qIfqsHd8ihBL61AqZDeOTYBP79ZhHNbdbCAc3Fu49SM=; b=oE0R1mHtR3UXS9T7lQ20Rhwr2d
+	20/URBEfimgv+uBo56GHhEJ11yy+9fctdNtV8gU9k9J5xa4+4MIc1BNhxCxFszd5dWAJV4v3ymPje
+	hYfex1zfEszdXuwxfrvu2rFtP1DkuQbk88f7GvXL4eSR52I24d84YQaGmWQSUm6ahjnLHeBDc57eB
+	MZqqsiQ8juwt6FJ+rnafE+VHGjfWhnffMAE88DJ8rqW+t1b8/LungKkSw9PmNzODQZmtpvzlftdsY
+	RkUOEYZAQ4Rtc5WQIddP6zgUDWRqwVDxkWPCkUc1wjO9Kg9xESwCZnAHnFvrxwrbUTlvF5bdSHMqU
+	AkcErr9A==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wd0Tw-0000000AdCL-2EAR;
+	Fri, 26 Jun 2026 06:56:08 +0000
+Date: Thu, 25 Jun 2026 23:56:08 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Trond Myklebust <trondmy@kernel.org>, linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Anna Schumaker <anna@kernel.org>,
+	Shivaji Kant <shivajikant@google.com>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v2 6/7] nfs: Optimize direct I/O to use folios for
+ requests
+Message-ID: <aj4iiD5C_yyLeb3U@infradead.org>
+References: <20260616134000.2733403-1-praan@google.com>
+ <20260616134000.2733403-7-praan@google.com>
+ <7ee3bcfdd6126c93cbb1c219bf601182b95c10d9.camel@kernel.org>
+ <ajGGpDvzZdkGtSbN@google.com>
+ <ajP8ZTTLYkICFTO_@infradead.org>
+ <ajQ21kH1ZVajS2Y7@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj12aVq3he6q7b2C@cmpxchg.org>
- <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
- <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
- <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
- <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
- <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------cX5ukXFyQlDiVGJNom11010b"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajQ21kH1ZVajS2Y7@casper.infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Stat-Signature: 3y3rp8zftwakoz55xkfoerke6idbkd6a
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 00BA04000D
-X-Stat-Signature: rx1gg456sfk3omh5xfy4ab4fxhs4ud6z
-X-HE-Tag: 1782456495-638114
-X-HE-Meta: U2FsdGVkX1+vUlZgUZz/yTHNflZiddNk8esqFz6YNV/2xZLVPVjWXmsJdiiiU4hzVQvI14gfB5tIijoibali1y6pKsMk+xf39eocKTud/dMQa3XXkn6Tt7zhkwstNFxNkEoqdZUuVCqjltco+X7a79sZTpbHux9aY37Q7+fitX+SUfqDtYiX2G3nARFX7jQeGa6ke4HHghvh94hTluuiMYg3V8CA9bu8QW6EVSbNY11HmvLfhTt8er/xqc3ixC/lE5veqIrx8xv00mCQBGHIUOpXmzggbTHYCl1WcXAaX2UTEU+ZQsIKC67EvzXr1Hb2Rlw6hyPrhyx9ODjJmqTMjQHu+qbhs8ucWVWYjGGOs1K+8qDIguXTe7u1CTi/kfAzbxCqQXTyjdUHBpS2BdJpL84Z+tK2hFGE3ugS8tNVIE18zgC6UY2PsCRaOkAsZTrc9yDzWRHDWk2dZSPdKDZ6sXSp3cVWQIbet31BRF8RvXG4IuS/+cVE8LcJ0wMR3uvghFKxxC1wo9nQFuhevCYe7rklTGYxNaXjszf/RY5antc474a5rXsy3rAUoMtFETPmE9T5M+9ZDqfMzHqWH9zpI7i+MGT5LXR/stgAF0+9KNNTwG6JiB/Sm2Ejmy3jmZeoApdmwJyxOouZgPgurpZ+DAG5RbBnIcUpd8fif2M19/JIMRACgaeqQ5xn6opaq6+ZA1sMJHnaopbZvwV6tSBZYd1aDLiVo2HqTbBz1RUD87vrLCu56QZE0G82kCuJAFZlT5JD8cr5+x1/sFXUo3FaAXi9iIzW2A57RX9b83XG8kEyG5jRLos1EUJkUR2XjBKtUxrDdcCILnNtwiw/whYaDLD31vBeybNeDcukniTw+ssK9IVBkY1qX69cfEAQKrPC8RzySYbbdDsY7s96eBERQwvv5ZVi6TQnXTJjgnhNm6tHc4VgrTt/Y9B8UUXEr66nQ0pHV3YZ4kgi0oSudKA
- jmVy231y
- Zn0j8pNjRr6Are9Kd+MnfoX/QK8FPZXUGrizsrfT5PE9Y/mslOUpaoXwYoJjgPTq5OdnwSUZPOysvDWLHqlAh6ndUAsZi/U4OrTlZYA3W6X+a28uegyX2IqILp8p105LxqXINKmlyK09RPEs2cNBtLtKSjvT+znzh9CQwAfUWqc2wnJ054RrRJXwcAVX4Pp+SuPpL3ob9ttF25IQ9QNuU14FceMiVCl4LrsGJJDyJ3ASE3WBm9w+pJpN47GiUNzoRPEb12AEgxDr57kCXc8t7fiIITBBHucqllepY0gX01wVEz4cKcd2SfnNlJEEOzuAP2diuWsJESBz8X7dSwkIYKEC1T3k8LfbRS3BDvwLtCEwUXCEMGZhHCAwT2b2Zh8qvfAl/GZnIvt4G3HVNq/gUCVPedr4Xr7++EdT/jxGlwGTteY7mP1pXnxG94BhA4dL6Sy1BbTamWCHCW211kEX+uM9tXkjH6D1+R1FDqss05churWSruF6/fCCS44XYg05ZV4vhGam7gZl03y1nF0SpUhxL8xrmNT69BaBu
+X-Rspamd-Queue-Id: 1F31C18000A
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782456971-365193
+X-HE-Meta: U2FsdGVkX19bL0OchwdQ0o1Vaf/76Dchy/u2eDHTsvdmlPD/DAHoGJ8srkcMbauLwu4qu6hmhEqhucjMVJ3mpuYqTbCxROf8q1KS/zb177NWZc50KYLJ7QTnwpZETMghz++7C40fVQVT7vqPhq3iu9QmxB+B9ExlrwdgGKll7+0l9D/0xWMhx99RZKYc0r/x4D3i780tVO59SE+qLpM0KVJK+KIwLZ9MOu1WglyZ/zollrYmZ/NpfM6rJfdEWpOGRnzyDdW/52mCWpSXUd8qtnqdzvZpQoPIVIUm/6ahLJcYTfw7Bx1oh3CEis9ksrUMYTil+RpEON3CS3jjpPWZ7x7j7EEzQsDFZh4JnuVyOPIEcNCIX1ZB3BZi6nN8T8llBCLlDnrXLACBH1Win68h401v5GrIhIldca7qgxmuLNcMmiFwpQuQOeOHZ5oS0T7mySpAyrb9Ueb6PHvWTTvUn2ijW4/Nj+rtVI2fz2XNSbspg1HkdXg0Q2aTZg7ky+9V5d6dp9NGQVgO0o1UJzkOvuorS6IWpFYh7D5QNLTk8sAaWdacXueXADqyKk8MtYJz3leRchKqPF5C2B2sMS6103kkGbudqGnptdCOWwI2uSPlxdjyj2eY4Gpa8iWdsDmWwe2P8maaqFMfjE8iNJFBdDCnkzHbmCvtaLCmTrl+LP2XPpRQPTdaxmlFGzWCw8LPykOuivQ39TqF4eBGjTISzhXzzp1vMx437u/kPtV2WxRBauSsZf8C8LYLZeqr7gPxXzZVmdPiWbuLzxRbZHvGBk6XbbZl/IWycfZ0pGv/I/CFjLfFRQoHFYNJjUElPz9BasUnIaC1mUUmeEMN+cTPRC4f6c+cQuumCDBoEow3JL0hXrVtWpZ7xAohhpXIvwnzSQHekulJFDA6CYDcU1aWSnw/rKdYOLYsidbrMmlaTTDXXIEV6QfXlYllXGsGb4Q6tgcMqqd1LL6HKDpymbT
+ oLxmfayq
+ lWcjG06pYsxwBxtc0E+eAl4by6NejNPK4HaEA6crZQ3amJeF2+w8m49Yj35UBmBs+cC1LLrOkWPbvITOdVm8Bf+i2VcyKhHDi9nujFVzzuGyolMP2W15H+8g7tH35AFpFvagwnJfY6r0uQDKCP028+mZdhiJG0fwG+fHsXD7+Efihztv7ChtLv7RR7/XRVKWY7JLqv1BxUvqQR9JmwsQe4v1dQJ6mmWTV7XCOh98PpIV2m8U23ek+gX2xIMTqCUYaJvhQUxEm6/ui/9RRwvNPyC//IbsgcnfpNvtG9DnJ5ffKxiqk6u0G4X1RcbmFBkrbAcCLSmVGtBAyHIwJlOvwtJTLBuFi/dnrtlqY4lHKFis4viJLfhhBfLzVLWc4cq6VswVDPo8cIcIJj9ojIUBBgizHEu4CgfGISxtGOS/eCY+imFX60qfBmyYEuBYWPiizxkta7rCFEAOxX8UflbtnEJ/cEXfWatuPy1h0xlJEcFl0sWh4gIA8IzbJEsCzUiLttY6M/pX+dESMMJWpuBY1uFOsAtbNwgxtk0IE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,175 +99,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------cX5ukXFyQlDiVGJNom11010b
-Content-Type: multipart/mixed; boundary="------------LJvK4Zuc5TCvFT3lxqrCEeNR";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Message-ID: <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj12aVq3he6q7b2C@cmpxchg.org>
- <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
- <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
- <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
- <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
- <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
-In-Reply-To: <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
+[sorry, dropped the ball a bit on this due to overload]
 
---------------LJvK4Zuc5TCvFT3lxqrCEeNR
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+On Thu, Jun 18, 2026 at 07:20:06PM +0100, Matthew Wilcox wrote:
+> On Thu, Jun 18, 2026 at 07:10:45AM -0700, Christoph Hellwig wrote:
+> > On Tue, Jun 16, 2026 at 05:23:48PM +0000, Pranjal Shrivastava wrote:
+> > > AFAIU, the MM subsystem explicitly ensures that every valid struct page
+> > > is part of a folio.
+> > 
+> > It is definitively not what the vision for the folio is, although if
+> > I'm not mistaken it actually is still true right now.
+> 
+> It's not true, eg, for slab.  While there's still a struct page there
+> for slab, there's no refcount and flags like PG_locked have different
+> meanings.  You'll get into a lot of trouble trying to treat slabs as
+> folios (and that will include assertions tripping).
 
-DQoNCk9uIDYvMjYvMjYgMzoyNCBQTSwgUWkgWmhlbmcgd3JvdGU6DQo+IA0KPiANCj4gT24g
-Ni8yNi8yNiAxMjo1OSBQTSwgSGFycnkgWW9vIHdyb3RlOg0KPj4NCj4+DQo+PiBPbiA2LzI2
-LzI2IDE6NDggUE0sIFFpIFpoZW5nIHdyb3RlOg0KPj4+DQo+Pj4NCj4+PiBPbiA2LzI2LzI2
-IDEyOjQzIFBNLCBIYXJyeSBZb28gd3JvdGU6DQo+Pj4+DQo+Pj4+DQo+Pj4+IE9uIDYvMjYv
-MjYgMTE6MjcgQU0sIFFpIFpoZW5nIHdyb3RlOg0KPj4+Pj4gSGkgSm9oYW5uZXMsDQo+Pj4+
-Pg0KPj4+Pj4gT24gNi8yNi8yNiAyOjQxIEFNLCBKb2hhbm5lcyBXZWluZXIgd3JvdGU6DQo+
-Pj4+Pj4gT24gVGh1LCBKdW4gMjUsIDIwMjYgYXQgMTE6MTU6NTRQTSArMDgwMCwgUWkgWmhl
-bmcgd3JvdGU6DQo+Pj4+Pj4+IEZyb206IFFpIFpoZW5nIDx6aGVuZ3FpLmFyY2hAYnl0ZWRh
-bmNlLmNvbT4NCj4+Pj4+Pj4NCj4+Pj4+Pj4gVGhlIG1nbHJ1IHBhZ2UgdGFibGUgd2Fsa2Vy
-IGJhdGNoZXMgcGVyLWdlbmVyYXRpb24gc2l6ZSBkZWx0YXMgaW4NCj4+Pj4+Pj4gd2Fsay0+
-bnJfcGFnZXMgd2hpbGUgd2Fsa2luZyBwYWdlIHRhYmxlcyB3aXRob3V0IGhvbGRpbmcgdGhl
-IGxydXZlYw0KPj4+Pj4+PiBsb2NrLg0KPj4+Pj4+PiBUaGUgcmVzZXRfYmF0Y2hfc2l6ZSgp
-IGxhdGVyIGZvbGRzIHRob3NlIGRlbHRhcyBpbnRvIHdhbGstPmxydXZlYw0KPj4+Pj4+PiB1
-bmRlcg0KPj4+Pj4+PiB0aGUgbHJ1dmVjIGxvY2suDQo+Pj4+Pj4+DQo+Pj4+Pj4+IFRoZSBw
-YWdlIHRhYmxlIHdhbGtlciBjYW4gcnVuIGNvbmN1cnJlbnRseSB3aXRoIHRoZSBtZW1jZw0K
-Pj4+Pj4+PiByZXBhcmVudGluZw0KPj4+Pj4+PiBwYXRoDQo+Pj4+Pj4+IGFzIGZvbGxvd3M6
-DQo+Pj4+Pj4+DQo+Pj4+Pj4+IENQVTDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgIENQVTENCj4+Pj4+Pj4gPT09PcKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgPT09PQ0KPj4+Pj4+Pg0K
-Pj4+Pj4+PiB3YWxrX21tDQo+Pj4+Pj4+IC0tPiB3YWxrX3BhZ2VfcmFuZ2UNCj4+Pj4+Pj4g
-wqDCoMKgwqDCoMKgIC0tPiB1cGRhdGVfYmF0Y2hfc2l6ZQ0KPj4+Pj4+PiDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCAtLT4gd2Fsay0+bnJfcGFnZXMgKz0gZGVsdGENCj4+Pj4+Pj4NCj4+Pj4+
-Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoCBtZW1fY2dyb3VwX2Nzc19vZmZsaW5lDQo+Pj4+Pj4+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgLS0+IG1lbWNnX3JlcGFyZW50X29iamNncw0KPj4+Pj4+PiDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgLS0+IGxvY2sgbHJ1dmVjDQo+Pj4+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IGxydV9nZW5fcmVwYXJlbnRfbWVtY2cNCj4+Pj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqAgLS0+IHJlcGFyZW50IGNoaWxkDQo+Pj4+Pj4+IGZvbGlvcyB0bw0KPj4+Pj4+PiBw
-YXJlbnQNCj4+Pj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdW5sb2NrIGxydXZl
-Yw0KPj4+Pj4+Pg0KPj4+Pj4+PiDCoMKgwqDCoMKgwqAgbG9jayBscnV2ZWMNCj4+Pj4+Pj4g
-wqDCoMKgwqDCoMKgIHJlc2V0X2JhdGNoX3NpemUNCj4+Pj4+Pj4gwqDCoMKgwqDCoMKgIC0t
-PiBjaGlsZCBscnVnZW4tPm5yX3BhZ2VzICs9IGRlbHRhDQo+Pj4+Pj4+DQo+Pj4+Pj4+IFRo
-aXMgd2lsbCB0cmlnZ2VyIHRoZSBmb2xsb3dpbmcgd2FybmluZyBpbiBscnVfZ2VuX2V4aXRf
-bWVtY2coKToNCj4+Pj4+Pj4NCj4+Pj4+Pj4gwqDCoMKgwqDCoCBWTV9XQVJOX09OX09OQ0Uo
-bWVtY2hyX2ludihscnV2ZWMtPmxydWdlbi5ucl9wYWdlcywgMCwNCj4+Pj4+Pj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzaXplb2YobHJ1dmVjLT5scnVn
-ZW4ubnJfcGFnZXMpKSk7DQo+Pj4+Pj4+DQo+Pj4+Pj4+IEFuZCB0aGUgdXNlci12aXNpYmxl
-IGltcGFjdCBvZiB1bmRlcmVzdGltYXRlZCBucl9wYWdlcyBpbiBNR0xSVSB3YXMNCj4+Pj4+
-Pj4gcHJlbWF0dXJlIE9PTXMgYmVjYXVzZSBNR0xSVSBkb2VzIG5vdCB0cnkgdG8gcmVjbGFp
-bSBtZW1vcnkgd2hlbg0KPj4+Pj4+PiBucl9wYWdlcw0KPj4+Pj4+PiByZWFjaGVzIHplcm8s
-IGJ1dCB0aGVyZSBhcmUgc3RpbGwgbW9yZSBwYWdlcy4NCj4+Pj4+Pj4NCj4+Pj4+Pj4gVG8g
-Zml4IGl0LCBtYWtlIHJlc2V0X2JhdGNoX3NpemUoKSBjaGVjayBDU1NfRFlJTkcgdW5kZXIg
-UkNVIGJlZm9yZQ0KPj4+Pj4+PiBmbHVzaGluZyB0aGUgcGVuZGluZyBiYXRjaC4gQSBub24t
-ZHlpbmcgbWVtY2cga2VlcHMgdGhlIG9yaWdpbmFsDQo+Pj4+Pj4+IGxydXZlYw0KPj4+Pj4+
-PiBzdGFibGUgYWdhaW5zdCBSQ1UtZGVsYXllZCBvZmZsaW5pbmc7IGEgZHlpbmcgbWVtY2cg
-cmVkaXJlY3RzIHRoZQ0KPj4+Pj4+PiBkZWx0YXMNCj4+Pj4+Pj4gdG8gdGhlIGZpcnN0IG5v
-bi1keWluZyBhbmNlc3Rvci4NCj4+Pj4+Pj4NCj4+Pj4+Pj4gUmVwb3J0ZWQtYnk6IFBlaXlh
-bmcgSGUgPHBlaXlhbmdfaGVAc21haWwubmp1LmVkdS5jbj4NCj4+Pj4+Pj4gQ2xvc2VzOiBo
-dHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvNUE5RTkyOUQ4MjcxNzEwMSsxMmZjZjY0My0N
-Cj4+Pj4+Pj4gZWZiOC00YjlhLWE1M2EtMWUyOGNjODk0ZjBiQHNtYWlsLm5qdS5lZHUuY24N
-Cj4+Pj4+Pj4gRml4ZXM6IGYzMDQ2NTI2MDllYSAoIm1tOiB2bXNjYW46IHByZXBhcmUgZm9y
-IHJlcGFyZW50aW5nIE1HTFJVDQo+Pj4+Pj4+IGZvbGlvcyIpDQo+Pj4+Pj4+IENjOiA8c3Rh
-YmxlQHZnZXIua2VybmVsLm9yZz4NCj4+Pj4+Pj4gU2lnbmVkLW9mZi1ieTogUWkgWmhlbmcg
-PHpoZW5ncWkuYXJjaEBieXRlZGFuY2UuY29tPg0KPj4+Pj4+PiAtLS0NCj4+Pj4+Pj4gQ2hh
-bmdlcyBpbiB2MzoNCj4+Pj4+Pj4gwqDCoMKgIC0gcmUtaW1wbGVtZW50IGxvY2tfYmF0Y2hf
-bHJ1dmVjKCkgYnkgY2hlY2tpbmcgQ1NTX0RZSU5HDQo+Pj4+Pj4+IHVuZGVyIHRoZQ0KPj4+
-Pj4+PiBSQ1UgbG9jaw0KPj4+Pj4+PiDCoMKgwqDCoMKgIChzdWdnZXN0ZWQgYnkgSGFycnkp
-DQo+Pj4+Pj4+IMKgwqDCoCAtIHVwZGF0ZSB0aGUgY29tbWl0IG1lc3NhZ2UgKHN1Z2dlc3Rl
-ZCBieSBIYXJyeSkNCj4+Pj4+Pj4gwqDCoMKgIC0gdGVtcG9yYXJpbHkgZHJvcCB0aGUgcHJl
-dmlvdXMgUmV2aWV3ZWQtYnkgdGFncw0KPj4+Pj4+PiDCoMKgwqDCoMKgIChzaW5jZSB0aGUg
-c3luYyBtZXRob2QgaGFzIGNoYW5nZWQpDQo+Pj4+Pj4+IMKgwqDCoCAtIHJlYmFzZSBvbnRv
-IHRoZSBuZXh0LTIwMjYwNjI0DQo+Pj4+Pj4+DQo+Pj4+Pj4+IENoYW5nZXMgaW4gdjI6DQo+
-Pj4+Pj4+IMKgwqDCoCAtIHVwZGF0ZSB0aGUgY29tbWl0IG1lc3NhZ2UgKHBvaW50ZWQgYnkg
-QmFycnkpDQo+Pj4+Pj4+IMKgwqDCoCAtIGNvbGxlY3QgUmV2aWV3ZWQtYnkNCj4+Pj4+Pj4N
-Cj4+Pj4+Pj4gwqDCoMKgIG1tL3Ztc2Nhbi5jIHwgNDUgKysrKysrKysrKysrKysrKysrKysr
-KysrKysrKysrKysrKysrKystLS0tLS0tDQo+Pj4+Pj4+IMKgwqDCoCAxIGZpbGUgY2hhbmdl
-ZCwgMzggaW5zZXJ0aW9ucygrKSwgNyBkZWxldGlvbnMoLSkNCj4+Pj4+Pj4NCj4+Pj4+Pj4g
-ZGlmZiAtLWdpdCBhL21tL3Ztc2Nhbi5jIGIvbW0vdm1zY2FuLmMNCj4+Pj4+Pj4gaW5kZXgg
-MzVjM2JiMTVhZTk2Li4xZWM4YzIzYzcyYjkgMTAwNjQ0DQo+Pj4+Pj4+IC0tLSBhL21tL3Zt
-c2Nhbi5jDQo+Pj4+Pj4+ICsrKyBiL21tL3Ztc2Nhbi5jDQo+Pj4+Pj4+IEBAIC0zMjYyLDEw
-ICszMjYyLDQ0IEBAIHN0YXRpYyB2b2lkIHVwZGF0ZV9iYXRjaF9zaXplKHN0cnVjdA0KPj4+
-Pj4+PiBscnVfZ2VuX21tX3dhbGsgKndhbGssIHN0cnVjdCBmb2xpbyAqZm9saW8sDQo+Pj4+
-Pj4+IMKgwqDCoMKgwqDCoMKgIHdhbGstPm5yX3BhZ2VzW25ld19nZW5dW3R5cGVdW3pvbmVd
-ICs9IGRlbHRhOw0KPj4+Pj4+PiDCoMKgwqAgfQ0KPj4+Pj4+PiDCoMKgwqAgKyNpZmRlZiBD
-T05GSUdfTUVNQ0cNCj4+Pj4+Pj4gK3N0YXRpYyBzdHJ1Y3QgbHJ1dmVjICpsb2NrX2JhdGNo
-X2xydXZlYyhzdHJ1Y3QgbHJ1dmVjICpscnV2ZWMpDQo+Pj4+Pj4+ICt7DQo+Pj4+Pj4+ICvC
-oMKgwqAgc3RydWN0IHBnbGlzdF9kYXRhICpwZ2RhdCA9IGxydXZlY19wZ2RhdChscnV2ZWMp
-Ow0KPj4+Pj4+PiArwqDCoMKgIHN0cnVjdCBtZW1fY2dyb3VwICptZW1jZyA9IGxydXZlY19t
-ZW1jZyhscnV2ZWMpOw0KPj4+Pj4+PiArDQo+Pj4+Pj4+ICvCoMKgwqAgcmN1X3JlYWRfbG9j
-aygpOw0KPj4+Pj4+DQo+Pj4+Pj4gV2hlcmUgaXMgdGhpcyB1bmxvY2tlZD8NCj4+Pj4+DQo+
-Pj4+PiBUaGUgbHJ1dmVjX3VubG9ja19pcnEoKSBpbiByZXNldF9iYXRjaF9zaXplKCkgd2ls
-bCBoYW5kbGUgdGhlDQo+Pj4+PiB1bmxvY2tpbmcuDQo+Pj4+Pg0KPj4+Pj4+DQo+Pj4+Pj4+
-ICvCoMKgwqAgLyoNCj4+Pj4+Pj4gK8KgwqDCoMKgICogVGhlIG1lbWNnIGNhbiBiZSBOVUxM
-IHdoZW4gdGhlIG1lbW9yeSBjb250cm9sbGVyIGlzDQo+Pj4+Pj4+IGRpc2FibGVkLg0KPj4+
-Pj4+PiArwqDCoMKgwqAgKiBPdGhlcndpc2UsIHRoZSBjYWxsZXIga2VlcHMgdGhlIG1lbWNn
-IG93bmluZyBAbHJ1dmVjIGFsaXZlLg0KPj4+Pj4+PiArwqDCoMKgwqAgKi8NCj4+Pj4+Pj4g
-K8KgwqDCoCBpZiAoIW1lbWNnIHx8ICFjc3NfaXNfZHlpbmcoJm1lbWNnLT5jc3MpKQ0KPj4+
-Pj4+PiArwqDCoMKgwqDCoMKgwqAgZ290byBsb2NrOw0KPj4+Pj4+PiArDQo+Pj4+Pj4+ICvC
-oMKgwqAgZG8gew0KPj4+Pj4+PiArwqDCoMKgwqDCoMKgwqAgbWVtY2cgPSBwYXJlbnRfbWVt
-X2Nncm91cChtZW1jZyk7DQo+Pj4+Pj4+ICvCoMKgwqAgfSB3aGlsZSAobWVtY2cgJiYgY3Nz
-X2lzX2R5aW5nKCZtZW1jZy0+Y3NzKSk7DQo+Pj4+Pj4+ICvCoMKgwqAgbHJ1dmVjID0gbWVt
-X2Nncm91cF9scnV2ZWMobWVtY2csIHBnZGF0KTsNCj4+Pj4+Pg0KPj4+Pj4+IMKgwqDCoMKg
-wqAgd2hpbGUgKHVubGlrZWx5KG1lbWNnICYmIGNzc19pc19keWluZygmbWVtY2ctPmNzcykp
-KSB7DQo+Pj4+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIG1lbWNnID0gcGFyZW50X21lbV9jZ3Jv
-dXAobWVtY2cpOw0KPj4+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBscnV2ZWMgPSBtZW1fY2dy
-b3VwX2xydXZlYyhtZW1jZywgcGdkYXQpOw0KPj4+Pj4NCj4+Pj4+IFRoZXJlIGlzIG5vIG5l
-ZWQgdG8gYWNxdWlyZSB0aGUgbHJ1dmVjIGJlZm9yZSBmaW5kaW5nIHRoZSBmaXJzdA0KPj4+
-Pj4gbm9uLWR5aW5nIG1lbWNnLg0KPj4+Pg0KPj4+PiBzdHJ1Y3QgcGdsaXN0X2RhdGEgKnBn
-ZGF0ID0gbHJ1dmVjX3BnZGF0KGxydXZlYyk7DQo+Pj4+IHN0cnVjdCBtZW1fY2dyb3VwICpt
-ZW1jZyA9IGxydXZlY19tZW1jZyhscnV2ZWMpOw0KPj4+Pg0KPj4+PiByY3VfcmVhZF9sb2Nr
-KCkNCj4+Pj4NCj4+Pj4gd2hpbGUgKHVubGlrZWx5KG1lbWNnX2lzX2R5aW5nKG1lbWNnKSkp
-DQo+Pj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBtZW1jZyA9IHBhcmVudF9tZW1fY2dyb3VwKG1l
-bWNnKTsNCj4+Pj4NCj4+Pj4gbHJ1dmVjID0gbWVtX2Nncm91cF9scnV2ZWMobWVtY2csIHBn
-ZGF0KTsNCj4+Pg0KPj4+IElmIHRoZSBmaXJzdCBtZW1jZyBpcyBhbHJlYWR5IG5vbi1keWlu
-ZywgdGhlcmUncyBubyBuZWVkIHRvIHJlLWFjcXVpcmUNCj4+PiB0aGUgbHJ1dmVjLiA7KQ0K
-Pj4NCj4+IE9oLCByaWdodCA6KQ0KPj4NCj4+IEhtbSBidXQgSSBzdGlsbCB0aGluayBKb2hh
-bm5lcycgc3VnZ2VzdGlvbiBtYWtlcyB0aGUgY29kZSBjbGVhbmVyLg0KPiANCj4gSSBkb24n
-dCBoYXZlIGEgc3Ryb25nIHByZWZlcmVuY2Ugb24gd2hpY2ggb2YgdGhlIHR3byBjb2Rpbmcg
-c3R5bGVzIGlzDQo+IG1vcmUgcmVhZGFibGUuIEJUVywgaXMgdGhlcmUgYW55IGtlcm5lbCBk
-b2N1bWVudGF0aW9uIEkgY291bGQgcmVmZXIgdG8NCj4gZm9yIHRoaXM/DQoNCkkgZG9uJ3Qg
-dGhpbmsgdGhlcmUncyBhIGNvZGluZyBzdHlsZSBndWlkZSB0aGF0IHNwZWNpZmljYWxseQ0K
-bWVudGlvbnMgdGhpcy4gSnVzdCB0aG91Z2h0IGl0J3MgY2xlYW5lciBiZWNhdXNlIGl0IG1l
-cmdlcyBpZiAoLi4uKSBnb3RvDQpsb2NrOyBhbmQgZG8td2hpbGUgaW50byBhIHNpbmdsZSB3
-aGlsZSBsb29wLg0KDQo+PiBPYnNlcnZpbmcgYSBkeWluZyBjZ3JvdXAgc2hvdWxkIGJlIHJh
-cmUgYW55d2F5LCBpdCdzIHdvcnRoIGZvY3VzaW5nDQo+PiBtb3JlIG9uIHJlYWRhYmlsaXR5
-Pw0KPiANCj4gV2hpbGUgaXQncyByYXJlIHRvIGVuY291bnRlciBjb25zZWN1dGl2ZSBkeWlu
-ZyBtZW1jZ3MsIGl0IGNhbiBzdGlsbA0KPiBoYXBwZW4sIHJpZ2h0Pw0KDQpCdXQgaXMgd29y
-dGggc2F2aW5nIGEgZmV3IGluc3RydWN0aW9uIGluIGEgYmFzaWMgYmxvY2sgdGhhdCBpcw0K
-dW5saWtlbHkoKSB0byBiZSBleGVjdXRlZD8NCg0KSSdtIG5vdCBhIG1lbWNnIG1haW50YWlu
-ZXIgbXlzZWxmLCB0aG91Z2guIGp1c3QgbXkgMiBjZW50cy4NCg0KLS0gDQpDaGVlcnMsDQpI
-YXJyeSAvIEh5ZW9uZ2dvbg0KDQo=
+True.  But also not relevant for direct I/O user pinning.  If we stopped
+having valid folios for anything mapped into userspace,
+iov_iter_extract_bvecs would run into problems, and we had the discussion
+before that at least right now it would be hard to fix.
 
---------------LJvK4Zuc5TCvFT3lxqrCEeNR--
+Also if iov_iter_extract_bvecs was used on kvec or bvec iters we could
+run into the slab problem.  The block usage currently makes sure bvec
+iters are not handed to iov_iter_extract_bvecs, but there is no such
+thing for kvec vectors, although no one is using them for direct I/O
+right now.  Not that I'd want to rely on that in the long run.
 
---------------cX5ukXFyQlDiVGJNom11010b
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4gpgAKCRCGXBN6rc5S
-1rDcAP4ygpzRUkuMkjporBYJzPsnen0DkH09BkvSo7aiybr/HQD/eDhGLFt5NxEM
-eb8EG9w1TyS+gbQJoKUa33njhsKqEwc=
-=ScuO
------END PGP SIGNATURE-----
-
---------------cX5ukXFyQlDiVGJNom11010b--
 
