@@ -4,87 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D50BCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46CC9CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:14:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D66B6B00EE; Fri, 26 Jun 2026 06:14:03 -0400 (EDT)
+	id 3AF336B00F1; Fri, 26 Jun 2026 06:14:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3AE066B00EF; Fri, 26 Jun 2026 06:14:03 -0400 (EDT)
+	id 35F7B6B00F2; Fri, 26 Jun 2026 06:14:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29E6E6B00F0; Fri, 26 Jun 2026 06:14:03 -0400 (EDT)
+	id 227F76B00F3; Fri, 26 Jun 2026 06:14:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0538C6B00EE
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:14:02 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 922E88D479
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:14:02 +0000 (UTC)
-X-FDA: 84921653124.15.5C79CFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F13BFA0003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:14:00 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QeqtOWrw;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E597E6B00F1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:14:08 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 661D0C1DCB
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:14:08 +0000 (UTC)
+X-FDA: 84921653376.10.27F206A
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 57A2DC000C
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:14:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782468841;
-	b=A+A3zOjSV8QBZMz/Xrgq7cuKITfMZ5xvBiWeciU76a7A5rO6/htlESMs57DrHozAgnHKgW
-	6CbhssClnIOiYVIrEMoLG4kXSu0N2/ks4nr+e7sXPqNab9/5GJe8ezRVuLS0XwyjvJfo8S
-	uS+i8IS1ydbK1cDq1+auWcEPZem+uBo=
+	t=1782468846;
+	b=FzVArirVrbqOiJGBGvkoJRznpkuupL0mY0QxN+c8dPRBzac5DVAnp1NX9oIzdbc1V+eWuk
+	X2ZfUIJUawnZ4/m2QXfeDZ2dkiVch8eSt16SMw5fTUvMgLESuko01f6KzQsHp+TKhiJXJh
+	1w3wq3/jq1muItqHLmZY2grF0UceZas=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782468841;
+	s=arc-20220608; t=1782468846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=npGKdarXf5gccltScbGUlMqW+/k/IwUKWJXo0mdK4HA=;
-	b=a9m9aSVS4bgrDjyahTxvOUuut0RvElLT4aS/qd8VrHGL8yISoW23ps+tix2WhOmcqKJFjm
-	ygUmrad5sBz/FDLF5qjBrWW8wMcm2Ka7lpv3KDsY28pQEidlvUwPaO4cVZbeJBdTxuWmuj
-	VJKp7vvcWoeAaXqYgp4zwwlE3yhM7TM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=51qIM4p1NvfZURtbRRB+90FDO1iGM4P1BpNeTkPJIsU=;
+	b=BCYaATJKiEvaS8549K1z/n1SdsRuac353ltetgiPSHvcni3mF15aHdWkKbfnL6NGuhwrey
+	D6M9eN0caUlLRz4AKEREOI2nPD9EZHG0CemGUqdrpG8k3ns1XwsddiMXArXsf15dJ6qUAs
+	g3g3W7PwSX+2he8LryRf61Y+DzZCprA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QeqtOWrw;
-	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E0E6C4333A;
-	Fri, 26 Jun 2026 10:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295501F000E9;
-	Fri, 26 Jun 2026 10:13:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782468839;
-	bh=npGKdarXf5gccltScbGUlMqW+/k/IwUKWJXo0mdK4HA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QeqtOWrw/nvPfytCrj64spgdjebDv9dxdI/7ffl0uNJJvUiah4WzurpwKx80iW6xF
-	 joEFraG+d0aXcp+VscaSEPyLNm0YilTzfApeVBGNwhOUJIAIsaQX104gpWwe1eElrw
-	 zLVbBDiHL+Yz+EpE/KOko5HJWN8Gg1791euUt229lmlhvkLyvqCj4OvA0/k9fLefWJ
-	 DHnlP1wFRq3uWshwZeQv5X90qpydKMjP6mcjEDWE3RgrHW4rRuUEehOZLiUF6BA8WP
-	 LpROwQLuvECotyYP8/UlvXVgmnKydhqOdyQFUz6drRtafw8eBITvxf7lZ5IHIA/2nM
-	 JarTtKU5/LgXg==
-Date: Fri, 26 Jun 2026 11:13:51 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, kent.overstreet@linux.dev, david@kernel.org, 
-	liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, hao.ge@linux.dev, 
-	jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/2] MAINTAINERS: move inactive maintainer to CREDITS
-Message-ID: <aj5Qyp-D1BHdqIwJ@lucifer>
-References: <20260625184857.2193482-1-surenb@google.com>
- <20260625184857.2193482-2-surenb@google.com>
+	imf28.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf28.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.195 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6D91820CCB;
+	Fri, 26 Jun 2026 10:13:58 +0000 (UTC)
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>,
+	Barry Song <baohua@kernel.org>,
+	Ben Segall <bsegall@google.com>,
+	cgroups@vger.kernel.org,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Kairui Song <kasong@tencent.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Mel Gorman <mgorman@suse.de>,
+	Michal Hocko <mhocko@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Wei Xu <weixugc@google.com>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Alexandre Ghiti <alex@ghiti.fr>
+Subject: [PATCH v2 0/9] per-memcg-per-node kmem accounting
+Date: Fri, 26 Jun 2026 12:09:27 +0200
+Message-ID: <20260626101356.1599643-1-alex@ghiti.fr>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625184857.2193482-2-surenb@google.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F13BFA0003
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alex@ghiti.fr
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: dmFkZTGmWD2fPyKDYNlhP4gTn9Rxo3haDH1OvFRHYwg3drCV4CZLvBEv9OczPZLwKS6J1xcDH0flBnn6daeBkaySaYZY+gpFW+i7m/KXEZ6Ws5xxe7LMmjQQa3yDT3WkW05+4p6RkYb/hJCZRk8b5v7/dmFEsZvET0Yc8fWC1Cv3sVxs1kVYYH3+u9xFCDABt+tFKkSE1lH9umelwQZS8QLxMNjRIy+/D65/rXWJjzLo+lV3PJnR+L5/MRZq0DjZ9KN7P/vxZCT5yv4V3tYsbVUbg027xGHm8Agd400V3SYgE/wKtjrtxm9XDjR8lcftVfj3cDfgX61TYOv4S5tgOvyO2vnsQhJtjIJqc6z0vBvpp+4eBBcK5y+n2PqLKXvOVFxg7dXRMrvtLZCrQOVMnUXvzGrGExdkQWGLFhgX/4d90CMXdj38yfHzB+tApYX/GIN9/bvCoE7CtYCU44SyeJvQy+SHG2nh+vHy0BbEkChajexlf4B5nPVOemNEmX3S5Kc837Y0x86Cz0cvw0FOlgQxuhfb+/RtrxKbyIEk1h/rhgY8iI8L/UgL9NLkS43rJqbVn87T6lY+xbAsBI2VMFIu7d3pRT4R3S88vYjIEBsh9Yf40ZqlMsZuvvrDFYBRlMNTjQwqvPDOspANmyf0OcnhuNmRWo4QXtUTIUj4GIa68/KRoA
 X-Rspam-User: 
-X-Stat-Signature: fp4k7aah3fxkgabxkk5j67zcqco8ecid
-X-HE-Tag: 1782468840-290582
-X-HE-Meta: U2FsdGVkX1+gbqb7XWdQYY7cg8anv31YnBzNv5biT2t9UT3Pd001S5+6FJQNYUV+NaBp/s0sj/iKFwN6R357AkKjyaisxok+qhEA8quvwM20YC8pJd8RYWKaMkjheOJ+ZMCqCtnYNSezaqo6ime+f8Z28/K1G3yH1ZT7OVdXNEht7Hhijux3zRczi0TRxdQ2bQLelsos1iiz8TT0yh7KTsvll0ab4OmypeFrRhQffjgD36TPQeyaYLqCHWnEJG7IUt0BKpSLAS6bCGYbhfO0nWrvrQe7dmK9CS+7gVCW4lPrWOaQhDFRixZWkjX1qJT6DtikMrxPM6f9T/XHUc6jew5fBdK06gh4aHGaNp6wdl2rsh3nqYA7u1l+o3oPAhCJQRZJzET/YJgIWuX5qAWZHa8z2JyN9vhoncG7Bfk/bQ9dNdgKYuawPdefoYX8vwnjTJtGykSfeY/BAmUR2vjEem0gG81ofN9SaN5bsipY8F939uVC6+pW6UNu8NTOpc5AIH+RIAXpGYISnq2DCAYG/xTt3RIyUJHlkKqAod6EEpfbkm5jX3BRd6FoIuBaOloUBuP68XO3kE/2FZFYwOXeNKEzXVhbEBkJnAEKjtncZPqrN77qXMEsK39lqg4hMOLUn/26TwnC6K7DFe073eGCm0oshndG4BeKbCKw/9+k1DxMgCE55M2Lf/yvy7jop6Tii0wTChYtnoI8epPhNLPW7tE7kJVO1SyGwlisSFU0yD2STnQrsvuq6JJ1HhPUbXyuqfGmNm1VZKELk5/GujEehfFh4CLtX8l8gkw0Kw2o3ixCI3yn/qLU2ZfgYQ8/DZee8nEFol3hIB+49nouDMfoD4cyr1imzQxZOmkZk/p2JmVGMgJPS+eyybauoweAWgyf5sw+6qYw5d3eAOVHZF/B/NMHAYbxM5vO1exUTS+mvCouR0zf6gndswjv650Q4rHQ6QZuDBxIu1bChnZW0pW
- 0BwNmnyC
- Q/5gX9e4tF9fxU8yM9J8Oaiq8X3LVWhcK6kKGWioWgQlexJ4gCtxhGdXx7HMYTeWwUX4ph/PlANppa8A26/z0cYIMtL0X4xvHyvDQ5gzP1SOGIu+kSA4iRd7jcV45v/GnR5F2Hb8dZ3r1aduCP4Pu5PjH/QEBJPfPWRHOiespi1v5oowq6aBbSBv9xNUE37qKDRXY4fR//gqcdd8jlt65yc1Ca8ikkQvU1+f9YYCD8IHxS/6IlSf5bxt9tgq031klMdf7XBSjsRe4XZuc5+gGNabgBCKa8ZqupHW9WLe7hG960c0O73xRdmkoVQWkV82wI0WXIe0bW1wuAgxLckCEk4XWbaAId2qjVtN3rvOvw51+ChrGiA2g6dWZx3nG8S/dCdTy1jjhxYDl5JbvJEiBPz475X27/ZS3JTIjlYWb2uCHVPIgWsBrsKNK5ljrYPa0bJrJ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 57A2DC000C
+X-Stat-Signature: kapg6b6753re18fdeou1pgfuwaq5wj34
+X-HE-Tag: 1782468846-102760
+X-HE-Meta: U2FsdGVkX1+FQmwa4EGik2aUkhOnSfmnFQ0FnQSm7fQwbs8lD6I5Zke168l38HynQKnAfV2C7emDJWljHM6smVCUv+kB/xixRfkkNDSBv/fe9uANSVgtcokV+yb2sn5P5rsohodX2rbtr35PhBuvBP88lEZcPQ6brehKU3o/rx0VbcyS3iqqUL516skPUE26qsKCW0R46tMjwv5qyIvw8Yl/zfC8f/B4N9SyjIgbCJGSOxO7aUQ4UifiHqq4cssiGrgigRFnACKurqKZU1ZwaiUW+uk2U+CHH2k4mIQ1mAlV6FkBTWGAncmDRaL+WrATO/+uBsDQRJCYfoO0wi9i6aV95X5Ykq/6UGQ2K76n7IGfSYzL/sLCdje3h73mjSyf5a3uF9eF0kjftfaVBZqatFWgI5Il7BCwH32QiwupqWtQVCNjXzE4iDSAIxPNdtcMN5RQC/pNpnIbbWX/Wzhi73WrlnF96Mw12L1sMSNrWv1MbvM30mGKdQ+ephHaNVavCD4V1wxmuXQ1Qy8bDFBH1uRKon0/BLKqO7/p+cECzymAIhAT964nXgcuXbHuc70pqe6RVne7otMvFC6mmPZsEGQnkTGVngduH0d2X2zVbdHMwa7bMghtf4I5qALf7DxuqpNAM4HPS4dJ9XxogBXjnRciF7mpHKxeS8dFTRdfObibYvWhWfOP563H9sN715v6XnDYyHhIH59EfetlHeSLEdXFlUe3XkYEMSA++8COxuFSmgYVf04csOOsp//Xd+Ce/skIx9SMi0vNcta+Fqb/hxS0HYQh2t/xsEskCZA8GwRgkKzgPZz9SHJUv7R2PJPRCdA21tWOU8bIoxmgoYk+Q0lOYMoRu8JmJWCF0M0FaAu14FhczXrZy00YTyCmJehllfKVZlw8RxXb0gu4Hr9R6V3O+T8Q7mDa/nN6xRh7XIxc7R+WEN9EKp+dQA1qvCwSOuZbng5OuRAV78WOrkk
+ YHQdIy0B
+ qSgtUne4hWPcGi/7KlwIbt90G8HJrTREJkCS8nDtmwvdH2EqgjQiNO4Ps9PBLM4u9K2DVk/SpNUwcXdU9AHoFS8EWMg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,51 +116,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 11:48:56AM -0700, Suren Baghdasaryan wrote:
-> Move Kent Overstreet from maintainers for Memory Allocation Profiling to
-> CREDITS in recognition of his co-authorship and contributions to this
-> feature.
->
-> Cc: Kent Overstreet <kent.overstreet@linux.dev>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+This is version 2 of per-memcg-per-node kmem accounting.
 
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+As asked by Joshua, I ran some microbenchmarks to check the impact of
+this fine grain accounting.
 
-> ---
->  CREDITS     | 4 ++++
->  MAINTAINERS | 1 -
->  2 files changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/CREDITS b/CREDITS
-> index 17962bdd6dbd..9a3e4b639505 100644
-> --- a/CREDITS
-> +++ b/CREDITS
-> @@ -3091,6 +3091,10 @@ N: Jens Osterkamp
->  E: jens@de.ibm.com
->  D: Maintainer of Spidernet network driver for Cell
->
-> +N: Kent Overstreet
-> +E: kent.overstreet@linux.dev
-> +D: Co-authored and contributed to Memory Allocation Profiling
-> +
->  N: Gadi Oxman
->  E: gadio@netvision.net.il
->  D: Original author and maintainer of IDE/ATAPI floppy/tape drivers
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index dd963b72c614..0948dc573744 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16706,7 +16706,6 @@ F:	tools/testing/memblock/
->
->  MEMORY ALLOCATION PROFILING
->  M:	Suren Baghdasaryan <surenb@google.com>
-> -M:	Kent Overstreet <kent.overstreet@linux.dev>
->  R:	Hao Ge <hao.ge@linux.dev>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> --
-> 2.55.0.rc0.799.gd6f94ed593-goog
->
+TL;DR: There is a substantial impact (up to +337% on small percpu allocations)
+on a benchmark that loops over small percpu allocations. On the other hand,
+on a userspace program that creates a bpf percpu map, this cost is not visible.
 
-Cheers, Lorenzo
+I followed Joshua's advice and now this version batches the memcg accounting:
+it improves the performance +337% vs +417% (v1) on 176 cores single node
+machine and +153% vs 206% (v1) on 80 cores 2 nodes machine.
+
+We can see that the overhead of this version scales linearly with the number of
+cpus (the number of nodes being small). This overhead comes mainly from
+vmalloc_to_page() so I have another variant (b) that decreases the impact even
+more (+131% vs +337% on 176 cores and +86% vs +153% on 80 cores) but I'm not
+sure the added complexity is needed so I did not send this version, let me know
+what you think.
+
+Performance
+===========
+
+All benchmarks run in a memcg with __GFP_ACCOUNT.
+
+1) BPF percpu map create/destroy, full series vs baseline kernel (two
+   boots, 176-CPU AMD EPYC, 1 NUMA node): the per-node accounting is lost
+   in the BPF syscall overhead, the delta is within noise (us/op):
+
+     size (B):    64     256    1024   4096   8192
+     delta:     -5.5%  -5.1%  -1.8%  -5.1%  -4.1%
+
+2) In-kernel microbench that isolates the accounting cost: a tight
+   __alloc_percpu_gfp()/free_percpu() loop, __GFP_ACCOUNT on vs off on the
+   same boot (ACCT COST = on - off). The dominant cost on a many-CPU box
+   is discovering each backing page's real node (vmalloc_to_page() per
+   possible CPU). ACCT COST by value size:
+
+   176-CPU EPYC, 1 node
+     size (B):              64       256      1024     4096     8192
+      baseline (upstream)  +5.3%    +5.4%    +0.1%    -1.8%    -0.5%
+      v1 credit (per-page) +417.3%  +182.5%  +68.5%   +21.4%   +16.1%
+   a) per-node accounting  +337.8%  +141.8%  +36.1%   +11.9%   +6.8%
+   b) per-page nid cache   +131.3%  +53.7%   +10.5%   +0.9%    +2.0%
+   c) single-node fast     +12.6%   +12.1%   +3.5%    +6.6%    +0.7%
+
+   80-CPU Xeon Gold 6138, 2 nodes (fast path inactive)
+     size (B):              64       256      1024     4096     8192
+      baseline (upstream)  +1.2%    -3.8%    +12.4%   +1.2%    +0.5%   (noise)
+      v1 credit (per-page) +206.1%  +134.0%  +44.5%   +11.6%   +11.5%
+   a) per-node accounting  +153.2%  +64.7%   +19.4%   +4.2%    +5.9%
+   b) per-page nid cache   +86.5%   +45.5%   +14.7%   +1.8%    +1.6%
+
+   (a) this patchset without fast path for single node
+   (b) is an alternative version, not in this series, that caches each backing
+       page's node in the chunk so the walk is paid once per page instead of
+       once per allocation
+   (c) this patchset with fast path for single node
+
+Changes in v2
+=============
+
+- objcg lifetime: Shakeel's patch 1 now guarantees the lifetime of every
+  per-node objcg
+- dropped patch 5 and 6 since Shakeel's patch 2 replaces them
+- fixed the number of precharged pages (the v1 formula under-precharged)
+- per-node batching (Joshua's suggestion): accumulate the per-node bytes
+  first, then issue one account_kmem()/uncharge() per touched node =>
+  O(nodes) memcg ops instead of O(num_possible_cpus)
+- single-node fast path: skip the per-cpu node walk on single node machines
+- obj_exts metadata is now accounted per-node (walk its vmalloc pages)
+  rather than charged whole to one memcg (Shakeel's main v1 objection).
+- renamed obj_cgroup_get_nid() -> obj_cgroup_nid() (returns a borrowed RCU
+  pointer, no ref taken).
+- zswap: fixed the missing locking around the per-node objcg lookup (now
+  done under RCU + obj_cgroup_tryget()).
+
+This series pursues the work initiated by Joshua [1]. We need kernel
+memory to be accounted on a per-node basis in order to be able to know
+the memcg <-> physical memory association.
+
+This series takes advantage of the recently introduced per-node
+obj_cgroup and makes those obj_cgroup tied to their NUMA node.
+
+The bulk of the series is percpu per-node accounting: percpu
+"precharges" the memcg before we know the actual location of the pages
+it uses, so charging and accounting had to be split. All other kmem
+users (slab, __memcg_kmem_charge_page) are now handled directly by
+Shakeel's per-node obj_cgroup infrastructure this series sits on, so
+only percpu and zswap need explicit per-node work here (zswap support
+is limited because Joshua is working on it in parallel [3]).
+
+Thanks Joshua and Shakeel for the early feedback!
+
+[1] https://lore.kernel.org/linux-mm/20260404033844.1892595-1-joshua.hahnjy@gmail.com/
+[2] https://lore.kernel.org/linux-mm/56c04b1c5d54f75ccdc12896df6c1ca35403ecc3.1772711148.git.zhengqi.arch@bytedance.com/
+[3] https://lore.kernel.org/linux-mm/20260311195153.4013476-1-joshua.hahnjy@gmail.com/
+
+Functional Testing
+==================
+
+- Tested with a percpu kmem self-test in an 8-node VM (2 nodes with CPUs,
+  6 memory-only). For each allocation it checks that every node is charged
+  and later uncharged the same number of bytes -- including a CPU-less node
+  that ends up holding the obj_exts metadata -- and that nothing is left
+  charged after teardown. All checks pass. (The self-test module is not
+  part of this series.)
+
+Alexandre Ghiti (7):
+  mm: percpu: fix obj_exts metadata charge size
+  mm: percpu: Split memcg charging and kmem accounting
+  mm: memcontrol: track MEMCG_KMEM per NUMA node
+  mm: percpu: per-node kmem accounting
+  mm: percpu: per-node kmem accounting for obj_exts metadata
+  mm: percpu: skip the per-cpu node walk on single-node systems
+  mm: zswap: per-node kmem accounting for zswap/zsmalloc
+
+Shakeel Butt (2):
+  memcg: convert task->objcg to a per-node objcgs array
+  memcg: charge kmem pages and slab objects against per-node objcg
+
+ include/linux/memcontrol.h |  23 ++-
+ include/linux/mmzone.h     |   1 +
+ include/linux/sched.h      |   7 +-
+ include/linux/zsmalloc.h   |   2 +
+ mm/memcontrol.c            | 286 ++++++++++++++++++++++++++-----------
+ mm/percpu-internal.h       |   2 +-
+ mm/percpu.c                | 108 +++++++++++++-
+ mm/vmstat.c                |   1 +
+ mm/zsmalloc.c              |  11 ++
+ mm/zswap.c                 |  19 ++-
+ 10 files changed, 361 insertions(+), 99 deletions(-)
+
+-- 
+2.54.0
+
 
