@@ -4,117 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88D44CDE010
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 05:37:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AAD6CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 06:05:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309726B00A5; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
+	id 738916B00F3; Fri, 26 Jun 2026 02:05:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BADE6B00AB; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
+	id 6E84A6B00F4; Fri, 26 Jun 2026 02:05:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D21A6B00AD; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
+	id 5D9DB6B00F5; Fri, 26 Jun 2026 02:05:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E4D1A6B00A5
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 01:37:19 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D1971674AF
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:37:19 +0000 (UTC)
-X-FDA: 84920955798.13.11977ED
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 064354000A
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:37:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 328446B00F3
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:05:13 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 880B9A03A1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:05:12 +0000 (UTC)
+X-FDA: 84921026064.18.5A8216F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id CC9A34000F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:05:10 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlqtmkwO;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782452237;
-	b=fhDfFm/vC85hfMEQEswcW3S7cs2s5OvTNvixqEZG3PlvMw618nXSSuBFXnY3gHelqmdwtq
-	4AGFvY79IJh0ZoB6QWmXqffO9tgQZe1Y4WAOi9dM5MCTpSoHcG5UvO3GXZddG3dHmfAIWB
-	IVP3KOl7nj5k2yWYi+3vPAwgNxDl7gY=
+	t=1782453910;
+	b=CySr/ZvjuXjiPd/gGGROZq4AuYTV2aVnqP7Cnqlne3ZfLCHXsGYMfs/QnoWW1jKXGHfJIC
+	Lxq4ycozDoje6ol6N0rOFkknJDXSKBbRyuAOlsAYtwvsjEGxDDWqpgCuiJ8mv+VZuJ54ve
+	abpF/K1XmdvfFdiEq7V/IU+7/WmsBW4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782452237;
+	s=arc-20220608; t=1782453910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=0fRac9g7xFADUxrUK1pW4Pv+lpPXqxRY96g6U1AVFd8=;
-	b=VE0IGzsPHKVRb5xFAUPLLIvR1jprlKyHCog78pNOH8L9BSSGkB8vnISk6ZKmun+l6liMhO
-	M6Hg8o6UDzJtDArw31MJsHmr6YWIg9G/V3h9mYEyfGvQJCYJn8yeejgclmCRQE31KGJ75V
-	+Io/vuKbc409JQES3n7ki4ffQoq0LNA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S9oL7c3i+gk56KOTzil5DMHlEF4gYOabQZTiWR5RK4M=;
+	b=bvGN8qP+QNQDGr7duCwwYOm4jjAv9EZ0nIlr7oifg/bIGjf9QhuyKIfw6aWvmVI0uwguSP
+	fET2J1/8EDho0zYNK6bDS00i+sY3Kj43PSjv5nRV6Zcpcnf/pczqDmBSKrZLmie3dKOuxg
+	rzCU52u2Mw/SMCY2lEhUK77BfjLCDYg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn;
-	dmarc=none
-X-UUID: 115c4086712111f1aa26b74ffac11d73-20260626
-X-CTIC-Tags:
-	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
-	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
-	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
-	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
-	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
-	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
-	ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:91871d22-cfc6-436c-80ea-a21df0c3bb22,IP:20,
-	URL:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,AC
-	TION:release,TS:-25
-X-CID-INFO: VERSION:1.3.12,REQID:91871d22-cfc6-436c-80ea-a21df0c3bb22,IP:20,UR
-	L:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACT
-	ION:release,TS:-25
-X-CID-META: VersionHash:e7bac3a,CLOUDID:b5107a83e03fea0bca18c675b04aa7d6,BulkI
-	D:260626133706V8VEZZ1C,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
-	850|865|898,TC:nil,Content:0|15|50,EDM:1,IP:-2,URL:99|1,File:nil,RT:nil,Bu
-	lk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
-	0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,
-	TF_CID_SPAM_ULS
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 115c4086712111f1aa26b74ffac11d73-20260626
-X-User: wangxuewen@kylinos.cn
-Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
-	(envelope-from <wangxuewen@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 206352148; Fri, 26 Jun 2026 13:37:06 +0800
-From: Xuewen Wang <wangxuewen@kylinos.cn>
-To: akpm@linux-foundation.org,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	baoquan.he@linux.dev,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	david@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Xuewen Wang <wangxuewen@kylinos.cn>
-Subject: [PATCH v3] mm: annotate data-race in cpu_needs_drain()
-Date: Fri, 26 Jun 2026 13:37:00 +0800
-Message-Id: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DlqtmkwO;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C78B9436F6;
+	Fri, 26 Jun 2026 06:05:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47471F000E9;
+	Fri, 26 Jun 2026 06:05:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782453909;
+	bh=S9oL7c3i+gk56KOTzil5DMHlEF4gYOabQZTiWR5RK4M=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=DlqtmkwOymvSa5ZtNvNfHbECUNFE7rZKzhXuStdjYZwLnFUTSY2M3eKhy4ZtQzyri
+	 LZwaAEt+JAkRKwkl4Bnd+/4ByhlVn2eQ26irDRzqRYoKWyEOmG2En6OYMDuSRSYa/D
+	 pUV4zyONLqW65JAZDreixRqs/BNWc5qhuUy/CHbWayhycGCaN77lcVM7GAJKHUu8/q
+	 wpV1XUCSP0JxWFUJe/yHBXAmgM6T5xTZc/vpUM54JJUZ/zVg5he8bd0nc6pUt6Q6dG
+	 SXfhzNN8oGBK2YqiGGS7HDVJrEJcFRycal3pN8pooUnnC5R7nMG7ImePS7JrLGgkbr
+	 cgEaFra2NEg/g==
+Message-ID: <be9556d1-7eba-4472-a932-bf56db6285e1@kernel.org>
+Date: Fri, 26 Jun 2026 15:04:50 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/4] memcg,slab: kmalloc_nolock() fixes
+From: Harry Yoo <harry@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------ejXnirQmd0n0E9T07k6SM4Rs"
 X-Rspam-User: 
-X-Stat-Signature: yp8jpjan6ki6hzo7tqes9wenc68i4mzi
-X-Rspamd-Queue-Id: 064354000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782452235-272153
-X-HE-Meta: U2FsdGVkX1/BC04m5i5gKg6KG0z6Z6FKk3AVxqGoNatQXTPg6mNrtH//tkqNLq86TK0IOq0z0ylVLePr53iCpVAsdxNScUBTDJrxV1Q4AkzyNfVayO7B6D7GjEmKksYpJtdu+hBp06FhGITEoOkQSoAHyUTTuwGnY4ecnrHgAuj6KYU6EH3KajAl3EHW3qR9ILfWzlOg5C6nqSZqwXVenlHtuwZ3Lr9hWAEaReyep8G6/Q4gDmJ1KW1ArjWSe/dkxSHeJ3fQat9FclYX7ntLeilK+6Zg8fzzEgXuJn0PVxlfRM8sE8OGt0lJVF8i1yMxiv9aBoPArIxOnbX/59hi/Oi3KdHnlLKkT1+j3m7N6e0qPs8iyXw7S89jBtYUsDKCsJcJ+bl4ExrcznXeEIXSBBpRJsPKP/Ct4SmguNs5aSzQAV2TxPQEj8Mq1ht+NRwDBHV5SOfzMYerJ9Hmwd7W8C3WW/+uF2k/y9hxr+ql2fq5alhIYFmOw9A1Exb+ZYv24f7QLdz8XPuNoGLOeFg3EQBQgBkJIioFShcdv1KiiaeA3ojibP+nP5KMwsS0BxLglCv5LZiW3vEGE0VE/Il5YDsXNqYiHdwarot5LFs/JTheTwwxKTGBvXfwA9jOQ33s7hGq8e0zw29VbU/Lt19vhkbSauA5hsMd90txJKkyLhKy0gEQZE/iF63uTsgKE0hC4VtfLHXHHQTzpXwDyA8kNqx3xU4lFApn5z9+z3RBlq5qRBvRnw8a0fm8S9rWXb69lYtQqSmj0oumFKSPpJiyoLkJNxD00Cj5HFTgCkEx6ZIvTGNTYjDj1hz02HW3NLISobi4O0Kyu4oDR2a3xzgXFsVZi+w+lbe5kODDXcnKm/UdvTIgfK+lq0L77ORc+vZJJpZ7KGua5LEsEgK3iiaKHHI9vKsT4OUmST2405nGriXVWql4Xnv6njHhouMYtJsHoUvpYkLQwCYuvg3GdbR
- M/U6XEks
- TdG6HKOSruFE2O2YViaCVLt8kGq0I6jmrtsChhlRv+D56iSqscsTdv1IJE8b+G7xxOIiQscGugUfTH7s=
+X-Stat-Signature: ytko5r14sw5j1qt58kc9gj19qeqcnpfh
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CC9A34000F
+X-HE-Tag: 1782453910-500105
+X-HE-Meta: U2FsdGVkX19qqDWwQnCOR23jydcAI+t3qLZAFgN3z8kgxvlzSL4E1D6ZdSPYTxCqlhAfwJQVJL/Rl268Q+/95tsrlbbFztlKa9R4NW/pNdWpf8cz2QQ3dYU4Joexn1ZI6kXEylbLmsIbN8NnMGjrIhZrs8Bd9ZRqdELUufGhSkK85r6L76WeIgDP/aZ6ldKwAWGtJVqUwIpnWRjVUp7xH/SrY5K4dFhENO33lSSuGczukZktFIGVh3KjRMM+8dLuf0ST/JNeFqgz0aT2B1EvY3uu1BtGVeT0SyhoqamDc1rX/7AzXtiWPSvhe2MzAidmfcrvTV07IcXCbBOeKiKqXgme3Tsj29v5qpbaaJKQd1pCGSHs1iYG9HslmBPuyu90ZWYDxMDovdr7CEf70niTaec740ZBGzd+6Nx1yBRK1ic2P93mHVq/Xn6S65+z9VUjWxkv/jbWZ8sSQHbJQ2ALxK+twrwhCv4dVD+0g6cDWDEoIDhzXMBI7KndOyG1CBs26MRohWXo10GHBNMZ1paM0IW/AuW2YcE6ir8x8bUncL+iUZrYlm3L7Pz7unfXweIXOtivic7/J4TkuuVhAgO/StVI4qB4meRxJwk53zsGWqteedVvJ0TInpNu3wrO+3epJ5bw9G8Z0iTVzzIwIqH5mS+tSW3h/kiJLlMPVNHAVXMXERDUOO1Jl0Xok97iTMp+8YvsWdRV0+uIy+XepO3WPlswLhAM8En8u9bFtSbV7x1rfvv+Dz2xSg4PBeGQpOXsywLrMn9a+CriLgTq788009avbGlC32hz+jF+iElMRq/+WQFUx1b0S4lIpwxwnDkDtVCqowzAjir3pNUBeqI6LsjShapIVOQx3fJWtWmv3saRv88tYYVr9Nj0Z7Ldua8KGu0ttU3oLH5ynzMOyo2aH9oelaJ90iKQrKHBhvP4QXjsMs/B0RhFKKI3adpBvD3baHBZHdqqkQ7c74EINT8
+ s5Xextcc
+ W0R+Uf+C1V6OZZEv0i/zVHnHsHN2kvWmOPdVRMA0/4ZutcQVz1SSjJu4xiT4duP6gsF+pMqisWrV6OyqWpn/6VjtOFGpNsrPui23RKh3HjNGzCXTHJmgRBVR6apifsEcesZMvBSrRtWqQFRCSO4UHasNWKMNMZnRp8QcpYFMf+zwIWf2GmJkQ3AVzBvmdgUigebZM8lTGTWXDujYFXy4g3wEyOdpUky4JLDrBd9u0lA+prz+/fuzzlYozDuZfQr152C9w+tukOebyDri+h31nBPZbvq4jLHDe4RIcj7yC6LgeAlqJ4Uomf2yyBIFOVT7pu+yN87zXFdznc/vdtCLAU2Ok8uM9VRXMn7A8LoQMX+Lwr64FXKriIGyYNtH1HO/aE7FbtbfRErgqd6Dbx/FA/HrU/M3xlNYsB9JCXVKuFEVcsX4kQVbrIDG8bQTuFbV5V3nu2WtrqGJtRbJiLzUu6fujEE4uYsG/An0O6QXDcqgN9rQ+8OPuHwwd5Ph2wgD31U+I
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,52 +99,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KCSAN reports a data-race when cpu_needs_drain() reads another CPU's
-per-cpu folio_batch->nr without locking, while the owning CPU writes
-to it via folio_batch_add().
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------ejXnirQmd0n0E9T07k6SM4Rs
+Content-Type: multipart/mixed; boundary="------------xqitAKa4qlewiFSJqUEqWGv3";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Alexei Starovoitov <ast@kernel.org>, Pedro Falcato <pfalcato@suse.de>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Message-ID: <be9556d1-7eba-4472-a932-bf56db6285e1@kernel.org>
+Subject: Re: [PATCH RFC 0/4] memcg,slab: kmalloc_nolock() fixes
+References: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
+In-Reply-To: <20260624-kmalloc-nolock-fixes-v1-0-fdf4d17351dd@kernel.org>
 
-Reading a slightly stale value is harmless -- cpu_needs_drain() only
-decides whether to schedule a drain, and the next iteration of
-__lru_add_drain_all() will re-check. Use data_race() to annotate
-the intentional race.
+--------------xqitAKa4qlewiFSJqUEqWGv3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
----
-Changes in v3:
-- Wrap the entire || expression in a single data_race() instead of wrapping
-  each folio_batch_count() call individually, as suggested by Pedro and Lorenzo.
-  This is equally effective and more readable.
-- Remove data_race() from need_mlock_drain(), as it is now covered by the data_race()
-  in cpu_needs_drain().
-v2:
-  https://lore.kernel.org/all/20260625065153.1581419-1-wangxuewen@kylinos.cn/
-v1:
-  https://lore.kernel.org/all/20260624092606.1083449-1-wangxuewen@kylinos.cn/
----
- mm/swap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/swap.c b/mm/swap.c
-index 588f50d8f1a8..46ea207e0624 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
- 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
- 
- 	/* Check these in order of likelihood that they're not zero */
--	return folio_batch_count(&fbatches->lru_add) ||
-+	return data_race(folio_batch_count(&fbatches->lru_add) ||
- 		folio_batch_count(&fbatches->lru_move_tail) ||
- 		folio_batch_count(&fbatches->lru_deactivate_file) ||
- 		folio_batch_count(&fbatches->lru_deactivate) ||
- 		folio_batch_count(&fbatches->lru_lazyfree) ||
- 		folio_batch_count(&fbatches->lru_activate) ||
--		need_mlock_drain(cpu) ||
-+		need_mlock_drain(cpu)) ||
- 		has_bh_in_lru(cpu, NULL);
- }
- 
--- 
-2.25.1
 
+On 6/24/26 10:11 PM, Harry Yoo (Oracle) wrote:
+> Apologies for posting another series during the merge window.
+> But these are bug fixes and there are other features that need to be
+> rebased on top, so...
+
+Okay, given that this needs a bit of discussion with the memcg folks and
+this has been there for a year and nobody noticed, I'd suggest we be bit
+less hurried and not delay other new features going on because of this.
+
+But I still think they should eventually be fixed.
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------xqitAKa4qlewiFSJqUEqWGv3--
+
+--------------ejXnirQmd0n0E9T07k6SM4Rs
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4WggAKCRCGXBN6rc5S
+1gJoAQCU62++/Xsx2zl/wm3/4ApCCo8iBQMYmBrJ4FIbh3ZIfwEA8BrSGtpSXrbl
+07eyqHG4yRJBsXB/Xo0SQu5z9kQcFgI=
+=TLzD
+-----END PGP SIGNATURE-----
+
+--------------ejXnirQmd0n0E9T07k6SM4Rs--
 
