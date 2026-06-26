@@ -4,172 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD46C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E61CCC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:29:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 95D6C6B00CD; Fri, 26 Jun 2026 11:29:07 -0400 (EDT)
+	id A210D6B00CE; Fri, 26 Jun 2026 11:29:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90E726B00CE; Fri, 26 Jun 2026 11:29:07 -0400 (EDT)
+	id 9D0F56B00D0; Fri, 26 Jun 2026 11:29:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B1096B00CF; Fri, 26 Jun 2026 11:29:07 -0400 (EDT)
+	id 8C0F86B00D1; Fri, 26 Jun 2026 11:29:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D92F6B00CD
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:29:07 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D7AFF8E1BA
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:29:06 +0000 (UTC)
-X-FDA: 84922447092.26.AC07FB7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 15DEC140011
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:29:04 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idHputUK;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 53EDE6B00CE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:29:15 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C122F1C32FE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:29:14 +0000 (UTC)
+X-FDA: 84922447428.13.C7B5D96
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 150D940009
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:29:10 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wIhePOhy;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782487745;
-	b=i33P3e0SdNdY5b96B8+yW94ekN+6V9GZb0Lq3ypi7gyTHb5F11UzLLwgA+NRKFIVjvO5iA
-	MOdGTnW9o0SJTyKlga8OGU5m7Vit9NVmCzLCrTp45plHikJ1M8CjWI/VT+Sq35GyABtAZ9
-	hSYqQNILlGG1LtKkqb+y396p2OFAHiM=
+	t=1782487753;
+	b=CnxuwyMHdiE3lKzg0NtqkhK8uWOh53pM0AiFGJp2tWc2BSJK2aeqSCIaRibjqd7XHEz7ut
+	V9oUHvp5UFHpkJh73uqtWUswYiEyIy5SMpOwKe4k0TZG+8k9E6w8ltDw7cRTJyoOzOYvrg
+	s+GZ173hzc0jvbUm+k6UNpoKQ9SRrr4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782487745;
+	s=arc-20220608; t=1782487753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YSvnrDQeqiuou4mWYG8YFG85sz9T2AFOYdJJQqH5aKQ=;
-	b=eDr6HLivQ0UE0WdwLep/qsYisyMNPm4gS5DN5b0fQ3bCXu13+6VMkMHzlBJYaNgQhWdF3z
-	DaJkaB6a0gVmipu9D37noyVQHP7YdLff7Td+dnIlsSj76yJzX8c8Aj63/aQhlIXtbOguNG
-	468iJMG3ENXGALmvryktJKFHxt3bTRc=
+	bh=A9yV2d4U6Iq5tvwMQAZTQglaDvuPvKN3XGu5+n1GLLQ=;
+	b=lRqNNCmxDxdThHM4Wimpc0vGwvhqMkYedAPkK+ubNmtsqa9rIy6k8QwBcEbpr6T3Jq8vpO
+	cMCv9ck8xcJUL5Gnj8szmo3Z61/90lCISGWuP9EMWHg0kb6ue2Z4G6PRWhEvMe96MDHi26
+	RX4hDG9xdZ8XP+DRBymQ3vTEBf2MHzc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=idHputUK;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9ABFE432F2;
-	Fri, 26 Jun 2026 15:29:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1081F000E9;
-	Fri, 26 Jun 2026 15:28:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782487743;
-	bh=YSvnrDQeqiuou4mWYG8YFG85sz9T2AFOYdJJQqH5aKQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=idHputUKAXQjKNiThw4I2jQol6Qci2xV0EurB5Pr1bNgQj+ucMHTasa7myaudlUf4
-	 zeB0phEsOTef3/d8Io+sTnhlAhw4DJL/SNQHe5Bs3EuVep7xigU4jO464ACUXS14e5
-	 JUKoc1t21hbjEgwwsWveOSF8TemVlod3dOSIsDW1z58x0hCYQDEiAmVaY+3OS3XFuO
-	 Gdegn4G1m+r084YL3gAe04jFQyugVl6EE6Js2I5X1xWntH08RmiPoUEDZCiAOcetKS
-	 y1mPxAubsgFYG1nr92yN69gLeRpLenjKfTN5T65Kah7gTu1XrHYLX+jEL3e278dnim
-	 xW79xk2em+PlQ==
-Date: Fri, 26 Jun 2026 18:28:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Brendan Jackman <brendan.jackman@linux.dev>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"kernel@xen0n.name" <kernel@xen0n.name>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"oupton@kernel.org" <oupton@kernel.org>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"will@kernel.org" <will@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"willy@infradead.org" <willy@infradead.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@kernel.org" <david@kernel.org>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"vbabka@kernel.org" <vbabka@kernel.org>,
-	"surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>,
-	"ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"song@kernel.org" <song@kernel.org>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"kpsingh@kernel.org" <kpsingh@kernel.org>,
-	"haoluo@google.com" <haoluo@google.com>,
-	"jolsa@kernel.org" <jolsa@kernel.org>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>,
-	"skhan@linuxfoundation.org" <skhan@linuxfoundation.org>,
-	"riel@surriel.com" <riel@surriel.com>,
-	"ryan.roberts@arm.com" <ryan.roberts@arm.com>,
-	"jgross@suse.com" <jgross@suse.com>,
-	"yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
-	"kas@kernel.org" <kas@kernel.org>,
-	"coxu@redhat.com" <coxu@redhat.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>,
-	"yosry@kernel.org" <yosry@kernel.org>,
-	"ajones@ventanamicro.com" <ajones@ventanamicro.com>,
-	"maobibo@loongson.cn" <maobibo@loongson.cn>,
-	"prsampat@amd.com" <prsampat@amd.com>,
-	"wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
-	"mlevitsk@redhat.com" <mlevitsk@redhat.com>,
-	"jthoughton@google.com" <jthoughton@google.com>,
-	"agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
-	"alex@ghiti.fr" <alex@ghiti.fr>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
-	"chenhuacai@kernel.org" <chenhuacai@kernel.org>,
-	"baolu.lu@linux.intel.com" <baolu.lu@linux.intel.com>,
-	"dev.jain@arm.com" <dev.jain@arm.com>,
-	"gor@linux.ibm.com" <gor@linux.ibm.com>,
-	"hca@linux.ibm.com" <hca@linux.ibm.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>,
-	"pjw@kernel.org" <pjw@kernel.org>,
-	"shijie@os.amperecomputing.com" <shijie@os.amperecomputing.com>,
-	"svens@linux.ibm.com" <svens@linux.ibm.com>,
-	"thuth@redhat.com" <thuth@redhat.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"urezki@gmail.com" <urezki@gmail.com>,
-	"zhengqi.arch@bytedance.com" <zhengqi.arch@bytedance.com>,
-	"pavel@kernel.org" <pavel@kernel.org>,
-	"yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
-	"vannapurve@google.com" <vannapurve@google.com>,
-	"jackmanb@google.com" <jackmanb@google.com>,
-	"patrick.roy@linux.dev" <patrick.roy@linux.dev>,
-	"Thomson, Jack" <jackabt@amazon.co.uk>,
-	"Itazuri, Takahiro" <itazur@amazon.co.uk>,
-	"Manwaring, Derek" <derekmn@amazon.com>
-Subject: Re: [PATCH v12 01/16] set_memory: set_direct_map_* to take address
-Message-ID: <aj6aohb8Z4yR_Sh3@kernel.org>
-References: <20260410151746.61150-1-kalyazin@amazon.com>
- <20260410151746.61150-2-kalyazin@amazon.com>
- <aeeDvpDnGnY5n69n@lucifer>
- <DJJ23EXF55VK.1EGQZS511HFB6@linux.dev>
- <DJJ2NKKPRANG.188CUADJO2CKK@linux.dev>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJJ2NKKPRANG.188CUADJO2CKK@linux.dev>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 15DEC140011
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wIhePOhy;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782487742;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A9yV2d4U6Iq5tvwMQAZTQglaDvuPvKN3XGu5+n1GLLQ=;
+	b=wIhePOhyn6G6N5ff0edE/tWPIL0KMu4yLFZwEwWoqZZHrBK6tCDf3vdBAO8t9df+oI6kuQ
+	xLnpFgOEs4zA46/+kNEFwdQe2/mKKSiElfQZLqTo8viWrcXcy9xwbuopsxn4/7w4KV94aW
+	uCiQ2fhh93vV19Hi8UBA0NS234VnMPI=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jun 2026 15:28:43 +0000
+Message-Id: <DJJ35VLH2PE5.DFD8OYXEOH97@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Takahiro Itazuri" <itazur@amazon.com>, <seanjc@google.com>,
+ <ljs@kernel.org>
+Cc: <Liam.Howlett@oracle.com>, <ackerleytng@google.com>,
+ <agordeev@linux.ibm.com>, <ajones@ventanamicro.com>,
+ <akpm@linux-foundation.org>, <alex@ghiti.fr>, <andrii@kernel.org>,
+ <aou@eecs.berkeley.edu>, <ast@kernel.org>, <baolu.lu@linux.intel.com>,
+ <catalin.marinas@arm.com>, <chenhuacai@kernel.org>, <corbet@lwn.net>,
+ <coxu@redhat.com>, <daniel@iogearbox.net>, <dave.hansen@linux.intel.com>,
+ <david@kernel.org>, <dev.jain@arm.com>, <itazur@amazon.co.uk>,
+ <jackmanb@google.com>, <jannh@google.com>, <jhubbard@nvidia.com>,
+ <jmattson@google.com>, <joey.gouly@arm.com>, <john.fastabend@gmail.com>,
+ <jolsa@kernel.org>, <jthoughton@google.com>, <kas@kernel.org>,
+ <kernel@xen0n.name>, <kpsingh@kernel.org>, <kvm@vger.kernel.org>,
+ <kvmarm@lists.linux.dev>, <lenb@kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-pm@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+ <linux-s390@vger.kernel.org>, <loongarch@lists.linux.dev>,
+ <lorenzo.stoakes@oracle.com>, <luto@kernel.org>, <maobibo@loongson.cn>,
+ <martin.lau@linux.dev>, <maz@kernel.org>, <mhocko@suse.com>,
+ <mingo@redhat.com>, <mlevitsk@redhat.com>, <nikita.kalyazin@linux.dev>,
+ <oupton@kernel.org>, <palmer@dabbelt.com>, <patrick.roy@linux.dev>,
+ <pavel@kernel.org>, <pbonzini@redhat.com>, <peterx@redhat.com>,
+ <peterz@infradead.org>, <pfalcato@suse.de>, <pjw@kernel.org>,
+ <prsampat@amd.com>, <rafael@kernel.org>, <riel@surriel.com>,
+ <rppt@kernel.org>, <ryan.roberts@arm.com>, <sdf@fomichev.me>,
+ <shijie@os.amperecomputing.com>, <skhan@linuxfoundation.org>,
+ <song@kernel.org>, <surenb@google.com>, <suzuki.poulose@arm.com>,
+ <svens@linux.ibm.com>, <tabba@google.com>, <tglx@kernel.org>,
+ <thuth@redhat.com>, <urezki@gmail.com>, <vannapurve@google.com>,
+ <vbabka@kernel.org>, <will@kernel.org>, <willy@infradead.org>,
+ <wu.fei9@sanechips.com.cn>, <x86@kernel.org>,
+ <yang@os.amperecomputing.com>, <yangyicong@hisilicon.com>,
+ <yonghong.song@linux.dev>, <yosry@kernel.org>, <yu-cheng.yu@intel.com>,
+ <yuzenghui@huawei.com>, <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
+References: <aeennZlV60k81OBf@google.com>
+ <20260506080753.14517-1-itazur@amazon.com>
+In-Reply-To: <20260506080753.14517-1-itazur@amazon.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: 16bisn1zytpb4hdo1jde71o7uzj8pjyz
-X-HE-Tag: 1782487744-751864
-X-HE-Meta: U2FsdGVkX1+GMeB1T4K6fWfkyEdL0g0ps7uUdBbG5KHZ8nf6W3wCutxLpXwtmZNSuz6/34vUjgW8dTapUcsFkF6eX1cSIZqiAht35hnBVQTWitZuWvBgHoOJ8HS/FxnCX0uXVVcWZa2bHlWcwNgXBn6thsULfa0F9B85SX0SW2jVLnryVzvnPZsARhkR+q9jOrV24/oZGZum3CKLNygmEtHlLLn3YNRqsiY2v3tKVLLWPt0od3tXga6RtT7FzNU+mjzyVhuJz2HxMbIfRYreDpGvlteCWq+UEwFBoANLK9M1lp2Pk6U5vdLc2hxVjI8oqGiwY/a2ZABJxh0UAyayvT1p9T/TvFkw+wYXUDRY6Fc/Y33JvPSZHfGoBjP3nh9NSQ2EdYOiYycQacK8AdKmuDQtGZdXCDqDDDDFRdVdYE6Ma8tjDIJUqc3piIKkqNlswnhvqr0Wk91vB3BCJmJpTe1tyjMsA3OlBJGJxz8YdqdixZr4HZK65CUVgLJFqSHVpY7SXk1xXQlJbyXGWadJO86I2311idublYFiQju0cCwsIm2SpsuUEJN7izD+HKdid1iWaRbfUQsoI1aCXfw4ZTJXBrYGmRhOMu4bXhijovdYSrqOnBCgqIxxF3ta2Jtz6T/9MzEwmAGydBsxd2OQNnU6F6SjQzomDAcnfyn/TuBiCLaU32qM3waWqLv62YC9h0Dj/tW6yBdLlYppiMzAMJyW//RQuxy1D4dXw+Ktiogiybkgd39jWxND71VsTSXfFoxdFN4ypM+zeIqoj1+4uIwSPcs5Jg0nejh75u0K5isp7n34iLnUpkNIPCXaAKvTwaYZaxtgM372F32c5z0sBtm61uiwA7qsP6hJWEQtB87tUUiG+Y/v1eszXbWfR2oWwjw9vg2fPdTKoPnQ9cnarEYMM9PamqnCS5zlqqf2s/HqHQgVUjittz4jDTpj/YvASrn6g7NiSumsM6hUheS
- UFyCPFQ3
- sCoDgORJUbI3CjxNm2dQgr1Pb6fcVPnnWnrcrTMXyNQyFPGUrvdj9+dxs6KorlAvXxUqAEf0JSSyZiymeG94KOSQAnKwJaR28DN7BBJrXO4KfXctAzxKpYbFGe/TmW44PJKxCXTG6ulzoLQIwPQnUHhn87IZZjkML5RXfwWjdukVTyI+lE0qnsobi9MuN5ThXJlhmLlCl+ma8gaToGrnW3LqPETSa+POFLk8CKg0sN9tIKwQXZCMXgz0BVajk9UbM0TjnUfDYaNwff31yr6fz3xSp0jhrK/5de0k1v3cn4BY/raxOXvXi+SMpLhPK5yjgxaV5N6WBYzghu41NCmrergIyWvf8KAp9zpAc7JXD0cJdscIuMgPg2JPoD8CAkB83R9zU/DJys9phj8YEtPXRCdix8Z1TuT7nNobCrGb6SXq0NIP7bgTW8XNwSDBtzK7XGGCUk44p/vLxTWUJPjk/B8QJnDxtdZ7M88lQJ+z4hHGnSaMZyCGeStYQ6Q==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 150D940009
+X-Stat-Signature: 5y4i7erku3p76o6pse55rz6hs9baeufe
+X-HE-Tag: 1782487750-425911
+X-HE-Meta: U2FsdGVkX1+ftUoOVCk4ulYkBumdE1X25Q/zHmIOBWRNUXwzIs8mN4GB5WdoM2C0AGKW6b79nckrwm4gXDFdZd25aXtkj16zSuQ28Pjg9fSs5dS6F2SIcjnRcoXXtirxgp6XuiY5dabQbMtBSqvi+9OBlErFECSNa+x9jpaMeKsoSlBcZ+MBAXA1TW9WvpuJUT4I1UVKIMFzhu9Rp6CHNEtzkw9qgvcNXTBRRTK2faFo3uULaTe7qtQeuaJ1CfJwe4myul9gda/H3JqthC7GzwjxwuAo0bGjc2U16EdnsymNUiC6bS6pe8nyu6tC5gG2o5Ap5+1nHL6lI/MyC5lkABoMbLY6/2qxWlpBIjAjCDEq6anb+ITS1p9ll4gjznmeVEl7rBv66XXaj8VsXBMyGMV8NDr/Epb7XaCupp0mt8iKGg9VR37GhNWTUD0GJgeY9cb3Th1XdO5cLDn1UvK9TKOCVMDWw9WFWK5spzIapIONlVFwBDUWngzsuIQE6aHh2LusFwOavm+cveY2Xe9BV7MhX3EAQmYCTyd9LDwxHC1ebG5040tOc5d8ObPH1keUI5wJ1EKQxPqT+Bufu43vXOQyCw6rJ3xK73mbbpBmeveA+Z1ilvJNMdZcTsapOdl18QHOrvw6Jq1OnASQdLulZSkk3WIrhy7DZN0LEY4miBue32Uw+78QHYFJojl1clf0GbdpC26pkDfWNAC0MAioeQtZ3BH+PePpDw4MAyb3xX5begluscjywbeBA1qOo/MiULkRkdItcKZ9+GDB8uNjXI8gyAyaM8PdPD9rsKgVbZPCfROs3KRsqWsQpKgMaorzdr3TxuJiXnQqAXE+b1sX4Re8ipMyXeiNg2EHL5N92lbZ1T9pvDF8SS7xBBJBGvrCRmKKdxDR+JZUO/CLVrghfIvgM5HuxIrixi5F1BqKXQsI8RHegUBpYgpGTFLy//kHC7QhdWUkgyWfrDBztHe
+ 22HzN4rn
+ Dl+0mfE70Yo9aHhj7jye3TpLgAYpqiA8XIGcLZghDAZ9lMV+PjhkV0BMSXay8/RqVYNxS/i8ZD91p5JgyED6NQLGVKMdX2Orsa06TgpCi9wu00U77BHNIe2hBWrMv6YYjeQrJu1SffL742g879C5phVsj89yElYn6z0HyD1qoismkNKjOpSL0oJrozJWU744Ax865DkqKyyxUIskXa4Z24FrglRXJQjt/19gPuOEv+B+lFUHzpmmMmwPFmw9qWfCrUREdbQxJ83CpoRJeHWhf9PsP5oOxmOWh0Dr71G2OJSixNA96UuZz/nx3/pgkyhAXfeSNDxZTMxirzw0i42CtKoZ+4sOu+JPiR/POAkxZZ3rRSRiqUxQLRiBQ376LPNETp6V3cwRpvQKCLRp3/VkBzimC0A+8N0qakEXf3q3F2gZYjBtYyYdEhwfLb4I4GB/TWfgEnl3ij+1Jn22pFgNoF8DgpYMV+0RxqT3+hBsTlS1ykL5eRnTUDHXQug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -177,61 +122,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 03:04:48PM +0000, Brendan Jackman wrote:
-> On Fri Jun 26, 2026 at 2:38 PM UTC, Brendan Jackman wrote:
-> > On Tue Apr 21, 2026 at 2:43 PM UTC, Lorenzo Stoakes wrote:
-> >> On Fri, Apr 10, 2026 at 03:17:58PM +0000, Kalyazin, Nikita wrote:
-> >>> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
-> >>>
-> >>> Let's convert set_direct_map_*() to take an address instead of a page to
-> >>> prepare for adding helpers that operate on folios; it will be more
-> >>> efficient to convert from a folio directly to an address without going
-> >>> through a page first.
-> >
-> > Why is this more efficient? Isn't it a purely compile-time conversion?
-> >
-> > Indeed in the current implementation folio_address() is
-> > page_address(&folio->page) so it still goes through a page anyway, no?
-> >
-> > I might be missing context here about how this will look in the
-> > memdesc future.
-> 
-> Sorry I failed to do the history search here, this was suggested by
-> Willy during the review here:
-> 
-> https://lore.kernel.org/kvm/aWkN4yzwPtotaTeq@casper.infradead.org/
-> 
-> Matthew Wilcox <willy@infradead.org> wrote:
-> > The implementation isn't the greatest.  None of the implementations
-> > of set_direct_map_valid_noflush() actually do anything with the struct
-> > page; they all call page_address() or page_to_virt() (fundamentally the
-> > same thing).  
-> 
-> But IMO the struct page isn't there to carry runtime information, it's a
-> type hint that this API operates on physical pages. Yes this is already
-> implied by the name but it also gives us a certain amount of safety
-> since it avoids unaligned or non-physmap addresses at compile time.
+On Wed May 6, 2026 at 8:07 AM UTC, Takahiro Itazuri wrote:
+> Hi Lorenzo and Sean,
+>
+> Apologies for the delayed reply =E2=80=94 Nikita is leaving Amazon, and I=
+'m
+> taking over this series going forward. Thanks for your patience.
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+>> Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to=
+ do this
+>> through the mm tree?
+>
+> On Tue, Apr 21, 2026 at 04:36:00PM +0000, Sean Christopherson wrote:
+>> Yeah, when the time comes, the mm pieces definitely need to go through t=
+he mm
+>> tree.  Ideally, I think this would be merged in two separate parts, with=
+ all mm
+>> changes going through the mm tree, and then the KVM changes through the =
+KVM tree
+>> using a stable topic branch/tag from Andrew.
+>
+> Thanks for the guidance. The split makes sense to me; I'm planning to
+> follow this approach with patches 1-6 (mm) going through the mm tree
+> and patches 7-16 (KVM) through the KVM tree on top of a stable
+> branch/tag from mm. I'll confirm the exact boundary and coordination
+> details as I prepare the repost.
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+>> In any case, we definitely need a rebase on something not-next :) if not=
+ mm then
+>> Linus's tree at least maybe?
+>>
+>> I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam ev=
+en patch
+>> 1 and in Linus's tree it's failing at an mm patch (mm: introduce
+>> AS_NO_DIRECT_MAP).
+>
 
-I think it's more historical thingy, the initial user was
-vmalloc::set_area_direct_map() that passed each page from vm->pages[] to
-set_direct_map functions.
- 
-And yes, having a page there let's the implementation to go directly from
-the page to it's address in the direct map, even for highmem ...
+Just as an FYI, I am gonna look at trying to move this forward a bit
+while Takahiro ramps up on taking over (I spoke to him about this off
+list).
 
-> > So converting folio->page->address is a bit inefficient.
-> 
-> ... but yeah now I see this comes from Willy I definitely suspect I'm
-> missing memdesc insight here. 
-> 
-> > It feels like we should change set_direct_map_valid_noflush() to take a
-> > const void * and pass either page_address() or folio_address(), depending
-> > whether the caller has a page or a folio.  What do you think?
+My ulterior motive is that this would give me an excuse to add
+ALLOC_UNMAPPED (formerly __GFP_UNMAPPED) and the mermap [0] which
+unblocks various security nonsense including ASI [1]. (But also, this
+feature is a good idea).
 
-... while with void * it's not necessarily one-to-one because void * can be
-a vmalloc address. 
-
--- 
-Sincerely yours,
-Mike.
+[0] https://lore.kernel.org/all/20260320-page_alloc-unmapped-v2-0-28bf1bd54=
+f41@google.com/
+[1] https://linuxasi.dev
 
