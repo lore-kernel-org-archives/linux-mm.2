@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD647C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:05:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47AAEC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:07:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A49C6B011B; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
+	id E47976B011C; Fri, 26 Jun 2026 14:07:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47C6B6B011C; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
+	id DF94C6B011E; Fri, 26 Jun 2026 14:07:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392D26B011D; Fri, 26 Jun 2026 14:05:19 -0400 (EDT)
+	id CC3496B011F; Fri, 26 Jun 2026 14:07:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B2C6B011B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:05:18 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8376D1A0569
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:05:18 +0000 (UTC)
-X-FDA: 84922840716.05.A344933
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B26B6B011C
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:07:53 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 152DF1C34AC
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:07:53 +0000 (UTC)
+X-FDA: 84922847226.28.72C4E02
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id C924FA0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:05:16 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RWQRTWo/";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 53717140007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:07:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQKUT1uS;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782497116;
-	b=7cD/OFUV3xTR2zTVvVXflC1K6jzw/oaZZsdIAQfw8CiH3IBmsxANtjCej7JnWlTzHBkc4V
-	PtsVxNp86kl1pProsZlp53RMU61hOThpN4VWpydwP/LGOIuZeDsp5HXL+5tImcU8oKCuS2
-	ZIrNgVOuFG/l5eGU+hgXRytTQXo8yA4=
+	t=1782497271;
+	b=QRQ/gd9m31LhKENHZV6B4KnqAHBcxsxFUjdrI8fVt1oc/5Y3khjCRcMdOLZXAd+QdLCclt
+	WIeDEabbgjR++rq9/lo/JmS9HBGYD06/SHNlHoJJ7OmM2L1zA7XmKh+pJlCBuJl+aKs44W
+	pIDO/+5udzvUw3ANVATVB3ugolN+smc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782497116;
+	s=arc-20220608; t=1782497271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fGiMyZB/kEhf07t+JFhkktFDb6T15Rf253lpTmaTVd8=;
-	b=8CAvGCLl/Uh4p4Rr1KPpjEHWdR7TCIJonugRcTqgDWnyyz/iXQrXQmQ6BYXip85e2/rWda
-	+Uw9TvN+bpGU3PDA9B1Ti8eYID/SZcM9q5wJ09kymDOpyUKZKRhb882FzzFYYr9X85Drcw
-	RNZbQ06SqyMhu5OauJDoOpK8A+2DIjw=
+	bh=VL1nHVZPTfavofIwp9gpOh3SmHbzNBRcvKHEMSpIbFg=;
+	b=OOsS4S2DxDU5AgAhbFfecjM17/830kTQIDSg4fXw/pXreL6XGZZQ15Kyu0i5q3v9ZM41Bd
+	yGJd7Q0ADj9vHadRzut4LtuD9ZaYL155OW5TQxChOlAhgmXM/4fIPmZVdfUFobkFsOna0A
+	L+c2ToWwLmz4/u+QjbvgBuSc4bnP0PE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RWQRTWo/";
-	spf=pass (imf15.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UQKUT1uS;
+	spf=pass (imf26.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 348FC601C4;
-	Fri, 26 Jun 2026 18:05:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F171F000E9;
-	Fri, 26 Jun 2026 18:05:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9EE33601C4;
+	Fri, 26 Jun 2026 18:07:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 973BB1F000E9;
+	Fri, 26 Jun 2026 18:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782497115;
-	bh=fGiMyZB/kEhf07t+JFhkktFDb6T15Rf253lpTmaTVd8=;
+	s=k20260515; t=1782497270;
+	bh=VL1nHVZPTfavofIwp9gpOh3SmHbzNBRcvKHEMSpIbFg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RWQRTWo/O74n4A8v4P+Qyk3xgKStasPuZl6B7LVJ5wjaiALscfqq3SAfKa+w4+OQA
-	 FoXgyKGVvOeF8Z1Vi9qJ5l/MYpAHoPt0ZRQn00vUIcY3HrM82aA4S8UiuPcfaZfZNd
-	 t850CYdcz+VqiDQls9RsFY/JrIa5Xqt2g2YKaZwz4UL2o3bUhBZYGli3c6ubwjL6+0
-	 SkoSXh+vnsLm+eUoMO9GJE3sE4cwTXdr8M7Yjs3X2cqSyVSp5t9lExOaDSXj3b42HU
-	 faUqhcmcq/+zhWKeqTFFQQDtztGavuSbocqtkCrnsmzjBgmWd0ww3MdqT5ikusnD4I
-	 /AI9JO7i8hEQA==
-Message-ID: <10824fdd-0abf-44ad-9a2f-e62aeb669195@kernel.org>
-Date: Fri, 26 Jun 2026 20:05:07 +0200
+	b=UQKUT1uS4wbGc81aYsivha4ghMYSw+zS2A8Jw6cgXRoAyLdFw8mG3RmH/1Xv+Pgaf
+	 x9LWCsRJVv0e9Lw/naxu8UwhIPNcs5FxQRe+mfzcKy+ZXZJGzqLU2mMVGWflgoVYGQ
+	 JKhokP3ca0R+GBKN0omFwlcWHWatUxW4GvRUTJoz874+WDh4fJI4+6hugg1t2d5NK/
+	 xr7JHoupim3OF7y7fwAoLtYJ2eG6t6en2p8qhnGFipIgTU5/2a5CJaG7pgmQw3mAvs
+	 UA/v05PIUZxOY1lID555z4QY9Z2Jg+37m8pl+Xpzdja0ojRAM9j2knyU/yvyB2SaYf
+	 xXWTb52WhTDOw==
+Message-ID: <ccac4af6-56f0-43f3-9964-1a5a45d10188@kernel.org>
+Date: Fri, 26 Jun 2026 20:07:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/13] mm/page_alloc: some renames to clarify
- alloc_flags scopes
+Subject: Re: [PATCH v2 12/13] mm: Move __alloc_pages() to mm/internal.h
 Content-Language: en-US
-To: Brendan Jackman <brendan.jackman@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, Brendan Jackman <jackmanb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko
- <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
@@ -86,15 +86,16 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Michal Hocko
  David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price <gourry@gourry.net>,
- Alexei Starovoitov <ast@kernel.org>, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
 References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
- <20260622-alloc-trylock-v2-2-31f31367d420@google.com>
- <CAJuCfpGagFf4RaCNJqu4Y1oqOXXOWSkP1UGuT9LA-9EbDN4Njw@mail.gmail.com>
- <DJHEUV09YHKE.1YVJWE38NM8U5@linux.dev>
+ <20260622-alloc-trylock-v2-12-31f31367d420@google.com>
+ <41e92bab-6882-401a-8de9-154adbdcfb36@kernel.org>
+ <DJFLNQEBX3PK.1ONMJBA46AQNL@linux.dev>
+ <521f8943-bfc3-4414-a630-634712c709e4@kernel.org>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -135,17 +136,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <DJHEUV09YHKE.1YVJWE38NM8U5@linux.dev>
+In-Reply-To: <521f8943-bfc3-4414-a630-634712c709e4@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C924FA0005
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: ddhzf8cyh4nga7tbamyj1w4659bm9j8n
-X-HE-Tag: 1782497116-501124
-X-HE-Meta: U2FsdGVkX18mSSnCbaVLgeF1SkTrubwo3B2vZWI0PMCiQDZ1XPuDRavP/eafrtf5Vdf25vYUDcys41+hAM1CZ+DcCUNyDk8LbFcdGCUWxzCTeSfUeIOYirXrZRC9u2D1Rw5qqymm2SHwyutDu62S28osurc/Q0hfUehwha3QHTFr9iZgBSdrsnY/9ACRctuMYlMrJ3M/QodmopVwnPttKnh0mYfeSNq68WZHRDA3+flLZb9In6eM5+q8d6aUn+dtrQvXSnG40N4ESDipNNPlMfZYwCXJ+IanixjAp9OPW7BI0QLWQ7CJwwZzxhSX1He/j8PheBaWAsPoiWwOyzvqof3Nu9wIT+cJ+m94gtCC8pTcu/Rk2akMle1U1ShpMMVh6BlWIayNBROmyeNer6CeyTZNUSnkel4HTTCbf6lY2EZw94LLZsRLm/rsay9oTDLwyC4c5beq6mpeUcZXnEGZUHocNJBlWsAEF9qgkuNEfohqfsPNvjUA6Qdw6EIazDlxVp7+TRildeRonsFyO85Wn1JxM6UGrGQ0f8Pilxia/bwSgv1UBoZ3BW/V3p4CXE24FXtmk8CcuP9QZ1gJy0JtrQWztjQWTsLahR/jV/a4QmkTcWWOPnsbMdDF3f+NCFNQylOj4A1IY4ZOJ+ww+BJM/eZcs+GXFWevtrJ+XQJemGz5SgNFCXIZ7ixmQd7aZBWJMp+vpXEUND1GPoJ0UwH62BFenK6Z30fbDrOZTtmkW/R3letSck6Zmw6U7+6w3c5yBWBysTZ6SI9OWjO41N9W4Ye3yZayaaAHoirxxk8KHbkvKPP4JT241iFcEtkqXjUv/d9sEdq+SSFh7iXcf51jR1AfON/EX+BaCA1hFs2AJ9/u+7mykPEEHfSQYuCL1VRK38DLejmS7ajYUfgwGOh9Hv0ZkSyrjaHhcJqbl//kIov42kRlE2WiBB1RrFtWkSHrltIMfunu4wI10KvNXFx
- KJudnWSv
- 3GlCNcT95PmBnpjllr8dvk+O5P7AtsN2Cg699wJj5uwn/M/DALC7lxYX526+t40izSb/Iu0lcwLR2bfhVp4O+oNfnXHVrv7RsaqnMUvtZ+coD7Gp/egHS91y2B4msBdzV5WaLTy7r5hreghy4pn8INSXIt32XbfiTlSy6mnXA5aq5p0iylrlixBKRmRMw3oIwmqQZkofqhf+RRP2Fsk9neOaSXQBEOHL0iQ88bupCumJICEq1RjgQPNR/pHeskLAPXaRflXfcroSWlvz76FKkhjfowNgqk0A8tIBcsfYk1Z56zY51EVl3G2l1CdDI8RmNkrORqMOtLl8lG7J5z4QhtOXxkEnlqARbrKaW8/Q5Mva1dGZg1ODyN7PVVQg6Ob0vyCjHC002BSJ8AC+AsmCcwMpeNEh/XHtZF8AkNMQkRUB8myw=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 53717140007
+X-Stat-Signature: xqow6kpbkkoj4kc514nnckfdkywwatun
+X-HE-Tag: 1782497271-64691
+X-HE-Meta: U2FsdGVkX19kS6g6vYxMBab1R87v15sTp9wGtgyMwrhFJewFSpj7tVCUAVhsBoaUyByiq9IOO9KvdB3RM7nfqvT608xqjfeVW4h06tB+6/6td8Ch7Y335ATuuRn42634onHzwpRtV2hJNnGU9C5vFcW8CylQHcqgBjLN62E1HpUOL1eTh5hI+eUl3rQO32LuH4Gzzj2vVJoHADc3823St86k3Wq/hT6GXFpVSY8BOxOPgVHKIMNuwFK0fgDjxGYfesTKx2G5DBDcD8aQ5YCKJWFIRbAMhoSl0C8YD+tTOEVh91KiiJqcT7j//whjxAKgiY2Lexc0EcJd8XtrujSXx1qdskFmS2PcYMEmId/tDJ1nimSlGsrlKRqL5/3ANo9PT3NWTKfxXwPdpDZBxkCx6ml6LGCPXEBhLgTxnwfdHf7wBu99+2eWOJdToH6QQDyuYCO1pi8yrDsWDMGQ1ZegHX0vgsAAI9CbOeWPOw2/nJ4wZBRNRukWAnnOI5B1pHRP5Tijk9YLmfefy3QJKAwtvhLQg4SHuOVPsGsuGDS9P3ESDeJnFcuP7QxZCVo0Mmz9Ezod3YsMO8D/suWJHvnNwSPuTEtN9Chnzglcf+28A+MWoqQHkN7GbthFMwWBvW+3MxY/EFzNHRMv7gN71OTVvXm5aHd5XE8H6eEm1b0nMFDI/Jg9kqZPTONyriHiCB5EeiKojntUiJjQR2m8iEeS3y+/puZnYRpixErS7IRb9Ort2rKhTaiN7TY7/OA0G0yIk1rgnxUZgRrE8Va1EAfHPZT62Z7iwe+LzKjMLF53oid79VRVrL0VWtvGnXIBgezcAeHfFEpVCLlG5VBlwUwulDPVIfm65kUbeGsPtty7S/XIXQk1qEKTDS63FecbRIoP2+GWJA0h0JDtnJxA8EmiKDQ5Y/YdUGG3KriVPTvpDsY74qce4R/6Mm+Af7F97G5s0flcRFwATbNIdLplL2H
+ uXOJF9cC
+ PB7xln1qcFmHdSvAmef+WSPBGiLOCCv/mDlax2YVZ+JalMzX50mPcuyP+ymLbrKEpyC8cQHYY17lT7VeqqjPZ/m8lkRboFO3J4HMqKl3ZsT342Iuf2rOWsrIxCIrzXixzBqFROPQTiuTBoDOvTTDxdr8BtNuKCye/UMs09eBbbQuhQu8diRQ6x+b7E3paxc4uysN5DEI5hW7fSW3IcCxbD0CwAtI+Bzph48uX3Xu/EFnLRicSNRlUkL8kJQMD7kelpJONQ2JxvdFy6bPpKmeGG5EKNyFz1FRN3u/X0KXccOtPLYIJfthQRuLJiU7e0to8OrAY4eBtg7PlBSX1LMr/HkbbpPGOuyEsHl4Una5YnqZVie+uHfPYjsttyqHfIGlKxTOVIbs3dmHQVsEtfv+VquliKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,47 +154,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/24/26 18:13, Brendan Jackman wrote:
-> On Wed Jun 24, 2026 at 3:03 PM UTC, Suren Baghdasaryan wrote:
->> On Mon, Jun 22, 2026 at 3:01 AM Brendan Jackman <jackmanb@google.com> wrote:
+On 6/22/26 16:30, David Hildenbrand (Arm) wrote:
+> On 6/22/26 15:07, Brendan Jackman wrote:
+>> On Mon Jun 22, 2026 at 12:24 PM UTC, David Hildenbrand (Arm) wrote:
+>>> On 6/22/26 12:01, Brendan Jackman wrote:
+>>>> It's no longer used outside of mm/.
+>>>>
+>>>> Since this means __alloc_pages_noprof() is no longer visible from gfp.h,
+>>>> this also means moving the definition of alloc_pages_node_noprof into
+>>>> the .c file.
+>>>>
+>>>> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+>>>> ---
+>>>>  Documentation/admin-guide/cgroup-v1/cpusets.rst |  2 +-
+>>>>  Documentation/admin-guide/mm/transhuge.rst      |  2 +-
+>>>>  include/linux/gfp.h                             | 16 +---------------
+>>>>  mm/internal.h                                   |  4 ++++
+>>>>  mm/page_alloc.c                                 | 11 +++++++++++
+>>>>  5 files changed, 18 insertions(+), 17 deletions(-)
 >>>
->>> It's pretty confusing that:
->>>
->>> - The slowpath and fastpath have a totally distinct set of alloc_flags.
->>>
->>> - gfp_to_alloc_flags() sounds generic but it only influences the
->>>   slowpath.
->>>
->>> - prepare_alloc_pages() is generic in that it sets up the
->>>   alloc_context, but the alloc_flags it generates are only used for the
->>>   fastpath.
->>
->> I understand you want to clarify the usage but this particular point
->> seems to be an implementation detail. IOW, if tomorrow
->> __alloc_frozen_pages_noprof() is changed to use alloc_flags when
->> calling __alloc_pages_slowpath(), would we be renaming it back? So, I
->> would suggest keeping alloc_flags as is in prepare_alloc_pages() 
+>>> Do we want some mm/page_alloc.h , to start splitting up mm/internal.h
+>> 
+>> Don't see why not, if people are on board I'm happy to do that for v3.
+>> 
+>> (I just realised I put __alloc_pages_noprof() at the bottom of the file,
+>> while it should be next to __alloc_frozen_pages etc, should fix that in
+>> case we don't end up going for the separated header).
+>> 
+>> So what would go in the new header...
+>> 
+>> - All the buddy alloc/free entry points
+>> - ALLOC_ flags
+>> - alloc_context
+>> - buddy_order*(), page_is_buddy(), find_buddy_page_pfn() and
+>>   __find_buddy_pfn()
+>> - post_alloc_hook(), free_pages_prepare()
+>> - zone_pcp_*()
+>> - find_suitable_fallback()
+>> - free_area_empty()
+>> 
+>> Anything else? Or anything on that list that should stay in
+>> mm/internal.h?
 > 
-> I would say yes, we should rename it even though it might mean having to
-> rename it back later. IMO it's very useful to make it clear to the
-> reader that they also need to look elsewhere to find the slowpath flag
-> logic, without them having to notice this rather odd detail of
-> __alloc_frozen_pages_noprof().
-> 
-> But, yeah I guess prepare_alloc_pages() doesn't really care that its
-> caller is only using the result for the fastpath so I could see the
-> rationale for keeping the arg as alloc_flags...
-> 
->> and its callers. 
-> 
-> ...  but for it's caller I really do think the rename is necessary and
-> doesn't really have any downside? Especially once alloc_context gets an
-> alloc_flags field as it does later in the series.
+> Above looks like a decent start :) Thanks!
 
-I don't mind either of the renames. It's all page_alloc.c internal anyway.
-
->> The rest LGTM.
-> 
-> Thanks as always, I appreciate the review.
-
+Ack!
 
