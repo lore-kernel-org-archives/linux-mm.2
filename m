@@ -4,103 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 371EFCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BC2CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:26:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 148A66B00A1; Fri, 26 Jun 2026 05:26:13 -0400 (EDT)
+	id 911D96B00A8; Fri, 26 Jun 2026 05:26:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11F7C6B00A4; Fri, 26 Jun 2026 05:26:13 -0400 (EDT)
+	id 8E81B6B00AB; Fri, 26 Jun 2026 05:26:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05C8C6B00A5; Fri, 26 Jun 2026 05:26:12 -0400 (EDT)
+	id 800376B00AE; Fri, 26 Jun 2026 05:26:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CED616B00A1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:26:12 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 63CCB1A03CB
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:26:12 +0000 (UTC)
-X-FDA: 84921532584.28.88715CA
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 706FA2000E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:26:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=LS6nu51m;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=tBCXf1Hk;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 59E786B00A8
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:26:34 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D22291C264C
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:26:33 +0000 (UTC)
+X-FDA: 84921533466.17.DF46F3D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 33FF04000D
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:26:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+gGMaTD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782465970;
-	b=rnfzZycxUlKHsI1l0+b++NrnUEQX3a4XoLu2OfJp9Z8BrQw/QpzdMiWwLyxVyP6DVXTZcn
-	Uvnf+46t4w8W+5Ed7WF5tpCLEoMQ5T+7yt3E+JXNHY73JnGys1ImdnuYVKkuPrLGW8+HN0
-	4NzLM1tIL1I6yfdQaqC852DCKvT1KI4=
+	t=1782465992;
+	b=hynIsDvkIOQokMYQCRIVVk9OVgxxus5pJqYAl4NF4rOkJ5pk0QrQ0UdXTmGhx/tnL4OlxS
+	t9jE3hXvfCp1N1TEgaxy9+zgljZXrD232Ch0UDakCkNbOwpeM6B78zW2Xs3lOErDhCCQzP
+	IgvwJcjjGOCWcBwG8DBLDiflr8o2Hgk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782465970;
+	s=arc-20220608; t=1782465992;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ESLUukbTyuXFhgfd0D/+0BdDSoyQJQSXwbpAwcEaCdQ=;
-	b=xoA83UGVa4PJiBSRRfvNGL590qRCP9uUvPAQ2Sirsc1OIUZD9T4N1CBL7qnQYl++NvWHJQ
-	UlkEV5ZwRcfwaNuoWhDfRlb6Fu7IajJlTfGVeFpYSLiRyiA9dn6STY9M8U2j4TkbvTgU5J
-	vwguHlC+C3/Orz5SxZkLVrV99Y9Yy4c=
+	bh=01m3+JrV7x8mtVic+JScx8nYqoYaBvDNEk9FDqRBYl8=;
+	b=5LyriijzlbL5bUkVnSp1QtI2fiLfw933G2tGbcocAQY5a/brMVbcjDi+NRK2NOqquJty4P
+	w3OpHemSpjgdqFhvmy7srucFL5r3XdZlYy/zAWHV9PMy8XYLyVlP/v8W6CZ4E0nraynF5B
+	75jUNJVrJv9TVIoNrBH5ASffCQMbALE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=LS6nu51m;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=tBCXf1Hk;
-	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-Date: Fri, 26 Jun 2026 11:26:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1782465968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESLUukbTyuXFhgfd0D/+0BdDSoyQJQSXwbpAwcEaCdQ=;
-	b=LS6nu51mQxNJD0vxddn78QN7H3lj1LTRjQW+ORQiyipYcUwrVFwHEkibqkaEULhxParD8/
-	iw9QTlFesyAoubBPzc7aRwLJNySviBG8aduI1U9oPb/I3Zj22ljHzgrzS8XKiVgamH6FdH
-	6YDdv76Ew69tKZga7l0umA+ayuqnH1QuKvGRLCkMbHpa1vSWYajShZIyQ1ElTGGCKZzrkv
-	R2tYve5VPiF6Tyz5SRTXG2EjxNbjZyG/l6+/AeNxusLzbUHX8PO9+B1ZKy833Ar5mPdi9R
-	LClabLtuA9IyjYlro5oLQLIWq5T8OArDhTGnjc5FIz3kk8OPewoOC424w01CLw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1782465968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESLUukbTyuXFhgfd0D/+0BdDSoyQJQSXwbpAwcEaCdQ=;
-	b=tBCXf1HkCRueAn/IedC0QdVKzSvGp657mso2UypEf0p2lW9nxZySEbfa7NtcpMQAUYl6Cv
-	Nr5yoNpBzC2jLvDw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Wandun Chen <chenwandun1@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-	akpm@linux-foundation.org, vbabka@kernel.org, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, david@kernel.org, ljs@kernel.org,
-	liam@infradead.org, rppt@kernel.org, clrkwllms@kernel.org,
-	Alexander.Krabler@kuka.com
-Subject: Re: [RFC PATCH 1/3] mm/compaction: skip isolate mlocked folios when
- compact_unevictable_allowed=0
-Message-ID: <20260626092606.7BgipTin@linutronix.de>
-References: <20260604023812.3700316-1-chenwandun1@gmail.com>
- <20260604023812.3700316-2-chenwandun1@gmail.com>
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l+gGMaTD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id ADCDC60098;
+	Fri, 26 Jun 2026 09:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDA81F00A3A;
+	Fri, 26 Jun 2026 09:26:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782465991;
+	bh=01m3+JrV7x8mtVic+JScx8nYqoYaBvDNEk9FDqRBYl8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=l+gGMaTDDsAyWw3kZpPgLMz4/yZwTquI7bXU9gw4LfXHQ28YVHfaFS1gFU2uAn/jS
+	 T4QdliSEZSnYYgj2xEjgU5PPvYpNuHkCfgsChMBgJNyUsHINgcONm9HssLBa+DNMQp
+	 yRtolTqFvsMYqalXl7HEmPbpseO6qlxZfrtArOdavz9GdCTS8Bm4PPYQmNAv0Aws7e
+	 yAHPD6O3TNIehS5Lb1AywYH4akW6d/StxRESlJNr4ABjPxHAMPpGVY3N9LgQUu794a
+	 0YHpou7lmPlAgZmY1icXHGqUgWtrPlMvwNOo5oGIa0QybpV4dUmjLttN15iY0Nz7/V
+	 22hLBL0uriinQ==
+Message-ID: <99b492bc-52fe-418c-88da-4e86bd7adce6@kernel.org>
+Date: Fri, 26 Jun 2026 18:26:27 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260604023812.3700316-2-chenwandun1@gmail.com>
-X-Stat-Signature: nfrdmag4uddyjaq3797w6wxub8gtobyb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, hao.ge@linux.dev,
+ jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260625184857.2193482-1-surenb@google.com>
+ <20260625184857.2193482-3-surenb@google.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------gE6xfyk5b3YJWqjJKRgr36tT"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 33FF04000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 706FA2000E
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782465970-219742
-X-HE-Meta: U2FsdGVkX18BpWozML+Hq5W8mJ7yQ/IPb/WK8yIRD+Cx1nzLp6frxgHxHePqD+oSESEfwStaQMFJ152NHPvM2r/N43EYNaHDfj0wT1Jfpsw0qOzn3f9Yj35mkXP/B2DyJJ+Jr3giEhcpA34E8+sCFH9XE8DqgkqrxOywPHC1oiNnjhO00r/RWUYuMOeWszjLfTsTBeLqMYMAzZ7XuktSPQS4LP8d6j5bWIC8maszilVwIJEa/6Hm6xd6xThq9hU9x+CI0NdQvGYjQa3la58ZW2CaGjPhfyhAi32NIPo0njvovq218LE3uhApqvBhZaSWMQUFpMF3LphRgxm6pijtBnzSb1vzLW1Gl1oWsmoAa6neAy7TMC0MyEyzFSuZHHU+M9rtrESr4sOGeH2jWuLcLfndQYaGsiH7N1beuYt+FllE1H0rrpLzbgNwChqWSX9R06VBJWi79SWu/a4jC2NNiE6PCnw1kzg0M2+dYC7cz06xJ7TN+w57pHZhlf7yRkcA6JNk1/lYets0JHGi1SE84jNeRK4EIeKAc2NnGTY2mTRJ6BeBXIdAe5IKDH+/xh1ikIdWl3T2NS0R7AoJQZHUzwoUyFILdWP5bMqmVe14icfkZ0NScztes9dXTO1jM7uKVVk4YSOqr5pWhDK1zwRiyugsAjqjCxp/GkeDNk9e9DBc85IczLi0XE4d5gjhw23MzyxrAfp1/SlH/Ic+ypBtWEmlh6vjEeRS3NXQ1fZiY3FJEMMOcq6LCQ25Z1W2jULU+QhDXfbs9e4cly2JM9wVAyl1nn/uiqL/NVGpDsqNdiPJ5pYEME1iKdydiZpFwXDFuTqytZW8VgmjJ2iM0S1lIty1BdcDiTqLw+m6ODzHcA9INFarQVq5GqdVvp/EsU/1Vi2lyO2BrPFKvWy8TtCLyAFYdszVDgOPWIouPI6rSvfw/qqGOLgSjML+5J000W1OQI4SdQgwYx+/pm730uX
- 1Tx3Y1qm
- C29gHu+FfWFqZWF+9gY/ANNkhGIG4x6O8hCz3kkZ1d4GrNOWBDRT2FLzqWoK658W2AZw0AEls7Ygu+a3nkeb0lNR9kAdRsdarBhCSyg6LaqExUOBlBbBSiiSyS2eF628utrf8Xg7Epn9T1wHt6kCWSPYhNeRbpxKafhNypjYjFkT6E7Z0lWiKz9p54TfPtW0okOizFK0ZQMX9RA+HIRZoDKka6pcEywcq5QGrVXSzUFsa1biuhNEntBhcaKpyi2EIm8OZKZXhox1tvpAUL9Q6Qx6dYV/4kG8XXS2RifK6iYufU7WUoGJ7YUOf1Fa8ZBCKIGBkxWP0KmWrxaSh9ZNl4708mvYh5KCjiwwSIs2l0eYWmm5IkppMkZvzYLi7mEHmns3hbE2l0TTuMD6P9Rw5pNc4OnVywE1D8z+Bf0e8qVeFEA0jJCnrJTnMWWb3QhH7Jpx5
+X-Stat-Signature: kwadwdy3juippsh56fajknbgyirpqjxf
+X-HE-Tag: 1782465992-227393
+X-HE-Meta: U2FsdGVkX19LrA1Jjo8vvYpFEA3oAr6swIzPfN2umdS68uQ96shRDG34QL64dA+byO8M2IFoWhzxxNGuMH8EPUjjsCDAs4eeBJAx3haR8jRdWGAHnnte11kEoRI9xE0ZYIzUAfVlsJCXsluAaGnOpFKgyO0TMIjeIBvAjdP2CxyaTFXJ1oPfk+PHtaIa1kPhAuwPgbDm+DaMcIWICD7UGYF52E3TAalJu09VMeiYzVwYz/yNBRr0mdW6b6VnaVu4mnX5recnRq6WLMaPkzXMIYNNzNiaDJiPwlQ+ESUmc1YVrMVDdjc78293Caq+s53YE4dUKpnBB0n1fhfalocFpdAx8ltiYRJ0MLkgMmlUb/5C2RToFPU6SkPY/MddWg9W5tPmsSNuFWU7axCyYuTFPI+H4n9/yqehNPZ6M0Rjwtbfwqyi3PEjyN2VSkg5+tN8bfgSjGAgqWVu6IP+XYIVJKvzR4uI5WjPCk+0BMDzYHJQgokpCo6lpwOQ/blP7Us21OKDKaiEbaN/7MBSzbuH6py0c2h+GXKHmcXiPLn9pHQCqH2+Sox2OGkCH/ukkrb5DbfEXO8YeFtztl3vu/i4p76oVPwmckShkFfBst/7+13j6tC/dE/pvhq09TAtndKAxk0N+RSNEiSE7z8ZrDLLsZ+BSOOIW3PqFQUK+4bVuwKtsHohvS51devbk+SR1FC15Vtf6juwNCbDCZwJfP7a0r7d1C89e68kn+TYr6c4ciDeQ7ZE+H16nuUGJ+m2mjv30CY+EguB9sHnzdSvkasoES1MGyM4fslPMdJ4MZdzyfsR+YbI6D9hmJ6iw78QzKGD5G+QscS/1sNHDCP/s33VtKvky8T/Crklf5QE6jlM11XriCXlxHKQ+VBe0xxm99k9XVMrqxdi04d3wV0WY+7611iHJgiUhy9tuDy8o3XtlIvi8Y/lYp586wgBpqtb55snm1KoAjaQO+TYPl0hs+5
+ kt+HA5Aj
+ rIFXjs3keF2Av9Jq5dSTJvsVyAgPcu3XojAHN0C5jn1JOg6dqbtyHLwg5oh9mMO9rxf+tkjAn3wYWBwQeDvKnx1Ixcftj0Cl9g70ywyPNnxfIM/WWMjQ7UU5eVQoJpeyikZovGhGYScLRTfr7vdd/GA6kVdCOTBU3SCfnuebPHONdF/eitpKG1FfykOXr/hjDonmFq77/BtZb3IsBbQ+UMaXASKdWo94R3Hl+ce/E0jm7pc6y9cMQjlqbkjlM1OjAwnhHcLfOPtQts0sugfO8FKVt67ZMUJGa7MPxDVbz2LjEWms6dvn/AB7F2n21LAnbwmseFttYwZKuttfPO2NJAJOigYKDG2g6c5iATb+es4VvUEQJjL78XAr8cj1U461sQk2A+Xh6llEKvJEgXeQ16cliBhGHlD8zFETYmGJLrXd+vg+zojg3ZxDOXFbVEa/ujFddW3HE2ytIHenmCnTPWdLdLENh+YnsQITt3GoTLz0doWJj89qxq47deQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,18 +95,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-04 10:38:10 [+0800], Wandun Chen wrote:
-=E2=80=A6
-> Reported-by: Alexander Krabler <Alexander.Krabler@kuka.com>
-> Closes: https://lore.kernel.org/all/DU0PR01MB10385345F7153F33410098188825=
-9A@DU0PR01MB10385.eurprd01.prod.exchangelabs.com/
-> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
-> Link: https://lore.kernel.org/all/33275585-f2db-4779-89f0-3ae24b455a67@su=
-se.cz/ [1]
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------gE6xfyk5b3YJWqjJKRgr36tT
+Content-Type: multipart/mixed; boundary="------------xgyUie7mXHuSqSafgvREO57l";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, david@kernel.org, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, hao.ge@linux.dev,
+ jackmanb@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Message-ID: <99b492bc-52fe-418c-88da-4e86bd7adce6@kernel.org>
+Subject: Re: [PATCH 2/2] mm: move alloc tag to mm
+References: <20260625184857.2193482-1-surenb@google.com>
+ <20260625184857.2193482-3-surenb@google.com>
+In-Reply-To: <20260625184857.2193482-3-surenb@google.com>
 
-Is it possible to get a Fixes tag on the final fix so that it can be
-backported stable?
+--------------xgyUie7mXHuSqSafgvREO57l
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Sebastian
+
+
+On 6/26/26 3:48 AM, Suren Baghdasaryan wrote:
+> From: Lorenzo Stoakes <ljs@kernel.org>
+>=20
+> The alloc tagging work is really mm-specific, so move alloc_tag.c to mm=
+/
+> and additionally update the MAINTAINERS entry to place it within memory=
+
+> management and port over the Kconfig and Makefile code to mm.
+>=20
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------xgyUie7mXHuSqSafgvREO57l--
+
+--------------gE6xfyk5b3YJWqjJKRgr36tT
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj5FwwAKCRCGXBN6rc5S
+1im+AQDJ/4/3Q05RgEx2et2igvt2pYusJSrt8UvfyTtiEE3C8gEAygxikW7+fgcA
+1w/YWzNHmxD+MDrA8YEnpgpmdHKPvAQ=
+=r1yp
+-----END PGP SIGNATURE-----
+
+--------------gE6xfyk5b3YJWqjJKRgr36tT--
 
