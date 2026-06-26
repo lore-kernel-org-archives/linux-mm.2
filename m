@@ -4,92 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B211CCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 05:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88D44CDE010
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 05:37:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 515406B00EF; Fri, 26 Jun 2026 01:05:18 -0400 (EDT)
+	id 309726B00A5; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C6EA6B00F0; Fri, 26 Jun 2026 01:05:18 -0400 (EDT)
+	id 2BADE6B00AB; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4058E6B00F1; Fri, 26 Jun 2026 01:05:18 -0400 (EDT)
+	id 1D21A6B00AD; Fri, 26 Jun 2026 01:37:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1535D6B00EF
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 01:05:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 77E558CDF9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:05:17 +0000 (UTC)
-X-FDA: 84920875074.23.2C07084
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 9E48C40003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:05:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kL8d4v0a;
-	spf=pass (imf07.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E4D1A6B00A5
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 01:37:19 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D1971674AF
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:37:19 +0000 (UTC)
+X-FDA: 84920955798.13.11977ED
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 064354000A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:37:15 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	spf=pass (imf01.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782450315;
-	b=qsDOsB7OSX6k/IQPa2KkbGaz6hpkcYxqrdZszikdtVh6vtxztZdkofWOCbSo261qHPcIqa
-	DNpAPX35XyLdCTu9qhZWZ9lFXMkgp+TpgGl9VSZbLlYEFoj67KXEdCBwUPY4SVJ3O/u4kQ
-	cWvHOz1shGaB+g8x28WCdhNPJPcpV9g=
+	t=1782452237;
+	b=fhDfFm/vC85hfMEQEswcW3S7cs2s5OvTNvixqEZG3PlvMw618nXSSuBFXnY3gHelqmdwtq
+	4AGFvY79IJh0ZoB6QWmXqffO9tgQZe1Y4WAOi9dM5MCTpSoHcG5UvO3GXZddG3dHmfAIWB
+	IVP3KOl7nj5k2yWYi+3vPAwgNxDl7gY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782450315;
+	s=arc-20220608; t=1782452237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u7v0PPdOi6Pl4ejNu0hv7r7pLaNyzclPpil1+QtQ9Dg=;
-	b=yhTxyHymQPJ0uX6Vn/+zlMF22Ktj11HD8ov3gZbgvYwQqgUJ40v0CGlP6vA3LSz5oXG/Bt
-	DSnFF92Lkf0eo9oNcr8P+JNWCRvV+njmJ3TobpAmr9ZexcGywmKt6uAs37+m6BuT0McFs6
-	etNRmIJs0qbtm8+Y1vNqfs6MqOU4TIw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=0fRac9g7xFADUxrUK1pW4Pv+lpPXqxRY96g6U1AVFd8=;
+	b=VE0IGzsPHKVRb5xFAUPLLIvR1jprlKyHCog78pNOH8L9BSSGkB8vnISk6ZKmun+l6liMhO
+	M6Hg8o6UDzJtDArw31MJsHmr6YWIg9G/V3h9mYEyfGvQJCYJn8yeejgclmCRQE31KGJ75V
+	+Io/vuKbc409JQES3n7ki4ffQoq0LNA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kL8d4v0a;
-	spf=pass (imf07.hostedemail.com: domain of leon.hwang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <925c8686-9ff6-44c1-9780-63bd7cd8a1c3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782450313;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u7v0PPdOi6Pl4ejNu0hv7r7pLaNyzclPpil1+QtQ9Dg=;
-	b=kL8d4v0aV7DDMvUYsPHOBhZqJmyWCtgnEifP1xb8Lm81nORYLNFhU9MTI36LrxV6kcHrfM
-	nyccMjaKwGfzz4YYmbZciuqA8+g4mk416iv0tH3va/dcRXXk+xaRdUVkex/7tHlwIkVPZ0
-	nNRUVyjEldhtn1B30EduqeECwLlXuwc=
-Date: Fri, 26 Jun 2026 13:04:51 +0800
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of wangxuewen@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=wangxuewen@kylinos.cn;
+	dmarc=none
+X-UUID: 115c4086712111f1aa26b74ffac11d73-20260626
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_EXISTED
+	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, CIE_GOOD
+	CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD
+	ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:91871d22-cfc6-436c-80ea-a21df0c3bb22,IP:20,
+	URL:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,AC
+	TION:release,TS:-25
+X-CID-INFO: VERSION:1.3.12,REQID:91871d22-cfc6-436c-80ea-a21df0c3bb22,IP:20,UR
+	L:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:EDM_GE969F26,ACT
+	ION:release,TS:-25
+X-CID-META: VersionHash:e7bac3a,CLOUDID:b5107a83e03fea0bca18c675b04aa7d6,BulkI
+	D:260626133706V8VEZZ1C,BulkQuantity:0,Recheck:0,SF:17|19|38|66|78|102|127|
+	850|865|898,TC:nil,Content:0|15|50,EDM:1,IP:-2,URL:99|1,File:nil,RT:nil,Bu
+	lk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:
+	0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_AEC,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD,
+	TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 115c4086712111f1aa26b74ffac11d73-20260626
+X-User: wangxuewen@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <wangxuewen@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 206352148; Fri, 26 Jun 2026 13:37:06 +0800
+From: Xuewen Wang <wangxuewen@kylinos.cn>
+To: akpm@linux-foundation.org,
+	liam@infradead.org,
+	ljs@kernel.org,
+	vbabka@kernel.org,
+	jannh@google.com,
+	pfalcato@suse.de,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	david@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Xuewen Wang <wangxuewen@kylinos.cn>
+Subject: [PATCH v3] mm: annotate data-race in cpu_needs_drain()
+Date: Fri, 26 Jun 2026 13:37:00 +0800
+Message-Id: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: Re: [PATCH v7] mm: assert exclusive nid/zonenum bits at the
- page/folio access sites
-Content-Language: en-US
-To: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Kairui Song <kasong@tencent.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-References: <20260626032012.1049667-1-hui.zhu@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <20260626032012.1049667-1-hui.zhu@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: xegmc9pbd6aezyxtk9ckuyqze3sxp94y
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E48C40003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782450315-698455
-X-HE-Meta: U2FsdGVkX194E2xmh1ER4CRD56y6zGy0aZ1no/R55xm0cZUzkFsY0YsWrAbg1T33bUpL1KG5Ie7yT1MBHY4b12037rSg7Ig+H+AKF72JXk7PFRPTlOkrmZsRgWJLJCxzcoKPwSirevLEi5j9L4N9m4ePZQei1uxbiNeXBqKeXyVpfHzzJYPNI2Ef/+4Ehn8zFutpbttoU/JuVlR8haveWdCA7YOqdaOKNyr71aSXZMzcNO6BhVAp7e9zH6p6L6juH+9IFORDVPdZC22FwuGRzavvlXiC8XVJRw6kpLrrxJ8Oxu/ojo1AqPKPSMe6x00JUmgRI+CN7asAasMFgBTROY+XvZQ1Heg6SAKg06XbFjM2YTo88u5RP1IkfAKI/oew1JhBDntn6HHJDj7dXp40fRkW61CbtZyAhSfcVxMDhlaLTgS/bwfbCzsC1y0M/ZeRUtt27ZHXf/IUIcnWGEWDUez4eDBzD5Y8KCWHvMi3OJ2koFajyhscqHHqoruL6Pki7FUplFOJBlgyKIztyM9pX9z2rM4nMECj3sb5db2rmFgFnNqbHiLJp7SiHlamWUl3V6ETe5Hn9JwelmMGlLih2I/nY4FuJ0at5PMN7jkVjn+ToVgqKGJSRG6FP2hYXaATFMYeZuJFdpO9nUbDZ7LZL8WM96jUIYxpYwKzyrE4XrK/T6PBkUVPv8IKqh722H3k/+8Ea4CzPa+rz2Ax974vyy8CLU+Qsblqe1LCGF6xBOQwOOEXHL+9Qpx3P1MYd3prCXLPawQL1nTaH+quynEqfd1k5ZYvlmuWt054UIGoFbOufaDEghbd/Kip/nTwmcBkOKPER9RT0cKFnzbeOPzm/sKbVReoIbDzVfKBb101Kl3u/SOqSEqY1wHzZGS3REFye8Rea0A8t+6M3+Vu9GXcPgVsax9w1FiAVv+0HppRmqZLL0cj5voRM1Yl2edzbjMrDyE4SKvVtEAY0+qhE7m
- DAmkCSHl
- k9JpGNXLs6GvHptMshQVyrpGCfrplr90FF2kee8IfJYxXZRwffRUxpR6NYf5EG1hoR+lDLzohTgJuJYLrfjqbmmErrisrU/VNKrnIcW21RbLNkNWTOz10u6D28+pRvOUgcFCOIR2pfkQstaV6C6IxirwiGTNmArLhhxHkI8AnZJGxgG8vcPBh14fr6l26DE4ZhQrO4ix/+F0Y6M/SzDwi+OXNFA==
+X-Stat-Signature: yp8jpjan6ki6hzo7tqes9wenc68i4mzi
+X-Rspamd-Queue-Id: 064354000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782452235-272153
+X-HE-Meta: U2FsdGVkX1/BC04m5i5gKg6KG0z6Z6FKk3AVxqGoNatQXTPg6mNrtH//tkqNLq86TK0IOq0z0ylVLePr53iCpVAsdxNScUBTDJrxV1Q4AkzyNfVayO7B6D7GjEmKksYpJtdu+hBp06FhGITEoOkQSoAHyUTTuwGnY4ecnrHgAuj6KYU6EH3KajAl3EHW3qR9ILfWzlOg5C6nqSZqwXVenlHtuwZ3Lr9hWAEaReyep8G6/Q4gDmJ1KW1ArjWSe/dkxSHeJ3fQat9FclYX7ntLeilK+6Zg8fzzEgXuJn0PVxlfRM8sE8OGt0lJVF8i1yMxiv9aBoPArIxOnbX/59hi/Oi3KdHnlLKkT1+j3m7N6e0qPs8iyXw7S89jBtYUsDKCsJcJ+bl4ExrcznXeEIXSBBpRJsPKP/Ct4SmguNs5aSzQAV2TxPQEj8Mq1ht+NRwDBHV5SOfzMYerJ9Hmwd7W8C3WW/+uF2k/y9hxr+ql2fq5alhIYFmOw9A1Exb+ZYv24f7QLdz8XPuNoGLOeFg3EQBQgBkJIioFShcdv1KiiaeA3ojibP+nP5KMwsS0BxLglCv5LZiW3vEGE0VE/Il5YDsXNqYiHdwarot5LFs/JTheTwwxKTGBvXfwA9jOQ33s7hGq8e0zw29VbU/Lt19vhkbSauA5hsMd90txJKkyLhKy0gEQZE/iF63uTsgKE0hC4VtfLHXHHQTzpXwDyA8kNqx3xU4lFApn5z9+z3RBlq5qRBvRnw8a0fm8S9rWXb69lYtQqSmj0oumFKSPpJiyoLkJNxD00Cj5HFTgCkEx6ZIvTGNTYjDj1hz02HW3NLISobi4O0Kyu4oDR2a3xzgXFsVZi+w+lbe5kODDXcnKm/UdvTIgfK+lq0L77ORc+vZJJpZ7KGua5LEsEgK3iiaKHHI9vKsT4OUmST2405nGriXVWql4Xnv6njHhouMYtJsHoUvpYkLQwCYuvg3GdbR
+ M/U6XEks
+ TdG6HKOSruFE2O2YViaCVLt8kGq0I6jmrtsChhlRv+D56iSqscsTdv1IJE8b+G7xxOIiQscGugUfTH7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,161 +122,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26/6/26 11:20, Hui Zhu wrote:
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
-> page->flags and folio_trylock()/folio_lock() concurrently doing
-> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
-> 
->   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
-> 
-> The node id and zone id occupy fixed bit-ranges of page->flags that
-> are set once at page init and never modified afterwards, so they can
-> never overlap with the low PG_locked/PG_waiters bits touched by the
-> folio lock path.
-> 
-> ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
-> used to check a by-value copy of the flags word, not the actual shared
-> page->flags/folio->flags being modified concurrently, so it didn't
-> reliably assert anything about the real race.
-> 
-> For zonenum, move the assertion out of memdesc_zonenum() into
-> page_zonenum() and folio_zonenum(), where flags is dereferenced
-> directly from the page/folio.
-> 
-> For nid, turn memdesc_nid() into a macro instead, so the mdf argument
-> is expanded as the caller's own flags expression
-> (PF_POISONED_CHECK(page)->flags or folio->flags) rather than copied
-> into a function parameter, letting ASSERT_EXCLUSIVE_BITS() check the
-> real page->flags/folio->flags directly.
-> 
-> On CONFIG_NUMA=n, NODES_MASK is 0 and the old memdesc_nid() body
-> folded to a constant, so page->flags/folio->flags was never actually
-> read. ASSERT_EXCLUSIVE_BITS() is a real runtime check that can't be
-> folded away, so doing it unconditionally would add a pointless read
-> of page->flags/folio->flags and a check that can never fire. Keep
-> page_to_nid()/folio_nid() as plain "return 0" static inline stubs
-> under CONFIG_NUMA=n instead.
-> 
-> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> ---
-> Changelog:
-> v7:
-> According to the comments of Sashiko, restrict the memdesc_nid() macro
-> to CONFIG_NUMA, keeping a plain "return 0" static inline stub otherwise,
-> and re-add a local page pointer in page_to_nid() to avoid evaluating
-> PF_POISONED_CHECK(page) twice.
-> v6:
-> According to the comments of David, turn memdesc_nid() from a static
-> inline function into a macro so ASSERT_EXCLUSIVE_BITS() can check the
-> caller's page->flags/folio->flags directly.
-> v5:
-> According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
-> calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
-> ZONES_WIDTH != 0 (for zonenum).
-> According to the comments of David, avoid calling
-> PF_POISONED_CHECK(page) twice in page_to_nid().
-> According to the warning of lkp, switch the CONFIG_NUMA=n
-> page_to_nid()/folio_nid() stubs from macros to static inline functions.
-> v4:
-> According to the comments of Andrew and Sashiko, set
-> page_to_nid()/folio_nid() as static inline stubs returning 0
-> under CONFIG_NUMA=n.
-> v3:
-> According to the comments of Andrew and Sashiko, move
-> ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
-> into the page/folio call sites.
-> v2:
-> According to the comments of David, remove useless comments and use
-> ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
-> page_to_nid().
-> 
->  include/linux/mm.h     | 25 +++++++++++++++++++++++--
->  include/linux/mmzone.h |  7 ++++++-
->  2 files changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbdd..63fcf277b675 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2288,21 +2288,42 @@ static inline int page_zone_id(struct page *page)
->  #ifdef NODE_NOT_IN_PAGE_FLAGS
->  int memdesc_nid(memdesc_flags_t mdf);
->  #else
-> +#ifdef CONFIG_NUMA
-> +#define memdesc_nid(mdf)						\
-> +({									\
-> +	ASSERT_EXCLUSIVE_BITS(mdf.f, NODES_MASK << NODES_PGSHIFT);	\
-> +	(int)((mdf.f >> NODES_PGSHIFT) & NODES_MASK);			\
-> +})
-> +#else
->  static inline int memdesc_nid(memdesc_flags_t mdf)
->  {
-> -	return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
-> +	return 0;
->  }
->  #endif
->  
-> +#ifdef CONFIG_NUMA
->  static inline int page_to_nid(const struct page *page)
->  {
-> -	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
-> +	const struct page *p = PF_POISONED_CHECK(page);
-> +
-> +	return memdesc_nid(p->flags);
->  }
->  
->  static inline int folio_nid(const struct folio *folio)
->  {
->  	return memdesc_nid(folio->flags);
->  }
-> +#else
-> +static inline int page_to_nid(const struct page *page)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline int folio_nid(const struct folio *folio)
-> +{
-> +	return 0;
-> +}
-> +#endif
->  
->  #ifdef CONFIG_NUMA_BALANCING
->  /* page access time bits needs to hold at least 4 seconds */
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index ca2712187147..1b4336098113 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1274,17 +1274,22 @@ static inline bool zone_is_empty(const struct zone *zone)
->  
->  static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
->  {
-> -	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
->  	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
->  }
->  
->  static inline enum zone_type page_zonenum(const struct page *page)
->  {
-> +#if ZONES_WIDTH != 0
-> +	ASSERT_EXCLUSIVE_BITS(page->flags, ZONES_MASK << ZONES_PGSHIFT);
-> +#endif
->  	return memdesc_zonenum(page->flags);
->  }
->  
->  static inline enum zone_type folio_zonenum(const struct folio *folio)
->  {
-> +#if ZONES_WIDTH != 0
-> +	ASSERT_EXCLUSIVE_BITS(folio->flags, ZONES_MASK << ZONES_PGSHIFT);
-> +#endif
->  	return memdesc_zonenum(folio->flags);
->  }
->  
+KCSAN reports a data-race when cpu_needs_drain() reads another CPU's
+per-cpu folio_batch->nr without locking, while the owning CPU writes
+to it via folio_batch_add().
 
-Better to factor out a common macro alongside a comment for these two '#if'?
+Reading a slightly stale value is harmless -- cpu_needs_drain() only
+decides whether to schedule a drain, and the next iteration of
+__lru_add_drain_all() will re-check. Use data_race() to annotate
+the intentional race.
 
-Thanks,
-Leon
+Signed-off-by: Xuewen Wang <wangxuewen@kylinos.cn>
+---
+Changes in v3:
+- Wrap the entire || expression in a single data_race() instead of wrapping
+  each folio_batch_count() call individually, as suggested by Pedro and Lorenzo.
+  This is equally effective and more readable.
+- Remove data_race() from need_mlock_drain(), as it is now covered by the data_race()
+  in cpu_needs_drain().
+v2:
+  https://lore.kernel.org/all/20260625065153.1581419-1-wangxuewen@kylinos.cn/
+v1:
+  https://lore.kernel.org/all/20260624092606.1083449-1-wangxuewen@kylinos.cn/
+---
+ mm/swap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/swap.c b/mm/swap.c
+index 588f50d8f1a8..46ea207e0624 100644
+--- a/mm/swap.c
++++ b/mm/swap.c
+@@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
+ 	struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+ 
+ 	/* Check these in order of likelihood that they're not zero */
+-	return folio_batch_count(&fbatches->lru_add) ||
++	return data_race(folio_batch_count(&fbatches->lru_add) ||
+ 		folio_batch_count(&fbatches->lru_move_tail) ||
+ 		folio_batch_count(&fbatches->lru_deactivate_file) ||
+ 		folio_batch_count(&fbatches->lru_deactivate) ||
+ 		folio_batch_count(&fbatches->lru_lazyfree) ||
+ 		folio_batch_count(&fbatches->lru_activate) ||
+-		need_mlock_drain(cpu) ||
++		need_mlock_drain(cpu)) ||
+ 		has_bh_in_lru(cpu, NULL);
+ }
+ 
+-- 
+2.25.1
 
 
