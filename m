@@ -4,95 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E817CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9286BCD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 04:17:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 193896B009B; Fri, 26 Jun 2026 00:10:06 -0400 (EDT)
+	id 833186B00D7; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16BF06B00D2; Fri, 26 Jun 2026 00:10:06 -0400 (EDT)
+	id 8095E6B00D8; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 083E76B00D4; Fri, 26 Jun 2026 00:10:06 -0400 (EDT)
+	id 71FD16B00D9; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D84176B009B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:10:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C54F1673CC
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:10:05 +0000 (UTC)
-X-FDA: 84920735970.28.7C5551D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8560420003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:10:03 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 4C7336B00D7
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 00:17:02 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D20B01C185D
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:17:01 +0000 (UTC)
+X-FDA: 84920753442.10.66BE5D9
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0887920006
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:16:59 +0000 (UTC)
 Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sfpK7nGw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tU4auLan;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782447003;
-	b=HSWflk0zQWWeE/ga/d1i3du5iGeBhUYefXnnjMGVkgYaEvUmuoYeVIkPtu09QYLI9lAF5P
-	LSxnRD5RDseYthlNTr0Ai5d24Vfs0ohxxNOTMFRZfF8reRmt0pEJHyRHhBI7inl3xgzcUo
-	MrgSPiZkWAGNUGjBaq3ZB9fMEfGLI2Q=
+	t=1782447420;
+	b=nriRv/rFGzC524GLOZ207wcfyY8QeYi2eRo3LOYbOr2WPfrM/zhh63W+4/sfD6Eamb1x5e
+	v791MMRlNEgR8vhT8cIDXYonJzDM2EaRZ75+OQGhC805uWV423aqsbyMf4p+DVtRCqTST2
+	4zTIArTJ5HlV3AJxfeAnhTs5ioYlOWg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782447003;
+	s=arc-20220608; t=1782447420;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zBZVyWvoQfCRJGJOx1qxPwKatGc6T3VqU/ROcK37Dqs=;
-	b=mwsWrHhSjvN4q88eFqEYGhPRHvipi+W2aOf9ufOcpuIe7yhxgnzflv1sB/83MQdonx6lfF
-	uubVWUeB3UEQzu76CfoSQN2FOm4rAmB8ESWCiyJKR38kWGseQqURFbT9yWZYl5Rw24sgWk
-	1BzrYJLhBOTf8esb5F5o1DCBma6aI8Y=
+	bh=XOkT4HE4MTvk1wZ4w40cb5pP0zMW5GgLzCncJ/GrFKA=;
+	b=u6KTXwvTvzYn3d8ZvNBmANiG9R+LYzwnnFXPFfAPZtVTTvtpKkS/1nAumkfS2+nP8uT9Cr
+	pjnr/oDnQ6t3oF5YvKVfRJlZ5ZowiJtl/wcLtDkkRADf/Q8X2vVU4cqkjeaYbJ57cY1XhZ
+	WbTLOXDU8pSR3x0p4Sp/sJAl35cLT/U=
 ARC-Authentication-Results: i=1;
 	imf31.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=sfpK7nGw;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf31.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9BF228C7;
-	Thu, 25 Jun 2026 21:09:57 -0700 (PDT)
-Received: from [10.164.148.34] (MacBook-Pro.blr.arm.com [10.164.148.34])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E7E163FAF5;
-	Thu, 25 Jun 2026 21:09:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782447002; bh=SpHSZj0Ie9PxHEQt8oq6IEyx1BGJwCxxpYw55kH+XHo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sfpK7nGwqkPkcur6fGaPSDbMmnwqt421AW/1JpY5wKA9mVVaay6yqy2BHH6fBrJUU
-	 0zE3vzqv5nOm3H5wn7UVnDZTY2oCF8gpb1NhhOkBDhDES35oT7GKocOTIYih2WVNeA
-	 lxNdKs+UzECOSWnJsqAI2pfHdgw9HGvT4qI4L6GU=
-Message-ID: <24c8b1af-73e2-4c32-8e68-fc230dbcb25c@arm.com>
-Date: Fri, 26 Jun 2026 09:39:49 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] Fix incorrect access of hugetlb pte entries
-To: Zi Yan <ziy@nvidia.com>, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, david@kernel.org,
+	dkim=pass header.d=linux.dev header.s=key1 header.b=tU4auLan;
+	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782447417;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XOkT4HE4MTvk1wZ4w40cb5pP0zMW5GgLzCncJ/GrFKA=;
+	b=tU4auLanIoznu++bAndccmy95kBQZM3vq3F5BJdIdB3bzdmwcKIzlcD38N7fNciBZ/LSMH
+	FmoUliuhEWquBQUxpNJpE5YaDbsYyNkQL31Ss1/hRuoD6Ntulu0n0evwIVXfNH2VKUj639
+	Q9BDEF4Ep3G7a4GsovfzVtNZszPAUak=
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.600.51.1.1\))
+Subject: Re: [PATCH 1/5] mm/rmap: use huge_ptep_get() in try_to_unmap_one()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <4619650f-28b5-4fb4-91be-50daa0b4d84b@arm.com>
+Date: Fri, 26 Jun 2026 12:16:16 +0800
+Cc: riel@surriel.com,
+ vbabka@kernel.org,
+ harry@kernel.org,
+ jannh@google.com,
+ lance.yang@linux.dev,
+ kas@kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com,
+ apopple@nvidia.com,
+ ziy@nvidia.com,
+ matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com,
+ byungchul@sk.com,
+ gourry@gourry.net,
+ ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie,
+ nao.horiguchi@gmail.com,
+ ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com,
+ pfalcato@suse.de,
+ dave.hansen@intel.com,
+ tglx@kernel.org,
+ jpoimboe@kernel.org,
+ ryan.roberts@arm.com,
+ anshuman.khandual@arm.com,
+ stable@vger.kernel.org,
+ osalvador@suse.de,
+ akpm@linux-foundation.org,
+ ljs@kernel.org,
+ david@kernel.org,
  liam@infradead.org
-Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, kas@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, rcampbell@nvidia.com, apopple@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
- j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
- tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <EF014590-F5F0-4B9A-9C6A-C4EAC8187237@linux.dev>
 References: <20260625112955.3254283-1-dev.jain@arm.com>
- <DJI6MYYF7NOS.2JRWBWFWEO4AO@nvidia.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <DJI6MYYF7NOS.2JRWBWFWEO4AO@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8560420003
+ <20260625112955.3254283-2-dev.jain@arm.com>
+ <f8516534-3b18-4988-b384-251225755285@linux.dev>
+ <4619650f-28b5-4fb4-91be-50daa0b4d84b@arm.com>
+To: Dev Jain <dev.jain@arm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: dkqi4xkx487cwirq9z33qtboh6cgmcri
+X-Rspamd-Queue-Id: 0887920006
 X-Rspam-User: 
-X-Stat-Signature: e8mgb76fida33cp5x476gpk8e3obndwm
-X-HE-Tag: 1782447003-872561
-X-HE-Meta: U2FsdGVkX1/0bU/yjJQzsYmklKEm3bqxpTrNdD29O+kz9y6Myowafknr319f1r95ctiV4X9hVtrMrkLzhvlJMZyi3/sUfF9bfcDNFNGWRueGVBWUlikEVynsWhnpbzk36hD+TZ7+K1Tm3yhSZACIBECGtit4AuYoWQ325A7CYVfSzs9+2QBPBR1JdQYLe87uyMBSDkfO2hLhuOQOPEIT714NYLc09Q54NCXP61VgSpJVHD7JTkIaH2TQKIZSyUVxoHkYG1B2KeFRxICuQBcKV+PozbIqP6tRR5ghhAmg3HXsXvRAswlDlbRk5INw8wGESh9ZaWc4GkaRdqvU6JoGiASVjPCVJMF4+1SZyijfWbFQywzk6Z/TX6jgGrgL6ouQY5NGxHCZG+0i4qrrejzy01WaIK+IxePY+TXbbEH5b6Kx9WM4GdhJOeQ7bufCjFhQ/JO3uw3/XJwcxrKNiNlkKmxML3DuCUyVRoLzVkoTbVDVmkxyON5JYj6ZxEFz5HirVDvT5qsb2Vssbz9s3DHWYpm9bPopuizx09e6YKQ8e3mRlwFbzHZm+t37HILe9qSiKkxoMe4DJmtg5JJQope2nuvxH8KdimP94wsNgFaWbLjdc07URbNuNB9GVeO7F4FIzYmoMLgM/VWXlAhZeK9Tf7GbIRtnmxeYXwwuijyOYXY1rSSqLU3qpfik3iYQEN7kpGsWFK5YAXLAvcSp/sZPxesoo4i9EYb7TtAzulzq4gR4SpEUfrnq7ITkkNSR5Wqdpyz9T8OntWO/mkqyCoyt4B2iF60ZZnUHhe3qr2WCEHklAc5ei8Eyy063rpdJ0ykFzdqxaY1Tfm+GhKyc888sha+/7P8IHzbZShlaGaNpHBSV2aMh3t6umuBjF843UtGRw31599Ha75tZKlx+03yJhVX33CFokjZSl5mtbRlsC5Hy60ZQe7TUDGXe5CFcJT2iNT38egAKMZLagUb5l55
- xmRHXRHQ
- Q1jYGWa0cWGWJgiVTEPZatkEwjmy/+T3bJx4zE6+irfEShwE6BCfv/Gu4oAYgUL4RW96W+fIaeCHRjqsKkS67ZgY6R6JunBZuXrVlS9Hz4p+VG9S7WVZNC9YTxzvFGnDkQxDTdmdWKZ8UDdA8EpLotA8N/BuUjeqoYzWVOh0wlSQ8V78tpBwbvxZzNGjRwlVN0NnVrDACHQD4VVVgiFkVAWivy9DcfLBFjit9vNSpNPnDzU7/d6NepcSFArTTYumNip/HAyDYSzr1Hu+Z878MOm36wNDfUKT8pf1cLLFERdDjnec3KGwquyJuMA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782447419-556784
+X-HE-Meta: U2FsdGVkX18RtinAtEuef3oy14vMNTIfb/C/W3we440NzjIUBy6cVo8HeSTqsEBr3OxLn3TnlsISwUoi9/7lya9OrbcJfwCzms8FqjZ/hE/K9cGpedW+6AF1fP0xZIMPDAS99lcVRw1g0U1o+6zQc1u9/e64D57w7VfhasDMyErlF2FcoxPnUMEQlGLiIOqmu6kxSRJM9KBsti22hsiYlXbPVu/WlH2VB0kYediThhZEKQ1KCSeU5TdXCj4+664tB6D1q6GSDb30A4d9lPKZlcZNBM29wTYCozR6G3NHXWwIKv0bJmvuFtM2dRIuIEaAUspHebSJDUDTCJbzQ2tc4GbVqPy6Z+RoxSFN3koBVPf/hhdusT7F4E19EaK1nBRcFiRX6W4uIlrWTtqEbPF9fVDXl+t77rqjsWZpDceGd41S+y3IvFWvmDzKMKlpCv68aSh9egmH4MF+1rlN6E66sAUcSRc0ZebWVfgYDgbtgLg1Oi8lBWWvb48PZfiKgbEfsoVDpvHN7pKDV8E4z5mWSmdZL8tLVhm46wFhCeovx2Z0nS+EyQABSydF+BLEIZT7B6vcHmH/yGwDXj243j6zaBKwlX+A2ekTW5R3JeO3xdxa1NDEYjElaHhB0qkODeJHohZBn4Ts6auAoZoRs13alytuEK0uMsSZfwQzon6D6OOkRsiY/l7Xi7drVExVhr23S3LxdjEdAXbOQiVXTchojoFhF+z4NoLNro8aTXMRxOHGBziOUmrt9n7FWuCay+sOXFMvlZEAY8wSKpAyr9mRogEhrRS+ccmX4mKvtb8LqgWaUKn+k0XAgmWjVQdRwrlhjKAh5Hqgn+TYJdx6S2izyS1Mlhyyfj9KWsDkR89jQKWqJQeko2+uJ5u2vWPgSoyPJSFUaKgMsMVF4SDtTECCVXY8UT+Q+0gnJXhgLGPfexOrPARH1u4rW97YZCojzVivJ05i8phYWaFQkAqptiJ
+ QvlDkapl
+ DD+3G4Wj5dctvtUwWWXfHxsueFLN6XhUterwuAht9OSrKX8qyIIzzO3ohwLTF7okaEyNLER/M0Z5cRbhFmd213tsZHPbb8/89x7mfMg5+L0ndg+4yhld1b/zuyUNV+MgID/Q5a7lS9RE04cmLaUN5oYVzXG8jwVqC63vrYJrZb0DJw69HY5c6lzai2uDgSeFBYFpObEa9lZ/xhPlqIIzk89doqh/2Rf9lF9UiWUAIBQ5LIaqaGkMwCh+Q7xsedl5PkHNfs8kTZW5F3eg2anQKa/WzD+/I1sk6C36WcP3sdvL2RSo1zg7lNXy2edTst7neCVopOl6omfET94Aia0Hw81lE0BhqPQMj3i0ZZ0dd2TMTav9+cdLY3/X3Tf+nD7r6gfWkv0p6IidCYk0In39HfiDLKIw2JKb5jWbOQ+8OV4ZIYA+vmsLyGgJ3UlnTcQxFuR3j
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,37 +125,108 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 25/06/26 7:29 pm, Zi Yan wrote:
-> On Thu Jun 25, 2026 at 7:29 AM EDT, Dev Jain wrote:
->> There are various places which use ptep_get() to get the pte entry
->> corresponding to a hugetlb folio. Some arches have special handling
-> 
-> I think it is better to mention s390 as a concrete example.
+> On Jun 26, 2026, at 12:03, Dev Jain <dev.jain@arm.com> wrote:
+>=20
+>=20
+>=20
+> On 26/06/26 8:47 am, Muchun Song wrote:
+>>=20
+>>=20
+>> On 2026/6/25 19:29, Dev Jain wrote:
+>>> try_to_unmap_one() handles hugetlb folios when memory failure needs
+>>> to replace a poisoned hugetlb mapping with a hwpoison entry. In that
+>>> case page_vma_mapped_walk() returns the pte pointer to the hugetlb =
+folio
+>>> in pvmw.pte, but the code reads it with ptep_get().
+>>>=20
+>>> On arches which provide their own huge_ptep_get() to dereference a =
+huge
+>>> pte pointer, accessing via ptep_get() would cause pte_pfn(), =
+pte_present()
+>>> etc to misbehave.
+>>>=20
+>>> It is not clear whether this has a trivially visible effect to =
+userspace.
+>>>=20
+>>> Just use huge_ptep_get() for dereferencing a huge pte pointer.
+>>>=20
+>>> Fixes: c7ab0d2fdc84 ("mm: convert try_to_unmap_one() to use =
+page_vma_mapped_walk()")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>>   include/linux/hugetlb.h |  3 +++
+>>>   mm/rmap.c               | 16 ++++++++++------
+>>>   2 files changed, 13 insertions(+), 6 deletions(-)
+>>>=20
+>>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>>> index 2abaf99321e90..fdb7bdf7645c5 100644
+>>> --- a/include/linux/hugetlb.h
+>>> +++ b/include/linux/hugetlb.h
+>>> @@ -1261,6 +1261,9 @@ static inline void hugetlb_count_sub(long l, =
+struct mm_struct *mm)
+>>>   {
+>>>   }
+>>>   +pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+>>> +            pte_t *ptep);
+>>=20
+>> Thanks so much for the fix! I'm curious, though: why do we
+>> need to add a separate declaration for this function here?
+>=20
+> For !CONFIG_HUGETLB_PAGE, compiler complains that there is no =
+huge_ptep_get.
+> So this is to make compiler happy.
 
-Sure. In case there is no v2, requesting Andrew to change
-"Some arches have special handling" to "Some arches like s390 have
-special handling".
+Got it. We can refer to 5d4af6195c87c6b162b7963e0ad00a214b80d764 to fix
+this warning.
 
-> 
->> to compute the pteval, so they provide huge_ptep_get(). Use this
->> helper consistently.
->>
->> Dev Jain (5):
->>   mm/rmap: use huge_ptep_get() in try_to_unmap_one()
->>   mm/rmap: use huge_ptep_get() in try_to_migrate_one()
->>   mm/migrate: use huge_ptep_get() in remove_migration_pte()
->>   mm/page_vma_mapped: use huge_ptep_get() for hugetlb
->>   mm/mprotect: use huge_ptep_get() for hugetlb
->>
->>  include/linux/hugetlb.h |  3 +++
->>  mm/migrate.c            |  6 +++++-
->>  mm/mprotect.c           |  8 +++++++-
->>  mm/page_vma_mapped.c    |  8 +++++++-
->>  mm/rmap.c               | 32 ++++++++++++++++++++------------
->>  5 files changed, 42 insertions(+), 15 deletions(-)
-> 
-> 
-> 
-> 
+Muchun,
+Thanks.
+
+>=20
+>>=20
+>> Thanks,
+>> Muchun
+>>=20
+>>> +
+>>>   static inline pte_t huge_ptep_clear_flush(struct vm_area_struct =
+*vma,
+>>>                         unsigned long addr, pte_t *ptep)
+>>>   {
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 1c77d5dc06e9f..aa8a254efaecc 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -2095,11 +2095,16 @@ static bool try_to_unmap_one(struct folio =
+*folio, struct vm_area_struct *vma,
+>>>           /* Unexpected PMD-mapped THP? */
+>>>           VM_BUG_ON_FOLIO(!pvmw.pte, folio);
+>>>   -        /*
+>>> -         * Handle PFN swap PTEs, such as device-exclusive ones, =
+that
+>>> -         * actually map pages.
+>>> -         */
+>>> -        pteval =3D ptep_get(pvmw.pte);
+>>> +        address =3D pvmw.address;
+>>> +        if (folio_test_hugetlb(folio)) {
+>>> +            pteval =3D huge_ptep_get(mm, address, pvmw.pte);
+>>> +        } else {
+>>> +            /*
+>>> +             * Handle PFN swap PTEs, such as device-exclusive ones,
+>>> +             * that actually map pages.
+>>> +             */
+>>> +            pteval =3D ptep_get(pvmw.pte);
+>>> +        }
+>>>           if (likely(pte_present(pteval))) {
+>>>               pfn =3D pte_pfn(pteval);
+>>>           } else {
+>>> @@ -2110,7 +2115,6 @@ static bool try_to_unmap_one(struct folio =
+*folio, struct vm_area_struct *vma,
+>>>           }
+>>>             subpage =3D folio_page(folio, pfn - folio_pfn(folio));
+>>> -        address =3D pvmw.address;
+>>>           anon_exclusive =3D folio_test_anon(folio) &&
+>>>                    PageAnonExclusive(subpage);
+
 
 
