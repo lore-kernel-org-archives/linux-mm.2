@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3110CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:00:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F67ACD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 09:01:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 811A46B00BC; Fri, 26 Jun 2026 05:00:06 -0400 (EDT)
+	id 1D3D76B00BE; Fri, 26 Jun 2026 05:01:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E9DD6B00BE; Fri, 26 Jun 2026 05:00:06 -0400 (EDT)
+	id 1AAFF6B00C0; Fri, 26 Jun 2026 05:01:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 726CC6B00BF; Fri, 26 Jun 2026 05:00:06 -0400 (EDT)
+	id 0C0C36B00C1; Fri, 26 Jun 2026 05:01:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46D526B00BC
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:00:06 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C0C571A03C9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:00:05 +0000 (UTC)
-X-FDA: 84921466770.15.DA8F009
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9CC3A140004
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:00:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BZC2sX83;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id CD2986B00BE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:01:25 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E4DF1A03A4
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:01:25 +0000 (UTC)
+X-FDA: 84921470130.10.C84DC84
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8119020004
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 09:01:23 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KhrDWg3I;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782464404;
-	b=r19hhe3+6swVg1XQw55zJFQp9q+svg65JzBYlb5oqtkZw/tLAZMPVYPsXosNIWyzZpCZ7b
-	oNU4peFHJntltZbvXkYQVFtQEjbEbVjcWYfY/XAzk5m/tTHZdOq3QlVQm0TZTJA09ctGA+
-	jBCYlRwkkzY7Iz2jF0Y3urI/k3i7X0M=
+	t=1782464483;
+	b=KOmnDjojgPAzCspfx2uCR0Bi58wqSfuqchXQNejAOGrl2BEyi9BrL+RMNxOB6FQ4oMb+iB
+	aWcoBzs5dgiog7XwuY2IZg30dsCOf+ezJxzwzi158GZvwLqkrXeAu2lDq4CZgER2Vxai7O
+	wp1NjOKlN16CqUWVcO5QE/b6VHBvkf8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782464404;
+	s=arc-20220608; t=1782464483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RiF+ZZp+CVU1sZqeDDRKvFPYiBeZ08llaMDiB0IH+P0=;
-	b=jB/3nzJ7yViTHXtJ5pWU7TJtw4oh0BTeI1bVfdRZkwNJ99wH08mvERUj0+4KBUn5wrG+db
-	mu8BWc7UXGT9hRn1FrT6OfJsXH7bomA+C28nWItxJkzYFRcJXECRefXd+Ls9VhqpCXCgjb
-	R3AVneX6M04h7lGexklEnHS3lKKtFe4=
+	bh=oljwZFEHyQbS4dJbZnrrRQZYBmFAfUoVQ0TPQ0VSX5c=;
+	b=P/3FJCw9NaSy0QB7l6ToJ4fzcH5uyoZn294NaahEQ5qA6oKB+k2i+RhzQ/m6Iay1rSCov9
+	7inrWwH2CAVrMo7QJN74hJU5S7NQ1uYO5hXLFnRTuOMLQHUx8bzHNB4QOJEQ+oKy2JzWIn
+	/zH9SDMlK678aOll0qqX0Gxhbs8qQdU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=BZC2sX83;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf09.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782464402;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RiF+ZZp+CVU1sZqeDDRKvFPYiBeZ08llaMDiB0IH+P0=;
-	b=BZC2sX83iCPGiP8u4V/j2JFHHAvan3ttXTMNSWEawRTRc+lBxqRdNidDx4QEoApuNeJhAT
-	BgdopX6rtN9K9+8I+cLEXF9ye8+IOW3/ZuUeXXpWrpCbv6N7VonvJYEtiyZ43uTJ3qsC3P
-	ZqY5ujY+QkxJyy2C1NoBP7ZADQVxNFU=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: damon@lists.linux.dev
-Cc: jiayuan.chen@shopee.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shu Anzai <shu17az@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/2] mm/damon/tests/core-kunit: test split above max_nr_regions/2
-Date: Fri, 26 Jun 2026 16:58:38 +0800
-Message-ID: <20260626085851.70754-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260626085851.70754-1-jiayuan.chen@linux.dev>
-References: <20260626085851.70754-1-jiayuan.chen@linux.dev>
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KhrDWg3I;
+	spf=pass (imf31.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AA6A64071B;
+	Fri, 26 Jun 2026 09:01:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98501F000E9;
+	Fri, 26 Jun 2026 09:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782464482;
+	bh=oljwZFEHyQbS4dJbZnrrRQZYBmFAfUoVQ0TPQ0VSX5c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KhrDWg3IRbYGeQXE8WE2dG1VgG5rq13frn5oMFczMwZ8bAB0zZ/OLITmYPJkLGyrq
+	 9Kat7cxtdTdaL2fT4yGxBSN3RxTcxQlLXsZM2EwYnPvqRTvXmXX+37TpXQmZ5K5b11
+	 p9kT/J+vtWRvGfsha0agfpDCLf6Np9k4Z4uEGf4kv/qN0sCOeGAJNXQIAwGukefLfn
+	 lCzajdw/0rMK/wmhNKgNoC7RwieOB3da+MMJ5gxO0lpTr6K+GfUe9y5ainEOzkpIn9
+	 JLdO4jiQPzi1u2TzznmE5i7CiH4jxlvisl9pMr3r/pfaFpSU3hY93Oak4b58j3XzwO
+	 nIenQfDkYvt+g==
+Message-ID: <47711372-fe2e-4072-8b23-cf3fa09eb201@kernel.org>
+Date: Fri, 26 Jun 2026 18:01:06 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/13] mm/page_alloc: rename ALLOC_TRYLOCK ->
+ ALLOC_NOLOCK
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
+ <20260622-alloc-trylock-v2-1-31f31367d420@google.com>
+Content-Language: en-US
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260622-alloc-trylock-v2-1-31f31367d420@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------1TM52njjKfSDr01RWPlc5SOq"
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9CC3A140004
-X-Stat-Signature: pr5dfacuogon99nmsbgf8danxpqm7ph6
-X-HE-Tag: 1782464403-254549
-X-HE-Meta: U2FsdGVkX1+wrrDjooo2PBnCfpYGqBSGJlXY5YABxDRP3UQhS+51U5jatDsrb5JSnlpyP5O1jKlSUrkI9h0YnPYAPKr3nZTkLvYK+6CvOeQqAFAkFJ6Z6lzMJ36ZF5vWbbLR97nI07RTaVThGNKW4b1d0nwNwi8HOLIEIaPoFAC7Frh6R9L550Fa4Iir3l0AtW3IPiMe4OmZNtrnmJE0Uo/J76/KQzId92dt7yLbQzbPa64lVxWuWd/DJBWdOPzAqN8AFW9u/jzmBw7euiUgxMpwHtY3SWltrtRj5HW0V/cPYRKB9hnW3+hM24vH3jiUH4jOYXkxdNSLLmMgi2GhqiWwchgzaARGoAEu8vAut5lZqUvd/ia/Uc2vG4IqpQV7w5APw6Ac9CyJEu7HX4Td1qRliqlil3hywJZEWDV+jggofwLbGf3p+nqikZLoWBwzyZQpJQs0/syOiIZTjZm0g+IFqqq5fPvpOLiVptw1mXgZSLYXs9k21V7LcyFWzWkdxP0JSDbYUvvHqLmS/alAPl6UKqxXQjs3zwSm0kdKjZXQS/6bRErxX5WAY+dPukDr8N54S7p9w2tYzzkvtQ9b1MVbi/5rIR2vmJ2YgwBobWDdoXmIFy+Pzz9h6d0OIf2UewYFuFcPv8j45WRn9wK7IC7wOACxeZG2k6nzP16d1qv0AbQfAnjcUgOtQAXP2DdszAUHCUZQDvxlTGy1ju9o9ZKoJv/PD4NwY+E8meyAx0fv8s+CjwO8NaNfGDGs+oVv+A8ktr457DDbrk+K5eaaflZmA7iYiwmbsqpdnhammH4STL1hvM14fufqRB/I1Lhd41CehZMqGwO5lXi8WWSNB/NX+JoJcav1DSuATjWcOID8QmTPXgvf8QvdaKprADMAUlV61ef0niY+4hVdYg9dqQDlga9jCWN7CiUCGdHYz8BZu/kens2/6Ae4XgNVbGdr5kEjzwEIwBSUfjCoG0C
- mVftsSzX
- wTa0GB31MbpDs5OCKkIiz0oGe8LdTYVsq7+u90k/rIWc1BsVTmlNhwuc08wr14KvqT8WV5OBJbc08OFQ1Y49KWvo869/PIzy4B5UVSeaTA4uP+kJyOsqRQBrrArHF7qMETnuHSseWHljW5EIPTjeD/kkyElIUNMEv3XoIijB0EZgWVr1ZrOIJQ6umpzbMUrBDtrc9Ex/O5chV9Um9gG5BVgSwgX8eIsZJpHGZLK0Z0OgAgXSMKrls2FggXt2BI/CpJGep4PxOa4dwmgNdk20oTmbEtEvw2Ph8K1zWIywOe7IJwFO/PVTAnjTF5LMvtVWN+r4gIYc9BM1QgGJSY+rRcwNgvQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8119020004
+X-Stat-Signature: kjio17gpi81ms6fw7mi5jctghrhpz6ag
+X-HE-Tag: 1782464483-310532
+X-HE-Meta: U2FsdGVkX19uBdOzQ0JqICY/EbjGswgNgEsjymvROMv/3iFpRFEaCUvbZATIm/FRdnIGXo5pQ7yP+G9bcuSfeuJtxs9or2K+uOwOnzPJs7IT7iayh+0SwL+xLmz3rwV5z0lSV0j7AdIhvGFQIFUjrkXf5NDWwWNXzqe3Tx0zKlOIFW5aco1FsBnRSq69sT5ZmUQOAsIzTRyD/6ZqR54/5MJ7QJbIpSbLaTtXKeQQwg4BAZVXqV9EEKrAy+2X15ua1zGkHa7USIh9od8YO7sJJ80/w1zwohrG504NFgbW9Ijiy9n+GX+u1r/ER+2JhgzK4d551qMPwtptU1gwSiJyVAbqiScml/NF+WDAYvC0K1WGOT9Jv6a+sWSqjxZKH+zmhYKT+gDeF6uqahIEUq0GULV7bYRcfveZjAXe3Mwy79d8wxfADowGCy+fnA+ByX4ZAckimykXW+eCVCxVsYuUahTNSSqSUz2H5+8P5CVyJmjpO8p32Tdp0k/MS+sp8QKEXbDq7JkGgDtpcfu9bQI92BqdPVHWyHLRQEF3UicvDK3SIk1S5l7Zk93obRZ8U89l5j94W6h2gOWhAXDE47lbj6Mc4halkB3LUz6nB4RTDcDapJQw++nbbFl+k0lDJnTV0aJx5xqnBsXoE0sU0QgjqZWmsvy9RfZwb721rWAxYSAmZbHIRJC4Qx1HmxWEBu4itvX8SYUtz0iKIeCGqzKMJIiCAI4/GNA9C9Z8EGoYBklupofkyFjd3oZqbtW1Y1TI5sDHyYwkrjZYFgnStrpUK4G7OGEygoT3STVxgDbT3WSCQjjsQ+B/CDbXeI/bEPTRGkZaTdVZvvjplAuWp3ggf0r7jBTBhlsjJUJVMEjkz29JjAGqwqQ1hJ6nVXOXg5CxF+NYvKuGvUUtRFyLFjUhoLXuVFkXdZqAzfBVE4BvaI6KCaCI9oeKsYOI4+BFAqgEcQGmgCKDYtRH7g4yx0W
+ XdEMd3p7
+ FEzdaLeB5biWA8v0OM4HmERm8xTtKF9aSEbyNPV+hmS1erFd2pjAyCn7XU4dOLhT9nwqk9ythjYUHTjvgYmBhOLiUz3nVfz3wZ3Jvb6ploKUQg6rVvtQ2Kl63WjenEE27sOcZDEhbTYkivBrGGxv8Lrq1ddLBuSd9B9NkMlHBPHv5hvgxRtEPETwiLsWTFKsF35rCCJZ5xEFxFJKzxwfARW0lPDkB9sn5I7cCxyfWnA/0n2wKehe1hXNJX5LVjxoxXZiWTxM2BPgLWH+DhcF7gVWcfSoWQ6sIkBbY8kTjY1SVqnuJp0rlEI25nhb9HC/YKsW2P4jGSXD4iP+pwZM1FU75cj5gdfXohetfryThSk6wGEfPBgooWo1WoPCsbfasQ2DAQuEyq727dwyhX7v0qidsmH9WUhDigaBtcTOxSmTVy9+pSrs1PkNrPUyzGruNsI+HJxr0Hf+E5zFpMSS+ywmVospYaeSt5/38wfJWicYkdVc4tk7ZIgocORqmuaSOt2c24cGH8WckMehCfXJwREWnCFyYatP2RlpDOxrUrQY8WeDcthkmMehNo4hMcTYOra6YtkaiUynRAzFCaSsrZZ+n2bz45fHo7s5MnNAL70xZ0EV6LDOBg9FH6A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,109 +111,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------1TM52njjKfSDr01RWPlc5SOq
+Content-Type: multipart/mixed; boundary="------------XDSSJxToBp7oeVvqN0zGo8UF";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Message-ID: <47711372-fe2e-4072-8b23-cf3fa09eb201@kernel.org>
+Subject: Re: [PATCH v2 01/13] mm/page_alloc: rename ALLOC_TRYLOCK ->
+ ALLOC_NOLOCK
+References: <20260622-alloc-trylock-v2-0-31f31367d420@google.com>
+ <20260622-alloc-trylock-v2-1-31f31367d420@google.com>
+In-Reply-To: <20260622-alloc-trylock-v2-1-31f31367d420@google.com>
 
-Add a test that exercises kdamond_split_regions() when the total
-region count is already above max_nr_regions / 2, asserting that the
-function still splits a fraction of the regions (makes progress) and
-does not overshoot max_nr_regions.
+--------------XDSSJxToBp7oeVvqN0zGo8UF
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-The region size and min_region_sz are picked so the split arithmetic
-does not depend on the page size.
 
-All tests pass:
-  damon: pass:31 fail:0 skip:0 total:31
-  Totals: pass:31 fail:0 skip:0 total:31
 
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
- mm/damon/tests/core-kunit.h | 64 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+On 6/22/26 7:01 PM, Brendan Jackman wrote:
+> It's confusing that the function is called "nolock" but the flag is
+> called "trylock", align them.
+>=20
+> The function's terminology is more visible and has more mindshare so us=
+e that.
+>=20
+> Suggested-by: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> Link: https://lore.kernel.org/linux-mm/2399b3ad-4eac-4a14-94c3-27e9f079=
+72a1@kernel.org/
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index 29fbe495e532..6fe7abcd670d 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -341,6 +341,69 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	damon_destroy_ctx(c);
- }
- 
-+/*
-+ * When the total region count is already above max_nr_regions / 2,
-+ * kdamond_split_regions() must keep refining the resolution by splitting a
-+ * fraction of the regions (making progress), without exceeding
-+ * max_nr_regions.
-+ */
-+static void damon_test_split_above_half_progresses(struct kunit *test)
-+{
-+	struct damon_ctx *c;
-+	struct damon_target *t;
-+	struct damon_region *r;
-+	unsigned long start;
-+	unsigned int nr_before, nr_after, i;
-+	const unsigned int nr_init = 760;
-+	const unsigned long region_sz = 100;
-+
-+	c = damon_new_ctx();
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+
-+	/* Keep the split arithmetic independent of the page size */
-+	c->min_region_sz = 1;
-+	c->attrs.min_nr_regions = 10;
-+	c->attrs.max_nr_regions = 1500;
-+
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
-+
-+	for (i = 0; i < nr_init; i++) {
-+		start = i * region_sz;
-+		r = damon_new_region(start, start + region_sz);
-+		if (!r) {
-+			damon_free_target(t);
-+			damon_destroy_ctx(c);
-+			kunit_skip(test, "region alloc fail");
-+		}
-+		r->nr_accesses = (i & 1) ? 0 : 100;
-+		r->age = 5;
-+		damon_add_region(r, t);
-+	}
-+
-+	damon_add_target(c, t);
-+
-+	nr_before = damon_nr_regions(t);
-+	/* Above max_nr_regions / 2, so the blanket-split path is skipped */
-+	KUNIT_EXPECT_GT(test, (unsigned long)nr_before,
-+			c->attrs.max_nr_regions / 2);
-+
-+	kdamond_split_regions(c);
-+
-+	nr_after = damon_nr_regions(t);
-+	/* Still made progress ... */
-+	KUNIT_EXPECT_GT(test, nr_after, nr_before);
-+	/* ... but did not overshoot the configured maximum */
-+	KUNIT_EXPECT_LE(test, (unsigned long)nr_after,
-+			c->attrs.max_nr_regions);
-+
-+	damon_destroy_ctx(c);
-+}
-+
- static void damon_test_ops_registration(struct kunit *test)
- {
- 	struct damon_ctx *c = damon_new_ctx();
-@@ -1521,6 +1584,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_merge_two),
- 	KUNIT_CASE(damon_test_merge_regions_of),
- 	KUNIT_CASE(damon_test_split_regions_of),
-+	KUNIT_CASE(damon_test_split_above_half_progresses),
- 	KUNIT_CASE(damon_test_ops_registration),
- 	KUNIT_CASE(damon_test_set_regions),
- 	KUNIT_CASE(damon_test_nr_accesses_to_accesses_bp),
--- 
-2.43.0
+Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
 
+--=20
+Cheers,
+Harry / Hyeonggon
+
+--------------XDSSJxToBp7oeVvqN0zGo8UF--
+
+--------------1TM52njjKfSDr01RWPlc5SOq
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCaj4/0gAKCRCGXBN6rc5S
+1gyOAP96IylFQ68CSoQPVkjZreEapB0lAuT4SaO71TRUd9IrEgEApOqW/shMrU18
+8ZWxkyQmKqte3Fat2T/ICqmmF6okdQY=
+=Etyv
+-----END PGP SIGNATURE-----
+
+--------------1TM52njjKfSDr01RWPlc5SOq--
 
