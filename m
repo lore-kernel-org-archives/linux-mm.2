@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8CAC43327
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:11:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BCC7C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 16:12:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1595C6B00ED; Fri, 26 Jun 2026 12:11:10 -0400 (EDT)
+	id 7276A6B00EE; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 130DA6B00EE; Fri, 26 Jun 2026 12:11:10 -0400 (EDT)
+	id 6FFAF6B00F0; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047236B00EF; Fri, 26 Jun 2026 12:11:09 -0400 (EDT)
+	id 615936B00F1; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE65A6B00ED
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:11:09 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34FE31C339C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:11:09 +0000 (UTC)
-X-FDA: 84922553058.10.E2A5816
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 365CC6B00EE
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:12:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A89638DCA1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:12:13 +0000 (UTC)
+X-FDA: 84922555746.17.3EFC1F4
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 53A74140013
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:11:07 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eBlvELcb;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id DFFBA18000C
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 16:12:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQPMbViz;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782490267;
-	b=u2+8MaxYqNLyXDe2Nzoo07IxH5qAZTCh5MDm9ig/QCqsR4R0HPLPa5hZ9/IfJJ2NHjpHqZ
-	bFHZYE2fnoFI1IRzJQqAd9RFEYdtdHAHgvTkaj0S3xA3ZlPh3OcPsZ7gI3AfZx5/2Nu169
-	MQNfh/TxqTOSJNMccxO8wBFudOd9dzU=
+	t=1782490332;
+	b=rklcClwTptQY0ni1CMtz+5MZT+D8XEeDFxaEDxRZG0m5p8Wmw1YGPDQ8djk89yn4K+IwjX
+	+LfmsdkXXLAjHw7iuVryzSXI26tT9EuQQuiuGMTIx1O54hJPA2IqqsHXMRhh5INwqnK4J7
+	7CMsJDKf8k3Fin6i8ZlS1rCdoN29eVs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782490267;
+	s=arc-20220608; t=1782490332;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JJ8+hoO7D+7qgqudQMyfDfTAg2e5gJUXPK5mrA1wKl0=;
-	b=5KuXsw8AsQ9ZYcd3v9xJ12i/FtMKFGwMaW56M6Lo2LPXrQZ9RdRiYBFtK00MuLqpapt+cH
-	eBqlr2vQZPXVt4z6zZ4UyTf+koDDYRZhQBT9Ippt7F/gLbcMWmz8WiCKhIc3hHeHDJtpeH
-	U/vtnq//q9tVhyzNEcq8+qOmeL57FKA=
+	bh=KZmJ5FAUnKSZNe/4tfkRMgIB/pgG0Tmi0diyqJ7nPEs=;
+	b=cq6SM8VpC2Mn/dfsUHpbaSepCsCZd7D+99GEJYJ2VSm5Rt4bTE+B9ws6vNbz7e6/2BShjd
+	/c+omktqsFIxAlse3gc9rCbnQyJKyCEhVWL/VeQzRpIS+u4zm6MWQDCXVk0Lz2Pcam2R25
+	R6isT/CWT0X7XfusOVcnjyoanYYqM1c=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eBlvELcb;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BQPMbViz;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6AC5740704;
-	Fri, 26 Jun 2026 16:11:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2EF1F000E9;
-	Fri, 26 Jun 2026 16:11:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0958D43534;
+	Fri, 26 Jun 2026 16:12:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BAC1F000E9;
+	Fri, 26 Jun 2026 16:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782490266;
-	bh=JJ8+hoO7D+7qgqudQMyfDfTAg2e5gJUXPK5mrA1wKl0=;
+	s=k20260515; t=1782490330;
+	bh=KZmJ5FAUnKSZNe/4tfkRMgIB/pgG0Tmi0diyqJ7nPEs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eBlvELcb1S8gvS56npK1n+m5rPWGrpFU8GDwH0REEGRGnyTu2CHTcJIypJjJqNRsD
-	 W1g0C+aWhsl8de2/5PnDM6eFUirBU7DCu2oWW8FFOR5+spqArQntUKYAOOZ/9Or3sM
-	 C5htzXYcXAfiT0QOhqbJdylAQ5MW4yGLsaGVkYJQpz8lhQUarSTRA5Qrlza3RmmfWw
-	 bOCyoq+NkkU1ViT0kvAKZAPcgMRLTAxM/Vh385aW+mkMem+obUTBs4FCPJSTRAkoMs
-	 2G/iZ1xvUTMV3am+5ar3gZKlTrGj7pYAoMs6vbqOe7lEt/u5hCkMjgRa0YdzU/mbWw
-	 efQa6E1aO3rEw==
-Message-ID: <53e834e9-2cb1-49c1-ab27-2d6b51d50fc0@kernel.org>
-Date: Fri, 26 Jun 2026 18:10:59 +0200
+	b=BQPMbVizG95hAt/8047HSKMeQsim+Jg7gZG6JWlOOFk2v7B6OBpdBP+YhYY1NSCx3
+	 GNVwZnGNfJa9jQOZP/0NogmebDDudQxIbzRVkdLZN0oSJbt3lhb4SB/N+3k7qseuUH
+	 0qfSfZ5wTixIwfN8D/PDSLS0sTeDvvPBjcOHc9ZRveJrSZLJmF2aech3YvNdhxUk3m
+	 AlRxH7+TtGweQazKzTjqDF2/TESXrCQk28erqSy97CA0cs17xP6XG/Td/1zvpEh6wm
+	 7US4qioeGR6+C816i0glNmbbP+kJFCsmwP4rKzufw1tqVZoailjOJGQNDS7OF0KNAi
+	 Yni2bS24/qA7Q==
+Message-ID: <2e9fefd1-38e3-4561-a7a4-d66b5e9f81e5@kernel.org>
+Date: Fri, 26 Jun 2026 18:12:03 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/migrate: rename page to folio leftovers
+Subject: Re: [PATCH 2/3] mm/migrate: fix stale list name in
+ migrate_folios_move() comment
 To: Shivank Garg <shivankg@amd.com>, Andrew Morton
  <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Matthew Brost <matthew.brost@intel.com>,
@@ -79,10 +80,9 @@ To: Shivank Garg <shivankg@amd.com>, Andrew Morton
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Dev Jain <dev.jain@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260626-migrate-cleanups-prep-v1-0-a95933af7619@amd.com>
- <20260626-migrate-cleanups-prep-v1-1-a95933af7619@amd.com>
+ <20260626-migrate-cleanups-prep-v1-2-a95933af7619@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260626-migrate-cleanups-prep-v1-1-a95933af7619@amd.com>
+In-Reply-To: <20260626-migrate-cleanups-prep-v1-2-a95933af7619@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: endbf4sh8ebnddtj3niy6ipmjh45k8yf
-X-Rspamd-Queue-Id: 53A74140013
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782490267-52371
-X-HE-Meta: U2FsdGVkX1/yv2+dGlvJYKSbNGYtMIzYyClBRBed8jYXHgNTlI+CbtgxTy2TBABTkAs1rnG3leD3RJi7rHi90zcDZed7REnvmG5NIEhnWiLSD6Ra6wvsPflUMFIhFl5MQGaIIjTI0XpfToAfgiZFsbg/nSWP1Y3TCbLyPcWmncWFURhAMHwzV4diZykQ7FIlejc4mn6J5/0PcuMlFc2EoQzwHUwJWRzqtK1rgqNKa/FimZo1KrmIvOYNH9hgmEM9gzNUQJLqe7OAuybGlT0/Bnqrt1FsLRbCIjs7AZ4QM0RKINeabLuIY+nI5zCkqZyirtbvdur7Whd9wzzjbjAMZzaiLx7z9t0GokIDEGeRPYSYIjo/ymNE+dzL23RfqdDV1cFaO5HJWN5rwDP2Qom6UnF3H/jcmc9foNxRakUmj9kUrGyoe3RDK0xtm5f7ergNYY5SpnpPtGmrG5wFaIRdXSUbJ+9i7BuAxvRUFx+h1PpjZ7UEDx/3QspA+5UfqemYEf1ouBeuJNAlfswxrkn4uo7N+7wshdp9K6cy7OrSjCnTgKKSaDcwkFIgWVKXKxPFXfqQ7hW/2p/EPjDiFCme85XrLDpxVVvjr+T3q5O70xbjb9B6IzyNT1odT9d49mq4ATQTNob7v+x30PoRyZtqa8xVwNdS9WUpKW0VWeRRs5xI/ZO4ZxrG2GBW4KmrVsgbk/DHHofKW5Ad1eh3hDa/bGLLmwpgyBX+pR4B8Bc1o+ZLAVMUIYWkTYHBpWXKQbIzjh0BPHD2VUZP8xLbC4X6xxwuSSnr6TcrmapIJO7DboMFLCdY6uWUAw6ONAsoYucPDZzoTBPCj7vFUwcMkS1ZlszmBp1hkrml3Byrqrl60S3o58GWCzUfX5h/Gh+d1SS0waagDYsYOE8p7ABWntFNl53BTkbhWyJ6AqWygxqPGO9x3Cr941x3/g91hE8X9ditDdvxuzMIKJB6Eqd34+S
- taU7K1Wm
- nKP14a2trfxKuk6VpF/oq+ViI8kzHd8V4EI948RJc9nBYZ/k8yx7WfDz1cMJ//7yINQlbXo7oXVqFNHaFkmWTW+H3cNVsdKe9HAm7rMfY8aQrzLRBU2tY5TE14ISnCJH3PMHiNUKH5XwKpdHNVT/lwsM7VCqEIURElUFY2qkLQ4v6nlCgUH6ZcVc2rozU/Xj5UX8au6975xvfwdCqlLT1th158oBebqd2S77Ni9KwHYzpMr+fP5mMAVjEatuUxAGjAaV7iKRy3w3cnZnRfTtX7n8Gwok+5MWqJcaro3gVae8mAOiDjKhf/fkWqha2RJh8t02ZP9sp2G5mck+5qN7gU/rB1hNIuKYCVjpvA6FYd/ao2lbmNOaV/6Cut1VQWbNbfva5k22vV2/ZTlV1h+mNfQokqP9KjEe96/liUaa9u8LIjqo=
+X-Stat-Signature: wtfh9eaef9qf5m4kiwye3xnbxmwtqqfz
+X-Rspamd-Queue-Id: DFFBA18000C
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782490331-123943
+X-HE-Meta: U2FsdGVkX19ZuR5ukVM/cAgUdb4hZXcUZv0E4hfpqp110RNqrSg1stqB9W/2cbNSnWnCJHMkWBBGWH9L53Ok+z3KC96weoj6QhYljK/Q5BSRewmEl6NEIcVriYaItNXmLXphNtzUOKaUhRhIqmfNQf5Al/j0R5oYFnK0gVMnwuHb0V2UQuSne04Oi0mzNX1CiqQyWUfduZBR/m5jOpB2ppflrMW2qxllrbz3jvc/UrUe2pUpZeVdfpy6I3zMv/jV4Skm16/Sn8+oXaneT4fDDe1IXWbjXiR2e/WbP3jezVzW+UnxIiws49m/LQ7Fo0oTNe1llGCeorpd2Xv6HlHW3lQF+tXAte4hxOCItJkJO/6NmKGtQ5axSl1Q5OYrcK6YrvNr71pMijElxU2934gC5W4wB7Hln0xk5qKUpAA5ze/QRSNem3XDrCT99VePCzFGcquvTeXyPNE6VPv6QnTbtId65VaRWRadRQsvEusLD0CzIwm1bPEqFRWeW6Pt0yZpDvFLJvOtOrSHIxNl9v6VlYeMwZMwSw096NacuTZhCyfhOqrJFDRAnOCEKzBhHMyrwgAl7lWaKoGjdl+RxPwYCMz2ZaW8PbhzXHX5eS/0YiHfOW9FxPS5jQJykcgyhDNByyS97suCL2F388yXllhwBAPwg0sJr1urYuj4sSMYEdw3xyBzMAq2Vj40bsFq8whjYyKYMtP7TE56SEOb2oiPk0CKjmPkA5e7TS5Gz+OVgLMyq/j8kQd0XrZnSsWS8tGkcyK79m35+tnfa9kH9bU2u/ZU4fjk5HOo2UD4ub4+y9a2DYdSbESM/UHGgLCDpK1g7ZtBY3Fb71rxFZityeO5pAk/i9eNqwvsB9s8cSdcYnJfGhwrGV5MfaaUQtdpUjQbljXuGNCFwQlC0Y3ED3V2BR/NnV99AMoIDcM6E990JK90nW8rSG4XDNejJGTLZOEALvBjze1AHpgSjLpkgsX
+ e8ZZoZRo
+ rqK63pZDBJCrsa51x+XBh7qAnFiH876Ktlgksv/VI8SKEA3IHYUg76LnkTF2P/g7qIZ4QIFn/wvwogfZXAm0lBlGVzGrm31JRQfL31y6fejr+wVHr9PNCGFSNcgzjkOEEGFnZqINTf0iqd41xAJmzP212MHK+77RUC864MRL65anLeQ9QzSfYbFAbYRfzsYFU7jD1NcF5HqEZRs0UyF1K4MBRYFKy4sFP61MK6xVpf1TTrT+iAGQlM2c68MgmfcO3iACAX4uRTC9BXP8timXdko79Aa+oGWv+MEc5eAAsD875Zz0dqF73ixRGJgfpcjJ0XWCoE08U5I7sstWN2krUpGaPFZWosw5Z+l45b6ZywLD/UfGBiGfXHxXoLX0v4NY4su01tQ6qiCE9UOuXNOooFu8/FrtXeThlTyXVmVGr4lqQd4s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,48 +148,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/26/26 11:37, Shivank Garg wrote:
-> Rename migrate_folio_undo_src()'s page_was_mapped parameter to
-> folio_was_mapped, matching FOLIO_WAS_MAPPED naming.
+> The return-value description in migrate_folios_move() still refers to
+> unmap_folios, but that list no longer exists. Update this name to
+> src_folios.
 > 
-> Also fix migrate_folio() kerneldoc to say "folio" instead of "page".
-> 
-> Suggested-by: Dev Jain <dev.jain@arm.com>
 > Signed-off-by: Shivank Garg <shivankg@amd.com>
 > ---
->  mm/migrate.c | 11 ++++-------
->  1 file changed, 4 insertions(+), 7 deletions(-)
+>  mm/migrate.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/mm/migrate.c b/mm/migrate.c
-> index d9b23909d716..dd7dbd8d84a0 100644
+> index dd7dbd8d84a0..84b4c24f9dac 100644
 > --- a/mm/migrate.c
 > +++ b/mm/migrate.c
-> @@ -884,7 +884,7 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
->   * @mapping: The address_space containing the folio.
->   * @dst: The folio to migrate the data to.
->   * @src: The folio containing the current data.
-> - * @mode: How to migrate the page.
-> + * @mode: How to migrate the folio.
->   *
->   * Common logic to directly migrate a single LRU folio suitable for
->   * folios that do not have private data.
-> @@ -1157,13 +1157,10 @@ static void __migrate_folio_extract(struct folio *dst,
->  }
->  
->  /* Restore the source folio to the original state upon failure */
-> -static void migrate_folio_undo_src(struct folio *src,
-> -				   int page_was_mapped,
-> -				   struct anon_vma *anon_vma,
-> -				   bool locked,
-> -				   struct list_head *ret)
-> +static void migrate_folio_undo_src(struct folio *src, int folio_was_mapped,
-> +		struct anon_vma *anon_vma, bool locked, struct list_head *ret)
->  {
-> -	if (page_was_mapped)
-> +	if (folio_was_mapped)
+> @@ -1738,7 +1738,7 @@ static void migrate_folios_move(struct list_head *src_folios,
+>  		/*
+>  		 * The rules are:
+>  		 *	0: folio will be freed
+> -		 *	-EAGAIN: stay on the unmap_folios list
+> +		 *	-EAGAIN: stay on the src_folios list
+>  		 *	Other errno: put on ret_folios list
+>  		 */
+>  		switch (rc) {
+> 
 
-Why not "was_mapped" given that folio is part of the function name?
-
-(it's also not "folio_locked") :)
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
