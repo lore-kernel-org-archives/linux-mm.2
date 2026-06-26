@@ -4,134 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7F51C43211
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D874C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:35:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A43FE6B010D; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
+	id 680306B0111; Fri, 26 Jun 2026 13:35:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1B5A6B010E; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
+	id 631306B0112; Fri, 26 Jun 2026 13:35:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8955B6B0110; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
+	id 520806B0113; Fri, 26 Jun 2026 13:35:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 621D66B010D
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:11:40 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C075CA0324
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:11:39 +0000 (UTC)
-X-FDA: 84922705518.16.E69C63B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0E093C000D
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:11:37 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lKKCG/0y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 24F486B0111
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:35:37 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7A263C25E2
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:35:36 +0000 (UTC)
+X-FDA: 84922765872.17.8EA121E
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 840B04000F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:35:34 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=asu.edu header.s=google header.b=IwKQVIfY;
+	spf=pass (imf12.hostedemail.com: domain of xmei5@asu.edu designates 209.85.214.177 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
+	dmarc=pass (policy=none) header.from=asu.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782493898;
-	b=CATc3WVfOiWqjcWerh+RDvClQ7KUIxx59GAt99E2klltgPh95qwLXreSlmng5VGR6ZM4GM
-	rGaEx4SBbdj9GsO7wj0975SdnCAKEh1dBWvQK4xZ8r0uEkrQslf4O+iCpHwuy3Qqxff0ym
-	RYa2eUfu7mbIxfNEvAqZeco0xOjhDoU=
+	t=1782495334;
+	b=aB932TJIqflQAjUzditzvyKv6O+QBesATuWCEjUBECqjIi3jBCUT2hrWzXcektyRy5kAcn
+	OrmBaQxJSQNqHCC5GOQ/qj4BDjSKtjaVoyOq8nPT6iM+YoE3aMN36fod8rHWpbDNmQUl0k
+	YX5G1LyAs31VMt0ap1GPBJx7/QT/7OE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782493898;
+	s=arc-20220608; t=1782495334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M1TSg3m88zL9U7ax0KrJL2CCGkfVpyIHBvazIemMV5c=;
-	b=I8UV1/hQQ5fx+GqBOqwi5jj2+GKDoZhcaV/VIzG+vePnWWXqMm50hvFIQD7F1uthFaO/uy
-	htfXZY5l6jqeKpNs6ZPuxfrbrV5lU20qIJqjEZKrCCbdLFzpJf1aShudCuLkCstg5TghJb
-	Y6aOF65wTwefyXuJteOx5rGfMV3b2gc=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2rq/jb9kJpeX24z87UrbY8sPlcGI6O1WY5TpBBjHjfY=;
+	b=HEMaI+XgMjH2UKwJdSQPnW2GHHM13B5qDiipOSPIQxuZbY1+smTT7sVp+1HE5HbhnCsUWg
+	srHFjSNVCK+8pJ29tSBkQf8gE+OXL40rsP7PVWCtzrJCh6qj2+n9jCuj/VWyW7RTRCktj0
+	LTc5Uc8cAnAKx/XfRffnphCqHBpQH08=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lKKCG/0y";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D3E1600C8;
-	Fri, 26 Jun 2026 17:11:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89EE1F000E9;
-	Fri, 26 Jun 2026 17:11:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782493897;
-	bh=M1TSg3m88zL9U7ax0KrJL2CCGkfVpyIHBvazIemMV5c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lKKCG/0yHKC9L57TsKeQCQ7hpezVrAD50Shli5YkrEriDnPnkxMUX1GsztZ4ACfVs
-	 0xlD9FmOUH/iaD+VQm4ll8fVmRalcWXJBaXNbIDG1WCMZwjOYjHQ7kRMbi6mqPLE/H
-	 GdGk56ZM93qNgQizn75ELcyu4Z5+sqbEKjqI7k04LKr4l6b0tSRlf2GTcpluIVYs0e
-	 ezI9goimgZyRTWIPUcev8VQS/fIyioWct4jaJIGslxcaC5mR7jjXVvo1vZrNKG13qZ
-	 d+voLCSPev5s0kTRt0EUw5pvAPXYkbg6Fi1A6Ta/1IpEzbNygVjXhKJE0ZebhaVhlQ
-	 UlQHNbIyqu6qA==
-Message-ID: <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
-Date: Fri, 26 Jun 2026 19:11:33 +0200
+	imf12.hostedemail.com;
+	dkim=pass header.d=asu.edu header.s=google header.b=IwKQVIfY;
+	spf=pass (imf12.hostedemail.com: domain of xmei5@asu.edu designates 209.85.214.177 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
+	dmarc=pass (policy=none) header.from=asu.edu
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2c7f1db3ad4so11468735ad.3
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:35:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1782495333; x=1783100133; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2rq/jb9kJpeX24z87UrbY8sPlcGI6O1WY5TpBBjHjfY=;
+        b=IwKQVIfYT4l0hOcTNCpDpRhlaFW8fuKQjNc3A/fSYENz1bNI/5ruES5q6J7fe4h4pg
+         VLDwgKUl1bbIvnOJtBB6dXpd5w5e5di+YXOs5sc026N8XdoL3Fdk/4Nvs1gvllX/jBqq
+         tzlWgBG3lonqjY0kMhKIgCHbT/yz7vWu5AgYSVdd7v2JxWkYWwl5G4KWxy+OiJ63f114
+         ydLiYzY331Kdfi3NxE5SQ2USe8nSmeaQ9u/dn7ksqCQmjQZw2DhN2wywSjAMWIDC1Ac5
+         RTCTrlqa3D35OHRSh+MKMUY4bXEaY71u+q77VpBKSTWrMg6k0kMy7UFhEgDM6eBGX/Wj
+         ouSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782495333; x=1783100133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2rq/jb9kJpeX24z87UrbY8sPlcGI6O1WY5TpBBjHjfY=;
+        b=BNt8Ho02EGu7GPSQtknm4W+pjp4ROD6otI81/sCsPym65Dj146Lw2MDYZDkdsvPAhg
+         lvHIQnUh2cSw4nVVu8mtLiEEA0vagqHGmkOr93hw6nQEDMk8het1QxJBvak4qWsh7fVU
+         tmu5LBpWZx8kwQaps5xpcKrAcsXB/aFJd77W//3WKoKoqAu/q/HpjMJcuW6kD5hvcVKq
+         FLs/HBDD6ObZv75DuVP91q+1ssiD4mjDAt+SySjrc+cY+Ld+RtNlV93HqHnMpeYVntjy
+         po11FDOWSYa/w/RFkPfFI346ULKvbbhxZ77i05DOEgKIzDox9DC1bo6qA41tbY8W5tT4
+         EGVw==
+X-Forwarded-Encrypted: i=1; AHgh+RqHYePfhjQkdj1IfRW0yH7rdMo6Ldbn1xzmzkWICOAnXJXzgdLrmWoRhr6/5IeA8PKvZSnniOr2MQ==@kvack.org
+X-Gm-Message-State: AOJu0Ywf+26ZKGZ9WPGtN74mWLage1JGiDm6sbbzxt5E0yJDBZuh/keG
+	7POeAbAqd6DqilRSo0pcYGqTj88yCaVvY19Zs/O0rWsjIDxX7bNfZ/fWRTNq/kt39A==
+X-Gm-Gg: AfdE7clWWqULgGiHDZoNZj/efVF00BAjJtp70EKxrIggjwZE0z9cRp4sMf0X4Pew3vi
+	1deIbnJyueMIsq18S05Uzjkynbpd33ZjRL/E5iMOoQE38b17HIEtNtoy3ZYTeu2dVNXc8iVUn0s
+	BF0rrQJ9iuxKJPf2AHjfLWEk9sjRYNue3IUBS4VfSQeEPJFj6k9ppbvnSvHv6yVray+hQHlPf/2
+	Hp112uYpfOrjaRPPz8M0COmW2J2taPqSDs9yniyX3O0JsxA2YpqpvedhuyT8an6evjeErVTvyZp
+	+/P7GD6TxZL3JpJftIwq6KUtJdLGAbPr6hfuof3Os8uJPfq1ps/aJA9nk3cQveQDJjxYUWoSxrO
+	FPrdu4N6s6gkF514IBLatWg9flwYwfDEksXG/xG+DfOfNRlYYe6h1AuPErpRTYJKF3lmUVuziRw
+	YGc875BFNH
+X-Received: by 2002:a17:903:1cb:b0:2c7:f227:58ee with SMTP id d9443c01a7336-2c7fca717bdmr68178005ad.22.1782495333348;
+        Fri, 26 Jun 2026 10:35:33 -0700 (PDT)
+Received: from p1.. ([172.56.109.70])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f6509ca0sm42853305ad.81.2026.06.26.10.35.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 10:35:32 -0700 (PDT)
+From: Xiang Mei <xmei5@asu.edu>
+To: Kees Cook <kees@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	linux-hardening@vger.kernel.org
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Jennifer Miller <jmill@asu.edu>,
+	Tiffany Bao <tbao@asu.edu>,
+	Ruoyu Wang <fishw@asu.edu>,
+	Adam Doupe <doupe@asu.edu>,
+	Kyle Zeng <zengyhkyle@asu.edu>,
+	Yan Shoshitaishvili <yans@asu.edu>,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based stack pivot
+Date: Fri, 26 Jun 2026 10:34:44 -0700
+Message-ID: <20260626173444.2252041-1-xmei5@asu.edu>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-Content-Language: en-US
-To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Suren Baghdasaryan <surenb@google.com>, Usama Arif <usama.arif@linux.dev>,
- Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
-References: <20260625230029.703750-1-shakeel.butt@linux.dev>
- <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
- <aj6re83IC84lkFL0@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <aj6re83IC84lkFL0@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0E093C000D
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: 1fwd4imw5k4hsgzotww7333k4farbpsq
-X-HE-Tag: 1782493897-832670
-X-HE-Meta: U2FsdGVkX1+LFb6O5kJM/EDHJ5RZ2fSIdkAupdkKXrbDsjaFuwqBHELYbO2fYVRP1iB3Xty8Izy8qUShf3Gi0nmscgXwCa66RHLAX5emLT3CNWIG7P0mPl7y7AwEA4J8I9qM7FVO289wILweLGxhJEWfSh0ohteHBawM/pDdR9AiIs8vf9i2IssWCYt1Jvuex6oCfsbXNeJ6bfu3IsywTkgsjuFjTIahN4b6DsGFICgoBbA8dfkIAGdDPByF+XLHTZ18TvzxjS/Q+rFtyopGvnybrdwIRPA+Qw3mlwS9JmZndpUkC/bAYi9dlJCdp8mO56AwDyXfKyixmLCvppRXQ+wYa4/JxvbAAEExF5qMayGcp44YGAy+d7fY3lLwFAaspQwtyXxLBDdvice6owYFebDMdGHZpUDVtWucwWV6AR8l1LWM9UF4dsCGROvwt+HDPBh7KL+YZPKMdik3qsRNhy0DmbEjrWuYZiiWdHveiy1ilaNAUhkwzD8VEFv6MLtX/YtFCN4v+P9pv9XBgn/ZJS9tYUTt1ShEESp14hF44JbzOL8vzwVh/x9kbDROtPI4N+nvLULp4y3kzZkZtGKT0j5V3aWQrB9mQdGrt4/ScrMPB5zCd8jfWGhiJeFwvThpKk4VSD3RtGbxeg1oeNYFrajSaebXiYC0BIwLFlaSnyjDrnlQPaMDZCrDJO8yxNdOmoiYFODHmoSZr4drIkKE6PS91LJhfoYb1UNezGT2I65kKYII7Ms3OTh1SNsvVQABae2k3Vp8xw8vmDcuORfKVHw9+H7Gxz6RBzwvvGPbeMwpOh4biApzqSzD0JeGdKnW+hvQd3MqxgptU+PcJjpN4G3CNvpBLK4ZrEJ+filcHablFN73VYFfoCItQsg4/iGrQHLQpOXpoPpfkR3lrf3C19ZY7m80DRyYrjkd/c5SDGxJGwf1TIiP9jpgYY0cXBVKPyWXyWBaM1V4TOn9yqb
- Pv1Ts8rK
- JIxXmojH5zZIUz7o+vs25rHBzsi30zLc2BCsjn1y8UK8Fw3QpYQ2J7+l4phNgg2X44VIhASvsjUPa7mZyrgZc+rG6y1jqg6ExmzE+JIMbiNDPFS7yjXaNeAvv9e0YcEmOZ1DPr0mejIt2mJ5qtxiu4cfEV0zcwkQ0dn2bChVxBqW3SerN0zD3b4JRCjiDhT/mk8u3S8St5dlRd9JDswNUmQC6PWSo2RgmUr6xVCfbejKyoYonSpADDJWLAD7CR2Ct1KTYKPGPA3Nb7KZ7AyIzUJH5oGcCx1SKLLS9/BH3r3+oEqebQl4QezcSOrz2+LkhCrRPNG1XsKdytMAG6+Nbd37nspjbwFaYPF35
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 840B04000F
+X-Stat-Signature: 3jrh6f4xry4cjouq996eksic8881upce
+X-HE-Tag: 1782495334-824216
+X-HE-Meta: U2FsdGVkX18GpqGJNXM9ct7BhPDZ/KbM435kl9lDUzY+VLnmWGTANlZVAxUaeDi6gpsT8qf9ueTL2QTz+UjLUC9yQH0e6BphS1YKh6VTuMSJvT4H7T9hHIzBo2XJGzftSPsoYviEJ14y7xoJlNRvAdJbQK9v5CgqwzZtix1TeDJNy61Au0ZTyRCxMcwKKGzZ5znAeqzrHXTD7aREW2MTaOEG/+LTnFF+0UhNZYBkxBg47IaXKjUlrBUhsb/M6t2TB1CeU4fgyPxLz1UVCVkO9TNzNaZmLna64NtSjYW3pCCQ1pcQWZVrbuzetKzvXAXOU+LQv3BXTcL/+gPbwvvJ7lHCJRhM/RzD+JLHJA9TGh8kHJuEtjK61Y8zH8CDkduOj4BEL/nwrRFrpjSzkkL085f+5toJ7qSqXYrjjcAZRa4a7AKsizdRllgmo1ZQGmZooAp9/KbNKPY53ryh0vH6DvxikmgomddQuqfLYDQQH0oEvjsxVCL9qBbCnN2SaBdxekNfRlD25dWBQFcPTW2ktkTcQviE45l+ESr2JA5Wg2KAV6Pu0GLzTqpc0vpZP0p1H7Y/+wzbGkjdtmK+jiwMnHFZt7UmgMTKU1SvVXvrlsnk3SFVoJIMSaxs5g0nw8M3EBWXPgVPxycC60h7ffSbPO0/w4icB/UiJT4mHUos6KTlnxEzpakW09OF4QI+R6ejKtCAssdb5Cr4qN6NxTD6FlhI4/h4W3WuSp+ProMWMntQiFRewsoSdnQFTdDLw5pzk4F1Jglw7j1ZwT/K5EZGM7MaXWuxtbqfUynq36taXp/APyogTFFvQ7mSLRwn+Y7FUKQRRVefHIaV8XFK5WAxNxvM3I+wQ/va+WWJuFcZAX6rfli27uke+VfAOL7FGdKquPrwgIGSwky325klWSKh8uwekvH6hla6cveP2ZG8UgOmBpvRaqoSQYlsC2wKZ8JpnaxmQQRPLaVuC8lP+j6
+ Jsq4YrXe
+ OqOs/piUbxyRFfLBbvEUSPAMG9vq7dq6Vb6Cu0KXaoTwX09JeGj7SLnlVRXJbt89kOOuTU9HAvsIyfyo1udwvjrtqaFV03w7Vf8QFM4nblqZt5N28p+vfAmW31eGmgBlfVJZcdek8dl0Ju9KMsxLsWNT5LHHivp69N32lJRAJwRu03TgMWUg0AngwfcBgtavTadr+8tPqEw+hQzFDifdgDmjI+hd3KcXH5DeXkZOifxwctc6wMezZwi6Lv9CjEPoDKuimF4LXuHUYXAfczKwUZ7kcB2Y8qfVGxDBF
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,108 +131,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/26/26 18:49, Shakeel Butt wrote:
-> On Fri, Jun 26, 2026 at 01:22:09PM +0900, Harry Yoo wrote:
->> 
->> Hi Shakeel,
->> 
-> 
-> [...]
-> 
->> > What happened: a KMALLOC_NORMAL slab's obj_exts array (used by allocation
->> > profiling / memcg accounting) is itself kmalloc()'d from a KMALLOC_NORMAL
->> > cache,
->> 
->> Usually KMALLOC_NORMAL caches don't need obj_exts array, but yes,
->> this could happen if memory allocation profiling is enabled.
-> 
-> Yes, we have enabled memory allocation profiling fleet wide.
-> 
-> [...]
-> 
->> 
->> > Fix it structurally by removing cycles of every shape: serve the array
->> > from a cache strictly larger than the one it describes whenever it would
->> > otherwise come from the same or a smaller cache.  Every reference edge
->> > then points from a smaller to a larger cache (here kmalloc-1k's array
->> > moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
->> 
->> This will fix the problem.
->> 
->> But this will waste memory as we need smaller obj_exts array
->> as the size gets larger.
->> 
->> We should probably create a new kmalloc type to avoid cycles instead?
->> (needed only when memory profiling is enabled, though)
->> 
->> That would also prevent recursion even further.
-> 
-> Yes but I assume that would add kmem caches even for users not using memory
-> profiling. Anyways, I think that is a separate discussion. Am I understanding
-> correctly that you don't have any concerns with this approach?
+With CONFIG_VMAP_STACK, kernel stacks are allocated in the vmalloc area,
+which an unprivileged user can surround with attacker-controlled data by
+spraying vmap allocations adjacent to a target stack (for example via
+XDP_UMEM_REG, though other vmalloc spray paths work too). Today each
+guarded vmalloc allocation is followed by a single unmapped guard page.
 
-Umm, the memory waste is a concern?
+A single guard page is not enough to contain the x86_64 ENTER
+instruction used as a one-instruction stack pivot. ENTER imm16, imm8
+builds a stack frame and lowers RSP by:
 
-Minimally I'd now want to only do that size bumping when allocation
-profiling is enabled. Ideally that means both configured in and not booted
-with "never".
+	imm16 + 8 * (L + 1),  L = imm8 & 0x1f
 
-We probably should have done that already in 280ea9c3154b2. Because AFAIU
-memcg-only obj_exts array don't have this issue (or maybe they do have the
-[1] issue? Harry?). But if memcg-only should keep avoiding the same size
-bucket, it can keep what it was doing and only memalloc profiling would do
-the strictly larger thing.
+imm16 is an unsigned 16-bit operand (ENTER never raises RSP), and L is
+in [0, 31], so the maximum displacement of a single ENTER is:
 
-Suren's input would be also nice to have.
+	0xffff + 8 * 0x20 = 0x100ff bytes
 
-Thanks!
+That is more than enough to step off the current stack, across the
+one-page guard, and into the adjacent sprayed pages. When those pages
+contain a return sled feeding a ROP chain, reaching any ENTER gadget
+(opcode 0xc8, abundant as both intended and unintended gadgets) turns a
+control-flow hijack into full ROP execution without any register control
+at the hijack site, making it a one-gadget-style primitive that
+significantly eases exploitation. The pivot happens after the control
+transfer, so it is not constrained by CFI (kCFI/FineIBT).
 
-[1] https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
+Widen the guard region from one page to VMAP_GUARD_PAGES (0x11 pages,
+0x11000 bytes), which is the smallest whole-page span exceeding the
+0x100ff-byte maximum single-ENTER pivot. A pivot off the top of the
+stack now lands in the unmapped guard and faults, instead of in mapped,
+attacker-controlled memory. RANDOMIZE_KSTACK_OFFSET only perturbs RSP by
+a sub-page amount, so it does not change the required width.
 
->> 
->> > No slab can be self- or cross-pinned, the tear-down recursion is bounded
->> > by the number of kmalloc size classes (it terminates at the large-kmalloc
->> > path, which carries no obj_exts), and profiling/accounting coverage is
->> > unchanged - the array is still allocated, only relocated.
->> > 
->> > Reproduced on next-20260623 at the same geometry: churning
->> > kmalloc-512/kmalloc-1k under vm.mem_profiling and then shrinking leaves
->> > kmalloc-512 with thousands of unreclaimable objects without this patch
->> > (8056) and at baseline with it (847).
->> > 
->> > Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
->> 
->> Perhaps Cc: stable? v6.12 and v6.18 are affected.
-> 
-> Ack.
-> 
-> [...]
-> 
->> > -	if (s->object_size == obj_exts_cache->object_size)
->> > -		return obj_exts_cache->object_size + 1;
->> > +	/* compare object_size, not the cache pointer (partitioned kmalloc caches) */
->> 
->> This comment is no longer relevant, by the way.
->> 
->> "compare object_size instead of cache pointers because there can be
->>  multiple caches of the same size" doesn't apply anymore.
->> 
-> 
-> I will remove the comment in next version.
-> 
-> Thanks for the review.
-> 
->> > +	if (obj_exts_cache->object_size <= s->object_size)
->> > +		return s->object_size + 1;
->> >  
->> >  	return sz;
->> >  }
->> 
->> -- 
->> Cheers,
->> Harry / Hyeonggon
-> 
-> 
-> 
+Introduce a VMAP_GUARD_PAGES knob that defaults to a single page (no
+change for current architectures) and can be overridden per arch via
+asm/vmalloc.h, and set it to 0x11 on x86_64. This is deliberately scoped
+to x86_64: the 0x100ff bound is a property of the ENTER opcode, and ENTER
+is also a one-byte opcode (0xc8) that appears as abundant unintended
+gadgets. Other architectures (e.g. arm64) have no equivalent
+single-instruction, immediate-controlled pivot reachable as an unaligned
+unintended gadget, so they keep the one-page guard and pay no cost.
+
+The override is gated on CONFIG_X86_64 rather than applying to all of x86:
+VMAP_STACK is selected only on x86_64, so 32-bit kernel stacks are not in
+the vmalloc area and the technique does not apply there. 32-bit x86 also
+has a far smaller vmalloc window, where widening every guarded area by 16
+pages would needlessly pressure the address space.
+
+The guard pages are never populated, so there is no extra physical
+memory and no additional page-table population beyond the larger virtual
+span; the cost is virtual address space and vmap_area bookkeeping, which
+is negligible against the 64-bit vmalloc window. get_vm_area_size() is
+adjusted by the same VMAP_GUARD_SIZE so the usable size reported to
+callers is unchanged.
+
+On x86 this widens the guard for all guarded vmap areas, not only thread
+stacks. ret2enter targets the stack specifically, so a narrower
+alternative is to apply the wider guard only on the thread-stack
+allocation path via a dedicated VM_ flag; we kept the change in the
+common path as defense in depth for any vmalloc-adjacent pivot target,
+but are happy to scope it to stacks if maintainers prefer.
+
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Jennifer Miller <jmill@asu.edu>
+---
+ arch/x86/include/asm/vmalloc.h | 21 +++++++++++++++++++++
+ include/linux/vmalloc.h        | 16 ++++++++++++++--
+ mm/vmalloc.c                   |  2 +-
+ 3 files changed, 36 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/include/asm/vmalloc.h b/arch/x86/include/asm/vmalloc.h
+index 49ce331f3ac6..2c341f398227 100644
+--- a/arch/x86/include/asm/vmalloc.h
++++ b/arch/x86/include/asm/vmalloc.h
+@@ -5,6 +5,27 @@
+ #include <asm/page.h>
+ #include <asm/pgtable_areas.h>
+ 
++/*
++ * The x86 ENTER instruction can be used as a one-instruction stack pivot:
++ * ENTER imm16, imm8 lowers RSP by imm16 + 8 * (L + 1), L = imm8 & 0x1f.
++ * imm16 is an unsigned 16-bit operand (ENTER never raises RSP) and L is in
++ * [0, 31], so a single ENTER can lower RSP by at most
++ * 0xffff + 8 * 0x20 = 0x100ff bytes. With CONFIG_VMAP_STACK the kernel
++ * stack lives in the vmalloc area, where an unprivileged user can spray
++ * adjacent allocations; a single-page guard is too small to contain such a
++ * pivot. Use 0x11 guard pages (0x11000 bytes), the smallest whole-page
++ * span exceeding 0x100ff, so the pivot faults in the guard instead of
++ * landing in attacker-controlled memory.
++ *
++ * Restrict this to 64-bit: VMAP_STACK is selected only on x86_64, so 32-bit
++ * kernel stacks are not in the vmalloc area and the technique does not apply.
++ * 32-bit also has a far smaller vmalloc window, where a 16-page-per-area
++ * widening would needlessly pressure the address space.
++ */
++#ifdef CONFIG_X86_64
++#define VMAP_GUARD_PAGES	0x11
++#endif
++
+ #ifdef CONFIG_HAVE_ARCH_HUGE_VMAP
+ 
+ #ifdef CONFIG_X86_64
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index 3b02c0c6b371..b8546e519deb 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -49,6 +49,18 @@ struct iov_iter;		/* in uio.h */
+ #define IOREMAP_MAX_ORDER	(7 + PAGE_SHIFT)	/* 128 pages */
+ #endif
+ 
++/*
++ * Number of unmapped guard pages appended to each guarded vmalloc
++ * allocation. The default is a single page; an architecture may override
++ * VMAP_GUARD_PAGES (via asm/vmalloc.h) when a wider guard is needed to
++ * contain a worst-case single-instruction stack pivot into an adjacent,
++ * attacker-controlled vmap allocation (see arch/x86 for the ENTER case).
++ */
++#ifndef VMAP_GUARD_PAGES
++#define VMAP_GUARD_PAGES	1
++#endif
++#define VMAP_GUARD_SIZE		(VMAP_GUARD_PAGES * PAGE_SIZE)
++
+ struct vm_struct {
+ 	union {
+ 		struct vm_struct *next;	  /* Early registration of vm_areas. */
+@@ -236,8 +248,8 @@ int vmap_pages_range(unsigned long addr, unsigned long end, pgprot_t prot,
+ static inline size_t get_vm_area_size(const struct vm_struct *area)
+ {
+ 	if (!(area->flags & VM_NO_GUARD))
+-		/* return actual size without guard page */
+-		return area->size - PAGE_SIZE;
++		/* return actual size without guard region */
++		return area->size - VMAP_GUARD_SIZE;
+ 	else
+ 		return area->size;
+ 
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index bb6ae08d18f5..8bb2b3ef40a8 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3217,7 +3217,7 @@ struct vm_struct *__get_vm_area_node(unsigned long size,
+ 		return NULL;
+ 
+ 	if (!(flags & VM_NO_GUARD))
+-		size += PAGE_SIZE;
++		size += VMAP_GUARD_SIZE;
+ 
+ 	area->flags = flags;
+ 	area->caller = caller;
+-- 
+2.43.0
 
 
