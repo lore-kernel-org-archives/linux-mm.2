@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACBCCD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:33:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E23CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:34:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9570B6B010B; Fri, 26 Jun 2026 06:33:04 -0400 (EDT)
+	id 22D4C6B0110; Fri, 26 Jun 2026 06:34:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92E766B0110; Fri, 26 Jun 2026 06:33:04 -0400 (EDT)
+	id 206116B0114; Fri, 26 Jun 2026 06:34:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86C3B6B0112; Fri, 26 Jun 2026 06:33:04 -0400 (EDT)
+	id 1422C6B0115; Fri, 26 Jun 2026 06:34:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 65C006B010B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:33:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0271CA03E9
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:33:03 +0000 (UTC)
-X-FDA: 84921701088.17.CE2339A
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2C5D71C0009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:33:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E71BA6B0110
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:34:10 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 775381A03E2
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:34:10 +0000 (UTC)
+X-FDA: 84921703860.08.C249544
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AB96680017
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:34:08 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	spf=pass (imf02.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782469982;
-	b=VVWJkuK4gnve8kgnP/9aBziJ9Wnty/cgsUxd1HPXr48eHEPFnrOdSCFA4b73oIyKfM2VhZ
-	tQG5H3jUdFBXAi4ObjWI9wwBJbZdqydP7bPnZSFgVfwZsHmD3xgvnEXgrhs1kXPUVHfZKe
-	w7Abjah+rviShgA4X32BUnugRRn1haA=
+	t=1782470048;
+	b=JlLSzse0B4jUfS4+aqnNDX7PG4Jrnjye06rzRsRTb0DO7A+d9xTprua12G9FBPOa6JmUyM
+	+3WyQ9QxfnhuYDFi1kwZ8OnlwbU57taLbMnECSEsBViPx5jiW8MW1y9WiiWXSzDwxM8F+W
+	g1DS/T9XVCfiYw0aUy8xNxenDHiwKm8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782469982;
+	s=arc-20220608; t=1782470048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8gMFkrXfKqxSdfofXJDNgc4lAClOuImmq01pKN/JDNA=;
-	b=4yhwPGhF3E+iTW2VKEH40AhBcwEBVI4Zm/Jt5OW27StSsnHyCFjWd2fPxwE6MjQsbopqmF
-	fHeTX1JRy6w47tov7nd17dbp6LNvTjUDpZ3rnqbOb71PeFD2dvBHnLHonfVkUHeplV6JiV
-	RO11z9T9zucqhzitl9maNQvBrf7v4Ts=
+	bh=yssedXzlapOOd0igp+sjs1tPmdImP/TdG96kJqU5CHg=;
+	b=XItnES+4gxZCtk09Xjk0byHeG6fPgyFeKpiIGkh5UVHW/Zb9kEEru0QJn0E8Pj73hUPChi
+	2rEj+n6ajktwRpfZn/H7vF3jbxLZxVrMoDj22SIMowWk9LuORAaGW1/cEyyCII9mIXMTSF
+	SzKS5K5F64H4wUJ7+T22f8QJXAaE2tc=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.198 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	spf=pass (imf02.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
 	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CF0FA3EB86;
-	Fri, 26 Jun 2026 10:32:55 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 35CA53EC65;
+	Fri, 26 Jun 2026 10:34:01 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: alexandre@ghiti.fr,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -91,26 +91,26 @@ Cc: Axel Rasmussen <axelrasmussen@google.com>,
 	Yosry Ahmed <yosry@kernel.org>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2 8/9] mm: percpu: skip the per-cpu node walk on single-node systems
-Date: Fri, 26 Jun 2026 12:20:57 +0200
-Message-ID: <20260626102358.1603618-9-alex@ghiti.fr>
+Subject: [PATCH v2 9/9] mm: zswap: per-node kmem accounting for zswap/zsmalloc
+Date: Fri, 26 Jun 2026 12:20:58 +0200
+Message-ID: <20260626102358.1603618-10-alex@ghiti.fr>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626102358.1603618-1-alex@ghiti.fr>
 References: <20260626102358.1603618-1-alex@ghiti.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-Cause: dmFkZTGdhs9xuqAzUROmmsJvsJjXlJZ0qeTIQWv1SwQGarWmGYIa0sFgvk5TpQ9jfrltusvZoPk8YdWn3PZEEalLBjdfHMe7NqNuZrhxSoChbVpy5Nep8byl3DHWVqDvp22mXFzlNO8942ydLlAkQ+L6aO+eIgnDvtvprJXn6Gk9sJGXK+ptPbEvnkFg0hCg1QwOx0jFi2oA3CD11zGmtPZ3Qj90hnJeuAwCdkM5UQT74WjOHTYJqjH6/g55DRp4gxglIvoWlT1Dy8heeGbvllTWUsmkWwtaP9Gq6rx1FN35MPiV+ZgrCHBylug5kSysqz4Bd4NnZNgsc26P0Z686fWBs04NGZ2L6BOqlCYjKvy0RPl7Thgt+4EKQYopbxzDs7aRSVnv8Om2E7KFTJqyW49SFwExedbRztVQ3o3Mx42iJb/e5jWK2J2HP0hZ8f6iwzaeOrYp24wuOmClFvrWLD0Vl4qKtHrID2ph3in0idGpyU1i+AnVA9ZmliVPBjveNKHVapt32F7vtuOo5Gr8AZ+yUGd3ELG9ZiGkMLsESU6QpYSR4Z+V/fA2nWJNczIPh54RZtlsCY6gKvvfZI+HtGQP2Mil6Dk60YBYJdUlCDWI2Ymw0Ya/Rwr3g0qWeGny0xO8mX/7X33UudNXMYp14pkhpFjJdky320ibKb7wdMNa3KUXNA
 X-GND-State: clean
 X-GND-Score: -100
-X-Rspamd-Queue-Id: 2C5D71C0009
-X-Stat-Signature: czecrdwj83ss5y97u9rejock1ncihxwi
+X-GND-Cause: dmFkZTG3h5G6t3FC2isZZGU/PT2pn+1paeiWOdgcvbFuD+1BKVsNu4saVvfuzt75aavMMcGzuV3jTmfiGGFoaK1beSakgFC7iEno5M78bKzolba0CnxXwUui8VjRa1yK6+WhcZ/aKsvWtdNWYdQgHkYc+meTm6yjPpGSSCaQ/cUZsVZjasBVRYNS5HCE4R0qp9cJZuPpvf7jxHkgnY4LdvAc8t5qsLJYCXTJKl501kxTLSYYWKNE5ufQVuz5upqkJLG0shbqvbT6RN7ik/pC7OXlu/GwZnn7PAXBL5PaAIvFrTlXRqOeQUW0BAvIJCUnr8re/L97syiX1fL4lPXMhmn2cVwrKlRN7SgVe3oX12fxoLpgCMiakunAF0nk7ZKlp4KV7lAyV9Av1/BDD7qQI0UD+tGTHnWIjwfXgb3VWkWC1vfMSQSTfjPuLaaFznyiH01XFnRH/+8/Il79IfAYhV813teP6pqb0tLfCzfBb2rseQ3ItD5QjdM52zAZrfUJEG8f6stkCHzzDO/uyzLPyjJJk5WnPzwnSPb2ym2c9iPwjEyOx/0VVV1BM2xGJP8TbWaMP7ZbXKW/HZJXEu0230c32PzvnJr1ezYLZ+XbYak7O1/XIQ4uGlicjMdcGOoJ8d+X7NurrBJkszb5Uu1NqYfo1vuyuyilJYRKxgyCO0VYmTE4NA
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782469981-68721
-X-HE-Meta: U2FsdGVkX1+eJCgmzYahSzhv+cScyrP49+r9P5TZsyIoEELiBt644SD5dx4Qjkvm+m3yS08LjpyvoTSg97YmaClH5lT1kfCCLmFdIAfSlmGZH/F1KMXMWUhHlXCIw7G66tcO+2th7zmmrWOyOKg1lGMFQYAUuBtyz25r6wUeer14pI1+3kUuNpLtse7xPCXbbOaAof960fRynw+HmadwG+CtBgaxVkXGehw17hRUmax9yTRY30phaq2E8t/t7r/P6v76HZVbo8bhNfIoywdN1CvnMyum1H5ONkyNyQkgwdHtieTfP3LqF2usOV6RegJmAf5Ftx0Za7+16exrg11vDmXVXT9+/2mHcAT8jC3dsKbf311nDJuA/pdtS6/s7QmCJp22HGU6jNtJ3LL6EDm6U6JMwsL0OyLfufYlYXedPUDtnIwXGRqU8wdILoKYPlMEWGEr5gCUNdBKsS0D3i2xRA8pB+ATnjtgc/10xHLVSr2t6aJ2BbgQLQgQjkRJmj3Di8PLy5vrSnS1s0jeRUb2TwKjmAjAHHgeFlE7qaoVHFjgk5Jun6hFksEYQJ5qR2f29MgydGCxTx/q/2e1+AQg5hQAUv229TvL7upCNxFysUX3Hn8SHNWYgcNz5eC83RCveBF9pAFiEMrsWzgrVVjS/L3vVtfwObLq3OewyMU1NpHOXwLC9nV1wLbGh8IrfBBQR8wo/vK2pzN3NNH3TsS2qUpSd3DvF4ICaie9YA3EslabaTk/MvW0MSfJYFi0nsqL2is/oAoJGvWC7LLqn1Afh5oyo/HCCJQhVS8oK3HwL+vj8/5y7bDEKz+alb819EnwvGawUVWimFj4qyQxN+d+P0IUeNT5hP8V/0lK9U3/lGBUodFfNDWNU7d2LKT7lpyMTA+7h473qlfVVukO9XhUOiS32R7ny9wQpr7NxmYy9YLT6PrY+oXJjeRLY6GAH1rJyEFkd2/vvwLQjqHPikz
- HhHUdekX
- Ym2VQ
+X-Stat-Signature: j76o7gwpb5wk8o67477qi7j79bq3pbqi
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AB96680017
+X-HE-Tag: 1782470048-464095
+X-HE-Meta: U2FsdGVkX182jqfrQk6LbxTEAjLx4GTT6W1aPhpoiyLJG+0lZId21qjSEg/iKC5+JqxWtVoXIjf3hg5UOsYC2JuLDCOozsOCpYGp0sJj5vbvSw+VNsr9LrsTEYU+quc5W7d931DiwAbv7SFkbzRsoxnjGlM1Puqhc4rkji+ujzhwMGI6a5exrSVZ3+dq3RKd+8sIe7BabmWKqcoiVsiBBT1NEcCiR9wp+cxQEd99znJsW6JQRJ1kaOYvEth+bKr0ZB9TuTZUaheTHhs/PWL1jfI9p60w6VwhkGe8noU3qwRRxsOHxVAscoblE/Rve3fz5tYEtbQdgwpPIkZyyKEI6kmT/PTGhpKH5gnKXS7+/1fyRnu6OKnwhHfoaJRMTpnSwug/ZvyQ8iOcAprqAX8xNP8HG29Yx+2cXxZNDkuHQUmjX85y1R3lsaVqGkYkzCFGY1u2Y1szaHQkTs6wnWIOm81EuFeKy/eWijREeAUY5PEKzBMPynwPLX1esi/R1R+oqqEv2sAgjLMXQTJ737gUVRHDpILW3r/flVUUK+UcTFCTRPYxDkXQhez04fsAurIWVvvi2BbIxnDq4d1cmJeV3JG33I7bGgQlym8g5WCGYW++cWxBDQU33/4IhCvy3aJLEfv0jernnWwvU/uCSuCZQu0ZizVezRqFFoTBXorgASjySPKiQ68P0bDMgcJHw6JcKRNAHi+nikxoQtWc08x1VZr1k2shn4FDwruJOoBnqJCjye7GX2rmRlL4VBKMYiq4zGK/JJZ9RABlJsk6ZS7Ksbjy0Be1l5n05muM2gpgMhxbCdjq5OkVWRIqb69KfJYot+/HXvv5Co811QT1RANz9jfEiYzeIVYt7iJhJ7rb/6bJjmdo/4WeIxNWXPvioKgqzp6Ei7M3+0TQ1fGSGp9fVNfcr2aiSiwRXL7C/U9FO4cgok3W2q7RTMyBHBrdo9TLcGVCU7NObDrJ6pfOM9i
+ Es20hvX2
+ CmRVx553e0L/cq9MoncsN+IcA/aCiptzXerscFrjVhSxNEB8sHx//xaX3Lw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,66 +118,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-pcpu_memcg_{post_alloc,free}_hook() determine each backing page's NUMA
-node by walking the chunk with vmalloc_to_page() once per possible CPU
-(plus the obj_exts vmalloc pages). On a single-node system that walk is
-pure overhead: with only one online node, page_to_nid() can only return
-that node, so the whole allocation footprint necessarily lives there.
+Update zswap and zsmalloc to use per-node obj_cgroup for kmem
+accounting, attributing compressed page charges to the correct
+NUMA node.
 
-Add a fast path in pcpu_memcg_accumulate(): when nr_online_nodes == 1,
-attribute pcpu_obj_full_size() (payload + obj_exts metadata) to
-first_online_node and return, skipping the O(num_possible_cpus)
-vmalloc_to_page() walk entirely. The result is identical to walking the
-pages, since every page is on that node.
+But actually, this is incomplete because it does not correctly account
+for entries that straddle pages, those pages being possibly on 2 different
+nodes.
 
+This will be correctly handled by Joshua in a different series [1].
+
+Link: https://lore.kernel.org/linux-mm/20260311195153.4013476-1-joshua.hahnjy@gmail.com/ [1]
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- mm/percpu.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ include/linux/zsmalloc.h |  2 ++
+ mm/zsmalloc.c            | 11 +++++++++++
+ mm/zswap.c               | 19 ++++++++++++++++++-
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/mm/percpu.c b/mm/percpu.c
-index 9224344d4b8e..9a735d01b23a 100644
---- a/mm/percpu.c
-+++ b/mm/percpu.c
-@@ -1689,6 +1689,18 @@ static void pcpu_memcg_accumulate_obj_exts(struct pcpu_chunk *chunk, int off,
- 	}
+diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+index 478410c880b1..30427f3fe232 100644
+--- a/include/linux/zsmalloc.h
++++ b/include/linux/zsmalloc.h
+@@ -50,6 +50,8 @@ void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
+ void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+ 		  void *handle_mem, size_t mem_len);
+ 
++int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle);
++
+ extern const struct movable_operations zsmalloc_mops;
+ 
+ #endif
+diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+index 83f5820c45f9..17f7403ebe77 100644
+--- a/mm/zsmalloc.c
++++ b/mm/zsmalloc.c
+@@ -1380,6 +1380,17 @@ static void obj_free(int class_size, unsigned long obj)
+ 	mod_zspage_inuse(zspage, -1);
  }
  
-+static void pcpu_memcg_accumulate(struct pcpu_chunk *chunk, int off, size_t size,
-+			     unsigned int *node_bytes)
++int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle)
 +{
-+	if (nr_online_nodes == 1) {
-+		node_bytes[first_online_node] = pcpu_obj_full_size(size);
-+		return;
-+	}
++	unsigned long obj;
++	struct zpdesc *zpdesc;
 +
-+	pcpu_memcg_accumulate_pages(chunk, off, size, node_bytes);
-+	pcpu_memcg_accumulate_obj_exts(chunk, off, size, node_bytes);
++	obj = handle_to_obj(handle);
++	obj_to_zpdesc(obj, &zpdesc);
++	return page_to_nid(zpdesc_page(zpdesc));
 +}
++EXPORT_SYMBOL(zs_handle_to_nid);
 +
- static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 				       struct pcpu_chunk *chunk, int off,
- 				       size_t size)
-@@ -1705,8 +1717,7 @@ static void pcpu_memcg_post_alloc_hook(struct obj_cgroup *objcg,
- 		obj_cgroup_get(objcg);
- 		chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = objcg;
- 
--		pcpu_memcg_accumulate_pages(chunk, off, size, node_bytes);
--		pcpu_memcg_accumulate_obj_exts(chunk, off, size, node_bytes);
-+		pcpu_memcg_accumulate(chunk, off, size, node_bytes);
- 
- 		rcu_read_lock();
- 		mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
-@@ -1748,8 +1759,7 @@ static void pcpu_memcg_free_hook(struct pcpu_chunk *chunk, int off, size_t size)
- 		return;
- 	chunk->obj_exts[off >> PCPU_MIN_ALLOC_SHIFT].cgroup = NULL;
- 
--	pcpu_memcg_accumulate_pages(chunk, off, size, node_bytes);
--	pcpu_memcg_accumulate_obj_exts(chunk, off, size, node_bytes);
-+	pcpu_memcg_accumulate(chunk, off, size, node_bytes);
- 
- 	rcu_read_lock();
- 	mod_memcg_state(obj_cgroup_memcg(objcg), MEMCG_PERCPU_B,
+ void zs_free(struct zs_pool *pool, unsigned long handle)
+ {
+ 	struct zspage *zspage;
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 761cd699e0a3..466c6a3f4ef3 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1438,7 +1438,24 @@ static bool zswap_store_page(struct page *page,
+ 	 */
+ 	zswap_pool_get(pool);
+ 	if (objcg) {
+-		obj_cgroup_get(objcg);
++		struct obj_cgroup *nid_objcg;
++		int nid = zs_handle_to_nid(pool->zs_pool, entry->handle);
++
++		/*
++		 * obj_cgroup_nid() returns a borrowed RCU pointer (no
++		 * reference), so the returned per-node objcg may be freed
++		 * (kfree_rcu) before we use it. Pin it with a tryget inside a
++		 * single rcu section; if it is already dying, fall back to the
++		 * folio objcg (held by the caller) so the charge still lands on
++		 * the right memcg, just without per-node attribution.
++		 */
++		rcu_read_lock();
++		nid_objcg = obj_cgroup_nid(objcg, nid);
++		if (nid_objcg && obj_cgroup_tryget(nid_objcg))
++			objcg = nid_objcg;
++		else
++			obj_cgroup_get(objcg);
++		rcu_read_unlock();
+ 		obj_cgroup_charge_zswap(objcg, entry->length);
+ 	}
+ 	atomic_long_inc(&zswap_stored_pages);
 -- 
 2.54.0
 
