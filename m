@@ -4,83 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A957CCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97D9ECDE013
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 08:21:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CB486B00A6; Fri, 26 Jun 2026 04:20:54 -0400 (EDT)
+	id 6A9DF6B00A7; Fri, 26 Jun 2026 04:21:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A86D6B00A7; Fri, 26 Jun 2026 04:20:54 -0400 (EDT)
+	id 681766B00A9; Fri, 26 Jun 2026 04:21:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E0456B00A8; Fri, 26 Jun 2026 04:20:54 -0400 (EDT)
+	id 5BF466B00AA; Fri, 26 Jun 2026 04:21:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5A5D56B00A6
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:20:54 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8A621A03B3
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:20:53 +0000 (UTC)
-X-FDA: 84921367986.15.05E9DF5
-Received: from mail-m82159.xmail.ntesmail.com (mail-m82159.xmail.ntesmail.com [156.224.82.159])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 84E86120004
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:20:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf29.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.159 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 25A506B00A7
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 04:21:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81C0B1A0358
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:21:30 +0000 (UTC)
+X-FDA: 84921369540.08.27D27EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CAF101A0006
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:21:28 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2rMods2;
+	spf=pass (imf19.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782462052;
-	b=faqzYq0MSIpUTawOLACdap6lob+Js7oMRZguk/WDwaRaSwzyEq2G4fi/FE4MoAo8Puo/yd
-	d+wgnHi/nY7hLTqwc6qQR/8VX3Dr/WZppf8VpK1Ma6/7voc2YfIDVBY3o9RXAik/sHfsv+
-	ZzZbJUseMJN05l2mTxakFkFS6jfNdhU=
+	t=1782462088;
+	b=n6ShBOfydqbp1nFXil9kJu36zo9Cbk2js3jfet4BKnp/Xg+2rhTMaL4FebxSVeP8CmIh8v
+	VJPqP92wPX8LNt8DfQoxc4qbykF/WoC3UQXprrIQ6N77/0kQ4lu44GXHCGQ1pFUVtDhZCw
+	1ePooONueFCBSjWDpFNJRRv55Aqs3o8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782462052;
+	s=arc-20220608; t=1782462088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e/L2KLjMCpTLW0CfuScQX2gognXOjZ7j/pK1RIKwVCY=;
-	b=eT8Np8z6yipPApdQZ8eg7ajQ7KJU40Eauykp2MXe7AoL/d7z+//jSjgfZwTbBBQ0l9PXGX
-	/Sk1N/yYVElH8+ldu/l5ozBnJ/5SHpgOq6kphMfoOOMaLWABEmZtiZQg8iq0zWx3HAXVGr
-	ITPmWd4K1coK8ntGG+6X/HP51M491CA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8Gh35kQAbF9NJda9I6lHvwWhKBgWUfcBmP3w8KkXOio=;
+	b=phm+J4LSfNf6UrLPfWKEw26Wrf1h/knyHqDC8hzeGRbAp4tsNG6b3SZe77pHRuzQ9UJEWT
+	KWAZsB5WwibGwIPDdjeBEv3At3tLBxJUT3GZlytmzHSnDQzgtUNBdiT/eylPZHCwp8wvZh
+	jjyiZ1gv61DaaugrDZWapkGgoYDCZno=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=easystack.cn;
-	spf=pass (imf29.hostedemail.com: domain of zhen.ni@easystack.cn designates 156.224.82.159 as permitted sender) smtp.mailfrom=zhen.ni@easystack.cn
-Received: from [192.168.0.59] (unknown [218.94.118.90])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 1bef758d8;
-	Fri, 26 Jun 2026 16:20:44 +0800 (GMT+08:00)
-Message-ID: <4944753a-da93-4f7a-8f22-81bf41cd171a@easystack.cn>
-Date: Fri, 26 Jun 2026 16:20:43 +0800
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2rMods2;
+	spf=pass (imf19.hostedemail.com: domain of patchwork-bot+linux-riscv@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=patchwork-bot+linux-riscv@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2FB9F60132;
+	Fri, 26 Jun 2026 08:21:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A8B1F00A3A;
+	Fri, 26 Jun 2026 08:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782462087;
+	bh=8Gh35kQAbF9NJda9I6lHvwWhKBgWUfcBmP3w8KkXOio=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=P2rMods2RZJ2WUH9fceMLGk+MpRiyzpYQRjH4L1pJ6AqR61HFQvucLW938qDFyqSa
+	 FrkrECMukEjHEVzuIjf3V5yv1Q9p5xzHWGE+6HTZgD9e8Q+Z7nOezHkV6X/Sw+wiEW
+	 UPxEJFogBt7IvXPhQEsLsvxrjA2ZUZ+sJUU/SjGsUQqENcjHgmsRWXaKB8JJOigNrD
+	 z/e7SPqqHF1NDBLkiCfywon1PNKm2pb6Q3QrCHZx2g16/jVLKpx0YZhOf14SdseVff
+	 79jb5rym05v6a+Y09V7n67Wwd7zqoPAjo6ZU1rDj2vUgGPcpWRf3ejlG4/+MASOcl2
+	 CdcLmqI3QOqjA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199D739389E8;
+	Fri, 26 Jun 2026 08:21:16 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 2/4] mm/page_owner: add NUMA node filter
-To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org, vbabka@kernel.org
-Cc: surenb@google.com, mhocko@suse.com, jackmanb@google.com,
- hannes@cmpxchg.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260625043101.338794-1-zhen.ni@easystack.cn>
- <20260625043101.338794-3-zhen.ni@easystack.cn>
- <DJICJHL8QY2F.2C6UR95O4RBIT@nvidia.com>
-From: "zhen.ni" <zhen.ni@easystack.cn>
-In-Reply-To: <DJICJHL8QY2F.2C6UR95O4RBIT@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9f030458870229kunm4cb2cc3bf23d9
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFJQjdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVkZGRkeVhlDGk0YSRlMGkJLTlYVFA
-	kWGhdVGRETFhoSFyQUDg9ZV1kYEgtZQVlJSkNVQk9VSkpDVUJLWVdZFhoPEhUdFFlBWU9LSFVKS0
-	lPT09IVUpLS1VKQktLWQY+
-X-Stat-Signature: u86drsnq853gy7hyb8rkun97kq89nax4
-X-Rspamd-Queue-Id: 84E86120004
+Subject: Re: [PATCH 0/5] mm/sparse-vmemmap: provide generic vmemmap_set_pmd()
+ and
+ vmemmap_check_pmd()
+From: patchwork-bot+linux-riscv@kernel.org
+Message-Id: 
+ <178246207479.3816447.9419541647213093704.git-patchwork-notify@kernel.org>
+Date: Fri, 26 Jun 2026 08:21:14 +0000
+References: <20260404071720.3577290-1-songmuchun@bytedance.com>
+In-Reply-To: <20260404071720.3577290-1-songmuchun@bytedance.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: linux-riscv@lists.infradead.org, catalin.marinas@arm.com, will@kernel.org,
+ chenhuacai@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, davem@davemloft.net, andreas@gaisler.com,
+ akpm@linux-foundation.org, david@kernel.org, muchun.song@linux.dev,
+ kernel@xen0n.name, alex@ghiti.fr, ljs@kernel.org, Liam.Howlett@oracle.com,
+ vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ ryan.roberts@arm.com, kevin.brodsky@arm.com, dev.jain@arm.com,
+ anshuman.khandual@arm.com, yang@os.amperecomputing.com,
+ chaitanyas.prakash@arm.com, wangyuquan1236@phytium.com.cn, ptesarik@suse.com,
+ austin.kim@lge.com, vishal.moola@gmail.com, junhui.liu@pigmoral.tech,
+ willy@infradead.org, alexs@kernel.org, chengkaitao@kylinos.cn,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ loongarch@lists.linux.dev, sparclinux@vger.kernel.org, linux-mm@kvack.org
+X-Stat-Signature: i9p57gtdrbdq3punmqnemqwuwcy3q5qo
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782462050-39328
-X-HE-Meta: U2FsdGVkX18RehKUbTNZKLJt8VRm3H8o30Rv7EchPazus/UiUiE1miWh2JX2twx5LBiZPN3vB4Cqc0SXzr93/k6Zy3d92FuB4GL4pNQkeFmJySOkd5CkGOSZyuqw5Mzc+Nwgz/6TM72khKs+a90Ff4oj2CQ1QkGIXczi1xbvYCkv5E5WiCuKEf2r0OLCychAIPXyWsiWTLbG7ILSVYP87x1Ofpt9vTIZTSmQSNEe70tVeyddZHak50YoVbaEzw9R6m0P2xx7FSkbqsznvYxO3WzjMEvJ9eoMIO3TAhuj685mv1Vke1Z4fm8SFM6y2HfwBE0AxsMRWHT/dpAhN+/gmUsW4i132DfhQXXSftEXs+jdF51I7+LVar9Xd5SVZ4sAYkQV/YHBO22ONpqUoMqrutXe3hw6ds3LkhmGzTeQgRoIqB+xUwDVYc8X6j2TWwlEvFP2etQxYnyW15ss2ji1ETO8j6k7oUlN6I57NPe3/6f7Nx+Zxp7k/Z57umAi9WI5h+CH3NpkDe3yKrgZIJVwml11GBq9SUf3P+Pz8GR82P+mWvxGA2KR8VR2Zd/4PdX7QBsHJDv8Pv0VbruN88cxUdXVdIbcwgyVK9UmOICo8lppWS3SR8wxVji47J9RpPuWG7UyAkjrXIreUqgOEQuN+wMmpC+y4kYE9HlbYCrSfCJjMxffdLDjyemk4bi4tLQ8cFif3JCGHaHZzFpqNsArVBYHz+zNgtr9ZNi2WIl3T090fLgrpLyPYlvmfeYLEU+QVfo0vim9RgPi+QCjDZtUnAIlpY3M4TF7TAjromvKKp7J8UT2VcVHNzsaYxZsLPnHP+KUebfIhJNUiiIPKYfFYxnofdNJHUb2NnqzaBWAjRbmmtzneaaS4UdRC3M6TeoFi1rwSi9+GTuzs+Fv+bnpISNV8Ud7fptzWiu2GxAaR4k0OpUNYKGTlIvTHnG23DLknqKrunF6ZRbHd7jUR6v
- ZX2Cw5aC
- ZHJHnlIuMkVDkpa39oKKXRquUklMRzK/GUk34in3Eqx31Polo303fz4eLjV68Rm2yIb9SfF1lfC0C5rnMh5AKGjrf0P9GNKrjf+V+gsMtoICAVC/9H6XGcVtURAXbf3iqzGq2GN7deUfUEhrpSasA4mZ8s1APJuizGhTwKF7MuPZizpkF4O8AKXKXGqb5szLbIhFgYXdJ7TJiBVtpDrAoLiHhdbQ2r0kwNuP+Kvhs4J7I6pKyhaP1TZOKJw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: CAF101A0006
+X-HE-Tag: 1782462088-111788
+X-HE-Meta: U2FsdGVkX1+M29uHl0A/gZShASwbHUmzNZt1Zpd6Us4KiVghhb1bBXW1WsHV04mqUTluufx65hf4pQ2eQb4sK6SYHCx/GxS93Yb3muKt+I3XtKj37SZCnzAnWFt+HBqJzAypumqQ/ov4Kg0x7R1706OaY7wtmo1xH9BYYAg1RUyLslCLJPLYFpzkr8htMOikhcTMxa3O8icHz0SCU83ygMiPEh1c0MLykqO62Bk3rQkhC1x1Rr0EaIPLt2vWpeC95K+RmSX/1MexTtSogMXAefP0zgTQZsGWVqkT9bMqaDPazjJ8bX94y98s7Se8FcVDV3TAsAq2JWOv/t11nv1LyIVY8VLfJz5ZYP1Vv3727bibda6X10EOVSg0fiKfW79RsfaeHxDbQUEPCK0bRFOAXJCLp8Fi53fQIa/gkBqiwhZSS8WEuhHTqAvuQ6OiwVxjkG2h7lSJJW0+HtpOhRCg1hnIjGFu41W+grxvR26UJyuCAYWOcVjIIIMf/XoKjrPri4nlLXxGLcSqiBTPLYKyqD2WKe/sqVppTqxa6cY/l9Qcv7fruxmGOjzPBmvhIo4YgzrPP+tmXulUQIa7eLlylyKegzaD5Xa5BYc2ugLT04IilXdXMQEF9sIsPoDrJPIgtSxccnUBTrjxBCgSqZwbLU5q5ZWocQPsHg+CYlX9G4YMr47unVzsNg6aMlRgn9DMxVyEjGzB+hr103XBQ8hFISEsN5F2aPf5EfA+c9tt1bEcuwzcQgyXUb+26dTgbB0wSPdaqk8L8aNMlSChkHBa4XXdw9uWzoJxEdv1XcAHilWYLMbjaFirlpRWaV/UFYne6LlRGxsebASOH2cEsCxO4Ds2KW3z5qHFgNMRH+Y/b0DuVMaU92P6kbdFH7lAGDd8Yv5VgjsUpslfKdJ1Lql8C1FPiUY+un5X45TDS7ZArJehhuo2bIFdFlrks0Eg37gUKUMhlgiiSFdtpftUgXv
+ /gBbkTJT
+ gorxMzX9AfrdeOt9bSFERoLdJqhJhkVLkX/SQNlSJRqnzxwRRaJn2QTkZkEg/0ynPl3R3g5JM2pE+KA0h061uoJVHXeFYbVBBuUZT21gIipf4u8YQZCCrnX1NWs8JVGqdZkiByjgqAx+Xo4VxIehSJEZhx/E6j2GO/EhMd/8QeCFHk3d35hWwy6JPpcDQYoZR/bHemSPzFnL3I5GN+Wd3938NFdAW1iSaB9YEwdw026vCBT/illgkLwUP8N6Zv7XjYNzNe1FtE7ulO0Pl90Dsw7weYr+T4zQa+MMy9SYjHvsBAglfs5LJTvNbGb35VZkK1jhRONt1qePA6zF7LZklnPZZ/OKnBhy86HB6S2dC44SicY53dBVMqyLy+myxVkn7hjAdY1cV6omyp1rud9AxRu8HeOW3vNlegSSGFp9luQOoHPAZ3DuyKPX8U4KxFs0lDRpxYF/MC8n5/Jm0lwN2iq9IAOCLA/tToOcqJmrTqFYTfcOOpEBAJsrW6uFa6WGvV08RW9jzjRTl4o20vda0+vH0JP2S8+fhKiHarMkiTGAe5as=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -88,39 +108,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hello:
 
+This series was applied to riscv/linux.git (fixes)
+by Andrew Morton <akpm@linux-foundation.org>:
 
-在 2026/6/26 02:37, Zi Yan 写道:
->> +			nid = memdesc_nid(page_flags);
->> +			if (!node_isset(nid, state->nid_filter)) {
->> +				spin_unlock_irqrestore(&state->lock, flags);
->> +				goto ext_put_continue;
->> +			}
->> +		}
->> +		spin_unlock_irqrestore(&state->lock, flags);
->> +
->>   		/* Record the next PFN to read in the file offset */
->>   		*ppos = pfn + 1;
->>   
->> @@ -783,6 +807,7 @@ read_page_owner(struct file *file, char __user *buf, size_t count, loff_t *ppos)
->>   				&page_owner_tmp, handle, state);
->>   ext_put_continue:
->>   		page_ext_put(page_ext);
->> +		cond_resched();
-> In the changelog above, cond_resched() is said to be removed in V10. Did
-> you miss this? Or it is intended.
+On Sat,  4 Apr 2026 15:17:04 +0800 you wrote:
+> The two weak functions vmemmap_set_pmd() and vmemmap_check_pmd() are
+> currently no-ops on every architecture, forcing each platform that needs
+> them to duplicate the same handful of lines. Provide a generic implementation:
 > 
-
-
-Sorry. This is a changelog error in v10.
-
-The v10 changelog wording is misleading. It should say:
-
-     "Remove need_resched() check, call cond_resched() unconditionally"
-
-
-
-> Otherwise, LGTM.
+> - vmemmap_set_pmd() simply sets a huge PMD with PAGE_KERNEL protection.
 > 
-> Acked-by: Zi Yan<ziy@nvidia.com>
+> - vmemmap_check_pmd() verifies that the PMD is present and leaf,
+>   then calls the existing vmemmap_verify() helper.
+> 
+> [...]
+
+Here is the summary with links:
+  - [2/4] riscv/mm: drop vmemmap_pmd helpers and use generic code
+    https://git.kernel.org/riscv/c/abff0ecf7602
+  - [3/5] riscv/mm: drop vmemmap_pmd helpers and use generic code
+    https://git.kernel.org/riscv/c/abff0ecf7602
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
