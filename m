@@ -4,70 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69EC2C43327
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E78C6C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:08:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 492306B0095; Fri, 26 Jun 2026 11:05:04 -0400 (EDT)
+	id 9CACF6B00BD; Fri, 26 Jun 2026 11:08:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 442CC6B0098; Fri, 26 Jun 2026 11:05:04 -0400 (EDT)
+	id 97BEC6B00BE; Fri, 26 Jun 2026 11:08:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A1C6B0099; Fri, 26 Jun 2026 11:05:04 -0400 (EDT)
+	id 845446B00BF; Fri, 26 Jun 2026 11:08:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA0B36B0095
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:05:03 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5ABE1C2399
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:05:03 +0000 (UTC)
-X-FDA: 84922386486.08.145AD84
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 7DEEFC0015
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:05:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ka0GYafl;
-	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 477DF6B00BD
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:08:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B40D01404A1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:08:55 +0000 (UTC)
+X-FDA: 84922396230.25.811D346
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E415B40004
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:08:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BPvNDeEl;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782486301;
-	b=KTqfRVKYMKJpjV4SeyrmmCOcCynkOiGOSY0ahe0RSldWBwstvOxENt+i9uAnv905PZyhSy
-	iD8ylcNekIO6XLVBoE4n+DK9PaGl9wDvffz0lb+xeGpAWRJAFBeM6sjycJZWD/uioYG7kX
-	ZArjH0Wr4a8//bCWVjSwGr7bQP65g+Y=
+	t=1782486534;
+	b=eYodWk6faPCc9mbuyDN4fttbLN5gu8X0FDY7CPkPof6d5LD8/v7gae9JdzfnHZUMmYMtng
+	Y4YbZp1HA2dTbzMq0TzEbJgolHJ07M1d0lQn38AB4NoMuyem1Ccr10kp7iYlOILcWBLb52
+	lu3sKlE6gSeg0ZVt0ybMJ2MA2Hd1zac=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782486301;
+	s=arc-20220608; t=1782486534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z/3t6es/Sh5NFgNAr92B/NG50RTxtozIvYYF+FgF2iA=;
-	b=lCc7tyCPuEDsWU3zOHEeFgfvFstCZLIeJ5+rtlEttmx48Eh/utXr+EkoP1NyF2iEEh6k6s
-	cBYXH7wFKeJ8ojBF5Bb16VApARJ2w1YyK65SM8/4b8bqUJuELu9QHuAelB6MnfNYFNXd/N
-	FPzjJ1oiQJjQUKqpXrR0CeQOGs/U038=
+	bh=W9StKkQ0/yj07eWoElZiv+n2VxDoLxnR18N0r893Esc=;
+	b=PIl8OJv+hFVvvTWKGMBD8Iq9p6jo7Ugzmiyb9/RkKnybztZA7D9iYZDpYeIFRz4icFabIk
+	SwjWaC633mDH7/FsoEiDGdeGVXW83zG3OWd4yW5QCUHVC4eumHukvSAs98eEFIuK0JyW7/
+	6PRch4SDYg5mwR5F3rQUsViOtsNpojw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ka0GYafl;
-	spf=pass (imf28.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BPvNDeEl;
+	spf=pass (imf01.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782486297;
+	t=1782486531;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z/3t6es/Sh5NFgNAr92B/NG50RTxtozIvYYF+FgF2iA=;
-	b=ka0GYaflSKkPFQ7rFhIGoeEDcZfUQi/jBpWMJl+inaTs6Ay8kTJp9zdbYmSenvlQJh+XR+
-	XB172PGZ4cpCqyqeulNT+N+xr0AurrQi4xrcP61whLGk9uJ8pOP+saDL+I6rAvgBdS3Po7
-	QQIlkgcah948ts7waig31URzqiuDpu0=
+	bh=W9StKkQ0/yj07eWoElZiv+n2VxDoLxnR18N0r893Esc=;
+	b=BPvNDeElvRZEMwzggouWII2tofymA3pxu+5JfmGwK7CJp2impsOKKN+WsSGMrtCbjeGBPp
+	NozIkXctwbMzmWJYZfWlevw7VPXWSaOnPydN+auEoQa0orwMQ/6weJ5g1FizLIV7FLvrOU
+	M1Cmc9YYM8i84hgILpAHMIQo3kf7m7E=
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 26 Jun 2026 15:04:48 +0000
-Message-Id: <DJJ2NKKPRANG.188CUADJO2CKK@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Brendan Jackman" <brendan.jackman@linux.dev>
-To: "Brendan Jackman" <brendan.jackman@linux.dev>, "Lorenzo Stoakes"
- <ljs@kernel.org>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>
+Date: Fri, 26 Jun 2026 15:08:42 +0000
+Message-Id: <DJJ2QJQQ73CM.2WHKW4AT6QT1D@linux.dev>
 Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
  <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
  <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
@@ -86,20 +82,20 @@ Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
  "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
  "luto@kernel.org" <luto@kernel.org>, "willy@infradead.org"
  <willy@infradead.org>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
- <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
- "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
- "daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
- <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
- "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
- <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
- "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
- <kpsingh@kernel.org>, "haoluo@google.com" <haoluo@google.com>,
- "jolsa@kernel.org" <jolsa@kernel.org>, "jhubbard@nvidia.com"
- <jhubbard@nvidia.com>, "jannh@google.com" <jannh@google.com>,
- "pfalcato@suse.de" <pfalcato@suse.de>, "skhan@linuxfoundation.org"
+ <akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
+ <lorenzo.stoakes@oracle.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
+ "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+ <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org"
+ <ast@kernel.org>, "daniel@iogearbox.net" <daniel@iogearbox.net>,
+ "andrii@kernel.org" <andrii@kernel.org>, "martin.lau@linux.dev"
+ <martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>,
+ "song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev"
+ <yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+ <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+ "haoluo@google.com" <haoluo@google.com>, "jolsa@kernel.org"
+ <jolsa@kernel.org>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+ "jannh@google.com" <jannh@google.com>, "pfalcato@suse.de"
+ <pfalcato@suse.de>, "skhan@linuxfoundation.org"
  <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>,
  "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
  <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
@@ -129,19 +125,25 @@ Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
  "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro"
  <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
 Subject: Re: [PATCH v12 01/16] set_memory: set_direct_map_* to take address
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Brendan Jackman"
+ <brendan.jackman@linux.dev>, "Lorenzo Stoakes" <ljs@kernel.org>, "Kalyazin,
+ Nikita" <kalyazin@amazon.co.uk>
 References: <20260410151746.61150-1-kalyazin@amazon.com>
  <20260410151746.61150-2-kalyazin@amazon.com> <aeeDvpDnGnY5n69n@lucifer>
  <DJJ23EXF55VK.1EGQZS511HFB6@linux.dev>
-In-Reply-To: <DJJ23EXF55VK.1EGQZS511HFB6@linux.dev>
+ <f7a40359-a210-4711-acba-677e9c1d565c@kernel.org>
+In-Reply-To: <f7a40359-a210-4711-acba-677e9c1d565c@kernel.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 7DEEFC0015
 X-Rspam-User: 
-X-Stat-Signature: wurz4qq45er7suwspry8rftya9fn6gcq
-X-HE-Tag: 1782486301-793881
-X-HE-Meta: U2FsdGVkX19nnOvgfQivyLcLoczBb99RBEWZzNCyUC/prwgQgE7Mm58mSgshI9oOnfCwupoYJuFlZeXYjhX3xvSWYCUZppKYBDylwlm0i3uDQN4nupz27S8YjPNyEEtdzs01FT3+FJjXZhFr8omDceWFfS9135rYiDuRPEwaRIyWhmqXkU3mvt2aY/QnV43dhWMN6MqlcHTQ56Z0eyunC8nV48wG1VCsZVyKX1pvARuRrPoi9hc1GdJCO3XMWZkZVEnEAG7gDQN9M5hj9S3ml0ps3LKVtLhngN8iAoZl6Q716b/w1xslkk3sWD4uESuQtzIFpfXagQQBqd0DRswFTyQ8LL7QYdEGXxGt4Cbtlw92KWxVW1ZOtAZx6OhRI5RG7B24u834k5LeCNeLueX7+UKpXmCKR8fS1YGT/DmuHiCqJuZn6udIk/pbjIcy7P8Rwu5im1XCG/BKv5OSaaHDZKM/7iAW+yKoZJPcTt328avEqGhOwWKX//gh3Ie8vrI5cj3rciEoiAZV5rnt3mmgbWb6Lfz7qoIJsKoxdm3OeJErgGG7yszc0TtU9MQDZ581hBVE75n7zSKI+aalfYMvgWVN6Fe/P5yGKeJXvR0nP46xKFg8XI+gnRAKPmS6G8iKLxr9X2zb3ACCVSZu98rHuFyQXnQqyUL4lEZPdg8/623NArAweAk30pfZn/T15OHgJxFVeWY9AdQ5EdMrsqkSyvxeP98+KE7D/PzjJo7/xesZhOz7wuyyfW7P8sqv+DpPht7cYIpCNi0OLsYKAj85Ur97WRDUFX5hPASEDU/vxh42HWmoPS357hV3tDE5uEB2RBfOfMCvJhTGwmYyDVB+aRa+OLtBxvasbSbYjKMQicPHEoay2OZxyIbp7IVXxdzSkHFJRf0FlYTE/3hWmMfwLe9eiV/DlMTVhyeoJLWjIOAxlB/9z2EFkISfukCR2jJSSrvKZbn64A1vylLg0hJ
- U7YxvhNW
- wUe8hib8r2pJNJmFooxkqODVSlVW+xGERg58GsJKU8QN++ivD6bUnyL0yamakOP8wFF+HzawRLkXo8T/rSAwSHQ2WQ2EbqEdBY9DD1vYpk4eqauQ6eBB7LfbZnROE45p2RKt1Io3gufITaWnpyCe1vpy7LnSvntc/+6DezBceW7xGim3swJc3Rz6ozcJY7e6TBpulFVInd6zfnGhtPzgA7LiqhGCaInu1q5LuO9x/xiKPkqS0k+Oh6E/FoT45nmZsQ2P6K3NS4Yk1gPDznXyiuTtv/kicyeZcY0DSypuM0D2ANu9K4A9ZzM1F5DKJAdRLkeYARv8y0uP0BHUP7sZ8WZNUNFGex51Z/pFAdaVkQ5CdPtWGTWbGsVywZMg9LArdGKd6tVztlmhbyPGoXXisPURIb+QrszbK/A/C8OGYb2Y6381ZPpgy5bW/w9cA/vZCD5grw/T5yFp/KH+iJaz9T9Hcs3UVGdwzgQ1/8v1DC4DOcrQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E415B40004
+X-Stat-Signature: 3h9cakr5s5xkss6fm8xxcmfdoomsowbo
+X-HE-Tag: 1782486533-335349
+X-HE-Meta: U2FsdGVkX1+8kYivwvZrIk9oeMgsZ5aA9BYvFEvhQb5v7FDHllOVilqXOyX/U11M57jKQziw3ZybkO44EaQFR+HMrAKWBTLlOywzF3g8fYkhHiCd6gdf0sgCf9DsjDOtfhufTa947tyoD795StoK1R/1LzVX0Ex+k9TvFN/mzN+qUqmeGxr6WO0TKoZmdY7WbWQ5gUJYo2knz87kh3Xk8AQ9xBjU5ap+Bo43qP9nI7kbpXDzDc+bgr4UNzyiyJZ0H1I2Dxulto5ccOk7VguVWpMUW7AvAJ9EbBRTMD/x7cMacbWFcqUFUxxUtUeI5JHf9ipz40qPaGl2LkTzi5Z6tLmx1ZkmbJ9a2Lr1PsdNfztQInd0bxDdcGm5XRcznVNBxNrsweaybfXnqonMOUDOssVyLPCiuRDi6yEF17RKc49jubvEMWY42/41BToZCQa7ILwz19/DAhw86bTbcpm0pZK30sqr9Ijl5741kWECWIYnQoHPgKX38Tf2oxaXwN1z/0DEwVL2+5cFaXlRToY2+bnwlNTF2uBDRAP95nlBEgPtUlIqL3PUSCcmGYIkoons1buN5DTWFzLcPT5NTDXTknV98E+GOfqyy/mRjEE73HWwaqkO4AppqMpXhIjZcrZCcOGPxkVIjsMWhAQsF0nYUed5CcVKYM4+bMMRChwyL8oe0V1O/YCUaa+qOKLQhbRt+jzl3Ag5zSfo9dRFUfEhvxCCpBRgNKW4GOehqsVFqNbHyivJ+5JzqyIb3+nN4dqPzanqdbWCRRNGvyB2w6y02U4RteJZ9KYhLnsXvJKRksrVRT+hw2PBxkUqXz0fvqPjuqFg3oweB++Z8MYUNgCnM2NcmhHWiX60opg9r6Dp5GZ5JS3AhsDDrI5Iz1E+XI7noPDmkbfcjtbXQUtAUrCgAroi2xde03ZkhMprP7HiU53/nUCC8T2lQxlzY9Cy2TAPcuN+H9k1K9a7VBNP0P3
+ NBIshxkH
+ 9xMpwjbstWQMEXHH7iTLGSAy8UhkPNGEIogNzs+o+4bAMiVgaxVDQ6Y6/ydrWKVjtTA/hZSUAP/XtASItm4rqzBvskag8ILETlbVs5CsgU+NsxSFbuMJE7MCpNmA+VayIlip9r+8lhSmnZmGV1FBbuDJO6Obp2AZ1DgMYAzM1W2fVeXdgqdYZ/LOagz1qWBO1U95EAsuO3KoAvYT8Tb4/YPXwyJdsQkobDXQvpdnkXHr1pd8T6NylV5FHCwintmZ+oDOdPhy4X9ybA4gI4IqF8ecrJ14h07spM1QUhnblRb92edcGz0wbkoR4gXSl5nW/dtpWdBy+Nz6fk5g9AkNXfOfQYTyW92OWpk5IAcHMEfJo3AWxu26LNX2eJe88nsc+M1w8z37BVV6SMGD5SLnmtAugoJQ5WJhBRqNlJFnNWuJFKwuQJ7qb+w/JY9RF6mMvIzTSZsu2cg7nY/PrQiJIa7SGXOQ5H0DFe5yjHO5YhARH2Lo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,47 +151,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri Jun 26, 2026 at 2:38 PM UTC, Brendan Jackman wrote:
-> On Tue Apr 21, 2026 at 2:43 PM UTC, Lorenzo Stoakes wrote:
->> On Fri, Apr 10, 2026 at 03:17:58PM +0000, Kalyazin, Nikita wrote:
->>> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
->>>
->>> Let's convert set_direct_map_*() to take an address instead of a page t=
-o
->>> prepare for adding helpers that operate on folios; it will be more
->>> efficient to convert from a folio directly to an address without going
->>> through a page first.
+On Fri Jun 26, 2026 at 2:58 PM UTC, David Hildenbrand (Arm) wrote:
+> On 6/26/26 16:38, Brendan Jackman wrote:
+>> On Tue Apr 21, 2026 at 2:43 PM UTC, Lorenzo Stoakes wrote:
+>>> On Fri, Apr 10, 2026 at 03:17:58PM +0000, Kalyazin, Nikita wrote:
+>>>> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+>>>>
+>>>> Let's convert set_direct_map_*() to take an address instead of a page =
+to
+>>>> prepare for adding helpers that operate on folios; it will be more
+>>>> efficient to convert from a folio directly to an address without going
+>>>> through a page first.
+>>=20
+>> Why is this more efficient? Isn't it a purely compile-time conversion?
+>>=20
+>> Indeed in the current implementation folio_address() is
+>> page_address(&folio->page) so it still goes through a page anyway, no?
+>>=20
+>> I might be missing context here about how this will look in the
+>> memdesc future.
 >
-> Why is this more efficient? Isn't it a purely compile-time conversion?
+> Good question. page_address() is really only complicated for highmem. For
+> non-highmem stuff it's simply derived from the page pfn.
 >
-> Indeed in the current implementation folio_address() is
-> page_address(&folio->page) so it still goes through a page anyway, no?
+> I suspect going page -> pfn will remain as efficient as it currently is (=
+with
+> vmemmap). For odd cases (SPARSEMEM without VMEMMAP) going through folio->=
+pfn [1]
+> might be slighty faster.
 >
-> I might be missing context here about how this will look in the
-> memdesc future.
+> [1] https://kernelnewbies.org/MatthewWilcox/Memdescs/Path
 
-Sorry I failed to do the history search here, this was suggested by
-Willy during the review here:
+Ah sorry I raced with you and replied to myself:
 
-https://lore.kernel.org/kvm/aWkN4yzwPtotaTeq@casper.infradead.org/
+https://lore.kernel.org/all/DJJ2NKKPRANG.188CUADJO2CKK@linux.dev/
 
-Matthew Wilcox <willy@infradead.org> wrote:
-> The implementation isn't the greatest.  None of the implementations
-> of set_direct_map_valid_noflush() actually do anything with the struct
-> page; they all call page_address() or page_to_virt() (fundamentally the
-> same thing). =20
+The above makes me realise that if we really do want to avoid needing a
+struct page here, the "right" thing would be to make this API accept a
+PFN.
 
-But IMO the struct page isn't there to carry runtime information, it's a
-type hint that this API operates on physical pages. Yes this is already
-implied by the name but it also gives us a certain amount of safety
-since it avoids unaligned or non-physmap addresses at compile time.
+The problem would be that our favourite programming language we use
+doesn't know the difference between `unsigned long addr` and `unsigned
+long pfn`... but I thiiiiink its unlikely those bugs will be latent,
+I've made that mistake a few times and my computer usually let me know
+about it.
 
-> So converting folio->page->address is a bit inefficient.
+Still, I'm not really convinced we need to change anything here yet
+(modulo fuzziness about memdesc etc).
 
-... but yeah now I see this comes from Willy I definitely suspect I'm
-missing memdesc insight here.=20
-
-> It feels like we should change set_direct_map_valid_noflush() to take a
-> const void * and pass either page_address() or folio_address(), depending
-> whether the caller has a page or a folio.  What do you think?
 
