@@ -4,90 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D112BCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89369CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 02:31:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1F946B00AC; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
+	id 7956F6B00AE; Thu, 25 Jun 2026 22:31:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF8826B00AD; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
+	id 76D776B00AF; Thu, 25 Jun 2026 22:31:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B37A06B00AE; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
+	id 6833D6B00B0; Thu, 25 Jun 2026 22:31:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FB2F6B00AC
-	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:27:53 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B7691C5F60
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:27:53 +0000 (UTC)
-X-FDA: 84920478426.07.C469474
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7D02F20002
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:27:51 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dvmQTEAx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 442356B00AE
+	for <linux-mm@kvack.org>; Thu, 25 Jun 2026 22:31:51 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBA21C1AA3
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:31:50 +0000 (UTC)
+X-FDA: 84920488380.22.BFBABF5
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BAEE240007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 02:31:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wJmFW8Rq;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782440871;
-	b=pSJvTpN1JTm/kCw229WOxxJ8UnC2MyK2PNyUkIPSxe0FC3nFHGcP3bOH9MCOFq0GYi9cfl
-	UyaPSm2TshWHA3OfEOGipi+dje8Naqk21IzyNUGAOjhZosXlu+0InzyekMTBkPLqff6Ad1
-	BbsrVdYWK58gnPbd6nI5o+nQ3K0ws5s=
+	t=1782441109;
+	b=UZ1GwzXUvwzQLmoBC5v2ZjyzL1BO/JCcb78XlwsSz9cr3dr+0dTQ39qEahlTimQpynFKwz
+	qMsXGxHPdItOIdJhcMxxJapczzHzljH1vrp8hgQiqxKVU/jy9Vph1GNVYpVg9zIQoVJpJW
+	47PQt1CdfMbcmqnXzORO1kGg9Z3TqDE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782440871;
+	s=arc-20220608; t=1782441109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h48iMyZJeOBo8mJP1NqWzlLxC6G6uq5RUz9cl4e400U=;
-	b=4nUpx/WkeSSBamPisQwvd2RySEPl3tgenOxWqdD4DHytquI2l/bSwOX1lRJTIi7Dpl8Fwu
-	rTqVsNr8EojZijH1LOReRS4l19QdOrd15tqWggBDHFXu0PH/zMlHWn4Q4xarl+Jce3RP6S
-	Aa71Ove0bgs+Yqm81E29u9OxUsN0IvI=
+	bh=d48K2vjsdWWrmdOhQW/44VDv65Oy54deGsCoIpejECI=;
+	b=wXv71Qr0EEqCTCKRKl9W51MrXZQ4X+8ClyOgDnX2G30XoK3yVF6cixRNXi/Lxwp6bN7Ksa
+	YyBVb9DtjecUSWUW5uPfGNjzVC0XOPpsz5H5Ie/PLrHkym8WtSSCATg2E1vJhsf2iojn5W
+	TJBg13H9LE217S1N1lbjYDuQWUj8s/s=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dvmQTEAx;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf31.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wJmFW8Rq;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782440870;
+	t=1782441106;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=h48iMyZJeOBo8mJP1NqWzlLxC6G6uq5RUz9cl4e400U=;
-	b=dvmQTEAxG5XVvmLYAb9HPsG9G5ggSSpuxSDd7nJhF49Q3rVYDso9H+zUiwWAzS6atUFeTa
-	qZuLIm3ICeB8mEy2FSb0+fsLykYl2eJo+gz4kNIXZ+dkof0bMk05AS39jZVd0ZHrPMV5tr
-	T2tb07g13wox1UbYqeJLskElVUNfOFs=
-Date: Fri, 26 Jun 2026 10:27:36 +0800
+	bh=d48K2vjsdWWrmdOhQW/44VDv65Oy54deGsCoIpejECI=;
+	b=wJmFW8Rq8MtufcNDuLj9hiQBZr7FtMot8wz8j/UjOKKVXgJAFQA1+bNovARL0N/3j3ijtV
+	issgHAKWSs/2O78CmFu/tLsAcyzZ5o2xW3OCNaoLPlvlAM1iFNuMI5pxxYRMzfn6RF7LJz
+	XPdMrkzUPfgKlMJ+N+bq0LECZC2WUbU=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com
+Cc: muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	liam@infradead.org,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	mel@csn.ul.ie,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	jpoimboe@kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+Date: Fri, 26 Jun 2026 10:31:27 +0800
+Message-Id: <20260626023127.60788-1-lance.yang@linux.dev>
+In-Reply-To: <20260625112955.3254283-5-dev.jain@arm.com>
+References: <20260625112955.3254283-5-dev.jain@arm.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, harry@kernel.org,
- muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
- roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj12aVq3he6q7b2C@cmpxchg.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aj12aVq3he6q7b2C@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 7D02F20002
+X-Stat-Signature: g9bk1joi1ozp5xdk5sny63ngpd1e9myo
+X-Rspamd-Queue-Id: BAEE240007
 X-Rspam-User: 
-X-Stat-Signature: 1s18yu3gi45oiz7ecruio8zbdhz9den8
-X-HE-Tag: 1782440871-23315
-X-HE-Meta: U2FsdGVkX19HbXOKOln2wkk/8e81FrcgeyQ8wL7XxBP5V5hElEaXCMpJYxhw1hB50qy8gOPbyzIpCAk7UksyPvudr8GHPgUq6MtCIG64sDTTs95GmtjNcmXHWu2LlcmZrxEDcxx8yvGXGYJyzGtWJj0IJYwBA8QE2Xi1QB1FTmBPs1OFAvrRk/wqft8kNSRrDjKjh7cQWteoBpgIUJxvSpVgNzN+Yj7B0iDh/0pFLCqgdYLH2KJUBwzUMcqVqBkHiUx/9O2hIUnXW7L/H6QR9vP7tHgNFyLcP2pE6KcUpj0wd+JOlJN8hRpTNiTQ4ct0M8Goa0Cm1WRfWRRSy6V1NODlafziq3ky8FBz42esyXnSHl+OCT9wS/mr9vZKpaJeOXIQHWD5twW+QKMBsdRC4sb6VMTpi9Fe0pVNiKaY1RwyhRnb9JsYbaPtjLE9HH4VQm7jJvFlcDdFWamPlfByOHozidvt8XWSjA39G1RIhkF7xi5b1vhkumf9jHoP3XowM+IPGOyBZ1rPZAP1lUkhqdvc+CAmJMAReGV6WcFaePjoxV4Qajt0PzAyj1lTb2vtCslkQ9R1u4+5MHuWPgZUe6dHT9WwA6A7/in/3QBR2UvwDWHaKMBHi1SZl3FUFfKHIzKwcqIn2t+5HI5z6QESPCVqmMZmIbZ0y0oJWHsU6MGTvV+63kFsRAm0hR2/biCrHNU9iQSRLaWslJuphTyxkGX8+0NOK8yWYyKTQ/F4QP79hk7eAFF+M8btv0S/76Y3A4MRkNK0DdThmHuAOWw1hdWQWOaigitwm3CsUyxKzMWhcHO+5f67i/j8jrEnlWowbzbqgqLAZEqggP60aa8uLEV04Eg2cppI95WGQcfVyAX4efBr23S40MsyE4GzTYj8yKrbcZ22j+KHFCvfH8A2CDK5NZPONb42UbkIDTe6XdC0CA/r0wNKsqoOI7ZMx0DwAYNJfDnY1ClawVB+4U6
- KgYC2Yg8
- kuCDoBqQO8lB51jq23rTweN7JCWu4qSPi8hQ0OXOxvCYgDRKKSH6ulWUYZ85N+P5QD7jWZ/Wt1Wx/lCAeqOkdAkFI2W6EvOMgpfv/FWWed+bqcfYGZdzueu19U+CsmjXnOQsDZzYf4uGfSPNLmvr+HIqCycw2GljEpYwJFqdcYBAUK6wCHDpl+woluNXtJ7h08VYgtLEhCcspgXFV0hlU1ODPUPIGQ6fCWbmthWzet/QUExNBaC9F3cJIcwI7GoZW1wrW
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782441108-580421
+X-HE-Meta: U2FsdGVkX19clP7sZP4kpLYSwAj5pGrwxZwt1fpnVA90CvK98AI1rcCUhp3QQuz4Z4ZZWtv98udt+iDI6RG65pmKlgYrS43cxOxqjq6JtI28A+GhxQMb9LM/mv5wuSQTQS3gzOUWAgRGGnEp03xxKTFRTsP41s6Tvq0gKvuo3zGYcUa0sP7JWZ5GLAvSZPObuLXiBy3/FGkhpcqt38toTTPINAdqXApDASx28RijAaCPdZMKn8pjySYKEP8JlulbHewMKazvzR/uvPvIfNWYmQnD8XKUEOcn0fbAK4xgFjrP1Xk+3rqL9Hgzbvux04n9OK6ROOhO5N+lUGyEv8iFXCdRn16GfpT2pX2WDWyXmeVHz9tlDFEYmnPE+vHdoktEzyD2zOPk5W3Tik0VO25c589wPXJMr/AV/I8pJvdeWA1cGuAB5PgoXXQEpTD0y/p7zNJE4+rqmAkTJuY01AuJVh/FH7pNfxqAAJorKULwpZJC+Mz3KsW9sLXnTtUPADe5aIugbVx7BAYkJ+YtCmEXscVod9f4HVkqBmvmMPEKfylFg5viN2Uep3eB2iWRbI4HEbR4+Hk+qTI/9OakqvP097hr1YQ3pZ/ORP8Ob7POUN52gfKfgJeYvu+UoFjJ7lR8pfLav1Mh1JhEPlApMVrhgGHLDJibQyknpIUyjt8eL6eMFZ0hef+PvIxjyB/L4kf9yUqvgT/CqFfjlW0IMk9FDHBw+1p2RwBqNhW470wlqT/SzFQfUpYFeWRhCPsk/QBOY0CuGuI4Q4aw1+Y3n4Et4UWus1YYrKtwC90We+Z8b4bgfvvuVyvaIEHyjo2pKuAg99rE7lrHFLPH5LxFVnSng/QcZT2p8710wyd9mAN1J6bmobh2nKlZ5J1llHiEFMNxkSZqGkWWgJIluFWatgr6/dMsWwFRXX0yjnqzi8gYQ/uu5RgF8JpExZZkRVb5AoKv4ZGMa+GP+bxUkvRU3yk
+ UyHp3Cjo
+ QZ79OSGzD6a8uy6C/PnlRKzS6CCF+fUqJU/R7hOMNJW0aAcmXBEa69vSh49EaS66FW5IOPU6qylrBSemm9M15LUH5k0hQoKxPZWSLzPTbMQd9TZ5XNgCwb9XKq1vGGx+xYMzUNZIHkuJFTn4C/RZp+9tGp7P02AZTFCSGHwZ/j0oe9GIEHHCphMCSle+ScZ+CSa/aDAPO5jhLSQbyS9C3OE8KDwpFBAriOGcH213igc5Smrf3KMCCpSBjpFWS3670CMubYToiaeNVuErgkvn2Lvgd2g929BZlHIR/Ir0AAXjIG0W3GnsYDwgN/v25KHkQNUIdCcD3/OSQP/ATHMy91BJGQMD+ZafqvN3CG3yTxKv6QNdFt/0GGbE2LauvAADrqGaMnOIevBSPqUE6NYPYEdCsHzypgnu2eaT1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,117 +120,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Johannes,
 
-On 6/26/26 2:41 AM, Johannes Weiner wrote:
-> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> The mglru page table walker batches per-generation size deltas in
->> walk->nr_pages while walking page tables without holding the lruvec lock.
->> The reset_batch_size() later folds those deltas into walk->lruvec under
->> the lruvec lock.
->>
->> The page table walker can run concurrently with the memcg reparenting path
->> as follows:
->>
->> CPU0                           CPU1
->> ====                           ====
->>
->> walk_mm
->> --> walk_page_range
->>      --> update_batch_size
->>          --> walk->nr_pages += delta
->>
->>                                mem_cgroup_css_offline
->>                                --> memcg_reparent_objcgs
->>                                    --> lock lruvec
->>                                        lru_gen_reparent_memcg
->>                                        --> reparent child folios to parent
->>                                        unlock lruvec
->>
->>      lock lruvec
->>      reset_batch_size
->>      --> child lrugen->nr_pages += delta
->>
->> This will trigger the following warning in lru_gen_exit_memcg():
->>
->> 	VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->> 				   sizeof(lruvec->lrugen.nr_pages)));
->>
->> And the user-visible impact of underestimated nr_pages in MGLRU was
->> premature OOMs because MGLRU does not try to reclaim memory when nr_pages
->> reaches zero, but there are still more pages.
->>
->> To fix it, make reset_batch_size() check CSS_DYING under RCU before
->> flushing the pending batch. A non-dying memcg keeps the original lruvec
->> stable against RCU-delayed offlining; a dying memcg redirects the deltas
->> to the first non-dying ancestor.
->>
->> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
->> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
->> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU folios")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->> Changes in v3:
->>   - re-implement lock_batch_lruvec() by checking CSS_DYING under the RCU lock
->>     (suggested by Harry)
->>   - update the commit message (suggested by Harry)
->>   - temporarily drop the previous Reviewed-by tags
->>     (since the sync method has changed)
->>   - rebase onto the next-20260624
->>
->> Changes in v2:
->>   - update the commit message (pointed by Barry)
->>   - collect Reviewed-by
->>
->>   mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->>   1 file changed, 38 insertions(+), 7 deletions(-)
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 35c3bb15ae96..1ec8c23c72b9 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct lru_gen_mm_walk *walk, struct folio *folio,
->>   	walk->nr_pages[new_gen][type][zone] += delta;
->>   }
->>   
->> +#ifdef CONFIG_MEMCG
->> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
->> +{
->> +	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->> +	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->> +
->> +	rcu_read_lock();
+On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
+>check_pte() is the final validation step in page_vma_mapped_walk().
+>It reads pvmw->pte with ptep_get() to decide whether the entry maps
+>the PFN range being walked. For hugetlb VMAs, that pointer refers
+>to a hugetlb entry.
+>
+>On arches which provide their own huge_ptep_get() to dereference a huge
+>pte pointer, accessing via ptep_get() would cause pte_pfn(),
+>pte_present() etc to misbehave.
+>
+>It is not clear whether this has a trivially visible effect to userspace.
+>
+>Use huge_ptep_get() to dereference a huge pte pointer.
+>
+>Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
+>---
+> mm/page_vma_mapped.c | 8 +++++++-
+> 1 file changed, 7 insertions(+), 1 deletion(-)
+>
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 2ccbabfb2cc17..18e1d341f463c 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+
+Just one ordering thing: should this patch come first?
+
+Patches #01-#03 only reach the new huge_ptep_get() after
+page_vma_mapped_walk() succeeds. But before this patch, hugetlb sill
+goes through check_pte() (still using ptep_get()).
+
+> {
+> 	unsigned long pfn;
+>-	pte_t ptent = ptep_get(pvmw->pte);
+>+	pte_t ptent;
+>+
+>+	if (is_vm_hugetlb_page(pvmw->vma))
+>+		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>+				      pvmw->pte);
+>+	else
+>+		ptent = ptep_get(pvmw->pte);
 > 
-> Where is this unlocked?
-
-The lruvec_unlock_irq() in reset_batch_size() will handle the unlocking.
-
-> 
->> +	/*
->> +	 * The memcg can be NULL when the memory controller is disabled.
->> +	 * Otherwise, the caller keeps the memcg owning @lruvec alive.
->> +	 */
->> +	if (!memcg || !css_is_dying(&memcg->css))
->> +		goto lock;
->> +
->> +	do {
->> +		memcg = parent_mem_cgroup(memcg);
->> +	} while (memcg && css_is_dying(&memcg->css));
->> +	lruvec = mem_cgroup_lruvec(memcg, pgdat);
-> 
-> 	while (unlikely(memcg && css_is_dying(&memcg->css))) {
-> 		memcg = parent_mem_cgroup(memcg);
-> 		lruvec = mem_cgroup_lruvec(memcg, pgdat);
-
-There is no need to acquire the lruvec before finding the first
-non-dying memcg.
-
-Thanks,
-Qi
-
-> 	}
-
+> 	if (pvmw->flags & PVMW_MIGRATION) {
+> 		const softleaf_t entry = softleaf_from_pte(ptent);
+>-- 
+>2.43.0
+>
+>
 
