@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AE28CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90648CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:27:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550616B0105; Fri, 26 Jun 2026 06:26:30 -0400 (EDT)
+	id 68C476B0106; Fri, 26 Jun 2026 06:27:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 501166B0106; Fri, 26 Jun 2026 06:26:30 -0400 (EDT)
+	id 663546B0108; Fri, 26 Jun 2026 06:27:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CB2A6B0107; Fri, 26 Jun 2026 06:26:30 -0400 (EDT)
+	id 554846B0109; Fri, 26 Jun 2026 06:27:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 094EA6B0105
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:26:29 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8E32E1203EF
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:26:29 +0000 (UTC)
-X-FDA: 84921684498.07.5AF9013
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 9C3554000B
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:26:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	spf=pass (imf27.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 30FBC6B0106
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:27:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B8F948C3E7
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:27:36 +0000 (UTC)
+X-FDA: 84921687312.15.ADC323F
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by imf17.hostedemail.com (Postfix) with ESMTP id EB4DE40007
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:27:34 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782469587;
-	b=7hHToksAUiT8Q8rpkeGboYC/2pmra/39QFn6QuY1etz0QVKPHv0LN5uMnYyhkU5NyZgZZa
-	HuBzQhXBFYodvbAm6M6gFOS8BQMbeG7deLsm7iIA0y2ferprkKHmmvQ4kv+1fohMZRurtb
-	R46UZgjLuq0IE2n+b24rF5vaIgWC5Ws=
+	t=1782469655;
+	b=01yQWIZlQXulO6yQGkChmkRPY/TiQKi79nmeXPYPIG69x/DgF7JEEU4eXEEwkGdHaJwMbv
+	/9qac1GTLD2pb6++F/ai57fdMK6m5HCCL4Fd8LANxwvR0DljcFJ7wfNOeWn0o+OAb04h+T
+	a7uY1Yaw1MYQlULDhRT08UPwqEGwx/M=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782469587;
+	s=arc-20220608; t=1782469655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8xZ5Eg1d8rMU6UALyA13SDN7lD6PBBpM6tye3vIR6eQ=;
-	b=v9gCb6FSsCsSQOlxMjjf+o4pLBjXGhzXx7lkChuu1kAvmXMbeGrJNkYQyrxFxppueXD8MM
-	MlAHs9y+38R6i/pfzzMhuX6LHZXWn6bbs5+yoBgIFHVUGEWfYeVoxkos78t9bRMTzHVvj+
-	zosjAoUjJUZZU+5E2FM0ggnhDLX1T78=
+	bh=TynSdaQ58qF5cmfO3ktCh6Cq7Zw5aN+HxMRTnMgeCjU=;
+	b=H0ljFUS0s1eVslvecjDKB50IcSHnvZFOdqYe/Vy5Nnz/EP+IVkQLeg/7fnF4OEFOrwIGVo
+	IhHTxn/zluMCtM6mmIlNi+DQ71wmVlDWPDHpaLVHS7tUpyIZ9cXygTBvB7MEiUg8gAtePi
+	Oj7axQRoJ419j+bc+b0GQPhP7gzgtlA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.194 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
+	spf=pass (imf17.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.201 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
 	dmarc=none
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CDD153EBFE;
-	Fri, 26 Jun 2026 10:26:18 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 803FE3EB90;
+	Fri, 26 Jun 2026 10:27:26 +0000 (UTC)
 From: Alexandre Ghiti <alex@ghiti.fr>
 To: alexandre@ghiti.fr,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -92,27 +91,26 @@ Cc: Axel Rasmussen <axelrasmussen@google.com>,
 	Yosry Ahmed <yosry@kernel.org>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2 2/9] memcg: charge kmem pages and slab objects against per-node objcg
-Date: Fri, 26 Jun 2026 12:20:51 +0200
-Message-ID: <20260626102358.1603618-3-alex@ghiti.fr>
+Subject: [PATCH v2 3/9] mm: percpu: fix obj_exts metadata charge size
+Date: Fri, 26 Jun 2026 12:20:52 +0200
+Message-ID: <20260626102358.1603618-4-alex@ghiti.fr>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626102358.1603618-1-alex@ghiti.fr>
 References: <20260626102358.1603618-1-alex@ghiti.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alex@ghiti.fr
-X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: dmFkZTFilqhOMXToAz/+gNdVKTxHRLavAczJtQ6fU64KH+lF2vkD6tw/iDgQXjhpHB5KEzd/dhU0FR5U7NLGKc+kze3Yd4z5yM7SzW2g38NVzcUbh7Bi280+j7Pwgwze/T7Xezbi0avOoCHg9Agp2B4VsPEZg0Pe+zE3KqBIKbVVfO+pPA7VF068h8hAVGLigEAJqQMAfxAXDxSQRnN6HLgy0sV9WDEI5cElrhqcUCInbpyl2UnqzXx1Hot7ncShsRn/QOdYuZaK4mX1gbrSnFEPnR0oUjPGEaH2gqxRCqT8ROg5bkk51r5Fi81YBaCKsfO7reIkwe+CYd0WYgge08+VXt0SsWuUNEv510K/mjnT0QlTJ28O3Zly/R3M0IV1u38J0dYc0Whpp1wC66RFwaI8QgLapQl9pScXF87j0GGVBT6JOOnYHNQTIJX22C7Y+s4qVApL52sZ4nJxo6MNDZwxZN8FR3g+iGQ0+uUdwCk5vpa1cvcqhkQdt2sq6CxJle/Q/45BtHu1yWG7zpMwUEoakKF5LMTquEYYbSO4C8RgS8X3ZdJEK+WtBWxlzZtyyW4b2FSzRUgFsmZPSQXw0mMtexoGZ91kfpc+ahiN1PGtfyOcv3lhvrF65v3X5/5wE3uEpHnMLFooDoeeklceAyVsMY04/2i4dY6i7sPaqdhn6ZzgpQ
+X-GND-Cause: dmFkZTGnYIDq9A11TftEatbke2wSLsM4U/RRnbCHpAUAIQBwHbVmowa+ke86M8Z6PPn5o7UKBvUMbr2gZWgcRiFc7ixLzqgLUvmoF1f6yq0GAxvM7ym0xa3n5f10aBqF/6aF0YuddnSkH5x50aCnRuJBlmRRybtyRnTHEtDjNABLsbF8/J37ko6Bm3zG+eW4NfAtWrkoIM0OVuVjH1i1R2t7kHuPQJtjQvB5ayDwVI8gcfE8wIDI8ctauyWpfQVDC9X4EX6LKQuBwn+BvrBeBO0dxg0WQvW3qtFakFlV8vs7Ehg02InoNEqwXY73y16xKIg4BKzVJqVRXZF2evXpKGHtjYSRICkDEkROcNVTsGp7+HvytOVWOvqCzJZvFqA9U0asoStphjFxrwjYHTun2FbrP2cY5CUFueIVGpmgGhZ4L+6TjIkJnmqViwrnMGDlAaLFCoLhoilHKmwbT9UclHSoartkKorY0R6ZvVd0TBVsbmy4Eu7EyEQeQd5BQDRpwJKKK2kecd0KDg1QZ9kzEiB2Rbnc5+Nu67xS7KN6EaDvdYpRj9ghoDeQBodD83HNzmpyh1O2Uz56gpM+Ngn5oGOk9F4GhWXeFH2ND/B/ChRfsdIrkV/6jsF0+Y4FG3t6PG7uxYaJYWTANQSlIGADiNiALI5UcEKUddASLwFeS02KeJDvIg
+X-GND-State: clean
 X-Rspam-User: 
-X-Stat-Signature: mrxejxrybr1njnkwofpqby4w9ihiyruh
-X-Rspamd-Queue-Id: 9C3554000B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782469587-542952
-X-HE-Meta: U2FsdGVkX1+I9/11SSEXPWDVxp2TbN7X07AYlKIkcPPKzAJrE6YXYOrWsOUba5vNtQVv0SWASznE3GLFz1i/8xSBdYME2qpMpBRnV2/Sa5kEDQ+XUoDo7LmZQd9soWrUBBjuOPVeTRXtTcZtuyhnhf2Isi6ZQBVU/Ahv0YwD34PysXEszlkak8Cn1vywV97xqRQdKUZkxPQAVSh0aL4sWKKdApyIn+zlPO+SQLlER0hJQGalcxT499GbNxJEjG2EP9naJKp+MJZ9bK+xoug3B71iXY1W7DdaXiTCyQ3dtS7AHMeD6vHAiLA9SDr46vQS09J8U/rOiL/eat/O2Vi4zvDWoqvsOEJXaM2xfKoLFu20oQDqi8s9TfKe+t6bK0I+wobscdpxbdx4lwKCEtdQb/5dCJFL8YZgBrhOLKux2yZZl5N08gYqb3kagnXM80nlIfxeEOb6FFnnhFJQAKMV0m7jnFesUL6inKaF1jpDzLVhd1bqDhSRyL37OYR2xrAFGFVeTn/gNBVlXDSzMDValTWlNlwKzOFaaqKqq6eem1faA9OYTCNH26py5hUz3DhU1vRcbSSYv4NEebk9qMRZqAJWqeWclsf2UD6jO+tJh8hSfsnOagat/bkKYRPYrte1LXAbhMFSnx+QJdViIAUUSUGuvEZbVFjZw1uMkQ48ysFqm3odqvho6khLHqRuVT318JYrkoFCown+66voW8ycW9wlnWtFxXhjVAdRjursvi1uaGUwKE9cqESim7ncRk5e2GNQ+5MNz89BZ0rsrzSBcFrYyFsoAOWgLbm26QgICKHVXVbBbjQj6Yk9HjJXCtpkaCHDcDJJ3AlDnIDOd2yoZ22pedvDmAwhTQUvCuM4r3qX2bvdBWSJTAlrFLMGo7BgE94i3oG6Ftp3StQAsgwTLFTHcB+AEs5LK2G63CGxdPIMOrKzpKySIjXETkw+TwKQjGTE4TzyDzNqVNyklGv
- j6Yxo0m8
- oSC9hJt0vjxkEyis++FrMTnzF3uNt2r8bx9Qzm2RMIBWG0vM=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EB4DE40007
+X-Stat-Signature: q1aq8ouj7yfrgrsw8ekqdsoi9gaitmiy
+X-HE-Tag: 1782469654-220479
+X-HE-Meta: U2FsdGVkX18ngYX4d3Da9U0NUHF8SKPY9BHhDsSMl16wnBIh0itLVZ1bDYYtOKNaovSmo19ZfsQNtBgRibvg8wIWN0KOacI0xAon/Oz7CjIy5ekz33FVHakQY0c+Jxu4Y+NRI9ph97bTRpDr/xh8bABSzY/iekEx1Zr17gynyX/nk1Om7N6uvfiTu6ogHzc5X+Y7eqpZvdlefbcBLr9U/YXxC1AlXQnnil/xeKevAUn5nCZJnxKaIZ7dO/YlqAunIFadoag8hQHKjMpY97tWas7MSyTqq1m7vAUxJEmXaVvTtny/m8TlwWT8VuPbb6B9KDaNkdcuLRe8rx3k6iXJWKAlyJW9YpGPuxeSew2arc1QvT0cVgQaaii2w/i//uKBU+XGopNLP6nmXFbmwRVv8vLmmGGTMZ4IA24g0nRPmLp85FQSZZ1l4GY2L8XMXMYVR/iVuYNri9XJwDxt/J4d6sQHoNBOD2qKFsSiCyZwIZIABQ/zmEEzJiS8jTR5U14WLkpQLz3zc82nNlUzZzCIGMgelaoE1f6qpr+xPflU5rpphQp4C4OPYIg3d3HAl8CbEIcs/i1VtyQS6aymIywmzUv12G13r8zoSd7tAuuXhNhWkc17D93NOQhhRSXgz4mlpFLKmfF9XmdHSq0VgkFqW1jxE/Mtlq2Ij83ogt+xscK1r5jmWt63elBCxrA3yejKbB0n83NnmNmj6F/U2CYabLjC/cnClLzydgWceKpgh5Nr8xcl5lU4Jn2D49BNMaTSkyNuXLdp64XVXevshv/LZOPWottsewjzIXHt4Lj5Svbi0c1FoBys1x1AhhU5UDvEt4uw7Pzdkp7TSWgedMCz6EKOzuBpEFxaHN2KbDXMTu7S3czQPqLVjU+MrnPetGcY5fdrIu83iRcm5sK2iVJTyeXPVKhTDFN8hQ4/+D/W2kghUOsimucp7Oggtpc2r4A/x3L34qIL1fcHeFvCvk/
+ 0xN2912u
+ k8HbvHHYbgowuIi0h/qbS3B83rWaTc2aePlC5+xd4BX2ivF9RByDiLQKIOQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,119 +118,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+pcpu_obj_full_size() uses sizeof(struct obj_cgroup *) to charge the size
+of the percpu obj_exts metadata. But obj_exts is actually a vector of
+struct pcpuobj_ext, whose size, when CONFIG_MEM_ALLOC_PROFILING is
+enabled, is 16B and not 8B like sizeof(struct obj_cgroup *) currently
+returns.
 
-After 01b9da291c49 ("mm: memcontrol: convert objcg to be per-memcg
-per-node type") current_obj_cgroup() returns the per-node objcg of the
-task's memcg for numa_node_id(). Two callers in the kmem accounting
-path always know the actual target node — the page being charged in
-__memcg_kmem_charge_page() and each slab being charged in
-__memcg_slab_post_alloc_hook() — but were using current_obj_cgroup()
-and so charged against an objcg whose nid did not match the
-allocation's physical node. The per-objcg vmstat batching (keyed by
-objcg->nid) and per-node charge attribution were both routed to the
-wrong sibling of the same memcg whenever the allocating CPU's node
-differed from the allocation's node.
+Fix that by using sizeof(struct pcpuobj_ext) instead.
 
-Factor the per-node objcg lookup into __current_obj_cgroup(int nid)
-and keep current_obj_cgroup() as a one-line wrapper that passes
-numa_node_id(), preserving all other callers. Use the new helper in:
-
-  - __memcg_kmem_charge_page(): pass page_to_nid(page).
-  - __memcg_slab_post_alloc_hook(): re-fetch inside the loop using
-    slab_nid(slab) so each slab in a bulk allocation is charged
-    against its own node's objcg. The early per-task root/NULL check
-    above the loop remains (all per-node objcgs of a memcg share the
-    same root-ness, so it is still a valid fast path); the in-loop
-    check guards the transient drain window where one node's entry
-    may be NULL.
-
-Update the stale slab_pgdat(slab) reference in the TODO comment to
-slab_nid(slab); slab_pgdat is no longer relevant after the
-obj_stock_pcp cached_pgdat removal.
-
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Fixes: 8f30d2660a38 ("mm: percpu: introduce pcpuobj_ext")
 Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 ---
- mm/memcontrol.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ mm/percpu-internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ee47427de9e2..3bcc20e72914 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2987,12 +2987,11 @@ static struct obj_cgroup **current_objcg_update(void)
- 	return objcgs;
- }
+diff --git a/mm/percpu-internal.h b/mm/percpu-internal.h
+index 8cbe039bf847..d1c0a508710e 100644
+--- a/mm/percpu-internal.h
++++ b/mm/percpu-internal.h
+@@ -156,7 +156,7 @@ static inline size_t pcpu_obj_full_size(size_t size)
  
--__always_inline struct obj_cgroup *current_obj_cgroup(void)
-+__always_inline static struct obj_cgroup *__current_obj_cgroup(int nid)
- {
- 	struct mem_cgroup *memcg;
- 	struct obj_cgroup *objcg;
- 	struct obj_cgroup **objcgs;
--	int nid = numa_node_id();
+ #ifdef CONFIG_MEMCG
+ 	if (!mem_cgroup_kmem_disabled())
+-		extra_size += size / PCPU_MIN_ALLOC_SIZE * sizeof(struct obj_cgroup *);
++		extra_size += size / PCPU_MIN_ALLOC_SIZE * sizeof(struct pcpuobj_ext);
+ #endif
  
- 	if (IS_ENABLED(CONFIG_MEMCG_NMI_UNSAFE) && in_nmi())
- 		return NULL;
-@@ -3036,6 +3035,11 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
- 	return rcu_dereference_check(root_mem_cgroup->nodeinfo[nid]->objcg, 1);
- }
- 
-+__always_inline struct obj_cgroup *current_obj_cgroup(void)
-+{
-+	return __current_obj_cgroup(numa_node_id());
-+}
-+
- struct obj_cgroup *get_obj_cgroup_from_folio(struct folio *folio)
- {
- 	struct obj_cgroup *objcg;
-@@ -3143,7 +3147,7 @@ int __memcg_kmem_charge_page(struct page *page, gfp_t gfp, int order)
- 	struct obj_cgroup *objcg;
- 	int ret = 0;
- 
--	objcg = current_obj_cgroup();
-+	objcg = __current_obj_cgroup(page_to_nid(page));
- 	if (objcg && !obj_cgroup_is_root(objcg)) {
- 		ret = obj_cgroup_charge_pages(objcg, gfp, 1 << order);
- 		if (!ret) {
-@@ -3536,7 +3540,9 @@ static inline size_t obj_full_size(struct kmem_cache *s)
- {
- 	/*
- 	 * For each accounted object there is an extra space which is used
--	 * to store obj_cgroup membership. Charge it too.
-+	 * to store obj_cgroup membership. Charge it too. In addition, we
-+	 * allocate obj_exts array on the same node as slab_nid(), so per-node
-+	 * kmem accounting is fine.
- 	 */
- 	return s->size + sizeof(struct obj_cgroup *);
- }
-@@ -3594,6 +3600,16 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 			continue;
- 		}
- 
-+		/*
-+		 * Charge against the per-node objcg matching the slab's node
-+		 * so the stock's per-objcg vmstat batch (keyed by objcg->nid)
-+		 * aligns with the physical slab. May transiently fall back to
-+		 * root if the per-node entry is being drained.
-+		 */
-+		objcg = __current_obj_cgroup(slab_nid(slab));
-+		if (!objcg || obj_cgroup_is_root(objcg))
-+			continue;
-+
- 		/*
- 		 * if we fail and size is 1, memcg_alloc_abort_single() will
- 		 * just free the object, which is ok as we have not assigned
-@@ -3602,7 +3618,7 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 		 * for larger sizes, kmem_cache_free_bulk() will uncharge
- 		 * any objects that were already charged and obj_ext assigned
- 		 *
--		 * TODO: we could batch this until slab_pgdat(slab) changes
-+		 * TODO: we could batch this until slab_nid(slab) changes
- 		 * between iterations, with a more complicated undo
- 		 */
- 		stock = trylock_stock();
+ 	return size * num_possible_cpus() + extra_size;
 -- 
 2.54.0
 
