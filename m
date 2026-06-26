@@ -4,144 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8C26C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77A33C43327
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 17:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3FD66B0109; Fri, 26 Jun 2026 13:02:03 -0400 (EDT)
+	id D22D16B010B; Fri, 26 Jun 2026 13:08:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF1116B010A; Fri, 26 Jun 2026 13:02:03 -0400 (EDT)
+	id CFA636B010C; Fri, 26 Jun 2026 13:08:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DEBC6B010B; Fri, 26 Jun 2026 13:02:03 -0400 (EDT)
+	id C38726B010D; Fri, 26 Jun 2026 13:08:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 768F46B0109
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:02:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 795631404F8
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:02:02 +0000 (UTC)
-X-FDA: 84922681284.21.9822D20
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AC0C2140010
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:02:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d40MDhLL;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 840926B010B
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 13:08:41 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ED55AA052F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:08:40 +0000 (UTC)
+X-FDA: 84922698000.11.8CAEC7E
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1B42140006
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:08:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HYljj6Ox;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782493320;
-	b=rEb4A7bbJKQ/IuRlo/5q/uThF/E6P3kLibWXyO5o0tS6Fx+WIfbD3Y37i/T0ORGi9t2huo
-	/n6ZVSoMBIqn4T1Ln9OCXnipaKO0jQ7Jd9/4xi8Vd79jpQNhgEz0/JYPwVfpI+OYOE9+sG
-	0/DGjiEnXEtXbotkd+s6D0k+2tc5OB8=
+	t=1782493719;
+	b=F68hIZKueFdubsRSy9s+XHik4+MPBurqY9yrM72ddbGeETsSWRGaBcHkx00kbapJytsfnb
+	sW1OdGNd6+Ou5BXwk/JxCfRG6rJO4MdHf16ubf0dgH65Ux+fk/Y1kXiMnii3qStD5cnpSH
+	H9LVA7DYqj3LnTAHwxq6BLLhR3Wu7f0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782493320;
+	s=arc-20220608; t=1782493719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IDLJ3unlJJuJqzXW94kopPN3/rkEcpY2dYB5PnTRk30=;
-	b=eOoefrkbB6hEaOr4BEAa9qpAW4OaCtvhQBrVNTQEAlU9Ro9jwJW561UOVRzfEPCIijfhXZ
-	lWZl2ggpzVGlrgrTC5q30PK4goelhoeU6nQ5FbsxW068FJ0B71NNW4h2gZpq5U/o24wW/o
-	oraEHIujwmk2BP55wPiOZR408IDYP2k=
+	bh=tLPhQOvYbJ9MvCaXmifdh1jUBsM27DjBWEoAqn3LyyM=;
+	b=4iToesutv0XRJDPkzzm+1LrbbHL2v2woDlcqc2WcdfbwLHz5PaAUBEUEQF2wX0+EEKjLkC
+	E8NTMj1fVu8hjzCyIfyvbwCZDA3QRSoqywV+7sqQIJ9APpTCWTWn8E9xqRquZCbKWzDsLd
+	dZFiFOhSY3Hz5+3C/M6TFE4e8zrbARg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d40MDhLL;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F1E14600C8;
-	Fri, 26 Jun 2026 17:01:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0091F000E9;
-	Fri, 26 Jun 2026 17:01:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782493319;
-	bh=IDLJ3unlJJuJqzXW94kopPN3/rkEcpY2dYB5PnTRk30=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d40MDhLL2pbmkmMZZZmju8x4k1gaiIk8fUXTIjQOAilsMzseLiDEu1XvfE9ghM/Zv
-	 lFHPVzygKpkr1o7SY1Q+ZG9aW/PU9kW3tTo6OeEs5LnhBVtr1W7KHhgaVPFNI6NMt1
-	 uunjwPF+dmVGNPyQbl6SIcqxd4xZiQZN6pqyPqpdGtM5RXNT8MFSYsM9LnV7iD429X
-	 GPPtFQ5vy+KKj3lY/z6EDCaxVDAOJuTHbFLnP9uG3fJWX2nrysNsGiP/GWmwDXsU75
-	 YSQLFQ/3lpDk89nUXTifLckYOU0D0T3QhTsQOTSmQgN16UoEYTShL8T94GCO/LeL0+
-	 g58sBSq53zfjw==
-Message-ID: <6da834ec-e62a-467a-9951-b591cf9c508d@kernel.org>
-Date: Fri, 26 Jun 2026 19:01:53 +0200
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HYljj6Ox;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 26 Jun 2026 10:08:31 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782493716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tLPhQOvYbJ9MvCaXmifdh1jUBsM27DjBWEoAqn3LyyM=;
+	b=HYljj6Oxv5JQqBwnaQNq8arYkl4AVGChM7A/N+JwsXNKPFlqfwPfDmcembYDjq+qFPbBaW
+	WYIjUXv88Ktn302oXsGMU6PTCtdkLbBVI+qbEeazTj23fzTPOhPIGpqtsfF24Y3aRckwAw
+	BW4tjB68OxrX9c5nu8VHDntI287ZpHw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Harry Yoo <harry@kernel.org>, 
+	akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev, 
+	peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev, ljs@kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+Message-ID: <aj6xzyqtwd4it0kZ@linux.dev>
+References: <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+ <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+ <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+ <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
+ <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
+ <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
+ <c0e366ec-ee5d-42d9-ba33-7c630660e8af@linux.dev>
+ <aj5I7JAXWlTHRyEW@cmpxchg.org>
+ <57c18afd-e2a3-4b37-90b6-f2a4c758e8aa@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm/migrate: rename page to folio leftovers
-To: "Garg, Shivank" <shivankg@amd.com>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Dev Jain <dev.jain@arm.com>
-References: <20260626-migrate-cleanups-prep-v1-0-a95933af7619@amd.com>
- <20260626-migrate-cleanups-prep-v1-1-a95933af7619@amd.com>
- <53e834e9-2cb1-49c1-ab27-2d6b51d50fc0@kernel.org>
- <6d477d0b-1f14-4e33-958d-e6a66c647963@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6d477d0b-1f14-4e33-958d-e6a66c647963@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <57c18afd-e2a3-4b37-90b6-f2a4c758e8aa@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 1B42140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AC0C2140010
-X-Stat-Signature: jmicozfo6m91bjxas3r7nuwqfy86f5us
-X-HE-Tag: 1782493320-777250
-X-HE-Meta: U2FsdGVkX18r1G3EDRHw8piOV3c+QgnVebJLknHt1bKvWHo5cQjVYheby4okaeUL96wpyBgsENxp7yzFCox6zYogya7UO9tNPU2Ks/AWknVvHgxhJFNL757jqAD7DWlsRRgLBVhVdjb9uxojPWy8NzMV/eiY9UYTAuOq5PeP8NqRvgY37Mizivrsx9Wll9RP3f8WX9f05iA8VqqZF6ndOYKN3viRiuPUbQi/jVdxnNK/J0viG3QN/QOSh+Ux7H59UyTP/LGNAj6a4qRrIEkiD/vXUxkfibgbJU7wmyZTEUlfnH400ChvGGzLnAE3aIJO1skXVjRaCmyZHi9DjBKtKATnxLTafjvSZRHQ1wZrjMegAYBeRo8wj+bkwE7KU+5IfSv3XMjYbfDwSJLBhhFjoMrnc324e8w/t8ziFmxLamdRlTPHCzvNJPy7+TjCkQN7S205Jqzag7I3ReT/FBH2huw+iAJlou40nvwdVfXCaK1bBswyUzRi+CRAbTkzEO/AY+UZdfYQumNVtQ1rjsm5Lb9sg8Qu2gwnmC57PHa5nYB1CYf7W5LoiVmQ4nNr3gB48erZ/XmYlteGnAo4m5UYJSYMbTixD7g5JYF9FP2JbpxJg1sJEw8QPf1u86/iOZA8a9sxeO4NN3gYBav9a0fVv9BhGV190iL++PZ/JqcDMoZ4ts8sYJRbubwJF7ulZf2y84f/BjXV/+GWYgq6SzjzCi3p/uw1SKZpEFxj/HJscbH1P4dFpk/pjNBfHZfwdSf5QOU1+UnIvpMIHZmpyoa709HZxKKyII80p4FclHZU5B1+r5DCSSJzeX9nQ3z/dKeKG1rtr6gkFye5fzX2Y7shpJSskYKaUp5KzrwiAUBWRVouxKKN84qs71KN9eiKiev74f5ujjxM6KigMutPMbVe+SDQOnKWH0L9gJHK2i2C/UopOegaDAWtoiTgRIFWcWHOy2pA9+f51TgJAGw5jyk
- EllWp6fZ
- r4BeKslOZ+5SUbd9H+MEOQhMSH798+kiuIFCIeBJshUyuMFkdQx5DH8U23Cizk/H3Ij08YlEQkepRn3Prn8oEYdM1cCLL15olBtsW+eiKHD70d4tp5Z9SRLy89A0vS3BRKb6mpaEZdeUO5GmY7Nkj0ycOQTZAPDcV2qIzYkdMKrfImwS4eGI54NN/t8xXcKVXZNDVWGS+fpZY/WrTzoXqv9YgBXLJI09EEj+Jn+4+Q/gZNQ6fzTeEd+2NyOhb8MCAI/8QMi/0u6DwFN/IxnUaqjFg3J8q7+XiMyC8/0XQhxz4Dsp4zX/c0Sr9PmcZpwjIdwITQHawXxAlECFKCpsVbI7HajZ4TSOA1UZqGoavVyRS8gPbnIyFNJjGYjFOb2+XZXYyRTSHZfZMG/NCaEbGGKm01NBbkETDQtCL
+X-Stat-Signature: tcas1yiu15ujwx8ka587tbjjdm35ighu
+X-HE-Tag: 1782493718-70874
+X-HE-Meta: U2FsdGVkX1/ce3ayQWrbEQaDaEnm8gfsOXJ3qHwAZT8PbL4riz0NwR+biphuDvrRf7vqajrTGOdWPZzx2L6gXewEO4l6QcRZe9kPRp/oDFQf45KyYNOFApI1uks5nlw0UYlAmGuAd/qDiSpEPmxtLkdXcWMbVt2VUQIRfNTVxtC3Yvuxli56nyJBAtr0Jo3u0hSCTbfFYOPK1sKGp0o846kfTNBR00PhLVHtRBhatqTiJc7i8DY4j1iDs6iprxtHY3fM/0XZ3HdDqttuIccTtmk7k5Ga+He0OsQufxQQk/QL0eGhXBzc9Sn9FqqYiOsSH/QkfdCVw4kogUuJZrbr7Rg5PahTVq/gKaiSn8zTrUOsqyuTad+57Z7oLPE6XO1RtOmYvRyjVd/M232NHRRRRJNoepTGe6vyaEEevwAdH+knaAXVhjy1NMWG2gj9EvQmpjoEMJvfNf7NUPGXWn0XxK+sFl/NN4wXCpjV55bR6gmcQXaNkZdjv9KK5WKxIOZOOkqku4F542sdBw3BDmQudsntMRCFIqi/Tb0Ayz09oOE2+WHWmuwQLHyh7wrjJDB6ggBWYe/c0oGqz/uzEgWhmrx2Uxqk37WzW5bq0z/8KNb/nrRAscPmpmcITV1ua/FLek+yTuZ42L1Tttc7gpzXDybAWAsLakNqzCQuUvkmWxHSaxp3Hv3l1MxzE0Y50NphhQu4CuKF16jTTf3JJeXUQqH5mg6q+YiqmBZ5sdZIYPhorkl4R2qYCrThtJ9vvSQBT81WFyAEGhyXFq5JVd42rltygjZklpMqZ4Z1ZaDvrQg7HaktrvdrwA58v+t9e1jGrCBvwNM1K9e6Gn/7liMoJJNLMLkHBnRJdd2/3T+uoIB6M3q147tK17qhAV0hNk9V6+jpB5iBjVhf7i0PZ9h29JDLwjAAWGKEVIYDas1rzV37eWEXzhsLhQroMmvc7wtBv0TLAkeu46iaG/vQcxy
+ DNPz7zbV
+ vh/u8ZRmvp4YJ1ADyD6V5DMlmfhvDuZTMHKzeFJYLXbkqvPDWHs0ClaDbLDJOhj/CkVRAxLF0qpliKfeBJ1DGFCxNSawUKPtFcRTMkRlXTA9jBc4o6RnwSCtd+kOIWoUWRvivEvASd9txIBo1S6kg3sxbFIZdLOStEsMeTbLKsZeKy58wPy0BSvUqoNX7p+1FSuqRgW7E4lgRsTJFwApHcT6yfw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,67 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/26/26 18:42, Garg, Shivank wrote:
+On Fri, Jun 26, 2026 at 07:21:28PM +0800, Qi Zheng wrote:
 > 
 > 
-> On 6/26/2026 9:40 PM, David Hildenbrand (Arm) wrote:
->> On 6/26/26 11:37, Shivank Garg wrote:
->>> Rename migrate_folio_undo_src()'s page_was_mapped parameter to
->>> folio_was_mapped, matching FOLIO_WAS_MAPPED naming.
->>>
->>> Also fix migrate_folio() kerneldoc to say "folio" instead of "page".
->>>
->>> Suggested-by: Dev Jain <dev.jain@arm.com>
->>> Signed-off-by: Shivank Garg <shivankg@amd.com>
->>> ---
->>>  mm/migrate.c | 11 ++++-------
->>>  1 file changed, 4 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/mm/migrate.c b/mm/migrate.c
->>> index d9b23909d716..dd7dbd8d84a0 100644
->>> --- a/mm/migrate.c
->>> +++ b/mm/migrate.c
->>> @@ -884,7 +884,7 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
->>>   * @mapping: The address_space containing the folio.
->>>   * @dst: The folio to migrate the data to.
->>>   * @src: The folio containing the current data.
->>> - * @mode: How to migrate the page.
->>> + * @mode: How to migrate the folio.
->>>   *
->>>   * Common logic to directly migrate a single LRU folio suitable for
->>>   * folios that do not have private data.
->>> @@ -1157,13 +1157,10 @@ static void __migrate_folio_extract(struct folio *dst,
->>>  }
->>>  
->>>  /* Restore the source folio to the original state upon failure */
->>> -static void migrate_folio_undo_src(struct folio *src,
->>> -				   int page_was_mapped,
->>> -				   struct anon_vma *anon_vma,
->>> -				   bool locked,
->>> -				   struct list_head *ret)
->>> +static void migrate_folio_undo_src(struct folio *src, int folio_was_mapped,
->>> +		struct anon_vma *anon_vma, bool locked, struct list_head *ret)
->>>  {
->>> -	if (page_was_mapped)
->>> +	if (folio_was_mapped)
->>
->> Why not "was_mapped" given that folio is part of the function name?
->>
->> (it's also not "folio_locked") :)
->>
+> On 6/26/26 5:39 PM, Johannes Weiner wrote:
+> > On Fri, Jun 26, 2026 at 03:04:17PM +0800, Qi Zheng wrote:
+> > > On 6/26/26 2:48 PM, Harry Yoo wrote:
+> > > > On 6/26/26 3:24 PM, Qi Zheng wrote:
+> > > > > On 6/26/26 12:59 PM, Harry Yoo wrote:
+> > > > > > Observing a dying cgroup should be rare anyway, it's worth focusing
+> > > > > > more on readability?
+> > > > > 
+> > > > > While it's rare to encounter consecutive dying memcgs, it can still
+> > > > > happen, right?
+> > > > 
+> > > > But is worth saving a few instruction in a basic block that is
+> > > > unlikely() to be executed?
+> > > 
+> > > I don't have a strong opinion here. Hi Johannes, I'll leave the decision
+> > > up to you. If necessary, I can send out the v4.
+> > 
+> > Yes, I was thinking what Harry actually bothered to spell out ;)
+> > 
+> > The race is rare, multiple levels even rarer, and even *then*
+> > mem_cgroup_lruvec() is a quick inline.
+> > 
+> > This way you have one block to handle that one rare race
+> > condition. One place to put the comment. No labels, no goto.
+> > 
+> > Simplicity wins :)
 > 
-> yes, makes sense. I'll use was_mapped.
+> Okay, I will update it as you suggested and send out the v4.
 > 
-> While here, what's your opinion on unmap_and_move_huge_page()?
-> It also has local variable named page_was_mapped even though the function
-> is fully folio-based. The function name and comments still have "page".
+> Hi Shakeel, do we really need to move lock_batch_lruvec() to
+> memcontrol.h? It's currently only used by reset_batch_size().
 
-Ah, yeah ... please fix that.
+This function is very specific to memcg therefore I asked it move to
+memcontrol.h and not to keep in vmscan.c but we can always do the cleanup later,
+so proceed however you want.
 
-And while at it, rename it to "unmap_and_move_hugetlb_folio". Thx :)
-
--- 
-Cheers,
-
-David
 
