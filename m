@@ -4,134 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F243FCDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 11:56:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04808CDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 11:57:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0FCF6B0138; Fri, 26 Jun 2026 07:56:27 -0400 (EDT)
+	id D26F16B013A; Fri, 26 Jun 2026 07:57:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBF7C6B013A; Fri, 26 Jun 2026 07:56:27 -0400 (EDT)
+	id CD7B16B013C; Fri, 26 Jun 2026 07:57:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB1346B013B; Fri, 26 Jun 2026 07:56:27 -0400 (EDT)
+	id BA0D36B013D; Fri, 26 Jun 2026 07:57:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A3F7D6B0138
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:56:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22081A0422
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:56:27 +0000 (UTC)
-X-FDA: 84921911214.06.A7480D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 571BA40008
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:56:25 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HkuZ7XBk;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 868C96B013A
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:57:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E097A120422
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:57:16 +0000 (UTC)
+X-FDA: 84921913272.22.550661C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 3CBD9180002
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:57:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bx1YAzWS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782474985;
-	b=XaxPODUOS4RwIDdhK15SA+AbKqgn9twKVsrBHeUfx/pBqVr+vaQ1BP+vsCWPRROc4jLASg
-	M36f/Nl2ZvIBKzFOzHl9hLokG4a8keFA+MOWGnwz2bFQn1HE8HIZzrCjmbdz9SS4fA1WcA
-	PvtNYr4C9jKjBmMh4XGLraHv4+e0QPo=
+	t=1782475035;
+	b=7tzotq/5lrSLlaPGORdLXVXkQqzzKK9DD5l9I0mFwoWE3D2osIImkk+9hSMpQHvAt45i6w
+	GEnql4/05d2R7K38hiO21zf7Hpd4qEb22+rSfvgXXFAO6Oc3/DDqReXXCQfmMcbIDSZd5h
+	SAZkRFrvlDMfuwqtDSPwabogwGsZORA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782474985;
+	s=arc-20220608; t=1782475035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9MHwt/piGbHaBX1U0Ciw0A9tLdy3GnbZtG5V2/pNbH0=;
-	b=HD//Zxi7+viRhAUlAQn98hT1sIZAIbiU4VZOAGZOT5LSzRkTGL0LU0MhIgecYgcaGj9WLb
-	lhqZa4GA7FrEaFEvVbMmeDzvtoKF2y2IGxO1YirKwmJUgpSsQD6vjYz1KxUh091HfRAmZ6
-	MPxUohIxakTaEmtPwZ30slb8GqsR+6g=
+	bh=9YpMyR+qlvlqRuVjps8vxBolsZnShA75KeyYR5QZWZI=;
+	b=xMpzKkHPvEZyeM7U0u82IbYjIx1HmQqrU6+BrbX3Pjb938IXNj7hTsO4LHgIBTpfFzo1DE
+	u8nR0xn/vB+p9fmQOM/PO63InZsxK6Z6F2vi7/gqJcedkvqAscWTsJH4pTKT4nlYzbCXtd
+	RmGXN2jks3TBllk3LFBqoYFWQrBYuCU=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HkuZ7XBk;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bx1YAzWS;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E902760098;
-	Fri, 26 Jun 2026 11:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BDD1F000E9;
-	Fri, 26 Jun 2026 11:56:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 59DFC40ABE;
+	Fri, 26 Jun 2026 11:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F51F1F000E9;
+	Fri, 26 Jun 2026 11:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782474984;
-	bh=9MHwt/piGbHaBX1U0Ciw0A9tLdy3GnbZtG5V2/pNbH0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=HkuZ7XBkNBbPpmNh0jHv41Wuw70A+GdUFYjWET1qmXcQIKjTVrIaymEhyhQxZiJDQ
-	 OYQaC+YTngeDtEXGcTZg2nrhdNP6R8cyrSArn0Vcg4mmq7Hto8gxALTcWSWfRU8kgb
-	 i1NX1hBZ94yWCUrkJOY2045ItoVFnZTRZkQr1dHUJS9nY+rKTbTq6HIwWBAr/01JNd
-	 oDiP18WI45XFmDdzBNkxdUAOofCB8I9OwzTdx5AOBXno0NZp0mktQRseoVeUXD9ds/
-	 Ea6yM6KoBk2H/UJkJmv+1gH1PriKePYHNbY2wWHbjbguzGKMCCtNXrSSLLiaCwHwV6
-	 ioGjyljtNEVjg==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 26 Jun 2026 13:53:58 +0200
-Subject: [PATCH v19 1/8] rust: alloc: add `KBox::into_non_null`
+	s=k20260515; t=1782475034;
+	bh=9YpMyR+qlvlqRuVjps8vxBolsZnShA75KeyYR5QZWZI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=Bx1YAzWSid7owFWxMCfA0186eDDpPS6Bk1iUsg+5y5Ugl2P9liT+7/arQf95DTE4S
+	 HW+dq6UYThVhQ9NIFmWe8tFD2BlNMJWJaVVk+JZX4xuPvF8cmg5B3rOmTwW7ZTRg58
+	 T7RbELABusb6j+rLGCeH8mpsvLl5yXS00wxwbkJHNLbmweXgbRfVy8v7Owq6GAzcY7
+	 3kHxztfz8U+TqCWxUt9uQydBK4QYk3UwDBX+mf4JwlBYIElybqH1uEgseynnD70u92
+	 +7njhKUWT8E49vgLRmSWdFkjWBnLtyosTqxRf/6QkwYBJJTCqHZR9Pw/4v0hWtMQep
+	 lpa9skKfM/ccA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf
+ <graf@amazon.com>,  David Matlack <dmatlack@google.com>,
+  tarunsahu@google.com,  open list <linux-kernel@vger.kernel.org>,  "open
+ list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,  "open list:KEXEC
+ HANDOVER (KHO)" <linux-mm@kvack.org>
+Subject: Re: [PATCH 1/1] liveupdate: luo_file: Add internal APIs for file
+ preservation
+In-Reply-To: <20260613012521.835490-2-skhawaja@google.com> (Samiullah
+	Khawaja's message of "Sat, 13 Jun 2026 01:25:20 +0000")
+References: <20260613012521.835490-1-skhawaja@google.com>
+	<20260613012521.835490-2-skhawaja@google.com>
+Date: Fri, 26 Jun 2026 13:57:11 +0200
+Message-ID: <2vxzwlvljyzs.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-unique-ref-v19-1-2607ca88dfdf@kernel.org>
-References: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org>
-In-Reply-To: <20260626-unique-ref-v19-0-2607ca88dfdf@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- Uladzislau Rezki <urezki@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Tamir Duberstein <tamird@kernel.org>, 
- Alexandre Courbot <acourbot@nvidia.com>, 
- =?utf-8?q?Onur_=C3=96zkan?= <work@onurozkan.dev>, 
- Lyude Paul <lyude@redhat.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- =?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, 
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>, 
- Carlos Llamas <cmllamas@google.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
- Serge Hallyn <sergeh@kernel.org>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, Igor Korotin <igor.korotin@linux.dev>, 
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
- Michal Wilczynski <m.wilczynski@samsung.com>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, 
- Philipp Stanner <phasta@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- driver-core@lists.linux.dev, linux-block@vger.kernel.org, 
- linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-fsdevel@vger.kernel.org, linux-pm@vger.kernel.org, 
- linux-pci@vger.kernel.org, linux-pwm@vger.kernel.org
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1170; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=L57zDm7ALp0lZWMW+Cln/Gg2DuJozYQVYKA2SZ2s83c=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBqPmh0T9NXm2ekfnSlVS5q2a5Nkx3elel1Z+sUE
- lVzxvaywm6JAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCaj5odAAKCRD6UCkIqsW9
- 0GQwD/kBPhAfqhuRT/wPQuyxM0apWmNdKJ15rz0l+MH0DxUqynfkKds77p9Ba1hBaXZEiIgHmCH
- pDIBbcmrQR3ZzjLNEC27ic8X6+BdCVjQKsQBQWJ7NKui+imMc++MYWVIYyM0r0enlZe2kmN8hO5
- neGpUe0IvwQ3Lj6UWc6ACsUoOIJ/VSSl4SFZNnkH2SbWvbImu4RPT5mmyv3heMJ9g65NMAedvle
- tw99mHlW+RMWghmbVY1G0CFXcrMFX/ICi7lpll6iz01cgmdWZ00Zk2kIk1MDSePNSLkiHcviPYo
- eujIyeR9+opejbUdjMsWAJIqUz1K+CusSsy+pMB9t+0TM36BK03TehWUHzki1rXsWQby8KUOQx5
- JtTsLGUeCdq8jj5LJh7ikHfha1V5+4WAgb1NU6rWbu0HAaCDeoUfacnX5DMEVlA2YDZYl6lGSYy
- LTe2rZntwugKRllSVNPfbq+vpbu4eh/00OZ+rZuo6jg4qjxcaF8bpEujK1QOVaT6mqH0SIO6fL7
- dafroHQszbX998/omhRnZ/sCkPDELv4EwBaAlkTH7N3G0DsXiUEUx3nko9wa630BA3dS1kWBvKn
- cRx4J3Tc31/zybazPxJ7yei5pHjMTfOHDnSsGrWwiXODWfvRUZiqgEWUO3S3KJWIZpG2VabKArA
- vHegIagDX5flLQQ==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 571BA40008
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: hzims49ofs39wqsshjj5ckwksf4e668p
-X-HE-Tag: 1782474985-728207
-X-HE-Meta: U2FsdGVkX18k3Ji+Bj8QUHeuBQaYRA/eSDmkVbHpZAWKWST6xIAmdB2sRuMSIV6mdMy2V+k5Kkx1WOJwbRj8gm8g1yqR+tUA/ffjwBACdxegXOLI+gC7EpOtb0CJLGdhkvEkrjLyWGy4XYY7/MZ/GlaR5/o2gxGNW7h48ww59j3eJda5KaREiRANoQEv+dBlc75Mfmda59ApiGhOBp8CS9PCxkXwj0VxcELH41ev7duVCFEGxYmyEvm9dsB+qzjct7LtxLe8Dj74kgx8ceRQbivfmMhOhxrh6873Z+1zvakfN9M7ucyH+2wwrpJ/tBDZbzv1Y6zdV0DFZtUwpfpTcklnvUy6xj8Q5kq0K4lyLBn2PevA4g42GZCboDEw57UypmggKKMwxsElJjcEITj5GGnSt/kyH1886K/u/CURZDOkNuv6Z0Ehx8NsM2PPdzfSUPcUevxpKB07+0+PdsLBQ8yY/M13Ft5ue4qSss2zOwzKkTosebj4Glo6p/CcMVXH+5oZNhDN0DaXBUqXSaaHePjypmA/Sh6I9o8yweIU0mXbop6+pa4GHfA25GIotg9jfYFgCGgd8lknYmfTWg6vSoXy/u4ZZa1hvtIPjXygplc5acPMH5ynMZ+c0HVyyZE8RL0Zf7/BNfFRyMYidINPYcG2oZF7fjUDkEKCUMPboZh32tq70KHVN+oEj3gu5Rnxgn7ctv+WlDnabGQPb4FcvClEysKmV5iQch2rZJdB177HuX9MM9wJuM8jFv+W1r3Ww5YJIjFQMUBmeFXC8u4XUt17hiuHTwWAlXT2YXHTCd3qwXrJt8e8RqnodBxlittB9U7+KSMeH/3tCq+49D8ANEbEPNQ0hHYuttcSxzTMhwPnSqGm93xrrfubne+XrLoq6zlBQtRTcXHqpZCFGRaqu2YZ2SYvDlJipUXGoeZTzrHVFx4CfoUyvzcw3wlur+fwKHj2B/f9S0k9ANmrvRU
- 2GnNddiT
- tdFgdvGZH4GYNZ29izHGHBqNsxK8JWFuD6AZaGkhpIQ6X9FELOASNs9CvaZWzzTDsHUaQGbhu3Cie0/646U9nm5CsW0saG4SWQDQdAQ/fx2M90U/QHcTcslIOWvYdWN/6poJT5K/wj0WsODHdXRbAhHdDWgI57DvNRxWCxTxVQmcu+Ndc/kNACCo8j1IITADkvANh72ixARxnz+R9kNblsdHdEgLsLpIrhopD++rBMB7KOHYot4vUpY5l3UXNbYSuoJoLBgZi5j+hlXz3mIopJeHKFY4je9zMHyfNDTK6th+OijOIgaEYoRDSZWMuAUgBioyW4r4hyqNjCPx38Uf9U4zh48efoJdlrBb2gEu9CfPTrzN1zy7eLJOn0fo8X0ybcbu1QaDLPLQ5HlxD/I8k0Ef3Sa09L/hcDALSX+REep+XNew/a2bzwukKljo3QpeHhbzDqhW6tH2nLWQTvWyFvIZptqZ5bILE0nxLJV/m6sZcN8Y=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3CBD9180002
+X-Stat-Signature: ho35eksrto5ny5npfet7yhzn9xp6dae1
+X-HE-Tag: 1782475035-618030
+X-HE-Meta: U2FsdGVkX1+PGMMT0qCwMTEbfVZpwtbCxL7ETbHFyVDnwhhhBAeJ3wj853CN52BaI9pE3+puLO0i3FBGfcRQFAKHSrw2vJx/PH/kvqZQbNL3rbKO46ZBjYDrOSNJwb2PYquaUArioSV62Aw59cenw3LIKukOkLnigr4Lmbde251D3dnmUKcpR+A12gH0qM5EYSL3Z+l7W5FGwFCvp2VDfcmZk20YPlwAeRpn5TvR0HThJd3N++hqyD5u4qlgXyZ6pXjh7+S4DwK/oPGqFzE7qBKjh7xF/c0+lhZ8U4DMh40cCmUZrhN/XdJGtm+WmEuB94o5013pKLehpb0ZarMmU3zzfAJwojFSOjshn2axGtttoWwIW+Bo/sbUkvAoZjUGlbBYULe4hWDwBwmV9SzCUtEAMWOjIV/P+DtVnRtkuQgpOsYZgnQcWA0l2yP8EaxaDi7/QtMdmX+B638DWizUB/mioOaPcUpsK9QvWp1GJf94W0nSGjs6z3yM6hipB0yhrKay0fMMg5mm8RbxUX3d1VomKLPeT4UinPTSeLlMRb/rsq6HJ83pFG+8WV7v4nmuIlUJgmqEyCqt1a8lnf9x2SmBMF2clqsfsQMCNRVPTINT22tmgHgU/8ehw8ByiAnFrQ38+7yfHvkJBs6p5SDcjSTeVqKWfX+x8jJdp+gblHQdtXHKVAEe/l5T0gqhQlzZV7eh0n7hc9Z6IEeIZfwlWyEVQw6Uohk3qf75nFYh58JWqyjGilaVJNnbY7ksxEOmOtHWvp6dOEzjUVXfdrrAZYDSwbbnRlcq3mokCWGPfpELnSeUMzJ4nLkmw8kXVjAEX+2sLKd6Fasxfj7td8JI2l8Hz66XaBeyYMxqFoVs8p2agYLRieV3ORU1ANtNxywLkNvUUmQu00/6R6qojA9MeXY/DGNKS3lJVUj5JYiVxXLHc5j2DROLNZ/INCqcWlOcd4JoMYGROoWx0UZxe2N
+ qf3Lz44X
+ UITgqzyiho1SVVHJk227Zon6W2V2D0wFmhn2cdj09rNdzaEvFbozqAGa7Efis1XZfjGcguV8CmEa0mB0wGGUxeZc4MkT6Vf0p61geLWI9M96BtVtumxmRCB3PpZGqQ/oESgbpbI24u7h4rLbq8NbRcrkEHsMwKxU7fycJdbNdKw7NyU0QoP9t57ncANA/wqmvVMSrxS4fZ1BH5Cz8Nws6w8pccx6b24WgglI7oKgS6YId/6q+3hSOJI4FWgI4po8ZMnSNPZfnt+MHtMtz3fGF43H5dC1bOBxeLT6i1ETFaZH9ifjSeatTf9FDHm0ERG3PkxBpSDGmSHc+wCS59RsGpAKKpg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,40 +97,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method to consume a `Box<T, A>` and return a `NonNull<T>`. This
-is a convenience wrapper around `Self::into_raw` for callers that need
-a `NonNull` pointer rather than a raw pointer.
+Hi Sami,
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Gary Guo <gary@garyguo.net>
----
- rust/kernel/alloc/kbox.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+On Sat, Jun 13 2026, Samiullah Khawaja wrote:
 
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 35d1e015848dd..d534e8adcf7b3 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -211,6 +211,15 @@ pub fn leak<'a>(b: Self) -> &'a mut T {
-         // which points to an initialized instance of `T`.
-         unsafe { &mut *Box::into_raw(b) }
-     }
-+
-+    /// Consumes the `Box<T,A>` and returns a `NonNull<T>`.
-+    ///
-+    /// Like [`Self::into_raw`], but returns a `NonNull`.
-+    #[inline]
-+    pub fn into_non_null(b: Self) -> NonNull<T> {
-+        // SAFETY: `KBox::into_raw` returns a valid pointer.
-+        unsafe { NonNull::new_unchecked(Self::into_raw(b)) }
-+    }
- }
- 
- impl<T, A> Box<MaybeUninit<T>, A>
+> From: Pasha Tatashin <pasha.tatashin@soleen.com>
+>
+> Live update orchestrator file handlers depend on the preservation of
+> other files. To make sure that the dependency is preserved, the file
+> handlers needs to fetch the preservation token of the preserved
+> dependency. Similarly during restore, a file handler wants to fetch the
+> restored file of the dependency.
+>
+> Add APIs that allows fetching token of dependency during preservation,
+> and fetching the restored file dependency during restore.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+
+We discussed this once already on a call, but I'll write my argument out
+here for everyone else to get a say as well.
+
+While it isn't obvious, this patch implicitly defines a part of the uAPI
+for live update. This patch says to VMMs (or other live update users)
+that "you can restore dependent files in any order". That is, VMMs
+don't have to restore the files in a topological sort order or
+dependencies, they can do so in any order and the kernel will manage the
+dependencies on its own.
+
+But on the preservation side, VMMs still do need to follow the
+topological order of dependencies. Because if they don't, the
+liveupdate_get_token_outgoing() call will fail and preservation can't
+proceed.
+
+In simple words, if file type A depends on file type B, VMMs always need
+to preserve B before A, because A's preservation will try to find B's
+token, and if B is not preserved that will fail. On the _restore_ side
+though, liveupdate_get_file_incoming() implicitly retrieves the file so
+the VMM can restore then in any order.
+
+I don't like this for a couple reasons. First, this makes the API
+asymmetric. If the VMM needs to manage dependency order during
+preservation anyway, why not do it on retrieve as well?
+
+Second, the API is easier to misuse. The VMM can restore A but not B,
+and then close the session. It will go on its merry way never knowing it
+did something wrong. For example, guest_memfd depends on its VM FD. With
+this patch, LUO will allow restoring guest_memfd without restoring the
+VM FD. This makes the guest_memfd practically useless. Yes, it is a bug
+in the VMM anyway, but if guest_memfd restore was denied, then it would
+be easier to catch.
+
+The kernel will keep itself safe in either case, but it will make the
+API harder to misuse. And you can always _relax_ the ordering
+requirement if there is a need in the future, but you can't go the other
+way round.
+
+So that's my question: do we enforce restore ordering? The code change
+should be relatively simple. You just need to fail if the file is not
+already restored in liveupdate_get_file_incoming().
+
+In either case, please at least add a piece in the documentation about
+this ordering. We should not leave it implicit.
+
+[...]
 
 -- 
-2.51.2
-
-
+Regards,
+Pratyush Yadav
 
