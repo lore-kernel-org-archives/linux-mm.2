@@ -4,110 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D900AC43327
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:15:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05EE4C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:18:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBF9B6B0088; Fri, 26 Jun 2026 10:15:36 -0400 (EDT)
+	id D4B466B0092; Fri, 26 Jun 2026 10:18:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B96636B008A; Fri, 26 Jun 2026 10:15:36 -0400 (EDT)
+	id CFCA96B0093; Fri, 26 Jun 2026 10:18:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A874B6B0092; Fri, 26 Jun 2026 10:15:36 -0400 (EDT)
+	id C13726B0095; Fri, 26 Jun 2026 10:18:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 77A506B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:15:36 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E5A151A04A2
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:15:35 +0000 (UTC)
-X-FDA: 84922261830.01.ECB305A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1848E40004
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:15:32 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ptpS7SPO;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9421F6B0092
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:18:30 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1A0618CA65
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:18:30 +0000 (UTC)
+X-FDA: 84922269180.15.57E5173
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5D23E160012
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:18:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSZxxfSY;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782483334;
-	b=dZtslXWKgfKl/mSnoapiFjsdUyfoBq3ZPzPS2LKEVvV18HQUH1BE78C8NeVX4t9TYHAfpw
-	qIe7dRxBb1OqQ8hSkAXNm1NamX9Zsw4408cbCgE2UQr0Tcg1R/YtrVDtgCFdDPpuev4VeQ
-	XasWvhIM7Zxyprdr6sItHxU6p1KJw4E=
+	t=1782483508;
+	b=v2WHNyo+JLdYrij985JrPivQHFlBqGlkw7ePLNH2b3Dmsjymz5+ego+mczxewDVvbzRkCd
+	fF01gS/2KqH1AR5zsKBrMlmaTwpHpAJxGwy6Nae0Q6z6am6sTT/n8dKeXwMVxxs6Go6lkZ
+	L5CcMRL+/mZ6CDVuBFJ573RKk9XfzKk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782483334;
+	s=arc-20220608; t=1782483508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fk23Dy4ZIc61XYKtH81zEfyaoMPF2yWZmOGN1C30DSY=;
-	b=E2p4WKNYPudyoONt5yPK2OvBXwRr0SxTllYRe1Sf+PWrQoJzvu9BRAbwuRK/Rpdwk0hVAX
-	3Ks+CDUo7AUoNvYsYu25POMxYZQ2E+15mtOBDTZ44WD9xmlDAzxpcih5tac+LvpPSAkT3R
-	4zEXn+sM2CKemSDHlTrsHcEy5kIWtkI=
+	bh=fSqrO2bqW4dSYaxlrIc5+ZVhWS8NkgGiGqjtTA9ncRw=;
+	b=btEUhHotsFYX01R85q4uf6q8fDjosB0Wfgewyhcz8HqB6lmQHZQ2MwkoIOxArssPnMYlhP
+	KQo8/Kb7ivaEO8VjsxdyHn4E6Rnn16yOoX5NOQBALnxCoH+wULvGdGQfvE0bxzmntO9RK+
+	77PXXG4ko0gH0up/4NpXIQOKQ6sK4zs=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ptpS7SPO;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf04.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Fk23Dy4ZIc61XYKtH81zEfyaoMPF2yWZmOGN1C30DSY=; b=ptpS7SPO8KrxMt8IaYVlZ4Zn2D
-	4r9VnoW06/NoZlCKiKfiBWTVJkxsCvLwBnIOmDZQMF5YBqXGi5Q+E3FNyEhl0h0J6BxooH0qpBXXy
-	gwDAxiSr/RaFQ9nGw8tGxeRRNvstWM/3h3fBoIos7vr7+yJj9BuzmftTQMWBDKG7eHVXMZYoejtRD
-	cWBrmR6//Oxd+cjFgObvz4lTWQ2CVY+bSUJ6q3OB87WIU3ufmMekEg7JWCRB1fEk68MZV6ihVx7QD
-	gVxD/g6Gi+U6+Y2iOn8T+Zp6+mK0tH4obdHvjerDebPqDm2uJUEvUf3WBituFBor7aEdSdFN7Phsn
-	5iCyMUJw==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd7L2-0000000BxKA-0uSb;
-	Fri, 26 Jun 2026 14:15:24 +0000
-Date: Fri, 26 Jun 2026 15:15:24 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Pranjal Arya <pranjal.arya@oss.qualcomm.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>,
-	linux-arm-msm@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Will Deacon <will@kernel.org>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Mostafa Saleh <smostafa@google.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	Shuah Khan <shuah@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Wyes Karny <wkarny@gmail.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>
-Subject: Re: [PATCH RFC 00/12] mm/vmalloc: migrate vmap_area indexing from
- rb-tree to maple-tree
-Message-ID: <aj6JfHxWGbJr0WPZ@casper.infradead.org>
-References: <20260613-vmalloc_maple-v1-0-0aa740bb944b@oss.qualcomm.com>
- <ai3kkIpaR0aT_6q5@casper.infradead.org>
- <ai_LVreyRWx-RDEd@pc636>
- <ajGQ_WPT3Ra2kPCQ@casper.infradead.org>
- <ajPDDkV7yqWlhPIh@pc636>
- <e65e6153-10b4-403e-ac40-10687ea5cb68@oss.qualcomm.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSZxxfSY;
+	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 45C534074C;
+	Fri, 26 Jun 2026 14:18:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850591F000E9;
+	Fri, 26 Jun 2026 14:18:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782483507;
+	bh=fSqrO2bqW4dSYaxlrIc5+ZVhWS8NkgGiGqjtTA9ncRw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SSZxxfSYlWcVT5jvIJ9nz2ueUduvU5pmr6hfphnHMxRs44ttAkP++FeuBcMZAniz+
+	 XKgpXoqOPxXhGcrWyoy7CjrjyYlbzMZRpReiOFTKieSAxbPbwX+K4Soo3jrxsT24EJ
+	 VB/EJ8jIdNFNmcOzW+rjjZrAUHIq4+a3vqUnz2O2Q+5UOGYH78I9AP8MM8wHeoAShG
+	 p7FhqZQRFN8sU6U2uNMBBfZP3+/Fjt8iwoDlQuFkwV8mDUo3sasov9UqXrT+t8F8bt
+	 6oBhi0sfNZDuxlv4FlFLHQV5xXzftdNMC2FzZqneQCyyc+/8suTxEdCjMxP33NrkMU
+	 4nuVQXuuju1oQ==
+From: SeongJae Park <sj@kernel.org>
+To: Liew Rui Yan <aethernet65535@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon/reclaim: add 'available' memory as an optional watermarks metric
+Date: Fri, 26 Jun 2026 07:18:18 -0700
+Message-ID: <20260626141819.86269-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260626081038.46569-1-aethernet65535@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e65e6153-10b4-403e-ac40-10687ea5cb68@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qwo7nko1acnpdmijwuzftwk1o7yuzbsz
+X-Rspamd-Queue-Id: 5D23E160012
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1848E40004
-X-Stat-Signature: jqw9o54cwb79o3ngx1ktw4ujddueydhb
-X-HE-Tag: 1782483332-456952
-X-HE-Meta: U2FsdGVkX18M0cDAFIeFEt+1QCyp1tzTSgBxrZEaq8AEsZBeSPUfRJ1gFnRAOUTGiJNb5Lbv+V0Ze7aU0wNYv9tzC65QffbpsdxuXRfg2ZhhoqYplGH4neLgRWYlz9Vc4s8NeSAM48Ps+yWN2S2lLZBFydLDJ30ymYgJeaM5/bK3WINILT7g/tUgbVFZBuT3ZhK8YlfmUhq7awYbTvxzVGbToXg4LTaNw0SoyxHKDuhBcJO+tzEGNNLX7pjUfia2QHp+LhLehIAKLdSFKbtvmgegLI2lDENm0s9EGmWzrfBQ5w9kw68nmA1/eBzFLxh7trehh9jH9Pm21z+q6s4asFg2s1MCQUijsDz/VjwlbOSWkOCFTbL+iCcp8oAtM3FuSiJReLPQAn9Yq7wTlbKXxi0oLFszYMAg86jbwwUMxcjjtIj5AlI268ZkL0VuY/Qm/yMlgGh/AMYuE1ewLGpfwhfkiSiA4EP7QdmkNi4W6HRae7UbIQDAMqy3XiE7ihNSBOFuWPSWX4LpUNjg9yAdzFEnQMiLjzqSwGXJifyTUTIM1ia1Fo9q+ocK3EszuapyHy1RrtCZrvxAthsilrMnn77Tonu8vpfUwNKaVkUJstUKEPKwIOcV5RW7Bq7JlpPGPGUd0ilaPjuIxKZRzupl9olqo3N90aCVWIPMjJOOGbS06H9rD94xDzqS2u6EHEG+ENdLb+UUS43JHNG57+50KRjLfcuYpBJpY6FTqsS2KBtUCOYPknTsQcDtAQHLpF5ueRBAfX6Wnw8ridRGEAAfj+C6LwZaoSHB290LyifucfCB6Orcoj3VKOoxS85ckopDDwOJjO/Wv15GTlw4VSL13/sMLdojFvj/KxPa0BPBZHvTX4xP7ut4+jO8s6w9jkMj7EsYom8Y25aOm9uwjsdaHCTfUl+D1ZEyY77Mob4yLYNsnH70tcd/uJxudmfVq/P3Z9hIr+tJxnMfRpHG6C5
- DVskzcBl
- QrZGEse4DIQGZUeo2kNet8KV6HsuVsUcjkES3KcQANragNoJupff2ULpK78kG5Ip84PaG83BN9haYCAKnJibuyHAgPjuZWzWtRS6xhxE4kf/B477AXABlFVuBaD5aHQpBVZL/3b9//qMueiXlKNOdPZLiOxnfDhVylYEzN2BzKbF/u2Yb/P7CSHjXyngXG49D5isDaCdV2tvOxXlL8Xv2HaCWT53bvFYEdw3XwX5oW6ruFH5Ls29CgKB/eE6Bu4wDYjkgqKL7OdSN3Wij0KaVuSf/fq3BxsBua2lDIyTjgcZQlOUozGytbcwYpAdCGD+TgX6rZa/VoBIJPUXWWvh26DTVc2w4IlflbOX255MKJyNPj4KWTEnE80YGSA==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782483508-344197
+X-HE-Meta: U2FsdGVkX19C2T58Ozsdu1d464voW8hQwXVFuSHrLmxcK0LiUYQt/vfzgwOKyswUBIruzfo6p06qtcHe4xpwPeqVh3eKWI7NsoWkkDQbZ4ETNsak3rAc8SfJtH6vOxZwmm/jb/Usm9cxFSkOIEJ9KIgvxQSF0l4FCbE1732zPhuE/pZlvxBxmxNPYCGMlRXZt+ISSLmDzo0f34bjKnwWPYyfIy4rTipd6HdftJU8/cas/8VoJXuYDamkqTthHfLtZVWNXC76koJ8kctfd12XqWuUyn3SS0BnEy6TmLr5iGlYhyNla63oNH7IgwDyZl2ZbESI+izxQRxL+VHNtNl83kBTEaV2zDMpXxX1xxiKOhDYm9IcB6ql10URxpRYOeHFX98lF1i709bleGx50MxTZ+26JZvCFBG+8VdylX9QGd9Zbzh6COGmeQxfSwN0W/EiIz3YBTuBwRnLVHlynb1eCHNDrN+i9t/4jU8sq2y80dxi2BY62romeG/B2lsfcXi/rHj+Lw7IRg4ZGkTpFlhmnsq2OoVdMoxdNw51zqcmqNaiD/EjjwSpK5IOF2zwAXlXpplMITFogB+En5Rs/mnoN6vYTyWWdTlcO+nLL20dhpvUBGA7bnwimPGGLtbQlmrg9H3sENUEh/K+M9zqqX9sM5zxbk93YTMvR9j3oolkm6GntwUsC+Nq8Ng18y0bvizuJKEt9UBM0zwNsrZkcLLjN1SendNLzrxqBztuFYYjZrmEU+QLsne8XvcMqZ/pKAU+HRT3gPn1/hwfmtyqNrYmtadmxyx/GJF24k3AL1Hwe1iFgGMp07o/E8cN/wIQIdcloG9zyX31SbvXQcqcDV/Yz/pERdL11hOIIRFNhDwrcb5BkjdYLtH1gGu7yhFRfFT+C/71cobtCfNMViBbZFDyCQtOvQIR5ciK6NLGlePmdTrlzny8HiY//otOu4bZDJZaKeVOo94xnzfik1tiMtm
+ r251C8ki
+ IDaG+Sk6bDeFH8A5kbe/joUJH7gFLQmS+n07dzk/cvSFmBgTEh9zylEWeUBWN50FBXZE0B2oIUQ7OpnnVy5AeCCPeB6EPzqSw5GR/bbl2sWXwq6XsKwHO+MOjs0OhSJP5zIYJllRm0YBdeo6DgqVl5+12Cf4mYhdQ2ADfVB8xKQsb8f0FOt+KwSvAWJe++3rEXvzPjk666le1sK8daFfeWiaOxQ3fJ4Hoiy20zVlI+MMM0KNVUnzAKB5tFPCbHQQjlg3s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,22 +91,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 04:17:08PM +0530, Pranjal Arya wrote:
-> I am planning to have following approach on this:
+Hi Liew,
+
+
+Thank you for this patch!
+
+On Fri, 26 Jun 2026 16:10:38 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+
+> Problem
+> =======
 > 
->   1. mas_preallocate(GFP_NOWAIT | __GFP_NOWARN) + mas_store_prealloc
->      will be fast path. The preallocate attempt will be non sleeping and,
->      if it succeeds, the subsequent store won't require allocation.
+> Currently, DAMON's watermarks metric is calculated based on the
+> proportion of the system's free memory.
 > 
->   2. mas_store_gfp(GFP_ATOMIC | __GFP_NOWARN) fallback: if
->      preallocate fails (rare but possible under memory pressure),
->      GFP_ATOMIC will make a non sleeping allocation attempt inline.
+> However, on devices like Android, the system typically maintains a very
+> low amount of free memory, even when the available memory is abundant.
+> This causes DAMON_RECLAIM to prematurely or aggressive trigger memory
+> reclamation, thereby increasing the risk of page refaults.
+> 
+> Solution
+> ========
+> 
+> Introduce a new sysfs parameter 'memrate_type' to DAMON_RECLAIM. Users
+> can switch DAMON's watermark metric evaluation to be based on available
+> memory by writing 'available' to this parameter and commit the change.
 
-This isn't how you're supposed to use the maple tree.  The intent is
-that it's protected by its internal spinlock, and so it can drop the
-lock to allocate memory if it needs to in order to balance the tree.
+How about using DAMOS quota with its aim-based auto-tuning, instead?
 
-If the user needs to also use that spinlock to protect other things,
-that's allowed.
+I developed DAMOS watermarks and quota as safe guards of DAMOS.  In more
+detail, DAMOS quota is for restricting only resource usage of DAMOS.
+Meanwhile, watermarks is for restricting resource usage of both DAMON and
+DAMOS.  That is, when the watermarks condition is met, not only DAMOS but also
+DAMON is completely paused.  Also, watermarks feature was considered smarter
+than quota, because it is a kind of auto-tuning.
 
+However, it turned out completely turning DAMON off is not a very good idea,
+because it drops monitoring results when the watermarks condition is met and
+therefore completely stops DAMON and DAMOS.  It drops the region shapes and
+'age' information.  Especially, 'age' of some regions commonly cumulated up to
+hours or even days.  Dropping that was a problem in production use cases.
+
+Meanwhile, we introduced aim-oriented DAMOS quota auto-tuning (a.k.a DAMOS
+quota goal).  It made DAMOS quota smarter and easier to extend than watermarks.
+Nowadays, users can also pause and resume [1] DAMON/DAMOS without losing the
+monitoring information when they want.
+
+So, I personally don't encourage people to use watermarks.  Of course, I may
+missing some problems in alternatives.  Hence I'm asking the question to you.
+
+How about using DAMOS quota with its aim-based auto-tuning, instead?  If you
+cannot, could you share more details?
+
+I'll hold reviewing the code until this high level discussion is resolved.
+
+[1] https://lore.kernel.org/20260427151231.113429-1-sj@kernel.org
+
+
+Thanks,
+SJ
+
+[...]
 
