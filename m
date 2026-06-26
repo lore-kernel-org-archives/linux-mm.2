@@ -4,95 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A5E3C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F855C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 15:28:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E605A6B00C8; Fri, 26 Jun 2026 11:26:28 -0400 (EDT)
+	id 3B7586B0098; Fri, 26 Jun 2026 11:28:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC3B36B00CA; Fri, 26 Jun 2026 11:26:28 -0400 (EDT)
+	id 341846B0099; Fri, 26 Jun 2026 11:28:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8B876B00CB; Fri, 26 Jun 2026 11:26:28 -0400 (EDT)
+	id 1E2116B009E; Fri, 26 Jun 2026 11:28:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 983AE6B00C8
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:26:28 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 03ADC12049C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:26:27 +0000 (UTC)
-X-FDA: 84922440456.08.7944435
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BE35DC000C
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:26:25 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HPWX+OQv;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782487586;
-	b=yUC4JwloLC3rnjoNM8K4ZinVICnQh4+n+CwLvyvAthkZ4iGwB4ZR1Q5/PZYU3k05qL8VjX
-	rmtqXYO06NgTXZZ0uNcM5gijoZoefZsDRQG8OtOjkzRKH3q3RF7YrzC1N8TWTzLnWMYnne
-	KdaZvgSMOGVIZ7gsb6sxHOpSUwOTIw0=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782487586;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D5CC16B0098
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:28:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36A7540494
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:28:38 +0000 (UTC)
+X-FDA: 84922445916.27.4EE589E
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2C4EF40006
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 15:28:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TsaQqMPd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782487716;
+	b=CdUMZaV1TyHqBPe6wdMdNsHtjyG80yl8cY6aLoR0UERU+rYMdfJDHpo9dAh36E25puNVZE
+	TrNStL678WqGfd8y1bcWalrbCB+oTfbt5PVlPzrgDxxIEOklAzb13YrIYBY+6eF8B5mHMu
+	pa+yRfCsdPRl1x0df7V3+rzGUh819gw=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782487716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QG5+PYzEuGtNhR45bSwYQvD3S+ezvfHRMl5QyroVe+0=;
-	b=m1L1aptHogIIWwAK2075OVVd66Zgv6hZ62uxVItBG2yo6eDBSL/Xz6qhZ1UarG3Sht/84C
-	rXQcgpDKucU1CxDN9JMRSPFufZJbXuFM83R3HIpH4i+8FdguPRWhu8NihHI/W4WPutOzeC
-	XYlP1LPTFgbMu9xnWROUjKPKDbXVc8s=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HPWX+OQv;
-	spf=pass (imf10.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2F8141E7D;
-	Fri, 26 Jun 2026 08:26:20 -0700 (PDT)
-Received: from [10.164.19.14] (unknown [10.164.19.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 16F953F632;
-	Fri, 26 Jun 2026 08:26:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782487584; bh=yOf+G2zy8ADquUCJfsyMqZ/X84D8NfSOq31ye18BdJw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HPWX+OQvHHGLA0mG7rFu8R4aEdwcCIs86zgcB9uBuanhWnSUYFniYlzVNmOzpyp7M
-	 g42qZoFvzyFUlheZPHu1daTb7uIiuv58nPK5uNdnP9ifY0Eu6uwPQ4JdnM7C39S3xf
-	 qqvxo7D4SjnM1RSCG7t/kNd+umJbp+/bD5o/xZlc=
-Message-ID: <61e9fcf7-02a5-4285-948b-62fba4dcd69c@arm.com>
-Date: Fri, 26 Jun 2026 20:56:13 +0530
+	bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+	b=t/nEMW5466aNn9ZWBqQs1C58xfOBq/p5zq7QhO1j6/2lDkI4N6Z5wGdi0mWRWi/jdsqNM9
+	m4p0rAyPbappHzHYk7sMKWVSUuAh1RD4lxhmlHnYVK9TqtQnfpA8ruc7XzymTovE0fGve6
+	C6cgGuSdmaCG9j5ju6DhjMJMm2oDqE8=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b=TsaQqMPd;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf12.hostedemail.com: domain of ackerleytng@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-139d5c9a495so119256c88.0
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:28:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782487715; cv=none;
+        d=google.com; s=arc-20260327;
+        b=odX0Bt4JMAMqb1iUKGgoQFvzBBZ9IxqzPACjRxyFkfvFid2OWXlWARWIBRBCX26AzS
+         sCJg9gx8uWhp086xQDvgPqX5WQR9alGDRmt5Rv7kYlmm4AwnUyFGdO7V4mlBnjDYJK5W
+         sIJHi/xr6B4gdWOu+WR4M5gz/YMMvHnLFve3ulWR+arsLcauS45y6a8aet5Gxb2yt5Xx
+         v5Jz8a99Jhn/VA15aSNcULWORaaSn72J4HDaQRX68LelVDhY4BgkAqge+ZXGlY86P+e2
+         ylIl8lA0RiCYf6Uv390H/4qjtxDbuA29aoeYCEqdF/LGWJG71OjEuWpxEhF7SbLzAUjr
+         sJjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        fh=zNZRQaPicvUf1x5liV7zShcMnltUXMCHmy9q8mS1+qk=;
+        b=n85PIX3D8kBCCoaeBkfn+A4+YkzaLtQswbkVCHyIXAAa+VTeVcI2MnaKSxH8WVNXcI
+         FiDNHvbzpr6cdQ5L3LpD3P7ypIAwfmXIcqqw+sq2EXGDqq14+dAehWixUFPnJv7Aqz6b
+         iOkr2qea3sumtgEFESDzqVOqSDac49gJLv4JjdG4N4goh9x76l7wVKzNp+mrI8vFViq5
+         SeJn2rTRsuQLmMqwvbp1UZ/kTkD0rmKXbeaAFSc2HUF0BlFW92lOiCJk/mKmicCkDI5e
+         JQbBNJFlFWdyU7iYR0T9v12RMh9hmdVSE+6qrFDm5zJ4f6S4Km0Pu0LfcZWu71BxhVZx
+         Eokw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782487715; x=1783092515; darn=kvack.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        b=TsaQqMPdBoLCLCs1FrC3hwnVuxxZunqX2rbDpmt1K3fuMB3/0/qC5wfmV3DVeE6SMw
+         ZeoPkiuhwUwZzA/64Ctr/uSvkYN0mKBrXrHpZk7L5aWwoEIYR/EDwSG8tUsFc1+rLT/7
+         jXcpYZNsBOfD+ornFMs/xTzt19Jdj/GYkRYyFA2/FZ1VeuPIgH0/jrF+4lh0Y3qEbrQP
+         CIT15ZUexrESMzcifEkb8OOcDh5Qm1fExQwuyEmyLL9J1jmi2TPgOAQCndlruuhg51qL
+         LIsnFq2JdcY467M1WloAHVguFNkQ5nV10nfmMc+UpeSZGGz8Vigv23y5mWdr6YURRcL1
+         P0mw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782487715; x=1783092515;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JSgVUERoRNVGTFJweVHOL66/ldGV42KdpD5nvU6ojsg=;
+        b=btAYb+G9ZzNYTd8Lc74ywUQsKNP9GiMSA2i53UwgpkdMXm1F/f8SjKmIRXAI7TQrFu
+         EWA/yd7y7VlqoPLMEfvtOiyCTbDDpM5CUj5p5JOtRG5TYVmXurjDHmhKQIAd7UDSK7vl
+         H3gQP1Tz/13+3f9H8amlMC66ntCxJ/ONkdVT1Lq06a3LZ8TSJL7ji3yQcIOXU/wD3N9e
+         vyYCSMqcRXtWsynUed7RADFPNMfjb1azANJH7VfIPRkh4bdeef4xWUJo9v7KvxvNPU+V
+         oXPJQZeBaMu8wHpEmOqJSKQDGWiEfqwXYycF8t4JBaXRpdA1yIirrZ78iVIQstOUB5+H
+         0XpQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+fTlQ0Ee/iWWSWBiN2hAVjs/quhEmFbrVOl5pD7nnfI10OVSxLzc4ACjzsC1QVeX+OdwSBYtft3Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw9tfo8lEmEBQilEhT//jW52XmaNcueuaVnItKNhfqisHfj5DKE
+	/CEyTFZbs//j1UFpgzOxSp+UNCt2onm0oBkZvjiitozRIJ+CTe3v/mPTfura0IB5zQvW5MV57ni
+	KtY5p7qaW0ALbddZrvMQyWFDkzCwCu2cMkNe963hi
+X-Gm-Gg: AfdE7cktppgZ/ywdVGC2DE+vnsG5C3ohFFy98OrbC8qrlJkkTNZ4oAypKYYXpLkGMco
+	lUILbBYUbgWBK+WKklJu6q0tts/uhyVIQJ6CKg0gZsQ6uoFFiyHz45XSzNiCr94+b1/eBlQpFgi
+	0FvVy32jKK9J7yXppE3XAUzenTDWITqSMf/mCqt8of4mTxNs7pKh5enNOME+eIPL8ANNWZFwLOk
+	cSN/zxZ6ScqgkRELH0v2GH6ifNNk52ER9YBpewl3FIWz++7vYqydzgRiMLFHY6Box7kPDab9smR
+	CrX++5NKdKgU9iM5aCLyVdv2O71CYZX1UKuZd4meU3pSxvd/tTJT2HtGxHM=
+X-Received: by 2002:a05:7022:481:b0:133:1ba6:f42d with SMTP id
+ a92af1059eb24-139dbaa6f11mr6321808c88.3.1782487713577; Fri, 26 Jun 2026
+ 08:28:33 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 26 Jun 2026 08:28:32 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 26 Jun 2026 08:28:32 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-23-9d2959357853@google.com>
+ <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com> <ajnf5Z9nWZxoLS4x@google.com>
+ <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com> <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
+ <ajxasFBzp_9KnQLq@google.com> <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com> <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: Lance Yang <lance.yang@linux.dev>, linmiaohe@huawei.com
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
- apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
- nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
- jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- stable@vger.kernel.org
-References: <e6d1b813-0893-458e-9d58-8d3a9bd979c4@arm.com>
- <20260626141031.14309-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260626141031.14309-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pe56nipm3t4xrpn69o16upmixzh4fqgf
+Date: Fri, 26 Jun 2026 08:28:32 -0700
+X-Gm-Features: AVVi8CdXoJwmFS4d0lnA6dJlBDOu8Tqkyef5BrEHt8qMv-aHgkBxRUgcAuJaPfQ
+Message-ID: <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
+To: Yan Zhao <yan.y.zhao@intel.com>
+Cc: Sean Christopherson <seanjc@google.com>, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, forkloop@google.com, pratyush@kernel.org, 
+	suzuki.poulose@arm.com, aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 2C4EF40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BE35DC000C
-X-HE-Tag: 1782487585-647465
-X-HE-Meta: U2FsdGVkX1+R4WGAJbUZGIMGv9vHI7FE1Gf9j1dIfebL1UYF+5fcOkvAf8DcPQdhrPDCQL17aR1kMGBPgSl/delujsGVQ/H+q74KYfRCqigxz0CpaPUEWWduLfrj5Os//+W00b2oIoKVoilFQbxszbIYMKPR/2E7G26wf85vYcYe/mtDs7tt1UMTvYCgblQ3KVEdgfxMd6xC0jB3s5D1r0QTJoH1i7vBUzwDaeTLhA4eSBGNxQ5tVxM+t5aTFY6vJw7/gAMyTftOZYLS6nLynlAVrCENWW6CKaHmOCDnsZyAadk0dxbxJWiBnSItwvHhLX6jMZsbowU9QawiBFbupuJ+ApsL/PnvbjsiMeMqelJPiE6rfD9bSYIG/bg3gVLUKCgY6yYV7ot3XU1kQccrbemTgk51wbl2VY/VpP1k4cCbYE9Q46d6BI7Dx3qS97J4GIjZnvyKOI8ROUJ+wjQEWGohrFsCaNDbOmw919UJ4M19j+fdQAPt+2VaiZF7zQhIisKf3AbwhlAVb8FsRJmZ7n/GbrZe2UaQHDN6umgp4HDUI5SGHbqY/K72uvGMsM4pB3hRJMlp6TGxKVsKfeScZTcvN09pVJllrnUk1Hd8J/gmWLqZ+3qY9huEgDRTxC36Jto8By5TGtqKCP833U/Szums1qN4xmukG7J6y0SotLSl5fj/u0Hrtcnwgs3+jWwqRssCh1PPIUq3Qm5JW3jJUGRFHikGCiLHUz+knSNUKnEYgz6lNOq9BB6zD7bqdU83urueXgYbc0uDJklHPOoq4HQDWKsa7YYFc9qfE1w7NVwibG37xymqB+3Y7vaXuZUtbD3jq1Pj3E+VhR98GKIrKug/pPijEFJfWvI3Fdk7u/UB8+qB/kk9CyWT+PKg5lg7zUlD/3dbWVUfF3EVd6sFdBwev5F3P8tlIYnGoh9WGl8lBJtVmiFO5CHFcCj+t7s4/YuNQyNsKKgE7EoOKvg
- 5kmSJuve
- yXU1GYI8D9w6EbLem7S44Ib5cn0MKb4mtgnHEAGvTs0K70dD78/fCANr6MdfWrp+OetB9MT3nUs+guUQlBlq8xgmq4mWOZM005uRa0lKE1B1KoIkHmivnhY/4wKIhjP4I+tV1AndErxqZvDYN/8JVbJ5JFOQdSkhtLR3toWdDRVI6hTfaLpD20Eii31CZxs6AP/POcGWKOFNKbmzyqEn5EmQJyDj/S3NLL5oTTfmiCQlPxc/OT+w7DXBQraEHgEP/o0Amr9eud6TN0YNU5vgzk7wl3Iu2V+3a2/u6Y+E5QJRqrD54TSRdq89twIX1jH91uUZJYtYGH8E42WZ4uQ/d/B4oUcqAH2r99qRbbvQo4Jngd9ONCJvgIifCBIvT/tRXkCwUfxmUTkp8DSDCAGzEDXpPvCpkdJfm6c0wceJHZbIqRktuhMlipqOqnhjA8PPC6oVQ
+X-Stat-Signature: gxqa6ietnacmui899nqwk51s5idgj3th
+X-HE-Tag: 1782487715-91534
+X-HE-Meta: U2FsdGVkX19ToaFbPAx0RD45h/9w5hh/29DnbjXOYRdiWr1wmuqA0/ouX47oj4DHj4i3+IQccl2HoE5mOSyekeH21N5Zfdau9ALBA3kgOy88qMVDdi1c5FqYDP0fOKqcp6HgazKqCHKfFK2Haj0QJu5yWWwjuPTxAA4II2Cb+96f87DNVHHU3qd6809dKIDiLwj0a764ppIqfYfHe5zSwqam0kYgRuKRI5P4P8XbvrxqkP7mYrH1bFOCZkv+gouj6zfyLGQaaT61tyEb3joUnn+hB08X/gQ408tUqeY95pevwajgY6Y1XOM6WBW/IXAcWZG0aovN4V4wai+yzEmDnMbQe4mhuMuspRJefn16ALIjzuKu8RZpHJyYuNJgfrya4wtLwhNZt2CUs9T4ePZleTlk8f7cfyV7qHV38skyLGLAP4CbikL88mwqccpH+4Hw02R23raJdyEm8h5GavtnRfN1/sifk8v0W4IkkmezlWJrg5iXdoTnpKtL5W4dkZJReXwUzMVsineuc6FdM06Pb2Y0sdi+EXrG9Zig7Tr7iJZ6fIGU857ZeOqiYZdczzUgWyLZ8EhlREnLIFARbiJNQshqGPHs0CbAzOsomcNFQiYMODfPZ95s2rWwGpWHAokmfomOlKADRpSi8H+Aujaw5n1n5kvQv5o1YcFP1QGeEDjIjXiP48TYFdfMqrXzVtlm2hbcaokwxUd1hTV7YGQGsCGGdufFpGntE0vn+QEO8H5yyCtl8f8Nhn+AC3k+8LeyM2uC3dU/+HeDsbZHR7+79RmS3WZGzqMJUc8oKoNpdCJhJr2HLZlBvRyGA7n9lCYCVsU+Ow5g+1/30RDrmd3IfsCjQdRxoTvCx+tcm6ELxTvc84FYxE6kqKsKXSxUtxJAIdjCM/u81rHG4F6D/ZIwWNdM4XsyO9RoD5rKZjyP9gVI70njTQzKiIdPLmpk23kI/aLuuQgtVJZyuRoYUhz
+ 3VFc/Ev9
+ ihMo75a/R8/z38SPYuNlsK62jsyyL0Qr01wZLJOLk8a90RFi5RZfZyoTOgo+AO2jHF/ubzil+oX19M2oAbQC4WQWns4H8rynjgcc0xwA3KMxCqcvhprvDhJOfKA5FBA21Rah91uCS6JbRdlaqYL0aI5x7YYOwOvfXHL6rgiGUPJm+YWoB8If1hrAA9QqGrT2NIOGXUvO6EXw7nkd68KqVzK5ypcjG5IzkvgxGXxBa8yM1WUdkiXzDYC/LqBWBHwpw7i9Itju8JBa/eU+tDgljc/d22nIcC+teDY13KhEU+8SsACKOUG/rUREnIQ0AcPAN1qgjSMSWMdqhNi2JJGpY/+1L/2HZUXR7roeBMRfTn/vKwFsWxIy7WqoPM2NXZJFC5plZcCpBUYy8dtKcQ7uM7M1lYstfgeQKX66T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,298 +168,256 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-
-On 26/06/26 7:40 pm, Lance Yang wrote:
-> 
-> On Fri, Jun 26, 2026 at 06:53:10PM +0530, Dev Jain wrote:
+> On Thu, Jun 25, 2026 at 05:07:23PM -0700, Ackerley Tng wrote:
+>> Yan Zhao <yan.y.zhao@intel.com> writes:
 >>
+>> > On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
+>> >> Sean Christopherson <seanjc@google.com> writes:
+>> >>
+>> >> > On Tue, Jun 23, 2026, Yan Zhao wrote:
+>> >> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
+>> >> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
+>> >> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
+>> >> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
+>> >> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
+>> >> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+>> >> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>> >> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+>> >> >> > > > >  		return -EIO;
+>> >> >> > > > >
+>> >> >> > > > > -	if (!src_page)
+>> >> >> > > > > -		return -EOPNOTSUPP;
+>> >> >> > > > > +	if (!src_page) {
+>> >> >> > > > > +		if (!gmem_in_place_conversion)
+>> >> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
+>> >> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
+>> >> >> > > > error.
+>> >> >> > >
+>> >> >> > > Why MMAP?
+>> >> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
+>> >> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
+>> >> >> >
+>> >> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
+>> >> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
+>> >> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
+>> >> >> > > initialize the memory.
+>> >> >> > Do you mean using up-to-date flag as below?
+>> >> >
+>> >> > Yes?  I didn't actually look at the implementation details.
+>> >> >
+>> >> >> > if (!src_page) {
+>> >> >> > 	src_page = pfn_to_page(pfn);
+>> >> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
+>> >> >> > 		return -EOPNOTSUPP;
+>> >> >> > }
+>> >>
+>> >> Yan is right that with the earlier patch "Zero page while getting pfn",
+>> >> folio_test_uptodate() here will always return true.
+>> >>
+>> >> Actually, this is an alternative fix for the issue Sashiko pointed out
+>> >> on v7 where userspace can do a populate() (either TDX or SNP) without
+>> >> first allocating the page, with src_address == NULL, and leak
+>> >> uninitialized memory into the guest.
+>> >>
+>> >> Advantage of using the uptodate check in populate: if the host never
+>> >> allocates the page, populate doesn't incur zeroing before writing the
+>> >> page anyway in populate().
+>> >>
+>> >> Disadvantage: Both TDX and SNP will have to implement this uptodate
+>> >> check. guest_memfd can't check centrally because for SNP, for a
+>> >> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
+>> >> firmware will zero and there's no leakage of uninitialized host memory?
+>> > Another disadvantage: the uptodate flag is per-folio. What if the folio
+>> > is only partially initialized by the userspace especially after huge page is
+>> > supported?
+>> >
 >>
->> On 26/06/26 1:18 pm, Lance Yang wrote:
->>>
->>> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
->>>> check_pte() is the final validation step in page_vma_mapped_walk().
->>>> It reads pvmw->pte with ptep_get() to decide whether the entry maps
->>>> the PFN range being walked. For hugetlb VMAs, that pointer refers
->>>> to a hugetlb entry.
->>>>
->>>> On arches which provide their own huge_ptep_get() to dereference a huge
->>>> pte pointer, accessing via ptep_get() would cause pte_pfn(),
->>>> pte_present() etc to misbehave.
->>>>
->>>> It is not clear whether this has a trivially visible effect to userspace.
->>>>
->>>> Use huge_ptep_get() to dereference a huge pte pointer.
->>>>
->>>> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>> mm/page_vma_mapped.c | 8 +++++++-
->>>> 1 file changed, 7 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>> index 2ccbabfb2cc17..18e1d341f463c 100644
->>>> --- a/mm/page_vma_mapped.c
->>>> +++ b/mm/page_vma_mapped.c
->>>> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>>> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>> {
->>>> 	unsigned long pfn;
->>>> -	pte_t ptent = ptep_get(pvmw->pte);
->>>> +	pte_t ptent;
->>>> +
->>>> +	if (is_vm_hugetlb_page(pvmw->vma))
->>>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>>> +				      pvmw->pte);
->>>
->>> I think check_pte() can pass a wrong address to huge_ptep_get() ...
+>> Good point on huge pages!
 >>
->> Won't this be handled by rmap_walk_anon/rmap_walk_file - they are the ones
->> performing the rmap traversal and passing address to try_to_unmap_one/folio_referenced_one
->> etc ...
-> 
-> Right, that should cover the rmap callbacks. The bit I was worried about
-> is page_mapped_in_vma() though.
-> 
->>>
->>> Not sure that is wrong in the first place. For memory failure,
->>> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
->>> folio. In that case, pvmw->address need not be hugepage-aligned.
->>>
->>> @Miaohe
-> 
-> For hugetlb memory failure we start with the poisoned PFN:
-> 
-> static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
-> {
-> 	...
-> 	struct page *p = pfn_to_page(pfn);
-> 	struct folio *folio;
-> 	...
-> 
-> 	folio = page_folio(p);
-> 
-> 	...
-> 
-> 	if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
-> 		...
-> 	}
-> 
-> 	...
-> }
-> 
-> and pass the same p down:
-> 
-> static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
-> 		unsigned long pfn, int flags)
-> {
-> 	...
-> 
-> 	collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
-> 
-> 	...
-> }
-> 
-> static void collect_procs(const struct folio *folio, const struct page *page,
-> 		struct list_head *tokill, int force_early)
-> {
-> 	...
-> 
-> 	if (unlikely(folio_test_ksm(folio)))
-> 		...
-> 	else if (folio_test_anon(folio))
-> 		collect_procs_anon(folio, page, tokill, force_early);
-> 	else
-> 		...
-> }
-> 
-> So collect_procs_anon() still gets the poisoned page, not &folio->page:
-> 
-> static void collect_procs_anon(const struct folio *folio,
-> 		const struct page *page, struct list_head *to_kill,
-> 		int force_early)
-> {
-> 	...
-> 
-> 	pgoff = page_pgoff(folio, page);
-> 	rcu_read_lock();
-> 	for_each_process(tsk) {
-> 		...
-> 		
-> 		anon_vma_interval_tree_foreach(vmac, &av->rb_root,
-> 					       pgoff, pgoff) {
-> 			...
-> 			addr = page_mapped_in_vma(page, vma);
-> 			...
-> 		}
-> 	}
-> 	rcu_read_unlock();
-> 	anon_vma_unlock_read(av);
-> }
-> 
-> page_mapped_in_vma() then builds pvmw for that page:
-> 
-> unsigned long page_mapped_in_vma(const struct page *page,
-> 		struct vm_area_struct *vma)
-> {
-> 	const struct folio *folio = page_folio(page);
-> 	struct page_vma_mapped_walk pvmw = {
-> 		.pfn = page_to_pfn(page),
-> 		.nr_pages = 1,
-> 		.vma = vma,
-> 		.flags = PVMW_SYNC,
-> 	};
-> 
-> 	pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
-> 	...
-> }
-> 
-> and page_pgoff() includes the subpage index:
-> 
-> static inline pgoff_t page_pgoff(const struct folio *folio,
-> 		const struct page *page)
-> {
-> 	return folio->index + folio_page_idx(folio, page);
-> }
-> 
-> So if the poisoned PFN points to a tail page, pvmw->address can be offset
-> from the start of the hugetlb mapping by
-> 
-> folio_page_idx(folio, page) << PAGE_SHIFT
-> 
-> Should check_pte() pass the hugepage-aligned address to huge_ptep_get()
-> for that case?
-
-Thanks! This looks correct.
-
-I can indeed fix this up in check_pte. But in the memory-failure path
-it has always been confusing to me for hugetlb folios why we are bothering
-with the tail page. I am sure that area can also be simplified. But for
-now I'll just do a simple fix here itself.
-
-
-> 
-> Cheers, Lance
-> 
->>>
->>> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
->>> page_vma_mapped_walk() passes that size to hugetlb_walk():
->>>
->>> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>> {
->>> 	...
->>> 	if (unlikely(is_vm_hugetlb_page(vma))) {
->>> 		...
->>> 		pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
->>> 		...
->>> 	}
->>> 	...
->>> }
->>>
->>> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
->>> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
->>> calculating pmdp:
->>>
->>> pte_t *huge_pte_offset(struct mm_struct *mm,
->>> 		       unsigned long addr, unsigned long sz)
->>> {
->>> 	...
->>> 	if (sz == CONT_PMD_SIZE)
->>> 		addr &= CONT_PMD_MASK;
->>>
->>> 	pmdp = pmd_offset(pudp, addr);
->>> 	pmd = READ_ONCE(*pmdp);
->>> 	...
->>> }
->>>
->>> So for that case, pvmw->pte is calculated from the aligned addr, not
->>> necessarily from the original pvmw->address. But check_pte() passes the
->>> original address together with pvmw->pte:
->>>
->>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>> +				      pvmw->pte);
->>>
->>> arm64 then uses that addr again to choose ncontig:
->>>
->>> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->>> {
->>> 	...
->>> 	ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>> 	for (i = 0; i < ncontig; i++, ptep++) {
->>> 		...
->>> 	}
->>> 	return orig_pte;
->>> }
->>>
->>> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->>> 			   pte_t *ptep, size_t *pgsize)
->>> {
->>> 	pgd_t *pgdp = pgd_offset(mm, addr);
->>> 	p4d_t *p4dp;
->>> 	pud_t *pudp;
->>> 	pmd_t *pmdp;
->>>
->>> 	*pgsize = PAGE_SIZE;
->>> 	p4dp = p4d_offset(pgdp, addr);
->>> 	pudp = pud_offset(p4dp, addr);
->>> 	pmdp = pmd_offset(pudp, addr);
->>> 	if ((pte_t *)pmdp == ptep) {
->>> 		*pgsize = PMD_SIZE;
->>> 		return CONT_PMDS;
->>> 	}
->>> 	return CONT_PTES;
->>> }
->>>
->>> With a tail address, pmdp may no longer point at pvmw->pte, so
->>> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
->>>
->>> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
->>> can walk past the CONT_PMD entries, and possibly past the PMD table.
->>>
->>> Should check_pte() pass the address matching pvmw->pte, sth like:
->>>
->>> ---8<---
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index 406fd50bbd8f..58463493bd3d 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>  	unsigned long pfn;
->>>  	pte_t ptent;
->>>
->>> -	if (is_vm_hugetlb_page(pvmw->vma))
->>> -		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>> -				      pvmw->pte);
->>> -	else
->>> +	if (is_vm_hugetlb_page(pvmw->vma)) {
->>> +		struct hstate *hstate = hstate_vma(pvmw->vma);
->>> +		unsigned long haddr = pvmw->address & huge_page_mask(hstate);
->>> +
->>> +		ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
->>> +	} else {
->>>  		ptent = ptep_get(pvmw->pte);
->>> +	}
->>>
->>>  	if (pvmw->flags & PVMW_MIGRATION) {
->>>  		const softleaf_t entry = softleaf_from_pte(ptent);
->>> --
->>>
->>> while leaving pvmw->address unchanged for page_mapped_in_vma()?
->>>
->>> Cheers, Lance
->>>
->>>> +	else
->>>> +		ptent = ptep_get(pvmw->pte);
->>>>
->>>> 	if (pvmw->flags & PVMW_MIGRATION) {
->>>> 		const softleaf_t entry = softleaf_from_pte(ptent);
->>>> -- 
->>>> 2.43.0
->>>>
->>>>
+>> The uptodate flag on the folio in guest_memfd means "this folio has been
+>> written to". As of now (before patch at [1]), this happens when
 >>
+>> + folio is zeroed on first use by userspace
+>> + folio is zeroed on first use of the guest
+>> + folio is populated
 >>
-> 
+>> When huge pages are supported, the folio can't partially be initialized?
+>>
+>> On allocation, if any part is shared, we split the page. The parts are
+>> separate folios that have their own uptodate flags.
+>>
+>> On splitting, if the huge page is uptodate, the split pages will also be
+>> uptodate. If the huge page is not uptodate, the split pages won't be
+>> uptodate, but that's ok since they will be marked uptodate on first use.
+>>
+>> On merging, the non-uptodate parts have to be zeroed and then marked
+> If that's true, it would be good.
+>
+>> uptodate. Any parts that are in use would have been marked uptodate
+>> already, so there's no overwriting data that is in use. I'll need to
+>> think more about when it's safe to zero.
+>>
+>> I'm still on the fence between the two options
+>>
+>> 1. Using uptodate check in populate to reject src_pages that have never
+>>    been written to or
+>> 2. Always zero before populate
+> 2 does not work?
+> The flow is
+> 1. mmap gmem_fd, make GFN shared, and write initial content.
+> 2. convert GFN to private
+> 3. invoke ioctl to trigger populate.
+>
 
+This flow is correct, is what users of in-place conversion should do.
+
+"Always" is the wrong word, I should have said "zero if not uptodate
+before populate", as in, with patch at [1].
+
+By doing the zeroing in __kvm_gmem_get_pfn instead, by the time populate
+gets the pfn, the page would be zeroed, either because userspace faulted
+it in, and the zeroing happened in kvm_gmem_fault_user_mapping(), or if
+userspace never faulted it in, the zeroing would happen because
+populate() allocated the page.
+
+>> but whether the uptodate flag is per-folio or not doesn't affect these
+>> two options in terms of fixing the leak of uninitialized host memory,
+>> right?
+> yes, provided "On merging, the non-uptodate parts have to be zeroed and then
+> marked uptodate".
+>
+
+Thank you so much for bringing this up, I hadn't considered this
+before. I'll do that when I get to guest_memfd hugepage restructuring.
+
+>> >
+>> >> >> Another concern with this fix is that:
+>> >> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
+>> >> >> folio uptodate before reaching post_populate().
+>> >> >>
+>> >> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
+>> >> >>
+>> >> >> > One concern is that TDX now does not much care about the up-to-date flag since
+>> >> >> > TDX doesn't rely on the flag to clear pages on conversions.
+>> >> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
+>> >> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
+>> >> >> > user access.
+>> >> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
+>> >> >> > to have more effort than introducing a dedicated flag for TDX.
+>> >> >> >
+>> >> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
+>> >> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
+>> >> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
+>> >> >> > > > 1. create guest_memfd with MMAP flag
+>> >> >> > > > 2. mmap the guest_memfd.
+>> >> >> > > > 3. convert the initial memory range to shared.
+>> >> >> > > > 4. copy initial content to the source page.
+>> >> >> > > > 5. convert the initial memory range to private
+>> >> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
+>> >> >> > > > 7. do not unmap the source backend.
+>> >> >> > > >
+>> >> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
+>> >> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
+>> >> >> > >
+>> >> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
+>> >> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+>> >>
+>> >> Yan, is your concern that userspace forgot to update the code and
+>> >> forgets to provide a src_page, and if we keep the "Zero page while
+>> > Yes. Previously, it would be rejected after GUP fails.
+>> >
+>>
+>> I see, didn't realize previously it would be rejected because GUP
+>> fails. GUP failed because it wasn't faulted into the host?
+> GUP fails if 0 is not a valid user address.
+> But GUP would not fail if 0 is a valid address. e.g., in below scenario:
+>
+> #include <sys/mman.h>
+> #include <stdio.h>
+> int main(void)
+> {
+>         void *p=mmap((void*)0,4096,PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+>         if (p==MAP_FAILED) {
+>                 perror("mmap");
+>                 return 1;
+>         }
+>         *(char*)0='Y';
+>         printf("addr0=%p val=%c\n",p,*(char*)0);
+>         return 0;
+> }
+>
+>
+>> That's kind of orthogonal, I don't think GUP fail leading to rejecting
+>> populate was meant to help userspace catch these issues. GUP would also
+>> fail if the user did mmap(), write to it, unmap using
+>> madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
+> The original uAPI did not explicitly define 0 as an invalid uaddr. Whether 0 was
+> rejected depended on whether the user mmap()'d address 0. If 0 was a valid
+> mapping, populate() could proceed.
+>
+> commit 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating
+> guest memory") changed the behavior though. It would return -EOPNOTSUPP for a 0
+> uaddr.
+>
+
+I see, I only looked at this after commit 2a62345b3052.
+
+> But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+>
+
+I'd say the original uAPI perhaps just didn't document 0 as an
+unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+was perhaps accidentally changed and no customer complained, I think we
+can move forward with 0 as an invalid src_address? I wouldn't think
+anyone relies on 0 intentionally being a valid address.
+
+I could document that, if it helps?
+
+>
+>> >> getting pfn" patch, ends up with the guest silently having a zero page?
+>> >> I think that would be found quite early in userspace VMM testing...
+>> > I actually encountered this during testing this patch.
+>> > I update most code path to follow this sequence. However, still some corner ones
+>> > for TDVF HOB, which are less obvious and harder to update.
+>> > The TD just booted up and hang silently.
+>> >
+>>
+>> I think this is just the life of a close-to-hardware software engineer
+>> :P no errors, got stuck somewhere, root cause is some unitialized
+>> thing.
+>>
+>> >> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
+>> >> >> > kernel to detect this mistake, similar to how it validates whether source_addr
+>> >> >> > is PAGE_ALIGNED.
+>> >> >
+>> >> > The alignment case is different.  If userspace provides an unaligned value, KVM
+>> >> > *can't* do what userspace is asking because hardware and thus KVM only supports
+>> >> > converting on page boundaries.
+>> >> >
+>> >> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
+>> >> > request would then be making assumptions about what userspace wants.
+>> >> >
+>> >>
+>> >> Also, +1 on this, what if userspace, knowing that pages are zeroed on
+>> >> allocation, actually wants to rely on that to get a zero page in the guest?
+>> > What if 0 uaddr is a valid address? :)
+>> >
+>> >> >> > Since userspace already needs to perform additional steps to enable in-place
+>> >> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
+>> >> >> > intentional seems like a reasonable burden.
+>> >> >
+>> >> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
+>> >> > just wen up with code that does:
+>> >> >
+>> >> > 	if (in-place) {
+>> >> > 		src = NULL;
+>> >> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
+>> >> > 	}
+>> >>
 
