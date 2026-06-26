@@ -4,125 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 256D3CD4F26
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:02:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBEACDE008
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 10:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCE416B00B1; Fri, 26 Jun 2026 06:02:03 -0400 (EDT)
+	id ACDC26B00EB; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA4DA6B00B2; Fri, 26 Jun 2026 06:02:03 -0400 (EDT)
+	id AA4DF6B00EC; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBD506B00B6; Fri, 26 Jun 2026 06:02:03 -0400 (EDT)
+	id 9BD596B00ED; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9585C6B00B1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:02:03 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2A9A51C6189
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:02:03 +0000 (UTC)
-X-FDA: 84921622926.09.098DA97
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 19BCA40009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:02:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=u7SCg5wY;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6AF616B00EB
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 06:08:04 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4C261403C4
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:08:03 +0000 (UTC)
+X-FDA: 84921638046.30.0E9439E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 37CCD40005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:08:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mJ93/Qt9";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782468121;
-	b=TEZC7SzlGkVRJCFv8xkaG77xukNxlnnB3u6/QCqck0W7C7wM5QdFodQY7oQfjAVHl1m2iK
-	6azq0RAZtKJgoS/v0+z7SWu0rcw/btDIx3BXMFipjg/1K3VKM1ks4/z/SNYvoHnxspNu9D
-	RElLIL0oky1EQe1N22MXeLfRFmykFP8=
+	t=1782468482;
+	b=r5GJibQb1lAJyyLolt6x5Jqa/s7ah7OYkAYvotunr+EQiBJ+0TiHFVDFYi8Qshi2pqO3sM
+	mDjG6eBodpSq+pZZcq6q1Y/WFRfjTsychQKlMJBsYtI+9bZbwWUVMVUCAyqj4HZsl2wGIF
+	xI2dgU2DQ+VudsdSrq5gnOu0GpQQaOc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782468121;
+	s=arc-20220608; t=1782468482;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j+mUD/LNP8qDYzVuVSQPXOxPIzjVPEQiYJsBHPRLl0Q=;
-	b=nuQv5an4KAii8vQxD6nPwRd/pk6LA5JvhtDiAsRRMnkjdlZL4wTO6Y+BHe/FaZ+Ekhs06m
-	CwoUCXF8sKdmoTvLApBHruXix5Parqb+NK7yVpK6myeeWZFEI1nw9eYSHd8KjdufGReKpe
-	SJXQiW1E2ScLxIeoemL0LuvcG3ZmqvQ=
+	bh=rVGr/ryTaEsmh1iE16XC+HpiEurnbEy3UUdTQoKGaK8=;
+	b=5Hn5Xec4RYprF1Lcc2Kodn7jeMvrntr9GB8XXgffnm8UT7ZB2XFqQZlLXPliuNBAC4qQ2U
+	BcKTa3/zl8EwUPC0vBssyd8jLldDQGANK+Szv53svymWTtB10yK97XtfsUREhdcjd7wlle
+	ItM3Eotx+tqbipqhGNZAlF+Bfy5SJs4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=u7SCg5wY;
-	spf=pass (imf01.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.176 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-91562bf6c12so95711885a.2
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:02:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782468120; x=1783072920; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j+mUD/LNP8qDYzVuVSQPXOxPIzjVPEQiYJsBHPRLl0Q=;
-        b=u7SCg5wYuSwv2VrybHFQwAYqC5JgZqiXNRHKU+7D3CS655XnYx4Sk8BZZA8cNbnQUQ
-         mFOYKFj9OgQlEMPLd6vnEDqMp2Oyb++nBisrr+SheeDy3SXm/P82r2uaaEf05MWEgzZW
-         8x83G/yeIp99r3IXmFPvjvt9ohcBACZKKFRmnwW6/0vXL2FEb+8UUX4UOliviItBrV6A
-         efBSRR8SIbkvU2NiS0NIF6eFnEDZyuquzS39KFXKSAhQoDhc1ujwudanBOdMUeW+iiSG
-         qK1dEL2pi4u1WvUGv4HW5YlhgfgHH00IC7I+FHQUr3AOl9ufHWIBpKkjtUPsGCR23wlC
-         qlPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782468120; x=1783072920;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j+mUD/LNP8qDYzVuVSQPXOxPIzjVPEQiYJsBHPRLl0Q=;
-        b=X3hrhl/gSSmNLeMZA6biCL3O7AuzN/vS9JuRF3LxRb4Er9I3iTVsJ5AHNiRVOTbndJ
-         xaXrkub1F/pnxd50YIsnWzwj+1S0MlhehOu/unoXCVGQi0facz1VnFNYuzrfVLFe7pwk
-         3SHBPuWrrIz5+lT3jRfU3rco1n0IaJVzLzfnT3mDnweaJGm4R4ucBDBWX2tunv8GLCIB
-         KqarHI4CdHNEpK12xzpGGOW+KMGk2uzwnj0ppGMTuNu/MkHqY2gpdDfnafeqdzo6p6iS
-         LOap/nP2ShMgaJPm1c3IV2gZ2MnUm1WUAdbQcnSJgGtpcYXr+BeOff6+pzfonRaXZs9i
-         1ZfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8UtU5atXHdjniHiuP+dnSu3jCy7hJcscrFVzqS/XTBjYwsJ9UkfIv7V/QJbwMVa2arSod8TBkJ9A==@kvack.org
-X-Gm-Message-State: AOJu0Yzs6xGZrffeexffhnF5SrQfg/rhMMrIKqk9i3ypb6ozhaxppbsu
-	41qnPkbkrQB6CLMBxAGAmKXJjEhrwm5u2EsvFyANOLSprYfXgff4wKuGVWDTQJQddcc=
-X-Gm-Gg: AfdE7cm0VESEbuv3u6CAvv2gaFigOoWZtppu5PgQJZxAA4g2K6i7xYnynAPnf2PrsQ5
-	nBOgFYqxTp5EOUkVrEPAVQyf3STkv68fuxJH7yjokccbNTN3dzF0N6hJ8bp1yG+Cb9w5yLXDXbQ
-	Mbb/R8Tc8TGDlLtWLb/iz4ToTWg9G1uI40tzH2OVoZxnpzPiVZZcCghV1gAUbUQ5Dwy9xw4VFts
-	t76kIKMJwL53H2Okw747Rkk4YEvux2D9zXP545YrlGtRwRRqfZxlJDoKAi8RLEfxGyMV12CBo8u
-	ImXiUWCnk9E+BxGuGsEjcez7v8DYdAkIzTcAccNFnqY3RuAbyZ5cAaIFjtTuE4Wd0cRKG+RDvug
-	Gkmssw6uFU7leG5GmcuU8hfVLc/YPSVA9bJJL6BfGfgqKf9WuIMMOXXjC1AO0jqsO+3Ke87hyez
-	tPXtcKgRtJX3THL6Tudlyu5Q==
-X-Received: by 2002:a05:620a:4714:b0:925:dda5:c05e with SMTP id af79cd13be357-9293c5fcea8mr1018783985a.32.1782468120008;
-        Fri, 26 Jun 2026 03:02:00 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c0c0csm1111876785a.25.2026.06.26.03.01.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 03:01:59 -0700 (PDT)
-Date: Fri, 26 Jun 2026 06:01:55 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Barry Song <baohua@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
-	axelrasmussen@google.com, baolin.wang@linux.alibaba.com,
-	dev.jain@arm.com, kasong@tencent.com, lance.yang@linux.dev,
-	liam@infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, ljs@kernel.org, npache@redhat.com,
-	qi.zheng@linux.dev, ryan.roberts@arm.com, shakeel.butt@linux.dev,
-	weixugc@google.com, yuanchu@google.com, zhaonanzhe@xiaomi.com,
-	ziy@nvidia.com, Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [RFC PATCH] mm: Avoiding split large folios if swap has no space
-Message-ID: <aj5OEyV5WsVkwUWt@cmpxchg.org>
-References: <5790c4a4-d502-4180-82f5-47de5809a4fe@kernel.org>
- <20260620081017.89085-1-baohua@kernel.org>
- <4aa8350e-712f-4380-b3bf-2ff06cf2a35d@kernel.org>
- <CAGsJ_4xR0Ge707s8JAfd5Fw10+U+25_nuBGuVayx9qnxR+NnGQ@mail.gmail.com>
- <c29f90c6-2075-43e8-8f0d-0d6718a0f124@kernel.org>
- <aj0u12N_GzGtQT6K@cmpxchg.org>
- <3af41c23-2365-4ac1-b1b9-076b6ef7ae9e@kernel.org>
- <CAGsJ_4wXTpTS4RF=qPs0wvF3UosrOQ7s9-zdXpx4OKGEysf=VA@mail.gmail.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="mJ93/Qt9";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7D1F660098;
+	Fri, 26 Jun 2026 10:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBD21F000E9;
+	Fri, 26 Jun 2026 10:07:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782468481;
+	bh=rVGr/ryTaEsmh1iE16XC+HpiEurnbEy3UUdTQoKGaK8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=mJ93/Qt9HnoekLP+fpKQIJLYhT2quZwR+UN1au0ly3DRbWZsYooFWq084kQy7trfW
+	 G5XyGa6A1TN99l+j9BNRvqF2io1f1Afs4LUkzS9y/vKZQ8da6fs3pULX8E7his20+X
+	 9gbeCVKQbbJUbc0Am+G8Oew7AkXPUO3C4XWXay5YSW+B0SiblDo+X04ls6Hv0QUVPk
+	 7mYpSw66WWRhreMuvVC2hOfnzi7tnsiYm3ps1Y7eVXgwteIVqsO0otZWqOAFg/oRDZ
+	 1SHEdRiWXspF824EtSdaJPlLSwUxe8csJ6XcZw+yNoaEO9NME+iL01CG+jIfrhAiV1
+	 QrWYN1YdF4XBg==
+Message-ID: <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
+Date: Fri, 26 Jun 2026 12:07:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAGsJ_4wXTpTS4RF=qPs0wvF3UosrOQ7s9-zdXpx4OKGEysf=VA@mail.gmail.com>
-X-Stat-Signature: ubabub83q9e9s738wrrnirkosfoyt5g1
-X-Rspamd-Queue-Id: 19BCA40009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD
+ handling
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org,
+ harry@kernel.org, jannh@google.com, ziy@nvidia.com, sj@kernel.org,
+ balbirs@nvidia.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Lance Yang <lance.yang@linux.dev>
+References: <20260624065353.1622-1-richard.weiyang@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260624065353.1622-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bahpwg9qjgcnrr5rzj5kuk1b7fn5cd6z
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782468120-636152
-X-HE-Meta: U2FsdGVkX1+ZbwKr+RYsMLrYQ9hCIWmLuXD1XgT8smNooRz0MBnDpzFnRZT2Z1ppCdFFvs74Cb7iSMnPt+2dmC58Cb5qge6qswYZxo3EoRDymhoYy3dN5YhPHpJdDd2IXJegaAZM5CZTyaro/0dXX5GBphjzNxp5f0JtLD6LZKAKySKGWWT5PrIrA2SAuMUElNS2ioXD9fBdig0eesbohKuLEEf9x/vcVu1JemxCn/MsOdFAZYonY4Cw4NppLXDTYeF99NzniWNjGv7T7B0LtdFr7P8FzCm32q5OPFhRlas9C5tFJDMMX0K3uG95AVh6jZkjJ9pBJ/mcXvfjsoc6KVvTCBmCGeLm3D+2S7TXjoPiR7QEED01l0JN37PsgNGDIrXv4b5YxQh4hqnjVhMhWdqMj8vrsr6ULBw5sUtIqbH+zgcROOIiIBNdup7i8XoZbFLNm2B54rcgqjgRre7r5eRyp0Ith2lRkKk+aakIvw28jQPfGOoL+ov5mLCets2vfd39swgbljjXoEaIPg3b3HRhoSv6GE9QYBZpsQptZkk0DUiSlXPMCOIow4b9ekc3jKMDw5HKtrhYQ05VvEYLy2yUaZBKiX9qKm5RN6lxUPTnh2jHD8VmU4m8J9hFrgm8K02TRiJvMuKaV/jDZQpEQexP/2lbxejUGLNFpSK0avMdBHAjDJjAJUBATKcSsD5sJNzAOFjv5F/5cX2ZJYQBtY0bhpPZSCdGF9VFW2Ln+xB/sPguQ1HAdICFpsU1U1QRcH9i3sMC9uGM0ZfRu0hVSA8Ux7i6gljKsNESgG+vMrwnFN+ZIDs8Lj0vFCkbivES0KBqyKmdQLe/LVwky7vlx76l+epXfeyJ+plVBrM3ddHzvY1ZeuL1DEXCD/+fWVegC5oyndOS9VFYyyr3ghz2shcHPySB9GHM+zBjqpziLJ8azE4nmCL+wAilQ8G1havem5paS35NNA3sK6inHHa
- Sc+TL5YO
- 3ceUxC4RnYJvpQTYpnQLxu5UcpZXyauTJz4mkEQLzuCbBJfoSGguv6BvpEnmd7D/FJYBXMdfyeI4yexPprmsq4ylfyyLEoaj0/FHJct7ZaX1p7IlFMjaOWkX8joQbXFBf1r2JgM9v7LYxAcEAdaweJfd1nXjt1fi8AO9VMUk67zKkeO4GkkOz4hZTT+E95kto9vYbbXaX62l7iyUwfW2E7G5r0lLvOpLligVWDGm66vEo77sCz7OJVBZA8s7IZvrcfg6eFqgT0OFJnl4KO/NNUbr8s3nZz4zEUxv2zhGy1B5SgctrCKhbNdVl/8V7flAs0W04stECDIWJwXN8pxp900/Jeds0CTlauSc79grztXe2oOeMOeFKsxRwVDAtJLyXuLier06Hi1kpIWkDut2Eqck4gA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 37CCD40005
+X-HE-Tag: 1782468482-225143
+X-HE-Meta: U2FsdGVkX1+DBdQRCMcOYIfTUKD5m3N40/UNyUYhfw8vrJH4QGO+NDe3mfGzW4qCUvpOuyLklMPdGB72TfUvzpH9a5A6t9V5jubq3CvU9X6aa7dwxBYQrRpH9mqW+GDNsqbfi+8afpFmit2UcObnevr+qakCRskfBozR3BGTuCXYx7DlpQs4hXFxTjqeigzqU/wa6EhY4S3wIgChseKCNAWP90jvsCPwobayPoG0be2Uj5f85OHxGXmRyhnOBmA4dNWODqVwADy3cT0spYrSgloXK0xqiCKKngmmBeTGL44Rmwv6wSxM/mfwQzSsV4jfzchXgGCVzVhefQZ43j5ceZaCXrLHMjlHlGOv1JS06sx+2bZZS11xkulx8Q7TRtb5f2aUtRcX3mwulUmyVu3Xro9weoLlUiDA8CiBYKWLTzH0a4aMX7ohqfravCoFOGa6AMFUdFZGGiLQjgjZ0moxHjLbLPdMPLaoxeeFlTe9ptfqQVewVKmatNV4+lFtgy2tvFDUPVJgnqNLUtX0vgfeM2nMJmqRuxQfP8SAF6EP15h0kQ2wDq0swwY2Z3/NpU8t6AdIszlK9UFJWdvbVoUDCejiz2bnAd3A4MbfxSpVvDM/+xMD2uPXNgMGL/uj15H7uzr3IPh45XoxVZD/WxAnJOx33YvrBVfaShHA1gHE0Tv07kuUnwVvqoN+7wg87bLcdWC7xotzY9Wt8xeAdPXevOQXaYIVre7ZCbb2jDSnEJzZobNOSMKrnds75OJcGzRx/CMJ0iTw2pGlbrA9a+OBD1DyMaBjj+cmV/vTNlOWBcqjkmKXKo2VNJvP9sOk7Tz79opU7Ma+rHZzhlhKT4s1SE1SlhHgoCH47yFM+pz364YRyEnY6ifB/zeVrkmssqqqBVuD+xar0RgL7ccLR0ettMl12ov5avtBH4IIk0K+SlkcA89c3MHG5op+uAX3w5yU6y67IwGs2BoGRlONbGW
+ wJyjmi2O
+ y7reIwJsRFqLYngdMyptP7W9ZoGMjZSjpxkui4o4S9upe/heR7TDcqJwO6LyN0DGb4T4XEMkP52xQy/ouCXaqMQ7fkzNokBp77iPqxQpMXSDwfRIf9AMq/b7nX6QJjxmvTJdTCJfvoDAoUTjgeHKw+TfM/NlK1TKpRvwOhndp2KK09CngtdXMDYPPNAyqpTrH8IpHZxngMpH/A7lqehiOyCBX8e+C/af/ar8PgUT2+3zwSLVmeVtRpVGQjr2xTSlXwMdAOvfLSKw5xDtx3qcxQO80ynodow2F0sluZ8JvMPESxR2BA95muyLkjgNUvABD8ukWDv7Y5ePrWpy3uqyppcWzp6XkSC9deY+jR8F7oDshhhh9EVcJU+VtNSa3IvvsjBRyXknCy6ULFsmIu6EJbJjc4ZX/SUf2BSHcglAtgiayNgjRPdFWUV7R8vG5YHcNsED1kW0/yQ2g0Ig=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,89 +141,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 02:15:58PM +0800, Barry Song wrote:
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -5578,7 +5578,7 @@ int __init mem_cgroup_init(void)
->   *
->   * Returns 0 on success, -ENOMEM on failure.
->   */
-> -int __mem_cgroup_try_charge_swap(struct folio *folio)
-> +int __mem_cgroup_try_charge_swap(struct folio *folio, long *left_space)
->  {
->         unsigned int nr_pages = folio_nr_pages(folio);
->         struct swap_cluster_info *ci;
-> @@ -5611,6 +5611,10 @@ int __mem_cgroup_try_charge_swap(struct folio *folio)
->                 memcg_memory_event(memcg, MEMCG_SWAP_MAX);
->                 memcg_memory_event(memcg, MEMCG_SWAP_FAIL);
->                 mem_cgroup_private_id_put(memcg, nr_pages);
-> +               if (folio_test_large(folio))
-> +                       *left_space = mem_cgroup_get_nr_swap_pages(memcg);
+On 6/24/26 08:53, Wei Yang wrote:
+> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
+> device-private entries") introduced the concept of device-private
+> PMD entries, but did not correctly update the rmap walk code to
+> account for them.
+> 
+> As a result, when page_vma_mapped_walk() encounters device-private
+> PMD entries, it takes no action other than to acquire the PMD lock
+> and exit.
+> 
+> However this is highly problematic for two reasons - firstly,
+> device private entries possess a PFN so check_pmd() needs to be
+> called to ensure an overlapping PFN range.
+> 
+> Secondly, and more importantly, if PVMW_MIGRATION is set the
+> caller assumes the returned entry is a migration entry, resulting
+> in memory corruption when the caller tries to interpret the device
+> private entry as such.
+> 
+> In addition, commit 146287290023 ("mm/huge_memory: implement
+> device-private THP splitting") allowed device private PMDs to be
+> split like THP mappings, but again did not update this code path.
+> 
+> As a result, we might race a PMD split prior to acquiring the PMD
+> lock.
+> 
+> This patch addresses all of these issues by invoking check_pmd(),
+> ensuring PMVW_MIGRATION is not set and checks whether a split raced
+> us we do for PMD THP and migration entries.
+> 
+> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Balbir Singh <balbirs@nvidia.com>
+> Cc: SeongJae Park <sj@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> 
+> ---
+> v4:
+>   * refine subject and commit log based on Lorenzo's suggestion
+>   * put pmd device-private entry handling in its own if branch,
+>     suggested by Lorenzo
+> 
+> v3:
+>   * remove cleanup part, only fix the issue for device-private entry
+>   * refine user effect description based on Lorenzo's suggestion
+> 
+> v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
+>   * specify the possible error case of current code and user visible effect
+>   * besides fix, cleanup the pmd entry handling based on David's suggestion
+> 
+> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
+> ---
+>  mm/page_vma_mapped.c | 20 +++++++++++++++-----
+>  1 file changed, 15 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+> index 2ccbabfb2cc1..17dff8aab9f9 100644
+> --- a/mm/page_vma_mapped.c
+> +++ b/mm/page_vma_mapped.c
+> @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>  			/* THP pmd was split under us: handle on pte level */
+>  			spin_unlock(pvmw->ptl);
+>  			pvmw->ptl = NULL;
+> -		} else if (!pmd_present(pmde)) {
+> -			const softleaf_t entry = softleaf_from_pmd(pmde);
+> +		} else if (pmd_is_device_private_entry(pmde)) {
+> +			softleaf_t entry;
+> +
+> +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+> +			pmde = *pvmw->pmd;
+> +			entry = softleaf_from_pmd(pmde);
+>  
+> -			if (softleaf_is_device_private(entry)) {
+> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+> +			if (likely(softleaf_is_device_private(entry))) {
+> +				if (pvmw->flags & PVMW_MIGRATION)
+> +					return not_found(pvmw);
+> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+> +					return not_found(pvmw);
+>  				return true;
+>  			}
+> -
+> +			/* device-private pmd was split under us: handle on pte level */
+> +			spin_unlock(pvmw->ptl);
+> +			pvmw->ptl = NULL;
+> +		} else if (!pmd_present(pmde)) {
+>  			if ((pvmw->flags & PVMW_SYNC) &&
+>  			    thp_vma_suitable_order(vma, pvmw->address,
+>  						   PMD_ORDER) &&
 
-It's a bit awkward to walk up the whole hierarchy again when we
-already have the counter that failed. Please do something like this
-(not tested!), then use page_counter_margin() against @counter:
+This is extremely hard to review given the existing crap handling here. I'm
+really sorry, but it makes my head hurt (I'm not kidding :) ).
 
+It's completely unclear why we only have to check for a subset of the cases
+after taking the lock.
+
+Could we simply extend the existing migration pmd handling and leave the
+!pmd_present() case for pmd_none()?
+
+That leaves no question to "which transitions are actually allowed", including
+"could we accidentally assume something is a page table when really it isn't".
+
+
+So what about something like the following?
+
+The "thp_migration_supported()" is not required when checking for
+pmd_is_migration_entry(), as that defaults to "false" when not compiled in.
+
+Untested:
+
+
+From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Fri, 26 Jun 2026 12:03:40 +0200
+Subject: [PATCH] tmp
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
+ mm/page_vma_mapped.c | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/page_counter.h b/include/linux/page_counter.h
-index d649b6bbbc87..07b7cb12249c 100644
---- a/include/linux/page_counter.h
-+++ b/include/linux/page_counter.h
-@@ -68,6 +68,7 @@ static inline unsigned long page_counter_read(struct page_counter *counter)
- 	return atomic_long_read(&counter->usage);
- }
- 
-+long page_counter_margin(struct page_counter *counter);
- void page_counter_cancel(struct page_counter *counter, unsigned long nr_pages);
- void page_counter_charge(struct page_counter *counter, unsigned long nr_pages);
- bool page_counter_try_charge(struct page_counter *counter,
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 772bac21d155..02472008144f 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5275,12 +5275,9 @@ long mem_cgroup_get_nr_swap_pages(struct mem_cgroup *memcg)
- {
- 	long nr_swap_pages = get_nr_swap_pages();
- 
--	if (mem_cgroup_disabled() || do_memsw_account())
--		return nr_swap_pages;
--	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg))
--		nr_swap_pages = min_t(long, nr_swap_pages,
--				      READ_ONCE(memcg->swap.max) -
--				      page_counter_read(&memcg->swap));
-+	if (!mem_cgroup_disabled() && !do_memsw_account())
-+		nr_swap_pages = min(nr_swap_pages, page_counter_margin(&memcg->swap));
-+
- 	return nr_swap_pages;
- }
- 
-diff --git a/mm/page_counter.c b/mm/page_counter.c
-index 661e0f2a5127..a0874f853ae0 100644
---- a/mm/page_counter.c
-+++ b/mm/page_counter.c
-@@ -46,6 +46,22 @@ static void propagate_protected_usage(struct page_counter *c,
- 	}
- }
- 
-+/**
-+ * page_counter_margin - remaining usable space within hierarchical limits
-+ * @counter: counter
-+ */
-+long page_counter_margin(struct page_counter *counter)
-+{
-+	long margin = PAGE_COUNTER_MAX;
-+
-+	do {
-+		long m = READ_ONCE(counter->max) - page_counter_read(counter);
-+		margin = min(margin, m);
-+	} while ((counter = counter->parent));
-+
-+	return margin;
-+}
-+
- /**
-  * page_counter_cancel - take pages out of the local counter
-  * @counter: counter
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index 2ccbabfb2cc17..ed2a23a90e8dd 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 		 */
+ 		pmde = pmdp_get_lockless(pvmw->pmd);
 
+-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
++		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
++		    pmd_is_device_private_entry(pmde)) {
+ 			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+ 			pmde = *pvmw->pmd;
+-			if (!pmd_present(pmde)) {
++			if (pmd_is_migration_entry(pmde)) {
+ 				softleaf_t entry;
+
+-				if (!thp_migration_supported() ||
+-				    !(pvmw->flags & PVMW_MIGRATION))
++				if (!(pvmw->flags & PVMW_MIGRATION))
+ 					return not_found(pvmw);
+ 				entry = softleaf_from_pmd(pmde);
++				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
++					return not_found(pvmw);
++				return true;
++			} else if (pmd_is_device_private_entry(pmde)) {
++				softleaf_t entry;
+
+-				if (!softleaf_is_migration(entry) ||
+-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
++				if (pvmw->flags & PVMW_MIGRATION)
++					return not_found(pvmw);
++				entry = softleaf_from_pmd(pmde);
++				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
+ 					return not_found(pvmw);
+ 				return true;
++			} else if (!pmd_present(pmde) ){
++				return not_found(pvmw);
+ 			}
+ 			if (likely(pmd_trans_huge(pmde))) {
+ 				if (pvmw->flags & PVMW_MIGRATION)
+@@ -270,12 +280,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			const softleaf_t entry = softleaf_from_pmd(pmde);
+-
+-			if (softleaf_is_device_private(entry)) {
+-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
+-				return true;
+-			}
+
+ 			if ((pvmw->flags & PVMW_SYNC) &&
+ 			    thp_vma_suitable_order(vma, pvmw->address,
+-- 
+2.43.0
+
+
+-- 
+Cheers,
+
+David
 
