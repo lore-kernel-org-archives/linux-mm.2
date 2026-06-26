@@ -4,132 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C55D4CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 11:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3D6CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 11:21:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD7456B0123; Fri, 26 Jun 2026 07:14:15 -0400 (EDT)
+	id 978DC6B0125; Fri, 26 Jun 2026 07:21:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF6C6B0124; Fri, 26 Jun 2026 07:14:15 -0400 (EDT)
+	id 950016B0126; Fri, 26 Jun 2026 07:21:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA0846B0125; Fri, 26 Jun 2026 07:14:15 -0400 (EDT)
+	id 868A16B0127; Fri, 26 Jun 2026 07:21:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 873A26B0123
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:14:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05C96120410
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:14:15 +0000 (UTC)
-X-FDA: 84921804870.05.DD1FD4F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4616B20003
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:14:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TtYfFDMb;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 639096B0125
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:21:52 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5F258DC3F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:21:51 +0000 (UTC)
+X-FDA: 84921824022.17.8E1BB78
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E97F7100003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:21:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ShybaEdE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782472453;
-	b=F2KKA6F9Cmcj+Qar0kgUz2Clb5+h6Ea3/wEmAb1jJBDi+EKlGcNVZfm9oXBRJ7dzna3FFk
-	B6qlKYXZUsPgCQYXj19l445iO1GqKtpFyC8nsMGueZlY8LR6ELhRhP11odhHuNWN8stOS6
-	9IgM+Kp7mVaz8gmT1aGrKaZux2n776g=
+	t=1782472910;
+	b=D7flY/tCx3RY8i6p86FULpnGsFHN2ZhVKo+/Bf/MY+8lAA5a2Dg0cGz6t2RyQRECE/y3OL
+	T6A2+T7po2wyYf2dnC5XTFmarUE1M67/hxYso0vtclCcLcC6n6e1Vj1L37BL3TCub+3uqq
+	zpIPjAKcM0m00qLsfSAIhlLolvf5RXo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782472453;
+	s=arc-20220608; t=1782472910;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fkLoybXTfezIlsdwsuEtEbzAWgE+RILpwfWU/sPIuWA=;
-	b=JMhUYOVixAfbzbgUPUSZE1TCvewyUSvwo2l/dbBziiwALlP0KsQCFXhEzm9VRnANFEJcnf
-	8CZxN28wUtYB3mQ+qVpGKQtR4mPKxcmwt8pUh2lWiqzEFGRwJtF4gI4mC/bMQ0xDTKnXGi
-	cIWuMN3pxBLzZd3rBg2iJRQISDiA+98=
+	bh=sXnGSQ/f8kthQgxhjN/qMHFlHYZPXPOXt+bobY0m7Ck=;
+	b=JC9f+IBAKIBS9Jpdzi47A2PvPgRLYeWEb/mklsCRoc0295MujoyPgqqaGV8EsJz3MPfkY0
+	LKMI6jyde7Fb7XpuvDMfKk7UgGHIhvN/rhfOmegFoue2Ql5x2Awex13QTB8hBnJFX7ShIK
+	xe1aRG6uYkjUrh74LMEGnLJGHYGUnZw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TtYfFDMb;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B280360098;
-	Fri, 26 Jun 2026 11:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA5B1F000E9;
-	Fri, 26 Jun 2026 11:14:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782472452;
-	bh=fkLoybXTfezIlsdwsuEtEbzAWgE+RILpwfWU/sPIuWA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TtYfFDMbibXE/aQtux0dRDDpsDLX9HbZGssUTgE1amA6JEkqCrj+Qb4/A/UYH1on1
-	 Q0vvlU2sK4Q11H3ZoEgbtEA9T8ZToDEAnP1UprlkorFQnfEPAnnG2XQwutyivg6afG
-	 kcIH2dq8l3d8VII7Mw8sAG82MQImnxDu+NDDL9yyIhPE6cW8QTIws8eoYeQjDyzffu
-	 a9tHAcg/zSXFdNp57PEl3JlopVVfAbM58+Qxw7rYa4itOcSZRJWda7FcwI1e901mh9
-	 Kwy5X9uQi4fdhNDfjuJLd5ZcbfF5ijML3CZuWM2KbeI4wkAakaVFSODLRkaDzow0pV
-	 9H+kEEHi7sKNQ==
-Message-ID: <45961106-ac2d-4916-b750-448b9cfda5b5@kernel.org>
-Date: Fri, 26 Jun 2026 13:14:08 +0200
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ShybaEdE;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Message-ID: <57c18afd-e2a3-4b37-90b6-f2a4c758e8aa@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782472907;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sXnGSQ/f8kthQgxhjN/qMHFlHYZPXPOXt+bobY0m7Ck=;
+	b=ShybaEdEuvjaq13R1piH2Z+U9a0wSOAEKFD90/s1i7ZE77Vs1RndU1kW6KQ7qUbtW79HcD
+	vreqzNqtQaQeE+7AcQ8JQkv+EBQd3thYj97SSBWGmSD22qqs/z7PobV/u8tB2breJGoknE
+	My76uAFXDSZY5f+J75MBfMNtqFjnir8=
+Date: Fri, 26 Jun 2026 19:21:28 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/mempool: Untangle CONFIG_SLUB_DEBUG_ON abuse and
- switch to static key
-Content-Language: en-US
-To: lirongqing <lirongqing@baidu.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Harry Yoo <harry@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: Matthew Wilcox <willy@infradead.org>, Usama Arif <usama.arif@linux.dev>
-References: <20260604110318.2089-1-lirongqing@baidu.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260604110318.2089-1-lirongqing@baidu.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
+ reparenting
+To: Johannes Weiner <hannes@cmpxchg.org>, shakeel.butt@linux.dev
+Cc: Harry Yoo <harry@kernel.org>, akpm@linux-foundation.org,
+ david@kernel.org, kasong@tencent.com, baohua@kernel.org,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ muchun.song@linux.dev, peiyang_he@smail.nju.edu.cn, mhocko@kernel.org,
+ roman.gushchin@linux.dev, ljs@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Qi Zheng <zhengqi.arch@bytedance.com>,
+ stable@vger.kernel.org
+References: <20260625151554.55105-1-qi.zheng@linux.dev>
+ <aj12aVq3he6q7b2C@cmpxchg.org>
+ <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
+ <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
+ <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
+ <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
+ <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
+ <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
+ <c0e366ec-ee5d-42d9-ba33-7c630660e8af@linux.dev>
+ <aj5I7JAXWlTHRyEW@cmpxchg.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aj5I7JAXWlTHRyEW@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4616B20003
-X-Stat-Signature: ttqzreoe1xun63prg86gqtojykqoj7mw
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: E97F7100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782472453-179420
-X-HE-Meta: U2FsdGVkX18c8NOHKrQlFRjejmu0erj0TFi1FbrO4gjDRfWk9zoSDSGjlVS0WcUdayYZov9ngokZOh3ZmogfHp2ozQyC4AVNTFdk+162Grs909P5smGRVqjduJPYNTtjvrU/4USrqXe92MXwd0JfU/wKdxjd0C0/FWGs/LPL68l+kFI0KKLZJgcZJIWXHeeuW3cZnWOBPphuvBYlA2AJBV4xCrXLed82lG7Rs4/Yg45VPptzOervHR24Rfi0G4fjSDjvOlQj3UvAUncpz0yRQRZIMovLpPPexsNmaCwQvl3MF/s7dL6CYg09beVFVXD83cnyzKW22Bt7n1zMHga/m/QX2Pxf7GxwzYzKFKfLP94mjheaPghO4FF1LIPQb3aq6lE9E7BaYLUtfrZP3Y+yPSe6rl8d//IG75HofCL/KX7jEhYtsHEYak0lS/8EoqVXolUXB+944NMkZto5DH2kmReZz6FRe0mI7iR+OUpRu8M/78UzQ3d1GaZq+y0ONIhxiO7yWyhJsNm58zf/RRkMx4Q81iewSb+D1RJDuMyJu1sMAqAGThk2W8lCIJGKwkFu2omNnU9polrS2fV4/iJxVVLBrKMsJZHAXMySq0Z5jXmkC+W4ddexaF/+w/lK93TIwAuIP6UG8Kz5v1R7Nj0Rk37GLB/eBYgIrocW6xA/aehnXbk0HMv5CqVMD4BD5eUwiVwFQ/j+JoV3k34b8DYlFA4Y21/IKDH+xMYOQtiyX0/UCNBm4d9Jgb4NyxPlkmB0uWlvnUKKa2K9ZqtBlUhViAgFin84ezeZLPEOckJMyw998Sm8JOVOYJEXhANkKUMVmT0US2XHwVIqxD0mQ11QuZapniV71VeQ5G4OcNueyOBRgw4mVpykAy+fqwLY0oKItORRLoSOss1OdtfUZTCWzr0AmYOoZ3jsBSPyyxbgCg61EZg85cYqULkd2BULbF7P5SjKMODDB9p8cFeECND
- hGVAUsF1
- 5/chL+qw19k28AQBb5cDhx/dc+mNz69lYxbiSuZ2OzC99YnYXtDRvuXWixfp/rDSHHkBz1OjTwPnzQuYlGSh6cXqrAwWr8qSTYcPxO0kUmTLbVH3fhEkm/tS+6QG62G7hkliCaIzLaAvqJsTfVR/SrBOedbnbik/ffsoMQWkqOezkM5KwcKR+zMkxk/uRM+09xYT1u5rmswWwG0jnDSISYtYrVDggc+hnG/24qYlrHgjejhTzOi5L4lz1rGwx8HFVynRA5iH6h4L/WCLiCY4Ah12f+lbJ463NxuwRR3jFUCs0FB8KvVK4y/wqZmeC+hSqMkSOqapP9NgMVIvVCcuHdU0TQcnYiMve3nxTFC5XaxUW6rDu58Rhtn+MYUdRfuFhtyQ/WgL6/VVM2Qs+hC91AsD1ye8zaZzFSV33/GRv4q1yCf01uQ+m0/njZPml3J2fxYwMMgJylLsVJfVbq+yrjnwa7EiF+wSEZAEm3dKq0onTINxxCSY5YGqM/KcleioCZdq7+NqZEaQMpR39ONRBOob7LxsjN8v0C6mzEcdLVsql8M9phQ3X/fe6Gg==
+X-Stat-Signature: m7ajjd9yswtrgdz5sgh5wzh3o5sspes1
+X-HE-Tag: 1782472909-116186
+X-HE-Meta: U2FsdGVkX1+pgVQKQBQt70VeYtRNwOdYo7qAxHUD6hqOOnJs7KNEcRGmyS/I8Uzl1UtozojICiCp4FhIAY6OnruIQ4YOKvVlxGNlZBulMk06Fc5T6vI8kFoO1lSZorvHF0LKrglt1ccSr1HzRmIRuoL/Xmt9ViQR5GzvWkmb32Y8XPqonkgbQIgEoa5PsP1CtUZ5g6ado/AtUFukk2ySoDnJ/OzFdlpJF1qnS90MMMcuyKegLS99XiGpwo/Y4W8774qcqkcR9AiQxUWq9tKnVtSTWDBvNix5ecvBrvprPaCJDkS8Yki539IxF5DHTisvEvbyu+wgkTMm4eISJgg57P1bU3c+YznRagBiOH1JQ5FITMA8DxhGtpUPxmrFFiEOh2y72L5/FqoWgDoe60g8dkI5O9ISZb6UcsScxsUv5WQgUL+W67sCJNv614cvd9XqI1m9W12e3cbzIWJaEG7pxklmMWik4pma+jOQIraRvGPQ6N17KsKHjGIXCjGKlww5uDopbN/zBa7hrvHoci8IQ+8FrY5PBpXkN3L4ooxtYEFPIdLq4seaaU2Zfd6FOXALJRTmpG1Y5Myaf/1gAUkoaa/mD917zCt2O0irqfU/99iukYQhBZihTlzi1joVc80D6x5ekFt20MHccnf+Mvvia3ANtvw4nI7apJqfAQsFOYYGPnxylB7eRl6rlLUai/OHA9ZD/n/0Fx2eD1AHhH7/BJ6eEBMRdbEiyjisyTkXlN0hGz+SvPhgTNWGqzqtr943E3vs6eC/cw2/HnwB3mevT+GCPxki2ExKZGA7DSY/7Zr3E6y9vs9jrduZwS2w/pA0bTh6vJwfPu1ZOys51G7MRc8a4fmtQDZ4goNunSE79m47Y6EcmTZOAopQEoX0n1ISGglb9ya6gVr0p2QfNx8gG/mD2/xVsWPdScdy7/o5nJ135hY/vTGv6Rm/ZtQVIlGx6v/e1eaLb1WgQsVkx5o
+ sNeZHKi4
+ AW1IelYrjWYXXwEiVB+OR+5ui0qAFwqr/BPaI4Bhz5Vpqqz+ppfgmDeyu+4PRYoUugHafFzsT7cDYEPWoDNuDgs8PaXjk2Z/RonFSRHEMstHwT7gJVfOLaoTtJSwckJobrME0h+lTCXiKpNkp8qd+YORH9AGBW+I7GEQdcroawz3k/pZzuva2MafhyZW67f7xqw90xiv7KmjDTovINCru5yCM+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,35 +103,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/4/26 13:03, lirongqing wrote:
-> From: Li RongQing <lirongqing@baidu.com>
-> 
-> The mempool subsystem historically wrapped its debugging logic inside an
-> merely defines compile-time defaults for SLUB and caused two flaws:
-> 
-> 1. On production kernels where CONFIG_SLUB_DEBUG=y but
->    CONFIG_SLUB_DEBUG_ON=n, mempool debugging was completely compiled out
->    at compile time.
-> 2. On kernels with CONFIG_SLUB_DEBUG_ON=y, mempool debugging stayed active
->    even if a user explicitly disabled slub debugging at boot time.
-> 
-> Clean up this mess by removing the #ifdef and switching to a runtime static
-> key (mempool_debug_enabled), allowing mempool debugging to be toggled
-> cleanly via its own boot parameter.
-> 
-> Suggested-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> Signed-off-by: Li RongQing <lirongqing@baidu.com>
-> Cc: Vlastimil Babka <vbabka@kernel.org>
-> Cc: Harry Yoo <harry@kernel.org>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Hao Li <hao.li@linux.dev>
-> Cc: Christoph Lameter <cl@gentwo.org>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> Cc: Matthew Wilcox <willy@infradead.org>
-> Cc: Usama Arif <usama.arif@linux.dev>
 
-Added to slab/for-7.3/misc, will exponse to -next after 7.2-rc1.
-Thanks!
+
+On 6/26/26 5:39 PM, Johannes Weiner wrote:
+> On Fri, Jun 26, 2026 at 03:04:17PM +0800, Qi Zheng wrote:
+>> On 6/26/26 2:48 PM, Harry Yoo wrote:
+>>> On 6/26/26 3:24 PM, Qi Zheng wrote:
+>>>> On 6/26/26 12:59 PM, Harry Yoo wrote:
+>>>>> Observing a dying cgroup should be rare anyway, it's worth focusing
+>>>>> more on readability?
+>>>>
+>>>> While it's rare to encounter consecutive dying memcgs, it can still
+>>>> happen, right?
+>>>
+>>> But is worth saving a few instruction in a basic block that is
+>>> unlikely() to be executed?
+>>
+>> I don't have a strong opinion here. Hi Johannes, I'll leave the decision
+>> up to you. If necessary, I can send out the v4.
+> 
+> Yes, I was thinking what Harry actually bothered to spell out ;)
+> 
+> The race is rare, multiple levels even rarer, and even *then*
+> mem_cgroup_lruvec() is a quick inline.
+> 
+> This way you have one block to handle that one rare race
+> condition. One place to put the comment. No labels, no goto.
+> 
+> Simplicity wins :)
+
+Okay, I will update it as you suggested and send out the v4.
+
+Hi Shakeel, do we really need to move lock_batch_lruvec() to
+memcontrol.h? It's currently only used by reset_batch_size().
+
+Thanks,
+Qi
 
 
