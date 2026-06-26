@@ -4,120 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21CC7C43458
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:32:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95755C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 14:38:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1382F6B00A0; Fri, 26 Jun 2026 10:32:58 -0400 (EDT)
+	id 871066B00A2; Fri, 26 Jun 2026 10:38:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1101B6B00A1; Fri, 26 Jun 2026 10:32:58 -0400 (EDT)
+	id 821166B00A3; Fri, 26 Jun 2026 10:38:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04D256B00A2; Fri, 26 Jun 2026 10:32:58 -0400 (EDT)
+	id 6EB966B00A4; Fri, 26 Jun 2026 10:38:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7D416B00A1
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:32:57 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 62F211A049E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:32:57 +0000 (UTC)
-X-FDA: 84922305594.29.8C57EA4
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 4FFF712000E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:32:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a31JYTtk;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 473D16B00A2
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 10:38:53 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B52298DD1F
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:38:52 +0000 (UTC)
+X-FDA: 84922320504.23.2C398C1
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DDDA1180003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:38:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhqJhoG7;
+	spf=pass (imf06.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782484375;
-	b=tvFnlNwQJMdIManbJyqGl2dtkjlBhApGsEW2oQ9R3vD1GJztkObLKI89FqNiiuqvl4eURE
-	y8mxx+FdBuZJCFErb7siCT2TbIameGmzY1t8rwB1hZYqKgNpcX1JMgahVcbUx+/BJiT5dF
-	nGD2qOna+8hZBSZt2HVGTM87JDj+zEs=
+	t=1782484731;
+	b=wJe5GxmYN9ypzdMNTw1LOWVYQ+kakw4aiSTs1ZrtzV7RxI9BffDmB6IfgXRxyIhSrGpJS4
+	A4C/WE7m/dpJ+8rhhVJxpfx5SbmK0FtBN5nXlx+clg2KQ1ruYEF3CTerjfzsebq+8TVNNu
+	o8RPvfXIxG+xBU9FV1AupJ6pfpIES3U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782484375;
+	s=arc-20220608; t=1782484731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K1f7G+W7XdToQCcEEv+xhI/b4k9eRW05nVoQLm3eeNw=;
-	b=jn/IVOmJhoj/EuYkHckctrkAuC/wxMqE1HwwEloKWUmo03XxyHsBgAiDAeMvywKKHPwmGU
-	zR9JRP7koAkMLJGtbzBqBzxGajeig63mslwBXkEQoQ3p9mBOEyUWEaV15mRNO7tIqkN7/R
-	PN2WaayUUWS9SPn6/9cTK7dDcsCxwaE=
+	bh=ywfVVfHIaMt446COgp92lwZKXn494SDuKzJCEPWrxoY=;
+	b=H7jpveC51izbU39zmOIvEka4DjNlOOheJkOwef1BMsTfFjcgwP1T/EP4YmB5A5zdcohezB
+	oIkQXVKHUZSMNi4In1HE9o/dmjiECFP9PJnc0JLiSZ71lojYS/sHKV4lVPV6ewCHYk2T0N
+	+h7qRD38KT2eS4eMMe1fjCizUHoBV0A=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=a31JYTtk;
-	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhqJhoG7;
+	spf=pass (imf06.hostedemail.com: domain of brendan.jackman@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+Mime-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782484372;
+	t=1782484727;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K1f7G+W7XdToQCcEEv+xhI/b4k9eRW05nVoQLm3eeNw=;
-	b=a31JYTtkHqBYP9yQgIATJLIF5O8Bt+AGU5eBWio4HiGkQ+cWhMjdR+Z7sw8NkHZw6f+WCi
-	a20/l8a4z1Yth6b1AP+Q2UbPym1OAFn9NaJQRG16c34M/0bXcekcPKPKqMyOlmlXhJKfks
-	7Sx+8QTrExLatoHZHsVkKYjjyn9ZtIQ=
-From: Usama Arif <usama.arif@linux.dev>
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	alexandre@ghiti.fr,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <baohua@kernel.org>,
-	Ben Segall <bsegall@google.com>,
-	cgroups@vger.kernel.org,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Hildenbrand <david@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Kairui Song <kasong@tencent.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Mel Gorman <mgorman@suse.de>,
-	Michal Hocko <mhocko@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Wei Xu <weixugc@google.com>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Yuanchu Xie <yuanchu@google.com>
-Subject: Re: [PATCH v2 9/9] mm: zswap: per-node kmem accounting for zswap/zsmalloc
-Date: Fri, 26 Jun 2026 07:32:43 -0700
-Message-ID: <20260626143244.3382853-1-usama.arif@linux.dev>
-In-Reply-To: <20260626102358.1603618-10-alex@ghiti.fr>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	bh=ywfVVfHIaMt446COgp92lwZKXn494SDuKzJCEPWrxoY=;
+	b=PhqJhoG7u6ok3Ih9DjMgoZ6ovI2yjIinVBsySEs7Qw3RiK/Oq+Zc3N2SAZXs+yXqvd1E0l
+	e+iA7cqchVdYTpQQvBZjPyxy5YEfiGxVaOtpJD5Y08vSFQLRDl4gghkSy9NlCsT02LyeaD
+	kIpat7BwpGr6soNSeerUQ203dXuim8w=
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 26 Jun 2026 14:38:29 +0000
+Message-Id: <DJJ23EXF55VK.1EGQZS511HFB6@linux.dev>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "linux-mm@kvack.org"
+ <linux-mm@kvack.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+ "kernel@xen0n.name" <kernel@xen0n.name>, "linux-riscv@lists.infradead.org"
+ <linux-riscv@lists.infradead.org>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, "maz@kernel.org"
+ <maz@kernel.org>, "oupton@kernel.org" <oupton@kernel.org>,
+ "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+ <yuzenghui@huawei.com>, "will@kernel.org" <will@kernel.org>,
+ "seanjc@google.com" <seanjc@google.com>, "mingo@redhat.com"
+ <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "luto@kernel.org" <luto@kernel.org>, "willy@infradead.org"
+ <willy@infradead.org>, "akpm@linux-foundation.org"
+ <akpm@linux-foundation.org>, "david@kernel.org" <david@kernel.org>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "vbabka@kernel.org" <vbabka@kernel.org>, "rppt@kernel.org"
+ <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+ "mhocko@suse.com" <mhocko@suse.com>, "ast@kernel.org" <ast@kernel.org>,
+ "daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+ <andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+ "eddyz87@gmail.com" <eddyz87@gmail.com>, "song@kernel.org"
+ <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+ "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org"
+ <kpsingh@kernel.org>, "haoluo@google.com" <haoluo@google.com>,
+ "jolsa@kernel.org" <jolsa@kernel.org>, "jhubbard@nvidia.com"
+ <jhubbard@nvidia.com>, "jannh@google.com" <jannh@google.com>,
+ "pfalcato@suse.de" <pfalcato@suse.de>, "skhan@linuxfoundation.org"
+ <skhan@linuxfoundation.org>, "riel@surriel.com" <riel@surriel.com>,
+ "ryan.roberts@arm.com" <ryan.roberts@arm.com>, "jgross@suse.com"
+ <jgross@suse.com>, "yu-cheng.yu@intel.com" <yu-cheng.yu@intel.com>,
+ "kas@kernel.org" <kas@kernel.org>, "coxu@redhat.com" <coxu@redhat.com>,
+ "ackerleytng@google.com" <ackerleytng@google.com>, "yosry@kernel.org"
+ <yosry@kernel.org>, "ajones@ventanamicro.com" <ajones@ventanamicro.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>, "prsampat@amd.com"
+ <prsampat@amd.com>, "wu.fei9@sanechips.com.cn" <wu.fei9@sanechips.com.cn>,
+ "mlevitsk@redhat.com" <mlevitsk@redhat.com>, "jthoughton@google.com"
+ <jthoughton@google.com>, "agordeev@linux.ibm.com" <agordeev@linux.ibm.com>,
+ "alex@ghiti.fr" <alex@ghiti.fr>, "aou@eecs.berkeley.edu"
+ <aou@eecs.berkeley.edu>, "borntraeger@linux.ibm.com"
+ <borntraeger@linux.ibm.com>, "chenhuacai@kernel.org"
+ <chenhuacai@kernel.org>, "baolu.lu@linux.intel.com"
+ <baolu.lu@linux.intel.com>, "dev.jain@arm.com" <dev.jain@arm.com>,
+ "gor@linux.ibm.com" <gor@linux.ibm.com>, "hca@linux.ibm.com"
+ <hca@linux.ibm.com>, "palmer@dabbelt.com" <palmer@dabbelt.com>,
+ "pjw@kernel.org" <pjw@kernel.org>, "shijie@os.amperecomputing.com"
+ <shijie@os.amperecomputing.com>, "svens@linux.ibm.com"
+ <svens@linux.ibm.com>, "thuth@redhat.com" <thuth@redhat.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "urezki@gmail.com"
+ <urezki@gmail.com>, "zhengqi.arch@bytedance.com"
+ <zhengqi.arch@bytedance.com>, "pavel@kernel.org" <pavel@kernel.org>,
+ "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
+ "vannapurve@google.com" <vannapurve@google.com>, "jackmanb@google.com"
+ <jackmanb@google.com>, "patrick.roy@linux.dev" <patrick.roy@linux.dev>,
+ "Thomson, Jack" <jackabt@amazon.co.uk>, "Itazuri, Takahiro"
+ <itazur@amazon.co.uk>, "Manwaring, Derek" <derekmn@amazon.com>
+Subject: Re: [PATCH v12 01/16] set_memory: set_direct_map_* to take address
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Lorenzo Stoakes" <ljs@kernel.org>, "Kalyazin, Nikita"
+ <kalyazin@amazon.co.uk>
+References: <20260410151746.61150-1-kalyazin@amazon.com>
+ <20260410151746.61150-2-kalyazin@amazon.com> <aeeDvpDnGnY5n69n@lucifer>
+In-Reply-To: <aeeDvpDnGnY5n69n@lucifer>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: set95r9cqx5stsehoe7pbb5b8w1noj7k
-X-Rspamd-Queue-Id: 4FFF712000E
+X-Stat-Signature: prh6tt5pkjg8g5yqxty79uxkk94xs38i
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782484375-357025
-X-HE-Meta: U2FsdGVkX1+zAfy8v8C0sk23gWLq2UgjKfisn89DC9u2TURmTNh3bGOalntHA84ITnGZ9xpmQ9qVvas4zJ/ljsnE1/dthuSC+pdDCGxWDdDc/qSD+xdSN9INaoyhxSo/DCisYNJGEZQuIvA6l8udU0oDIOjeNcwm5M5XnxmKn7EQR3mhGmYQb5/Beb6/M/665ZZUwyn9VcUpH+idVs6MY256m6hzj2ysX2H2mqqQ4gk6F1sBdqRPZsSNeOSKChI4fwX61MoBwWkrAVGgnGt9Nev4z1WeK4cM+4Jhpu80+fHI8kYPm82rV76NUOqdZCKq2EYOAMzs2MnztRPR7p0PeyOqlI0GyAcKDkakG+KpA41E1OoN0zKZuhCri5gQKHm0N3jy+PY0x7n7avpYEMPyu+NrzkDBgoDIBl9+1u8Pjq0d1cnHd7JkRb2Ev2VyVgg9Y52F5DYFESt5BJt/vBQKjOmGsHw9U+cIjNxqNFyek5bURAu5gm0+Cj3II+kMudc2U4FTdEIaGpSHoXZqxmZAzQopqQMQFmGpF72SajPxmX7jwBV/0uoOzcfeksYLNMbL7/NhcNoBkBbbw/bS3375iVrB9fMb4wPXc8WjzPtwkRR+29wzLyKRgzw89S5p2/amWfak6O85juNT+ixLgn5ufgE1HrKy5pFlQLDpwIXT7mx7sxwCpU8Qxx4Hso0y567Ag0G0upwVdLN1ljYE42dNFPXGQIgxEXQjSakzJmFfL4YukYVFJwjdV9GwMjYam2K3LIADIvEoWSzaqQim+ue8Lcji9es1raQ2Me/Z69xMdEzs2B4WJ2JQzPsZ5m3TeH4rG9nqna99MXrjmalSTKtWCqMuchACH9tyrqsoSJQQFBFEx0KVyeuRuR/EdR6LbLOaTbBaSD6cslFpv6/t9aSi172I6gtdh5nIoLafPN230l+XBx4VOhINiHBRewEWoV3vbsedJ9OUDpq94Z3FFKh
- g6P7cCzL
- 0CN7kD63MyA8LZekSMsrWsdoZc74p7T6kvlxecQuz+chQHuU5dPEzrfEAMshcAEEU05voqFhRmZpJBNMbR9//finzmBlKcQNWkjkn7938sApGc86hTEk7uZloymPd4FkaBRy1qMHzwky8pCenyhgSn0qabPUfY+lbiLLGx4N3DYbHqtWMja0TC3cyK6ZvOQS42eUPwap9IkH1nrbb8qXniuYI90xKqrYeGu9iBRTC2WNF099klnFABLNE+g==
+X-Rspamd-Queue-Id: DDDA1180003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782484730-929497
+X-HE-Meta: U2FsdGVkX19i8ZyOtO5xURKBl7nj/iWNsj82wmK61TuMT/A6ukkhBUJt/PMLuddoMMlS07Qtf/JxsNKZT1Q4vNIoZe83h45cnQchf2QnQ0WUQjLexSvOvZag4OctF6fFAzq/11mAYPS2JBsHsw+kjHTIEJTZD5k9mRvP5umuOVJIP48PM0tuG5vsq83k+Ynz3I9Zt7Oi2p4uVX+HZsRt8Nu3elkMPoUTs7LBItcPBDxznoutaNffZKiIyqENR99huRlKZ+3/YDIQBGlXflFGQNKp0UDqe7IpQb1zP9LqgQiGEJy9j/ohtMije08dMUF9mquQYDxMhieeVZTVJS3gFbujiC0s5Q9yzVbHD6cXwslxKIcaKBmPB1wG3fltdpR+GJh0L42xE5n09xp1kSeK3NSoNP7nA8KD5xmTJlWApYRvJxiFwZHNuhgUAD05YjkNCkETxqb0MHiypWK2v6bt0nAHx1HEHHGUueW2FHSV2ZMqzZ2yJ1JKW/c8SULFPuinbIGRjyZdmalOYFDfPcrQKulPJRtQEuFDmH56UidpifKjg1yumHXX2JJQthA5aVmvWVJ8xBjOeK5j0QD0Gj9dzV+/WeGGFtO3Et1FXbSOSymORGlWjx4catVhalbpfnM9ewRFdBB4AWoGwoxnyIeTOQABh0IAgUJzcODrGMTp2yUeuhiV45p+cqLhQkKKz6wExqu9gQxqm3ar/ZApnh6lZOfUbJ1x8sq5yNzNe8Q3gZ9KD2SCdL9h4zvO1XTq6S2Dij5sXx8eDmWKjDmlkG5ELZbSOfowkFuVaZqb4E41BFeViqKdJ3MGs281fXP4+1+zdHyIo+v4xRJ/7K1B1K+Wh+ZEfEdrlRl8HlAOnJ3g9/vf5oMj1vCermSRx8/SxfEgK5FSDoIFOe3clr2FpWlmkNM6m+JPhGs2bQ4cOSM2EiT+kzbSJf1gXaa9bfLeMSErm8Bo6QT5axmIhWlu8jc
+ wnGvH5+E
+ 8JhQfAkZgRr7J9uee5xn2gRUNP8d11t9Rr/8+d2gNup8ULi3GKONaYmrfrKcplBRPUGHiFsmDXfJaPVmx+kWMiriYggozvppjvj1i8z2tcPbQ8aLOHiu53CthMAuGUWGU1UhdSFvpI0TnVWkHf+9SwixXTsZuB/4cKvgh7sBGxmETQghkAR61vXonQ5XgPLKatY1LyJRW8/Jljke68QejpklEGWQghOScc57CqW8Cf7WeZ57mx2SIGbWDGp+vGnMpuC5yoyEuSsaSnUNwNnxFuL3P//oS12lO8w++vr6y4+MaQ0va1nPVkAbBOsqj9xY8PY6NJ6eAb4NoviTSBqzwo9IQeqjwrYhSrJvnByYNlrUaYKDUtPDLNAi/aZAZWY3IYa3Juc9xiKQCzOSiCf1JbBHYuw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,101 +148,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 12:20:58 +0200 Alexandre Ghiti <alex@ghiti.fr> wrote:
+On Tue Apr 21, 2026 at 2:43 PM UTC, Lorenzo Stoakes wrote:
+> On Fri, Apr 10, 2026 at 03:17:58PM +0000, Kalyazin, Nikita wrote:
+>> From: Nikita Kalyazin <nikita.kalyazin@linux.dev>
+>>
+>> Let's convert set_direct_map_*() to take an address instead of a page to
+>> prepare for adding helpers that operate on folios; it will be more
+>> efficient to convert from a folio directly to an address without going
+>> through a page first.
 
-> Update zswap and zsmalloc to use per-node obj_cgroup for kmem
-> accounting, attributing compressed page charges to the correct
-> NUMA node.
-> 
-> But actually, this is incomplete because it does not correctly account
-> for entries that straddle pages, those pages being possibly on 2 different
-> nodes.
-> 
-> This will be correctly handled by Joshua in a different series [1].
-> 
-> Link: https://lore.kernel.org/linux-mm/20260311195153.4013476-1-joshua.hahnjy@gmail.com/ [1]
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> ---
->  include/linux/zsmalloc.h |  2 ++
->  mm/zsmalloc.c            | 11 +++++++++++
->  mm/zswap.c               | 19 ++++++++++++++++++-
->  3 files changed, 31 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-> index 478410c880b1..30427f3fe232 100644
-> --- a/include/linux/zsmalloc.h
-> +++ b/include/linux/zsmalloc.h
-> @@ -50,6 +50,8 @@ void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
->  void zs_obj_write(struct zs_pool *pool, unsigned long handle,
->  		  void *handle_mem, size_t mem_len);
->  
-> +int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle);
-> +
->  extern const struct movable_operations zsmalloc_mops;
->  
->  #endif
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 83f5820c45f9..17f7403ebe77 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -1380,6 +1380,17 @@ static void obj_free(int class_size, unsigned long obj)
->  	mod_zspage_inuse(zspage, -1);
->  }
->  
-> +int zs_handle_to_nid(struct zs_pool *pool, unsigned long handle)
-> +{
-> +	unsigned long obj;
-> +	struct zpdesc *zpdesc;
-> +
-> +	obj = handle_to_obj(handle);
-> +	obj_to_zpdesc(obj, &zpdesc);
-> +	return page_to_nid(zpdesc_page(zpdesc));
-> +}
-> +EXPORT_SYMBOL(zs_handle_to_nid);
+Why is this more efficient? Isn't it a purely compile-time conversion?
 
-Does this need the same locking as the other handle-to-zspage paths?
-zs_free() takes pool->lock before handle_to_obj() because zspage migration can
-update or move the object behind the handle. This helper does the same decode
-without the lock, so zswap's uncharge path can race migration and charge or
-uncharge the wrong node, or observe transient zspage state.
+Indeed in the current implementation folio_address() is
+page_address(&folio->page) so it still goes through a page anyway, no?
 
-
-> +
->  void zs_free(struct zs_pool *pool, unsigned long handle)
->  {
->  	struct zspage *zspage;
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 761cd699e0a3..466c6a3f4ef3 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1438,7 +1438,24 @@ static bool zswap_store_page(struct page *page,
->  	 */
->  	zswap_pool_get(pool);
->  	if (objcg) {
-> -		obj_cgroup_get(objcg);
-> +		struct obj_cgroup *nid_objcg;
-> +		int nid = zs_handle_to_nid(pool->zs_pool, entry->handle);
-> +
-> +		/*
-> +		 * obj_cgroup_nid() returns a borrowed RCU pointer (no
-> +		 * reference), so the returned per-node objcg may be freed
-> +		 * (kfree_rcu) before we use it. Pin it with a tryget inside a
-> +		 * single rcu section; if it is already dying, fall back to the
-> +		 * folio objcg (held by the caller) so the charge still lands on
-> +		 * the right memcg, just without per-node attribution.
-> +		 */
-> +		rcu_read_lock();
-> +		nid_objcg = obj_cgroup_nid(objcg, nid);
-> +		if (nid_objcg && obj_cgroup_tryget(nid_objcg))
-> +			objcg = nid_objcg;
-> +		else
-> +			obj_cgroup_get(objcg);
-> +		rcu_read_unlock();
->  		obj_cgroup_charge_zswap(objcg, entry->length);
->  	}
->  	atomic_long_inc(&zswap_stored_pages);
-> -- 
-> 2.54.0
-> 
-> 
+I might be missing context here about how this will look in the
+memdesc future.
 
