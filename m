@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA1E8C43211
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971F0C43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 18:22:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 962216B0120; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
+	id 67B9C6B0121; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 911D56B0121; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
+	id 653C66B0122; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 801146B0122; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
+	id 51B0F6B0123; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F2596B0120
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:36 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABD3A1C33C8
+	by kanga.kvack.org (Postfix) with ESMTP id 27B4E6B0121
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 14:22:38 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84A9F164E65
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:37 +0000 (UTC)
+X-FDA: 84922884354.05.F1BF8C6
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 54B441C0003
 	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:35 +0000 (UTC)
-X-FDA: 84922884270.25.066500B
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CF061A0004
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:33 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ymd84ctr;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="cKN/iAfc";
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782498153;
-	b=BOJtDVvoJhI/evogjMtoRPskAxc72FC06GnlbdReWN4jnktOgeIVVHt2KAK9oF/QnQMF/6
-	l4G6bVoK/4QmiAELrt0XHnoMYolafqfxAEg9mW1bhEXiFFwaBrZyGg/BOFWKoFjx1I0zdW
-	yv3/dhENxOhb4njIi5c1TUJDA5QQfRQ=
+	t=1782498155;
+	b=WxEywDBjRV7mLB2UcnnXKUWbXB+wtQnMXHyRlBxkKP+MZvLZ4ID6y6sthfKDZ66wRM7A9v
+	UsKP4ngwxPM7nXK8aoMBbjjOgantM2X9Utav5h1N/30dQrdZwEWqf18IKpSODR358UWep3
+	9uGqUhQiKZaOrB7RD+YNr66d/7fLClY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782498153;
+	s=arc-20220608; t=1782498155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
-	b=rHxNsQPEovnzExjwTSDdrBOB4wUsL+E7mMJ89mOmdNrIV3y7a3XW0o6F5ttROxPbUrOqWT
-	ICOJcc6fRi9w56EYzjMWORup7ft5c6sFzyygat/WSx+1RrR+9ViYlrtAMR/1C9dZlsSN0F
-	IjXStKFjPCBXcABjI7vAi249qu0XU84=
+	bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
+	b=iAzOLjEh6UVNYE8vOyGsgsQH8PkLbxUZalnHUI0ab1X/rYAnPMx/ITVstEDC9lpW87L5WS
+	8hY0dkIL4Tx2BJBW2eQkhKX4xdsvPmpJx9btFdWWQZfK02ruukY4jeCNb4JG/k37Y9mVjs
+	IMWp3REuNqBOV0e6roHTIdpUsJ3p8Bs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Ymd84ctr;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf25.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.44 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8e608e02bf0so11452266d6.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:33 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="cKN/iAfc";
+	spf=pass (imf20.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-92213351918so163030485a.0
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 11:22:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782498153; x=1783102953; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1782498154; x=1783102954; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
-        b=Ymd84ctr3wv6PT1MSxMm0Z1jHZ8R9sJKORJ3h8fbnn255g943gxt+X6wIG0W+NK323
-         dX1jowa0BjJOy61H/OipofCQCcs8GdSHi/CArsUfPOUSfq5N0TDx3lExkqsvmIjFjBEb
-         kJ5Y2jUSpr2EtJTmTNlZnTXMps30I+7L/GAnJiEHfFU5SxUUsAilF0N0IClTyNGCyvxB
-         eOLW5N9Z7nr+1WRZZASAxxzGFFfq40lbsN4YXSz4vies2TARoc1DH0dZjxEzN8bMQ0S6
-         suZYzjVSgHHl8UBT+TbfhDHKaLho3cOK/142GeyQtfYa5jxM5f8KFUGpV/A+sIX9esqE
-         OGZQ==
+        bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
+        b=cKN/iAfcpqV2EkwvzdpbwYkl6Sw/cwSDD0aWbRkuWgd6ZRq2jg+EWFNLwPyshSAA0Y
+         RMhB0YVQ41kV6+B1YNBmaAjNmE3gPwY2TajyxiXCbha/+751yVm2aGb46mZlPUNcCPNU
+         1x8Hs+YMjnxIOKYewvNmNP68haMgACE5w/AaybYQeInWaXM+5OYw4ceJMCBVBiy3FhV4
+         WVxZJJKNLXSBr9FH8micqXo+XrD0IMiUUKI2LNC/vPxO6d2fiVpYp0f9TSotzxpIaGpA
+         GNTw1jw1UkRdxuif0zqas+pIS3p3QHXWP5cFr3HQXmqMYhgjzO/QftUdWIAsm3Z9OIhp
+         P6ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782498153; x=1783102953;
+        d=1e100.net; s=20251104; t=1782498154; x=1783102954;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=xNnQvDlpVbdSBzQMZkREgFp+pXIUFVREki7kHSxzZi4=;
-        b=LlCOLabob5qucwasDoOI/MzwGzrU3evl28oLa++0RcIlFlGEsVeYEaLD2Hm7zWiyeE
-         U+e/12a1/CyQq7VwjxikAFUx4VRViv0GAtYLKTMHuRlwAZVLl/eEdKaIOPjm7TyPMSTB
-         1NDlwnXUuT/e93A3+T8uf4eKyvKkbwfqwY14cA/tjRDleDSJitP2bjf7UUS5gy8z0wZi
-         kbo7aKp78U0sFkEXMXJiopwriewwW6PyMLQ7IimCP/COSmzBoZw+NFQRRQYtM3hGcwrZ
-         g1sbirA4aEZ1MM2QSQsBlwYiAv/KVA488q5Jf11wV5t3aFIcx1fTFQfE3Rh90Ape9x/m
-         RzIg==
-X-Forwarded-Encrypted: i=1; AHgh+Rr8CBGlANNgZBnDaw4eTXhDLLubjAOLZfOoqvaLa5iGHqbNoTtjDDQv1eSyRJDEZHBRLk0pvD97Bg==@kvack.org
-X-Gm-Message-State: AOJu0YxmU+/GsMagADHBnjhibICZvchQkAonrTADF7h3eU5E0czG6Uve
-	H+C5AMJU1ekhvmIEGe0ux8G7kSF2W72LSyqZ0EeOm0smyUs18/iF/QQUlEPUINCfHaI=
-X-Gm-Gg: AfdE7cnUXQvTpH5SZu9DAqlHY2bhYSamgBUo/SmjT+HWk3du3uUgEUWkjkn0QH2jtK/
-	MwJkxGclZkhjHD1jDtTy83zTt09ZG1Wz9X7DB/HEFCe3ipwK9dCqM/BZhHeAsyDPpmZ/gSn0eeo
-	rNzSaS7jYfUzqrTAPLJivxaWeRgcM9YdEYd8Iyk40psGg7Q20dnCMtx0opxy3Y4JC3wuBNyb9wB
-	pbhK00C4wuEI7XFzkwdaC2SPw9bqva+q1ukp5npB1nEN8KtdDuiLzpLr5gT7wyTPXtRdtbBiPvh
-	nKT6QrlNfCNuGMK7aY+RSqOr/VoFhc3qkyW5wdNGzqqkOgerAFb0EiB7/o2sNWkUuDJXgzaZHF8
-	75Ux3eM1Zpou90rBTISGLUCgqiwhdF1GQ8Y96UIHWMuvvdSj5agXD5NxBuwkUjmEt/sRqZJQsd8
-	hKP2U6OK4ynp4=
-X-Received: by 2002:a05:6214:40a:b0:8ca:2559:8886 with SMTP id 6a1803df08f44-8e6d88d9babmr138437776d6.13.1782498152835;
-        Fri, 26 Jun 2026 11:22:32 -0700 (PDT)
+        bh=vcsui4ccGNEMg6euNBSFI6gmklxyb2LXsMBiP6Of6n4=;
+        b=h0tSsCpgye/s+CpC4MGsVxMa9+dMN1ymKwexZQjzNgKVpd+mn/en7npIU2z1qxAXg/
+         Lne6Xhv8rFaO1RWuehimXNBLZ/CJz0wGalTw8xiy/cfG4GElN2qpeB5UU+Egy+o/hVIw
+         DZTuuzj0HkC+dYEceiOyN7f0rHsSNuZZfhr5/ulyoDefzQjubrQz9gZKKDx6q3ovH//N
+         JNojWR50pnIIOYNxSMRJ0L7X8QxbUVSZSdPyL2KMJE/UVfyfEdc/Zvw/euQbhdD8qOIX
+         wUpRB1NGu7rNNqB7Q/4nYWecWNUpUzIaLqawK9ZVs5SE+VcnIt9V1MCUnlvo6e9lsvvy
+         6VvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/tDYrt9wWew6mu4HcdPDMF9IktblvCVu65bb6+MuvIEjn5uo6NvKo1/hxrSIp2B4i7fsuiva2+KA==@kvack.org
+X-Gm-Message-State: AOJu0Yw709yLS83YGyNk1Rg0lPN0d9AqCsb1zXyoEFs3pFplaYhQ66h9
+	mOL9DjNWIMWKAFt9r9syWfIECjrLVr2CeFlIQEXf9elmSCF92ECAftzo2Z7VcsNTIfw=
+X-Gm-Gg: AfdE7ckxon7ce4qBbH86IAqGZ7IMhYp59zmQZF6KNO37vnXJk6kZIvTk2nOrPFmE2+Q
+	HY64E7n+GXZ9BP1z+uwcqt6bfihDhsggRAIcgr3SCjUXht4AzGxt6hHslSOfAlYnUabgklTGaez
+	U84vx+AxPi5qo+jOWCH4Ky7cCqlMs8ukuCDnktrmYwa2DH330NP40yVfC1FWADLu9tiQIvbhvBO
+	ADEcZibBkbxOoDbOMkrP2Z72cyN2mgDdghgkSxQJNZXybpFmm66MZmDuzVE82aT3/EstzQcK0cH
+	bU66cXKt9dTzz1vSTnXGG7TDBDANZp/dLzBrEdl6oXlxhvJM8/mOe5m23rO0gTd9miie8Apem3d
+	6ZUXjIvnu8LzRuZwWGH7xxam17/9GbRH32c8VyynS5p45eOKyfTrMGjmDzJRLd6C/c2EaoalcIl
+	1ZnlRHGiomoJg=
+X-Received: by 2002:a05:620a:370b:b0:918:4137:6be with SMTP id af79cd13be357-9293d0b9ef3mr1327199985a.53.1782498154411;
+        Fri, 26 Jun 2026 11:22:34 -0700 (PDT)
 Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df81fcb55csm217910836d6.34.2026.06.26.11.22.32
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92600c7aae6sm1227611085a.44.2026.06.26.11.22.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 11:22:32 -0700 (PDT)
+        Fri, 26 Jun 2026 11:22:33 -0700 (PDT)
 From: Johannes Weiner <hannes@cmpxchg.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Vlastimil Babka <vbabka@kernel.org>
@@ -103,22 +103,22 @@ Cc: Suren Baghdasaryan <surenb@google.com>,
 	Mike Rapoport <rppt@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/4] mm: page_alloc: __GFP_FS lockdep annotation for direct compaction
-Date: Fri, 26 Jun 2026 14:21:17 -0400
-Message-ID: <20260626182215.1107966-2-hannes@cmpxchg.org>
+Subject: [PATCH 2/4] mm: compaction: support non-movable compaction for pageblock requests
+Date: Fri, 26 Jun 2026 14:21:18 -0400
+Message-ID: <20260626182215.1107966-3-hannes@cmpxchg.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260626182215.1107966-1-hannes@cmpxchg.org>
 References: <20260626182215.1107966-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CF061A0004
+X-Stat-Signature: epz1hknm1n85cryyz5oe96zg5f8tcu19
 X-Rspam-User: 
-X-Stat-Signature: onc86xs199qwod3irytii96aygyqc6ox
-X-HE-Tag: 1782498153-139719
-X-HE-Meta: U2FsdGVkX1+Hooekg3OdsfMJiDt4fcYE1NBizSAt/jZ/ntc06KPoL1uxUdoNidaoFVIjig1rrT10S1WvTXnxqGlvY38+R03HCQTUdESlfr54V46rW2f3ivJUs6bsk7eU7iX9+97eDtCSplGg4WKM14/zXIpkHNKV0SOwtZUYAjVEfAt6znfILtzOlFbPSZPyYMOpVmlCITs6SPjlSZu12hyKQUCZb7vQGLBH/fUzZ3aF9Ig+FWw3KoBJ+3AXhKtrmyDz3m1+5Py/6+Co930oYx+h81K/IgG9yYkK66KgNkXlX35yowpcnjHvOtZ2KUozRM5O9MBHoxTP/6uy/r0asI00664pWNgtzpJtr+RrbH9aPtXMv2dm6S+vETI1F7DdLXezc6pbGM3vL9bOAXxBm7WURP6AHMo4nTgDDeNDgbcRyw4av9ZW5x8feLPgKxczIZestTG6r9REWTdOlzazzTysgygJq/j7eBuq5hiWcslKaxH/MZ5sCWsTwQvwdV+Y3JpKYUFMrGnW91zK2DIZf04mCbuOFDQM+jMF0+CzraZfSbrynWmPgXJQ1srDzvdRtDa2kAQOQ93YjzFL8RgSiBnwtGO0iFw+nF/lK46WrkVUvdSUDhJdId56zldETmvhT3gSlww7PBK8za+SMAzk4j9cA8riN/z/hE8CiGHn05zjm72asfVhbXvaewSbGcOiwtZ1bYkkUkmoqHXMvL0zhSarKLC1G4gHhInezgQJ7N5AcvCtwXRULlgIRLbHGPTJxyy7R484DcT1kLvlGU074keQxLvdchdgHzPnr9iUTogvrhoJgukugvnXdmA0tDLS4zGB2aChgMd+viL6vUOWwLD/0U3MxpvPAfecR2otreXWstbzTJVR7zhzqQz9anJVTZdy5Qf08eEvbQ/gz21x0dY2ys0Kk6L+rCLLyssq7UEvLz+SjxWMkiQtV31R2EGvjAXkwhWlih7mf2xijO9
- r7tyzFI8
- M8hhaYOyknr0LdQrIrNP5VVjc5lwBJ83y4aRAC7dF1fQjFy23l6DBpfR2XRgq9+Z+AtCZMbIUpPPgaeqBOxxNd88R6du/toyzGka/SpjiScNl5pUioBJFtYsCOJIFiDN6TyDLM/yE+M1CabrkzsL/p3ycOs6fVuNI41aVryCEI7xezxuIQ5AcbDe1dmmgWvGVkK9B8nyccj3bap7alKKebGATpwqE4lW1KFMVf+AMF3EsHuPqgUit+msd1EKnDZIuYqTilZbL8CUDsGOWeXvsDUlpu31v3AyXqWesP2ftCgHFOwgLjzEtB6a6pR8h2bSZEKadFiFUfT1Q+xGNQcgx1e0rhsjFqflg9b8ZL6FjwYYMrWTodnHmTapu7onoDATRKaCF6jFcMdGb63KYSiYRihNjFJpKa7+SNIaz4kmuvfTxPVidm9/i88SHpQ==
+X-Rspamd-Queue-Id: 54B441C0003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782498155-835594
+X-HE-Meta: U2FsdGVkX1+1h0jmtNQw8qp57KrrOf1/ieQSH74RpCRpBQNtDIrxM3EECHsJJGeUTQKB7dLJpXJAx6qPTZr2RKroNHcbDjAjQhCv9lCBEtZ5szNSQjrbbty3lL+jASqLrrL12dRPdDsJX6/NdbZEZVv1qod+CFZa+s+l/5KsSmr0EXRvNvv/u6gilVkiuORIMLPw4sPnQH+McBJbVUXA3oO9MYxAMLhXrjxjavzTenRxctIIRSDZuHmNb/z7oOUIEI5fk+0O8540KSDJcCTwgMcqZbExui9BdDsxzcElpuPzjMGP5b2Eh6FrK1EKnaPHT8b+DYZskNUsbhjES8wXD7pqXHMdry93l5Po26MypVF/o1XnPPelstjOUolyLn4U3pggmw3U0qySO2n1iPEsAe8ORGv9/qZmvddt3Vk8/4ugj2yxPO/BE+mqw38/D/Wkr0OomMaU5/wW0qaCD1n8kXSttEClwMKEzPSqV/lhGZ7olMtOhFu8K+IZ9RaM5rEqTtQphoia5RghiJMfkuEeccG0hXD0umiZIN8rHAKY2HUmotmVpPDoTWPuatTm/6+5doX+UoQLsd67rqame562r6ah9i2cC5QiDn6G2/U995GhDCikO6P1I9X5SViCw2oie1hUUt5k8su2EGl9rKlU+tZ+uW9eZbJGcwkYjkWJxOnKd0MRJcCe3JpWeExXtHiDh6/eqkuz9aRfnDB+wnP2hvFGslax2g6/5PigZA3unUcRuy3Zp4x52wT9Id5fc3fDVQLcdEr0bYuVivOBKBSG7ZeAQQjQQQSRf6focbX/WSiDF7/pZJHJsciR4Fk39EXQ3/AcymdVcb4V3IYlCkvS2G9yDyFVrigIBc4FTOGBdnQrbcvkxUMIZWpuvdd5eUEieBJ4hSXbb81X9mTVRnHQdi+Fq1axkr5okaZ4ZzoeYidcwdPsV9RUCtbg3f9FCpW6WJRd7/PrmNVe63HOqUX
+ dJOL2OF+
+ u/xztuQfS+drC4ACZE6wmWvEMAnUoInHj3k0uObIjfKv0uiDmcQj3JjlZSwP83sy4QbCXEdxGmcpUI6DSVeSWPqlUybMSW6HvcOrNaKLc0nE46DLdEpKgDLA7ybvgpJvLPWoRYRgNouEInBODaynUl85DGV+FL7CAjJgOMR+yOT+F8JazWvtAnA3NjkbDMWBcmviLI1okXXM92krAPQYhG7GjO3NgChW5tLRhTRzBOCjlMr0QcCNu2p/Se0SU1w+Nj8FAY2XTg9eVQCTc7r+Ks3/QCZYdF1SauWvg0HRyRsOk5gZ7Hd8R8qHDYXHKOJQvC3aQJuZJ5DxLV10LwA+ufCg3e7KfBkwsWLuRwiOf6Zl6IlsNfs4/pKYDCYNyxe74WvGt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,41 +126,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A subsequent patch will have some order-0 allocations participate in
-compaction under defrag_mode, to stave off extfrag events.
+While trying to fix a reclaim storm in defrag_mode, I noticed that
+non-movable direct compaction is extremely inefficient.
 
-Since this is a sprawling expansion of entry points, and compaction
-can enter filesystem paths, add lockdep annotations that catches
-__GFP_FS passing errors.
+When searching for space to evacuate, compaction only allows blocks of
+the same type as the incoming request. This is to prevent migratetype
+pollution, where a small non-movable request frees space in a movable
+block and provokes the allocator to fall back and pollute it.
 
-Direct reclaim has had this annotation for a while, and since reclaim
-and compaction are usually used in conjunction, this is unlikely to
-unearth old bugs. It's more about future proofing and peace of mind.
+This protection is reasonable on one hand, but the downside is that it
+makes non-movable direct compaction nearly useless: if we get the type
+annotations right, by definition there aren't any movable pages inside
+the non-movable blocks it is allowed to scan.
+
+With defrag_mode, the goal is the production of whole blocks, which
+are essentially type neutral: __rmqueue_claim() will convert them
+wholesale on alloc. This makes type mixing and pollution a non-issue.
+
+Fix the pollution gates to take the requested order into account, and
+allow whole-block requests to scan blocks of other types.
+
+The only exception is CMA blocks. That type is sticky and these blocks
+cannot be claimed to other types. Continue to be strict with them, and
+allow only explicit ALLOC_CMA requests and kcompactd to evacuate them.
 
 Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 ---
- mm/page_alloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/compaction.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee902a468c2f..cb422505c6ef 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4152,12 +4152,14 @@ __alloc_pages_direct_compact(gfp_t gfp_mask, unsigned int order,
+diff --git a/mm/compaction.c b/mm/compaction.c
+index f08765ade014..7df3a85d43af 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -1381,12 +1381,33 @@ static bool suitable_migration_source(struct compact_control *cc,
+ 	if (pageblock_skip_persistent(page))
+ 		return false;
  
- 	psi_memstall_enter(&pflags);
- 	delayacct_compact_start();
-+	fs_reclaim_acquire(gfp_mask);
- 	noreclaim_flag = memalloc_noreclaim_save();
+-	if ((cc->mode != MIGRATE_ASYNC) || !cc->direct_compaction)
++	/*
++	 * Background compaction produces blocks for the zone at
++	 * large, with no particular allocation context. Allow all
++	 * block types, including CMA.
++	 */
++	if (!cc->direct_compaction)
+ 		return true;
  
- 	*compact_result = try_to_compact_pages(gfp_mask, order, alloc_flags, ac,
- 								prio, &page);
+ 	block_mt = get_pageblock_migratetype(page);
  
- 	memalloc_noreclaim_restore(noreclaim_flag);
-+	fs_reclaim_release(gfp_mask);
- 	psi_memstall_leave(&pflags);
- 	delayacct_compact_end();
+-	if (cc->migratetype == MIGRATE_MOVABLE)
++	/*
++	 * CMA pages can only be taken by ALLOC_CMA requests. For anybody
++	 * else, vacating a CMA block consumes free pages the caller
++	 * could have used, and produces free pages it cannot.
++	 */
++	if (is_migrate_cma(block_mt) && !(cc->alloc_flags & ALLOC_CMA))
++		return false;
++
++	if (cc->mode != MIGRATE_ASYNC)
++		return true;
++
++	/*
++	 * Prevent small unmovable/reclaimable requests from polluting
++	 * movable blocks through fallbacks. Whole-block production is
++	 * exempt as the allocator claims and converts these.
++	 */
++	if (cc->migratetype == MIGRATE_MOVABLE || cc->order >= pageblock_order)
+ 		return is_migrate_movable(block_mt);
+ 	else
+ 		return block_mt == cc->migratetype;
+@@ -1974,12 +1995,12 @@ static unsigned long fast_find_migrateblock(struct compact_control *cc)
+ 		return pfn;
  
+ 	/*
+-	 * Only allow kcompactd and direct requests for movable pages to
+-	 * quickly clear out a MOVABLE pageblock for allocation. This
+-	 * reduces the risk that a large movable pageblock is freed for
+-	 * an unmovable/reclaimable small allocation.
++	 * Prevent small unmovable/reclaimable requests from polluting
++	 * movable blocks through fallbacks. Whole-block production is
++	 * exempt as the allocator claims and converts these.
+ 	 */
+-	if (cc->direct_compaction && cc->migratetype != MIGRATE_MOVABLE)
++	if (cc->direct_compaction && cc->migratetype != MIGRATE_MOVABLE &&
++	    cc->order < pageblock_order)
+ 		return pfn;
+ 
+ 	/*
 -- 
 2.54.0
 
