@@ -4,95 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01F91CDE008
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:05:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F5A5CD4F26
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 07:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBDA76B0088; Fri, 26 Jun 2026 03:05:11 -0400 (EDT)
+	id C01386B0093; Fri, 26 Jun 2026 03:07:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C47526B0093; Fri, 26 Jun 2026 03:05:11 -0400 (EDT)
+	id B89B46B0099; Fri, 26 Jun 2026 03:07:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0E8C6B00A2; Fri, 26 Jun 2026 03:05:11 -0400 (EDT)
+	id A57936B0093; Fri, 26 Jun 2026 03:07:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FE516B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:05:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D17CA1C295E
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:05:10 +0000 (UTC)
-X-FDA: 84921177180.23.AC9136A
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0113E1C0007
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:05:08 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b8c9dZcU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 722556B0093
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 03:07:58 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C91011203A3
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:07:57 +0000 (UTC)
+X-FDA: 84921184194.09.7C79EC5
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A79E92000E
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 07:07:53 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=T74Qi6xA;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782457509;
-	b=Q6ks3gJfrhZCp7NCaV0xfoN34XG3ttfPk4WjE3M5r4swrrd6dwt+oQydBcbIrPXDMoZ8LO
-	oE0f8v0BOyxzbrQNb5hXYkmlvZ+jKP+4gLVBPXI4N8Teba/vAp/a5pO90ANdn222KBB3mQ
-	TeurRzhZiJsqZOlCO6fjkZqToZ/DNfE=
+	t=1782457675;
+	b=dwO2h01ap9NWNKyxh6GBDCiq+bxC+9Je6T/h6zt2NLMTlMLLcs/usyolc5GWdbKxU5cTwL
+	e+qG5J4Y170eiGu7ZbseB70n+gG+Zh0q1dhIYI6YB92VWJXKp0hcxT2IIynr7+Id6gDBie
+	28YmRTb/hRhXlib04vxzolwLi/5KTj0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782457509;
+	s=arc-20220608; t=1782457675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+bLG5UfpgPjMKqrgsZ8bW9KeIBxng26HYMlgjgCAW8=;
-	b=3259LSCvGSZJnLppCnAjJF34yNIeNkoEl8Ad+4wXj+9O/6xBdK5m4w+nO/2JVHCGnDHQkU
-	Nxvg3LbR1hSOpRIjPSIhM64Pct6B1CI77k1LVZjJOp8Op4U8z1xaFosdBfW4gPU3wOq8Za
-	PETk1NH+uE3zKznKZ3fkhEpKSm+qJyE=
+	bh=D2/QFfIJp4/32GGiKH+24p2DarJlOeahIHOo3GA0odQ=;
+	b=HWbFLtrgCzR7xJmzGLsVx0YjWrHN3dx+26IaUc9r9YsbI/GuJZvT8HR83rQxeiFL1PpEbD
+	qD5X7kDMIkJZQZ9EXSgCp8HbwKP6tuGbdKoX5y633o1UsZdwsmeDKbA+xmbV+66zIP/D0R
+	JV6LPJ0Ly9WN7wDeWO15MhasFlfiMsY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=b8c9dZcU;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-Message-ID: <c0e366ec-ee5d-42d9-ba33-7c630660e8af@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782457506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z+bLG5UfpgPjMKqrgsZ8bW9KeIBxng26HYMlgjgCAW8=;
-	b=b8c9dZcUJ81dwTVzshi/HpGfP2I4P05U8G/nHRbW1IMykFToKsM4HP5YTqv8SYOgHWNRlo
-	py1nnHBBimpqvdb1M374AOU511u8l2FGtbmXIXTytfR6NgpZecQavFQSkOvnbf8To8MWhh
-	Pkwt4WyjLFQlCmpa+M34ZHTpXOuepAs=
-Date: Fri, 26 Jun 2026 15:04:17 +0800
+	imf03.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=T74Qi6xA;
+	spf=pass (imf03.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=D2/QFfIJp4/32GGiKH+24p2DarJlOeahIHOo3GA0odQ=;
+	b=T74Qi6xAmaQTqEJzHgjrX4aNuSD26S9wDsgNEw5ahnoYNGkT2YKYqMYgM6CAVuF9WkbRSW92s
+	kUuiGw4l02oiiVvX0w9xI96/exF4CEzpn9HHhoJ4nbWdYuM8LRlbz9tFwYPnF3loud/jN8Fk/49
+	E2QY+iDAq1i+4nlfCSUOtrA=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4gmmjQ62PBz1prmc;
+	Fri, 26 Jun 2026 14:58:34 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5625C40571;
+	Fri, 26 Jun 2026 15:07:43 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 26 Jun 2026 15:07:43 +0800
+Received: from [10.173.124.160] (10.173.124.160) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 26 Jun 2026 15:07:41 +0800
+Subject: Re: [PATCH v9 6/6] selftests/mm: add hwpoison-panic destructive test
+To: Breno Leitao <leitao@debian.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-trace-kernel@vger.kernel.org>, <kernel-team@meta.com>, Andrew Morton
+	<akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, Naoya Horiguchi
+	<nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
+	<skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>,
+	<lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>, "Masami
+ Hiramatsu" <mhiramat@kernel.org>, Mathieu Desnoyers
+	<mathieu.desnoyers@efficios.com>
+References: <20260609-ecc_panic-v9-0-432a74002e74@debian.org>
+ <20260609-ecc_panic-v9-6-432a74002e74@debian.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <40150c86-68a4-aa1e-185e-f24f78595650@huawei.com>
+Date: Fri, 26 Jun 2026 15:07:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Subject: Re: [PATCH v3] mm: mglru: fix stale batch updates after memcg
- reparenting
-To: Harry Yoo <harry@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>
-Cc: akpm@linux-foundation.org, david@kernel.org, kasong@tencent.com,
- shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, muchun.song@linux.dev,
- peiyang_he@smail.nju.edu.cn, mhocko@kernel.org, roman.gushchin@linux.dev,
- ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-References: <20260625151554.55105-1-qi.zheng@linux.dev>
- <aj12aVq3he6q7b2C@cmpxchg.org>
- <4c7b0c46-14f0-4a62-893e-e50714e09b74@linux.dev>
- <46ac28bf-5be1-4600-b522-0a1aa76c28e6@kernel.org>
- <08cf8972-6cfc-4452-9a3c-88e0368dbbf9@linux.dev>
- <afdaff7c-fe6b-40da-8f54-aeeab8fe8867@kernel.org>
- <90fd5300-1016-42e7-abad-08ad85fb62b4@linux.dev>
- <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <5a0c6597-6b96-4781-a71b-fd1298b2b7bb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20260609-ecc_panic-v9-6-432a74002e74@debian.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 0113E1C0007
+X-Originating-IP: [10.173.124.160]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Stat-Signature: atgbk7szueumhj93i4tatu8aczrepigb
-X-HE-Tag: 1782457508-491271
-X-HE-Meta: U2FsdGVkX1+pDdRa1oJ5eAS4Vg9ExhcfVviBpJzGhgRFDiLIvVLv2e+hqMo7p8sM3BCcEfIbmw4/Il1B5fjbFlYCHNpKq+5+5gYoCn4KLca/Dzzf5kbkDiDBe4ghYXLeg1txsumh9aCS0zImKA2RtSLMq1g9GKFuur8SEWBNJv5bFutABHbIN6wQckWOV82Iy1eCSyzQVqeneP0148Vw0EqyPbm1k88fYZvZ5lYrbqXu0kSiUIuROHqlj2mkiEDBXVOQdXsb+o+Zz4uNNCg+ikx2NKiU8Vwct7j9tzTzhOGSAtDlnQfqljjgeEfGPEH1TkRKzdr22n27x4uOUUXPRYso8MOtsvjJVYu98JIEyh0lRVDYtSUDAdyesS4DgVmO0ERZng29043Gvkojeu4ILxIVT0EAM4Ys7ufbayHktf1nGTd3VjoZXzp4J1ngDAB0MuSdz4dzCCF1ZD8lcXtfauQwoq8bUFxFwubrxyfV00Qw5n6iQ+YqD5LvsGStIb6LUFH3X/tlrmyCrDSS7zf/rtEU0OqU7FKqG7kdgWcYsEZ1i9utQf5zhMZlVaJ7+13K6WAZO+3A1uxP1v2ys0LpjqJaUcS9ECPGh6BmqZFWkW2A4C3ioVG46PVe9iajgN1FuTBLDsYMjezSTfLpaSGt1Mox4Da7RF6ajo5Bn8yn8TTIo5+HTg/7rPrU4dJ4WDWJ0/3UUj/LMzfZFs0JogI+NDvUGBs2oDSZAcJOmuoRpAojm6ngUH0fEnZ5larKhKYAJFIDeZFmL6elslhyxEOx/Vz7J9nxf8RsSuCcIGLy0RYAbWkjLZwRy7tSXAx5SIkxFjSo6X6PQFz58Cvqv1N/h8DfM6qoXyAv4RHNwBS/OaqAgzRh9nUWxmPj7wdp9olRQqvv5IMOhqXZrqwY/hC9wnucNedW2OpIdPHIHdV69Lb1zUK3K0UFYiDh/3D2cPyrnPcOc8EarI9Xv9oMmiM
- LALLlSNq
- ru1KSL1MV7BJnRbw3QhGSLOxzJL+wr+LuHyndEl++cmZ+JmVPY95Bg3rGhZyuXXONL3cH8+BknblHe0AWJ4GeCt3Xtwwkn/PTY15IqmVZ0+iW+Z2MXXBwR8NBCcIWt3bSbS8pyDL8mQxH2YnbB/m9R0mK0sBTtrP08654V4lFWIosUl4rvjFUdsO2XZVOKZ8zQLWVkDvp7ekbgEH1NZ0MQQwFYPoWPBTrcvC3Q17q1y8I8PljDCcpuqJ4uYY1CeuKVmGQFCtQYTAmwiMPpF1avqKJynweTgR/YMPX
+X-Stat-Signature: b3bfqx8hgxjzqig3h3t9nwz9f7aasq9u
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A79E92000E
+X-HE-Tag: 1782457673-391292
+X-HE-Meta: U2FsdGVkX1+YPpf0ttOtpkEjZ9Xur+wmskJDqjm78VnIs7KlVG/TzPt84vrx2pw76PJTmzy7Iscxcmaioh37Pv393vX0DPv40TaFAV7nvvLrvl83ttfBlH8gW0I6HkG8e3fHimCzRfzgw8V1QBzq/vNjOCZsI1W+MyNmoswP0DPUqQYtkQhmtV/ksV3rDlTztv1KSSn8ixdOrlgzTMHD4JqbiTnddo7ZjLnkSBq0yam68VHZoYX97VDVKjKXlLVxTMVBNM0nkfYDvNLHX9fQTegt6wsDsDKjbaZvMTEThjEPvIH4gmlAHShTo/7+Kau35gqJktkKZ18Aylno0m/4XLddSw9uv/7a0Rl77jX+RZJ0VDvU+kBz1t8YQiNKbDIKYJfP18QjxZd4sxo/3qkCr9j11iLuktstyjf2R7wIT6nB5cc8Tg7ZYwoowSHIzwGjk2JOQ9TzuqK8SZZATZADzfWK7V29irZebjdkiX3KJxL5+73mNgWzbLZIZdhFFFIc3ex45u+NV5B2QNvlY/H2M7e4e3n+TYD61YOAC0KZgyLfycju552tIXAFNUn2N2c4Is8zR1FXRw+R0EN57pia1/Cy8WutVYhKTxSrPbr1AVYDWkRtt1osYWtDgaJdkR42OY44WmrxYBlES8VvYWKikP7cChwlGUswx9RvTmLlyjBYtwB7UfcgYriBgbx4ATSht+TgybpP+gj3Fqwda0QnMwuIWHnbtSDWCVJHKNPOyoVzJjkGyifKdMPbRfwtrQsjh8XBkxkS2kMKrL32B3ewoxm5YQ1JCR10Z31TOLQn43XuwgsDkIxJMDwQB5ZY2UPYQEAblM8Satx+/YU3hjQEMoTOb3BYQ5P4i0yvJ8lTmXsFN7CgKhw1k+VPisgwlPnwp0ri1wElO12JrsSXckGSvlsgME+ko54P4oYY/KZirISetjqpB3OWYZVHJAUmaiBvuinjOczR9TJ0bV5wp9U
+ OG2N4cTk
+ Rrn+qbjQipmY2pGmv6BkBT45fGdrTyL5X9JG1SQyAMcYZaQyzgPl2A+h7xgN1KRIdWqpq8MulExYEfsJdUeMHFs6Ju60JE09S8tBGBHDRTZJyfewvs24ly+4Sg0Z1hYXlCfQHsewi/0B5bCfg4lJqTS4OT6vy9jYpFQ4P0DWuLTJwQPC1Z5cIDOhvKsj7c+C9oMHSbp3hbVyeYrV+6fGwSH1mng4Ws6NJo8uDUsYIKLNJROjHHcxNLJO3dixiVUeIsfm+zAqBxsAEPXfR8CTJHwC4/RRieCtF0oBNraXFs2kgOrclYLtFH72lvLk/BkhNvtJuxQauJ/Z836aCQYFuQSRtW90qkpMjPF3G5nimueiIrFQANRqjzjI4M4UDT8na8EtnWAMPQJdhKf+dIYx+ASDmOTBhsjTTW3DTpYJ86xhp6FGXoQAOSAbi+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,193 +114,307 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 6/26/26 2:48 PM, Harry Yoo wrote:
+On 2026/6/9 18:57, Breno Leitao wrote:
+> Add a destructive selftest that verifies
+> vm.panic_on_unrecoverable_memory_failure actually panics when a
+> hwpoison error hits a kernel-owned page.
 > 
+> Three "kinds" of kernel-owned page can be targeted, selectable via
+> the script's first positional argument (default: rodata):
 > 
-> On 6/26/26 3:24 PM, Qi Zheng wrote:
->>
->>
->> On 6/26/26 12:59 PM, Harry Yoo wrote:
->>>
->>>
->>> On 6/26/26 1:48 PM, Qi Zheng wrote:
->>>>
->>>>
->>>> On 6/26/26 12:43 PM, Harry Yoo wrote:
->>>>>
->>>>>
->>>>> On 6/26/26 11:27 AM, Qi Zheng wrote:
->>>>>> Hi Johannes,
->>>>>>
->>>>>> On 6/26/26 2:41 AM, Johannes Weiner wrote:
->>>>>>> On Thu, Jun 25, 2026 at 11:15:54PM +0800, Qi Zheng wrote:
->>>>>>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>>>
->>>>>>>> The mglru page table walker batches per-generation size deltas in
->>>>>>>> walk->nr_pages while walking page tables without holding the lruvec
->>>>>>>> lock.
->>>>>>>> The reset_batch_size() later folds those deltas into walk->lruvec
->>>>>>>> under
->>>>>>>> the lruvec lock.
->>>>>>>>
->>>>>>>> The page table walker can run concurrently with the memcg
->>>>>>>> reparenting
->>>>>>>> path
->>>>>>>> as follows:
->>>>>>>>
->>>>>>>> CPU0                           CPU1
->>>>>>>> ====                           ====
->>>>>>>>
->>>>>>>> walk_mm
->>>>>>>> --> walk_page_range
->>>>>>>>         --> update_batch_size
->>>>>>>>             --> walk->nr_pages += delta
->>>>>>>>
->>>>>>>>                                   mem_cgroup_css_offline
->>>>>>>>                                   --> memcg_reparent_objcgs
->>>>>>>>                                       --> lock lruvec
->>>>>>>>                                           lru_gen_reparent_memcg
->>>>>>>>                                           --> reparent child
->>>>>>>> folios to
->>>>>>>> parent
->>>>>>>>                                           unlock lruvec
->>>>>>>>
->>>>>>>>         lock lruvec
->>>>>>>>         reset_batch_size
->>>>>>>>         --> child lrugen->nr_pages += delta
->>>>>>>>
->>>>>>>> This will trigger the following warning in lru_gen_exit_memcg():
->>>>>>>>
->>>>>>>>        VM_WARN_ON_ONCE(memchr_inv(lruvec->lrugen.nr_pages, 0,
->>>>>>>>                       sizeof(lruvec->lrugen.nr_pages)));
->>>>>>>>
->>>>>>>> And the user-visible impact of underestimated nr_pages in MGLRU was
->>>>>>>> premature OOMs because MGLRU does not try to reclaim memory when
->>>>>>>> nr_pages
->>>>>>>> reaches zero, but there are still more pages.
->>>>>>>>
->>>>>>>> To fix it, make reset_batch_size() check CSS_DYING under RCU before
->>>>>>>> flushing the pending batch. A non-dying memcg keeps the original
->>>>>>>> lruvec
->>>>>>>> stable against RCU-delayed offlining; a dying memcg redirects the
->>>>>>>> deltas
->>>>>>>> to the first non-dying ancestor.
->>>>>>>>
->>>>>>>> Reported-by: Peiyang He <peiyang_he@smail.nju.edu.cn>
->>>>>>>> Closes: https://lore.kernel.org/all/5A9E929D82717101+12fcf643-
->>>>>>>> efb8-4b9a-a53a-1e28cc894f0b@smail.nju.edu.cn
->>>>>>>> Fixes: f304652609ea ("mm: vmscan: prepare for reparenting MGLRU
->>>>>>>> folios")
->>>>>>>> Cc: <stable@vger.kernel.org>
->>>>>>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>>>>> ---
->>>>>>>> Changes in v3:
->>>>>>>>      - re-implement lock_batch_lruvec() by checking CSS_DYING
->>>>>>>> under the
->>>>>>>> RCU lock
->>>>>>>>        (suggested by Harry)
->>>>>>>>      - update the commit message (suggested by Harry)
->>>>>>>>      - temporarily drop the previous Reviewed-by tags
->>>>>>>>        (since the sync method has changed)
->>>>>>>>      - rebase onto the next-20260624
->>>>>>>>
->>>>>>>> Changes in v2:
->>>>>>>>      - update the commit message (pointed by Barry)
->>>>>>>>      - collect Reviewed-by
->>>>>>>>
->>>>>>>>      mm/vmscan.c | 45 ++++++++++++++++++++++++++++++++++++++-------
->>>>>>>>      1 file changed, 38 insertions(+), 7 deletions(-)
->>>>>>>>
->>>>>>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>>>>>> index 35c3bb15ae96..1ec8c23c72b9 100644
->>>>>>>> --- a/mm/vmscan.c
->>>>>>>> +++ b/mm/vmscan.c
->>>>>>>> @@ -3262,10 +3262,44 @@ static void update_batch_size(struct
->>>>>>>> lru_gen_mm_walk *walk, struct folio *folio,
->>>>>>>>          walk->nr_pages[new_gen][type][zone] += delta;
->>>>>>>>      }
->>>>>>>>      +#ifdef CONFIG_MEMCG
->>>>>>>> +static struct lruvec *lock_batch_lruvec(struct lruvec *lruvec)
->>>>>>>> +{
->>>>>>>> +    struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>>>>>> +    struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>>>>>> +
->>>>>>>> +    rcu_read_lock();
->>>>>>>
->>>>>>> Where is this unlocked?
->>>>>>
->>>>>> The lruvec_unlock_irq() in reset_batch_size() will handle the
->>>>>> unlocking.
->>>>>>
->>>>>>>
->>>>>>>> +    /*
->>>>>>>> +     * The memcg can be NULL when the memory controller is
->>>>>>>> disabled.
->>>>>>>> +     * Otherwise, the caller keeps the memcg owning @lruvec alive.
->>>>>>>> +     */
->>>>>>>> +    if (!memcg || !css_is_dying(&memcg->css))
->>>>>>>> +        goto lock;
->>>>>>>> +
->>>>>>>> +    do {
->>>>>>>> +        memcg = parent_mem_cgroup(memcg);
->>>>>>>> +    } while (memcg && css_is_dying(&memcg->css));
->>>>>>>> +    lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>>>>>>
->>>>>>>        while (unlikely(memcg && css_is_dying(&memcg->css))) {
->>>>>>>            memcg = parent_mem_cgroup(memcg);
->>>>>>>            lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>>>>>
->>>>>> There is no need to acquire the lruvec before finding the first
->>>>>> non-dying memcg.
->>>>>
->>>>> struct pglist_data *pgdat = lruvec_pgdat(lruvec);
->>>>> struct mem_cgroup *memcg = lruvec_memcg(lruvec);
->>>>>
->>>>> rcu_read_lock()
->>>>>
->>>>> while (unlikely(memcg_is_dying(memcg)))
->>>>>            memcg = parent_mem_cgroup(memcg);
->>>>>
->>>>> lruvec = mem_cgroup_lruvec(memcg, pgdat);
->>>>
->>>> If the first memcg is already non-dying, there's no need to re-acquire
->>>> the lruvec. ;)
->>>
->>> Oh, right :)
->>>
->>> Hmm but I still think Johannes' suggestion makes the code cleaner.
->>
->> I don't have a strong preference on which of the two coding styles is
->> more readable. BTW, is there any kernel documentation I could refer to
->> for this?
+>   rodata  - a PG_reserved page in the kernel rodata range, sourced
+>             from the "Kernel rodata" sub-resource of "System RAM" in
+>             /proc/iomem.  That entry is reported on every major
+>             architecture and guarantees the chosen PFN is backed by
+>             struct page (an online System RAM range, not a firmware
+>             hole), is PG_reserved, and is read-only -- so even if
+>             the panic fails to fire for some reason, the resulting
+>             PG_hwpoison marker on rodata does not corrupt writable
+>             kernel state.
 > 
-> I don't think there's a coding style guide that specifically
-> mentions this. Just thought it's cleaner because it merges if (...) goto
-> lock; and do-while into a single while loop.
+>   slab    - a slab page found by walking /proc/kpageflags for the
+>             first PFN with KPF_SLAB set (and KPF_HWPOISON / KPF_NOPAGE
+>             / KPF_COMPOUND_TAIL clear).  Exercises the get_any_page()
+>             path on a non PG_reserved kernel-owned page and so
+>             catches regressions where get_any_page() collapses
+>             kernel-owned pages into a transient -EIO instead of
+>             -ENOTRECOVERABLE.
 > 
->>> Observing a dying cgroup should be rare anyway, it's worth focusing
->>> more on readability?
->>
->> While it's rare to encounter consecutive dying memcgs, it can still
->> happen, right?
+>   pgtable - same as slab, but the PFN is selected via KPF_PGTABLE.
 > 
-> But is worth saving a few instruction in a basic block that is
-> unlikely() to be executed?
+> PageLargeKmalloc, the fourth page type matched by
+> HWPoisonKernelOwned(), is intentionally not covered: it is a
+> PAGE_TYPE_OPS flag with no /proc/kpageflags bit, so selecting such
+> a PFN from userspace is not feasible.  The slab and pgtable
+> variants already exercise the same get_any_page() positive-check
+> branch.
+> 
+> The script enables the sysctl and writes the selected physical
+> address to /sys/devices/system/memory/hard_offline_page.  A
+> successful run crashes the kernel with
+> 
+>   Memory failure: <pfn>: unrecoverable page
+> 
+> A return from the inject means the panic did not fire and the test
+> fails.  Test outcome is therefore observed externally (serial
+> console, kdump) rather than from the script's own exit code.
+> 
+> The script is intentionally NOT wired into run_vmtests.sh: every
+> successful run panics the kernel, which is incompatible with the
+> sequential "run each category in the same VM" model that
+> run_vmtests.sh assumes.  It is also not registered as a TEST_PROGS /
+> ksft_* wrapper so a default kselftest run does not opt itself into
+> a panic.  The script is meant to be executed manually inside a
+> disposable VM (e.g. virtme-ng), one variant per VM boot, and
+> requires RUN_DESTRUCTIVE=1 in the environment as a safety net.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-I don't have a strong opinion here. Hi Johannes, I'll leave the decision
-up to you. If necessary, I can send out the v4.
+Looks good to me with two comments below.
 
+> ---
+>  tools/testing/selftests/mm/Makefile          |   4 +
+>  tools/testing/selftests/mm/hwpoison-panic.sh | 208 +++++++++++++++++++++++++++
+>  2 files changed, 212 insertions(+)
 > 
-> I'm not a memcg maintainer myself, though. just my 2 cents.
+> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+> index e6df968f0971..ed321ae709da 100644
+> --- a/tools/testing/selftests/mm/Makefile
+> +++ b/tools/testing/selftests/mm/Makefile
+> @@ -174,6 +174,10 @@ TEST_PROGS += ksft_userfaultfd.sh
+>  TEST_PROGS += ksft_vma_merge.sh
+>  TEST_PROGS += ksft_vmalloc.sh
+>  
+> +# Destructive: every successful run panics the kernel.  Installed and
+> +# kept executable, but not run from a default kselftest invocation.
+> +TEST_PROGS_EXTENDED += hwpoison-panic.sh
+> +
+>  TEST_FILES := test_vmalloc.sh
+>  TEST_FILES += test_hmm.sh
+>  TEST_FILES += va_high_addr_switch.sh
+> diff --git a/tools/testing/selftests/mm/hwpoison-panic.sh b/tools/testing/selftests/mm/hwpoison-panic.sh
+> new file mode 100755
+> index 000000000000..fe58e7638a8b
+> --- /dev/null
+> +++ b/tools/testing/selftests/mm/hwpoison-panic.sh
+> @@ -0,0 +1,208 @@
+> +#!/bin/bash
+> +# SPDX-License-Identifier: GPL-2.0
+> +#
+> +# Verify vm.panic_on_unrecoverable_memory_failure by injecting a hwpoison
+> +# error on a kernel-owned page and confirming the kernel panics.
+> +#
+> +# Three "kinds" of kernel-owned page can be targeted, selectable via the
+> +# first positional argument (default: rodata):
+> +#
+> +#   rodata  - a PG_reserved page in the kernel rodata range
+> +#             (sourced from /proc/iomem "Kernel rodata").  Exercises
+> +#             memory_failure() -> get_any_page() on a PageReserved page.
+> +#
+> +#   slab    - a slab page found via /proc/kpageflags (KPF_SLAB).
+> +#             Exercises memory_failure() -> get_any_page() on a non
+> +#             PG_reserved kernel-owned page.  This path is what catches
+> +#             regressions where get_any_page() collapses kernel-owned
+> +#             pages into a transient -EIO instead of -ENOTRECOVERABLE.
+> +#
+> +#   pgtable - a page-table page found via /proc/kpageflags (KPF_PGTABLE).
+> +#             Same path as slab, different page type.
+> +#
+> +# This test is DESTRUCTIVE: a successful run crashes the kernel.  It is
+> +# meant to be executed inside a disposable VM (e.g. virtme-ng) with a
+> +# serial console captured by the harness.  It is skipped unless the
+> +# caller opts in via RUN_DESTRUCTIVE=1.
+> +#
+> +# Test passes externally: the kernel must panic with
+> +#   "Memory failure: <pfn>: unrecoverable page"
+> +# A return from the inject means the panic did not fire and the test
+> +# fails.
+> +#
+> +# Author: Breno Leitao <leitao@debian.org>
+> +
+> +set -u
+> +
+> +ksft_skip=4
+> +sysctl_path=/proc/sys/vm/panic_on_unrecoverable_memory_failure
+> +inject_path=/sys/devices/system/memory/hard_offline_page
+> +kpageflags_path=/proc/kpageflags
+> +
+> +# /proc/kpageflags bit positions (see include/uapi/linux/kernel-page-flags.h)
+> +KPF_SLAB=7
+> +KPF_COMPOUND_TAIL=16
+> +KPF_HWPOISON=19
+> +KPF_NOPAGE=20
+> +KPF_PGTABLE=26
+> +
+> +kind=${1:-rodata}
+> +
+> +ksft_print() { echo "# $*"; }
+> +ksft_exit_skip() { ksft_print "$*"; exit "$ksft_skip"; }
+> +ksft_exit_fail() { echo "not ok 1 $*"; exit 1; }
+> +
+> +if [ "$(id -u)" -ne 0 ]; then
+> +	ksft_exit_skip "must run as root"
+> +fi
+> +
+> +if [ ! -w "$sysctl_path" ]; then
+> +	ksft_exit_skip "$sysctl_path not present (kernel without the sysctl?)"
+> +fi
+> +
+> +if [ ! -w "$inject_path" ]; then
+> +	ksft_exit_skip "$inject_path not present (no MEMORY_HOTPLUG?)"
+> +fi
+> +
+> +if [ "${RUN_DESTRUCTIVE:-0}" != "1" ]; then
+> +	ksft_exit_skip "destructive test; re-run with RUN_DESTRUCTIVE=1 inside a disposable VM"
+> +fi
+> +
+> +# Pick a PFN inside the kernel image rodata region of /proc/iomem.
+> +# This is preferred over a top-level "Reserved" entry because top-level
+> +# Reserved ranges are often firmware holes that have no backing struct
+> +# page; pfn_to_online_page() returns NULL on those and memory_failure()
+> +# bails out with -ENXIO before reaching the panic path.
+> +#
+> +# "Kernel rodata" is reported as a sub-resource of "System RAM" on every
+> +# major architecture, which guarantees:
+> +#   - the PFN is backed by struct page (within an online memory range);
+> +#   - PG_reserved is set on the page (kernel image area);
+> +#   - the memory is read-only, so setting PG_hwpoison on it does not
+> +#     corrupt writable kernel state if the panic somehow does not fire.
+> +#
+> +# /proc/iomem entries look like (indented for sub-resources):
+> +#     "  02500000-02ffffff : Kernel rodata"
+> +pick_rodata_phys_addr() {
+> +	awk -v pagesize="$(getconf PAGE_SIZE)" '
+> +	# Convert a hex string to a number without relying on the gawk-only
+> +	# strtonum().  mawk lacks it and would otherwise spuriously skip
+> +	# this test on distros that ship mawk as /usr/bin/awk.
+> +	function hex2num(s,   n, i, c, v) {
+> +		n = 0
+> +		for (i = 1; i <= length(s); i++) {
+> +			c = tolower(substr(s, i, 1))
+> +			v = index("0123456789abcdef", c) - 1
+> +			if (v < 0)
+> +				return -1
+> +			n = n * 16 + v
+> +		}
+> +		return n
+> +	}
+> +	/: Kernel rodata[[:space:]]*$/ {
+> +		sub(/^[[:space:]]+/, "")
+> +		n = split($0, a, /[- ]/)
+> +		start = hex2num(a[1])
+> +		end   = hex2num(a[2])
+> +		if (end <= start)
+> +			next
+> +		# Page-align upward and emit the first byte of that page.
+> +		pfn = int((start + pagesize - 1) / pagesize)
+> +		printf "0x%x\n", pfn * pagesize
+> +		exit 0
+> +	}
+> +	' /proc/iomem
+> +}
+> +
+> +# Walk /proc/kpageflags and return the phys addr of the first PFN that
+> +# has bit $1 set, with KPF_HWPOISON, KPF_NOPAGE and KPF_COMPOUND_TAIL
+> +# all clear (so we attack a real, non-tail, not-already-poisoned page).
+> +#
+> +# We skip the first 16 MiB of PFNs to step past low-memory special
+> +# ranges (BIOS/EFI/ACPI/etc.) that often are PG_reserved and would not
+> +# exhibit the slab/pgtable type we are looking for.
+> +pick_kpageflags_phys_addr() {
+> +	local want_bit=$1
+> +	local pagesize skip_pfn
+> +
+> +	[ -r "$kpageflags_path" ] || return
+> +
+> +	pagesize=$(getconf PAGE_SIZE)
+> +	skip_pfn=$(((16 * 1024 * 1024) / pagesize))
+> +
+> +	od -An -tx8 -v -w8 -j "$((skip_pfn * 8))" "$kpageflags_path" 2>/dev/null | \
+> +	awk -v want_bit="$want_bit" \
+> +	    -v hwp_bit="$KPF_HWPOISON" \
+> +	    -v nopage_bit="$KPF_NOPAGE" \
+> +	    -v tail_bit="$KPF_COMPOUND_TAIL" \
+> +	    -v base_pfn="$skip_pfn" \
+> +	    -v pagesize="$pagesize" '
+> +	# Test whether bit "b" is set in the 16-hex-digit value "hex".
+> +	# Done with substring + per-digit lookup so we never rely on awk
+> +	# bitwise operators (mawk lacks them), 64-bit FP precision or the
+> +	# gawk-only strtonum().
+> +	function bit_set(hex, b,    di, bi, c, v) {
+> +		di = int(b / 4)
+> +		bi = b - di * 4
+> +		c = substr(hex, length(hex) - di, 1)
+> +		v = index("0123456789abcdef", tolower(c)) - 1
+> +		if (bi == 0) return (v % 2) == 1
+> +		if (bi == 1) return int(v / 2) % 2 == 1
+> +		if (bi == 2) return int(v / 4) % 2 == 1
+> +		return int(v / 8) % 2 == 1
+> +	}
+> +	{
+> +		gsub(/^[[:space:]]+/, "")
+> +		h = $1
+> +		if (bit_set(h, want_bit) &&
+> +		    !bit_set(h, hwp_bit) &&
+> +		    !bit_set(h, nopage_bit) &&
+> +		    !bit_set(h, tail_bit)) {
+> +			pfn = base_pfn + NR - 1
+> +			printf "0x%x\n", pfn * pagesize
+> +			exit 0
+> +		}
+> +	}
+> +	'
+> +}
+> +
+> +case "$kind" in
+> +rodata)
+> +	phys_addr=$(pick_rodata_phys_addr)
+> +	missing_msg='no "Kernel rodata" entry in /proc/iomem'
+> +	;;
+> +slab)
+> +	phys_addr=$(pick_kpageflags_phys_addr "$KPF_SLAB")
+> +	missing_msg="no usable slab PFN found in $kpageflags_path"
+> +	;;
+> +pgtable)
+> +	phys_addr=$(pick_kpageflags_phys_addr "$KPF_PGTABLE")
+> +	missing_msg="no usable page-table PFN found in $kpageflags_path"
+> +	;;
+> +*)
+> +	ksft_exit_fail "unknown kind '$kind' (expected: rodata|slab|pgtable)"
+> +	;;
+> +esac
+> +
+> +if [ -z "$phys_addr" ]; then
+> +	ksft_exit_skip "$missing_msg"
+> +fi
+> +
+> +ksft_print "enabling $sysctl_path"
+> +prior=$(cat "$sysctl_path")
+> +echo 1 > "$sysctl_path" || ksft_exit_fail "failed to enable sysctl"
+> +
+> +ksft_print "injecting hwpoison at phys 0x$(printf '%x' "$phys_addr") (kind=$kind)"
+> +ksft_print "expecting kernel panic: 'Memory failure: <pfn>: unrecoverable page'"
+> +
+> +# If this returns, the kernel did not panic → test failed.  Restore the
+> +# sysctl before reporting so the system is left as we found it.
+> +if echo "$phys_addr" > "$inject_path"; then
+> +	echo "$prior" > "$sysctl_path"
+> +	ksft_exit_fail "inject returned without panic; sysctl ineffective"
 
-I'd like to express my gratitude for your reviews, and especially
-for your invaluable help with the earlier dying memcg work!
+In case of failure, should we recheck the page type? There is a window between
+we get the phys_addr and inject the hwpoison.
 
-Thanks,
-Qi
+> +fi
+> +
+> +# Write failed (e.g. -EINVAL on offlining a non-online region): also a
+> +# failure for this test, since we expected the panic path.
+> +echo "$prior" > "$sysctl_path"
+> +ksft_exit_fail "inject failed before reaching the panic path"
 
-> 
+Should we unpoison the pfn in case of failure?
+
+Thanks.
+.
+
 
 
