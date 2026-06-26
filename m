@@ -4,140 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD9BCDE002
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 12:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C22ECDE00E
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 12:43:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56DDE6B0147; Fri, 26 Jun 2026 08:40:03 -0400 (EDT)
+	id DDA206B0148; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51E496B0148; Fri, 26 Jun 2026 08:40:03 -0400 (EDT)
+	id DB19C6B014A; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40D1A6B0149; Fri, 26 Jun 2026 08:40:03 -0400 (EDT)
+	id CEE816B014B; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 176586B0147
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:40:03 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8752AA03DA
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:40:02 +0000 (UTC)
-X-FDA: 84922021044.21.F111855
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9885DA0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:40:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=txY7wWu0;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782477600;
-	b=XD5fnsqRE2JywNS1fasbD11h/2gIOK2K3gnHo11XpVmyrtgXEQL+66Nwk8RBoGHlIfDoml
-	P3xZTxIGlDnTPwLBRqFvjHM66ei3nkzVzQLeBCc1YWdN1Hh6cCNWP8v2veowoLHjYrBPLp
-	Bsq3JWwUYYiuerjzmXO9rvfr02lT0T8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782477600;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2546B0148
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26B058DDA4
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:43:23 +0000 (UTC)
+X-FDA: 84922029486.20.5233E8D
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 55C5940009
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:43:21 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="fKX/UsqN";
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782477801;
+	b=CpFnHitCpfkfwyWxxUjeSJi6tnzMeGgVd2poTiK5eNgguRRBXodPiAhdoBI3N466fo5h33
+	pgKNZW5u5xpEpzooBgMD1/yAwMx4mznnIY/s18kasYWEw/fKOQqRX6KnUYSZw/0cSzSECC
+	t1RraEXZRl56Kc5EkGTNWgzkgDjB8oM=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782477801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9E/powVa2kz95H4iGUwNMkUp/TwMZFDOhnjzy0yvsRc=;
-	b=7hLaEdSnWZPNYpFnemG13yxSL+jGJYvufCJk0mEl65EKz1rtwuEdECqdJytsEF3lqhApaP
-	trqgbwfA4q1tcWPvKqJ7iPac10r7OmjL7ZFljn/WbZU2sNr3nsPMKitXdjuAPQf98CW1wY
-	10xt3/Q9Gk0DJB+UBZevsC/5CwQJwz8=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=txY7wWu0;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=jannh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6982f2dc01bso4153a12.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 05:40:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782477599; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QsR0Cc1YU25FcI6UY8ZDX1xHqHD1hECeKGxztS40gvTWHUWSqBl9QyS2sKEs1R9A9z
-         CAceURbwZJFInC5rpxfiKBcxgLTBB+nEJ1lgXipo61JtA/zT2atCfWXKCs7zo4hDFdAZ
-         BdkcIAO4VkJKc+pA9NbAx9Gr4tjcNpkWcjSmi9hobAk/xUgRYXPFpnNSFK3s26eg3nwB
-         gHE0nWFirZksOa8rP0DPwEZM3Vv1garW3ce/LQD7qAppzKK7FU2dyXgF130oh4m44p3u
-         Ef8ibhgsgmV4nWOpgtMmTUz1L/JJz+KwnLHQAjNh06Cz1VhA5Ffxq01ZeJdh+YyitQQJ
-         HUMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9E/powVa2kz95H4iGUwNMkUp/TwMZFDOhnjzy0yvsRc=;
-        fh=FNA5yL90xZLtFm7XSs84E2GA6+2urlJplGnt2pjGVVY=;
-        b=oS+KdFjvjEhcPzK/cu6bieqGr0IqENuLspz9Liga94dd22JyzYZaEq7cHGHAX+Xz6A
-         24dyIexvDiRdEhiRRyZjHPGPwY3X5xDgQIPVPAX4SqWKZKydmwaAT1JMLFt/qYWbzPHB
-         SyhY6KOaleAsnfPYeSUJv5YK42dInysZivYmIuMjIE7xixjFNRBZ3X3dENRv9K3f196q
-         mz/sOu1fzHQnSMer1+2tItC1uz8BuxtqH5Pdp/7m9dj1lvhLGe9uoD+czK68ClS4yHvo
-         Wl/StaQ/vTK7WF1cKzKYRhiG65gIoh4V8TDCbeoKF1QUh7wFam+DWid7cXtBd7GU4W/C
-         u3fg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782477599; x=1783082399; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9E/powVa2kz95H4iGUwNMkUp/TwMZFDOhnjzy0yvsRc=;
-        b=txY7wWu0FfwUwcY4MavFdSVVRms/uwxUkI4GGatpnvnE2iVQ1AgdraPbPJGJ5mP6Ap
-         yWyVUNGtvvk8MAhghopsLQTA2JiuKYDQNBecAEWSN1bvP6lXDQMlcLJ6YzuB9OfeHEIM
-         L7mMR05WpvPIoJmxIgeHAWmxARciVS7BKa0LVbUbjeI9pZsGKB0t2NdbAzGdOmqLSFp0
-         utcxz8k62dJ1Y9lA8z5xQuLAW4H1+0d98SHaWmIMF+zkZB9lz/GHefpqnk5xIvuUXsb1
-         cAcgiKhflPZm93ITvosUuqftPkSVapXaLLM7H6LFfIy7FfSC0wc4eL16B+fWGMazp3+9
-         /TXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782477599; x=1783082399;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9E/powVa2kz95H4iGUwNMkUp/TwMZFDOhnjzy0yvsRc=;
-        b=acptTP45TZ2Yxgi3qtAWF0I5gcZ6jYQn8/QojPkiH3HUOD6X95r8+flyVHHlrnbWGg
-         S0+hGZaDyJhLTEUIVcxDBk97TFEqBP75YvvEQFTbvxlDufzndU/N5efLGP5y8i5Au/iL
-         E7770r9eYv2k1X1iOa8pRAROpoh+hMWrzwuHTTr9PgAp/N8oImaAp9L3ezdHkpzpkl2s
-         5dtYq75L5ZWqM7SS3/uAKub3mh4jo7d00Qrzowo2I4R6BIixA4SNbOJCDeFgrzi9tFXL
-         6uOwjI3jJZauLQbf3aJd/q6Hl7z8g0NETgFDyciiIoWvyoZmvQpRH/KJbXUl9xg8tY03
-         zM4A==
-X-Forwarded-Encrypted: i=1; AHgh+RpYtFxkgXFszWC+MM2e0Xz06D4hwbrSq7T4vLOYZmhaoB9UggZed4t4AjvvKTa0Ly8/KE/eg6KwVw==@kvack.org
-X-Gm-Message-State: AOJu0YxlmUYA9a9+j+Rlp2oBXFk7UwdLN+YDjkwZbOXTYslITLr5mx4n
-	QI59bi6gu7Vdo4G1q0uTRFszogGY0HBU7VOW9MQs17II7xYctCH8B4OJQt3DM8ip29bzsZYS176
-	xifUb31Rj6V6oq5N/0iYRHwNLrvMS5EEkF/IkZu7x
-X-Gm-Gg: AfdE7clu4ng+Sk4KOahWlJbHUv6E4h2p42s3/VeLJK36OT63DpwxaJ597fb5Wou5rEg
-	ZUT7fgDPI6zBomEGVHc2qSF8XXTJkqmPodASAJonLrf4DovL6COke0x20XwR65cZDMWIAICAuI2
-	Dkp6sX98GLcu1cSWcCe7JOSQjNWYWezdBvwoN2CWnXxriCmQ9R1V+txV0PSWyQfGuOIwH3uBqeB
-	Zcn3LH7EFVoKJgo70wBwmo/Pf9EbI2SMTZd8pDjIttD+5kQhkapeaYIX5FhqARkDUp9+lk7wFa2
-	pFWVE3yecL0EXSUVIXAwSC8R8+18Bd2y5wJFFVjGQ48rdaaJhRp7d7XOF2g=
-X-Received: by 2002:aa7:d3c1:0:b0:697:9254:a66b with SMTP id
- 4fb4d7f45d1cf-6983795482bmr2913a12.6.1782477598491; Fri, 26 Jun 2026 05:39:58
- -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LFehXIpnlAu03PJtDtW2qnYLqBakhJsXo9kxZSgtjTM=;
+	b=BVgyxTrkdqcmgofe1dthaurDDPIkXugSzniT0S1cSmPK8sVW7ZlvQD1mBAKc+jOm9A88eO
+	pDB6dfyWnUEhZAVQG16NUDHspT1QF1P96Jx1wSWEJYkw9/CRyUxjP+5rW5hxVESD6Z/gyq
+	NWbSygDlZSe71+DpMEuPGcem+P6gVWE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="fKX/UsqN";
+	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=LFehXIpnlAu03PJtDtW2qnYLqBakhJsXo9kxZSgtjTM=; b=fKX/UsqNQ6nMqZeZILWxRmcRBU
+	WIMEUIkkkHx0fSyaGXaCkcvQpoOCMIKMVUhhhPuMoHBwPQnmh1j3tQJYD9h7k0T9KDqBzVB4rqhyG
+	voPH+WIaazkBt8wktvWloNJZCMXpvzl8oV4nqkykiYPrDd9LkmNnkc5zbRl7/zoul0uHgqI9WVq+q
+	TwdnT1NJGF77hHca+e+7RQx9v0Ax2QNK82BjvF3hW8vAUJRPAX+PN+tgZllorYHuvvYYzTadXgUg7
+	UZXl8ynWJDSzDDrFYd8WtdR5GGbmt3JiPDdwepBr0UmlCGSETRo2Es4zghq9lhvuIrbyFRa2LdP62
+	tfb+UNew==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wd5tr-003yQV-0w;
+	Fri, 26 Jun 2026 12:43:15 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Fri, 26 Jun 2026 05:43:02 -0700
+Subject: [PATCH] mm: memcg: initialize *locked in memcg1_oom_prepare() stub
 MIME-Version: 1.0
-References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
- <sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
- <CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
- <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com> <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
-In-Reply-To: <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 26 Jun 2026 14:39:22 +0200
-X-Gm-Features: AVVi8Cfh5sgf8WRo60ET7C02KjqU2lxAfQoevMPof67z3PBX1H-BhFeEjrTW-GA
-Message-ID: <CAG48ez2X1p5Nm2_sU=SK9wUusUO8c3_T-=FGrrOhkm7Kn9Y_7g@mail.gmail.com>
-Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
-To: Christian Brauner <brauner@kernel.org>
-Cc: John Ericson <mail@johnericson.me>, Farid Zakaria <farid.m.zakaria@gmail.com>, 
-	Jan Kara <jack@suse.cz>, Kees Cook <kees@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	shuah@kernel.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, linux-kselftest <linux-kselftest@vger.kernel.org>, 
-	LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260626-memcg-oom-uninit-locked-v1-1-a00175936b39@debian.org>
+X-B4-Tracking: v=1; b=H4sIANVzPmoC/x3MQQqDMBAF0KsMf+2AjW3EXEW6kGRiB5tEkrYUx
+ LsX+g7wDjSpKg2ODlT5aNOS4ejSEfxjyauwBjiC6Y3trbGcJPmVS0n8zpr1xc/iNwl8Ez9OIcb
+ rMFl0hL1K1O9/nu/n+QM4Z5buaQAAAA==
+X-Change-ID: 20260626-memcg-oom-uninit-locked-5ec79dff4396
+To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+ stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2015; i=leitao@debian.org;
+ h=from:subject:message-id; bh=TA0Rd2ZjkVKCe2puqV8Hx8ZyVS5qHu93hA0Ef1x/rJo=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqPnPdMiNdj8Aq4cZwwmjfA6oz+iDQ4r12lOoi0
+ SDtEabzzG2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaj5z3QAKCRA1o5Of/Hh3
+ bc8OD/44h+JH0trsSrMtwAxqLnmU2Dox724W+6lkQXsZkjA8VTyTHRLwsMNfUWS5BlfUuyhmASR
+ CrcCCiZvvDS6mNl9b9JG8+N9yrgdXJVUPWgQkllyG3MjESZ1iFxb49An6dK9nVgTmAy3NdimsnP
+ BVAeUAyY0iR3wTVYIOAuHC5wk6Lo07qjFzDdZ4NpqEkWdBSw1xb79uniGPbLaMA76xCqtgBlmrw
+ BLTcvj0VVJjpCuvNUZZVhAbURSNpdGmV7VPXTP7h2jDUhPgV3jQXWBZt32+e2i60nk2rcWbvchw
+ /mj0yQNGHdjCd03ssT5VBOOCHSgIkqNlfitHxBjqVi39vIDvMq9m2h1Y2B/NI8JOkBX0zySxAvv
+ 7Kk67mcOG98Km5KEkDlzYijy7zZ4WaRQJ4ezlFweb5KItqfNM81ZXZf60UUnDKXrlNN6BRVSav8
+ /NYC+CQpPt+07QnuP4zaj3mu3zfKo1Jdn4heQkg5bmeVDEY84ququEc0Rt6nx5XukUy1BqOt3lU
+ XDhMQsuTMJVYuJulL+upwwK3JhvA1dkPGIgP53MPoyTaL4ngehHCg6tSjbNwYUpUPe/4+uEP3Gc
+ 94AJlSSYQPzbtno6BoQLELmlAHpr/kzXUCO1f4E/S6fm2Whl7MqIasISB0TKqMgsrOEMIGi4FNC
+ 8kWKKL7vZoISKLQ==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Rspamd-Queue-Id: 55C5940009
+X-Stat-Signature: 3o8um63zoxoz9sfweccuy4dtxtfq9773
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9885DA0005
-X-Stat-Signature: hbyf5zg9oksyme6ogxqpd1k8rsxsywu6
-X-HE-Tag: 1782477600-338779
-X-HE-Meta: U2FsdGVkX1+trzcDv/vxDoIfQ2ZMOkghvdEWIHdjatzBUjP+52qKWHddxSzMHG2FPBwWgHfGCxmvD4WtpZW1WhnzANbs+AMuWkLgqizlPu617YQ0yj6ePflTQkpzUYFhegU6+x5/fF4HE/MdGy6IhEru/0BTVh6Jdi0wkmP2yZOHd9bsdxr8o+cqnNzrjSPdUHaqGpBy+QHysZVtSTuP7zWY8dJfLR7i2bHPU2lmE/6DfYsbPLafKi/2uM1xHGf8W8Q1/wZ2C+2fNiwnjD4IHFnP1fe6yCZytUjpxvMCaW3oLOKKefeYQ4CUeeZFXZKb+boh9Pc7dYVfoGZt524Mx2J1F8Y1E0qdkgSlNrPiClbtJgH3hQvkaTsTaN+HZzdUwvQAOzFYlxGdIEFUD08RYuGtHRc6IvqgWs45PPA/WAgop6O2ESlRPPeMQP2OXsdJQEVs7O2LBb4MXj2Gx0XWMY3jklbUXFwGpWovHSrWdn3B3aeoBb98kwyi0cDYIj1mo38BeWSyTONP37ZPkhZbQEUH74ZGP0/EJOax1Mdp2QwDzk55ob5y0d0B26TwLNQG/TMpCwDfOvU2fyDVcsWh2/EvFa/mfs/Cg3AA31b7KeXSGx+Lgr51JR/ZFlKlt7yga7yqL3wIwnDR0STv3XfsWw0iJKtPqSMbD6NxyQDiROV2kSFRSTDZy3ia7E2ssKMQRABwi1W0J/Qs5j15+dCg+fLg3GiVnF/5f/ZDvQSaF51qtSjWJVZgmpjmwlOk8pffCcMMFnweQZ/FgCbXvKqhQmrQd8r84fQw5hs1ttOgX88IUG3dXFHWLSZXMeSjaixKQLPn2Dkv2Mf3lFBkNfxhLzHxImp7dCOLKudHn8sttYIthFV8NTgKuwoXGrkyL2gEsLH2OBQhWwMyhW/Fw3nhT1TlwCxyIPQ/GGpKVRbvoT7VJOXNhGsy9sqg2sjY5OaRFTtryKT5ZqwNLE8ZQKM
- 33uvtIOc
- VXkx2Fv6kFHfhwmghYVhoWzsHhdx9M9tvbTHXx56D16yT7YRPdiPvXNl9CZEE/cQc+CtF6zoRgrRXfq6vhnqe2WKVgGmsPqLVRiBQy6D/V9SgFxZV8iXWWx3eIkrN61SYo+C9Tg+KJunNrZQuiSoUmZNuNuzL+tn9nkYaJSGG//+5ReUPRGpI6q1wWktoBgIdZfdH9wiqaVPDxjtZRbK7r9SbA+DgJ1/koxXCo61RsWmBsx4EjmghKJAU5lbIdVQW8hI9f6UkVkZd52nkbyAfJ2uG4XhyfL9mn+N6VXkvqRb5NZyhPnqP/Fs1d+LncSswJR60aYoSdhhw1BatSMwMaerApWJIvRF1J5r+e3DLdeGMVpnnrzzWopV4GEqye1OiDa2B93mXPdN5F88Rs5ZYZ1tLeQ==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782477801-112289
+X-HE-Meta: U2FsdGVkX18xr7XeQHyoOhPfXsMHuRTb1nCI2zPGD+DF+JsT8ywqF6x5M9qGP0M+UIvC1di3uHJLDWnRC4zPAyJZhXttMdos1TI1TSytR/WQbCnByxIxw9TErMonksAj60EygOhDoZVGVrd/fcUfV7hvrnPJNSIkNQXqh/7p0R/o8Sh/IN80KV3B6Y4jhNeoBNU1i2CeKS17AsIHaiAMB8mE2RavusAwSWVxzstnqA6SNopplUH3+I4VKjZxeOAyTVxCA8WQuqliHki7zT/3PIEWIhi+4U/UNk6HySPaFNH+cE1zK1Vu4OHRcFtu7R4kBtQvhBh26z/lYpFiJhC4+BOdXdd3+DOgcAk/Br+EVBCk3fZUvlyXPDF/0epwYPrj2CRTxv6sqPO+6FcpA7IblvRLbJcONM7n1ZXiZw4Q2GMHtRkYqatWx43j2o60PxngKTLOFHktll8+bP0myKzUkJ2XxxQqT7goyIeJeZBfqpPIiyTd1bvEXT0j8zw+aTDcs34AkFrjEKAiXbZ2rVwBoZadtJ7DRv6oowhLipZETDx4brtO2QV1GlQmLj8IlSNAjfYZd+QrYRri3Cpm+uqrMJvwmdNXufSQ1hwdZozJK+AcqKJ+gJj75eGGn+ev62ucXyeNE3r1GC3m9VyDStAnpxod7FiJKD9mvaid/YsqRW2Z+quKeWRNj4ckc+p3Qz2KgjAuAR36ayBz4dKTiHqerBVYQpEqzil9rCRqZwfBw9P5Uz5W34cMibZAwHve2E89z4Buc0QbhatG6pYLrJLI9LfnGmxIIobGFq5aYUca3aV+26NTlzjHicclGIg62/7U8oZfOOfOsP2li6nmHbz5Xgx9+bY7K1B1je7G86bNsFCBTyvxZ0D7XpixJQ9y+DzCQ81d1TyWV5WtWVOFi3H6AdtwsCuKyDUw2LxXYualJAzB75voqJlS+d+NwgVLLrhGxoevxJvqBBL1jq7qJbL
+ PPZ3PUFu
+ gCvQ2hltA041/TSaWkhDybyYlvWw83DYcstLUkNGLEuHjkS5reREdt2oUKbPv7azMtRITS6yPfwfBXQNM1ImGWBkf1H4sn5JsJshbhoOf61ZPvs1haqgJwbH2FpLuCjTpnSfib7rmqkjMSQpKuAtjExNsJGMUXSaY3QE9t0jSARKGrAjFiNxj8GUOd0j/WM/XucR+tn5vc1jASDcgJSYPr+THx2r68tovsxTyCeyBcsZHcFR9crFsb/GH7oH8YdTO/wFg0k5HW9Z5lB7FLC5PuH0wxxtr0x1MU/0zngaXWl1kgBHrCOh92m1TTn/IqctUSWtxX9h3yP6i5xO+S5uJOjvj5HC7pNWKYKFe6tN+BakmRvw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,87 +115,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jun 25, 2026 at 10:50=E2=80=AFAM Christian Brauner <brauner@kernel.=
-org> wrote:
-> The arguments I have heard from various people so far are:
->
-> (1) Userspace would be able to clone a random chroot to /woot and run a
->     binary from it without having to set up a complicated sandbox
->     effectively making dynamically linked binaries more like static
->     binaries in a sense.
->
-> (2) Quote:
->     "If you debootstrap/dnf a chroot to some location in your
->     home dir and try to run a binary from it, that it tries to load the
->     libraries from your /usr is a pretty unintuitive and not at all
->     useful behavior."
->
-> (3) Quote:
->     "[Various remote execution things run in locked down containers that
->     disable userns, which makes the sandbox impossible and hence our
->     builds wouldn't work there."
+mem_cgroup_oom() passes an uninitialized "locked" to memcg1_oom_prepare()
+and reads it back in memcg1_oom_finish():
 
-FWIW I think someone also mentioned to me that it would make things
-easier for them if they could build a piece of software in one
-environment and then bundle it up with all required libraries and such
-and run it in a very different environment, without
-container/sandboxing stuff and without static linking. But I guess
-that's kinda niche.
+	bool locked, ret;
+	...
+	if (!memcg1_oom_prepare(memcg, &locked))
+		return false;
+	ret = mem_cgroup_out_of_memory(memcg, mask, order);
+	memcg1_oom_finish(memcg, locked);
 
-> I'm discounting "Oh, userspace already allows this so why not the
-> kernel.". I think that's generally a bad argument. Kernel and userspace
-> aren't really alike in that regard.
->
-> The userspace ORIGIN concept is guarded behind AT_SECURE. The kernel has
+This relies on memcg1_oom_prepare() setting *locked whenever it returns
+true.  The CONFIG_MEMCG_V1=y version does, but the stub used when
+CONFIG_MEMCG_V1=n returns true without touching *locked, so
+memcg1_oom_finish() consumes an uninitialized value.  On a memcg OOM this
+is reported by UBSAN:
 
-(To be pedantic: The userspace $ORIGIN concept is only partially gated
-on AT_SECURE - glibc has an allowlist of acceptable library
-directories, listed in "/lib64/ld-linux-x86-64.so.2 --list-diagnostics
-| grep ^path.system_dirs". But clearly we wouldn't want to mirror that
-in the kernel.)
+  UBSAN: invalid-load in mm/memcontrol.c:1932:27
+  load of value 0 is not a valid value for type 'bool' (aka '_Bool')
 
-> to enforce the same rule. That means the loader now depends on the type
-> of binary. I think this is a rather serious issue.
+Initialize *locked to false in the stub; with cgroup v1 compiled out
+there is no OOM lock to take.
 
-And annoyingly, the bprm->secureexec flag can change in
-security_bprm_creds_from_file(), which is currently reached from
-begin_new_exec(), which is called after we've already opened the
-interpreter, so accessing ->secureexec state during the interpreter
-lookup would require some refactoring. So I think this is a doable
-change, but would require more work.
+Fixes: e93d4166b40a ("mm: memcg: put cgroup v1-specific code under a config option")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ mm/memcontrol-v1.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Or we could take the easy way out and say "the kernel always rejects
-this unless LSM_UNSAFE_NO_NEW_PRIVS is set", which would make it clear
-that this can't lead to privilege escalation and would serve as an
-incentive for people to stop doing stuff that relies on setuid
-binaries or privileged apparmor/selinux transitions. :P
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index f92f81108d5ed..4fa6e2bc8413f 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -107,7 +107,11 @@ static inline void memcg1_remove_from_trees(struct mem_cgroup *memcg) {}
+ static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
+ static inline void memcg1_css_offline(struct mem_cgroup *memcg) {}
+ 
+-static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked) { return true; }
++static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked)
++{
++	*locked = false;
++	return true;
++}
+ static inline void memcg1_oom_finish(struct mem_cgroup *memcg, bool locked) {}
+ static inline void memcg1_oom_recover(struct mem_cgroup *memcg) {}
+ 
 
-> First, it creates confusion in userspace what loader is used. Second, it
-> means anything that any build/chroot that uses AT_SECURE binaries now
-> has to use the sandboxing solution anyway or risk that some binaries use
-> the system loader and others the chroot loader.
+---
+base-commit: 4e5dfb7c84012007c3c7061126491bbc92d71bf1
+change-id: 20260626-memcg-oom-uninit-locked-5ec79dff4396
 
-I think we would probably just fail the execve() attempt if we see
-$ORIGIN in the interpreter in an AT_SECURE execution? Since the
-interpreter field does not allow listing multiple alternatives.
+Best regards,
+-- 
+Breno Leitao <leitao@debian.org>
 
-> Ignoring AT_SECURE, LSMs likely will need a say in whether that ORIGIN
-> thing gets honored or not introducing yet another vector where this can
-> be overriden or ignored.
->
-> Also, we change long-standing kernel behavior which will be very
-> surprising for any userspace that might implicitly rely on the fact that
-> the system loader is used. So even if we were to do something like this
-> it would very likely have to be configurable in some way.
-
-I think the proposed patch will only change behavior if the
-interpreter path starts with "$ORIGIN"? That wouldn't work on existing
-kernels unless you have a directory literally named "$ORIGIN" in the
-cwd, because "$ORIGIN/..." would be interpreted as a normal relative
-path.
-
-> This makes this all ripe for malicious loader injection attacks. And we
-> need to consider this possibility.
->
-> So I'm not enthusiastic about this. I want this to be consistent.
 
