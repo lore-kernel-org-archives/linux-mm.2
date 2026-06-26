@@ -4,110 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C22ECDE00E
-	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 12:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AA4AC43458
+	for <linux-mm@archiver.kernel.org>; Fri, 26 Jun 2026 12:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDA206B0148; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
+	id C4DE36B00BB; Fri, 26 Jun 2026 08:59:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB19C6B014A; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
+	id BFF886B00BF; Fri, 26 Jun 2026 08:59:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEE816B014B; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
+	id B146D6B00C0; Fri, 26 Jun 2026 08:59:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA2546B0148
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:43:23 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 26B058DDA4
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:43:23 +0000 (UTC)
-X-FDA: 84922029486.20.5233E8D
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 55C5940009
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:43:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="fKX/UsqN";
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88E276B00BB
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 08:59:23 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0C7AC40474
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:59:23 +0000 (UTC)
+X-FDA: 84922069806.10.4844FEB
+Received: from va-2-115.ptr.blmpb.com (va-2-115.ptr.blmpb.com [209.127.231.115])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 72CCA140003
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 12:59:20 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=cXV2aLWt;
+	spf=pass (imf26.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782477801;
-	b=CpFnHitCpfkfwyWxxUjeSJi6tnzMeGgVd2poTiK5eNgguRRBXodPiAhdoBI3N466fo5h33
-	pgKNZW5u5xpEpzooBgMD1/yAwMx4mznnIY/s18kasYWEw/fKOQqRX6KnUYSZw/0cSzSECC
-	t1RraEXZRl56Kc5EkGTNWgzkgDjB8oM=
+	t=1782478761;
+	b=3JCmmknY7PYkJDL4/b+DKKSXRAjA0PPUjJy7NNsgsVS2xKAQvDkJAoUM1qnaSmw1lUsKNF
+	DmRPvEwjrx0gUkUgx6gUFWWuiDtX7H8JyTuLs/rJt5QeA8LOBCoTbLoi/2riElbSJkYz1i
+	FUtLEE7QMNm65F6lLNT3l6GlpKamg2c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782477801;
+	s=arc-20220608; t=1782478761;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LFehXIpnlAu03PJtDtW2qnYLqBakhJsXo9kxZSgtjTM=;
-	b=BVgyxTrkdqcmgofe1dthaurDDPIkXugSzniT0S1cSmPK8sVW7ZlvQD1mBAKc+jOm9A88eO
-	pDB6dfyWnUEhZAVQG16NUDHspT1QF1P96Jx1wSWEJYkw9/CRyUxjP+5rW5hxVESD6Z/gyq
-	NWbSygDlZSe71+DpMEuPGcem+P6gVWE=
+	 references:dkim-signature; bh=AL6ByXhQdtUtH0hlRBpSnP6WApmmsj9bwOb+UcTFFBE=;
+	b=r2JX9yEoCFQaEjm8yJm+dBJw5Vzzqg2zwemvjYnaF7AqCSTZLwJ4gmm9kWsgsXDqMvtQqU
+	y3KxFAb1UZBnQQICNkdjVBQ3dCPAk9st3R5cbKYK5P1uzH7fnd3nIx8Ji44Ry+NLZ3+DlY
+	Yvzw41KqPQSk5y1u+B4I/3WjM3Sy1Y4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="fKX/UsqN";
-	spf=pass (imf01.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=LFehXIpnlAu03PJtDtW2qnYLqBakhJsXo9kxZSgtjTM=; b=fKX/UsqNQ6nMqZeZILWxRmcRBU
-	WIMEUIkkkHx0fSyaGXaCkcvQpoOCMIKMVUhhhPuMoHBwPQnmh1j3tQJYD9h7k0T9KDqBzVB4rqhyG
-	voPH+WIaazkBt8wktvWloNJZCMXpvzl8oV4nqkykiYPrDd9LkmNnkc5zbRl7/zoul0uHgqI9WVq+q
-	TwdnT1NJGF77hHca+e+7RQx9v0Ax2QNK82BjvF3hW8vAUJRPAX+PN+tgZllorYHuvvYYzTadXgUg7
-	UZXl8ynWJDSzDDrFYd8WtdR5GGbmt3JiPDdwepBr0UmlCGSETRo2Es4zghq9lhvuIrbyFRa2LdP62
-	tfb+UNew==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wd5tr-003yQV-0w;
-	Fri, 26 Jun 2026 12:43:15 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Fri, 26 Jun 2026 05:43:02 -0700
-Subject: [PATCH] mm: memcg: initialize *locked in memcg1_oom_prepare() stub
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+	imf26.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=cXV2aLWt;
+	spf=pass (imf26.hostedemail.com: domain of wangyijia.yeah@bytedance.com designates 209.127.231.115 as permitted sender) smtp.mailfrom=wangyijia.yeah@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1782478753; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=AL6ByXhQdtUtH0hlRBpSnP6WApmmsj9bwOb+UcTFFBE=;
+ b=cXV2aLWtGSdMFkqfvPa9DJuV9Ru0iFpapq/VaMDvMGuPRRmTHDOihyCyWRjK8zOlr5I61+
+ R+7NktbvmC6+YD3tsNorBkh5EWk2TZR7IPoxyvn9hHf4m/psk7g+zTmmZBoH2ZJTsNTPfk
+ FRDwIfT16xWq8vBwpK6csTMZPe27H6nrhjX/H7nziES/JuCDFhyJjPw3yTQsXE3SugfDX+
+ vBAna8ZgHLQZehENGe1kGiKNNzRMtxrM0h9LkLq9aM+yOnNOdivUGyUlzDCW7XqcLoAMan
+ zTDd1FjdFNJbDvc6oIr0iNacnzqagWv/LrRY70TpZKcL5bM3mZ1KcbjmSTpJMg==
+Cc: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <shuah@kernel.org>, 
+	"Yijia Wang" <wangyijia.yeah@bytedance.com>
+Date: Fri, 26 Jun 2026 20:59:02 +0800
+X-B4-Tracking: v=1; b=H4sIAJV3PmoC/x2MQQqAIBAAvyJ7bsGsPPSV6KC21R7SUKhA/HvWc QZmMiSKTAlGkSHSxYmDr9A2Atxu/EbIS2VQUmmplUbb48HehUh4fgHdqAxJ1y16INtCDatf+fm n01zKC08V+qVkAAAA
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260626-memcg-oom-uninit-locked-v1-1-a00175936b39@debian.org>
-X-B4-Tracking: v=1; b=H4sIANVzPmoC/x3MQQqDMBAF0KsMf+2AjW3EXEW6kGRiB5tEkrYUx
- LsX+g7wDjSpKg2ODlT5aNOS4ejSEfxjyauwBjiC6Y3trbGcJPmVS0n8zpr1xc/iNwl8Ez9OIcb
- rMFl0hL1K1O9/nu/n+QM4Z5buaQAAAA==
-X-Change-ID: 20260626-memcg-oom-uninit-locked-5ec79dff4396
-To: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Michal Hocko <mhocko@suse.com>, cgroups@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
- stable@vger.kernel.org, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2015; i=leitao@debian.org;
- h=from:subject:message-id; bh=TA0Rd2ZjkVKCe2puqV8Hx8ZyVS5qHu93hA0Ef1x/rJo=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqPnPdMiNdj8Aq4cZwwmjfA6oz+iDQ4r12lOoi0
- SDtEabzzG2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaj5z3QAKCRA1o5Of/Hh3
- bc8OD/44h+JH0trsSrMtwAxqLnmU2Dox724W+6lkQXsZkjA8VTyTHRLwsMNfUWS5BlfUuyhmASR
- CrcCCiZvvDS6mNl9b9JG8+N9yrgdXJVUPWgQkllyG3MjESZ1iFxb49An6dK9nVgTmAy3NdimsnP
- BVAeUAyY0iR3wTVYIOAuHC5wk6Lo07qjFzDdZ4NpqEkWdBSw1xb79uniGPbLaMA76xCqtgBlmrw
- BLTcvj0VVJjpCuvNUZZVhAbURSNpdGmV7VPXTP7h2jDUhPgV3jQXWBZt32+e2i60nk2rcWbvchw
- /mj0yQNGHdjCd03ssT5VBOOCHSgIkqNlfitHxBjqVi39vIDvMq9m2h1Y2B/NI8JOkBX0zySxAvv
- 7Kk67mcOG98Km5KEkDlzYijy7zZ4WaRQJ4ezlFweb5KItqfNM81ZXZf60UUnDKXrlNN6BRVSav8
- /NYC+CQpPt+07QnuP4zaj3mu3zfKo1Jdn4heQkg5bmeVDEY84ququEc0Rt6nx5XukUy1BqOt3lU
- XDhMQsuTMJVYuJulL+upwwK3JhvA1dkPGIgP53MPoyTaL4ngehHCg6tSjbNwYUpUPe/4+uEP3Gc
- 94AJlSSYQPzbtno6BoQLELmlAHpr/kzXUCO1f4E/S6fm2Whl7MqIasISB0TKqMgsrOEMIGi4FNC
- 8kWKKL7vZoISKLQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 55C5940009
-X-Stat-Signature: 3o8um63zoxoz9sfweccuy4dtxtfq9773
+From: "Yijia Wang" <wangyijia.yeah@bytedance.com>
+Subject: [PATCH] selftests: mincore: use default huge page size for hugetlb test
+Message-Id: <20260626-b4-mincore-preview-v1-1-5f07aa02ab32@bytedance.com>
+X-Lms-Return-Path: <lba+26a3e779f+bc767a+kvack.org+wangyijia.yeah@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+X-Mailer: b4 0.13.0
+To: <linux-kselftest@vger.kernel.org>
+Mime-Version: 1.0
+X-Original-From: Yijia Wang <wangyijia.yeah@bytedance.com>
+X-Stat-Signature: 8wh6c8bxq44g5oa1kkm5jxdzwb47r9zf
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782477801-112289
-X-HE-Meta: U2FsdGVkX18xr7XeQHyoOhPfXsMHuRTb1nCI2zPGD+DF+JsT8ywqF6x5M9qGP0M+UIvC1di3uHJLDWnRC4zPAyJZhXttMdos1TI1TSytR/WQbCnByxIxw9TErMonksAj60EygOhDoZVGVrd/fcUfV7hvrnPJNSIkNQXqh/7p0R/o8Sh/IN80KV3B6Y4jhNeoBNU1i2CeKS17AsIHaiAMB8mE2RavusAwSWVxzstnqA6SNopplUH3+I4VKjZxeOAyTVxCA8WQuqliHki7zT/3PIEWIhi+4U/UNk6HySPaFNH+cE1zK1Vu4OHRcFtu7R4kBtQvhBh26z/lYpFiJhC4+BOdXdd3+DOgcAk/Br+EVBCk3fZUvlyXPDF/0epwYPrj2CRTxv6sqPO+6FcpA7IblvRLbJcONM7n1ZXiZw4Q2GMHtRkYqatWx43j2o60PxngKTLOFHktll8+bP0myKzUkJ2XxxQqT7goyIeJeZBfqpPIiyTd1bvEXT0j8zw+aTDcs34AkFrjEKAiXbZ2rVwBoZadtJ7DRv6oowhLipZETDx4brtO2QV1GlQmLj8IlSNAjfYZd+QrYRri3Cpm+uqrMJvwmdNXufSQ1hwdZozJK+AcqKJ+gJj75eGGn+ev62ucXyeNE3r1GC3m9VyDStAnpxod7FiJKD9mvaid/YsqRW2Z+quKeWRNj4ckc+p3Qz2KgjAuAR36ayBz4dKTiHqerBVYQpEqzil9rCRqZwfBw9P5Uz5W34cMibZAwHve2E89z4Buc0QbhatG6pYLrJLI9LfnGmxIIobGFq5aYUca3aV+26NTlzjHicclGIg62/7U8oZfOOfOsP2li6nmHbz5Xgx9+bY7K1B1je7G86bNsFCBTyvxZ0D7XpixJQ9y+DzCQ81d1TyWV5WtWVOFi3H6AdtwsCuKyDUw2LxXYualJAzB75voqJlS+d+NwgVLLrhGxoevxJvqBBL1jq7qJbL
- PPZ3PUFu
- gCvQ2hltA041/TSaWkhDybyYlvWw83DYcstLUkNGLEuHjkS5reREdt2oUKbPv7azMtRITS6yPfwfBXQNM1ImGWBkf1H4sn5JsJshbhoOf61ZPvs1haqgJwbH2FpLuCjTpnSfib7rmqkjMSQpKuAtjExNsJGMUXSaY3QE9t0jSARKGrAjFiNxj8GUOd0j/WM/XucR+tn5vc1jASDcgJSYPr+THx2r68tovsxTyCeyBcsZHcFR9crFsb/GH7oH8YdTO/wFg0k5HW9Z5lB7FLC5PuH0wxxtr0x1MU/0zngaXWl1kgBHrCOh92m1TTn/IqctUSWtxX9h3yP6i5xO+S5uJOjvj5HC7pNWKYKFe6tN+BakmRvw=
+X-Rspamd-Queue-Id: 72CCA140003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782478760-506736
+X-HE-Meta: U2FsdGVkX19idylOuPWDUU8DXEkbYx2U/WQwUDYzVXfEzewDFZsWgtIDK1KSpTUr1RsHdh9C9P5e8nWI4S+kTFNalY89VQGQOaZW+6dasEDSuTbUzgVMn8y3vWwMiTjLujjt0zdu5oRyYY8UVw+42VY90x1iHeO6BvuZVkJRvEF51KKU3sp55PGnpaap5KFZNCTjzf488UopW9kOy6p6WE0kJwtcbGiwKJEst2QWxsZZOMRPBCZoR3UWsmQRV+nol4+e+jAWwJg/1qQXhzl2oxzp0zfC8/EwXEAq+bxZ/UWgq8fUHksRXUKpFWu2xrQtr2sk1LMf6fcVAqUhhc18VNXu77ULZHVlFgOqe0kmeYbIXfQV40xU8EV8rq5QwrY+OXE/t61i2Rhi3rwPxnyGzdPGoJxewZSEYLZUKGTFlrqzqi3wFSS2QYjiNwzgCeuys+aLbxpQv4JjJXBKExRHXNcB+OnYhWmwjx3LmIzRv5ilPnw0nHE4PNWHL4COQ+aLrokS4F5PRrkXERqwFcJHsbXA7o4QiuNx2uJJJgGvA22SdIX7bASTeEIyROskpG4TdXwBnuN91kFxEizswr563cmhLqAsJR/TwXi/FrPQMt+IymOoIF5/OL1Ob46DxiHeR1izo7JkiLdGf7FnUrzGggN0kPaGWA98z3fEbjXBuC3hPl/sGlsPQmKvXLmKzJisbEQIkWU9qz13eDOM0OdVpzdC5T9ggvqUpJDg3U45z7vFCrkfYjXg3sm+hANs0QUv5nI542YBniHfcz/eyJjl9cZQ+/MvygNxdFFNpCn/eTH62zK2JTRd1jGUaEIEdTErZnfVRG2OS0+qdVqmPj9gM5p8wMlGXvORaJbRNxQ5XR6niyns6buqaObiads0FITzQVIhZvjGgW2RnhRzC9bHhr8/OWRmgCrckOAX6555NUm/k3zaauwtgEL8/pjuGE6XAYszh/LjpXp21TTta1g
+ Ufngg9SK
+ vXiDHNnL5pSwK5T9AXfQHIbPf6rfs2aR/yvirhQxF7Mnah8xhe9mP/BBOZEe2U+5Pyh+HfTtppo55JuCayI1wE8nmqaBzwyC3ZEq1Aj6Vh8mmCLP7KynYcouNUAByG4EAHZtmRpRm86m7P7NBo8L47BkelNh38P/TQafqQtYIPVXMZ2QtTbRNIW5270e68RsC0Mv4hfDXP85RQkCzYhJwEoA33iag6KLr8wgfChsZ4f5wGy6E/PCjsZbY8J15UKCZ14bb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,59 +87,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mem_cgroup_oom() passes an uninitialized "locked" to memcg1_oom_prepare()
-and reads it back in memcg1_oom_finish():
+The hugetlb mincore test passes the base page size as the MAP_HUGETLB
+mapping length.  This works on systems where the default huge page size
+is the same as the base page size, but mmap() can fail with EINVAL before
+mincore() is exercised when the default huge page size is larger, such as
+on arm64 systems with 64K base pages and 2M huge pages.
 
-	bool locked, ret;
-	...
-	if (!memcg1_oom_prepare(memcg, &locked))
-		return false;
-	ret = mem_cgroup_out_of_memory(memcg, mask, order);
-	memcg1_oom_finish(memcg, locked);
+Use the default huge page size from /proc/meminfo for the hugetlb mapping
+and unmap length.  Keep the mincore() check scoped to one base page since
+the test only needs to verify the residency state before and after the
+mapping is touched.  This also avoids changing the mincore() length to the
+whole huge page, which would require a larger residency vector because
+mincore() reports one byte per base page.
 
-This relies on memcg1_oom_prepare() setting *locked whenever it returns
-true.  The CONFIG_MEMCG_V1=y version does, but the stub used when
-CONFIG_MEMCG_V1=n returns true without touching *locked, so
-memcg1_oom_finish() consumes an uninitialized value.  On a memcg OOM this
-is reported by UBSAN:
-
-  UBSAN: invalid-load in mm/memcontrol.c:1932:27
-  load of value 0 is not a valid value for type 'bool' (aka '_Bool')
-
-Initialize *locked to false in the stub; with cgroup v1 compiled out
-there is no OOM lock to take.
-
-Fixes: e93d4166b40a ("mm: memcg: put cgroup v1-specific code under a config option")
-Cc: stable@vger.kernel.org
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Yijia Wang <wangyijia.yeah@bytedance.com>
 ---
- mm/memcontrol-v1.h | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mincore/mincore_selftest.c | 29 ++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-index f92f81108d5ed..4fa6e2bc8413f 100644
---- a/mm/memcontrol-v1.h
-+++ b/mm/memcontrol-v1.h
-@@ -107,7 +107,11 @@ static inline void memcg1_remove_from_trees(struct mem_cgroup *memcg) {}
- static inline void memcg1_soft_limit_reset(struct mem_cgroup *memcg) {}
- static inline void memcg1_css_offline(struct mem_cgroup *memcg) {}
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index cdd022c1c..cd51420d5 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -22,6 +22,27 @@
+ #define MB (1UL << 20)
+ #define FILE_SIZE (4 * MB)
  
--static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked) { return true; }
-+static inline bool memcg1_oom_prepare(struct mem_cgroup *memcg, bool *locked)
++static unsigned long default_huge_page_size(void)
 +{
-+	*locked = false;
-+	return true;
++	FILE *f = fopen("/proc/meminfo", "r");
++	unsigned long hps = 0;
++	size_t linelen = 0;
++	char *line = NULL;
++
++	if (!f)
++		return 0;
++	while (getline(&line, &linelen, f) > 0) {
++		if (sscanf(line, "Hugepagesize:       %lu kB", &hps) == 1) {
++			hps <<= 10;
++			break;
++		}
++	}
++
++	free(line);
++	fclose(f);
++	return hps;
 +}
- static inline void memcg1_oom_finish(struct mem_cgroup *memcg, bool locked) {}
- static inline void memcg1_oom_recover(struct mem_cgroup *memcg) {}
++
+ 
+ /*
+  * Tests the user interface. This test triggers most of the documented
+@@ -139,14 +160,18 @@ TEST(check_anonymous_locked_pages)
+ TEST(check_huge_pages)
+ {
+ 	unsigned char vec[1];
++	unsigned long hpage_size;
+ 	char *addr;
+ 	int retval;
+ 	int page_size;
+ 
+ 	page_size = sysconf(_SC_PAGESIZE);
++	hpage_size = default_huge_page_size();
++	if (!hpage_size)
++		hpage_size = page_size;
+ 
+ 	errno = 0;
+-	addr = mmap(NULL, page_size, PROT_READ | PROT_WRITE,
++	addr = mmap(NULL, hpage_size, PROT_READ | PROT_WRITE,
+ 		MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB,
+ 		-1, 0);
+ 	if (addr == MAP_FAILED) {
+@@ -170,7 +195,7 @@ TEST(check_huge_pages)
+ 	}
+ 
+ 	munlock(addr, page_size);
+-	munmap(addr, page_size);
++	munmap(addr, hpage_size);
+ }
+ 
  
 
 ---
-base-commit: 4e5dfb7c84012007c3c7061126491bbc92d71bf1
-change-id: 20260626-memcg-oom-uninit-locked-5ec79dff4396
+base-commit: 1d5dcaa3bd65f2e8c9baa14a393d3a2dc5db7524
+change-id: 20260626-b4-mincore-preview-2ae0c3d65eb1
 
 Best regards,
 -- 
-Breno Leitao <leitao@debian.org>
-
+Yijia Wang <wangyijia.yeah@bytedance.com>
 
