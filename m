@@ -4,117 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45A2C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 20:42:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CADCC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 21:36:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9621B6B0005; Sat, 27 Jun 2026 16:42:24 -0400 (EDT)
+	id F3BA06B0005; Sat, 27 Jun 2026 17:36:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 912B66B0088; Sat, 27 Jun 2026 16:42:24 -0400 (EDT)
+	id EECBA6B0088; Sat, 27 Jun 2026 17:36:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 802C66B008A; Sat, 27 Jun 2026 16:42:24 -0400 (EDT)
+	id DB62C6B008A; Sat, 27 Jun 2026 17:36:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5512B6B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 16:42:24 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C2F1AA0243
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:42:23 +0000 (UTC)
-X-FDA: 84926865366.20.9148C0A
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F1F8518000A
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:42:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Ws//CmF1";
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 968AD6B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 17:36:46 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E06AB1673E2
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 21:36:45 +0000 (UTC)
+X-FDA: 84927002370.07.B0A99D8
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1610380008
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 21:36:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cuoa0S2P;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782592942;
-	b=aT7PjQLcK6D8VDLnD6U+og/D8kra/GGOZ4s0Cw+B0hisDfzWr5yxVahBQHzVO5fHz1j9z0
-	IzTE0yNd+eaL6PEt3T19MgM3aA7JG00qNaYxpPf2Cqby8xihosn+l6qCK1KYr1xdMm9j/x
-	1vU9+MYekhL7DfHy6A3uPrG+w1nPEgw=
+	t=1782596204;
+	b=vTG9Poflu83785FhxnsQBBKBDbhvjqeRljjcSE3qD9NB6aR9KFOqljbILVI0AdcWtL4vyd
+	R1RC0gBv2wouxuvo7NvgcKda7W1eM5beGbprcEiTT3RDtuviJgSZc2/0YfwrPgo0YjRsea
+	YyqSu0AhlTGTkkqKPU3ExL1CM4pezJ4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782592942;
+	s=arc-20220608; t=1782596204;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UvBTXqN1MAazPmYZrbZsf15Ac2BOg/NxzUUoaLCPN5k=;
-	b=NmQv6FyKQhXSJwlseT17fQ/yGWjDDNJVOx3N/wzVAXhtsTm/7xxFGDDaEXmOwZj7Y88s/x
-	XZ5ag/+w8o6fcx5f+rqGMqS7fctEqAXds4wAqSbGkyapqbYaTcVJelGODXrRorcic9SeKw
-	zVP0jcO90WY5Kct5plf1cWnccyy2u9U=
+	bh=SXvatVIXGlRA1p89/xy5prsBIMJ3M0pdIs4NFYTkFQQ=;
+	b=WtGdcm5nH/whmcPwwoG4cp1wQCxWx++nV1/V9D3zHisM5lTy+BXXTm0sD5Be+nLK9ULfJQ
+	gaD2/wMmLxSzgkk8CxLY70KVwBMYPlpXULisvRlDUCIT2B9hvBRE672r81vdNwixTphUAF
+	3d4uYdQ+8k27VrRLC0rr2nQQ0wLg8/M=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Ws//CmF1";
-	spf=pass (imf24.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-920fbdffa31so174505185a.3
-        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 13:42:21 -0700 (PDT)
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=cuoa0S2P;
+	spf=pass (imf02.hostedemail.com: domain of aethernet65535@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=aethernet65535@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-845b965c1c4so1068390b3a.3
+        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 14:36:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782592941; x=1783197741; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UvBTXqN1MAazPmYZrbZsf15Ac2BOg/NxzUUoaLCPN5k=;
-        b=Ws//CmF1Glj8WAmZBN1hgXG+TqBDy/uaMcZDNJGp1gD2ZWt2iin7buUQjS8lYQw4mv
-         hr38szD4kAaaZAVRafY4yjOK31blamZio1V7bOsd/QTNXi3d1oXema6FoKvZ3xLMX+JQ
-         ry587PMesppUdQsGjNaIBlJcTRHpoPrpNoSoM6L/BsGqKbifDyS7w4cLRLwr6HdkshSZ
-         iZ+KNdLCPzMDfxTiSGVU2iW9cPp9EpEnnifgRBFrje9sP37ZejFXTj5fTDY7Yf9JtOAX
-         lKCGo9ZJi5IXgavJXMq+bFb/7YenKTFqx4whVvreVkJekvvWOY9X/5W9CthE2QLDQFfz
-         b2FQ==
+        d=gmail.com; s=20251104; t=1782596203; x=1783201003; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SXvatVIXGlRA1p89/xy5prsBIMJ3M0pdIs4NFYTkFQQ=;
+        b=cuoa0S2PtENOh0Bfz4KuXRSNPamSZfL5XweRQmW/rsgeNJq/rfUHyi57QCFeyuNkN3
+         ILcnqJr6ldpyo0rYh6Wg1uASraPRWnJukt63EwETyBYq/DlIzRm2r4KUKVuTdjhHx5Dr
+         BDp2DzLsLFyLynoBAvOAVzsXx3FazVXtYDB82STQbBNV/FNdJHNbLTJzp5gOirqCA1/K
+         kHCDIy8PsIBstMEdE/6CqV4NIhOgozxtVHvSnTwIX4KviAZ9SnrCIsk/O+OtcIVCV8oS
+         uT21atbD5clxnqVUXjvYREFZQ2shwu5Wg3UOhGr3pWs0mCYArn2FFsRUKrx3jODo7r+c
+         Rubw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782592941; x=1783197741;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UvBTXqN1MAazPmYZrbZsf15Ac2BOg/NxzUUoaLCPN5k=;
-        b=onHi8nb6tT2s73KeoiOAGBPnGSvfnqrrPuhEFMd8To5RTjLnqJt0EkUEO+4htqll08
-         uR18+Uywiw6wA76uQ6zhV9UtHh3qKvngPyhbWRYnobIM1qsQR+VVw7iwwwAnnR+CVKMQ
-         8tOXCLnWajJQOPciuB47yu7DWMDb0XBATSff0VgfKb5AzP3AAZjcYP7H5nevunnzKYwK
-         IqMZfBD92iIIiKZK3fEUJthZEbigo6+mzsmTnuz8gygFXeOBA5XiG8f8380yOMkAPRXW
-         0rGsKqhNLD/b4xPCAst/Dtc85028A0IbJgDS6a0U0ItKKYXPMlC0qTeklDLrYGCMkIaw
-         mCMg==
-X-Gm-Message-State: AOJu0YyNHFmXBjYJCt9TqRpo9tM6BnZfTzoDeknt4rVIBzNd0CEEi+l6
-	EhL4ISrA4uW5lQB+FLZ5jjd5FVntHk4WMrZ/MSd/SAoReriCy+O6WqtE8UfJRbTsYRLhnCjOTsW
-	YR3Lu
-X-Gm-Gg: AfdE7clPhD/UlJ5sg8b0LsbstyrCxc71vcNLeGeITrsbRslVeFNAu7XNbhnIXKGgBf+
-	wMvk5hUvHm0YI+dLDmBBx6Fq/81k5djrRZDCKSjrpC103fYB34HG0W2dAEdftxDLWT1N0iQajqn
-	KlaqVxaScE8HCpKKnKotp16wia9n9t6IeL+70TbiQkz9iSf/8wKLOz2kk1z/K6xc8GEyojNlOBp
-	cAFKEpIfAVuHVKa+DNfjOa+xHZQ7gEPeZ4baXjAgENBVWcIuzbpOv+f0sN4sXppsxZkCvgrLxqT
-	MFBBFp8TpB3KSQQsw6GpYbVcxTnsq/6a9XQo/PsJLmGgf1ypkMrTA0muex0lbTtJi5Cvq5EH39o
-	sPOg0EMGvM80/RzcoMZRj3UC1b0KXUyCX5IQLRGZ/MwrUHywYOcvAzpl9CCA/c5ForSSQfhT+ZD
-	z+fQHFxywNw99r1MIdO7IyBsy3qxSPVWmQShghnmToO8/R8uHl3y5DQJeUcZOUq3v0n5bGYULJ5
-	W47I5o=
-X-Received: by 2002:a05:620a:2915:b0:922:2baf:d757 with SMTP id af79cd13be357-9293d4a105fmr1727191785a.58.1782592940972;
-        Sat, 27 Jun 2026 13:42:20 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-925fda626b9sm1585236085a.14.2026.06.27.13.42.19
+        d=1e100.net; s=20251104; t=1782596203; x=1783201003;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SXvatVIXGlRA1p89/xy5prsBIMJ3M0pdIs4NFYTkFQQ=;
+        b=VfsiOl+caatcGCQl6zK7VJmUpbJx0VrCOVK0gupMReXiJrwbiaYVcWw0aqWY1O3t+6
+         c4cKaPxClA7bM+769rjrCHqVF4Pl6kir3KMYn5BXGtWOeBjbXCpVP8KWCsiEshpmFs1V
+         18+hubR42nARVnGJ1504uNzu+tmbkXttIHgoW3htsvdtVcuGybw9kJ19fXMhCXROIQcm
+         paq1S7Ln32iPOcCo6/nZ6Xriu7lxGOvaeKJzYg7Je5yzPXZ/B6eWlbRh/qt3TCW+Cax6
+         obzoEK7/ANe6uXBtZIoQT+P+zAqENZfDuXG2qpXGEkE4knRnn908ImmLXHr+CdtmrvOu
+         YQoA==
+X-Forwarded-Encrypted: i=1; AFNElJ9J69XJ6ECyDvbDo2QlljSYYc83euEVx1HrR9kvqubprqtae7QFm3vUQGVqoyiSBxiIRm783+wktQ==@kvack.org
+X-Gm-Message-State: AOJu0YxUpj0dyjf/jmsAK8HIn96Eq4shbAUYYf9dnRHwrdngHrLDga50
+	csAEwrs1+kJGTTGjPf19uwM2hTZPVYB4ysp6DHGabNZVo4wyKSua0f7i
+X-Gm-Gg: AfdE7cmbiWWAHLXzqza8MExDdAlmBSFAZ3q4GcLiMG8m/Mzn7G2emO3R1TY3ikYsMsF
+	SvISPwGqlXcp38LizcP/5F/0IqLct6IJlHpqnQ1mSQXla8+7Mo9D1tNMeZEMStHJrTcw79c25aH
+	q3IPdrkBH+t0l5cZAinNerkDpMZf9barxP7bDP4ZAtARZtSETEZEiX/ln8N3Hc3bX+bMHt9QRPl
+	DP/40WJuZN23GDT/LNFyVek+Q529oNHGNOPFW4+Otb7HjxUOuOW1Wv1FpszL3sYLV8oC0wLnDg/
+	+9oyF4TgSKExnPT31Hs3tXRybm48lUo7ysLiEI4NqetAPJgUFuS08wyHHd0VyRYlb1+xkurQEH2
+	NSDRNOU8XONWe2d8yOQiSOGXPSzhjK77+8EL36I4Adr18cfPJ5GHn15QS9zbR6yaJJgW1JnD/lO
+	LJUKVemTC+/Q/+0hatjKVLn+YHJLDp+M9gLOZzV/XNAeecYgvG65o=
+X-Received: by 2002:a05:6a00:b53:b0:845:c0db:3926 with SMTP id d2e1a72fcca58-845d2475cfdmr4821976b3a.22.1782596202842;
+        Sat, 27 Jun 2026 14:36:42 -0700 (PDT)
+Received: from celestia.taila51cc2.ts.net ([2402:1980:9a5:e298:5467:317e:e807:794b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a3feb7d5sm9112206b3a.14.2026.06.27.14.36.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 13:42:20 -0700 (PDT)
-Date: Sat, 27 Jun 2026 16:42:15 -0400
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org,
-	kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
-	ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	osalvador@suse.de, hannes@cmpxchg.org, mgorman@techsingularity.net,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/vmstat: flush per-cpu node stats when a node goes
- offline
-Message-ID: <akA1p_scgVk5FTmA@gourry-fedora-PF4VCD3F>
-References: <20260627073107.523499-1-gourry@gourry.net>
+        Sat, 27 Jun 2026 14:36:42 -0700 (PDT)
+From: Liew Rui Yan <aethernet65535@gmail.com>
+To: sj@kernel.org
+Cc: aethernet65535@gmail.com,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH] mm/damon/reclaim: add 'available' memory as an optional watermarks metric
+Date: Sun, 28 Jun 2026 05:36:50 +0800
+Message-ID: <20260627213651.19000-1-aethernet65535@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260626141819.86269-1-sj@kernel.org>
+References: <20260626141819.86269-1-sj@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260627073107.523499-1-gourry@gourry.net>
-X-Stat-Signature: ywxayysk7wtjx9qaah5x87mwo3dpnnde
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1610380008
+X-Stat-Signature: x5xkgedib9hebj6d3j7pj6h5gwuq9beq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1F8518000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782592941-684468
-X-HE-Meta: U2FsdGVkX18HVMbrPZVsRMu+t2uNLqoylavEFVlWlY0meacaTuHhop+eWRmUnPbbnXkorGDC5PC8LsxfAiDLbmd2LRN3GxNIMhE0Th9c8+BL/EfPev1+rZWAXI0ly6EzQpTWE9ecxwepqFVcaWiyZOxmVyqGOApOrUUumUn5olspSIhZOPx6Z+WVmQeG7uw7k5RSKWSco9eEASKt9MYo2fRIJ54EKKeA9/fS3RLnE9jd8YSTKT2dBGnq9oHHwayUbA8QFcbHeTSnyH+l63x3rB2cFPFMdgQ2vKZFR3iMi/8qegEKM9zAapyj/87nt6Le53ebjf963ZovhpgiHUHo60/UzNtq1ovhdMtqM4QApuOF3H7iEy3XqYGjKeYGj1jiaNpD6KMjuaVKK9DIZ214mgXYvlDRLGsIchJJpGVFAIaQByaB1auSF6AIiifJMSg/Nco1zKKx4OsBBSDlZyhvLW0JFmH+wjkcBu01W571j5XAKRzHmxPxKQxosplJaaVVicT76dXB6xAsKw2rSq0hhlU4WlrXBIV4WTVU1gN8KQCtZcrjFeAzab8gvgGl1Sf/KnFpY8S6eSLqmr+FlbPKyBKdEFzbD2dc064fOZstugF3fKty1A4xQ4mHfbpndETCPcrc48DwyWa460yw9T/85Me2iiiYTGsOXnt1yo4dia4Vlk3decC8Y+3m2nKEAaW+UcmGB/nJdxBbc/oPPq26qRxhDSYgFAHvJ/dlyFG8tmeOWyVYnBG4sDQvK6dUOWkjgZ1mECF9TShjz2iNaFeAYNL7iLqZEFkRjx8JZvxgKB/qeXAAxGzWkos9fUE5oTSFFPURwQ8XU5LxggQlC6rCAmMFWc5exUHK+Qr1f0vGdFGy21Ej9/0LWoN/KTyhuhQ4Xz0CUC2ZhxjhQY2FXPbEgHYVcQkioe3W40693dLQ4Att82UbpqkcHJyLbGZbMZX3O2E3O6cM5RLEXrJZi4C
- kct12vDD
- ry2b43dvHbcEYrgQQTFUpsXrNirEw7Eeo9abbJSB+JHrBfQN0TWKsbmZOSmamHaTm5m1Rk87uQ5BNQIf8jluCP9qP1PMbNC3g4QUR2dDtGg2MkANZLN/9hYzDXrkd3SvSvDVvAnFiHZ2nEg5qL/zjdK5EU1qYt+pVpuRteyyJ8H7xGhFXoqu+/VZxOE7a+lBNeLGIzJI9EksIsM5peHz2ce1a5M1k6mVyrrY9kTrhwU+UvdrtxQnlsP/VijPVSPGCkq95vSOmaZjU4iHISnMzLW+pl9fr5iAfr6OElw7CgFnO9CNIiRe0RbV+U9QVrQATXLJn8RBQ9e5HvCIbxa8zlWt5Rlgn0x4kf+9jo5c1V7QHvI0BEZE4brKwz7tnx4Hj+3ODyk3Hm/nkV1kgCE0FeWBVcW8r1H59xyHq
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782596203-530362
+X-HE-Meta: U2FsdGVkX1/PxPH23G5+8aFmjn9X1bdIMJic48pwn9GXAHa0qSZ8y8lsokUc1tkKOj79ItSGbZvPQhbOYqP1LbNIiVaTsY17FoOB5KYkeJQ1AAfhNtFt9kwMdQLWUD7X2WxHLcVmCl6HTAd+EQdfGMJAEWSwNCHQi+kQYTK1/sNNyXfZAjW+L0OlTEFjF7ZYas5Q09uCLwk9E6m35tIlRkP90q0Y2wjLWdw0Vl4AW8q84FVsPQaL8mjh7A7PQWNaGl608B2og4QJ9b+vRGMhf2+P3ElS2tIOz6o6ra2TvLNN2oiHQKAtclrU0DA4SCxrVoPDEQ3LM0dWzdUsFX58vd/WhgNm03hXrnVLKUGnKmrb5VB2cuNmlkkmWEaaeElRazjxF6iJaC3oO4+eckkvtlNGoDeWgviQSsqsKm1qxxPH/PP+7JFtsuUxvmp740/aezndG4KH6ISzNJYtPiTFcmo6JiT7ddc/HswAG6kkh3pVXBEIA1j979ly1yhEFouai5mT4XdhWrJh7ZoQ30gfnzzVOKKKHB0xwq9EBcTCNSoq/aljDt8uaG3BH3gvgWOistjLLRv6P6ZLzLjJR4kzT5eY7F3FVMEPGwa5ING49n3Zvr21gNY8LgBvbHpdyMeU2GBV0Zuy8XdXRsP7JGrI+Xq9izHTn0lecbuHgl3zwMMLnDMRQhcP2PuX6BYpCbFnyw5VugCxzJGROQzb8UcBd46x/S4EJ03Fmtagl5iXOL7vw+rbrhvxtD6HoFMuOWC5pDZGddoC8yIgoXxeRYqW5sUB+v39fCCr7OJRUlzpeAOOOvTfESVlH9sn5/Dgu/QF/Qr6kOswFt4pApgR1xjWsaJKYzolnwxK92lkJZoz8HhVJUxGPDXwN574NueqCTiL6XGPQkQQjRexawGo8j2ir5Jy7ZE9PEl5m0zaasQ9qsZJQLjRjWLn7W4BWH2A9L9C0bl1EQ00mtxurICRJZA
+ cZ9AmqIF
+ RB3ZPRFaIsfYjDbVKQTskGuDm+aRF8pfds2O3h0aZPbHVtzBzW5V7GzKJlfZozzRcvOyOmFbKliIkOSStn7lp6a1Y7d7dvt6lUWz4W6dGxDEn88OWQIDxOtf78WfxFF8MoyMqA77doZxUbsvavbhLTESI+WERuJj0qVd6bS4W9O/xo2SZPM6T+g3XiF7rpKXlZ9XVjy662a2Y+3+FoW/pQIjv7AD4F8TKhLPlHhhmoxG22q/7OOfSL3aPIRDL24zI+ejnZtXMi/8cu4QwWxeYZYkH5530NcwwNNK1zNiCuq1IhwghAdbcoKK0WGhdpFr6yl2HMDDWa95PucwHDB8JHRt8fj1dkapm8hULbU1MWCuXxE32BXoQ25Qz+vmk589fbof8m2vRHY5Y4szd0rKFipxIgeO1ShZYFiMFHGivzkjK8VXu17ZEePELARv+6OCs+dhBCTSqr0USY4gP/gE3gSse96xNab7UXBnjFRdqUW+1+A2xa0saXYiKlw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,31 +120,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 03:31:07AM -0400, Gregory Price wrote:
-> A per-node vmstat counter is pgdat->vm_stat[] plus per-cpu deltas.
-> A balanced counter can sit split as global=+N / per-cpu=-N.
-> 
-> The folds reconciling the split only walk online nodes, so when
-> try_offline_node() marks a node offline - per-cpu deltas are stranded.
-> 
-> A subsequent online zeroes the per-cpu area but not pgdat->vm_stat[],
-> orphaning the +N permanently. All NR_VM_NODE_STAT_ITEMS are affected.
-> 
-> Flush the deltas before the node leaves the online set.  A remote
-> fold races the periodic per-cpu fold, so do it as per-cpu work.
-> 
-> Discovered when a node/compact call hung for a nearly empty node, as
-> the math to determine throttling broke. Reproduced by repeated memory
-> hotplug/unplug cycles on a node under pressure. NR_ISOLATED_ANON
-> ratchets up and never returns to zero.
-> 
-> Fixes: 75ef71840539 ("mm, vmstat: add infrastructure for per-node vmstats")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+Hi SeongJae,
 
-Realized I changed the title on v2:
-https://lore.kernel.org/linux-mm/20260627073107.523499-1-gourry@gourry.net/
+On Fri, 26 Jun 2026 07:18:18 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-Core issue was the zeroing at online time causing the skew, just have to
-do the fold there instead.  disregard this version please
+> How about using DAMOS quota with its aim-based auto-tuning, instead?
+> 
+> I developed DAMOS watermarks and quota as safe guards of DAMOS.  In more
+> detail, DAMOS quota is for restricting only resource usage of DAMOS.
+> Meanwhile, watermarks is for restricting resource usage of both DAMON and
+> DAMOS.  That is, when the watermarks condition is met, not only DAMOS but also
+> DAMON is completely paused.  Also, watermarks feature was considered smarter
+> than quota, because it is a kind of auto-tuning.
+> 
+> However, it turned out completely turning DAMON off is not a very good idea,
+> because it drops monitoring results when the watermarks condition is met and
+> therefore completely stops DAMON and DAMOS.  It drops the region shapes and
+> 'age' information.  Especially, 'age' of some regions commonly cumulated up to
+> hours or even days.  Dropping that was a problem in production use cases.
+
+I looked at the code and noticed that kdamond_wait_activation()
+doesn't seem to free the regions, the data remains in memory. By "drops",
+do you mean the age information becomes stale/unreliable during the
+inactive period rather than being literally discarded?
+
+> 
+> Meanwhile, we introduced aim-oriented DAMOS quota auto-tuning (a.k.a DAMOS
+> quota goal).  It made DAMOS quota smarter and easier to extend than watermarks.
+> Nowadays, users can also pause and resume [1] DAMON/DAMOS without losing the
+> monitoring information when they want.
+> 
+> So, I personally don't encourage people to use watermarks.  Of course, I may
+> missing some problems in alternatives.  Hence I'm asking the question to you.
+> 
+> How about using DAMOS quota with its aim-based auto-tuning, instead?  If you
+> cannot, could you share more details?
+> 
+> I'll hold reviewing the code until this high level discussion is resolved.
+> 
+> [1] https://lore.kernel.org/20260427151231.113429-1-sj@kernel.org
+
+Thank you for the detailed explanation. I now understand that watermarks
+pause the entire DAMON monitoring loop rather than just gating DAMOS
+actions. I agree this makes watermarks unsuitable for the Android use
+case I described.
+
+I will drop this patch. I think controlling DAMOS pause/rusume
+separately might be better suited for execution in user space (such as
+controlling‘quota_ms’ and ‘quota_sz’).
+
+By the way, I sent you an email about three weeks ago (Fri, 5 Jun 2026
+20:28:00 +0800) introducing a userspace auto-tuner program I wrote for
+DAMON_RECLAIM's 'min_age', and asking for your thoughts. I am not sure
+if it reached you, could you please check? I would really appreciate
+your feedback on that as well.
+
+Best regards,
+Rui Yan
 
