@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B2AC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:27:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394EFC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:28:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 810F56B00B5; Sat, 27 Jun 2026 03:27:55 -0400 (EDT)
+	id 21F336B00B6; Sat, 27 Jun 2026 03:28:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C1346B00B6; Sat, 27 Jun 2026 03:27:55 -0400 (EDT)
+	id 1F6EE6B00B8; Sat, 27 Jun 2026 03:28:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B0126B00B7; Sat, 27 Jun 2026 03:27:55 -0400 (EDT)
+	id 0E5016B00B9; Sat, 27 Jun 2026 03:28:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BCFF6B00B5
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:27:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 97E678FB2E
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:27:54 +0000 (UTC)
-X-FDA: 84924863268.06.F479E31
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id DD05E140002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:27:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sZYiqigO;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D9BCE6B00B6
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:28:23 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 56B1B1C2368
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:28:23 +0000 (UTC)
+X-FDA: 84924864486.21.60B43AB
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B2CCDA0008
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:28:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="X7Egz2Y/";
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782545273;
-	b=5Vpl+tNv3gCW1/wX7v7R9yCL9YQlOVPJac7Nl1D+cYUcBofcxqRo2hPnpsug7rRcjmeFgg
-	rYnHrF/6JehaoL5709YFfR9AMtKEc/Zh75W/gvkR56xrYl7TQP5Y4Uc6MBxHbY8khWm+SQ
-	YARYsnQ99d/kPRDjMkiAktv6DPxkBAI=
+	t=1782545301;
+	b=D5ScUM7h74Jj9IwT4K1FVtCc+Q4ODsEpukrvzEiZ0e3H7HX/ssMSQKQUwk2QJ4B1UMQSZX
+	Yy/RURCl0fQDYELykMJT9OkFQ5oNhjSgRDkFNgnEdDNpyo6Ok6wmY59ByriVgQ1MOocGe1
+	LEMpEx1k8TeWxp40ZsHhrM/VWLJU1OA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782545273;
+	s=arc-20220608; t=1782545301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UHtddMQ5l0jeR9cQaglj+dt/LUSWNwvctZzH2qSyB+Q=;
-	b=hDZAPt5TDiSFmYr6/JPErHkdpuhdD4BsiJkNp30li0HnI+y5yUaEet1JPgXiCTPJ7t4pEt
-	pX0zFsFvZROpJee//0eZ+a2byuaQoAjLkSpn/wgu7RBO1ItR2k3h8eY+46jTG/N7LooAlf
-	OVh6KlD//YIvn8B1C5tJtVX8L4VEWnA=
+	bh=smajn29rHFOT4MtyJVi/R4P7juDmV113b9H8N2iquf8=;
+	b=SBR2lHxs3fIrq1h9bkZeiqKEv0TRqq1aLOERz6PvxsDW7BHBfSHlNtZrcVoMJES5TAcnXd
+	8m7zN7c/PpOaiyF0njtOprUXTSVg6nkPg5MLvT5KzFhQqC+7eCSDQXu4ajxIGMjXKaMHI0
+	nsDwjXjfmv1dyx9+q90Dnlbgtxz5YJM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sZYiqigO;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="X7Egz2Y/";
+	spf=pass (imf15.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782545271;
+	t=1782545300;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UHtddMQ5l0jeR9cQaglj+dt/LUSWNwvctZzH2qSyB+Q=;
-	b=sZYiqigO9EwhkQ5du7srmFAf5h2ae2Zn2Ebs0oijiGc5OKyDV5d1eTnyVsfbKv/UcWsZTn
-	btt13StpGnqiQcqJyMzweISfjMmIprN7jNccluQaCDQFP3AcXn8qxgRPtznuLAGgRrfQQy
-	mwTEXBS40yF2dg9kmJWsnj+72G0V9YM=
+	bh=smajn29rHFOT4MtyJVi/R4P7juDmV113b9H8N2iquf8=;
+	b=X7Egz2Y/3kNgx936KgThNiTP1CtcNpl89b1xaYU349h/ZUp1X1ciL0yJVdsMVamhVtvOhu
+	tHt1ZySq9gv19gJ1Y3mMFbiVURl6A0d1o3Jh/F62VE+klH8Dt6bnpdTRDY1r+ySuRI1R2l
+	7ZgQOSH83Y2dJVk21qRAj9Y3qA3BB/8=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -90,22 +90,22 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [RFC PATCH 6/8] mm: maintain reserved THP quota across VMA changes
-Date: Sat, 27 Jun 2026 15:26:42 +0800
-Message-ID: <2380a4ba5805017917715994c6d49e7cbf5de27a.1782538002.git.zhengqi.arch@bytedance.com>
+Subject: [RFC PATCH 7/8] mm: support reserved THP VMAs in anonymous faults
+Date: Sat, 27 Jun 2026 15:26:43 +0800
+Message-ID: <8d14f837be754414b9eade37b8409be10a91c7b8.1782538002.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1782538002.git.zhengqi.arch@bytedance.com>
 References: <cover.1782538002.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: qmyq3jrzp8wh8bz13g3p4o8ec8okmijp
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DD05E140002
-X-HE-Tag: 1782545272-720074
-X-HE-Meta: U2FsdGVkX1+dF/fWtc9Zqv5idMyVGraZF20gFcwkFyPOiXKKSFLODYmGtJm5NMxpw0Dxdc6dWbj+gsxo6CSpNYQZm0Qvji/jOVM7lL0MNYv66HqkihJKaOCnMMbWlLuvyOfS/O2n4w9mKfOUCXyPMXtFbADUY/iI8AxzNhjORaOxoTMoh3ItDikY+NxdVtRSkI0jb7w5bhY9TBRJAc4e3JV+cG8o7I9hatjDU3ywx3PwsPrg8hmAbP+NnjP5RgNR1LKrpnx4WETALs+01olwcm/L2GtTZMPQVrUA6WWuVftWGqVzV68u334qTnz/T+MnrvrKTRD8YfWR7clMwVS0vRchQpHXS4B5huXbY72MaYjMDmu0Lltl2Wr6KLRrIDqLX0aDsUoG62/kNxKDP88Mz/HFOlHWCYMn8Tdw7XfcCbW+KBeDOKIhSbp727y0FPuyDdOSxq/bqonL5sn1rvUNwBSAKNQdB327GfQc5/9t9CiZLSi+DdSJP0VcyAwMP+VZfS9A3W/pfFiVGjoxiKwzYbj5g8y7MOHJlA5VK3GCkAC8lUk3oQiWfs6QBPef7Z1uFYXUxDo0zdL8aFeYPj41EMDYa1V07yyVi706RhZ8/FWpJ6y9X9ALyTzU2teaft9RXZvNd+OS81x0zw90JGnlYRG0tMUcqpKulw6rT+hftdwxJolrRNnIHw1T9V+4Zf/xZPMxJpa6CmRBNEApbA2AJmUwHfgHH9fY/Hmy/8Dxg2pQHhEdVRHqqT5+fC9Qko1Zmf3kz1A+3aUucbnuPEVJeSENeZlvpLKYCOsmsqeYT7KEBaSRvmy6isDtdb9erdszNRfstfmrjKUU8s9Dai4YopM5B2ZqtSZQRIK8HgoCVQSDmbK2OcD406NytjhQQ+kqa0kaHOH7wbqfb/Ph5CpcrkpM3A8kw/YUFzRrbYzNE6zym/KpXeO41L7+Xn/koqXoRKeix8xt612kRDEu+8P
- 97v7cn9J
- seqtTLcm79n0k0dgMVooCWucI7dtcXse8qVoY0Eui28GlNPnPSBg4UKW6nTY/vYZSTK+RaeDY/L8pzs0FvGhN9dvPGjoylfe6KBXJfVrSwwyPlvOy0rgfy8LGw/GP8I9J2b6TWDKVe2NEyav9S5Icsl/v8cANy4Xda9vYJCoxXeQ5wtiZ79/DhmFvnQ==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B2CCDA0008
+X-Stat-Signature: harjqt6a54db6148g675ukde3648fmzk
+X-HE-Tag: 1782545301-806280
+X-HE-Meta: U2FsdGVkX1+Hy3qGlW6M6C4/1ywtIU833GzFxPP+9unYvWphKc6GgteJyGz8VvF10EbjoWJp7KikRSDg628MgDGnKsrY3NE5A16bHTJ4OG0PxvnvjtfA3Nmndo3u/vrndJ8wg8sf2WO6r1S19uNOVtM3aqJKeUxfB12qUqfItl//CFz4di5kW31aXDdsRNre9UQFX4E6JZ1hmBil0aRg3oRQrRSarYFg+5y6nligysp6cEpL6pvvFWw2N5a7cnJrFDvFYxP3XmNGkSdn3iXNeuEDHrLwcaVviW3O4bJ+DUFkzK/vLXNCN8OGYUhHOD32zN6Vbm9lW+fqGUm7q7yjRsg+VWzmfyCguf0oae3Dw3VvEYCUE/qylfMmp4b4LTnhkHlNJd3Yzg5pbCQPCD1P6tY0Hr96GcwUye0q2+z6rODWaf+lYRm1xnErgwV8bQZxZRKRQi0ZNNvPCew98rVCJASr9dTE7mWuQfYSFaMj82RIPN4cjH2jiKV/WD/rSSww0AotnO2B4rHoHthycZ+Skb57JkgqzMKobKNnhN5OL3JhIUKTr5hun4RJsN20TzLKLgwiso41NLjjnDI2jwkUij1bkWTqbrUFSMSoI2QvWM/mTcUqRBU/af0TyLJBJB1vaKaLHh/shjytUI3WECaeggjxQa+MafLcUhS8pK1G1c3dXDromfaxNAUoE1L+963LW6AlgQyU9W3JGV8pv7sGnKqadfCtDJAzpeih099lgvacWjrHgEy5I/aZLZj1Ursdlqbs5wKXBiMm0DVKNG8FAjOMUslNG9ehuZWdCBNDeUGiQuo8cwFJV5ggCacax2KYxT7eKKta21Kd6xTz1CEHjn4E5ysGK+sUimYn4k/OfIyRup/7jlpR01nfIVfIKb+IB42B92hO7D4IMvtA4lguptpPMrbXS0Gbhb7UDyfEGefcO9UQ44dWh5UI917tMNUw/G35oVjPtm7EDmpJJBn
+ F7+XI2w1
+ T7TvdKC6BkCGFFF97W2gFwPvMVlDq8MguQ/ySfCpfNqtMdEizkSvjoIdUrjDzbD3z+f/gJEWq7jpd2Hre0ebcpqEUwuODiGecTaT0LYqSrbr+Q+6BFaW5I0GzKXWU0rhQ5Se9u1XhhAjRUGOqhEa0TOaTBLO3sf63jGnXhmPyXa9X2wFX1gLHACi2rA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,402 +115,110 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Since reserved THP represents a PMD-sized VMA reservation, VMA operations
-must maintain the alignment of reserved ranges and keep the quota balanced.
+Wire VM_RESERVED_THP into the anonymous PMD fault path.
 
-Handle the lifecycle of VM_RESERVED_THP VMAs by:
-- Rejecting non-PMD-aligned splits.
-- Uncharging reserved ranges during munmap and teardown.
-- Charging copied ranges during fork.
-- Updating mremap accounting when a reserved VMA grows or moves.
+For reserved THP VMAs, the faulting folio is requested with the
+__GFP_RESERVED_THP flag, restricting the allocation to reserved THP
+pageblocks. The resulting folio remains a normal anonymous THP, using
+the existing reclaim, swap, and buddy paths.
 
-This prepares the necessary lifecycle management before exposing the
-user-visible MADV_RESERVED_THP entry point.
+Additionally, enforce that reserved THP faults must either successfully
+install a PMD-sized folio or fail completely. Fallbacks to the huge zero
+page or small anonymous pages are not allowed if the PMD-sized allocation
+fails.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- mm/mmap.c   |  18 ++++++++
- mm/mremap.c | 121 ++++++++++++++++++++++++++++++++++++++--------------
- mm/vma.c    |  23 ++++++++++
- mm/vma.h    |   1 +
- 4 files changed, 132 insertions(+), 31 deletions(-)
+ include/linux/huge_mm.h |  4 +++-
+ mm/huge_memory.c        | 18 +++++++++++++-----
+ mm/memory.c             |  3 +++
+ 3 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 2311ae7c2ff45..4818b14ec0ff6 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1251,6 +1251,7 @@ unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
- 		struct vm_area_struct *vma, unsigned long end)
- {
- 	unsigned long nr_accounted = 0;
-+	unsigned long nr_reserved_thp = 0;
- 	int count = 0;
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index ad20f7f8c1794..4fe9651cd86b5 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -330,6 +330,8 @@ unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
  
- 	mmap_assert_write_locked(mm);
-@@ -1258,6 +1259,10 @@ unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
- 	do {
- 		if (vma->vm_flags & VM_ACCOUNT)
- 			nr_accounted += vma_pages(vma);
+ 		if (vm_flags & VM_HUGEPAGE)
+ 			mask |= READ_ONCE(huge_anon_orders_madvise);
++		if (vm_flags & VM_RESERVED_THP)
++			mask |= BIT(PMD_ORDER);
+ 		if (hugepage_global_always() ||
+ 		    ((vm_flags & VM_HUGEPAGE) && hugepage_global_enabled()))
+ 			mask |= READ_ONCE(huge_anon_orders_inherit);
+@@ -371,7 +373,7 @@ static inline bool vma_thp_disabled(struct vm_area_struct *vma,
+ 	 * Are THPs disabled only for VMAs where we didn't get an explicit
+ 	 * advise to use them?
+ 	 */
+-	if (vm_flags & VM_HUGEPAGE)
++	if (vm_flags & (VM_HUGEPAGE | VM_RESERVED_THP))
+ 		return false;
+ 	/*
+ 	 * Forcing a collapse (e.g., madv_collapse), is a clear advice to
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a6..66d85a2fa855f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1267,6 +1267,9 @@ static struct folio *vma_alloc_anon_folio_pmd(struct vm_area_struct *vma,
+ 	const int order = HPAGE_PMD_ORDER;
+ 	struct folio *folio;
+ 
++	if (vma->vm_flags & VM_RESERVED_THP)
++		gfp |= __GFP_RESERVED_THP;
++
+ 	folio = vma_alloc_folio(gfp, order, vma, addr & HPAGE_PMD_MASK);
+ 
+ 	if (unlikely(!folio)) {
+@@ -1344,8 +1347,11 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+ 	vm_fault_t ret = 0;
+ 
+ 	folio = vma_alloc_anon_folio_pmd(vma, vmf->address);
+-	if (unlikely(!folio))
++	if (unlikely(!folio)) {
 +		if (vma->vm_flags & VM_RESERVED_THP)
-+			nr_reserved_thp +=
-+				reserved_thp_hpage_nr(vma->vm_start,
-+						      vma->vm_end);
- 		vma_mark_detached(vma);
- 		remove_vma(vma);
- 		count++;
-@@ -1266,6 +1271,7 @@ unsigned long tear_down_vmas(struct mm_struct *mm, struct vma_iterator *vmi,
- 	} while (vma && vma->vm_end <= end);
- 
- 	VM_WARN_ON_ONCE(count != mm->map_count);
-+	reserved_thp_uncharge(nr_reserved_thp);
- 	return nr_accounted;
- }
- 
-@@ -1733,6 +1739,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 	struct vm_area_struct *mpnt, *tmp;
- 	int retval;
- 	unsigned long charge = 0;
-+	unsigned long reserved_charge = 0;
- 	LIST_HEAD(uf);
- 	VMA_ITERATOR(vmi, mm, 0);
- 
-@@ -1775,6 +1782,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 			continue;
- 		}
- 		charge = 0;
-+		reserved_charge = 0;
- 		if (mpnt->vm_flags & VM_ACCOUNT) {
- 			unsigned long len = vma_pages(mpnt);
- 
-@@ -1782,6 +1790,15 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 				goto fail_nomem;
- 			charge = len;
- 		}
-+		if (mpnt->vm_flags & VM_RESERVED_THP) {
-+			unsigned long len;
-+
-+			len = reserved_thp_hpage_nr(mpnt->vm_start,
-+						    mpnt->vm_end);
-+			if (reserved_thp_charge(len))
-+				goto fail_nomem;
-+			reserved_charge = len;
-+		}
- 
- 		tmp = vm_area_dup(mpnt);
- 		if (!tmp)
-@@ -1916,6 +1933,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 	vm_area_free(tmp);
- fail_nomem:
- 	retval = -ENOMEM;
-+	reserved_thp_uncharge(reserved_charge);
- 	vm_unacct_memory(charge);
- 	goto loop_out;
- }
-diff --git a/mm/mremap.c b/mm/mremap.c
-index e9c8b1d05832b..ae37e0b3ce788 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -24,6 +24,7 @@
- #include <linux/mmu_notifier.h>
- #include <linux/uaccess.h>
- #include <linux/userfaultfd_k.h>
-+#include <linux/huge_mm.h>
- #include <linux/mempolicy.h>
- #include <linux/pgalloc.h>
- 
-@@ -69,6 +70,7 @@ struct vma_remap_struct {
- 	enum mremap_type remap_type;	/* expand, shrink, etc. */
- 	bool mmap_locked;		/* Is mm currently write-locked? */
- 	unsigned long charged;		/* If VM_ACCOUNT, # pages to account. */
-+	unsigned long reserved_thp_charged; /* If VM_RESERVED_THP, # hpages. */
- 	bool vmi_needs_invalidate;	/* Is the VMA iterator invalidated? */
- };
- 
-@@ -962,6 +964,9 @@ static unsigned long vrm_set_new_addr(struct vma_remap_struct *vrm)
- 				map_flags);
- 	if (IS_ERR_VALUE(res))
- 		return res;
-+	if ((vma->vm_flags & VM_RESERVED_THP) &&
-+	    !IS_ALIGNED(res, HPAGE_PMD_SIZE))
-+		return -ENOMEM;
- 
- 	vrm->new_addr = res;
- 	return 0;
-@@ -977,24 +982,44 @@ static bool vrm_calc_charge(struct vma_remap_struct *vrm)
- {
- 	unsigned long charged;
- 
--	if (!(vrm->vma->vm_flags & VM_ACCOUNT))
--		return true;
-+	vrm->charged = 0;
-+	vrm->reserved_thp_charged = 0;
- 
--	/*
--	 * If we don't unmap the old mapping, then we account the entirety of
--	 * the length of the new one. Otherwise it's just the delta in size.
--	 */
--	if (vrm->flags & MREMAP_DONTUNMAP)
--		charged = vrm->new_len >> PAGE_SHIFT;
--	else
--		charged = vrm->delta >> PAGE_SHIFT;
-+	if (vrm->vma->vm_flags & VM_ACCOUNT) {
-+		/*
-+		 * If we don't unmap the old mapping, then we account the
-+		 * entirety of the length of the new one. Otherwise it's just
-+		 * the delta in size.
-+		 */
-+		if (vrm->flags & MREMAP_DONTUNMAP)
-+			charged = vrm->new_len >> PAGE_SHIFT;
-+		else
-+			charged = vrm->delta >> PAGE_SHIFT;
- 
- 
--	/* This accounts 'charged' pages of memory. */
--	if (security_vm_enough_memory_mm(current->mm, charged))
--		return false;
-+		/* This accounts 'charged' pages of memory. */
-+		if (security_vm_enough_memory_mm(current->mm, charged))
-+			return false;
- 
--	vrm->charged = charged;
-+		vrm->charged = charged;
++			return VM_FAULT_OOM;
+ 		return VM_FAULT_FALLBACK;
 +	}
-+
-+	if (vrm->vma->vm_flags & VM_RESERVED_THP) {
-+		unsigned long hpages;
-+
-+		if (vrm->flags & MREMAP_DONTUNMAP)
-+			hpages = reserved_thp_hpage_nr(0, vrm->new_len);
-+		else
-+			hpages = reserved_thp_hpage_nr(0, vrm->delta);
-+
-+		if (reserved_thp_charge(hpages)) {
-+			vm_unacct_memory(vrm->charged);
-+			vrm->charged = 0;
-+			return false;
-+		}
-+
-+		vrm->reserved_thp_charged = hpages;
-+	}
- 	return true;
- }
  
-@@ -1004,11 +1029,10 @@ static bool vrm_calc_charge(struct vma_remap_struct *vrm)
-  */
- static void vrm_uncharge(struct vma_remap_struct *vrm)
- {
--	if (!(vrm->vma->vm_flags & VM_ACCOUNT))
--		return;
--
- 	vm_unacct_memory(vrm->charged);
- 	vrm->charged = 0;
-+	reserved_thp_uncharge(vrm->reserved_thp_charged);
-+	vrm->reserved_thp_charged = 0;
- }
+ 	pgtable = pte_alloc_one(vma->vm_mm);
+ 	if (unlikely(!pgtable)) {
+@@ -1480,15 +1486,17 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
+ 	vm_fault_t ret;
  
- /*
-@@ -1157,8 +1181,8 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- 	struct vm_area_struct *vma = vrm->vma;
- 	VMA_ITERATOR(vmi, mm, addr);
- 	int err;
--	unsigned long vm_start;
--	unsigned long vm_end;
-+	unsigned long vm_start = 0;
-+	unsigned long vm_end = 0;
+ 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+-		return VM_FAULT_FALLBACK;
++		return (vma->vm_flags & VM_RESERVED_THP) ? VM_FAULT_OOM :
++							   VM_FAULT_FALLBACK;
+ 	ret = vmf_anon_prepare(vmf);
+ 	if (ret)
+ 		return ret;
+ 	khugepaged_enter_vma(vma, vma->vm_flags);
+ 
+-	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
+-			!mm_forbids_zeropage(vma->vm_mm) &&
+-			transparent_hugepage_use_zero_page()) {
++	if (!(vma->vm_flags & VM_RESERVED_THP) &&
++	    !(vmf->flags & FAULT_FLAG_WRITE) &&
++	    !mm_forbids_zeropage(vma->vm_mm) &&
++	    transparent_hugepage_use_zero_page()) {
+ 		pgtable_t pgtable;
+ 		struct folio *zero_folio;
+ 		vm_fault_t ret;
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe923..225fc1ae22386 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5297,6 +5297,9 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ 	if (vma->vm_flags & VM_SHARED)
+ 		return VM_FAULT_SIGBUS;
+ 
++	if (unlikely(vma->vm_flags & VM_RESERVED_THP))
++		return VM_FAULT_OOM;
++
  	/*
- 	 * It might seem odd that we check for MREMAP_DONTUNMAP here, given this
- 	 * function implies that we unmap the original VMA, which seems
-@@ -1170,6 +1194,8 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- 	 */
- 	bool accountable_move = (vma->vm_flags & VM_ACCOUNT) &&
- 		!(vrm->flags & MREMAP_DONTUNMAP);
-+	bool reserved_thp_move = (vma->vm_flags & VM_RESERVED_THP) &&
-+		!(vrm->flags & MREMAP_DONTUNMAP);
- 
- 	/*
- 	 * So we perform a trick here to prevent incorrect accounting. Any merge
-@@ -1192,6 +1218,13 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- 		vm_start = vma->vm_start;
- 		vm_end = vma->vm_end;
- 	}
-+	if (reserved_thp_move) {
-+		vm_flags_clear(vma, VM_RESERVED_THP);
-+		if (!accountable_move) {
-+			vm_start = vma->vm_start;
-+			vm_end = vma->vm_end;
-+		}
-+	}
- 
- 	err = do_vmi_munmap(&vmi, mm, addr, len, vrm->uf_unmap, /* unlock= */false);
- 	vrm->vma = NULL; /* Invalidated. */
-@@ -1227,19 +1260,27 @@ static void unmap_source_vma(struct vma_remap_struct *vrm)
- 	 *
- 	 * do_vmi_munmap() will have restored the VMI back to addr.
- 	 */
--	if (accountable_move) {
-+	if (accountable_move || reserved_thp_move) {
- 		unsigned long end = addr + len;
--
--		if (vm_start < addr) {
--			struct vm_area_struct *prev = vma_prev(&vmi);
--
--			vm_flags_set(prev, VM_ACCOUNT); /* Acquires VMA lock. */
-+		struct vm_area_struct *prev = NULL;
-+		struct vm_area_struct *next = NULL;
-+
-+		if (vm_start < addr)
-+			prev = vma_prev(&vmi);
-+		if (vm_end > end)
-+			next = vma_next(&vmi);
-+
-+		if (accountable_move) {
-+			if (prev)
-+				vm_flags_set(prev, VM_ACCOUNT); /* Acquires VMA lock. */
-+			if (next)
-+				vm_flags_set(next, VM_ACCOUNT); /* Acquires VMA lock. */
- 		}
--
--		if (vm_end > end) {
--			struct vm_area_struct *next = vma_next(&vmi);
--
--			vm_flags_set(next, VM_ACCOUNT); /* Acquires VMA lock. */
-+		if (reserved_thp_move) {
-+			if (prev)
-+				vm_flags_set(prev, VM_RESERVED_THP);
-+			if (next)
-+				vm_flags_set(next, VM_RESERVED_THP);
- 		}
- 	}
- }
-@@ -1309,7 +1350,6 @@ static int copy_vma_and_data(struct vma_remap_struct *vrm,
- 	*new_vma_ptr = new_vma;
- 	return err;
- }
--
- /*
-  * Perform final tasks for MADV_DONTUNMAP operation, clearing mlock() flag on
-  * remaining VMA by convention (it cannot be mlock()'d any longer, as pages in
-@@ -1576,6 +1616,23 @@ static bool align_hugetlb(struct vma_remap_struct *vrm)
- 	return true;
- }
- 
-+static bool check_reserved_thp_alignment(struct vma_remap_struct *vrm)
-+{
-+	if (!(vrm->vma->vm_flags & VM_RESERVED_THP))
-+		return true;
-+
-+	if (!IS_ALIGNED(vrm->addr, HPAGE_PMD_SIZE) ||
-+	    !IS_ALIGNED(vrm->old_len, HPAGE_PMD_SIZE) ||
-+	    !IS_ALIGNED(vrm->new_len, HPAGE_PMD_SIZE))
-+		return false;
-+
-+	if ((vrm->remap_type == MREMAP_EXPAND || vrm_implies_new_addr(vrm)) &&
-+	    !IS_ALIGNED(vrm->new_addr, HPAGE_PMD_SIZE))
-+		return false;
-+
-+	return true;
-+}
-+
- /*
-  * We are mremap()'ing without specifying a fixed address to move to, but are
-  * requesting that the VMA's size be increased.
-@@ -1745,6 +1802,8 @@ static int check_prep_vma(struct vma_remap_struct *vrm)
- 	/* For convenience, we set new_addr even if VMA won't move. */
- 	if (!vrm_implies_new_addr(vrm))
- 		vrm->new_addr = addr;
-+	if (!check_reserved_thp_alignment(vrm))
-+		return -EINVAL;
- 
- 	/* Below only meaningful if we expand or move a VMA. */
- 	if (!vrm_will_map_new(vrm))
-diff --git a/mm/vma.c b/mm/vma.c
-index 9eea2850818a8..8c4cd7c97a984 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -7,6 +7,8 @@
- #include "vma_internal.h"
- #include "vma.h"
- 
-+#include <linux/huge_mm.h>
-+
- struct mmap_state {
- 	struct mm_struct *mm;
- 	struct vma_iterator *vmi;
-@@ -507,6 +509,10 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	WARN_ON(vma->vm_start >= addr);
- 	WARN_ON(vma->vm_end <= addr);
- 
-+	if ((vma->vm_flags & VM_RESERVED_THP) &&
-+	    !IS_ALIGNED(addr, HPAGE_PMD_SIZE))
-+		return -EINVAL;
-+
- 	if (vma->vm_ops && vma->vm_ops->may_split) {
- 		err = vma->vm_ops->may_split(vma, addr);
- 		if (err)
-@@ -1361,6 +1367,7 @@ static void vms_complete_munmap_vmas(struct vma_munmap_struct *vms,
- 		remove_vma(vma);
- 
- 	vm_unacct_memory(vms->nr_accounted);
-+	reserved_thp_uncharge(vms->nr_reserved_thp);
- 	validate_mm(mm);
- 	if (vms->unlock)
- 		mmap_read_unlock(mm);
-@@ -1423,6 +1430,11 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 			error = -EPERM;
- 			goto start_split_failed;
- 		}
-+		if ((vms->vma->vm_flags & VM_RESERVED_THP) &&
-+		    !IS_ALIGNED(vms->start, HPAGE_PMD_SIZE)) {
-+			error = -EINVAL;
-+			goto start_split_failed;
-+		}
- 
- 		error = __split_vma(vms->vmi, vms->vma, vms->start, 1);
- 		if (error)
-@@ -1445,6 +1457,11 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 		}
- 		/* Does it split the end? */
- 		if (next->vm_end > vms->end) {
-+			if ((next->vm_flags & VM_RESERVED_THP) &&
-+			    !IS_ALIGNED(vms->end, HPAGE_PMD_SIZE)) {
-+				error = -EINVAL;
-+				goto end_split_failed;
-+			}
- 			error = __split_vma(vms->vmi, next, vms->end, 0);
- 			if (error)
- 				goto end_split_failed;
-@@ -1465,6 +1482,11 @@ static int vms_gather_munmap_vmas(struct vma_munmap_struct *vms,
- 		if (vma_test(next, VMA_ACCOUNT_BIT))
- 			vms->nr_accounted += nrpages;
- 
-+		if (next->vm_flags & VM_RESERVED_THP)
-+			vms->nr_reserved_thp +=
-+				reserved_thp_hpage_nr(next->vm_start,
-+						      next->vm_end);
-+
- 		if (is_exec_mapping(next->vm_flags))
- 			vms->exec_vm += nrpages;
- 		else if (is_stack_mapping(next->vm_flags))
-@@ -1560,6 +1582,7 @@ static void init_vma_munmap(struct vma_munmap_struct *vms,
- 	vms->uf = uf;
- 	vms->vma_count = 0;
- 	vms->nr_pages = vms->locked_vm = vms->nr_accounted = 0;
-+	vms->nr_reserved_thp = 0;
- 	vms->exec_vm = vms->stack_vm = vms->data_vm = 0;
- 	vms->unmap_start = FIRST_USER_ADDRESS;
- 	vms->unmap_end = USER_PGTABLES_CEILING;
-diff --git a/mm/vma.h b/mm/vma.h
-index 8e4b61a7304c6..68e44adee5c89 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -48,6 +48,7 @@ struct vma_munmap_struct {
- 	unsigned long nr_pages;         /* Number of pages being removed */
- 	unsigned long locked_vm;        /* Number of locked pages */
- 	unsigned long nr_accounted;     /* Number of VM_ACCOUNT pages */
-+	unsigned long nr_reserved_thp;  /* Number of reserved PMD THP slots */
- 	unsigned long exec_vm;
- 	unsigned long stack_vm;
- 	unsigned long data_vm;
+ 	 * Use pte_alloc() instead of pte_alloc_map(), so that OOM can
+ 	 * be distinguished from a transient failure of pte_offset_map().
 -- 
 2.54.0
 
