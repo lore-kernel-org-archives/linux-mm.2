@@ -4,112 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E93C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 22:37:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30590C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 23:10:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3EB3A6B0005; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
+	id E4E736B0005; Sat, 27 Jun 2026 19:10:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39C576B0088; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
+	id DFF6D6B0088; Sat, 27 Jun 2026 19:10:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28CAE6B008A; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
+	id D175A6B008A; Sat, 27 Jun 2026 19:10:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 03A3E6B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 18:37:22 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 789EF1C1E1D
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:37:22 +0000 (UTC)
-X-FDA: 84927155124.02.4B716B5
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C5488120002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:37:20 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d9R/wUuR";
-	spf=pass (imf29.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AF2656B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 19:10:11 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 276BF4028A
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 23:10:11 +0000 (UTC)
+X-FDA: 84927237822.06.6D06DAE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5E2DF40004
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 23:10:09 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XPjgvX6y;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782599840;
-	b=xcf3l7Ya+UCcDpKjiwjD9KsMI3cELqkDqyTD8ZolCBjzV8YiIWWCNB4mOVErWTleUGgPVy
-	aJ3YsAfSUtfp3K3M9+Sd7XgqHo7BMvvmFndJ4MINq+WTJU4K7NJFuSOLDySUd4oJdIAe0a
-	MhPDCzBg/xb2qX0BxCzP6yz35OzYu1o=
+	t=1782601809;
+	b=t38dy7st5QCMjz/Of26rvdT1ZK4BB1o0RJ7Woz1d+Q65XSrj/unMLlklqqExDgzAHTbR5y
+	f4DFBiIoNa3xifJ/OjSHkKWWSd8QUEJPmELel7enMtra2nutyO+EizhLxVtPH8LNJgJmO4
+	owuO4amX/faIqDPezQ3OO+DFRr48RDw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782599840;
+	s=arc-20220608; t=1782601809;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
-	b=iRhRS2TAQwuEdDTdORDOiupUYV1DjPqb9eVLSEOEgmQK3t31FSp42hYwI58svc0E1Tbbw8
-	7sNLjERtU6L8b/wzQ/FFPsru1Q9P1V1zJVPPA6s59bJPsRL5Vwqa/CYbimgUVqF4DJatsH
-	qq+/RXFJXbcFfmM0O5AiFA7sbjK3ppw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5D6v0GXcAFL77pAcQTrYWtPV+T9YBufpS6c20apcpxQ=;
+	b=PVhLz9dpcfDuWYF47+CiAZix1+ZigFfnTjeG7i7Qvma2psRoa2tmfPTy+0ebjewkas3BGJ
+	TGpNMst3DV4Fg7uak7erfCZPX5Z3pM72LN2/ekyAFj2n8Yl8imShZz2WfTA2MWZRHg1Gmq
+	6KFDuieu0f8lFzvXf1348R00CMuDjhY=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="d9R/wUuR";
-	spf=pass (imf29.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4629051c9d1so1092545f8f.2
-        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 15:37:20 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=XPjgvX6y;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A341E600DA;
+	Sat, 27 Jun 2026 23:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABA91F000E9;
+	Sat, 27 Jun 2026 23:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782599839; x=1783204639; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
-        b=d9R/wUuRsThi30LfyWHvKR32BBhUe6UFPtNV7GQQDxFb7deC26DGa5HlenFzVXcuwn
-         jbcOrsk9bhe00AiQGjc5pPgK1NbA3XTSVyTYY9WK7fdNLeOHmPNhCsha209HGtbahy/f
-         MTkUV+bEJ7ZQSvGSW/wUnMzHathnOrqLpWoqu8D7t5ATLyMbi3jiEk1SvcfX6vj/kjiW
-         bbYQD3XhLq+bR4sLf8bHXNNl6vTB2UuCuzt+Cyx9Y9+Z/oI7vuXr8rZis2yZum4WsDEk
-         IuF1i9joou61+AZErSgb9XZJftwm0Zv7QxGaZHXCHV9ql52dyZeUE1stP3pu2tkmuQgv
-         K1vA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782599839; x=1783204639;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
-        b=LYeobHf/UwnH35OAAd8daSiu8wk/CwVQgkJMwmGhaWFAie7aEpWY2Tv5ux0+KPka2o
-         +0tYyVwsyqJ7HsLmMfi3tToAO+FQZRkhu2yxrzn1n9lyFnvcci79eiKr9wx41m5wm8gl
-         Lgbl7B0Tc8CX6d9xtQm01IaTi8xeFfpiPiK79Nb42xDKccn7x59ZOPbapLsFZbjvy6/2
-         9p/4J6SIYS0oK+XJkKH97iApFAbHQG1DJSgceBtjDAq7RJUmyXIUCc8cO6/GZcIrH+qY
-         VwAPDOkge4flZa/gj8WuPGkcXGFlkc2BDpyvzO4L3tG4Mo+lUnBaaZ+3C+TD23uj6P6v
-         d1Pg==
-X-Forwarded-Encrypted: i=1; AHgh+RqUwudEOu1S5rDk0TU87dZLvyUke9d0AJIBp6pOqWslSylwUOW4UG8Q3N47MVdtiXRj/FzOSxtMcQ==@kvack.org
-X-Gm-Message-State: AOJu0YwnD+1Qcr4nF1ivHWwe9ssYQu7tYD4V16dCs4Ch+waENVTKjYNY
-	rozP7DqM367tv3cgeCh3GBJTyKX6hCUWX+QT/VH7GjlVUy1b/lgq/TFM
-X-Gm-Gg: AfdE7cmKcPcTl1WCoSEhlCK1KePVJw6Afl2WDLH3251/KkHWN5iWIxYWu0aHgqFECEQ
-	zcijZijPnfPeXQFCrsgLORzKrbVjY1slOXGFVzWGYRImbYNX6bFJCkyyD/HwP3d9niAd323ER25
-	VlxM2QYYlsDeRA/WQKY51pwNfffC9r8yON5VaZc6hMkSp6K+Bpb3Rr6IRxhhLRSla+T6yN38mEx
-	c2LF7b4iVwMpevKhn4eweO6TqQYyR/wkDXg94LnZy4IodtmCMC8HicROcbIXMtxDmXsCbKYPodq
-	uuedFxXnoRHzZa0lgQQkfUQoKIYgQOYIbsmeZOSma2f+9VO3Xwmlt/7wigC0O8PbMMLufSAYQnR
-	SbGwr2etlHVfh1LI7bTGeoGipQDS1Nj0BNc5CelRyrUJUD32ct0fhc5dZlatpo9NVFur1ozB2Ed
-	QHzdHbM6HJys4=
-X-Received: by 2002:a05:6000:2203:b0:470:2fb1:3dca with SMTP id ffacd0b85a97d-4702fb13e80mr6329910f8f.30.1782599839120;
-        Sat, 27 Jun 2026 15:37:19 -0700 (PDT)
-Received: from user ([104.28.155.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee018e8sm40869097f8f.11.2026.06.27.15.37.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Jun 2026 15:37:18 -0700 (PDT)
-From: yahia <yahia.a.abdrabou@gmail.com>
-To: hughd@google.com
-Cc: baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	yahia ahmed <yahia.a.abdrabou@gmail.com>,
-	syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-Subject: [PATCH] mm/shmem: Fix data-race in shmem_fault
-Date: Sun, 28 Jun 2026 01:36:56 +0300
-Message-ID: <20260627223656.181988-1-yahia.a.abdrabou@gmail.com>
-X-Mailer: git-send-email 2.54.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yf3z8hyp7ztfn5htprrtjdneibf84rx1
+	d=linux-foundation.org; s=korg; t=1782601808;
+	bh=5D6v0GXcAFL77pAcQTrYWtPV+T9YBufpS6c20apcpxQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=XPjgvX6ycSUd9Pjzv07W94UUP0I2rXBsMn1XGQ1TtVVprC6RaHbLLOlm8YRdyA82Y
+	 gjAuEtnZwvYXdnZ2FS0zk9vkPz9y4ULh4V4ZNZ2hhggC1WwyU+AJXPnrrYwlTlN2Vc
+	 ntMsz8r1/oJhB4GpC55pla69W3RJZN1NpPWFYtwk=
+Date: Sat, 27 Jun 2026 16:10:07 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ rppt@kernel.org, vbabka@kernel.org, mgorman@techsingularity.net,
+ hannes@cmpxchg.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmstat: fold stranded per-cpu node stats when a
+ node comes online
+Message-Id: <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
+In-Reply-To: <20260627202243.758289-1-gourry@gourry.net>
+References: <20260627202243.758289-1-gourry@gourry.net>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5488120002
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782599840-742042
-X-HE-Meta: U2FsdGVkX1/PzYmLZ9LRe3oo3GYrU03Cpkvw1bdh2VyjhX2YllSdaoKERcPib8tA3K3UdV1xbHYZU/bZ6Y4XvNZITzwILVnpgNa+K5F0KxnOp8aIODlrbTTQh5niMGv6dnw3n2ZzLMJV3eBOX6bqQm/Zi/eQZqcj8aIHKrnlaTo0LW0sd1aMDDi428BXljYR338owrKD+9MuhddZUfju5AxDtjxskDfxdzw3UjcdJnmCoW4eBJsCL2lxYwisXpvBYIRUk0tmjUUyZhqkMb+NrBCfnf/qBG+xKulPz7X/6dD7/pPEEWaZwu9aeM9+YeAG/FlCG/LrPcsJ6+w4zpblqRFFeHlNhfynucI1sHTwKubsox5UBKckwREhaHuAmxrM7q365FyCsL5d7hEcq4g/yhsYMyE6Us8SYoPkDduq1HqNQzwxBOuteLhYwdf2IzIop2R+K866Gao5B0RNjPE1foAxKv9JCCB4xQ/l1pMphsuQZa7AORFeZWbt4AouaL3ZowA8DkQ29u2uTkrK1/qyqFNNbAKOSXDDmdGrT7WUCaKA7oftaWMka/BVF3iQ9i7B/bSi2Y/Q//QIhAsQMSXJwEEuw0U5jnsVGhfxfL+GL13Syq6QgCBYFJfQ0m6JhIV6OFgAcYuhkR849rTLisXk6gMH54WFoIedYF/qq34fBFT3s71BaI+KShvjDxsH1ub4/8+VnfsMRjhsuoDSXvqKAkDOn/n/OyIXERVUSYi1g7xS+U2rZ6vVPHWRiH31007wDJqBkqBneLo6UGHpqPi2Rfdwpw5sp+OQ9yf/dPTmtgi3UvRX79Rlme/Qm3qANbBeG/2LC8o4NX/f2KiX6i9MEWShMWOCvQlbho5QAxx1+Z6+wbUVh/N+nwnbAppQjNytyk76OU+1pHg9M5CcKyCZmK2t+5XjdCEsqkg+h58XJSc7dZHtOE8rpkxF5TILkq1srq1yYKLn1abhpyP+CpV
- 8xlvepV6
- lckQoWw0yjqsEeq5X1XRYeJApda+zoo+zOTzSpWmSeS3apYt4RDiyMCxTEK3jpuWQi66AklGvQPKcInKZVKcC17d/oe7ZQkBhI4GGu/uNd6ko2mNi+2hjN5cr2nr4rAreJoexgm+LoZvoIbtMXVMqJ6piWfggcibSbvPDI2WTil3Sy0Lq9xmy3ctnPAN01qYnIzVIPQCEwwUZMo7hx5DVkAnHbPqXnRcGb5o+tm3vSKgE96SfLxUQuJ6isFX+QWlYgqggaJPBAW4f1ugKhemRmS94tVB+04px7B2eHztLHJWM0RBO9YP24agQ52Jx2THOU2qWKc9hQ6Ii1ke7n2YaRRQd4//njNgaqaIDssB7EhLBdTixe/kvf26hmZ6hwuFF2LaOOuQj9098a2TWFfHGJIqM0/rjigyCrjUQvDGm5s9lH3J1Ko73q/v8XpVhxXvDTvp49kNzVXwfwvR2BYEfpGYATr1o5X0UNSuD1UsyOEu7WhIHu5byfP7FYHHtWRCjJh9pU9njCPkjoLDikFcfAW4itq1IoyFSCX4CDp5Ep4tO6fQxPpA4ZOSveCAqRsa6QnVjbdesY0f8sUlpjdCNf88TbycWYht/eDI9nkV9YekeTnbq54UD0ZOO8yM8uYkYrIwj5+0FWXLfqD8gzS6wsiX4wkhkP6cJDc4QZnNfYzwFFD32Df2WJJjKOh5/oTNP/Q6oyynskkzShD5V/QjdaIiuWKVdXUit+jpF0gTh1Pp9BKuENBd3a3c35Q==
+X-Stat-Signature: kw39s1kn5wrhxjg4r4hjpiyniw6u8hqm
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5E2DF40004
+X-HE-Tag: 1782601809-674223
+X-HE-Meta: U2FsdGVkX1///r8TI7/1ddF/GVxkXd55NO9AxEFCo228smKlENYysWGjyf3AC6CmILs5rM66K7/CV4xT/W6A1X2nixJoghg6xSfvMbYh+cJhG6RDxvu/NgmBB+yC0x3FRL1ouSqQTO1NBDvWr4l3eNpxe2VCVITAjMceaqeO+PSeUJSYKj4TB+6m8G++D9/9FCJ1T9hV4ahR7jDvtYq1kNBbVk/ujwHFAtewDThuTrQ7Sk6JriJizuDdhn/u4sw2W6UkOsCPFJyd9Jceas//x39e1dTcsL0k3sFa1BtwFRImTPdz2Hm6t+RVIVqJArQbtVW+6A8Rb/+B9FlQnYnx3kfMYKII8intwReEGqqGdZ/k7RKQXnIKcH8F+gwOuRHKemap2XCj86OMt+wHleG/W4Z6oPR6HJ+lk+0rKRsy/8pcxJuojTuxKM3+qOOP6AWoXdnAbulu09gww39JXsJ25EDOgypEcwLwWZnkMZpA4KjopfNDvalezzut4IHLQMCPJITzHbRxX0d4P5TxbiAdHJyviWM4b6aJGTGu81GJIyPuZaUi465Nf4R4IAzlKvZg7DmSl2LNDjY6o+Ydfrbz9EXlT9HkSJ/KDM718/t86XN5Qmmc+4zWSxe5QeEhbMrauRsIt/bOmdYmdbEjZtbCRaluMTJ5va5FTgYXZR6ab7ytClvZ3m43aKuUgTu8OwG2Iq+zqq1i6PEHBobbrAkpfbTlruUzUWyNO8nn+hZg29LZDsPvr4KM2lqgSKd/OZArU75lMGd1GKlmOKI8OCFJIfzFJbZB8V7vAtsG2wOmJU3raG3mwztgTi4K64MS3QwVJIuO83M2FIhOu5GgcN/XTKh+uA/c62ZPaajeR5B7iymOmsviT7dEhz5BtA+tkIr4bZGzvFYrMWCTsb1pQo12xswxUnMW5nspaFaPzKPP3GEHZhvZyweYpZB+vcxHzQ39h3TOpvxfTd6BP44KLtL
+ k7tHxriO
+ O4bu97p8A6n2YEGwwMxAX4iBy6vt9QQHxLySCd00yu1TRTwaPdKMXGJM6WFGXRTo8zgTR2w+HdB+0CCMwt/p+6jObyheBz1LO1Aj+tkmUlZwgCbVvVS0Isa6PoaYwVpZ2rfNM5VIaQqxex+9nPnGAEoaX469ZJPX1J0X/HnS10UxMsMFAF4X3+/PkRMSlNzv/6KQD8NuBPEqoPKdVFGYmc5stUpAH99fZGChmCyQny8Bsw7jnbyDgoalGLt+1j3nSdcNGEm0Aiqd0MZMHmZSsYeB5mBMME6GPTDwtJwB2OMC+c7CLp3deXYvJRmQJ5QmftlM7rGG2+aIuC0yQdlCSH0zMkdOW5dqDmVv3gGl9aud9KVSX0agkSJ59cA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,39 +91,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: yahia ahmed <yahia.a.abdrabou@gmail.com>
+On Sat, 27 Jun 2026 16:22:43 -0400 Gregory Price <gourry@gourry.net> wrote:
 
-shmem_fault accesses inode->i_private without
-holding a lock, while shmem_fallocate is modifying
-it while holding a lock, thus a data-race is created.
+> A per-node vmstat counter is pgdat->vm_stat[] plus per-cpu deltas.
+> A balanced counter can sit split as global=+N / per-cpu=-N.
+> 
+> The folds reconciling the split only walk online nodes, so when
+> try_offline_node() marks a node offline the per-cpu deltas are stranded.
+> 
+> A subsequent online resets the per-cpu area but not pgdat->vm_stat[],
+> orphaning the +N permanently.  All NR_VM_NODE_STAT_ITEMS are affected.
 
-Fix this by using READ_ONCE, which provides an atomic
-lockless read of inode->i_private which prevents compiler
-optimizations such as caching registers. which is safe
-because subsequent call to shmem_falloc_wait revalidates
-the lock.
+Geeze, simple mistake, been there ten years...
 
-Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
-Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
----
- mm/shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The existing code zeroes the per-cpu counters and causes a permanent
+> skew. Fold the stranded deltas instead, before the node rejoins the
+> online set. The node is not online yet and the hotplug lock is held,
+> so the remote access to per-cpu values is safe.
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b51f83c970bb..97b3913144ad 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
- 	 * Trinity finds that probing a hole which tmpfs is punching can
- 	 * prevent the hole-punch from ever completing: noted in i_private.
- 	 */
--	if (unlikely(inode->i_private)) {
-+	if (unlikely(READ_ONCE(inode->i_private))) {
- 		ret = shmem_falloc_wait(vmf, inode);
- 		if (ret)
- 			return ret;
--- 
-2.54.0
+Oh.  Shouldn't we be doing this during offlining?
+
+> Discovered when node compaction hung for a nearly empty node, as the
+> math to determine throttling broke.  Reproduced by repeated memory
+> hotplug/unplug cycles on a node under pressure: NR_ISOLATED_ANON
+> ratchets up and never returns to zero.
+> 
+> ...
+>
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -1536,7 +1536,7 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>  {
+>  	int nid = pgdat->node_id;
+>  	enum zone_type z;
+> -	int cpu;
+> +	int cpu, i;
+>  
+>  	pgdat_init_internals(pgdat);
+>  
+> @@ -1554,10 +1554,17 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+>  	pgdat->node_start_pfn = 0;
+>  	pgdat->node_present_pages = 0;
+>  
+> -	for_each_online_cpu(cpu) {
+> -		struct per_cpu_nodestat *p;
+> +	/*
+> +	 * Hot-unplug can leave per-cpu vmstat deltas unfolded (folders skip
+> +	 * offline nodes) - reconcile this at online. Foreign access to counters
+> +	 * is safe: the node is not online yet and we hold the hotplug lock.
+> +	 */
+> +	for_each_possible_cpu(cpu) {
+
+That's a lot of CPUs
+
+> +		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+>  
+> -		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+> +		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+
+and that's a lot of items.
+
+I guess the overall loop count won't be large enough to cause issues,
+but it's large!
+
+Perhaps there's some simple test we can do on the per_cpu_nodestat to
+avoid the inner loop?  Perhaps might need to add a field for this?
+
+btw, "for(int i..." is allowed nowadays.  It'll make this code nicer, IMO.
+
+And... Sashiko seems to have found a pre-existing issue:
+	https://sashiko.dev/#/patchset/20260627202243.758289-1-gourry@gourry.net
+
+> +			if (p->vm_node_stat_diff[i])
+> +				node_page_state_add(p->vm_node_stat_diff[i], pgdat, i);
+>  		memset(p, 0, sizeof(*p));
+>  	}
 
 
