@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D53AC43458
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9871CC43327
 	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 01:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4AAA16B009D; Fri, 26 Jun 2026 21:22:56 -0400 (EDT)
+	id AC7C26B00A1; Fri, 26 Jun 2026 21:22:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4129A6B009F; Fri, 26 Jun 2026 21:22:56 -0400 (EDT)
+	id A9F816B00A2; Fri, 26 Jun 2026 21:22:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B0776B00A0; Fri, 26 Jun 2026 21:22:56 -0400 (EDT)
+	id 9B4956B00A3; Fri, 26 Jun 2026 21:22:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EE2356B009D
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:22:55 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A4691A061E
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:55 +0000 (UTC)
-X-FDA: 84923943510.01.4B6AE6C
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 99B97100006
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eNhR0OPK;
-	spf=pass (imf05.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CAD26B00A1
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:22:59 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id B9D551C356B
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:58 +0000 (UTC)
+X-FDA: 84923943636.14.504FA79
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	by imf13.hostedemail.com (Postfix) with ESMTP id CE27820009
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:56 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rXU6MK1c;
+	spf=pass (imf13.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782523373;
-	b=SwRBcseHqNyN8dDeJrwcu7O7XFbQdgCFP9W3zN2kQuHir+unAlpZmKmHQ7fwQEEdMUH5to
-	5UVA42CZ8guRzT9i2GmqvpGfVL4pHctp0i8/TK67z355+YOaxSEZUj37LHySZRhtYKqz2R
-	7rwsId8WZeAZT3sFVu9jizQtYzbCqRM=
+	t=1782523376;
+	b=66UmEuqiUmBycVByfWKwtisFV+py4jTrvjm8YxbDWbmgEFgFySA5MtsW3jgfSeag5xV3yI
+	dj7ImDy+ZVkj1eE/snlj7K6k+8J5411BQeMg5ZQKjG/q7kmfKEH7SQpbZA9qo0BM6Ylj8s
+	l2rDEMdmafaz4vCQG3mdLTxXzAh/Gcc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782523373;
+	s=arc-20220608; t=1782523376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gxxBMw8gFEfs376EipY0Ourc1Enx4n+0AlFgEEal9Tg=;
-	b=gIZ367zuKGKtPfehul+/pNt/ONCFPjRXNiJ9eD7YyBAhTE9pxEtkXXeuGAi3w7DQmDZBCk
-	7+ro4dnAMB78CueyZ+t4Q8wOHBDE/EO/VvxzdoRLCp+Nx3wTaAgx/THzWjzLGaqB9zMvQl
-	kHStrYaGacsezNtF0nsLCmkEA//1dn4=
+	bh=vRrGpKZ+abQ6YTR/WwGAxpwqxu+0Is3sCqTd33CTxkE=;
+	b=xTkA2gG4D1J24+nnGy0Bd8niHGCimB2oPcyf/DJs8bT6y/j1vnOXsrHnMrTjm24M7/IavP
+	LsvQKK5KpY27nSaMXSWA7q+x1/HpmcKcGfgZrGIRQFGtBjSvsZ6q0EZj7F/JB6RmUY2i1W
+	Cz3PXObTLB4aYr/3OLNuK9cpgD64xZs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=eNhR0OPK;
-	spf=pass (imf05.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.49 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=rXU6MK1c;
+	spf=pass (imf13.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.170 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-139f1dfc9faso33389c88.0
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:53 -0700 (PDT)
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-30c9c8c2697so1710856eec.1
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782523372; x=1783128172; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782523376; x=1783128176; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gxxBMw8gFEfs376EipY0Ourc1Enx4n+0AlFgEEal9Tg=;
-        b=eNhR0OPKUXD55lF9hq+k/YJEMFFT+3QHaTxFMjkVPL3zgsZoA3AAYw9mq6PPMU4OqE
-         DlDSzqItkW91mKZNmYq0G5KYEPAJ5FH6HXJZd9MARC9b5cr53DwXMWPh6wCTOCdirKEe
-         KBpg8dD2GfG2r/gWAOAr55urb+Rox2rpSs07jDMwJNXg/xAvQWqyqMkzgdIdZN4KPz2h
-         piLViD32oxeqvMjmsL+ycKWUmV+BwymgkXXn2HEpu11LlaG58wc+U+FAYSUW1DwFWC9o
-         yY3+y72KBulRME/GOwSoqTmI25jB47gkkt1vRwliom+pRBSn6/YLH13u6tsmnzgAjbU2
-         9fnA==
+        bh=vRrGpKZ+abQ6YTR/WwGAxpwqxu+0Is3sCqTd33CTxkE=;
+        b=rXU6MK1c+Fd090ruxiLMiD9PfHhcL4slrN2kdoqa1GnRgV9fZceoEfSQlj1NzxvcBd
+         kNwGiDG2tBYhdYFXtsEUbVMV1JuI5dIL6hqOMC+/f2PX7OcgxWqg77vpouwtyjvc14HK
+         skw9BrfpB0wPpH4e95XWDKhT42Y1mqrnljq/h4/Ak/7a9XidD1cCt3paL0VBAMGA59vQ
+         uu+OcXyFPLpkbAGJPAdPmakcYKIK5YkrNClcbWa5s/0qSwN87TLU9j/LAAThlBX7v8zK
+         viLogefgqLf0w4vop2yXMHhgBgXKMkqZhBULEy/t3A3kTmkqwIHaOTohdETgpLXA3MXf
+         UP3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782523372; x=1783128172;
+        d=1e100.net; s=20251104; t=1782523376; x=1783128176;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=gxxBMw8gFEfs376EipY0Ourc1Enx4n+0AlFgEEal9Tg=;
-        b=tJhWK/lJbWIEtZUI4uRv5Vb23u2qK9oBB1Y4eIfnJ8T8v+qVyTSetqjT9CAVtb457P
-         tQKNcnw5s/35xAgdtdp+k5fVLiUv7pkGC2fbzt+lMJ76pGT4QraFot4+ABXTfuBNjmMd
-         s28bUHYyxS9JxTD5lZM2AAS2sfICUH8FppP4iiagengad0eVtu7v2+WafuaI85Czz6m8
-         VvIgaMyb4uIZudmGEpuMvaSFJ5fsiMDi3cHkr2huxMVi1uTXs0Zlqic/VphzmVEq/Gjo
-         ff/mwy4b4MoWT4KTIN/AafQAmIv6OLtFnKkRF+9qncSu5Xf//pzvfiaeV4Za4WEYfgNz
-         PsJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqHLXWcCQv5LpVFgvbGbPDyb4uFNOoq57DGgRvgYBuiuUDLKU4sjl88rJv7TRWFBHMlbJM0kC8Bgw==@kvack.org
-X-Gm-Message-State: AOJu0YyZDju/mbKs6LPl2Q7rIQ5wV9OzxJWALnskDz8FzfBiI1z+hiAT
-	uow7X+CiDFAe+/FlNhQfbVhW06dD8L9UfYfV1cj1txkvRXck3fK3Wtuo
-X-Gm-Gg: AfdE7clBLFH1BWaA9Ptf6TK21pV6ZLA+/QITNAwlw/jngAWbhmUhTZb/AuAkga1VODG
-	gaxv9M5ZqvnJxvcwou31J6X99trLhd1Mn1uTgoqv6DWrJgjw2tuU0Ml9pedohaOrrSbEl0nTvx7
-	ZEmIRRMdqRYA4zAHyxnXhvAlksUCE04Iq8hnGLfAXiZS8L/ONYlijJJB9NW1KSGo4/YX/iOA8ZS
-	/NDnqZR3Mkn9ipuLtVf5UzK3l1b1eyn/PBnf/86SUYOwJ7/jTeCVYVFMaOgx3nxfuxYwUfYtPdL
-	8bSwzEJfoMSS2Zkh1m85GKPReSzTs3TAiFekEOtpQinHhAWbIEl/XHmcErC5el6ddyhat+GOxee
-	iAJH7yCJV7xOkEderzgEq3nkFOm6VjGDZY/02fdgnchZ8ZtXZn1MabqTE8gtM+9coM2rS2l7mPl
-	aKo9oFpO1UjwllphGIYeTE4RoxzdAeZ2fgIjdaAXnpLx1o5VVb
-X-Received: by 2002:a05:7300:f602:b0:304:d75b:f5df with SMTP id 5a478bee46e88-30c84eb7db9mr7021813eec.19.1782523372367;
-        Fri, 26 Jun 2026 18:22:52 -0700 (PDT)
+        bh=vRrGpKZ+abQ6YTR/WwGAxpwqxu+0Is3sCqTd33CTxkE=;
+        b=jBq1UJvrOOQHTQRrutLtgzID3npd5xA9rZVJOWn9PQ80Uj5dibqLfOGN9QV1K1yUQF
+         vLO7wCfWhGJ3aVv00u5Y4AqVXJlDnDOsplNK5sc3hAl0UVOzgvce/3ezoC7Zs1eFIjyo
+         LJrey+LFXEJ17nRNUpsEcOJ0xdj+VONpc9/DcmQbFL/SbjdOATq/k9zNFz8Wxs3Wcx++
+         iLGv9waatVu37yh8rz+qZitD3tuYPYHiLeMe0pApI/W7Kd0RdFgjmB5dGrkyOyVMT6av
+         Wli+jAN4Hdis0+2XjJCKeWh7lHPhwLWXBacwE/ki3UVtAawf6WyDnjm3Qai7cEImt1fl
+         fRbQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rp0M39n57H+paXeFAPrXe5Py7aatmyOaR8PazXJSaZC3uXZUYEVzrutPLC8O1IdbqLvf/bd3MLefw==@kvack.org
+X-Gm-Message-State: AOJu0Yw0O5Ag1bbrKpIyQnoO3Hi5+zTZ6oZi1u9GTqj201JlVGtqpAy9
+	JNCemCYgaJPFjVv9LpTLyD6iePSbrirY/eemEaOqe3UuqLENSqHmFi1z
+X-Gm-Gg: AfdE7cko87nDY/OPuNopN0m4j3jqxjIaaT0mPhbREJQvwA2UUsJmdc0zAqanEa8AkbO
+	6BdGUK8cBvEDnf+1vEvZ32bBQTtpTOlbpN0dEKFFWkMd0MX+1MbLI3TKSSn8Xg8IV4w9NyLi6xy
+	AT1y7+WM6QQJzqx3R3eq7Bdwe08/kt+lVdsFE6GTO+L/WDtAFZTXiLF0MFRi6OfZowhOMA6wm+V
+	9uBTJr1M1YSSu6mpVn72Jl19g/NVq4UdlEUiui511E7fvZAVvu3YWeedsOnHNm10MELT2UgbNWP
+	gJG3bwBF+YstaXW8y6ELcW01lZqHHYFH7KBq9NDQXIFu7NhPTYBvtHdY2ONENN8QBCqk8SJMRIL
+	x/421ApkgbPYejLXd25JJFo+hgv5P1Zhv68XBmw3BUH5d2okX9FX1AVdHiOQcVD2UTF3bn26fCP
+	iO2D1ybAY35kfdv5GwMBRTrnR/B1J6/NP6K68tVKqt336NSb+g
+X-Received: by 2002:a05:693c:3105:b0:30c:ab4f:46a9 with SMTP id 5a478bee46e88-30cab4f4865mr2199291eec.45.1782523375611;
+        Fri, 26 Jun 2026 18:22:55 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6802:dbc0:fe0d:366d:f00:1840])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c9e9214sm22883437eec.20.2026.06.26.18.22.50
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c9e9214sm22883437eec.20.2026.06.26.18.22.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 18:22:51 -0700 (PDT)
+        Fri, 26 Jun 2026 18:22:55 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: Andy Lutomirski <luto@amacapital.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -99,22 +99,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	Cong Wang <cwang@multikernel.io>
-Subject: [PATCH v4 2/6] seccomp: introduce SECCOMP_IOCTL_NOTIF_PIN_INSTALL
-Date: Fri, 26 Jun 2026 18:22:15 -0700
-Message-ID: <20260627012219.1079851-3-xiyou.wangcong@gmail.com>
+Subject: [PATCH v4 4/6] seccomp: re-validate a redirected syscall against outer filters
+Date: Fri, 26 Jun 2026 18:22:17 -0700
+Message-ID: <20260627012219.1079851-5-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
 References: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CE27820009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 99B97100006
-X-Stat-Signature: r5o9brcpa1knh7mgfyppm4norauy5qkx
-X-HE-Tag: 1782523373-682302
-X-HE-Meta: U2FsdGVkX18BJERjVxWysKkD2Qq591jDDSazTdpOvBoJQ/juwxw9DE37KEjMr31bJhSNzgxtNPIdyzeSpDoQSvYCfToUaxFfkj46UfILPAUZKoKM7IjOvKxXYSO/m/uc1ebBHOAm1owZamWbaWCake3Xb+cPtjO/0WvV3FFpcwlfhgTPrW0kcQ6SHubpUIH/xEyDPOBlUmxQP8GxcozSa6KgBh4Z0rY30uGIYthujoG5pqt6EeW56uTxQy4scs0+d5uBkUWvv8bgAt3S54EMv03jAIYq5RN7/jR3crZPGr7FKm66OueMLiEwOSN2t4gSMATYQPmwtVdwX7ceJLsGvea/j9RskRKxPoVqTUaPn9ZApM/Wi0Yv29MgTT30OvBUmA6TP+w9ei8XNZkbKHBD8sdE3J0k+cAk8i/Yz0MqBYEJsH9aW2pLqtZb//Hz434MnHdCvO1yoKnZntkAOEoNMyJq10R5CDmVxVU1JCUspSAJmGvr1bVlww6eAZnuwc7/fPw51XOu9xZtk7A3bvSthuDvNNolXY/DheR6PYL1dUZvceicANenP5aihItSygS/l/Ag2yMduWQyRiPLcbO8Tw8wgJnbe0Dce9rtXXDtnYb5ZkbkefvKdJO4FhT2RMnmirNa04IBnPQVRdrW0954h7cU28gQCoUaecToAF9N3iB7TA5LDvBMkuEfEgS/CYQocceoTAQbVXg6myu0/769Pi1++qnGnJr3yyA/v2c2tmuC8y3vdlfqHQ6cD4TtDsfeNFaYQcaPqeJxyXZTKyUrSATSHv2IxY3ysyCMaZSF0hx8XyaY8RMZUi7nzwQ3ljhcqvZLO9QtPGhhA6cKWnzNz41324qQcKdOa42xLUaQ3Mq769LFdDW87JxpFXSsTb47JS73b6Hyw8LU+zt1772vfUQw4DyejsH7uHeCdiHe3BlK36rMDFeuiSRYr9WYrj8Pl6eGK6uFqYMB3+pNsEk
- 8V2RTvVa
- jZ2WMzXzVPsjx10+GfLRi2D5zq5rHP9+uMfmpV18fECzK0OhFIQmIKXipXOZ01aqI04t51oBbO8ZKAoTm2DQbMaVRN4EiS7idupnEuoZwSGlEupinc493n6DllcUF+wEefUrd3zNmFyUbnEp1gl/QdqztkBCujLAsCnUb3fTJaG9/oPOLm8VY5TD6YSiNXIdWXkvHSw/jFvqt3xPUjEhxQ16We+wP+1TYhGdmSAxzx2mJwXk9ytegdaUnncN7xMkUwZk7EBrQfgHGSg3mHxRFQd7I+X0yDN4bqvYdjByjJiJioMFLscQkkNezBibCx8gFBadRm3mHxl5UjI6eSqfWaNv7K7ukxSkBfZIuUTP/hqWMJ3OykP17P13984uYgmiDaTYQHwBfO0UNd0XjZmnyZ+BKs7V9XB0yQhk0lrgrwXlkGmohpoKjnnRgXT2nsb+tqRhqJzDB3YmaKbFRqVwfZNqNiWNogEFT6MGTmHZta+a86sgVqy0wOw+xxs59L7MKxLL4YtA5TjrObnI=
+X-Stat-Signature: 4bktnh8e3ccey7fjwaiwncswjs1cf4fw
+X-HE-Tag: 1782523376-683825
+X-HE-Meta: U2FsdGVkX19GnjEDf1y4MKu0+JbOSx0YtHNiTbisNllA+06paq0To+GEJaj6bQoKY1f3ZNwWKJccphaTyRXOVglfDVYJNtaQqPhf3v8NRB8FFVm5wS0l6G0aklafogM5wKHo3uTxT3Not+GC+5kB4Q7/fXqxsLuI1VRnrPDOz4uqU4w6TReM9Y35n478otdeHPCXqnOI7DOWtZf4+mI+EfrwXK4T13Y51a9IJx40pzPJlVq+38ZVBsJGMeAypmBHtTjTxPJYBzW0F9zvz4xeLXgRsjureohAynoDHhdKQO6dqWPjcG2ZtcRGi9Kb4HRpl0KnTcpH/J0C8pW2JpKz0yy/lM5RyG5Mo7IsKHGD69oq9Z8UyOJn12U/0MAjX6ZwONtPfdW6anIpCwMhJ21L0Hekz/1DzhnlfY7mqj4EOESP6HWyQrXqLjQq0woXqJ9ljfhDXqYkzNobAEEWbSmtattJb4ltBDnerx8jrdsNGvxisUOii52KI/M32stLwQqzCrhCJ6i0+lwdTUtF4FS1HC0iFrfX+/2h7T93UZTzHF6F/wV3W1JHV1v6FyxDp9c6KI4w8MtUy6r819C1KRrx807AyhA2UtRfWVGlimV/dl4wT+mioo1q4TP3MkkxjhaG6tIyb/a42qfsnXknE3oLms7iDoV7Ruz5+urT++W28cIvYL7gtUlakxq1E4WWfz5K8pwkR4KEmFGhx2Fy/7YozlQI3V40FTJ6btYrAkl7/5f/kIMZDdCsImA+J8WGqy7V62Z+rzgno6J0D6ijQOOaasOnmMbG9CPT9AOTtYGP0GGoBsE6IBBE4ScwIQujw9moLTaOxdluPuinlqdKebryauttfOHcj1q2byzIsq213VI43PfOKHkTfuOca4ZywLqOyOpIgkkh8Tqhtz8YOOQfpmiCWQQVuh694Hq2p5fktdnjgX0AKgyt8D1txtmIJdpI09sawe3trIvLq1OjieS
+ 8BodZRhP
+ v8Rh8igHhD0UiFtdlClROjWe9/0GI9/KhHqVWxPajZW2z/Q0OEWdeZKMmEnAHaXda74/VamTcTan2X1ThOP04J7y1nhKCker8fdlx1aC4nFTCENDvqWKgGCteLkyVIvmzTbBvzbxVUKu69s7T7M7DTo6xSwMW2nQJRFiUGZIIEqm0KwsHLIPkz7Im9M1tr217HAMNZ5l+r0yGXzbT5/jirHJdNexDW9e0yrOwhe0YONRyP4d1jIFzeAJm7EekTluSwUZXIHINEuk1f8IComJnysr0bvEcacHdx843OPY1uibDLA45fHv3AuBiAme41DbWkfK5GAT9vypUe0ntRzJQVvZQ0Trdeam9KmKp5dcR9F1gV51n2eopKE8cNMlQiDL4HMGnD1v05s1doqL1tAhdrURZ7HkAurfAqxVUHwNJtFabDTv6cC5TyuWj3O5uEO5Ew/lDzgezwmeHY6wCekJ/weoF+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,264 +124,198 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-SECCOMP_IOCTL_NOTIF_PIN_INSTALL maps a supervisor-owned @memfd at
-@target_addr in the trapped task's mm via vm_mmap_seal_remote(),
-PROT_READ, MAP_SHARED, MAP_FIXED_NOREPLACE and VM_SEALED. Because the
-mapping is sealed, neither the target nor a CLONE_VM peer can munmap,
-mremap, mprotect or MAP_FIXED-stomp it; its contents are immutable from
-the target's side while the supervisor retains write access through its
-own mapping of the same memfd. The install needs no target-side
-cooperation, which is what makes the feature usable for fork+execve
-sandbox wrappers (Sandlock, Firejail, Bubblewrap-style) that have no
-trusted post-exec window to install their own mappings.
+Stacked seccomp filters are composed by seccomp_run_filters() taking the
+min over a single evaluation of one seccomp_data: every filter votes on
+the same registers, and the most restrictive verdict wins. That model
+assumes the syscall the filters voted on is the syscall that runs.
 
-The pin is just a sealed VMA owned by the target's mm: it persists until
-the task execve()s or exits (a sealed VMA cannot be unmapped piecemeal),
-and the kernel keeps no per-pin bookkeeping. A supervisor reuses one
-region across many redirects.
+SECCOMP_IOCTL_NOTIF_SEND_REDIRECT breaks the assumption. A USER_NOTIF
+verdict only wins the min when every other (here: outer, earlier-applied)
+filter returned something at least as permissive on the *original*
+registers. The supervisor then rewrites the argument registers and the
+syscall resumes via FLAG_CONTINUE without the stack being re-consulted.
+So an inner, container-installed filter's notifier can redirect a syscall
+whose substituted form an outer filter would have blocked.
+
+Close the hole by resuming evaluation after a redirect instead of
+re-running the min. A redirect turns one syscall into a different one, so
+the outer filters cannot simply re-vote on a single seccomp_data; each
+must judge the substituted syscall in turn, exactly as if the target had
+issued it directly. Starting at the filter outer to the one that notified
+(match->prev), seccomp_run_filters_seq() walks strictly toward the root,
+evaluating one filter at a time and stopping at the first that does not
+allow the call; ALLOW and LOG (which only logs) are non-blocking and
+continue to the next filter. A BPF filter can only read registers, so
+re-evaluating on the substituted registers is complete.
+
+An outer filter may legitimately ERRNO/KILL/TRAP/TRACE or run its own
+USER_NOTIF on the redirected syscall; if an outer notifier redirects
+again, evaluation continues from its own ->prev. Walking strictly toward
+the root is monotonic: the notifying filter and everything inner to it
+are never reconsulted, so a notifier cannot loop by re-notifying on its
+own redirect, and the walk is iterative (goto, not recursion) so a deep
+stack of redirecting filters cannot exhaust the kernel stack.
+
+Only a redirect triggers the continuation. The first pass is the
+unchanged min over the full stack, and the allow-cache is consulted only
+there, so nothing changes for existing, non-redirect users.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- include/linux/seccomp.h      |   5 ++
- include/uapi/linux/seccomp.h |  54 ++++++++++++++++
- kernel/seccomp.c             | 117 +++++++++++++++++++++++++++++++++++
- 3 files changed, 176 insertions(+)
+ kernel/seccomp.c | 79 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 73 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
-index 9b959972bf4a..a91d1fc8a2b8 100644
---- a/include/linux/seccomp.h
-+++ b/include/linux/seccomp.h
-@@ -16,6 +16,11 @@
- #define SECCOMP_NOTIFY_ADDFD_SIZE_VER0 24
- #define SECCOMP_NOTIFY_ADDFD_SIZE_LATEST SECCOMP_NOTIFY_ADDFD_SIZE_VER0
- 
-+/* sizeof() the first published struct seccomp_notif_pin_install */
-+#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0 32		/* up to @size */
-+#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER1 40		/* adds @offset */
-+#define SECCOMP_NOTIFY_PIN_INSTALL_SIZE_LATEST SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER1
-+
- #ifdef CONFIG_SECCOMP
- 
- #include <linux/thread_info.h>
-diff --git a/include/uapi/linux/seccomp.h b/include/uapi/linux/seccomp.h
-index dbfc9b37fcae..cc34188f8aeb 100644
---- a/include/uapi/linux/seccomp.h
-+++ b/include/uapi/linux/seccomp.h
-@@ -137,6 +137,50 @@ struct seccomp_notif_addfd {
- 	__u32 newfd_flags;
- };
- 
-+/**
-+ * struct seccomp_notif_pin_install - have the kernel install a sealed
-+ * MAP_SHARED mapping of @memfd into the trapped task's mm at @target_addr.
-+ *
-+ * The supervisor owns @memfd. The kernel installs the mapping into
-+ * the trapped task's address space without target-side cooperation
-+ * (the target need not mmap or mseal anything itself). The mapping
-+ * is marked VM_SEALED at install time, so the target and any
-+ * CLONE_VM peer cannot munmap, mremap, mprotect, or MAP_FIXED-stomp
-+ * it. The mapping is read-only. The supervisor retains access via its
-+ * own mapping of the same memfd in its own mm.
-+ *
-+ * @memfd must be write-sealed (F_SEAL_WRITE or F_SEAL_FUTURE_WRITE),
-+ * otherwise the ioctl fails with -EINVAL. This guarantees the pin's bytes
-+ * cannot be rewritten through any other reference to the same memfd (for
-+ * example one the target reopened via the supervisor's /proc/<pid>/fd),
-+ * not just through the read-only pin itself. F_SEAL_FUTURE_WRITE still
-+ * lets the supervisor update the bytes through its own pre-seal mapping.
-+ *
-+ * @offset lets one memfd back several disjoint read-only pins.
-+ *
-+ * @id: The ID of an active seccomp notification on this listener,
-+ *      identifying the trapped task whose mm receives the pin.
-+ * @flags: Reserved, must be 0.
-+ * @memfd: Supervisor-side fd for the backing memfd. Must be write-sealed.
-+ * @target_addr: Address in the trapped task's mm to install at. Must be
-+ *               page-aligned. If non-zero, MAP_FIXED semantics apply, no
-+ *               other mapping may exist in [@target_addr, @target_addr +
-+ *               @size). If zero, the kernel chooses a free area in the
-+ *               target mm. On success the actual mapped address is written
-+ *               back here.
-+ * @size: Size of the pin in bytes. Must be page-aligned.
-+ * @offset: Page-aligned byte offset into @memfd to map from. Zero maps
-+ *          from the start of the memfd.
-+ */
-+struct seccomp_notif_pin_install {
-+	__u64 id;
-+	__u32 flags;
-+	__u32 memfd;
-+	__u64 target_addr;
-+	__u64 size;
-+	__u64 offset;
-+};
-+
- #define SECCOMP_IOC_MAGIC		'!'
- #define SECCOMP_IO(nr)			_IO(SECCOMP_IOC_MAGIC, nr)
- #define SECCOMP_IOR(nr, type)		_IOR(SECCOMP_IOC_MAGIC, nr, type)
-@@ -154,4 +198,14 @@ struct seccomp_notif_addfd {
- 
- #define SECCOMP_IOCTL_NOTIF_SET_FLAGS	SECCOMP_IOW(4, __u64)
- 
-+/*
-+ * Install a sealed memfd-backed pin in the trapped task's mm without
-+ * target-side cooperation. The supervisor owns the backing memfd;
-+ * the kernel installs the mapping and marks it VM_SEALED. The actual
-+ * mapped address is written back to @target_addr (relevant when it was
-+ * passed as 0 to let the kernel choose).
-+ */
-+#define SECCOMP_IOCTL_NOTIF_PIN_INSTALL	SECCOMP_IOWR(5, \
-+						struct seccomp_notif_pin_install)
-+
- #endif /* _UAPI_LINUX_SECCOMP_H */
 diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 066909393c38..fa0fb3c960a8 100644
+index 7d499e422ba1..84812ce9bdb3 100644
 --- a/kernel/seccomp.c
 +++ b/kernel/seccomp.c
-@@ -37,12 +37,19 @@
- #ifdef CONFIG_SECCOMP_FILTER
- #include <linux/file.h>
- #include <linux/filter.h>
-+#include <linux/memfd.h>
- #include <linux/pid.h>
- #include <linux/ptrace.h>
- #include <linux/capability.h>
- #include <linux/uaccess.h>
- #include <linux/anon_inodes.h>
- #include <linux/lockdep.h>
-+#include <linux/mm.h>
-+#include <linux/mman.h>
-+#include <linux/mmap_lock.h>
-+#include <linux/sched/mm.h>
-+#include <linux/task_work.h>
-+#include <uapi/asm-generic/mman-common.h>
+@@ -94,6 +94,13 @@ struct seccomp_knotif {
+ 	long val;
+ 	u32 flags;
  
- /*
-  * When SECCOMP_IOCTL_NOTIF_ID_VALID was first introduced, it had the
-@@ -1823,6 +1830,113 @@ static long seccomp_notify_addfd(struct seccomp_filter *filter,
- 	return ret;
++	/*
++	 * Set by SEND_REDIRECT: the reply rewrote the syscall's registers,
++	 * so on resume the syscall must be re-evaluated against the filters
++	 * outer to the one that notified (see __seccomp_filter()).
++	 */
++	bool redirect;
++
+ 	/*
+ 	 * Signals when this has changed states, such as the listener
+ 	 * dying, a new seccomp addfd message, or changing to REPLIED
+@@ -1181,10 +1188,12 @@ static bool should_sleep_killable(struct seccomp_filter *match,
+ 
+ static int seccomp_do_user_notification(int this_syscall,
+ 					struct seccomp_filter *match,
+-					const struct seccomp_data *sd)
++					const struct seccomp_data *sd,
++					bool *redirected)
+ {
+ 	int err;
+ 	u32 flags = 0;
++	bool redirect = false;
+ 	long ret = 0;
+ 	struct seccomp_knotif n = {};
+ 	struct seccomp_kaddfd *addfd, *tmp;
+@@ -1241,6 +1250,7 @@ static int seccomp_do_user_notification(int this_syscall,
+ 	ret = n.val;
+ 	err = n.error;
+ 	flags = n.flags;
++	redirect = n.redirect;
+ 
+ interrupted:
+ 	/* If there were any pending addfd calls, clear them out */
+@@ -1267,14 +1277,38 @@ static int seccomp_do_user_notification(int this_syscall,
+ 	mutex_unlock(&match->notify_lock);
+ 
+ 	/* Userspace requests to continue the syscall. */
+-	if (flags & SECCOMP_USER_NOTIF_FLAG_CONTINUE)
++	if (flags & SECCOMP_USER_NOTIF_FLAG_CONTINUE) {
++		*redirected = redirect;
+ 		return 0;
++	}
+ 
+ 	syscall_set_return_value(current, current_pt_regs(),
+ 				 err, ret);
+ 	return -1;
  }
  
-+static unsigned long seccomp_install_pin(struct task_struct *target,
-+					 struct file *memfd_file,
-+					 unsigned long target_addr, size_t size,
-+					 unsigned long offset)
++static u32 seccomp_run_filters_seq(const struct seccomp_data *sd,
++				   struct seccomp_filter **match,
++				   struct seccomp_filter *f,
++				   int this_syscall)
 +{
-+	struct mm_struct *mm;
-+	unsigned long ret;
++	for (; f; f = f->prev) {
++		u32 cur_ret = bpf_prog_run_pin_on_cpu(f->prog, sd);
++		u32 action = cur_ret & SECCOMP_RET_ACTION_FULL;
 +
-+	mm = get_task_mm(target);
-+	if (!mm)
-+		return -ESRCH;
-+
-+	/*
-+	 * Install a sealed, read-only mapping. A fixed request (@target_addr
-+	 * != 0) is MAP_FIXED_NOREPLACE: an existing mapping yields -EEXIST
-+	 * rather than being silently clobbered. A request of 0 lets the kernel
-+	 * pick a free area in the target mm.
-+	 */
-+	ret = vm_mmap_seal_remote(mm, memfd_file, target_addr, size,
-+				  offset >> PAGE_SHIFT);
-+	mmput(mm);
-+	if (IS_ERR_VALUE(ret))
-+		return ret;
-+	if (target_addr && ret != target_addr)
-+		return -ENOMEM;
-+	return ret;
++		if (action == SECCOMP_RET_ALLOW)
++			continue;
++		/* LOG does not block the syscall; record it and continue. */
++		if (action == SECCOMP_RET_LOG) {
++			seccomp_log(this_syscall, 0, action, true);
++			continue;
++		}
++		*match = f;
++		return cur_ret;
++	}
++	return SECCOMP_RET_ALLOW;
 +}
 +
-+static long seccomp_notify_pin_install(struct seccomp_filter *filter,
-+				       struct seccomp_notif_pin_install __user *upin,
-+				       unsigned int size)
-+{
-+	struct seccomp_notif_pin_install pin;
-+	struct seccomp_knotif *knotif;
-+	struct task_struct *target;
-+	struct file *memfd_file;
-+	unsigned long addr;
-+	int seals;
-+	long ret;
-+
-+	BUILD_BUG_ON(sizeof(pin) < SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0);
-+	BUILD_BUG_ON(sizeof(pin) != SECCOMP_NOTIFY_PIN_INSTALL_SIZE_LATEST);
-+
-+	if (size < SECCOMP_NOTIFY_PIN_INSTALL_SIZE_VER0 || size >= PAGE_SIZE)
-+		return -EINVAL;
-+
-+	ret = copy_struct_from_user(&pin, sizeof(pin), upin, size);
-+	if (ret)
-+		return ret;
-+
-+	if (pin.flags)
-+		return -EINVAL;
-+	if (!pin.size || !IS_ALIGNED(pin.target_addr, PAGE_SIZE) ||
-+	    !IS_ALIGNED(pin.size, PAGE_SIZE) || !IS_ALIGNED(pin.offset, PAGE_SIZE))
-+		return -EINVAL;
-+	if (pin.target_addr + pin.size < pin.target_addr)
-+		return -EINVAL;
-+	if (pin.offset + pin.size < pin.offset)
-+		return -EINVAL;
-+
-+	memfd_file = fget(pin.memfd);
-+	if (!memfd_file)
-+		return -EBADF;
-+
-+	seals = memfd_get_seals(memfd_file);
-+	if (seals < 0 || !(seals & (F_SEAL_WRITE | F_SEAL_FUTURE_WRITE))) {
-+		ret = -EINVAL;
-+		goto out_fput;
-+	}
-+
-+	ret = mutex_lock_interruptible(&filter->notify_lock);
-+	if (ret < 0)
-+		goto out_fput;
-+
-+	knotif = find_notification(filter, pin.id);
-+	if (!knotif) {
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+	if (knotif->state != SECCOMP_NOTIFY_SENT) {
-+		ret = -EINPROGRESS;
-+		goto out_unlock;
-+	}
-+
-+	target = knotif->task;
-+	get_task_struct(target);
-+	mutex_unlock(&filter->notify_lock);
-+
-+	addr = seccomp_install_pin(target, memfd_file,
-+				   pin.target_addr, pin.size, pin.offset);
-+	put_task_struct(target);
-+	if (IS_ERR_VALUE(addr))
-+		ret = addr;
-+	else if (put_user(addr, &upin->target_addr))
-+		/* Pin is installed (and sealed); we just can't report where. */
-+		ret = -EFAULT;
-+	else
-+		ret = 0;
-+	goto out_fput;
-+
-+out_unlock:
-+	mutex_unlock(&filter->notify_lock);
-+out_fput:
-+	fput(memfd_file);
-+	return ret;
-+}
-+
- static long seccomp_notify_ioctl(struct file *file, unsigned int cmd,
- 				 unsigned long arg)
+ static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
  {
-@@ -1847,6 +1961,9 @@ static long seccomp_notify_ioctl(struct file *file, unsigned int cmd,
- 	switch (EA_IOCTL(cmd)) {
- 	case EA_IOCTL(SECCOMP_IOCTL_NOTIF_ADDFD):
- 		return seccomp_notify_addfd(filter, buf, _IOC_SIZE(cmd));
-+	case EA_IOCTL(SECCOMP_IOCTL_NOTIF_PIN_INSTALL):
-+		return seccomp_notify_pin_install(filter, buf,
-+						  _IOC_SIZE(cmd));
- 	default:
- 		return -EINVAL;
+ 	u32 filter_ret, action;
+@@ -1291,6 +1325,8 @@ static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
+ 	populate_seccomp_data(&sd);
+ 
+ 	filter_ret = seccomp_run_filters(&sd, &match);
++
++eval:
+ 	data = filter_ret & SECCOMP_RET_DATA;
+ 	action = filter_ret & SECCOMP_RET_ACTION_FULL;
+ 
+@@ -1353,11 +1389,40 @@ static int __seccomp_filter(int this_syscall, const bool recheck_after_trace)
+ 
+ 		return 0;
+ 
+-	case SECCOMP_RET_USER_NOTIF:
+-		if (seccomp_do_user_notification(this_syscall, match, &sd))
++	case SECCOMP_RET_USER_NOTIF: {
++		struct seccomp_filter *outer;
++		bool redirected = false;
++
++		if (seccomp_do_user_notification(this_syscall, match, &sd,
++						 &redirected))
+ 			goto skip;
+ 
++		if (redirected && match->prev) {
++			/*
++			 * The notifier rewrote the registers. Resume
++			 * evaluation at the next outer filter on the
++			 * substituted syscall, sequentially toward the root:
++			 * each outer filter judges the new syscall exactly as
++			 * if the target had issued it. Walking outward is
++			 * monotonic, so a notifier cannot re-notify on its own
++			 * redirect.
++			 */
++			this_syscall = syscall_get_nr(current,
++						      current_pt_regs());
++			if (this_syscall < 0)
++				return 0;
++			outer = match->prev;
++			match = NULL;
++			populate_seccomp_data(&sd);
++			filter_ret = seccomp_run_filters_seq(&sd, &match, outer,
++							     this_syscall);
++			if (!match)
++				return 0;
++			goto eval;
++		}
++
+ 		return 0;
++	}
+ 
+ 	case SECCOMP_RET_LOG:
+ 		seccomp_log(this_syscall, 0, action, true);
+@@ -2154,13 +2219,15 @@ static long seccomp_notify_send_redirect(struct seccomp_filter *filter,
  	}
+ 
+ 	/*
+-	 * Mark REPLIED with FLAG_CONTINUE so the wait-loop exit path
+-	 * runs the syscall normally.
++	 * Mark REPLIED with FLAG_CONTINUE so the wait-loop exit path runs the
++	 * syscall normally. Flag the redirect so the resume path re-validates
++	 * the rewritten syscall against the filters outer to this one.
+ 	 */
+ 	knotif->state = SECCOMP_NOTIFY_REPLIED;
+ 	knotif->error = 0;
+ 	knotif->val = 0;
+ 	knotif->flags = SECCOMP_USER_NOTIF_FLAG_CONTINUE;
++	knotif->redirect = true;
+ 	if (filter->notif->flags & SECCOMP_USER_NOTIF_FD_SYNC_WAKE_UP)
+ 		complete_on_current_cpu(&knotif->ready);
+ 	else
 -- 
 2.43.0
 
