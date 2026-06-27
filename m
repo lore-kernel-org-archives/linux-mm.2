@@ -4,96 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27366C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:05:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B840AC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E396E6B0088; Fri, 26 Jun 2026 20:05:03 -0400 (EDT)
+	id 6FDDC6B0088; Fri, 26 Jun 2026 20:15:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E129F6B0093; Fri, 26 Jun 2026 20:05:03 -0400 (EDT)
+	id 6ADE06B008A; Fri, 26 Jun 2026 20:15:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28CB6B0095; Fri, 26 Jun 2026 20:05:03 -0400 (EDT)
+	id 59D7C6B0092; Fri, 26 Jun 2026 20:15:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AF31F6B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:05:03 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2B4E5C301D
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:05:03 +0000 (UTC)
-X-FDA: 84923747286.30.A8797A1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9A52DA0002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:05:01 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MZTbPqdo;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 34A456B0088
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:15:26 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5C0E40640
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:15:25 +0000 (UTC)
+X-FDA: 84923773410.07.8EE216A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 038C4140003
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:15:23 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bZIWrY54;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782518701;
-	b=6eWqntNFQ6kNiZ9XJJ7sX5nlWSHu7r1ArlD/rX4thbF7RB/NXXeD3sW8DqyBLZdRvqQNWc
-	qHxGdOQH/Ct5hPFjtYrUlYiGD02ENmOBgkoEyugRUmAHE5TjL7006UzHzR0/FOolw3ARzc
-	raphMj1/Cf2c9tlpmHWKX4/BvfOXcXo=
+	t=1782519324;
+	b=vLnyM4LPYIoY3GGVvzgrsxGA6Wf1k3dBo1bz0NyIgdokInx9u++AJjO8ybMZvLIg/TN3PE
+	NjDQMs/f+4lEjkOvxvzS2tU3R0Sl108p7frTHItsF+jElYN0AVXLsJ6DwgvcEcpeI3FDjC
+	Ka+HAYfOQqFhAT/B4dnsRwYTR21p1a8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782518701;
+	s=arc-20220608; t=1782519324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qaTIdG2spwckKCehRc5kJjk4jNw/YP4es+XSEGs8qSw=;
-	b=j14YByO3kCR1ouV6D4yXjtctuXElggW/HxKQNtMmW7W4uE2GzDk+ltpY6GsjVGI7/v45Mu
-	EeLE6PpivjSDtDxGR4ujCKat9uyzL/+SmH4Ot4N7TUAnvNk1aTubkhgpATGj2NEv+5BGOV
-	0aCdVaKHggchI+loxUverwj/CfC8fuY=
+	bh=3KRY5OrO7g+cPT9+7+2igg1BzSLFiMUr5YncE0LQ8JI=;
+	b=55xShhjwzCsFPdMuPM4d3N0nRgKJI4Dc8E0C4vHB2WuAD+/uVbsbZCwIUMI5fkPNrOAjIW
+	H7JK3zHjjQG77GrZ3LFzwXTfWC3+nhAl45gsXpkoSnbJXnDDU5yiXkqB4TDHJdtU4+an/m
+	DKVBifj9s+DeOCIbjCvmZGsGIh/H/xE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MZTbPqdo;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bZIWrY54;
+	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 047AB600AA;
-	Sat, 27 Jun 2026 00:05:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BF31F000E9;
-	Sat, 27 Jun 2026 00:04:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DEA44419D1;
+	Sat, 27 Jun 2026 00:15:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444D31F000E9;
+	Sat, 27 Jun 2026 00:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782518700;
-	bh=qaTIdG2spwckKCehRc5kJjk4jNw/YP4es+XSEGs8qSw=;
+	s=k20260515; t=1782519322;
+	bh=3KRY5OrO7g+cPT9+7+2igg1BzSLFiMUr5YncE0LQ8JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MZTbPqdonoA49oh0gHgSqOLKuwIFjZJRM4j1UsXSBMvZ63LI0/LOhspgpSuv2LA2h
-	 sm9pMMPk2qW8nsLrI0LgGk8bglA/ELX1QAuq5AecvwjL6Jry7RCJ8I9kNC/OrkJwYl
-	 cRGZFZxmtaMNYlRIBXS/jsSOZnBbmMXZfLJ3SJfUz+Lq1PsU2ZDTXdZx4Hmnktn697
-	 EeE/L+uVvYc7yXEZCS0zirjwi7USipcIQvFt3AE1EfOd4nPfNSRglHl6vg+K6XWMxh
-	 PcuoEALYr+JpNu2Mk93yC+/xWfvhb9Sot7JVEA2q8fpg7i/z51TFWD2aRBWIMjRvtN
-	 1VWQ/qlStZjBQ==
+	b=bZIWrY54veV5+26gLmgy96EhnXGzoYWtKD9q8OCpYYLYxx/YzJKpSL5p5SqEWDvjX
+	 imioq55UvWyjm87pKOZ7aZg2U5eVnrPytxISK7GDFf+ekRRyS3GgB71UzPIU/0v8+S
+	 WAeRNAIxaT7diZkxZ79AbNy1y1spRBkgXyUpArAT0xUE92jzopDZN9/qWHnEzXXepT
+	 k90gcdox90LlKNifdSL6AOTstVp9zYFgeTHF4XZKXDEcVJxl1Q1SNUNwgExi3z7gdU
+	 Vgb8z4D+CbcOtZaQQae4UzEgs2K3BJtOEmUjxuC4qSGi5iJssyRNlybi743yW6Pniv
+	 VQq8JjLN9iQEQ==
 From: SeongJae Park <sj@kernel.org>
-To: Johannes Weiner <hannes@cmpxchg.org>
+To: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: SeongJae Park <sj@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>,
-	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm: memcg: initialize *locked in memcg1_oom_prepare() stub
-Date: Fri, 26 Jun 2026 17:04:45 -0700
-Message-ID: <20260627000445.85650-1-sj@kernel.org>
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org
+Subject: Re: [PATCH v2] docs: pagemap: fix flags location, member name and sample code
+Date: Fri, 26 Jun 2026 17:15:10 -0700
+Message-ID: <20260627001511.85842-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aj7KoDXJv3NByGUm@cmpxchg.org>
+In-Reply-To: <20260626162710.25844-1-zenghui.yu@linux.dev>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 038C4140003
+X-Stat-Signature: ztjhbrwxjd17epp43q5zu9fzgfqq1aon
 X-Rspam-User: 
-X-Stat-Signature: ofh6genab481s61cri5wtfyh13tfrscz
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9A52DA0002
-X-HE-Tag: 1782518701-52208
-X-HE-Meta: U2FsdGVkX19X+rb0wH7LIfmHFViwvnzsfoXECZHRkV0dRcC6Q8OUn+ziCacehMQWCr/Rqm/X+ROTX4a6/Gt3wW1kcAuh+HxSYWf/bSkhhm/6poFSEj7XZx820vW6XtvmmFANTqIyZSxrMs76E8QIwZNDlwjvZl0ZsNHQcMmyiann/6KKWx/BJvN3/QQoT0ZsDqjzic5mZBqXlYTWy/tDPYUCskkrzF0j9xTqORzb8WLR69l8oOAJahyc3cTxz2N0AvQBpk62fJoWT2ifgIuniqaFU/O13VgXmg0zxVtb4z65dReukmuS3GOT3g+w8Zhr5g6zrEx846dSXzUw+cCvx/kjtLrGCBnZprzMcl9aoMwmSzjjuaqWDxu81MF4/ZAMQWi1YUPOnzGW6XGtwQc7RLQJ+f3DYztidT0L/Svj2KGXFgaNfneqq9GMkK4P+xbv9GtFED93v3F7Yd3faRmmX6513gkPA3LvtjumA5t3Zhpy8ZSbdwkrUEucgL+bo5/oC4/zMARVfWVhE9eVMSfaMvNJBSv+3djCBoct4JJiP/qP+XGpt22+cvsicqpyEyjDjfHo4rmBE5ho7XcfbCyj5Of68hlp6WgFptl6nwwI3BkHu1rbI6pzDHwuXpJdv9jw0HrF3qaK6RyZ86e6PIRKopfmmnc1NVXboDVtxGpXFV7FEapg1Dpb7uOBAN3sDRfjM9/O/GxWE13caeLn/K+nVALsyjy8Ldzt34sOFh9L52gcLp0iERFSmnSCb0DEFQz8agxo5X1Ki/F5u0Jx2Nx651io7+S4h14NUjaDRgxBgyoOpiUMjx+XHicssANLoUl9LRsV3f3NDGr6pfpKg8nNLnf42oaQ8hcJMsSFVOv5YIPN2xAaUhjAKTcqz2t9TgyImm2entdOP2eCGqYocOBLrSkP/9ssygWyvY+h6MoCVS7E5AuWJh2A+i99ulMnCxITtmZbKENPtG5q5B29UMl
- np0pjSPo
- WM+BRHwuOvZEJtmmUS/fTrUs4vNJkYlanWyu2Mjzg7/sMI/sG19qlC8Sjtko5sBLCi9K3xujlaie6ubwO3QoUvYX19moH3ssZ5qLDZW9pchKkhQi0IcJtlZrgKGA6YMKveZXemT8BRHOv5fNHzO7WCBfVoKVxSLq+77mh7ITJX/IMvZiz8Qy48TZy6tdOe2neqzUdd2tqdE2KRtHNF5h6pJSFGg0DgrVX4GG0BP3Ttn9S20MnrRw/zQkkrgb6JCaChgh0MK9hPkD/WFKoGnHeZTG9rfohZD7EeCGE0Ovj5digoB3IZXZeQCcsOli4B4IIiRnHQeBsZLKLWlBbJQ+bdUpdJUliNeSwACwGpgnR9NK70yY=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782519323-67541
+X-HE-Meta: U2FsdGVkX18O3ebi1qQa/yA1otyXZnUO+lMqb6s2UIc5nuVY5i5AK3wnagGdi7QA6v/ynPEN0ROeg5w6MSaBEUaItJfJyWz3JEv3tFqtyudVbhBBX2DU9eqiGA2BEVM/M0oX/1Ro74xWRZbf9HFiJGo1z9JBzoGJJNAbXVFQBbJcwxgcANTF42l1MoJh/5U1HE0PQx8rTllwws8JeFYmSv7CToypwN3bdBXttr88n1iI84CJgAdTnYG51gm5YylzilKk6jnefFIYliMVm8z9WPGjSL84PsH6haboanU7s8In6ZbX6vXHwc5ItUcu0Ta37/NpAxiLKAfXZ9SStDkWNOSFzyiU5Y/+6MOh4gRXXyJx6TJjN7hoX7TytuzaKH8Nfi0By5dN5tYKUj8xwUA1AyZS62t8q54wjI0KCv4HnmcBlcGi9Zlso8Mh8Mma9RxDVhcOOulLP8xzUlsQYNakYK+iJd4fKbjNEUQPfw68D4lkx8+Jgqel19f32OWmCkfasDrXvbzoV1ZTx7nPXBNdMnQv390n9Sba9nrXN9Xk6iWE7JcfHpmbnzSuHXAJzLmLmvU4do2wX7BJEdO0xUi4SYxO5wU/quvENt0PrJcQLGpIT0A6U7juVX7TR/4voGK1PhUX+fkRxz6TDpm7y5WlmChiG/hcZW1T4cXsLwPCcDkflK+tWgcm0yhxBAy6e7W1V/4g+wmWJasEBnbpr/FGQlp6lGe7HHRNtw4GgBq66XvekZkVFXvwvhipHDk/hqcVnAgJGbk6Guu9Vgx1UrlKVz/nsrN5h/nSTsso3EQxrCJGDIfAEwVquxS4S5juSts2hur7RhJ5CYvMrIfgDwukYjYW+ZiDlSTsa/fnn5eVEfvqEVuEbXZdSX4s1oxPBF+7h72zWa+sqmdZ3tMp7jpZ01QVpZJXTf0C5sE2KMfNyURrUZvNL8m5O+YVV/LPlgBIB0SlPyXQQIM/B9XaDzi
+ r2PqWLep
+ 9zqsJqOwQJZGwx1wLFmGg5GPRddn0vaNY1HxgSlHdXKI+mfOVYc0chsZgH+Z71LC6jiUn+ZtFS/hf3oovOYNe5KUS5dbPmN0UGk25oRkuRPwYyzvpdSijrTyUHbN5eGKYC33Jpi0P6Os7MyIGHkuRq+0LdkfUQrMuH+6Db2umQ6apzug7KqlTiw6hG7eNXKVPsajq5IuZRmb7uqfiJvrgMTQFhzNMugq0YMocfW9DaytIX8Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,56 +102,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 14:53:20 -0400 Johannes Weiner <hannes@cmpxchg.org> wrote:
+On Sat, 27 Jun 2026 00:27:10 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
 
-> On Fri, Jun 26, 2026 at 05:43:02AM -0700, Breno Leitao wrote:
-> > mem_cgroup_oom() passes an uninitialized "locked" to memcg1_oom_prepare()
-> > and reads it back in memcg1_oom_finish():
-> > 
-> > 	bool locked, ret;
-> > 	...
-> > 	if (!memcg1_oom_prepare(memcg, &locked))
-> > 		return false;
-> > 	ret = mem_cgroup_out_of_memory(memcg, mask, order);
-> > 	memcg1_oom_finish(memcg, locked);
-> > 
-> > This relies on memcg1_oom_prepare() setting *locked whenever it returns
-> > true.  The CONFIG_MEMCG_V1=y version does, but the stub used when
-> > CONFIG_MEMCG_V1=n returns true without touching *locked, so
-> > memcg1_oom_finish() consumes an uninitialized value.  On a memcg OOM this
-> > is reported by UBSAN:
-> > 
-> >   UBSAN: invalid-load in mm/memcontrol.c:1932:27
-> >   load of value 0 is not a valid value for type 'bool' (aka '_Bool')
-> > 
-> > Initialize *locked to false in the stub; with cgroup v1 compiled out
-> > there is no OOM lock to take.
-> > 
-> > Fixes: e93d4166b40a ("mm: memcg: put cgroup v1-specific code under a config option")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> The userland visible page flags (KPF_*) were initially moved to
+> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
+> stable page flags"), and later moved to
+> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
+> (Scripted) Disintegrate include/linux").  Update the doc to reflect the
+> current location of these flags.
 > 
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> The member @walk_end of struct pm_scan_arg {} was wrongly written as
+> "end_walk".
 > 
-> I prefer this way over the idea to initialize in the caller. For the
-> actual implementation, the protocol is that the thing is initialized
-> when the function returns true. This version of the fix maintains that
-> for the dummy as well:
+> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
+> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
+> The second one included the wrong category in the required mask -
+> PAGE_IS_FILE should be used instead of PAGE_IS_SWAPPED as per the
+> intention.
+> 
+> Fix them all together.
+> 
+> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+> ---
+> 
+> * From v1 [1]:
+>   - drop PAGE_IS_SWAPPED in .category_mask (David)
+>   - fix typo in commit message (David)
 
-I agree.  I also feel the caller code is _slightly_ easier to read as is, than
-adding the initialization there.  If it is initialized there, I would assume it
-will be used somewhere.  But after finding out it is not used for early return
-cases including memcg1_oom_prepare() reuturning false case, I would be confused
-about the inefficiency.  Using a variable after passing its pointer to a
-function depending on the function's return value makes me assume the variable
-will be set inside the function.
+Good catches!
 
-The code is simple enough to read in any way, and my taste is sometimes just
-weird, though.
+>   - didn't collect SeongJae's R-b (as the content has changed anyway) but
+>     thank you for that!
 
-Anyway nice fix, thank you!
+Let me give it again :)
 
 Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> 
+> [1] https://lore.kernel.org/20260625174447.24292-1-zenghui.yu@linux.dev
 
 
 Thanks,
