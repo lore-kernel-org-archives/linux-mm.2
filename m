@@ -4,120 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C09C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:38:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6595CC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:52:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 891966B0088; Fri, 26 Jun 2026 20:38:20 -0400 (EDT)
+	id 333E86B0005; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 842DE6B008A; Fri, 26 Jun 2026 20:38:20 -0400 (EDT)
+	id 30B996B0088; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 733526B0092; Fri, 26 Jun 2026 20:38:20 -0400 (EDT)
+	id 224006B008A; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 455106B0088
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:38:20 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B3AE61C666E
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:38:19 +0000 (UTC)
-X-FDA: 84923831118.03.2784BB4
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C3C11140003
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:38:17 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fONAOD/q";
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EA0C06B0005
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:52:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74B981A061B
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:52:54 +0000 (UTC)
+X-FDA: 84923867868.02.40A2E19
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 811F320002
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:52:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="gp+t/72X";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782520697;
-	b=bUzOPHRZZD9pAW4zUKnxuVTz3/bD2TYWwGtLUQQqxDzndvaiezUn6vNGi1j5IXjtjrQgz/
-	0Rhc6b2zz9lqYsHTtn3JFoAU3oJRqz/nInZYesqmMZksQS3enBogOyoC7GsCj6Sl/gC4oy
-	eINrdfwQJqNZyWeX0f4lqgtqwbiEk6s=
+	t=1782521572;
+	b=8LdBecXrw2CDJWxGUUkq5gl6Q8irWVzmrnGxsMuH4KStWWENSy1yKWxrDo9huDH+DHyQod
+	5WElSUJ2NNYLIioxf7L633ZH5RuTs8wzMULoFnbGnVg2jOWfPhmtN8/4DbQBstdiYzLaXc
+	QkuC5mRb4PcepXEEuWeTrqAXLGSSd3k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782520697;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782521572;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JPFVIV5ffTTrKYQTZc202v1RiHOXGlAXpe39g4o238E=;
-	b=TCMSHr+7WAoWp+Z3j3d9EOtXneFcMv7PAzqjYRe6ttnrhT8QnXSESy+FKelbZf7lKAkvAC
-	TBIHUmp+e4bcKzwppsptGi2lnml3TonRSs/whV7mlWfyKRrSdjiY7Kpw4chhLD1pgoy5/C
-	nKlxYr5lx9VQBULYphtK+ag3oVShYws=
+	bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
+	b=THRRWK4ks6oxMNsZj5Cyib879xDk1RPcWpgKPFeiTI6uud4EJeuw+TI7jYsJK22oR9ofvT
+	In3dsYXVKagORV6o6Zl6QGxEI7Q/AkuEfgAE8WW3q1jGOIkbbtuektEnUGSMMFdBT/FYes
+	9POJt5LdMm0bNMaqglytEzToqvOU0aQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b="fONAOD/q";
-	spf=pass (imf26.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-697e96dd8d2so2591562a12.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:38:17 -0700 (PDT)
+	imf31.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="gp+t/72X";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9159da9bba5so151365885a.1
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:52:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782520696; x=1783125496; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+        d=soleen.com; s=google; t=1782521572; x=1783126372; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JPFVIV5ffTTrKYQTZc202v1RiHOXGlAXpe39g4o238E=;
-        b=fONAOD/qKRAip0CZHOGkMATxCPvrE/wv11mKgeRhu3k2Mm2Tu6qbKCYcyJ/gU2rDFZ
-         039xwisXu8NnwlVof4RRg8/+tsbB3pZAbq0QsdWayqQ9xPu7tMymqGboRez2pgQPDbcB
-         svpbZxyrXRoZ0tHy47uh2H9o8h7Zke9ualb+IZy8rH5FOxEYqyufoBhLGz5eUWeVbBIs
-         EE2iK42knoDPtdhPqZf8pEmiaBlUFvG+/1tV8sPV14RInTuD64QcJTvkxYEQnWltU0AQ
-         QbV0MDbxSQtWa8f3V9YYPD685tlgvvt2V7SsIMXsjPequHxgehPLM4Nnm0Vn9QmPJLnA
-         gj7A==
+        bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
+        b=gp+t/72XhUkvMAddrAF0xmYvLAb+VxOsuIZiys2RfOCZ8xTnqquOGcOrhbSWe1wIlU
+         Xp0CZ9T+gFuXld653qKBk3SzHmYE+81wWOSPDjonPoll9BhoJqwLpJMet81WQ2GVTSdF
+         8ZEFKzFsR9JBJo6lsZVcno3YfFaEAuTuzy2KKpS0n27hCWlUmvI/ZUwxMCZWSmMyzhqm
+         dYvs3ddqGws01i6l5SgMBzrsPFyzJVxKBH/JbVlc4BE+MYyFY84BlLQF7fl6q+ok9SiV
+         6KB+VDYf5g51BL8OPNELhXNxX3YuCORODRsn9AOnOZUDGnaiuDBkukGvn+RwMw/slsr7
+         6clw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782520696; x=1783125496;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JPFVIV5ffTTrKYQTZc202v1RiHOXGlAXpe39g4o238E=;
-        b=o2dwMTPeJjzyvziBAvpQrqnCTapjrZkBKXwnVXBnE327RdYZ/MnL8EATa1K4lD9SGH
-         ITeR73aBAA3T5W+Agt02/PGEBdiTV4IVtJGXKk4EvCRC1IxZe3OAUnDF3h8aLQwYkNsQ
-         ZfchvyXqBDMOfil6S/Jbp9+nCX7HE4UPskdjIOxLBauKn2kqGKS4u3OdeD9W5xlR1H9w
-         6OHJBR/lHfpTSoGxTY6nOUYzAZ5xUO+M1EJrSF2OR3Rr1YPDNwx645ISFKf+iyzdADGI
-         ynYrlc00ZRE8PDH6uwuX1xozitUMnyTF/q/5seCH2CJahFyU2iDq+z9LG2yxAK+1O9ZU
-         7U5g==
-X-Forwarded-Encrypted: i=1; AHgh+RrpCwEOVT44prbHAsOwBC6v3vh13snS9+rANVgjH8OY4DkjrQ1wvhdU9Au+aNG8FeVMuUm+WUBbBg==@kvack.org
-X-Gm-Message-State: AOJu0YzG3P9XRwbgYfNivS8diHGFbzGi2zBr6nT0cM/9Z7DYsBmCV+4i
-	yCaf6cK84gZZZweZqhx+CC8jK1IFCSRWbKc5742bdhqJwy48BJJVyYZQ
-X-Gm-Gg: AfdE7clkA5wGzO10x/T+xYLKmFUj7HUFR2BSSJk7ON8c7gp1M7G57SogRHQ0XRaMZ69
-	O9zfkTNOfHpKK5c6zrb9Mz3kFdXFvjGOUoMoJg+P2EQemwTcMLc0RBwKsshC4hToNMgjvTKVoht
-	O5jpjfqbkEBor3erJN6PaK83V1WUUPbIXikUK4qu8GkGuSE8h0TX21YtNmj8uoyY5FEdwDcXSaT
-	PzZP4WC4GyAmofmm2yFlRx+xgmCgVt4Y6eVo+WZ5ReBu/KTbTUtEpOUGWrTVKrjhPnZh2CLTXk5
-	91luA74OM/NlduK+8hUtMwca/WZFWnnhyvLTJuf5XAEO0kNq0RkywEe+nSmRnmUd2Z5kRiRbPV1
-	ILqJqwk5C0H8g78McdlWpO5YNiWu5bUnZ6jxqrtpq6Q5cwxSJ93JjxnwalQo7JW4o6OWGhQyMXj
-	aixYKizb1BXtc=
-X-Received: by 2002:a17:907:a2cd:b0:c12:c69:ba0 with SMTP id a640c23a62f3a-c120c691824mr448756566b.20.1782520695919;
-        Fri, 26 Jun 2026 17:38:15 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbe05ed6sm394276766b.30.2026.06.26.17.38.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 26 Jun 2026 17:38:14 -0700 (PDT)
-Date: Sat, 27 Jun 2026 00:38:13 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: david@kernel.org, richard.weiyang@gmail.com, akpm@linux-foundation.org,
-	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
- PMD handling
-Message-ID: <20260627003813.ktpya35fx5doaz36@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
- <20260626132728.77436-1-lance.yang@linux.dev>
+        d=1e100.net; s=20251104; t=1782521572; x=1783126372;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
+        b=gBSLLFUYZ09RpP17KqxgTmN6o+qUiM1EAFBuPdLrAsZ1moioSgOcBekFu6R1dmZqGm
+         9nDz6ztCrHsol99tQtRmcNT/SLQL99SLjJrNRZ4pScC5GvGWPwH1fYhYVsvrXLE87+7d
+         cZ9tg/G0kQlh/XjnZ+W1B4QsjZxZGB10xRw9N2ty87n0HN1J+kv5vq861PucsoqwBnMI
+         PtU5ZEYCFFyfBXcB58SsJsLK0s6droDMyENRRSFVg/n4uxumF9EQ9k9rr8CYzxjLqh8Z
+         YfiY4/6ME8c/vX4+BbEIv0juGnq44diMXw+LW0znpb4OUmfuYJ6YpdpZVA7fWPC/UsCN
+         jtQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8QR9X+PGpVK4lyJD79mElXQofMtjcErsCa+fRmfskuGKufTA1pIinrWRZRDFJh+y7pVJIECnFLUA==@kvack.org
+X-Gm-Message-State: AOJu0YxkAUakTzkvtQje6UgPNGmNE86ReEmwGHPxmpCAdIpILhe1wHHr
+	dY8GAKMLNPDhxnZ477R1cGqjx2AYxyCRGJNdQ64EI2KIARW3T817Au9kIswAjeaenSo=
+X-Gm-Gg: AfdE7cnl4q/SOUttph2lGLQxtUa4pkF4QYqNsKXfQtw41vumFXdEdb2GHQQVuY7O8HM
+	N2VS6EicFyihCcowcChoMoLVxZuRhd87qkhwfTdES0ehpuOwQaR/VocftazO9BP5NX/obcFA6kA
+	mfTFkWxLssJqL86xhnfOKJRUPd/N4P6tKITJq0PeMBpF6g3OgQL+HlAMpHADzh6iWToxInQfZz4
+	Ds3C/YylXW6iCmzfHjo3cvtm9bsergezonqzTvS8MQobCVQVNjhou2AR6W3S91jeUFAkhVO7Kjt
+	vcFB4nYpjn3gZ00dBmVQZcuVZhPjvXMci2pCR5CmANk75XPNWyesgb+s7/BpCOUtyrNqoyozvPY
+	2afo9KBgfYaMY+ou8DSRqthRi6F4Kdm9hHiAkyezHp3nam20XDPQXDRlfgl/1R91l3aBh2vJqU5
+	Scz169VqzyO1H4R1Jag4QW6HJQ8qjGU90Ea7vCv8bKXG9qu+4lnQ==
+X-Received: by 2002:a05:620a:4413:b0:92c:ba97:9b28 with SMTP id af79cd13be357-92cba97b01emr51609185a.58.1782521571509;
+        Fri, 26 Jun 2026 17:52:51 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c0c0csm1304879985a.25.2026.06.26.17.52.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jun 2026 17:52:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260626132728.77436-1-lance.yang@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Stat-Signature: joszt9wxo9417fw5u5q8z177inkt3w1g
-X-Rspamd-Queue-Id: C3C11140003
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v5 1/3] mm/memfd_luo: validate serialized_data before
+ conversion
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
+ kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260623105201.3724592-2-tarunsahu@google.com>
+References: <20260623105201.3724592-1-tarunsahu@google.com>
+ <20260623105201.3724592-2-tarunsahu@google.com>
+Date: Sat, 27 Jun 2026 00:52:45 +0000
+Message-Id: <178252156515.136430.8828544568760798209.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=667;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=lA9Ld76U/OZePGMYSwBGOUPWdUw3wx0ta7LzTU2JjXg=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqPx7i6XBsRVosljnAEJPuGa4GIhpxEyJNpsUUu
+ eODBiTs6H+JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaj8e4gAKCRC7dyhM23N6
+ 3rHkEAClYVvZXcLcIYww1NmCuxoqyIcTwNmfZ7YRrSmcCbayxGiOmHeO2cDUEtek6MYaqMnQ4PQ
+ VtPpfm9ZfIjx/wCaTN1vYCj7t2rDndKrJIZcP/poz6iMjONujZ0WYh8G1eSISQVKrn0TdJ90C9u
+ u0B1As4Pi5iSfK2xlEnhTIMF9sioKdG68998nIXlscpwSGTDQeclcaxvRxbGs2XFT0cZ/oIy4eI
+ r7rYOzykpsiqyXUFm9nQK7zfvjtA/0nOygHz54mOeGOWS2d40yIX0alocNsTX+3IUlMUri4KSRX
+ YrZJamlftCGCx/EamG/7viE4FhBimMnvbBmPlxtvDkGt0rq0JviVVvFEFDP7qUpU5YGkHT/LGE9
+ eK4FSbRJwImWRfC2IGguZ9qpSSWXK9HpVlXrWsvObgKlu13kMNfxNSMteuDNSvNPBsIJs23mQMt
+ jGxvmnB3pAzm0e0St1G0g/c/tJEjXAe6XcuAUWDZZlOEI5sO0IfuKuAwGqQ9TE3l5wze/6GJw16
+ KDgi7sZDsgp0cf8/Xc0b6DJKd+wXWNojjHxdcfI5hBkFB7FObDNvG4Ixmh2kPvQa2pIMI0AF6Oz
+ U1QlPkkbr1T1OqgDQG/SwqT7v5a247kIJ9ohMOPY8l1z3osTH8HYJOaupsWihIwHt1Gvve3bf/e
+ x21CziXQacgN+cg==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 811F320002
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782520697-155885
-X-HE-Meta: U2FsdGVkX1+B7NgHJRzAXWcHsMokIUOEsd8avfc0284oCmBPLwEM8AZQbe8A69Z+AjCGJV3bTPRDSgaMv8Hf5JCnh1BbfRFexPF+EZzlHreMIP+aatiAOIHuhzVnybuLX/4aUP7k34n9TF7hpKoJN0HFySPo4Ovdr9CqvSq9soLzIb8r/yspzXovqc+WTnQGPpZOkaXBPcjQlNalPnHoubCYl4oTonbDUBCUaCa06xrFgNyKHmS5xdb9h4cfiwomkmfza80iU33HpA/bn7fAK6byzA3QLyAbsxLBc3J7AZ0UPw6mgsG3ZEvbXZEwkFLau/ppvvED0+pnIq80CvZKebEjw4cpYo44N1CaGqPnHk+U1yrOA+e5rnN0KulLYwTjABTmYbBaXP5ITVaEeWJp0G2tNo7KAskrra3KzO3o0KvmYcD6RJ8ASgseCH/mFMCqiJwlENlixEID9fIrGbxy11i4/xNvpeBj2XgvQcEvvaYyuCeQvTRgnKj9IuGnK2u/uBrP02SL55x08OYQHD8NUy/A67TlcFqsCyTo9+LbjzSCx2HrU9ITnX0Ib/ZM+DLzpXTEMI861zGPJike/VRZYsw88W624Ft+Y71nqoh47uN9Eid3SNjRZp8BTEe3V4NgoxNx9oYaVcZ1cXv4KVtI8WnmFMoMiDZph3V2/BoGZ6ybscuXJqUxxlF0ZiphLN+GSZDgzL2TqtpkTKdcRS8i9S+dk0miagSOhrAi6Qp5CMEIR5LkCoep5OlSXCIHE6OYUlgAqsHoh0VB44Z1PKPUORrp7wke8BPXzoby6JuvPUGtGWXLo6W80qE38VdSywnpSGOwSN+8nbFDkA2tyNnma6VwNO1zVXT7UUGfHyn9TD73axMsRHz96rpGGdC6zxDKFzltxXmZlNeu6cYZzNAfIDvsYdlQlfXkesjjHbKTTGBs0tno5Oh3tFvZnel1J4b3laQMoUXfQ5byfZZaELo
- 0/k8Wp65
- Y8cLpM3eHyfTC+Vv9kakZmCkuSHu8ywokDWWLYqZogVp87hn0fFVBZ4R/2zaDck1s4C4gpf4iUlSBH3E7BEZpNPTO+4L4TyXlXBq+xyMA4qlRWoGr20Sx0bI+qVXXZmTUcJuRwCvpghgb3Mjc5RRHipDJDincOMOQFOGlew2Rod7BKnXe8h69pdUwvboI0k8Zpu2n4jVb4ArUMD6+bET+iXNErYdxa22krS8WRM+wVC13Ca38PZ/0dZ3ZG5qFqG9fvOVdkbmKfaZzE0GB4pwFTQiYelnWFMZZssPOeYX/HWjV8pQMIkxbfyCRP4twM6S5K6XbCHgGMjY4DzSUKYPwBUhpnng5++5Vm3D+ES2wGioZBG8LKnJo+17isYUjKxi5pNsoa4wBfdB6PCZDLRsdJAYA1uATpYcD6f+S8dfnWmH4uEF5kMTTgR4+XD46dgPSjM/1lb4u1AU10AncjiGs8xTrzV1W+KidHVasuDRY92hyjEhISAJIItGd0nvSIHSDWw751Wgc7oJ4XuLPoYX3e3aEI2OMS0RVCgmJK+Z9P+s71PZipLxk03bWe9tERDZ5EtMLgypLgVr/3l6PpbD7f/JBa6USQU48aciqkq8iD3RgtFEmnkvZMvxQlXwVU8nQ0L+CSnIg8hg1wYzqi9AR06r296+PT70xiLPuhbAd7498kFh7FHRN8JoUKg92/S2Mgi3IPfGNrEfhs1J5CNfaZzsEhHn23lwjVNKHi5XbkmPyjkNm7eM+C2TzPRsPyLl7Dv68RS26vR5u2L4=
+X-Stat-Signature: 68wcinzcd5nyq6cm17yktzef97y8ceqj
+X-HE-Tag: 1782521572-658722
+X-HE-Meta: U2FsdGVkX1/mzSb22phJzTl5zs+xxb3ILHGyJXKzPoPIR/NPw9EP03InDyXNQb9YN8AMYZFvrVMZV9O2Fo6DZIF4TrOeeKeZ5p15JPM5537CwkLLfaxcv1/3oIg0In4gCbmjt+HA+XsEJqBqrgj9FQ2ehWQMsU0Q73n/qiZ/LsaO/qwvNZLZxRI+fkL5H2+wWBNTgA/GyLZLtoff0Y6s15VNy3v6pz4c8K80tHNoQPJz+k5C8ESgtTMq7cExiarDEk5kkXVaRTdzkRBDhkvBE5ir0G7z/2ZqwjWuQ9HuKthCl/PJckHTL6py8a7P0u+qAvoo84NCU+H1usuoJ/M7jbBW5du87YOv1HdQiqn1/lCNjq+Z6IB7ytgHgIb+fPZqwC+BuKwrxD6gCLWYUjnTF8AS2GylSGx0v7/56x40a1V5y4szG4ll1bzEC8qKuoGcMsx8IIgNjbuJjm8ssho52XaQj0I8BWEHinVbUkEVD1BgCyjhdD9Ai9vuMSGoPiKPAjlNpSEdIR06Cgdzd4fYRhAiVEzK7V40d569P6YnL9uFrUIJ/at1PQzPerzZhmo/C1mcIO3UiMigdt7ZSX4aiaTUUlPZB3tmhLEdCjlG4T2VI0ZaskJn9dvdWbfuzkLwGg9fnKJu/Jh+IT6nda5N6VwRw3gC4+JfrH277PRXWGA3JIM8yxT/efHj4AEagFu0A9r+OwvPanZtfLDUSlsEYBz4s3c64SeNpayhEGR8MN1iD8npH5Q3jW3pmry398ipya6q+9PnxmUybrswJMZrm7rWuwIE5Sr89xDBTfOBQofdwxzujLOJ+L3eNczElYv/AnPNt21ACW56B9Ct6TTNs//4Ep2vRbJMmFnqvYsuO2oYqBOUXhJnwmnMD8mywXb6ZbWHhb7TdO8ctriqfVcUKdtuJVvKZytWN98k+Ik42wCDVRPg9PySqTAXtUpJFvbTae0wBnBTVtumGl3J4j6
+ kv7msV04
+ SYBbH403ILnVsE9O9iF2ZAIc8wARe1eBt47MrSlZiVzZ8rXOORyyvr3eU4Kxs4UxflM8IMp5i0/FMr8DHr5UMLA71WBQYHBigA+2r48sH6D7gWq+dgxjoa3PJWg0MD/apnE65i+kbn1Qv0u6TjAoaH1AwZ4Kdbq39E9UeS+rwOmDTltMmP0DVxfxdkFSbm6SgpGwVPPC3v+kO6tz1SAC9GWzPJOo33hnkGmaxHZe5YpC0RKZ2xKpgOJl5nz2oJA+Yqr8qEkaNqVBAh8bSMZ1B8jikVAh9d12W04jHCNn+cPFSk7iCPDnvyyixKOBKKFVyF5QyOTCgefeuaj1TER1lc+x5VdxT2rSaGmj0Nxt65u6ao3FvyCNzVdpRFMlrWXrkP4HvLFodJFPvx/mbbS+uXxmtBai94kfDsVZd+uXAaw4mXIm/YOoGHG+eEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,224 +141,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 09:27:28PM +0800, Lance Yang wrote:
->
->On Fri, Jun 26, 2026 at 12:07:56PM +0200, David Hildenbrand (Arm) wrote:
->>On 6/24/26 08:53, Wei Yang wrote:
->>> Commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration support
->>> device-private entries") introduced the concept of device-private
->>> PMD entries, but did not correctly update the rmap walk code to
->>> account for them.
->>> 
->>> As a result, when page_vma_mapped_walk() encounters device-private
->>> PMD entries, it takes no action other than to acquire the PMD lock
->>> and exit.
->>> 
->>> However this is highly problematic for two reasons - firstly,
->>> device private entries possess a PFN so check_pmd() needs to be
->>> called to ensure an overlapping PFN range.
->>> 
->>> Secondly, and more importantly, if PVMW_MIGRATION is set the
->>> caller assumes the returned entry is a migration entry, resulting
->>> in memory corruption when the caller tries to interpret the device
->>> private entry as such.
->>> 
->>> In addition, commit 146287290023 ("mm/huge_memory: implement
->>> device-private THP splitting") allowed device private PMDs to be
->>> split like THP mappings, but again did not update this code path.
->>> 
->>> As a result, we might race a PMD split prior to acquiring the PMD
->>> lock.
->>> 
->>> This patch addresses all of these issues by invoking check_pmd(),
->>> ensuring PMVW_MIGRATION is not set and checks whether a split raced
->>> us we do for PMD THP and migration entries.
->>> 
->>> Fixes: 65edfda6f3f2 ("mm/rmap: extend rmap and migration support device-private entries")
->>> Cc: <stable@vger.kernel.org>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Suggested-by: David Hildenbrand <david@kernel.org>
->>> Cc: David Hildenbrand <david@kernel.org>
->>> Cc: Balbir Singh <balbirs@nvidia.com>
->>> Cc: SeongJae Park <sj@kernel.org>
->>> Cc: Zi Yan <ziy@nvidia.com>
->>> Cc: Lorenzo Stoakes <ljs@kernel.org>
->>> Cc: Lance Yang <lance.yang@linux.dev>
->>> 
->>> ---
->>> v4:
->>>   * refine subject and commit log based on Lorenzo's suggestion
->>>   * put pmd device-private entry handling in its own if branch,
->>>     suggested by Lorenzo
->>> 
->>> v3:
->>>   * remove cleanup part, only fix the issue for device-private entry
->>>   * refine user effect description based on Lorenzo's suggestion
->>> 
->>> v2: https://lore.kernel.org/all/20260616063436.20455-1-richard.weiyang@gmail.com/T/#u
->>>   * specify the possible error case of current code and user visible effect
->>>   * besides fix, cleanup the pmd entry handling based on David's suggestion
->>> 
->>> v1: https://lore.kernel.org/linux-mm/20260508013728.21285-1-richard.weiyang@gmail.com/
->>> ---
->>>  mm/page_vma_mapped.c | 20 +++++++++++++++-----
->>>  1 file changed, 15 insertions(+), 5 deletions(-)
->>> 
->>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>> index 2ccbabfb2cc1..17dff8aab9f9 100644
->>> --- a/mm/page_vma_mapped.c
->>> +++ b/mm/page_vma_mapped.c
->>> @@ -269,14 +269,24 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>  			/* THP pmd was split under us: handle on pte level */
->>>  			spin_unlock(pvmw->ptl);
->>>  			pvmw->ptl = NULL;
->>> -		} else if (!pmd_present(pmde)) {
->>> -			const softleaf_t entry = softleaf_from_pmd(pmde);
->>> +		} else if (pmd_is_device_private_entry(pmde)) {
->>> +			softleaf_t entry;
->>> +
->>> +			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> +			pmde = *pvmw->pmd;
->>> +			entry = softleaf_from_pmd(pmde);
->>>  
->>> -			if (softleaf_is_device_private(entry)) {
->>> -				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>> +			if (likely(softleaf_is_device_private(entry))) {
->>> +				if (pvmw->flags & PVMW_MIGRATION)
->>> +					return not_found(pvmw);
->>> +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->>> +					return not_found(pvmw);
->>>  				return true;
->>>  			}
->>> -
->>> +			/* device-private pmd was split under us: handle on pte level */
->>> +			spin_unlock(pvmw->ptl);
->>> +			pvmw->ptl = NULL;
->>> +		} else if (!pmd_present(pmde)) {
->>>  			if ((pvmw->flags & PVMW_SYNC) &&
->>>  			    thp_vma_suitable_order(vma, pvmw->address,
->>>  						   PMD_ORDER) &&
->>
->>This is extremely hard to review given the existing crap handling here. I'm
->>really sorry, but it makes my head hurt (I'm not kidding :) ).
->>
->>It's completely unclear why we only have to check for a subset of the cases
->>after taking the lock.
->>
->>Could we simply extend the existing migration pmd handling and leave the
->>!pmd_present() case for pmd_none()?
->>
->>That leaves no question to "which transitions are actually allowed", including
->>"could we accidentally assume something is a page table when really it isn't".
->>
->>
->>So what about something like the following?
->>
->>The "thp_migration_supported()" is not required when checking for
->>pmd_is_migration_entry(), as that defaults to "false" when not compiled in.
->>
->>Untested:
->>
->>
->>>From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
->>From: "David Hildenbrand (Arm)" <david@kernel.org>
->>Date: Fri, 26 Jun 2026 12:03:40 +0200
->>Subject: [PATCH] tmp
->>
->>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>---
->> mm/page_vma_mapped.c | 29 +++++++++++++++++------------
->> 1 file changed, 17 insertions(+), 12 deletions(-)
->>
->>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>index 2ccbabfb2cc17..ed2a23a90e8dd 100644
->>--- a/mm/page_vma_mapped.c
->>+++ b/mm/page_vma_mapped.c
->>@@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> 		 */
->> 		pmde = pmdp_get_lockless(pvmw->pmd);
->>
->>-		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->>+		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
->>+		    pmd_is_device_private_entry(pmde)) {
->> 			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> 			pmde = *pvmw->pmd;
->>-			if (!pmd_present(pmde)) {
->>+			if (pmd_is_migration_entry(pmde)) {
->> 				softleaf_t entry;
->>
->>-				if (!thp_migration_supported() ||
->>-				    !(pvmw->flags & PVMW_MIGRATION))
->>+				if (!(pvmw->flags & PVMW_MIGRATION))
->> 					return not_found(pvmw);
->> 				entry = softleaf_from_pmd(pmde);
->>+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->>+					return not_found(pvmw);
->>+				return true;
->>+			} else if (pmd_is_device_private_entry(pmde)) {
->>+				softleaf_t entry;
->>
->>-				if (!softleaf_is_migration(entry) ||
->>-				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->>+				if (pvmw->flags & PVMW_MIGRATION)
->>+					return not_found(pvmw);
->>+				entry = softleaf_from_pmd(pmde);
->>+				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> 					return not_found(pvmw);
->> 				return true;
->>+			} else if (!pmd_present(pmde) ){
->>+				return not_found(pvmw);
->> 			}
->> 			if (likely(pmd_trans_huge(pmde))) {
->> 				if (pvmw->flags & PVMW_MIGRATION)
->>@@ -270,12 +280,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> 			spin_unlock(pvmw->ptl);
->> 			pvmw->ptl = NULL;
->> 		} else if (!pmd_present(pmde)) {
->>-			const softleaf_t entry = softleaf_from_pmd(pmde);
->>-
->>-			if (softleaf_is_device_private(entry)) {
->>-				pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->>-				return true;
->>-			}
->>
->> 			if ((pvmw->flags & PVMW_SYNC) &&
->> 			    thp_vma_suitable_order(vma, pvmw->address,
->>-- 
->
->Might be good with this on top:
->
->---8<---
->diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->index cfa1230c87bb..8b7c062bd81d 100644
->--- a/mm/page_vma_mapped.c
->+++ b/mm/page_vma_mapped.c
->@@ -281,7 +281,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
-> 					return not_found(pvmw);
-> 				return true;
-> 			}
->-			/* THP pmd was split under us: handle on pte level */
->+			/* THP/device-private pmd was split under us: handle on pte level */
+On Tue, 23 Jun 2026 10:51:59 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+> In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
+> on args->serialized_data before checking if the physical address is valid.
+> Since physical address 0 does not map to virtual NULL (due to direct
+> mapping offsets), the subsequent check 'if (!ser)' was ineffective at
+> catching a missing serialized_data, leading to unsafe dereferences later.
+> 
+> Validate that args->serialized_data is non-zero before calling
+> phys_to_virt().
+> 
+> [...]
 
-As the comment in commit 65edfda6f3f2 ("mm/rmap: extend rmap and migration
-support device-private entries") says:
-
-  Add device-private THP support...
-
-Per my understanding, we first already setup mapping and "migrate" to device
-memory. This looks a kind of place holder.
-
-Not familiar with this. Just want to clarify, we want to treat device-private
-pmd as some sort of THP or not?
-
-> 			spin_unlock(pvmw->ptl);
-> 			pvmw->ptl = NULL;
-> 		} else if (!pmd_present(pmde)) {
->--
->
->Looks good to me as well, thanks!
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
 -- 
-Wei Yang
-Help you, Help me
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
