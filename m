@@ -4,92 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15F34C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 08:10:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A27C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 08:19:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD6F46B00BF; Sat, 27 Jun 2026 04:10:40 -0400 (EDT)
+	id 7E0056B00C1; Sat, 27 Jun 2026 04:19:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAEAF6B00C0; Sat, 27 Jun 2026 04:10:40 -0400 (EDT)
+	id 7911E6B00C2; Sat, 27 Jun 2026 04:19:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9DE76B00C1; Sat, 27 Jun 2026 04:10:40 -0400 (EDT)
+	id 6A8356B00C3; Sat, 27 Jun 2026 04:19:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9D21C6B00BF
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 04:10:40 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 28E73907A4
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:10:40 +0000 (UTC)
-X-FDA: 84924971040.18.5AFB734
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 92AD140003
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:10:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QKpWqi5J;
+	by kanga.kvack.org (Postfix) with ESMTP id 40F0C6B00C1
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 04:19:11 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2E3D9081F
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:19:10 +0000 (UTC)
+X-FDA: 84924992460.21.C227213
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 02357140005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:19:08 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/qtVLwe";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782547838;
-	b=vY8RQQx0Z49NwXhLUxKR35e7NDlA6fb+afCa91tcS3GHoCVASQ4Z8bMKGCfcPcMfPWVubW
-	GnDBbrhZb4CTueLxNBNouyCLhXXpQyNkM4pn8QXUaDJYXA2N7ADzXm4qwwy0JtCuOlEf2U
-	w5wj4q26qbK0tSAKzThrBoYDSj1Wt70=
+	t=1782548349;
+	b=rUnnblEOgND0wZPSPwKGb4aS7/D6Qt+eGq9wP8/P8SxavoJEsGD09khKnPe6SQ9l23wyfO
+	T40IqV5spjqCmApzzfUA0MHfVkYLr5m1caEaFTgX1H/mTgvcmsHFV/50iEXivCCw9C6MDd
+	0OkGJubxqNRpjDhYrmwRz67+ijUxoEw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782547838;
+	s=arc-20220608; t=1782548349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eTAIgWxGNpSg69lMclaqMrON/rAaetWWrjF7qKqNzt4=;
-	b=tXIOloJvWYdDB7sz+SCUqt0gdzig8PbtFcLZYcvLkWh0p0dpyeXpIBWBIaUxKXhGupaXv0
-	5fEw5amXO+hkn/StVt7KhQ78abqWq5/pCj2NmMZXEo+AbI9NXYdfGYuIYuBkjv6lydI9B8
-	2XBIRHmUoDU6kDKFC7bvOh8KkQWxB4Y=
+	bh=F6yvcAh2bJ8NdCdk0A9b3/sGLFVIdQHFN8lm74CeDSQ=;
+	b=Nuh7Cw0QItXUc5Pn2q5O/CinhDi37drB0x62YydT6HuUcjm5/TKtBGHRCzI4lwRMnQ2rqS
+	38yGLDg1qH5JmFQN2d5xMzE27BuTRUymGCzyYyba+POGeZObhqKX5c/4lvFyRoWsUrnSQx
+	3IdETGybQ+6Ys5zbxyDWqRx4sQfxb4M=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QKpWqi5J;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="H/qtVLwe";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E7920600C8;
-	Sat, 27 Jun 2026 08:10:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FAE1F000E9;
-	Sat, 27 Jun 2026 08:10:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E10C840BE9;
+	Sat, 27 Jun 2026 08:19:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E404F1F000E9;
+	Sat, 27 Jun 2026 08:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782547837;
-	bh=eTAIgWxGNpSg69lMclaqMrON/rAaetWWrjF7qKqNzt4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QKpWqi5JrQfOQROMv2OSoXTAaY7IRR3sO0WfuN1qvx1l2b0oHysMy4PHVXzw+V8Rr
-	 Brc0qkFTaSTrRE8sPsc+TWz6aiPQ8SLd687MoNACrxWKQ3qM+Bu7wpx5DRbwjRLbnC
-	 A93OT2JhcsDrBwwC7LzPA0McritfSWefHzc7a1loENR2MEi4uUZi+U4R/9cZwhGJzo
-	 8AQJS7jL/xYrUW7rx/x+gB+nsuHYcCizs1eqt14X6rq6DJ0VnPv6tnNqoj8Pj1PTHJ
-	 E0PsLlxHputgytZLZP4n3mT5N0I1ZTN1kHM95ZbK0NSQAaCXsqJjHLnq2fvjtokAD4
-	 +h0iN8Cvnz85A==
-Date: Sat, 27 Jun 2026 11:10:27 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Gladyshev Ilya <ilya.gladyshev@linux.dev>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>, ivgorbunov@me.com,
-	Liam.Howlett@oracle.com, apopple@nvidia.com, artem.kuzin@huawei.com,
-	baolin.wang@linux.alibaba.com, foxido@foxido.dev,
-	harry.yoo@oracle.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
-	muchun.song@linux.dev, surenb@google.com, vbabka@suse.cz,
-	yuzhao@google.com, ziy@nvidia.com, pfalcato@suse.de,
-	kirill@shutemov.name
-Subject: Re: [PATCH v5 0/2] mm: improve folio refcount scalability
-Message-ID: <aj-Fc9hCSj51RYbP@kernel.org>
-References: <bb1cb750157733f897df2e261cad3d5c42acc172@linux.dev>
+	s=k20260515; t=1782548347;
+	bh=F6yvcAh2bJ8NdCdk0A9b3/sGLFVIdQHFN8lm74CeDSQ=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=H/qtVLwewfmNI7pYK88SnnQveWdSSgFpt2KJJZXL8j+Y+vMuDrhJqSrIU1fBlQ5JM
+	 uZD3VDPp1H5BB3Iqj8EeplKi1zf9vllak71ObOMuCfbHJ9mHLDZfcCcifX7Xa78xpN
+	 rnyD8dezmep1GeSjpt3glCPirRMqNfsL1E9EUCt+5+e/FaFaZm8O2fTJ3r+RyApAHH
+	 qGAc/8W5KBDcMgnk4AxqG7AguiPpy9qwubFu39ghFyN/T194BX3nxzn0AgAr06CmjI
+	 geSCZE6m55CZyaerkrjYFXr8KGzvn+aotcTtmeWytDfDLPiLJEWQs+yJExWQCSCUx5
+	 vXx2FlR28c83w==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bb1cb750157733f897df2e261cad3d5c42acc172@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 92AD140003
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v4 0/6] seccomp: non-cooperative pinned-memfd argument
+ redirect
+From: Mike Rapoport <rppt@kernel.org>
+To: Cong Wang <xiyou.wangcong@gmail.com>
+Cc: Andy Lutomirski <luto@amacapital.net>, Kees Cook <kees@kernel.org>, 
+ linux-kernel@vger.kernel.org, Will Drewry <wad@chromium.org>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org
+In-Reply-To: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
+References: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
+Date: Sat, 27 Jun 2026 11:19:03 +0300
+Message-Id: <178254834314.5812.2094612523351837049.b4-reply@b4>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Stat-Signature: h9f68ujnw8ifhq975t5agmwhr18nzhnp
-X-HE-Tag: 1782547838-857224
-X-HE-Meta: U2FsdGVkX19iZndFD1tFvIuAUUMU7a3saEaApGBMFAuS11nEgtGjppWs6/+uZ7oA0QoFDNpSWsMOkziSFr306If5kxv5986cJW+0UtHQf5+YfSKscO7YkiBN4v2mk1CyDWtj+UNrxP6t1v+XmWoc2Zz8h9F1wyf/aijmV3SdMiwgw6nzD8LpZbKGBx+HrBgWOobZiQNyEikMhAxwNXTlLUwYt8K7NS/+jge9hDDgevOTCq8e+mDsWE7hQGfDs93KWuLrSwD8Q3QrpvIADLoMIMokx0CgUdByP7lO7OWJ6sMthw3vqCbOTxI7UmXbjQ5cukCeq0QesmQ2fsq0vc/ihOeTzJA2KyUwCW0iYafBnAL9ZtrfxxJ6pXZFuKqghdBDj6GYZgs/n5EWmYKpPVnDS6D/z7Bt3qyaWrtZ4G8CV4IidaKkjVJ2Zt7v8ySTSNwvDVy69qNQqL8IfaYWrNO6kuo4VhpRbvzr9x+gjj2YwFPBWIzDgyhZJ4TGXSJEALzEyxQ4e/Hg5meQ/8eKd4KPLCDL06kBj746eAHSMZsXWcT9Kv35ou6YV1K1JpKiUHFS7z7BPd7zDVU06OLHQe1fSc+DwbaLGjUgd/Vc/KJpWQAg+4Sm6AHK6EwRPP8HSKswbcPWbRDwHDeKa3zArdn3WhFR6LY6t3+q5Jv/JwwoA2RdVoxyECYQTuh7RffiJuezaaqLj+gTNxVchzKJTcTJPc00V446gOZlsrYJPHl9dig6XrG6aw8bolgwueKWxkNifuIHHBgwZbCOLivqMpIbh70L3VgGMKKp1pYDjmJGHL7MuUnqH2uJOouavbvvDkA3pZX4ikhyuJYnrTYZbK1g97k6kcwpLfCxPU/66AI+fVT6y84YUHPCvT4x/qYskjk+bStQS1b5RldyXyq7XdXSpdW4vSzIYeAz2qt7vE85j+rzHIIAqZ1jsDPEVMJSZsdmeSYtSjGAtiRnHy73uzM
- /ixMKXgt
- a7He+43DwTxsQ4sf2d74LjzUBxazon3QeBHlxLvE6b+oBYyDTd9mNR3fMyGhajJ6GNmeiq8/tZCJY72oqxOANJdnVrb4haQMDOB42a6c6NBtKa90upOf4DsY/G8yUMIvyazjwndIALi83UkDteqRnJ7HWeiYhz68cJ6r9z4R1YFlTlUFwYsMS9a/9MdhDy7jRVuB4spKx5/fee4oVLOLs7lmKexo70wammFH/fFeW0XqJuYv4WFjcveKwPbrCrkITj/UEEn4ZyOISdT2lcNgXycOyQQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 02357140005
+X-Stat-Signature: s86h4oskikjcypwmrjbn4dajymyk36nz
+X-HE-Tag: 1782548348-770702
+X-HE-Meta: U2FsdGVkX19Sc2CnkQhoa8IAGVAA4RU0jYkKsdbGV5pbK86ruK1D32fFzdLmkt1VenjeNOHQw4B8191KbT8D0uPnmXNNn9o/ZUbu8HaQBbhU+uTeBtcYblFpKrI6/mW703UbqsBA8LiHqHeaSOnwW3/TK0oj6BuQoclpRI9nPaShf/HY6lzOu52abckaL1pssWs1EttKJrSVe4wzJL9K2YL4iqaEkRFbIHkdw7+c7G7WFhf3/mANIYAgOnvrHy1+99oxSbMTKRUdgLBdDR9pHztkeYn7MGQTJVBCcG4oiFryEs8CeU5FQfbJqXIr8g4j0WgBuJPm1iR+lZj/ela1iouTo3NIobtLtPpdmfSrvcPeVnoR0sGQUKqgdVeOFwC3u0uMAua5gIlcrPfx8q43WbXLUn6Z83ogbkfqcyqxupDWBDUoIr6H1WTKIyPGTBTI6rOO7M3oKI1y9Ro5q5TWrM+AMWhZsYC/RZ+ZXf2ymV6TXO0NQMEFZPiBVRtIEnrSMMckUpi5OYU/CNSvuPQymI16ID496acZFyAaq4iUHl7hrrT/IqVhXQNUBoQYjEIBPJjaK/joblZ+7vsi4+GgguDGWsTP84ODJ7hyxiTq7vzn+CDWzrUjcEhkC5OLFhDcCh1TVY+zOyxBSl61ouL3wL1lzEMSZILzl4FQpHocFIaS6RNyxhq2VXdjeesKDBanjXacYYq5kYIde+fSycM7mB1LOqDB39fooxLXzqOPup80KpaWi6blH76tq7o9oSnrCqdLCsOoWgmiVI4arF7IMa4aB7DCKinPk8mHJHdZAecgCaDBSNhQdhx/uOwmdIEn2XOwZbr0wzDW1FODGiMjVthc8AJdJYen3CgSc2QdvQlR1OP8AuwoHUKHW3lATh4NdwCLd+VdJDEj3dvtEhPILLn3eY5eSrWK3xk0IjoW2n6CVsv25SHX5rOv24zejCpN5noLBa/Q3yO4SLJEcRN
+ mB9nYw0p
+ 6UTSU590+z4stKTBfPLr4XUM0QXaKKSpIk5N5lDTRBoSJzN5XoG2tXBV0lpmsp59E05U9ZQrQ4Lr5fU84O4N4eEm4YO21cdwFK2HM6LHXi26IEcdZlWmqR7fLbL0VcoNr4K+7At/Z3QKpQcxpFh2PfV2LFok1jEuUeBabTo4W8slmOc4Vr8/S2ih/SgNwEYc0Bxtd8R6EOdrxj8Uda3y2sR2VTjU393vhpp4WFG5Eehvkj1bBJW438t8z21toY2Ms/CMbag8PPZDiu9L0GMtEvnnfN7FUnFfF42B8QHPWc7ETWyE89VZVEo823q/rAhh+q2qLvegvE4kvtnDhenVFivOgKw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,17 +95,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 06:44:58PM +0000, Gladyshev Ilya wrote:
->
-> This patch optimizes small file read performance and overall folio refcount
-> scalability by refactoring page_ref_add_unless [core of folio_try_get].
-> This is alternative approach to previous attempts to fix small read
-> performance by avoiding refcount bumps [1][2].
- 
-Looks like memory-failure selftest is not happy:
-https://github.com/linux-mm/linux-mm/actions/runs/28259343162/job/83730467505
+On 2026-06-26 18:22 -0700, Cong Wang wrote:
+> The seccomp user-notification SECCOMP_USER_NOTIF_FLAG_CONTINUE response
+> carries an inherent TOCTOU: once the supervisor decides to let a syscall
+> continue, the target (or a CLONE_VM peer) can rewrite the memory behind a
+> pointer argument before the kernel reads it. This is documented in the
+> UAPI header and is why the notifier "cannot be used to implement a
+> security policy" today.
+> 
+> ---
+> Cong Wang (6):
+>   mm: add __do_mmap() and vm_mmap_seal_remote()
+>   seccomp: introduce SECCOMP_IOCTL_NOTIF_PIN_INSTALL
+>   seccomp: add kernel-installed pinned-memfd redirect
+>   seccomp: re-validate a redirected syscall against outer filters
+>   selftests/seccomp: cover non-cooperative pinned-memfd install
+>   docs/seccomp: document pinned-memfd redirect ioctls
 
--- 
-Sincerely yours,
-Mike.
+This breaks VMA tests:
+https://github.com/linux-mm/linux-mm/actions/runs/28274564619/job/83778604364
+
 
