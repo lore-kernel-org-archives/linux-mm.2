@@ -4,93 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA8DC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 01:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B1C3C43327
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 01:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71DAB6B00A2; Fri, 26 Jun 2026 21:23:01 -0400 (EDT)
+	id 1C6916B00A5; Fri, 26 Jun 2026 21:23:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A80A6B00A5; Fri, 26 Jun 2026 21:23:01 -0400 (EDT)
+	id 19F136B00A7; Fri, 26 Jun 2026 21:23:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5214B6B00A6; Fri, 26 Jun 2026 21:23:01 -0400 (EDT)
+	id 066436B00A8; Fri, 26 Jun 2026 21:23:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 021FE6B00A2
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:23:00 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 68568C2D9F
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:23:00 +0000 (UTC)
-X-FDA: 84923943720.21.233C3F6
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 78A6A40002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:58 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DKpR576q;
-	spf=pass (imf04.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C59F16B00A5
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 21:23:01 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A76D12064C
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:23:01 +0000 (UTC)
+X-FDA: 84923943762.20.1DBBD57
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 659634000B
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 01:22:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H4NnhONH;
+	spf=pass (imf27.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782523378;
-	b=x+4yW5HybMblkdBRhM1mhTpVZ8NEt+wa7Bbv9qJ2dqoG79mA34/JaSkMILMeSYavKyV50a
-	Dgc4FmVEgMKrpCylxxni5olykM/9jO8A1ZCPwJiFzmd054dS/1ndPz0wJwpx+bW1jZyrvh
-	aj4RDDvKtM77aotMqT63bheAroglKuo=
+	t=1782523379;
+	b=mMeTk6+dVsLo9aEPI+tn9cQgS7w/DmkBXPifY0CXzPR5cjyIcbuM6dqyIosxih2PmYd8yt
+	kWNBl4bZUQK9GHeN7h4oEEqIcM1Ng6QdnhX2jNfwn5kGcJY1THIxICgDP7Lr2AF7CrphMX
+	WjMFWocSNkGOxW/0oW12lngWOgU/Wyw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782523378;
+	s=arc-20220608; t=1782523379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JYoG5ymmdA7ULb4UPrYYU/Qt6AuOzw6+QsFIz77aks4=;
-	b=IkrUbXjwvWZPt8Hsw2bprxbuKNcZC2SkhAqSf9FbgcTjxV4mrkgo65KGdkJNdhsNzrHTen
-	1BfBmjVVv2yoMpKrWNH3/41x+1PhwAPvbPB6SpRw71u7V0vpT94bklloljBTLgU396jl37
-	vWrPyz3vLVpEmNPmDFiJptnE5ZOTezs=
+	bh=wnffDW3FKM5YM/EqmJp7noMm1eMG7pAWT9QkVPBAw3o=;
+	b=JoTvwZl4sYEeikpICejuz7VgQrBdJ7Pjc8ygHCNwAn5X5iLqmIwa8A0gbj3Gga+e4F+aBT
+	P7T5j2e1o56sUo9pxSUXAtbLWEDvzOyRFo2Mgeqhvhdd4fmMNvVuVbcFpBLhHPTfimbiQZ
+	kaDCyJwdeVvIccD/ibSGYA3B7M2CaGQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DKpR576q;
-	spf=pass (imf04.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=H4NnhONH;
+	spf=pass (imf27.hostedemail.com: domain of xiyou.wangcong@gmail.com designates 74.125.82.53 as permitted sender) smtp.mailfrom=xiyou.wangcong@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-30b9e755555so1370662eec.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:58 -0700 (PDT)
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-137335bc3caso3016281c88.0
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 18:22:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782523377; x=1783128177; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782523378; x=1783128178; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JYoG5ymmdA7ULb4UPrYYU/Qt6AuOzw6+QsFIz77aks4=;
-        b=DKpR576qGiFJ8doO41s3Vhpz+Oj+CIp9JSwUXajApCu8qob6sZyAZjwVaWwvXwrp94
-         1rfxFtCtvmCAhgz7BYv/gfN+p43X2tUkTEv1l169emYob05TP0CRgEGbn4wlI5LTAZsU
-         GVf8sgVogcHKYTtTDRTrcwnT5Z+PGdWl2XYAQHPW8qTfAB7lT1SMATUwzlmhFMMVtQkf
-         Va31jrB569j9T0F2nrXb5JN9SX+safXIZKtB6boAoeHRS9Nheb9LElSI7jf1WcxOThiS
-         WJeFFXZWHZYLfttqvc6OIFIXRP/sYcc4EttgY8ZEZwW3HUMaUTNflieMtnci7qNvIrJs
-         COxg==
+        bh=wnffDW3FKM5YM/EqmJp7noMm1eMG7pAWT9QkVPBAw3o=;
+        b=H4NnhONH44FSMH7m2Bn2RfW540/PKtewD08CH/xRu9ZS/3hxqCy4qup6mha4XE6QtI
+         p+AdP4hD0Myluk4Nx6844kLlF53ZFRxSfEnWpkFV0RxMhyiCIJ+oguud5m2d3FZid3IX
+         e+5HNkrOMZ7tExHnveOxRUjIzinrUZFRjrokCo3tHSBs6DvBFXAPczJzgvmp6sQII8zS
+         cSi8xEOW7c9PvEXrG55ZpI0LuXBGJSUmj3XskG7Oo50UIpTAjj+bW3RDzcDcM9/3hPDu
+         Ar7UK82lolH7Fo+9Fvi4zTE1g9fw9QNYhzCQ/8eUh8OiSC9izDzNeTofmFmFhOuCS1nt
+         JaOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782523377; x=1783128177;
+        d=1e100.net; s=20251104; t=1782523378; x=1783128178;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=JYoG5ymmdA7ULb4UPrYYU/Qt6AuOzw6+QsFIz77aks4=;
-        b=pBP63y2gWeq4hxyepimFwPyHrm4aH4brCxHZahn+RsKJwwArIoHZ1HSA1b7JjXAIIO
-         FrEZfCPLxzfNOzPbBiyLCtBZ+LOkUVHhDrTWqm1a/20MCUf6wjYvr/pTIEIyFbDlrSd6
-         b/PJ8TnV1mUOLG2Coe5DiWFfpSKqYzBQnRZSFITeSFA2iEJw2Xf0zYqU54UeyomgMJB2
-         9c5ID2FgB+m19CtohBMkzLWDkxDQVNXg/TTVNngWRKCP3g37DCOqll14NfJ25J6Qc7hV
-         GlxyID6bcYQUW5uwJsDuZedhcPO/4MMd7+u4/NRHwbuRGULPfjTkfLpnmc9DPnJhZaYZ
-         fgVQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqnxNdbilLsb4fXTtOI24soduvBnE6zApEjNbl0RWnfInlpjQJvMiGgGJyNj2vccD/jB8YsYx6nCA==@kvack.org
-X-Gm-Message-State: AOJu0YxpTj376xDWOSbVErKKx/tponAezIz3VcjyA1bapdMbP88a6q45
-	MZ1JSuc+ou+JINFv5ZaIIEzYfFXklXIxFTN/NGYoak2fz449FeF8qi+Q
-X-Gm-Gg: AfdE7cnUIvrHKO5/Vzi7QM/QElvcUQj5s7K5UHADUU3NqyubQTWS0nzMhff5TVyKleh
-	COexazlRXosWniDZcIb60izHpy5YsKvYMcx44VEPU/yoU4uS+0l9QnO3bacGXA2pz0W4t8eYoV0
-	9IL7CGGTrGFFFT+YTTEfiQUsKI17eMxhunCpkhqtbnmDxXb1Ctlyst6QjH9lFALZsgxZSZo+tlu
-	wHLPxwov4OAs5z5KzKnAIkFCbiOOPF8PxB6oXevlF68fM3YbET4TRl3z7+keM9EF+CB/maDJmRd
-	CwvDZRgDRK1QQNzGvFnBKI1RDg4I4SUBJ2VA0I2ZIVVYf2TKc1XPxGOIyqDKESeJB7UFCfsPtub
-	SVWG8hGaLYnP2Cq+7YF0su8X5vlgfo+lqg/OxTshuVQOwwxBh64/QFADOf85SimJN+8ncIk31L0
-	gHD4L0mhtDy+Q3cUiSnwDfDnyxcwfUkgrcrFBL+4AEqdPgffmf
-X-Received: by 2002:a05:7300:2326:b0:30b:e3c7:27f0 with SMTP id 5a478bee46e88-30c84c04eb1mr9176790eec.13.1782523376953;
-        Fri, 26 Jun 2026 18:22:56 -0700 (PDT)
+        bh=wnffDW3FKM5YM/EqmJp7noMm1eMG7pAWT9QkVPBAw3o=;
+        b=VYH1zrtTNrfFl+xABx3Bq00lXYswA8khGMsvJjWf1YvFaeJ/bD1dOvfPbN7lmCpwLY
+         k4fgOfZwIcJOoWD79ByAruapCQfMI2vcfqa5LoiD8cM5hfnt1LTSCD6TTtloeIQhQ+cq
+         ahohTpFdpyE275AwVFmsk7KqPTh/CgjFMggGzUbnzV63sEgyxN5ScFg5b8L3fS0sjvGx
+         y9Hl+7AXjsJu7THIuEsJopHLgNMMRvMfee89Yc11+rMR7ZF+OJROYCs6NLwkL8SviW+y
+         tn+5gpImuYCkbDyYR8Z5hK3IVhFcL2FSojDSDyNQ60QUKZxz8HwC/8KtLBTB5UoOgLLv
+         8v9w==
+X-Forwarded-Encrypted: i=1; AHgh+Rq1a5nKrGkFtYBZ1RkjEQfoQkerpGIHdHAGdJbQf7PeYK36OKJ+NTiYFcvGxhKr19aEbTuQMgY5Ng==@kvack.org
+X-Gm-Message-State: AOJu0YwlQp2pK2w/ASU8+fVZOd7urOSL53t8y9ZACKRZyP8dLscYuohO
+	x883IB65u+fRoS6jEfPZfnxB0j6Gjb8WMaL1qBmvjOR6sHVlcJmho0io
+X-Gm-Gg: AfdE7cnCaRpBGGjCB01dz6BHTzr31ea7htQ5dDwi4C88+CpBpPd3ssHXSAVE8+BoFd3
+	1iLY8+xWh5zRMdelchTHJ+zQ/zk4LVIC3JnTc3iMVECqhJYmYAjm9laM7B6T/Bs1oyxTl6Y+NLg
+	JGwGnBefnd9dSWJyOBuguY/KrhvEOjk+Pm8mh3KYodMVncTZAKDnXxuUcndXHUzMu1DbJeovlop
+	JE+05RVHh/rvVhxJpT1KpKB3e/R+Y6UHheds1lDussk2fqwCqy0u59M/FrWmdW9wJ5vo89btjup
+	GydWHQvKPatMIQ2FX2gCY6myAp2X/jklRbQP4ZFMylhKdhR2KcNH1T72qln8uEi28x4fevKvmAS
+	3QTc20vV3JPSj6/XLTn1AhZk3gJOfzH5We+kOsmagH96nAKVkiXCqbg42AEyYMAwufY1iqSsu/L
+	pwixvYU3jUBgND+08awcsLHFRU0EuAMNrJlRw4n0XkuF40khoI
+X-Received: by 2002:a05:7300:e887:b0:30c:6847:c2de with SMTP id 5a478bee46e88-30c850a51dcmr8095341eec.29.1782523378139;
+        Fri, 26 Jun 2026 18:22:58 -0700 (PDT)
 Received: from pop-os.. ([2601:647:6802:dbc0:fe0d:366d:f00:1840])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c9e9214sm22883437eec.20.2026.06.26.18.22.55
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30c7c9e9214sm22883437eec.20.2026.06.26.18.22.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 18:22:56 -0700 (PDT)
+        Fri, 26 Jun 2026 18:22:57 -0700 (PDT)
 From: Cong Wang <xiyou.wangcong@gmail.com>
 To: Andy Lutomirski <luto@amacapital.net>
 Cc: Kees Cook <kees@kernel.org>,
@@ -100,23 +99,22 @@ Cc: Kees Cook <kees@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	linux-mm@kvack.org,
 	Cong Wang <cwang@multikernel.io>
-Subject: [PATCH v4 5/6] selftests/seccomp: cover non-cooperative pinned-memfd install
-Date: Fri, 26 Jun 2026 18:22:18 -0700
-Message-ID: <20260627012219.1079851-6-xiyou.wangcong@gmail.com>
+Subject: [PATCH v4 6/6] docs/seccomp: document pinned-memfd redirect ioctls
+Date: Fri, 26 Jun 2026 18:22:19 -0700
+Message-ID: <20260627012219.1079851-7-xiyou.wangcong@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
 References: <20260627012219.1079851-1-xiyou.wangcong@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6yycwt34xjrpytttic96fbq9d8qrrt8w
 X-Rspam-User: 
-X-Stat-Signature: nayq3aqhseuekn8s1nzawxhqbt7mw1q3
-X-Rspamd-Queue-Id: 78A6A40002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782523378-887282
-X-HE-Meta: U2FsdGVkX1/F36mHowH43rrnwPvHCVragRu06AopUh0ruAz/3QU0wAMo3pxkQfALs3PBULTZ24REerxFEEC1QqFT1oujriLMYVNwkar2kSviD22tDEid5ivgGB3m9dBB8LziC3NnRaXk0pVEsRMYXWeYKaOtJts7LoILcguVn7+u8I3h4EKFTe6OKqHOb5aSHVMhAW7ckzsprrbELVo13YOX6x1I8nxWupUMChUlbhyGuuveFkpeduHP3f3KUYhNK2mlOqIo+gyjO4jmh9u/izWvAEd/z+oxwi+QA4ZUtT++4mvJ/lzXdxnTZcexH4xJM7z2JgXxf3gv4P/Ry1JkK1G0HJjxbzsimBH01pc8SPQPqQ13PDXilnV+tKtwkkiQXMSHiK/RvqTcrbYBbWav57A+gk41hakqMiKJXwnSf+13qMdjB7CMPmWRVVIX479ZxegPU0/kJZf446JDLAemK9dF3ecYuHzVUemEUoQyJ8cAXVSvzdTJqA1G1elJIo3jLLOm4OawBnPgCebOUpXaa0aGejr+T1y+QaoDCUume2rvQ1t+m3+pFGQJq2uNOkUjPhz3D3L7zxglnt1ANlaWcI5raIKTOQHr9aAWpnSYG1Kj936YuO2SY3gHJKnHX8pSXqXTd34Exl+0PrDqJXD1/CfasdTnBhMmHJ5+v34BpNj4wAWhvstbfXyBk0S14AEGqN6CMXZAcYk27yp2tObxFXuK0l1l/ZWudgPzQSVKKoLXW/4KA61hwihlGkGIAtT3ka63WYgCUf/cm5YZ/do5KAHGB//am9MymC4nQzgzkEzGKfy4KiXtk5x+Ofb6tfKvsY2g/pKgCs84ZCAexmyk1gHFvORxPbs4jay4WcacNb2reWzxUwerN1BuM9TF2tOw3DMuVwNYovYNmyDeL1edO80+6LdPoBwjxKjiCDj1nmnwAnkVED7TsHWjrG8StdmEU8r/JRtrClhg6i565w1
- Q+S9bVzo
- hr/lSES1YaQHxDIsXMDOlLyd79zo7cNdxUbQNKgX1Tj9i/4RFsoMf9MNP2ETAJmRFAHaUfB2YjYCkq26vH4iFeom6iTrsMo0db3fJmS7/BVOE7GEmDWZEGaCz0GUf355IOZfUWVuVCPiU+k0p1p4OkwFK0Ys+8H0HSVxpmm/Vk/inde/hX5hqf/ugakoyV/RgWoOtLBxCNlmeOaQF9Ph4Pn0kj/sVSHGuoT+pVc044nn77HO/VOuHM5zk9r3ZAFv0ap9Cf8uqhYjjYLEEPosjOv4pnYY1/IulWt0HZowFZBwV+So9UvdDTwW3pQBkNyFlvirNJeNUVw0R71yPGwr4VNnJw+0zyDmvxMxpGyLpqt9wb4fMH8q02+4agiNnl9ebZp4/CzHt4GLwWD6szUyZX7eTUCQougiTtkXWViX463Lx5wwU84x1MguJ1UoPg/WwJD+KfXXDw3AYlqkPGUc5FjVGABAoHdpYOHQGyp2J/ho9VgbxNTrGWM/YpA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 659634000B
+X-HE-Tag: 1782523379-587481
+X-HE-Meta: U2FsdGVkX1/g93Iyldu6gOCleFSx+SAHOHvYvRedg2ki88dvyBn10Yuqi208pTEYACqNPeGlMWGzFa4FY2mDG09J2bOLtfO4dgfUbkH5qEBC1ihO6Nr9lyLF8SIN+BnrKDfdiUMkbQdyhF5NrM3jj6VimLdykYxsXdeIZyc1AMYrmcGzYbtueep8jknZ2+A2aBTcqMFXMtjow/oGv38d/PskYaQoklO/1r8AmyhhK7Em7BbZ0gcBry+GcNTe3Y8UfAdqhuePyISOYcVlH3RDPVEc1vh7SevWImoVRhguIRBRuo1L0+jVsctNSzu5RLHCkt5U53TuKUN5TlhnsxnDUVKjX1zD4wQbzlqoH2mDVTmL2E/YdhEiqPozJihsq+eDxq8GlrIBTEUyULs6hPCiNLZq12EmXOv/lUyt5uftxyhVXa4YDVKW0ZTboTV1BcZ9YVR6v3E2EoLrOAQmvvtdO8F7t89UKT3Fq/semV9smtaHaMragFfN5I9qEmPXASdQTYhOKySw8JJ63hvBqfU5jYNiBUFjPromEj/qaSupOTZHX/dK35V7Mi8Yi8A2+NxPXWNJCXVQlGXtp9oTeZuWnnRjRonhWbqKtHpDC7PHcXQeA9Po56ZUbCRfDUaCaLBIS1aFxC+Fm1K87STWDx4tyIohMcvXPG+aXY/WoKuLE6CVx/bCK2E7djj8iaUjzZbz/vmzNA8ViRNNEGooDaOh5i3aiXGyVuQzgowxyvH5qyZOxRSpZ90iedVakcMHuPa+N64xUlPpYgW4H07EY5fF7gd/oLTHBJXFkLJo2r5J0uZJ3kPYgNzW54WUBUMT1+JQXiXrqJ9nStd3yXVevAAOALVwUtn3ni69+EThC6i+YbXurgi2/d+hd0wR4NbHPfVGR8a1vs9iJAbHA42MSmnhsThyJrhXfAIcofdUG5HI3NAY9PgJXylo1BWMgA5yVkHrPWgth2bko6If9aSm9Oe
+ 8d6JKoCr
+ 4qXYci1u0awH2vLoQfr0wGzG70RvF8Yyweb2vI5OBd54gFl1fH5EVRPUsF+sWVnCFIjdqvnQoA4YuKjxLb2a0SVguphr1QR4nwLadvakoNOqAf1hqqrot7ODM4+UZAh4Mz+QBl0+rlOAs/d1klL6CGSKejluAuv72snVJn1CGOf84tfJmFFI/ODhXmHNSUOMmkumpMD34VypTbHSCQKTM5A8hpzAQ4Eg+eBYOVrqUzWFe9CxcbUkiEZwyl3/m4jSGAOL7Cp4ldqnPPWJqIxQ5nlmHALt7rXAFAaA7CI1WemFb4QppXfWbuMgwSXNL9T2cWNdvcJjtoEiT/hAAUwx+1mj6bCVz+M+fmrT4YJDnQVaajOucJocRA6W3pdy5JhAuaAzYA+LhQ46bFgNWZCGgr49+t03bfCcTFousjWRjTbQtQWIvB/DS8m8E6nryq6nihImwabLPAjaCfW6LKKxPnF9H2g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,1101 +124,143 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Cong Wang <cwang@multikernel.io>
 
-Add coverage for SECCOMP_IOCTL_NOTIF_PIN_INSTALL and
-SECCOMP_IOCTL_NOTIF_SEND_REDIRECT, where the kernel installs a sealed
-PROT_READ MAP_SHARED mapping of the supervisor's memfd into the trapped
-task's mm via vm_mmap_seal_remote() and the supervisor redirects a
-pointer argument into it.
+Document SECCOMP_IOCTL_NOTIF_PIN_INSTALL and
+SECCOMP_IOCTL_NOTIF_SEND_REDIRECT in the userspace API guide: the
+SECCOMP_FILTER_FLAG_REDIRECT opt-in and the single-redirector
+restriction, the two response structures, and how the pair closes the
+user-notification TOCTOU for non-cooperative fork+execve sandboxes.
 
-Six tests:
-
-  - pinned_memfd_remote: a forked child that does no setup of its own
-    traps on openat; the supervisor PIN_INSTALLs and SEND_REDIRECTs the
-    path argument into the pin, and the child reads the
-    supervisor-controlled safe path from the sealed pages. Also covers
-    the rejection paths: an unsealed memfd (-EINVAL), a pointer one byte
-    past the pin, and a base inside the pin whose ptr_len extent runs
-    past its end (both -EFAULT).
-
-  - pinned_memfd_execve_scm: the full fork+execve flow with a detached
-    supervisor that receives the listener fd over SCM_RIGHTS. The child
-    traps pre-exec, then execve()s a real binary; the supervisor
-    reinstalls the pin into the freshly replaced mm and redirects again,
-    exercising the per-mm rebind (a pin from the old mm is no longer
-    accepted).
-
-  - pinned_memfd_churn: stateless validation across many short-lived
-    targets over one listener; PIN_INSTALL/SEND_REDIRECT keep working
-    with no per-target state accumulating (kmemleak/KASAN over the loop).
-
-  - redirect_outer_refilter: a redirect is re-checked against the outer
-    filters in the stack, so an inner notifier cannot smuggle a syscall
-    past an outer filter's policy.
-
-  - pinned_memfd_abi: the trapped task's original argument registers are
-    restored at syscall exit after a redirect.
-
-  - redirect_signal_abi: regression test that the deferred arg-register
-    restore runs before a signal frame is built, not after.
+Also spell out the scope the implementation deliberately enforces or
+relies on: read-only input pointers only, same-syscall-number only
+(rt_sigreturn is refused), the per-interruption re-notification of
+restartable syscalls and the restart-block behaviour, the clone()/fork()
+child caveat, and the ptrace syscall-stop semantics.
 
 Assisted-by: Claude:claude-opus-4.8
 Signed-off-by: Cong Wang <cwang@multikernel.io>
 ---
- tools/testing/selftests/seccomp/seccomp_bpf.c | 1027 +++++++++++++++++
- 1 file changed, 1027 insertions(+)
+ .../userspace-api/seccomp_filter.rst          | 108 ++++++++++++++++++
+ 1 file changed, 108 insertions(+)
 
-diff --git a/tools/testing/selftests/seccomp/seccomp_bpf.c b/tools/testing/selftests/seccomp/seccomp_bpf.c
-index 358b6c65e120..1b1eec505198 100644
---- a/tools/testing/selftests/seccomp/seccomp_bpf.c
-+++ b/tools/testing/selftests/seccomp/seccomp_bpf.c
-@@ -217,6 +217,10 @@ struct seccomp_metadata {
- #define SECCOMP_FILTER_FLAG_NEW_LISTENER	(1UL << 3)
- #endif
+diff --git a/Documentation/userspace-api/seccomp_filter.rst b/Documentation/userspace-api/seccomp_filter.rst
+index cff0fa7f3175..3a8ac7775da6 100644
+--- a/Documentation/userspace-api/seccomp_filter.rst
++++ b/Documentation/userspace-api/seccomp_filter.rst
+@@ -289,6 +289,114 @@ above in this document: all arguments being read from the tracee's memory
+ should be read into the tracer's memory before any policy decisions are made.
+ This allows for an atomic decision on syscall arguments.
  
-+#ifndef SECCOMP_FILTER_FLAG_REDIRECT
-+#define SECCOMP_FILTER_FLAG_REDIRECT		(1UL << 6)
-+#endif
++Non-cooperative pinned-memfd redirect
++=====================================
 +
- #ifndef SECCOMP_RET_USER_NOTIF
- #define SECCOMP_RET_USER_NOTIF 0x7fc00000U
++The TOCTOU described above means ``SECCOMP_USER_NOTIF_FLAG_CONTINUE`` cannot
++enforce a policy on pointer arguments: after the supervisor inspects the
++target's memory and lets the syscall continue, the target (or a thread sharing
++its address space) can rewrite that memory before the kernel reads it. The
++cooperative workaround, the target ``mmap()`` + ``mseal()``-ing a shared
++buffer, is unavailable in the fork+execve sandbox model, where the supervisor
++confines a binary it did not write.
++
++Two ioctls let the supervisor close this race without target cooperation. The
++redirect step (below) requires a listener created with
++``SECCOMP_FILTER_FLAG_REDIRECT`` (in addition to
++``SECCOMP_FILTER_FLAG_NEW_LISTENER``). Because it rewrites another task's
++registers, at most one such listener may exist in a task's filter chain; a
++second fails with ``-EBUSY``:
++
++.. code-block:: c
++
++    fd = seccomp(SECCOMP_SET_MODE_FILTER,
++                 SECCOMP_FILTER_FLAG_NEW_LISTENER | SECCOMP_FILTER_FLAG_REDIRECT,
++                 &prog);
++
++``ioctl(SECCOMP_IOCTL_NOTIF_PIN_INSTALL)`` installs a sealed mapping of a
++supervisor-owned ``memfd`` directly into the trapped task's address space:
++
++.. code-block:: c
++
++    struct seccomp_notif_pin_install {
++        __u64 id;
++        __u32 flags;       /* reserved, must be 0 */
++        __u32 memfd;
++        __u64 target_addr;
++        __u64 size;
++        __u64 offset;      /* page-aligned offset into memfd */
++    };
++
++``id`` names an active notification (the trapped task to install into).
++``target_addr``, ``size`` and ``offset`` are page-aligned; ``offset`` selects
++where in ``memfd`` the mapping starts, so one memfd can back several pins. If
++``target_addr`` is ``0`` the kernel picks a free address and writes it back;
++otherwise an existing mapping there yields ``-EEXIST``. The pin is read-only
++and sealed, the target and its threads cannot unmap, move, reprotect or
++overwrite it, and lasts until the target ``execve()``s or exits.
++
++``memfd`` must be write-sealed (``F_SEAL_WRITE`` or ``F_SEAL_FUTURE_WRITE``)
++or the ioctl returns ``-EINVAL``; otherwise the target could rewrite the pin's
++bytes through a separate writable handle to the same memfd.
++``F_SEAL_FUTURE_WRITE`` still lets the supervisor update the contents through
++its own mapping made before the seal.
++
++``ioctl(SECCOMP_IOCTL_NOTIF_SEND_REDIRECT)`` then resumes the trapped syscall
++like ``SECCOMP_USER_NOTIF_FLAG_CONTINUE``, but with selected argument
++registers replaced:
++
++.. code-block:: c
++
++    struct seccomp_notif_resp_redirect {
++        __u64 id;
++        __u32 flags;      /* SECCOMP_REDIRECT_FLAG_CONTINUE must be set */
++        __u32 args_mask;  /* which arg registers to replace */
++        __u32 ptr_mask;   /* which of those are pointers into a pin */
++        __u32 memfd;      /* the pin's backing memfd */
++        __u64 args[6];    /* replacement values */
++        __u64 ptr_len[6]; /* validated access length for each pointer arg */
++    };
++
++Each bit in ``ptr_mask`` (a subset of ``args_mask``) marks ``args[i]`` as a
++pointer; the access ``[args[i], args[i] + ptr_len[i])`` must lie within a
++single read-only pin of ``memfd`` in the target, or the ioctl returns
++``-EFAULT``. ``ptr_len[i]`` must be non-zero for those bits and ``0``
++otherwise. Bits in ``args_mask`` but not ``ptr_mask`` are scalar replacements
++written verbatim, e.g. to set the length register that goes with a redirected
++pointer. The original registers are restored at syscall exit, so the
++substitution is invisible to the target and the TOCTOU is closed.
++
++Scope and limitations
++---------------------
++
++The redirect mechanism is deliberately narrow and is *not* a general syscall
++rewriting facility:
++
++- **Read-only input pointers only.** A pin is read-only, so only an argument
++  the syscall *reads* (a pathname, a ``sockaddr``) may be redirected into it.
++  Aiming an output or in/out argument at a pin makes the syscall fail with
++  ``-EFAULT`` when it writes back.
++
++- **Same syscall only.** A redirect replaces arguments, never the syscall
++  number. ``rt_sigreturn()`` (and its compat variant) cannot be redirected and
++  return ``-EOPNOTSUPP``.
++
++- **Signals and restarts.** The redirected syscall really runs, so it can be
++  interrupted and restarted. On a restart the original arguments are restored
++  and the syscall re-traps, so the supervisor is notified again and must answer
++  consistently. Syscalls the kernel restarts without re-trapping (e.g.
++  ``nanosleep()``, ``futex(FUTEX_WAIT)``) keep the substituted arguments --
++  safe for read-only inputs, but a reason not to redirect arguments of syscalls
++  that block or wait.
++
++- **clone()/fork().** A child keeps the substituted argument registers (the
++  restore is not inherited). Redirect ``clone()``/``fork()`` arguments only if
++  that is acceptable.
++
++- **ptrace.** A tracer sees the substituted arguments at the syscall-exit stop;
++  they are restored before the task resumes, so a ``PTRACE_SETREGS`` of a
++  substituted register at that stop is overwritten.
++
+ Sysctls
+ =======
  
-@@ -295,6 +299,35 @@ struct seccomp_notif_addfd_big {
- #define PTRACE_EVENTMSG_SYSCALL_EXIT	2
- #endif
- 
-+#ifndef SECCOMP_IOCTL_NOTIF_PIN_INSTALL
-+struct seccomp_notif_pin_install {
-+	__u64 id;
-+	__u32 flags;
-+	__u32 memfd;
-+	__u64 target_addr;
-+	__u64 size;
-+	__u64 offset;
-+};
-+#define SECCOMP_IOCTL_NOTIF_PIN_INSTALL	SECCOMP_IOWR(5, \
-+						struct seccomp_notif_pin_install)
-+#endif
-+
-+#ifndef SECCOMP_IOCTL_NOTIF_SEND_REDIRECT
-+#define SECCOMP_REDIRECT_FLAG_CONTINUE (1UL << 0)
-+#define SECCOMP_REDIRECT_ARGS 6
-+struct seccomp_notif_resp_redirect {
-+	__u64 id;
-+	__u32 flags;
-+	__u32 args_mask;
-+	__u32 ptr_mask;
-+	__u32 memfd;
-+	__u64 args[SECCOMP_REDIRECT_ARGS];
-+	__u64 ptr_len[SECCOMP_REDIRECT_ARGS];
-+};
-+#define SECCOMP_IOCTL_NOTIF_SEND_REDIRECT	SECCOMP_IOW(6, \
-+						struct seccomp_notif_resp_redirect)
-+#endif
-+
- #ifndef SECCOMP_USER_NOTIF_FLAG_CONTINUE
- #define SECCOMP_USER_NOTIF_FLAG_CONTINUE 0x00000001
- #endif
-@@ -4368,6 +4401,1000 @@ TEST(user_notification_addfd_rlimit)
- 	close(memfd);
- }
- 
-+/*
-+ * Create a write-sealed memfd of @size for PIN_INSTALL and map a supervisor
-+ * writable view, primed with @content. F_SEAL_FUTURE_WRITE keeps this
-+ * pre-seal mapping writable (so the test can still stage content) while
-+ * barring any other writable reference, as PIN_INSTALL requires. Returns
-+ * the memfd.
-+ */
-+static int make_pin_memfd(struct __test_metadata *_metadata, const char *name,
-+			  size_t size, char **sup_view, const char *content)
-+{
-+	int memfd = memfd_create(name, MFD_ALLOW_SEALING);
-+
-+	ASSERT_GE(memfd, 0);
-+	ASSERT_EQ(0, ftruncate(memfd, size));
-+	ASSERT_EQ(0, fcntl(memfd, F_ADD_SEALS, F_SEAL_SHRINK | F_SEAL_GROW));
-+
-+	*sup_view = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED,
-+			 memfd, 0);
-+	ASSERT_NE(MAP_FAILED, *sup_view);
-+	ASSERT_EQ(0, fcntl(memfd, F_ADD_SEALS, F_SEAL_FUTURE_WRITE));
-+	memcpy(*sup_view, content, strlen(content) + 1);
-+	return memfd;
-+}
-+
-+/*
-+ * Non-cooperative pinned-memfd: kernel installs a sealed PROT_READ
-+ * MAP_SHARED mapping of the supervisor's memfd directly into the
-+ * trapped task's mm. The target runs no mmap or mseal code itself —
-+ * this exercises the same kernel path that a fork+execve sandbox
-+ * supervisor would use to install a pin in the new image's fresh
-+ * post-exec mm.
-+ *
-+ * Target child does nothing but call openat() on a bait path. The
-+ * supervisor catches the trap, calls PIN_INSTALL (kernel does the
-+ * mmap + seal in target's mm via vm_mmap_seal_remote()), writes a
-+ * safe path into its own memfd view, and SEND_REDIRECTs args[1]
-+ * into the freshly installed pin. The child's openat resumes,
-+ * reads from the sealed pin, and returns an fd to the safe path.
-+ */
-+TEST(user_notification_pinned_memfd_remote)
-+{
-+	pid_t pid;
-+	long ret;
-+	int status, listener, memfd, unsealed;
-+	struct seccomp_notif req = {};
-+	struct seccomp_notif_pin_install pin = {};
-+	struct seccomp_notif_pin_install unsealed_pin = {};
-+	struct seccomp_notif_resp_redirect redir = {};
-+	char *sup_view;
-+	const size_t PIN_SIZE = 4096;
-+	const char *safe_path = "/dev/null";
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	memfd = make_pin_memfd(_metadata, "pinned-remote", PIN_SIZE,
-+			       &sup_view, safe_path);
-+
-+	listener = user_notif_syscall(__NR_openat,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT);
-+	ASSERT_GE(listener, 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		int fd;
-+
-+		/*
-+		 * Target performs no setup. Just trap on openat. Kernel
-+		 * (driven by the supervisor) will install the pin in this
-+		 * process's mm at a kernel-chosen address behind our back,
-+		 * and our openat will be redirected to read from there.
-+		 */
-+		fd = syscall(__NR_openat, AT_FDCWD,
-+			     "/this/should/never/be/touched", O_RDONLY, 0);
-+		if (fd < 0)
-+			_exit(11);
-+		_exit(0);
-+	}
-+
-+	ASSERT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req));
-+	EXPECT_EQ(req.data.nr, __NR_openat);
-+
-+	pin.id = req.id;
-+	pin.memfd = memfd;
-+	pin.target_addr = 0;
-+	pin.size = PIN_SIZE;
-+	EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_PIN_INSTALL, &pin)) {
-+		if (errno == EINVAL) {
-+			SKIP(goto cleanup,
-+			     "Kernel does not support pinned-memfd remote install");
-+		}
-+		TH_LOG("PIN_INSTALL failed: errno=%d", errno);
-+	}
-+
-+	/* The kernel wrote a non-zero, page-aligned address back to us. */
-+	EXPECT_NE(0, pin.target_addr);
-+	EXPECT_EQ(0, pin.target_addr & (PIN_SIZE - 1));
-+
-+	/* Reject: the backing memfd must be write-sealed. */
-+	unsealed = memfd_create("unsealed", MFD_ALLOW_SEALING);
-+	ASSERT_GE(unsealed, 0);
-+	ASSERT_EQ(0, ftruncate(unsealed, PIN_SIZE));
-+	unsealed_pin.id = req.id;
-+	unsealed_pin.memfd = unsealed;
-+	unsealed_pin.size = PIN_SIZE;
-+	EXPECT_EQ(-1, ioctl(listener, SECCOMP_IOCTL_NOTIF_PIN_INSTALL,
-+			    &unsealed_pin));
-+	EXPECT_EQ(EINVAL, errno);
-+	close(unsealed);
-+
-+	/* Reject: redirect outside any installed pin. */
-+	redir.id = req.id;
-+	redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+	redir.args_mask = 1U << 1;
-+	redir.ptr_mask = 1U << 1;
-+	redir.memfd = memfd;
-+	redir.ptr_len[1] = strlen(safe_path) + 1;
-+	redir.args[1] = pin.target_addr + PIN_SIZE;	/* one byte past */
-+	EXPECT_EQ(-1, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+			    &redir));
-+	EXPECT_EQ(EFAULT, errno);
-+
-+	/* Reject: base is inside the pin but the extent runs past its end. */
-+	redir.args[1] = pin.target_addr;
-+	redir.ptr_len[1] = PIN_SIZE + 1;
-+	EXPECT_EQ(-1, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+			    &redir));
-+	EXPECT_EQ(EFAULT, errno);
-+
-+	/* Happy path: redirect into the kernel-installed pin. */
-+	redir.args[1] = pin.target_addr;
-+	redir.ptr_len[1] = strlen(safe_path) + 1;
-+	EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+			   &redir));
-+
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status)) {
-+		TH_LOG("child exit %d (11=openat fail)", WEXITSTATUS(status));
-+	}
-+
-+cleanup:
-+	munmap(sup_view, PIN_SIZE);
-+	close(memfd);
-+	close(listener);
-+}
-+
-+/*
-+ * Helper for the execve test: read up to @max bytes of a NUL-terminated
-+ * string from @pid's mm at @addr into @out. Returns the length read
-+ * (excluding the NUL), or -1 on failure or no NUL.
-+ */
-+static ssize_t read_remote_string(pid_t pid, unsigned long addr,
-+				  char *out, size_t max)
-+{
-+	struct iovec local = { .iov_base = out, .iov_len = max };
-+	struct iovec remote = { .iov_base = (void *)addr, .iov_len = max };
-+	ssize_t n;
-+	size_t i;
-+
-+	n = process_vm_readv(pid, &local, 1, &remote, 1, 0);
-+	if (n <= 0)
-+		return -1;
-+	for (i = 0; i < (size_t)n; i++)
-+		if (out[i] == '\0')
-+			return (ssize_t)i;
-+	return -1;
-+}
-+
-+/*
-+ * Send a file descriptor over a connected UNIX socket via SCM_RIGHTS.
-+ * Used by the execve_scm test so the target child can hand its
-+ * SECCOMP_FILTER_FLAG_NEW_LISTENER fd to the supervising parent
-+ * without the parent having to inherit the seccomp filter itself.
-+ */
-+static int send_fd(int sock, int fd)
-+{
-+	char cbuf[CMSG_SPACE(sizeof(int))] = {};
-+	char data = 'x';
-+	struct iovec iov = { .iov_base = &data, .iov_len = 1 };
-+	struct msghdr msg = {
-+		.msg_iov = &iov, .msg_iovlen = 1,
-+		.msg_control = cbuf, .msg_controllen = sizeof(cbuf),
-+	};
-+	struct cmsghdr *cmsg = CMSG_FIRSTHDR(&msg);
-+
-+	cmsg->cmsg_level = SOL_SOCKET;
-+	cmsg->cmsg_type = SCM_RIGHTS;
-+	cmsg->cmsg_len = CMSG_LEN(sizeof(int));
-+	memcpy(CMSG_DATA(cmsg), &fd, sizeof(int));
-+	return sendmsg(sock, &msg, 0) < 0 ? -1 : 0;
-+}
-+
-+static int recv_fd(int sock)
-+{
-+	char cbuf[CMSG_SPACE(sizeof(int))] = {};
-+	char data;
-+	struct iovec iov = { .iov_base = &data, .iov_len = 1 };
-+	struct msghdr msg = {
-+		.msg_iov = &iov, .msg_iovlen = 1,
-+		.msg_control = cbuf, .msg_controllen = sizeof(cbuf),
-+	};
-+	struct cmsghdr *cmsg;
-+	int fd;
-+
-+	if (recvmsg(sock, &msg, 0) < 0)
-+		return -1;
-+	cmsg = CMSG_FIRSTHDR(&msg);
-+	if (!cmsg || cmsg->cmsg_level != SOL_SOCKET ||
-+	    cmsg->cmsg_type != SCM_RIGHTS ||
-+	    cmsg->cmsg_len != CMSG_LEN(sizeof(int)))
-+		return -1;
-+	memcpy(&fd, CMSG_DATA(cmsg), sizeof(int));
-+	return fd;
-+}
-+
-+struct addr_range {
-+	unsigned long start, end;
-+};
-+
-+/*
-+ * Parse /proc/<pid>/maps looking for the dynamic linker's executable
-+ * mapping (glibc ld-linux-*.so, musl ld-musl-*.so, etc.). The trapped
-+ * task's instruction_pointer falling in this range identifies a
-+ * loader-bootstrap syscall (race-free, kernel-truth) so the supervisor
-+ * can auto-allow it without inspecting argument content via the racy
-+ * process_vm_readv path.
-+ *
-+ * Requires the supervisor not to be subject to the seccomp filter
-+ * itself -- fopen() internally calls openat(). The execve_scm test
-+ * structure (child installs filter, sends listener fd to parent via
-+ * SCM_RIGHTS) satisfies that.
-+ *
-+ * Returns 0 on success with @out populated, -1 if not found.
-+ */
-+static int find_loader_text_range(pid_t pid, struct addr_range *out)
-+{
-+	char maps_path[64];
-+	char line[512];
-+	FILE *f;
-+	int found = 0;
-+
-+	snprintf(maps_path, sizeof(maps_path), "/proc/%d/maps", pid);
-+	f = fopen(maps_path, "r");
-+	if (!f)
-+		return -1;
-+
-+	while (fgets(line, sizeof(line), f)) {
-+		unsigned long start, end;
-+		char perms[8];
-+		char *path;
-+
-+		if (sscanf(line, "%lx-%lx %7s", &start, &end, perms) != 3)
-+			continue;
-+		if (!strchr(perms, 'x'))
-+			continue;
-+		path = strchr(line, '/');
-+		if (!path)
-+			continue;
-+		/*
-+		 * Match common dynamic-linker basenames: ld-linux-*.so
-+		 * (glibc), ld-musl-*.so (musl), ld-*.so (older glibc).
-+		 */
-+		if (strstr(path, "/ld-") || strstr(path, "/ld.so")) {
-+			out->start = start;
-+			out->end = end;
-+			found = 1;
-+			break;
-+		}
-+	}
-+	fclose(f);
-+	return found ? 0 : -1;
-+}
-+
-+/*
-+ * Non-cooperative pinned-memfd across a real execve, using the proper
-+ * supervisor-isolation pattern: the child (target) installs the seccomp
-+ * filter on itself and sends its listener fd to the parent (supervisor)
-+ * via SCM_RIGHTS over a socketpair. The parent therefore does not carry
-+ * the seccomp filter and can freely call openat() -- which is what makes
-+ * the race-free, kernel-truth loader detection (req.data.instruction_pointer
-+ * + /proc/<pid>/maps) actually usable.
-+ *
-+ * Phase 1: child does a pre-execve openat; the supervisor PIN_INSTALLs and
-+ * SEND_REDIRECTs. Phase 2: child execve's, so the pre-execve pin VMA dies
-+ * with the old mm. Phase 3: in the fresh post-execve mm the supervisor
-+ * PIN_INSTALLs again (idempotent replace of the stale bookkeeping) and
-+ * SEND_REDIRECTs, proving the full redirect mechanism survives an mm
-+ * replacement, not just the install side.
-+ */
-+TEST(user_notification_pinned_memfd_execve_scm)
-+{
-+	pid_t pid;
-+	int status, listener, memfd, sv[2];
-+	struct seccomp_notif req = {};
-+	struct seccomp_notif_pin_install pin = {};
-+	struct seccomp_notif_resp_redirect redir = {};
-+	struct seccomp_notif_resp cont_resp = {};
-+	char *sup_view;
-+	const size_t PIN_SIZE = 4096;
-+	const char *safe_path = "/dev/null";
-+	const char *bait = "/seccomp_pinned_memfd_test_bait_scm";
-+	bool post_exec_install_ok = false;
-+	bool post_exec_redirect_done = false;
-+	bool loader_known = false;
-+	bool loader_check_attempted = false;
-+	struct addr_range loader_range = {};
-+	int phase = 0;
-+	int trap_count = 0;
-+	const int trap_limit = 200;
-+
-+	if (access("/bin/cat", X_OK) != 0)
-+		SKIP(return, "/bin/cat not present");
-+
-+	memfd = make_pin_memfd(_metadata, "pin-execve-scm", PIN_SIZE,
-+			       &sup_view, safe_path);
-+
-+	ASSERT_EQ(0, socketpair(AF_UNIX, SOCK_SEQPACKET, 0, sv));
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		struct sock_filter filter[] = {
-+			BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
-+				 offsetof(struct seccomp_data, nr)),
-+			BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, __NR_openat,
-+				 0, 1),
-+			BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_USER_NOTIF),
-+			BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_ALLOW),
-+		};
-+		struct sock_fprog prog = {
-+			.len = (unsigned short)ARRAY_SIZE(filter),
-+			.filter = filter,
-+		};
-+		int my_listener;
-+		int fd;
-+
-+		close(sv[0]);
-+		if (prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0))
-+			_exit(20);
-+		my_listener = seccomp(SECCOMP_SET_MODE_FILTER,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT,
-+				      &prog);
-+		if (my_listener < 0)
-+			_exit(21);
-+		if (send_fd(sv[1], my_listener) < 0)
-+			_exit(22);
-+		close(my_listener);
-+		close(sv[1]);
-+
-+		/* Pre-execve trap. */
-+		fd = syscall(__NR_openat, AT_FDCWD,
-+			     "/this/should/never/be/touched", O_RDONLY, 0);
-+		if (fd < 0)
-+			_exit(11);
-+
-+		execl("/bin/cat", "cat", bait, (char *)NULL);
-+		_exit(12);
-+	}
-+
-+	close(sv[1]);
-+	listener = recv_fd(sv[0]);
-+	close(sv[0]);
-+	ASSERT_GE(listener, 0);
-+
-+	/*
-+	 * Parent has the listener fd and does NOT have the seccomp
-+	 * filter. fopen(/proc/<pid>/maps) below works without
-+	 * deadlocking on the parent's own openat.
-+	 */
-+	for (;;) {
-+		struct pollfd pfd = { .fd = listener, .events = POLLIN };
-+		int pret = poll(&pfd, 1, 500);
-+		pid_t reaped;
-+		bool ip_in_loader;
-+
-+		if (pret < 0)
-+			break;
-+		if (pret == 0 || !(pfd.revents & POLLIN)) {
-+			reaped = waitpid(pid, &status, WNOHANG);
-+			if (reaped == pid)
-+				break;
-+			if (pfd.revents & (POLLHUP | POLLERR))
-+				break;
-+			continue;
-+		}
-+
-+		memset(&req, 0, sizeof(req));
-+		if (ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req) < 0) {
-+			TH_LOG("NOTIF_RECV failed: errno=%d", errno);
-+			break;
-+		}
-+		if (++trap_count > trap_limit) {
-+			TH_LOG("trap_limit (%d) exceeded", trap_limit);
-+			break;
-+		}
-+
-+		if (phase == 0) {
-+			pin.id = req.id;
-+			pin.memfd = memfd;
-+			pin.target_addr = 0;
-+			pin.size = PIN_SIZE;
-+			if (ioctl(listener,
-+				  SECCOMP_IOCTL_NOTIF_PIN_INSTALL,
-+				  &pin) != 0) {
-+				TH_LOG("pre-exec PIN_INSTALL failed: errno=%d",
-+				       errno);
-+				if (errno == EINVAL)
-+					SKIP(goto cleanup_scm,
-+					     "Kernel lacks pinned-memfd remote");
-+				goto cleanup_scm;
-+			}
-+
-+			memset(&redir, 0, sizeof(redir));
-+			redir.id = req.id;
-+			redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+			redir.args_mask = 1U << 1;
-+			redir.ptr_mask = 1U << 1;
-+			redir.memfd = memfd;
-+			redir.ptr_len[1] = strlen(safe_path) + 1;
-+			redir.args[1] = pin.target_addr;
-+			if (ioctl(listener,
-+				  SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+				  &redir) != 0) {
-+				TH_LOG("pre-exec SEND_REDIRECT failed: errno=%d",
-+				       errno);
-+				goto cleanup_scm;
-+			}
-+			phase = 1;
-+			continue;
-+		}
-+
-+		/*
-+		 * Post-execve. Lazily resolve the loader range. The
-+		 * supervisor's own openat (fopen on /proc/<pid>/maps)
-+		 * doesn't trap because the filter lives on the child,
-+		 * not on us.
-+		 */
-+		if (!loader_known && !loader_check_attempted) {
-+			if (find_loader_text_range(req.pid,
-+						   &loader_range) == 0)
-+				loader_known = true;
-+			loader_check_attempted = true;
-+		}
-+
-+		ip_in_loader = loader_known &&
-+			req.data.instruction_pointer >= loader_range.start &&
-+			req.data.instruction_pointer <  loader_range.end;
-+
-+		if (ip_in_loader) {
-+			memset(&cont_resp, 0, sizeof(cont_resp));
-+			cont_resp.id = req.id;
-+			cont_resp.flags = SECCOMP_USER_NOTIF_FLAG_CONTINUE;
-+			ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND, &cont_resp);
-+			continue;
-+		}
-+
-+		/* Program code: inspect the path to identify the bait. */
-+		{
-+			char path[PATH_MAX];
-+			ssize_t n;
-+
-+			n = read_remote_string(req.pid, req.data.args[1],
-+					       path, sizeof(path));
-+			if (n < 0 || strcmp(path, bait) != 0) {
-+				memset(&cont_resp, 0, sizeof(cont_resp));
-+				cont_resp.id = req.id;
-+				cont_resp.flags =
-+					SECCOMP_USER_NOTIF_FLAG_CONTINUE;
-+				ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND,
-+				      &cont_resp);
-+				continue;
-+			}
-+
-+			pin.id = req.id;
-+			pin.memfd = memfd;
-+			pin.target_addr = 0;
-+			pin.size = PIN_SIZE;
-+			if (ioctl(listener,
-+				  SECCOMP_IOCTL_NOTIF_PIN_INSTALL,
-+				  &pin) == 0) {
-+				post_exec_install_ok = true;
-+			} else {
-+				TH_LOG("post-exec PIN_INSTALL failed: errno=%d",
-+				       errno);
-+				memset(&cont_resp, 0, sizeof(cont_resp));
-+				cont_resp.id = req.id;
-+				cont_resp.flags =
-+					SECCOMP_USER_NOTIF_FLAG_CONTINUE;
-+				ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND,
-+				      &cont_resp);
-+				continue;
-+			}
-+
-+			memset(&redir, 0, sizeof(redir));
-+			redir.id = req.id;
-+			redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+			redir.args_mask = 1U << 1;
-+			redir.ptr_mask = 1U << 1;
-+			redir.memfd = memfd;
-+			redir.ptr_len[1] = strlen(safe_path) + 1;
-+			redir.args[1] = pin.target_addr;
-+			if (ioctl(listener,
-+				  SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+				  &redir) == 0) {
-+				post_exec_redirect_done = true;
-+			} else {
-+				TH_LOG("post-exec SEND_REDIRECT failed: errno=%d",
-+				       errno);
-+				memset(&cont_resp, 0, sizeof(cont_resp));
-+				cont_resp.id = req.id;
-+				cont_resp.flags =
-+					SECCOMP_USER_NOTIF_FLAG_CONTINUE;
-+				ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND,
-+				      &cont_resp);
-+			}
-+		}
-+	}
-+
-+	if (waitpid(pid, &status, WNOHANG) == 0) {
-+		kill(pid, SIGKILL);
-+		waitpid(pid, &status, 0);
-+	}
-+	EXPECT_EQ(true, loader_known) {
-+		TH_LOG("find_loader_text_range never resolved");
-+	}
-+	EXPECT_EQ(true, post_exec_install_ok);
-+	EXPECT_EQ(true, post_exec_redirect_done);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status));
-+
-+cleanup_scm:
-+	munmap(sup_view, PIN_SIZE);
-+	close(memfd);
-+	close(listener);
-+}
-+
-+/*
-+ * Stateless redirect validation must hold up across many short-lived
-+ * targets over one listener, and must not accumulate per-target state.
-+ *
-+ * PIN_INSTALL records nothing: the installed VM_SEALED VMA is the only
-+ * record, and SEND_REDIRECT re-validates the pointer against the live
-+ * mapping (sealed, read-only, backed by the supervisor's memfd inode).
-+ * So a supervisor servicing a long churn of targets keeps working with
-+ * no bookkeeping to leak. Each iteration lets the kernel choose the pin
-+ * address in the fresh target mm; every install/redirect must succeed, and
-+ * kmemleak/KASAN over the loop confirms nothing accumulates.
-+ */
-+TEST(user_notification_pinned_memfd_churn)
-+{
-+	const size_t PIN_SIZE = 4096;
-+	const char *safe_path = "/dev/null";
-+	const int iters = 16;
-+	int listener, memfd, i;
-+	char *sup_view;
-+	long ret;
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	memfd = make_pin_memfd(_metadata, "pinned-reap", PIN_SIZE,
-+			       &sup_view, safe_path);
-+
-+	listener = user_notif_syscall(__NR_openat,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT);
-+	ASSERT_GE(listener, 0);
-+
-+	for (i = 0; i < iters; i++) {
-+		struct seccomp_notif req = {};
-+		struct seccomp_notif_pin_install pin = {};
-+		struct seccomp_notif_resp_redirect redir = {};
-+		int status;
-+		pid_t pid;
-+
-+		pid = fork();
-+		ASSERT_GE(pid, 0);
-+		if (pid == 0) {
-+			int fd = syscall(__NR_openat, AT_FDCWD,
-+					 "/never/touched", O_RDONLY, 0);
-+			_exit(fd < 0 ? 11 : 0);
-+		}
-+
-+		ASSERT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req));
-+		EXPECT_EQ(req.data.nr, __NR_openat);
-+
-+		pin.id = req.id;
-+		pin.memfd = memfd;
-+		pin.target_addr = 0;
-+		pin.size = PIN_SIZE;
-+		EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_PIN_INSTALL,
-+				   &pin)) {
-+			if (errno == EINVAL) {
-+				kill(pid, SIGKILL);
-+				waitpid(pid, &status, 0);
-+				SKIP(goto cleanup,
-+				     "Kernel lacks pinned-memfd remote install");
-+			}
-+			TH_LOG("iter %d PIN_INSTALL failed: errno=%d", i, errno);
-+		}
-+
-+		redir.id = req.id;
-+		redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+		redir.args_mask = 1U << 1;
-+		redir.ptr_mask = 1U << 1;
-+		redir.memfd = memfd;
-+		redir.ptr_len[1] = strlen(safe_path) + 1;
-+		redir.args[1] = pin.target_addr;
-+		EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+				   &redir));
-+
-+		EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+		EXPECT_EQ(true, WIFEXITED(status));
-+		EXPECT_EQ(0, WEXITSTATUS(status)) {
-+			TH_LOG("iter %d child exit %d (11=openat fail)",
-+			       i, WEXITSTATUS(status));
-+		}
-+		/*
-+		 * Target is dead now; its pin (this iter's mm, at the
-+		 * kernel-chosen address) is stale. The next iteration's
-+		 * PIN_INSTALL walk must reap it rather than leak the range +
-+		 * mm + memfd reference.
-+		 */
-+	}
-+
-+cleanup:
-+	munmap(sup_view, PIN_SIZE);
-+	close(memfd);
-+	close(listener);
-+}
-+
-+#ifdef __NR_socket
-+/*
-+ * A redirect must not let an inner (more recently installed) filter's
-+ * notifier smuggle a syscall past an outer filter. Two filters are
-+ * stacked on the target:
-+ *
-+ *   outer (installed first):  socket(AF_INET, ...) -> RET_ERRNO(EACCES),
-+ *                             everything else ALLOW.
-+ *   inner (installed second): socket -> RET_USER_NOTIF.
-+ *
-+ * The child calls socket(AF_UNIX, ...), which the outer filter allows, so
-+ * the inner notifier wins and fires. The supervisor SEND_REDIRECTs arg0
-+ * to AF_INET. The kernel must then re-run the outer filter against the
-+ * rewritten registers and block it with EACCES; without the outer-suffix
-+ * re-validation the inner filter would have bypassed the outer policy.
-+ */
-+TEST(user_notification_redirect_outer_refilter)
-+{
-+	struct sock_filter outer_filter[] = {
-+		BPF_STMT(BPF_LD | BPF_W | BPF_ABS,
-+			 offsetof(struct seccomp_data, nr)),
-+		BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, __NR_socket, 0, 3),
-+		BPF_STMT(BPF_LD | BPF_W | BPF_ABS, syscall_arg(0)),
-+		BPF_JUMP(BPF_JMP | BPF_JEQ | BPF_K, AF_INET, 0, 1),
-+		BPF_STMT(BPF_RET | BPF_K,
-+			 SECCOMP_RET_ERRNO | (EACCES & SECCOMP_RET_DATA)),
-+		BPF_STMT(BPF_RET | BPF_K, SECCOMP_RET_ALLOW),
-+	};
-+	struct sock_fprog outer_prog = {
-+		.len = (unsigned short)ARRAY_SIZE(outer_filter),
-+		.filter = outer_filter,
-+	};
-+	struct seccomp_notif req = {};
-+	struct seccomp_notif_resp_redirect redir = {};
-+	int status, listener;
-+	pid_t pid;
-+	long ret;
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	/* Outer filter first => it becomes the outer/root of the stack. */
-+	ASSERT_EQ(0, seccomp(SECCOMP_SET_MODE_FILTER, 0, &outer_prog));
-+
-+	/* Inner USER_NOTIF filter second (innermost); returns the listener. */
-+	listener = user_notif_syscall(__NR_socket,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT);
-+	ASSERT_GE(listener, 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		int fd = syscall(__NR_socket, AF_UNIX, SOCK_STREAM, 0);
-+
-+		if (fd >= 0)
-+			_exit(12);	/* bypass: outer filter was skipped */
-+		if (errno != EACCES)
-+			_exit(13);	/* unexpected errno */
-+		_exit(0);
-+	}
-+
-+	ASSERT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req));
-+	EXPECT_EQ(req.data.nr, __NR_socket);
-+	EXPECT_EQ(req.data.args[0], AF_UNIX);
-+
-+	/* Scalar redirect of arg0 (no pin needed): AF_UNIX -> AF_INET. */
-+	redir.id = req.id;
-+	redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+	redir.args_mask = 1U << 0;
-+	redir.args[0] = AF_INET;
-+	ret = ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT, &redir);
-+	if (ret < 0 && errno == EINVAL) {
-+		kill(pid, SIGKILL);
-+		waitpid(pid, &status, 0);
-+		SKIP(return, "Kernel lacks SECCOMP_IOCTL_NOTIF_SEND_REDIRECT");
-+	}
-+	EXPECT_EQ(0, ret);
-+
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status)) {
-+		switch (WEXITSTATUS(status)) {
-+		case 12:
-+			TH_LOG("child exit 12: redirect bypassed the outer filter");
-+			break;
-+		case 13:
-+			TH_LOG("child exit 13: socket failed with unexpected errno");
-+			break;
-+		default:
-+			TH_LOG("child exit %d (unexpected)", WEXITSTATUS(status));
-+		}
-+	}
-+
-+	close(listener);
-+}
-+#endif /* __NR_socket */
-+
-+#ifdef __x86_64__
-+/*
-+ * Load-bearing ABI check: after SEND_REDIRECT, the trapped task's
-+ * redirected arg register must be restored to its original value
-+ * before user-mode code resumes. The kernel's restore mechanism
-+ * (task_work_add(TWA_SIGNAL) -> seccomp_redirect_restore_cb) is
-+ * what guarantees this; without a test the property is just an
-+ * assertion. Bypass libc's syscall() wrapper (which caller-saves
-+ * arg values and would mask a restore bug) and capture the actual
-+ * arg register immediately after the SYSCALL instruction.
-+ *
-+ * The child issues openat with RSI = sentinel_path. The supervisor
-+ * SEND_REDIRECTs args[1] (RSI) to point into the pin. The kernel:
-+ *   - saves the original RSI into the knotif
-+ *   - writes the pin address into RSI via syscall_set_arguments()
-+ *   - runs the syscall (kernel reads path from the pin)
-+ *   - on syscall_exit_to_user_mode, fires task_work which calls
-+ *     syscall_set_arguments() again with the saved original
-+ *   - returns to user mode
-+ *
-+ * If task_work fires correctly, the child observes RSI == sentinel.
-+ * If broken, RSI holds the pin address (the redirected value the
-+ * kernel left in pt_regs).
-+ */
-+TEST(user_notification_pinned_memfd_abi)
-+{
-+	pid_t pid;
-+	long ret;
-+	int status, listener, memfd;
-+	struct seccomp_notif req = {};
-+	struct seccomp_notif_pin_install pin = {};
-+	struct seccomp_notif_resp_redirect redir = {};
-+	char *sup_view;
-+	const size_t PIN_SIZE = 4096;
-+	const char *safe_path = "/dev/null";
-+	/*
-+	 * The "sentinel" is a real string the child can also pass as
-+	 * the openat path. Its address is captured pre-syscall as RSI;
-+	 * post-syscall RSI must equal the same address.
-+	 */
-+	static const char sentinel_path[] = "/seccomp_abi_sentinel";
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	memfd = make_pin_memfd(_metadata, "pin-abi", PIN_SIZE,
-+			       &sup_view, safe_path);
-+
-+	listener = user_notif_syscall(__NR_openat,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT);
-+	ASSERT_GE(listener, 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		register long r10_val asm("r10") = 0;
-+		unsigned long rsi_after;
-+		long fd;
-+
-+		asm volatile(
-+			"syscall\n\t"
-+			"mov %%rsi, %[after]"
-+			: "=a"(fd), [after] "=&r"(rsi_after)
-+			: "0"((long)__NR_openat),
-+			  "D"((long)AT_FDCWD),
-+			  "S"((unsigned long)sentinel_path),
-+			  "d"((long)O_RDONLY),
-+			  "r"(r10_val)
-+			: "rcx", "r11", "memory"
-+		);
-+
-+		if (fd < 0)
-+			_exit(11);
-+		/*
-+		 * Load-bearing check: RSI immediately post-SYSCALL must
-+		 * still be the sentinel pointer the child passed in. The
-+		 * kernel's REDIRECT-then-restore mechanism is the only
-+		 * thing that guarantees this; a broken restore would leave
-+		 * the pin address in RSI.
-+		 */
-+		if (rsi_after != (unsigned long)sentinel_path)
-+			_exit(12);
-+		_exit(0);
-+	}
-+
-+	ASSERT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req));
-+	EXPECT_EQ(req.data.nr, __NR_openat);
-+	EXPECT_EQ(req.data.args[1], (unsigned long)sentinel_path);
-+
-+	pin.id = req.id;
-+	pin.memfd = memfd;
-+	pin.target_addr = 0;
-+	pin.size = PIN_SIZE;
-+	EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_PIN_INSTALL, &pin)) {
-+		if (errno == EINVAL)
-+			SKIP(goto cleanup,
-+			     "Kernel lacks pinned-memfd remote install");
-+	}
-+
-+	redir.id = req.id;
-+	redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+	redir.args_mask = 1U << 1;
-+	redir.ptr_mask = 1U << 1;
-+	redir.memfd = memfd;
-+	redir.ptr_len[1] = strlen(safe_path) + 1;
-+	redir.args[1] = pin.target_addr;
-+	EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+			   &redir));
-+
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status)) {
-+		switch (WEXITSTATUS(status)) {
-+		case 11:
-+			TH_LOG("child exit 11: openat returned -errno");
-+			break;
-+		case 12:
-+			TH_LOG("child exit 12: ABI violation -- RSI not restored after redirect");
-+			break;
-+		default:
-+			TH_LOG("child exit %d (unexpected)", WEXITSTATUS(status));
-+		}
-+	}
-+
-+cleanup:
-+	munmap(sup_view, PIN_SIZE);
-+	close(memfd);
-+	close(listener);
-+}
-+
-+static void redir_sigusr1_handler(int signo)
-+{
-+	/* _exit() is async-signal-safe; bail with a distinct code if the
-+	 * signal frame was clobbered so the handler sees the wrong signo.
-+	 */
-+	if (signo != SIGUSR1)
-+		_exit(12);
-+}
-+
-+/*
-+ * Regression test: a redirect's deferred arg-register restore must run
-+ * before a signal frame is built, not after.
-+ *
-+ * The restore was queued as a TWA_RESUME task_work, which runs in
-+ * exit_to_user_mode_loop() *after* arch_do_signal_or_restart() has
-+ * already set up the handler frame (regs->di = signo, regs->si =
-+ * &siginfo, regs->dx = &ucontext). The restore then overwrote those
-+ * registers with the trapped syscall's original argument values, so the
-+ * handler was entered with a corrupted signal number. Queuing the
-+ * restore with TWA_SIGNAL makes it run at the top of get_signal(),
-+ * before the frame is built (and before any syscall-restart rewind).
-+ *
-+ * The child traps on pause(), the supervisor redirects arg0 (RDI), and
-+ * then interrupts it with SIGUSR1. The handler must observe
-+ * signo == SIGUSR1, not the leaked original RDI sentinel.
-+ */
-+TEST(user_notification_redirect_signal_abi)
-+{
-+	pid_t pid;
-+	long ret;
-+	int status, listener;
-+	struct seccomp_notif req = {};
-+	struct seccomp_notif_resp_redirect redir = {};
-+	/* A recognizable original RDI the broken restore would leak in. */
-+	const unsigned long RDI_SENTINEL = 0x5a5a5a5aUL;
-+
-+	ret = prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0);
-+	ASSERT_EQ(0, ret) {
-+		TH_LOG("Kernel does not support PR_SET_NO_NEW_PRIVS!");
-+	}
-+
-+	listener = user_notif_syscall(__NR_pause,
-+				      SECCOMP_FILTER_FLAG_NEW_LISTENER |
-+				      SECCOMP_FILTER_FLAG_REDIRECT);
-+	ASSERT_GE(listener, 0);
-+
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		struct sigaction sa = {
-+			.sa_handler = redir_sigusr1_handler,
-+		};
-+		long rc;
-+
-+		if (sigaction(SIGUSR1, &sa, NULL))
-+			_exit(10);
-+
-+		/* Raw pause() carrying a controlled RDI sentinel. */
-+		asm volatile(
-+			"syscall"
-+			: "=a"(rc)
-+			: "0"((long)__NR_pause),
-+			  "D"(RDI_SENTINEL)
-+			: "rcx", "r11", "memory");
-+
-+		/* pause() returns -EINTR once the handler has run. */
-+		if (rc != -EINTR)
-+			_exit(11);
-+		_exit(0);
-+	}
-+
-+	ASSERT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_RECV, &req));
-+	EXPECT_EQ(req.data.nr, __NR_pause);
-+	EXPECT_EQ(req.data.args[0], RDI_SENTINEL);
-+
-+	/* Redirect arg0 (non-pointer); this arms the original-RDI restore. */
-+	redir.id = req.id;
-+	redir.flags = SECCOMP_REDIRECT_FLAG_CONTINUE;
-+	redir.args_mask = 1U << 0;
-+	redir.args[0] = 0;
-+	EXPECT_EQ(0, ioctl(listener, SECCOMP_IOCTL_NOTIF_SEND_REDIRECT,
-+			   &redir)) {
-+		if (errno == EINVAL) {
-+			kill(pid, SIGKILL);
-+			waitpid(pid, &status, 0);
-+			SKIP(goto cleanup,
-+			     "Kernel lacks SECCOMP_IOCTL_NOTIF_SEND_REDIRECT");
-+		}
-+	}
-+
-+	/* Let the child reach pause(), then interrupt it with a handler. */
-+	usleep(100000);
-+	EXPECT_EQ(0, kill(pid, SIGUSR1));
-+
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status)) {
-+		switch (WEXITSTATUS(status)) {
-+		case 10:
-+			TH_LOG("child exit 10: sigaction failed");
-+			break;
-+		case 11:
-+			TH_LOG("child exit 11: pause() did not return -EINTR");
-+			break;
-+		case 12:
-+			TH_LOG("child exit 12: handler saw wrong signo (frame clobbered)");
-+			break;
-+		default:
-+			TH_LOG("child exit %d (unexpected)", WEXITSTATUS(status));
-+		}
-+	}
-+
-+cleanup:
-+	close(listener);
-+}
-+#endif /* __x86_64__ */
-+
- #ifndef SECCOMP_USER_NOTIF_FD_SYNC_WAKE_UP
- #define SECCOMP_USER_NOTIF_FD_SYNC_WAKE_UP (1UL << 0)
- #define SECCOMP_IOCTL_NOTIF_SET_FLAGS  SECCOMP_IOW(4, __u64)
 -- 
 2.43.0
 
