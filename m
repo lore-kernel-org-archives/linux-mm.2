@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67F01C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2BAC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:21:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F6446B0092; Sat, 27 Jun 2026 03:13:49 -0400 (EDT)
+	id A4BB66B00A6; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CD9C6B0093; Sat, 27 Jun 2026 03:13:49 -0400 (EDT)
+	id 9D5D26B00A7; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50C676B0096; Sat, 27 Jun 2026 03:13:49 -0400 (EDT)
+	id 89CD26B00A8; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 23CB66B0092
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:13:49 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 99BE61A0460
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:13:48 +0000 (UTC)
-X-FDA: 84924827736.15.8FA6BD6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 69DA040002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:13:46 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YoAljMYl;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 5230C6B00A6
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACC73406CA
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:06 +0000 (UTC)
+X-FDA: 84924846132.08.2A95E18
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B714016000A
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:04 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQEKHFhP;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782544426;
-	b=wnI/A2zGRt7rTuwFy4i7mscgp48mFj1/BX5ctiZuO1LcVYNn0oL40s4hlzlDw3rlnMLGhz
-	01r2HxJaTLkrH//CTlCpZBS2pE/mKCeDIXkkAMbaxLkETXN3ywcLgm/fBjYbEgcrR6oW6+
-	NcNwwzFSkEUZsGWR9gd9a4Tc13Q5rNI=
+	t=1782544864;
+	b=frC0SGU/2ofO8To8MDUcpZA8gdh0AZP9DaqEA/LcOQuaqhWPIVyd1ne3W4hmOEDOiVLYRx
+	K6wzV77PzNrPgRncUlkQmVXhCE4ls5kOp2TLbdgARfA0eIkIoDgRdDGK6VaF3hQOGUDEZ4
+	Qx9im+9B6EKADP3D47+MuG+l7w1e77Y=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782544426;
+	s=arc-20220608; t=1782544864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FOdSpA3wposle3Rm+E57Ywcku8iRVBjyEZ9SSpSpikA=;
-	b=VGWGBtvQ8H0XdlzuHiOO2F/x13djKU+D3ZP5Crur7M6Y4PZb5fCGwKui6iszAXR7E7DY5U
-	UeUWJ05n8LQEDlNwsHhq7MipfyL0XKYsnP+Xhyexby7RrYwM5QBRsLJRUbK8tAQbZK7MFo
-	UZUn9vBjZARHEOAh0HDEEWDUg3Du5Sc=
+	bh=CdGno2AbrekCG0b53bLETJhCdWbqhJa2B0RZ3rUtZhY=;
+	b=n4Ycl7he48OgfuQkaYKbrCgxFQRl52CTCDzcAgVH6ja+5jwicN/3ccPsXVZgs0Amdp+A+Q
+	7ZE/hAbtb+PFPvKx/6LpP/pk9Wjq9oaLL/Vtm9sZNs3Rz8gBdmVOcFsAuDtS1FYKS3JvVB
+	UsrUjDO9sTkKA8a1cRtqgBuMp4SrDBE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YoAljMYl;
-	spf=pass (imf11.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B16DA288E;
-	Sat, 27 Jun 2026 00:13:40 -0700 (PDT)
-Received: from [10.163.169.90] (unknown [10.163.169.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82A553F836;
-	Sat, 27 Jun 2026 00:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782544425; bh=yRcIUZDb9qKuUQnLFd+ReKJj5Icp/O6BCQEU3OKwLUQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YoAljMYl9iNda7vAS8dBUIz4EirPI6ctqUn5dx7zY9xMkmZW6DEJYPeF0vuZZDQ6Q
-	 n4jYHioUUcRIeMy3crLUHOfSmQBOVSyB66DqmYHjT5+VXBlfvOA0KOsp7Kse8LbzXP
-	 tTDw7axhmhHktS5IEVPDiFsI3khCFUlIAbi5EaQg=
-Message-ID: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
-Date: Sat, 27 Jun 2026 12:43:31 +0530
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQEKHFhP;
+	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D941643927
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09CE1F000E9
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782544863;
+	bh=CdGno2AbrekCG0b53bLETJhCdWbqhJa2B0RZ3rUtZhY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=mQEKHFhPVVQycgnikJcQagUI/ln6fOtLx22IK301bueLhzlS09RNYUw65TorMUcIe
+	 N6EkzVX5BoWZyqBwmTwUBJK2ipjhiiaS8V7jI7DK8bik7hMUTM0v5KYaX+J3MNzVJT
+	 Fn5otSZX7tMFgQwG/fPordWWIOptIqX28NTN1O82mFDJ9UANnXQU0+/iZVX8bt0Aj9
+	 2/TVQbyM3pd40uquoJNB5pBmg4K8v+kJS+ypRbgwMZ6IFFiL+M8uUHcWB/BM6mthvp
+	 pLO9C4y0fHk2jRxrk290iMY62IaFV/oS0M0GYlCZ4aFhgykiVp0sWZ+kpGxq0ycZ2A
+	 1kVM79YhKF9Ag==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8eccf61d0a0so1931716d6.3
+        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:21:03 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrWydzpMlZiSW3ku6IFAodZiDPUrcJ2N7sOg4Or2TTKjF9CdogQHV60qspV81N5EOSERmdx6F0jUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx/Budp7FCGzy/yWP5uy2xxpGCtmJF9r1KeTiWb8nBlhNcxOe9/
+	5k8YklPSocICmKTBuuMf9uLUA4RbPgOYsV+tbzoRwP6zzjdT43y8tTYAnA4kpi/N8W+YQB2asKu
+	VfOL/jNAaeMv7tQF8FFuJteq/Kg82Rj0=
+X-Received: by 2002:ad4:5de5:0:b0:8e6:7adf:e0e1 with SMTP id
+ 6a1803df08f44-8e6d687a59cmr148353856d6.12.1782544863012; Sat, 27 Jun 2026
+ 00:21:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: Lance Yang <lance.yang@linux.dev>, linmiaohe@huawei.com
-Cc: muchun.song@linux.dev, osalvador@suse.de, akpm@linux-foundation.org,
- ljs@kernel.org, david@kernel.org, liam@infradead.org, riel@surriel.com,
- vbabka@kernel.org, harry@kernel.org, jannh@google.com, kas@kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcampbell@nvidia.com,
- apopple@nvidia.com, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, mel@csn.ul.ie,
- nao.horiguchi@gmail.com, ak@linux.intel.com, j-nomura@ce.jp.nec.com,
- pfalcato@suse.de, dave.hansen@intel.com, tglx@kernel.org,
- jpoimboe@kernel.org, ryan.roberts@arm.com, anshuman.khandual@arm.com,
- stable@vger.kernel.org
-References: <e6d1b813-0893-458e-9d58-8d3a9bd979c4@arm.com>
- <20260626141031.14309-1-lance.yang@linux.dev>
- <61e9fcf7-02a5-4285-948b-62fba4dcd69c@arm.com>
- <edee8461-34c6-41e9-ae0c-076380d92ebb@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <edee8461-34c6-41e9-ae0c-076380d92ebb@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-2-baohua@kernel.org>
+ <bf2bbffa-dc68-4a3e-a8e6-1ad57c10255b@kernel.org> <CAGsJ_4wJ-2JFY4+ADf-Bn2PrbpvOnWeVwZY3unKnB=TZ71-hzQ@mail.gmail.com>
+ <c4718e32-2baa-4dee-873c-7ab99f21ca4e@kernel.org> <aj83c5ix_YCFMU-M@linux.dev>
+In-Reply-To: <aj83c5ix_YCFMU-M@linux.dev>
+From: Barry Song <baohua@kernel.org>
+Date: Sat, 27 Jun 2026 15:20:50 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4xbYOVvonZg6d8eeuKcY9SUic3zXLbWUvxJrbf=U9sQnw@mail.gmail.com>
+X-Gm-Features: AVVi8Cfjlms2NVFRTodzEFCm_jnM6HsOYvqAgkGAMgtgvIB3JVVYsjveW66P4UM
+Message-ID: <CAGsJ_4xbYOVvonZg6d8eeuKcY9SUic3zXLbWUvxJrbf=U9sQnw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev, 
+	kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
+	ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, 
+	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
+	vbabka@kernel.org, youngjun.park@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: kn6d79mfurazgjfswwjwgu6rkupcoxge
-X-Rspamd-Queue-Id: 69DA040002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782544426-895414
-X-HE-Meta: U2FsdGVkX1+8K6jOeosSFKq72Lu8YPE5EVADsPPTSJbSYyGowgMYXV7HqFdlPtg/YN7iHrUEI4baFqWV5hJO1QyrCR8tN5RymCjfIHpGFSOjuwjr4QXiFx1Bfladtqtk3s23Mw5pFz5ijtImk9rugNd36SKL2720J2t1JNUuRwPLudpIO7zjGPybZXjAtTa99mbTlMw7Jfl+37D2/p2N+0ZwFee82sMC5CWOFZJoUa2lS1CUg2i2I7kjnfQnhyTBFlEi0p3fvIpgAjMTJlMa8pC9zAqpFKmEQsgus40cIZt3V0Fa5+t8cerMN7crs5UpIgp4zxIsx3BoxuGbzYfjHW9Gb1F7zu9L+G3bJ9GBhxjUmPkWBcV8o67IR/u5KqCiEMeKJu8i+K4EwcaK5zueFk+YyJ++EeH+nznSY27G9Cy0c97wJIIZQjF9wQ1L4qfur8/pL6R9LCJ0QcnCh/p36PPUR+iwfx8KcBjXl+lF2RTE71PRXzAxZhwbIkpCNRU+tYXQ/Lo+jOFEOdEf2/wuaB/JMdPxNmopCtBy2yy4/trkGHWvgTTvUZVyQ6Vz/9HtvQHSfoSivltpK2UmiZUu4zQo2YWdL6+Zbv2Y2aCEQ4HUket5rPeyL2g0vUc8XFbOQiat0ZE7PsOXYoX/t9mNMZvXlmdAGjsiqaWoFamF9d5daUD3b1V9g3R0C15a0MB6Y3pk8dtcAj7ibIMGjpoSbQcKVePRUKy7grsBNcd7+KjoajaMMHMb8NQr0r4dNIusRo8EOmkCitspldVAWI05uJJCbAJf9HahoUyIUiEwsaP6VbjLrm2tEQkWlCqlqFTZ1hjOegfXdIOtzrTqwqk3SnFV0hahsSoHB9Mt9Igx5L1WfwECpzgiQmi1gszGLf/xVBIAiip2pOB0w4XP5fYnubArK10VXowndA6w//lYNcezW9NNOuRUSHPA3WsKlM/PlCR/Ac7hxGR+qD7Relc
- FMsFiERt
- JKNyOJcsmoTNaGorHFIPaXp0IDQLMpAmjBLJRV3gWPI5bEMcntCck+OO/FvsKfFbiknmEbzGRXsQAKGKjiyv2j1/9u1G5xp9jUi76RdNLhtTFIQQZ6/UVQ6Dl5A4xcxTTVh86AvI0VXBiVqg9RJ/0hbM7vuhHPqHMA/gEAY+1UPpFloSOUU5EXTgLE2pNY5F4XoRtT8VjX037bomk7mcQeo9oNqAId62r3uecCBsYisgwsQeimn+7Ff0+xhfO4l7/6bvvI1TYo5UKNXTZbKKYKC1/tCknkADvg7GlhSRNADHkteKShWYW0KLcZQnw+VmHM15xXSR1Eazy/afvZIV3cLi4wA1jviF5DWWyXaYn9j+eYQNxzqLC77015CarEz9OHVxvemnH8hyd7svvFVfmWfbIN+kolRFwaxO+15vhUjNHmlVsQI6LM/eT4qLJKbBHTS6m5bqt3oekdccd+yxft3SP+w==
+X-Stat-Signature: xj1teh3bqo3h5ai16o4onjc5dju3axow
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B714016000A
+X-HE-Tag: 1782544864-750743
+X-HE-Meta: U2FsdGVkX1/zrsIYOKxP23VoiNM4/TsKTL9bGRuf7quQqF/xx4IAAX7T3I0phfXBOonDHn8vBI0lDeqV1b7ZZzwzWgst3BIU9mBuOzrxOs7lsYiRwFEL0CAWKnui8eVeQGO/oQsEb1lZeQm+hrwRoEItrCNC+YoccMTLORKfbEG65YKzhe2RJ2hOM4ObsgWrxRGDMedtYpqFsFsXD9ZYh+2YMHYILTtuJF+TMCCorMPrHm7AZE/GJXMQhnAJHMzmLIjGn8Jq6bQjZdCJk+xc2exvjoRtZm3gHBBW2Vz38I+d+HtlWO8VwishbI16mJFvPltwclWXmkVWAL+XN69cebA5xdMNy+BFQTDbv7iFiA+woFllY2jBs3XoWD7y/H3Kbe8kb+GrzKWBsi36wt8lx0+n1qoY25uMXjPnLyFOkR+ss1YqmG5KRlz2YMdEUIs3HRIkatdxCnxdM8lKTIpudvguZv1rURzexkUWvWeRL3oUhUmIyr9KKfAMnoCrlIHMaeQ7G53GIbtMCfXW/2+OTu6MI82Ghho1kWlAoTzsVXq6yXdtsw3ZUATqkgIfdFXtmmftlk4ZKqAjl24+R0qRYHXLWYu7lpBgFHF4SZ/nJKSQ/TY+0FO2NsT6V4cY53R3OgS5ZKyDnHC4TI98JcBQgcEgiFae6TvYF2o3mMdt6ZNaAV258C48LtS5D6BBVB5L4NvHla8XG0evSBHnEdr6AaV2EVZiEakQvmhQTheBsLR4Y1z2bIjy683w87RG2IDRfiKBQwbg1An+E/V3LJeDIFjchUJOAaeZn4ZK1kEUrnSNSeVZzYq8wVbo8Gt1JduRNvp3TKiRJyrmy1d53vn4gzLWjF6sfGtlaHpmRl49FhEDuYLyYtFcz/Dsk/lyEaQLVd5eMPe4o8EuJ1Fo2bqtAozMMPzAK7Y1dfz3zDzTIOSNnJj+mqe92BnPGNJIFUe5oulBM+OXXEWRXTUKUcV
+ RgznIZJP
+ I+IhmGa+mAoNKmJfEWCshTu+mrNkmrhFdMnHDkS+l1MWK3foQLvO30eVf3CjdFQB7tfmQVlAIeqWcmwoZvViI6jGDqaR7iiXRAS7k/LfOFQgy1MQbTluJSDGWjKBJ/1QAbcrCE9+MBjDuDKx6DDcx0qXW/y/UJhTFZGk6jtzi4xXPI5lCwQDpGyJVql41tJMRuTxdPXvhrNiSb1UM3kAqHiEAfN1VIhNdcklX/mgvi+0zYPNhrwsNQ9VEA5S7zWTMWVWHqvqsNrRSOoThdj1oXmimppmp9NESr1/sBqf8/fKGtQ/dZYorQ6vD8xzec9kPMaSIbn1YPXbqaEQaWTe64OUfmKl6VdWelr1Df1qx/L2AlfIcQxsOJbWxlVLdkgOpgwtS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,354 +108,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sat, Jun 27, 2026 at 10:44=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
+ev> wrote:
+>
+> On Fri, Jun 26, 2026 at 06:25:48PM +0200, David Hildenbrand (Arm) wrote:
+> > On 6/24/26 23:04, Barry Song wrote:
+> > > On Wed, Jun 24, 2026 at 11:02=E2=80=AFPM David Hildenbrand (Arm)
+> > > <david@kernel.org> wrote:
+> > >>
+> > >> On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
+> > >>> We always unconditionally drain the LRU before retrying anon folio
+> > >>> reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folio=
+s
+> > >>> are in lru_cache, and use the refcount to avoid many unnecessary LR=
+U
+> > >>> drains.
+> > >>>
+> > >>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > >>> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
+> > >>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
+> > >>> ---
+> > >>>  mm/memory.c | 8 +++++++-
+> > >>>  1 file changed, 7 insertions(+), 1 deletion(-)
+> > >>>
+> > >>> diff --git a/mm/memory.c b/mm/memory.c
+> > >>> index ff338c2abe92..f6848f4234a6 100644
+> > >>> --- a/mm/memory.c
+> > >>> +++ b/mm/memory.c
+> > >>> @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct =
+folio *folio,
+> > >>>        */
+> > >>>       if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
+> > >>>               return false;
+> > >>> -     if (!folio_test_lru(folio))
+> > >>> +     if (!folio_test_lru(folio)) {
+> > >>> +             /*
+> > >>> +              * Assume folio is on lru_cache and holds a cache ref=
+erence.
+> > >>> +              */
+> > >>> +             if (folio_ref_count(folio) > 2 + folio_test_swapcache=
+(folio))
+> > >>> +                     return false;
+> > >>
+> > >> I'm not keen on making this function even uglier, so no, not like th=
+at.
+> > >>
+> > >> We have the earlier "folio_ref_count(folio) > 3" check.
+> > >>
+> > >> In which scenarios can you trigger this such that we would care?
+> > >>
+> > >> If the answer is "I don't know" there is no reason for a change.
+> > >
+> > > As I replied to Shakeel in the v1 discussion [1], this can avoid a
+> > > large number of drains, both during Ubuntu boot and under normal
+> > > workloads:
+> > >
+> > > "I booted the system into Ubuntu, and after
+> >
+> > is this with this patch only?
 
+Right. wp_reuse_skipped_drain accounts for the behavior
+introduced by this patch, while do_swap_skipped_drain comes
+from patch 3/3.
 
-On 26/06/26 10:16 pm, Lance Yang wrote:
-> 
-> 
-> On 2026/6/26 23:26, Dev Jain wrote:
->>
->>
->> On 26/06/26 7:40 pm, Lance Yang wrote:
->>>
->>> On Fri, Jun 26, 2026 at 06:53:10PM +0530, Dev Jain wrote:
->>>>
->>>>
->>>> On 26/06/26 1:18 pm, Lance Yang wrote:
->>>>>
->>>>> On Thu, Jun 25, 2026 at 11:29:53AM +0000, Dev Jain wrote:
->>>>>> check_pte() is the final validation step in page_vma_mapped_walk().
->>>>>> It reads pvmw->pte with ptep_get() to decide whether the entry maps
->>>>>> the PFN range being walked. For hugetlb VMAs, that pointer refers
->>>>>> to a hugetlb entry.
->>>>>>
->>>>>> On arches which provide their own huge_ptep_get() to dereference a huge
->>>>>> pte pointer, accessing via ptep_get() would cause pte_pfn(),
->>>>>> pte_present() etc to misbehave.
->>>>>>
->>>>>> It is not clear whether this has a trivially visible effect to userspace.
->>>>>>
->>>>>> Use huge_ptep_get() to dereference a huge pte pointer.
->>>>>>
->>>>>> Fixes: ace71a19cec5 ("mm: introduce page_vma_mapped_walk()")
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>>>> ---
->>>>>> mm/page_vma_mapped.c | 8 +++++++-
->>>>>> 1 file changed, 7 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>>>> index 2ccbabfb2cc17..18e1d341f463c 100644
->>>>>> --- a/mm/page_vma_mapped.c
->>>>>> +++ b/mm/page_vma_mapped.c
->>>>>> @@ -107,7 +107,13 @@ static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
->>>>>> static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>>>> {
->>>>>>     unsigned long pfn;
->>>>>> -    pte_t ptent = ptep_get(pvmw->pte);
->>>>>> +    pte_t ptent;
->>>>>> +
->>>>>> +    if (is_vm_hugetlb_page(pvmw->vma))
->>>>>> +        ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>>>>> +                      pvmw->pte);
->>>>>
->>>>> I think check_pte() can pass a wrong address to huge_ptep_get() ...
->>>>
->>>> Won't this be handled by rmap_walk_anon/rmap_walk_file - they are the ones
->>>> performing the rmap traversal and passing address to try_to_unmap_one/folio_referenced_one
->>>> etc ...
->>>
->>> Right, that should cover the rmap callbacks. The bit I was worried about
->>> is page_mapped_in_vma() though.
->>>
->>>>>
->>>>> Not sure that is wrong in the first place. For memory failure,
->>>>> page_mapped_in_vma() can be called with a poisoned tail page of a hugetlb
->>>>> folio. In that case, pvmw->address need not be hugepage-aligned.
->>>>>
->>>>> @Miaohe
->>>
->>> For hugetlb memory failure we start with the poisoned PFN:
->>>
->>> static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->>> {
->>>     ...
->>>     struct page *p = pfn_to_page(pfn);
->>>     struct folio *folio;
->>>     ...
->>>
->>>     folio = page_folio(p);
->>>
->>>     ...
->>>
->>>     if (!hwpoison_user_mappings(folio, p, pfn, flags)) {
->>>         ...
->>>     }
->>>
->>>     ...
->>> }
->>>
->>> and pass the same p down:
->>>
->>> static bool hwpoison_user_mappings(struct folio *folio, struct page *p,
->>>         unsigned long pfn, int flags)
->>> {
->>>     ...
->>>
->>>     collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
->>>
->>>     ...
->>> }
->>>
->>> static void collect_procs(const struct folio *folio, const struct page *page,
->>>         struct list_head *tokill, int force_early)
->>> {
->>>     ...
->>>
->>>     if (unlikely(folio_test_ksm(folio)))
->>>         ...
->>>     else if (folio_test_anon(folio))
->>>         collect_procs_anon(folio, page, tokill, force_early);
->>>     else
->>>         ...
->>> }
->>>
->>> So collect_procs_anon() still gets the poisoned page, not &folio->page:
->>>
->>> static void collect_procs_anon(const struct folio *folio,
->>>         const struct page *page, struct list_head *to_kill,
->>>         int force_early)
->>> {
->>>     ...
->>>
->>>     pgoff = page_pgoff(folio, page);
->>>     rcu_read_lock();
->>>     for_each_process(tsk) {
->>>         ...
->>>        
->>>         anon_vma_interval_tree_foreach(vmac, &av->rb_root,
->>>                            pgoff, pgoff) {
->>>             ...
->>>             addr = page_mapped_in_vma(page, vma);
->>>             ...
->>>         }
->>>     }
->>>     rcu_read_unlock();
->>>     anon_vma_unlock_read(av);
->>> }
->>>
->>> page_mapped_in_vma() then builds pvmw for that page:
->>>
->>> unsigned long page_mapped_in_vma(const struct page *page,
->>>         struct vm_area_struct *vma)
->>> {
->>>     const struct folio *folio = page_folio(page);
->>>     struct page_vma_mapped_walk pvmw = {
->>>         .pfn = page_to_pfn(page),
->>>         .nr_pages = 1,
->>>         .vma = vma,
->>>         .flags = PVMW_SYNC,
->>>     };
->>>
->>>     pvmw.address = vma_address(vma, page_pgoff(folio, page), 1);
->>>     ...
->>> }
->>>
->>> and page_pgoff() includes the subpage index:
->>>
->>> static inline pgoff_t page_pgoff(const struct folio *folio,
->>>         const struct page *page)
->>> {
->>>     return folio->index + folio_page_idx(folio, page);
->>> }
->>>
->>> So if the poisoned PFN points to a tail page, pvmw->address can be offset
->>> from the start of the hugetlb mapping by
->>>
->>> folio_page_idx(folio, page) << PAGE_SHIFT
->>>
->>> Should check_pte() pass the hugepage-aligned address to huge_ptep_get()
->>> for that case?
->>
->> Thanks! This looks correct.
->>
->> I can indeed fix this up in check_pte. But in the memory-failure path
->> it has always been confusing to me for hugetlb folios why we are bothering
->> with the tail page. I am sure that area can also be simplified. But for
->> now I'll just do a simple fix here itself.
-> 
-> Just thinking out loud: given that huge_ptep_get() already assumes that
-> addr matches the huge pte, at least on arm64, would it make sense to
-> have a small hugetlb wrapper around it that takes hstate and aligns
-> the address before calling the arch helper?
-> 
-> Might make the rule clearer, and a bit harder to get wrong again :)
+> >
+> > >
+> > > boot completed I observed:
+> > >
+> > > wp_reuse_skipped_drain: 5542
+> > > do_swap_skipped_drain: 0
+> > >
+> > > Then I built the kernel in a 1GB memcg using zRAM swap, and observed:
+> > >
+> > > wp_reuse_skipped_drain: 25017
+> > > do_swap_skipped_drain: 43595
+> >
+> > This is all data that belongs into this patch description, not hidden
+> > somewhere on the internet :)
 
-Are you suggesting something like:
+Agreed. Sorry, I was being a bit lazy.
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index fdb7bdf7645c..xxxxxxxxxxxx 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -825,6 +825,15 @@ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+>
+> I asked the same i.e. to include this information in the commit message [=
+1].
+>
+> [1] https://lore.kernel.org/linux-mm/ajK4N2zK3sPZFQuf@linux.dev/
 
- #include <asm/hugetlb.h>
+Sorry, I missed this one. I'll add it in v3.
 
-+static inline pte_t hugetlb_ptep_get(struct vm_area_struct *vma,
-+				     unsigned long addr, pte_t *ptep)
-+{
-+	struct hstate *h = hstate_vma(vma);
-+
-+	return huge_ptep_get(vma->vm_mm, addr & huge_page_mask(h), ptep);
-+}
-+
- #ifndef is_hugepage_only_range
- static inline int is_hugepage_only_range(struct mm_struct *mm,
- 					unsigned long addr, unsigned long len)
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index 18e1d341f463..xxxxxxxxxxxx 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -110,8 +110,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
- 	pte_t ptent;
+>
+> >
+> >
+> > And why do we care about local draining? This is not a drain-all.
+>
+> Let me take a stab at it. Local draining can potentially make the lru cac=
+he's
+> batching ineffective. The whole reason for lru caches is to batch the lru
+> operations to keep the lru lock contention low but if we keep draining
+> prematurely we will continue to make lru lock contention worse. This is
+> particularly bad for workloads which chrun a lot of LRU pages through
+> allocation, free and/or reclaim.
 
- 	if (is_vm_hugetlb_page(pvmw->vma))
--		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
--				      pvmw->pte);
-+		ptent = hugetlb_ptep_get(pvmw->vma, pvmw->address, pvmw->pte);
- 	else
- 		ptent = ptep_get(pvmw->pte);
+I actually asked the same question myself in the RFC here[1]:
 
+"On the other hand, the folio may be sitting in the lru_cache of
+another CPU, which the current drain cannot flush. As things stand
+today, the drain only succeeds if the folio happens to be queued on
+the current CPU's lru_cache, giving it roughly a 1/nr_cpus chance of
+working. drain_all would clearly be too expensive to avoid.
+So another possibility is to drop this drain as well. The folio can
+be released later, at the cost of missing some opportunities for
+reuse."
 
+After thinking about it for a couple of days, my gut feeling is
+that keeping it might increase the chances of reuse in at least
+two cases:
+1. It could be a newly allocated folio in do_swap_page(), and
+do_swap_page() may subsequently call do_wp_page(). In
+that case, task migration is less likely to have occurred.
+2. On systems with fewer CPUs (and typically less memory), the
+chance of having the folio in the same CPU's lru_cache,
+which is roughly 1 / nr_cpus, may still be reasonably high.
 
-> 
-> Thanks, Lance
-> 
->>
->>>
->>> Cheers, Lance
->>>
->>>>>
->>>>> For arm64, CONT_PMD_SIZE is one supported HugeTLB size. With such a VMA,
->>>>> page_vma_mapped_walk() passes that size to hugetlb_walk():
->>>>>
->>>>> bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->>>>> {
->>>>>     ...
->>>>>     if (unlikely(is_vm_hugetlb_page(vma))) {
->>>>>         ...
->>>>>         pvmw->pte = hugetlb_walk(vma, pvmw->address, size);
->>>>>         ...
->>>>>     }
->>>>>     ...
->>>>> }
->>>>>
->>>>> hugetlb_walk() then calls arm64 huge_pte_offset(mm, addr, sz). For
->>>>> sz == CONT_PMD_SIZE, huge_pte_offset() aligns its local addr before
->>>>> calculating pmdp:
->>>>>
->>>>> pte_t *huge_pte_offset(struct mm_struct *mm,
->>>>>                unsigned long addr, unsigned long sz)
->>>>> {
->>>>>     ...
->>>>>     if (sz == CONT_PMD_SIZE)
->>>>>         addr &= CONT_PMD_MASK;
->>>>>
->>>>>     pmdp = pmd_offset(pudp, addr);
->>>>>     pmd = READ_ONCE(*pmdp);
->>>>>     ...
->>>>> }
->>>>>
->>>>> So for that case, pvmw->pte is calculated from the aligned addr, not
->>>>> necessarily from the original pvmw->address. But check_pte() passes the
->>>>> original address together with pvmw->pte:
->>>>>
->>>>> +        ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>>>> +                      pvmw->pte);
->>>>>
->>>>> arm64 then uses that addr again to choose ncontig:
->>>>>
->>>>> pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->>>>> {
->>>>>     ...
->>>>>     ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>>>>     for (i = 0; i < ncontig; i++, ptep++) {
->>>>>         ...
->>>>>     }
->>>>>     return orig_pte;
->>>>> }
->>>>>
->>>>> static int find_num_contig(struct mm_struct *mm, unsigned long addr,
->>>>>                pte_t *ptep, size_t *pgsize)
->>>>> {
->>>>>     pgd_t *pgdp = pgd_offset(mm, addr);
->>>>>     p4d_t *p4dp;
->>>>>     pud_t *pudp;
->>>>>     pmd_t *pmdp;
->>>>>
->>>>>     *pgsize = PAGE_SIZE;
->>>>>     p4dp = p4d_offset(pgdp, addr);
->>>>>     pudp = pud_offset(p4dp, addr);
->>>>>     pmdp = pmd_offset(pudp, addr);
->>>>>     if ((pte_t *)pmdp == ptep) {
->>>>>         *pgsize = PMD_SIZE;
->>>>>         return CONT_PMDS;
->>>>>     }
->>>>>     return CONT_PTES;
->>>>> }
->>>>>
->>>>> With a tail address, pmdp may no longer point at pvmw->pte, so
->>>>> find_num_contig() can return CONT_PTES for a CONT_PMD HugeTLB mapping.
->>>>>
->>>>> On 16K arm64, that changes ncontig from 32 to 128. So huge_ptep_get()
->>>>> can walk past the CONT_PMD entries, and possibly past the PMD table.
->>>>>
->>>>> Should check_pte() pass the address matching pvmw->pte, sth like:
->>>>>
->>>>> ---8<---
->>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->>>>> index 406fd50bbd8f..58463493bd3d 100644
->>>>> --- a/mm/page_vma_mapped.c
->>>>> +++ b/mm/page_vma_mapped.c
->>>>> @@ -109,11 +109,14 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
->>>>>       unsigned long pfn;
->>>>>       pte_t ptent;
->>>>>
->>>>> -    if (is_vm_hugetlb_page(pvmw->vma))
->>>>> -        ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
->>>>> -                      pvmw->pte);
->>>>> -    else
->>>>> +    if (is_vm_hugetlb_page(pvmw->vma)) {
->>>>> +        struct hstate *hstate = hstate_vma(pvmw->vma);
->>>>> +        unsigned long haddr = pvmw->address & huge_page_mask(hstate);
->>>>> +
->>>>> +        ptent = huge_ptep_get(pvmw->vma->vm_mm, haddr, pvmw->pte);
->>>>> +    } else {
->>>>>           ptent = ptep_get(pvmw->pte);
->>>>> +    }
->>>>>
->>>>>       if (pvmw->flags & PVMW_MIGRATION) {
->>>>>           const softleaf_t entry = softleaf_from_pte(ptent);
->>>>> -- 
->>>>>
->>>>> while leaving pvmw->address unchanged for page_mapped_in_vma()?
->>>>>
->>>>> Cheers, Lance
->>>>>
->>>>>> +    else
->>>>>> +        ptent = ptep_get(pvmw->pte);
->>>>>>
->>>>>>     if (pvmw->flags & PVMW_MIGRATION) {
->>>>>>         const softleaf_t entry = softleaf_from_pte(ptent);
->>>>>> -- 
->>>>>> 2.43.0
->>>>>>
->>>>>>
->>>>
->>>>
->>>
->>
-> 
-> 
+I'm not entirely sure about this, so I chose a relatively
+conservative approach: making an obviously correct improvement
+without introducing dramatic changes. Another reason is that it's
+also hard to evaluate the impact of removing the local drain
+across all systems and workloads.
 
+Shakeel, David, what are your thoughts on this? Should we go
+with a code refinement in v3 as David suggested, or completely
+remove this drain?
+
+[1] https://lore.kernel.org/linux-mm/CAGsJ_4yFgcvpTAZ_YV73+U=3DBEnOiSxaFtGN=
+Fpbf0DWBkVcOQ3Q@mail.gmail.com/
+
+Best Regards
+Barry
 
