@@ -4,88 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8ACEC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 22:26:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0E93C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 22:37:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 929396B0005; Sat, 27 Jun 2026 18:26:53 -0400 (EDT)
+	id 3EB3A6B0005; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DA5F6B0088; Sat, 27 Jun 2026 18:26:53 -0400 (EDT)
+	id 39C576B0088; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F1A66B008A; Sat, 27 Jun 2026 18:26:53 -0400 (EDT)
+	id 28CAE6B008A; Sat, 27 Jun 2026 18:37:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 555116B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 18:26:53 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B9439120278
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:26:52 +0000 (UTC)
-X-FDA: 84927128664.04.F803BF9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 141C416000A
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:26:50 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BiaMHCNE;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 03A3E6B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 18:37:22 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 789EF1C1E1D
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:37:22 +0000 (UTC)
+X-FDA: 84927155124.02.4B716B5
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C5488120002
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:37:20 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d9R/wUuR";
+	spf=pass (imf29.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782599211;
-	b=X4WMbCbw8RPD4TcRkr4e8z/x64dThmSXbogAgHb7qEjksGpLCDdUiusCC4DNJ+nAProjUy
-	360QQ6IQz/xJxb4LIuz3D/Zt0pmRBIaW/HNvEyAdVIzQryUPl4iUzHz3TPe7JajIq9w8g1
-	GUVFKe3Y8TufEWsu9hoJViscbwAIzAA=
+	t=1782599840;
+	b=xcf3l7Ya+UCcDpKjiwjD9KsMI3cELqkDqyTD8ZolCBjzV8YiIWWCNB4mOVErWTleUGgPVy
+	aJ3YsAfSUtfp3K3M9+Sd7XgqHo7BMvvmFndJ4MINq+WTJU4K7NJFuSOLDySUd4oJdIAe0a
+	MhPDCzBg/xb2qX0BxCzP6yz35OzYu1o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782599211;
+	s=arc-20220608; t=1782599840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNhuZf4EzNX+x+mPYeLipgASXqtM4sleYQ2JqrvbmuU=;
-	b=kOl3DMeezi12Mx8x1WMJUqkjqcOsOjIM+B+fW6pJoHeCQ9RJihK6ebk38loMevIZ9rKl6a
-	i2P9bgYkVUgCfxPJgoAIvNFcu87ZEHZ0StkgT+nTvlapmVaEvXux0KqsvJHlf2YRdErFcF
-	pCDhSXZ4OgIHDYGts4DOkh6qw1NIjyM=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
+	b=iRhRS2TAQwuEdDTdORDOiupUYV1DjPqb9eVLSEOEgmQK3t31FSp42hYwI58svc0E1Tbbw8
+	7sNLjERtU6L8b/wzQ/FFPsru1Q9P1V1zJVPPA6s59bJPsRL5Vwqa/CYbimgUVqF4DJatsH
+	qq+/RXFJXbcFfmM0O5AiFA7sbjK3ppw=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BiaMHCNE;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E46F04179E;
-	Sat, 27 Jun 2026 22:26:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 966F91F00A3A;
-	Sat, 27 Jun 2026 22:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782599209;
-	bh=ZNhuZf4EzNX+x+mPYeLipgASXqtM4sleYQ2JqrvbmuU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BiaMHCNEgYRSLBK49xOzbr4x3ibBYZBjeim+jIKiXM3UaUyp59DAKUYWwC/JD4zHl
-	 mEwhkniH8sqzOjM0s3PMVz/gl7DOCrN+83gtMKfKPz8lET3hQt/l31n+oHMpyeplxE
-	 ePie9HaSLTJ6tKUQH8NFey5Zn4HLTU89UE3y/3cLAmzg65o7QE0FRBDiyEiE82E3W2
-	 Ijg9mLfBH9lyevCUComaEMRSXPi4zIxLt6DsVlEhILgXiiN/3HUqAUc+HXG8oIFttJ
-	 vOAO4L51ePXIoIUGWXNhBci3cUBtcD4exLgXR5c5TBjrCz5PNvX53F9WAEG/K0TjKj
-	 Z8IM+G2iKaXnA==
-From: SJ Park <sj@kernel.org>
-To: Liew Rui Yan <aethernet65535@gmail.com>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH] mm/damon/reclaim: add 'available' memory as an optional watermarks metric
-Date: Sat, 27 Jun 2026 15:26:43 -0700
-Message-ID: <20260627222645.26834-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260627213651.19000-1-aethernet65535@gmail.com>
-References: 
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="d9R/wUuR";
+	spf=pass (imf29.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4629051c9d1so1092545f8f.2
+        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 15:37:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782599839; x=1783204639; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
+        b=d9R/wUuRsThi30LfyWHvKR32BBhUe6UFPtNV7GQQDxFb7deC26DGa5HlenFzVXcuwn
+         jbcOrsk9bhe00AiQGjc5pPgK1NbA3XTSVyTYY9WK7fdNLeOHmPNhCsha209HGtbahy/f
+         MTkUV+bEJ7ZQSvGSW/wUnMzHathnOrqLpWoqu8D7t5ATLyMbi3jiEk1SvcfX6vj/kjiW
+         bbYQD3XhLq+bR4sLf8bHXNNl6vTB2UuCuzt+Cyx9Y9+Z/oI7vuXr8rZis2yZum4WsDEk
+         IuF1i9joou61+AZErSgb9XZJftwm0Zv7QxGaZHXCHV9ql52dyZeUE1stP3pu2tkmuQgv
+         K1vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782599839; x=1783204639;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ftHstwGsGNHVySY6WyJrlGTgEX0ZtiUlQfSBunj0DQs=;
+        b=LYeobHf/UwnH35OAAd8daSiu8wk/CwVQgkJMwmGhaWFAie7aEpWY2Tv5ux0+KPka2o
+         +0tYyVwsyqJ7HsLmMfi3tToAO+FQZRkhu2yxrzn1n9lyFnvcci79eiKr9wx41m5wm8gl
+         Lgbl7B0Tc8CX6d9xtQm01IaTi8xeFfpiPiK79Nb42xDKccn7x59ZOPbapLsFZbjvy6/2
+         9p/4J6SIYS0oK+XJkKH97iApFAbHQG1DJSgceBtjDAq7RJUmyXIUCc8cO6/GZcIrH+qY
+         VwAPDOkge4flZa/gj8WuPGkcXGFlkc2BDpyvzO4L3tG4Mo+lUnBaaZ+3C+TD23uj6P6v
+         d1Pg==
+X-Forwarded-Encrypted: i=1; AHgh+RqUwudEOu1S5rDk0TU87dZLvyUke9d0AJIBp6pOqWslSylwUOW4UG8Q3N47MVdtiXRj/FzOSxtMcQ==@kvack.org
+X-Gm-Message-State: AOJu0YwnD+1Qcr4nF1ivHWwe9ssYQu7tYD4V16dCs4Ch+waENVTKjYNY
+	rozP7DqM367tv3cgeCh3GBJTyKX6hCUWX+QT/VH7GjlVUy1b/lgq/TFM
+X-Gm-Gg: AfdE7cmKcPcTl1WCoSEhlCK1KePVJw6Afl2WDLH3251/KkHWN5iWIxYWu0aHgqFECEQ
+	zcijZijPnfPeXQFCrsgLORzKrbVjY1slOXGFVzWGYRImbYNX6bFJCkyyD/HwP3d9niAd323ER25
+	VlxM2QYYlsDeRA/WQKY51pwNfffC9r8yON5VaZc6hMkSp6K+Bpb3Rr6IRxhhLRSla+T6yN38mEx
+	c2LF7b4iVwMpevKhn4eweO6TqQYyR/wkDXg94LnZy4IodtmCMC8HicROcbIXMtxDmXsCbKYPodq
+	uuedFxXnoRHzZa0lgQQkfUQoKIYgQOYIbsmeZOSma2f+9VO3Xwmlt/7wigC0O8PbMMLufSAYQnR
+	SbGwr2etlHVfh1LI7bTGeoGipQDS1Nj0BNc5CelRyrUJUD32ct0fhc5dZlatpo9NVFur1ozB2Ed
+	QHzdHbM6HJys4=
+X-Received: by 2002:a05:6000:2203:b0:470:2fb1:3dca with SMTP id ffacd0b85a97d-4702fb13e80mr6329910f8f.30.1782599839120;
+        Sat, 27 Jun 2026 15:37:19 -0700 (PDT)
+Received: from user ([104.28.155.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee018e8sm40869097f8f.11.2026.06.27.15.37.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2026 15:37:18 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: hughd@google.com
+Cc: baolin.wang@linux.alibaba.com,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>,
+	syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Subject: [PATCH] mm/shmem: Fix data-race in shmem_fault
+Date: Sun, 28 Jun 2026 01:36:56 +0300
+Message-ID: <20260627223656.181988-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 141C416000A
+X-Stat-Signature: yf3z8hyp7ztfn5htprrtjdneibf84rx1
 X-Rspam-User: 
-X-Stat-Signature: 6zxzrambhhq4p3ncfuu1m5poowj35q1r
-X-HE-Tag: 1782599210-163783
-X-HE-Meta: U2FsdGVkX19/kSO2ozN0hI/0dwzNPHcXXzKU/v0Y6Rnm5aulkLcYuBH21/74zL1+XCsv6nUuJ8m/gzIQ4/HzTuahu/ME6nOcrCmESz/TztgaYGSbi2z+fdGu2KSgLV/5zOVaepib0g3MelLklNkMQiqNEbiSgMh1J9ulHFEGJDu9CZDrB4973rVADm0FuhFZt7vFirD4eeYVb61znh2Pq243XkokmlqaSpZchXgmMKF/7b5+fAjwZZFSzFVgwpD/SarlG/F/8wudVYY5ZJsMeQk4dmow+iG/kjziI6bfj+OjJhbzKS8rYOXrQj9OmuCRoIvUVn2pSUCIztjcad/HPnj9VsOleqX8NBITEGV08I63RMF/3Z0e0BIvG0ukgv4IcAi9M8lYcQZmmCaKsDsAdLgEP0V8kemlX8LwasdNu1NZPvBYy5WWGWSPzIH/UHjzGLharUlxvI7HXw+oRescFY0swv8fvPZ+npSD7xsL6mIP7OncueK2ep8PnlyjaHPmrVzXLhdBGI9YaszXPYqkz0DcD9t6pIpSNFbkEwsfyNFkTqG3IZ5BC6LjwGjFgJOctSFDiFxwKOcExpYK2K5z/egRxmAmMYipkrrvdspw4yc77YjcAoJ+03cNxDTgg4r7251af8iXqP3HIZwgkt+27vc56YG2MaT24QGWi94UJ0AkX9BKLgDcMcVTolJ1DMJqlxT4L2Egj3eoKKwzQYNXfbtlOoXJCSRAC4HaeI8/It49AVh1KZwCCOv32AVnYT01W+VtKZpn9N83ZW0Pp9zDfx4QciWrGzccctNliPD3sBLii9FcaN4DslYB5kdWlFD1fLUu/T1KvA0KEuNmXLYa7IMx7AWXnS7+zV+iZXSF2Kpme0diC4leX8KcNPUXmsEqxikX/o6j6QAgWeNG/Sgy6/pLVmS6n2JGDml9jjnxY2bB7B8bfVx+ay6KbS650UStPlcnd3LJUCHremg43VF
- +0+gpoPx
- Pv5zlhxJ0zCa8Wxlmz4Y4x7iS6hw+8ikR8Wf5voO+Lm8kvhAQ2XUUErfrNFs2LrEguHKi0sPsjLfn5IZ1paanJ4GSEI3rzC24shUHxChI1jfWY4hsY9pEiibjYsQCWDgs9pUszbDAaqiYqZR20bJaCv2sMD4GZ0wTGSOsxq7a3R4vvgCaQFridhfrkNbVU68C7Z4QwDK50Crm56hbD9c+JZJNnq3eA3VFWXnHntxYxIm0KG3TuCu3JxBb2a7Qi0XiElP9L84Kx7PWmQYt8U1U5i7gOy49RWNPuGXZ
+X-Rspamd-Queue-Id: C5488120002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782599840-742042
+X-HE-Meta: U2FsdGVkX1/PzYmLZ9LRe3oo3GYrU03Cpkvw1bdh2VyjhX2YllSdaoKERcPib8tA3K3UdV1xbHYZU/bZ6Y4XvNZITzwILVnpgNa+K5F0KxnOp8aIODlrbTTQh5niMGv6dnw3n2ZzLMJV3eBOX6bqQm/Zi/eQZqcj8aIHKrnlaTo0LW0sd1aMDDi428BXljYR338owrKD+9MuhddZUfju5AxDtjxskDfxdzw3UjcdJnmCoW4eBJsCL2lxYwisXpvBYIRUk0tmjUUyZhqkMb+NrBCfnf/qBG+xKulPz7X/6dD7/pPEEWaZwu9aeM9+YeAG/FlCG/LrPcsJ6+w4zpblqRFFeHlNhfynucI1sHTwKubsox5UBKckwREhaHuAmxrM7q365FyCsL5d7hEcq4g/yhsYMyE6Us8SYoPkDduq1HqNQzwxBOuteLhYwdf2IzIop2R+K866Gao5B0RNjPE1foAxKv9JCCB4xQ/l1pMphsuQZa7AORFeZWbt4AouaL3ZowA8DkQ29u2uTkrK1/qyqFNNbAKOSXDDmdGrT7WUCaKA7oftaWMka/BVF3iQ9i7B/bSi2Y/Q//QIhAsQMSXJwEEuw0U5jnsVGhfxfL+GL13Syq6QgCBYFJfQ0m6JhIV6OFgAcYuhkR849rTLisXk6gMH54WFoIedYF/qq34fBFT3s71BaI+KShvjDxsH1ub4/8+VnfsMRjhsuoDSXvqKAkDOn/n/OyIXERVUSYi1g7xS+U2rZ6vVPHWRiH31007wDJqBkqBneLo6UGHpqPi2Rfdwpw5sp+OQ9yf/dPTmtgi3UvRX79Rlme/Qm3qANbBeG/2LC8o4NX/f2KiX6i9MEWShMWOCvQlbho5QAxx1+Z6+wbUVh/N+nwnbAppQjNytyk76OU+1pHg9M5CcKyCZmK2t+5XjdCEsqkg+h58XJSc7dZHtOE8rpkxF5TILkq1srq1yYKLn1abhpyP+CpV
+ 8xlvepV6
+ lckQoWw0yjqsEeq5X1XRYeJApda+zoo+zOTzSpWmSeS3apYt4RDiyMCxTEK3jpuWQi66AklGvQPKcInKZVKcC17d/oe7ZQkBhI4GGu/uNd6ko2mNi+2hjN5cr2nr4rAreJoexgm+LoZvoIbtMXVMqJ6piWfggcibSbvPDI2WTil3Sy0Lq9xmy3ctnPAN01qYnIzVIPQCEwwUZMo7hx5DVkAnHbPqXnRcGb5o+tm3vSKgE96SfLxUQuJ6isFX+QWlYgqggaJPBAW4f1ugKhemRmS94tVB+04px7B2eHztLHJWM0RBO9YP24agQ52Jx2THOU2qWKc9hQ6Ii1ke7n2YaRRQd4//njNgaqaIDssB7EhLBdTixe/kvf26hmZ6hwuFF2LaOOuQj9098a2TWFfHGJIqM0/rjigyCrjUQvDGm5s9lH3J1Ko73q/v8XpVhxXvDTvp49kNzVXwfwvR2BYEfpGYATr1o5X0UNSuD1UsyOEu7WhIHu5byfP7FYHHtWRCjJh9pU9njCPkjoLDikFcfAW4itq1IoyFSCX4CDp5Ep4tO6fQxPpA4ZOSveCAqRsa6QnVjbdesY0f8sUlpjdCNf88TbycWYht/eDI9nkV9YekeTnbq54UD0ZOO8yM8uYkYrIwj5+0FWXLfqD8gzS6wsiX4wkhkP6cJDc4QZnNfYzwFFD32Df2WJJjKOh5/oTNP/Q6oyynskkzShD5V/QjdaIiuWKVdXUit+jpF0gTh1Pp9BKuENBd3a3c35Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,84 +117,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Jun 2026 05:36:50 +0800 Liew Rui Yan <aethernet65535@gmail.com> wrote:
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-> Hi SeongJae,
-> 
-> On Fri, 26 Jun 2026 07:18:18 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > How about using DAMOS quota with its aim-based auto-tuning, instead?
-> > 
-> > I developed DAMOS watermarks and quota as safe guards of DAMOS.  In more
-> > detail, DAMOS quota is for restricting only resource usage of DAMOS.
-> > Meanwhile, watermarks is for restricting resource usage of both DAMON and
-> > DAMOS.  That is, when the watermarks condition is met, not only DAMOS but also
-> > DAMON is completely paused.  Also, watermarks feature was considered smarter
-> > than quota, because it is a kind of auto-tuning.
-> > 
-> > However, it turned out completely turning DAMON off is not a very good idea,
-> > because it drops monitoring results when the watermarks condition is met and
-> > therefore completely stops DAMON and DAMOS.  It drops the region shapes and
-> > 'age' information.  Especially, 'age' of some regions commonly cumulated up to
-> > hours or even days.  Dropping that was a problem in production use cases.
-> 
-> I looked at the code and noticed that kdamond_wait_activation()
-> doesn't seem to free the regions, the data remains in memory.
+shmem_fault accesses inode->i_private without
+holding a lock, while shmem_fallocate is modifying
+it while holding a lock, thus a data-race is created.
 
-Ah, you are correct.
+Fix this by using READ_ONCE, which provides an atomic
+lockless read of inode->i_private which prevents compiler
+optimizations such as caching registers. which is safe
+because subsequent call to shmem_falloc_wait revalidates
+the lock.
 
-> By "drops",
-> do you mean the age information becomes stale/unreliable during the
-> inactive period rather than being literally discarded?
+Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+---
+ mm/shmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I was just wrongly recall the detail ;)  But, yes, your representation is
-correct and much better.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..97b3913144ad 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	 * Trinity finds that probing a hole which tmpfs is punching can
+ 	 * prevent the hole-punch from ever completing: noted in i_private.
+ 	 */
+-	if (unlikely(inode->i_private)) {
++	if (unlikely(READ_ONCE(inode->i_private))) {
+ 		ret = shmem_falloc_wait(vmf, inode);
+ 		if (ret)
+ 			return ret;
+-- 
+2.54.0
 
-> 
-> > 
-> > Meanwhile, we introduced aim-oriented DAMOS quota auto-tuning (a.k.a DAMOS
-> > quota goal).  It made DAMOS quota smarter and easier to extend than watermarks.
-> > Nowadays, users can also pause and resume [1] DAMON/DAMOS without losing the
-> > monitoring information when they want.
-> > 
-> > So, I personally don't encourage people to use watermarks.  Of course, I may
-> > missing some problems in alternatives.  Hence I'm asking the question to you.
-> > 
-> > How about using DAMOS quota with its aim-based auto-tuning, instead?  If you
-> > cannot, could you share more details?
-> > 
-> > I'll hold reviewing the code until this high level discussion is resolved.
-> > 
-> > [1] https://lore.kernel.org/20260427151231.113429-1-sj@kernel.org
-> 
-> Thank you for the detailed explanation. I now understand that watermarks
-> pause the entire DAMON monitoring loop rather than just gating DAMOS
-> actions. I agree this makes watermarks unsuitable for the Android use
-> case I described.
-> 
-> I will drop this patch. I think controlling DAMOS pause/rusume
-> separately might be better suited for execution in user space (such as
-> controlling‘quota_ms’ and ‘quota_sz’).
-
-For explicit DAMOS-only pause/resume, you may also be interested in
-max_nr_snapshots [1] feature.
-
-> 
-> By the way, I sent you an email about three weeks ago (Fri, 5 Jun 2026
-> 20:28:00 +0800) introducing a userspace auto-tuner program I wrote for
-> DAMON_RECLAIM's 'min_age', and asking for your thoughts. I am not sure
-> if it reached you, could you please check? I would really appreciate
-> your feedback on that as well.
-
-I don't recall that mail.  Did you send that to damon@lists.linux.dev or other
-public mailing lists?  If so, could you share the message id or lore.kernel.org
-link of the mail?  If not, could you please resend?
-
-[1] https://lkml.kernel.org/r/20251216080128.42991-8-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
 
