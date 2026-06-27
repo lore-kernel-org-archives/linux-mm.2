@@ -4,123 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6985C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 11:41:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72231C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 13:37:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 434BC6B0005; Sat, 27 Jun 2026 07:41:53 -0400 (EDT)
+	id 0980F6B008A; Sat, 27 Jun 2026 09:37:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40BF16B0088; Sat, 27 Jun 2026 07:41:53 -0400 (EDT)
+	id 048016B0092; Sat, 27 Jun 2026 09:37:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 349256B008A; Sat, 27 Jun 2026 07:41:53 -0400 (EDT)
+	id E78CD6B0093; Sat, 27 Jun 2026 09:37:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B2C16B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:41:53 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8660E1A02FF
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 11:41:52 +0000 (UTC)
-X-FDA: 84925503264.11.EC7D354
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9AD6740002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 11:41:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bGhlW43j;
-	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A656F6B008A
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 09:37:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EE01187871
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 13:37:10 +0000 (UTC)
+X-FDA: 84925793820.02.FA3B8C2
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4C36A4000C
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 13:37:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=YJaTGbBC;
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782560510;
-	b=NoRk82dgwdfc/zWlN/2vLC539Zp7g1SgORZROvFEmVK+IgMILRF63DDu8mQikklDs8fVic
-	4kl8065ClFrOryIoAGSv45yFI238yADsCy8gcJpHddMdjWrrDML316ZvPMbgh4cVxVToHc
-	9Eog9fKX0cXoYASZlc6AmVyLLgvU8sc=
+	t=1782567428;
+	b=d9HO3Dm8by88cPSuzW2ogmPbpDmAlkUnwxD1HSoi4oi6JpXLCVDeFcACsC5jwd8g96j1DI
+	LtyqIkD7thJKx+dQ6ztk5SX1CTwiM/ldoeUK1rQUKDdqUib+fz76rSibQhEqxJ71aV6NNh
+	8OyelJY7ofHVLenyaG71Wk8AooktUFI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782560510;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1782567428;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5MsGEy5Adg9XX//QZzyVthhl1GGb0HZKXz/vMlwCOV0=;
-	b=cqkmdRE+SqSswYA6ISoxR77rjqlXfd5yKNjuZ2O8S6HPf4Tz1sNWF+ba5RzS38i3RU1X2o
-	0Oc/T4YZgMPkfUkYD6h9CjmAoU3RnkEOxCg9OmejKmYuO/RA1NaHk6+epv0LGF7h9KEF3S
-	guqgnLCEgpGyx9kBQJhSOkDeMNMsGVw=
+	bh=uUTYL+XiY6nbZ0YUir4XMg22YbfTVMU7jfHFV+vOYwc=;
+	b=hDOOv4p+/t0c7eLlUCeiQk0Mku61DUEBQV9juLAQHXxCWQ7ILs+Lwi1qrqWWddcE6yRybu
+	ZnAbvca+3s7bXR8NPfC+IxqA9qTRek2QiMNkQB68+Tuv83S2m13n4tKjZeDR4Uz6laZ+o+
+	F13NAmJ3Qp1FXm5m26zCD7QXg0TOmyo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bGhlW43j;
-	spf=pass (imf11.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1214dc027cso191969566b.1
-        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 04:41:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782560509; x=1783165309; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5MsGEy5Adg9XX//QZzyVthhl1GGb0HZKXz/vMlwCOV0=;
-        b=bGhlW43jG6p2zaoI3XiIPWtdD15bpaScYBjf7LKS50g77xvm/UgHFuMiaFgvjB2NeJ
-         qVMCOLBCxovbDh356KgdPHjg97HD4AA0Li9RTHvqVOfr3j0YLPOFUkh8phlvS0yb/1tw
-         NLLcd0Mr57liEcYtVTsa1H236HfVZqyy/evss/AU2V/Rkro043/o5Lts4ASB7+FDbETZ
-         nfH1nWTu0gx9M2ezcKukj9kJ/ZSqh9WaZcobXAWnm8gIKJWg8U+qXL0I2SsvwaIkb99+
-         4TGkJUO1/ddzVgwJrQT/4/5tyAoGzfRcby5Yr4Llvi81DxoeIEt3b7n840tsWewnZxEV
-         6mUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782560509; x=1783165309;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5MsGEy5Adg9XX//QZzyVthhl1GGb0HZKXz/vMlwCOV0=;
-        b=F6hwVNYIx3/2yA8dClPQTPJp1RAeJ8AaQz2GAcvQOXL4RLLs9g/CznjSEdXtmCPAFT
-         YvJrCpQOh1GfVVLiFf0rK2IzzTznGShLJAhmxJjeJw59Vgma9w4aUoKrWdDONnOZcnO4
-         MJg9bs8V+XfH41uH9xOW4B9rdRHUFbiIx9P6h4FTZS3MVHTAzPEKrtmASoPMDARpAoWb
-         FFihYWJxafJTS9gf9am3xHtCA95AxrTpbW6H996VOLBfSo8muBRhzOzt7LS7NeQT6xvo
-         j+Wq/BdTbGMiHCImPNe1ls/2tFKXfI65omaVcrDqJyOmjajZ32MizKkKGWpyA5L/KQLE
-         bEHw==
-X-Forwarded-Encrypted: i=1; AHgh+RqKvZ5oB1UtwcfZ26uLdtSC7ZspTqdhFgQoiPSAYghlolHBtooeJ4jKXcnBSoJFwyaVTEEXRkKhCA==@kvack.org
-X-Gm-Message-State: AOJu0Yxy0NqQeREy8L5YK9jbEgN8zSA2TEPqO/syVtxFb3I1roVM1iSr
-	OjSOu16IORRr2sSX4rS+kYdR/lpXKa4VCo3A2JRGcXdpQr0iOODqYlas
-X-Gm-Gg: AfdE7clf8MyjdtSXtlBhW8J4786XAXd7mHz1suUX45fhLQiZ7Wa8JtEkKadpud3j96y
-	UYpLiner/wtgvEZ9nf2yGn4G/ZCkTcd3erydAYxdjyO0T1OfwzfdbWtoT7QFbZetL9N2gUcREPY
-	3N8GJzJkLLvJJYyySPg17M/emEaG0DKHIRim5WPLq5n65WgXrXvKdIGok84ygngQvWpU+cxk7F+
-	Tq8B0l68d4QiZj4fMLGbp450pEAJkgmuW7C4aairvGH58aPB4s5kWRSolzp511m0p7yp870TEjf
-	if2GKSzBYpMwoUVE6cD7jm0gOzOPj8K7JoBRM5JKTI5SauHqipXQCyjsv3xJx1SCKezc9tfWHt6
-	88mTkrO2TnKhQfs1vutKD7NLeKiq5NensmYladUcpJMX93I7g6uHHKhqk6MtKpGxtfcbkyiQ6Jy
-	gqkrLqfzHh46I=
-X-Received: by 2002:a17:907:c705:b0:c12:3d5e:65f8 with SMTP id a640c23a62f3a-c123d5e7db2mr75082266b.4.1782560508661;
-        Sat, 27 Jun 2026 04:41:48 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c11fbec3514sm467854066b.57.2026.06.27.04.41.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 27 Jun 2026 04:41:47 -0700 (PDT)
-Date: Sat, 27 Jun 2026 11:41:47 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	ljs@kernel.org, riel@surriel.com, liam@infradead.org,
-	vbabka@kernel.org, harry@kernel.org, jannh@google.com,
-	ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private
- PMD handling
-Message-ID: <20260627114147.d6csxmiha6whfyb2@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
- <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
- <20260627020719.ipzfrlhfbvr6ac35@master>
- <b7cfc04e-7a57-489e-9459-82d7eb818675@linux.dev>
+	imf27.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=YJaTGbBC;
+	spf=pass (imf27.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=uUTYL+XiY6nbZ0YUir4XMg22YbfTVMU7jfHFV+vOYwc=; b=YJaTGbBCAVkVuPVOSxUJ2kyeYa
+	46ME1ttXik+l5W/4OaXgsFFRgNxoTXOJSK9N8VJ+c/+QrIfMDCzUE2fJ4GAkPb7p3H0fc8JDQdYcf
+	kxGge3hiO4PZ6LpBE3ofT5oqUu/Rnnwn/foxEhnSgeZM4nVCrVAWDZqJZaiUAfsiA8a5CX3uLPzBN
+	r+DZp2wjEQcTBiLwDbHh0eDvbOH4wBM0AmEQmchQpavFxPzudC489W+mjUYDlbAoiI0e0dfdnBKI/
+	rrqtnG+L8Vvh2CgwhahdXjZDSVs5uXIiefETS5PJUZeHRreYtb4s5n1eh9ab5nIEMB80rdg6igmk4
+	ZhzQ7/9w==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1wdTDI-000000001nG-0Ciu;
+	Sat, 27 Jun 2026 09:36:52 -0400
+Message-ID: <528e3a5fbc27c9dc7a098121c32b7679b4c9962a.camel@surriel.com>
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+From: Rik van Riel <riel@surriel.com>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	david@kernel.org, willy@infradead.org, surenb@google.com,
+ hannes@cmpxchg.org, 	ziy@nvidia.com, usama.arif@linux.dev, fvdl@google.com,
+ Andrew Morton	 <akpm@linux-foundation.org>, Jonathan Corbet
+ <corbet@lwn.net>, Chris Mason	 <clm@fb.com>, David Sterba
+ <dsterba@suse.com>, Vlastimil Babka <vbabka@kernel.org>,  Steven Rostedt
+ <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Rafael J.
+ Wysocki"	 <rafael@kernel.org>, Oscar Salvador <osalvador@suse.de>, Mike
+ Rapoport	 <rppt@kernel.org>, linux-doc@vger.kernel.org,
+ linux-btrfs@vger.kernel.org, 	linux-trace-kernel@vger.kernel.org,
+ linux-pm@vger.kernel.org, 	linux-cxl@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>
+Date: Sat, 27 Jun 2026 09:36:51 -0400
+In-Reply-To: <aj9yrlB0TrlYCLlf@lucifer>
+References: <20260520150018.2491267-1-riel@surriel.com>
+	 <aj9yrlB0TrlYCLlf@lucifer>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b7cfc04e-7a57-489e-9459-82d7eb818675@linux.dev>
-User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 9AD6740002
-X-Stat-Signature: 1jbr4gk8wyg7yr74sstqc4c1xkjhbo3m
-X-HE-Tag: 1782560510-871899
-X-HE-Meta: U2FsdGVkX19ty0Y0XtlYgaXvNVBJcNRkF31bFl8+dsWHijNAdraLJv9fmxn0haKleNm7V5cpBzw1Oycgz1Lb7q4cRLTYQBacW0JCe8BmVU1XpQT6rbkzxA/27CnfCVPnrOmAnaCIJQb4FSehaBc1e4EuJTemX8x4S5/D2JKKS3Nykt9QKmJc0Zc/sEKLo5mdjfu0QQjq9XnIv3eAeSlixvTKpi6PEGTuAXwWuLr6D6TNr691xzYhmZqJHKPku50EQpvkcpdtOFxmYbw9DQGbP/gsRurmH8wA8CE0/nPJAlyQ1S44XrmOUQUqrQR3nAzbaDQiNZZrCZHam5qmrNJUpAGsaNu5k+A9JY2VQC57yfmnU9JqhlPN1GxNaQGmQ8TCpDghKEX8e+JtNgaTqp2Qh2iOewPbIO8tw6gCZ087cOJcbMqzZqxZCHXrdPx8PM7Su69Cl+81jb7n157Swh8GzIn+dScxo6ZWAfoFweBRADdu2wjl5p+izh4JP65Q+bFKr4KbODOOjNMOKEO8NE93ady74cbkb7QdNkevJB+b1U0/+7jNOndI/VAhNBYYpkAeQM/DhbKKTjlG/pn3cZkSfZ32k5NsdmuJefFm0c6w8ICY6YjYx3n7UHE/1R2h8KzHFKd/Nb6KlrbhvjsZfe96g+3ekT6IBYGqWelugLY7d0wkVn0oBTKC8ALkVAOMYMMoIQoFYdxhALIvaXovOSz2xr3MDM4L6eQsD/5Y5zuz/AJPzaasgO41yF4zcuPmbvy9W6qGnlBGUAszEu/O5TaLCQ1PaiCCuNMZ3OMhtCj8TTA8+sunovrrZx7AiGPGMoYczUxzZHh+BNwD91vEHqJMgiQgYNGxgDJXUf/WlSxV9lu36NvGUxNng6jF9flRCMqtDDMbjbWxhCbXnQJjV4+7XftH2awv43BUadHyOQ6/tIltAY4k/NLlvTLAbE0PyaXxtQ5bZb0qnP7H2TM3l0o
- mGlYMuRR
- dnTgjXr/BjFW2Bwggvopcs1zyjPM9xlFIuDhG2W4eQL12qi1FNhuEOb1CfWoXIgwZXH1mDdppyn+dDYZvPI1D9IHnzLXpkJRWePRykQFbVP9ceW5R6bJeAHEgF/oXlRpw21efx8a1aRAY3osI1A3ssvxHqo4KqftWucANKLxgS4mUmaIf8e/BlYwrl65FGKQ3Lheq2R1q6Q0ANR4ET/wlW+3swFDr2XuaCFAdVwTiS4b/3L2yEMj/KOO3KX40/6fwKBfwfAr4g7c97SzPSAn2wNCWFKaN4stFuolqnYLz52eBI+/Jc0XPeGalw6kFRRcqpisHDwbOwthKkbyrGB0tibHFF1e6DPzGHUV04hNEbmf3xzI4OvWpAO5f5OI0POdqpU0190V3KXnxv46rwtM7jSqGsvsE74HxW7QdYRT26LkB1kC/mnhLD+3Gbzj5ygIGBTuAj2Jmtq4N4Y36iIgbMLTYqg7MXLm/a2nXEmZZ8vXH5HTVnOfl/veH2hVuIhpNLv+XQfwal77AZLmwhfv6utAt9bTcoTllZoMfuztcfRQHVl6GomtapKrM/W4fCMydgq/9Pz5Fbn4C6q/cC8dn7pX8m0+c11j421RBrsjocYLpkKe/+izLhRqaw7eNj3LaL/DQEBehHEPt73nYE9Y0HLV7nEce8haNwrYC/Yr2wUaU4Nas4lwCS6AuWxhipKMwcfIIVh8I4+j30UtSwODroS7crnAO6xXR00EaZapGE7oF1v3I3C9Mh4hyIypmUo9J5SQw
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4C36A4000C
+X-Stat-Signature: hpath6hsq9fzuxepsf3d6zmkx5ocs4e3
+X-HE-Tag: 1782567428-758977
+X-HE-Meta: U2FsdGVkX1/bG3zWXnNWAMfnnJG6zRZkNjkY18bPFlvMcEXOsyaYgarF5BkBZVMcWr4GLlGEggwDhIG5Teg7P9D3oVcNn36yw8z5JKVc1okwTUNylXaI47bRWcIcw4L8hUX61hLyxoyE/hR7XDZ+OUB3VN2Dv8rKaqeNjo+3/7y8Ys5W/G+9jrUzM1a7+6p4dIFUAzycay7rnGgSE4NHt5Q87LkPk5frUxM4vNOXxjMBB4BuHSZgQfx/hC7nzRqPU9plm6GoPEPe1ZtMmopofU3rNS3W9nPBtf+i9ySPitkvLgUVBOB6ttQLouolqsaMeADqPL+NRuY+GiWU7Kj8E5F8mWn7mrCCP91JrRLe5AuJRQxmURLZzgWdu7Pf9o78gToKUE4TUbvbUw7qPP+31lttYtaGMipR/DAM3BMnHDcHFvWiaHgqIfnd4xLTDijjLwaAA5OtMDn0tJruIRxmdyO1edR+3uF4dnsV7YK9401rOCG0PUIkIyJpo0Q665Rmm+x2WK4QlKY9ix65L5C34cVEFu/Wh8XN6KbnKxXqMeE99tvKTEb2ZUAyE8shjNkQ2Xnt9iQPg7Nfc86zLKqCZMMCUhS4JUxspqZlY5iwIKSCw9whc0KUzemBFgmmDbSaKeyU/mEdKNOxbGAsqSzW4NCiiFaGE3grTYJExqq5MsqCO8DxOdy1HIFP/ZAYj1b/PoOyKoucndpyy83l7WGBeTuSfMgN7ZQnhcjatNuXowkYqevNqpQba2NCLsmX92aSwIT/3ZXTSHPcvEdGRpT0ryVaQmcCCKm5gcYozgQbEGxVQUGu5RjuZj2/CSijGR2oA+UNxB433aGK5NUFiG+6mBL7bnvmCCYGj3REuOxFYT4LcrIUVIq3dAgHPpvLkKhdoN8GKV3ftHPX+jA8UsLddbeEl4DmShY0Au/1LlIH3ugPuUNfNNZmLDQjis/v8z207VwHi1tvF2FdxrD9w/K
+ TdMtbpIX
+ rJy8kumLgs6zzMqDqtG0PXk4blmIvz5j2pVseKG/uP9YyRWyXPxTpqY983fjbYJzQP5UU+Am5bPmDsF08IXA9AAvxyK5cf/bJbe0fFG7hAG88j2cfXK1M/fQS/uxeLkAHn7BZ01RVnW6tWVHSo0rowJj6W24+GJcbXom1PerVAaMKSi8bqxkFamDaMKri6bbzdWDlkPuguVI4uIFZ92bY3DruIttv64m1fQn5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,89 +130,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 10:59:16AM +0800, Lance Yang wrote:
->
->
->On 2026/6/27 10:07, Wei Yang wrote:
->[...]
->> 
->> Hi David
->> 
->> I did a little adjustment like below. Want to check with you at first.
->> 
->> > 
->> > >From 048ecd33673ec649e168fbbb97749a7c0e344fcd Mon Sep 17 00:00:00 2001
->> > From: "David Hildenbrand (Arm)" <david@kernel.org>
->> > Date: Fri, 26 Jun 2026 12:03:40 +0200
->> > Subject: [PATCH] tmp
->> > 
->> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> > ---
->> > mm/page_vma_mapped.c | 29 +++++++++++++++++------------
->> > 1 file changed, 17 insertions(+), 12 deletions(-)
->> > 
->> > diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> > index 2ccbabfb2cc17..ed2a23a90e8dd 100644
->> > --- a/mm/page_vma_mapped.c
->> > +++ b/mm/page_vma_mapped.c
->> > @@ -243,21 +243,31 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> > 		 */
->> > 		pmde = pmdp_get_lockless(pvmw->pmd);
->> > 
->> > -		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde)) {
->> > +		if (pmd_trans_huge(pmde) || pmd_is_migration_entry(pmde) ||
->> > +		    pmd_is_device_private_entry(pmde)) {
->> > 			pvmw->ptl = pmd_lock(mm, pvmw->pmd);
->> > 			pmde = *pvmw->pmd;
->> > -			if (!pmd_present(pmde)) {
->> > +			if (pmd_is_migration_entry(pmde)) {
->> > 				softleaf_t entry;
->> > 
->> 
->> How about:
->> 				const softleaf_t entry = softleaf_from_pmd(pmde);
->> 
->> > -				if (!thp_migration_supported() ||
->> > -				    !(pvmw->flags & PVMW_MIGRATION))
->> > +				if (!(pvmw->flags & PVMW_MIGRATION))
->> > 					return not_found(pvmw);
->> > 				entry = softleaf_from_pmd(pmde);
->> 
->> could be removed.
->> 
->> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> > +					return not_found(pvmw);
->> > +				return true;
->> > +			} else if (pmd_is_device_private_entry(pmde)) {
->> > +				softleaf_t entry;
->> 
->> The same.
->> 
->> > 
->> > -				if (!softleaf_is_migration(entry) ||
->> > -				    !check_pmd(softleaf_to_pfn(entry), pvmw))
->> > +				if (pvmw->flags & PVMW_MIGRATION)
->> > +					return not_found(pvmw);
->> > +				entry = softleaf_from_pmd(pmde);
->> > +				if (!check_pmd(softleaf_to_pfn(entry), pvmw))
->> > 					return not_found(pvmw);
->> > 				return true;
->> > +			} else if (!pmd_present(pmde) ){
->> > +				return not_found(pvmw);
->> > 			}
->> > 			if (likely(pmd_trans_huge(pmde))) {
->> > 				if (pvmw->flags & PVMW_MIGRATION)
->> 
->> How about merge this with above? And put at the first case?
->> 
->> Below is what it looks like:
->
->Why add more churn to a fix with a stable tag? Cleanup can come later no?
->
+On Sat, 2026-06-27 at 10:28 +0100, Lorenzo Stoakes wrote:
+>=20
+> So really, you need to start again, from scratch, and without the use
+> of an
+> LLM for generating code, or at least with it kept on a (very very
+> short)
+> leash.
+>=20
+> And to be clear, I _want_ this concept of GB superpageblocks to land.
+> It's
+> a really exciting concept.
 
-OK, will leave it for future cleanup.
+That is the one reason I sent out RFC code before it
+is ready. I am looking for feedback on the concepts
+in this series.
 
--- 
-Wei Yang
-Help you, Help me
+How do people feel about splitting up the free lists,
+so each gigabyte (well, PUD sized) chunk of memory
+has its own free lists?
+
+How can we balance the desire for higher-order kernel
+allocations, against the desire to preserve gigabyte
+sized chunks of memory that can be used for user space?
+
+>=20
+> Pulling compaction kicking and screaming into 2026 stands to
+> significantly
+> benefit linux users and developers.
+
+That's another big question. How do we balance the
+desire to keep compaction overhead low with the desire
+to do higher order allocations almost everywhere?
+
+>=20
+> But the execution has to be _completely_ rethought.
+
+There's no argument there.
+
+I am just hoping to figure out what I should be
+doing on a conceptual level, before figuring out
+how to do it cleanly.
+
+The mess in the RFC is the result of trying something
+that seemed right, watching it fail in some subtle
+way, and trying to fix it up.
+
+Once I know what I need to do, coming up with a
+cleaner implementation is very doable.
+
+>=20
+> IOW I say we take off and nuke the entire site from orbit. It's the
+> only
+> way to be sure :)
+>=20
+BOOM?
+
+> Another issue here is maintainer time - even this _extremely_ light-
+> touch
+> review has taken me a few hours (of my weekend :). To review it in
+> detail
+> would take probably DAYS of dedicated work.
+
+I suspect there is a mismatch in expectations here.
+
+I already knew this code has to be totally redone.
+
+I was looking for feedback on the basic concepts
+and design in the patch series, but failed to
+clearly communicate that.
+
+You provided some detailed feedback on the code,
+but as of yet nobody has really provided any
+opinions on things like whether it is desirable
+at all to have the free lists per gigablock,
+or whether we need to come up with some totally
+different approach.
+
+How do we better communicate that kind of thing
+in the future?
+
+Is that something to spell out more clearly in
+the cover letter?
+
+Is that kind of feedback something developers
+could even reasonably ask for? (if not, how do
+we figure out what maintainers want?)
+
+
+--=20
+All Rights Reversed.
 
