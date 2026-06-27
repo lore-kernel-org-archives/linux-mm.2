@@ -4,98 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6595CC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:52:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F33BC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 00:59:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 333E86B0005; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
+	id 565E06B0088; Fri, 26 Jun 2026 20:59:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30B996B0088; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
+	id 53C856B0092; Fri, 26 Jun 2026 20:59:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 224006B008A; Fri, 26 Jun 2026 20:52:55 -0400 (EDT)
+	id 42DBB6B0093; Fri, 26 Jun 2026 20:59:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA0C06B0005
-	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:52:54 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 74B981A061B
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:52:54 +0000 (UTC)
-X-FDA: 84923867868.02.40A2E19
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 811F320002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:52:52 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="gp+t/72X";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 17CA56B0088
+	for <linux-mm@kvack.org>; Fri, 26 Jun 2026 20:59:36 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8A0A91C357D
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:59:35 +0000 (UTC)
+X-FDA: 84923884710.11.130D070
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A138D18000A
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:59:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Mefc1dYg;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782521572;
-	b=8LdBecXrw2CDJWxGUUkq5gl6Q8irWVzmrnGxsMuH4KStWWENSy1yKWxrDo9huDH+DHyQod
-	5WElSUJ2NNYLIioxf7L633ZH5RuTs8wzMULoFnbGnVg2jOWfPhmtN8/4DbQBstdiYzLaXc
-	QkuC5mRb4PcepXEEuWeTrqAXLGSSd3k=
+	t=1782521973;
+	b=AoX4eTNS2vuz8GKZU8gHn2GsGszdZsq3AtSDRHfChAhkEMpPdwf3WZGVD0oKDMLKj07IiA
+	zalV0Ss/UK4AvK9xuhMOipS5yXUgEPVlRMGSzrp2KkDMnAqN2v+iU0+KIO42aFKb8au1Dw
+	7rEFau+j7pFLS8yfmoJNefcUfZaBXAQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782521572;
+	s=arc-20220608; t=1782521973;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
-	b=THRRWK4ks6oxMNsZj5Cyib879xDk1RPcWpgKPFeiTI6uud4EJeuw+TI7jYsJK22oR9ofvT
-	In3dsYXVKagORV6o6Zl6QGxEI7Q/AkuEfgAE8WW3q1jGOIkbbtuektEnUGSMMFdBT/FYes
-	9POJt5LdMm0bNMaqglytEzToqvOU0aQ=
+	bh=R6fI86SlfzCXqZetzJ98HYtjazk1qqu/5Wh9zakbqJk=;
+	b=Pn9QugnKEVog0OaLZ6yQgN+XE8otvIXDzqRKVX5Nz7TJcHEqpcVva9qYeKFzIsCHVmx3m5
+	mLvZuJH4Z6w0cD7a7AXq6OYfnZDTw4gIyJ3Hih8FpdukCJwwYw98sP0Rd3KEAAfk1nLRRB
+	kmzh62vqI6mAcCNVXWOW35YYaPbTvgI=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="gp+t/72X";
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf31.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-9159da9bba5so151365885a.1
-        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:52:52 -0700 (PDT)
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Mefc1dYg;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-519ff1c8b8bso16832761cf.3
+        for <linux-mm@kvack.org>; Fri, 26 Jun 2026 17:59:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1782521572; x=1783126372; darn=kvack.org;
+        d=soleen.com; s=google; t=1782521973; x=1783126773; darn=kvack.org;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
-        b=gp+t/72XhUkvMAddrAF0xmYvLAb+VxOsuIZiys2RfOCZ8xTnqquOGcOrhbSWe1wIlU
-         Xp0CZ9T+gFuXld653qKBk3SzHmYE+81wWOSPDjonPoll9BhoJqwLpJMet81WQ2GVTSdF
-         8ZEFKzFsR9JBJo6lsZVcno3YfFaEAuTuzy2KKpS0n27hCWlUmvI/ZUwxMCZWSmMyzhqm
-         dYvs3ddqGws01i6l5SgMBzrsPFyzJVxKBH/JbVlc4BE+MYyFY84BlLQF7fl6q+ok9SiV
-         6KB+VDYf5g51BL8OPNELhXNxX3YuCORODRsn9AOnOZUDGnaiuDBkukGvn+RwMw/slsr7
-         6clw==
+        bh=R6fI86SlfzCXqZetzJ98HYtjazk1qqu/5Wh9zakbqJk=;
+        b=Mefc1dYgJ71Uf1tTnzmtbtuJfs4ymyqXFzkh+/cRt94wFb5SKICoHQo14DRmi/ixXW
+         G31iPHPmGSeSgQXbGd+MY9lRz3AqtAJaZlrc4/oZBMlAQLXWs1t19NYMzvzkHuw+rysO
+         654udV3N6Rdgbid/yjZKctW8FOLgmXtVCxPO6MVlm0i1Sxoz85PhBGamW0sfLqMhj/2H
+         yyBY7HxHwkl7jEokKrITk7WbGYX7rrc1rMlk21/oZU4QHL2xRW9UEPRsS11xaR+iBa7u
+         s9s6Cs0HY3gW5L+y2OYFgPHyGImlEMr86iKfml1f7RN+ITf6HNS6aFMl7wreCcyv240+
+         7+Yg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782521572; x=1783126372;
+        d=1e100.net; s=20251104; t=1782521973; x=1783126773;
         h=message-id:date:references:in-reply-to:cc:to:from:subject
          :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=vVYfSXCDWmf5gbYok3uJRaEhWbuILu/Vcmy1zPHwtMI=;
-        b=gBSLLFUYZ09RpP17KqxgTmN6o+qUiM1EAFBuPdLrAsZ1moioSgOcBekFu6R1dmZqGm
-         9nDz6ztCrHsol99tQtRmcNT/SLQL99SLjJrNRZ4pScC5GvGWPwH1fYhYVsvrXLE87+7d
-         cZ9tg/G0kQlh/XjnZ+W1B4QsjZxZGB10xRw9N2ty87n0HN1J+kv5vq861PucsoqwBnMI
-         PtU5ZEYCFFyfBXcB58SsJsLK0s6droDMyENRRSFVg/n4uxumF9EQ9k9rr8CYzxjLqh8Z
-         YfiY4/6ME8c/vX4+BbEIv0juGnq44diMXw+LW0znpb4OUmfuYJ6YpdpZVA7fWPC/UsCN
-         jtQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8QR9X+PGpVK4lyJD79mElXQofMtjcErsCa+fRmfskuGKufTA1pIinrWRZRDFJh+y7pVJIECnFLUA==@kvack.org
-X-Gm-Message-State: AOJu0YxkAUakTzkvtQje6UgPNGmNE86ReEmwGHPxmpCAdIpILhe1wHHr
-	dY8GAKMLNPDhxnZ477R1cGqjx2AYxyCRGJNdQ64EI2KIARW3T817Au9kIswAjeaenSo=
-X-Gm-Gg: AfdE7cnl4q/SOUttph2lGLQxtUa4pkF4QYqNsKXfQtw41vumFXdEdb2GHQQVuY7O8HM
-	N2VS6EicFyihCcowcChoMoLVxZuRhd87qkhwfTdES0ehpuOwQaR/VocftazO9BP5NX/obcFA6kA
-	mfTFkWxLssJqL86xhnfOKJRUPd/N4P6tKITJq0PeMBpF6g3OgQL+HlAMpHADzh6iWToxInQfZz4
-	Ds3C/YylXW6iCmzfHjo3cvtm9bsergezonqzTvS8MQobCVQVNjhou2AR6W3S91jeUFAkhVO7Kjt
-	vcFB4nYpjn3gZ00dBmVQZcuVZhPjvXMci2pCR5CmANk75XPNWyesgb+s7/BpCOUtyrNqoyozvPY
-	2afo9KBgfYaMY+ou8DSRqthRi6F4Kdm9hHiAkyezHp3nam20XDPQXDRlfgl/1R91l3aBh2vJqU5
-	Scz169VqzyO1H4R1Jag4QW6HJQ8qjGU90Ea7vCv8bKXG9qu+4lnQ==
-X-Received: by 2002:a05:620a:4413:b0:92c:ba97:9b28 with SMTP id af79cd13be357-92cba97b01emr51609185a.58.1782521571509;
-        Fri, 26 Jun 2026 17:52:51 -0700 (PDT)
+        bh=R6fI86SlfzCXqZetzJ98HYtjazk1qqu/5Wh9zakbqJk=;
+        b=YBWdnhM5XgpAhZ0U47jW68JbNC3daAu/gML9x8iwvRMx/jLVjdAcIEupbvt7zyYaQZ
+         lKnJK5PVeIJ7f0sK5GdKhgeYC8RqDITG/stFCxucr04Amu13UHnEKg2qZwSP/Y9KVxnG
+         j2Poaf8DUr9ZqA8dfYgEJgZZg/UmT8JwrCeI6sHKbSNmALfWzIsVsMJTmnuz8v2pV1Wx
+         xXWVjzdKp9dvQMuY8uDz6Z5+ryNdpqSlo+swsPTe71T5GIZeE4KQZM1qxQfUP70MEOlv
+         gMhQ08LnYTx5UFQgvoT83b82ZrkNqbu+eGGBoKJ1vjSJLKLCcfLUtyV3F3WK0Dtb1s4y
+         L9Dg==
+X-Forwarded-Encrypted: i=1; AFNElJ97/Arakc5+aRWQlaV5FxRV/NR4hsZPBC9I9S9y0NizGAd0vF5pp0XF3mgSgUYfSdpgEpNFETOINg==@kvack.org
+X-Gm-Message-State: AOJu0YzK0eVJgwAf1DRK7/ChjPCWcc32TYYmCJo99dyi1YcMsc8XwKKI
+	3kP99NIYpZIuzfr2mlJO9BEVMa2tXQuuYz+DkJdufXl/XmQtkgP74wRyKzPro04dZgM=
+X-Gm-Gg: AfdE7ckMF6Y27dHMRB1Wkhmn1/NVPxZwmh1nuE1AgZtxiWUrSRcC3GTBSTc0s5IxTop
+	ANL+x21zSupBIgWE799H4Bd9JXASMKE/aAbpxpIzJyBun+4Sv8+1UBqG31i3aFemggJ9m0W2EOX
+	Dn4TOpx/01V10P3iL5SK3Z2LL9p6aksZzOG8KIr3O33Uf+E+o0vGoflDYKKVmcwyD0MuJR/euKs
+	apQ89J4Fpoti/sU5DcdCrk/sUW210dxVN8PqsL0Xs7rMs+mUYvAM9RMLrK/NYtCNDzGGORyPzjz
+	EOVO/rzlNPopuoVziGyvhP+DI4yPH1cnQjAnEIdXRJ8J/82/Jclt04hoPy7zNFJJnCYIdqPJqST
+	XNBDW5g9aDN63LwlH1h1b6033ZZ8DpSC544dnRNjiMsO7V4X4FzUAnnNtE+gEp7dVoBK89SSrkj
+	FXrlpLAUcshHj67Ph6HwVrylA6G7QwMpBDcHBg+olkNIKb2NnV7A==
+X-Received: by 2002:a05:622a:652:b0:51a:8c97:938a with SMTP id d75a77b69052e-51a8c97961dmr30547341cf.65.1782521972789;
+        Fri, 26 Jun 2026 17:59:32 -0700 (PDT)
 Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c0c0csm1304879985a.25.2026.06.26.17.52.50
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51a876c888bsm18434161cf.9.2026.06.26.17.59.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jun 2026 17:52:51 -0700 (PDT)
+        Fri, 26 Jun 2026 17:59:31 -0700 (PDT)
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v5 1/3] mm/memfd_luo: validate serialized_data before
- conversion
+Subject: Re: [PATCH v5 2/3] kho: add KHOSER_COPY_PTR to allow phys copy of
+ serialized ptr
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: Tarun Sahu <tarunsahu@google.com>
 Cc: Mike Rapoport <rppt@kernel.org>, 
@@ -103,37 +103,37 @@ Cc: Mike Rapoport <rppt@kernel.org>,
  Pratyush Yadav <pratyush@kernel.org>, 
  Andrew Morton <akpm@linux-foundation.org>, Alexander Graf <graf@amazon.com>, 
  kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260623105201.3724592-2-tarunsahu@google.com>
+In-Reply-To: <20260623105201.3724592-3-tarunsahu@google.com>
 References: <20260623105201.3724592-1-tarunsahu@google.com>
- <20260623105201.3724592-2-tarunsahu@google.com>
-Date: Sat, 27 Jun 2026 00:52:45 +0000
-Message-Id: <178252156515.136430.8828544568760798209.b4-review@b4>
+ <20260623105201.3724592-3-tarunsahu@google.com>
+Date: Sat, 27 Jun 2026 00:59:25 +0000
+Message-Id: <178252196519.136430.866206127737477576.b4-review@b4>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=667;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=418;
  i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=lA9Ld76U/OZePGMYSwBGOUPWdUw3wx0ta7LzTU2JjXg=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqPx7i6XBsRVosljnAEJPuGa4GIhpxEyJNpsUUu
- eODBiTs6H+JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaj8e4gAKCRC7dyhM23N6
- 3rHkEAClYVvZXcLcIYww1NmCuxoqyIcTwNmfZ7YRrSmcCbayxGiOmHeO2cDUEtek6MYaqMnQ4PQ
- VtPpfm9ZfIjx/wCaTN1vYCj7t2rDndKrJIZcP/poz6iMjONujZ0WYh8G1eSISQVKrn0TdJ90C9u
- u0B1As4Pi5iSfK2xlEnhTIMF9sioKdG68998nIXlscpwSGTDQeclcaxvRxbGs2XFT0cZ/oIy4eI
- r7rYOzykpsiqyXUFm9nQK7zfvjtA/0nOygHz54mOeGOWS2d40yIX0alocNsTX+3IUlMUri4KSRX
- YrZJamlftCGCx/EamG/7viE4FhBimMnvbBmPlxtvDkGt0rq0JviVVvFEFDP7qUpU5YGkHT/LGE9
- eK4FSbRJwImWRfC2IGguZ9qpSSWXK9HpVlXrWsvObgKlu13kMNfxNSMteuDNSvNPBsIJs23mQMt
- jGxvmnB3pAzm0e0St1G0g/c/tJEjXAe6XcuAUWDZZlOEI5sO0IfuKuAwGqQ9TE3l5wze/6GJw16
- KDgi7sZDsgp0cf8/Xc0b6DJKd+wXWNojjHxdcfI5hBkFB7FObDNvG4Ixmh2kPvQa2pIMI0AF6Oz
- U1QlPkkbr1T1OqgDQG/SwqT7v5a247kIJ9ohMOPY8l1z3osTH8HYJOaupsWihIwHt1Gvve3bf/e
- x21CziXQacgN+cg==
+ bh=rwTVAsBBkl6m9nXDZzsnVlHfZlLxgx8r+wYRTya4rFU=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqPyByUQB3ZtOZejeLpITOeBDenLDFWImk+jAt5
+ d7Mnw5s74KJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCaj8gcgAKCRC7dyhM23N6
+ 3kMzEACL+IpfP2QOYHoFVmDQ53QyykaWU1CyFZYqJxKRJOZqX+h6ti5kZr/QOGsJtRpcAKird5V
+ nh6fuSEvCGiYyRbF5/zO9yMPaS2XLyiYQ6Bx5p6HCdE8RYtULu6ZXrqvy+frSw0ReetrKXJ8dfb
+ 1lBTjI6fbJpCjZnlxkGAt2m4TCJNn7Fu1Ww3uWyYrDYKVivpIp7mYLHIirsP4RjqpB+gvZNoCW2
+ GJgfDrBKZOgFC5tX/9N6NrEVOAa0ga938R30US8+5RzIeu7GRzgU2SoBeAe7CAj9oTiJccLA6Gv
+ DSRaurlixLG2myHzw66H/6l+oBHfQNdoAoDjSMOePteal9PDcJunUlv738WvzAhi11hbzIVyT0V
+ JkpzfGq8aCIAMOHJf5ltBNHmS2YBhBIHAsuUKEsr1q3pF0lNdkf1A1wsfBihZ5dshufhToECQvw
+ yTyN3+4uqnT9C052gMo/uJZPTBu6BAm291roodzJqw4opXE4zcx0SPBsv7q10ovTYtonbUa1yST
+ phuAdlHeoDZsc2Jwl+mmbMTvf6moMDck59E3jlvb0Uym+VNEEo/AZsIxO5k4bPRSQtA1gU+s8ri
+ hrXSXwMlBZuKGqDRwOTygeb71UMdrmwG55Hy+gZp5MgfYUvyo/JH68xtWyQpkTYPejQ0vIAyotF
+ /68hf0eXsNoWTXQ==
 X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
  fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 811F320002
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A138D18000A
 X-Rspam-User: 
-X-Stat-Signature: 68wcinzcd5nyq6cm17yktzef97y8ceqj
-X-HE-Tag: 1782521572-658722
-X-HE-Meta: U2FsdGVkX1/mzSb22phJzTl5zs+xxb3ILHGyJXKzPoPIR/NPw9EP03InDyXNQb9YN8AMYZFvrVMZV9O2Fo6DZIF4TrOeeKeZ5p15JPM5537CwkLLfaxcv1/3oIg0In4gCbmjt+HA+XsEJqBqrgj9FQ2ehWQMsU0Q73n/qiZ/LsaO/qwvNZLZxRI+fkL5H2+wWBNTgA/GyLZLtoff0Y6s15VNy3v6pz4c8K80tHNoQPJz+k5C8ESgtTMq7cExiarDEk5kkXVaRTdzkRBDhkvBE5ir0G7z/2ZqwjWuQ9HuKthCl/PJckHTL6py8a7P0u+qAvoo84NCU+H1usuoJ/M7jbBW5du87YOv1HdQiqn1/lCNjq+Z6IB7ytgHgIb+fPZqwC+BuKwrxD6gCLWYUjnTF8AS2GylSGx0v7/56x40a1V5y4szG4ll1bzEC8qKuoGcMsx8IIgNjbuJjm8ssho52XaQj0I8BWEHinVbUkEVD1BgCyjhdD9Ai9vuMSGoPiKPAjlNpSEdIR06Cgdzd4fYRhAiVEzK7V40d569P6YnL9uFrUIJ/at1PQzPerzZhmo/C1mcIO3UiMigdt7ZSX4aiaTUUlPZB3tmhLEdCjlG4T2VI0ZaskJn9dvdWbfuzkLwGg9fnKJu/Jh+IT6nda5N6VwRw3gC4+JfrH277PRXWGA3JIM8yxT/efHj4AEagFu0A9r+OwvPanZtfLDUSlsEYBz4s3c64SeNpayhEGR8MN1iD8npH5Q3jW3pmry398ipya6q+9PnxmUybrswJMZrm7rWuwIE5Sr89xDBTfOBQofdwxzujLOJ+L3eNczElYv/AnPNt21ACW56B9Ct6TTNs//4Ep2vRbJMmFnqvYsuO2oYqBOUXhJnwmnMD8mywXb6ZbWHhb7TdO8ctriqfVcUKdtuJVvKZytWN98k+Ik42wCDVRPg9PySqTAXtUpJFvbTae0wBnBTVtumGl3J4j6
- kv7msV04
- SYBbH403ILnVsE9O9iF2ZAIc8wARe1eBt47MrSlZiVzZ8rXOORyyvr3eU4Kxs4UxflM8IMp5i0/FMr8DHr5UMLA71WBQYHBigA+2r48sH6D7gWq+dgxjoa3PJWg0MD/apnE65i+kbn1Qv0u6TjAoaH1AwZ4Kdbq39E9UeS+rwOmDTltMmP0DVxfxdkFSbm6SgpGwVPPC3v+kO6tz1SAC9GWzPJOo33hnkGmaxHZe5YpC0RKZ2xKpgOJl5nz2oJA+Yqr8qEkaNqVBAh8bSMZ1B8jikVAh9d12W04jHCNn+cPFSk7iCPDnvyyixKOBKKFVyF5QyOTCgefeuaj1TER1lc+x5VdxT2rSaGmj0Nxt65u6ao3FvyCNzVdpRFMlrWXrkP4HvLFodJFPvx/mbbS+uXxmtBai94kfDsVZd+uXAaw4mXIm/YOoGHG+eEg==
+X-Stat-Signature: 5uxo6t7qyqcfuabjjg7otp5rp7jps874
+X-HE-Tag: 1782521973-67284
+X-HE-Meta: U2FsdGVkX18Aing8JaB48IXNON4MxBOfsryOetoSThR7QCu7lbFin+3qgq84Nhar/xmaQBkEb+fUyQGstmb4SpB9ars+An0IBqFaoBOh7at8Vy/7B24f/+dkNx2P2P2zLgWtYB9PKUK7rwkEj61tYQx4wpDifDBFTa7v8TaS5S5L0Dxvt+09AFUNpoOQf/TQ5PtS81fKsjateJDpzdjRLOLXnvwV60RxEdJCkL7XoFFb3HMVHRHP/VwO4GHnV3o0PwZI3KlNVhmpMojAK3xM22XXYZP1bIl5zvAxbmfKzrGkjwR7QiCp4CwrodnURiJPOzzH/HZyESV1y+WHR2pV39yPgsmVhd4HKBeZgelWrNKUNNY0UTG1pcuKFnhGH3ADMyjHxEAS+mSVohkUSlZY+iKFPAP5GaIGzGysD9SJbh9h1QWmtT2l/GgZhwBvjtWlO7/KLuR4d6mN+Tj92K9p2Yr//9+74XxDPttL+7UjCtx7+M8XHBglcXusqF/eyMW2nMHLZOgER90sG+cKlODGDXoHf+ffufEB1rUNNr/p4aHtvvrEaPx88fws0b96J8nqqmuoI6L1rGrUNwYJXzuDqofv6MEe6M61r3CypIzmXMFBF3/dkZNI0GW9TcgoEBGSHUGy6r4xzC3uJoVPsgL6FsLq+hrN2OMcNvOjEusPMpfxX2YxeL2MkNKVxXTZ5mggRZYTd3pTIUf1GENAaPou7hu8mZigCpw5oyA0NYdQfF5hUXlXlhlP8gEVqalMJX4TRrQm+48e+dGwEtJnGyzeyKzTwu3gZUuLJcDjkQEMm8bOp15NWSOcotk0R5NIHiajSPG1tNL67X2E97Yw9CMXPpg5+V2ZssW6qFdOIAgCmYMqQM9Dc1ZLlVkhgUZNfSQzoLSlAadeAnj7+Gnf9i0qZFdR1gTdQMxTy5TBi1OYnhVvHLJsQY09Rvi0F2IcaZfSGeLbzQ+ojT4kXegHekV
+ QqFXVbno
+ cQUonKrC6NReUfkzhIdgCmu7QHcVhwVGNliylDYrh4KBD8wfN3dEdZ8GOnMTVEm5HvcGQ6wAc6dusmhrRR+kByvngqVh585WD2qgV6/1N/dah9lGdXeH9QwNb5FbZBJVAlOqT0mzHuIE22RF3bA6Wpt84x6vvpa5LjbRr6p3P5NC6f+G1QPaxLbRtIt4Qcv6YdkypzMRPmCG8mE1IynWq3S9adrzKesalnHwYWhHLPfKjn+pzFItTr4Ju5V8OOBPHDWsikTCWv8Md4aSF5oc9K60cAKO4wD28SIPOUuVRYNWXL552tIUQf3Hbg05UsOyri/C4AVePEKoZchn8CIhVmH94Tj9R7L5WEs2syts6D/dulifULamU6NyNu8Vz8OLwF8rvAZ5pfXkYyz3J2VDV3Ett9w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,15 +141,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 23 Jun 2026 10:51:59 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
-> In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
-> on args->serialized_data before checking if the physical address is valid.
-> Since physical address 0 does not map to virtual NULL (due to direct
-> mapping offsets), the subsequent check 'if (!ser)' was ineffective at
-> catching a missing serialized_data, leading to unsafe dereferences later.
+On Tue, 23 Jun 2026 10:52:00 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+> Adding KHOSER_COPY_PTR to copy one serializeable pointer to
+> another. It basically allows copy of phys val of the
+> serializeable pointer.
 > 
-> Validate that args->serialized_data is non-zero before calling
-> phys_to_virt().
+> It ignores the typecheck if any of the argument is of void *
+> 
 > 
 > [...]
 
