@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2E64C43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 09:00:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E46AC43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 09:00:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74D716B0096; Sat, 27 Jun 2026 04:59:59 -0400 (EDT)
+	id C7F3A6B00C7; Sat, 27 Jun 2026 05:00:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FE776B0098; Sat, 27 Jun 2026 04:59:59 -0400 (EDT)
+	id C57106B00C8; Sat, 27 Jun 2026 05:00:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 613036B0099; Sat, 27 Jun 2026 04:59:59 -0400 (EDT)
+	id B936C6B00C9; Sat, 27 Jun 2026 05:00:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 411116B0096
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 04:59:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A45B38DEBA
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:59:58 +0000 (UTC)
-X-FDA: 84925095276.08.CBD8695
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 195B820002
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 08:59:56 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QFP15Yvz;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 95C556B00C7
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 05:00:49 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18989406B6
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 09:00:49 +0000 (UTC)
+X-FDA: 84925097418.15.7068ED4
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B336318000B
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 09:00:46 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ckMRKwOr;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782550797;
-	b=KHCx/7n8McvUohmldg4V2vnVdu0CQqjrlAAb2YeJJF5tasvfcfl6LpHaZnNNuNcAhzdREF
-	safc0QLbP0U6SqCWxxBi9DUTHRl2RgygKL3e8/LwDRdseYZj8Q0jNuNrbPe+3fCOUxxcsC
-	cp/ba3PaEphwHTi6Byaz3I5pNFEy/6E=
+	t=1782550847;
+	b=RiT4q36P4frjtHRDcKzQgeGYhe87viHGEc3tscu98YXcKD/nGtoeWKx9L2CNbmfjznVVcj
+	DIhfCj0PSRtbXlRyUBgCpK2Pd4fVwM+ma9hKHFWx3MFWo7nc7z9RYO7loSY0eD8kIz574j
+	uw6TEvPlWg0HtvAcOgJmiMU1KZitCRE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782550797;
+	s=arc-20220608; t=1782550847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9AYyHhsOmrkOkHlnQ8kt3V/chet8d/72eUus0xZyb6s=;
-	b=ggtpruikBgGdoDkEx6UEoxfhUtuxROlolJrvew9sVuXW5w0aohUPB6QrlX51MEbmLiinHe
-	LsO/dEmpPeiKeOv4i9Espuh/fjdigj/EC3MSvEcAmF6a30jSjya4cKi7LwI/FjXN+6nIIW
-	I1Qp4uROyoTMpoDId2HRtXJk+23vwgU=
+	bh=J+B+5XHDEOIaoJiGrYwAZTBVUZIWjDN3PtKIsz2gYPg=;
+	b=q859BOE7V+04dxj6525iUy56Mvhx2fv5ln48scDq/GOOMR1qfvxYHB5kKqJKZ8y07JFKLo
+	MBeHuWx/KtLeaTzb30iWBs5ybzydUWzAhaT77HZ82v+JS6cMycVYWivz9WL0lvgys51mwT
+	YAJa6d/72TD/4Ud++DpnEt7r/sPK7g4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QFP15Yvz;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B50F600AB;
-	Sat, 27 Jun 2026 08:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A76571F000E9;
-	Sat, 27 Jun 2026 08:59:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782550796;
-	bh=9AYyHhsOmrkOkHlnQ8kt3V/chet8d/72eUus0xZyb6s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QFP15Yvz/No2SgGk1kPy51T0lrTgCp3RvoVAQKRGq3FwcrpVhBCmHwf5sLmX7gALc
-	 s7pgeKTC/YH+vYPEQQvYL9AuE5oeIDNBklqx3/Y4fSj+DkRdXGKV7z7HpE4d2jdiyG
-	 98jWurSeZA8J6pNz1O97UKkTVL8Dl9yOuLyWiyDFdkXw32vMxBO16FhFA8x/wv2EQ+
-	 x5kf7YF2hBfHwlWnojxn3OAHnx+bkVmqCOL4kT/h2vxmwN5+AKfk0hqDbnHVMdQQnp
-	 v5wsfYeRSRfFK3UJFPI7k6cl3TjIKqB/lp208ve+ps8rNALo6uhqmLGw7v4YST1UlM
-	 0KS9DEgKwcR9w==
-Date: Sat, 27 Jun 2026 09:59:45 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Rik van Riel <riel@surriel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Dmitry Ilvokhin <d@ilvokhin.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, kernel-team@meta.com
-Subject: Re: [PATCH v2 0/3] mm: __access_remote_vm with per-VMA lock
-Message-ID: <aj-QuW3sEtVSKQ2X@lucifer>
-References: <20260625015053.2445008-1-riel@surriel.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=ckMRKwOr;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7BBD135AF;
+	Sat, 27 Jun 2026 02:00:40 -0700 (PDT)
+Received: from [10.163.169.90] (unknown [10.163.169.90])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D3F153F905;
+	Sat, 27 Jun 2026 02:00:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782550844; bh=G2e0ceuQUsxQ6NxyX9ix1UWAx5NCHXsCEJR9LZp7A7k=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=ckMRKwOroPTMOl54I45VF2b2udxZ3FbiCwnkJnkEvs8ajGIaDhqUWW9+kV0AoSFdp
+	 CPlR9AcsXqgdvIi8tpl4p9T70ajPeWlZV89n+fYzkLIedmuftFMHwf3LKsZl+TOyUV
+	 Vt28YHoPGsrCj+eWZNk1NZkN2kFTvSgqsBNl5ckk=
+Message-ID: <0654116a-235d-4eb0-9970-414322645aa3@arm.com>
+Date: Sat, 27 Jun 2026 14:30:32 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260625015053.2445008-1-riel@surriel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/12] mm/memory: Batch set uffd-wp markers during
+ zapping
+From: Dev Jain <dev.jain@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org,
+ ljs@kernel.org, chrisl@kernel.org, kasong@tencent.com, hughd@google.com,
+ liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-5-dev.jain@arm.com>
+ <a9483db7-5b13-40ff-8d45-12f40dc97c77@kernel.org>
+ <562addc1-b334-4258-b0d2-0154ffed061b@arm.com>
+Content-Language: en-US
+In-Reply-To: <562addc1-b334-4258-b0d2-0154ffed061b@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: bp95wfir967wm54bcm8c6ifr9xiemt9i
 X-Rspam-User: 
-X-Stat-Signature: wwg11dejbyuin419888945wtms9o7db3
-X-Rspamd-Queue-Id: 195B820002
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782550796-845545
-X-HE-Meta: U2FsdGVkX18YKn2KBoNmHP10qUtgS2wrAfErwum/eaq5imgwTjA6XbIuJtqdL4n9KoPx+es3ReROPgxTKd5kkirJSwg3jmW51/7KPtCL3sXF9jUYpj302MS9iOP0dM9MWmlTfcAJayWE7JC2RGCeJHjeFoc/C+YMWLlaqo0vTWliv3brJrE+oycSsaKWypzyzgDAXx29y089P6EvPIcwrYKhNzc2gfMnZ45JybO5cZuzZduw9FqMJH8IQzNO1K5pvUW4Q7atX33YfqYivRPUE+S0t+7UztFi070dNwa/GlsmmNU5QME9zZ9OA+nrN0hmMYpTBXpsU9Cfu8778siYQTt141DGiKOKoujV30mK1ctKOqMMKaRbwt3tjYuBAnF3fe2w+Lxk84AIVOboNo/eqnmIrqUkMSzbIaQwsNjBUWobCpJP0LoPClXjpi8+RWnW4vsYVRf4y12fpQef54Xl/fKL1uLDD5oD7Mnt6WO4mE0v2yrSEd/V2GD+rFkFG4Bvnlw8ACsOVwYwkCL1yH6mdUANk7DHJEzwfOOCOa618fBsUB+4umVSk9j9Xf29vx2NO045k8907X1/SJfwUtvw2PhgUIZSf2Rz3sNiRz68aRCDl7u3PuwNePukFx30uHBpdt1bhpSAHwwlp45kpG7meuav31yEUq1NbKWoFCgZ8Nx3uJc2ENYEUBUFeNi1Q/2YlkpTLuWYUBIXsVqUB9tfwpCJaUxx75V024QEgszZGOjoibirdWMlO7POmVtI6lqh/C7Aamz3GczZlWn2hY1eJRx8RZFBE7uhlbr1DMrp1rcsUxnhxwaVSkyXjLtHl+YvRhj50TFr/tMj8LfbeyE1i56e6/V4UXfDKq/8T9Q9v9fF7beO+dJOCrgBd87cqrySZeYZJ8wvZb5fmuvkOjrPLThw2+FgpUnA3ZQoJPSR3HX2RCoBKAV8nVzA1JFDovvAgtVlREJBjCMy3MUNeC+
- 1ya3GU/8
- tZzR4VKDM9cAEGwH6NwCJBkvJEAlLb/VES9N/y0SgRgD15akPIZFQCOVlRVDlRqIAsoOlQGj7huyApUaTUALsl3l/6LR4gs9KCc/SLTGi9zV9vYsG71l7ghcdUvUX7mPxzafndejCP6FQF6P+jOMBipSpy3fCi4IG9FXT7XT54m2J5X3+KbYCkzFgVgUmoSXLPBnbJwpbabshvMRR1Qh/U2c1wGZy7OJT02uUTCHh92HJreEs9AgbBo3MT7/efpBFROY9xZcpXJYMXs8dd20CrHrKyS1JmmREDpnaujsePTSRfe8=
+X-Rspamd-Queue-Id: B336318000B
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782550846-568876
+X-HE-Meta: U2FsdGVkX1+kAE2otbWuDR5Epw/03L/Qg+ezHn9q21YqkEITFv9koy/KT1sl0ErM7D9gF3X2BVrfbRTW2wwvIBzq1TOUcd4xzguGPt9GucWYMBxPn99HHKIaAzbD+dWhG8X3uKcKCAHTpJ5nAL/MGOUp3bATXkQD8Cr6S+pzcjJEtLdy0cEqY45SEqdWBm/tR9arwVJfRe0cLXrxj4SqeDC/iQwTPGgii6fUl08hPEwbn5XU+8J7uEjU41p7BfmW+zFWg8W2/4h91FuqKQK0NL9irbcenPdeHdE0ogDkSGG93uWwca8n4rtP8BXuwefUUKSfjyIj9waGz3Vgx1vYw0S0k3T7z9WJzh0Lv8G6eV+jyjbpwBr4HqRnAPGguMGWIB9l8rnmHSPKarY02I8KqzBRmm5p+pk0VQUroPoso2zvnynaL/ZTxNgHQu2oHJw6K6LeHMf2KD2w4bGsRDs4kbXJPe45dJdej8udCXfVcuU4Pe/+gixH+QXM2wnrsH8/BILHGDsfsOmi045Flwe342i2mzAi85Ixqveg7pHjnHAaf57qEqeF8etoikmQ0nRcLTvUOyWg24D9EDJr3jSzfz/B/B4kSAFxd8i+sPYDmoHStiojc3kko9jtQ+5DISSHuUxFsjh0EtJY1LUCtV5tT0cvb5bMmocmq/DeCvcZ0iMszXnfpMAp4cpopoYAs+yCecdxscfJEg0ZC3LO1hi7mLVgeqIN+GZGZR1HJ+/ZOt7cyYgbaINUJOBH8dpapqMILmz8oDaDXtNP1oONZRnnSzWC+TmE84kW1J9ikbKIw4WBaVfPhbn7chWz2pNYpI/0On8Xvnvkc38PEbO2J0KKv8K4+jekTDdfbW5GJ99kM1X4ievYEFuZsX7LmLP4B9eoNnem9C7iMmbgy8YZGVYOun0uhkjzK0vN7CsPfc2ATSoICM7yYWLF1xNvVRCROnr2jc7/IUMPUSAeniRqqDH
+ fttsEqMJ
+ ufErtz439LxrEfwcizijFrPY/Idg+OCbMb+45ZynObpveOeFEw0WPdkVm3YSEa7a1TB5UDfHdiUl1YmD9SYmtrARAwuOG9aaNyE8EJPSC5YGsYyzbOYSJe7h5l0e534g0r156fzfxpkO8VdOmSAm+xbNCKBJ8M/ROYMhxnEUV4N/mQ2MnCgDJ6pYqvj6sJ+L9dTHwaK2z5fz+lYpULOnYndoi3/FIYLc1wdc0A42jh1PNBXk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,31 +102,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 24, 2026 at 09:50:50PM -0400, Rik van Riel wrote:
-> Sometimes processes can get stuck with the mmap_lock held for
-> a long time. This slows down, and can even prevent system monitoring
-> tools from assessing and logging the situation, because they themselves
-> end up getting stuck on the mmap_lock.
->
-> However, with the introduction of per-VMA locks, we can improve the
-> reliability of system monitoring, and generally speed up __access_remote_vm
-> under mmap_loc contention, by adding a fast path that does not require
-> the process-wide mmap_lock.
->
-> This fast path is only compiled in and used when it is safe to do so,
-> meaning a kernel with per-VMA locks, RCU pgae table freeing, the VMA
-> is not hugetlbfs, iomap, pfnmap, etc...
->
-> v2:
->  - simplify the code, which should be ok because these copies are < PAGE_SIZE
->  - clean up the code
->  - fix locking wrt tlb_remove_table_sync_one()
->  - hopefully address all the other comments
 
-Please always send a diffstat in your cover letter by the way.
 
-I noticed you didn't do this elsewhere also, so please adjust your tooling to do
-this :) (git format-patch --cover-letter does this by default).
+On 23/06/26 3:31 pm, Dev Jain wrote:
+> 
+> 
+> On 16/06/26 7:13 pm, David Hildenbrand (Arm) wrote:
+>> On 5/26/26 08:36, Dev Jain wrote:
+>>> In preparation for the next patch, enable batch setting of uffd-wp ptes.
+>>
+>> Avoid talking about "next patch". Phrase it as "In preparation for batching...".
+>>
+>>>
+>>> The code paths passing nr > 1 to zap_install_uffd_wp_if_needed() produce
+>>> that nr through either folio_pte_batch or swap_pte_batch, therefore
+>>> batching is correct:
+>>>
+>>> 1) all ptes belong to the same type of VMA (anonymous or non-anonymous,
+>>>    wp-armed or non-wp-armed)
+>>>
+>>> 2) all ptes being marked with uffd-wp or all being not marked (same is the
+>>>    case with the pte_swp_uffd_wp_any check)
+>>>
+>>> 3) uffd_supports_wp_marker() is independent of the function parameters
+>>>
+>>> Note that we will have to use set_pte_at() in a loop instead of set_ptes()
+>>> since the latter cannot handle present->non-present conversion for
+>>> nr_pages > 1.
+>>
+>> Below you have
+>>
+>>> +	/* The current status of the pte should be "cleared" before calling */
+>>> +	WARN_ON_ONCE(!pte_none(ptep_get(ptep)));
+>>
+>> Could we easily extend set_ptes() to allow for non-present -> non-present with
+>> nr > 1?
+> 
+> We could have a set_nonpresent_ptes() in general, but then for some non-present
+> configs like in this patch, we don't need to change the pfn, while in some
+> configs like setting swp ptes in one go (like I do in later patches) we have
+> an underlying pfn. So I don't see an obvious simplification with a common
+> helper for non-present -> non-present for nr > 1.
 
-Thanks, Lorenzo
+I think a "non-present" entry always means a softleaf? In that case, we can
+simply branch on softleaf_has_pfn().
+
+>>
+>>>
+>>> Rename the function to cond_install_uffd_wp_ptes, and convert the
+>>> documentation to kerneldoc format.
+>>>
+>>> Move the function to memory.c since this has grown too long to be kept
+>>> in mm_inline.h, while retaining the inline hint.
+>>
+>> Well, for functions in the header you really need "static inline", so it's not a
+>> hint and I would just drop that comment.
+> 
+> Ok.
+> 
+>>
+>> However, the move while modifying a larger function is rather suboptimal for
+>> reviewing (more like "spot the difference between these two pictures"). I'd
+>> suggest moving it in one patch, and thenb modifying it in a second (this) patch
+>> instead. You can perform the rename already while moving I think.
+> 
+> So I'll move the function, do the renaming of pte and pteval, do the kerneldoc conversion
+> change in one patch. Then batch and rename in the next.
+> 
+>>
+>>
+>> Nothing else jumped at me.
+>>
+> 
+> 
+
 
