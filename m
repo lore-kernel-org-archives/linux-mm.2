@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD38FC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:25:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD449C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:25:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A06D96B00AD; Sat, 27 Jun 2026 03:25:14 -0400 (EDT)
+	id A7C7F6B00AE; Sat, 27 Jun 2026 03:25:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B79F6B00AE; Sat, 27 Jun 2026 03:25:14 -0400 (EDT)
+	id A2CB06B00AF; Sat, 27 Jun 2026 03:25:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87E6A6B00AF; Sat, 27 Jun 2026 03:25:14 -0400 (EDT)
+	id 8F46A6B00B0; Sat, 27 Jun 2026 03:25:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 64E606B00AD
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:25:14 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E554F1206BD
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:25:13 +0000 (UTC)
-X-FDA: 84924856506.23.7B683CA
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 53FCB140003
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:25:12 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WjYVRNgZ;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62DC76B00AE
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:25:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E4BBA1A06B5
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:25:20 +0000 (UTC)
+X-FDA: 84924856800.26.C7A7600
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4BF3EA0004
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:25:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mFLDYxrL;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782545112;
-	b=bLN602n3azUtPMqn96Cp9QK/JXO5C1DURg0d3TG9TPi1uz+lkEkoUV9Sut2D/ELgvGQolz
-	omgzy83u73rscEWYtC/4JfjwIKHVeYy9qQ1xf0JBDwCBZeMIngxF1ouO4MCbo/9AUSs+8H
-	Q48v8unu6Db8gRFzm1pZ6xmei2O8G64=
+	t=1782545119;
+	b=6eKtOYMYm9YAgR7m7WLJ/ig30pROkF7okk2JYsV9jJAshpnZ5Itlx7NoEFRN4qAVuzVcPp
+	/7uibWio2qUUwLt8jp5UpdPCHZ1z8eRpxpmfhTIQ118lVZkpz/ozQ6VEG0r4J5yOJgRSgn
+	SXFKWODHxGGi3Oc39brpT3n5sdiOTAU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782545112;
+	s=arc-20220608; t=1782545119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AZvZGSG5jOLMYDPRs7s32jMDvXNepxeOOwA2iwapnr8=;
-	b=ISYx2NCFwBI/MQxP+Olh3lXFVh7AI8xZ53iE3LMFABiEtBxmibg0sdHHUpOHFwdMeAe7kg
-	BvE5fbQLbctUykmmR4ND6bCDkhw/iyH2aCjTNEQGFNpw1XAYGNIeJtQWeY6nGaxFiEhMP3
-	Igm9LPUszS65bh5zZybfXFXmtrzeAnY=
+	bh=jYH2dLJwZ3cdQqCNGntqjFRlxZpQAFD5iRYR2M5+uBI=;
+	b=pOSvHQ0o2fHfA7jJJMVf1Qcl04/rmsZrKNFq5pV/nR9NsUuuV7HOBlAZ6VAwUwWeZ2JYRM
+	PprucUL3SBc+VVW27JdjT78GxHSQx1O7qWnbQa/bQJbpJ44OuRp0zQWTSVZyivMwo50fOk
+	q6yBb/m//K3Kxz54ST5iY9Bcgd2Te1c=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WjYVRNgZ;
-	spf=pass (imf23.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mFLDYxrL;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782545110;
+	t=1782545117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AZvZGSG5jOLMYDPRs7s32jMDvXNepxeOOwA2iwapnr8=;
-	b=WjYVRNgZ1rp8XgvNn6uHLbOrxBaeWPDTSaN8urjXkQjMfJFhWZWFviydpWd051AkZ7TWAs
-	JARDOOz8tENGDeJbvOAyLqRQNL85Y8CInSUt5GILQ3OiMm+vj7ejNPKDq2uKB6Aj7CB4m+
-	rvrQ/IjlD4ZdHiqfc8bFTH/OY8PVd8s=
+	bh=jYH2dLJwZ3cdQqCNGntqjFRlxZpQAFD5iRYR2M5+uBI=;
+	b=mFLDYxrL7UzOFziiy3W002Tsl27Ys6rVpAkAtTN7GhFfN+EGRWLkUTDlYqR50K6+LYo6l5
+	K3L7/YS7n8L0JMlaYVk988HcdfDtUwbN1MTF4Dte5n7Mho32m3Y188LRnHLaIFnN/7unqA
+	Oj9MWBWemhL4V5W4bxZL5DpOGcwAxEE=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -90,22 +90,22 @@ To: akpm@linux-foundation.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [RFC PATCH 4/8] mm: add reserved THP quota helpers
-Date: Sat, 27 Jun 2026 15:21:52 +0800
-Message-ID: <b6256043b68022678e97b2541fafa441a57c0408.1782538002.git.zhengqi.arch@bytedance.com>
+Subject: [RFC PATCH 5/8] mm: add reserved THP vma flag
+Date: Sat, 27 Jun 2026 15:21:53 +0800
+Message-ID: <e790929dd5853aafe9bfbf7adb684bf7d3093d43.1782538002.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1782538002.git.zhengqi.arch@bytedance.com>
 References: <cover.1782538002.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: tfkncawgyxckn6s8ao68f5igftwgk8fj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 53FCB140003
-X-Stat-Signature: chta4d75x4n31rjdhsrxb7p7wun1a684
-X-HE-Tag: 1782545112-450038
-X-HE-Meta: U2FsdGVkX19lWBpbNAmVgtrJkUQfr0s9H+8O2Liz3RkV20pfIXXIbf2KB+VcMFAPbxmvHBBsKf3r3kghWwq97VIQpSZFIzPe9fbuZOUg6Ypb9sX751yI6eOSWTjtfU1AZGaFA2SxySbQhnDnzKYgCeEAsFuOgfBNcQPP0RMb5afj6kvE6wK0utAxhFkdvWYGl1JcIcyGiPxcvOu4b8xa1V67pDd9NkYzGlMTocJuQTDQ3x49icZgq7sRZmD8YUcAdCwXWBIm4398sJjWmmqb+DK2KjGmCb/USslo+CiRWn97ekxQksv1WhaxM9pMIGBCsHFkGXX8G5sAnG7AjiEFTU0gB75YRJQEIXAh6TVMyv8K4a0a4fG8oN8TXXexpM5TWyV/JyOIP2LR2WAWkaUoiKg58cKP58HmXjGLSJnzEIXOZQisEEVdaFFFHha+pmXfVn4mtwL69yPjCGeXPfcssm6OR0PAamRf4+NBtGb8eW193iS0CazRxv08r3MZ8z1N9q/XkTmAKNepInq9GrKuCywmUeW+rE3mSJq6xUbVNP/5UG8B/geiJ+tylq9UlRbO7NScUjnMcKk40Ke48LNY1bJ1+aX5yTVydAbUO25flAjRfbundpyX3gb17ElWt5gmSqoIbWs+Ji2YNtLp0n7U7R/KIlNZzOD5vpEyj+RF9UKmlEAbBa+XcFWJGid764E3tXc1Zvo03VcGBi301BV10hFg15UzaWvXMj5Qh0eqqLfcerw919IDDTHi+VjOq5YSrTUxWMDm8orYjMWESMHL7AcTPQhY7klO7IPueXFqdhKiMbQrK3qidGQB/ScLtuAGq8vbAz9fu3fJsJaHfxSdB03fO55FgQM4sJI4Uy8I3HZFscAJNdMGYolcPk/jIgWkfNaWXL4Lv5CcfEG9O61A/J3yXJJm9GSkepIf9NydRylMYSzkMc4hps9uQ0q1O/3VnZHdErPDjK0EFHXSlRV
- fdsbA78F
- yXwTTf23gemRMpdoJJac6GBHE2kJfl3WIucWLIXmInk8rpJwx3jukktBoPipkF9gr5W2thoLQQANyT1pLVS9wq2VVTELeZRm+Sn7I7AOdFzWYiN96cL6QzdRrlIFQqkTmW9wyrTB4F1MzYUIKCekut+US4rzvR8N3PsVfJMs2gvAzU/wY0m3ug3MM/Q==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4BF3EA0004
+X-HE-Tag: 1782545119-98940
+X-HE-Meta: U2FsdGVkX19Fb6JrHccdX5AMZ6ZKzBN9eHkNME91zKNmUJh+VHfXF6dt623RpmBMTIkxD+7CMTCxugpt/58AXat0kO/lB/TqS741TR+ltO/2QQcq9u/lkhtEapR5gbPo57liLyWLBVUN5A2mICgCfuIsqBilJNZB+qRdhhZdvekRa8UJqVASjl5w1mcYDZXj3tjZyC4pSCrtWzihhEFGaUQLtsIWQ6RRB3n/DeAXj0NGdHOHeiyweT2HN9ST4GPVG941tv63tNTxNwhIUeuJANhRrZ+zAQWY4K3gTflm0Bn0DHmbK3RC7Ad13Z8TKQXXMRFe6cT186u8iplVh4UKBtgytQZZEZCKyLkZZjEsi2AsUigG4un35hUPBs9ZdVcVnX1DFcUJd3+BSggyJEuFISYRiNouEGA9CgwLwikKwKXJvNR67VprGZsdlWfwAWaAjZI1jzenhHleC1sTx7fSEUJ+kQu+6K/FpoasAWsg3s+7hdRnFKoQRhih6+s6uvEa9MZ6hoqjeCgHSqpQ7J6bhmus/OYjNCN6SmoL++xKxsCnn3GTLa1ax4gKbbprDtKBUR9xoXqarS7XULjqn/Aib9CGmFrc1f3YHdO8NJmHNgPMIb83DRyGCEIGvuFk4xmNPW+Es3Rgrbk3CnWR5lt/iDNo8O+puqfVg6oBRisqCp1J5P3JjxHbpVpOPvmvXMQdpei7o/pw9/upjxnYEK1MbCHObooAXVuJZ4vOr7vehByhrlt++tJIvddslWAhEi1XOSI67EaNg0aDfZhM+NtfLaGvngiKHmb+iOjAPwXjdar868HEnPUe9SFWIjLqYGzEtka1y8XWXv9+pygLEY1NFuZrmxOT+lpkjTUfvgYW3JdIOBe+r/E1oG09Vrjlep/BmDvkiiTL/rMX0cRn2hHt5bVNLwFhzzVfwwMxSomIR3htNraNg4gR2lyHZkl2nBjuQH+ystJZydElxc27wrZ
+ SJ9x9n1L
+ Yah4Khfx5lrhRBxD5qDpFs71ws5ogK403fwcCjhtk50XMF5AVNKVxTSGrEj8jm1gAMHqXjnjxCs4YzuwhAXEw+gl7csOcol3LndzONxPQ8eMeKOkh7EqHDpyvzIMF8/IR2jMx0556241Pu/BZU0fCTP3iz5VaCE0au65YcpRGSd/Z45gepiVDqZqEKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,78 +115,71 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Add quota management helpers reserved_thp_charge() and
-reserved_thp_uncharge().
+Introduce the VM_RESERVED_THP VMA flag to mark Virtual Memory Areas (VMAs)
+that have the reserved THP policy enabled.
 
-These functions are used to safely update the reserved_thp_used counter
-and check the quota limit during the allocation and freeing of reserved
-THPs.
+Also, add the "rt" (reserved THP) flag indicator to the output of
+/proc/<pid>/smaps to facilitate monitoring and debugging the status of
+the corresponding VMAs from userspace.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- mm/internal.h     |  3 +++
- mm/reserved_thp.c | 35 +++++++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ fs/proc/task_mmu.c              | 3 +++
+ include/linux/mm.h              | 7 +++++++
+ tools/testing/vma/include/dup.h | 1 +
+ 3 files changed, 11 insertions(+)
 
-diff --git a/mm/internal.h b/mm/internal.h
-index 3826c88b3804c..4b2a13d353772 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1953,5 +1953,8 @@ bool may_expand_vm(struct mm_struct *mm, const vma_flags_t *vma_flags,
- 		   unsigned long npages);
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index d32408f7cd5ed..65c4b2a61aeac 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -1245,6 +1245,9 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+ #endif
+ #ifdef CONFIG_64BIT
+ 		[ilog2(VM_SEALED)] = "sl",
++#endif
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++		[ilog2(VM_RESERVED_THP)] = "rt",
+ #endif
+ 	};
+ 	size_t i;
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbddb..278cf4bfd4ec5 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -353,6 +353,7 @@ enum {
+ #endif
+ 	DECLARE_VMA_BIT(UFFD_MINOR, 41),
+ 	DECLARE_VMA_BIT(SEALED, 42),
++	DECLARE_VMA_BIT(RESERVED_THP, 43),
+ 	/* Flags that reuse flags above. */
+ 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
+ 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
+@@ -526,6 +527,12 @@ enum {
+ #define VMA_DROPPABLE		EMPTY_VMA_FLAGS
+ #endif
  
- unsigned long reserved_thp_pageblocks(unsigned long nr_hpages);
-+unsigned long reserved_thp_hpage_nr(unsigned long start, unsigned long end);
-+int reserved_thp_charge(unsigned long nr_hpages);
-+void reserved_thp_uncharge(unsigned long nr_hpages);
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++#define VM_RESERVED_THP		INIT_VM_FLAG(RESERVED_THP)
++#else
++#define VM_RESERVED_THP		VM_NONE
++#endif
++
+ /* Bits set in the VMA until the stack is in its final location */
+ #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
  
- #endif	/* __MM_INTERNAL_H */
-diff --git a/mm/reserved_thp.c b/mm/reserved_thp.c
-index 1eee4f39b9d69..931c539c15a70 100644
---- a/mm/reserved_thp.c
-+++ b/mm/reserved_thp.c
-@@ -39,6 +39,41 @@ static int __init setup_reserved_thp_nr(char *str)
- }
- early_param("thp_reserved_nr", setup_reserved_thp_nr);
- 
-+unsigned long reserved_thp_hpage_nr(unsigned long start, unsigned long end)
-+{
-+	return (end - start) >> HPAGE_PMD_SHIFT;
-+}
-+
-+int reserved_thp_charge(unsigned long nr_hpages)
-+{
-+	int ret = 0;
-+
-+	if (!nr_hpages)
-+		return 0;
-+
-+	spin_lock(&reserved_thp_lock);
-+	if (nr_hpages > reserved_thp_total - reserved_thp_used)
-+		ret = -ENOMEM;
-+	else
-+		reserved_thp_used += nr_hpages;
-+	spin_unlock(&reserved_thp_lock);
-+
-+	return ret;
-+}
-+
-+void reserved_thp_uncharge(unsigned long nr_hpages)
-+{
-+	if (!nr_hpages)
-+		return;
-+
-+	spin_lock(&reserved_thp_lock);
-+	if (WARN_ON_ONCE(nr_hpages > reserved_thp_used))
-+		reserved_thp_used = 0;
-+	else
-+		reserved_thp_used -= nr_hpages;
-+	spin_unlock(&reserved_thp_lock);
-+}
-+
- static ssize_t total_hpages_show(struct kobject *kobj,
- 				 struct kobj_attribute *attr, char *buf)
- {
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index cf73bcd9bb9d5..022b7a56b6a9f 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -160,6 +160,7 @@ enum {
+ #endif
+ 	DECLARE_VMA_BIT(UFFD_MINOR, 41),
+ 	DECLARE_VMA_BIT(SEALED, 42),
++	DECLARE_VMA_BIT(RESERVED_THP, 43),
+ 	/* Flags that reuse flags above. */
+ 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT0, HIGH_ARCH_0),
+ 	DECLARE_VMA_BIT_ALIAS(PKEY_BIT1, HIGH_ARCH_1),
 -- 
 2.54.0
 
