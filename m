@@ -4,103 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2BAC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D14C43458
+	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 07:24:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A4BB66B00A6; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
+	id 06A086B00A8; Sat, 27 Jun 2026 03:24:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D5D26B00A7; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
+	id 019A16B00A9; Sat, 27 Jun 2026 03:24:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89CD26B00A8; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
+	id E4A256B00AA; Sat, 27 Jun 2026 03:24:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5230C6B00A6
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:21:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACC73406CA
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:06 +0000 (UTC)
-X-FDA: 84924846132.08.2A95E18
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B714016000A
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQEKHFhP;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AEC936B00A8
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 03:24:50 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DCBE140671
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:24:50 +0000 (UTC)
+X-FDA: 84924855540.18.3E33783
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A0DEB140007
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:24:46 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="s/vYdOKx";
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782544864;
-	b=frC0SGU/2ofO8To8MDUcpZA8gdh0AZP9DaqEA/LcOQuaqhWPIVyd1ne3W4hmOEDOiVLYRx
-	K6wzV77PzNrPgRncUlkQmVXhCE4ls5kOp2TLbdgARfA0eIkIoDgRdDGK6VaF3hQOGUDEZ4
-	Qx9im+9B6EKADP3D47+MuG+l7w1e77Y=
+	t=1782545088;
+	b=wZqgSb9m7t824yQ+/AZth71ELt6tzOYR4rsw1l/Ck51E/5Yz+n9uVSKxVwYREVcgWFKwjI
+	lAuLIMTPvhq4jT/7UDdSyHjNXJQBaljegfWv6F+6ZDVxykbiNzQeXBusBV7F0yN6/WFWhB
+	jEcGesYknY/XX+xwdyu4PmJRwFZkZBM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782544864;
+	s=arc-20220608; t=1782545088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CdGno2AbrekCG0b53bLETJhCdWbqhJa2B0RZ3rUtZhY=;
-	b=n4Ycl7he48OgfuQkaYKbrCgxFQRl52CTCDzcAgVH6ja+5jwicN/3ccPsXVZgs0Amdp+A+Q
-	7ZE/hAbtb+PFPvKx/6LpP/pk9Wjq9oaLL/Vtm9sZNs3Rz8gBdmVOcFsAuDtS1FYKS3JvVB
-	UsrUjDO9sTkKA8a1cRtqgBuMp4SrDBE=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=NQdcHPxDrEBhFiblLpcWfzToAlt+qmr/LfE1ctvG9DI=;
+	b=wDKmiDpN8emIaYRs2qm/M+7Yme647gkKJKr5gOesglhlVMH4KR/l2HCJ6Abu7LdLcfPTqe
+	HTKuR1zG7xhbj+QJCm5wVCqYO/zT4T+CBJ/Uk85Zmg6fQTabRmGRpMUlNI14KjXs1lc6st
+	XOJEMqZJDk5at3rZSL64M0WtLvf188w=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mQEKHFhP;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D941643927
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09CE1F000E9
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 07:21:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782544863;
-	bh=CdGno2AbrekCG0b53bLETJhCdWbqhJa2B0RZ3rUtZhY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=mQEKHFhPVVQycgnikJcQagUI/ln6fOtLx22IK301bueLhzlS09RNYUw65TorMUcIe
-	 N6EkzVX5BoWZyqBwmTwUBJK2ipjhiiaS8V7jI7DK8bik7hMUTM0v5KYaX+J3MNzVJT
-	 Fn5otSZX7tMFgQwG/fPordWWIOptIqX28NTN1O82mFDJ9UANnXQU0+/iZVX8bt0Aj9
-	 2/TVQbyM3pd40uquoJNB5pBmg4K8v+kJS+ypRbgwMZ6IFFiL+M8uUHcWB/BM6mthvp
-	 pLO9C4y0fHk2jRxrk290iMY62IaFV/oS0M0GYlCZ4aFhgykiVp0sWZ+kpGxq0ycZ2A
-	 1kVM79YhKF9Ag==
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8eccf61d0a0so1931716d6.3
-        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 00:21:03 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+RrWydzpMlZiSW3ku6IFAodZiDPUrcJ2N7sOg4Or2TTKjF9CdogQHV60qspV81N5EOSERmdx6F0jUQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx/Budp7FCGzy/yWP5uy2xxpGCtmJF9r1KeTiWb8nBlhNcxOe9/
-	5k8YklPSocICmKTBuuMf9uLUA4RbPgOYsV+tbzoRwP6zzjdT43y8tTYAnA4kpi/N8W+YQB2asKu
-	VfOL/jNAaeMv7tQF8FFuJteq/Kg82Rj0=
-X-Received: by 2002:ad4:5de5:0:b0:8e6:7adf:e0e1 with SMTP id
- 6a1803df08f44-8e6d687a59cmr148353856d6.12.1782544863012; Sat, 27 Jun 2026
- 00:21:03 -0700 (PDT)
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="s/vYdOKx";
+	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782545084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NQdcHPxDrEBhFiblLpcWfzToAlt+qmr/LfE1ctvG9DI=;
+	b=s/vYdOKxRQPReBLZmbAOAK24B7a3gHz7B35xfMdthD62oSvuEtgUjtZbORLkIZ8AGIlGO/
+	I20SSECLdW+Tauf0IR0QoVy1DvGaONdX3wjL+YXm28+sbQvIV03RKlyYmefsC9Vwhmz9Gc
+	PYVcWLt+e6YSPvZ6QfVPeuaXuonoVLU=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	liam@infradead.org,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	baoquan.he@linux.dev,
+	youngjun.park@lge.com,
+	peterx@redhat.com,
+	usama.arif@linux.dev,
+	willy@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [RFC PATCH 0/8] Introducte Reserved THP
+Date: Sat, 27 Jun 2026 15:21:48 +0800
+Message-ID: <cover.1782538002.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-References: <20260623231635.43086-1-baohua@kernel.org> <20260623231635.43086-2-baohua@kernel.org>
- <bf2bbffa-dc68-4a3e-a8e6-1ad57c10255b@kernel.org> <CAGsJ_4wJ-2JFY4+ADf-Bn2PrbpvOnWeVwZY3unKnB=TZ71-hzQ@mail.gmail.com>
- <c4718e32-2baa-4dee-873c-7ab99f21ca4e@kernel.org> <aj83c5ix_YCFMU-M@linux.dev>
-In-Reply-To: <aj83c5ix_YCFMU-M@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Sat, 27 Jun 2026 15:20:50 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xbYOVvonZg6d8eeuKcY9SUic3zXLbWUvxJrbf=U9sQnw@mail.gmail.com>
-X-Gm-Features: AVVi8Cfjlms2NVFRTodzEFCm_jnM6HsOYvqAgkGAMgtgvIB3JVVYsjveW66P4UM
-Message-ID: <CAGsJ_4xbYOVvonZg6d8eeuKcY9SUic3zXLbWUvxJrbf=U9sQnw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm: avoid unnecessary lru drain for wp_can_reuse_anon_folio()
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
-	baoquan.he@linux.dev, chrisl@kernel.org, jp.kobryn@linux.dev, 
-	kasong@tencent.com, liam@infradead.org, linux-kernel@vger.kernel.org, 
-	ljs@kernel.org, mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: tfgrm43x6a9bd7m67kaeqzxf4cochri6
+X-Rspamd-Queue-Id: A0DEB140007
 X-Rspam-User: 
-X-Stat-Signature: xj1teh3bqo3h5ai16o4onjc5dju3axow
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B714016000A
-X-HE-Tag: 1782544864-750743
-X-HE-Meta: U2FsdGVkX1/zrsIYOKxP23VoiNM4/TsKTL9bGRuf7quQqF/xx4IAAX7T3I0phfXBOonDHn8vBI0lDeqV1b7ZZzwzWgst3BIU9mBuOzrxOs7lsYiRwFEL0CAWKnui8eVeQGO/oQsEb1lZeQm+hrwRoEItrCNC+YoccMTLORKfbEG65YKzhe2RJ2hOM4ObsgWrxRGDMedtYpqFsFsXD9ZYh+2YMHYILTtuJF+TMCCorMPrHm7AZE/GJXMQhnAJHMzmLIjGn8Jq6bQjZdCJk+xc2exvjoRtZm3gHBBW2Vz38I+d+HtlWO8VwishbI16mJFvPltwclWXmkVWAL+XN69cebA5xdMNy+BFQTDbv7iFiA+woFllY2jBs3XoWD7y/H3Kbe8kb+GrzKWBsi36wt8lx0+n1qoY25uMXjPnLyFOkR+ss1YqmG5KRlz2YMdEUIs3HRIkatdxCnxdM8lKTIpudvguZv1rURzexkUWvWeRL3oUhUmIyr9KKfAMnoCrlIHMaeQ7G53GIbtMCfXW/2+OTu6MI82Ghho1kWlAoTzsVXq6yXdtsw3ZUATqkgIfdFXtmmftlk4ZKqAjl24+R0qRYHXLWYu7lpBgFHF4SZ/nJKSQ/TY+0FO2NsT6V4cY53R3OgS5ZKyDnHC4TI98JcBQgcEgiFae6TvYF2o3mMdt6ZNaAV258C48LtS5D6BBVB5L4NvHla8XG0evSBHnEdr6AaV2EVZiEakQvmhQTheBsLR4Y1z2bIjy683w87RG2IDRfiKBQwbg1An+E/V3LJeDIFjchUJOAaeZn4ZK1kEUrnSNSeVZzYq8wVbo8Gt1JduRNvp3TKiRJyrmy1d53vn4gzLWjF6sfGtlaHpmRl49FhEDuYLyYtFcz/Dsk/lyEaQLVd5eMPe4o8EuJ1Fo2bqtAozMMPzAK7Y1dfz3zDzTIOSNnJj+mqe92BnPGNJIFUe5oulBM+OXXEWRXTUKUcV
- RgznIZJP
- I+IhmGa+mAoNKmJfEWCshTu+mrNkmrhFdMnHDkS+l1MWK3foQLvO30eVf3CjdFQB7tfmQVlAIeqWcmwoZvViI6jGDqaR7iiXRAS7k/LfOFQgy1MQbTluJSDGWjKBJ/1QAbcrCE9+MBjDuDKx6DDcx0qXW/y/UJhTFZGk6jtzi4xXPI5lCwQDpGyJVql41tJMRuTxdPXvhrNiSb1UM3kAqHiEAfN1VIhNdcklX/mgvi+0zYPNhrwsNQ9VEA5S7zWTMWVWHqvqsNrRSOoThdj1oXmimppmp9NESr1/sBqf8/fKGtQ/dZYorQ6vD8xzec9kPMaSIbn1YPXbqaEQaWTe64OUfmKl6VdWelr1Df1qx/L2AlfIcQxsOJbWxlVLdkgOpgwtS
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782545086-212631
+X-HE-Meta: U2FsdGVkX18Ui5wYMRv78g/57YsAjkxGSwFqSW2HbEJVlZKPQ9+SMywKvOUmrmuHZktI49fK+40yTwhcOcWq99IjPu9lmSrsJ3dJIlpVejf1t3TBEYsST5Wqq/ZJl0jNzbsm5XY/+33JZIJ9otZwJYRCw1FKAY7TIf6K5VYGGZPl2zXTgceVu4cGtqHuzJFoZkwHa1iQzC2nKWfbpbqhedkAfvRxow/zjF4wh7FcbfuYTe/UMz6D911jp7AWiWkZMktgI6pF0pFiYmHOoGugPUME5l/v0wKeKATPNE+ks0BkcAUq5JVaU5u6s+7x6NxG2Ei1UMGSYlDnlKli8WLPc28eARZ6pppNw3ModxX0GOlJhPwLxHYCubghXRYW9+GcSftmWBHPStCmkPYl1v8g/QdUMkAM5IqOG15WXKX2/tVc7G1yvJXLNhSa4VDK/wwXcP8TQAOdLJhNuMHm2+GJFdQ73IH2NewNqViiYZBc/QQLiBniB3CGDrqRSwiv7Bh4l9bu2PGYz3T0f167ij34CxI6ncrv1EStqUEckwxqImtv8Kpxkp36fiBSmn30Gjf7T4/wKOUAPrUrE/ajxdOcU0wzma/qtyX4xRgL1WULLYLO5J2JhY5+p41XXExi2HKIZ5HFQIyD8glfZ74x50EIy42x4/5tLhYmuxFV66+Odf1r3L+89Ff/fpW+NCEAcK4vfWsG83HdrvST9f0xqCxP9WoDwwoTEdAhch2rag+59h2jMOIAJGKDNhn/cfkF7jnjPFoczqeCGVClXif5OrySqtHGotBI3KGM7lZdpX0MjcUafWtydYKaUn1ycnbE3ighmEZzlHrn4djh8giMuGWL2d4k5DtO8kwMxcTJtSpNAtFMnve7K2rGSNRyfFfekKlFoLw2fSTj/1pPfothYEInqH/Z31nxm2cBOFby6qdV6qPupgQ0TV6gRN4w8N7oLGJNMVzMu6X5fqD6FgjqBrY
+ Y7qXI0My
+ ktYzqmrn59hKfb58tiKirw5gjrMRg6eL0a5bdXlBPlw1Bvup7ZiC3HeMfV/gQUtX9xK15wTXkQx3H9yB9V5iHJrjHffPhGXs11sESDsbj89qeg81VomaPxL59hONO1kP35KgLZpJz1aHZCivpdkJ5uUgUDZDtCq8JYxBMgip7dWKIwULlWAbnyKVdexDim+2BvIprJbqrw51TKDvYodJMZHIr9Nmat3oJrywFyMAEWIbFdZOkLM1zs0Qe5ZE7BrBAI7VOlIvXUQqqx7zrtPqbSAwnPqr8TKDwxhDSV0l438EAZwLLYVe/ZfRWmymcCFouKkomYDIIVTUpzek+MTmbce/cXGwFyGA0EAq5NWYbVdu9M/c+rXf1vgrUlQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,141 +110,194 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 10:44=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.d=
-ev> wrote:
->
-> On Fri, Jun 26, 2026 at 06:25:48PM +0200, David Hildenbrand (Arm) wrote:
-> > On 6/24/26 23:04, Barry Song wrote:
-> > > On Wed, Jun 24, 2026 at 11:02=E2=80=AFPM David Hildenbrand (Arm)
-> > > <david@kernel.org> wrote:
-> > >>
-> > >> On 6/24/26 01:16, Barry Song (Xiaomi) wrote:
-> > >>> We always unconditionally drain the LRU before retrying anon folio
-> > >>> reuse in wp_can_reuse_anon_folio(). Instead, assume !LRU anon folio=
-s
-> > >>> are in lru_cache, and use the refcount to avoid many unnecessary LR=
-U
-> > >>> drains.
-> > >>>
-> > >>> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > >>> Reviewed-by: Baoquan He <baoquan.he@linux.dev>
-> > >>> Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> > >>> ---
-> > >>>  mm/memory.c | 8 +++++++-
-> > >>>  1 file changed, 7 insertions(+), 1 deletion(-)
-> > >>>
-> > >>> diff --git a/mm/memory.c b/mm/memory.c
-> > >>> index ff338c2abe92..f6848f4234a6 100644
-> > >>> --- a/mm/memory.c
-> > >>> +++ b/mm/memory.c
-> > >>> @@ -4193,12 +4193,18 @@ static bool wp_can_reuse_anon_folio(struct =
-folio *folio,
-> > >>>        */
-> > >>>       if (folio_test_ksm(folio) || folio_ref_count(folio) > 3)
-> > >>>               return false;
-> > >>> -     if (!folio_test_lru(folio))
-> > >>> +     if (!folio_test_lru(folio)) {
-> > >>> +             /*
-> > >>> +              * Assume folio is on lru_cache and holds a cache ref=
-erence.
-> > >>> +              */
-> > >>> +             if (folio_ref_count(folio) > 2 + folio_test_swapcache=
-(folio))
-> > >>> +                     return false;
-> > >>
-> > >> I'm not keen on making this function even uglier, so no, not like th=
-at.
-> > >>
-> > >> We have the earlier "folio_ref_count(folio) > 3" check.
-> > >>
-> > >> In which scenarios can you trigger this such that we would care?
-> > >>
-> > >> If the answer is "I don't know" there is no reason for a change.
-> > >
-> > > As I replied to Shakeel in the v1 discussion [1], this can avoid a
-> > > large number of drains, both during Ubuntu boot and under normal
-> > > workloads:
-> > >
-> > > "I booted the system into Ubuntu, and after
-> >
-> > is this with this patch only?
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Right. wp_reuse_skipped_drain accounts for the behavior
-introduced by this patch, while do_swap_skipped_drain comes
-from patch 3/3.
+Hi all,
 
-> >
-> > >
-> > > boot completed I observed:
-> > >
-> > > wp_reuse_skipped_drain: 5542
-> > > do_swap_skipped_drain: 0
-> > >
-> > > Then I built the kernel in a 1GB memcg using zRAM swap, and observed:
-> > >
-> > > wp_reuse_skipped_drain: 25017
-> > > do_swap_skipped_drain: 43595
-> >
-> > This is all data that belongs into this patch description, not hidden
-> > somewhere on the internet :)
+This RFC patchset introduces a new feature called "Reserved THP", and I'd like
+to open up a discussion on how to use this as a stepping stone toward unifying
+HugeTLB and THP (Transparent Huge Page).
 
-Agreed. Sorry, I was being a bit lazy.
+1. Background
+=============
 
->
-> I asked the same i.e. to include this information in the commit message [=
-1].
->
-> [1] https://lore.kernel.org/linux-mm/ajK4N2zK3sPZFQuf@linux.dev/
+Currently, two huge page solutions co-exist in the kernel:
 
-Sorry, I missed this one. I'll add it in v3.
+1. HugeTLB: Supports reservation, guaranteeing successful allocation within the
+            reserved pool. However, it does not support features like swap. And
+            it is a relatively independent subsystem.
+2. THP: Does not support reservation and may fail to allocate and fallback to
+        small pages when system memory is fragmented, but it is more tightly
+        integrated with mm core and supports features like swap.
 
->
-> >
-> >
-> > And why do we care about local draining? This is not a drain-all.
->
-> Let me take a stab at it. Local draining can potentially make the lru cac=
-he's
-> batching ineffective. The whole reason for lru caches is to batch the lru
-> operations to keep the lru lock contention low but if we keep draining
-> prematurely we will continue to make lru lock contention worse. This is
-> particularly bad for workloads which chrun a lot of LRU pages through
-> allocation, free and/or reclaim.
+Both have their pros and cons. However, in one of our internal scenarios, it
+seems we need to combine the features of both to meet the requirements.
 
-I actually asked the same question myself in the RFC here[1]:
+In our internal scenario, a user process needs to reserve double the amount
+of Hugetlb memory due to hot-upgrade requirements. For example, if the
+process needs 16GB of Hugetlb, an additional 16GB is required during the
+hot-upgrade to satisfy memory allocations. After the upgrade, the old
+process exits and releases the 16GB of HugeTLB. Therefore, in most cases,
+the extra 16GB of HugeTLB is wasted.
 
-"On the other hand, the folio may be sitting in the lru_cache of
-another CPU, which the current drain cannot flush. As things stand
-today, the drain only succeeds if the folio happens to be queued on
-the current CPU's lru_cache, giving it roughly a 1/nr_cpus chance of
-working. drain_all would clearly be too expensive to avoid.
-So another possibility is to drop this drain as well. The folio can
-be released later, at the cost of missing some opportunities for
-reuse."
+A straightforward idea is to use the Hugetlb CMA feature, reserving a total
+of 32GB of hugetlb_cma. During normal operation, 16GB is consumed, and the
+remaining 16GB can be used by other processes. During hot-upgrade, we could
+try to migrate the memory used by other processes to allocate the required
+extra 16GB of Hugetlb. This might work, but it still requires reserving 32GB
+of memory.
 
-After thinking about it for a couple of days, my gut feeling is
-that keeping it might increase the chances of reuse in at least
-two cases:
-1. It could be a newly allocated folio in do_swap_page(), and
-do_swap_page() may subsequently call do_wp_page(). In
-that case, task migration is less likely to have occurred.
-2. On systems with fewer CPUs (and typically less memory), the
-chance of having the folio in the same CPU's lru_cache,
-which is roughly 1 / nr_cpus, may still be reasonably high.
+We also found that during the hot upgrade, about 10GB of the old process's
+hugetlb is actually cold memory, which could theoretically be reclaimed. In
+extreme cases, we could reserve only 22GB of memory and reclaim the
+remaining 10GB during the hot upgrade. But unfortunately, hugetlb currently
+does not support swap, and supporting it seems quite difficult.
 
-I'm not entirely sure about this, so I chose a relatively
-conservative approach: making an obviously correct improvement
-without introducing dramatic changes. Another reason is that it's
-also hard to evaluate the impact of removing the local drain
-across all systems and workloads.
+Therefore, we are wondering if we can introduce "reserved THP", which is THP
+that can be reserved. It can be consumed through methods like madvise(), while
+normal memory allocation cannot consume it. This can achieve an effect similar
+to hugetlb. And because it is THP, it can relatively easily support swap
+features, which perfectly solves the above problem.
 
-Shakeel, David, what are your thoughts on this? Should we go
-with a code refinement in v3 as David suggested, or completely
-remove this drain?
+Additionally, in 2024 (or possibly earlier), there have been discussions about
+the possibility of unifying Hugetlb and THP:
 
-[1] https://lore.kernel.org/linux-mm/CAGsJ_4yFgcvpTAZ_YV73+U=3DBEnOiSxaFtGN=
-Fpbf0DWBkVcOQ3Q@mail.gmail.com/
+Link: https://lwn.net/Articles/974491/
 
-Best Regards
-Barry
+After all, hugetlb's management is relatively independent and requires too
+much special handling in mm core. The introduction of reserved THP might be
+an opportunity. In the future, reserved THP could be enhanced to support
+various hugetlb features, such as acting as a backend for hugetlbfs. When
+reserved THP can completely replace HugeTLB, HugeTLB could be entirely
+removed, and reserved THP would just become a feature of THP.
+
+2. Implementation
+=================
+
+In 2024, Yu Zhao proposed a similar idea:
+
+Link: https://lore.kernel.org/all/20240229183436.4110845-2-yuzhao@google.com/
+
+The idea was to introduce two virt zones: ZONE_NOSPLIT and ZONE_NOMERGE to
+guarantee the allocation success rate of THP, achieving an effect similar to
+reservation. However, it seems there was no further progress, perhaps because of
+reluctance to introduce more virt zones like ZONE_MOVABLE.
+
+This RFC wants to discuss another implementation:
+
+1. Introduce a new migratetype: MIGRATE_RESERVED_THP.
+2. Introduce two new hugetlb-like kernel boot parameters: `thp_reserved_size`
+   and `thp_reserved_nr`. When set, the required memory is marked as
+   MIGRATE_RESERVED_THP and put back into the buddy allocator.
+3. Introduce a new madvise parameter: `MADV_RESERVED_THP`. Pages marked as
+   MIGRATE_RESERVED_THP can only be consumed via `madvise(MADV_RESERVED_THP)`.
+   Other normal memory allocations cannot consume MIGRATE_RESERVED_THP memory.
+
+This can achieve a reservation effect similar to HugeTLB and guarantee
+allocation success.
+
+3. Future Plans
+===============
+
+3.1 Enhance swap-out and swap-in for large folios
+-------------------------------------------------
+
+Currently, For swap-out, THP_SWAP is supported, but it only tries to swap out
+the THP folio as a whole. It is still possible to be forced to split in some
+situations (e.g., fragmented swap space, memory.swap.max limits, etc). For
+swap-in, it is almost impossible to directly swap in the THP folio as a whole.
+
+But for reserved THP, splitting is not allowed. We need to ensure that it
+remains a whole huge page during swap-out and swap-in, to achieve a function
+similar to hugetlb swap.
+
+
+3.2 Integrate reserved THP into the common reclaim path
+-------------------------------------------------------
+
+Once swap-in and swap-out of huge pages can be supported without splitting,
+reserved THP can be integrated into the common reclaim path as a normal LRU
+folio for memory reclamation. This fills the gap of the hugetlb swap function.
+
+3.3 Use reserved THP as a backend for shmem/tmpfs
+-------------------------------------------------
+
+This would allow shared or file-like usage to utilize reserved THP.
+
+3.4 Use reserved THP as a backend for hugetlbfs
+-----------------------------------------------
+
+This would allow existing hugetlb users or applications to seamlessly switch to
+reserved THP.
+
+3.5 Add 1GB page support to reserved THP
+----------------------------------------
+
+Historically, there have been several attempts to add 1GB huge page support to
+THP:
+
+1. https://lore.kernel.org/linux-mm/20260202005451.774496-1-usamaarif642@gmail.com/
+2. https://lore.kernel.org/linux-mm/20210224223536.803765-1-zi.yan@sent.com/
+
+Adding 1GB huge page support for reserved THP would be relatively simpler
+compared to regular THP.
+
+3.6 Remove Hugetlb
+------------------
+
+Once reserved THP can completely replace the existing functions of hugetlb, we
+can gradually remove Hugetlb, leaving only one huge page management system in
+the kernel.
+
+This series is based on the next-20260623.
+
+Comments and feedback are welcome!
+
+Thanks,
+Qi
+
+Qi Zheng (8):
+  mm: page_alloc: add reserved THP pageblock type
+  mm: add boot-time reserved THP pageblock capacity
+  mm: page_alloc: add a reserved THP allocation primitive
+  mm: add reserved THP quota helpers
+  mm: add reserved THP vma flag
+  mm: maintain reserved THP quota across VMA changes
+  mm: support reserved THP VMAs in anonymous faults
+  mm: add MADV_RESERVED_THP range policy
+
+ arch/alpha/include/uapi/asm/mman.h     |   2 +
+ arch/mips/include/uapi/asm/mman.h      |   2 +
+ arch/parisc/include/uapi/asm/mman.h    |   2 +
+ arch/xtensa/include/uapi/asm/mman.h    |   2 +
+ fs/proc/task_mmu.c                     |   3 +
+ include/linux/gfp.h                    |   3 +
+ include/linux/gfp_types.h              |   8 +-
+ include/linux/huge_mm.h                |   4 +-
+ include/linux/mm.h                     |   7 ++
+ include/linux/mmzone.h                 |  11 +-
+ include/trace/events/mmflags.h         |   4 +-
+ include/uapi/asm-generic/mman-common.h |   2 +
+ mm/Makefile                            |   2 +-
+ mm/huge_memory.c                       |  18 +++-
+ mm/internal.h                          |   6 ++
+ mm/khugepaged.c                        |   8 ++
+ mm/madvise.c                           |  83 ++++++++++++++-
+ mm/memory.c                            |   3 +
+ mm/mmap.c                              |  18 ++++
+ mm/mremap.c                            | 121 ++++++++++++++++------
+ mm/page_alloc.c                        |  73 +++++++++++++-
+ mm/reserved_thp.c                      | 133 +++++++++++++++++++++++++
+ mm/show_mem.c                          |   5 +
+ mm/vma.c                               |  23 +++++
+ mm/vma.h                               |   1 +
+ tools/include/linux/gfp_types.h        |   4 +-
+ tools/perf/builtin-kmem.c              |   1 +
+ tools/testing/vma/include/dup.h        |   1 +
+ 28 files changed, 499 insertions(+), 51 deletions(-)
+ create mode 100644 mm/reserved_thp.c
+
+-- 
+2.54.0
+
 
