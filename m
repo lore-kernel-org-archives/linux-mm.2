@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34913C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 00:57:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 215C6C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 02:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DD2586B0005; Sat, 27 Jun 2026 20:57:31 -0400 (EDT)
+	id 6B64A6B0005; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5C786B0088; Sat, 27 Jun 2026 20:57:31 -0400 (EDT)
+	id 6673F6B0088; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB0D76B008A; Sat, 27 Jun 2026 20:57:31 -0400 (EDT)
+	id 57F916B008A; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8490F6B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:57:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E56D4C153D
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:57:30 +0000 (UTC)
-X-FDA: 84927508260.16.F2A7481
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 638F0A0003
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:57:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQoWwsCX;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 332B06B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B0C9A030B
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 02:58:21 +0000 (UTC)
+X-FDA: 84927812802.24.DE2B326
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BB943A0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 02:58:19 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MtA91UTS;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782608249;
-	b=VYOtuPNBruguZgOJyU9frshJQkyX+cKpBkzxYSDOAaVYbNX0KnAf5i3ved/QRYLXfN60Dz
-	n1ejePyisghxbLSYeMprqEJOgNtio8V2HgS6H1TI0BRFqAXBKPP89e9sM3pWZCHBeogCnc
-	DqrHPjh7DdShYfgibikqmiENMqqEVkQ=
+	t=1782615500;
+	b=oOuf9I56UAROoOZt5GfH8O4qSbmDPhS6dEKTjhEsiJuDQbhNKF1S2P7q6htJCi6TOIKkYr
+	zd7CdTLiA3oWcWFtJ0nnx+J35yo16ONWpBQwLGk5pQPLseT7bAUoofUAl0C6717ViQVNwY
+	beNfKSxyKHbInVUPkmT+kEa6RxY0yPo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782608249;
+	s=arc-20220608; t=1782615500;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tznSpU7jKgoi/IAc701RjRwzUrhhlndb6N0yCpqUF6Y=;
-	b=i70aT5rjPQ3uwqYv75fZ9wIk2w14sTMrHZgIIu+KhVsn8ySAdfxpAmOsj1i9pidlR3QECS
-	lhzSvFZXHF6xAIS8eLtsYMt++kAXOmh2PNrZXkxT7kxkMtoup/aswfc3Bh0TQIIdVb0+xz
-	azoxP7k02x9u2O4HjHt36+6uRKOYZLM=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4QGjDrc94iYtKB/2VDYW46TVOW3u0FLV/oySj9gxXuQ=;
+	b=mLwX3JHHJ5KlOokFKYwayF+wpcZcPcV2rV5nXVNyjhbW2lY10OgOdaqyWCfJw0weqgwGpw
+	L9y4W3W8Vi4iLdk0fFf63Cb8mAtPu9IWKuKWobjXgfLfuz+5/MlNkYmjiezzVdgTRZCE6Y
+	clAbL6rePaabBTBpQd3Lx1K3YWhEKfc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQoWwsCX;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6842443584;
-	Sun, 28 Jun 2026 00:57:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04AA1F000E9;
-	Sun, 28 Jun 2026 00:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782608248;
-	bh=tznSpU7jKgoi/IAc701RjRwzUrhhlndb6N0yCpqUF6Y=;
-	h=From:To:Cc:Subject:Date;
-	b=ZQoWwsCX3UlTCy9mLO8MoRulCOcTI/rsGY6DC+7jYEDPeCSwHh3DuH6UUYn/qvglO
-	 QeTKbLss8rNnaeU7rPAlafnix+x2kEETjfv6ZqkZfHogiEnIagnXH0I1FEVVrIMMhf
-	 HzmndrWiHEBMFTQrKyHNCkgozfwLjTCNvtzjD8Q7+7twokBaA8NWh8dxk8dBE+PVcN
-	 SLPWtrgdbrBfurx9a9mfbbpRmiijXXK3T0Uw0gQowPODmqJgobSD8x+36sikkGjeLR
-	 ebX3SI80TknbXFhnECtX10/IvQbWBqpRjjcbslINxKkY3KLhGNVea6YHrac4Tbvb4o
-	 ZRRkqzqVJRy3Q==
-From: SJ Park <sj@kernel.org>
-To: 
-Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: [RFC PATCH v1.1] mm/damon/core: validate ranges in damon_set_regions()
-Date: Sat, 27 Jun 2026 17:57:22 -0700
-Message-ID: <20260628005723.28549-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MtA91UTS;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Sat, 27 Jun 2026 19:58:12 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782615497;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4QGjDrc94iYtKB/2VDYW46TVOW3u0FLV/oySj9gxXuQ=;
+	b=MtA91UTS1oJHSpQEQeUuziB80H/5pCqnyTlOMzJfLBLdy0kz6IaDSJsi+PaEqJPQqL69gx
+	gFkxpoRRiewwH11Sm4EXcX0fo5lBTH7zNPmv60mD0Yu0U5cTjdp5cwMtJUEyCo2JrYR/m6
+	hMhh/4BqnIpq98A4WAw0KUScFRlkZtw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Harry Yoo <harry@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
+Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
+ kmalloc cache
+Message-ID: <akCJRTnmA2um3CIy@linux.dev>
+References: <20260625230029.703750-1-shakeel.butt@linux.dev>
+ <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
+ <aj6re83IC84lkFL0@linux.dev>
+ <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3kjdfb9rxfa6ps1uu7qxui8yu9xtwuwz
-X-Rspamd-Queue-Id: 638F0A0003
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782608249-290404
-X-HE-Meta: U2FsdGVkX19ZsoHBAJYh9idIpwdEUlZb5rvXuPBSf/AMieYc/hd9Vvudd0pI91eS1GVTGnp/Y07H2P2gGz7r4PXFLPiHRkv/TRE2Bu0WXgAesY1ZJZsy89x0W/T58ZsZGgA2XDxAyadyCpU0FMzq7tEdXXFetzJIN8XETKTpjNx1shyG5akLIRgVrtN5y65387n+WFyrllkB+AUBA9IH4X3fiouSAK4fgiN4Xczja39crdmwz+7nGxy2hWGfj4l3G0saVRrE7FPYpqEJNHtiT3wa/PHk/w4QsSQkHoY1OU5mVd8Y2ftvgzlPtFWafCIgWj5VwH6sxjy9TRIDD1ACM71Q9KmAqXZRxBWSfRGmsfehPsYdfOmERK/YQlMYThM6W0meKl64/LdqHoNoLhj4d2wU/vlQLU29+XKRG7Ypu/pbfbWLtl4jxHqWcQ+98D1dc2aZg7comP8VNSvZSxl067o7X9eCSkyjGzC9soKS7F220ZTS9FFyPIPcQnL+voBuum4UhKSA/6RGhpsBhIrepZ0Jle16VKuGNvf8kAsIM5DMIUdvJyE8zIyp2mNcPSrnL6t58vzKmFTwgNpm027b+OuOSlYOutdn7wjbgvHCfRrp7YnDd5K8yZYa8RzCTJxx1ZJGWxETp5z3v7hRjmw8Cq4bxmHLanul2VzDpaaOaV1J+nR5j+ZSMCgRJVm37bezjrkdNeZxR/lDY8C/PIixr390X7N8IRzrRPaBVozB60M6ZNYxPz/5C/NB+4V1b6j633S53dHtxGQZlBX8L75/gUZBjs5/aHEsyNKgB5IB/4oPugOatBvIz0Gi+nik9e2H8jMxoQQMjjQNwEwPMD+FxVmSeJGdmXvFDxu6KcWAsH8Gngby2Sa8vEScD/VnQq6JhO3Atn7PGfNEg2kD7oGpugwa5heijlBbbFb4Fe5MTf6rgjwnkEUDaqp0TQeAbq4jstOOfX4R/36+r9quP7b
- 8YdwyEI0
- yuyit4/0C3w4gRw3+qlsJ+YVlmTOdmKHCTlbOgrJq4z1HODESEPUUoF5gFCVFH+qVBEUEDK8FKDNsraHwvpBER+aB3JWc8nUcAe84ZVPIjsHiSz+GpVp8H/uaqJEs146FXwl3KB2igu7/Uj0gE4cIGfdGjkcBEdhdc1K4xeAwH4H6qSl2CM4GPGGRs3qzhvyxz7Exr6gxVL7LlUyHNe0vSLCC58Kkd/uddgFLgJ17RKhotxy5jaNwyLGVxboHzUiZqOMNC3CCN/1u94ih9D4Szzi78Q==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BB943A0005
+X-Stat-Signature: hwyf6eih6awb6in6nc1ejdxhe1rznjmy
+X-HE-Tag: 1782615499-196864
+X-HE-Meta: U2FsdGVkX18N2J9e7RRyZxOEDh2FC6HYxuTqyitnKut+lM/6WDT48M45P5qS6ZuWgEveQPIBxrhZZmQYkni6KzNjfZORLhYWkM15b+hmIbuzVAVf7xCR4NBT7ZQIaKdX7UfLWmnLIv8XLCSVJCcfcN3twSxORtkt58bbAe1kkuwnE87UfF5iUM65hN+saaDFO18GTqFPoyf7WNTKyldVSPRHBm/9z7rLUukOb1Ez0fLSiqmUBUYD1zGHtmgiiJbT95gevb3Ys0vYVG3fcyxMFXCap1uITBXfN4OTlPk36Z3sP0kKmrOXMfPjh9TRjO6rXy5XEfxmQ/Cws0aahMFJn1Ly7hQ9clyTvu0OhUwF5pTcClNrfQbgHUMLBGhPiILALz/GJPotBnkK1ZDj/C7L7e23Lr6FeaIKq4vLPMUYaOMlxKtk+lfgmaDyAe9sF6v6w30Krw3id29w/ac+6Ks8Zq4zcEa9gnmtXI4U5qDuRfZ7L7jXkCcnBGiPhHFuYVztirBIh8Tv0WMSUg8YxqaON1ma+1hYACVmBXzNSIWwwsYsQlKIlJEZwg2+kP1H7j9jroijcLDj9sMQBPzkUiuskmZa2scJSXHPb1jdeLm0EZWtUgitv9LB1FlnOPTwKKS5Vgko5M7kBVH5RTUY3TIFj21utQB68VNk6rbwakMeQrf3du8KX4exoO1aykqGhhn0jgKfobOMNQnNsCnKmoxqxLPjvrVdksghF4KPsJSIvwrRZbJ6Cy0qHpA9GIhDJk9g8DiYK/vN8QOytuHc/LnwuNGQf87L1u4ozMAZmlvwnROiNjl09xt1xN5v4S2wM5/wvE1v5DSigL3mI0ssDU5orxy+PVmGEv2M6FJ7eqyvleNMMkZ0m8pd6/4ilJtOSwm4RrfbPIivDQONesfGzTBURVcyO1IOd6I8z0fNap7T2QRPHlSss1mOytbtNUHDkO2gLyMpWKS7ETv+mFb8+CG
+ jmABckTP
+ 5LDJIxY+15ToRUWrufwhE1J5nSyGP+Kzhae2CJqVUaR15wSxbB5V33tOFo/ieUXAyBg5v8TgK2Fy95FUaSeWfHr0mypVNQg0qwCspleLo6SHgcHIwSfar1Wg0EO82ZSNViiwzg8Tnc2OuaUrA3HKIRWR8l9D6n3Y3zM8i2G1+8RVO7p6XDIIHxd9dmb6vmg1bKLv4IYDpc55TVIDJmEbGia+jUKA6+oJjNq15vPDUgCEhPG4zbYmywYbK3pzbZ/ye+hELohBP98VPgNYfCRojVzG1ldpTbEU21yZkFdjJB3LUEh/qn1Nvo649CA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,69 +94,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON core logic assumes zero length regions don't exist.  However, a
-few DAMON API callers including DAMON_SYSFS, DAMON_RECLAIM and
-DAMON_LRU_SORT allow users to set empty monitoring target regions.  This
-could result in WARN_ONCE() on CONFIG_DAMON_DEBUG_SANITY enabled kernel,
-and divide-by-zero from damon_merge_two_regions().
+On Fri, Jun 26, 2026 at 07:11:33PM +0200, Vlastimil Babka (SUSE) wrote:
+[...]
+> >> > Fix it structurally by removing cycles of every shape: serve the array
+> >> > from a cache strictly larger than the one it describes whenever it would
+> >> > otherwise come from the same or a smaller cache.  Every reference edge
+> >> > then points from a smaller to a larger cache (here kmalloc-1k's array
+> >> > moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
+> >> 
+> >> This will fix the problem.
+> >> 
+> >> But this will waste memory as we need smaller obj_exts array
+> >> as the size gets larger.
+> >> 
+> >> We should probably create a new kmalloc type to avoid cycles instead?
+> >> (needed only when memory profiling is enabled, though)
+> >> 
+> >> That would also prevent recursion even further.
+> > 
+> > Yes but I assume that would add kmem caches even for users not using memory
+> > profiling. Anyways, I think that is a separate discussion. Am I understanding
+> > correctly that you don't have any concerns with this approach?
+> 
+> Umm, the memory waste is a concern?
+> 
+> Minimally I'd now want to only do that size bumping when allocation
+> profiling is enabled. Ideally that means both configured in and not booted
+> with "never".
+> 
+> We probably should have done that already in 280ea9c3154b2. Because AFAIU
+> memcg-only obj_exts array don't have this issue (or maybe they do have the
+> [1] issue? Harry?). But if memcg-only should keep avoiding the same size
+> bucket, it can keep what it was doing and only memalloc profiling would do
+> the strictly larger thing.
 
-For example, the WANR_ONCE() can be triggered like below.
+memcg should not have this issue as normal kmalloc caches do not serve memcg
+charged objects. 
 
-    # grep DAMON_DEBUG_SANITY /boot/config-$(uname -r)
-    # CONFIG_DAMON_DEBUG_SANITY=y
-    # damo start
-    # cd /sys/kernel/mm/damon/admin/kdamonds/0
-    # echo 0 > contexts/0/targets/0/regions/0/start
-    # echo 0 > contexts/0/targets/0/regions/0/end
-    # echo commit > state
-    # dmesg
-    [....]
-    [   73.705780] ------------[ cut here ]------------
-    [   73.707552] start 0 >= end 0
-    [   73.708452] WARNING: mm/damon/core.c:359 at damon_new_region+0x6e/0x80, CPU#1: kdamond.0/758
-    [...]
+So here we can do dedicated caches as Harry suggested or make this size bumping
+very specialized as Vlastimil suggested. What do we want long term? Orthogonally
+we do want this fix to be backported easily to older stable kernels. I will see
+how does this narrowed down size bumping looks like.
 
-All DAMON API callers eventually use damon_set_regions() to setup the
-regions.  Add the validation logic in the function.
-
-Fixes: 43b0536cb471 ("mm/damon: introduce DAMON-based Reclamation (DAMON_RECLAIM)")
-Cc: <stable@vger.kernel.org> # 5.16.x
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from RFC v1
-- RFC v1: https://lore.kernel.org/20260627170057.1867-1-sj@kernel.org
-- Fixup the commit message for how the fix is made.
-- Do the validation with min_region_sz-aligned addresses.
-
-FYI, this fix cannot be applied as is to the commit that introduced this
-class of bugs, because damon_set_regions() was introduced after the bug.
-I considered making three fixes for each caller to make the backporting
-on the old kernels easy.  However, the first LTS kernel having the bug
-is 6.1.y, which has damon_set_regions() and all the callers are using
-it.  So porting this to necessary stable kernels should be easy enough.
-
- mm/damon/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index d99f7a297fdde..df0cc699494fe 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -356,6 +356,12 @@ int damon_set_regions(struct damon_target *t, struct damon_addr_range *ranges,
- 	unsigned int i;
- 	int err;
- 
-+	for (i = 0; i < nr_ranges; i++) {
-+		if (ALIGN_DOWN(ranges[i].start, min_region_sz) >=
-+				ALIGN_DOWN(ranges[i].end, min_region_sz))
-+			return -EINVAL;
-+	}
-+
- 	/* Remove regions which are not in the new ranges */
- 	damon_for_each_region_safe(r, next, t) {
- 		for (i = 0; i < nr_ranges; i++) {
-
-base-commit: 7c001190b88a32f80c93a6ac302af59a9756309c
--- 
-2.47.3
+> 
+> Suren's input would be also nice to have.
+> 
+> Thanks!
+> 
+> [1] https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
+> 
 
