@@ -4,97 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7191FC43458
-	for <linux-mm@archiver.kernel.org>; Sat, 27 Jun 2026 23:11:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5345BC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 00:11:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DB2B6B008A; Sat, 27 Jun 2026 19:11:27 -0400 (EDT)
+	id CC4556B0005; Sat, 27 Jun 2026 20:11:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B2856B0092; Sat, 27 Jun 2026 19:11:27 -0400 (EDT)
+	id C74BB6B0088; Sat, 27 Jun 2026 20:11:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F0396B0093; Sat, 27 Jun 2026 19:11:27 -0400 (EDT)
+	id B65866B008A; Sat, 27 Jun 2026 20:11:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 134E36B008A
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 19:11:27 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 84E86A0293
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 23:11:26 +0000 (UTC)
-X-FDA: 84927240972.06.FBAC891
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EFA01180004
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 23:11:24 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VCltz26+;
-	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD586B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:11:22 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F33EB1402DA
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:11:21 +0000 (UTC)
+X-FDA: 84927391962.27.769864C
+Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 44EFF40006
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:11:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G85OU/xu";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3pmZAagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3pmZAagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782601885;
-	b=2Fr0auaEXZxlQnrya0tV8GnClVPnhwOKV5VuozqgR4JM9EyjGsG4OhzQJicKjV/DXAfGtQ
-	imnRnqh01LSz9REyZEw4qK5YyHVxN8aak6FllbN/ksQkwHqUm35VFHNp+UZOe8WBbUARcV
-	AnjbLHTUCHhN8V4pQE+IcAQJ92hyrn4=
+	t=1782605480;
+	b=RYjL13iIPWXPbWIM2xt6Bk+fMy5dAxHZOyXtkRg76KJKxXWuZFK+x2msv2PXh4ywo9/RMG
+	i2GDDhWImTPcsP5rZz5Ubx+W4kXGJNcPknCJ892Z6LetPJYis0a4sLAWsQkdVNhlNMmw16
+	lhbPxleB7YIxcr3/4BRVbWiYvGdfry4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782601885;
+	s=arc-20220608; t=1782605480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SUVfPb32/5Yy02PpVgYPuV1CNj4nGegvpvPLP2fZQKA=;
-	b=nr+0o8bh+RQpnzum7Nkq8lhUbj+mgiBE3AEPhU4ZmbOPaPmqIJV4md9hk5KcAzxJdM5B5Z
-	z4YIW2Fdzda8R9J06k1chu4q80RppgMCp5bkhvR2hcbWJCcUNIehb0tPhw2AgCi+e1Ruci
-	5lE2SOO02FTDTpP4BbumKMn/krbc5js=
+	bh=R1hMKkHTx9eCvHpWXu0wJEWn2SvHnzVGjd97/dJhuHc=;
+	b=PI0xiNGrw3dx5FHOl6yw4rcVYp5EwGqYvsmKevRMOxFb9XQJ4ahLxU3fbiMbDv5LK1X2WX
+	/LlIavLha3A5bUZQ1/IrnfJVNC2JeVx1j2EJs5Hd6o18rWt3oz7ubhlr5gNTK1Rhp5illu
+	ouXRZ6FuQzOHUTd8dLYjT582sqFch3Q=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VCltz26+;
-	spf=pass (imf24.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F3A4600DA;
-	Sat, 27 Jun 2026 23:11:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEC61F000E9;
-	Sat, 27 Jun 2026 23:11:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782601884;
-	bh=SUVfPb32/5Yy02PpVgYPuV1CNj4nGegvpvPLP2fZQKA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=VCltz26+9OwDWF4Xhi9cKwvUKfA4xvms0qgjby4HjX0MUh9P4kxXEEGW8dyCh7H0n
-	 LzQ2Sr5NpaQqAGyxM2mfnhOmZEuU4q+ECiyC77vmNjLb+2bh8BQrzcV8hRtk2XyGYc
-	 NUpKJmEq55RMIKhZ1t9hHqNnEh9moFHE6VgRGhbGz4nEOBjMl+CB1hmK32Crzp+4Sn
-	 3QaSz55tMvLNfrcXPdmMhvbejEPYqRRAa4QzE7MppFiFcaH5H5pA6R/HgtVwdEH+FN
-	 07kUr3MfHc98mtbSbSyFiajSnSm0/kcPYTs6wzj2m9qkgofCZL5XPZHCayMqezgwFT
-	 tiz+tk9YWRlfA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: David Stevens <stevensd@google.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Linus Walleij <linus.walleij@linaro.org>,
- Will Deacon <willdeacon@google.com>, Quentin Perret <qperret@google.com>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Xin Li
- <xin@zytor.com>, Peter Zijlstra <peterz@infradead.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>
-Cc: David Stevens <stevensd@google.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 10/13] fork: Store task pointer in unpopulated stack
- ptes
-In-Reply-To: <87wlvkhqd0.ffs@fw13>
-References: <20260424191456.2679717-1-stevensd@google.com>
- <20260424191456.2679717-11-stevensd@google.com> <87wlvkhqd0.ffs@fw13>
-Date: Sun, 28 Jun 2026 01:11:20 +0200
-Message-ID: <87qzlrh947.ffs@fw13>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: bwgbzfdjdahg8f81fthfe1mj7jt95r8f
-X-Rspamd-Queue-Id: EFA01180004
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20251104 header.b="G85OU/xu";
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf11.hostedemail.com: domain of 3pmZAagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3pmZAagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com
+Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-69842d5e6bdso448095a12.3
+        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 17:11:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1782605479; x=1783210279; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=R1hMKkHTx9eCvHpWXu0wJEWn2SvHnzVGjd97/dJhuHc=;
+        b=G85OU/xuEL6KMqRB7Aoey7JM47zID9D3aDLR4Ut8pgSYIa2ofeDJanK/eV4xBuW8G0
+         TvxkAUI0S4gP3Sfmz924pQktzQkA+8iBvu5938nnL91wplcqrHxGjCNFORJWAnTdTB8L
+         CMUJqf4HfbcIdVQaYqVfvCj1j5Bf8TeBKUrV42NkOHhfbO/YSC6l04pPgUMz9qu2X+0q
+         w1bYkkYkzkyoeVCvfJLJpwIQ0cMUM2ijBPyLe/CiwL53CL3lcb90LmcQscb/Am3U6Eap
+         SaNUy5OSQ/5IQmr9c3o7mrVc59nHtZoDvxxisGUUXgFI6+JZqUr+6JrgtcJCZyWsm1wC
+         3DZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782605479; x=1783210279;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=R1hMKkHTx9eCvHpWXu0wJEWn2SvHnzVGjd97/dJhuHc=;
+        b=r66QdJMDI7tOliDlv4NJop4vhmRNKPGfhxcnXGgGVQ7MBHCxfcMfdPe0WxEn8BgIEU
+         Ab2s+o+RIADc3WwufQWI0tzw1JcznmjNqegbLIgCqHlSiE0w8P/+Wh+LLkdwF8tGqMt3
+         ozEZFy47d4CjyK2ch2zMxUNfpil/jnTxWwkKyx7O8ZVX1hErr6SsOAVeuGngA/ywzlon
+         7KbaH4g7Bg8AftJBvc+gdQVhhTwLOG+rqVmbMfAR8W8yW7czfAFpIaC6QmYho/8J4eCx
+         Dr9FxTPzzwU3ehK5S58EVCtJ5BKb1+xv2i43MTeEOSm8bcrkv26AFtmcuCnlzEyWYmHz
+         i8Zw==
+X-Forwarded-Encrypted: i=1; AHgh+RqlbPRUJ5r+F9o3zoDfug7Qyy4Gnuy0aJWVHKHsTFNHkKQh9mLD77+VHGcVnwFixtps13xEE1ND3g==@kvack.org
+X-Gm-Message-State: AOJu0YwtTll+dexrnr7ziuAZjlaI8kGOHT2S1NtxMYhlMi2iVyDmlawt
+	Gsd90VE/eCpMhp46m2jbeT7oAyS2W+behtoUZUeN5dK+MQxbXzx1gd5YqLe/Hmnq72dHp1FK8/L
+	1zpJdWnu0wJqB5EbxfQ==
+X-Received: from edbbf28.prod.google.com ([2002:a05:6402:1a5c:b0:698:48be:f3ac])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:3591:b0:698:4831:f9aa with SMTP id 4fb4d7f45d1cf-6984831fc61mr973106a12.12.1782605478597;
+ Sat, 27 Jun 2026 17:11:18 -0700 (PDT)
+Date: Sun, 28 Jun 2026 00:11:13 +0000
+In-Reply-To: <20260628001114.1869564-1-tarunsahu@google.com>
+Mime-Version: 1.0
+References: <20260628001114.1869564-1-tarunsahu@google.com>
+X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
+Message-ID: <20260628001114.1869564-3-tarunsahu@google.com>
+Subject: [PATCH v6 2/3] kho: add KHOSER_COPY_PTR to allow phys copy of
+ serialized ptr
+From: Tarun Sahu <tarunsahu@google.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, skhawaja@google.com
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 44EFF40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782601884-582790
-X-HE-Meta: U2FsdGVkX1/O2WKl+K4GCP22WLpMKHCW2joiHAZ3rNb5OwmROgFCp1EPKA/b2JIqTPV/X67aX8fxKt4Jeu2SO2w569mZmPg0ad362DoJHbcqbTLkjCiDfFD370gsPkF+PlvZNgAC8Dg3hWxvF6MhovelNxmdpW3md0hwtzIBhDzY/fzzPVM2qfaNNqOXCxvNW71USmi1hm1OM9M8gDjDAYPIzTgqEeZx2V7GYIHK21ivJypoFObsA3AvgSZZhEiEAbm7Du9+D9Y0LuxaSGhGk0ikkRrYR8PU1FRRkT8V3c85JyAUPeFB1uf5jVPArYaKqT1oeAdXgqZ90WfYuSa+ZgELnuN0FZzoYbTCkTnGC+gT492+h7xHKXAq+0p1R2rTRLeIK1KON9ytZsyyxWGdDrjrzUiErtmknh3sro89jjubs7Vjr5Hvj29+UhBqR80C1WAFvqVOEAP2wW9CDLqU6iRXbu83pR32/7tukjZMSLei8zhLGfPVJZe1o5uVOQkmFjjht1bOPDniSiQGULbFxpNXUY5yunPptS2jQl1lofXiXF9BgsheNYmjqT1oLeWjsr9AIAiL/Yymj6/Z64dbC59nHA9WRSXWuRKYoyNZajLYwW9AYmsXGDl8dKxLrxA2tWp4LFmb/VAeP5171nWL+Ok0Tb/l+aDdfE4glb8iFwtA69/2BHGCDx/YLVeF+53PV2j6BJGO0xRIMOxH3CmNUTLm/Dw6OFr9yYvHyug6T6vZ8bAnoB5ySyNH5fRJBv8X1KmCA0ftC/aA+CqIyLSQ8r5l38n1/bjnyeVGuUaRDxFQHepkQkiIL2VhyCpEJrlIhIBBXkRieXPrjkTaWnnQCZ2y3GVpgnFSIxN9gbTLJ8pAD7rxAnkd3+YgECFpFjaM4ZLdjSSc1UHI8+eOupHG9ip0qIVZpfj6wWiMFkRRm0JbD0RDBHdp6uTLXCDSMRDF1kMKRueIP7xJ8Q9T9MS
- eHlb+CD+
- zlgv0AeEzPVRFSn82gtpQu097MPLMrNaSJcw6v3v7a6U0d9eTmfDWawZ30qDW9/Azxz0XcW5G0DJfMXb7Xs9Ksa4r7jO2JXlNovjAwzIqg7W87/dVjbybtJKKjeALueevJYRBuBpGHWbVni3CvY0xbjOXGGIcSDF1SdnSgjDyDB2VTT4s+04CSfo3XLLkSxVkjK0DbdvDU1TP3iZ9aVoedjKUCbdkQfpFW5MUF2+ho5yEyheA1FXVQtrlUA==
+X-Stat-Signature: icwso6fyeyc8nnoxqpony535axfqgmwf
+X-HE-Tag: 1782605480-467847
+X-HE-Meta: U2FsdGVkX1+A6hSwj2xzo8ifZ2+/ek/POdnQwvReurGsTSxu73RTuenuwJTdZOOQcM6reuiXC4Yd61+nPggQoJtVIzj5ZR0uybdt67Se6GOG0kEIuCX17LKyFU8QuTMLFueSMwq6l6VATuFndjoRHJErGaWqTkVlY7GwkIrfe8sDc5DePpHCvoWy3GHuoQ1/iUKmiyKQm6cbgH7690aKLoXwBUsB1DePllzFpg8llmiS/n7uHRQjxGUuUCTKSauJeM5L0wpHhhBuSw29h45oDEc0hiZ+Il+8uO0arLNbmSKogEBtYJnHImVZfb73/8t49r0F01g18EJxr1IOTi8rEBZnt2KnlhWwQEVUaYM9a4bgjTsUSctRRl+VwEwKacMD02yKoN3gVcq7FNyxe2fuDXZN3Qwb5TIGIZ2fx694CW75nQthlZsGAk5OJIe9ilAKyQB1w5NssCeWb8n++Dty7tAbfPCRhSuEsLh+dbxxcurPA3oKMHml9Jf2azkah03d3UjIwgfmKmhLQxQoPZoH2cKLezQmpG1HWLqzMgPsvUWNuWiEx/j6z/2jtbwXAWt30cPP9ICUvnxtga1uBBehzrdqGWmLG2iinNnHXOrDiqmPbIcY4kbOZag3PEfvZY325dSzpqsal4Y1NHCzMN4p1MpQJb2HJdgheZ8NJbFf2as0b/eZSPI8O00+6hmcUmup9XSwa9buV60jQO80ZOWW58QvMe530i4cWvmUDcmtqd8XLcVwMv1FtVIiaeW8r5WMuM9Lz/2JN+tn8kGRUTTE/OaK8aTlMpWWSpPJ0hdzgbLJk4/Gp+MkewOJDsltaquymEC/kfyLkxzkmLdZLv5P3LXgcBf6fZ7G2t0ESYGVAmSQ+RkB5joNcAneS7IQjYhmrnmikYTEipKYpgYZJaLDNL5z7xFDSJA2d+0meuItyt3gXmbMi+YZFkwhuN4UB0YDDnXWJ3AJxrz9q1ZC7DO
+ 4JQyAs/X
+ mCXNDCGYrzbL+1xhLwkGf/WXRG2MEB9e8tKRoiAZue+V01N1bxcw9fiWtPHaOFEaI9758uG3v7EDzgsNq4KrlpXhNpbgbLvMPwsJ2DTjnszB0gB8DVRmwc5ggJtONUUaeF16ZsR4jLW1fk+jmP1Ptx9C9/znSWhs2WooEGB6GgGKFfO0W83EEVvINz3e2fPswASFDY7bR1b/rFMeV3lXOV7BDWIoHEvE4YMntq5NP2Di2bHGhNDqHYoKAyW9N6h0CB4dnlv2hh2es4iKdEbX/X8Np4F4gY7tZoFGVRHwnKlBk4lAh0uJUocPBQ+bxfKcoHxZ/EkxyKQJIUbwkZNC7vrJsA2LqzYbhNNKpaT2LaCr5ozMx66lP5OkXFTw0mCEaQLRRFvKf24001tNpXTnkWxvVz+5Jx+AVZkzIKHqKAZfrDarg5LnqtkOckyfPYO7kY++HzgB4/bunFz42DQDaJSOS079mDMONXBMHUKS/U8RfTSh63eqTeJZ+VcqhW3C7EbJBchAiC+Y54CJ9ouwtmlUvnBtjN0TmV00fTttgbQpnl7pFTaeeNY+sAeEhKClnus8OdiNRjtokxr4qO15k2l9q9Vu6R6rH9YqKjzS+iw5E0ezdgmjriyN8a1nc+GgczpK6qWcDZJDz/CZCzbr/7RD3a0qOQNBNTQa7SRLN3AJwoFts6bDcWpu9TkjeYcgGZhxW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,84 +110,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27 2026 at 00:46, Thomas Gleixner wrote:
-> On Fri, Apr 24 2026 at 12:14, David Stevens wrote:
->> Store the task pointer in the ptes of the unpopulated pages of dynamic
->> stacks, to allow the vm_struct pointer to be retrieved without relying
->> on any locks or current.
->
-> You fail to explain why you can't use current. Changelogs have to
-> describe the WHY and not the WHAT.
+Adding KHOSER_COPY_PTR to copy one serializeable pointer to
+another. It basically allows copy of phys val of the
+serializeable pointer.
 
-I obviously know why you can't use it. But the absence of a proper
-explanation and my disgust for the implementation bothered me enough to
-look deeper into it.
+It ignores the typecheck if any of the argument is of void *
 
-Let's look at the only problematic case:
-
-      schedule()
-          ....
-          switch_to(prev, next)
-              switch_to_asm(prev, next)
-1)                switch(RSP)
-                  __switch_to(prev, next)
-2)                    this_cpu_write(current_task, next);
-
-There is obviously a hole between #1 and #2 where 'current_task' is not
-giving the right answer. You work around that with this PTE storage
-magic which is admittedly smart, but completely overengineered and not
-necessary at all.
-
-Why?
-
-If you look at the above condensed context switch logic related to this
-problem thoroughly, you'll notice that there are three sources of
-information:
-
-    - prev: the task being scheduled out
-    - next: the task being scheduled in
-    - RSP:  the stack pointer
-
-Between #1 and #2 it cannot be determined whether RSP belongs to 'prev'
-or 'next' because 'next' is not exposed to the fault handler. But if it
-would be exposed it would allow to answer the question where RSP belongs
-to, no?
-
-So the obvious _and_ simple solution _is_ to expose 'next':
-
-      schedule()
-          ....
-          switch_to(prev, next)
-1)            raw_cpu_write(next_task, next);
-              switch_to_asm(prev, next)
-2)                switch(RSP)
-                  __switch_to(prev, next)
-3)                    raw_cpu_write(current_task, next);
-
-With that the stack fault handler logic becomes:
-
-   curr = raw_cpu_read(current_task);
-   addr = fred_event_data(regs);
-
-   if (within_task_stack(addr, curr))
-   	return handle_stack_fault(regs, curr);
-
-   next = raw_cpu_read(next_task);
-   if (curr != next && within_task_stack(addr, next)
-   	return handle_stack_fault(regs, next);
-
-   return 0;
-
-Which is correct at any point in time and that pattern works on _all_
-supported architectures because it's all CPU local. All you need is one
-extra store. When done right that's ending up in the same cache line
-which is anyway dirtied by the context switch (i.e. current_task), so
-you won't even be able to measure the overhead.
-
-Thanks,
-
-        tglx
-
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
-  Everything should be made as simple as possible, but not simpler. - Einstein
+ include/linux/kho/abi/kexec_handover.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/include/linux/kho/abi/kexec_handover.h b/include/linux/kho/abi/kexec_handover.h
+index 5e2eb8519bda..a5a518e881fd 100644
+--- a/include/linux/kho/abi/kexec_handover.h
++++ b/include/linux/kho/abi/kexec_handover.h
+@@ -139,6 +139,17 @@
+ 		(typeof((s).ptr))((s).phys ? phys_to_virt((s).phys) : NULL); \
+ 	})
+ 
++#define KHOSER_COPY_PTR(dest, src)							  \
++	({										  \
++		static_assert(								  \
++			__builtin_types_compatible_p(typeof(dest.ptr), typeof(src.ptr)) ||\
++			__builtin_types_compatible_p(typeof(dest.ptr), void *) ||	  \
++			__builtin_types_compatible_p(typeof(src.ptr), void *),		  \
++			"pointer type mismatch in KHOSER_COPY_PTR"			  \
++		);									  \
++		(dest).phys = (src).phys;						  \
++	})
++
+ /*
+  * This header is embedded at the beginning of each `kho_vmalloc_chunk`
+  * and contains a pointer to the next chunk in the linked list,
+-- 
+2.55.0.rc0.799.gd6f94ed593-goog
+
 
