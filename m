@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 215C6C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 02:58:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFA68C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 03:23:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B64A6B0005; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
+	id AC4916B0005; Sat, 27 Jun 2026 23:23:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6673F6B0088; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
+	id A74D46B0088; Sat, 27 Jun 2026 23:23:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57F916B008A; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
+	id 966046B008A; Sat, 27 Jun 2026 23:23:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 332B06B0005
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 22:58:22 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B0C9A030B
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 02:58:21 +0000 (UTC)
-X-FDA: 84927812802.24.DE2B326
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BB943A0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 02:58:19 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtA91UTS;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 64B866B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 23:23:34 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B1DFF1C631C
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 03:23:33 +0000 (UTC)
+X-FDA: 84927876306.07.7BCE59B
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 75D9540003
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 03:23:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ebi4YUnh;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782615500;
-	b=oOuf9I56UAROoOZt5GfH8O4qSbmDPhS6dEKTjhEsiJuDQbhNKF1S2P7q6htJCi6TOIKkYr
-	zd7CdTLiA3oWcWFtJ0nnx+J35yo16ONWpBQwLGk5pQPLseT7bAUoofUAl0C6717ViQVNwY
-	beNfKSxyKHbInVUPkmT+kEa6RxY0yPo=
+	t=1782617010;
+	b=cj9Fl/3YB9fjKHW8fsFaSeQX3Xdp9c5DrkCK6x7NK+I9Na0BL5pWkTiysAcah7Ib3XIH7F
+	i7j4/h9iIfZs7W2HxLw+adGIb6TwjTjdXa1BEPtcWPUMZaQLrhD8WxhOzlIqsgvfXok4xe
+	5SVEBQyk7gtWGMc/FV7/3k/jwig0U4s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782615500;
+	s=arc-20220608; t=1782617010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4QGjDrc94iYtKB/2VDYW46TVOW3u0FLV/oySj9gxXuQ=;
-	b=mLwX3JHHJ5KlOokFKYwayF+wpcZcPcV2rV5nXVNyjhbW2lY10OgOdaqyWCfJw0weqgwGpw
-	L9y4W3W8Vi4iLdk0fFf63Cb8mAtPu9IWKuKWobjXgfLfuz+5/MlNkYmjiezzVdgTRZCE6Y
-	clAbL6rePaabBTBpQd3Lx1K3YWhEKfc=
+	bh=rLd9VAaSv4zTPzb8ADl5Mo8ij7MWawo9NF5gj929yqY=;
+	b=MntLrw5Na58MMLyyOxnMEHzcwXZKwGpUVrFaXq80+D++pCNSWFGhUqZwJ/lb9cnnjOQrBy
+	2CS0snkzqWJmnZdWjSqq9Ch8nSh2RQ/4xGOGCvthm1Xx4rMGgm7ngf83KsERkcs/1VB8Pq
+	7Ezbt088LjvmyihpuwqbDNHOtEbCMXQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MtA91UTS;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ebi4YUnh;
+	spf=pass (imf01.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Sat, 27 Jun 2026 19:58:12 -0700
+Date: Sat, 27 Jun 2026 20:23:15 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782615497;
+	t=1782617007;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4QGjDrc94iYtKB/2VDYW46TVOW3u0FLV/oySj9gxXuQ=;
-	b=MtA91UTS1oJHSpQEQeUuziB80H/5pCqnyTlOMzJfLBLdy0kz6IaDSJsi+PaEqJPQqL69gx
-	gFkxpoRRiewwH11Sm4EXcX0fo5lBTH7zNPmv60mD0Yu0U5cTjdp5cwMtJUEyCo2JrYR/m6
-	hMhh/4BqnIpq98A4WAw0KUScFRlkZtw=
+	bh=rLd9VAaSv4zTPzb8ADl5Mo8ij7MWawo9NF5gj929yqY=;
+	b=Ebi4YUnhCJvH6XWtRsJn4n8jcVz9Ov+QBEbOG8OF44b5mOBstpkqNU3YVbYVw5lZJIqQ8q
+	gEJ9bE51FkRByR6r9KMFElJS/A6P12qNW5x/1PwwlkbRyICqZBAccwHimtG7qe7BG5Vx5x
+	IZjjTOOPDJ/jU3fMw8DoWFXP5pHyPpQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
 To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
@@ -69,24 +69,25 @@ Cc: Harry Yoo <harry@kernel.org>,
 	linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
 Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
  kmalloc cache
-Message-ID: <akCJRTnmA2um3CIy@linux.dev>
+Message-ID: <akCSftF6mrsKsz1V@linux.dev>
 References: <20260625230029.703750-1-shakeel.butt@linux.dev>
  <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
  <aj6re83IC84lkFL0@linux.dev>
  <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
+ <akCJRTnmA2um3CIy@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
+In-Reply-To: <akCJRTnmA2um3CIy@linux.dev>
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BB943A0005
-X-Stat-Signature: hwyf6eih6awb6in6nc1ejdxhe1rznjmy
-X-HE-Tag: 1782615499-196864
-X-HE-Meta: U2FsdGVkX18N2J9e7RRyZxOEDh2FC6HYxuTqyitnKut+lM/6WDT48M45P5qS6ZuWgEveQPIBxrhZZmQYkni6KzNjfZORLhYWkM15b+hmIbuzVAVf7xCR4NBT7ZQIaKdX7UfLWmnLIv8XLCSVJCcfcN3twSxORtkt58bbAe1kkuwnE87UfF5iUM65hN+saaDFO18GTqFPoyf7WNTKyldVSPRHBm/9z7rLUukOb1Ez0fLSiqmUBUYD1zGHtmgiiJbT95gevb3Ys0vYVG3fcyxMFXCap1uITBXfN4OTlPk36Z3sP0kKmrOXMfPjh9TRjO6rXy5XEfxmQ/Cws0aahMFJn1Ly7hQ9clyTvu0OhUwF5pTcClNrfQbgHUMLBGhPiILALz/GJPotBnkK1ZDj/C7L7e23Lr6FeaIKq4vLPMUYaOMlxKtk+lfgmaDyAe9sF6v6w30Krw3id29w/ac+6Ks8Zq4zcEa9gnmtXI4U5qDuRfZ7L7jXkCcnBGiPhHFuYVztirBIh8Tv0WMSUg8YxqaON1ma+1hYACVmBXzNSIWwwsYsQlKIlJEZwg2+kP1H7j9jroijcLDj9sMQBPzkUiuskmZa2scJSXHPb1jdeLm0EZWtUgitv9LB1FlnOPTwKKS5Vgko5M7kBVH5RTUY3TIFj21utQB68VNk6rbwakMeQrf3du8KX4exoO1aykqGhhn0jgKfobOMNQnNsCnKmoxqxLPjvrVdksghF4KPsJSIvwrRZbJ6Cy0qHpA9GIhDJk9g8DiYK/vN8QOytuHc/LnwuNGQf87L1u4ozMAZmlvwnROiNjl09xt1xN5v4S2wM5/wvE1v5DSigL3mI0ssDU5orxy+PVmGEv2M6FJ7eqyvleNMMkZ0m8pd6/4ilJtOSwm4RrfbPIivDQONesfGzTBURVcyO1IOd6I8z0fNap7T2QRPHlSss1mOytbtNUHDkO2gLyMpWKS7ETv+mFb8+CG
- jmABckTP
- 5LDJIxY+15ToRUWrufwhE1J5nSyGP+Kzhae2CJqVUaR15wSxbB5V33tOFo/ieUXAyBg5v8TgK2Fy95FUaSeWfHr0mypVNQg0qwCspleLo6SHgcHIwSfar1Wg0EO82ZSNViiwzg8Tnc2OuaUrA3HKIRWR8l9D6n3Y3zM8i2G1+8RVO7p6XDIIHxd9dmb6vmg1bKLv4IYDpc55TVIDJmEbGia+jUKA6+oJjNq15vPDUgCEhPG4zbYmywYbK3pzbZ/ye+hELohBP98VPgNYfCRojVzG1ldpTbEU21yZkFdjJB3LUEh/qn1Nvo649CA==
+X-Rspamd-Queue-Id: 75D9540003
+X-Stat-Signature: yhk7bqs9g6e5o4kdzyjqmuye4bgs4h6t
+X-HE-Tag: 1782617009-763379
+X-HE-Meta: U2FsdGVkX18E1oatlcN28+WtY1HKN1rcsmX7zVyGeCSuChEgBgtD0EtcJitat8Ej7VBLFynVyTD43q+mwB9AN4Si5ujVElXyqhLXD79anQazgQ3oWol7sjhcNs1COeUB4TlGduAx2idyolGvgYiV4X3D2lTs4aBTDtvOlVLAqmkpTCC7ip1d0zfoEkxN+681Hd8MaSR2b3ERN/ANjj7Cj2tUzom+Zkt0BDLt5Y3Q0Kt1YLjed913vq8XtgMVSR7B4QyHJGeMiheeS0NCRRlcLQlFZQBI/Wogm566mJbTzwkeyznATTBZzXF+JgHi5EEeZXzk/jS5uMpsXg6gxkkawbvIrhggn7eX0M7/vJq9e3JykmDIGjbY8LC2W2f9K7b8CJILhb6lf/M+yH9gmjjg7Gdr99CPBr75ITnl152qCwhz79+YYukAZp+LxDKybFu2n0TdAkfqRLYpu7fDeSKoYXWbxEYJlhiw2dIE/f23ddT5yrDMTn2KKdUr1zHfHnT49qBnAftzj7Pucps8o9WxXiI40p/S1pnGej4vOeoWENIHtajYIl3TitvStpYyGGKw3fYdH3RytJLvMbQONNDN39M4L4n13qnftT6ikUG63z4iDtetyurzqf5q5zf5Gir8itM4jtZ7VjdctehsOiRZIrusgZ5iDu533zOEdAdWsWa9enew3/CGadegSb4C7KT9///yPvhk0Ry+lUp2Ugr/Gr6FDR8a/TLYpDixkUt9m71B0JQf5BYhUHkJVVwKSNvj3gvO6FcAepmh3NbfOTFXZgNauMEBhKzxPyIHAjQeqAdGJ2q0TsjSwr94PSdhKMOMsdwCbCSgOExc546FqG9lOgs2YAzN4qiQGQZih2HBke+tRQOwQ2quOaeAx2+3GROhKmgnCWtZm5WPr//1pRITF5tlGnYHJwkt/zZxcznCLEKuqHNbk7qkrtGcwB76cx8mlt9Wpyv+JZ9cyByy4JC
+ 403V2Qea
+ woC34d6VxncIkuRfTwdblROYuSVIJ8fV0XauKajZBSx6c0ec8X7AELy1aF/ND0tWLeMY/vT68zKkXsrDD86tkuKSeFXNF7yfBnV8F/aCNI4GHkofyVHVEF9a+PblwyECROCGwI67RMSpQAHh6+BBlvg1X4BPK+L5TW4Rw4yPQxtn1gYIAU5RelZDhFyDrgmRd+oJt8YcOqTO2whCYg9UsBeBfHVFMg+B9cZHuthsIne8f6B2EDsTeD0J5kSoMR+E8GQISW4zOvKryJffJkaeVVRpOH5KspY8MgroUHiFIUUmd7Nd1MDNXNnwcEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,53 +95,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 07:11:33PM +0200, Vlastimil Babka (SUSE) wrote:
-[...]
-> >> > Fix it structurally by removing cycles of every shape: serve the array
-> >> > from a cache strictly larger than the one it describes whenever it would
-> >> > otherwise come from the same or a smaller cache.  Every reference edge
-> >> > then points from a smaller to a larger cache (here kmalloc-1k's array
-> >> > moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
-> >> 
-> >> This will fix the problem.
-> >> 
-> >> But this will waste memory as we need smaller obj_exts array
-> >> as the size gets larger.
-> >> 
-> >> We should probably create a new kmalloc type to avoid cycles instead?
-> >> (needed only when memory profiling is enabled, though)
-> >> 
-> >> That would also prevent recursion even further.
+On Sat, Jun 27, 2026 at 07:58:12PM -0700, Shakeel Butt wrote:
+> On Fri, Jun 26, 2026 at 07:11:33PM +0200, Vlastimil Babka (SUSE) wrote:
+> [...]
+> > >> > Fix it structurally by removing cycles of every shape: serve the array
+> > >> > from a cache strictly larger than the one it describes whenever it would
+> > >> > otherwise come from the same or a smaller cache.  Every reference edge
+> > >> > then points from a smaller to a larger cache (here kmalloc-1k's array
+> > >> > moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
+> > >> 
+> > >> This will fix the problem.
+> > >> 
+> > >> But this will waste memory as we need smaller obj_exts array
+> > >> as the size gets larger.
+> > >> 
+> > >> We should probably create a new kmalloc type to avoid cycles instead?
+> > >> (needed only when memory profiling is enabled, though)
+> > >> 
+> > >> That would also prevent recursion even further.
+> > > 
+> > > Yes but I assume that would add kmem caches even for users not using memory
+> > > profiling. Anyways, I think that is a separate discussion. Am I understanding
+> > > correctly that you don't have any concerns with this approach?
 > > 
-> > Yes but I assume that would add kmem caches even for users not using memory
-> > profiling. Anyways, I think that is a separate discussion. Am I understanding
-> > correctly that you don't have any concerns with this approach?
+> > Umm, the memory waste is a concern?
+> > 
+> > Minimally I'd now want to only do that size bumping when allocation
+> > profiling is enabled. Ideally that means both configured in and not booted
+> > with "never".
+> > 
+> > We probably should have done that already in 280ea9c3154b2. Because AFAIU
+> > memcg-only obj_exts array don't have this issue (or maybe they do have the
+> > [1] issue? Harry?). But if memcg-only should keep avoiding the same size
+> > bucket, it can keep what it was doing and only memalloc profiling would do
+> > the strictly larger thing.
 > 
-> Umm, the memory waste is a concern?
-> 
-> Minimally I'd now want to only do that size bumping when allocation
-> profiling is enabled. Ideally that means both configured in and not booted
-> with "never".
-> 
-> We probably should have done that already in 280ea9c3154b2. Because AFAIU
-> memcg-only obj_exts array don't have this issue (or maybe they do have the
-> [1] issue? Harry?). But if memcg-only should keep avoiding the same size
-> bucket, it can keep what it was doing and only memalloc profiling would do
-> the strictly larger thing.
+> memcg should not have this issue as normal kmalloc caches do not serve memcg
+> charged objects. 
 
-memcg should not have this issue as normal kmalloc caches do not serve memcg
-charged objects. 
-
-So here we can do dedicated caches as Harry suggested or make this size bumping
-very specialized as Vlastimil suggested. What do we want long term? Orthogonally
-we do want this fix to be backported easily to older stable kernels. I will see
-how does this narrowed down size bumping looks like.
+I am wrong here as I went back and see d8df600b67d7.
 
 > 
-> Suren's input would be also nice to have.
+> So here we can do dedicated caches as Harry suggested or make this size bumping
+> very specialized as Vlastimil suggested. What do we want long term? Orthogonally
+> we do want this fix to be backported easily to older stable kernels. I will see
+> how does this narrowed down size bumping looks like.
 > 
-> Thanks!
-> 
-> [1] https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
-> 
+
+BTW I think we need something like the following, right?
+
+	if (mem_alloc_profiling_enabled()) {
+		if (obj_exts_cache->object_size <= s->object_size)
+			return s->object_size + 1;
+	} else {
+		if (obj_exts_cache->object_size == s->object_size)
+			return s->object_size + 1;
+	}
+
+> > 
+> > Suren's input would be also nice to have.
+> > 
+> > Thanks!
+> > 
+> > [1] https://lore.kernel.org/oe-lkp/202601231457.f7b31e09-lkp@intel.com
+> > 
 
