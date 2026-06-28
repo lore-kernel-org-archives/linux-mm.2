@@ -4,86 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07251C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 21:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A91C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 21:45:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1E376B0005; Sun, 28 Jun 2026 17:42:15 -0400 (EDT)
+	id 6AC486B0005; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCF106B0088; Sun, 28 Jun 2026 17:42:15 -0400 (EDT)
+	id 65CB66B0088; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C71166B008A; Sun, 28 Jun 2026 17:42:15 -0400 (EDT)
+	id 4FE2A6B008A; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DFE86B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 17:42:15 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0E5C4140486
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:42:15 +0000 (UTC)
-X-FDA: 84930645030.09.CC42496
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 72299C0003
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:42:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BzQP8hnP;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 166146B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76DF9167BF7
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:34 +0000 (UTC)
+X-FDA: 84930653388.17.3834124
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 07F3A20009
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QXgjva6G;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782682933;
-	b=c5FnbDbTZiye+jdJ+RonBmoSqeJNBEEPSu08I5A6rF6sl4BtUwM4eLYq+Kxjy+Jz3TEPC0
-	d2rz0ysaOtz2QMOeEZsv6dpjmE7+MhDGY0vtJTuAcLKRGM/CZxYhywvTtZC+rIIIcsLkYt
-	U/KIsOBhnUPlhN4r8hrCu9CHDMUlXIk=
+	t=1782683132;
+	b=lnEezwAhKOhh/CIMxzlpQmtTgy0O4Mf7WnZP/SQR4KdEpSfhJCJH6S36c3SbFEmuOchs99
+	ekBX8lOe+cabO+4HNIFbbZri1fgGLAQD7bNbJFVZOZsCfeYYz1YbrRR3M5r11gg1mFBh5s
+	IdNIsn822A7PKtyioPlXDXsK/Ss5LPM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782682933;
+	s=arc-20220608; t=1782683132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EbdMQQtZX/wQMqAhMHFL3ANnWsMXWow+5Kt3DUx2tcM=;
-	b=ZJnSJNrO8wWsAAXT28w2C5tujxlPucasOPRoffsMH6hkYlO3T1pcaTe2v8F+PU1mcLhwXE
-	5VAL/iVF8UEqqY72e8WdF5e51P0xEPPN0Bf1ae8bkJ+80PwroMJxvqp0s5QXogLQ2P+3pT
-	HrZPvlF1f+cuuRq21NQRYu17GSHlt7k=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
+	b=yflGbRHsskrRtrsQpZi7YE8RRxdjL8ZRNoJ1YUIt9BavR/e84A3ARsEZtAbg2TT0zx89tv
+	eWLomeLpJAL8ZHkHRfunYBQO2QzIx+e2n1OD5gLB9BFpkKchHaP7ufA27d2GHGzQivN6nN
+	gFhcWoen90OF2xx+7Be0eFJ1AYdr1W4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BzQP8hnP;
-	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5E906001D
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:42:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338D41F000E9;
-	Sun, 28 Jun 2026 21:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782682932;
-	bh=EbdMQQtZX/wQMqAhMHFL3ANnWsMXWow+5Kt3DUx2tcM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BzQP8hnP9w8tQjAlNhhCeNJYVMnTumfbEguSTvHdROlE3x2ub3H8uev+FllmpXJeS
-	 oPo2iWuJKX6ISqKynapiZz6QoeBPP4NZD0gm5+iqS4JWa5iaRtT//0im6OL1xEaoDK
-	 33iz663ery6mQiUmLZSH+tcf5X0vgl9juP3G2kI9qzRNzOk5PiXJ199LNZwA5gWy/N
-	 2PhfWqdBjRrs74m7xEZ2YN3U6w6USTiQZEfPmTw09Ipd8GiHthMFYzDVYoXotO4q0C
-	 l0AU/vgxJjIoEmkqN731PVuP4oFOgIw4P13A8e/XLn9oI/mlPD46eUhjyBzX7FOVgs
-	 5SxIVvR4BkfFA==
-From: SJ Park <sj@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: DAMON Release Newsletter for v7.2-rc1
-Date: Sun, 28 Jun 2026 14:42:08 -0700
-Message-ID: <20260628214208.94619-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260628211904.94361-1-sj@kernel.org>
-References: 
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QXgjva6G;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782683131;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
+	b=QXgjva6Gi4O6YD887grlurtmwnNtsBHmgFCB9P6+1grfVCTxWq7NiEgsEO9H2E5JF3YXDQ
+	SWJRJ3U1iPgS2ls/YgITViE2qwkUYFr9Iz9xYcZtBxlzKC7JYRGhELOzqyQI/IkZDzfSHi
+	H96CjvTTxdAxJ+34aU5geKhLQvpJ0HE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-183-9_rja7jlMAupiDzqx0pzSA-1; Sun, 28 Jun 2026 17:45:29 -0400
+X-MC-Unique: 9_rja7jlMAupiDzqx0pzSA-1
+X-Mimecast-MFC-AGG-ID: 9_rja7jlMAupiDzqx0pzSA_1782683128
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-473e18559b2so75063f8f.0
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:45:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782683128; x=1783287928;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
+        b=scJx8uHr7jF8+j3hMZ7svslxudTvRN7V0EufkQRmhd0EPqDERz2LFaWLqZHP22M4Ge
+         pLYG0xC+D32fGlsgWZ2ba6nQuG1uyBpin0Nc8JtkE3hF/JOaRzUYHZzEYqhjClGWe3fA
+         FIybk+wz7sY4g+OKaNJ9B9htTTf16T+7GMrQIuCbKRDMI8H0gQVtANZbzZ6o+G1CC1cM
+         9U80mOsLdpcoLx0aRRbzkk5m6tM4SFXOlzjpKQCkUYTdt9p9SD37dWOLcK63fAefnyql
+         ED0rcp5n9lymzSQOsPB+csRNY2MwqoRGA3IeZXJjkudV50EP7bxY5PliFUYr+S8EK+22
+         hpKA==
+X-Forwarded-Encrypted: i=1; AHgh+RrqYLgn7uMnzaRbDpd0YRyLqUhrpb4AKyqYj0nf9WqCndVbGLR/LzaFLDbJp5qsLqC6/MgpFEpC/A==@kvack.org
+X-Gm-Message-State: AOJu0Yz29VvXjDHBxqO1aMVbsFdp9Diurb+hX83nTQUoh73VfwWzZVse
+	eN81ugbEIfKpCxXk3bHHaiHYP4DFgTlv1kg6M/i3SVWMV0mDIAqfy7Xiqq/l39YUti+jyYA1St9
+	wJpwRETGWAy7a6YqKEB/tfwayhQGS9Mje48e8rQyIesCbqtvitqEQ
+X-Gm-Gg: AfdE7ckgl9Ztc72jfnW3367YptV+r//iMwjids4XE75i6IRDqX4adQO9WVcdTnvXU5C
+	EAxH3huHyHUuxTgUWAqJmGLBkyngid5xDHOmWQ8tjyYgnYuCqRyO32up9nFwjGi9/o6SCChN5iW
+	AMtw6XX/dLFzm6EEpjdwLuoWgzjIBC8RrnZtCYdUS0AkLT9XZqi4zY0obYX2b+Erx8MKDS2Hpvc
+	aK4OoTiKnZsig9QznPXDrAd0jyPS0TjDhVpAwuNrlER57f1DbyP0P6lL/boaBbPrNtxVbA26z+P
+	h+4Ih48COJHnUOaXu6uBBeKQdMelCdEWI2s/UYKQmVSRfRhjba4IOgqk+JaYEjRT6wezsXnJk3z
+	Q
+X-Received: by 2002:a05:6000:2387:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46dc0d0eae8mr23677100f8f.21.1782683128241;
+        Sun, 28 Jun 2026 14:45:28 -0700 (PDT)
+X-Received: by 2002:a05:6000:2387:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46dc0d0eae8mr23677067f8f.21.1782683127520;
+        Sun, 28 Jun 2026 14:45:27 -0700 (PDT)
+Received: from redhat.com ([31.187.78.70])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4730937e18dsm8325636f8f.21.2026.06.28.14.45.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 14:45:27 -0700 (PDT)
+Date: Sun, 28 Jun 2026 17:45:22 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: David Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+	David Hildenbrand <david@redhat.com>
+Subject: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+Message-ID: <cover.1782676497.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3gu3auizmasw61nmxqbayf6e5o8npihh
-X-Rspamd-Queue-Id: 72299C0003
+X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
+X-Mutt-Fcc: =sent
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: vjT9DcIowDW2OITX-XgXBbpdSz7DKNMXaQPKQv7TuFs_1782683128
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 07F3A20009
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782682933-752796
-X-HE-Meta: U2FsdGVkX1804D0SKX9htiIaxtxiq3VMEQTRP3K4XK8ihnrvhF0NvWWv9Q9fAvrhdVOGNOaq1AjVIALVWVWg3BX+RPhVt9s5DsTEpvTDR+gWOffK+x3EuyGwiOSHvIsXQXIyvXg9gYQswsoQpx57VUApmwT1hq9GZ4TXWhV4+P0YNfTUqxaukat3B5eJhvtfWPY0xgfdvRuhPXwHNFZR7yB+k6zzRfVcz6NiOZUCtSpMVukacCzKhQ9eCq4SZGkE+M1eSi0MGpRp+c6CgwdY9sQW6Y5dg0NyZ3snMhACdolmYLItF+moRaECY4bAkcVB+H6NqdqwsuP8bXTePaDPrI8bI3PpQPC8PrjBD3hxgb16xLoYuI5UgbLqyeSxRh4/SGEwHV+/nxpr0SzNyOjY9akcWVO/ELjKOfDV4dvFDy5nL2VjQhtp5jXrITrkAkrHdyYYAUVgfKurnIUaNrCGSxH4GDUvWmSMiC8nZCiHX+LA9l1thZV3M+4pNNs2O36+QOWCmmxDqpTFuI3yRFM2xBZaaIFYEhg4oOcUC+u0JR5W6ta4L/aS0d1t8++Dy8/I9oLTG0//qq0uhoEsLpumXYXPG0x12Bq9CNRZJru1JoiTWqWyfMnONBtxdcgNNmwnVtNt+hPXnjgsZ+S66dLN8HC6GelmJ3r5ZT62sbaUuENDXnV4bcmJ8FkI8ZIA87fTglFS0im2izTm63yK+uAy6saMITmfRFGnQDEikkNJgzpWO6sKFa9rbRoGyPVPNcHhUc+dl75sv++QpqS3L9DGrpQ9yU/wGABB4m4iRXLi5noFLFUGWFrkjUOnTHxVkMM0CLrZVw+TFAiUT5Ubp/AxemckValn/R8yoSTeKHHCEMYJ5On0Nby79yxykXItifPzC2HVE+YrCUxaBzndTcRwKfyPqwOfIY8DaS9vH8SuiC132OfMhLco73SxckeIDyrTnpXZlJjue/umT0UYmqn
- 3E5shx/C
- QuJtsp1Bvkow9AHijV54lV9rt8VzhDXgIpwtaeCTayL0Hhn2U1JUCetQNkTrCumE9QJEvcN2X4nVxYCXKftiQV7NfF+rheisUaf2JXEdNGzqvMKcOjszPxbROaXZ3wAZScbul8jKeKmq5zaMY3cG5SDJKs7KpSKIVkvOezYyXOHo9/pwur6qqOg789GJ9WLkBO1ReQjdM7xYwku/GHNfP0wz74Tn4jj+wWJdP7C4xBzygGYpm9yNJ0c9Vv3bXAPxyiSFsxJGFg7loVkYlitqWaFHM2oVjonRN0NMq2Y+GoRCWioQ=
+X-Stat-Signature: 1cw4b57p964gft3zre1ogtxb3j6a7gfu
+X-HE-Tag: 1782683131-744152
+X-HE-Meta: U2FsdGVkX19U4AZa6S9QdJwYIoOedX4vsJm4pWEePX0zfXAnKovJZUK2ctRhmvCM4pJHu1w2bFNaRXfX906cG0wt5Llu3OgPetoGZP1XUnSNPQ02tVROF2gKr4/Mm4ncW7Ntmbfel2HfS3o+UErtwMBlnfXGktFGhgMD54Bc8HQ3kwFMNQcnuxmj1LLoNwYB0ApLmpdSE5oT0tlkgSGUDFCfwqsoJs5kychouIa9kQdFWgeGosa79BMZnguIlog4KhKXaJDocPUpZzz5L83a917fP7nUCVP5LDPDMyXFf1TAav4xvRDxWi3stM1NVrx8s4cBFwgChFoWCLxMFALshImT4GGUSIy0qq1OHaFbrWndon6NRyFynnOC11Fx12Zx1pE+pIBQKAWkvBVF1LjIiSTzlbQD5pfjmKYvAZEySYvt71OmoczIRQYSgemIf2ww4/5zQwN/Dcljd/gUx1FC5mbLvK97s0R7IKUf9t/vGkltnLKkMAvDJ3SYDclrxtIbt7UtVyupU9cKpgmrCOzlbOWFbv2cFhpDh+PJdIJNEtqygj0rjOM9L0+c1TvavAYXvxe2zDs7ywZNJCrSc3eU+MgOuC83Eputy6P3/fFjqe7XAh02AVsnC2rqi+91TVN4jeZkdSPxj9YKGBd27OdjqpKe1O581ln94AnNSoLYGbmJYyLKnfYPax3CuNtxsesTYliPWzm4toPuDstTRR024EYoLWvD5DsJvXvyMKHirJbitVNTPnjgGIpVgTjuYHCRmhW6NQp9O5NFiMazM7I1qIsjGNLVSWB5ngDQkFaHdzfkqXh8PgtfRMyJPjZ1w6ydaehAIL0r6XIcgk8fCLKHO3Kg7u3n80KCTlugXg9BCmKd7xkbnGnRKJCPK/O1qgPeFcIS/151IVwIJYJ6KzPVKAexBiukcOCgZ+1DwQ094vwKlqKZfeA7ieUIg6lABgNAwGbWbUgOn009fgypqdH
+ wXF47uui
+ FgsUEFYKQB2mlr0umM2RzBxz8c22aXhpUCjkhFt9vg6qZjwg7JzAAJfE78/1BYcgXJXjmgm+F0YCGvNQHXfRsNApsd5PU6yovvuFBKqJmFXTZAYdb1ip3758XjGiJTlHtuJg1l4NF3+Bmg6ZYNiYUw95kfPK6ad3WWV9wX9VYduF1DoLNXCvnWjiY1I7vN7mQqv/Cb1dTQA+8sVnlQbq5brpiChl3rcPZrFRNQQOm6h0JaGMiZSg0xkh8uRYEgwDlxixqfE8p6AM3MaMKmilqUSlmEs2LMRvKuC+5n75mFsEayiMyrNaQyugzL0RiUi9pjai47La8+hHTJv6Oio4QIosmF2qnSC6Daa3J3Cb7iU427giLq/3tGtmC/oMkNrcQUen+WWZ1jm8e/Kush6PispP30Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,40 +147,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Jun 2026 14:19:03 -0700 SJ Park <sj@kernel.org> wrote:
+I don't like it that we are adding overhead to the good path for
+the benefit of memory failure, which never triggers on many systems,
+but I don't have a better idea. Pls take a look.
 
-> Hello community,
-> 
-> 
-> This newsletter covers DAMON features that landed on the mainline, queued for
-> the mainline, development statistics and misc events that were interesting to
-> me that happened in v7.1-rc1..v7.2-rc1 time period (2026-04-26..2026-06-28).
-> 
-> The newsletter covering the previous release cycle (v7.0-rc1..v7.1-rc1) is
-> also available [1].
-> 
-> TLDR
-> ====
-> 
-> The last development cycle for DAMON was the busiest cycle of its mainline
-> history (~6 years, since 2021 September).  12 Authors landed 106 DAMON patches
+Non-atomic page flag operations (page->flags.f &= ~mask, __set_bit,
+__clear_bit) can race with atomic TestSetPageHWPoison() in
+memory_failure().  The non-atomic RMW reads flags, memory_failure()
+atomically sets HWPoison, then the RMW writes back the old value
+without HWPoison, clobbering the bit.
 
-s/6 years/5 years/
+The race was confirmed by injecting a cpu_relax() delay between the
+load and store of the non-atomic RMW in __free_pages_prepare, then
+running concurrent MADV_HWPOISON injection.  The clobbered HWPoison
+bit was observed repeatedly.
 
-Sorry, I'm definitely not good at counting.  Sometimes even worse than LLM.
+This series fixes the race by:
 
-> for a number of changes including 7 new features on the mainline.  A roadmap
-> for extending DAMON to utilize AMD IBS, Intel PEBS like h/w features and do
-> per-CPUs/threads/reads/writes monitoring is made.
-[...]
-> The 6.17 development cycle was the busiest DAMON development cycle in history
-> (~6 years since 5.15).  This cycle broke the record.
+1. Having memory_failure() call synchronize_rcu() + retry after
+   setting HWPoison, so that any in-flight non-atomic RMW that
+   read the old flags value completes before we proceed.
 
-s/6 years/5 years/
+2. Wrapping all non-atomic page flag operations in
+   rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
+   so that synchronize_rcu() actually drains them.
 
+Performance impact (page alloc+free microbenchmark, 200K iterations,
+20 runs, KVM guest, error bars are 3-sigma):
 
-Thanks,
-SJ
+  !PREEMPT_RCU (x86):
+                         insns/iter      cycles/iter
+    base:                12237 +/- 1     17954 +/- 136
+    patched:             +22 +/- 1       -124 +/- 122
+                         (+0.18%)        (within noise)
 
-[...]
+  PREEMPT_RCU:
+                         insns/iter      cycles/iter
+    base:                12512 +/- 3     18541 +/- 214
+    patched:             +95 +/- 3       -12 +/- 161
+                         (+0.76%)        (within noise)
+
+When !CONFIG_MEMORY_FAILURE, all wrappers compile away completely.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+
+Michael S. Tsirkin (2):
+  mm: memory-failure: use RCU to fix HWPoison flag race
+  mm: wrap non-atomic page flag ops in RCU for HWPoison safety
+
+ include/linux/mm.h         |  7 ++++
+ include/linux/page-flags.h | 81 +++++++++++++++++++++++++++++++++++---
+ mm/huge_memory.c           |  2 +
+ mm/memory-failure.c        | 54 +++++++++++++++++++++----
+ mm/memremap.c              |  6 ++-
+ mm/mm_init.c               |  2 +
+ mm/page_alloc.c            |  4 ++
+ mm/slub.c                  |  2 +-
+ 8 files changed, 143 insertions(+), 15 deletions(-)
+
+-- 
+MST
+
 
