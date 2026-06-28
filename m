@@ -4,90 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055ADC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 05:34:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F9A0C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 05:44:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FF096B0005; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
+	id 2AD726B0005; Sun, 28 Jun 2026 01:44:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AFED6B0088; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
+	id 25E586B0088; Sun, 28 Jun 2026 01:44:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79DF96B008A; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
+	id 174506B008A; Sun, 28 Jun 2026 01:44:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 549346B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD6A78D227
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:34:08 +0000 (UTC)
-X-FDA: 84928205376.20.E60F6EE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F1607120003
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:34:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q9AWHfkW;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id E38E36B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 01:44:15 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5B76C8D298
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:44:15 +0000 (UTC)
+X-FDA: 84928230870.29.A62C4BD
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 91AA140003
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:44:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UbSaXfGF;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782624847;
-	b=H2yOpOsIco9B2LszfPMi8NB6ExtnqSwwCsizs9Nc3a1oy9sim1CLGfx3cyc8Ttx8WykK4f
-	JnJUU9sb+8pLWIF6wHoxY8NXVW7H3JcxQ28Rci91bZRM8cK89cWVs37uP43+GK6aMxfkt3
-	q7uvuh1QsCGr1w4gj8Fj/w/RW89FC/I=
+	t=1782625453;
+	b=Ai0o/ji/mWA8dM8cWV6aJ7N1Pv8Daf67pjJKH97y2BAWfAzZK4MvS+VyYOZvjAQ1JD11au
+	sfJeTSlB2B3n9/fnMN/NIITihUtLNM3ogoMqOBlcqZ0f8VqGMDYeI2bHWXHkfF25tD2w6c
+	QQpBhsyXpTVBKeJKUa66zSiLCNUSKCs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782624847;
+	s=arc-20220608; t=1782625453;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U8GvqtPsONGiqrdSgng3Dl86u7BfkOlwSjotfA+CRVc=;
-	b=eFnz621/8ZVlpf6Eqmy/+zT9fNKNX6YQ77OpLsJ1HHqqp2TewSL1bqI0E/PvAlX6LT4O3m
-	qO1wiZZ91gi1o4Nizsx2Fg3BiZ0eYuoXrVnsnQc+4eYJmjPE9rAyfMFRciWRWcvYboVTC0
-	8IybSEGSMDkluFUPQZmYJD73K4GBpCo=
+	bh=Hh2gd/qWylLtYWmFXLrDcR+MvqoGGuVJgOfm4/cNwnU=;
+	b=zWDQGFAbgib5FXF+86OwAOpCZ9yOPOZslD6YU6Fysd1Fue/Frk9haNsXlNKVICF7NiItHr
+	l6FN1VJFbn17rbmLPWsZwFMk3Q0/9asOf9mkbCFqO2kutLC46PEfZoSohHHRnRgD3802mb
+	Yhky6njPbrolDLZBOnrU0V99P1Sy1zg=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q9AWHfkW;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DA1F601E0;
-	Sun, 28 Jun 2026 05:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C321F000E9;
-	Sun, 28 Jun 2026 05:34:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782624845;
-	bh=U8GvqtPsONGiqrdSgng3Dl86u7BfkOlwSjotfA+CRVc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=q9AWHfkWK3xyQiwev8Qy9xYMgHiUtblF/aXyVNjeozZq3oC7HZUZV0RXG5dmrZSfU
-	 Q2A7Wwign3MChDNVu4cyloKW6zTvUeoymXR646u2TO6eIQZ3iKz5jbT1ltsUah/zj3
-	 0qRwmI1KpMm1lr3DOLWSOhIGECDop207dPOPrjpM=
-Date: Sat, 27 Jun 2026 22:34:05 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Nick Desaulniers
- <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
- Stitt <justinstitt@google.com>, Ravi Jonnalagadda
- <ravis.opensrc@gmail.com>, Quanmin Yan <yanquanmin1@huawei.com>,
- damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [PATCH] mm/damon/core: reduce kernel stack usage
-Message-Id: <20260627223405.3533412b4010b6ce658da01f@linux-foundation.org>
-In-Reply-To: <20260611135608.66888-1-sj@kernel.org>
-References: <20260611125704.3386176-1-arnd@kernel.org>
-	<20260611135608.66888-1-sj@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: am1nh967mcajojj953pxoq87ukped37h
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UbSaXfGF;
+	spf=pass (imf27.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782625451;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Hh2gd/qWylLtYWmFXLrDcR+MvqoGGuVJgOfm4/cNwnU=;
+	b=UbSaXfGFeBZY8DWvD4BZijtH1P+LU+jU7J+yZCcXnK6fzLcMgDZfFgvUOZ6QoZ+3q31NgQ
+	RuPz+1jUO6Q6d6PczVunELVw6rDH7vqb9rxNAFzlsoaC8oCQBa633o30AfId7jm4PvZ3jj
+	dW1Of102EdtUGtUOHDuvE8cA1aDtamw=
+From: Lance Yang <lance.yang@linux.dev>
+To: dev.jain@arm.com
+Cc: lance.yang@linux.dev,
+	linmiaohe@huawei.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	david@kernel.org,
+	liam@infradead.org,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	mel@csn.ul.ie,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	jpoimboe@kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+Date: Sun, 28 Jun 2026 13:44:02 +0800
+Message-Id: <20260628054402.76978-1-lance.yang@linux.dev>
+In-Reply-To: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
+References: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 91AA140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F1607120003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782624846-555092
-X-HE-Meta: U2FsdGVkX1/lxfXMZfk2KivgHGvmJHUolB0oCLC8gWqHPLyvnWDoe4fCICjb/VAKqMne5euOdAu/IKU96igbVjtvmdYKKtCjv93p3nuSVpKi0f0rFHfzM0owVxay32mJKx/SU9kn91CgSVtxcxtfrAbNEoM45ayj49Yx2ced7DpXAKbhG6vwzYjbb0j+7znIADybCB4q8PY/DxyNwo8lruzYEnzs9vZFyJZ0pwkhCsqdgqeLimo8kP+wN3jlfx9nKfUD4qh0YWp6ejZW+iBGR/zP/374gAHZs/wjmYqUo/ajd0nbL8jzoJlvIqhKIcvSbdtoiQdbM7ks6om6N1BmElWE07kZLykyK4K6IL81NbKEAj5R0ALHBiyvfhMZz+VdpJjh2T26I+gdBAvhEoJ/kSDzkegatN+bQMZfqg9EhntIRB6Tkm8jGr3zUSlDNZSwFJq+H+P9W6csH/dR5vLvgHNfhxslTxfJz/h0qm0nCrR3ED3OW0JeofEncAIF58i4EGkqdDrmDvW+Q/kLHN1XMFHtEyBSDyGuJqNgGzRMdreaAg/vGm5OGvoYhWh/QUhdl8t7iMOBvLeRYzB+9W9EUVUOVorUFfdL3fj3686F/KiFDFLcrWTExDLJR3HEDEC2vozS2EKc0UqAlwTvGC2QjpwRiuu1Na/fJdrFqsdChFr7OxDn3dq8vP8pi/YU5u+jam15vqBXhphGjUEDtXW5ml/n3YcgtSdd2m1MbjRPjoOu3xheQajRYkroqZEz4BQ+YjypIAhgyBrUp1CquzNpH5+R1RizFzWuR6jwlotVqHRy77o5QPuHtq/DAq41cPagES7uYSvRmw4yzT+edaJVVf6giFvuSKiv2/L1J184v1CSVzFh6Y5fIlGeXZnv/WFmvAzFNrHKOKwIS2nftxH64pXR4LEFdAY40Mst9tww//5HoK33PAn1Al0wdFO0m6J9VwluwOCdduyte+MVkwY
- 1hB4b+Ux
- I+ETBRMd9mdL1Vw3W5U2IbyOJXyp1DKHZQ5hBHjOZv5ikFqNb7piY4/q6j9cDlrOYmdhXWCkp9qE8AQa2niCe7cQZp/ItDYNuymPXJ3a0gHxknECZ4wZ4cK+dxT7QikaVderX4SMPR1nps3OC+PPeAZgVQSJ8rtM3m9TRXEyZBjuCPh55D1FMS0n6gBwTWWo4GI4lpiGKyciKabN55215XrTo8jK5y/7g3XzlQW03lYxb80/QkTV7F9FXe/qc8rKxTVJitnMPRJ9x+Csw7tLy5w6U9sdSch/3jMfKE5cTj1A6ZXLWSQmwVIEETK7zJhvIv8RVpBMORdnOMrWI8DCjwG2tPGwKQdqnuAVpWMdEgL9kuOwHR5Y23R7nHbTUcUy+WuMVopNZ0D4IhtX9gQql36gOiu9gBc3scRndUrkVfmIlHuw=
+X-Stat-Signature: qk8x7tsyhuiuhyx5dj7znkxeudabpfyo
+X-HE-Tag: 1782625453-654880
+X-HE-Meta: U2FsdGVkX1/SZYat/Qojn80xw0YdJBCOS5XTDed9MqVbBjYkdPvZxkKAdTxB/GuuVjLI23RlzVyI17dVdtzhYuLMHvDFlPikyJfODIA7WVA1v6YiM6QRkXs4iYr+JyLhUzdA508vWLgx7OAopLvxoTFnQQ6BlMVHYgKoR3jMFwCCB76wVbhxXVIqWg/tjCeRUGyfGRcPvR7vHzDTxtNd27DW8Zo2KpxR0SEj/FQLcFSIPIckQZMYjUy6fnZyhtVlon4ji6iTd4vj8isVXBzVVXf4Lf1/jVXCs2p3lJ36SmLHo2QKVud9s93EFIzc6jSU0QdISp8MxBD0F4oMIznLZ15p0wzOVTPKoOi5SokER92TMGKXpDlMuMawEmbZFysIOwVQaanMWOxaY3cDTrvcCt/cWMbKA9WJiTKB2ayp4oiAtIUNg+xF/7M7aMNXBnAYAcVc283xvLR++MKjiG2b2lbpTQFTT1V4e88HKTgMaw+gHwQCEunNRemYoWGzi7LDFDCffEubHSOa0WaBbc4jPWNiCYk4gpkYXP+BZtDXF3+9H3tC9qZic5Odyee1zKgL9aaXh4xEpYzjOddE8bThr5pvvrORgs0g8I/TchjHnN2lhv5CqHUJmfFXfu/Vqg0PPCsbvdsF2iLhvPtFZXFx8wKY6YHsjUCEmbxG8i0zwrKTViIEPE4jPQ7P0u0Q/ioauWcYYXHW9pn2Qh7IZ9RpGNOa7v5RmuPVImLjukc8vRc2IhGoNdNJXwE6jFMOq7FDegm0kvsCn5LAM66CAvXeCQomwyS53+fFtW3bCJbKSHXRtmC5ouh1Ww3dcxNV4Oh1NMoh6AGFLlBGqlt/1TCdHxZWMZRa5/RTEm+sktq7L1gyN1N5dsBlJG1BOVXxm5IwYelX2A76fgerHS3iPpB2+BUhwyhn6qJkwfBHJTZSXl+2t7ks2nfve/jjccPTW4x6JIjcR3/sqlZ8kc1tMbw
+ rTBihPx9
+ KVed2FNcszcWC+gKoI7PSg8aI5ZvJqtUpfoQxj4EJDVS1D2gzcCbqbGzBz347CUy3n/T9Wbhoiglo3QWmMqBmdG7pSMOptnU8GlYk5pU9WMFb1jRW1nbmzHlS2nSoy6W5CukwweERWGnRV7wuqkcfJmlmkNopiXhG1l5MH3HvzOzgRQBlizSi4V56vjTtZr3F+njhQ0m2OqC0nTQzaUUV8hyKQC4EWd5i9jMgWbAlPpGl/J3xpbM0+s6/UrnE11FWsOJSufICWQMjI1aJbOlNGtQHknxSaKVmNctdZ7KsKwqDPv2MLmWV13M4qFGsEOu6Lkz1MlQXcbQ9jM0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,41 +121,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 11 Jun 2026 06:56:07 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> On Thu, 11 Jun 2026 14:56:57 +0200 Arnd Bergmann <arnd@kernel.org> wrote:
-> 
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > 
-> > The main thread function has recently grown to the point of
-> > exceeding stack frame size warning limits in some configurations.
-> > This is what I hit on s390 with clang and CONFIG_KASAN:
-> > 
-> > mm/damon/core.c:3440:31: error: stack frame size (1352) exceeds limit (1280) in 'kdamond_fn' [-Werror,-Wframe-larger-than]
-> >  3440 | static int kdamond_fn(struct damon_ctx *ctx)
+On Sat, Jun 27, 2026 at 12:43:31PM +0530, Dev Jain wrote:
+>
+>
+>On 26/06/26 10:16 pm, Lance Yang wrote:
+[...]
+>> 
+>> Just thinking out loud: given that huge_ptep_get() already assumes that
+>> addr matches the huge pte, at least on arm64, would it make sense to
+>> have a small hugetlb wrapper around it that takes hstate and aligns
+>> the address before calling the arch helper?
+>> 
+>> Might make the rule clearer, and a bit harder to get wrong again :)
+>
+>Are you suggesting something like:
 
-Well cheers to s390 for using a nice tight stack limit.
+Yes, that's what I had in mind :) thanks!
 
-> > The largest stack usage here is inside of the kdamond_tune_intervals(),
-> > so by marking that one as noinline_for_stack, the functions individually
-> > stay below the warning limit, though kdamond_fn() itself still uses
-> > hundreds of kilobytes for some reason.
+>diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>index fdb7bdf7645c..xxxxxxxxxxxx 100644
+>--- a/include/linux/hugetlb.h
+>+++ b/include/linux/hugetlb.h
+>@@ -825,6 +825,15 @@ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+>
+> #include <asm/hugetlb.h>
 
-Wait what wut.  This cannot mean that kdamond_fn() uses x00,000 bytes of
-stack, so what does it mean?
+Maybe worth spelling out the rule as well: 
 
-> Thank you for this fix, Arnd!  I will also take a look in kdamond_fn() to see
-> if there are more things to reduce.
-> 
-> > 
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-> 
-> Should we add Fixes: and Cc: stable@ too?  This function was introduced by
-> commit f04b0fedbe71 ("mm/damon/core: implement intervals auto-tuning") which
-> was merged into 6.15.
+For arch helpers that use addr, huge_ptep_get() assumes addr is the
+address for the hugetlb entry ptep points to. arm64 already makes that
+assumption.
 
-I don't think so - kernel is full of these offenders and it will be a
-long and painstaking process to weed them out.
+Callers where addr may not be hugepage-aligned should use
+hugetlb_ptep_get() instead.
+
+>+static inline pte_t hugetlb_ptep_get(struct vm_area_struct *vma,
+>+				     unsigned long addr, pte_t *ptep)
+>+{
+>+	struct hstate *h = hstate_vma(vma);
+>+
+>+	return huge_ptep_get(vma->vm_mm, addr & huge_page_mask(h), ptep);
+>+}
+>+
+> #ifndef is_hugepage_only_range
+> static inline int is_hugepage_only_range(struct mm_struct *mm,
+> 					unsigned long addr, unsigned long len)
+>diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>index 18e1d341f463..xxxxxxxxxxxx 100644
+>--- a/mm/page_vma_mapped.c
+>+++ b/mm/page_vma_mapped.c
+>@@ -110,8 +110,7 @@ static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+> 	pte_t ptent;
+>
+> 	if (is_vm_hugetlb_page(pvmw->vma))
+>-		ptent = huge_ptep_get(pvmw->vma->vm_mm, pvmw->address,
+>-				      pvmw->pte);
+>+		ptent = hugetlb_ptep_get(pvmw->vma, pvmw->address, pvmw->pte);
+> 	else
+> 		ptent = ptep_get(pvmw->pte);
+
+[...]
+
+Cheers, Lance
 
