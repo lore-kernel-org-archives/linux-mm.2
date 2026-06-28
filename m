@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10FF4C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 09:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FD2CC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 10:07:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD5976B0005; Sun, 28 Jun 2026 05:52:27 -0400 (EDT)
+	id 2FF236B0005; Sun, 28 Jun 2026 06:07:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5E836B0088; Sun, 28 Jun 2026 05:52:27 -0400 (EDT)
+	id 2B0A16B0088; Sun, 28 Jun 2026 06:07:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FF406B008A; Sun, 28 Jun 2026 05:52:27 -0400 (EDT)
+	id 19F7A6B008A; Sun, 28 Jun 2026 06:07:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 57EC96B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:52:27 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B5E13A031D
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 09:52:26 +0000 (UTC)
-X-FDA: 84928856292.15.2FB9CE5
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1226E40007
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 09:52:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E1F776B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 06:07:51 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 690BB1A037E
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 10:07:51 +0000 (UTC)
+X-FDA: 84928895142.29.AFC292E
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf27.hostedemail.com (Postfix) with ESMTP id AA2444000B
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 10:07:49 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of szehawong@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=szehawong@gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of szehawong@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=szehawong@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=trevrosa.dev (policy=none)
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782640345;
-	b=B/dAIwiwO0ZGbYy52qlaGYVb7xM06MRzoyRRz+cCpl0C/WXDt2RCNvnDhiB5fTZ2sfYSz2
-	mVkJKduufSnjL/icn+S6/3pu82IJsjvfJ1EzdfA8CUOPGOid5EO1XMUDYEYlAWk4Nc8sFq
-	Y0YJhvoLPvu/e42NdamhI21EWNy2xXE=
+	t=1782641269;
+	b=U96qoa6xCaG4bLTw+VKiWTn6fsM47FU4jbd+HuxnzG+FqphAuIQ/RkF2xr8WI307HpVdU/
+	2C/J7d6WSXSGnR4vymwdmRaaXE0qxR0WqYO/kJjIhrGJXS4xa/XxdCi6dISDUuH0rqWPER
+	L0nQqszkYK3GkGkCbNCp4b0L5iTRPK8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782640345;
+	s=arc-20220608; t=1782641269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=lDgOeoLgb3Wg1d9q9LSag5G1FEbopPLBrrQaAkjZfVw=;
-	b=0JSRT5yVg3esfkbrSNiS6/gQKEWQphhzdNePgPf2IuXm1hxkmpmIQmrGSHgdQ6lN51yvY5
-	Cagvf8NZBtoWyGK1NMVbspmLZVYDrvpwZC+58QLf6na9aCJ2qmPZWtGAB6n6BhS2DLGCsM
-	dqsSyh/LaCoRqcW0MJ8dyylgjko2yBc=
+	 in-reply-to:references; bh=LQUKSUK9vdQ1Kz4RjZ18oZFcJVkdORoocJ3F5XrJ/Po=;
+	b=UAV3NPCSkqSRYH6F3GMYlJQIyd0yiGxqIf08VOQ3rhqPf0QjP4KqfSkDlykxfCMtbEW7Qo
+	LC76rHdMlftW2U+YDIrsFjLAdCniL4Q3ZnUMr79skbta6sZ5wO/11AU13QnXYe0+86vAPi
+	kI2OICZUndMD6VP/JTH+BC9PIbIRVOc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
+	imf27.hostedemail.com;
 	dkim=none;
-	spf=pass (imf04.hostedemail.com: domain of szehawong@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=szehawong@gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of szehawong@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=szehawong@gmail.com;
 	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=trevrosa.dev (policy=none)
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2c9e89fded0so1908005ad.2
-        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 02:52:24 -0700 (PDT)
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-845b965c1c4so1178354b3a.3
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 03:07:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782640344; x=1783245144;
+        d=1e100.net; s=20251104; t=1782641269; x=1783246069;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lDgOeoLgb3Wg1d9q9LSag5G1FEbopPLBrrQaAkjZfVw=;
-        b=Hk7fae5jILN9h3+bDhFXY9zxELv7hluC9XLzYjRZMCDcaEYbKEIOw4x3lGMxpzWic/
-         B03Zzg4tjY8rd7kplU5YxidZAGZ19HIIdlTN49MSs8cucXzpfYxxvLNTx58BXe4Jsjyu
-         J25DPnqSovtbgx7h/vyexxMJy5MWKOWfvcnrz6Uh5ChU6tSZYItJiT63vCIp5CtFWwm4
-         3xheVLkv8wSdIn5bEN6QyRP5LFxfELEUZfWR9wvwqdcxOkoiO/cr9HSmmt+z9oMvY76d
-         NVmWIXv99EH2M2Id9XM02VGNmZej8bOnL2lDwQFH48QmuFUCkzP2bHJCvsk3CXVzoc/1
-         rlUQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrAkA2qlz0I+OQmkGNjJn0A4Tw+JPCh1hrFYy98PMGh8keajqP6DaJiCr9pYl3T+qg4pxVZU1PjOg==@kvack.org
-X-Gm-Message-State: AOJu0YyZWWICBhHxIcf+4knBzFypwEKWmgSlD1wU1GDIcQbl+AXxwNw/
-	SYwdQni0ROeyYvPJYxELpRVt3Qt+iV2bT1NG8w+Su6l4uXR2rNIwphIJ
-X-Gm-Gg: AfdE7ckx4/ySzDiEAF/aIHUIhmqqtjXZgyjoKELVDYZmAmQRzTmRV4E4cQ8sqzoZOnQ
-	CO2P0JrF8DCndTwCQTxbt2SahEdbwiOpE4WG6tfHHP1rluv6eRwvVe0/Lo3Ho1IPg3Y7Nxsne5T
-	xzHj3n01rfFbyEh3+qonWnlabpAgfgtubkd4WLUshCnaog+O72tQNjY65F/gldFq+6ZGEoEBjPJ
-	eMylO7dNc1RqHlGlzEhakAXQIFYh4CcEOAWY1z2QHe5mziRSyw/xOuM8dyktGmygUOI7tYhwLn5
-	51EMZ4Z7LqE44UPhFBwLMpuhTGb4yFtSRrSREu0xgRjUbOqlmhgm245fNoHciVpZd3oXpcUuOX5
-	K4lXbgvWsd0yNozUANPfsv7ZQAwWlpsiRyet/9TTtDSPBu0uXZz7lG7gmhU1BuP4+Q+2lk63kMJ
-	M4T1DklmSvpxG5NStyjocuY5VMzxOZVP3tX51kJd8zME4PlJmGmQ==
-X-Received: by 2002:a17:903:19eb:b0:2c2:62ee:5a0d with SMTP id d9443c01a7336-2c7fc74ed9bmr130708665ad.14.1782640343700;
-        Sun, 28 Jun 2026 02:52:23 -0700 (PDT)
+        bh=LQUKSUK9vdQ1Kz4RjZ18oZFcJVkdORoocJ3F5XrJ/Po=;
+        b=LVVwPpWNHfQSV1VJKflVJi7VLEw7ow7WpKXHuNN4gH4DGegS+fHWuH8/iQJzb69Uts
+         39JL70x1v6EfQIhkxFAHO2Zsc5HQCW7cy9dQCYLe4ZbMAYlKl03mhQmRxZc2145YjN/S
+         A2RrCX28dMHQhLIygS8huYkRXvNt1Iiik6DKHDNQUGqenaiI8ZRo55pfuDCEBWUPFEWD
+         cY/zYp1LXna0eHzt39Hxc8yo10EFRdsrSfFSA9kprGDOPKGTRGGhnQ1NFQCdmOj1To1G
+         Z12sc8AaITInW1D4MF3+CsLqb5C7ksomcXT/OmyOojvuqSPHZyRS7VZ77+W1TFcYxQgO
+         /20Q==
+X-Forwarded-Encrypted: i=1; AHgh+Rpg8IO22Ob7Ml0+JKwE9CCUx2FdPsvbPrtX1ujM+DYJZDLN/t9NhiMcDLYECGV+aAhjdw69hNQ6VA==@kvack.org
+X-Gm-Message-State: AOJu0YxeZc3+Nk1US+TgRICuFA7CjeVLI4Td0bzlk+T651NsUp3q8Hvw
+	UmM6Mh4gyCjei7qEkIS2nEXFPrNHZQdsv8JoU63/SW4oFHA29vh945ql
+X-Gm-Gg: AfdE7ckNZ9KcfAhwJxq+VTHRhUd9FHHnchjVtC4UErr0Q/34nSe1LGo2431YlZWYbEp
+	3oSfFhfTPzyPh4qJ03qc/nec4dadjTXRlkutF8n0VTGsgnkPYISMidGZ3UBM2ao5cBfjG2uWJud
+	N+vQISLJXbvQ8cv+dSh+zSRtFjKq8G56MAH03rPGZYdpzMcMynBtrvgzvOfoTFuCQjqTgckCKCL
+	paAzN9iV7bb8Xa+h6JDUISAXfgjwUprtJIs5721a7Ub5Mms4c9KMl03LsdrE7+C8TGOjElnQcBW
+	RKhLVo7/0MSaIxmp7weGE6BC2Nmot/T1W3A+NvXGwKW3CoKQLSpbxW9X4cPelTSsxxYTFXZiA6D
+	tKbO6Q8qP3ky6N4vY/NIutt0/jOklEKX9My3bMhm4HC/eal6GCgv8UA9vzoX4I/85xb2woWjCWn
+	nOvplq5b2oS29UqTRm0OlrDtyff71WTOcF4FM1FLmR7XHFhcdC7Q==
+X-Received: by 2002:a05:6a00:929f:b0:845:c5d5:3743 with SMTP id d2e1a72fcca58-845d2475c86mr6541601b3a.28.1782641268305;
+        Sun, 28 Jun 2026 03:07:48 -0700 (PDT)
 Received: from trevor.localdomain (n119236170163.netvigator.com. [119.236.170.163])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c7f63b2339sm72101365ad.38.2026.06.28.02.52.13
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845e3455bacsm1840491b3a.37.2026.06.28.03.07.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 02:52:23 -0700 (PDT)
+        Sun, 28 Jun 2026 03:07:47 -0700 (PDT)
 From: Trevor Chan <trev@trevrosa.dev>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -131,20 +131,20 @@ Cc: david.m.ertman@intel.com,
 	bhelgaas@google.com,
 	kwilczynski@kernel.org,
 	ptikhomirov@virtuozzo.com
-Subject: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an associated function
-Date: Sun, 28 Jun 2026 17:51:32 +0800
-Message-ID: <20260628095132.47753-1-trev@trevrosa.dev>
+Subject: [PATCH v7] rust: aref: make `AlwaysRefCounted::inc_ref` an associated function
+Date: Sun, 28 Jun 2026 18:07:30 +0800
+Message-ID: <20260628100731.64885-1-trev@trevrosa.dev>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1226E40007
-X-Stat-Signature: jti8neo7i87zosfhedf4geku7tmt4wds
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782640344-21844
-X-HE-Meta: U2FsdGVkX1/wf8zhBD0SSHlZ8Vj1piJ7dIPb3/mnMRq6N+Zst69aQjJu9RMeUxskTznPGoJpcHZZwaNNf59c037JTlhd9RnY2ir/SiUjoxndREyWrcPsY7Mx94IbDj7cepyVDH8yL1vQaqJh014YhZTXvHTqHjB5Z2A1hyRftN6fPHAfb3X9n0TsoTLyVi4Bgth+vVbVTm9yexMNXPdQbw4s1B9cxTkUTV5YK3LlgdZF7WjUBYlQJGV/8SAnh919A3B+P2D50z6nd+AYoxpBku5JmYoh/ZjZJzwsTRZuO5jqbZDKuDQYQEH9h3LYs44+dZlFbkECTchy6Np/x0m4JjGFgwtTuJR1t7qj9MBGWVsQ+ZlOaNGqiaffYzJZDPe+baxSlyleYvAbGSPERKd/zSU4CICGPIQBZtn4yRc3MS1ziCS1sP4JwYinabUPCc52szAJlfhVmZgVMgi6FFsuJJ/+73vmTCLpc/2I76re5SiCD+1VqtwodAu6dnZpFI+rWMLoBG0sz9H8vhu2hLZA5+S+Csl0DR/yMTLzffj5TbMzBhpTR/SV5D3DnWdI4KRb6By/QKq5AaTcjkZNlmpeKgBCyOsiCe//mSRaHc0XXsHbAciKa8cNlEBhobiKJBkO0tXG5R/SmptUafOtAspQj+wMipm8ug/v293WWnN4Q4TawJN7oFlezd4iBDixR8I+8L8B8OhCeQOKzSXpIoIIbZUDOUQC8Af109Zvir7uM3k/NTDMkTkOJfQ/qievPi7VbWI+uedE6xZjneoUBw7AlHOm45lL8YOflQRA0ctcAacRLSE1Cemo6XN1GCvo/gRLMf7m+9xwMrhNpy6bVigGj0F+BDF3ecX0paGBfEmgUXJKfe2Ops8wWxPze/7ZXu2tYdaQ/gmzVNjMchnCjs2rFVWp93UTSWewa7l2imfGXl9KkkRU+uSJgaxMRSlNNiQLXKtN5rNkA18KYUs/pev
- VUxTV2i/
- QcB6xAE8SVFVCfoL+TcqDMr0RzIkQXIgffcqHsiqq7k776yGhIOybTZB4r+lUX7Ov1F4QRdzSVvO6ZkhKR64/D64IJAn5enn7FgHsmisCYdMhcDiZZhc2tFClkozUFGgp9Zl/C+RSoaKfTQuivTIfP1OYzrxwHaSlQlAGGfC6dLoYS40n9i57z5ldoFkyI6u9EcLSt9STIFGIV3hPsjgbQdu66D2PgGKV4V5gIJjT9VSTxeS1ilhZyBmhAbYnkJX9YHTN+yVK/6tObubkW0xP6ep1VROMXHzGnqjCvfN9v1Ldk3DZR9N2bvsPsAeqLKPMkr3a5ow1vSaMmZMvrtvfn8RM8yOBB+G/mnaPdK/TjMIAUCRMmR7TzjnKaS0yBnw2elLUOyJ/NFgWtncaqu44sXkIenZMpRgsUcwH8CJgvUBCzjdFjjVajRs/yFc/IXZZ3gqdHsaIPTQbVPvPHse5hsvPoKKDc5d54HEEu1c6VS5Epk3uRmCgnbeS7wvq2m2Zyh/H1+6Mfv3TReK01tUnp/yQXipibOI+/POkP7g6eo/ftNR7Tm0Lsk6TlVGWxAzALzSRwgp40mClvyugLa+FAmt9dA==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AA2444000B
+X-Stat-Signature: jxhhtdacfgrjttyfwms3jqkdxkoe5y6d
+X-HE-Tag: 1782641269-282892
+X-HE-Meta: U2FsdGVkX1+DHZJxS5HvRxXlzw+LMR7TRaauAuKCFl78dd6MyUbjzkkMhZIQFpKxyi1Aoc2jemqyrSD3w8wS8XtNjf31paw3ne9nvsxlfdWsbSdxooiTMmDxDatN5E5idKJq9c6Iy89NoMyB7/AAxTd57S3r9RNFRLPVbzpogDj+wE5/3UxFytI/Yg9ifpKe3F5dfoawvoK3b+u66d8JszKgv53JnlHhhvRBZWOg99kG2NzoSDPBltyAG9B2fpxjuzGFx9dZWXdsVm5qNcoy/r6d4kEmr0z4mrNYMojKJKqCIsYKIEFSwriayvRlpdPikVWgIw3J791YzlfRbqLHgJo72FSr0RCSL0YbKDqifF/evdJuQoZozjFj04keLLprss2madg0m4zr3NHqlhp746mmVWNV5/EeFNCKYzOWKEUCOGbA8/4vsL6gYa8w2G3ez21fYwnEE00KVJTcSCQlDxf80WPks9fClhR3Isl1VjQfmTDugiR6i2CilWA1ZEV6ev8j6UWvF8mxVL/WomImlI9oIL2T4rnTnDrkAUs2Op4OU2x4tA91qH/tlI1my+cfHvFMmmbvLGGLIxr5F3Jk1Q5OV/RNRt2l6cJcb+6lqqIaIeXdZJ3IZmKdZSu12/vFnlmyy7A48IGfGDclpT8OFPOXr8sCKpXkMnsCEWOsBn7aukOM5efxHL37oge1n41qblQPFzqW4FG/kUjZFyoGZjN1eS7Dr7cBKx5m7mlCSFQ7UUac49giNZKmb9EaFBpTe3oLVn8V4Jz3cGxYk5S9GDbDUWq0xPzutJq58y1Pmxwnl26gnfEK9qulYNQQCmQY5wCNaUiAov7dw7qrT/Cp9qSAkBwmOrY54foBmvjULzIep8iZpVryfNPuHpwOw82UuqTJM60tS9qeKpe0+BPiDrzNgx0kJ6unDiWaTwg5yQ33EtJdB1XQEgC8D3/1a4n+Hp96cKCY7mE437r9kDb
+ 6bAjcjmr
+ Ql0n6kVBabs+1rv43ZUhcsuFCLTQdof1CFnPl0YG0PIBkALz6UDf/ybiOC8HmwELNilERRywsCbCwPhF7Is0Mk6JwsgPeLx6s7p63e2aiultbtASFther/hX5y59Y27Hkl7eK0zbmXENteH6SbaUoPDvf9i0o5dX/wwV0NFpJ+a/SxzPw/Ax3MzBoMiIs03KJkk6dJfo9kVWQ6ZAKDzIgVMPAf0Qxh8/oT6ShlZcqqi2OL8NrkY4Eu3vI0BhvSH5iqL/vnetFSgFgbs4+tkbCOibmG2w3S0v4E24E9apZp0Sn3EBYUHCtf/42tX34pas6vP1fM4gp5XTAoJ4vqFhQVxfc/uiY6Sr65ElM3ZaeFziEKnASWNs/m6Yw/FXa7m0MtiAUJ8+9ywvs1CO7TB5tqLqDjaYWaMwl1bX6/ZUie7HNp+wW4qICQIl7VgHIF8KHlsLm6j8NWq3MarfeWX3K3l5rPTwh3Ny79h5G9272l9dGX0PT73cFxXjfMrok+sfqXfgUnS0IfBINQZ80cdvu848ex5wrmMgV3hWlZj29ffnk6GGzmLhJt0CUg1K+NEnYxPSUOEXllnkuSWhKpXRUdMYcWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,6 +174,8 @@ Changes in v5:
  - Change commit message to be imperative
 Changes in v6:
  - Change all the implementors
+Changes in v7:
+ - Correct changes for implementors that are conditionally compiled
 ---
  rust/kernel/auxiliary.rs        |  4 ++--
  rust/kernel/block/mq/request.rs |  4 ++--
@@ -192,11 +194,11 @@ Changes in v6:
  rust/kernel/pci.rs              |  4 ++--
  rust/kernel/pid_namespace.rs    |  4 ++--
  rust/kernel/platform.rs         |  4 ++--
- rust/kernel/pwm.rs              |  2 +-
+ rust/kernel/pwm.rs              |  4 ++--
  rust/kernel/sync/aref.rs        | 11 +++++++----
  rust/kernel/task.rs             |  4 ++--
  rust/kernel/usb.rs              |  8 ++++----
- 21 files changed, 54 insertions(+), 51 deletions(-)
+ 21 files changed, 55 insertions(+), 52 deletions(-)
 
 diff --git a/rust/kernel/auxiliary.rs b/rust/kernel/auxiliary.rs
 index c42928d5a239..75a61b51cf79 100644
@@ -508,10 +510,10 @@ index 9b362e0495d3..85068ae5a405 100644
  
      unsafe fn dec_ref(obj: NonNull<Self>) {
 diff --git a/rust/kernel/pwm.rs b/rust/kernel/pwm.rs
-index 6c9d667009ef..c95b442a972e 100644
+index 6c9d667009ef..6f85ddceb872 100644
 --- a/rust/kernel/pwm.rs
 +++ b/rust/kernel/pwm.rs
-@@ -631,7 +631,7 @@ pub fn new<'a>(
+@@ -631,10 +631,10 @@ pub fn new<'a>(
  // SAFETY: Implements refcounting for `Chip` using the embedded `struct device`.
  unsafe impl<T: PwmOps> AlwaysRefCounted for Chip<T> {
      #[inline]
@@ -519,7 +521,11 @@ index 6c9d667009ef..c95b442a972e 100644
 +    fn inc_ref(obj: &Self) {
          // SAFETY: `self.0.get()` points to a valid `pwm_chip` because `self` exists.
          // The embedded `dev` is valid. `get_device` increments its refcount.
-         unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
+-        unsafe { bindings::get_device(&raw mut (*self.0.get()).dev) };
++        unsafe { bindings::get_device(&raw mut (*obj.0.get()).dev) };
+     }
+ 
+     #[inline]
 diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
 index b721b2e00b98..42e11458b77c 100644
 --- a/rust/kernel/sync/aref.rs
