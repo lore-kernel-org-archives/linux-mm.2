@@ -4,87 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D53BC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 18:13:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B2A9C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 18:44:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1E2E6B0005; Sun, 28 Jun 2026 14:13:34 -0400 (EDT)
+	id 405A86B0005; Sun, 28 Jun 2026 14:44:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA80C6B0088; Sun, 28 Jun 2026 14:13:34 -0400 (EDT)
+	id 3DD906B0088; Sun, 28 Jun 2026 14:44:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C98536B008A; Sun, 28 Jun 2026 14:13:34 -0400 (EDT)
+	id 2F48C6B008A; Sun, 28 Jun 2026 14:44:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BE0B6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:13:34 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1DD9D1C62B2
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 18:13:34 +0000 (UTC)
-X-FDA: 84930119148.17.7CA0C0E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5294C100004
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 18:13:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Oqd3Y8q4;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EB8CF6B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:44:11 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60DF2167CCA
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 18:44:11 +0000 (UTC)
+X-FDA: 84930196302.05.E30CB3E
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8EEDD180002
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 18:44:09 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pdk1+AqD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782670412;
-	b=AUbcc9dSBvd1LVjwI9UMlOC0Ho5IHs1P0uZvstUKjuyEJZlsW45XBtIAsHAB5fBbZ1W49H
-	YMVTm/vmCpjFiiCNOHanNfJ77jjfHdVadHaQjGzr3mGeWUsWzTnwVeyhs519Px0nytktUW
-	VtWXmLj84xZooDnlxeQpxdlY8ChfYfs=
+	t=1782672249;
+	b=446+h8I/Hy9PPm0lXkRAEZeH3zMRZ/+WNgQhw2FVmpyy/xinJadJxy8uLIM5DyD6SvIazY
+	Y+m5XyEJuRSc4/BMiKqzjgo4qkPSjvrSSag3NJMPgT7cGyqOOk4N3r2bGmeKa3WpCCKCFF
+	DdAndjJi6RxIeLd0ntMuypGdem0sqlY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782670412;
+	s=arc-20220608; t=1782672249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nG0zSS7NrnTDyRmwSClrih85J+cAN99dOSGVHcRqmTk=;
-	b=1UqQt/aM/0VU4oKTFT08MbPQ5CMivq9C3hW4BGYq2FEHewbGOhMvafYIER3F6QrqlyAao/
-	dCH5smobB+wioUhS7EsWES1JebKQBSVhHfJ0L3KqeB9rF5i61eNxUpWORx0R0gFdJ47/0U
-	Bwk8UAeFIdlyrI/6gynwQSs+y8WTR2w=
+	bh=UpVWK3fWX6RtxuEZlDdW1KGkNIIyoL6bwAJsYAyunoQ=;
+	b=gCCzbqkELzSwEBJ8a1ri16/x1VVmXzg09cKZqaa6aiqq9L17ssB7oji6lSLHea6T8mj7fF
+	ojTDsxrVYVbiIo4AmnBoE7ZWzHZtkEw2s3tE5lZ9mY6RsxpoRhMoyEDForz2X9kvYZNmn1
+	lrAWHxF/RfGycQs3RVJzosSI93xuUhg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Oqd3Y8q4;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35F3E43230;
-	Sun, 28 Jun 2026 18:13:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4E51F000E9;
-	Sun, 28 Jun 2026 18:13:30 +0000 (UTC)
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Pdk1+AqD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf06.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-493a97fad2fso6281135e9.0
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 11:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782670411;
-	bh=nG0zSS7NrnTDyRmwSClrih85J+cAN99dOSGVHcRqmTk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Oqd3Y8q44w53p5dPo+HSiY+O789+71l/eF/6i7QZfQma4KphYiwC0JJKlq1aMcGeM
-	 RZYQ6NH17VeitoTeIR37DA64FdYdQBrwCzoZe9FPWnCOo5hnK87os5SneLHh8NwYnp
-	 q3sx3xVAWLXtLz3rIqiGIht0I1/0vy7n6ebfiKWo=
-Date: Sun, 28 Jun 2026 11:13:29 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, david@kernel.org, ljs@kernel.org,
- liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shuah@kernel.org, usama.anjum@arm.com
-Subject: Re: [PATCH] selftests/mm: pagemap_ioctl: use the correct page size
- for transact_test()
-Message-Id: <20260628111329.9cfcd9c67925869307020aba@linux-foundation.org>
-In-Reply-To: <20260628101118.35861-1-zenghui.yu@linux.dev>
-References: <20260628101118.35861-1-zenghui.yu@linux.dev>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+        d=gmail.com; s=20251104; t=1782672248; x=1783277048; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UpVWK3fWX6RtxuEZlDdW1KGkNIIyoL6bwAJsYAyunoQ=;
+        b=Pdk1+AqDrETp2bG/qWV9aBdkjuKXbXpA56t5TazYEkGt1MuYffLKU7c+F03SbFNnWN
+         IihAkj6ddrgV7V4IIVon/3k838WfbmE/re3VwW6i2RTNXfh+XYHD59gTZtckr+4Tsfps
+         1cxDqfShZmMAMGouUOnuVSJppa8Fvhfgy/+vZ5lMx+TWaOHjnx6CEu65TQDBwMACSLYV
+         AqMujcHfs/hjDgi4PLtJkaO11fMbzhwCzp++3CMU3pzWbZGXwtFkgmqzqdAJrvgRE1/f
+         vbEGn4PTtHRAjWljjTfnWKtoYItF+rix4TQy6e2NlPsebmWgApd0dowNJ4swVXXu6FV9
+         /g2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782672248; x=1783277048;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=UpVWK3fWX6RtxuEZlDdW1KGkNIIyoL6bwAJsYAyunoQ=;
+        b=WT41t6gk3nWmk7Iuae72npqBEKB2s98iA2FuJokoOy9Nquqaoky9gf/2Y009qmXv7F
+         aWb705/wZRI2e7LT8NIlIlfv4FjdimTBnIbqS8mhN9Xqp8VW0Sps1qZGzxBBivn0x0Ne
+         8OWqBqUe6BMVZnBIT7NSGPtMFqg2123BgqEByo/2HyK+MYbdU70BUiqK2XRRF6V1MLIQ
+         HizRWmuFYhWxGzPTNMfyEdGEizGUFknYrbe6/5izVpt9TaoM/QhKLo0zUQ6Vn9hb76V4
+         uVgOwP9etf489IgszFQfvjde2uP7hRBX0IRvUGw/5lzC8bLhk54T5anBdmvagm+fgtfE
+         OEmA==
+X-Forwarded-Encrypted: i=1; AFNElJ/qmhIMvGKfgsalgoUrU0PSkW4vMAdNcabJNli78ZRzaA8NhScGaVdlcrAkuUO1itH4TT4jqu1UxQ==@kvack.org
+X-Gm-Message-State: AOJu0YxBKFfWj2i7h7C/4j7fLKbSwTfHjHjyoQA9BuELKmThibxRSEwO
+	htJpgCRpz04d3h1vnx/gw42QtvxTCBl0y16gBnOHMNKlbr1aXrwXbUTz
+X-Gm-Gg: AfdE7cmaqUc7t4x/psRiQOuxonXZVBpziZK1b8jh8BsDhnr+vPGtykC8RNa6jeZrD7C
+	7d5IvPR71QxnwCg1cXXdWVK1wVJoXg7dwfYc/nAha3pWqTmu6hf4VXOzb9ybs0AAKRr2Vvj6lh4
+	6gcOlpT0BbLp9Zbnr5lLxv9CfF252xXv9my1RAp0710IJ/ycT9CEKbH7Mh0PipvuXBcL09+Cip1
+	iQSKrdUzEvF9kQ+6MrC0XpxpI0PfaYM1rJYcHNyD4e+alLUC88EWxmAjVkygcIqJl4h7amcT14R
+	aZrwEDQKMudCX/JTnh2iVX0D8pQf2M67L++g0DuznIE4KID001hajxxJg8puryiKWPyX1nGEm8h
+	ruaxBk8xflQxqo7eEBxj537Spij/b4eARGT2xHz3F/IjF0CAitny0D6jNuI6kF+ShMxjN0K8SeX
+	WyuhldcP0bfgDraI0uBzUASz/zRuji2CiMT503iRttZAoKig==
+X-Received: by 2002:a05:600c:628c:b0:492:71ec:7b4e with SMTP id 5b1f17b1804b1-49271ec7baemr92587895e9.22.1782672247820;
+        Sun, 28 Jun 2026 11:44:07 -0700 (PDT)
+Received: from pumpkin (host-92-21-50-228.as13285.net. [92.21.50.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4926c285fc1sm167243165e9.1.2026.06.28.11.44.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 11:44:06 -0700 (PDT)
+Date: Sun, 28 Jun 2026 19:44:04 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jann Horn <jannh@google.com>, John Ericson <mail@johnericson.me>, Farid
+ Zakaria <farid.m.zakaria@gmail.com>, Jan Kara <jack@suse.cz>, Kees Cook
+ <kees@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, shuah@kernel.org,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, linux-mm
+ <linux-mm@kvack.org>, linux-kselftest <linux-kselftest@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
+Message-ID: <20260628194404.40253a7d@pumpkin>
+In-Reply-To: <20260628-debatten-vertagen-amortisieren-3bf518773e75@brauner>
+References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
+	<sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
+	<CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
+	<24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
+	<20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
+	<CAG48ez2X1p5Nm2_sU=SK9wUusUO8c3_T-=FGrrOhkm7Kn9Y_7g@mail.gmail.com>
+	<20260628-ungeordnet-orgel-stechen-36dd64038541@brauner>
+	<20260628-debatten-vertagen-amortisieren-3bf518773e75@brauner>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5294C100004
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 8EEDD180002
 X-Rspam-User: 
-X-Stat-Signature: 9z31stu79y16onbb5cmyz1x14qyrhk9j
-X-HE-Tag: 1782670412-741930
-X-HE-Meta: U2FsdGVkX18A9kvq6X9C+Y1DoMPlkwCDdXRa7cx9VBJCnxf3BxknS/0i0F6d2di8VWrkexQurnk43edpcgrQn9l5mRYHqXiFXyrE5CABBHDoQa3boZEysbiiyippuo2nwzEdZBLoRzhjfHsF1kt+MchARjkoTomcRXwTEmj8MB85XKON2X4vLw0faKJWeFnyw8rizBHIWrFSRU3eipRnk10krRmSZygSYj76tJUwn2aqVCejHbWdV5BoMEDPF850NU+NMjfTzeVq4/GkwFPF89Sw+txGK9dagFdiWWAB9hsU+vamuLyL6FUb/TFD2TlxnVaupWA7hNCE1DklGiMDl/uMqSEgFUTEFNys7tsMiE/k2h05f/9XxQwNxpFzxCSL8uqReE358LQ8McJ/C3aABSA/672ELlT2KFOl2YOVQmZjDIv1uy5H6Fe9y6egFD0REpFVww0CzSpZIGU3q/6/lCUpS53qOXCnZPWpG/Gwvow+rLQkJtepMW8gFOklPxi2QwpPgqs7pDaiJlnf7rPyZNZR/mcNzl5pN+eTCgc8dgWQSlWOw34nTw2kTn1bfG8G7b9obGpodcY5yqSZhmw3anCipSoaX5dlGCgu1jo1EQGgqU3jgsmGbXm336mW8ODbgcwSpoEgRvD7v+C8hS1GYgo9I1/lEXyuzog6nx4A805+tM5eyWuenOBT101Oygzv7FNNE+1w9iZmsxUpGx6XNNiqfnPNRhlAOnhMzUALHO6Po+6mexNA3S66w7B6uAMMvRaPpi0F2p+ByRgPbOjs3UpB322DJepCnDCFfNyDdIN7cUBh/n8KkF0mxI6sQS8bYLjHkEJsx7xIC5ilVpg3KdXnK+8HVo3E947aZ9e4CsVshTTyoyoNaggh6UDrt22mWeeRE4YXT+kvYWpVgti49nbRe9cGHOCAWWFV++RHbWf2e3MTHMlkkC/wCuM9VLM2fMi7XP/E5v4Hhycelk8
- AsHvDHqd
- XT7439fikZwPPq1IooY7qhxKPjR72qQ/8d+MX4Uzdv5qcyqnp0smrropLQOt6E7H7uRKPs8sCaD29B3abrtlvWydISuXOI4V4OzcuNIBGkG0nvsRNUi6jeapBJMMfXlD5OuF9QLwHpmYqCvR4ePsp13KS2dI3S/kqpAf0rqzcNBMQMXXdGpJVfThVzF/JMwMV6m0AwcGw8C1ONVE8oL5V5DrVdzGnbivauTI6fvE+JiqHs4fVRjyeKzPfX970iLkIgfbdseFalPVZO8+YITg45TSgs8wSw5YVKjWPriIUHOmp9go=
+X-Stat-Signature: 6zqoq8m86e1snmqiw34okxw6yo55g6x9
+X-HE-Tag: 1782672249-416479
+X-HE-Meta: U2FsdGVkX1+82T/sh5Gm/+1sRUYx6Ev5oxSh28fs67M0u0M8tEfH6/kk2JUoxjZKVC96SNZSsHLsTEEoUZEzm6v+BGDFIi6/mFeQsZrIkPcG/d0ffkS44BWTDKGnoYOlgQnB5PLx6OwLAsykm23ZKXW46kyJMENyDayGXArjW9BP+HWXeys6CkNEuqO8c6soqPskdLVrj3H2G7X2GB890QLuNO2w8kf7zVsrM0mbxgfSSzL7Wbqxhdzn5heB7KdNSFiiUSnEpanIkGgflfFc7RTrXCbjK0OuPcfOX3o5/Yd2LN3VERajBf49WAhrEWshRVfFJ4l6w7NFUiLpuDct4ZgN8LWlg4rFhbfkLdMmbfppjF1bVReC1ycLuVyxJSucBeMUSSto91GFJfT6HV7MEYIE3/fQT8e4jvH4iBmrfqGjV7vQ0wv6GrbpCaDno8v4wVaNOPVKV1SSMMkbOIoLDBjxqR7bAlewFKcUlk4OdTxFC8/ghK3d0/7iwm6KF25Jwh+rfQy0aCjnRXbOUyXoXtCkcUhc1P9VrZ9hBd/Op3l0udqvKaKIBWSQFvADAS/4LWe8Hkt9gklzhrANJyP5Q2q9JZBy5N64ocnEUer05fB49OewjZ0iNaLW0htAw1S6Qv8Rjlhuwm7nygm81YL7jj9JIWYVUUw0bNHBodaHEfGqyet+FpZyBbKNuQbgyxQ1qpZWs/fXKxHxgPZR8aAx+1zEyGvdVx9r32xkE6JmCd8B+F0iXv7iGGYCu/tz/UMOgvAvfAov+YS5ZNYL9DqNfjnjKqpciYJLKcoUbguRSUMrkOy0F0IRcpltd5yBpNUBDrylkM00s3TmdWvxeSIkaYnW2b5zNYyNN+0zecpliA4c6zP0cDEzR3hp30sLHcd7BwPr2kDmycNlKqHunLoMQKubx+cGPKm3HR64ERaz2sSYR/ZzWkItjnaju1pe/yZLdQU8WAdBarXBLm64xlD
+ nKTirYa+
+ jwcM5CXm9GIuD/JilfFVjt93boPjRH6qgg2vSrBoQKdlYhMpypKMWn98+skrlnAcCv2WAfMQFJnT2qqQ+A3Rt9tx9inr3dkoq2/fWr36n3sOalnC9YB7j69qW172IUGLo/XSRVeq5LkyqZpqQJ6FTpt65BvlMdaGABR6ELqgBzaimntt0UglZHiArmCTV5/9SrKIFowhjY3PsNRx3vFu8MIW9CyljvCYaIMubZNwJ+iWaOs4XjsWfr4gJdFnz88q8VC5qHkybfByEazo90NX+b3HwCmArBwCW21i4/PaIW3gRzO78OvRBh3ZdnOdhgfhGr2YSfQkX9hGjqtDxbNFk8+4K56GytOtxWYRVbcCMwLXNAF417d2SiValLo9ITEZxJp/oV/7cRIsSWO+MHADBKnqWhwHwIIam835jNbEARmUjRhoIT6Ge9j/wQso0a9kXkKru/qSqIxyew7kOt6sM6qx5kI2BikKrNoLtob4lKR91bKd896bcEn16EtmqZZEQ/h9zwAr/ptlrYKk9gOnrtHIpoB/Xamt9J/T0bvcWO+esMGP82+HCgbzhjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,37 +130,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Jun 2026 18:11:18 +0800 Zenghui Yu <zenghui.yu@linux.dev> wrote:
+On Sun, 28 Jun 2026 15:20:11 +0200
+Christian Brauner <brauner@kernel.org> wrote:
 
-> There are several places in transact_test() where we use the hardcoded
-> 0x1000 (4k) as page size, which is not always correct for architectures
-> supporting multiple page sizes.
+...
+> All of that needs consistent, easy to reason about treatment. Reading through
+> the glibc implementation of $ORIGIN for shared libraries in rpath - even with
+> an eye on cutting through most of the complexity - doesn't give me very warm
+> feelings. It feels very hackish and full of edge cases...
 
-doh.
+I'm sure that NetBSD refused to implement $ORIGIN because it was full
+of loopholes.
+You'd need the kernel to hold a reference to the directory inode and
+have a 'magic' argument to openat() to be relative to that directory
+rather than cwd.
 
-> Switch to use the correct page size. Otherwise ./ksft_pagemap.sh on a
-> 16k-page-size arm64 box fails with
-> 
->  $ ./ksft_pagemap.sh
->  [...]
->  # ok 96 mprotect_tests Both pages written after remap and mprotect
->  # ok 97 mprotect_tests Clear and make the pages written
->  # Bail out! ioctl failed
->  # # Planned tests != run tests (117 != 97)
->  # # Totals: pass:97 fail:0 xfail:0 xpass:0 skip:0 error:0
->  # [FAIL]
->  not ok 1 pagemap_ioctl # exit=1
->  # SUMMARY: PASS=0 SKIP=0 FAIL=1
->  1..1
-
-Thanks.  I'll add a cc:stable to this.
-
->  tools/testing/selftests/mm/pagemap_ioctl.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-
-I'd like to see this code initialize page_size and hpage_size before
-calling init_uffd(), hugetlb_setup_default(), etc.  That won't fix
-anything but it's safer and saner to get these globals set up before
-doing other things.
-
+	David
 
