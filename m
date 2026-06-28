@@ -4,106 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66834C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 13:20:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FDE5C43327
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 13:58:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDB896B0005; Sun, 28 Jun 2026 09:20:20 -0400 (EDT)
+	id DDB0E6B0005; Sun, 28 Jun 2026 09:58:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B65286B0088; Sun, 28 Jun 2026 09:20:20 -0400 (EDT)
+	id D8BE16B0088; Sun, 28 Jun 2026 09:58:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A56776B008A; Sun, 28 Jun 2026 09:20:20 -0400 (EDT)
+	id C7B1C6B008A; Sun, 28 Jun 2026 09:58:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614BA6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 09:20:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B94641403DB
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 13:20:19 +0000 (UTC)
-X-FDA: 84929380158.08.9DAE901
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0596E20010
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 13:20:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T58wKw3/";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 963A96B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 09:58:43 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05E3E8D8CD
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 13:58:43 +0000 (UTC)
+X-FDA: 84929476926.22.F9B8FA7
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 55CAD100009
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 13:58:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fcEHFFS5;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782652818;
-	b=Dl3xf1kHJXubadjBtxKBpcv9YaYQ1PbvyeEn5IdV7yYErOKvRfinRsnSENciDeel2Hguwa
-	WuA/MSX3U5Je/7Vc7tZGPBsIqJk05DtjmhOHKY4sqlU8lkp8fcUADNY9twyDIontUcSMeC
-	/Mikf0HH4hlnWkQTR2q5VhRPehxwz30=
+	t=1782655121;
+	b=bmkeHycFj+A+QIjTeuLK8oADmcuM4xV7Q2I2fF8agnDqtHVfcyoT3WDxxNl8RlSl8bkX5Q
+	dQYtZigQJ9u23Tp0MdygrDQEYYf7mznXTDroJiecls4aRGh852+JVttBJ1tVVsjj78qFFS
+	BqVn+ektqhWTOTfJ3s3zjgMR5+B69tY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782652818;
+	s=arc-20220608; t=1782655121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXoQjZLUk0Gu2GsfbmsyigRTgwTQyOHHwu7BBNkqboI=;
-	b=PKLKqvQQd47blkSwlrSHEU9/8w9qwVd+Z4I5y3gfJP7hS3M/Qn4GGOYy3/4pPalJ4sDtcG
-	zRlaC0/5P5RoqJl0ZXI6tuYhpdT2oVEXt4NMetd5pYK6kBN6FxU1F5QYJM5j6IDKhhD02g
-	rTvbqh2R+6nWpXvq5O1iMFqdVALAkY0=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Ij65SijD3TAjZdNPDp/lCaocyGnY8KRthDqQSOYaHw0=;
+	b=3B4/jLaWgT1zlP7o0K6eiGiai9wsru3vF6D5pLvZZvlGlYKg8/qVQEiJKGEMDe6zH0X9MS
+	3tI3efn1IKp7CTJKeuwb6g/criVpx9M8emW1effR7MUBpXQ8Zf0vY5KBJvxGSG8qi4vAVH
+	v5uHZBB7XxwSzFedywjm0x+WEnBZcNw=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T58wKw3/";
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6B4526001D;
-	Sun, 28 Jun 2026 13:20:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F3AC1F000E9;
-	Sun, 28 Jun 2026 13:20:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782652817;
-	bh=JXoQjZLUk0Gu2GsfbmsyigRTgwTQyOHHwu7BBNkqboI=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=T58wKw3/h195JJKQslgax470vRU1moZzYMEaQLAo0MoeU72pEf8B43+d3jCrLorTI
-	 SwkW7RJWoNeW+/Wlt8uFGkacN2dNc21vnPhntK7zSRu9W7trR+WCW6WmDwW4oGWGci
-	 Lg65sOJVYJ7fVZ8OBSDwP0hygUcnbt1ZVZ3OHesiSeYjzRXxMokmWB+3bpHKKiH8Ar
-	 HpWbTudaosHJDfaenjrQhyqaOR3OtMr4qXm6CJgd6w+QJLYKy1DBjPu00Uo7GuMK6o
-	 lo/6Pvu9d4bU0QpyCBgbY43irSMjUq9QTCEUgPgSQCU0hkF1tvh51Uui+Y2mQ8RcTl
-	 YvEA66rRM1a5A==
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=fcEHFFS5;
+	spf=pass (imf14.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-845b733e82cso1502332b3a.2
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 06:58:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782655120; x=1783259920; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ij65SijD3TAjZdNPDp/lCaocyGnY8KRthDqQSOYaHw0=;
+        b=fcEHFFS5pb49WUUv0xWPg6Sqdjorr6Ii89J3CgwZQaxtfqc5P0A117QXaK093ngAj+
+         OTztUfIv3wwRbb6LoTRo4SkTTwsBiUHmzL2ES4yu77y4yvEVIZAh+tQaQAseUBhNd0XD
+         QeMmw90bXPJnO/05+0PVzNnIts0LX88XF1cLB7fbMPmf/WwpBJYjDayXNrpAhB4ZIXZX
+         gdlSbqDJiN97qhXonk5Yqgqq6v4DFNfDvRZbtjkDXMdh2J11xaBpaFXn6gnq+CzebVGR
+         EigTqf6xTi80vCtBt7/II0ll74PFL0AjwBz+EG156Dl+9bLAlLrZSe9jFgUQlgHGHU2a
+         HUxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782655120; x=1783259920;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ij65SijD3TAjZdNPDp/lCaocyGnY8KRthDqQSOYaHw0=;
+        b=f6R+5Suac2v31qhaaUenbwOjglBWfdI+LZSnp6fUJshE3hzuWYGL5SzOml7EzcWWsD
+         0Q3eKrEDk7g/Zcu9J3FhVdcn97xo5p/b94LZIDc9sCvdsrE2wOSeO1Lq1V+upCSOdeQs
+         iTwzSq4YmYosknFKX/7sVZP+F0VVvFIl1N6JlusHAE3OCF2c7GMKw+9vc8B0hDt5qWX3
+         0Liis9uWawtd99hJrsO71HrqJqGY28fVAJeL94ZaWVaYLVYpKC4170qkOYjb4tzchec/
+         auNi/jtxgvzIoh0nIIy3ANaL8ayHs2BwivisuH2sxQgQjW6XbdCzUkjLlaKCjiKUNjVp
+         BhQw==
+X-Forwarded-Encrypted: i=1; AFNElJ8PpGoI4w7EOZXUylQKj3iX6K58CkoRMXGQzutKe0tBJF0EejdKuMlEHGRZzlPgiKbryJPhRwj03Q==@kvack.org
+X-Gm-Message-State: AOJu0YzCGyoiUrwnTYUaTcxH/KaerAg8aePi++IEHyIWodZwO9yF+a8G
+	r31EgBAWFoDp6qf5tZCQjgKVUjwhyKnL1SptkIKGH0dbsmAMBLZ5pz2C
+X-Gm-Gg: AfdE7cnjSNg+88EHi08X0gfaHXN5T1unRrjZDGi3xr6sXfknbaZWCuW1Yg+hvsy0hnd
+	JYsLidycR8WLRMXNhlQ9AfYbjX9TniGAY0aQZmPUgVf9E7pTRwtuqdDx+jOMyrUKUIoiv9wWy1c
+	wk4c5K4DhoELkChiiylj2+QYtJqVakyNbWV16te20Vt/esSKM796aQzGe4nZPqpA860WZVOQoTS
+	F2TIMsyV+zu/+W3bHWcmnrDhfnyMIEdGuC5iwt4j2W/IpaIE+XAvx02C0RxHcKHoJNyQPmqc09f
+	kRUndnUCx9RC+oMNRF79j4YIoMk0BvXX0XQS2bYh8uVLqDgFHS3GBFP1czgodthBrI+CMPbeDEN
+	tCVNk9uu2U3GdyIYaBEua8V8adSI13NOEfJn/wVXtriLpNVGwRN4iPvREV6+kqqtDAkuZOvuQYT
+	eYmlZQDJQ=
+X-Received: by 2002:a05:6a00:3e03:b0:845:d1fe:9cd0 with SMTP id d2e1a72fcca58-845d1fea7c0mr6017737b3a.0.1782655120131;
+        Sun, 28 Jun 2026 06:58:40 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-845a40d23d7sm10041108b3a.30.2026.06.28.06.58.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 06:58:39 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Saravana Kannan <saravanak@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>
+Cc: Sang-Heon Jeon <ekffu200098@gmail.com>,
+	devicetree@vger.kernel.org,
+	driver-core@lists.linux.dev,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Len Brown <lenb@kernel.org>,
+	linux-acpi@vger.kernel.org,
+	linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	WANG Xuerui <kernel@xen0n.name>,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/9] treewide, numa_memblks: remove redundant work during NUMA init
+Date: Sun, 28 Jun 2026 22:58:14 +0900
+Message-ID: <20260628135828.1393120-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH 0/2] fs: support $ORIGIN in ELF interpreter paths
-From: Christian Brauner <brauner@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jann Horn <jannh@google.com>, John Ericson <mail@johnericson.me>, 
- Farid Zakaria <farid.m.zakaria@gmail.com>, Jan Kara <jack@suse.cz>, 
- Kees Cook <kees@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- shuah@kernel.org, linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
- linux-mm <linux-mm@kvack.org>, 
- linux-kselftest <linux-kselftest@vger.kernel.org>, 
- LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20260628-ungeordnet-orgel-stechen-36dd64038541@brauner>
-References: <20260622043934.179879-1-farid.m.zakaria@gmail.com>
- <sfv7zc6jboy2oxv7zuyofysas4ncbzenwsuzveiyduisfr6i7q@mx23er7uxdbg>
- <CACCo2jkDuwy5w_yhX8833m+s-rY736pk8xtKjxg3_y_7BCOHeg@mail.gmail.com>
- <24420045-a6eb-4999-ab19-1e344eaba8a4@app.fastmail.com>
- <20260625-atomkraftgegner-hunger-kursbuch-b452ff2becab@brauner>
- <CAG48ez2X1p5Nm2_sU=SK9wUusUO8c3_T-=FGrrOhkm7Kn9Y_7g@mail.gmail.com>
- <20260628-ungeordnet-orgel-stechen-36dd64038541@brauner>
-Date: Sun, 28 Jun 2026 15:20:11 +0200
-Message-Id: <20260628-debatten-vertagen-amortisieren-3bf518773e75@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2418; i=brauner@kernel.org;
- h=from:subject:message-id; bh=iEXwwCjxyid4ZfFr2P+Mp82+XoX1Wd5fAjKvPPhBb94=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5yvfpGvgGyOgzlOotv/p9s/+c+m3O2xgLvZwmNTJeW
- r3AeLpXRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwES81jD8T7zvks7EoT1j4+We
- RXfTDUQuVVX11Xx7XF3GLvV3khvPeYZ/JstLjUMu3Zs+0/97ncChzoavG1eomwlM1isIXnXln8B
- sXgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: stci6jfurk787ki88dj86bgdefg65wxf
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0596E20010
-X-HE-Tag: 1782652817-21885
-X-HE-Meta: U2FsdGVkX1/2QJf+1xtC/9LCP2Np4Cj4Lwwmki78VQst+VwEpAqXglJOLsQkrstNpxV0LG3icAqGPoGxfVjX7DmqZVaUVppo/WITBT62WXzleuJRR1/ZW2D9UwOOYvEHEF2PusPVUrejiGoZi4DipuG0UHwl0hbkJxIcJ57Y0Ti1sUbeYoeTIgb4J3hzbNIZ6Mw79jhRKJnovMiz5V50/XSXEQdoO8EynacSz0thsAFr7Jkurkt9Sjy+loGtT23aBOzD9D/O3SueP8Qy4q5jZ6fg6SU1su5iLbafCh7z+EQbyY8dJ8j3N9/7Tf3ILWmI5F9km2NlerHQ1Fz0z+Xhtjpn9RcrOrXPyZnZvC8hRLKMGiY0kkWeITr4mTEBEjJGM5TzauKSKNnX0O5n+JLq+UCkj+4gxLmtibLom4FvnhYy2AY3MNElrnSvnkYXR0rxMZ7fMIqMZIBicjPb3W9DxuUKjlCyNz1uLNySB27f9I2sVlDlkDPbLsVEWaq01B1YREh7GSIDu3piWjIoxbVY4TSI6sumjrAWQgX8YFQX3yl9VfQF/5pt4Korktq8shxv8WBrjn4S9ui2s/IEVEABim6IfkkHU2dWG3vUPMSnyZRybQMqzRR2rXRF7Q+QPtVY2W9Oze7nRr4kqe+bcJt/1P1Z4jAQiigIRK1ONaUIUQsBrW3x8nzb6ppV9gZ7Foa6OOtGkYdELwQmKJ1IFOh5vuQbsGBLdrl6WVHHojdWbNj8z8WksQR0uG89m5tB0s2a4MbmqEmmkNzlrUKM6nteY9UaxxBKnC0BUutag8zTBIvedbxINLN1LBqCiUTQ5wlYntcavu2HqoPjDCfU0mokqUIbuRZBAob4Mb0cC5F3s7jlhPhkyl1BwBB7EU3T+ZMa66lARU4GRmJK/MdU7yI5uxOwGcewf+2mDZCAMQqHKWWMmDY/630jskA9I6K+v55nvVitnTzDwYAwzqavGQe
- EKiKNycM
- TRP+IayLh9eWyusF+L6ej2vLAHPJtdkaQkdg6ZiJdZDXdpdluW2FRoynbt+fdTkxHH4pkPx4Bxv3WQk9SteK6W18Kwsiz60AffxL76Kae+16x3tX+9JO267AvWrx54ei//3Jx/PlOpvrli94ZcWY2zKfpQqaMgfn0IJyLqZROfYedgqanntKe9MXykv//GFUHZvMnWpBfuqhg98K2+nErFzbtvUFytwJpNjoAoGEZQDjS5W8Y1aOfUAB2oaDsuQp+NBF0wHpjfh0S2008YwX0EJp+sS4K58qwkQfqG4F6r6B+8+CwWcLlpWyAw8leIxKFWNor5gsslXCRpcHMabVzkvk98TbkzSm4YB4RQ54X6Yj7mgrIy5i+QiX40H1gW1yT0l3q9Zi8qzLx8Wu4ndSsYR0XdTL3QTIs9+fDxvu9l3lEl6ptSMh80euttoJzryRfTn5oVKJP5gfDd6k=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 55CAD100009
+X-Stat-Signature: n44kz5amnt1p9iz8jdxaypem9ythi58n
+X-HE-Tag: 1782655121-984353
+X-HE-Meta: U2FsdGVkX1+DJfrJqga5vO5DxRVU81gc2qVeM8BICaLNHJgHmH1mIOdR9BxDidvtvfhPCcW6GP5rZ9TmCYG1+tx/UihavKDYUenyQoKZQ2OsbEDgAMW3l2e3ZHHAWojiM6kRys/2XlOhOxKXmwTvTdd+qP4NYZ7ZG8KMwqFFUFf8PbWkCMAnZqL8WC0rGYlmLAfkuBDWK9X1S06zGA/cijLOhU33BzY6v7V1PWXxBudMyCsKjRccOOaiBT5CMj2p/OT9NnsktEkcWG02U5dSImNfz0pzdCf07TvrZzvtP+X8B9RtIOPhaEhv+LiLk33DgMGF5z6MAXkIekzq/p42XCUQHA/JiJX/RPmA5k0617LgYxl5B295m6Y8pMcORMEp644eGsJHl6DmTazrTge26Bda1keOtXbDdZnaTsplcrPnBndQr6oD3ESBpbb42ztL7tnXkzarSFeLX9pZb++dA0VBVKcRfYkOmEG5ZuwZygNJNGKfjFAFzUfdriEr8INwvwC80/GNhG6l7y/BYDIYKdXKUTH10C3B4rOYDZ2nr/wNcey3eks0+W3uVnR6aitKemCuoRnISeVrJu8iSqMYv9HDszrbE0QlMxjVigB9mP55wPXydjkF3YDP3EC8T22/5+nBg1C+/r6JUwuvI832MQZ/o58wW1bxSRXT+rPTOzHHPcozXlr2XvIB6/QYM9QuGBJmcwxBqk3D8t6XsjOBrlIR7lepwivzuU15Q1SuJ9OZV9pTs1CdCPjGr5K9Nh9yms84pnTv+EMTbeLYB2mNMPLid+2Qnt6sO2La0ZBmrp94pNzqIggh7VwvprdihCa0AIbKvJYk/HKj/iKQRd2nIfzv/BxfA8pEhhQo/6aW8h/O9iD1pQNN+DrAx51Q+u1l76n2gCxO3pnFSKrgAXU9XK2syt1A3gBDyUydhomcUSGaOl+n8Le2YmlqdJggs2jB4pB1aqD6nn4wfyiYjpe
+ tnrZAeNW
+ CTKdIQNwtNmeXPAm+mMWdJLtJ2RuAFN+eQh9+o/fcDscn8lBOTjrY5j48lUGSHMdRS4qOTNZjdyZLDhWoSeTlYNbrA7KSHSuoNfKh/XymqkRyJFiTxkYHpHHsGpHAucDvBvpJH34roYdcRkaeC/hums7KUKuUed5SOGlHH/NicpIv7ag5BPuXc4bRd0HktwT+1Fl84X7c5dF3QIGSjxVFTXTuu6sfslf8cpjSD169FJnfIQq9xJvom1WZFO0iOLvfY7ktMGq8/GyJbsuGR1FWhtRE7MCyWk8/6MtOjaxpClLcO1XKU7fbQS3Q/lSrHvENFYJublhgs4yPL42RCnNSp1m90bRfew82QymfCrHqLlyolTrG7h5408ckpAP9P1eLYGteNYogs3LTepzAk2Ih2ZahJJ7bBNVEW16H5tX6m4AyNhEGBnRKl3vNaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,63 +136,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-28 14:36:52+02:00, Christian Brauner wrote:
-> > I think the proposed patch will only change behavior if the
-> > interpreter path starts with "$ORIGIN"? That wouldn't work on existing
-> > kernels unless you have a directory literally named "$ORIGIN" in the
-> > cwd, because "$ORIGIN/..." would be interpreted as a normal relative
-> > path.
-> 
-> I was thinking:
+Every existing numa_add_memblk() caller passes a valid node id and
+separately marks that node in numa_nodes_parsed with node_set(). In
+addition, numa_nodemask_from_meminfo() recomputes the same "nodes that own
+memory" set from numa_meminfo, which numa_nodes_parsed already contains.
 
-A few other things came to my mind:
+This redundancy implicitly depends on the callers' node_set(). So, before
+removing the redundancy, make numa_add_memblk() set the node in
+numa_nodes_parsed explicitly. Then remove the per-caller node_set() and
+numa_nodemask_from_meminfo().
 
-(1) memfds: /memfd:woot-woot
+Also, since the generic numa_register_meminfo() already sets
+node_possible_map to numa_nodes_parsed, remove the duplicate assignment in
+arch_numa's numa_register_nodes().
 
-    A memfd doesn't have a path so any $ORIGIN type behavior - script or not -
-    will be at least useless if not very confusing outside of a sandbox.
+Patch 1 adds the node_set() to numa_add_memblk() itself, so every memblk's
+node is set in numa_nodes_parsed on add.
 
-    Btw, used by runC to guard against binary overwrite attacks.
+Patches 2-6 depend on patch 1 and remove the redundant per-caller node_set()
+from all callers.
 
-(1.1) deleted memfds: /memfd:woot-woot (deleted)
+Patch 7 removes both numa_nodemask_from_meminfo() call sites and the unused
+function itself.
 
-      Same as (1).
+Patch 8 removes the duplicate node_possible_map assignment in arch_numa.
 
-(2) deleted executables:
+Patch 9 is a minor cleanup, using the existing numa_add_reserved_memblk()
+wrapper in numa_cleanup_meminfo().
 
-    /woot/woot-woot (deleted)
+No functional change.
 
-(3) unrecoverable executable paths
+Sang-Heon Jeon (9):
+  mm: numa_memblks: set numa_nodes_parsed in numa_add_memblk()
+  ACPI: NUMA: remove redundant numa_nodes_parsed node_set()
+  of/numa: remove redundant numa_nodes_parsed node_set()
+  x86/numa: remove redundant numa_nodes_parsed node_set()
+  arch_numa: remove redundant numa_nodes_parsed node_set()
+  LoongArch: remove redundant numa_nodes_parsed node_set()
+  mm: numa_memblks: remove redundant numa_nodemask_from_meminfo()
+  arch_numa: remove redundant node_possible_map assignment
+  mm: numa_memblks: use numa_add_reserved_memblk() in
+    numa_cleanup_meminfo()
 
-    No path can be resolved at all. What to do?
+ arch/loongarch/kernel/numa.c |  1 -
+ arch/x86/mm/amdtopology.c    |  1 -
+ arch/x86/mm/numa.c           |  1 -
+ drivers/acpi/numa/srat.c     |  2 --
+ drivers/base/arch_numa.c     |  4 ----
+ drivers/of/of_numa.c         |  5 +----
+ mm/numa_memblks.c            | 41 +++++++++++++++---------------------
+ 7 files changed, 18 insertions(+), 37 deletions(-)
 
-All of that needs consistent, easy to reason about treatment. Reading through
-the glibc implementation of $ORIGIN for shared libraries in rpath - even with
-an eye on cutting through most of the complexity - doesn't give me very warm
-feelings. It feels very hackish and full of edge cases...
-
-Imho, tying the lookup of the interpreter to the binary itself and making the
-kernel responsible for figuring out the relationship by resolving bprm->file
-and splicing it with PT_INTERP is terrible.
-
-So, I kinda like the concept of having relocatable dynamic executables but then
-let's cut through all the userspace red tape and figure out something that's
-super simple and outsources the problem to userspace.
-
-I think the wrap-buddy approach here: https://github.com/Mic92/wrap-buddy is
-going in the right direction in that it gets the kernel completely out of the
-way. I like that a lot more than moving more nasty bits into the kernel itself.
-
-In a way we have been doing something in systemd that goes in a similar
-direction. As of systemd 261 systemd _only_ links against libc and nothing
-else.
-
-Any other shared library is dlopen()ened as needed (discoverable via
-elf-notes). Lennart wrote about this just a few days ago:
-https://mastodon.social/@pid_eins/116781776665322560
-
-This effectively minimizes the work the loader has to do at startup. Imho, your
-effort with wrap-buddy is related. To me moving the loader invocation out of
-the kernel and into userspace makes a lot of sense to me.
+-- 
+2.43.0
 
 
