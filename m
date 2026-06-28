@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D7E3C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 14:31:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B482C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 16:09:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C009E6B0005; Sun, 28 Jun 2026 10:31:40 -0400 (EDT)
+	id D71D76B0005; Sun, 28 Jun 2026 12:09:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB1646B0088; Sun, 28 Jun 2026 10:31:40 -0400 (EDT)
+	id D23226B0088; Sun, 28 Jun 2026 12:09:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC7316B008A; Sun, 28 Jun 2026 10:31:40 -0400 (EDT)
+	id C3B276B008A; Sun, 28 Jun 2026 12:09:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DE096B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 10:31:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D9B371C144C
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:31:39 +0000 (UTC)
-X-FDA: 84929559918.14.BE9E5AE
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0E9404000A
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:31:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iLwALtkn;
-	spf=pass (imf17.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BF816B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 12:09:24 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 931FF1203E1
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:09:23 +0000 (UTC)
+X-FDA: 84929806206.04.A95782A
+Received: from outbound.st.icloud.com (p-east2-cluster5-host3-snip4-8.eps.apple.com [57.103.79.51])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B82331C0009
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:09:21 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=weU5cmRn;
+	spf=pass (imf20.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.79.51 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782657098;
-	b=0zbFj8FgG5miyZ425CmT8wnyKKL838SiRFRddfgzFosaHj7lzmaMya3LdqI1KumvTOpyiX
-	wWJDXxd4KLAMjNOGrecibdILbdyRBJs6hsxUiTidC+F/Lch1R7cTBUKR4KKMp7BFdpdJBP
-	nn0PiEQ9mjl27NWhz2RhJMWi/JvFW+s=
+	t=1782662961;
+	b=DNnwZhv3QT2+DKGQX0yXLg4oLRsGwVWCEMa9Uaaw6VRif5chlUxFk2SNRdD/4JDVF9k3wg
+	HGYoZ3jUUs5OzKZ+2Wx7IJ55weB11lUO/ZoS6/Cnmdee3+HwS9KvK8LSULz9FfGjd2MD0H
+	rMaAr/qZMFcDShF9CVrlIsFlOdk+5iQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782657098;
+	s=arc-20220608; t=1782662961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=giQ5JZiMBc+levHSGoNxfSkMTUQ4CST11ly2JfyN3Dw=;
-	b=QuuSF7KQEO0NINkcLdt77uNCfIHOnSQLRoslpI2Kxj3N5uo7CJAaSB43TK0nmWq1mxa295
-	H0VFZmlRefyr+727L8bShlr2d8umQLmEVwoys5cf8dFT8ZPC2tw/U3r6n7EhiDhm9v1Kaf
-	oZdtV9xwO+G4TG3V1tp3YavQNpAdQjQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HsPtSOajqeeyfCW7HxrnAuQ711GqnUaN3sgpgm0Q6LE=;
+	b=ZVnT+lTupeLUqhW/h9JQQXqvcQ+pBF88DgAKvvjTnSsS1hDYAox15dUlj5SNGRelfdSxWp
+	nK7PgmAi0WN9D/pjJni8f9D/enck2LJwlA/pCm2u20YBwunYkb1gcq7OqHluyFlFSc3g2n
+	Ws1/RbZr7/RaP8+IIVOAq+sUO1e0700=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iLwALtkn;
-	spf=pass (imf17.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782657095;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=giQ5JZiMBc+levHSGoNxfSkMTUQ4CST11ly2JfyN3Dw=;
-	b=iLwALtknnxAdMMZb3J5Y0+N+4RbEzF0FRS4LcT/leUorBVKJsQQQeZ7RDQHy5dXOl2Pujo
-	0lh0UN/zvE8ThNEYgSUDYtNdd4FJnoymm1ShXTqMpeO8Czgl3r+0zgRs70vSyioI9erYvf
-	Ft/gB5iL6rP6+iuSCsGliHjeZSsuirU=
-From: Zenghui Yu <zenghui.yu@linux.dev>
-To: linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: jgg@ziepe.ca,
-	leon@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	dev.jain@arm.com,
-	Zenghui Yu <zenghui.yu@linux.dev>
-Subject: [PATCH] selftests/mm: hmm-tests: include linux/mman.h to access MADV_COLLAPSE
-Date: Sun, 28 Jun 2026 22:31:11 +0800
-Message-ID: <20260628143111.36863-1-zenghui.yu@linux.dev>
+	imf20.hostedemail.com;
+	dkim=pass header.d=icloud.com header.s=1a1hai header.b=weU5cmRn;
+	spf=pass (imf20.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.79.51 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
+	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from outbound.st.icloud.com (unknown [127.0.0.2])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-2 (Postfix) with ESMTPS id B69AF18011D5;
+	Sun, 28 Jun 2026 16:09:18 +0000 (UTC)
+X-ICL-RepId: 019f0efe-0e54-7854-84c8-409d30ca50b7
+X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhKB0MGWQReCEsLQwZcBlBcHA4XXhtCFUsVXANcDkswUBtfAkIPHBNWFRMLU1ZbE1UXRgkZCF0dGQpQUAVaEhhcFFxQWB5GElYNXQkZGEZeUBtfAkIPHBNWFRMdQxkPKwhKBEMHRQJeCyUTCVNWWxNVF0YJGQhdHRkVWgkKV1NAD0AACQ5ZH0hYQAJAAw4AQRQaUQgPRlNFX0BSCwUIBkkKS3MEVAddBV1WUAJaVRIEQAhWUF4IXh9MHA==
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1782662961; x=1785254961; bh=HsPtSOajqeeyfCW7HxrnAuQ711GqnUaN3sgpgm0Q6LE=; h=Message-ID:Date:MIME-Version:To:Subject:From:Content-Type:x-icloud-hme; b=weU5cmRnFr3gsPtbRquzi/wHP7x93Z84PuBtbEmlgzi3ShkkSe/Xrq/tsM8eBsKYuFCJ4tIbum1Ql/lP6A5ZFpcw6+B0+bDeKpgP9EwiDF8yich9dkbf2koyXSVld/QpLZ6ngLt/4UcEwFMetjOEKJabZpudcKJBnfZIswn6eOOCSgOq0Ud27AU8AUsTYUIlV+SAGcXsk7v+e/4NTW5VR9esBMXXZwCGK8QqwKauqiIsDuQg+dIB8nslf6nEO4IeBS2nEMhMWuR4cXrAxcgJ8A0aOo06SNsbwRC1Jfy37cx0jZGfJcyoZeBnYhqEijKOjfOjaXIhKLpqhmB3y2deIw==
+Received: from [192.168.255.10] (unknown [17.42.251.67])
+	by p00-icloudmta-asmtp-us-east-1a-60-percent-2 (Postfix) with ESMTPSA id CA98618000BC;
+	Sun, 28 Jun 2026 16:09:11 +0000 (UTC)
+Message-ID: <a0683d92-8a81-4e21-bbe8-a5f8af2c4933@icloud.com>
+Date: Mon, 29 Jun 2026 00:09:03 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: david@kernel.org
+Cc: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org,
+ bruzzhang@tencent.com, hannes@cmpxchg.org, kasong@tencent.com,
+ liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ ljs@kernel.org, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev,
+ rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
+ vbabka@kernel.org, weixugc@google.com, yuanchu@google.com,
+ zippermonkey@icloud.com
+References: <8a8240ad-049f-4bf8-af65-d5bab2c19024@kernel.org>
+Subject: Re: [PATCH v4 1/5] mm/vmscan: introduce folio_activate_locked()
+ helper
+From: Zhang Peng <zippermonkey@icloud.com>
+In-Reply-To: <8a8240ad-049f-4bf8-af65-d5bab2c19024@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 3b64pdx5p7g47xhbn1ifmtoeskp4z9f3
-X-Rspamd-Queue-Id: 0E9404000A
+X-Proofpoint-GUID: zhWZNeanj4DqCr_EBq7T1rv6sTbp8owZ
+X-Proofpoint-ORIG-GUID: zhWZNeanj4DqCr_EBq7T1rv6sTbp8owZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI4MDE0NCBTYWx0ZWRfX0TJe5CGKuVqV
+ q4LzJdR1ClNAOUt0Y1ifzFUiQoLN3GQCtEItlxR/oYMSSSDqrhpQ1J0spAxAN1Gbm2VWfOFOaUo
+ BTao+0xzytQmgOEszBVyHDxy4b5AVMhEiZxb3pO2bP+14xyB7jlTsjJ6PE14Pqy78+XJJEcrFrE
+ cLnZjQrNi6Dd3kRtKEjw5LRZFhTorB16Ns0WiG2PIpXyOLWb6qK9efHG+vIpe2Wu6Fc+rOOkH7P
+ fwB+oD7WAsierLfE+KlPX6BphRWcH6efkRkNF/UiecW6wHgL+Slk5bX0nRyNW5wipyQJgnZupSe
+ 8/kE1cEdOr1tv59SDRB
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782657097-179675
-X-HE-Meta: U2FsdGVkX18E2c8zJ1x8o8HWHHKPl4xWQs3UETE2oy4NGKqWlWdJHEWSVlZJp4W7wINiZ4WjTwkpgPVcjhVw49SZ5R+bLKmNuvOjTnEZmWFYfL3wqQEQsbJ3HBgRMB4nrqthzjYJo71ohswZzyMD+vja5tesK6KKMBgGwRKXJZVru/LZNwGjsZw5/vdpGag+T9MV9dHnebd5/hQHxifT6S4u2yihxaWFiotuRBeSQ+MJUOCiQEmOWBfrPRB6D382mr9g+Sj1kiC5/y7zGxaptLTTvlx6apPGuAw6sBiE8jQnAUJ9bDYqjI3dmAH6UdpVeSRBFIbvQg1rHSRaBaBbDslxHwI0DNXtOCXopX3XvI8QJvb8M1PWcIYCUl6Csp6LLIa2dxxPu8wwSZYzBGOON+1cWYep4AXXf2moUE0PNwwMNqZ07iw5g7Id1eJlfIbQcF1SEPHFxugvCjJM3T4M4We0B5v8fpKcgn6FeWhcuzcTUYC0uxcWtrpF2p5vjjlMycJRtYs26IxY+a4E+bsO/B/hIZxEf8AOB2q57xpDD1yK7K72hNilgf6wXPi4B1oZpCysaI0KY0zgLQL6Hwi/Ar/gAuDnNUEaZGN0XQdwC1cHJ3RLUdaVQvs3YTPdJg99Q80zh+MFDEgiYq4fph5/0b29f0wb5KbrwP1hzmN4Te4KrUbU/hP8d3yVaEuAo1rDjjKKp6Qgovp09isUmFkILHmzF2e4P+C+JJ4/XrOFMezxqpV7BiG6tUqc2VlY9Sc+wMWWzuEVNn8u412FbjptmfAp7yJ6qTg+8xxwp6fPZrw/RngcL6TLwohFMDo+mkeehy0iiOJT5aLJCzpHab/99uOzkjsNEYNRLupxRQ/KaRDNgPBoKlcyEnDtyrrtAgwUtm8gzSy3R2Em0w/txjwQBHULvea9OziPFiLKImd7rjeDu20hkUTv6awea0TUyRAoAbp1kCmgVQVOV4nU6ca
- 5JS2584J
- uGsf6qO7Ilk0I/C1PWR6QkbPvkP+HX4JsvzaDAmsQHEZ+rIQbo2lyKe18wnpqpTuVwb/ux3WYe+fKCVS4mj4M5tQPYn3iMPMdtBNXzXrW+Zl0ED36ip5L1cCW5bHTDgg65vYtLJOsrDmiE11fvnxAUWKwFzlmUasz3t2w0ApUxK4uVTu+MDH1g2Emwb3BRHkOzrqHyzPKupr/Pg1VZ4qPZ/BSeQFzp3qBl7P+m5tP1ReXUdYZtIDx/0vN8w==
+X-Stat-Signature: f9ncgf4oesraseh7uz8818k5c64sb9w1
+X-Rspamd-Queue-Id: B82331C0009
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782662961-787089
+X-HE-Meta: U2FsdGVkX1/XCAc7y+295Dkt3BrUBpX9ET2tolfrPNoql6VtgGErAjPcVv5WEE1xe6tZlykEfpLvPU8sO4zosIMuP4bkOwir/gy+XMIbaGm+IN6DMa9AiWfYhP19+nS1rzjZwYKSnVidEcMIzZ57w9Uf0fkedC6j7hOO0uFDyKtTAv1lzs1Hy4pcTuiVX4tWo6PBibd/cLGzhsfSaKW4CbkUTG2U/FGfkVtusU/tSyWBrPPN1hTR4rSjxoQN57M+/ZA0XLHt+mUsdjmtNBxQVbDeY6zXYAsT5NfC3LSr0/QsaN41AS8dcwmD/BQbt/7x6F8TRDu+/deuEAsoOE8XDsdECV3269kRCt4jBN6QNw43w05/+LfNr8hvj6ZX0ZFLrl6NJK/F5fdYGfXb9CyAWDceqHuRSEHeWovLxAJab88sye384iY0mkrm4f3ZrpcnvS+oxBIRcPb9QGd5bnutxfFDwFEUjafpHPTyvcudOgQxoK0aGnXrGDTmNoIzQbyVft8n0KSp87V7z5P2V4Z/wQEZanyeGYo4fKgddpngt5g56pX9nL3Ln/uYorKY9U0OFImmpAJydsH36gXTBVKgDrJ6s5tlT4Z9ifjlvx5seTU8XJbYl4Udf0UcN4rK8nG3v+zVdit57ObkE5jRTrkzCp7rPgdJ7ZRLTAL+kRsepk63toHNQWLEtuN6PlgGeeBGsh1MBq5Sog6Twcav5y5V6AQ/1es0pW1oAVDaBHJSIaFJKAbfxTT3rwvV5pqH0BRIaJ1W4JhlFKqtLDBiRIb679cxOFDfi1PJx/5ZWcbNLx7oPJGVPDFtf4f92fhMSW/kZ+KXsKpK/vx/OSM6KXyb844iMK3IGb7KkPHBI6I2LPV4fQR7pmOu6WWQmKCyRavehTNQon2/gcKuSnObcO1vJHGn6UIS7HDUS3Bw7+ZD9Lh0qop3eWQDQFys6GSMlDy6wT/IEckj8nAlP3DVCNP
+ 5VuQg81R
+ +5KNb31lTXUz2ssipdt5gYOXCLDlb85VAe3rqsLx/gb5yoQdjZZwtH+nUGHDMZC6FzQo2DULp1K86UKeCbPtVxH0yPY7CKtZZsHzpOYrfBSCP6qUCYxur19BnuvawOBtkIa2WEKJ2kxndrsZKZxy6cBMIgBBVLweDx+5ekFoqhvPpdfmLusBm9gY1OKrQEKOyGY0c+7530kp+YuPZ4E15bfVSqUD8CJO3ojvSlcmbbuDWzGQ/p1WH2Qu+gEV/RT4x9oo0fmdY7jGuV6pkTiZfHtOkp/stjvZ8YWcNCbHfolHOBZk5a5yRMnj4oxQlKOCCwx64FQSx0O0eoNyo3J/1VGuxzCbaZpOcH7sYMIpWlZ2Vp3rxgDjcqu+51FEaQmZhxEQVxgleJFwF4bnBtNd8S/suMNOfRvdJl5vOtsAzus8E1G3DjjKzwT/06fzGn5wOCO5vYdGI0KbDFBs8yQmDukq7v5hL2KNnPtNif/GV373+BjwJj0DbBTNDelAnTPfnJ1GxxdypJdDaQKHWblLU5TqAVH3TWgEbo8XnFztY3lq0deMwLRnxPIbJqR8MOcifJQxh0SZHZUjscHudP2CkIb6Rec4Tz25mO/mo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,43 +100,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The following compilation error occurs with an old version of glibc due to
-a recent commit adding MADV_COLLAPSE testing:
+On Wed, Jun 17, 2026 at 01:59:55PM +0200, David Hildenbrand wrote:
+ > Passing nr_pages to this helper is rather questionable. Just use
+ > folio_nr_pages(folio) here and make the function less weird.
+ >
+ > Do we want to add a
+ >     VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ >
+ > While at it, do we want to turn this to a VM_WARN_ON_ONCE_FOLIO?
+ > (and can we move that to the beginning of the function?)
 
- [root@localhost mm]# getconf GNU_LIBC_VERSION
- glibc 2.34
- [root@localhost mm]# make
-   CC       hmm-tests
- hmm-tests.c: In function 'hmm_migrate_anon_huge_fault':
- hmm-tests.c:2355:27: error: 'MADV_COLLAPSE' undeclared (first use in this function); did you mean 'MADV_COLD'?
-  2355 |  ret = madvise(map, size, MADV_COLLAPSE);
-       |                           ^~~~~~~~~~~~~
-       |                           MADV_COLD
- hmm-tests.c:2355:27: note: each undeclared identifier is reported only once for each function it appears in
- make: *** [../lib.mk:225: /root/code/linux/tools/testing/selftests/mm/hmm-tests] Error 1
-
-Include linux/mman.h (which provides the definition of MADV_COLLAPSE) to
-fix the build error.
-
-Fixes: e3d8707358ea ("selftests/mm/hmm-tests: test pagemap reads of PMD device-private entries")
-Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
----
- tools/testing/selftests/mm/hmm-tests.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index e4c49699f3f7..2f2b9879d100 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -23,6 +23,7 @@
- #include <time.h>
- #include <pthread.h>
- #include <limits.h>
-+#include <linux/mman.h>
- #include <sys/types.h>
- #include <sys/stat.h>
- #include <sys/mman.h>
--- 
-2.53.0
+Yep, all makes sense.  Will drop nr_pages, add the locked check at the
+top, and switch the BUG_ON to WARN_ON_ONCE — panicking over a bogus
+active flag is overkill.
 
 
