@@ -4,104 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 387D3C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 00:11:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A772C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 00:31:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE69E6B008A; Sat, 27 Jun 2026 20:11:24 -0400 (EDT)
+	id 506B16B0005; Sat, 27 Jun 2026 20:31:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBE896B0093; Sat, 27 Jun 2026 20:11:24 -0400 (EDT)
+	id 4901C6B0088; Sat, 27 Jun 2026 20:31:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D85B66B0095; Sat, 27 Jun 2026 20:11:24 -0400 (EDT)
+	id 359F86B008A; Sat, 27 Jun 2026 20:31:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A0AD56B008A
-	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:11:24 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 008851C4A42
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:11:20 +0000 (UTC)
-X-FDA: 84927391920.26.42EF650
-Received: from mail-ed1-f74.google.com (mail-ed1-f74.google.com [209.85.208.74])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 36478180009
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:11:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FeNwYjIg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3pWZAagkKCMwBs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3pWZAagkKCMwBs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A60E6B0005
+	for <linux-mm@kvack.org>; Sat, 27 Jun 2026 20:31:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 836831C17C5
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:31:27 +0000 (UTC)
+X-FDA: 84927442614.12.A68DF39
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B24E7140003
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:31:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EeNiOkpO;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782605479;
-	b=icwjHMULMRypwmNvoxHK4LT3YOjWxuCNdx+ohHNR0Gsx2Uc1mwS2L68IW4zAE+rEE7YVX/
-	7SNUYMaX/Mjaz4bKlIUQChxMtRcttXi+L1ekUoY4rzSFFAzs3YaZDrhKJx28YKdGFSyvHY
-	I7HHRjTiIKH/K7sGXif0+bRAVz0gNQ4=
+	t=1782606685;
+	b=vKGUMPdh36RRfsgxHSMPFi9ZuMO/3yj90yqvvsvSwPelybb5z6Er66ClA0bTBw8tS63KCj
+	4OQ8vW6Ro7phmzDOEmMsr70R02lOUwrbj6nzHLW/Tbxzc3l+Ueu91mOFygKObuQP8l/4fD
+	dIr2Si+JUkeMYW0IkbkyBleredrpjZQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782605479;
+	s=arc-20220608; t=1782606685;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9wo+YX/Ag7ncd7bf256KRZ5DnnahmErnNNobKR7tPZM=;
-	b=1QbCf28wuK1kWmVnlxO/nWISW4mqNZ2Bmz5UU4CsxrRw79d/ke1HckPBICgiSdbQNthfQA
-	wZGR1oOpdQoi3iyOkedKkl0ZiA45FF8CyTMKmQD1EikbDXld08ccPmSk0jEbm5FiyZOlCN
-	ca8zxHXrZLjjq+/r7DbB0+FU3ktJY2s=
+	bh=wkN+srl6wjGtNu7iwo0FYJ4HSQUHdkfF1SLjXCC02H4=;
+	b=dxnvmRY8qlmtEC0455pek8FZchEujkUA5G84k5VcnYM92rKWTIsD2ufuy/oLiHg7liACQJ
+	KD2219Mqq5eOh8O/kpAN/WoVnRpuQk1VmRcbhcqVkDiIySzQ4o64ekinOYlRvkVIoxg0oD
+	dy+XwjQ8bWwoJcM8djIrcKYE5ZGLyNI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=FeNwYjIg;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf06.hostedemail.com: domain of 3pWZAagkKCMwBs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com designates 209.85.208.74 as permitted sender) smtp.mailfrom=3pWZAagkKCMwBs9C5AszCy66y3w.u64305CF-442Dsu2.69y@flex--tarunsahu.bounces.google.com
-Received: by mail-ed1-f74.google.com with SMTP id 4fb4d7f45d1cf-6984688a545so536729a12.2
-        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 17:11:18 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=EeNiOkpO;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-92c7a0a701aso53400985a.3
+        for <linux-mm@kvack.org>; Sat, 27 Jun 2026 17:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782605478; x=1783210278; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9wo+YX/Ag7ncd7bf256KRZ5DnnahmErnNNobKR7tPZM=;
-        b=FeNwYjIgQFB/AyOvab675/mwsehqZ1MnTL52glUEbxbrNxBZMOsgKnBmMgbWFQxi3o
-         rJ7cvVSRb6LlfLmObMoDG7ZaypOK2EsmQdv/CcHFgJr6NcpzMMnKAsxgT66vERzAzEAB
-         eKlDIKWGB9XlA5vbCxarYvaIx1FmWLpcAwKk2qhxqb6tMUA4p41zRFlFFoRmd3+f3scs
-         AeISlUd6jfJ12V4Cak8NUgE+vJ/IlYwJi/UT2G0vW9aBLEKDeh9s0RDiPYvFLRyFNZB0
-         47Y/h3IzqNY/PEtAS3VKG/Znzj4Vcz0cggq8Pj9FTa/Q44sSarDmivH8yTdLYgvFCIcl
-         D/Yg==
+        d=gourry.net; s=google; t=1782606685; x=1783211485; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wkN+srl6wjGtNu7iwo0FYJ4HSQUHdkfF1SLjXCC02H4=;
+        b=EeNiOkpOo6sRs5KHXq0spfJaNmA6JaphW90OYFNekUXdhvfdJcj2d9aY17vrq7nBgQ
+         epJ9newFCj+IdInw4GZf1Kb2v56SSs9lYrREJJRfmY9tiIS/v3cpRc2baQRK0dHmSFeL
+         k5o4XYjwdNO4bFblqbraDUzdlUTwmZNMBoly9aK4U7ZzFPqk9GqNzDl0hpJGywPiWeiJ
+         8BNjL7T5hbGNux7dcVJK/lydSDvmXcW+zS8x755jHiP59YG5FdIRNojPbrvLh1edb/nr
+         mNkdz8BpiKWvwzQDR0lOh/46KSEfnuZ/YvDnlQuToKqsdSlTb/OEeiPbaVF+QWg/yq7a
+         qiMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782605478; x=1783210278;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9wo+YX/Ag7ncd7bf256KRZ5DnnahmErnNNobKR7tPZM=;
-        b=fOdBRGmKQ46f+juxI0ul4XhDWUE4UKwkA7mH8hx6OSsgdbxNXbE+mOWJsAMEBQpbs/
-         B+QEgAjlHu59rITGH26hUet+hXFmRZWxUkbuNfDeEZgBeDdImYZ7lSyfDrzqOY+8qjLO
-         ewtoaO6k1iNgQKvuzfsR3TxVii4tDmD2YxWSQm13mTp6GcoocFRdjzGXQEwuT4A4hPQa
-         +um4PgM2l1fLObBLUHygBmgA1WLv8O3/t3cF3Wijckpzv4jNHqQkzjsRI5gsSgGslxF3
-         Un02FtMDq/CBtA5/D0SnO0873QGMzyHEoovkNDpi94oTSjj9gMD1bc5i7fAGlrljyDl0
-         FEOw==
-X-Forwarded-Encrypted: i=1; AHgh+Rp5bxq7aORHuX82DOg47W1DYupZc7bBkFN1nmh6BzoSBjcYNqPnI7Vcx1GkKjrlcp1PcHWx57g0GQ==@kvack.org
-X-Gm-Message-State: AOJu0YzoEEDgk5YP5ks30btNd3lIvSZJzJHJMnPEgm/dmGD2tyuPSKQL
-	1dcUfh6Jo6WlmiVfpTNHwQuZuNWxfCc54BtghrF73mdSykts/TCRsC4kTODbxqz9YG0SXV0GaMo
-	4LK9gK9xRiGqcG6sB9w==
-X-Received: from edxb10.prod.google.com ([2002:a05:6402:2ca:b0:698:3b14:4ab9])
- (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6402:510a:b0:697:de29:c802 with SMTP id 4fb4d7f45d1cf-69810ab88f9mr4353570a12.18.1782605477536;
- Sat, 27 Jun 2026 17:11:17 -0700 (PDT)
-Date: Sun, 28 Jun 2026 00:11:12 +0000
-In-Reply-To: <20260628001114.1869564-1-tarunsahu@google.com>
-Mime-Version: 1.0
-References: <20260628001114.1869564-1-tarunsahu@google.com>
-X-Mailer: git-send-email 2.55.0.rc0.799.gd6f94ed593-goog
-Message-ID: <20260628001114.1869564-2-tarunsahu@google.com>
-Subject: [PATCH v6 1/3] mm/memfd_luo: validate serialized_data before conversion
-From: Tarun Sahu <tarunsahu@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, skhawaja@google.com
-Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Tarun Sahu <tarunsahu@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        d=1e100.net; s=20251104; t=1782606685; x=1783211485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wkN+srl6wjGtNu7iwo0FYJ4HSQUHdkfF1SLjXCC02H4=;
+        b=cKgoWPLtI0YWt3LlXwjL+LSXjWirvMtcLs6LimEymJdTdGjiLGD+ISH7SwI6Q4nJf7
+         2ic7cSGyiAR0O0ft71dl1N3590tfXec+1Kpv33hyyTEkWefzPRiLPwJx0AvN+3CelJ3c
+         u87BdbH6RN9anwhMCelZNo5g1XV/+uUNdpVenJ77z/ZGA1XqHBtnO+P/z9Hb0qlc2lIJ
+         Usww0pIpoPwent9damLbbSC3CVHLNb5raXigHy5BA3AGrzBFUQG965ViWNq2YNmO/kNE
+         v78qEVD3kVcvc7HbfPliiGWZwTjSA+KO6VdZ8ObooILGC2VP78YNXkltjBCC+nmrC/7J
+         oV/Q==
+X-Gm-Message-State: AOJu0Yy2ig9Q54H7cdMC6S6WcZYEQFDBFdNcK2KbG0NEE47rl5g24Bd5
+	aS7v6ysdHuNclcq4YSLjYhhUzZLsqUYCmogiMOVy0IhG+Kq9RDYjnyuzC7qvYq9nXHE=
+X-Gm-Gg: AfdE7ckDpxLaoHuZrMYNWT8ND+Ibvncu042pRkmmP+iUB+ThnjqrOIBjPojyL6M4fYY
+	gbyLYngQfVE++o4v/9OdOf6dK4mSLbuwaXgyeKLHBPwGDM/Q9Zig7duy6IdMwJIS4We1dqpYZfS
+	goIBlYIHMkkNE7AwTa52Xi91tsBL846Vdh+Khoxpb55Xey7V8kv7W9Ts79MBJn4d/zERHqQpL4W
+	0+mGbay///lE4nTd6nPwTeKijj2wIiNBGRUirzGgLHzL3TaaiiKCrRLt+O0qEcu5JYdTrFvVx0u
+	TQkR5QWYm3KtiIvCSVCkFgxFvSkov51ZS5YEG+DkjMIe6Lk6GIM/a1AYeCYpkaUOKeMCTzMFWat
+	Iloj8dA+k6XtmEi/Puc+c9Hk1zX4onfrc9hEtALK0deUDWtfQw8JRm9gNfNR4ZxKN2dPDYIB47J
+	pTNvyx5owLl5KM/bPPJ4hnAPiNf9w7cGPLmC6XefjejG9xo9GJTuoiBjHnvz2in0akH2fs
+X-Received: by 2002:a05:620a:2b90:b0:915:7fe4:cac5 with SMTP id af79cd13be357-92b3e96cd68mr914439085a.49.1782606684710;
+        Sat, 27 Jun 2026 17:31:24 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-926000c31b4sm1637191585a.23.2026.06.27.17.31.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Jun 2026 17:31:24 -0700 (PDT)
+Date: Sat, 27 Jun 2026 20:31:18 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	rppt@kernel.org, vbabka@kernel.org, mgorman@techsingularity.net,
+	hannes@cmpxchg.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmstat: fold stranded per-cpu node stats when a
+ node comes online
+Message-ID: <akBrVoku9tKstb9n@gourry-fedora-PF4VCD3F>
+References: <20260627202243.758289-1-gourry@gourry.net>
+ <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 36478180009
-X-Stat-Signature: 7ctj6noazixpfoye7a8ioudf6pd9aiee
-X-HE-Tag: 1782605479-886079
-X-HE-Meta: U2FsdGVkX1842Pm9j08xqdyn9ThzDYxJA+0fCk9hRP85c5injp0JVR29TjFmiZ1+vB6QIupj8ZBKTXj9sPRm4YITibCVPgbiKwrV8w7zeZSL1PdHgKVPrlzUnUzTkcwGtwGuJjQJfmwKDAV79dalFG4At2B4i6/OVqfUGHSE3tCjRJGsF+Zb+xHNGHN1SGUA3+m1vEZxno0CbVsK/J/FT4i0r2cRTLHl9gJ7d43EQqOrQqigAvAe/35XokdkjGiCrqBLQvcxWi23fDkV/jbipaQXT32aZpu+Gx5LyyPQf3mAb/Byuwn0bXPTPa07JyrisnjIrsEpVGr84aNJLASZUqIXsdxL3ybKRz2poQTxF1tpv1sZEaZ1l9vUZbhIPuVOzTIqILj+IeCEFkX4QecKd60FsF4McmK/cdJ3JywPmZU7iaR5IcJm1+19I0btWyzTTvCTYRvrSQWB3PQoM1vg8qbgkWNtThAFUIyz7MTBLj0lSq4/bw4ZsYHR7KPggoQV8Q5H8RPG4AY/ULKCJA1XCgIjYWZ5LSIUqVImkoe+YmiZqgT3mA1t5LTf/c08MsVoA+hN7JxTv0I6zHv33OQuODhxEea+Z6K9CIUeH8h+kR2P7CUlwq1v5xyinZOCccp2AsSotx1/WMFlN1aEYDaPPgRP42Wwmh5TyPbIu+W4i4xN7K2kcW9a4HeNM/0oSVkHK/tRxevDtxF+kzsmqH40k92vzp9pU/LdPH3zNjR9iNiVIVZCrMyr7/TFc8IWJc9kweeWdYQhnkEGFBrzUvQOBEl8SHzoPM9y9KwlD/OKxhUMJg/4+Axj1Sw86qIttcGp4BZlyZcmxuZJeAuPQgFup5P5ypyJ4ct2Y3uSJQuVOrnaU1NXtKQ0d7e/XK1T00j0XMDBNY8LYuJgeGcCzd1ucMapu0kInLa7QcnI5yhHBDcFmuwjr3vZSkOIL704FcGwSWztdTQ0MDgdxDPWGUB
- JHO1PtNm
- VRh63b7QLxAvx367yzMocAfdW5HDMkq8aAGSGgSuscoO8nQ3odK0Q9cXTrBLX4+j1TS3sOLPEFJwf7JPP1aH9PGoklPnoasj8FtzchQTTwJhkR0IV5jM91LVTvm1Fe1b/fh0aSN3rEoudgDyU6QJA7dSSKxB+goY/JNoV+Z58FTcfKJcS5gxONFkIn8BasLQgkMRDrPwUBIHkpZB0QbvtqBUIDHQrGCJkt+E3/F3fu7DGsEXbpnuUUH9tniye6PXRiOQfnm8iAjyaA6zdsonYnZ69Bx/ES8nYHpl2tO35L3xwrwZCZreGWaxn3j/X2EPRunMwYQlZ7h9pGrcjgUragDEXCg5sOA1e/ocvHNw8d4mFUHszP18VVTpEgLs1LgmR6g/Tj4hmlMWNdz10Bu2MT6IRGzhmBCxxxDpEsMm+B7Z6YXzMX3mk/+owuyAxPinCJREiHB1VSsmIuSRQhgeVqKTXSV8b+/uctStGvpU5Gjc/g2uu5oXeurE9Y3kVnmzkru3FzVoStJmIm0gT7sDKBV7XhlXlpLPcxgMlaP/nlJT684mQqVKAv0PbN7akmoWin8ENKUl5C+t34znRtYHDXxuNFJ3tf2iFp7X6eZwQi42LLBPE67TyzhcUaTvdYKOZslGMrfSd+bTt66tYDcsILOHybRvzlUytQyNFHPiOJZmmbvp7qV7tMC4lKYjRVzXHCDh8
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B24E7140003
+X-Stat-Signature: fgepfuaetywghh1hcgdk17rwiy59ckmu
+X-HE-Tag: 1782606685-928664
+X-HE-Meta: U2FsdGVkX18hU0oEey1uy0AwjaeJk8plIlicdZn+ai8Om4uXy8g17wwJFxii4rUkaVY/VwLvLLR0jbZVrr5rBOLjy2IAGei5tIkRC8fI20MhbGQOfJ1ScnPIKVcMmgMw62zgLKBA+xEMVwWVJoiOD6gbw7GHNDZgAcuO7dtDpR9eQOJ1h8SQ3yK3YNmeEON+H682/BbGU1FN7AQsioRaQ53V83vlIIqupJsjIA/CkJvUopWjsOE/MpgeDtv1A/Utb6FYG5r+Si4yyDp1ROsS9A22x5Jt7D3U63C00HbmiN9JAtQvZjj1WjDNZCzqCsDCXYXJDtW7qfqzIMOQfSPjrcBSeUWa9uXK4qUCTIgWcr4mGLRS8BrfYK9XDg4Xw/5+TJGfAM0e5cd0YiBHFV8HL2dlBiu9P4LHQq8GZSCwOnVisKUeBysUc+HaRf6FkmxaPmG+aWww/XQ+rgtIosJbVvJEZrUgUTVO+1M3eAhdqltctcWEeGONnwY2rlqKkSKFMspBShlC9dyevJqY+j57ytrrfHbgYcU3S9hvU58iYOjQIibDuTqLmr35EIuqfYlutwF0ObgNEpC7i1BZPPIciSL23REKognkvtk5o+R3SK+hpZVBjV8Ttqnv5XclmlQJavTt7KNlYhPrZAbcQ+geM9j5HH1wf6qNETxdaGeh85oY10GvNjTE3p1VCRCVjWEEjtHxSQllPHZ41ARXgBzszpkEmfRUgNyUm/BRqRlUqZI4z2ubEGtk6b7oIjZXeU3mwQhu+R9TIYL82pjeic3cWXWchO7QOWrpYGiNrGJRc23krZ3b8c3GQIud05Pnw2nqKSsgruGxCW1Ks0RebEMy0dDFfuGpeXEmLb3Y/HeyE7/a/oyDd2WtR/GPsYA/7IZBkRFd10S4QXaakPExubzep71ohk67xgnXQa8nxHXAiyWylphNZyI9servg7yXrU8dyw/FG9Iax+4kJFkUcKA
+ dchQsexl
+ ibrZmsp8vOJLOlzlBiCfGGktJUt89PABtbBKsaUEMZW9NPGrQ2cvUEUl1rMQ9ahTtpVQUWdj+UJUKoNqEE0sVNdnc7pdU6Wz8WaH4y5JrMX9dFrlhlmBlp5xzSXWVwyalvfWBBfAOrBTwpf9NF47Q/ykuj4ck00KbGkxKa8azfeaAGDi4X7wwm9NiX7FxWbRlOs3qgTuZhO2Z1xHA3OdDdswrIyQ3R3pymFa3V1OgkB4nkeoo6SFLBkew6C7UrM5CTYg6OwoBvaYb0qbhLTaFEFMqb9QiMm1HpzpmtWAdTrZqashGl9wkkOzmkusTxisi10OliPUq12QL1mY0SDVYcZn24YTIKD7wIucNHZ26kR6ithaapJb9xzKCUizzV43FRBnQi9eb14ZTuiLyd0nrPylpv9KRlBoMmKEQcodqwSMn62s8aEDo+zmJzWitJRDC1yDg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,56 +118,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In memfd_luo_finish() and memfd_luo_retrieve(), phys_to_virt() was called
-on args->serialized_data before checking if the physical address is valid.
-Since physical address 0 does not map to virtual NULL (due to direct
-mapping offsets), the subsequent check 'if (!ser)' was ineffective at
-catching a missing serialized_data, leading to unsafe dereferences later.
+On Sat, Jun 27, 2026 at 04:10:07PM -0700, Andrew Morton wrote:
+> 
+> > The existing code zeroes the per-cpu counters and causes a permanent
+> > skew. Fold the stranded deltas instead, before the node rejoins the
+> > online set. The node is not online yet and the hotplug lock is held,
+> > so the remote access to per-cpu values is safe.
+> 
+> Oh.  Shouldn't we be doing this during offlining?
+>
 
-Validate that args->serialized_data is non-zero before calling
-phys_to_virt().
+I tried this first.  I was unable to convince myself there was a 
+safe way to accomplish this.
 
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Tarun Sahu <tarunsahu@google.com>
-Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
----
- mm/memfd_luo.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+1) sashiko pointed out we can't schedule_on_each_cpu while holding
+   the hotplug lock because we'll re-take cpus_read_lock and cause
+   a deadlock condition with cpu-hotplug.
 
-diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-index 59de210bee5f..10f3983b0060 100644
---- a/mm/memfd_luo.c
-+++ b/mm/memfd_luo.c
-@@ -397,10 +397,11 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
- 	if (args->retrieve_status)
- 		return;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (!args->serialized_data)
- 		return;
- 
-+	ser = phys_to_virt(args->serialized_data);
-+
- 	if (ser->nr_folios) {
- 		folios_ser = kho_restore_vmalloc(&ser->folios);
- 		if (!folios_ser)
-@@ -522,10 +523,11 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
- 	struct file *file;
- 	int err;
- 
--	ser = phys_to_virt(args->serialized_data);
--	if (!ser)
-+	if (!args->serialized_data)
- 		return -EINVAL;
- 
-+	ser = phys_to_virt(args->serialized_data);
-+
- 	/* Make sure the file only has seals supported by this version. */
- 	if (ser->seals & ~MEMFD_LUO_ALL_SEALS) {
- 		err = -EOPNOTSUPP;
--- 
-2.55.0.rc0.799.gd6f94ed593-goog
+2) I'm not sure we can do it after the hotplug lock as been dropped,
+   at least not safely.  At the very least another hot-plug re-adding
+   the node could start.  That just seemed like a bad path.
 
+3) foreign cpu access to the per-cpu values are not atomic with
+   respect to in-flight folds on the target cpu.  this_cpu_xchg
+   and this_cpu_add are (i believe) only atomic wrt the cpu itself
+   (can't be interrupted mid-exchange).
+
+doing it before node_offline() has problems (in-flight folds),
+doing it after node_offline() still *technically* carries the same
+in-flight fold risk - just narrower (fold has to have started already).
+
+I couldn't convince myself there wasn't still a race, so here we are.
+
+> > +	for_each_possible_cpu(cpu) {
+> 
+> That's a lot of CPUs
+> 
+
+Unfortunately - cpus may have gone offline while the node was offline,
+so we legitimately have to visit every *possible* cpu :[
+
+> > +		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+> >  
+> > -		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+> > +		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+> 
+> and that's a lot of items.
+
+I am aware :[.  I suppose we could vectorize the collection here on some
+archs, but I try to avoid being clever where I can.
+
+> 
+> I guess the overall loop count won't be large enough to cause issues,
+> but it's large!
+> 
+> Perhaps there's some simple test we can do on the per_cpu_nodestat to
+> avoid the inner loop?  Perhaps might need to add a field for this?
+
+Hadn't considered this, but maybe.  Will take a look.
+
+> 
+> btw, "for(int i..." is allowed nowadays.  It'll make this code nicer, IMO.
+> 
+
+aye aye o7
+
+> And... Sashiko seems to have found a pre-existing issue:
+> 	https://sashiko.dev/#/patchset/20260627202243.758289-1-gourry@gourry.net
+> 
+
+Will take a look, thanks!
+
+~Gregory
 
