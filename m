@@ -4,89 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2FCBC43602
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 22:01:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A0CC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 22:01:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9FA5F6B0088; Sun, 28 Jun 2026 18:01:28 -0400 (EDT)
+	id 352886B0099; Sun, 28 Jun 2026 18:01:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9442B6B0099; Sun, 28 Jun 2026 18:01:28 -0400 (EDT)
+	id 32F716B00A1; Sun, 28 Jun 2026 18:01:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 880B16B009F; Sun, 28 Jun 2026 18:01:28 -0400 (EDT)
+	id 12E3C6B00A1; Sun, 28 Jun 2026 18:01:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DDB56B0088
+	by kanga.kvack.org (Postfix) with ESMTP id D9B106B0099
 	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 18:01:28 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D338B1A04E5
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:01:27 +0000 (UTC)
-X-FDA: 84930693414.15.D2A7171
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4A0171A04E7
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:01:28 +0000 (UTC)
+X-FDA: 84930693456.22.E696C2C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 1107D2000E
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:01:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Do8CglHv;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id A01F220003
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:01:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JXALbY/b";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782684086;
-	b=A5IE1JIwCpnaA9kDDMdo5PaGLtmszydZkT8TbFogUPsLBd3Bqm4UpUl6XYXyEwcY/HmK24
-	wpBNRKhxEU7haXT8eG+UUcLe1OaVefoxC7ZF5y8xKwqDi2dsLB8BF+4pBSNnB3p0pc2bul
-	YVtATtR/fOyeZ3AsfBLmhKZCd9SIX7g=
+	b=Of1tQkXYcgxLQn6hjt8HDbtqF565Usq/z0+/MxXL+0S9gMpRbPzSJczVuUmFynUH+9VsXL
+	luVYUUXNl9/cGXlR1BQSPKRGWAVl9rPWl7Ia1R2isDQMgVFAsDONqmwJDAxPeiZJMcTj5s
+	mwpwLg+ly1w5Ol04+njAyp7MD1yfKB4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782684086;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b2RwMvGvcXDxhpeE3Fm2y1VL7VUt3RWHHkP0dXl44lw=;
-	b=b3TwiRJIw7Qto1/wkGx1S+9pbD/0x40zOUjU1FMPAeg3ttHcp2rDq/vjgLc0ZsAUuKbHpG
-	sIc3iGd6w++bPFfVZmRtXhjte8oz4nzni5NHNoX2fCWIrwVYXS/a/5+ztGcRJA1L2DGXaY
-	bixYwI1tzPtZSa93OY3p/OxNVySgPrI=
+	bh=kWsoAsTU2RLrwCg9yIH11L07Sw1ho6y486HJ6RBWC/I=;
+	b=UdfgEie7b/l/4eWP7NpJrWU+koJYYHdjCiW/CkE65oZjVuwI3vK6k6fiRlEfPnWKOHFgnk
+	qovqVsTuGNvhRE1rFgwccHWFif8dDcQMV/Du5ibB2SJWY9KQAmrrXrLv4XI2cZj1FPbBG0
+	6wl++kIeqyDJMYBwZgFf4unnWccRimA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Do8CglHv;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JXALbY/b";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C6D641991;
+	by sea.source.kernel.org (Postfix) with ESMTP id E328D43847;
 	Sun, 28 Jun 2026 22:01:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE29C1F000E9;
-	Sun, 28 Jun 2026 22:01:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3DC1F00A3D;
+	Sun, 28 Jun 2026 22:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1782684085;
-	bh=b2RwMvGvcXDxhpeE3Fm2y1VL7VUt3RWHHkP0dXl44lw=;
+	bh=kWsoAsTU2RLrwCg9yIH11L07Sw1ho6y486HJ6RBWC/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Do8CglHvvd6hU5kWZSRwGWzN4Hz8HtwGTGz1/VwmuA1/bhV09vN2ju/H+Eq0CAWxa
-	 +EVWFfLdCkGb9nd2DQ0Q0RMHsp4xITyCG0iZ0fkugh5EeUdcm68io3mihgCdyig8XW
-	 Noj92cdiKk0FZvVErunjGBHmsdhAwovibuM4CdLVAuBBPSD45PP+cIlKhtxHhr4ymi
-	 lRi+19TfEdyvkj0Stp7HxfoLNSQ5+FXFsLqGth6fydPqlxG9nqXKTEH2HRor8dZHFb
-	 VLEnR10QeLiZeCQqnSSGD2CscOEg9MQBTpP2ex8vxCcspd4jeMmU8NF0tF4I/bVnfH
-	 alZMsleQGlk1A==
+	b=JXALbY/bP7agD+NSNT/wgc3+09pPckbDI6uMcxzEJJp0aSErNwKoOXuGUuQ/V1+Vy
+	 U1wzqONNSi8fzYLB8K74lWuWsqW639h1mV0b7BI7kDq5gdHwPNdp6aqwUJGbL7O4QZ
+	 AXLr2uOOV78AWdEaZ6MdwT/AepXjH2Y1v8K9RuaNDi6CXgdLeENvD1s3HJTMQhi8et
+	 TiGM2D4DeW1xSbfD/OvLYw+o2BGC4IY+dpAi+nNUesTid3oCMhTPxSmn2Ih7inRh+3
+	 x/sAUs68rILMRHGHQG68nltgKY2RY+ebq04XD8S8VR5PHjUnWfooR6MBBtKYzX7TY8
+	 U0QxGPPsPiWlA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	"# 5 . 18 . x" <stable@vger.kernel.org>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 01/11] mm/damon/sysfs: kobject_del() target (normal), context and kdamond dirs
-Date: Sun, 28 Jun 2026 15:01:10 -0700
-Message-ID: <20260628220121.97360-2-sj@kernel.org>
+Subject: [PATCH 02/11] mm/damon/sysfs: kobject_del() region and target (error) dirs
+Date: Sun, 28 Jun 2026 15:01:11 -0700
+Message-ID: <20260628220121.97360-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260628220121.97360-1-sj@kernel.org>
 References: <20260628220121.97360-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dja6bnj5tenh8mqfzabfdom1x5agjq8f
+X-Stat-Signature: 9xe3uaezpenxjcwitktb1zz97qfpid7e
+X-Rspamd-Queue-Id: A01F220003
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 1107D2000E
-X-HE-Tag: 1782684085-619494
-X-HE-Meta: U2FsdGVkX1/Hr4WhqCshA/k12CF9Y8PhSHDBWNz4ei5mTlTiHTjKAruyMBjKUSE9zwMF5xZzDWgLa+a0umZSSVSZrkZvJw9rt8YgyTr41i+n+6XaL0CSbX1vOtCU4EjCJT3Gw4QHn46Ak+ZeCXQN+TdMjpODYQapsE1oRap5nlQ3qSbftQh3GpfvQ5ut7dpgdSTNx9gUcPIIQTu701Ht2THvjjOBEefhcHg58fUVd9wbnIb+gd+LYbBw/uOP3mzvn9qhgMK0LKRSA/N3dr+oPplVH9V2poT/mBTiyEWktwC4avR0rmiA7amChSpTf5quku7t2sVnH4wpn4LAd1J6EJUL8Zcq+dV7BEi7feFjO7LhFU/kXIaxz0oC48R9sDu59xrZN9wUhMVVzs7TkLG+XSwnON0meoOZCJXrWuCgHwSu9xF7A8ko1QHIwHAWy2zeyrhM1PGHnriZXytIhZJjbxhZA7+X/9BIzDkpfRPkPotuvNIU8roboaP7zWBGLfImRKhht66ovvYU+H+gnjpBiAP1xWwbmJBrODWpzWJUU24xmrF23FuvSxHF3JIBLu/ZIjJ9g5LoDON3Gq8VLE9a0QGqPxGXvOQS8jcv9N+F9Y6qQ4UuOsTRfk29TE2/HtZO2fpzipFuSPlrME91nYgfmHhFnHuutm5zFa/tdJpXZoDzIEb3O33m6a/OxRHc/oT7nb1QqBJGmydpwKQR4HzKUUYlKunLWHl8u7jzJdOQzhQoM9/BjAs/phzm9vGI8h0bdCnR5LPFS+PWtxQAyviEcZzJ3XOo+IAtc4ZCfgfY+msz27KdtbeHDY1rFU/oXByipyr+WaDrQGmtfHdtkIc4xcZeEy5OKsvJf4S+mk8k/2xvJAmHioA8HW2dBpKC4nboOVCR+Lwxje04VYY38VNQfPTt3kHCETK8KzSosJ/4SNcTbbov5kn2uxQAFVvAo4/JEr8f7LFE33ZTqopw7r1
- t8jhZKeO
- 8/5t6PKVIS53kHXDFf3OU5NaKqfzmIPlRcKAgRWN3Au1OcULoNQnc2r2aliGq3H3EZBOg/w0s/DIk6B8VxKmS2RuDPhqQltHA22gCOusAyJnJ08vmgCrwDyR5Re9Sy1ls52+uQ9EwQk7d0qLP+fwhCNqe/xcZJhs3xyskc9Qqslv5SAy7Q3TPoNwIoeZsbxcMrtjhSKpLERTzV5l/s63sZmqmvUjbzC/sKZX2UHG0RfR1XlOaf2mfb9Bz+bjMfcQ1vLY5INIG98eHKu+CcQKeZDl48g==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782684086-646938
+X-HE-Meta: U2FsdGVkX1/GqP14lVRF9EndoXyAji00z+GvORgoaOLf0ejg5netwkJqie538jdG3WGadeh0t/GaAW1GjNDuDMjZAkJepMs3LYqLghVvRYd7E4r6s/JVPM8ACOq9vm247My730dSNtQ7Xg9xDpKfRVdUgxOlpzGorMk5VHJiNdh7y9xci3SRjW7a975a+z56xKpvzcznjDUA9BW4hZJci+wMtrH34mSCGIN7V0EA9sVcUDi4zNziZVouB8F/svVu33hUGwPlJi8VMKN/b8aZ/X+RPPKx6B2vzvJJxrDzWNTCKhCYtpjrpdBOlVIDnGVmT+RC/O2trC50jYH/ZpCXvT+1fyiUQfvKLIrsfqvVFEe5sV5Gi92GYq4C9uTLpfiWv6xrNQXdJxSwgk2W4StYbPo99uwzAJnK2QzjKz5CWk1wGP0ymSgvfF/l2fskoU6n4mBsDheeWdJyCFjS4O5HmTNJxCVLx09aVmKT2b5UDAjAYprupRg+D+Sy5ivyC5cek0yna6Ep+yMqXm4xdL+a7JF8lqQva9Mg44B9XbS3CbBcwG3mpKn9gFRlels+JbdBFemC3RCDpF3lxXXH/mYzuPvqZ41LavWuupHnZeTPC0XRbWRueJ8NIZahYMl95TrcVfBcQh3ikuOentGnL4Soq64OZnAxPZoNX+Z18cVCezeBKReWd/0pmUwyew7fgjqcYMLIMJTMRWfYbFxvyl8sEo+/zRR33nBbWFx8E1jsRWOh98LseGzodWLRxPcfjP7MDNU7XcNTidBnGL8Bsn6JNke2TdsgCcrSCFUjBPHV+xnlFqzP3KEzyfbDu1ADFC7KSgMAgX16PggPGM3qXDS2zEZpdtvNgrl5usrvXODWehE9AMvf0iCdqbGtaeB/mlxAEFEvEffdufAcKfKYBp/H4zl5gAFmWPmCFafb+XR0Nfgv5WmZ79xfMo8TFaYr801ZeuIaljzxM7W+iwp74l3
+ m3/HbquI
+ iJ5r9NSOZWyiDSWgEJnVPc8SpCfq+oaDSwnkW4gQN+eW1zQwg8GyGW1K6t1ACgUdaZ20xmlXNTnYgStYYrIXmciV1t6isDSwGmcNSE7+hMJZziQJVR/Qe9IOHN6ItN1QXcQRhDteuKwuAgaNhFyOyLkAXL1DKF6zGAHRpkcQbhxoG0jLpSy0zZ7fJ8/Cc7LaVR7eN8hRaDUHj9O9sqgNvnw3Bu8QP5bdqkyizeml5qAkZk4c3gwu+NSjvF3JjSYJiSX1vyio6JniVdZtUVeDr8r/TbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,85 +95,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On CONFIG_DEBUG_KOBJECT_RELEASE enabled kernel, lack of kobject_del()
 could cause directories creation failures due to the name conflicts. Fix
-those issues for normal creation paths of target, context and kdamond
-directories, and error paths of context and kdamond directories by
-adding kobject_del() calls.
+those issues for the normal creation path of region directories and the
+error path of target directories, by adding kobject_del() calls.
 
-Note that this fix for target directories is not complete since it has a
-similar issue in the damon_sysfs_targets_add_dirs() error path.  Because
-the normal path issue and the error path issue are introduced by
-different commits, this commit is fixing only the normal path issue.  A
-commit for the error path will be added next.
-
-Fixes: c951cd3b8901 ("mm/damon: implement a minimal stub for sysfs-based DAMON interface")
+Fixes: 2031b14ea757 ("mm/damon/sysfs: support the physical address space monitoring")
 Cc: <stable@vger.kernel.org> # 5.18.x
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ mm/damon/sysfs.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index a9e187158067d..38f3b02481f0a 100644
+index 38f3b02481f0a..204aed6a3e5da 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -331,6 +331,7 @@ static void damon_sysfs_targets_rm_dirs(struct damon_sysfs_targets *targets)
+@@ -105,8 +105,10 @@ static void damon_sysfs_regions_rm_dirs(struct damon_sysfs_regions *regions)
+ 	struct damon_sysfs_region **regions_arr = regions->regions_arr;
+ 	int i;
  
- 	for (i = 0; i < targets->nr; i++) {
- 		damon_sysfs_target_rm_dirs(targets_arr[i]);
-+		kobject_del(&targets_arr[i]->kobj);
- 		kobject_put(&targets_arr[i]->kobj);
- 	}
- 	targets->nr = 0;
-@@ -1640,6 +1641,7 @@ static void damon_sysfs_contexts_rm_dirs(struct damon_sysfs_contexts *contexts)
+-	for (i = 0; i < regions->nr; i++)
++	for (i = 0; i < regions->nr; i++) {
++		kobject_del(&regions_arr[i]->kobj);
+ 		kobject_put(&regions_arr[i]->kobj);
++	}
+ 	regions->nr = 0;
+ 	kfree(regions_arr);
+ 	regions->regions_arr = NULL;
+@@ -370,13 +372,15 @@ static int damon_sysfs_targets_add_dirs(struct damon_sysfs_targets *targets,
  
- 	for (i = 0; i < contexts->nr; i++) {
- 		damon_sysfs_context_rm_dirs(contexts_arr[i]);
-+		kobject_del(&contexts_arr[i]->kobj);
- 		kobject_put(&contexts_arr[i]->kobj);
- 	}
- 	contexts->nr = 0;
-@@ -1678,13 +1680,15 @@ static int damon_sysfs_contexts_add_dirs(struct damon_sysfs_contexts *contexts,
- 
- 		err = damon_sysfs_context_add_dirs(context);
+ 		err = damon_sysfs_target_add_dirs(target);
  		if (err)
 -			goto out;
 +			goto del_out;
  
- 		contexts_arr[i] = context;
- 		contexts->nr++;
+ 		targets_arr[i] = target;
+ 		targets->nr++;
  	}
  	return 0;
  
 +del_out:
-+	kobject_del(&context->kobj);
++	kobject_del(&target->kobj);
  out:
- 	damon_sysfs_contexts_rm_dirs(contexts);
- 	kobject_put(&context->kobj);
-@@ -2499,6 +2503,7 @@ static void damon_sysfs_kdamonds_rm_dirs(struct damon_sysfs_kdamonds *kdamonds)
- 
- 	for (i = 0; i < kdamonds->nr; i++) {
- 		damon_sysfs_kdamond_rm_dirs(kdamonds_arr[i]);
-+		kobject_del(&kdamonds_arr[i]->kobj);
- 		kobject_put(&kdamonds_arr[i]->kobj);
- 	}
- 	kdamonds->nr = 0;
-@@ -2553,13 +2558,15 @@ static int damon_sysfs_kdamonds_add_dirs(struct damon_sysfs_kdamonds *kdamonds,
- 
- 		err = damon_sysfs_kdamond_add_dirs(kdamond);
- 		if (err)
--			goto out;
-+			goto del_out;
- 
- 		kdamonds_arr[i] = kdamond;
- 		kdamonds->nr++;
- 	}
- 	return 0;
- 
-+del_out:
-+	kobject_del(&kdamond->kobj);
- out:
- 	damon_sysfs_kdamonds_rm_dirs(kdamonds);
- 	kobject_put(&kdamond->kobj);
+ 	damon_sysfs_targets_rm_dirs(targets);
+ 	kobject_put(&target->kobj);
 -- 
 2.47.3
 
