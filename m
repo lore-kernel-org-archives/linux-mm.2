@@ -4,86 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22992C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 04:36:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055ADC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 05:34:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC7EB6B0005; Sun, 28 Jun 2026 00:36:04 -0400 (EDT)
+	id 8FF096B0005; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7A0E6B0088; Sun, 28 Jun 2026 00:36:04 -0400 (EDT)
+	id 8AFED6B0088; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 991216B008A; Sun, 28 Jun 2026 00:36:04 -0400 (EDT)
+	id 79DF96B008A; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F5D06B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 00:36:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D35711A0317
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 04:36:03 +0000 (UTC)
-X-FDA: 84928059006.07.6FCB346
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1EE2A18000A
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 04:36:01 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LhHpJH0r;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 549346B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 01:34:09 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AD6A78D227
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:34:08 +0000 (UTC)
+X-FDA: 84928205376.20.E60F6EE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F1607120003
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 05:34:06 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q9AWHfkW;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782621362;
-	b=y3S21u27eUgch+ECDdUhrVcTKcdUClbWDhPd5/rqDhVXfbc9bQHI8P1H3Ig+Twyq8MWVhr
-	Syt1j9LzokyyS9nIpD7qSYRtarwlNjIWi0OkoB7atNbdYH3fe4f5Pyxs6hsTXBIbp0xV0F
-	A7Q9pwHhuD5etjer2PGDjf0UfSfLxVU=
+	t=1782624847;
+	b=H2yOpOsIco9B2LszfPMi8NB6ExtnqSwwCsizs9Nc3a1oy9sim1CLGfx3cyc8Ttx8WykK4f
+	JnJUU9sb+8pLWIF6wHoxY8NXVW7H3JcxQ28Rci91bZRM8cK89cWVs37uP43+GK6aMxfkt3
+	q7uvuh1QsCGr1w4gj8Fj/w/RW89FC/I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782621362;
+	s=arc-20220608; t=1782624847;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Wjl+dxNDyYjsMYaLZcgEdyYxld6KBRJroBN1TfCk0w=;
-	b=HQDrrQ9EQVs026CTbZggfPyRvy1z/5FbjIh3UEIgVsMu5unnKw+IcKhef72lzN9zCD20ry
-	5LLyQpWngyHB/2NWciwrrbJIpUuzbF05eHArumpKlG9RJ4ROFtLdjcbjzC9gLW9afkZbt3
-	s8JaQbQ5HIyDKpDAUp+LaGxWr/2WXlM=
+	bh=U8GvqtPsONGiqrdSgng3Dl86u7BfkOlwSjotfA+CRVc=;
+	b=eFnz621/8ZVlpf6Eqmy/+zT9fNKNX6YQ77OpLsJ1HHqqp2TewSL1bqI0E/PvAlX6LT4O3m
+	qO1wiZZ91gi1o4Nizsx2Fg3BiZ0eYuoXrVnsnQc+4eYJmjPE9rAyfMFRciWRWcvYboVTC0
+	8IybSEGSMDkluFUPQZmYJD73K4GBpCo=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LhHpJH0r;
-	spf=pass (imf24.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q9AWHfkW;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0AA8F40705;
-	Sun, 28 Jun 2026 04:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA291F000E9;
-	Sun, 28 Jun 2026 04:36:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3DA1F601E0;
+	Sun, 28 Jun 2026 05:34:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C321F000E9;
+	Sun, 28 Jun 2026 05:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782621360;
-	bh=/Wjl+dxNDyYjsMYaLZcgEdyYxld6KBRJroBN1TfCk0w=;
+	d=linux-foundation.org; s=korg; t=1782624845;
+	bh=U8GvqtPsONGiqrdSgng3Dl86u7BfkOlwSjotfA+CRVc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LhHpJH0rvmw3IgvaFZDaHqDd7tyjuwuh6THoTUFV0BGWlmbT6aWUi7YHoOEBCCKgD
-	 zCWuLWmpntHhB0m9hCcyMkMH2n9aMcm8MZwdhDiIj4kaBtpe1RADMuILAKz/7xyYvr
-	 e4lj7rY5w7ix/b2csStP3rSoTvdWEhkPKzHMRB8Q=
-Date: Sat, 27 Jun 2026 21:36:00 -0700
+	b=q9AWHfkWK3xyQiwev8Qy9xYMgHiUtblF/aXyVNjeozZq3oC7HZUZV0RXG5dmrZSfU
+	 Q2A7Wwign3MChDNVu4cyloKW6zTvUeoymXR646u2TO6eIQZ3iKz5jbT1ltsUah/zj3
+	 0qRwmI1KpMm1lr3DOLWSOhIGECDop207dPOPrjpM=
+Date: Sat, 27 Jun 2026 22:34:05 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, Minchan Kim
- <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nhat
- Pham <nphamcs@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Barry Song
- <baohua@kernel.org>, Wenchao Hao <haowenchao@xiaomi.com>
-Subject: Re: [PATCH v6 0/4] mm/zsmalloc: reduce lock contention in zs_free()
-Message-Id: <20260627213600.eb072ba84382807a8242efc9@linux-foundation.org>
-In-Reply-To: <20260626015003.2965881-1-haowenchao22@gmail.com>
-References: <20260626015003.2965881-1-haowenchao22@gmail.com>
+To: SeongJae Park <sj@kernel.org>
+Cc: Arnd Bergmann <arnd@kernel.org>, Nathan Chancellor <nathan@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Nick Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, Justin
+ Stitt <justinstitt@google.com>, Ravi Jonnalagadda
+ <ravis.opensrc@gmail.com>, Quanmin Yan <yanquanmin1@huawei.com>,
+ damon@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ llvm@lists.linux.dev
+Subject: Re: [PATCH] mm/damon/core: reduce kernel stack usage
+Message-Id: <20260627223405.3533412b4010b6ce658da01f@linux-foundation.org>
+In-Reply-To: <20260611135608.66888-1-sj@kernel.org>
+References: <20260611125704.3386176-1-arnd@kernel.org>
+	<20260611135608.66888-1-sj@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gjsaz64hg5fd9q9bcw8n4um9mpdtwbmf
-X-Rspamd-Queue-Id: 1EE2A18000A
+X-Stat-Signature: am1nh967mcajojj953pxoq87ukped37h
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782621361-918387
-X-HE-Meta: U2FsdGVkX1+likidKmAQOMN45ad8oiNwxNOUfuHqWHQ06TRqWNczuhSOdFYyLCAJdQc5b4hJQQceg0DE9TWhKN2F+fAlY/bs9KujhIoKm4MnHf1ZZTi7NccrUTb5vE1h+67M/cYx9em5QFq4ZYi1fEl8wPkglQ/M1B1KaIWSpzpVDmIbcd8rAC6n3Sd93l4gGPNKT6TmbGSjplYM6v5mo3iGBZCd32etPfA3bjzTz7tsHSioOMM9YNerRGv+G5pedgReuI8iduXHcDfdrcPAKzImjT8Xu40EbFnn4Y5KuP8iuKbH61YuiZQjavm8iDmx0nVals3bsRhnuBtI3mL8k36Ni6BXBucFg/XfuRyI106UubbABKF8Ib2IrsLp2CyrZIknRqyPYsTiwtr4eKKKmOcbBRif5N8V7Kkes8RT38J6O5KarhehXrWO48h7eDwC4tLZ1tKDpXGAImyQfllkwkZpvk8TcgS+wpsH4V662YGDPAnoTxBCAr7H5mQ6HtmqC1kY/V5wXYmMIWoJOR5fy4dqPozd7rMsuqKKkFhI0aGV6wl5b9nKF6bYNfuqLAe/T3XfgmMjHyNCk3uuuf/jvdkoIhqnvpy4dJEHuVbgCORbIrftvyZgsb8ngRjxlZP2vf0p2V7fCBS33ZgR9RdSYn4HJtAqfdtGzJgGgrw8vUYpDaR23JmrL/alXr3MSAv88TyYhRbPy4n6r/+DjtTWQSKN9+exsE1HiG0JQWlfEddPTScgNhiGG7pXp8ciiEBkm4v5Cc8E4fW2eVygCzXR0huT41Rb2wPnCgBLrpP4yqGi7J8ejJ88pMnMYbS7+qJyLICd66SyuJIWAywt1uxikNbg7armnMGrqUH0gQWcVDqJC6/kP8BHu27RZkeSwJI3QuTYHuUajsuyNnragA1IKe4GR2xrvLP3pkDFozfO5Z9DmIxctJ8Mw5GcV1K0hD0h0vwWWCtTEvGi045Bk32
- 6fjQlnU4
- 3y7Y34izPZsob7NR4T+Eot9jNKzSuXiRODYnivTzRON7TiWm2mXSeDkuc8rgBzumAs2Xq4Bq+6hvdOGIReck8trj6g/ajZqIJu1oRQKaov9AWV661wp3mRsw+OpE9HdjS/Qxh/eL67Qvdbve5j+eQ90I43Y/+WEtouj5mIkMqiJudb82EWBpeRZpG5m/lEZ5WWN+h1EgPA/w9FpMRb+xcCVdEWR6aIxfjVyZ/k0MqzeqJ4nuP9xooy9/ESEXqp+Ky3G7Lhj2Ni6udgxyl57FVlX8kY3JWzVe0gRKc/4IED2J6g0PcGh24ZGaheGp7lG5YQaiwrehsFPxWbIZvwu7Tqkvlu3ca+mjEikdqpSEp9KnnRuzoBlllHX9f/bP/UH8FpHbwHXfrmEaT6YvBgscB+3ltZ3THYaUIuePq
+X-Rspamd-Queue-Id: F1607120003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782624846-555092
+X-HE-Meta: U2FsdGVkX1/lxfXMZfk2KivgHGvmJHUolB0oCLC8gWqHPLyvnWDoe4fCICjb/VAKqMne5euOdAu/IKU96igbVjtvmdYKKtCjv93p3nuSVpKi0f0rFHfzM0owVxay32mJKx/SU9kn91CgSVtxcxtfrAbNEoM45ayj49Yx2ced7DpXAKbhG6vwzYjbb0j+7znIADybCB4q8PY/DxyNwo8lruzYEnzs9vZFyJZ0pwkhCsqdgqeLimo8kP+wN3jlfx9nKfUD4qh0YWp6ejZW+iBGR/zP/374gAHZs/wjmYqUo/ajd0nbL8jzoJlvIqhKIcvSbdtoiQdbM7ks6om6N1BmElWE07kZLykyK4K6IL81NbKEAj5R0ALHBiyvfhMZz+VdpJjh2T26I+gdBAvhEoJ/kSDzkegatN+bQMZfqg9EhntIRB6Tkm8jGr3zUSlDNZSwFJq+H+P9W6csH/dR5vLvgHNfhxslTxfJz/h0qm0nCrR3ED3OW0JeofEncAIF58i4EGkqdDrmDvW+Q/kLHN1XMFHtEyBSDyGuJqNgGzRMdreaAg/vGm5OGvoYhWh/QUhdl8t7iMOBvLeRYzB+9W9EUVUOVorUFfdL3fj3686F/KiFDFLcrWTExDLJR3HEDEC2vozS2EKc0UqAlwTvGC2QjpwRiuu1Na/fJdrFqsdChFr7OxDn3dq8vP8pi/YU5u+jam15vqBXhphGjUEDtXW5ml/n3YcgtSdd2m1MbjRPjoOu3xheQajRYkroqZEz4BQ+YjypIAhgyBrUp1CquzNpH5+R1RizFzWuR6jwlotVqHRy77o5QPuHtq/DAq41cPagES7uYSvRmw4yzT+edaJVVf6giFvuSKiv2/L1J184v1CSVzFh6Y5fIlGeXZnv/WFmvAzFNrHKOKwIS2nftxH64pXR4LEFdAY40Mst9tww//5HoK33PAn1Al0wdFO0m6J9VwluwOCdduyte+MVkwY
+ 1hB4b+Ux
+ I+ETBRMd9mdL1Vw3W5U2IbyOJXyp1DKHZQ5hBHjOZv5ikFqNb7piY4/q6j9cDlrOYmdhXWCkp9qE8AQa2niCe7cQZp/ItDYNuymPXJ3a0gHxknECZ4wZ4cK+dxT7QikaVderX4SMPR1nps3OC+PPeAZgVQSJ8rtM3m9TRXEyZBjuCPh55D1FMS0n6gBwTWWo4GI4lpiGKyciKabN55215XrTo8jK5y/7g3XzlQW03lYxb80/QkTV7F9FXe/qc8rKxTVJitnMPRJ9x+Csw7tLy5w6U9sdSch/3jMfKE5cTj1A6ZXLWSQmwVIEETK7zJhvIv8RVpBMORdnOMrWI8DCjwG2tPGwKQdqnuAVpWMdEgL9kuOwHR5Y23R7nHbTUcUy+WuMVopNZ0D4IhtX9gQql36gOiu9gBc3scRndUrkVfmIlHuw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,56 +95,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 09:49:59 +0800 Wenchao Hao <haowenchao22@gmail.com> wrote:
+On Thu, 11 Jun 2026 06:56:07 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> From: Wenchao Hao <haowenchao@xiaomi.com>
+> On Thu, 11 Jun 2026 14:56:57 +0200 Arnd Bergmann <arnd@kernel.org> wrote:
 > 
-> This series reduces lock contention in zs_free(), which dominates the
-> unmap path under memory pressure on Android (LMK kills) and on x86
-> servers running zswap-heavy workloads.
-> 
-> The current zs_free() takes pool->lock (rwlock, read side) just to
-> look up the size_class for a handle, then takes class->lock and holds
-> it across __free_zspage() which can call into the buddy allocator and
-> acquire zone->lock.  Two costs follow:
-> 
->   * pool->lock reader-counter cacheline bouncing among concurrent
->     zs_free() callers.
->   * class->lock held across folio_put(), so any zone->lock wait
->     fans out to every other zs_free() on the same class.
-> 
-> The series tackles both:
-> 
->   Patch 1: encode size_class index into obj alongside PFN and obj_idx,
->            so zs_free() can locate the class without pool->lock.
->   Patch 2: drop pool->lock from zs_free() on 64-bit; 32-bit unchanged.
->   Patch 3: move zspage page-freeing out of class->lock.
->   Patch 4: document the three free_zspage helper variants that result
->            from the split in patch 3.
-> 
-> Performance results:
-> 
-> Test: each process independently mmap 256MB, write data, madvise
-> MADV_PAGEOUT to swap out via zram (lzo-rle), then concurrent munmap.
-> 
-> Raspberry Pi 4B (4-core ARM64 Cortex-A72):
-> 
->   mode        Base       Patched     Speedup
->   single      59.0ms     56.0ms      1.05x
->   multi 2p    94.6ms     66.7ms      1.42x
->   multi 4p    202.9ms    110.6ms     1.83x
-> 
-> x86 (20-core Intel i7-12700, 16 concurrent processes):
-> 
->   mode        Base       Patched     Speedup
->   single      11.7ms     9.8ms       1.19x
->   multi 2p    24.1ms     17.2ms      1.40x
->   multi 4p    63.0ms     45.3ms      1.39x
+> > From: Arnd Bergmann <arnd@arndb.de>
+> > 
+> > The main thread function has recently grown to the point of
+> > exceeding stack frame size warning limits in some configurations.
+> > This is what I hit on s390 with clang and CONFIG_KASAN:
+> > 
+> > mm/damon/core.c:3440:31: error: stack frame size (1352) exceeds limit (1280) in 'kdamond_fn' [-Werror,-Wframe-larger-than]
+> >  3440 | static int kdamond_fn(struct damon_ctx *ctx)
 
-Well that's a nice result.
+Well cheers to s390 for using a nice tight stack limit.
 
-Sashiko AI review said ....  nothing.  I don't recall seeing that
-before ;)
+> > The largest stack usage here is inside of the kdamond_tune_intervals(),
+> > so by marking that one as noinline_for_stack, the functions individually
+> > stay below the warning limit, though kdamond_fn() itself still uses
+> > hundreds of kilobytes for some reason.
 
-I'll add this series to mm.git for the next step, thanks.
+Wait what wut.  This cannot mean that kdamond_fn() uses x00,000 bytes of
+stack, so what does it mean?
+
+> Thank you for this fix, Arnd!  I will also take a look in kdamond_fn() to see
+> if there are more things to reduce.
+> 
+> > 
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> Reviewed-by: SeongJae Park <sj@kernel.org>
+> 
+> Should we add Fixes: and Cc: stable@ too?  This function was introduced by
+> commit f04b0fedbe71 ("mm/damon/core: implement intervals auto-tuning") which
+> was merged into 6.15.
+
+I don't think so - kernel is full of these offenders and it will be a
+long and painstaking process to weed them out.
 
