@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BC42C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 16:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97605C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 16:46:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7361E6B0093; Sun, 28 Jun 2026 12:11:46 -0400 (EDT)
+	id 402986B0005; Sun, 28 Jun 2026 12:46:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70DCE6B0096; Sun, 28 Jun 2026 12:11:46 -0400 (EDT)
+	id 3B3C56B0088; Sun, 28 Jun 2026 12:46:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64C146B0098; Sun, 28 Jun 2026 12:11:46 -0400 (EDT)
+	id 2A2A86B008A; Sun, 28 Jun 2026 12:46:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E5796B0093
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 12:11:46 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B83C11C1F49
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:11:45 +0000 (UTC)
-X-FDA: 84929812170.19.8F77855
-Received: from outbound.ci.icloud.com (ci-2003j-snip4-2.eps.apple.com [57.103.91.223])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DA7421C0004
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:11:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HeyiQOSb;
-	spf=pass (imf21.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.91.223 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 058E56B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 12:46:38 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EE04140445
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:46:38 +0000 (UTC)
+X-FDA: 84929900076.10.F1DEC20
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B7BA080007
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:46:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T2r/74FM";
+	spf=pass (imf02.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782663103;
-	b=V94Nln1uWO3Zpq8LFX5/SS9GeO1kKD3ebdj1IX/U5w+QOtVhoUgFAsPryJWLPS4FomQsXI
-	SJ7FqZM9bwJ0wWTQgV1nhAhTQdLR0KTOA2ue1piIwuf514JpLuvZNNNkhaVTO1FCONGrGV
-	T91/vVB6o+TYGQ8nkjUmPDSmifNw/gg=
+	t=1782665196;
+	b=f8RG/9TaSb1XloZ095x8F44DsAyBtZe2njhEaK9qoya564L4+b2J+hEnAaKRT0vt6dM7R8
+	k4I9FEbeSFng+gjloNBA3OeLc2b0q5iJiD4RONXgMdLTOHrDFy0IK6uhLKewNr6sKehGM5
+	a0bnNoWzts8GN5bEzibW4LocqrAGlqA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782663103;
+	s=arc-20220608; t=1782665196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cma98jfyNJJ+NDh7rTXdRBnQFZGxAUrRnQqNFIayISw=;
-	b=ygcPAxCUbVEzZFF1hIP7o+BOVPis3Zqf2B0E3Fvb9ikAkvcYhLEz4hMoIPrfKtS2gvWm6k
-	8Os91Itz6Z11jmXHGQJpzG6c7uoSIdSURN+iJ3RJZIJFEby7lavz4383l35VOqrjSa1eUY
-	d6WYn+UOGbhFWqDwRu52X6Rs/NecFNA=
+	bh=THp64I9/31adVTX3Es1NaaEmLtXylmJ/nlw0Onko050=;
+	b=I52YW2U0DJVS3KRO8EDb8/x3FJF91WGhwEnCUud83MVjR/LHDsOP8OlQbdAqcQn1kZ6acT
+	TnkpuCveIs1VxoAtRhzX5qYYV5PSsFYPM/C4MjZN2CYTkv28WU9v+wAgIjABCpct40Y2xY
+	l8R6EfSWaL7qEREmHL0YEIZxgKR/7fE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=icloud.com header.s=1a1hai header.b=HeyiQOSb;
-	spf=pass (imf21.hostedemail.com: domain of zippermonkey@icloud.com designates 57.103.91.223 as permitted sender) smtp.mailfrom=zippermonkey@icloud.com;
-	dmarc=pass (policy=quarantine) header.from=icloud.com
-Received: from outbound.ci.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-1 (Postfix) with ESMTPS id 3CE60180018E;
-	Sun, 28 Jun 2026 16:11:41 +0000 (UTC)
-X-ICL-RepId: 019f0f00-3b0a-78f2-9202-d93478becd28
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQhKB0MGWQReCEsLQwZcBlBcHA4XXhtCFUsVXANcDkswUBtfAkIPHBNWFRMLU1ZbE1UXRgkZCF0dGQpQUAVaEhhcFFxQWB5GElYNXQkZCFteUBtfAkIPHBNWFRMdQxkPKwhKBEMHRQJeCyUTCVNWWxNVF0YJGQhdHRkVWgkKVwdHCEkDDAQIH0haSApAAw0DQxQaBQtWRgtACkkGWFYNABEOTHMEVAddBV1WUAJaVRIEQAhWUF4IXh9MHA==
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1782663103; x=1785255103; bh=Cma98jfyNJJ+NDh7rTXdRBnQFZGxAUrRnQqNFIayISw=; h=Message-ID:Date:MIME-Version:To:Subject:From:Content-Type:x-icloud-hme; b=HeyiQOSblPh7u9R+o6RVQEas7dyHOfZ1H7b5HW5u3y+0lTcUuNuuEcqYmdC7ijndyb4ck8IKZYHK7C+QbJytQ6JMraIr2iacXjZZFfkPAewOIcFyNjSRkH/6gbPBVoJmC0S+0hDdrgjKDheAb+ysCvdwrqoVFa0onODfYX1o6XqfSrFGIuv5VaBIB6o/sYWKjyemPijuDTt7FrIJV0HcbXMZkV2yizP2kgiUb86E+4Wcb8/f7rlA0MyGTpmed9gwfaSebbGtebv5uFAlpEHJEi1aJwthKvYrcxPqyiVtw4bEgA5mMTgry9CGqAluK6MfhoMChgoeX5K1bJ9EMcHeAA==
-Received: from [192.168.255.10] (unknown [17.57.156.36])
-	by p00-icloudmta-asmtp-us-central-1k-100-percent-1 (Postfix) with ESMTPSA id C1AF818004C5;
-	Sun, 28 Jun 2026 16:11:31 +0000 (UTC)
-Message-ID: <57110a3c-8c09-4f13-b6fa-903155af2a74@icloud.com>
-Date: Mon, 29 Jun 2026 00:11:27 +0800
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="T2r/74FM";
+	spf=pass (imf02.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9975A4064E;
+	Sun, 28 Jun 2026 16:46:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C909D1F000E9;
+	Sun, 28 Jun 2026 16:46:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782665195;
+	bh=THp64I9/31adVTX3Es1NaaEmLtXylmJ/nlw0Onko050=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=T2r/74FMf/7gQgsL/45OzYzUr8Kl7WLfPCebvUFVd9iV0Kpvdnx6Zn22StMRLHECx
+	 crRp5Nh3YSpNZUejpnapuaFZ8oW/QW0srztGBsRKazpUMyOpCn84BhDbKFC2EVQhK9
+	 qbNev2RfZZvbIegaa3ePFGwxllrwG6LZ6iaXKC7OxQclpsC9jP5fYIdNQ7krRESti7
+	 yDrv732uIb7jVkbvlM4ryCUmEagryXhZ2N5Et5Q5YuHM5YXuxPdagIUNdldU9JaAF0
+	 wKZ5zx7Gi23v3cmcvzTGMURfddEQ6CJMKawY3IUOruQkUd4A5yq4/fYFprgyKiNw8V
+	 Ne4etnQZ+/35Q==
+From: Thomas Gleixner <tglx@kernel.org>
+To: David Stevens <stevensd@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, Quentin
+ Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski
+ <luto@kernel.org>, Xin Li <xin@zytor.com>, Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, David
+ Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Uladzislau Rezki <urezki@gmail.com>, Kees
+ Cook <kees@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/13] x86: Add support for dynamic kernel stacks via
+ FRED
+In-Reply-To: <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com>
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <20260424191456.2679717-13-stevensd@google.com> <87zf0hgc3r.ffs@fw13>
+ <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com>
+Date: Sun, 28 Jun 2026 18:46:32 +0200
+Message-ID: <87ldbyhatz.ffs@fw13>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: david@kernel.org
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org,
- bruzzhang@tencent.com, hannes@cmpxchg.org, kasong@tencent.com,
- liam@infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- ljs@kernel.org, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev,
- rppt@kernel.org, shakeel.butt@linux.dev, surenb@google.com,
- vbabka@kernel.org, weixugc@google.com, yuanchu@google.com,
- zippermonkey@icloud.com
-References: <0ea1abc4-ff2c-4070-8bfa-67f6892aaca7@kernel.org>
-Subject: Re: [PATCH v4 5/5] mm/vmscan: flush TLB for every 31 folios evictions
-From: Zhang Peng <zippermonkey@icloud.com>
-In-Reply-To: <0ea1abc4-ff2c-4070-8bfa-67f6892aaca7@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: sf7DZHFsN1vpqzlqxoeyITrRmTYWK-n8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI4MDE0NCBTYWx0ZWRfX2ThNs/SDP+v8
- TXUHqM2ojuyyNy8n+nO5o2teq4BIvXs+0/Rmu+4K4x7MMBtYW2lo6Gdqs2ixkGT93SJmXgzn3KZ
- rzxLP4hfcGfyAiPn7j2MVHfXo/c+7rusf1R4Y2TxR1BN7dQLInHQvxIBhX+rQm9ll3gPQ9xV5vt
- GsWT168Qa1gYAmxykFNgrPDPamOrUb2ySQNoApFOHY7NRs1QeaZ3nLOJxr+8fSzfQwJPZbFOKqM
- bzt/A3SjS1cjktJh5d3hKQoMmIriEegykDyDpHkBUBDin3IZaVPSKiYe6x9A5HZCPqhZ0UCxWXs
- eIecOrlizeVVW/sazN6
-X-Proofpoint-GUID: sf7DZHFsN1vpqzlqxoeyITrRmTYWK-n8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B7BA080007
 X-Rspam-User: 
-X-Stat-Signature: 5q3jtajx1cau5eha4m1zywf5e991618k
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DA7421C0004
-X-HE-Tag: 1782663103-11783
-X-HE-Meta: U2FsdGVkX18PUPuCysUQkXZVhbeZCNXnlypNo+ZPzMZHuD2r6Y5TCA0PJJgN8nxYKB7OpwU72aHckDLaTszroZBSIy3+Ci7YWlZI2FtiUEOQjdJlbiohaqSQFbZFwUUsfRd3k9TGdNSK6MF2A4/oedO8t2DXP2aNqKq/PhMqAeu1VFzk2+Ee40gafA8nMyy+Lbtxt8rkmmJx9CY+O1UQhzZk2vDqTPzoAA6wbojB3CghR87HVRkHGI4R98Xeupbt76b7rDVfBuU5WOjWWcXfFNkGJOVRBGrubKY28SdK8/QSY3M44zfaPoYjqVauUp74taskKAZ9kFDvQg6MZtLMsNtdVYQLudqOIfBIgeEGNH1IkMBzRgy25zZ/DlwA/OyuoXFJLGGpG/IjjLgO+UlHJfcCqr6K1iq+AE4bw8dHQTDT/vMsTW/A9fV8yw8/+g4ifl52IehaqKyYPBiM6GItLEF1crhOIHLHhr9wSMulL3e+G5dtFpNFthnb22J8xS6D+mfOnqRh+JObxcxemRz9v5Oa336cGwDY2v/Xkqsz9cFKD2/fW669XMvlouJErPXwnnfI2wSOgMOid2PXj0e0+ieIQxmw4roWMHkL3VEzo+ZVWQmWn1rJS6bPhEno7ecYQxkVjbqcmJMvnnImseCYMbRu6Y2lU4hfFRLyQoaFxqrCUvsno4hmeadyGP4r60IQr99wdVM3gARifoLWJXwHvaruSDWy4lGmtIrk1JHty6HT8mackug3PciavQQ8zwraPVh7ZuAm22M0f8ZVjZuOx/B3kYCUeggDOJKEgpLZUQmde2Wfp8cWau4fd50GQm4F+3QVcr3o0LTsNbjkOGVpZic7VDBJKYST4GhGbBimDHoo2x+0L7DjoP+QBtHQ5sv0W0QFg/q0iZs9KiwO6gRqvnnqqTDZv/CuM4hIGkCK2riOtCHKqzje0NrZvkP57UGrZux122vbMNEV6YXdDfB
- 6ldZECWf
- wBc/BiF8zfN7pgk7bdh9GkSHYaY2CdHMbCFDMzezmm9omeNtelVLthW8Ra2CqwF8xV8heFgWyN8c46v3ZxzRjVTBhcWfvrymBhnWs5+bnkoTRzqUWE/Qn6zAyzcnvVT8dkGdoZ+Bih1YKpQ0hZAHNT2QfWCIVnwfI6ICr2UQJCE7aSmz//k6AZfWeDADIizxMq07IYVdmYQQgV2ht/MMSU+QzGBUiLPUkQKKrfaEHx699s+9pFVAsWywQiFQmE7iSpJb0bpsnU55U1GFboEQwb+n3vxP26TAME8aldluTHf+R4bmPxGGLWe6x/8OKlAhKbDrMlhgMXc/na7zSzia/YBb6dDJ/FqpPdIaFeZLLt8/ArV+XydjrGqe6zM0iSlkH6GRdTzu9kEUO8TUgvY7Zel4Kkso62llhpLCEM6SdDfek4BN9+os/wJZjLQiOOnmjJy/k
+X-Stat-Signature: 4pwaa1fghrgpqaif5s8n4hi78hwy7cfj
+X-HE-Tag: 1782665196-149508
+X-HE-Meta: U2FsdGVkX19U4iFGwtK0DTZ1m0+NwkHhERjmXxdtElaQSaG5yaNwu01kBuDHOuu+gnBkPJhc79JYi8jmUOf2pc84ZDLRJ1lShPlsvMgb6GotApIOtGeIzQMfBIqA62Vj+p4mS1gR1z1RR59Ckz8+fND0izn9xXdUffHERDOJaG5zEzQCqjc9L3LIAOFyXL/q35NDEKVxmFgyqCPNP+XSAMPhOYhWXCH1CYDqwxzVRQ+3H7kCLtGg4cynO0v9KnonOe2aj0d61QkT3IgYOW3QJHofNslms28lVtsBwDuoJOdTkTLyCByqsxx29uK3U/2qG0hGKGSkAvZw2rWZbdeaPR8JI3xkWZZ+vlKbrZbUNLCI+NlYpdaykSyZvA35sQEVf/vw4+slg8+HSgP0Oi0CkLf1qxJSNj1Od7a8rMKet/MPqbVAVTAtXJhFwJSu7kxQca8smr1wWxv09+SE7JL17Awgll4OWhqAfhxfeFL2NwQiUvTqQNRYLESE4rxUPD+pX8TMUjH7mQ2qjnkYqn6SwPOTnrj3FI53RGztMGQoPbZyQQcUm5wufNfZ0hUDPrw/MBktz0Wt1PNyEleahPusLpAgL3swCxy0HL1qJeJKup/oNrpShPWjXYLzgGmMG/Pi/2jWtIHx3eP2CizGKgYH/OOFjAqAmRiaN1BZBGJz8/jNj2kqjPFcvQb0S/RYNZZJN864uVvOTnc0DQTJULdh72xjpsk5F4DSNW+wUezGHRMQ7PkZoF/eXiGP4lGy+MyoMP4pqqO1lGeqoN4EvXMb3q3QTZimUY0Mb7IbPJa1+7WLLE9mXCtllAHyREilhCBvTrdK7jD2JVW7m6UGo6UlCW5Wh8M5yIUXkEpsh/Mb+cZMhAA7wt0qvmyWHeolYfAfavr4KPhvKclxlqr7RF/i8piKDoumgJYk5WsDP5GMfx6NI84338wdjgVtjtwefuCKm9jfjoxbV2LbOMo/fMG
+ /N7HdcUk
+ hakiYFfjcYSvwED5x3oODogy/G2tX6NQ5BvuWsiL8NpXKVpgd1UbKzgYcFmnvZLsFt7QI2HzuHq8DYd1XwBbTjPCHdBC53IxmIbkWiPePyDEvg/9vi8rueiRD7dIMJCfFEx0RhefJFGgZtK1AqWMzG3xQW6nhIiO/sv4HQs33L7WYmg/SOBAsIgi711kKMcaUvhJ08/ooMYt6ZL838duCXgMFS/qf4+D06AZt4LwdLCdORub/JLWdVqIRO7pX6kAXEO7aYdHx0mrtLOx8S4XPfmxI0Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,53 +104,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jun 17, 2026 at 02:47:36PM +0200, David Hildenbrand wrote:
- > Two tabs. But this is starting to look a bit messy. Could a helper
- > struct be used to reduce the parameter count to something readable?
+On Fri, Jun 26 2026 at 21:05, David Stevens wrote:
+> On Fri, Jun 26, 2026 at 3:39=E2=80=AFPM Thomas Gleixner <tglx@kernel.org>=
+ wrote:
+> That is definitely a situation that could happen, I hadn't thought of
+> it. Luckily, I don't think we need NMI-safe re-entrancy to handle
+> this, since an NMI on SL0 couldn't have interrupted a dynamic stack
+> fault.
 
-Yeah, 7 args is too many.  For v5 I'll bundle the plumbing into a
-small struct.
+Correct.
 
- > That looks rather hacky. You reinit the batch to then traverse the
- > batch? There must be a cleaner way.
+>> As a consequence you copy stack data around to the same place, which
+>> should be benign, but it is well understood that memcpy() source and
+>> destination areas _must_ not overlap. That's UB, no?
+>>
+>> I know that should not happen, but that doesn't make it less UB :)
+>
+> That sort of fault would probably end up either with a
+> page_fault_oops() or risk a context switch with SL>0, but we shouldn't
+> make debugging harder with UB.
 
-It works because reinit only zeros ->nr and ->i, the folios[] array
-stays intact — saved count lets you walk it while folio_batch_add()
-rebuilds.  But I agree it's too subtle. Maybe I will use a local temp
-array insteand.
+Definitely not :)
 
- > Took me a second to understand why exactly you test for these
- > properties. Can you add a comment how these check here mimic what
- > we checked earlier, before dropping the lock?
-
-Will do.  The three checks correspond to what shrink_folio_list() did
-before the unlock: writeback may have started, swapin may have
-remapped the folio, a GUP may have pinned it.  Anything that fails
-goes back via ret_folios.
-
- > So, IIUC, what could have happened after dropping the folio lock is
- > that someone would have remapped the folio to user space?
- >
- > Either from the pagecache or from the swap PTE -> swapcache.
- >
- > From there, it could have gotten pinned through the page tables.
- >
- > Is that correct?
-
-Yes, exactly.  A swapin (or a page cache lookup for file-backed)
-can find the folio while it's unlocked, remap it into some process's
-page tables, and from there a GUP — O_DIRECT, vmsplice, RDMA, etc. —
-can pin it.  That's precisely why pageout_batch() rechecks mapped
-and dma_pinned before doing the TLB flush and writeout.  Any folio
-that got remapped or pinned in the window goes back via ret_folios
-instead.
-
- > What would happen if page migration finds the folio, locks it and
- > wants to migrate it?
-
-Migration can't find it.  The folio is off the LRU (isolated) and
-out of page tables (unmapped) — migration's two entry points.
-Compaction walks PFNs but skips !PageLRU pages.NUMA hinting faults
-walk page tables and won't find a folio with no PTEs.
+You can avoid quite some of the problems right in the ASM entry code.
+Instead of checking event type/vector and then going to the stack switch
+logic, you can check the stack level on which the event happened
+first. If it's not 0, then there is nothing to do.
 
 
