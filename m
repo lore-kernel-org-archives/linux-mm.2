@@ -4,103 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F4CDC43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 20:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84CA0C43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 20:53:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B04F96B0005; Sun, 28 Jun 2026 16:33:51 -0400 (EDT)
+	id 3E4676B0005; Sun, 28 Jun 2026 16:53:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB5786B0088; Sun, 28 Jun 2026 16:33:51 -0400 (EDT)
+	id 393C56B0088; Sun, 28 Jun 2026 16:53:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CD466B008A; Sun, 28 Jun 2026 16:33:51 -0400 (EDT)
+	id 284496B008A; Sun, 28 Jun 2026 16:53:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7611F6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:33:51 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E43974049B
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:33:50 +0000 (UTC)
-X-FDA: 84930472620.27.D0F01EE
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 926A8180003
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:33:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026052701 header.b=NszmPxQ1;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf16.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F24096B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:53:45 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 75C22167D37
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:53:45 +0000 (UTC)
+X-FDA: 84930522810.30.E67F569
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A968FA0008
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:53:43 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aUloFBqh;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782678829;
-	b=AoYqHP2mlDdJNYmXPScVGlpYUlkMSoT8oOhzfVIndaOo47P1WgS5Te8RJ5SztIhP6rVA/x
-	x0IgM0o1lW+MD8xRoO7Qok+C13C5J0DEKi+xgsUY03EA+9ylxFHDos3oaaSQpCbwr5E7T9
-	SeyfEX+tsrHnXVQ0JALluUn0QNw/xsg=
+	t=1782680023;
+	b=xzZT4737/+8eJlKbeE+t5ZwKauvXLDJBRMZHTaSXWmwVsqyuVSmnQ5oX5ttbOT4Xub9vwk
+	5ht4xRXGsQWW4oDie6+mFxvFvHU9dq/Jj1djAsYFy311klDnkNoJ+ElwtKDc7jbGcmen2X
+	8j8kgJHdoap8QhtU7a87ncAoMBNvFfE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782678829;
+	s=arc-20220608; t=1782680023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5hHkkrsNMZT0O9wtqbdmauroM8dLeoBeYas3cz5fvoE=;
-	b=4eCskzkL+5Hu25tKfMphUUmZilZt6HXfndC2pe1APUJ6ANKhUMxm5biqfKOqMMCc6e5D3s
-	tPgpugjcGGVMIxVugkiCfgHKQCgLylOfjhoB6srFAM/enGtWpucCHBbF5nRaRCqaDPrrAN
-	7b68/duWD6KYyx5Ky0nAVyhCpOHD4eM=
+	bh=43Qp/DZkFZa4pSVmpAAZCxaCea3bWSVMtuT4gbAZk+M=;
+	b=oz/UeFrv9+LZAFsmxjTYalC2Zwi+cqYlJlNBlPjvmtUQ1gFTUmimG4v/eNxVbAqwBHZtlU
+	Hi7uIyD2zLHxSHeuyJR7WxTjUKSglxpDQ9Lw6rkRPbv9I1g1LVYdoJu8kmydOaH9SnpnzE
+	S1JxrKncMXGe5cX8jxvJg1XFQg0CwQc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026052701 header.b=NszmPxQ1;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf16.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65SKX9Fc2699327
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 28 Jun 2026 13:33:10 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65SKX9Fc2699327
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026052701; t=1782678791;
-	bh=5hHkkrsNMZT0O9wtqbdmauroM8dLeoBeYas3cz5fvoE=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=NszmPxQ1WPMOaCrJDuL3o5bdzt4WDtZQqs7n+t1PPrTGFuuyBtBSSLx570gYRCxmC
-	 VlVcm7JjJ9awHV9T2+rRe4Gky7FaNiSyyyPy18rcPflSt7KwqU2JJF/vatpOwBo846
-	 0Ium/vS+0rYYS5GkfJlHvb/uxJ/llNtEZQroav+qvgjDP5C2IaR4nhJFKoZl/2sraH
-	 PBLWr1lHQV3eSWso18CbHuznN+Ed3uJlFru5e89ICel6qwMfFWd3YMPAWujGjzzpa8
-	 eIW76RtLn7y/UTgfyCUC++MrmBm5EhiHFn3SVMgIAstrH0OnkNVBU4fAWT0JZYx4/W
-	 nghpja145d9uA==
-Date: Sun, 28 Jun 2026 13:33:05 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Thomas Gleixner <tglx@kernel.org>, David Stevens <stevensd@google.com>
-CC: Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Will Deacon <willdeacon@google.com>,
-        Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_12/13=5D_x86=3A_Add_suppor?=
- =?US-ASCII?Q?t_for_dynamic_kernel_stacks_via_FRED?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <87ldbyhatz.ffs@fw13>
-References: <20260424191456.2679717-1-stevensd@google.com> <20260424191456.2679717-13-stevensd@google.com> <87zf0hgc3r.ffs@fw13> <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com> <87ldbyhatz.ffs@fw13>
-Message-ID: <888C322E-BF59-4C72-BFD2-2E71FD8605C0@zytor.com>
-MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 926A8180003
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=aUloFBqh;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1F58F60054;
+	Sun, 28 Jun 2026 20:53:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D98B1F000E9;
+	Sun, 28 Jun 2026 20:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1782680022;
+	bh=43Qp/DZkFZa4pSVmpAAZCxaCea3bWSVMtuT4gbAZk+M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=aUloFBqhNDK4cnV6TVf93MMmYU7EzVvmfAA0r7uGl13Cv//sukiUTm9edFpINIiWn
+	 +GHeqFIWXdpff++K7SP6GuDOEJwo4BLORaVMgrUoArCUCb0ELZGnYOlAxJytLHnbDg
+	 apMSmgEtEEFKVSK/dOv1TSLQ0rbP3BB6op5EGJeQ=
+Date: Sun, 28 Jun 2026 13:53:42 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Cc: rppt@kernel.org, linux-mm@kvack.org, peterx@redhat.com,
+ linux-kernel@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+ syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm/userfaultfd: clear uffd-wp PTE state when
+ re-registering without WP
+Message-Id: <20260628135342.21cb90a7a559d36bb629802c@linux-foundation.org>
+In-Reply-To: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
+References: <20260601082609.170076-1-jianhuizzzzz@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Stat-Signature: o8dkqep17sf3u5bbydyhqz4w5t6wwk1p
-X-HE-Tag: 1782678828-635064
-X-HE-Meta: U2FsdGVkX1/MP2DTHwAGA367BtUQQvw/6PS4WLEac2sysBQb7Fh2SAmPjOUzUw/imh2z8VeCJauAAdu3hYwXgwUsEgnd+YBFlvnrM/eeQkhmQgdfFCNEPD3i5dxlRtZKpet/cTNjAxH2q+KY4YAQY+CAYBAhYmSW0j+q4NajOVJ+mkXFd7MrLGWH43azesnHao51S7+fOnUuEbN1TZCz3O84xUcXDDN9q4fzLvq5LGF4ZPk4KEq2oexVSUlXhjQ7roUhiqnUifoDcd7IVtEAFJ+lcfK2aD/xXOW1PoV/MGlnFNgy7UMqoCbbqTMNnojTm077QXxU6dTdzD3O5yIoNn+qsAjwP0/BMi4xJKFGogNQBJPNAZLQbFzUVaXL5HZrbdpgxiAuGdWyNFoeESWuHjA/Rgg547HuoHTJ5jaOFLbe8mAznSjeAHD3VBMz2OwtJSsK79sBMtMZA1MkD3BfQpt4Sw6Reh37pAa+h/WtBomZYcXTx8abtoIocMQzfP/cNvUJqI14yu9lstNJjJobemfjA3OjYz4/mdXnvVoVnCXweJE7loVuvvQdsojHjtibLB5atuhazyUf0Fe9yZaDAepmV4LLKe27Dw+qUwRNooUGS4h/FxEIgnJ9piNvq2YxSdPN0PExgHuzqxhZbEGHEUnrYjdmBuFzxXwOLhAffvYS7FJno4sMeyKCOIhkNiCS+dr8jwNj0vaap+fvYr4X4htPFNemUX9a6QOXwo5GslONbwwrIaFb6f+6Biu1kf8nYn9BVdW+p7kedmblJlXXRbXhdgdScuQyQSDIEnaxjjeX2rLAzon4S2j12UssVUlxkfW8VJnXERwGMl3dh4vQUP0J206iqf/eJL/xtUNYvSY50F7fZIaiRwelfzBP+0SGklC84U5FCduFTGZlMKZ0MS/kjTqyPquFu5WoXtffe3+46ZV6cJ2gAzGo93/PcTkOSkQZxcYB9/BJbb6qm7K
- Oc7xbuxo
- aBrjJ7QeCb6zdBXmyri5DfHJG2fmgnj5kp58sHh6vqE+Ed5yvQOfftSEo4IKYF0o0e5ZAtEGq60h+shIxH/iXDZHq/6jCUluTQGIE9TsxCkFZW/qVigbuFGoPLpY0+tcVCCpR7cMTn8mGRn3yDYEGUKC20oYLOF6fmpxI2IPPMLVgKs7nZyvp8a1kYEkuFpp2MkeYozZsKF8LjAknA5yyftsrIITTVgR6I31KojLCGFcZGHhXT2oL6yPTwVReP/DLfWbHwZ+1YPdQp6S3vSZ9gm9cnfOdMEqcNmSLiZspuVQpxBmGnI5s9Ea18ClztfcUcqHDtIwgMNrw64g=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A968FA0008
+X-Stat-Signature: n7gyqzn63eaxt7h7jfj15gjjkudf767y
+X-HE-Tag: 1782680023-29006
+X-HE-Meta: U2FsdGVkX180u4pVcxgEvwt9/DBCyDhqJ9tz2LnkPQ+iP57XVBKoHIUs1Da6ewkkW0Kol1+FpP2wEmycPmJ4x6cv9ynuKTeYptMnR37aozPtkScNIkpwNei2qhCV8YD9ZqnaDUzoTK9+XrNvDbZYGZOKs8C1dsKg40rH6lQrBzNNwFACcnkmWe1CkiBowQfwPZJnmnzkWo0JuxV+hNIZvZoHE8UYTM1l7fyyaj5ex9B5ffEWkpioVUoOVpaJgE3JbErvkfXTZ2rdqZaWLkLD4HuzBiQs6lBaJyhanJ+e2EDQNOYYMgQMnsXRYOCRg7byM0sVmSVc0IpQqMcgN5W/lxHiaGYW3T4cz2pHSe+3FZeonqLhI9RfyXBpgdDq1Ct9jIgCC606pvgeCpa0WQKZXCd0nyWjVhcnAua9JVVGbussJr6/srq2jFfLw2JUPcO6Fl2MjMk8+O3aj9zud/1ChIBxRGrGtA6DssGFrqUmRtTReVV1E1587XEMlFUwAKX4M8+aE434inmSY5yOsijywZbldgYqnud6j0tjp3xvUneIdYlmxiWm4VtFG5Ktvlmnwp1ypkMO2knxP8A77+PYTiaOXqrwz5t3R+hRZak+7gGi5jeFMV+Sqs9YXhvYUDAUp8iMi4Qit2bke+zdxy2FBZEDhPQeuseUABsMF//TYbZWgHiBBAHEILM/8M3hcwyXfmUA1BcNmneXOdBXT80pUOjrSIuPyP90+sp9jnVJJnbziMEQZhuwh+TXJt4Sa36fhH/Yz05klGSIUBE8O11g8kjWqdfVP0lwIL+1pt5x+RvNeOzHFXCejRziCZIIyHwr3i7JCKQdcLte54+Dsq/WgqFYOhRcgbXjeTe6AOONx3ZBr853xMfbAIUUIduPu8C3UTsDoApD2DKHVo40pDrrE/NhaK2yDqXO85MSHbx7StA9fXvBJYz5G/+VmCkRdOXiguy/Q7aIkMk/594lTKX
+ 9AX8GaFN
+ jgtf1U22AiFfVCLGElQREw37tiVJXDa8CAZGMzw+sF2LSnSi0k4m3fA8lRNY2VGac0RR/Iuc2Cq6DIfE/4ooafvNiwkTZH5CEIGmwCq1lufeaRJRff58OsqLL5ZL0S1edrrtCE3aUXY+uf8oYBfodNGYGnTBJRw7OHDrn9jWtxTaLy3fE/MVbLvbB2aAATZiWHPvF1wvPbXgoxTIfqcV37ZyV8zdNLbAIAFOjKJ9n7erBMR89UhNtQO+7c0IIIwWplLSHrXaMoe494qv7Ah4n0y7bE2LEGJIzQ6ZU5ZteleNexpJwfJuaKO4O0u+hOpQy/KUQDkq5rfzhvfh/VP9LQf5jii987xZbAof3W76EI+d0OGb+0+v7ULpV9dfv0QTVzo+keeXwFOPt9lWdz7k4ToNkpZewT94u0OaPXdTqsDWVdnuAVno5868iEsixVFg5pF6sULWoN+7p6Bm/11I7Aexc6oN7D5C06WJB+0i3ciWn539qwid9caec5pdxRgaFUaeo3lhJaG1IusI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,35 +91,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On June 28, 2026 9:46:32 AM PDT, Thomas Gleixner <tglx@kernel=2Eorg> wrote:
->On Fri, Jun 26 2026 at 21:05, David Stevens wrote:
->> On Fri, Jun 26, 2026 at 3:39=E2=80=AFPM Thomas Gleixner <tglx@kernel=2E=
-org> wrote:
->> That is definitely a situation that could happen, I hadn't thought of
->> it=2E Luckily, I don't think we need NMI-safe re-entrancy to handle
->> this, since an NMI on SL0 couldn't have interrupted a dynamic stack
->> fault=2E
->
->Correct=2E
->
->>> As a consequence you copy stack data around to the same place, which
->>> should be benign, but it is well understood that memcpy() source and
->>> destination areas _must_ not overlap=2E That's UB, no?
->>>
->>> I know that should not happen, but that doesn't make it less UB :)
->>
->> That sort of fault would probably end up either with a
->> page_fault_oops() or risk a context switch with SL>0, but we shouldn't
->> make debugging harder with UB=2E
->
->Definitely not :)
->
->You can avoid quite some of the problems right in the ASM entry code=2E
->Instead of checking event type/vector and then going to the stack switch
->logic, you can check the stack level on which the event happened
->first=2E If it's not 0, then there is nothing to do=2E
->
->
+On Mon,  1 Jun 2026 16:26:09 +0800 Jianhui Zhou <jianhuizzzzz@gmail.com> wrote:
 
-To be fair, for this *specific* case, memmove() does exist for a reason :)
+> UFFDIO_REGISTER can be issued on a range that is already registered in
+> the same userfaultfd context, replacing the VMA's userfaultfd tracking
+> mode.  For example, a range can be registered with
+> UFFDIO_REGISTER_MODE_WP and later re-registered with
+> UFFDIO_REGISTER_MODE_MISSING.
+> 
+> When the second registration removes VM_UFFD_WP, the VMA flags are
+> updated but existing uffd-wp state in page-table entries is left behind.
+> That stale state can survive in swap PTEs.  On swapin, do_swap_page()
+> restores _PAGE_UFFD_WP from the swap PTE and can then install a writable
+> PTE, triggering page_table_check:
+> 
+>   pte_uffd_wp(pte) && pte_write(pte)
+> 
+> Handle removal of WP mode through UFFDIO_REGISTER the same way as
+> UFFDIO_UNREGISTER: resolve the per-PTE uffd-wp state before dropping
+> VM_UFFD_WP from the VMA.
+> 
+> Also make the same-context fast path require an exact UFFD mode match.
+> The old subset check treats MISSING|WP -> MISSING as a no-op, even though
+> WP mode is being removed.
+
+Thanks.
+
+> Fixes: f45ec5ff16a7 ("userfaultfd: wp: support swap and page migration")
+> Reported-by: syzbot+18d274a59b87cf80e86d@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=18d274a59b87cf80e86d
+
+So we have a WARN which can be triggered by unprivileged userspace.
+
+The patch arrived during -rc6 when people were reviewing and testing
+material for the next merge window, rather than looking at new changes.
+
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+> @@ -2153,13 +2153,21 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+>  		 * userfaultfd and with the right tracking mode too.
+>  		 */
+>  		if (vma->vm_userfaultfd_ctx.ctx == ctx &&
+> -		    vma_test_all_mask(vma, vma_flags))
+> +		    (vma->vm_flags & __VM_UFFD_FLAGS) == vm_flags)
+>  			goto skip;
+>  
+>  		if (vma->vm_start > start)
+>  			start = vma->vm_start;
+>  		vma_end = min(end, vma->vm_end);
+>  
+> +		/*
+> +		 * Re-registering into the same userfaultfd can remove WP mode.
+> +		 * Clear any per-PTE uffd-wp state before dropping VM_UFFD_WP,
+> +		 * matching the UFFDIO_UNREGISTER cleanup semantics.
+> +		 */
+> +		if (userfaultfd_wp(vma) && !(vm_flags & VM_UFFD_WP))
+> +			uffd_wp_range(vma, start, vma_end - start, false);
+> +
+>  		new_vma_flags = vma->flags;
+>  		vma_flags_clear_mask(&new_vma_flags, __VMA_UFFD_FLAGS);
+>  		vma_flags_set_mask(&new_vma_flags, vma_flags);
+
+I'll queue this for 7.3-rc1, with a cc:stable.  f45ec5ff16a7 was 6
+years ago, so there's no rush here.
+
+I don't know if this is the best fix, so I'll await reviewer input
+before taking it any further.
+
 
