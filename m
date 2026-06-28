@@ -4,96 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A91C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 21:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C04DC43458
+	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 21:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AC486B0005; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
+	id 610096B0088; Sun, 28 Jun 2026 17:45:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 65CB66B0088; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
+	id 5C0FF6B008A; Sun, 28 Jun 2026 17:45:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FE2A6B008A; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
+	id 43A9D6B0092; Sun, 28 Jun 2026 17:45:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 166146B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 17:45:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76DF9167BF7
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:34 +0000 (UTC)
-X-FDA: 84930653388.17.3834124
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 07F3A20009
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:31 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QXgjva6G;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 067C66B0088
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 17:45:38 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43D35404CF
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:38 +0000 (UTC)
+X-FDA: 84930653556.28.A355FF1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A87FC40006
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:45:35 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ScNyX3oa;
+	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782683132;
-	b=lnEezwAhKOhh/CIMxzlpQmtTgy0O4Mf7WnZP/SQR4KdEpSfhJCJH6S36c3SbFEmuOchs99
-	ekBX8lOe+cabO+4HNIFbbZri1fgGLAQD7bNbJFVZOZsCfeYYz1YbrRR3M5r11gg1mFBh5s
-	IdNIsn822A7PKtyioPlXDXsK/Ss5LPM=
+	t=1782683135;
+	b=u2rwqWRdZLRNBk0ECdAEGoSSdmKrbF9CzsHT2IgYrK9ucWLIm5x3aXtikfJl115pvRq0KV
+	nAEgmUDXBrOaBhu9lCwrkagTfeCvPa8Ctc8hDKfFh0uOIBum4VHxDZgGLYiMetxbrG1uG1
+	0+bSbLkpIMmE65dvxpleDVUq3fDeVeI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782683132;
+	s=arc-20220608; t=1782683135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
-	b=yflGbRHsskrRtrsQpZi7YE8RRxdjL8ZRNoJ1YUIt9BavR/e84A3ARsEZtAbg2TT0zx89tv
-	eWLomeLpJAL8ZHkHRfunYBQO2QzIx+e2n1OD5gLB9BFpkKchHaP7ufA27d2GHGzQivN6nN
-	gFhcWoen90OF2xx+7Be0eFJ1AYdr1W4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SiJhyXhNBfsAzo8nGoH5kDNlW+30TFjfN78Hcf1BrTc=;
+	b=VMY/gV8uqG35szxTdO0NNUSbwxs5dod1sv3VVc69/7jFjRbEG+Vyu326kCORx0Eis3F+1B
+	tdiODePtaZnXGzD4rZnoFchDl2zLeCxN7ftpb4OXF40yTNXpAeB3QP28VUodJSxPFEs+z4
+	sXdbVnZHZy1AzyNxZDz6btO62VZWguo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QXgjva6G;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ScNyX3oa;
+	spf=pass (imf04.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782683131;
+	s=mimecast20190719; t=1782683135;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
-	b=QXgjva6Gi4O6YD887grlurtmwnNtsBHmgFCB9P6+1grfVCTxWq7NiEgsEO9H2E5JF3YXDQ
-	SWJRJ3U1iPgS2ls/YgITViE2qwkUYFr9Iz9xYcZtBxlzKC7JYRGhELOzqyQI/IkZDzfSHi
-	H96CjvTTxdAxJ+34aU5geKhLQvpJ0HE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SiJhyXhNBfsAzo8nGoH5kDNlW+30TFjfN78Hcf1BrTc=;
+	b=ScNyX3oaWvNeraRba9l46q7kmnb7+N15lswlWZQ38h8drBfBhswyLvHcgR7jBuioPa/4Rr
+	4Xp2B/Y44glPYPQ73sQn1IVkWy2njGYrEumVsGwkLY6S/GQqmyheHbUk+7Lm+HRLaaJTV+
+	SKn5UCnwX3eCHLAReN42poUXrZiPe5g=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-183-9_rja7jlMAupiDzqx0pzSA-1; Sun, 28 Jun 2026 17:45:29 -0400
-X-MC-Unique: 9_rja7jlMAupiDzqx0pzSA-1
-X-Mimecast-MFC-AGG-ID: 9_rja7jlMAupiDzqx0pzSA_1782683128
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-473e18559b2so75063f8f.0
-        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:45:29 -0700 (PDT)
+ us-mta-78-6p7Oq2RYPBmL_NoIrVg3cA-1; Sun, 28 Jun 2026 17:45:33 -0400
+X-MC-Unique: 6p7Oq2RYPBmL_NoIrVg3cA-1
+X-Mimecast-MFC-AGG-ID: 6p7Oq2RYPBmL_NoIrVg3cA_1782683133
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47132f8a98aso1238210f8f.1
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 14:45:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782683128; x=1783287928;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RCuiBN9uCkmY04AJpyhIWd7gPOrcS7Rrqdc+Y3Kk15Y=;
-        b=scJx8uHr7jF8+j3hMZ7svslxudTvRN7V0EufkQRmhd0EPqDERz2LFaWLqZHP22M4Ge
-         pLYG0xC+D32fGlsgWZ2ba6nQuG1uyBpin0Nc8JtkE3hF/JOaRzUYHZzEYqhjClGWe3fA
-         FIybk+wz7sY4g+OKaNJ9B9htTTf16T+7GMrQIuCbKRDMI8H0gQVtANZbzZ6o+G1CC1cM
-         9U80mOsLdpcoLx0aRRbzkk5m6tM4SFXOlzjpKQCkUYTdt9p9SD37dWOLcK63fAefnyql
-         ED0rcp5n9lymzSQOsPB+csRNY2MwqoRGA3IeZXJjkudV50EP7bxY5PliFUYr+S8EK+22
-         hpKA==
-X-Forwarded-Encrypted: i=1; AHgh+RrqYLgn7uMnzaRbDpd0YRyLqUhrpb4AKyqYj0nf9WqCndVbGLR/LzaFLDbJp5qsLqC6/MgpFEpC/A==@kvack.org
-X-Gm-Message-State: AOJu0Yz29VvXjDHBxqO1aMVbsFdp9Diurb+hX83nTQUoh73VfwWzZVse
-	eN81ugbEIfKpCxXk3bHHaiHYP4DFgTlv1kg6M/i3SVWMV0mDIAqfy7Xiqq/l39YUti+jyYA1St9
-	wJpwRETGWAy7a6YqKEB/tfwayhQGS9Mje48e8rQyIesCbqtvitqEQ
-X-Gm-Gg: AfdE7ckgl9Ztc72jfnW3367YptV+r//iMwjids4XE75i6IRDqX4adQO9WVcdTnvXU5C
-	EAxH3huHyHUuxTgUWAqJmGLBkyngid5xDHOmWQ8tjyYgnYuCqRyO32up9nFwjGi9/o6SCChN5iW
-	AMtw6XX/dLFzm6EEpjdwLuoWgzjIBC8RrnZtCYdUS0AkLT9XZqi4zY0obYX2b+Erx8MKDS2Hpvc
-	aK4OoTiKnZsig9QznPXDrAd0jyPS0TjDhVpAwuNrlER57f1DbyP0P6lL/boaBbPrNtxVbA26z+P
-	h+4Ih48COJHnUOaXu6uBBeKQdMelCdEWI2s/UYKQmVSRfRhjba4IOgqk+JaYEjRT6wezsXnJk3z
-	Q
-X-Received: by 2002:a05:6000:2387:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46dc0d0eae8mr23677100f8f.21.1782683128241;
-        Sun, 28 Jun 2026 14:45:28 -0700 (PDT)
-X-Received: by 2002:a05:6000:2387:b0:460:e4d:bd46 with SMTP id ffacd0b85a97d-46dc0d0eae8mr23677067f8f.21.1782683127520;
-        Sun, 28 Jun 2026 14:45:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782683132; x=1783287932;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SiJhyXhNBfsAzo8nGoH5kDNlW+30TFjfN78Hcf1BrTc=;
+        b=CwasSj9P0P2bEXIGhcrqfXd7D8XJBNxsXcAvmk1xh/z/kO9nrfgeOdlpOqY3Zqksvb
+         pUOdux0PnT3NwTNGqK+Z7v6OHC/cU89hZbTQN3KI643Af6/ncbyYfvn0cNAzZXRBazUK
+         FI1DXhuGuzmLzwPg+4qjktPl1zGGJZonJRnxm/OPIpongeU/IL5bE7PiLbc0A0X6NWMY
+         Br1vAHBTAAzZjToBfa6wegz5TZ3QBK7D/KgpvOL3WMaHrNoczQuRyMR+RIHRrG1gzU51
+         MEcxUHohd3HwpA6kEfK7TM6YvpNUEugeonO0iYT7FupvU0+vXXhGvvLzSHmzdU8h2QdN
+         qIcA==
+X-Forwarded-Encrypted: i=1; AHgh+Rr3EbpJZSldT3q+K7sAf9BmEc5N7cyDfdRlv2DGRgRlXm3Kzp718tUgQwrWiBJu/1KsvePdrngbdg==@kvack.org
+X-Gm-Message-State: AOJu0YxgX6ra5Yuz0+EcIT/7yp5MuLuoZEThhtmJ2xHJFLukSPDkh92p
+	usgcjdP0Ar68K3bcbDFM8WYbMEuGEK63x7hfuBJjsU+ko94vKWZmkent/6BuMqR1L29Dw9auTtF
+	GeBCQ9nBwhh9zyWtgqaVgxo7toZM8XPnzvoNX/GGblZ3JcrMcqSnM
+X-Gm-Gg: AfdE7cnGFTov52CJd2yBStCuXkugUwAAH006OELXwFvZQzuPOiFTrfRxYnqFVMxIMC3
+	kL3cENffWlyMuCpoyyu5GZu/ofiHJjPLJbT0t1X+0VyLYcEflaay7WAwvk9yVtN7nWtJ8JMZzDn
+	kn6o7oqdJtPfFYGxALSDNnhLSZsMEEMXyGwe65qZH5qFo/d4uHAroff9QmrWcttKj5nNV+R3KfB
+	rOJaOJ1sZGThrxezh1X0KPQD4PQI8PO/a/x2dKRUUvXnfwBmjwjsG0niZ7P/UXZajb0vJwibWZ+
+	uhhBWQwe71yNoG1kwgxZAKJa+qBtWh4+R8t6a7ZS4Kitz1R2rMA30arRIQe0YP1OLY8lKS3pFa8
+	0
+X-Received: by 2002:a05:6000:4285:b0:45e:fa7b:a7d2 with SMTP id ffacd0b85a97d-46fb6bf2caamr14037826f8f.7.1782683132439;
+        Sun, 28 Jun 2026 14:45:32 -0700 (PDT)
+X-Received: by 2002:a05:6000:4285:b0:45e:fa7b:a7d2 with SMTP id ffacd0b85a97d-46fb6bf2caamr14037797f8f.7.1782683131891;
+        Sun, 28 Jun 2026 14:45:31 -0700 (PDT)
 Received: from redhat.com ([31.187.78.70])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4730937e18dsm8325636f8f.21.2026.06.28.14.45.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46f978dc0a9sm20747231f8f.15.2026.06.28.14.45.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 28 Jun 2026 14:45:27 -0700 (PDT)
-Date: Sun, 28 Jun 2026 17:45:22 -0400
+        Sun, 28 Jun 2026 14:45:31 -0700 (PDT)
+Date: Sun, 28 Jun 2026 17:45:27 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: linux-kernel@vger.kernel.org
 Cc: David Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
@@ -121,25 +123,26 @@ Cc: David Hildenbrand <david@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
 	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
 	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
 	David Hildenbrand <david@redhat.com>
-Subject: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
- non-atomic page flag ops
-Message-ID: <cover.1782676497.git.mst@redhat.com>
+Subject: [PATCH 1/2] mm: memory-failure: use RCU to fix HWPoison flag race
+Message-ID: <e2d32b6bd7322f855ec8ae4ddda4b5ced27f261d.1782676497.git.mst@redhat.com>
+References: <cover.1782676497.git.mst@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <cover.1782676497.git.mst@redhat.com>
 X-Mailer: git-send-email 2.51.2.2891.g4157995a80.dirty
 X-Mutt-Fcc: =sent
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: vjT9DcIowDW2OITX-XgXBbpdSz7DKNMXaQPKQv7TuFs_1782683128
+X-Mimecast-MFC-PROC-ID: 4noHLCASWVzjr-Ur4tlut6JIMrgZTeQP4KXPatqP1_k_1782683133
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 07F3A20009
 X-Rspam-User: 
-X-Stat-Signature: 1cw4b57p964gft3zre1ogtxb3j6a7gfu
-X-HE-Tag: 1782683131-744152
-X-HE-Meta: U2FsdGVkX19U4AZa6S9QdJwYIoOedX4vsJm4pWEePX0zfXAnKovJZUK2ctRhmvCM4pJHu1w2bFNaRXfX906cG0wt5Llu3OgPetoGZP1XUnSNPQ02tVROF2gKr4/Mm4ncW7Ntmbfel2HfS3o+UErtwMBlnfXGktFGhgMD54Bc8HQ3kwFMNQcnuxmj1LLoNwYB0ApLmpdSE5oT0tlkgSGUDFCfwqsoJs5kychouIa9kQdFWgeGosa79BMZnguIlog4KhKXaJDocPUpZzz5L83a917fP7nUCVP5LDPDMyXFf1TAav4xvRDxWi3stM1NVrx8s4cBFwgChFoWCLxMFALshImT4GGUSIy0qq1OHaFbrWndon6NRyFynnOC11Fx12Zx1pE+pIBQKAWkvBVF1LjIiSTzlbQD5pfjmKYvAZEySYvt71OmoczIRQYSgemIf2ww4/5zQwN/Dcljd/gUx1FC5mbLvK97s0R7IKUf9t/vGkltnLKkMAvDJ3SYDclrxtIbt7UtVyupU9cKpgmrCOzlbOWFbv2cFhpDh+PJdIJNEtqygj0rjOM9L0+c1TvavAYXvxe2zDs7ywZNJCrSc3eU+MgOuC83Eputy6P3/fFjqe7XAh02AVsnC2rqi+91TVN4jeZkdSPxj9YKGBd27OdjqpKe1O581ln94AnNSoLYGbmJYyLKnfYPax3CuNtxsesTYliPWzm4toPuDstTRR024EYoLWvD5DsJvXvyMKHirJbitVNTPnjgGIpVgTjuYHCRmhW6NQp9O5NFiMazM7I1qIsjGNLVSWB5ngDQkFaHdzfkqXh8PgtfRMyJPjZ1w6ydaehAIL0r6XIcgk8fCLKHO3Kg7u3n80KCTlugXg9BCmKd7xkbnGnRKJCPK/O1qgPeFcIS/151IVwIJYJ6KzPVKAexBiukcOCgZ+1DwQ094vwKlqKZfeA7ieUIg6lABgNAwGbWbUgOn009fgypqdH
- wXF47uui
- FgsUEFYKQB2mlr0umM2RzBxz8c22aXhpUCjkhFt9vg6qZjwg7JzAAJfE78/1BYcgXJXjmgm+F0YCGvNQHXfRsNApsd5PU6yovvuFBKqJmFXTZAYdb1ip3758XjGiJTlHtuJg1l4NF3+Bmg6ZYNiYUw95kfPK6ad3WWV9wX9VYduF1DoLNXCvnWjiY1I7vN7mQqv/Cb1dTQA+8sVnlQbq5brpiChl3rcPZrFRNQQOm6h0JaGMiZSg0xkh8uRYEgwDlxixqfE8p6AM3MaMKmilqUSlmEs2LMRvKuC+5n75mFsEayiMyrNaQyugzL0RiUi9pjai47La8+hHTJv6Oio4QIosmF2qnSC6Daa3J3Cb7iU427giLq/3tGtmC/oMkNrcQUen+WWZ1jm8e/Kush6PispP30Q==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A87FC40006
+X-Stat-Signature: x4auehaq64syap4rftb6iuix3eewxwzn
+X-HE-Tag: 1782683135-401053
+X-HE-Meta: U2FsdGVkX1/8na7T9NP89QlTBskG45MU5owxReTVNaV9WE0ddCj7kUDhLY56dyeVSVlMZkvGFWRQMlptueaw1DFiT/J9lXILjN3hqemotWxwCnl9TVcCIkxCTrlUbugRCVmBtEYYvJ6ui95HSV0O6wXKtmFC4onGa+91Xe+2wsY0+CQhtn7qLPWokBQnfC52dXYcrkol7H7Cr8QYE0Bx19BILLHVSmnuNggkfSP2JliAKYR5RQCQM1TM/AgRgMusHADn9uL28IMuRtjcR7Q5wbOB5asPTvRD3K/9ukcS/biv8gA7M+ieT3KQODzNITJ/rcHKfLQdp9YhDAESVhA+IkcUEE+mwb9zxos3mCDHnoHifnzbwo2GYHkGN+pHOavm9AXNMQRwrRH33a5oTbF4nblxKVZdylz0tzPrakGGG8ZoREkZd6FCw983D48OFspWHywoEaR6iT/d8WcOoWmuI3keAgNrFsG5iA2YdvUHwaj+v8MkzbtkeSmgA39m7Fmrg+wAXSmkLQ9ygEtBr22seqMRGwhiTwFTo+dQ+P0EwR4/3BG77dzbo8T8kFhTO22aD5kTBPoUwjNPq4Hfr7+Z6lf/bwVI5hNtDrP8b74v9zhp7HY29dx4hz9aTI6YcCbR4+3ivH/zmfw3B1xCSdX/+D9RbS5BmWLNLoIhWe2zC7lPGZZ2E5QzlcHT+wrdpMmb3CqyD88sqgIJfXyMY/webhkc/QyfLr7wYW1J7IesDj2PtvsbC9l1UROhNJU9guG5ECJaSFIVpwzIsMwWLphXXP4kfgSMFoGWt6PuuScHu0dLBrgDxPtuhb1kK19lSC/IDSddacGNlMxgCwMF3QTCfALw+utdwr0GhSE95+FN8eXZhMM7oA4/wIZWdNDCRt4HNov/P3jFEgKyTglIDszAHEE7wt+Pn2bvkNm2p56umosbxqI+l6g4tXkiN5ljnvTuS5vjorckBhdmKEkn33i
+ 27sDi47k
+ ZoXXSMVKriRITGfgpKlmXjd4aiAKX6DTVfiTFSHcdkV7gY6ov4Rgg2KLTtDRxhitxPZW6keKKUdNoJfVRSg1GD3UUsZn4anqQOspGS7+oQfP2klHyyNV0UIhII7A1lLEda/KF9eKJ2LsfBES44GlKRH2MDEZUnCBvEXnAlcCcLpQo59cRdskxAmjcVRU1GDJ2ZBvxdtwTNB2erY8dEkd19gJSjZqEtJMkDX9wf7lQXo8DdpRCm+HyrtoZXSEZi1h+NUsTtZlFH5pxxkCcxPfbvX2JmTGybT0nwd8t7iUI/9FezX3jx5TexpfcMNXWCmCdz1wJtYAxTFtLVpG8GbYEciykdOCAiFVezNI3Ejb60RGpkAAc2uRTVLD0OiwfvC1j20PmukGih5FL4E7MFsvTGmeCbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,64 +150,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I don't like it that we are adding overhead to the good path for
-the benefit of memory failure, which never triggers on many systems,
-but I don't have a better idea. Pls take a look.
-
 Non-atomic page flag operations (page->flags.f &= ~mask, __set_bit,
 __clear_bit) can race with atomic TestSetPageHWPoison() in
 memory_failure().  The non-atomic RMW reads flags, memory_failure()
 atomically sets HWPoison, then the RMW writes back the old value
-without HWPoison, clobbering the bit.
+without HWPoison - clobbering the bit.
 
-The race was confirmed by injecting a cpu_relax() delay between the
-load and store of the non-atomic RMW in __free_pages_prepare, then
-running concurrent MADV_HWPOISON injection.  The clobbered HWPoison
-bit was observed repeatedly.
+Add synchronize_rcu() + retry helpers for setting and clearing
+HWPoison, and convert all memory_failure() call sites to use them.
+Follow-up patches wrap non-atomic page flag operations in
+rcu_read_lock/rcu_read_unlock so that synchronize_rcu() drains
+in-flight callers.
 
-This series fixes the race by:
+Note: the MCE handler in arch/x86/kernel/cpu/mce/core.c also calls
+SetPageHWPoison() and is subject to the same race.  It cannot use
+the drain helpers (MCE context cannot call synchronize_rcu()).
+For recoverable MCE errors, memory_failure() is queued via work
+items (kill_me_maybe/kill_me_never) and will re-set the bit via
+test_and_set_hwpoison_drain_rcu() if it was clobbered.  The
+mce_panic() path sets HWPoison for kdump right before panic() so
+the race should not matter there.  The MCG_STATUS_SEAM_NR path does
+not queue memory_failure(), but the affected page belongs to a
+TDX guest whose CPU core has already been marked dead - the page
+is not subject to concurrent non-atomic flag operations in the
+buddy allocator, so the race does not trigger.
 
-1. Having memory_failure() call synchronize_rcu() + retry after
-   setting HWPoison, so that any in-flight non-atomic RMW that
-   read the old flags value completes before we proceed.
-
-2. Wrapping all non-atomic page flag operations in
-   rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
-   so that synchronize_rcu() actually drains them.
-
-Performance impact (page alloc+free microbenchmark, 200K iterations,
-20 runs, KVM guest, error bars are 3-sigma):
-
-  !PREEMPT_RCU (x86):
-                         insns/iter      cycles/iter
-    base:                12237 +/- 1     17954 +/- 136
-    patched:             +22 +/- 1       -124 +/- 122
-                         (+0.18%)        (within noise)
-
-  PREEMPT_RCU:
-                         insns/iter      cycles/iter
-    base:                12512 +/- 3     18541 +/- 214
-    patched:             +95 +/- 3       -12 +/- 161
-                         (+0.76%)        (within noise)
-
-When !CONFIG_MEMORY_FAILURE, all wrappers compile away completely.
-
+Fixes: 6a46079cf57a ("HWPOISON: The high level memory error handler in the VM v7")
 Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Cursor:gpt-5.4-xhigh-fast
+---
+ mm/memory-failure.c | 54 ++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 46 insertions(+), 8 deletions(-)
 
-Michael S. Tsirkin (2):
-  mm: memory-failure: use RCU to fix HWPoison flag race
-  mm: wrap non-atomic page flag ops in RCU for HWPoison safety
-
- include/linux/mm.h         |  7 ++++
- include/linux/page-flags.h | 81 +++++++++++++++++++++++++++++++++++---
- mm/huge_memory.c           |  2 +
- mm/memory-failure.c        | 54 +++++++++++++++++++++----
- mm/memremap.c              |  6 ++-
- mm/mm_init.c               |  2 +
- mm/page_alloc.c            |  4 ++
- mm/slub.c                  |  2 +-
- 8 files changed, 143 insertions(+), 15 deletions(-)
-
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index ee42d4361309..351f8bbda248 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -76,6 +76,44 @@ static int sysctl_enable_soft_offline __read_mostly = 1;
+ 
+ atomic_long_t num_poisoned_pages __read_mostly = ATOMIC_LONG_INIT(0);
+ 
++/*
++ * Drain any in-flight non-atomic page flag operations that could
++ * clobber a concurrently set HWPoison bit.  Retries until the bit sticks.
++ */
++static void set_hwpoison_drain_rcu(struct page *p)
++{
++	do {
++		synchronize_rcu();
++	} while (!TestSetPageHWPoison(p));
++}
++
++/*
++ * Drain any in-flight non-atomic page flag operations that could
++ * restore the HWPoison bit from stale data.  Retries until it stays clear.
++ */
++static void clear_hwpoison_drain_rcu(struct page *p)
++{
++	do {
++		synchronize_rcu();
++	} while (TestClearPageHWPoison(p));
++}
++
++static bool test_and_set_hwpoison_drain_rcu(struct page *p)
++{
++	bool was_set = TestSetPageHWPoison(p);
++
++	set_hwpoison_drain_rcu(p);
++	return was_set;
++}
++
++static bool test_and_clear_hwpoison_drain_rcu(struct page *p)
++{
++	bool was_set = TestClearPageHWPoison(p);
++
++	clear_hwpoison_drain_rcu(p);
++	return was_set;
++}
++
+ static bool hw_memory_failure __read_mostly = false;
+ 
+ static DEFINE_MUTEX(mf_mutex);
+@@ -211,7 +249,7 @@ static bool page_handle_poison(struct page *page, bool hugepage_or_freepage, boo
+ 			return false;
+ 	}
+ 
+-	SetPageHWPoison(page);
++	set_hwpoison_drain_rcu(page);
+ 	if (release)
+ 		put_page(page);
+ 	page_ref_inc(page);
+@@ -1756,7 +1794,7 @@ static int mf_generic_kill_procs(unsigned long long pfn, int flags,
+ 	 * Use this flag as an indication that the dax page has been
+ 	 * remapped UC to prevent speculative consumption of poison.
+ 	 */
+-	SetPageHWPoison(&folio->page);
++	set_hwpoison_drain_rcu(&folio->page);
+ 
+ 	/*
+ 	 * Unlike System-RAM there is no possibility to swap in a
+@@ -1801,7 +1839,7 @@ int mf_dax_kill_procs(struct address_space *mapping, pgoff_t index,
+ 			goto unlock;
+ 
+ 		if (!pre_remove)
+-			SetPageHWPoison(page);
++			set_hwpoison_drain_rcu(page);
+ 
+ 		/*
+ 		 * The pre_remove case is revoking access, the memory is still
+@@ -1878,7 +1916,7 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+ 	head = llist_del_all(raw_hwp_list_head(folio));
+ 	llist_for_each_entry_safe(p, next, head, node) {
+ 		if (move_flag)
+-			SetPageHWPoison(p->page);
++			set_hwpoison_drain_rcu(p->page);
+ 		else
+ 			num_poisoned_pages_sub(page_to_pfn(p->page), 1);
+ 		kfree(p);
+@@ -2390,7 +2428,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	if (hugetlb)
+ 		goto unlock_mutex;
+ 
+-	if (TestSetPageHWPoison(p)) {
++	if (test_and_set_hwpoison_drain_rcu(p)) {
+ 		res = -EHWPOISON;
+ 		if (flags & MF_ACTION_REQUIRED)
+ 			res = kill_accessing_process(current, pfn, flags);
+@@ -2420,7 +2458,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 			} else {
+ 				/* We lost the race, try again */
+ 				if (retry) {
+-					ClearPageHWPoison(p);
++					clear_hwpoison_drain_rcu(p);
+ 					retry = false;
+ 					goto try_again;
+ 				}
+@@ -2441,7 +2479,7 @@ int memory_failure(unsigned long pfn, int flags)
+ 	/* filter pages that are protected from hwpoison test by users */
+ 	folio_lock(folio);
+ 	if (hwpoison_filter(p)) {
+-		ClearPageHWPoison(p);
++		clear_hwpoison_drain_rcu(p);
+ 		folio_unlock(folio);
+ 		folio_put(folio);
+ 		res = -EOPNOTSUPP;
+@@ -2761,7 +2799,7 @@ int unpoison_memory(unsigned long pfn)
+ 		}
+ 
+ 		folio_put(folio);
+-		if (TestClearPageHWPoison(p)) {
++		if (test_and_clear_hwpoison_drain_rcu(p)) {
+ 			folio_put(folio);
+ 			ret = 0;
+ 		}
 -- 
 MST
 
