@@ -4,157 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A772EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 933D1C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C27566B00DD; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
+	id 8D5E56B00B1; Mon, 29 Jun 2026 08:30:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFF346B00DF; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
+	id 8868D6B00B2; Mon, 29 Jun 2026 08:30:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B165A6B00E0; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
+	id 7754F6B00B5; Mon, 29 Jun 2026 08:30:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 508166B00DD
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7062C32E1
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:26 +0000 (UTC)
-X-FDA: 84932870652.16.1A4A7D8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 421596B00B1
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:30:15 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C302E903FE
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:30:14 +0000 (UTC)
+X-FDA: 84932882748.28.5905FBE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 30AB940002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:25 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id E9BDB40005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:30:12 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2fdxPuJ;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLNXU5kn;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735925;
-	b=mHFSoOl9AisF6Ha39dFWPLafrqqGMwOcMXx03Fluegrq1QrmUc0GFrWwr6NjmAEcBEgxW2
-	+GxrpnuPOsvqrPgQV65rvcQOGPk8SXil3bieWbQj2XwMnCe7n3f2XPcjBKt7dCky9Pa+1X
-	TZuQTxf/A1/7LUoIzr4COf+13kWy+IU=
+	t=1782736213;
+	b=LOVbiHmObbQV3SXpeTi1rnr+FzUuVkiuC+VBMG7KaGuN6Lm+vYcJ5gIxMuNKkViARpWIek
+	5A+vZmAK1XTt2J45U65GVMgzjt/nNJTEmedNpGEIYM+EAkrqIRZ5ceNfUcsH9Ur087VdaQ
+	tAaq7QKZXN8g/JdKcH1KAN1dp9PSauY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735925;
+	s=arc-20220608; t=1782736213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1jtLkA6UuZsfpQiwXDViZ4TbQirP1iCEgORsJjMVIE=;
-	b=eyYTphaG1bVvecexsA+J+QOoAy62jXRx18NfMLlKJ9BaWtIKQhnIv3rO+Xd0UNUGfLmZdq
-	ekJACyQ+Iq+axRAb3CAT0/cDb6zRSRp59skJVwMd0W4Wj9rqohRDLs+ortvQMQeEwXGR8q
-	+fpuKE4KoqgVYjce0iG2yrmUedfFGuk=
+	bh=G0FbGvFoXBPHpc88ruFVuL9aF9fGlwmJMKH5fBSm8aE=;
+	b=xRnka4CK29ZeOhWejz3MIuNJk3rHvEGAjpg/sv0CusftYfPLlQWzYhzfDr5/ZYEiAOxd7M
+	CgxPXBXuR2HwbR6O7cfxbAoHdKYSJK1dWhkmZ+24d5TWfj3Qw+qU90IppFf7bpDTlFYT8x
+	pAPq7oJ6Ktj8ILbdgEW0YRTSQ3J4ezQ=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2fdxPuJ;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kLNXU5kn;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BF9AC601BE;
-	Mon, 29 Jun 2026 12:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F691F00AC4;
-	Mon, 29 Jun 2026 12:25:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 797C760008;
+	Mon, 29 Jun 2026 12:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE051F000E9;
+	Mon, 29 Jun 2026 12:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735924;
-	bh=U1jtLkA6UuZsfpQiwXDViZ4TbQirP1iCEgORsJjMVIE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=c2fdxPuJZracea4THiWagUGG3qtjKlYQLO8kI5qBAOAmNyUqU+Cz2tE0LZcZK/+x6
-	 6Xk6iEoGktAUHyeB9cblz74jdddGkwaBjm0aSRvDSQySW3n0Fr3QzWtICG5O83ECq+
-	 CpGzQfZJaEmCid2LM+2XsU2ThNJ23kEbysH1NlUtWxqEIESKzs4x6d5f0OSVrFyJfm
-	 j3TScuQr22512dqslB4Ah+zgS28CuS/F239kYvXoA+o5vDrfUPnKKgS1tQAkh4mNti
-	 ITFv6t9aZ5OoDpmTegOvjzsXL8lUZRPNTyuRby3AAe3GvKu9tkUXabe/jqKUOVL1Ww
-	 sDInYPPHhFcHQ==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org,
-	etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org,
-	linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-mm@kvack.org,
-	iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	damon@lists.linux.dev,
-	Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 30/30] tools/testing/vma: output compared expression on ASSERT_[EQ, NE]()
-Date: Mon, 29 Jun 2026 13:23:41 +0100
-Message-ID: <432444fa4c12ae1c4047550e2b205d3e9bab458f.1782735110.git.ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
-References: <cover.1782735110.git.ljs@kernel.org>
+	s=k20260515; t=1782736212;
+	bh=G0FbGvFoXBPHpc88ruFVuL9aF9fGlwmJMKH5fBSm8aE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kLNXU5knlHa3KmPye65lbh7Fo2+k3BFQRh76KUtsvTNCDRW1TugDSfOp598AyqSVf
+	 fQhV+bgMJdGNNbrlOy9NWbiClQdKu9qLLobOz0c2uZixhN9z5fYjCMZ1zfnv+lqPDm
+	 MPlNzKBTu6zceRDAFlc8KX1eg85HeXSoEDDk4nPr43jzIIuQgVn3qMf8+k6yqtCvBF
+	 rcks7qAJS9l4HXfUNu8okAJsU6UxRxP1B4uJQSD9P9WBtiD4zYKCHWq3IQylxKclrZ
+	 liXeuT5DYGZh3izx0OqIfZtiaannaqVNwIWiFlN38Bf2GD4k/Ic4uNgiR7fslAkBDy
+	 2MxKm25Wvg8ZQ==
+Message-ID: <b96f27d5-95a5-477d-9529-bf932905ddc5@kernel.org>
+Date: Mon, 29 Jun 2026 14:30:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9ytbx3h7ky3najmizx7icj7cb1754hbi
-X-Rspamd-Queue-Id: 30AB940002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 03/12] mm/rmap: refactor some code around lazyfree
+ folio unmapping
+To: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, ljs@kernel.org,
+ chrisl@kernel.org, kasong@tencent.com, hughd@google.com, liam@infradead.org
+Cc: riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, qi.zheng@linux.dev,
+ shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
+ yuanchu@google.com, weixugc@google.com, shikemeng@huaweicloud.com,
+ nphamcs@gmail.com, bhe@redhat.com, youngjun.park@lge.com,
+ baolin.wang@linux.alibaba.com, pfalcato@suse.de, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com
+References: <20260526063635.61721-1-dev.jain@arm.com>
+ <20260526063635.61721-4-dev.jain@arm.com>
+ <dcfcc52e-7e1c-4940-944a-faf0c02672e0@kernel.org>
+ <dbe63454-6ee8-49f9-b956-f5a211785aec@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <dbe63454-6ee8-49f9-b956-f5a211785aec@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: E9BDB40005
+X-Stat-Signature: 3uxpf9rh1opsyqqwwpnzor9wdxo59zpq
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782735925-208670
-X-HE-Meta: U2FsdGVkX1+zXQQo8HPssc8ThDP7W9XCe9Iqb+4oSIFL+PCLlH++lZvMF5LPdUpJref+kvnSmW/9MVnxfvrjZ2+UkThvyGo56AhXuIFIqJLUBSed2vNkSQ5pgLQ/bg3Vi4fCSpTnzIMlLVJYEdkHU8elqWlgGJbhEEF/9mA3NXyaNU5lRPXtdL8Lb85ttFkHkKiaIJzletCiCeAiYUjj7ei9SP/DZaZj/41hWDIaxE2LKs0vyLaWh4ClWlGCFo7d2T6+KMeK7KKzNTnKR4eB2XCXfs+/lmTZ8VbxJ2Ps7cn7UNwLWyDfycCMpmArJV8Z3THK5Lj6tucCJeUJ6s/AIFc7jkFnUSDU0yJdKUSAFSoYHs8hKuyWzId+OkilYQ6ONA/3qtDzuzJe4QAs/p7FMj/0kT7cXZ4Kj15SR3M12fJFvfcmTNmAlsXb3NP2LYkaGl6JWiDQZLGmmxoZ4I0xmLpoc5ojmewwPXcN3p6YzGLfTBhufAdJD4wjsI+G8J4ag/fuRn9Q9Ll3iuVNK7uFKRxjIZXgHEfPiu8dObxOAstd8IlGkYLsFPW77ESDPMfnbIrgokM0i/PBjPZUzZTyFbzc5Knw5gO6gcM0iYKYbxHHppQHBwKimwjUta/XdbrxcHtv9oPVgbZy1eKB81XGacwVez3Ena1ij+bXRCnGiUfV1m1hNAJx60Tdr9wrzF9buZRl4+Sl0JF7O8swy/ZdWpbLsWhIL9d+HO05P1IShbymyv4mVOd0a1X7i7ZVNEi1f8ub3rU43BeqOv27rtT2JvZmo6YBQviH3pejMHgaP04o5frKEYEjRVwBErTbCLL1lb4Kr2W1yct4Ry0V3z0Z1I27yzuHyenyUnsDxDXnHAvDmzdnjaks7fOrMWP9O9hnqcZ+G07KMOHCB8Gq4tmUuAMiRPVKbSs1cIkgdA97IUR3GOKCl601BR/eZ9PG/fgMJj3wYtsKvBYD/g4rHlB
- sYf2Cm49
- BXMU+2gokMOFofYpgxmNeoS7e3kx26ylRfdD+tgzBrdcixPstiRLsDzIJcfpEEiaW4lcP8LN36BRlDHPqZS+VsCBcKsxvPJP8oFqmWxfV/5og1YDKD7F3jqHFnrwTEgNnaV28grbklZvOd8IRd0OmZRQkyhDxVrO1QwppAipx5LEkYadMQJh0JlSoKR/1c7DQIuSaJr6lryOVDSYXKipG5dZSCGXP0zWoJfRNzYlqaCDfeO1Zo5DWm0OBNEGwC4wk7j7K8KHJyhrMPHyx5Fey5vZ+zBz2RiE+VS6PLQZEkpHH2PmmlRaDuGHREWnYx8ph4UoV8j8dRGJRlxtei/M+VEwkj9qeaIQ4TSZNgzwqCgV5EXg=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782736212-807032
+X-HE-Meta: U2FsdGVkX19XUSzezFf3LsBD7ooP+pNhj/LbmcohpZvb6OwULEH4kSc3RtAE0wGrwZvLr+Vlfy9+PVyPHZu/LkHAzRLSE8bVVyV9wRjg6Jcedst8GvAwJaRwPTnKNQF0YiAvNq4LhQSsCM6UjpzIbFVrhAuR3jGPzo836AaEbxKOWEwtsg9RmoEY/BHr+SbXEKlVA24pYkgNWmfI6C6gBjskm2WB2ZoDotTKUJmp3+Y/glv4KxJrvVgjVIweL9xpA2BdSiN9TcFV1uhqrCkOH2nkRdVmGmMe6aU4AMTFzgmEztafkom40ZHRHCGb0AAd85UoIoCtn3h48Ey9eey6RsZaqxHmtvWXDLArmbAWg9TSkgrmf+TLZoRRbia6WCXELAOHzjy4Bzfnaf2PlnvC2/MO8e0f6vsPwRLf3qnTY1Z1OU12tb2hKRRFetqGFWBcwOaxdmKKThVEWwrccH2PGLjisIQqIpyYhrPasTQWJo3r2NTBFPUxcmtfnwduVuvzaF39MHCZkLi+D+ukHPSAfovFhgikMVytGis8sloUJI6t4rFmbFetQknigk2JlfCwkGfeJPoviUQqxg7VQbdmI1RX2Qy5X1v7eLiL6u7+z9GMlpRyjT8vFzdiYTDUQtcwpIG6vlDSHuf8fQqvGa6l1emHOLMaQi9yU8TUVb7irBZoyQGW3lz9Y9LOFyzAsd6SsUc9EBCv1nj59dFlpN25HL42cY0G4J7Rqgz89NRVZIU/x7URgcCY1wVlVqmwh+rZvszjsp7+L4lof1LS/y2tHlEu1ZEAiWa4Arz7Snt9RiOxKSav/n7XSJuDT7BHhZDYGXbVZ/C5Qwnc7dBs1Lkzw6IWV/CyLOXn8/rxEFdzGtdsXTnKKURcdiFAv/NhacEqTRPgU8T7SyvvvSXLopHy/t+isbNHY+tQK1PQGAIFAGKJbD715qQ30PMDtpUTUEJTpoakRShU/jzyxWIhceC
+ j85fqAk8
+ Ix5JCPpC3JPnRfTBKGHW6fJlM4wVNeQyW0thq2wPgGKRxIJjASl2bpRzkybvH0Y+871goyrtxP88gdco7fSZCWVFUJZtpXtQQv4M5ymQDy78x3LsqvE57m8umo6J/eoe43KVJ6dPwVm9F1om3tx0QYahwyO4mYMISKL6cRIH4QjM60RyA4OH/tztaTx9eyRh4WZ2SGFjyfuPxSjSCDNMvR/eT9McUzp9PR+Z0VqTVKSyGHjYgMQJ9xC6B/1ByIvM3hdhml4Dg6tra9WhB9LWnYwSeTqZdXxxaju1hFaOsLjiHRWso9wcBWX0NIQ69puXCioQd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,68 +148,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update the macros to output the compared values at hex for easier debugging
-when test asserts fail.
+On 6/23/26 10:42, Dev Jain wrote:
+> 
+> 
+> On 09/06/26 7:50 pm, David Hildenbrand (Arm) wrote:
+>> On 5/26/26 08:36, Dev Jain wrote:
+>>> For lazyfree folio unmapping, after clearing the ptes we must abort the
+>>> operation if the folio got dirtied or it has unexpected references.
+>>>
+>>> Refactor this logic into a function which will return whether we need
+>>> to abort or not.
+>>>
+>>> If we abort, we restore the ptes and bail out of try_to_unmap_one.
+>>> Otherwise adjust the rss stats of the mm and jump to a label.
+>>>
+>>> Also rename that label from "discard" to "finish_unmap"; the former
+>>> is appropriate in the lazyfree context, but the code following the label
+>>> is executed for other successful unmap code paths too, so 'discard' does
+>>> not sound correct for them.
+>>>
+>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>> ---
+>>>  mm/rmap.c | 88 +++++++++++++++++++++++++++++++------------------------
+>>>  1 file changed, 50 insertions(+), 38 deletions(-)
+>>>
+>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>> index 06ab1158d4cd1..12bbee57f20da 100644
+>>> --- a/mm/rmap.c
+>>> +++ b/mm/rmap.c
+>>> @@ -2093,6 +2093,52 @@ static bool try_to_unmap_hugetlb_one(struct folio *folio,
+>>>  	return ret;
+>>>  }
+>>>  
+>>> +static inline bool ttu_lazyfree_folio(struct vm_area_struct *vma,
+>>> +		struct folio *folio)
+>>
+>> Nitty, but I wonder whether we want to return an int with 0 vs. -EBUSY instead.
+>>
+>> Reading "!ttu_lazyfree_folio" naturally makes me assume that this would be a
+>> success path (which it is not).
+> 
+> You have a point but if you don't have a strong opinion I'll prefer to keep as is.
+> -EBUSY won't be consumed by the callers anyways : )
 
-Also remove unused IS_SET() macro.
+Yeah, works for me, the "try_to" part implies what a bool return code means.
 
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- tools/testing/vma/shared.h | 31 +++++++++++++++++++------------
- 1 file changed, 19 insertions(+), 12 deletions(-)
+-- 
+Cheers,
 
-diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
-index ca4f1238f1c7..216be4cda369 100644
---- a/tools/testing/vma/shared.h
-+++ b/tools/testing/vma/shared.h
-@@ -21,19 +21,28 @@
- 		}							\
- 	} while (0)
-
--#define ASSERT_TRUE(_expr)						\
--	do {								\
--		if (!(_expr)) {						\
--			fprintf(stderr,					\
--				"Assert FAILED at %s:%d:%s(): %s is FALSE.\n", \
--				__FILE__, __LINE__, __FUNCTION__, #_expr); \
--			return false;					\
--		}							\
-+#define __ASSERT_TRUE(_expr, _fmt, ...)					   \
-+	do {								   \
-+		if (!(_expr)) {						   \
-+			fprintf(stderr,					   \
-+				"Assert FAILED at %s:%d:%s(): %s is FALSE" \
-+				_fmt ".\n",				   \
-+				__FILE__, __LINE__, __FUNCTION__, #_expr   \
-+				__VA_OPT__(,) __VA_ARGS__);		   \
-+			return false;					   \
-+		}							   \
- 	} while (0)
-
-+#define __TO_SCALAR(x)	((unsigned long long)(uintptr_t)(x))
-+
-+#define ASSERT_TRUE(_expr) __ASSERT_TRUE(_expr, "")
- #define ASSERT_FALSE(_expr) ASSERT_TRUE(!(_expr))
--#define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
--#define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
-+#define ASSERT_EQ(_val1, _val2)						\
-+	__ASSERT_TRUE((_val1) == (_val2), " (0x%llx != 0x%llx)",	\
-+		      __TO_SCALAR(_val1), __TO_SCALAR(_val2))
-+#define ASSERT_NE(_val1, _val2) \
-+	__ASSERT_TRUE((_val1) != (_val2), " (0x%llx == 0x%llx)", \
-+		       __TO_SCALAR(_val1), __TO_SCALAR(_val2))
-
- #define ASSERT_FLAGS_SAME_MASK(_flags, _flags_other) \
- 	ASSERT_TRUE(vma_flags_same_mask((_flags), (_flags_other)))
-@@ -53,8 +62,6 @@
- #define ASSERT_FLAGS_NONEMPTY(_flags) \
- 	ASSERT_FALSE(vma_flags_empty(_flags))
-
--#define IS_SET(_val, _flags) ((_val & _flags) == _flags)
--
- extern bool fail_prealloc;
-
- /* Override vma_iter_prealloc() so we can choose to fail it. */
---
-2.54.0
+David
 
