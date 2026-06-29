@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B06AEC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AEA6C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFA596B00DC; Mon, 29 Jun 2026 10:42:46 -0400 (EDT)
+	id 8E05D6B00DE; Mon, 29 Jun 2026 10:42:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED0A36B00DE; Mon, 29 Jun 2026 10:42:46 -0400 (EDT)
+	id 8681B6B00E3; Mon, 29 Jun 2026 10:42:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4A826B00E3; Mon, 29 Jun 2026 10:42:46 -0400 (EDT)
+	id 6BBA56B00E5; Mon, 29 Jun 2026 10:42:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FCDA6B00DC
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:46 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F3EC9120128
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:45 +0000 (UTC)
-X-FDA: 84933216690.27.9E62905
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C20E6B00DE
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:48 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B1D011A0161
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:47 +0000 (UTC)
+X-FDA: 84933216774.29.040C17F
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 777AD180007
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:44 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ASg6zH6V;
-	spf=pass (imf16.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2C3D1160011
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:45 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=djU1ICuD;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744164;
-	b=yj4l5Vwu7XWmTmGxvh6hPmebjB0up0/NqNYsKIoR+qQX/USv9KbmU3YmLIJqvNkrPp+pbc
-	FCKfz9RYTpUdOxcfIqjdvQW+ENQBI7W0nljkC0S6+PPJoD1kaL5cf511Wk3cW8hvGiyIuP
-	uMoW6KwZFxZElBJaBmx+V2nDzX5Jfl8=
+	t=1782744166;
+	b=6TIUGZ2hb0Y/bFA1SVGogTAD4rKHpBZbrTudh1zrZgWaWvuZ/FJzSJ1iNJ7fh3U++21/3v
+	xhuRWptBeXY1H6BG8ZVUN1HtWctKU1rY5BiRn3Vl4L27YfhkveqgDBfEi4mXssggFiv3oz
+	NY3DJN6UdwsvUIsPjG7FRDK/8oyfETE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744164;
+	s=arc-20220608; t=1782744166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TVVMo16TNRm7PRWmHQW6fZz+VCRjTretVoH73fawlt8=;
-	b=RkPzMnOwhYV/f7DUxDKs4G/LR9kPddFhSi9yvFH0XsG8bCtYJ9gADBXvToABEOBMHAKdKG
-	oa9ElBiMQBRslMCw3SdqCfnFNGwjjcYIbzgGxzNs9t0YPDL1kC4ULA4VqXuNUF8v0pFhgV
-	ZS0oUgH1r6B733J6K8p4Ia4wmMwCFiw=
+	bh=bDMHXsCKcSGAHD12REN22mHVNiO24BTkjlbIOD6JWMU=;
+	b=7XRNFqF1hYYuNuQ64FeCzUdKkO0R5QQEqoGBF73tvmFKqmCt+L3jIGUGkS+MpNQXPdCmG5
+	tU+tCwVTpRdp/NXNVZtQDdZzKAjSJslfh4fhbRkW0zBH33kgIan48lod5cT3Q52Fx4jkah
+	wOsiHi0JJAD+Fe/JwVmhGVzYQ9C9YfQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=ASg6zH6V;
-	spf=pass (imf16.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=djU1ICuD;
+	spf=pass (imf08.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=TVVMo16TNRm7PRWmHQW6fZz+VCRjTretVoH73fawlt8=; b=ASg6zH6V4HikVZVus2QkfucNtJ
-	h0sAETDT6kI/7Endy+TlipZJr6okkcPDd9OXkpw1YJug/8wLV00IzfOsNhrY8JVQ9uO/CiIX/79ko
-	bk6dNIs45B6hOItHp1nlSwhOuLFFVicZSeru08uTy0UyFIszZUKHV2z4RS3lNQ591mc6ErqbcAFhx
-	pXaIHbE0v9Llrx0dqdTd5d116+iLVYDRU46sK4CXEBMAfDcrahE3cGpLfy5XuU5wvjtmarBIXAWgI
-	ZXxFUrg8nO1lR625WfdqrGR3YgQzM0IZHNVrDIL4XXG5aHfEPaZ1XhUuT+wkkj7xTycs83WrYevjp
-	2VsaVl1Q==;
+	bh=bDMHXsCKcSGAHD12REN22mHVNiO24BTkjlbIOD6JWMU=; b=djU1ICuDWaNku/q/mvPldJIRcu
+	kqsTQLYQAyqYKFQfvsnmqqIuoPJZmPDzhw4XslxD7jPIT9F6ERLkxvY1azeYHOOfr/waNabo8JmAl
+	oGM4f2fGX3bHIeIj06VAGQMHFTMwy49arrhdKI36w82eG3Sxso4AOnGh8QJDa3ySch3tcNvnJClmu
+	5SpVeZ1ggbZjl4axu5wyDjUz/vUXoyjCTIhr55Wpzfn8KxXjmDKnKuEpoMOTKZSCrSkn+GvwtN2oy
+	SjEP4aX2Ldyt4U7DhA/QB2bJE52kcpSyY8DhGhD/mhGfdtujhh36sbEb4S6kU+Uc2ZHvhcBUcuCq4
+	A1o6w+6w==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weDC7-0000000EuZq-27Cc;
-	Mon, 29 Jun 2026 14:42:43 +0000
+	id 1weDC9-0000000EuaM-0I3G;
+	Mon, 29 Jun 2026 14:42:45 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
 	"Liam R. Howlett (Oracle)" <liam@infradead.org>
-Subject: [PATCH 07/18] maple_tree: Clarify comments on mas_nomem()
-Date: Mon, 29 Jun 2026 10:41:34 -0400
-Message-ID: <20260629144145.1572283-8-liam@infradead.org>
+Subject: [PATCH 08/18] maple_tree: Use prefetched value in mas_wr_store_type()
+Date: Mon, 29 Jun 2026 10:41:35 -0400
+Message-ID: <20260629144145.1572283-9-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629144145.1572283-1-liam@infradead.org>
 References: <20260629144145.1572283-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: bintip3o6omoe433ja1ezyjmashepi95
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 777AD180007
-X-Stat-Signature: w7yyokw4ujmz4wcp8e1b7gdaxjuegg4q
-X-HE-Tag: 1782744164-873898
-X-HE-Meta: U2FsdGVkX1+J/qpvAz9oRUd3HHtnjgHw2uBUy0d9xBsKh0KxrGp8RdrXDSZ/kczOo/bHeQwh6KnTzUTMLoY0/Bx6YPj6Fugule01sxtYPadV62ysW8jAy/ubOvS6EIn6lV0OOr1cnjIfW2cIcgBqxO2iwD+t+nzr+hTPwPNqh9iDR+EhGju/S/0VBMSgOUm5NNS5pnimyTUGdYLTcpO7JFzg9rEfliZ9S0dCSiFeJQ0jwgrRdBgVimWFSQ8PB+o8UFf3UXjmNRNkHcxTKKVASfuKO/qnNUj9xdzbkHulecShwZiUJwH25+8WNQoFGSu33MtNIcjEW9ai2CRNbU91e/A547cOlCaxaLmKcuh4SiAPfeLVCj0N7irMXMhzyZegiqCyTQUcvvaevILyZN0qnBV12bGFDanGLhSaZveAYI7WV/kfELkCIk3I8RlQZ9mEegtcqpmlw4x07MaHhE7YBYLtatLK2GHgtLmVkqFGk29NOlLFNyf/4DMMyecguObZITA/FC/tk38cUSBCih+E8VFIHOEbvXnlSsrO8RYAgHpZdYRCoFIndB+haro39bz8yiu0deslE5xYZoZVqe+EBayRIpp6BnHhNpuYZ8osNkA0P7wl1/gl2B2YJFasA8BFH0OrgtjtNAeakEn8VTSPGh8q2xj4Dp0q3p/l+6oiCKBUo+cTVVvAWOrMUAKtVu5Xum99xMDVyrHQnuPXSlza+MdVs56hbDhaMqMMvFIsnIz5LlnrCxpPDP1r8wK2kOgRN/9No29Dzqh6YA/sR+NRHlPQ+1ZbkU6sVmaFx/mI3tSd/CmGGlfhATukVhFpKKQyl3rdMnHPx2bx/Azd/turjtAzrA1XHv0eZfn9ti1FWq8Hrde1giXM2GsLvykD0Q3tqRqwtP2OGAtVlGS/+r0d9sJSK8QelSpr7rBdrRsIaMVBzjeag8iLxQmcjcaKq5gcWu4GC5Vxnc+wWiMRj+3
- xBsjP3+/
- 589+KTGRf1JtB9ciqZUfNZa0UF7s+AR7A2cruGjA+f4Nk2tpsOqWv5oPqIM+0B2HKqYin5owibOxnK07OLy0+suj/OjK/y+WkNmtgMfj6TnY+ggbG6glG+Uu6KguXHshs7C0Cx8g2jCHZo5jrsXenksET4ek0Hj3/BH1Yhf4LKTP0QJ9EZzEqiyufZxSLtLk4EK+J52/hGHv/4eSi+2Y4dGW2vrl0e0AS50lGUBBAHdwhg43b1McRsQJGOy/LwmeoI3D8f1EM29Uagz5xb06lQno+Pfw0qzzBT0zEHhbr+Dl6q6bD/ZRM4UcizJT/EDrZfRKMLydmeAoCESb05sRFGwHWCA==
+X-Rspamd-Queue-Id: 2C3D1160011
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782744165-943384
+X-HE-Meta: U2FsdGVkX1+DaG/MTtsnrcdIona4zLpQ6lf5op7e3QL8O1ISh8v8F0Oivhr4XaYQF6iK96kUGDEGdU9wA/msw480mcyCO00T0oCtX5PeRK2BSlNWRM6yL5GUe0X5Prld8vKWnk5iVkRYPQKjzM/oTzmdDgI+Y1rTa8uAXKpka6Tc5c1xnR4gTQaumuBreZLnOMMhARSRiROGEr78XI9Rpe0j5cyo2UcXESpm5eWiJJIH23Ub4U3MSGlCLrkaGj/yN/xEwt/nFL0KnnZc5KKLuap4K9r5qkDd5EMCZz81uK6VdwGPXC6hbldvfvxmqNY5SGkBDV4FsTRnovyDocOAOxyrrvrPHu0YC3zUZ3Iyd+R5vu+cuCAAajEANjM1qI4410Hv1xoivRukraL/itdpzbJul2MgUJHUf6saViqZ1kxVBgrulNfY3OSpO4wyWsmpkiiwS0Ev2WKskMcl2OlK5+NukFg/DuH31vSCrhJD6hf88rKQPGq3iA2VZOwiIjCwFuH0PGG/n1sHT9X2ZF8Ih9KdWksM2Y/aQyHIy+2oNKFZ99SA+3xDII4DmmfmSfU6tTaYUpl5Z93w4LuL+9oE+RWAF8jZbKz1rH9o6VpMrxYGd/FgcYjSmmX/Ip0vnOVUy3Zva5807m+JM1KrdqCqsFsNf97lilcrBTORBms7YchcoA/OxXEvMMnmE55lhD94ia+1g400Qs0O6YnlBFs/Zo96snKBppKA1wysTrfbW+UJxJFXUOzogIYtWJRqne2MaZn3lhpvAKh0kAxhtUfRi5V+wQ8GYiHMd8UDWPu+RwgopJE7c0cRvi0sRwweZAswPmZ8fqjXafNo8WRCA3vRfqlqSrncC9+J2Ol2GlhAIPxdXBwhMTfadrY+8/BoITmFxn+UWzLegIdSJ9ugusrj+9BEuyOmyViJHk0V63hEvX+ixQzJ8MuBBzNShbY02xvZAOj3dPFwnRmzdPJIRqa
+ +htCW9OW
+ ZgKYwASDGBXXRNh0z58uoGKec7HVOLDKkbp32+6EZO3og0gJUgygm0+adUyYProdWpRhlpk89vNtQ3AcPvB4v5rzoShCXb9vRtrTEQWDeIlMx6xb84JpNAoKc/360aqKqvqmZ8ZkNlw1/NaAcCyp2TH5EgXWkN/Cg6Tv6+j+2oaqV/t2Zo/6TaSBDHNqE0AZKDGrtYtElhxSMjeiwARHXZ1zhRMbZtOoscx201T5lDxqbK5JC/3fiH4ZgnBp6ub3C07vmACBOOIH3MQkzAQ1sUOWocRI/p4Dr1Z0pegyGnv/X+yqPJE6hpQ7xKma/YliTAuFCYdubScFjc50Ptq4nqbkNng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,46 +91,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When an allocation completely fails, the return is false.  If the
-allocation succeeds or partially succeeds, return true to indicate a
-retry of the operation.  Note that since the lock may have been dropped,
-the operation is retried from the start - including potentially
-allocating more memory.
+The slot contents exist in wr_mas->content, which has less overhead than
+reading the slot again.
 
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- lib/maple_tree.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/maple_tree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index f0aa08902b462..8106eb8bf2eb6 100644
+index 8106eb8bf2eb6..fe10ff83e4937 100644
 --- a/lib/maple_tree.c
 +++ b/lib/maple_tree.c
-@@ -5672,10 +5672,11 @@ EXPORT_SYMBOL_GPL(mas_erase);
+@@ -3276,7 +3276,7 @@ static inline void mas_wr_slot_store(struct ma_wr_state *wr_mas)
+ 	void __rcu **slots = wr_mas->slots;
+ 	bool gap = false;
  
- /**
-  * mas_nomem() - Check if there was an error allocating and do the allocation
-- * if necessary If there are allocations, then free them.
-+ * if necessary.
-+ *
-  * @mas: The maple state
-  * @gfp: The GFP_FLAGS to use for allocations
-- * Return: true on allocation, false otherwise.
-+ * Return: False on no memory.  True otherwise (partial success as well)
-  */
- bool mas_nomem(struct ma_state *mas, gfp_t gfp)
- 	__must_hold(mas->tree->ma_lock)
-@@ -5691,6 +5692,10 @@ bool mas_nomem(struct ma_state *mas, gfp_t gfp)
- 		mas_alloc_nodes(mas, gfp);
- 	}
+-	gap |= !mt_slot_locked(mas->tree, slots, offset);
++	gap |= !wr_mas->content;
+ 	gap |= !mt_slot_locked(mas->tree, slots, offset + 1);
  
-+	/*
-+	 * Return false on zero forward progress.  Partial allocations are kept
-+	 * so the retry path will attempt to get the rest.
-+	 */
- 	if (!mas->sheaf && !mas->alloc)
- 		return false;
- 
+ 	if (wr_mas->offset_end - offset == 1) {
 -- 
 2.47.3
 
