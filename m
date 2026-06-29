@@ -4,102 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3119AC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 03:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD161C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 04:03:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D39796B008A; Sun, 28 Jun 2026 23:57:56 -0400 (EDT)
+	id 3808A6B0088; Mon, 29 Jun 2026 00:03:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEA476B0092; Sun, 28 Jun 2026 23:57:56 -0400 (EDT)
+	id 331756B0092; Mon, 29 Jun 2026 00:03:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C00376B0093; Sun, 28 Jun 2026 23:57:56 -0400 (EDT)
+	id 222016B0093; Mon, 29 Jun 2026 00:03:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 862A06B008A
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:57:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0C3E71C66EC
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:57:56 +0000 (UTC)
-X-FDA: 84931591752.24.1E1CBE7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5F87C100005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:57:54 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N2DYghzd;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E184E6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:03:52 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 61D1A1A053A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:03:52 +0000 (UTC)
+X-FDA: 84931606704.22.AE2F405
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8A2FD180004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:03:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EUBX1LDb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782705474;
-	b=gt/wo/IXzj06vKo3Zmjfz4+xh3R4V4pTEUJsESIyBckzMsHfKqf+K5ae+F8alOIOsnLBsW
-	8bgWjSLTP6pGGXyt4lgDdrfwThAVkb+eMgEnJb61sS7tngxkB6cJfkTIX8sAfLIZx5eKYf
-	N0EA6U6pWNACHMKTyH34CJ/CnBwAAQc=
+	t=1782705830;
+	b=zpUylMF+QUXcLGdMabL+xOqBiSWchANmm/o+MEE2MNgi5B93YX0vvosZUyTtTc7s1clTaC
+	Przq4osJtucolpZEX+g1TQP4VvH/voscEFxMrmXvWW5zpF2APg/oW/ndfKM/jWBkMNON16
+	nJ1IfC2+ma5B/suXT2wzmA/R9WulzUo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782705474;
+	s=arc-20220608; t=1782705830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9BWTqCcdFd79kNtuHH2+5DlGXwn4xidZaCYPnEXjfjE=;
-	b=xxNq+VxGK2jS7IpwizEJvVDcJbbSe6pkg/Wop5X43SD2fmrviRtr62VkRIiimkuxMwItbl
-	IIHORgRNvtkfYIy6TQMBhQqP6D0rJYTn3El5fXXeYojYTXbobA8DXX0oNmxUGWnVXD9Ug3
-	WsFFojob9194V9NBwtO7LnAT1dbjgjw=
+	bh=qWOyOOefL1L0qpTT6Ovn6IvrZReT+icTWgiUMkImrG0=;
+	b=QKXtXYEdW0VGtjmq7kVOjIfICIg5GyL0fhtCckxrXzAcypDL4RVEBg2WOnZHJs25XgcOyZ
+	dCsGn/9K9Q79vLz0BowFEjQFn3DLcmsOlG/s7LxkcbvtiYzoo+FUkf4k5zfqbVk8fMH3i1
+	fZuA9db2l/SYkgYpzOw3Zxig4qlq8d0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N2DYghzd;
-	spf=pass (imf05.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A53160054;
-	Mon, 29 Jun 2026 03:57:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC3D1F000E9;
-	Mon, 29 Jun 2026 03:57:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782705473;
-	bh=9BWTqCcdFd79kNtuHH2+5DlGXwn4xidZaCYPnEXjfjE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N2DYghzdbvdXgZTm52RVU2UGpV07+Ip2Nso6dcrYYqVrV9u+eHpXODG7N7T89K7i3
-	 Szurg24QtNgh6dBwx0J2eDz5Xw3dpUDFoauW/SDL2F/NZr4o6WmC3Ofyzznk/3CuTK
-	 +bQ4MLHElZHhvZ7/1IYfObLUQuY/AgtibbpcZfb3bAKFYbsBK5Ky/f7gnAD62xzfiR
-	 JtCbn6rJBZKr++McrYCT8rd47qxWfw7NzElwAPYUOM1MDx+Gq4JtFs6cdhS2+SzKBN
-	 6YUuwKxTTcDY7T0JFJ420aiIIH0WXpcyyckFttDVpNZutUjhCh1ywg3vycdVOD/2lq
-	 RwzycfEhZII8g==
-Message-ID: <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org>
-Date: Mon, 29 Jun 2026 12:57:47 +0900
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EUBX1LDb;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4938d5f86f3so8943705e9.1
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782705829; x=1783310629; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qWOyOOefL1L0qpTT6Ovn6IvrZReT+icTWgiUMkImrG0=;
+        b=EUBX1LDbIgsNgTJaFTpB9RzBpx5mV1gX/Q+oXZ5Zc7d6qvR4xV3BAKoQJ8ICrcXJmL
+         4YyVjKjYyjMdLXhLGADS6KSgA4BzcGTU0RKAC226Ar7pEz8VwcDdyT2ozh62HltAalP7
+         ZF1bencRsVhy6D1uAsRXyslCE2mlnvyOxcQLvD/kVFNENBVWxtkSjepaMJjN8iqPeUDw
+         8EClUmwCSIRz5BzUNsqsELqDJP9xYQjHm5gcBQ9L9fDY3kUiD0h4jVrMgApxMnR0Auz0
+         +lDROD3VB09nmxMPVabf6GnEr/QmHbbjr13SB81HuIbxpd+XNhHe1kvH0KAHXQcuCuso
+         /jzg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782705829; x=1783310629;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qWOyOOefL1L0qpTT6Ovn6IvrZReT+icTWgiUMkImrG0=;
+        b=a3WeXP3eN3j6OQ773aTdK23d77pvgR5kyXKNazmbQfDJiXKyVmrVo4Akt0qlAgtXGc
+         ZnmgrGTdCdjHGuHCRAAxslpcnJt0wvlODIU2Hd6mOftB5/PP+5LbOckc41AysqnpKG/t
+         H7KbHk/EGL1wu/nzCwVY3djr292T/avPKTCU63YLMt6kzyAn+P99bY3LwsCPx2ALF8j0
+         4/1if3gkz2tuwkJlvSPNT8vGEBA/Go3oKJbYuE6H45BPWzril25PHeVlcHXdigmpe8XP
+         ez0OoaqxIr4y9NhO/EsFWhwfiqv7THit9W8R8v/AIHpF2Vcqxxr6U2jsbfYAEiVkTDG9
+         zFzg==
+X-Gm-Message-State: AOJu0YwLSDCUxPTibnlvPY/lRhhz8mn/vYFidlZK0FWHRVX6h7Rgnv6s
+	L/UTP3ltdvLlDUdawedIXl1Ld1CQTOaNIQyOBzMKsnlpNlm4/fH4c4TN
+X-Gm-Gg: AfdE7cn29nXKJfnHM5MOpoJAGxy1LhOPAKAyPxmsnZYfb+6I6DFHPQFY8wQHbe3qMqO
+	LRIgFK3dqYhlBlv316X8JihuApgbntw0bN78q8SityadrsZvrEMwzBPbhi7DelWrRQNAAwrZwk2
+	47Ai6y7CvMO3TO/5Ek+rBz1vJ/3qJJjMY4Xm60hBe+uD5mpqF/RZJWg9gRM7V2m90/9oY2qw2F4
+	Us2+ESSFPqRVPzKE/J+VAOgvh+mdIzpv4hMIE+MpG+UjvLBhRL6HeLxNXSm3MTnWH4hPG18hzvp
+	fRICTqvPVZarW+ZFADNWQvWHLHFQ3u4S5Tw+BIn3P3xvew3jy/mKJwq37pswkbaIUe8JCBIUq2u
+	vJ5JXZ2GV45COc/FHlobaF2f0eoH9uRxEV9MHoar24nSWWWMOtZhVkqaZvGYarl6Tb45V4q4DdH
+	JB+yNeaiqa9VM=
+X-Received: by 2002:a05:600c:8b23:b0:493:a43d:6a2e with SMTP id 5b1f17b1804b1-493a43d6b59mr68551165e9.8.1782705828974;
+        Sun, 28 Jun 2026 21:03:48 -0700 (PDT)
+Received: from user ([104.28.154.196])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-492690100c7sm310404035e9.12.2026.06.28.21.03.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 21:03:48 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: hughd@google.com,
+	baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>,
+	syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Subject: [PATCH v3] mm/shmem: Fix data-race in shmem_fault
+Date: Mon, 29 Jun 2026 07:03:45 +0300
+Message-ID: <20260629040345.13138-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <8b6aecca-c4fe-441b-b0f9-fff10f7b43af@linux.alibaba.com>
+References: <8b6aecca-c4fe-441b-b0f9-fff10f7b43af@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Danielle Costantino <dcostantino@meta.com>, Kees Cook <kees@kernel.org>
-References: <20260625230029.703750-1-shakeel.butt@linux.dev>
- <62453403-954c-4cf1-8924-6d38184b0810@kernel.org>
- <aj6re83IC84lkFL0@linux.dev>
- <09267187-6c85-438f-8791-4cce8d07892a@kernel.org>
- <akCJRTnmA2um3CIy@linux.dev> <akCSftF6mrsKsz1V@linux.dev>
- <e6ca6ac6-92c8-4db6-a82b-cbb92ceaa4ea@kernel.org>
- <68122038-e8e0-47ed-82f8-cb6a23e4658e@kernel.org>
- <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kkwj78zobtmb7fk3uudy8bngdfe377an
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8A2FD180004
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5F87C100005
-X-HE-Tag: 1782705474-421574
-X-HE-Meta: U2FsdGVkX18izWPl1MmlMAQYdty5qXkeoilDC9FFEMHh+TzEMdig2ojwCDwtk9VOkJ0b8p25IYMIIFo+BeHulTWVvItE6wPLM1QX+AZpgMgeTlXJE3uDXnYB/gOlaSKRKerLJexgIx2ZHkeFFniqmPPHAyeNuNE3wrgl7fvTtIfiKJLqlUPVzB2FcVNC4l5+C5eIIod/C1Km2NFNDBURoa+OsmKuxfLA+HCEuJ5XTtJwuShb4fm2h7XE2d5ztzI46qPnkeQ/afBDCFWgL7546n7Qm1wgkxgplbMIbF6KDmeI5o1BdL0jWHx3WFOCaa45LrVe6jVRQcGdsTNYa7+k+KZ1gHimTuxAPB8M2H/0c0Q3s7G+kdNtf3nOaF7+bhjCB9FU7DZwv/1CmX44E1HejaOFCJkoqEUOuHqdHu/Z7deiyb6WFLSZwfmznNck8XhVXkaXk4BrnVa+T5lWTnP09plvXwRLVdaKhfOG1qXxlenMSE00+BVGMlLr0V68eq0Jvrl33VJW2Cu/70kW5LwOzvegsOG5ldGtj9lqZCSHWftU7OQ5hzuW/3XoR0FoRUaeuJ7kHzL308/zRZpZCJS5wgkEc/a2SA3vw0LW0XpmfqLUMYdEbdtryIk6fqbRYIEAPjJ2i3BF1tEjpfa9WQvkTjONdP7pv1evk7EqG2CelgJ0766gqrJ0BypO7Xhnn20zE9qFIeSTKxEoYPc+sDNZfOzSgspikhd3hbmVd3Ti/bRjlGWiysp1hzVK6Qypudk3izcvLrNBHJNtvh4BXuLIN0rgL1WQSjTTQLMQuskRYJCl8ctCu9PuX5Z07DlQYnVe2GvoVUoqEZuut4R5qgi1GwisyobLwAeqleJWGlxG2Sr4xeSZoSyFgws5hFNXwmxryeISLQXoV+bh+fgOTplmgw6hhg4+E9QNEKVp4vsIHKdJ6sPtVTQR/BvqmWOCVlc/xfglCQfet0WABDwUd+3
- s7g9UAtG
- cLNviuMoP3uGZUoCRwKfD/jPOonj5npO5+bGIPSyZq0NtFTChq9AQRkq2Q8z3YDsjinrqxNiZ8eIQRLW+TAvfGk2qhII1LnZ4IcvPCiXDzRynLWuZkCytSlnvdxuzdt0fHIOelm8ZZpop+smV35PB6zaPlinL5/lAhyDnOtMy3N82cth2tuAVE45ncxMzfd3CRcn47e0xRFlAwD6ZtyKwdNBwmL/iC3B2cNcLjmdRgAv4PyoMwf1soaPACrJHohbLxp5kj3FkmxsXvt7WaAWWMww7FOfJLizlGPbJ45RuPMtpSqaq7S/C654FGKSyTOPCYmAVOS+WF/0c5I0AC6D/4LvH/M/SWQYZfsiZ
+X-Stat-Signature: aoua8wuks8k4g14xuhtzu5pnfurj4378
+X-HE-Tag: 1782705830-263043
+X-HE-Meta: U2FsdGVkX19sQ1WfsxINVal4aFM9sccHNe29pEUbVWKcXArud6gy+0nMugcBXIYfdyLEx+PMUo/J5HzXX/yLJVJ5+5kCvD9EJa0QXk3asNvgX4EIgwj1nAIgBRfDmoO4fmK9IP+UFngkUPsdRgo8vAgj1wgn+SJW31EViBUfiVhi/l+07//wLctTVn2u7tfzZfXngdq2NwfkitMeqLWm6YcNZbFSGYshV5vb4JSNnIjGDZALCDWfOQ5mJlM6j/YaZ/w9kJg9V573nujQ5UJ/pBRapPermuHhhaJ6fsaFMCbyI/tMuVxACby4ovYZg+w1a64uxCq8iKv8gUmhGogSLl98cfZ+112nYBBiSh4kkAGsxMwYtNOIa4NICPk6EGjGOAZ2F4SuwuldWAJPUIhHIZy55bT72BYF8TtSjWlvyuYvGIpE2RAPm+LRUIDWvFKuEzaBAcDaKUs3sFaUjdmTMsZ7k0yR9Dt+hJSi535MZrp4uBCX8FaQLMVBkKTEdNzlwvIXLk8xbscZZOJLSl1QtLao2akC7lZe9jEUAnfjnjnCXOcEJQ2St/5XvdQNTUbzZk6ZwnJRE/Gqbpv2PEk9X0CZhcrTTKnYhwxTjIlj2PjGvdqHgxkYF55l3l5FRGvpiQiYNxHqWU14wYO7tVDnSJ5MbEkq4e3RHo1jx3od+a/WRdj+aNXPwb6K+tHRJe4Z9Gp9DfPkahPzLgFuXZ4og/PCz6pj2T+bgHNZDhiT1pXGEEHJKweAt9X1z3WtbpXi7rtk2CV/JqdePsEX8F6rCBgzBKa665vlA1cVxxvJpBSMsueuyw9zm7bg6XrH8yP/lzsyUV4STC6DToAqMav7z4ylPeIGdIc8gDNl1PNZns2ZEBqsZOROthx/b0WzJWqbP2Yt1tFU6t5Klw82NW24iS2kJvUByTyzJrakoaWKQDtpCCKoex+KrSmUHls7wcB5o1aIuft7739khIN82N6
+ kh0Xa6Q4
+ ocHbv3AD9zrGHGNmEk+TrAx824Q99vr0gAlF8sK54jNwNplu82LXQK4yuKU3C6jr4QhDD6CSoAqfjEyj3GlM5JrcReCknBSqDaB/6eYROOV0+F0EAYpV2dQZk6xkaa9+mFzxJh+0RlMShe4lfBaYVKIEgdxPFvgc7h0apngqqYl85J5cpR4SxgBqGnaQ4JcpVdTbejtaMor8Or5jVp2ScLoxMfZBfxlNgvFwk/ptiYjmC/YvcZ29IDNUMDAUw4K6BTc9crwlhp5UipYQzw8ZIY/kfK1Rv9gB/2Uk5akZYPvW7azXZfVaY8CGOf0KQL9UDvAympStT6WNfsO5jUgRjB9XjSx5SR9WsAQfaqYcUzpI+Kfwoh47djtX97bkYOsEsjI4Ogb3vetXUIpv7qTixKX5CgZQRXcI0LQ+2yOXNeF8z0xJB+DSOLE9JMXtOEt5W/Hg3tUqy7rEXcUptYVLjex6/tb+YR7UV8Fg+Kc/H9IQ/kB9159XHxX6RezAQrKHloJrOWZFMLgyqrDqYi9q4vn7gIjVqGgvdfzixOWNl2RzOTsM7UcGdCA8OqgVrLMam3A1AT84WWIx1sO9XcEuxqWbYO0PYzjagxcAIE7jZCrKN4TlBiZdNIlanj7GPzjiz6oDxvaNW9VILY+WS/MGbx9hYgQWRWUY37NciGVnydZPDFI5u5rn36WAPAyLH/i67fQ9csWAqUnJKJ6Kwdg5mAlH3eXrrWxzF3ausgnyOCQ+dXC/nBnvbGTaWiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,152 +119,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
-[ Adding Kees Cook for SLAB_BUCKETS conversation ]
+shmem_fault and shmem_writeout access inode->i_private
+without holding a lock, while shmem_fallocate is modifying
+it while holding a lock, thus a data-race is created.
 
-The thread:
-https://lore.kernel.org/linux-mm/20260625230029.703750-1-shakeel.butt@linux.dev/
+Fix this by using READ_ONCE and WRITE_ONCE, which provides
+an atomic, lockless read of inode->i_private which prevents
+compiler optimizations such as caching in registers and add
+writing to inode->i_private with WRITE_ONCE to prevent the
+compiler from writing in registers.
 
-On 6/29/26 8:37 AM, Suren Baghdasaryan wrote:
-> On Sun, Jun 28, 2026 at 2:22 AM Harry Yoo <harry@kernel.org> wrote:
->> On 6/28/26 4:47 PM, Vlastimil Babka (SUSE) wrote:
->>> On 6/28/26 5:23 AM, Shakeel Butt wrote:
->>>> On Sat, Jun 27, 2026 at 07:58:12PM -0700, Shakeel Butt wrote:
->>>>> On Fri, Jun 26, 2026 at 07:11:33PM +0200, Vlastimil Babka (SUSE) wrote:
->>>>> [...]
->>>>>>>>> Fix it structurally by removing cycles of every shape: serve the array
->>>>>>>>> from a cache strictly larger than the one it describes whenever it would
->>>>>>>>> otherwise come from the same or a smaller cache.  Every reference edge
->>>>>>>>> then points from a smaller to a larger cache (here kmalloc-1k's array
->>>>>>>>> moves to kmalloc-2k), so the relation is a DAG and cannot contain a cycle.
->>>>>>>>
->>>>>>>> This will fix the problem.
->>>>>>>>
->>>>>>>> But this will waste memory as we need smaller obj_exts array
->>>>>>>> as the size gets larger.
->>>>>>>>
->>>>>>>> We should probably create a new kmalloc type to avoid cycles instead?
->>>>>>>> (needed only when memory profiling is enabled, though)
->>>>>>>>
->>>>>>>> That would also prevent recursion even further.
->>>>>>>
->>>>>>> Yes but I assume that would add kmem caches even for users not using memory
->>>>>>> profiling. Anyways, I think that is a separate discussion. Am I understanding
->>>>>>> correctly that you don't have any concerns with this approach?
->>>>>>
->>>>>> Umm, the memory waste is a concern?
->>>>>>
->>>>>> Minimally I'd now want to only do that size bumping when allocation
->>>>>> profiling is enabled. Ideally that means both configured in and not booted
->>>>>> with "never".
->>>>>>
->>>>>> We probably should have done that already in 280ea9c3154b2. Because AFAIU
->>>>>> memcg-only obj_exts array don't have this issue (or maybe they do have the
->>>>>> [1] issue? Harry?). But if memcg-only should keep avoiding the same size
->>>>>> bucket, it can keep what it was doing and only memalloc profiling would do
->>>>>> the strictly larger thing.
->>>>>
->>>>> memcg should not have this issue as normal kmalloc caches do not serve memcg
->>>>> charged objects.
->>>>
->>>> I am wrong here as I went back and see d8df600b67d7.
->>
->> I was confused too :)
->>
->>> (8dafa9f5900c upstream)
->>>
->>>>>
->>>>> So here we can do dedicated caches as Harry suggested or make this size bumping
->>>>> very specialized as Vlastimil suggested. What do we want long term? Orthogonally
->>>
->>> Maybe long term we make kmem_buckets unconditional and use that.
->>>
->>>>> we do want this fix to be backported easily to older stable kernels. I will see
->>>>> how does this narrowed down size bumping looks like.
->>>>>
->>>>
->>>> BTW I think we need something like the following, right?
->>>>
->>>>      if (mem_alloc_profiling_enabled()) {
->>>>              if (obj_exts_cache->object_size <= s->object_size)
->>>>                      return s->object_size + 1;
->>>>      } else {
->>>>              if (obj_exts_cache->object_size == s->object_size)
->>>>                      return s->object_size + 1;
->>>>      }
->>
->> We should not add mem_alloc_profiling_enabled() check because,
->> then we're not fixing this issue on SLUB_TINY, when the caller specifies
->> __GFP_RECLAIMABLE|__GFP_ACCOUNT without memory allocation profiling.
->>
->> `if (!is_kmalloc_normal(s))` check already bails out when it doesn't
->> need to bump the size.
->>
->> So Shakeel's original code will work fine.
->>
->> We're only pessimizing memory allocation profiling and
->> SLUB_TINY && MEMCG users, but (as Vlastimil suggests off-list)
->> it wouldn't make much sense to enable MEMCG on memory restricted systems
->> anyway. (IIRC even raspberry pis don't enable the memory controller by
->> default...)
->>
->> I think it's okay to fix the bug first, but we need to address
->> the memory wastage issue sooner or later if companies (Meta and
->> Google I guess?) are deploying kernels with memory allocation profiling
->> on in production systems.
-> 
-> Sorry for the delay folks. I just got a chance to read through this thread.
+Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+---
+v3:
+- Fix lockless read in shmem_writeout
+- Apply WRITE_ONCE and READ_ONCE across all
+  locked instances of inode->i_private
+v2:
+- Add WRITE_ONCE to shmem_fallocate()
+---
+ mm/shmem.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-Hi Suren, no worries!
-
-> I think adding a new KMALLOC_TYPE would be the cleanest way to fix
-> this recursion problem once and for all. This size bumping and the
-> special case of SLUB_TINY are quite confusing.
-
-As mentioned by Vlsatimil, in the long term, using SLAB_BUCKETS
-infrastructure would be more straightforward than new KMALLOC_TYPE
-because (I think) the kmalloc type is decided purely based on GFP
-flags and we need to somehow work around that. SLAB_BUCKETS provides
-a nice abstraction to do this.
-
-Luckily, SLAB_BUCKETS is introduced in v6.11.
-Unfortunately, SLAB_BUCKETS is optional.
-
-> We could define that> new KMALLOC_TYPE only if memory allocation profiling or SLUB_TINY are
-> enabled to avoid new caches when not needed. Does not seem too complex
-> but maybe I'm missing something? WDYT?
-
-I think we need some enhancements to achieve that with SLAB_BUCKETS
-
-1. Rename SLAB_BUCKETS to SLAB_BUCKETS_HARDENING
-   (w/ SLAB_BUCKETS being a transitional config for _HARDENING)
-
-2. Make the SLAB_BUCKETS infrastructure unconditional,
-   but the decision is made at runtime:
-
-   1) actually creating a kmem_buckets vs.
-   2) falling back to kmalloc.
-
-3. kmem_buckets_create() creates kmem_buckets only when
-   SLAB_BUCKETS_HARDENING is enabled.
-
-4. SLUB decides (not) to create kmem_buckets for internal use
-   during the boot process. Use the kmem_buckets for obj_exts
-   array allocation.
-
-Side note: this would unconditionally add the kmem_buckets parameter to
-the kmalloc slowpath. Probably it'd be worth introducing a dedicated
-entrypoint for kmem_buckets instead.
-
-> If it is more complex than I imaging then I'm fine with Shakeel's
-> approach as a temporary fix.
-
-Since above requires quite some changes, I'd say let's proeed with
-the fix (since it's one line of code change that fixes a bug),
-and then see how we can make SLAB_BUCKETS changes as minimal
-as possible for backporting?
-
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..1c39e9dfc524 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1657,10 +1657,10 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 	 * reactivate the folio, and let shmem_fallocate() quit when too many.
+ 	 */
+ 	if (!folio_test_uptodate(folio)) {
+-		if (inode->i_private) {
++		if (READ_ONCE(inode->i_private)) {
+ 			struct shmem_falloc *shmem_falloc;
+ 			spin_lock(&inode->i_lock);
+-			shmem_falloc = inode->i_private;
++			shmem_falloc = READ_ONCE(inode->i_private);
+ 			if (shmem_falloc &&
+ 			    !shmem_falloc->waitq &&
+ 			    index >= shmem_falloc->start &&
+@@ -2647,7 +2647,7 @@ static vm_fault_t shmem_falloc_wait(struct vm_fault *vmf, struct inode *inode)
+ 	vm_fault_t ret = 0;
+ 
+ 	spin_lock(&inode->i_lock);
+-	shmem_falloc = inode->i_private;
++	shmem_falloc = READ_ONCE(inode->i_private);
+ 	if (shmem_falloc &&
+ 	    shmem_falloc->waitq &&
+ 	    vmf->pgoff >= shmem_falloc->start &&
+@@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	 * Trinity finds that probing a hole which tmpfs is punching can
+ 	 * prevent the hole-punch from ever completing: noted in i_private.
+ 	 */
+-	if (unlikely(inode->i_private)) {
++	if (unlikely(READ_ONCE(inode->i_private))) {
+ 		ret = shmem_falloc_wait(vmf, inode);
+ 		if (ret)
+ 			return ret;
+@@ -3630,7 +3630,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+ 		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
+ 		spin_lock(&inode->i_lock);
+-		inode->i_private = &shmem_falloc;
++		WRITE_ONCE(inode->i_private, &shmem_falloc);
+ 		spin_unlock(&inode->i_lock);
+ 
+ 		if ((u64)unmap_end > (u64)unmap_start)
+@@ -3640,7 +3640,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		/* No need to unmap again: hole-punching leaves COWed pages */
+ 
+ 		spin_lock(&inode->i_lock);
+-		inode->i_private = NULL;
++		WRITE_ONCE(inode->i_private, NULL);
+ 		wake_up_all(&shmem_falloc_waitq);
+ 		WARN_ON_ONCE(!list_empty(&shmem_falloc_waitq.head));
+ 		spin_unlock(&inode->i_lock);
+@@ -3672,7 +3672,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 	shmem_falloc.nr_falloced = 0;
+ 	shmem_falloc.nr_unswapped = 0;
+ 	spin_lock(&inode->i_lock);
+-	inode->i_private = &shmem_falloc;
++	WRITE_ONCE(inode->i_private, &shmem_falloc);
+ 	spin_unlock(&inode->i_lock);
+ 
+ 	/*
+@@ -3747,7 +3747,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		i_size_write(inode, offset + len);
+ undone:
+ 	spin_lock(&inode->i_lock);
+-	inode->i_private = NULL;
++	WRITE_ONCE(inode->i_private, NULL);
+ 	spin_unlock(&inode->i_lock);
+ out:
+ 	if (!error)
 -- 
-Cheers,
-Harry / Hyeonggon
+2.54.0
+
 
