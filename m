@@ -4,121 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13CF2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:41:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFE93C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:44:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0C536B0107; Mon, 29 Jun 2026 13:41:16 -0400 (EDT)
+	id AE0896B0101; Mon, 29 Jun 2026 13:44:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBDD06B0108; Mon, 29 Jun 2026 13:41:16 -0400 (EDT)
+	id A91E56B0102; Mon, 29 Jun 2026 13:44:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CACA56B0109; Mon, 29 Jun 2026 13:41:16 -0400 (EDT)
+	id 980696B0103; Mon, 29 Jun 2026 13:44:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A08186B0107
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:41:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DD9BC08E9
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:41:16 +0000 (UTC)
-X-FDA: 84933666552.30.4893B7B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 662176B0101
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:44:01 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA7061C16B5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:44:00 +0000 (UTC)
+X-FDA: 84933673440.13.DD4ECDC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 751E21C0003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:41:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwaoyB6l;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id EBB0AA0008
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:43:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMBCmM6u;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782754874;
-	b=VAdNs++F2JVgO+0cimKZ3jdc2gKWsmBh4Je+DkeuwEa1SyZKDcWCOE9UvqdrbhwmSwi3re
-	rg1O//YsfOx4yT9m2jL36/RTJSZJfdSkePuqTS1obTFFkiexdgh0MHBw6lcdpfuN1PQg3n
-	1ejs7cddix8JxXgx3GHqUxszs2g/42M=
+	t=1782755039;
+	b=LwAPoNzEfyTT66XMfM+UwOqJg8JcVspYpblH8lZA1J6x7biFe04CzcR9ec+pTXNVMOoU25
+	qs7mW9iUXPHuNiL0BpZ69vlagA6zxT4oHzSbxMiL3V74pMkmCakxKa7jo8FRS93PKdi7lK
+	4meZg6YejCJ8QY05Fb0wGe3AnIOGBWg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782754874;
+	s=arc-20220608; t=1782755039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aQOiijNvdTgOg0ZDAoyrNzD33sjFLDelNYagWZ6KgVc=;
-	b=iANTkUlCZ67na2ju8VBMbjyCvzxmVg8LCNqvXcZUrqo+A8+RZqutot7EL5ZrH5wkg+OKh5
-	w/PqpDbAdeP/OitFE0YXShKOVGGpLOv6ORsp2P/mgp1rS7E4N5isGM44wnJVJrlzHosO8b
-	i1jUV7gxhnBTxwmhvsTKbLa8/h1FDwo=
+	bh=sNPWUj0b3dpxJFm9DmiWQoTjCiuvhdzLK8xC9ADnE8o=;
+	b=ljZ7EImGVO9weIvJd33bptEO6cf9fs7XqQF1gavzUIStJ8adZA4uaVMYRe0u06t39gp9P8
+	shD//5/8voNb6gBtCuy5IqUIVflz8ZVxKA1l1DL+ZDxAwpUg37ZNtRKxSX+M1ex0nXyCVV
+	ZicxLA8Q87iPL3srg9ObyjAIXMjo3oI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JwaoyB6l;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FMBCmM6u;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1AE82414BB;
-	Mon, 29 Jun 2026 17:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA521F000E9;
-	Mon, 29 Jun 2026 17:40:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3611541388;
+	Mon, 29 Jun 2026 17:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A651F000E9;
+	Mon, 29 Jun 2026 17:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782754873;
-	bh=aQOiijNvdTgOg0ZDAoyrNzD33sjFLDelNYagWZ6KgVc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JwaoyB6lWKH7ik47HITJbeTKRuRVfEO/0pfh+FINdeuw0SW8eTRpmytBGps7cxq+S
-	 kCNxhF/4sUF9JTuYBPt+gxEficptfxjI4Ts803QKT6eKGg4SzB2GwWxKUWqlCQn0l9
-	 8f9cXn9tIT+sPqdX3U0y0w9x3G09VMFKEVU1DGcxCD4GVjIrlUxjbdU0zRQEz8q7QC
-	 mcugOs41Y7eE/Nj43NtJtSgVb0EqBim8qmc/DbOOo6P9Tky+uXOtwwn26EwNHq3UCN
-	 XCWemy+r6UszZnRM3oT+U8VC1D0qCApuNOrmYwKXCeFmYfWusMxcdVWgEhsuAemzi7
-	 qVl/nL+loLawQ==
-Date: Mon, 29 Jun 2026 18:40:51 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
-Message-ID: <akKt5S96pJZGzeER@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
- <akKWvnU2Ua-8ceSb@gourry-fedora-PF4VCD3F>
- <akKfAl-wdIAbexNR@lucifer>
- <akKnNy64lhNqPtLL@gourry-fedora-PF4VCD3F>
+	s=k20260515; t=1782755038;
+	bh=sNPWUj0b3dpxJFm9DmiWQoTjCiuvhdzLK8xC9ADnE8o=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=FMBCmM6uX9VREwWikdZd8AjqjhA0cn8zckZezxCiaDRwpSVAuFWVUsl7qw03ZO1Hq
+	 O40u+9Ah0zciqqs3VgdDdNVUFsHXteukIHLzAm0/rSDQzzzAJ1EfJEalXtLOZYDTe4
+	 TsRC/hFucqYfARZ4BGTVaoMkXlPVDT3WIBdsq4bB8ecDMYMcBFzPHuUS7vSTgQyV82
+	 e3e7QmolFwS1AZUMzBVQjbX4C+K4Mgv3wroJoKMpxvEfE1BUXOBzzl5w0F4vcXxE8Q
+	 GDdkUQxFMLe1h1Pl3KtE1y3UtvsCeWMliEQrBJxAzME36Iz+vio0+BTH5F0NwWOZh9
+	 ZaTbQWxQjPVdA==
+Message-ID: <fd1b4199-ebbc-420b-afe4-3bea4b9149fc@kernel.org>
+Date: Mon, 29 Jun 2026 19:43:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akKnNy64lhNqPtLL@gourry-fedora-PF4VCD3F>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/3] mm: drop pte_clear_not_present_full()
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Andreas Larsson <andreas@gaisler.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ "Oscar Salvador (SUSE)" <osalvador@kernel.org>, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260629-clear_not_present_full_ptes-v2-0-96089871a1e7@kernel.org>
+ <20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
+ <20260629102215.09605f0e9ef66c5f58fe0932@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20260629102215.09605f0e9ef66c5f58fe0932@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EBB0AA0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 751E21C0003
-X-Stat-Signature: 1w7xwyukeh3z6j1xwubo51k7ang317f3
-X-HE-Tag: 1782754874-32971
-X-HE-Meta: U2FsdGVkX1/C7A0m+yEKPrQSvIPXzyOKdQQTwg9/V5uryMVyFEVcP1fQqhm6+PE/dD+VDRplzGNxSPAlQvjz3eAHakzJ5g840cziH9eS6xuXL0g2t1NvkjPIa+YfpEtT4yrjAYtS9sEVJm12/4wu1u8Lp86SAW+3ROO/J6giayEPfQbbhNNnKOFRCwWfwdFD70vVwkLfqKoQEK2j45og4jxEYHr4FUqXFKpUiAckqLFaszyB2rNk9m22iXO/OpmoMIoKwUz5oT/RoEccdb7LY2AtmprbDJDAFwVJooXWgZ+0o36kIkd4W4dyzYP96uM0MMajt5LVEN8XvP1rQ4MYvUgzgMlotAGPmQavkn+5Bsr+3qqtH4+6eVGidN4PHDdydxSc8oua8qeRbCbGUOU3BX43oMk/TuBFqHQaU/NhJ9uejau67BmShqpARUaLNHTZZ5D+7ccV9UKaHEfji8RtcWqkN3Udhm7DgtfqmKJtiPjPt3HYcQ3Rk3l03uZOXyY6JQG37VtatJyRIv217D9gyWIDNVhEPU4P7hHpLQweN53FWow4RYD1QDGdnK7Afpls0kQm5Df203rzG2VGTWwjvRWCBN6a1pMcSlh9PhpTT5D2cG51Q/y8wsfkNy/4ClXyCkiDjZKdhYKRfFhxCel0grie6fX9PWUJCzVqKTXKca0W+M796k99FLlQ50b1Bwpz8XZnjcfddnBFUtj7s2IQeSz+Vzjx/ILOv2tcYFA3Y0hGgiGOO9yvMKlFHeoyq2V/vNqsvys56yf40D+2Uux8LwbP65AS0LFwf9HqUFZip2UC9un+eR+APM0WrvKSvfN/jgdNsa5hV93Qnn1SKOlkMV4BOyAq4yGjm6nhXDSTPxJXXnjxov+yCHOCnXHPQD7aGiUkzPVZ9BMVni4B+g/7yDpVCKkvHI0g5Ff81uQWEcruuOk5Ke4doqfB2LpbovJX7cvj918idpskoh8VA9A
- UmdzfRy+
- TLyrBSp+k/Bc6g30ePiUUV3m1tFcvADF+ljqsjuFn4fRjf7bkabKuSe5YpRC89sbSvbUJtkLKOHoQACqn2dA3nD48CKHDXlqYolS/daJLnVdiLRgjTH1xqe5U8d0bu7KqutO42N42SNBzsC5O9KV+1fg/mAAqTAlbULUjSZvLbJtUMSgy1TThQ/6t6iUp2NumW5Nw0HUQkYtxioFUdJYDgp/Sp/9VuRot3enNcaAmqoqmDZMfFh2ZskUrejen+NOZcaNIJfWhaBH1nXUikoC7abr0lwRDf6gXT7W6HNbyAkwmFAAvYZ6ZClKpywuup8vD6D3FoDNRXHRM9f+TAZk26I3gMt1DnURI07g+7wQaAXmP9Z8XOBy+0P7VJzmzCMm9wA5pRYGhcIHBIxkQUfEaMLp/CCmbtC7celwwtfOToM0Lv0d+ppnRRfr0gw==
+X-Stat-Signature: 897mtw1yth3641yi3b39x65dgo6pw7q1
+X-HE-Tag: 1782755038-870306
+X-HE-Meta: U2FsdGVkX1+twH+K23J9P7MzkiKEAKj2Q1ZnMMrlO0XOdLGQnWrc8m2/L1mzb9i+3/CyBPXMjLXijkQV1Wqe8QCbqXvHKbTnYPr/As8xKl94MWC7Yqb9uPV1rbXNi4Zdv/f17gP/5BaLYzlH5K+6pw2aEzaZPMAU1e5G99YtaqDAS1J83Vqqslfu9+od2m5tE2Rt+zf+Upj+Dv6vkww4BnNim3Ds5GLEEqmlVXZ/leBrEAIjfhYKhjaksIZSrdLwhGPXIMJWezvyDyriH8m/hwF1YNgmz/sxG8OCz8YGTrV8xYlGqz6NHiBvSI0GZzRgHz9mIaw4E/jOxO5TapIAaiWG3a+sAWx3BfvacHgqML4FXppM/ND5QYCCUlGpb0VXRug3PYgoG4VlzKymLjZJdci6RdwOqYJuxiyWOQlxYSHbJjqySIs+SLe0+pK//G7oBWiPHDriC2sIFQR0UzFXPW8vqTqgSZsN1xQko7EETY7ljnTEFi5fZ7B2mfFER5nHxxEVAGbcjn2+WNMDynMD8G1cnHp47c/llq6q4gn2sIYYBTmChSPqdaiV/cDFC/Mrydw8BBWxZNNxtKWxf41MMNZ21wMU8POZQeWMYPV5apl8FrPJmFL5D7YYgKzJQ2AvSq49ouxA+r7zJanqYx3NFkAi2JlZwVBSICVMDPSyv6Cov5RQ5pETZcL4AVpBA314M6GpvhZBGmm5egUW/7HBci4E6p0oihxEkAZGQk+WLiirFvIM1L7xnSrtxACah2fOfpmJdqJGW6z8bmabCg/IdK8Dyca2PmwxMSv74HQDRx0HLmrJyGHH5OIx095txNzSLBEC5MarCJVgfdPbvUYKcfAtd90Sw5YqnG3enGAO+lh3o463f2gXUaTw+vSlo8wqik5zSt9gp2HO8CHcCXMVksJy103C0khc3xAZ3WuK9sOnJNq2kOVP5dnGPdbt7ySLnCaIj+T37SvXEN9Zn+D
+ 904dCtv/
+ G7YbNhsNGJ7hy9E+eu1CEZ+kY5hK+ARo2iNLhDRvHtMmarG8bHGI0ghmstK7q8aDSEFBwJzmeQp+vXQIHuF0VyRxN3G6TBCpnHtWY+B6NIWz1tB9n1XtSF1aVIgdp7MNiD4htajvwFaqLXe9g71TUAshXdaaUVnJOWiaiia//QaOIeyV+iruNtDOP4x1FKekhWVBSFzbJTih/zOFq3ovbEH8ReqNn3MHNQi7K3jeH+ge4c3ABuHHzCbmh6qrAZlTAGyS2lCdz8SZRLyqGOQN6bLSEpx5KbPYCevKTU9RBwLo+KaSBiISk5oBCMoO2no2np9bQJCdWrMHhpsDTOCfELMI37AQgGKBzm0rY
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,44 +145,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:11:19PM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 05:41:16PM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Jun 29, 2026 at 12:01:02PM -0400, Gregory Price wrote:
-> > > On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
-> > > > Update the file comment to clarify that both file-backed and anonymous
-> > > > interval trees are provided, referencing the relevant data types for
-> > > > clarity.
-> > > >
-> > >
-> > > Isn't this self-evident by nature of the function definitions?
-> > > (one takes a vm_area_struct, the other takes an anon_vma_chain)
-> >
-> > Well you see you're already hitting up on issues there, they both take an
-> > rb_root_cached and the vma_*() ones do not instantly scream 'file-backed' do
-> > they? As VMAs are obviously used for buth anon and file-backed...
-> >
-> > But later patches fix this stuff :)
-> >
-> > And I feel it's hard visually to see where one set of definitions end and
-> > another begins, which was really the motive for this, as trivial as it is!
-> >
->
-> Fair enough, I scanned the rest initially but trying to wrap my head
-> around everything as i go through one by one.  Generally this really
-> screams "fix the apis" not "comment the bad ones" - but i suppose that's
-> the whole point here.
+On 6/29/26 19:22, Andrew Morton wrote:
+> On Mon, 29 Jun 2026 15:49:48 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+> 
+>> In general, there is no good reason to do anything special when clearing
+>> non-present PTEs.
+>>
+>> In theory, HW that does have to invalidate TLBs for non-present PTEs could
+>> benefit from a "full" parameter, but fortunately
+>> pte_clear_not_present_full() is not wired up anymore ... and there would
+>> have to be something very convincing for us to care about that to re-add
+>> it.
+>>
+>> So, let's just use pte_clear() directly now. To avoid the compiler
+>> complaining on some configs about unused "addr" parameter, silence that
+>> here.
+> 
+> Wait, which configs do that?
+> 
+>> @@ -1022,8 +1007,10 @@ static inline void pte_clear_not_present_full(struct mm_struct *mm,
+>>  static inline void clear_not_present_full_ptes(struct mm_struct *mm,
+>>  		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
+>>  {
+>> +	(void)addr;
+>> +
+> 
+> We heavily rely on this warning not happening.
+> 
+> eg, one of thousands:
+> 
+> static inline bool page_range_contiguous(const struct page *page,
+> 		unsigned long nr_pages)
+> {
+> 	return true;
+> }
+> 
+> So... what's happening here?
 
-Yeah intent is to eventually completely remove the anon stuff from here at least
-:)
+"nr_pages" are not modified in the function, so the compile does not complain.
+See below.
 
-And Pedro I think is looking at the file rmap so we'll get there :)
 
->
-> It's definitely an improvement either way.
->
-> Reviewed-by: Gregory Price <gourry@gourry.net>
->
-> ~Gregory
+A private build bot barked at me after v1 for
 
-Cheers, Lorenzo
+	arm-linux-gnueabi-gcc
+	openrisc-allnoconfig
+	um-allmodconfig
+
+For example:
+
+https://lore.kernel.org/all/202606121420.Wke8Ipgx-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/kasan.h:38,
+                    from include/linux/slab.h:264,
+                    from lib/test_bitops.c:12:
+   include/linux/pgtable.h: In function 'clear_not_present_full_ptes':
+>> include/linux/pgtable.h:974:31: error: parameter 'addr' set but not used
+[-Werror=unused-but-set-parameter=]
+     974 |                 unsigned long addr, pte_t *ptep, unsigned int nr, int
+full)
+         |                 ~~~~~~~~~~~~~~^~~~
+   cc1: all warnings being treated as errors
+
+
+The problem is that addr is updated (written) in the function but never read.
+This becomes visible once pte_clear() is a macro instead of a function.
+
+	arch/arm/include/asm/pgtable.h:#define pte_clear(mm,addr,ptep)
+set_pte_ext(ptep, __pte(0), 0)
+
+
+"(void) addr" silences bots. An alternative would be to find all such macros and
+convert them into (assuming inline function is non-trivial)
+
+#define pte_clear(mm,addr,ptep)  ((void)addr, set_pte_ext(ptep, __pte(0), 0))
+
+Something I wanted to avoid for this simple patch here that just removes one
+function indirection.
+
+-- 
+Cheers,
+
+David
 
