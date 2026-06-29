@@ -4,97 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D8DAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419F5C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:48:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1B8F56B008A; Mon, 29 Jun 2026 03:40:40 -0400 (EDT)
+	id CBD216B0005; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 169FD6B0092; Mon, 29 Jun 2026 03:40:40 -0400 (EDT)
+	id C6E016B0088; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05A876B0096; Mon, 29 Jun 2026 03:40:40 -0400 (EDT)
+	id B83E56B008A; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D0ECE6B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:40:39 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 900CC6B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 501D7A05F0
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:40:39 +0000 (UTC)
-X-FDA: 84932152998.06.4241050
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8BBEDC0004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:40:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JmHQL8lE;
-	spf=pass (imf22.hostedemail.com: domain of hverkuil+cisco@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hverkuil+cisco@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0039120593
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:48:29 +0000 (UTC)
+X-FDA: 84932172738.06.3889068
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0136C20002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:48:27 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rql5VEcf;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782718837;
-	b=KIL6el1ApEeSAwwlaBuD4jdgKIe5SnzwaIMc25dhcXodLX0iYoX08TC7guQpvEIZuIdEF7
-	y+YkvfIadBtrw+ln3DYc/osfTLIFB48dRGUbyPvb4/otp/ll0CdIePNEDnz26EemRukqsg
-	jrJCfmtiOBJ9nCaKasgPf4Sb+LysBV8=
+	t=1782719308;
+	b=02BdDr91m+5Zt0oTZjvIqz/aChzONzORqOuPR0XCdcHssEaU5LtnKPxNUy1ne+4NRuslCK
+	vutvarzFNM9qVeLrnOWCL+nDsI1uYNvN/3HkPz80YJoYu6XSqTm5bUs0haklYCJ00vELWF
+	3NhRwhtFRjam41pLZ4ExGF9D2QuYmVI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782718837;
+	s=arc-20220608; t=1782719308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WgIRlcejZoj2vu7HrtjrPtuhxXds25sfbR6cc/Z3oZM=;
-	b=ioi+Ee3FumUevv+ay0woPP1xeO40xzpJUX8U7MA10BRB8HHFCVn5drmfypffTKvy0l88lq
-	ylwhTn7vdvn/wnYqu3IPrDOPyuDWqQ9D30I/jKSwdx3pGwDrptfLmfSrcV5TxHoZutOfmU
-	HlfYEoH4T97muLvkYFePx5mAUxTegKg=
+	bh=xGFa9gooeOspYp4vl0A+wPqxGnfwbnKJ6LWOLsX6z/o=;
+	b=ohjQ9WvAxQ4P97a6qGlFM5yB8/BFjzufQSceYZ5KMnO+WsloHOfmtMqciyTbNBTNyP0rQD
+	40Hlb80EJVhZ/KoxhSZBI5KnMJWt/ES6Lim7hdpf8lnFNXGJk4j02XrTVbsdHLuz/HjoVO
+	yILqfmeenTL6B0kwJWgO6bsQQC4zgCc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JmHQL8lE;
-	spf=pass (imf22.hostedemail.com: domain of hverkuil+cisco@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=hverkuil+cisco@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0A2B42DEA;
-	Mon, 29 Jun 2026 07:40:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7FD1F000E9;
-	Mon, 29 Jun 2026 07:40:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782718836;
-	bh=WgIRlcejZoj2vu7HrtjrPtuhxXds25sfbR6cc/Z3oZM=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=JmHQL8lE9+PyPwTcD5p+IiQj7vBq5CdTbQo2NSAJonNiW8tzZXju3VE3viSbOi/Xe
-	 JYmVavc4AmKQJvVtMNuC2TV+UU1uVsyR07xu/sjuauulxWjhnPjfmhHMHLqyJIC29e
-	 7lGap7OLcO0L4xXy9+7E9Le12gWMZesIHTPtdiSsL2MY6OcWRAht+0B8Rh+ypIKUBt
-	 qpNyNbyKN5DFkB84ieGPYkldqWilITr3giSQsKXs6lhHTMw8vMdlNU9Jqh17IffV0E
-	 G/VeVpPc/LFlr4kpGRj8TuQ1Cwj+S7Sv8MELoIcnMrGn0+7vzkWtMF8/SN/MqsUpw8
-	 3XABLFRBgmBxA==
-Message-ID: <91381a8b-d562-4363-ac52-470c1ca53d80@kernel.org>
-Date: Mon, 29 Jun 2026 09:40:30 +0200
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Rql5VEcf;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782719304;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xGFa9gooeOspYp4vl0A+wPqxGnfwbnKJ6LWOLsX6z/o=;
+	b=Rql5VEcfNlXPZKFLS7y5qlk8EU6IZxaJbezHUrEyFyoHcx4/+RH5ALnqLEtQaRrosJUh6V
+	BUq7TMwlCe6PqgxaxGQgzR9vWrUGXjjgzDOCu2JvphUiefbDAjbSVDH2YOibNL+UhyRAsZ
+	46K/CszOdo5gTI0MkiYa172hVlOhyMI=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	dev.jain@arm.com
+Cc: linmiaohe@huawei.com,
+	muchun.song@linux.dev,
+	osalvador@suse.de,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	riel@surriel.com,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	kas@kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	rcampbell@nvidia.com,
+	apopple@nvidia.com,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	rakie.kim@sk.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	mel@csn.ul.ie,
+	nao.horiguchi@gmail.com,
+	ak@linux.intel.com,
+	j-nomura@ce.jp.nec.com,
+	pfalcato@suse.de,
+	dave.hansen@intel.com,
+	tglx@kernel.org,
+	jpoimboe@kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+Date: Mon, 29 Jun 2026 15:48:02 +0800
+Message-Id: <20260629074802.42727-1-lance.yang@linux.dev>
+In-Reply-To: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
+References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: Re: WARNING in usb_free_urb
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Michal Pecio <michal.pecio@gmail.com>
-Cc: sanan.hasanou@gmail.com, vbabka@suse.cz, akpm@linux-foundation.org,
- cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzkaller@googlegroups.com, contact@pgazz.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- Dinghao Liu <dinghao.liu@zju.edu.cn>
-References: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
- <85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
- <20260629092033.4a83e91b.michal.pecio@gmail.com>
- <b50be148-f7e4-4c11-9893-54d4278b2e32@kernel.org>
-Content-Language: en-US, nl
-In-Reply-To: <b50be148-f7e4-4c11-9893-54d4278b2e32@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: newjzbmy39zpn7j4wziz3ys59xpikfjf
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8BBEDC0004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782718837-14917
-X-HE-Meta: U2FsdGVkX18lbSEF7rvSkp7yAIP5qhxQeCvWOLUYOO2e1dPyf3IpLWTFNrnAxahajQil8D/TBFNwHRpUSxw+IJRvQHQ1oz55LiY9hXvA+9oXnbC8lOZOIAC2yWzLeqlIURML/Lb3zdrOPY/Hp2KnFO+YkwVVcmQuheb8zIF1QHvKcoI1gYqAJaWZhnYWbiUQV6CRVU1HPOk6APAQSLRegJYtThcrr4ejMJwaSBBZu+ugCaI8+76Dq/F0n8xf2MqqLIVCDu4CoS3GV9U5MXWpdjHOQhdbGi7KrHjjfoNPkLH0pM3HHAq1U8SnOs1F1UVpyqarKdBh3GAe0HYOh9twDwCbcTlw/fxRviiphaXxGnpeatGtPyxRg9nRoa9x2m/L+W2XHY/7JlbAgL8gnMaO3iulJ3wFSA3WUCJtWpIH9O0y2shBhtZHNeNJHgt2FC6+eTHw5UGYyoDvLxrC3wy/Ju+KPtj9FJARhVg9xHXqjfhKhIclFmPpnJ72fwdeU4YB8buxBZwsajbHrMt/qQItyNWAvW9pdbpUlnlDcFve/tS1t1ozhyvzsj3xXMCXSoIvD6qCOh7/+dUdwSbCBrrskdaoEf6jOqDqFRsGSmpVB7f4ENZfrE+vbu6Mi5UaKpw2m5nm8uBM8UrpLXI5Tm/u7cNNME5+4gNmfSIACwV9a4h4e57ZiFOpX9WU7uhyjJBrh1wFL6CdroRC9pWc97iTVhl2MgQm4PHjsF7QM3UyMNcG16tR9SM9jmTA3PY+apDj4s53atSZVdtOvh85sOQZmWxhfvik+3KK5tAEVw81kRgaUVAjuZIRXQd0Efaouzdr4CwkKAEENh8FFsoxG944H7F7gGYBcBle86202uLG8tXANC1UXTApnvUU7zqHYH+v25d0miSQ8xgWWnJGG2t+LtHrkCvLL/5V06p4PTo8RKpfz80bpJ4UBHKBGtMhGlzg16pn0V+2GDhl9Ccjt2W
- vtXhjz09
- 0d7CXygwU/4WHDQy8tHLDW5mJrY1uNErAx++/UqqR1pF9S6nCq1pO0tqqojt7/1B7+m7Vi4GhJTcB9udZaInVufj8e4gX256Yp8tYe2Av3RFIrEl473Rx59yL/5XAADvmCRC+sW9ILNZXKIJ/GoTotzrNmmsyT44EHNd4nGNM1YJotxOB1f0ymzu7AqydvpWXj9Dsh9JAN4iCf61H/aWtzeRQ+0HPV9vFp/PPY9UmJW1oHxgoae446eIUTprAhSACJMpf60R+jFzNJJ3TBOOlqly95HMSDfqJOhwlGdqXQUQVBqNLiBa+TvD1Gzfg9D8gwp1cTKvzhsgkgsb4MW62OkWZZ7gbPw37LX6Pwe/2c9ZN/JQMyLUASzC7kvDq+1gmk6QV4nUGjY7VKLI+QfiSyRLuLtCLgxq7yoH6+4ruKA1mkWPkTHDjYoCxQ2COz3jtSucDYtMZrvS+1HntbUhiKdJ7ZqlcW5jdmE0P3QhXjE9N/wN41Z7TnQouIGeCSDL+ftZ2
+X-Stat-Signature: ywe9zu4ca4uoi47krzsgtpj61z67xh5b
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0136C20002
+X-HE-Tag: 1782719307-995855
+X-HE-Meta: U2FsdGVkX19govrqQ+ZF+swmNE2TwaqRytDiiPzP+bBOuxP1dm4VOCw0Cot6yriN4zaYEmbf89A+azEaDAFpqQer01D3k7k4IzMgJwmHzYg9gsmoM2eoLp86bkd4WUq+Xb+aq6v8g5m2VVIazwjyB/bwlFHlgGBLgFE29H7KP4Dr6Mp0KsSC8oxTkYOqIi8sckbo0BCAK7BEU39TPUqGgTrgFv61lo3IBRWTdULmqr5yyW+WHFZQDJ/HEXVdY3x0NQaomeAo699XHIoolr44QB90py2y36/73xobOg3V1oukwvZPK3GNdB0jA1lejU2uxsU2OEEd2wtBJlMa4xUuOCUSevjuD2FdYXa4qf3L9lcUMxbbQ0WYQt2U0/669HEx1EQeM/KAkbuAbFcwmxImu6i7eagB7Bb48slX6GLMnMZRbKrjTeOLT2o1rbUclEf8F8Z/eFl8EHwpyE3tQfTPzbS8YI6tQRUnjyoD0uVdnRmvXHBWUpqo8a/wuDeCXjXSDsPD/lH4qDnp+jjeWYA4FKQA9Xq7NIjbnjY0nb6oFNL2aIylhdexMFfGW/EnerlD9oFyg09FUvjRypbPEjXDhKnwZ7KH3dCTK0I/K6TpxC3TPE3lWQKu96ctuRIkFLgs+NJNZTJqJrJfQ325rPkxL3nV+aE2G5yg4ktZwh6egG2L8dr8K5VHUtjojCN+hnn1xMvnerkd4gjbL4J0Bbv3L8BHN3PQ1VS79Bsp4O8L0K5Y4qy7RgwAOC3svHpMr1FeFBgZqOCGeR9dXO46iyktG3gDcN3tOOPro4CZMzGxIhGp811vR2xWeFNqyC9LpCr0Z79vSa0TGZay8SyMNWtJXxEHYjXQQ1RrI9V6xoX3lwgO4+hLkzoEWlBLL66GpLH2ugLLfuuDKjkkY3zjeOWHe60ACYZLaNdxMepFZE173sOevKVLDckJQz6ID2Jt/5jGxEsSGK3oj7bHlG8+MtS
+ PlhBUEq/
+ 3uUijpiVC4Ytml475CSCR5Ifp4yzY6aD2k9AFIjRHuBFAMAnBA397UJpu3AKN4HT0etWZdrCGomG16pa/6ND17fUq3b/7Zt2bzSTWYZLX0WxnxwPimmlKdIK9E09IJUFHbdsRHOp3RM6iVgZwdihhI03Ea0cVwe/8jvUg76CFFtqmE5a7gRdxYWdXWzwgEpK+6hHDi223WWgGM0hZQ87GYoDqmFfAaR74/v4JXVhwdjPZtp1JsDUG/7kZPKGPkFWsmUXZFDF2geqvhlSc3u9DeWh7Nys6NQQ5Glv4Spi/HeWC/buFSnX2uOd0GLdzk/FxOb2+4uFYNWe1afKsmhzWG+Dqa2F8nAjHg1y2DXHSRA4e9or2enpra68o0QVxmws/hS1lFhiQby1ZdhL+mOR7dS/8yaSvr9IKUDIOF5aGLyKBXsc/sj1FZ7hfkWIle1bEwTuEJwglhqB9bzU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,113 +121,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are a lot of lifetime issues in em28xx.
 
-This patch series should fix them:
-
-https://patchwork.linuxtv.org/project/linux-media/list/?series=26968
-
-If you can, then please test with this series and see if this issue
-still appears.
-
-Regards,
-
-	Hans
-
-On 29/06/2026 09:31, Vlastimil Babka (SUSE) wrote:
-> On 6/29/26 09:20, Michal Pecio wrote:
->> On Mon, 29 Jun 2026 08:27:48 +0200, Vlastimil Babka (SUSE) wrote:
->>> On 6/26/26 23:27, sanan.hasanou@gmail.com wrote:
->>>> Good day, dear maintainers,
+On Mon, Jun 29, 2026 at 09:25:48AM +0200, David Hildenbrand (Arm) wrote:
+>On 6/29/26 08:48, Dev Jain wrote:
+>> 
+>> 
+>> On 29/06/26 12:09 pm, David Hildenbrand (Arm) wrote:
+>>> On 6/28/26 07:44, Lance Yang wrote:
 >>>>
->>>> We found a bug using a modified version of syzkaller.  
+>>>> [...]
+>>>>
+>>>> Yes, that's what I had in mind :) thanks!
+>>>>
+>>>>
+>>>> Maybe worth spelling out the rule as well: 
+>>>>
+>>>> For arch helpers that use addr, huge_ptep_get() assumes addr is the
+>>>> address for the hugetlb entry ptep points to. arm64 already makes that
+>>>> assumption.
+>>>>
+>>>> Callers where addr may not be hugepage-aligned should use
+>>>> hugetlb_ptep_get() instead.
 >>>
->>> Subject says "usb_free_urb" but you only CC'd slab maintainers, where slab
->>> slab is most likely a victim here of e.g. double kfree() or a kfree() of
->>> otherwise broken pointer.
->>>
->>> Ccing USB and EM28XX maintainers. But they can feel free to ignore this per
->>> the next point.
->>>
->>>> Kernel Branch: 7.0-rc1  
->>>
->>> Why use such a version for fuzzing? rc1 will have many bugs that are
->>> already fixed in 7.0 final. And it's not even latest, 7.1 was
->>> released 2 weeks ago too.
->>
->> To be fair, em28xx had no changes since 2024 until 7.1-rc1, so the bug
->> must be present in various stable releases and likely in mainline too.
-> 
-> OK I didn't check that, but in general my comment stands.
-> 
->>>> WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317  
->>>
->>> A kfree() was attempted on a pointer that's neither from a slab page nor a
->>> large kmalloc page. Might be double free or corrupted.
->>>
->>>> Call Trace:
->>>>  <TASK>
->>>>  kfree+0xae/0x630 mm/slub.c:6437
->>>>  urb_destroy drivers/usb/core/urb.c:25 [inline]  
->>>
->>> static void urb_destroy(struct kref *kref)
->>> {
->>>         struct urb *urb = to_urb(kref);
->>>
->>>         if (urb->transfer_flags & URB_FREE_BUFFER)
->>>                 kfree(urb->transfer_buffer);  <--- this one
->>>
->>>         kfree(urb);
->>> }
->>>
->>>>  kref_put include/linux/kref.h:65 [inline]
->>>>  usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96  
->>>
->>> USB layer itself is likely also not the root cause.
->>>
->>>>  em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
->>>>  em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
->>>>  em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
->>>>  em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117  
->>>
->>> So it might be this driver doing something wrong?
->>
->> Yes, it is. 
-> 
-> Cool :)
-> 
->>         /* allocate urbs and transfer buffers */
->>         for (i = 0; i < usb_bufs->num_bufs; i++) {
->>                 urb = usb_alloc_urb(usb_bufs->num_packets, GFP_KERNEL);
->>                 if (!urb) {
->>                         em28xx_uninit_usb_xfer(dev, mode);
->>                         return -ENOMEM;
->>                 }
->>                 usb_bufs->urb[i] = urb;
->>
->>                 usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
->>                 if (!usb_bufs->buf[i]) {
->>                         for (i--; i >= 0; i--)
->>                                 kfree(usb_bufs->buf[i]);
->>
->>                         em28xx_uninit_usb_xfer(dev, mode);
->>                         return -ENOMEM;
->>                 }
->>
->>                 urb->transfer_flags = URB_FREE_BUFFER;
->>
->> If buf[i] allocation fails, all previous buffers are freed and then all
->> previous URBs are destroyed. But they already have the URB_FREE_BUFFER
->> flag set, which causes a double free as shown above.
->>
->> The free(buf[i]) loop should simply be removed. It was mistakenly added
->> by d571b592c6206, then a26efd1961a18 recognized the double free but
->> attempted to fix it only by changing the order of freeing. Sent from
->> .edu domain, so probably an automatic static analyzer fix...
->>
->> Regards,
->> Michal
-> 
-> 
+>>> Do we have any examples where code would do that? I would think that all code
+>>> must properly align addr ahead of times.
+>> 
+>> Sashiko notes other places:
+>> 
+>> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
+>
+>Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
+>from pagewalk code (where some users like pagemap need the actual address).
 
+Indeed ...
+
+>I think we have two options
+>
+>1) To prevent any (further) issues, make huge_ptep_get() always consume the
+>hstate, and let the arch code deal with aligning it. Invasive.
+
+Kinda lean toward option 1, even if it's more invasive. If we pass the
+hstate down, each arch can figure out the right addr from there.
+
+>2) Make the arch code handle aligning without the hstate.
+>
+>diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+>index 30772a909aea3..303a1b74796c9 100644
+>--- a/arch/arm64/mm/hugetlbpage.c
+>+++ b/arch/arm64/mm/hugetlbpage.c
+>@@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>                return orig_pte;
+> 
+>        ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+>+       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
+>+       orig_pte = __ptep_get(ptep);
+>+
+>        for (i = 0; i < ncontig; i++, ptep++) {
+>                pte_t pte = __ptep_get(ptep);
+> 
+>(nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
+>
+>IIUC, that's similar to what huge_ptep_get() does on ppc.
+>
+>
+>static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>{
+>	if (ptep_is_8m_pmdp(mm, addr, ptep))
+>		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
+>	return ptep_get(ptep);
+>}
+>
+>I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
+>entries.
+
+AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
+doesn't really care about addr there. Looks mostly arm64-specific ... 
+
+>
+>
+>Interestingly, huge_pte_clear() / huge_ptep_get_and_clear() and friends would be all
+>wrong when the wrong address is passed. But that code really is called from hugetlb.c
+>where we should take better care of that. (e.g., partially zapping a hugetlb page is not
+>possible)
+>
+>-- 
+>Cheers,
+>
+>David
+>
 
