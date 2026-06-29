@@ -4,118 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C07DBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:23:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C68C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:29:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3ACA6B00F4; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
+	id 51A4C6B008A; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A11E86B00F6; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
+	id 4F15A6B0093; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94E026B00F8; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
+	id 3E29D6B00F6; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60B736B00F4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0F168CAA4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:58 +0000 (UTC)
-X-FDA: 84933771636.21.83FAB18
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D78BB40004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:56 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=hsKO2BAK;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DBC06B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E8A040209
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:29:27 +0000 (UTC)
+X-FDA: 84933787974.26.CDA843A
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A83BAA0004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:29:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WZ2n3yfQ;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782757377;
-	b=YbICSOpf6FjwzsVOdTJDAxKkTPCxvuP1/lSZ1GOY3IKQkjL+HxOOCp/mxIhUdOHwPb92Oa
-	Uyc9xDTkfhv2lrnxAha4u0ydyYweqAz2jVgbUme7Nu7LTiaB752j3sIJkjE20FcQZgSe2H
-	IZ0zHUhdZA0fr/E1lvBKccFOze6NJcI=
+	t=1782757765;
+	b=W64oKYjR6w6gmnZkwVCbtj/AWOTeXwiagz1ZPDD1lcFsp7iWyzX+ekf85gessdkCWtY0Hf
+	4wBQuWqw9ZnWg0KXrT8+xca7dXfXwQkLEpGhGmxEQu3UktXhb9wOG67sjvBNlmjlUZRXTk
+	TZdGuHY3MRWkJJzpjs2W5EYoyjbAR6k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782757377;
+	s=arc-20220608; t=1782757765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
-	b=cTe+mryQVoczOYvA8WwsSWPUdZmIxBYiJCM/jWUeoASKAcegL1STkfntFMa9A1eSfamFOL
-	IwDPOf8GQthOfx1M2Y/haIp1/47fRm24kkDKu1RVL4tgmbuA1+neF2EuyLkVSCH1RYU4Eb
-	KgiHC8j4+euYxqVDl7qjsOZB6qsTbzI=
+	bh=wTW0XC8dEWZiwseOxkoyBChQncFjhrJXjY1B/hyy8Y0=;
+	b=DFb9ETJbv/RTmf/vo23feNButNOnRRaqgg/XeGXJNffS30p7atAVy07Jth3iqxv5l6WUa5
+	yu25AMysHxq+zwaSZbpH06t60Mc5BBaRaw5d7WVqDx1jdXChMDDmHQAeJuzdPdjmkHC1uB
+	1yz0jEEu/DkM8qkfpw09zvCgn6yk/vM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=hsKO2BAK;
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e501244f5so72164285a.1
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:22:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782757376; x=1783362176; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
-        b=hsKO2BAKm/DzrODdLZhtJX/AoD1o9RXBwyWIUE8MkbeD0TYhDplD+9PlrGtpY8oDGo
-         JD1FbddkUtcx96y0PN9Z/diBTIYnGDGpaNne2ygQBpOcZcGzqGNbnEe+RTmUuev51pjk
-         /Tt111PetU60A723y5JFWCTkwh9HqSeu8KfLM71/ZoXQGm1tCo4YOPzEypNHmXFBKPvY
-         /oppKqYKKOwXE6wpwXPP2KgQRJCWAkJ/z9NwL9P1E89Fo4XNVylPIca9iPYU49Pi46qh
-         u7O34GM2z2AmCNwv4hPrTJOfLW69pHHPVjmKN6KEMJbO0DaNvLeVbbs9+9mEzKHKxSwy
-         GogQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782757376; x=1783362176;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
-        b=FOV8QcPiXP4h3WuEdBOtrQBfrcgiDG3bPvJvazRj90JxZDvLulg+EyWD9Ia2PkVYiW
-         ghTMLaIJMKGqTlGUT+8XJPn5wR6sstYK0asjo6pSv+eUu4llSbjxQ3lBLvFgMeCbeSxG
-         Q4pm25rAEeeF7996rQ5hkIKms1c9PbhmEjlJUauVLvuYvq59I+RL4v3fW+Cxyzh0ZGE3
-         Kz5BqyxUdAe1mIX1Yqz+rqE9etEfXxK1Vv9nH2BrF+SRTI/VZ9/XDJRYc2Lnll7N7GfJ
-         LkSMW/+XO65fvaMWU30O+OJexXv+wSwO/Vkyep/rGShsXv1Ud3yv6yf92l3wfMOjaZEM
-         kUXA==
-X-Forwarded-Encrypted: i=1; AHgh+RreP/sZkyxBJJvb7RuK+R/LkVTCh5NlwZOaRc4hltAsFTAoM/pnMsjqGwI7i2SnAA/AB6NzE1DEzA==@kvack.org
-X-Gm-Message-State: AOJu0Yyw57beb9Qks+t7CK3gcD9DUCLtc8wjiALYB81wHj1t7jUkYNnY
-	wQCDJkW34kDCFQ21n33v2a1HTfU8miivgg2TEAp1mA/3o51mhDx21Ob1kQw0urSr+RY=
-X-Gm-Gg: AfdE7cmPFASvGhmpETW7EWo3KgQ4RSVGAVTNyabg9oErEvZYdubrbNXf8gM2GffdazB
-	JzN5sh7wBDmal7bV4S9xI2pspBJofCot3Z41jmEOkFyXsVxUz8F4EujbOECpFEzD79oQzlK0CF+
-	61VvIX6Ju8PE0I4RfYKtLfErRtf5L9Nqd5nAdevYoTJKW6yARCIvz/v047OYJAeAmy1gdEArxHw
-	x6EJf++sMjXk2Q9EOlpJBmyUP1KXaWtvO1wWZDw0Gb9q7fLpShPH4k1lQ8o3AeJ6hloVOuZjNTU
-	dKnV3iPZWep0vjsLWh8+ebYOL0Kiqo0Y8n986k4iceg+PErkYjUSMjz+lBlja9Z3skII/vBQHJN
-	AUkCKOnRhw3iwyNBT4Fv87ESgUIC4DouH99d80u0znmc4F9LRzAtJO+bvkNW7ddjmBjTgnArdS/
-	KmGR79nh8/03A=
-X-Received: by 2002:a0c:e70f:0:b0:8ce:ade5:e8fd with SMTP id 6a1803df08f44-8f1bbec32b1mr5223426d6.25.1782757375699;
-        Mon, 29 Jun 2026 11:22:55 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a328fed8sm4510276d6.16.2026.06.29.11.22.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 11:22:55 -0700 (PDT)
-Date: Mon, 29 Jun 2026 14:22:54 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <akK3_qUnEPMNs37M@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=WZ2n3yfQ;
+	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Mon, 29 Jun 2026 11:28:45 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782757760;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wTW0XC8dEWZiwseOxkoyBChQncFjhrJXjY1B/hyy8Y0=;
+	b=WZ2n3yfQsB7DAqunz7QrD8IzF/yt614EZi2fR064jPUt4e9EAcc3D0fbB5foVguLFClapW
+	wDomh3rSE0EY0PDDI765Q6N5DIWs/kdrEOlBAl9NZeOvFRIQxvIhXSpUycwmJs9yKBWP8O
+	Q47xDrZ41Cy1506mCfNsXUPNbhntU0I=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Usama Arif <usama.arif@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, linux-mm@kvack.org, tj@kernel.org, 
+	mkoutny@suse.com, roman.gushchin@linux.dev, liam@infradead.org, 
+	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, 
+	surenb@google.com, vbabka@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
+ into vmpressure-v1.c
+Message-ID: <akK5QOLJMElZz5iw@linux.dev>
+References: <20260629130042.2649505-1-usama.arif@linux.dev>
+ <20260629130042.2649505-3-usama.arif@linux.dev>
+ <akKhzR8uHh-wzrx2@cmpxchg.org>
+ <b84a497d-9159-4967-b355-44913a3865cf@linux.dev>
+ <akK1lm7mVUXEmIZm@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: D78BB40004
+In-Reply-To: <akK1lm7mVUXEmIZm@cmpxchg.org>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: q1yfp8yqpsuxitgsc9fjwh6gx7cr4axn
 X-Rspam-User: 
-X-Stat-Signature: upjfq1mbhb7aghq9k9htkkjfk13scpgs
-X-HE-Tag: 1782757376-11873
-X-HE-Meta: U2FsdGVkX1+HzB7H/ro/4k3zdVe4ZlTdz0yV1ceaTG/xMpbMecxLUsb/vTOjsmVB/55FmqFHfJPzyilSPa8HB/GroBXOtTdrL8wyUoJsTmskspJGQ1W2paoe2P63toLHh0MJf0mV0wRy3bpw3e0Lptp0zE70w+a5qCqDD9p/8Lr/fBemkRbVh4kI0PwVWd7PW5/yeL/ZOMCyMN1pYIQE2M3Nf2mNY95nMDegAqDHinSNidy3oUEthOxWBO43SMR2WDroyaczXwtcjLgE3xh79YG2SRNYIxvG63PAMJVub8c27iTeFYh0anhw7z3Q0ayCJjVnpQywZsG/qEVr51uKrVWjreSMlqsz+rBNIDaCw64FFLcaJfa9F36PTTQGYwyG1wlQcv6OLUuLUmtX5xJ3O6cSDevbBGYFklTN+96fjALR9ReMjF+0qWSuW+8Apn5b3QK4ZAEAklnEKYKPugMtsnm240jaNCkqeEZkcQ81F+MHnP8hIMYHribtSP42i+Xvo85crF9u34hDNCfHhggw1CQJ/n5d8gQrlkM7uA3mkgRbjv7x1P2hjJypUf0I/c+NegzQVvuwiJYNz1EJ5f85IL6YOOhkQZ+SzNJq1rKTYzbTynqb9YrXl4vzKoGitdnP7ObD6I3OCSs2s6pdFVAMvbaqJExr8XeSmKE48HJAAsC+OtnCA8bx+ooHvYkRih013sf9/olhfzyUU2dqSkX982DIBEH9SqndRoPU3PxakieS/YbT86fwy3JS/7MGBkdPVaZ/C3oSx1DA3PKZUcqJbH3jLba7rG1h7aBXyvNO28T2hqwJEHPaeEzzFFeUPGLTxAgLv4ENfnrTs/d9dfnqqfu8kLo/j+co5PK/WgviN47Zczq5LlQh6dKWmT502xERt3pr9ojngcZ3w8C2wnl2YlkCmFOwsCLqZw7Lkb52XIUJNor0utmvVUtXq4BgkZ2cGWW3HZ+DcNeb6/3nCmp
- qAiloXs2
- hbxJwzuDqouN0sndrLEH2HsBJhxnVBSidkU1cfTyny3n9QCqbCZeI0R+5mArrp26fXfW6FPdDT9kvrAg/jrzHLUepBkfmnk10tRoWnHvPMRoHLNX7GC02DetV2QorWW7Gi9naIDrwIpTzetTy1FMSdrFHvicKYSKrZfzWgzZ3bsnrRfPc9vBUpfArRyKawesPwueyDzSiXledI7on5f6g69rxXC5TFz2mY2XEsZBsK+95aw92HWtTiMZhBx+ywk7h/JhmIJ38yz7RPnmhY+vEwG5MRChhi73Pil5SLVaWyFkooE39KsTR2tIAbZwfqwoZW+F+IUGQxU5TskOwKeWKW38UR1RWJPGcFFQ8uym5cxRT9aUesD7imChHUJCitgWkb3eg09ssOIxNcTvnn4I/d1SmG4/WrKwGlHhZTGikbPVq2QKcpywf9Yks81xFhDjWyB+hU3QWBu7IJ+oAqu583nvYFlQBPY4bx6g3qHX0iEVmkeWkHREc71FI8Nknh9p51B10/1wJa/ETqpghQ9gp8nA540aOIGkM97Qvf+2TCe+u0xY9dxOmxN9wTl6dke/ciotTlmf3+Uisuo8rOMZrMB6RpQ==
+X-Rspamd-Queue-Id: A83BAA0004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782757763-771106
+X-HE-Meta: U2FsdGVkX19WQf5xhHtZpAzSfKsa5efoOcp/4QF9+4hZLW3hsj8hjx7vitxaQdabEaXOYZRaQHhO0NE0+bbOQqMnwuG4wiMtmMubV4/8L4a87sdWvFnRoaA+R173xM1i3XXJg7nzDjcW5XU/YB0nxuM0vz3pvlX1O1dFoXL97xg74aQTeyMiUvc1Ub57BKsT1UY9kPXzX0IRhKpVuqXlfWtYEfk3HBTuaFc+mROJzEP/TZz5ffT9M141MOp5ulVnolnUodFj5gQKibvcFWrfOqWCm6OtTyNiEuafsCmT8R0bHfRD9PU2eYbOvNtWpME2RaQbDTVFSmiMWXo4cjdCq3UzHjNAhy4o1vLLdd7Ibu6Pxgs24BUiRH6BjmBNxNYxHVVGj0IOdNHVm3zdSt4fOPHuoWnL+Bp6MUWXyHDBsIOaPlbnyVhzTQoP9eqBgkreQT0HL76/fPDdpPieLKRSX9gNGcAkNKFaJ7+PGP8ZLfXEas3vl9gsLSxyZpcO5tJXfFXRERAlqFv4nbF/4+DtGd7VoRty1jtkDFdB6cZmVUYNCxAgqecRCCy4qv6LB4RiA7bXfkUf4jzvOYezxGixuL+Al/jNK/+Fo8/4rIZkUAJsDpiigA5k6WxRd62Hsy5QiQJGKToyWmfIaHgqS2yC3zMZS59SOSv+cC1p7P48OhaulqJngXQeCHG+9FFROPn/KKS7R8zCKytsmtpNOaGSRWbV+V1AnA43SgIE7BNGSYC7WXqvd+Rs96Hu9dboVXnF6n7TlxpXdqCagaxp0pE3gRazaoX+FJZwfOYrfTO6E642xtzvHW9p8GQGML9UN2L1B40WTJMMPRzH3XcmqdbZlSIRsxNu107r/97a/h+0vpzaeijPaKbigr6eBhFcLt+oXqhTt4Ote5+VfzC0oEkM3iItDRk0G7mW83wPKlKeFBsbokLVbLlFilKYVwl6+3QTg654SpzOe0gB/oR27mY
+ tYNqY1bi
+ BvEq0GrYpnOwv0S4wSWAPFN19gQsuGkQH5GCt/eeb1su0zR7zYuGAoD5eck1X0HL4tNl3uY1FNZursZBGpmyy6xH9gajCl8Lluwa8QDtKEDCutLveHwN3EY0p6inc0WXzZpY6QVvTl4oQJjNMs0iYxJF56IFlL2+2CAW9rMuibWrZO4l3CKp9WA8/9b3bexZ0DvBUOxsxIWyeiqf6E1RmAnhyzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,58 +94,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:59:41PM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 12:33:37PM -0400, Johannes Weiner wrote:
-> > Neha reports that mapped shmem aren't considered for NUMA balancing,
-> > noting convergence problems and bandwidth bottlenecking for cachelib
-> > based workloads on tiered memory systems.
+On Mon, Jun 29, 2026 at 02:12:38PM -0400, Johannes Weiner wrote:
+> On Mon, Jun 29, 2026 at 06:23:58PM +0100, Usama Arif wrote:
 > > 
-> > Looking at the code and going through the git history, this doesn't
-> > actually seem intentional:
 > > 
-> > Commit fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault
-> > VMAs") added a vma_policy_mof() gate to task_numa_work() so VMAs whose
-> > policy lacks MPOL_F_MOF are skipped from NUMA balancing scans. The
-> > motivation was a real usecase: Oracle was pinning shared segments with
-> > mbind(MPOL_BIND) so trapping faults was both expensive and pointless.
+> > On 29/06/2026 17:48, Johannes Weiner wrote:
+> > > On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif wrote:
+> > >> @@ -101,7 +101,7 @@ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+> > >>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+> > >>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+> > >>  obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+> > >> -obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+> > >> +obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o vmpressure-v1.o
+> > > 
+> > > Might as well move the interface part to memcontrol-v1.c instead of
+> > > creating a new file.
+> > > 
 > > 
-> > The handling of NULL from vm_ops->get_policy, however, treated "user
-> > explicitly opted out" the same as "user never specified anything." For
-> > VMAs whose shared policy is absent - the common case for shmem - the
-> > scan was disabled too.
-> > 
-> > This issue is old. It probably hurts less in conventional NUMA. But it's
-> > very noticable on tiered systems, where entire tmpfs workingsets can get
-> > stuck on lower-bandwidth memory.
-> > 
+> > I think it would make it easier once we move cgroup v2 off of
+> > vmpressure. Then we can rename vmpressure-v1.c to just vmpressure.c
+> > and gate it to CONFIG_MEMCG_V1. The other option would be everything
+> > living in memcontrol-v1.c?
 > 
-> Eugh.
+> Hm? I just mean move whatever you move into that new vmpressure-v1.c
+> into memcontrol-v1.c instead.
 > 
-> Demotions don't care about mempolicy, so opting shmem out of NUMA
-> balancing and mbind'ing on a tiered system is just full sadness.
-
-Right, mbinding in tiered mode is a whole other ball of wax. I'm just
-trying to make the default case work ;-)
-
-> This is all just more evidence that demotion needs to be completely
-> redone, it's creating a mess of undefined behavior for memory placement.
-
-No argument from me.
-
-> > Fix this by having vma_policy_mof() use __get_vma_policy() directly, and
-> > thereby handle the fallback to task policy (-> preferred_node_policy()
-> > has MPOL_F_MOF per default). Every other consumer of vm_ops->get_policy
-> > already handles it this way, the scan-eligibility check was the outlier.
-> > 
-> > This preserves Mel's intended fix: don't scan stuff the user explicitly
-> > pinned. But allow default policy vmas to participate in balancing.
-> > 
-> > Reported-by: Neha Gholkar <nehagholkar@gmail.com>
-> > Tested-by: Neha Gholkar <nehagholkar@gmail.com>
-> > Fixes: fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault VMAs")
-> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+> > I think its nice to keep it separate as
+> > memcontrol-v1.c is already 2K+ lines and this is standalone feature
+> > that can sit in a separate file.
 > 
-> Reviewed-by: Gregory Price <gourry@gourry.net>
+> It's all deprecated code with no active development. Containing it and
+> making it easy to see the footprint of the cgroup1 option is the
+> higher priority, more than maintaining neat component separation.
+> 
+> No need to work it naturally into the file either - decls/variables up
+> top, functions somewhere further down etc. Just paste it into one
+> contiguous vmpressure block under memcg1_oom_finish(). That's how that
+> file is already structured with the other components in there.
 
-Thanks! Sorry for making you feel bad.
+Yup, this makes sense.
 
