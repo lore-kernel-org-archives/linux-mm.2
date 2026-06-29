@@ -4,119 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A780EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC00DC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:26:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B5066B0005; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
+	id 798246B0005; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765F66B0088; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
+	id 7225D6B0088; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 67BB76B008A; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
+	id 5E9936B008A; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 45AD76B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 18EBB6B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
 Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B99401C5C5A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:20:41 +0000 (UTC)
-X-FDA: 84932102682.13.8924362
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8D9EC4000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:20:39 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K4dVghBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76D09405C1
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:26:07 +0000 (UTC)
+X-FDA: 84932116374.13.ECE6D4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id C4A8210000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:26:05 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782717639;
-	b=DKBcKZ21CF3xMf6I+09CwsBw51i4AVZkzCeIsMo923mV1/MuFK/1j3T9Hp3GnxEoSpgtnE
-	kFkb59KnOWI3v33GvozRph6xoackoFrU6gA4ezMDkGOWH0pFED/K6mnAUHJ13FOs7GGJjy
-	KXegcYowh+3g41/IdUVITNPEgFJ1VEQ=
+	t=1782717965;
+	b=7G2T57yFQCiH1BzTbJuLw8vCpM/EGBYRqORoBA4Nlsudz+gtKCh0S4y9GHjcT95jxEZION
+	QNVapNXmFJiCWqBwSM8HIBEUBRvFZoPptBQz6YvekvdmWKhEJyjMh7Z+TbV2u5SB/huirK
+	JpVmPfIP4hBtf0B9FCIY5edhPvnENXk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782717639;
+	s=arc-20220608; t=1782717965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
-	b=26olALOHlVpR/4qLiM8gt1JybBCGocQSbMB8mzDxTBxnfAKkKw1rQG5kL5vmSRb7Cl5TA1
-	pAeO6gxcO2iqOG+CJiEOsLFTErN7QnLyph/yAahI0JcuCvS5rQ0jIlse6pgPd7eKK87FT8
-	zgJu6G+3pDlzWcjg3/G8IrpZrOSw7R0=
+	 in-reply-to:in-reply-to:references:references;
+	bh=0t5WKgX7491nnO1TWw1NvgfhMDEnzDCwVnx65iBvCrk=;
+	b=2H7OTolCgwEJMWcLQljnUa1AaZ3yJtkbcxiYkjXOnd+Vv9uhBCI29zeRPX+e8pcbVWy4nG
+	ID7dz/lN8VE4A3b9yRntJV96Ax6DDJiMtm+hLl+ta8Uv/iy6H/skqxdMabNQG1pWlCL0FC
+	yq86rH3cwAntGZfHOxcvwreL8UUDuIE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=K4dVghBD;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-463f1165e16so3047317f8f.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:20:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782717638; x=1783322438; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
-        b=K4dVghBDkpdt6UQgs6RJdYlgFlxL2TPF3lYN7pQltPEupOR7CSHKWeaytfSMyo6ZLM
-         lK7e+EpFS6jZ2Dbaey8LXLtwjqMZLJ7c12PU4GiNa05gSmiRrDK89pvniqTyVZrL9erG
-         Pu4Qk6vYlI5C5KEc6g11Az73H9RYWaUcf102uKNV+rKxI5OYf2W2g2y9aRHYKr9k7XEn
-         0cgO6afh9cLTgMHMa1SI5xmWIR0DTcdAZzq0rTL5iFmQGRyB3MvKJkZO9kz0ykYtsQhP
-         1n6WfS/I56znODrnqb5DUkRWNp+A3fy+GLtjXbs0lhsKnzL5R+zaoJq3gWVnbsdgv3sL
-         6vFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782717638; x=1783322438;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
-        b=dIkPsmsS5bgnawMRgTsnFmLPW9jv9mMoY/7/aeM9gBngybvMrpwDhdhVkhMW2ubJAO
-         2zzMhfEKJseGDRTUt3aujpICupbx/AuC37KMkjbwBUzYb1fEkgpoQflyzNb4ePylq+9f
-         pS4alZC/cJ22jPviipyTcIZSQjnevfzCPAXeIU38xhW9P0EYhOE+Oeeq8mgph3nEeCoH
-         6vADDBYCm9yTynyr+scgWRo1tXomQEtzysQmDSmIj5Wjxk+rJB7VhlpJcWwNY+RvKffr
-         ckVjTYIYqJaG6yo29jQK3gNbnZyvnk5QD8wqpyfE886jQVPVvSPFHQO0w4ymKCDH+dNl
-         ghJQ==
-X-Forwarded-Encrypted: i=1; AHgh+RquUw4b41Qrs54gDL4PHb6OZqmFEOFDO6u5KB1uIZWjH2iGZrDqT8eUZZAc/AvzXaugNyYus6BTlg==@kvack.org
-X-Gm-Message-State: AOJu0Yxb/K20QPCCmEYAaa1hueZn8E+sG0qZ8PfHsMdmP9UNLKvkyYwq
-	O8vNU3Vte+P+CmBTlJaYoPKzValzCa7Yd2O8j0iWbjVNU1u3OVhUl56Z
-X-Gm-Gg: AfdE7cnJEcSaE2yuctnT9dRh5Xo/JiyX71vQXnXUT6cLDOcTOH1x3g1pyL5mor1d3sc
-	tyr2h9TYMeeNhsGJv+ykSznTYXeL+vhlWu0nOsuEEgzXplkNXGtLvSbCzxVXG6ef2mvqGRyMEJ5
-	Df1Xo0lsShQa+9Unu6nbu170t3EGJZxdhBj4ei4HDd73Gs/ELP4G0fVsHECEEi7SxAT70gbERsz
-	lQVeJw/gq6ljN1qvnn5qttTWZcMs+5zgKreXLGMbO/3+ZC69wnjbJsGHaJpb6BWYDyOEn6uIvj3
-	GUgJ4vFE6iYfnrUN3MRhzBq1jBm5Zh0AvrtwGlZkAOw306O/6MEms1QGdUuFX5JmOVsbDEMrqh5
-	1IA5MFCI5WJT5D4fkZWrwx4QUAoFnmBbaRuxoPfnjuB+CeATsLRS1f4w2u3DFjjW78Wc2jP2EqH
-	xIxBhx7Lkh+mVkIMIxmUB+KhDL
-X-Received: by 2002:a05:6000:706:b0:46f:558:a43f with SMTP id ffacd0b85a97d-46f0558a904mr17320972f8f.4.1782717637738;
-        Mon, 29 Jun 2026 00:20:37 -0700 (PDT)
-Received: from foxbook (bgu190.neoplus.adsl.tpnet.pl. [83.28.84.190])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee0189esm49368953f8f.9.2026.06.29.00.20.36
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 29 Jun 2026 00:20:37 -0700 (PDT)
-Date: Mon, 29 Jun 2026 09:20:33 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: sanan.hasanou@gmail.com, vbabka@suse.cz, akpm@linux-foundation.org,
- cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzkaller@googlegroups.com, contact@pgazz.com, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Mauro Carvalho
- Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, Dinghao Liu
- <dinghao.liu@zju.edu.cn>
-Subject: Re: WARNING in usb_free_urb
-Message-ID: <20260629092033.4a83e91b.michal.pecio@gmail.com>
-In-Reply-To: <85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
-References: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
-	<85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 169F860052;
+	Mon, 29 Jun 2026 07:26:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952701F000E9;
+	Mon, 29 Jun 2026 07:25:53 +0000 (UTC)
+Message-ID: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
+Date: Mon, 29 Jun 2026 09:25:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
+ tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
+ <20260628054402.76978-1-lance.yang@linux.dev>
+ <98f3aedd-de11-4a83-81b8-f3e3c9380e49@kernel.org>
+ <1d6d699e-62e5-424f-a147-b7a75b966957@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1d6d699e-62e5-424f-a147-b7a75b966957@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8D9EC4000A
-X-Stat-Signature: dtmojpxu55xekm1z7yxd6wnnpdw5onkh
-X-HE-Tag: 1782717639-543250
-X-HE-Meta: U2FsdGVkX1/mNWbJn6tGbFexmbu61ETlkzyZuvYJUbNlGdq2q1g3bFDh1A+vJSZQqbUPB1yKw0gWsMdpbg+8bhCr3yZ9pHTO0LQmgAeQ2/PE62Qqm3S4gaJ2Xxfa7mrjYuvXOs50A1VnKHZd/T6FEe0JXv4qEp2rO96EAyq1ogpye6Hw3i0f5B4DrKxUxN7q+x3C1cRpwlfDPr5PhZdQAhAciV3OokouLkSPSRIyl3O7KUjhSzAaHc4/FW01zFk+I3LS6y2r5Di+Zj8JEaMVWU17W+YS6Px2iyfZH7Z5Zp+2BVzmV3l8foRPFHNilfBlr1uQCVbgpYA++/LwI5th942vMSI7tfVKdSBXtWpwhyIYVXfo8bLUIgDPAx3HMvM2vSyEjMS+zd/2jns1Kgyi5jnxKZMLKd+VjjWDphFX3aSI1xYeUI5+3DEuGhybVLdSTcie3bNnmgOALwUflLxc9qbU/Bo1dElq6Jf7WR8d3dz+jaRvKgVS6Bx+mmeno33biHCFL4Q5nBH5RUc+GPoYWpmPivo1PvLraDio6R/I7aYzZHNhIwiATIux/Gxwn+3bDuEEic+y9wY+Rc33j/9ZHDILD7uOv0vWlZbxWUDmtiLKF55dJ9fDo4Z7W17/Z6YWhR/TS9VqvMHVmqQ2TKHPtHtFZYdS0KFDR3XuNVZcLEutxn4+G1SCz1eti2TxHXMUhq4UXVULbCzze0hzlODIntqwY0Xpginn13vmnYwt6OoIhnUh7aBlPK5wSZX7qyUMQ7T2xauw+CEoNWOLqAPSdFzITvdT5xytek5ZJMfHhXK9HN/VC0mDzB3Q6IS9ysSRuO6E/4aijefQL0Mk30leC22gs9NlWd2fjQxSR4JjrB0Xs5lG5bLpxecd/Bjyj7Vdo4LZw4F/D/iSXES/t+25cZxhsE5IiXOZ3DmJqYy5cKRZXT27NjFvihnA222QxI2ffJ7m9ZqgtWWOXEALUOi
- 5Mlxny8I
- jXa6b39SA4xY9lJ1d2YE9XWin/nEErQfBagkIBDGfw8+ITT4KAnQy8nZRQRLaIIQeqhYlP+kBwY0sFTPbUwMcps6X0P3JSnPh88l+OUwWQYDtqXieszR+zExAA8ztqqapvIDbHVpy++82G0BSi+o//ldBqPWdF4GjXHO1kCpxqUiPDAX4hG3x6Th9qIr9UdBKxdOZX6yH4u2WFDOy40KX2Wa9Xa1jw6tWFYrFUiYIY7zVjrMDxK5rh0tAX91ymcowh1D4nEHBFXv2mQYKKKPYx4NIrmCjTEOI0YIgIafeF/0VdDFIuCXFSLDfnqaLDj7ZnHCMLtL2845U+QbSpuwG4PfqaRFP85RwNTlmiD7Ba1gHc6w0H+9nHvHthv/zHyo/lL9OPjdx4F/k3QSDonrXs6Pqu6uIRLD+3YFBdFR1OG3S1jQTtoGxl3RqYFSu04GezuppGwzeWmiK7vMUntCGX6IofbqkAsAJmMub5cNhK5H8uCSW/gpSP+F54cd90sY+vXfORd63xPSgrffYZMztDJ4fyetT66VjNnW5slnu/oSeVkOPZLOu3SbtN98E4z+a/R3tljLVaDGb1pM=
+X-Stat-Signature: 5mecfscq8fs13b55h5ygacm4wtw9mpm8
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C4A8210000A
+X-HE-Tag: 1782717965-195290
+X-HE-Meta: U2FsdGVkX1/Pf9sTc0yvLQj2RmOcRK1QCSLT1Fqc02Kc+D4SIrQorPd6B8iJBKGQk8xH8FKN6gXCjqb1OoUwpeIb2l+JSPYqIsw7FPJV6BDtCuOiY7RuBnfv7YTp0C51otYuMrcKpvBzK/RS40w6prtojGROqlBAHGpUhMeGiDmSGPaywlEIJKuQU5bbIps2UHz3qWh1gCpqrmJbd/J2dEqxf/PaUTL0Ay4IXseQ32Q2em6KqE0R6OqQoCCsulUuZZh29GZJkMz8pcxC5XjkMxbZCosNHMWdgtw8gVbHIOoLHkszql2U2JtXUPwV5SMambSsXZJPpqvPfjzEJfzV3JkLKg9L6J6XawEQuhdUu9NyvfigpWlHgekWx99r3dY14s7cXnn/Ptm/B7xFmadt+GMxkw9CE4qseu3ECH6csMNNjEgHnVa4H251iOWFLOBNCqb+s1YsEQZbKhX97v2HL6tX55aJ8xna9hABLeR4ljcslKNnxWZz3v0LxHgC031LgA7/cwOpNJY0n+WyUigixBMKLWLcM/jjasc+KBhIrlNqo/29lDfp+U9T6p8060n6Xwk2io+two+T4+nc8j+q3OWZuvxOwEaI820cVWzjQI46XFxLa5f0MGG6W5Wgbg2P6zxyOcg/ik9LEGliwObByP2kEgIDWw6+MTpUAmAiUerBznsAWPTKADh+ZQlk7K60dRBOgPENx2TzQf1Z0JMUs/ePHcNn80gs3vbU0BJNLUUkdXlY1LIGX7WRquGS3qxlFdNQ9GIEIz/us3fZA8PbHUSKtbgr0piWFq2gK1jbpAwIEKjXorI0m1okuXGrke2mfkY64WPTQx8Xqp+ws//YQqY6pCj9OxjFnkzOlxLZRjLuH1TC6fw5/2bVRzPezh9XQDuNh8Nim5ueQUkm/HDKe02ud8LbkC25/xW29VGcoCFSGzgFOi56AQEc5FrIKjDfmRLXRDae6cvB6OscYx8
+ duriKRZs
+ IuXGBFvfI2onOiKClbnSXjIRqgR3KRcqhoFgc+qym4ee4uqLmr4BmkfsNgCL3NFY6bav9wXPMvmBcWJxZev6aM1hH85k0GJ2M4YOXWErwTiw1J08ylfzCx0MCEeUbKq0JT28g8kA8U5Cl7+lQbbKwyXvrApy5IGr8rvBWoqx28sz2H6730YDLNeG6HU36CxKU/+ui9y+OlTQmxM9nW/u1Y2bQxa4EkNPp8/kOSROPhpwwLewJAPRFHIln+ntAh2Fdm/6SyXuR/Ezfpq9FW7uZDV7oeWNH5MGs9R74SNcStnrPATWdyioV6D1YWpO+FaOqzCwpHQx1szTECXDQ9/VL9+nfBgl/7ylGQwLk0q0wvrUmJjMXA2FPu1stY/zZYvhylKg5g+hpPn25JHA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,91 +139,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 08:27:48 +0200, Vlastimil Babka (SUSE) wrote:
-> On 6/26/26 23:27, sanan.hasanou@gmail.com wrote:
-> > Good day, dear maintainers,
-> > 
-> > We found a bug using a modified version of syzkaller.  
+On 6/29/26 08:48, Dev Jain wrote:
 > 
-> Subject says "usb_free_urb" but you only CC'd slab maintainers, where slab
-> slab is most likely a victim here of e.g. double kfree() or a kfree() of
-> otherwise broken pointer.
 > 
-> Ccing USB and EM28XX maintainers. But they can feel free to ignore this per
-> the next point.
+> On 29/06/26 12:09 pm, David Hildenbrand (Arm) wrote:
+>> On 6/28/26 07:44, Lance Yang wrote:
+>>>
+>>> [...]
+>>>
+>>> Yes, that's what I had in mind :) thanks!
+>>>
+>>>
+>>> Maybe worth spelling out the rule as well: 
+>>>
+>>> For arch helpers that use addr, huge_ptep_get() assumes addr is the
+>>> address for the hugetlb entry ptep points to. arm64 already makes that
+>>> assumption.
+>>>
+>>> Callers where addr may not be hugepage-aligned should use
+>>> hugetlb_ptep_get() instead.
+>>
+>> Do we have any examples where code would do that? I would think that all code
+>> must properly align addr ahead of times.
 > 
-> > Kernel Branch: 7.0-rc1  
+> Sashiko notes other places:
 > 
-> Why use such a version for fuzzing? rc1 will have many bugs that are
-> already fixed in 7.0 final. And it's not even latest, 7.1 was
-> released 2 weeks ago too.
+> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
 
-To be fair, em28xx had no changes since 2024 until 7.1-rc1, so the bug
-must be present in various stable releases and likely in mainline too.
+Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
+from pagewalk code (where some users like pagemap need the actual address).
 
-> > WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317  
-> 
-> A kfree() was attempted on a pointer that's neither from a slab page nor a
-> large kmalloc page. Might be double free or corrupted.
-> 
-> > Call Trace:
-> >  <TASK>
-> >  kfree+0xae/0x630 mm/slub.c:6437
-> >  urb_destroy drivers/usb/core/urb.c:25 [inline]  
-> 
-> static void urb_destroy(struct kref *kref)
-> {
->         struct urb *urb = to_urb(kref);
-> 
->         if (urb->transfer_flags & URB_FREE_BUFFER)
->                 kfree(urb->transfer_buffer);  <--- this one
-> 
->         kfree(urb);
-> }
-> 
-> >  kref_put include/linux/kref.h:65 [inline]
-> >  usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96  
-> 
-> USB layer itself is likely also not the root cause.
-> 
-> >  em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
-> >  em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
-> >  em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
-> >  em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117  
-> 
-> So it might be this driver doing something wrong?
+I think we have two options
 
-Yes, it is. 
+1) To prevent any (further) issues, make huge_ptep_get() always consume the
+hstate, and let the arch code deal with aligning it. Invasive.
 
-        /* allocate urbs and transfer buffers */
-        for (i = 0; i < usb_bufs->num_bufs; i++) {
-                urb = usb_alloc_urb(usb_bufs->num_packets, GFP_KERNEL);
-                if (!urb) {
-                        em28xx_uninit_usb_xfer(dev, mode);
-                        return -ENOMEM;
-                }
-                usb_bufs->urb[i] = urb;
+2) Make the arch code handle aligning without the hstate.
 
-                usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
-                if (!usb_bufs->buf[i]) {
-                        for (i--; i >= 0; i--)
-                                kfree(usb_bufs->buf[i]);
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index 30772a909aea3..303a1b74796c9 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+                return orig_pte;
+ 
+        ncontig = find_num_contig(mm, addr, ptep, &pgsize);
++       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
++       orig_pte = __ptep_get(ptep);
++
+        for (i = 0; i < ncontig; i++, ptep++) {
+                pte_t pte = __ptep_get(ptep);
+ 
+(nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
 
-                        em28xx_uninit_usb_xfer(dev, mode);
-                        return -ENOMEM;
-                }
+IIUC, that's similar to what huge_ptep_get() does on ppc.
 
-                urb->transfer_flags = URB_FREE_BUFFER;
 
-If buf[i] allocation fails, all previous buffers are freed and then all
-previous URBs are destroyed. But they already have the URB_FREE_BUFFER
-flag set, which causes a double free as shown above.
+static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+{
+	if (ptep_is_8m_pmdp(mm, addr, ptep))
+		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
+	return ptep_get(ptep);
+}
 
-The free(buf[i]) loop should simply be removed. It was mistakenly added
-by d571b592c6206, then a26efd1961a18 recognized the double free but
-attempted to fix it only by changing the order of freeing. Sent from
-.edu domain, so probably an automatic static analyzer fix...
+I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
+entries.
 
-Regards,
-Michal
+
+Interestingly, huge_pte_clear() / huge_ptep_get_and_clear() and friends would be all
+wrong when the wrong address is passed. But that code really is called from hugetlb.c
+where we should take better care of that. (e.g., partially zapping a hugetlb page is not
+possible)
+
+-- 
+Cheers,
+
+David
 
