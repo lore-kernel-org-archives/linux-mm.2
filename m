@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D06C6C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:49:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3E2C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D8256B0114; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+	id 768056B0115; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08A136B0115; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+	id 6F0C06B0116; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F08BD6B0116; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
+	id 5B87B6B0117; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C97936B0114
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64F2F1C2EF2
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3334D6B0115
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACE061C0CB0
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:38 +0000 (UTC)
-X-FDA: 84933234036.16.53FE433
+X-FDA: 84933234036.17.667A59E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BE2172000A
+	by imf24.hostedemail.com (Postfix) with ESMTP id 20114180004
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Le6BHDP8;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9NuB6Qw;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744576;
-	b=LIKbNe48Ohz4gLEAU6TUSBOa+bL9A7VmueSXAELMaJeE+M0/TMXrEyi/aLFRnKboiN3mDv
-	e1e6MXjbf5oh97ejV0cgrVe0CaBqVPKXCnb9JbBF42+Hd7sR1WGa6iyNfVEhnxCTuR9PJZ
-	qhmzTzgyzDlLr/eH8thr81DFRGGOCNs=
+	t=1782744577;
+	b=rEJ/lFnojSMPGa0qDMU8gEjR8pfzKC80+jqLZRSR7m0OJom40nDITsKCMIqtYBeySikmDl
+	XWKRLNgC6EMa04CXRm9npOE6UpJIl3vEDH50Io1YozJxoSBXA1WZz+nmk3m8z0DUF3G5lp
+	ArH3RIuBQpIrWkvLCYNwScxOrcRehWY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744576;
+	s=arc-20220608; t=1782744577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U3trZStiezM+6sm/g9plYWwoc59rolAxRxndflOxpvQ=;
-	b=LARgTpB2g2DXmdqo/15RudpZ9c7iXRxW6m6aICp/BWNA4LwR4PpoVvj1IoP2rm2DJI/rEq
-	tVnQGJZ1jL/cMZltLmBVu1K1AkJ/OTBfs5wACN0cBX71OoKaXIPDpd9RWMLriH3uqaFMv+
-	l8qvpDEDRgsOEu+03ePDZWGzAhEIe5M=
+	bh=jf02Ij8O80K2A7ATECAqkrfhafLEEQ+h7n6pFX7YXCo=;
+	b=4BfVL6kzA5J1QhmIet0GatPaYP4RmiDN8P4Wm2PXLMVbyJOtndJdm4IryIpRlOS3LEHbNp
+	r7oE6xCJLvSiataeADupphZQNA/RJJS3FGOn7aYObJVhb/GW9bAkAF5huFYjf9DDKEBvY8
+	JKMxUvwVsAU1ljsYlnT7Dwg4a+bzIyw=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Le6BHDP8;
-	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9NuB6Qw;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 56AB060125;
+	by tor.source.kernel.org (Postfix) with ESMTP id B9D78600AB;
 	Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2EA41F00A3E;
-	Mon, 29 Jun 2026 14:49:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354511F00A3A;
+	Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1782744576;
-	bh=U3trZStiezM+6sm/g9plYWwoc59rolAxRxndflOxpvQ=;
+	bh=jf02Ij8O80K2A7ATECAqkrfhafLEEQ+h7n6pFX7YXCo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Le6BHDP8kLQkgFFLTSOq5d55t8jWttWvTorxRLRkbZJ6RNtucoYQFdNqMVWNFXwTQ
-	 bQgcVL2T9voIC3o/JQ7bgcl+fTBBtl56ey16d5jHGSxPSYVgyyQO1g6G8HNAQePC/5
-	 i5aZdsdMAQ9CUVV5geSBHZcg78ikGHZFlQMQLlk1IgfD7uU8EukT/+JKd7tyfRUaUa
-	 lwhhxWwrQOOPuR9Zkn+mGUzbT3WctZMDTDsevx15yfZ61Y88wstVexBhZ3UT3LBjb0
-	 /CpWZUaSS1DEl48fcTSoQkjN9MrYvgPrBUzD8WKWBu9B/3b0sC+se/YSPa+yEtcxM5
-	 hHpTN7w/6d9+Q==
+	b=L9NuB6Qwn+GuWe+S0bSEWS5lP/9JluIjXtyezwZmrVqdJhpwrre577CuWhH9pIF5I
+	 EgTUy/7NXimwhPPyophout9wNiSvN4ZjuVBRizCk/ELTPd9cEMYABojmHBrvesQ3HE
+	 KpCKaVFZkhX2gCNcaEfYqJQhhQQ2ZGKNEsZW/odAUP2tFyEVUOYC/8Bp2usDJVuTI1
+	 1k3RkNx1fyrcXd4VJvpGfr5hyDxcn3GUwqDZtcmhxjqRZm0qypctwOLRCSUSuSuqDG
+	 1DWdkOXAEMm2nCaJw+ozaPahHX2cvbFa8YtKDxIuh8Bt94xCQuP3O30wvu5tWyb0zX
+	 VZaSNd0x9zb7g==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Ruslan Valiyev <linuxoid@gmail.com>,
@@ -72,22 +72,22 @@ Cc: Ruslan Valiyev <linuxoid@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v2 1/2] selftests/damon/_damon_sysfs: support kdamond refresh_ms
-Date: Mon, 29 Jun 2026 07:49:25 -0700
-Message-ID: <20260629144927.134237-2-sj@kernel.org>
+Subject: [PATCH v2 2/2] selftests/damon/sysfs_refresh: test kdamond refresh_ms
+Date: Mon, 29 Jun 2026 07:49:26 -0700
+Message-ID: <20260629144927.134237-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629144927.134237-1-sj@kernel.org>
 References: <20260629144927.134237-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BE2172000A
-X-Stat-Signature: zr331ubx6xm5hh1iiq4anw3cgzpqrnkc
+X-Stat-Signature: 4u1tc8qoz7ywynwq43mrc36fr93uokmg
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782744576-880961
-X-HE-Meta: U2FsdGVkX1/GiAjR22ML5W+IRCJ02xUM5p63x/QEOVUuwx2+W49qv91b3Z67c2Gx/JMWMEusWLardCQW1aEOKWF+8H1yJeyENRptviNxbnQ/ZXOSkwU8LEmiNkAm6N9bwjoGxTnNIxVzIEpYKe6zq83JOSTWwtL/a00pgrm89/B4dAknkn/jcy1lNiwBVU1CvTYEzdKJCwHUoYR7sz/fh444J3+TG7sYPEmW+iZx9XsJNYO0h7skJZKMeKfHAn4qeAaYtr2UyoiFhihTZTkSZ/lOvG4BTPxAeIHHarzzyUmAU0WQFtcSvpFtcfwcBL40NnvL1v47VPGLGz72LQY4hToS/YRCo93Z8DVDdFfYV4z3w8HZRUXBqYTE9FiKqAkE2CyDN0OufPkdKjqS/vhctx4DFVDYVtaLPXxTZCFaJnRcJSMvJaxP8irOWLd+Ep5me0BEtddcGbsjzfScj/vg3gpJWJknW7IfqssuwiWnsa6pPNWwXfMW48fKSLK76yGojsMcMYq7g59se/chZ9IMgfThWsowzwS7PdI8Q1Sl3x4TcjH200CSAs1aZIFzLlHSqHkQvtUEOojHpsKdkNjR5omyk82ydags+5ipZs5B7pNz2Wcu97zTpawbzLpnbqIj5X8iXFLL9iLTNZxU3I8XajzWYCA/7A0qnHJLFrTqWngjXd3ViPFN5vpjfJvvOkYoW12dzeZKgry6zC2MvuExBSu60LKHHP2envN0hheaCwD87P/GahVyOgRxVjY5cE/wF61uHkcClt5kRPbFpPXtIYwRpY1fGIv5F/gJhoZWuR1d5cXI+vszRXznWz5KhqhGdK8PWpfFEL7O1uMndjQ/if1rWs7HpFtC0bJTOdW/VKR/ZomI4ay/k2NutIFWyEefIdVEZq4+KUa45ydKLSSPL31AQ/P16O2WlHmPXbiBoOwbIb3HHLIwduwCq3joIwtqValkB88Rjto5AppP/Ua
- GnnhYBaF
- jJ9b0GRszxKMcOniOKkpjlTowe5aPRbGVAmvXydIKHI4DJXnbxhGaB1VB+ZNnDSzVrDBemZEvw0RF8kg12G/Yd+9e6PnPJJQ4I7YcgxmKPSQ316IRlFjN53vHvXeDJ7am9rCcHTjlIHx8Svvr+7yTPGM9f/AcX9jakXU+P7SQoSwIlZJkdR6L99kl9dFfP5gNc3X1os9vl3k+92lGG5UFKSNfijreh014kiiFkJ6Tr3TkDEGzNr+XIfOPlwrw193AF7EQtUxHYbigMS6o2yySB3CB+lnSQtGWQG8foAacg2F3SII=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 20114180004
+X-HE-Tag: 1782744576-686208
+X-HE-Meta: U2FsdGVkX19dueswJpAujOoBL/DCldAZUirxZW5OshVDVdkG7taaA75hwKM/Nl1F52KeJtHJigYKe+wDmS5O5Juc8tGpcerSmZ3XKOUW+xG3YFRT2kTlrfPrv0zoJLtwH6+7/OOu0YipGfe0zw0v+Wo2KYPaFuxq2O7u8hi0yvtWj/xcndJ60PMKnvEwcA9Rhthyct3R/7Niw5n7LCD6HVhjhaw+KQJ202dbVJMYJdpnj0JdPoyKL49gjLuQQWQqNrOWrgOkgFZ3uKHrQ04JzX0kMvz2ZjTjolH6Zxmzf3g6gfVLU4j+kqhKoCZi7rMp4PRo9P2at9izz0Pj+1b8k20Vsu8/wpgaclTcwjdNR4YQdqQJHdnAX5ztvmEZ++phKsOLc3ZDMurdWTlr1KrR2mqEYLuxoG7xIMaLK23xOXwmAOBpJdE2/dLQr98R4Q8Vt62WyCcMx1/1t5PTKW97AB3kBbutSrDdbT3wKSc0CVlHtUDr7oiPEmiGDpTZ0PKwjw5GzYUXFuZbGHhLTRsiMD7ma3fE+cf8Nm+i/KRPgjxH1aaDEEkxpYqGpLSZGx3PFgvIJThwxd1oGXw00swKMLTlAhYxQU6cdCv+VLrxKfe4texbiKaGqCHv8iyO02PFizpo1hOsp0fV/03L632C3Bb5ZuYiwR8oBgiK2B01sRFvhAW1K1IdtsvCB7ui6uFilHNV7ENFqXlRKJ5zPdKvTrbDs/u0OF1h6BKleEJoxvxNGhVfJMWcY4It5hElq09wh57pOWmfAeIhQ50c2kUgxVStypqWfhNudFxFt4k4FeMIXsc8LrOhL8utZM7TpT2/UE15sv2YX/lOXENnmDxfg9TMMbSMfvFiD1Rxm4XNzKj4AyHvWvDRX/voeJ/BUyqIMkH93XIAMliYPx2s/HMsh8F//nTF7XeRe68ZDXMr3AU1zOYxi0UCS54gLihfNooRZU0txLDCFKr8fhgkz1T
+ 1x6mKfB1
+ Lfp6tzqilz9DJrm/Y//YQC0c+FbSftskOzGbeKRAPQB010OzumIfXzcRqlK9Cclcde9vh1HUGSpv0GcgEfiCeQb8gw68xjeVNtZhLKqjiMd0oSxmms0bU/SX6LbtpaeL4KWwP9j1r8vTJ1qMqGoOel0TkmspFSaCLtskYSzNW9rThqFWsoUBlTnoHJJCpw0Wp9YVejtyL/pPGwXzbxUcLN5uoJwBNqlqRULa8SiYh1te2SxVS/No5UxYy/K2EBiyZRFjlFgMVoyCcoKQDgTACX4Jemtn9cAkOxGkWKG3W5cdYsPI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +97,122 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ruslan Valiyev <linuxoid@gmail.com>
 
-The Kdamond class has no way to set the kdamond-level 'refresh_ms' sysfs
-file, which makes DAMON periodically update the read-only sysfs files
-(DAMOS stats, tuned monitoring intervals and the kdamond pid) on its own.
+Writing a non-zero value to a kdamond's 'refresh_ms' sysfs file should
+make DAMON periodically update the read-only sysfs files on its own,
+without the user writing update keywords such as 'update_schemes_stats'
+to the 'state' file.  This behavior has no test coverage.
 
-Add a 'refresh_ms' parameter to Kdamond.  When it is set (including to
-zero, to disable the periodic update), write it before turning the
-kdamond on, so tests can exercise the auto-update behavior.  Leaving it
-unset keeps the previous behavior of not touching the file, so callers
-running against kernels without the feature are unaffected.
+Add a test that starts a kdamond with refresh_ms set and a 'stat' scheme
+whose default access pattern matches every monitored region, then polls
+the scheme's 'nr_tried' stats file directly, without requesting an
+update.  The value can become non-zero only via the periodic refresh, so
+the test confirms refresh_ms works; with refresh_ms disabled the stat
+stays zero and the test fails.
 
-Link: https://lore.kernel.org/20260602131217.2210912-2-linuxoid@gmail.com
+Link: https://lore.kernel.org/20260602131217.2210912-3-linuxoid@gmail.com
 Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
 Cc: Shuah Khan <shuah@kernel.org>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/_damon_sysfs.py | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/damon/Makefile        |  1 +
+ .../testing/selftests/damon/sysfs_refresh.py  | 75 +++++++++++++++++++
+ 2 files changed, 76 insertions(+)
+ create mode 100755 tools/testing/selftests/damon/sysfs_refresh.py
 
-diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
-index c197ab99bcc0a..e6a2265d721e8 100644
---- a/tools/testing/selftests/damon/_damon_sysfs.py
-+++ b/tools/testing/selftests/damon/_damon_sysfs.py
-@@ -698,12 +698,14 @@ class DamonCtx:
- class Kdamond:
-     state = None
-     pid = None
-+    refresh_ms = None
-     contexts = None
-     idx = None      # index of this kdamond between siblings
-     kdamonds = None # parent
+diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
+index 2180c328a8252..ece244e5c5b95 100644
+--- a/tools/testing/selftests/damon/Makefile
++++ b/tools/testing/selftests/damon/Makefile
+@@ -13,6 +13,7 @@ TEST_PROGS += sysfs.py
+ TEST_PROGS += sysfs_update_schemes_tried_regions_wss_estimation.py
+ TEST_PROGS += damos_quota.py damos_quota_goal.py damos_apply_interval.py
+ TEST_PROGS += damos_tried_regions.py damon_nr_regions.py
++TEST_PROGS += sysfs_refresh.py
+ TEST_PROGS += reclaim.sh lru_sort.sh
  
--    def __init__(self, contexts=[]):
-+    def __init__(self, contexts=[], refresh_ms=None):
-         self.contexts = contexts
-+        self.refresh_ms = refresh_ms
-         for idx, context in enumerate(self.contexts):
-             context.idx = idx
-             context.kdamond = self
-@@ -726,6 +728,11 @@ class Kdamond:
-             err = context.stage()
-             if err is not None:
-                 return err
-+        if self.refresh_ms is not None:
-+            err = write_file(os.path.join(self.sysfs_dir(), 'refresh_ms'),
-+                             '%d' % self.refresh_ms)
+ # regression tests (reproducers of previously found bugs)
+diff --git a/tools/testing/selftests/damon/sysfs_refresh.py b/tools/testing/selftests/damon/sysfs_refresh.py
+new file mode 100755
+index 0000000000000..012b7e8f509f5
+--- /dev/null
++++ b/tools/testing/selftests/damon/sysfs_refresh.py
+@@ -0,0 +1,75 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++
++import os
++import subprocess
++import time
++
++import _damon_sysfs
++
++def main():
++    # Continuously access a memory region for far longer than the test needs,
++    # so the kdamond always has a live target to monitor while we poll.
++    sz_region = 10 * 1024 * 1024
++    proc = subprocess.Popen(
++            ['./access_memory', '1', '%d' % sz_region, '60000', 'repeat'])
++
++    # A 'stat' scheme with the default (maximally wide) access pattern matches
++    # every monitored region, so its 'nr_tried' stat increases as the kdamond
++    # runs.  refresh_ms should make DAMON update the schemes' stats files under
++    # sysfs on its own, without a manual 'update_schemes_stats' request.
++    kdamond = _damon_sysfs.Kdamond(
++            refresh_ms=100,
++            contexts=[_damon_sysfs.DamonCtx(
++                ops='vaddr',
++                targets=[_damon_sysfs.DamonTarget(pid=proc.pid)],
++                schemes=[_damon_sysfs.Damos(action='stat')],
++                )])
++    kdamonds = _damon_sysfs.Kdamonds([kdamond])
++
++    err = kdamonds.start()
++    if err is not None:
++        # Kernels older than the refresh_ms feature have no such file; treat
++        # that as unsupported rather than a failure.
++        if not os.path.exists(os.path.join(kdamond.sysfs_dir(), 'refresh_ms')):
++            proc.terminate()
++            proc.wait()
++            print('kdamond has no refresh_ms file; skipping')
++            exit(_damon_sysfs.ksft_skip)
++        proc.terminate()
++        proc.wait()
++        print('kdamond start failed: %s' % err)
++        exit(1)
++
++    scheme = kdamond.contexts[0].schemes[0]
++    nr_tried_path = os.path.join(scheme.sysfs_dir(), 'stats', 'nr_tried')
++
++    try:
++        # Poll the stat file directly.  We never request an update (e.g.
++        # 'update_schemes_stats'), so 'nr_tried' can become non-zero only
++        # through the periodic refresh that refresh_ms enables.
++        nr_tried = 0
++        deadline = time.monotonic() + 10
++        while time.monotonic() < deadline:
++            if proc.poll() is not None:
++                print('the access_memory target exited unexpectedly')
++                exit(1)
++            content, err = _damon_sysfs.read_file(nr_tried_path)
 +            if err is not None:
-+                return err
-         err = write_file(os.path.join(self.sysfs_dir(), 'state'), 'on')
-         if err is not None:
-             return err
++                print('reading %s failed: %s' % (nr_tried_path, err))
++                exit(1)
++            nr_tried = int(content)
++            if nr_tried > 0:
++                break
++            time.sleep(0.1)
++    finally:
++        kdamonds.stop()
++        proc.terminate()
++        proc.wait()
++
++    if nr_tried == 0:
++        print('refresh_ms did not auto-update the schemes stats')
++        exit(1)
++
++if __name__ == '__main__':
++    main()
 -- 
 2.47.3
 
