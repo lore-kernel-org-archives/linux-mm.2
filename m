@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BBAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:19:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18F9CC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:21:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BFBF6B0088; Mon, 29 Jun 2026 04:19:15 -0400 (EDT)
+	id BFB366B0005; Mon, 29 Jun 2026 04:21:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 149866B008A; Mon, 29 Jun 2026 04:19:15 -0400 (EDT)
+	id B853D6B0088; Mon, 29 Jun 2026 04:21:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0111E6B0092; Mon, 29 Jun 2026 04:19:14 -0400 (EDT)
+	id A4CC56B008A; Mon, 29 Jun 2026 04:21:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C56D66B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:19:14 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 527481C598A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:19:14 +0000 (UTC)
-X-FDA: 84932250228.11.265A610
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 774626B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:21:00 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EAB451205B0
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:20:59 +0000 (UTC)
+X-FDA: 84932254638.03.2B17D25
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8C97FA0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:19:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0POJnWW;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 3A488C0003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:20:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALYdjdHR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782721152;
-	b=Wk0gAFB9GsD8HZwrYaTJrGmjn30Pa51RwzIEp+R9OGDgbA5xzGNtDWCAIv7+xYazVbm1mT
-	IjVv+xyZCUGAaS78gJ8mmeokNhKv/xkwlRZEFEBEweUb43CobtVMgB5SQAjd7GAymGmAwY
-	L3KB+wpJtXX3HIkfoXZhWpI3l6xRS58=
+	t=1782721258;
+	b=w8CSanKz+KkH2lMXjeeWFFntP12xAtAVLg75Cf03RxM3cCvIdTBNPr1EePsorYvm7UJhBi
+	MeGNaOGDOrhinJzTMoWFiV5DFfxameOXwhk8YPmKQK5TwKCOxmmTwMVNKJM/R4VIkBXap3
+	XYU59PsoPPZYIVn76FoBSfj1r/4IJ8c=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782721152;
+	s=arc-20220608; t=1782721258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MZGohl8o0Xi4Sw0uZbCmVZVFuovj8uht9Jky77XzxYU=;
-	b=xbBAGI4ca01xpNe4xSO+DBdE+g2x7pnr7u0L31gGqDc3qV1SzhJB3kRLNbnYEvPk6M5QJR
-	TmVgfY8r3elwl2GYM2nUQ2/czbDtLFuqoDNir0V7mNJwlpZNwlcGQoawB3NPWrONV4xYhh
-	V0mMJcS8osuStXmM3KQI/8UKAyCo9ZA=
+	bh=kia53t9Vmn3rVHR65dB2hSoGJC+kCBm9nZndKzrlbpY=;
+	b=31N8hZZMzY9dCpBmbfcSjvE5FN5usrBRuQb71aktwXMq0WSeLxBXO4pzbDlWNavRayFf+W
+	88UyXB3lnzJ88pGhOcK/ihfXS4gUL5Ngw9xknKbc4P3Z2qEZaOYc76i/yXdA47LKOZjbyV
+	4zc2Ibi6MJTlCyUKtuLDIcVGDXSgvh8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0POJnWW;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ALYdjdHR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf28.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B487A406FC;
-	Mon, 29 Jun 2026 08:19:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3345A1F000E9;
-	Mon, 29 Jun 2026 08:19:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 64E7743D34;
+	Mon, 29 Jun 2026 08:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F287B1F000E9;
+	Mon, 29 Jun 2026 08:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782721151;
-	bh=MZGohl8o0Xi4Sw0uZbCmVZVFuovj8uht9Jky77XzxYU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=a0POJnWWk9ffjgZuRxp3Xl1Ko7Fd1mFeGrnnmbmrrMA3HWIC+dBIu/1pEDHFjovB1
-	 gIrp7QtAeYN74W3QDb4cqypY1atSqrRrj4lAruTKrkF50SudutWlUbr0ckVRNNNHaU
-	 rcKajXP8DvD4Zz4aDxRkBfmugpUGtkrNtcgHCEcIUtq4eSlyH3fHEYmyhTv0bcNcaR
-	 OTr77NDEnDum2neyY387k7QBXDtQ3l02OdsTD4Qf4AvMXTkFuxv8eDU5wc5SgR2Ea3
-	 HFaHZjr9rYx3l0y8tEwRXvFDfUWVcEgjcjMxyLlLeQGpU0PtblG7gAae/KbDugIZ84
-	 ukSShW0IL4tHQ==
-Message-ID: <1f4d68e5-7ea7-45f8-8286-fc276178c7ed@kernel.org>
-Date: Mon, 29 Jun 2026 17:19:03 +0900
+	s=k20260515; t=1782721257;
+	bh=kia53t9Vmn3rVHR65dB2hSoGJC+kCBm9nZndKzrlbpY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=ALYdjdHREWYrGGiSraB7MR+uJIezD9H8RD62KChSKPY5qxgXGXnNPOmA0XJMurrdl
+	 AkcvDW58TEZEpP1VIafI87KjnUhZDr6+wuOVo8M2U+CPKAURCoIRpcaz0eUU0pIy+x
+	 Nr5nn+rpu7fQ2EyjOORAw0sP6LIEf5fSon8WkphyJmSJCzTWa+2f7PMN3A1rKTklKR
+	 7tfSSATNMl2tmIcJh72y3vqvLxCEGX/i3vIpmOHpyUcauAEPrMJVSHvsuJAAoFlyg8
+	 ZHcQH4W7mHA01/DLNoviNonduxaiLIX3gsV2xK9uh8cMi1ilmE4nEQTdUj32wpg4Kg
+	 1Fn3sX7B19hVw==
+Message-ID: <b48c8045-2297-47ee-a0f7-d7a67e74ea09@kernel.org>
+Date: Mon, 29 Jun 2026 17:20:46 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 4/9] mm/slab: use call_rcu() in unknown
- context if irqs are enabled
+Subject: Re: [PATCH for-next v3 2/9] mm/slab, slub_kunit: register kprobe to
+ trigger _nolock APIs
+From: Harry Yoo <harry@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
 Cc: Vlastimil Babka <vbabka@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
@@ -90,22 +91,22 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
  rcu@vger.kernel.org, bpf@vger.kernel.org
 References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-4-70a54f3775bb@kernel.org>
- <ajvpq2Ay-nRH7s-X@pedro-suse>
+ <20260615-kfree_rcu_nolock-v3-2-70a54f3775bb@kernel.org>
+ <ajvczSpMOGWFhe30@pedro-suse>
+ <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ajvpq2Ay-nRH7s-X@pedro-suse>
+In-Reply-To: <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
 Content-Type: multipart/signed; micalg=pgp-sha256;
  protocol="application/pgp-signature";
- boundary="------------GaUI6z90zVa0zdq40fRpqq00"
+ boundary="------------8xQSbLfkLa3QcHTEy0A3WfM5"
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8C97FA0005
-X-Stat-Signature: qg8ak8jop9a5yzncozozf8grkbg6rkxw
-X-HE-Tag: 1782721152-751954
-X-HE-Meta: U2FsdGVkX1+wljcLDsu8C77o8qip0PbYyVB/vdHa2a4vthmmj7RkF3wbqBQ0FDLnwP9U6LakrxIJ5TR75VDR/6klPZJ8avvLEsf5BYVsEHCTjhOa/8RgKJ40XW+IKL2QzM3+hIkRT7TWf5EPAjjOOHS/0xyf2sZQU8ZGXKhsp0CHEM2zfHQGPJvMWjT7fXt5v1VL4DHwrKm5PSvpbol9+LRF5A0xIGhDxgd+tr/xOgp896t6P4YmYP1ne1BK6fsAcqj8C5x6UsSfcLQA8NkEPzUiZbUWz8lXUHkEygaRaLdRtGoPS1LI/EOWxyNNE5XrEL4QwLHvPOgMqlcWIu8QpWO+9BrIuT3Ny1qD8STGJhsdsRYfNtXdSKGyyiZj5/xbb0+vif1Iu6i1ycVQI2TlYzpvRuyGFVq4zb2ZhcJpmv1+AuDs1alMnKnqqzZd1Ran1yMLBnC5Ex48o1KgQ6GLbOxQBg4X0AVgygSFbRLCYYXn3j1+EI2efmQP6yg8SvOe64CCxtsVxSMh3tGeTZLwrSudHr1P7A7IsfsrRnlg5TAXvrlgUYU6ihuDTTZVOSndHJs2EDDIn7SjROjxFqJLWeOZlCnYXV+VNLp6XU11Oqal1TK92Hcxih6jSYZmxDMW5H2rJU/d2/tIy0vHmCNIsIWnhKtQjJRmrZbff+ses7McguJCdlE/z+7vfVewUVFkVe1h0mddbd+Hpju2qGRPj6D31POccB5f4qzwNk6Wxc4X6QkUbG9QoctJfSGJWD4e+xddQiJa1B5vVcPtF4sJhawyZkym38IxcBcnVbmz0Cv4fWf8Nyr2L0DNfmiWiSj+CTaC0y6+hrTnlMqsf0spBTn9ONi6zYrxQB4bzhEAd+aTa7pm/2K6WsoAFp7d7PKy1ihT/Ni5Rp/FtrC8I7Qjsex8G1Sz/PGr3sHPrU5HDXCe+TfvGo26xHz1yvBuRDezBWVozG8IWEld+UHFCkO
- WAef/0/T
- C+8gaREy/nsmvK0k7iVpX9Fj7ux86DiLnBJNPzjWpqR2wSNGPdxaADoHRAM3xsYuaUZGUzLp6cVndZZlWnSkp6RGA7BCV0K1QeMVk79J02loytxIdU230zwUvIdlJm7iaYSdvYOsdyK8DlusIoj3F2m7SRO5xIPAFjarrWudI/X43bjj7AHl18rtVx9Q45cVehJSPzbZtZpMwX9c/YYrpZbNEy2JcBjuYgBbdW5AXkHBKt4Yv8hnJDnje0p4Lh6gcN+X2o+Rx07EYdZmfwUscZ4yKABzAt+DQixAwDHZXURJ7iwU9ZGGneGXbnuW/W5j3XVJUd8jeRY1ecoVYJIoErXiN0im58pTgn5JXMdxHVglmy8inO3NGASPTl72G6V3qtx54SV3Sc3mphzTy+LPmIb9+nO8AcrQdHxXRwQ76GAMRl38Q97FB4GZGkicesh+oUu5JgZJ1N4SvqlLOIkOh3VUuumpQNpe2yALMn+FRt0F8WSvXEjheiIZlrZ5jOLaR0QHU8iB6wsDvDUs0h+VCIkFthpR1p1zdsqnp3jt57saWdKE=
+X-Rspamd-Queue-Id: 3A488C0003
+X-Stat-Signature: kzrjnbye7kejuiujw6ubz5tias7mzaer
+X-HE-Tag: 1782721258-577279
+X-HE-Meta: U2FsdGVkX194cNv0ZUtEAoyJlyjKcmsS2ngUoFSXHyB4Wv1vCcmyhWzHwcjgRm5nCjKdc///nOjK3L/my7J1ATObOfcH7b0yXKA7y5inc7mo1AT6umxRDUZKWwtGxNRwKgHfVvchFKBmr/mzkwoE/KAwDcPNN9dEL9Z15PAmtrRpQKL5qqyUrRP6KZj9yyeVM+VVz/Co3o+dFdREQyG5QgYPKseMB7S1a3PNHC16t1RZkwckNrkPMbYlvuv3d7LrD64y5NqnAZc5SRD8PC+nQWbptiTgl1B5NYL287LtUHqh+Z3XyyLpjkg61pKnYPFHhgMPcFEKgQmFCTNudMR1ModOxqCTq+zFya6Rwnu5PXT0QyHHq431SBYrMWvzv1kGrx36nw1auQVlJXidsKumyw8G1TIY+hdyzYShbwxT1tfwDYU/N65/fxLv2mLRf4OuSRXMJThfWJMYWqwxwUpJ8tofdIFOoFgQ4Yeh58HAXb7YA/VCwMYNqJHi1uT0LrgkHFBjtKKBqwppHUnL6AxstAvUZZtHO5xSz5chPdwuQupAluJ9KvkQfkXhKzJTE8gJzkeQdlzrvKSShdjcbRl024YmeGph3jZXCE68hGga3+VnBQyT9A64K/fOMBHX1zBWU44vVvNkEb4Pp256ywSmImehzQHICN1BuLtynuXGqINMRErazXRAxiQ0PGxdLfx6HwJrMuVFfsFKrRQfge+zxUCOhI7eANPret2xSubWGnKQEAOlpU03/gcAJO8qG9bER7E/kWZQbm6lnyvImQB1SyA1yIyGPCJ3tl1MDBWR8Hw1Hp+QQpq7cHCPasvrt9HsbLYqam2ymgn/jv+nEVNhSlObNfDzHQ2mqX+9qyzWk4NhP69lSeAVc2NvTooDvcsHnE+pF8mUIbDcghXR0BWnw7jZGfiKuEwE5f55267S6snNl+vybrG4ulYCx7GqHkMAnmfTWB3AfSzLLd/D2Y/
+ eclfYybG
+ BsRb33gn5iMt1ER36m+3QvK6cHfDv9kP+5L+juilssappi7yGywxB7qwpnC4p1vNv6rP3j2Uu6FEX++HfOKwiA15BV/THq7pJLsU91uJdGkPzjJzmKfj0heplzfhkMVXXWT6/ByGanUImwZqj6co54UXvpDp5e9Kcp9lAvHCjUG0u3GG5koRejMt02F2BQGpZg4BltR9aSc/8EKvM/2mYTnVe1FH6c3UhxEvhunwfNyqCXe0IU1rCtzQjErXpwnaFYsgXG0Wenes/S5OBlSzlH0qu23juTdC1LdUgW0rr0zrAeEM714Z173uM9+jUS0U3UxkrjQSZidYbexkYAv5W+XlHYkb6z8vIPsn/HVYCz+nZg2WxseJuBEfr+9yBV2/1G6hVC3xxr5RI35Iy2TKl9d71n5boQHrFEKqrAfpIQQRbRnIsQjyMCnjqUGSy+3FAHKiigcYJh1uU8mfFopndTm8U3Zf2dr29f7MlHsW8gDo1OwO/t5fyTH5j/2/smjX7eFNV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,8 +115,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------GaUI6z90zVa0zdq40fRpqq00
-Content-Type: multipart/mixed; boundary="------------0gIw2wbsDQjCNZaQoAyGLTmg";
+--------------8xQSbLfkLa3QcHTEy0A3WfM5
+Content-Type: multipart/mixed; boundary="------------H7l0hVTepAgAY5a6Xn02vj04";
  protected-headers="v1"
 From: Harry Yoo <harry@kernel.org>
 To: Pedro Falcato <pfalcato@suse.de>
@@ -138,95 +139,60 @@ Cc: Vlastimil Babka <vbabka@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
  rcu@vger.kernel.org, bpf@vger.kernel.org
-Message-ID: <1f4d68e5-7ea7-45f8-8286-fc276178c7ed@kernel.org>
-Subject: Re: [PATCH for-next v3 4/9] mm/slab: use call_rcu() in unknown
- context if irqs are enabled
+Message-ID: <b48c8045-2297-47ee-a0f7-d7a67e74ea09@kernel.org>
+Subject: Re: [PATCH for-next v3 2/9] mm/slab, slub_kunit: register kprobe to
+ trigger _nolock APIs
 References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-4-70a54f3775bb@kernel.org>
- <ajvpq2Ay-nRH7s-X@pedro-suse>
-In-Reply-To: <ajvpq2Ay-nRH7s-X@pedro-suse>
+ <20260615-kfree_rcu_nolock-v3-2-70a54f3775bb@kernel.org>
+ <ajvczSpMOGWFhe30@pedro-suse>
+ <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
+In-Reply-To: <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
 
---------------0gIw2wbsDQjCNZaQoAyGLTmg
+--------------H7l0hVTepAgAY5a6Xn02vj04
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-On 6/24/26 11:30 PM, Pedro Falcato wrote:
-> On Mon, Jun 15, 2026 at 08:05:58PM +0900, Harry Yoo (Oracle) wrote:
->> call_rcu() disables IRQs with local_irq_save() to protect its per-cpu
->> data structures. Therefore, if IRQs are not disabled, they cannot be
->> corrupted by reentrance into call_rcu(). So fall back to the deferred
->> path only when !allow_spin && irqs_disabled().
->>
->> The RCU subsystem does not guarantee this contractually, and this
->> optimization relies on RCU's implementation details. Ideally, it shoul=
-d
->> be removed once call_rcu_nolock() is supported by the RCU subsystem.
->>
->> Link: https://lore.kernel.org/linux-mm/CAADnVQKRVD5ZSnEKbZZU7w86gHbGHU=
-ug2pvzpgZTngNS+fg4rw@mail.gmail.com
->> Suggested-by: Alexei Starovoitov <ast@kernel.org>
->> Signed-off-by: Harry Yoo (Oracle) <harry@kernel.org>
->> ---
->>  mm/slub.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index b0d38d515386..6a3552b70683 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -6158,8 +6158,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, voi=
-d *obj, bool allow_spin)
->>  	if (likely(rcu_sheaf->size < s->sheaf_capacity)) {
->>  		rcu_sheaf =3D NULL;
->>  	} else {
->> -		if (unlikely(!allow_spin)) {
->> -			/* call_rcu() cannot be called in an unknown context */
->> +		/* call_rcu() disables IRQs to protect percpu data structures */
->> +		if (unlikely(!allow_spin && irqs_disabled())) {
+On 6/29/26 4:34 PM, Harry Yoo wrote:
 >=20
-> Perhaps this could be more neatly exposed by RCU? something like
-> maybe_in_call_rcu().
+>=20
+> On 6/24/26 10:41 PM, Pedro Falcato wrote:
+>> On Mon, Jun 15, 2026 at 08:05:56PM +0900, Harry Yoo (Oracle) wrote:
+>>> Since kmalloc_nolock() always fails in NMI and hardirq contexts on
+>>> PREEMPT_RT, slub_kunit cannot properly test _nolock() APIs.
+>>>
+>>> Register a kprobe pre-handler to invoke kmalloc_nolock() and
+>>> kfree_nolock() in the middle of the slab allocator. However, do not
+>>> register the handler on UP kernels [1].
+>>
+>> Maybe explain in the commit message why that is?
+>=20
+> Because it's the case is broken on UP and we decided not bother to fix.=
 
-Make sense if we need to keep this optimization for a long time, but
-hopefully RCU would support call_rcu_nolock() soon (apparently Paul has
-a plan [1]), rather than introducing maybe_in_call_rcu() just to drop
-it soon.
+> Thought the cover letter in Link: would give enough context.
 
-But I don't have a strong opinion on this and
-I'd leave that to RCU folks.
-
-> Also, it's a bit odd that you're introducing code and
-> then subsequently patching over it with an improvement. Maybe this coul=
-d be
-> squashed into patch 3?
-
-I was hoping having it as a separate patch to make it easier for RCU
-folks to take a look and provide ack or nack :)
-
-[1]
-https://lore.kernel.org/linux-mm/03da8742-3790-4428-84b8-11911bf44c9e@pau=
-lmck-laptop/
+But I will clarify this on the commit message, thanks!
 
 --=20
 Cheers,
 Harry / Hyeonggon
 
---------------0gIw2wbsDQjCNZaQoAyGLTmg--
 
---------------GaUI6z90zVa0zdq40fRpqq00
+--------------H7l0hVTepAgAY5a6Xn02vj04--
+
+--------------8xQSbLfkLa3QcHTEy0A3WfM5
 Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakIqdwAKCRCGXBN6rc5S
-1hymAQDnrjBNhyfghMOQ1Y5XsS5xCPbM5nzOMMvxwieKQiGerQD/TIjtJEpF5Zy6
-02PvBcB4Ksu+B1/s6N8O0omOEQOq6Q0=
-=1j6o
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakIq3gAKCRCGXBN6rc5S
+1oI0AQCmD4+FAnCL5s0WuOSoFo5XR/5TKwqVhP08qfsAyrwXvwD/RJBmV5okisfF
+oBc6p+YW15g8jrEgvQwjI3qwgz+UDgw=
+=v2D6
 -----END PGP SIGNATURE-----
 
---------------GaUI6z90zVa0zdq40fRpqq00--
+--------------8xQSbLfkLa3QcHTEy0A3WfM5--
 
