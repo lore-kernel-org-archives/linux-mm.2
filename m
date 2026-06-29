@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59452C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3C8DC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E712F6B00C3; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
+	id BB0F96B00C7; Mon, 29 Jun 2026 08:24:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF9FA6B00C7; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
+	id B88DC6B00C9; Mon, 29 Jun 2026 08:24:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C626B00C8; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
+	id A50B16B00CA; Mon, 29 Jun 2026 08:24:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9132A6B00C3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BB99120641
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:52 +0000 (UTC)
-X-FDA: 84932869224.03.E3B4ECD
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C60A6B00C7
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC408140673
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:54 +0000 (UTC)
+X-FDA: 84932869308.30.78D5B68
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6463940008
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIIvri7+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2D097160003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:53 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jdGf9jH9;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735890;
-	b=HsPqKSjhLGxINYd62keUfSp+Wdz/T2iDbnwh6xMMLdM4ngAOMzgpWh6FSzqVEQuSHlcwBj
-	RUAWOQ+IOPNGC4L6+U4l8UvOEKLVLfADxhF2eySSF+R5ictQ0wZbORxMx7zBtWMSlEkLA3
-	llsFTg41irop/XmzrH4Lb5XJvqAz07g=
+	t=1782735893;
+	b=jKhZUqRPUBmj5sKBhF4l8OgbMPjt5zv9G0fYjFl9/I9mOJ2YUAsf/grXAY82IrmgtN7U+q
+	lWVZBBZFWMHl8rd+iSm1AoAVJqyWsnU9DvF1hPpnlU07CIZdXjfER9mh3etlqy9k5/11o0
+	uGrgulN5+J6baQL5wvQEMJmSnK14GM0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735890;
+	s=arc-20220608; t=1782735893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pNf2vZLs0Ll45B4pKyb976+6a6p0KPUKwIl6t6WJtJE=;
-	b=RqcnM0G5Qv72HfNGc422WVUtfJcNX7qanWh00m5KGe47T871xgcWDZ4eHDFtKNKtIGdRY1
-	vYjgiLS9QT04kx7POsDp8I84Apb04QfAfSEu0ACXrqA6AmMd16tmuz3LvUMjogNW9WbJrp
-	KSXy1sAetqei51aD+Z3C+1vvYpiQxZk=
+	bh=+tfecYI3iCL9+dzv6JtnQtpRoRey92E96q+WqEoW8Sw=;
+	b=L6/X3fgfk27Kudx+sn+lojUe7WM+IQ/ZxHe2F9yxPEMp7CRQwbQGN9VFPCG9YIIhasMRnf
+	DKhH7Z9OExrio124eXMbiY1tfKVXMJaiM6GMdfRbS/oVURgmzCkScdJFqosRFJvuZtyuSL
+	/tzfm6rsBnB7GbPBXXhGQ705CRLUf/c=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIIvri7+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jdGf9jH9;
+	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9D65241905;
-	Mon, 29 Jun 2026 12:24:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13381F000E9;
-	Mon, 29 Jun 2026 12:24:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 76CF743E4E;
+	Mon, 29 Jun 2026 12:24:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3A41F00A3D;
+	Mon, 29 Jun 2026 12:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735889;
-	bh=pNf2vZLs0Ll45B4pKyb976+6a6p0KPUKwIl6t6WJtJE=;
+	s=k20260515; t=1782735892;
+	bh=+tfecYI3iCL9+dzv6JtnQtpRoRey92E96q+WqEoW8Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NIIvri7+xMYzLim1PkfG/ho1mN+c9wfJYOoMG5RAAbL4KacfAhSRvbPZdT+r5T04k
-	 WAZFffkPoN9trQ/+yCnF2yVOcZikQi67qHMu8Gkfbdgz9aWvYK0MORbqEDNaMw+x56
-	 K8lOXoq6WRvCNKB7YFZpD6ffvCVeS36Nh4pQ82MX0sqTXfUyNE7/zj8ANh7D70Jpu4
-	 +Mi5eloSuherPvTbQK0z0Z0UtoSMHj1IP+0q/uR2bJt+3EThjagVfw0k0q3Mm9d8M/
-	 6ev1pefTPiYeFjOMFmb+/b0HMnsv1ZDkoYky7cdihOqNla7gdHc5hH2+xVLh2cAdxM
-	 K1VekTqZ/PREw==
+	b=jdGf9jH9adsBJRms93JJP2hO4xGy6V0e5hV2nXk2WS0hZ2yJvg9go1tFLhsAXUrnd
+	 D1dST5LU5l7l/ozI1VERvCoxX9njVJSdFvvIaWCvBDsDWfzkGyRiq325cmVLrry1Zy
+	 ws0snYdC7Z709CZvZySt0/MydVXYxo6HK0m+11iIQmh+aUD5W6SCmgucHBfO/XgDSB
+	 dWPU0haqhNHmmmg7aldX6EIdMkp7hJzh0g+78x/8Knt2+ALN7yHG00bcvR6zhVKvcQ
+	 rMq/f+Xh9kkJlTpeda7U2Jpw4Ur9pBeReuM1xj9AfSoMAEC/ukDTYL0C2FbWs+cPhH
+	 PIRri4XkVH9Eg==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 18/30] mm/vma: remove duplicative vma_pgoff_offset() helper
-Date: Mon, 29 Jun 2026 13:23:29 +0100
-Message-ID: <10671c2fc5d0dd4e3bf497181923e63e46053df1.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
+Date: Mon, 29 Jun 2026 13:23:30 +0100
+Message-ID: <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: osahqtdgdxg3969s5mme5r6pe755bben
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6463940008
-X-Stat-Signature: fy5bi3qr4m9u96d7wudufirz53unh5gy
-X-HE-Tag: 1782735890-450797
-X-HE-Meta: U2FsdGVkX18IEmeXk5A97n/2a/xy7qQOY7E5PPTMk8l5H0a9ayp5RqORXfv2+M4+dasf6WfXo60pgpkpdGRyX121APEPVvgPZRMdnon8izGHCFPfXHBTAobvPgW794OIe6cdpLbXZ19PiXRu05JmSJaqX2czNQk4/4P3bJHCEQcunSlXNIdVG3fPFn3z0T/AfvFl67M0Yvy30OUHMBI2nrN1MThzi/6p2uwCXvF3q58WCR9mwJ5aIXzkzT1o4qiPiAAQ6i9S/9wOtuwUrsGugaQmtyV2VozzP9Xuk8fh2Jt1AtninRgHLNCyT1orq4eljvkS5cvhgBwfdlV/qroAPKmjDrKG2NcBm1ieXOwqjmeJnyp/TC7ldlkUoL3TgMeRvYxWamXSNtaGIhmCvlysqLNy0lztTu2xSV3uUK7VK71UjLsOG9K8Jbbpp5j7uRRPMV9G8BOnK97B1/GOz/EQrecX26OmYbNjmA+vxseKVNZBb27WVnlNMPgV3BgY9Ryay/UN9vkZzO3CrrFvNXxUZttXSn8g0knnvIYDOAWDqpCmQ7ArtgqqrgoKyM88i1ed+DuRobshiWtjnjrfQcMXnIV9LT0PFvaPy/Kn+kBj33RyQNcmAx/KjlABANl1w96D8lyppRXXqd8dneJ010X+/Yp7b0um3ASPzoSrZ6NC1OMJsR61XUYZf44PYC7Abqwu707Vr8wBg8q84g1IxQDY/i8/lugJg+KyQ/sK1NyQoKGbAd8p6UvzGkJYkeUr5/PwqFkraDidqxdbgiBT8RPjHVFEE3zBTyEWGlM8BhH2n66Vl0e2R2xVYXomAqwCuBjdBPLoGowF0ayWdkfqBXecZlCmw52yxnElfkOkjV9FAM+nTVVJiZtEGjHzge8Ax3nezUqEthoOZ99TvOHNLLXu484tZHiVRXXNaUt3e0GvoIb9QujAOwhIBK+EflERmJzNhUl3UAg3PwmJaeyfY7H
- /VVQoLYE
- hk/wTJSBaHmwKa7pD9+7/giSZ5++ncj7BfADqtIx1lLxF8RRX0CiQjmcwXRP2kSgZbWprjNBaAByud/uMSlYLKkMW7VyAkFjbFfLVchDxxk3mlgK2lWTQBacxKVBFsm+cSS8p4zGO/Rvjfe2GFYlqsYE3KsguCNifiHpJvrYB52ujBAfY0c33Q45BQhwt2SxQWEC/pXzsbpn0oRthuj67KEYdD9Pq5j0gS/iYXXt0lHKyEVMW7RvLS2ECgLEVLElsMQ8Oy7agt/hqy3xrE0UrDqAQuZJ8W/VMojsKsUTDEtjzE39fwBFnmJfXGEApynL0AHbuszXFWzYGmov5IrfZ59dZK+xhu+T5xaxUl1Ec2nhJF+A=
+X-Rspamd-Queue-Id: 2D097160003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782735893-468448
+X-HE-Meta: U2FsdGVkX19oce/sq0RvCuPd8MXJGsCYD7kUneIYzpFiUzrC0i3WuWGlD0Np9Q7mbVb90D4m+C4gOqXQXlUgiyy1qutnERkgxHBHLnlRt2AmRWz1t2FDl/NALVP0Dosfm0+ruRlkYU7M9CY0U/1TIQBtKCUpOgerztJpwV9QG/wveoFDuVo9pEkITrla55dqK0DGAymQ2a2Wk6xBoe1m9YZPDHlY3kS8L0J8WjT3TbbCzlUyVuRjiAqFb02OVmqG0ntP7Y1jwEZ+n4a3OaFpoBHrujIBfZx+yP51T1eic0lZcng8BzFaEjXvSIZpqyOCgVux21oc+N9YfzgphU2eFS9sj/6YUMsgWrQBdXkiL6S1VurK5v6i/QW727/8U8B2WIYrGV2uAhMnz15Fi38XRLxll6Cjty3Dvy0P6po5h2e7fwt0hnEXMRAvob60RpsRVJgWET5LW4cAWbu+zr/eMeJaKeBeX2D0QQEQVmkUgMmEE+iK5DCdFgh0/a/ZplEoWQgo9Gg0dH5Gm0Jbw556IEObvOvCklVxEFaJT9ANJ/NXBi/AhQQ6hxOmJvcZCBKaysW45+pIWDDG7LyIMdoN0k96JqWgbndLB8FsdHYOX7LH5qGr4sByqn1Mtja7MFKe4D+BJtkIS5d5WTM6ffM7Q5cxfERITc9NNT0XBwq23VT54frJIuR4uZp+Kq4KbZO81CNZO3cvl7QcYJmsV9u2jsX4/H+CXt9W+6nthRw/4Qe/bDWpyBDzFkvX46aJlHU5hTKWX0SA7t4VxC8+h/aMKAoHCq5LY4GWAIL/qXDgDTZMXIBk4/4aQKH2k3i+L61+COFgY1z3LgXKu4tQjw5+UZN34NsWDiCU6twO5OvcHjbAHuJ6xLAil3x2zVGfUzmzPcpX3FjENeZXdBk+JLqZsLINbrgiXQFmH1hwLvy5osR64X46RIqwWaASoGqcOpIqJQ3CwncHS3s3ZPUKcy+
+ anjxZ3iI
+ //VEnjpHfnCR4Mr01d8IU0dTRegPLKhdiwV7IUVSYcqNh/YhSrP3/gOvicNZE7AeI9BPkqNIDjx/DY/VlRgv0T1ajtYYFMPZ/zhWOFlA+MScLHOX71D8fz6BStp97j7BTd9dAaMC+41GZfKRe3MhE2UqY1+DMdc5WvC4WaKOUZTD91KeJ8npCsWOMsU5BRQbTqxrYF9z59EilL/k+rlF3ABIdXADff9ffy6QE6XMudRR9WXrke8GWPfUzQuBsHgY7LaM1V1tIhqxiD8XAY3xTGG35pME+fbP2NgckVoOgflSFERFEV0vd1nnbzR9LhlT116j4wAT7ZRxDTeiRIu9s5VvcJ8dzjLERlO8Byt8xxMOecI0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,70 +162,298 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is doing what linear_page_index() does, so eliminate it and replace it
-with linear_page_index().
+There are a number of places where we open code what linear_page_index()
+and linear_page_delta() calculate.
 
-Update the VMA userland tests to reflect this change.
+Replace this code with the appropriate functions for consistency.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/vma.h                        |  9 +--------
- tools/testing/vma/include/dup.h | 16 ++++++++++++++++
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ arch/arm/mm/fault-armv.c              | 2 +-
+ arch/x86/kernel/cpu/sgx/virt.c        | 3 ++-
+ drivers/comedi/comedi_fops.c          | 3 ++-
+ drivers/gpu/drm/etnaviv/etnaviv_gem.c | 3 ++-
+ drivers/gpu/drm/gma500/gem.c          | 2 +-
+ drivers/gpu/drm/msm/msm_gem.c         | 3 ++-
+ drivers/gpu/drm/omapdrm/omap_gem.c    | 5 +++--
+ drivers/gpu/drm/tegra/gem.c           | 3 ++-
+ drivers/gpu/drm/ttm/ttm_bo_vm.c       | 7 ++++---
+ drivers/vfio/pci/nvgrace-gpu/main.c   | 3 ++-
+ drivers/vfio/pci/vfio_pci_core.c      | 3 ++-
+ mm/nommu.c                            | 2 +-
+ mm/vma.c                              | 2 +-
+ virt/kvm/guest_memfd.c                | 2 +-
+ 14 files changed, 26 insertions(+), 17 deletions(-)
 
-diff --git a/mm/vma.h b/mm/vma.h
-index 527716c8739d..2342516ce00e 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -247,13 +247,6 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
- 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
+diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
+index bd1ad4181a53..306cfd7b0765 100644
+--- a/arch/arm/mm/fault-armv.c
++++ b/arch/arm/mm/fault-armv.c
+@@ -132,7 +132,7 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
+ 	pgoff_t pgoff;
+ 	int aliases = 0;
+ 
+-	pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
++	pgoff = linear_page_index(vma, addr);
+ 
+ 	/*
+ 	 * If we have any shared mappings that are in the same mm
+diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
+index db6806c40483..6a1933ddc6fc 100644
+--- a/arch/x86/kernel/cpu/sgx/virt.c
++++ b/arch/x86/kernel/cpu/sgx/virt.c
+@@ -9,6 +9,7 @@
+ #include <linux/miscdevice.h>
+ #include <linux/mm.h>
+ #include <linux/mman.h>
++#include <linux/pagemap.h>
+ #include <linux/sched/mm.h>
+ #include <linux/sched/signal.h>
+ #include <linux/slab.h>
+@@ -41,7 +42,7 @@ static int __sgx_vepc_fault(struct sgx_vepc *vepc,
+ 	WARN_ON(!mutex_is_locked(&vepc->lock));
+ 
+ 	/* Calculate index of EPC page in virtual EPC's page_array */
+-	index = vma->vm_pgoff + PFN_DOWN(addr - vma->vm_start);
++	index = linear_page_index(vma, addr);
+ 
+ 	epc_page = xa_load(&vepc->page_array, index);
+ 	if (epc_page)
+diff --git a/drivers/comedi/comedi_fops.c b/drivers/comedi/comedi_fops.c
+index c09bbe04be6c..536c25d8dcee 100644
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -25,6 +25,7 @@
+ #include <linux/fs.h>
+ #include <linux/comedi/comedidev.h>
+ #include <linux/cdev.h>
++#include <linux/pagemap.h>
+ 
+ #include <linux/io.h>
+ #include <linux/uaccess.h>
+@@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
+ {
+ 	struct comedi_buf_map *bm = vma->vm_private_data;
+ 	unsigned long offset =
+-	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
++	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
+ 
+ 	if (len < 0)
+ 		return -EINVAL;
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+index b0436a1e103f..2e4d6d117ee2 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+@@ -6,6 +6,7 @@
+ #include <drm/drm_prime.h>
+ #include <drm/drm_print.h>
+ #include <linux/dma-mapping.h>
++#include <linux/pagemap.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/spinlock.h>
+ #include <linux/vmalloc.h>
+@@ -188,7 +189,7 @@ static vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
+ 	}
+ 
+ 	/* We don't use vmf->pgoff since that has the fake offset: */
+-	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	pgoff = linear_page_delta(vma, vmf->address);
+ 
+ 	pfn = page_to_pfn(pages[pgoff]);
+ 
+diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
+index 88f1e86c8903..2708e8c68f4c 100644
+--- a/drivers/gpu/drm/gma500/gem.c
++++ b/drivers/gpu/drm/gma500/gem.c
+@@ -288,7 +288,7 @@ static vm_fault_t psb_gem_fault(struct vm_fault *vmf)
+ 
+ 	/* Page relative to the VMA start - we must calculate this ourselves
+ 	   because vmf->pgoff is the fake GEM offset */
+-	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	page_offset = linear_page_delta(vma, vmf->address);
+ 
+ 	/* CPU view of the page, don't go via the GART for CPU writes */
+ 	if (pobj->stolen)
+diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+index efd3d3c9a449..cbf723a5d86f 100644
+--- a/drivers/gpu/drm/msm/msm_gem.c
++++ b/drivers/gpu/drm/msm/msm_gem.c
+@@ -9,6 +9,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/dma-buf.h>
++#include <linux/pagemap.h>
+ 
+ #include <drm/drm_dumb_buffers.h>
+ #include <drm/drm_prime.h>
+@@ -360,7 +361,7 @@ static vm_fault_t msm_gem_fault(struct vm_fault *vmf)
+ 	}
+ 
+ 	/* We don't use vmf->pgoff since that has the fake offset: */
+-	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	pgoff = linear_page_delta(vma, vmf->address);
+ 
+ 	pfn = page_to_pfn(pages[pgoff]);
+ 
+diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+index 8e013e4f2c6b..00404fb6c29a 100644
+--- a/drivers/gpu/drm/omapdrm/omap_gem.c
++++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include <linux/dma-mapping.h>
++#include <linux/pagemap.h>
+ #include <linux/seq_file.h>
+ #include <linux/shmem_fs.h>
+ #include <linux/spinlock.h>
+@@ -359,7 +360,7 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
+ 	pgoff_t pgoff;
+ 
+ 	/* We don't use vmf->pgoff since that has the fake offset: */
+-	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	pgoff = linear_page_delta(vma, vmf->address);
+ 
+ 	if (omap_obj->pages) {
+ 		omap_gem_cpu_sync_page(obj, pgoff);
+@@ -407,7 +408,7 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
+ 	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
+ 
+ 	/* We don't use vmf->pgoff since that has the fake offset: */
+-	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	pgoff = linear_page_delta(vma, vmf->address);
+ 
+ 	/*
+ 	 * Actual address we start mapping at is rounded down to previous slot
+diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+index 436394e04812..1d8d27a5ea89 100644
+--- a/drivers/gpu/drm/tegra/gem.c
++++ b/drivers/gpu/drm/tegra/gem.c
+@@ -13,6 +13,7 @@
+ #include <linux/dma-buf.h>
+ #include <linux/iommu.h>
+ #include <linux/module.h>
++#include <linux/pagemap.h>
+ #include <linux/vmalloc.h>
+ 
+ #include <drm/drm_drv.h>
+@@ -564,7 +565,7 @@ static vm_fault_t tegra_bo_fault(struct vm_fault *vmf)
+ 	if (!bo->pages)
+ 		return VM_FAULT_SIGBUS;
+ 
+-	offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
++	offset = linear_page_delta(vma, vmf->address);
+ 	page = bo->pages[offset];
+ 
+ 	return vmf_insert_page(vma, vmf->address, page);
+diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+index a80510489c45..88babf435ac2 100644
+--- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
++++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+@@ -32,6 +32,7 @@
+ #define pr_fmt(fmt) "[TTM] " fmt
+ 
+ #include <linux/export.h>
++#include <linux/pagemap.h>
+ 
+ #include <drm/ttm/ttm_bo.h>
+ #include <drm/ttm/ttm_placement.h>
+@@ -208,9 +209,9 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+ 	if (unlikely(err != 0))
+ 		return VM_FAULT_SIGBUS;
+ 
+-	page_offset = ((address - vma->vm_start) >> PAGE_SHIFT) +
+-		vma->vm_pgoff - drm_vma_node_start(&bo->base.vma_node);
+-	page_last = vma_pages(vma) + vma->vm_pgoff -
++	page_offset = linear_page_index(vma, address) -
++		drm_vma_node_start(&bo->base.vma_node);
++	page_last = vma_end_pgoff(vma) -
+ 		drm_vma_node_start(&bo->base.vma_node);
+ 
+ 	if (unlikely(page_offset >= PFN_UP(bo->base.size)))
+diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+index d07dcacb76bd..963fd8ded20d 100644
+--- a/drivers/vfio/pci/nvgrace-gpu/main.c
++++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+@@ -11,6 +11,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/sched.h>
+ #include <linux/pci-p2pdma.h>
++#include <linux/pagemap.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/memory-failure.h>
+ 
+@@ -385,7 +386,7 @@ static unsigned long addr_to_pgoff(struct vm_area_struct *vma,
+ 	u64 pgoff = vma->vm_pgoff &
+ 		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+ 
+-	return ((addr - vma->vm_start) >> PAGE_SHIFT) + pgoff;
++	return linear_page_delta(vma, addr) + pgoff;
  }
  
--/* Assumes addr >= vma->vm_start. */
--static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
--				       unsigned long addr)
--{
--	return vma->vm_pgoff + PHYS_PFN(addr - vma->vm_start);
--}
--
- #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
- 	struct vma_merge_struct name = {				\
- 		.mm = mm_,						\
-@@ -275,7 +268,7 @@ static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
- 		.start = start_,				\
- 		.end = end_,					\
- 		.vm_flags = vma_->vm_flags,			\
--		.pgoff = vma_pgoff_offset(vma_, start_),	\
-+		.pgoff = linear_page_index(vma_, start_),	\
- 		.file = vma_->vm_file,				\
- 		.anon_vma = vma_->anon_vma,			\
- 		.policy = vma_policy(vma_),			\
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 535747d7fee4..7ed165c8d9bc 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1548,3 +1548,19 @@ static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
+ static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index a28f1e99362c..55d4937d495a 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -19,6 +19,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/notifier.h>
++#include <linux/pagemap.h>
+ #include <linux/pci.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/slab.h>
+@@ -1727,7 +1728,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+ 	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
+-	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
++	unsigned long pgoff = linear_page_delta(vma, addr);
+ 	unsigned long pfn = vma_to_pfn(vma) + pgoff;
+ 	vm_fault_t ret = VM_FAULT_FALLBACK;
  
- 	return vm_get_page_prot(vm_flags);
- }
-+
-+static inline pgoff_t linear_page_delta(const struct vm_area_struct *vma,
-+					const unsigned long address)
-+{
-+	return (address - vma->vm_start) >> PAGE_SHIFT;
-+}
-+
-+static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
-+					const unsigned long address)
-+{
-+	pgoff_t pgoff;
-+
-+	pgoff = linear_page_delta(vma, address);
-+	pgoff += vma_start_pgoff(vma);
-+	return pgoff;
-+}
+diff --git a/mm/nommu.c b/mm/nommu.c
+index 60560b2c457e..7333d855e974 100644
+--- a/mm/nommu.c
++++ b/mm/nommu.c
+@@ -1332,7 +1332,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	*region = *vma->vm_region;
+ 	new->vm_region = region;
+ 
+-	npages = (addr - vma->vm_start) >> PAGE_SHIFT;
++	npages = linear_page_delta(vma, addr);
+ 
+ 	if (new_below) {
+ 		region->vm_top = region->vm_end = new->vm_end = addr;
+diff --git a/mm/vma.c b/mm/vma.c
+index ee3a8ca13d07..185d07397ca6 100644
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 		new->vm_end = addr;
+ 	} else {
+ 		new->vm_start = addr;
+-		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
++		new->vm_pgoff += linear_page_delta(vma, addr);
+ 	}
+ 
+ 	err = -ENOMEM;
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index db57c5766ab6..f0e5da490866 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -440,7 +440,7 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+ static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+ 					     unsigned long addr, pgoff_t *ilx)
+ {
+-	pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
++	pgoff_t pgoff = linear_page_index(vma, addr);
+ 	struct inode *inode = file_inode(vma->vm_file);
+ 
+ 	*ilx = inode->i_ino;
 -- 
 2.54.0
 
