@@ -4,137 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F25F8C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3A27C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:37:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A55DD6B008A; Mon, 29 Jun 2026 14:33:40 -0400 (EDT)
+	id A38EA6B008A; Mon, 29 Jun 2026 14:37:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2E916B0092; Mon, 29 Jun 2026 14:33:40 -0400 (EDT)
+	id 9EA636B0092; Mon, 29 Jun 2026 14:37:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 945A86B0093; Mon, 29 Jun 2026 14:33:40 -0400 (EDT)
+	id 8DA4E6B0093; Mon, 29 Jun 2026 14:37:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 623C86B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:33:40 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D5B8CA0201
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:33:39 +0000 (UTC)
-X-FDA: 84933798558.27.D36E909
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3F5DC0002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:33:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mfsMOuqV;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782758018;
-	b=GOk90k1tILKHF9xXJVWLtRlZ7wauoqryI5uGkH53o1FPUldqrcoSjd2HBTfEJFa315uU2B
-	r88B9LNMV9jWnxQNHH//WuuVkBOZKAYCZEEsbm2S1BDuHyfwEMOA6gRviYvPR4LNkbFF54
-	HVhdPS3aG4eAe7c1RXSiPtmdiaCBsPs=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782758018;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C0FB6B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:37:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C68451673C2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:37:40 +0000 (UTC)
+X-FDA: 84933808680.05.4967162
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DA4B040007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:37:38 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KoEEPYCO;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782758258;
+	b=SBnLJMLKVbgrAhDCUJw0sia5ZWL6uf7TRFMj9T14vS4S5tUOnQgsQ374KomKArz/9SPVQr
+	c/G7jCa75O+x6LWlNpx8cAXvaSF0FX/i8wc2Gig32/9waDbro/xOalmeoNBLJIrtfRdNlg
+	QU21Ck/dwxIwgKyP7NQItimZVeRik+A=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782758258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kIt0MX12ycDk124SAeYfFyNpLYyys/OHkSbkyqFSd78=;
-	b=r14Ntvlw7N4hXXouU2tMgWyzzThXfr9+u4snLhJx1SQEAk/yES+nQQDuAqeXbh1y3238eQ
-	eEubB2qxNT+0ZrqFKphtpgzAx9AKlIFQ3gyT8LWXdwRa8mttDADHfUcnUxhBM112awF1Wm
-	djDqZFs3FdWwLs0eQfsrp11aRpreImI=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mfsMOuqV;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 11D694189C;
-	Mon, 29 Jun 2026 18:33:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0D61F000E9;
-	Mon, 29 Jun 2026 18:33:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782758017;
-	bh=kIt0MX12ycDk124SAeYfFyNpLYyys/OHkSbkyqFSd78=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mfsMOuqVYVS9UEV1G+8hUcr0Tigrrwz1wkeQMOTs6i6G5h2N5jU+93Zs7uQJ1KRU1
-	 0fL9nbfq3qm0fpsIYs1Fv949GutXWWyFhS5GZbu4n1/2OYfcYGv62dkSd52Y7wfQ4t
-	 CIvt/YvXmWyaNWCeuZBiYDAB4zDWbTS6q2sgX/Abi6n9teX+qMPUNvkmNCfQIKlSJw
-	 ITM9tJbMI5xUhV0XW/PTfW534cF04h5795BPrnzjsSK6EqagfYMikk+OtObnpQcDYL
-	 cEPhKemQ2PH9y1vo9u/pwW7VQFyapb4ZoEarPk8I3hf05cC2sGJEVUGPd2wRB0zw7k
-	 gYw4j9d8JykPA==
-Message-ID: <e18f075a-2203-4ebb-8f4e-713d386d0ef3@kernel.org>
-Date: Mon, 29 Jun 2026 20:33:32 +0200
+	bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+	b=RH2Zx5eQlbth+HHFrU42ZxSo422kiiZXmNTitZpcmQYRpWMivlVKjVUlALfzP8geBLhdMK
+	PA7MvG8WLmeUJ1EJDbM+2rXyzIIjDXW5j3J9hUnm6tXfnFjX5Kht9Zehel4JZ/ZxzQ36a9
+	j0G18bKd4l8ImaJ4OeLJyglisG9HNb8=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=KoEEPYCO;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-493b29be0d6so9994405e9.0
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:37:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782758257; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rNBcjZ9xUEd7lVToKPZiBAVoCbSkwgdXLbkmMHabZL44Ea83+DS5Rg3PwGWpe3KRA0
+         mr+OzBd44jmZVfw6612Mvmiq/s8Po/PmnFpYoRVL8gYuniKBNCZo7fCVBj1kjoJQx5P5
+         0I6Mzdc9CdbXIU9lzqnaGtS3DvryLPnU03cHaNfSuCymdzsWbFSee77KC10vYSHGFinX
+         0T3tLhde4dxNnr+QEtqQTkhCL3W1dnU87hFBMYEVTWfgNzoxpsOI4XMfnDdKe5n9mit5
+         dpttAH6xWd2maHe4ci6MQicxSlzAxpOcFujpZcKxeBZ8noKyxjqYZ+Wu8MCORhIgSKhI
+         64QA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        fh=d7yQJSIE84/x98VfUuh6m6XBYFxPMMu5U1+RC15Hmks=;
+        b=Abcil+Et5hJUZN299TlxOCnXoNbHVfW9G/EYbI8zUxUccBC0qQyp/gtjWbYBgxGwoy
+         lndegnrblywcqUYkGUE8OWMzFJ5n2Ido495IsZdGgqP1uRTyGCZrSzBj+S0xnhKXXsta
+         dzfUAqDDXESHf3IcSC3iU9Mt06p1kG+v6YxKmhav8aJQfyGFuC2o92HCggKIl46Ywoan
+         Wjw+MEJErhDVKJ8raVGnDg2LMhF78jQYM52uWYbsml95Az8sjIt6Ji8z7ujw3LLM1LxT
+         eGdomEcxf7EZa7VRgLuvOgRcRWPqzSFJIR1qMgvpF1/6eCKpOFlks5CuKlykcDkt0R64
+         8mNQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782758257; x=1783363057; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        b=KoEEPYCOWdau6/CeMATVFnpJB9bjVD2PyEgZaVkWT7Mh/FoUmE7WhfWGnvgvxK0jPK
+         IzCRsSb4juqim8DYeM5STDSzEPfg7FJZCXeRevNpOBW42YfSa7/+iUWG6ejY7ElMSJ4k
+         KqK37EYfJq/OhzHNhOCg3IluzepUsLAkG+rUz7Gudx1k9TJGAh0uauL4qpUb9B27YpWk
+         aYWkSQnk6Vd/WRIttjXPpaI9eVT6Y0QeYu2atX9ODlzq5jZoDo2G10q9JKZp/u51ETco
+         ZuT/lOCwYY85IqaqdvQxRdqgKJx+3GvYQC0csI7t7EItakrogMt+CNH9LprhJcHQMmeq
+         503Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782758257; x=1783363057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=66IdtV4A4O3twwyEenTNgYY676iFrQKRg0yaSc+sXIk=;
+        b=KO9ntPGfhJTrOtsmHhWXxykMFsKvz0KBZxtfRDEWcRkx2e1k+YeOrhi4nFXa//xh5/
+         j9lOE8YoAh5zh7KyhWJRGhObvs8dY88kXbDf7aP6c9vZLkB2HoRsRLDqXZm8gQzKNdSC
+         gkoHQl0wAWil+GSK/O95OCCVNDZiJzK2kFYrX7xgc1QIpY8q0lOyIVREbHG4FWAMf9am
+         YvYYp54Ob+uAkUreyNEmv0gFc6jdEvw8TVJso0pkVLz+KrQx1uM0jyLXOuyb1zOwyi64
+         cG2gjmZgw3bqTdFn1IPSIi0iXkMJkMzvhysBb5yt3QzWqhamfYkzpD4iIBCKtBLl9LDS
+         tqxw==
+X-Forwarded-Encrypted: i=1; AFNElJ/42xJJJ3SzqDPkdYdg8FI2Yvgj6sg9lGTFDrS6ZGXRbXrDGtDq9/UPJ6Y27U34z2+YvvOcPEalOQ==@kvack.org
+X-Gm-Message-State: AOJu0YzTrgiJ/z5fg2XOGtUbi79ucePTRTvzx2iW94miPgyCxxNV/aqO
+	SMsI8EQ/rDkRbk6j1nf9kXWysa8pdtXfzzDlVOTx2zFlzU/nneXyKT9VlP4lVTypbIX5Fc30kUS
+	XTUnlmEv40lZmQYtvBuxZSBUHRwi8bO8=
+X-Gm-Gg: AfdE7cmeMFMfEyb9jwJZ11pBUDPpRmYHlJzch2Gh+F+kV0o9OCsHDeU4gwG3nnNvu34
+	Oc6ZD5EFUfFHzwlq81OTCPUFxsu0E8ozXJiSR670WfOc/og+yPrZGDjxLfj9N2AR98Ha+B1MHQG
+	LRst4+kQgneE3i6YLIT/3vrhP6QJ493XwpmEecVuX2a8FmIxypK8iEEhBLOx4Ml1C3enxHvVMw1
+	kuWxHxflSQUDkHKcJCB5GzYrsfufZonwVHNFBeLAB41O5m463M/GS6pE0TVETODIuNreBXe/yAk
+	t64xEjkrmKjtHmb+4fXVwKyz4M1Y
+X-Received: by 2002:a05:600c:524e:b0:48f:e230:29f5 with SMTP id
+ 5b1f17b1804b1-493b8ce540fmr4782905e9.16.1782758257412; Mon, 29 Jun 2026
+ 11:37:37 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-To: Johannes Weiner <hannes@cmpxchg.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260629163337.1264881-1-hannes@cmpxchg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3phc8txm6jigtmrysztw7wkdx7e8xy39
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com> <20260629112032.20423-2-jiahao.kernel@gmail.com>
+In-Reply-To: <20260629112032.20423-2-jiahao.kernel@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Mon, 29 Jun 2026 11:37:24 -0700
+X-Gm-Features: AVVi8CeUNnnZ1b5gr34nY8C8rkHWBFp3tMR1RyjfkvKK-T1UYPS0l8SmSsuAXg0
+Message-ID: <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/6] mm/zswap: Fix global shrinker when memory cgroup
+ is disabled
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, yosry@kernel.org, mkoutny@suse.com, 
+	chengming.zhou@linux.dev, muchun.song@linux.dev, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: p8ekyen6w9xehaxipy5w68a89z8bhwp1
+X-Rspamd-Queue-Id: DA4B040007
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: F3F5DC0002
-X-HE-Tag: 1782758017-932741
-X-HE-Meta: U2FsdGVkX19N/4240WomaQc1SMmw+ll0xQGNgjHKi4BtS5BWt/wC/PYh6FoUvCnP/mDN4xuJMsYMyT9UM+21qie45nn8v8u1lLd4KE8a6H7COGdqFLY89+ZMdFQHP6jHyllBQkYLkDbF4cvFxWTvan/7Kd2o4JIaNUuDjrowK4VdDlPyyn6SA5VBGHFNuKtFbZBmrFZszUvADAINh3iuV7tLu0KBKW3xipFZ+bfi3TDqiZDW6mGHgLaACn9RLYx9IqRU2q+lj3LMKlie6t8X3oJaSsTXyRekVOhPyz+g+k6pUTVkyrpN/7GL36uvbGcnG0txb8BURI7TdhFIBGFo15lJXWa8kPPdfGLSRt5MzxQ+AiZzFNBcRsCyzwy0o7PiENJzMWXhNECQ+gPS4KCWe5pVfdpV39sQ951CXe8fHoW23xA5ONUcGUK8jyFNd0e2yvyUQUPukeufVqRVLLDo1LFJADIrdOaDmQTjJYwqWeegTntJ1nYNTvaf4kxZBypmuu4yFN2Wgs3AuE/NX9kkDh50UvhHrqqpHQ+ABtVvTSq3DpKRXOaUFQvqfMq93HDQut3fD3H9gjOjVzj6Rs0GtP+oe1tjcSad+GMezOB3ZsoR+Ns1Wj2ZLyjV5P08/BgZOghVTfbch1WgSnwbf7enyZw8HJWLWFR8GDJiIXhcxRY/hHj+gljaTns36sD81TQFkbqYxXWcfErvvhI5XC3nZf5nsGl4uLRrHbk/uKhkjzeR/64xy7/rx6SmDPhFKEXwKNqSi1Nnywdzh8+qomXBuEOE9PJD+i4XDF+RjDp144Wz56nDZ/zF9NQ/x81y+SucwvHfYLBY7vNg8GrLxqv+RlECcVoYluDq/gJnUmp37I7XL+Hfj0cvvTu7ND1TAxLiV2xk4n2M7RMs159ss4cJtCWE0y4i7zM57jxXXh1NPEFtccTUntbekGkYt8IgtXlFH0JB/9tD1ABD7/pXOBI
- HAmAgTPU
- wtyLiESEcp555IAQ6MvLSyQ1ThI7PejLSj1hwf4j4YVbf43+Rm++3cc4cLdYSTyun8C22Gtwhd/wcB0HGDRJv0JblX4IrSu6DNwlQ7ynNOYld1J0/7ZUsdUwTdhKuodOMJ3yA1yuBms3V7qUSehxAXxMruNg8ddMTkOYzjVMNtp0S1qgCVC1u5nslA01XhPZBpsUa08VWP0uGfPyAK0HTJve0dec/71lPgfQ7jOBKMJFgEI4vttL+K/EviB4wjERovCinLi6qoY9LJQqRYEIL6NmH1MiJXUKgDUDonXIY/jDwz9VdqhFSmEmbtJP7bT2r6HGN8dZCWjhC6G/RwDVIhlMi46Mkjw0N3PcHPNvbEpjF/KnP3STmvVMbmNFzzKOkdFotaabdSIUC4sBDij+I++tLYzsqD2PCQY9ii3mn2tgtHKSxDA922f9YY9byU8aV7Aj0
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782758258-886209
+X-HE-Meta: U2FsdGVkX18YWT+Cvb4K0nRpRKWlKcYhgmdXL44f5RcpJFub6hEX/jF8Go/Z06yXnofwjygugacD5UonDYBIUS1IIwVseWvskdGvdYLtf0cYfEuFduiCuAEYE6MJedpJClryQWNIS+Umn1xv5ffDPi5FPB5T7BMyaczHJRws2SMaP7X+1HsgumUte6j1S9gRah+9A/AobRReBRYnnyZQYPWtxWYZrMsUJuhJRvVKqEbSs8Qg0m+kRC58mgHI6gHE3i5xZ9miQmTT0tq4ZLCanIvRvXvWDocJIsyhAk8Uhg6zOkNOFnrjDSwPfDB+JrLcKS9qiI2UFhsOy+xHu/AoIP3e554MKJU6k2nlae8Qb/VgRfbQ2ZMZFpysZ2BVllNgzTJy8Gdo2K052Fc5atcxuQqUhm6dhxzowhGEucGg5cyeAbRMuOLzSD8ArYn7q8hbLb+ug8TElTxaENL0/DnTFwGxNx3hRvACVzxIuDN+6uNUaQh9BGnd5PofWVRsGwUCqTZcWihgbReNj+1Kuzb4mtqdl5iQPo3ufrngUtlxlck/hszv0XISjGEgV6LL00cmVfyai0+VXPEy/JqtFTSu4RjwZ7xDjSebvZzZwl1zoKgKpAbK5TeoQU3YCrHY2FBdq0iw9fW/vVHXchR7bFgG7hJts3CLe9TlWM9VEaeU12dfSmOjviCfUnxry7LG+lNbeM7pD1i9jsL8lI/sOYtemgAGpKSnM511yO5ldACZu7hWQ4jHkDz/h9mN7e0oUKHl8j+9y9PobWaej9M3FGvpw500XVY4PySkTQyN5XRd8e4uyyWnCkvmXZ+gtGfcwjr5lrBwFeAMRP2UlDWzGMgjcdpdH2zD7zhxVzS0NZ5L0SCJQpzk2Bbps0ZvcUXeDk8L6qTpDi29EC1HgKxYM3BOF1V/XFTfP8HXtk6mMy0xEl5qZCVrhCaTMCMYiY+oRkeYIWKg/zwPmD5rlP5HlpD
+ tMJojfIS
+ aIRUIW2JFom/yegs1LT2hJ42RkA8HmOz2w4mkRcdclIJHOOOyCxGQHZuo/Cl6km8iA1eFWQrG+CerTPSHUwpy2MnXJnY9xRWu43s0NYsPrSsOBxLFkd9qKdz3OgQen39A0w04C7gAE/lYPJuzEZU60xVqGM0J1V5CRV+geEVZOJno+KvBg0F0V19rpoxg0DgjZvenzuk9h/Knj5hGv3hDPJPoCDRGGxOUzgIMP2JL89K8cz6JWx20RkxBTCxVWYWJB98qbW7ZxG8cDvOrk/DZvQxYU98uUtAjo71zkayUuUYkEuQZpvAkezX8olfCKIKE80waF81qngR3bk1KCaYt/S2FeuF90Jj0RSDRVCofNF0YlENIbaNZ65XjhVfAKjRZE3rqzC2dAS5clxA0q2BTzantyzjP40dY3LjvZFsV3v3SJuvDuPbcAOlSsP+onHgeQWCYBvLABfpoJmBA6UjmIUZTl0TgGTRRgxR1d2FYwzkHMErX5ScyBmTM7KpzLkCMucBl45D56X1w3L38Eqh02Evc4iAWzZXRyakir5jt7LplmgjGTe9G7zscPTaOZrZQEBzN0FCcDeSleZE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,86 +142,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 18:33, Johannes Weiner wrote:
-> Neha reports that mapped shmem aren't considered for NUMA balancing,
-> noting convergence problems and bandwidth bottlenecking for cachelib
-> based workloads on tiered memory systems.
-> 
-> Looking at the code and going through the git history, this doesn't
-> actually seem intentional:
-> 
-> Commit fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault
-> VMAs") added a vma_policy_mof() gate to task_numa_work() so VMAs whose
-> policy lacks MPOL_F_MOF are skipped from NUMA balancing scans. The
-> motivation was a real usecase: Oracle was pinning shared segments with
-> mbind(MPOL_BIND) so trapping faults was both expensive and pointless.
-> 
-> The handling of NULL from vm_ops->get_policy, however, treated "user
-> explicitly opted out" the same as "user never specified anything." For
-> VMAs whose shared policy is absent - the common case for shmem - the
-> scan was disabled too.
-> 
-> This issue is old. It probably hurts less in conventional NUMA. But it's
-> very noticable on tiered systems, where entire tmpfs workingsets can get
-> stuck on lower-bandwidth memory.
+On Mon, Jun 29, 2026 at 4:20=E2=80=AFAM Hao Jia <jiahao.kernel@gmail.com> w=
+rote:
+>
+> From: Hao Jia <jiahao1@lixiang.com>
+>
+> When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
+> Therefore, the global shrinker shrink_worker() always takes the !memcg
+> branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply gives up=
+,
+> so it fails to write back anything.
+>
+> Therefore, when memory cgroup is disabled, fall through with the !memcg
+> branch and shrink the root memcg directly. Stop the loop once
+> shrink_memcg() reports -ENOENT, since the root LRU is the only target and
+> -ENOENT means it has been exhausted.
+>
+> Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
+> Cc: stable@vger.kernel.org
+> Reported-by: Yosry Ahmed <yosry@kernel.org>
+> Closes: https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeL=
+c=3DeyTPKPVQgX4g@mail.gmail.com
+> Signed-off-by: Hao Jia <jiahao1@lixiang.com>
 
-Sounds bad enough to warrant CC: stable?
-
-> 
-> Fix this by having vma_policy_mof() use __get_vma_policy() directly, and
-> thereby handle the fallback to task policy (-> preferred_node_policy()
-> has MPOL_F_MOF per default). Every other consumer of vm_ops->get_policy
-> already handles it this way, the scan-eligibility check was the outlier.
-> 
-> This preserves Mel's intended fix: don't scan stuff the user explicitly
-> pinned. But allow default policy vmas to participate in balancing.
-> 
-> Reported-by: Neha Gholkar <nehagholkar@gmail.com>
-> Tested-by: Neha Gholkar <nehagholkar@gmail.com>
-> Fixes: fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault VMAs")
+Ah good catch.
 
 
 
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > ---
->  mm/mempolicy.c | 21 ++++++---------------
->  1 file changed, 6 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 36699fabd3c2..bba65898aee1 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -2057,24 +2057,15 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
->  bool vma_policy_mof(struct vm_area_struct *vma)
->  {
->  	struct mempolicy *pol;
-> +	pgoff_t ilx;
-> +	bool mof;
->  
-> -	if (vma->vm_ops && vma->vm_ops->get_policy) {
-> -		bool ret = false;
-> -		pgoff_t ilx;		/* ignored here */
-> -
-> -		pol = vma->vm_ops->get_policy(vma, vma->vm_start, &ilx);
-> -		if (pol && (pol->flags & MPOL_F_MOF))
-> -			ret = true;
-> -		mpol_cond_put(pol);
-> -
-> -		return ret;
-> -	}
+>  mm/zswap.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 761cd699e0a3..0f8f04f22888 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1356,7 +1356,12 @@ static void shrink_worker(struct work_struct *w)
+>                 } while (memcg && !mem_cgroup_tryget_online(memcg));
+>                 spin_unlock(&zswap_shrink_lock);
+>
+> -               if (!memcg) {
+> +               /*
+> +                * Reaching a NULL memcg means a full hierarchy pass comp=
+leted.
+> +                * Exclude the memcg-disabled case, where it is always NU=
+LL, and
+> +                * fall through to shrink the root LRU directly.
+> +                */
+> +               if (!memcg && !mem_cgroup_disabled()) {
+>                         /*
+>                          * Continue shrinking without incrementing failur=
+es if
+>                          * we found candidate memcgs in the last tree wal=
+k.
 
-Okay, we used the fallback of vma->vm_policy before (if vma->vm_ops->get_policy
-was not available), which is what __get_vma_policy() does at well.
+nit: I wonder if we can just merge this comment with the new comment
+you just added.
 
-But if vma->vm_ops->get_policy now returns NULL, we fallback to get_task_policy().
+> @@ -1378,8 +1383,15 @@ static void shrink_worker(struct work_struct *w)
+>                  * with pages in zswap. Skip this without incrementing at=
+tempts
+>                  * and failures.
+>                  */
+> -               if (ret =3D=3D -ENOENT)
+> +               if (ret =3D=3D -ENOENT) {
+> +                       /*
+> +                        * With memcg disabled the root LRU is the only t=
+arget, so
+> +                        * we should abort if it has no writeback-candida=
+te pages.
+> +                        */
+> +                       if (mem_cgroup_disabled())
+> +                               break;
 
+Hmm do we need to do this? Consider a system with cgroup enabled but
+with just one cgroup (root?). The behavior would just be trying that
+cgroup for MAX_RECLAIM_RETRIES failure attempts, correct?
 
-Makes sense to me although this is a source of confusion for me.
+In that case, we don't need to do this check, and we would get the
+same behavior. The loop would terminate after MAX_RECLAIM_RETRIES :)
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
--- 
-Cheers,
-
-David
+Could you fact-check me? :)
 
