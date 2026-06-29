@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A7E9C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB465C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:50:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6093B6B00BC; Mon, 29 Jun 2026 08:43:34 -0400 (EDT)
+	id BBDA56B00B8; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BAC16B00BD; Mon, 29 Jun 2026 08:43:34 -0400 (EDT)
+	id B94836B00B9; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 482816B00C0; Mon, 29 Jun 2026 08:43:34 -0400 (EDT)
+	id AACAD6B00BA; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 265EE6B00BC
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:43:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AAF63C31BF
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:43:33 +0000 (UTC)
-X-FDA: 84932916306.05.6D42C37
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A05C41C0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:43:31 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Of2KUBHf;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 836D56B00B8
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11AF7903FE
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:50:58 +0000 (UTC)
+X-FDA: 84932934996.06.3A88913
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2EF794000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:50:54 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b=Js7hPGLW;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782737011;
-	b=7AuaJ2+6F+GSUHWUv3K0UEd/04LuUo+az3MB0piXfldR+DZPuF4wguzukeJR/X8zCN0ief
-	pfXHyRUWNGJLcmimqkuD3cjh02PHrwEusQi/XNcT1OKt/gwBCnGmL8JZ/G97S+ro8lcvId
-	8jH5j+o6JZNo2nvguNTzQNbKQFEyWuc=
+	t=1782737456;
+	b=zHEKq96mpbJ1MjcoQNzDYLDuovoRT7RwP4wQ6HkitVb5EBZOWZWnyWts+CazRdEBupvGkr
+	ONam1qTp5kpAAh0vfZ/IrGEeb4OHBRvbYMbW07LovCaDUFi6cY2CyN463zvlRsmVLIsMjb
+	PWheK/hIj7vfKUHEeERoax3PU+gSQOA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782737011;
+	s=arc-20220608; t=1782737456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x7QqOx7L0yRT5lYn1aBp2HBANrTGQYy6nWxkVXuVCPs=;
-	b=41miWxVUmV85nHRRtgjtR8JzETU499VdoMvHLRF+BV+Zsu72UjuIueUISkCT/Ass9PCdsM
-	2PmzRDWDC9DQa2gNqhbD53zlbKIgLe91vlnz3Rj2oqSfXodB8HXyMIkgzbqYgJBuxQ6oEe
-	9qT/NYfai/SXovGXRArqq59wNFKq/48=
+	bh=fRdbBuAywd2/yTywAa2lmTsqxPePV+KffkY5n9Y48hM=;
+	b=SrohpyxNYsenmcv6ntAuTl5W31FU6qf4rkvTeuyutiwBw3/i+jLWAN4vVe2KO8MXUTmD4/
+	L1p9AsWl4h9bOZEItC4Gci4yP7nvRPShozNant4l+zm7osXt9j9tTIX4Uw/nrpSVW655cj
+	jpbDXTXgcD/3e5pI0hYjDnpkVuKw4Ew=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=Of2KUBHf;
-	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.175 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-519e7faecf1so51066751cf.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782737011; x=1783341811; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x7QqOx7L0yRT5lYn1aBp2HBANrTGQYy6nWxkVXuVCPs=;
-        b=Of2KUBHf5gVj5Tv81YQwZo27JaGvqLnw93OBso4+g1Qy1+0p/nxPNyM41sWg2ZqpIG
-         OxDU9B8HfxsDQCrAWKIWIz30+xBJidJKxGBYIrrNjei+M30jWN7QdxWMi8bB3W7mW+XW
-         inU0b2BBbWcYEKRz26Dex7gvZZm4GEttj8mvHkYzDPdxVZ4dw6f3XqJvpUBQk6VfHxmR
-         XAiPNWNrN0/uT2tOlo2LHZiLXuIlpTyLXh11UFNWQVt14fg9GFSOezdKBI0662ldltED
-         6I7NfJJYCM1IqLFSUeLfs51ghSA6XTlyqys6plBIWSyzZ8mIbFl4XwEF1rrhv/nFhJfV
-         MEzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782737011; x=1783341811;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x7QqOx7L0yRT5lYn1aBp2HBANrTGQYy6nWxkVXuVCPs=;
-        b=UU1zhIzlb1WZojyblJRNnLYOfK+td0un5I+quPsM64/pahj/8Pz+ea22/7Uup5BEpH
-         oXH/kuhsZKZ3SBJYkUSNt/nWjXCpxMtjxy6dAtGucp+I5aovfj+WliuSEd5Mjlam7O9p
-         tDhs3EEioMawWqiTwGbF1F0edYti0m2ikSDxRAsVQve9zFJyH/Yfl6aIFawYdWi2UkDa
-         11zkgKNihPMx9AmA55Sd/30FeLn5XnbHfvOoN8U2Z+adHEqu+avjm72GfQqpLwLY4+R8
-         JcHSiNOEFF1wHjgjAL1dvkFl+nN6pBnUK1QK1JhFnkAp13BC/UvbPLwF47RV1XaFHxmR
-         R0IA==
-X-Forwarded-Encrypted: i=1; AFNElJ96JVYvE2Z0oBXiyO3tEhCx1ZOiAYfAKbhZI91i2U6jrSmc75seEUTyw3h6N8pWCF1cyUUX21mAXg==@kvack.org
-X-Gm-Message-State: AOJu0YxMdGm7I4+IwWK5BS5IjlBFMS7fkNvFahV70pnjSNaXeycUk+E3
-	jtkdecaIe7cLDEu9JCEPWL+U1cV2NwSjoC85fKM1zcdGeFxjpttXHM+/QTyebNMAxLg=
-X-Gm-Gg: AfdE7cm0B6A4PgvDJfEZ8+IrsTMsy0HcUosubigYU+UMazn9RLLpbDSuEQCbikDpseS
-	5vAsiGB6ylZTh1cwOkuIN/JFycP/OYuNxk2w67JZgm9QynE3pS0/5eQbFmpoQt3/DiCyEkCRVac
-	Fas8R17OEHp8+Z43+5FJIuqjftE0IQ+M9aVLrzh6qKN/2ACkAGlgTjZDnutC+0v4QD495pMxCeG
-	StdfSsq6Tt1bIB+h99HsSDzCh1U8BviWoD8yg6OyLa3BMwZGIjeiFWoXomz5ShYIVzWOS8yEHM3
-	plsszg/Ikg6WNOxeuyiL6Z3RI5VFrD1yAGaWULuer0lrQwM7XnLc8J/dozg6KTmUW02KUedCc+R
-	o+mz2e8Mix9U4zs1Nmy7hDpe1e9sQiSEqKdHU0GplLETLQtYlvM/mChpDYZQt2VErhB1bnVXbZS
-	9Skq5nKbuD7p8=
-X-Received: by 2002:a05:622a:48d:b0:517:6665:2a9a with SMTP id d75a77b69052e-51a727ee736mr224276821cf.50.1782737010340;
-        Mon, 29 Jun 2026 05:43:30 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df7ef1fe40sm304784856d6.4.2026.06.29.05.43.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 05:43:29 -0700 (PDT)
-Date: Mon, 29 Jun 2026 08:43:28 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev,
-	shakeel.butt@linux.dev, baohua@kernel.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, david@kernel.org,
-	mhocko@kernel.org, ljs@kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: vmscan: remove the redundant FOLIOREF_RECLAIM_CLEAN
- logic
-Message-ID: <akJocCUM4HEOegWW@cmpxchg.org>
-References: <def70a713e10bcbdf3b9fccc2139ecc07b64f2cb.1782715791.git.baolin.wang@linux.alibaba.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b=Js7hPGLW;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+Received: from [IPV6:2601:646:8081:7da1:4462:691a:e05c:b745] ([IPv6:2601:646:8081:7da1:4462:691a:e05c:b745])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TCoD8T244601
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 29 Jun 2026 05:50:14 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TCoD8T244601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1782737416;
+	bh=fRdbBuAywd2/yTywAa2lmTsqxPePV+KffkY5n9Y48hM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Js7hPGLWS5LTsb/3bMqBHhoVGIEj0VMpjxMvYFT2YIS6f3nHXeLALfVUDkd+j1wkV
+	 nWUug3QAfVgal8LCz0dJ+sOdkzS+uELoC3ObibQVmQU7Joi0u/rYGI9WpA1dIX8YcH
+	 Q1Jn+GhyBywHcndGzVYJ+QZ6Zum7Q8wLdpRTMu/8V9g8voVNG41Q8Bjqf/WBLWDW2B
+	 h2dbJ1kQ29c77xr5O7maE+enOLuuXL+5UXjMD/MaTsmmkcK25Gpk9a9sQw9lrss5ss
+	 26PFDqL2qXOJRWI+K9ckx1oVcM3YMb4bPv63pNLC6YD30f9ItKquGx5Fmmc/vCeRII
+	 C1hgFlSlEGFZQ==
+Message-ID: <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
+Date: Mon, 29 Jun 2026 05:50:08 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <def70a713e10bcbdf3b9fccc2139ecc07b64f2cb.1782715791.git.baolin.wang@linux.alibaba.com>
-X-Stat-Signature: gf7zz33jjheo7qgcqjui4pchzahrgkr4
-X-Rspamd-Queue-Id: A05C41C0005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Xiang Mei <xmei5@asu.edu>, Pedro Falcato <pfalcato@suse.de>,
+        Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
+        "Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
+        Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
+        Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
+        Yan Shoshitaishvili <yans@asu.edu>
+References: <20260626173444.2252041-1-xmei5@asu.edu>
+ <aj7UNceukU9zYeGH@pedro-suse.lan>
+ <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
+ <499a4e15-34a4-421b-946a-c855199fdbf9@zytor.com>
+ <akH34ycu5-q2Yc_D@casper.infradead.org>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <akH34ycu5-q2Yc_D@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2EF794000B
+X-Stat-Signature: mqmj8q41nyadmffx4j534n48wc54tb3u
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782737011-320561
-X-HE-Meta: U2FsdGVkX18YjUFtKiWpRAco1wbCijo/Jr9y9Z18BEta+LwayWQRDtMPhApAr7luIA6EiaqI7kkKk0DytKtbByDY9FSwzeZf7n8uxvTJBjMYhQu3vLrBAzQFwsqEUJpZJq8mFVapjScba1OtcGxWTvaYtdM8ea31QE8K9FzjIeox5dOLICNA41nSwThkGklbDC5rnVYZlfXjrdp68lE1xc9s444pazeHbbfdyZO6Q1fagB0Ad4ApSCtcan/NHCbAOnEqc5qBMziqQUt6gXarIXX4Ayzh26IMtoMeLVzYrCLhBVINOJmIqZZoeHWFc0M4GGBsxtWGPrF8Lxpf1/HgJEyC1SRTNCWY0fiL1qCpbC9+CMI03y9DxPqJs3P3Tjd8dl9/XOPBxReVf/2QXgkm/2N4UzDB9oiG741t95HRLGghwfS3ycdrT4gGfJcT6r4gXkiEfyi/M87POC+ZP7E6TLDG/lQpCfOULg+YbXcJ+w+zCIMp2ihoksQHU9sm3qvN5SjEPKD7fp26SKR9lXHYv1fELaffhFtFfgtnn31daj8/4Cz+WzGtLwG0uLdTtbqZH8H10weCQg1QpyY+Yc5qN5th/F/wXRzw/55wTndmsUKTQZLAc6tOAuctb61wJRYRb7uu6XnB5TH3gfvLqhDTXS1U1PM8VLUGtwgVpmJ58Yz+pWoDD5nAl1SUcX4zWbThZu01osKSX393LX+rrVpebeNaR4uzWIQK/MvgyK0X53PROj92bZZ/53r/Qj6c4wUPcCD8vLZvqOATkBkAxJVVQjYIdYvgnUWlJGURI95sfD7WhOOYnrKzjWpEz/aIs/l7+Oro/xUc9qWQ+luTy+tHelgHU93q7BK6LSNijm3qtenbMoMbBvoXFF5nNwlGnqBroA+JZMB3tdqMv8w3NqzA3y8fUES2V16sItimLaNWJF9c+DcBiHEyOzm5GfcFrJ06h1y24IkzVAPEBgIh/Vd
- 6Fxi/Jlf
- l+zapshRtsDm/iAhVsTrSU0gLc8wPBx9T/b6kzQzqXyKzRAVkcdK1tjXfoXG1xhkuknAO1ovh4vaNR7Aji4ZL4RRZqcNkEM1oSGsKVNcFDUVEsGRaz7P/p49f4rQ6/CztbwERCVpzpXI8Uffiwy+MNitjgUUeOy4VmcsXs7FO29ijyaT1NJmSdkeuSrhE7TJ9puKVV6kpOS9JNJCM/8SfazWsBIHO7d7MIJb3xXyJeELSOCA+FapPAscgZiFRJsRWzkkHUHoaUWfckvhoCc2qLguadQvxIl/iRk2cAW2OPJ6G7zBvhtlsk6E6l5W5mbQeu+9Iq43EX8TEoeKRbw1mE+qMuP6bMux21WzUyhQwRGsggn41G9Q3In0stDPMGvwvk2ARRAT0urLRHtKHV23F38iGcjzOLcF6Ahj2krMX2TnP2vdfiqiMCfvcNQrGZolMcLh2ZdiwmfmYYkaIK8DeseAOFcrIZOIjK88j7GPPiSLNweuko/st3A+lxVEEXvIBamzW
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782737454-506397
+X-HE-Meta: U2FsdGVkX1/GsQ+WnH6+yIDQJxAGvJZe3afNRqrwQv4fjSM0cYIVGwn6JNAUmS4ed37nNzpr+yJsEwvm/m+utbttbKrYnViwZlT0ccL9Q8i/E/vOHdEMPHrLT9yBzimurTdXwhvw/gjKGqMo6P4jAmHpVTyfwfPjhEiJy4bbLe7u0CsFudqmUQOlVOn6r+KdAucw5hzrA5nuTsp7aXDIv3sDAIxMaij44R7yMZBFEmFZebyZ+cJc4Ih040zKLum1PWvbrDNkWLEyHI3MpQB8Y/kQTuou4YGFfShj8GUJEvygJi4Ph4Iik94KpLyeAzP2mondS/G8SbRrOhq++tlt2NDKDUgD7O3+VIWv45yiNa2Th7IBBw6LCPeh173GZjBAWiZnfBowwHiCzEuh8SY2eGUlezvnyfuijrKE+xtGOQjNlmI2e5HwsibVacoczMuXqhkDjERdrJPuqO8mfdEevyPphy0XXZpmnA6eHgnDFqhmPuNFU4IqoiVntn3DmCtCHBPz8oMtOv89tTQ9C/EOorb/50yMxwdrM851jJb1ytYRTKfHxiSqI2zqYzy1EP9yaSPZKAFckjFbdxpYyz0JFmABB6H5vYLAh/SHscAeaFJxg5fQOGCD/raumlXgIXGfctcSeLGcxkYmCrLr2TZrj/LIPsL+71ctB1Eh2h92rI6MDViNA+SrUvD8Z2i95vHgeIi0cl2x25Z8i5NTmMC75vRx+CTG9wUrok5BghRJ332Oy3T/HWbf5JB99WFbcoBdaBOfBoI1H4pefDA+7gEjyedBA1MuKVGCvUimHdfg1vmQr3A9iuzsvd/1JIBAKBpd2R6FUCjyV/kpaa9IkaKXU0+DyAmLQ6NjMZD9SN4M/Vyx/o2iVr5N3xv7jKSK8bLnJwsF2thhxVUd2ue3O3rnAbGZwMNbv4UJtr9L8u/OjyMWj083yJJur+9Wb28HU/LRDYMnh5r0I2aqNOkMicy
+ AeEHG2WF
+ cug1wnX/akMbqDT+QU57Squ/Pv/8JBaHGMtqjg73RQh00m1gX2dtxMpPDqVXyYTQHPVJsrHUtBheCf4oVJvvm0KMe1bNibNNrvwjMUAZZloTXo83tmLXjfR2A9utcyP38/yqvsTPeYrzq7cAKbuJ5bQkhJgaHMg8V1fEMYqmf9LV16Z9qrwy8xNTm3XiorqKBO9cIw5kl3ByK2RkSKfU1Bq0dzSXV/6I0BNwRweZUckqhMBz7ztRtJ6x7FLM4+bIjKcpdU7bAViir1M/l749K9DmMl56yKLDBVTDZS9KKZC8HDwMlfvwQJfv8Rg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,25 +108,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 04:04:06PM +0800, Baolin Wang wrote:
-> folio_check_references() will return FOLIOREF_RECLAIM_CLEAN for referenced
-> file folios, indicating that we can proceed to reclaim clean file folios
-> or keep them if they are dirty file folios. However, after commit 6b0dfabb3555
-> ("fs: Remove aops->writepage"), we no longer attempt to write back filesystem
-> folios through reclaim. Instead, we always activate dirty file folios and wakeup
-> the flush workers to write them back. As a result, the FOLIOREF_RECLAIM_CLEAN
-> logic is now redundant: for dirty file folios, we will no longer reach the
-> 'references == FOLIOREF_RECLAIM_CLEAN' branch in shrink_folio_list().
+On 2026-06-28 21:43, Matthew Wilcox wrote:
+> On Sun, Jun 28, 2026 at 07:09:37PM -0700, H. Peter Anvin wrote:
+>>
+>>> 2) `enter` is not rare since we can take part in the instruction.
+>>
+>> This sentence doesn't parse.
 > 
-> Additionally, lazyfree folios are also placed on the file LRU list, but if a
-> lazyfree folio becomes dirty, try_to_unmap() will fail and thus prevent reclaim
-> of the re-dirtied lazyfree folios.
-> 
-> Therefore, we can drop the FOLIOREF_RECLAIM_CLEAN-related logic.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> They mean that we can jump into the middle of an instruction, and it is
+> not rare to see a 'c8' byte in the instruction stream.
+>
 
-Good catch and nice cleanup :)
+OK, I see the point now. The main difference is that ENTER doesn't require a
+REX prefix, whereas ADD/SUB/LEA do (otherwise it truncates RSP and everything
+immediately dies as a result of SMAP violations [you are welcome].)
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+This means that an offending bit combination is far less common.
+
+	-hpa
+
 
