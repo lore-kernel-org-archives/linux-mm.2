@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50C82C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 01:43:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7A16C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 01:44:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA07C6B0088; Sun, 28 Jun 2026 21:43:54 -0400 (EDT)
+	id A6AE66B008A; Sun, 28 Jun 2026 21:43:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D51576B008A; Sun, 28 Jun 2026 21:43:54 -0400 (EDT)
+	id A422C6B0092; Sun, 28 Jun 2026 21:43:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C184D6B0092; Sun, 28 Jun 2026 21:43:54 -0400 (EDT)
+	id 931046B0093; Sun, 28 Jun 2026 21:43:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A03B26B0088
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:43:54 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 117811678D3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 01:43:54 +0000 (UTC)
-X-FDA: 84931253988.17.B9547BC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 630F16B008A
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 21:43:59 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CA51240542
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 01:43:58 +0000 (UTC)
+X-FDA: 84931254156.11.7E0E8FA
 Received: from smtpbgeu1.qq.com (smtpbgeu1.qq.com [52.59.177.22])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1C846120003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 01:43:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="Nf/a3CqX";
-	spf=pass (imf29.hostedemail.com: domain of chenyichong@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 87272140006
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 01:43:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FpiIl+XR;
+	spf=pass (imf26.hostedemail.com: domain of chenyichong@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782697432;
-	b=7ExInjLBnOqmvZxH56nsGb0TSOMFndvrBEWfTI4vy+glTNgNBVVHd7yed86ARP0SrdYjAN
-	64TXdrz9LqAlmIcr37C7QhwlUp+GGdgNc6MXXcAzxaB/+pNH4b+FnjkYYXbMgd3r6XcGj7
-	sEFlZAwgpwD6m5UhA7SfGpLcJYXy16o=
+	t=1782697436;
+	b=QA4BAvPUCuBICs06NjKAjm5Mn71wKWLBkWsz83LNTgjWYrGyUgtil/4kRelG1M2MSysdB+
+	93qjc33ARuohJfkIXap+zaHDZJ+HWiwWNiOEEBer4saFgczjhRYWkmo7ajYvybu/TV3S7Q
+	xZGBl86VqzKorc52OlRggQlCqhK50JQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782697432;
+	s=arc-20220608; t=1782697436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dZnJoJtBgzZIFDWcRoWx5iyO1CtG4HR83S4oC98/yBA=;
-	b=Q3mlrNdiuui6Y/cZYCjPyAfBYc6bfinObkMbxQAnHe0g22KdTtGxWlDsRjhlt+ErMq1Aqy
-	aFTvZ9U4cGzjrKM3HGY3CsW3bjlZIkW3vHr9TaUUpHiOBJpZc9xBDd0ERDrdWH/YgDZzDT
-	EAovfhiG+Z4QGl5CuX9OO0xFwr8DHyM=
+	bh=Je8GC5rfMEsUvYHdHGNvs3OOS9YdQIZpjylOSaYJNy8=;
+	b=jNaFrNga2gVcty43SaelN1HlB5Y4ItU/CompSE6UsgRitwIwG5BfdQ3a5X25qQRyw7HaQY
+	ise6VHSQ+3D+Di8WyCB9oV5tIJhRd90YHf4LDbabb8jJi8LO9uolJk+M7dVsj1DV8DQ5Y0
+	UY1Zbz5JyLQGpoYUUh3KpFcG9YvseqI=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b="Nf/a3CqX";
-	spf=pass (imf29.hostedemail.com: domain of chenyichong@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
+	imf26.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=FpiIl+XR;
+	spf=pass (imf26.hostedemail.com: domain of chenyichong@uniontech.com designates 52.59.177.22 as permitted sender) smtp.mailfrom=chenyichong@uniontech.com;
 	dmarc=pass (policy=none) header.from=uniontech.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1782697411;
-	bh=dZnJoJtBgzZIFDWcRoWx5iyO1CtG4HR83S4oC98/yBA=;
+	s=onoh2408; t=1782697416;
+	bh=Je8GC5rfMEsUvYHdHGNvs3OOS9YdQIZpjylOSaYJNy8=;
 	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=Nf/a3CqXhrHeDOETsMwiD7ZIqG0Jxvkibr2DrQSPg7gCG3zbHRD4jzAbrGdscmpDa
-	 BF87pvcNxV1bTothzWQlSSdGeqvpRo/CkMvfQoI1/VUMQ/qgGIOGHt7Ekwysm9U7Ph
-	 uEkqbRZjBiLEdcJ04vYtPjnLxMNMXQovRTEVoKUU=
-X-QQ-mid: zesmtpsz7t1782697407ta4b31b1f
-X-QQ-Originating-IP: OqzAURa061oPDky5k7zvEf6/MGg2MwwXWpM2iYqAlzI=
+	b=FpiIl+XRiVnt/cg3A7RITZL/lZ7CgLRUjxrdmwoPVJgWxwHdRtpxFddegg8TCWjDf
+	 RplzUnrf80BjdN8uv3spywR8U9vtupCMS6viHO4whghz01KAudVseaabw0DChfjqlx
+	 qB+3M3W1eHswpmKukSWTj83wRfXp1pgdqu3WnXYk=
+X-QQ-mid: zesmtpsz7t1782697411t8fa0576d
+X-QQ-Originating-IP: /hKfklZZPe1Pgu6rC+PnFOPJtte/kahdGolhpK0wQdo=
 Received: from uniontech.com ( [113.57.152.160])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 29 Jun 2026 09:43:24 +0800 (CST)
+	id ; Mon, 29 Jun 2026 09:43:29 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 14938799598701627117
+X-BIZMAIL-ID: 14536289128426533273
 EX-QQ-RecipientCnt: 7
 From: Yichong Chen <chenyichong@uniontech.com>
 To: akpm@linux-foundation.org
@@ -72,9 +72,9 @@ Cc: vishal.moola@gmail.com,
 	chenyichong@uniontech.com,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 1/3] tools/mm/page_owner_sort: return explicit filter results
-Date: Mon, 29 Jun 2026 09:43:14 +0800
-Message-Id: <20260629014316.130307-2-chenyichong@uniontech.com>
+Subject: [PATCH v5 2/3] tools/mm/page_owner_sort: free per-record allocations
+Date: Mon, 29 Jun 2026 09:43:15 +0800
+Message-Id: <20260629014316.130307-3-chenyichong@uniontech.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20260629014316.130307-1-chenyichong@uniontech.com>
 References: <20260629014316.130307-1-chenyichong@uniontech.com>
@@ -82,32 +82,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NJV4ECYAIEtcwxGDUQI8g32CIL64oCT6VkXbABEvrjnzcGqPY25uJ/I0
-	6QZYxMMGzF7/NPKPPJ9pT2PmxieWP2wd1HrmKNSYGx7+51PGtnQ1M2WI08azx7Vxiu694eZ
-	qTQkOQxxG4FQo0TPgIP5IsbgGOqwnNhnGoECu0bfi5kfUPbn4Hcp7xQsEdDehCFKDuivpBp
-	hMWC6lDz7cNsohzc2sT0O7mZC2p7mL5X+jVO8q89mYhhYZ0SnQioVBXLYHu8u3+KlnHNW1r
-	4AqYJbNT08s5K+9Sy88TLo7lXiB22fZp0grKWnC5dXzmCI0WFBgTzSkcqyJNk26r6dh1B4z
-	udofIWYrb5X5VdMsNluvFaRQEMhTevbas239uwCANfmqQ3d5m0UU/DEDVQ0EcVK7Xzw65/5
-	HVLYF4AlzYOO9lUZw7f9ldjcMabWAkG3qTBF2gijgqni20ewnacdp9MltDIMAoBIkFacAs1
-	2gmp9kC2RryxXJTnPIeKHJqBry423EEp1NGigZlQMIIs8lfb/BsbOCLfjdXynsi88aPFCBs
-	fQHJmgMbfZTtpT4j7GEg+S7tClTNVUsGudU6cLXknLTbiuynJq4PDsU+Y2t/F0LD3VjA5Yi
-	7/iZv9WqPwkVxeAkmvYWKaAgbgcwF8KkOM5gujTwg/90YAwFfXccDUIV/mor0q94TfXHR2x
-	CUVNurYDTkIvyTGxkStNmGQ6jQu/hSMkFwtsMtz8bkQhzrhB+cJRPlzL8ahxeMMwWItBlWw
-	/nD2qRz3g8qfAQM7j6tJvGS487pnqV9NhtZldO/qe/Wj0v9+BU5fcZtCdCVLOqiV1uxTyRA
-	/nJM52cC4DHd9IKLBzvD5Q4Bwk+fLmm7FuOszynnCM3XZgQgSnS0VYurLzIL0ziJhf8j4GS
-	vl5uugk6EFTZqQK5x7jJddruWNTkBpFJO/Gd89U4pL1ROjv8rT6Xg2g/DHneL6Hoc5nmSQb
-	CDKnfCRuQ81EEGS8RvDingqEJ9ujK/T/upll3M1s5R8UFeOKE/sllgkkMLUctV1/nOOeivM
-	DxRn8DAYCGbBbD9BaAegT8F3fJ2W/x90bg6u47/qNDVrpTR39Z
-X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-XMAILINFO: ONeCszOCk2GVt8be9SyLc8QimUSxH1mGIPrY5AdhlIsFnWQx7Oe37cGD
+	SQXF2dTR1mNnNG2YJeIT2GHPK6xj5GcyhL5YJ0vA3Pfi3d+o7YB3S+T66XOeZvHoT10lXaI
+	Vc3tfZ3eIOLVh6rmcOthMl4SI29DT6eCDhTbpcPYD7oXpJn3T8PEFq3v9VBzZPH+DfiK7BF
+	UVpmHwE69QhQanI0iLvrZggF4l/XHpBw3FfpKTxBdlBxS7e25HXzOYU1jzEespcNUuLwE/R
+	2H680tBccIG1vSps7MPw0olKAA0Ls7Umqh8T91KQ/L7CtaYRBriQMjxub2ctGGZNWdRGz06
+	MLzyiL8EANzEMcgJcOIkA9GSmP7alvRbt8uzZTXheEBoOJwelA+5XkPbVTC/ZJzBlEQ0MRS
+	zduVK+Xteq5dEuTlG9ywRLXfxq3wKpOJQYXE33r6u2SRQznBLoO6B2ReAOHiGy58xYNyVrX
+	OrnwgAPqVlCpUk4qyi44yJKHcAvBwO9PbiQDt00VLQN/pvZgaXYMarnTPnAjo4os6GDQ2JI
+	QItzQ1bxy97QXdCQr0bckCSxEvuG4T0o2li6VcBuwFxtlrQjq6K5GOclPrPCxw5McR2UDHM
+	OEufQdxyn2r/e5o7f6OTKybCEAvzxtGGl0rSkLiJaVV1GqByPAXJEir3lqnaufQmed4DB13
+	OvBlhU+yxtSRQrTG1UEQ8VmxUygHwTI314PC5c+89ga56b0OPPei4O/RnoAujgSrRHSIqwx
+	qwsbXPN3STCaDwZbVkZxQoKn7yFUMnqAgEFdqhzX9sOej26UXjNYR0heyh76nwp52YqNsZG
+	n0moVG/lQ/PuQBCpAWzRmZpPGNqPi83MY8qIeeY90jny0bU7ql7ZFII5phMMbif5NnsFm+M
+	KjWP+N11XGKtNFRyoC2lJRsxh/DND1aBEXXwJc/DhWxeeYDp4cMXTTEXudlq77QgWH+8ZIy
+	c/1Lgmx6Z6y3egkdWkr5rJ7pEJQCW8uA2FVvlONAF6wxpWOI7NvCy3LQBsU6aALZwBI4FaG
+	POgmcIqa/iCupbETv2NIibY+gAbAl3sVTcYMzWrc4nDZadw/FvOxKRxfjSzCGW7HULX3z8s
+	RidUmcR2PFc
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
 X-QQ-RECHKSPAM: 0
+X-Stat-Signature: ghx4rx18xsyk46syy4t4sf4r5jjm5xjk
 X-Rspam-User: 
-X-Stat-Signature: g1biq5h15baouuo9h8mi3ukjhmxewnpy
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1C846120003
-X-HE-Tag: 1782697430-522726
-X-HE-Meta: U2FsdGVkX18Ls5oeMOTAd9ml5ACGYJplQLPF88+bPuQFBMb4iaMvVjUWLcC39bDnUuNuJ0G6qPl95Ja9pOIA2/dU366gbnZWpYkBITf3j5hs/GvCdFVyKSvvr6i0KgYuwwNOQ6Kd8d9XUB/Dp+yX5JmkK7lsLCNEFl207IhfVjW0jfS6rmODu4HyyY4YvDQJUEx1eypqJoy1LsUWSM/o0/1imHfq7W5d6z1KuKkMCxwbuEJjpXGZxqBzNiWUyRfAOLlxbYQ2HByKqdI9FQG9NN3k3Q/OHqubA1uBbOrjS4HyMHeMSE8XrC1+37C3LmACQCn48jt0Loapu6aabm6gLehqZI2rB/6PubC6clZzAKA96iI+xf5V6X4lgw+DvZm18Zt0SLs2hNt+9iIRz+YNj5xpFeb+xhEd2xPh6AWpXxFLXUeLMPGKOpttaAOzPdCJfEZtjqJtVLbRChwzOKBLwt6de77MgczFSSiMwbW/sfVglE2yoyiTDrKFsC7zZTihCkjqBTV63tHqtmQTsHLNhNK0vanLsqoY0Ns3ibnqHDsPc6UrySsrtly0D0e24ergHa30TAzMGWx7cENTHHsfE5qY48T2/Tow8y0Zm894L6xLF8FwGwOdkwxlmNAbkdfrg/3QVFwgwQf5SDOUdiEsBmyh/4rVm3S33txdMvSlLr+1IyIZe/zJxdR/o1h3XCAwEULuffNxuKQb178DugLajl9hAxCaHAXUvGVEUuJFRWs8ewiCjOiQzWmUcLfQmrJHDdcv6KHrD4RD/6q3TdRISqB9/PPLtE2Qi6HL75uG+Tk0BKSr4eBNwUIVYFvc+ka7xYm3bSbdLPYUAaXwLR8DM2GJI8Z7Ca3ufYqjJFVNTDE+vci08Rz9zO17FllVQ55qcG49WMvj+lp2h4cvgvKJflmZ4Q5iRCqlAHTs4SnC2oY9VSFLVLz3RVq0K8NyPukcRIKFqAxKYwX6/LGb+Vm
- uUdHEVkl
- Wh0opuwdlxXKbky7udbFYwF587EAI+XzdueaNZouLBqNrjm/tPbXCSYQtxXpgZdgpz0RJG6l5r8Sy93pIcRRUXP01dtq9Y3FHhiQ8mUwkEYq9DdTNBBCQohKIyfiJmgA3C5yCAO/boyBPH8Pt4yE1qyujgOyOw12FcWrz+jEfHdsvFKdkt/OP8fo7NUOMdjOPvchgjkuGBv17vvWSGaluNL6vO7kkK52wZAM9+flwgw2kkqLow2aUKjBJW4C05LWJ6xdUT4pLSCNt+hYzmHJ+fIzlQqEgtAfrcNsiN+/2aPv8jVROdIxU8xHTvyruraVYhXWcuqtB7Ti54Em3I6tyPFzu41AwpGgNruYj8LxQEvyJJYZf1aHh3INtSNTora92lJ0Xw0MZljaZwTJlo8DztyZKEPq2kBabm4nRtHSRFhA3kvs4rIqQAPeezNruoDso4JaKKqs0hujWDH+xR2V0hTBVTGxVfa20UAprPuJFuPOLT5o=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 87272140006
+X-HE-Tag: 1782697435-327968
+X-HE-Meta: U2FsdGVkX18QE4YbZEfH3+rftepPU74rV3Q9AOVx5I6ZXDBgylHapvSbm0KRSRaRVkksK/JEJAYAHZ5ZPY3W+Qqia/6aB893A+RbKgNPRdImZWvX/27Fn8Gc8txcUWtZKqia/aJbJ/+9dkK4ZqiYDPCT4jG5JULZrMHbnasAImopPS0AelUxBWIda0Lcn8HaykY82JeyVt9MM7kpQcZngxJWdmmFME0IIdzMU/jbJ4tYu8sm4YK67zZTMmSyVvssgmNAhUsZkYUwrt0MsTKSrWSqsYyzjAwdZG/BkaTAmNgpON7md3LI+zjeM0RMGd2AnU45tgYuhnTPqOVjjWC7PrOC0vyDpRQDjeuOHb5FDQoWuHALTMoTVovscoqpUhMSt2ACvn53iZE13f8d/vOsqCO8rrcOlw+h1V9iciVjJQYuecyaJ5DuuWWsB0w9PlF3DcaYdsGuv96dxMX4lcZuszbzYwnomLTP1Mv5cN7zHj38pustFdGzXOeVLH5EWBdcOypgAhi1Lr3R5Iwvambxo5G9emBY7v0D+6wavigf6qelTDuqUQBIycNOhwysy6MkLXivlxyqKvdWPf3Lyaw2t06I9lmh3twJaXxWTaKk/D3UTGtAo6wKRB523b+yssRpouNOJTzP3VBB9E4ziOirCqz0F3gajzMHQRAFtHEZ2Lh9jVQxPUlcS6jdGP0buuSutjHGeCwCdDre8l0epoFfeUZRPPZ634fqmrLD1cOgC+EtyklKQYYX2y9CveMJQum6UtaJBdqWu2FG8rG43y9viGw+JPeXDPof9y0QnyvGlyv1Kbo/QT9Tyz4H20Mr1AhRnxdgseMsGRK4LtGpykGbKSa7Hb0Xw3A9gJUx4j65I4VfVQf5SJdBMMYJqdvgrdx5USradiEvnt+QhT8imvZcxjRzi2XkvLEeXmIWEbGhSjXU9LHpW/AizYOUMzKZyGg9ZhZoZiVs+Zf4jXBZDGG
+ LEwPLH5m
+ k7ixMEaS657FFHCtYRQYsF/hLo9w4dccEIyx7q3uh8xq0mJ4IFT7vbTZzKplo+fJRdKR7Klri4W5y13r48z7HpTqYZW+IO163RP+C9OozmOh9NrUaYXJENVzyYISUfbAyg+/g+3uUj1n9ke9BSaYyokS7RZX8U8GMruwftoRAkMkuswbqaE8MYvPrPvqinIRQ8kapja7SDzRqEKRypk0xDhsyIglLR4ILEsw004/OAOI7htHzRpRpt8zAH7i7Nu6HdNr7nYDWFBEOKWYXFecTRSABrVaLWnTiXv6xoq9IiOZVGdRAFKnlL+JAM9QtXYS6NF7GtYkrp8BAqKVHrmG8vEJ2fNYuoUmwHRzRTL9lqQMF82DjoT0Mn6Xm2OB8zN9r7bpe/zKz1N3pzS0G8+/DcytXSpA4ah8dbvlcSWV+76KgLavJyOlc1bQF6ZJlLyo68Z/n7gWvn9ORMpN/d8jMGH13k5Z4IN+GZDzapctn4Xrc0vo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,98 +116,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rename is_need() to filter_record() and make the filter path return
-explicit error, skip, and match results. This lets callers distinguish
-allocation failures from records that simply do not match active filters.
+add_list() allocates comm and txt for each page owner record, but the
+cleanup path only frees the outer list array. This leaks both buffers for
+every retained record.
+
+Free partial allocations in add_list(), discarded records during
+culling, and retained records on exit.
 
 Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
 Signed-off-by: Yichong Chen <chenyichong@uniontech.com>
 ---
- tools/mm/page_owner_sort.c | 40 +++++++++++++++++++++++++++++---------
- 1 file changed, 31 insertions(+), 9 deletions(-)
+ tools/mm/page_owner_sort.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index e6954909401c..3c754826cec5 100644
+index 3c754826cec5..4c9be28abe3b 100644
 --- a/tools/mm/page_owner_sort.c
 +++ b/tools/mm/page_owner_sort.c
-@@ -43,6 +43,13 @@ enum FILTER_BIT {
- 	FILTER_TGID = 1<<2,
- 	FILTER_COMM = 1<<3
- };
-+
-+enum FILTER_RESULT {
-+	FILTER_ERROR,
-+	FILTER_SKIP,
-+	FILTER_MATCH
-+};
-+
- enum CULL_BIT {
- 	CULL_PID = 1<<1,
- 	CULL_TGID = 1<<2,
-@@ -372,6 +379,9 @@ static char *get_comm(char *buf)
- {
- 	char *comm_str = malloc(TASK_COMM_LEN);
- 
-+	if (!comm_str)
-+		return NULL;
-+
- 	memset(comm_str, 0, TASK_COMM_LEN);
- 
- 	search_pattern(&comm_pattern, comm_str, buf);
-@@ -450,32 +460,44 @@ static bool match_str_list(const char *str, char **list, int list_size)
- 	return false;
+@@ -396,6 +396,12 @@ static char *get_comm(char *buf)
+ 	return comm_str;
  }
  
--static bool is_need(char *buf)
-+static enum FILTER_RESULT filter_record(char *buf)
- {
-+	char *comm;
++static void free_block_list(struct block_list *block)
++{
++	free(block->comm);
++	free(block->txt);
++}
 +
- 	if ((filter & FILTER_PID) && !match_num_list(get_pid(buf), fc.pids, fc.pids_size))
--		return false;
-+		return FILTER_SKIP;
- 	if ((filter & FILTER_TGID) &&
- 		!match_num_list(get_tgid(buf), fc.tgids, fc.tgids_size))
--		return false;
-+		return FILTER_SKIP;
-+	if (!(filter & FILTER_COMM))
-+		return FILTER_MATCH;
- 
--	char *comm = get_comm(buf);
-+	comm = get_comm(buf);
-+	if (!comm)
-+		return FILTER_ERROR;
- 
--	if ((filter & FILTER_COMM) &&
--	!match_str_list(comm, fc.comms, fc.comms_size)) {
-+	if (!match_str_list(comm, fc.comms, fc.comms_size)) {
- 		free(comm);
--		return false;
-+		return FILTER_SKIP;
- 	}
- 	free(comm);
--	return true;
-+	return FILTER_MATCH;
- }
- 
- static bool add_list(char *buf, int len, char *ext_buf)
+ static int get_arg_type(const char *arg)
  {
-+	enum FILTER_RESULT filter_result;
-+
- 	if (list_size == max_size) {
- 		fprintf(stderr, "max_size too small??\n");
- 		return false;
- 	}
--	if (!is_need(buf))
-+	filter_result = filter_record(buf);
-+	if (filter_result == FILTER_ERROR) {
+ 	if (!strcmp(arg, "pid") || !strcmp(arg, "p"))
+@@ -502,9 +508,14 @@ static bool add_list(char *buf, int len, char *ext_buf)
+ 	list[list_size].pid = get_pid(buf);
+ 	list[list_size].tgid = get_tgid(buf);
+ 	list[list_size].comm = get_comm(buf);
+-	list[list_size].txt = malloc(len+1);
++	if (!list[list_size].comm) {
 +		fprintf(stderr, "Out of memory\n");
 +		return false;
 +	}
-+	if (filter_result == FILTER_SKIP)
- 		return true;
- 	list[list_size].pid = get_pid(buf);
- 	list[list_size].tgid = get_tgid(buf);
++	list[list_size].txt = malloc(len + 1);
+ 	if (!list[list_size].txt) {
+ 		fprintf(stderr, "Out of memory\n");
++		free(list[list_size].comm);
+ 		return false;
+ 	}
+ 	memcpy(list[list_size].txt, buf, len);
+@@ -863,8 +874,10 @@ int main(int argc, char **argv)
+ 		} else {
+ 			list[count-1].num += list[i].num;
+ 			list[count-1].page_num += list[i].page_num;
++			free_block_list(&list[i]);
+ 		}
+ 	}
++	list_size = count;
+ 
+ 	qsort(list, count, sizeof(list[0]), compare_sort_condition);
+ 
+@@ -898,8 +911,11 @@ int main(int argc, char **argv)
+ 		free(ext_buf);
+ 	if (buf)
+ 		free(buf);
+-	if (list)
++	if (list) {
++		for (i = 0; i < list_size; i++)
++			free_block_list(&list[i]);
+ 		free(list);
++	}
+ out_ts:
+ 	regfree(&ts_nsec_pattern);
+ out_comm:
 -- 
 2.51.0
 
