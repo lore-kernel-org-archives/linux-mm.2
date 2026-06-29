@@ -4,127 +4,221 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8F79C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 11:37:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E04C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 11:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86EBB6B0005; Mon, 29 Jun 2026 07:37:09 -0400 (EDT)
+	id 0AD6D6B0005; Mon, 29 Jun 2026 07:40:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81FC26B0088; Mon, 29 Jun 2026 07:37:09 -0400 (EDT)
+	id 05DCD6B0088; Mon, 29 Jun 2026 07:40:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 713966B008A; Mon, 29 Jun 2026 07:37:09 -0400 (EDT)
+	id E1ADB6B008A; Mon, 29 Jun 2026 07:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 445C36B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:37:09 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C2C021A0691
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:37:08 +0000 (UTC)
-X-FDA: 84932748936.18.994C57C
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf29.hostedemail.com (Postfix) with ESMTP id E1C7D120002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:37:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KDTw5q8J;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782733026;
-	b=jSOi0S0tRBbs4DAP7EdgyC4m/8lw7f16nhlmJbgc6HYpV57uBmIV0LF4OsqKyYBS9mIgnL
-	F21bQuaX8Ep/f7XxkUh9bAIIPIlmgno0EOO/+q9Jl02zz92Yt5TKPa5NIn+I9BHvSro+SZ
-	OGjpdKEE90mbchbXrOzxEoUHJhNY7EY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782733026;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BCD346B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:40:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 417B51C37AD
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:40:17 +0000 (UTC)
+X-FDA: 84932756874.09.50A97C1
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 02D1D20002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:40:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N3pP0hBn;
+	spf=pass (imf31.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1782733213;
+	b=qTfk1+PjjmnP/yr2/rpngFKwVcwjWszdiTFqkqDSlbdWVSYBrvTyFB78MnmUKfrunm5D9v
+	CDfiCh6pA7sDXy80tajqo7D1vApQuGfV4ax5SshhiVz4Kqybw8eR7Ez/q1VFA2wbRFDjTZ
+	Eb98CoEOyfgEOC1slaIWgoEYzi8UL/k=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782733213;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+TUP1LM09mE01dTMgP9xd0rTmvGkZOWNWCmE4JCIidU=;
-	b=Cn6MGHMYQt5p9+wAaA0dzOeEaLFu3JRv9g/XN4IE0Zd19q2PpzlDyLG6Xt1GwYqHaqn1oG
-	Q0O2H4P93ojktYx1Bzrk+B+cDFp/B5kqCMXSbjXjq3PftfTLCRRRmNAC7nAoElFCfqiirF
-	cWM9Wog4BHmg1m0vUsUXyj9d+IV+ol4=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=KDTw5q8J;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2c9cb97e178so13230315ad.3
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:37:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782733026; x=1783337826; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+TUP1LM09mE01dTMgP9xd0rTmvGkZOWNWCmE4JCIidU=;
-        b=KDTw5q8J2PwOjhP7mJCdwLMi3ub+xL0pPybdG2vCmaR/C5DEmmGorygjjaKNTJlYln
-         Zp8M0SKvT+TLKGq827N/S5Ai02ao5rPqvQztebeGPz8MJnQT8yeqe+hPxYVoUgxsO8hy
-         dk9KQQhde/GoOTnwYtlQ/ecIsOEIfljgJlOiY0XrHLao/DkOxJzQ9f06x0WABBrcbnO8
-         YOiubb+vn9ZWxnYaAorwh/BTC0TtytS/aIHslItlMAO1WKmyoF2Ja2pDTz1hMny8ST+2
-         /ZWdq7QfGuJeQ01EeQvvb7KhxtyjIByPe5wtUGIX3YiGxZPgi+Gw+czuEmLs1+QVd1di
-         eRFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782733026; x=1783337826;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+TUP1LM09mE01dTMgP9xd0rTmvGkZOWNWCmE4JCIidU=;
-        b=J/gGCPeISXnokvlES8pElWxCfesXwXgQ6bzTBFtA8x5kH7PUNpZMVHUrg4mDng5Jc2
-         RvLiublWfBhEfr3ubyAP+Bpfv2FlzS/6J59bxAzviWR4ZcJ3CCa4jYpBKkLLPgvJYLPV
-         8Bu7dZ2PON1PR+QRSVXcPjm7QvRmuqo+y/8Kw3cBhjDR+TeqWEqDo56MDlyZdsdXzi0J
-         CJEhcXqomsWwGLHwtkt+9PkijTkKbaiEYYDJVGOw+HZOHP4q+bvfD0+06VHuufn87vlO
-         SyCZxUTgJEHrRh2NJr68WwGk+D0Rsp9Gv0tbnS4Q2vE4EEJJijSk18ar9yNQ6M6ei4dW
-         BP9Q==
-X-Forwarded-Encrypted: i=1; AHgh+RpzjPD1YM+E700GJbYjBNNZCYgF/e+9/2/b+qrBgUH1Kyfv9dcsx7WPSgVeIytyYUOSueZc6xpuxw==@kvack.org
-X-Gm-Message-State: AOJu0YwRwbydiSr9DIgA4OKTKCACjCx7tKpt83sd9JJydb89MtrBgFpZ
-	n6FaV/kLNhf/flihewUzAedMHPqjfG6yEv3jUSvpbvZ97E885Q8VfipM
-X-Gm-Gg: AfdE7cnYOYOM082bO/5IZ9iyNvdzacGTYOEaEEX2QqGJl+XuJgVUmQXNzUJnSZw1zSG
-	don3OLDXxxnV379uqFyJtjyjyLN4GVDCbjoY5biK7f5PFw1UzQN1yAx3eSKh+kTAIfQ2gOy3DX0
-	axVxDo7Z7JFwTGz6SDVPPxHvtFgpQIs3kq7IbrflsT+cBSfN6WBl8s4LBDt15ajVsQob6Nktdtu
-	g4IDdzcW9+R5DCpF5ZbPf9+1SnN0tfaWhkgS+3fcKIttHfibvwwY3xvgxmHsJmsexLyUcKNMYIR
-	7fUXk25tgdp1T2/Va4wTw4YO5QfONnGQOOipCUBps6WVZphZjL7Gut8xQnIqttBg5itB9vKMj9f
-	TDJeRBiU+VNUl7oqMx9RUpIfDMyz1TgWoRE1dVM1DHkZ2V16NfpeshUnJrjajuV5ZY7YLjV/fFO
-	NTSGbf7YHLjWrwnrwPfc7ljZire4tLKCt0
-X-Received: by 2002:a17:903:b48:b0:2c9:e5ff:995d with SMTP id d9443c01a7336-2c9e5ff9c0bmr40545955ad.31.1782733025674;
-        Mon, 29 Jun 2026 04:37:05 -0700 (PDT)
-Received: from [10.125.192.77] ([210.184.73.204])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2c9b43af119sm43120405ad.48.2026.06.29.04.36.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jun 2026 04:37:05 -0700 (PDT)
-Message-ID: <db3b3d03-61a9-1c88-4e8e-c9319b048626@gmail.com>
-Date: Mon, 29 Jun 2026 19:36:53 +0800
+	bh=nLGDlUX45pyH4n6zMqY8n2u597JQXzQICQmu1s5kct0=;
+	b=5ZfQyYgOGu8V7Qzvr3z5o0BMP36s6fy0DL0I56j4CvvmHU8CQkrtoaVbUngiBSrdJlm9ys
+	QhAltms1HoPRXDrbCKRxYnq6xzCbxFH+KZjfHKlXoKCbxVXCkQZUFtmeIiRZAgFeSrU1ea
+	71ZCJb4Nj2kXwQWaM9ypGBgl2ABENGE=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=N3pP0hBn;
+	spf=pass (imf31.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782733213; x=1814269213;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=RQ2NcPVxyBOn3i9vV7zLzpSLZRYXl513Ob5PJjA//eA=;
+  b=N3pP0hBnHSwbgG8RUNGxuTg/LyqgAPcVyY1jflndI0Wn8fabGQI9lrYC
+   PRuroQm0+YmJzgMUlQOcAdFJNlHH4V9OCyNLtSHH4fejrJQOj/kjqBK6d
+   1xeLlC5DjEpI7wN1CMj4mG6PIUcO+oo0E2lce+boY5Z3MdzOegSPwzF2B
+   iIz7Mynn58qnTCTpQ6SYlUNYj02jhQeclzim9Ljv2SH2gHG9nnR72KyzP
+   Y2LLUuUxx5zjbMtYPn+d9EaYlKd0Jaymcr8I1/1E5bVsxucKoYPvkJzk+
+   oblFtiKssetDSuYznfmpjPxdn+x8xGXxnWg/b4XXntkJYnLWlxYjcHX9P
+   A==;
+X-CSE-ConnectionGUID: fJ7ihlEcS12J6lvkAEL1vw==
+X-CSE-MsgGUID: kN6NQXxuSNKkOdpsr6D4uA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="83449389"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="83449389"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 04:40:12 -0700
+X-CSE-ConnectionGUID: 9eZFGVeRQveht1wRLxGYUA==
+X-CSE-MsgGUID: J777P0kbQqyc0F4sc/QyPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="245574281"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 04:40:11 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 04:40:10 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 04:40:10 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.4) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 04:40:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g/5r/FAc3fvH6ANAQWEqy2Db5sWkJuGyLqmFexoiB4bw6p9U1Ax+jqFnKw22CmZeeaaJiXH2qcDjFBMjpByA49aD/CthjF9lF+08h45Kdk08C2bGI4rpidbOZaLqlC0Kt7vF05OMAjcTZR9HaGq1LoQn54eWzdJwtU9dyULtajWdhHn5zArYS/NX3zB8HrrdQnLx/UCPvxi4Y63sHdxkk5u2xKhw2LmXSrZG/308yc1AkoB1IF4TepuASUTraQORBbHB+ysp/ksA7qsmeObuqOAcZw19XBdyCajoa+jTnhYq1DCIpzf/OY/RAJSuz5CtGZ/lvBGmV486mbzp+VDz3A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nLGDlUX45pyH4n6zMqY8n2u597JQXzQICQmu1s5kct0=;
+ b=wTiQVxcLCqKF79LRiIefvMWLvoumwdrwTk5SKbkaI61uDlSCg1czxT2/6loah+rmD7pSuFABNjMMrmuvuFKxYPVB2qGD8elRQ1993ZGbuTWJ/PDDGm7cXlj9DmWWBQfmer0+NZPIZau8ltHMP3lkbV9VP7UwgZJ39UoJ5Vki4g08AMPIen9ouFQWSwWdlh0cpQ57DYhS/wDmcEFn/r3pzq7mIhq+8sl484UlvQAkuJmMhsUNfwQnhQqGDyUKmeGE+cyDePJOJKIArQnIRk8b94KlLYVylSLYCtCGQh0kv460FQsGbF0Ir0aiGpHhXkkYAnKpQrTxRUT9ocLa8Ov7+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by SJ0PR11MB5103.namprd11.prod.outlook.com (2603:10b6:a03:2d3::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Mon, 29 Jun
+ 2026 11:40:01 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 11:40:01 +0000
+Date: Mon, 29 Jun 2026 19:39:47 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Ackerley Tng <ackerleytng@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 24/46] KVM: guest_memfd: Make in-place conversion the
+ default\
+Message-ID: <akJZg/2P4TxJGBGq@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-24-9d2959357853@google.com>
+ <aji/2svhcc84rn5w@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHYTFnHbsLLgMTCSitmnp1_j9Pomikm9qmpGTh1w8YE5Q@mail.gmail.com>
+ <ajx5Vrz9ma--hrGH@google.com>
+ <ajyJhZcgfYFtGfS2@yzhao56-desk.sh.intel.com>
+ <aj0Jf30PS2f7x1nt@yzhao56-desk.sh.intel.com>
+ <aj087H1UWSFxbShR@google.com>
+ <aj3H2sxymOYTWTnE@yzhao56-desk.sh.intel.com>
+ <aj7NwCRwWEfLK-gQ@google.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <aj7NwCRwWEfLK-gQ@google.com>
+X-ClientProxiedBy: KUZPR04CA0015.apcprd04.prod.outlook.com
+ (2603:1096:d10:25::7) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [PATCH v4 2/5] mm/zswap: Factor writeback loop out of
- shrink_worker()
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: nphamcs@gmail.com, akpm@linux-foundation.org, tj@kernel.org,
- hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org,
- mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
- roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
-References: <20260618044857.69439-1-jiahao.kernel@gmail.com>
- <20260618044857.69439-3-jiahao.kernel@gmail.com>
- <ajnGTt8tkbAWX8Oc@google.com>
- <0916e673-861f-b472-7417-afbffbcc98ad@gmail.com>
- <CAO9r8zPSZLaqLXw87V3q4tZa8WD7xCympKqfLMLB+o-++GksJQ@mail.gmail.com>
- <91297bc0-268c-e9c2-57ae-6066eee5df2f@gmail.com>
- <CAO9r8zOYgjbuG5i+LrCcMK764nVpOS+muo-5Q45ZFdiVus-dTA@mail.gmail.com>
- <f1cd1ec9-48b0-1b03-0514-6c9958f3c77f@gmail.com>
- <CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com>
-From: Hao Jia <jiahao.kernel@gmail.com>
-In-Reply-To: <CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|SJ0PR11MB5103:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c867b55-048d-4ca5-8bf5-08ded5d3278a
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|366016|7416014|376014|1800799024|18002099003|4143699003|22082099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: krJrgMsDGR+fnw7RnJ7SPihbyuWO9qRAFmCKJ5W/zMtpXBPUwQOEZoTW7nF9ODmb8Uv+oczC1Fb07egihRAup+cmgPFDlYPMckqk7iAE0wAWVDx4Tn61u/dm5YNyD5lXMbxMi7vL2ho5Yf6mY2EvKe+jGuCjdWRYDKT2RvfqPhmVe07mCqsDBlGeEBlw9NH+C+iLfW7PatJRoND4tmL195q75GnaJz63l72P1SktcNZ5QREopOj+xY2DRaQNtR5G3O6sJGuT+C0wV7ju941kQ4Y1cNERZ/GbzJN6JE5dv8XxSEddCWvFtkYZYCI22uW74u5lWvCz5T5t313vkzO5c7Uma2cMXxInReuWCd0NKKBeUjZDEdbviuy0M4hQGjbsXrfxzjmuV/8B7RbekOCDz5dQphWEvpGolsMoe3yWZ2hHdaP5otVEAxw5QnrA2zEmnGvHc41+JEZr53UmgR+MeQNV0vE93LvDuEyNvqMa/i1ZkNUKQDNU3Zl8C2dyt/xhW6amvFfI9TCpqFD6Y7zdPHIhouGvVj8JTerScg5ce8JVroghH1FvWb86kiBF7uPqdS85dvVp6ua/FA6LmPfV4ZhY8LihEJqJLVcV7OJ86xf9zJ/gxliRyHctZOmY9l42ZD6M2BCNhGZMw4sH00wVaM31ZaUU2LR4MzSiWolv8tw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(7416014)(376014)(1800799024)(18002099003)(4143699003)(22082099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?MctI+KHDN/+MfCiH2PjThHhm/l28rkcJf2F0PTZa9rpgpdIPXzt9RwLsl6tQ?=
+ =?us-ascii?Q?Zyf4Wa7yb1S2FJa0fxeThRrCyJERt/2/bSUf7i+Ipvjfi7t3RYomAuocDjaG?=
+ =?us-ascii?Q?u5BSXFdB8cLSgfPk0k56w17mvvGYodaCbqrFuRZMkef34ms8d500BKwEBMI0?=
+ =?us-ascii?Q?wQc1NzgWBEeYXMSpdsdSnKV3hXyzY77wPUQtWJAP77d0kbUxNvRK5QkboECv?=
+ =?us-ascii?Q?Fvxe+GiiQP8vYJXS6gocWrYUYFDuR0lsWIezuvY/4omMTIz/IUb+w1YG+LlB?=
+ =?us-ascii?Q?FSpg70NDjKlpU3HB/vnRSNRFb7S1BTogylz1kQnSQjM4PNw7dc4mAYI9ro1H?=
+ =?us-ascii?Q?5/2nJ7MvRA3k2USF07FpJL/BZYFJwcOmtGNwVstT7WpLI5BZNNhZAbZ92slQ?=
+ =?us-ascii?Q?CAYtT2gEoHBkHUabXHnTf6NRmZCkPsYykp6TOd4y8qlQpVoJRBvWNjGngGEf?=
+ =?us-ascii?Q?hthFvpwnVsVDGlSL5GJliD2+lEpXi2E0gLH3YE+VA/Hnz64WLdY0oanbnUGe?=
+ =?us-ascii?Q?YKRuM7jc7w9/s9rW0FswCPf7ZY+sWJ0cq32lHO3jTMENfL0E0D2o0ONt74Dv?=
+ =?us-ascii?Q?9jIDMPg2QXqxw48i1GikY770UeG0XlINxZdPfK1QRZhpJGy28xZlftI9CDZe?=
+ =?us-ascii?Q?u58XcmdxDezx0tH0bI7yjykUSWRxAruN5XXwBC4H025SxnKsARE/MHexBwri?=
+ =?us-ascii?Q?uxNGtHmhpOip50tjbX05LRoS+LHyYRSPrza2dsLyLZ7DZ95pH7kuZSud2Tce?=
+ =?us-ascii?Q?/q4QSRfMMVOzatNsZ9HnYgtGL2ayUuZrRCYDoaK8Mk2dqor3XesGdPYV1W6G?=
+ =?us-ascii?Q?HRCHWdBZBSqih7Ay2s6eRQzcldmQaSUQLOccsGih0Gi/7DxJDUuLCqDRnsQ/?=
+ =?us-ascii?Q?B8t/JPJvRt4wtI2dy0km+7niCTh/Yp9J+8Hbd5PrcqI3SI+UyIEluHwefvT9?=
+ =?us-ascii?Q?84fBo70SWAJZWuQJmA7sC8pr84W0pCpLCBxxAO/Hi4D0DRULS/ceK9DquvDB?=
+ =?us-ascii?Q?i8AgOrHkIA6tK4rUe7Cl6BaFA+PabpbG5EGnn4HqA6dFRPyRv817sDxn0zQO?=
+ =?us-ascii?Q?18JcYYJxepWasSWM61rkxkWpTm3oeHNxQ8fO4O75T0/DP1xi+64nyEYR+VKt?=
+ =?us-ascii?Q?deinWUXd/OJSDCQDPjBE/6UESjm3xo9I7GMQmbwNwzwadkb/p1cB7YAsVbKd?=
+ =?us-ascii?Q?kRKn3bIwzB9T5MHTrZXuvfMrEmgNZQyjWavTGBnFkotQ8U8KJUxXEQhiLxoh?=
+ =?us-ascii?Q?bc/83+JoFpop72SxcIbhfOKqdmKgaxO6lqPwAc0Ytf9qDOZSaL1iicxfZCWP?=
+ =?us-ascii?Q?AbbKx0jAAHNnFV7Lt4gurSBq+Xnj7GIE+AiDgJjWbfWsOihCbYOvHwfQCSZd?=
+ =?us-ascii?Q?8Xvglot05MAakzb5y4D9UHi3n8PHUZNvJBubk5mtfGoAaSmr98qbdbAvWFT0?=
+ =?us-ascii?Q?q10aHjtxrtzWJnpicj1wcGeNYL/qr4o+lEpJYmFdpyDpoD0qdssCeCtPu6WU?=
+ =?us-ascii?Q?eSvB3lBxOyaXX2AnQsAbHOsxvhvJX8GYaCaHR9Y5RSeSTlhpNOaeDbvskgt1?=
+ =?us-ascii?Q?knTT8ZTiinrjdeypiD8dXYTraazix8HX8y01ZBXJVu+7KcakEBtOOjM7pNWD?=
+ =?us-ascii?Q?StNyesrZqp0gfGAHOfF/04iNJ/P3pZDJp9aBgV4UQaMeYLyvik8rJ5ZwFsb/?=
+ =?us-ascii?Q?GlPJoHaZuCLh3cldx3vN066MYJ+JA0ymAmklbRq82kuebBNMzDnpXQhOnA1E?=
+ =?us-ascii?Q?CGNAX0v4Tg=3D=3D?=
+X-Exchange-RoutingPolicyChecked: EVGDCS81BVvFz0d2oG2mV8NpYCEIircdhM8fwDc6X2e03thTPbWroPZucO6vNkTOUIVyVWGDjVhdFnOr9dLBuNEv8h6Be+VZqjsenli/YCsTfOTh4BAMRNkJMFI0hR0ISt5MvicaHbcZbZt8TzsRMbaa7Cvzcd/BjfUF+U9NQUZpSM13lOOzSgWZR1XKHw6vxGMno8be1AtheVf50sM+5PyeHCwNb32TRyoeDIHpo5wFsTP6YKzzwhGP17/opm8XZlCDjhxtLsn3xmKAZWnynYXJPByiEZkEQCHuszicJadfGQYoDdn2L1kI8JoaKlLNC4HXtLeQ9Xoldveo9fmFoQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c867b55-048d-4ca5-8bf5-08ded5d3278a
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 11:40:01.2802
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: /SpRTppMlgt4cSQtTIPMBjLsTtmvaSuoc8ncTj8LaGZGP40WJwqlXTXdZ7gE/R9QYdAx8KagIhJfpFXd5gSnag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5103
+X-OriginatorOrg: intel.com
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 02D1D20002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E1C7D120002
-X-Stat-Signature: hecqmwi54dzo4r4cobeaomf759npundw
-X-HE-Tag: 1782733026-657183
-X-HE-Meta: U2FsdGVkX1/FDUU8aaoP1Zvk7AsxGM3/nXEmRV9wPnWElA+OIu2jd2lnWfNM2fS4JF28IUHGRUr2M/+MjGsxbxW2CQ+2rDg/rtYYQ9EWwgONos8TCburajnaNnODBKp8EB1rD22MG8quu2FbNPeUlq69SVQZNFedDdTjxetzOHw115vmELRdX3U3r/tTFCfB10hddtQv839AvaAu6dSYyCSzGbEEHGk14iRKOM0u0IkW9Ihwf5qJnReaHssz7UVG87mjk7Bv3AOAiVtQe6it3Lr7i9YvHNjK0CDGjh5WDSjOLOWhapciV1Sg2ZyKvAGmZw431JymkzTKygm//fKzjyDUsTjJaxfcYbs0VvpO6GpfobpmvK1Yv2hcESBjjDtGYykRS/lt06vNK7yC/80PaMlZKkXx4Dk2nATU3ky9EOd1dPan90VBBxiv7/Ropp5l4mbWOhUjJaPsxRSfmmF3KsCAXLOpJqYPvJreVcH1DoiiXoNKLg2rf4xMyAOts68pwkFFC/YhxT93boWP5nrg6f8nKdApLqJOpsnRU2bZYC8BpC0oxghPOF+RZcnEJ73pcilnkDYvuzfktc5QBbiNyHV74t3MhVH52u6FT+NABNEtx///fwF5LvJ6OQ9gz1MS2FPkcVhZAOqNNnn1j4xmCmZGRzXdeSUD7d6L4WosEK9BnnLJJR9TKMIQjj9ca0ThNi/Z/GnOry12lLOA20b51GbA72qByUj9A9uxT9BYrilBQKC0YG2Ym8N/7Ewl9/gFDWty0jzzOq5Cra5lOC5Fg7pG65/Ze7I2WGKfXkuE/UePYz9v51Q3HyZygnKrnzu7e5XjYYRwA73jbQK5XYhTpkgTeOZIvEJZIK2bNz2PkemqZfW01xXxswidLZnsLcoKywPF0oeVJEbNlgiuXsW2kiWzTBKgTTpUWkIu90n0pT0NDcg44AQe/nErWsZ6dqtldmxvISEZdGhKCIEB0Bh
- gx2xckIG
- LUjl69x9dsLyI05SBUEUqnMOiBvj/Ia5fQn9Qhzy90iDPvxql/Wb45u4HjdxpfLMW7OKXxH1DCPmRXu32wAbea2LxZiXvubYKJ5c45Qvb8dNDDEiqJcLpdS+9afS2kre7ANFw1tRHHq/E7gTL5vvtCtdstnKgJkWfbh3G8B+L7b093mDDgubuh9KqKE4l1xAR0wvFbb17RwYCi5gV0xo/4my0eWwnD+z6LdvSUWcnwGRDFR/I8ra3qz0keY/iG+PUKu4Aa/wfG5l7B39m2Liv0QhJOG/IsNk3jQso55R/pMZNk4qoRyhkSij3d91Woq/7FA0jRJcZNXlNvIVf7S8K8y4MW19xy/LxAGkPZu5ahH2K1l9//v+U1pk56ETPhQFV1p9pMSy+yBynZsdgFk4qRpVjViZShbKZKStnhY0EYsq17Y4lr2I2r0cUWt//PQEk6HAJaF08RMKtrs1MA7ywY6lxulOpfSczVA75AkMroE0vu20l+vRQCLbbrlRbody7QszTHBenQf+6z3fr3zBtMW5M4Q==
+X-Stat-Signature: ezbhc9odcp99xai1njep6jsq358mg5df
+X-HE-Tag: 1782733212-949693
+X-HE-Meta: U2FsdGVkX1/Ia1odmeGMDF2IQx5BBmXqVWrx8e08BiyR+o18P+3ei1HJ8yY5HCRoThR229vKuEXoH7io6jpHiDvf2zf21OUIjwTlAjUJoOd8tRIiYvl4d7uAoqvsnPWuZ93a0n/u94M8kMi9FweJBZ05WpGW6RuDe8DQo5E8Z9n3kDSZmAlg4xWcoJhLf2IJ/Ip4hAIyhq4RWsgMOiDtN5N6rU8p0fcpy0aaexgj510CMk2gU/G2vRcWGhU7cN1grtCYKlCFm4i0wDx6ohAo4inlhlC08Sw3oGRh0EHlBH6CRw2XC8mNrqU4s6x87SuJRLDx65rc/2kDOfSEjJI5l2ktFAB4KMyCO2BSjVLteom+yes2Gjp8dYcAjpcJLW2N0PogB81okvHTiOHp327Ucb/EatZImwSQtiCY2/skx1l+1Mzc+O0ku8mV3o8PvKx9MZkZ1DJejD5lZfsuF0PjL9ARVQQCh5NlKEl8a1uFKp7pOLLnZcKjMbXSeDzZUIDznqhhk5IuWhD5DU+SM8eBL1dgMWcaOgiuLenAD8oIVT9mLMTyi88cbzQvW3pJGfnqCfVWUCMGomEzbySgJCyBEcORewO0bkNjzIITnffFFnKRs+At+ho/FCL+zPTMtKDdpO8vnOS8ikc8A8gg176JXeT4dmQNRGx8SbyhlgdH85pDk8xE4t0VauWmA5ytzts4b4WH9x2lp0Lvf/dzRijJ+F+JJEVz0ndyrBb0kW0mJZp2SJRRTV+GrjR8FB2A8/pfIlUJ7C9wjimv4znL4SipItSFm8R7vzwrLHcv1+ILPAAPyEBuc7GqEgCccdXjgpHnTOoEFTPSQXK3rhwi4bH5n44jgUhjrH5fegJFzjb39AXzl0VpcoQ/vVwaLcqABPQtQ/w9YxbWwSi6rvkyP6/PmcYaHkzxX7oQSjYmvnxUJFC66K7dSpyQu9nS+tSVODVPRngUdO2u0iU9r+jTDXU
+ 8WlOXMIG
+ 7zQdCXp4d8cIVRSHsxEQFyaCsk+oe8VD6ndXQv+u6Anw0gVuCsPK2OlzJen4aspwHjuYwOtkI3L9U8wcLZde8U2kqwNPG9xKomiIA4AlVem92p6AE+2qeI6BJ0IjljinLL+7dtFw8rBNCyL3AsoRBZLqjQwgJyCsv9MaIlixOzDqivT2vShbOUFuaBTqpDIzW6OSxJOKlYsUy8nE/6zbeJe37ek1KpV5gIx9d3RKLfKSieMWIVJqCwFYD+UGzwZp1l4y6g9wlWU5qJcJLmBxPhMVNKY4fB0MHbB2BHWpskqCfLbRK1/c+A0yx0QIjOrBHKmMWz2hArq+OLenRFfFV93U5c2phj4J9JZclQ74m+E0tAPovEyu4rnXzeYwn/UWjGEpmB57LhCmTIn/1X4zG3sA8P2tLslLw9NrTWEC3tu7470bM/0Pq24ir1LmJnmzEdrxSqtLbWz/CWcAFwNnBrtWuL1WXUvdY1H8DvMcUNNOjjU9j3cjqzjEvmI3q54nMWMKrtrclXO+ZJFM5UY2Jn8DJcUWM5HHxVw7devqmvyT6hztSnfJPk/TXYHi2OLT9vkRyEYZVGbzpSJ9FMK9pq8qgVQIaiS+1JD5teyh0TbcLWBHUvUIreTQtpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,154 +226,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2026/6/27 01:09, Yosry Ahmed wrote:
->>>> /*
->>>>     * Take one step of a memcg-tree writeback walk driven by the caller's
->>>>     * iterator, and fold the result into @s, the retry bookkeeping shared
->>>>     * across steps. @memcg is the iterator's current memcg, or NULL once
->>>>     * it has wrapped around after a full pass over the tree.
->>>>     *
->>>>     * The function returns -EAGAIN to signal the caller to abort the walk
->>>>     * after encountering the following conditions MAX_RECLAIM_RETRIES times:
->>>>     * - No writeback-candidate memcgs were found in a memcg tree walk.
->>>>     * - Shrinking a writeback-candidate memcg failed.
->>>
->>> Orthogonal to this patch, but I wonder if this can be simplified. I
->>> wonder if these two conditions can be replaced with "shrinking a memcg
->>> that has zswap entries failed". The "no writeback-candidate memcgs in
->>> the tree" case seems like we should abort right away instead of
->>> retrying?
->>>
->>> Nhat, WDYT?
->>>
->>
->> Perhaps something like the following is what you had in mind? I've
->> drafted the implementation below to make it easier for Nhat to compare
->> with the previous behavior.
+On Fri, Jun 26, 2026 at 12:06:40PM -0700, Sean Christopherson wrote:
+> On Fri, Jun 26, 2026, Yan Zhao wrote:
+> > On Thu, Jun 25, 2026 at 07:36:28AM -0700, Sean Christopherson wrote:
+> > > On Thu, Jun 25, 2026, Yan Zhao wrote:
+> > > And I'm not remotely convinced that prepending allow_ to the param will help
+> > > end users diagnose "unexpected" memory consumption, in quotes because anyone that
+> > > is deploying a stack that utilizes out-of-place conversion absolutely needs to
+> > > understand and plan for the additional memory consumption.  I.e. if the memory
+> > > consumption is "unexpected" to the end user, they likely have far bigger problems.
+> > My first impression of gmem_in_place_conversion=true was that it enforces gmem
+> > in-place conversion. However, it actually only enforces per-gmem private/shared
+> > attribute.
+> > My worry was that people might think it's a kernel bug if userspace can still
+> > have shared memory from other sources after they configured
+> > gmem_in_place_conversion=true.
 > 
-> Hmm I think if we pursue this it should be in a separate patch or even
-> outside of this series, ideally with numbers/proof that it's not
-> introducing regressions to the scenario that lead to its introduction.
+> Ah, I see where you're coming from.  FWIW, truly enforcing in-place conversion
+> is flat out impossible.  E.g. userspace can simply replace the memslot, at which
+> point the memory effectively reverts to shared.
+>
+> > However, I have no strong opinion if you think gmem_in_place_conversion is good,
+> > and with the above documentation. :)
 > 
-
-Got it. I will temporarily leave this part out of the current patch series.
-
->>
->>
->>>>     *
->>>>     * Return: The number of compressed bytes written back (>= 0), or -EAGAIN
->>>>     * once the retry budget is exhausted and the caller should abort the walk.
->>>>     */
->>>> static long zswap_shrink_one(struct mem_cgroup *memcg,
->>>
->>> Nit: zswap_shrink_one_memcg()
->>>
->>> BTW, the existing writeback logic has been broken for a while now when
->>> memcg is disabled. I think we constantly hit the !memcg case and run
->>> out of retries. Not sure if your patch changes this in any way, or if
->>> you want to fix that while you're at it :)
->>
->> Yes, I'd be happy to do that. However, would it be better to submit a
->> separate fix patch or combine it with this one?
-> 
-> A separate patch. Feel free to send it with this series to avoid
-> conflicts, but probably as patch 1 as we'll want to CC stable on it.
-> 
-
-Done, and I've just submitted the v5 patch.
-
-[v5] 
-https://lore.kernel.org/all/20260629112032.20423-1-jiahao.kernel@gmail.com
-
-Please take a look when you have a chance. Thank you very much for your 
-review!
-
-> [..]
-> 
->> /* Track progress of a memcg-tree writeback walk. */
->> struct zswap_shrink_state {
->>       int scans;
->>       int failures;
->> };
->>
->> /*
->>    * Take one step of a memcg-tree writeback walk driven by the caller's
->>    * iterator, and fold the result into @s, the retry bookkeeping shared
->>    * across steps. @memcg is the iterator's current memcg, or NULL once
->>    * it has wrapped around after a full pass over the tree.
->>    *
->>    * The function returns -EBUSY to signal the caller to abort the walk when
->>    * either of the following occurs:
->>    * - A full pass over the tree found no writeback-candidate memcg.
->>    * - Shrinking a writeback-candidate memcg failed MAX_RECLAIM_RETRIES
->> times.
->>    *
->>    * When memory cgroup is disabled, the iterator always yields NULL. All
->>    * zswap entries then live on the root list_lru, so NULL is treated as the
->>    * root memcg and shrunk directly rather than as a completed tree pass.
-> 
-> I think this chunk should be moved above the code returning -EBUSY
-> when mem_cgroup_disabled() is true, and probably made more succinct as
-> it should be obvious.
-
-Done in v5.
-
-> 
->>    *
->>    * Return: The number of compressed bytes written back (>= 0), or -EBUSY
->>    * when the caller should abort the walk.
->>    */
->> static long zswap_shrink_one_memcg(struct mem_cgroup *memcg,
->>                      struct zswap_shrink_state *s)
->> {
->>       bool disabled = mem_cgroup_disabled();
-> 
-> No need to store this in a variable AFAICT, it's a static branch and
-> it's clearer to just call it directly in both call sites imo.
-
-Done, and I've just submitted the v5 patch.
-
-Thanks,
-Hao
-> 
->>       long shrunk;
->>
->>       /*
->>        * If the iterator has completed a full pass, update the shrink state
->>        * and check whether we should keep going.
->>        * With memcg disabled the iterator always yields NULL, so fall through
->>        * and shrink the root memcg directly instead.
->>        */
->>       if (!memcg && !disabled) {
->>           /*
->>            * Abort if no writeback-candidate memcgs in the last tree walk.
->>            * Otherwise reset the scans count and continue.
->>            */
->>           if (!s->scans)
->>               return -EBUSY;
->>           s->scans = 0;
->>           return 0;
->>       }
->>
->>       shrunk = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
->>
->>       /*
->>        * There are no writeback-candidate pages in the memcg. With memcg
->>        * enabled this is not an issue as long as we can find another memcg
->>        * with pages in zswap, so skip without counting it as a candidate.
->>        * With memcg disabled the root LRU is the only target, so we should
->>        * abort if it has no writeback-candidate pages.
->>        */
->>       if (shrunk == -ENOENT)
->>           return disabled ? -EBUSY : 0;
->>       s->scans++;
->>
->>       if (shrunk <= 0 && ++s->failures == MAX_RECLAIM_RETRIES)
->>           return -EBUSY;
->>
->>       return shrunk;
->> }
-
+> Ya, I think this largely a documentation problem.  I agree that a param name
+> like gmem_private_memory_attributes would be more precise, but I think it'd be
+> far less informative for the vast majority of users that only care whether or
+> not KVM can do in-place conversion, and don't care about how that is done.
+Ok. 
 
