@@ -4,137 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF2BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14088C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:57:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D75E76B0096; Mon, 29 Jun 2026 05:45:11 -0400 (EDT)
+	id E735B6B0005; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4CC16B0098; Mon, 29 Jun 2026 05:45:11 -0400 (EDT)
+	id E23FC6B0088; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C65CF6B0099; Mon, 29 Jun 2026 05:45:11 -0400 (EDT)
+	id D39E56B008A; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BDA96B0096
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:45:11 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BD42A0629
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:45:11 +0000 (UTC)
-X-FDA: 84932466822.04.5B983DA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 3F60C120006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:45:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gXlIChH6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6CBB36B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3B4F4061A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:57:13 +0000 (UTC)
+X-FDA: 84932497146.05.A818A0F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 488BA10000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:57:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kk26YqZk;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782726309;
-	b=HtR90xjYCSAK78pXFapn3b+NPt7i8u0zLYEOtvxlMcvQNL9V38B00sBDpx9V6bgTi1uuP6
-	QceT7+ztcxnPXmcRYUyeMn+ddl0xS31/JeyWI9FXm92TBcq7OgR5Z8/CVD5SMB2PYB+mcx
-	m9qX+4fue7GUtfp4n+xKUe4iT+yhhPQ=
+	t=1782727032;
+	b=Y4Ss8p5xoV+bDW0OXGgPZ754UvY9axOiYfWCBfL0Fd9vPVzoh6RGaWP4lhhnUyWhB8zGeu
+	KuJetntOP4zQtEhYF35n4YvZWVAF4Fx7nZiaPG2TVKYD2ktArQXl2uN60E+KLfpPVL+i1F
+	nYGWXHWBDYs2HBKLyFfO4Oy9ref15J4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782726309;
+	s=arc-20220608; t=1782727032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PNKitwu74metHjmohLLyIabuuGfZTd3oLPEcVRH6PRU=;
-	b=aiqW3TxwDdx3zA1f5N8xj8huSvZkpf5Q9wjKUiW071uFutgKktuUEvXM1G+908OZIueft2
-	8DeTcT6Gl/O1e8Uo1o8U5/hjBpWMWT3ptbaK2UYMYKbgT0ach5BLKdxca+cfJ/mLsKZQ6s
-	xeYO/A4aZYgeAhO3LPqNqwiAmYhpYiw=
+	bh=Hm7uAuXqV83pH1WcLn0gFqC/C3n5BbfPtcxR9BhAvpM=;
+	b=aXRNgSNvXqVM2pAh2I5PKK1KwwCky3SvM4NeHFUFH1OK9BamZbZIqzgBBF/iqXd5AfDFKV
+	A77M3iCoofreeiQBMUD/0F51wmfSTJv1bIOQvc+swSF3jPgvLs+JS9EWuNxB9WQ5cAgejf
+	bQk9YatNReKpZuGwm03TEoZvLWC2MMQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gXlIChH6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kk26YqZk;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7617443CA7;
-	Mon, 29 Jun 2026 09:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DCA1F000E9;
-	Mon, 29 Jun 2026 09:45:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A457B60008;
+	Mon, 29 Jun 2026 09:57:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E21F000E9;
+	Mon, 29 Jun 2026 09:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782726308;
-	bh=PNKitwu74metHjmohLLyIabuuGfZTd3oLPEcVRH6PRU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gXlIChH6W10efBG9/fXMWcJ27q89S58y77++tE7iaU9SBIBbytfPOm3+n5eALGWvQ
-	 +PcjmjvNJ3g+pXgYvAQiJQi9enFcQrckiga8YZcgbfPXOXjnKSzydwhp7FMNij5iqk
-	 ODMRcFMqcaox7LSMPjXg7lkbANSYReEu5+19A6MfeM7ba7TYTOYWHih239hwYsUD6p
-	 +PN8qtUoT51jqG9jPvKoS5uyiOhT8y3JxfsEAqfs3i7lgBKRP70UptZgDGNUZGNCqn
-	 Q7p0GQX0ISg+YCRge0PT3XDaZ4HpwTl4cuiblvFPRs7w20+CAeYn/0sJAzF48NLS67
-	 k3mLTnMAnxAyA==
-Message-ID: <4b12ba64-5e2f-492b-80dd-b9be95604026@kernel.org>
-Date: Mon, 29 Jun 2026 11:45:03 +0200
+	s=k20260515; t=1782727031;
+	bh=Hm7uAuXqV83pH1WcLn0gFqC/C3n5BbfPtcxR9BhAvpM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=kk26YqZkaOzOyHBGvLH2I3k6ZIgsbpejLMKNX1uggbfg00ql+m6ITE5AivlZeIlUe
+	 NoYLSoPHX5QnQarNtjvJggAs5ObhB2Ng6sA1FEaj2KYxKS25lGWJDYl8tS5JL+0/LP
+	 T657DnAFLnzIEO4DWrYaylDmo7kCY0tWBecCf602uDcy1fstdla7kdT48LvT+OfVth
+	 4S2gFKF1BuX7kCGMgoXI1Gh5x2kbURdgGraclZaKVuHTRkPMQeH+WYdlWKOv6oAqKV
+	 xDsXNaRkCnpLZyllAbvyiZq/eSxywnXfXPczSic7bQEgQhxPMn1qTOi77AqfY+q3rt
+	 E0Z79BLC+0a3A==
+Date: Mon, 29 Jun 2026 10:57:02 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Manuel Ebner <manuelebner@mailbox.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	"open list:HMM - Heterogeneous Memory Management" <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] docs/mm: Fix brackets
+Message-ID: <akJBDwtGX241WHxo@lucifer>
+References: <20260627093258.31265-2-manuelebner@mailbox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: s/SeongJae/SJ/
-To: Lorenzo Stoakes <ljs@kernel.org>, Pratyush Yadav <pratyush@kernel.org>
-Cc: SJ Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- "Liam R. Howlett" <liam@infradead.org>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260627195630.24519-1-sj@kernel.org>
- <e29d1211-8bc3-433a-b1d7-d7fb44c2f0cd@kernel.org>
- <2vxzo6gtk89r.fsf@kernel.org> <akI8lkVb5CICUcWi@lucifer>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <akI8lkVb5CICUcWi@lucifer>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 3F60C120006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260627093258.31265-2-manuelebner@mailbox.org>
 X-Rspam-User: 
-X-Stat-Signature: qoy9sdof4k3t39ukzzk5q443uqgjyz8h
-X-HE-Tag: 1782726309-219636
-X-HE-Meta: U2FsdGVkX19Vuki22c+K/k7P3h6jtXgoL2Jv1/1daS4C2vBvTaM08dvQlK8lJP9tQSK88tQ6NiIw4iyRpKUvqmQGCneQCPqzhQwytovYQht/bY3xWlxPB1Bw/YVOX6xSGITT8C+iAYGVe019/8fHhAZ/IIyT4COQtlH79z7Ylw+jyL4onJjlwx/rKSOUq5QPdbqE5T6IG6D19ALkjjXhwd/T9n4BjQd5jgfi8z9Qn0C3DB4D0XYKT3lK37c/s4h2cD7T5umnxzJ2IEfKdooXt1qThKIU7XfwChIz0QN9ITQUtuNXBw/a2cQCvb22AVmYPaTXFW3bD2dYlzFlWnGCEThQ7s3lR2hNpg90vOBnOJQuLZR/BrQalBJUTb8Ta2XakcWL5UcVbNy88MtzOA3lHeF+gwfXLNdsynVdQIanWwyWH4oDGhAHh1LzsGj1Gx0lcU3um+jNyMeUwb15Tp5EFSecNgREikFBCoutbOqQBI0seiVPIIA0NjUeygmyADTHKeXVmQTRIDkkSSXRtNHZKdPnbV5+v+GOsuOftYgi5OxUfbOlADv8RsahOP+sXD1bF6kqjtqndrN1Tqf2s+PVlnkI+7ap5ykr/q+9gz5BZgciyyU3yCK2W6XnQN/pYOAyOapW+njqQ8nWiwJjtbYzFJyYx+wNkdCLIPoFrLZqQxIzih2q2PoEFOnRLCL+SyhObFbcPhgDUKGllI6YFqOfuQE3PugPquIgt983M8wdtKlQaG3omUBtdmCJTylLYXFtWVcB/p95c7AFRZkLgVguTFARtch0nop27eJLk+w9GEU4U0tOkF72F7WaVxMlbomoJniyZeqYV1BRO9D7xlFpaCSdKy0ocK0vrzg/8WnZL2J0JQg+tgqQ6vWNAY7k4OQdGM8v9M6cfrv9njktpuxxALCfFgIlKb2SGV286B7k8hgWoeCYll2vsccCBn0ck34cE+xcU9JYqlw1kDcFxhn
- INqG6kDk
- vJ28NIF8M0cdLt61MpooVJBsAPkoS++KRelsU5zk7BO+SIv/X1EX+fscJbxII7NoYrBD/vuri0OYm4O40KbpsHBGWtSNGZON7xidn+dQp8UWq2Dw8ZP0fbItG87qQ1RaSE4ezjj6bgMJ6tFzFXLXvNzufSE4Wr2SsDhXJcLQOJbHEnVpzJczsfBoeEYAGLoGgR0g2l35gjgL27OmBhGxqmyyl3HNNoH1XQo3OR5JKLN81y98834ZjHTJkUuaAfK7j4m5vepxstNxXtxg=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 488BA10000B
+X-Stat-Signature: 4m3zmpnxpdzz3hnk9ud6fyk9uomh8gc8
+X-HE-Tag: 1782727032-326842
+X-HE-Meta: U2FsdGVkX1/FXUm3SWxbE4LOOO/qyyhIDn3uvd4wIAw8zGQdN+RdA0wTCQfxGuyH6p/4UkMy5evjoKYTgmei5/ULa1HVThNvjVDa1Gik5MXI46QCR8Drr8oNCsXXJ0HTx1RydGeinJlvjGbWUeHUHwtUSrZqrxqrHcKWiWi3Opno/1DLBJshxfTA/87ZqhEHtdPwM48t8+VyuFNeYm1IM+zxf1VvHpRXS9WqjzrYqTR7DBLFV8CDuTZ9XKjBTK5R2bhd0H9IFkrZjXN2DSZrznUCRnziZ6sPAQFL/FSaN+ZduT0UhEgZm7q50IHR9vpM/BqskIOckqiMsBlttExOXuUVi9961tUpyPn6gy3y+ACobweeBILKkxqu3IMWUWDm+uXut09RZ7jypbJlq77an/VPKFfgZMjT+R/BVjXuwu5jFLC40JHwkmEiXn2FJKVhl77JcQAV0o4htybNja7Rt3KqTCzGXMdW4JhjHQIGsNd9tBuJR4dEMYq52qjLkLn2MUdyurhLu1wPLMgavynZrjsTMm0t3u1+9XY+43yelC+7T+ieAdWOw55zCqNa/yf1lBH39P03fyg8G16oEBj9XFCRZHt9c1qSuA7KjzZY2icWOe3ap/5vlu3wRJvPmCTISoY3XtKNkqLbufNTfBND03tw4QKI3zWbU8g3taV5zK9J+NdRFiQnsisyqoW2MjmZchYvCTtVzOTRfZF/xiHGxrWloZdypjKY8kd4wVFOJP5RSSuK8NxItVZIU9GUQIOVB0z8WQ3yMwPvO0Xt6Lqs6zIMOwancHpH18pn+mfbtjfkH2Wrk86TFMchLM1Jja5kqrLva9g/msBXTUxIzguyomdAEbyAgv95NMDqP/LVR4jdyDundGjnUOzvMUsqI8KTJVTicemf511u3eRnOjCZH00ORPsRjrL2sjH1E1v/NpKSOrr+LthaiKRNAw34eB1O6KLzABIQqHGjslOzZyq
+ RS5aPH/O
+ 4kpnqSCfWLK3O8pIa21H9AaIY1v7rrAbROiI6iRpUko0SnBGC8Y25dfbYKy46+06QO/HzmBuuXORkU1+a5nDifQ1p1LLpqT8MgOt/Qz4al9JZo4gh5m0y26mh2O2jNkp1ByRRMTD0FyITvJw9ZgWbr3/SoVSJo66+vANqhaZKvc99cKga/c9bts8g/086nR9NYJkWMOU1+Sgd/5kB78b89J26ZoxvOQbumtVoncVWnlRYQfKLpS1HC/6LeCLgQfrey5qEDjAp4yURtkGUnoofoBvqgJ6KL0UxtOYGwM4CHKSFo8ckxyTiX5CdlaiYRcTXh6tW3PDsWXBJsFZGvAvt4Iy8iA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,45 +96,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 11:37, Lorenzo Stoakes wrote:
-> On Mon, Jun 29, 2026 at 11:25:52AM +0200, Pratyush Yadav wrote:
->> On Mon, Jun 29 2026, David Hildenbrand (Arm) wrote:
->>
->>>
->>> [...]
->>>
->>>
->>> Just curious, why do you drop the author and copyright information? (can you
->>> even drop the Amazon copyright note?)
->>
->> Off topic, but I am curious how these copyright notices are supposed to
->> work in the first place. From what I have seen, the person who creates
->> the file normally adds one for themselves/their employer. But then other
->> contributors who make small/medium changes don't add theirs, even though
->> they should hold the copyright for the code they added. Bigger refactors>> sometimes add a notice but that isn't done consistently either.
+On Sat, Jun 27, 2026 at 11:32:59AM +0200, Manuel Ebner wrote:
+> Remove unnecessary ')' and missing '('.
 
-Yes, I saw it on bigger stuff as well, but not on small stuff, really.
+As per David this isn't correct :)
 
->>
->> So do these notices even hold any value? They certainly don't list all
->> the entities who hold the copyright to the code in the file. Only git
->> log can tell you that. Is there even any point in adding them?
-> 
-> It strikes me as a rather loose convention.
-> 
-> I am not a lawyer, but I would say that individual and corporate ownership of
-> code are implied by S-o-b, not by comments in files.
+   "Correct typos in mm documentation by balancing parentheses"
 
-Guess it gets interesting once the SOB does not carry that information. Also,
-some people might work at company X (and send code from company mail address)
-but may hold all copyright by themselves.
+?
 
-So even the git log cannot tell that story.
+<newline>
 
-But in any case, I would expect a comment about that in the patch description :)
+> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
 
--- 
-Cheers,
+Thanks for fixing this!
 
-David
+With the commit message corrected, feel free to add:
+
+Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+
+> ---
+>  Documentation/mm/hmm.rst           | 4 ++--
+>  Documentation/mm/process_addrs.rst | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/Documentation/mm/hmm.rst b/Documentation/mm/hmm.rst
+> index 7d61b7a8b65b..54c461e7a143 100644
+> --- a/Documentation/mm/hmm.rst
+> +++ b/Documentation/mm/hmm.rst
+> @@ -191,7 +191,7 @@ like a CPU page fault. The usage pattern is::
+>        mmap_read_unlock(mm);
+>
+>        take_lock(driver->update);
+> -      if (mmu_interval_read_retry(&ni, range.notifier_seq) {
+> +      if (mmu_interval_read_retry(&ni, range.notifier_seq)) {
+>            release_lock(driver->update);
+>            goto again;
+>        }
+> @@ -316,7 +316,7 @@ between device driver specific code and shared common code:
+>     system memory and device private memory.
+>
+>     One of the first steps migrate_vma_setup() does is to invalidate other
+> -   device's MMUs with the ``mmu_notifier_invalidate_range_start(()`` and
+> +   device's MMUs with the ``mmu_notifier_invalidate_range_start()`` and
+>     ``mmu_notifier_invalidate_range_end()`` calls around the page table
+>     walks to fill in the ``args->src`` array with PFNs to be migrated.
+>     The ``invalidate_range_start()`` callback is passed a
+> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
+> index 851680ead45f..b391502fbfd6 100644
+> --- a/Documentation/mm/process_addrs.rst
+> +++ b/Documentation/mm/process_addrs.rst
+> @@ -724,7 +724,7 @@ the zap and the invocation of :c:func:`!free_pgtables`.
+>
+>  Since it is assumed that all such steps have been taken, page table entries are
+>  cleared without page table locks (in the :c:func:`!pgd_clear`, :c:func:`!p4d_clear`,
+> -:c:func:`!pud_clear`, and :c:func:`!pmd_clear` functions.
+> +:c:func:`!pud_clear`, and :c:func:`!pmd_clear` functions).
+>
+>  .. note:: It is possible for leaf page tables to be torn down independent of
+>            the page tables above it as is done by
+> --
+> 2.54.0
+>
+
+Cheers, Lorenzo
 
