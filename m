@@ -4,93 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 561EAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 884B2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:25:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C0F46B0088; Mon, 29 Jun 2026 05:08:18 -0400 (EDT)
+	id 4C8976B0005; Mon, 29 Jun 2026 05:25:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 397916B008A; Mon, 29 Jun 2026 05:08:18 -0400 (EDT)
+	id 479A56B0088; Mon, 29 Jun 2026 05:25:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2872F6B0092; Mon, 29 Jun 2026 05:08:18 -0400 (EDT)
+	id 342396B008A; Mon, 29 Jun 2026 05:25:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EAE2C6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:08:17 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 623DE1405D4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:08:17 +0000 (UTC)
-X-FDA: 84932373834.28.F7B7D31
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AB95616000C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:08:15 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWKRGPoe;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782724095;
-	b=h3n1dV6WHH2vb0kB7X6To2iZYOuNGyn7uVoiJxt79pyM1ANdp3xEkLkMXhkGUN/rRBvIN2
-	D14cTFfTUpTS5tTS34QenXt28uwkvBxPHHUZZAA62QIR7Fw4lqqhapbBmqQBqpngGQ0A61
-	CZcWWglMedHUPLC4zvv0ewqMAhkcId4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782724095;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 032C86B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:25:21 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 601CF167FBD
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:25:21 +0000 (UTC)
+X-FDA: 84932416842.09.DE901C1
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010029.outbound.protection.outlook.com [40.93.198.29])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2FA1F14000E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:25:18 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=icXu5QsR;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.198.29 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782725118;
+	b=2fD1OAV0zquGPF3Le7sv4PI3zNguOfx8S7YDGNIc/jaEmcXs1yjd1N6SBkkuzLpNGWLBfQ
+	uXobX/vm7iPPYauzl5G85jnU038LrPmdXNlDie11zhnrGUdZWEFDd9Q4nzN7TasGlO89q/
+	iwsD3gelI45/96CKk56QYJ80rwevvOU=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782725118;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KIRuiP3uGCfyDumZZydtFbsuLumGucf7ctHvx92C2Lg=;
-	b=W1HKhKgQv9jGAoETWM6G2PJzZa8OwQ+0RTsM/GmbAnJLagC2dqshn70/LElvYp5OmhZnmH
-	plC44R1HAcbVjRsmLLXz6niSt85cE/3/k8hwvrkqxPSJxNRUtBrC8UVdNlWEA2SUwhWIJn
-	PKp5r4oDZjiuOodRjuu6BMUdGnfAo4s=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jWKRGPoe;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A47D242A10;
-	Mon, 29 Jun 2026 09:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AC41F000E9;
-	Mon, 29 Jun 2026 09:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782724094;
-	bh=KIRuiP3uGCfyDumZZydtFbsuLumGucf7ctHvx92C2Lg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=jWKRGPoeMKYHSWkprOEof3gvzQRlZRx/8mWh62FjBsp6cQ8dpsUO9cI3BKqCVYrbq
-	 1dVVK0m4XRp6AXO9nTc8x49vNb1K9dY/r/796rhyvBkYvrSYBDgmj3PW5rCQav3Prg
-	 KImAK6rmCHhw8T+uiW7bQGZD5aR35DDCMQcPdUvXEpo/WWeSu8Qw+qf+oqJeU2gclo
-	 tvRKgl00sZls7MEKtNXpfnz0u4mPMktOjV10TCjFwlhbR4vlIh90s2wQm4gCna9VZb
-	 MyF55vWI3mdh+/WPRZKOfoFR2aFPlvbLrFdPnjJdY1Yv6GGV0+na1KustcINvsCc0W
-	 cujHChQtJTYfw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Samiullah Khawaja
- <skhawaja@google.com>,  Mike Rapoport <rppt@kernel.org>,  Alexander Graf
- <graf@amazon.com>,  David Matlack <dmatlack@google.com>,
-  tarunsahu@google.com,  open list <linux-kernel@vger.kernel.org>,  "open
- list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>,  "open list:KEXEC
- HANDOVER (KHO)" <linux-mm@kvack.org>
-Subject: Re: [PATCH 1/1] liveupdate: luo_file: Add internal APIs for file
- preservation
-In-Reply-To: <akIask9nPTEAhd76@plex> (Pasha Tatashin's message of "Mon, 29 Jun
-	2026 07:32:14 +0000")
-References: <20260613012521.835490-1-skhawaja@google.com>
-	<20260613012521.835490-2-skhawaja@google.com>
-	<2vxzwlvljyzs.fsf@kernel.org> <akIask9nPTEAhd76@plex>
-Date: Mon, 29 Jun 2026 11:08:11 +0200
-Message-ID: <2vxzse65k938.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=9nFwbmP0/alm+paLOOk31r4Ih+5UNYoQskNpVC5z3Ag=;
+	b=fVwY9g9vsnMYU7P2cQh9DOcV0TEwhX2QXOKB+ycS4Q2MPCgfluL1N/puGfUI6JBXGB8XYU
+	QknlKJw+7mK11omFpfhJolByos57wiFdEPVEgaHcOsMCO/LPbhtU4hEazMIMcAtXS9g+1r
+	AG3H153VVJxpL/CObIs+1fPJAxUYsgQ=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=icXu5QsR;
+	spf=pass (imf23.hostedemail.com: domain of shivankg@amd.com designates 40.93.198.29 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ya4dJvP4GrqVLKGhaUlF+WF0vfjDmFAfAbsySqSjMSprH6bbpLv7nHWqd6uwUhqppOWZU9or01KIMeTyZQz4uLl/O6g5ZnB/VCVPzfyPz30VARxhdp1v1crlSsrg5SJcRRFKy7nbxOqRvYeXRO9DHG+YxqJEKUkEpeUnGJPe4v5j1p1akroXhumlrqgGOA8gOD0Sea6Pj+YE3rAgvFl0nCe/XSCizc7TR0/BE3MMn2fwdlRYqKZHep2UyhLmy+Jk9VsewOwlv5HBaemPHb1xTeI2MSnDZ8RkNAUM+aevUud6G8F0Qg16EW/ai3N+v+Lp/JfxOueuIw2JvCHKdmGc9A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9nFwbmP0/alm+paLOOk31r4Ih+5UNYoQskNpVC5z3Ag=;
+ b=BN55c9A/tbkCZ3XUivji7F1dkace5NkpSTqm24JWeZrrrRyv8LSuNpTL6xWZnrF0JGkrhEqyOSx7tn6TxtuUZfLHrv5KgIi/p28Z3i9g+5MTH7903ZCJ5BFmW2Grle1CYn6rctLZvA+aGIiWCgWU/2+HGyzhmNzh6co9fqH+aPUPkXeF5F/XUjdsTnJVkwplDIRBg75cW7ZuG8rsrfb+SUGCbwYBddAKhX4aXZPa9TLW8H2bhgTEtrzpp2nZ53C7VbkcISK7oT4jo10LBc/wmjN8a9C/E5gqjx2BnyYvTlPxxNDgOWrphJT5voTuIAQ19mitFBM0h5r0x0bmHMcRBw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9nFwbmP0/alm+paLOOk31r4Ih+5UNYoQskNpVC5z3Ag=;
+ b=icXu5QsRCntXKYLjDz3uy6+R89t6v+S5odAG7mTQPlfecwNnxH9mSFOAK3ahL5ySwmSx5S9PFeqT+D62lQcXlWCxu/QCqcO4bmmyywi4PQuuCgIVDr4E8HrhR1/TEQsUeVBda6yXdl/s1D3WqyNybF1QXZWKkNUnzZH9VlDUrio=
+Received: from BN9PR03CA0219.namprd03.prod.outlook.com (2603:10b6:408:f8::14)
+ by CH3PR12MB7499.namprd12.prod.outlook.com (2603:10b6:610:142::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 09:25:10 +0000
+Received: from BN1PEPF00006003.namprd05.prod.outlook.com
+ (2603:10b6:408:f8:cafe::2b) by BN9PR03CA0219.outlook.office365.com
+ (2603:10b6:408:f8::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.159.19 via Frontend Transport; Mon,
+ 29 Jun 2026 09:25:10 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00006003.mail.protection.outlook.com (10.167.243.235) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.181.6 via Frontend Transport; Mon, 29 Jun 2026 09:25:10 +0000
+Received: from [10.128.121.109] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 29 Jun
+ 2026 04:25:04 -0500
+Message-ID: <8c9f56db-88ef-4c53-a488-1178569760f4@amd.com>
+Date: Mon, 29 Jun 2026 14:55:02 +0530
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: AB95616000C
-X-Stat-Signature: p9uwr5asbrugfwmf8imocqjuuyo6dya4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mm/migrate: rename page to folio leftovers
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
+	<rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
+	<gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
+ Popple <apopple@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R.
+ Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike
+ Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal
+ Hocko <mhocko@suse.com>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Dev Jain
+	<dev.jain@arm.com>
+References: <20260626-migrate-cleanups-prep-v1-0-a95933af7619@amd.com>
+ <20260626-migrate-cleanups-prep-v1-1-a95933af7619@amd.com>
+ <53e834e9-2cb1-49c1-ab27-2d6b51d50fc0@kernel.org>
+ <6d477d0b-1f14-4e33-958d-e6a66c647963@amd.com>
+ <6da834ec-e62a-467a-9951-b591cf9c508d@kernel.org>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <6da834ec-e62a-467a-9951-b591cf9c508d@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00006003:EE_|CH3PR12MB7499:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa9290d2-6851-42d5-e027-08ded5c05129
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|36860700016|1800799024|7416014|82310400026|376014|18002099003|921020|22082099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	Z1WqVbLJ0At3OAZVTEME3h4qiKZXkBOe+CsJBXZoZgMtcGCd73TGHah2Nsx/Jg2Gb160OM+QwWFA04EqAPPM6nIobtTuYKfNfFKh2hCSHn5dL+btynagVK5WGiPgp8mdPeoWEDT4yQBS9xs4QFWNAOtmfRFhLj+b77D1l5DzBndRCMNizaXCf4EiocUHfnrMe7y4VGWeajKqAcqWcC8p1ChLTTq5+CK9P2NnJj6k1wbHkGtUbaasA82qQZtMx4X0XkcQsobU9bLLUHveT1J0aUz+c47ZIch+3EjXlOHVhf/U52QTV9lbKT5Cx3giuleoFHsERcRdnEuHNQ7U400AIvKUl0QqTt99BMVJfa1ib8eV1XYoUJbK52co3f2fF1UF7o1cF+Un/kgGA8/Tsow4K8uOUeljmQvS6CAVeSLK4WNlIYjz1q5LAP4gUpa+vjJvxlU4TVA3YCgpVVaIKcwFrK5THXOW6CUWLBlQbt0eUJplJ6+7ZxtZZ9ox0whM+0/EgZF6THeYDzMXZs7J5/3C+nL2Ku7opJVg2E6EVEBnEHNk+ikRGr3xXJkpIET1wewXPSLBtV1cZ4yn/pDak/o7AryexINoYjm+qdWEa8VdIaeiQngdWh3kib2wtVpEY+YxgPkOkzo4cUJxko/+XpdQURiD4hSxPHxCrUHCGFkKSX6/QUSEOzBorDJLwaW24D7wyXIA2z45cP7fvBjhvIHRDDdcDmfTwaIjAgC/PtLhx1Shkbresulz59DD7Yp7f1qN
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(1800799024)(7416014)(82310400026)(376014)(18002099003)(921020)(22082099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Fs9VEYS5ecnyhiSjcfJyOwi6DTIVS4sCqurp1dwGDcWPfNCqDYS9uNpOIBYDd5+n9vfMQt6HoVB9ktpY5C8RLC96Yy2W39nzFRePYoCiF2J8+WuEWbULwWTxRzz8tNiFQtOOkqinOZxdlaBrNh62dj/bI/EkUtKpxS2ipRFm7q7yDZiLQDFh6874o6xnHQhCr7LJiuShlv91/BimVEc74Ga9+eZENg9DHg3d0JDTJf78QnAMhtfWCxPHis5TH0M566XEkAG34Gd6tU6mr0vfePHqvowvZ+4w7Ls6UP0MokY5RxCS56VuMO88KBzIrMyPk3j3LEWLXTjh5mzJrj8prmMsSpa4u4mWWAWlMxxEk1WcNxWwZJwWcf73XYLkmox/BmOCb3mwTwTE+e4+mnQjo6ee+SLHoUo8KmGTx1DO4AZwZwgkfM9XYTA1KlIXFoFO
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:25:10.4934
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa9290d2-6851-42d5-e027-08ded5c05129
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN1PEPF00006003.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7499
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782724095-88908
-X-HE-Meta: U2FsdGVkX189qlV7LEErBqfu/mGgFqktCcfdbVy0ZgIQtQk2zXCcVoHWDMNvDMHc0ewXnyZE/nSJbpZ3rftrCIsL85NBP3W+L+ct67xrUOlraG5TyNcAN36z/tPPj0VUBiqpbIL1qcWmDDiGRbbDpW7pFbfm3fYT4st1pM+MDom0PDMJZF8QtTkOhW+/XtzjxXzT4t7W3igQpRa6UaMbA391aH0gJZLUjTN6IW6g937u0vdbjv9JTbcOcOazq99vkvQGZOZFSu3rPOdX/zLI+4S9CTgwcH8beIMuCA01S8DpkCcfbBaHOIilxr2aX5gARYgxaHzf0aHwRpg0BxhafqhwrfGRRD6UtICnnMFD2qzgdO9kmHAnE1YJpAzk+7q9C6SZJFArwCSLV9Cw28IKR1I0PaVuzw8/Aqqg75g1YQX+6NF5eIVU8y7ZAFSFgOWxedc9HDg6iweUPatXjwrpQzfn714LnE8VpB1UJAgge+AmrrbNBacroSGW2jJNOtkwi0Aqq//vqIDvoX1m31LhT05JACe4wUtqAe5ZtVxbKI0gJ2jnbvha/j/iCiBMJyi+XYBrf31P/jnsxnrqnaESDBVUplzjtvvkKn2XEEvnSibT4mJDmnWT/Ogn+1DQ3Y6+tBBpkLN+e8KfuJEAQ1L2IOXycIm+uOz1rd11DqSkQr14yFsfJu6s7YEZviJA5jpJaNxjHk/AhQvGQPNi9Z68XzgHQI3LkzWgoJ6aX1NyW1Y6fbDZNCnVJj/1i/Sti/rCuXrFkjPosNhwDyDy10fd807u9gAQ9LAJmdWErQ+wOjIS5EBCk3EQnnSExfuXyEBDrJCmJorqIh/7g4coNEGTrd+kgaSTfE5IVdTiVrkiJMXcBaDkeHJcvpg74uA1VP3YM/j1CqXkY2yDedcpn5KKBQQqskBXtlQk7d3zmXMydvlXeUM6jQY0Z8Q04CbZhOnoWlIT/G5pSf9s+2i7eZ7
- VFgQMY/w
- bTmEtcKLJ20sQFxuhXItDryfFAIygqCoAzTScJMX0+y1b5hXAybhRAk3tM9N3rT5S0WSpsBsQfYNXP49O7A5T4jNRDBNNG7izUTTw/dPlazBdV08PW7WHxQ4+TGWSVhTZt7ALNq/WFH09V84Xs3AUZkUYK4UY+ec/RHEjb3sZ2u8dWGy95QAdZ9igjsNJaKrwNiN6UopYXl3/ljrIOspSMgsbbddO1DgvAW+aRLUgiWXaRDu9JWYlfXQwgANewLzvMe/hQ5c3bTQ8TkbtrzazvTMQmhtyx7J41IpTpfQkq/2TiYW17fvThs0I4eydPgx966gTqoLAI0LVnyknOv5OypaCEw==
+X-Stat-Signature: kgqey4gn3b39y3n7hdwkgxzfkcwcx8y1
+X-Rspamd-Queue-Id: 2FA1F14000E
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782725118-712737
+X-HE-Meta: U2FsdGVkX19o5eSU68hasgVhA4sOGH/wxYj+mNulOGzpw2fnlZm0lAB3W9fFh66Y+aRSngcDJs+2T/plqutiONQDS3mfstZI+MSzX542M3Bm4q5ObYLFFOuI4rz3tyfTAv9utv0uILziw3V+nJDjfSLEtb/QM6aOyJ2+f6IeM74Sn4VmbYrgY2cQNnzRFdFm8o8Zzv2zma5s5j1H/g8jSg42G54LJdtPTOvwWvjAulzIWJczHEJF3ZuEus2n0KMvYdaeUbGPXMlv1FebA6tIkMryPdGpJJ9ue9zGuqQer5LEW+pYfH9k8HQI8vmQjP5/v5i8Ju6u7iBPFDYR0VOkxiuQGWCDw22yxIJVF/Xgcko0xpYSYEewx/zx7Q//EQYs1I6bi4t7vpQp8/dSGhft70ctzApmjaOwPB/GnhMMthMXyxcY2/CGx61+vW9JD7EzozwOhtch8ljveA6EyxBQJUyIeN9KqNckhU6SesXLgzM/IE7pOYoBdVG+Ac6SoNGQ81zJrLLVSYaqPN4OE2eTB07Rbr55j5NOOh9/K+c8Rb26SUFQXeZM4132u7ArgzaFVYIKN8l34y3B4qle8U7BAr1MbpXyN+yvVd/tu/eV6wIrz238Lit3v0coezj913i8f9UiCJGhnFXMv0pzUBCu3RbC9hp+U/j7ydRis+nUn6AyUYGuZhgb6Swn0cA6pmqwyly0x0qpWhkH1IVY9nIYs58tLbHbkVfNSRwQq/1hxpSOh2fGg9DWeXO1sII+wdXe5eyQnyPzueO/BnZ7i7nZVidYsi8fnhX44MxXouixI3au82rnSQhJ7KBoZVG52Zx2lGi2NJxkBfkWKo0vu1j/coLg+YKBVRF60hQyI5uxdAWTIOuZoiUkR/jHDc32grbVMtgAIPcegM8fRi2zsQRYX6LYYWvCHzowXatiLXdsdL6JY8eK4mHaZwpQ60G/ckL+8qjIe4zoFQCpDs8U1t1
+ dKU0JcCB
+ i790No5nmBLww7SoymFZn5cblifNasHpBJ/bv9qdsP55vrtuGQ+ETZP6+w7jva26EhpmMwa+BGgLAqe9hivgJDI4dBm0lL7DaQo1UBX3KOkmUkpEyFOghxU0mXdWof02a63uINOoeXCvFd5jbCZ6d/1XBDLpRxdqdic6cdTlWVzp+SX/AVlhCQ4+pqhDb9G97uE6LMcZAueYUTMnqGHV+rQet4e7LxZc0zNGkqGJ+/f/xSXXOkCOeotsrOfNOSKC4+PcRbde+is5tHB1Fv3snuQEoQ+oss6aQ9vK7rgVqHPHjoAxHyZpJZE632CvQMraxSf9QeOrDqGnbQ8pag816yW2W/Pvm5Wq5T/Lm4V6qNXCqLnN1qaBcPAuMkI7O4oCQNGE0ScQp4IcXJOpm1aGBOn17xJz6uIp7os89qn1ea/Cs91BLd7Z69Ow4qvXuhxzQMtc5xtyUUdYSK3XfhGAORGuttgXwpL+ueftMMHWRLQKUwy7uOZKSKyoXw0IKzeEHJxVEQjd47G/Q9wHp+eSup4R/7l+V7tEDO0n6CX9dvRL+gVpCHkmYvt7Bo/Yp8uQ/pjfg5ssbgTC2tyGYJ69bWSCRN/1cNoqSbfhEl03duux4B/6AXJDCfS2oHn0NZ6C2FyWI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,141 +160,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29 2026, Pasha Tatashin wrote:
 
-> On 06-26 13:57, Pratyush Yadav wrote:
->> Hi Sami,
->> 
->> On Sat, Jun 13 2026, Samiullah Khawaja wrote:
->> 
->> > From: Pasha Tatashin <pasha.tatashin@soleen.com>
->> >
->> > Live update orchestrator file handlers depend on the preservation of
->> > other files. To make sure that the dependency is preserved, the file
->> > handlers needs to fetch the preservation token of the preserved
->> > dependency. Similarly during restore, a file handler wants to fetch the
->> > restored file of the dependency.
->> >
->> > Add APIs that allows fetching token of dependency during preservation,
->> > and fetching the restored file dependency during restore.
->> >
->> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> 
->> We discussed this once already on a call, but I'll write my argument out
->> here for everyone else to get a say as well.
->> 
->> While it isn't obvious, this patch implicitly defines a part of the uAPI
->> for live update. This patch says to VMMs (or other live update users)
->> that "you can restore dependent files in any order". That is, VMMs
->> don't have to restore the files in a topological sort order or
->> dependencies, they can do so in any order and the kernel will manage the
->> dependencies on its own.
->
-> Avoiding a forced dependency ordering is a deliberate design choice in 
-> LUO, to avoid any kind of circular dependeces: A depends on B, B depends 
-> on C, and C depends on A.
 
-Do we have anything like this in practice? IIUC IOMMUFD and VFIO FD have
-sorted out their dependency order and we no longer have circular
-dependencies there.
+On 6/26/2026 10:31 PM, David Hildenbrand (Arm) wrote:
+> On 6/26/26 18:42, Garg, Shivank wrote:
+>>
+>>
+>> On 6/26/2026 9:40 PM, David Hildenbrand (Arm) wrote:
+>>> On 6/26/26 11:37, Shivank Garg wrote:
+>>>> Rename migrate_folio_undo_src()'s page_was_mapped parameter to
+>>>> folio_was_mapped, matching FOLIO_WAS_MAPPED naming.
+>>>>
+>>>> Also fix migrate_folio() kerneldoc to say "folio" instead of "page".
+>>>>
+>>>> Suggested-by: Dev Jain <dev.jain@arm.com>
+>>>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>>>> ---
+>>>>  mm/migrate.c | 11 ++++-------
+>>>>  1 file changed, 4 insertions(+), 7 deletions(-)
+>>>>
+>>>> diff --git a/mm/migrate.c b/mm/migrate.c
+>>>> index d9b23909d716..dd7dbd8d84a0 100644
+>>>> --- a/mm/migrate.c
+>>>> +++ b/mm/migrate.c
+>>>> @@ -884,7 +884,7 @@ static int __migrate_folio(struct address_space *mapping, struct folio *dst,
+>>>>   * @mapping: The address_space containing the folio.
+>>>>   * @dst: The folio to migrate the data to.
+>>>>   * @src: The folio containing the current data.
+>>>> - * @mode: How to migrate the page.
+>>>> + * @mode: How to migrate the folio.
+>>>>   *
+>>>>   * Common logic to directly migrate a single LRU folio suitable for
+>>>>   * folios that do not have private data.
+>>>> @@ -1157,13 +1157,10 @@ static void __migrate_folio_extract(struct folio *dst,
+>>>>  }
+>>>>  
+>>>>  /* Restore the source folio to the original state upon failure */
+>>>> -static void migrate_folio_undo_src(struct folio *src,
+>>>> -				   int page_was_mapped,
+>>>> -				   struct anon_vma *anon_vma,
+>>>> -				   bool locked,
+>>>> -				   struct list_head *ret)
+>>>> +static void migrate_folio_undo_src(struct folio *src, int folio_was_mapped,
+>>>> +		struct anon_vma *anon_vma, bool locked, struct list_head *ret)
+>>>>  {
+>>>> -	if (page_was_mapped)
+>>>> +	if (folio_was_mapped)
+>>>
+>>> Why not "was_mapped" given that folio is part of the function name?
+>>>
+>>> (it's also not "folio_locked") :)
+>>>
+>>
+>> yes, makes sense. I'll use was_mapped.
+>>
+>> While here, what's your opinion on unmap_and_move_huge_page()?
+>> It also has local variable named page_was_mapped even though the function
+>> is fully folio-based. The function name and comments still have "page".
+> 
+> Ah, yeah ... please fix that.
+> 
+> And while at it, rename it to "unmap_and_move_hugetlb_folio". Thx :)
+> 
 
->
-> To achieve this, LUO provides the .can_finish() callback. So, LUO does
-> two-phase verification:
->
-> 1. It iterates through all tracked files and invokes .can_finish().
-> 2. Only if *all* files return success does it proceed to invoke .finish().
->
-> If a VMM restores a file (such as guest_memfd) but fails to restore its
-> dependency (such as the VM FD), or attempts to close the session 
-> prematurely, the .can_finish() check for that file will fail (returning 
-> -EBUSY), and the entire finish sequence will abort. This guarantees 
-> kernel-enforced correctness at the session boundary and without forcing 
-> the VMM to execute restores in a strict sequential order, which anway 
-> would not make  any sense from kernel side due to circular dependecies 
-> issue, where topological sort does not exist.
->
->> 
->> But on the preservation side, VMMs still do need to follow the
->> topological order of dependencies. Because if they don't, the
->> liveupdate_get_token_outgoing() call will fail and preservation can't
->> proceed.
->
-> Actually, preservation can also be performed in an order-independent manner.
-> While a handler can call liveupdate_get_token_outgoing() during .preserve(),
-> it can also defer this query until the .freeze() callback. Because .freeze()
-> is invoked after all files in the session have completed their .preserve() phase,
-> all dependency tokens are guaranteed to be available, completely eliminating any
-> topological ordering requirements during the initial preservation calls. It is
-> up to individual file handler implementations to decide whether they wish to
-> enforce ordering at .preserve() time or defer it to .freeze().
+Sure, will do.
 
-That is the worst of both worlds. I get your point that LUO doesn't want
-to enforce dependency ordering. My arguments against that are somewhat
-subjective so I can live with this.
-
-But then you can't let file handlers enforce it as they wish. The
-dependency ordering is uAPI because it directly affects how VMMs
-preserve files. If the VMM has to keep track of dependencies for some
-file types and doesn't have to do so for others, that is a terrible and
-inconsistent API.
-
-Ideally, LUO should handle the dependencies on its own. preserve() can
-give LUO a list of files the preserved file depends on, and LUO makes
-sure all the dependencies are present in the session at freeze. We would
-also need a way of getting the dependent files back from LUO on
-retrieve(). That would make sure the dependencies are properly enforced
-both on freeze and finish, and the enforcement isn't left up to the file
-handlers.
-
-Unfortunately all that sounds fairly complicated so I am not sure if we
-want to do that just yet, although I would like to hear your thoughts on
-this.
-
->
->> In simple words, if file type A depends on file type B, VMMs always need
->> to preserve B before A, because A's preservation will try to find B's
->> token, and if B is not preserved that will fail. On the _restore_ side
->> though, liveupdate_get_file_incoming() implicitly retrieves the file so
->> the VMM can restore then in any order.
->> 
->> I don't like this for a couple reasons. First, this makes the API
->> asymmetric. If the VMM needs to manage dependency order during
->> preservation anyway, why not do it on retrieve as well?
->> 
->> Second, the API is easier to misuse. The VMM can restore A but not B,
->> and then close the session. It will go on its merry way never knowing it
->> did something wrong. For example, guest_memfd depends on its VM FD. With
->> this patch, LUO will allow restoring guest_memfd without restoring the
->> VM FD. This makes the guest_memfd practically useless. Yes, it is a bug
->> in the VMM anyway, but if guest_memfd restore was denied, then it would
->> be easier to catch.
->> 
->> The kernel will keep itself safe in either case, but it will make the
->> API harder to misuse. And you can always _relax_ the ordering
->> requirement if there is a need in the future, but you can't go the other
->> way round.
->> 
->> So that's my question: do we enforce restore ordering? The code change
->> should be relatively simple. You just need to fail if the file is not
->> already restored in liveupdate_get_file_incoming().
->> 
->> In either case, please at least add a piece in the documentation about
->> this ordering. We should not leave it implicit.
->
-> As explained above, the .can_finish() callback addresses this problem 
-> and prevents any misuse (such as closing a session with a missing VM FD 
-> dependency).
->
-> That said, I agree that these ordering semantics, deferred verification 
-> model, and the exact roles of .can_finish() and .freeze() should not 
-> remain implicit. It makes sense adding details to the documentation to 
-> clarify this behavior.
->
-> Pasha
-
--- 
-Regards,
-Pratyush Yadav
+Thanks,
+Shivank
 
