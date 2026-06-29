@@ -4,98 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32C9AC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:41:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0DA1C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:56:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F01A76B008A; Mon, 29 Jun 2026 04:41:18 -0400 (EDT)
+	id 8664F6B0005; Mon, 29 Jun 2026 04:56:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB1976B0092; Mon, 29 Jun 2026 04:41:18 -0400 (EDT)
+	id 8163F6B0088; Mon, 29 Jun 2026 04:56:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEF5F6B0093; Mon, 29 Jun 2026 04:41:18 -0400 (EDT)
+	id 72CFD6B008A; Mon, 29 Jun 2026 04:56:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BB2D56B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:41:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 37F07C2C63
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:41:18 +0000 (UTC)
-X-FDA: 84932305836.20.CC61D54
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D78A6B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:56:12 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB7648FA39
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:56:11 +0000 (UTC)
+X-FDA: 84932343342.12.AF1AAD5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id A5148100005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:41:16 +0000 (UTC)
+	by imf05.hostedemail.com (Postfix) with ESMTP id DAD41100010
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:56:09 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0HRWXtu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwU3YJXR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782722476;
-	b=vm+aPOXAeCoBaKb8DN8gd3Jxle7PAo7md+eoCVL5YmC9KFGXd6YH1Fqp9NbH6n/l5Vxah2
-	rcdmqEpCUs9HSt+vRDMaC4cYqMHd4gUfOLmCnn8zM2+er5X8umxbNrpVzy929rxF0To29X
-	Oknb2ykPnHwSVkhqAv0+VTJmYnSTxuM=
+	t=1782723369;
+	b=EZrd46/aBkz/9qEz+TQvq8JhLSf+ynVx2g4y53Xm5UUsJELaVDn+TMfokAfT9u95Mcfe8z
+	DYkv15Lp+u/NyKb0bH835JP/x+Th6j6O2ruEKfU2p05+MH+2ar1uyZrPRovP1sg+9k39fY
+	KGlh1m3F/cHAecqJ68K5cYAGeuGiBTI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782722476;
+	s=arc-20220608; t=1782723369;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yfkssgBoiQ6bVfPaoqfkHc4dekis+Bm6SNpXHbgRJFA=;
-	b=gwqpch75eZkrUhkjjFh2d5OqAHh/7i7voi3c8MVibFp8R80y6+xg3jfSN25ljmvhYRb/UG
-	aYsVLOg8ZVgPnwyE46ZECjo9JME9fud6DyXnwncjWeoTJR3UzJVb9DGdJXNwcY9MzrIfYG
-	x8w68b6UgKnfNY2N7FKvnVgf4cH4+Z8=
+	bh=MjjLfoAnCdYSBQMHU+LNPQ7Y69v0MhSYKVpOdD7ztR4=;
+	b=J8CiHT+7TAY+3VfxJZ7o4ylQuTRE+C1C4Ata3ZL+PFeORJbXtvNI7NF5CF2EKpNg1Cz4tp
+	iwK/EV20tho/vPGLlDkoJeAtEPyQorNKsOExjaiyzixjpA/uLlOJ8PqFmwJdJB+MoB0ZG3
+	2zeeJ4k5fUQGTewlXNzjA0tgK+CfpzA=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H0HRWXtu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwU3YJXR;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of tglx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tglx@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF0EB40431;
-	Mon, 29 Jun 2026 08:41:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5581F000E9;
-	Mon, 29 Jun 2026 08:41:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 03C0241572;
+	Mon, 29 Jun 2026 08:56:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8BC1F000E9;
+	Mon, 29 Jun 2026 08:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782722475;
-	bh=yfkssgBoiQ6bVfPaoqfkHc4dekis+Bm6SNpXHbgRJFA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=H0HRWXtuJ2HLeUnPWK4mdYB2zisrtpwGufv0M4V/iKLqrq5n1WACDZ2o2xj5SXrHV
-	 HwK+KkD541OO7p7m5tYnemIhi+nC9NYHm4XgFUYTfP3IxzCyt9UQcT4YiZEjLy10Yo
-	 wdYMhJzw2PT0bEv4AOxv0Ep0/zjfMqR1jJgLbEla4avhJ66Y0qK3A8m/EJrUgYIHGH
-	 fA4NLMFj2l7oP/PlsdOqZqCYFGMmY/DI94iI9+hPkGW+9/nlbYGBJFbM7X0ylrBAIs
-	 FmmydQMoXplVeO4r3x1ceaNS656nARlDZVUKxdIEnEgmfiEOCvLARz0KwRnk0dfzEq
-	 jxMsfiAXRwRSA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: "H. Peter Anvin" <hpa@zytor.com>, David Stevens <stevensd@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij
- <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, Quentin
- Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav
- Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
- Peter Zijlstra <peterz@infradead.org>, Andrew Morton
- <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
- Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 12/13] x86: Add support for dynamic kernel stacks via
- FRED
-In-Reply-To: <888C322E-BF59-4C72-BFD2-2E71FD8605C0@zytor.com>
-References: <20260424191456.2679717-1-stevensd@google.com>
- <20260424191456.2679717-13-stevensd@google.com> <87zf0hgc3r.ffs@fw13>
- <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com>
- <87ldbyhatz.ffs@fw13> <888C322E-BF59-4C72-BFD2-2E71FD8605C0@zytor.com>
-Date: Mon, 29 Jun 2026 10:41:13 +0200
-Message-ID: <878q7xspqu.ffs@fw13>
+	s=k20260515; t=1782723368;
+	bh=MjjLfoAnCdYSBQMHU+LNPQ7Y69v0MhSYKVpOdD7ztR4=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=GwU3YJXRw2/+yv1fTqnt6eVUxhDAcOuivlMebRL8kpMszPEkVDZp9KZvr1qmRJkEj
+	 ndYeJ+NxyL9mh9tGB6OfPO7zUGCg3QXdX8430/N2Iysu67+wdAZgfcELi9z31tkr6K
+	 Y9U1RVBXklyP6tItBZFDn3uCwDFuhK1NOepw5hw3nVpaTH/63SnR79X6vJtapM97kU
+	 4oA9wlFsT8Mn2tdApNGT/6ZgFis6bRokFmsJyqXoLoH40wuVZ5jVFdTmfZXG0iW4oF
+	 xcAky5dvfXqGgX8fxhaq09pJ6hXplxohoAPkJTz057yO88MJTs5krF6d9LLLvMX8GR
+	 6aLMDBEccE6JQ==
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: A5148100005
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2 0/7] vmsplice: fix some problems in my previous
+ vmsplice patchset
+From: Christian Brauner <brauner@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Askar Safin <safinaskar@gmail.com>, akpm@linux-foundation.org, 
+ avagin@gmail.com, axboe@kernel.dk, brauner@kernel.org, 
+ collin.funk1@gmail.com, david.laight.linux@gmail.com, dhowells@redhat.com, 
+ fuse-devel@lists.linux.dev, hch@infradead.org, jack@suse.cz, 
+ joannelkoong@gmail.com, kernel@infinite-source.de, 
+ linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, luto@amacapital.net, 
+ metze@samba.org, miklos@szeredi.hu, netdev@vger.kernel.org, 
+ patches@lists.linux.dev, pfalcato@suse.de, torvalds@linux-foundation.org, 
+ val@packett.cool, viro@zeniv.linux.org.uk, w@1wt.eu, willy@infradead.org
+In-Reply-To: <63f7860c-4f5c-4682-8914-27978b9fbfe1@kernel.org>
+References: <89ea76b3-e956-4232-8180-ee3929adf905@kernel.org>
+ <20260625101132.3859505-1-safinaskar@gmail.com>
+ <63f7860c-4f5c-4682-8914-27978b9fbfe1@kernel.org>
+Date: Mon, 29 Jun 2026 10:56:00 +0200
+Message-Id: <20260629-bauland-knabbern-abgeladen-c0acbfa62cc2@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=560; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=6ZpRv6SzHMXp0xQtZa31f3aFronDafFEK7j2Ogd9m0w=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5GStpsto3L25ZaHM588TTeVIxjm8PX36fP4G3atef6
+ tnan07bdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykfyojQ/+HyQebdwRoa/Tw
+ +LrZf/ycyn56iXf4+nN/F66647o+OJORYdO0TNsO1j5m20MZD44uXF/x9VjejOt+wk928kitEog
+ 8ywAA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DAD41100010
 X-Rspam-User: 
-X-Stat-Signature: wr73t9m6n94u88wnyrx5xhzupx19zfoa
-X-HE-Tag: 1782722476-334501
-X-HE-Meta: U2FsdGVkX19pl8MIfHS9s9ICrURlJE9jYpY2nYvlHVCSolQ3A+bMM9sWpz/ksJVFgTUv1iHWDN7OHSMWgLc0j+Per+au5YUAr1PeQgB7XVVaM6SQFer1c49t11ZYtDU65NXZqSNfkquCiIMKLntJsiYszZJVGoLKZ9xrTRMDeWndRFoijoxbVfj/Iws8C/tjazZJSKMhb+tY2H08+I1OIG5XvbJsVbT/QMJoBjUN9QO/Hkf7QweQMuNqAljtLjjST5E/XtdRunbl+3u8zN3Hi4DOJeqEjF8jVZf5mN2VuH1Q4MlSDav36y3DgFh+DeWypOqqtUdgi3F6GKhM6NrhxKZOcvKRzTnfA5oP7wSejQTaAdLmtJbtMCaG42U0QrZXnnFLC7fXQqmPk/c2JS8ybvhanGirps3zKSrboawbLuT2FAp8XsLSz2z736zE70BYVVQxvLAylhL809AFVFk7lmrfJOk5ZKcWWHD3+3N+kFqvkZo9lbYKmudXX1d0WHmofnrmRNK+y/rsyD1MjUIZ78FKicV5N2LOPjUx2FwPSI0kDLaBCP7QESUg5ar8Y4MehYobcxNjuNP/l2xboSy83K84c5WjR39vmbpBWJPiird0F7KyA9RhxLyWiSClputKEf6N0mjjb7gaIj2YpYN3TBR/n8aAbCMJuNQ4kN73TUWOVaYeZjpGQjPlzSpvpbDg/PUREtxiBuNFLJZeW57n6Hwcc81IdwHAhteYY6WLei6783iSO3TKQIG59MR0Zqh5mBX6cMr/ALbyXnJjXwXlOrNwl31HzUTv2P+/pGl9P303nWeduR3UINmTi0f0zUE58IBrghej2Q+wYk3+Qg3deWaFo5QMiZ4kHcGdYWZRmorUM89x3jdO6F+pszRHtmuKDw7g/AxkaqLNKCBhcJc4XcS7Q5Vb3nL5qoSjOIMM1AamDU4aNAd3shzTTyhiRe/dFOroM2cgjgQlr+cVphM
- dh6QLXHs
- JKkh8jmHzyu2pGeEsTtCgzgzl+gvn2fT16wPUP1npitW6VKFFrHemSt6szOD9KY8M8yOr2sdjMj/9JxcOxuKYPyr/GQfZl0qxsOOSRatEEPq0gPPfw4F5M5ZIy5N93RYHwviEabzEyDKaTclyupm3DvVbK5OD4DS1sLaRHWNNC3SmFUGSS5XFObm40wM7/qWcycQY/C7/ff2mnXMDeZzuPBesXPHX7zBt89MAsL2BHHpCD5SxCy6CTLTXIW3D7GcB0iUsm5z+d0E/QuvUiUx/xeTXwCdcg4Zu4HifBpztgm5xWO/6bg6j+4BX/XMAwRJKgqJJ
+X-Stat-Signature: amfg1r83k9uhxt6hymnz8f98pjmw31a9
+X-HE-Tag: 1782723369-42290
+X-HE-Meta: U2FsdGVkX1+XhyTAdYRJmO2Td6GFq1JEjLytOUSS1kfn+LMWKerlS1Mf+7uSH/NwbD2L1ggUb5SWCGkAMFE2rbVAnueydBAVcbh6q6mZQMf0V/QmJ4KGBpJAYf/x/Ym2o4l8/gpYqiBjCp11SNuDrwnnoeuRGyhRnAQXNLwblXZlMBZJIH8aBGvyj8mMH7+MKhD242KZmgHiWClCgOspaatlcRMmqhC2JzfzpU86hyBYmQzMqpQ5WAbzUhziRFFwhobF457kxGLxHyJPP7K5llB/9dyxsvG0s/MnF5fnEPchp0oznUPLqnUvdJ8R0RTYDfldAQJ13chNBQ4Tnork32vWcyJqJWnh4gw+RrWuFuGR5HxyFJ6nF2KlVfljJhguGy6i/dm8JKgdp1hJn2/PQpfFnyEtdPzO6HfX/eoNS6BXalBQ0b+l/A9ShOqAbDY4Ox5FM0Aw1j8Iq8my3U1io9S/ocG/FYnNblQCPyd75NfyUfEfJPE8Zndhw3ayBLK8+MH6plbaNNtDMdvEmOq9YomY+bd+7aZy8rQ/i0y8BtpdjnIP+uvEhlkT5676oR/UGRKBSqll+HpkOUctIYvjqNODsd0z2QGQQ9ai2av0BZbQzZ+508B7B9xRHTNBgYMEA54snHLro5sGxiahWVyC11tqcd1IE+TgsenDAAZRO/kHDqcXZvhYsZh8Qz2JSjiRAOR9wQiE7A2bacpdOdXBdPKiF06MLmxt2YyHDCgBi1RraVJW5aHGTqc4NlaXBlq8eVn7jYRvj5/+FIk/ZtrQyhPkUXeloPitBm7Coi24WzFpHm2egemLsGGfIGb63B5HZgJvVHOxmYuLijGu9ez9Z8I69PrUgwt4iiAg6Q0FT3WAE8NudiT6Ywhhm2rjHZBlebdZPLdBvHMkPqCHHRB3P1Ba+NwPiPljZZJ4mgLmwQ3SnPGnEj7ETtsSaSIDIc+ZFmQyhaJCZOroPkmLj+/
+ prrHVCwp
+ pYMuUjDz0VBIqoNGZHyCjpVRhJHQwzzbvN7e5wTmylmm/8Y+cvhLVrFgcHdYycl02SlvInFPI57JBRRd1s+To2Yi6H1CHI/hsB5xxdvRGEtIBm0SELQC7fA7fr5KlyqK1ZoIQQsFbd9T5RFIyEP+2DJ8LC5brMM519+aUsLwKD7u+4nWOwy0przVtor1DFSoPkAga4tYsZ8mRGPrmAIMwoSfJrJcC94h4PZYSS7IgoAZuqYdN/FgH8ovLQJbn/+EdEvk/pdb18EauKDgQ5QPDzDhLN3s9doV8CHzxkwbtaal/d6esz/CRBgkoa0F4IgFaFN3UmSZUbvPgjXTEmO8F9Xb0XtX1Kw3V3L4Xpihc0ZNUjalqEhJ06lPBAQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,23 +111,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 28 2026 at 13:33, H. Peter Anvin wrote:
-> On June 28, 2026 9:46:32 AM PDT, Thomas Gleixner <tglx@kernel.org> wrote:
->>> That sort of fault would probably end up either with a
->>> page_fault_oops() or risk a context switch with SL>0, but we shouldn't
->>> make debugging harder with UB.
->>
->>Definitely not :)
->>
->>You can avoid quite some of the problems right in the ASM entry code.
->>Instead of checking event type/vector and then going to the stack switch
->>logic, you can check the stack level on which the event happened
->>first. If it's not 0, then there is nothing to do.
->>
->>
->
-> To be fair, for this *specific* case, memmove() does exist for a reason :)
+On 2026-06-25 12:35 +0200, David Hildenbrand (Arm) wrote:
+> On 6/25/26 12:11, Askar Safin wrote:
+> > "David Hildenbrand (Arm)" <david@kernel.org>:
+> >> I think we concluded that we cannot rip out vmsplice that way at this point, and
+> >> I suspect that Christian will drop that topic branch from -next after -rc1.
+> > 
+> > I think my patches still have a chance.
+> 
+> I talked to Christian and it doesn't sound like it.
 
-It does, but why bother doing actual work, if you know upfront that it's
-not required :)
+The amount of regression reports that we got in short succession doesn't
+make it likely that we can merge a plain degradation.
+
 
