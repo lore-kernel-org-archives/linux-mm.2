@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2F93C43638
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CADC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2FCF36B00A8; Mon, 29 Jun 2026 08:24:17 -0400 (EDT)
+	id C9A8C6B00AB; Mon, 29 Jun 2026 08:24:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 261FF6B00A9; Mon, 29 Jun 2026 08:24:17 -0400 (EDT)
+	id C4B196B00AE; Mon, 29 Jun 2026 08:24:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B1BA6B00AB; Mon, 29 Jun 2026 08:24:17 -0400 (EDT)
+	id AC5AB6B00AC; Mon, 29 Jun 2026 08:24:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5416B00A8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:16 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45E041680A4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:16 +0000 (UTC)
-X-FDA: 84932867712.30.E21D6F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 94E63180009
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RJg+us/S";
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 8601C6B00A9
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:19 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F9A1120664
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:19 +0000 (UTC)
+X-FDA: 84932867838.09.55399E4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 76A77140005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lNGV9yN8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735854;
-	b=kGjo1mZYjP4pIp0og9PR9LACC5WhzyxA9avebW78YFM+dsRgh8VHV5mm2HGqNXO5kUuvBG
-	XWmqkfsSr4aweMDF9yL1ccNC4j2OnD6fAn8e2wOdYGiOEfLTnCuixo8wazjTh8tmIRK7xG
-	dVUMKBlOOZRnzUzD9KLdZd6fG/XjYXc=
+	t=1782735857;
+	b=UzNSbVQDd/rshLvLOEKRy/8wX09PHQPdrdOIUph4LNrR8UyFF2kUpMVRzh8pXiNBAWuAMP
+	OBnd492EPddYHmydxEY2zUcZFPivH8FGJrjMA5auNU4C2cVAhrbcsaRpNiiTGIWHJgoQDB
+	NNr87JYvSKMHmj/hdPnEJMlkxxKG54w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735854;
+	s=arc-20220608; t=1782735857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3nPd85K/PKl95JwMlsnWtpK/46tOZR3B1poqhuEzpXk=;
-	b=AbJsshZN4ghUYhOFLjFyg18B8CZZpAYihmwmL3LvOgzI7+KZgHdhF7idnoMMNeh8Tx+bfa
-	fvoP4b2QyGeg3bcr6I87QfTzlIL67nje/lcSy0gFblHL5C7mlLGDINCnH1sNBz+AAgo+mJ
-	7GApyfB6dJq9XZSCuMh2C7ouYTXFqwI=
+	bh=IfYIi3h97Td9h3DBJgVJcf+P8SXVr5wM/GvJvcwStzM=;
+	b=QKrlRIVV+hOGUb9BFfdtIvxezEndveugEBzbKzZ+ID7Hj4HN9kYgysYT5w4djRABP8FdVc
+	36eNMEOVcBZk7pkvcDhMbhIVbaL8C6QyLOESfAaoI/UnP6VpZ0N0g9tuLFnhA+o/sJM1li
+	SKcf7x9jXUGRF1zSAIOw87OmpPkcYrA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RJg+us/S";
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lNGV9yN8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7D964172B;
-	Mon, 29 Jun 2026 12:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B22B91F00A3D;
-	Mon, 29 Jun 2026 12:24:12 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 15178601C1;
+	Mon, 29 Jun 2026 12:24:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AF71F00A3E;
+	Mon, 29 Jun 2026 12:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735853;
-	bh=3nPd85K/PKl95JwMlsnWtpK/46tOZR3B1poqhuEzpXk=;
+	s=k20260515; t=1782735856;
+	bh=IfYIi3h97Td9h3DBJgVJcf+P8SXVr5wM/GvJvcwStzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RJg+us/SbcSato5R7/D528Wu7uvkBHeOuV9nfZ4B17LV/FsE7e8H//SZcm88icvqH
-	 VCNFFyjohv2ogw1FUAsj0BpzWD5SnE0CDeqlLzNYb3vwFVFJQ/HGPnKuzWqatHX8vr
-	 tJEQdbGmyZ9NAeE4TxnKvBTWi/qJmkXXGlhIP0CgIBeZwycaAtmPcAwJrYpicH0m5r
-	 wiELN4xm2gU6buCgnjKFd9xobBAqxZOWi4Tiay1NeTah5LvHFbEnFXpg3Lm1Cf5app
-	 gC88jGPChjgkEegk2dmP8ctoPBmZoby5incfZJKo6RqLXcyLfER1IIwl+LLTn9MUaw
-	 Jinz7LeUHmA9Q==
+	b=lNGV9yN8kBRD132uXCwgnUfErFd07LVxDdYGkBetq1diSTqEUGTMxPgPBUDMnbOlV
+	 90h0il5nNqOL1Rwqv03Mf7MyJPILKA/ML+jHiOXakYHRAGB0QOi3CcojnRb3/HsP6b
+	 1cfIQidEDYqwdJd8qMvDRR3kfr4dZ6E43KD639b6YBImUkci67dpgoggwfb+fdKz8B
+	 oClDM1FA+NiUCX4bnHhmWU6PQwC2QCi9KkZj2cAqyUSXMe6dl1LXYbd15qxry2ghNq
+	 hKoqDeMRlFWfzBJr4QkVZghkE9jRZaG/2AAnsf3PEpx66dnpBXR4xuGW73smCOyNUW
+	 5X0mB7ocRS6ZQ==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 06/30] mm/rmap: parameterise vma_interval_tree_*() by address_space
-Date: Mon, 29 Jun 2026 13:23:17 +0100
-Message-ID: <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 07/30] mm/rmap: elide unnecessary static inline's in interval_tree.c
+Date: Mon, 29 Jun 2026 13:23:18 +0100
+Message-ID: <ed5fd5358382217a92f0a6afddcfaa030c933055.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 94E63180009
 X-Rspam-User: 
-X-Stat-Signature: upkauww9kj5nn7ze5468a1c1i5hpenrd
-X-HE-Tag: 1782735854-116998
-X-HE-Meta: U2FsdGVkX195+1odi+J8TJDOzEpF2rzzUa9SHloPfnLfcvhAchm661IonC9wo6I8Qt8QcBIwVo9XEV6DS9o0e7GagClwbl4j7EHeRKgXqAww4BbudGWajsC7vwHYyWy6Qbgjp5YiSt8eBnOR6i8aGe5z09Cb2EOVPvbdyuwLKxbErZ10RuCwnKUCaF4/5dUQUgCEi3dDu7EHpbn61z8WwaB+5257gS7QVdBbgXljF0cMcVar6qmwxurP10mY5JgnnRL7Rsx28mnfgrcznR7yYogjTdhWHXAfls4PSM8MQ+LAmV7ocw9Tj/0mRwsTSRSSZOK4rzqn+x6ekzIxjmvPvxcixF6b7i1Z9ZTO5pNMU/6W5+UeqzAcrRg7MqgM7Pp7lTOqxO9u8YhY9dJglRg5Wix39MX8Wv9CvmRA1rfuHMTdvOGOQrUyCzOm3EaADgk/kUJTxm1S58drxJfOvylpYuS66Qx0e6kphjMF7b9ylUQvDBrGgMWA9X8NleQRBSrTi4miQ945x0T46TK2ZfQAvBIDf8zk+gHkuuYBVZKmxsNoZk3CqkeX5ojoS/Ghiee+k5Hp0ZiTrFhqfLoPIp41ISD8OJCAiGoFrEFHQtbl5HtLk+RNdQLvz0YA9J4ny+EwuGwjasBprwSLkTteXAkYCdQPZPtpElWh1F1YRu4Q9C4HC5ROEUr60rD0Fz3iMVnX/dgtSpsXk5h4APpJVicRvzSxwEMqXSQgVwiLcfgmr31WI9+iYEp0GblyjRhrwB3hEFNBrDyAUjyllU6fOqRSMTTrnHGOrT0Lv0yYTy8uPDnKBZh5XqfmoNODF7OPxVdoaSO+Bya16g6enbqgPikvvZ7X3mVA8ky+w1qxYuauUFfwEKrSkbZRuni5p++FoXN5Dspo06GwqCikYahr1xSlRybarCrWtIETtgYclvMfDOkUdyxJCuSwW9Q6Ek/OErIU9SQAz7Ak9sqAABXX5zj
- j6xzpnp1
- YmO0NuK+BPRZGs7/6sJHoPj7tfAn2hFyEjt8sAPH64hgEsVKmjhBY44TnqYu2pNANXF7ZxGFpf4nYnYFSXNq/7F9ndR59NdbPUlpkPbzU5SZSuJbo55HzhKkgiXMeggqBzcXdrlhuQHjTKXGavgsKBOKgbmp63U4rH1N3TXBQZ/4ENoDADidS+mk1mSjEtR1gh1bMI/6G9Pno84UhKX1lWNEI8QgJV8oalw/5bUxsqV1OYNsVDwwa2lUkh/6YEaivGFPin/kar+CHexKMpFPsqDHeEEioC9D2V0uuv1xJqvGopmM476L4SJVZLIrPHnHw5PfFFKgZHhhMW8cVQOLWQDtQbi+Tqmr08pfdNmbOi+PxP3U=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 76A77140005
+X-Stat-Signature: 7xt6rz595mq7jcc9gwsu99b773z7bsc9
+X-HE-Tag: 1782735857-448801
+X-HE-Meta: U2FsdGVkX1/xPgZGDJr5SBiaiMboMJ4IDMs+gVWbtzP7E4bBJxxIzWFJAXRIMKxMKwd5iY0rAwPM67BwV0XWHDDnsJfMTLAmxezeEeD0stigHj9vtDd7a/zF7f9r2eRKtPN+hcqLOP2xiNcfC8P3jC/rAG6GShAKkb6hTuuZkxPpYretDV/5Db9PPY1nc/7Q3p6Wq8QAXVCGkth9KVRRUOA3w7K2H3ZcNSXHktVWcdmVkZxRlLa+4oDhz6SU74heLU4Fx1CS59EfPnCArgz19d5HdIfx95jNJQAbNar26RdT21ymET9U9bcUJnV8/ZIEGSoVoC9WNfQySXZcMgHGWqOzXUHGD94M6hPXn+JQayFTXlYwxWId5fBEbUSRrD073eFOxMxpaNWcH1jFx4LiEzPoNAYvXSSQY0487PkKgFWYPeTyf4zqCm+HbqgyM6Bvw38WrN+k2zmBgWJms5AY+xjY+7NV/3TDF2sHJXXGei+7adxJY9IQ8HDNiWX+xfjjjE7T/JSMb4prb22R6ZItJMcWgbq19404GJJ4swI0R+f6ZOH/S3IB2PiHW3IZlrOuo5kCviHEhM+AK7cmuDwzGD6mUb7/9ORhE094EJobJYpYCIRmQ2DUjlu8UJRmtgClIDwYBOY8WcOGyIcFHhyeWwthdr/xJtRw2Mb5LIvaedoSrTcnRb42sR4jg5yTNBTgP5P6aPwyKhbHSvphFCYbCZBzfhyaB1vWYrjoigFzLJwPlVUGlHrXUuAtQ2ZsPGycdSR8iXOSq8UApAnulARj+WSgPk1IOPi6nhvOwGuzFGQxX7SB6w1gVr1SfNMe5z9WIAvBxiY2PvTosFu9LFE6GIbvTnBT2/mO3nSicQ4ANhbTNxrTIrxrde5mOFXwyYPI4BdaViC9h2afw39SJWBIVgJu3wW9oLCBHAXG7rAlRU5VrBp4x/qUDLmRO0QqxMfZ5QC7NZNo2+O2BWhl6kg
+ iaTX3mge
+ Bpwtt+OkbqqlpACRjswumS+Z+YtyNR63EOj6vlSmv9m0Nzl9tthzn5wX8HJ+gH3hbX2Ob6sU7eo2NmbmNC2FaCo+qrWapJcKtFVm/eRR5uMDXp3eJpDmpwplWB/wa617DqTNVlnIWB7mY5P86G6gzdJqBxSkxqYrEBq+UUwL4kJugPrDE36+yq33Ovsvr1EF7bK52o7ND7bXtOoKcZAQs0JWe17JPWCm3DX+uQ4mF3/5+0srwm9dMX+HyksSvdLxpsQZ3MPMPjEVkzf8HjKLqhSEfRHGyrxE4+mwiHrEiyF7NJ6EGszHxPLoBD7lA5oS2OfcTmhA8ZfboGLOGsEKxkEiphBsGeivUGE3/E/iXkHVrGPE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,588 +162,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The file-backed mapping interval tree functions vma_interval_tree_*()
-accept a raw rb_root_cached pointer to determine the tree in which they are
-operating.
+It's not necessary to declare these functions static inline as they are
+contained within a single compilation unit.
 
-However, in each case, this is always associated with an address_space data
-type.
-
-So simply pass a pointer to that instead to simplify the code, and more
-clearly differentiate between these operations and those concerning
-anonymous mappings.
-
-While we're here, make the generated interval tree functions static as they
-do not need to be used externally (any previously existing external users
-have now been removed).
-
-We also rename VMA parameters from 'node' to 'vma' as calling this a node
-is simply confusing, update the input index types to pgoff_t since they
-reference page offsets and rename the parameters to pgoff_start and
-pgoff_last.
+This makes the anonymous interval tree code consistent with the newly
+updated file-backed interval tree code.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- arch/arm/mm/fault-armv.c          |  2 +-
- arch/arm/mm/flush.c               |  2 +-
- arch/nios2/mm/cacheflush.c        |  2 +-
- arch/parisc/kernel/cache.c        |  2 +-
- fs/dax.c                          |  2 +-
- fs/hugetlbfs/inode.c              | 15 ++++----
- include/linux/mm.h                | 34 +++++++++---------
- kernel/events/uprobes.c           |  2 +-
- mm/hugetlb.c                      |  4 +--
- mm/interval_tree.c                | 58 +++++++++++++++++++++++--------
- mm/khugepaged.c                   |  4 +--
- mm/memory-failure.c               |  7 ++--
- mm/memory.c                       |  8 ++---
- mm/mmap.c                         |  3 +-
- mm/nommu.c                        |  8 ++---
- mm/pagewalk.c                     |  2 +-
- mm/rmap.c                         |  3 +-
- mm/vma.c                          | 14 ++++----
- tools/testing/vma/include/stubs.h |  4 +--
- 19 files changed, 100 insertions(+), 76 deletions(-)
+ mm/interval_tree.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mm/fault-armv.c b/arch/arm/mm/fault-armv.c
-index 91e488767783..cd52cf7f8874 100644
---- a/arch/arm/mm/fault-armv.c
-+++ b/arch/arm/mm/fault-armv.c
-@@ -140,7 +140,7 @@ make_coherent(struct address_space *mapping, struct vm_area_struct *vma,
- 	 * cache coherency.
- 	 */
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_foreach(mpnt, &mapping->i_mmap, pgoff, pgoff) {
-+	vma_interval_tree_foreach(mpnt, mapping, pgoff, pgoff) {
- 		/*
- 		 * If we are using split PTE locks, then we need to take the pte
- 		 * lock. Otherwise we are using shared mm->page_table_lock which
-diff --git a/arch/arm/mm/flush.c b/arch/arm/mm/flush.c
-index 4d7ef5cc36b6..8c593e9898ee 100644
---- a/arch/arm/mm/flush.c
-+++ b/arch/arm/mm/flush.c
-@@ -251,7 +251,7 @@ static void __flush_dcache_aliases(struct address_space *mapping, struct folio *
- 	pgoff_end = pgoff + folio_nr_pages(folio) - 1;
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff_end) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff, pgoff_end) {
- 		unsigned long start, offset, pfn;
- 		unsigned int nr;
- 
-diff --git a/arch/nios2/mm/cacheflush.c b/arch/nios2/mm/cacheflush.c
-index 8321182eb927..42e3bf892316 100644
---- a/arch/nios2/mm/cacheflush.c
-+++ b/arch/nios2/mm/cacheflush.c
-@@ -82,7 +82,7 @@ static void flush_aliases(struct address_space *mapping, struct folio *folio)
- 	pgoff = folio->index;
- 
- 	flush_dcache_mmap_lock_irqsave(mapping, flags);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff + nr - 1) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff, pgoff + nr - 1) {
- 		unsigned long start;
- 
- 		if (vma->vm_mm != mm)
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 0170b69a21d3..f28aa7884cbf 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -503,7 +503,7 @@ void flush_dcache_folio(struct folio *folio)
- 	 * on machines that support equivalent aliasing
- 	 */
- 	flush_dcache_mmap_lock_irqsave(mapping, flags);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff + nr - 1) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff, pgoff + nr - 1) {
- 		unsigned long offset = pgoff - vma->vm_pgoff;
- 		unsigned long pfn = folio_pfn(folio);
- 
-diff --git a/fs/dax.c b/fs/dax.c
-index 6d175cd47a99..2f0818a68a7f 100644
---- a/fs/dax.c
-+++ b/fs/dax.c
-@@ -1201,7 +1201,7 @@ static int dax_writeback_one(struct xa_state *xas, struct dax_device *dax_dev,
- 
- 	/* Walk all mappings of a given index of a file and writeprotect them */
- 	i_mmap_lock_read(mapping);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, index, end) {
-+	vma_interval_tree_foreach(vma, mapping, index, end) {
- 		pfn_mkclean_range(pfn, count, index, vma);
- 		cond_resched();
- 	}
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 216e1a0dd0b2..4ea1798f1ffb 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -380,7 +380,6 @@ static void hugetlb_unmap_file_folio(struct hstate *h,
- 					struct address_space *mapping,
- 					struct folio *folio, pgoff_t index)
- {
--	struct rb_root_cached *root = &mapping->i_mmap;
- 	struct hugetlb_vma_lock *vma_lock;
- 	unsigned long pfn = folio_pfn(folio);
- 	struct vm_area_struct *vma;
-@@ -394,7 +393,7 @@ static void hugetlb_unmap_file_folio(struct hstate *h,
- 	i_mmap_lock_write(mapping);
- retry:
- 	vma_lock = NULL;
--	vma_interval_tree_foreach(vma, root, start, end - 1) {
-+	vma_interval_tree_foreach(vma, mapping, start, end - 1) {
- 		v_start = vma_offset_start(vma, start);
- 		v_end = vma_offset_end(vma, end);
- 
-@@ -460,8 +459,8 @@ static void hugetlb_unmap_file_folio(struct hstate *h,
- }
- 
- static void
--hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
--		      zap_flags_t zap_flags)
-+hugetlb_vmdelete_list(struct address_space *mapping, pgoff_t start,
-+		      pgoff_t end, zap_flags_t zap_flags)
- {
- 	struct vm_area_struct *vma;
- 
-@@ -470,7 +469,8 @@ hugetlb_vmdelete_list(struct rb_root_cached *root, pgoff_t start, pgoff_t end,
- 	 * unmapped.  Note, end is exclusive, whereas the interval tree takes
- 	 * an inclusive "last".
- 	 */
--	vma_interval_tree_foreach(vma, root, start, end ? end - 1 : ULONG_MAX) {
-+	vma_interval_tree_foreach(vma, mapping, start,
-+				  end ? end - 1 : ULONG_MAX) {
- 		unsigned long v_start;
- 		unsigned long v_end;
- 
-@@ -615,8 +615,7 @@ static void hugetlb_vmtruncate(struct inode *inode, loff_t offset)
- 	i_size_write(inode, offset);
- 	i_mmap_lock_write(mapping);
- 	if (mapping_mapped(mapping))
--		hugetlb_vmdelete_list(&mapping->i_mmap, pgoff, 0,
--				      ZAP_FLAG_DROP_MARKER);
-+		hugetlb_vmdelete_list(mapping, pgoff, 0, ZAP_FLAG_DROP_MARKER);
- 	i_mmap_unlock_write(mapping);
- 	remove_inode_hugepages(inode, offset, LLONG_MAX);
- }
-@@ -676,7 +675,7 @@ static long hugetlbfs_punch_hole(struct inode *inode, loff_t offset, loff_t len)
- 	/* Unmap users of full pages in the hole. */
- 	if (hole_end > hole_start) {
- 		if (mapping_mapped(mapping))
--			hugetlb_vmdelete_list(&mapping->i_mmap,
-+			hugetlb_vmdelete_list(mapping,
- 					      hole_start >> PAGE_SHIFT,
- 					      hole_end >> PAGE_SHIFT, 0);
- 	}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index e7ee315d5ba2..bdba25491b0e 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4061,23 +4061,25 @@ extern atomic_long_t mmap_pages_allocated;
- extern int nommu_shrink_inode_mappings(struct inode *, size_t, size_t);
- 
- /* interval_tree.c */
--void vma_interval_tree_insert(struct vm_area_struct *node,
--			      struct rb_root_cached *root);
--void vma_interval_tree_insert_after(struct vm_area_struct *node,
-+void vma_interval_tree_insert(struct vm_area_struct *vma,
-+			      struct address_space *mapping);
-+void vma_interval_tree_insert_after(struct vm_area_struct *vma,
- 				    struct vm_area_struct *prev,
--				    struct rb_root_cached *root);
--void vma_interval_tree_remove(struct vm_area_struct *node,
--			      struct rb_root_cached *root);
--struct vm_area_struct *vma_interval_tree_subtree_search(struct vm_area_struct *node,
--				unsigned long start, unsigned long last);
--struct vm_area_struct *vma_interval_tree_iter_first(struct rb_root_cached *root,
--				unsigned long start, unsigned long last);
--struct vm_area_struct *vma_interval_tree_iter_next(struct vm_area_struct *node,
--				unsigned long start, unsigned long last);
--
--#define vma_interval_tree_foreach(vma, root, start, last)		\
--	for (vma = vma_interval_tree_iter_first(root, start, last);	\
--	     vma; vma = vma_interval_tree_iter_next(vma, start, last))
-+				    struct address_space *mapping);
-+void vma_interval_tree_remove(struct vm_area_struct *vma,
-+			      struct address_space *mapping);
-+struct vm_area_struct *
-+vma_interval_tree_iter_first(struct address_space *mapping,
-+			     pgoff_t pgoff_start, pgoff_t pgoff_last);
-+struct vm_area_struct *
-+vma_interval_tree_iter_next(struct vm_area_struct *vma,
-+			    pgoff_t pgoff_start, pgoff_t pgoff_last);
-+
-+#define vma_interval_tree_foreach(vma, mapping, pgoff_start, pgoff_last) \
-+	for (vma = vma_interval_tree_iter_first(mapping, pgoff_start,	 \
-+						pgoff_last);		 \
-+	     vma; vma = vma_interval_tree_iter_next(vma, pgoff_start,	 \
-+						    pgoff_last))
- 
- void anon_vma_interval_tree_insert(struct anon_vma_chain *node,
- 				   struct rb_root_cached *root);
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 4084e926e284..50a96a4d812d 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1210,7 +1210,7 @@ build_map_info(struct address_space *mapping, loff_t offset, bool is_register)
- 
-  again:
- 	i_mmap_lock_read(mapping);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff, pgoff) {
- 		if (!valid_vma(vma, is_register))
- 			continue;
- 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..1e1fbf348c51 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5382,7 +5382,7 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
- 	 * __unmap_hugepage_range() is called as the lock is already held
- 	 */
- 	i_mmap_lock_write(mapping);
--	vma_interval_tree_foreach(iter_vma, &mapping->i_mmap, pgoff, pgoff) {
-+	vma_interval_tree_foreach(iter_vma, mapping, pgoff, pgoff) {
- 		/* Do not unmap the current VMA */
- 		if (iter_vma == vma)
- 			continue;
-@@ -6864,7 +6864,7 @@ pte_t *huge_pmd_share(struct mm_struct *mm, struct vm_area_struct *vma,
- 	pte_t *pte;
- 
- 	i_mmap_lock_read(mapping);
--	vma_interval_tree_foreach(svma, &mapping->i_mmap, idx, idx) {
-+	vma_interval_tree_foreach(svma, mapping, idx, idx) {
- 		if (svma == vma)
- 			continue;
- 
 diff --git a/mm/interval_tree.c b/mm/interval_tree.c
-index 2d50bc6228c4..ff36fd14ef37 100644
+index ff36fd14ef37..b387d39e0547 100644
 --- a/mm/interval_tree.c
 +++ b/mm/interval_tree.c
-@@ -14,19 +14,26 @@
- /* File-backed interval tree (address_space->i_mmap) */
- 
- INTERVAL_TREE_DEFINE(struct vm_area_struct, shared.rb,
--		     unsigned long, shared.rb_subtree_last,
--		     vma_start_pgoff, vma_last_pgoff, /* empty */, vma_interval_tree)
-+		     pgoff_t, shared.rb_subtree_last,
-+		     vma_start_pgoff, vma_last_pgoff, static,
-+		     __vma_interval_tree)
- 
--/* Insert node immediately after prev in the interval tree */
--void vma_interval_tree_insert_after(struct vm_area_struct *node,
-+void vma_interval_tree_insert(struct vm_area_struct *vma,
-+			      struct address_space *mapping)
-+{
-+	__vma_interval_tree_insert(vma, &mapping->i_mmap);
-+}
-+
-+/* Insert vma immediately after prev in the interval tree */
-+void vma_interval_tree_insert_after(struct vm_area_struct *vma,
- 				    struct vm_area_struct *prev,
--				    struct rb_root_cached *root)
-+				    struct address_space *mapping)
- {
- 	struct rb_node **link;
- 	struct vm_area_struct *parent;
--	unsigned long last = vma_last_pgoff(node);
-+	const pgoff_t pgoff_last = vma_last_pgoff(vma);
- 
--	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
-+	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(vma) != vma_start_pgoff(prev), vma);
- 
- 	if (!prev->shared.rb.rb_right) {
- 		parent = prev;
-@@ -34,21 +41,42 @@ void vma_interval_tree_insert_after(struct vm_area_struct *node,
- 	} else {
- 		parent = rb_entry(prev->shared.rb.rb_right,
- 				  struct vm_area_struct, shared.rb);
--		if (parent->shared.rb_subtree_last < last)
--			parent->shared.rb_subtree_last = last;
-+		if (parent->shared.rb_subtree_last < pgoff_last)
-+			parent->shared.rb_subtree_last = pgoff_last;
- 		while (parent->shared.rb.rb_left) {
- 			parent = rb_entry(parent->shared.rb.rb_left,
- 				struct vm_area_struct, shared.rb);
--			if (parent->shared.rb_subtree_last < last)
--				parent->shared.rb_subtree_last = last;
-+			if (parent->shared.rb_subtree_last < pgoff_last)
-+				parent->shared.rb_subtree_last = pgoff_last;
- 		}
- 		link = &parent->shared.rb.rb_left;
- 	}
- 
--	node->shared.rb_subtree_last = last;
--	rb_link_node(&node->shared.rb, &parent->shared.rb, link);
--	rb_insert_augmented(&node->shared.rb, &root->rb_root,
--			    &vma_interval_tree_augment);
-+	vma->shared.rb_subtree_last = pgoff_last;
-+	rb_link_node(&vma->shared.rb, &parent->shared.rb, link);
-+	rb_insert_augmented(&vma->shared.rb, &mapping->i_mmap.rb_root,
-+			    &__vma_interval_tree_augment);
-+}
-+
-+void vma_interval_tree_remove(struct vm_area_struct *vma,
-+			      struct address_space *mapping)
-+{
-+	__vma_interval_tree_remove(vma, &mapping->i_mmap);
-+}
-+
-+struct vm_area_struct *
-+vma_interval_tree_iter_first(struct address_space *mapping,
-+			     pgoff_t pgoff_start, pgoff_t pgoff_last)
-+{
-+	return __vma_interval_tree_iter_first(&mapping->i_mmap,
-+					      pgoff_start, pgoff_last);
-+}
-+
-+struct vm_area_struct *
-+vma_interval_tree_iter_next(struct vm_area_struct *vma,
-+			    pgoff_t pgoff_start, pgoff_t pgoff_last)
-+{
-+	return __vma_interval_tree_iter_next(vma, pgoff_start, pgoff_last);
- }
+@@ -81,19 +81,19 @@ vma_interval_tree_iter_next(struct vm_area_struct *vma,
  
  /* Anonymous interval tree (anon_vma->rb_root) */
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 617bca76db49..9dcf38dc0f8c 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2136,7 +2136,7 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
- 	struct vm_area_struct *vma;
  
- 	i_mmap_lock_read(mapping);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff, pgoff) {
- 		struct mmu_notifier_range range;
- 		struct mm_struct *mm;
- 		unsigned long addr;
-@@ -2568,7 +2568,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		 * not be able to observe any missing pages due to the
- 		 * previously inserted retry entries.
- 		 */
--		vma_interval_tree_foreach(vma, &mapping->i_mmap, start, end) {
-+		vma_interval_tree_foreach(vma, mapping, start, end) {
- 			if (userfaultfd_missing(vma)) {
- 				result = SCAN_EXCEED_NONE_PTE;
- 				goto immap_locked;
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 51508a55c405..3c842b472a75 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -586,8 +586,7 @@ static void collect_procs_file(const struct folio *folio,
- 
- 		if (!t)
- 			continue;
--		vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff,
--				      pgoff) {
-+		vma_interval_tree_foreach(vma, mapping, pgoff, pgoff) {
- 			/*
- 			 * Send early kill signal to tasks where a vma covers
- 			 * the page but the corrupted page is not necessarily
-@@ -638,7 +637,7 @@ static void collect_procs_fsdax(const struct page *page,
- 			t = task_early_kill(tsk, true);
- 		if (!t)
- 			continue;
--		vma_interval_tree_foreach(vma, &mapping->i_mmap, pgoff, pgoff) {
-+		vma_interval_tree_foreach(vma, mapping, pgoff, pgoff) {
- 			if (vma->vm_mm == t->mm)
- 				add_to_kill_fsdax(t, page, vma, to_kill, pgoff);
- 		}
-@@ -2239,7 +2238,7 @@ static void collect_procs_pfn(struct pfn_address_space *pfn_space,
- 		t = task_early_kill(tsk, true);
- 		if (!t)
- 			continue;
--		vma_interval_tree_foreach(vma, &mapping->i_mmap, 0, ULONG_MAX) {
-+		vma_interval_tree_foreach(vma, mapping, 0, ULONG_MAX) {
- 			pgoff_t pgoff;
- 
- 			if (vma->vm_mm == t->mm &&
-diff --git a/mm/memory.c b/mm/memory.c
-index ff338c2abe92..1cf59041600c 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4336,7 +4336,7 @@ static vm_fault_t do_wp_page(struct vm_fault *vmf)
- 	return wp_page_copy(vmf);
- }
- 
--static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
-+static inline void unmap_mapping_range_tree(struct address_space *mapping,
- 					    pgoff_t first_index,
- 					    pgoff_t last_index,
- 					    struct zap_details *details)
-@@ -4345,7 +4345,7 @@ static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
- 	unsigned long start, size;
- 	struct mmu_gather tlb;
- 
--	vma_interval_tree_foreach(vma, root, first_index, last_index) {
-+	vma_interval_tree_foreach(vma, mapping, first_index, last_index) {
- 		const pgoff_t start_idx = max(first_index, vma->vm_pgoff);
- 		const pgoff_t end_idx = min(last_index, vma_last_pgoff(vma)) + 1;
- 
-@@ -4387,7 +4387,7 @@ void unmap_mapping_folio(struct folio *folio)
- 
- 	i_mmap_lock_read(mapping);
- 	if (unlikely(mapping_mapped(mapping)))
--		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
-+		unmap_mapping_range_tree(mapping, first_index,
- 					 last_index, &details);
- 	i_mmap_unlock_read(mapping);
- }
-@@ -4417,7 +4417,7 @@ void unmap_mapping_pages(struct address_space *mapping, pgoff_t start,
- 
- 	i_mmap_lock_read(mapping);
- 	if (unlikely(mapping_mapped(mapping)))
--		unmap_mapping_range_tree(&mapping->i_mmap, first_index,
-+		unmap_mapping_range_tree(mapping, first_index,
- 					 last_index, &details);
- 	i_mmap_unlock_read(mapping);
- }
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 2311ae7c2ff4..2f22fb0d068d 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -1830,8 +1830,7 @@ __latent_entropy int dup_mmap(struct mm_struct *mm, struct mm_struct *oldmm)
- 				mapping_allow_writable(mapping);
- 			flush_dcache_mmap_lock(mapping);
- 			/* insert tmp into the share list, just after mpnt */
--			vma_interval_tree_insert_after(tmp, mpnt,
--					&mapping->i_mmap);
-+			vma_interval_tree_insert_after(tmp, mpnt, mapping);
- 			flush_dcache_mmap_unlock(mapping);
- 			i_mmap_unlock_write(mapping);
- 		}
-diff --git a/mm/nommu.c b/mm/nommu.c
-index ed3934bc2de4..9a01b01ba8ed 100644
---- a/mm/nommu.c
-+++ b/mm/nommu.c
-@@ -569,7 +569,7 @@ static void setup_vma_to_mm(struct vm_area_struct *vma, struct mm_struct *mm)
- 
- 		i_mmap_lock_write(mapping);
- 		flush_dcache_mmap_lock(mapping);
--		vma_interval_tree_insert(vma, &mapping->i_mmap);
-+		vma_interval_tree_insert(vma, mapping);
- 		flush_dcache_mmap_unlock(mapping);
- 		i_mmap_unlock_write(mapping);
- 	}
-@@ -585,7 +585,7 @@ static void cleanup_vma_from_mm(struct vm_area_struct *vma)
- 
- 		i_mmap_lock_write(mapping);
- 		flush_dcache_mmap_lock(mapping);
--		vma_interval_tree_remove(vma, &mapping->i_mmap);
-+		vma_interval_tree_remove(vma, mapping);
- 		flush_dcache_mmap_unlock(mapping);
- 		i_mmap_unlock_write(mapping);
- 	}
-@@ -1816,7 +1816,7 @@ int nommu_shrink_inode_mappings(struct inode *inode, size_t size,
- 	i_mmap_lock_read(inode->i_mapping);
- 
- 	/* search for VMAs that fall within the dead zone */
--	vma_interval_tree_foreach(vma, &inode->i_mapping->i_mmap, low, high) {
-+	vma_interval_tree_foreach(vma, inode->i_mapping, low, high) {
- 		/* found one - only interested if it's shared out of the page
- 		 * cache */
- 		if (vma->vm_flags & VM_SHARED) {
-@@ -1832,7 +1832,7 @@ int nommu_shrink_inode_mappings(struct inode *inode, size_t size,
- 	 * we don't check for any regions that start beyond the EOF as there
- 	 * shouldn't be any
- 	 */
--	vma_interval_tree_foreach(vma, &inode->i_mapping->i_mmap, 0, ULONG_MAX) {
-+	vma_interval_tree_foreach(vma, inode->i_mapping, 0, ULONG_MAX) {
- 		if (!(vma->vm_flags & VM_SHARED))
- 			continue;
- 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index 3ae2586ff45b..490a14691660 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -810,7 +810,7 @@ int walk_page_mapping(struct address_space *mapping, pgoff_t first_index,
- 		return -EINVAL;
- 
- 	lockdep_assert_held(&mapping->i_mmap_rwsem);
--	vma_interval_tree_foreach(vma, &mapping->i_mmap, first_index,
-+	vma_interval_tree_foreach(vma, mapping, first_index,
- 				  first_index + nr - 1) {
- 		/* Clip to the vma */
- 		vba = vma->vm_pgoff;
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1c77d5dc06e9..13ffa71bd20d 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -3051,8 +3051,7 @@ static void __rmap_walk_file(struct folio *folio, struct address_space *mapping,
- 		i_mmap_lock_read(mapping);
- 	}
- lookup:
--	vma_interval_tree_foreach(vma, &mapping->i_mmap,
--			pgoff_start, pgoff_end) {
-+	vma_interval_tree_foreach(vma, mapping, pgoff_start, pgoff_end) {
- 		unsigned long address = vma_address(vma, pgoff_start, nr_pages);
- 
- 		VM_BUG_ON_VMA(address == -EFAULT, vma);
-diff --git a/mm/vma.c b/mm/vma.c
-index 9eea2850818a..ce4ec4b71138 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -234,7 +234,7 @@ static void __vma_link_file(struct vm_area_struct *vma,
- 		mapping_allow_writable(mapping);
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_insert(vma, &mapping->i_mmap);
-+	vma_interval_tree_insert(vma, mapping);
- 	flush_dcache_mmap_unlock(mapping);
- }
- 
-@@ -248,7 +248,7 @@ static void __remove_shared_vm_struct(struct vm_area_struct *vma,
- 		mapping_unmap_writable(mapping);
- 
- 	flush_dcache_mmap_lock(mapping);
--	vma_interval_tree_remove(vma, &mapping->i_mmap);
-+	vma_interval_tree_remove(vma, mapping);
- 	flush_dcache_mmap_unlock(mapping);
- }
- 
-@@ -319,10 +319,9 @@ static void vma_prepare(struct vma_prepare *vp)
- 
- 	if (vp->file) {
- 		flush_dcache_mmap_lock(vp->mapping);
--		vma_interval_tree_remove(vp->vma, &vp->mapping->i_mmap);
-+		vma_interval_tree_remove(vp->vma, vp->mapping);
- 		if (vp->adj_next)
--			vma_interval_tree_remove(vp->adj_next,
--						 &vp->mapping->i_mmap);
-+			vma_interval_tree_remove(vp->adj_next, vp->mapping);
- 	}
- 
- }
-@@ -340,9 +339,8 @@ static void vma_complete(struct vma_prepare *vp, struct vma_iterator *vmi,
+-static inline unsigned long avc_start_pgoff(struct anon_vma_chain *avc)
++static unsigned long avc_start_pgoff(struct anon_vma_chain *avc)
  {
- 	if (vp->file) {
- 		if (vp->adj_next)
--			vma_interval_tree_insert(vp->adj_next,
--						 &vp->mapping->i_mmap);
--		vma_interval_tree_insert(vp->vma, &vp->mapping->i_mmap);
-+			vma_interval_tree_insert(vp->adj_next, vp->mapping);
-+		vma_interval_tree_insert(vp->vma, vp->mapping);
- 		flush_dcache_mmap_unlock(vp->mapping);
- 	}
- 
-diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-index 64164e25658f..94442b29458d 100644
---- a/tools/testing/vma/include/stubs.h
-+++ b/tools/testing/vma/include/stubs.h
-@@ -258,12 +258,12 @@ static inline void vm_acct_memory(long pages)
+ 	return vma_start_pgoff(avc->vma);
  }
  
- static inline void vma_interval_tree_insert(struct vm_area_struct *vma,
--					    struct rb_root_cached *rb)
-+					    struct address_space *mapping)
+-static inline unsigned long avc_last_pgoff(struct anon_vma_chain *avc)
++static unsigned long avc_last_pgoff(struct anon_vma_chain *avc)
  {
+ 	return vma_last_pgoff(avc->vma);
  }
  
- static inline void vma_interval_tree_remove(struct vm_area_struct *vma,
--					    struct rb_root_cached *rb)
-+					    struct address_space *mapping)
- {
- }
+ INTERVAL_TREE_DEFINE(struct anon_vma_chain, rb, unsigned long, rb_subtree_last,
+ 		     avc_start_pgoff, avc_last_pgoff,
+-		     static inline, __anon_vma_interval_tree)
++		     static, __anon_vma_interval_tree)
  
+ void anon_vma_interval_tree_insert(struct anon_vma_chain *node,
+ 				   struct rb_root_cached *root)
 -- 
 2.54.0
 
