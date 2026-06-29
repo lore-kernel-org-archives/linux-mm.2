@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF49FC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:00:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BF4C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:01:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B352B6B00B5; Mon, 29 Jun 2026 09:00:57 -0400 (EDT)
+	id D7FD86B00B7; Mon, 29 Jun 2026 09:01:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE5576B00B6; Mon, 29 Jun 2026 09:00:57 -0400 (EDT)
+	id D56CF6B00B8; Mon, 29 Jun 2026 09:01:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 986EE6B00B7; Mon, 29 Jun 2026 09:00:57 -0400 (EDT)
+	id C468E6B00B9; Mon, 29 Jun 2026 09:01:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 76C9C6B00B5
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:00:57 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5010C3442
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:00:56 +0000 (UTC)
-X-FDA: 84932960112.14.F565B16
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BE1E640006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:00:54 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tq07vjhl;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 922626B00B7
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:01:10 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE42B14067A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:01:09 +0000 (UTC)
+X-FDA: 84932960658.06.7C8C93E
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B851940004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:01:07 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NEkbEO9k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782738055;
-	b=pNdqtgK+0kAhJ5JGdEkmC1EIwttzUZGBgjLIChDgEAPDvfp1TEkBLw1EhS5PcT5kd/IJc0
-	Uk/WUjAF0/XxfOmbXf6Aqg+jbfSBnZGA95k0qoimceTfSz6wgMIYMtk63YF0koEYTN/E8c
-	hSSUyHWMHVWn7azyVp8RbB0Erxcm3so=
+	t=1782738067;
+	b=f1VMkdY2q7rGY23PVsTbqbIFnZmMpHdSwhssBT4gOgwkp+nivQCzTV1Noijp8ygrWDX7Cm
+	bw6DUFpQJMAffWE0PlPoiXpVPeuWf/y6ugCerMzEBYmGIO4QQoiWtb1HQoQTkbOk5f08h2
+	R7tfzStvNPbKCq1s/frzOIkE5mD01Iw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782738055;
+	s=arc-20220608; t=1782738067;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Mj2gt/hTNZzbuZtdAFTmoZ+udDIFe1awW9U5cT+0b8=;
-	b=RbU5pKrIRJx0+z0yEWrbtfL/NGRz9Fnc1nt/bQ1VQy0VxdYqUq3LRy7hO9IVojjsb1aCRg
-	Rg+hqSaNOsD5vsxPrazeoILEieqT4nniSv5NPpdEjXTHNIfhA5ZUTSNOeZ3HPKvksCYHYK
-	GKroUzNbIR5UyOl9hzhqMxDpQmbwQpA=
+	bh=4fHPY44tVR4NAOp/vUPB+L6K1EwQde1TZgGjyAmQFPk=;
+	b=M2W/ivAFPMmyJk6sYaQ9WOjxqAhRH/GwquDHFOsuQvEhdfAZSYy0l+tFTdDJ68mmetePV/
+	umfL8xK8r5/FMut5F9ngmLs6BzgGHi6a1MzLaVZ2W+Mf/ePE5AHcAhrxHXl10j+TDjtceL
+	1qiOJosam59gPDHy6IPKighecFMYYbY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tq07vjhl;
-	spf=pass (imf12.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NEkbEO9k;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf17.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782738053;
+	t=1782738062;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3Mj2gt/hTNZzbuZtdAFTmoZ+udDIFe1awW9U5cT+0b8=;
-	b=Tq07vjhl1bPKN9Z63p9ufM43vhudCB5raWPV/KUTdZ9voQE2TI3vu89IcpO2wmPowcgJVG
-	xtEBN80W1RgfrbgXx52uEU1ufqhctorpGvEZFp2o1J/R0BtEpyMaGmtAFT9Z88h2r2D5Ks
-	+WhAn8Ftb9wc6n5nvBSwokO27VAuVw4=
+	bh=4fHPY44tVR4NAOp/vUPB+L6K1EwQde1TZgGjyAmQFPk=;
+	b=NEkbEO9khCzcHXT+2aU0XHdty484TOaOmPAG+3XEm8TW4JyMbCwmz/uBL3BZ3AM/NnLp6U
+	6Uo3iy0UKYlIiC0Q8wF9+MHYGSs9RTfpavjyFltoQ+g2iURokrBPI0KDDcNx7ngzzN2M13
+	lFGZpbWAwyPftHQKXvvE/SpYVM9/QOk=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -77,22 +77,22 @@ Cc: hannes@cmpxchg.org,
 	vbabka@kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v2 1/2] mm/vmpressure: skip tree=true accounting on cgroup v2
-Date: Mon, 29 Jun 2026 05:59:36 -0700
-Message-ID: <20260629130042.2649505-2-usama.arif@linux.dev>
+Subject: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code into vmpressure-v1.c
+Date: Mon, 29 Jun 2026 05:59:37 -0700
+Message-ID: <20260629130042.2649505-3-usama.arif@linux.dev>
 In-Reply-To: <20260629130042.2649505-1-usama.arif@linux.dev>
 References: <20260629130042.2649505-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B851940004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BE1E640006
-X-Stat-Signature: o9o96b1r7psd1heaa443qk58ns1cx9h8
-X-HE-Tag: 1782738054-762341
-X-HE-Meta: U2FsdGVkX19Medq5ykY2sKOMsn41dwBlxjwxfbHQAka9SDdycm7pBFyFq2Q6aA2aJt9bvINubezNDLZPlWM7T/5ejV4JwXwQ997pkGb9EmJgar1is34E4vhpl4v4f+e55h9erkBs905+wATgFAVeAIJH1Znwc1Q82ay2xtdjXaIrukcTua2QLHzso2Mtbw3Hsp6Wrp6xF3DD8I2B746hkySYeZaX/ohWM0BivN3PQ6pQUhb12vSutKEWv6Rve/GIutueF7Fb22o/B44o/tEKtPJiyTzQGFQKc/ZyZCM4RUd9z9XdY64wNzO9QhJveUNvIZKFtlBmTVsNsyBuHs7JCfHw9LUg9+/a9blVeGdAHMKXqF8HLHb0hOql+3ImzdY9Qu484B2eDU7+QkPVz6ssDpJNmraPaWjD7G+qeEv1RrC71eVAfx0QoG3FHBYSjLvUZbErMBkbkzo42YA9SQFokMxG7shFqAr34Sbvfno9Q4qeLH6qcb7Beiys925xae7Xr7NhDgbyNmHyrRbiuhIJUDCkGFcMBiZOKPCO/ZmwJTgQkedBrIpciUggshSbg8RCNKW1TuRw6PE5JdCC5QA+CQ13AVAcO1SRC2402gswucAjY7oHzGuiBma7GyBGrd3Ug9W0PUacpDWgFuS2GlE4Ko8G6WDKgyvOdrx2Yr7RBFCKh8b9wlCmde+2UAzCGYr0qgMiUzkoDszOvkQ44UGQtZ/GLC7H/cHUsMVnpfMVIpAdhpcwhLg2v7VxM4Mgye677VZUE4xlFSgyu6HgtuYagwRVY7u+zXl8nObW8M4MiN8UFzWtilfFdzBwOvF87XNKTH+BuOae8+vXYZhjzV9TNAY0vCDIei3fPqAsn+o58TNzGY3BV3/kN3ahsv5IjfCcsrf0+6TBvz85jrYIwffIQFWAGX2SKKXrRHfbCXfKy3LyCI03kVcS0ZA1VghLYfOgn48XmT8aOmrWEQCOFfo
- bPjytduD
- H5M55dG/2ijceSpAw5nE+6rsOnhQTh13HxACWBkoGIu4Snq2hrAxwQu1A5d/gQcZzrQB22OlcEJczsltppklrJzqUdXrVVStsZuNkQLRf805zDPnQBQwleNdvfJImzvdWPcywchhNGJmj/3ZELojDL6XfdsKoYQ96D9Dw6/KrAPdNHM/98vGlI2RhdvDSJGTXF6LiDyRYDqelVWk=
+X-Stat-Signature: k6imr864wzf9hswu6t4zdtj4ab5o38us
+X-HE-Tag: 1782738067-760388
+X-HE-Meta: U2FsdGVkX18URPxCJIHPoZ63stPW8rZRilesEs0o92sCMSrpXBSAzIYk/1LzjUogJdC8FGGbWMPATxzAz3SBPYBc2Gr5KXzmXN4m347+7tzRXzyNideWKFtAsamZobBi1L5lVNrIP7wD6JK8mt83B5TLd8Hs4Fw7+EfkJK1uXRq30AtaiW+KzhQYEjF9bNRoB9Fdt8vDCegTIW3opMvYDG7ChYlS59P+rkScNVhWpeVli8LHMrx77mYu8Bh5+T3sC8gH/Hi7aLO3B9LD/YA1tBdCNNhVNsN4l6nmgZuYGYxMHzG/IFAcMpwQxG4F7x2h0IJlN2TvGkIVTVn5K51UxyGX3eQyiGcdZtZ2g3Rqwa6p2isNzSjp+IwPE2Da9FVyHj1FRh45+WQsBC5NrKrj+/yvgFY3KUQWWijBiS1+cAeJKF8U9wMNwvTfRy3+GM1XEhvfCOeD22NGTIH3eyUou4rVLOJqhyYWSpycoUyGqjMttea5JRVKqR8TgJ+CSbQFBv6rxpgR46pnfTcplHX79yRWW8cYWZnAYiWNCayieCuAfOWZXiXDyQ/aauxKDsLWu9KrtQC4r0yy21Ty84oWkkv6ec+30KQkFo4kvcCDi+gE4Y24j0SHg4LyagQPKrxusQg0XlmPTVZgg0vM8ZyqIB5CbvIzm4Wg6d/A/gkhBC/3X992Y/kJnBoUAu3+JXFPnnIVPFLe2Eq2wcHXbsGnkG3P4HFrkv8DvxjAvGyckzvmjObhFYfcRTXFeP32rL8VeBXs+oS8Sh0ZFxMvI1c6Ioq6QlDpKwGk9hMTJjT3wFUH3NaiapeYdYlyUrWptWyEe8SlSzrrezHC1zslxWQ/vX3Lulp44R447y9fyqzqrxqyHo2CbQYohdFOL3Vyb8jQ7NuZ3G+5nHCTq1jaKvAioVgrB3HyGnE+904g5QaL8qaaPndKnIonRkYSw+9lx2ZHj0xc/679r7g5QgKmIna
+ fyK7BtNQ
+ u2tU80z5GRB3wh0SKWwaIJ9yQjZVg6wiZMb+ozITUVcN61foZA4Y9TMwHgOJhVL7o/c6i/bmgcuQzwOly06wC4jr9lPQaXGnMPLZJHSrTOX1PkQRD0amhyf8VdQmPb/XVft8oh+ZVbtnFL5qmHvRRz6DSBnXVk91gK4h+28zwHBa0Hwpzp0G3f87LpPdFEdksT9Kdoc1wU3/4TDM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,58 +100,825 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vmpressure() has two outputs gated by the @tree argument:
+Clean up mm/vmpressure.c by separating the cgroup v1 userspace eventfd
+interface from the shared and v2 in-kernel code.
 
-  @tree=false drives in-kernel socket pressure (mem_cgroup_set_
-              socket_pressure), consumed by TCP/SCTP. This only
-              applies on cgroup v2; on v1 socket memory is charged
-              separately via tcpmem and the consumer reads
-              memcg->tcpmem_pressure instead.
+Currently, almost half of mm/vmpressure.c exists to serve tree=true:
+struct vmpressure_event, the events list and its mutex, the work_struct
+and vmpressure_work_fn that drains tree_scanned/tree_reclaimed, the
+parent walk, vmpressure_event(), vmpressure_register_event(),
+vmpressure_unregister_event(), and vmpressure_prio() (which always
+calls vmpressure() with tree=true).
 
-  @tree=true  drives userspace eventfd notifications via the v1
-              memory.pressure_level / cgroup.event_control interface.
-              v2 has no equivalent: userspace gets reclaim signals
-              through memory.pressure (PSI), which does not touch
-              vmpressure.
+Move it all into a new mm/vmpressure-v1.c built only when
+CONFIG_MEMCG_V1=y (following the existing memcontrol-v1.o pattern).
 
-The existing early return covered v1 + @tree=false. The symmetric
-v2 + @tree=true case was falling through and doing the full lock /
-accumulate / schedule_work / parent-walk dance for an events list
-that can never be populated. bpftrace on a 176-core production host
-(cgroup v2, CONFIG_MEMCG_V1=n, 285 memcgs, sustained reclaim) showed
-~16,200 @tree=true vmpressure() calls per minute. Add an early return
-that skips cgroup v2 + tree = true which avoids us doing all this work.
-On a v2-only host this also eliminates a lock contention path that can
-serialise reclaimers on a single global sr_lock.
+vmpressure.c keeps the shared bits (constants, vmpressure_calc_level,
+the runtime hierarchy check, the tree=false body, init/cleanup
+plumbing) and calls into three small v1 hooks for the tree=true
+accumulator and the v1 portions of init/cleanup. The hooks have
+static-inline no-op stubs in include/linux/vmpressure.h for the
+!MEMCG_V1 case, so callers don't need ifdefs. vmpressure_prio() gets
+the same treatment, which means vmscan.c's call site disappears at
+compile time on v2-only kernels.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+The only #ifdef CONFIG_MEMCG_V1 in source remains around the v1-only
+fields inside struct vmpressure itself.
+
+Memory savings on CONFIG_MEMCG_V1=n (measured with pahole):
+
+  struct vmpressure :  112B ->   24B
+  struct mem_cgroup : 1664B -> 1536B
+
+This split is the first step toward eventually making vmpressure
+CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
+(tree=false) cannot be removed today immediately: PSI is not an
+exact replacement for vmpressure, and switching networking socket-buffer
+back-off to PSI may regress networking performance or increase memory
+pressure in workloads that today rely on vmpressure's hysteresis. The
+medium-term plan is to introduce a PSI-based socket-pressure path, keep
+vmpressure available for v2 behind a defconfig as an opt-out for several
+releases, and only then drop the tree=false path entirely, at which point
+everything that remains in mm/vmpressure-v1.c is the whole subsystem.
+
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- mm/vmpressure.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/vmpressure.h |  46 +++++-
+ mm/Makefile                |   2 +-
+ mm/vmpressure-v1.c         | 305 +++++++++++++++++++++++++++++++++++++
+ mm/vmpressure.c            | 292 ++---------------------------------
+ 4 files changed, 357 insertions(+), 288 deletions(-)
+ create mode 100644 mm/vmpressure-v1.c
 
+diff --git a/include/linux/vmpressure.h b/include/linux/vmpressure.h
+index faecd5522401..e5e6b68d0dc4 100644
+--- a/include/linux/vmpressure.h
++++ b/include/linux/vmpressure.h
+@@ -13,18 +13,31 @@
+ struct vmpressure {
+ 	unsigned long scanned;
+ 	unsigned long reclaimed;
++	/* The lock is used to keep the scanned/reclaimed in sync. */
++	spinlock_t sr_lock;
+ 
++#ifdef CONFIG_MEMCG_V1
++	/*
++	 * tree=true accumulators feed the v1 userspace eventfd interface
++	 * (memory.pressure_level). Drained by @work. v2 has no equivalent
++	 * interface, so this state is omitted on CONFIG_MEMCG_V1=n builds.
++	 */
+ 	unsigned long tree_scanned;
+ 	unsigned long tree_reclaimed;
+-	/* The lock is used to keep the scanned/reclaimed above in sync. */
+-	spinlock_t sr_lock;
+-
+ 	/* The list of vmpressure_event structs. */
+ 	struct list_head events;
+ 	/* Have to grab the lock on events traversal or modifications. */
+ 	struct mutex events_lock;
+ 
+ 	struct work_struct work;
++#endif
++};
++
++enum vmpressure_levels {
++	VMPRESSURE_LOW = 0,
++	VMPRESSURE_MEDIUM,
++	VMPRESSURE_CRITICAL,
++	VMPRESSURE_NUM_LEVELS,
+ };
+ 
+ struct mem_cgroup;
+@@ -32,18 +45,41 @@ struct mem_cgroup;
+ #ifdef CONFIG_MEMCG
+ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
+ 		unsigned long scanned, unsigned long reclaimed);
+-extern void vmpressure_prio(gfp_t gfp, struct mem_cgroup *memcg, int prio);
+-
+ extern void vmpressure_init(struct vmpressure *vmpr);
+ extern void vmpressure_cleanup(struct vmpressure *vmpr);
+ extern struct vmpressure *memcg_to_vmpressure(struct mem_cgroup *memcg);
+ extern struct mem_cgroup *vmpressure_to_memcg(struct vmpressure *vmpr);
++
++/* Shared with mm/vmpressure-v1.c. */
++extern const unsigned long vmpressure_win;
++extern enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
++						    unsigned long reclaimed);
++
++#ifdef CONFIG_MEMCG_V1
++extern void vmpressure_prio(gfp_t gfp, struct mem_cgroup *memcg, int prio);
+ extern int vmpressure_register_event(struct mem_cgroup *memcg,
+ 				     struct eventfd_ctx *eventfd,
+ 				     const char *args);
+ extern void vmpressure_unregister_event(struct mem_cgroup *memcg,
+ 					struct eventfd_ctx *eventfd);
++
++/* v1 hooks called from mm/vmpressure.c; no-ops below when !MEMCG_V1. */
++extern void vmpressure_v1_init(struct vmpressure *vmpr);
++extern void vmpressure_v1_cleanup(struct vmpressure *vmpr);
++extern void vmpressure_v1_account_tree(struct vmpressure *vmpr,
++				       unsigned long scanned,
++				       unsigned long reclaimed);
+ #else
++static inline void vmpressure_prio(gfp_t gfp, struct mem_cgroup *memcg,
++				   int prio) {}
++static inline void vmpressure_v1_init(struct vmpressure *vmpr) {}
++static inline void vmpressure_v1_cleanup(struct vmpressure *vmpr) {}
++static inline void vmpressure_v1_account_tree(struct vmpressure *vmpr,
++					      unsigned long scanned,
++					      unsigned long reclaimed) {}
++#endif /* CONFIG_MEMCG_V1 */
++
++#else /* !CONFIG_MEMCG */
+ static inline void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg,
+ 			      bool tree, unsigned long scanned,
+ 			      unsigned long reclaimed) {}
+diff --git a/mm/Makefile b/mm/Makefile
+index 4fc713867b9b..de991630c96a 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -101,7 +101,7 @@ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+ obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+ obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+ obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+-obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
++obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o vmpressure-v1.o
+ obj-$(CONFIG_MEMCG) += memcontrol.o vmpressure.o
+ ifdef CONFIG_BPF_SYSCALL
+ obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
+diff --git a/mm/vmpressure-v1.c b/mm/vmpressure-v1.c
+new file mode 100644
+index 000000000000..fd813cba0544
+--- /dev/null
++++ b/mm/vmpressure-v1.c
+@@ -0,0 +1,305 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * cgroup v1 userspace vmpressure interface (memory.pressure_level /
++ * cgroup.event_control). Split out of mm/vmpressure.c so that v2-only
++ * kernels (CONFIG_MEMCG_V1=n) drop the whole eventfd accumulator,
++ * its work item, and the per-memcg state it requires.
++ */
++
++#include <linux/cgroup.h>
++#include <linux/eventfd.h>
++#include <linux/list.h>
++#include <linux/log2.h>
++#include <linux/memcontrol.h>
++#include <linux/mutex.h>
++#include <linux/slab.h>
++#include <linux/string.h>
++#include <linux/swap.h>
++#include <linux/vmpressure.h>
++#include <linux/workqueue.h>
++
++/*
++ * When there are too little pages left to scan, vmpressure() may miss the
++ * critical pressure as number of pages will be less than "window size".
++ * However, in that case the vmscan priority will raise fast as the
++ * reclaimer will try to scan LRUs more deeply.
++ *
++ * The vmscan logic considers these special priorities:
++ *
++ * prio == DEF_PRIORITY (12): reclaimer starts with that value
++ * prio <= DEF_PRIORITY - 2 : kswapd becomes somewhat overwhelmed
++ * prio == 0                : close to OOM, kernel scans every page in an lru
++ *
++ * Any value in this range is acceptable for this tunable (i.e. from 12 to
++ * 0). Current value for the vmpressure_level_critical_prio is chosen
++ * empirically, but the number, in essence, means that we consider
++ * critical level when scanning depth is ~10% of the lru size (vmscan
++ * scans 'lru_size >> prio' pages, so it is actually 12.5%, or one
++ * eights).
++ */
++static const unsigned int vmpressure_level_critical_prio = ilog2(100 / 10);
++
++enum vmpressure_modes {
++	VMPRESSURE_NO_PASSTHROUGH = 0,
++	VMPRESSURE_HIERARCHY,
++	VMPRESSURE_LOCAL,
++	VMPRESSURE_NUM_MODES,
++};
++
++static const char * const vmpressure_str_levels[] = {
++	[VMPRESSURE_LOW] = "low",
++	[VMPRESSURE_MEDIUM] = "medium",
++	[VMPRESSURE_CRITICAL] = "critical",
++};
++
++static const char * const vmpressure_str_modes[] = {
++	[VMPRESSURE_NO_PASSTHROUGH] = "default",
++	[VMPRESSURE_HIERARCHY] = "hierarchy",
++	[VMPRESSURE_LOCAL] = "local",
++};
++
++struct vmpressure_event {
++	struct eventfd_ctx *efd;
++	enum vmpressure_levels level;
++	enum vmpressure_modes mode;
++	struct list_head node;
++};
++
++static struct vmpressure *work_to_vmpressure(struct work_struct *work)
++{
++	return container_of(work, struct vmpressure, work);
++}
++
++static struct vmpressure *vmpressure_parent(struct vmpressure *vmpr)
++{
++	struct mem_cgroup *memcg = vmpressure_to_memcg(vmpr);
++
++	memcg = parent_mem_cgroup(memcg);
++	if (!memcg)
++		return NULL;
++	return memcg_to_vmpressure(memcg);
++}
++
++static bool vmpressure_event(struct vmpressure *vmpr,
++			     const enum vmpressure_levels level,
++			     bool ancestor, bool signalled)
++{
++	struct vmpressure_event *ev;
++	bool ret = false;
++
++	mutex_lock(&vmpr->events_lock);
++	list_for_each_entry(ev, &vmpr->events, node) {
++		if (ancestor && ev->mode == VMPRESSURE_LOCAL)
++			continue;
++		if (signalled && ev->mode == VMPRESSURE_NO_PASSTHROUGH)
++			continue;
++		if (level < ev->level)
++			continue;
++		eventfd_signal(ev->efd);
++		ret = true;
++	}
++	mutex_unlock(&vmpr->events_lock);
++
++	return ret;
++}
++
++static void vmpressure_work_fn(struct work_struct *work)
++{
++	struct vmpressure *vmpr = work_to_vmpressure(work);
++	unsigned long scanned;
++	unsigned long reclaimed;
++	enum vmpressure_levels level;
++	bool ancestor = false;
++	bool signalled = false;
++
++	spin_lock(&vmpr->sr_lock);
++	/*
++	 * Several contexts might be calling vmpressure(), so it is
++	 * possible that the work was rescheduled again before the old
++	 * work context cleared the counters. In that case we will run
++	 * just after the old work returns, but then scanned might be zero
++	 * here. No need for any locks here since we don't care if
++	 * vmpr->reclaimed is in sync.
++	 */
++	scanned = vmpr->tree_scanned;
++	if (!scanned) {
++		spin_unlock(&vmpr->sr_lock);
++		return;
++	}
++
++	reclaimed = vmpr->tree_reclaimed;
++	vmpr->tree_scanned = 0;
++	vmpr->tree_reclaimed = 0;
++	spin_unlock(&vmpr->sr_lock);
++
++	level = vmpressure_calc_level(scanned, reclaimed);
++
++	do {
++		if (vmpressure_event(vmpr, level, ancestor, signalled))
++			signalled = true;
++		ancestor = true;
++	} while ((vmpr = vmpressure_parent(vmpr)));
++}
++
++/*
++ * Tree-mode accumulator: accumulate per-memcg scanned/reclaimed and
++ * schedule the work that walks the parent chain and signals registered
++ * eventfd listeners once we cross the window threshold.
++ */
++void vmpressure_v1_account_tree(struct vmpressure *vmpr,
++				unsigned long scanned,
++				unsigned long reclaimed)
++{
++	spin_lock(&vmpr->sr_lock);
++	scanned = vmpr->tree_scanned += scanned;
++	vmpr->tree_reclaimed += reclaimed;
++	spin_unlock(&vmpr->sr_lock);
++
++	if (scanned < vmpressure_win)
++		return;
++	schedule_work(&vmpr->work);
++}
++
++void vmpressure_v1_init(struct vmpressure *vmpr)
++{
++	mutex_init(&vmpr->events_lock);
++	INIT_LIST_HEAD(&vmpr->events);
++	INIT_WORK(&vmpr->work, vmpressure_work_fn);
++}
++
++void vmpressure_v1_cleanup(struct vmpressure *vmpr)
++{
++	/*
++	 * Make sure there is no pending work before eventfd infrastructure
++	 * goes away.
++	 */
++	flush_work(&vmpr->work);
++}
++
++/**
++ * vmpressure_prio() - Account memory pressure through reclaimer priority level
++ * @gfp:	reclaimer's gfp mask
++ * @memcg:	cgroup memory controller handle
++ * @prio:	reclaimer's priority
++ *
++ * This function should be called from the reclaim path every time when
++ * the vmscan's reclaiming priority (scanning depth) changes.
++ *
++ * This function does not return any value.
++ */
++void vmpressure_prio(gfp_t gfp, struct mem_cgroup *memcg, int prio)
++{
++	/*
++	 * We only use prio for accounting critical level. For more info
++	 * see comment for vmpressure_level_critical_prio variable above.
++	 */
++	if (prio > vmpressure_level_critical_prio)
++		return;
++
++	/*
++	 * OK, the prio is below the threshold, updating vmpressure
++	 * information before shrinker dives into long shrinking of long
++	 * range vmscan. Passing scanned = vmpressure_win, reclaimed = 0
++	 * to the vmpressure() basically means that we signal 'critical'
++	 * level.
++	 */
++	vmpressure(gfp, 0, memcg, true, vmpressure_win, 0);
++}
++
++#define MAX_VMPRESSURE_ARGS_LEN	(strlen("critical") + strlen("hierarchy") + 2)
++
++/**
++ * vmpressure_register_event() - Bind vmpressure notifications to an eventfd
++ * @memcg:	memcg that is interested in vmpressure notifications
++ * @eventfd:	eventfd context to link notifications with
++ * @args:	event arguments (pressure level threshold, optional mode)
++ *
++ * This function associates eventfd context with the vmpressure
++ * infrastructure, so that the notifications will be delivered to the
++ * @eventfd. The @args parameter is a comma-delimited string that denotes a
++ * pressure level threshold (one of vmpressure_str_levels, i.e. "low", "medium",
++ * or "critical") and an optional mode (one of vmpressure_str_modes, i.e.
++ * "hierarchy" or "local").
++ *
++ * To be used as memcg event method.
++ *
++ * Return: 0 on success, -ENOMEM on memory failure or -EINVAL if @args could
++ * not be parsed.
++ */
++int vmpressure_register_event(struct mem_cgroup *memcg,
++			      struct eventfd_ctx *eventfd, const char *args)
++{
++	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
++	struct vmpressure_event *ev;
++	enum vmpressure_modes mode = VMPRESSURE_NO_PASSTHROUGH;
++	enum vmpressure_levels level;
++	char *spec, *spec_orig;
++	char *token;
++	int ret = 0;
++
++	spec_orig = spec = kstrndup(args, MAX_VMPRESSURE_ARGS_LEN, GFP_KERNEL);
++	if (!spec)
++		return -ENOMEM;
++
++	/* Find required level */
++	token = strsep(&spec, ",");
++	ret = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
++	if (ret < 0)
++		goto out;
++	level = ret;
++
++	/* Find optional mode */
++	token = strsep(&spec, ",");
++	if (token) {
++		ret = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
++		if (ret < 0)
++			goto out;
++		mode = ret;
++	}
++
++	ev = kzalloc_obj(*ev);
++	if (!ev) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	ev->efd = eventfd;
++	ev->level = level;
++	ev->mode = mode;
++
++	mutex_lock(&vmpr->events_lock);
++	list_add(&ev->node, &vmpr->events);
++	mutex_unlock(&vmpr->events_lock);
++	ret = 0;
++out:
++	kfree(spec_orig);
++	return ret;
++}
++
++/**
++ * vmpressure_unregister_event() - Unbind eventfd from vmpressure
++ * @memcg:	memcg handle
++ * @eventfd:	eventfd context that was used to link vmpressure with the @cg
++ *
++ * This function does internal manipulations to detach the @eventfd from
++ * the vmpressure notifications, and then frees internal resources
++ * associated with the @eventfd (but the @eventfd itself is not freed).
++ *
++ * To be used as memcg event method.
++ */
++void vmpressure_unregister_event(struct mem_cgroup *memcg,
++				 struct eventfd_ctx *eventfd)
++{
++	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
++	struct vmpressure_event *ev;
++
++	mutex_lock(&vmpr->events_lock);
++	list_for_each_entry(ev, &vmpr->events, node) {
++		if (ev->efd != eventfd)
++			continue;
++		list_del(&ev->node);
++		kfree(ev);
++		break;
++	}
++	mutex_unlock(&vmpr->events_lock);
++}
 diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index f053554e5826..c82cee1ab43b 100644
+index c82cee1ab43b..bcfa4bd8ffc5 100644
 --- a/mm/vmpressure.c
 +++ b/mm/vmpressure.c
-@@ -246,11 +246,13 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
+@@ -7,16 +7,15 @@
+  *
+  * Based on ideas from Andrew Morton, David Rientjes, KOSAKI Motohiro,
+  * Leonid Moiseichuk, Mel Gorman, Minchan Kim and Pekka Enberg.
++ *
++ * Tree-mode (cgroup v1 userspace eventfd) bookkeeping lives in
++ * mm/vmpressure-v1.c; this file holds the shared code and the in-kernel
++ * (tree=false) socket-pressure path that runs on cgroup v2.
+  */
+ 
+ #include <linux/cgroup.h>
+-#include <linux/fs.h>
+ #include <linux/log2.h>
+-#include <linux/sched.h>
+ #include <linux/mm.h>
+-#include <linux/vmstat.h>
+-#include <linux/eventfd.h>
+-#include <linux/slab.h>
+ #include <linux/swap.h>
+ #include <linux/printk.h>
+ #include <linux/vmpressure.h>
+@@ -35,7 +34,7 @@
+  * TODO: Make the window size depend on machine size, as we do for vmstat
+  * thresholds. Currently we set it to 512 pages (2MB for 4KB pages).
+  */
+-static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
++const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+ 
+ /*
+  * These thresholds are used when we account memory pressure through
+@@ -46,68 +45,6 @@ static const unsigned long vmpressure_win = SWAP_CLUSTER_MAX * 16;
+ static const unsigned int vmpressure_level_med = 60;
+ static const unsigned int vmpressure_level_critical = 95;
+ 
+-/*
+- * When there are too little pages left to scan, vmpressure() may miss the
+- * critical pressure as number of pages will be less than "window size".
+- * However, in that case the vmscan priority will raise fast as the
+- * reclaimer will try to scan LRUs more deeply.
+- *
+- * The vmscan logic considers these special priorities:
+- *
+- * prio == DEF_PRIORITY (12): reclaimer starts with that value
+- * prio <= DEF_PRIORITY - 2 : kswapd becomes somewhat overwhelmed
+- * prio == 0                : close to OOM, kernel scans every page in an lru
+- *
+- * Any value in this range is acceptable for this tunable (i.e. from 12 to
+- * 0). Current value for the vmpressure_level_critical_prio is chosen
+- * empirically, but the number, in essence, means that we consider
+- * critical level when scanning depth is ~10% of the lru size (vmscan
+- * scans 'lru_size >> prio' pages, so it is actually 12.5%, or one
+- * eights).
+- */
+-static const unsigned int vmpressure_level_critical_prio = ilog2(100 / 10);
+-
+-static struct vmpressure *work_to_vmpressure(struct work_struct *work)
+-{
+-	return container_of(work, struct vmpressure, work);
+-}
+-
+-static struct vmpressure *vmpressure_parent(struct vmpressure *vmpr)
+-{
+-	struct mem_cgroup *memcg = vmpressure_to_memcg(vmpr);
+-
+-	memcg = parent_mem_cgroup(memcg);
+-	if (!memcg)
+-		return NULL;
+-	return memcg_to_vmpressure(memcg);
+-}
+-
+-enum vmpressure_levels {
+-	VMPRESSURE_LOW = 0,
+-	VMPRESSURE_MEDIUM,
+-	VMPRESSURE_CRITICAL,
+-	VMPRESSURE_NUM_LEVELS,
+-};
+-
+-enum vmpressure_modes {
+-	VMPRESSURE_NO_PASSTHROUGH = 0,
+-	VMPRESSURE_HIERARCHY,
+-	VMPRESSURE_LOCAL,
+-	VMPRESSURE_NUM_MODES,
+-};
+-
+-static const char * const vmpressure_str_levels[] = {
+-	[VMPRESSURE_LOW] = "low",
+-	[VMPRESSURE_MEDIUM] = "medium",
+-	[VMPRESSURE_CRITICAL] = "critical",
+-};
+-
+-static const char * const vmpressure_str_modes[] = {
+-	[VMPRESSURE_NO_PASSTHROUGH] = "default",
+-	[VMPRESSURE_HIERARCHY] = "hierarchy",
+-	[VMPRESSURE_LOCAL] = "local",
+-};
+-
+ static enum vmpressure_levels vmpressure_level(unsigned long pressure)
+ {
+ 	if (pressure >= vmpressure_level_critical)
+@@ -117,8 +54,8 @@ static enum vmpressure_levels vmpressure_level(unsigned long pressure)
+ 	return VMPRESSURE_LOW;
+ }
+ 
+-static enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
+-						    unsigned long reclaimed)
++enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
++					     unsigned long reclaimed)
+ {
+ 	unsigned long scale = scanned + reclaimed;
+ 	unsigned long pressure = 0;
+@@ -147,74 +84,6 @@ static enum vmpressure_levels vmpressure_calc_level(unsigned long scanned,
+ 	return vmpressure_level(pressure);
+ }
+ 
+-struct vmpressure_event {
+-	struct eventfd_ctx *efd;
+-	enum vmpressure_levels level;
+-	enum vmpressure_modes mode;
+-	struct list_head node;
+-};
+-
+-static bool vmpressure_event(struct vmpressure *vmpr,
+-			     const enum vmpressure_levels level,
+-			     bool ancestor, bool signalled)
+-{
+-	struct vmpressure_event *ev;
+-	bool ret = false;
+-
+-	mutex_lock(&vmpr->events_lock);
+-	list_for_each_entry(ev, &vmpr->events, node) {
+-		if (ancestor && ev->mode == VMPRESSURE_LOCAL)
+-			continue;
+-		if (signalled && ev->mode == VMPRESSURE_NO_PASSTHROUGH)
+-			continue;
+-		if (level < ev->level)
+-			continue;
+-		eventfd_signal(ev->efd);
+-		ret = true;
+-	}
+-	mutex_unlock(&vmpr->events_lock);
+-
+-	return ret;
+-}
+-
+-static void vmpressure_work_fn(struct work_struct *work)
+-{
+-	struct vmpressure *vmpr = work_to_vmpressure(work);
+-	unsigned long scanned;
+-	unsigned long reclaimed;
+-	enum vmpressure_levels level;
+-	bool ancestor = false;
+-	bool signalled = false;
+-
+-	spin_lock(&vmpr->sr_lock);
+-	/*
+-	 * Several contexts might be calling vmpressure(), so it is
+-	 * possible that the work was rescheduled again before the old
+-	 * work context cleared the counters. In that case we will run
+-	 * just after the old work returns, but then scanned might be zero
+-	 * here. No need for any locks here since we don't care if
+-	 * vmpr->reclaimed is in sync.
+-	 */
+-	scanned = vmpr->tree_scanned;
+-	if (!scanned) {
+-		spin_unlock(&vmpr->sr_lock);
+-		return;
+-	}
+-
+-	reclaimed = vmpr->tree_reclaimed;
+-	vmpr->tree_scanned = 0;
+-	vmpr->tree_reclaimed = 0;
+-	spin_unlock(&vmpr->sr_lock);
+-
+-	level = vmpressure_calc_level(scanned, reclaimed);
+-
+-	do {
+-		if (vmpressure_event(vmpr, level, ancestor, signalled))
+-			signalled = true;
+-		ancestor = true;
+-	} while ((vmpr = vmpressure_parent(vmpr)));
+-}
+-
+ /**
+  * vmpressure() - Account memory pressure through scanned/reclaimed ratio
+  * @gfp:	reclaimer's gfp mask
+@@ -283,14 +152,7 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
  		return;
  
- 	/*
--	 * The in-kernel users only care about the reclaim efficiency
--	 * for this @memcg rather than the whole subtree, and there
--	 * isn't and won't be any in-kernel user in a legacy cgroup.
-+	 * Only two combinations have a consumer:
-+	 *   cgroup v2 + tree=false -> in-kernel socket pressure
-+	 *   cgroup v1 + tree=true  -> userspace eventfds (memory.pressure_level)
-+	 * Skip the other two: nothing consumes the result.
- 	 */
--	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
-+	if ((!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree) ||
-+	    (cgroup_subsys_on_dfl(memory_cgrp_subsys) && tree))
- 		return;
+ 	if (tree) {
+-		spin_lock(&vmpr->sr_lock);
+-		scanned = vmpr->tree_scanned += scanned;
+-		vmpr->tree_reclaimed += reclaimed;
+-		spin_unlock(&vmpr->sr_lock);
+-
+-		if (scanned < vmpressure_win)
+-			return;
+-		schedule_work(&vmpr->work);
++		vmpressure_v1_account_tree(vmpr, scanned, reclaimed);
+ 	} else {
+ 		enum vmpressure_levels level;
  
- 	vmpr = memcg_to_vmpressure(memcg);
+@@ -332,134 +194,6 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
+ 	}
+ }
+ 
+-/**
+- * vmpressure_prio() - Account memory pressure through reclaimer priority level
+- * @gfp:	reclaimer's gfp mask
+- * @memcg:	cgroup memory controller handle
+- * @prio:	reclaimer's priority
+- *
+- * This function should be called from the reclaim path every time when
+- * the vmscan's reclaiming priority (scanning depth) changes.
+- *
+- * This function does not return any value.
+- */
+-void vmpressure_prio(gfp_t gfp, struct mem_cgroup *memcg, int prio)
+-{
+-	/*
+-	 * We only use prio for accounting critical level. For more info
+-	 * see comment for vmpressure_level_critical_prio variable above.
+-	 */
+-	if (prio > vmpressure_level_critical_prio)
+-		return;
+-
+-	/*
+-	 * OK, the prio is below the threshold, updating vmpressure
+-	 * information before shrinker dives into long shrinking of long
+-	 * range vmscan. Passing scanned = vmpressure_win, reclaimed = 0
+-	 * to the vmpressure() basically means that we signal 'critical'
+-	 * level.
+-	 */
+-	vmpressure(gfp, 0, memcg, true, vmpressure_win, 0);
+-}
+-
+-#define MAX_VMPRESSURE_ARGS_LEN	(strlen("critical") + strlen("hierarchy") + 2)
+-
+-/**
+- * vmpressure_register_event() - Bind vmpressure notifications to an eventfd
+- * @memcg:	memcg that is interested in vmpressure notifications
+- * @eventfd:	eventfd context to link notifications with
+- * @args:	event arguments (pressure level threshold, optional mode)
+- *
+- * This function associates eventfd context with the vmpressure
+- * infrastructure, so that the notifications will be delivered to the
+- * @eventfd. The @args parameter is a comma-delimited string that denotes a
+- * pressure level threshold (one of vmpressure_str_levels, i.e. "low", "medium",
+- * or "critical") and an optional mode (one of vmpressure_str_modes, i.e.
+- * "hierarchy" or "local").
+- *
+- * To be used as memcg event method.
+- *
+- * Return: 0 on success, -ENOMEM on memory failure or -EINVAL if @args could
+- * not be parsed.
+- */
+-int vmpressure_register_event(struct mem_cgroup *memcg,
+-			      struct eventfd_ctx *eventfd, const char *args)
+-{
+-	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
+-	struct vmpressure_event *ev;
+-	enum vmpressure_modes mode = VMPRESSURE_NO_PASSTHROUGH;
+-	enum vmpressure_levels level;
+-	char *spec, *spec_orig;
+-	char *token;
+-	int ret = 0;
+-
+-	spec_orig = spec = kstrndup(args, MAX_VMPRESSURE_ARGS_LEN, GFP_KERNEL);
+-	if (!spec)
+-		return -ENOMEM;
+-
+-	/* Find required level */
+-	token = strsep(&spec, ",");
+-	ret = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
+-	if (ret < 0)
+-		goto out;
+-	level = ret;
+-
+-	/* Find optional mode */
+-	token = strsep(&spec, ",");
+-	if (token) {
+-		ret = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
+-		if (ret < 0)
+-			goto out;
+-		mode = ret;
+-	}
+-
+-	ev = kzalloc_obj(*ev);
+-	if (!ev) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	ev->efd = eventfd;
+-	ev->level = level;
+-	ev->mode = mode;
+-
+-	mutex_lock(&vmpr->events_lock);
+-	list_add(&ev->node, &vmpr->events);
+-	mutex_unlock(&vmpr->events_lock);
+-	ret = 0;
+-out:
+-	kfree(spec_orig);
+-	return ret;
+-}
+-
+-/**
+- * vmpressure_unregister_event() - Unbind eventfd from vmpressure
+- * @memcg:	memcg handle
+- * @eventfd:	eventfd context that was used to link vmpressure with the @cg
+- *
+- * This function does internal manipulations to detach the @eventfd from
+- * the vmpressure notifications, and then frees internal resources
+- * associated with the @eventfd (but the @eventfd itself is not freed).
+- *
+- * To be used as memcg event method.
+- */
+-void vmpressure_unregister_event(struct mem_cgroup *memcg,
+-				 struct eventfd_ctx *eventfd)
+-{
+-	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
+-	struct vmpressure_event *ev;
+-
+-	mutex_lock(&vmpr->events_lock);
+-	list_for_each_entry(ev, &vmpr->events, node) {
+-		if (ev->efd != eventfd)
+-			continue;
+-		list_del(&ev->node);
+-		kfree(ev);
+-		break;
+-	}
+-	mutex_unlock(&vmpr->events_lock);
+-}
+-
+ /**
+  * vmpressure_init() - Initialize vmpressure control structure
+  * @vmpr:	Structure to be initialized
+@@ -470,9 +204,7 @@ void vmpressure_unregister_event(struct mem_cgroup *memcg,
+ void vmpressure_init(struct vmpressure *vmpr)
+ {
+ 	spin_lock_init(&vmpr->sr_lock);
+-	mutex_init(&vmpr->events_lock);
+-	INIT_LIST_HEAD(&vmpr->events);
+-	INIT_WORK(&vmpr->work, vmpressure_work_fn);
++	vmpressure_v1_init(vmpr);
+ }
+ 
+ /**
+@@ -484,9 +216,5 @@ void vmpressure_init(struct vmpressure *vmpr)
+  */
+ void vmpressure_cleanup(struct vmpressure *vmpr)
+ {
+-	/*
+-	 * Make sure there is no pending work before eventfd infrastructure
+-	 * goes away.
+-	 */
+-	flush_work(&vmpr->work);
++	vmpressure_v1_cleanup(vmpr);
+ }
 -- 
 2.53.0-Meta
 
