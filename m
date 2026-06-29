@@ -4,89 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C68C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00B3EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51A4C6B008A; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
+	id C4A726B00F6; Mon, 29 Jun 2026 14:30:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F15A6B0093; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
+	id BFB026B00F8; Mon, 29 Jun 2026 14:30:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E29D6B00F6; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
+	id AC4E06B00FA; Mon, 29 Jun 2026 14:30:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DBC06B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:29:28 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E8A040209
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:29:27 +0000 (UTC)
-X-FDA: 84933787974.26.CDA843A
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A83BAA0004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:29:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WZ2n3yfQ;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 871486B00F6
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:30:51 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 178771A022B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:30:51 +0000 (UTC)
+X-FDA: 84933791502.17.4803D77
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 0D8CE40007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:30:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZSKW5IWI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XiK/ozan";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0Ip6Kwgp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeYyMfbh;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782757765;
-	b=W64oKYjR6w6gmnZkwVCbtj/AWOTeXwiagz1ZPDD1lcFsp7iWyzX+ekf85gessdkCWtY0Hf
-	4wBQuWqw9ZnWg0KXrT8+xca7dXfXwQkLEpGhGmxEQu3UktXhb9wOG67sjvBNlmjlUZRXTk
-	TZdGuHY3MRWkJJzpjs2W5EYoyjbAR6k=
+	t=1782757849;
+	b=uLe5HKdyWz3NoZ1LHVBnojVe/Gi74+4H86ymffGpP81cgX0cD5WPn7Pskq489WeZuJCR9d
+	ZBP9qYvt9BlSfa/aHPODhjz/MyjrGLqHdt2K7WqQlx5NqDmkhXivhghJge5k/Sh1M8nsA6
+	AhxOpAgLPIaGAvhoEHwytuYpmquhFb8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782757765;
+	s=arc-20220608; t=1782757849;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wTW0XC8dEWZiwseOxkoyBChQncFjhrJXjY1B/hyy8Y0=;
-	b=DFb9ETJbv/RTmf/vo23feNButNOnRRaqgg/XeGXJNffS30p7atAVy07Jth3iqxv5l6WUa5
-	yu25AMysHxq+zwaSZbpH06t60Mc5BBaRaw5d7WVqDx1jdXChMDDmHQAeJuzdPdjmkHC1uB
-	1yz0jEEu/DkM8qkfpw09zvCgn6yk/vM=
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=WngGP3IzciYv3pP/Ncn/7vhEV4n0WJ0Irrc/tsRJ/TRl+stL5rR9/T9QFSXJoRQuuR5Mi0
+	V/7H1x2Umj4aFGzif+4uPIa1/pwK5xsF/kc4VBJhrjj1rVOHrEU4TJWStguYanXnmvHkuL
+	/UClAfQp6LoXBMx0dLTrsG2oaUgZLuw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=WZ2n3yfQ;
-	spf=pass (imf25.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Mon, 29 Jun 2026 11:28:45 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782757760;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZSKW5IWI;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="XiK/ozan";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0Ip6Kwgp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EeYyMfbh;
+	spf=pass (imf11.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C5DC73213;
+	Mon, 29 Jun 2026 18:30:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757847; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wTW0XC8dEWZiwseOxkoyBChQncFjhrJXjY1B/hyy8Y0=;
-	b=WZ2n3yfQsB7DAqunz7QrD8IzF/yt614EZi2fR064jPUt4e9EAcc3D0fbB5foVguLFClapW
-	wDomh3rSE0EY0PDDI765Q6N5DIWs/kdrEOlBAl9NZeOvFRIQxvIhXSpUycwmJs9yKBWP8O
-	Q47xDrZ41Cy1506mCfNsXUPNbhntU0I=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Usama Arif <usama.arif@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, linux-mm@kvack.org, tj@kernel.org, 
-	mkoutny@suse.com, roman.gushchin@linux.dev, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, 
-	surenb@google.com, vbabka@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
- into vmpressure-v1.c
-Message-ID: <akK5QOLJMElZz5iw@linux.dev>
-References: <20260629130042.2649505-1-usama.arif@linux.dev>
- <20260629130042.2649505-3-usama.arif@linux.dev>
- <akKhzR8uHh-wzrx2@cmpxchg.org>
- <b84a497d-9159-4967-b355-44913a3865cf@linux.dev>
- <akK1lm7mVUXEmIZm@cmpxchg.org>
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=ZSKW5IWIhLmI75H5Ru137+UQ9cwp0wZYNWh0wLLIwO5UeUdvIAf2J7wD49hRckfFtQs5te
+	KCzC0YssaeSjr9FGF/D0OVQ2YRkDRna7X85nfuOKVE/gp+B0yhLSpINVrqY3eRm3M7t9q+
+	m/I00eAYwiTNDvSUCNHwMzn1k11kjAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757847;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=XiK/ozan+2lMDL5Detpi57el9beS/jZlYoacw9yUkD5LGELLMmDbFuIPMzf6NDHVdguh8N
+	ri9mJsShahj+JlAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757846; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=0Ip6KwgpFhy8F4Ou3+lH/mzi+xCwIOYpRGCQ3A3XNcrAfHKigDU/sszYi08H5tg4Xv6+1R
+	xdZV1ik8foXtGbd1KHMUkOLd9PFKWatLgTqBU/lEqi7pgcAv4zo/Ll41gcTaMmwmOWKLxP
+	wJEC8RthywEFKzfWtAYS9zFXCNRqa/E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757846;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+4unOw1kC7PDoCyOC3Zep6sOEjf/lsnW9nQUlS74aFs=;
+	b=EeYyMfbhRr8oQQjM/Igb3SEFQJcXtgZp4ynHWIVDTLcZcStgOopApUqSajIw8RiD8N7NHY
+	ZiPQqv8eCeLo1ZDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D138779A8;
+	Mon, 29 Jun 2026 18:30:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uIrYHtW5Qmr0dwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 29 Jun 2026 18:30:45 +0000
+Date: Mon, 29 Jun 2026 19:30:43 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: do file ownership checks with the proper mount idmap
+Message-ID: <akK4CRgiv9G29UiM@pedro-suse.lan>
+References: <20260625153853.913949-1-pfalcato@suse.de>
+ <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
+ <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akK1lm7mVUXEmIZm@cmpxchg.org>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: q1yfp8yqpsuxitgsc9fjwh6gx7cr4axn
+In-Reply-To: <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A83BAA0004
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782757763-771106
-X-HE-Meta: U2FsdGVkX19WQf5xhHtZpAzSfKsa5efoOcp/4QF9+4hZLW3hsj8hjx7vitxaQdabEaXOYZRaQHhO0NE0+bbOQqMnwuG4wiMtmMubV4/8L4a87sdWvFnRoaA+R173xM1i3XXJg7nzDjcW5XU/YB0nxuM0vz3pvlX1O1dFoXL97xg74aQTeyMiUvc1Ub57BKsT1UY9kPXzX0IRhKpVuqXlfWtYEfk3HBTuaFc+mROJzEP/TZz5ffT9M141MOp5ulVnolnUodFj5gQKibvcFWrfOqWCm6OtTyNiEuafsCmT8R0bHfRD9PU2eYbOvNtWpME2RaQbDTVFSmiMWXo4cjdCq3UzHjNAhy4o1vLLdd7Ibu6Pxgs24BUiRH6BjmBNxNYxHVVGj0IOdNHVm3zdSt4fOPHuoWnL+Bp6MUWXyHDBsIOaPlbnyVhzTQoP9eqBgkreQT0HL76/fPDdpPieLKRSX9gNGcAkNKFaJ7+PGP8ZLfXEas3vl9gsLSxyZpcO5tJXfFXRERAlqFv4nbF/4+DtGd7VoRty1jtkDFdB6cZmVUYNCxAgqecRCCy4qv6LB4RiA7bXfkUf4jzvOYezxGixuL+Al/jNK/+Fo8/4rIZkUAJsDpiigA5k6WxRd62Hsy5QiQJGKToyWmfIaHgqS2yC3zMZS59SOSv+cC1p7P48OhaulqJngXQeCHG+9FFROPn/KKS7R8zCKytsmtpNOaGSRWbV+V1AnA43SgIE7BNGSYC7WXqvd+Rs96Hu9dboVXnF6n7TlxpXdqCagaxp0pE3gRazaoX+FJZwfOYrfTO6E642xtzvHW9p8GQGML9UN2L1B40WTJMMPRzH3XcmqdbZlSIRsxNu107r/97a/h+0vpzaeijPaKbigr6eBhFcLt+oXqhTt4Ote5+VfzC0oEkM3iItDRk0G7mW83wPKlKeFBsbokLVbLlFilKYVwl6+3QTg654SpzOe0gB/oR27mY
- tYNqY1bi
- BvEq0GrYpnOwv0S4wSWAPFN19gQsuGkQH5GCt/eeb1su0zR7zYuGAoD5eck1X0HL4tNl3uY1FNZursZBGpmyy6xH9gajCl8Lluwa8QDtKEDCutLveHwN3EY0p6inc0WXzZpY6QVvTl4oQJjNMs0iYxJF56IFlL2+2CAW9rMuibWrZO4l3CKp9WA8/9b3bexZ0DvBUOxsxIWyeiqf6E1RmAnhyzg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0D8CE40007
+X-Stat-Signature: 6fkui76rzacch9rbep6ed7j9ss48jotr
+X-HE-Tag: 1782757848-147323
+X-HE-Meta: U2FsdGVkX18RxMlVjnO5c5g9LkzTH27WkyNZ++Qk2N0fne4huL0lJpnsClcU1pDHWzRnJDE4iIE/z+qBAeO+Luk/WNyIB0YoBhpaHzG3YHhZXSk6nboZTTFUEuHmauPJON8NrftDUFryisKcrCVNjC+ChHVnAF6Wpv+OfaBrtcUjLW711MTL7hwLNzyLYepm4eHhJ5Q/MVmctseQtkzflOBzHfTqKvMakGcGbqpapEuVx7etxMg+rRONmQogg1ycJ9lRTxmztUl7GLVDe3Z7dDMqsYrj0kUMfomeCDIUIvQWOKl693Pwyvy82ZS5qtoLxHIyO+N9oEB/5Z3jCpjfYWuTllSE09I4P+mEooDmchj1kgYxFf2eIoGxB8n7Om//Hc6giJPBUESpZf6yFnUfyuMvT1zMgSsQP+UPC5EtNZjgM9N/CtXRekL0/2WX0Uuo9F+HAwK/N2viY337XDlc91jr2Hxucc1nOsWkKuKWs3sllni5eM6EyLeCGfE/qWpcyyZq7RPeCk+Tmp9JO67jxPPaqlDgDMyAkFk+xCppnosiPxOlna7rpWrRa6lB4yx876vSJQo5l1QgI7Mbu8DYGeG0fsAqgduANlwmEuO3WclqQwfWdb6NEdRS/tjG7Yxya2ONk8iBDGDtY1jTf3nvIz7IrJOuO9C6eF/xO0c89HZZOdqDojegpjtDGmG7UrAHc/u+RtrgF+w61jRrjmfZBfv/2aNfE8OsU9wYSsS2g0JSSrmTXqVu44s4BBWHwUaeAfw0Gw7NbWkE5YDd8CmWPLytA5NBJpZ/RwUQiA+XF78VRRFdEpnkP4FpuULgki6xbpfl9DZ8p04Nk6HlRHf4unC7DpVdSItVEHkf5X8sB3A4+6A0bNngeTHX/bNnf+mWNVblPa4AK3zouBdfm0hJrVBqkjC2aiz4t10uo6GT8UHM0z4IaIEEfoScRS9WorkMLYHerO4h/2wOd9WNRMy
+ B4JwHeN6
+ oTaJbWUdXcmX5x6sSVjutCXL5NncrDRqvSYjcrloph4dENouXm5qJ3BItn2BqUsS7qSotgV3Oqf7UCfTEtqGPaYm56lDt0L+zc2Lz0aVATfaVAIMpgRxL8d6co9CGXD5RJwBWuP1O1+42WFXlhUikjaAP4bhP7XhXnxe783AHrTmMW9JoVrT36N6bHqvw+5obhC/4j1+BtmhDhY5CGbQZFcx2yeKSx1gaPDvt64tyRet1HsOpHh5vGaBoIpTQGxnaHyUSMeZ6V6WzYxJ9OJhjXZ40uMTI+yf9xgay
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,43 +134,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 02:12:38PM -0400, Johannes Weiner wrote:
-> On Mon, Jun 29, 2026 at 06:23:58PM +0100, Usama Arif wrote:
+On Mon, Jun 29, 2026 at 02:15:19PM +0200, Christian Brauner wrote:
+> On 2026-06-26 16:19:18+02:00, Jan Kara wrote:
+> > On Thu 25-06-26 16:38:53, Pedro Falcato wrote:
 > > 
-> > 
-> > On 29/06/2026 17:48, Johannes Weiner wrote:
-> > > On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif wrote:
-> > >> @@ -101,7 +101,7 @@ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
-> > >>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
-> > >>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
-> > >>  obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
-> > >> -obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
-> > >> +obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o vmpressure-v1.o
+> > > Ever since idmapped mounts were introduced, inode ownership checks
+> > > (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+> > > done against the nop_mnt_idmap, which completely ignores the file's mount's
+> > > idmap. This results in odd edgecases like:
 > > > 
-> > > Might as well move the interface part to memcontrol-v1.c instead of
-> > > creating a new file.
+> > > 1) mount/bind-mount with an idmap userA:userB:1
+> > > 2) userB runs an owner_or_capable() check on file that is owned by userA
+> > > on-disk/in-memory, but owned by userB after idmap translation
+> > > 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
 > > > 
+> > > In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+> > > file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+> > > idmap internally, but it does not need to be the case on e.g a 0444 file
+> > > where even the owner itself doesn't have permissions to write to it.
+> > > 
+> > > Since this is clearly not trivial to get right, introduce a
+> > > file_owner_or_capable() that can carry the correct semantics, and switch
+> > > the various users in mm to it.
+> > > 
+> > > The issue was found by manual code inspection & an off-list discussion with
+> > > Jan Kara.
+> > > 
+> > > Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
 > > 
-> > I think it would make it easier once we move cgroup v2 off of
-> > vmpressure. Then we can rename vmpressure-v1.c to just vmpressure.c
-> > and gate it to CONFIG_MEMCG_V1. The other option would be everything
-> > living in memcontrol-v1.c?
+> > This looks good to me. I'm a bit curious why Christian initially (in 2021)
+> > used init_user_ns here instead of the file namespace... Anyway feel free to
+> > add:
 > 
-> Hm? I just mean move whatever you move into that new vmpressure-v1.c
-> into memcontrol-v1.c instead.
-> 
-> > I think its nice to keep it separate as
-> > memcontrol-v1.c is already 2K+ lines and this is standalone feature
-> > that can sit in a separate file.
-> 
-> It's all deprecated code with no active development. Containing it and
-> making it easy to see the footprint of the cgroup1 option is the
-> higher priority, more than maintaining neat component separation.
-> 
-> No need to work it naturally into the file either - decls/variables up
-> top, functions somewhere further down etc. Just paste it into one
-> contiguous vmpressure block under memcg1_oom_finish(). That's how that
-> file is already structured with the other components in there.
+> Back when this was added only the do_mincore() codepath existed and that
+> was intentionally left unconverted because it exposes the cache
+> residency status. So it was effectively a massive side-channel.
 
-Yup, this makes sense.
+Hmm. I'm not sure what you mean by this. Wouldn't it be more correct to respect
+the mount idmap (given that a mount-ns-capable user mounted it with an idmap for
+someone else, or itself) for mincore? Am I missing something? Or maybe I'm
+misunderstanding that paragraph.
+
+> 
+> Both fd3b1bc3c86e ("mm/madvise: fix madvise_pageout for private file mappings")
+> and specifically cachestat() came way after all that.
+> 
+> I'm otherwise fine with the change.
+> 
+> Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org> 
+
+Thanks!
+
+-- 
+Pedro
 
