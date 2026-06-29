@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8CCBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:07:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53486C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:07:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A08D26B0005; Mon, 29 Jun 2026 08:07:55 -0400 (EDT)
+	id BB6A26B0088; Mon, 29 Jun 2026 08:07:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B9906B0088; Mon, 29 Jun 2026 08:07:55 -0400 (EDT)
+	id B8FAD6B008A; Mon, 29 Jun 2026 08:07:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A8CD6B008A; Mon, 29 Jun 2026 08:07:55 -0400 (EDT)
+	id AA4486B0092; Mon, 29 Jun 2026 08:07:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58D6B6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:07:55 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA256167BB3
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6C1AC6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:07:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 868C21C6D26
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:07:56 +0000 (UTC)
+X-FDA: 84932826552.12.1AB29F7
+Received: from fout-a3-smtp.messagingengine.com (fout-a3-smtp.messagingengine.com [103.168.172.146])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9C49D10000F
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:07:54 +0000 (UTC)
-X-FDA: 84932826468.30.5237C7A
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf01.hostedemail.com (Postfix) with ESMTP id CA3B840003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:07:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="L tIKchL";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=YcHxJB+f;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="l 3QM2Xg";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Lo9d2zIC;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782734873;
-	b=eQUox+Y7OftuD3t3sznNJdCe8vpD6qAH3SUCPjOcW2abuh0ThJFUgIY5XdUd2WFe/mW994
-	C+wZnAdutznRP9vvfhr3HnB+9sxOZjzMtRfyL6VjWGO6YVjd2X+ruua7S0F6VtcBmBVjQh
-	4sbq42hWwmK8I4kjWzLvv8Ph+uP+wqs=
+	t=1782734874;
+	b=IU0eGQeaWd4cGazO/8m0GcYKq5aErY653v1mjWy0V6msJu74tmmHCXQgZiJxo+7LRDCCLD
+	wxIUhXt4K1xFpH1KyFatHH9VpD/EwN7ZgrbdqR5g8yHfS8OAZfVTte+XqEecYD2jDiwWJM
+	miaF+JwyEDvfMAgSowPhSCl1rHLid1E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782734873;
+	s=arc-20220608; t=1782734874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=UgUfSQ3fgfdnjYJwVZAgLkKRpc+OyNaXy23DbcKh0B0=;
-	b=KwaYr9J2uUPQhy3ja6r/1jXwFk3ieAeaCaiM9sL1HkoufvHcSy06Nk2D7uT/IAdmN1uyZc
-	PCqyQwUjBdrdYFITvwIGU/9v1JRKqZaeOdEvOdTPwJO+NO1uyxQd4B2H5Z1rEcrSo8J9e4
-	sBmV2f3XJFch+w2GMuVNyvjfe1aMc3M=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Bi6ZCi9/zUIsKmhwfb8Lt5NG7YE3vAzXLT8nxhhcSmo=;
+	b=RlJOuyEXrFGJP5Dtfa6ez3F07K8CP/kfdwH0M+gwqxlpSsMYhOkp3y0DQYdTxmA4htj95w
+	8ENTGxHJF4og4IxGk8LokTnjIbKAzr/7CGBK/3S+nWHox6mknv2tD2g95UL/1FjV+2EacZ
+	50d070XzideFWIOhJjb4BgewH+gf6o0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b="L tIKchL";
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=YcHxJB+f;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 22DD01400103;
-	Mon, 29 Jun 2026 08:07:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 29 Jun 2026 08:07:52 -0400
+	imf14.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm3 header.b="l 3QM2Xg";
+	dkim=pass header.d=messagingengine.com header.s=fm1 header.b=Lo9d2zIC;
+	spf=pass (imf14.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.146 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 25BF3EC013B;
+	Mon, 29 Jun 2026 08:07:54 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-09.internal (MEProxy); Mon, 29 Jun 2026 08:07:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:message-id:mime-version
-	:reply-to:subject:subject:to:to; s=fm3; t=1782734872; x=
-	1782821272; bh=UgUfSQ3fgfdnjYJwVZAgLkKRpc+OyNaXy23DbcKh0B0=; b=L
-	tIKchLUHiowbhOygHxmCBogwmlzKWSMoOb8OnT5FTRo0Lg/7zJ2y3Wuu8rCmMnWT
-	Ps61Am+hiqt/icaym+GahxQfqKYCopa3+hKD+I+k+7XyQSZstt7VKZ0kACSG9WFu
-	/Cp7AyH9NTPjTe8UtZDsWfjYSQitJqKnoRa3LCNOA2CZBpy2qk9wexnAd7H3v7bY
-	Y2M62ZRM6W0CHY3hwqvAgjBSW2jEcVS6g2Cit7YGGMx8+qIQ6gF2Xf+YSv3EyLhW
-	Sr76iAU24cDwj4JZcBuWfciHDUW30T70VYWsrKRcrYQEgZrBNf4vr0JwcYQBP/yV
-	uZq2kb10sQjYhxaEo9MOA==
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm3; t=1782734874; x=
+	1782821274; bh=Bi6ZCi9/zUIsKmhwfb8Lt5NG7YE3vAzXLT8nxhhcSmo=; b=l
+	3QM2XgwHgomoBQgqxWSMaOWRCXcCide7CHiPnPupUjv19o/menCd0kg4R1Nq31OM
+	HVbTPEJkIK3Po3sU9yCFvhc7ZDRMIjQJQpQyekp6bosmr1NKYKHf8EwO4K54af6P
+	Qv6u0HmansdEFxwNDzHW2x2oLt9hy5VpA6B1e3OPumixA3rLfQeQVfbnt6HePGfR
+	MkwRacUnOhT0awnCd9O+aEBdGsLYT2D02ZD43DhSk6He06sj/0Qj9mexjbQA8jSr
+	k1LxkvKUfeUkSTi6vhz6xUnAY1U4SO3ADp4GEW3CSQL7BYKv8Y4vGVvFGHjEO1sQ
+	fwd/zp6zw9WpYA3rpYb1Q==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1782734872; x=1782821272; bh=UgUfSQ3fgfdnjYJwVZAgLkKRpc+O
-	yNaXy23DbcKh0B0=; b=YcHxJB+fX5q3H4dvIZn7aCUZwu0/DaAdq5/ciUsrQhqe
-	rkjyZtty1+4uSevQcgc12Z2+11NDYAb7kWWD7+xP/I3Jz6usQJ5Yi+71nn0fc7H/
-	o+A//n/4qjVa7NDySUqwARk7r04vM8gOu8TgVoTiXjhMzKEBuU7r7kO2wbbaFDfX
-	mhdlJglEdemykC1QD2AWUWJJjvyF8r4ZIsENChSs0CXvazJLKjEgisovwPtr7J1A
-	1vK9WfEJzTEy4h/AqeDuOh2cAjUthmizUwNzXPwrEDAqEWblC8gVjrqdxAiinBf7
-	fARrNYrzv00poWKy++dPFala4HAdcPj/L0Qb08KRJw==
-X-ME-Sender: <xms:F2BCavXRRPoDacjVszM8MBVT0emcaVZ2lmmj3GNYDbqfkThIAuoxgw>
-    <xme:F2BCarjK9TW7jhqreZYvBDqien9HL0RKvW4oQHDxezdlwzpRZ1XxVwYTyUjQr60Wr
-    IWga1K6j72qjz9EbGSdvu5PYT5QWDnQIsLmlkqdTDqDHtEkHRP6308>
-X-ME-Received: <xmr:F2BCaj7gJYgbJXkjZu3LXG_LpWb77z4LC7ONIbHhMyuS3bTA7lgbZa0_72huIQ>
-X-ME-Proxy-Cause: dmFkZTFUMlL5mu5y8Upbv9HR9aFxU4WQKlExYJbTC0hStB1ZaeQIv/++UIHbviFJ2AGPQk
-    gj7l9YOykxdouzJPl5/lriT8Q948gdAIJ0XIynWvJn1flyoMhiN49uGLzqcID5igt13Z9b
-    L3kra4t3SVxpZKLFF4y9OeRDrhsKThwFN6yYHWzsJHREjnIpWtaygQ2GGHrUyWMjBLeEtx
-    osclhPO2lGuRYRPu3fUhKYvVbYRGprIk6gy3FhSO6q3liAby7E5t1CfY2Raob7o3dOvQTH
-    mB2rtF3LAPUoafCxiKPztyvhVTLhVm1gkL2Zu2o+beJD19ZvTDTLGVSzBw+J/J5MnspcY+
-    7yKjSMs3YEzUJUqm2KiNNJdxAgC+lOlv0+8Qk1Evo80ichj+kBvqe9aGyhG+QN7JddI9tk
-    t6pMAbw51FjG8OTAYaIqG17cQ4fckD2koSpv8HWnv6i3b7UVn/uJe9FHniiC/Gi2RQrxPc
-    hrwLCVnFHOtGdfQc04GhmDuzwFMLDtKOYvWPolMu63GTODifIb6AMmDDwxbnL6ee4pNdlt
-    yFFmdJpIFt71sB61quIjsBwoAKX9PHwhugoczOHHkmh6IFIcXZU3qcmVXvM5YdhRk/cD0y
-    PbgLlhiqs9DAdI8XSbz6QWC4flDa9I4onP3GQzR22gC5gRyaPnttZcu6UUZw
-X-ME-Proxy: <xmx:F2BCaj4_nO7Ds5cIlEZ97XpDN4y85qmTijh5k2sxTo-F10njhkPdHw>
-    <xmx:F2BCahH0SNmVLFcibcpYKwQ1G-Ba1QmyxfRf9h7hHMhQwHA1BqMOaw>
-    <xmx:F2BCahxDTMzevmYCCdH_xWk2oGEhTAucU6RmMyaJhsWMNGXjvGCDWg>
-    <xmx:F2BCah3hhPbB-ZWRR1wTKL0wQVEzqCiKbbtkKwBn_5Zbcr583GzOPg>
-    <xmx:GGBCam2TSsRejXKts53s4QL6htg9syPe26JtTucA9JhHAZTLu7cNRuFg>
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm1; t=1782734874; x=1782821274; bh=B
+	i6ZCi9/zUIsKmhwfb8Lt5NG7YE3vAzXLT8nxhhcSmo=; b=Lo9d2zICXeR+cjNgs
+	261AyoQ6sS7y3HTmeWssILw2PuOn48xskYIoimhRJiXZIV5WwRSy4FcRQ7l0SgC4
+	GoptpZmGaLMi42a/TegH7SoVYnCRPWeQIpeJi6q+EBIKg+jHcWcyfFhEUgdsoVLZ
+	QYsSWX4mBIaTRAJ3WKiY8C04ntZB7GTlharlLFHcE/OZU2Rk/WhkFVLon2kSaikR
+	ZTxWloVStvaA5qaz3PO43o0LVCgHaJSrs6Z7ulSnMwnevChfgdDz7/5d6jXPmqEW
+	O8XZX9zZh0ywVXr+wmrguATTiOx6xkPa2sP+Y/xxrmw8Z9vtLau38Zk7FyTh9qf3
+	DqK8Q==
+X-ME-Sender: <xms:GWBCaojN1CwDVyZ_W0FXZ0mxmF8qKy8PYQA2sax-aTyDuRscYQS0TA>
+    <xme:GWBCak_6zX6XLpSwPS_jsfIv8A1B_i8_z46Pei6Ue5Fugxg-Wfs7xG-WMq7NNq0ft
+    EnjZAPwUJZmE3K5NNu7Clg_9G2EKi4N514zmLbgX6t-xBWJTXo1O_lc>
+X-ME-Received: <xmr:GWBCaonNJ5jDgw-2m_QxGIM7p9QG1oArHj_ocdSqxVQ49xze8eSZ5F58kPNr0w>
+X-ME-Proxy-Cause: dmFkZTFY6shGePvmxOMh2n7JXpRvMYayhSPkReA/qp2Kk9FFh7qIwqznFdabTWQQmbT6np
+    orb7nZimraCt1e9FjxE+D963WQ5XDZfLTwLobafoyB3i66gOkO3z85tAcKnmI3RB25+PVB
+    EZ98eAuca1GkEm7XR3L2jnIB5DGE7Gq/dUpvQ2A9oIHx8hwh4f84uT4y/OhQorrh2fKXDR
+    UYo9Jps0lppZOy2xiKorTonIMZqLK9GUCnCQcdTCD/z+aL3OihCctiT9iWAjf4SCGuOWH6
+    0ORm+HxXgzRDvylsCh2WOkVei6ivCiAy/pOXBTW6wB8gDyVJ0wFaPNiIhLc7QTSUTVd0fR
+    ERLjdb6EZU+Dki41pvOSDzzqVu0cMk2tI091bs/p27sDSxRwRpDFmiDRc3/ZDY2u5Ul2SI
+    OPx33kXzgG+E/c4y6gGL1mQrS3z8rptnZsZ4owrtpg2lH1eqKB7La0D+PkCoMdBn0npl29
+    fD+0maj2YD2LkSNZuJUbu+bZ9k0d5jj10L502yhfObxYmLwVWXauW5OKlNaYHvNOSZYRh1
+    B1MLAELYXcfvK9e4BzhnpKOZDobJUxR4/EAkI3/r5Tg+zhq8MIV22YbgSBywV/m3C/Ol9Z
+    tfhUrxn0CZN6lvpckz/MdrmW6RNbLHgNDoOCcrXKwIaaGIk2nwGsc/g+cWNQ
+X-ME-Proxy: <xmx:GWBCai2qw0XmRmxyWPR6FLbmm54UDPpSJ20Jy8hIy4K45o57rj-E0g>
+    <xmx:GWBCatQ1eDVdWizfR8qQVpekgYDYqwn4Dsftb6tocDXLqeey1LsS4A>
+    <xmx:GWBCaiN1RDvbgdYM4V9an_qnOH6_hzMi1MOIPxIkQuD6yWZVDzbnFA>
+    <xmx:GWBCahh4mGPnsEewwN-WO51dA4XjPo8tvQM7NlZUzxe9tSpVkNg4Xw>
+    <xmx:GmBCamgDxFRgLtpm6Rnn74QjIJNnDeW-onOquh5F_Lb1G7ItVpF1voWu>
 Feedback-ID: ie3994620:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Jun 2026 08:07:51 -0400 (EDT)
+ 29 Jun 2026 08:07:53 -0400 (EDT)
 From: Kiryl Shutsemau <kirill@shutemov.name>
 To: akpm@linux-foundation.org,
 	rppt@kernel.org,
@@ -125,21 +126,22 @@ Cc: ljs@kernel.org,
 	kvm@vger.kernel.org,
 	kernel-team@meta.com,
 	kas@kernel.org
-Subject: [PATCH v7 00/15] userfaultfd: working set tracking for VM guest memory
-Date: Mon, 29 Jun 2026 13:07:31 +0100
-Message-ID: <20260629120749.566063-1-kirill@shutemov.name>
+Subject: [PATCH v7 01/15] mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
+Date: Mon, 29 Jun 2026 13:07:32 +0100
+Message-ID: <20260629120749.566063-2-kirill@shutemov.name>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260629120749.566063-1-kirill@shutemov.name>
+References: <20260629120749.566063-1-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: CA3B840003
 X-Rspam-User: 
-X-Stat-Signature: pacrj3bbsj4amdzgjfz4n6ebwxtq3hyz
-X-HE-Tag: 1782734872-161066
-X-HE-Meta: U2FsdGVkX1/24iuOplk5kqzcx8mArFSAmYYUb3mjYspn6F6wSLFSLRbEAapOZzV7cYGDLYJ2h28iaa04Pj/bbxsVgxivwXDCDnBWYn2RKVbDkDO0zk4Yvm+k7Yvaus+qTZ0u+Sm9mrizYU7vO/+dMHEBYLNjVM4DjDRUealWv98wdjz1MTzmU0g0H/NfLg+HcJqInKOR0fAFawLzfEExTtkQROsJNc6Jvo0/zLEF/h8/koI8U4qLPUmVmdg5TbKkqyHrm+rqDEkrXMroKULAy+XBX9waHToH6C25iJJuiU/5MR9wr6S2k61Yz6on/YEV8xOL41AW2unYLEpHgjsRc23W5eJuVKS0e/VEax8vniBo1sjZXAm/LQ9gPqXb+gdX7l15uM50CeYWSgCN57P1jXMPzKaT6eQo6YNLqvPFQgG70z/f0nF73pbFUWU3jFfNTds/uv7ssx5D4ZsZRMT0p/NOsbEHlIqdM4NpxH3/51Us2lSaQivDI9Kpb+Ivx/tzZ2b6s0LdFu50VNjTJffX4nbkmvmY/GV0o+sOcoQyztwUUJ+MVRuf4B4ZjWcPtF8xQjoXA4PykPyObmRVVSQw9xVxY3SZxz97tGi16DF4oR7cnht30HJ/6zsKcDYpXlu0dpMD7inSO4S6hb6Q9qIaQgdM+WvmrGwHdFRk5yg4NLpzG2sIKi+GHycBu+PinXKuioDJrwADY3qm0YhYnya4EmjQ5gL/mZVIWcUbsziHFLLaOBp+lfZZZCKJVyexD1/oSSjCrUCx+0mHY2QypCOynzn1o3IlpnYpGEloBuqvtWCs/iHfVJDowDYtxRO9LbkzLGGPHdIQ5uN2bFhHGAJMPYV79LnMcI/uHs5WhC/NSDGpDI5+bgZObwcjrR4KJ2HobJusfoyG2Y0iYOZfMEyYCyTfcxbRLD572XpqgjWLwcr6ETfuD7punk+sLuz7nsj1WwwSSleT+Pq0qOAfI/m
- Tcmozw7W
- xgqZG4OsVQ263FIoFjn23QMyH2uHFV+0qjFJZVsbG7Y9lrDxjvspl+8Tz5zrbJQq1Qes6Yc+8Y2c7O449rBgr74qKsJ3VRiARl/dTih645TzrtFhxTapHF0cLbrcBuHG9zYT47D6ZYmp1OsoY1N2Xx9WoLnne77wXvvWiV9lq+wjjjdoz3Nn08S8ORO28EG/Mbc3ElhbO1ZAM5jDFlVGYYTaNDdl5jKuJDfl9XqNY1X30uXqfosTppaMN5dyCpznsydtE11YeV+MLBHqt9MX25l3ZcwdjIuHPTdtlwG41ycleEk4mLzIz+XT31vE6p/r123fYEqDbBjKdSPxqBvjufinjtASnqbeZTkWckzt8wgnTIMdburo6MtnMNTyIPvrieBHDDucByGuhtCVA3JAuonrYsF942oPR2AJeeO5oXpf7R84oA5Tsk+2AD5dF9wZTTL+fGFp4X/5MzfJE7baV8O3q8w==
+X-Stat-Signature: warimxgu51egpmj4cweo9tef584pr5n7
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9C49D10000F
+X-HE-Tag: 1782734874-394746
+X-HE-Meta: U2FsdGVkX1//6O7E0P1uTSnlfbxGq4lD0hQhitWL3CHVIoHGXr1/5wwJ8+sIqzuYvzlplc+0aiZqFc2Lxqw/h4201yDjZvGZvIOndfPygLcLqVx3rkzGPKHUQSBxRVgDM2mpJ2EYCHmLSv0soceY/xCtADcOHXP9F7s7AFHYHahhp/4JGB3p8LCu/cJb8P9AJqfWv/1u8sJTFLm6mUVgOK9WslwhQwGEyQ/p8Z7sl0rMIprj4XUZWPhAdns1qI04Xpo3neMwFUUcBFjug/+34Prei6oqMYGKmBCF9E4jDzRIa0J5az/G2rJ1+ofFFYKu5OygAMgllfV+TAv70G6DqKGFRf459e7jAE+GhhH/7pdBUnAzLCXKKEVth1vZM/0XsRg/yk81PHnytK+Xt5v86vbHinkPPuQcIcZs97cA6IcdvHE/V1yJO0jvizr6u4MNf1bmTshxJVzIoAQJpZMluO2DPmgCWrDJD+wmRJ44KVj9oyBiw5CbsyE+K6hKqSWi8eYG9AysdaSmCF2wGsam0vFwtPST69C6Nlc1nsEKRiYAg6S0ASoQI8L4TG1eo4aetnyvpbN5b3A77tEtUjoDgSMxuBk0D4PVIhUy4uO3eCRu8lzkETNpvWETQiqeTCzxkEiC6qWmTzlqPaLOfk7TsfHSg88Y2YHEpYJ1Vpia8yT2F29OtGwMYr6s77dy/zh5ltvQth4bBMEM/VSU2zFwh5ANaaqkjnvNJHvZbf9ajewOzFi6S+LnF+nJBRvZqV9Zxpn711opPIrocqUzIkAKMyv0PqrzaHNv+52iI5T9oym3woL11J/q1qn/SdbKZF/7UltkXGg+WMR4RG1qdsebQuymeBE5d4rAkgRScINaXVrHlmHuaCJDqv+ZjbBXZ+2t8qvDpZXMDo/FVrqQy0ozgS3Xv25xbGCdDthOJfDyHRfjCNN7jlhTODhhSjETC1oZjsD0icUtu9g5v+YUBnn
+ CciDlrS/
+ PTra+rhacDDSAqmkRyf6BHnsHulJFBeyClfoWjO1mkJka9AkUDfCLqXok86wdMguB4Thhgxyq6PpnhGOjkyxd9niHbLmwRxumhdkihbXt1/4Kat6dNmwVu5iReZH763u/WnQ+zQtfgMwB9oY3+PVHYUNYGgx52phLYbTL7i0OlADYKA/shDKhBsFE9e0hPyJazBlqdSjKQVQry1lDx+MQC/VEvdTso2M2ua7HaeSmGQH2lqsxfZONJW/O3F/avTJ+YTJpzyFvi6/AYIlJwuFoPiKmlhrV6NaK6EemGBBTlRS94AbSsh0PDJSyytl5n4SD66Ro9n+TXocqTX20TiMurn3AZl39r2A67BdDhBchY4nDXvnZxQjsIAu5AmqbdEaDDTu7MyDLxvPon3HROfFQKSeL9Xk6m5wr0QoUc4dtg92sTuGRQz7HqbVqHj7/AA/VKlnMP8ydYOxpEgEu1b6894AptyE+Oa6La/HUjTB4Kwcm8DPSqmPe3je+1u62+Q06Zi3xK6a5epTTOE0lzSBbf5cvxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,223 +151,370 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-This series adds userfaultfd support for tracking the working set of
-VM guest memory, so a VMM can identify hot pages and reclaim cold ones
-to tiered or remote storage.
+pte_protnone() and pmd_protnone() detect present-but-inaccessible page
+table entries. This capability is useful beyond NUMA balancing -- for
+example, userfaultfd working set tracking uses protnone PTEs to track
+page access without unmapping pages.
 
-v1: https://lore.kernel.org/all/20260427114607.4068647-1-kas@kernel.org/
-v2: https://lore.kernel.org/all/cover.1778254670.git.kas@kernel.org/
-v3: https://lore.kernel.org/all/20260522133857.552279-1-kirill@shutemov.name/
-v4: https://lore.kernel.org/all/20260525113737.1942478-1-kas@kernel.org/
-v5: https://lore.kernel.org/all/20260526130509.2748441-1-kirill@shutemov.name/
-v6: https://lore.kernel.org/all/20260529172716.357179-1-kas@kernel.org/
+Introduce CONFIG_ARCH_HAS_PTE_PROTNONE to decouple the protnone PTE
+infrastructure from CONFIG_NUMA_BALANCING. The six architectures that
+support protnone PTEs (x86_64, arm64, powerpc, s390, riscv, loongarch)
+now select this option, and CONFIG_NUMA_BALANCING depends on it.
 
-== Changes since v6 ==
+No functional change -- the same set of architectures continues to have
+working protnone support, but the infrastructure is now available
+independently of NUMA balancing.
 
-  - Rebased onto v7.2-rc1. v6 was stacked on the separate
-    "userfaultfd/pagemap: pre-existing fixes" series; those fixes have
-    since landed, so v7 applies directly on v7.2-rc1 with no out-of-tree
-    dependency. The only rebase adaptation is that the accessor-rename
-    patch now also covers two call sites in remove_migration_pmd() that
-    appeared in v7.2-rc1.
-  - Addressed Lorenzo Stoakes' review: the two VM_UFFD_RWP single-flag
-    checks -- userfaultfd_rwp() and gup_can_follow_protnone() -- use
-    vma_test_single_mask() instead of vma_test_any_mask().
-  - Reworked the working-set documentation and the PAGEMAP_SCAN selftest
-    around hot-page detection (PAGE_IS_ACCESSED, non-inverted) rather
-    than a cold scan. A cold scan (inverted PAGE_IS_ACCESSED) cannot see
-    file pages that are present in the page cache but not mapped, so it
-    misreports never-faulted regions of a pre-populated file as cold.
-    Tracking the hot set and reclaiming everything else from the backing
-    file is the correct model and is now what the docs and tests show.
-  - Documented a related file-THP limitation: RWP state is PTE-granular,
-    but a file mapping faulted in as a PMD-level THP loses its RWP marks
-    when the PMD is split -- split_huge_pmd() clears the file PMD via
-    pmdp_huge_clear_flush() without redistributing the uffd marker to the
-    PTEs (there is no PMD-level RWP marker), so the range silently reverts
-    to untracked. Cold-page tracking over a transparently-huge file
-    mapping is therefore unreliable; the selftest opts out of THP
-    (MADV_NOHUGEPAGE) on the non-hugetlb backings, and the documented
-    hot-set-plus-file-reclaim model sidesteps it. hugetlb is unaffected
-    (its mappings are not split by split_huge_pmd()).
-  - Collected review tags picked up during v6.
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Assisted-by: Claude:claude-opus-4-6
+Acked-by: SeongJae Park <sj@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ arch/arm64/Kconfig                           |  1 +
+ arch/arm64/include/asm/pgtable.h             |  7 ++---
+ arch/loongarch/Kconfig                       |  1 +
+ arch/loongarch/include/asm/pgtable.h         |  4 +--
+ arch/powerpc/include/asm/book3s/64/pgtable.h |  8 ++---
+ arch/powerpc/platforms/Kconfig.cputype       |  1 +
+ arch/riscv/Kconfig                           |  1 +
+ arch/riscv/include/asm/pgtable.h             |  7 ++---
+ arch/s390/Kconfig                            |  1 +
+ arch/s390/include/asm/pgtable.h              |  4 +--
+ arch/x86/Kconfig                             |  1 +
+ arch/x86/include/asm/pgtable.h               |  8 ++---
+ include/linux/pgtable.h                      | 32 ++++++++++++++------
+ init/Kconfig                                 |  8 +++++
+ mm/debug_vm_pgtable.c                        |  4 +--
+ 15 files changed, 52 insertions(+), 36 deletions(-)
 
-113/113 of tools/testing/selftests/mm/uffd-unit-tests pass on v7.2-rc1
-(46 RWP cases plus the existing UFFD groups, no regressions).
-
-== Problem ==
-
-A VMM managing guest memory needs to:
-
-  1. detect which pages are still being touched (working-set
-     tracking);
-  2. safely reclaim cold pages to slower tiered or remote storage;
-  3. fetch them back on demand when accessed again.
-
-== Approach ==
-
-UFFDIO_REGISTER_MODE_RWP is a new userfaultfd registration mode, in
-parallel with the existing MODE_MISSING / MODE_WP / MODE_MINOR. It
-uses the same mechanism on every backing -- anon, shmem, hugetlbfs:
-
-  - PAGE_NONE on the PTE (the same primitive NUMA balancing uses)
-    makes the page inaccessible while keeping it resident;
-  - the uffd PTE bit (the one MODE_WP already owns) marks the entry
-    as "userfaultfd-tracked" so the protnone fault path can tell an
-    RWP fault apart from an mprotect(PROT_NONE) or NUMA hinting
-    fault.
-
-VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA, so the
-same PTE bit safely carries both meanings depending on the
-registered VMA flag.
-
-In sync mode, the kernel delivers a UFFD_PAGEFAULT_FLAG_RWP message
-to the registered handler, and the handler resolves the fault with
-UFFDIO_RWPROTECT clearing MODE_RWP. In async mode
-(UFFD_FEATURE_RWP_ASYNC), the fault is auto-resolved in-place: the
-kernel restores the original PTE permissions and the faulting thread
-continues without a userfaultfd message ever being delivered.
-Userspace then learns which pages were touched during the cycle by
-reading PAGE_IS_ACCESSED out of PAGEMAP_SCAN -- that set is the
-working set; everything else is a reclaim candidate.
-
-UFFDIO_RWPROTECT is the protect/unprotect ioctl, mirroring
-UFFDIO_WRITEPROTECT.
-
-UFFDIO_SET_MODE flips RWP_ASYNC <-> sync at runtime under
-mmap_write_lock() + vma_start_write(), so a VMM can run in async
-mode for detection and switch to sync for race-free reclaim without
-re-registering the userfaultfd.
-
-== Typical VMM workflow ==
-
-  /* arm */
-  UFFDIO_API(features = RWP | RWP_ASYNC)
-  UFFDIO_REGISTER(MODE_RWP)
-
-  /* detection cycle (async) */
-  UFFDIO_RWPROTECT(range, RWP)
-  sleep(interval)
-
-  /* freeze the snapshot before scanning */
-  UFFDIO_SET_MODE(disable = RWP_ASYNC)                  /* sync */
-  PAGEMAP_SCAN(PAGE_IS_ACCESSED) -> hot pages (working set)
-
-  /* reclaim everything not in the hot set from the backing file */
-  fallocate(FALLOC_FL_PUNCH_HOLE, non-hot) /* or pwrite to remote */
-  UFFDIO_SET_MODE(enable  = RWP_ASYNC)                  /* resume */
-
-== Series layout ==
-
-Patches 1 to 3 are preparatory:
-
-  1: decouple protnone helpers from CONFIG_NUMA_BALANCING.
-  2-3: rename _PAGE_BIT_UFFD_WP, pte_uffd_wp() and friends to drop
-       the _WP suffix, since the bit now carries WP and RWP meaning
-       depending on the VMA flag. The SCAN_PTE_UFFD enum's ftrace
-       output string is intentionally kept as "pte_uffd_wp" so
-       trace-based tooling does not silently break.
-
-Patch 4 switches the uffd VMA-flag helpers to the vma_flags_t
-accessors (vma_test_*_mask), so the VMA_UFFD_* masks are the single
-place that knows which modes the build offers.
-
-Patches 5 to 8 add the in-kernel mechanism:
-
-  5: VM_UFFD_RWP VMA flag (aliased to VM_NONE until patch 9
-     introduces CONFIG_USERFAULTFD_RWP together with the UAPI).
-  6: MM_CP_UFFD_RWP change_protection() primitive (PAGE_NONE +
-     uffd bit, plus a RESOLVE counterpart).
-  7: marker preservation across swap, device-exclusive, migration,
-     fork, mremap, UFFDIO_MOVE, hugetlb copy, and mprotect().
-  8: handle VM_UFFD_RWP in khugepaged, rmap, and GUP.
-
-Patches 9 to 13 wire the userspace surface:
-
-  9:  UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
-      (introduces CONFIG_USERFAULTFD_RWP).
-  10: RWP fault delivery and exposure of UFFDIO_REGISTER_MODE_RWP.
-  11: PAGE_IS_ACCESSED in PAGEMAP_SCAN.
-  12: UFFD_FEATURE_RWP_ASYNC for async fault resolution.
-  13: UFFDIO_SET_MODE for runtime sync/async toggle.
-
-Patches 14 and 15 are kernel tests and Documentation/. The matching
-man-pages series is already upstream.
-
-Kiryl Shutsemau (Meta) (15):
-  mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
-  mm: rename uffd-wp PTE bit macros to uffd
-  mm: rename uffd-wp PTE accessors to uffd
-  userfaultfd: test uffd VMA flags through the vma_flags_t API
-  mm: add VM_UFFD_RWP VMA flag
-  mm: add MM_CP_UFFD_RWP change_protection() flag
-  mm: preserve RWP marker across PTE rewrites
-  mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
-  userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT
-    plumbing
-  mm/userfaultfd: add RWP fault delivery and expose
-    UFFDIO_REGISTER_MODE_RWP
-  mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
-  userfaultfd: add UFFD_FEATURE_RWP_ASYNC for async fault resolution
-  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-  selftests/mm: add userfaultfd RWP tests
-  Documentation/userfaultfd: document RWP working set tracking
-
- Documentation/admin-guide/mm/pagemap.rst     |  13 +-
- Documentation/admin-guide/mm/userfaultfd.rst | 269 ++++++-
- Documentation/filesystems/proc.rst           |   1 +
- arch/arm64/Kconfig                           |   1 +
- arch/arm64/include/asm/pgtable-prot.h        |   8 +-
- arch/arm64/include/asm/pgtable.h             |  47 +-
- arch/loongarch/Kconfig                       |   1 +
- arch/loongarch/include/asm/pgtable.h         |   4 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h |   8 +-
- arch/powerpc/platforms/Kconfig.cputype       |   1 +
- arch/riscv/Kconfig                           |   1 +
- arch/riscv/include/asm/pgtable-bits.h        |  12 +-
- arch/riscv/include/asm/pgtable.h             |  59 +-
- arch/s390/Kconfig                            |   1 +
- arch/s390/include/asm/hugetlb.h              |  12 +-
- arch/s390/include/asm/pgtable.h              |   4 +-
- arch/x86/Kconfig                             |   1 +
- arch/x86/include/asm/pgtable.h               |  56 +-
- arch/x86/include/asm/pgtable_types.h         |  16 +-
- fs/proc/task_mmu.c                           |  98 ++-
- include/asm-generic/hugetlb.h                |  18 +-
- include/asm-generic/pgtable_uffd.h           |  32 +-
- include/linux/huge_mm.h                      |   7 +
- include/linux/leafops.h                      |   4 +-
- include/linux/mm.h                           |  65 +-
- include/linux/mm_inline.h                    |   4 +-
- include/linux/pgtable.h                      |  32 +-
- include/linux/swapops.h                      |   4 +-
- include/linux/userfaultfd_k.h                |  89 ++-
- include/trace/events/huge_memory.h           |   2 +-
- include/trace/events/mmflags.h               |   7 +
- include/uapi/linux/fs.h                      |   1 +
- include/uapi/linux/userfaultfd.h             |  54 +-
- init/Kconfig                                 |   8 +
- mm/Kconfig                                   |   9 +
- mm/debug_vm_pgtable.c                        |   4 +-
- mm/huge_memory.c                             | 161 ++--
- mm/hugetlb.c                                 | 158 +++-
- mm/internal.h                                |   4 +-
- mm/khugepaged.c                              |  40 +-
- mm/memory.c                                  | 135 +++-
- mm/migrate.c                                 |  20 +-
- mm/migrate_device.c                          |   8 +-
- mm/mprotect.c                                |  70 +-
- mm/mremap.c                                  |  17 +-
- mm/page_table_check.c                        |   8 +-
- mm/rmap.c                                    |  18 +-
- mm/swapfile.c                                |   9 +-
- mm/userfaultfd.c                             | 387 ++++++++-
- tools/include/uapi/linux/fs.h                |   1 +
- tools/testing/selftests/mm/uffd-unit-tests.c | 781 +++++++++++++++++++
- 51 files changed, 2333 insertions(+), 437 deletions(-)
-
-
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index b3afe0688919..6e123adca29b 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -78,6 +78,7 @@ config ARM64
+ 	select ARCH_SUPPORTS_CFI
+ 	select ARCH_SUPPORTS_ATOMIC_RMW
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
++	select ARCH_HAS_PTE_PROTNONE
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+index 27689c62bd25..83eb707508cc 100644
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -553,10 +553,7 @@ static inline pte_t pte_swp_clear_uffd_wp(pte_t pte)
+ }
+ #endif /* CONFIG_HAVE_ARCH_USERFAULTFD_WP */
+ 
+-#ifdef CONFIG_NUMA_BALANCING
+-/*
+- * See the comment in include/linux/pgtable.h
+- */
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pte_protnone(pte_t pte)
+ {
+ 	/*
+@@ -575,7 +572,7 @@ static inline int pmd_protnone(pmd_t pmd)
+ {
+ 	return pte_protnone(pmd_pte(pmd));
+ }
+-#endif
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ #define pmd_present(pmd)	pte_present(pmd_pte(pmd))
+ #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index d8d252325017..177fb9dc6432 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -67,6 +67,7 @@ config LOONGARCH
+ 	select ARCH_SUPPORTS_LTO_CLANG
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
++	select ARCH_HAS_PTE_PROTNONE if 64BIT
+ 	select ARCH_SUPPORTS_NUMA_BALANCING if NUMA
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+ 	select ARCH_SUPPORTS_RT
+diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+index 223528c04d73..1952e34bc8ee 100644
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -623,7 +623,7 @@ static inline pmd_t pmdp_huge_get_and_clear(struct mm_struct *mm,
+ 
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline long pte_protnone(pte_t pte)
+ {
+ 	return (pte_val(pte) & _PAGE_PROTNONE);
+@@ -633,7 +633,7 @@ static inline long pmd_protnone(pmd_t pmd)
+ {
+ 	return (pmd_val(pmd) & _PAGE_PROTNONE);
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ #define pmd_leaf(pmd)		((pmd_val(pmd) & _PAGE_HUGE) != 0)
+ #define pud_leaf(pud)		((pud_val(pud) & _PAGE_HUGE) != 0)
+diff --git a/arch/powerpc/include/asm/book3s/64/pgtable.h b/arch/powerpc/include/asm/book3s/64/pgtable.h
+index e67e64ac6e8c..53a0c5892548 100644
+--- a/arch/powerpc/include/asm/book3s/64/pgtable.h
++++ b/arch/powerpc/include/asm/book3s/64/pgtable.h
+@@ -490,13 +490,13 @@ static inline pte_t pte_clear_soft_dirty(pte_t pte)
+ }
+ #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ 
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pte_protnone(pte_t pte)
+ {
+ 	return (pte_raw(pte) & cpu_to_be64(_PAGE_PRESENT | _PAGE_PTE | _PAGE_RWX)) ==
+ 		cpu_to_be64(_PAGE_PRESENT | _PAGE_PTE);
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ static inline bool pte_hw_valid(pte_t pte)
+ {
+@@ -1067,12 +1067,12 @@ static inline pte_t *pmdp_ptep(pmd_t *pmd)
+ #endif
+ #endif /* CONFIG_HAVE_ARCH_SOFT_DIRTY */
+ 
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pmd_protnone(pmd_t pmd)
+ {
+ 	return pte_protnone(pmd_pte(pmd));
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ #define pmd_write(pmd)		pte_write(pmd_pte(pmd))
+ 
+diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
+index bac02c83bb3e..36b64a24cf30 100644
+--- a/arch/powerpc/platforms/Kconfig.cputype
++++ b/arch/powerpc/platforms/Kconfig.cputype
+@@ -87,6 +87,7 @@ config PPC_BOOK3S_64
+ 	select ARCH_ENABLE_HUGEPAGE_MIGRATION if HUGETLB_PAGE && MIGRATION
+ 	select ARCH_ENABLE_SPLIT_PMD_PTLOCK
+ 	select ARCH_SUPPORTS_HUGETLBFS
++	select ARCH_HAS_PTE_PROTNONE
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select HAVE_MOVE_PMD
+ 	select HAVE_MOVE_PUD
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 3f0a647218e4..58c12f4fac66 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -71,6 +71,7 @@ config RISCV
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS if 64BIT && MMU
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK if MMU
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK if MMU
++	select ARCH_HAS_PTE_PROTNONE if MMU
+ 	select ARCH_SUPPORTS_RT
+ 	select ARCH_SUPPORTS_SHADOW_CALL_STACK if HAVE_SHADOW_CALL_STACK
+ 	select ARCH_SUPPORTS_SCHED_MC if SMP
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 5d5756bda82e..8139e0b2f008 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -534,10 +534,7 @@ static inline pte_t pte_swp_clear_soft_dirty(pte_t pte)
+ 					PAGE_SIZE)
+ #endif
+ 
+-#ifdef CONFIG_NUMA_BALANCING
+-/*
+- * See the comment in include/asm-generic/pgtable.h
+- */
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pte_protnone(pte_t pte)
+ {
+ 	return (pte_val(pte) & (_PAGE_PRESENT | _PAGE_PROT_NONE)) == _PAGE_PROT_NONE;
+@@ -547,7 +544,7 @@ static inline int pmd_protnone(pmd_t pmd)
+ {
+ 	return pte_protnone(pmd_pte(pmd));
+ }
+-#endif
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ /* Modify page protection bits */
+ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
+diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
+index 84404e6778d5..ad56daa6f874 100644
+--- a/arch/s390/Kconfig
++++ b/arch/s390/Kconfig
+@@ -148,6 +148,7 @@ config S390
+ 	select ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128 && CC_IS_CLANG
+ 	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
++	select ARCH_HAS_PTE_PROTNONE
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK
+ 	select ARCH_SUPPORTS_PER_VMA_LOCK
+diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
+index 859ce7c7d454..0689dfdba407 100644
+--- a/arch/s390/include/asm/pgtable.h
++++ b/arch/s390/include/asm/pgtable.h
+@@ -842,7 +842,7 @@ static inline int pte_same(pte_t a, pte_t b)
+ 	return pte_val(a) == pte_val(b);
+ }
+ 
+-#ifdef CONFIG_NUMA_BALANCING
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pte_protnone(pte_t pte)
+ {
+ 	return pte_present(pte) && !(pte_val(pte) & _PAGE_READ);
+@@ -853,7 +853,7 @@ static inline int pmd_protnone(pmd_t pmd)
+ 	/* pmd_leaf(pmd) implies pmd_present(pmd) */
+ 	return pmd_leaf(pmd) && !(pmd_val(pmd) & _SEGMENT_ENTRY_READ);
+ }
+-#endif
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ static inline bool pte_swp_exclusive(pte_t pte)
+ {
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index bdad90f210e4..380c4aacd42a 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -124,6 +124,7 @@ config X86
+ 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	select ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_SUPPORTS_PAGE_TABLE_CHECK	if X86_64
++	select ARCH_HAS_PTE_PROTNONE		if X86_64
+ 	select ARCH_SUPPORTS_NUMA_BALANCING	if X86_64
+ 	select ARCH_SUPPORTS_KMAP_LOCAL_FORCE_MAP	if NR_CPUS <= 4096
+ 	select ARCH_SUPPORTS_CFI		if X86_64
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index ac295ca6c92f..36c44350f843 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -985,11 +985,7 @@ static inline int pmd_present(pmd_t pmd)
+ 	return pmd_flags(pmd) & (_PAGE_PRESENT | _PAGE_PROTNONE | _PAGE_PSE);
+ }
+ 
+-#ifdef CONFIG_NUMA_BALANCING
+-/*
+- * These work without NUMA balancing but the kernel does not care. See the
+- * comment in include/linux/pgtable.h
+- */
++#ifdef CONFIG_ARCH_HAS_PTE_PROTNONE
+ static inline int pte_protnone(pte_t pte)
+ {
+ 	return (pte_flags(pte) & (_PAGE_PROTNONE | _PAGE_PRESENT))
+@@ -1001,7 +997,7 @@ static inline int pmd_protnone(pmd_t pmd)
+ 	return (pmd_flags(pmd) & (_PAGE_PROTNONE | _PAGE_PRESENT))
+ 		== _PAGE_PROTNONE;
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ static inline int pmd_none(pmd_t pmd)
+ {
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 2981e386da7b..7d3dc8abc6c8 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -2129,18 +2129,26 @@ static inline int pud_trans_unstable(pud_t *pud)
+ 	return 0;
+ }
+ 
+-#ifndef CONFIG_NUMA_BALANCING
++#ifndef CONFIG_ARCH_HAS_PTE_PROTNONE
+ /*
+- * In an inaccessible (PROT_NONE) VMA, pte_protnone() may indicate "yes". It is
+- * perfectly valid to indicate "no" in that case, which is why our default
+- * implementation defaults to "always no".
++ * In an inaccessible (PROT_NONE) VMA, pte_protnone() may indicate "yes". It
++ * is perfectly valid to indicate "no" in that case, which is why our
++ * default implementation defaults to "always no".
+  *
+- * In an accessible VMA, however, pte_protnone() reliably indicates PROT_NONE
+- * page protection due to NUMA hinting. NUMA hinting faults only apply in
+- * accessible VMAs.
++ * In an accessible VMA, pte_protnone() reliably indicates a present
++ * PROT_NONE page protection. Today the kernel uses such PTEs for two
++ * purposes: NUMA hinting faults, and userfaultfd RWP tracking on
++ * VM_UFFD_RWP VMAs. The two are distinguished by the uffd PTE bit and
++ * the VMA flag; see include/linux/userfaultfd_k.h.
+  *
+- * So, to reliably identify PROT_NONE PTEs that require a NUMA hinting fault,
+- * looking at the VMA accessibility is sufficient.
++ * So, to reliably identify PROT_NONE PTEs that require kernel handling,
++ * looking at the VMA accessibility (and the uffd bit on RWP VMAs) is
++ * sufficient.
++ *
++ * Architectures without CONFIG_ARCH_HAS_PTE_PROTNONE get the always-zero
++ * stubs below; PAGE_NONE references that survive to runtime fire the
++ * BUILD_BUG() fallback, since callers should have folded such paths to
++ * dead code via IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE).
+  */
+ static inline int pte_protnone(pte_t pte)
+ {
+@@ -2151,7 +2159,11 @@ static inline int pmd_protnone(pmd_t pmd)
+ {
+ 	return 0;
+ }
+-#endif /* CONFIG_NUMA_BALANCING */
++
++#ifndef PAGE_NONE
++#define PAGE_NONE ({ BUILD_BUG(); (pgprot_t){0}; })
++#endif
++#endif /* CONFIG_ARCH_HAS_PTE_PROTNONE */
+ 
+ #endif /* CONFIG_MMU */
+ 
+diff --git a/init/Kconfig b/init/Kconfig
+index 5230d4879b1c..9d91074c5d0a 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -944,6 +944,13 @@ config SCHED_PROXY_EXEC
+ 
+ endmenu
+ 
++#
++# For architectures that support present-but-inaccessible (PROT_NONE) page
++# table entries detectable via pte_protnone() / pmd_protnone():
++#
++config ARCH_HAS_PTE_PROTNONE
++	bool
++
+ #
+ # For architectures that want to enable the support for NUMA-affine scheduler
+ # balancing logic:
+@@ -1010,6 +1017,7 @@ config ARCH_WANT_NUMA_VARIABLE_LOCALITY
+ config NUMA_BALANCING
+ 	bool "Memory placement aware NUMA scheduler"
+ 	depends on ARCH_SUPPORTS_NUMA_BALANCING
++	depends on ARCH_HAS_PTE_PROTNONE
+ 	depends on !ARCH_WANT_NUMA_VARIABLE_LOCALITY
+ 	depends on SMP && NUMA_MIGRATION && !PREEMPT_RT
+ 	help
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 23dc3ee09561..5e9f3a35f924 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -672,7 +672,7 @@ static void __init pte_protnone_tests(struct pgtable_debug_args *args)
+ {
+ 	pte_t pte = pfn_pte(args->fixed_pte_pfn, args->page_prot_none);
+ 
+-	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
++	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
+ 		return;
+ 
+ 	pr_debug("Validating PTE protnone\n");
+@@ -685,7 +685,7 @@ static void __init pmd_protnone_tests(struct pgtable_debug_args *args)
+ {
+ 	pmd_t pmd;
+ 
+-	if (!IS_ENABLED(CONFIG_NUMA_BALANCING))
++	if (!IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE))
+ 		return;
+ 
+ 	if (!has_transparent_hugepage())
 -- 
 2.54.0
 
