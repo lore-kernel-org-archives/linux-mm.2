@@ -4,120 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8DEFC43638
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 919E7C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE3206B0005; Mon, 29 Jun 2026 03:28:40 -0400 (EDT)
+	id 5A6536B0005; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98896B0088; Mon, 29 Jun 2026 03:28:40 -0400 (EDT)
+	id 57D8C6B0088; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A82656B008A; Mon, 29 Jun 2026 03:28:40 -0400 (EDT)
+	id 446DF6B008A; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 890166B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:28:40 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0EA401A05CA
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:28:40 +0000 (UTC)
-X-FDA: 84932122800.26.408694E
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4234B40003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:28:38 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=erDBmVyp;
-	spf=pass (imf27.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 13D5D6B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EA0C12059B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:31:35 +0000 (UTC)
+X-FDA: 84932130150.27.49234E7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id DB886C000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:31:32 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPpyMNwD;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782718118;
-	b=jM/BomjHNRBQFPaD/02lkPZkWw1MTtrnnRT/H8Nxx+Gu83Zdz+UI2q6kYxC6fYY0f87CLl
-	SDOjO0/VgbRpv7iYrpKkZRMlWAtgzUI3I8ER7DxTp5yR6KwYyfrM5C453bxi3PG5P+wTXl
-	hPPnuI8A8BWWuc+973T4PLn9FlpBZvo=
+	t=1782718293;
+	b=y9BRibPgU4IH7Jn7KrOANrE2pan8/qtIXrFM7GH3nbLTWD5BeFsVxNTvYpJmHKkmngu/1Q
+	pTl95wocizrvqt9VFtw0kZ2CylJ0Hd6V5kMb2DchqZ7L+IDZ1viPEI/SOGPoLvz4YfTDsQ
+	4kP2+Wb2BawaL632kR6Uj80GEBHEYZE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782718118;
+	s=arc-20220608; t=1782718293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lQpHZi11cKsP2uCr/CzXPM2KCFMIncW7KSkiCY3Sf8o=;
-	b=lbF2wbZBSD4elNFujmVwfJC8kdBIIUsvYeYNM2YiuUjs5YvM0Laxojv+oYAQSeW5WIc8HQ
-	wyxoQWqgQxeTuE6USFRz3zsrlzFgIqT4DEL3WBlrGG87oWZb3Qeca3/aTfOODYeKCM1WTZ
-	YGjsQTDaFUCjunnhu759pVB4kIwCP+o=
+	bh=gfFSSbFa1kkiEFju+F2cWFK+kFerBLm7T/klRFOuIwg=;
+	b=3k0+CB3w+P6+nVru+glPqw5jZDLRq7pZAMMIEPHWoVS3t3bFUa4RWexTjI8u4u+GkjxruL
+	yNHHG86++r+K77bOQzk3w+1ht3LLqW3eOi5F3boNje5jJGgSUgWphnRS58LtOFUB/49T/t
+	RZn7VYIurqFAwosx67TJmShc16goa1Y=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=erDBmVyp;
-	spf=pass (imf27.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4720f3bf164so643769f8f.1
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782718117; x=1783322917; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lQpHZi11cKsP2uCr/CzXPM2KCFMIncW7KSkiCY3Sf8o=;
-        b=erDBmVypO4iM7yL26+9+Dj4Tg1KZFDmXV9k41NY849CU3gN/e0VsPYS0TNIjZBX23V
-         sf1TOxLQwdRztthLQsQueynlBWXIoaxgJY4/56x7tFTMKO9GBN4tilW9StGJILVzzv5v
-         5X3aIIHk5gZdEHYmt8y/yH1zRuF/eYtd3x/aJ91u+nD/rMkNK/UWdxCFMgUV9OEWvLzj
-         +WEhZTC0yaAlDT3MUd6RLoSil7Qs9Q6mLqZE0hUPI/vpGSB9kicHMioMvXa4GKFBgp4X
-         NSLikZ/hf4vRqjAjuvvZxqB2ZKbBKtJTCe4lBjlZkOxJF2CDyk1JLSIki7nEHOqmHj/A
-         MOLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782718117; x=1783322917;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lQpHZi11cKsP2uCr/CzXPM2KCFMIncW7KSkiCY3Sf8o=;
-        b=fytQOmafk2pcIepHPV7i9OfMrGMgeesHXagPxkRHZcnH/A6O9p1whFxe6H0tQLkqFx
-         dm0zOgCTRroOEskCpO8L6Jgv5mrVO0JnFDHSsHUFa89LdHMHsI8Yjq4T61GA82ErFdMj
-         5tYcTDSvYETQ6jD2xVXXLLLsx2sMmG1FA/rBIk/b63ajWh3HEe3049AIUMju41c1nwb2
-         FHXB4yrmXRGtwFqhINDNmAwWu4NWgUHut2DdmrSGt+oBZkEAi0xsevgg4SCs1vnmrBpH
-         0Y/X0aDhgfDU7VBsohXrlo3Qwd+a22Djuk8vWvEMaarOBrIv48vf/KmAvNlQ3HaGf2Yd
-         /+EQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqjT+h2k0Y/32zzK+eTGn2fJ5d8PngS2Z+N35NDdVLMV4iqA5ejZ0jV95ljZq/Id4QR5kQu2dkywQ==@kvack.org
-X-Gm-Message-State: AOJu0Yzd73DFhJLMLibNzpqcuwGi9Wfglf+y+Ogifupk9Y/BmqW1T7tr
-	eqFH5V2FVil+J9MFr1uJX0GSbae7aaGE66c3aeuliZJklMKEc5geuubkTE4ZxnV4
-X-Gm-Gg: AfdE7clLeXkMvr2DleUvmb2f7JeXDky507ePFeRCkoxaRWk/jUFFpQ5FlZGnS93IWz7
-	6wHIEel3wo0i91GuhxbOeUd6LwzUwtya2YyqE8kF7rEE/xpg2D74Qzu1ASCdsUE3y/LkROfcPY3
-	KceZTi31KDt5cSBKWQ211J1hq2SIkjk9z4dxS2fTd/rQfcEBV7/3xEzKMHX9ytmr4MNjWHvsFHx
-	g0oZIYuqUp+eMCGv+LySM6yLC4UNB8nzyu0sLI7DQZeVQ+ab1fT9KDiTIrw/9E2y/SBzXAjf6NB
-	xqrXKrviD8LIWkFKgdXU9irCmT+WJcdfyW1gA3pT3SRXJuqhoG7QQRI5kZkYMLD/lQOzzfEG57e
-	zGbFMqzJ7Fww0zJNiq0iet12R+oHMskYgSeNpJNf+iat9DqCyIzGcZ06CGRmT2xHyGLgDgvcypZ
-	Xzi+EuVw4XxdynlOl9iCbessQq
-X-Received: by 2002:a05:6000:3110:b0:46f:1b89:999 with SMTP id ffacd0b85a97d-46f1b890a94mr16268450f8f.30.1782718116866;
-        Mon, 29 Jun 2026 00:28:36 -0700 (PDT)
-Received: from foxbook (bgu190.neoplus.adsl.tpnet.pl. [83.28.84.190])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46d86960983sm40122019f8f.4.2026.06.29.00.28.35
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Mon, 29 Jun 2026 00:28:36 -0700 (PDT)
-Date: Mon, 29 Jun 2026 09:28:32 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPpyMNwD;
+	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09654419CF;
+	Mon, 29 Jun 2026 07:31:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2251F000E9;
+	Mon, 29 Jun 2026 07:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782718291;
+	bh=gfFSSbFa1kkiEFju+F2cWFK+kFerBLm7T/klRFOuIwg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RPpyMNwDxysjUcOYZ4W+pforECuPsD7hMwvFilq+ds9qaGhx1Igu2VE42OfdXIsQy
+	 ZzDXfSX/hk1IUtpf3E4WAW09xj/bDch7THnUpa5oUa7aSX4lOq/6SciAFiGOr/XquU
+	 6boEJD3X4bCxX3SK0foOnvI7rwfvikUW2jM+0kaKSgzAhOIe7tFcIRm/6ZbSSMJWCK
+	 /UAIzIs/z1ArHGGH/37tj0FGbmOpGGvAyjoqqnDhMvD2rhqx70PENKtqRq8lAMzzy6
+	 l2SfLXFGOu/Ckq3xO2wVbcbhxGlrUEzrG2kFJjPXivhlkiEnP/3AYhWk+MrFk6gZYv
+	 AYwoZpNALHhWg==
+Message-ID: <b50be148-f7e4-4c11-9893-54d4278b2e32@kernel.org>
+Date: Mon, 29 Jun 2026 09:31:26 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: WARNING in usb_free_urb
+Content-Language: en-US
+To: Michal Pecio <michal.pecio@gmail.com>
 Cc: sanan.hasanou@gmail.com, vbabka@suse.cz, akpm@linux-foundation.org,
  cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
  harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzkaller@googlegroups.com, contact@pgazz.com, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Mauro Carvalho
- Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, Dinghao Liu
- <dinghao.liu@zju.edu.cn>
-Subject: Re: WARNING in usb_free_urb
-Message-ID: <20260629092832.355327e7.michal.pecio@gmail.com>
-In-Reply-To: <20260629092033.4a83e91b.michal.pecio@gmail.com>
+ syzkaller@googlegroups.com, contact@pgazz.com,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+ Dinghao Liu <dinghao.liu@zju.edu.cn>
 References: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
-	<85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
-	<20260629092033.4a83e91b.michal.pecio@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
+ <20260629092033.4a83e91b.michal.pecio@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629092033.4a83e91b.michal.pecio@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4234B40003
 X-Rspam-User: 
-X-Stat-Signature: iinmarf3dzzi8bxrrdpkutp37ujajfke
-X-HE-Tag: 1782718118-140444
-X-HE-Meta: U2FsdGVkX19EgzwRq6KALNRuDJbOy7UGJivQN9jHcGkGtc9Tr6TUyFqm+wFHBMDHFao+1mKjJVUjxyWOhZbNCE+9giDDnytNxVHUlqzjWDqptDMhXrn+WtQSa0Rx0xkCAJJeA38i40+JaBx7H85IfS7zacWKg/S/fQa+lHpCaz+xpR77DfLm1k6a4/DwzO74IVOzspMCBjVjBR/jUtbmU8S8s0xTaikQKbMZ61PGvLOSuihtvgabQO540zlFD1Sq7LnoGH73Y/mf9HsYcuGl452oKDFVqI5QmNdd6se0vFLQb5LJqUWawK1knJJWkorSAMMZm/F6Zj33a/pbpvtGRNIQ4OzLB0cbyVLnB5E3BvCmLnxo2/mIgXdj2ezBNV0Vg6H8dudneawkQtOaJLphqUp4g+SvqKwb0Pfs9Lz1CXv3+2Tuw9SIwgwU4/JeKzb0A6jAcDIajJbwkvYaMjKJzgYD7ZLGYTI293IPA/HW83lB74Ftu2exag8nS5g+XAfk5N1HfvbztFNduTSN2HC4SunHkf2zlcB7G1RhFw+hrZI7mF+mRzDTF8OgvUKlUc37G1aEA4U7pm57dp0TaAJk2eow6RaiF0e7nAU6cZrwCX9lWLPV9V5VLmLqpFo32rk8bq5bMBAc8F9Fvrr+jPn2rK5XS1no3UEag7X6cCQ9vjncwRnLp/04u0TAjG/VxOaFt1Ru/fFLJeR7iXU86GIl2vh+OGxEnLWeul+/yhsyBquLtMn8ywQx4PUoR29cJ0zy2W807GAPhf8vBQqO0oHrhtvUgbRHR0KzZmxmfw7ShU7JTqa9e831l/i9S0YT+515IOmzfG8cGHdiitVYNEqpuEiAXxrc3v5Y1JUPYLSASlohSs2u9MjwvSLZBL86WMfwLYeCeHCAY24zb1gfGv7VLTi76MDbNu4zhDKLbfrmKIseEl54Iiow9H5QhIDQVKZcKUWeSg3YoZ6lBfphe/7
- yNvJ8QyL
- z9dJtwV0J/3uTBQCbR1fXgTVNNfEts0Ux1I0txJUnc2r985ziVDkXFckqQzced14f/JXoI7GJeSdBGyMW8wEZDZRbwnnOUi/VETh7C9+CZ+0oXs2dVmUsHMCoDLD79TrGKBodo5L960WwSmb+JkxN712YCQMZT/+WU5p3i8nreS2KYwqeYN0pnoFWvAaEyIEWa22Kh5xIvtRt4OKSgO/7Ir/IivGmvw0YnVh1jP8xLT559oNHtRqCN8v9Kf7F6597irM4vHqKE32LRGQWZ06CUDK7tkhHuZ9+Du7whR5+/0W88vMHBGapc1d1L5gHug++2+78dqmXj239ptLUDxAEXwoKHFGPYJ2eHsadb+jh5c3/jsib0+OvAvNVUTNXsyf6EcsWvlvYDNBdcaF9GdDRc0Ytbzfj6bQhsoMfFkR+IB1Xz+XmF/8kVCwJvTRdPbfyoPtKRJ0mVfQ4yZMHCURMKhvUU1HMYrmRf4+q71o/MntaKVJO51GY+sOvuxCNFJvZpuHE40pg8LuPe/+nySw8dXd929pEBU3xDGxtl8WTA3AertDysSRsoE67SQ==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DB886C000A
+X-Stat-Signature: y74rucfchpdkfdq1wiotpp1uq1muwq75
+X-HE-Tag: 1782718292-563651
+X-HE-Meta: U2FsdGVkX19UhSoI6eZJ6NIVz4MWBdoFAFsyP8BH7LuEdodh7NNFY2AfrFZn5x5Nk6VfKs6EmswI4cXS7mAwtDtKRfV0W6q2gK+1ikFZYGp1KZ8dRQ/DkskKtVuQoLb4z4av7qWHeJTegfCtS51OppH5KHYtXco29vRu+bgLyBlHm2NQ+HXo7CLB4TBK2PUlJEeZ68u02faytjXxu9p8EC3OYVGOcmFnJqciJlnJIYbMkrUo7sCJWodt9aLbvYl6DMTOl0eDnk54n3f4ayidQI2L8K9P5bferW01t7pEwYDTTw0OZqzTA6DxXdxLVIyK8iaYET7inZemqejeTqp4u6aGnNYFGufh+ErDXU5ZqZwiadainExOhVMZ0jE43tj4Mwb6hgN0cWP2GdUCrJ0yYiV6Z2diswN3FCY/JC4unVc+7QRPW2/BM/2fQma90qyTXUNd33LAyGJPJqBx8l1Nc6cAwvfiN5BVViX5J/q7bDUCRSlnhZE6Rg7nraUjrGqvTIfdEe0h5VXEApQnAB+nJ2nENAQs1kkZYSDc0HrsAaP0ILXCY9szOdaZmk1VWz8Y5TpzBIkbzSZfgBLjsfGxp/Y51WfwtGv5LTYSPq0HvzG9Kg/MGPbiBlvWO3urIynk1+vgepMijRN/c/NTQkEiKKMx1sFj83J6xJBF9FWStWEWMN8YqPmfWh59btrX4oMsjvSdOJWo1kj47mcuWspRrEY0e3uGIBMMxQCacaMTbjusehbvaBAuEIOnBFGKnlITiKCn3Jm9+h8DEXuLYoVgJr2sSDxoGrahBx/+RiBUPcdXbaOlWglFJeG0eACQUNghSwi/wQaqLQC0ZKF6elHKbIHot5MjYha0/hsTLIJhsVIZPtSDUf/E88fxcPiB6VsSdVg/7tvDZSIC2JPZUlav1o1LDL6jRgrgcpJbTLwJAZNfeRPVyGZoqFJr+rKVCdS+yJXO9+kvRRZRnGv/1s1
+ Giarf0wT
+ +MwjF4NBtHJ8DABYYFRYs9LXvFvt0lonQA+eHdGKjHQxhuXf2yuAd/O16D39UuOgQ68CW0HW0dpaALWIyfwJdbZ3YWVRCf2AnNxTSvUYADhwxeWfclXVf+8rzOq+L20yOWe0xDK0B4Z5y54X97Js/7eH+xMM399kqCzmQvOlkt+AgSYr5qKDJ7SH27peXFYSM4wwEaXFYSgJpbS8R4NeUyYqKJlkJPLbezRGRgNSh0FXrBkba0Bs94cJ4i96UrFe27yYq/Nzob3rv2hfE/7TmCAz9PlTyJPyBeDTToHMdNO8AOfvLkmXZ2v8vRkXp6pgigyQsx1YAZkGvgex2cZK6PBU7wjeoW79VxPgNyKBVT08qIHG8zUF4sYAW1NmO3c82ZnLydwmtSZgMAeTuEF5ot/vHqg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,15 +139,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 09:20:33 +0200, Michal Pecio wrote:
-> The free(buf[i]) loop should simply be removed. It was mistakenly
-> added by d571b592c6206, then a26efd1961a18 recognized the double free
-> but attempted to fix it only by changing the order of freeing. Sent
-> from .edu domain, so probably an automatic static analyzer fix...
+On 6/29/26 09:20, Michal Pecio wrote:
+> On Mon, 29 Jun 2026 08:27:48 +0200, Vlastimil Babka (SUSE) wrote:
+>> On 6/26/26 23:27, sanan.hasanou@gmail.com wrote:
+>> > Good day, dear maintainers,
+>> > 
+>> > We found a bug using a modified version of syzkaller.  
+>> 
+>> Subject says "usb_free_urb" but you only CC'd slab maintainers, where slab
+>> slab is most likely a victim here of e.g. double kfree() or a kfree() of
+>> otherwise broken pointer.
+>> 
+>> Ccing USB and EM28XX maintainers. But they can feel free to ignore this per
+>> the next point.
+>> 
+>> > Kernel Branch: 7.0-rc1  
+>> 
+>> Why use such a version for fuzzing? rc1 will have many bugs that are
+>> already fixed in 7.0 final. And it's not even latest, 7.1 was
+>> released 2 weeks ago too.
+> 
+> To be fair, em28xx had no changes since 2024 until 7.1-rc1, so the bug
+> must be present in various stable releases and likely in mainline too.
 
-Correction: it failed to recognize the double free, but it fixed a
-different (real) problem that the buf array itself was already NULL
-and couldn't be scanned for buffer pointers to free.
+OK I didn't check that, but in general my comment stands.
 
-So it turned this NULL dereferenc into a double free.
+>> > WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317  
+>> 
+>> A kfree() was attempted on a pointer that's neither from a slab page nor a
+>> large kmalloc page. Might be double free or corrupted.
+>> 
+>> > Call Trace:
+>> >  <TASK>
+>> >  kfree+0xae/0x630 mm/slub.c:6437
+>> >  urb_destroy drivers/usb/core/urb.c:25 [inline]  
+>> 
+>> static void urb_destroy(struct kref *kref)
+>> {
+>>         struct urb *urb = to_urb(kref);
+>> 
+>>         if (urb->transfer_flags & URB_FREE_BUFFER)
+>>                 kfree(urb->transfer_buffer);  <--- this one
+>> 
+>>         kfree(urb);
+>> }
+>> 
+>> >  kref_put include/linux/kref.h:65 [inline]
+>> >  usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96  
+>> 
+>> USB layer itself is likely also not the root cause.
+>> 
+>> >  em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
+>> >  em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
+>> >  em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
+>> >  em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117  
+>> 
+>> So it might be this driver doing something wrong?
+> 
+> Yes, it is. 
+
+Cool :)
+
+>         /* allocate urbs and transfer buffers */
+>         for (i = 0; i < usb_bufs->num_bufs; i++) {
+>                 urb = usb_alloc_urb(usb_bufs->num_packets, GFP_KERNEL);
+>                 if (!urb) {
+>                         em28xx_uninit_usb_xfer(dev, mode);
+>                         return -ENOMEM;
+>                 }
+>                 usb_bufs->urb[i] = urb;
+> 
+>                 usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
+>                 if (!usb_bufs->buf[i]) {
+>                         for (i--; i >= 0; i--)
+>                                 kfree(usb_bufs->buf[i]);
+> 
+>                         em28xx_uninit_usb_xfer(dev, mode);
+>                         return -ENOMEM;
+>                 }
+> 
+>                 urb->transfer_flags = URB_FREE_BUFFER;
+> 
+> If buf[i] allocation fails, all previous buffers are freed and then all
+> previous URBs are destroyed. But they already have the URB_FREE_BUFFER
+> flag set, which causes a double free as shown above.
+> 
+> The free(buf[i]) loop should simply be removed. It was mistakenly added
+> by d571b592c6206, then a26efd1961a18 recognized the double free but
+> attempted to fix it only by changing the order of freeing. Sent from
+> .edu domain, so probably an automatic static analyzer fix...
+> 
+> Regards,
+> Michal
+
 
