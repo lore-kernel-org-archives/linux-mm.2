@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC00DC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:26:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73FA2C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 798246B0005; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
+	id 440D16B0005; Mon, 29 Jun 2026 03:28:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7225D6B0088; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
+	id 4192E6B0088; Mon, 29 Jun 2026 03:28:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E9936B008A; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
+	id 32EAC6B008A; Mon, 29 Jun 2026 03:28:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 18EBB6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:26:08 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 76D09405C1
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:26:07 +0000 (UTC)
-X-FDA: 84932116374.13.ECE6D4A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 093346B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:28:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7D2C31405C0
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:28:02 +0000 (UTC)
+X-FDA: 84932121204.21.D66538B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C4A8210000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:26:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+	by imf06.hostedemail.com (Postfix) with ESMTP id BD0E218000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:28:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782717965;
-	b=7G2T57yFQCiH1BzTbJuLw8vCpM/EGBYRqORoBA4Nlsudz+gtKCh0S4y9GHjcT95jxEZION
-	QNVapNXmFJiCWqBwSM8HIBEUBRvFZoPptBQz6YvekvdmWKhEJyjMh7Z+TbV2u5SB/huirK
-	JpVmPfIP4hBtf0B9FCIY5edhPvnENXk=
+	t=1782718080;
+	b=kI2zOxLV2HiwE/ZLNI3x3CiMD88u4NlHOihhySwJF4nlXKgDy5TOAUlFA1DrY5iNFj54b4
+	zU8nLvoQhXnwyijoo0TyLpCn5n8IHpLmEweGwsRL4CUU5GPSy8VWNEnzDNMSzIK+aoaWkR
+	23rVp0072iGAetB8hGtgSpeF2dIl7sU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782717965;
+	s=arc-20220608; t=1782718080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0t5WKgX7491nnO1TWw1NvgfhMDEnzDCwVnx65iBvCrk=;
-	b=2H7OTolCgwEJMWcLQljnUa1AaZ3yJtkbcxiYkjXOnd+Vv9uhBCI29zeRPX+e8pcbVWy4nG
-	ID7dz/lN8VE4A3b9yRntJV96Ax6DDJiMtm+hLl+ta8Uv/iy6H/skqxdMabNQG1pWlCL0FC
-	yq86rH3cwAntGZfHOxcvwreL8UUDuIE=
+	bh=9K0ZkzX+wdmwIdGa0Hqy9PfDQUOF8G3dL0/A/ACpZOQ=;
+	b=PKIO3U/SkKaEoMLb3gdL5zQG6wCuY5i9GgK+JbggrBWaI+ATT0UDynPRNY8dqBnqnFSXvP
+	lNl7WG6VPPkvMEd09QoiufKVKfbvJtOtNM8LBzzE0JWq1q3zPCxdi5iX8wuXPM6B5xFSy4
+	MrckdsdDyVjc/uLGqscbzJ1nJsuM4AE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
+	imf06.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 169F860052;
-	Mon, 29 Jun 2026 07:26:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952701F000E9;
-	Mon, 29 Jun 2026 07:25:53 +0000 (UTC)
-Message-ID: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
-Date: Mon, 29 Jun 2026 09:25:48 +0200
+	by tor.source.kernel.org (Postfix) with ESMTP id 31950600C8;
+	Mon, 29 Jun 2026 07:28:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04FF1F000E9;
+	Mon, 29 Jun 2026 07:27:54 +0000 (UTC)
+Message-ID: <fd16413a-95a7-4503-80df-2d71303498fa@kernel.org>
+Date: Mon, 29 Jun 2026 09:27:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
- j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
- tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
- <20260628054402.76978-1-lance.yang@linux.dev>
- <98f3aedd-de11-4a83-81b8-f3e3c9380e49@kernel.org>
- <1d6d699e-62e5-424f-a147-b7a75b966957@arm.com>
+Subject: Re: [PATCH v2] cgroup/cpuset: rebind mm mempolicy to effective_mems,
+ not mems_allowed
+To: Andrew Morton <akpm@linux-foundation.org>,
+ Farhad Alemi <farhad.alemi@berkeley.edu>
+Cc: Waiman Long <longman@redhat.com>, Farhad Alemi <falemi@asu.edu>,
+ Gregory Price <gourry@gourry.net>, Yury Norov <ynorov@nvidia.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Zi Yan <ziy@nvidia.com>,
+ Matthew Brost <matthew.brost@intel.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+ stable@vger.kernel.org, Tejun Heo <tj@kernel.org>
+References: <CA+0ovCg05rUk1-3k2ysdxmbcER8aG-wVh9SSTrrbp6LPWpPHYA@mail.gmail.com>
+ <CA+0ovCgfHJHv5d1mzapWWvF-LhjppzDX8NPPLvCPZxPKg8RiYw@mail.gmail.com>
+ <20260627231508.74201ca47c883507be97d8c2@linux-foundation.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <1d6d699e-62e5-424f-a147-b7a75b966957@arm.com>
+In-Reply-To: <20260627231508.74201ca47c883507be97d8c2@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: BD0E218000B
 X-Rspam-User: 
-X-Stat-Signature: 5mecfscq8fs13b55h5ygacm4wtw9mpm8
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C4A8210000A
-X-HE-Tag: 1782717965-195290
-X-HE-Meta: U2FsdGVkX1/Pf9sTc0yvLQj2RmOcRK1QCSLT1Fqc02Kc+D4SIrQorPd6B8iJBKGQk8xH8FKN6gXCjqb1OoUwpeIb2l+JSPYqIsw7FPJV6BDtCuOiY7RuBnfv7YTp0C51otYuMrcKpvBzK/RS40w6prtojGROqlBAHGpUhMeGiDmSGPaywlEIJKuQU5bbIps2UHz3qWh1gCpqrmJbd/J2dEqxf/PaUTL0Ay4IXseQ32Q2em6KqE0R6OqQoCCsulUuZZh29GZJkMz8pcxC5XjkMxbZCosNHMWdgtw8gVbHIOoLHkszql2U2JtXUPwV5SMambSsXZJPpqvPfjzEJfzV3JkLKg9L6J6XawEQuhdUu9NyvfigpWlHgekWx99r3dY14s7cXnn/Ptm/B7xFmadt+GMxkw9CE4qseu3ECH6csMNNjEgHnVa4H251iOWFLOBNCqb+s1YsEQZbKhX97v2HL6tX55aJ8xna9hABLeR4ljcslKNnxWZz3v0LxHgC031LgA7/cwOpNJY0n+WyUigixBMKLWLcM/jjasc+KBhIrlNqo/29lDfp+U9T6p8060n6Xwk2io+two+T4+nc8j+q3OWZuvxOwEaI820cVWzjQI46XFxLa5f0MGG6W5Wgbg2P6zxyOcg/ik9LEGliwObByP2kEgIDWw6+MTpUAmAiUerBznsAWPTKADh+ZQlk7K60dRBOgPENx2TzQf1Z0JMUs/ePHcNn80gs3vbU0BJNLUUkdXlY1LIGX7WRquGS3qxlFdNQ9GIEIz/us3fZA8PbHUSKtbgr0piWFq2gK1jbpAwIEKjXorI0m1okuXGrke2mfkY64WPTQx8Xqp+ws//YQqY6pCj9OxjFnkzOlxLZRjLuH1TC6fw5/2bVRzPezh9XQDuNh8Nim5ueQUkm/HDKe02ud8LbkC25/xW29VGcoCFSGzgFOi56AQEc5FrIKjDfmRLXRDae6cvB6OscYx8
- duriKRZs
- IuXGBFvfI2onOiKClbnSXjIRqgR3KRcqhoFgc+qym4ee4uqLmr4BmkfsNgCL3NFY6bav9wXPMvmBcWJxZev6aM1hH85k0GJ2M4YOXWErwTiw1J08ylfzCx0MCEeUbKq0JT28g8kA8U5Cl7+lQbbKwyXvrApy5IGr8rvBWoqx28sz2H6730YDLNeG6HU36CxKU/+ui9y+OlTQmxM9nW/u1Y2bQxa4EkNPp8/kOSROPhpwwLewJAPRFHIln+ntAh2Fdm/6SyXuR/Ezfpq9FW7uZDV7oeWNH5MGs9R74SNcStnrPATWdyioV6D1YWpO+FaOqzCwpHQx1szTECXDQ9/VL9+nfBgl/7ylGQwLk0q0wvrUmJjMXA2FPu1stY/zZYvhylKg5g+hpPn25JHA=
+X-Stat-Signature: e4rkpqwfoj1h4hxu1xdzgifhsw86catr
+X-HE-Tag: 1782718080-69932
+X-HE-Meta: U2FsdGVkX18JdExBHrZyrnNqe/YDd38ewncZ4sVKexCcbnmqGBFzEEQhIDlZs42JJzEmvrBRfzXMzdM6eVweqIwmYnitQhlyNMB5QDLbuU4LjjNRSXNRxX5dmtOsLLcTmcjbRIqAxwfRJJTj+tP1S3xOwMRC/4dFvyVwMB9kw3TfDfTyUcNRiJwvRuANjmZLslw/CBQUUhMZh2bJ1v8A/1jL9+APmY0yNriDhHC/HnNg3Qsa9hFtnaPHdkB6dWc8Rf8JsBXTh+XabJsvrXGiJ6wetdjqdK+gQUubH+3L4uFoOp9sjxnJ0ylMXfMv0XvCLPSct2SRUhDxQY/OvPEJYDjh6mSfw7KWaYzipt95iHW9j033DvhqicxG2Lb8A27AAPdaO2yefVgxPZuafNT03uY/2eQ5IMTwG/I74lcNSlMnk8lnk4cfQGMw+NuOUSXCg9HjbB7NBgSOAPyLw1jARP7dy9HAAw7LJg2pAbEI4yiidH24lXBeQqDadvtjrz9eFcSr9ZMg+++gfugGiH8+clHl7JhDBoZ54xw8C1gHSSQX2gffT8YzfDvWvWTLITV/1lsjZtL3Hx1VZHs9U4bWiA/M0oz2FMipqY/eqhQ75+b5Loj9jsWF1r6l8oP0xy2ZIx5YU81rRdWkCSs2oEqNTMVz7Kh1zofYBPGygfRDPu7OqgcpQ0hC2m8jypifULa9Iu+4EoDXzoEE1D1UWuPeaqzHNVyyeqF5bfOV94d0q4fGzUvIDjpx4e1uQWDz4pWAX0LebFQgbgr6tWnVP+U4LNkXVYXMvqYX1cSrviThx9QVg4ovOgAoT9+tFv/dpi+YhxX5kxBGv9yO5uS3SlvPMh4A05P/TncZcMuai361um52N7+N/iGr1LYqZdk8lTo6uWThwtiA/XXGrpSQpQ4OfSuIEn3T/jWrBpIpSOLADqYhRQUzx5dA0zwIiVDtF57QDfm8Z9mTswZGuOvlpLw
+ OAxjMvPs
+ /+qY7bS+k7l0cMxjG327Bcv2oh9Chn80WvjAaEuETRdG7SmtrJEfHyV7fmamBXPNVAf3DmoR5Xri7KErAqR6g4RaWQcmhygT+UzbnhU3M9enNGLqT8vajw4JFF6i5ZcrTXcT8u7HL8MY/HVaATlRGqRm5O7kT4iXCptC44jy3VXdftCL2i0tsuJdt84HIlIm/HpEfiM5pYUebinq0Na2cIqL33TTlM5N18GJ/2UlMqeTjUghPSOvd6lQzHOO0SuMyFlb+osySXkZLFuilV8NOCi1Xtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,78 +138,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 08:48, Dev Jain wrote:
+On 6/28/26 08:15, Andrew Morton wrote:
+> On Sun, 14 Jun 2026 06:25:55 -0700 Farhad Alemi <farhad.alemi@berkeley.edu> wrote:
 > 
-> 
-> On 29/06/26 12:09 pm, David Hildenbrand (Arm) wrote:
->> On 6/28/26 07:44, Lance Yang wrote:
->>>
->>> [...]
->>>
->>> Yes, that's what I had in mind :) thanks!
->>>
->>>
->>> Maybe worth spelling out the rule as well: 
->>>
->>> For arch helpers that use addr, huge_ptep_get() assumes addr is the
->>> address for the hugetlb entry ptep points to. arm64 already makes that
->>> assumption.
->>>
->>> Callers where addr may not be hugepage-aligned should use
->>> hugetlb_ptep_get() instead.
+>> Creating a child cpuset where cpuset.mems is never set leads to a div/0
+>> when a VMA mempolicy with MPOL_F_RELATIVE_NODES rebinds in response to a
+>> CPU hotplug event.
 >>
->> Do we have any examples where code would do that? I would think that all code
->> must properly align addr ahead of times.
+>> Reproduction steps:
+>>  1) Create a cgroup w/ cpuset controls (do not set cpuset.mems)
+>>  2) Move the task into the child cpuset
+>>  3) Create a VMA mempolicy for that task with MPOL_F_RELATIVE_NODES
+>>  4) unplug and hotplug a cpu
+>>       echo 0 > /sys/devices/system/cpu/cpu1/online
+>>       echo 1 > /sys/devices/system/cpu/cpu1/online
+>>  5) mempolicy rebind does a div/0 in mpol_relative_nodemask on the
+>>     call to __nodes_fold()
 > 
-> Sashiko notes other places:
+> Oops.
 > 
-> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
+>> The cpuset code passes (cs->mems_allowed) which is not guaranteed to have
+>> nodes to the rebind routine.  Use cs->effective_mems instead, which is
+>> guaranteed to have a non-empty nodemask.
+> 
+> Well gee, what happened with this patch.
+> 
+> I apologize for misfiling a cc:stable bugfix into my post-rc1 backlog
+> pile, but I got there in the end.
+> 
+> I guess this is an MM patch, even though it's against
+> kernel/cgroup/cpuset.c.
+> 
+> Nobody cc'ed Tejun.  Fixed.
+> 
+> David acked v1 but is being coy about the v2 patch?
 
-Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
-from pagewalk code (where some users like pagemap need the actual address).
-
-I think we have two options
-
-1) To prevent any (further) issues, make huge_ptep_get() always consume the
-hstate, and let the arch code deal with aligning it. Invasive.
-
-2) Make the arch code handle aligning without the hstate.
-
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 30772a909aea3..303a1b74796c9 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-                return orig_pte;
- 
-        ncontig = find_num_contig(mm, addr, ptep, &pgsize);
-+       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
-+       orig_pte = __ptep_get(ptep);
-+
-        for (i = 0; i < ncontig; i++, ptep++) {
-                pte_t pte = __ptep_get(ptep);
- 
-(nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
-
-IIUC, that's similar to what huge_ptep_get() does on ppc.
-
-
-static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-{
-	if (ptep_is_8m_pmdp(mm, addr, ptep))
-		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
-	return ptep_get(ptep);
-}
-
-I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
-entries.
-
-
-Interestingly, huge_pte_clear() / huge_ptep_get_and_clear() and friends would be all
-wrong when the wrong address is passed. But that code really is called from hugetlb.c
-where we should take better care of that. (e.g., partially zapping a hugetlb page is not
-possible)
-
+Yes, after the discussion, I think we should add comment similar to what I proposed.
 -- 
 Cheers,
 
