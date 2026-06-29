@@ -4,150 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7045FC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:21:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A377FC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:23:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3236F6B008A; Mon, 29 Jun 2026 04:21:56 -0400 (EDT)
+	id 82DF66B0092; Mon, 29 Jun 2026 04:23:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9F46B0092; Mon, 29 Jun 2026 04:21:56 -0400 (EDT)
+	id 8069E6B0093; Mon, 29 Jun 2026 04:23:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 175E56B0093; Mon, 29 Jun 2026 04:21:56 -0400 (EDT)
+	id 6F5086B0095; Mon, 29 Jun 2026 04:23:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D97BC6B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:21:55 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5747D40509
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:21:55 +0000 (UTC)
-X-FDA: 84932256990.21.3CA3A53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 95D25120010
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:21:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eJM17GOj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F49D6B0092
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:23:15 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9F5141C36A6
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:23:12 +0000 (UTC)
+X-FDA: 84932260224.30.5F97812
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 240D5A0002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:23:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ev1aNmXq;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782721313;
-	b=sRs0YrsYWRPYTGsVvEHx4Met7G6nLefJc71EuOBRMx72/zyt6Lmc3ED2Z09XFYdrP2w6qk
-	VqX7Kj8PKyS88m15mezBmbGGrPLQrxDWQWikVvdANutUafor2NcxUByxMiKdJgJACiHj+F
-	bMKiP7q099g/lLilIBQPv1lt7hU8/1I=
+	t=1782721391;
+	b=x4Ki5TSv81aAdefP901NRWVDJi9tZGGhvfFSzHoK1AT9NLGK6hwifz+6egtSv8cNnzP0yz
+	Ah0uGxs7KJ7AE8w9t2CFXCBPkbYfrnljad8dSqVjpBWcwlaRM+Wn79WtP+87ErDsUWtrSm
+	U+VwPoLqMW3L5+TLb2wBLukuVVytWtA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782721313;
+	s=arc-20220608; t=1782721391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PTgXkbvVLbmjixblka4EX/WB3VrVuB2RapiXZ8W+wIg=;
-	b=bHISADb/5MOXPCoEVpSGrtUJ31zQ6YCWqxGWSrUoDu3Ir8MSr4UqPuNOlIhCe4D3/YI6lX
-	RS/G/FiNFG05bAw1H1U2ajSRzLclxsbrKvw5r5hYz0BrZaYkvpJ1XupxiuxeTv3UfplGWB
-	OTEfapRoMtRRJ8hOp+7yDkrETL1/flk=
+	bh=hFxUO7tgIcr0aaRoeEv4WTyZn0JslVlD209KcTGHDqc=;
+	b=QyK8JzHatEVIdGPCUWBPCSvihmUR8oMJoSLzXEWg0PulrdMKFh03i1OKZfaB9Ci/slm2AU
+	20zPIyULWyUyvubGUJsAjW2trE376RYGjvXF8OOr/QURdDoebxjBrllolG1vp9lUfwb8EF
+	Y1ZE2t+tErdRZ6+FE0Gmh/Zvtl+mseo=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eJM17GOj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22F146001D;
-	Mon, 29 Jun 2026 08:21:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D59D11F000E9;
-	Mon, 29 Jun 2026 08:21:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782721312;
-	bh=PTgXkbvVLbmjixblka4EX/WB3VrVuB2RapiXZ8W+wIg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eJM17GOjQPe7POwFKir2rKmQvXq1KG08ah06Lp5zlKQ3rzcdympN++OKKa2ZVsntv
-	 WTQC2r8gNLJclFMRpjNVhWgB3qqGuos9yaea9mmVHx/HvYLL1tYLsPlNNedCSiau3z
-	 A6eL0rLU0obT2P+QtewXrxyf3zoEYRktkL43EYOZ2YlAfHg/w9m1JkST9DS69NqUOS
-	 XMXRTj7GOruKPSgfEp4epYL12ulnANdMWVLsNJHGTLMep2UW5WAzOG6cS28huhaMUy
-	 r37erDxj9w5NjwglaiWEy56P9PIkxcjhLKOBLSrw60geyFBz9vGd0Eel4WigqDN4Wi
-	 4FAENakVFTM0g==
-Message-ID: <4709b993-85aa-470f-a346-2c3ea36bc4d4@kernel.org>
-Date: Mon, 29 Jun 2026 10:21:42 +0200
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ev1aNmXq;
+	spf=pass (imf25.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <458f63e2-6ee4-44c7-a230-636e1927f857@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782721385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hFxUO7tgIcr0aaRoeEv4WTyZn0JslVlD209KcTGHDqc=;
+	b=ev1aNmXq7ogiDIfLA6fwdm8/E4svVMoXrQk1fT8rGFz3UmiKKzsl/hv4jM6VSXvdeRIXSY
+	+hGUGRGHVpH/oq+1s7hpJexHb9LmvsPTB68wx+kCIH4MG4qC7Bk/doclxFP0JZyxlaaHbm
+	u4aXlpHb3wvosR2bMj24RfY4WpKOuaI=
+Date: Mon, 29 Jun 2026 16:22:49 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
- non-atomic page flag ops
-To: "Michael S. Tsirkin" <mst@redhat.com>, Andi Kleen <andi@firstfloor.org>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
- Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org
-References: <cover.1782676497.git.mst@redhat.com>
- <akHUboUaYi-OJHFu@firstfloor.org>
- <20260629033608-mutt-send-email-mst@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: "David Hildenbrand (Arm)" <david@kernel.org>, dev.jain@arm.com
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
+ tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
+ <20260629074802.42727-1-lance.yang@linux.dev>
+ <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260629033608-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 240D5A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 95D25120010
-X-Stat-Signature: wh16pwr314s5fhjr5peuqy714fho19w7
-X-HE-Tag: 1782721313-710047
-X-HE-Meta: U2FsdGVkX1/OHFn2kkmkdWM+418f0NeNCmmE8qOUMXpYTH/1fKs7YAYepPJ20CUZHwBEdv724RjWQWH4duxp+ZquaF7Ug707aPBZ5hkOKztCOeUP7Oa8LG/EGEaVG2GrQUhsp3gu2XLlcOjEpXtaoVCsPR0sgisnYanTbJBaQg8Y+h9aQPWmAZHTnnbG00Nz6msB+QSLQZC5xtqcw+0fuyKGBDx6FjAQ6FvZj5JqV26OgZAsp+aRKr0GiCNVz6qMOIjwp895YiL04uaNNrmlTuoCfJP/ZyS/kYI8+aBA1H2UjCoedYkUA64Y6BhrR+ALImLfncKGtCjGLt3Lq4hAvieyPERcdB/LJXHsoscfi/rDrHWIdRAaqEYBWXjApQ9e1cNh7+gs9K7SLdKC4fOQPzux7SMehGu3eIMeXguq4sYK9Fw2T7GwR3aQ69lz+JZH+drLweymyU+rSgJywCKYvWzxicsZfcU5WXCnb3yEBJYoPbRWJnhAzRuEiJ7RBIvcBKdaLeQp9FY50KDZeLVO7dVERXo3hz5T10fbcGjkcbtdzSw9j/qLu9uaHsLAVSzlDGYagjOzm78ap7qPXXFl+8/FC917Z/kE1iK3CcfQrq4bCNcJdp0netJDN7O7MYTQTf7jLhGazpmuBkVHNPWNyMKH9SjUQ5oZrP7hA0krh+VgdMYmTmTIBc7ud7gLkO7Vx4PriCT3HYbpwaqLnBGDrQYH/8ApR2xOG+g2cwqTy6SySfkzdT/Qn+gNJUAvzm3fpDElXU+5w1JM8qp1Jdx4kAn3xhz+J1tfZwqN9vCFyGFtmou7/O+bguZU6L2mFa3CNWdvwyZfYM0rhZ9yE5cS7rHK/COu/c/hnve1s4tbTjEX6QIK85gQ/1PGmecyv0n7BgNPb2CWBkyntTso/ZVeg1yR3L9qrXPz4ng0InCHnK7VkAn7HzPrlPxWkCFq55Qd6aUOLwkIdjrHCBh64rf
- xv0l2Eyy
- ch3MocLFwlMUjbbTw7XJlrVEWz8cEiFfq1Q1BUOH0GoAGLMW0Gjot06K2kmPxu/Mb8e+bkEg/brXy1OjdwfB7E3Jq2a5zi+MoyGZ3c+jHf9bJAYI/s3q3zv3GYPM3LcdWXDg8ntOw48peLpXu3nMKNnJCw6EfciWJEScP2gUDZCGU5zSpcKZVc1YWOVTlK3j9fa88pESBK3Sk/3hm+6gtwj3SNMikwGS3salqo/efyL4+UeTqu4Ki+m3qxGa8elU9VCk8vFSMvitZ4dzBRrnoMfEchkzUR1OC1jljYRFJHXUHYuTjO4etHBy5nE6q9M42Xbr5qVytJqHerCb7kXa8ZLql0w==
+X-Stat-Signature: ek48odbehrbihqndtccb749huwqeoyqr
+X-HE-Tag: 1782721389-284713
+X-HE-Meta: U2FsdGVkX1/c0U6yUEAaBn/anUEoTvq+HKOsqsnTZ61KmSWXGhPAd5/z3hIMKxb+rmQa4DC06LHkMFtGjmrayKJoP/c3bDa27CXX24TiTMet1jYFUN61+mr8t//QMg4XDJSjPrV9s1+IP37xaZOOi6acmvvizKWt2kVodupQy9ZJk3obZnU4dveQtw2jlH/yrUob/Z/lPrDGJ3FGv5z2oU9pzjIp2eYuDJEhjR9JbG0IjIWIhvHS/23S1EecMDTb/N7JAcAx5zRRz9dffesJ182wMT/BrkF3lzRP3LXxCMxW3CtaNq8eegP1rqN2Wr/MoxDpEcWtOwLuJ9DtpsO3C3eamhgKB11ytZvguCPf93bwInY+aQFJLOB970i4bbmyozlzhMnSjZTCRy472s+ADaaQjnq0Eo6jOsZ+RwUpek70xv6cu6wITkXY7nOtCiUNZ1NbMfoWfJcTIbh5247FMQhTE1M5RnxQ41RJtOjSfd7qEkdp7R8eYRv5AjxUr7jl+ljss99nGXBwYAwQ/6yBmDmvxwXT5EjZDL/0r3xfH6iDnLLwrmGDXFYx3qZ+mZIa804fANkrbCNv+fhEf4LwQ0OdXWqGzTzj2h2xqwEvYXSigmw933Z6YJssHGrMc4Z4Ghdbl1RGrDX+PT/yDhlrsAK5NDVlpObK08CYKPxc+mZHU21DoACyFoZE4hn6oRPPZET0V/+1vkZYCd9Eqg/lLXIRjIxCm4BlxYM5tzGS7DsRXyEhk7yfXLTG4L4uWrwXkTEbddEUg3Fw3W0oc3E/mFvP64hzXktwdnEMUonsga+xP/ivO8hHxDIbY9TT86FtiLwQkXfBFD7CZi18L8grCmFiA+s3PhUrXl/GakyqNcEp0BKP3x8hEZzq7eXWn0krEUUAn4jGo9uuUKz2A2O6zAK/YuOOmd/OEPgPXpha/mFA1FfKOBM65Ar2lMPQDy9WMCRitUWrEFhpnBfxg95
+ W56mL5yM
+ AQms3zSpt7i/y90kBUhS0X0rw31uGxajHha83TtVGc5aNb7LeSx22CJfdkG/qfFxH99XvXCms4Xa9mKI62SxM+X2/E1+H2gko38dKKhsLDalx1I7maVWl4Qk/3ZXgU2DJybwuMTG0UgKw258u+G/jp7sP41jFBslCtz5eCJw/ieVmFqQPJEdbApzagpFIbK4dWsMP+pWCQe79Gdj41AenNgNxti+RpMzi07LOZ1nFVkoZ4RHQ+LQ1PS3eoU5o9VLh0ruP1b+6T0W5c0ghCZzYaSz+2Qq553g42N470tLS/dD+LW7tvWH3qVpkXhgCRZr5xa1BbwFsKepIHgC+ALNARBJxJ5f5r6KeeWYWB74moLAJGpcqpJhOIA/KyZ2SpURMFCvwNhTThY4vuFHPnmhGDLSNc7NlcR0WZBMa3uvcQcyleJkC0Tuo5mKW1+3GZHeiqNc/XLFvAXpGFoI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,70 +100,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 10:10, Michael S. Tsirkin wrote:
-> On Sun, Jun 28, 2026 at 07:11:58PM -0700, Andi Kleen wrote:
->> On Sun, Jun 28, 2026 at 05:45:22PM -0400, Michael S. Tsirkin wrote:
->>> This series fixes the race by:
+
+
+On 2026/6/29 16:05, David Hildenbrand (Arm) wrote:
+> On 6/29/26 09:48, Lance Yang wrote:
+>>
+>> On Mon, Jun 29, 2026 at 09:25:48AM +0200, David Hildenbrand (Arm) wrote:
+>>> On 6/29/26 08:48, Dev Jain wrote:
+>>>>
+>>>>
+>>>>
+>>>> Sashiko notes other places:
+>>>>
+>>>> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
 >>>
->>> 1. Having memory_failure() call synchronize_rcu() + retry after
->>>    setting HWPoison, so that any in-flight non-atomic RMW that
->>>    read the old flags value completes before we proceed.
+>>> Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
+>> >from pagewalk code (where some users like pagemap need the actual address).
+>>
+>> Indeed ...
+>>
+>>> I think we have two options
 >>>
->>> 2. Wrapping all non-atomic page flag operations in
->>>    rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
->>>    so that synchronize_rcu() actually drains them.
+>>> 1) To prevent any (further) issues, make huge_ptep_get() always consume the
+>>> hstate, and let the arch code deal with aligning it. Invasive.
 >>
->> It wouldn't surprise me if your underlying performance assumptions 
->> -- an non contended atomic is cheaper than a rcu_read_lock/unlock --
->> are not true in various CPU/kernel configuration combinations.
+>> Kinda lean toward option 1, even if it's more invasive. If we pass the
+>> hstate down, each arch can figure out the right addr from there.
 >>
->> Modern CPUs have fast atomics when uncontended in normal circumstances.
->> But it probably doesn't matter much either way because the difference
->> shouldn't be very much.
-> 
-> 
-> Hmm. It's a bit silly that I didn't try. Seemed clear to me, but,
-> on this old xeon...
-> 
->                                    insns/iter    cycles/iter
->      -------------------------------------------------------
->        base                       12238 +/- 1.0    17889 +/- 97.9
->        rcu_read_lock              12251 +/- 7.3    17991 +/-191.6
->        atomic ops                 12233 +/- 1.9    17733 +/-136.5
-> 
-> 
-> The diff in the noise.
-> 
-> And old, slow CPUs maybe don't have MF at all.
-> 
-> So maybe just atomics instead of all this mess.
-
-That would be much better.
-
-What I was concerned about so far was that many distributions enable hwpoison
-handling unconditionally (independent of any specific CPU!).
-
-I recall running experiments on some not-so-dated hardware 2 years ago (when
-optimizing out rmap atomics) where additional atomics really hurt, even in
-uncontended cases.
-
-> 
-> 
-> 
-> 
->>  It seems very complicated for something that
->> could be much simpler.
+>>> 2) Make the arch code handle aligning without the hstate.
+>>>
+>>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+>>> index 30772a909aea3..303a1b74796c9 100644
+>>> --- a/arch/arm64/mm/hugetlbpage.c
+>>> +++ b/arch/arm64/mm/hugetlbpage.c
+>>> @@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>>>                 return orig_pte;
+>>>
+>>>         ncontig = find_num_contig(mm, addr, ptep, &pgsize);
+>>> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
+>>> +       orig_pte = __ptep_get(ptep);
+>>> +
+>>>         for (i = 0; i < ncontig; i++, ptep++) {
+>>>                 pte_t pte = __ptep_get(ptep);
+>>>
+>>> (nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
+>>>
+>>> IIUC, that's similar to what huge_ptep_get() does on ppc.
+>>>
+>>>
+>>> static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>>> {
+>>> 	if (ptep_is_8m_pmdp(mm, addr, ptep))
+>>> 		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
+>>> 	return ptep_get(ptep);
+>>> }
+>>>
+>>> I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
+>>> entries.
 >>
->> But I guess it's fine.
->>
->> -Andi
+>> AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
+>> doesn't really care about addr there. Looks mostly arm64-specific ...
+> powerpc handles it correctly in the weird "span two PMD entries" case by
+> aligning the PMD down.
 > 
-> Indeed. David already said he's gonnu look at this himself, but he
-If we can go that simple route (I'm not sure yet), your patch would be fine. I
-can try finding someone to run more experiments on arm64 hardware.
+> Risc-v copied from arm64, but can simply derive the #entries from the PTE value.
+> it doesn't have to re-walk the table using the address.
 
--- 
-Cheers,
+Yeah, fair enough, thanks for spelling that out!
 
-David
+> But I think the following is required to fix, no?
+> 
+> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+> index a6d217112cf46..7e25cc13b3dba 100644
+> --- a/arch/riscv/mm/hugetlbpage.c
+> +++ b/arch/riscv/mm/hugetlbpage.c
+> @@ -5,6 +5,7 @@
+>   #ifdef CONFIG_RISCV_ISA_SVNAPOT
+>   pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
+>   {
+> -       unsigned long pte_num;
+> +       unsigned long pte_num, pte_order;
+>          int i;
+>          pte_t orig_pte = ptep_get(ptep);
+> @@ -12,7 +13,11 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
+> pte_t *ptep)
+>          if (!pte_present(orig_pte) || !pte_napot(orig_pte))
+>                  return orig_pte;
+> 
+> -       pte_num = napot_pte_num(napot_cont_order(orig_pte));
+> +       pte_order = napot_cont_order(orig_pte);
+> +       pte_num = napot_pte_num(pte_order);
+> +
+> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) << pte_order);
+> +       orig_pte = ptep_get(ptep);
+> 
+>          for (i = 0; i < pte_num; i++, ptep++) {
+>                  pte_t pte = ptep_get(ptep);
+> 
+> 
+> 
+> I'd prefer (2) as a simple stable fix first.
+
+Right. I'm good with (2) as the stable fix first :)
+
+Still pretty new to arch code, but happy to stare at it some more.
+
+> If we do (1) on top, huge_ptep_get() on arm64 could stop walking the page table
+> another time.
+> 
+> If we pass the hstate (or vma) to set_huge_pte_at(), huge_pte_clear(),
+> huge_ptep_get_and_clear(), we could likely get rid of the re-walk in
+> num_contig_ptes() entirely and possibly just remove it.
+> 
+> That would probably be cleanest.
+
+Agreed!
 
