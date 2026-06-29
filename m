@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03503C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D5E1C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4FAA46B00D3; Mon, 29 Jun 2026 08:25:16 -0400 (EDT)
+	id 65B136B00D7; Mon, 29 Jun 2026 08:25:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D3516B00D7; Mon, 29 Jun 2026 08:25:16 -0400 (EDT)
+	id 60B946B00D9; Mon, 29 Jun 2026 08:25:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39A5F6B00D8; Mon, 29 Jun 2026 08:25:16 -0400 (EDT)
+	id 4858F6B00DA; Mon, 29 Jun 2026 08:25:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 045486B00D3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:15 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8A050A05F5
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:15 +0000 (UTC)
-X-FDA: 84932870190.11.E22EF47
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DF136160015
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgqC78of;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1661C6B00D7
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:19 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A114E1A06A0
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:18 +0000 (UTC)
+X-FDA: 84932870316.29.DF0D34C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E50DFA0003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:16 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fy5hgPIF;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735913;
-	b=50jPqffbZmh/QsSbPRBT3tCNjFydPUYbZa7l+7iOWMfrAclZL5sqZFYrAIuWlyoAr0leZd
-	uITEbEJjLanl/RlSvAdganggVbNZQYEIETm1q0LvUCIIevtBrUDVZzBaQ2Henmo5do0VSb
-	Lh01y9b2/xva1s2C9oDtBAeYpow5q2Y=
+	t=1782735917;
+	b=2Q2Kq+Ki2GvOvZuOTThW20pWAGHQC4fLSHgoRDs7NsXcit8n++32Dhoe+fNtbuIqXs3Vdh
+	aXoSvI5/vAaZwv439PzNxTJ1Fi0Xezl4dzHtGIZw5h2WfTnA4mgFbe+WOS0QtG+AsuXii6
+	rN8Gv5Y+1aeRJiGTrLHDqYrT8CgyfmI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735913;
+	s=arc-20220608; t=1782735917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DVaVwtD/YAzrfGJ2wPEBHWUnW7o191nw2vqkxZjY3Jw=;
-	b=HnNnc98M8iKeeiM+1PuLWoVr/wU34fUThNs7IcHB3QVP/Nz3Trfg+hPa+g/B50b0V65cq9
-	kmSDjvMyhFgXQiXOSRIOccWxHYj3XFs6iX6U6r4JwkwVl0i7XJhMXDWF/P0E3tuNk9n2hK
-	hNNgtDvOt7mZ5IxrzRGWZl9je4CSb4g=
+	bh=wZLLn6w5tKaY1nW+KkITtgwyfLONnb8tW4SFWVp8Sgg=;
+	b=LFVu7/7jjYnVLX6kCwB2MKKoRtbun/hn0ghzF3Godsj1iAbnu9ExsbgUf4F3zV72ooJr7P
+	XdWT4WQqVUGBzJqkIkfEErNgUvwzmm/iRJEORmIIkMYywzC9LKS71bMcXE5/ASi5M9IlFL
+	s9T6Eg4ZVvfAHRGfXc1gmkFVZP4vKTA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgqC78of;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fy5hgPIF;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 739BE600AA;
-	Mon, 29 Jun 2026 12:25:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9FB1F000E9;
-	Mon, 29 Jun 2026 12:25:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29A9E4094E;
+	Mon, 29 Jun 2026 12:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE591F000E9;
+	Mon, 29 Jun 2026 12:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735913;
-	bh=DVaVwtD/YAzrfGJ2wPEBHWUnW7o191nw2vqkxZjY3Jw=;
+	s=k20260515; t=1782735916;
+	bh=wZLLn6w5tKaY1nW+KkITtgwyfLONnb8tW4SFWVp8Sgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TgqC78ofk9v1RrRyLce5+3TleoIZPAtXaIyZ6fzsHFjFdozTq2QBLY3gm4IGtuTiC
-	 EwF+WyI2H/isawxxImP0y71reCK5jNgEK5nWyzuTw5dpKH9hDysj0jLSQ7m7EbtOGc
-	 Nz3/MPcHAgDN2lkGo/hMPKHzyCWcv0QYrWPuQ9v7E9gfnrQACSB4LdjlRCrTJZiKnB
-	 U9Sd2OpiW/Oifq+yv83CtBcL4hWV82gHlSrNEWvDOO4/Xde+nzxUKfwQJu0FGSn43x
-	 Fhlnfp9yzmBZ5xXoM/j/e6KCGxDRbggvmrKSqPx2wzHJVSvYOjZc1wz8yqKynID0+s
-	 mA89hNnI/tl3g==
+	b=fy5hgPIFV0OpgIW/0nPU7jLTQ8rPiZ8dM8upySZALILoZhYgNzHuFDpmCfg6JWomN
+	 G0HPTvmQAFebwcgjThqux4FlQ+/BO6XRgEJbIwamZ24hcP+1wgCRotnYnKflTBCJJR
+	 bpGhjvShcYRZylRyaqINKKmzKch04WcHFUPyws35pHkGRTjBHPqVgAeat0g2pBE/j8
+	 o1t2l+K+FKK1VISsw0FzfZNZrSQzaWBl/42hcRwpcZICvBxv/Xy4PrKx39z5FkfqVd
+	 TvkRJba6GypFsA0LGOL+E2NStUyXgzGuaEDWg150uHCn9m0SJvxjVby4OswnV+cS8a
+	 lxabVOtJQBhVA==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 26/30] mm/vma: introduce and use vma_set_pgoff()
-Date: Mon, 29 Jun 2026 13:23:37 +0100
-Message-ID: <37f4d951897641f304dba26f6f91ade03a50eb01.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 27/30] mm/vma: correct incorrect vma.h inclusion
+Date: Mon, 29 Jun 2026 13:23:38 +0100
+Message-ID: <22d0f4e3fe11f6fd1312734e242d008267ad142c.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DF136160015
+X-Stat-Signature: er9bo9zbk3a3gkdp1xurn313ajhtakfb
+X-Rspamd-Queue-Id: E50DFA0003
 X-Rspam-User: 
-X-Stat-Signature: oi8h4ze5bkf9xfoc5piyo58taddhue3w
-X-HE-Tag: 1782735913-476234
-X-HE-Meta: U2FsdGVkX1+j3rQl7cAg3KRwgATD7y6BGa1HOQa2fEYKDxFXhX2peL/xevzz4rpFbEKc6WoNitiMmvWr16oPhNFKx1IqEluv+1Gb+bPjfVWdHEEwbVoT+wLiE99csXHtTXcNOwO0HUBtsgux3hs6sAwHh6DaGr6FmqjHLfFB/1vPEuxTJyAT1JoFR8sWUiy/2pdOQzndyY0TkDCs8dAkeQeWC1fKZYzZUFIKeHQ/oM649K9YnITTDPVH75dZQeqOG4Icqf5tqMlRiC6eUko5LjaPZmaGmYgKeNemeBHp0WHsr8qj6x3AbVR8qjNj3jDg4bB6bfIZeMIcYcIzhN5+wV1e6XS8BdYYTEEhLbQiYCe923JNIEgQovCBhMgFh2eJckJZGyHpt2MCrMmldRviPs005BTyqVu7/3w2iEUC7UMYhtfZiy4sXqCkU6skqovWdDbs+trMYkBPSWE6+Xw6sI3wm1pgopGhCizzss1gXrGXUimZ+iO5xyKlSu5IeqZh4xBO++nUyapNNstlIAeTouhKmCfYExZ9otzlyqiU88xznGFFqbgKkiXGx155H3hSbh8PkfosRE1rVX0en8RuwtamUEsAH64V3aKK8yYpFLX/15JBiIOO1SepuRx8ObJU/gpU4cIGQP0HwtshdLIosdJl8c8x3dtBCXRo2JktWu6B5k6JBq0Lbb0kdOKmHEA3qsGwdf2qoZsnNh4qJfvTD2sCh8DsN3PHzeik/Ls80OvPVJj3GOp+4Hw19GWRtU7Bjh5rh5idSO+tkhkcz2wxPPpovy0OmaT19D3n0x2KdvRVnvMfepEXiQx75b5IyBwDxbyEIvWYck8ScAe4K5b3Y3Um/KMHg7VAjhYnfqNrpP5ysHZuJ8lTkdGq0bW9afIFdpCrFeN4KvyxNRykk6yOZCigI2ydcCGfh56WtXoVOG/KhxZPiCBK4GqCQ7xel2kQa/EYZFqrYbour9VL+6w
- mOvEsGrK
- etDaan5BcqUNSYCZPVVHt4dDKMS0sz8znVslgFvghwStO2OQ+maEPlku8wYZ3Duk117FTl3DhG4/o0moKddsIEvGQudGq3dZRhi9xbsfCQ1FVbvJ5RnFgcAof6ApAqoVa4eJYSsglvSJlfd53PI/GIT/qDZOvNJbjUkmt69xAUNwswqN6Ol5muanXxfLp7qzhPgIp+mj4XDRC9hytXIAHhSNZ0OU3bcbqbVUCor6xJLPSVdV/OyxWImzSCEuLG63oDs1t8FvRh6ZPD9xf9XcyuoNwqo97g/LzXVOwRMN0McnDBSJHHGpovufErcfO8yPtO+0hdG1Aj/qpykZixbc/+yV82kmza58i/ESYlQmmxUylD8k=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782735916-891333
+X-HE-Meta: U2FsdGVkX19n8TuXNo4lqrbsbCsgqSDbLI44AVtDOUhUiRH4si1lBcWXiD3Y3nmUEHZt/CXjc7kxCGwFJaN82Ictd8qXzcGvTzCzR6DQzHXaFMiBcbChiGM82sPlCva8xkQ4monQ+7ldZiNXIk6ZdgJlAfU87lBT4y1B2Djd8oQQ9GdNcowKq0wyZh9Yle16+lATZpLwt/y1daek5+SSNnF/x7mKhXjzBdPi7v9RDUOa9hSeJ7ZaOMeUg0Rju4u84owSjF5uTmasMPTliWqKvOwv14S9YMvWi3OgeTs1wu8RCqIIKJb5xAZsNjZWF6agxwh8lm3lkt5cIlLm7SsyrSN3B0kbUyYKRglhenQEmvTLp6MesqtDaspfnJa9RRpfYuE2g8di8QuKdWqKaDlioD3nxJyX8lusFxqhrruTCNrO47jzHTUggR9fztkb5q8v/f7twOSwUbbrjhc4escxItZZy96LbhsZmX12r8nibZ2LtIkFHY6ritU10WG2japfqPaSzZ/566DIHC+hbrBpV8rE6v2InAG2KgFErOwYy7hehTKf3NCatAR+hy8uTnbNSOSuMiPnELN/v3Ju7WZ1k9wQ5cyjkP2oKEPc6XcMys9GDTt2lsR6OhXuyQLgMpFfgBGZFaRCNBmbAkB2FusLGHLKf5G8aaSsYfoi0wlGsIvstAVh9evZeustmqJFHTzBGMzclck6QDbnoAVXRzZnU6d6ZHeq+zwZfTIjoEaDrM9VaCF7xOU0MpwO4Jpw/+d7Bkf84EHwbzBC5q2tV2L3PTK3A0kAjIc5ITAbpnA1g08ysE3oHgZ7VHsPsKHgEQhIxFJnqGoSlVhvJft8LgYi5zsUIFC8V5NIRwEhYDA0LYuW26msc/fe5fgD/3q+Jp+IXTL6Z7/m1M35xhyTag1TFlEVDoMlS1/qaUo94j5O9XuSUaaUmXVw1Yd51ao/PjOHtxTLEMO+DtjddpdutEA
+ HWQmU5G3
+ hJP2Qgw7LM2Zp7qbviA8j7vJcB2UhYCy6GPwAlHqzj/N02+0HuI47bzycUxha4fTBY+2cEC3hVHnHC6qEmY17hK7kvGzAd74awuUpESRN3vOw49DFxTOIcEdCuAE8ldVFazy5BfF157PJYDQR59cnkrA6jaW2+4fsjWqWfT4iUmowrKI3dxqFCUYEZk8MWP+raFHVHUbO9/FOR//W0LpSvyLpaau/fk+BjWO9P1EPP/6logamuraVreujr/iSlWYL4QdoT3bRT+jEJCuf47nPDaVEqQwNOhjmRg6N4iX/DG/FdvpxaXykcH2evsb7xoVOZ+7anvMb5oejwMU6PdpgE3f04Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,162 +162,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to lay the foundation for work that permits us to track the
-virtual page offset of MAP_PRIVATE file-backed mappings, we abstract the
-assignment of vma->vm_pgoff to vma_set_pgoff().
+The only files which should be including vma.h are the implementation files
+for the core VMA logic - vma.c, vma_init.c, and vma_exec.c.
 
-We additionally add a lock check here using the newly introduced
-vma_assert_can_modify(). This asserts the VMA write lock if the VMA is
-attached.
+This is in order to allow for userland testing of core VMA logic. In this
+cases, vma_internal.h and vma.h are included, providing both the
+dependencies upon which the core VMA logic requires and its declarations.
 
-We also assert that, if this is an anonymous VMA and unfaulted, that its
-(virtual) page offset is equal to the page offset of the VMA's address.
+Userland testable VMA logic is achieved by having separate vma_internal.h
+implementations for userland and kernel.
 
-In order to maintain correctness given this assert, we also update
-__install_special_mapping() to invoke vma_set_range() after it's set
-vma->vm_ops (which determine whether the VMA is anonymous or not).
+Callers other than the core VMA implementation should include internal.h
+instead. This header does not need to include vma_internal.h as it only
+contains the vma.h declarations, for which the includes already present
+suffice.
 
-We do not use vma_set_pgoff() in vm_area_init_from(), as at the point of
-forking, we don't necessarily have correct locking state.
+Update code to reflect this, update comments to reflect the fact there are
+3 VMA implementation files and document things more clearly.
 
-Updating vma_set_range() covers most cases, but in addition to this we also
-update insert_vm_struct(), compat_set_vma_from_desc() and nommu callers.
-
-We also update vma_add_pgoff() and vma_sub_pgoff() to use vma_set_pgoff().
-
-While we're here, we drop a BUG_ON() and update insert_vm_struct()'s
-comment to reflect the fact anonymous mappings can be added here.
+While we're here, slightly improve the language of the comment describing
+vma_exec.c.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/nommu.c                      |  2 +-
- mm/vma.c                        | 14 +++++++-------
- mm/vma.h                        | 15 ++++++++++++---
- tools/testing/vma/include/dup.h |  2 +-
- 4 files changed, 21 insertions(+), 12 deletions(-)
+ mm/mmu_notifier.c | 2 +-
+ mm/nommu.c        | 1 -
+ mm/vma.c          | 4 ++++
+ mm/vma.h          | 9 ++++++++-
+ mm/vma_exec.c     | 8 ++++++--
+ mm/vma_init.c     | 4 ++++
+ mm/vma_internal.h | 4 ++--
+ 7 files changed, 25 insertions(+), 7 deletions(-)
 
+diff --git a/mm/mmu_notifier.c b/mm/mmu_notifier.c
+index 245b74f39f91..df69ba6e797f 100644
+--- a/mm/mmu_notifier.c
++++ b/mm/mmu_notifier.c
+@@ -19,7 +19,7 @@
+ #include <linux/sched/mm.h>
+ #include <linux/slab.h>
+ 
+-#include "vma.h"
++#include "internal.h"
+ 
+ /* global SRCU for all MMs */
+ DEFINE_STATIC_SRCU(srcu);
 diff --git a/mm/nommu.c b/mm/nommu.c
-index c7fafcd87c14..ba1c923c0942 100644
+index ba1c923c0942..4fef6fbbd6e9 100644
 --- a/mm/nommu.c
 +++ b/mm/nommu.c
-@@ -1059,7 +1059,7 @@ unsigned long do_mmap(struct file *file,
- 	region->vm_pgoff = pgoff;
+@@ -41,7 +41,6 @@
+ #include <asm/tlbflush.h>
+ #include <asm/mmu_context.h>
+ #include "internal.h"
+-#include "vma.h"
  
- 	vm_flags_init(vma, vm_flags);
--	vma->vm_pgoff = pgoff;
-+	vma_set_pgoff(vma, pgoff);
- 
- 	if (file) {
- 		region->vm_file = get_file(file);
+ unsigned long highest_memmap_pfn;
+ int heap_stack_gap = 0;
 diff --git a/mm/vma.c b/mm/vma.c
-index 0579fc8c9bd5..d727150e377a 100644
+index d727150e377a..5c3062e0e706 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -81,7 +81,7 @@ static void vma_set_range(struct vm_area_struct *vma, unsigned long start,
- 			  unsigned long end, pgoff_t pgoff)
- {
- 	__vma_set_range(vma, start, end);
--	vma->vm_pgoff = pgoff;
-+	vma_set_pgoff(vma, pgoff);
- }
- 
- /* Was this VMA ever forked from a parent, i.e. maybe contains CoW mappings? */
-@@ -3345,9 +3345,9 @@ int __vm_munmap(unsigned long start, size_t len, bool unlock)
- 	return ret;
- }
- 
--/* Insert vm structure into process list sorted by address
-- * and into the inode's i_mmap tree.  If vm_file is non-NULL
-- * then i_mmap_rwsem is taken here.
-+/*
-+ * Insert vm structure into process list sorted by address
-+ * and into the inode's i_mmap tree if file-backed.
+@@ -4,6 +4,10 @@
+  * VMA-specific functions.
   */
- int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- {
-@@ -3373,8 +3373,8 @@ int insert_vm_struct(struct mm_struct *mm, struct vm_area_struct *vma)
- 	 * Similarly in do_mmap and in do_brk_flags.
- 	 */
- 	if (vma_is_anonymous(vma)) {
--		BUG_ON(vma->anon_vma);
--		vma->vm_pgoff = vma->vm_start >> PAGE_SHIFT;
-+		WARN_ON_ONCE(vma->anon_vma);
-+		vma_set_pgoff(vma, vma->vm_start >> PAGE_SHIFT);
- 	}
  
- 	if (vma_link(mm, vma)) {
-@@ -3420,7 +3420,6 @@ struct vm_area_struct *__install_special_mapping(
- 	if (unlikely(vma == NULL))
- 		return ERR_PTR(-ENOMEM);
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
--	vma_set_range(vma, addr, addr + len, 0);
- 	vm_flags |= mm->def_flags | VM_DONTEXPAND;
- 	if (pgtable_supports_soft_dirty())
- 		vm_flags |= VM_SOFTDIRTY;
-@@ -3429,6 +3428,7 @@ struct vm_area_struct *__install_special_mapping(
- 
- 	vma->vm_ops = ops;
- 	vma->vm_private_data = priv;
-+	vma_set_range(vma, addr, addr + len, 0);
- 
- 	ret = insert_vm_struct(mm, vma);
- 	if (ret)
 diff --git a/mm/vma.h b/mm/vma.h
-index 9658e0c678ad..155eadda47aa 100644
+index 155eadda47aa..f4f885615a92 100644
 --- a/mm/vma.h
 +++ b/mm/vma.h
-@@ -247,16 +247,25 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
- 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
- }
+@@ -2,7 +2,14 @@
+ /*
+  * vma.h
+  *
+- * Core VMA manipulation API implemented in vma.c.
++ * Core VMA manipulation API implemented in vma.c, vma_init.c and vma_exec.c.
++ *
++ * Note that, in order for VMA logic to be userland testable, this header
++ * intentionally includes no dependencies.
++ *
++ * This is specifically scoped to mm-only. Users of this functionality (other
++ * than the core VMA implementation itself) should not include this header
++ * directly, but rather include internal.h.
+  */
+ #ifndef __MM_VMA_H
+ #define __MM_VMA_H
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 0107a6e3918c..c0f7ba2cfb27 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -1,10 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+static inline void vma_set_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
-+{
-+	vma_assert_can_modify(vma);
-+
-+	VM_WARN_ON_ONCE(vma_is_anonymous(vma) && !vma->anon_vma &&
-+			pgoff != vma->vm_start >> PAGE_SHIFT);
-+	vma->vm_pgoff = pgoff;
-+}
-+
- static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
--	vma->vm_pgoff += delta;
-+	vma_set_pgoff(vma, vma_start_pgoff(vma) + delta);
- }
+ /*
+- * Functions explicitly implemented for exec functionality which however are
+- * explicitly VMA-only logic.
++ * Functions provided for exec functionality which however are
++ * specifically VMA-only logic.
+  */
  
- static inline void vma_sub_pgoff(struct vm_area_struct *vma, pgoff_t delta)
- {
- 	vma_assert_can_modify(vma);
--	vma->vm_pgoff -= delta;
-+	vma_set_pgoff(vma, vma_start_pgoff(vma) - delta);
- }
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
- #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
-@@ -332,7 +341,7 @@ static inline void compat_set_vma_from_desc(struct vm_area_struct *vma,
- 	 */
+diff --git a/mm/vma_init.c b/mm/vma_init.c
+index a459669a1654..715feee283f0 100644
+--- a/mm/vma_init.c
++++ b/mm/vma_init.c
+@@ -5,6 +5,10 @@
+  * between CONFIG_MMU and non-CONFIG_MMU kernel configurations.
+  */
  
- 	/* Mutable fields. Populated with initial state. */
--	vma->vm_pgoff = desc->pgoff;
-+	vma_set_pgoff(vma, desc->pgoff);
- 	if (desc->vm_file != vma->vm_file)
- 		vma_set_file(vma, desc->vm_file);
- 	vma->flags = desc->vma_flags;
-diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-index 41fea90a344d..5d7d0afd7765 100644
---- a/tools/testing/vma/include/dup.h
-+++ b/tools/testing/vma/include/dup.h
-@@ -1186,7 +1186,7 @@ static inline void vma_assert_can_modify(struct vm_area_struct *vma)
++/*
++ * To allow for userland testing we place internal dependencies in
++ * vma_internal.h and external VMA API declarations in vma.h.
++ */
+ #include "vma_internal.h"
+ #include "vma.h"
  
- static inline void vma_assert_detached(struct vm_area_struct *vma)
- {
--	WARN_ON_ONCE(refcount_read(&vma->vm_refcnt));
-+	WARN_ON_ONCE(vma_is_attached(vma));
- }
+diff --git a/mm/vma_internal.h b/mm/vma_internal.h
+index 2da6d224c1a8..4d300e7bbaf4 100644
+--- a/mm/vma_internal.h
++++ b/mm/vma_internal.h
+@@ -2,8 +2,8 @@
+ /*
+  * vma_internal.h
+  *
+- * Headers required by vma.c, which can be substituted accordingly when testing
+- * VMA functionality.
++ * Headers required by vma.c, vma_init.c and vma_exec.c, which can be
++ * substituted accordingly when testing VMA functionality.
+  */
  
- static inline void vma_assert_write_locked(struct vm_area_struct *);
+ #ifndef __MM_VMA_INTERNAL_H
 -- 
 2.54.0
 
