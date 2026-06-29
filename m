@@ -4,79 +4,79 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D75DC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA5B4C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:15:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7B96B0093; Mon, 29 Jun 2026 04:13:09 -0400 (EDT)
+	id AE3C36B0005; Mon, 29 Jun 2026 04:15:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 959356B0095; Mon, 29 Jun 2026 04:13:09 -0400 (EDT)
+	id A94676B0088; Mon, 29 Jun 2026 04:15:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820D96B0096; Mon, 29 Jun 2026 04:13:09 -0400 (EDT)
+	id 95C976B008A; Mon, 29 Jun 2026 04:15:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46C2E6B0093
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:13:09 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA18E40591
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:13:08 +0000 (UTC)
-X-FDA: 84932234856.02.1FCB8ED
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 663356B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:15:52 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CA187167F61
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:15:51 +0000 (UTC)
+X-FDA: 84932241702.11.6479BBE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 0AD721A0008
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:13:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lMJbdi4R;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 20B3240008
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:15:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QBMPbCQv;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782720787;
-	b=d32rQWtg6Uq/0237Ga5psc+yq80RkQmHKyHTrkbjOw6Xx9zCbXLRItr3jDAg3SW5M8QYlt
-	wMzWokQleX3Q9ktfXs0X/cFRRmAGJf2Cgn7banmYukNqB5CrwD2rro9vtON/v+MjiEMDd+
-	rvt8WkQ6hwPwjRxWimF/4pKbsSGzwYA=
+	t=1782720950;
+	b=XBZu+bgvddentb7tnkVtcUMCd3nbAq0MWZOkIoV7VvbxmQ0Jy3wsDvOKE/uIWSvi9MPpjK
+	+RSIIsovEoNUWs4lSH2roT260OqweFDrlzwR2R0MmD8j+BqXv81Qj0nQcI1R55mzwuUThN
+	paYKDJezM+81sqWVW4Mv6NRtRRV/0T0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782720787;
+	s=arc-20220608; t=1782720950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=slFeSu4AqtBj1Xx91s6ZBfnTR7RAaI0yh7MOot2s+hI=;
-	b=uZjlzZHEcrEraHjTrYvDvGoAigh0nHofCkfQrlqCBFtQiNPIwXR8jRyaiTWr3TdxhSWrLI
-	SogJV4V974IIxeVDHrgNTFWJ9ybXrK9Q5wqsEhf0Rjft1SXXgca68gfGJSG8SA++0qIlpa
-	r0DBxV8JN+1qBEppnIuK/VwPtGgxlzg=
+	bh=JtMbXTDOfzndkZDer6uzHrvmb1CYxZ6yVGY/SmOu0IE=;
+	b=iB7Brvbr5rdYheNi9G/J+1cf7LdLrzEy9I9oYiSLuOOHC4A5IbgZdPT+cHJfdonSlmXwf7
+	BHaS3iXT/oqxIJmHvRKB4hyAop50JLYjP0fdb/8w8W1vn6gKN3JM60EqPCCbi7XmmY0cpT
+	UcSYTHzLUiGFLH0Z0KIV+ZXprz9V8Kw=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lMJbdi4R;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QBMPbCQv;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8267B6001D;
-	Mon, 29 Jun 2026 08:13:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD481F000E9;
-	Mon, 29 Jun 2026 08:13:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A5AEB60008;
+	Mon, 29 Jun 2026 08:15:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9735D1F000E9;
+	Mon, 29 Jun 2026 08:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782720786;
-	bh=slFeSu4AqtBj1Xx91s6ZBfnTR7RAaI0yh7MOot2s+hI=;
+	s=k20260515; t=1782720949;
+	bh=JtMbXTDOfzndkZDer6uzHrvmb1CYxZ6yVGY/SmOu0IE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lMJbdi4R314M+6kLOjYuCWMzIshteAzty/tx72gb/1TyN80fRw6wmPzXyuYV1p7ua
-	 LTzIubWu5rRicQaLy/tvQt+PxgF0HsYuNHqd7UwzvnO0442HLzWYTgQCKybhTyi+yp
-	 Zj2P97y8CnyKZ3siBx31G/UC55aOljQXoHyy0igJGncxF3+LOODg9BfTro8R0Tattd
-	 1VlYmZbKNVcy+TyjtvLnVrtuKcR4p7gcsTWk3OEh11HkCPBWXSsNiDGYmPqogqL5Ck
-	 Tuzj8Jd4cqi4mmFhzAI5l4b3+nsIzmCgDnhJqrbXhBLavWvw8XVw48N2ucXuVH6lX8
-	 oSvmSnIr91Iig==
-Message-ID: <96c919ca-9b35-426f-a142-4d8450a54953@kernel.org>
-Date: Mon, 29 Jun 2026 10:13:03 +0200
+	b=QBMPbCQvs8hYi+N2xX2u0QDcm1wrcGDS5O2DtLv065DQclG99S1G9A5HOq4J1OJwP
+	 isEkn2hV9P3LbgfwQet+yfkqrMwb/pq45HV+O0r/ES7Eh9cTsvdDqOzm3HTgmpzSEs
+	 RNY4dpenZXlcPovycZKcE5kcUP0PDqr8SYDaVaNnK8J+mISy8EDMblt3sNUa2Emc0P
+	 66VhmyI95dDgAVtNcUiUMKNN0Qcy+ibLbD/WvKjOy3r/LfktR3w+D21HmkF3oIMBSz
+	 eSccLWkHJMSEhSo2GPeiGCh0NCrNj5cbbl+iT4BhhF9d0b2Djqlf634fpD1O29TKye
+	 0faJpaQAgxpVQ==
+Message-ID: <2293328e-ae86-4568-9353-7f4d2cdfc415@kernel.org>
+Date: Mon, 29 Jun 2026 10:15:46 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] mm/page_owner: move free_ts_nsec output to free
- section in __dump_page_owner()
+Subject: Re: [PATCH v2 6/6] mm/page_owner: drop redundant page_owner prefix
+ from static symbols
 Content-Language: en-US
 To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
  Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
  Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
 References: <20260626024550.25677-1-ye.liu@linux.dev>
- <20260626024550.25677-6-ye.liu@linux.dev>
+ <20260626024550.25677-7-ye.liu@linux.dev>
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 Autocrypt: addr=vbabka@kernel.org; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -117,17 +117,17 @@ Autocrypt: addr=vbabka@kernel.org; keydata=
  NcaZ+c6J4H+nEJGi2SkHAUJz5oBzuThvPudLvPA/SK8sKoM01IRxSihev/S/5WLazXB1PGem
  OCbvzC1IjWJJraxiDJ5IygokapUa2RP7+WBR22skQ3SSl6G107QgWKSyTOGWEaRmV53vxQLV
  jXuCmzSSasTL60zq5yGrT4/DYQVSNEUiUbG4pYekxJujNeEDkUlky0Y=
-In-Reply-To: <20260626024550.25677-6-ye.liu@linux.dev>
+In-Reply-To: <20260626024550.25677-7-ye.liu@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0AD721A0008
-X-Stat-Signature: ctmm7q9jqhzrci7s61z1nmgmmjad983y
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782720786-819818
-X-HE-Meta: U2FsdGVkX18Jn6iv5yPuHBR2oeAipC0UcPewVGGBKr/Uv9qFnb6ZKeP3WZYCfQwRysNoVIAxehEtaOEizzxOUgFTf3jpZwdh3rfDmSniirNveyFclNvYxCnvtoWM36+GRjarVRyE9jUpSfHoIwWgiT4bZPRcsKKfLy5B3Bft6h7CEFkUK98JLGk80hXEofvOXHK0fCCAFPNP7Rfm8abEd1uqlt0IBWu7K3xFeIuLZEPzCkKMuA9weU4nHWk/kj0C6hJIVn2yH1MzmOzwAJQNhQQMekondAzPf7Af+f2pkxHtETmqwJA5UIqCreY9gOIg+cjIG21MwjxFms+BYEuSXwJMWeOr9VdjXhwlQsu8bs5ZwpXDQBKQYmkagfujQaISTjzjHrlAisIxGqKIFLIOTlxMFmYsp5ayK8PqCQOk7OM8rvG/DxHMNPfX6kCoPeL2Xsc9qcU7tPVkWZTikMGpe976NAYLCr0PHTDbwsyJnL1Q6CCiM7/6VzCXAgRQUXlOoUo+l6Fwpq0gtCgQKbxviAOto31V7NkE9UDpdrkiRQ4CN3Mj/6VdeZnV12+Ft19ZvzBEf8akGJ+sInNzAwjFkea8SIBl3crW4oaeLJvA2PnDL98GT6Y8i1qVslsEKRMqs/STLsHEa9uqQGxjSi5SNuvzMRdbuDyGKSsDLHinvhPHWSo61VF4NgINKA/8ZLuV/AhfNNM3xBqN3Tqc0Jn4kJsNSiqsJf93noa0bywDkP9YYuAjaVpW8hkfw9uFtj4sjTXSGyyejottvLUj0gqnLnC4MBJB14jqzmPLAtk8uaAXeWv5Zbg/yHa4q4EZslS9zc1j4bj2yYgoaTjcUilvORFqGvbVp3q/n1Crsdb0vr4EWBLidQnpvl7SPnkYwT1kLL/zs/0vGO9mc3fzmbGB/9fffUSmnypLRIwONKWWGnjur0mC4wSV1YXUvZxXbopwmeTCfmLbu/1iw7MPxpT
- xaNN8T+7
- bsNQzLbN/DtsFD7q4hg/b9dM3ksXwkBril9UjNZagakEekTRkj7ex/ZATjPx+sQ/jii3RB2Cmje0u4Vkw1R9KmvCY7jx/KQ5BMEaSllclfBfHXS0OSLbr3pFBDrIZVGdcveiUY+k1Edkmlq3DSQb+ytZxMwNa6w7ADHNtDkpwVLaJOaGcp8blaco/8lAnmtNFxjXFqO5HuQPMtK67Aa92HFJo3wPcAH/ZuSkdQmmv4kTVqj5Xo2LoW4HgVxMUkS6z1nVLmx1sZvSjoso/IOeC1ul9ddwptH2/8sxMxTmNZKOspnvneAOS8WD4VM8j2j7vbOBJHgp8H3Jz1yw=
+X-Stat-Signature: i9inh8w3b8x4rnt6ajyty4biocobno81
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 20B3240008
+X-HE-Tag: 1782720949-636889
+X-HE-Meta: U2FsdGVkX19DgiWbi9jUQWHByKu0LAMWhPkU6GCnrEliEStjTKWLg1qfF3RIMPbfo5ITXBjgqc/I0JNI4Zxr0YCH6BKc883rNan0I3bFBR2ZICJuPTa2WWlJT6bOC7H8d6rCIf8XmY4Vb+5Np7n9TEuwJ7pUKlm9sW5Pypd0FRfvFdIrWIvix3Zdupb08r5pi88B8t1Yx9T4MSwXb4O6PMmb1yG3ski9cRDoz1hjeEEWTauTHn/SpzA+Zi1u9p69oyimQpLgHn6sRx0TkonXLOk8/pmM5uojEjMe+87UTPKkHeFl8xdUWMVTFU9vaO33Wp3BaSQmgFUr3U0fsJkFPOQy3UGPU0T7QlF8tdGg5YrQd74OQyYUIegMRlNeFwWthDzutbXw+T/ryaDuLjhQUWaZLkmUXepygKutxS6SQxjaUSgjnWdS2pbhRSN4cWo2ldFI3HpODLd1IMexeNqgNsyT7Dzj7DOIpi20vL+uQb2ilMCb5WP9vngpyPFh4cTl8DXxu4fEOVR9DSmKhqHP28dY+/iFBWwAvzvRWcxU3taYOeEaWWEx+SAUWbXvyOlIXnwU+HRtxDAJIYZ765YuyMJVvXThnBLQxaNg3IyoepZ0hfByoEw2aIbWsWd4pNOAPgWyZSzQMqH36XmlXKt6LDMN8bAQzMbu9Vn3yV9atcoGfcfGqbcOE3slK7ew+aV3agrAX9Jd4MppkVNGXqsa8wQsIEGWoIblv8SKg4L6PkpJaxfpA89xjoMPGQRQEoAdX2k9sgvAGRCjM1QNipJP418CnwFt5lyL2JgOlSWAI0cBXUT30SU37CatxWcWH2rr/qZkHJuOWpL66npWFsK9X7ua8zBa6KEiuDiNi+Ydu+JC2hx+AqOBAj0F8AJxtNWhJNFcrl77K3SuhbbnoK8139GehahyW4ukypVSUbsl5bWUMGXUrZksoh4TEfAmLz5p/lCNuPxPRbjRsjdwwMq
+ /HKaX2d8
+ VBs7JwG+4TMMqjHmTPtbNDoLbCsM/OwxGTJRxFxiuwxuQdjqwN1F8GI/WM/vynp2qzebCvIHm1lCcQQjoI9BIvPdbGtJNWCDrneaImb4O2hHtJVkx3KVRS9VqP4cbJYTa2L5deNi2Mdd5Bu9RJneQfBN51vpeE1s49IaNdHFK5s1ospOlE9Z/mo/td9Hf3NStJKz9BB6Crm9yZ0l/VUlVNHQ1g9UzTKI9gq2kGzLMIORHvtr4pKho6IWZmtJcXA6mOJTY2nMsMO5oxJ7Cz6yPi4gWgleKmKnS4dk1YLAIBs89XDo7JO8PFFMn6neOaGFeHaYukpO7nhHz5e0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,57 +136,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 6/26/26 04:45, Ye Liu wrote:
-> The free_ts_nsec field is a free-event timestamp, but it was printed
-> in the allocation summary line alongside ts_nsec (allocation time).
-> Move it to the free section where it logically belongs, together with
-> free_pid and free_tgid.  This also makes __dump_page_owner() consistent
-> with print_page_owner(), which only prints ts_nsec in the allocation
-> summary.
+> All of these symbols are file-scoped (static) in page_owner.c, so the
+> page_owner_ prefix is pure noise.  Rename them to shorter, still-clear
+> names:
 > 
-> The output now groups all free-related information (pid, tgid,
-> timestamp, stack trace) in one place.
+>   page_owner_stack_op      -> stack_op
+>   page_owner_stack_open    -> stack_open
+>   page_owner_stack_fops    -> stack_fops
+>   page_owner_pages_threshold -> pages_threshold
+>   page_owner_threshold_get -> threshold_get
+>   page_owner_threshold_set -> threshold_set
+>   page_owner_threshold_fops -> threshold_fops
 > 
-> No functional change except output formatting.
+> No functional change.
 > 
 > Signed-off-by: Ye Liu <ye.liu@linux.dev>
 
 Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-If it breaks anything and they complain, we'll deal with that, but the risk
-is low in this case so it shouldn't stop us from trying.
+Nit:
 
-> ---
->  mm/page_owner.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/page_owner.c b/mm/page_owner.c
-> index 958151ccb587..eaccff355cb4 100644
-> --- a/mm/page_owner.c
-> +++ b/mm/page_owner.c
-> @@ -660,10 +660,10 @@ void __dump_page_owner(const struct page *page)
->  	else
->  		pr_alert("page_owner tracks the page as freed\n");
+> -static int page_owner_threshold_set(void *data, u64 val)
+> +static int threshold_set(void *data, u64 val)
+>  {
+> -	WRITE_ONCE(page_owner_pages_threshold, val);
+> +	WRITE_ONCE(pages_threshold, val);
+>  	return 0;
+>  }
 >  
-> -	pr_alert("page last allocated via order %u, migratetype %s, gfp_mask %#x(%pGg), pid %d, tgid %d (%s), ts %llu, free_ts %llu\n",
-> +	pr_alert("page last allocated via order %u, migratetype %s, gfp_mask %#x(%pGg), pid %d, tgid %d (%s), ts %llu\n",
->  		 page_owner->order, migratetype_names[mt], gfp_mask, &gfp_mask,
->  		 page_owner->pid, page_owner->tgid, page_owner->comm,
-> -		 page_owner->ts_nsec, page_owner->free_ts_nsec);
-> +		 page_owner->ts_nsec);
+> -DEFINE_SIMPLE_ATTRIBUTE(page_owner_threshold_fops, &page_owner_threshold_get,
+> -			&page_owner_threshold_set, "%llu\n");
+> -
+> +DEFINE_SIMPLE_ATTRIBUTE(threshold_fops, &threshold_get,
+> +			&threshold_set, "%llu\n");
+
+We can now do make it a single line? 82 characters are fine unless hch sees
+this. checkpatch now warns on 100 chars
+
 >  
->  	handle = READ_ONCE(page_owner->handle);
->  	if (!handle)
-> @@ -675,8 +675,9 @@ void __dump_page_owner(const struct page *page)
->  	if (!handle) {
->  		pr_alert("page_owner free stack trace missing\n");
->  	} else {
-> -		pr_alert("page last free pid %d tgid %d stack trace:\n",
-> -			  page_owner->free_pid, page_owner->free_tgid);
-> +		pr_alert("page last free pid %d tgid %d ts %llu stack trace:\n",
-> +			  page_owner->free_pid, page_owner->free_tgid,
-> +			  page_owner->free_ts_nsec);
->  		stack_depot_print(handle);
->  	}
->  
+>  static int __init pageowner_init(void)
+>  {
+> @@ -999,17 +998,17 @@ static int __init pageowner_init(void)
+>  	debugfs_create_file("show_stacks", 0400, dir,
+>  			    (void *)(STACK_PRINT_FLAG_STACK |
+>  				     STACK_PRINT_FLAG_PAGES),
+> -			     &page_owner_stack_fops);
+> +			     &stack_fops);
+>  	debugfs_create_file("show_handles", 0400, dir,
+>  			    (void *)(STACK_PRINT_FLAG_HANDLE |
+>  				     STACK_PRINT_FLAG_PAGES),
+> -			    &page_owner_stack_fops);
+> +			    &stack_fops);
+>  	debugfs_create_file("show_stacks_handles", 0400, dir,
+>  			    (void *)(STACK_PRINT_FLAG_STACK |
+>  				     STACK_PRINT_FLAG_HANDLE),
+> -			    &page_owner_stack_fops);
+> +			    &stack_fops);
+>  	debugfs_create_file("count_threshold", 0600, dir, NULL,
+> -			    &page_owner_threshold_fops);
+> +			    &threshold_fops);
+>  	return 0;
+>  }
+>  late_initcall(pageowner_init)
 
 
