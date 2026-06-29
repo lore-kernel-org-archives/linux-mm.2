@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14088C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE520C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:58:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E735B6B0005; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
+	id B68966B0005; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E23FC6B0088; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
+	id B40686B0088; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D39E56B008A; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
+	id A7D566B008A; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CBB36B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:57:14 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D3B4F4061A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:57:13 +0000 (UTC)
-X-FDA: 84932497146.05.A818A0F
+	by kanga.kvack.org (Postfix) with ESMTP id 870936B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0156440631
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:58:53 +0000 (UTC)
+X-FDA: 84932501388.28.BB56B56
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 488BA10000B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:57:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kk26YqZk;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 69996140003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:58:52 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lxBdgJLs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782727032;
-	b=Y4Ss8p5xoV+bDW0OXGgPZ754UvY9axOiYfWCBfL0Fd9vPVzoh6RGaWP4lhhnUyWhB8zGeu
-	KuJetntOP4zQtEhYF35n4YvZWVAF4Fx7nZiaPG2TVKYD2ktArQXl2uN60E+KLfpPVL+i1F
-	nYGWXHWBDYs2HBKLyFfO4Oy9ref15J4=
+	t=1782727132;
+	b=7KDloF46QjbLIzY/+8LTXW/FTvS0sqvvQqZarOBEJ9yymH5plcKq4m/xF8QjwrPDiAsVb+
+	t7Fc5Lxyq7DRD9Ms6ucXVRjpkz1yDzJXBDEtw2kZc0uK+KOY3G0FiBSPnbXX2/qmkxJp/d
+	kDlocSCa+yqHlDTA/vBTt/KKbDLsZO4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782727032;
+	s=arc-20220608; t=1782727132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hm7uAuXqV83pH1WcLn0gFqC/C3n5BbfPtcxR9BhAvpM=;
-	b=aXRNgSNvXqVM2pAh2I5PKK1KwwCky3SvM4NeHFUFH1OK9BamZbZIqzgBBF/iqXd5AfDFKV
-	A77M3iCoofreeiQBMUD/0F51wmfSTJv1bIOQvc+swSF3jPgvLs+JS9EWuNxB9WQ5cAgejf
-	bQk9YatNReKpZuGwm03TEoZvLWC2MMQ=
+	bh=opowCa2ZvIDE9fF6/MgL802+A6a0EGc5rtw+OZ6dgaQ=;
+	b=6Ut1x6qAyN4GT+oI2PSas6ExIyBb26Zj23B0j8NL2nwoxBX6BS0Ae4bwes64m4lsfsMtmV
+	RKv5aoNYJCVhoikkV14gAPvrYTh7Y9zR1ME9H3IH1dOCDRAVI44/kt0wH7OHwiL3Ibd0oV
+	FFGLxKFIklnnqj7YcDVQ6C+jWl4kx2Q=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kk26YqZk;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lxBdgJLs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A457B60008;
-	Mon, 29 Jun 2026 09:57:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070E21F000E9;
-	Mon, 29 Jun 2026 09:57:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DBC0860008;
+	Mon, 29 Jun 2026 09:58:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9441F000E9;
+	Mon, 29 Jun 2026 09:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782727031;
-	bh=Hm7uAuXqV83pH1WcLn0gFqC/C3n5BbfPtcxR9BhAvpM=;
+	s=k20260515; t=1782727131;
+	bh=opowCa2ZvIDE9fF6/MgL802+A6a0EGc5rtw+OZ6dgaQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kk26YqZkaOzOyHBGvLH2I3k6ZIgsbpejLMKNX1uggbfg00ql+m6ITE5AivlZeIlUe
-	 NoYLSoPHX5QnQarNtjvJggAs5ObhB2Ng6sA1FEaj2KYxKS25lGWJDYl8tS5JL+0/LP
-	 T657DnAFLnzIEO4DWrYaylDmo7kCY0tWBecCf602uDcy1fstdla7kdT48LvT+OfVth
-	 4S2gFKF1BuX7kCGMgoXI1Gh5x2kbURdgGraclZaKVuHTRkPMQeH+WYdlWKOv6oAqKV
-	 xDsXNaRkCnpLZyllAbvyiZq/eSxywnXfXPczSic7bQEgQhxPMn1qTOi77AqfY+q3rt
-	 E0Z79BLC+0a3A==
-Date: Mon, 29 Jun 2026 10:57:02 +0100
+	b=lxBdgJLs0kGs9j01dlQJ60KK/e8g5xMS8KKXGGi0H9F/bdVZdb2FdYlqn715ZRY88
+	 SquVXra9Xgh9/dIiWwEMLlpemoZuZPw5lnSkPlaUS7F3o2k1mqdapRCy0LCXl0095Z
+	 L6P3Cc6K0ADLqpYZ2X2i4yYYrjdCNwmIr+V9NEXbwiZYEx041eXfkFPr4mvBGyGhkB
+	 89owQTyLFU21r4/x2PP/yGZpjA4ru8qkfuWIbUhY6IHEBUbdAER69uJ8d67ZvLqjud
+	 S7Ui3Xdj7RmjUJOGVkewC6G6yq39R7f2q84w+3vhJyhAFvfEUb/0b2zG9RSPnjgHfp
+	 B7W+Ra4pS4rrA==
+Date: Mon, 29 Jun 2026 10:58:42 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Manuel Ebner <manuelebner@mailbox.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	"open list:HMM - Heterogeneous Memory Management" <linux-mm@kvack.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] docs/mm: Fix brackets
-Message-ID: <akJBDwtGX241WHxo@lucifer>
-References: <20260627093258.31265-2-manuelebner@mailbox.org>
+To: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	corbet@lwn.net, skhan@linuxfoundation.org, sj@kernel.org
+Subject: Re: [PATCH v2] docs: pagemap: fix flags location, member name and
+ sample code
+Message-ID: <akJBvKcTU1dw8M9I@lucifer>
+References: <20260626162710.25844-1-zenghui.yu@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260627093258.31265-2-manuelebner@mailbox.org>
+In-Reply-To: <20260626162710.25844-1-zenghui.yu@linux.dev>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 69996140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 488BA10000B
-X-Stat-Signature: 4m3zmpnxpdzz3hnk9ud6fyk9uomh8gc8
-X-HE-Tag: 1782727032-326842
-X-HE-Meta: U2FsdGVkX1/FXUm3SWxbE4LOOO/qyyhIDn3uvd4wIAw8zGQdN+RdA0wTCQfxGuyH6p/4UkMy5evjoKYTgmei5/ULa1HVThNvjVDa1Gik5MXI46QCR8Drr8oNCsXXJ0HTx1RydGeinJlvjGbWUeHUHwtUSrZqrxqrHcKWiWi3Opno/1DLBJshxfTA/87ZqhEHtdPwM48t8+VyuFNeYm1IM+zxf1VvHpRXS9WqjzrYqTR7DBLFV8CDuTZ9XKjBTK5R2bhd0H9IFkrZjXN2DSZrznUCRnziZ6sPAQFL/FSaN+ZduT0UhEgZm7q50IHR9vpM/BqskIOckqiMsBlttExOXuUVi9961tUpyPn6gy3y+ACobweeBILKkxqu3IMWUWDm+uXut09RZ7jypbJlq77an/VPKFfgZMjT+R/BVjXuwu5jFLC40JHwkmEiXn2FJKVhl77JcQAV0o4htybNja7Rt3KqTCzGXMdW4JhjHQIGsNd9tBuJR4dEMYq52qjLkLn2MUdyurhLu1wPLMgavynZrjsTMm0t3u1+9XY+43yelC+7T+ieAdWOw55zCqNa/yf1lBH39P03fyg8G16oEBj9XFCRZHt9c1qSuA7KjzZY2icWOe3ap/5vlu3wRJvPmCTISoY3XtKNkqLbufNTfBND03tw4QKI3zWbU8g3taV5zK9J+NdRFiQnsisyqoW2MjmZchYvCTtVzOTRfZF/xiHGxrWloZdypjKY8kd4wVFOJP5RSSuK8NxItVZIU9GUQIOVB0z8WQ3yMwPvO0Xt6Lqs6zIMOwancHpH18pn+mfbtjfkH2Wrk86TFMchLM1Jja5kqrLva9g/msBXTUxIzguyomdAEbyAgv95NMDqP/LVR4jdyDundGjnUOzvMUsqI8KTJVTicemf511u3eRnOjCZH00ORPsRjrL2sjH1E1v/NpKSOrr+LthaiKRNAw34eB1O6KLzABIQqHGjslOzZyq
- RS5aPH/O
- 4kpnqSCfWLK3O8pIa21H9AaIY1v7rrAbROiI6iRpUko0SnBGC8Y25dfbYKy46+06QO/HzmBuuXORkU1+a5nDifQ1p1LLpqT8MgOt/Qz4al9JZo4gh5m0y26mh2O2jNkp1ByRRMTD0FyITvJw9ZgWbr3/SoVSJo66+vANqhaZKvc99cKga/c9bts8g/086nR9NYJkWMOU1+Sgd/5kB78b89J26ZoxvOQbumtVoncVWnlRYQfKLpS1HC/6LeCLgQfrey5qEDjAp4yURtkGUnoofoBvqgJ6KL0UxtOYGwM4CHKSFo8ckxyTiX5CdlaiYRcTXh6tW3PDsWXBJsFZGvAvt4Iy8iA==
+X-Stat-Signature: aei4ywuh1xhi86rc1stw3k5ma6kfbdxr
+X-HE-Tag: 1782727132-681099
+X-HE-Meta: U2FsdGVkX19Ba9jbLJ6N2IWv5hmgy1Dw5o5Quh8lQSTDiJjcQkqGSVY0tu3qZDksoikC5HVyOsou/43lD3KvbalVeMn67oEkmMwaTzze6wnmln1MRIgrx0Q2RzutTiQd1vnwBpDXbIhesMIWBQFwU6kKFrfXeLveZU4M64rNkNg/9Uc8MWGYkDnuVAVkWHz+TtNQPGCW60g0WMfqsWIbSzv1J7VsXIRDO4It6rn4bDAiASp8I21xzwwQw4ZgYpj9slW/oQItByaSPFfYt40JL1kSYYq19IErxgIkoBotyc3fmbBqN8LE/w3uJkOoD7LBwSva6ewQ28BxHLwJtE7vCPuV9NT2Ub3GW6dl1T7zTvMXmbKTx0X2sl/ZMvrn2DhKwogLF2R2m9IIWbeT5tPmpp2oAQXaqwlqRU7KJL5m6O9E0piIxGHMFqhYAl7Ckx15jiMvOlvQ66BNeJNBazjrqEkUHJcc6uWtgiwt0Gi8vgbzP1jgj2nxpQJUlDcysNa1XvtcLwWkWfVZ7jYkG+wD1Tw586vEmITXQUFbKQMMbMnlSPJbAmJN82L4h7JqU9z5lCdcy/WKYc001IWsPEVjKnOHyEIYzGG61Ta84Kk0UUOfJCjGgdiqCQGMgLoSvi/l/D8I+lmFb9ytORUtKOTTKGkIOWrIe3js410z5yHv7VPDwUdWzUTU19IYMHlDcFDlUjs9eHmT5NG8Z27OO2ypTv/fsdPgDiIziwQU0n2xshpcy95W1u6CegdK2xQKLFiFinril2wh/47TjjNb5ZQepD94wSkbFbBXTbCv84EdtzzmAA/o+/tObNhSZabBDXL8634nYL7U22pk0bQVQ7kXFAEElqyv8mDO1RCUvuWnsALnLAmlc+R9DjDANLi0OKD3TokgiozVZ11xjopgDgNqS45YklrTlWkChMKnF5zvPqHZAv9EKuAsSVUv9ZtDFgF0yjzPexUFGRReNW2+Bxj
+ JfDyQcT3
+ FwPldcfX4Ci9a7P+/c7HEcQY/QN0GCq03pLMG225BgBMzHf7e19lHWWuLyay6wtMWuRpX4jaTwPQJnSisyORwlTm8rhCXGHNze8D5Vt11BQyHMXROYbwhGE2N5nMYzwGiNNotw0CgbKSy80lQl+PYNwzPG31HrOLPt11cpi/tX23Gz7372WnixBl6hH4wYhUEPIUxycbFZJ9qt0vVsfx1XZO/qeQVTkfa8uhGDXVGfOzQY+RV4qUDKzk4LOxXg/wS9DGjsY69dbAEKqjulFgm5tsfEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,68 +93,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 11:32:59AM +0200, Manuel Ebner wrote:
-> Remove unnecessary ')' and missing '('.
+On Sat, Jun 27, 2026 at 12:27:10AM +0800, Zenghui Yu wrote:
+> The userland visible page flags (KPF_*) were initially moved to
+> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
+> stable page flags"), and later moved to
+> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
+> (Scripted) Disintegrate include/linux").  Update the doc to reflect the
+> current location of these flags.
+>
+> The member @walk_end of struct pm_scan_arg {} was wrongly written as
+> "end_walk".
+>
+> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
+> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
+> The second one included the wrong category in the required mask -
+> PAGE_IS_FILE should be used instead of PAGE_IS_SWAPPED as per the
+> intention.
+>
+> Fix them all together.
+>
+> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
 
-As per David this isn't correct :)
-
-   "Correct typos in mm documentation by balancing parentheses"
-
-?
-
-<newline>
-
-> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
-
-Thanks for fixing this!
-
-With the commit message corrected, feel free to add:
+LGTM, so:
 
 Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
 
 > ---
->  Documentation/mm/hmm.rst           | 4 ++--
->  Documentation/mm/process_addrs.rst | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/Documentation/mm/hmm.rst b/Documentation/mm/hmm.rst
-> index 7d61b7a8b65b..54c461e7a143 100644
-> --- a/Documentation/mm/hmm.rst
-> +++ b/Documentation/mm/hmm.rst
-> @@ -191,7 +191,7 @@ like a CPU page fault. The usage pattern is::
->        mmap_read_unlock(mm);
+> * From v1 [1]:
+>   - drop PAGE_IS_SWAPPED in .category_mask (David)
+>   - fix typo in commit message (David)
+>   - didn't collect SeongJae's R-b (as the content has changed anyway) but
+>     thank you for that!
 >
->        take_lock(driver->update);
-> -      if (mmu_interval_read_retry(&ni, range.notifier_seq) {
-> +      if (mmu_interval_read_retry(&ni, range.notifier_seq)) {
->            release_lock(driver->update);
->            goto again;
->        }
-> @@ -316,7 +316,7 @@ between device driver specific code and shared common code:
->     system memory and device private memory.
+> [1] https://lore.kernel.org/20260625174447.24292-1-zenghui.yu@linux.dev
 >
->     One of the first steps migrate_vma_setup() does is to invalidate other
-> -   device's MMUs with the ``mmu_notifier_invalidate_range_start(()`` and
-> +   device's MMUs with the ``mmu_notifier_invalidate_range_start()`` and
->     ``mmu_notifier_invalidate_range_end()`` calls around the page table
->     walks to fill in the ``args->src`` array with PFNs to be migrated.
->     The ``invalidate_range_start()`` callback is passed a
-> diff --git a/Documentation/mm/process_addrs.rst b/Documentation/mm/process_addrs.rst
-> index 851680ead45f..b391502fbfd6 100644
-> --- a/Documentation/mm/process_addrs.rst
-> +++ b/Documentation/mm/process_addrs.rst
-> @@ -724,7 +724,7 @@ the zap and the invocation of :c:func:`!free_pgtables`.
+>  Documentation/admin-guide/mm/pagemap.rst | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 >
->  Since it is assumed that all such steps have been taken, page table entries are
->  cleared without page table locks (in the :c:func:`!pgd_clear`, :c:func:`!p4d_clear`,
-> -:c:func:`!pud_clear`, and :c:func:`!pmd_clear` functions.
-> +:c:func:`!pud_clear`, and :c:func:`!pmd_clear` functions).
+> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
+> index c57e61b5d8aa..20e3fe76f099 100644
+> --- a/Documentation/admin-guide/mm/pagemap.rst
+> +++ b/Documentation/admin-guide/mm/pagemap.rst
+> @@ -67,7 +67,7 @@ number of times a page is mapped.
+>   * ``/proc/kpageflags``.  This file contains a 64-bit set of flags for each
+>     page, indexed by PFN.
 >
->  .. note:: It is possible for leaf page tables to be torn down independent of
->            the page tables above it as is done by
+> -   The flags are (from ``fs/proc/page.c``, above kpageflags_read):
+> +   The flags are (from ``include/uapi/linux/kernel-page-flags.h``):
+>
+>      0. LOCKED
+>      1. ERROR
+> @@ -264,7 +264,7 @@ The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
+>      provided or not.
+>   3. The range is specified through ``start`` and ``end``.
+>   4. The walk can abort before visiting the complete range such as the user buffer
+> -    can get full etc. The walk ending address is specified in``end_walk``.
+> +    can get full etc. The walk ending address is specified in ``walk_end``.
+>   5. The output buffer of ``struct page_region`` array and size is specified in
+>      ``vec`` and ``vec_len``.
+>   6. The optional maximum requested pages are specified in the ``max_pages``.
+> @@ -275,7 +275,7 @@ Find pages which have been written and WP them as well::
+>
+>     struct pm_scan_arg arg = {
+>     .size = sizeof(arg),
+> -   .flags = PM_SCAN_CHECK_WPASYNC | PM_SCAN_CHECK_WPASYNC,
+> +   .flags = PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
+>     ..
+>     .category_mask = PAGE_IS_WRITTEN,
+>     .return_mask = PAGE_IS_WRITTEN,
+> @@ -288,7 +288,7 @@ present or huge::
+>     .size = sizeof(arg),
+>     .flags = 0,
+>     ..
+> -   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED,
+> +   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE,
+>     .category_inverted = PAGE_IS_SWAPPED,
+>     .category_anyof_mask = PAGE_IS_PRESENT | PAGE_IS_HUGE,
+>     .return_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED |
 > --
-> 2.54.0
+> 2.53.0
 >
-
-Cheers, Lorenzo
 
