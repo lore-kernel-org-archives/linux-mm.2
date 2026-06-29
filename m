@@ -4,88 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31FAFC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA30AC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7FB16B00EF; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
+	id A45816B00EB; Mon, 29 Jun 2026 09:34:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C306C6B00F0; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
+	id 9A8596B00ED; Mon, 29 Jun 2026 09:34:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6D4A6B00F4; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
+	id 871916B00EF; Mon, 29 Jun 2026 09:34:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8DD746B00EF
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A985A0101
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:26:47 +0000 (UTC)
-X-FDA: 84933025254.11.B60AA39
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6D522180002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:26:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hyOkg9Oc;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 589306B00EB
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:34:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE827A0100
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:34:09 +0000 (UTC)
+X-FDA: 84933043818.27.0B81756
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0872EC0009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:34:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Wi1AmJ1e;
+	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782739605;
-	b=V18BxbJL0gNJJ9OXjhPJzkzNCnBKNJgJ5u8wUdnQipPQpdDMtHs8C4n+54nLcjfns/+n4e
-	tTjqNy694YzNnJD6ydeELa0JkX3KEEXwPDfhhTrEG7uAe7GC9LbjCBswoFEP/oJbyZ6K9y
-	6NL2q+v+NAXplvQIm5hTSSf7bz8vLLQ=
+	t=1782740048;
+	b=VHOHURdqsfO+jPeXKYmkbc/9Zuyx/jZ2jlvScAaJ/ab9GRpxPs9r88YbrDE73rIbvDSRKz
+	+qbN9UkMn0O4kCaIVSYQrCyGzeixAlloT9Yud5eJMEZcM7fzYt2JRyjL6EsRCsrhuNQavl
+	WtFPu31GFUjSo5Cv6tVUiSrOojHchKc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782739605;
+	s=arc-20220608; t=1782740048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u8ULakCzLsWXbut5dk0qJu4BUbPuCQCs0oXe/SzVkos=;
-	b=d5QCdxSEZ0+rUK9znnXwsqRH8c4E5V0fnYjbbk4KLBKWVP6w/95zzkHoDnTqMe/AxTVaE8
-	mYVD4TCBfBnfjlh/cDf3MzYipgprcPrblZjiGOF384B+VtOjNASRIUINHX8ERlx6cDtPdt
-	o1lrBThcbJFwOXzUkmlvtuS96Hw9AUI=
+	bh=EWnLWnmmIYuiG4wckNud855w6MzP81jV1onPDpYtMjQ=;
+	b=QRyKCMeTBoNC1mfDkHtdQbZBkU/OmE6KjjIp4C+UcmYfbBjt31CUo+fCbkUzPSt+AYfR6z
+	H3rJrQ3efk/yoztjm16UmSeSGfhAzy3l39YObFEBu4ZdTvXTVLg5VEaQPjVPvH2OJzOHzI
+	XZgFbuOfD7kfTgTB/55Dhi70mUGaYUo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hyOkg9Oc;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6014640B0F;
-	Mon, 29 Jun 2026 13:26:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C7C1F00A3A;
-	Mon, 29 Jun 2026 13:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782739604;
-	bh=u8ULakCzLsWXbut5dk0qJu4BUbPuCQCs0oXe/SzVkos=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=hyOkg9OcJ2pdQbr3lKDnJd3n10vcR5hkZ12R70W40Tp+M69i1hJFYPRp/7+K27rj0
-	 fm+4ODdXl/T2Aw1QEy+xihsoycDNcycYmv/RcxbSY0u2Nzp+i72Vj0j2GoLeCGypb+
-	 H/CJqlp78ubNiCpI9a8RPFINrH0M7Gk9YIY33+wvocGDXcQoyGZVSYlDjuVWCZ4PTG
-	 tEX3XQlU+iXk72Q+i/rVNPXSVYbw4gZsXD0yBm7fKGzMwYMG4aZ/1CwW4k1RuCgBS8
-	 uWbmr0B66Phk3fM/sBsFQQeBKWbpOZXSQfbuX0SXzU3Emg2kMzVYGEHYrL7Jv136gi
-	 tNVWvCFiMYR5g==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"# 6 . 14 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 0/6] samples/damon: handle damon_{start,stop}() failures
-Date: Mon, 29 Jun 2026 06:26:40 -0700
-Message-ID: <20260629132641.159851-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260628214900.243ae17b910c18a4434036d7@linux-foundation.org>
-References: 
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Wi1AmJ1e;
+	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mkoutny@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-493a613571eso12154495e9.3
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1782740046; x=1783344846; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EWnLWnmmIYuiG4wckNud855w6MzP81jV1onPDpYtMjQ=;
+        b=Wi1AmJ1e75U3nJDAqLXmqs2+l1uIzAFtxxR7jtcD2IIT8xs7ds8MarfL28/wgsfEMA
+         NrrwjKN2ge6auUS0QPJaL4athG3H/B+ckjb63GoRsnvWLTrxgy9ubC8QwUG7ULeYibhN
+         zFItkGZ3aXvMgpShz/kYAbCt/IUqhZzQkepTwvX1tnb93nct8Q1SSdGiLMfVThMYwbpD
+         l0jFh86CkU3p8z5yBqe6f/lqCVWutYlmI5Z+SLYeMKhzs6rcZCUahz+5OZhl9PJ7YZ9O
+         KT0sDRW3YOs+VNJegeWNME7+8mDPEO2+1ogmxLPtRBnoaosOzp5T+nOnqwzV8gGuCNEu
+         xG1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782740046; x=1783344846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EWnLWnmmIYuiG4wckNud855w6MzP81jV1onPDpYtMjQ=;
+        b=IsA9Kb1upX4JsaH6V5SHNTS7oXCXELdKwUDSK2tLA23N/nBTtvnzan2ilDCo3kVm97
+         pz6DWHXbNK+xbO0F9n6TrviZ+WTVbfWp6b9ibB7jJzTwjgiKb0aCA09Svhm1kQdgDd4r
+         gs4dCWl95pJvApZ7Xq59ZyFvdibqKomXiaCOuLNcpcsIaFgVID03330rgMUqIEaN5M0D
+         xJocvaksA7lEq11eUJ8uh6Xc8NJ/Uu0xFa3rMxvcQ6CLKgyXjU2x1sdXlw0QdCYamNsX
+         3/5S8QBeemHJN4VhYY0+v2jqGUmqxgpXHEMGrkY/qTJpGZa05Nn/teO2vy5Qg+zj02QM
+         HX7w==
+X-Forwarded-Encrypted: i=1; AFNElJ/SdI93c26BlMAoQUtyyL1/G7tQa2BF2TqBoZT8W56ZTAsjMxSe1bRN33coaJBDDEjn6ht1H/fJ4g==@kvack.org
+X-Gm-Message-State: AOJu0YxZ1jXL9RHytf7hpmgXYYwVOzv7xmQR4hH2OZ+wTw8CNHBoHole
+	dGbe/CTjYyHCH4FGUsyYjBkBx57MdvxpkT3LYto/Ft77QML+sYAL+i3VrXO8RscPRMA=
+X-Gm-Gg: AfdE7clMulGCIFiwnxnIcb/W3glerORyRnwkrItEMP8Pf3JquxYlEtOQPOmfA2nf+Gh
+	eQHFVaxpSuCpzox+SsHIts1rOS+31HB6wJsEoZalZwT8U2W183xXbnQfiMNr27zNSA8BlIyXR4l
+	kINSXdY1ZNtTPufn/+SkHAOF4T37iRWh8J+n0uMlVgQTzyqlXMwFshGpITsIaNAZPsyNk8zh0WR
+	v3RlbCRuA+2ZMTHOOkooNdWDo8Qlvhizw5h3aRVIKLT0PCHcC+rGlMqpuk4aRFwwN8UZW1YmLcv
+	W3Dp5lIlMbIOnsG3G9xYSwNHOfwxu5X7ksTKs/lUeTEnMzcYFlXlqt1j0WLZUvvBrgPX+uQOJBF
+	Hj/kAHvQ4/hyQ+ic6AUenV/N38PjqDDGDlGqUUJQ1IyE2cMbM4T06FrdtJUPPXzkaj7vLThqRRz
+	pBb+U2o6UdeGLEjJBkMA==
+X-Received: by 2002:a05:600c:34c2:b0:492:53e8:3bc1 with SMTP id 5b1f17b1804b1-492668858d0mr266307595e9.17.1782740046575;
+        Mon, 29 Jun 2026 06:34:06 -0700 (PDT)
+Received: from localhost.localdomain ([62.77.90.70])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49268ffe204sm322532645e9.7.2026.06.29.06.34.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 06:34:05 -0700 (PDT)
+Date: Mon, 29 Jun 2026 15:34:03 +0200
+From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, shakeel.butt@linux.dev, 
+	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
+ into vmpressure-v1.c
+Message-ID: <akJzXU52XJ9-F2IB@localhost.localdomain>
+References: <20260629130042.2649505-1-usama.arif@linux.dev>
+ <20260629130042.2649505-3-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i84hsgiuzw3rajaakj1kehguci9z5nhm
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="o2pdfa6ez77chn7m"
+Content-Disposition: inline
+In-Reply-To: <20260629130042.2649505-3-usama.arif@linux.dev>
+X-Stat-Signature: fexxjbio7stdr1p66iimgz7egpxp1ji5
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6D522180002
-X-HE-Tag: 1782739605-663489
-X-HE-Meta: U2FsdGVkX19zsPS5iqhLg/unpRkbd9ataGqC7ndqsoo9tPDo/DXxaOEuO6dp6E+OCigTz6C7WepVx/UD1amF6o2TPL7stnGnSuY+QvHrpzZb4Phq5PnGidLuNjs4nC1VwOtJ6jfHh+LjLR1hpI8mAvmv/fX4Whp9yEQSZoPdSRfx/9n6qV4Uc+Y1XIVluQsSq5cctRoP2QHmKjteAB/15g8h9JCfahOUaCgSY6YSKTqDwjIMOY+l9qiNgCh1qCQoLiuqf/V0qYY+16RqgD+b5ZXCXvO9svNbnqNTR0iBXFnmXLUH1+hwJVrb/1XbFefH+juqUIDga4lLwXZUgxbCvjgfRcqvfPys7sS+/9PPBIWreGUePSyP+GRMDMgod7qpVVDr0DFEVJx2aIIOzQdn1gzFT0NbO3fRw7APo58GIMB3XqzNc0rxmBZNsJNQ/SerUA4EXazmm2cJvCjUBl5QhPo2wsYlSZKHYlhqdDCX2zmhXBFZpQvVKp3U9rfSxB5mHwDr3dYdEO6HFYKm6ld33m7wyyE5b73vEZmWXeKtcm0YHXxNFwGGDnXS+gP+HCSe8FPrPd7zrINiFsYGZ6fDdzDl+2yhFYVdd38nJ8W/SoXQyZTbX5bULHzNEu5AOxx/r6a3iCMJdvpblcNG/wRH9sh6I4jCNlvUGM+xE1lrOqq0WYk37CGhP8TMvaZ3G/HyfE/65qr+CUeFLUWBIgVWeEDzErwwSdsFzVLP+mD422Ua5Y+D/8O+qN9USvVVh5ddYh5jtmXOBr9SZ3+LmR+CCLjeFVFnVU0MgWx76Iw+16q+1dUOwS+xbru23jz052ib4B8Cgz2f30z1pf69LSNVruUt+zRISuBwAYBWeAADFzlNZK4JMwPR8QwwxrLsQj10vq79xdXHaD/m0b2MOK2M8nyVWBKfs5iXVuxVTTAfpi7SmFQ91a04FYSfXQjfDC54nVXjOhBDuK4P23orE72
- f4OjDQWr
- Q96XaD3Oe4TKbx9rZYuSpUo7Ag5rpbYafUDu7ipaOyytSZpd3izlk8U4+FCzqf3Bdoi8wzDI2+EpHCJZ8F1DztBDJtINdOKajODzbSHIjLTPerxSsX4+v1u2N2O48Xo1bTSE3AK3a0yb94wgDS85KLKsRUeKQSUrtk4SHg3xl3JGFebelqo/G4luBnuZlAHNIFZTU3Sf8YDFbFxy1H6P7lvRtq1V3XYoFRAGoLFQdtB7kYSyTukoIDUw6nxlZQ1c4WBDRZjFv+Zvk1LGAishJEwgCXJNs1qjmQksvqEOnKfkspncQgxhhfAWfSuz1tgADjQbB1vLHByz56SN/Xi+fwJ6Qgw==
+X-Rspamd-Queue-Id: 0872EC0009
+X-HE-Tag: 1782740047-586245
+X-HE-Meta: U2FsdGVkX19NosYC110S7k7fv3LEljpxIlq7NFvoKet219wdDR2n+wc0yCVtsC62JgwrIwhB7hejShOdCGbd+3HbVZ2lSLS/ja+hh5vNEbyYV6fzMf223FEhBGzovu6QFVD9y3g4Wa2iooZM6R8puE5EroUts9EYw/TCo1KWFYveFePjNOYTDWRguf1MB9Yev/KUQaTVUgX49iaIi4/9A7ybo3VoiP1rUQnKtjLYiIUyuSv8C71JE8hO6V0WEFUjfM6Zz5DhBfzfXngRB5UoMoXFpHsV8h8AkvfNC2G/WfqnsfM7blm6OMxpabUxmDGI8+s9x0S7ZcF00fgUYeMmbpfZ5dGwodx62Nt+pcVADLcQ2IL33pHv5vy/GaeGlrnXlQKKV2A/vrBumPBpH5VvogMBHdVCX7+OJG19O28TzaDhueKAA+9E3Q6FrgCK48ed4/45qfmBZ539UIKOUrMXPhwe7fl8OoFCPKIt209h1kJtpANrMg1EeHYDjO9w0xrvtKKBuslTIrk0BznX3kx1fS5YgnUM7OUAPX/1oYXPvttftwfv4dnPGDGwts/wY4x9etDQQQRvRbm3kQ2CvKALzOF0GhZ72juok4xPR7QcDPAbTrsM3zY87SoasDeUiPPfP0aRcHyduk2VQkcLbPOH2RUR0XMJIfcu8ylosqBhSRqZ/WV1zECruwaZOC3q/rPXSc3oJZZ0LUvjtsUF31K/xv7B9UZYStP40iAAKnfx9jhjmJknfrwDedb+yw1Q5M0iHX7jtQtVUyS5qkqeKvl+ZWUkDwRiwoRQH0M3eE3X8P3H55jf1AYvkCrDpYFGjiajqpd1thDwWdEZo5QEhWk9MXOL2TpCQZIzdWcQcPrWGBFDNY/M+zqck/qCizz2u7cK0fKb5CWHgM38HdI3w+Rk4xqSKJTa189NF1w9K4YlEu2NcNzLemsmZHaQKUANlnMgqZTfaABCyvOsj7n4ffQ
+ wCxDcR5D
+ v39QAiC0GpHyQhJINFlqFOgyv9xV469ZKpHRX9X6X3drt2Lvk0in8zD/IeXkcKjtbU2VAYOxRN4dc+lIxRTedFW9wK9DLNEqd88uPrMhdtFryhcCb1D51SxG8RVdXBKMDDUPDQuhJ+21WWpXosVerCURHe5TX67BICBHSVECaR7MM+oMr9TZH4NVOt4510JwgFPwc8Fc6OlZV8vvkX+3iZpPMC84NSu/zgLcc13VkFkI8ulplOLtk5YIbdb6R2/kolM3zeOpGNJ4wVCmXE1cWODMynKXRL03i7Jwo3w1CN1C9NVZRrVqy4U7yvKKmURBBJYOHC0PdYLLp67MNvhJeu1rtySVU0+P9EiVLlqccLBkh92FWIpY5sRt1HvCuHJZWMtZ8oBSZWaEKb/04VJc5wOSQDA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,26 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Jun 2026 21:49:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Sun, 28 Jun 2026 14:54:39 -0700 SJ Park <sj@kernel.org> wrote:
-> 
-> > All DAMON sample modules are not correctly handling failures from
-> > damon_start().  Among those, mtier also has an additional problem for
-> > handling of damon_stop() failures.  wsse and prcl also have a problem in
-> > their damon_call() failure handling.  As a result, memory leaks, next
-> > DAMON operation disruptions, and use-after-free can happen.  Fix those.
-> > 
-> > Note that only the damon_start() failure caused issues can reliably be
-> > reproduced.  Reproducing those issues require the admin permission,
-> > though.
-> 
-> So it doesn't seem that we need to fast-track all this into 7.2-rcX?
+--o2pdfa6ez77chn7m
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
+ into vmpressure-v1.c
+MIME-Version: 1.0
 
-Yes, I think it is fine as long as they can be merged into necessary stable
-kernels in reasonable time.  And 7.3 also sounds reasonable to me.
+On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif <usama.arif@linux.dev> wrote:
+> This split is the first step toward eventually making vmpressure
+> CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
+> (tree=false) cannot be removed today immediately: PSI is not an
+> exact replacement for vmpressure, and switching networking socket-buffer
+> back-off to PSI
 
+(Here I understand PSI is a different and differntly scope metric) but
+what does it mean when you write that tree=false cannot be removed but
+the other patch bails out from vmpressure() (i.e. nothing is updated
+anyway)?
 
 Thanks,
-SJ
+Michal
+
+--o2pdfa6ez77chn7m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCakJ0RxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AgFPgD+JZC2Ru4dZyck6LkO3pM6
+3H5HDVhUScIWPmMTNxGATCUA/i2bkM9tfKRLXJkcr8IqKXvQtu1C3cOkS6gDBRPc
++0YI
+=7mf0
+-----END PGP SIGNATURE-----
+
+--o2pdfa6ez77chn7m--
 
