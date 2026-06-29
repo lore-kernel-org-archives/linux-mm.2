@@ -4,103 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989B1C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 02:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7EBCC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 02:20:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B1246B0005; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
+	id 78C996B0005; Sun, 28 Jun 2026 22:20:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 861D66B0088; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
+	id 7648B6B0088; Sun, 28 Jun 2026 22:20:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7501C6B008A; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
+	id 6A3186B008A; Sun, 28 Jun 2026 22:20:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 475806B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE6801C645B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:12:02 +0000 (UTC)
-X-FDA: 84931324884.03.69E8158
-Received: from one.firstfloor.org (one.firstfloor.org [65.21.254.221])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1AC5BC0003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:12:00 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=firstfloor.org header.s=mail header.b=dJjN3COW;
-	spf=pass (imf22.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 475836B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:20:48 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BBD6A8EDAC
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:20:47 +0000 (UTC)
+X-FDA: 84931346934.15.A9C9EAA
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9C6E9180003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:20:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fPRn39Wa;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782699121;
-	b=142DFB5Vz3fqMoNMSi/R7fhbZyKrOs7/lSjBNZ9EF9MZdD9JprWGGZL6e8NJlrazpHAJDY
-	vW8W3RzkmcgkiEPWhzi8LEEpLBrwaoK0P84/CN0osvoiSDj5GUAs4T1PxeDq8LdfQQERYi
-	h9QzQ4xfGK8xZJh00RLHL/yNwQ5PXtM=
+	t=1782699646;
+	b=CrLlVWtHrYTBgHRDRSC7qVWc1V3toXsKayy0CA2u9/o+fkn6hLXsrb5QnNDUYxHs4AR7pn
+	lLGUfSngdQembLHnxZNddNhVRTLsZ5VQYSBudeiFTl9cri3m2Iq5abmoAuQ84brv8XTJxn
+	rM2EYuUGSEjz4Dw6RYTTcU0A2wxmSms=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782699121;
+	s=arc-20220608; t=1782699646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ju+l1c1eu6zVsUY2O28hQpAXOGeb8J/0ohMkOsErdu8=;
-	b=Guh1udFETsCJzoUJx2pazcd6pI1NuU0J7pXhXSIFDtAnshmeqon+Isnu8TWZF313zrgcAm
-	uWoNaCgOWgFpafQdBHoDjFlMh2YmH3FSYZMqA1Q/KgkuZV6v1KCGYgd4x3uNtdEn34zhT/
-	EnB05RNC8cs5Z/pOJcEKU+Jkw+u4iFY=
+	bh=8ZMBFIIHzKp4wEGH39HgLodCOcu46BE1L/+pEUVqads=;
+	b=8bux85BMXPQxVCVF6ZeN31mVs1cD2XQhEAM0bJtfi9DPY8dbU8m1GkbZqubemGiE+wOtqh
+	noJ0v8z80D7v+cdYQ8vuX0nJk9WxBhLwa5xJyQdkTUrtVf+rWYEgCd9RzQCs6EzWk1ItQ3
+	faaA+8iY7XTYClGt6F06J4GKx+GflEE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=firstfloor.org header.s=mail header.b=dJjN3COW;
-	spf=pass (imf22.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org;
-	dmarc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=firstfloor.org;
-	s=mail; t=1782699118;
-	bh=RFG3rzu5a6Ap7m/l0KIWt23agkjRtO1qq92PQWzi49w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dJjN3COWIwqRMqxwVgtQuQdggZDssaR78n9SWsZ7HMfD4HwLIMI0jbAltBaMq55sA
-	 j0R3zPaOyQSOczagvtS+qsgwqDIuziba9Ons2RHL1M5XFhmzqWN8A/HZF6C/BrLncX
-	 q6QXw5w2oCh7Wv9PvURMJr1nELOmwNuWVx5vE0mo=
-Received: by one.firstfloor.org (Postfix, from userid 503)
-	id 70B0C5EAB0; Mon, 29 Jun 2026 04:11:58 +0200 (CEST)
-Date: Sun, 28 Jun 2026 19:11:58 -0700
-From: Andi Kleen <andi@firstfloor.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-	David Hildenbrand <david@redhat.com>
-Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
- non-atomic page flag ops
-Message-ID: <akHUboUaYi-OJHFu@firstfloor.org>
-References: <cover.1782676497.git.mst@redhat.com>
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fPRn39Wa;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf06.hostedemail.com: domain of ye.liu@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=ye.liu@linux.dev
+Message-ID: <407fa67f-3212-4c5a-ac8c-7c5d41479cc9@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782699643;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ZMBFIIHzKp4wEGH39HgLodCOcu46BE1L/+pEUVqads=;
+	b=fPRn39Wa0GEM59aN7rtvgym8CNcEvbYf4MbBgPWlhNekwP3UtQZcfBsn2jq35lV17B8YO+
+	ohzFJHKhjmLPVVKFk6qouSh54NzX3Ev2QRzLdD1OtpCpNa71KtAeJy434X2Kx/kWpVPre0
+	5qud769RpwjuoLjWTx08XQF30LuXn6w=
+Date: Mon, 29 Jun 2026 10:20:24 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1782676497.git.mst@redhat.com>
+Subject: Re: [PATCH v2 2/6] mm/page_owner: use MIGRATE_REASON_NONE instead of
+ -1 for last_migrate_reason
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260626024550.25677-1-ye.liu@linux.dev>
+ <20260626024550.25677-3-ye.liu@linux.dev>
+ <DJJ7CCWCYI47.3VWWQE2AWP6NC@nvidia.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Ye Liu <ye.liu@linux.dev>
+In-Reply-To: <DJJ7CCWCYI47.3VWWQE2AWP6NC@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 9C6E9180003
 X-Rspam-User: 
-X-Stat-Signature: 5wza8mbte7gtx37d5gtihcywuofbhxsa
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1AC5BC0003
-X-HE-Tag: 1782699120-72163
-X-HE-Meta: U2FsdGVkX1+c/8q2rvxIlqjkTPiVsFPyQ/QPcjO7WCIdt6jQlRQAfmZk6SK8B7eGzNboeghjMXCdkEVmbvU35K1jgfUBQLuwjlZAmGRcqQGFjUrterSm6YUfGvFBV3zVjHyq5qT3c3TmqIBwBEGV4ltZBTrSpYdanA3m7200JQYbOPqdyy8mmlPa94o8rSpb0WX61GraibKi8TJPo7ZRFOgGL7GQRgA2yRRtsMl69WDtBNPmBBfDfRXLQrGhDxbazrESU6PBHXP4vS+pPpHVK6EDCuSTa5kzt2ZpDb6U4bRachMGrN1B2UdzmcKSflkqBIVja8okR5tUIVFYJnwXGtxfVasnfcm3RpdmDBKzCP/0qxU/D7Bu/YlvhUQLXoifXQazIjua3u68JVOSAJaYo6tBinMx8r7NtTVas0ffZ7vBZcBkSxkwUmjFpjpmrzUZNxLDyectiORLwLr/QaYYROY92qsg7DxpwnXhFycuqDBOLg3+wyAVF0HkdhzT5eM16TsKjAqC+dNkIPPvzQ1E2iIK46r8dsM2XC6Kld+N7PC0BGDh18rxlq94ZcS2xMyZXODCsgRYz8Lc05437irEJVLATjS2NgHuvW9+cJ4GhZicotrb/KqyTq01kEsMohlcY/7YAkp2cspY5Pzvr12UaWN523TPPpVXYeA1gdXH/Q+8QcpYo2MTpxNiCbt+xxbWHaKOX4W+wkAY4KUk1K3FvZMb4BModHs42vQnb/dfuumkarsBl52PAg6d1xTnWDj6oni+X0u45pMMCdpzCiqXt8oNosJWFvt5Tlr7FsIQZO/IfVtW53bt/b+4J8UrbOvaW9z75ouMGy4yYK1UUciT0DftiAvKpFTFePJKP7fUtrtJ/X7Jn8iZwCtPg0DYy0RLcL1rmCcqIpdxk/HKyp4gNKDtVPgWHfAX4b46Wuy9IjjUxZ4fgnO8L5HYSM65i9SSQb6bPtVrYbgcc9MzjVN
- VdSPPC66
- jnnW3WqvTcDYxp3cJBiycl7Bp8nns72sVUwsMIxKhkZNeR0iUB2780ASUUY0BRsebwY2CbugT2GADhzhfhwlEma097mwb5JWpxWaF4PtOgs/RxGwfMBIlJhaLXwMtktLT86/Mpk2imGNJAVXStuMO/l3D5qnyXapw9A4nCmPB4AciWRnZK9/aDG3vkNHmiBABqDJz6l9Jmarw5Wsp7cSlKDd5j1iGOmd2tbvF9877ffZAiOmc4q9ZHhI2nQk7X19j5yVX9lOVM3AjHCdm5v6QMkKeS9A44JXrVRZbz78LVFGKDtJSYpbvhP6xDw==
+X-Stat-Signature: rz6oerrh7f8y7efmcm17ixziu54dw7ra
+X-HE-Tag: 1782699645-214899
+X-HE-Meta: U2FsdGVkX1/iEdfJULIp0ucmf/7srCd7/ZYyn3riGyvDELm22VXH1iHMaVbB0ROU13esOUsgmooG1+ZMu5qGQziWtHeL066z8iUw81XZ3Zqux7q1xABkLy5y0HS0HQmFdWuQV35bl1aWBQytXe+vBZQyOF7xaNWvLS1gCU3DjAfYIseOtqHXLssbUceQF+aNsHqAWh/z9T3N41bRDU714aI1R/9VHANOIGeGD7UjfEZj76RRrsbEhOnwQzJ7lrq8/rFZZf8o9yCw/oQmYRVCcBEGiHQcRq83p/bZa/xn7v0/7pVz0hZES8jO6RHdCnv7oFpUoLvsx+CPE/zFmwaggg75/PyIfPTdmP16fJAdRyX4Orw9KeWJD+Cji7T4hFY+EGovrLB618LNSgM+v2qxqH5JAIS5xagoxNA8ZA/z1MAQPpH54nJtycrcEBB9ZI2gfNTRDWjJjr4E0fe7k/pX9g30iMb0Mztwr53ppv/PkSdUUq/X7EqPiWFhHrN6JO1cf+Y5lxvAZFc0xjk3aGb6+pQt1p/LGxdnXjWzlmGlS+iG5RjbsQRqw3gA/10mIH74G7zkHcI+t8HWSoGMMO9J+HUKsi3U1iYsgGiA5U8Ew+58w2/1RLLFY0fCXFLnO718Z+2AeSgQwFK2sMNM064FMaryhhd41jOkicPAfWm0B5t+yVD0v+pExfW94k/71+vm7mpg+DvkeN4V4yDvy6IPwBLg6Ai4zIwFcJlImjkQ/V9A6avnNcITiUTd+hJHhxLobUzq0ep0axDpBpr5H5xdCtEqZzKs1MrSMu9hz6ZJ8kJvKhRQ0dufolhXOun2biWLdM4yjd5yPH11y7gLgRUaFaJjGzMoNVSjLOLmenbNaVH8K4hIX+jAChHjjY+l/oPpU4jkIr0M9w0SLSyPkUNqcQaFXwmNPTeZ+2D2pde+96urQygjYkxxVj0ONgJz7WD8/Utu7VB7ZDCij+XLb3B
+ 41R+rzAD
+ KQwXMkO8xzeznzSyjvv2SO8UqP6b4wTMfov+tcfewIJg66gniGFuqq/iI5SWl9Luu8HK5ld0AqSSsrEsrv7n4OxLBEcU4yS0kWSsKqacYFT+1D3vwyqUNaYPJmJtvk/FKLxPI+ywnmX2Jry7bGMpkLgNBLu2bJX5PcqucaCtS0UA3esGk36yYy7FTBmmHQq1b4IQPt1n5yVtoD5+JO94bG31TZVw+SSIKtjzJOb9Ax+vyM3ayXDvf6i1grtyo9F4UggmuuRECaJ35ALbVtwikKV1rBg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,46 +94,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 28, 2026 at 05:45:22PM -0400, Michael S. Tsirkin wrote:
-> This series fixes the race by:
+
+
+在 2026/6/27 02:45, Zi Yan 写道:
+> On Thu Jun 25, 2026 at 10:45 PM EDT, Ye Liu wrote:
+>> The last_migrate_reason field uses -1 as a sentinel value to mean "no
+>> migration has happened".  Replace the four bare -1 occurrences with a
+>> local MIGRATE_REASON_NONE define so the intent is explicit and the
+>> magic number is eliminated.
+>>
+>> No functional change.
+>>
+>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+>> ---
+>>  mm/page_owner.c | 15 +++++++++++----
+>>  1 file changed, 11 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/page_owner.c b/mm/page_owner.c
+>> index 342549891a8d..ebafa9d7ff07 100644
+>> --- a/mm/page_owner.c
+>> +++ b/mm/page_owner.c
+>> @@ -21,6 +21,13 @@
+>>   */
+>>  #define PAGE_OWNER_STACK_DEPTH (16)
+>>  
+>> +/*
+>> + * Used to indicate that a page has never been migrated, as the valid
+>> + * migrate_reason values are non-negative enum members (MR_* in
+>> + * include/linux/migrate_mode.h).
 > 
-> 1. Having memory_failure() call synchronize_rcu() + retry after
->    setting HWPoison, so that any in-flight non-atomic RMW that
->    read the old flags value completes before we proceed.
->
-> 2. Wrapping all non-atomic page flag operations in
->    rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
->    so that synchronize_rcu() actually drains them.
-
-It wouldn't surprise me if your underlying performance assumptions 
--- an non contended atomic is cheaper than a rcu_read_lock/unlock --
-are not true in various CPU/kernel configuration combinations.
-
-Modern CPUs have fast atomics when uncontended in normal circumstances.
-
-But it probably doesn't matter much either way because the difference
-shouldn't be very much.  It seems very complicated for something that
-could be much simpler.
-
-But I guess it's fine.
-
--Andi
+> Why not change last_migrate_reason to enum migrate_reason and functions
+> pass migrate reasons? MR_TYPES probably can be used to indicate no
+> migration has happened if we do not want to add MR_NO_MIGRATION.
+> 
+> folio_set_owner_migrate_reason(),
+> __folio_set_owner_migrate_reason(),
+> move_hugetlb_state(), and
+> __update_page_owner_handle() need to update their signatures for this.
+> 
+Thanks for the review.                                                        
+                                                                              
+Using MR_TYPES as a sentinel is problematic - it's used kernel-wide as an     
+array-size marker (migrate_reason_names[MR_TYPES]). Overloading it to also    
+mean "never migrated" conflates two unrelated semantics. It also has a        
+subtle out-of-bounds risk: if anyone ever uses the field as an array index    
+without the guard check, MR_TYPES silently points past the end of the array,  
+while -1 faults immediately.                                                  
+                                                                              
+Adding MR_NONE = -1 to the enum is the right long-term fix, but that needs    
+proper enum definition changes and cascading signature updates across multiple
+headers — better done as a separate series.                                   
+The current patch is a minimal improvement: it kills the magic number and     
+makes intent explicit without touching any header.                            
 
 > 
-> Performance impact (page alloc+free microbenchmark, 200K iterations,
-> 20 runs, KVM guest, error bars are 3-sigma):
+>> + */
+>> +#define MIGRATE_REASON_NONE (-1)
+>> +
+>>  struct page_owner {
+>>  	unsigned short order;
+>>  	short last_migrate_reason;
+>> @@ -339,7 +346,7 @@ noinline void __set_page_owner(struct page *page, unsigned short order,
+>>  	depot_stack_handle_t handle;
+>>  
+>>  	handle = save_stack(gfp_mask);
+>> -	__update_page_owner_handle(page, handle, order, gfp_mask, -1,
+>> +	__update_page_owner_handle(page, handle, order, gfp_mask, MIGRATE_REASON_NONE,
+>>  				   ts_nsec, current->pid, current->tgid,
+>>  				   current->comm);
+>>  	inc_stack_record_count(handle, gfp_mask, 1 << order);
+>> @@ -596,7 +603,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+>>  	if (ret >= count)
+>>  		goto err;
+>>  
+>> -	if (page_owner->last_migrate_reason != -1) {
+>> +	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE) {
+>>  		ret += scnprintf(kbuf + ret, count - ret,
+>>  			"Page has been migrated, last migrate reason: %s\n",
+>>  			migrate_reason_names[page_owner->last_migrate_reason]);
+>> @@ -667,7 +674,7 @@ void __dump_page_owner(const struct page *page)
+>>  		stack_depot_print(handle);
+>>  	}
+>>  
+>> -	if (page_owner->last_migrate_reason != -1)
+>> +	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE)
+>>  		pr_alert("page has been migrated, last migrate reason: %s\n",
+>>  			migrate_reason_names[page_owner->last_migrate_reason]);
+>>  	page_ext_put(page_ext);
+>> @@ -826,7 +833,7 @@ static void init_pages_in_zone(struct zone *zone)
+>>  
+>>  			/* Found early allocated page */
+>>  			__update_page_owner_handle(page, early_handle, 0, 0,
+>> -						   -1, local_clock(), current->pid,
+>> +						   MIGRATE_REASON_NONE, local_clock(), current->pid,
+>>  						   current->tgid, current->comm);
+>>  			count++;
+>>  ext_put_continue:
 > 
->   !PREEMPT_RCU (x86):
->                          insns/iter      cycles/iter
->     base:                12237 +/- 1     17954 +/- 136
->     patched:             +22 +/- 1       -124 +/- 122
->                          (+0.18%)        (within noise)
 > 
->   PREEMPT_RCU:
->                          insns/iter      cycles/iter
->     base:                12512 +/- 3     18541 +/- 214
->     patched:             +95 +/- 3       -12 +/- 161
->                          (+0.76%)        (within noise)
 > 
-> When !CONFIG_MEMORY_FAILURE, all wrappers compile away completely.
+> 
+
+-- 
+Thanks,
+Ye Liu
+
 
