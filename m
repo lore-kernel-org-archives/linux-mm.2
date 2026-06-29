@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93EA3C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF2D8C43638
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:04:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C55F6B0120; Mon, 29 Jun 2026 11:04:08 -0400 (EDT)
+	id 2318F6B0122; Mon, 29 Jun 2026 11:04:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6284A6B0122; Mon, 29 Jun 2026 11:04:08 -0400 (EDT)
+	id 1E26E6B0128; Mon, 29 Jun 2026 11:04:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A2796B0128; Mon, 29 Jun 2026 11:04:08 -0400 (EDT)
+	id 05CC36B0129; Mon, 29 Jun 2026 11:04:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17DCB6B0120
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:04:08 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C014C04F1
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:03 +0000 (UTC)
-X-FDA: 84933270366.17.090692A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id AC9EB180019
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:01 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESN8Gj1O;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C8DFD6B0122
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:04:09 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 47A4740188
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:09 +0000 (UTC)
+X-FDA: 84933270618.05.7C21924
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 89C344001B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:07 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C/5rVcyE";
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782745441;
-	b=RK5PjJRM3JCGEJI0rV/w3tFFfYP6YfEX0Nvhj9bTsXElGfkYTua7YY3QeBkovvyh7iJn73
-	FaC8440YyO02m0JdT5H5KrXvk7KxXbiDDZTjNpdxL1vXcoQr1XmHgR29TOL1eZhIEFMcrs
-	/VQiIWrZgftaQj41iV5uuJj//WxrmOs=
+	t=1782745447;
+	b=nHubkj4kltNlh4CsnUd4TPEbH/tpmCjmxerWtVb7Yr5m3NJ5lRZSbbcWxdKPJR+NxRQfiz
+	6BQnqmRNbXIhlSkc0l4/Yv5WCQS0/Oi8agkDp19yfX9FnxAxtX8Ep4oeA/5M1AR5Eawnkl
+	DehdARcqOsV1feidAv+FL1tO3a8NHPE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782745441;
+	s=arc-20220608; t=1782745447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=Xh/MSGNSnNRTjM6MyqfalLvjoIfiLrZQnoiXR5GG7w0=;
-	b=eGqG1Crt5KGChhXXYXhu9m0ZKDrJAFDqZjezBVPifOXtZDl4vegq/Z2A7/gLPGT/FB3VZ4
-	PfZeTSxWowiZEz16/v1ah5TQDcsXydRNLjAlTM87Ly2TvXzcosKcEQKByS42fsmvx++hFa
-	bupwwbzS1fPwMU4W/wVf4imfMaXFwdU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1DdTYzEtu4ByiEUoSpMsinYaOl4+O4+ddJT+gWoYupA=;
+	b=mnW1oppvULmCF0C98rVysUcxa7zDXLIgENLiqlMxXOCyGSEJ+ZAD8TOvTyOBz1ym9oZfo7
+	bhuUPG0SRlnPV7W1lu0V4m85VEy4jNEFd6PAktNJ9gHQ73vpZ3j0fTexG4tbwppx74Zgwu
+	SGWffiSSw2mWWPk8EsoISD+OIWGWfmI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ESN8Gj1O;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="C/5rVcyE";
+	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2B9836001D;
-	Mon, 29 Jun 2026 15:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB5F1F000E9;
-	Mon, 29 Jun 2026 15:04:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C6D1E43EEA;
+	Mon, 29 Jun 2026 15:04:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D8D1F000E9;
+	Mon, 29 Jun 2026 15:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782745440;
-	bh=Xh/MSGNSnNRTjM6MyqfalLvjoIfiLrZQnoiXR5GG7w0=;
-	h=From:To:Cc:Subject:Date;
-	b=ESN8Gj1OzVoyWQgxniIR+ph1G1ks5F2YjNdY8EmOaSKlPB5hO1UpgG4F9jCCeDAJe
-	 ilTxD8yxiPcBgUwB+OLB6DLCFS5tktLhQt4hC21j8+1bQ0lGYgTcCJPatPW46b0/Dx
-	 7zR8As366NZxCaD+ZOuPavMTcEERsO7GTOu4c/D7bNZeVwHOGHMs9HvDZmXOkrQ4CL
-	 rV/ucsgUu3V2zPY0xHQO86s7YH5ASdPrJaBygEWMCVkGroIps74ZF7ZmRqIH+McDu8
-	 9YJfwIss37OJSIFfAJfyskXK0F9hUam0Qn0G0irsYlWb35L89OvlTKwRJI85l0H2kM
-	 QuRJuPhaYNGRA==
+	s=k20260515; t=1782745446;
+	bh=1DdTYzEtu4ByiEUoSpMsinYaOl4+O4+ddJT+gWoYupA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=C/5rVcyEx/DDRNUuTGZxEIfgwq0ywplFZzKOf6vzDKxIfUFz9aKIZkEICUqgIa06G
+	 vR6p7lB01J9QCTLZ/DWSzDmEcjVeRSlnKvOODgIorGqNEBgsbzzWBGtLCRgNORsdFl
+	 gDWfh8k0JvYr4OCmiZ1gOvzYlIcXhzjJF4FXcCqe1Yurw33PwM7P1GPw5gRwRNyq5P
+	 eTHRvW7PVXd5VSkI7WINZRVmGgrORlXvR1C4UZr44aiF4/h46c70FC89n/m18HUAog
+	 OWiav7nKM5MXu/shgHYgVlYyHv44ZoKfzqp9SkeIKHaa7tpLy/wuZ3v56QIDURqi7V
+	 cS94ReU+6pujQ==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: David Hildenbrand <david@kernel.org>,
@@ -100,20 +100,22 @@ Cc: David Hildenbrand <david@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [RFC PATCH 00/10] mm/rmap: index MAP_PRIVATE file-backed folios by virt pgoff
-Date: Mon, 29 Jun 2026 16:03:40 +0100
-Message-ID: <cover.1782745153.git.ljs@kernel.org>
+Subject: [RFC PATCH 02/10] mm: introduce linear_virt_page_index()
+Date: Mon, 29 Jun 2026 16:03:42 +0100
+Message-ID: <ab82859030cfa88aa52768d1f32f78c903d15844.1782745153.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1782745153.git.ljs@kernel.org>
+References: <cover.1782745153.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 1pbrnnzm974f1wzbogzmggpsqr5etmm4
+X-Rspamd-Queue-Id: 89C344001B
 X-Rspam-User: 
-X-Stat-Signature: dizo19cjs3iynr1g7qxwzg55aungtmzj
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AC9EB180019
-X-HE-Tag: 1782745441-835063
-X-HE-Meta: U2FsdGVkX1/iHOX66p9HGx821gq/+MrRgPyjK1hV4TF4xuX3X1WcYXry7xZtBmOs96kb942tdbItxpLHI/Ub2QmYiCrV8b++4p4ryPfrDNQnwrCVLuKjijJKBxOh2a6Ls7nyjjtM2E6yYNnucoD+6x5cMKxhOc90Dw6MFFCot4f155+YDnR0Daf1zMvjhYrgHYsehGDHyQb0zd8Vfb4MscYlJwDUW0/9WOsNEf2GilqeTr4utW7j2Cph6grc8gMg07lXhgaBHMRawr1m/i30tH3Lvx3ilkt8YJX1SU0Y2wUnpKCe18O8IJH6wGyh7+S8RiVxt9mox13UrU7GZ1C9T03HHuI0Ws0B1jUvuWRzLMuAsn70xbzwNUC5v8XpNWRNluCqV2ReCdznqGksC6cwm9v5U8L9RDCK/8/NF0PVEIWhHHWOtYqUA1j3hbaZsRCnmsGecWquy30Bio6Y51SYn00EP/6V0f+Ce906ZvDTV/3BaQvN8trMNzYtq0mMRcLya8v/y/FT1w63+oFG+vFh0E4EfarfHr3WaqnOTKX7qSLRMr/C5GDdyXtyj07FV/KpjOZahMJPjonlzTolzJSMV7SHFlGcPB79Kr0xiqfKPP0FwbAmB3iwYl1MQk2pGwiDcwwkn6l/5eTcmINop4gWjlafbmZXG52wEcSrkwedbJcOel8hKEgvCsjDrY/qHc6/rqmyAlDZ3uZMYDHaR+9MHMv/uOnUYn+bST0ISqps7dgp+SYJRgD67PTry1Zk4Odw2oB8wRMicxj3XihGV/A3NfqsfRUgly4FUftAICfS/qx9U97NDcse/27HuLtDfaicEyjZMw87Oi1vS0sSGrWD3jNFqTyhtURBlAsCHWu3TcY+ikMKqlt/znVeiWsN+H3yWqFS33MzaohV3T/jmqa5LSrpKRR2vF1KCDD6Ggw1hMZl/tbZfBSSOQfCk/lINDskWpO8T8kH6WPgOeWurJx
- Jj3Np1A6
- wi6UgJzdujRQN4Qlao/DjE1m40R3hBaFvUrt9zOLAyRD7GDQBkCQ5SlrzecQEsuIAsjiQ8lFdW9+W72/me8MLwWFN8ytz4+lKOJIRq+3Gh/yYuu2Cit6rzlzOPEks1vtspL0vHqn/z7CXA1w4CrfsEaZ+jXECaazKlqofNBUPD4p7VhUiy/wXVh38xaoIX1A1uTcxnHHLuu3rzSIoPq/v2ZlaOyTHPCo2xhgnF44nvpUFKYVlm/x7ISFnspnkPxZfaJsXfoUK+zY+8NCFfPdEJzhGpQVanR2OUyoiDF9RAde9PJel499CHaCOkUM0Lf99CRWGyZFdvnHyN1MR776Uq140d/Iz1xukcCBh4uTgoDjh4NU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782745447-340979
+X-HE-Meta: U2FsdGVkX18n3rXxkEGTuNp3PVihFpFB4DFmaK5ykL+6nopkgXsS2QIkDjFnLkp5S1jnDTmKIiAMODT8dfOw7ZX1kRAkrW89od+WC1zQCdVmLJ4ZBqrPls6GxPgTv32hRpUQazb0k6P6ANvfo96j/+ec4iChDOSOgiJZdCP+tWLsaTe0x3wWzjK16NBWSMQZ3JplhT5/+sphe26JP70VTN7o147a+CKESZN1mcwIZ8bV8Dk/rCA1dmYscC3vJhM5iIa4gZh3bAAQYBvWzqEZUuY/hgW2MxrKAXPj5QnaEyS75s1f7HJ3TV5CBG3LQaLt53daOZUMmfRkayUv77HKl68wvha0JalFhiJTQWLwkzDyofQp51L4EwK32Q7LokCqYEZjzHDqpnF8lTKYmcVCMsBswovOfdEJnhMFL+XITKcUm7SatTblgEtoBmAdHGm0XB6O+cw2RNB9gy/Dhr4q++mlabZKWG0V/lCN/+uDsADrlXPK0Iv5fNKHRwMFkakPkndXeT9FoDZX8foiuCfSjugV9ywn8e/qYWeY9e0qEuT4oWAJVO2ftLVAhIPZcw0+uCmZltojWR9p0LuIY3n1TgnrQt8m2Ea7LlL+l6n2r3YBCMsiDx+hSSJ1Ap0++7ZLJZZbvBL+Led2dYQidaA6ljFcEgaTTSEYQ17bEFF8N+u7h2PGcjx4pknFrsf6HyUrmdvxroPo/esLXkRLSl7o0uN3dR+mUIG4eGtjyT7tb9RZFReU3yPOcmSshOaICR4QE1o5Ceye9v1g2zbD1dLWcA4SxUGbdvSrf9G5rwir0jUQoawxRynrrFlnv/sZ/nybHeAjSKv1HRn0LLRCFNh8RIsRiCJf2E7y0IKtvcfOrhfr8hzc1ycN2lWwyYwBAVt+XsjNxfUKIOZEWslMeK3sKNYq8Us1/0vyfcQ+mPRE+xTabV2GqZ8ZNhE4gGXhh4AL1Hz6mNSxMu6vXhoxQ0u
+ G1Brkgvm
+ FNiQPQ2hxg3BxczwpEJByfzDvvzXyVVX2MOlgCN/hSNd47dkT8Dth7bwXDTsA0/5LWyOx86tw/h/regY8bFvdqrWf5hc7xVmsfDNj0Vo3oW5qVPkBRvVghT4/9SRIAlgffDgQngiZzsozPQHGcP5LuRsXx/LeW7zsqyd/gz0+UY7AnYk8xV+QxZ+4SFwPhD5GtwakohWDxNSqAHUqhUtnTWvwItaIkssUmH1j2KLHsh09wOQK9mUm2TKjBcmG/sdzz9RbVvKqvnpj9+U16z17uNoz+KGOPfTH3xpK5l1s8jTQSXZX4qg/SNjRilPfGuMqsUAsF3HtPIs/ZOm3jdggOjxfHiq58Jk0MZYpeveqHyWovHI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,126 +123,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In memory management we've managed to manufacture a great deal of confusion
-around the concept of anonymous memory. We have:
+This function provides the virtual equivalent of linear_page_index(),
+instead offsetting based on the virtual page offset of the VMA.
 
-1. 'Pure anon' memory - anonymous VMAs whose folios are anonymous and
-   swap-backed (thus for reclaim purposes, treated as anonymous). These are
-   simple enough.
+It is valid only for anonymous or MAP_PRIVATE file-backed mappings. It must
+not be called for shared file-backed mappings.
 
-2. shmem - file-backed VMAs, file-backed folios (from rmap perspective) so
-   present in the page cache and mapped by an address_space object, but
-   whose folios are also swap-backed (thus treated as anonymous for reclaim
-   purposes).
+For pure anon VMAs, this will be equal to linear_page_index().
 
-3. MAP_PRIVATE-mapped /dev/zero - a strange beast whose VMAs have
-   vma->vm_file set, but whose mmap_prepare callback clears vma->vm_ops to
-   satisfy vma_is_anonymous(), which results in VMAs that were mmap()'d
-   referencing a file and whose VMAs reference a file, but are in every other
-   sense anonymous, including the folios.
+We implement the algorithm in __linear_virt_page_index(), which is provided
+for internal mm code that might be interacting with shared VMAs.
 
-4. Other MAP_PRIVATE-file backed mappings - These possess file-backed VMAs
-   and have file-backed folios until CoW'd, at which point those CoW'd
-   folios are anonymous.
+In linear_virt_page_index() we assert that both of these invariants are
+true.
 
-This series focuses upon issue 4.
+Note that MAP_PRIVATE-/dev/zero mappings will satisfy vma_is_anonymous()
+but not fulfill this invariant, so when asserting this we check
+vma->vm_file to account for this.
 
-In order for us to traverse VMAs using the reverse mapping, we require two
-fields - folio->mapping and folio->index. The first tells the rmap code
-where to look for VMAs, and the second tells it at which offset the folio
-starts within the referenced object.
+We do not update callsites yet, so no functional change intended.
 
-For anonymous folios, folio->mapping points at an anon_vma object. For
-file-backed folios, it points at an address_space. And:
+Also const-ify vma_is_anonymous() to make it compatible with the
+const-ified linear_virt_page_index().
 
-* For file-backed folios folio->index is simply the page offset of the start
-  of the folio within the file.
+VMA userland tests are updated accordingly.
 
-* For anonymous folios belonging to pure anon mappings, folio->index is
-  equal to the virtual page offset of the folio.
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ include/linux/mm.h              |  2 +-
+ include/linux/pagemap.h         | 41 +++++++++++++++++++++++++++++++++
+ tools/testing/vma/include/dup.h | 22 ++++++++++++++++++
+ 3 files changed, 64 insertions(+), 1 deletion(-)
 
-* For anonymous folios belonging to file-backed mappings (i.e. CoW'd folios
-  of a MAP_PRIVATE file-backed mapping), folio->index is equal to the file
-  page offset.
-
-This series establishes a new virtual page offset property of VMAs to
-allow us to map anonymous folios at their virtual page offset, consistent
-with pure anon.
-
-The purpose of doing so is to lay the foundations for the scalable CoW
-work. This is necessary because firstly the approach first looks in the
-maple tree for the VMA located at folio->index << PAGE_SHIFT, before
-falling back to looking up tracked remaps if necessary.
-
-The MAP_PRIVATE file-backed case means that folio indices will very often
-conflict with one another and this remap tracking becomes substantially
-more contended, and of course the fast path can never be used.
-
-This also makes it possible, in future, to unshare anonymously mapped
-folios with deep fork hierarchies on remap, eliminating the need for remap
-tracking in the vast majority of cases.
-
-Simlar to page offset of pure anonymous VMAs, we update the virtual page
-offset of unfaulted file-backed VMAs on remap, but do not once CoW'd
-(i.e. vma->anon_vma is non-NULL).
-
-Overall, there is little impact on mergeability - for shared file-backed
-mappings, we treat the anonymous page offset as equal to the file-backed
-one (via vma_start_anon_pgoff()), so merge behaviour remains the same
-there.
-
-The only impact is on MAP_PRIVATE-mapped file-backed mappings, which must
-now match on virtual page offset as well as file page offset to be merged.
-
-To fail to merge like this would require CoW'ing the mapping then remapping
-in such a way as to eliminate compatibility, but this is very much an edge
-case that should very little impact (and which scalable CoW may very well
-address in any case).
-
-
-REVIEWER/MERGER NOTE: This is dependent on [0], which must be merged before
-this.
-
-[0]:https://lore.kernel.org/linux-mm/cover.1782735110.git.ljs@kernel.org/
-
-Lorenzo Stoakes (10):
-  mm/vma: introduce VMA virtual page offset field and add helpers
-  mm: introduce linear_virt_page_index()
-  mm: abstract vma_address() and introduce vma_anon_address()
-  mm: update print_bad_page_map() to show virtual page index
-  mm: introduce and use vma_filebacked_address()
-  mm: propagate VMA virtual page offset on map, remap, split + merge
-  mm/rmap: track whether the page VMA mapped walk is anonymous
-  mm: introduce and use linear_folio_page_index()
-  mm/rmap: use virt pgoff for MAP_PRIVATE file-backed anon folios
-  tools/testing/vma: expand VMA merge tests to assert virt pgoff
-
- include/linux/mm.h               |  61 ++++++++++++-
- include/linux/mm_types.h         |   4 +
- include/linux/pagemap.h          |  66 +++++++++++++++
- include/linux/rmap.h             |   2 +
- mm/huge_memory.c                 |   3 +-
- mm/internal.h                    |  69 +++++++++++----
- mm/interval_tree.c               |   4 +-
- mm/ksm.c                         |   2 +-
- mm/memory-failure.c              |   4 +-
- mm/memory.c                      |   8 +-
- mm/migrate.c                     |   6 +-
- mm/mremap.c                      |   6 +-
- mm/page_vma_mapped.c             |   6 +-
- mm/rmap.c                        |  23 +++--
- mm/userfaultfd.c                 |   6 +-
- mm/vma.c                         |  70 +++++++++++----
- mm/vma.h                         | 141 ++++++++++++++++++++++++-------
- mm/vma_exec.c                    |   2 +-
- mm/vma_init.c                    |   1 +
- tools/testing/vma/include/dup.h  |  48 +++++++++++
- tools/testing/vma/shared.c       |   3 +-
- tools/testing/vma/tests/merge.c  |  22 ++++-
- tools/testing/vma/tests/vma.c    |   4 +-
- tools/testing/vma/vma_internal.h |   1 +
- 24 files changed, 468 insertions(+), 94 deletions(-)
-
---
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index cd826c052be1..9451aa537abb 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1533,7 +1533,7 @@ static inline void vma_desc_set_anonymous(struct vm_area_desc *desc)
+ 	desc->vm_ops = NULL;
+ }
+ 
+-static inline bool vma_is_anonymous(struct vm_area_struct *vma)
++static inline bool vma_is_anonymous(const struct vm_area_struct *vma)
+ {
+ 	return !vma->vm_ops;
+ }
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 68a88d34a468..6e0d719d639a 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -1105,6 +1105,47 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
+ 	return pgoff;
+ }
+ 
++static inline pgoff_t __linear_virt_page_index(const struct vm_area_struct *vma,
++					       const unsigned long address)
++{
++	pgoff_t pgoff;
++
++	pgoff = linear_page_delta(vma, address);
++	pgoff += vma_start_virt_pgoff(vma);
++	return pgoff;
++}
++
++/**
++ * linear_virt_page_index() - Determine the absolute virtual page offset of
++ * @address within @vma.
++ * @vma: An anonymous or MAP_PRIVATE file-backed VMA in which @address resides.
++ * @address: The address whose absolute page offset is required.
++ *
++ * This returns the virtual page offset of @address, which is the page offset
++ * the address possessed at the time the VMA was first faulted.
++ *
++ * For anonymous mappings, this returns the same value as linear_page_index().
++ *
++ * For MAP_PRIVATE file-backed mappings, this returns the virtual page offset of
++ * @address, which is the page offset the address possessed at the time the VMA
++ * was first faulted.
++ *
++ * It is not valid to call this function for shared file-backed mappings.
++ *
++ * Returns: The absolute virtual page offset of @address within @vma.
++ */
++static inline pgoff_t linear_virt_page_index(const struct vm_area_struct *vma,
++					     const unsigned long address)
++{
++	const pgoff_t pgoff = __linear_virt_page_index(vma, address);
++
++	VM_WARN_ON_ONCE(vma_test(vma, VMA_SHARED_BIT));
++	if (!vma->vm_file) /* Is anonymous except MAP_PRIVATE-/dev/zero */
++		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address));
++
++	return pgoff;
++}
++
+ struct wait_page_key {
+ 	struct folio *folio;
+ 	int bit_nr;
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 09cfbf9572e8..bac6caf2eaa2 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1601,3 +1601,25 @@ static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
+ 	pgoff += vma_start_pgoff(vma);
+ 	return pgoff;
+ }
++
++static inline pgoff_t __linear_virt_page_index(const struct vm_area_struct *vma,
++					       const unsigned long address)
++{
++	pgoff_t pgoff;
++
++	pgoff = linear_page_delta(vma, address);
++	pgoff += vma_start_virt_pgoff(vma);
++	return pgoff;
++}
++
++static inline pgoff_t linear_virt_page_index(const struct vm_area_struct *vma,
++					     const unsigned long address)
++{
++	const pgoff_t pgoff = __linear_virt_page_index(vma, address);
++
++	VM_WARN_ON_ONCE(vma_test(vma, VMA_SHARED_BIT));
++	if (!vma->vm_file) /* Is anonymous except MAP_PRIVATE-/dev/zero */
++		VM_WARN_ON_ONCE(pgoff != linear_page_index(vma, address));
++
++	return pgoff;
++}
+-- 
 2.54.0
+
 
