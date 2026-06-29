@@ -4,122 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E45DC43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:17:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70479C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4870A6B00F5; Mon, 29 Jun 2026 14:17:58 -0400 (EDT)
+	id 43F146B00FB; Mon, 29 Jun 2026 14:20:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45F4B6B00F6; Mon, 29 Jun 2026 14:17:58 -0400 (EDT)
+	id 3EFD06B00FC; Mon, 29 Jun 2026 14:20:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39C066B00FA; Mon, 29 Jun 2026 14:17:58 -0400 (EDT)
+	id 2B85A6B00FD; Mon, 29 Jun 2026 14:20:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 14B926B00F5
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:17:58 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 82855120243
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:17:57 +0000 (UTC)
-X-FDA: 84933758994.08.F8440DE
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AE683120006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:17:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F3MqQiTl;
-	spf=pass (imf29.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0021A6B00FB
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:20:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C04E12022C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:20:15 +0000 (UTC)
+X-FDA: 84933764790.22.0B1FA7A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 585C740009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:20:13 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VBx6Go9V;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4tlWpoq;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U9PHprco;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Tb4wgHhX;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782757075;
-	b=CtBYsykWDVjiSvEihT3FJzbJjS4bt+zB/lRbBRY+37/qnz7fNt3yA3hbpCl7NJAuvrX1S9
-	Mco1SlMzFkllRc/qqIQ3HtGA8dKYI/bJjw7OZEW65AWL1cxnIEZwwAhhO3QeXjf7jXW1LH
-	Hi0WSwAe9nUC1A9cC1fCIsoBUkjL5Rg=
+	t=1782757213;
+	b=rVMO3vIa9Ed/lEshtOKp3dNW4XpEa88pHPReGlFzmDaP9QJO1Q2bpFwfDnnccKteYHaFNJ
+	T2leNcwPIuvZbb93URkf7qw6hLdHzlr54wh+lKO4SFdsMhRbPHIKrU/61T6gUz+B3gxLNB
+	Y6QgVSA6SfIE8hHj9HKbOxn0V4VnS5Q=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782757075;
+	s=arc-20220608; t=1782757213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VfUxWLWQvY9mB/81AVkSpyLi8QxfdBiALIQMC7mv16k=;
-	b=XxRGu7U3M/DGsMZWTwYfdevMOBO2Q/Uf1m/yEeZmQVdWT8iQcafNcfviMDYxxHUSIT/GqH
-	6kVNDN4HjMhcIBrrxMKZlANFFv3GkOGVJZn+/IFfb02C1oIxfFYwrgn0up/4uqH1LiCv9Y
-	Un4ojP68ZjutbCH3BjB5FVCwKHxoLyQ=
+	bh=52IgFMOwkd7eriRsZwUPQpeZD1+MN1y/keLJNnBYVKw=;
+	b=07aPtdzhv/yIIA0H3haa68EPpXs/Z3ViZfrhi84aZCBjEyg8YFCeW22FMKJI46s4vnStpV
+	egmegRQU0cOOgQ7Tvzn8NBlpYgmTCeAI4MjcK3iEtO/b9Pf/dOPBtinNJQFUJLSHD3JzS4
+	m/W67AjZokQU7X6PSMbxI6NghOmfZWA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=F3MqQiTl;
-	spf=pass (imf29.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-13986d61b4eso8626613c88.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:17:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782757074; x=1783361874; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VfUxWLWQvY9mB/81AVkSpyLi8QxfdBiALIQMC7mv16k=;
-        b=F3MqQiTlqgkrGFSrL3e4WqEb3wPc8ruIE/JfMt/4wIRxfhd92a1OF/lFodviVreDzb
-         /6sLLC/3FxT4GfLMA/vbapRBIp6l22c0RcnO9c6HyfZSAx1Y+TNeq6VHa6PtzpEHPz7u
-         2Vk58MmI9CGEfAQ50dSkivtImxM4N4n+EPWFm0vqI/AvAkBB0pDXe2Z4wagNurdLq0oc
-         q8oV7F14voOUkEnaavcbgmmKTIvxuAFG/xtt7+vT2NQd87jeglY+c97OnTD185BMOTSh
-         FA0w+nTEWA3sUm09+VckcL13qCeeN3aeRRbam2Hxs82n8nuLq0xKyGrC4vlwKG8Tz7A0
-         j0pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782757074; x=1783361874;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VfUxWLWQvY9mB/81AVkSpyLi8QxfdBiALIQMC7mv16k=;
-        b=tFUFpF2Xu40NxPFuUyxq2cpJDnbosLm1uelTstqrf62WOBlL2lF3gR+Z3SB76gb0Ua
-         4qM7cYcHQY7usNAEpfJbBMk8LUth8oGOJmQ8vVBuip0co+7cpL2HE6PQ6+sY0vH5hqHy
-         uIK0Wfz8JIp1jpWOdZ0/noO4aIlFErAMO8/4yst3WFs3Nq0vzTcs0P2EgjB8WFF8XYBh
-         LoYLJlWY7myRXepZq6n6HKQeRHw2Dr0yx4hOx49BSfsR1lsH54Mh6Vx5vbc0JDSh6f3l
-         /amO7NLjOcfWRx6HjRIjJDEsLu5Y6MPFdDv7gfBCE5gYfzPTWs7fwSQA/INspbdiDtWz
-         viYg==
-X-Forwarded-Encrypted: i=1; AHgh+RorEcky8WXukZ5oxtDad4Eeu0DB0CYZpw8H8z9pRg4gMy+1/H5igDLZ3MauJUT222Oz7o/0hqNhsQ==@kvack.org
-X-Gm-Message-State: AOJu0YyfNeGf5rlKksE9et8r3QokGK0GhRfD+7TnN/sLq4+Sn5ZFgI9e
-	UzplClybSdcK+pxda6ok4jYW0j7saG5WegYJwIUgJoZrGr/tVY/gxnkj
-X-Gm-Gg: AfdE7ckdWIYW+6MjhwKACDu6oGibare2BAo1j0HZk0pSq+4kSY+/FaIjSRFcyo5Yevt
-	WljkX7tVBvnKCNIi8oBGJoL+jRSXUu47IoM2bMUYc+rudFgIJVDucUSH5V26ryfOseQ694JR/Vx
-	jqkGY3E2fImE+kNO4pUE8o8I6m+gTBtUb02Sdpf626SxSuYCOFim3ays3JSV0m/+LbYA4R00Fpq
-	kfJeE5w5lQQX0bQbBilxiOcB4HSgc70A5KyrYb2fv6ky+Ture/bOgktYoi85fsbG/hbDIqXQvZo
-	TmW60ZEmD1ZljP5sYNWA5gAGw72nhSotBp2J5jcRK1CWL1q6hdAtr0dxThyMDu7jL7Amnv53pda
-	WwMSVjvGrWuU/0ygZCSdLro9rYbGf3HVFAA0/gObmBckhBtoYA9MhGol4IX/Q+Nhms3zNU3pi1d
-	/9n85JK/U2FhS0z/wxR20DrjSCyIVD9HHyxgiK38BKcOmg
-X-Received: by 2002:a05:7300:72cd:b0:30b:f5c1:4484 with SMTP id 5a478bee46e88-30ee13a2040mr379952eec.35.1782757074358;
-        Mon, 29 Jun 2026 11:17:54 -0700 (PDT)
-Received: from fedora ([2601:644:937c:6c90:6d4e:7b2d:4a39:fb0c])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30ee2fc12e7sm70363eec.8.2026.06.29.11.17.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 11:17:53 -0700 (PDT)
-Date: Mon, 29 Jun 2026 11:17:51 -0700
-From: Vishal Moola <vishal.moola@gmail.com>
-To: Manuel Ebner <manuelebner@mailbox.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] docs/mm: Fix braces
-Message-ID: <akK2z2q_OWiNBpYO@fedora>
-References: <20260629161156.90213-2-manuelebner@mailbox.org>
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=VBx6Go9V;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=h4tlWpoq;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=U9PHprco;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Tb4wgHhX;
+	spf=pass (imf01.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A759C758B1;
+	Mon, 29 Jun 2026 18:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=52IgFMOwkd7eriRsZwUPQpeZD1+MN1y/keLJNnBYVKw=;
+	b=VBx6Go9V4Z/2WdxoGsIajBgRyxGs51T2zdrn5kyeSY5D0lOoCvb4NQ/9p10HX0WDBcZUWA
+	2U+RL9jpLs+WNgXV5v7nJneQeFFViOAB+4XLhlxflnOQwgv8Iv7QIUptrnabC/GHjkUXtu
+	AchlE6MveWFQaV67x5iuJtqFrCZnSv0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757211;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=52IgFMOwkd7eriRsZwUPQpeZD1+MN1y/keLJNnBYVKw=;
+	b=h4tlWpoqlaXYVfDSY/fzkzUFqLQ+rrMqs/isZ2iw4IMP7lEEVBV6kzORggOQwSRzXvvfvp
+	6Gy3GKVLHMjLVkDg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782757209; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=52IgFMOwkd7eriRsZwUPQpeZD1+MN1y/keLJNnBYVKw=;
+	b=U9PHprcoWiVDaHulvM/v56i2Hwpo+KEo4FNn1ptTMPBl5hGeeh3hUp5hUhsTcr3uE+EyPA
+	q5moh5oZZFpigbqa8Vql5deANlGwuTrFlEukiGo5Mqawe18eVGo5Y9mAo1eOx1XakB4LUH
+	n/okYa5mutt2kSH4pyJaDXMOAoZsquU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782757209;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=52IgFMOwkd7eriRsZwUPQpeZD1+MN1y/keLJNnBYVKw=;
+	b=Tb4wgHhXz5ILT5wwi16vtUCYlEoySq02kFyYurCi8zZhDaVdIplCnIbFvdsDlvdRzB5TuA
+	+q6vqj6Cse9mlODA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F0CF779A8;
+	Mon, 29 Jun 2026 18:20:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id q42DD1i3QmqFbQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 29 Jun 2026 18:20:08 +0000
+Date: Mon, 29 Jun 2026 19:20:06 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Xuewen Wang <wangxuewen@kylinos.cn>, liam@infradead.org, 
+	vbabka@kernel.org, jannh@google.com, chrisl@kernel.org, kasong@tencent.com, 
+	shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev, baohua@kernel.org, 
+	youngjun.park@lge.com, qi.zheng@linux.dev, shakeel.butt@linux.dev, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] mm: annotate data-race in cpu_needs_drain()
+Message-ID: <akK2lkm1k6IF49ut@pedro-suse.lan>
+References: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
+ <04ea3e05-5b83-4c2d-8759-67c544a7b484@kernel.org>
+ <akJHit8BV-hWRXYk@lucifer>
+ <20260629093402.a4d14d4f95ccde7d4c804115@linux-foundation.org>
+ <akKgikoi2dFKqmaG@lucifer>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260629161156.90213-2-manuelebner@mailbox.org>
+In-Reply-To: <akKgikoi2dFKqmaG@lucifer>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AE683120006
-X-Stat-Signature: dppui36xnqzn3gs994fi4bwjetirqaab
-X-HE-Tag: 1782757075-303432
-X-HE-Meta: U2FsdGVkX1++y1pxWxFnLhkh9AYM+DUJk2rUjDc+r5vKg8L+qS9cLYyBhK5wo83nCp0yAkobqNkLw0pi6dQU2UVruwTbl8Xz6JeaJbwtjZpLhIWW7Z8xWTTdwz8frhnTLsJwN3d45MOdPj6ndVSLQeVK0ldjGxihQiqqPUgzM7OwYQCz0DY3UvB4zGsET8Y+30dPovD42tB6odP1krYZu/EMFjnJ4PrR61h/c1Y5ybBQFxNfhI8n1FGRc+JfWT1O78LtZkFaXc3blYTMQ2q6/AYCfgIK3fV6GhHRzsl8iUBL6WtC46xAFp/WKSdf664h681GZs2Bs/IueQtHPCkNwfWDYgiKcTJ8cDWK6pVo7Jc4SVxdV2mmwJAFGUdSBBqpDHExNyvmdhqmY+Sd+OQG2BEWBjN5oN9WO9HNEep14WRft3UyItRiDMHw3MzAf35vWoDTpu1I/50tzS4otsujerDx2jFQocC5zZCWGVH7OGcxjlF6r88moXbFxkIB6O1SUT1LdDBzAkn3lIK1zwx+wrCrKw9RLNQShOQkjgnEVcKo5pPirii68S4MRl9O/I+bgOr5oRF16kZcR3h3yBDWH9QkuhNqmFbukesDm6LpztiMclagVkm6GNCoQhBBSTEmtD0jupztXJcq0oWG3G7OMGzScEYVTkg46YQ7NI3ecttLKE4KTwljM+PDYeJXGsaTpjWEKqFbiXOw+7/NScD6EN1unnLREespfaHn1Kcj1zo/PFNZvkbWyRhjibWLqhCDuMdmtnWEP6rRBs4rdq+gP984rnK0c1YJrid/k7mK5lo2jrpoXhgXFbs+ctKVVzBYQqixS0/AJpkobAfzzoH9qSrHTTHoIZ/s0GgFhhECk7cfwRAENPrSut/vC2HXa+lxCg4rVKaGTr8llh25xySQbOAGvZTtsrKcvToWQmPp2BOOVf/pTa/XBSGlnpedYcxzrhJ8bsCZq9EntAieyGm
- nS3jCSkV
- qgtj0Xt+ahczOA7C7G5n7fMb4Wktf0TSUCQd+0ssLN3XstfZxCdRKC56uPzo4sEw6xJu6cDfUwSaswDrClOUh39T6ICDkMTpDgg9HBX12ZNEln8N1a7Dd0J/rWcCVmbIQa/QC5niyGs6ssT7jOahD1RbNLheGfE5pIjNYXp1PhzCD6OrhZlnTDCTB1AJvWpQJVgooHYwqkBP6+7Qey7YjkqAk00ibokN70t3dsI13B+Qe7AbWtWI7ubIrE1Ckpf1lzl+E5Ag4tkn5r0Ntvst1UtFBs/bzG+JMN8dcBOuB4U+g7+T6J500zLXqgdWGzpgRnbZLb/9yQbfM4c1ruReMOD71z2ylxXEid4+p1FQYD2nGqtrKafvMOa6RxkQtXXuWn4bj8ygJUzABfgVEWxU9GXYtrYwmEzQYWDZBzS1AErieFBRaF/A73No0nkWLeJVWXpDdM6C7KVKwdimwH+2ii+6VfYvi5M4/Ym38Ye63hrTR5elnKc5ldiv2A4tJlKxcw7vnFQyPkSEB+I/CTlg09W4lpQzLoCctlNppw4/YHc8ZHwwsxQrOmQ6UqUMWs6blJqkmw3YbCUkMu+xCM+oeo+eFsNqVk7h8BE9QhkmoYCvFRoftGUF22+81VTCXo8PGkFF9oFoGYwRnw38=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 585C740009
+X-Stat-Signature: c1umoo91ie9qy46cwrp5w1oxc1bt3ku3
+X-HE-Tag: 1782757213-876927
+X-HE-Meta: U2FsdGVkX1+yrpGwfFSJDkJVJ7xFBCLRSjI2pc5di9UOfR0krEJUuJrKc4kvQMaqGrZ+jHwaBNuNqMRpPY0YDkPKwp3glzepl/Jh5tlGMeURegv8IEwXt4IwrB/VR736JiW6oMmPfL91hCengFXTDDtGTuIVLESnPrN+VDoRzP1vmyFgjyb8iuTpZIReNbHdi0je7VM7yQrqR7MtqqomJ2HFsdv6xN2nThpCskN9Kc34LTfUCRMOgmPLwHFxs5kOr1Nc/72AsB50EHWNWsjT+daxIyEvtEgnsDJ6D4nOAiOEBbLCebmqwdJIbcYwLUcokOUfPnPKSg3X+GBk+ys7T23CXxxs3ev8Ve2HYqvIbdpYpfg8/pZLXHBktn5gBNKPPcGZlO1l+8QhP/GNE0yFQ0M9qVH/p3lYzMnJ3Ez/F5uiJtlMmaeh3DomJeOWsFBEMelMLzP8mm1eJA7u2gDdQXIqw6bI5XRx8CdanwgTV1T2uHhO3eOJPlZS3cws8I/lI33nTPb9dRgKnyiedULUXc14qZ2rWMuxLFeiFxmPr3WsUNDE3Hac880E6jqehedCK3nke5g+MVX2RKTrBKZtL5gc0DVzSsPXHmno0rVXDur3Ft9VLVATwkz/vCQbcRg6xjfGIiqF52U8lFK0A29fx2ufiMV63beHsPdIws5z4+sQ5VmPCq1kVAynzyXv5LWRAi01w+6xZfHA8UsSNNsC3V0xqhaK5DNW75ed6P+ajLpvCJLUc3kTbBXIcr84xrbhkbez3MCG7eJcoLh3cqR3L8Kku6X3MGsT7J50VvqAClsKj+7iuvwTQvc9/4SpMOYeD8XeK7SGpIjE3t9MLKw+mOOcw9ij5DcDbWAwW0rBOvekVae2ZwcG7SkDWzRhbGVUUOqYn3tvtLHkRNYQEP6/bNoWeQwGYyzyifIrLkZ27M7KwJOxVhoO/JqVKUzt1XqSVxsXiBiiy8hHcDncHpM
+ 7AOdZqRU
+ u0VCLSyqZdO0gnUjv1e3U22K0BdlqvDRQTsSNXH3PEr2xP4DxsjnwgpO5MC+lqzBTDkWdykG0Ya1bgTMMe4JFI9uTBEhtjA0cTFBUrYULoxeu1fb/y3OG1aldL/3DfRi2/f2/CzxPGmOZE3zCTuTdaJQ+XLIql6rMvnqK1FbTRzETbu6gTSQoqT1/wqPTITQPJtXjubg0Xljp1Tm0Zvggy5SZJXmACtVvXMxhbZAVg+krjYeewUgTVxTdLYlvE3SlhzgUisEZ8RoWhQj0LZqgpeOMnw+A4xGdvaExyrCJfvpAXKs3rNnRHe5xIZ6Jj1e/aycvJJf9eHkVUDiggBAYArrTEg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,12 +138,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 06:11:56PM +0200, Manuel Ebner wrote:
-> Correct typos in mm documentation by balancing parentheses.
+On Mon, Jun 29, 2026 at 05:45:22PM +0100, Lorenzo Stoakes wrote:
+> On Mon, Jun 29, 2026 at 09:34:02AM -0700, Andrew Morton wrote:
+> > On Mon, 29 Jun 2026 11:23:26 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+> >
+> > > > >  		folio_batch_count(&fbatches->lru_lazyfree) ||
+> > > > >  		folio_batch_count(&fbatches->lru_activate) ||
+> > > > > -		need_mlock_drain(cpu) ||
+> > > > > +		need_mlock_drain(cpu)) ||
+> > > >
+> > > > The indentation is a bit suboptimal now.
+> > > >
+> > > > Would read nicer as
+> > > >
+> > > > diff --git a/mm/swap.c b/mm/swap.c
+> > > > index 588f50d8f1a8c..5958e6fdd3593 100644
+> > > > --- a/mm/swap.c
+> > > > +++ b/mm/swap.c
+> > > > @@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
+> > > >         struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
+> > > >
+> > > >         /* Check these in order of likelihood that they're not zero */
+> > > > -       return folio_batch_count(&fbatches->lru_add) ||
+> > > > -               folio_batch_count(&fbatches->lru_move_tail) ||
+> > > > -               folio_batch_count(&fbatches->lru_deactivate_file) ||
+> > > > -               folio_batch_count(&fbatches->lru_deactivate) ||
+> > > > -               folio_batch_count(&fbatches->lru_lazyfree) ||
+> > > > -               folio_batch_count(&fbatches->lru_activate) ||
+> > > > -               need_mlock_drain(cpu) ||
+> > > > +       return data_race(folio_batch_count(&fbatches->lru_add) ||
+> > > > +                        folio_batch_count(&fbatches->lru_move_tail) ||
+> > > > +                        folio_batch_count(&fbatches->lru_deactivate_file) ||
+> > > > +                        folio_batch_count(&fbatches->lru_deactivate) ||
+> > > > +                        folio_batch_count(&fbatches->lru_lazyfree) ||
+> > > > +                        folio_batch_count(&fbatches->lru_activate) ||
+> > > > +                        need_mlock_drain(cpu)) ||
+> > > >                 has_bh_in_lru(cpu, NULL);
+> > >
+> > > Yeah that works for me.
+> > >
+> > > Andrew - maybe easier if you fix that up? :)
+> > >
+> >
+> > Sure.
+> >
+> > --- a/mm/swap.c~mm-annotate-data-race-in-cpu_needs_drain-fix
+> > +++ a/mm/swap.c
+> > @@ -832,12 +832,12 @@ static bool cpu_needs_drain(unsigned int
+> >
+> >  	/* Check these in order of likelihood that they're not zero */
+> >  	return data_race(folio_batch_count(&fbatches->lru_add) ||
+> > -		folio_batch_count(&fbatches->lru_move_tail) ||
+> > -		folio_batch_count(&fbatches->lru_deactivate_file) ||
+> > -		folio_batch_count(&fbatches->lru_deactivate) ||
+> > -		folio_batch_count(&fbatches->lru_lazyfree) ||
+> > -		folio_batch_count(&fbatches->lru_activate) ||
+> > -		need_mlock_drain(cpu)) ||
+> > +			 folio_batch_count(&fbatches->lru_move_tail) ||
+> > +			 folio_batch_count(&fbatches->lru_deactivate_file) ||
+> > +			 folio_batch_count(&fbatches->lru_deactivate) ||
+> > +			 folio_batch_count(&fbatches->lru_lazyfree) ||
+> > +			 folio_batch_count(&fbatches->lru_activate) ||
+> > +			 need_mlock_drain(cpu)) ||
+> >  		has_bh_in_lru(cpu, NULL);
+> >  }
+> >
+> >
+> > The removal of data_race() in need_mlock_drain() is a little worrisome
+> > - perhaps any future callers would have needed it?
+> >
+> > need_mlock_drain() has only a single caller.  How about I remove it and
+> > open-code it within cpu_needs_drain()?
 > 
-> Signed-off-by: Manuel Ebner <manuelebner@mailbox.org>
-> Acked-by: Randy Dunlap <rdunlap@infradead.org>
-> Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
+> That references a static per-CPU variable (mlock_fbatch) in mlock.c's
+> compilation unit so I think it has to stay as it us unfortunately.
+> 
+> And it's better I think to only use the data_race() here where we definitely
+> know we need it (and as the only instance of that).
 
-Reviewed-by: Vishal Moola <vishal.moola@gmail.com>
+I agree. FWIW something that would perhaps be nice to pull off would be:
+lockdep_assert_held_or_data_race(), or something with a less excrutiating
+name. Which could assert "either we hold a lock, or the caller is aware
+that this can race". Which sounds nice. In that case, we could simply
+slap that on need_mlock_drain() as requiring the mlock_fbatch's local lock,
+or data_race().
+
+It night be too special purpose though.
+
+-- 
+Pedro
 
