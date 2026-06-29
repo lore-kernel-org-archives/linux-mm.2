@@ -4,184 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 670B8C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 761BEC43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 52B216B00CF; Mon, 29 Jun 2026 10:37:43 -0400 (EDT)
+	id 492CD6B0088; Mon, 29 Jun 2026 10:39:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DB956B00D0; Mon, 29 Jun 2026 10:37:43 -0400 (EDT)
+	id 46A2C6B008A; Mon, 29 Jun 2026 10:39:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A5BD6B00D3; Mon, 29 Jun 2026 10:37:43 -0400 (EDT)
+	id 380436B0092; Mon, 29 Jun 2026 10:39:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 073A36B00CF
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:37:42 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E3EF8AE5B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:37:42 +0000 (UTC)
-X-FDA: 84933203964.30.9D35519
-Received: from CWXP265CU010.outbound.protection.outlook.com (mail-ukwestazon11022073.outbound.protection.outlook.com [52.101.101.73])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 9E05E1A0008
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:37:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=tqbBWUdj;
-	spf=pass (imf19.hostedemail.com: domain of gary@garyguo.net designates 52.101.101.73 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782743859;
-	b=tegQHPmZLo7211GcuKf71U8lERxZ9wTQy0nHDRXifsKBxdLmYGNMyxx/O6qTOCbbqr0uxO
-	8jWQ1yX3TcXjsNfdYVQStCPPoibWqlPLVNGFhjCsKRN+D/CfuPacSZirtP0OCqBrCuRQfO
-	iM/ZpGwO27wRS+r2DBtxDb51DNeC8xI=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782743859;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DD1D6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:39:39 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 03D4240149
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:39:37 +0000 (UTC)
+X-FDA: 84933208836.04.A4EC5F4
+Received: from shelob.surriel.com (shelob.surriel.com [96.67.55.147])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 21B284000C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:39:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=BlIR7eoq;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782743975;
+	b=MJtzlRhM4m+2xWN4msKiIWXpBkVczLhYk36K5JySY+8H8+lActwItYB+bzYV3gG1FtMus+
+	2ckQlcLUq8qGMsgHQi5NNFuo8ac6yVsuhszw88WsV6i87lI7pDt2WNDH5bOueQ2sT8bH9N
+	K8opRMXJje7E9E4clYPYsWvsKVk6648=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782743975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YV7oZKbABRxxMwpZXqVthvBESnI21SFwDJM/ql3zJvw=;
-	b=fcjuetfKuxIgJwFgITqk+DQJIUg8Y93kDwSgy0TTzwsxkvbv4oLDNM7+jeLUF0RcYhB5lm
-	DJEPYnKpFr9JlKLBH4wGJuDePJY+bmZyl0X8NvOFXI6BORVNxs2IwMCiE9DvORnolqDqCV
-	DnNfaVUgACe/UIHSfgrUjTAmg4mLJd4=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=tqbBWUdj;
-	spf=pass (imf19.hostedemail.com: domain of gary@garyguo.net designates 52.101.101.73 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	dmarc=pass (policy=none) header.from=garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OfpQLrjnCsss0Y49a4PJzrP6ngLQ3DEKp2TZi36gKAZTgCci0X1BEoVhHpNEudcLq63gAUGYDz3ohVmF528LKQKArvLP1jujYx7TbV2Q4SFmqbifS6ojC1Dlj/lyK9MwU3ZG8/Zv3v4imn6mLusm2m8dMDqMXWUtB1uiQ+2bogvco1JtsfiN+P1Xldpu8RJontSXXcP/2D/FXjQkSThJ9mG561f4erE4PrWpcFAErWeqDpAL1lr2aOyH2nY+s5H0p4hQztfuwESJCUH4M1dLyZZpxJT8te781Pjcs+bIJxf3KHlLcCq8YAjdMyQSf2MZNxQNzxh5ChQ/HUKir5Gq9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YV7oZKbABRxxMwpZXqVthvBESnI21SFwDJM/ql3zJvw=;
- b=pXL7ZDq0NxmeJqEBQnmqiGAjp/tSFpdj8Jx6NeKlwLwc7/RjnVlMTkoF1mECxg3flT0UXamDYJVgpStEtqUcyzA9yG/7G5G97uQIt9H273zJp4O/s9s5YAj3YIdY/+T7tdnCq+UHCl7hO11EWlXP6bcaE+UveWQIyxqeboasxzOuWcoQrJXByB+McpPS1utIxee8eY+bhArQDozV+gWX5iFSlIl/h9x+ttKazfSAVNFzeOpKc3697rYMGUULPoxdpV8Me5CPIFZBuA2eJUwX8Pryo32ep4gJ5/Dr7uoO8iNuZGqrZSxDZko3Kq07kddkkuPmpMsadC5biNCElcug0g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YV7oZKbABRxxMwpZXqVthvBESnI21SFwDJM/ql3zJvw=;
- b=tqbBWUdj5vka7a9zE3S8aiXnqyDJe+nELzeW5EaC9/FgWMUY0Fmve+FBc5/DPRMFUGtuFCvpdxjAJ9jplETJLMRo/YK745zKQ7UNFHQXqOcrFLm+8gKTVwEk8U72pduH53w1kFaGsIqeGc0VhPYfM4hPJdFCuuEYUhMt3sv5/TE=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by CWXP265MB2662.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:aa::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.17; Mon, 29 Jun
- 2026 14:37:35 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%4]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 14:37:35 +0000
+	bh=tIgmvkbVGgsAFw9O5XEwFGKEfBQkgY3RT+doQ9R/e5A=;
+	b=UnYNDg8r69/O2LtVcTAXhvT2NhK7H+BBWXeARCgXAYGikoHxnN8Y9psIgD7z/dDpLfFYf3
+	6PJsCybLELA5ledAUwIlpuFdRuTUQC7aA0kAUIWtxp2j87cQ6CRV1Dzr1ulAhZTtW/Z2Ju
+	Vza9dRxU/VHIVrOxceFABzf7X2HUfa4=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=surriel.com header.s=mail header.b=BlIR7eoq;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of riel@surriel.com designates 96.67.55.147 as permitted sender) smtp.mailfrom=riel@surriel.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=surriel.com
+	; s=mail; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=tIgmvkbVGgsAFw9O5XEwFGKEfBQkgY3RT+doQ9R/e5A=; b=BlIR7eoqUhI1rLk2ZjKvXK65XF
+	ul1b3Jicl/kzWBqFFYfTW2921ScvcTwoLQ7D7BoW0xono/v0ezOQgDtoxXPq8xKg9MqyJQHmaTZhG
+	3N1FL0vYN2X8TFLjAVPYDdDvGPGx1uft0Pa7GoBvSEuiVgDaK3EgcJG8dImxaUrlrgvLYWMIxQyn1
+	mqWkLM7qeLR9Typ4qRZCwCK3lq9Oq4RFiCgyZ2raRaTMiE9Vts5062yaD5qjjHcCL8sVUyeLo3GWz
+	+cuYSucxEx9Gj/nM3pCzyJgsqsJA+OZVuo9vlhAoQJX3s1SIwfIZUWajLmBCV7g8w4yjJ5+x20fez
+	cWgAlFmw==;
+Received: from fangorn.home.surriel.com ([10.0.13.7])
+	by shelob.surriel.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <riel@surriel.com>)
+	id 1weD8d-000000007rY-1v7G;
+	Mon, 29 Jun 2026 10:39:07 -0400
+Message-ID: <ec4d1acc0d01cd9d9b6f4c9da4033f8591f9436a.camel@surriel.com>
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+From: Rik van Riel <riel@surriel.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Lorenzo Stoakes
+	 <ljs@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	david@kernel.org, willy@infradead.org, surenb@google.com,
+ hannes@cmpxchg.org, 	ziy@nvidia.com, usama.arif@linux.dev, fvdl@google.com,
+ Andrew Morton	 <akpm@linux-foundation.org>, Jonathan Corbet
+ <corbet@lwn.net>, Chris Mason	 <clm@fb.com>, David Sterba
+ <dsterba@suse.com>, Steven Rostedt	 <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Oscar
+ Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	linux-doc@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	linux-cxl@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 29 Jun 2026 10:39:07 -0400
+In-Reply-To: <361fd2e5-a5f9-42fe-90fc-bc0af109553e@kernel.org>
+References: <20260520150018.2491267-1-riel@surriel.com>
+	 <aj9yrlB0TrlYCLlf@lucifer>
+	 <528e3a5fbc27c9dc7a098121c32b7679b4c9962a.camel@surriel.com>
+	 <akIjA_dqh4OHAYo4@lucifer>
+	 <361fd2e5-a5f9-42fe-90fc-bc0af109553e@kernel.org>
+Autocrypt: addr=riel@surriel.com; prefer-encrypt=mutual;
+ keydata=mQENBFIt3aUBCADCK0LicyCYyMa0E1lodCDUBf6G+6C5UXKG1jEYwQu49cc/gUBTTk33A
+ eo2hjn4JinVaPF3zfZprnKMEGGv4dHvEOCPWiNhlz5RtqH3SKJllq2dpeMS9RqbMvDA36rlJIIo47
+ Z/nl6IA8MDhSqyqdnTY8z7LnQHqq16jAqwo7Ll9qALXz4yG1ZdSCmo80VPetBZZPw7WMjo+1hByv/
+ lvdFnLfiQ52tayuuC1r9x2qZ/SYWd2M4p/f5CLmvG9UcnkbYFsKWz8bwOBWKg1PQcaYHLx06sHGdY
+ dIDaeVvkIfMFwAprSo5EFU+aes2VB2ZjugOTbkkW2aPSWTRsBhPHhV6dABEBAAG0HlJpayB2YW4gU
+ mllbCA8cmllbEByZWRoYXQuY29tPokBHwQwAQIACQUCW5LcVgIdIAAKCRDOed6ShMTeg05SB/986o
+ gEgdq4byrtaBQKFg5LWfd8e+h+QzLOg/T8mSS3dJzFXe5JBOfvYg7Bj47xXi9I5sM+I9Lu9+1XVb/
+ r2rGJrU1DwA09TnmyFtK76bgMF0sBEh1ECILYNQTEIemzNFwOWLZZlEhZFRJsZyX+mtEp/WQIygHV
+ WjwuP69VJw+fPQvLOGn4j8W9QXuvhha7u1QJ7mYx4dLGHrZlHdwDsqpvWsW+3rsIqs1BBe5/Itz9o
+ 6y9gLNtQzwmSDioV8KhF85VmYInslhv5tUtMEppfdTLyX4SUKh8ftNIVmH9mXyRCZclSoa6IMd635
+ Jq1Pj2/Lp64tOzSvN5Y9zaiCc5FucXtB9SaWsgdmFuIFJpZWwgPHJpZWxAc3VycmllbC5jb20+iQE
+ +BBMBAgAoBQJSLd2lAhsjBQkSzAMABgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRDOed6ShMTe
+ g4PpB/0ZivKYFt0LaB22ssWUrBoeNWCP1NY/lkq2QbPhR3agLB7ZXI97PF2z/5QD9Fuy/FD/jddPx
+ KRTvFCtHcEzTOcFjBmf52uqgt3U40H9GM++0IM0yHusd9EzlaWsbp09vsAV2DwdqS69x9RPbvE/Ne
+ fO5subhocH76okcF/aQiQ+oj2j6LJZGBJBVigOHg+4zyzdDgKM+jp0bvDI51KQ4XfxV593OhvkS3z
+ 3FPx0CE7l62WhWrieHyBblqvkTYgJ6dq4bsYpqxxGJOkQ47WpEUx6onH+rImWmPJbSYGhwBzTo0Mm
+ G1Nb1qGPG+mTrSmJjDRxrwf1zjmYqQreWVSFEt26tBpSaWsgdmFuIFJpZWwgPHJpZWxAZmIuY29tP
+ okBPgQTAQIAKAUCW5LbiAIbIwUJEswDAAYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AACgkQznneko
+ TE3oOUEQgAsrGxjTC1bGtZyuvyQPcXclap11Ogib6rQywGYu6/Mnkbd6hbyY3wpdyQii/cas2S44N
+ cQj8HkGv91JLVE24/Wt0gITPCH3rLVJJDGQxprHTVDs1t1RAbsbp0XTksZPCNWDGYIBo2aHDwErhI
+ omYQ0Xluo1WBtH/UmHgirHvclsou1Ks9jyTxiPyUKRfae7GNOFiX99+ZlB27P3t8CjtSO831Ij0Ip
+ QrfooZ21YVlUKw0Wy6Ll8EyefyrEYSh8KTm8dQj4O7xxvdg865TLeLpho5PwDRF+/mR3qi8CdGbkE
+ c4pYZQO8UDXUN4S+pe0aTeTqlYw8rRHWF9TnvtpcNzZw==
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 29 Jun 2026 15:37:34 +0100
-Message-Id: <DJLLYCLQEBV0.2L6F55OJ8A6B@garyguo.net>
-Cc: <david.m.ertman@intel.com>, <iweiny@kernel.org>, <leon@kernel.org>,
- <bjorn3_gh@protonmail.com>, <tmgross@umich.edu>, <tamird@kernel.org>,
- <work@onurozkan.dev>, <sergeh@kernel.org>, <matthew.brost@intel.com>,
- <thomas.hellstrom@linux.intel.com>, <jack@suse.cz>, <ljs@kernel.org>,
- <liam@infradead.org>, <bhelgaas@google.com>, <kwilczynski@kernel.org>,
- <ptikhomirov@virtuozzo.com>
-Subject: Re: [PATCH v6] rust: aref: make `AlwaysRefCounted::inc_ref` an
- associated function
-From: "Gary Guo" <gary@garyguo.net>
-To: "Trevor Chan" <trev@trevrosa.dev>, <gregkh@linuxfoundation.org>,
- <rafael@kernel.org>, <dakr@kernel.org>, <ojeda@kernel.org>,
- <a.hindborg@kernel.org>, <paul@paul-moore.com>, <aliceryhl@google.com>,
- <airlied@gmail.com>, <simona@ffwll.ch>, <viro@zeniv.linux.org.uk>,
- <brauner@kernel.org>, <igor.korotin@linux.dev>, <vireshk@kernel.org>,
- <nm@ti.com>, <sboyd@kernel.org>, <m.wilczynski@samsung.com>,
- <boqun@kernel.org>, <gary@garyguo.net>, <axboe@kernel.dk>,
- <daniel.almeida@collabora.com>, <shankari.ak0208@gmail.com>,
- <lyude@redhat.com>, <j@jananu.net>, <lossin@kernel.org>,
- <acourbot@nvidia.com>, <markus.probst@posteo.de>,
- <driver-core@lists.linux.dev>, <rust-for-linux@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-pm@vger.kernel.org>, <linux-pci@vger.kernel.org>,
- <linux-pwm@vger.kernel.org>
-X-Mailer: aerc 0.21.0
-References: <20260628095132.47753-1-trev@trevrosa.dev>
-In-Reply-To: <20260628095132.47753-1-trev@trevrosa.dev>
-X-ClientProxiedBy: LO4P265CA0123.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2c6::10) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|CWXP265MB2662:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c89eaf7-5e09-4c01-cf62-08ded5ebf5fe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003|23010399003|22082099003|18002099003|56012099006|921020;
-X-Microsoft-Antispam-Message-Info:
-	lfW4LtejC5NkcjQrS2K1vSbpS1pcuHsaPqK5i1eH9LtK2wbCFOGhVTxv7q9bE6LOk9j655n8ggoEoITwmAnao0fxye7284u1HQWHOYMpa8CCnomhFe5ptU0pbIox2yiOXylK8AXRNoSrfv7/7yF/A1B5bbnvmRyRdv6R36hMrBxqrr0I82vHKxgvYkgddXkx6GzDglVHvNghpfOhapPIdjoWyrtbraszhhWkM0Ft895aV6+/Z5z45HTpbRdR6aj9IyborTscsCvavF93tonKUfqe9tSbHMPGFYLBK/9PaTAwnu6/ggVGdjKmJokKmziQs7KfuG22bUKYoWphXoZfTerRhpaKg2c5ZeITyG8EqERBfVrcLxKs66V2k6k1lELdidkovWPVLai/Qhffcibunylfz5o49Aud+BE+vTIgERV5SQ+Xa1zCKUu8pGG7f5FmCXcluaFuXIbk+abpa0uGwYMSZSjqaEiE+HcEzEfOvU1x4Pb0VH67KMwa6kLbtW/zDesvnnuvJ20TjDfCMzZJjHNes3zBBc4Q/PJnlWPXOrBoB02J/vUKja818VzoDwKI10WrLQ4sfB1z/pevlyJw+wiHgd0dha+SAJZXrN5h/V0HPngzZxWkCWVf7XudU9d+V/0sQ/dSUqHehB4r/jOtNe+bdifAoWyj+Cib0YBMaC+qqnF1eXxODXBoKyhc2+wTDH123y93izlTXqRK8xqNrw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003)(23010399003)(22082099003)(18002099003)(56012099006)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VVRZbGNLTXl0clh5b0ovUTZJREpsTXJLeFRheTBIV2lpZ2t6ZmF2OVY5L1Q0?=
- =?utf-8?B?TjJ6OXRSWVVNMzhpTHlMSWxaY3BFb2tWNzJUMXVuWlgwMWlYM2pzdTNMbkY3?=
- =?utf-8?B?akRZRFdQMEFnQys5Z21HRXkvdS8zUGxTWC9Ody9yeExNZlJ0eCtIdVJLWW9L?=
- =?utf-8?B?c1ZCV2IveHhudk4zSERabjFQdXIzdGhtY1czMC9FTWpBbnhPeXcrem1HN3ZI?=
- =?utf-8?B?Q2F6WStDTmJEMk1YNjBnWXUxaUp0NVRmVU8vSCszYjNPd1phVDhkUjdtcnpw?=
- =?utf-8?B?UmZERmRicTRwWWlyRU9Va1J0bVdnT3IxZmE0NVd4VytSbHZGSWI1Y2RmQTlL?=
- =?utf-8?B?UnFlR2J0ZkhneXc5Uzl0Y2l0ZW5hdVZQcnRrWWw4UWpsOTJ4U3B1cFZNcnlR?=
- =?utf-8?B?dzI5Ky9jTFpWazlUbkQ3bC9yY0FRR2N2aTBtWXBMVHdRbXVLTkcwbU9WWmlo?=
- =?utf-8?B?TkdkOUx0ZTVjbEpYdFVMUm9Da3poQTFud3dvTnV3TVpWZW1YdDdCSzNXa2tO?=
- =?utf-8?B?LzBwcG9DUXNtZ1NkeXdqVExycWZLZkkyaGJ4L3ZSTWV1V3FoT1o2ZGd5UzBw?=
- =?utf-8?B?VFp6eE1NVEhOek1CZ0t0MlR4Z292a2ZtWjN6Rm5KU2ZqSnVDUmZOR3JFNEVI?=
- =?utf-8?B?eXJpWGw2TUx0RENmaUNLbTFESnduQlRlOHlUMSt6b29uTTBmQ1NFa0lnNE02?=
- =?utf-8?B?cFNDOWRJRjdaVnVrcmFQYzJ2YTk4Qk5ZVmczS29yU3ZBNkkxNk5BcXhFZW5k?=
- =?utf-8?B?SzNqSGNiN1QwRDcwOUlwQlBwQ0hpSlB3MU52azBBSHRYTEdNUjBUYVlKWEph?=
- =?utf-8?B?SnJGRXZOZUlOdFFrL3M3Qnl4Vis3Nld3N2hFYndTOFptaEhxZUNweVFaS21u?=
- =?utf-8?B?Y3NDTzNtb0hEaE5TWkVyUDJNdE41Vi9TNzYrdkdqU2x4M0g0UDIzTTVwK3F0?=
- =?utf-8?B?OVlOaTY0dVA1OHkyWVYzUjNmNXcrNTJzSXh4NEZFbWxLK3FxRlI1Q2xoMkkv?=
- =?utf-8?B?eUdlbld6Q2FQdHRjMGF1UzNKajdrdkRJR25yNS8rVkI0djZpTzdNVVdiU2VG?=
- =?utf-8?B?UjVsRHl2OWp5bTk5N3htQkJNUk16NnRDWWdmRHNIWXErbE85aUFUR2RjTU5i?=
- =?utf-8?B?SDNSNWNVK2NrRmtVZEV5ZUtlbUJIbko1WXBsVkNuWUFTN0xPSyt3dzRLdWFK?=
- =?utf-8?B?c3VJOHF4SHRhUXhLYWJyNTFsZ0FwVkVGanVPNVNCeDBXTG5OL2xWUkhuYTZ3?=
- =?utf-8?B?L1VNY1o2Slo0MFRYeC9YVHRKU0RYbkQ2QndEVnZqYjVWc0p5eDMwQTV2Mm9J?=
- =?utf-8?B?L0xPMmxOZklYQWExUjN3QzdRYU5kMmhvWW5WeXQ5aStlLytmUlBPYk1wQ2hm?=
- =?utf-8?B?TUxHdmU2TFdOODQra3lJTmVpb2ZEcVFUcGlsQ3poTTFMWHBiR1d1NnpldzJ5?=
- =?utf-8?B?Z3JPbUh5TC9BRlZwdm5OUG5xRmpkWWNzd21DL3ZWaEViTnh3TDIzVGY1Qzd4?=
- =?utf-8?B?Y0pkZUZwWjlJb2RCekROd2RRR0kyK3NkUkkwZnVFdFp6MFhhUnoxWFRGUnhz?=
- =?utf-8?B?empwWldNVWhZYTVSWjEvU1NoQnRmQjQvRzErMU1mWXdLUVZaaW1seEFpcmY0?=
- =?utf-8?B?aUFPd21TM0xjcFlHVnRjcE9XMnBKa2JlRzFPazBhb1RxWE80V25PTkN4YXFH?=
- =?utf-8?B?R1pLRFpSeUNEbkVzMnlHV2J4QUdYSHpDQmZoRnpGc0F6cUJTMDAyTkJtU0lQ?=
- =?utf-8?B?dWhianA5NTl6WnV1ajZWakpJUEw5VHNCRzdodlhiZU1sSCtPVzU1UjR4RGVT?=
- =?utf-8?B?eVFsUHg4SEMxUWlqd01WZzZJYjdFS1NGV05jZEJzN0ppWUFZaEJHYVBCREFk?=
- =?utf-8?B?U04vTkZBem8yVkcyWmxDWTZ2TFJoOFNrMEN4WFhldEt4aGFWQ0pEeDNNUnRz?=
- =?utf-8?B?UVNLVVdIV3dVRUxmNVlNcklCcWMzemNIWkpHWmlweVlFZWdjYTJONk5INmNW?=
- =?utf-8?B?RUFLWkFIakVrN1JnaEVYcTF2c0t5TGRUSXB5SGFJTURLaFVRdW96THViMm5U?=
- =?utf-8?B?VjNQdUhFSHhlT3lBSUtLcTdVbWQ1eFR4MW54ekR6V0RISTR2YUNkVkU5RWs4?=
- =?utf-8?B?bUF4SVFoNFM1NVVueGVCNnNXR1AyQ2plUXJQNVVWbnBlYTEzTU1iTzdCTys5?=
- =?utf-8?B?S2lQV3JMaDQyZTlvUURmVVhBb3RRdGRpK2ZVb2VTc01TcE5HcFVNV0JFSVJq?=
- =?utf-8?B?Q1hEcTlpaVhwQU9nUkxGaFo3YjNTKzZDVzVEMGlkcFc4ajljYSt0bXZCQmYz?=
- =?utf-8?B?YjZzd2VhRm5DSWlab1ZoSVFhM3pkdUxGbGVMdEVVbFRzOTdzQUM1dz09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c89eaf7-5e09-4c01-cf62-08ded5ebf5fe
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 14:37:35.5162
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FvHVrIKuuKEsO9lOZwHVhmz87YIOzMTcCr0HOXMSvWCP0EpcNCwWzsmCYhrSA7sxBt/kbrQGtt7mcGJ1ttb1sA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB2662
-X-Stat-Signature: qedhio7u5nggxp3g6jcei4w63uagg6hx
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 21B284000C
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E05E1A0008
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782743859-431830
-X-HE-Meta: U2FsdGVkX18iBzD25URfJKjUY2o4/8ST2LTeXTiT1SLJ4XNjC0Vo2FDCFMV8ykQeVKDlY0IGYpklmuMappC/zjTwMvhU9wJ1Z0saoz29OxqGRA9t6wCZM5LqnaBM7InmViSqlND7sSFiqAN6SfYtKIJ2++nCLa0xa+suueF7aGJDdHJ4PXrW8OenISujDLmf4ExsWBXqnkDcxSGH4R8U3iKKVZouHMBrB7w7/4mVK83cl0euoL7bhS0lfgfminmlKcYuvkdVaEtVPVnQ9S7cw2cN/lfroziYM/luJWJuUZ3HamQIc+uI2pfRIKhUkAvT/J8iH7omlWZxktw4x7Hbpx9P4FERH0LwUTY0uGXmjntvnWDBG0jd8exfdvVmpTaIVGwS9SRaMzM4+Iy9J96tm3jggzaRzb6mVkt+cEmjqKUeTTspNYZq8Zr6IoBMrAQbLt4q6ncFBx9wQY7f3JBCpKC1E2v3mNTQrSMjR5Zj1CpR0sZyDxIZTnkFPa+6J5I9B9OugllgA0mfq4l1i7GbEp6uauH0nhQOJjzCovD0YeJjfErpcY1WgwzNtywvJetne/FvLZb+9TazGIsV31L+3rl1QWzYxnluBmQsreg6pUt42VHMN8Dnbq2FbJtIGKGr0s15uG2YfCH1fTa4EtEvS6XkJyFtJ7MQiOSuLOVgjbj1ZDjy+KMVCu/SxQkZFrBjbXyx1Q1ePvSyCHUGSnEwV4f1UEw29FvS53aeguwJricV1ryeewUfvZNb9YLSr/FaA8vgknMu+WZk1+iC7ez5bCiHvrxO1l7comyoT7Y+5XxudUIrDaX0O7FPcneYachKhfR4oUN69gmb03eeu4SgJxjoQcEydJfWYMB3gsB/yDjgUp2WwiGH/tuon0igHbaikPo1NfJeNLkYT/FCfc9YYvIp8i9EAGd9jsxDG9WgfBVuRyEw0EvQrpPULACo4qWPnr8XrZg0SbGqmfu0fnv
- dNZxWcdD
- BTb2LBYz5zdCfqICDdPRc0S5GminR3DYa/cHMuJOiYG2yKtZt7USK5KY5Ymz9AMeXeVHjlGTtaKdMORxSHW+p+ROUQphfYndBTLDHMStDLEIBkTLpkF3OIgM03ln1kQiZTSaxVlYItVDvwKtnHGroR4pLRoActWpvk6qVo27CmpnMFiaIrvmGkyZVoLefCm7Kb6DS09obVLp5P5IYF77hSy+NwK3lQ0dQhooylqXDLTLesFaUkqr8mQPvACHfUXkX2eiQC3rYxvINXHgU2UV5FgzuCqfUkRtiVV4w4ZRnjkqRD4kvOnG+P2Nm8sNfnXDu+0VQFyiizbzfhgHtwAedaCYTKlIsG3nHcn9gbDXkaVAYq4N56TLIKatbENwQeyoUDfuq6Rr62D/n53t/LF0HPxPDQTFcuJ/PQakEhudI41531qNloGAksW7oWQZ0Bx9dVOBvOiDls9oipBrY72bYWXwrsljbdZTZhjWiQdP5qRleyvscG/3kZ9j4nM9UCUvlAhzpBMkTd+Bex2fuhmLfmJPsqJtbUy6V+AJ/UJFZLIR5H1pCQodO9BEEideeXPT1X/f002BnHn5IpvO1+ZRFwcGNNrB7v/YfCULBkgwyO3+smPWgoin8bv17MQ==
+X-Stat-Signature: wqkt911jutit1jh8xs1hy7wqjyux6euw
+X-HE-Tag: 1782743975-800556
+X-HE-Meta: U2FsdGVkX18dbfHCVD2xEsGrA8La1ZqfnhnegmWgnEWfFYExrjfFI5SWGlyjoY4QVXHKlWiY7gEmT9ekc3OypcJ0m9pz8e1wVQ5doust16RTfIXyzEU4idKs/+VWgu3GbX3Fz8kiegVF0d50zWF9yyjMpMBQiTKG0eo2D2pVxLwMrAVczSkjoKKhxYYlzmewfF8CnL1+PraTVDDimGrmpgXIuPTWg8g+TqX9UgRtkiSfaBCBCmq9++M1P1K2CwyuLHXMXJNqc5HurKkv6vSbDsR6cocFNiSkOU0kkgmmFDqHMw/6ldJQyyWP6gG0j7CsV9SYkshqftXNot+DcYV66rTquNSlIU5CpMP8c44ElGXXnStMlaaHHtE0JlEDNpjvAAe8wslJ1QPWim7aHLQCwtMF3civv+XnhhGKXNn9O9xcEqxNcA7TKYcd4y72b1K31vTM+72SgcKRXFDcOBhGQrdih+HSC8dnNaQsciIMmgzdyFuZ76zSJJpgj+mVE47aJ3TUuCgUq4cOisFaOSwM5Nc/0nVFXnHGC6iCg53VP3Aatu4XPW/LbRz3k5Uh0rEAZsQIDl+/t/bjqzsmqKXIyjbQRVCgN9z68SLE5PuuoVlKEiDBl0udAwrG15DbG3SrPhPssUkwnnFWKuG08F9cjQMMJ8Tbc1vuNhMhfDODWUSWhr5lCF5/nkv/CJoRhHi8qkKbp2FKjtzfNQnP+bFgRVd34Yzca+4/5WSzTGHmoYYUl7OrPkuJwaAnQL1Gt7El7plczfi4uEWR1LDnC+HVs11gNJUaDUTpGR7LiauPrltueWYfHlI/1hLgqC9KXgsm5fP1klsXvic7W59ytA3u/E8YegFqf0TtokWgba3hXKormNtTofakYI0G3cx6OEs4yvAtkD+aX2A5fT0Efo6+2U+KUiFjjC0LsA8+vU3EdrsmMaze/WdXUwJ5803AhHCGxjPD41JR4YubnZsdlbj
+ wvRKjdy/
+ APbzaIjbm+mFsGFg5+jdA7cw/u7Dp0fAB0jNpuLZCAXn1xaDne1jpQUu7UlbGz81ClGPterNBrvhGLEDtzS6dAPsFOe8Cvnws+eh4503AnjwBQEKBqHsaSeyGxjWgBlqQUppURu4f57wKVkFe4QeoZELUDd4EleJf4ix8t81Sg08uRO4dy5sQhcDqGD4fdgbFHVB2jwWgYoacYTVYyBc/aAv9Hvzmgkk+uSqo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -189,58 +133,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun Jun 28, 2026 at 10:51 AM BST, Trevor Chan wrote:
-> `AlwaysRefCounted::inc_ref` is a function that shouldn't be called lightl=
-y.
+On Mon, 2026-06-29 at 12:03 +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/29/26 11:29, Lorenzo Stoakes wrote:
+> >=20
+> > So to be concrete, if you send really rough code, Use [pre-RFC] or
+> > [DO NOT
+> > MERGE] (on the series as a whole) to make that clear and say so in
+> > the
+> > cover letter VERY VERY clearly.
 >=20
-> To prevent accidentally calling it, change `inc_ref` to be an associated =
-function.
+> Yes please. [POC NOT-FOR-MERGE] perhaps?
 >=20
-> Modify all `AlwaysRefCounted` implementors to work with this change.
+> > Or, you can put it in a repo somewhere and link it in an email
+> > discussing
+> > the concepts (like I did with scalable CoW for instance).
 >=20
-> Suggested-by: Benno Lossin <lossin@kernel.org>
-> Link: https://github.com/Rust-for-Linux/linux/issues/1177
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Trevor Chan <trev@trevrosa.dev>
+> Indeed.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+I'll do that for the next version.
 
-> ---
-> Changes in v2:
->  - Don't word wrap the patch
-> Changes in v3:
->  - Make argument name of `Empty::inc_ref` consistent with `Empty::dec_ref=
-`
-> Changes in v4:
->  - Rebase to new rust-next, change new implementors
->  - Reword explanation for change in `AlwaysRefCounted::inc_ref` doc comme=
-nt
-> Changes in v5:
->  - Change commit message to be imperative
-> Changes in v6:
->  - Change all the implementors
-> ---
->  rust/kernel/auxiliary.rs        |  4 ++--
->  rust/kernel/block/mq/request.rs |  4 ++--
->  rust/kernel/cred.rs             |  4 ++--
->  rust/kernel/device.rs           |  4 ++--
->  rust/kernel/device/property.rs  |  4 ++--
->  rust/kernel/drm/device.rs       |  4 ++--
->  rust/kernel/drm/gem/mod.rs      |  4 ++--
->  rust/kernel/drm/gpuvm/mod.rs    |  4 ++--
->  rust/kernel/drm/gpuvm/vm_bo.rs  |  4 ++--
->  rust/kernel/fs/file.rs          |  8 ++++----
->  rust/kernel/i2c.rs              |  8 ++++----
->  rust/kernel/mm.rs               |  8 ++++----
->  rust/kernel/mm/mmput_async.rs   |  4 ++--
->  rust/kernel/opp.rs              |  4 ++--
->  rust/kernel/pci.rs              |  4 ++--
->  rust/kernel/pid_namespace.rs    |  4 ++--
->  rust/kernel/platform.rs         |  4 ++--
->  rust/kernel/pwm.rs              |  2 +-
->  rust/kernel/sync/aref.rs        | 11 +++++++----
->  rust/kernel/task.rs             |  4 ++--
->  rust/kernel/usb.rs              |  8 ++++----
->  21 files changed, 54 insertions(+), 51 deletions(-)
+I suspect it will take a while to beat this thing
+into shape.
+>=20
+> > And _you have already done this_ in your reply here:
+> >=20
+> > * "How do people feel about splitting up the free lists, so each
+> > gigabyte
+> > =C2=A0=C2=A0 (well, PUD sized) chunk of memory has its own free lists?"
+>=20
+> My immediate response is that now we'd need to search multiple sets
+> of lists
+> instead of a single one? What about the overhead?
 
+The current code is clearly not good enough. It
+has to try several gigablocks almost blindly,
+because there is no efficient way to find the
+right gigablock.
+
+I have an idea on how to fix that with bitmaps.
+
+We could have one bitmap per order, indicating which
+gigablocks have order 0 pages, order 1 pages, etc
+
+Then a second set of bitmaps indicating which gigablocks
+have unmovable / reclaimable pages.
+
+At that point, finding a good gigablock to allocate
+from can be done with a bitmap_and and a search.
+
+These bitmaps would only need to be changed when the
+status of a gigablock changes, eg. going from having
+order 0 pages free, to not having any order 0 pages
+free.
+
+Does that seem like a workable approach?
+
+Once we can quickly pinpoint a gigablock for the
+page allocator to grab pages from, we can also
+split out the "pick a gigablock" code from the
+"allocate a page" code.
+
+>=20
+> > * "How can we balance the desire for higher-order kernel
+> > allocations,
+> > =C2=A0 against the desire to preserve gigabyte sized chunks of memory
+> > that can
+> > =C2=A0 be used for user space?"
+> >=20
+> > * "How do we balance the desire to keep compaction overhead low
+> > with the
+> > =C2=A0=C2=A0 desire to do higher order allocations almost everywhere?"
+>=20
+> How can we have a cake and eat it too? :)
+
+Pretty much :/
+
+I suspect it's going to require some fun interactions=C2=A0
+between allocation, reclaim, and compaction.
+
+However, with everybody from networking, to filesystems,
+to anonymous memory wanting to use higher order allocations
+of differing sizes, it seems like we're going to have to=C2=A0
+tackle this somehow.
+
+>=20
+> > I'd also very strongly suggest (as I did in my original reply)
+> > breaking out
+> > parts that can be broken out as prerequisite series.
+> >=20
+> > If you're doing something good or useful _anyway_ then just send
+> > that
+> > separately first, and have later work rely on the earlier work.
+>=20
+That becomes cleaner with the "post a link to
+a tree" thing, as well.
+
+The pcpbuddy stuff is likely to go in separately.
+Johannes is still working on that code.
+
+The "make btrfs inode cache pages movable" thing
+already went in.
+
+I think I have a few more things in the tree that
+can go in separately, but hopefully that will grow
+as this code solidifies.
+
+On the flip side, things like "making compaction
+scale" may well end up depending on the gigablock
+stuff, because lack of targeting data seems like a
+likely cause for why compaction has to try so hard.
+
+I'll make sure to go over every point raised by
+you guys before writing the next version of the
+code, and again before posting a link to the
+tree.
+
+--=20
+All Rights Reversed.
 
