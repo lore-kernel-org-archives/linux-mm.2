@@ -4,132 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E56AAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C07DBC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:23:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1F776B0093; Mon, 29 Jun 2026 14:22:52 -0400 (EDT)
+	id A3ACA6B00F4; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCF9B6B0096; Mon, 29 Jun 2026 14:22:52 -0400 (EDT)
+	id A11E86B00F6; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE6666B0098; Mon, 29 Jun 2026 14:22:52 -0400 (EDT)
+	id 94E026B00F8; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 853C56B0093
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:22:52 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0A0468CB1D
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:52 +0000 (UTC)
-X-FDA: 84933771384.07.C10181B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 08AF8140007
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:49 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gy069FRp;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 60B736B00F4
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:22:59 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0F168CAA4
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:58 +0000 (UTC)
+X-FDA: 84933771636.21.83FAB18
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id D78BB40004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:22:56 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=hsKO2BAK;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782757370;
-	b=V+W4HMRx4tktF7pVR+eWd3Rf7jjcvFeqcT9XW1xVHWJ2uB9ayiglHXrRm0Y9UOJVBa+iII
-	NKaV3QVZaj0Wkv196sGtInvEv5Nz+/2anzBoydwRae+8Y1Ffn6eVXJMWBbkLwdGr41J/fD
-	na7wjnI4zptAo2mqastpRtUqOAt3T7o=
+	t=1782757377;
+	b=YbICSOpf6FjwzsVOdTJDAxKkTPCxvuP1/lSZ1GOY3IKQkjL+HxOOCp/mxIhUdOHwPb92Oa
+	Uyc9xDTkfhv2lrnxAha4u0ydyYweqAz2jVgbUme7Nu7LTiaB752j3sIJkjE20FcQZgSe2H
+	IZ0zHUhdZA0fr/E1lvBKccFOze6NJcI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782757370;
+	s=arc-20220608; t=1782757377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lid0FUNtB8nz8P0m7H80tq06ULN31mZTI/xvhz6bRbM=;
-	b=boduQH2egnPXKK62VCkQalX/acSR8nhuxzTcQvdczS4lO/lfR1WWWvaRtIr/4f8LxGXmKv
-	hDeV3t+vsAcsSAX+t6eBwK2u2d6+RogJ17FR5m/hWHM4ONbSG3HppKyIxdcaOPL8LrD3P6
-	vGUEXymXWBpk6KSPDHzxidUyDz3PbZ8=
+	bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
+	b=cTe+mryQVoczOYvA8WwsSWPUdZmIxBYiJCM/jWUeoASKAcegL1STkfntFMa9A1eSfamFOL
+	IwDPOf8GQthOfx1M2Y/haIp1/47fRm24kkDKu1RVL4tgmbuA1+neF2EuyLkVSCH1RYU4Eb
+	KgiHC8j4+euYxqVDl7qjsOZB6qsTbzI=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gy069FRp;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 12096438F7;
-	Mon, 29 Jun 2026 18:22:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3241F000E9;
-	Mon, 29 Jun 2026 18:22:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782757369;
-	bh=lid0FUNtB8nz8P0m7H80tq06ULN31mZTI/xvhz6bRbM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Gy069FRpnFzo2hmeubyzmP7MHdfH4sX5PZFy6BYLfWOa9u0pv9xrDehTTTcIgrfX/
-	 KdPTFgPz0ljAcIveGLu/JxoUTLID5hWRKlVQTUYYOUnYPHdxfIXgy+j1yC1Nc8L7Wl
-	 MRBX71+N6M2135knVeT/8p3Z3o/2upSSC+JnXqWci9ZTn9XOB4ewA0LWXLbM1gPfix
-	 ZmLIOJNbhSwYvnLdp3iGkjNO68u0B7XGTMowu8XLYFk1dSrhCH069GOUy2kMywt1vG
-	 6VwtaGft0hztYLWSBC+q9o0cqIxroN/sBRtpdlEwyj6J/S/nVVwqwgxArDcMpE9c65
-	 Qaz9ATY0dh72w==
-Message-ID: <e0b696c1-ee1d-407e-89af-98cfed967095@kernel.org>
-Date: Mon, 29 Jun 2026 20:22:45 +0200
+	imf12.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=hsKO2BAK;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf12.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.172 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-92e501244f5so72164285a.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:22:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1782757376; x=1783362176; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
+        b=hsKO2BAKm/DzrODdLZhtJX/AoD1o9RXBwyWIUE8MkbeD0TYhDplD+9PlrGtpY8oDGo
+         JD1FbddkUtcx96y0PN9Z/diBTIYnGDGpaNne2ygQBpOcZcGzqGNbnEe+RTmUuev51pjk
+         /Tt111PetU60A723y5JFWCTkwh9HqSeu8KfLM71/ZoXQGm1tCo4YOPzEypNHmXFBKPvY
+         /oppKqYKKOwXE6wpwXPP2KgQRJCWAkJ/z9NwL9P1E89Fo4XNVylPIca9iPYU49Pi46qh
+         u7O34GM2z2AmCNwv4hPrTJOfLW69pHHPVjmKN6KEMJbO0DaNvLeVbbs9+9mEzKHKxSwy
+         GogQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782757376; x=1783362176;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hdEpOaUd21Ax6YrMiG1pwzwQGghCCbiiNKGBo6BJ3iE=;
+        b=FOV8QcPiXP4h3WuEdBOtrQBfrcgiDG3bPvJvazRj90JxZDvLulg+EyWD9Ia2PkVYiW
+         ghTMLaIJMKGqTlGUT+8XJPn5wR6sstYK0asjo6pSv+eUu4llSbjxQ3lBLvFgMeCbeSxG
+         Q4pm25rAEeeF7996rQ5hkIKms1c9PbhmEjlJUauVLvuYvq59I+RL4v3fW+Cxyzh0ZGE3
+         Kz5BqyxUdAe1mIX1Yqz+rqE9etEfXxK1Vv9nH2BrF+SRTI/VZ9/XDJRYc2Lnll7N7GfJ
+         LkSMW/+XO65fvaMWU30O+OJexXv+wSwO/Vkyep/rGShsXv1Ud3yv6yf92l3wfMOjaZEM
+         kUXA==
+X-Forwarded-Encrypted: i=1; AHgh+RreP/sZkyxBJJvb7RuK+R/LkVTCh5NlwZOaRc4hltAsFTAoM/pnMsjqGwI7i2SnAA/AB6NzE1DEzA==@kvack.org
+X-Gm-Message-State: AOJu0Yyw57beb9Qks+t7CK3gcD9DUCLtc8wjiALYB81wHj1t7jUkYNnY
+	wQCDJkW34kDCFQ21n33v2a1HTfU8miivgg2TEAp1mA/3o51mhDx21Ob1kQw0urSr+RY=
+X-Gm-Gg: AfdE7cmPFASvGhmpETW7EWo3KgQ4RSVGAVTNyabg9oErEvZYdubrbNXf8gM2GffdazB
+	JzN5sh7wBDmal7bV4S9xI2pspBJofCot3Z41jmEOkFyXsVxUz8F4EujbOECpFEzD79oQzlK0CF+
+	61VvIX6Ju8PE0I4RfYKtLfErRtf5L9Nqd5nAdevYoTJKW6yARCIvz/v047OYJAeAmy1gdEArxHw
+	x6EJf++sMjXk2Q9EOlpJBmyUP1KXaWtvO1wWZDw0Gb9q7fLpShPH4k1lQ8o3AeJ6hloVOuZjNTU
+	dKnV3iPZWep0vjsLWh8+ebYOL0Kiqo0Y8n986k4iceg+PErkYjUSMjz+lBlja9Z3skII/vBQHJN
+	AUkCKOnRhw3iwyNBT4Fv87ESgUIC4DouH99d80u0znmc4F9LRzAtJO+bvkNW7ddjmBjTgnArdS/
+	KmGR79nh8/03A=
+X-Received: by 2002:a0c:e70f:0:b0:8ce:ade5:e8fd with SMTP id 6a1803df08f44-8f1bbec32b1mr5223426d6.25.1782757375699;
+        Mon, 29 Jun 2026 11:22:55 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a328fed8sm4510276d6.16.2026.06.29.11.22.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 11:22:55 -0700 (PDT)
+Date: Mon, 29 Jun 2026 14:22:54 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <akK3_qUnEPMNs37M@cmpxchg.org>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hugetlbfs: enforce F_SEAL_EXEC in setattr
-To: Eva Kurchatova <eva.kurchatova@virtuozzo.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260629180247.2343229-1-eva.kurchatova@virtuozzo.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260629180247.2343229-1-eva.kurchatova@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6869jynsfzit6d5n858xe5n3ka7njwbh
-X-Rspamd-Queue-Id: 08AF8140007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D78BB40004
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782757369-585454
-X-HE-Meta: U2FsdGVkX187ecD/OXtqVqgJkffLO8Uj0viTo47ymbbzataE+DHQ7EWn7HkZR6ogflDZs0Y9Mp51NkfSpnjyICbl5FVbZGT+J8FEwAzrG+artXxVbBzOYlkqOrPvcWyo3YBORq6D5IBGDgNoX1rPx/VcgtyD8tq2LLa8fW2akSny7RyDE/IsyTDthC424VJYuD+YwMxGj7v8hrRhR2qRT24HfNNYWiAqDStgdJoJQNy4z3C3ctErzVh07n+FqyBt54DbmNWwni8KjnY5w6MFBtt2OV9mxcmO0SS83ot5PJVOM215QSLaU2DU7frI8+WFTCA0uUEEQLCQY8coxOTidmMiOoE0X1LWVslcOvCNHwvlIZiK6f69txJKPrLufUDX2RpjP0Oc2rMk0Jy3Tgskf96WXu/NdDRj2DXiWZNnCs4i2nmfcQB4M3CWUANljKvvhrSFpMB6QeNr0a2/yN2mJ/pkfejvG2c2HyZ/H8vIsc7GuNOiwR190+ISRt5i5gS9Xz3H96xiG5efznBGZePjGEW7c0xHr/9GPHcjIdNoNhX+0/xrw6+vo1UJyRAszvHN6nIGbu4GRR4/bY78Vh2CWcTasdzyFnMKVNhj87rEyaA2zA22HP/YxBf6YaW0bKav3vjWzCMBYmnMCNvKw3YGvZQAM1vFYA1p4/ZYStftj+53yf8duANDhWFp/HdPHzM8wVPiiJ2id9kb+bcWqgU3YWqPPnXJVmYjFdrs+RfNNNlJBey8rjIvXQPhysFjAjOzdwleSnakIZiORClpYNV4Al+n3muI/JlK8m3hzsFRfeFmvzWsbWbrCr1xiXmUFdATw/J+h5uo8CpqDs6iWFQCBh0sks7kgDrvD0tSk1DxiB4PRUQPfweC2wP6fRhBMXR7FI1Eo202OStL2m5tYxXoasXAmMBVcuyjjFH+yjjckRJOjxHXzODWo2SAaC2wEzQdkLdBLr7Js/ziwrBLuNd
- loFYIb/M
- n8QCkauZYDZ7Zw9F1BDKaBXgd5do1uN2hj4+kKjYw3tYEV+kG7q+TmNkTt7fNAJKGz697pGYSRVwkNHO+Li48W/KjNYzjM4A+qkLegWvJ5/549bDWYj43UoajTndxZAIpCxJh06zOBpKWUaBK4E2CJ9Ur6A/wfS+M4w3HtccdM34P8LgswKvbTapKgPau42CuFDcP/VpBmb/K/Uc7OlNJsdoGskKEx0wqUCkPnYt0m3AgYQn7zIgJCLHVDoWDhXggkY3l8SFhrYOejY0zz9B6Q5g8fS3wZvHBYr6ihx5joTCM6HRqaRBldwdbW06y8Fu5loktzBZLPcMceMFsHxSs7m8UPmG2iGyg62m/V7sQl+pbO+TLPprqwOHpqcWTWIw5UQAOKNS7CR3iFoUBMuODoyslJjhICuswTTCf
+X-Stat-Signature: upjfq1mbhb7aghq9k9htkkjfk13scpgs
+X-HE-Tag: 1782757376-11873
+X-HE-Meta: U2FsdGVkX1+HzB7H/ro/4k3zdVe4ZlTdz0yV1ceaTG/xMpbMecxLUsb/vTOjsmVB/55FmqFHfJPzyilSPa8HB/GroBXOtTdrL8wyUoJsTmskspJGQ1W2paoe2P63toLHh0MJf0mV0wRy3bpw3e0Lptp0zE70w+a5qCqDD9p/8Lr/fBemkRbVh4kI0PwVWd7PW5/yeL/ZOMCyMN1pYIQE2M3Nf2mNY95nMDegAqDHinSNidy3oUEthOxWBO43SMR2WDroyaczXwtcjLgE3xh79YG2SRNYIxvG63PAMJVub8c27iTeFYh0anhw7z3Q0ayCJjVnpQywZsG/qEVr51uKrVWjreSMlqsz+rBNIDaCw64FFLcaJfa9F36PTTQGYwyG1wlQcv6OLUuLUmtX5xJ3O6cSDevbBGYFklTN+96fjALR9ReMjF+0qWSuW+8Apn5b3QK4ZAEAklnEKYKPugMtsnm240jaNCkqeEZkcQ81F+MHnP8hIMYHribtSP42i+Xvo85crF9u34hDNCfHhggw1CQJ/n5d8gQrlkM7uA3mkgRbjv7x1P2hjJypUf0I/c+NegzQVvuwiJYNz1EJ5f85IL6YOOhkQZ+SzNJq1rKTYzbTynqb9YrXl4vzKoGitdnP7ObD6I3OCSs2s6pdFVAMvbaqJExr8XeSmKE48HJAAsC+OtnCA8bx+ooHvYkRih013sf9/olhfzyUU2dqSkX982DIBEH9SqndRoPU3PxakieS/YbT86fwy3JS/7MGBkdPVaZ/C3oSx1DA3PKZUcqJbH3jLba7rG1h7aBXyvNO28T2hqwJEHPaeEzzFFeUPGLTxAgLv4ENfnrTs/d9dfnqqfu8kLo/j+co5PK/WgviN47Zczq5LlQh6dKWmT502xERt3pr9ojngcZ3w8C2wnl2YlkCmFOwsCLqZw7Lkb52XIUJNor0utmvVUtXq4BgkZ2cGWW3HZ+DcNeb6/3nCmp
+ qAiloXs2
+ hbxJwzuDqouN0sndrLEH2HsBJhxnVBSidkU1cfTyny3n9QCqbCZeI0R+5mArrp26fXfW6FPdDT9kvrAg/jrzHLUepBkfmnk10tRoWnHvPMRoHLNX7GC02DetV2QorWW7Gi9naIDrwIpTzetTy1FMSdrFHvicKYSKrZfzWgzZ3bsnrRfPc9vBUpfArRyKawesPwueyDzSiXledI7on5f6g69rxXC5TFz2mY2XEsZBsK+95aw92HWtTiMZhBx+ywk7h/JhmIJ38yz7RPnmhY+vEwG5MRChhi73Pil5SLVaWyFkooE39KsTR2tIAbZwfqwoZW+F+IUGQxU5TskOwKeWKW38UR1RWJPGcFFQ8uym5cxRT9aUesD7imChHUJCitgWkb3eg09ssOIxNcTvnn4I/d1SmG4/WrKwGlHhZTGikbPVq2QKcpywf9Yks81xFhDjWyB+hU3QWBu7IJ+oAqu583nvYFlQBPY4bx6g3qHX0iEVmkeWkHREc71FI8Nknh9p51B10/1wJa/ETqpghQ9gp8nA540aOIGkM97Qvf+2TCe+u0xY9dxOmxN9wTl6dke/ciotTlmf3+Uisuo8rOMZrMB6RpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,74 +123,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 20:02, Eva Kurchatova wrote:
-> Commit 6fd735518263 ('mm/memfd: add F_SEAL_EXEC') added the F_SEAL_EXEC
-> seal to memfd, with the corresponding enforcement implemented in
-
-$ git show 6fd735518263
-fatal: ambiguous argument '6fd735518263': unknown revision or path not in the
-working tree.
-
-Is it
-
-6fd7353829ca ?
-
-commit 6fd7353829cafc4067aad9eea0dc95da67e7df16
-Author: Daniel Verkamp <dverkamp@chromium.org>
-Date:   Thu Dec 15 00:12:01 2022 +0000
-
-    mm/memfd: add F_SEAL_EXEC
-
-
-
-> shmem_setattr(): once F_SEAL_EXEC is set, fchmod() of any of the execute
-> bits (S_IXUSR|S_IXGRP|S_IXOTH) is rejected with -EPERM.
+On Mon, Jun 29, 2026 at 01:59:41PM -0400, Gregory Price wrote:
+> On Mon, Jun 29, 2026 at 12:33:37PM -0400, Johannes Weiner wrote:
+> > Neha reports that mapped shmem aren't considered for NUMA balancing,
+> > noting convergence problems and bandwidth bottlenecking for cachelib
+> > based workloads on tiered memory systems.
+> > 
+> > Looking at the code and going through the git history, this doesn't
+> > actually seem intentional:
+> > 
+> > Commit fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault
+> > VMAs") added a vma_policy_mof() gate to task_numa_work() so VMAs whose
+> > policy lacks MPOL_F_MOF are skipped from NUMA balancing scans. The
+> > motivation was a real usecase: Oracle was pinning shared segments with
+> > mbind(MPOL_BIND) so trapping faults was both expensive and pointless.
+> > 
+> > The handling of NULL from vm_ops->get_policy, however, treated "user
+> > explicitly opted out" the same as "user never specified anything." For
+> > VMAs whose shared policy is absent - the common case for shmem - the
+> > scan was disabled too.
+> > 
+> > This issue is old. It probably hurts less in conventional NUMA. But it's
+> > very noticable on tiered systems, where entire tmpfs workingsets can get
+> > stuck on lower-bandwidth memory.
+> > 
 > 
-> The hugetlbfs equivalent in hugetlbfs_setattr() was missed, even though
-> hugetlbfs memfd files carry the same 'info->seals' bitmap and the same
-> F_SEAL_EXEC bit can be added through memfd_create(... MFD_HUGETLB ...)
-> plus fcntl(F_ADD_SEALS, F_SEAL_EXEC). As a result, the seal is silently
-> ignored on hugetlbfs memfds and fchmod() may turn execute bits back on
-> after the seal has been applied.
+> Eugh.
 > 
-> Mirror the shmem check in hugetlbfs_setattr() so that ATTR_MODE changes
-> that flip any execute bit on a sealed inode return -EPERM. This also
-> fixes the memfd_test 'hugetlbfs' SEAL-EXEC subtest, which previously
-> aborted on:
+> Demotions don't care about mempolicy, so opting shmem out of NUMA
+> balancing and mbind'ing on a tiered system is just full sadness.
+
+Right, mbinding in tiered mode is a whole other ball of wax. I'm just
+trying to make the default case work ;-)
+
+> This is all just more evidence that demotion needs to be completely
+> redone, it's creating a mess of undefined behavior for memory placement.
+
+No argument from me.
+
+> > Fix this by having vma_policy_mof() use __get_vma_policy() directly, and
+> > thereby handle the fallback to task policy (-> preferred_node_policy()
+> > has MPOL_F_MOF per default). Every other consumer of vm_ops->get_policy
+> > already handles it this way, the scan-eligibility check was the outlier.
+> > 
+> > This preserves Mel's intended fix: don't scan stuff the user explicitly
+> > pinned. But allow default policy vmas to participate in balancing.
+> > 
+> > Reported-by: Neha Gholkar <nehagholkar@gmail.com>
+> > Tested-by: Neha Gholkar <nehagholkar@gmail.com>
+> > Fixes: fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault VMAs")
+> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 > 
->     fchmod(/memfd:kern_memfd_seal_exec (deleted), 00777) didn't fail as expected
-> 
-> Fixes: 6fd735518263 ("mm/memfd: add F_SEAL_EXEC")
-> Signed-off-by: Eva Kurchatova <eva.kurchatova@virtuozzo.com>
-> ---
->  fs/hugetlbfs/inode.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 216e1a0dd0b2..812bf8e21b91 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -841,6 +841,11 @@ static int hugetlbfs_setattr(struct mnt_idmap *idmap,
->  	if (error)
->  		return error;
->  
-> +	if ((info->seals & F_SEAL_EXEC) && (ia_valid & ATTR_MODE)) {
-> +		if ((inode->i_mode ^ attr->ia_mode) & 0111)
-> +			return -EPERM;
-> +	}
+> Reviewed-by: Gregory Price <gourry@gourry.net>
 
-This matches the mm/shmem.c change but could be written as
-
-if ((info->seals & F_SEAL_EXEC) && (ia_valid & ATTR_MODE) &&
-    (inode->i_mode ^ attr->ia_mode) & 0111))
-	return -EPERM;
-
-But even better would be factoring that out into a common helper that checks that?
-
-In any case change itself looks like the right thing to do for me.
-
--- 
-Cheers,
-
-David
+Thanks! Sorry for making you feel bad.
 
