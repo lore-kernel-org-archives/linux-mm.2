@@ -4,107 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDC5C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:12:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A780EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:20:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B80D6B0005; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
+	id 7B5066B0005; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 868DE6B0088; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
+	id 765F66B0088; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77EB46B008A; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
+	id 67BB76B008A; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 489756B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE40912058A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:12:20 +0000 (UTC)
-X-FDA: 84932081640.23.18E05DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DE386A0002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:12:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MrYJJ0zh;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 45AD76B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:20:42 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B99401C5C5A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:20:41 +0000 (UTC)
+X-FDA: 84932102682.13.8924362
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8D9EC4000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:20:39 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K4dVghBD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782717139;
-	b=WjwY5nyvdMa/Zj5lDI+4hVV4XIEGk/Sbukktca2CuLmFvwNAIRsJhzaSO2iy5gu/uOmA0x
-	u51+C5SHLFjQqTQjZ5AG1JgaF0oLJiwlXefmO9npTW/56vOOsGRCqjFX2NHBKiDWfbI0Ud
-	H6ipRYp8x4z9yruhOnW/42sHnMQ6rt8=
+	t=1782717639;
+	b=DKBcKZ21CF3xMf6I+09CwsBw51i4AVZkzCeIsMo923mV1/MuFK/1j3T9Hp3GnxEoSpgtnE
+	kFkb59KnOWI3v33GvozRph6xoackoFrU6gA4ezMDkGOWH0pFED/K6mnAUHJ13FOs7GGJjy
+	KXegcYowh+3g41/IdUVITNPEgFJ1VEQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782717139;
+	s=arc-20220608; t=1782717639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RfYGT01dvLOEc8FqHgrZrGneidKm26R2Z1JVOqhWxrM=;
-	b=iKNDycYblnSfr1aclWLwBeG4iG1oTB30pw7cPVUnL2Mv2RNqKDmTCOChQtoE6xAFReKiqu
-	bJkgXESEGQjTOE7jf0n1N+rfdfRWuFo6nLOQUgX6Wdl1duopC0X6wm4Pr15yTq0RvoAegv
-	ZeLYc+hNbBipLIh0fHVP7apes1oqAQk=
+	bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
+	b=26olALOHlVpR/4qLiM8gt1JybBCGocQSbMB8mzDxTBxnfAKkKw1rQG5kL5vmSRb7Cl5TA1
+	pAeO6gxcO2iqOG+CJiEOsLFTErN7QnLyph/yAahI0JcuCvS5rQ0jIlse6pgPd7eKK87FT8
+	zgJu6G+3pDlzWcjg3/G8IrpZrOSw7R0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MrYJJ0zh;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C9AF7409DF;
-	Mon, 29 Jun 2026 07:12:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2920C1F000E9;
-	Mon, 29 Jun 2026 07:12:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782717137;
-	bh=RfYGT01dvLOEc8FqHgrZrGneidKm26R2Z1JVOqhWxrM=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=MrYJJ0zhU6cSrLl39RQigi+2QZvaFhOxbtu1yEA6hTyfVFpe/kYj8ZS00AXP7ptpn
-	 Zs/rJ4Dk4D534ofnWSAGcbnEwLBN/KnvzIci93vQYjVXwfpFlx1AlhBW9Fl152Ded2
-	 /d2CVFTAmvwi5kDgZUn7qhQmYO2wdcMIKJ4WVa+ZCyvoFeewkXIeIOzYKTxPYfM626
-	 SjdOu9pZ7M9zKvR4x37LFNlLbmDD8YtYoeFwpksA/Z471kU6qCbYSB3sCDLkxfcAQi
-	 JOMt77dEy2HlYYsyn4/PmvnAsM7jCjaWO0fNwc7DiAVI1I8URakcULdgc+Xyp2+ihr
-	 o5UyVL2HDf0Jw==
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=K4dVghBD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of michal.pecio@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=michal.pecio@gmail.com
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-463f1165e16so3047317f8f.0
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:20:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782717638; x=1783322438; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
+        b=K4dVghBDkpdt6UQgs6RJdYlgFlxL2TPF3lYN7pQltPEupOR7CSHKWeaytfSMyo6ZLM
+         lK7e+EpFS6jZ2Dbaey8LXLtwjqMZLJ7c12PU4GiNa05gSmiRrDK89pvniqTyVZrL9erG
+         Pu4Qk6vYlI5C5KEc6g11Az73H9RYWaUcf102uKNV+rKxI5OYf2W2g2y9aRHYKr9k7XEn
+         0cgO6afh9cLTgMHMa1SI5xmWIR0DTcdAZzq0rTL5iFmQGRyB3MvKJkZO9kz0ykYtsQhP
+         1n6WfS/I56znODrnqb5DUkRWNp+A3fy+GLtjXbs0lhsKnzL5R+zaoJq3gWVnbsdgv3sL
+         6vFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782717638; x=1783322438;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Ega7ohzS6r6GgV/ue9UrgO9PLazVFbtWrIRnE4VyLbg=;
+        b=dIkPsmsS5bgnawMRgTsnFmLPW9jv9mMoY/7/aeM9gBngybvMrpwDhdhVkhMW2ubJAO
+         2zzMhfEKJseGDRTUt3aujpICupbx/AuC37KMkjbwBUzYb1fEkgpoQflyzNb4ePylq+9f
+         pS4alZC/cJ22jPviipyTcIZSQjnevfzCPAXeIU38xhW9P0EYhOE+Oeeq8mgph3nEeCoH
+         6vADDBYCm9yTynyr+scgWRo1tXomQEtzysQmDSmIj5Wjxk+rJB7VhlpJcWwNY+RvKffr
+         ckVjTYIYqJaG6yo29jQK3gNbnZyvnk5QD8wqpyfE886jQVPVvSPFHQO0w4ymKCDH+dNl
+         ghJQ==
+X-Forwarded-Encrypted: i=1; AHgh+RquUw4b41Qrs54gDL4PHb6OZqmFEOFDO6u5KB1uIZWjH2iGZrDqT8eUZZAc/AvzXaugNyYus6BTlg==@kvack.org
+X-Gm-Message-State: AOJu0Yxb/K20QPCCmEYAaa1hueZn8E+sG0qZ8PfHsMdmP9UNLKvkyYwq
+	O8vNU3Vte+P+CmBTlJaYoPKzValzCa7Yd2O8j0iWbjVNU1u3OVhUl56Z
+X-Gm-Gg: AfdE7cnJEcSaE2yuctnT9dRh5Xo/JiyX71vQXnXUT6cLDOcTOH1x3g1pyL5mor1d3sc
+	tyr2h9TYMeeNhsGJv+ykSznTYXeL+vhlWu0nOsuEEgzXplkNXGtLvSbCzxVXG6ef2mvqGRyMEJ5
+	Df1Xo0lsShQa+9Unu6nbu170t3EGJZxdhBj4ei4HDd73Gs/ELP4G0fVsHECEEi7SxAT70gbERsz
+	lQVeJw/gq6ljN1qvnn5qttTWZcMs+5zgKreXLGMbO/3+ZC69wnjbJsGHaJpb6BWYDyOEn6uIvj3
+	GUgJ4vFE6iYfnrUN3MRhzBq1jBm5Zh0AvrtwGlZkAOw306O/6MEms1QGdUuFX5JmOVsbDEMrqh5
+	1IA5MFCI5WJT5D4fkZWrwx4QUAoFnmBbaRuxoPfnjuB+CeATsLRS1f4w2u3DFjjW78Wc2jP2EqH
+	xIxBhx7Lkh+mVkIMIxmUB+KhDL
+X-Received: by 2002:a05:6000:706:b0:46f:558:a43f with SMTP id ffacd0b85a97d-46f0558a904mr17320972f8f.4.1782717637738;
+        Mon, 29 Jun 2026 00:20:37 -0700 (PDT)
+Received: from foxbook (bgu190.neoplus.adsl.tpnet.pl. [83.28.84.190])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-46c1ee0189esm49368953f8f.9.2026.06.29.00.20.36
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 29 Jun 2026 00:20:37 -0700 (PDT)
+Date: Mon, 29 Jun 2026 09:20:33 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: sanan.hasanou@gmail.com, vbabka@suse.cz, akpm@linux-foundation.org,
+ cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+ harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzkaller@googlegroups.com, contact@pgazz.com, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org, Mauro Carvalho
+ Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org, Dinghao Liu
+ <dinghao.liu@zju.edu.cn>
+Subject: Re: WARNING in usb_free_urb
+Message-ID: <20260629092033.4a83e91b.michal.pecio@gmail.com>
+In-Reply-To: <85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
+References: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
+	<85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for
- pre-exit before dumping
-From: Christian Brauner <brauner@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>, 
- Christian Brauner <brauner@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, mjguzik@gmail.com, ebiederm@xmission.com, 
- viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, 
- chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
- keescook@chromium.org, mcgrof@kernel.org, j.granados@samsung.com, 
- allen.lkml@gmail.com, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
- Xin Zhao <jackzxcui1989@163.com>, linux-mm@kvack.org
-In-Reply-To: <9a8e189a-39b4-4571-bdd5-400cf6443204@kernel.org>
-References: <20260624145552.70143-1-jackzxcui1989@163.com>
- <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
- <9105c433-44a7-4e8f-bacb-def93d11a7f2@kernel.org>
- <aj0Mr3e9yt0kU-Qj@pedro-suse>
- <9a8e189a-39b4-4571-bdd5-400cf6443204@kernel.org>
-Date: Mon, 29 Jun 2026 09:11:33 +0200
-Message-Id: <20260629-zunutze-wirkt-furor-e9ed5e4c31ee@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2891; i=brauner@kernel.org;
- h=from:subject:message-id; bh=iIFLBAM/tIt0dQ5zz76F+VqqO3DXDSEYi0YBpjgPesI=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5Se197O5/9JN18ZuQuB087FV2hsyBitO0r6+OvXRY1
- uRYwsnzHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNpn8HwV3pngYVt49uynd6p
- 3+a2TZzmxvVtguLbMr6tfY9XBIX9bWX4n9C9UiVUPda/2qBRe06i9a2NodH7fbWCpnPt/WTjph3
- PAgA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DE386A0002
-X-Stat-Signature: gtajrjp7jubu1nj1nso9b9bt4w9xkaga
-X-HE-Tag: 1782717138-558921
-X-HE-Meta: U2FsdGVkX18JhP4EY7yEoRUpjcHNi6h4vTUARY/vNsjU1RzIoK+KXESrB/5cTdsaF6wAAbqMyW2clYyeU617YqUctk1Baz5qmQ9/Tu2L1tlFoWbyNeJyPaD2aAP0l1njTv4ktijk9r2wNFinx13ZafBG2Wzx9EP/F9xEiDh06ZoH3DpVPJPzikH2TCo4iTPHns/s1I/H4SMJ4aNM6I73nbFlR1fJdvktZzbPY+t7FUc+xGGoD+3p6foDR8XephBRbWtALu+I164n7SCtfJVOUTxytTTCi9IAOgRHNIiJkQ0qiMm0P1smxFMJzpznLeHPeTeOiKpqAVrBasiyPIVWdUBb0BrpO0kHO5q8TNAUhIVwZM5HXX1M0j4HZ0MZ8LUutEobVvrvjJhaBsrIChmSF2ia+sotObejGlGZx2jfnNYyhMEIDldZGUYTs/KtxerRH6yUKofoUwiYdvJvZ2tYmBa+G6ntFstHoU711P48LfVd8TZNxyl1yhH39JTLB1UypAUsz2tQ/MhhGcCjGF3+vUs/EC95PDGN2hrSNpY3KRhO1GkVXHgyrkWefqtNk+FNnQ3gn9n09fmKyL7Gt1o3SPzrqPO3bbZDwNYJQI9IeE82lcbCP0o1gPiAfZsnnlc8dlocFCLrfKS3Q2vWjJV8pz+65o1jiefObAvHbJs4U3GylNa+fEBte2BCRqEiYfSnnczQWVRlzohGIba2pIiFP12z6ElHl/oFrZheZ7XYGpSXJGMU20S4XJ2u8tp/p6DS2ks0ZJ6KBK7pQS5Pn7/8WJJH1cH0v5XWI8d9pXX+FuFz46xVButHFdRHlifIgV4YTETKbFuBfkcWppxwQAAonN1pm7N2kedbuIGDwLpc846BrqbGviMa/q+G0nlQLYImuz1Ts+e6aq9k4mRvW0HEk2nesEv1VstD2f1SeCGN0B5sGHv58ukryO9TdojEufduB2HSOpV0FApmRflunF6
- z0ft5kM+
- GFJEftGocqIAjPvxMZTYWE7N1nHvcokGqNHT1vRd7sLuRK2KAcZ+P1KhV34xtCVW4g7zdTGmYqWl+d7NDQndA6FjZUpwtB3Jq5so8IX1ZRY6TVCvRcpZiAPGkOhQUm6Ti2J5GCb5vu07nQizQHXd6+pNgpcCQCpuv4QYnyyrwxbSoK1ZKUJzCBLgbIAkF8VL7c7hIMNU8C4FajRfBbTWuaK0xU2AxaumSbZPmIG6bOXAwNSRIuHNqXdLyIBR3c6hfw8x+GkdVIwjkWWX6YofeA36lYZfQqgW5/m/3RNzDEYoMIUsVmYLEJKoTfgj0Wh2bRn09SZY8Vz4KyWtpPq3sUCfUN9SkD2VYzEmR/0HGOJSCNJk4RGBataKGo36J8NhQcLYx3jdf7QDa0Dc=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8D9EC4000A
+X-Stat-Signature: dtmojpxu55xekm1z7yxd6wnnpdw5onkh
+X-HE-Tag: 1782717639-543250
+X-HE-Meta: U2FsdGVkX1/mNWbJn6tGbFexmbu61ETlkzyZuvYJUbNlGdq2q1g3bFDh1A+vJSZQqbUPB1yKw0gWsMdpbg+8bhCr3yZ9pHTO0LQmgAeQ2/PE62Qqm3S4gaJ2Xxfa7mrjYuvXOs50A1VnKHZd/T6FEe0JXv4qEp2rO96EAyq1ogpye6Hw3i0f5B4DrKxUxN7q+x3C1cRpwlfDPr5PhZdQAhAciV3OokouLkSPSRIyl3O7KUjhSzAaHc4/FW01zFk+I3LS6y2r5Di+Zj8JEaMVWU17W+YS6Px2iyfZH7Z5Zp+2BVzmV3l8foRPFHNilfBlr1uQCVbgpYA++/LwI5th942vMSI7tfVKdSBXtWpwhyIYVXfo8bLUIgDPAx3HMvM2vSyEjMS+zd/2jns1Kgyi5jnxKZMLKd+VjjWDphFX3aSI1xYeUI5+3DEuGhybVLdSTcie3bNnmgOALwUflLxc9qbU/Bo1dElq6Jf7WR8d3dz+jaRvKgVS6Bx+mmeno33biHCFL4Q5nBH5RUc+GPoYWpmPivo1PvLraDio6R/I7aYzZHNhIwiATIux/Gxwn+3bDuEEic+y9wY+Rc33j/9ZHDILD7uOv0vWlZbxWUDmtiLKF55dJ9fDo4Z7W17/Z6YWhR/TS9VqvMHVmqQ2TKHPtHtFZYdS0KFDR3XuNVZcLEutxn4+G1SCz1eti2TxHXMUhq4UXVULbCzze0hzlODIntqwY0Xpginn13vmnYwt6OoIhnUh7aBlPK5wSZX7qyUMQ7T2xauw+CEoNWOLqAPSdFzITvdT5xytek5ZJMfHhXK9HN/VC0mDzB3Q6IS9ysSRuO6E/4aijefQL0Mk30leC22gs9NlWd2fjQxSR4JjrB0Xs5lG5bLpxecd/Bjyj7Vdo4LZw4F/D/iSXES/t+25cZxhsE5IiXOZ3DmJqYy5cKRZXT27NjFvihnA222QxI2ffJ7m9ZqgtWWOXEALUOi
+ 5Mlxny8I
+ jXa6b39SA4xY9lJ1d2YE9XWin/nEErQfBagkIBDGfw8+ITT4KAnQy8nZRQRLaIIQeqhYlP+kBwY0sFTPbUwMcps6X0P3JSnPh88l+OUwWQYDtqXieszR+zExAA8ztqqapvIDbHVpy++82G0BSi+o//ldBqPWdF4GjXHO1kCpxqUiPDAX4hG3x6Th9qIr9UdBKxdOZX6yH4u2WFDOy40KX2Wa9Xa1jw6tWFYrFUiYIY7zVjrMDxK5rh0tAX91ymcowh1D4nEHBFXv2mQYKKKPYx4NIrmCjTEOI0YIgIafeF/0VdDFIuCXFSLDfnqaLDj7ZnHCMLtL2845U+QbSpuwG4PfqaRFP85RwNTlmiD7Ba1gHc6w0H+9nHvHthv/zHyo/lL9OPjdx4F/k3QSDonrXs6Pqu6uIRLD+3YFBdFR1OG3S1jQTtoGxl3RqYFSu04GezuppGwzeWmiK7vMUntCGX6IofbqkAsAJmMub5cNhK5H8uCSW/gpSP+F54cd90sY+vXfORd63xPSgrffYZMztDJ4fyetT66VjNnW5slnu/oSeVkOPZLOu3SbtN98E4z+a/R3tljLVaDGb1pM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,67 +124,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-25 13:43 +0200, David Hildenbrand (Arm) wrote:
-> On 6/25/26 13:18, Pedro Falcato wrote:
-> > On Thu, Jun 25, 2026 at 12:57:02PM +0200, David Hildenbrand (Arm) wrote:
-> >>>
-> >>> This makes no sense. I think you really need to sit down and think about
-> >>> a design for this that doesn't introduce state machinery for boot, mm,
-> >>> and the VFS in one shot to solve a fringe problem...
-> >>
-> >> Staring at exit_mmap_mapped_shared(), ... this looks rather hacky ("let's fake
-> >> munmap and set some magical flags").
-> >>
-> >> We're essentially saying "we don't want (pretty much) anything that's MAP_SHARED
-> >> in the coredump". And for some reason someone should configure that, that's a
-> >> rather weird toggle tbh.
-> >>
-> >> And the granularity ("file-backed shared memory") is completely odd.
-> >>
-> >>
-> >> Aren't there other ways we could optimize this internally?
-> >>
-> >> Like, if we know that a process is dead and cannot run anymore, downgrade writes
-> >> to reads (and make sure we block GUP write attempts accordingly), or would that
-> >> also not be sufficient?
-> >>
-> >>
-> >> Another thought:
-> >>
-> >> fs/coredump.c calls get_dump_page().
-> >>
-> >> get_dump_page() will not fault in any memory. So if a page is not in the page
-> >> tables at the time of the dump, it will not get included in the coredump. Which
-> >> means, that whether most non-anonymous memory will be included in a coredump is
-> >> already like playing the lottery.
-> >>
-> >> This is true for MAP_SHARED file mappings and MAP_PRIVATE file mappings without
-> >> private modifications.
-> >>
-> >> Which makes me wonder: How much is tooling relying on file-backed pages to end
-> >> up in a coredump?
+On Mon, 29 Jun 2026 08:27:48 +0200, Vlastimil Babka (SUSE) wrote:
+> On 6/26/26 23:27, sanan.hasanou@gmail.com wrote:
+> > Good day, dear maintainers,
 > > 
-> > FWIW this mechanism already exists, see /proc/self/coredump_filter. The
-> > default is bits 0, 1, 4 and 5 (see core(5)), which maps back to no file pages
-> > being dumped to a core dump, apart from ELF headers (these help the debugger
-> > trace back the mapped binary to the debug info using the buildid).
-> > 
-> > So the answer to this question is "approximately none" :)
-> > 
+> > We found a bug using a modified version of syzkaller.  
 > 
-> Ah, thanks! vma_dump_size() honors this, and I am sure through some magical
-> routing the information stored in m->dump_size will end up not dumping these pages.
+> Subject says "usb_free_urb" but you only CC'd slab maintainers, where slab
+> slab is most likely a victim here of e.g. double kfree() or a kfree() of
+> otherwise broken pointer.
 > 
-> Staring at elf_core_dump(), this "unmap some stuff" part is really, really
-> nasty, as it effectively removes the VMAs->segments from the dump. (unless I am
-> missing something important)
+> Ccing USB and EM28XX maintainers. But they can feel free to ignore this per
+> the next point.
+> 
+> > Kernel Branch: 7.0-rc1  
+> 
+> Why use such a version for fuzzing? rc1 will have many bugs that are
+> already fixed in 7.0 final. And it's not even latest, 7.1 was
+> released 2 weeks ago too.
 
-I would not mind if you would clean the mm portion of coredump up as I
-think it's pretty ancient and - as you can see - rather questionable.
+To be fair, em28xx had no changes since 2024 until 7.1-rc1, so the bug
+must be present in various stable releases and likely in mainline too.
 
-Fwiw, for the coredump socket I added a "userspace" mode a little while
-ago where the kernel doesn't actually generate the coredump at all but
-let's userspace do it. Android has the same model but uses signal
-handler tricks (iirc) to do this.
+> > WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317  
+> 
+> A kfree() was attempted on a pointer that's neither from a slab page nor a
+> large kmalloc page. Might be double free or corrupted.
+> 
+> > Call Trace:
+> >  <TASK>
+> >  kfree+0xae/0x630 mm/slub.c:6437
+> >  urb_destroy drivers/usb/core/urb.c:25 [inline]  
+> 
+> static void urb_destroy(struct kref *kref)
+> {
+>         struct urb *urb = to_urb(kref);
+> 
+>         if (urb->transfer_flags & URB_FREE_BUFFER)
+>                 kfree(urb->transfer_buffer);  <--- this one
+> 
+>         kfree(urb);
+> }
+> 
+> >  kref_put include/linux/kref.h:65 [inline]
+> >  usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96  
+> 
+> USB layer itself is likely also not the root cause.
+> 
+> >  em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
+> >  em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
+> >  em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
+> >  em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117  
+> 
+> So it might be this driver doing something wrong?
 
+Yes, it is. 
+
+        /* allocate urbs and transfer buffers */
+        for (i = 0; i < usb_bufs->num_bufs; i++) {
+                urb = usb_alloc_urb(usb_bufs->num_packets, GFP_KERNEL);
+                if (!urb) {
+                        em28xx_uninit_usb_xfer(dev, mode);
+                        return -ENOMEM;
+                }
+                usb_bufs->urb[i] = urb;
+
+                usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
+                if (!usb_bufs->buf[i]) {
+                        for (i--; i >= 0; i--)
+                                kfree(usb_bufs->buf[i]);
+
+                        em28xx_uninit_usb_xfer(dev, mode);
+                        return -ENOMEM;
+                }
+
+                urb->transfer_flags = URB_FREE_BUFFER;
+
+If buf[i] allocation fails, all previous buffers are freed and then all
+previous URBs are destroyed. But they already have the URB_FREE_BUFFER
+flag set, which causes a double free as shown above.
+
+The free(buf[i]) loop should simply be removed. It was mistakenly added
+by d571b592c6206, then a26efd1961a18 recognized the double free but
+attempted to fix it only by changing the order of freeing. Sent from
+.edu domain, so probably an automatic static analyzer fix...
+
+Regards,
+Michal
 
