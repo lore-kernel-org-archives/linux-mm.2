@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E515CC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCC6C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA786B00D9; Mon, 29 Jun 2026 08:25:21 -0400 (EDT)
+	id DFBEB6B00DB; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC2966B00DB; Mon, 29 Jun 2026 08:25:21 -0400 (EDT)
+	id DD3D16B00DD; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8BEC6B00DC; Mon, 29 Jun 2026 08:25:21 -0400 (EDT)
+	id CC2916B00DE; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 88EF66B00D9
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:21 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0D61990468
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:21 +0000 (UTC)
-X-FDA: 84932870442.05.268FC2D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7CD2C40006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:19 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LzaVIJgs;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A7E5C6B00DB
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39319120639
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:24 +0000 (UTC)
+X-FDA: 84932870568.15.E4D7C34
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 93B8D40002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:22 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9kcot1+;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735919;
-	b=J92cuJNib/WADa5XfIcHv1ljfj3arEYiW+cdhhysIHFemkx1oXN7wtLwVGO2K5EUO5CVkw
-	UPfFLGSAs1Z2N3Pn7BwEGgwCdVHSQC9fKnUOTrT7G6UUraY+eM9Mq3xHzhprmMp75bnD3n
-	+PbcAv/b7drV9y6Oiim2ntZgjMEtx1I=
+	t=1782735922;
+	b=6xbyZSNC6KD8jPCZzCDOn0g1UrVi+6rs82mR/QZFGRMngN01kPVR+DGVd7tMKR7wqotZmY
+	JtoDcpBP7BUBbF7CZyNXyQpyk3fLpFgAJegPoF77Csas9LeLhinQcNiiq6Y+Wl7uWbewaZ
+	JLi6lQrTYACnRKmL5+v1i0D5ht4OOB8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735919;
+	s=arc-20220608; t=1782735922;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jss+F81DP/cs0B/Pcj9h2s0BrMlGB7h7WXj2K0PFk1s=;
-	b=AJSnlvjuv93EOdxhaDkTx0fqeDJEPh4PIqGVfB7D7iNp8aai+JcXseR+Z0+WkzI4QaTiWA
-	y688qciW3T9rrG9+5GMxXVDOwhfoc9s2X4swjDNnGuz9PBtxVpG8Ue0jTSHuAvJpkASRuw
-	jNws2jp7ZgmlHMQ0zPLT6jEJR1EP7TE=
+	bh=rHOb9ve3jYcE/W9RyXVRFM5l4Jk2KuXJSM2ur2HmA8o=;
+	b=2H0dFbXFMHgGMLH8kzH59CYyEyuh6mtNUlmVG5Wqj8VxnsaiVIl+ua3F9Tpt3Df17SiHY8
+	+LGN3ImGfein8afv40QgDEi1S2rw6Nk6F/jHQOv0TEjmFFiL9V53HI/kP9VjLL6fiO5IJy
+	OKZGA02HJiaOiPyk18coLI6fULzLD7c=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LzaVIJgs;
-	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9kcot1+;
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 15287600AA;
-	Mon, 29 Jun 2026 12:25:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1854A1F000E9;
-	Mon, 29 Jun 2026 12:25:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D436743BE2;
+	Mon, 29 Jun 2026 12:25:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66421F00A3A;
+	Mon, 29 Jun 2026 12:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735918;
-	bh=Jss+F81DP/cs0B/Pcj9h2s0BrMlGB7h7WXj2K0PFk1s=;
+	s=k20260515; t=1782735921;
+	bh=rHOb9ve3jYcE/W9RyXVRFM5l4Jk2KuXJSM2ur2HmA8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LzaVIJgsys62G+Y5l1WPaL5KQg6Z9HDAWxSbs7bAkvDQSJaO1VHm9gvWufC4VLmRZ
-	 jM7dpVcbVkF0SaP5Ojhs2zhRfm/Pm/c57mYs4zRHf+LvG8Gz2lV5Zd7jFguf/A+Aer
-	 MvdUsRxGB7wdbuOShGZQOpB/BZ+xQu0z6RpiPRZlQcVRrODtCGFjFyGztrKJcLuJVT
-	 F/kWSDsg+64kaSG4Gtj04lo6i96YLOeVRijxNkFR2Vl4HpUl1qyQJZrEJ1ZttLFyuJ
-	 VZzxp13dMEaBPNzJjC3VctdXBDUgzvzJmDPej1MoZQWyEpxYqX6bktXABOszXoE8oJ
-	 Ilp56I6Xu/UJQ==
+	b=N9kcot1+WY2jypsv4U6kyLKClwmxgtXnpUiiDsh9uB4wjsv/6mJ3uO8Mm+KlvRTpt
+	 x95DOn031RIiOjhD9YBKvRsJ3SWRscOOHqXP5//ffbZRcn2+ZeOGSqWcDJL8lpSdT6
+	 9xiMjnB7g5DmFlroBbERwFk8HFxqwumjaOz9YYOFNe+t1tNkvjM4Dw8POSV8W15821
+	 j0S2qUg2MPsEO6oUCpFNLuavOjl181R825Q1U0o2hykdFp0yv8/ZlyQqKxPThBHA+b
+	 ZaWet0RIDIpDhYPXxPyW/nHY7c+UePobu/bAvV+uoPejolMs3FGhsJpEMMh+z+0i3V
+	 QBTJtGRqk2zcw==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 28/30] mm/vma: use guard clauses in can_vma_merge_[before, after]()
-Date: Mon, 29 Jun 2026 13:23:39 +0100
-Message-ID: <213918ef85ed427d29d0635db6b07b15280d3bb0.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 29/30] tools/testing/vma: default VMA flag bits to 64-bit
+Date: Mon, 29 Jun 2026 13:23:40 +0100
+Message-ID: <27cd07f6dd862d92410cf9db03f7c11e5f66854d.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ireuttuyuwnfzm3p15gaeocx1i9gd5om
-X-Rspamd-Queue-Id: 7CD2C40006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782735919-796091
-X-HE-Meta: U2FsdGVkX1+f+xnz8xRDurMUMZG/N/R7L9TvmcXuWmZJO7cCeuv92YLv7XZctJFL6lB4UCwofJmJEq9rztUOc1eIyXQWJlYlGNLtEEGgPi4EfeqOYVqiro1ZdkBqgo8/rLsfhrPASTOf8OXQKD+lidNNXxK06MxaAoh7NWWcGPVS7EFaSDeDpiLFPa3lKIVdIHizWTjbFF0i7h2svWDuve77hM/FvkL+IvnRzyHFswGrGmdHZni8YJGnSnBEb4C5/SJRaqCI5X6OKe1FOwluLy7W5L1m20w/TRYIg1G/GnZdMnvUBrVOs7apa6JWe4thhpqhl23uIVbFFoB6H0S05hzMxmmBZro7kk6eaD+1we9DuB2B0icQeSUrwsIDjcsCCPfzB32GpvmLgk/Remg5Zuk84BTvoFUhct66mWjt9YHOf46E217ccA7skDf8UvTDWg1fONUiVwNBfykGoFWt9cvAvgxFv51WNSlvDkEG4FN/yuuuqhYDGnqNB4mNpYtFCXFrMDk+5x2DAbqhB8thc6O87XFFu51tNQvdv1izY5QTJUSwwkZcz1U6Mf4TP6PR4Z13ga48gdDvSysirPmiH3uiqOqDTVmvaXWDd4j4/6RbGa7eeZ+j4wP53yLFAsLaLOYgBwC/1cQVNYLAWhdsuK4EnQOwZvzAC3Fk5hvbxXEDXKy9TPFrO7QGGm5OAT8dp1nw46QiRkkr//qwvKFfwgH1t9S0lYNB4Bay/NO32e272olaLBW9f67l9MTEOCScYLfWyps9CycqCzibA7EPgcIpG/BXDkwMZT2sqYC+ROuN9255u0JNGcw7fmYl7YO+DOZL/psTZZe1Klr1xbfwD+NxtdKpfKQdS6r8UXOhBM3jcbh5zj3AwFMjpzIPLLaWitx6E6bJYqsYqWfOqBVxvmUfroed5iv7vFGINNa0QM71wa30uPicdeOisqFw387xhbUzecnkUEQ/Q882uT3
- duJyFDXQ
- PU8LU/D3BZLxlns4ubN0WCo3s644jDoRqwHbTG3a7qSLsytQj6ZrKPVW6K+2AHYEWfHTaTKru5rYLq8gLx9NF8t0tscFfvAAH5DIEjAaslbIUuwnR3EIAoxyvItciq6I8FZiDQwPZSDYExxshbH9VXUqlPybgGCkP3282DwsI9PVeUHErhxkHB1Mid4JPfIj4xH9JXxwxVc9C+oBbtx0XCi9sztQiK+7YS1pn0DXXkfk+z7f5lZMmhfC2lM88UVQugoQhvqJrAr1v5D0YHya+lGzZYNQ9XZQeOVKDVgFSoZHNlHKJ29JfjnG7P98W6YTakCfhfN4dxAHz7KrlT41mTS/RZZsCUqpWGQTMRfAkSZmNpSs=
+X-Stat-Signature: wgakg3xphj6wu4t7ikkdwcj74nraq64y
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 93B8D40002
+X-HE-Tag: 1782735922-983792
+X-HE-Meta: U2FsdGVkX18Daz9p9lsjwKsEeHjLJ2sGKCrkhaBOBS7cgcic00SzoanKzPxG0YOL/iKEahFN4sGW2SCc6fhCqFl0lU6CfVKOo0Mps7sjIE6oKMjDtj/4kYAlSvskjdO01vW3F1RbgC02fodOvSHgl1lnHPfPIIpr2FHM1Sv8Vke1ZNMMOGi6jNmHL/Gf77AEv0fVY6/ZzfNZB4pDO6X5+APDAdXdwcZ4hpkJPwFIBh5gho8XvydWO42cDOT79t+7Var2R1251iJBUDx6CXqd/Gpdhq71wDe8pm2pHDMaoH4yd3Wp72KtqT8TT8QRqvXnsLr6vRkS+1pvmb4gujncNsK6NK+/3Nc/OlqA4WXeU1dBjpzYL+sRoauNjdvt1yyCU1Ebce6R23endFOZtuKnwndtdamisk2kHgs9qhMoqNeHHfvNNB0c9KT+xN7AL5JXbSRWkUt2wvV5p3AjY0a3v6u+4zVyrp2qsKyUsVZ7KpMxm5NCZG8jLDNW5oWfWkfnS5/C12q/QySKO+DDz/ccx2CJ0hQEUhypTNWA/BAoGsEmGbdRxu5AOHl0hE5Przue0sbO7I1KmIlT01XpWojk5Krrbxa00+/OgZLiQQTkkj/5OdTN1dAg9aM4SNw0hiTY9NoXnjS2EbfOrxm1CQNNSxLQQ5J/2kVoZilrSn7LlbVXplzoRt/TPUCodvJvKSqllpZh8CDIiUKBqmuP6dQN6RJ+rluEkSp+5akguJobdEgaJdSh+X/JMBI+D9P8p4KetmDBtKMQjpogEEVUzdJuCd0zGTxeWPJkz4ToZgQZ/QK0fAFtr4QAfrU8tOcipcxvUMAw7eHgLGQbeNjaCNtR0V1reQm0vxXCKMdcHXVfNxoej0NyOHbuW1RmJs4m/GMTtq7K4gAqZKAUIPeNor8ZBTN8BzECr1WplvKd08sBLPf7rWQIZ+Pm0lXW3YfWO43xyTLNZPw5or9Uu91aeMl
+ Rqz6z0CC
+ TNIyZJU7vdGSbg9HyculTslovAvuhrUcvq3AfapN3R3jz2K6re/IFOdZLFoP/lzHHPo03YlqZwSGcNe7eyy5pvGuBRObACJzsAF08llnc5WZhKSHzvHjMLCnGLX12iEPEAarXDPlI1mmbydVHnqKdBNAKUNU8qSsda8cF5iXx9fHbT3HsZfTK85oD3jpkLFuA8vq5gsJ/azRwlSE38AMI4L/1BVn1MBZp87yjTY7GHO/dEaxrEzSIazHrsWhN6jJLiR9DbFc3AAsI5tPD2y+dTJFFsseNIfC98NQyEtjP8c66SUckUat8GSR6wg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,65 +162,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Rather than combining a bunch of conditionals in a single expression,
-simplify by inverting the mergeability requirements into guard clauses.
+With all of the sanitisers turned on, setting the VMA flag bits depth to
+128 by default results in overly long build times.
 
-that is - instead of checking what must be true for the conditions to be
-met, instead check the inverse of the requirements and return false if any
-are true, defaulting to true.
-
-No functional change intended.
+Reduce this to 64 - we can always manipulate these later for testing of
+larger bitmaps as needed.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/vma.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ tools/testing/vma/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 5c3062e0e706..7201199fc668 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -215,13 +215,13 @@ static void init_multi_vma_prep(struct vma_prepare *vp,
-  */
- static bool can_vma_merge_before(struct vma_merge_struct *vmg)
- {
--	if (is_mergeable_vma(vmg, /* merge_next = */ true) &&
--	    is_mergeable_anon_vma(vmg, /* merge_next = */ true)) {
--		if (vmg_end_pgoff(vmg) == vma_start_pgoff(vmg->next))
--			return true;
--	}
--
--	return false;
-+	if (!is_mergeable_vma(vmg, /* merge_next = */ true))
-+		return false;
-+	if (!is_mergeable_anon_vma(vmg, /* merge_next = */ true))
-+		return false;
-+	if (vmg_end_pgoff(vmg) != vma_start_pgoff(vmg->next))
-+		return false;
-+	return true;
- }
+diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
+index e72b45dedda5..ef6cc558afe1 100644
+--- a/tools/testing/vma/Makefile
++++ b/tools/testing/vma/Makefile
+@@ -10,7 +10,7 @@ OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
+ TARGETS = vma
  
- /*
-@@ -235,12 +235,13 @@ static bool can_vma_merge_before(struct vma_merge_struct *vmg)
-  */
- static bool can_vma_merge_after(struct vma_merge_struct *vmg)
- {
--	if (is_mergeable_vma(vmg, /* merge_next = */ false) &&
--	    is_mergeable_anon_vma(vmg, /* merge_next = */ false)) {
--		if (vma_end_pgoff(vmg->prev) == vmg_start_pgoff(vmg))
--			return true;
--	}
--	return false;
-+	if (!is_mergeable_vma(vmg, /* merge_next = */ false))
-+		return false;
-+	if (!is_mergeable_anon_vma(vmg, /* merge_next = */ false))
-+		return false;
-+	if (vma_end_pgoff(vmg->prev) != vmg_start_pgoff(vmg))
-+		return false;
-+	return true;
- }
+ # These can be varied to test different sizes.
+-CFLAGS += -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128
++CFLAGS += -DNUM_VMA_FLAG_BITS=64 -DNUM_MM_FLAG_BITS=64
  
- static void __vma_link_file(struct vm_area_struct *vma,
+ main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h include/custom.h include/dup.h include/stubs.h
+ 
 -- 
 2.54.0
 
