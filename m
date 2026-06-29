@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E94C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:22:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84BF9C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:24:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43C476B008A; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
+	id 3F3256B011D; Mon, 29 Jun 2026 13:24:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41A756B0093; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
+	id 3A3216B011F; Mon, 29 Jun 2026 13:24:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32B5F6B0096; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
+	id 2E0C06B0121; Mon, 29 Jun 2026 13:24:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B3D66B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D57E1A01F4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:22:19 +0000 (UTC)
-X-FDA: 84933618798.21.7341D5E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8FF661C000E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:22:17 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTo5qVX1;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 022596B011D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:24:16 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78CA91C6030
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:24:16 +0000 (UTC)
+X-FDA: 84933623712.11.5D37812
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 810914000E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:24:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gFeb3XnT;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782753738;
-	b=P65Pv5feaJI8I5lBK/lp9YwsjgLAeiXgd3QvlKXMBZXwmhCt+zDTfu1+KretgoTa5o2lWd
-	pzda9m5aitfgbatx8pSgZ2kmC4WraJl3QpoMchB2S/ihaaO6Jkp4v3lxjUdgYkLJLP5raJ
-	taYikfTSZCYQ9NV/9mSQ8liZ3/pJJOs=
+	t=1782753854;
+	b=oCJgral38jnsM89ynpScvGs+5aMpHsVKlr79iSOQ2rNDCUUo4Q01r1quDrB7Zpcc1I5Mxd
+	/ZItXWdpT2pEB/CYUXsCNimMl0lBCOeMcgzWqz3P3EXF/j7IC4jAMHgYyMiXeBEcIrpd4t
+	e9gM1MswoFSizL6+2bfkA5rLq+tEdco=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782753738;
+	s=arc-20220608; t=1782753854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=juWgsiwKrfmDYFjWzFD07h7xasT5wM0m/CbZLCSQTVE=;
-	b=f2fuhzq5C2bk8apJVnEfZiZf9pnIEfcm0v7iJn2cfsT3dBfp/UZfzNFwhyWZViLkQq8eKQ
-	l95s/sAQr9mu4lCMzNwSJ9GK2D12yzajjDSWfcmF8eXtsn2ddXJIYjjrBHEyLk4dUClgt9
-	0qmudlL9uwQgpAXqlURAM1UaldL8Whs=
+	bh=IZNbbav3TlayBnL24voJZl6NnED9LU5K9rl2Lg6cBNo=;
+	b=qFqtBzKrBUSn9//ehbWObYGiAgFWHKpxYpDBFDwjmqqBzuKPpmR9caVzUi6d5vBVYPEEby
+	UXIHyDYpeqXUJ6fsGQDDYy10BD4N5u9HATTSl8CUPyHqVswx7bvw/ZMlUCngOPGXK4TrZv
+	Z5ZWbg1jjIzwklMfOP9pf5gCbYUNU5U=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTo5qVX1;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E18CF601EB;
-	Mon, 29 Jun 2026 17:22:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2699C1F000E9;
-	Mon, 29 Jun 2026 17:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782753736;
-	bh=juWgsiwKrfmDYFjWzFD07h7xasT5wM0m/CbZLCSQTVE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=uTo5qVX1WCofU7ArQgIge3U5uPhkOafXY7LAqEvLoUorCsTnMWFkxpUZNTf8CHCZr
-	 AeASxor7XbYPpI6VrMzqtE0MppRB7PPFVbH5MjKJ2vTBtq/2HgmS2d0vYeRlCftWN8
-	 M4yhQnX7V544cg53/WuFnz9XZQ23NxJnaDdSzFfA=
-Date: Mon, 29 Jun 2026 10:22:15 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Andreas Larsson
- <andreas@gaisler.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Jann Horn <jannh@google.com>, Peter Zijlstra
- <peterz@infradead.org>, "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] mm: drop pte_clear_not_present_full()
-Message-Id: <20260629102215.09605f0e9ef66c5f58fe0932@linux-foundation.org>
-In-Reply-To: <20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
-References: <20260629-clear_not_present_full_ptes-v2-0-96089871a1e7@kernel.org>
-	<20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gFeb3XnT;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <b84a497d-9159-4967-b355-44913a3865cf@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782753852;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IZNbbav3TlayBnL24voJZl6NnED9LU5K9rl2Lg6cBNo=;
+	b=gFeb3XnTM6SMtm27Y9liMgdbo8RGjXGKPEII6Ieiw6WvJavwMB++05Dylmkt5UtsT6UsRT
+	0h1qePfTwxkE4guHUbDxrFEWSlFTOQWk40xF46QauPYEgjSeDAoRQj+F1Km9RY8hJ77LQe
+	O6GAeunG+xJo1ElZsdmCg6mSDK+fVh4=
+Date: Mon, 29 Jun 2026 18:23:58 +0100
+MIME-Version: 1.0
+Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
+ into vmpressure-v1.c
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com, shakeel.butt@linux.dev,
+ roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org,
+ ljs@kernel.org, mhocko@suse.com, rppt@kernel.org, surenb@google.com,
+ vbabka@kernel.org, kernel-team@meta.com
+References: <20260629130042.2649505-1-usama.arif@linux.dev>
+ <20260629130042.2649505-3-usama.arif@linux.dev>
+ <akKhzR8uHh-wzrx2@cmpxchg.org>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <akKhzR8uHh-wzrx2@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: d3teaazaa3gjk93je5ddzst56umtd34z
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8FF661C000E
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782753737-849525
-X-HE-Meta: U2FsdGVkX1/rTqTtoOULSPAryeIARpcRHoStpI4TO4X6s5mTdnWrIuyBYhJ1xw3QmGwqY2/qQc9DXy6wTVRSYIgIslvO15S5k6grH3R02wbcuXKU7D/hn2HKvUzcaoYoH2S9LRdVxy5WoiOKRjgcTl+FNVKfdhSFNtxKWc396w/tWS6Q6j4/cHfEaxMx20besuE/yOY1i2RDXrOEWK8OycMlamrrXFm9GCnvz5aclFAc7rM0YcFAIMpSQLT8NYilgiWPNqQtFq97pezo2JzJCrg+13IXFQ20cQ0pVIzwUMYQ8BTemKdnWTjJaruWEIrpVrdHerUkwdDJ9mZ1qqPY0VmTsJ2+4u5izt4rAEIWrSx1iX9snmyHaohxuZ4OGu61en1+s4WjmCiXxNE7VDhbNi9xIXJJ49nFv/kujrY78IBs6oP7P7JoMqGPk/BDmqi7bnZKekof292UmAQ9HAzcB+DKN+sKJ6af3ymHDleU6MuWqxLUGHW9oS+WpMcFpJ5JF66N4r76f3PtZ/WcwuwRany/COC3xdmW5cDg7SOpSO0j5SkxyMepJmCoBxMzClSroiDCCrpUjzmcAzQqvM3pk7DMWx9SJt8CHO6nePKEuXnHhcMTwgRRFyuuEk1ZHy4FcvYg1glyj7rQ/Xs6uh/j6sOQM4rppf3QFjHDICHFr1T38Sx7ZbKKzJhXKwwlLr7Ss5dtg+7UV6zexfMZ298ABNtBv3bX5TORMQ7c4n16Zw9h/1zw3AaE1X2NgOkhHk4R+vkCN9dJ2lD9RfrZqG9i57dZw1pLcwGDXfbKb0lWMvs0pNi/bBNtuoQJjmShnMxEzoN8XbkMZQ306SEhnzoUvBVKvh+96bfJn7XH5i+PT10B/7y33i4R3FYaVO+B+iw3xnwhGX91JukIgsnbmLfegG7IyZnCVcqicNPBhbQ/35GwwgBvFu73NmoNGrkCnTnQux7dILLeuoYwySTp3eB
- WpXSHiqa
- qkiwBzDQ5nNb3wC6wXOPrw0hXxTMmQKCOv7xzM4SVy7lnYLy9O1W/YiKWgfUeWdvp4hkMzJtfokB5dEbFKPQ9Br8DVcDGT027GA/Y0ushf6WbvybTa3wyI3Y1zcmD+ciM/iWDgE2zv/euU1d3AVM9hjmn7Lna/Pi3Mwi+Vh1OFDg/riR/sHTpsrZczYpce4Kvw1KeH41peVZ1QwlMdaG66ya/7D2t8uzWWVB8rAXxGLaZL7WHPREQJyThIGNbDzEaFAjAFlanKQdkFuX9OUfDeaXB6yRC67I+S+HSgwccJeQUuwHslFAdqY1uTmzqG/HFJgFC
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 810914000E
+X-Stat-Signature: w7edw4r3kxuzqfxzacxb513yshqoo3p5
+X-HE-Tag: 1782753854-125735
+X-HE-Meta: U2FsdGVkX18Xhb6BctBtJm1uVEZ5zL0jYu4lllrCQoeIuo4RJFx3ovQMXtgzIp8gv9kvR/jKpoxvHaJwtUYCXoMme4EBgcTmbFtV+5D2GNULh223VVjjn9fbZXVCapKNgaOae2qC2+pQgXk6a6zXYftiuEHqi+S/GXnmWS3d4Qjmr7h7QpuZdAzkIlabgDRE08zU7yrXs++qDuqlNJUOfxOCCD2sBnJdqQB+Zeenqu2OWGx7TECL+YtEEZSzHCRiYn953qwqV0QkW2jFWhMjnLlcYaMHxTcqfi8mn7fnDWHhF6E4wFoAhcmyA8bSKsogmsJPyW5gfrbbD3I7QpTfdD28r7GU3j17yLgA4VaeZK9ILPR2g5PklRqHRJm+7AFVYaoorAHheTn60ns93yJA1ja4LBcLIqJqE0DQdQ5QFAdzlFAhKDD2FBpge8K59PB0WlRlzvm9q4olLJP6bwkkcv54eTg+G42Fn8Ykg647fstMBkQhHnchpo5m3b3MmvB0SyUsccYBETLIG6jXWNd370SqDj5TLWJ+ztJHggNUG/vPW6n1K4DzwxpGJETLLio/o/DRKL1eSpYgegNLmwSvuWuSHaKbclqStiteKQknv7J3JyfE83kRdy4TliHo05VUyf7kB3EXQhB7goSybDzawUUHkY/uumS5hUJ9BSM8+l7B1NZe85bVOswCZ3PRMW2PepD3L2m8S31EG7MpZ41Jq/lI2zObjGUgcpbyvsUOLyyBoqjSSiAn1vSDvOCAaqIIhxaarrQtnMJX/GzMhMZT77z8nqf4/I3dmJ5MIpSxM6Bf0MuzlAp+lYtKPFNCLd88saqGKeNyNS3VRAPMxc3XQy9UTqyDZn90azsF0bB2Fks7l9JhMQKdavfLPaCr7iAG9RTnHbCxI+82VmaLG5ggaL/hMDioHw2fVBja1ibfH/M+bq3IdWu1vPq2AojnS/uwPc5GJh3k3pz3/lrrE4Q
+ n6TNS99w
+ WoEipGnFN0L1PV8hhYNlr5fcygs4LIM0TRqrtd2aVMz6wontFkh4qoASQUDaaMA4t4XuWvlguTObQdymgj6GGsO20mqz6LAmq7PIzr0qyCVSBiB1SD7Bv8qoWqytweCzQtUb5kuF88+SUYVwGTx+SUh3/OcFQinM9cgJA6MoEqdBWmQKjL227VkWWfs6Pol3PmDfzn1LkfIG2K76D53px1A5mFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,39 +95,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 15:49:48 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> In general, there is no good reason to do anything special when clearing
-> non-present PTEs.
+
+On 29/06/2026 17:48, Johannes Weiner wrote:
+> On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif wrote:
+>> @@ -101,7 +101,7 @@ obj-$(CONFIG_DEVICE_MIGRATION) += migrate_device.o
+>>  obj-$(CONFIG_TRANSPARENT_HUGEPAGE) += huge_memory.o khugepaged.o
+>>  obj-$(CONFIG_PAGE_COUNTER) += page_counter.o
+>>  obj-$(CONFIG_LIVEUPDATE_MEMFD) += memfd_luo.o
+>> -obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o
+>> +obj-$(CONFIG_MEMCG_V1) += memcontrol-v1.o vmpressure-v1.o
 > 
-> In theory, HW that does have to invalidate TLBs for non-present PTEs could
-> benefit from a "full" parameter, but fortunately
-> pte_clear_not_present_full() is not wired up anymore ... and there would
-> have to be something very convincing for us to care about that to re-add
-> it.
+> Might as well move the interface part to memcontrol-v1.c instead of
+> creating a new file.
 > 
-> So, let's just use pte_clear() directly now. To avoid the compiler
-> complaining on some configs about unused "addr" parameter, silence that
-> here.
 
-Wait, which configs do that?
+I think it would make it easier once we move cgroup v2 off of
+vmpressure. Then we can rename vmpressure-v1.c to just vmpressure.c
+and gate it to CONFIG_MEMCG_V1. The other option would be everything
+living in memcontrol-v1.c? I think its nice to keep it separate as
+memcontrol-v1.c is already 2K+ lines and this is standalone feature
+that can sit in a separate file.
 
-> @@ -1022,8 +1007,10 @@ static inline void pte_clear_not_present_full(struct mm_struct *mm,
->  static inline void clear_not_present_full_ptes(struct mm_struct *mm,
->  		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
->  {
-> +	(void)addr;
-> +
+> Otherwise looks good to me.
 
-We heavily rely on this warning not happening.
-
-eg, one of thousands:
-
-static inline bool page_range_contiguous(const struct page *page,
-		unsigned long nr_pages)
-{
-	return true;
-}
-
-So... what's happening here?
 
