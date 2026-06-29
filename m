@@ -4,134 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 919E7C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:31:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67236C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:32:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A6536B0005; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
+	id 272CF6B0005; Mon, 29 Jun 2026 03:32:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57D8C6B0088; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
+	id 24A166B0088; Mon, 29 Jun 2026 03:32:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 446DF6B008A; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
+	id 160A26B008A; Mon, 29 Jun 2026 03:32:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 13D5D6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:31:36 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7EA0C12059B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:31:35 +0000 (UTC)
-X-FDA: 84932130150.27.49234E7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DB886C000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:31:32 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPpyMNwD;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E00856B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:32:19 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5A1E1A05F7
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:32:19 +0000 (UTC)
+X-FDA: 84932131998.06.C487463
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 79BA040007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:32:17 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=U4PGCrH1;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782718293;
-	b=y9BRibPgU4IH7Jn7KrOANrE2pan8/qtIXrFM7GH3nbLTWD5BeFsVxNTvYpJmHKkmngu/1Q
-	pTl95wocizrvqt9VFtw0kZ2CylJ0Hd6V5kMb2DchqZ7L+IDZ1viPEI/SOGPoLvz4YfTDsQ
-	4kP2+Wb2BawaL632kR6Uj80GEBHEYZE=
+	t=1782718337;
+	b=uI/9q/4pPzHfUPEtcPv5KY5bKnu7zIC3HWdTSgUUZWdc1ZGvIO3ufWllx9+YrbFFMefAOR
+	8Xq5rmLzlXn8xH6M44d6QE3HSZN5Tfv//+yVBIxz3qbsydueAsIYNxX7+WuboRELIQUZRN
+	E8mzqWGGN9Nip5Sf8c2LwTet5wV+Edg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782718293;
+	s=arc-20220608; t=1782718337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gfFSSbFa1kkiEFju+F2cWFK+kFerBLm7T/klRFOuIwg=;
-	b=3k0+CB3w+P6+nVru+glPqw5jZDLRq7pZAMMIEPHWoVS3t3bFUa4RWexTjI8u4u+GkjxruL
-	yNHHG86++r+K77bOQzk3w+1ht3LLqW3eOi5F3boNje5jJGgSUgWphnRS58LtOFUB/49T/t
-	RZn7VYIurqFAwosx67TJmShc16goa1Y=
+	bh=1v6W6k2MU5dZ6c3Yzz6iw0lMzjubTnc25U0LLuynrUI=;
+	b=CNU+3CBVPX0XqpGfCy6XBJ9TOX/grpUqPyiPowemGl1CoVagUu8AvKlSOoWAduHzJOKwca
+	9lEhtrPORbfpY12+6LfC8oD1HdLyiDg1zrvZxnP5E62J6XejW4AHub2ysKWzSDcRjSAqLO
+	uJLhxz10wghKbHVzdVJXEs+zWZCwGHQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPpyMNwD;
-	spf=pass (imf10.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 09654419CF;
-	Mon, 29 Jun 2026 07:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2251F000E9;
-	Mon, 29 Jun 2026 07:31:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782718291;
-	bh=gfFSSbFa1kkiEFju+F2cWFK+kFerBLm7T/klRFOuIwg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RPpyMNwDxysjUcOYZ4W+pforECuPsD7hMwvFilq+ds9qaGhx1Igu2VE42OfdXIsQy
-	 ZzDXfSX/hk1IUtpf3E4WAW09xj/bDch7THnUpa5oUa7aSX4lOq/6SciAFiGOr/XquU
-	 6boEJD3X4bCxX3SK0foOnvI7rwfvikUW2jM+0kaKSgzAhOIe7tFcIRm/6ZbSSMJWCK
-	 /UAIzIs/z1ArHGGH/37tj0FGbmOpGGvAyjoqqnDhMvD2rhqx70PENKtqRq8lAMzzy6
-	 l2SfLXFGOu/Ckq3xO2wVbcbhxGlrUEzrG2kFJjPXivhlkiEnP/3AYhWk+MrFk6gZYv
-	 AYwoZpNALHhWg==
-Message-ID: <b50be148-f7e4-4c11-9893-54d4278b2e32@kernel.org>
-Date: Mon, 29 Jun 2026 09:31:26 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=U4PGCrH1;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf07.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8eeb4508f29so15982546d6.0
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:32:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1782718336; x=1783323136; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1v6W6k2MU5dZ6c3Yzz6iw0lMzjubTnc25U0LLuynrUI=;
+        b=U4PGCrH1VcotxHPWhra7bEjiOUq/FG7rgilkkJtvtDgJg8UcxU3aDdRq1YSic0T9MW
+         nO3IvR3mTJiNE9oLSygzKe1UJk+5fvCyDbeXkOLs8oWMtYF1KbxiXPI1YKZR+IfPahMG
+         e8gFboCqpoqmoCEnPEqXbzjR4oUdmnaZJ3CYmeyNko644IUbxtdOz5IFBcamzboC3Z6w
+         XiQpBNg4ajT1e3LrolUae0KoRZhUDc1R6qyDUXUF9ODm/sMwSmA/HtiRTG28DbuwbK6A
+         S5J4KMPL4ERjoLV0zgEECbYFIenmb/pfGeEY3Rbkf0KCHKMaf7GaS/HlFQOAhouh7MPn
+         rHJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782718336; x=1783323136;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1v6W6k2MU5dZ6c3Yzz6iw0lMzjubTnc25U0LLuynrUI=;
+        b=dvwGPPjns9HDZCfVV32SQxa5xBfHSRMu7y1A0f+j60/B6EtQPIxQJ4lr297P3MTPEH
+         7/q+STECAKCewDSBo3nnHtbJgasKl/vMlDo/ONbCr5zZJh+6hTSdhLv5m2pvpWxeaf92
+         Cu4O2ouGr+U0wHTr2N9Re61yJ/0O+hxV/IANETv/RRymORi06J8/0ceyEvMkqJ5iY0nG
+         2xRrBltLUZ+PlEgokUcH2cD0WwrZX/JPWHwa/gd4dhw/OmFbXSpccnqoP5lTJ0KpmRbU
+         QFBfm2L+l4JU8GQCv1G88bHQbhjXdz+9GxSUDSzRWOPwuM/SY8JVdH1Le8WNcmrqQQKw
+         vWZw==
+X-Forwarded-Encrypted: i=1; AHgh+Rqv8adMpyIikVki6xMB5dNSmsuWusdnP3cw/WxNr18TDRqrPGWMTatg0AeHpqNYb05M+dkBjNTTfA==@kvack.org
+X-Gm-Message-State: AOJu0YySadvirnA7Sh0fI7TmVoJ7pubQUNr0rmQENc6hlaFuR0zMMJXr
+	RKM42iR7hVmOc70Qxog3qzjf5D+7MfFJwK8QQCkjKNun46+kQVkbbPn3rmckkV3xyXM=
+X-Gm-Gg: AfdE7cl6aJFDFza8QnvlHkAU6aWL2E7i380LwCsTTaoOo56rBI4dtDsQvLe10YNLL4a
+	DieCq8aEWQ1qI0ndqAermNx3TuDciW3xI/0/bXzQa7aCJJKBlmTH1X84RXUFwBSCloQfbDTHWWN
+	16Y48VBZBRdaMNY7V1Wl3lzcfFbjcvSQNFmFyUlbXH4R1uJFWgTix6uPK7k+3oUJZsst3KseDXt
+	AgJFJMQx6RE+wc+/CaOMMV2A5vivVksXoWHh4UF2GEMvosYbhi9CHmG9IGBaH8vTKZpGwwaKQeY
+	Pn4fpUX5dLuu7qC+7DPqpUvAo7YWcG5j/S1bxmrS+eT9KruNmAdcGtyHkIhELHUc+9RR4vwJ6b6
+	U6bZ8xPE68AmaIwe/2309KV2fezlyuhIMEYuqkm9O0RxK5+Ibf8WrA9IjbNw4jpZH2DXqWZJY2d
+	nC+bpVvUaimzdrSryGwSipvyF6biuEfJDeXR4FnDg5
+X-Received: by 2002:a05:6214:6010:b0:8e9:f5de:d5c2 with SMTP id 6a1803df08f44-8e9f5ded9b5mr130841736d6.57.1782718336450;
+        Mon, 29 Jun 2026 00:32:16 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ef55c2a4c2sm47392796d6.10.2026.06.29.00.32.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 00:32:15 -0700 (PDT)
+Date: Mon, 29 Jun 2026 07:32:14 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Samiullah Khawaja <skhawaja@google.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
+	Alexander Graf <graf@amazon.com>, David Matlack <dmatlack@google.com>, tarunsahu@google.com, 
+	open list <linux-kernel@vger.kernel.org>, "open list:KEXEC HANDOVER (KHO)" <kexec@lists.infradead.org>, 
+	"open list:KEXEC HANDOVER (KHO)" <linux-mm@kvack.org>
+Subject: Re: [PATCH 1/1] liveupdate: luo_file: Add internal APIs for file
+ preservation
+Message-ID: <akIask9nPTEAhd76@plex>
+References: <20260613012521.835490-1-skhawaja@google.com>
+ <20260613012521.835490-2-skhawaja@google.com>
+ <2vxzwlvljyzs.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING in usb_free_urb
-Content-Language: en-US
-To: Michal Pecio <michal.pecio@gmail.com>
-Cc: sanan.hasanou@gmail.com, vbabka@suse.cz, akpm@linux-foundation.org,
- cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
- harry.yoo@oracle.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- syzkaller@googlegroups.com, contact@pgazz.com,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-usb@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- Dinghao Liu <dinghao.liu@zju.edu.cn>
-References: <6a3eeead.7fb353d3.354599.b0b0@mx.google.com>
- <85cf5045-b52b-4aaa-a038-ca1b856b55f9@kernel.org>
- <20260629092033.4a83e91b.michal.pecio@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260629092033.4a83e91b.michal.pecio@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzwlvljyzs.fsf@kernel.org>
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 79BA040007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DB886C000A
-X-Stat-Signature: y74rucfchpdkfdq1wiotpp1uq1muwq75
-X-HE-Tag: 1782718292-563651
-X-HE-Meta: U2FsdGVkX19UhSoI6eZJ6NIVz4MWBdoFAFsyP8BH7LuEdodh7NNFY2AfrFZn5x5Nk6VfKs6EmswI4cXS7mAwtDtKRfV0W6q2gK+1ikFZYGp1KZ8dRQ/DkskKtVuQoLb4z4av7qWHeJTegfCtS51OppH5KHYtXco29vRu+bgLyBlHm2NQ+HXo7CLB4TBK2PUlJEeZ68u02faytjXxu9p8EC3OYVGOcmFnJqciJlnJIYbMkrUo7sCJWodt9aLbvYl6DMTOl0eDnk54n3f4ayidQI2L8K9P5bferW01t7pEwYDTTw0OZqzTA6DxXdxLVIyK8iaYET7inZemqejeTqp4u6aGnNYFGufh+ErDXU5ZqZwiadainExOhVMZ0jE43tj4Mwb6hgN0cWP2GdUCrJ0yYiV6Z2diswN3FCY/JC4unVc+7QRPW2/BM/2fQma90qyTXUNd33LAyGJPJqBx8l1Nc6cAwvfiN5BVViX5J/q7bDUCRSlnhZE6Rg7nraUjrGqvTIfdEe0h5VXEApQnAB+nJ2nENAQs1kkZYSDc0HrsAaP0ILXCY9szOdaZmk1VWz8Y5TpzBIkbzSZfgBLjsfGxp/Y51WfwtGv5LTYSPq0HvzG9Kg/MGPbiBlvWO3urIynk1+vgepMijRN/c/NTQkEiKKMx1sFj83J6xJBF9FWStWEWMN8YqPmfWh59btrX4oMsjvSdOJWo1kj47mcuWspRrEY0e3uGIBMMxQCacaMTbjusehbvaBAuEIOnBFGKnlITiKCn3Jm9+h8DEXuLYoVgJr2sSDxoGrahBx/+RiBUPcdXbaOlWglFJeG0eACQUNghSwi/wQaqLQC0ZKF6elHKbIHot5MjYha0/hsTLIJhsVIZPtSDUf/E88fxcPiB6VsSdVg/7tvDZSIC2JPZUlav1o1LDL6jRgrgcpJbTLwJAZNfeRPVyGZoqFJr+rKVCdS+yJXO9+kvRRZRnGv/1s1
- Giarf0wT
- +MwjF4NBtHJ8DABYYFRYs9LXvFvt0lonQA+eHdGKjHQxhuXf2yuAd/O16D39UuOgQ68CW0HW0dpaALWIyfwJdbZ3YWVRCf2AnNxTSvUYADhwxeWfclXVf+8rzOq+L20yOWe0xDK0B4Z5y54X97Js/7eH+xMM399kqCzmQvOlkt+AgSYr5qKDJ7SH27peXFYSM4wwEaXFYSgJpbS8R4NeUyYqKJlkJPLbezRGRgNSh0FXrBkba0Bs94cJ4i96UrFe27yYq/Nzob3rv2hfE/7TmCAz9PlTyJPyBeDTToHMdNO8AOfvLkmXZ2v8vRkXp6pgigyQsx1YAZkGvgex2cZK6PBU7wjeoW79VxPgNyKBVT08qIHG8zUF4sYAW1NmO3c82ZnLydwmtSZgMAeTuEF5ot/vHqg==
+X-Stat-Signature: 4e46ydwhtn7ycjtbanqqgcdko6jjdtrx
+X-HE-Tag: 1782718337-627897
+X-HE-Meta: U2FsdGVkX1/yDBGO/l6oZRz8qPWBs0L81wY2pt2yJFntmpIO99KiDX5fOAH+oXdIzrpm7h1DiQN0g5/ahSALORdr2iv0E5TgqswUa6nx+QpS0hZo4VQbQnRFN/jkBAC3euIv6X6dNN2WpmdVS66n7eOpx7F7PJIQAWXFbO06SUjAu4dhGkJ4GqoZM3quBD5BxI3srRrqO5b/q4PLqZUrH9A44vVefL7YzkG76dQnJ7WYGeew3CU6dputfSME5vE03k6GYEKVBJ7ZFVZ/gFhIYinRgmqrPe9dSOadZo0dIkPMPAx2dtCjx7IzXEMoR4kg/rTOtHeBV7y3DN2vEt+TMhVsxtla20n8NLXckNPoAQIrzywAS7g4//LLCaWaZZgOEV+TBwsJ5xUpaYtzOnvuD6hzmjDFcUICT8F/DUe/LwCS968IdtXus7OWY+w4xnXnb2xXzO7ZEEApEiXFmDhxJ8dKqo4ThXMTngiZCLat5SdtNPgsZXA0OcdmhQuWZQ8T9UbMVD2wWd8n0n6dZzAdcrCXjN7lizcfTNsE7opmtBz74jvAmwlM9heiBbw9R4LjI83iUDF0hj92qKTkTQQ/Sj5CvI4ciiirWBpWRptRdQYgXvOhUBcj3C73GKvgBj86Ys4tL88DOgF4kMU3bTdsMd+zVI5K7WQsjt6Qxqwjht/f0d49FcyzVKG7mRoKvEBaF+W/yhxtluYrFHkn7POgX8QSLyOflFeiLyva06g0E/2r2nWGLN7QK7RV4E+8VI5kSF3lYn3FnfwpifnXbDLRizxj24bxb42jNUkkGdPq6RqmWJHZFr1UwjrOeepSviA5OI/AZ9DPoVvdJlYGL+VnLzuK0ka+cWifo5jugb2vEPaTZzwUDwBp8wTyQ+Xinb+ICcuA0lgQ+o7Pes8w4N1M9aCu0gMYC37V1ULU9kJOPOu4W41Bzckrw0tPVXfjriUSjwy4diLw/AUfPWjBg24
+ K7/lLMJT
+ PlK8mZ2+SU8j1rn1cwheTxu5PsaizzzNLdJjGanZR0fM+rQ4JxRN2ME/e6/GLz/yv9uzij8DjmbqDlnzD4/e0/wVs0EWwz/xtX2plx22LELdAAxGPtQRj4QAggYFF5RGWUsHtDMSF5p5PwXX+FNNH71NMJbgTLs7+Yrfj+khP7WQadLyGVl0tehmNJUtT1dwMwLL+ZG5dFCli8j0DJahGKIHl6QWoNQrBr8P5ZVM7aWdullXz3XiooGoFQvVNc10IWf41P888Gx92GINTX2Y3c+MZUEQOM2R3Z8kbif3q9hevhDsrO2jETkhS4nxg3bVBWjBXVdZqDq1f5swnQKXyySq7mAKft/lQ8oHlIKroCS6Fcbi3ALo4ZRuyIXkEfYe19o+i0uhjQ6s6Odnr0QpID8f7rr+b6XQygtxXHAO19XErhaZ3EjBJ6szaUqaJIMBDF2SW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,97 +122,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 09:20, Michal Pecio wrote:
-> On Mon, 29 Jun 2026 08:27:48 +0200, Vlastimil Babka (SUSE) wrote:
->> On 6/26/26 23:27, sanan.hasanou@gmail.com wrote:
->> > Good day, dear maintainers,
->> > 
->> > We found a bug using a modified version of syzkaller.  
->> 
->> Subject says "usb_free_urb" but you only CC'd slab maintainers, where slab
->> slab is most likely a victim here of e.g. double kfree() or a kfree() of
->> otherwise broken pointer.
->> 
->> Ccing USB and EM28XX maintainers. But they can feel free to ignore this per
->> the next point.
->> 
->> > Kernel Branch: 7.0-rc1  
->> 
->> Why use such a version for fuzzing? rc1 will have many bugs that are
->> already fixed in 7.0 final. And it's not even latest, 7.1 was
->> released 2 weeks ago too.
+On 06-26 13:57, Pratyush Yadav wrote:
+> Hi Sami,
 > 
-> To be fair, em28xx had no changes since 2024 until 7.1-rc1, so the bug
-> must be present in various stable releases and likely in mainline too.
+> On Sat, Jun 13 2026, Samiullah Khawaja wrote:
+> 
+> > From: Pasha Tatashin <pasha.tatashin@soleen.com>
+> >
+> > Live update orchestrator file handlers depend on the preservation of
+> > other files. To make sure that the dependency is preserved, the file
+> > handlers needs to fetch the preservation token of the preserved
+> > dependency. Similarly during restore, a file handler wants to fetch the
+> > restored file of the dependency.
+> >
+> > Add APIs that allows fetching token of dependency during preservation,
+> > and fetching the restored file dependency during restore.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> 
+> We discussed this once already on a call, but I'll write my argument out
+> here for everyone else to get a say as well.
+> 
+> While it isn't obvious, this patch implicitly defines a part of the uAPI
+> for live update. This patch says to VMMs (or other live update users)
+> that "you can restore dependent files in any order". That is, VMMs
+> don't have to restore the files in a topological sort order or
+> dependencies, they can do so in any order and the kernel will manage the
+> dependencies on its own.
 
-OK I didn't check that, but in general my comment stands.
+Avoiding a forced dependency ordering is a deliberate design choice in 
+LUO, to avoid any kind of circular dependeces: A depends on B, B depends 
+on C, and C depends on A.
 
->> > WARNING: mm/slub.c:6352 at free_large_kmalloc+0xb3/0x160 mm/slub.c:6352, CPU#1: kworker/1:4/12317  
->> 
->> A kfree() was attempted on a pointer that's neither from a slab page nor a
->> large kmalloc page. Might be double free or corrupted.
->> 
->> > Call Trace:
->> >  <TASK>
->> >  kfree+0xae/0x630 mm/slub.c:6437
->> >  urb_destroy drivers/usb/core/urb.c:25 [inline]  
->> 
->> static void urb_destroy(struct kref *kref)
->> {
->>         struct urb *urb = to_urb(kref);
->> 
->>         if (urb->transfer_flags & URB_FREE_BUFFER)
->>                 kfree(urb->transfer_buffer);  <--- this one
->> 
->>         kfree(urb);
->> }
->> 
->> >  kref_put include/linux/kref.h:65 [inline]
->> >  usb_free_urb+0xd1/0x120 drivers/usb/core/urb.c:96  
->> 
->> USB layer itself is likely also not the root cause.
->> 
->> >  em28xx_uninit_usb_xfer+0x165/0x310 drivers/media/usb/em28xx/em28xx-core.c:833
->> >  em28xx_alloc_urbs+0xf2a/0x1130 drivers/media/usb/em28xx/em28xx-core.c:-1
->> >  em28xx_dvb_init+0x2b0/0x4a20 drivers/media/usb/em28xx/em28xx-dvb.c:-1
->> >  em28xx_init_extension+0x121/0x1d0 drivers/media/usb/em28xx/em28xx-core.c:1117  
->> 
->> So it might be this driver doing something wrong?
-> 
-> Yes, it is. 
+To achieve this, LUO provides the .can_finish() callback. So, LUO does
+two-phase verification:
 
-Cool :)
+1. It iterates through all tracked files and invokes .can_finish().
+2. Only if *all* files return success does it proceed to invoke .finish().
 
->         /* allocate urbs and transfer buffers */
->         for (i = 0; i < usb_bufs->num_bufs; i++) {
->                 urb = usb_alloc_urb(usb_bufs->num_packets, GFP_KERNEL);
->                 if (!urb) {
->                         em28xx_uninit_usb_xfer(dev, mode);
->                         return -ENOMEM;
->                 }
->                 usb_bufs->urb[i] = urb;
-> 
->                 usb_bufs->buf[i] = kzalloc(sb_size, GFP_KERNEL);
->                 if (!usb_bufs->buf[i]) {
->                         for (i--; i >= 0; i--)
->                                 kfree(usb_bufs->buf[i]);
-> 
->                         em28xx_uninit_usb_xfer(dev, mode);
->                         return -ENOMEM;
->                 }
-> 
->                 urb->transfer_flags = URB_FREE_BUFFER;
-> 
-> If buf[i] allocation fails, all previous buffers are freed and then all
-> previous URBs are destroyed. But they already have the URB_FREE_BUFFER
-> flag set, which causes a double free as shown above.
-> 
-> The free(buf[i]) loop should simply be removed. It was mistakenly added
-> by d571b592c6206, then a26efd1961a18 recognized the double free but
-> attempted to fix it only by changing the order of freeing. Sent from
-> .edu domain, so probably an automatic static analyzer fix...
-> 
-> Regards,
-> Michal
+If a VMM restores a file (such as guest_memfd) but fails to restore its
+dependency (such as the VM FD), or attempts to close the session 
+prematurely, the .can_finish() check for that file will fail (returning 
+-EBUSY), and the entire finish sequence will abort. This guarantees 
+kernel-enforced correctness at the session boundary and without forcing 
+the VMM to execute restores in a strict sequential order, which anway 
+would not make  any sense from kernel side due to circular dependecies 
+issue, where topological sort does not exist.
 
+> 
+> But on the preservation side, VMMs still do need to follow the
+> topological order of dependencies. Because if they don't, the
+> liveupdate_get_token_outgoing() call will fail and preservation can't
+> proceed.
+
+Actually, preservation can also be performed in an order-independent manner.
+While a handler can call liveupdate_get_token_outgoing() during .preserve(),
+it can also defer this query until the .freeze() callback. Because .freeze()
+is invoked after all files in the session have completed their .preserve() phase,
+all dependency tokens are guaranteed to be available, completely eliminating any
+topological ordering requirements during the initial preservation calls. It is
+up to individual file handler implementations to decide whether they wish to
+enforce ordering at .preserve() time or defer it to .freeze().
+
+> In simple words, if file type A depends on file type B, VMMs always need
+> to preserve B before A, because A's preservation will try to find B's
+> token, and if B is not preserved that will fail. On the _restore_ side
+> though, liveupdate_get_file_incoming() implicitly retrieves the file so
+> the VMM can restore then in any order.
+> 
+> I don't like this for a couple reasons. First, this makes the API
+> asymmetric. If the VMM needs to manage dependency order during
+> preservation anyway, why not do it on retrieve as well?
+> 
+> Second, the API is easier to misuse. The VMM can restore A but not B,
+> and then close the session. It will go on its merry way never knowing it
+> did something wrong. For example, guest_memfd depends on its VM FD. With
+> this patch, LUO will allow restoring guest_memfd without restoring the
+> VM FD. This makes the guest_memfd practically useless. Yes, it is a bug
+> in the VMM anyway, but if guest_memfd restore was denied, then it would
+> be easier to catch.
+> 
+> The kernel will keep itself safe in either case, but it will make the
+> API harder to misuse. And you can always _relax_ the ordering
+> requirement if there is a need in the future, but you can't go the other
+> way round.
+> 
+> So that's my question: do we enforce restore ordering? The code change
+> should be relatively simple. You just need to fail if the file is not
+> already restored in liveupdate_get_file_incoming().
+> 
+> In either case, please at least add a piece in the documentation about
+> this ordering. We should not leave it implicit.
+
+As explained above, the .can_finish() callback addresses this problem 
+and prevents any misuse (such as closing a session with a missing VM FD 
+dependency).
+
+That said, I agree that these ordering semantics, deferred verification 
+model, and the exact roles of .can_finish() and .freeze() should not 
+remain implicit. It makes sense adding details to the documentation to 
+clarify this behavior.
+
+Pasha
 
