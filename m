@@ -4,90 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7B35C43638
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:48:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E27C4C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:49:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0FCE56B010E; Mon, 29 Jun 2026 10:48:20 -0400 (EDT)
+	id D34936B0110; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D41E6B0110; Mon, 29 Jun 2026 10:48:19 -0400 (EDT)
+	id CE46B6B0116; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB66C6B0113; Mon, 29 Jun 2026 10:48:19 -0400 (EDT)
+	id BAD6E6B0115; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B674B6B010E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:48:19 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11A144011B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:48:19 +0000 (UTC)
-X-FDA: 84933230718.04.B099AAF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 94CD36B0110
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:49:38 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 11085120146
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:38 +0000 (UTC)
+X-FDA: 84933234036.29.578B3AE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 69CFA140017
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:48:17 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXkWB0xC;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8548F180012
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NUK0R1dE;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744497;
-	b=2Ob798+UI1k7tm9aqsom7IVpKJeweX9fLHTqu1V1C+DWtOOmyvBfFG9JScb0Mwkm49P/j0
-	Nqd3S8I2o2gULMlYRWT+AR4N8J9Ir5qXECDPj6WcloEb+ZBeR5bG+Kvg/4WjYUqWraH3mU
-	THmue4aHEatwXVMqcbj/jJna0GIb77Y=
+	t=1782744576;
+	b=H6OiSPMbpUMU5LTkAPe29oeQAwwUN6UNNJtuDdF4lvaSJeYk29nfQcv+9O//ga/mGomw6g
+	WUX/Th3LLJoAo4NyCzUzqOUgsT4UBcvsX3xjL6V+c/wPY9bDdaRHlhbDmYc6/QmaxotFI/
+	lvlzVQNfSGzq9dIXZPz3QlBni6laVjc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744497;
+	s=arc-20220608; t=1782744576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rgh/etwyJrwwwa/GAcWsO5WdxICD4nfXcQRavERHHxY=;
-	b=cIO83jfIkkeG35WpfgvUdnUXBGwGRnNvkDLpZXw/xMfdS5xUmM8nNIIoKf55l459WeqegZ
-	ImnerXQJ8e02kVD6YfxhN40qgYc4EYtt8GkBXGyQvwfMHMx6OQhvkMwWmtl9fx6SKoO+Rr
-	avSWuFoWe+/SO7232fJ/HMRYR+uBnYg=
+	 in-reply-to:references:dkim-signature;
+	bh=zYB54nSNsC1cSvePQMmqCTyhvQRTVTX+nG90R7aX3cM=;
+	b=go9uYhpBkfsLNRwhh1vQXkqwpbowTvADO7vlMVKh6B0S3DIDDogS2PwlcemgZqjJvw4rJ+
+	9VFzlsFCilI4y+YNXY+c1TrLBuqCBm5FRMPnhEnwQsfAWR09OWxBt7pEfSXTN/HBrozofc
+	2nUFDsUQvCsLf/3ct2+io9HZQILrXPM=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jXkWB0xC;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NUK0R1dE;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B27A14078D;
-	Mon, 29 Jun 2026 14:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561161F00A3E;
-	Mon, 29 Jun 2026 14:48:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B735140160;
+	Mon, 29 Jun 2026 14:49:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6434A1F000E9;
+	Mon, 29 Jun 2026 14:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744496;
-	bh=Rgh/etwyJrwwwa/GAcWsO5WdxICD4nfXcQRavERHHxY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jXkWB0xC3cSzu+Z6WW/1irg/KU2cjpWLLGnPr07TWbBo25fkh8xNK6DyomKSngTQ9
-	 vcLWLmQfs9DG40Xn9wGIaBHd+H+07ZDKRGjMm0gxbjq1QNBvorP1DbXDUeCTAb7ss0
-	 zF7PXfeqinjJPqW68u2q5Gf9MdobGyPteJUYtBilRfd9U0f/nUEPOcUdDG1Adbjrxa
-	 sXnfe+qVqDSFCELJXJ8uWuI/oIuYdgJZbnf/pNoHN4/AH6ZyGltY+3w9yBMn9lMje/
-	 m7tE3rIqvHQPQmhpnbjOUZTnkOQ/6jHBrlYUFjNYHvXciBslJanTUmF5dhoatJhuiX
-	 7J6ATfdtXNevA==
+	s=k20260515; t=1782744575;
+	bh=zYB54nSNsC1cSvePQMmqCTyhvQRTVTX+nG90R7aX3cM=;
+	h=From:To:Cc:Subject:Date;
+	b=NUK0R1dEJcu8e5K+/EOxUGDzwIFsmYJ7Y9pvkPMQgkPlafcii5zsPnhsJZ6mn4d9I
+	 jgGj0DA3FIN7j+ceIyVFKqrAZOrxU3rAzB8RKswIOOEpzQqKc6gZC/h+vp74Qz7Q7F
+	 3D2XcEn9v9jgwMdf7JmLrOPI298bp+xG8yWlbnYDqE9hvljayGzNKvPrGmi8XQGdUr
+	 MnLNZlWnO5bcm9D8Mmkrfsha3tayGPlqGFMjR2zKOCcI9LzFuJLbJgVQ1nlf8UdBH8
+	 UK0anGAEX9uC3BkyY49RU55YN07nk5fMnrUJ/SgLMpt5fjDIfDg7dRqv42gd7Ml7px
+	 fQZ7Nh9YqxdlA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Cheng Nie <niecheng1@uniontech.com>,
-	SJ Park <sj@kernel.org>,
+Cc: SJ Park <sj@kernel.org>,
 	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v5 2/2] selftests/damon/sysfs.py: validate memcg_path staging readback
-Date: Mon, 29 Jun 2026 07:48:11 -0700
-Message-ID: <20260629144812.134159-3-sj@kernel.org>
+Subject: [PATCH v2 0/2] selftests/damon: test kdamond refresh_ms
+Date: Mon, 29 Jun 2026 07:49:24 -0700
+Message-ID: <20260629144927.134237-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260629144812.134159-1-sj@kernel.org>
-References: <20260629144812.134159-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4xb77sgu78whkeqxbbrbbgero8k6wun9
+X-Stat-Signature: ds9ibpenjnd3qcchbihkty5e1ywugoyz
+X-Rspamd-Queue-Id: 8548F180012
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 69CFA140017
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782744497-36679
-X-HE-Meta: U2FsdGVkX1+OhF1eIJgXRM4OiOUrKlJ6qQN5+uRYwhHNHpwbqhkPpvZ8Mhzc+tcUJ15s9/dRqoOUfcLhKVtVwQtF5kNnIVIQa802aTZ59bsY+1ZnMpv2s2s6Au2AhuKwBpqTLMWz6irNyfPRvx57Lu7YCaucPzvS2CdSOaTOXQ5XwXNGMQK6qJvscz1Q+4FZENpTG+LOxZHfT/uogaY2Q10h+8E23eoopCOD9FJ5cvpupu4nZiCExTeKtMmARJpI4yguN16Z96UPbfSoFvYzJRWiawXle286MUvxm7IjPYsQMLykJRAhR7NkkTiJL0lAOrQQPlpcDJffC0qxrwbpYlysD6RczBrMi+mWlNplgfstOTRDjDsAziPKtkOCoNM6IPGTE7mEvvaVhXfQWf1Ak9Bfw2ZmNNBYBY3ah8bUN5XH871Y0UYCuS+toBcTYXiUVDwxIjHfa1awEyBnXJXD2yUvr6U+TK6ClN7w1l2w3opqHYUW4DQI9yoqtcrVa8K+r8caEU+nkajMVHOqDe443pg5ltJOMp4txwRkfNIGh+iz7R/KecbWzhgl8v0fuvceI5WXJzJj2YeW0SzMAxDRH3AFYXZaV8iRluu4vSawSeMu73k2ggBRF8QkazLXhHaVZNxENrmzQZPovj/DO0w9dSVONpykE3XhN/HHkLBPGsUY5cTF/CSNTvPfu18qSng30vGIdQkRSL8k3P7Rcw2cjP7/Mf1V9IopL/PtmwsI7StaXvcY5A6ySlhiki7KfOtYJrZnEZLcrF8zsA4EdAtkp8yB6imF5OrecD0XH0OYkp2SYJzq+xoQiSGuznBoeWtsvPF2SvGA6Wbt5gFByAXFt84cie3JzICW90G+5BLO5sPZGGQ6sdZm71CyJ7ShDoiXf7d3aP9+7ZkI83Lf++eMyabo2AgsJgNwrYwKazz+TGOg1ogXoEazNBlufWSkqUN6arG1QyMJuNnWk0bgldp
- KMrSh6+j
- IlXacTcp7MypK2+UFZ3JgABO+3ia1z4LLXLBfbxExFxsl4hg8tE8DkTaSOM1bCpl/v65OgcyqOzz8SuurZPk+3LKeInuBJKdsYko833np5MaEgwfUWHcKfcTrf1NrjmZrrPIIjPaFlJseF0+iYELU72CDMOFFzwsEuox4e19ydYC3aV7J5M/WsVwZgNS90nywvgOOZzBBSbxvDdPKAt2y3kPc/hfsg8fBXwqFNg2GY08y11Pk+l76D7ueGx0QUBzuuhs5wXFWFb85ausStl4G57QnsNOpdmYlKblDOfvoTuC1zM1Zx3LT6ijImj0NmD2JUe7uNvHC1Shkux5dSR2r4/fC5A==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782744576-905599
+X-HE-Meta: U2FsdGVkX1/YDqsHCo3ckm6XwvtIuCiyIaVpmMGftPoWBM4cjuiV21UDfQ/Gw8oApoJ8KrUBN+dGUmi7MURyBKP0s+ciCByBL+sBRlEiWTxxavEnRUhin9KZMloMah14pOOFpn9iGnvWWEeCvUF6QDHpKDEKHgoAJsqYX9Kt+HSRulStAW/U2L/6m07npubJyhKN2tvFdtYTMDHPh+e8PjiTp+I89fjdOFExuRekVqTSkUo8X23gq8ykMAzSek8as1+HlVrir4QJr9GaWvu+5MOpJ7GxqJcsthAXDStAbdplJrgdPcO3Y/G2Hr66lfCA4kG7fHPg0FLjdJ2LbC9ZZVmdcaQJDENxVWjB5s/kqCqr/Lq+WBdta9gDvU4Qint9Tm6J99uE4RKBUrOImqlCORu4QE3KqevYrdHadHLlHa9bk7fSSUoLb1SdOx+FH2d7AZ/rcVg9SjTXBBkIvK0yM0UomUGwztbdHoJE8XhSURq4zRLr8U0rWnPchxTm8VNGN0pnB9pJXQZUvvvq1fOU/nOuOiZQP0gk0PAfAWQPGauqnxt5/cB4OSO4HKRSGtGiZCV/hXVl50hxg4yzZgW1G1y3xSasNWpz3HGgXTy275dDA9USCwmuOvG4/H0GiDgB5XUOvhoP1Wr+TT36FuzQy7/u1emcoEgynOSOtuopiZ8YjoLamYfyfyELuU6Jp+KY16nt9/QOBIVfw0JCBvkv0qKNMTEp0u+bIscqQwI4knkKhPH+ma477Q8X5ARPg/GR7+6BB57eS8dag8K+AeBiRpklhE1smaXJtNo+24m7VueigYCWIexjcokHi/sleL07KFJ8XY+ISck3ARj70EpMQWDMvzZw6t6DzDQlw+fu/5z9a8RtqH46T8XRCX3PI6YOez+4/38mWjojQS9ZVYJT5/eQZDjaImk5yJ0YXz85twaIfiKWRhnjUE36U/G6CBgx8fZjk5miUwETfEM+3Xb
+ WVeBAR50
+ n4VnL60Cdi91K2oXaX+V0g0/R4AQbKS/Cv8wpoCBPrQrD7AbCm/mlB+2PqEaSr6CUSV7tthyuHYEhkqQ895MMjyOo8gjG9mz85ODKEE5LrD/qhb1/34dWsV7sI3WvhW0Yn1SVUDddBGVJwG3dCF6fEbkg/VkadQKyZ9fHQTImHodT86jkgFAkwrg/ZSzrG0LwWr09big7VVFFLoVVNvLHt4+Hz/e1SEE1SEIP7lEdnGYXD9FEuOJNexZ/nXnYEYRGNYJhqwLjuvkob1uQPjO4w4/OCTblldTpSHTm0vsF9hM3D3i6KDX0dNvVKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,70 +92,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Cheng Nie <niecheng1@uniontech.com>
+The kdamond 'refresh_ms' sysfs file makes DAMON periodically update its
+read-only sysfs files (DAMOS stats, tuned monitoring intervals and the
+kdamond pid) on its own, so users don't have to write update keywords
+such as 'update_schemes_stats' to the 'state' file.  It has no selftest
+coverage.
 
-Add a dedicated test at the end of main() that stages memcg_path via
-sysfs and verifies its readback.  Configure the memcg filter before
-start(), do not call commit(), and ignore start() failures so the test
-does not depend on CONFIG_MEMCG or cgroup layout.  Call stop() for
-cleanup without checking its return value.
+The first patch adds refresh_ms support to the _damon_sysfs.py test
+control module.  The second adds a test that sets refresh_ms and confirms
+a scheme's stats are updated under sysfs without an explicit update
+request; the test skips on kernels that predate the refresh_ms file.
 
-Link: https://lore.kernel.org/D2B37130D38E09AC+20260601090634.241864-1-niecheng1@uniontech.com
-Signed-off-by: Cheng Nie <niecheng1@uniontech.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- tools/testing/selftests/damon/sysfs.py | 31 ++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Tested on current mainline under a DAMON-enabled kernel: the new test
+passes and the existing DAMON selftests show no new failures.
 
-diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
-index 99412f0d31f37..3ffa054b63867 100755
---- a/tools/testing/selftests/damon/sysfs.py
-+++ b/tools/testing/selftests/damon/sysfs.py
-@@ -250,6 +250,35 @@ def assert_ctxs_committed(kdamonds):
-             if ctx in ctxs_paused_for_dump:
-                 ctx.pause = False
- 
-+def test_memcg_filter_memcg_path_staging():
-+    global kdamonds
-+    memcg_filter = _damon_sysfs.DamosFilter(
-+            type_='memcg', matching=True, allow=True, memcg_path='/')
-+    kdamonds = _damon_sysfs.Kdamonds(
-+            [_damon_sysfs.Kdamond(
-+                contexts=[_damon_sysfs.DamonCtx(
-+                    targets=[_damon_sysfs.DamonTarget(pid=-1)],
-+                    schemes=[_damon_sysfs.Damos(
-+                        ops_filters=[memcg_filter])],
-+                    )])])
-+    kdamonds.start()
-+
-+    shown, rd_err = _damon_sysfs.read_file(
-+            os.path.join(memcg_filter.sysfs_dir(), 'memcg_path'))
-+    if rd_err is not None:
-+        print('memcg_path staging: sysfs read (%s)' % rd_err)
-+        kdamonds.stop()
-+        exit(1)
-+    if shown.rstrip('\n') != memcg_filter.memcg_path:
-+        print('memcg_path staging: memcg_path readback '
-+              '(shown=%s, expected=%s)' %
-+              (shown.rstrip('\n'), memcg_filter.memcg_path))
-+        kdamonds.stop()
-+        exit(1)
-+
-+    kdamonds.stop()
-+    kdamonds = None
-+
- def main():
-     global kdamonds
-     kdamonds = _damon_sysfs.Kdamonds(
-@@ -356,5 +385,7 @@ def main():
-     assert_ctxs_committed(kdamonds)
-     kdamonds.stop()
- 
-+    test_memcg_filter_memcg_path_staging()
-+
- if __name__ == '__main__':
-     main()
+Changes from v1
+- v1: https://lore.kernel.org/20260602131217.2210912-1-linuxoid@gmail.com
+- Add R-b: from SJ.
+- Rebase to latest mm-new.
+
+Ruslan Valiyev (2):
+  selftests/damon/_damon_sysfs: support kdamond refresh_ms
+  selftests/damon/sysfs_refresh: test kdamond refresh_ms
+
+ tools/testing/selftests/damon/Makefile        |  1 +
+ tools/testing/selftests/damon/_damon_sysfs.py |  9 ++-
+ .../testing/selftests/damon/sysfs_refresh.py  | 75 +++++++++++++++++++
+ 3 files changed, 84 insertions(+), 1 deletion(-)
+ create mode 100755 tools/testing/selftests/damon/sysfs_refresh.py
+
+
+base-commit: f46247bcce72b9e62868c347711c772657b00ce6
 -- 
 2.47.3
 
