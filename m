@@ -4,73 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 169E2C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 06:36:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9DC4C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 06:39:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BFA96B008A; Mon, 29 Jun 2026 02:36:01 -0400 (EDT)
+	id 98EB56B008A; Mon, 29 Jun 2026 02:39:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16FF76B0092; Mon, 29 Jun 2026 02:36:01 -0400 (EDT)
+	id 93F3C6B0092; Mon, 29 Jun 2026 02:39:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 039936B0093; Mon, 29 Jun 2026 02:36:00 -0400 (EDT)
+	id 82F456B0093; Mon, 29 Jun 2026 02:39:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D08046B008A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:36:00 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3D9E8405C7
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:36:00 +0000 (UTC)
-X-FDA: 84931990080.13.A433634
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 86AC9180006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:35:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4770D6B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:39:35 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BD1738F255
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:39:34 +0000 (UTC)
+X-FDA: 84931999068.20.FB67B9A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id E03BD40007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:39:32 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3k9YUwH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782714958;
-	b=iIHVld3slhNOtdNdnfDqDNqIfGABinDDwGEjQ8v7w6APwRuzeQybROi7iboXwoNHWJz6T9
-	lX964yXy3ZSTdRYe2U8VjYdkS3WBWmJlaE2Mi5Cj3Zpucl/JZUkEFi07lHgjo/fmbYg9bZ
-	RW9D0j4OpHum9yQoaOG51i8F+QTEoSQ=
+	t=1782715173;
+	b=47wxI4IGBfrYPucKPkG5xc7q2SPXR62BAYvKpq+//YjSt/KGUxcGDDusDqtUfXGsnR3ZXg
+	CfC1EKj3R8zS4y22Gc4eH8VSh0duILm6MkRIDfPAjtWk2urFsCigLjHEgqFbCGQNL0xnPh
+	nSfQz//OnW99M7Shwo/9S8vzEGvVW48=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782714958;
+	s=arc-20220608; t=1782715173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ziZF5MjDBHEwSrU5Njn2F9RHVQMfnkb8O50T7BHAiB0=;
-	b=DhDh/budLc/43myNrTllAIlqIJ2rhcH1XZOKAk0PcRLtIfIo2isC0v0JZzD9IlnI9h82MX
-	/0G1G0FKZxMO9j/TUeGH7d8TthL2fya4P5trblpJfegL1JrYfH8rRQietnWlO3LIX7QEbp
-	Hv7ishjwJ6vjmxbjaNnplmHOgWjHk6w=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cQw1a/kEB3mNmeLx7vc6yl8U+kM7fc1WO7NLhI45kwo=;
+	b=bPnEzh1ELQ6Azxg+nG8H4yvcx47xc7sfz0kUMob0OX48UQZcV5sX1xt/zaMY0EsxQOUZg+
+	qqs16G6iaA/ah4Pvvpvp2RHX3ndJvkN1Dec0p+0Q32WpBZnB5t1VYmASS2ZTNce9t5cKI6
+	iSchMLlRaW1e03aVBcZ1Q7EG0v8A+xI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3k9YUwH;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F334C60052;
-	Mon, 29 Jun 2026 06:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EBC1F000E9;
-	Mon, 29 Jun 2026 06:35:52 +0000 (UTC)
-Message-ID: <0404b7af-2785-4518-827f-9df0f30564d9@kernel.org>
-Date: Mon, 29 Jun 2026 08:35:44 +0200
+	by sea.source.kernel.org (Postfix) with ESMTP id 10FA5438DF;
+	Mon, 29 Jun 2026 06:39:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023571F000E9;
+	Mon, 29 Jun 2026 06:39:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782715171;
+	bh=cQw1a/kEB3mNmeLx7vc6yl8U+kM7fc1WO7NLhI45kwo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=R3k9YUwHvqJr6hD5xfkx9NumEmjX/ilAxlkpJG1EZuq6alPxC5Y9iZKiztOuO4ZgQ
+	 KPTxcb0fnk4uvqc7kShBOFHJhIHT/H/PDyoUn1nQ9cQlaXtnenyJEdQrmYVXHlTY7c
+	 0MTnR9v6SajCC4vyDUw4TTkZUVIabyhlvg1njEulBEvfAD43hvmqvBa9uXtu/jx+cz
+	 EP4CoCIVcWDTNEH85CmoXAoxoU/GFlSAv77Ou2u3u7mYSGdATE5wuxfTbLNXhBqQVl
+	 PL8tAsTqKpriFyHM89UR4f6pbPL4F7+hd97SAL/RqTCS9Ui+Idf8ILiZYg4gUZviYE
+	 niz6wrb/7SBvg==
+Message-ID: <98f3aedd-de11-4a83-81b8-f3e3c9380e49@kernel.org>
+Date: Mon, 29 Jun 2026 08:39:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6] mm: assert exclusive nid/zonenum bits at the
- page/folio access sites
-To: Andrew Morton <akpm@linux-foundation.org>, Hui Zhu <hui.zhu@linux.dev>
-Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-References: <20260626020629.1042041-1-hui.zhu@linux.dev>
- <20260627213031.88e3bfb3489553afb1102399@linux-foundation.org>
+Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
+To: Lance Yang <lance.yang@linux.dev>, dev.jain@arm.com
+Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
+ akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
+ kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
+ matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
+ j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
+ tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
+ anshuman.khandual@arm.com, stable@vger.kernel.org
+References: <82395f5a-31d4-406b-b7ec-10d1a9d067d4@arm.com>
+ <20260628054402.76978-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -117,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260627213031.88e3bfb3489553afb1102399@linux-foundation.org>
+In-Reply-To: <20260628054402.76978-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 86AC9180006
-X-Stat-Signature: x6mnhg47rjf8u7f9zfiku9thrteno5hx
-X-HE-Tag: 1782714958-136834
-X-HE-Meta: U2FsdGVkX18+rPg9WJQxFcff52CB2aY2D7EN66NXheypTJfp/WLpnCWEFD6/nTNg9eP00xU9L6Cs2TjQost2ohXl7z9Rn4vww2weSt0WrAC64zqlWtQHRIwlreMyieq0iiH3a8pzLH82i9S8ulQV0NnJOYl15nd4zgHDxtkyCbc9uJ5TYe9VyBoFeyXwvsPqhuiqUXI//Ne3RsUmxrboN4NSU0sIHJfaDbcYNkvt+bfA3z5Br0wagkWZHeiN322lwa+p0kCh5dKND1oGGr5TmQzJ2xPUZxptBlzNGF1MHwB4GDMYhBEAxmOXEFt7jJYjZlDZWGRSOxHYualRpkVhgTp1zFqj4mF0TB1I0eyjw64jjOU553kl7jWZCsLisLK7s5WYzq/RLZv9jpgetTZKeftT5fSUTyRxgmtdpLECCk3XwM2FYlAYHcppilRi5GpYoNdW1q/7hvUzRk4ZGmZXv/8dYNxltdPiOJsFNk7vjTjtzqRL9ZhZcYPDT7Ejy11djgyL/03Ypow30SiaEzbQCfXvsl3aUFJMBcIp7ldxOBrzBKi/wsJ7aS3IIv8VCW/wJT75W6pDTMZU7xIsEBw7I7Ohk1lf5e+uN9WkStSNJrJfEioTIF4RzrsA7Ff9aRQtLwbmoW1VuHS/opNw4oz/o4JShtAQaQZp3yENSRo8LVRsp8JCiXX+3xJNErlRSEjbvMZq+lphyYPNV4IlW4eLg4nkASQsSgn6vvXsep4ISKGm58d7qdJ235LeEa7ooGpPQYU2XOzg+Q2hLxdxlLV73EJOo64B+Q8oB645JRN1qiyUhteKFSYkAzXXkpPL4FaMPfytcEIOYmuDuPotIGVMsknoEPA2sAaVujtHHG5fRAJoFVHxfosc67vQHQNTYkbHBmPEKmPMEZXVimj7jko5GNz4g4o0FWNfeAnnF2XJTrotVwaD7zpTIKZ6n0F0/kyDvhacfDAtRYXthjyRBp2
- ttJCAcal
- NnCD0z5GypSZuRUgLKOI3crC+5JZjpTM5WEqOZmVn55UlUAguoOGga7wuqz8MfNUVgQM5Jq0W6fPlyjJOhXBXlYrZsyNtYSnUut2iTPsHf+n/8xFzxUehQXn+1h6YdmHU0P5XymVdpSC5ZUkcexh6iPTWyLvgyqM7/dJBMDxVQ+YZjyUenYBVs/OHoDYXQVHU/d/ptkSw4n2RYOk1wixsLYEvvQ==
+X-Rspamd-Queue-Id: E03BD40007
+X-Stat-Signature: qzzm5rudkrkxycn5r3qyw4gnzj7k8s6e
+X-HE-Tag: 1782715172-828794
+X-HE-Meta: U2FsdGVkX1/MF6Wkm1rJnhXjAznmTEE824UT8X/PAt0pw1zuBBT25fQQS6VJ6b08nxpqZPt5Fi8hsnrTIMvdsqcarh0BHw7MmRD5DFVanh1j9gvsbXV9jyQQNQwBrKCEwRWafd/shVvP/eqFeyji1LDp7yjBJvCwjxitFlRXvnKUzfAziQVe09mbeLmPGJJqqM+9bpRB2nXkgtXRyKlijTM+yVZWjtJqcxASnA0hXAuBVkz3vsryubLyS3tBeXlXn+k/LmX2qAUlNKD9RP18xgl+8w3wu6wTzo4seTd8JiY19bA67sdHwopYaH6bQxmgv7axIDwtVYN15Acuth0niviVMaQf86peGpBPE3dTkXbek+chb6LPBlgEY67jeuKGxjwDR1Eem36HYwOPLk2JbPGlBsQIGMheJu/f55+O5rGpJypBBHNHUGS0vKN0avW2flf1t6tt8u5rVGuy2eDJ7xNBOOg6WvwXhoq3PKmPj0SqofkN/KIT8v5XtX20K0xs0slWi831IYLIvHFCrFv8s2GSbc95LvnHZFaooVKvh3wTd1DQjRm92ZDMmFVKrtZpi5oYlE8e9z3xZBfP2ZqO+3IMVN+5mDT467PI9IehlL/bTq/GRp3hQLuFfrcwF8hJcGlYT2YUuGJTiLYdFUGnw5w3CsXel4G1MWv7ZYiabslFx7Ig0HQz5pHstHmfhPe9gNNXxVP5TE0pRFNOnnBY9RFw+zOtnwdkfLqmI9a2UmGglySNX70iTvUHexXeHsKlOEz6wN4+3U4a2YolMR5AfRyGwz/Bw2ITEr83+w3q/ZpjU3MbBb8GTmkQmeECEav2106NMU6AZ07ywQO2xio1vXeBRrDRsq0Owh0vaavUhE8rA9M95ua+4B6KLvr2shKSwPzfQ2zdV2XvdX8JAPcI3I/GwpR03zuwchGyPTEIvZcUIVQe7ra0meRbPvraCiDno6FWVwZtOsRY04D3lUa
+ 9qMvswIJ
+ 8UQ8PqF4tB4AxIMzrQGOvd0Q2PlezlSMStIKpTVVZl3SoDW9Z0VcRLYA6TkBR9Tf2vhnpcOgx5isxv6uvl5E2wwfrHjFG8h39rrvFYMPyUDl29XDRzmbVleHKU/Yxx7Hp3mOswHPhbpNg4OHjf9c0EvEyUxIPfe0Q1J0h9fiGPJc3/9tOX1iF3b6qlBLc4GGg24vhxV19p+w4YKhcdC+dnNi60uldky9d80SbHCjC8brqZ8Xk7P0AfV/CcgI5Fxj5Ux8gdcguyeCL8COQhTkb+lxWjlpc1vj6t+lesPIF7CRKAJxCI2ZXMqzoZLnHl+Lv8L2O0MWJFN4JZ7rxRv5YOhOoA9gXGfCi3MMRLdRgkT0Az0e1X2SYZonF7rnvMqnGK0e8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,62 +147,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/28/26 06:30, Andrew Morton wrote:
-> On Fri, 26 Jun 2026 10:06:29 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+On 6/28/26 07:44, Lance Yang wrote:
 > 
->> From: Hui Zhu <zhuhui@kylinos.cn>
+> On Sat, Jun 27, 2026 at 12:43:31PM +0530, Dev Jain wrote:
 >>
->> KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
->> page->flags and folio_trylock()/folio_lock() concurrently doing
->> test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
 >>
->>   BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+>> On 26/06/26 10:16 pm, Lance Yang wrote:
+> [...]
+>>>
+>>> Just thinking out loud: given that huge_ptep_get() already assumes that
+>>> addr matches the huge pte, at least on arm64, would it make sense to
+>>> have a small hugetlb wrapper around it that takes hstate and aligns
+>>> the address before calling the arch helper?
+>>>
+>>> Might make the rule clearer, and a bit harder to get wrong again :)
 >>
->> The node id and zone id occupy fixed bit-ranges of page->flags that
->> are set once at page init and never modified afterwards, so they can
->> never overlap with the low PG_locked/PG_waiters bits touched by the
->> folio lock path.
->>
->> ASSERT_EXCLUSIVE_BITS(mdf.f, ...) inside memdesc_nid()/memdesc_zonenum()
->> used to check a by-value copy of the flags word, not the actual shared
->> page->flags/folio->flags being modified concurrently, so it didn't
->> reliably assert anything about the real race.
->>
->> For zonenum, move the assertion out of memdesc_zonenum() into
->> page_zonenum() and folio_zonenum(), where flags is dereferenced
->> directly from the page/folio.
->>
->> For nid, turn memdesc_nid() into a macro instead, so the mdf argument
->> is expanded as the caller's own flags expression
->> (PF_POISONED_CHECK(page)->flags or folio->flags) rather than copied
->> into a function parameter, letting ASSERT_EXCLUSIVE_BITS() check the
->> real page->flags/folio->flags directly.
->>
->> On CONFIG_NUMA=n, NODES_MASK is 0 and the old memdesc_nid() body
->> folded to a constant, so page->flags/folio->flags was never actually
->> read. ASSERT_EXCLUSIVE_BITS() is a real runtime check that can't be
->> folded away, so doing it unconditionally would add a pointless read
->> of page->flags/folio->flags and a check that can never fire. Keep
->> page_to_nid()/folio_nid() as plain "return 0" static inline stubs
->> under CONFIG_NUMA=n instead.
->>
+>> Are you suggesting something like:
 > 
-> Thanks for persisting with this.
+> Yes, that's what I had in mind :) thanks!
 > 
-> ASSERT_EXCLUSIVE_BITS is defined in kcsan-checks.h and I'm not
-> immediately seeing a reliable route by which mm.h and mmzone.h get to
-> include that file.  I don't think kasan.h gives that to us,
-> surprisingly.
+>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+>> index fdb7bdf7645c..xxxxxxxxxxxx 100644
+>> --- a/include/linux/hugetlb.h
+>> +++ b/include/linux/hugetlb.h
+>> @@ -825,6 +825,15 @@ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
+>>
+>> #include <asm/hugetlb.h>
 > 
-> Unless I've missed it, we're presently getting kcsan-checks.h thanks to
-> good luck.  Let's not rely upon good luck ;)
+> Maybe worth spelling out the rule as well: 
 > 
+> For arch helpers that use addr, huge_ptep_get() assumes addr is the
+> address for the hugetlb entry ptep points to. arm64 already makes that
+> assumption.
 > 
-> Also, Sashiko is saying stuff again.  Does it look legitimate?
-> 	https://sashiko.dev/#/patchset/20260626020629.1042041-1-hui.zhu@linux.dev
-> 
+> Callers where addr may not be hugepage-aligned should use
+> hugetlb_ptep_get() instead.
 
-Let's see whether pass-by-reference as suggested in reply to v7 sorts this out.
+Do we have any examples where code would do that? I would think that all code
+must properly align addr ahead of times.
 
 -- 
 Cheers,
