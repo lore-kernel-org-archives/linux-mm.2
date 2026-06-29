@@ -4,86 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CCB5C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 10:00:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5928C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 10:03:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ACA26B0088; Mon, 29 Jun 2026 06:00:55 -0400 (EDT)
+	id 99C376B0088; Mon, 29 Jun 2026 06:03:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 883C56B008A; Mon, 29 Jun 2026 06:00:55 -0400 (EDT)
+	id 94D106B008A; Mon, 29 Jun 2026 06:03:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E9096B0092; Mon, 29 Jun 2026 06:00:55 -0400 (EDT)
+	id 7EDDA6B0092; Mon, 29 Jun 2026 06:03:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 58B8E6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:00:55 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA1591C371C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:00:54 +0000 (UTC)
-X-FDA: 84932506428.11.845C089
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 491906B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:03:50 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B65174061C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:03:49 +0000 (UTC)
+X-FDA: 84932513778.25.BD12D8F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 49A9810000B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:00:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWielXC0;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id E76EB140003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:03:47 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoarWmxW;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782727253;
-	b=Q6fnlwb/WZW18eqZmKATenkHiB58v0jvgRplHY2lD45eXz2DxQjyP3toOH5tl52UvOf5hI
-	cGHE9rsZsk7vWt9/dbASgWjsjPhFP6RLZ1SNmQwXtSqlIDhnlNq3YXPXJJkrmHPOvG8Mj4
-	r2t5GZcQrO/F54O5KSfEsyk9WKokVxM=
+	t=1782727428;
+	b=3ACVt5ovNEGquX205lWkm6lcds0g1BeS/KH1q7Y7JjI9qWC3ow4Qy2D3bJQGfVJQfPYVfT
+	nyJVSET/i0mmf7QxZDnTUW2Htxf7NoIfi63V77JPzgFhIP+hHg0QGG64FyfofujlW3+pAH
+	87Hf7Vxbub/5i0JVMDfyUrykEivbGK0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782727253;
+	s=arc-20220608; t=1782727428;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kcUEP1IuN/ViafkBIS4hOeiZ1h/lYXLSXFhXyukIWQ=;
-	b=eQp+h7r54NUEtVwQY5gCRdSDwr70dO29OTBdAcq/6LmG64jt0/i64OTk9e5v2CuOWoJtwg
-	XqxYZzxbVwkC1Llw18K2O4X6mxLAHg448ip4PtieHyyW6rMROOh9f/Oio0O81Tk/R7uYft
-	5VdLAEao0/C7vJ2CnB2pgyZcVmW6+0Y=
+	bh=Jd+hmxLURQiD9Sgh35jmlQ8k1qpegebRuBU4J3XstSM=;
+	b=WAW6mgAo6WePusrt6tuzF/eOIEu11Kr1yXa6rreoROnmo8EHsgbPiyG7Y8HtiFp3fTbO6r
+	mLyX8MzxcmOG990enPzWG1ADAlpVbdT8o2N51/V2nM2HKBF/EzoIis2UXkn/conZWbGzIp
+	bZyPzZD2JWQqiOC1ECGrAyXbl7fjGRQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XWielXC0;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoarWmxW;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5D79A40949;
-	Mon, 29 Jun 2026 10:00:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615801F000E9;
-	Mon, 29 Jun 2026 10:00:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 212CE43A92;
+	Mon, 29 Jun 2026 10:03:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DD01F000E9;
+	Mon, 29 Jun 2026 10:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782727252;
-	bh=0kcUEP1IuN/ViafkBIS4hOeiZ1h/lYXLSXFhXyukIWQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XWielXC0MwtF16hpnVoUhHPpwhtm4ahSJyF02mjbivDCl1SooMN8MYVadargAdyEV
-	 eFlr3/tJUdxAI0cdZjSdMLcL0Nd0EhuYCJR/aoHDa6BY9AtStRJeqG/vhfzYEzEDep
-	 WgqlUTcAtavSi7Nzi/HdEM+JHreTOvDemCZPhWVE2nZG7wqiMzHhU3xqkoPZBSzoTu
-	 xWj4azLCw1Kz4iv0G+rO/v8po9P1u7ND3AP7wp/4N+c1Y3cCaJPIi8z53z9BiQtzaL
-	 8cdG3kI7DOcmMrnCc7zmaQWIVi3Biuj/Z4l8nOIXKMCRmzj8EnJtgcQkTgswavvgK6
-	 T+qC1DNJl5IqQ==
-Date: Mon, 29 Jun 2026 11:00:44 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, david@kernel.org, chengming.zhou@linux.dev, 
-	hughd@google.com, wang.yaxin@zte.com.cn, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: KSM: performance optimizations for rmap_walk_ksm
-Message-ID: <akJCGApJi1XCxCJ7@lucifer>
-References: <20260629174111989hvHNpXBxy36GgPPhOoPi1@zte.com.cn>
+	s=k20260515; t=1782727427;
+	bh=Jd+hmxLURQiD9Sgh35jmlQ8k1qpegebRuBU4J3XstSM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KoarWmxWjVDe2EjBPztEGnT09eM0m6YQTFgIHSu01qGRWVz6iiIBSvc2hxB0aVpA+
+	 Wuf+esX0EphxkjbdxfFD1lboJUsG94uCFUGTIyd8yxNorQozTn6vvDsgpR/rpNdL4o
+	 HByjVHsUeDPVTYKR1Sifft2E/47evt1V26MI06NT49+UAug0JkOuVEbGQ6VLksEqk3
+	 +18uw2WA6RcmwawTnahlR77ecg/pVNMLKWjLN+O0I2tsf6vegWhlM03opgOpxEfxNs
+	 R0erYHaOrtSuXcJi+hQRduGwhqYFQincxnCDCDTyPEcNn07kccpBtJmSpWhSBBT66W
+	 q3Iq4tTUkOsUQ==
+Message-ID: <361fd2e5-a5f9-42fe-90fc-bc0af109553e@kernel.org>
+Date: Mon, 29 Jun 2026 12:03:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629174111989hvHNpXBxy36GgPPhOoPi1@zte.com.cn>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+Content-Language: en-US
+To: Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org,
+ david@kernel.org, willy@infradead.org, surenb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, usama.arif@linux.dev, fvdl@google.com,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ linux-doc@vger.kernel.org, linux-btrfs@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-cxl@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>
+References: <20260520150018.2491267-1-riel@surriel.com>
+ <aj9yrlB0TrlYCLlf@lucifer>
+ <528e3a5fbc27c9dc7a098121c32b7679b4c9962a.camel@surriel.com>
+ <akIjA_dqh4OHAYo4@lucifer>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <akIjA_dqh4OHAYo4@lucifer>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 49A9810000B
-X-Stat-Signature: 5cdnfbjj7rz366bkx3w5rpi6wrpof9f8
-X-HE-Tag: 1782727253-995563
-X-HE-Meta: U2FsdGVkX18QGsYTYp6KOsyPEyO6VnO9/h59HahtfrCYBkHhaKtDPLkHfpNjti2X9SuilW4GS3w7r7jh6TMzeNsYcpgN8Ip53gEtR79gyhw95lw5UynHd/fHEoMuTonWAfg+HjEWo5vIvx+lay4k32NTIzCkLver/1iot5GgI/jXQ+OkGybb082rNNok64unk0dPqi8gSe2M92/Iv9YlVxrgyxsIEdbsGeaqId0iM01tz1EgVkZvwSMH3jZg9bcAv/JNpllI3PjUaGJPN9FixoSi9n7T7x3Pmpu9fMLeBo3D8B5x3DB68zv5TrTvc9B7MJ1/jH3F5ll7/rO/av+NWOge422ckJCdt6gbwFxPkr8pg+hE3ZaGjkhqHAbOfMfDcJS3kkL7ESv/Xy31RyO0OqolhSxoyBZhDC1zaK6JYrcDOdhEAQ1PZd+QBawr/tTYXK68taJ6ZAD3lfgq4xJCKth7MT6pdGGejmQsn1PRXY+GcPVMHkY3qwHUbQei6dWapwYHMHnoOCLGAU/kxAdEBprzuEumSdD+tdPpdDNHbGR6zbMnCP9pxmWnaXLZ5pOe1kTzK8nrSuRG9loU3aCC5pH031j6ZMXriZOqNG1m4Pfj6JPXNCjmNy6XwUKrege5Mq8m+FaWoEg2trsbspugHNTuT039P23u7iwbQOR3HIen0F2iUZcNuBOv0j9qCIoiWuhH6wNTrGLkjQyk3s+yJKAvRj2a8mnB83hEOYRMZeIUDdDtxxSyTvf5kS9BA3ogr6Iw0tbBZk4f4whn8JpvNgfkUg0LcEX1ResXNgO6vnpz18LIH8Xj+EYTiD2tk/DptLb6/9mQBP0VgqC96XJoj/yMF3BkNney6AxKLw4gdG7zprcUpn70l/SN1P1+t9U9Tm/HGsw289ZbOLu2U5aiz88rdTzZ0ABNZjRwqvNEvx44ymuoeICrH9cuTe1IeshxXMPCOvuM1sXxi8zLaUA
- d8B5j7IW
- IgrhVENdwMjr8J5Z7vB6ZiNSouuu3wHBWZGMzRFwDlhjIjifrGSJHfibjp8hHbwYhyywJbzhDyfuhOoOyaFnnz3od+QOSuLBe1WnO1UGOhc4v5M5qllXNC1RvM7/au+jvlQXjn3QU2vdyGxeCs1wVQPc51I7onWOung7k1Lg+qwuFDZqUy2YORpzkGKmY+QXGKrULT5iiqenRYgZTAMxypZS2DJHeS1eYOE17AU6B3mIpe3JhYK/8OyRkZypF7AeHRPUV3u/9bVKahNF8W5cZZ2Hrw0CwpKDPYMLwhUAZerL8Zp4=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E76EB140003
+X-Stat-Signature: 96nfghtmoukjq13kxu141d4d5j9xk3jo
+X-HE-Tag: 1782727427-468418
+X-HE-Meta: U2FsdGVkX1+UvclVxdzSTcLKo/tqvZ52T+XpY57JDZ575mZ1rrplgyfz27tH/48+6sbZuaVtFsWPFvEou114wDx8UQIxndG5+ki8Uj7SKsO9VwkNKuc8TlzpU+5algZfyxHn/IwDdYyVeYymEPuimfaSG1dWX0jwrZj715o0ow5V5UxCsedvkFqtNFKkZMTbQKxnhlXgXAN+pxtTszPiE3xoGUCPGUY/qYqN1J6MtFL56Bi0/ILY3GS0X45cSHl6o6DfQzhTx7HE3LjVjpZfzA3pqs/LXe91zADZwgg21OxDZhla59fio60a4C5NI83pxoco2XXH1YL1983cYiTUasxnoWGs2LOUN1vEoV4eweqa3eb/JyuLefwtKgO9OcLQZ04ochXe6JpK4GPMH3H0nTL91gqF2k32tDEueWLxjha7jIkXd/lT581CijY6NcqWdTZKKazUI0cy4VAQWubV6SbsNUllvN/svYVh+uxVPPQpNUKDWspfrErPC9q13HHTmTCRwMEQdx8icTMM6aq9fGFdSpDyxFxeHK4e67eIIA1psyuSdVm5yjCTxb9mydZCdC2hkuo8LkaJ9RteUtN4Jg+R/iazD1oMmSOpGZVNBk2W6BtsrVyXIyXr4j49tZ5t+BwWApSBjpfKQ/Jaom+iMaQVBJr1WgD7cip8r8bTLkZlGg9HBemcrivn0Kl3B2JeTWmgsfkEP2BuDYIjnqkdOCzOhlqZ5nu4HAPTm9aexEs/UgqHDkTfgJxX1YfIb4RiYq7iObQotOrd0hJzE2EmWBq52up94IrEd8eVAcpQqezfka3JX1TPH3sTYppXsNzMzqZN4G0nf3RRcAoWZ6WmZHOEe8w8DSot+wHfGtlZSmF2qqvXKIlohkP7Fi2UAqlyXYzjm10Ll7Gtx8kj/eKV8ZzGNtrkxv17soZkdoAeuT9ojTUIvWZzeVzvqQDTkXbPGvv9mLAzjrnEbQaofk3
+ AIVdUULP
+ Iq/NamqWP7LrDRdz22ALcLXu4hJ9GyN1s/+80mYz8uxVsa0TOf/Bpcl5+H5Ib9AStaGrpR1YCjtx3qzTH6d+nHoFh4NG6SkykuYqnqrBi7mNtqDcQiFk99+Og3bf/2t7Ygsi8wL4PfGeqDed/wj8K29k4W2nVgW121HnIfdOUteIy6I5f1Rn9E7uKJuUwtntKoS4/RD+M5SQhr1cXBDoOHAT9mI6ap1NDHw+AOTq4MnOs8VxqUiS6CiIkWK/th9KA4M0mXMv4/YzgjusLxygV0w5BPoDlf7sq67TFuwsPxqpFhPR6IbOk5bDepyC02DHh+bGEF72PmY422aUYy4Y3VpZpkvmrJjgqwFwrfpBh82Jt6d562HJwhssZuQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,9 +144,235 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thanks for the detailed cover letter (will try to have a look through!), one
-very small trivial thing - the cover letter is missing the [PATCH vXX 00/yy]
-prefix :P
+On 6/29/26 11:29, Lorenzo Stoakes wrote:
+> TL;DR - please don't send unfiltered LLM code to list _at all_. If you want
+> to share it, link to a repo.
+> 
+> On Sat, Jun 27, 2026 at 09:36:51AM -0400, Rik van Riel wrote:
+>> That is the one reason I sent out RFC code before it
+>> is ready. I am looking for feedback on the concepts
+>> in this series.
+> ...
+>> Once I know what I need to do, coming up with a
+>> cleaner implementation is very doable.
+> ...
+>> The mess in the RFC is the result of trying something
+>> that seemed right, watching it fail in some subtle
+>> way, and trying to fix it up.
+> ...
+>> > But the execution has to be _completely_ rethought.
+>>
+>> There's no argument there.
+> ...
+>> > Another issue here is maintainer time - even this _extremely_ light-
+>> > touch
+>> > review has taken me a few hours (of my weekend :). To review it in
+>> > detail
+>> > would take probably DAYS of dedicated work.
+>>
+>> I suspect there is a mismatch in expectations here.
+>>
+>> I already knew this code has to be totally redone.
+> 
+> I'm glad we are in agreement on this :)
+> 
+> But in general I feel you have sent this and at least one other series like this
+> without being as clear as you should have been.
+> 
+> I hate to belabour the point but just to be clear:
+> 
+> * You label one patch [DO-NOT-MERGE], but none of the others (implying they
+>   are candidates for being merged) [0] and the cover letter has TODOs,
+>   including trivia like naming, but nothing about the code.
+> 
+> * You sent a non-RFC series with identical code quality issues [1]
+>   recently.
+> 
+> * Until I pointed it out, you were responding to other review here as if
+>   the series was genuinely was intended for (eventual) merge:
+> 
+>   - "This is a userspace-visible removal. Writes to
+>      /proc/sys/vm/watermark_boost_factor will now return -ENOENT instead of
+>      being accepted, breaking userspace." [2]
+> 
+>      <-: "I'll just drop this patch for now." [3]
+> 
+>   - "I left a small code nit inline, but whether you take that suggestion
+>      or leave it, you can add Reviewed-by: ..." [4]
+> 
+>     <-: "I sent it with this series mostly because it's needed to make the
+>     series work, and to provide context on why it's needed. I'm happy to
+>     resend it with a GFP mask passed in by each caller. That would look
+>     better, indeed!" [5]
+> 
+> So to be concrete, if you send really rough code, Use [pre-RFC] or [DO NOT
+> MERGE] (on the series as a whole) to make that clear and say so in the
+> cover letter VERY VERY clearly.
 
-Cheers, Lorenzo
+Yes please. [POC NOT-FOR-MERGE] perhaps?
+
+> Or, you can put it in a repo somewhere and link it in an email discussing
+> the concepts (like I did with scalable CoW for instance).
+
+Indeed.
+
+> As above, firstly make it clear that the code you are sending for review is
+> not to be reviewed so people don't waste highly contended maintainer time
+> on that! :)
+> 
+> Also, you didn't respond to my point regarding cc'ing the right people -
+> but that's clearly something you need to get right if you want this kind of
+> feedback to start with.
+> 
+> For instance, you didn't cc- the page allocator maintainer (Vlastimil) on a
+> series that is fundamentally changing the page allocator. That's not going
+> to help with feedback.
+
+Right! Thanks a lot for adding me, Lorenzo.
+
+> In general, this area of the page allocator and compaction isn't my
+> specialism in the kernel so I can't give you the in-depth feedback you need
+> on that.
+> 
+> But I do have thoughts in general as to how to achieve what you want here:
+> 
+> Firstly - you should try to summarise what you're doing here and what
+> you're changing alongside the trade-offs as clearly as you can in the cover
+> letter.
+> 
+> Then highlight what it is you need feedback on, broken out into clear
+> questions or points that make it easy for people to respond to.
+
+Yep.
+
+> And _you have already done this_ in your reply here:
+> 
+> * "How do people feel about splitting up the free lists, so each gigabyte
+>    (well, PUD sized) chunk of memory has its own free lists?"
+
+My immediate response is that now we'd need to search multiple sets of lists
+instead of a single one? What about the overhead?
+
+Having a POC (even vibe-coded) for measuring that overhead might be actually
+useful to quickly figure out whether the idea is viable or not.
+
+But then the code doesn't need to be sent as a huge series if it's not for
+review. As Lorenzo said, git repo link is enough.
+
+> * "How can we balance the desire for higher-order kernel allocations,
+>   against the desire to preserve gigabyte sized chunks of memory that can
+>   be used for user space?"
+> 
+> * "How do we balance the desire to keep compaction overhead low with the
+>    desire to do higher order allocations almost everywhere?"
+
+How can we have a cake and eat it too? :)
+
+> I think a really good way of doing this would be to start out with
+> something like:
+> 
+> 	Right now compaction often fails to achieve what we need, with
+> 	fragmentation occurring anyway and (for instance) THP stalling on
+> 	the availability of higher order folios.
+> 
+> etc. etc.
+> 
+> Summarising _the problem_.
+> 
+> Then a section about your proposed solution, e.g.:
+> 
+> 	I propose a means by which we proactively achieve gigabyte-sized
+> 	pageblocks with logic which maintains these as physically
+> 	contiguous under both ordinary and contended workloads
+> 
+> Then list out the "secret sauce" of your approach, e.g.:
+> 
+> 	This works by arranging memory such that unmovable allocations are
+> 	grouped at <blah blah blah> etc.
+> 
+> Then raise your questions e.g.:
+> 
+> 	I'd like to ask the community - how do people feel about splitting
+> 	up the free lists, so each gigabyte (well, PUD sized) chunk of
+> 	memory has its own free lists? <etc. etc.>
+> 
+> Then make it clear whether this is an RFC that is ready for primetime or
+> not:
+> 
+> 	This series is simply intended as a proof-of-concept - PLEASE DO
+> 	NOT REVIEW THE CODE per-se, but rather comment on the concepts!
+> 
+> (And obviously as above, if that _is_ what you intend, underline it with
+> [DO NOT MERGE] or [pre-RFC] or something like that).
+
+Ack.
+
+> I'd also very strongly suggest (as I did in my original reply) breaking out
+> parts that can be broken out as prerequisite series.
+> 
+> If you're doing something good or useful _anyway_ then just send that
+> separately first, and have later work rely on the earlier work.
+
+Ack.
+
+> There's no rush, this is huge and will take time.
+> 
+> A final KEY point:
+> 
+> NEVER submit unfiltered code generated by an LLMs to the list in _any_
+> form. If you want people to access code like that to test or something,
+> then put it in a remote repo and link to it.
+> 
+> The code is SO overly complicated and SO messy that it's really difficult
+> for people to understand what's actually going on.
+> 
+> At the heart of what you need here is CLARITY.
+> 
+> You need to CLEARLY communicate what it is you're doing so busy maintainers
+> can examine it. That's the _only_ way you're going to get something like
+> this merged.
+> 
+> The LLM-generated code is so awful that ain't nobody got the time to try to
+> understand what it's doing.
+
+Indeed.
+
+> The workload for this really has to be on submitters, not maintainers.
+> 
+> And what you've done, even if not intended, is workslopping, and that's
+> really not acceptable. Quoting the kernel process on tool-generated content
+> [6]:
+> 
+> "If tools permit you to generate a contribution automatically, expect
+> additional scrutiny in proportion to how much of it was generated.
+> 
+> As with the output of any tooling, the result may be incorrect or
+> inappropriate. You are expected to understand and to be able to defend
+> everything you submit. If you are unable to do so, then do not submit the
+> resulting changes.
+> 
+> If you do so anyway, maintainers are entitled to reject your series without
+> detailed review."
+> 
+> As per this and my previous reply, AI slop doesn't scale, even as an RFC -
+> I won't have time to reply like this in future, and we will just have to
+> reject your series out of hand, which helps nobody.
+
+True. Thanks a lot for going out of your way on this!
+
+>>
+>>
+>> --
+>> All Rights Reversed.
+> 
+> Thanks, Lorenzo
+> 
+> [0]:https://lore.kernel.org/all/20260520150018.2491267-41-riel@surriel.com/
+> [1]:https://lore.kernel.org/linux-mm/20260616190300.1509639-1-riel@surriel.com/
+> [2]:https://lore.kernel.org/all/20260526140204.1390573-1-usama.arif@linux.dev/
+> [3]:https://lore.kernel.org/all/2ecf71858845e7d14c718b1a6845389cb78b986e.camel@surriel.com/
+> [4]:https://lore.kernel.org/all/20260520174749.GA1458531@zen.localdomain/
+> [5]:https://lore.kernel.org/all/daa29c92f055d028a5b3ec0e42cfb1ee1496a593.camel@surriel.com/
+> [6]:https://docs.kernel.org/process/generated-content.html
+
 
