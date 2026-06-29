@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AAFBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:55:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F29C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F7766B0119; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+	id 490206B011B; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8AA6B011B; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+	id 3F2766B011E; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3CFC6B011C; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
+	id 293976B0120; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BD4916B0119
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 337821C0391
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:47 +0000 (UTC)
-X-FDA: 84933249534.21.D3302D1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CBF3A6B011B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56817A015F
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:48 +0000 (UTC)
+X-FDA: 84933249576.01.513DF31
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8ECD118000F
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMHGHv8A;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id B467A40004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VDXoE4r+;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744945;
-	b=gFV/im4+uANcoRB4lnRaUtXIh5fyJniruWfE8gsuEhL1N40XS8s4SxmX4/CTvUaDNEGQmn
-	S/9PZog+EIEHnqsN+ChNrdk3yc7/+eGYP+qJA0VBrRlfzp8ay0OHIgmUEfgVtLtkG5hpR4
-	rLrgTxGOfCo6gU1hO3um9WeRb2l8nyo=
+	t=1782744946;
+	b=pycZM5Ou0mHv6wuV2N1RI/aSmgwxZlx8B/YvQFBFdOsn07ZHFyRZUOjCADyShu4SefHnM9
+	C3dtcXy2o4vpZF88kqnnA+PDBtu4GdH6ILVkdAxP7XXbqtMMcQNiQh3LmGMNGxT8m/WApe
+	zpQ1kQP8SvhDB84U38zsywtwUAWLL6s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744945;
+	s=arc-20220608; t=1782744946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZVhN2I9i6QpLRkVKkW1yI5yzs7NG5PgDPEhiMNWAM8U=;
-	b=vtlFQRlxVofNkbLphRamr7hGAKchm8KLt7f6eTIZiP8JzCPauly27zAfx2QcyMPWcuyLDk
-	TS3gUqzo7IRbZ7eBtxpf1qJBbBWsyn8aCKkwCp0hd2QTrzfnsT8cWGWur0+b919agDcBuI
-	fXwnehwsR06cbpamE3ZL/tFtPwdlRIo=
+	bh=PmG2gg8tRrgzpTnWK4727CnmxNa5ZlUXqEpxl0pzTvM=;
+	b=7UoaWD3N+CZC4jM+EdR9+/Syb/thPMOr5y8M/vIRmH2zPDeflTDnDsZq5BoH35zAWfZUV8
+	c7w1f0bI6C9YeYDXY2IIjBsOAytqeS9Fzgk09s2djNLd3V+xo0Gfhmd4k1u32dpKuUzhk3
+	YZXAiVEEEIagP8fqJuR1GkBNyUxCGdc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bMHGHv8A;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VDXoE4r+;
+	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E088841A53;
-	Mon, 29 Jun 2026 14:55:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D4A1F00A3E;
-	Mon, 29 Jun 2026 14:55:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E29943EF6;
+	Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72971F000E9;
+	Mon, 29 Jun 2026 14:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744944;
-	bh=ZVhN2I9i6QpLRkVKkW1yI5yzs7NG5PgDPEhiMNWAM8U=;
+	s=k20260515; t=1782744945;
+	bh=PmG2gg8tRrgzpTnWK4727CnmxNa5ZlUXqEpxl0pzTvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bMHGHv8A1MYROF6vPuTDwZviR+le8pe4sCB4aR6QW3CKon05YWmPUiV78+bUpqs82
-	 y+CzIcn7dROAVEmlPM/i9LOM8+tsOxlZBw5GvmZ3Ppr0WZPdnmXj6Se0woYaBx/iEB
-	 D879T5sWVZrYXm1zjZdzi65tillLHPSq5D9McygwAwJv18yi689aZcSByhZhc/8iAF
-	 sJSgJ+GLlytguYm38pnp/qcio4yLqY8Lc4a6gNgCo8J5MX1OeRfKhvFCxw6Md19gEG
-	 2UmyIuQA7rHYd3BH0xhlN+I59pmMih1IhRAW6Xq5z4UyCeVA2GBmvMSOZxKapZ5UuV
-	 CmJOZdoJb2d1Q==
+	b=VDXoE4r+74Y296coPt1frx1kzyLDNql3DFMMOIzlslvyJFTNPeKJqSeOd1BDGHscn
+	 7JxWBT1rCvA81uHJy/isaEosOp2DZGHkNoGD4HLn7ogayUzWJ5zwg2x+07rkEtpRaw
+	 8blA/qmadJwueO/Rdnjs8v3bGmYMlO82Dn90EOYVDAnWNUqA7/YKH+U7s7tGYpzed7
+	 rK9ch9+t8IbKto8G+dMJ5sXLTueItloeyuqj7aP5RcAJ2Vuymeig0gwzKEAAuMmUhe
+	 qAqTSwke8+1IpOiHyxeO9XEfWO97aI6ag7574rgyB0OFWqfTHWItsgEeJuobPoeZ/w
+	 pKCprFZAKr7IA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Philippe Laferriere <plafer@proton.me>,
+Cc: Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
 	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/5] mm/damon/stat: use secs_to_jiffies() instead of msecs_to_jiffies()
-Date: Mon, 29 Jun 2026 07:55:33 -0700
-Message-ID: <20260629145538.134832-3-sj@kernel.org>
+Subject: [PATCH 4/5] samples/damon: Fix typos in Kconfig help text
+Date: Mon, 29 Jun 2026 07:55:35 -0700
+Message-ID: <20260629145538.134832-5-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629145538.134832-1-sj@kernel.org>
 References: <20260629145538.134832-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ow61tiazq15i3tmyzw4q5j1xiyd64cr5
+X-Rspamd-Queue-Id: B467A40004
 X-Rspam-User: 
-X-Stat-Signature: bsgdborm5g66uixcky778q8rnptom1d4
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8ECD118000F
-X-HE-Tag: 1782744945-421682
-X-HE-Meta: U2FsdGVkX1+mc/8E2kXdVTigJTRxeEpEkhKQMsTXConV0obsZKEfvgGLg9D5BFV+a0pmg5VShkOoNS+Qoypjj2nD0gCiDjqHM4R+nmSsob06z3NL39DI6qOllEmTZOWhEgWbyQ+zIo96qx3bMwnzV53cS9ilInXrMpWBk+omxQZjTtUqFOKYFLQFSN3FShDUVBC2CxSrkd0EV/XKiYBwn+IsqVs+epbkNvZ02L55/oxIUhNq46Q9kPtJ/CohlFMVBnwShgkZ+KeIXCOnDiOg6ziCwV3GSPCm/KQNxnvy1BioFnQUmsDbzlzgt56axTwAIUQ2S535p3YYLsy3A8y2n/Pa4LIXppCtbyYx6MvsUuuSZ8mOB5UKSc9p+SN7DQVIn4T5Vmr+9NC1iP0Yl0Ws7D1kTXohmk1ovK4BBG/gpGmvXB77OgWFqNZpLXH99TgVWfasT0jy5CjCWNbh5thjM/wi3x6dJj9uCaRBty/PlAMlGQOBaF+iU91pPVhEA4bv+Kf8DRnF+Ec9rQoVffAyrwwjpPRzff08np4kmzFTVack1IQ6YsPvT9wzfFhH8pP8DZ1jnJnfF6doRO0exA82kk3znmM0WttnoUyTOCRC4jKrEVvh34895j5ITh+vy0ZqDgtg1n494Dmp6DKdg5mbXBtq+L2QmO451s12AhUB2A11oBIE8ElgX6Zu6o7VALgO1yd0p+iP4YPiMUxFJkwdam8TG+zreIq7TsfFhjMNP4OKErJcOlh0yxBaevAD497DUhYsHBTbSTkvJjmOCQDKUlzimbZy9sCKd9KHbDAnyhfqP7bvK/d5X/OegDoOWnpM6Y6MpwNfdXZs4g7hapXwsr3UcBFvm3jdNntEWF8tBjJNUZMuOulkBqVdP2/whnSx+HTdKWNROkoorIA67PCU8/21SbRygVz4bALcTbK0kOtTNh6IqLj9p6jtdjDu6YOk5Ws7oSprAneQG/YeT9D
- dzC5ix4Z
- BhZ7ewFEEJ5qIRsY1HM9sgSslHFIrdiZLSXrYYV2lzwTBv2DBXj6yW8WRaQEy4vFR76Cwd8XZZsItu9y+7E56lhdttOu2MJ8lwcIn6tMvyiLHT/rmLf5gTzrOnAMp2KsBCmUiMpEidnyPiGa4H7Na/fiYXu9PekaohsY84koHJMSlficrBSvPETTJdnXTwAL2WxnXvOAPfktOJKYoLAJ+VBIgdlG+U6QT7SZBSdb3ImIowrqRgOobGtmrWZnxjOMdS/bKZe4PvNL4M3dWKCN45fnGSw==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782744946-867441
+X-HE-Meta: U2FsdGVkX19b2BsHPUcw1/dKpDYyLcLVpK4rk2whvjpzFUie+zbfcIHp9j30sroqONIh6Pf/H8DMNOGLuKX0a/J0cVJW/XTYynJgRA0SCJnA6LkFX6OKPxyEiozSPgYUVdjHtH2XBY1xv6C+4TrzrMI8Xbt40fMkjxXQTO//TLX7YFRbOiLjoA7jLOcx4JExVO/wlffTyU0JQTwbWUefQeaM4NAPZaHuzHd1eWWoAbJIwzgfEh3Ag9ujIJnw6N3JCDW1mBfxjz/7vc4gg/dCezFjwfKH10FV+ICayFhfiGk3XdI5lTyP9uMu3jF1m6I/jrbkyZpPIbLNroBHdIEjLHEV8wvbXj7aag8JCkGka/YEQsX8alrr0jBJgO+Tr46RwfH6BZ71aOtmBJWv64++ZbnSqSlIOuZoiaCUzkenD6WONSFd/SGj3VuSFzWtSbmHEmoC7YKXIzj5dbcgyz4A7ArpRQOGax3LI3zz8s0EMrDoJNTyJvj2UwwQYRgWNNKXdkyN6q5qJ/x5H+YxqUsUHHdKA6dHTdUQcrUHSqBcKIqYRR/ln2H0eSLhymE+jsFZt3NgZ4gP4bXm7k3H+ze/y+fVoLywnMWOs+N6WH9CSQxAPjcQDJdOipDv2z+bfZDv1ZPuKJEdLx7Bwl02kBaPYzoUnvhsg49ARqhP2EBfg/5+uebZllVrna3J+2zgW4wdHjAYnfEZJDQ6q5BdCopEWUkW+ADP8x/oQWaYY82Ay0PwoNcHCr+oYDtO4z0CU5tPBeuYYj/q1pCAYbHMA0WEuixcZDi9ELiJnp5Uz3+/aA0OaY1wem1iftpgaWEFACri61HmIqkgd3NbSYbX8wVDrRn0g12FnbdagSfMCHSwtZbly+Yn3lRlCXkcBVGaKvvXyC+LKcVcI4CWF4zP6ed2BFXd3vGXI2YetpE+56lEEf4RX114suqPRuvFxlH3gmJpdJ/mCPTlrV1JLBNNaZm
+ XH01mtoW
+ uFa46SgGEYf3dq2Dl1Hch7pdxa9jwptFVLhlidJ81cikhxQAA42T66RqklSwgljaEoitapHwcdcM5WY+lAwvARi5T950hRzLGGlZBXQ2PXkSo3CeSapGZ2Ybf7f6YR1mGMZXCXzWYEcbN9kC4Sxpat86VPaXKVl4Z2AvKyZ4EJdFILEdCVIYljwZMVt6AaQa77jtMGeAwRqnIW4URjOJKOrRhnOZdoA0GPOmkR/1F1cv0dNAfo5w0d6+rtxcYIiNRH1Blb8l4VAkP1zUXyfe7AgmoUDCGBUcFHamV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,41 +93,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Philippe Laferriere <plafer@proton.me>
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-The conversion of a duration expressed in seconds reads as
-msecs_to_jiffies(5 * MSEC_PER_SEC), which obscures the intent and
-needlessly goes through milliseconds. Use the dedicated
-secs_to_jiffies() helper, which expresses the 5-second refresh
-interval directly. No functional change.
+Fix a couple  of typos in samples/damon/Kconfig help text. Change "Thps"
+to "This", and "tierign" to "tiering".
 
-Found using Coccinelle (scripts/coccinelle/misc/secs_to_jiffies.cocci).
+Changes from v1
+- v1: https://lore.kernel.org/20260617065716.750179-1-gutierrez.asier@huawei-partners.com
+- Fix one more type: s/tierign/tiering/
+- Add R-b: from SJ.
+- Rebase to latest mm-new.
 
-Signed-off-by: Philippe Laferriere <plafer@proton.me>
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from v1
-- v1: https://lore.kernel.org/20260615214113.122923-1-plafer@proton.me
-- Collect R-b: from SJ.
-- Rebase to latest mm-new.
-
- mm/damon/stat.c | 2 +-
+ samples/damon/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index 0e14f5bb8f75d..b05b68f73e10d 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -138,7 +138,7 @@ static int damon_stat_damon_call_fn(void *data)
+diff --git a/samples/damon/Kconfig b/samples/damon/Kconfig
+index cbf96fd8a8bf9..00be3e6bdd659 100644
+--- a/samples/damon/Kconfig
++++ b/samples/damon/Kconfig
+@@ -31,7 +31,7 @@ config SAMPLE_DAMON_MTIER
+ 	bool "DAMON sample module for memory tiering"
+ 	depends on DAMON && DAMON_PADDR
+ 	help
+-	  Thps builds DAMON sample module for memory tierign.
++	  This builds DAMON sample module for memory tiering.
  
- 	/* avoid unnecessarily frequent stat update */
- 	if (time_before_eq(jiffies, damon_stat_last_refresh_jiffies +
--				msecs_to_jiffies(5 * MSEC_PER_SEC)))
-+				secs_to_jiffies(5)))
- 		return 0;
- 	damon_stat_last_refresh_jiffies = jiffies;
- 
+ 	  The module assumes the system is constructed with two NUMA nodes,
+ 	  which seems as local and remote nodes to all CPUs.  For example,
 -- 
 2.47.3
 
