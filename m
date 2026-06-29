@@ -4,106 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E1EBC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 11:44:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C21C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 11:48:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F33596B0005; Mon, 29 Jun 2026 07:44:11 -0400 (EDT)
+	id C7D346B008A; Mon, 29 Jun 2026 07:48:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0A5A6B0088; Mon, 29 Jun 2026 07:44:11 -0400 (EDT)
+	id C2CCD6B0092; Mon, 29 Jun 2026 07:48:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E47A06B008A; Mon, 29 Jun 2026 07:44:11 -0400 (EDT)
+	id ACFB46B0093; Mon, 29 Jun 2026 07:48:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C115A6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:44:11 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 414C314067D
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:44:11 +0000 (UTC)
-X-FDA: 84932766702.02.8E8166C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 82D6C6B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:48:37 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EF6DDC2B23
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:48:36 +0000 (UTC)
+X-FDA: 84932777832.01.83A6364
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A03E61C0003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:44:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q8m5WZPQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 647C3A000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:48:35 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H65gbf2i;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782733449;
-	b=zecyHP1bfdl3pTBjSFG1pKiSeWjsF7P1zneQ3CModDQjxkMOU/DuMeZLF9hz4IO+qV0Z01
-	dAcGtI5i8S/exufsRHX730WK9pdlY5PHX5qfhOxcxn1ynB0WPqS2tvE5A75vGHIa005FKQ
-	i9EygBVk490N12SSragPCGlD0y8/lps=
+	t=1782733715;
+	b=uLCqtEiF3J0zC1ZWTek0R8plpH1C22YFzs8Cwx2X6UlLy3RF9wX7nIweYeX0j0ao8Ylwrs
+	2Ma1w8fIfkbxNGVV89yONAhBq5HXb5lpqUUyMdlKSxEvJvRs1gvyZ6O+sV8s44mAIJ7O0D
+	UH7AVQ8dnxAAXPQn1OOYAJ5knsFBzmw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782733449;
+	s=arc-20220608; t=1782733715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ViaMG4AIx4t7Xw8EOKV5lY2S4wNOCDcLNhNIuR/tVoE=;
-	b=Z2QANtY5XkwYHLyjMqOS+GhTvI+N4tHF7ArGGVavRZ4VTfIME07a7jkgKWwJx+GTI+tLQE
-	5+vkvv8W83NeIm02mSD2dWzDTBDW+3W5a0wn5aBKjstelcIe5eyk6DJim8h6Qr8fnarWhS
-	y7gKOU8lbEa9JArYJNBCQ7jCa4Bi1Hs=
+	bh=WdJjBapnWqK/5wc19D0+FvXlEWJ7CMzxx57KUogxdVo=;
+	b=B4BJR+21Ow0Th5jrNVFdiAymxIKCb7sMbPsgtAK3c2kgtg/cvTFtiPPrj4XOpxZHYzNWRE
+	Psalldz8yQPydWP/2+VDNQJwhQ22El/WTdkMqyTppxHvQ2dUNo9G/IiXtDWkvzGNl9T9cZ
+	fA39sEIst+EpQqS2VQxOlkHHo0cGwFs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q8m5WZPQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H65gbf2i;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0A71B6001D;
-	Mon, 29 Jun 2026 11:44:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D281F000E9;
-	Mon, 29 Jun 2026 11:44:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A34D5600DA;
+	Mon, 29 Jun 2026 11:48:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2E21F000E9;
+	Mon, 29 Jun 2026 11:48:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782733448;
-	bh=ViaMG4AIx4t7Xw8EOKV5lY2S4wNOCDcLNhNIuR/tVoE=;
+	s=k20260515; t=1782733714;
+	bh=WdJjBapnWqK/5wc19D0+FvXlEWJ7CMzxx57KUogxdVo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Q8m5WZPQxys7TASSEPS79b1PS7Camd9Fn+c6d1C9gq57MCQiYrcQnCXQfgL5Pom18
-	 DEi/W04AGewzD/rKoMQlj7PH7ZlvfhgT5wCxco8mN/yozzeDJebmnwHsmAjUc92Hvw
-	 6FvQmlN57DCT6ekazGvEXvtaVtlZGacM99DDCOSxpOBVSleTe4irqCX5KbtC2izNKF
-	 T291dor9anDtABM3b/yxgkDP56ANzslcvn4NGksr9xxTxzQ33O68zYsFM+1kAbKewL
-	 8f2NZFEXGGeHuNzx86QM2uiAaWdYbAx+u9ZKEshlHOlDMKPf26u4dffwBuDK6k7Dw4
-	 85OiP+UwZqwrw==
-Date: Mon, 29 Jun 2026 14:43:57 +0300
+	b=H65gbf2iEGv2XZKo4se061BH3bpHpe3VUjVrcnH1e+nvvMAQO8XAvhKSS1QlzRZj/
+	 Xuf1p9OvYpjwTNrVOHuRn76V/YYYj7Ma7qMir7f49NfjE/PsXgWBuBnPntta+oizSu
+	 IJQtP0EFsaHz8PDDj3NYWZ4e09Ec2QXBZbsnRvDSm3knw6q/ZaB4s6547BwB2e/p+Y
+	 BsqkzdIscaS0Sef0dyM67Pv66p53nbpBoqUhBVJk23R8kRQjAfWRoEqS8jrHGFt0Dt
+	 ya3hvDQVXDeh3pkiuW6MyJqSxzt0hN6M3/lEuWBIE1avqqnJAW9wOLw7FET6ICk+jb
+	 3laaHp7g0kQNA==
+Date: Mon, 29 Jun 2026 14:48:28 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Alexander Potapenko <glider@google.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@kernel.org>,
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	WANG Xuerui <kernel@xen0n.name>
-Subject: Re: [PATCH 0/6] treewide: remove unnecessary invalid range checks in
- memblock iteration loops
-Message-ID: <akJafRKJJBd5Jrv0@kernel.org>
-References: <20260621145919.1453-1-ekffu200098@gmail.com>
- <aj426bA-YiOKt06m@kernel.org>
- <CABFDxME8wej3m8T5gn8y4dmpOLZutm=tDTa7ZcfhbWwScTu_5Q@mail.gmail.com>
+	Taku Izumi <izumi.taku@jp.fujitsu.com>,
+	Yuan Liu <yuan1.liu@intel.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm/mm_init: drop overlap_memmap_init()
+Message-ID: <akJbjA-_ZeGGJKHC@kernel.org>
+References: <20260625073941.145014-1-rppt@kernel.org>
+ <20260625073941.145014-3-rppt@kernel.org>
+ <20260625095846.4e2tl3fbduc24erg@master>
+ <aj4s8DvCQ0jE2H_y@kernel.org>
+ <20260626092952.qoihjgphv43ezw6v@master>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABFDxME8wej3m8T5gn8y4dmpOLZutm=tDTa7ZcfhbWwScTu_5Q@mail.gmail.com>
+In-Reply-To: <20260626092952.qoihjgphv43ezw6v@master>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A03E61C0003
-X-Stat-Signature: g7xuh1adge85yd1rp96zgg5314tnpyo9
-X-HE-Tag: 1782733449-437178
-X-HE-Meta: U2FsdGVkX18d6RPjWNmuCIQerLNQZuGaoie+kjcU0cLkAk34qYZQhPPhYNqkl0bRGALgF0YcfpliU8oM97ZzLhivJb/JcPzOyVOZpZrlLVxjcgcR2uJVe8c38bjq2MhCqnreB2e6+hTWvpxPDeJTGDJI00fVNUSKMPqL40dVjsflAlVR5kCMrnOY5xeLJCScuHXoMIjl72N7214RlS3N4XgOQvW9Bf0vikaj2HvhhK/N/fmfqgSU+prMTv48ozNG35UT4yOYTt1gTsb9tWNGmOjTC3kbJV1yGQvucJt7J1YQ6lySH9xp74IzNmldg+kjQUgKuEIJ2TeM8T3gn7VIpBORMm879C6bd20W3P3g826wl2DrKrQqQtSlxWs4sPm/gh9KzVQipsK2CJ7uPoRzy0scQKzsSKrJCSb5HKx4BiJCR7q9LCufbOXSomf0oeP6xWfhpyd+X3j4lATauXElbapJZk4VrjOqVj8f1ggu6COwUxbM0k30EaZ45J+w/piRrxeZ/rIkWYhGoffL4635nnp2HD/XtA8HKGD9/Z55RXt7rniTdxo/wI4zMxeiwMH+J3awylXcGblY6Izl34hfHd+WgktTtzohx66vxc30WL0zBdqfuqAu5JfMM79i6FN7aJsCLH+2+Zftldf7k83+OI2mP97WaF4+1CkrBTBMi/1xK9VdKqSToYU2dMdttoTe0gc187x7SSDxsF5zGsZHO2878SrLQXg0pLwx269GuiIE/undnLMjKBPAmD8PJpepdJ3LldwBCo/EVIOtBhWa7mt7i3F9Un2B9qJ9AVD3UkjquCK7bEKRkzef2fdWv8qDTwU+GfgLRCPmHZU4J0Wbch9nNEz3MVs3qtviDmWt1etXe5hZ0m32CXJlnZy8C1eBn0lHrw90HUkCQ7u+acEZ5XWZYoSljnCgL23nCjQQbxVyL/bhA43KjNuMlwbjJPxJt1hzoqXVWmEgQ8hWXAj
- 1C8X5RRu
- 06CeGfq+rIFhF8flF45BVlqertCDsbsGzvE/HSggjfNhaNwhO3WpVdQ7ItdTWXsI/YELC8HNLkcboQvmBlnrei1aRyuyrkr+lCBalirog/irWuw2piWZ5R/RqrIHu2Tj7UfspnHHD7cjAuW4B1blkBdiB36bUAn4w7IP6WZVmvzzmiUbBJLS8RywayciMUv3RJTYh5uZyw8vIjUaFBVJjvf8/wl0H7lePzQEfqiJbKu3xVmvJVxsYAVbjlb4FPQL0ZYuLpLd6ezGRHI1+5rGP5GP0AxzPWKWdrLzCFBcvka7KYFRvjGNc90p4p8i04QvtIiE4XF+fnHAkijZv9K7MqnDkvCRmJUK4OM8wenq1rBVIb8fXWp7ODW4mCl975UGwt8jLXtzxMjUAnOyetTZQLWOu9w==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 647C3A000A
+X-Stat-Signature: p6j7zfi7tpa5fb7ei5asqju4qebj8nnf
+X-HE-Tag: 1782733715-367120
+X-HE-Meta: U2FsdGVkX1917z65K1vYvIszjQK2Xnw+G8fCDK8CY/Fz6Ga5TIR5sg/nGAMhXeDX9LMXpX4C/NTkNdLvTuHsHwms2hmPRAeiK/ejGYBuRn6Hq9A3LEPAadR8rUXUZegqlsf+azYoOJKiis6MzgxARzwK1bAYAlfhBd2vPiZFR9gGYoKmMf3uyRxhXy85DsSbtL2XGCSrVJerD4NMDsB/qMngiL6z+x/FUhBwr22YDoYrpr1GWzv1hh5wF/mN2FCTkUsEN0nigRrLemWylBlFE2BR+vuXYcmliSO+zbTv0PhT0PsQZrQEwcVtf3CUdWsqbI2mx2b/9xJkf+y+o6hXG/LtUcRnhAsfbLxmbCvXu6SzZqHT7ujE78ClKPKgAMrj0hn/eWeNEyv2kCkfTUag7cULs9ZckFJ5lcuWec9OidaHoq6Ryx7AsOEhrMyMxaczO8UNKfA7ipiEiplop8p0xKdj2gIXw2x2cAhem48x0GdALNQuz4Pzp0eYREMmJXPh1K+/djZ6yv5zXAjEEw56oIGgNxF6wZbbasqo42FYAEp3iRbe++M1+/jP7XriRbbVtJOj3n2TB1/7w4H1dOow4enMrnQu0QjrF+K6WOfves2DazvYbQqljVr2MxYHCM+XiMQ58GNJ+325f1YepKlSjVD3u67+mby/V4k6XcV/9QH+9fTRJVv40NJUWLY51gej+e9dPkz1v7hI8eB4A4YIwgsQRZRRQ+o83VJOyjTkAkM3Qk2dj5R7aZNijUFjoGRY06iDy+kz/nCqDnrFDVTj8PU2ql4dwK2ugv8bt8nqfXrZDb8L6nGxO/eeT4jEn4RlD9Q4shWx8iif9GtPdPeX0DMQhvaHYU7ovPhhSOdKE3tE0JaQDTx+9nsfVCzjVwtsfv2cZCvw3IvY8TBOxbIi4Hfa9boiI3Rc738F8AyZQH3Z71zbIHeRcdUmSUVRgix44OMKhbP4a1lavty6Gu5
+ alYONbaM
+ ALswyI58J8/CZHoEe9DkVivuH+DgU7WAUjQdzFhbuR6bAG4sZCUpaOQCJyig+nrMGXiW2/WyvbDrY1F6UDr5VyhOp7RbsLfu5e1m/Jsbxn5UgYGy5qo7yFt0Wo/zIoDxbm3kUu7iWZYNE0ZQUP6xTbe+v04rUTbbZC1KSql5szd5R5ivzg4nnsXebMzvXzJ2FhVIQF0QkMnXRFqxp8V8h4iLPZhQuXpjyNb02h48h5KiFhwTS7ikdakiN7/jwdT1O+rKSDIwc1UKdMYsrhfv8nMANEbeOYa6kqqLB0boXlzPV0qCGHxJEBveu3r4pq+OaDiFJKR0EuiJoqLzfsC4Qn6X7dqS5uoHQydW0Ylpyd/OOCXDxYgIe9p2IJpx4J0DwZffKaPkCk1XIT9Z3EeZ/wxbJhg0HJAEU1EZeg9Cc9HyA1WQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,58 +96,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jun 26, 2026 at 07:59:22PM +0900, Sang-Heon Jeon wrote:
-> On Fri, Jun 26, 2026 at 5:23 PM Mike Rapoport <rppt@kernel.org> wrote:
+On Fri, Jun 26, 2026 at 09:29:52AM +0000, Wei Yang wrote:
+> On Fri, Jun 26, 2026 at 10:40:32AM +0300, Mike Rapoport wrote:
+> >Hi Wei,
 > >
-> > On Sun, Jun 21, 2026 at 11:59:10PM +0900, Sang-Heon Jeon wrote:
-> > > The memblock API guarantees that for_each_mem_range() and
-> > > for_each_mem_pfn_range() never return an invalid range, meaning start is
-> > > always less than end.
-> > >
-> > > Several memblock callers still have unnecessary invalid range checks in
-> > > their loop bodies, so remove them.
-> > >
-> > > Sang-Heon Jeon (6):
-> > >   arm64: mm: remove unreachable invalid range check in
-> > >     kasan_init_shadow()
-> > >   LoongArch: remove unreachable invalid range check in kasan_init()
-> > >   riscv: remove unreachable invalid range check in
-> > >     create_linear_mapping_page_table()
-> > >   riscv: remove unreachable invalid range check in kasan_init()
-> > >   mm: remove unnecessary empty range check in
-> > >     early_calculate_totalpages()
-> > >   mm/hugetlb: remove unnecessary empty range check in
-> > >     hugetlb_bootmem_set_nodes()
+> >On Thu, Jun 25, 2026 at 09:58:47AM +0000, Wei Yang wrote:
+> >> On Thu, Jun 25, 2026 at 10:39:40AM +0300, Mike Rapoport wrote:
+> >> >From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> >> >
+> >> >When ZONE_NORMAL and ZONE_MOVABLE could overlap because kernelcore=mirror
+> >> >didn't reduce the span of ZONE_NORMAL, initialization of the memory map had
+> >> >to skip overlapping pages during initialization of ZONE_MOVABLE to avoid
+> >> >double initialization of the same struct pages.
+> >> >
+> >> >Since kernelcore=mirror works now the same way as other variants of
+> >> >kernelcore=/movablecore=, and adjusts the span of ZONE_NORMAL, there can't
+> >> >be an overlap between ZONE_NORMAL and ZONE_MOVABLE.
+> >> >
+> >> >Remove overlap_memmap_init().
+> >> >
+> >> 
+> >> Do you think this is valuable to mention the double init for the overlapped
+> >> range?
 > >
-> > I queued this for inclusion into memblock tree.
+> >Not sure I follow.
+> >We had this weird overlap_memmap_init() exactly to avoid double init.
+> > 
 > 
-> Thank you, Mike.
+> Yes, this is really weird.
 > 
-> Could you please review and queue this patch [1] as well? It does the
-> same kind of clean up, I just missed it at the time.
+> As I described the detail in [1], before this change kernel would have
+> overlapped zone range like:
+> 
+>   Normal  [100000, 1c0000]
+>   Movable [140000, 1c0000]
+> 
+> Which means [140000, 1c0000] belongs to both Normal and Movable.
+> And memmap_init_range() would be called on this range twice for Normal and
+> Movable respectively. And we want overlap_memmap_init() could skip init this
+> to Normal. Because actually, the memory in this range belongs to Movable Zone.
+> 
+> But overlap_memmap_init() only would skip for Zone Movable. This means when
+> init to Zone Normal, it doesn't skip as we want. And when init to Zone
+> Movable, we don't expect it to skip.
 
-Can you please resend them all as a single set?
+I'll add something along these lines into the cover letter and will merge
+it as a merge commit.
+
+Will send v2 soon.
  
-> [1] https://lore.kernel.org/all/20260626032902.703944-1-ekffu200098@gmail.com/
+> [1]: https://lore.kernel.org/linux-mm/20260623092351.13031-3-richard.weiyang@gmail.com/
 > 
-> > >  arch/arm64/mm/kasan_init.c     | 3 ---
-> > >  arch/loongarch/mm/kasan_init.c | 3 ---
-> > >  arch/riscv/mm/init.c           | 2 --
-> > >  arch/riscv/mm/kasan_init.c     | 3 ---
-> > >  mm/hugetlb.c                   | 3 +--
-> > >  mm/mm_init.c                   | 3 +--
-> > >  6 files changed, 2 insertions(+), 15 deletions(-)
-> > >
-> > > --
-> > > 2.43.0
-> > >
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
-> 
-> Best Regards,
-> Sang-Heon Jeon
+> -- 
+> Wei Yang
+> Help you, Help me
 
 -- 
 Sincerely yours,
