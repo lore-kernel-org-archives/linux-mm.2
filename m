@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D769DC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59452C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C25F06B009B; Mon, 29 Jun 2026 08:24:49 -0400 (EDT)
+	id E712F6B00C3; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAFEA6B00C3; Mon, 29 Jun 2026 08:24:49 -0400 (EDT)
+	id DF9FA6B00C7; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A034C6B00C6; Mon, 29 Jun 2026 08:24:49 -0400 (EDT)
+	id C4C626B00C8; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B56F6B009B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:49 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D3F521C3777
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:48 +0000 (UTC)
-X-FDA: 84932869056.16.EE63589
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 42C4E4000B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:47 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PlndaMYO;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9132A6B00C3
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:52 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BB99120641
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:52 +0000 (UTC)
+X-FDA: 84932869224.03.E3B4ECD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 6463940008
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:50 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIIvri7+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735887;
-	b=Li3cZxaCCiQwDXEQWCiIJGMiGAp7aadRhzYxumv9Rr+wrWrWz0qt3FhZwWEAtrcAhzbqMU
-	xSn/3v0izI11nSRkyGMI+uwSHuKLT2wMqhXj/VpB6xT6Ih8tzYh1cCbj/QOtb6m+ZhD1fb
-	Ccg1NXjaA5/4vToHqatj7pj5iMmIN/0=
+	t=1782735890;
+	b=HsPqKSjhLGxINYd62keUfSp+Wdz/T2iDbnwh6xMMLdM4ngAOMzgpWh6FSzqVEQuSHlcwBj
+	RUAWOQ+IOPNGC4L6+U4l8UvOEKLVLfADxhF2eySSF+R5ictQ0wZbORxMx7zBtWMSlEkLA3
+	llsFTg41irop/XmzrH4Lb5XJvqAz07g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735887;
+	s=arc-20220608; t=1782735890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lsln70Nt2xZ3e+TM/n/yGo1O6uRwImQ7en0yGThaEMY=;
-	b=RUrVkkavvIDGeWF9cryFgHhZeulckm0knQ5Exe3E74Y+iE0vG7wDK+3RiqRW41e6DoKs+j
-	JOSd4K0X4jsn60JNh49F2vpzdFMKpYzFGcJI79kJarzInpCanNY9t8PyXLCkXX2g6a0WYn
-	/cBKJA0IXTHmQTXMLjc5tHU0QSRpZuI=
+	bh=pNf2vZLs0Ll45B4pKyb976+6a6p0KPUKwIl6t6WJtJE=;
+	b=RqcnM0G5Qv72HfNGc422WVUtfJcNX7qanWh00m5KGe47T871xgcWDZ4eHDFtKNKtIGdRY1
+	vYjgiLS9QT04kx7POsDp8I84Apb04QfAfSEu0ACXrqA6AmMd16tmuz3LvUMjogNW9WbJrp
+	KSXy1sAetqei51aD+Z3C+1vvYpiQxZk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PlndaMYO;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NIIvri7+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC197600E2;
-	Mon, 29 Jun 2026 12:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC75F1F00A3F;
-	Mon, 29 Jun 2026 12:24:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D65241905;
+	Mon, 29 Jun 2026 12:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13381F000E9;
+	Mon, 29 Jun 2026 12:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735886;
-	bh=lsln70Nt2xZ3e+TM/n/yGo1O6uRwImQ7en0yGThaEMY=;
+	s=k20260515; t=1782735889;
+	bh=pNf2vZLs0Ll45B4pKyb976+6a6p0KPUKwIl6t6WJtJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PlndaMYOEEDo9y/BYx1L4NafUGtOw9hv0rBUhMcjKwlZmqbjc94j2hVFLqS/KvZ+y
-	 40OFrYDVSSF7T9EypqFSK6TimQk/4XGGd8umptAGTerO+BOZsNYpw3L7GtcNSfPwM7
-	 SsZ0tc06chaOtQb5ZSfbU6KDl53Cw6DknS3B97eBehCTm8g9K9btYeMFOMNSygzaBK
-	 EwTmsweFODQqTlA8WvspAXfk0bJC3OwLqAZuwS3SQ5sBHz4xtGlKyMP31PmgDAMTE0
-	 Mluv0Zrvs/xdiEsrbn9HMSsNhic3GiJi2z1Uh7dcPNVmDO6p0HLYIghRVt2kLheU9D
-	 UArLqvg1MyX8g==
+	b=NIIvri7+xMYzLim1PkfG/ho1mN+c9wfJYOoMG5RAAbL4KacfAhSRvbPZdT+r5T04k
+	 WAZFffkPoN9trQ/+yCnF2yVOcZikQi67qHMu8Gkfbdgz9aWvYK0MORbqEDNaMw+x56
+	 K8lOXoq6WRvCNKB7YFZpD6ffvCVeS36Nh4pQ82MX0sqTXfUyNE7/zj8ANh7D70Jpu4
+	 +Mi5eloSuherPvTbQK0z0Z0UtoSMHj1IP+0q/uR2bJt+3EThjagVfw0k0q3Mm9d8M/
+	 6ev1pefTPiYeFjOMFmb+/b0HMnsv1ZDkoYky7cdihOqNla7gdHc5hH2+xVLh2cAdxM
+	 K1VekTqZ/PREw==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 17/30] mm: prefer vma_[start,end]_pgoff() to vma->vm_pgoff in kernel/
-Date: Mon, 29 Jun 2026 13:23:28 +0100
-Message-ID: <ea87349d63205bf4c26ea79854f179a9bf8cfb0b.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 18/30] mm/vma: remove duplicative vma_pgoff_offset() helper
+Date: Mon, 29 Jun 2026 13:23:29 +0100
+Message-ID: <10671c2fc5d0dd4e3bf497181923e63e46053df1.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 42C4E4000B
-X-Stat-Signature: rwsizertm6so77puhcw9tkat9e9mnpo3
-X-HE-Tag: 1782735887-568092
-X-HE-Meta: U2FsdGVkX19X3klVREluHb6d23qdqs+a/kT7RiLNIkodzA7uX99LuvzLmfRwc1nCB5rCNqCqv2o7m33mRtfH7tmHR1mrwjxmnBA7OOK8uZ9xwaHHghdwV+uoCA+3RsWqNFF+CiI988rK/AKJSYfXzZFmbIkydeiB616h55yPiDEpXVqv26dm/3qEnYUfekAw1l51dDkOUxcy5l8m6s2xYIyDV9qeQHm+1fMr3RA7zc8n+5JK3GbryLfWKcQtPi4TceaEwt07QXu3riPZP8lgLX/SIA2k47eUvEfCA5pVyPUKLdG3jsBtL8TjQ+gDewpiN8hiocjzkJg7L58xSyQ9mcaTzRGXC6T3IYa1ctK2Iex+i6LgtDrw0m+hLZPvVKbzmBQ/MNiGXRoHxa1B22T6c1UFGHv/IFaEvo+oTx0iEf4lVMK/pVFpV+Fu6PveiLGXnk1PX+TVjalUm6OnmUFaUL4UenOX1gbVYOoEn0zNv8UL8CRyNRbU4rcQsJrTGveAwRU5lRAUZdLmUIzMZl+CJsW+4SsrE1S3aocGfbGnYQIqrsPjtjNDeB5ad97hs+gE5AdoiObQJRD132iNADlC3ZJKZXKvZm2UBc4PTo66qj2vWu6UMbFixaCQ1kdi1bFUjPUlldwIf4R2WSXBnwj0I4+CiwmNXyBbJSj7DgipHvtPaS+B7adAx7nKF5jHcJElnH/+ZxXaIwA1orRDVemCkTc52dHdxtnqVl2CntqXlEl50K2qC73XD31S133nH7s8YONLBrVcHJSSYNjucsrrpXuGobaoI2M8V/QuEBz4RVuxgJ7M9ySThHh21kSX0NGb8nJX1nNi1a+3TB5TmnD4H+r5W9om8JJ0TdjQbkXBSbToyov80glx4LDGBCz30HzYJHeQZvHejMVVOo/A1OAcmoT3fzf9DitiMXMBkK9gXauUocs1KSCxGngNaHX+KRq+5nXZOFjiOb++r+9ILE5
- g5vqPDMS
- +LgZ9BbrR1ocO1PdzN70IR0nkJZkMRusFaBCmaS8XlO2udNGMvIlr9oqgnj5hl5gl8UBGOD1yGxrHPeTHLR/fTil+ncahaap7A9CH4+IMcZZJvQlVlI6BZVzfHfOudRiPtamwrk0fWFcVLLRBmous5wWOZU8/hvVCE+/1FDeJLhf8DxUFvChNbyaEAUVFDLKf7vH+KFE+caSrEvzyu691hageeKfBvY5bums9MBa2/6OLXTwRkrX/f6+/VF9zIWUeDATMFUWgh5g8Y6FZZKhawGrwIpWJurkvoVDTDz78IHT0DG2HH2ZRSRF3+Q/XyNRL/TY0qtOP5JYWxLE8igRI3xBZJrQCEn13958h
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6463940008
+X-Stat-Signature: fy5bi3qr4m9u96d7wudufirz53unh5gy
+X-HE-Tag: 1782735890-450797
+X-HE-Meta: U2FsdGVkX18IEmeXk5A97n/2a/xy7qQOY7E5PPTMk8l5H0a9ayp5RqORXfv2+M4+dasf6WfXo60pgpkpdGRyX121APEPVvgPZRMdnon8izGHCFPfXHBTAobvPgW794OIe6cdpLbXZ19PiXRu05JmSJaqX2czNQk4/4P3bJHCEQcunSlXNIdVG3fPFn3z0T/AfvFl67M0Yvy30OUHMBI2nrN1MThzi/6p2uwCXvF3q58WCR9mwJ5aIXzkzT1o4qiPiAAQ6i9S/9wOtuwUrsGugaQmtyV2VozzP9Xuk8fh2Jt1AtninRgHLNCyT1orq4eljvkS5cvhgBwfdlV/qroAPKmjDrKG2NcBm1ieXOwqjmeJnyp/TC7ldlkUoL3TgMeRvYxWamXSNtaGIhmCvlysqLNy0lztTu2xSV3uUK7VK71UjLsOG9K8Jbbpp5j7uRRPMV9G8BOnK97B1/GOz/EQrecX26OmYbNjmA+vxseKVNZBb27WVnlNMPgV3BgY9Ryay/UN9vkZzO3CrrFvNXxUZttXSn8g0knnvIYDOAWDqpCmQ7ArtgqqrgoKyM88i1ed+DuRobshiWtjnjrfQcMXnIV9LT0PFvaPy/Kn+kBj33RyQNcmAx/KjlABANl1w96D8lyppRXXqd8dneJ010X+/Yp7b0um3ASPzoSrZ6NC1OMJsR61XUYZf44PYC7Abqwu707Vr8wBg8q84g1IxQDY/i8/lugJg+KyQ/sK1NyQoKGbAd8p6UvzGkJYkeUr5/PwqFkraDidqxdbgiBT8RPjHVFEE3zBTyEWGlM8BhH2n66Vl0e2R2xVYXomAqwCuBjdBPLoGowF0ayWdkfqBXecZlCmw52yxnElfkOkjV9FAM+nTVVJiZtEGjHzge8Ax3nezUqEthoOZ99TvOHNLLXu484tZHiVRXXNaUt3e0GvoIb9QujAOwhIBK+EflERmJzNhUl3UAg3PwmJaeyfY7H
+ /VVQoLYE
+ hk/wTJSBaHmwKa7pD9+7/giSZ5++ncj7BfADqtIx1lLxF8RRX0CiQjmcwXRP2kSgZbWprjNBaAByud/uMSlYLKkMW7VyAkFjbFfLVchDxxk3mlgK2lWTQBacxKVBFsm+cSS8p4zGO/Rvjfe2GFYlqsYE3KsguCNifiHpJvrYB52ujBAfY0c33Q45BQhwt2SxQWEC/pXzsbpn0oRthuj67KEYdD9Pq5j0gS/iYXXt0lHKyEVMW7RvLS2ECgLEVLElsMQ8Oy7agt/hqy3xrE0UrDqAQuZJ8W/VMojsKsUTDEtjzE39fwBFnmJfXGEApynL0AHbuszXFWzYGmov5IrfZ59dZK+xhu+T5xaxUl1Ec2nhJF+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,276 +162,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Be consistent in using vma_start_pgoff() and vma_end_pgoff(), which clearly
-indicates which part of the VMA the page offset refers to and aids
-greppability.
+This is doing what linear_page_index() does, so eliminate it and replace it
+with linear_page_index().
 
-This is part of a broader series laying the ground to provide a virtual
-page offset for MAP_PRIVATE-file backed anon folios.
+Update the VMA userland tests to reflect this change.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- kernel/dma/coherent.c      |  7 ++++---
- kernel/dma/direct.c        |  6 ++++--
- kernel/dma/mapping.c       |  8 +++++---
- kernel/dma/ops_helpers.c   |  4 ++--
- kernel/events/core.c       | 20 +++++++++++---------
- kernel/events/uprobes.c    | 11 +++++++----
- kernel/kcov.c              |  2 +-
- kernel/trace/ring_buffer.c |  3 ++-
- 8 files changed, 36 insertions(+), 25 deletions(-)
+ mm/vma.h                        |  9 +--------
+ tools/testing/vma/include/dup.h | 16 ++++++++++++++++
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index bcdc0f76d2e8..2d3195eb7e83 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -236,14 +236,15 @@ static int __dma_mmap_from_coherent(struct dma_coherent_mem *mem,
- {
- 	if (mem && vaddr >= mem->virt_base && vaddr + size <=
- 		   (mem->virt_base + ((dma_addr_t)mem->size << PAGE_SHIFT))) {
--		unsigned long off = vma->vm_pgoff;
-+		const pgoff_t pgoff_start = vma_start_pgoff(vma);
-+		const pgoff_t pgoff_end = vma_end_pgoff(vma);
- 		int start = (vaddr - mem->virt_base) >> PAGE_SHIFT;
- 		unsigned long user_count = vma_pages(vma);
- 		int count = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 
- 		*ret = -ENXIO;
--		if (off < count && user_count <= count - off) {
--			unsigned long pfn = mem->pfn_base + start + off;
-+		if (pgoff_start < count && pgoff_end <= count) {
-+			unsigned long pfn = mem->pfn_base + start + pgoff_start;
- 			*ret = remap_pfn_range(vma, vma->vm_start, pfn,
- 					       user_count << PAGE_SHIFT,
- 					       vma->vm_page_prot);
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 4391b797d4db..436310d6e4a2 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -534,6 +534,8 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
- 	unsigned long user_count = vma_pages(vma);
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
- 	unsigned long pfn = PHYS_PFN(dma_to_phys(dev, dma_addr));
-+	const pgoff_t pgoff_start = vma_start_pgoff(vma);
-+	const pgoff_t pgoff_end = vma_end_pgoff(vma);
- 	int ret = -ENXIO;
- 
- 	vma->vm_page_prot = dma_pgprot(dev, vma->vm_page_prot, attrs);
-@@ -545,9 +547,9 @@ int dma_direct_mmap(struct device *dev, struct vm_area_struct *vma,
- 	if (dma_mmap_from_global_coherent(vma, cpu_addr, size, &ret))
- 		return ret;
- 
--	if (vma->vm_pgoff >= count || user_count > count - vma->vm_pgoff)
-+	if (pgoff_start >= count || pgoff_end > count)
- 		return -ENXIO;
--	return remap_pfn_range(vma, vma->vm_start, pfn + vma->vm_pgoff,
-+	return remap_pfn_range(vma, vma->vm_start, pfn + pgoff_start,
- 			user_count << PAGE_SHIFT, vma->vm_page_prot);
+diff --git a/mm/vma.h b/mm/vma.h
+index 527716c8739d..2342516ce00e 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -247,13 +247,6 @@ static inline pgoff_t vmg_end_pgoff(const struct vma_merge_struct *vmg)
+ 	return vmg_start_pgoff(vmg) + vmg_pages(vmg);
  }
  
-diff --git a/kernel/dma/mapping.c b/kernel/dma/mapping.c
-index 4fe04669e5e6..c986639044e9 100644
---- a/kernel/dma/mapping.c
-+++ b/kernel/dma/mapping.c
-@@ -761,12 +761,14 @@ EXPORT_SYMBOL_GPL(dma_free_pages);
- int dma_mmap_pages(struct device *dev, struct vm_area_struct *vma,
- 		size_t size, struct page *page)
- {
--	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
-+	const pgoff_t pgoff_start = vma_start_pgoff(vma);
-+	const pgoff_t pgoff_end = vma_end_pgoff(vma);
-+	const unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
+-/* Assumes addr >= vma->vm_start. */
+-static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
+-				       unsigned long addr)
+-{
+-	return vma->vm_pgoff + PHYS_PFN(addr - vma->vm_start);
+-}
+-
+ #define VMG_STATE(name, mm_, vmi_, start_, end_, vma_flags_, pgoff_)	\
+ 	struct vma_merge_struct name = {				\
+ 		.mm = mm_,						\
+@@ -275,7 +268,7 @@ static inline pgoff_t vma_pgoff_offset(struct vm_area_struct *vma,
+ 		.start = start_,				\
+ 		.end = end_,					\
+ 		.vm_flags = vma_->vm_flags,			\
+-		.pgoff = vma_pgoff_offset(vma_, start_),	\
++		.pgoff = linear_page_index(vma_, start_),	\
+ 		.file = vma_->vm_file,				\
+ 		.anon_vma = vma_->anon_vma,			\
+ 		.policy = vma_policy(vma_),			\
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 535747d7fee4..7ed165c8d9bc 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -1548,3 +1548,19 @@ static inline pgprot_t vma_get_page_prot(vma_flags_t vma_flags)
  
--	if (vma->vm_pgoff >= count || vma_pages(vma) > count - vma->vm_pgoff)
-+	if (pgoff_start >= count || pgoff_end > count)
- 		return -ENXIO;
- 	return remap_pfn_range(vma, vma->vm_start,
--			       page_to_pfn(page) + vma->vm_pgoff,
-+			       page_to_pfn(page) + pgoff_start,
- 			       vma_pages(vma) << PAGE_SHIFT, vma->vm_page_prot);
+ 	return vm_get_page_prot(vm_flags);
  }
- EXPORT_SYMBOL_GPL(dma_mmap_pages);
-diff --git a/kernel/dma/ops_helpers.c b/kernel/dma/ops_helpers.c
-index 20caf9cabf69..6b5f9208d31c 100644
---- a/kernel/dma/ops_helpers.c
-+++ b/kernel/dma/ops_helpers.c
-@@ -39,7 +39,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- #ifdef CONFIG_MMU
- 	unsigned long user_count = vma_pages(vma);
- 	unsigned long count = PAGE_ALIGN(size) >> PAGE_SHIFT;
--	unsigned long off = vma->vm_pgoff;
-+	unsigned long off = vma_start_pgoff(vma);
- 	struct page *page = dma_common_vaddr_to_page(cpu_addr);
- 	int ret = -ENXIO;
- 
-@@ -52,7 +52,7 @@ int dma_common_mmap(struct device *dev, struct vm_area_struct *vma,
- 		return -ENXIO;
- 
- 	return remap_pfn_range(vma, vma->vm_start,
--			page_to_pfn(page) + vma->vm_pgoff,
-+			page_to_pfn(page) + vma_start_pgoff(vma),
- 			user_count << PAGE_SHIFT, vma->vm_page_prot);
- #else
- 	return -ENXIO;
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 954c36e28101..d6d2d557ccb8 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6998,7 +6998,7 @@ static void perf_mmap_open(struct vm_area_struct *vma)
- 	refcount_inc(&event->mmap_count);
- 	refcount_inc(&event->rb->mmap_count);
- 
--	if (vma->vm_pgoff)
-+	if (vma_start_pgoff(vma))
- 		refcount_inc(&event->rb->aux_mmap_count);
- 
- 	if (mapped)
-@@ -7032,7 +7032,7 @@ static void perf_mmap_close(struct vm_area_struct *vma)
- 	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
- 	 * to avoid complications.
- 	 */
--	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
-+	if (rb_has_aux(rb) && vma_start_pgoff(vma) == rb->aux_pgoff &&
- 	    refcount_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
- 		/*
- 		 * Stop all AUX events that are writing to this buffer,
-@@ -7190,7 +7190,8 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
- 	 */
- 	for (pagenum = 0; pagenum < nr_pages; pagenum++) {
- 		unsigned long va = vma->vm_start + PAGE_SIZE * pagenum;
--		struct page *page = perf_mmap_to_page(rb, vma->vm_pgoff + pagenum);
-+		struct page *page = perf_mmap_to_page(rb,
-+				vma_start_pgoff(vma) + pagenum);
- 
- 		if (page == NULL) {
- 			err = -EINVAL;
-@@ -7348,6 +7349,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
- 	u64 aux_offset, aux_size;
- 	struct perf_buffer *rb;
- 	int ret, rb_flags = 0;
-+	const pgoff_t pgoff_start = vma_start_pgoff(vma);
- 
- 	rb = event->rb;
- 	if (!rb)
-@@ -7366,11 +7368,11 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
- 	if (aux_offset < perf_data_size(rb) + PAGE_SIZE)
- 		return -EINVAL;
- 
--	if (aux_offset != vma->vm_pgoff << PAGE_SHIFT)
-+	if (aux_offset != pgoff_start << PAGE_SHIFT)
- 		return -EINVAL;
- 
- 	/* already mapped with a different offset */
--	if (rb_has_aux(rb) && rb->aux_pgoff != vma->vm_pgoff)
-+	if (rb_has_aux(rb) && rb->aux_pgoff != pgoff_start)
- 		return -EINVAL;
- 
- 	if (aux_size != nr_pages * PAGE_SIZE)
-@@ -7400,7 +7402,7 @@ static int perf_mmap_aux(struct vm_area_struct *vma, struct perf_event *event,
- 		if (vma->vm_flags & VM_WRITE)
- 			rb_flags |= RING_BUFFER_WRITABLE;
- 
--		ret = rb_alloc_aux(rb, event, vma->vm_pgoff, nr_pages,
-+		ret = rb_alloc_aux(rb, event, pgoff_start, nr_pages,
- 				   event->attr.aux_watermark, rb_flags);
- 		if (ret) {
- 			refcount_dec(&rb->mmap_count);
-@@ -7457,7 +7459,7 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 		if (event->state <= PERF_EVENT_STATE_REVOKED)
- 			return -ENODEV;
- 
--		if (vma->vm_pgoff == 0)
-+		if (!vma_start_pgoff(vma))
- 			ret = perf_mmap_rb(vma, event, nr_pages);
- 		else
- 			ret = perf_mmap_aux(vma, event, nr_pages);
-@@ -9884,7 +9886,7 @@ static bool perf_addr_filter_vma_adjust(struct perf_addr_filter *filter,
- 					struct perf_addr_filter_range *fr)
- {
- 	unsigned long vma_size = vma->vm_end - vma->vm_start;
--	unsigned long off = vma->vm_pgoff << PAGE_SHIFT;
-+	unsigned long off = vma_start_pgoff(vma) << PAGE_SHIFT;
- 	struct file *file = vma->vm_file;
- 
- 	if (!perf_addr_filter_match(filter, file, off, vma_size))
-@@ -9974,7 +9976,7 @@ void perf_event_mmap(struct vm_area_struct *vma)
- 			/* .tid */
- 			.start  = vma->vm_start,
- 			.len    = vma->vm_end - vma->vm_start,
--			.pgoff  = (u64)vma->vm_pgoff << PAGE_SHIFT,
-+			.pgoff  = (u64)vma_start_pgoff(vma) << PAGE_SHIFT,
- 		},
- 		/* .maj (attr_mmap2 only) */
- 		/* .min (attr_mmap2 only) */
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index f23cebacbc6d..244651380ca1 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -144,12 +144,14 @@ static bool valid_vma(struct vm_area_struct *vma, bool is_register)
- 
- static unsigned long offset_to_vaddr(struct vm_area_struct *vma, loff_t offset)
- {
--	return vma->vm_start + offset - ((loff_t)vma->vm_pgoff << PAGE_SHIFT);
-+	return vma->vm_start + offset -
-+		((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT);
- }
- 
- static loff_t vaddr_to_offset(struct vm_area_struct *vma, unsigned long vaddr)
- {
--	return ((loff_t)vma->vm_pgoff << PAGE_SHIFT) + (vaddr - vma->vm_start);
-+	return ((loff_t)vma_start_pgoff(vma) << PAGE_SHIFT) +
-+		(vaddr - vma->vm_start);
- }
- 
- /**
-@@ -1482,7 +1484,7 @@ static int unapply_uprobe(struct uprobe *uprobe, struct mm_struct *mm)
- 		    file_inode(vma->vm_file) != uprobe->inode)
- 			continue;
- 
--		offset = (loff_t)vma->vm_pgoff << PAGE_SHIFT;
-+		offset = (loff_t)vma_start_pgoff(vma) << PAGE_SHIFT;
- 		if (uprobe->offset <  offset ||
- 		    uprobe->offset >= offset + vma->vm_end - vma->vm_start)
- 			continue;
-@@ -2453,7 +2455,8 @@ static struct uprobe *find_active_uprobe_speculative(unsigned long bp_vaddr)
- 	if (!vm_file)
- 		return NULL;
- 
--	offset = (loff_t)(vma->vm_pgoff << PAGE_SHIFT) + (bp_vaddr - vma->vm_start);
-+	offset = (loff_t)(vma_start_pgoff(vma) << PAGE_SHIFT) +
-+		(bp_vaddr - vma->vm_start);
- 	uprobe = find_uprobe_rcu(vm_file->f_inode, offset);
- 	if (!uprobe)
- 		return NULL;
-diff --git a/kernel/kcov.c b/kernel/kcov.c
-index 1df373fb562b..b19b473c366a 100644
---- a/kernel/kcov.c
-+++ b/kernel/kcov.c
-@@ -512,7 +512,7 @@ static int kcov_mmap(struct file *filep, struct vm_area_struct *vma)
- 
- 	spin_lock_irqsave(&kcov->lock, flags);
- 	size = kcov->size * sizeof(unsigned long);
--	if (kcov->area == NULL || vma->vm_pgoff != 0 ||
-+	if (kcov->area == NULL || vma_start_pgoff(vma) ||
- 	    vma->vm_end - vma->vm_start != size) {
- 		res = -EINVAL;
- 		goto exit;
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 56a328e94395..dfa493d54ef9 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -7613,7 +7613,8 @@ static int __rb_inc_dec_mapped(struct ring_buffer_per_cpu *cpu_buffer,
- static int __rb_map_vma(struct ring_buffer_per_cpu *cpu_buffer,
- 			struct vm_area_struct *vma)
- {
--	unsigned long nr_subbufs, nr_pages, nr_vma_pages, pgoff = vma->vm_pgoff;
-+	unsigned long nr_subbufs, nr_pages, nr_vma_pages;
-+	pgoff_t pgoff = vma_start_pgoff(vma);
- 	unsigned int subbuf_pages, subbuf_order;
- 	struct page **pages __free(kfree) = NULL;
- 	int p = 0, s = 0;
++
++static inline pgoff_t linear_page_delta(const struct vm_area_struct *vma,
++					const unsigned long address)
++{
++	return (address - vma->vm_start) >> PAGE_SHIFT;
++}
++
++static inline pgoff_t linear_page_index(const struct vm_area_struct *vma,
++					const unsigned long address)
++{
++	pgoff_t pgoff;
++
++	pgoff = linear_page_delta(vma, address);
++	pgoff += vma_start_pgoff(vma);
++	return pgoff;
++}
 -- 
 2.54.0
 
