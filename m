@@ -4,88 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE520C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:58:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFCFAC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:59:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68966B0005; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
+	id AF4506B0088; Mon, 29 Jun 2026 05:59:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B40686B0088; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
+	id ACC046B008A; Mon, 29 Jun 2026 05:59:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7D566B008A; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
+	id 9BB536B0092; Mon, 29 Jun 2026 05:59:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 870936B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:58:54 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0156440631
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:58:53 +0000 (UTC)
-X-FDA: 84932501388.28.BB56B56
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 69996140003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:58:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lxBdgJLs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D0C56B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:59:37 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 103D81C6B2D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:59:37 +0000 (UTC)
+X-FDA: 84932503194.23.69CEA8F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 5CD9740007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:59:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRMhkfmu;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782727132;
-	b=7KDloF46QjbLIzY/+8LTXW/FTvS0sqvvQqZarOBEJ9yymH5plcKq4m/xF8QjwrPDiAsVb+
-	t7Fc5Lxyq7DRD9Ms6ucXVRjpkz1yDzJXBDEtw2kZc0uK+KOY3G0FiBSPnbXX2/qmkxJp/d
-	kDlocSCa+yqHlDTA/vBTt/KKbDLsZO4=
+	t=1782727175;
+	b=NKbnjCXx68fsOoKkYH6boVV/8c1GjPI0Prznt5y4G+E742aL2n38LDmtVoOW4u6jW33UCq
+	n/WajcI2CgAdrP+V2VXo7plTXBnQEvOG1YZOT76Zcee0I22RRvXLgerE4XnONga2ua8akj
+	HiTZxBm2ccyDsOLjnAMOH91t7CfFAd4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782727132;
+	s=arc-20220608; t=1782727175;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=opowCa2ZvIDE9fF6/MgL802+A6a0EGc5rtw+OZ6dgaQ=;
-	b=6Ut1x6qAyN4GT+oI2PSas6ExIyBb26Zj23B0j8NL2nwoxBX6BS0Ae4bwes64m4lsfsMtmV
-	RKv5aoNYJCVhoikkV14gAPvrYTh7Y9zR1ME9H3IH1dOCDRAVI44/kt0wH7OHwiL3Ibd0oV
-	FFGLxKFIklnnqj7YcDVQ6C+jWl4kx2Q=
+	bh=xMapsRFdm1PFSt4n5Kx4fRcXn2nJ3ZS+Q6JyTjzdMu0=;
+	b=yWzxrSB8lo3KJ4RMI0rUJVEAquTA6GHSsVY7jOA2xBek0GXkCEkwq8gM79CDQFcf+7PrpB
+	BjfZ1YrNVxg2b/GNQWG8fnuqui4hkqhEJM/erkxWXa21h06hZ29OwOJel0u8ir5mU2pUVp
+	jsAUXU6O1rO/Y+Fw5YXaqnXMnVF2hdc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lxBdgJLs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lRMhkfmu;
+	spf=pass (imf01.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DBC0860008;
-	Mon, 29 Jun 2026 09:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9441F000E9;
-	Mon, 29 Jun 2026 09:58:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 761BD43E05;
+	Mon, 29 Jun 2026 09:59:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D1F1F000E9;
+	Mon, 29 Jun 2026 09:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782727131;
-	bh=opowCa2ZvIDE9fF6/MgL802+A6a0EGc5rtw+OZ6dgaQ=;
+	s=k20260515; t=1782727174;
+	bh=xMapsRFdm1PFSt4n5Kx4fRcXn2nJ3ZS+Q6JyTjzdMu0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lxBdgJLs0kGs9j01dlQJ60KK/e8g5xMS8KKXGGi0H9F/bdVZdb2FdYlqn715ZRY88
-	 SquVXra9Xgh9/dIiWwEMLlpemoZuZPw5lnSkPlaUS7F3o2k1mqdapRCy0LCXl0095Z
-	 L6P3Cc6K0ADLqpYZ2X2i4yYYrjdCNwmIr+V9NEXbwiZYEx041eXfkFPr4mvBGyGhkB
-	 89owQTyLFU21r4/x2PP/yGZpjA4ru8qkfuWIbUhY6IHEBUbdAER69uJ8d67ZvLqjud
-	 S7Ui3Xdj7RmjUJOGVkewC6G6yq39R7f2q84w+3vhJyhAFvfEUb/0b2zG9RSPnjgHfp
-	 B7W+Ra4pS4rrA==
-Date: Mon, 29 Jun 2026 10:58:42 +0100
+	b=lRMhkfmugXROtoJKY71+zIary7pV5lG50fYBXPzQGviugLtdYhw3yg+eQyVnF3C5A
+	 anfGNxHpT5nsMdb9JKuwkixzHvdWTdxdWfhG/+PwPzeXg26RVHaMz8D1xz7D2YE9D9
+	 sqvsrHAqAAoondkDcXQTRVF80fo8nMFvUuzUPTDABK7YVH3+/oPQDEiW4DTusTR293
+	 LPMbOdVRzKTN8dI05sVpilcE1kMRGhLuj7e94dFe8qSuukkIaX+JQiF9ycO5bTrjec
+	 GfdJU1Lqtm2MXXSKjiXumpFFjs2mXyc628+h3kZLx8QWwoG6WkNcWfogvP/7dfpoT9
+	 YwjOmJBYAiY+g==
+Date: Mon, 29 Jun 2026 10:59:25 +0100
 From: Lorenzo Stoakes <ljs@kernel.org>
-To: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	corbet@lwn.net, skhan@linuxfoundation.org, sj@kernel.org
-Subject: Re: [PATCH v2] docs: pagemap: fix flags location, member name and
- sample code
-Message-ID: <akJBvKcTU1dw8M9I@lucifer>
-References: <20260626162710.25844-1-zenghui.yu@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>, SJ Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] MAINTAINERS: s/SeongJae/SJ/
+Message-ID: <akJB9EYPerO90rEh@lucifer>
+References: <20260627195630.24519-1-sj@kernel.org>
+ <e29d1211-8bc3-433a-b1d7-d7fb44c2f0cd@kernel.org>
+ <2vxzo6gtk89r.fsf@kernel.org>
+ <akI8lkVb5CICUcWi@lucifer>
+ <4b12ba64-5e2f-492b-80dd-b9be95604026@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260626162710.25844-1-zenghui.yu@linux.dev>
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 69996140003
+In-Reply-To: <4b12ba64-5e2f-492b-80dd-b9be95604026@kernel.org>
+X-Stat-Signature: y6ctdj3sq4pzk3t1ea9wzb59mh8ip7a8
 X-Rspam-User: 
-X-Stat-Signature: aei4ywuh1xhi86rc1stw3k5ma6kfbdxr
-X-HE-Tag: 1782727132-681099
-X-HE-Meta: U2FsdGVkX19Ba9jbLJ6N2IWv5hmgy1Dw5o5Quh8lQSTDiJjcQkqGSVY0tu3qZDksoikC5HVyOsou/43lD3KvbalVeMn67oEkmMwaTzze6wnmln1MRIgrx0Q2RzutTiQd1vnwBpDXbIhesMIWBQFwU6kKFrfXeLveZU4M64rNkNg/9Uc8MWGYkDnuVAVkWHz+TtNQPGCW60g0WMfqsWIbSzv1J7VsXIRDO4It6rn4bDAiASp8I21xzwwQw4ZgYpj9slW/oQItByaSPFfYt40JL1kSYYq19IErxgIkoBotyc3fmbBqN8LE/w3uJkOoD7LBwSva6ewQ28BxHLwJtE7vCPuV9NT2Ub3GW6dl1T7zTvMXmbKTx0X2sl/ZMvrn2DhKwogLF2R2m9IIWbeT5tPmpp2oAQXaqwlqRU7KJL5m6O9E0piIxGHMFqhYAl7Ckx15jiMvOlvQ66BNeJNBazjrqEkUHJcc6uWtgiwt0Gi8vgbzP1jgj2nxpQJUlDcysNa1XvtcLwWkWfVZ7jYkG+wD1Tw586vEmITXQUFbKQMMbMnlSPJbAmJN82L4h7JqU9z5lCdcy/WKYc001IWsPEVjKnOHyEIYzGG61Ta84Kk0UUOfJCjGgdiqCQGMgLoSvi/l/D8I+lmFb9ytORUtKOTTKGkIOWrIe3js410z5yHv7VPDwUdWzUTU19IYMHlDcFDlUjs9eHmT5NG8Z27OO2ypTv/fsdPgDiIziwQU0n2xshpcy95W1u6CegdK2xQKLFiFinril2wh/47TjjNb5ZQepD94wSkbFbBXTbCv84EdtzzmAA/o+/tObNhSZabBDXL8634nYL7U22pk0bQVQ7kXFAEElqyv8mDO1RCUvuWnsALnLAmlc+R9DjDANLi0OKD3TokgiozVZ11xjopgDgNqS45YklrTlWkChMKnF5zvPqHZAv9EKuAsSVUv9ZtDFgF0yjzPexUFGRReNW2+Bxj
- JfDyQcT3
- FwPldcfX4Ci9a7P+/c7HEcQY/QN0GCq03pLMG225BgBMzHf7e19lHWWuLyay6wtMWuRpX4jaTwPQJnSisyORwlTm8rhCXGHNze8D5Vt11BQyHMXROYbwhGE2N5nMYzwGiNNotw0CgbKSy80lQl+PYNwzPG31HrOLPt11cpi/tX23Gz7372WnixBl6hH4wYhUEPIUxycbFZJ9qt0vVsfx1XZO/qeQVTkfa8uhGDXVGfOzQY+RV4qUDKzk4LOxXg/wS9DGjsY69dbAEKqjulFgm5tsfEw==
+X-Rspamd-Queue-Id: 5CD9740007
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782727175-227106
+X-HE-Meta: U2FsdGVkX1/rcRBoQf44IzpcGFSwOvlOTHZL5mU8IsfFpP1kuVwa0BoqbKl2J7vJhXmKfMPE+PGl+BpBLrBAoO6/rQNprzrndh6ORfrwS9jqOUsbklw1u1Wvr2vxatGO8uKWhYluf/lYIf2oL1OnpvgBLxctyB/3yHZU1SaNhNCmoshV9YYYV32ESRHMchcgoc/jV+b0p9P3gSyF2orlNiHtEJS7wklQLhYtlf9zOZNBwvwKGSMO8yWrE8pHrV4B3igHmPszoE810uVL7HUavR2WBb1CUzsAfoQ/WkosASFy1eMDU3H/7a+JddU6J+pJAWvWEGLmXGPvIQRIAJncO4sznUgkOrE7hUHyQ8ODuj0CgMpAQFn0mVDBIGy24FXp98p8/XdJDUw90D1IxhPbdhNTGVreeePrGLtPlrO6o27pvgRM2EZXQFUmWc1gPEYv4/jWw+k9xR8ytQ6MO4ca6zYbBwvGyf+IgZebZYeL6ThX+0EQ8iwTgBmg+INaUQMb8HmDGwe0V9vUv/3ahFbI1v3ia3yOtQHS7fAgwtX6LiQ7odWeOlTh4120+AmBktXe2zMAvOiFgqBGeGpw3zRqCqcnN4+Umt8+1Czo/TUosGbFu6tZEE4zuOffU2oKb3j6t3BGmijsvhPaVvqNpKf6Hhahfc5CIzbCijkJs3vp70KsHD1vvDfSx+ZIXxOVaP9QQRjB4PhgRwpDXRVhA9Ur4cEQkTm5TjBlIKnE5NSHjLzRsBrE1LCg81TXNkmNBI4W5ciBeEFYlE4bsoPeCWO/eWVmjaYXOYUeqfkoJzwPQJuQLeWrZBK1AesW7AUxPWs8KUG9obhlLJc/LnHCG/xypQuFCGdimAjt3xifG7bq5aJmwmQu3apFfdbcPj8wwiTwagKhfZT8FbZVZrHkxX/p6fU9ILtOsAhJp+VADEQX4rloUMPCgy8l4Dj1tKa2lXkkWgm9NfQCy3ZCreXWE4F
+ AWiLcRmo
+ zyzGXYC6ggz6I+qtIiUsQdkxt0yPlq27zkovaF0YJGnHxVvRJjeVw0awjW8l23poJxs7raWp8f5Ni6TO9sSpLxwr0AEGFtsxzgfX+/8nR5/X61Y+ZTSn2tG9GMOyAnVWFB7FEQFEk3hq2lAUvdM6AjoTmhcg5czEYAXs3icGUFufMuiaBs9RKa3JcdcSMYsTOsxOrVWcLljeMvWM8cnDyL2DWM1ldAecq0cGrCBKwt56xVbLpvttgJJYnP4DNZ9c94dtM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,85 +97,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 12:27:10AM +0800, Zenghui Yu wrote:
-> The userland visible page flags (KPF_*) were initially moved to
-> include/linux/kernel-page-flags.h in commit 1a9b5b7fe0c5 ("mm: export
-> stable page flags"), and later moved to
-> include/uapi/linux/kernel-page-flags.h in commit 607ca46e97a1 ("UAPI:
-> (Scripted) Disintegrate include/linux").  Update the doc to reflect the
-> current location of these flags.
+On Mon, Jun 29, 2026 at 11:45:03AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/29/26 11:37, Lorenzo Stoakes wrote:
+> > On Mon, Jun 29, 2026 at 11:25:52AM +0200, Pratyush Yadav wrote:
+> >> On Mon, Jun 29 2026, David Hildenbrand (Arm) wrote:
+> >>
+> >>>
+> >>> [...]
+> >>>
+> >>>
+> >>> Just curious, why do you drop the author and copyright information? (can you
+> >>> even drop the Amazon copyright note?)
+> >>
+> >> Off topic, but I am curious how these copyright notices are supposed to
+> >> work in the first place. From what I have seen, the person who creates
+> >> the file normally adds one for themselves/their employer. But then other
+> >> contributors who make small/medium changes don't add theirs, even though
+> >> they should hold the copyright for the code they added. Bigger refactors>> sometimes add a notice but that isn't done consistently either.
 >
-> The member @walk_end of struct pm_scan_arg {} was wrongly written as
-> "end_walk".
+> Yes, I saw it on bigger stuff as well, but not on small stuff, really.
 >
-> The first sample code of the PAGEMAP_SCAN ioctl wrongly used the
-> PM_SCAN_CHECK_WPASYNC flag twice, instead of the PM_SCAN_WP_MATCHING flag.
-> The second one included the wrong category in the required mask -
-> PAGE_IS_FILE should be used instead of PAGE_IS_SWAPPED as per the
-> intention.
+> >>
+> >> So do these notices even hold any value? They certainly don't list all
+> >> the entities who hold the copyright to the code in the file. Only git
+> >> log can tell you that. Is there even any point in adding them?
+> >
+> > It strikes me as a rather loose convention.
+> >
+> > I am not a lawyer, but I would say that individual and corporate ownership of
+> > code are implied by S-o-b, not by comments in files.
 >
-> Fix them all together.
+> Guess it gets interesting once the SOB does not carry that information. Also,
+> some people might work at company X (and send code from company mail address)
+> but may hold all copyright by themselves.
 >
-> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+> So even the git log cannot tell that story.
+>
+> But in any case, I would expect a comment about that in the patch description :)
 
-LGTM, so:
+Right yeah that'd be nice agreed :)
 
-Reviewed-by: Lorenzo Stoakes <ljs@kernel.org>
-
-> ---
 >
-> * From v1 [1]:
->   - drop PAGE_IS_SWAPPED in .category_mask (David)
->   - fix typo in commit message (David)
->   - didn't collect SeongJae's R-b (as the content has changed anyway) but
->     thank you for that!
->
-> [1] https://lore.kernel.org/20260625174447.24292-1-zenghui.yu@linux.dev
->
->  Documentation/admin-guide/mm/pagemap.rst | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/admin-guide/mm/pagemap.rst b/Documentation/admin-guide/mm/pagemap.rst
-> index c57e61b5d8aa..20e3fe76f099 100644
-> --- a/Documentation/admin-guide/mm/pagemap.rst
-> +++ b/Documentation/admin-guide/mm/pagemap.rst
-> @@ -67,7 +67,7 @@ number of times a page is mapped.
->   * ``/proc/kpageflags``.  This file contains a 64-bit set of flags for each
->     page, indexed by PFN.
->
-> -   The flags are (from ``fs/proc/page.c``, above kpageflags_read):
-> +   The flags are (from ``include/uapi/linux/kernel-page-flags.h``):
->
->      0. LOCKED
->      1. ERROR
-> @@ -264,7 +264,7 @@ The ``struct pm_scan_arg`` is used as the argument of the IOCTL.
->      provided or not.
->   3. The range is specified through ``start`` and ``end``.
->   4. The walk can abort before visiting the complete range such as the user buffer
-> -    can get full etc. The walk ending address is specified in``end_walk``.
-> +    can get full etc. The walk ending address is specified in ``walk_end``.
->   5. The output buffer of ``struct page_region`` array and size is specified in
->      ``vec`` and ``vec_len``.
->   6. The optional maximum requested pages are specified in the ``max_pages``.
-> @@ -275,7 +275,7 @@ Find pages which have been written and WP them as well::
->
->     struct pm_scan_arg arg = {
->     .size = sizeof(arg),
-> -   .flags = PM_SCAN_CHECK_WPASYNC | PM_SCAN_CHECK_WPASYNC,
-> +   .flags = PM_SCAN_WP_MATCHING | PM_SCAN_CHECK_WPASYNC,
->     ..
->     .category_mask = PAGE_IS_WRITTEN,
->     .return_mask = PAGE_IS_WRITTEN,
-> @@ -288,7 +288,7 @@ present or huge::
->     .size = sizeof(arg),
->     .flags = 0,
->     ..
-> -   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED,
-> +   .category_mask = PAGE_IS_WRITTEN | PAGE_IS_FILE,
->     .category_inverted = PAGE_IS_SWAPPED,
->     .category_anyof_mask = PAGE_IS_PRESENT | PAGE_IS_HUGE,
->     .return_mask = PAGE_IS_WRITTEN | PAGE_IS_SWAPPED |
 > --
-> 2.53.0
+> Cheers,
 >
+> David
+
+Cheers, Lorenzo
 
