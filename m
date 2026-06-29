@@ -4,120 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE5D6C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:35:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17558C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:37:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7FEA6B010E; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
+	id F1D2C6B0113; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C56BD6B0113; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
+	id EF43E6B0115; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9B426B010E; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
+	id E31346B0116; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 927CA6B010E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 168521C5EB2
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:35:41 +0000 (UTC)
-X-FDA: 84933501282.18.E5A892C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 665E84000D
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:35:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfDXIPAD;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF08E6B0113
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43FEEC107C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:42 +0000 (UTC)
+X-FDA: 84933506364.19.FDF66A7
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0ED5E100012
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026062701 header.b=f3ilMgWj;
+	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782750939;
-	b=IXVqh+u/DlxksJy+KHRVIQn0Gr//zK4/vui93eXuUQkGYMlVzHz4yeFTdDwG2UkMRBDf5N
-	i/pITrKcN0FIeVqKbTLD+CaDnz6Vpk2xZzzx76OYeJalCdPr4Oz61blNNDEfzUi6hJIQQ2
-	Hw8A+BVtohZgsSDuVnNFBq/7+wCRxEM=
+	t=1782751060;
+	b=i4pBXKRS4dX1tHonKRjoQpIqryREo3bCsbYreJt+73gWraHHArDUOZn7jaQqLvtxufRxuU
+	llkUfcRW5chQaI9pM2aK8xr3WavMGQoZnEXn2fFZ4p9uceu6NwLgXBSpXljtahWQKgE7sy
+	Vq/oPuONIgPbFVdVtQ4ss93dWH5Roco=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782750939;
+	s=arc-20220608; t=1782751060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tqvibWEtQh2T48OiewXhNx0S0zqLKa3gex5DVvzFGOM=;
-	b=zG7ngp7mJxR+7mOqceHwLDlQGJyfmOKOkaiaPdyt1w9ATd4VLqK8yEENCcRczREss30qNx
-	PI8WfjJnrjMWxrDqzx/waZNu8A0yLwtymhKcwfA8hm4YT4A42MUlq4Oa8rI5qwfvoP9IYy
-	TVp/ydnuA/8eY1UglrJrmGm8zXL7W+U=
+	bh=hydOrMOVfJpPy1RK9SdrTaqp0nT1DvgDdBkLQq657fY=;
+	b=wsNOiZtKS//onaKb7tDEcfH/KFQ7qQZRg7z9u6ice2e/zpxHYOW60xHj/g5VxrSWVnkZow
+	H/LBb8C5LVSPVoJpsaNkCvYYWlf4Eu/aQeokqEWz6r1ZZz6DpRVeEs647Ymu89OC3as7kF
+	y10t5EH3LMRd7lt/ubbn+APp1c5k/3U=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfDXIPAD;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8B28A434BC;
-	Mon, 29 Jun 2026 16:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5B21F000E9;
-	Mon, 29 Jun 2026 16:35:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782750938;
-	bh=tqvibWEtQh2T48OiewXhNx0S0zqLKa3gex5DVvzFGOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PfDXIPADcSrUOwdTRGhDf130tTlUjzfb55asHDeokcwn4q2fFY7uD5zpTbQijKU2j
-	 A3h6LyrgBRhD8vjv/PCOQbIS0x10wNp15U53uZUeJSa+ZUUtNYjmvMkaFTX0FdsPtY
-	 5VFsbeAwARiOlYL96AR5bc/UJx13BAZgTchhOZXOoq884yT683+Ba+UY0kenSbPQ5G
-	 /9Y3STPVYFUZGbaD/nfway1UOiEmxiypL1sfzIHXjp28wqpXFD1BkVYOwnVTwzjxBO
-	 T6iDd2rL+GJ7Oq4z7lXn+Gf9jPYSMojIl9QVfBm4ugrQ3F58b1YoFt3gxDwWn1rh48
-	 BJyQRg2g8eDBw==
-Date: Mon, 29 Jun 2026 17:35:16 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Gregory Price <gourry@gourry.net>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 03/30] tools/testing/vma: use vma_start_pgoff() in merge
- tests
-Message-ID: <akKeKSnWlc416OIP@lucifer>
-References: <cover.1782735110.git.ljs@kernel.org>
- <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
- <akKR3bFV7393yOUs@gourry-fedora-PF4VCD3F>
+	imf05.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026062701 header.b=f3ilMgWj;
+	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+Received: from [IPV6:2601:646:8081:7da1:68c9:ba90:b2f5:8138] ([IPv6:2601:646:8081:7da1:68c9:ba90:b2f5:8138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TGLFL5618076
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 29 Jun 2026 09:21:15 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TGLFL5618076
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1782750077;
+	bh=hydOrMOVfJpPy1RK9SdrTaqp0nT1DvgDdBkLQq657fY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f3ilMgWjXzS9yJM/j5yvFtl534nWjsXQ1K+RYDbfTNVHTUW2tT6ThzU5x+t5hyj49
+	 tkUhwl5iKD1jacrqoLdQSvVrhMqsr3bs6C5ZYLGAJBcXkNsWMOEEf8BQbrgz53GXz3
+	 zJxXdUXaXfuY42K26nze+Hk1qkQRdm+kmEl1bxxRF99jGzZg1kUUCoX5qSH3PvBy5o
+	 fT/6QhfAsFDBG/q92VW15KqG9LhWe55+I+Vfc7LCHhuMpiFUQc/oFaxEX7HxmYul4z
+	 jdAOIKR/2yNwuqhonMQZBx70o4wNCQfdvXJNtIajaTTwWokp+ver5Xu2wrVSKeINq9
+	 WjsGvInCjmeUg==
+Message-ID: <37a630ef-1574-4415-b42c-1d23993c6084@zytor.com>
+Date: Mon, 29 Jun 2026 09:21:10 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <akKR3bFV7393yOUs@gourry-fedora-PF4VCD3F>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
+        Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@kernel.org>,
+        "Zach O'Keefe" <zokeefe@google.com>
+Cc: David Stevens <stevensd@google.com>,
+        Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Will Deacon
+ <willdeacon@google.com>,
+        Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Mike Rapoport
+ <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
+ <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
+ <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
+ <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
+ <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com> <87pl1md7h0.ffs@fw13>
+ <CAAa6QmSHBDeY0G=_N1P4dAAH917J7jerfZrWDfDd8w=8jH8nVw@mail.gmail.com>
+ <87qzm2b39k.ffs@fw13>
+ <CAAa6QmTO=hhdJQa-ofSZ6wW0geLaEfWZumF6KmksxZqM3i33OA@mail.gmail.com>
+ <87mrwon5uw.ffs@fw13>
+ <CAAa6QmSeq8bbckyJk_5HFagsHfS5SXbG4y6Y-Py66eYLgvjcUg@mail.gmail.com>
+ <87cxxgly12.ffs@fw13> <5604a47b-9457-4162-bd23-720e29cf1983@intel.com>
+ <a1b4b0ba-45c5-4de5-855f-7474918b52ff@kernel.org>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <a1b4b0ba-45c5-4de5-855f-7474918b52ff@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0ED5E100012
+X-Stat-Signature: go1pb8cnbbpajyu3tc1mrokuz5e5c9xz
 X-Rspam-User: 
-X-Stat-Signature: xpsc98e7usktwi63uno9n3hg8h3tutqm
-X-Rspamd-Queue-Id: 665E84000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782750939-661311
-X-HE-Meta: U2FsdGVkX1+tuJCyAm6smntPY/F+7rwei4gMHgdwjVOfyHyiwyabBqn+30U0cj5SRAXr+cX1ipU+MkVH5oKKJ4T+eIzQsBn3xx08w5XdFgF7h5UQoqcWecWqfGcUQEymuDmfLBpPxF5pH9i0Fee3bXQOg09V8yLsfFJz392uA7mm2KKJqviterTmbxERvdzriiQEb0vDxM3fB+4NERZlUNVhJUFc6GKJ8EPsyVpLiZkpGTL4ayreZSC5erMtaXPT3mOiLm7Uj6um1Agj3jxflTiGDmFZqR1IWUF25dzby65AER19/+benuSHo8y1WcAnCs1N3macypoberQ6Hu+rfGO3K5Dfauk33LKF8gkSEJ+78X5FpdwJMa3bZjZbTVOcv8WtD7RhERBj6Q+j+0P+mc1mDXRmdIXEqy2Fm2Uwh9K7a2NN9ItkzVlthiaeE8vP2JjGseXl4Wxek0ZLcYSPed7aY0cErrxu95UYl3rFHS0UseKsuhux55r6rEuebbOywIOXtFhNb8t0qCY+8vmsSHf3mVCD0gQvndp/jf/bZytQZgAMzrHpQv+umKODwpD1ickvWeQz0XUtbLnYBKytqbiEbEO/uT6HuetTvynnDo5rmeIQjHhEAq4cpKkrOS/zlL0UASx2k2pVoNsamQBR9Mvs7wV07Ygm+DVpr0M3KpZzNIlMZpFXMwiQMymp/943qUa6Q8gHoCoJ2ndzXVLCX558zaYF9OFiCbWsDAqN/DtgDZGJ6lArJYwvczNXvk2c1mA4RRT9pF+RTZr070kGZFyH/vBTru7gYSViO9btgNkxFgCslPg22JqRlGLbFmUOaXiG5vKdtljpvQXvdAaAfoyZwgWsTix6iNKy5J3dTevIA/GAhXylIgFy2YzzDxCcEyilMrhykaBRHLGM6hL2VHQ0JPUmnf0eNHwHMP9H7pjO/4RF66aN2chNktteEQ3WCYr1IjjZ5rGs1JA0CnS
- JG2jT11A
- Kp+YJpNTmX+mWgCvuy530y1blhVJ9MJfBpvgG1J6CP+TKmLK6wnqhPAWEKQzOOhPrkwG+SCbUZqOT9vD+9ZCBoCJAGauWVi+7sVmXsGPcdkOOqtQpeAhCR+NAAXlsem16b7vJy0EoyAJK4mby3oiukw88Z45tElfsuppLHjoXj4o7quZdlOCFNAVR881Ang1oMOBMfN7V10z74W0T2B3eBw3NQ0Z/DbJZZQJyXOamODNUAad8XSWq2n58WSni+4pR2/1zuUVEr1CJ1vlHOZCkadaw/8jJ1H5SXdiMuXQG6EbWIFDJAHNc+84DKjHwwHsSEft0eDmg589YABiAymYO4dWce6G5per42djfqNSenPWwbRalQ5TtE3QfOa9kE1R3FZv8JsrpmwA+3ObztdQmOSaQAU5YxNbuhijFlFz5qa5799u8NPwnTpS1D6P7y9DboTQ/MAJCJJxD8oo=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782751059-26677
+X-HE-Meta: U2FsdGVkX18fzjikUI64DUb4ut8GFV0EH6w/A5ZIhwha69//sv9cX8pIUawNuKHh1QZFjqbWzsRIr6zfO3KVhA5xMe5w7ISTuw9tYWzyFe03zNs313S+/UoEddZxLOnfCtlFYUxoiEzIvp9F+ZhCjpJESnWSfXI656YuZyWEL3gFWiE4lUzKDWw5zryKn/BEpsupwYjsdNWZvXt5NZfVCThHpphR7rry2lyUaE+phj4QtajrI6qMrhw3UbkawDJKL4SLWx9bIF8SNWizjH0IaIx9pABabO2DZTLqestO/4rNtbap2/1O9HIf8s+2N/d1MYLlp9qfTWuM2U26WAEpfPz2jXzh6IbNZFIL9NXZ4A2uplvzBYL8ipkkf8RRdPEnFmMToUgk+zLbE6ruPbs9L7wpQqSUBkS6rJH+/AombiENqjUVQcGGhZeVI5/939sNNrJkPXJIdYwEO6+WDFQl/cXhhf8b0ujlAkgzUN0a3bv4iQdGKgoCua03XiyjByQ08t+vsYcf2HYJuuKYJe0apO6cK+HKMoHOuP0UDpj/Qh3T6xYdZlz6VQEufDKP9xMVrTzP8EX1V21G978rQSFiOMvzRQVzPsngevB5eDB3wS1mQF2O2YFxn/dJi64mZUGW/T8Tlgzrm3u/46sTdxHtPnYC/Ix9p6r9PwaOxaKxY9KHkOMYxRfBFMgz1P31fpFDvDUsR3jpeBkRahqPw8P9SuRX/wUpq/q+osqUbusCdjaxwwAmITOHZ1hxrd07u6p6zP3OAySDwc/uIu2fFiU3NBIga5C0bAT5E7XCpDGIwiTb64hM+nmlAsZW88n+dSU3G84Pk6eVfrJLRlkBh2bo9Pu7MsSEAm9QOCzVJqY+cJ6xRy+dMEy82i6cEulnO3NOZqDg++VQA8DLPYnXT7i/y0uBUyq05JdxqprF13jjkKdvzrdfc0mf1rerINVDUWITfrfRDJp7iPrEv7idG+9
+ ymkEgi9Q
+ FMmMunoECTzY2OnPMf+2V5R5Hn4YxaMCt0jp2Mfwxav5FDGWphzQN7vkIlP1tdrSUJezPlFrPKs3fAK98aBokXUFYLuIjal5EIApu4RvgwCiP1tyhFsZqE+xkIPUTikXrRWSuzZwQ4ozAoe4Qc9jzV+0gh9Or+BEGmNgOUAOVtI9YrjhkhRmGK9uZA00Ai/FAgbh8SAGm6rn1zaBVfh7fbsy8lClhdhMXyH1/jjlY6Yx5gH5pYH9a2XHCDJaHV3v+FAZn6dzNy+SrQrv5UBD4UrIu68Nj7jIy0D2jhrz6FVjgsbNKtQE57lJc4LKEANo88EUXdXlxTl3N44HBOaoS9oWPSGRJmCb1FZLbJe2s6XgcwO0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,38 +124,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 11:40:13AM -0400, Gregory Price wrote:
-> On Mon, Jun 29, 2026 at 01:23:14PM +0100, Lorenzo Stoakes wrote:
-> > Now we have the vma_start_pgoff() helper, update the merge tests to make
-> > use of it for consistency.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->
-> Question: Should we have primitive tests for vma_*_pgoff() since
-> the behavior changes depending on file/anon?
->
-> Nice to have the cleanup and clarity. Maybe worth asserting no
-> one ever breaks this.
+On 2026-06-29 09:18, Vlastimil Babka (SUSE) wrote:
+> 
+> But it wouldn't tell you what was the large stack? Or we could try to print
+> it inaccurately, and hope the non-overwritten deep part gives us enough insight?
+> 
+>> There are, of course, more games that could be played with stack depth
+>> checks on normal interrupts or NMIs. But those would be less deterministic.>
 
-Well funny you should mention that :) I do add some asserts as I go.
+Less deterministic, but probably more informative, since it would be possible
+to actually get a stack trace.
 
-In my RFC series which this series is the predicate for, I add more as then
-we track virtal page off separately (see [0]).
+	-hpa
 
-Amusingly (or not) /dev/zero breaks assumptions a bit (anonymous VMA with
-vma->vm_file that tracks by file index, just glroious). But I plan to fix
-that later!
-
->
-> for this patch though
->
-> Reviewed-by: Gregory Price <gourry@gourry.net>
-
-Thanks!
-
-Cheers, Lorenzo
-
-[0]:https://lore.kernel.org/linux-mm/cover.1782745153.git.ljs@kernel.org/
 
