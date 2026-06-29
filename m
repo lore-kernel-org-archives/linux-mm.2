@@ -4,91 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F022C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:26:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA4ACC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:29:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 453FE6B0088; Mon, 29 Jun 2026 05:25:59 -0400 (EDT)
+	id D344E6B008A; Mon, 29 Jun 2026 05:29:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42B706B008A; Mon, 29 Jun 2026 05:25:59 -0400 (EDT)
+	id D0C856B0092; Mon, 29 Jun 2026 05:29:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3437E6B0092; Mon, 29 Jun 2026 05:25:59 -0400 (EDT)
+	id C48EF6B0093; Mon, 29 Jun 2026 05:29:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 120EC6B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:25:59 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 96AA61C3658
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:25:58 +0000 (UTC)
-X-FDA: 84932418396.06.0883029
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 98C186B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:29:55 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1D6D8C3033
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:29:55 +0000 (UTC)
+X-FDA: 84932428350.30.11D9532
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 09716180009
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:25:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CyZL9ojg;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5D7AD14000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:29:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtA7MjXR;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782725157;
-	b=wFGAfZqSnk72pE01o18OMt4TxV6zzZnB4BxHXanCfO5z6LLYctOeiX9SQN4jZp6cLuMcnq
-	EsonraVIYK66vlqWQ8V4xardIfCFnkfo+pjZigNGuEmtR89cg9wgCEH9sOzE0o6szMqlxI
-	l5sm7l2h5H+ozdp9zKz/TLuze2xbH58=
+	t=1782725393;
+	b=DMqWwUXeXciuso5CWAOZMgOd8jebSdA+4g0KCpwkCNsV4m6J8dTIpCJ03iWWiRzH3FpwEA
+	nxjDy+hZfwHraZs8Zb71jnweLQqcYyNuMKKWCIUulKRKTac0zBO9ZS7O37+pfq7apkuV40
+	0aWSryJu3OZc8dSwsT1eW4PmYTT6akI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782725157;
+	s=arc-20220608; t=1782725393;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pdZf8FEQU/Nz7H0SIPDxFTAlCPeoMrqoIBM0aEQEZEc=;
-	b=g6IIEB/fwk2uaBQgORH4DX+nYO7cuf1xWW7Gz74Pk+JxHeCkUpFnCuZxQc9LdX3xg+uQIE
-	MRIeAEtMLLpunh+St1M875XcEazDbJSbBsMhW1QBtMSLRO9Qiz01YDCITpjmBtsl694Nqt
-	34GhpecUeCk4+xl7Q3c3dfrqugs2ROk=
+	bh=Npk92WP4+iddnwXb26xetSuG1nU9c64h3XFMA6XCVrA=;
+	b=VG9te4QMIkwqapsn4GRaAIBacnpUn3tgIpc/ey2PXd+zmwCbZD1uqBcMRZ1C760NI+1mqc
+	2B/aajl93gsslYIeQdGAorfc04dR2CGbql5wSswZucBimRYiFZVRlfiPlf4f4kpUceSvjx
+	0QeilPzYIEjQe6sHLdeGwCcV57b9qYY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CyZL9ojg;
-	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VtA7MjXR;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 474BA43C98;
-	Mon, 29 Jun 2026 09:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204A71F000E9;
-	Mon, 29 Jun 2026 09:25:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 804C340572;
+	Mon, 29 Jun 2026 09:29:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047F41F00A3A;
+	Mon, 29 Jun 2026 09:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782725156;
-	bh=pdZf8FEQU/Nz7H0SIPDxFTAlCPeoMrqoIBM0aEQEZEc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=CyZL9ojg4JokMZn4tULoJ5z79GszhxB7MBh0TLLm6N8wwmKuIXzvkTEDqZDH4X90j
-	 c8Ds+zmpG3rGJ2pGYIC3PRH0aWVsjOdpQCFayQQRz7w+KLNqB305ty1xb45Sc9l3Tf
-	 cKiq8Y0MKEWjuv0hY02ct4Lt6Ht4r3zJnFEpQnSdPWLc/D+UEwDnalNlluo1+c3846
-	 2gcKVeDGzzEiwej51RxTrzkTu1ZCIL385qHQqLCFrU70xVaQi9LcgiVmMRVYzXll0f
-	 Hp8DEZ8ZwZ6VWzLJdMpWpmulsLykPi5bNUGXyNh2ccEygSlYvlA7OaaMelgd6NGkGc
-	 4uADB6zoGjwQg==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: SJ Park <sj@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
-  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo Stoakes
- <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
- <rppt@kernel.org>,  Suren Baghdasaryan <surenb@google.com>,  Vlastimil
- Babka <vbabka@kernel.org>,  damon@lists.linux.dev,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: s/SeongJae/SJ/
-In-Reply-To: <e29d1211-8bc3-433a-b1d7-d7fb44c2f0cd@kernel.org> (David
-	Hildenbrand's message of "Mon, 29 Jun 2026 08:30:23 +0200")
-References: <20260627195630.24519-1-sj@kernel.org>
-	<e29d1211-8bc3-433a-b1d7-d7fb44c2f0cd@kernel.org>
-Date: Mon, 29 Jun 2026 11:25:52 +0200
-Message-ID: <2vxzo6gtk89r.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1782725392;
+	bh=Npk92WP4+iddnwXb26xetSuG1nU9c64h3XFMA6XCVrA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VtA7MjXRZVQaaJ9Ih/X8IeykXC9h1JN3ed+nWlG+FOYdWGYUVvUlIiRfl8oubtyCi
+	 gOmZrcpZ7qUUKF3WHd8F3vWIfsakqRyVS0nU1BabmH05MWinufmuagmMR+lVYMj/Sh
+	 9ISoLFdQ38FmmGnyJP1nwUcRyG0El5hYGkYeIa6RyCDutA2wHCodwkG3HhA7gvREzN
+	 MsT+C+WV88u/DYSwuWI7DQ+2llBIY3R3Qte+cAsQs4hVNlZSfO9axLXh/C6eHPvdII
+	 qSVdM5bqj/+BDniFj4HC3c2DUW0+1pD55OJ1rVvyJoYtl/NFw0Nax2r+VvCkGMmUgh
+	 O6dPgtCAjuZSg==
+Date: Mon, 29 Jun 2026 10:29:41 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Rik van Riel <riel@surriel.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@meta.com, linux-mm@kvack.org, 
+	david@kernel.org, willy@infradead.org, surenb@google.com, hannes@cmpxchg.org, 
+	ziy@nvidia.com, usama.arif@linux.dev, fvdl@google.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, Chris Mason <clm@fb.com>, 
+	David Sterba <dsterba@suse.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
+	Mike Rapoport <rppt@kernel.org>, linux-doc@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-pm@vger.kernel.org, linux-cxl@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFC PATCH 00/40] mm: reliable 1GB page allocation
+Message-ID: <akIjA_dqh4OHAYo4@lucifer>
+References: <20260520150018.2491267-1-riel@surriel.com>
+ <aj9yrlB0TrlYCLlf@lucifer>
+ <528e3a5fbc27c9dc7a098121c32b7679b4c9962a.camel@surriel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <528e3a5fbc27c9dc7a098121c32b7679b4c9962a.camel@surriel.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 09716180009
-X-Stat-Signature: gpnuk5914drosb34nzzoxhg36h7hns84
-X-HE-Tag: 1782725156-826827
-X-HE-Meta: U2FsdGVkX1/VIu4wH+UB1eTZrpWmY51m407rNRe9sE9xaoWHcsjklfdpu4NA7UunEnozN/UDvG8AYwROqu9ENNv3oQKhgjbLULF6ndLPbffyN29uRdiWiO3jiLV1Sx+tzjrPDKj8TQ0eHRKrLJAsZOQMdvYV3vregxznnkj2i2vuFt3lW/I0sKr0LbqxyGEIIiIPwYwaHXeVYpSJ9SMVgNlzNCEIjF4ezuAx8/kls4ad3qDzyO41Wlma3Pnu5N2aC5qbTnHfFpXCAkIYbrHAl2i9ys/XHpnqODsiLOIwxzMnr6L/P/bvL/G/BdSWvvqZGB/8W//P+gRXac8UTCj4j+l/gnMaYv6dGJYAMIbez+E7Vze01lSbSc7uHdpLIWkyIQhkQvOQCKczQrtcvEfGuCGWsYoY3Cp7o/qRcbZhp7p6a7ixLh6TjJ/wshg/9MNx1RDGa+3vfN7Qm+BqugqNgjjBZP1CVbAU1JewiC37fI9QAtEtN3WTW5D8hf/LpYR+NBIkf3ee2VEAtKC9PRaQMF2YBMiIsHiKYSQhstNS558E+jqm5Ut0rg1L0MoriPatS1KU9PGPKX2shjvFv5YwXxkx1j8c2GSFYaAMP6SEA3TybAYWQx1RIvOBTXFThUg1oWKPv74YbyiWDocC+Ez3EGWRDeaANqxSfdeSIqASFXTDGTnVdHj5MechDhEQZ/qGfOnQq8943rmil55bGNDSt/ZH/fZJFwKgwKR04zOW9cwfzPWMn30Vg233NCBcBhBVJSjmOXbMTau19Rzg+JECuuD8PdoiED3PXy4QNndW+VzfxZVAlEgd2oYWgFdl4xQaK2B/OpCFaUDopgKMub7/QXufBNSHLccL63lrFeHZDRXlYrnAxqiS5IIqfNq2EdRlX/kT02ii91HkyPKmWUTc+MtJOgYKOLV4R6Vmd6M6E6hOkT0i1vP70PH6VKUkc06u8DUE5UJvVvboozU3nUT
- 3prtCvhE
- TGwb/AIIitEbfTQcavO2PBvsHj2nx9KaQzeR8jJRe1nm7QrtvoNQY5mjeYMrG9q/ZY00McmgtEN8SAfp+jm9VQiI3DZ3fiPFDh47GlZTZ5DFKLP2iJjAy0md+I3XoO3FfvTnnJnuMS6T+wGvWMiNyV1RfW2P17xP8WaXkQfgzz9ufbNwzjUcZhydSnf9JO/OYhfBRGT0cFxPdFvQmkB76W2jzFVQIWthqjYQ/Y3GjgZNsp77MyTw8Ra/bYnxTzQ6uFlDScUsn4/rNqwaaud8bMeDX30/YvckqwREj
+X-Stat-Signature: ix4kdeajnewcrigyxqc7e44euyp6pt1h
+X-Rspamd-Queue-Id: 5D7AD14000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782725393-623180
+X-HE-Meta: U2FsdGVkX1+7EJhoozPvLseZwh993b8etBTSOvX0d5/QBd8rfYW6vegr36ndC39Uc8olU9Qbj+Q/fzUSWf5rI8Kf712nadnxFBHV/ReoU19n09zEw4+1BkATvZxDPr2YNtBQWBzlAghRG2QUybVvUmx0iAkUoPSeo+qdDkVwNDLkwWtV0UpaFXazC/d82djnL08CiL7J1m8FWDqVc04LU220wDhsmtI97rqHYO8agQAxJc86ViUIN8EvhBETW7zxfj6EXDA9ximXpcTqHnvB9oIlQv4am8GoZcByJwybaKzxmu7E1J+SfeLmK8Nq71xT9SvjbZ/ZdG5XhIX1mxfizlivxQbpzbstUc03sTqgqqpgZLUlQUpOdp1KaPquogSrY+JcVe31f4xOg6IIDtvtTrnogIBNjfiQCjwBAyeS/OkZ/Raq0O3mDXKFiOX8us9cRO/F01cMMqOMxT71Um4QtDkCwFvt9ltzPaHXJ5q1OFM1sKRp5f3HGWmUNOi3AKkctFGG8O7ZLhPKs1hLgjbWqS+b0AH0Z/f7vz/v3l7NtRUo397pSo4gtyAgfx5LhfTRIot9Cc1Gg6o0O59iZEG5sJcVAlZVGxQIN4Fm/vfgfDmgDBBJlIYLCbmPk5OeFGbovw//mwMgvyHCUhfZ1rhX/BG3+9kMsCtfOAlcBe+le84AP3w2ETTXtyp3iOArPkZWtaE0Hzq9CEFNWlikoovEmbntzy4W+3T++2xjDo5UMSyUGva6TI4FWWjLWWHdZWYgryGEHLUeZK+eK4KeiMhO6oh/flNAhcX+Mcmgl/U1MbiioBnpV4reRYTxnF1hEm7m5Uf6q1XPHhkSrhJnuoAWjkNTfsp6FwsUhQ+rjzcoC4yq/ZABL5gIlcYPkQxhnBu+g/oTle8bdC2cyv4o+q29g/BZjhoQfKf9U5/OIs3wVbtGM0doIqUBbhd+f4PgYZBkutepJ+aDl1KuCnWgOQ5
+ Ec+pS6Zp
+ 6X+kl+VsQgE6/ZxCyurfZNOqOr+d5jq220pTfrVdrM2eubogPeLFOJ+HQ++C/A10tk9JYuNjZPpz2XNWlExerxQLS0jPyERHDJYUCFfi5ROsaGvpOjrxnY9wl1JUMkHi4tKKCqQC7u0xnNWtpFLLgrRWIk50u4NfSAinMrAKrROcW3+Qph+U0ohAhhI2z2e7sp4vIBFudfvivaSCA/hK7i680PecesBksn/HwtxUSd3R70YKT2l/Voco7EHgmWLg6jvRdboV4Ve4lDtGI1+bLHG1JYnRy6WQ5ze6uunnfk38n7MM8IC9gqhppUzvwWzYYGnU3h6sOpKTWWbk8K9bBJBUuPL2jG6065hbGN1Qrl4O+mWc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,49 +100,252 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29 2026, David Hildenbrand (Arm) wrote:
+TL;DR - please don't send unfiltered LLM code to list _at all_. If you want
+to share it, link to a repo.
 
-> On 6/27/26 21:56, SJ Park wrote:
->> My legal name and preferred first names are SeongJae and SJ,
->> respectively.  I was using the legal name for commits and tags, while
->> using the preferred name for conversations.  It sometimes confuses
->> people including myself.  Consistently use the preferred name.
->> 
->> Signed-off-by: SJ Park <sj@kernel.org>
+On Sat, Jun 27, 2026 at 09:36:51AM -0400, Rik van Riel wrote:
+> That is the one reason I sent out RFC code before it
+> is ready. I am looking for feedback on the concepts
+> in this series.
+...
+> Once I know what I need to do, coming up with a
+> cleaner implementation is very doable.
+...
+> The mess in the RFC is the result of trying something
+> that seemed right, watching it fail in some subtle
+> way, and trying to fix it up.
+...
+> > But the execution has to be _completely_ rethought.
 >
-> [...]
+> There's no argument there.
+...
+> > Another issue here is maintainer time - even this _extremely_ light-
+> > touch
+> > review has taken me a few hours (of my weekend :). To review it in
+> > detail
+> > would take probably DAYS of dedicated work.
 >
->>  #include <linux/pid.h>
->> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
->> index 1cfb8c176b873..fcf7c7fadb5fe 100644
->> --- a/mm/damon/tests/core-kunit.h
->> +++ b/mm/damon/tests/core-kunit.h
->> @@ -1,10 +1,6 @@
->>  /* SPDX-License-Identifier: GPL-2.0 */
->>  /*
->>   * Data Access Monitor Unit Tests
->> - *
->> - * Copyright 2019 Amazon.com, Inc. or its affiliates.  All rights reserved.
->> - *
->> - * Author: SeongJae Park <sj@kernel.org>
+> I suspect there is a mismatch in expectations here.
 >
-> Just curious, why do you drop the author and copyright information? (can you
-> even drop the Amazon copyright note?)
+> I already knew this code has to be totally redone.
 
-Off topic, but I am curious how these copyright notices are supposed to
-work in the first place. From what I have seen, the person who creates
-the file normally adds one for themselves/their employer. But then other
-contributors who make small/medium changes don't add theirs, even though
-they should hold the copyright for the code they added. Bigger refactors
-sometimes add a notice but that isn't done consistently either.
+I'm glad we are in agreement on this :)
 
-So do these notices even hold any value? They certainly don't list all
-the entities who hold the copyright to the code in the file. Only git
-log can tell you that. Is there even any point in adding them?
+But in general I feel you have sent this and at least one other series like this
+without being as clear as you should have been.
 
-[...]
+I hate to belabour the point but just to be clear:
 
--- 
-Regards,
-Pratyush Yadav
+* You label one patch [DO-NOT-MERGE], but none of the others (implying they
+  are candidates for being merged) [0] and the cover letter has TODOs,
+  including trivia like naming, but nothing about the code.
+
+* You sent a non-RFC series with identical code quality issues [1]
+  recently.
+
+* Until I pointed it out, you were responding to other review here as if
+  the series was genuinely was intended for (eventual) merge:
+
+  - "This is a userspace-visible removal. Writes to
+     /proc/sys/vm/watermark_boost_factor will now return -ENOENT instead of
+     being accepted, breaking userspace." [2]
+
+     <-: "I'll just drop this patch for now." [3]
+
+  - "I left a small code nit inline, but whether you take that suggestion
+     or leave it, you can add Reviewed-by: ..." [4]
+
+    <-: "I sent it with this series mostly because it's needed to make the
+    series work, and to provide context on why it's needed. I'm happy to
+    resend it with a GFP mask passed in by each caller. That would look
+    better, indeed!" [5]
+
+So to be concrete, if you send really rough code, Use [pre-RFC] or [DO NOT
+MERGE] (on the series as a whole) to make that clear and say so in the
+cover letter VERY VERY clearly.
+
+Or, you can put it in a repo somewhere and link it in an email discussing
+the concepts (like I did with scalable CoW for instance).
+
+Also if people respond to the series as if it isn't pre-RFC, I'd suggest in
+your replies saying something like 'I intend to completely rework all this
+anyway' or something like that! :)
+
+> How do people feel about splitting up the free lists,
+> so each gigabyte (well, PUD sized) chunk of memory
+> has its own free lists?
+>
+> How can we balance the desire for higher-order kernel
+> allocations, against the desire to preserve gigabyte
+> sized chunks of memory that can be used for user space?
+...
+> That's another big question. How do we balance the
+> desire to keep compaction overhead low with the desire
+> to do higher order allocations almost everywhere?
+>
+> >
+...
+>
+> I am just hoping to figure out what I should be
+> doing on a conceptual level, before figuring out
+> how to do it cleanly.
+>
+...
+>
+> I was looking for feedback on the basic concepts
+> and design in the patch series, but failed to
+> clearly communicate that.
+>
+> You provided some detailed feedback on the code,
+> but as of yet nobody has really provided any
+> opinions on things like whether it is desirable
+> at all to have the free lists per gigablock,
+> or whether we need to come up with some totally
+> different approach.
+>
+> How do we better communicate that kind of thing
+> in the future?
+>
+> Is that something to spell out more clearly in
+> the cover letter?
+>
+> Is that kind of feedback something developers
+> could even reasonably ask for? (if not, how do
+> we figure out what maintainers want?)
+
+As above, firstly make it clear that the code you are sending for review is
+not to be reviewed so people don't waste highly contended maintainer time
+on that! :)
+
+Also, you didn't respond to my point regarding cc'ing the right people -
+but that's clearly something you need to get right if you want this kind of
+feedback to start with.
+
+For instance, you didn't cc- the page allocator maintainer (Vlastimil) on a
+series that is fundamentally changing the page allocator. That's not going
+to help with feedback.
+
+In general, this area of the page allocator and compaction isn't my
+specialism in the kernel so I can't give you the in-depth feedback you need
+on that.
+
+But I do have thoughts in general as to how to achieve what you want here:
+
+Firstly - you should try to summarise what you're doing here and what
+you're changing alongside the trade-offs as clearly as you can in the cover
+letter.
+
+Then highlight what it is you need feedback on, broken out into clear
+questions or points that make it easy for people to respond to.
+
+And _you have already done this_ in your reply here:
+
+* "How do people feel about splitting up the free lists, so each gigabyte
+   (well, PUD sized) chunk of memory has its own free lists?"
+
+* "How can we balance the desire for higher-order kernel allocations,
+  against the desire to preserve gigabyte sized chunks of memory that can
+  be used for user space?"
+
+* "How do we balance the desire to keep compaction overhead low with the
+   desire to do higher order allocations almost everywhere?"
+
+I think a really good way of doing this would be to start out with
+something like:
+
+	Right now compaction often fails to achieve what we need, with
+	fragmentation occurring anyway and (for instance) THP stalling on
+	the availability of higher order folios.
+
+etc. etc.
+
+Summarising _the problem_.
+
+Then a section about your proposed solution, e.g.:
+
+	I propose a means by which we proactively achieve gigabyte-sized
+	pageblocks with logic which maintains these as physically
+	contiguous under both ordinary and contended workloads
+
+Then list out the "secret sauce" of your approach, e.g.:
+
+	This works by arranging memory such that unmovable allocations are
+	grouped at <blah blah blah> etc.
+
+Then raise your questions e.g.:
+
+	I'd like to ask the community - how do people feel about splitting
+	up the free lists, so each gigabyte (well, PUD sized) chunk of
+	memory has its own free lists? <etc. etc.>
+
+Then make it clear whether this is an RFC that is ready for primetime or
+not:
+
+	This series is simply intended as a proof-of-concept - PLEASE DO
+	NOT REVIEW THE CODE per-se, but rather comment on the concepts!
+
+(And obviously as above, if that _is_ what you intend, underline it with
+[DO NOT MERGE] or [pre-RFC] or something like that).
+
+I'd also very strongly suggest (as I did in my original reply) breaking out
+parts that can be broken out as prerequisite series.
+
+If you're doing something good or useful _anyway_ then just send that
+separately first, and have later work rely on the earlier work.
+
+There's no rush, this is huge and will take time.
+
+A final KEY point:
+
+NEVER submit unfiltered code generated by an LLMs to the list in _any_
+form. If you want people to access code like that to test or something,
+then put it in a remote repo and link to it.
+
+The code is SO overly complicated and SO messy that it's really difficult
+for people to understand what's actually going on.
+
+At the heart of what you need here is CLARITY.
+
+You need to CLEARLY communicate what it is you're doing so busy maintainers
+can examine it. That's the _only_ way you're going to get something like
+this merged.
+
+The LLM-generated code is so awful that ain't nobody got the time to try to
+understand what it's doing.
+
+The workload for this really has to be on submitters, not maintainers.
+
+And what you've done, even if not intended, is workslopping, and that's
+really not acceptable. Quoting the kernel process on tool-generated content
+[6]:
+
+"If tools permit you to generate a contribution automatically, expect
+additional scrutiny in proportion to how much of it was generated.
+
+As with the output of any tooling, the result may be incorrect or
+inappropriate. You are expected to understand and to be able to defend
+everything you submit. If you are unable to do so, then do not submit the
+resulting changes.
+
+If you do so anyway, maintainers are entitled to reject your series without
+detailed review."
+
+As per this and my previous reply, AI slop doesn't scale, even as an RFC -
+I won't have time to reply like this in future, and we will just have to
+reject your series out of hand, which helps nobody.
+
+>
+>
+> --
+> All Rights Reversed.
+
+Thanks, Lorenzo
+
+[0]:https://lore.kernel.org/all/20260520150018.2491267-41-riel@surriel.com/
+[1]:https://lore.kernel.org/linux-mm/20260616190300.1509639-1-riel@surriel.com/
+[2]:https://lore.kernel.org/all/20260526140204.1390573-1-usama.arif@linux.dev/
+[3]:https://lore.kernel.org/all/2ecf71858845e7d14c718b1a6845389cb78b986e.camel@surriel.com/
+[4]:https://lore.kernel.org/all/20260520174749.GA1458531@zen.localdomain/
+[5]:https://lore.kernel.org/all/daa29c92f055d028a5b3ec0e42cfb1ee1496a593.camel@surriel.com/
+[6]:https://docs.kernel.org/process/generated-content.html
 
