@@ -4,116 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D3C9C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29353C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:41:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7CAE76B012E; Mon, 29 Jun 2026 12:38:29 -0400 (EDT)
+	id 0CE696B0109; Mon, 29 Jun 2026 12:41:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77BAC6B0132; Mon, 29 Jun 2026 12:38:29 -0400 (EDT)
+	id 0816C6B010B; Mon, 29 Jun 2026 12:41:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66AA66B0133; Mon, 29 Jun 2026 12:38:29 -0400 (EDT)
+	id EB2296B010F; Mon, 29 Jun 2026 12:41:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3BB846B012E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:38:29 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B8C551C07A3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:38:28 +0000 (UTC)
-X-FDA: 84933508296.18.3B5C366
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E390C40011
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:38:26 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+IkbCXk;
-	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C258B6B0109
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:41:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4C524166A01
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:41:41 +0000 (UTC)
+X-FDA: 84933516402.13.FEFEA1D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B21094000C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:41:39 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hJmAai/5";
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782751106;
-	b=Awis2ijM7XyvBj3LQOXqV5LsND80y5DrUhnLsV1l47Ejgs4+nDdKMy5JS5Pq4SjnNRDmGi
-	jD4wkLZHrrJpPHmyf5KPJkWzGgWIitmJPfWkRwUlmZdeF+G/e8uCJFz/K7EkHmwxdcDps9
-	TDHMaWcMdDe+NissS7NkgvYU+FTVYTE=
+	t=1782751299;
+	b=rfCa2f3cyy1cw0wwGJlE3KcGzf2Nz8d/Xwy93/5FYKP7KjN0y42+JAVlHWq5EITDC7+ZcN
+	hZXH1N7ySGTABsb3rHm6TSd8To2AX8Yvjbklgi3jHPJBwfTnvpK3GTLd0h2eLFuvIVHfhS
+	KDS64AqN8oOmQJrXZbxzaPmSpkQEuXw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782751106;
+	s=arc-20220608; t=1782751299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eOlG97Uwj+vcAWyz61FNiTd47EpTHp6kS1XDYGWjK/k=;
-	b=BUMuBfY33fFVE5gn0QK4F/jzsFBg/b4WY7t0YV10xJQ0ZttRbZzW1mVq5v7Krwx78s7Cjv
-	zfA+SZzLXY7jtJYdqMOY/skMfsOm8CTZ+THKYHFZlX5YuJbzcq9H3IZ7pc2mHilVBhCFPg
-	hRZwK1kgDshza53pNTxULPk4bpaOLjQ=
+	bh=ch5CI1toUlORlovajdCC+YMRoe+PpJQnl8a5VV79Qi0=;
+	b=2YhbagxWs8fj+YhTEnjhvgjymn8hK8YyXKNKq4IehnV7PVJVY9OGMvIyYn7QDjkrLOVubg
+	ccC9V0L1mwcDGRdiuwa6oQjI47hedMmCFPDzPddz7sCiQH/T2M0bBEOcbKCsC8fk9yQ91o
+	+wQQ4gFvJ8Vu79POV8pwEv/Ieumll/U=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=J+IkbCXk;
-	spf=pass (imf01.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-845ea8924fdso864006b3a.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:38:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782751106; x=1783355906; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eOlG97Uwj+vcAWyz61FNiTd47EpTHp6kS1XDYGWjK/k=;
-        b=J+IkbCXkxuiTZ4+tHZ72kDHJWqtEPc7jtvdNQQs0IQk2A+Q4pVofcoluuKO7vu5Fl5
-         Gl8b9ww7AIruUVSTGRfwDt0dM3SOGNkCYQojF68BhoJRmbVHj1MdZEs2pU9/pijhAtY+
-         kWfC2CwRZllZtBC476CpDcCPrH/Qtge2YkhXHomiHR+RJ4VLLkIPYCCzyNqUZmw9LcDN
-         ZmoQYTVFcs7BVxx7Gr+SHlLfd2+sdJoP8swBTkfwVD4q0/QLxbR1wo2hN8aw4FaY4VIf
-         xcQBaxGeat9LzAMcp8G5HbWgGepLLPi8dmownGRwmp20VtI3ayFZ6hPrt2F2wRyrirKF
-         fPxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782751106; x=1783355906;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eOlG97Uwj+vcAWyz61FNiTd47EpTHp6kS1XDYGWjK/k=;
-        b=O0d0mNAAmojDdkFkt5GfiQcBTUtoNTGdGXFERI210odrvPgLNsUu1LnlRQRSsxTjkZ
-         EXB2/7TccQERvHJBqDJvEN0+ZzaGs6SFtxqsM7nMcgQMDxsfTY8QU8VtH4/Yn3yWLqz+
-         8PU3hEgYn/x93lGl3+cDc7Yhxmqz03HsjRiDbJfY9hS9HTp1snJZsA69tJ5cUCmwz4aC
-         W3A7LidjnczIwcG+Q1YF2U4hKI5R0k3zfs0lh7o78+YvTbZK93qrDKy4zkDFDRJyQwYG
-         qJim48QBWW9h34be1aNPxraquswAdqKhn6JkVwLx+9WfM4CocfSTypKLNQiIhTrPq0FA
-         XnHA==
-X-Gm-Message-State: AOJu0Yw7QEtvkEps7cE6PArL71+/wZhbzj/KKR/wQpNWXMyfAWjofCcQ
-	WLQ3xd4zRs8p9o9lLXPTkNHa2T8i47PXCso+9Kx6dpB77r3b0aTszbHc
-X-Gm-Gg: AfdE7cl2WualuKNZlabkHwd+oStt2xIMpKhlaePLegn3AVw/4lzUnrBNpNXj076aV9D
-	Ftv31zm9xuS+MxvEShucRF1NoBZR/r6R7HaKgmkGwafWlKZdXNnKk3ghIaZK3ZPLp7I7oG+xaeA
-	n8G0HM/GcFmLnOSD0RiaNYj8M1EnJNQ0RLQCKfjpabIrBHHA1o0963yuQFxPLoteenxE3sEggES
-	FUPx3d+on2aiDhDT3e0pDAMAxFbvZLlNGVFQrJh5430QdR7O5SS476B541SUGD3u6Yr/65f0QZF
-	T/gj/5aek6lKYhRjMS33LPHA3U0s00fcqGJFdmowzlNwiu//Vd9/F3l0FhdMlJqg3yhqEJ4rv63
-	Arl+w+JHPnhNSlaQBxnmjK6ySOquWCJSaQbNgTTsP5ZRKSTrcPONlpwfoxU2b7H+VFmOPw+Bihu
-	SnsWI2Sbg=
-X-Received: by 2002:a05:6a00:2d22:b0:845:e703:3c with SMTP id d2e1a72fcca58-8479f25a6cemr192278b3a.44.1782751105833;
-        Mon, 29 Jun 2026 09:38:25 -0700 (PDT)
-Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847a02d41c0sm18474b3a.33.2026.06.29.09.38.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 09:38:25 -0700 (PDT)
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-To: rppt@kernel.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	David Hildenbrand <david@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 8/8] mm/hugetlb: remove unnecessary empty range check in hugetlb_bootmem_set_nodes()
-Date: Tue, 30 Jun 2026 01:37:36 +0900
-Message-ID: <20260629163736.1606688-9-ekffu200098@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260629163736.1606688-1-ekffu200098@gmail.com>
-References: <20260629163736.1606688-1-ekffu200098@gmail.com>
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="hJmAai/5";
+	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4608F601CA;
+	Mon, 29 Jun 2026 16:41:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027B21F000E9;
+	Mon, 29 Jun 2026 16:41:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782751299;
+	bh=ch5CI1toUlORlovajdCC+YMRoe+PpJQnl8a5VV79Qi0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hJmAai/5vkibkmO6VFkWSq/Ll1y5jE3j/DzaeyyPFKyq6xwAWxIjO79R0qGEP4vSC
+	 dscAlrX5ctbgTMNUAbj21/JNqvHk3lRwZZOF6r/Ta4FjjCdP3/PBnSN/C4tlpR5j9j
+	 HSF7Dlc0aoj7gsDTbePMQtjCP/xBpH87s7MdWxQs9Zuf/RhQ5LBVu/X3uV1WM1uMla
+	 uNw5QZ+z1TPY33Q7kIG03f2R4Eax2CqGoQK5L9fO6gf9Y0pff5oJ8krKULZnitJWl+
+	 HfINykNpBBlOytN9AKxyPcJqJfMwdZgfi0f/ZXCpWHSG44+9HDMHmBql5baxz3zYvY
+	 zey7OMeB60fnA==
+Date: Mon, 29 Jun 2026 17:41:16 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
+Message-ID: <akKfAl-wdIAbexNR@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+ <akKWvnU2Ua-8ceSb@gourry-fedora-PF4VCD3F>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akKWvnU2Ua-8ceSb@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-Stat-Signature: f9sbr71b85w7p15ubmrryprf3ko3twrw
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E390C40011
-X-HE-Tag: 1782751106-513350
-X-HE-Meta: U2FsdGVkX196832K5peYCSSkClHzd11OpTG2dIoK7t0lXWReSj91bPDZZQsxb4ECz0T4Qlb3pRK94USSk5OU2xKQX5CDT5nJ5mN43uwBOVkP4FpU4LlKsv0X9BsanX8pr3qc5n/MF4gIZNPRqTNpo9xrhGgITS9C5oYhaz3L0uG5I0sIz5M+Sa3qoTGmgty7IleXcJobln1XmlV36JAA3+hKHgN3j1cSauKyve1pJ1NbTb1mReJT/dcdyMPr3KmE9YksDnPzI87JJ4NoXi8qkSDX70vjaCV8J8auKfmjIbnGoCuqHD5MQF5DxS9ap3VUi78VqgCwHs/27WURBH7wPy9Y91XdOZeKK2HJkWbyL38bQv2FZcgUsSlo2bNx8wzj8IwK4C6418cRrdlUh6a+vG2ywulOYKk+fjkqJFTSSCOQMILQRh170GRQ03QOqSD9Z9nM7ykcUwQy0wlUDKps3ccIbF7S7MRpAezwBY0kD/Be61HY9Oh7T2+N1cJZCh2/Qs5Iqh5nUh3GouBvHR1GX2/pPfJUHVXIH+5z/2hcDS5rrVGqlBcQEqpbGb594fLgdYMnWpw1F72xXSJV2avj+C+ZccAPju2vDNdMcvLAzpal765TuwdwLLZo6JDPg33DX5CDurXNEdofU84ENZeQauY1gg8mng55rBIpHyy3MqULgIJ8IEcu7fk7zF+gegG9Yqa5a0pUDcSbuzkNEf0OzrtPxOJ4xQPCnvy6jnmNrTcuqKHD+5p1wJp3LLqiCuDEgte4TIc1C8RMOE6co4pUiZC9wgU6Y+oodu0ru6NFser83Wh0GgZ0uM+ukl5SCJXiJGRxtnXdb8UKKj+XO5fEdNc3dWeAINFLKMLRHwDBJFmCQCU6h0hkp8+/+W1AD33YkIw8zNVG4PJqf75WUcZdJIrOpyNtz0gjkphBEqU4GqFRJo1bd4WSNn1kb5Bpi6wdMJy6+e3RSCTrUBOBJGR
- 4Rasg7bq
- 9YvjoBz+GHR90hRpjSdZpgy/ShFQI6zW6i8tprWB8Z2pxQGlHvy66lzjgOpq1Duzws+6wuTjx6930mDLTBUvlT5IYK3xmcHPNWkl1neH29xGlXD/qS7OzHDqvWeDugextfwrDnbcYMYIAL9s9K5087eio4m+56Sw1Owt545vSUHsuR5WMkwzytMVAZG6n5ii93qfBUQMQJdcohj8MoOoQ58bgzF4u/qogUVbHl4Aaf8M06jYIuNB0JbsMgpKgTpQCiI/UOQg5iy7jPQAsKqY0KrW4sUyI4wGo6k19m9aXA01MVF6Gj/9dbJCpf8QYRhWyvbufsRoPFNyMq3NFvCr3pM/MnOmLyj1e7X3BpD9qvqkNhEfKf4v7vv46kF2gB1e9gLyoPmQdpv7LJ7mUdZXormOFhZ1aLUNC3opjtddr0flbTfxW3awn1ySRU5sEIZKa+Yjch3iHq/VEf0+f7QBAmQeRalFIk/3I7ZqEz6tJTfQF9J8=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B21094000C
+X-Stat-Signature: 1hmh5dks9obh1fqe77fc4a9xqrte5fwu
+X-HE-Tag: 1782751299-443428
+X-HE-Meta: U2FsdGVkX18rmQ354xLxuYZ17rvttx0UARvnrUdYKIx5Ay87siVGzJafOxLd0/z0NqFz/iyKyeNa61y8agvijPlnRjezm/TttHK37RXREKAAEIm09fbwj8G/WUd0dIVuWmULZvhCe0eLu4duQuL9KPfsAEcUqiUJ3Ch93ndUAgQ8Wbk9FQWD2AkT1AKV6SBUuDWQ18DtiuGpZU9ONYzFSY+yW2gvHCZj5lv79kwUut8DbFGS/xycOniy8m+ZEwjirXE96KacyPyOsz1U1dBHil7yJ/A7K71xy/+BQztRbuwpY75uhkHA1hhEW9zP/KZyQNs6jdyrgu5Bcpua/H/IYZVg/r4qCWQgfGpajSl5ovIJVTR49EWLbfcQwG3F7NS/ZEm1ZhZui6tBC5lJSHs6MJTPNqZ9D/6HOy5/3iQao02xZJ3+brXamq+IzZ+5eucdlWJclh4xpluzCFjDPrT30JJX2w3Y4tHZbMC2z4ZJh22ub803cyciwqMRpLW3Vacs7g8GGMZxNgc3cBmQq1hXmrj+f/pjZEmPx2+JJgAY7dH90vx2sY+29Xn/EGkA/wnea9PfFpu9o7fhhp3r+pCUbJ00m3G5Ugog6Ic1B8cAHwPLqsG1zqixnMhW9aKmR2/+IRAoUZMYGakNncflj6ut0ormRqa36ID8xrXlkH40K6wqtFxXNzBublJYmuqOu4l1a/6WlPcUv7YRNVATcfdUOC0QceneIr1ajqscJMhsm/hMoONoNHCP1ablMyzJr4KskZsDryT5gwGBx6P+ri2YTURWA+8yyp7zyI+OG66fcBCl1rCxlPTDNAoL8sBAwCamErmlP65n6s2RRnwxnWAz0eZoDduIPHMuy1QH3nd18lyNwwoS2/fTWh0yKCw0vMtIGzzdH7C7OUxg9wK8yQBaHaIzLTy5uupY+J0ayBYUqfimrPCfogCigQKLvdlgmdpTkLtKsLKpkORqtb25zdI
+ JRUwOnhv
+ DwVXc1CywZQYdsJI5wKrkB1uA2zZ5JIegWp95Bv1ED2H1OYg73Qc/pBObWByldL6Z7CpsXFEbPQ+QIiyqUIYZ/il5Mneb0ZzhP7EVxAVO2kvp3khTlXsQYnHUaWG3j7ZA/5GhjiBDE/Pd+vpb+Sl5+l8RQ7xQIMZcHXFD196/odJaVVldT4nkwCHzPaQ6MV35ME5Tzh2yal5PiK2b/kgR9iVjhZ70vH0VnJ1bdKMU4cjkHp2gB7C9i20jQVQDDXEtwKkwfzVZuvqqCe8/2oTtYp9BrBEm7XPgi+gsU4tQGVDeOxAVjiMtagQo+oYkF0QrAeBn3iY3K8XibM3KdjDq8C0tAIK/Q/UQ1vHSUjjqS39OzQ9LIioKskh65w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,36 +124,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-hugetlb_bootmem_set_nodes() iterates the memory ranges with
-for_each_mem_pfn_range() and calls node_set(nid, hugetlb_bootmem_nodes)
-only when end_pfn > start_pfn. for_each_mem_pfn_range() never returns an
-empty range, so start_pfn < end_pfn always.
+On Mon, Jun 29, 2026 at 12:01:02PM -0400, Gregory Price wrote:
+> On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
+> > Update the file comment to clarify that both file-backed and anonymous
+> > interval trees are provided, referencing the relevant data types for
+> > clarity.
+> >
+>
+> Isn't this self-evident by nature of the function definitions?
+> (one takes a vm_area_struct, the other takes an anon_vma_chain)
 
-Therefore the check is unnecessary, so remove it.
+Well you see you're already hitting up on issues there, they both take an
+rb_root_cached and the vma_*() ones do not instantly scream 'file-backed' do
+they? As VMAs are obviously used for buth anon and file-backed...
 
-No functional change.
+But later patches fix this stuff :)
 
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
----
- mm/hugetlb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+And I feel it's hard visually to see where one set of definitions end and
+another begins, which was really the motive for this, as trivial as it is!
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 571212b80835..d4d4c9df5f51 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4450,8 +4450,7 @@ void __init hugetlb_bootmem_set_nodes(void)
- 		return;
- 
- 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
--		if (end_pfn > start_pfn)
--			node_set(nid, hugetlb_bootmem_nodes);
-+		node_set(nid, hugetlb_bootmem_nodes);
- 	}
- }
- 
--- 
-2.43.0
+>
+> > -	VM_BUG_ON_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+> > +	VM_WARN_ON_ONCE_VMA(vma_start_pgoff(node) != vma_start_pgoff(prev), node);
+> >
+>
+> For my own edification - I know not to add new BUG(), should I be
+> converting BUG->WARN/something when i find them in areas i happen to be
+> working in?
 
+Yeah pretty much in all cases.
+
+It's very rare that you'd want the kernel to definitely oops, and I can't think
+of any circumstance where you'd only what that if CONFIG_DEBUG_VM was set :))
+
+>
+> ~Gregory
+
+Cheers, Lorenzo
 
