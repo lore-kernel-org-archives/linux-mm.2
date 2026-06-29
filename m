@@ -4,103 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB465C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5330C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:00:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBDA56B00B8; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
+	id AC0D96B00B4; Mon, 29 Jun 2026 09:00:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B94836B00B9; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
+	id A71B86B00B5; Mon, 29 Jun 2026 09:00:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AACAD6B00BA; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
+	id 9870F6B00B6; Mon, 29 Jun 2026 09:00:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 836D56B00B8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:50:58 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11AF7903FE
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:50:58 +0000 (UTC)
-X-FDA: 84932934996.06.3A88913
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 2EF794000B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:50:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026062701 header.b=Js7hPGLW;
-	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 76A976B00B4
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:00:54 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 02DDE1A06C1
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:00:53 +0000 (UTC)
+X-FDA: 84932960028.10.D668EA2
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0F80C14001A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:00:51 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhYScBkp;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782737456;
-	b=zHEKq96mpbJ1MjcoQNzDYLDuovoRT7RwP4wQ6HkitVb5EBZOWZWnyWts+CazRdEBupvGkr
-	ONam1qTp5kpAAh0vfZ/IrGEeb4OHBRvbYMbW07LovCaDUFi6cY2CyN463zvlRsmVLIsMjb
-	PWheK/hIj7vfKUHEeERoax3PU+gSQOA=
+	t=1782738052;
+	b=j5HPW+NI7IzASHo89Ez9l51rM8qBfvA+uuIATcmFcYK4f8s2gK7XHLK7MRM7nkgDdB5LQV
+	LMdQ4tHywcpXO5UPd0BLMad1QCdLR7KJ3DRT6rfPB52PX8BJ+6djUqG5Y/HNZKX7R+ilm9
+	1+mPSX2yWm9XOwRcwElJR/gooKUeWxs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782737456;
+	s=arc-20220608; t=1782738052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fRdbBuAywd2/yTywAa2lmTsqxPePV+KffkY5n9Y48hM=;
-	b=SrohpyxNYsenmcv6ntAuTl5W31FU6qf4rkvTeuyutiwBw3/i+jLWAN4vVe2KO8MXUTmD4/
-	L1p9AsWl4h9bOZEItC4Gci4yP7nvRPShozNant4l+zm7osXt9j9tTIX4Uw/nrpSVW655cj
-	jpbDXTXgcD/3e5pI0hYjDnpkVuKw4Ew=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=bymgERp/YFbwVBxVzPFXfDs+LSnZmVynKzWNDPQQDUs=;
+	b=b0OmoFPtigi1XfHnokIVWUo/DJIpzqtoTkrLtaoKWVsCD/gZXZP7yhW30UKCkDaFXVKjA/
+	E44eyxOFXUtfggvWPp3FFOb8R5OxxoQOrbCPBMRERDyhrEo31BJA2d5A8+m2W1wwokg+bR
+	VpmR16Z/ycD4q2GPFuw06+IDtDPhdyk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026062701 header.b=Js7hPGLW;
-	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-Received: from [IPV6:2601:646:8081:7da1:4462:691a:e05c:b745] ([IPv6:2601:646:8081:7da1:4462:691a:e05c:b745])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TCoD8T244601
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 29 Jun 2026 05:50:14 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TCoD8T244601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026062701; t=1782737416;
-	bh=fRdbBuAywd2/yTywAa2lmTsqxPePV+KffkY5n9Y48hM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Js7hPGLWS5LTsb/3bMqBHhoVGIEj0VMpjxMvYFT2YIS6f3nHXeLALfVUDkd+j1wkV
-	 nWUug3QAfVgal8LCz0dJ+sOdkzS+uELoC3ObibQVmQU7Joi0u/rYGI9WpA1dIX8YcH
-	 Q1Jn+GhyBywHcndGzVYJ+QZ6Zum7Q8wLdpRTMu/8V9g8voVNG41Q8Bjqf/WBLWDW2B
-	 h2dbJ1kQ29c77xr5O7maE+enOLuuXL+5UXjMD/MaTsmmkcK25Gpk9a9sQw9lrss5ss
-	 26PFDqL2qXOJRWI+K9ckx1oVcM3YMb4bPv63pNLC6YD30f9ItKquGx5Fmmc/vCeRII
-	 C1hgFlSlEGFZQ==
-Message-ID: <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
-Date: Mon, 29 Jun 2026 05:50:08 -0700
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PhYScBkp;
+	spf=pass (imf23.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782738049;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bymgERp/YFbwVBxVzPFXfDs+LSnZmVynKzWNDPQQDUs=;
+	b=PhYScBkpS+3gjZ3UnAmke9dWXpY17VSXA8SzjnJZh3XYFBt2diml52/3bsONtdCJX2Z3IO
+	gGFZlyWXt6jw1gfKOoHN1F+lePE0FNBVsUL3yYK09EOb79m2QBYFJeK4/CszI3SK3zkBMt
+	doM3b2Kc7q5rztN4Sa2S4Rz8mTfCz4c=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	linux-mm@kvack.org
+Cc: hannes@cmpxchg.org,
+	tj@kernel.org,
+	mkoutny@suse.com,
+	shakeel.butt@linux.dev,
+	roman.gushchin@linux.dev,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [PATCH v2 0/2] mm/vmpressure: reduce CPU, memory and code overhead on cgroup v2
+Date: Mon, 29 Jun 2026 05:59:35 -0700
+Message-ID: <20260629130042.2649505-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Xiang Mei <xmei5@asu.edu>, Pedro Falcato <pfalcato@suse.de>,
-        Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
-        Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
-        Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
-        Yan Shoshitaishvili <yans@asu.edu>
-References: <20260626173444.2252041-1-xmei5@asu.edu>
- <aj7UNceukU9zYeGH@pedro-suse.lan>
- <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
- <499a4e15-34a4-421b-946a-c855199fdbf9@zytor.com>
- <akH34ycu5-q2Yc_D@casper.infradead.org>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <akH34ycu5-q2Yc_D@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2EF794000B
-X-Stat-Signature: mqmj8q41nyadmffx4j534n48wc54tb3u
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 6s9gooqz494gxuo3f5iz99syxzwhf136
+X-Rspamd-Queue-Id: 0F80C14001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782737454-506397
-X-HE-Meta: U2FsdGVkX1/GsQ+WnH6+yIDQJxAGvJZe3afNRqrwQv4fjSM0cYIVGwn6JNAUmS4ed37nNzpr+yJsEwvm/m+utbttbKrYnViwZlT0ccL9Q8i/E/vOHdEMPHrLT9yBzimurTdXwhvw/gjKGqMo6P4jAmHpVTyfwfPjhEiJy4bbLe7u0CsFudqmUQOlVOn6r+KdAucw5hzrA5nuTsp7aXDIv3sDAIxMaij44R7yMZBFEmFZebyZ+cJc4Ih040zKLum1PWvbrDNkWLEyHI3MpQB8Y/kQTuou4YGFfShj8GUJEvygJi4Ph4Iik94KpLyeAzP2mondS/G8SbRrOhq++tlt2NDKDUgD7O3+VIWv45yiNa2Th7IBBw6LCPeh173GZjBAWiZnfBowwHiCzEuh8SY2eGUlezvnyfuijrKE+xtGOQjNlmI2e5HwsibVacoczMuXqhkDjERdrJPuqO8mfdEevyPphy0XXZpmnA6eHgnDFqhmPuNFU4IqoiVntn3DmCtCHBPz8oMtOv89tTQ9C/EOorb/50yMxwdrM851jJb1ytYRTKfHxiSqI2zqYzy1EP9yaSPZKAFckjFbdxpYyz0JFmABB6H5vYLAh/SHscAeaFJxg5fQOGCD/raumlXgIXGfctcSeLGcxkYmCrLr2TZrj/LIPsL+71ctB1Eh2h92rI6MDViNA+SrUvD8Z2i95vHgeIi0cl2x25Z8i5NTmMC75vRx+CTG9wUrok5BghRJ332Oy3T/HWbf5JB99WFbcoBdaBOfBoI1H4pefDA+7gEjyedBA1MuKVGCvUimHdfg1vmQr3A9iuzsvd/1JIBAKBpd2R6FUCjyV/kpaa9IkaKXU0+DyAmLQ6NjMZD9SN4M/Vyx/o2iVr5N3xv7jKSK8bLnJwsF2thhxVUd2ue3O3rnAbGZwMNbv4UJtr9L8u/OjyMWj083yJJur+9Wb28HU/LRDYMnh5r0I2aqNOkMicy
- AeEHG2WF
- cug1wnX/akMbqDT+QU57Squ/Pv/8JBaHGMtqjg73RQh00m1gX2dtxMpPDqVXyYTQHPVJsrHUtBheCf4oVJvvm0KMe1bNibNNrvwjMUAZZloTXo83tmLXjfR2A9utcyP38/yqvsTPeYrzq7cAKbuJ5bQkhJgaHMg8V1fEMYqmf9LV16Z9qrwy8xNTm3XiorqKBO9cIw5kl3ByK2RkSKfU1Bq0dzSXV/6I0BNwRweZUckqhMBz7ztRtJ6x7FLM4+bIjKcpdU7bAViir1M/l749K9DmMl56yKLDBVTDZS9KKZC8HDwMlfvwQJfv8Rg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782738051-821214
+X-HE-Meta: U2FsdGVkX18UqPkAEG1yKfyCqbV7uyF1fXARkOvQW7+4+3pRMGPqhGC8xPMMlx5P7/85CTcH9orF9cIHvLecHAgyOYdgq2/yYJfD/kjpTG6H7cCMy5VzJJy2Epctc224Kl1z/AIT37qg/usO+nyoLUVypCJ1fPnLd2cYg4TiVYz1jU7oEOIigatjKCjJ9uKPzHitpsKVjRNIIFTWPU2NactGKG26KottTuwoi9gaA+Vdftw2rLnC/m4Z7QiQxaCDj3X+Qv5qA01N6Amz3kuFf2BdzaZ/qUM6ZavScd6L4GqAuG74E9klUVCs6JF7bhLggBWQ7/NvXRidiKwpJ37HcH4RH4IqY+/5YFi2rdBzYeYjXc2blGLMoNK78h5I+0ioHyLpaVO/XUMQUXToUQb/llNfbRgdauC72brqzIdfk7aDzTeZqYejZjCoCweeSZQaOV7GTk6ZHb4YfOlznQqEJS6HDEUHuQepTq/BL6DsjVFlu66it3k1/vxAs3KTSaFfJgh6fWdIfqJkT8STgLyOkCivrIgz78maGaZHaq2C3VRQSIZ3kuPHiJtq73FouVytflbVaiVoBjdHSGS1I5A7MFkUByrkyttPoQkIlsAAErRywe4j1AGSvXcpONanYNegNJ1FuvjGXIeBd9TfIHJ/g5QY6iO4KHfkNuSWv7dMHG5vRq63+dFeqjVKeNWKxlHR5o8ZhPJTLSklM8Q4pGNEWGnAU9BGz1VOYm7xsVasW24M5JmOzekUNvPC/XFM7tBB/Zcf6UA1Vrx/TeBpBMehOJxAPu0l80uMU7Ddh6Buvcuhi9RK/i1bzMzp6UuDK7gG40SCz1dOhIBvt2dQUegETP9GP178KPgp4GMjW1EGVxLbejEbzQxHgrwOc0cQknK33/0I37fnvZ95XTEXPhc72qwFenkjB08O/Z9xXKW/bLxUYWXe+RaiqkBqXFRdYGx3KnPr7ebWfVWy/NQl+/3
+ ir+8oxRr
+ CvbZUDFIDKOOPA+CbDSTWg8XdyoiWemau1qRFj+c+mVvXR3MXW9PKcY/4AmfDI9Z7hwFJ/GUpgb7KeAtIqQGhABwCK6p2ZYiRXv+JrQY10Z72Ys0rqnFYN1pcb57wbxw7BHuBiTecHtvid8UU7pwx7IpB+LMTsd7w8VzCjcLaDk0XFQOUxefI3bYZGX2ngQi56YFmee9vUzS3yyYTJpt4ScXqmLr6se/6luhg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,23 +97,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-28 21:43, Matthew Wilcox wrote:
-> On Sun, Jun 28, 2026 at 07:09:37PM -0700, H. Peter Anvin wrote:
->>
->>> 2) `enter` is not rare since we can take part in the instruction.
->>
->> This sentence doesn't parse.
-> 
-> They mean that we can jump into the middle of an instruction, and it is
-> not rare to see a 'c8' byte in the instruction stream.
->
+The vmpressure subsystem has two distinct consumers, gated by the
+@tree argument:
 
-OK, I see the point now. The main difference is that ENTER doesn't require a
-REX prefix, whereas ADD/SUB/LEA do (otherwise it truncates RSP and everything
-immediately dies as a result of SMAP violations [you are welcome].)
+  tree=false : in-kernel socket pressure, consumed by TCP/SCTP. This
+               is cgroup v2 only; v1 sockets read memcg->tcpmem_pressure
+               instead.
+  tree=true  : cgroup v1 userspace eventfd notifications via the
+               memory.pressure_level / cgroup.event_control interface.
+               v2 has no equivalent (userspace gets reclaim signals
+               through memory.pressure / PSI, which doesn't touch
+               vmpressure).
 
-This means that an offending bit combination is far less common.
+So of the four (hierarchy, tree) combinations, only two carry data
+that anyone reads. The existing early return in vmpressure() covered
+v1 + tree=false; the symmetric v2 + tree=true case was falling through
+and doing the full lock / accumulate / schedule_work / parent-walk
+dance, even though the events list it eventually iterates is empty
+on cgroup v2 (vmpressure_register_event() is wired up only through the
+v1 cftype "memory.pressure_level" and can't be reached from a v2
+memcg).
 
-	-hpa
+Patch 1 extends the existing early return to also skip v2 + tree=true.
+On a v2-only host this eliminates a contended path where reclaimers
+can serialize on a single global sr_lock. bpftrace on a 176-core production
+host (cgroup v2, 285 memcgs, sustained reclaim) showed ~16,200 such calls
+per minute with tree = true.
+
+Patch 2 follows up with a cleanup: it splits the v1 userspace eventfd
+interface (struct vmpressure_event, the events list and its mutex, the
+work_struct and its handler, the parent walk,
+vmpressure_register_event / unregister_event, and vmpressure_prio)
+into a new mm/vmpressure-v1.c built only when CONFIG_MEMCG_V1=y,
+behind small no-op stubs in the header. mm/vmpressure.c keeps the
+shared bits and the tree=false socket-pressure path. The size of
+vmpressure.c goes down to half and the code is much more simpler.
+The only #ifdef CONFIG_MEMCG_V1 remaining in source is around the
+v1-only fields inside struct vmpressure itself. Memory savings on
+CONFIG_MEMCG_V1=n:
+  struct vmpressure :  112B  ->  24B
+  struct mem_cgroup : 1664B  -> 1536B
+
+This split is the first step toward eventually making vmpressure
+CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
+(tree=false) cannot be removed today immediately: PSI is not an
+exact replacement for vmpressure, and switching networking socket-buffer
+back-off to PSI may regress networking performance or increase memory
+pressure in workloads that today rely on vmpressure's hysteresis. The
+medium-term plan is to introduce a PSI-based socket-pressure path, keep
+vmpressure available for v2 behind a defconfig as an opt-out for several
+releases, and only then drop the tree=false path entirely, at which point
+everything that remains in mm/vmpressure-v1.c is the whole subsystem.
+---
+v1 -> v2: https://lore.kernel.org/all/20260606114158.3126210-1-usama.arif@linux.dev/
+- Add more in commit message about future plans of vmpressure for cgroup v2
+  (Shakeel)
+- Remove unnecessary return statement in vmpressure for v1 only tree path
+  (Michal)
+- Rebased onto latest mm-new
+ 
+Usama Arif (2):
+  mm/vmpressure: skip tree=true accounting on cgroup v2
+  mm/vmpressure: split v1 userspace eventfd code into vmpressure-v1.c
+
+ include/linux/vmpressure.h |  46 +++++-
+ mm/Makefile                |   2 +-
+ mm/vmpressure-v1.c         | 305 +++++++++++++++++++++++++++++++++++++
+ mm/vmpressure.c            | 302 ++----------------------------------
+ 4 files changed, 363 insertions(+), 292 deletions(-)
+ create mode 100644 mm/vmpressure-v1.c
+
+-- 
+2.53.0-Meta
 
 
