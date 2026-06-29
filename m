@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 375B3C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8EBC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:56:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDF0A6B011D; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+	id BBBB26B011E; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D93DC6B011E; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+	id B1DFA6B0121; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6A0C6B011E; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
+	id A0C4F6B0122; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 67D236B011B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:48 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D27561C0D0B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:47 +0000 (UTC)
-X-FDA: 84933249534.04.CB1FC22
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 684086B011E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:49 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB6E112016B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:48 +0000 (UTC)
+X-FDA: 84933249576.23.6D9A995
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4CBFF40015
+	by imf05.hostedemail.com (Postfix) with ESMTP id 25EE9100006
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6POtsQ7;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5qQPFvO;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744946;
-	b=zzgFeiX/Y5NR/ZQiAY0Y3UwAks9qyYnHngOjjXxHobzrxzjxzPgiubfvlL8r3D7KyiZrUV
-	0nlRunt+aLctKRLyAJFK3DAUGxcfoU5x9Z8ctT9Bu1hxIdhUUmTjW9BGVgZ4nmiFzEXrEe
-	0+zn3IN0PWRHx7KTaHEMkikkMTeJ8Xs=
+	t=1782744947;
+	b=Jbqn+sp4hIIZvW2JsRgjHbWjno4JWWiUT/h1FzR+u6GGpi70OfPLtoJ1rskPUs2cQKnKc8
+	XjU0eHKqojuntsN1ll4S2/ODRfMgKatXaHMgGD9YXYwQ+AHzfJmjKCl77k/mYRtebpx7vd
+	NTUKR5r5x4qSSLsTkElJwgTBz6eIEsM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744946;
+	s=arc-20220608; t=1782744947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=glg/l+97lI6caoDUvXnrGH8mHyRTc6ftKl7nh2+8cz8=;
-	b=7EZHom4ei4D42ciBAWaIcHXAlD8guVpkTpPPAH+EV9rdDV0TMwoNfASBUmCqXHvZ7IMmhG
-	Vt1HfIgeY/K9o0NUpQT6q0rdzTbqqKJhLiJzff6rCmdL81FO1voiPMUfI47MHf4or4PT3f
-	haQWUOfDdRCn1nh7ptIEG0tckcbdeUo=
+	bh=YEMOORj6+k+v752vYE0fvW8oE/gyV10AxdEBNRJjrnM=;
+	b=NQ+r6xvtkJgxpme7uGl5jaaxSyRqm3L+Nu4uodt4pVCLymhQi6FWk/p63g6y+I7nZxJ0se
+	AxxDdKV8CZTzhtI2Zhtc/WCeNVS/YglfHjdA9zQ6zLtaFE0/49qQZY87YPtZSMwtB2v2bm
+	M41tB4ucn7YdR0jdmHlejvKXSRS/cHM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M6POtsQ7;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V5qQPFvO;
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D9BD760172;
-	Mon, 29 Jun 2026 14:55:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFE91F00A3D;
-	Mon, 29 Jun 2026 14:55:44 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AC5BF601C2;
+	Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F961F00A3E;
+	Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744945;
-	bh=glg/l+97lI6caoDUvXnrGH8mHyRTc6ftKl7nh2+8cz8=;
+	s=k20260515; t=1782744946;
+	bh=YEMOORj6+k+v752vYE0fvW8oE/gyV10AxdEBNRJjrnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M6POtsQ7JwmFriLSUrGusEFtYk7bOEnNTG5xsCHvROuypRxbdJzTOv1JY3znWxYIL
-	 Lsa+7xKyixqJnDniTwmiovWuuCzQYr2zooe5OLSRu2/I/j16UemiOs4/Rr8d3xFZkp
-	 CwoJyfx+45upeJBPkYdN2+j4yrIrq4/uWq6WNkoBe1Y64oHEKeaC6dp+nO5hzLX8Pn
-	 9nayPZef9Pa5G9WERePzsQ9x00WSkgICjp0bNoTplPbp1SP9uB2fnKNEsSw9LvbVVJ
-	 dY1jP0GGKonOw9Qz9xAMZ7vHBzH9Jee/PT6Hsz218cwJkPz5lP6FFBI1buzoYkCnDp
-	 B9c8EvOAix4NA==
+	b=V5qQPFvOwWuoHblsWDCUSPcMaUkfQr0s673YQXPIpHGuxpWZJzMj2fGfNmEgQUS8T
+	 mcPlhF+P8MqFhjMeAxmUor3NAuTDNdUB7Mv6SCedZ8pTsScwx5+7h99ZZlZwUxJ3xm
+	 HGd2KiTTD5rdSSHQa/MuyUs8eMd6fDyTHqE7GL5D/K14xl+7SHetvbuYeKh5ZoJ0yS
+	 o9q3oluA3W8T/ZCgLcWeUcabzeCPVhl4NAfATyKlam+pwiYG0eX87W3wdxl0ODQ0CR
+	 AS3LydIvR9iIMB7pVG1rErUeAFNlsQjYydbXZrELnWnhiRZt2knJOPYkJOtpXpZBhv
+	 tyJlYUwHs0b0w==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Doehyun Baek <doehyunbaek@gmail.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
+Cc: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
 	SJ Park <sj@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
+	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 3/5] Docs/{admin-guide,mm}/damon: fix DAMON documentation details
-Date: Mon, 29 Jun 2026 07:55:34 -0700
-Message-ID: <20260629145538.134832-4-sj@kernel.org>
+Subject: [PATCH 5/5] mm/damon/tests/core-kunit: add KUnit test for walk_control_obsolete behavior
+Date: Mon, 29 Jun 2026 07:55:36 -0700
+Message-ID: <20260629145538.134832-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629145538.134832-1-sj@kernel.org>
 References: <20260629145538.134832-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CBFF40015
-X-Stat-Signature: puzupamu5871xchbqxohzpp6adzps5nn
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782744946-965696
-X-HE-Meta: U2FsdGVkX1+11JJRAXoeAssl1MOw5oglDU/HCwea6ZM+uui7PG3YTfezMyQmFLxcyrPZatsE8xYfbjxCC1zScMTqBGY/nQ0Pxau4bE0AzxtBRNPXrVpvaCiZIrIKQVROdbSZzQ6dvPivZCY5U4hCYgmoBdvDda18qfYDdIMwd8uWIG1lFPZp2r6o/ZSRTbTYr1zE09Dhm8ehedGfHR054adhCJxuhI5XeGAWmQTWt1QIaemR0wj8y+r+/DNBK/kW92lbKK5LDJHXWsYc6028gwJodXlZAnfs5MxQXJgxFBpfxjwGG6E0OmBau6IgI/Otiq78f2xmeOWml9029ZIqzutRFUjCzlA/nYPOIp11ZTdPViaFCdkpEv71UfnMVxc/+e6l2tT4cwW/Pgc7VmuozrqJt4zPZ3gkgZiqWMZ0agOkBUkvkYanNI3cI+f68OXjdDbqIfXtmag6aRvCv2+lApXVNnbvY9sRZQ7lYRJcZHedyFmYWAIjtWhGqcTRK3YYTDnR+q/ovdFIrBFqciaZZcbGHw6jyg/16wIq+0a1Zu2NtF1mUgsdGvGOu+ZCPf4aS48/cD/iwj/SLRXfwPvl3knQYQEzGaU4ojFMqDQULWSfF5Si7Qo+L4KgnDtKAi2lDIougoXyR8Bsvww7n6zELjMtHKuhNi1gsqBKGkLSQVFjmr7oEKHaoYk8AzHfU/wzxDAXMaSyI8nUD+Iq8N2KKiFdCQm4+4pVuERjwaT2hoG+mH8UvufRN5o11mIAx/8oBNZWCdFQmuJBnhL3d06/vylJfQI27xobFAGe4kkyCiF/0qSQep94G7Sfw4xVpPL4d+caT98Dr3hzqYHdGlCfei+9hs/oOKi3X8i+m7UcIR5+wtWyDZ36KQyL1pDJC07UPJuRMblD7xuUI6zdAMBh3Si4SQASHao//TPY7Lx9FBAIxhN8r2JN0GB5obChlB1eVHGAO/txnXDkHeB4jIc
- 2Do0iuVj
- Mts/teM+aTr3mtCikV+35UM0sftuEPITBGhCp3XHwZh8Eiss+meT6IWcbDQw0SqQRMGdhyW40qY6KwwFTh80iO4ji1p6h2iG8dB/yaulgnx0Oy3X3CXGDnaFMUnOuWJUE8dcNkPIO19dEl/wV/ch+D5MAHFwGt0ldvPqCLcWTDkK4PYQ4MK5pLFZOXzCSYs1WDQXp5P1j61JreV2y85di0bVrNb8Xi7WKFt6E0H4NaYSSYWSHg3wjvhspU4cGfWq6YVy9enxJvd/mHAdIWvW8ubJmgOezdboYYB+7PytRCd7d0qnTcb7M1IrZJYbcsfDjqtwK8ixa170pG0lpRAEOO/8WIxokizlK6MRxP8QhVOh0Cyug098HMiRCGtE0MAMhNZzRbrUeM9vflTFbLBL/JkuMsNE5O0+TZmf4NcdTmD0wKBbXQLtwakvnCnEg3IeRBvBWUsRZLnSbEI/2/TstuW5LzUyXpm3Nh0sSZ9Xn8My9+vi0e6NIminHCdSAgnGUjxxto9BQNwXdgtI=
+X-Stat-Signature: z41fbsrnzwu6gnpoy8j9knfxust85wtn
+X-Rspamd-Queue-Id: 25EE9100006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782744946-502687
+X-HE-Meta: U2FsdGVkX19Unmk/JFa4gg2ovC6luJnl8xwUTRSQ3pNV+9FtilrcoVAEyVHhUd74jhpuDzGj/PRybPj5v/nZD7xpo7ALeJT+DAqVUL0lBbRVAuLOzJ4UzjL7+xEhu7iykrVwu/EHvw+JmNq9Re0PYfl5A9g7vhEaOZwWRumTUTLE5WctmtsVtY0WyGbl3yFN/HoSIVchyxeEz9laUiyafFvo92PS02Js2L0Xp2P7BPJB4ph192l7H9jDK7j+wq3ZTHfQzTzVqL7OO5sJAATNWzresRaVBVGeWon8nrBIkzh5B2MInQfZmG9XOaZluaDeQKBLeN+KmFmLJ8Xm6Pf0GrrxotEjPmO0cgs9V+f3B7hoUwCTWXvVyDp+U9KWGjg2J10YWx0yX8BGoz1YdT+ougIiljYGRnDNuea6l5CTkqcjC/EOmmMWQbLwebXdacE3b6jAVic8MxxZw/1m70xuDHlvebKpfgQa4worySwLkuEyZGvR/Yl3/ONgBeSZbfHALbwAd85zjSLg6q2MgLL3s5azDVdrCTYlbHTLBq1aofLXb6gWLY4OkxosmAqMGynGET5wpD6x5j0dlG39PtuYwFy6In0xGjOE86iU9OWFM2rXrLHY9s7QwmONYXAtB5lpH2RTkFO5HQLXaroShF1UL8z51eZFJ7l6UQ1VKNnBtK3FbMlgFXMn2pykns0fC1yDFaKLDhfmyuepeXb7OJusZeYSy6FlLTlQr2scg0M05/bung/zgRzdvbBWbhSXGVYLlKomVUXKR1faLHlYTrKI8JfKLpMOaAnybNI6dizto6fwLDotqAHP1ixdZmpHPr+iS8pEy0VS45Ddg7Lapy+QTTyXU3X7fK8lzbT1OidBLkY0baZyDBkrRq/rtgSHuaFYiZP0dhge+EkzJUKJOkxbGYfJ55IFRgvI4SUE0vSFKvU+PB0j3UbfvidXnBPwCJiSMcWz8Cxir7eF6SGEcaR
+ heewC6fq
+ L6WgJrggsUANnwj3XjrJDJVVPVaNmBv9XaGg6Qj1sea7lQlOCX76QVQVGGLFIBaIs8sRmwOCAXWvD87Mr2rkdzh/6X/22RHo/8G0npjH3/GOKgbfCURdsAQB/TMWU3nTQxwUCCN/NP4W2tT8eVA6cyTkqMf9B+NXSJKu9HR8YADpaWnUI5RF1nOeAjVJfuGwa5cVrBY6c2Xdb7YnQImToD/I6Gd67TtqjdLGnle2bTxte3ub+9uibYHnEsVotB6HcncTIZSiKqPIKu8P0KaSGNJxxwB71S98UMrUo4lo4tRIwwWvE2lnd8JBmv1N8uXnnXT81kKrbGwD4y0HgcNM8HRnwTVxcbcpz8FSlM5WooOUHRG2lQSfPG9mE3NtmiwHMqCgQ4ZkX/p482Xw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,103 +97,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Doehyun Baek <doehyunbaek@gmail.com>
+From: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 
-Fix minor DAMON documentation issues.  Correct the sysfs scheme file name
-apply_interval_us, the DAMON_STAT module count, a malformed reference, a
-misplaced label indentation, and a few typos.
+Add a KUnit test to verify that damos_walk() rejects
+new requests when walk_control_obsolete is set.
 
-Signed-off-by: Doehyun Baek <doehyunbaek@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "Liam R. Howlett" <liam@infradead.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
+Commit 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs
+kdamond_fn() exit race") introduced walk_control_obsolete
+to prevent a race condition where new requests could be
+registered during kdamond shutdown and never handled.
+
+This test simulates the shutdown condition by setting
+walk_control_obsolete and verifies that damos_walk()
+returns -ECANCELED immediately.
+
+This validates the invariant introduced by the fix and
+helps prevent regressions.
+
+Link: https://patch.msgid.link/20260612062337.2459-1-saileshnandanavanam@gmail.com
+Suggested-by: SJ Park <sj@kernel.org>
+Signed-off-by: Sailesh Nandanavanam <saileshnandanavanam@gmail.com>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from v5
-- v5: https://lore.kernel.org/20260610053951.553739-1-doehyunbaek@gmail.com
+Changes from v3
+- v3: https://lore.kernel.org/20260612062337.2459-1-saileshnandanavanam@gmail.com
 - Collect R-b: from SJ.
 - Rebase to latest mm-new.
+Changes since v2
+- v2: https://lore.kernel.org/20260524100258.36819-1-saileshnandanavanam@gmail.com
+- Dropped the userspace selftest approach entirely. SJ tested
+  v2 100 times on a kernel with the fix reverted and it always
+  passed, confirming the microsecond-wide race window cannot be
+  reliably hit from userspace due to syscall overhead.
+- Added a KUnit test for damos_walk() + walk_control_obsolete
+  instead, as suggested by SJ. This directly sets the
+  obsolete flag and verifies damos_walk() returns -ECANCELED
+  immediately, without timing dependency.
+Changes since v1
+- v1: https://lore.kernel.org/20260524091812.35283-1-saileshnandanavanam@gmail.com
+- Addressed sashiko bot review comments (execute bit, threading,
+  dynamic sysfs path, OSError handling) - superseded by the v3
+  approach above.
 
- Documentation/admin-guide/mm/damon/usage.rst |  8 ++++----
- Documentation/mm/damon/design.rst            | 12 ++++++------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ mm/damon/tests/core-kunit.h | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index 011296f1e7c21..b2649ea011f93 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -246,7 +246,7 @@ writing to and reading from the files.
- Under ``nr_regions`` directory, two files for the lower-bound and upper-bound
- of DAMON's monitoring regions (``min`` and ``max``, respectively), which
- controls the monitoring overhead, exist.  You can set and get the values by
--writing to and rading from the files.
-+writing to and reading from the files.
+diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
+index fcf7c7fadb5fe..c5f5124c3d1f4 100644
+--- a/mm/damon/tests/core-kunit.h
++++ b/mm/damon/tests/core-kunit.h
+@@ -1456,6 +1456,33 @@ static void damon_test_is_last_region(struct kunit *test)
+ 	damon_free_target(t);
+ }
  
- For more details about the intervals and monitoring regions range, please refer
- to the Design document (:doc:`/mm/damon/design`).
-@@ -264,7 +264,7 @@ Please refer to  the :ref:`design document of the feature
- <damon_design_monitoring_intervals_autotuning>` for the internal of the tuning
- mechanism.  Reading and writing the four files under ``intervals_goal``
- directory shows and updates the tuning parameters that described in the
--:ref:design doc <damon_design_monitoring_intervals_autotuning>` with the same
-+:ref:`design doc <damon_design_monitoring_intervals_autotuning>` with the same
- names.  The tuning starts with the user-set ``sample_us`` and ``aggr_us``.  The
- tuning-applied current values of the two intervals can be read from the
- ``sample_us`` and ``aggr_us`` files after writing ``update_tuned_intervals`` to
-@@ -377,7 +377,7 @@ schemes/<N>/
- In each scheme directory, nine directories (``access_pattern``, ``quotas``,
- ``watermarks``, ``core_filters``, ``ops_filters``, ``filters``, ``dests``,
- ``stats``, and ``tried_regions``) and three files (``action``, ``target_nid``
--and ``apply_interval``) exist.
-+and ``apply_interval_us``) exist.
- 
- The ``action`` file is for setting and getting the scheme's :ref:`action
- <damon_design_damos_action>`.  The keywords that can be written to and read
-@@ -743,7 +743,7 @@ counter).  Finally the tenth field (``X``) shows the ``age`` of the region
- (refer to :ref:`design <damon_design_age_tracking>` for more details of the
- counter).
- 
--If the event was ``damon:damos_beofre_apply``, the ``perf script`` output would
-+If the event was ``damon:damos_before_apply``, the ``perf script`` output would
- be somewhat like below::
- 
-     kdamond.0 47293 [000] 80801.060214: damon:damos_before_apply: ctx_idx=0 scheme_idx=0 target_idx=0 nr_regions=11 121932607488-135128711168: 0 136
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index 2da7ca0d3d17a..c16a3bb288d07 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -86,7 +86,7 @@ To know how user-space can do the configuration via :ref:`DAMON sysfs interface
- documentation.
- 
- 
-- .. _damon_design_vaddr_target_regions_construction:
-+.. _damon_design_vaddr_target_regions_construction:
- 
- VMA-based Target Address Range Construction
- -------------------------------------------
-@@ -930,11 +930,11 @@ control parameters for the usage would also need to be optimized for the
- purpose.
- 
- To support such cases, yet more DAMON API user kernel modules that provide more
--simple and optimized user space interfaces are available.  Currently, two
--modules for proactive reclamation and LRU lists manipulation are provided.  For
--more detail, please read the usage documents for those
--(:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim` and
--:doc:`/admin-guide/mm/damon/lru_sort`).
-+simple and optimized user space interfaces are available.  Currently, three
-+modules for access monitoring statistics, proactive reclamation, and LRU lists
-+manipulation are provided.  For more detail, please read the usage documents for
-+those (:doc:`/admin-guide/mm/damon/stat`, :doc:`/admin-guide/mm/damon/reclaim`
-+and :doc:`/admin-guide/mm/damon/lru_sort`).
- 
- .. _damon_design_special_purpose_modules_exclusivity:
++/*
++ * Verify that damos_walk() rejects new requests when
++ * walk_control_obsolete is set.
++ *
++ * This tests the invariant introduced by:
++ * commit 33c3f6c2b48c ("mm/damon/core: fix damos_walk() vs kdamond_fn() exit race")
++ */
++static void damon_test_walk_control_obsolete(struct kunit *test)
++{
++	struct damon_ctx *ctx;
++	struct damos_walk_control control = {};
++	int ret;
++
++	ctx = damon_new_ctx();
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
++
++	/* Simulate shutdown phase */
++	ctx->walk_control_obsolete = true;
++
++	ret = damos_walk(ctx, &control);
++
++	KUNIT_EXPECT_EQ(test, ret, -ECANCELED);
++
++	damon_destroy_ctx(ctx);
++}
++
+ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_target),
+ 	KUNIT_CASE(damon_test_regions),
+@@ -1485,6 +1512,7 @@ static struct kunit_case damon_test_cases[] = {
+ 	KUNIT_CASE(damon_test_set_filters_default_reject),
+ 	KUNIT_CASE(damon_test_apply_min_nr_regions),
+ 	KUNIT_CASE(damon_test_is_last_region),
++	KUNIT_CASE(damon_test_walk_control_obsolete),
+ 	{},
+ };
  
 -- 
 2.47.3
