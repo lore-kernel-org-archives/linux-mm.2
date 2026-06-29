@@ -4,163 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8943CC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70703C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:04:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6771C6B0111; Mon, 29 Jun 2026 11:03:48 -0400 (EDT)
+	id 651496B0117; Mon, 29 Jun 2026 11:04:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64FBE6B0112; Mon, 29 Jun 2026 11:03:48 -0400 (EDT)
+	id 628966B0120; Mon, 29 Jun 2026 11:04:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53E066B0116; Mon, 29 Jun 2026 11:03:48 -0400 (EDT)
+	id 517DA6B0122; Mon, 29 Jun 2026 11:04:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2521D6B0111
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:03:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 901698B746
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:03:47 +0000 (UTC)
-X-FDA: 84933269694.01.DB58B8B
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010013.outbound.protection.outlook.com [52.101.193.13])
-	by imf03.hostedemail.com (Postfix) with ESMTP id B542620013
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:03:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YiHj4qoW;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782745424;
-	b=zuUF478c8P42ih2Ot51t1URELclgtAEOo58fq5ETqYU2VXh0P92aLLXvFCoRR0hy60yUx1
-	IXzcjAmH/LHMjt/S/5H4AdlPBoK3VUbOVRwt4z3m5JQ0p+0BlzZti1DJPSQnyjyWl4qtzq
-	ZCE8HlzAO8p5/CeMJd8162kXIVTZiU8=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782745424;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 24D316B0117
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:04:07 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3748A018A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:06 +0000 (UTC)
+X-FDA: 84933270492.27.E1D1195
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C8E5614001A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O2jn/yVc";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782745444;
+	b=2vAswdgzIRpRhVRGX+FjwWViI/iDa68fzJNi0j3LM4RekKWraEbkfCL2d+eAPuFvUqiDSQ
+	TQcFWXq4mpPLaIXV0bfDDZARCiuUw6a7LBwosZImoAVKmbfV/VmcTYiDJgGN5KfqWp2rks
+	IeyQ8gw5bCCtpnwJUtx4SQ7Gf9sOrT8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782745444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J6K90pZSfJWU8xJmLqocD0fGt15EHtm32vR2Kr7HiP8=;
-	b=eQBDZjOJqxwLDWpJgdICIPgl4wOVlyauzroimtZUekJc/0EPb3n9VKa92SeFJAA3Ge7lyz
-	0w8b69BVTnFaYPAEy1KMws6NoT8lGmuw/SOMllQaro4/iGvd/5I+NeRHG2C/wfvFpkaTg9
-	sIuZmVi0cJTZbNZLkE3IZxaalSJp2pE=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YiHj4qoW;
-	spf=pass (imf03.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.13 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QBPk2BYWylt0QrUFtF98/udXiT8plKaYjHi/+dXDNDvWqwZOPuOLbxOrzMZLQprho5DWrFRdS/JalDAG9JIbWFmf3nqs6LuooTz1uZdKyJKiHJuhr+XpH141WGNJv/HaTjIdx4M2xdnTL/D7ywymftFHTjFe3kJzZExuf9pqRUTR56AMyniI1BFWI8WgJrgGoJTANAwrbPrS+b7Ot0ALssOwxr622OciM2PodYkj9N8JHn0aysGDFaunCpgFMvna+jlFFdMtYZnBj2n3jpsYuhQz5YWQFtE9R7/noOGGlt0VX6QoPusFtlY7kODd8AEt/PHHTDAsA9QcWT7ANcv6sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=J6K90pZSfJWU8xJmLqocD0fGt15EHtm32vR2Kr7HiP8=;
- b=PIaLvTklvu5oM2Lq8yYVfLpz8tNJIJ354mttgDqOSZG2YaTO+gF4YsVeH8DDs7R0+3NmUMaxXSlApsqoL5qusBVeiFlheQkYaoL7koMOL1ool2ncTabQ3W8GPQ4E8K2nBG+yX5QIPTuBbMmZR7gmFpN+sq4oV4+YZzDorwwnGTTj6vxL5pOqilqfFjIo6r19pbi8jCPjaNaNOiZDZYcX4KtRpr26vevAPv1lH8RqmCFyfzXMXt5z/ZmbE6BRRn+iUb/JpA//7GS2RX+Goi7RVItswO3nzZmLi3FBGM3bCjEffp3f7ak7uf/8HEOVbsyEfyQFLOXffMHDLY6JI0eN1w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=J6K90pZSfJWU8xJmLqocD0fGt15EHtm32vR2Kr7HiP8=;
- b=YiHj4qoWqboni7N41bYCh8iOCaRf3wTq/8gQAIEz9J6dZsmLtBCr/4BaSN9i7UpP8mp4l7vhkXGOkc6j3ZJ01t9i4qgShdXKqvR7g+rv6VqatzLJs1+VEMZdoF2yC+QMzJVvfMGWIr734J1dsNEOPwjtnYlg9/65Ud60jhKMrNoZ72K/z56HIkRO93bj5yVa0Q+Jjk6TId9ifnQol6jwZcmKtx6xBbdRjzk3QvYeZGmmlNIzS051QS3N4vpSMJoSd1mZOE56hvHU6+9L5mEHR2Os+gj7lXu/iVPpZfGuVQ0lpcrkHpIW7MVzIMaNZfcGEPI3BPSEUmOTq8MmaBk9YA==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS0PR12MB999103.namprd12.prod.outlook.com (2603:10b6:8:2fe::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
- 2026 15:03:40 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
- 15:03:40 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/4] mm/compaction: stop recording free page order in
- page->private
-Date: Mon, 29 Jun 2026 11:03:38 -0400
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <4CD1FE9D-3860-4A55-ABCE-13C97DB205BC@nvidia.com>
-In-Reply-To: <220774cb-ba5b-4a12-a649-955c83bfc704@kernel.org>
-References: <20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com>
- <20260628-keep-subpage-private-zero-at-free-v1-1-f4ce3930d10f@nvidia.com>
- <220774cb-ba5b-4a12-a649-955c83bfc704@kernel.org>
-Content-Type: text/plain
-X-ClientProxiedBy: BL1PR13CA0208.namprd13.prod.outlook.com
- (2603:10b6:208:2be::33) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=FhJ57wjixnXyfz65Ud2mcgvSt6Jn+r9xjHxY5R6qlC0=;
+	b=GueFN9daduMDQPKVFO+4SX9ElD+UkivW4qkD0dWk/osRPo0NODoAXVvOh/hd9p1mhoQW4J
+	WjIyqKNw1kCb8Ze3GUWB18SnDp7GWM/IUDLGSdCd4IIGNBbs1R26K9yZ5ZHops2F1K5EDP
+	KUGQ5m70VCHxep6pgpcpWVeiBTV0xo8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="O2jn/yVc";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E5A0443F06;
+	Mon, 29 Jun 2026 15:04:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08701F000E9;
+	Mon, 29 Jun 2026 15:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782745443;
+	bh=FhJ57wjixnXyfz65Ud2mcgvSt6Jn+r9xjHxY5R6qlC0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=O2jn/yVcJJ2mqZUA30Orcz2uGFpQLJdO2WJ9hUPur3pPLa7moFzYE9SUb918PbEdb
+	 MyXn6ShIYGirhXnDeUCmEVvQdsewjITy/LBTHd8Olms6viNugWfKgiMlVhT38HMaet
+	 EDH+wWRGtVQNyIQpwwfKCYN1A4mUGwmgGgiHbUQY7HF6YgsMy76EpLC4noF59GbSO/
+	 hdAT30kDCbBl6SsSQ5D+h+OdC0VdPdvJ5imAeow4nPUtGXAEqMPS5LuGkODRNR3Dob
+	 0YZVEhUjATDyCtM3s4/F2iGMYhvzZ22xHKtVEBhYLtiGU6YnHIhfUP7lJQzwZu5vnU
+	 MCPaMd2zaf55w==
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [RFC PATCH 01/10] mm/vma: introduce VMA virtual page offset field and add helpers
+Date: Mon, 29 Jun 2026 16:03:41 +0100
+Message-ID: <fc51a14e71c78047ff9d1b1b8c97cfedb84c77bb.1782745153.git.ljs@kernel.org>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <cover.1782745153.git.ljs@kernel.org>
+References: <cover.1782745153.git.ljs@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS0PR12MB999103:EE_
-X-MS-Office365-Filtering-Correlation-Id: 73201922-ad59-436b-4f00-08ded5ef9a7a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|7416014|376014|366016|1800799024|22082099003|18002099003|56012099006|6133799003|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	B0k2AgBSilynUtWKMJoZGLaw3BYy5m0N0ba+yS8epWyCJobUY5cZBVZCIfquaWbF5D+pCwHXQ8Lx88fkDYMblr2qFGw5c0sRpCI44Nmqfd9qyjOF/BbaCqshvo9dcHSWY0bIUQWOJJyW297mHzbSzk6yMJhzpUmO1SFp2aGk9H/5aTmUlfwWrgxlA2sMrN86zyqNGEA18fyzDvBiY58Z7uUNfgarQ171oSLkqILc6MHfuzJ5AWiE9yyzpNlDQ9BCXMB1miQwEOZDNMlOhrUPCPfM3ffryLUM/HJsrpqOG5RYCDwhmEkI0snZOzfkXcH4t7K/iwx62CyDGnDV2xm/gDXGRyeMJpFpZ6cykX3tj29eoEQpZPA6BR2sWoRaqbSQqqUnMBF9HSHLpMXKZ75xxQFKpD+ULXGYHq9+RJuFwAFqqHUNIc77QlrXgsEWnSfm4Tzoq98U8m4VL5F9QepzWmoj4qVDKzOt4ldbCmsiTtKEd+f6x6s2qn0ixcFkU47RoZBbwZ9QUboMgH6rodfQTWHMScUJWIg8TycmptaZLNEToscgHLrUXz+sGzTyQ7+1I4aCtvVlrJwZvJL1qd64P103thHcCN5ONBLfG/bMr4b07dIs5k7taNNYyIhHUc1iovJirJBZS6YEF6sKqhM876yoBFGYW5166r/S7qMzGw4=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099006)(6133799003)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?z4T8r32oL7Y0n5kve72EaGLjiF6iZfnnbLxyMKCJeKg1qT8nqdAg2LtO94Ju?=
- =?us-ascii?Q?AP1Z9bLzMuEr89n+Vfx3scoRx3hbRYJE8sgEE6l2ewAM3eVDVbcP1k6Mqa9o?=
- =?us-ascii?Q?0DBMdMqdXWZxAbny7sKu2ciJZ7lgEGu8U4KKr3MtfqDYCT8NpE0Jhx6tT8qQ?=
- =?us-ascii?Q?bD6KPTe4RSL8sXZFl5aV/V0FAIiMNj3PGixkQV2vqXmw6xPy3qEhx4uk9GR8?=
- =?us-ascii?Q?oYg3hZhhwwJaErU4Nw7N6caeDp6mnc6UmxaGLEnmQz0ldxzlRlEXLdi60YMx?=
- =?us-ascii?Q?kegHwA9muOaXkB3AjZRiO+SCBclPsCUPmLgTC+b/llLYymfI2d9OYUv9Q+P0?=
- =?us-ascii?Q?djSrkgeD/t2z7eXFPs1RuU4s3uDd0QLmwWAldDU9TByYBFF5TvdMyhcjmdu7?=
- =?us-ascii?Q?7P91GFkQyHeNePcKc99EjSfIMC/WPDvFSGcw9zMoQPHI0LZpeTP7cuqrQdPm?=
- =?us-ascii?Q?UpHFfySw8J0VDjdBARQjRmH2kuR5rk9dm5/GJTbko0Ssa4iMfUQWbsPQhhyl?=
- =?us-ascii?Q?AeJ2B+ywnTPedpf59BhuZFhGWaavdbhpfWcpw4E1p0MIpy4bI7qhgLcEUQL/?=
- =?us-ascii?Q?9eTIv7gYlcs9DZ7U/CDThrXRjB5SqvvVJ0+qSMi8d7x0NJ3HYzlvwaB/afZ9?=
- =?us-ascii?Q?wAoNdfPtpO3GzqORbQN8wiTRTLFi8wY6n/q/68LK8Ai8rpGmjBSTa1hI6YHa?=
- =?us-ascii?Q?c4BEXJ15TkhTdu1H5HyqTetYohcYNt/uwePySHv5pftFSHchtwDZ6hM2svB+?=
- =?us-ascii?Q?im1UkJtQsv2YFXls9ipJXWj71nPpd7CUnXj1hsbUAWjMFxJMwo7eTobC3vl6?=
- =?us-ascii?Q?sPYsoWgHcXCoXy2NLMAl95dOv+wY2V3Ty9agAvrPrf4vXS6ro1Y/lLDnF/fK?=
- =?us-ascii?Q?dZl9en0l+NvZ+DvXs3awWkwlNSTee6mKuILIbT05S9CWdRDua1jf3GRO8g7w?=
- =?us-ascii?Q?OD8ljnMg9wQU6GL0rPQpK8XGNO7cohPpg2NO6BE66vhXDVsyDtYphhONK8vS?=
- =?us-ascii?Q?gEs22oiH5gIUVNMNtK3jrGs54KjYM16rwFIe1ILvRvt966RDuvzJDfssJNeC?=
- =?us-ascii?Q?B69Cs/OdR1py/yU3pLlzDyByH/6YnwoJoHsE78oI43zIsGZDu6rBpsa/lIez?=
- =?us-ascii?Q?q0vIE5yQdeILsWgeAyt6vpkVX1jWQPQQxqxuCFSq8sGnRzEdkiu6LRs0u7aX?=
- =?us-ascii?Q?DqPdTt5vkVoqh/eKIq1LBIfX+Lvh+Oa9LDdqlkAltZNh02/GquI3CsmPARK8?=
- =?us-ascii?Q?TwUmLTujFt9XTxeuZr0FEnPm15dI0Pv+DPoE+gDXEme+FkRoX4dGIH5nEQUK?=
- =?us-ascii?Q?9gHrKfmTHrwsdUAf+bu5tN3RdoWvnFDUUnvy9XRfzZjcJifwuvf7GEwHFdFS?=
- =?us-ascii?Q?kIeNDTKEAzrLM/Pw4eo0NTLRh6Nqkcq8XE/PPDv6H4C9vZMcozwSKe0xzVg9?=
- =?us-ascii?Q?IyQfCxzQuHTpXObI4qfi/3UZsq7jUM8O4d1bJX73VYB2ci8dK1hl1JJxpdmh?=
- =?us-ascii?Q?q1kKg9TX6M18H3znKidKrJ4LgqH3apvgMUlKRrQ0emP70D6ETbGy6BKGasNN?=
- =?us-ascii?Q?/AzR2XHa+4+HMbfvBo+/o4w2UY/NFHAjLMBChZ+CHDBudSr/GHP/sws7mGI1?=
- =?us-ascii?Q?C5m63TpBjV6mpqej8i7OB2NjwyuNz/Tv1BoRCmmV7FmrYouMlefUcKNCArhL?=
- =?us-ascii?Q?qHxW+tn3OMwNLvLhLdTHk4K7Yi85x9YuE23uEz66BUFPHJ7q?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73201922-ad59-436b-4f00-08ded5ef9a7a
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 15:03:40.0079
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xSLWax/TGUJVVhhK5GjofCYdAsEazr9RONh0hOeoGazy2yB6yHG5M1HAeb6L07FE
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999103
-X-Rspamd-Queue-Id: B542620013
-X-Stat-Signature: h8imdj8iz767ytp7qoxyg9uhwikijq19
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C8E5614001A
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782745424-716656
-X-HE-Meta: U2FsdGVkX18f3oDQHfhMcXfqt7/+sy02+LrbwNvfoaREYp7UVDSfFiTvGrrkqUlJ4Anbjuzcrre0AXBhoYPeS98mKv+FoSpv30PzjgVbKWm95Ks+cDt0VCPIrI95IhNnG4VRftJiEULyqR+2lIUjeWIkd6LvoTTNkIKOSHesk/PxC/akx+TsADP6QdaGTMLxg05nv33BVQJnmT6Qg8dNQU8pFA1WkKSiqAzy3eyKBZ/IAX8jjNwQ7wSiZ+lSWl8RexBhPjZOkTxRdCMeLLic0GzcjsEVpicEgylu4/8SpiPiBNmn5ferSrNrMlmZbs37GHlWU73FW3afAsoE7o3oR37rOrJev9UljchK5t05n2AGVztObJYGQ4xQ80B6819EYpfwerNmycOCbplt+6tR0OC7+QqsFMxLi+GKrU64k1kCL8uUo3FzUQdmmo+gYjLgQW5xyY6vc69ZiriXpWnS3/47xMXKJRdAqRHeBt/XZuuSi7zslyOP0Gh/09N7THFD1PjG/y5PATWjTaKIlkRso3VCqrOj6YIdYx+QLYW94em3Choi/BnPJXyoxgCJSGleyUJkBu79ubBdGna0mETKhhjI3bPGzEUKf5zr7c2wn+trHEHxj0WV8ek2tiSmA9Nt/gxi9SHfjdVe41H6govu0+ZfZMSfUaerRzHNWHD91HV6TLWpJ+brzOV2w3oATAminIddQwnukjdYMrlnKNeINPpnX948vI/CZ9Rtuj2aZBfee+0lQpSsMXTXsLfVE0SnhFpDUQMFb4jQRSo3Dor7KcQo6Q1c7yoznw2qAYPtCRK6fo+U/rtuw6qleUflYdodPngTIpzFJStIuypeLBcsEvP2Ghs/DRak2UBLMJqILQaPfEL3+nevrKZIakGd0pIiNNMXvcAj2Kr7Wjd2ErHuiIL43njg6UX1M3xvqJ7oAMSwuklNqLZcyPlBSHVcDgetSFrKtGWy29LeZmfHA/m
- 0eEw+4nI
- cQM7LbCb2+V4Z4fkChrdJwTTly/dB3YFteiYPcCJ78tPmXppvUEP/i+Hzi4TI4co7JUN1NZQ1UBX0C7k9obLViTc2E35x6tr8cLGgm6Mf5M8NBV4bO9mHCdDN0h3VYjnK5PN75wtc8++33ZMUfljEyMDcRaG3z3WrE/sAGr5n0MXw5mhw0gOIzjYFYIMFXIlWu8+h25zRv3O/OS6RerUmCqi8N8HX9jHBuAcKpONAPRNJo7PJO11S2lJ8W5a7OLHoQJHLty8HQwbRGxTKi3t3AS6EiRsV6Vwg3D3twqxT0r26zJLpCIDjhkrKA/ywhjLsk003j6K66VEFzY0zSuVkWi7jdbEfe3Z8zZydrrG2em++zpg6Nps/Tnq+yCrLpViH//QagrGYS1of4uM+0Gl4T983xGPXz9iqk1XP
+X-Stat-Signature: bwhuynftxdzdckkog4go1q68n77ggr15
+X-HE-Tag: 1782745444-592202
+X-HE-Meta: U2FsdGVkX18ZTdihUmhxh7gwzqO5Xky8TPELmy+hbODlDLQn37WlAqXrjaeiJC9Nl4NaFSe6RKiLeiFCmTtn9AxLVENKUDv/vxKMEFxVkMpHIRRuMAeENVRRoeh1zx4HQSI9xLE+N8SugialeeVpo503PXzaUfnjGNKRtRoHYZvKgQK1j6WYumv08UyamEXqNElN8vXthovCGPpvkKP0Wz5sjL1s0IkEY1L0ps1pOWMCwJdNGfaHGkU8chMPVv9ONO5sbx+8H5faDnA69+m9wD4vPERfMyixh59EmOkAP7KtVQMHbdX9m92FHfZMyHLnzBV1/Wnj1OEcFPNlT2vpgtsAPypRR7KvNLpjVlC2/Du3jzD8f2dYqWH7c2pvLYSNZUccJX6fDVeTmItWuJoWPknOecSJwqrfWrjKThHGljYEvbVV2Q9vU9SkaOrzhgTmqexi0fuDzcOh/qm/msCEgUazdgAvrP91hlV+SdW8MvTW2Nr1nihdVUUR4L24FuwG03bu3jz717JvT+jszrQFt+stgBjwXYxrCGYjcl/ToXCuMUkcAfcFfC/seUpaT4IYkrPCtzEDS9iqiwygXrkVH1J3iMkQfyG0AIWZam+1O24rT9dYf53E/OZp9pJ/UE12JyB7rNfJx0QZJa1HnLDOeHaQHWfhmBszhVTMltWJUePIi0iK5ZYkFlYJWMksT9WdnTiaPblpvRU4PRLiHyBhz63oogQSwoqQXsgj/dU21jgoERkGgdSH6EZAaQoTI4wrLiGSNflrZFbSzSY6Yi9jdd4t6pnkIYZyHaViJeFFhnYBmINFojOaW1k48vGfD/WfBnBmRVooLJk6VzHOwIV/2zEA7keP2mfsIa7rvafh/y3WzQnD0NPBWJizEvxrJKEjncHhYEzKbUGim2qkM8n0UebMfFHji3sFMnzNctpXGAIXOZ88IGGQpwwgw2vmdpSk9diQrwIDSwA12y55jyG
+ is6TiSmo
+ ONm8LzZ5YUcBCTpYAmnOikMXWVG/YdhsidVdh3xIMPEJ1lZCgK4yJyFBFKMo+Pnddv1ANpOC2TdXv7x+bTYTW0WyyrcWrJJ1CXedNko13elNk/uf7GDQCyeYDUIoXuCZ+cDLJSFSmj3sPeMLgOIbGtb9LWSwl8rMz+dMFc8d9UO1SEA2oySbrTbXZSKTBfNd0CYl0EKFpAFYv7lVp/pObzuRrmwO5qom+j41+oW6zswU4MXd4l6N6q1DRDPi7l6aKbHtQEzkZG83gOIdL37yCI3YonnAJwLyoO1Ox74rkgcruRxrdX/4dF4fVsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,41 +123,230 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29 Jun 2026, at 10:28, Vlastimil Babka (SUSE) wrote:
+This patch establishes fields within the vm_area_struct type to store the
+virtual page offset of VMAs.
 
-> On 6/29/26 04:56, Zi Yan wrote:
->> Commit 733aea0b3a7bb ("mm/compaction: add support for >0 order folio
->> memory compaction.") stores isolated free pages in an array indexed by free
->> page orders, it is no longer needed to store the order in each page's
->> ->private field. And there is no code using the stored order. Stop doing
->> that.
->
-> Ah, great observation. Cool.
->
->> It also prepares for an upcoming change that ensures subpage->private is
->> zero at page free time and the removal of set_page_private(0) from
->> prep_compound_tail(). In alloc_contig_frozen_range_noprof(),
->> isolate_freepages_range() is used to grab free pages from buddy allocator
->> and it leaves the aforementioned page->private set until
->> either split_free_frozen_pages() or prep_new_page() is called.
+The virtual page offset of a VMA is equal to vma->vm_start >> PAGE_SHIFT if
+they are unfaulted or were not remapped, otherwise it is equal to this
+value at the point of first fault.
 
->> That
->> triggers the upcoming subpage->private nonzero check along once
->> set_page_private(0) is removed from prep_compound_tail(), which is called
->> via prep_new_page().
->
-> I'm not sure it needs to be said here (or in such detail?)
+Currently, anonymous folios belonging to CoW'd MAP_PRIVATE-mapped
+file-backed VMAs are tracked by their file offset. By adding virtual offset
+as a property of VMAs, we can now track them by their virtual page offset
+instead.
 
-Will move it to the cover letter.
+By tracking this, we provide the means by which to eliminate this
+inconsistency, and more importantly lay the foundations for future work for
+the scalable CoW anonymous rmap rework.
 
->
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->
-> Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+This patch simply adds the fields and some simple helpers. Subsequent
+patches will update mm code to make use of these fields correctly.
 
-Thanks.
+The fields chosen are packed in the VMA such that, for 64-bit kernel
+builds, no additional space is taken up.
 
+The first field is present on cacheline 0 containing key VMA fields, and
+the second on cacheline 3, which contains file-backed reverse mapping
+fields.
 
-Best Regards,
-Yan, Zi
+Given the relative time spent accessing reverse mapping fields as well as
+updating them, there shouldn't be any performance impact here from false
+sharing.
+
+Update the VMA userland tests to account for this change.
+
+No callsites are updated yet, so no functional change intended.
+
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+ include/linux/mm.h              | 59 +++++++++++++++++++++++++++++++++
+ include/linux/mm_types.h        |  4 +++
+ mm/vma.h                        | 14 ++++++++
+ mm/vma_init.c                   |  1 +
+ tools/testing/vma/include/dup.h | 26 +++++++++++++++
+ 5 files changed, 104 insertions(+)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 868b2334bff3..cd826c052be1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4335,6 +4335,65 @@ static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+ 	return vma_end_pgoff(vma) - 1;
+ }
+ 
++/**
++ * vma_start_virt_pgoff() - Get the virtual page offset of the start of @vma
++ * @vma: The VMA whose virtual page offset is required.
++ *
++ * If unfaulted, then this is vma->vm_start >> PAGE_SHIFT, if faulted then the
++ * virtual page offset at the time of first fault.
++ *
++ * If the VMA is anonymous, this returns the same value as vma_start_pgoff().
++ *
++ * This value is used for tracking MAP_PRIVATE file-backed mappings by their
++ * virtual page offset.
++ *
++ * Returns: The virtual page offset of the start of @vma.
++ */
++static inline pgoff_t vma_start_virt_pgoff(const struct vm_area_struct *vma)
++{
++	pgoff_t pgoff = 0;
++
++#ifdef CONFIG_64BIT
++	pgoff += vma->__vm_virt_pgoff_hi;
++	pgoff <<= 32;
++#endif
++	pgoff += vma->__vm_virt_pgoff_lo;
++	return pgoff;
++}
++
++/**
++ * vma_end_virt_pgoff() - Get the virtual page offset of the exclusive end of
++ * @vma.
++ * @vma: The VMA whose end virtual page offset is required.
++ *
++ * This returns the virtual exclusive end page offset of @vma, which is useful
++ * for expressing page offset ranges.
++ *
++ * See the description of vma_start_virt_pgoff() for a description of VMA
++ * virtual page offsets.
++ *
++ * Returns: The exclusive end virtual page offset of @vma.
++ */
++static inline pgoff_t vma_end_virt_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_start_virt_pgoff(vma) + vma_pages(vma);
++}
++
++/**
++ * vma_last_virt_pgoff() - Get the virtual page offset of the last page in
++ * @vma.
++ * @vma: The VMA whose last virtual page offset is required.
++ *
++ * See the description of vma_start_virt_pgoff() for a description of VMA
++ * virtual page offsets.
++ *
++ * Returns: The last virtual page offset of @vma.
++ */
++static inline pgoff_t vma_last_virt_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_end_virt_pgoff(vma) - 1;
++}
++
+ static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
+ {
+ 	return desc->end - desc->start;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index b18c2b2e7d2c..b1bf3db84ee7 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -964,6 +964,7 @@ struct vm_area_struct {
+ 	 */
+ 	unsigned int vm_lock_seq;
+ #endif
++	unsigned int __vm_virt_pgoff_lo; /* Low 32-bits of virtual pgoff. */
+ 	/*
+ 	 * A file's MAP_PRIVATE vma can be in both i_mmap tree and anon_vma
+ 	 * list, after a COW of one of the file pages.	A MAP_SHARED vma
+@@ -1038,6 +1039,9 @@ struct vm_area_struct {
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map vmlock_dep_map;
+ #endif
++#endif
++#ifdef CONFIG_64BIT
++	unsigned int __vm_virt_pgoff_hi;  /* High 32-bits of virtual pgoff. */
+ #endif
+ 	/*
+ 	 * For areas with an address space and backing store,
+diff --git a/mm/vma.h b/mm/vma.h
+index f4f885615a92..68fb2f49bbab 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -263,6 +263,20 @@ static inline void vma_set_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
+ 	vma->vm_pgoff = pgoff;
+ }
+ 
++static inline void __vma_set_virt_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
++{
++#ifdef CONFIG_64BIT
++	vma->__vm_virt_pgoff_hi = pgoff >> 32;
++#endif
++	vma->__vm_virt_pgoff_lo = pgoff & GENMASK(31, 0);
++}
++
++static inline void vma_set_virt_pgoff(struct vm_area_struct *vma, pgoff_t pgoff)
++{
++	vma_assert_can_modify(vma);
++	__vma_set_virt_pgoff(vma, pgoff);
++}
++
+ static inline void vma_add_pgoff(struct vm_area_struct *vma, pgoff_t delta)
+ {
+ 	vma_assert_can_modify(vma);
+diff --git a/mm/vma_init.c b/mm/vma_init.c
+index 715feee283f0..710b18849a36 100644
+--- a/mm/vma_init.c
++++ b/mm/vma_init.c
+@@ -51,6 +51,7 @@ static void vm_area_init_from(const struct vm_area_struct *src,
+ 	dest->vm_end = src->vm_end;
+ 	dest->anon_vma = src->anon_vma;
+ 	dest->vm_pgoff = vma_start_pgoff(src);
++	__vma_set_virt_pgoff(dest, vma_start_virt_pgoff(src));
+ 	dest->vm_file = src->vm_file;
+ 	dest->vm_private_data = src->vm_private_data;
+ 	vm_flags_init(dest, src->vm_flags);
+diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
+index 5d7d0afd7765..09cfbf9572e8 100644
+--- a/tools/testing/vma/include/dup.h
++++ b/tools/testing/vma/include/dup.h
+@@ -573,6 +573,7 @@ struct vm_area_struct {
+ 	 */
+ 	unsigned int vm_lock_seq;
+ #endif
++	unsigned int __vm_virt_pgoff_lo;
+ 
+ 	/*
+ 	 * A file's MAP_PRIVATE vma can be in both i_mmap tree and anon_vma
+@@ -608,6 +609,9 @@ struct vm_area_struct {
+ #ifdef CONFIG_PER_VMA_LOCK
+ 	/* Unstable RCU readers are allowed to read this. */
+ 	refcount_t vm_refcnt;
++#endif
++#ifdef CONFIG_64BIT
++	unsigned int __vm_virt_pgoff_hi;
+ #endif
+ 	/*
+ 	 * For areas with an address space and backing store,
+@@ -1322,6 +1326,28 @@ static inline pgoff_t vma_end_pgoff(const struct vm_area_struct *vma)
+ 	return vma_start_pgoff(vma) + vma_pages(vma);
+ }
+ 
++static inline pgoff_t vma_start_virt_pgoff(const struct vm_area_struct *vma)
++{
++	pgoff_t pgoff = 0;
++
++#ifdef CONFIG_64BIT
++	pgoff += vma->__vm_virt_pgoff_hi;
++	pgoff <<= 32;
++#endif
++	pgoff += vma->__vm_virt_pgoff_lo;
++	return pgoff;
++}
++
++static inline pgoff_t vma_end_virt_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_start_virt_pgoff(vma) + vma_pages(vma);
++}
++
++static inline pgoff_t vma_last_virt_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_end_virt_pgoff(vma) - 1;
++}
++
+ static inline int vfs_mmap_prepare(struct file *file, struct vm_area_desc *desc)
+ {
+ 	return file->f_op->mmap_prepare(desc);
+-- 
+2.54.0
+
 
