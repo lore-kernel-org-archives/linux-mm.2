@@ -4,143 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9D7C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:21:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73E94C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:22:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D14F76B011A; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
+	id 43C476B008A; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5456B011D; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
+	id 41A756B0093; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB6A86B011F; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
+	id 32B5F6B0096; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 937026B011A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16BE91A01EC
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:21:37 +0000 (UTC)
-X-FDA: 84933617034.15.A192952
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 14FF64000F
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:21:34 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=asu.edu header.s=google header.b=pB0btLtA;
-	spf=pass (imf07.hostedemail.com: domain of xmei5@asu.edu designates 209.85.216.41 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
-	dmarc=pass (policy=none) header.from=asu.edu;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782753695;
-	b=EoX4RY+GmrWpUonFLMbkRSbYTgynNAr1NIYRgBYwO/RMpPfCEQRDfJYPoKMrj98DfIqu+L
-	m1UmwepDGrA9Izwyy6Ar0cBjO98l5nBzXO4fQ0PcEKs97tFW27PKWgZw6NmZm08JefBmzE
-	KZO7/d07qEe07J9MDMWYw4KpVbCa6Ek=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782753695;
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3D66B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:22:20 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D57E1A01F4
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:22:19 +0000 (UTC)
+X-FDA: 84933618798.21.7341D5E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8FF661C000E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:22:17 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTo5qVX1;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782753738;
+	b=P65Pv5feaJI8I5lBK/lp9YwsjgLAeiXgd3QvlKXMBZXwmhCt+zDTfu1+KretgoTa5o2lWd
+	pzda9m5aitfgbatx8pSgZ2kmC4WraJl3QpoMchB2S/ihaaO6Jkp4v3lxjUdgYkLJLP5raJ
+	taYikfTSZCYQ9NV/9mSQ8liZ3/pJJOs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782753738;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
-	b=rPOnWkRanEY8XmglWTwZOFNIKzYF+oE6jPXAIRpj9Cf+rcRANgq/8lAHmmXa2qnZMOTc+w
-	sut+xkzbFkmaAhmjLYQQet7//DuqkNjK3CnipqIUuUV2V9+23qg63ZyiiMeWg6gvD5QtJm
-	cj4o2U6/lCcXII7WRu2Lb+qAqWnMd0I=
-ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=asu.edu header.s=google header.b=pB0btLtA;
-	spf=pass (imf07.hostedemail.com: domain of xmei5@asu.edu designates 209.85.216.41 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
-	dmarc=pass (policy=none) header.from=asu.edu;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37ff798fe89so855198a91.1
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:21:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782753694; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T0iVRTiFIaNOF68EDuYtPxF6iijNf8hSz4OFDr3Ng/M7EwoL/4Osj+c4cQhg37K0uI
-         lEKyGtn7Z1CbZUgq+P+VKB9XgnOesuYdmYiNpmmROidxqYSZVvS2zECq9f7EMhYlxZBv
-         in9BoxzHPtHWnrT2+zV0xtHzcaYTfBpvTmqgXbMrlpdKEfXZrc+gujgel32VjyVvNB0v
-         ckIh+6rQmLvmFGLTiF5Gbp8XI1SJ/AsWFFqFM2OJMWCITEbwC+3dFqT/YUU6e2F0lgve
-         EY3f892k25xaKtcQ3uxuW0gbhfOrYdM5Mqd6HGhiP7tLugTmsJS7BJoEyu5g257s3k99
-         uAeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
-        fh=yc9PYn+b2XWKQOXnKEYW1vS/HkPV0yLna5uEvIqw23A=;
-        b=hS1tEt4lUPPgh9C+UAgZdZNVI621W/sjrHQb57ziJK3EBsk+wEF2e95TS4LBKKSMMD
-         j52cC4AGIMVicg7GEDtft0VYTWFO7lj/0JG2okczeam8bYbgGLpNf0y80ogiTkE0sXtf
-         SRmZTpeK/TVeziSubtZksq9uYpWTymIzkSfG9KprSh0YPZ66/ADCTlV0CAYtS+WOtNIz
-         Siz2mo+LfOQz8BjAd/7G+KHK8us37amoaNEVQN8sh/2gWU2sSS+xL45OHTCRa/3uN9od
-         dqlQTzCdXs4Kuknvtx0+vkP7MlpTtyjYEZ4gqP/ELWY8rYjJH19d/eJaj3oQ8tqgyHRn
-         +tkQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=juWgsiwKrfmDYFjWzFD07h7xasT5wM0m/CbZLCSQTVE=;
+	b=f2fuhzq5C2bk8apJVnEfZiZf9pnIEfcm0v7iJn2cfsT3dBfp/UZfzNFwhyWZViLkQq8eKQ
+	l95s/sAQr9mu4lCMzNwSJ9GK2D12yzajjDSWfcmF8eXtsn2ddXJIYjjrBHEyLk4dUClgt9
+	0qmudlL9uwQgpAXqlURAM1UaldL8Whs=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uTo5qVX1;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E18CF601EB;
+	Mon, 29 Jun 2026 17:22:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2699C1F000E9;
+	Mon, 29 Jun 2026 17:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1782753694; x=1783358494; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
-        b=pB0btLtA2qTbSwXWQxZvWdW+G7gqm7dtxQnDoGGqNpe3CmsDViV2r2lbS8NrTkCuuA
-         GCYZsyBhaDPGGfJzrsOOI68GbET+cwEfzeUaRNOW3skWCLqFU8WleG25SwySIbTpW6iy
-         Egxy5wQg1LebrtYHrvR1IxYpT+w/B5OgsHQ8KhZ0MQwseM3VM9wLh8OaiBE5LSb4zPi1
-         bTLIDEthWakJYeOm3ilrG2i6QJwo3vSGOLMpy/Z7PM0APpr0hy159ALyIUYjB4iY/bBD
-         RsUhfCqsShKhYB4WgBuo/Qw4OKRr8TMFZH+4BULneVRj+bLcRbDXTPo/kXb5JI8957kw
-         TRJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782753694; x=1783358494;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
-        b=kyYzfspDrbP3Fec3HuaPQnRA/9LiMGbAJEkSK5OrVKn9Yo4IEwA2mYBwV5cYDe9qYW
-         XYOXDZv5Dexm+1DoZIoHVowqeqotoRgVqT8r1VNFrogUu42RtMSHGuBGe2+bGvj4gjam
-         Tc3LsO895HxgUiJksoD7quQqx5eDHSyq9UN86PFT4gcQtPSXglJCR0S/qfa2NB7UB32t
-         JxoVX7JvIJKIUqoLpTqjpcWAjQVLXmmHlfze+DkFmyYTWeDUgnfGrRoRpojRdcZTkXvD
-         ZZJ0rtJCwGBQz5WrtAq3D4OymN7ov8Rk+ZPa8Zp1q6cNjSQ/w0RvZkIBb7QtMrKVRw2k
-         b+/g==
-X-Forwarded-Encrypted: i=1; AHgh+RqvVJisFWILJYvfBwvzLXdmORP7rjfqLVxRQbDFpfKGtwuCql6O61qkWoo+Uvyo33MHP9b71BwEPA==@kvack.org
-X-Gm-Message-State: AOJu0Yz1KnzTo7157I5h8jOBcLIiXU2Y8GEmpH7zhlXJ41lGyCBU2ZCk
-	mlzATE3J+xVuNLABkwC3rNVgzZMgu//EZ02fcjQBBWLhCugafapkN7F8ek7WjCZOCWiOS9EjkhD
-	r6GBgOz26iYXoB7srsZMSAvmE/g/LTXjyy8fSaDWn
-X-Gm-Gg: AfdE7cnRTPiPLP5/P25aOpjXbtmRuq5COiDWfK14sDZjq3pkOLCf1jNMSll2nagC7FO
-	8jEfwUUn30a3fmDj7FY8MSQXSTK0pwEMMiIyoVIOhS2F9EhEPTD1ffhuftOdr1efNQOWImbTrEb
-	jbXH3qPkl94DgCBu/+a07P49YSru5fxsg3bmrorTh3VPBUP33QgZHeCgUgR+5Kh4PXL3eDUazUO
-	YYdDVBiuD48FTga8Vf7UU3j6/Ft1HXmf6zY0NQ7sArEEKw5AKc+pJp/A14F+pRnGAprpCN4cljE
-	qMGeMT4/adI9zH5Vd6ZPtgDdKJZ62J2p5CCtDaY=
-X-Received: by 2002:a17:902:d2d0:b0:2ca:26:195d with SMTP id
- d9443c01a7336-2ca2d53dd40mr2407385ad.11.1782753694022; Mon, 29 Jun 2026
- 10:21:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260626173444.2252041-1-xmei5@asu.edu> <aj7UNceukU9zYeGH@pedro-suse.lan>
- <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
- <499a4e15-34a4-421b-946a-c855199fdbf9@zytor.com> <akH34ycu5-q2Yc_D@casper.infradead.org>
- <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
-In-Reply-To: <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Mon, 29 Jun 2026 10:21:20 -0700
-X-Gm-Features: AVVi8CdDH6df1uqA9evZfvzbBY7svtEDKcDmc2IfSbHyvrdoUr7AcMeuMxGI6qE
-Message-ID: <CAPpSM+TA6ECyCO4J3c9CrezbApMO66Fm5u8z6djDaFj5Wtagng@mail.gmail.com>
-Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>, 
-	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, Yan Shoshitaishvili <yans@asu.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 14FF64000F
-X-Stat-Signature: y7pc89t41buxdpjxtse7wfamuohrzmxd
+	d=linux-foundation.org; s=korg; t=1782753736;
+	bh=juWgsiwKrfmDYFjWzFD07h7xasT5wM0m/CbZLCSQTVE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=uTo5qVX1WCofU7ArQgIge3U5uPhkOafXY7LAqEvLoUorCsTnMWFkxpUZNTf8CHCZr
+	 AeASxor7XbYPpI6VrMzqtE0MppRB7PPFVbH5MjKJ2vTBtq/2HgmS2d0vYeRlCftWN8
+	 M4yhQnX7V544cg53/WuFnz9XZQ23NxJnaDdSzFfA=
+Date: Mon, 29 Jun 2026 10:22:15 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Andreas Larsson
+ <andreas@gaisler.com>, Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Jann Horn <jannh@google.com>, Peter Zijlstra
+ <peterz@infradead.org>, "Oscar Salvador (SUSE)" <osalvador@kernel.org>,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v2 2/3] mm: drop pte_clear_not_present_full()
+Message-Id: <20260629102215.09605f0e9ef66c5f58fe0932@linux-foundation.org>
+In-Reply-To: <20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
+References: <20260629-clear_not_present_full_ptes-v2-0-96089871a1e7@kernel.org>
+	<20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: d3teaazaa3gjk93je5ddzst56umtd34z
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782753694-954574
-X-HE-Meta: U2FsdGVkX18gzYLZ9HTaahVMDEgERfmxGLwwo9lMnqE90CHXmbk0lMcP9wSIr2aNe348Fr4x91WuUqUaMI/EQnf6xi7C0acUjk6oq67GznG3aUG243a9rypny8vxkgGdp3GSAAjaV6bnVFJvuFXBz3nkCbuNZuaYyjA9NMfLuWvvWFAPFlRtJHD0g+ek1p5J0htYDJZ9CgD8uf+sh9uI4XIX9Oh6KEAoVviaaJNtndl9lcUFvvcBu3DS/JIt2JDY1A3T6H2XoFzDbbJXrfZHCOjpjGMg7Nbn6YKxaarqpca8pgrbMg1pLVL8X3N9j4Aw23XTtiCdyOcddWqxe4RXZx5X/YB+slKu0qbya8UACjXH1T5ISu9RjIZgclbyPBZbQrIiK2hbmNM3dUA0JcD4YwUNtiI/YqyKW76JwOc4Mzlih6p/mTdVe9TIajzYzrBSk3SoV+cQJEzmgRqzWxWu/ZVZBf2QPwx2MwFvlVSSYp91eocpvTpO/GmYVe/fOn6HFmroLbVxDSxAexfS6QzF6iSuLSOEv6w3wtJoydX9unpz/8x9vb4zPFXpFh/btMNik4naAKthgNuHdyDdFbYFBUtd2JEEwE0gdp0rG4wYoHwe/GbOIl3P6p3iLBNqz7oCcJa4wy5rAwcz+LBrzr/MP3R46JDzGFNModAOOXPh+gy5l5P+7te8LFyyQ9pP3uBhm68E9UDbvuXo+5CCEnGCrszERhF/elCdUkcGGaX99IlWMuh/lPMYUtpwh3jWExWfuh6Z723DGYfoG+cDK0MVujdzzz2pSQ+PlnkkQAHFjGGbmIwWqfgNzTH+/X1Uo4L98L17USkff/9PjMuiAEOSRAW6dHJaH44/2LHr7kgE2ckt3skgmSlUBeUDJzw738DWyaZ0h/BtYnXAwxyOi6rpT8DHUX3+y2GY47v4QuQEFC/pw+diJASo37wUlkb3RUzFu04WIb1ng9JGVr34zox
- hBfihlHd
- 1qHOSMOqTi7H1yuOxKgu7756N4YDdHS4zVTpDJyvkHLgGKKYSq6PSoKhgog7tBnpP6sH9LuR6+HQzSc5PLEUAyGmDMzsKLUsu5u5jGuLdIUd0pX+8pZb4gOT14XXVnG2VDBBOeBfxY9blIebD/XHx8ER+9Xi/LG1s7hhSgNJIHky1vBK7D63vLKFfF1IM83ksrFIcCMPpdpeDFUYjewNnWUiLaJp4Scm2k9xr2NAN2kYoLFpEhVvU4jIzwascAhsbNghOCY6o1iza0NV6f9Ul2tczuMAMMpn7AX6A3o/Wuj6Ahsn6ieYpHTnqCg==
+X-Rspamd-Queue-Id: 8FF661C000E
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782753737-849525
+X-HE-Meta: U2FsdGVkX1/rTqTtoOULSPAryeIARpcRHoStpI4TO4X6s5mTdnWrIuyBYhJ1xw3QmGwqY2/qQc9DXy6wTVRSYIgIslvO15S5k6grH3R02wbcuXKU7D/hn2HKvUzcaoYoH2S9LRdVxy5WoiOKRjgcTl+FNVKfdhSFNtxKWc396w/tWS6Q6j4/cHfEaxMx20besuE/yOY1i2RDXrOEWK8OycMlamrrXFm9GCnvz5aclFAc7rM0YcFAIMpSQLT8NYilgiWPNqQtFq97pezo2JzJCrg+13IXFQ20cQ0pVIzwUMYQ8BTemKdnWTjJaruWEIrpVrdHerUkwdDJ9mZ1qqPY0VmTsJ2+4u5izt4rAEIWrSx1iX9snmyHaohxuZ4OGu61en1+s4WjmCiXxNE7VDhbNi9xIXJJ49nFv/kujrY78IBs6oP7P7JoMqGPk/BDmqi7bnZKekof292UmAQ9HAzcB+DKN+sKJ6af3ymHDleU6MuWqxLUGHW9oS+WpMcFpJ5JF66N4r76f3PtZ/WcwuwRany/COC3xdmW5cDg7SOpSO0j5SkxyMepJmCoBxMzClSroiDCCrpUjzmcAzQqvM3pk7DMWx9SJt8CHO6nePKEuXnHhcMTwgRRFyuuEk1ZHy4FcvYg1glyj7rQ/Xs6uh/j6sOQM4rppf3QFjHDICHFr1T38Sx7ZbKKzJhXKwwlLr7Ss5dtg+7UV6zexfMZ298ABNtBv3bX5TORMQ7c4n16Zw9h/1zw3AaE1X2NgOkhHk4R+vkCN9dJ2lD9RfrZqG9i57dZw1pLcwGDXfbKb0lWMvs0pNi/bBNtuoQJjmShnMxEzoN8XbkMZQ306SEhnzoUvBVKvh+96bfJn7XH5i+PT10B/7y33i4R3FYaVO+B+iw3xnwhGX91JukIgsnbmLfegG7IyZnCVcqicNPBhbQ/35GwwgBvFu73NmoNGrkCnTnQux7dILLeuoYwySTp3eB
+ WpXSHiqa
+ qkiwBzDQ5nNb3wC6wXOPrw0hXxTMmQKCOv7xzM4SVy7lnYLy9O1W/YiKWgfUeWdvp4hkMzJtfokB5dEbFKPQ9Br8DVcDGT027GA/Y0ushf6WbvybTa3wyI3Y1zcmD+ciM/iWDgE2zv/euU1d3AVM9hjmn7Lna/Pi3Mwi+Vh1OFDg/riR/sHTpsrZczYpce4Kvw1KeH41peVZ1QwlMdaG66ya/7D2t8uzWWVB8rAXxGLaZL7WHPREQJyThIGNbDzEaFAjAFlanKQdkFuX9OUfDeaXB6yRC67I+S+HSgwccJeQUuwHslFAdqY1uTmzqG/HFJgFC
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,33 +96,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 5:50=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
-e:
->
-> On 2026-06-28 21:43, Matthew Wilcox wrote:
-> > On Sun, Jun 28, 2026 at 07:09:37PM -0700, H. Peter Anvin wrote:
-> >>
-> >>> 2) `enter` is not rare since we can take part in the instruction.
-> >>
-> >> This sentence doesn't parse.
-> >
-> > They mean that we can jump into the middle of an instruction, and it is
-> > not rare to see a 'c8' byte in the instruction stream.
-> >
->
-> OK, I see the point now. The main difference is that ENTER doesn't requir=
-e a
-> REX prefix, whereas ADD/SUB/LEA do (otherwise it truncates RSP and everyt=
-hing
-> immediately dies as a result of SMAP violations [you are welcome].)
->
+On Mon, 29 Jun 2026 15:49:48 +0200 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-Yes, Matthew's explanation is correct. (Btw, thanks Matthew!)
+> In general, there is no good reason to do anything special when clearing
+> non-present PTEs.
+> 
+> In theory, HW that does have to invalidate TLBs for non-present PTEs could
+> benefit from a "full" parameter, but fortunately
+> pte_clear_not_present_full() is not wired up anymore ... and there would
+> have to be something very convincing for us to care about that to re-add
+> it.
+> 
+> So, let's just use pte_clear() directly now. To avoid the compiler
+> complaining on some configs about unused "addr" parameter, silence that
+> here.
 
-Xiang
+Wait, which configs do that?
 
-> This means that an offending bit combination is far less common.
->
->         -hpa
->
+> @@ -1022,8 +1007,10 @@ static inline void pte_clear_not_present_full(struct mm_struct *mm,
+>  static inline void clear_not_present_full_ptes(struct mm_struct *mm,
+>  		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
+>  {
+> +	(void)addr;
+> +
+
+We heavily rely on this warning not happening.
+
+eg, one of thousands:
+
+static inline bool page_range_contiguous(const struct page *page,
+		unsigned long nr_pages)
+{
+	return true;
+}
+
+So... what's happening here?
 
