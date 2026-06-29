@@ -4,91 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 788E5C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:34:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE5D6C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:35:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59DD16B010C; Mon, 29 Jun 2026 12:34:07 -0400 (EDT)
+	id C7FEA6B010E; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54F606B010E; Mon, 29 Jun 2026 12:34:07 -0400 (EDT)
+	id C56BD6B0113; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48C3D6B010F; Mon, 29 Jun 2026 12:34:07 -0400 (EDT)
+	id B9B426B010E; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 246116B010C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:34:07 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0EB78C52B
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:34:06 +0000 (UTC)
-X-FDA: 84933497292.01.1206ED5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id DB05818000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:34:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uvduFPxh;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 927CA6B010E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:35:41 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 168521C5EB2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:35:41 +0000 (UTC)
+X-FDA: 84933501282.18.E5A892C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 665E84000D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:35:39 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfDXIPAD;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782750845;
-	b=IbZmwmqH8EcIL/uGOQwVHfj8LWto8hbCHw7KQ33OF6BDEeRNgFGxqT4kULnyV2Ojudpz8R
-	UWR8CMbBWLbML65flxU3Pbie+xjM6prw/QqVHbSajizlnQsiO79wZ6RrCwHmi8v41MU8am
-	E7UjQYDyPED4udS8BJGCM4qJmR5XG8Q=
+	t=1782750939;
+	b=IXVqh+u/DlxksJy+KHRVIQn0Gr//zK4/vui93eXuUQkGYMlVzHz4yeFTdDwG2UkMRBDf5N
+	i/pITrKcN0FIeVqKbTLD+CaDnz6Vpk2xZzzx76OYeJalCdPr4Oz61blNNDEfzUi6hJIQQ2
+	Hw8A+BVtohZgsSDuVnNFBq/7+wCRxEM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782750845;
+	s=arc-20220608; t=1782750939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rSWd/bQSzHe8Iq/VNf2zewGegErxrGJT7kEbZKW8vaI=;
-	b=zR0dnwB7zFXDhXPCpBkNmTqob3AvRcYBabWQK/KbuLs/zZ/tP1rMp+mQinsep4s64gtBk6
-	ThA01dMWMJli3/4pPEq7ipAGIoJSngqzwq5+kYXberOBJu+WqtwX7OemF875PrDpVBYpdf
-	TdM6k616pSFMsVwWHMFGmOpc5mIn4ZE=
+	bh=tqvibWEtQh2T48OiewXhNx0S0zqLKa3gex5DVvzFGOM=;
+	b=zG7ngp7mJxR+7mOqceHwLDlQGJyfmOKOkaiaPdyt1w9ATd4VLqK8yEENCcRczREss30qNx
+	PI8WfjJnrjMWxrDqzx/waZNu8A0yLwtymhKcwfA8hm4YT4A42MUlq4Oa8rI5qwfvoP9IYy
+	TVp/ydnuA/8eY1UglrJrmGm8zXL7W+U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=uvduFPxh;
-	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PfDXIPAD;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1982D601C8;
-	Mon, 29 Jun 2026 16:34:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2707B1F000E9;
-	Mon, 29 Jun 2026 16:34:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782750843;
-	bh=rSWd/bQSzHe8Iq/VNf2zewGegErxrGJT7kEbZKW8vaI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=uvduFPxhRWXqREkwtY9s5rbK583t9aI3KTKK72sfnejBDFsjlclavo/yjshPxsc5k
-	 0N75X4+6j3brru09lXqRqSjYHLcp14T4OWRMQCYJiP/lly2FMCprasmsMTFfxHJ+rW
-	 RZjKL1P9SZ3/pj3Fdy+3c2rp8zt2x9OGJ0CItxDg=
-Date: Mon, 29 Jun 2026 09:34:02 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Xuewen Wang
- <wangxuewen@kylinos.cn>, liam@infradead.org, vbabka@kernel.org,
- jannh@google.com, pfalcato@suse.de, chrisl@kernel.org, kasong@tencent.com,
- shikemeng@huaweicloud.com, nphamcs@gmail.com, baoquan.he@linux.dev,
- baohua@kernel.org, youngjun.park@lge.com, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com,
- weixugc@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] mm: annotate data-race in cpu_needs_drain()
-Message-Id: <20260629093402.a4d14d4f95ccde7d4c804115@linux-foundation.org>
-In-Reply-To: <akJHit8BV-hWRXYk@lucifer>
-References: <20260626053700.2036899-1-wangxuewen@kylinos.cn>
-	<04ea3e05-5b83-4c2d-8759-67c544a7b484@kernel.org>
-	<akJHit8BV-hWRXYk@lucifer>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	by sea.source.kernel.org (Postfix) with ESMTP id 8B28A434BC;
+	Mon, 29 Jun 2026 16:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5B21F000E9;
+	Mon, 29 Jun 2026 16:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782750938;
+	bh=tqvibWEtQh2T48OiewXhNx0S0zqLKa3gex5DVvzFGOM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PfDXIPADcSrUOwdTRGhDf130tTlUjzfb55asHDeokcwn4q2fFY7uD5zpTbQijKU2j
+	 A3h6LyrgBRhD8vjv/PCOQbIS0x10wNp15U53uZUeJSa+ZUUtNYjmvMkaFTX0FdsPtY
+	 5VFsbeAwARiOlYL96AR5bc/UJx13BAZgTchhOZXOoq884yT683+Ba+UY0kenSbPQ5G
+	 /9Y3STPVYFUZGbaD/nfway1UOiEmxiypL1sfzIHXjp28wqpXFD1BkVYOwnVTwzjxBO
+	 T6iDd2rL+GJ7Oq4z7lXn+Gf9jPYSMojIl9QVfBm4ugrQ3F58b1YoFt3gxDwWn1rh48
+	 BJyQRg2g8eDBw==
+Date: Mon, 29 Jun 2026 17:35:16 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Gregory Price <gourry@gourry.net>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
+	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 03/30] tools/testing/vma: use vma_start_pgoff() in merge
+ tests
+Message-ID: <akKeKSnWlc416OIP@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+ <akKR3bFV7393yOUs@gourry-fedora-PF4VCD3F>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <akKR3bFV7393yOUs@gourry-fedora-PF4VCD3F>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DB05818000A
-X-Stat-Signature: u3nieiwur5kftibnbc17red4wmmgj5aw
-X-HE-Tag: 1782750844-830851
-X-HE-Meta: U2FsdGVkX1+Wu4Z094VEZ7xAmTybebVt0Ps0dq3pFgj0DftZgK1tTz2sscgMVy5Ooo4EMXxHAWCJyYaSpmDbWe6rc688XcY2rC9K/iH1NBybH1jXbdzhdFP91YZMD7y0lt47PFKTSwTsmz145YyjlzMhQ0DPWBbagkBdSnsSMnmCnXYLb8xAwPdLFSo4TddH5zYIMMWw9OBJpuQKDXTUfSdk2XvvcnSyD5TfzNsgrsBr8rJfh32ARjaqhH3OQzOLB+B5oM24Caj0yVmwb8pulQukJldWgi/5SQwdfV8s7/wvy86JxmG5efv32eVUfFzjlU2Kg5FAfgJntT6qRoXWkn7aef8BE/o35s0x/SGdvboVVz8i5d3mvRKBUw7mWfg8BplD0g7lN1VP3jMFIxUjPGfA/j6Ye9Ias76zGDjc5nVGfxjnTeIa9ZjK4P01GROBAVRt9aFBnH/LBP3aMncIJyxdxc7WXeB4tJ2fMDxPdQK2gurC5FQrFDaPLDAYguZK9FGycK1nUJjKygp86YykSwK/5gWIFLHoCq31CpToOQ61NaWXHK56v86587g8HLR/OUvoTnXpw+1Uu5XOlnqR9ksV/cbebVulYR3brKfJ5hv0hgc0PyS9X7ONBXf1oLgonUBPbhDLLWeOtkVJ+NkpHShHWcPtLYHwraIUDlncOPFOm+VrXba6d+a4CeVTTAY8KontaN5IYjCZd8ncUmb6JRRY/TNWO/HrGY80HlSFeez5xS2AnTIj2AmZyw0QBfyNB9HGInVNfqUwDnfjE8TlPwAdLO14GQi7Z3jo5Aajpp1YVqpZFayhiO7HzC0KJckQFZpgsof1z7Ae3Nm3A155v7guYcAtUu2xaq76WnW9fxPo5rE5iFZKNVzygCubznNgG3toMD8rpRJn8CTyTXbgk0pH9O5HXzuDiiCGR8SnrHfa3FipONhacx7wI1MNM+mcsmNvL/OVp37kvQVFRJI
- uhfbKScq
- K6xbaKzlggtNGGsWKCEl457aswH4pea25iWSKEOydOw7ZbzzF34av0goR+NG+1RzcRWrMynDgQip3Hi9LGxya7JF69h8b8ZkLPa6IFG3kjDh3N3LTcfIHW3l5INK5ndkhCdrThcSpkVBVnNGSf6ZwLBwcqXyVlJAYqNX7EaKwwNGgOLZcX1zqgnrIbNnSy1+Y7K4cARzMJEsL3M6VP7yET7mFrLXFaBzjYEW622M6GSqd8JVLkezJOTLd0RA6XhnpOn4DkEsnewNuNV55mDyMETOxTfGtO2xCCU+16osnPFn2etk3WeopGIgLOc6U3RaMPzNc
+X-Stat-Signature: xpsc98e7usktwi63uno9n3hg8h3tutqm
+X-Rspamd-Queue-Id: 665E84000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782750939-661311
+X-HE-Meta: U2FsdGVkX1+tuJCyAm6smntPY/F+7rwei4gMHgdwjVOfyHyiwyabBqn+30U0cj5SRAXr+cX1ipU+MkVH5oKKJ4T+eIzQsBn3xx08w5XdFgF7h5UQoqcWecWqfGcUQEymuDmfLBpPxF5pH9i0Fee3bXQOg09V8yLsfFJz392uA7mm2KKJqviterTmbxERvdzriiQEb0vDxM3fB+4NERZlUNVhJUFc6GKJ8EPsyVpLiZkpGTL4ayreZSC5erMtaXPT3mOiLm7Uj6um1Agj3jxflTiGDmFZqR1IWUF25dzby65AER19/+benuSHo8y1WcAnCs1N3macypoberQ6Hu+rfGO3K5Dfauk33LKF8gkSEJ+78X5FpdwJMa3bZjZbTVOcv8WtD7RhERBj6Q+j+0P+mc1mDXRmdIXEqy2Fm2Uwh9K7a2NN9ItkzVlthiaeE8vP2JjGseXl4Wxek0ZLcYSPed7aY0cErrxu95UYl3rFHS0UseKsuhux55r6rEuebbOywIOXtFhNb8t0qCY+8vmsSHf3mVCD0gQvndp/jf/bZytQZgAMzrHpQv+umKODwpD1ickvWeQz0XUtbLnYBKytqbiEbEO/uT6HuetTvynnDo5rmeIQjHhEAq4cpKkrOS/zlL0UASx2k2pVoNsamQBR9Mvs7wV07Ygm+DVpr0M3KpZzNIlMZpFXMwiQMymp/943qUa6Q8gHoCoJ2ndzXVLCX558zaYF9OFiCbWsDAqN/DtgDZGJ6lArJYwvczNXvk2c1mA4RRT9pF+RTZr070kGZFyH/vBTru7gYSViO9btgNkxFgCslPg22JqRlGLbFmUOaXiG5vKdtljpvQXvdAaAfoyZwgWsTix6iNKy5J3dTevIA/GAhXylIgFy2YzzDxCcEyilMrhykaBRHLGM6hL2VHQ0JPUmnf0eNHwHMP9H7pjO/4RF66aN2chNktteEQ3WCYr1IjjZ5rGs1JA0CnS
+ JG2jT11A
+ Kp+YJpNTmX+mWgCvuy530y1blhVJ9MJfBpvgG1J6CP+TKmLK6wnqhPAWEKQzOOhPrkwG+SCbUZqOT9vD+9ZCBoCJAGauWVi+7sVmXsGPcdkOOqtQpeAhCR+NAAXlsem16b7vJy0EoyAJK4mby3oiukw88Z45tElfsuppLHjoXj4o7quZdlOCFNAVR881Ang1oMOBMfN7V10z74W0T2B3eBw3NQ0Z/DbJZZQJyXOamODNUAad8XSWq2n58WSni+4pR2/1zuUVEr1CJ1vlHOZCkadaw/8jJ1H5SXdiMuXQG6EbWIFDJAHNc+84DKjHwwHsSEft0eDmg589YABiAymYO4dWce6G5per42djfqNSenPWwbRalQ5TtE3QfOa9kE1R3FZv8JsrpmwA+3ObztdQmOSaQAU5YxNbuhijFlFz5qa5799u8NPwnTpS1D6P7y9DboTQ/MAJCJJxD8oo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,74 +125,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 11:23:26 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
-
-> > >  		folio_batch_count(&fbatches->lru_lazyfree) ||
-> > >  		folio_batch_count(&fbatches->lru_activate) ||
-> > > -		need_mlock_drain(cpu) ||
-> > > +		need_mlock_drain(cpu)) ||
+On Mon, Jun 29, 2026 at 11:40:13AM -0400, Gregory Price wrote:
+> On Mon, Jun 29, 2026 at 01:23:14PM +0100, Lorenzo Stoakes wrote:
+> > Now we have the vma_start_pgoff() helper, update the merge tests to make
+> > use of it for consistency.
 > >
-> > The indentation is a bit suboptimal now.
+> > No functional change intended.
 > >
-> > Would read nicer as
-> >
-> > diff --git a/mm/swap.c b/mm/swap.c
-> > index 588f50d8f1a8c..5958e6fdd3593 100644
-> > --- a/mm/swap.c
-> > +++ b/mm/swap.c
-> > @@ -828,13 +828,13 @@ static bool cpu_needs_drain(unsigned int cpu)
-> >         struct cpu_fbatches *fbatches = &per_cpu(cpu_fbatches, cpu);
-> >
-> >         /* Check these in order of likelihood that they're not zero */
-> > -       return folio_batch_count(&fbatches->lru_add) ||
-> > -               folio_batch_count(&fbatches->lru_move_tail) ||
-> > -               folio_batch_count(&fbatches->lru_deactivate_file) ||
-> > -               folio_batch_count(&fbatches->lru_deactivate) ||
-> > -               folio_batch_count(&fbatches->lru_lazyfree) ||
-> > -               folio_batch_count(&fbatches->lru_activate) ||
-> > -               need_mlock_drain(cpu) ||
-> > +       return data_race(folio_batch_count(&fbatches->lru_add) ||
-> > +                        folio_batch_count(&fbatches->lru_move_tail) ||
-> > +                        folio_batch_count(&fbatches->lru_deactivate_file) ||
-> > +                        folio_batch_count(&fbatches->lru_deactivate) ||
-> > +                        folio_batch_count(&fbatches->lru_lazyfree) ||
-> > +                        folio_batch_count(&fbatches->lru_activate) ||
-> > +                        need_mlock_drain(cpu)) ||
-> >                 has_bh_in_lru(cpu, NULL);
-> 
-> Yeah that works for me.
-> 
-> Andrew - maybe easier if you fix that up? :)
-> 
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> Question: Should we have primitive tests for vma_*_pgoff() since
+> the behavior changes depending on file/anon?
+>
+> Nice to have the cleanup and clarity. Maybe worth asserting no
+> one ever breaks this.
 
-Sure.
+Well funny you should mention that :) I do add some asserts as I go.
 
---- a/mm/swap.c~mm-annotate-data-race-in-cpu_needs_drain-fix
-+++ a/mm/swap.c
-@@ -832,12 +832,12 @@ static bool cpu_needs_drain(unsigned int
- 
- 	/* Check these in order of likelihood that they're not zero */
- 	return data_race(folio_batch_count(&fbatches->lru_add) ||
--		folio_batch_count(&fbatches->lru_move_tail) ||
--		folio_batch_count(&fbatches->lru_deactivate_file) ||
--		folio_batch_count(&fbatches->lru_deactivate) ||
--		folio_batch_count(&fbatches->lru_lazyfree) ||
--		folio_batch_count(&fbatches->lru_activate) ||
--		need_mlock_drain(cpu)) ||
-+			 folio_batch_count(&fbatches->lru_move_tail) ||
-+			 folio_batch_count(&fbatches->lru_deactivate_file) ||
-+			 folio_batch_count(&fbatches->lru_deactivate) ||
-+			 folio_batch_count(&fbatches->lru_lazyfree) ||
-+			 folio_batch_count(&fbatches->lru_activate) ||
-+			 need_mlock_drain(cpu)) ||
- 		has_bh_in_lru(cpu, NULL);
- }
- 
+In my RFC series which this series is the predicate for, I add more as then
+we track virtal page off separately (see [0]).
 
-The removal of data_race() in need_mlock_drain() is a little worrisome
-- perhaps any future callers would have needed it?
+Amusingly (or not) /dev/zero breaks assumptions a bit (anonymous VMA with
+vma->vm_file that tracks by file index, just glroious). But I plan to fix
+that later!
 
-need_mlock_drain() has only a single caller.  How about I remove it and
-open-code it within cpu_needs_drain()?
+>
+> for this patch though
+>
+> Reviewed-by: Gregory Price <gourry@gourry.net>
 
+Thanks!
+
+Cheers, Lorenzo
+
+[0]:https://lore.kernel.org/linux-mm/cover.1782745153.git.ljs@kernel.org/
 
