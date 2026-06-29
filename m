@@ -4,111 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BA7C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 23:30:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF195C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 23:34:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DA9B6B00BB; Mon, 29 Jun 2026 19:30:19 -0400 (EDT)
+	id 774FE6B00BE; Mon, 29 Jun 2026 19:34:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B27C6B00BD; Mon, 29 Jun 2026 19:30:19 -0400 (EDT)
+	id 74CDF6B00BF; Mon, 29 Jun 2026 19:34:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C7E76B00BE; Mon, 29 Jun 2026 19:30:19 -0400 (EDT)
+	id 664C86B00C0; Mon, 29 Jun 2026 19:34:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6554D6B00BB
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 19:30:19 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBA3D1402D4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:30:18 +0000 (UTC)
-X-FDA: 84934546116.07.36F1F08
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1860640014
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:30:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E+pStYXj;
-	spf=pass (imf27.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 283086B00BE
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 19:34:51 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 915C9402DD
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:34:50 +0000 (UTC)
+X-FDA: 84934557540.26.8CACA18
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 2D554C0003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:34:48 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dsnyPtqO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782775817;
-	b=SVAAgz4H3HTHsNBWdd8fodcwHptx2Eubh2X8picqaDDoHCm7XRB4+DvLREQXaer143BVDg
-	an3cwpcTZ7Vn+4mTIrNlATze0g9UAhlgNcif4+FPQngEEZpIeruLuTkLoD51jx7w/qx8a2
-	jMEOhPdmRPfYMSScBj92cOvTYrPNHok=
+	t=1782776088;
+	b=tk5NhlldJUr5MBHsGEHCJM0ng2irb7frCOZdgpJwvTSCt85BEtSGPNQgpO8JjH4z88Vof2
+	ZaQEHIhXSr4CWt3s2Q+oFO659lrvm8rolLzNMSb8N3/PK0lkFbbnfmJQv+LMJIWg28NmUR
+	rP/yaLT3zZXOQCPk0W1ZR/lUin90G24=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782775817;
+	s=arc-20220608; t=1782776088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=GFdypiSpH095gJ4CTwl0p3mqZVHOelsR9GAvKC1fb7c=;
-	b=aLiBWms63J7qZOrVS66U0IA3ODdSn+9w6CwVUARYTDKP/pUrUZAT+oWCwTIG9B92+bTdW6
-	crbkzkV+hO9XCfdMSd84mAGTvkLLDZrqlLpTW66WY5JU8GvDUOUC5ERVih8egJhKgpyJFJ
-	PPlCyCQzAPQA17cGYsCnqGabhaAweJ8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Tx9bcHWuZ8oC4m9hNe2V4W31Y648brgxhiWHI5yWr0k=;
+	b=gywijhCOHmJC4N5C8Kw/Eu5YT35yMVlloSgjCN6/kdRGTccxtVWjHZQywu7RMnbKGE0s85
+	4uRi+IXiyPvz2O20lWUHBFLXlyycL+EG+DcZ1I2WO451NMS882cxUJfp1DjGZ4yFGIcCh1
+	Z79BishuJdq2RFePiXoGgYi+ftn4TkU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=E+pStYXj;
-	spf=pass (imf27.hostedemail.com: domain of skinsburskii@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=skinsburskii@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ca15944645so6038085ad.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:30:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782775816; x=1783380616; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:user-agent:message-id:date
-         :cc:to:from:subject:from:to:cc:subject:date:message-id:reply-to;
-        bh=GFdypiSpH095gJ4CTwl0p3mqZVHOelsR9GAvKC1fb7c=;
-        b=E+pStYXjQTU0HUrE8dhQYLTR4vHhXiPZOTxdygb2agZI8iyKDb8LXpXoYniiAgeI1B
-         RhqQWLWQ4louJEKbxRKzV8QQ4NhjIWmrGBYc+yjjEbFJj+W6PPSzGtnKFkPwZLPDQYyj
-         c5O37ASewILahxDtvFOWwqYY95+NG0RYoz9QS1Yzq3Vv/5RXNCweORaPXakkMitvTpbS
-         tUq0p6gQe9fmQR5T2XYCQlY/3dhFZ6KuJHSXQZRyThkps8GRN7UusC8SgcHpE2Om/c7C
-         8a/V+t5l7PaOrbkL0XufOGq9ePNtJXb0wj0xpRisQQWNiESHtsJmLDiYMa5kI4LxBNQH
-         5q8w==
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dsnyPtqO;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf28.hostedemail.com: domain of mst@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mst@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782776087;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tx9bcHWuZ8oC4m9hNe2V4W31Y648brgxhiWHI5yWr0k=;
+	b=dsnyPtqO5cZ/Q+ivcKftVNLdxCx0nHrF9YJy31h9PJgD1lyN/xFZI4Lo/1mzmRlM/NhICr
+	reWvgaG/fYGnVyfupZPTLZZWrG4Bqic6tsdU2I/GX+mw1dTZ9hRaPVh+KZGu0ev/nXAoDm
+	Ix/VKd0K0wrcNPwivkuttubSj6b7mvE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-92-1wRSU-_zMNSh7DgCDdXKLw-1; Mon, 29 Jun 2026 19:34:46 -0400
+X-MC-Unique: 1wRSU-_zMNSh7DgCDdXKLw-1
+X-Mimecast-MFC-AGG-ID: 1wRSU-_zMNSh7DgCDdXKLw_1782776085
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-47416fc1674so922040f8f.3
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:34:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782775816; x=1783380616;
-        h=content-transfer-encoding:mime-version:user-agent:message-id:date
-         :cc:to:from:subject:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GFdypiSpH095gJ4CTwl0p3mqZVHOelsR9GAvKC1fb7c=;
-        b=SWH4YvIt4msQyoKanUkujlWAU9++n4cPAouMcdrm0H14Fxd31taRG1ZCW7fjQQ91gY
-         xZ6dMZnTKO2AiVYyOCoe2JjQjchnhU/j4nyOv3QRAXMltSD8ULwOo3/6H3AewblF1dkH
-         88FXJ4FQXIAJcDE4IKKuvKBwxLOnLQTrnjfECm2ANWJnUjzdMQ4u6HY74+wZOIAuREoF
-         YS8JVD1lKLDDNBThgLp0UW5vtvKqM58nvxGupiFYZ1Xt47VWApLLqrELAh7nwrWzTU2X
-         OHuINdwOfvTlrqhEkS72C555W1O0qB3c51p+ZJr/oewJtbeUg/nLTtLMdXLv+Y3ia4DW
-         4CSg==
-X-Forwarded-Encrypted: i=1; AHgh+RrnbHQUo5lPS9ul1hOtuECERRHlFGvEmexwTjzGZG6cnGFWVm79zRdPFW375VEAc1TTxIpHJYcDYA==@kvack.org
-X-Gm-Message-State: AOJu0YxpIls2h5QM4DoTN3l7pftTYvrasjnYUmTaVsaZWel/nOziODKY
-	F2yZo1mzjlMvrS//qjN5VsCdQmtQqmM3/uG8E52LgP64jCCJrazIzeWu
-X-Gm-Gg: AfdE7ckRFTqWL/P8k3resb3utXH3VDeWx0hwwddNIXCBpBLrYdGMpa3BYOKd4EV9NUl
-	8lMChZeXzVAaekRhMBcvV+U0wAtlNGa7c4/qrT0NJA4yCR73Rr4m0MSpPE7A/YdzN1s3k/cWF2J
-	ArBKHC57JU+/QYkll//B541HMGt0MioiTxZ9uQg/hW7zUlIybGrqOHa3mSYfigcaarg5wgIDTsJ
-	6Arl2qmG9AEBjlwZVhvdbhEw9kHr9Z7G7Jdf/e3JUy4sTlimRaNrZaXYUlePI7wdNa+htMzQdpL
-	xkCJLW+vT/FlWmEY2NpGi5lExYHZYcf3XWcoeqUam3SU+4u7Y/UA9bbF8ccBkMRF89gxw9iv7uM
-	wEAVsp35tJ79LWtqrrLWHkMhO2hes9jf7Mms5ESo9ZmvP/NKzIJ5mixIgm54Myd/j3mHhZrmCZ9
-	cbyHZiU+OWVcUsQO/N4PoWGRmJDjeX8ch1olZgmUY70k6i0hN2vMNORUqlp/M=
-X-Received: by 2002:a17:902:e548:b0:2c9:f0d2:3a11 with SMTP id d9443c01a7336-2ca2ed3193amr8812415ad.31.1782775815794;
-        Mon, 29 Jun 2026 16:30:15 -0700 (PDT)
-Received: from [192.168.0.160] (c-98-225-44-182.hsd1.wa.comcast.net. [98.225.44.182])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca3828c6d2sm1366065ad.39.2026.06.29.16.30.14
+        d=1e100.net; s=20251104; t=1782776085; x=1783380885;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tx9bcHWuZ8oC4m9hNe2V4W31Y648brgxhiWHI5yWr0k=;
+        b=mv1ilicsZbfV16MCTN8vy4sYo2sRH6E+VIEoWADwmMf8NEvUjvoI4KFlsazE7YwyUE
+         BvEy49WV7yUfuPIWRU6etfb/1Y8eQul1vPypAB5SU93BwRZumhuhFph4Qeg0siMZrfJg
+         M/FZ0S1IpZoFyDLJxMIRAlxOYM3thA1yR4duDJCvrJ3jBuLbo6VOjBoZaBY1DoPznoo+
+         Mc5UeGlDc2L0hXO3j0XpIFiVAMU81TnfLde8OJJ6dGZHdV9yvDxWIhlbU0EtyWA+KEXG
+         AvQ8KZFCm/qThFc7No7HSjQIV1Db4nD07IXND6meTmUwceJ8+uYVbgHxbipG6spcBpAQ
+         sx7Q==
+X-Forwarded-Encrypted: i=1; AHgh+RpH5jjiJ9DeXmddtkl5GBxEae8lZyePVPRyptVThwNX0p+rFfqGCFESlmzLKLEvTcffdNdEOZWIFw==@kvack.org
+X-Gm-Message-State: AOJu0YxLZJn/7by+DcFct0YIM2RVN/WsRh8i42Zsew19L6chTSr79W0D
+	AGxQWb7MILhuSH2CfcSLY3XrQNhE4Llbw5dW0nEHBaKEDmvqb1RhDx71EDUkfG1EAtQpYdPU/kQ
+	Pm0mOJGTvvi55mvafKmdH8E5RqmWPKfde/DDIUiWpoOXwhtJlkU2j
+X-Gm-Gg: AfdE7cnY8IowsNj/Hl/tgg1SSyedeCC/NEDiF+o+tjtv1mWvqehVm75sAxFBezjO4eO
+	x+Ip+1WmnfEAMU8IoxDZXnY013zBIykSaw2iNszmHC/sQnmPbcS8t8Ex3e0YQg5G3+YG6sUSVQ7
+	m22foI2DgpIuBZdhROGGEs/4Yxk1gmAJBktYwFqkxyc412uNLJ2PhW8gP1EYF4JIz4k8kJUalFl
+	8Z9rBg+xQmE9Uhg7scZnH2V1KXk+q33wsCGMjPoIdSQQo5GcoCcTz3HELwePoWFKVG/lhJmIuLR
+	8hnXO8vV1FWg5CotgO7ZnmpuoFYGqftJZ8RGtEcWWVDSi7EIni2NYIxi1nTL2HoVe1Ze8280PpO
+	FehsjbQh8WZRzyXXqf+baQh+9anfTn6nC
+X-Received: by 2002:a05:6000:1789:b0:472:7ded:66ac with SMTP id ffacd0b85a97d-475505f51c3mr1799238f8f.7.1782776084939;
+        Mon, 29 Jun 2026 16:34:44 -0700 (PDT)
+X-Received: by 2002:a05:6000:1789:b0:472:7ded:66ac with SMTP id ffacd0b85a97d-475505f51c3mr1799165f8f.7.1782776084447;
+        Mon, 29 Jun 2026 16:34:44 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-475641e4618sm2067879f8f.9.2026.06.29.16.34.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 16:30:15 -0700 (PDT)
-Subject: [PATCH] lib: test_hmm: use device devt for coherent device range
- selection
-From: Stanislav Kinsburskii <skinsburskii@gmail.com>
-To: akpm@linux-foundation.org, jgg@ziepe.ca, leon@kernel.org,
- skinsburskii@gmail.com
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Date: Mon, 29 Jun 2026 16:30:14 -0700
-Message-ID: <178277581197.172200.16265155329935822153.stgit@skinsburskii>
-User-Agent: StGit/0.19
+        Mon, 29 Jun 2026 16:34:43 -0700 (PDT)
+Date: Mon, 29 Jun 2026 19:34:38 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+Message-ID: <20260629193347-mutt-send-email-mst@kernel.org>
+References: <cover.1782676497.git.mst@redhat.com>
+ <0b5f8b4b-d7dc-4b79-9555-a5b36265f3a9@kernel.org>
+ <20260629030657-mutt-send-email-mst@kernel.org>
+ <4f5ba5d6-246c-4430-9737-e8dd8e4c5142@kernel.org>
+ <20260629092856-mutt-send-email-mst@kernel.org>
+ <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
+ <0a309ed3-378e-4d88-95a0-65bf47c5496d@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6pxypm75wg79gsk9be7wka4y4cthsbbq
+In-Reply-To: <0a309ed3-378e-4d88-95a0-65bf47c5496d@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: iIRoVBPbpzXTSJoA93p3B9E35jLszaQ5vVjdTvMZGRQ_1782776085
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1860640014
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782775816-263209
-X-HE-Meta: U2FsdGVkX19m+6+6Iuw1En8z3Qk5FuK1zoo35FD+uZ7EE5j+V4Ushw/3jsKnUEZfTB/w//kff/lPUADmlgiSxtfZOuZ7iqa26C3/TtEhTfhD932IPhVUdN/WKDPAzavPowzWWF7wcScuwa/OMcDBLmj9OAKHDodyIDCGUoNVz216qFbUJEdKF+bpaOlnlFhZlcSDdityXMbKb+OUIur7XUUIH3PM/NWaFxkdyQ7hTyR43NijbVhCx/+D5CF/OVKA/6YlFMv3aIcYLlmzMLDWrIntYR4YvnwdsEen3vNCLst6eX7IjuCHozu9mp/8BGCuyoGEVXevTdxinOV19c17P1I3rQJHJuNejsXX3J/oZ94T3Kfe4XmacLQ5bP1Mm16WQAQWShXyzuXotlnAgiRZWD0NzDTqlwflQEfh1CADCXTscq0xZZGIGAdyD7re4xuorqZpB/2i9bl8vN0UYzaj+as/0WcJuaYESAH/IQtMHVaF9mzINaNMo+BbQ0i5B+Mrgf9efql+hWdenNuj1HQv2CL+HOPFaTphYrJ0PCv6uPPR5H336dHGROaGZ2eHw53abXTaXBCUh8/GQABAULuEdNV+E15BX69M9gwx6w1yaTgLxT9cx7Za9vP0kKYx0GYf+oE1LXl2I1T75npRCWffT/gDsK4n6Ldq6uhmuIuGCnWK8q+dBFExCifzby0e+GVjWLZ1qmucDmmAr6oDycauJdZWqAskzgYqi7F06WQ/T+X7MwtpHexEQczRk8CJGIAoMksT2+zITXoM/hLCo9UwSPmm9EEoK2S+etijvM11zmlz4i2ITwAXrY7g/tgHCfbGQQwkvCNK1FF8goS1zvBMiSx4Ri+EP0Oa1eMtqj3M7y1sFhAVuscY4d5sksNCSQ5IKmL4gHebi/PdhibfTREXS45uLWfT8zSCDkzE3R7Xw4sQrVLV5BtNjlJ/u/5qxXMEbZPmhqAiJIGFFJmn/zq
- kjCeh+W8
- IBwtPf2iFql7Fyj/4NaPbOJovrL8a8i/U+3tnotiSxk+b9IfbD1eKZIb4a9/IBDpJfKFa/C+MwJyoXsONNOSMEhIPIn5lwR0ReSQBG0HLktvJWhh+K2o6pyZH3z9NLNKlL5nHLnsewbpZT7ghiW7pterxhVS/VHh1yLd/96vEKwh4el5rgyg9gMkXhCOGDtT6DWwySY+8eKRu3Pdp4qbZwZmQW4Sx3FjeBAX0DX6i8tD2t70fzgn+Wr+yCuookIaoA3D+atlzs0hCAeOiDKXG2k9ak0pGXCToU+aZg35zdA8e6B8ezFJpQitiHhupm7K2V/SujzUrv/HZzomEZB5rDqmtDewVHUaPsO/aQb0hmtpUKa7Oo5K0eoq4dsDr81Okf4E4OuOe3HndcW1NkYYQyl3V3wJQq4yYqzCPZk+38aqMt8VT3lV+d7pQSVcaFSaQKJ97YLdfw2t+bQu1kJqos6SpyIr58uMXavVGjLmR2y76O7BdgfXTgn8BmY6o419Ipb6R6e0snddlYwk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 2D554C0003
+X-Stat-Signature: 6k1a8tcng7zfwmngnx1zakfcxk4b5qiz
+X-HE-Tag: 1782776088-897228
+X-HE-Meta: U2FsdGVkX1/Gqy2xpu02/aONe5loFC+bB9UOCJoYq+R5Zxu8HMuUlyKHSuDEPKYFMbIDnX9xJApEi5QcpjPhkxl43aSKb+xGjSEirqNP1rHsYHAjWDV+fzWDEt474Dv30++ImnEg1d+9p5VC7cBGb/IPqWXGMUAvwqauXe7xvUlyljMJFvvTFqyPa6eeWw/0wX4zZafRWthK8SclzW7jLvJmUM5wk9vNAQA8dKksr4/i8CNnPvJEr/ELmHvw9Vwwyq6OL33gA1qYjtASKNsTh5owQrD2PlbVnHfJ8FR9Qx5i4R1+mX0/CoGlklVdTZTKPaxhZmh75HBz1u++iPj5zQX0V6v7L03Im6iTcjVt2/NPWeeKhrPC1/SLxHLUYtEh9dXmXbWEtFbHJ9a8QAABcGkHrfKwmNqtbqsoxCSac6usj2KbZ2Z3CjMEEwArTtc024LihoMHtZ4JILiKDfELjXO5sHvMNiUe6v7P93Tm1JH9crKwmptooxRZyP0zTqZ+yB3ZP57nosnlJR7UwhsglP4m0s1jjUYR6SjvK6WAdhBB6/qqyRzctawW/t/bDR4FKjv2eFpsLrDY+s8SqOsSbysuii6oDxBRqpYvDJS508Ah83I4FokaVMhUut1TkRbUvxIRfa0l1bX0G+vhBVFkKNAM5BjlsxApsvoy+d/dkYxdSy371XsnQgHIhlfMr4tZizCXSK5Z1cjwwMGajLQ4VUPTQL5UDWCQ8/B89PjXwFyP5pBaev/hzMIb1DUnWW1lT4r6uuLE+N8BQ4u6DmM/oZSR9HpXo3A9I9xPHwtTlN5+nMLh3HGWjjLNnwh9JiE2fjF67b+7vtpET8v4wYHUnGf2zyH8gnQr7soh3h8HZRYdV8GZhPsXzOyPTJmBSW+wG1K7qd76AIFgNXDXwshg+D4vRYOv3JpfC6v34JUEtaSoQEj6wcHWRRrPZTh0oRYCxhDrsUXDS5hXHcNkPFi
+ 986jp68A
+ +eSDfHpMAM6M6kt7nR763jUvHuV9H4BCKS83nR1LRVRmIbkpEP8vCNHjvsNJi8cBPEnCm/TCMfnzp4ceVzkCpVectUb6wwSEwU1LlDteCgwIWF7GCaSySK++Dip2mtR/1occBIzxkcnfyJHbzV6Z3bMIGa+VubHgcDKD3u+okhY4Cz4bxSMwzO5ZGkinTW9xIpyZu+Ie4Sg8Lc2NeOqPOVl+yxOMul3NxuU+vKIqJP3uxHsUJiQI59vf7cJT38FragFtryEaBk7ltXyi/apjzDGEFhDkviGUALy0d1UrJvW9WqAgu4FYiZeIa4oTRPLjqtXm8U05hzLAXSnKLaQz8AXsVQMFoK6KcHf7b/Lhs9cC0UW9dKbM93vcsMT6w23KFOKOBxbC8IvwtFWLXbKrL1++WbmoEHmFV6e1u
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,40 +154,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit af69016dab96 ("lib: test_hmm: implement a device release method")
-moved the initial dmirror_allocate_chunk() call before cdev_device_add().
-That means the struct cdev has not been added yet, so cdev_add() has not
-initialized mdevice->cdevice.dev.
+On Mon, Jun 29, 2026 at 11:43:32PM +0200, David Hildenbrand (Arm) wrote:
+> On 6/29/26 23:22, David Hildenbrand (Arm) wrote:
+> > [...]
+> > 
+> >>
+> >> And again, I'm really not sure fixing a theoretical race when memory
+> >> is failing is worth slowing the world by 0.1-1% for.
+> >>
+> > 
+> > Fully agreed. I was hoping RCU was cheaper (I mean, we were once told that RCU
+> > read side locking is essentially for free ... well in some configs :) )
+> > 
+> > The question if we could optimize it reasonably enough ...
+> > 
+> >>
+> >> From what I saw in my testing, if we allocate 4k pages
+> >> it's hidden by the overhead. With hp and thp it's measureably
+> >> worse than rcu on !preempt config.
+> > 
+> > ... for example, by doing the rcu read lock + unlock around the
+> > 
+> > 	for (i = 1; i < (1 << order); i++) {
+> > 
+> > loop on the alloc path. But I suspect it's not going to make that much of a
+> > difference.
+> > 
+> > I concluded, similar to Andi, that stop_machine() is too big of a hammer.
+> > 
+> > I wonder if something could be built out of preempt_disable() and sync SMP
+> > calls. hmm :(
+> 
+> Scrap that, shouldn't work I think ...
+> 
 
-The coherent-device range selection uses the device minor to choose between
-spm_addr_dev0 and spm_addr_dev1. Reading MINOR(mdevice->cdevice.dev) before
-cdev_add() therefore always sees an uninitialized dev_t. As a result, both
-coherent devices select the same physical range, and adding the second
-device fails due to the overlapping dev_pagemap range.
+Wait a sec, what about call_rcu_tasks? Use that and re-check the bit is
+still set?
 
-Use mdevice->device.devt instead. It is initialized in
-dmirror_device_init() before dmirror_allocate_chunk() is called and is the
-same dev_t later passed to cdev_device_add().
-
-Fixes: af69016dab96 ("lib: test_hmm: implement a device release method")
-Signed-off-by: Stanislav Kinsburskii <skinsburskii@gmail.com>
----
- lib/test_hmm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 9c59d1ceb5b5..c4adbf98fac7 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -581,7 +581,7 @@ static int dmirror_allocate_chunk(struct dmirror_device *mdevice,
- 		devmem->pagemap.type = MEMORY_DEVICE_PRIVATE;
- 		break;
- 	case HMM_DMIRROR_MEMORY_DEVICE_COHERENT:
--		devmem->pagemap.range.start = (MINOR(mdevice->cdevice.dev) - 2) ?
-+		devmem->pagemap.range.start = (MINOR(mdevice->device.devt) - 2) ?
- 							spm_addr_dev0 :
- 							spm_addr_dev1;
- 		devmem->pagemap.range.end = devmem->pagemap.range.start +
-
+-- 
+MST
 
 
