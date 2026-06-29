@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49756C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A9E3C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 117256B00E8; Mon, 29 Jun 2026 10:42:53 -0400 (EDT)
+	id 07A336B00E9; Mon, 29 Jun 2026 10:42:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C7C56B00E9; Mon, 29 Jun 2026 10:42:53 -0400 (EDT)
+	id 052D96B00EA; Mon, 29 Jun 2026 10:42:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 004C06B00EA; Mon, 29 Jun 2026 10:42:52 -0400 (EDT)
+	id EAADA6B00EB; Mon, 29 Jun 2026 10:42:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C296C6B00E8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:52 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 481BA40155
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:52 +0000 (UTC)
-X-FDA: 84933216984.03.A954DEA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B26016B00E9
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:54 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1278D140134
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:54 +0000 (UTC)
+X-FDA: 84933217068.08.513CE81
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf29.hostedemail.com (Postfix) with ESMTP id BE0D0120007
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:50 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=OYjRcMVT;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 8A7701C000C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:52 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pBdoLaed;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744170;
-	b=aAay5ahXYnUP+fqLgwth1dDswQcfAIZAa4iYnfF+b67+RVRhVD2Eh9MU7qSh2J/jIeD/6w
-	TTQlgSC2d83EtqxE3KQ5r5gLrg9m+bWnEpupX4MP7Ht8FAG4D7Y1fp2i2Cv7nXYEsBUHyS
-	Pv6DOtvRmaEKaCp2gv99B+eYX1RqqKY=
+	t=1782744172;
+	b=vjHHKU3RnbHLhAkuCbqAI2pSPTiBtLfmi8Qv6CtztHNMwOxFiPfvq+F52jqkacw34waIdp
+	VOfmHHTeZxEVBTRbr9D8eJJAOAYoD7tqV1hbEHvMlGM0rqyRtKMIGP5ljTNtQm/IyZscIQ
+	u9+cTrO8QVy25QJRMbbq7glpECrg3Sw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744170;
+	s=arc-20220608; t=1782744172;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SDtINFsEXgJAYq83PFKVlhRpnIRfNfxztGiIGve8N6Y=;
-	b=fkRQ1npKy4LR1EbZrlPxsbcu6C9o8dE7I37l+8LnP8kLniEvOA+qE0vJkf8SJHOzgzIt33
-	e/sro7klYRI/Jqv11o7yQxEyTy0VkiR9T7S5Sp8oqdXqO3H+EHmwhC625DJW9R0/iYNfyn
-	C2iPG0mTs3e2/V6hkOVfdYGxfMXxOS0=
+	bh=H6dWsdmUf7ylZMz9/kx/ayCZU5UJ+5FE1mY/hNHUuYY=;
+	b=RYbqLRrpGS69MkPba0O1g2/sSTHli1Fu87NXU6o2NpjzAsrE41OpoRDHhEf5XlxZ0RxI+k
+	TRrVTi8p48+ZefKe43USGhaCK+TEamxCrcJXaV43PO0Hi9pH4GKN1PKjaYtpg/eD9ewnm3
+	FzqpQIrB54aPF0YzM4dyjXa6HBdKYSM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=OYjRcMVT;
-	spf=pass (imf29.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=pBdoLaed;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf20.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=SDtINFsEXgJAYq83PFKVlhRpnIRfNfxztGiIGve8N6Y=; b=OYjRcMVTO52rjDgaELicVF/KGw
-	w1xNsFR62AWXMxz+Bs6C4YXCzXiYuqEcd0I/DfywbfZH9Xffy6Xx3dMtDz9LCSIILXA6C6Q/RFQHc
-	1cQ4HVPSkcKwT9IvsbpeTk1Ix+kwCk+ugukSmMefpkSKPwgInnBxhPXUWl9l/gPZ4rLSDKL63vsLV
-	V5UaRibJVQtbfLNLK2dvFiRzF1xKsHceP3kSbk10c4/9dSrpC2Nnnmfu2HQXRcBFM3ucAC9qepP7d
-	/StE6i07N6JVfJ7yAydKYQQXeTSKl6wnecZG5wRqdNI7MSvAVdtzPlLl5uL3tNz0XmoYwEdLHHw2e
-	/FpFaKLQ==;
+	bh=H6dWsdmUf7ylZMz9/kx/ayCZU5UJ+5FE1mY/hNHUuYY=; b=pBdoLaedvvzM2zY1IGOrfYPJnW
+	rc4cMTP3BQzZNpHO3f4TwD8ViN2LU1m2G7bIssNdCmaaRfQOKY88AmuKd4INkaVi4RhGj1AdWHhhi
+	BH5uXYb311I31dPzQCiJwqI8j0ovyq4Xd6rr5wlob7mq2xhg6AtNEvLtI03pHAoBq5rwVWKwkGL36
+	fbnkVNd53FGIMZFFBQN7NUd85hqk8xGrYcAgl05BMD0G+v2MMDhF5cl0fLdgTGUSBKs5ILFiTg11B
+	wEqqJJJZ+Pr5eKVMh7uNKx/Hv+hGEopYvPhTudqlo8fQWGDbxWBpqxZw9cwVAOzz3DmFA/aMuBaNL
+	N7DDL6Mg==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weDCD-0000000Euch-39QC;
-	Mon, 29 Jun 2026 14:42:49 +0000
+	id 1weDCF-0000000Eudm-1h8Y;
+	Mon, 29 Jun 2026 14:42:51 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
-	"Liam R. Howlett (Oracle)" <liam@infradead.org>
-Subject: [PATCH 11/18] maple_tree: Add bulk parent set helper
-Date: Mon, 29 Jun 2026 10:41:38 -0400
-Message-ID: <20260629144145.1572283-12-liam@infradead.org>
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>,
+	Chris Mason <clm@meta.com>,
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH 12/18] maple_tree: Catch race in mas_alloc_cyclic()
+Date: Mon, 29 Jun 2026 10:41:39 -0400
+Message-ID: <20260629144145.1572283-13-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629144145.1572283-1-liam@infradead.org>
 References: <20260629144145.1572283-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: a7zth5crur1r1g6a11senrqeg8hgr6jk
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BE0D0120007
-X-HE-Tag: 1782744170-289653
-X-HE-Meta: U2FsdGVkX19+7/d2yeCRNAASuuxKzmcA2B2ejJzd4G6UzsNvOaC7dNAPIiLtv+syeQmJzedezmxv2Qosys6zvbfYsM+QsXPq/zrVjNa1boy1xBrjBK/+JbUuxi8THN0zPSfcUzu22NMlGrP4q2FCIEcGv0uUAuSQOn5HXiut5qMLXYm0FpbSC5q4rcDp8X0LthwmSU7JdOruBXLgdjSc+J9l7Oe4LKQzteJPnrs2IzGR610oG3esUldtNsG1EKZGLV67cCEgWxF20PlNE2ncFu44ATF2gAH+ximYGEBQTzMEH9uiGQO1aVVAiwlYJwlSGzqW9hYjQ/5OUYinRVN1rh6A9jP/vf8lNMoskgiB6xFG7tPeEN22iRaneOBm+3TUGuexoguoASvA0Eq9JAdt1LNk65H7HS1jaxmwY3YB8RQ40BiyNiMe2wqncx+r1nLifh4I6aLHxMPWPOJ15uYDc32m6mLVZUWifxkjQXVsEfNsvz3983p8t5fLNw1r8JOYPb13XqnyeZ0kpHKGxx8SkGESIFy0e7d7WdjQQ0wqT7GhmgybTGH3j0OT1dxyvz8ABFPBNdG8ZaFIkW8oeKzwKLut6Y7Nq9tFgRTUFCtdx/DCmoxzsYEWCbZnVoHN0426xv8wgjE77GH6Hbbv/FM+STIzP/2Ik4ayQ5RNcAY0MJCIP5US299hLlFgwDXoLdkn/KnYdj6mM1/gqkSj+M9mpe4GEMx4ZqNsSyTbfURC9RPxPgldJB0i6R065Lkyx1iIzbV/qC2xr/itYRnb9E7cYdYb2L0NWthZPb9OccjMUHDEKwHNjBUkSqm6ryoqOopgV3tsqFTc3BKhpBYOgE9M513+mdh8mYjkHWkq7L5y2KrS6Hc7hor4xg4ZptpobWjH16XB8kVw4VbdOKhffoDwxAhT+FSfcGdgRWvtjRmShta1TWQlGU4cJXWKHROXnecR418oz+0dx36QLkb8kA6
- GTcCLUeG
- acmyIqmAp0TOTZ50OQLgB0dERalrRnCcqt/SQ4ZOAPSTw+JdRZERcxm6PrzUe4QFogFFicp8/mf1D6uvCrIWhzzW9YrL63iHEtyEaQZ9R40Z9AFnWK/fEVWD7lwp4BXyjkPgOusUANpGEtBwqRn7DONXu/iHZFAh8ljriv9cY7CeMJm0/JO8B1erJa2sUf4pareWWJDpQfKMhxXHOdnRSI3IX2ZD/Smk2ze04TWfsNoDFgm+aBFVoICk8WpRUk9HBErFTKlgqwCX94oe3Q9bovvznU14H55xdVKKFnBm/dv8HUG42cYZiJ3CYicEgUhsSema29zAsiTXHltrn1yzrVEQPog==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8A7701C000C
+X-Stat-Signature: 9sendbb93h5zm3gbgbojx1ud6sci8x7d
+X-HE-Tag: 1782744172-455183
+X-HE-Meta: U2FsdGVkX1/sSVTBrVoDrxrMyD8XpnO0i+L5jI0le0p8Ka0S9+9awec28Jxh1w3b57JRAmCNGDzeG3AZX/uPtDxmXRUSnm3pQBGvkG/yYEPcMePyM35NDrwH5IogtjsF/e3t/veQegNi9S5wRlsSCvCWfS6e+z1jTbog+fAJoKDHkRvt7PaH3WeuTZxj0k/izaYtozzgu/QQpV28ESx9UK1h9Rtz2cZS6Kg4CcGhCBIV+UyZrk+dtM1jbcb2iKaYLAcXsEvBgXsipOmkC8XA1j+rFlPcsuk/DUNvgy1WJO7k0lESyCCNhjNLhXKpgcLX69blhGoT9r78/tPBHO3vAPjjy/9ch/mNYXbqPde5Rq8JC2DmKrSrNW+uCu0mH7RaRX/plz7TnDq4g8ezE5t/XZIYHk0yA4xhP5Gus804R34O/wEyFY0xq16jfGxOoQXzJ42pL4x9YBBdGKMH4zgpRG0gCm3YBAOMqyMyiNVd8QlrmLmA7wmanCL4FqcLrsJ4m5AVohWheD2s8yT24IMD8u+W6ufpRLidO9KGANXFraiPcD+b9Buc08HnNjfuC254L8P6AsIMbAi0JDNbs0c0TJAQUvLK8a99bC3awuYtsUvAV+eBm1fyeFJakPPRCLqwYzWs5QpqFH3ix/Wih1/quPazJ7EIVSEXOG1GUHb3wus8SxZ9aP+aWqMuWEKoFp20cxHKHGGZ7kEUgPccZ1BecFZS+DFUGTZyU3b1qJPYaMdVo0MWG85Arikf8elGAD4E0QG4wHfx4crs3UUXZvtGJtMBJ3SHnWM++m7e0qzsyACKkgN9JsjOkXxewfupQZ1BLp6VGPBnVD8qAd8WJgK6B0A9jD8Ztmu9s/xl8LcZd878Z+jALYD3YjctIzDZbpyzUctnW6+vq5kkjFugSvt6PSJzNk3PZskDATrz3FBiRtdAUmiXvfk/eXxpSgsytk+Uy0QAwyYzz/cwlTO4joU
+ FE3PT0qG
+ STULr3XATOQsbcdDAIwZ5OeqVBXkE8kIG3HTlsgi4TpWCs6qT1OuncJwTzVXY5CEYaP8alwSpp90D5SUEkQLwauTE/8IVFhUkeSrWrsKZf14F5NYDuc47mIQ7F6ygug/uXKUbp/YQQbRZYuWVOvEIAV8+8xTpbbII+KlIKxsn1caPuf1NvxylXuBJvPIHF1P2xo3qbiYBImapmlJuYYy7EVr5iBxLaB40DbUkt5k5ARp4we3o9J1YOsIWMllRuVkK2jL0BoVZO5w1PeygSyeOsjZ+g2yzRPxk6Ouk0XlYAMecZHNvc4J4Y9esYuKgFBXr/WgqqMKzXx160XDHz5u84OmdmnNSWpumt1abT1DEhfX5077cb6BfLxowjBTz6eCiGd4AZvzEoC6IvS2IX5Av5eFHPPOlOftT0EMNrvshWbBb5fQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,116 +93,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Instead of calculating the parent pointer each time for a child,
-cache the majority of the parent pointer and only change the slot per
-child.
+If mas_alloc_cyclic() is called during a low memory situation, it is
+possible the lock may be dropped so reclaim can occur.  There is a
+window where some other task may allocate the same id and cause the
+mas_insert() to fail with -EEXIST.  In this scenario the function will
+return -EEXIST, which is not expected.
 
-Testing on a tree containing 2048 entries of height 4 had an increased
-gain of 3.51% on nodes tracking gaps.
+Modifying the retry on mas_nomem() to re-search for a slot means that
+any race with other writes will not matter as the lock will be held
+between finding the index and writing the index.
 
+No existing users are exposed to this issue.
+
+Fixes: 9b6713cc75229 ("maple_tree: Add mtree_alloc_cyclic()")
+Reported-by: Chris Mason <clm@meta.com>
+Cc: Chuck Lever <cel@kernel.org>
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- lib/maple_tree.c | 59 +++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 43 insertions(+), 16 deletions(-)
+ lib/maple_tree.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
 diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index dd679ba2b8bfa..6531a2af338cd 100644
+index 6531a2af338cd..67cc480534e96 100644
 --- a/lib/maple_tree.c
 +++ b/lib/maple_tree.c
-@@ -469,7 +469,7 @@ static inline
- void mas_set_parent(struct ma_state *mas, struct maple_enode *enode,
- 		    const struct maple_enode *parent, unsigned char slot)
+@@ -3900,27 +3900,29 @@ int mas_alloc_cyclic(struct ma_state *mas, unsigned long *startp,
+ 		void *entry, unsigned long range_lo, unsigned long range_hi,
+ 		unsigned long *next, gfp_t gfp)
  {
--	unsigned long val = (unsigned long)parent;
-+	unsigned long val;
- 	unsigned long shift;
- 	unsigned long type;
- 	enum maple_type p_type = mte_node_type(parent);
-@@ -490,11 +490,47 @@ void mas_set_parent(struct ma_state *mas, struct maple_enode *enode,
- 		break;
- 	}
+-	unsigned long min = range_lo;
+-	int ret = 0;
++	int ret;
++	unsigned long min;
  
-+	val = (unsigned long)parent;
- 	val &= ~MAPLE_NODE_MASK; /* Clear all node metadata in parent */
- 	val |= (slot << shift) | type;
- 	mte_to_node(enode)->parent = ma_parent_ptr(val);
- }
- 
-+/*
-+ * mas_set_parent_slots() - Bulk operation to set many slot parent pointers
-+ * @mas: The maple state
-+ * @parent: The encoded maple node that is the parent of @enode.
-+ * @slot: The slot that of the @enode.
-+ * @start_slot: The offset into @slot
-+ * @count: The number of slots to set (eg: exclusive)
-+ */
-+static inline
-+void mas_set_parent_slots(struct ma_state *mas, struct maple_enode *parent,
-+	void __rcu **slots, unsigned char start_slot, unsigned char count)
-+{
-+	unsigned long val;
-+	unsigned long shift;
-+	unsigned long type;
-+	enum maple_type p_type = mte_node_type(parent);
-+	unsigned char i;
-+
-+	MAS_BUG_ON(mas, p_type != maple_range_64 &&
-+			p_type != maple_arange_64);
-+
-+	shift = MAPLE_PARENT_SLOT_SHIFT;
-+	type = MAPLE_PARENT_RANGE64;
-+
-+	val = (unsigned long)parent;
-+	val &= ~MAPLE_NODE_MASK;
-+
-+	for (i = 0; i < count; i++) {
-+		unsigned long pval = val | ((start_slot + i) << shift) | type;
-+		struct maple_enode *child = (struct maple_enode *)slots[i];
-+
-+		mte_to_node(child)->parent = ma_parent_ptr(pval);
-+	}
-+}
-+
- /*
-  * mte_parent_slot() - get the parent slot of @enode.
-  * @enode: The encoded maple node.
-@@ -1605,14 +1641,10 @@ static inline void mas_adopt_children(struct ma_state *mas,
- 	struct maple_node *node = mte_to_node(parent);
- 	void __rcu **slots = ma_slots(node, type);
- 	unsigned long *pivots = ma_pivots(node, type);
--	struct maple_enode *child;
--	unsigned char offset;
-+	unsigned char end;
- 
--	offset = ma_data_end(node, type, pivots, mas->max);
--	do {
--		child = mas_slot_locked(mas, slots, offset);
--		mas_set_parent(mas, child, parent, offset);
--	} while (offset--);
-+	end = ma_data_end(node, type, pivots, mas->max);
-+	mas_set_parent_slots(mas, parent, slots, 0, end + 1);
- }
- 
- /*
-@@ -1994,15 +2026,10 @@ unsigned long node_copy(struct ma_state *mas, struct maple_node *src,
- 	s_slots = ma_slots(src, s_mt) + start;
- 	s_pivots = ma_pivots(src, s_mt) + start;
- 	memcpy(d_slots, s_slots, size * sizeof(void __rcu *));
--	if (!ma_is_leaf(d_mt) && s_mt == maple_copy) {
--		struct maple_enode *edst = mt_mk_node(dst, d_mt);
--
- 
--		for (int i = 0; i < size; i++)
--			mas_set_parent(mas,
--				       mt_slot_locked(mas->tree, d_slots, i),
--				       edst, d_start + i);
+-	range_lo = max(min, *next);
+-	ret = mas_empty_area(mas, range_lo, range_hi, 1);
+-	if ((mas->tree->ma_flags & MT_FLAGS_ALLOC_WRAPPED) && ret == 0) {
+-		mas->tree->ma_flags &= ~MT_FLAGS_ALLOC_WRAPPED;
+-		ret = 1;
 -	}
-+	if (!ma_is_leaf(d_mt) && s_mt == maple_copy)
-+		mas_set_parent_slots(mas, mt_mk_node(dst, d_mt),
-+				     d_slots, d_start, size);
+-	if (ret < 0 && range_lo > min) {
+-		mas_reset(mas);
+-		ret = mas_empty_area(mas, min, range_hi, 1);
+-		if (ret == 0)
++	min = range_lo;
++	do {
++		range_lo = max(min, *next);
++		ret = mas_empty_area(mas, range_lo, range_hi, 1);
++		if ((mas->tree->ma_flags & MT_FLAGS_ALLOC_WRAPPED) && ret == 0) {
++			mas->tree->ma_flags &= ~MT_FLAGS_ALLOC_WRAPPED;
+ 			ret = 1;
+-	}
+-	if (ret < 0)
+-		return ret;
++		}
++		if (ret < 0 && range_lo > min) {
++			mas_reset(mas);
++			ret = mas_empty_area(mas, min, range_hi, 1);
++			if (ret == 0)
++				ret = 1;
++		}
++		if (ret < 0)
++			return ret;
  
- 	d_gaps = ma_gaps(dst, d_mt);
- 	if (d_gaps) {
+-	do {
+ 		mas_insert(mas, entry);
+ 	} while (mas_nomem(mas, gfp));
++
+ 	if (mas_is_err(mas))
+ 		return xa_err(mas->node);
+ 
 -- 
 2.47.3
 
