@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72CC3C43638
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:08:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0AF6C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:08:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43F066B00E0; Mon, 29 Jun 2026 09:07:58 -0400 (EDT)
+	id 6B0966B00E2; Mon, 29 Jun 2026 09:08:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C9106B00E2; Mon, 29 Jun 2026 09:07:58 -0400 (EDT)
+	id 660FC6B00E4; Mon, 29 Jun 2026 09:08:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 240046B00E3; Mon, 29 Jun 2026 09:07:58 -0400 (EDT)
+	id 3F12A6B00E5; Mon, 29 Jun 2026 09:08:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E721B6B00E0
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:07:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 568EC1C2A47
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:07:57 +0000 (UTC)
-X-FDA: 84932977794.18.7772A6D
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E05D52000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:07:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cSATadQt;
-	spf=pass (imf03.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0921F6B00E2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:08:01 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F6A214066C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:08:01 +0000 (UTC)
+X-FDA: 84932977962.08.6AA767B
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3AB6420005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:07:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=n8efmFXZ;
+	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782738475;
-	b=27LCr2gmqIPnrsPQ2Bkxk1T+NtBFRNnW5uviLr5un/fVr0FjzXIOzabRaFirDii8c8xP/9
-	M/mJMTKnwQ+oQr6L7a06BLdz+6cNPZxLkj14vxzx/aCZN23cjRwNJXOhX4jXCkeh7PnJJk
-	YYQ2lxGQEqzpAgES/xLhqTN+rLL+n/U=
+	t=1782738479;
+	b=Y9dSjiX0g1NlqbBHZ+hKjoTz6C24pfFIRyOEv6ym31pTdTtnTcHOMHWYVxT3hQSORoGUj/
+	i/MgP34GiQWRct23O+GBkuhf2ky4RWeSvU97oCmyf1wIfaej3MhGfO0qLuDG3vLDvZsIyX
+	dqiVYQJCMXI26hOQG5DRIi5nBgHt5PI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782738475;
+	s=arc-20220608; t=1782738479;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+4M70Gapyp6lHxcKfDwoDJcCaABh3//z1ZN+1TfSdMw=;
-	b=EInzH6HP6QPgeEcsRNvkQWbKHP2l3lchKwzTIO+b1dcSksm9IppDJLw+7+0QftHr7nAnAb
-	+J82tA2dIo7IzQs4NOjRua7QJqzFte57FCOQdSdo2JmYomEioukH7kAlYFNb62ZEHeF42e
-	3gpQFp/dyV5mboZ1hDtblUjNIstuXYI=
+	bh=nXlEqg7p36Jks1c4yuaOXWFRq7Kp2sLsUwczenqjsfU=;
+	b=CbD4Zqb/kSFi4JV9QIwjfgSXZcXDDCfTGZJMA5NKw+MQRIUw5TzgI6LBQePizlwELkN9Qq
+	bglGcEslcvtnXHr3cPEyXrc8SN4ki1xaz8axIMzsdGN4jMMjJJGVmEAYCqknPZHoazWLvV
+	5q9cU9A3FSHXO7eUnNloj0erb+rTjA8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=cSATadQt;
-	spf=pass (imf03.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=n8efmFXZ;
+	spf=pass (imf13.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=+4M70Gapyp6lHxcKfDwoDJcCaABh3//z1ZN+1TfSdMw=;
-	b=cSATadQt9PmNn538c0HHU4sX8smMeILhM4/tfoRnYuXf0zwowoLl3eZcV10IFFxBuD4+cb08H
-	+KSbgdGzMyMpvYFbzcGOgEDWHH66J/pCKAly7VOfjRPdrY2/LCxyITtutjzl5BZTqlAVvhPbgi3
-	gxod+gURdaXV7rMOTz85YpE=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4gpmYY75QYzRhqt;
-	Mon, 29 Jun 2026 20:58:41 +0800 (CST)
+	bh=nXlEqg7p36Jks1c4yuaOXWFRq7Kp2sLsUwczenqjsfU=;
+	b=n8efmFXZdzG/h0lZ6Y0o4MsHme01XM8L7okaKbD/TR5W3fhAEUiS3084Q2F4FbdJWy9onNHJn
+	NoyvX82wTsDRv9G5PxGTgVIRQ7Jcm5Hx10ZCpPXtHg6aMkk03hx8R8iCitsSqg5zLYEjQwsADbU
+	ewPWK6UfSGus42FOPWCcAkU=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gpmYc65wvzLlYd;
+	Mon, 29 Jun 2026 20:58:44 +0800 (CST)
 Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3B07540575;
-	Mon, 29 Jun 2026 21:07:49 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 5D6CF40588;
+	Mon, 29 Jun 2026 21:07:53 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
  (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Jun
- 2026 21:07:45 +0800
+ 2026 21:07:49 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <oleg@redhat.com>, <richard.henderson@linaro.org>, <mattst88@gmail.com>,
 	<linmag7@gmail.com>, <linux@armlinux.org.uk>, <catalin.marinas@arm.com>,
@@ -99,26 +99,26 @@ To: <oleg@redhat.com>, <richard.henderson@linaro.org>, <mattst88@gmail.com>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
 	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
 	<linux-um@lists.infradead.org>
-Subject: [PATCH v16 17/18] arm64: Inline el0_svc_common()
-Date: Mon, 29 Jun 2026 21:06:15 +0800
-Message-ID: <20260629130616.642022-18-ruanjinjie@huawei.com>
+Subject: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso to the kernel
+Date: Mon, 29 Jun 2026 21:06:16 +0800
+Message-ID: <20260629130616.642022-19-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260629130616.642022-1-ruanjinjie@huawei.com>
 References: <20260629130616.642022-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  dggpemf500011.china.huawei.com (7.185.36.131)
-X-Stat-Signature: dxurcoqsgzrcnf9j9o9how1h3didj5n6
-X-Rspamd-Queue-Id: E05D52000A
+X-Stat-Signature: qcorxsxtsbtxymsf38ea4k19o6k8mski
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782738474-217510
-X-HE-Meta: U2FsdGVkX19jxVSW7baMWwywEsapoBC3wqUd/X5kRPE7bMP+LINPNdRj2c4zTRRuauiyAYc8BEIzuZNZwe0TXdBcIaPKZVstQqbyM6MoRQCh2fJQgVGjRF2Fsvz8fgBgCRPXvfTi3xXG9/iRgRneL8Ln+lBBbr8TpoaOF/QuIxjtIMvGzPRFqvgPNRfPuUWxA/u4KsQqxtwRzRthnhjLNJunURCPRrU8D1MhS3taNK/YpjD7eaGLpZ4WLMIGYy3B4y3KKabdfnAmhIUSAUba+/nK7DTcuaqp2ro3I5MEBl0v3DRmiJuPEQuH6Pzyl/lFiR84+Gym4+uWOXBu7ni/qx5A4mchVRKQaDyLxjkSXdiAchYGOnFPjzuLRscflPNWdUmSfErK5BjCSwVYwIDVzDZkU4o6fG2LXPudPJpFbe/5pmEprDMRHX+2/Mp1hHnQBcql643HPb+/X2G+JaRThmMdE/OP+iZ45oxvkDOul30nurJQFfRpWlclaDXiHr1bVAM140rgyX/b0bFUhgzGNfsmgPMcXfYdKawY5RfYOAlAScWMgqtwVD5oPm3ij6m7r70BnR4uH3sUcgF/EA95X7YEEP/f7HsUXD1op2jA1GPO5pYu7RIFhxtUiWARUSHXW9a4BMPijErJKV5ke64AxULyIIKHbRxugZDbyqhxmPrpjnPv8iHKcm7gwmjAkoG1CtCQA20J9bED5aK6omZGt7QWVrtKWVtCEFzL73YnEyEMRVdx30p6FNbkjt+D9bqoE9YvhYZSarSFnf53KJ3cd2BdujkuojZ+Oh6MYZFzL4rjr++nNMaDTzbesKrCBN34EOuhAh7CvAneyjspbbEgR5rCY3DSNZt2OOeA3eTsRAS95mDLOUDH5B3563m93sRtmfcV2QXCGWV0K46Cyn+1FcbBk/eZJDmfU0AMFVs5XTGqvgETcdtslRdP2XFPdrRqJx9dVSGjvygLwI4QOLJ
- axbiNIuN
- wjCtCG1ejaRBTKsoS9aKzlt8UJrOHUBl5rQcFeKIaJARIBEv9+LJ7cJmE4velqySKfE/tp5upcs7YfDQlUkvlAfHeTcr7OsKbggtb2lxLtkM5NKnoFduxGxQtXUlXux9LeRw4rDoWg0HlKnfP0qdZALs9jxSsxtu0Rn++Ao5I3yQsYOm13MiSIfMFue5f8amSRv012lzK27hJKIIfjQ4M6f/OQeJBrvQejMRXknmSOJKWbjHWoLEAGfFjPkjzbrZ0HwHbxY9L6PiryXwHImMqKx5FChuE14pRMiNH3wEJevUhXGiDzNb2n58750Cl1cDIWQx9i0kfuhRQ7J+YwezSAeUoP6ElmF1BSyzvntEq2f1sBJtwTdhWL+mCTSY28M68wpjHU9tmvYjuUT8UZLpBXKVPCGvHf7JxxNcIudwSDCo3a0RcvXIgKMMS9cpN2bZBkhtXfCB4y/LMJwQ=
+X-Rspamd-Queue-Id: 3AB6420005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782738479-894365
+X-HE-Meta: U2FsdGVkX1/q+65vpJvqe0KPr64wrv7JUEA7z3iR88yVrQBtjvrPPTIYMVxNlgiQHgo4LRFXIeAUuNQKS3Sl+mb0n0gr1fsfTX6Lr32HD95d/+l4Pcx31zpfgEnL7u06x0UpZmtMrdJ5xccMrWv58gFXJwdg2ie62q4Ay7m2zFw2BqZRM8W0sa5VrODKT7rewE81QryWWK/1fjvJ5PAArgb8FBhc72V5wjMYAIgcovenLfoFlh3KF4Giu6O2PTa51e8HD4kQY5QT9oDxC7RD+cG2ReREkG8MaznVtZUmV/1bJIetS5lVtkNoU4SSBmh2fmv/CaHuFkIlv1fyLw/kaddR3pwx60Bia026gLnHtxCzpO6byygtLDorHeAZonTrvBuoLCSGmttqdpFiHx8y28hf1+EQWOMVZlm59brWX1oJa8Tfft6aZZIhfIRc8WTNgNKcgtRgC0udY4wAY3sdkB860c+YcJ5C91xj5w8dGpxdIqE++plaH+4lrUdEbcpkiBR8BTNnzT1OjXzFJg8qa/U6K9bWYNjX8nATC/c+2ZpqU7kp9Ems781g7DI0qYcqlGjSkdTe6TOx/PzhlVa6qFcpcogOKC879zTIBTm3aS+0dJS1tJ3zt5j7FvXpsEOmo4HumyXaFcsiKKlw0rwd7rdU13EHgs/hN2DP8UGMlWDR7mgWeZ8uLuEzvRrgmiIXd7jA5xPPZ7LKtqLcr6lJufqfVGPJMn/600R+tSKEdlJdARWlSkztFIqPytTPwzK4gnOrZXqzqKmxy+BnLOVaFuMA/vw8IYz9dn9rsMH51PsjufkzeZZr37IdGvZDQ/Hwc7rD4caLoTGuJGa12M8/m3Dj42KltWvbwrcJGR9wLXbtqds0mSz/SkSGQ43f88Hd9BYF4WipxA2uyiwImDCH4BHTFpkYowUJf5+mgixeEZBnjQZnNHCwR1LUe3GCYaI8OgniDFg2tKTZoXhMg0D
+ s5+H0Vbi
+ wkeZHz+dOxMf66ZXzSnDft8rGfx+pd2Ahf3Na47pBrkJ9x6GjrB95ArEiLSvv2/DtDYoQee7mhIsDqEmHVeJzZoN1xDry3mSMqu3zNuVOcPO8BmGcgOonKPnavhXq1FhKs3Pvv9XdIQz5Pf+b4Adlagx/j/xstHLavCVPl821tvySsVl4/i7qgq4LcRKLTZA37MDb3JYCpRBf4tlfk8201q0/TMlGtWXEuur0oEs45DzOUHsyWX6bR6KaPmYPhfezCnmWkcNP0qoE/cHSds+48TC0FcBKbgx4JjQ6ePaG2HVekSDZCizzeMyQj3TbwVbMSqxrXdzfB8Pvhq/UB+5Ukc+uYHK9yHMIoy29
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,52 +126,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After converting arm64 to Generic Entry framework, the compiler no longer
-inlines el0_svc_common() into its caller do_el0_svc(). This introduces
-a small but measurable overhead in the critical system call path.
+Syscall User Dispatch (SUD) requires the signal trampoline code to not be
+intercepted. This is necessary to support returning with a locked selector
+while avoiding infinite recursion back into the signal handler.
 
-Manually forcing el0_svc_common() to be inlined restores the
-performance. Benchmarking with perf bench syscall basic on a
-Kunpeng 920 platform (based on v6.19-rc1) shows a ~1% performance
-uplift.
+Implement arch_syscall_is_vdso_sigreturn() for arm64 to support this
+exclusion mechanism. For native 64-bit tasks, it checks whether the current
+PC matches the 'svc #0' instruction inside the vDSO sigreturn trampoline.
 
-Inlining this function reduces function prologue/epilogue overhead
-and allows for better compiler optimization in the hot system call
-dispatch path.
+	SYM_CODE_START(__kernel_rt_sigreturn)
+	        mov     x8, #__NR_rt_sigreturn
+	        svc     #0
+	SYM_CODE_END(__kernel_rt_sigreturn)
 
-| Metric     | W/O this patch | With this patch | Change    |
-| ---------- | -------------- | --------------- | --------- |
-| Total time | 2.195 [sec]    | 2.171 [sec]     |  ↓1.1%   |
-| usecs/op   | 0.219575       | 0.217192        |  ↓1.1%   |
-| ops/sec    | 4,554,260      | 4,604,225       |  ↑1.1%    |
+For COMPAT tasks, it verifies if the instruction falls within
+the architecture's 'sigpage' range, allowing the kernel to safely bypass
+dispatching syscalls originating from these areas back to userspace.
 
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Suggested-by: kemal <kmal@cock.li>
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- arch/arm64/kernel/syscall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/elf.h |  1 +
+ arch/arm64/kernel/vdso.c     | 16 ++++++++++++++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
-index 41a3b70a9374..e0a98fac3b85 100644
---- a/arch/arm64/kernel/syscall.c
-+++ b/arch/arm64/kernel/syscall.c
-@@ -55,8 +55,8 @@ static void invoke_syscall(struct pt_regs *regs, unsigned int scno,
- 	syscall_set_return_value(current, regs, 0, ret);
- }
+diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
+index d2779d604c7b..f43d4dea916a 100644
+--- a/arch/arm64/include/asm/elf.h
++++ b/arch/arm64/include/asm/elf.h
+@@ -185,6 +185,7 @@ do {									\
+ struct linux_binprm;
+ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
+ 				       int uses_interp);
++extern bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs);
  
--static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
--			   const syscall_fn_t syscall_table[])
-+static __always_inline void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
-+					   const syscall_fn_t syscall_table[])
- {
- 	unsigned long flags = read_thread_flags();
- 	unsigned long work;
+ /* 1GB of VA */
+ #ifdef CONFIG_COMPAT
+diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+index 592dd8668de4..5a0314a3c26e 100644
+--- a/arch/arm64/kernel/vdso.c
++++ b/arch/arm64/kernel/vdso.c
+@@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+ 
+ 	return ret;
+ }
++
++bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
++{
++	unsigned long sigtramp;
++
++#ifdef CONFIG_COMPAT
++	if (is_compat_task()) {
++		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
++
++		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
++	}
++#endif
++	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
++
++	return regs->pc == (sigtramp + 8);
++}
 -- 
 2.34.1
 
