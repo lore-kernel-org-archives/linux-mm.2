@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BC3BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A21A3C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:20:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4EE8A6B0123; Mon, 29 Jun 2026 11:20:13 -0400 (EDT)
+	id 7D66C6B0124; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49FC96B0124; Mon, 29 Jun 2026 11:20:13 -0400 (EDT)
+	id 75E636B0126; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38E096B0125; Mon, 29 Jun 2026 11:20:13 -0400 (EDT)
+	id 627246B0128; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E85D6B0123
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:20:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 68BDF1201A4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:12 +0000 (UTC)
-X-FDA: 84933311064.02.5B83E15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 985E120003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:10 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GXIsfJDz;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C2C96B0124
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2D761C5C61
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:23 +0000 (UTC)
+X-FDA: 84933311526.12.EA6F6B0
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8D9F9180015
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:21 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JihvDOM2;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782746410;
-	b=aF289JtvU/w5Ci9x22YFbjUSw4eX9NUrqiEAaK2a3Php0BusjrS8pYwI/83bj9UF4GtnFK
-	c/dmdRtfrw95KnV2ekJyNbiEn/suN9gXOLlu5OAf3zT5UO+dnEoCT52zxgigXsMRYvYGTd
-	2q25u2uMk0nk0DkXiDt0QW3qVVqTSfg=
+	t=1782746422;
+	b=kHlvjP5GkF/C262q1/CVbMwvjtTuLq0yF8KogzzHtWK/2SxiRvkwKaMvh6Kv2muLoOjrQI
+	Wq5NDkK2sOboQp+a09OAO86lNgKvWSrf9osn0GKtzfGZ8o/n+WvtqE7AwgCmCvHFI4l2mM
+	CrQHEUVQDlrqOhN9EZrWZRptInbwYgs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782746410;
+	s=arc-20220608; t=1782746422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lAK889VnZ5GR1ejnB0aGy9b8XfwY8yySXBWtcqayKUU=;
-	b=yI15UzVL1w9GPrHJaqausunzPv8KAGKwPrvmOO1uCVF0fmX5dyfvTxs4b93k06vS001jLz
-	2oASxvA6NzriRLzqRJmmgdrRrv3OB5POeis6vWhM8n9e9xrs87TlyjzDz3SIRzGxq415RR
-	ECRtOtkbWm2hpDWkBvJK8NHT+sMqx8s=
+	bh=zY/GriVJLynATGzgCugUthPblhIxqMm9CgqWiWmlu5I=;
+	b=wywx2ZehgThrBh8DIHgz5hSgMZjkHIHURqQnrM/h5qeDbqxJCLQuypdPoIQDpzrB5Bfm/p
+	ilvwL7ttp8rbSPJDySS81nZFcR0AvJuIMckHF92CQs2YOKTUvc8RKFwK3VqXdSFX2szf11
+	llNgtmHByVLnSW5sI1OuDtniYfWzzfY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GXIsfJDz;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C63A64352A;
-	Mon, 29 Jun 2026 15:20:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F12B1F00A3A;
-	Mon, 29 Jun 2026 15:20:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782746409;
-	bh=lAK889VnZ5GR1ejnB0aGy9b8XfwY8yySXBWtcqayKUU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=GXIsfJDzyX6BUWkom6q69jdArKaxrNLPu+prOqdHr2uNODNVln7wtnlW4CU8QokP8
-	 UngcxEWqvcTuBcgPyK10OIe24gX2KV1XUkb4ypgeK4FGuJNB24gHpHkbJhBdkrharB
-	 thg2uvw5FZv5fi0+IP5mToROjvuHTtb/La2H2514ql4ZdD4tO/XDqReBVWGufCUn2v
-	 zZ3xrv0xRHe0mJAJ2vSzxtfya8QHQSJrh+C/R6XXrjIgiLHVTBjmsYGpgRw3FWbBz2
-	 zraz0APC6pq/JXbjbh/7yQ8qtByo3itYgemZG4ZGFkLiLGoJWgwiO0QB//7XK6J3mW
-	 ldRSKvrM7+DLg==
-Message-ID: <cfa56e7d-2395-44bf-848b-6103d53cccde@kernel.org>
-Date: Tue, 30 Jun 2026 00:20:05 +0900
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=JihvDOM2;
+	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <fb9af391-b991-41fc-a105-7a3008860c07@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782746416;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zY/GriVJLynATGzgCugUthPblhIxqMm9CgqWiWmlu5I=;
+	b=JihvDOM2HtqiSQAfyZeXmqsiw/qMEe5kcK6/aBmqOQ6JiD1jy5K3slgNtD5PpIcF4EKrsU
+	ntfMVLFqWweMVpB1fEd/I7/Jk9lThGT7CGs727xXTX2R5F6Ycwe7mTwad43arPQjvHRq1f
+	+bm02FfrILjYkgEqnWaF183fFZKAtJM=
+Date: Mon, 29 Jun 2026 16:20:10 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 00/10] kmem_cache instances with static storage
- duration
-To: Al Viro <viro@zeniv.linux.org.uk>,
- "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>,
- linux-fsdevel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Christian Brauner <brauner@kernel.org>,
- Jan Kara <jack@suse.cz>, Mateusz Guzik <mjguzik@gmail.com>,
- linux-kernel@vger.kernel.org, Hao Li <hao.li@linux.dev>
-References: <20260611171425.1671254-1-viro@zeniv.linux.org.uk>
- <20260613050951.855141-1-viro@zeniv.linux.org.uk>
- <151b1c96-0ed5-44ce-b9d5-86a48d8ad592@kernel.org>
- <20260624004828.GI2636677@ZenIV>
+Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
+ into vmpressure-v1.c
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+ linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org,
+ shakeel.butt@linux.dev, roman.gushchin@linux.dev, liam@infradead.org,
+ linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
+ rppt@kernel.org, surenb@google.com, vbabka@kernel.org, kernel-team@meta.com
+References: <20260629130042.2649505-1-usama.arif@linux.dev>
+ <20260629130042.2649505-3-usama.arif@linux.dev>
+ <akJzXU52XJ9-F2IB@localhost.localdomain>
+ <fb000c9a-add2-4c31-afe1-b6ec416c9058@linux.dev>
+ <akJ-It8m_xm1WVLY@localhost.localdomain>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260624004828.GI2636677@ZenIV>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <akJ-It8m_xm1WVLY@localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 985E120003
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: o9zaagh3er7a9k4bztwdn1jzr8etydwp
-X-HE-Tag: 1782746410-478274
-X-HE-Meta: U2FsdGVkX1/Olkht8LiUD0w7BmFZz8KF18XTSIy6eBWCdZX64jSe0qKev1f2aWGsZFVKM8FHY8P6rsxXks59KPSa8OyCuYQ88wvfnGgDox8wyZkV5cPHXBotf9qjpjIz1NxcOF7TUQT9vLgE6Dbjo5UVzlV1JkrK7FKCytO8Wzcf2ixAC64sJA5OWkQvxuNI6JHyfn/DYHQRxgkjV9mMqwbSEXIWSGkFRrUUzyNydIhfT98kqKP6I0Xl66t1slwisfnJ4QsSGAghKTEaIFqmwnP7ypOfSiTyIxS4OWa2LMhnLckQp4m9bEib3Odt24SJY5YYfZVnrnUiWi38FPeXtFkN6m4t6IRoWAOxLqeJHs0v/JKE0+9vJEwgRtqwoau5ws0hoUUjZhZESKOdIdsW7aChqMgv1Ot6GaxiU35P5Fj94DJrvurMTzV6lDeVv9+0zfKT3xre0x3pfLJ0nntQVRFvf9BOI1d7l4TkDqNDNQk2AyNH1h976Mp4sg/iXl8BxqGLsSRoZl2pRe7XsR9F2GpfGEj04bIVSr8IoiC8JzkSqjC4dM7t+WI4ArjSonwHtnZ0xwekvciJk4T1sjOnY0jFvff1m0FEU1vnGfSBYmOaGpovpetS4D0d1ub1fII27PhMSlzoWaXlmlII9zHD3qMPIVDtZU2AIGM8DqAfRjGjldeNbdannQjgk/1ij1bP8e4Ifsxt0lVYUKEiLL0H2pJR1X2JLXDrM77reyvi7+PY2+/1dJsOhrzyD9lQKxE3W9J8RTEmBlG3wwdWEzTByJ6NNfGJqaUlQqosgUENc6Hbl2KJk2CAV3Q0j8XZIndk2Dm2icUB9XL4ih2rGFOQQy56FYyqB9/P5vDjgvm/FNDuKyH7RpLxN/qGIxMfY0NEqXjOHASyupdLCZ/WoeE0Y+CDylvt/OOxURa0cRQjwtOdi/NBKVsYpvycUGkTWevAjKM9GPR+H9a7AIIevCN
- q84q7AQ1
- IYFlxTvGavHHUNLF8sfK+JCKmg56hRinuQUYwmQkkwyj41ezt9th1gL4XC8qb8VJiE5Sd016hhukGhhAOfVRd5NnnxNDt6n2rljtxmTChh0U2IVnGPfGdOBWJQKOPDcJKb0m1SRh1hXSUXFjKIWkKJ5Irgh+W1lyLTje3EcfJDzJvOeTmFeQ0U4My0kTbN4hMu30imof6dvCjkjpilvvLxEv/bBkQtI3b4ZqotmAo/qX59Qb2I3XCmeEXkCRwLVUMq14A46YCX1tXCIzBAVzQk5FHQun2Ja1c62mZcbMKRf9bV0x5Pbfgv9e8Va5U3TEekSkk3mTmngZ2i6SZNprbjhspehnow5hLwgE/7TZSfM0DlDXTm3HVbvRGqsS3yrfVi71zizdPsCZbRT1RySwk4H1qFmHNmXx0ZLrX
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8D9F9180015
+X-Stat-Signature: 9d1wmxn7towatbpiitmumudkqg5zrxyp
+X-HE-Tag: 1782746421-143404
+X-HE-Meta: U2FsdGVkX18ribgNoAtVDTRBhOyuCemenLeP+mnv4TKqXD2AJjss3XTmJV6UlqCNP6s/HW3nz7sGfsDnrFJR6A1XhMJ1QpBxKBYZUTbTwzWnORocK3O1MTUUC94msMJ4VzQcbqmwCVVqMj7Z7xi1IzURh0U0XKX2jNHmssAxliTzO/Al6rI9rh1YMdCwd1KRzVD9BIYt/QhrvtqKJX704JltmRo2pS7za7iDJoefVgcgsPReLhEtCDYvRH3pVFaXToPAtGh3Kb0fmZbFXidfAulkg9PAqGYhLAcfPlV4ziHqehs8aZSJJRo2ZDMkFhVhajzfdCHA7ReUbxFy+qk/e1EtNS/8D/8RcJ1UDyITx0V3vEg8qdavfMk2JlK389T1gFXBTacYyPY1WCLi05cy5tDLpC2VOuO3oeGKoAEch1scwPl+fLTSRkxwrFdsha7/eY4PfK0R1PS6YenYdhewdKaF6xZfVx4e6i66on4g9NI30rgA1/8NLx/ETbr+j/2TosaiOtTbadxod8cd70RWsuAptVE6w2BBvISh+kj+a7fRRDCE8zdLGu3pszYBq5L7f4uyILEz8WXOfH+lA8iTIbzGYu3Zka843/PxbXJ6X8xdldorTV148C+Nd+B9XahDa9tRZrzKvBttPw2N38LwAEAKALmavIKV/zR3GlHdJo/Gi3CRk0fF4RvWZ2uXpugBCfTlOP7hzxb+6lHcLwnE6bWTT47n25IltwK9QJ57PvCvvsDW3IR/tk5Ulimu0CZPfqHH+C7/I666WY4nfehNOz3xwZHJq3V7EyZ8u6mdW74Z6y1yrasVzIdBj3ssw2tsD3xGSZW+sc5vn44PHgaKQeHevWsnhpBOpO4SpNnXgQbe7496oE0Z9nYdKoqCZuclNe0K8u+0GULekCul109NJtEhdotQUwHY0Bix2XbGnM1ZJpikZVLbwNMt0BeKe1IhfAFJPBmLFwJ5UdHX3DM
+ q7aKyO6E
+ qYKj2hP2+o5iJxYcIZoQtoMbViI9buLBaSb3dxhoFjjYENjN15Iwk2OeCvg0+paz+y4nwQKuTpN2+bJX1u9ZEGLouxFMpq5W5Jsw/DwJclTPasKHzpE6z/ifLU/OpO77szsKHhrPVXx3WT4YPWQOP1T2OM+kPsKgD+SK3tQXzPN49LI4L1PfHz2tNwJZ0bvz/GfsCu8NuarST8sPu0sL3kXtrpfIvn1LNvxGcqfQ205QXovg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,59 +98,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-[Adding a new slab reviewer Hao Li and dropping my old email]
 
-The thread:
-https://lore.kernel.org/linux-mm/20260613050951.855141-1-viro@zeniv.linux.org.uk
-
-Trying to follow the discussion here...
-
-On 6/24/26 9:48 AM, Al Viro wrote:
-> On Tue, Jun 23, 2026 at 10:09:41AM +0200, Vlastimil Babka (SUSE) wrote:
+On 29/06/2026 15:29, Michal Koutný wrote:
+> On Mon, Jun 29, 2026 at 02:55:57PM +0100, Usama Arif <usama.arif@linux.dev> wrote:
+>> On 29/06/2026 14:34, Michal Koutný wrote:
+>>> On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif <usama.arif@linux.dev> wrote:
+>>>> This split is the first step toward eventually making vmpressure
+>>>> CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
+>>>> (tree=false) cannot be removed today immediately: PSI is not an
+>>>> exact replacement for vmpressure, and switching networking socket-buffer
+>>>> back-off to PSI
+>>>
+>>> (Here I understand PSI is a different and differntly scope metric) but
+>>> what does it mean when you write that tree=false cannot be removed but
+>>> the other patch bails out from vmpressure() (i.e. nothing is updated
+>>> anyway)?
+>> So the first patch bails out for cgroup v2 for tree = true only.
+>> For tree = false, it doesn't bail out, and is still used for networking
+>> socket-buffer back-off. I think that is a whole another scope of work
+>> switching to PSI. Hope that makes sense?
 > 
->> But the argument for doing the static duration support is that it should be
->> faster, not just "not slower"? So is runtime_const equivalent or for some
->> fundamental reason it's slower than plain &?
+> I've mixed mutliple things together, sorry. I wanted to actually ask
+> about your response:
 > 
-> Yes, on any 64bit RISC.  And if nothing else, arm64 has enough users to care
-> about.
-Agreed that arm64 has enough users to care about performance.
+> | I realized when trying to swap the order that the splitting off v1
+> | commit will end up doing more that what I think it should do (just
+> | splitting off v1 specific code), as the tree = true code will not get
+> | compiled in at all for cgroup v2, and it then ends up changing more
+> | behaviour.
+> 
+> tree=true won't get compiled but v2 doesn't care about it, so the effect
+> of patch 2/2 should still be same (regardless whether it comes 1st or
+> 2nd).
+> Do you refer to the invocation of vmpressure_v1_account_tree() that is
+> affected by this?
 
-Out of curiosity, could you please share on which workload you observed
-this (dereferencing cache pointers) on profile and how bad it was?
+So what I mean is that I want to keep the effect of the patch that splits
+off v1 code as just that and not have the optimization of not running
+vmpressure for tree = true + cgroup v2.
 
-> Compiler does *not* build the address of global variable in a sequence of
-> shifts and bitwise operations when it needs to pass it to a function.
->
-> runtime_const_ptr() must be able to handle an arbitrary address; it can't
-> avoid doing the general "build a 64bit value in register", which tends to
-> be nasty on RISC.
+vmpressure_v1_account_tree() compiles to an empty function in the split
+patch for cgroup v2, so if we make the splitting out v1 code as the first
+patch, the commit is not just going to split v1 code but also do the
+optimization of not running tree = true cgroup v2.
 
-It'd be nice to have some examples in the cover letter.
+I hope it makes sense?
 
-So if I'm following correctly, arm64, for example, uses four
-instructions to build 64-bit value in register (one instruction to fill
-each 16 bit) in runtime_const_ptr().
-
-And by making it plain &, the compiler can use clever tricks to use
-fewer instructions to do this?
-
-e.g.) a quick search says [1], on arm64, it is possible to reduce them
-to two instructions to build the address of any global variables, one
-instruction (ADRP) to generate page-aligned address using pc-relative
-addressing (within +- 4GB), and another instruction (ADD) to fill the
-lower 12bits.
-
-That's what makes it faster than runtime_const(), right?
-
-[1] https://devblogs.microsoft.com/oldnewthing/20220809-00/?p=106955
-
-> If you want real ugliness, take a look at riscv - AFAICS, they wanted to
-> avoid a long dependency chain, so they load chunks of constant into 4 registers,
-> then shift and combine those. 
-
--- 
-Cheers,
-Harry / Hyeonggon
+> 
+> Thanks,
+> Michal
 
 
