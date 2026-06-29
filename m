@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6392C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:50:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A137C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3D8F6B00E7; Mon, 29 Jun 2026 09:50:18 -0400 (EDT)
+	id E120F6B00EA; Mon, 29 Jun 2026 09:50:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C14EA6B00EA; Mon, 29 Jun 2026 09:50:18 -0400 (EDT)
+	id D4CFB6B00ED; Mon, 29 Jun 2026 09:50:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B51866B00EB; Mon, 29 Jun 2026 09:50:18 -0400 (EDT)
+	id C64826B00EF; Mon, 29 Jun 2026 09:50:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7EE4E6B00E7
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:50:18 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D241316571A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:50:17 +0000 (UTC)
-X-FDA: 84933084474.30.90488D5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E4EC11C0006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:50:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I92ZRMJq;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 8ECD26B00EA
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:50:21 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1BC92165616
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:50:21 +0000 (UTC)
+X-FDA: 84933084642.26.F111D19
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7724B40007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:50:19 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l4ySneqf;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782741016;
-	b=7d3WO0gvnOqXZAoMCFg2LuaH6pXWsSM3HJZqI5PEKu4jIidewjuWWrMKo8KWq2Xh9joZyU
-	jXbOtp3OqzrjWJjBNixeE4DlXxHN/HmHbYHG/obMAQEZTRkGEKPcD61IIt2u7Iw7ghoIgw
-	46yxVUh8ZQSGjO07kElNIPD7eyQd2T0=
+	t=1782741019;
+	b=6jW06LX3ytmv81/S3L/m3aefgZkF2T1sxaK9N7/mB4TjJ2ASAJibv6Iuq1XKj7A2sWwNFz
+	F4FgH5KpbAKHQuIg5FIALrNWZCCqjWvJaO2CB11YprZXPf7IEBFJSlfzlkApTM8MgAtzar
+	0EFTMP/xlMfbyUaqX1sO8nKFV+qtQbs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782741016;
+	s=arc-20220608; t=1782741019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i+cZJIOp09dMSw4V2hsqNnLUK/axMUzonrG0MkHxYeM=;
-	b=wyAwyRuQD5o1SYqfAz7K0DS6t8biMw9VX7BIr0DnQsn6Xc0+2xnBrKOt6AV8ZH53DjVIV8
-	DLXyObRBIDeMvx6n7Qljz6jo7hWt4eGdK10B3e8MimfjGt7oa73v+QR7V/FcbhlWzudl2S
-	5UlxBSfRG8FTYE6NdMaB6LFW0HBIZow=
+	bh=V+Zb5D1Rf+1FzByFCFmRO2vzNlcbsbvoAC0fHg7BI28=;
+	b=QplKbaTXOWxmiBY47M3C30e1Pd3/yj9O6vSy1xRYVUuu/RlEbvAMA+ntaXQllOUzWHIQAS
+	cVdm8fndppH6E8/MLJV4rx9acrxwcFuu0DaxDlErBBPJYUE5UoHaRbErJpZJN6we0T+X7K
+	Rc7f0PI6Zt0/JWTb19ugIaJ//yajTb0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I92ZRMJq;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l4ySneqf;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 35CC041AFE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 13B7C6001D;
+	Mon, 29 Jun 2026 13:50:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1ED1F00AC4;
 	Mon, 29 Jun 2026 13:50:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1081F000E9;
-	Mon, 29 Jun 2026 13:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782741015;
-	bh=i+cZJIOp09dMSw4V2hsqNnLUK/axMUzonrG0MkHxYeM=;
+	s=k20260515; t=1782741018;
+	bh=V+Zb5D1Rf+1FzByFCFmRO2vzNlcbsbvoAC0fHg7BI28=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=I92ZRMJq75nS6kILiQ6AXqA5GQi202584CnxxXxbFLXGHNUII+jNHHw5FDjnnw4iX
-	 yvpiEruTNJWYheMFIpugiQB+jVZPhkbd55yq0UDZYTIhKiEXIzhUgNKVtgJCpVmIqV
-	 xd51dzwLl+suxX/2q6Yz8H0vgV9DQDdsMFNHr2NyqzrCZm14q90n8iWGbOvBwnMKtA
-	 VA7O9x0iUqRMRNEAvAs2Kc0JrdZ1KL4aCt8X6GBS9YMThQe8nm/RFbl92zqATCUCtk
-	 glQT6NuDyA6B++0fXFdaNIaEo16d3RW6ZPsbb0MUwT5mqdGqqYg42QCyTXmjFidUhK
-	 NmNq4Bj5LWtyg==
+	b=l4ySneqfVaUVEMCfMQEsv/syXXvFDUFyU/OEbQPG7GK23ps2xOHHI5/ByjuxKSUwA
+	 37nhEhRNCLpGd9Qb8QBNzWQF9TCmTTl+rqj9FbvOXe1uH9RwwKk2PGQVRxGc2bO80W
+	 wKoxJDlXstQOsa2LBFZQKGN5krmHA6H8yIrDGCcPA2XNoHIP3jWQsED2ls3PFiiJQ7
+	 T6tJ0jpD3wP2eok5IoXzcuZfv6yJ9M54LjZy52CDdjpJjDoUTMxOjmQRBGoawQvrIN
+	 ckNxvrizn95vak8z4ZZ8cev0bN0K2dtVv47X1gK7k7pEuqT11sbbA7sEuamvgr9p0r
+	 +OgpqP9fI1VpQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 29 Jun 2026 15:49:48 +0200
-Subject: [PATCH v2 2/3] mm: drop pte_clear_not_present_full()
+Date: Mon, 29 Jun 2026 15:49:49 +0200
+Subject: [PATCH v2 3/3] mm: cleanup clear_not_present_full_ptes() and
+ rename to clear_non_present_ptes()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260629-clear_not_present_full_ptes-v2-2-96089871a1e7@kernel.org>
+Message-Id: <20260629-clear_not_present_full_ptes-v2-3-96089871a1e7@kernel.org>
 References: <20260629-clear_not_present_full_ptes-v2-0-96089871a1e7@kernel.org>
 In-Reply-To: <20260629-clear_not_present_full_ptes-v2-0-96089871a1e7@kernel.org>
 To: "David S. Miller" <davem@davemloft.net>, 
@@ -84,14 +85,14 @@ To: "David S. Miller" <davem@davemloft.net>,
 Cc: sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.15.2
+X-Stat-Signature: 47qd5ef81omo6497x13bxxfg5z4hi4da
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E4EC11C0006
-X-Stat-Signature: e8qd6x5gttmkfzqsb7p8t7aey4xn6fmt
-X-HE-Tag: 1782741015-283076
-X-HE-Meta: U2FsdGVkX1+yIvBkRq9drtW2VmhD/KGpkML+lF0lM3ivSzhjfjJHr9FNy6dB3XKrEISxdmcevHkp0h1mIdCQXZOIVlzWh+FopmM3U2lSoOgzotXf6ohOsmMNO5Rku9AcwmCuJ2vMQmAo5GimDlx9Mhwn9tPz64oLmOKBjfjnP6/2lk1Cb+0cToOoIkqwdLj26yt4+BZ6vCYH7WlWq5Mimq2L7t4gjO2kS7diagD1746yORqUZ/igKHH6q/6V3tAB4/DQYZ1LZ2glL13L16Z+5lmzB4rngzX/h00nYCI4GgYly/njn/6bisGjlZqgHsF2Htg6/7eEHkMlshWsp26BRnwgTqpvehrhb5j3Zz3kVIPnwzREE+nhzEqGk8AfrNtDbhDDKVR23L6U//t2jAo8jrY//ZM6rHHP9DpT7ntHatwf1z5/WdmlVLoOOygt7md0cs4fahkadQSyTiorO6Dpw06ghR9dVkSN2HeFOBLtZPv10kIjAUdmG87fVK7ePogPZtclU+PgGJtwBczTryXTTGslZfPvDFuS7mMzHPcShEQDt6qzqqHhIzY5IBzP78sa3+sRRsgG3mIlFYptjtdWakfxGJDiiAaUA/bmBEcSwRS6IyPBsiaeqeq9lXGdivOY9l99zPq+VzZE7KhxgaTVhTUFu/zt/SGsL6LnP7/rKBWE4Nlg9jzDp64WequtivvS3VwAnb5nfHhberSQpPw3pS5uoACWBks4MtQlNpcwua2rMbDKwEp0Wm7n53yn8ZPAaWpj2f62iUTdTyTvg70aChJsDwXvhZawotwi14uYCa1yFKer2EiVGEBBhlv9VDtaxjROUKNeGF1/BSQwNfu6IJvcUmJ58xIKLEdy0o7IYnko0m/nEP4basphCKkoUGThUM0IkY3Gm6XxbXwungASYQLBdB39EJoajgXKDqnbfp1IZBGfD9GQdK6zwoDdhkEODooGCfg1qxpLottWeBq
- N3BL/Xgw
- uFCtk5iJV/2QW3McpWExqrZw/LqxJPQAV0J/VgBw8hzakJXETimp63GlJw/GgWmfyblxyuEDwj/lga1duVa0w6ozDmBdDSI/mCY06zBSuOdhSql7xDzU82sSg1IrpZ7r4IFuOZX87xS//wQzaTAB1irF09iYwlXpREugI0fsTsAk9vbRZLkrNXX7YhWNZ6biqwOm+1AMn2bX854gnMVFU/PcQLl3/kON9b0bVS+EbRWPu060LAi7Afga43nnMU2Rl/vZJS2R1a3QWCHiFegEJgeoC+ck8MdO0JFANAfCOXsyDmi4=
+X-Rspamd-Queue-Id: 7724B40007
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782741019-210249
+X-HE-Meta: U2FsdGVkX18D1GDf8FslxrEh4mJUX4za6tffPFPqjMIOhJKKYAPb5l6u8h9oBy5zgY5soA2sG6AkvnZ+q+LKrMXNofRoHGsype6eJiy2440A/IoMhSEgeRZFa+Dvk2NP/bZS8/pZ5KmGvF7WyQsS3vROBqAjpF7bKE+dFAjCih5IpqElpQfUynKYmTAJEFtEWCYi480Tyu6Sb44vJvWpeuDBT994a/l1eiJSTf4EV0XhPhAGKcuA/XTnMXKJ9bDBdsRyNNVF5XOmtFM1cTimhflTJEh56nlm4QVaWiNcLdnGFV6Za5DPZdNyUoJoOIAgmXo3Yo4f6GtOgIBUyBHSSsce4uIZ6aXA84dbmHxDOJ74nELpf4c20s9moJeaA2B60kHq5+clrO23Vxo5TSUr8Qx+LDH0lHhufUBX2DAzBmNdPB3iQRBUBAGRovJBYZNYMmzmW/Mz6Iv7EuaaRnRl4FUmM3Pd1gqA59Q7IPXaiUO5mry2Xm04QEiK6WpowTkcov0PBTvX7DZPPqrvGdOWkspjxXbXNQRUBC4EMb/+jxbXs4Uu/xqU4RAZbZCO3WUPvW9nAVEsNlIJiZXM6hrsXXw4+upXiKqGxAMVdMMnWaDzJE8kJUbQmU905Lo0tKg+b2XvDMepm+HRgmcXhuL+IAfCA83tVqjgCVFVXhAoCBKTHvsyfz8HUskEsJvFL9SwBo/2QQ8EqZ0nzEm6aOciOvnWndYSogEHBLle19ts67T3XB5291fSpxsY6V6gUJlObe/sGQHmZSR0g7iCAN6Nug7aArnwzkSYDk/bMpOb8B4obPtxU/KJOves07H6YxKFgR2Me18EOXsOyI0X6JnGFZpQ9stNsOof3AH8glJJ3N2rwDqqfrQAKsUslWojbMj2xszU+za7kqiMjSXrbqWftLxWvLNxxYIlNIGP7+Gwm82X0k7tv8fI3kM/7BQii8PdqdHF0BBjNiTCHv0C4U6
+ d1GgNAUu
+ 7VVuQs70br0u9Aqw5sSmUVxWbQBEHIEuYY77hjOam05pEQNyO6HbRNdoFpzsSMXDQuwxbzLQh1iUuVU/d57deM2Fo9o6Rlv8MHos/8f7dVmRKHe1HJUasL1HIf8zI0VbTfgwBsL2/K5xu9/8ioKBMstPK12KbskcfpZsl5EsQA/+P/F7XC2FFM4y+llZUQxN9LgToavLAFRlUK2xUCrRxhFm5uHIdxHJoMiqqbwWQgoesqH0brCL/SY3j0gb6OLNNO3l27c6kJjjmMarw0AHkSKTnaELcmmYi27w+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,95 +100,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In general, there is no good reason to do anything special when clearing
-non-present PTEs.
+Let's clean it up a bit:
 
-In theory, HW that does have to invalidate TLBs for non-present PTEs could
-benefit from a "full" parameter, but fortunately
-pte_clear_not_present_full() is not wired up anymore ... and there would
-have to be something very convincing for us to care about that to re-add
-it.
+(1) There is no need to pass "full" anymore.
 
-So, let's just use pte_clear() directly now. To avoid the compiler
-complaining on some configs about unused "addr" parameter, silence that
-here.
+(2) No architecture overwrites it, and there isn't really a good reason
+    to do so when dealing with non-resent PTEs.
+
+(3) While at it, call it "non-present", similar to copy_nonpresent_pte()
+    and zap_nonpresent_ptes().
+
+It's a shame that we have clear_non_present_ptes() correspond to
+pte_clear() and clear_ptes() correspond to ptep_get_and_clear*().
 
 Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/pgtable.h | 21 ++++-----------------
- mm/madvise.c            |  4 ++--
- 2 files changed, 6 insertions(+), 19 deletions(-)
+ include/linux/pgtable.h | 14 ++++----------
+ mm/madvise.c            |  2 +-
+ mm/memory.c             |  2 +-
+ 3 files changed, 6 insertions(+), 12 deletions(-)
 
 diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index dc804296d78f7..0b81e396816a5 100644
+index 0b81e396816a5..d52d2a976e5a2 100644
 --- a/include/linux/pgtable.h
 +++ b/include/linux/pgtable.h
-@@ -988,21 +988,6 @@ static inline void update_mmu_tlb(struct vm_area_struct *vma,
+@@ -988,24 +988,19 @@ static inline void update_mmu_tlb(struct vm_area_struct *vma,
  	update_mmu_tlb_range(vma, address, ptep, 1);
  }
  
--/*
-- * Some architectures may be able to avoid expensive synchronization
-- * primitives when modifications are made to PTE's which are already
-- * not present, or in the process of an address space destruction.
-- */
--#ifndef __HAVE_ARCH_PTE_CLEAR_NOT_PRESENT_FULL
--static inline void pte_clear_not_present_full(struct mm_struct *mm,
--					      unsigned long address,
--					      pte_t *ptep,
--					      int full)
--{
--	pte_clear(mm, address, ptep);
--}
--#endif
--
- #ifndef clear_not_present_full_ptes
+-#ifndef clear_not_present_full_ptes
  /**
-  * clear_not_present_full_ptes - Clear multiple not present PTEs which are
-@@ -1014,7 +999,7 @@ static inline void pte_clear_not_present_full(struct mm_struct *mm,
-  * @full: Whether we are clearing a full mm.
-  *
-  * May be overridden by the architecture; otherwise, implemented as a simple
-- * loop over pte_clear_not_present_full().
-+ * loop over pte_clear().
+- * clear_not_present_full_ptes - Clear multiple not present PTEs which are
+- *				 consecutive in the pgtable.
++ * clear_nonpresent_ptes - Clear multiple non-present PTEs which are
++ *			    consecutive in the pgtable.
+  * @mm: Address space the ptes represent.
+  * @addr: Address of the first pte.
+  * @ptep: Page table pointer for the first entry.
+  * @nr: Number of entries to clear.
+- * @full: Whether we are clearing a full mm.
+- *
+- * May be overridden by the architecture; otherwise, implemented as a simple
+- * loop over pte_clear().
   *
   * Context: The caller holds the page table lock.  The PTEs are all not present.
   * The PTEs are all in the same PMD.
-@@ -1022,8 +1007,10 @@ static inline void pte_clear_not_present_full(struct mm_struct *mm,
- static inline void clear_not_present_full_ptes(struct mm_struct *mm,
- 		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
+  */
+-static inline void clear_not_present_full_ptes(struct mm_struct *mm,
+-		unsigned long addr, pte_t *ptep, unsigned int nr, int full)
++static inline void clear_nonpresent_ptes(struct mm_struct *mm,
++		unsigned long addr, pte_t *ptep, unsigned int nr)
  {
-+	(void)addr;
-+
- 	for (;;) {
--		pte_clear_not_present_full(mm, addr, ptep, full);
-+		pte_clear(mm, addr, ptep);
- 		if (--nr == 0)
- 			break;
- 		ptep++;
+ 	(void)addr;
+ 
+@@ -1017,7 +1012,6 @@ static inline void clear_not_present_full_ptes(struct mm_struct *mm,
+ 		addr += PAGE_SIZE;
+ 	}
+ }
+-#endif
+ 
+ #ifndef __HAVE_ARCH_PTEP_CLEAR_FLUSH
+ extern pte_t ptep_clear_flush(struct vm_area_struct *vma,
 diff --git a/mm/madvise.c b/mm/madvise.c
-index cd9bb077072cc..f3cda54c1d6a0 100644
+index f3cda54c1d6a0..3db143c442eaa 100644
 --- a/mm/madvise.c
 +++ b/mm/madvise.c
-@@ -698,7 +698,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
- 				clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
+@@ -695,7 +695,7 @@ static int madvise_free_pte_range(pmd_t *pmd, unsigned long addr,
+ 				nr = swap_pte_batch(pte, max_nr, ptent);
+ 				nr_swap -= nr;
+ 				swap_put_entries_direct(entry, nr);
+-				clear_not_present_full_ptes(mm, addr, pte, nr, tlb->fullmm);
++				clear_nonpresent_ptes(mm, addr, pte, nr);
  			} else if (softleaf_is_hwpoison(entry) ||
  				   softleaf_is_poison_marker(entry)) {
--				pte_clear_not_present_full(mm, addr, pte, tlb->fullmm);
-+				pte_clear(mm, addr, pte);
- 			}
- 			continue;
- 		}
-@@ -1234,7 +1234,7 @@ static int guard_remove_pte_entry(pte_t *pte, unsigned long addr,
- 
- 	if (is_guard_pte_marker(ptent)) {
- 		/* Simply clear the PTE marker. */
--		pte_clear_not_present_full(walk->mm, addr, pte, false);
-+		pte_clear(walk->mm, addr, pte);
- 		update_mmu_cache(walk->vma, addr, pte);
+ 				pte_clear(mm, addr, pte);
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe923..a3fcaf8cfe8f8 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1797,7 +1797,7 @@ static inline int zap_nonpresent_ptes(struct mmu_gather *tlb,
+ 		pr_alert("unrecognized swap entry 0x%lx\n", entry.val);
+ 		WARN_ON_ONCE(1);
  	}
+-	clear_not_present_full_ptes(vma->vm_mm, addr, pte, nr, tlb->fullmm);
++	clear_nonpresent_ptes(vma->vm_mm, addr, pte, nr);
+ 	*any_skipped = zap_install_uffd_wp_if_needed(vma, addr, pte, nr, details, ptent);
  
+ 	return nr;
 
 -- 
 2.43.0
