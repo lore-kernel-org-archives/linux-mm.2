@@ -4,136 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A990C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:02:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDC5C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:12:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 01AB96B0088; Mon, 29 Jun 2026 03:02:11 -0400 (EDT)
+	id 8B80D6B0005; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0DC16B008A; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
+	id 868DE6B0088; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFB896B0092; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
+	id 77EB46B008A; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B30E56B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3274B1A03E9
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:02:10 +0000 (UTC)
-X-FDA: 84932056020.30.3714602
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 28448120002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:02:07 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TszeRu7g;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 489756B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:12:21 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id AE40912058A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:12:20 +0000 (UTC)
+X-FDA: 84932081640.23.18E05DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id DE386A0002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:12:18 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MrYJJ0zh;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782716528;
-	b=YpADYG62nJ/yIMEifhF9t1j6JF82eWR2wD0hG8D2MCRphxvxuoWprdqEcPk1jTAWBa0C+5
-	BWAQbb+DQxbZjDP1K0Rbn49UCbYXpC/EcVj2d805/ihevUqEcGRDSQeTt4y9mEGX2aKgXA
-	faZx2DytEfUNGmxRoE/zLLwa6oohFS4=
+	t=1782717139;
+	b=WjwY5nyvdMa/Zj5lDI+4hVV4XIEGk/Sbukktca2CuLmFvwNAIRsJhzaSO2iy5gu/uOmA0x
+	u51+C5SHLFjQqTQjZ5AG1JgaF0oLJiwlXefmO9npTW/56vOOsGRCqjFX2NHBKiDWfbI0Ud
+	H6ipRYp8x4z9yruhOnW/42sHnMQ6rt8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782716528;
+	s=arc-20220608; t=1782717139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
-	b=1Gj50uMGdvs7Ouz6jvYgTfXJZmZ3iFSM531+pNGoS72ShSB3vCAY20hOE2h5VGKSVUzk+l
-	NM2Pxa2Inh5tL+XvFG1EJmk1ogBQXJr/tPUWpRtdAnmQbJlH8vDSdys2OiOtz5jQBklj7G
-	jLai4+f0wGbMtj37nVOh+weaCFE9cCI=
+	bh=RfYGT01dvLOEc8FqHgrZrGneidKm26R2Z1JVOqhWxrM=;
+	b=iKNDycYblnSfr1aclWLwBeG4iG1oTB30pw7cPVUnL2Mv2RNqKDmTCOChQtoE6xAFReKiqu
+	bJkgXESEGQjTOE7jf0n1N+rfdfRWuFo6nLOQUgX6Wdl1duopC0X6wm4Pr15yTq0RvoAegv
+	ZeLYc+hNbBipLIh0fHVP7apes1oqAQk=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=TszeRu7g;
-	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51a85b0e2eeso23730851cf.1
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:02:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1782716527; x=1783321327; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
-        b=TszeRu7gxVu6RySti6GnfeNI8EijR68HGm2ppTBmBWcaXV1JCnVaCa+NqB7k9xVUgA
-         KrHGx7lWImZ99dJuAGpKFafFbV/0m+TxOFw34+9DXeWD3K6tt7y8qGRCFA0Pi8sTCz6s
-         J/bi5uU3fzTOTERBrG+ASTa2qS9l2XiD4FS+KlMKk3ERhmcCZxSeqkZd3DlER60Oz7Ry
-         rQyDVqvCcneHNgR9KkcUvZ0GM5iZ+8BTfrUixKbg0WsFkWmpj8f9QEn0+Ek7JgYKNin3
-         X/6jyZM2mcfoakHgG2eYihjP4xnulGkpIpTu38qPCmvroVuxGkHEJVgeR005+9t1hoL3
-         JRXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782716527; x=1783321327;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
-        b=mcg3YBMr35Q6l9NARw1UrhN1B2AvsUpKqVozPSLoOAkXGLxi2T5Su2yUzdZBrC+aN7
-         NfcXwO+2xx5i6PH5Wl5OKYSxzb4VU4Ftof1q7LyWi6Qv3AqW1CLAJKF/tQBdQOUDVtP7
-         70FyXFvQFQ6dBEv7rVybvjJqhTrXWWdu08gffXI0YNryg0+leqJlk5IlYrPyStfIx6k6
-         fStL1n5GJUqtdCEGUZB0ntTncRrl3WyRdDXzj7i2ms1rmUdpYUxlz+2g8vJ9lgGzzeoy
-         BSAMWx55KEf9XgE/TtHbLNFPGSssoPsOh6CS29Ly1Qtqif07aSkDqvly03k+F6nrzRTf
-         /6fg==
-X-Forwarded-Encrypted: i=1; AFNElJ/yNEiDxuRxMvWvSJXx7f0n0jnfl8U2sUr8CVTlIZwr49AyO9syzlM5L+v2WLIQ/H9zERu5ls592Q==@kvack.org
-X-Gm-Message-State: AOJu0YzTUo0t4lPo9+5MRUGmi7xVOdhNDugBUEJFrFu1QUaYFDvtLpI1
-	zDcsg/3gi6JZ6h7MrjzRswL+peB+u1EjQIixY0duaHLZZBt0YBqbJsfHCMOapLXGUpY=
-X-Gm-Gg: AfdE7clUGwoltAQ4+0cwnZC7Oiwz+NBnCBUkRtcQs7HnIBUyK4RLZSPSzrK5o6IX/uw
-	EVoOnpX1ovzKdW+oB6eeGZ35Jo6184e27KvXFjU/6+BGs1sLaqTLpOxAEgcLpyI+hA+r7pugtqy
-	ZaAakrOyb5nG3FZDYbDUgGAXlnMY+dQ1QIfGn9QRmDl8cqkYqqyYvwaVUIaQyzCr9+HcZb/bJvO
-	udMwTK94Obpt0yblI90Ah8wHb9nh7ukjlvbCvBRswNXyzFCNiT2d3bIgiBoz1a9FRLQOGlmiY+8
-	aXb+zcAVeaLOUl5vxHc+eHTi9duLuaAaFwpqXmpCoSlftZM+Y5P+bjrO8l3if1NnZcv0ySI7YAP
-	5eY/9Xktc+TV5FdECHOC8VG4C1p1WpXgoxXpG9+FD/R7QNFUErG4fy9gEYI6uvNXju1naJ19hMD
-	WFPfZ/ZFgU4nHc0Tp/Md31lqv0LTz1D4Pzk2OEU6bPzBKhhoqRUAPU5VkZnrKE
-X-Received: by 2002:a05:622a:608d:b0:516:ca56:a44d with SMTP id d75a77b69052e-51a5178907cmr318181201cf.6.1782716527051;
-        Mon, 29 Jun 2026 00:02:07 -0700 (PDT)
-Received: from [127.0.1.1] ([71.181.43.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df82692bddsm300651096d6.43.2026.06.29.00.02.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 00:02:06 -0700 (PDT)
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MrYJJ0zh;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C9AF7409DF;
+	Mon, 29 Jun 2026 07:12:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2920C1F000E9;
+	Mon, 29 Jun 2026 07:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782717137;
+	bh=RfYGT01dvLOEc8FqHgrZrGneidKm26R2Z1JVOqhWxrM=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=MrYJJ0zhU6cSrLl39RQigi+2QZvaFhOxbtu1yEA6hTyfVFpe/kYj8ZS00AXP7ptpn
+	 Zs/rJ4Dk4D534ofnWSAGcbnEwLBN/KnvzIci93vQYjVXwfpFlx1AlhBW9Fl152Ded2
+	 /d2CVFTAmvwi5kDgZUn7qhQmYO2wdcMIKJ4WVa+ZCyvoFeewkXIeIOzYKTxPYfM626
+	 SjdOu9pZ7M9zKvR4x37LFNlLbmDD8YtYoeFwpksA/Z471kU6qCbYSB3sCDLkxfcAQi
+	 JOMt77dEy2HlYYsyn4/PmvnAsM7jCjaWO0fNwc7DiAVI1I8URakcULdgc+Xyp2+ihr
+	 o5UyVL2HDf0Jw==
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v6 3/3] luo: Update serialized data to use KHOSER_PTR
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: Tarun Sahu <tarunsahu@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
- Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
- skhawaja@google.com, kexec@lists.infradead.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260628001114.1869564-4-tarunsahu@google.com>
-References: <20260628001114.1869564-1-tarunsahu@google.com>
- <20260628001114.1869564-4-tarunsahu@google.com>
-Date: Mon, 29 Jun 2026 07:01:59 +0000
-Message-Id: <178271651966.13502.2620034351625890943.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1514;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=i8hMeTOD7PlXYKXCkQGIEVry2kHEdap7Vv1D92UaDwg=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqQhhtIYYuZBg6KJbH62WNctwI6mdsZePcCtfwN
- 44MDknREhqJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCakIYbQAKCRC7dyhM23N6
- 3h/YD/wNczubLTbms0pFp3A2EyjJjFEM/LlM1mQL5Mhx3WmXPxHlAJnaL72I+6yofWcwBajg5VC
- ernzYQ9l4uKEJzGRufG4MYpNHUtkTOs3Tz2nl7q7sTrmmWxoWj6EIZKcbDEWMRCns1bD6Vwnt6m
- a60hANaw9vrEwDmawr5obeIpzd0llmmSE2E3k3O90f8fY58rKkrqyEKeoW3Mi3gOJv9e5PzZGsQ
- s8ilIjofewCeCXV3WT9wwl4TKhiNLel5hY0yIlSCQhJ9a9Z2/Mq/010UoEuu3LTs6IrV13bXZ0r
- lDwx70HJVLinpsyqDu8duUaN9Hm8h/m5iRaaoR7zX6Dhxkjv3laM9PzwHNf+YPvslIA33JdnL+K
- PP0WCurgePElqGDXZdMrbV1lNZgbAhXq1YD0/IrYIoNEqyZh/n4wJKlsA8G2kqUCdAmzqKUSuMf
- zwO4ok5vooB1vI79jbSk57ltu8iWxuUcWdxcdyy+Kwp5qzR0B3smYZe/VOexN5lUmb9bIW03uyG
- IQnFXE11wh4D7UDXUp83rP0xZetlhhueDiIY4+x2MIMtChuf2L6K3F6yri2SVXDZOQM7begNd1P
- dqfg2xV4Oq2UD31U+CAGg7r/NzfOxnBDmcJhrU8QzCfxECfORWkuukH7bl+PlBtU20Mc5dliL7d
- mMeCz6aR1v1fQNA==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
-X-Stat-Signature: zd6qmzwkriurhr83rhy8bgzd4zfzti8b
+Subject: Re: [PATCH v4] coredump: Add /proc/<pid>/coredump_pre_exit for
+ pre-exit before dumping
+From: Christian Brauner <brauner@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>, 
+ Christian Brauner <brauner@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Lorenzo Stoakes <ljs@kernel.org>, mjguzik@gmail.com, ebiederm@xmission.com, 
+ viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org, 
+ chuck.lever@oracle.com, alex.aring@gmail.com, arnd@arndb.de, 
+ keescook@chromium.org, mcgrof@kernel.org, j.granados@samsung.com, 
+ allen.lkml@gmail.com, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, 
+ Xin Zhao <jackzxcui1989@163.com>, linux-mm@kvack.org
+In-Reply-To: <9a8e189a-39b4-4571-bdd5-400cf6443204@kernel.org>
+References: <20260624145552.70143-1-jackzxcui1989@163.com>
+ <20260625-wappnen-drohbrief-wermutstropfen-c53538f01547@brauner>
+ <9105c433-44a7-4e8f-bacb-def93d11a7f2@kernel.org>
+ <aj0Mr3e9yt0kU-Qj@pedro-suse>
+ <9a8e189a-39b4-4571-bdd5-400cf6443204@kernel.org>
+Date: Mon, 29 Jun 2026 09:11:33 +0200
+Message-Id: <20260629-zunutze-wirkt-furor-e9ed5e4c31ee@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2891; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=iIFLBAM/tIt0dQ5zz76F+VqqO3DXDSEYi0YBpjgPesI=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5Se197O5/9JN18ZuQuB087FV2hsyBitO0r6+OvXRY1
+ uRYwsnzHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNpn8HwV3pngYVt49uynd6p
+ 3+a2TZzmxvVtguLbMr6tfY9XBIX9bWX4n9C9UiVUPda/2qBRe06i9a2NodH7fbWCpnPt/WTjph3
+ PAgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 28448120002
-X-HE-Tag: 1782716527-592075
-X-HE-Meta: U2FsdGVkX1/NDNlNRgIdJdnmE1ZnSupeQZbUMHDx04HQMBdFRIRjUuqw+cylOIxu7fd/6K2JM7/0dPDtqRzKfpwyFfCBgoBbbZNInPeBVg0dTcF2mgv5FNE24dytCGnHCXF5cYSqR/jkPHf6AtHMlb2DtGcV+VUstNAm7knqCmK4Zn5Dcg689XIzCbU261pilARcsVHA2YPyMh3++q4hMKpJU9UwS3SPGgsMWBLkq1XUkU+zwpbkKePA694hx7chXUVPfpTKzvDfdrEwDarwNM6q2zhTxuZ2TxsiZav/qMnhelj0HfLQro1OPdPsXAHwnpqZ3UqOJlbvkr2wCTiBw1Yrdi2HNDIeKyFhYb/1mq9beL0SgTpoC6YQSKKDeOUplaB3cC9WQBLAYvet6aPqEOq+KWSTDKEhhJy3X0nMgA1zJa0MK8EzkMOjCXXF4p6ARZM/vmnQOineZRpypfTBQNqMj4mph3Fo4Asg3ahb6bA5wlMuXKdUYOjeXe36EawRAn6ND6D6qGIVVC3RpDXCsjdXyz96ZXzEdkeFetdf8Y+xd2c47FiVshF+pPWQAf3Y3A9tWA+pOIrR8vtdzgsB1F3SAJsdJGk7zaNHRYwA53zyTc22eum4Nm7VQPwzkCKO1pSGmGQISXNSXTauaSWMI4VfPeg9kuT+0esCMGgfPLoWEJsAVyChFryXs2h0JayRiXNLkU0Pa2UNZnDkok6cx9U3kuPfncuLDMpDfgRqam+6xgsSl4SqZiUckxhdGHDXCq1+ooXDwg5LkQG35dizD2Pz674rIooTRxUi+cUHh+hP9odIZgZ54PaZMsY5Aeek1PkQFZSOxXt7NmXTV1xPHgJJzv2AiCtuI2MNJdPUTz1ROtNF6OS+KAq9ShLx0I7uJ65JYklz8XxfnnL1Xq/pu5VYjoQpC2hAxVI/FnccFKmbPwN5sfs7FR8Jp26WngQ8G6LuXDxoU3/8n3gQGku
- CP1IhXUS
- Mn+zWs1jodesb62osP8tzCyChLHS5HvcMrph5uzQIgv+wlUWBppiPDpeLfaSdofb1Ugh6yVy4REA6G7uj0GLEqw+Hggt278tvsbU8CuNduFmkMzSkPshjpxMWnXQr00vyTA70RvTc5YafIzTxgRFRni2Z98SuzV08lJ/OkV/tpHQIy8CnzpThWWGuKeDjBsx3kyQdMEd5VwTT/rmGIeTIGgUiWsVcMCu6RWwYZ+d7okOAXxHKC3621UbcpnkfSzd0BOjs5YrC2PGLBxEtTfOThuI92zu7JOv3YlQyp0Sh2G5aETlNnX/wS9A9BPECbjO0Ig3P6Q7ik1JOLFpSyJEVsy9/glxvX04hrWPrFiPMA8s24F0a2JyjeXQ1NIC6dzKf9W5NYF7fgO8e5ZJD2xHvw50xDg==
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: DE386A0002
+X-Stat-Signature: gtajrjp7jubu1nj1nso9b9bt4w9xkaga
+X-HE-Tag: 1782717138-558921
+X-HE-Meta: U2FsdGVkX18JhP4EY7yEoRUpjcHNi6h4vTUARY/vNsjU1RzIoK+KXESrB/5cTdsaF6wAAbqMyW2clYyeU617YqUctk1Baz5qmQ9/Tu2L1tlFoWbyNeJyPaD2aAP0l1njTv4ktijk9r2wNFinx13ZafBG2Wzx9EP/F9xEiDh06ZoH3DpVPJPzikH2TCo4iTPHns/s1I/H4SMJ4aNM6I73nbFlR1fJdvktZzbPY+t7FUc+xGGoD+3p6foDR8XephBRbWtALu+I164n7SCtfJVOUTxytTTCi9IAOgRHNIiJkQ0qiMm0P1smxFMJzpznLeHPeTeOiKpqAVrBasiyPIVWdUBb0BrpO0kHO5q8TNAUhIVwZM5HXX1M0j4HZ0MZ8LUutEobVvrvjJhaBsrIChmSF2ia+sotObejGlGZx2jfnNYyhMEIDldZGUYTs/KtxerRH6yUKofoUwiYdvJvZ2tYmBa+G6ntFstHoU711P48LfVd8TZNxyl1yhH39JTLB1UypAUsz2tQ/MhhGcCjGF3+vUs/EC95PDGN2hrSNpY3KRhO1GkVXHgyrkWefqtNk+FNnQ3gn9n09fmKyL7Gt1o3SPzrqPO3bbZDwNYJQI9IeE82lcbCP0o1gPiAfZsnnlc8dlocFCLrfKS3Q2vWjJV8pz+65o1jiefObAvHbJs4U3GylNa+fEBte2BCRqEiYfSnnczQWVRlzohGIba2pIiFP12z6ElHl/oFrZheZ7XYGpSXJGMU20S4XJ2u8tp/p6DS2ks0ZJ6KBK7pQS5Pn7/8WJJH1cH0v5XWI8d9pXX+FuFz46xVButHFdRHlifIgV4YTETKbFuBfkcWppxwQAAonN1pm7N2kedbuIGDwLpc846BrqbGviMa/q+G0nlQLYImuz1Ts+e6aq9k4mRvW0HEk2nesEv1VstD2f1SeCGN0B5sGHv58ukryO9TdojEufduB2HSOpV0FApmRflunF6
+ z0ft5kM+
+ GFJEftGocqIAjPvxMZTYWE7N1nHvcokGqNHT1vRd7sLuRK2KAcZ+P1KhV34xtCVW4g7zdTGmYqWl+d7NDQndA6FjZUpwtB3Jq5so8IX1ZRY6TVCvRcpZiAPGkOhQUm6Ti2J5GCb5vu07nQizQHXd6+pNgpcCQCpuv4QYnyyrwxbSoK1ZKUJzCBLgbIAkF8VL7c7hIMNU8C4FajRfBbTWuaK0xU2AxaumSbZPmIG6bOXAwNSRIuHNqXdLyIBR3c6hfw8x+GkdVIwjkWWX6YofeA36lYZfQqgW5/m/3RNzDEYoMIUsVmYLEJKoTfgj0Wh2bRn09SZY8Vz4KyWtpPq3sUCfUN9SkD2VYzEmR/0HGOJSCNJk4RGBataKGo36J8NhQcLYx3jdf7QDa0Dc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,38 +112,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 28 Jun 2026 00:11:14 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
-> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> index 288076de6d4a..9e78625cfdc1 100644
-> --- a/include/linux/kho/abi/luo.h
-> +++ b/include/linux/kho/abi/luo.h
-> @@ -89,14 +90,14 @@ struct luo_ser {
->  /**
->   * struct luo_file_ser - Represents the serialized preserves files.
->   * @compatible:  File handler compatible string.
-> - * @data:        Private data
-> + * @serialized_data:  The serialized KHO pointer for this file
+On 2026-06-25 13:43 +0200, David Hildenbrand (Arm) wrote:
+> On 6/25/26 13:18, Pedro Falcato wrote:
+> > On Thu, Jun 25, 2026 at 12:57:02PM +0200, David Hildenbrand (Arm) wrote:
+> >>>
+> >>> This makes no sense. I think you really need to sit down and think about
+> >>> a design for this that doesn't introduce state machinery for boot, mm,
+> >>> and the VFS in one shot to solve a fringe problem...
+> >>
+> >> Staring at exit_mmap_mapped_shared(), ... this looks rather hacky ("let's fake
+> >> munmap and set some magical flags").
+> >>
+> >> We're essentially saying "we don't want (pretty much) anything that's MAP_SHARED
+> >> in the coredump". And for some reason someone should configure that, that's a
+> >> rather weird toggle tbh.
+> >>
+> >> And the granularity ("file-backed shared memory") is completely odd.
+> >>
+> >>
+> >> Aren't there other ways we could optimize this internally?
+> >>
+> >> Like, if we know that a process is dead and cannot run anymore, downgrade writes
+> >> to reads (and make sure we block GUP write attempts accordingly), or would that
+> >> also not be sufficient?
+> >>
+> >>
+> >> Another thought:
+> >>
+> >> fs/coredump.c calls get_dump_page().
+> >>
+> >> get_dump_page() will not fault in any memory. So if a page is not in the page
+> >> tables at the time of the dump, it will not get included in the coredump. Which
+> >> means, that whether most non-anonymous memory will be included in a coredump is
+> >> already like playing the lottery.
+> >>
+> >> This is true for MAP_SHARED file mappings and MAP_PRIVATE file mappings without
+> >> private modifications.
+> >>
+> >> Which makes me wonder: How much is tooling relying on file-backed pages to end
+> >> up in a coredump?
+> > 
+> > FWIW this mechanism already exists, see /proc/self/coredump_filter. The
+> > default is bits 0, 1, 4 and 5 (see core(5)), which maps back to no file pages
+> > being dumped to a core dump, apart from ELF headers (these help the debugger
+> > trace back the mapped binary to the debug info using the buildid).
+> > 
+> > So the answer to this question is "approximately none" :)
+> > 
+> 
+> Ah, thanks! vma_dump_size() honors this, and I am sure through some magical
+> routing the information stored in m->dump_size will end up not dumping these pages.
+> 
+> Staring at elf_core_dump(), this "unmap some stuff" part is really, really
+> nasty, as it effectively removes the VMAs->segments from the dump. (unless I am
+> missing something important)
 
-I am concerned about layring violation here.
+I would not mind if you would clean the mm portion of coredump up as I
+think it's pretty ancient and - as you can see - rather questionable.
 
-LUO is designed as  a generic, opaque transport layer that promises to 
-preserve 64 bits of raw data. How those 64 bits are interpreted is 
-entirely up to individual clients.
+Fwiw, for the coredump socket I added a "userspace" mode a little while
+ago where the kernel doesn't actually generate the coredump at all but
+let's userspace do it. Android has the same model but uses signal
+handler tricks (iirc) to do this.
 
-While some clients like memfd_luo will use those 64 bits as a physical 
-address pointing to KHO-preserved structures, other clients may store a 
-generic token, cookie, index, or non-pointer status. By
-changing u64 data to DECLARE_KHOSER_PTR(serialized_data, void *) in 
-struct luo_file_ser, we force KHO pointer semantics and layout 
-constraints on all generic LUO files.
-
-Clients that need KHO pointer serialization must cast that opaque 64-bit 
-value to/from a  KHOSER_PTR  within their own callbacks.
-
-Also, the field descriptions in  struct luo_file_ser  are no longer 
-aligned due to the length of the new variable name, I believe it will 
-cause warning when making docs.
-
--- 
-Pasha Tatashin <pasha.tatashin@soleen.com>
 
