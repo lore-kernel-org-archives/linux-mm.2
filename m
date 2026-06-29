@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C611C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9990C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:43:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 276E06B00E3; Mon, 29 Jun 2026 10:42:50 -0400 (EDT)
+	id 890F46B00E5; Mon, 29 Jun 2026 10:42:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24EA86B00E5; Mon, 29 Jun 2026 10:42:50 -0400 (EDT)
+	id 841AF6B00E8; Mon, 29 Jun 2026 10:42:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 163E16B00E8; Mon, 29 Jun 2026 10:42:50 -0400 (EDT)
+	id 757D66B00E9; Mon, 29 Jun 2026 10:42:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D54736B00E3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42D6D1C4D0A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:49 +0000 (UTC)
-X-FDA: 84933216858.12.93B9CB6
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 498DE6B00E5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:51 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C961E1A014D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:50 +0000 (UTC)
+X-FDA: 84933216900.15.96639AB
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9F503100004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="y/yBz0Rc";
-	spf=pass (imf05.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 413F24000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=euhmC69L;
+	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744167;
-	b=r4FZAzE9cVRNM9QtINIkUSViFrGPMOfK3COmbIk+oypgLKWKtsCHC7Tiq3bayp1UOKGHCv
-	aRPyAjzdR8BYBibiGjgbhSlu76A6sTi+yDQJN0OBHcJOpvGABWHO+eF0LNBJdMEL+cHfEA
-	VOKhWe/9axB67Vdv/eGtx7+EcC/s1g4=
+	t=1782744169;
+	b=QHpzWuCO82TbxvXAdWCG207D+lqcPuke31iy6ypAvVoW45N74tcugRepITT9znYIzZHxO6
+	CzCMLiAt9J0su3VYdLpBFGRC+n/JAwRjksWIVW8ixAVvoSzh19YIVkJnzuh2atweAjYqCj
+	Wsf3Srzj9V+6Yge1blDdu63ptKSR7Vg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744167;
+	s=arc-20220608; t=1782744169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kWtISXVTdaT95P9Ai8aXDGZfdrCS/RaIS8ba+R7GxKE=;
-	b=K9TsUeHQhP7hxUUiz4oTdcOk/L7KgIOJ3JCWHThXRv3b2pLE/azUvgsEHfRaHO/UUV7AO+
-	hc3udqBwBXIiuCk+9RbkxtJepPgOJkiCA2K2lXsFFVb7gAD1NdXr8I6O5FsrsZrqH4xzAe
-	r3SbqKIZrNuagIwXhB73D/HaN5CZm4Q=
+	bh=wl7SCHrPlo6N/ym8KPSSIcP6adc/9JLwa19T/UO77JQ=;
+	b=QVYfSS3SrtK63bL6hEZlb7s2FVt2rMAdEmm7a83Iu9k1xDk3mqtmeTJvq6dLginIQsV72Q
+	SGQsi2eiQEN1+2xLBJmRMjdpl7XkdIYZlMX4c/BAFieDzw4sxPfwsbqqHMW26oStFEXS7l
+	+JBXoAztOzxiC33ynos5UPzrDypOMWI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="y/yBz0Rc";
-	spf=pass (imf05.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=euhmC69L;
+	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
 	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=kWtISXVTdaT95P9Ai8aXDGZfdrCS/RaIS8ba+R7GxKE=; b=y/yBz0RcdINQl7RTVz7XFdvO89
-	7yyMIFSHWRWFFYGjqnZN3au9+qljknh6ry+52LTkfQFTmgFLzxsnTJUdjvVxBmwrQTR8NEInec1Cs
-	831OOzkHxH/Hg019AWZjzoBvtUchGha5DcnXrj81SfXoGjuaNO7ZTgJNleqQjuXeEiPrCrsyMZOoq
-	8nGUSg/s+RztOJ7SznMe47RunhIf3aL+JS4GokcokmKCWC4neh/pRXGeMjt0w1p/eB+8Rn7wPPdje
-	lec0oVXoP2vbqsEReJ9VPbn9jQ02XevZTvSqoDIiLiTHq8UIbktaGq2/o6LGE/jKiSwrWQaQVo1OT
-	3q0hexHg==;
+	bh=wl7SCHrPlo6N/ym8KPSSIcP6adc/9JLwa19T/UO77JQ=; b=euhmC69LbGhU9Dgd9AsPghPJN1
+	ebN6+NCHh2bzNlWJ78vv26FfpQw39H1ZmoWHhbtKq2ShvkbvqD6cVK5pSzzPitfB9on8/JhTco24+
+	8uCmsiVON3l7fl15B2hhzU0i1q1bDfonnfDUAnbeQWUPvt1Rjw4zZkYT18lraKuL/s70pmRV3N/tQ
+	scD8zbixPsPQZa8aa9vF5w7kPIACZr/wmOPOQUJxtg0IEmpl2dLS7cza9VK+G1ejB1D/X2a/8mep/
+	NwmenVnrgmeUgJCg6QDHSTNVMNKi1nBQvJjz5tdsl2eIvvun5q8Qd5P5d92pJUzDSro9kztBEwdAx
+	4ogi5WWA==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weDCA-0000000Eub1-2snP;
-	Mon, 29 Jun 2026 14:42:46 +0000
+	id 1weDCC-0000000EubZ-0mxD;
+	Mon, 29 Jun 2026 14:42:48 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
 	"Liam R. Howlett (Oracle)" <liam@infradead.org>
-Subject: [PATCH 09/18] maple_tree: Optimise mas_wr_node_store() when not in rcu mode
-Date: Mon, 29 Jun 2026 10:41:36 -0400
-Message-ID: <20260629144145.1572283-10-liam@infradead.org>
+Subject: [PATCH 10/18] maple_tree: micro optimisation of mas_wr_store_type()
+Date: Mon, 29 Jun 2026 10:41:37 -0400
+Message-ID: <20260629144145.1572283-11-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629144145.1572283-1-liam@infradead.org>
 References: <20260629144145.1572283-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: k4hbk974yuxyfuxa6d53znsdben5neni
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9F503100004
-X-HE-Tag: 1782744167-461122
-X-HE-Meta: U2FsdGVkX19gVMGwT7SqsVLsPSkGC8tJE9eSQpLc0s6iPyMrNkO2CBONxzoDiSKRqEip4h8dpdWcnkJWPxEbqv6MtBx//iI3zgBdiLv86HJOZYFKjVPaCNnbsbUzeUmx2vZlzK/t9srlLLwA5Fso2txTNWILfLSpuy6mU5vyzbwbbaTwsu/mfMZiqYaqO1Una6C7OQh/cNALRSqll1/f3UOP7D0IeGX2zmco4lEritvY2nsQMCnyV2seTHBlQBGlY3oWpzJwcqwR8hUIvUETFbIKaKofS8SN7UssIdJm646GWUcWckvPVtsADQenPjqU7ZA8gx06KPBgfn0U1CUWCC+z4lznQHsUY1rQ2SPcbwhnjuxlaQ9wAaCeMvxH345G21Uf0h35XAcQBa2MTDUnV2h9e6/HxJazzFegcr/K3KGoZpUSCtuiWWbm6vxGG+3OPtnh8sB31wEIzu4pmoskIF63zH0c0HBFBl9D7mYm8cOhNubZfyI6Ev0fhoSSIk1WLawGh7B7F79XNF/VXHPO/T7+FqrFBzm0RGtcYCc5xd1z23qMPnf14U6mxzpsg/QSWXp7jzC2UkJkGihf3TaWi9syb+BC6Yv5SoBdXlSIfYTMXMrFoQP9xCBR0jtSn3Esvkhd4wHiw/AAI6ubDNKFFMJNFb8nUaP8cqajNvv1bX6R21qWXbaf9vdca0OgmYL285d2JwSDqfvnpCo7pMAaD+aXGXUEZBnxV29AFLwnDR3nvcARy4Uhva3nQP/LXHcWSpn6y4Q9iMoE5afTA8oAmTN5SWf8RPuW3kPNxASBoVbBB5iXkOjzhbmvzsXCzpY/Z/ctKpDOU+1Gxml5BgewF21BA6AeaFGUJZ05ovcJ9OJJRerZsM3eHk0onEg01UulpR7fbttfY66HYBSAHa+SG5s1NJAstMoZBDb7Y9LBHLCJ+P9dxUISJdTI01OpvJqwE9hk+FtnmlMNkP8Qz0e
- MTYfPlY+
- G8pOQiEYX7fAVWgoPWWqceFYxzAFFEAmbMX4dtlDfSjfXK/hF5B+WfnwNHxg1Ph3CqnRpbXbzKzFt7klOF5NvMhtZHYwg1DBsfakyqQzmTW4cMpF1p6CFEtJUsFhY+PZ6MjWshvU3u3bA3kGuwXYxM7pLzSgBPtA/IANO0Ff9r79MwGFOl76r3yT5hvlo1I0HbM0d6G1YjJtTzqFux6SZ8n8ONEmponw15hCpBrA0oj4x79xuQPOMO0C2zW/UuyNPdm2/K51MtgS/RAS3BaEA9F60o/rb2Z12wt/+rIluj9BBI5TGc35Og5L2KBDFhzklNBY1d3UrO64tws/u3G6Cq6Vr8Q==
+X-Stat-Signature: ceyztonfw5ya1oaoqs4w1bz9er85bqmx
+X-Rspamd-Queue-Id: 413F24000B
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782744169-610223
+X-HE-Meta: U2FsdGVkX1/plTTXxCzDFufEVTzfTTMCyKuXQWlC469vxtwL490GrGxtpxaaokoBlxl2S3R+y1JAf4P4FZkDxkhXhpoYXQVua8vHAI9j3Atnn3sSWSxChnEJRj9RLi8lMbIgdLJkl7U2RUj7h1xO+4Ntfzk+zAjtuZa7OyzWocSfaK11ySW3czX7k7ie5lQNpa2E2tChCMVHh8sl5TUsukWEx53RDeqfOelqUWNEUKpLkdog+tmASVaF1eSYmG1RvXT8W1FtDyER2nk9BtKi1sUQXMEFj68kpKN4ZxukSSTYlAWczUpkDW7dZcgoLOIrjslCRydJbyAq8vweak+Bi978QUFx/xTHeeC7ITvtyfJfmxUcCakPe9MOVH1VIKmKZsEwDWAku9x4HclOW7zPdLbDot1BCGxwIXbU8YPD+N4wC5rpqsINXiFAzQgCVwt3ijewD8qtPYfOCrkRXCHM1o6kyjbZvVr4Bs3q7CBiR6uG8iEIeGvZqrkCQHyol0qSzmehJaMt0c9ZJgdovQ078KJrHDelucAML7FgXcgSZY+lawDPkv6OXaTIkOuGoN9XVDqw47JfJKe6J3tQL0Emdr+A1n47hrG2lA/Jn4Jet10xFWAgWzFN8C5pMzrosH2kAAg6ilUs9oIz/IE8rCM475gyPEySu4PuSsdEDpWWLoaL/FWU7QsrhBFJYYsc2rRMtDPbwamJrQkAsVEbZSROGbkwc7EVx/FYkrsctQsImTaw+TVY3aQSGTH1Hi92IHU6wRmxN8bRAGApi4o7fxAHCHvK1xEWcvEiJjM93ykGqGm5zQoo25/B7OQORGXCbdEbsjws1oxI3Ex5RL5wv7gP8C/rvsXj56mG4PfMddLeJebnPHrkZAqyJYVEYXvHywewhTQG1eV7uZKES+gA0ZH/7Yj4EEzc4csJ2m7JvHE+21URO69+fqYHfkAiRkcaAIYHFSFTVsGp7aU4jsF9bUS
+ KYjA8DCo
+ qyd0hv/egiGm9UN1aMd+hyo52tQAHkeUlUUkMhBQyqSZ0n4fwx10yndb3MaajcKaC874hOc+GsYvSrsVOshJFDNq5aptlBgPSAv988n/8DDD/ndjxRGJiXb/hnXaMzML93ZzKeUD3IuLEOZ2+la8REKjRTVMxoBoQGhIpPByvxytwrb65uxLK+M9b10y5b0dgbTSOI5lGvYQsp39QMYZQ0sOFEPOyeiVQZWl+RrrQ8NL+Erd8UuxY6HgAwwSPZ1BDGz05vTRUia0cNFJRmFRMQLRB1oCtgA7fw81NexIqm2o2G23BKBTwqLHtAOefRIQkbZl9gz+yyRUpf1pZ+G09s0cuCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,66 +91,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Clearing the entire node on the stack is unnecessary since most of the
-node will be overwritten anyways.  Just clear what isn't used after the
-data is in place.
-
-Benchmarking shows a speedup of 0.67% on a height 4 tree with 2048
-entries.
+Use three new local booleans instead of reading other structures.  This
+has shown an increase of 0.62% on a 2048 entry tree of height 4.
 
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- lib/maple_tree.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ lib/maple_tree.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
 diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index fe10ff83e4937..a2b96ef05cb32 100644
+index a2b96ef05cb32..dd679ba2b8bfa 100644
 --- a/lib/maple_tree.c
 +++ b/lib/maple_tree.c
-@@ -3183,7 +3183,7 @@ static void mas_wr_spanning_store(struct ma_wr_state *wr_mas)
- static inline void mas_wr_node_store(struct ma_wr_state *wr_mas)
+@@ -3729,6 +3729,9 @@ static inline enum store_type mas_wr_store_type(struct ma_wr_state *wr_mas)
  {
- 	unsigned char dst_offset, offset_end;
--	unsigned char copy_size, node_pivots;
-+	unsigned char copy_size, node_pivots, node_slots;
- 	struct maple_node reuse, *newnode;
- 	unsigned long *dst_pivots;
- 	void __rcu **dst_slots;
-@@ -3196,6 +3196,7 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas)
- 	in_rcu = mt_in_rcu(mas->tree);
- 	offset_end = wr_mas->offset_end;
- 	node_pivots = mt_pivots[wr_mas->type];
-+	node_slots = mt_slots[wr_mas->type];
- 	/* Assume last adds an entry */
- 	new_end = mas->end + 1 - offset_end + mas->offset;
- 	if (mas->last == wr_mas->end_piv) {
-@@ -3207,7 +3208,6 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas)
- 	if (in_rcu) {
- 		newnode = mas_pop_node(mas);
- 	} else {
--		memset(&reuse, 0, sizeof(struct maple_node));
- 		newnode = &reuse;
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char new_end;
++	bool appending;
++	bool one_slot;
++	bool in_rcu;
+ 
+ 	if (unlikely(mas_is_none(mas) || mas_is_ptr(mas)))
+ 		return wr_store_root;
+@@ -3748,21 +3751,30 @@ static inline enum store_type mas_wr_store_type(struct ma_wr_state *wr_mas)
+ 		return wr_new_root;
+ 
+ 	new_end = mas_wr_new_end(wr_mas);
++	in_rcu = mt_in_rcu(mas->tree);
++	appending = mas->offset == mas->end;
++	one_slot = wr_mas->offset_end - mas->offset == 1;
++
+ 	/* Potential spanning rebalance collapsing a node */
+ 	if (new_end < mt_min_slots[wr_mas->type]) {
+ 		if (!mte_is_root(mas->node))
+ 			return  wr_rebalance;
++		if (!in_rcu) {
++			if (appending)
++				return wr_append;
++			else if (mas->end == new_end && one_slot)
++				return wr_slot_store;
++		}
+ 		return wr_node_store;
  	}
  
-@@ -3251,7 +3251,17 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas)
- 		dst_pivots[new_end] = mas->max;
+ 	if (new_end >= mt_slots[wr_mas->type])
+ 		return wr_split_store;
  
- done:
--	mas_leaf_set_meta(newnode, maple_leaf_64, new_end);
-+	if (!in_rcu && new_end + 2 < node_slots) {
-+		unsigned char clear_from = new_end + 1;
-+
-+		memset(dst_slots + clear_from, 0,
-+		       sizeof(void __rcu *) * (node_slots - clear_from));
-+		if (clear_from < node_pivots)
-+			memset(dst_pivots + clear_from, 0,
-+			       sizeof(unsigned long) * (node_pivots - clear_from));
-+	}
-+
-+	mas_leaf_set_meta(newnode, wr_mas->type, new_end);
- 	if (in_rcu) {
- 		struct maple_enode *old_enode = mas->node;
+-	if (!mt_in_rcu(mas->tree) && (mas->offset == mas->end))
++	if (!in_rcu && appending)
+ 		return wr_append;
  
+-	if ((new_end == mas->end) && (!mt_in_rcu(mas->tree) ||
+-		(wr_mas->offset_end - mas->offset == 1)))
++	if (new_end == mas->end && (!in_rcu || one_slot))
+ 		return wr_slot_store;
+ 
+ 	return wr_node_store;
 -- 
 2.47.3
 
