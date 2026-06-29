@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9015BC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD53BC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 101576B009E; Mon, 29 Jun 2026 08:24:08 -0400 (EDT)
+	id E96066B00A5; Mon, 29 Jun 2026 08:24:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D8946B00A4; Mon, 29 Jun 2026 08:24:07 -0400 (EDT)
+	id E6CC16B00A6; Mon, 29 Jun 2026 08:24:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFF666B009E; Mon, 29 Jun 2026 08:24:07 -0400 (EDT)
+	id C4B5E6B00A7; Mon, 29 Jun 2026 08:24:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DEBA6B009E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:07 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 228EB903CB
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:07 +0000 (UTC)
-X-FDA: 84932867334.05.4243B53
+	by kanga.kvack.org (Postfix) with ESMTP id 919D56B00A5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:10 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0F8779037C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:10 +0000 (UTC)
+X-FDA: 84932867460.30.2D8A0A7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 75364C0006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:05 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jv0S71x0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5B8CB40007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8Gqq6Ha;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735845;
-	b=ymADRWTXpuRhLrjmhIqeL6UbZGxf3PlPfKP6Ohy48WY1k88A+d8IUo2VgiO3ivAtAOiAOX
-	EduysRJyifAjmG/hGp45sKYpX+6+/1CBqb9UZLh8DW3bhuQTYpvsqg/+zML+QEyn40Pke/
-	+OTZ/BmVM3kgz1HxVWN2FoH1IuRj7w0=
+	t=1782735848;
+	b=P2Py1gh+ff3bHU868w8nzaphj8lTZBDNJ2vrlSq4xEf2UB7xfjeBqqyLAsF5z6ZM6ygMb9
+	/23QjBTJye8ZU//Sm9FMZRtRHpV+e9gfrRC6ACa/ANnSz3Y9+Z7GMWlvkoVasaPm1ptQyE
+	C/iC+jHPqhZft/wvzF1WAW70vEewIOQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735845;
+	s=arc-20220608; t=1782735848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=caVr5w9GakvkpY1A37y5WyHo43wHFmBLWIOiIkQAHWo=;
-	b=5aiA38PtHQy+MkBPGOT07ib4koSxg7ad8pvYKYglOTWual3loHHK6Y7+eqIM5lWOuI5xwH
-	AlGDkMHCBqT8OoZflSaN3+SM5eFeK7OBJEe6jhFcoGcQ4RJ8Abqpq75YS1wkYbdtlCj2yC
-	/kLMj3+yLC4dUmCw6rhwzmU9jPEQoqc=
+	bh=FRH3nWttrO+IvYqL5rFGzJUV29IkkM89vk8rnpYCL2g=;
+	b=RcLLqPjy9WCp4JXpxN5l03tS10la8eRkGVcXhVPgT8QjCZi3dw7VvQwU1ctYjLEG6M4wDR
+	dKpRR0JgOW/wJNf/xiRWVecyivY4wC/I7+5I3I7rgjVIiDoSUDOR550+8uwT0tMJHEg/hg
+	uBTI9XJJbl5+kGryIMEGJeSwvF3/irk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Jv0S71x0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a8Gqq6Ha;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A1ED043E80;
-	Mon, 29 Jun 2026 12:24:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1E51F00A3E;
-	Mon, 29 Jun 2026 12:24:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A334940441;
+	Mon, 29 Jun 2026 12:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA58E1F00A3D;
+	Mon, 29 Jun 2026 12:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735844;
-	bh=caVr5w9GakvkpY1A37y5WyHo43wHFmBLWIOiIkQAHWo=;
+	s=k20260515; t=1782735847;
+	bh=FRH3nWttrO+IvYqL5rFGzJUV29IkkM89vk8rnpYCL2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Jv0S71x0XtjbY4JynE0d273n/VW6fPRlmcznd9ij1cca8fIKmAalEgiU8JCOkaACm
-	 6KqZC183aScWDsZhacSbQv9LWkazSoo8rgMRieyjC2hHPQ0PFTE2knRfFXoT3MfC6K
-	 KsCyLH6j+g6vriubKpidkbJ1Xm42w6dJGA88dBb2sDUPDdh2Iu87CRnUvUNfEJpqoR
-	 tkXy9XYbTgMZYiMKZ3HnckzJxZ/XRlg0AvUWqxGRzMRj8DX4haLWzKFy6RdtDa+H0l
-	 aBpW8jPy2czajWUUXK3OIQzRdRVRChG+UF0iZOWlTdI2SJVLQNtWYDJWkFJF+S2lgR
-	 5ieRrKdfvagew==
+	b=a8Gqq6HazVpY453qntgYQRg2KTWt8lZ/vexm6YznKPmhVEQVTTAOij1mmS4l/ZwSI
+	 tDroo5WMFbOkWde8qHAsbsbaC7BUMYnCytmnbbeZFKhKgmi+P6btImLxdQzbC0kMnf
+	 G0sUKWdf8EEgiXRDkPyQ02oipSfAG4yJ5h8dNwgHrKuvhCydec0pyvNNO72DESpGdQ
+	 HYc4wXd9paiOXhmo5YiZsNonoT+FRF1LSyZ++LYVPX+wXOC/ssLLGmWweo9y+WI/6/
+	 2MV1JSLmt74+aX80ll2fPEpThUkOYwJTEuePiaTIjqNp6YluviVf6MaXBwCziNhmTF
+	 +Vp0OVSfIq+lw==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 03/30] tools/testing/vma: use vma_start_pgoff() in merge tests
-Date: Mon, 29 Jun 2026 13:23:14 +0100
-Message-ID: <b501eca378b9d9734e83838102aadc9276590fba.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 04/30] mm: introduce and use vma_end_pgoff()
+Date: Mon, 29 Jun 2026 13:23:15 +0100
+Message-ID: <e379a1cb6a897126ad96e3a263fdb91d6c11f6cb.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 75364C0006
-X-Stat-Signature: odg8chgifxb886ennc8c3wmayqmyngjg
-X-HE-Tag: 1782735845-711816
-X-HE-Meta: U2FsdGVkX19pUeaGSIH0ITxQpY2rtWk5x106MmsDjRSX7/qSPwEFeKPfELN8UyKINqvQCp1hLd3xma+5zY65cHbdL6mNQlpF+Y6ojeMSV1oQxk9eUyR5/he6fU2AqLzGMIxqbB/0rByVoj/w0VT7WPBVqt61U1o2d6wKy/zdjMx/2g/tgPU1vzQ1OiFhmZo07kEPu/9W03wY0CqAx010Nlul8NI7zJL+1RhQuIA8MkIpD6yb8jxDYZsuscVysSKXU4fTGcVEI1YaHOIvzEzT0JOdyAjQSizKXuKP4CIU7qnnrnwG2V2KG7tOpoZcWfk/CdnYgsSMItK0xxd8P+TQ6Oge7nmXMMvxgAKVgVC/476cPFd0iZ5ZpItyCakBJYotFuownj7Gw2zW8xK7hkE5gr3ThZGwN7onHx5pjdFuT8aeryfD2RIAfHdiKDCKHsv+/cxwJaNzQmC2H8fLdFn1zDUbavqteu5i4CiS7sic1edaKU7sMPGZcVyOik386BBoaqLA0tOfXGl/TR3aTqFeb/OZKhgIfXMredFzAXumjUdFLAoypQNPMMede4Kd7+zhQHHKwvi9xw0z2WQHM1U7cw6zf35wTGFvSQ4DcljeqN3+fSXwdJPZvOOoJA8SZpePz+7OLSBsN4HgDmqX/jYHj27MRDY4CEsUWWFs/amEL7mlRlYq0S7qRyw+PDGgHGgZAghHlKWux1o8irUJnxKMMNyTdEanoCkO8sb2tIBKHVWotscL5yO0X5sZcnptZbUKvCAh2QGCaRoV53WwDKDj9K48ch7dtOldp6C5w4hHWsDn83MXOIlHfyqRvPWHfbt+mwrICRC4+tGMbrGfPtqwhJsqn7eZL0+J6Oyb6jXW3ElaXQSVyRJ75+LKr2X4P4AKDTLmCQyn5pJfJ2OHsSt+M4ACXuBGtZawCOc1+wN8vYCCPI2CaGX+muuQ9RSqXjtS3AWgB/tzqjjJSfX7hhG
- s1Z+N8Z6
- RYX34Vh/Gz/uSVD1156HlywxuO/w8GR2UUZ+lRM97W1KFAXHYePoUvMqWTyT585jdRsNRnyo0UITa2dIww5P/xdlSGk54wzLPEzJICIyrNcC23WXlxnRaeIo+88mkYUzFPUDBHVhBLzMa/Kn3ZcLT/YYaRbO7ehMpYnCG0sucZq6srakvwVSAlgk5cZRRzzNIst6SPpIJ0pMDv2+Sf++Id5Rar8Z36Eycr4Vfe5vfRkhW/V5/MTIkO/Uj34+0a2lVfp3IVYz30SvPUxOXm+rDQEtcy1dpG0neUcjc/T2jcH+0e4C4QQiCVOHtVTMV7CKpKa14EM4Jy8VaDNFS+GWHWjDlZhQJ0H3FICVQ9QjoSnaJzS4=
+X-Stat-Signature: 7u7jkk6mch8cdiksw7a5yxaqaan7gk6i
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5B8CB40007
+X-HE-Tag: 1782735848-282616
+X-HE-Meta: U2FsdGVkX18jo01oZdy6y1xPc3tag3GrquZJNaCzbmA4W7z7SXK660BbV29poyBB0yB54URQJbHToD9yONqacn76DvKEJGupYMFWKAdL/EPaZA92VWEtTSRQA63Dt5YHDMv73m9USuStXKSecZtdSIPwBsWlDVl0qLcEyUzEhU7FSlLwgeb8deI2VnfdEWrvHSzXtZ/RB1QqntLzx9OQJ56ZqDouDl5Hrt8ls2KT1P4KQuRdrmjChBrIZK8zVScPfLNLL5+hagoy9p+wvFFm9BA+dkGpwySVPQME/bB/Yl5k1856rdKO+W7OteKs3iRaeAsVYl24wOruTGlDuEjHovjFgHk5sAEcybK86L7xxiFn10QkeDK0pDMq8K522fMRCsUTxCQ7BIgcXoi+3EFm3hl3219keVX1NQ+rNzmE7WEIBbTUPlwF+eoABo6H3m49d3Eub9xXbhWwKzjVhaVklRNFJ1eXL0092ziSbiMCFmNKfxbFsPXuVaf7UAG6vFB8tHgu9pMvLVfMXUTwVV0Bhtc83u+H6xtTEmNp1QlePRGh0tF96aFYgJPfxFgy7xdyQ2JiOdE9jQcjfpcJHjhJny+jkzPJcCP2pLzKeOEhkVwE8KK6lfywwTa4CDrQUhH9yZSMIbovuiNEZ7l4IgUytQXwY0OXvz+Mqd5+qE64uZF+4lPonqb57TIqmftIj0YslMoX1KGPs2rhsJkooLXzSaA4VTG2KdLC2bHbJCwzoq9JOoyw/A9GIxQ+jrJ7+3MCexCfQcWum8S3Qmbair8RxwkvzER3DRs7qhZLWEPEwRvzXt98NKKhpMK6zLV3KSlbIUTRyJ/1fpIjGo8Ie+OeWr3xF8PFKCja6MhKHK/9g6zqHqbBFwjxZg/mfZip34N98alYrtdBbh0TOcx7pBtDBz/H9cNXdiGHojNIInABOBj3hQiWdJ7Mxfhwjv5jT8mPS89yLG3t5nQr0hcm95Y
+ amxApmDW
+ B5LacC/qi46Rfo6KQrQRNKTP2J2kV7qDlg3Rn/5IwNDnYAfdlhQGnzITxLFUQyhYFtGgnRwSsIDoBC5LpkZ327gh0aGGUHe98tUGPimOVofHgKTw1YTgFzeYFfenwVFiiRzBkFu64F3Z3ER9Aq9DUPkzAhlOwLwGvtUbsNk3AARpyuPYSCiNH8gBRNeTbRvE4K8U6K/NSZK183h1thf+318jfkApvxzHIRkVUtg+J6qPUbF558GDYpXeCiRrRVWsGE5NcY3r0hCm5+Y92N6EEVz8R/e/unGEwLj4EedvHDZja8kkVzpwgVy0vRKd2/CDX/ybPzshPPXZP6dqKl05PIrbwL0PDfYrDHMBPjCeHtwEcOPM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,191 +162,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now we have the vma_start_pgoff() helper, update the merge tests to make
-use of it for consistency.
+We already have vma_last_pgoff() which retrieves the last page offset
+within a VMA.
+
+However, code often wishes to span a page offset range, which requires the
+exclusive end of this range.
+
+So provide this in vma_end_pgoff() and update vma_last_pgoff() to use this
+function.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- tools/testing/vma/tests/merge.c | 38 ++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ include/linux/mm.h | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
-index 03b6f9820e0a..f8666a755749 100644
---- a/tools/testing/vma/tests/merge.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -118,7 +118,7 @@ static bool test_simple_merge(void)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 2f00c75e66bd..e7ee315d5ba2 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4298,6 +4298,23 @@ static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+ 	return vma->vm_pgoff;
+ }
  
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_FLAGS_SAME_MASK(&vma->flags, vma_flags);
++/**
++ * vma_end_pgoff() - Get the page offset of the exclusive end of @vma
++ * @vma: The VMA whose end page offset is required.
++ *
++ * This returns the exclusive end page offset of @vma, which is useful for
++ * expressing page offset ranges.
++ *
++ * See the description of vma_start_pgoff() for a description of VMA page
++ * offsets.
++ *
++ * Returns: The exclusive end page offset of @vma.
++ */
++static inline pgoff_t vma_end_pgoff(const struct vm_area_struct *vma)
++{
++	return vma_start_pgoff(vma) + vma_pages(vma);
++}
++
+ /**
+  * vma_last_pgoff() - Get the page offset of the last page in @vma
+  * @vma: The VMA whose last page offset is required.
+@@ -4311,7 +4328,7 @@ static inline pgoff_t vma_start_pgoff(const struct vm_area_struct *vma)
+  */
+ static inline pgoff_t vma_last_pgoff(const struct vm_area_struct *vma)
+ {
+-	return vma_start_pgoff(vma) + vma_pages(vma) - 1;
++	return vma_end_pgoff(vma) - 1;
+ }
  
- 	detach_free_vma(vma);
-@@ -150,7 +150,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
--	ASSERT_EQ(vma->vm_pgoff, 1);
-+	ASSERT_EQ(vma_start_pgoff(vma), 1);
- 
- 	/*
- 	 * Now walk through the three split VMAs and make sure they are as
-@@ -162,7 +162,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -171,7 +171,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
--	ASSERT_EQ(vma->vm_pgoff, 1);
-+	ASSERT_EQ(vma_start_pgoff(vma), 1);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -180,7 +180,7 @@ static bool test_simple_modify(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 2);
-+	ASSERT_EQ(vma_start_pgoff(vma), 2);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -209,7 +209,7 @@ static bool test_simple_expand(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -231,7 +231,7 @@ static bool test_simple_shrink(void)
- 
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -324,7 +324,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -343,7 +343,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -364,7 +364,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 6);
-+	ASSERT_EQ(vma_start_pgoff(vma), 6);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -384,7 +384,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -404,7 +404,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0xa000);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
--	ASSERT_EQ(vma->vm_pgoff, 0xa);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0xa);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -423,7 +423,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_TRUE(merged);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -443,7 +443,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 		ASSERT_NE(vma, NULL);
- 		ASSERT_EQ(vma->vm_start, 0);
- 		ASSERT_EQ(vma->vm_end, 0xc000);
--		ASSERT_EQ(vma->vm_pgoff, 0);
-+		ASSERT_EQ(vma_start_pgoff(vma), 0);
- 		ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 
- 		detach_free_vma(vma);
-@@ -805,7 +805,7 @@ static bool test_vma_merge_new_with_close(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_EQ(vma->vm_ops, &vm_ops);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -865,7 +865,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma_next->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
--	ASSERT_EQ(vma->vm_pgoff, 2);
-+	ASSERT_EQ(vma_start_pgoff(vma), 2);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_TRUE(vma_write_started(vma_next));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -931,7 +931,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma_prev->anon_vma, &dummy_anon_vma);
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x7000);
--	ASSERT_EQ(vma->vm_pgoff, 6);
-+	ASSERT_EQ(vma_start_pgoff(vma), 6);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -1416,7 +1416,7 @@ static bool test_merge_extend(void)
- 	ASSERT_EQ(vma_merge_extend(&vmi, vma, 0x2000), vma);
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
--	ASSERT_EQ(vma->vm_pgoff, 0);
-+	ASSERT_EQ(vma_start_pgoff(vma), 0);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
- 
-@@ -1456,7 +1456,7 @@ static bool test_expand_only_mode(void)
- 	ASSERT_EQ(vmg.state, VMA_MERGE_SUCCESS);
- 	ASSERT_EQ(vma->vm_start, 0x3000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
--	ASSERT_EQ(vma->vm_pgoff, 3);
-+	ASSERT_EQ(vma_start_pgoff(vma), 3);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
- 	vma_assert_attached(vma);
+ static inline unsigned long vma_desc_size(const struct vm_area_desc *desc)
 -- 
 2.54.0
 
