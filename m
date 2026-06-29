@@ -4,95 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B9ABC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 03:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F04AC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 03:35:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF1406B0005; Sun, 28 Jun 2026 23:32:08 -0400 (EDT)
+	id 2AE766B0005; Sun, 28 Jun 2026 23:35:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D80816B0088; Sun, 28 Jun 2026 23:32:08 -0400 (EDT)
+	id 25E366B0088; Sun, 28 Jun 2026 23:35:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6AD46B008A; Sun, 28 Jun 2026 23:32:08 -0400 (EDT)
+	id 14F3C6B008A; Sun, 28 Jun 2026 23:35:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D9D56B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:32:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E23626B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:35:35 -0400 (EDT)
 Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCD871A0576
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:32:07 +0000 (UTC)
-X-FDA: 84931526694.28.BB518DF
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 8410E1C0002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:32:05 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GEmekPgR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 667F2C28A8
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:35:35 +0000 (UTC)
+X-FDA: 84931535430.28.AC3DF49
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9C3F9180009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:35:33 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bNQ6ZeP/";
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782703926;
-	b=etDroyNfcHFwEsgnASDjBg5gfMWMhDsIQ3rFYFtJJozXvl7yBi6UeUReOCJFAQOloPESwJ
-	zmMLUBMGB6JrhnsIX3rUX79vm7ACh+XMV30aMhimNh5+VGqBuY/imBpc5ou7KjXbvpByzi
-	PkdByEcqY8+3Ci+YeJmmc8UyPxLevGo=
+	t=1782704133;
+	b=n+I4JegpHB+yOUsL4AGbolTJ91dcypAyxXc04ePwi0FnIIEzEVaAWZK18Byv1zCpmc5dwQ
+	gO8SXcjmfV0qi/RiF6OS2u1UiOUhHTspy4bqyYlGd5dFRMYByfYWOvlAaMCQDgFvTrYng/
+	5AXi1DoB/jh47/mCOW2YOlvhc6GnlxY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782703926;
+	s=arc-20220608; t=1782704133;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HNKmGiCuddpqva0PjrNytIXZttDwC5/AURmvzNbNX1k=;
-	b=unEnPQgYXhNT9POSKnQFnHKcT4jX1HGYbXdWV+fiaW/thhPYcegcK7t2D8n0yvHyygh2JL
-	mIFlS/oIiHUTsBSt7by9C+i2awVNaL/xtk0Mv4rFoPGh3FDVuC97EwNcV/SR2JUFKWeXXX
-	8fFueRwCLH2OJD2BYFihj/sgxuqtTI0=
+	bh=YtmqN5vqMmf40dd+iSQc5lwp4GlOGai4yHRqtQ0Gjt0=;
+	b=GIjsbBT8OllMmj+nfcBPbvcjXepaWNlCSTi5/vcgtLXRiR833668jAblbGOcyzL4LQuogW
+	QLYo2jCcqtvHnanJKVjSQiReCfGntIHudilQKJB5N4PVwc8eUTFaHAfsE2JKz1fyNgiQuD
+	y2anrMajVzGenVL7COA6J/+moTZPlW4=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=GEmekPgR;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf20.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="bNQ6ZeP/";
+	spf=pass (imf24.hostedemail.com: domain of yahia.a.abdrabou@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=yahia.a.abdrabou@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-4624a44e152so2544085f8f.2
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782704132; x=1783308932; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YtmqN5vqMmf40dd+iSQc5lwp4GlOGai4yHRqtQ0Gjt0=;
+        b=bNQ6ZeP/b6CzuV8CsulHWus3xAOOGHEhSpGIuq9YPTvGFhW6bUOv+x2FnW53sEMttj
+         oUkTo8khFF3SYl2QFCc45kprcEe5dWOBsDm0g2hj/kE7lcC4oiAUmeFrUR16z2CACMrc
+         my4pUE3rj3F+RTm2zgbEPxLVnAXCrdd7JewtKqZdi8KKd2cSXLq9ERr3fDipuIsEORbR
+         v98YRYSU5rwIxwqNtoJw4Bwme1ZhG535OmFeeZE1dymdQ1UzG++xtdyoZHxk1dvUqTUQ
+         spWWkzd8OYsmxFnZgH5F9Jm8kLTbkSxaOQp4TNALKxlNe34eItTXx7zkzAXfXVmrAB1Y
+         /Mtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782704132; x=1783308932;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YtmqN5vqMmf40dd+iSQc5lwp4GlOGai4yHRqtQ0Gjt0=;
+        b=J61b62DdV2S1cl0hanGWwYoBoSOh28YFa7CCQKUx1UHM5jwemTepNMeDHHSpV6HPGu
+         NEVXlC1dF0NN6QZYD2XHeUr26jXYBigoQKqXrpJUU9GeyuZaVEuYDBebjkzHbs+1VxJH
+         8CO1xk0lXBpHiatFKs51w3uQKlSFaqM5Cxjg1g4AhPqZm17ChAXXVIhCZlCL9mgwerXA
+         PMguAaEqLg/vlRXn4PjWnhGKaI/DOnqP68ofzrjX3+1HO1TgX9F6Ej72awpMl4dr3wMg
+         ZQOPKkRiXICkV/5Bk6FxSSUCXCGp6gpN2iUG4j3LNeHsFNKkeEckMcafyWISnvG8Uxe1
+         4JDA==
+X-Gm-Message-State: AOJu0YxU3xQcURSzNs622HvIeDLKkAUNifp0WRphOwOc9fg9D7oxdGCt
+	E0xc8Rvf30TF0QlWg2O/FxPCzy9BfRks5ucfrLEtA5f+DgTUF2JTZ/Rh
+X-Gm-Gg: AfdE7cnlqe7DBdFPhdapN1ldel4iKccmQl6EbDNe+Dq6MHquEqF4e/cyTRlWr3lAdir
+	bxVQC7pDEgJP4uxMestMtG9kDUSiW+l0ETomQGS6LCKTOLnftvyNgU/2YyPZyb9KRbwVlW1sjNw
+	o0Yhfbugtce+cc4yJG/DVxvDtjQWqLND8yBv75oEjG8ciN1mz9IV/IeCkEGxZPBKFfcuZPoJI5H
+	a9P3rL+4ODz8Wdnw7djTIPNXqNws2D4cfvilchzTEqrDffiR/kaMtjyiLFyJFZccy5ga0BftjjZ
+	E+ZDqOHevSbLtTybATM6WUf1uLr7mzCNG+wRKysWHBQh4syVDUfw7KaBLpjNsP3knquxZn8oksI
+	LJdLs5KeTfo+GScet2L8jMXuxsNA9PYVF435tH0wQjWLkZkDza4E+XI1RSik+wH/iLGx0nFuFNI
+	9elXzMaRQUIh1Sf/K+rUSexw==
+X-Received: by 2002:a05:6000:4a0a:b0:472:bdd6:f2fa with SMTP id ffacd0b85a97d-472bdd6f612mr6188696f8f.31.1782704131973;
+        Sun, 28 Jun 2026 20:35:31 -0700 (PDT)
+Received: from user ([104.28.162.233])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-472e8037a37sm12364820f8f.19.2026.06.28.20.35.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jun 2026 20:35:31 -0700 (PDT)
+From: yahia <yahia.a.abdrabou@gmail.com>
+To: hughd@google.com,
+	baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	yahia ahmed <yahia.a.abdrabou@gmail.com>,
+	syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Subject: [PATCH v2] mm/shmem: Fix data-race in shmem_fault
+Date: Mon, 29 Jun 2026 06:35:16 +0300
+Message-ID: <20260629033516.10836-1-yahia.a.abdrabou@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <828504a2-a1f8-40ff-bf84-ed7d03f02d83@linux.alibaba.com>
+References: <828504a2-a1f8-40ff-bf84-ed7d03f02d83@linux.alibaba.com>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782703923;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HNKmGiCuddpqva0PjrNytIXZttDwC5/AURmvzNbNX1k=;
-	b=GEmekPgRPXI1pHvo5Qd0OVY2ZmTtdImYJ7MjdfbjXWj8mYBQtpSZ9tRm+5F+2dKKhsyFMg
-	PwxmKU681zwFlKBlWFwtwf61aaB+nc9v4jzHyMcq8iithc6koSqJyLzxKeACPdi6vNUhQX
-	Fc9s3rhDLL5VzMjKkRdQkepH3vgpgBM=
-Date: Mon, 29 Jun 2026 03:32:00 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Hui Zhu" <hui.zhu@linux.dev>
-Message-ID: <7561266d0aedbb55f3f67090fb2493f7a899b66e@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v7] mm: assert exclusive nid/zonenum bits at the
- page/folio access sites
-To: "David Hildenbrand (Arm)" <david@kernel.org>, "Leon Hwang"
- <leon.hwang@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett"
- <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>,
- "Michal Hocko" <mhocko@suse.com>, "Kairui Song" <kasong@tencent.com>, "Qi
- Zheng" <qi.zheng@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Barry Song" <baohua@kernel.org>, "Axel Rasmussen"
- <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu"
- <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <e46ba0c9-6a24-45e5-99f8-b4f454887f50@kernel.org>
-References: <20260626032012.1049667-1-hui.zhu@linux.dev>
- <925c8686-9ff6-44c1-9780-63bd7cd8a1c3@linux.dev>
- <e46ba0c9-6a24-45e5-99f8-b4f454887f50@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 8410E1C0002
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wbuyyb1x3ysy7ntphiwxpa5s4yeq5gn7
+X-Rspamd-Queue-Id: 9C3F9180009
 X-Rspam-User: 
-X-Stat-Signature: 7y4ugizeejwyx5uhzcrrt5m5r51hcohj
-X-HE-Tag: 1782703925-67281
-X-HE-Meta: U2FsdGVkX19a7ejQx4cYJ/YzIoAlxXLcqYErF7sd3cvae9QZgrx2cE/FAfNqpUp6MQv1UO2wWjnlLJoTrtGZw7gqoVB9Bc4tUJIuJ7KO5uwMYERNyKb9B2tMIX4uSDHmDPJROuqVAHLGFqGSHN9FC6OpN8x+ZUOIfkCqVbXQn6IJHGAZoBiUBGvBkYOvTVPfH5eypxeWUqXEvIC6tXiHcWf1/TdgfactrYNjDG5oj0wrYC5b4anlcgENPkoQFGvi+CmxNSrHl3spKQio9INZvJmvsd6m2dHcUrI+sRB0R06VT/IA3If0SKliiCu6BU7lo4PS3IkUUtINSgoXwoWjktgPkdFrbEuAZjJalNpa85M9r/xn+eDEmkfi60SvdnuEneGaSvblu2duM8B5isNPqJ2Z0vbVg1TWk+XYmCIFzN+5jiC92iEd+Gzb+fXCZ/0yyhlAO/VofDM+E8HIDmzuIYYjTLDeggLVB0fXJQqDJrLUhW3olqMRoL71/UFo7hqTAei0RuDTK69b2PRJ+32N7npRnY5Bdwe6PUKamY5tM3OjeGtIQJpYTPIKmS+niXx9+tRStkPu6QIM47Zah3VxxkF8zamGD+CB+OYOk9iidtzESvkj1caL829/NHQto2lP96g6jLiTi0j7MZu71oNRZKmTV40MBOSQL2L1kQHjcAP59ur/q4OiFhvazmQbnQ/KYpC4prsKgNqr2q6mujtu5bKw4HNg4pwc2NpKu1x2Hp12m3V+kYwie3gIs5JB+gyamYcmPozKAIVm247tC2aj5uN1UWnk2cX4vLmYB2rGxT8sboxNNaEnRtGD38exaDx7cyT537g0r6jyfxmdImNMd4cUv+E0z/aUF8asChWO4xhzl6QjZ177Rjlfuo3o1JPyK5ZJ09iAdIcSUafOIFXJmECmpgHFuKbQv5TYd5LasROe38nvxrQ7o+yjJ/P9xlx8L70hDKCgAqHkiQO/L7X
- K+i7+Kue
- 7uasOHSK7QCTQSw7pBBeAB7xoCUiKvWzr1SjIiFGadTzhLcCc+ckKaVeJUXHAkud5Q8/DzljlYhINQbFrAkBFMZfn4SBnDRXB+hOKK/XqahoY/NnSaAIMqi3bPm+FngSfyK079wwadx+hojBpUC2VkoxpJgmrAdUsc2uGzn0nHQYYU2gBg61I8wU2fYMf/uK8XtKywXSrubzuBWB9klZ0TiO5VqbXe93O+FoJrxgtqsKz0sw=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782704133-16140
+X-HE-Meta: U2FsdGVkX1+1oLoUi4KscZ5neQ5J6v3KP4JpnFTygLCvxe192RHs86EmZFXPGk+2nf2IaQsKijHpXTGCnnOf1vsSKg9g2PSjN0nrSDcGBCS5hHF4fNyzKX4V1MPVOkBoaJUG29cRtU5aNGxHxqb5hXGwr+5HHxIK27mdEVALD4MGbWI+3PBmjlWi74ip1g6VCjZCDwL/y3vmAzmA4FIJZ2QCAXvOJz9zM/dce6AMhHh5iLzJ0XvSApdJDcYvYXnXxQXvTZBU7iCeKpyrDTFLVoEQDxWeTtGiZvA6KdaOGpdquYHdlgUEXRZI8Mod1F+ot95iwYCL57lsNoUFyLFA2NBv431X8EvroZJ9nktaqQzwEEyWuc+iKRzOL0ALXQvv43hEheSPkvm/2kr83MZQN2p7b6CtzJ2DulszMU0ZjHcFBDFid1ScOC5DlTVvjpSdBLlbluKEpsIGd9va4humZTdXWEI+27Ul3R0iIAEK2chSWwsO0iWjx+dMBlaNA0a78ufNxEt677yfVpHh3d39zE7N3PiaaXPhRP25c1M5UgmgsuMlvpm3zFcR8UrEhU3kK2wx22GSO8/X15tas9odESwxzfXdZB66bRXXDvi1iYHcrbB3nmDDadd8PPFWAX8vQ6sHlzWr7WMRjFL7cqSmDlm5hVBaPgrwA+kTIIUpKS2flWJRm0f7zeiiEecMYmUC5seM5sMpwRPCJHSWUkYETj+chZ3ujhbaTaKZWr0OcI63t8E5YsarVDWIWasiw/zD7wR7swU3bfoudv51afjOB36hiErLD6UvTONkqWNlQIGNB6UVg5xFi+0d/NQGSXkWI6a3PItDIXqFnnumrnilbjmioLdaInnayiwzotxDHvebOCJl24uOwFjPK8KnmobEZCbjjXbaBdxdNZbv5fVFPR2I7Ji0/o/KFh9eKcOyf5kSUffQV2l3P7mgvRrTtD+YF2XjT36m3tBBM4xbsZn
+ dpKrEO0n
+ JiZxX6f1RE8V10z7X9Zsz5LKbKNbn8YKCb0Dbf+Vh2NQ86TIqV79VMHORTrhGVV1pruMmIJY2bsk4OH8+oPn13LaxQQxp4ECD2IprQHRw9BDYJLpUq5OxCH5cF7amYy3CNHYFv+ujhTnf95pqJb4OQmkAIgLrzwVX3v6HLFyf30KPOkEe+/Tdu6M/7GZOQJLtBw3skeNhM1aZ0WXg98eLN8b6bCAWxD3CNLkfVDRyTrl3hIUeRLJck28Jft9fjZV510j8w9mEeLMdfE7Dg//yhin+/Fcu9ui8TNCCQWSrBkE1j7VQBzY/t5JJ5yq/a84BivDBjXzzaIlM3phLtk3/lQVvhs78z/EyncsrMycjBm6latrtCHkvqOAW1kZlQ0vAn2mTVGO2PtqKaz1ABXcA46X5l/wHRTVLvdcPU/PrriIMU6IibB/c8N5vudA9zGIG4CGyCm9b5veKcnLnn4tc/K5mvktabHEaSgJeTJ40GdDA3wccPLNbnAAxO4W3aIT3IJvGRrDcCT7Ic8i8sh2CnXWLfULa/hrYfy7l4GyJdzDwLBqvDm6TXQOG0374vRJCipkuCOLBwDzWRsXoiomT+kG13ns8iF0u7H44jczFSu7yoR4STKzFO1oppwe41L9x0jZKC8jqMHnONJT/pK0nlhKF/a9l6+knlKWqihz5rciiIfWKlJHgZk9uoyHpH0T6WhkdZ17tvUTEu72G2DsbW76+ywyGno6g8qwxWsuBxk4nLuNJt02GmTTjdvtIshHt7U/+iKulH0IYY267pelwu+GoZI40ycww/MzhWQkSWl7bmrlWjbWa60nRPtN5WwLntUuHIvlryO9frOGPMxeZ+KiLFw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,316 +119,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B46=E6=9C=8826=E6=97=A5 17:09, "David Hildenbrand (Arm)" <davi=
-d@kernel.org mailto:david@kernel.org?to=3D%22David%20Hildenbrand%20(Arm)%=
-22%20%3Cdavid%40kernel.org%3E > =E5=86=99=E5=88=B0:
+From: yahia ahmed <yahia.a.abdrabou@gmail.com>
 
+Hi,
 
->=20
->=20>=20
->=20> >=20
->=20> > static inline enum zone_type folio_zonenum(const struct folio *fo=
-lio)
-> > >  {
-> > >  +#if ZONES_WIDTH !=3D 0
-> > >  + ASSERT_EXCLUSIVE_BITS(folio->flags, ZONES_MASK << ZONES_PGSHIFT)=
-;
-> > >  +#endif
-> > >  return memdesc_zonenum(folio->flags);
-> > >  }
-> > >=20
->=20>=20=20
->=20>  Better to factor out a common macro alongside a comment for these =
-two '#if'?
-> >=20
->=20Yes.
->=20
->=20And while looking at it, doesn't memdesc_section have similar problem=
-s? And
-> there are other callers of memdesc_zonenum we wouldn't handle. So the
-> macro approach is only partially helpful I thing.
->=20
->=20Maybe we should just pass by reference and fixup all callers? Ends up=
- the cleanest.
->=20
+Thanks for your review, you are absolutely correct
+that i missed WRITE_ONCE is required for READ_ONCE
+to work.
 
-Hi=20David,
+Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
+Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+---
+v2:
+- Add WRITE_ONCE to shmem_fallocate()
+---
+ mm/shmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I think pass by reference is better than macro.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b51f83c970bb..20ee24ab4806 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
+ 	 * Trinity finds that probing a hole which tmpfs is punching can
+ 	 * prevent the hole-punch from ever completing: noted in i_private.
+ 	 */
+-	if (unlikely(inode->i_private)) {
++	if (unlikely(READ_ONCE(inode->i_private))) {
+ 		ret = shmem_falloc_wait(vmf, inode);
+ 		if (ret)
+ 			return ret;
+@@ -3630,7 +3630,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+ 		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
+ 		spin_lock(&inode->i_lock);
+-		inode->i_private = &shmem_falloc;
++		WRITE_ONCE(inode->i_private, &shmem_falloc);
+ 		spin_unlock(&inode->i_lock);
+ 
+ 		if ((u64)unmap_end > (u64)unmap_start)
+-- 
+2.54.0
 
-Would you like to send this out as a formal patch yourself?
-Or would you prefer I include it in my next version with your
-Signed-off-by?
-
-Best,
-Hui
-
-> Untested:
->=20
->=20From fb9b4e8c1d0419b960dc0cd4738d19d80d1fe14f Mon Sep 17 00:00:00 200=
-1
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Fri, 26 Jun 2026 11:06:39 +0200
-> Subject: [PATCH] mm: fix KASAN memdec_flags checks for zone/node/sectio=
-n
->=20
->=20Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  include/asm-generic/memory_model.h | 2 +-
->  include/linux/mm.h | 23 +++++++++++++++--------
->  include/linux/mm_inline.h | 4 ++--
->  include/linux/mmzone.h | 24 ++++++++++++------------
->  mm/page_alloc.c | 6 +++---
->  mm/slab.h | 2 +-
->  mm/sparse.c | 2 +-
->  7 files changed, 35 insertions(+), 28 deletions(-)
->=20
->=20diff --git a/include/asm-generic/memory_model.h b/include/asm-generic=
-/memory_model.h
-> index efa6610acbc79..f8404bc7773c2 100644
-> --- a/include/asm-generic/memory_model.h
-> +++ b/include/asm-generic/memory_model.h
-> @@ -53,7 +53,7 @@ static inline int pfn_valid(unsigned long pfn)
->  */
->  #define __page_to_pfn(pg) \
->  ({ const struct page *__pg =3D (pg); \
-> - int __sec =3D memdesc_section(__pg->flags); \
-> + int __sec =3D memdesc_section(&__pg->flags); \
->  (unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec)))=
-; \
->  })
->=20=20
->=20diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 485df9c2dbddb..3111e4a6c9c4c 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2286,22 +2286,28 @@ static inline int page_zone_id(struct page *pag=
-e)
->  }
->=20=20
->=20 #ifdef NODE_NOT_IN_PAGE_FLAGS
-> -int memdesc_nid(memdesc_flags_t mdf);
-> +int memdesc_nid(const memdesc_flags_t *mdf);
-> +#elif defined(CONFIG_NUMA)
-> +static inline int memdesc_nid(const memdesc_flags_t *mdf)
-> +{
-> + ASSERT_EXCLUSIVE_BITS(mdf->f, NODES_MASK << NODES_PGSHIFT);
-> + return (mdf->f >> NODES_PGSHIFT) & NODES_MASK;
-> +}
->  #else
-> -static inline int memdesc_nid(memdesc_flags_t mdf)
-> +static inline int memdesc_nid(const memdesc_flags_t *mdf)
->  {
-> - return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
-> + return 0;
->  }
->  #endif
->=20=20
->=20 static inline int page_to_nid(const struct page *page)
->  {
-> - return memdesc_nid(PF_POISONED_CHECK(page)->flags);
-> + return memdesc_nid(&PF_POISONED_CHECK(page)->flags);
->  }
->=20=20
->=20 static inline int folio_nid(const struct folio *folio)
->  {
-> - return memdesc_nid(folio->flags);
-> + return memdesc_nid(&folio->flags);
->  }
->=20=20
->=20 #ifdef CONFIG_NUMA_BALANCING
-> @@ -2541,12 +2547,13 @@ static inline void set_page_section(struct page=
- *page, unsigned long section)
->  page->flags.f |=3D (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
->  }
->=20=20
->=20-static inline unsigned long memdesc_section(memdesc_flags_t mdf)
-> +static inline unsigned long memdesc_section(const memdesc_flags_t *mdf=
-)
->  {
-> - return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
-> + ASSERT_EXCLUSIVE_BITS(mdf->f, SECTIONS_MASK << SECTIONS_PGSHIFT);
-> + return (mdf->f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
->  }
->  #else /* !SECTION_IN_PAGE_FLAGS */
-> -static inline unsigned long memdesc_section(memdesc_flags_t mdf)
-> +static inline unsigned long memdesc_section(const memdesc_flags_t *mdf=
-)
->  {
->  return 0;
->  }
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index a8430a7ae0544..efcddb9925add 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -650,7 +650,7 @@ static inline bool vma_has_recency(const struct vm_=
-area_struct *vma)
->  static inline size_t num_pages_contiguous(struct page **pages, size_t =
-nr_pages)
->  {
->  struct page *cur_page =3D pages[0];
-> - unsigned long section =3D memdesc_section(cur_page->flags);
-> + unsigned long section =3D memdesc_section(&cur_page->flags);
->  size_t i;
->=20=20
->=20 for (i =3D 1; i < nr_pages; i++) {
-> @@ -660,7 +660,7 @@ static inline size_t num_pages_contiguous(struct pa=
-ge **pages, size_t nr_pages)
->  * In unproblematic kernel configs, page_to_section() =3D=3D 0 and
->  * the whole check will get optimized out.
->  */
-> - if (memdesc_section(cur_page->flags) !=3D section)
-> + if (memdesc_section(&cur_page->flags) !=3D section)
->  break;
->  }
->=20=20
->=20diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index ca27121871475..19e709d7a13de 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -1272,31 +1272,31 @@ static inline bool zone_is_empty(const struct z=
-one *zone)
->  #define KASAN_TAG_MASK ((1UL << KASAN_TAG_WIDTH) - 1)
->  #define ZONEID_MASK ((1UL << ZONEID_SHIFT) - 1)
->=20=20
->=20-static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
-> +static inline enum zone_type memdesc_zonenum(const memdesc_flags_t *fl=
-ags)
->  {
-> - ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
-> - return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
-> + ASSERT_EXCLUSIVE_BITS(flags->f, ZONES_MASK << ZONES_PGSHIFT);
-> + return (flags->f >> ZONES_PGSHIFT) & ZONES_MASK;
->  }
->=20=20
->=20 static inline enum zone_type page_zonenum(const struct page *page)
->  {
-> - return memdesc_zonenum(page->flags);
-> + return memdesc_zonenum(&page->flags);
->  }
->=20=20
->=20 static inline enum zone_type folio_zonenum(const struct folio *folio=
-)
->  {
-> - return memdesc_zonenum(folio->flags);
-> + return memdesc_zonenum(&folio->flags);
->  }
->=20=20
->=20 #ifdef CONFIG_ZONE_DEVICE
-> -static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
-> +static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
->  {
->  return memdesc_zonenum(mdf) =3D=3D ZONE_DEVICE;
->  }
->=20=20
->=20 static inline struct dev_pagemap *page_pgmap(const struct page *page=
-)
->  {
-> - VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(page->flags), page);
-> + VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(&page->flags), page);
->  return page_folio(page)->pgmap;
->  }
->=20=20
->=20@@ -1311,9 +1311,9 @@ static inline struct dev_pagemap *page_pgmap(co=
-nst struct page *page)
->  static inline bool zone_device_pages_have_same_pgmap(const struct page=
- *a,
->  const struct page *b)
->  {
-> - if (memdesc_is_zone_device(a->flags) !=3D memdesc_is_zone_device(b->f=
-lags))
-> + if (memdesc_is_zone_device(&a->flags) !=3D memdesc_is_zone_device(&b-=
->flags))
->  return false;
-> - if (!memdesc_is_zone_device(a->flags))
-> + if (!memdesc_is_zone_device(&a->flags))
->  return true;
->  return page_pgmap(a) =3D=3D page_pgmap(b);
->  }
-> @@ -1321,7 +1321,7 @@ static inline bool zone_device_pages_have_same_pg=
-map(const struct page *a,
->  extern void memmap_init_zone_device(struct zone *, unsigned long,
->  unsigned long, struct dev_pagemap *);
->  #else
-> -static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
-> +static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
->  {
->  return false;
->  }
-> @@ -1338,12 +1338,12 @@ static inline struct dev_pagemap *page_pgmap(co=
-nst struct page *page)
->=20=20
->=20 static inline bool is_zone_device_page(const struct page *page)
->  {
-> - return memdesc_is_zone_device(page->flags);
-> + return memdesc_is_zone_device(&page->flags);
->  }
->=20=20
->=20 static inline bool folio_is_zone_device(const struct folio *folio)
->  {
-> - return memdesc_is_zone_device(folio->flags);
-> + return memdesc_is_zone_device(&folio->flags);
->  }
->=20=20
->=20 static inline bool is_zone_movable_page(const struct page *page)
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index ee902a468c2f5..020a97ca018e9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6904,15 +6904,15 @@ static void __free_contig_range_common(unsigned=
- long pfn, unsigned long nr_pages
->  continue;
->  }
->=20=20
->=20- if (start && memdesc_section(page->flags) !=3D start_sec) {
-> + if (start && memdesc_section(&page->flags) !=3D start_sec) {
->  free_prepared_contig_range(start, i - nr_start);
->  start =3D page;
->  nr_start =3D i;
-> - start_sec =3D memdesc_section(page->flags);
-> + start_sec =3D memdesc_section(&page->flags);
->  } else if (!start) {
->  start =3D page;
->  nr_start =3D i;
-> - start_sec =3D memdesc_section(page->flags);
-> + start_sec =3D memdesc_section(&page->flags);
->  }
->  }
->=20=20
->=20diff --git a/mm/slab.h b/mm/slab.h
-> index bf2f87acf5e3a..1ae8e6084ba32 100644
-> --- a/mm/slab.h
-> +++ b/mm/slab.h
-> @@ -155,7 +155,7 @@ static inline void *slab_address(const struct slab =
-*slab)
->=20=20
->=20 static inline int slab_nid(const struct slab *slab)
->  {
-> - return memdesc_nid(slab->flags);
-> + return memdesc_nid(&slab->flags);
->  }
->=20=20
->=20 static inline pg_data_t *slab_pgdat(const struct slab *slab)
-> diff --git a/mm/sparse.c b/mm/sparse.c
-> index 16ac6df3c89fa..8e38477645131 100644
-> --- a/mm/sparse.c
-> +++ b/mm/sparse.c
-> @@ -43,7 +43,7 @@ static u8 section_to_node_table[NR_MEM_SECTIONS] __ca=
-cheline_aligned;
->  static u16 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
->  #endif
->=20=20
->=20-int memdesc_nid(memdesc_flags_t mdf)
-> +int memdesc_nid(const memdesc_flags_t *mdf)
->  {
->  return section_to_node_table[memdesc_section(mdf)];
->  }
-> --=20
->=202.43.0
->=20
->=20--=20
->=20Cheers,
->=20
->=20David
->
 
