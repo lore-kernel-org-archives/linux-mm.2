@@ -4,92 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A21A3C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06781C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:22:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D66C6B0124; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
+	id 0135F6B0098; Mon, 29 Jun 2026 11:22:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75E636B0126; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
+	id EDF9B6B011D; Mon, 29 Jun 2026 11:22:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 627246B0128; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
+	id DCDED6B0126; Mon, 29 Jun 2026 11:22:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C2C96B0124
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:20:24 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B2D761C5C61
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:23 +0000 (UTC)
-X-FDA: 84933311526.12.EA6F6B0
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8D9F9180015
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:20:21 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JihvDOM2;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B5FD46B0098
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:22:44 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24EB61201BC
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:22:44 +0000 (UTC)
+X-FDA: 84933317448.16.A9E3173
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 433EC1A000E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:22:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kDKQBArW;
+	spf=pass (imf19.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782746422;
-	b=kHlvjP5GkF/C262q1/CVbMwvjtTuLq0yF8KogzzHtWK/2SxiRvkwKaMvh6Kv2muLoOjrQI
-	Wq5NDkK2sOboQp+a09OAO86lNgKvWSrf9osn0GKtzfGZ8o/n+WvtqE7AwgCmCvHFI4l2mM
-	CrQHEUVQDlrqOhN9EZrWZRptInbwYgs=
+	t=1782746562;
+	b=U74HCX73CyIp7zro+L+uDd1/MW6EsBlDUSjY8X7js174E8oESK4oCvebaJ2lbT8EakYhXY
+	txrv7WVJyY0erO5rIeW+d298ZeobZcKJ1NPtxlR6KNPfyLp1QdduelF/WEebnHKKJ+o6Mv
+	dIEwzIyd9E9UyP9XOP/z41bVdiXeB5g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782746422;
+	s=arc-20220608; t=1782746562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zY/GriVJLynATGzgCugUthPblhIxqMm9CgqWiWmlu5I=;
-	b=wywx2ZehgThrBh8DIHgz5hSgMZjkHIHURqQnrM/h5qeDbqxJCLQuypdPoIQDpzrB5Bfm/p
-	ilvwL7ttp8rbSPJDySS81nZFcR0AvJuIMckHF92CQs2YOKTUvc8RKFwK3VqXdSFX2szf11
-	llNgtmHByVLnSW5sI1OuDtniYfWzzfY=
+	bh=M6iR2qrUY3lKFFhhpreIimEDASDPW2AVk/qsJWmgcHE=;
+	b=g3rgmVYd76eGQze3h29XmUo2CTw9o2Y/AJzOM2fdtXt70Nn/+sJho017qejeWHanbrseKk
+	6Wbb4GFNtIRj7Q5F9u2pLxhZbVNBpIeiDFwDirUC0cF7YkVLxkZmKVrFFMwiCD2Dw3K1wU
+	AhuyT0yx9UVLdi9EeQIGfcusoKgSj3E=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JihvDOM2;
-	spf=pass (imf06.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <fb9af391-b991-41fc-a105-7a3008860c07@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782746416;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zY/GriVJLynATGzgCugUthPblhIxqMm9CgqWiWmlu5I=;
-	b=JihvDOM2HtqiSQAfyZeXmqsiw/qMEe5kcK6/aBmqOQ6JiD1jy5K3slgNtD5PpIcF4EKrsU
-	ntfMVLFqWweMVpB1fEd/I7/Jk9lThGT7CGs727xXTX2R5F6Ycwe7mTwad43arPQjvHRq1f
-	+bm02FfrILjYkgEqnWaF183fFZKAtJM=
-Date: Mon, 29 Jun 2026 16:20:10 +0100
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=kDKQBArW;
+	spf=pass (imf19.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=M6iR2qrUY3lKFFhhpreIimEDASDPW2AVk/qsJWmgcHE=; b=kDKQBArWTBErvdn6lVZwgItM6J
+	G62SHu1j97tzY7OXR5LFx4MmbnL2gsqM5Njes4h0SW7M8IWkMrkkPUIyoDi7mqjb//Nm6jAIfZ8D3
+	+ig1qjM8e3wnm7TxtNlfulp8JkYJByfdBAEqPZ/JqTjnpYUs0BR2L8ih0EeRtagAuNrmwvEWsCMmj
+	3yr15qtUY0fy5IwPwIqtnGpycII9+iZHdYy1veJT4b+uYJ/DHC0Ec0/Z1wVEMg+WY/21NbPwTsBUR
+	lTT8NJ75xywbeFcS+KL1Au09zxnfXeTFB0vfi4Z7KEYC4gVgh2xcJIvUvt1+a6LyLbqJDtQV7QGAc
+	eMKcOrdw==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1weDon-0000000F3JA-12k6;
+	Mon, 29 Jun 2026 15:22:41 +0000
+From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	maple-tree@lists.infradead.org,
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>
+Subject: [PATCH fixup] maple_tree: Fix dereference of rcu type
+Date: Mon, 29 Jun 2026 11:22:35 -0400
+Message-ID: <20260629152235.1629785-1-liam@infradead.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260629144145.1572283-12-liam@infradead.org>
+References: <20260629144145.1572283-12-liam@infradead.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
- into vmpressure-v1.c
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
- linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org,
- shakeel.butt@linux.dev, roman.gushchin@linux.dev, liam@infradead.org,
- linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
- rppt@kernel.org, surenb@google.com, vbabka@kernel.org, kernel-team@meta.com
-References: <20260629130042.2649505-1-usama.arif@linux.dev>
- <20260629130042.2649505-3-usama.arif@linux.dev>
- <akJzXU52XJ9-F2IB@localhost.localdomain>
- <fb000c9a-add2-4c31-afe1-b6ec416c9058@linux.dev>
- <akJ-It8m_xm1WVLY@localhost.localdomain>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <akJ-It8m_xm1WVLY@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 433EC1A000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8D9F9180015
-X-Stat-Signature: 9d1wmxn7towatbpiitmumudkqg5zrxyp
-X-HE-Tag: 1782746421-143404
-X-HE-Meta: U2FsdGVkX18ribgNoAtVDTRBhOyuCemenLeP+mnv4TKqXD2AJjss3XTmJV6UlqCNP6s/HW3nz7sGfsDnrFJR6A1XhMJ1QpBxKBYZUTbTwzWnORocK3O1MTUUC94msMJ4VzQcbqmwCVVqMj7Z7xi1IzURh0U0XKX2jNHmssAxliTzO/Al6rI9rh1YMdCwd1KRzVD9BIYt/QhrvtqKJX704JltmRo2pS7za7iDJoefVgcgsPReLhEtCDYvRH3pVFaXToPAtGh3Kb0fmZbFXidfAulkg9PAqGYhLAcfPlV4ziHqehs8aZSJJRo2ZDMkFhVhajzfdCHA7ReUbxFy+qk/e1EtNS/8D/8RcJ1UDyITx0V3vEg8qdavfMk2JlK389T1gFXBTacYyPY1WCLi05cy5tDLpC2VOuO3oeGKoAEch1scwPl+fLTSRkxwrFdsha7/eY4PfK0R1PS6YenYdhewdKaF6xZfVx4e6i66on4g9NI30rgA1/8NLx/ETbr+j/2TosaiOtTbadxod8cd70RWsuAptVE6w2BBvISh+kj+a7fRRDCE8zdLGu3pszYBq5L7f4uyILEz8WXOfH+lA8iTIbzGYu3Zka843/PxbXJ6X8xdldorTV148C+Nd+B9XahDa9tRZrzKvBttPw2N38LwAEAKALmavIKV/zR3GlHdJo/Gi3CRk0fF4RvWZ2uXpugBCfTlOP7hzxb+6lHcLwnE6bWTT47n25IltwK9QJ57PvCvvsDW3IR/tk5Ulimu0CZPfqHH+C7/I666WY4nfehNOz3xwZHJq3V7EyZ8u6mdW74Z6y1yrasVzIdBj3ssw2tsD3xGSZW+sc5vn44PHgaKQeHevWsnhpBOpO4SpNnXgQbe7496oE0Z9nYdKoqCZuclNe0K8u+0GULekCul109NJtEhdotQUwHY0Bix2XbGnM1ZJpikZVLbwNMt0BeKe1IhfAFJPBmLFwJ5UdHX3DM
- q7aKyO6E
- qYKj2hP2+o5iJxYcIZoQtoMbViI9buLBaSb3dxhoFjjYENjN15Iwk2OeCvg0+paz+y4nwQKuTpN2+bJX1u9ZEGLouxFMpq5W5Jsw/DwJclTPasKHzpE6z/ifLU/OpO77szsKHhrPVXx3WT4YPWQOP1T2OM+kPsKgD+SK3tQXzPN49LI4L1PfHz2tNwJZ0bvz/GfsCu8NuarST8sPu0sL3kXtrpfIvn1LNvxGcqfQ205QXovg=
+X-Stat-Signature: yoz9eiya3qfmym9y5mpo8t6am1cqwjde
+X-HE-Tag: 1782746562-779423
+X-HE-Meta: U2FsdGVkX1/4CK2UmozFAJZG+0gjNVtIgsgeQfuXjS5gisw5kFt9lIvPISNKX8EPqsYt9eGVL2agmknC3EfhQyas2Sfh5CdD1BOnJZQVngsRVwQ57PAQtIvxPt5Wsnr0Xd6qYRESd+sDjOTqz/86Ob9tX+Z50ad9A+8FWFbhJIhA4AZ3sRzP3AtAC/Ml70y5dcy+31V1d5NG8UXMx+lZNN4mIuZuFOmFGGMOBgS6rPTi1PYVneTksq35/Gx6lKkSpVS0e6rCsYCI7Wy+zd0/Lb/85+R9rL9v785of66lwA6iLHVq2IFeDrYcCdz34h6vAfwJ5uwha+wn34+x5a1xngBx+AKjPA29lGK+XFhsq6a+bBon40mOYaseGUg0mQKgD+s+0fBK/eIwXCkaXtKHFSsw4NlO7Zf7wAHdfGawYgOrHQwLAJAV7kE2OBBXxK0ui2XrxAwDoRU8uk8AyQxd2kEiJ88FrqbbSB9zfZ5S+r2X0hRFFnThvlmdh7XtGp37QUMsAIK7RhnfAf0etiLc8SOFpfuuWkqoTxylloq3sGKXze++ipWNBukqCuBO6mH0qr/tO2pYlOxkpvXPl/bmqpNN1hRbigklwBKlEyf6gBRQ+QBA7sRo/0/nYiTP2orApaEUxa5wgjggc7W35EwiA6MmoyScGed3LtUweSdDAJkwCftjlk4dPTSq3ALWzpTet6QUhRmfJxvoiuPB7Jxx077tpaQsGE4HZTNgBMpyUyDSV9BOHgQcv5Q0dorLnN8C8rpVckxu/NWaVz5Rillfcyua5Z2obDpAmsw6QweqT8PWmupzfSK1dOy9sEDvrv/bRlFkJ5+VPgptx9gIhKty8dBH9z/ijNaBJMzdJJWFS54ydzduuQezxyvTF4+qkZPmfzW+0JPTPzfn3omJ1E7Bn9yiLuA0xYd1JcMJWzYuh/e0ynFOzU9sqEJ1fJy9damE4qeTBuzfIDgfGcoVBRK
+ CJE7qpHm
+ LZ7jXdzXGkJ1MMzxqM5YPS/Sy8HwASfvOvV7lgBE50B2uvGbtxtGyS8hMv3hD5OEqqeFzlBSpXBjrlksgkb8MmRAy4EYTpxM1J+HHcSCIyRUI5COMnbg5jt28WjLPV1Ozn/LMq4YEy0YACQPE421kSC1pKNLq+YstiEQ1dyFcODDWK/yB1i76sK9LkYZF4Ejlwb13lWVj46tzs3XkbktG0E+hTzfa1ko7v5rjB+d3oGN8RMT3iJ9xYrSt8fbLh4evOidxMNhumRHdAKwiHu7wXnCmANHQIOXsHf08yRklCDGNjSLeSrFg5vjxslJkItYUdsby9Z99IMx3BdNoLrqn27PuLYHbzjbSTJ7XzCG9XY1HA7Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,55 +91,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When getting the slot, the rcu type of the slot needs to use
+rcu_dereference_protected() to ensure no locking issues.
 
+Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
+---
+ lib/maple_tree.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On 29/06/2026 15:29, Michal Koutný wrote:
-> On Mon, Jun 29, 2026 at 02:55:57PM +0100, Usama Arif <usama.arif@linux.dev> wrote:
->> On 29/06/2026 14:34, Michal Koutný wrote:
->>> On Mon, Jun 29, 2026 at 05:59:37AM -0700, Usama Arif <usama.arif@linux.dev> wrote:
->>>> This split is the first step toward eventually making vmpressure
->>>> CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
->>>> (tree=false) cannot be removed today immediately: PSI is not an
->>>> exact replacement for vmpressure, and switching networking socket-buffer
->>>> back-off to PSI
->>>
->>> (Here I understand PSI is a different and differntly scope metric) but
->>> what does it mean when you write that tree=false cannot be removed but
->>> the other patch bails out from vmpressure() (i.e. nothing is updated
->>> anyway)?
->> So the first patch bails out for cgroup v2 for tree = true only.
->> For tree = false, it doesn't bail out, and is still used for networking
->> socket-buffer back-off. I think that is a whole another scope of work
->> switching to PSI. Hope that makes sense?
-> 
-> I've mixed mutliple things together, sorry. I wanted to actually ask
-> about your response:
-> 
-> | I realized when trying to swap the order that the splitting off v1
-> | commit will end up doing more that what I think it should do (just
-> | splitting off v1 specific code), as the tree = true code will not get
-> | compiled in at all for cgroup v2, and it then ends up changing more
-> | behaviour.
-> 
-> tree=true won't get compiled but v2 doesn't care about it, so the effect
-> of patch 2/2 should still be same (regardless whether it comes 1st or
-> 2nd).
-> Do you refer to the invocation of vmpressure_v1_account_tree() that is
-> affected by this?
+Andrew,
 
-So what I mean is that I want to keep the effect of the patch that splits
-off v1 code as just that and not have the optimization of not running
-vmpressure for tree = true + cgroup v2.
+Please apply this fix to "[PATCH 11/18] maple_tree: Add bulk parent set
+helper" to avoid type complaints.
 
-vmpressure_v1_account_tree() compiles to an empty function in the split
-patch for cgroup v2, so if we make the splitting out v1 code as the first
-patch, the commit is not just going to split v1 code but also do the
-optimization of not running tree = true cgroup v2.
+Thanks,
+Liam
 
-I hope it makes sense?
-
-> 
-> Thanks,
-> Michal
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index eb7f32081b65d..f1b9c9b32bd42 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -525,8 +525,10 @@ void mas_set_parent_slots(struct ma_state *mas, struct maple_enode *parent,
+ 
+ 	for (i = 0; i < count; i++) {
+ 		unsigned long pval = val | ((start_slot + i) << shift) | type;
+-		struct maple_enode *child = (struct maple_enode *)slots[i];
++		struct maple_enode *child;
+ 
++		child = ma_enode_ptr(rcu_dereference_protected(slots[i],
++						       mt_locked(mas->tree)));
+ 		mte_to_node(child)->parent = ma_parent_ptr(pval);
+ 	}
+ }
+-- 
+2.47.3
 
 
