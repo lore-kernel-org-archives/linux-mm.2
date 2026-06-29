@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2AC9C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 02:10:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 989B1C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 02:12:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 553086B0005; Sun, 28 Jun 2026 22:10:10 -0400 (EDT)
+	id 8B1246B0005; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DC646B0088; Sun, 28 Jun 2026 22:10:10 -0400 (EDT)
+	id 861D66B0088; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A30E6B008A; Sun, 28 Jun 2026 22:10:10 -0400 (EDT)
+	id 7501C6B008A; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 07ABA6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:10:09 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 705A6140535
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:10:09 +0000 (UTC)
-X-FDA: 84931320138.20.20CCCC1
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 236F4100006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:10:06 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026052701 header.b=QYiS6laJ;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id 475806B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 22:12:03 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CE6801C645B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:12:02 +0000 (UTC)
+X-FDA: 84931324884.03.69E8158
+Received: from one.firstfloor.org (one.firstfloor.org [65.21.254.221])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1AC5BC0003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:12:00 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=firstfloor.org header.s=mail header.b=dJjN3COW;
+	spf=pass (imf22.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782699007;
-	b=xRHwdV5WZHXF3Y8MgTzSOOsOV3paYJcDcBfIm3fQADfQ+rePWUX0gcDvQFKPZYcs0TsPNz
-	EKgYbSXTp/3/zHwLc5NgdHMBGjaTillIHtCX4VQJsdVmJivOsItsXGJdrrEBZtNUIc5P6l
-	TTPCIPUq9mCo+Va+blteeybADn3pe+I=
+	t=1782699121;
+	b=142DFB5Vz3fqMoNMSi/R7fhbZyKrOs7/lSjBNZ9EF9MZdD9JprWGGZL6e8NJlrazpHAJDY
+	vW8W3RzkmcgkiEPWhzi8LEEpLBrwaoK0P84/CN0osvoiSDj5GUAs4T1PxeDq8LdfQQERYi
+	h9QzQ4xfGK8xZJh00RLHL/yNwQ5PXtM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782699007;
+	s=arc-20220608; t=1782699121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kv5dJD+a62Qg64IepgQhkySKSNHhTKfnqhs3Kx+EjjY=;
-	b=Du93J5cVuwun5a64EbCWVw8iE2mkHDed/aAmbFPfK0HHvOUTYmkQ9U1Z0R3aL8PRCOaNzF
-	pT8pie9dvGT401oWPiubPgpfsLvMzocH4nhsx3r07Cc/cFh8jQllxWztg4OOM1sEpZBphu
-	CzSyqMdKvjVArHavlPw5aV1T+Mjeh/A=
+	bh=Ju+l1c1eu6zVsUY2O28hQpAXOGeb8J/0ohMkOsErdu8=;
+	b=Guh1udFETsCJzoUJx2pazcd6pI1NuU0J7pXhXSIFDtAnshmeqon+Isnu8TWZF313zrgcAm
+	uWoNaCgOWgFpafQdBHoDjFlMh2YmH3FSYZMqA1Q/KgkuZV6v1KCGYgd4x3uNtdEn34zhT/
+	EnB05RNC8cs5Z/pOJcEKU+Jkw+u4iFY=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2026052701 header.b=QYiS6laJ;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-Received: from [IPV6:2601:646:8081:7da1:29ce:814c:118a:de3f] ([IPv6:2601:646:8081:7da1:29ce:814c:118a:de3f])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65T29gd13309161
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Sun, 28 Jun 2026 19:09:42 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65T29gd13309161
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026052701; t=1782698984;
-	bh=kv5dJD+a62Qg64IepgQhkySKSNHhTKfnqhs3Kx+EjjY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QYiS6laJ6bh/Gvvs2qYuXGqIhK5K9kUoaFspoLYFcbNE+I3wVgLg0vVOi9+DzeH3R
-	 rO6O6esbn1KCXDDCOf1UVuLiuRjgSlPruj8f5GOLxwHNgb94YMVOSY+A43KGT3FHwH
-	 cvVJhSIQmX6mRDi8juy2LqQCpg0D2Ym71EPwKPF6mqxXlNX3XabiNy4QgRlztRA3Gg
-	 NMGIfHAan3qEU3IrfeTVpNLTtbVGYRZBrII61mq4WZ3HNLDMgUAYSreMCFSbo3DpQM
-	 59rflZB0TxyCuDmB1Qgqk/M+5uI7b6f88Vg5Mcs3dsnxHckFCn80Nj3aFsnttj/nLE
-	 A0B4I8tYzE/SQ==
-Message-ID: <499a4e15-34a4-421b-946a-c855199fdbf9@zytor.com>
-Date: Sun, 28 Jun 2026 19:09:37 -0700
+	imf22.hostedemail.com;
+	dkim=pass header.d=firstfloor.org header.s=mail header.b=dJjN3COW;
+	spf=pass (imf22.hostedemail.com: domain of andi@firstfloor.org designates 65.21.254.221 as permitted sender) smtp.mailfrom=andi@firstfloor.org;
+	dmarc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=firstfloor.org;
+	s=mail; t=1782699118;
+	bh=RFG3rzu5a6Ap7m/l0KIWt23agkjRtO1qq92PQWzi49w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dJjN3COWIwqRMqxwVgtQuQdggZDssaR78n9SWsZ7HMfD4HwLIMI0jbAltBaMq55sA
+	 j0R3zPaOyQSOczagvtS+qsgwqDIuziba9Ons2RHL1M5XFhmzqWN8A/HZF6C/BrLncX
+	 q6QXw5w2oCh7Wv9PvURMJr1nELOmwNuWVx5vE0mo=
+Received: by one.firstfloor.org (Postfix, from userid 503)
+	id 70B0C5EAB0; Mon, 29 Jun 2026 04:11:58 +0200 (CEST)
+Date: Sun, 28 Jun 2026 19:11:58 -0700
+From: Andi Kleen <andi@firstfloor.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: linux-kernel@vger.kernel.org, David Hildenbrand <david@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org,
+	David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+Message-ID: <akHUboUaYi-OJHFu@firstfloor.org>
+References: <cover.1782676497.git.mst@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-To: Xiang Mei <xmei5@asu.edu>, Pedro Falcato <pfalcato@suse.de>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
-        Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
-        Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
-        Yan Shoshitaishvili <yans@asu.edu>
-References: <20260626173444.2252041-1-xmei5@asu.edu>
- <aj7UNceukU9zYeGH@pedro-suse.lan>
- <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 236F4100006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1782676497.git.mst@redhat.com>
 X-Rspam-User: 
-X-Stat-Signature: qx5k64tyot6ywa6mhan1nyyxqrzcgi84
-X-HE-Tag: 1782699006-953600
-X-HE-Meta: U2FsdGVkX196EqxlBr7KktaIBr6N2FpLsNRamTMfRTt4tuELKEdRbXONG4s0WR/7jjB547uMzE1qKDTarXlINuBcj67RlSD3OYeXkcpvXX0U6N8+dOMSpTn/ZGAUroZzfz9aV11XUR6dK7ptN4oyvPbe71gATzzGsHSwncxYTSSQwtR7lRLe7lDqMOy3sgfNegTwITQ6b13qf4o/x7VUjwzpsXSOA3N7BC6IzYwaLlF1kpVRMrzZdc2wqERGjuZTt5h/HI4Ke7/FHGiXfg4XkcLbKbW7v9OP1vTV5b8k7WTWGSo1mC6J1WQo1GLPIMxS1e7rRg0RuiK0LEjB8dLnadIlBpYmhb5OUOsmJRSODNinDhCR5ut2G50Vgc7G/zy+7IIrureqzKvAVyVX6vCWe8RE5zdcD9XgQaiLOfuwrpN8jqF1RLeFbSrz5fb8Rr75Y+pZiC7wtdmorAgQuEjv6lp8Y55ohY9ri3+dcVorbELqQNRUIXv6V1G6uFYnovgxvosUFJ//5UHvfYEZzesc+CmjxZNEdY+QRyVmN3gNiuJo2rvAbiQceaWO08QGt5b1C4IqPKFCGnyPibbye14HW1+cNt5vXjWLzaCgpdF9fJryVpb0BxkWrf0Sa+F4QcMSwapoPHkuPC8O8aIIv7dUww2Jun8jzYCOgrxWpBubJ3k4XwWFIZUDGSrA8hN0Hsm7MiN1zIHb9gMPV/omo4lioTfNcbjtpbul/n3g3Dxii3xdYXHsVe99FEyGV1wj78dC4Cvmn8VtpOOIRWZe+cmuXIPEVAyuwLOPHVV3ygVVlii7pFaFewSR4XQHDiMg3rxj0yxOGurDFQL0q2UslekBVC1d4rUEXgRMnE+lAqcC2GLPEzU27hEGWFdvvYAzASeq5WHpHeFTEd6VDMm6AmIuwZKA+oKl1fnaiq92X8HOB/CdKO+lXt8r0SDPoPpRgVkp/3H+HayU7gZEH1uGKHH
- z6qupM1t
- ynSKWDi/4o/2SE2mcy19vxqov50+lOhFvjx0PMcOeUV6nBB4sbTuOI2amQ4Ccxvr1dMvj4gFsChmFIyg59VlonQBIiqzfH5rirvLSfxYC5skHKn1qPOs5tWpx9lPo6adUGmjRiKrGJXtiMWgF7oJPDbNnJCUFrlMeLy5Z1r7amsAqYr5RW0bRLRGgUR07go/e1PIkXuGeX0A6O4vg57leqe4jkEC9w/iCTMt2FYaxj8cUklOkvq1Fouc+IdhjLP7+tbP7a6W8CBlul+4U67gfVhhSpppq0PtMRW8KmRhdlJgdE6yqKrd++xWJVQ==
+X-Stat-Signature: 5wza8mbte7gtx37d5gtihcywuofbhxsa
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1AC5BC0003
+X-HE-Tag: 1782699120-72163
+X-HE-Meta: U2FsdGVkX1+c/8q2rvxIlqjkTPiVsFPyQ/QPcjO7WCIdt6jQlRQAfmZk6SK8B7eGzNboeghjMXCdkEVmbvU35K1jgfUBQLuwjlZAmGRcqQGFjUrterSm6YUfGvFBV3zVjHyq5qT3c3TmqIBwBEGV4ltZBTrSpYdanA3m7200JQYbOPqdyy8mmlPa94o8rSpb0WX61GraibKi8TJPo7ZRFOgGL7GQRgA2yRRtsMl69WDtBNPmBBfDfRXLQrGhDxbazrESU6PBHXP4vS+pPpHVK6EDCuSTa5kzt2ZpDb6U4bRachMGrN1B2UdzmcKSflkqBIVja8okR5tUIVFYJnwXGtxfVasnfcm3RpdmDBKzCP/0qxU/D7Bu/YlvhUQLXoifXQazIjua3u68JVOSAJaYo6tBinMx8r7NtTVas0ffZ7vBZcBkSxkwUmjFpjpmrzUZNxLDyectiORLwLr/QaYYROY92qsg7DxpwnXhFycuqDBOLg3+wyAVF0HkdhzT5eM16TsKjAqC+dNkIPPvzQ1E2iIK46r8dsM2XC6Kld+N7PC0BGDh18rxlq94ZcS2xMyZXODCsgRYz8Lc05437irEJVLATjS2NgHuvW9+cJ4GhZicotrb/KqyTq01kEsMohlcY/7YAkp2cspY5Pzvr12UaWN523TPPpVXYeA1gdXH/Q+8QcpYo2MTpxNiCbt+xxbWHaKOX4W+wkAY4KUk1K3FvZMb4BModHs42vQnb/dfuumkarsBl52PAg6d1xTnWDj6oni+X0u45pMMCdpzCiqXt8oNosJWFvt5Tlr7FsIQZO/IfVtW53bt/b+4J8UrbOvaW9z75ouMGy4yYK1UUciT0DftiAvKpFTFePJKP7fUtrtJ/X7Jn8iZwCtPg0DYy0RLcL1rmCcqIpdxk/HKyp4gNKDtVPgWHfAX4b46Wuy9IjjUxZ4fgnO8L5HYSM65i9SSQb6bPtVrYbgcc9MzjVN
+ VdSPPC66
+ jnnW3WqvTcDYxp3cJBiycl7Bp8nns72sVUwsMIxKhkZNeR0iUB2780ASUUY0BRsebwY2CbugT2GADhzhfhwlEma097mwb5JWpxWaF4PtOgs/RxGwfMBIlJhaLXwMtktLT86/Mpk2imGNJAVXStuMO/l3D5qnyXapw9A4nCmPB4AciWRnZK9/aDG3vkNHmiBABqDJz6l9Jmarw5Wsp7cSlKDd5j1iGOmd2tbvF9877ffZAiOmc4q9ZHhI2nQk7X19j5yVX9lOVM3AjHCdm5v6QMkKeS9A44JXrVRZbz78LVFGKDtJSYpbvhP6xDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,25 +108,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-26 13:05, Xiang Mei wrote:
+On Sun, Jun 28, 2026 at 05:45:22PM -0400, Michael S. Tsirkin wrote:
+> This series fixes the race by:
 > 
-> Thanks for your questions and attention.
+> 1. Having memory_failure() call synchronize_rcu() + retry after
+>    setting HWPoison, so that any in-flight non-atomic RMW that
+>    read the old flags value completes before we proceed.
+>
+> 2. Wrapping all non-atomic page flag operations in
+>    rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
+>    so that synchronize_rcu() actually drains them.
+
+It wouldn't surprise me if your underlying performance assumptions 
+-- an non contended atomic is cheaper than a rcu_read_lock/unlock --
+are not true in various CPU/kernel configuration combinations.
+
+Modern CPUs have fast atomics when uncontended in normal circumstances.
+
+But it probably doesn't matter much either way because the difference
+shouldn't be very much.  It seems very complicated for something that
+could be much simpler.
+
+But I guess it's fine.
+
+-Andi
+
 > 
-> 1) `enter` can do big enough stack pivoting (where we can't find many
-> `add/sub/adc/sbb rsp, ` doing so)
-
-Say what?
-
-Using add/sub/lea on %rsp is probably more common than enter, because enter is
-considered kind of slow.
-
-gcc, I believe, will generate "leave" but not "enter" as a result.
-
-
-> 2) `enter` is not rare since we can take part in the instruction.
-
-This sentence doesn't parse.
-
-	-hpa
-
+> Performance impact (page alloc+free microbenchmark, 200K iterations,
+> 20 runs, KVM guest, error bars are 3-sigma):
+> 
+>   !PREEMPT_RCU (x86):
+>                          insns/iter      cycles/iter
+>     base:                12237 +/- 1     17954 +/- 136
+>     patched:             +22 +/- 1       -124 +/- 122
+>                          (+0.18%)        (within noise)
+> 
+>   PREEMPT_RCU:
+>                          insns/iter      cycles/iter
+>     base:                12512 +/- 3     18541 +/- 214
+>     patched:             +95 +/- 3       -12 +/- 161
+>                          (+0.76%)        (within noise)
+> 
+> When !CONFIG_MEMORY_FAILURE, all wrappers compile away completely.
 
