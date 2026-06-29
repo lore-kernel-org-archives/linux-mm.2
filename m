@@ -4,116 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419F5C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:48:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82EB5C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:50:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBD216B0005; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
+	id 3BEEB6B0005; Mon, 29 Jun 2026 03:50:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6E016B0088; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
+	id 347CB6B0088; Mon, 29 Jun 2026 03:50:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B83E56B008A; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
+	id 1EB3C6B008A; Mon, 29 Jun 2026 03:50:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 900CC6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:48:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F0039120593
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:48:29 +0000 (UTC)
-X-FDA: 84932172738.06.3889068
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0136C20002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:48:27 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rql5VEcf;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E900E6B0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:50:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6F50B1A0433
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:50:46 +0000 (UTC)
+X-FDA: 84932178492.13.ED411BA
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 17D4B1A0011
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:50:42 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782719308;
-	b=02BdDr91m+5Zt0oTZjvIqz/aChzONzORqOuPR0XCdcHssEaU5LtnKPxNUy1ne+4NRuslCK
-	vutvarzFNM9qVeLrnOWCL+nDsI1uYNvN/3HkPz80YJoYu6XSqTm5bUs0haklYCJ00vELWF
-	3NhRwhtFRjam41pLZ4ExGF9D2QuYmVI=
+	t=1782719443;
+	b=K5fumDeQC/OqaVXh4Gzy4tiUkk+auFBV5g6yv2zdVtiBE6UX+Em6Dyn5plLC69URLZ0M9y
+	Jnl5mll1VzI/Wj8VTadgv7E9dLkINzijw5LsprPwXK/jfQ8HMySEMyWGBPlL/wtGyiMb4Z
+	MCHnKZEaktvhMgpj2qTptLYTvovQFnk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782719308;
+	s=arc-20220608; t=1782719443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xGFa9gooeOspYp4vl0A+wPqxGnfwbnKJ6LWOLsX6z/o=;
-	b=ohjQ9WvAxQ4P97a6qGlFM5yB8/BFjzufQSceYZ5KMnO+WsloHOfmtMqciyTbNBTNyP0rQD
-	40Hlb80EJVhZ/KoxhSZBI5KnMJWt/ES6Lim7hdpf8lnFNXGJk4j02XrTVbsdHLuz/HjoVO
-	yILqfmeenTL6B0kwJWgO6bsQQC4zgCc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rql5VEcf;
-	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782719304;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xGFa9gooeOspYp4vl0A+wPqxGnfwbnKJ6LWOLsX6z/o=;
-	b=Rql5VEcfNlXPZKFLS7y5qlk8EU6IZxaJbezHUrEyFyoHcx4/+RH5ALnqLEtQaRrosJUh6V
-	BUq7TMwlCe6PqgxaxGQgzR9vWrUGXjjgzDOCu2JvphUiefbDAjbSVDH2YOibNL+UhyRAsZ
-	46K/CszOdo5gTI0MkiYa172hVlOhyMI=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org,
-	dev.jain@arm.com
-Cc: linmiaohe@huawei.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	riel@surriel.com,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	kas@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rcampbell@nvidia.com,
-	apopple@nvidia.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	mel@csn.ul.ie,
-	nao.horiguchi@gmail.com,
-	ak@linux.intel.com,
-	j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de,
-	dave.hansen@intel.com,
-	tglx@kernel.org,
-	jpoimboe@kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-Date: Mon, 29 Jun 2026 15:48:02 +0800
-Message-Id: <20260629074802.42727-1-lance.yang@linux.dev>
-In-Reply-To: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
-References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+	bh=LSUdgpdqtlNB/WdwxcpWnLs0sjH/WBnCk8LHsKNDL0E=;
+	b=cCBzF50LOZJLfXEwnZJxNZcTeuAm84SXBxbZM36smHWrSjmziM5oNWwbwk6GgY+wGsl3f/
+	rPjV/EpjsJjl9SmmCU4A6wrStQICkRpoGbHIVu9Sxi5YbMVUD+T2sD2wGQr92T4W+vpjiN
+	jeUyAYtLpByszgLDA4/uPkkSSv+iiJ0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=zte.com.cn;
+	spf=pass (imf19.hostedemail.com: domain of xu.xin16@zte.com.cn designates 183.62.165.209 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gpdjw2Dn4z58fdM;
+	Mon, 29 Jun 2026 15:50:28 +0800 (CST)
+Received: from xaxapp05.zte.com.cn ([10.99.98.109])
+	by mse-fl1.zte.com.cn with SMTP id 65T7o4VA056669;
+	Mon, 29 Jun 2026 15:50:04 +0800 (+08)
+	(envelope-from xu.xin16@zte.com.cn)
+Received: from mapi (xaxapp02[null])
+	by mapi (Zmail) with MAPI id mid32;
+	Mon, 29 Jun 2026 15:50:07 +0800 (CST)
+X-Zmail-TransId: 2afa6a4223af016-ff81d
+X-Mailer: Zmail v1.0
+Message-ID: <20260629155007041-i6ON_Yq8sJs3QymHqB9q@zte.com.cn>
+In-Reply-To: <20260629033122.774318-1-tujinjiang@huawei.com>
+References: 20260629033122.774318-1-tujinjiang@huawei.com
+Date: Mon, 29 Jun 2026 15:50:07 +0800 (CST)
+Mime-Version: 1.0
+From: <xu.xin16@zte.com.cn>
+To: <tujinjiang@huawei.com>
+Cc: <akpm@linux-foundation.org>, <ziy@nvidia.com>, <david@kernel.org>,
+        <luizcap@redhat.com>, <willy@infradead.org>, <linmiaohe@huawei.com>,
+        <svetly.todorov@memverge.com>, <chengming.zhou@linux.dev>,
+        <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+        <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+        <tujinjiang@huawei.com>
+Subject: =?UTF-8?B?UmU6IFtQQVRDSCB2M10gZnMvcHJvYzogZml4IEtQRl9LU00gcmVwb3J0ZWQgZm9yIGFsbCBhbm9ueW1vdXMgcGFnZXM=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 65T7o4VA056669
+X-TLS: YES
+X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
+X-SOURCE-IP: 10.5.228.132 unknown Mon, 29 Jun 2026 15:50:28 +0800
+X-CLEAN: YES
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A4223C4.000/4gpdjw2Dn4z58fdM
+X-Stat-Signature: o5a8ndnamoj6im8auckmhuu3b4s9q3im
+X-Rspamd-Queue-Id: 17D4B1A0011
 X-Rspam-User: 
-X-Stat-Signature: ywe9zu4ca4uoi47krzsgtpj61z67xh5b
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0136C20002
-X-HE-Tag: 1782719307-995855
-X-HE-Meta: U2FsdGVkX19govrqQ+ZF+swmNE2TwaqRytDiiPzP+bBOuxP1dm4VOCw0Cot6yriN4zaYEmbf89A+azEaDAFpqQer01D3k7k4IzMgJwmHzYg9gsmoM2eoLp86bkd4WUq+Xb+aq6v8g5m2VVIazwjyB/bwlFHlgGBLgFE29H7KP4Dr6Mp0KsSC8oxTkYOqIi8sckbo0BCAK7BEU39TPUqGgTrgFv61lo3IBRWTdULmqr5yyW+WHFZQDJ/HEXVdY3x0NQaomeAo699XHIoolr44QB90py2y36/73xobOg3V1oukwvZPK3GNdB0jA1lejU2uxsU2OEEd2wtBJlMa4xUuOCUSevjuD2FdYXa4qf3L9lcUMxbbQ0WYQt2U0/669HEx1EQeM/KAkbuAbFcwmxImu6i7eagB7Bb48slX6GLMnMZRbKrjTeOLT2o1rbUclEf8F8Z/eFl8EHwpyE3tQfTPzbS8YI6tQRUnjyoD0uVdnRmvXHBWUpqo8a/wuDeCXjXSDsPD/lH4qDnp+jjeWYA4FKQA9Xq7NIjbnjY0nb6oFNL2aIylhdexMFfGW/EnerlD9oFyg09FUvjRypbPEjXDhKnwZ7KH3dCTK0I/K6TpxC3TPE3lWQKu96ctuRIkFLgs+NJNZTJqJrJfQ325rPkxL3nV+aE2G5yg4ktZwh6egG2L8dr8K5VHUtjojCN+hnn1xMvnerkd4gjbL4J0Bbv3L8BHN3PQ1VS79Bsp4O8L0K5Y4qy7RgwAOC3svHpMr1FeFBgZqOCGeR9dXO46iyktG3gDcN3tOOPro4CZMzGxIhGp811vR2xWeFNqyC9LpCr0Z79vSa0TGZay8SyMNWtJXxEHYjXQQ1RrI9V6xoX3lwgO4+hLkzoEWlBLL66GpLH2ugLLfuuDKjkkY3zjeOWHe60ACYZLaNdxMepFZE173sOevKVLDckJQz6ID2Jt/5jGxEsSGK3oj7bHlG8+MtS
- PlhBUEq/
- 3uUijpiVC4Ytml475CSCR5Ifp4yzY6aD2k9AFIjRHuBFAMAnBA397UJpu3AKN4HT0etWZdrCGomG16pa/6ND17fUq3b/7Zt2bzSTWYZLX0WxnxwPimmlKdIK9E09IJUFHbdsRHOp3RM6iVgZwdihhI03Ea0cVwe/8jvUg76CFFtqmE5a7gRdxYWdXWzwgEpK+6hHDi223WWgGM0hZQ87GYoDqmFfAaR74/v4JXVhwdjPZtp1JsDUG/7kZPKGPkFWsmUXZFDF2geqvhlSc3u9DeWh7Nys6NQQ5Glv4Spi/HeWC/buFSnX2uOd0GLdzk/FxOb2+4uFYNWe1afKsmhzWG+Dqa2F8nAjHg1y2DXHSRA4e9or2enpra68o0QVxmws/hS1lFhiQby1ZdhL+mOR7dS/8yaSvr9IKUDIOF5aGLyKBXsc/sj1FZ7hfkWIle1bEwTuEJwglhqB9bzU=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782719442-372712
+X-HE-Meta: U2FsdGVkX1+jse2CMTolBA4yPW2cgopAnEYCOUF0uRPfQ8lb5MetHlU5K3nbSPekND9w+INVBHbke2KcWQJtUFA7S+U4hEqhodBbzlkEI8jNqvJf17gA4akMQSha3gRjBD+OjxnMSfnTH0CR2Sp5tkbMufErhyleypgPw2K0y+sabivL19JF///LD/j9Vf2rqTsbVbYHeQpjlUQkoyMk3qtXU9cUykr2O9YqEnATf7hQ+rItnVCLSFXhLvbsbSBjzqDlmDvYp+tnq+VQldyDYJawVYfzm3dHlfgEAZl3gSrihq6NaED5O2Q3iA2iybsty+Dk9Lv4CUXjbz4r27TgAI/afBy3Z/aR6mMLfu5oMviCIFde3oPjf2ZpQW7uw+14u7TafzugfT6H75nm5MgIAX+oS+gkQeDJFM//rLkNwtQoFsrKLmq9sbxHpmsknMHsUjFl7AkyAeX7pn0LClKli6yBrapk1LmnrskKST0xKcbOTP7QpAJ+2Q9FxZJuZDhN6k6lWNoX2eAiKuIVnbKLKk0mWEyP7WjnJpo+YPiWfI8APVCKo8n3IWdg7VkPgw5/vUDXCY7lATJIpZEkITSiUrhF6Km+QS5+k9if2/zn2mUTsk9WLCDaU+5rxtb38xC1sKut2w3ZJboCmfUJe3QVqEt0rGBGLeF3ioXB0uVhryNSBGte4N95LdXY5kuerTmqjf6fTJeBFpARQEP854USy50Y7494Fwx9Yb0GouS1Ww64+BiaViV8T72MM+v4repMZdafhrvPAtRI8TeBMh55KblWrizuZNmfsNzGMk2VSglEsD51KRkzPhagCpGE5W2WGFbQkAmFFWvvJcKucffZZaVWImFc+H+ytMUKRbwOcApsmsN1BKXCzzh6RS7ojHF4l3QEsVBkJPdNMo9DQSYb6Fyly1JSAU2eLeoeLZE+CzJOxTCOTlOMbP8QtIeYF8Y1WiPWTT2XUJw/cvppQRQ
+ 3NVZKpW1
+ 09li8r9c496VsOko+ZGr923vH7hQESVBOoVnckmDbNY1EjFolGliWuPwLyX5zL3yLv3oIQZ0bKegGGUjYR2eREhlXM7QnmbXz7C2UQRN22kQ7uC/v/luQOHI4wwg+7isahb2OJzHJVCxhRt+8CwDTmn2TvrsYKk6Fxa4paDG92spD3lm358S0ZgtttYeGo+ry66AmKCYAEi07S3tMjrYot9fVINnl16xAh7ipdaROWEkXgCT2euqg2OT1HAyNoseNAVqNdmNj5dW+Xo8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,92 +101,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Mon, Jun 29, 2026 at 09:25:48AM +0200, David Hildenbrand (Arm) wrote:
->On 6/29/26 08:48, Dev Jain wrote:
->> 
->> 
->> On 29/06/26 12:09 pm, David Hildenbrand (Arm) wrote:
->>> On 6/28/26 07:44, Lance Yang wrote:
->>>>
->>>> [...]
->>>>
->>>> Yes, that's what I had in mind :) thanks!
->>>>
->>>>
->>>> Maybe worth spelling out the rule as well: 
->>>>
->>>> For arch helpers that use addr, huge_ptep_get() assumes addr is the
->>>> address for the hugetlb entry ptep points to. arm64 already makes that
->>>> assumption.
->>>>
->>>> Callers where addr may not be hugepage-aligned should use
->>>> hugetlb_ptep_get() instead.
->>>
->>> Do we have any examples where code would do that? I would think that all code
->>> must properly align addr ahead of times.
->> 
->> Sashiko notes other places:
->> 
->> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
->
->Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
->from pagewalk code (where some users like pagemap need the actual address).
-
-Indeed ...
-
->I think we have two options
->
->1) To prevent any (further) issues, make huge_ptep_get() always consume the
->hstate, and let the arch code deal with aligning it. Invasive.
-
-Kinda lean toward option 1, even if it's more invasive. If we pass the
-hstate down, each arch can figure out the right addr from there.
-
->2) Make the arch code handle aligning without the hstate.
->
->diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
->index 30772a909aea3..303a1b74796c9 100644
->--- a/arch/arm64/mm/hugetlbpage.c
->+++ b/arch/arm64/mm/hugetlbpage.c
->@@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->                return orig_pte;
+> Changes in v3:                                                             
+>  * fix typo.                                                               
+>  * add CC stable                                                           
+>  * collect Acked-by.
 > 
->        ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->+       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
->+       orig_pte = __ptep_get(ptep);
->+
->        for (i = 0; i < ncontig; i++, ptep++) {
->                pte_t pte = __ptep_get(ptep);
+> Changelog in v2:
+>  * use FOLIO_MAPPING_KSM to match explictly instead of use FOLIO_MAPPING_ANON_KSM
+> only.
 > 
->(nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
->
->IIUC, that's similar to what huge_ptep_get() does on ppc.
->
->
->static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->{
->	if (ptep_is_8m_pmdp(mm, addr, ptep))
->		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
->	return ptep_get(ptep);
->}
->
->I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
->entries.
+>  fs/proc/page.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/page.c b/fs/proc/page.c
+> index f9b2c2c906cd..7d9387143435 100644
+> --- a/fs/proc/page.c
+> +++ b/fs/proc/page.c
+> @@ -173,7 +173,7 @@ u64 stable_page_flags(const struct page *page)
+>          u |= 1 << KPF_MMAP;
+>      if (is_anon) {
+>          u |= 1 << KPF_ANON;
+> -        if (mapping & FOLIO_MAPPING_KSM)
+> +        if ((mapping & FOLIO_MAPPING_FLAGS) == FOLIO_MAPPING_KSM)
+>              u |= 1 << KPF_KSM;
+>      }
+>  
+> -- 
+> 2.43.0
 
-AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
-doesn't really care about addr there. Looks mostly arm64-specific ... 
-
->
->
->Interestingly, huge_pte_clear() / huge_ptep_get_and_clear() and friends would be all
->wrong when the wrong address is passed. But that code really is called from hugetlb.c
->where we should take better care of that. (e.g., partially zapping a hugetlb page is not
->possible)
->
->-- 
->Cheers,
->
->David
->
+Reviewed-by: Xu Xin <xu.xin16@zte.com.cn>
 
