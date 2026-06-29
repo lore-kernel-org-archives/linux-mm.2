@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC91FC44500
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 19:26:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 174EDC44500
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 19:26:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 539E46B00F8; Mon, 29 Jun 2026 15:26:09 -0400 (EDT)
+	id 203D16B0100; Mon, 29 Jun 2026 15:26:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E84A6B00FD; Mon, 29 Jun 2026 15:26:09 -0400 (EDT)
+	id 18CEA6B00FF; Mon, 29 Jun 2026 15:26:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2EC456B00F8; Mon, 29 Jun 2026 15:26:09 -0400 (EDT)
+	id EFA856B0103; Mon, 29 Jun 2026 15:26:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DFDBD6B00FC
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:26:08 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4FC144025C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 19:26:08 +0000 (UTC)
-X-FDA: 84933930816.10.32F38A1
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A88B16B00FF
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:26:11 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D56AE8AC1F
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 19:26:10 +0000 (UTC)
+X-FDA: 84933930900.26.5E5151C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1C2084000A;
-	Mon, 29 Jun 2026 19:26:05 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mh42CEnV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id D3468180004;
+	Mon, 29 Jun 2026 19:26:08 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BExgykrx;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782761166;
-	b=zqZc80Xwj5P3rCPVZKVY9ECeYPz1uQ8R8SD5B4+67LPIku3lRMH3JYWdVzzgRIRfAG3m7J
-	36uOW3aF89ssfKXshoxQT4ZSyb2gdfbY7tPnXkt7OZsbmTB78bWIZC6nZFOIrLgJfOfjC7
-	vgDx9IJWGqEiymDJolrKHsdpizOnESk=
+	t=1782761169;
+	b=GbR0amkS+kLVBce8rwrSB0rVNmdQY/Jc/zw1OUp7r+y2bGyCIaP0Ka2q7n7qFFKJDi4Vh5
+	zKVWl0ek7xsncDhBnIfcXN2f82TliTUzg62EkKmnV+9A87xktnqZ2U8CBPFGdK9VtWbBsI
+	5Oh9umq3J5FxgKf5hQArgGkmmuQo+9E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782761166;
+	s=arc-20220608; t=1782761169;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MaO3ayQRsy4eLXJAr5Gtftk/d6G7w4vRnYQhd7ERP88=;
-	b=4w94lgg3PX2a9Mjzjp5ecT2NJhQ3sgFlyS8TRiG7iU5QPNes8b7q3u2iAjmwwPpq7VDZHD
-	JPKs9EGm7evQEvvwIXP8Dhv81SQS53xcNiPhD2em8e9BlPBbehck6n6cMC5Hua4sA8hOCY
-	Qj6pLf4OQHfFBwoBC+ViK5HNvlelDnw=
+	bh=hVd6ZuVqENj3zeMR4aL2t+2UMMhczNHM+gJ9snfAafg=;
+	b=e48qKEsappq+8pd2D+77sHhSSa2CUgJpq2S++TF9QkF9Fc7bJUbydT9A0B6E0eXaXC3fNC
+	myh6ocXTyOc7j3ECuFaqpz2NV19ltK40bbRuqukgBpTA2G7zkjTGVWk/Yx3HlGwB8AEDXg
+	9WK5CkjBVaunkzNpj+MGN6tJ9+zyPdM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mh42CEnV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BExgykrx;
+	spf=pass (imf24.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 77E68601C0;
-	Mon, 29 Jun 2026 19:26:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB941F00A3A;
-	Mon, 29 Jun 2026 19:26:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 51A386014B;
+	Mon, 29 Jun 2026 19:26:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2DC1F00A3E;
+	Mon, 29 Jun 2026 19:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782761165;
-	bh=MaO3ayQRsy4eLXJAr5Gtftk/d6G7w4vRnYQhd7ERP88=;
+	s=k20260515; t=1782761168;
+	bh=hVd6ZuVqENj3zeMR4aL2t+2UMMhczNHM+gJ9snfAafg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=mh42CEnVAN4v5nNg2E2/FA5haGMowMalAtIhiu+jbLMz622FqQ/mkU+OD8A8R+yDp
-	 aKYJaUUgJ3tLX8cfrvsmlfZK49qR6WEvGGkeQVA64WyFjSC1BsdkpQ0ktF0R74pkvC
-	 mSSIA94MxJ06qZ+pMsoJll3Jsje3muSqIB9/In1/WqYQgCP0+YuPVyG8eVcQbvvNkT
-	 XJrCQmi5s5QyHIrhwBlICQZohXF426NyGqUWSgXGrkaMRD9dbErFFKyaoBkMJ1D/QV
-	 VeE4pk4MUcm2iFemV68BZLTTbFYfaHPCaDovkn6E5AV34oefv6H0Y/5nizqKm8EYK/
-	 k5bPckliCXy3Q==
+	b=BExgykrxcgTd5RClbXfmFD5Hp/1Grb/Kjey3DiRaMUeFZgqydXxsDWyRIvpzoISG7
+	 /Iilv3IrxTXNlJUqKZNyr5TyZZvKbnpj8BmRYrG9ZFdN0Nb0i0NyJk8Sl7npMKfdti
+	 1DTOuDeaNgSBKxd+05qng9++fyrY+sD0P/+0C6uNIMSgwntxptodo0GGuiVJ2fa7Xh
+	 tcbnSkYetMr8IMTjqAFSQc8sq/Xc+KvUA6heTO4Lwayd0uEmx/7h0R2T9dkwHlc5h+
+	 iCD7J6P0FnSJ3xPPyRVSFdOIImy48N18CmoYp7IbeVR4j1E/heYWHJ8ULXWfCEAyFn
+	 uHB+/Pwf3DOzg==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
@@ -146,22 +146,22 @@ Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH 03/13] mm: convert __get_unmapped_area() to use vma_flags_t
-Date: Mon, 29 Jun 2026 20:25:26 +0100
-Message-ID: <b1ad7c4443f5cba622e4c48c5a9ef15427001a93.1782760670.git.ljs@kernel.org>
+Subject: [PATCH 04/13] mm: update generic_get_unmapped_area[_topdown]() to use vma_flags_t
+Date: Mon, 29 Jun 2026 20:25:27 +0100
+Message-ID: <cef55b19f86c110952f13829aefa4859db3a70ed.1782760670.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782760670.git.ljs@kernel.org>
 References: <cover.1782760670.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1C2084000A
+X-Stat-Signature: s1xiuscymh6fjeeiap49grafgojsujux
 X-Rspam-User: 
-X-Stat-Signature: eaz6n49b5r49hso6nqu4yi94r5y9hm14
-X-HE-Tag: 1782761165-662681
-X-HE-Meta: U2FsdGVkX18eMJ/+mrzE3c0fqvz3QwFO7DaghdF+nWTEylCDEGYMJsp6o8h9q2cizyVsiOtdGCWtr2WojJYIKaGLjqk7zz81XKVRDHVVIt8IVRjg2O2k2N8i/BTnWhnqACjApuwkTiHIAUDFFRHtdFEqRg/kJZOIl65faQB0GfGejUG+Yh0v/Y4k/9zhBFg7DHKPHBsRx/CqC/iPTax58KwQBqQNvwBSskbxIf9/CN4eIGH8gBU3lcdh+ofAj3hFnZ+GeIRYpy/4LUMYGo1jaLIK3erHUl+dujvmHi3VlOU4C8RwGXaIq5gxdycRWzNWcbKLNL4OJiyEwAPPzMzZiX/Ws9OWiB7uJhOn0Vz6ug5MliCwyjQow+sn0E8GAgWxTs9foIdUGMzjyAyeotX3HAZevwrqVp65f0wwVxPGKYlHZzH47Kz4mYBpAuI9nEWvdUuG1dJ5E0iLvDibHF8uwzeFvqlZKKkwh9zovr2+gIPBo+XMRqIYJFF4XCehFjQmwDRdbQR9KOh16uUms+bZEB85Aauu6IVkr/qEzkZj9Sfmz1sSH5kTNDKj34uXvBtnKgq88+A2F/9M4mOPo3iHPIZasiKarNod6bM7P9B5BDVk9MzzfmQr+peAcRh6r9XhesxhWgO2eJrATEHyTOE/CutyiPjM2S5uz3tRU1yBQNnuXRo3/sAwFpfIYqdHDgst2nBGn6t4k3zBSJkBOqEVtpI88QyU2YwivA1ZcESSEH6/gEFIUxppgIZ5bsSQkmLWaPe3RyHFXx0ExFEXUrTYn5rYsvtFvJgsP9HARm5Jx8rq3A9OPLIk3mufMu/lR7M4zeq5etfbgFMplqA5mCtSFEtzMo78pYdW+juWAbjoyc3gr8X2FGB/b5k+nSSugs/LIhVJ79ACyrREqw81rrRwjhBUaqyFHI9ULnkwAluOkpTs9Ix41gp/Z/u+YXUWqsmbvIUt2v2ySZkZ2mip89h
- LC8P1xOh
- yY6Dg0jusQU5vnEwUecdMnkRGPYKYfqik811UYh4dS1xqQr0AP8tez3t0q9Yj/xcedgfguuFvNptc0hcTGdhI9KKBCIvVaXBx/WCGKiqMZdJ/IWvfuOlVUrpJUN7l6h3lyZXszdESyj9poqZC6Q3HiBa/DY3YNzCg7U+SP4iDuFfRf0iFTchLqM3aDr04Gdf7+tl1bvM/+Pva/v6EQKCcdE2HlPy/A+L9IDXaBtt11s5AnUOldlHieukUx+pOxka8mxRndM51aHOaLHVh/1FIz215JQ==
+X-Rspamd-Queue-Id: D3468180004
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782761168-169877
+X-HE-Meta: U2FsdGVkX1+V6ipSw5zT12pufyBde0AQkkbcsgkKO3BjIzAahAeuNOXjQe5Ua+UtVGJZ3ovEWBF+QGxkFIpQ1rc/5iiwmxUz1sXlEU3CpEu8lRLfv+NIyWt8P4hiwpzfckbjnMZ+Tq7YsjeVdlhfFJE0hLVjCdtqnVdURbH7KQSdD3EGS4q/pYY0wyQbnZZhEm2XoM9XDVgCETI/2qOcyy+1Wu6lu909Si8q5I0CVUJeeYsl7+PbOujAGnrHjxFPbcBVyL9351srvebHCTAPUOLsiAjvooV6r4Sbm+b9XkaG0BkGO/o0rKSm/M3b8/890UOsWJePNmtynn86mAK6a0thNcrg5OfExmjljWCXTzxZgAJ8DgzJW6t2L8q91rUqMkYdfTDxukC5oavrgBlk6s8+HnrkH5w6VGTXmh+VV2lgYS1tg91255We3cSx0ZfvfuxIGHJhaTyMCwzgsLUp/7ejb6zJWLOJx8lUOmAKE/iI9GI8fCAeiWP1muAXKOCxJTZ0NV26eazdy/lccpWtf/r5lggrn00jvGTOkfXbHo440qYzBkwDKQyo5fO9PlXB6J7NnmNuB7K0QT+Ot//IZnOTyWw/SdbJmGH53XAWIUi4/JEM5W1iMAriEXi7e2qkhNC9UU+QvA8RubUTDvlR9J40KAXNMM/jjoLJ/ioU7H8utKT6L77cT2DIdcUE8fZQOElu0EvdUVEENTihX+XQ9LxJKRcISr1Ys2GH5FSlxT25lsx/o07+x0L3CImdfk6tF7We48nZjnQ8uKtqeBU38wOwlvP+v6phhgNShj9THX4rKZWylpmZkCjKJ1me0SxtVRZC2lCMfEeqBnVV0cz+OiAhWFBojd0MUvJ1Larh+Ng0oRitxDqbJbaVnNDWNQJLpsHOkabDYQVIJGBPUaei4YbRU65Ay+vTMtUmy8tuQ/V6mj+MeLDVSuuvoa+3tHvCNjH0cRdcaBhfTkDpUio
+ Zbt+yoTS
+ 6ZuN47JaANTsMGviZB2HoB3pLPgNzwewK2nWh2u2YtPujdS6y3SEtTNtQKk8W3GKEwwOsF4D/hZu8uZjTx1r91TfZveeDqFAYcYf2c8jUkHtYg3OpazNgbpJBdoTjb2nHHSZIxcGRArGCj3DzjfNyb0qaSTfhTBWINB/R3hX6l2YNkf5PsqNUWB7FgZzHAq9xGcSj/GGWj6mD1XcplxRMsASO8R/w4BZLqH9546gOqNF9/VuwGZCVXS1CCi5fzztXbKjit5BUmp3O5a1A2HNOGzzhSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,239 +169,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update __get_unmapped_area() to be parameterised by vma_flags_t rather than
-vm_flags_t as part of the effort to move VMA flags from a system word to a
-bitmap.
+As part of the changes converting VMA flags from a system word size to a
+bitmap, extend this change to generic_get_unmapped_area() and
+generic_get_unmapped_area_topdown(), which also allows us to convert
+stack_guard_placement() as well.
 
-We cascade the changes up to arch_get_unmapped_area_topdown() and
-arch_get_unmapped_area(), where, for now, we use vma_flags_to_legacy() in
-order to propagate the VMA flags.
+We retain arch_get_unmapped_area() and arch_get_unmapped_area_topdown()
+as-is for now, using legacy_to_vma_flags() as necessary to do so.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- fs/hugetlbfs/inode.c     |  3 ++-
- include/linux/huge_mm.h  | 10 +++++-----
- include/linux/mm.h       |  6 ++++--
- include/linux/sched/mm.h | 12 ++++++------
- mm/huge_memory.c         | 21 ++++++++++++---------
- mm/mmap.c                | 27 ++++++++++++++-------------
- 6 files changed, 43 insertions(+), 36 deletions(-)
+ arch/powerpc/mm/book3s64/slice.c |  6 ++++--
+ include/linux/sched/mm.h         |  4 ++--
+ mm/mmap.c                        | 16 ++++++++--------
+ 3 files changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-index 894d02e73302..fe7d5a5d60bd 100644
---- a/fs/hugetlbfs/inode.c
-+++ b/fs/hugetlbfs/inode.c
-@@ -184,7 +184,8 @@ hugetlb_get_unmapped_area(struct file *file, unsigned long addr,
- 	if (addr)
- 		addr0 = ALIGN(addr, huge_page_size(h));
+diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
+index 28bec5bc7879..82127e31dca6 100644
+--- a/arch/powerpc/mm/book3s64/slice.c
++++ b/arch/powerpc/mm/book3s64/slice.c
+@@ -659,7 +659,8 @@ unsigned long arch_get_unmapped_area(struct file *filp,
+ 	unsigned int psize;
  
--	return mm_get_unmapped_area_vmflags(file, addr0, len, pgoff, flags, 0);
-+	return mm_get_unmapped_area_vmaflags(file, addr0, len, pgoff, flags,
-+					     EMPTY_VMA_FLAGS);
- }
+ 	if (radix_enabled())
+-		return generic_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
++		return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
++						 legacy_to_vma_flags(vm_flags));
  
- /*
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index 653b81d08fe7..ae84a714907f 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -391,9 +391,9 @@ static inline bool thp_disabled_by_hw(void)
+ 	if (filp && is_file_hugepages(filp))
+ 		psize = file_to_psize(filp);
+@@ -679,7 +680,8 @@ unsigned long arch_get_unmapped_area_topdown(struct file *filp,
+ 	unsigned int psize;
  
- unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
- 		unsigned long len, unsigned long pgoff, unsigned long flags);
--unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
-+unsigned long thp_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
- 		unsigned long len, unsigned long pgoff, unsigned long flags,
--		vm_flags_t vm_flags);
-+		vma_flags_t vma_flags);
+ 	if (radix_enabled())
+-		return generic_get_unmapped_area_topdown(filp, addr0, len, pgoff, flags, vm_flags);
++		return generic_get_unmapped_area_topdown(filp, addr0, len,
++				pgoff, flags, legacy_to_vma_flags(vm_flags));
  
- enum split_type {
- 	SPLIT_TYPE_UNIFORM,
-@@ -615,9 +615,9 @@ static inline unsigned long thp_vma_allowable_orders(struct vm_area_struct *vma,
- #define thp_get_unmapped_area	NULL
- 
- static inline unsigned long
--thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
--			      unsigned long len, unsigned long pgoff,
--			      unsigned long flags, vm_flags_t vm_flags)
-+thp_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
-+			       unsigned long len, unsigned long pgoff,
-+			       unsigned long flags, vma_flags_t vma_flags)
- {
- 	return 0;
- }
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index cc2a87755adb..474b3698f565 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4160,13 +4160,15 @@ unsigned long randomize_page(unsigned long start, unsigned long range);
- 
- unsigned long
- __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
--		    unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags);
-+		    unsigned long pgoff, unsigned long flags,
-+		    vma_flags_t vma_flags);
- 
- static inline unsigned long
- get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- 		  unsigned long pgoff, unsigned long flags)
- {
--	return __get_unmapped_area(file, addr, len, pgoff, flags, 0);
-+	return __get_unmapped_area(file, addr, len, pgoff, flags,
-+				   EMPTY_VMA_FLAGS);
- }
- 
- unsigned long do_mmap(struct file *file, unsigned long addr,
+ 	if (filp && is_file_hugepages(filp))
+ 		psize = file_to_psize(filp);
 diff --git a/include/linux/sched/mm.h b/include/linux/sched/mm.h
-index 95d0040df584..b301ec90740a 100644
+index b301ec90740a..c8720d8e2158 100644
 --- a/include/linux/sched/mm.h
 +++ b/include/linux/sched/mm.h
-@@ -193,12 +193,12 @@ unsigned long mm_get_unmapped_area(struct file *filp, unsigned long addr,
- 				   unsigned long len, unsigned long pgoff,
- 				   unsigned long flags);
- 
--unsigned long mm_get_unmapped_area_vmflags(struct file *filp,
--					   unsigned long addr,
--					   unsigned long len,
--					   unsigned long pgoff,
--					   unsigned long flags,
--					   vm_flags_t vm_flags);
-+unsigned long mm_get_unmapped_area_vmaflags(struct file *filp,
-+					    unsigned long addr,
-+					    unsigned long len,
-+					    unsigned long pgoff,
-+					    unsigned long flags,
-+					    vma_flags_t vma_flags);
- 
+@@ -203,11 +203,11 @@ unsigned long mm_get_unmapped_area_vmaflags(struct file *filp,
  unsigned long
  generic_get_unmapped_area(struct file *filp, unsigned long addr,
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index e94f56487225..d6c5f51ee399 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1196,7 +1196,7 @@ static inline bool is_transparent_hugepage(const struct folio *folio)
- static unsigned long __thp_get_unmapped_area(struct file *filp,
- 		unsigned long addr, unsigned long len,
- 		loff_t off, unsigned long flags, unsigned long size,
--		vm_flags_t vm_flags)
-+		vma_flags_t vma_flags)
- {
- 	loff_t off_end = off + len;
- 	loff_t off_align = round_up(off, size);
-@@ -1212,8 +1212,9 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
- 	if (len_pad < len || (off + len_pad) < off)
- 		return 0;
- 
--	ret = mm_get_unmapped_area_vmflags(filp, addr, len_pad,
--					   off >> PAGE_SHIFT, flags, vm_flags);
-+	ret = mm_get_unmapped_area_vmaflags(filp, addr, len_pad,
-+					    off >> PAGE_SHIFT, flags,
-+					    vma_flags);
- 
- 	/*
- 	 * The failure might be due to length padding. The caller will retry
-@@ -1238,25 +1239,27 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
- 	return ret;
- }
- 
--unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
-+unsigned long thp_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
- 		unsigned long len, unsigned long pgoff, unsigned long flags,
--		vm_flags_t vm_flags)
-+		vma_flags_t vma_flags)
- {
- 	unsigned long ret;
- 	loff_t off = (loff_t)pgoff << PAGE_SHIFT;
- 
--	ret = __thp_get_unmapped_area(filp, addr, len, off, flags, PMD_SIZE, vm_flags);
-+	ret = __thp_get_unmapped_area(filp, addr, len, off, flags, PMD_SIZE,
-+				      vma_flags);
- 	if (ret)
- 		return ret;
- 
--	return mm_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags,
--					    vm_flags);
-+	return mm_get_unmapped_area_vmaflags(filp, addr, len, pgoff, flags,
-+					     vma_flags);
- }
- 
- unsigned long thp_get_unmapped_area(struct file *filp, unsigned long addr,
- 		unsigned long len, unsigned long pgoff, unsigned long flags)
- {
--	return thp_get_unmapped_area_vmflags(filp, addr, len, pgoff, flags, 0);
-+	return thp_get_unmapped_area_vmaflags(filp, addr, len, pgoff, flags,
-+					      EMPTY_VMA_FLAGS);
- }
- EXPORT_SYMBOL_GPL(thp_get_unmapped_area);
- 
+ 			  unsigned long len, unsigned long pgoff,
+-			  unsigned long flags, vm_flags_t vm_flags);
++			  unsigned long flags, vma_flags_t vma_flags);
+ unsigned long
+ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 				  unsigned long len, unsigned long pgoff,
+-				  unsigned long flags, vm_flags_t vm_flags);
++				  unsigned long flags, vma_flags_t vma_flags);
+ #else
+ static inline void arch_pick_mmap_layout(struct mm_struct *mm,
+ 					 const struct rlimit *rlim_stack) {}
 diff --git a/mm/mmap.c b/mm/mmap.c
-index 547352183214..461ce510e12a 100644
+index 461ce510e12a..3ef603d5ff00 100644
 --- a/mm/mmap.c
 +++ b/mm/mmap.c
-@@ -411,8 +411,7 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	/* Obtain the address to map to. we verify (or select) it and ensure
- 	 * that it represents a valid section of the address space.
- 	 */
--	addr = __get_unmapped_area(file, addr, len, pgoff, flags,
--				   vma_flags_to_legacy(vma_flags));
-+	addr = __get_unmapped_area(file, addr, len, pgoff, flags, vma_flags);
- 	if (IS_ERR_VALUE(addr))
- 		return addr;
+@@ -657,9 +657,9 @@ SYSCALL_DEFINE1(old_mmap, struct mmap_arg_struct __user *, arg)
+  * Determine if the allocation needs to ensure that there is no
+  * existing mapping within it's guard gaps, for use as start_gap.
+  */
+-static inline unsigned long stack_guard_placement(vm_flags_t vm_flags)
++static inline unsigned long stack_guard_placement(vma_flags_t vma_flags)
+ {
+-	if (vm_flags & VM_SHADOW_STACK)
++	if (vma_flags_test_single_mask(&vma_flags, VMA_SHADOW_STACK))
+ 		return PAGE_SIZE;
  
-@@ -812,19 +811,20 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 	return 0;
+@@ -701,7 +701,7 @@ unsigned long vm_unmapped_area(struct vm_unmapped_area_info *info)
+ unsigned long
+ generic_get_unmapped_area(struct file *filp, unsigned long addr,
+ 			  unsigned long len, unsigned long pgoff,
+-			  unsigned long flags, vm_flags_t vm_flags)
++			  unsigned long flags, vma_flags_t vma_flags)
+ {
+ 	struct mm_struct *mm = current->mm;
+ 	struct vm_area_struct *vma, *prev;
+@@ -726,7 +726,7 @@ generic_get_unmapped_area(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = mm->mmap_base;
+ 	info.high_limit = mmap_end;
+-	info.start_gap = stack_guard_placement(vm_flags);
++	info.start_gap = stack_guard_placement(vma_flags);
+ 	if (filp && is_file_hugepages(filp))
+ 		info.align_mask = huge_page_mask_align(filp);
+ 	return vm_unmapped_area(&info);
+@@ -739,7 +739,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
+ 		       unsigned long flags, vm_flags_t vm_flags)
+ {
+ 	return generic_get_unmapped_area(filp, addr, len, pgoff, flags,
+-					 vm_flags);
++					 legacy_to_vma_flags(vm_flags));
  }
  #endif
  
--unsigned long mm_get_unmapped_area_vmflags(struct file *filp, unsigned long addr,
--					   unsigned long len, unsigned long pgoff,
--					   unsigned long flags, vm_flags_t vm_flags)
-+unsigned long mm_get_unmapped_area_vmaflags(struct file *filp, unsigned long addr,
-+					    unsigned long len, unsigned long pgoff,
-+					    unsigned long flags, vma_flags_t vma_flags)
- {
- 	if (mm_flags_test(MMF_TOPDOWN, current->mm))
- 		return arch_get_unmapped_area_topdown(filp, addr, len, pgoff,
--						      flags, vm_flags);
--	return arch_get_unmapped_area(filp, addr, len, pgoff, flags, vm_flags);
-+				flags, vma_flags_to_legacy(vma_flags));
-+	return arch_get_unmapped_area(filp, addr, len, pgoff, flags,
-+			vma_flags_to_legacy(vma_flags));
- }
- 
+@@ -750,7 +750,7 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
  unsigned long
- __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
--		unsigned long pgoff, unsigned long flags, vm_flags_t vm_flags)
-+		unsigned long pgoff, unsigned long flags, vma_flags_t vma_flags)
+ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 				  unsigned long len, unsigned long pgoff,
+-				  unsigned long flags, vm_flags_t vm_flags)
++				  unsigned long flags, vma_flags_t vma_flags)
  {
- 	unsigned long (*get_area)(struct file *, unsigned long,
- 				  unsigned long, unsigned long, unsigned long)
-@@ -859,11 +859,11 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- 		   && !addr /* no hint */
- 		   && IS_ALIGNED(len, PMD_SIZE)) {
- 		/* Ensures that larger anonymous mappings are THP aligned. */
--		addr = thp_get_unmapped_area_vmflags(file, addr, len,
--						     pgoff, flags, vm_flags);
-+		addr = thp_get_unmapped_area_vmaflags(file, addr, len,
-+						      pgoff, flags, vma_flags);
- 	} else {
--		addr = mm_get_unmapped_area_vmflags(file, addr, len,
--						    pgoff, flags, vm_flags);
-+		addr = mm_get_unmapped_area_vmaflags(file, addr, len,
-+						     pgoff, flags, vma_flags);
- 	}
- 	if (IS_ERR_VALUE(addr))
- 		return addr;
-@@ -881,7 +881,8 @@ unsigned long
- mm_get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- 		     unsigned long pgoff, unsigned long flags)
+ 	struct vm_area_struct *vma, *prev;
+ 	struct mm_struct *mm = current->mm;
+@@ -778,7 +778,7 @@ generic_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 	info.length = len;
+ 	info.low_limit = PAGE_SIZE;
+ 	info.high_limit = arch_get_mmap_base(addr, mm->mmap_base);
+-	info.start_gap = stack_guard_placement(vm_flags);
++	info.start_gap = stack_guard_placement(vma_flags);
+ 	if (filp && is_file_hugepages(filp))
+ 		info.align_mask = huge_page_mask_align(filp);
+ 	addr = vm_unmapped_area(&info);
+@@ -807,7 +807,7 @@ arch_get_unmapped_area_topdown(struct file *filp, unsigned long addr,
+ 			       unsigned long flags, vm_flags_t vm_flags)
  {
--	return mm_get_unmapped_area_vmflags(file, addr, len, pgoff, flags, 0);
-+	return mm_get_unmapped_area_vmaflags(file, addr, len, pgoff, flags,
-+					     EMPTY_VMA_FLAGS);
+ 	return generic_get_unmapped_area_topdown(filp, addr, len, pgoff, flags,
+-						 vm_flags);
++						 legacy_to_vma_flags(vm_flags));
  }
- EXPORT_SYMBOL(mm_get_unmapped_area);
+ #endif
  
 -- 
 2.54.0
