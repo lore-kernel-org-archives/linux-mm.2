@@ -4,141 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CE0C43458
-	for <linux-mm@archiver.kernel.org>; Sun, 28 Jun 2026 23:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9530EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 00:21:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A68756B0005; Sun, 28 Jun 2026 19:38:14 -0400 (EDT)
+	id 3D3B16B0005; Sun, 28 Jun 2026 20:21:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3FCB6B0088; Sun, 28 Jun 2026 19:38:14 -0400 (EDT)
+	id 35DC36B0088; Sun, 28 Jun 2026 20:21:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 957AB6B008A; Sun, 28 Jun 2026 19:38:14 -0400 (EDT)
+	id 200356B008A; Sun, 28 Jun 2026 20:21:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 68F1D6B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 19:38:14 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A0CCD120474
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:38:13 +0000 (UTC)
-X-FDA: 84930937266.24.6C1A941
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 9BAC4A0003
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:38:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=REJHlv+t;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E09176B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 20:21:10 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3B273C1F26
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:21:10 +0000 (UTC)
+X-FDA: 84931045500.26.7642361
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 472E416000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:21:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LlYeafmc;
+	spf=pass (imf08.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782689891;
-	b=6ZfSy+SDTNXRe6wqvB+Odc4tV5DmWSf9adHOUenqoAEMrw6Uz5QhXjsvyenlu9UkJPXQV4
-	uyQydUpZMIQP3fc9yZCqAAdu55RuqpWuzo1AxowDf/amJzchn1WPRjRj3U7M4kEM9By6B6
-	pOGZNTGtCZC2+SM+aZC8LsAvi14PvHM=
+	t=1782692468;
+	b=qJ1lahsqvLA8ZN3dlQB5dv/gb/5E+Q0I0A4YwbXEvSGesfRZgcsfVWVdjcMddPu0QDJoSJ
+	525itbI0xWAbPGpd9xvuJwG648SUUycY/R9f+QM2Lbke4dDePODAva7gPAxSNESIsiG+3o
+	k+vOWNutnsHnrcDLNzZHtWjI53Q0/qU=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782689891;
+	s=arc-20220608; t=1782692468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZaNAzch66AgrefKnZPr7UqSbfd5kNS5KLyJJQedJZ/g=;
-	b=RazIaawXaa6RJmnyRpxVeeDqs/pVIVIjIuVk7BaKg+Xh7usJdcS/GP2PC4GSjFGkytFfVx
-	enWKYOg4DMOsCltg/u4YhD9UPVCm+0M2FaUaQRKf5YDAvL8FBmDXB2mhGA4M4fcGxQ6mSj
-	PF1WHfXb3LidhvqB5qz7N8wNdgt6C3Y=
+	bh=neBR3VtamRz9x5zM02CGSvqqsQzuRKF0xxUw39lUWvM=;
+	b=t/8DIgw+fKvpkijBb2GeE0Q4y+fx7E465zBLEeltG2nV2Dj5pLpdrhmsVI4GfxfwM3uzeN
+	3f6Z4Mc3CG1lwpddpNzueRU9qkHXvETI4LyFnnCS28tB+McrFmu681dcvzBnt86CfNUzt0
+	C5c6FrKThZQBunQ+GNNgi4nN8Qx0b3A=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=REJHlv+t;
-	spf=pass (imf15.hostedemail.com: domain of surenb@google.com designates 209.85.160.182 as permitted sender) smtp.mailfrom=surenb@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-519ed52bcc6so234901cf.0
-        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 16:38:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782689891; cv=none;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=LlYeafmc;
+	spf=pass (imf08.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5aeb18fe7ceso635612e87.0
+        for <linux-mm@kvack.org>; Sun, 28 Jun 2026 17:21:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782692466; cv=none;
         d=google.com; s=arc-20260327;
-        b=HfcmdANCZrdOXjdBSCjAKcOecsMoX6QJg0etoAbNjDrvx4M3+5y1PZgyxjB5asZmN8
-         7yKSB7WikUkfNYMYKC93+aWs/BcU3VYLR/ltIz9Rrq0bHBOyc2p60yR7IKChpX11Oe4G
-         dXR173gaRfNLpJWe+/pgnxLkPNQ9iwVkbmbph/sTbdi4Pz3aoa+SKUOO3nJbK8IH4zBc
-         LiEIjGaVUpVzJSZi4WRip5olVunz+gMf+drY3YOp1Ugm5anqOEdMymmHAzaYJqFNfAvj
-         +9MPusCIHUt8Y0Xiq0KWq8rKKadoJX8ZAWbm/kh2fCTpaO/H+gyDSXvzCkTHTTuwUkQt
-         YkAQ==
+        b=lJ28IT9qiNALsVXlhyhPX+mPPsAbhJIlaXveTPjpFWe10Z2sM+lCQK96Istl4HykV4
+         AW77rJbpCAmYx0lWxUTWeuFb/oxzKNQFmX7Q3lhB69RFD7W1406IONNFM/qX02gv7xl9
+         +V8zf5fN3xARvM0anlmHYoyWkKXbiMa2ctKvvtaclyIMNE0R8sP1HqKXxNMir/yzeeh6
+         vckr+zNC6r6b/1tYEW0IRkhL+vM0nQP2O6Sa6IjjSLxO64cZPYI5uV/oV3wcJvKIaDy0
+         M7HgmnT5HCVEhqdGj3jNCCx2d6DN1e/faApwdfutehBJrm405sZeoLQYBw+agn2U8rS4
+         +myw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZaNAzch66AgrefKnZPr7UqSbfd5kNS5KLyJJQedJZ/g=;
-        fh=ufI/YD5rTy02sGBXahzvwguB89wiAw4W36qlG7eZwfw=;
-        b=l+lG2RLMGRAdOOx2RB1QxQCvTQzj00FNrV4LG2PZZdCDOF/jdOmxg5Te80H8YEIAk+
-         73iiFixaL7Fjcm6N22xr3gtOdmJ6wK3/7+K5hADbh18X1iIycj9Lp3XATtKWmj/Diz3u
-         6cBKRt19m9LVB6L1twVY2/6nwB900IX5Ecgebkw64xBM6i+FcVFyJ3Fg7eIjzEM3M7lh
-         zxWNROLvctuYTTH8zbiW6Jez3ndMOLOJoH+amLy7GrxDneTFEOVw6/Hm8yQZlqhRE4Qv
-         QDi0rmf/okyA5fZ1u1qiY5xLz+cqFeOsTG9+1xAOOoAWD6pu+obe9xaxjT15SPUR00dI
-         +7XA==;
+        bh=neBR3VtamRz9x5zM02CGSvqqsQzuRKF0xxUw39lUWvM=;
+        fh=oa3Ss5v5RysVbWQLd109uLkeb+ekiFOrnqoJUhz0kko=;
+        b=LKKNVaYSbtPcs1lRvznb4CKIeBlXqkghe51CC5v83EkqaDrEtFtd+s4miHJlRBSwX4
+         DdkcPrTyICdsJcPJWizoqAyEcG5A0VwyGWUI8dEhMl/mkwUAnmujf2SOsBoZwLcNJGLS
+         y4Hk/WmvJLDoPc/vuDgBC+yXBd0qp+Q8V+AcCaWiBn7R6tuhJ4lx9oJu9q3QvNDJKbzT
+         B6d1bQ99t7tpZZECdYCqBhNIzJNDJpUDU8V2vg/32RrrMt1aDdQvr3qe8aJwc/bwyohD
+         qWpTrMc4gVxW5SxCRWd7IK7/SuDT8IAHPo7hrFl0Mbe16Ay0+0yPlNEs0hly8f6eUJhI
+         e+Mg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782689891; x=1783294691; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZaNAzch66AgrefKnZPr7UqSbfd5kNS5KLyJJQedJZ/g=;
-        b=REJHlv+tiY1fl+eZDXlrB9/Fwdm6VmCclgb7g2GWIk4PDi9ihOYSQKZXs25RIrQtME
-         WlltqGnxX6B4toxKSMUahRjM+imBF3Knwd4KHwiv0MutIfixa8dTLLRe0JOB64b3sqon
-         bKQOpwAMPYP4s/+UJCmNTAxxKTQu/mSVkm6Eb+tojbfjgXndsthXjhbStshSakCebIX+
-         IaAz25GG2tki9f+O+l56FGLtqjsnNmZKmQ2rKwlmzenTAH0EnCSY/NJJ9FKHwFNDQxjw
-         o6VQnhDGQvF7BGZ3PnqGrlwE/Oh68fB4um1I/7j0Qn7kJ0JNNhuG5Mjpa/OXy0uAQqjd
-         qGdA==
+        d=gmail.com; s=20251104; t=1782692466; x=1783297266; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=neBR3VtamRz9x5zM02CGSvqqsQzuRKF0xxUw39lUWvM=;
+        b=LlYeafmc2gpvPAczsBOq3Me+HrFI+OIVtInf9qYZleqHJtM1KSJSgs2qq2jw5a/HOZ
+         TCdo/Xfkr3IKNlis/iBmsYfrj54AbHrZ2r3ZQiz+FjPqdj5pzNgcCxdjVGjFupY3nW0N
+         V03jRPuJzs48kZCjFe5kcAjiq9CICIRlVhyCUoOZCYhqAbPyrrbrRBllxeNrINCQuSJP
+         ZrjPia3dPs5lXvpFXRxOY2PSIr/c2zHRV/AISm0F4sEEGTochTsdavoZZfVU/ZQOoOc/
+         TonjOw48KIyaBPKPdtedZqRwdN2SBVJmGGvjw8EtmVipODIajnav5HLk8ydWHlBKcYq7
+         a+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782689891; x=1783294691;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZaNAzch66AgrefKnZPr7UqSbfd5kNS5KLyJJQedJZ/g=;
-        b=NZ3RBYtr7n8ZvQlCRcspg3qZa41NappK+3iY1WQX6mMwqxUUO3LetW+5KPf0VKai4T
-         97LyFRMOfGphM1A49BWsijxfAzpNGxlKCUhUmsGHBn846I+jMlgsyynOoULmeFPkUsZD
-         RyehyiTIPqdPPOxWKljF0ZIh9brRe6LVUr8u4A5M/DUZK506hsVoNSxokC/K1xdhcbH2
-         4AFCglmVVplvhQrH/ozpYXEr6cpYXiQ65ZHXCekcm5f+yUvw+P7M4MGGn7WZG4rQQv29
-         +kkxU4n1VwYVPTZhPdZQZJGRCZDTr0D5UXJid5NevFuBBPRS7fJHNxcF66g8qvcCVDkC
-         QR8Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/2PBFTfkwkZtcyy6JGGOQKps641fBe699ShNFS/GC+kzvot0Uydq2Rh4ZqHBGoQayAYKK3C9E18A==@kvack.org
-X-Gm-Message-State: AOJu0Yz81fuBAf+2usgbln8ZbkUA96Vxt0SYDumoiafjSyLB41OpowW/
-	lCtPz7Rtf/C5vLcEPsezn4K2NrEY8cMfMrWteA/7LWXZQ8UXHxeQGOK8UGvJcPrVRZgcXdBPT+r
-	9MmEihepMgcLTkJqcR0X2S9OvaMKdsuKvUyqs95fc
-X-Gm-Gg: AfdE7cn6dZQimYLaq8VvYZoaUTabwESGTXjYgJPs7OCAv3p10g4ljztTt9v/S1MkTv7
-	c/7t51KS+jVwLr2vyN/r5VhaUabqle1jEx5ZouDKX7J8sJCoDM+LW8dJC1EQVkYoORLrwcdVNKx
-	W9OLONoUijgX9vunls6+71OlLwFtsEAsR35rOiVS3LDElwhIKdbhW4r5+9ZKnMtuxyyO3QQNgp3
-	ReBmF92a+8ANNpNXyOWQ5ge6NzPa3o58tRaUwoaWQ40ldrxp1Naih3xWn8ZdjhwoFENA08=
-X-Received: by 2002:a05:622a:1f9a:b0:517:6010:7c71 with SMTP id
- d75a77b69052e-51a8f65a1f8mr16797811cf.4.1782689890204; Sun, 28 Jun 2026
- 16:38:10 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782692466; x=1783297266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=neBR3VtamRz9x5zM02CGSvqqsQzuRKF0xxUw39lUWvM=;
+        b=r0jqGaWD72o5xq3efS0t27K4N93ztQ7X7CxDc/kWgH+QtnztsENE4GUiPIfFXqaVmE
+         j8aArdbSWHZbD+rOMlZxH0leSbJFWZCQBxWBOrC8fOg4DpljTQ2ChYESRVEN6b9yfRUY
+         pAuQRwn/2SXW14gqKwPlM+mKLQuIn9YBXshLjVpNbziI+FwysLBmQ2EOjBanJIkgS3YL
+         0vyfyBexb9RFQRubRrlN5ir/WtGIUs5Ws+3THKzhwbS94KkxwzaT07VuZR4ZMiJfKrwx
+         jLcg8LwIGSlRCBaMX/B8O6oDvUMeIvLvtGwUywNLN45DnKLEjBgrYDyHP9vMqfU+ID6Z
+         cGOQ==
+X-Forwarded-Encrypted: i=1; AHgh+RoP0RRuG9qqka1CA8Fyk1Wv6hmXjWs6NsFV5gECE8cpWG5efRrBaCAw5mbeuqDD/UaAM+BOlXwS0g==@kvack.org
+X-Gm-Message-State: AOJu0YyDQojfwgMW3cSPU2IvKAtmAsOVyg877J5CE6BxcGNj5yiKivs7
+	DAFGeY8E7gXl57eU93LooPRMuZJnyP4tXRAx/JVVDdCUEsAyLu5puQd6t7TR8L16qVISdRbQal9
+	Wt2O+htYLbUi0/iC2ghlD18DXZI7Be1s=
+X-Gm-Gg: AfdE7ck9bpbUbL1FVZMYvV3cnV3CJcwyFcjG4vqi9DnPHAmYaWNI6SDmjSfUye5e8LF
+	74hQ4wHLNRFVL1BcwNZvQy7zZw45J/dogywT2wXzeUOeQgHKlM/L0H5pLDmVLBoHrDDbLvWWPtO
+	08LIY7538FeCNbBW11XSCEkVQ3Ky21bTQBFm2waF7sudEgWF5AFLxi6l6EN+hZWb5+dSWz1WKbz
+	hKfgjKD5neqxnp79UxnKYloa51be8mDd8GyjogHa7+T1NLwguIie5EIwlYOnoOTPzVeYDhlbGyX
+	pQca5tPt9OXdmQzEKjuz95qXfQ==
+X-Received: by 2002:a05:6512:6407:b0:5ae:9c54:8037 with SMTP id
+ 2adb3069b0e04-5aea1f48d55mr3968120e87.17.1782692466242; Sun, 28 Jun 2026
+ 17:21:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260625230029.703750-1-shakeel.butt@linux.dev>
- <62453403-954c-4cf1-8924-6d38184b0810@kernel.org> <aj6re83IC84lkFL0@linux.dev>
- <09267187-6c85-438f-8791-4cce8d07892a@kernel.org> <akCJRTnmA2um3CIy@linux.dev>
- <akCSftF6mrsKsz1V@linux.dev> <e6ca6ac6-92c8-4db6-a82b-cbb92ceaa4ea@kernel.org>
- <68122038-e8e0-47ed-82f8-cb6a23e4658e@kernel.org>
-In-Reply-To: <68122038-e8e0-47ed-82f8-cb6a23e4658e@kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Sun, 28 Jun 2026 16:37:58 -0700
-X-Gm-Features: AVVi8CcHz29mUWBtDZ7w1koJuJeYJvDgDUspMoTVmLuyP7CWPjJJJDnQOqQ4Vdo
-Message-ID: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-To: Harry Yoo <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Danielle Costantino <dcostantino@meta.com>
+References: <20260603-ch-swap-series-plus-folio-lru-cleanup-v4-0-ce0219e100d9@gmail.com>
+ <20260628140322.c3ce1a7428d6c6d021069e7d@linux-foundation.org>
+In-Reply-To: <20260628140322.c3ce1a7428d6c6d021069e7d@linux-foundation.org>
+From: Jianyue Wu <wujianyue000@gmail.com>
+Date: Mon, 29 Jun 2026 08:20:49 +0800
+X-Gm-Features: AVVi8Cd4GbRDyyHZTqC0TU_IFKD2RqlTPO7y-VMam-g57uC7NkQtHOh0OQDnYh4
+Message-ID: <CAJxJ_jhp4i+hVtdrmGHffn6XyYaS8-uwbFNYS-MMEZbwq3CXjA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/3] mm: clean up folio LRU and swap declarations
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: te4ygkqupyur9xufy1hrm74nxe7hrkym
 X-Rspam-User: 
-X-Stat-Signature: 8xx4px7pazo1666jbxb8m5gftzuu8yi8
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9BAC4A0003
-X-HE-Tag: 1782689891-834513
-X-HE-Meta: U2FsdGVkX19M3Zo/ciS5c2/vbrWGj1H7AWDBPwaPWtMPyOdGOzMFqqWLuTuIkevdhVmiFMu619vRvWeUYCvsZLMbV8X6oZisp7CCfy3rvgdrHKczQkWKfX3h/7CRJqtED+i/wAioYsuV89R+pw97adWmTGzxN4q3lWZy/NCBrh3Izx26mZ8oBF50HecySFT/mfg1ZXg8SirCUZWsk0XsAbZ8mx8J0IN/VhND4+m76Bp1yPlQIU7ZJYGPHeCAmHYvbGCvU2QsT0C5h9B9A75SJdE5Dyuo0+bFxqI3sE8so6IqDCVEdkWU1+EJ+pgjGwnMwft1gzApGNz24mp6NLltWGsykWKMvkiSmJ27lNHleUl7e6NRVa2MqONrau8q28qnUz7P7XM5TpZ/SoWlgCIye4U1fMwG8g30JV+5c9AVgi7FXYl8Bi/OBXXZ6JuwpsP6kzIFdNyzEGpNfHZjFhnk6XZEJbWFgGpLhYD6QDfyVIhpIo77V77W8C9NIBH95mONwuFO05Rz4R+4aXG3lljHE+Gm7DMC9U4VduYXD3P1AE2ZoHqiWUVaU11q9XI561OZolWGoaOTVe8lgN6epppzDq55+1L7p36ds6pKc4chQYaKnXTy/ce9nLeQkULU7EqB05WGHhgkhieDsmmtkrgkI2uWN+C+kpXje8ZMyg6/WzatNKzswpVt9xna7SLYd6GJYiKW9vfy+LRh6vaJWdV9ZFkjCt6/dD0vp1eH0lQQCFJ68VVaNJdbULd5kUMs1T4KH96pNGwxAjsuApYZkGShh+baHUy+GPVMICzB8ayXu28OcHLdZaGikOTjwHjRTgFGHVs2PyT/I1RUALqK9fVSj2ciBMSSSZHcJEvz590jLZ46cUm+5PEXCOcLDCJYnk40Ys97EOvYQZ8j8i93vsS4H77ZmAw4u/hTPQXHL6UeTu6eE5hsSFC0t3t3vGlyGb9UjzshH5sWGqll9nt1Y9g
- L9xgz87m
- Jm26VcZcaddsr10KVU51N0tvUx7QVbEugqx1ecjvrrzG0oIuZcFpMWSQ2p6aMHrQTPFcEwy2BgcnIYlRb2zbSANwJhFLa/VMTgkqy1rL0FyBjced/CsJ34zT3rQLoGa4xJZQy8EsFkCE/Uhbm8ZaUwFeTGtCJwLAcRXUfhAl9A+044RH7yUTWp/T5Y+ccy3vEM15BW77bnrfn2bFNFwQjQKKLZ2uDDmi50WVJGk9hS863Yhg2+jjZfmSptMiKUETe+J/xswiWc+jV7LSHO2P0y8/oGwuZAwrGabWgxvudFld03ZWdnk/u/B8TbA==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 472E416000B
+X-HE-Tag: 1782692468-30685
+X-HE-Meta: U2FsdGVkX18OijZOnoyeW+F1WVWO4NbLnoirWdrTB7Dkz52R4uQ3mtdjvlTtbf7sn0hIYtFNFrBihmG/V6l+Q6O4ifWg12AUOFvU2+fG+5uo23aIdcAXH7vhpoW7Ow6lGyVwSf6tcytFfeEXuUz+HMvpSzTTB2SrhtUYSzNDTf7TFAWdqGmd+77g6Z6BaupGnHgkJcEjox7utVJrnnddgcmWu3JLtwS+fDuqvxdUxwXWUhYpoXHk5tEvAB1vYFibT/UAVzhERuXBpNGCj7aXHTB6JsEs0/xTEj5hpDfV1RDxX9fabN5cChVM6f9AzObva/f7oz8xKkr4WU6NfYuvAW68KdjaQvXszO6y9uut2rkt0o4qvRiu8bUyGaStQlGzYoEtBmpcuVrYndR3+jSmaus5Y5PjPoKwXprowsQ8T9QEkuKr+BK7nGiJA2FEL+4LUHMzKfKmdAGTyWQhlNe1Aa/gZVqfQFhhgk80qcH1FweI18tJ/RhW6gfJ/eOaVAIjpJav3ygKUCmSiX/p9EQnKQLWZlhqijiRJfr0q3M1SCkTJbCh0twAOHpuuX6DZwN28X5DkKRCpm/2F4fX0c30FSivaa7sA8ouzmgsSyZZQJv5FyoC4OHlbS+I0VkvNQuu3DQPhYb93HHBLrNTYFGTug6bmy5qrkP3/9jANj+guYKaOtncDoaQpki323VEWpvpmacrq3ZEg9hVXiGdVFRBv+dlJTiaB7fEOo0aT6kWF0EXxwAVcrjg96gWlo1YY6+LVVPiNHnF1Qjzh6Z1Ww5Lw4h9iCwzyDlzfB89SRgHj4k1baf3/ljMBXHP1YaQm2XYBMrZ0w+RG98IkBgJezev2nWQDeWyJ8KOFGV6umrOWuKxVwEiiMi7Na6dw8q2PTHybyTJkapO5PNhhtxcVWWmIgBxk5tSApGTJsK94q7RZVQW5u3hh0x8PqhVZuk7TFOqXV6HoQTV9PuNwDgL/Nl
+ GiLJAFC6
+ 73fn+NSFXE0WJPYF3pbvpGBurYau1GEza/p4IovbIJDVOcgM83qjqFWT5Jz+5iMXg7Nlijhbmiqkw/HB/bl4fJLJEeJfXlGh7TPhziU18kZp3gLdeYvFhDXPP1w67P/fpZAzYt8H7Z+XamqcuTx08FZjs38PpQsIA/NhUHIcK3QgjVSkOMfFsLbgYn9QwHA7MgiqXbM/kx3PkuMw1avg/2Butl+/7ST9jW8YSBtQarXnf6bBf5zf//TY3I9qLKvqtri1bOoXqvzsbiYa8HRVvCX1BPyGEFCF6zV3mDsThu0u5JJayDV5dZuJHYdcGoP2uKcWv5QyvGUi3xcezooSO2WhjkblPtUYKPR08hrW71Sck04VAg0UPZDVOvT5J0Yf9fS/O18qFQ8kaF7QM4Y80ckg5YON/7SM1xMe5EaLcnYKyh8Op3taZOWtHGIURk+4jKNyYn2MPhQY8SlcvHUYHybY2yvS2dvuL1xGdALm4h9yxkx2F406b7g+BZ6qPute/nprq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,142 +149,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Jun 28, 2026 at 2:22=E2=80=AFAM Harry Yoo <harry@kernel.org> wrote:
+On Mon, Jun 29, 2026 at 5:03=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
 >
+> On Wed, 03 Jun 2026 21:05:31 +0800 Jianyue Wu <wujianyue000@gmail.com> wr=
+ote:
 >
->
-> On 6/28/26 4:47 PM, Vlastimil Babka (SUSE) wrote:
-> > On 6/28/26 5:23 AM, Shakeel Butt wrote:
-> >> On Sat, Jun 27, 2026 at 07:58:12PM -0700, Shakeel Butt wrote:
-> >>> On Fri, Jun 26, 2026 at 07:11:33PM +0200, Vlastimil Babka (SUSE) wrot=
-e:
-> >>> [...]
-> >>>>>>> Fix it structurally by removing cycles of every shape: serve the =
-array
-> >>>>>>> from a cache strictly larger than the one it describes whenever i=
-t would
-> >>>>>>> otherwise come from the same or a smaller cache.  Every reference=
- edge
-> >>>>>>> then points from a smaller to a larger cache (here kmalloc-1k's a=
-rray
-> >>>>>>> moves to kmalloc-2k), so the relation is a DAG and cannot contain=
- a cycle.
-> >>>>>>
-> >>>>>> This will fix the problem.
-> >>>>>>
-> >>>>>> But this will waste memory as we need smaller obj_exts array
-> >>>>>> as the size gets larger.
-> >>>>>>
-> >>>>>> We should probably create a new kmalloc type to avoid cycles inste=
-ad?
-> >>>>>> (needed only when memory profiling is enabled, though)
-> >>>>>>
-> >>>>>> That would also prevent recursion even further.
-> >>>>>
-> >>>>> Yes but I assume that would add kmem caches even for users not usin=
-g memory
-> >>>>> profiling. Anyways, I think that is a separate discussion. Am I und=
-erstanding
-> >>>>> correctly that you don't have any concerns with this approach?
-> >>>>
-> >>>> Umm, the memory waste is a concern?
-> >>>>
-> >>>> Minimally I'd now want to only do that size bumping when allocation
-> >>>> profiling is enabled. Ideally that means both configured in and not =
-booted
-> >>>> with "never".
-> >>>>
-> >>>> We probably should have done that already in 280ea9c3154b2. Because =
-AFAIU
-> >>>> memcg-only obj_exts array don't have this issue (or maybe they do ha=
-ve the
-> >>>> [1] issue? Harry?). But if memcg-only should keep avoiding the same =
-size
-> >>>> bucket, it can keep what it was doing and only memalloc profiling wo=
-uld do
-> >>>> the strictly larger thing.
-> >>>
-> >>> memcg should not have this issue as normal kmalloc caches do not serv=
-e memcg
-> >>> charged objects.
-> >>
-> >> I am wrong here as I went back and see d8df600b67d7.
->
-> I was confused too :)
->
-> > (8dafa9f5900c upstream)
+> > The previous version moved the folio LRU helpers out of mm/swap.c in
+> > one step. Based on review feedback from Johannes, Baoquan and Barry,
+> > split the cleanup into smaller steps:
 > >
-> >>>
-> >>> So here we can do dedicated caches as Harry suggested or make this si=
-ze bumping
-> >>> very specialized as Vlastimil suggested. What do we want long term? O=
-rthogonally
+> >   - move the page-cluster sysctl next to swap readahead in mm/swap_stat=
+e.c
+> >   - rename mm/swap.c to mm/folio_lru.c after the swap-specific bits mov=
+e out
+> >   - move MM-internal reclaim declarations out of include/linux/swap.h
 > >
-> > Maybe long term we make kmem_buckets unconditional and use that.
+> > After this series, swap cache and swap-in readahead stay in mm/swap_sta=
+te.c,
+> > folio LRU helpers live in mm/folio_lru.c, and MM-internal reclaim/worki=
+ngset
+> > declarations move from include/linux/swap.h to mm/internal.h (public LR=
+U
+> > helpers used outside mm/ remain in swap.h).
 > >
-> >>> we do want this fix to be backported easily to older stable kernels. =
-I will see
-> >>> how does this narrowed down size bumping looks like.
-> >>>
-> >>
-> >> BTW I think we need something like the following, right?
-> >>
-> >>      if (mem_alloc_profiling_enabled()) {
-> >>              if (obj_exts_cache->object_size <=3D s->object_size)
-> >>                      return s->object_size + 1;
-> >>      } else {
-> >>              if (obj_exts_cache->object_size =3D=3D s->object_size)
-> >>                      return s->object_size + 1;
-> >>      }
+> > The first patch handles the swap-specific page-cluster state before the
+> > file rename, so the rename commit only carries folio LRU code. The last
+> > patch keeps the LRU helpers used outside mm/ in include/linux/swap.h an=
+d
+> > moves the internal reclaim/workingset declarations to mm/internal.h.
+> >
+> > This series is based on Christoph Hellwig's swap_ops series, which
+> > moves swap I/O dispatch behind swap_ops and leaves mm/swap.c with less
+> > swap-specific state. That makes the folio LRU cleanup more natural to
+> > split out on top.
 >
-> We should not add mem_alloc_profiling_enabled() check because,
-> then we're not fixing this issue on SLUB_TINY, when the caller specifies
-> __GFP_RECLAIMABLE|__GFP_ACCOUNT without memory allocation profiling.
+> Patchset looks good and is well-reviewed (thanks, all).
 >
-> `if (!is_kmalloc_normal(s))` check already bails out when it doesn't
-> need to bump the size.
+> But it's a little old and Sashiko was unable to apply it and I'm seeing
+> at least one (probably trivial) reject.
 >
-> So Shakeel's original code will work fine.
+> So please can you refresh, retest, gather the ack/review tags and
+> resend?
 >
-> We're only pessimizing memory allocation profiling and
-> SLUB_TINY && MEMCG users, but (as Vlastimil suggests off-list)
-> it wouldn't make much sense to enable MEMCG on memory restricted systems
-> anyway. (IIRC even raspberry pis don't enable the memory controller by
-> default...)
->
-> I think it's okay to fix the bug first, but we need to address
-> the memory wastage issue sooner or later if companies (Meta and
-> Google I guess?) are deploying kernels with memory allocation profiling
-> on in production systems.
+> Thanks.
 
-Sorry for the delay folks. I just got a chance to read through this thread.
+Hello Andrew,
 
-I think adding a new KMALLOC_TYPE would be the cleanest way to fix
-this recursion problem once and for all. This size bumping and the
-special case of SLUB_TINY are quite confusing. We could define that
-new KMALLOC_TYPE only if memory allocation profiling or SLUB_TINY are
-enabled to avoid new caches when not needed. Does not seem too complex
-but maybe I'm missing something? WDYT?
+Thanks indeed, I'll do it and resend:)
 
-If it is more complex than I imaging then I'm fine with Shakeel's
-approach as a temporary fix.
-
->
-> Perhaps it's worth adding a comment like this, though:
->
-> /*
->  * Only bump the size when the object (not the obj_exts array) is
->  * allocated from KMALLOC_NORMAL, either by memory allocation profiling
->  * or memcg on SLUB_TINY with __GFP_RECLAIMABLE|__GFP_ACCOUNT.
->  * Otherwise, obj_exts allocations cannot form a cycle between
->  * kmalloc caches.
->  */
-> if (!is_kmalloc_normal(s))
->         return sz;
->
-> Thanks!
->
-> --
-> Cheers,
-> Harry / Hyeonggon
+Best regards,
+Jianyue
 
