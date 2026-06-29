@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED7AC43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:56:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7753AC44500
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:56:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 30BCF6B0123; Mon, 29 Jun 2026 10:56:43 -0400 (EDT)
+	id AFB956B0125; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 295566B0125; Mon, 29 Jun 2026 10:56:43 -0400 (EDT)
+	id AB23E6B0127; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E8AB6B0126; Mon, 29 Jun 2026 10:56:43 -0400 (EDT)
+	id 973646B0128; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF6736B0123
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:56:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65F888B55E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:42 +0000 (UTC)
-X-FDA: 84933251844.23.4D108A8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F53F6B0125
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF0F240179
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:41 +0000 (UTC)
+X-FDA: 84933251802.05.8BB84BF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CA158140006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:40 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0p6niVz;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 02C6140005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJRDV1f4;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782745000;
-	b=fzqlA2xccirm24O9spVWnlPMMXOY0Oh2IFIGw8vUlMyfkGlylMtNouhkIEF4ixZpo3+gGh
-	L1J7e47eOq6n/z04tAiFuwDRR0gVhH+6FoxDcwG6fYB6QiDwaFlFxNrbAgfC9aAF5+a3ze
-	mqsEDa2o3aM5Jb/LTm0ynMxLBK304jw=
+	b=hZLr3UfjmT+DiZ+VO/S/mzCP7KhnXAhMyterObuEmTZSnNKYu8iRf9XFh2gzFdTKvAvXs8
+	APi9YcD44rOlOGaJmyY/XlpAi7BQ/5NtCcPUDjODfLHo4x6U/FLoPYS6u+vViWYLQk8WVu
+	4svVGx39P9q3kNQurMOPgVXUUWiYbGw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782745000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bnTE7JQYb8oLGzV0AMcpP4t+f6X2wdwYV6UVz9FcFq4=;
-	b=K50kQme5JKJwtBR6jWF4Um5nWVcg4IhKz9VL6tZU55DelOlir7LOX9F7W+4lbBKDtf/h14
-	IjnkxtEAsYGUqu4NIk/czsE5CMWyg7ZmvyuVcb7UV1/YqoRgU1yR+6cxULpCfYsgNIu/TV
-	DeWyZELbdMGHDkyFl8Z53l+YlMRaoTQ=
+	bh=NatPVMmr6lCmbwrlx8nymHKQLSth5j//NGxvrJ4IneU=;
+	b=mWC2wBhhn11uhEoxUYbuUEtR+pSnFKT8p4EivdGxI3ADRzugqZ/dtS4ozRQ1G4AV7ptB9u
+	gCl8JdCV7vKFP/ngkcoQpBaUlL6oB5Ghp0VIDC2hyk4Wvtu0eET6j+zN8vlAAUzqLRgVr9
+	CzMAwS7ESNXsLbrfQY4q3O1TTP0VZnM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E0p6niVz;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJRDV1f4;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5AA79600AF;
-	Mon, 29 Jun 2026 14:56:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7609C1F000E9;
+	by tor.source.kernel.org (Postfix) with ESMTP id 836F26001D;
 	Mon, 29 Jun 2026 14:56:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75A61F00AC4;
+	Mon, 29 Jun 2026 14:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782745000;
-	bh=bnTE7JQYb8oLGzV0AMcpP4t+f6X2wdwYV6UVz9FcFq4=;
+	s=k20260515; t=1782744999;
+	bh=NatPVMmr6lCmbwrlx8nymHKQLSth5j//NGxvrJ4IneU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E0p6niVzr944xjRtcTil+YADxceiaUiz4FBwNlSoB7Ex0G3NTNBcEjrYvdTGRt4Ls
-	 uWkiw1JTnBONqF5l7A/3dvoj4mkhSu84SD34HsO7sEH7ZeSOdzIe7/lgx1L5PGUiEF
-	 9Pa9wBg9EcNqEVmm8RaCGn4DkMiCT1j04GP/CLyhf6Y/tBSrMZWnBZ4jqpbFu/OZoC
-	 CRGvy6gXw57/KZQmeL5WxsHUTm6JBNpEuiiT7vOodDNOaXJ39bswS4/wVT0hjG181w
-	 QLpKD+1whJuDdf+ppU05DKe09W7HF1OsEzPmbtTXcDGDjlyfDhRr6LlxieSx03431u
-	 99aCdy/+V42WA==
+	b=PJRDV1f4my+izevuENYAHKkEumYnZ2U6dtePGJAVwunGLNbZNgrq3imspiQVL6zOw
+	 5iV4NRR8ojJUinocwL/VoKfkP9WaqOsroCXEgq6nCNZdkmq3h9lC8/G/6XebN3SHOx
+	 eieNMwPMJtATCYbQcn1xrSRqCv3nzrkFoqST+lATlEFCi+C6qCDQkxVQxCaoaJL2Fy
+	 03vqCdsqh7tJMDsy79Ee0lWkdBzOQsKgiZ5AtZNq8a9ndiQcE4UxBLpb+4bBAwxiw4
+	 rp9ktpeSBiFbmeK1FpPPZ77C0LpwFk1N0cIq+bUt7fVBNZ+GkAlDC4EmneVtg55ZXR
+	 IALxxuDZEIquA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
 	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	SJ Park <sj@kernel.org>,
 	Shu Anzai <shu17az@gmail.com>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 2/2] mm/damon/tests/core-kunit: test split above max_nr_regions/2
-Date: Mon, 29 Jun 2026 07:56:29 -0700
-Message-ID: <20260629145630.134891-3-sj@kernel.org>
+Subject: [PATCH v3 1/2] mm/damon/core: split a fraction of regions when nr_regions exceeds max/2
+Date: Mon, 29 Jun 2026 07:56:28 -0700
+Message-ID: <20260629145630.134891-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629145630.134891-1-sj@kernel.org>
 References: <20260629145630.134891-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA158140006
-X-Stat-Signature: wi8kp6hqzhwtd4ij1oozorfcrx4oknqy
+X-Rspamd-Queue-Id: 02C6140005
+X-Stat-Signature: 6emyss38tuyg3dfprai1oee7hn3cphqc
 X-Rspam-User: 
 X-Rspamd-Server: rspam03
-X-HE-Tag: 1782745000-841233
-X-HE-Meta: U2FsdGVkX18geoyffWUBEK8nEPEp7qId0oW7QOFEttVAI9ndzN64wlrYlgTLAXrtaE7uBuUEZqtJ7ZWYQ7NYl8WEGCHGo9vKLMHD/c8YUTWhwVKVA2bSkPYlggjANeVbonZ6xKMn2fQTUpmfVNDns5I8LioiokTZZfCZ0vDkHB6rOrFU6NfeuBaNNwc8msricd1gaogp95aPBHDNI/wtd0ikw67IbOcs9DGdw1DGSBnQjBiCvzGlJ6cduPKWjigO7aitSmoiyKZT525AQpRM0v1LAQXZ9pIgokGEdaIJwRGUhFQivFboxaHsTuSKkje8fVMjxQmHABnvxN/G7aLSX/kdo79Or9GX3if/g8ol6eL3r9Fm4PqnvhsAw+0J3+lt9JubbSGj/0bPielLUt1UJ/USmRrN2XstahBfYxtUEWusJiF6BBZf/ZxRTq7Aa7JRKyfDb7apUrC2hwNt5QJBeR5XcRqBKqFcqkz+PHfPlSrkJI906KLYpazMD/Km5gpoBhgSkmFxAMJHosPitJ1DjFWSOgi7QJGkA250ibTtykVyuyD1llYGVjhqi/dvQOnToF34IjqApnii9VT+XjgDOV7FghzJkVMGKIXniXapLeRO93R9MF7xN+Bb7ZQwWNLX8oSK2D8EHQFWc97ccddh7/H5yq18Hdt2lWVIkbZAtBP4TyKQsZ4eOdquBAWV7QRFhhUe5DWcNMNwI1uxEAauGIKa5BL7EjBypzUv+9UcHLsoqxmA543kAMKne7lNhye1sQrNswATsI7sVyD+mmLMn4p9hZbRWjdZZnTFN6ertfb7GKRQkJm+TSxOSGbdMqfWUAdqeToPmhCMG2i/BfBk+aAGRh3Z6PGZYLT7NZkAALqaPA+Io8I11BtX1tbkWkjtIDEEtDwWKhMNhE1KSNIwh7JAHNIh5g4yKzTxgJH6NXEvQfWYOzNEfe7E4YKl+NLdAPq4Ad77d4Wef4NAlJ/
- EmzDfKKA
- 9PwtAIGzXafwxqOpKzfNLHEmVUcU+U/hl85kWihLwJ7gVg2rPYenZNGoewYqkXv0hT8DM9GfCkRmTFlagg1Ru83uwz6WOEkIRF8Da0NVEVK+b6uc2+WnSoG65jQJp+LT0DM7uo/7cAo/q8X6FIv+ZSRBVT+HMBANAKKzzLQdKHCysJMJqrxwxgUFIQqmq+gkMMss8NBQBK/Mq8kPbCd7S97h/AYkaL4CqydwKZCptGqi50zQg/Ri+SCk427el9ClttzWJU6TbWT4b35kHAFNc4g6cPKb64EJzhJXHMPDwXnuSCr9fEiv3scSLpUEf8ep5MWncXFdvu5agfUNpnNYN4CV6L9Qtzei8VaHkkHZMSc80SvugbOd2LfzPTEBJAx9hwGv+cwZKL979VEv0Lo/ScNZeskMtRSnjyjTt5B/lj4t83Dc=
+X-HE-Tag: 1782744999-585009
+X-HE-Meta: U2FsdGVkX1+DZHVBMmnwILqvy9kzmNq5+WzEH9w7r9heOzWGGAxoGkMUJWZclGe60i+KEf5RdAn30wJugm+hpF25jYzSiaEERWQ9Zk7MnTeCyZnHO6nbRqi7TGoSgnVHPAdlQB2OfPMbKW0CPLgwDrIN+qOyvQOuGqzxIY0XJVvxyTgpzQP1i1O5ZKOngglJF5u4toePeSvITMr/kbB/YBuaCtD/i518TtTGfiL1bIgHkhklIZjsrlkjVlRB7F8gP22XAJBL7fhEQjXd8GgsB9ECbF+0mSCvldpRTrUes642hmlACWN/RJssVEyk2j7nJGDdlLwrqDYcA2IDyElYjFjp9sAQUqxULYFZa4Vw+0sGbhfarziZb52UGsAJtnpidUgDtkOENCSHJFA2Z4ofWifTnBBkH+uL50yPT5jagaZCs+r+PlumZM0+36cpSBumrjZi63HdwZUK2h/w3uXWh2tnT2B1w99GKFfGKSyFkO68J2PXIkfMC2LiYwXHBN7Bbv4p9CUMJrDgMKiOw/5rB/sH11x66FLvh/cIJ8i7e31l1gw4jUWIk/2TgQPdUdiGyLe9i/NIr3Vp79Bhw1GtIqrMrEXRGrfLTAc5Shjv6+/Dix2d8e19mkik794LMDtfhh7uDUVzANeVCrDnHYAjuy/2pIyAHsaUlewdjXWc2KLx/qyiWOZbo7U/jsbRnmF+JDai94wT/NW77fnAtYSgNL0ulvqynC6vmrDE/cWznaX4BXvoIJl/wrvxNx9JEOWlfFfyvfKOLFrvqlBPLlVzSpW/wz3KPdBS9yEUP9U1+nbrSIdtnHG8TTxuMUdDrumHaMo56Orki2XM/KT5HRY7Cy05Svn/krQIPnnuOSnRAVt+yjJsP7gRcQZqWsJrZ4PafqBCe/W+bV0VVNTqDSyneeA+bsMGsMmxOq2m7s6al69BHTD5B7J0KGvCHlRvC6+ixhXl1/L5HuiHszWYJKP
+ A+ethg5D
+ XHPEx85zqTCPov6k8nQddbOQu109ksQZMd6NRnb0nyNJIbiMyZ+esO9+BiS955F/zMJHv0cuFbBQYFlnKB7blq1FrUH56lGDIQIUsNA+WoUCYfCayfbnKbe/vLlrx6N8T5hVXLsfza3AEBc7qz+Iv4QuR/RWIz7/UMnPE0sr5rc6sUMoItyDSsNpvd73WFzhgZrD+1tyxohwbjxs+2ahcwpmPl/NE+xGVCA4vi89XAYPFPFWFzNBdKNobxixxYUAMs++VrbTPZ2RtJ5gX+dBqDGbfWuK02XoVnIaHxfYjVmxNlkkRdX0djQxs80RI/LSw2a8lX5VokHt81y0Dqu7CwpkaQ76c3hTYdQ5wBXaP1OD4a5z3CDb2tmQZwtzqu2AIF5mjLLvBgpnpHflDqH5bekhXDqK2nwnkhr/3Qrwl7sBrQmY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,19 +97,46 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Add a test that exercises kdamond_split_regions() when the total
-region count is already above max_nr_regions / 2, asserting that the
-function still splits a fraction of the regions (makes progress) and
-does not overshoot max_nr_regions.
+kdamond_split_regions() returns early when nr_regions is above
+max_nr_regions / 2, leaving internal access variation inside a large
+region undetected.
 
-The region size and min_region_sz are picked so the split arithmetic
-does not depend on the page size.
+Such a layout is common with damon-paddr on hugepage workloads or
+damon-vaddr on processes with a large anonymous mmap.
 
-All tests pass:
-  damon: pass:31 fail:0 skip:0 total:31
-  Totals: pass:31 fail:0 skip:0 total:31
+For example, with max_nr_regions == 1500, a target may end up with
+799 small alternating-temperature regions plus one large region that
+absorbed a uniformly-accessed range during an earlier merge:
 
-Link: https://lore.kernel.org/20260626085851.70754-3-jiayuan.chen@linux.dev
+H:hot
+C:cold
+
+      r1     r2     r3                 r800
+    HHHHHH|CCCCCC|HHHHHH|...|HHHHHH..........................|
+
+    nr_regions = 800  >  max_nr_regions / 2 = 750
+
+If a cold subarea later emerges inside r800:
+
+      r1     r2     r3                 r800
+    HHHHHH|CCCCCC|HHHHHH|...|HHHHHH........CCCCCC.............|
+
+The small regions cannot merge with each other (different access
+counts), so the budget stays full.  r800 cannot be split because
+nr_regions > max_nr_regions / 2 causes an early return.  The cold
+subarea is never discovered.
+
+When nr_regions is above max_nr_regions / 2 but still under the
+maximum, split only a fraction of the regions instead of returning.
+One region in every 'max_nr_regions / budget' regions is split, where
+budget is the remaining room (max_nr_regions - nr_regions), starting
+from a rotating offset so different regions get picked over time.  The
+fraction shrinks as the budget shrinks, so the region count keeps
+refining while approaching max_nr_regions smoothly rather than
+overshooting it.  An unnecessary split is reverted by the next
+kdamond_merge_regions().
+
+Link: https://lore.kernel.org/20260626085851.70754-2-jiayuan.chen@linux.dev
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 Reviewed-by: SJ Park <sj@kernel.org>
@@ -122,91 +145,90 @@ Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Shu Anzai <shu17az@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 64 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 64 insertions(+)
+ mm/damon/core.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 5 deletions(-)
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index c5f5124c3d1f4..a00168730445d 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -335,6 +335,69 @@ static void damon_test_split_regions_of(struct kunit *test)
- 	damon_destroy_ctx(c);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index ded76719e8a14..972a19fcee3ec 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -3240,6 +3240,37 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
+ 	}
  }
  
-+/*
-+ * When the total region count is already above max_nr_regions / 2,
-+ * kdamond_split_regions() must keep refining the resolution by splitting a
-+ * fraction of the regions (making progress), without exceeding
-+ * max_nr_regions.
-+ */
-+static void damon_test_split_above_half_progresses(struct kunit *test)
++/* Split one in every @split_step regions into two, from a rotating offset */
++static void damon_split_some_regions(struct damon_ctx *ctx,
++				     unsigned long split_step)
 +{
-+	struct damon_ctx *c;
++	static unsigned long rotation;
 +	struct damon_target *t;
-+	struct damon_region *r;
-+	unsigned long start;
-+	unsigned int nr_before, nr_after, i;
-+	const unsigned int nr_init = 760;
-+	const unsigned long region_sz = 100;
++	struct damon_region *r, *next;
++	unsigned long offset = rotation++ % split_step;
++	unsigned long idx = 0;
 +
-+	c = damon_new_ctx();
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
++	damon_for_each_target(t, ctx) {
++		damon_for_each_region_safe(r, next, t) {
++			unsigned long sz_region, sz_sub;
 +
-+	/* Keep the split arithmetic independent of the page size */
-+	c->min_region_sz = 1;
-+	c->attrs.min_nr_regions = 10;
-+	c->attrs.max_nr_regions = 1500;
++			if (idx++ % split_step != offset)
++				continue;
++			sz_region = damon_sz_region(r);
++			if (sz_region < 2 * ctx->min_region_sz)
++				continue;
 +
-+	t = damon_new_target();
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
++			sz_sub = ALIGN_DOWN(damon_rand(ctx, 1, 10) *
++					sz_region / 10, ctx->min_region_sz);
++			/* Do not allow blank region */
++			if (sz_sub == 0 || sz_sub >= sz_region)
++				continue;
 +
-+	for (i = 0; i < nr_init; i++) {
-+		start = i * region_sz;
-+		r = damon_new_region(start, start + region_sz);
-+		if (!r) {
-+			damon_free_target(t);
-+			damon_destroy_ctx(c);
-+			kunit_skip(test, "region alloc fail");
++			damon_split_region_at(t, r, sz_sub);
 +		}
-+		r->nr_accesses = (i & 1) ? 0 : 100;
-+		r->age = 5;
-+		damon_add_region(r, t);
 +	}
-+
-+	damon_add_target(c, t);
-+
-+	nr_before = damon_nr_regions(t);
-+	/* Above max_nr_regions / 2, so the blanket-split path is skipped */
-+	KUNIT_EXPECT_GT(test, (unsigned long)nr_before,
-+			c->attrs.max_nr_regions / 2);
-+
-+	kdamond_split_regions(c);
-+
-+	nr_after = damon_nr_regions(t);
-+	/* Still made progress ... */
-+	KUNIT_EXPECT_GT(test, nr_after, nr_before);
-+	/* ... but did not overshoot the configured maximum */
-+	KUNIT_EXPECT_LE(test, (unsigned long)nr_after,
-+			c->attrs.max_nr_regions);
-+
-+	damon_destroy_ctx(c);
 +}
 +
- static void damon_test_ops_registration(struct kunit *test)
+ /*
+  * Split every target region into randomly-sized small regions
+  *
+@@ -3253,25 +3284,33 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
+ static void kdamond_split_regions(struct damon_ctx *ctx)
  {
- 	struct damon_ctx *c = damon_new_ctx();
-@@ -1491,6 +1554,7 @@ static struct kunit_case damon_test_cases[] = {
- 	KUNIT_CASE(damon_test_merge_two),
- 	KUNIT_CASE(damon_test_merge_regions_of),
- 	KUNIT_CASE(damon_test_split_regions_of),
-+	KUNIT_CASE(damon_test_split_above_half_progresses),
- 	KUNIT_CASE(damon_test_ops_registration),
- 	KUNIT_CASE(damon_test_set_regions),
- 	KUNIT_CASE(damon_test_nr_accesses_to_accesses_bp),
+ 	struct damon_target *t;
+-	unsigned int nr_regions = 0;
+-	static unsigned int last_nr_regions;
++	unsigned long nr_regions = 0;
++	unsigned long max_nr_regions = ctx->attrs.max_nr_regions;
++	static unsigned long last_nr_regions;
+ 	int nr_subregions = 2;
+ 
+ 	damon_for_each_target(t, ctx)
+ 		nr_regions += damon_nr_regions(t);
+ 
+-	if (nr_regions > ctx->attrs.max_nr_regions / 2)
+-		return;
++	if (nr_regions >= max_nr_regions)
++		goto done;
++
++	if (nr_regions > max_nr_regions / 2) {
++		damon_split_some_regions(ctx,
++			max_nr_regions / (max_nr_regions - nr_regions));
++		goto done;
++	}
+ 
+ 	/* Maybe the middle of the region has different access frequency */
+ 	if (last_nr_regions == nr_regions &&
+-			nr_regions < ctx->attrs.max_nr_regions / 3)
++			nr_regions < max_nr_regions / 3)
+ 		nr_subregions = 3;
+ 
+ 	damon_for_each_target(t, ctx)
+ 		damon_split_regions_of(ctx, t, nr_subregions,
+ 				       ctx->min_region_sz);
+ 
++done:
+ 	last_nr_regions = nr_regions;
+ }
+ 
 -- 
 2.47.3
 
