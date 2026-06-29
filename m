@@ -4,90 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E3E2C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E95C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:52:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 768056B0115; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+	id 992626B00B1; Mon, 29 Jun 2026 10:52:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F0C06B0116; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+	id 969F16B0118; Mon, 29 Jun 2026 10:52:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B87B6B0117; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
+	id 80D236B0119; Mon, 29 Jun 2026 10:52:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3334D6B0115
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:49:39 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ACE061C0CB0
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:38 +0000 (UTC)
-X-FDA: 84933234036.17.667A59E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 20114180004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9NuB6Qw;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4F99B6B0118
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:52:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BDF361C0AB9
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:52:49 +0000 (UTC)
+X-FDA: 84933242058.30.8B06D57
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 70BA9C000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:52:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b="dK4IOP/K";
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf22.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744577;
-	b=rEJ/lFnojSMPGa0qDMU8gEjR8pfzKC80+jqLZRSR7m0OJom40nDITsKCMIqtYBeySikmDl
-	XWKRLNgC6EMa04CXRm9npOE6UpJIl3vEDH50Io1YozJxoSBXA1WZz+nmk3m8z0DUF3G5lp
-	ArH3RIuBQpIrWkvLCYNwScxOrcRehWY=
+	t=1782744768;
+	b=SBFCHw0doNGZqyswubVWyZGkXCLuW09vRc61pSmtwbg3EXw1M/Q2pjipAGAmHqW5vAnywi
+	JbcQhWzsPaYpLszkS2YxtaQ5HW3s+KBpluFeJ2aYTe5lQRsj83fYAt7LCabhImdx/YTCKw
+	0c9bb6+e1IT4vIA2W46dFXjHPjQXJ6k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744577;
+	s=arc-20220608; t=1782744768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jf02Ij8O80K2A7ATECAqkrfhafLEEQ+h7n6pFX7YXCo=;
-	b=4BfVL6kzA5J1QhmIet0GatPaYP4RmiDN8P4Wm2PXLMVbyJOtndJdm4IryIpRlOS3LEHbNp
-	r7oE6xCJLvSiataeADupphZQNA/RJJS3FGOn7aYObJVhb/GW9bAkAF5huFYjf9DDKEBvY8
-	JKMxUvwVsAU1ljsYlnT7Dwg4a+bzIyw=
+	bh=KwYRkjNitWaWf/u5dgSEWkgJNU+anMwoiUn3RtlC/o8=;
+	b=JgmYwuPJ2yXNBnSzX6p81Fe4BH9YK5z+AdGKBVSdW1L9gx/4iWgpDRy47yuRaMr4JWIgDb
+	g/kMq5df+0//uCpUgqAo0H7puELFVlmLy5wqQZUoOdEOyG4Bj++7L1Lac/usAd2rt0VZIb
+	t/L3cVvPaJkMSUcw4ISc6BhRyPkm8So=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L9NuB6Qw;
-	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B9D78600AB;
-	Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354511F00A3A;
-	Mon, 29 Jun 2026 14:49:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744576;
-	bh=jf02Ij8O80K2A7ATECAqkrfhafLEEQ+h7n6pFX7YXCo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=L9NuB6Qwn+GuWe+S0bSEWS5lP/9JluIjXtyezwZmrVqdJhpwrre577CuWhH9pIF5I
-	 EgTUy/7NXimwhPPyophout9wNiSvN4ZjuVBRizCk/ELTPd9cEMYABojmHBrvesQ3HE
-	 KpCKaVFZkhX2gCNcaEfYqJQhhQQ2ZGKNEsZW/odAUP2tFyEVUOYC/8Bp2usDJVuTI1
-	 1k3RkNx1fyrcXd4VJvpGfr5hyDxcn3GUwqDZtcmhxjqRZm0qypctwOLRCSUSuSuqDG
-	 1DWdkOXAEMm2nCaJw+ozaPahHX2cvbFa8YtKDxIuh8Bt94xCQuP3O30wvu5tWyb0zX
-	 VZaSNd0x9zb7g==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Ruslan Valiyev <linuxoid@gmail.com>,
-	SJ Park <sj@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v2 2/2] selftests/damon/sysfs_refresh: test kdamond refresh_ms
-Date: Mon, 29 Jun 2026 07:49:26 -0700
-Message-ID: <20260629144927.134237-3-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260629144927.134237-1-sj@kernel.org>
-References: <20260629144927.134237-1-sj@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2026062701 header.b="dK4IOP/K";
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf22.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TEq8ww461421
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 29 Jun 2026 07:52:09 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TEq8ww461421
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026062701; t=1782744730;
+	bh=KwYRkjNitWaWf/u5dgSEWkgJNU+anMwoiUn3RtlC/o8=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=dK4IOP/KT91qfq5gAJIymtQhJ+E7dYNwkOpkGSFgllbgcpqTc3JKX058I2Bc1mJGT
+	 5BLtdRaLkOf7Z9bsdCGW+kuvm8/df5mlJJN/MZoc27YJbOHTNLPekPQf5MgJbsy8Xn
+	 U8JamV7JSNRvHsgOOrzydpa6ETrcW9OhWT93JyTS0BqVIxeeHrzGCt0uAlI+9VRGqQ
+	 ExcTM9VnV+hQQqnh3KHSNZaLRtr6+v1U5EwkwdwG+HkZmdV4IbOoNWndzyJ2nKsGCH
+	 oJ9iThzxy2YtJqCu0vqpdiDH88e/i4pFmGomxB7lRXrbqarENlhjcjPV4KNtXOCcHO
+	 gBaTKM+bA/uEA==
+Date: Mon, 29 Jun 2026 07:52:02 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Thomas Gleixner <tglx@kernel.org>, David Stevens <stevensd@google.com>
+CC: Pasha Tatashin <pasha.tatashin@soleen.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Will Deacon <willdeacon@google.com>,
+        Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_12/13=5D_x86=3A_Add_suppor?=
+ =?US-ASCII?Q?t_for_dynamic_kernel_stacks_via_FRED?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <878q7xspqu.ffs@fw13>
+References: <20260424191456.2679717-1-stevensd@google.com> <20260424191456.2679717-13-stevensd@google.com> <87zf0hgc3r.ffs@fw13> <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com> <87ldbyhatz.ffs@fw13> <888C322E-BF59-4C72-BFD2-2E71FD8605C0@zytor.com> <878q7xspqu.ffs@fw13>
+Message-ID: <7D930EA3-54D1-41CD-B547-8A2A69F89142@zytor.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4u1tc8qoz7ywynwq43mrc36fr93uokmg
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 70BA9C000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 20114180004
-X-HE-Tag: 1782744576-686208
-X-HE-Meta: U2FsdGVkX19dueswJpAujOoBL/DCldAZUirxZW5OshVDVdkG7taaA75hwKM/Nl1F52KeJtHJigYKe+wDmS5O5Juc8tGpcerSmZ3XKOUW+xG3YFRT2kTlrfPrv0zoJLtwH6+7/OOu0YipGfe0zw0v+Wo2KYPaFuxq2O7u8hi0yvtWj/xcndJ60PMKnvEwcA9Rhthyct3R/7Niw5n7LCD6HVhjhaw+KQJ202dbVJMYJdpnj0JdPoyKL49gjLuQQWQqNrOWrgOkgFZ3uKHrQ04JzX0kMvz2ZjTjolH6Zxmzf3g6gfVLU4j+kqhKoCZi7rMp4PRo9P2at9izz0Pj+1b8k20Vsu8/wpgaclTcwjdNR4YQdqQJHdnAX5ztvmEZ++phKsOLc3ZDMurdWTlr1KrR2mqEYLuxoG7xIMaLK23xOXwmAOBpJdE2/dLQr98R4Q8Vt62WyCcMx1/1t5PTKW97AB3kBbutSrDdbT3wKSc0CVlHtUDr7oiPEmiGDpTZ0PKwjw5GzYUXFuZbGHhLTRsiMD7ma3fE+cf8Nm+i/KRPgjxH1aaDEEkxpYqGpLSZGx3PFgvIJThwxd1oGXw00swKMLTlAhYxQU6cdCv+VLrxKfe4texbiKaGqCHv8iyO02PFizpo1hOsp0fV/03L632C3Bb5ZuYiwR8oBgiK2B01sRFvhAW1K1IdtsvCB7ui6uFilHNV7ENFqXlRKJ5zPdKvTrbDs/u0OF1h6BKleEJoxvxNGhVfJMWcY4It5hElq09wh57pOWmfAeIhQ50c2kUgxVStypqWfhNudFxFt4k4FeMIXsc8LrOhL8utZM7TpT2/UE15sv2YX/lOXENnmDxfg9TMMbSMfvFiD1Rxm4XNzKj4AyHvWvDRX/voeJ/BUyqIMkH93XIAMliYPx2s/HMsh8F//nTF7XeRe68ZDXMr3AU1zOYxi0UCS54gLihfNooRZU0txLDCFKr8fhgkz1T
- 1x6mKfB1
- Lfp6tzqilz9DJrm/Y//YQC0c+FbSftskOzGbeKRAPQB010OzumIfXzcRqlK9Cclcde9vh1HUGSpv0GcgEfiCeQb8gw68xjeVNtZhLKqjiMd0oSxmms0bU/SX6LbtpaeL4KWwP9j1r8vTJ1qMqGoOel0TkmspFSaCLtskYSzNW9rThqFWsoUBlTnoHJJCpw0Wp9YVejtyL/pPGwXzbxUcLN5uoJwBNqlqRULa8SiYh1te2SxVS/No5UxYy/K2EBiyZRFjlFgMVoyCcoKQDgTACX4Jemtn9cAkOxGkWKG3W5cdYsPI=
+X-Stat-Signature: pcffncd7gw3se3hpuoo4ounh1rd3y55o
+X-HE-Tag: 1782744767-619539
+X-HE-Meta: U2FsdGVkX1/xJITaaXiZyjSse+Ga54ZOfeg8K1Bp3u9iszTdFcEZJNUmu1Y+KBZMINFfYe6IViu08iDJSTsNl4kdvYePIs5SCTQ/rSCKYwV9gdmKCrODML/RqMg6oswZGG0fxI59DnKQbL3jyCECQlqU5ZW8jfAzNUTtegUiHH/d6VdG0KIJzyQ+8pOSmGcvyJJxQ+hvIha8TWbr/htxUYgFJUinTi8rf2qvjEQMqrNheGSu3LJPcIBrsseTIaE8o+g3hqpPtzosH/JWadohXzz7s0gV+Fs777eUleMEkuEAfaGtQ1iiuPvXIngpfmVENpRJCIH/aqmuGcZU1mDWNf9mOpT/D0OafcYtOKWJd8sj4FYJtjlFVi0grq+pZoRBCgCPfB6DRaTN0AHSU+nWDiV5h4ct9I1gd1p9OCiLNa2xz4fQj7m7kHeCWC7pZ7N+epQ2wE6sfEFjONLfeRGGdZ49uLpQh84HVdSKrHrxpf689NtsEEGD0FwaC+CpJ/0i0zVDSG2h+SVwuWkDtpMa5zeOcbkVXlSZvnySPUbh/a9uHTbsHsWPCiBEF4QIr7t0C5ch2kNTGIkXQ3raBT42ng+YVbifiJm3uI+X8s1KGUOGcLLratM1XEx+Ml0f8kB735WWLp2rFhsWpHz1eU4lRWfLMlb3a40UC6CAaRe+fUWQJjxWaNQ6wpddiOK1ORiLn23kCf77L4ntMx/z1nbNB2wPJk9pkHioWoohrY7R0PtJX+JdFyJWZ/utJPUzW7BhV/NhUoXZTrhJg7TxNYKyR/ItUgMxlj99uB5/+tNfwj5J2/egQyCyyGfUFfKcoMxD6WfF0waFE7fjGljG5teNW0mB8KSyUxb//wkvxzRY3yh4ldJhzo3093lmvuh/O9F5WjONCxcJcbSP9/fMrZwhXQ+YV1jSBoHjRNx/pa8Tide08gRkP7vsQokJSAap4yinGn3p7yX1LiN+EmEJ2WB
+ 3rZckxzw
+ 0rq+IxerSzctrGqn0Ie8YAykVTgz9X/FZOg1tPAYB4mAFyZ/326yHugGOU/0JeFEjal0TrnXJklX1zQt8AE6DiAVYJr4MRWzHqElfDCW4JED56j1MS4zb+pS2b+roIz3pN8r/BYLpo9Nm6Gt20SDBOqphi2Oaoj/39C1hzSKNVolC0YUFNjfHPWJv+1is75broXVXP50keO9vrzWR3ZX5IV6BcUblhfW9QWGYTP8mLfOa+WXSlMHJ9ZbZQ9JrYtFJdHN45acXudXM+fkmee/NTCLHMTbmDw2CFAEDJCm08QPbiKm32K4tC9xam4TTybDEeffY69xogHLRar8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,124 +108,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+On June 29, 2026 1:41:13 AM PDT, Thomas Gleixner <tglx@kernel=2Eorg> wrote:
+>On Sun, Jun 28 2026 at 13:33, H=2E Peter Anvin wrote:
+>> On June 28, 2026 9:46:32 AM PDT, Thomas Gleixner <tglx@kernel=2Eorg> wr=
+ote:
+>>>> That sort of fault would probably end up either with a
+>>>> page_fault_oops() or risk a context switch with SL>0, but we shouldn'=
+t
+>>>> make debugging harder with UB=2E
+>>>
+>>>Definitely not :)
+>>>
+>>>You can avoid quite some of the problems right in the ASM entry code=2E
+>>>Instead of checking event type/vector and then going to the stack switc=
+h
+>>>logic, you can check the stack level on which the event happened
+>>>first=2E If it's not 0, then there is nothing to do=2E
+>>>
+>>>
+>>
+>> To be fair, for this *specific* case, memmove() does exist for a reason=
+ :)
+>
+>It does, but why bother doing actual work, if you know upfront that it's
+>not required :)
 
-Writing a non-zero value to a kdamond's 'refresh_ms' sysfs file should
-make DAMON periodically update the read-only sysfs files on its own,
-without the user writing update keywords such as 'update_schemes_stats'
-to the 'state' file.  This behavior has no test coverage.
+Of course=2E=20
 
-Add a test that starts a kdamond with refresh_ms set and a 'stat' scheme
-whose default access pattern matches every monitored region, then polls
-the scheme's 'nr_tried' stats file directly, without requesting an
-update.  The value can become non-zero only via the periodic refresh, so
-the test confirms refresh_ms works; with refresh_ms disabled the stat
-stays zero and the test fails.
-
-Link: https://lore.kernel.org/20260602131217.2210912-3-linuxoid@gmail.com
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- tools/testing/selftests/damon/Makefile        |  1 +
- .../testing/selftests/damon/sysfs_refresh.py  | 75 +++++++++++++++++++
- 2 files changed, 76 insertions(+)
- create mode 100755 tools/testing/selftests/damon/sysfs_refresh.py
-
-diff --git a/tools/testing/selftests/damon/Makefile b/tools/testing/selftests/damon/Makefile
-index 2180c328a8252..ece244e5c5b95 100644
---- a/tools/testing/selftests/damon/Makefile
-+++ b/tools/testing/selftests/damon/Makefile
-@@ -13,6 +13,7 @@ TEST_PROGS += sysfs.py
- TEST_PROGS += sysfs_update_schemes_tried_regions_wss_estimation.py
- TEST_PROGS += damos_quota.py damos_quota_goal.py damos_apply_interval.py
- TEST_PROGS += damos_tried_regions.py damon_nr_regions.py
-+TEST_PROGS += sysfs_refresh.py
- TEST_PROGS += reclaim.sh lru_sort.sh
- 
- # regression tests (reproducers of previously found bugs)
-diff --git a/tools/testing/selftests/damon/sysfs_refresh.py b/tools/testing/selftests/damon/sysfs_refresh.py
-new file mode 100755
-index 0000000000000..012b7e8f509f5
---- /dev/null
-+++ b/tools/testing/selftests/damon/sysfs_refresh.py
-@@ -0,0 +1,75 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+import os
-+import subprocess
-+import time
-+
-+import _damon_sysfs
-+
-+def main():
-+    # Continuously access a memory region for far longer than the test needs,
-+    # so the kdamond always has a live target to monitor while we poll.
-+    sz_region = 10 * 1024 * 1024
-+    proc = subprocess.Popen(
-+            ['./access_memory', '1', '%d' % sz_region, '60000', 'repeat'])
-+
-+    # A 'stat' scheme with the default (maximally wide) access pattern matches
-+    # every monitored region, so its 'nr_tried' stat increases as the kdamond
-+    # runs.  refresh_ms should make DAMON update the schemes' stats files under
-+    # sysfs on its own, without a manual 'update_schemes_stats' request.
-+    kdamond = _damon_sysfs.Kdamond(
-+            refresh_ms=100,
-+            contexts=[_damon_sysfs.DamonCtx(
-+                ops='vaddr',
-+                targets=[_damon_sysfs.DamonTarget(pid=proc.pid)],
-+                schemes=[_damon_sysfs.Damos(action='stat')],
-+                )])
-+    kdamonds = _damon_sysfs.Kdamonds([kdamond])
-+
-+    err = kdamonds.start()
-+    if err is not None:
-+        # Kernels older than the refresh_ms feature have no such file; treat
-+        # that as unsupported rather than a failure.
-+        if not os.path.exists(os.path.join(kdamond.sysfs_dir(), 'refresh_ms')):
-+            proc.terminate()
-+            proc.wait()
-+            print('kdamond has no refresh_ms file; skipping')
-+            exit(_damon_sysfs.ksft_skip)
-+        proc.terminate()
-+        proc.wait()
-+        print('kdamond start failed: %s' % err)
-+        exit(1)
-+
-+    scheme = kdamond.contexts[0].schemes[0]
-+    nr_tried_path = os.path.join(scheme.sysfs_dir(), 'stats', 'nr_tried')
-+
-+    try:
-+        # Poll the stat file directly.  We never request an update (e.g.
-+        # 'update_schemes_stats'), so 'nr_tried' can become non-zero only
-+        # through the periodic refresh that refresh_ms enables.
-+        nr_tried = 0
-+        deadline = time.monotonic() + 10
-+        while time.monotonic() < deadline:
-+            if proc.poll() is not None:
-+                print('the access_memory target exited unexpectedly')
-+                exit(1)
-+            content, err = _damon_sysfs.read_file(nr_tried_path)
-+            if err is not None:
-+                print('reading %s failed: %s' % (nr_tried_path, err))
-+                exit(1)
-+            nr_tried = int(content)
-+            if nr_tried > 0:
-+                break
-+            time.sleep(0.1)
-+    finally:
-+        kdamonds.stop()
-+        proc.terminate()
-+        proc.wait()
-+
-+    if nr_tried == 0:
-+        print('refresh_ms did not auto-update the schemes stats')
-+        exit(1)
-+
-+if __name__ == '__main__':
-+    main()
--- 
-2.47.3
+Then there is the very open question if this thing has legs at all=2E I'm =
+still interested in using SL1 for the interrupt stack as I think that could=
+ be a performance boost=2E
 
