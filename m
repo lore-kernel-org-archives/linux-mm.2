@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4564C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9B9C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:24:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B89216B00B3; Mon, 29 Jun 2026 08:24:34 -0400 (EDT)
+	id DAC896B00BE; Mon, 29 Jun 2026 08:24:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B625A6B00B4; Mon, 29 Jun 2026 08:24:34 -0400 (EDT)
+	id D112C6B00BF; Mon, 29 Jun 2026 08:24:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A28AC6B00B5; Mon, 29 Jun 2026 08:24:34 -0400 (EDT)
+	id B61036B00C0; Mon, 29 Jun 2026 08:24:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 719266B00B3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:34 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DAF851C3782
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:33 +0000 (UTC)
-X-FDA: 84932868426.21.69C1579
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3DF63180003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbRlBt02;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 744D66B00BE
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:24:37 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E669A1A0509
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:36 +0000 (UTC)
+X-FDA: 84932868552.06.60A244C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 37DF61C0009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:24:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgZY26GF;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735872;
-	b=NDD7bcbaVHgX5buD2ABPPr78OB4CoY52gKy+b1HBdF2I7TvSv/4KeAgHUxf5AMHDe0EOeL
-	2BeOnUYihC85P1HWEOQUJ3j/3yB40tGVqVmRAZjaeT8XbpbkgOxp2Zq3osONAtbeeuWHs/
-	qIrtYyvOPirJEvrBysKpROuFHPjv4bU=
+	t=1782735875;
+	b=UFFgVeWcwuXgaPZw4nBIHwQX/E5G/QgtvGB57PxHl8hSba6396MBaDvvxJ4e89zEqG5XLO
+	K7viYviI1pcF1eDOv+f7jpOxEmZbu5xjO/2SIiI6f2R3JCYJZiMRm47SG4Q4tozd8YfNV6
+	KS0h5P6tE9CsV4sUpYALDY68QSAHOzg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735872;
+	s=arc-20220608; t=1782735875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDqHHLYLI8SULeQcrQbbmm1Xqv4SbCojm3yMjIkoYS4=;
-	b=SysTzKtooQ9B8JM2CC96mb3KX8i0SnJmjyF8kKtGc1DlTGNxps9fxPNFj+MOB0bIDhwtLN
-	otir1h1AlRcqlC3kSQGYSLjMql3iMGCqtQpphFKYJdvMCkXRk47PjRQka+ttWP7OiY+CUh
-	/UpMvgFXIMT7y9Hu65DUE2qPPAJgumA=
+	bh=g8hFMC27gURJNhB6p0eY8jCsWeWrDR4QrXmiBvTta7E=;
+	b=QNonCsF27wzKK1DxcX9O5eC2byGCmZK/APMZUt6DfE9LHzXOIn5tGqZWnemNO+n63wj7qO
+	5yEZzQSNNMgOkBDuPL9SXwaBIR7qVRT6lgdIZ451J41eH1NwhHfqqtH4s97olOnOZklcHq
+	pLOJhVsFW7KHzDFlpVN2Ucyfc92pYbI=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gbRlBt02;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RgZY26GF;
+	spf=pass (imf20.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C3636600AA;
-	Mon, 29 Jun 2026 12:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55091F00A3A;
-	Mon, 29 Jun 2026 12:24:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7AAB041A2F;
+	Mon, 29 Jun 2026 12:24:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90B261F000E9;
+	Mon, 29 Jun 2026 12:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735871;
-	bh=lDqHHLYLI8SULeQcrQbbmm1Xqv4SbCojm3yMjIkoYS4=;
+	s=k20260515; t=1782735874;
+	bh=g8hFMC27gURJNhB6p0eY8jCsWeWrDR4QrXmiBvTta7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gbRlBt02eZV32vXAx1N9ysOeq0S6bwI9Ce2BPgKuRfpVZlRZdgJ+Rc9bshTzbaA/Y
-	 W14Sww3HyjEdedsUcYMcpQ9oUG/ausaLK7qwWO/ObfDuCVFHpJi681zlmHI1oY44qw
-	 JuYWfnS14KRRMRCqN6X7rVTIgwoB+b+Q7CFljrLUmX4CHXFe+lXtsfDfiR+NpSZg/6
-	 VFAgvA186XL/RNO5OBNYDw+9qoiTSPd1SJA4VjVv6xPifTqqwKvmIhr/L00cadwwD/
-	 Av7DzDW/ixy/Z1oRx3ExXlGkJB1de3WNQx1EoGzP7SZH1bGKaVpj5CUFZ1WpGLIrVF
-	 Z+35Yut2os7Xw==
+	b=RgZY26GFPwRTB1pZ7k8Hjrkht1yhlMQPpzLMXpSHyJE/iJGDN7j65pJ81hC/gtgLX
+	 TIXGR9Pmq2Hxctix/kWtNogsZ/VpxS9rEtLqkjyg+2gCc64vbLA1kjiihuPpSGgVqn
+	 5JE/+voej08NE9+VTMp/13Hp/4FeI8UWueVZot/5DzUfLHtSYw42SyKNlH2Be9bcXj
+	 S5L9pNn+ueyRVBev/leVYE6cKXlQlFTi7KLCH/hDrN51Ijk2orVDyg60yHbU+yCkn0
+	 GD8zPsNv+frXWvkaGHFxjbjgZFYsSeY3aqb2c33rePaO6yVCRySC9q7kmsMnG53f98
+	 8frGbDucBM2cA==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 12/30] mm/vma: clean up anon_vma_compatible()
-Date: Mon, 29 Jun 2026 13:23:23 +0100
-Message-ID: <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 13/30] mm/vma: refactor vmg_adjust_set_range() for clarity
+Date: Mon, 29 Jun 2026 13:23:24 +0100
+Message-ID: <ada7972f49ea7f1ff1df6d11e4651f270444f8fd.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 37DF61C0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3DF63180003
-X-Stat-Signature: ix1n8twixtqo1qs534xt9gmipphgxx4h
-X-HE-Tag: 1782735872-265830
-X-HE-Meta: U2FsdGVkX1978e1odQ4hBTPTHgQJWgDJKi3ciVVIW3ynBxFPHrPRNFnRvNPWAnbVj1aOxGVLtXkvjqUYmvc5Dc+SmZ0svK63Kj8SbKcgkc8nS+iZ/D+doi7KwXTGh4Ss5TLJq5CkOHNgguEoatT9CN/2W/DFgFRUHxxEvvTxWVqVzRtaXhm7Y3mSLzq/vHR7ckaCF4rcd2PxdmHnEp8pwCChZ0ZgdAGJGhDhCEeXkZZY0qQMKj1Fu6yR88YqlGIOTjJtwgPOX0L5+vyiUqqZIcaZCCzGRyLa3qFGTgRjdfdlLwa35c+mqlmlIpTlcIJFrJInv+ywn2VSwe+sUgJaCVJuFsmttu8MVGT0b63LUQWkx9HUvgxIXdmopvAd2IhYI4wb4KnW1DIwnIZQYWm60VbRae6VyBUI0U9UnHKrpi2IOuPIkwMOGRNKtw3dhUnt4SKRven4gI9aV4dLi+aA4kKdYB7EgxwWU9q3o8Mpuq4lce/5oNkjaamptdGBiLz3i6SsexTUfNY2KJcTIEF28iYSxsALGo4Zan4iYys3OOhlgYSOUQygv2K+u9Y1/1Up1BiO28eUC/+dbl2GQ5YZ63v4jb0eE0k9ZR1pEDnq42BW3z4SgiVGZ3t3NoTUEZc1Xg7GC/gEEgcTYFW0N2lsphKAkEDOPmy1H7YxAsnU5ZQc+nVom/h6AL5s/7eZoJ4UyWLPcJqw18F3ZxeAJLGhqY317zjMvLERf/Ibv2zvB7p9TNS3LV2jI5OewmiZvsVkIliX07hcn4Xn7Vnv4W9bAb70W9jQxoNtOjx5YZu8R0QVQ98EOGZ4ggzagFnrcA3ZTDzDiNSa6lqzMu7DK6BYe8H+/VRm5qAJfl/8uiZQz28UNaHU1BVJUBeL0DGRLDdRhGO6CVc45/Fup9OhLmE9cHWanxNJFbaMDw5ZXtyvsbacV2b0V4ZbQmArMMkkK3m6qOKzAndZkCvNKLMQryw
- wx8SOctb
- V++gJBqwoTpERp+Caa0v/hx8CjJ+KTQdM18XnYBivB9BJ9WyNBG/1AUvXJkW+s6blnXecJWLmMO30QrwTeTP7uaLgotzEbWhvB6+MshAmjcUtwyt66EQNEXX+FVpS9NYbuPdh9jUgis+GKBzvmpJhaB+oxCZXqsbsK/6cfSxJ8u+2etSzYQ9BUZt181BW7pVC1CjTQXP55d9HmYtJg+Yru/AnK5BUuHEqx3WBrhMivWezG0rIP9xeoX5dAr78DN5XKV1v4OO3d/pg13fd1SGTxxucVPBgo9ziFMiZBmIvptgfGAxr55RZyFRE6mfW6ewGUeIBQb06zpn/3fk5g7M4VFkBAyqQl4Jl9QeO
+X-Stat-Signature: xxcbodw4gif6niygcn3x5awzw6tydtem
+X-HE-Tag: 1782735875-759661
+X-HE-Meta: U2FsdGVkX18cAGWMV9zkqv8t3YEVGcO6LowSEl6i7DXZYePBtpLz2ffIv0wQlX0bWqjg/Ur2xKcBgUToPKDQh6NpmoemzjugVy2xDGBkUoTc7dZME0XfiLUuNuFdu4cIsUKaylOSCAapzlyYQC870tmsMH7DnjoR+eS9n6rjIjDe9k6Vq6iE3VtTMA2FJ5+QmxYhzJz47Jcp2cRJsFfadeVGcdNPFDrq6v70bYywmZ93/8UN2MHTLYPNh86G76O4/6Gscm7PDVRc0dv0dnPFUsrbMfPQWsjuDsef4jWR+6nB7qEz1Q8U4lK/ja9q8N1M0mWEuDgSNtmWW7kbZHaNupZCl4sctu5hadCsKQ0/GwkA9hmGLg3ZAR/SoFEXjcYrCDvqGu3sL4EX3NLPnlnkJHrXZIoTtI+hfH2D1Ab7iDD+ALfDoF51aH9WPwBj45EJlVMCxd0j8aCz56HeVA8Zm7CVjbTuiE4rsihlflzdgNjAaV9VW0lUvGqqZE99MZsOljKQwfO9s9lr/YVkngJKJCgXr32U1toJIibloIaYeBY3x/bBhH2D6AHhuJQE5DVvxG1qkGKhN0AX98FKirqXFLdyCDSwhbguywhFhgxHmo888jOvxGpHF1iHfBeY/QzoDySQr2L1GMclVxQkOJdxC9NQihsZBCxsGt2X7w57cXjtwzw6pEuDHTAI90RlVaClRgmdSUuoPdeRNCZ1HpF6+VG1FqcBGjPVMpO4N+8wBgEG7X9ejJuaDKkJuKowhZTMjWUuc2r4+FxHNbKatINqDp/MIlg7G0YmX0DKp9DYd+Ay1lULWROb7J+axuJQHJilPmDB1FLhOqRBGhv83aScrnkaGFOAPEcnBKbNYmvaELrJJo+otME6bUpL/MZMWX4Q9sAmYWuq8nkDCg924ft/r0vUZvZtrn65huCRplAPbwmNeQ+IHfoxIpu9+kHld35fpYJvnCahKstayHT44a7
+ l7c/Cvr2
+ rEXBrM3yQgdjoNmxGB0Pzq+Ftzr7gAhdROzhkQAjA7hDarca4xo+ecvjq9REi2BvR67pErOUuNXSVGl+9Od4dw4ahPyh4iydiNfjlWJTKi560Gbah1s/y5Hud9nYIbs6BqvLQqwf0ljUBaXyMMkMll28Qk5CMuKSatqdTBFlVLoadTuY8ovW9neNeKPCAsvQ++AYES/r91pdZeorbZXwFvoH5gGYdgL+1QXrdQurlnZevf+jx6zbgP6XmJY7IePw+fIYiBwcF8oK3uDrWoqSY3xKO4K2rthP8Djb1tt5NDcOoPxYeXVwZzJRAAZOUOmdOF1QGbp5vfiUyp4JU/CIIRfu9DZ/cBzHBdbrB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,51 +162,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Break up the existing very large conditional, add comments and use
-vma_[start/end]_pgoff() to make clearer what we're doing here.
+Add comments with ASCII diagrams to describe what we're doing, avoid
+dubious use of PHYS_PFN(), and use vma_start_pgoff().
+
+The most complicated scenario represented here is vmg->__adjust_next_start
+- when this is set, vmg->[start, end] actually indicate the range to be
+retained, so take special care to describe this accurately.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- mm/vma.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ mm/vma.c | 51 +++++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 4 deletions(-)
 
 diff --git a/mm/vma.c b/mm/vma.c
-index b60375c6c5c3..6296acecf3b7 100644
+index 6296acecf3b7..1e99fe8aa6ef 100644
 --- a/mm/vma.c
 +++ b/mm/vma.c
-@@ -1967,14 +1967,25 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
- {
- 	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
+@@ -704,11 +704,54 @@ static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
+ 	pgoff_t pgoff;
  
-+	/* Ignore flags that mprotect() can change. */
- 	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
-+	/* Ignore flags that do not impact merging. */
- 	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
- 
--	return a->vm_end == b->vm_start &&
--		mpol_equal(vma_policy(a), vma_policy(b)) &&
--		a->vm_file == b->vm_file &&
--		vma_flags_empty(&diff) &&
--		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
-+	/* Must be adjacent. */
-+	if (a->vm_end != b->vm_start)
-+		return false;
-+	/* Must have matching policy. */
-+	if (!mpol_equal(vma_policy(a), vma_policy(b)))
-+		return false;
-+	/* Must both be anon or map the same file (MAP_PRIVATE case). */
-+	if (a->vm_file != b->vm_file)
-+		return false;
-+	/* Flags must be equivalent modulo mprotect(). */
-+	if (!vma_flags_empty(&diff))
-+		return false;
-+	/* Page offset must align. */
-+	return vma_end_pgoff(a) == vma_start_pgoff(b);
- }
- 
- /*
+ 	if (vmg->__adjust_middle_start) {
+-		adjust = vmg->middle;
+-		pgoff = adjust->vm_pgoff + PHYS_PFN(vmg->end - adjust->vm_start);
++		/*
++		 * vmg->start    vmg->end
++		 * |             |
++		 * v    merge    v
++		 * <------------->
++		 *         delta
++		 *        <------>
++		 * |------|----------------|
++		 * | prev |    middle      |
++		 * |------|----------------|
++		 *        ^
++		 *        |
++		 *        middle->vm_start
++		 */
++		struct vm_area_struct *middle = vmg->middle;
++		const unsigned long delta = vmg->end - middle->vm_start;
++
++		pgoff = vma_start_pgoff(middle) + (delta >> PAGE_SHIFT);
++		adjust = middle;
+ 	} else if (vmg->__adjust_next_start) {
+-		adjust = vmg->next;
+-		pgoff = adjust->vm_pgoff - PHYS_PFN(adjust->vm_start - vmg->end);
++		/*
++		 *                Originally:
++		 *
++		 *            vmg->start   vmg->end
++		 *            |            |
++		 *            v    merge   v
++		 *            <------------>
++		 *            .            .
++		 * merge_existing_range() updates to:
++		 *            .            .
++		 * vmg->start vmg->end     .
++		 * |          |            .
++		 * v  retain  v            .
++		 * <---------->            .
++		 *             delta       .
++		 *            <----->      .
++		 * |----------------|------|
++		 * |    middle      | next |
++		 * |----------------|------|
++		 *                  ^
++		 *                  |
++		 *                  next->vm_start
++		 */
++		struct vm_area_struct *next = vmg->next;
++		const unsigned long delta = next->vm_start - vmg->end;
++
++		pgoff = vma_start_pgoff(next) - (delta >> PAGE_SHIFT);
++		adjust = next;
+ 	} else {
+ 		return;
+ 	}
 -- 
 2.54.0
 
