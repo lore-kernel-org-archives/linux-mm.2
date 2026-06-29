@@ -4,94 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21ED1C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31FAFC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:26:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A67116B00F3; Mon, 29 Jun 2026 09:24:55 -0400 (EDT)
+	id C7FB16B00EF; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A2FB66B00FB; Mon, 29 Jun 2026 09:24:55 -0400 (EDT)
+	id C306C6B00F0; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96D9D6B00FC; Mon, 29 Jun 2026 09:24:55 -0400 (EDT)
+	id B6D4A6B00F4; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 694996B00F3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:24:55 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8D67C011D
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:24:54 +0000 (UTC)
-X-FDA: 84933020508.06.A4BFE2F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 4E3971C0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:24:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McCDVAlg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8DD746B00EF
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:26:47 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A985A0101
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:26:47 +0000 (UTC)
+X-FDA: 84933025254.11.B60AA39
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6D522180002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:26:45 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hyOkg9Oc;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782739493;
-	b=w+lkvNyiOIIlfrU2wdpvwmCHqfAH8kWjc6IuGmmNQytcGjmHEqDA5IC8eqQ8AgK5PqN+97
-	XMfPIt//K4JLsrhVkLi43kxVrBCxKatWEu/36lBwm/0x64ZYNWyEkdeCovo0gx18igS6Yi
-	/4NJPbvqbj1I1WdzqjvXYOMP8+L7GSM=
+	t=1782739605;
+	b=V18BxbJL0gNJJ9OXjhPJzkzNCnBKNJgJ5u8wUdnQipPQpdDMtHs8C4n+54nLcjfns/+n4e
+	tTjqNy694YzNnJD6ydeELa0JkX3KEEXwPDfhhTrEG7uAe7GC9LbjCBswoFEP/oJbyZ6K9y
+	6NL2q+v+NAXplvQIm5hTSSf7bz8vLLQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782739493;
+	s=arc-20220608; t=1782739605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HOUoznpXkigmh8oYSHGFoXWsuDrCze7tnG/NPKBj+kI=;
-	b=wlSyiUPcJavA9ZIJI09hJ1uzu71LuhAcdzZnd41d63hodn+Cz+Q45lNDfKQILeozFn7fWC
-	PgACHE0VInNJUSVDoWoDcoQFY+nCUDiIyxsva53CzMpXD1H6VdNgQ5MY70Lby59rzHZWgQ
-	/oKdYfx4tTg/Tw48jhU69fiYRmu2GYk=
+	bh=u8ULakCzLsWXbut5dk0qJu4BUbPuCQCs0oXe/SzVkos=;
+	b=d5QCdxSEZ0+rUK9znnXwsqRH8c4E5V0fnYjbbk4KLBKWVP6w/95zzkHoDnTqMe/AxTVaE8
+	mYVD4TCBfBnfjlh/cDf3MzYipgprcPrblZjiGOF384B+VtOjNASRIUINHX8ERlx6cDtPdt
+	o1lrBThcbJFwOXzUkmlvtuS96Hw9AUI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=McCDVAlg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hyOkg9Oc;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CA6F26001D;
-	Mon, 29 Jun 2026 13:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1DE1F000E9;
-	Mon, 29 Jun 2026 13:24:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6014640B0F;
+	Mon, 29 Jun 2026 13:26:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C7C1F00A3A;
+	Mon, 29 Jun 2026 13:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782739492;
-	bh=HOUoznpXkigmh8oYSHGFoXWsuDrCze7tnG/NPKBj+kI=;
+	s=k20260515; t=1782739604;
+	bh=u8ULakCzLsWXbut5dk0qJu4BUbPuCQCs0oXe/SzVkos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=McCDVAlgNmf7hxH7+bscDwPdkzmimscS8MZcUXGzbNACev9Cbl3/Gt9n76Loyme7F
-	 F9wUCbQhG+nVhWV5Ql/rgHXwXLXV/9VyiaGG/EaWBjxU2bAxDmZpHm88v6YFe6VAf/
-	 QjL4XpEKAOXjFB4TgArmSN/Ado46MJHFKNF9J1ACGdm2d3rZRAuUP5QsFx6p72psSs
-	 1q+34rIl9DucWrn+soFGmXkJYH2WrlXVPo3I1DkNW/iW22L76x+NthU9H4lYFo6LpR
-	 9mCsw+SAWrkLKblgk3xNkOPA40CvzUaJfSYgT6HyMpl/YV44A8zs3S24rmLzFezFGq
-	 tDn4dutzhZWBQ==
+	b=hyOkg9OcJ2pdQbr3lKDnJd3n10vcR5hkZ12R70W40Tp+M69i1hJFYPRp/7+K27rj0
+	 fm+4ODdXl/T2Aw1QEy+xihsoycDNcycYmv/RcxbSY0u2Nzp+i72Vj0j2GoLeCGypb+
+	 H/CJqlp78ubNiCpI9a8RPFINrH0M7Gk9YIY33+wvocGDXcQoyGZVSYlDjuVWCZ4PTG
+	 tEX3XQlU+iXk72Q+i/rVNPXSVYbw4gZsXD0yBm7fKGzMwYMG4aZ/1CwW4k1RuCgBS8
+	 uWbmr0B66Phk3fM/sBsFQQeBKWbpOZXSQfbuX0SXzU3Emg2kMzVYGEHYrL7Jv136gi
+	 tNVWvCFiMYR5g==
 From: SJ Park <sj@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+	"# 6 . 14 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: s/SeongJae/SJ/
-Date: Mon, 29 Jun 2026 06:24:43 -0700
-Message-ID: <20260629132444.159703-1-sj@kernel.org>
+Subject: Re: [PATCH 0/6] samples/damon: handle damon_{start,stop}() failures
+Date: Mon, 29 Jun 2026 06:26:40 -0700
+Message-ID: <20260629132641.159851-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <akI8_W0mnQHhXS20@lucifer>
+In-Reply-To: <20260628214900.243ae17b910c18a4434036d7@linux-foundation.org>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4E3971C0005
+X-Stat-Signature: i84hsgiuzw3rajaakj1kehguci9z5nhm
 X-Rspam-User: 
-X-Stat-Signature: kb61xqtyfajj81y5o7qqkicx3sm7m3rt
-X-HE-Tag: 1782739493-43060
-X-HE-Meta: U2FsdGVkX18WzD4KjYa4g2WMPWVq+0tOwtJ2ZBejsKS5+MqZrv1TwrfG/Xu7hfshyBOQM1AHokkleUgPgMRezB1ej/snUP1ntqynm+VJSv35Zup6W6Sbhc9drTu0zkIheIpSxY0+iKgpHZca+I9IrB+51L07qY6fpojamcxZA+16DoeaY/LLggN8fD8ZZ6c2z3UuzKzcYqqvB9i7IcBLqafuFym+4Adijp4EL1qmUJECkXy5AJXeasq286B182N8jVYCYeT8buPPVc1ZqPGXjr70QxkdjLD50oMoDcRMoF5VZfB96odwHoAXfZhqYY7DoTftZoaDBbrr1GCu4vh5oNCjMZsxcBbOvtZwncdy0wGakTC29wjywXleCXVQocFst+RN0LNPqp+fc42ESnL5BkVlX/T188f025+gdTd22/WFAMNqo/LL5gb1toA1WsmzeVWTlP0ag0G4XBn9iG8YVelFkKk04VlzHvpY0PEJ4swEeUXa8LJskgzL+k+SdB3WG12A8uR641TGmEfDgX9ofw3POfAHR8CVcce0B6UER3U3cr6CXIONFgrBM9Y3S2CpB9vCS/J0jy8/8207LPT4tnbCYC6B/HLelo2ikDX/BcNMQwAVQn5CV8NtSxH9DMT6hwt+yfiuBtsun3Z64o+BPdQvo2uvyTVXnj7j8+zjseDnVaH7NW6YFvD3FIjtJobAfzm9PmwUDoavbV1NUWUkDyEwDHAxdrpOG/btDoKHikR+23DUXssDEZGiW4IRd274R+Kgda6crTBcECHrv/UHWU808abKaYTtYMZSmFu3qvHhCkQ+A3i/PTsCpSLURLXzPyKpjc/UFRxOikRrFCm7Y1q+2rf7KS7CrivdZf2svRSrl7RjNgpe9AbAv+BQ1iuqke6soIVMo8X4BsDnX0luNZUgXfSJGY7Qtq6Zk3naRTXyyUG0kqtLrnLUL73XrzMivYxSccP6lQSfRUgDhRG
- VkolvtmY
- FSmz3bzVTXRJRWxpdZToTtzUy+H3ppSlwA6hQWVToC9pYXs/YGne95u9gj0+cN/GIqEWVc1VXC/8Pe3S4XaFk25w8Ev2pVfBOJ8FLK9Nj+1i9hutBbGtg1mx9ahAw0e/jqqSpv25UYN+PjV9DW3TjIyCfeZtpHhFsBTGdVYYsKxnKxtO15EdpZq6ZdUuxuv7o1ZlaCGnmcja7wwxV1zdlWX4ApBc4oSMOBOV5VgBw0KZG87o=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6D522180002
+X-HE-Tag: 1782739605-663489
+X-HE-Meta: U2FsdGVkX19zsPS5iqhLg/unpRkbd9ataGqC7ndqsoo9tPDo/DXxaOEuO6dp6E+OCigTz6C7WepVx/UD1amF6o2TPL7stnGnSuY+QvHrpzZb4Phq5PnGidLuNjs4nC1VwOtJ6jfHh+LjLR1hpI8mAvmv/fX4Whp9yEQSZoPdSRfx/9n6qV4Uc+Y1XIVluQsSq5cctRoP2QHmKjteAB/15g8h9JCfahOUaCgSY6YSKTqDwjIMOY+l9qiNgCh1qCQoLiuqf/V0qYY+16RqgD+b5ZXCXvO9svNbnqNTR0iBXFnmXLUH1+hwJVrb/1XbFefH+juqUIDga4lLwXZUgxbCvjgfRcqvfPys7sS+/9PPBIWreGUePSyP+GRMDMgod7qpVVDr0DFEVJx2aIIOzQdn1gzFT0NbO3fRw7APo58GIMB3XqzNc0rxmBZNsJNQ/SerUA4EXazmm2cJvCjUBl5QhPo2wsYlSZKHYlhqdDCX2zmhXBFZpQvVKp3U9rfSxB5mHwDr3dYdEO6HFYKm6ld33m7wyyE5b73vEZmWXeKtcm0YHXxNFwGGDnXS+gP+HCSe8FPrPd7zrINiFsYGZ6fDdzDl+2yhFYVdd38nJ8W/SoXQyZTbX5bULHzNEu5AOxx/r6a3iCMJdvpblcNG/wRH9sh6I4jCNlvUGM+xE1lrOqq0WYk37CGhP8TMvaZ3G/HyfE/65qr+CUeFLUWBIgVWeEDzErwwSdsFzVLP+mD422Ua5Y+D/8O+qN9USvVVh5ddYh5jtmXOBr9SZ3+LmR+CCLjeFVFnVU0MgWx76Iw+16q+1dUOwS+xbru23jz052ib4B8Cgz2f30z1pf69LSNVruUt+zRISuBwAYBWeAADFzlNZK4JMwPR8QwwxrLsQj10vq79xdXHaD/m0b2MOK2M8nyVWBKfs5iXVuxVTTAfpi7SmFQ91a04FYSfXQjfDC54nVXjOhBDuK4P23orE72
+ f4OjDQWr
+ Q96XaD3Oe4TKbx9rZYuSpUo7Ag5rpbYafUDu7ipaOyytSZpd3izlk8U4+FCzqf3Bdoi8wzDI2+EpHCJZ8F1DztBDJtINdOKajODzbSHIjLTPerxSsX4+v1u2N2O48Xo1bTSE3AK3a0yb94wgDS85KLKsRUeKQSUrtk4SHg3xl3JGFebelqo/G4luBnuZlAHNIFZTU3Sf8YDFbFxy1H6P7lvRtq1V3XYoFRAGoLFQdtB7kYSyTukoIDUw6nxlZQ1c4WBDRZjFv+Zvk1LGAishJEwgCXJNs1qjmQksvqEOnKfkspncQgxhhfAWfSuz1tgADjQbB1vLHByz56SN/Xi+fwJ6Qgw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,26 +93,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026 10:38:31 +0100 Lorenzo Stoakes <ljs@kernel.org> wrote:
+On Sun, 28 Jun 2026 21:49:00 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> On Sat, Jun 27, 2026 at 12:56:29PM -0700, SJ Park wrote:
-> > My legal name and preferred first names are SeongJae and SJ,
-> > respectively.  I was using the legal name for commits and tags, while
-> > using the preferred name for conversations.  It sometimes confuses
-> > people including myself.  Consistently use the preferred name.
-> >
-> > Signed-off-by: SJ Park <sj@kernel.org>
+> On Sun, 28 Jun 2026 14:54:39 -0700 SJ Park <sj@kernel.org> wrote:
 > 
-> Same comment as David, but in general LGTM :) so:
+> > All DAMON sample modules are not correctly handling failures from
+> > damon_start().  Among those, mtier also has an additional problem for
+> > handling of damon_stop() failures.  wsse and prcl also have a problem in
+> > their damon_call() failure handling.  As a result, memory leaks, next
+> > DAMON operation disruptions, and use-after-free can happen.  Fix those.
+> > 
+> > Note that only the damon_start() failure caused issues can reliably be
+> > reproduced.  Reproducing those issues require the admin permission,
+> > though.
 > 
-> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+> So it doesn't seem that we need to fast-track all this into 7.2-rcX?
 
-Thank you!  I will send v2 with the clarification of the removal of copyright
-notes, and your kind A-b: tag.
+Yes, I think it is fine as long as they can be merged into necessary stable
+kernels in reasonable time.  And 7.3 also sounds reasonable to me.
 
 
 Thanks,
 SJ
-
-[...]
 
