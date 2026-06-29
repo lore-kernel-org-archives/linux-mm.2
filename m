@@ -4,118 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8FAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:47:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4940CC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 18:48:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EEC76B00EB; Mon, 29 Jun 2026 14:47:44 -0400 (EDT)
+	id F37066B00F0; Mon, 29 Jun 2026 14:48:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C6286B00ED; Mon, 29 Jun 2026 14:47:44 -0400 (EDT)
+	id EE68E6B00F1; Mon, 29 Jun 2026 14:48:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 104126B00F0; Mon, 29 Jun 2026 14:47:44 -0400 (EDT)
+	id DFD816B00F2; Mon, 29 Jun 2026 14:48:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5D036B00EB
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:47:43 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BC64E6B00F0
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:48:09 -0400 (EDT)
 Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EDC58CC0F
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:47:43 +0000 (UTC)
-X-FDA: 84933834006.29.FC79152
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2F493160003
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:47:41 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GcSEKVgt;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3A81A12025A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:48:09 +0000 (UTC)
+X-FDA: 84933835098.29.4BCA85C
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 067D6140009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:48:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b="hr/8LVFX";
+	spf=pass (imf26.hostedemail.com: domain of steve.wahl@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=steve.wahl@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782758861;
-	b=LAbYpHkYKFCfP3GER3dp3MSZl1xzGiTM8j80co5Bq++9DYziuqb/DvjmgwjC6cSSSkXo0p
-	3gTnPdZKafvrtKBpQMLYkf1JSEWENSMw46NEWndwHPErIihxcHpKw9rYfToMfIK+xpa7Pq
-	7ie9TgYODRf1ltWvNqhF3+bWeHG6w/0=
+	t=1782758886;
+	b=x885J9S16G5Q7IndhQxtp0vQklPwguoI+4uLhdOHeAPB/8J7Awg/SgpZviOQNn81I2iX6+
+	RLZz2Nkn9xvqdDPwsBik3A06CCKFZdBeF1ZJ+s+m+6NvahGZmcOMqmebMVOz3QEAq4E/+m
+	R1RJyT/HbmJZLNEskwjBgloj4G0wOBU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782758861;
+	s=arc-20220608; t=1782758886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ysXCP313kAdt03KShf1kvSecozhx/22zS/+otoUNAg=;
-	b=hV9L+QdZg65Ok3xaPkl2kW00hwLmBG0zSeT390ZAL9posOtcAjpCpiKoEUSlXd/XxqR8FQ
-	LESlUcj2nXknZKVaT5EG76YIjc35ZMMAUF4BEo31w73zK352XmydlDP76bXfuZ9CaIPgEl
-	kblxN2h24K/rFwTYgXdfSIXH5HQVjMI=
+	bh=b6grvcm5OGpU1yotvwOUMnvDfjQUFC5kGrd/zcVEo6w=;
+	b=aVJVOcJy2lVbNZG+bCmUNJgMJlpAWDwS/TB02i8XuxJpjeA7HvJ85ZabF9OG+3rCCs/zv/
+	lGQX3twaxt0/1UczgXZQpQEL6mzwLZpUtSUk3uVc0NK7Bnnps6oTND8FavUxbi0CEniAaU
+	smpzYyDJCTfgbWnqPff1SUzcAZ9au6A=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=GcSEKVgt;
-	spf=pass (imf08.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.160.173 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51bee804d15so15780151cf.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:47:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782758860; x=1783363660; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ysXCP313kAdt03KShf1kvSecozhx/22zS/+otoUNAg=;
-        b=GcSEKVgtjuNCoUmK+Eei7mrmQmkUZhDSzbijcoEUQPoDJGQbfbUukh4MZyFm3Ej4pc
-         /1WdWMo1OG8swhtTCHrMcofJvM9UxBbuIj0m/rYT7e/mn50WdsMf22n5bXCvHcJbQdUI
-         paQVs3Xz/u2/L9s04SW4TUltYgxgDMF3+bKgv77ikhWG5jiWSWC/5gzaHUoqHBNnJOwA
-         f150HT3tdpKl4rrjfT/vxMQRVqV9VPUAonkNx9BLbTSG8FvlWEoZZBYqJeFVGVnB54b8
-         I1LSAfuubZwUYJfPoQtllXfvVV6crIbQXm7V83BEjLRXvOuMyQAfRgCy8bWYouTbAGWJ
-         40Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782758860; x=1783363660;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7ysXCP313kAdt03KShf1kvSecozhx/22zS/+otoUNAg=;
-        b=Py3Wukgupf4eH/E7yfeEZeYVgOo3wt1tZa+F2kLhvDezj/VScGbliJOQKcclXP1/pS
-         fOt1K9FQTXN8f2ntD7iTezOmMHKqrVQ/KCm5AP695XK23MH615RO2D77vJfCmSLMhl0y
-         VFWydlTjMJF0izboXLf5M7gAQAfrdj7FhLh4LIXXoFtZmObr4Hg1oVSgUYPevKb/cU6K
-         S7d5vZWG9c+y7SNY3EwYJglBmpd17CWxT64KURLUTy3RpTBzQ0Avxy/+1sxCNEa6gjHv
-         GbF/fcLaM8IXvNt0hq9lv3rSe/1csmKhP3Z/N8dvpN0xulTLIxrVRS6uAG/RP3zMp/tY
-         cKog==
-X-Forwarded-Encrypted: i=1; AFNElJ9lC64OkpvxE6npOfPrZ2KnuTf15yepelLfE4rDyljSBc648DysfUCuX1cYXyN6b4bnRfPXfW2Z6A==@kvack.org
-X-Gm-Message-State: AOJu0YyBouKkBQsUoP+SmE9uWj5nEqvWCTQoUc2TF+/vhBT+9Vd9Ok+s
-	9vMF149WFmChbDr9bJqwhbDW6cj/o79AxSDBJlRPr7iuMCIAKy9AvmNKrg5WETKkTbk=
-X-Gm-Gg: AfdE7ckjQxETx4HUss/8DuXfzxDWL80ZtIXfoLXw1qFgzCXvb9nDrTQafcGrMR7mlou
-	DRUAWUdRVp676T8xQ08ZfJmwe8LS2R4Fyc2f8t5zShwNd3v9obIVGHCKFWrzAmhbzqYMRCSeP5/
-	0tl3VxJ+390GuxZbxFouT6ON5/Kf299kmMHDROYlnjVdSiWwLvVRfrp7w0JygIwcbH+re4rRXTM
-	R3r+jDgJalwYQ2PFvsZfnMz+laYzNAd3QfNf0HLMifklbtWcX4PzXfqLSUqtIeCHjOfkpT7z9g6
-	SIV/k4lElYHed05295QOwgjqrq/mUjY9RojOT3KVk8E6Vcy81juDudc0Qy15McCn/wAp1blWSMF
-	b/F87l7Jabj2rlBJD8CAO5GPpOxvny8h5QL8QS3fQrxVXOJV9uc2nJBqdWOpbm2zZBVyKI/zJF+
-	h8nG1aEkoTV2c=
-X-Received: by 2002:a05:622a:5792:b0:51c:6b6:9d0b with SMTP id d75a77b69052e-51c1072cb39mr7475191cf.2.1782758860012;
-        Mon, 29 Jun 2026 11:47:40 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c10862ecbsm2517521cf.11.2026.06.29.11.47.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 11:47:39 -0700 (PDT)
-Date: Mon, 29 Jun 2026 14:47:38 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
-Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
-Message-ID: <akK9yo20yelJ_M-a@cmpxchg.org>
-References: <20260629163337.1264881-1-hannes@cmpxchg.org>
- <e18f075a-2203-4ebb-8f4e-713d386d0ef3@kernel.org>
+	imf26.hostedemail.com;
+	dkim=pass header.d=hpe.com header.s=pps0720 header.b="hr/8LVFX";
+	spf=pass (imf26.hostedemail.com: domain of steve.wahl@hpe.com designates 148.163.147.86 as permitted sender) smtp.mailfrom=steve.wahl@hpe.com;
+	dmarc=pass (policy=reject) header.from=hpe.com
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65TGOQkG4133301;
+	Mon, 29 Jun 2026 18:47:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pps0720; bh=b6grvcm5OGpU1yotvwOUMnvDfj
+	QUFC5kGrd/zcVEo6w=; b=hr/8LVFXPUgVv1E5w7E72LHD1lUZpnGwKxOD/qMd7d
+	mhLsua0tMqEjK5DVhygd5w9nR4Ro+T3TU5xRbULJbfgaopuEuvKY0uB1mdYLscQy
+	4r34dGwkUqAkdX5/qg1j8EZpTLcdSNCeXu199aZuZDThMRKKXVJIwJ7QnQb7w8Fk
+	3A1sff0bwnEHGuJwSyUHMtseQ/7CPSb7/LKox+aaZf4gN3QLlSCZ3IWCSGd4cJ8b
+	wdEhR/YF+CjHwf76fQFu7cvnaaswaDJRWeOnKIabijExIU+69KQXfB83rpmC+wNg
+	UfboKobtHnL2BmMkp3aGn0KyC96ivmMkvDDVb5BDnfEQ==
+Received: from p1lg14880.it.hpe.com (p1lg14880.it.hpe.com [16.230.97.201])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 4f3tcw4uj1-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 29 Jun 2026 18:47:31 +0000 (GMT)
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id AFFFB8005EB;
+	Mon, 29 Jun 2026 18:47:28 +0000 (UTC)
+Received: from ilogsc-qemu.local (unknown [16.231.227.36])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id D3553800DBB;
+	Mon, 29 Jun 2026 18:47:21 +0000 (UTC)
+Date: Mon, 29 Jun 2026 13:47:19 -0500
+From: Steve Wahl <steve.wahl@hpe.com>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+        "Liam R. Howlett" <liam@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Matthew Brost <matthew.brost@intel.com>,
+        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+        Byungchul Park <byungchul@sk.com>,
+        Ying Huang <ying.huang@linux.alibaba.com>,
+        Alistair Popple <apopple@nvidia.com>, Hao Li <hao.li@linux.dev>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Clark Williams <clrkwllms@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        "Harry Yoo (Oracle)" <harry@kernel.org>,
+        Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-rt-devel@lists.linux.dev, Robin Holt <robinmholt@gmail.com>,
+        Steve Wahl <steve.wahl@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v3 11/16] sgi-xp: Use higher-level allocator API
+Message-ID: <akK9tyvmlxteOIEE@ilogsc-qemu.local>
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-11-57bef0eadbc2@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e18f075a-2203-4ebb-8f4e-713d386d0ef3@kernel.org>
-X-Stat-Signature: zd593zn6x6ec5oaohxkjqgjpngqeke4c
+In-Reply-To: <20260629-alloc-trylock-v3-11-57bef0eadbc2@google.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjI5MDE1NyBTYWx0ZWRfX4oaEEQu+svmh
+ 0jQDLkECSkLwUn9O+GVSj9ncpGy0ldhn9YZNf7JNtMco1kMowk9dekwegGksnr1GOVydqunPA+W
+ 896kaunTIng1vV7ykQtNfH628d+QAoU=
+X-Proofpoint-GUID: DIIV3Dhu-pescEAUPkMHsSecUf7k0d_D
+X-Proofpoint-ORIG-GUID: DIIV3Dhu-pescEAUPkMHsSecUf7k0d_D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjI5MDE1NyBTYWx0ZWRfX79YLrz1gyDlD
+ uC0D9FOuiDClqFB7aXc9EGCr21byWM+1L9a6GCi2dcRjXPZbQDqg0ch3QKWHUg7rbMXUAE+KD67
+ R7tbqZQBCPqGCfw9T9flkIvSuemRunrcIHAmfompNuuxmvF6m5e1QJkdKGzrJqXUOQdjYeJJKte
+ AzqVAxLxCS+EnQLh56QT86ctyRUwmVNyuPzDD7XQheODs3u5SxwmgqzLjuaj/+gti852ws1S4Zz
+ cLIChd3Q6MLUGO7iCVVMHpT1MiDIQu+O4Tb05RfaW1gNYADcIGr/pB+/7YaT8+FdtTW59/499CA
+ JXmrozO1CoHBmL03re8aEtG/S6a7J6DJEF8758+eLH+rFJEmWUXRAPT7KBFi+h9jwNlM2zaCiAU
+ /G4KWigHXXH/KyWENqbXoT1MYtds8YXfZt8ovEgY5HWnIatXZQB/EAGoZx23a0UCke0TDcfbVZ2
+ OvtaOWQiYvlJtyjZfoQ==
+X-Authority-Analysis: v=2.4 cv=f6t4wuyM c=1 sm=1 tr=0 ts=6a42bdc3 cx=c_pps
+ a=A+SOMQ4XYIH4HgQ50p3F5Q==:117 a=A+SOMQ4XYIH4HgQ50p3F5Q==:17
+ a=kj9zAlcOel0A:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=gQcMVamqm3wCPoSYhaRC:22 a=_ZmgHqWwjZUDpi_pur5s:22 a=MvuuwTCpAAAA:8
+ a=pGLkceISAAAA:8 a=ag1SF4gXAAAA:8 a=1XWaLZrsAAAA:8 a=g10eFjkI4RNaiMiBvy0A:9
+ a=CjuIK1q_8ugA:10 a=Yupwre4RP9_Eg_Bd0iYG:22
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-29_04,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ malwarescore=0 impostorscore=0 phishscore=0 clxscore=1011 adultscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606290157
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2F493160003
-X-HE-Tag: 1782758861-162574
-X-HE-Meta: U2FsdGVkX1/DB/V2x4POBkqoKUvJna+uUViv6fxSG0/kAyqzwWnsXhELOBSsVk18fbkjlTbpr7i+j7UjnYU8NQ4Gp7CkYwhHmw6HkKGvRouSc/Z1baS6vl9Yd7YDaoHOqqbPr0zBS7W6LCTNCNU/1yxvg0xCNgiBL7n93pH707CQAcwpqnxg2E/jQBdJAA67J0E4uhqP8nqdrFdnkcot5bpIrB0m5J5OzF6bbXt3PhUhhyl2JHggUp6VXAgph6FPAFe3aen3oyuDyvH07edFc0YswTOqdSODva3Tn1Hn+djBKN2CahYhXi00p4Z3BQiqNFRi4QLAGmA8b1Y5HD5NdLeGB00UasaeJ668wsaOMRiSqTJ/MamNW3PE6brHNwSOJDnFrYofLbXfEcg5RMLEbXF4BEmhxX+PyAgOjcVPD0YfaUoYcdrlSlnaujB1mm00wLXrgqaQanTkEhKL6J+9I7nN7+e/JHh/OcqYAlrkdvRQr66vGCMLhZTWDWxRMeXKlbKPViRSKToJo9YxACO47+PaiAEE0ofNX/i1LmxxE478y4KwC+XJ5DTgznwtltjRsC8YQY1tFwADd9uI9WxKERsAO+XXj0WIE6nNc6VnLUYL2z/6+qE4u4G7VlulejyueH0iOE3KussVmNiI1a+a/mqKIwwl0dEtmySiA8zWYdhUIRjDwcndKgj5cCKy8Drfa2KRaHf/qFqEGkRC7jYxP3ls9kY3RUtBrDsX7oSTjfv00hKpjtxyyOTqTVnNb6VyiqBIYQ2Sy5aAMbyaynrw4aOGULIySeu6Pispx3w/TkliSOxLwxwFgwa8vaRtG0b+IoXtLHCVS6RRCLQSByDwgHYnSUmz7Y9CPAoXargjH88S0+3i62o9F6vN7uXnuVcWA8M0fHuTDVmc59pOO/w5h0PnRgHGG0BK5BiN0V2VTz0gfuAgChheMaATjEwCT2loj705ftEsP+g8uKZy5xP
- UA1hcQfL
- ucT5CvmPeQBWiCtVD4MawUd55AqXQ0mWj7Qlyvf/gZNvuLLOj/x/DXOKAdT9vXJJtFz4kyZCirf6uLhapFfTL7nX7dTrx7jEej8H3vVxL/BX++78+kk3srCUBuI4nm4VGM+5Vkphnk3b9QK+HSSoU+dKhs1K7CwDVpuSi6eBHVRw9fTOqfElCPsFQQ9nk7Lchb9nb+fZqDG5p5zJ6mKLkibuSL2SHmJIVFkTVSJkM4CnpWJopbmGxVTeDd+ZF18egMLID5V+KACL8WV3pd4NRX4xfTmxfriWhR2fLr8OyPuAUCfI65sJ+VXfs2TLT01y1aIGTMoUjTHprYWz3LCgoeHMzYUNkTuCIbUx74EamQX4Co20+WCCY6d280X0N19ciJ1RDwp5LExu4ce7pEL69OHhkn3d0w5q+sbUhJ8/7nNhJhGUwqgEKDjEZE9vVXrOb/zjYQwIoUOreMf6E8ST2CANxceNN9gy+tzLTudsE6m0Pe/c/2L/yb0Vzeexpog5jlnrundn+wnoxQDc8meCzMAkaXA==
+X-Stat-Signature: n3se5cr1xwaemypma6urqyousk7p5nuu
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 067D6140009
+X-HE-Tag: 1782758885-939191
+X-HE-Meta: U2FsdGVkX183H8Djm3XsygfdrKUIBOC7F/bGw1eNbpLAQISUFDDHKtMx2ac9Et9qv6sSX7PlgegNQfs8oePoHS85D8HXcGtAc0+hNB/7hf5j9YjGq2I5Py0vCdgG1iy0Z5/fGNBC0RoAK9Y6n8LXbyWj3f50u4evLxkkgmP910Trml6cQJZA3dJBw9N2idCRRdK4OHcFizyzW5hqNsLBVyYi/Y+I1u6G9Mwsz/6/0uay3SzjTm/h1dYbOZupzqJ8qhxFhFtEJT+0bSGHwPt91ZyfQTwywUOZ37dOgERFRwfjr/sAYXUfyovFzI87qAIG1sotVLjsmqKoiWlm0xmp/OLqb28+TsWULT4otWmoeLDap/rBnteg4NY9jS4aUSmHZXITIuFNpgyyoC9PUNfmOGCDZGDd1OmOmETC4giTMfaoZCt10JOxI+c8SvslbRGOoqSfqaLK4wiNichxP4zc3hbBHD1H6z7yxquklkOcdd3P0FxlHgvZutzeveeRjuFIdLo4CjPPa163ohAQ8BI23Xt0vYG1F57x3gvai3XpXOGMzgN2p+Lr/gXgkJcIRFhiyc61vW2XgSRsMAUqBbWdt48KtVxcSV4roIZHqLc0PZllv0b/cbmVkEO4lDPRoxhWRgH42ppRWIWjFB7VdwM+qs1CV/A5ZqLeF3fY4Oz2C2ww2BD0pgyL6ykRfW49Ky+PvjsGtEbmsBxutghFHKJF3guCE/X9VCjwneFcwG2fecMjT3viFmyk19EMiBB/EV7bodFBMgKE9R1E/zxC6p8ysO/L14cmy9EIal/4rKc3kr+aGECJaEotYeUTe3bQtkgknB5Uz5C2M2Z6v3n48/tlfzNlOkStbdujMsXYQT/qBgr+9pIs5vDJ9qC1/OVYiA8aOTofPVcBSKyKNvlgUe5PVOx3aEbLeNrJ9/qVKkHwjxNSoETc3Ym+mqZJRq2N9iTD75kkAi4hB0Mn68tjJaR
+ wvVtRxR3
+ 014RtIp0bz70/V6REf+NK5p4ENAJLwpakGYa3Gf7oeAMg9ayK+pqTKw4Zb7g0sHfYUZKduOQZCIEVoTKPayMNcWyhi8019irmCa2tgmXV/dl7X4sXPtRkz3hYNBpgsiiIlFwXl7Db/iTa1jN722lq1eTmX25NddJc5tsMdvsVptedKPwkuV5b5pqvAvz6NNWKLSWSTOhEQEbtXCm5HjjmUEmydVfndPvOS2wDH8x6Yc7OT8O2pnu+3s8mOUCWSBQgATESeB17/2fabbR9tredOrNuKabX/3edO/SSLlTjriFGIsKHrNpoiXfgCvQecPRrkT7AKQRYxmE2MSpXG7ScoVhqa6Z3Ldgdf8XvobTRvDRqMthxeRah00wbS3lk8dr8t0MJLtGM5KUrzEQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,76 +157,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 08:33:32PM +0200, David Hildenbrand (Arm) wrote:
-> On 6/29/26 18:33, Johannes Weiner wrote:
-> > Neha reports that mapped shmem aren't considered for NUMA balancing,
-> > noting convergence problems and bandwidth bottlenecking for cachelib
-> > based workloads on tiered memory systems.
-> > 
-> > Looking at the code and going through the git history, this doesn't
-> > actually seem intentional:
-> > 
-> > Commit fc3147245d19 ("mm: numa: Limit NUMA scanning to migrate-on-fault
-> > VMAs") added a vma_policy_mof() gate to task_numa_work() so VMAs whose
-> > policy lacks MPOL_F_MOF are skipped from NUMA balancing scans. The
-> > motivation was a real usecase: Oracle was pinning shared segments with
-> > mbind(MPOL_BIND) so trapping faults was both expensive and pointless.
-> > 
-> > The handling of NULL from vm_ops->get_policy, however, treated "user
-> > explicitly opted out" the same as "user never specified anything." For
-> > VMAs whose shared policy is absent - the common case for shmem - the
-> > scan was disabled too.
-> > 
-> > This issue is old. It probably hurts less in conventional NUMA. But it's
-> > very noticable on tiered systems, where entire tmpfs workingsets can get
-> > stuck on lower-bandwidth memory.
+Acked-by: Steve Wahl <steve.wahl@hpe.com>
+
+On Mon, Jun 29, 2026 at 01:12:00PM +0000, Brendan Jackman wrote:
+> The difference between __alloc_pages_node() and alloc_pages_node() is
+> that the latter allows you to pass NUMA_NO_NODE.
 > 
-> Sounds bad enough to warrant CC: stable?
-
-No objection from me. I was hesitant because it's old, and while these
-are real workloads that see it they are hardware/kernel validation
-runs. OTOH it's a straight-forward bug and should backport easily.
-
-> > Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-> > ---
-> >  mm/mempolicy.c | 21 ++++++---------------
-> >  1 file changed, 6 insertions(+), 15 deletions(-)
-> > 
-> > diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> > index 36699fabd3c2..bba65898aee1 100644
-> > --- a/mm/mempolicy.c
-> > +++ b/mm/mempolicy.c
-> > @@ -2057,24 +2057,15 @@ struct mempolicy *get_vma_policy(struct vm_area_struct *vma,
-> >  bool vma_policy_mof(struct vm_area_struct *vma)
-> >  {
-> >  	struct mempolicy *pol;
-> > +	pgoff_t ilx;
-> > +	bool mof;
-> >  
-> > -	if (vma->vm_ops && vma->vm_ops->get_policy) {
-> > -		bool ret = false;
-> > -		pgoff_t ilx;		/* ignored here */
-> > -
-> > -		pol = vma->vm_ops->get_policy(vma, vma->vm_start, &ilx);
-> > -		if (pol && (pol->flags & MPOL_F_MOF))
-> > -			ret = true;
-> > -		mpol_cond_put(pol);
-> > -
-> > -		return ret;
-> > -	}
+> The former is going away and the latter works fine here so switch over.
 > 
-> Okay, we used the fallback of vma->vm_policy before (if vma->vm_ops->get_policy
-> was not available), which is what __get_vma_policy() does at well.
+> No functional change intended.
 > 
-> But if vma->vm_ops->get_policy now returns NULL, we fallback to get_task_policy().
+> Cc: Robin Holt <robinmholt@gmail.com>
+> Cc: Steve Wahl <steve.wahl@hpe.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Assisted-by: Gemini:unknown-model
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  drivers/misc/sgi-xp/xpc_uv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/misc/sgi-xp/xpc_uv.c b/drivers/misc/sgi-xp/xpc_uv.c
+> index 772c787268932..aacff70204241 100644
+> --- a/drivers/misc/sgi-xp/xpc_uv.c
+> +++ b/drivers/misc/sgi-xp/xpc_uv.c
+> @@ -170,7 +170,7 @@ xpc_create_gru_mq_uv(unsigned int mq_size, int cpu, char *irq_name,
+>  	mq->mmr_blade = uv_cpu_to_blade_id(cpu);
+>  
+>  	nid = cpu_to_node(cpu);
+> -	page = __alloc_pages_node(nid,
+> +	page = alloc_pages_node(nid,
+>  				      GFP_KERNEL | __GFP_ZERO | __GFP_THISNODE,
+>  				      pg_order);
+>  	if (page == NULL) {
+> 
+> -- 
+> 2.54.0
+> 
 
-Yep.
-
-> Makes sense to me although this is a source of confusion for me.
-
-How so? Is there anything I can improve in the changelog?
-
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks David!
+-- 
+Steve Wahl, Hewlett Packard Enterprise
 
