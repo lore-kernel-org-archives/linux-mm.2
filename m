@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B49CC43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:47:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A32FC43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:47:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B4856B00AF; Mon, 29 Jun 2026 10:46:58 -0400 (EDT)
+	id 1956B6B00B4; Mon, 29 Jun 2026 10:46:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 58CD16B00B4; Mon, 29 Jun 2026 10:46:58 -0400 (EDT)
+	id 174746B00B2; Mon, 29 Jun 2026 10:46:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C9B56B00AF; Mon, 29 Jun 2026 10:46:58 -0400 (EDT)
+	id 067BB6B00B2; Mon, 29 Jun 2026 10:46:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 260B76B00AF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C8D1E6B00B2
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:46:58 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9ACDBC0397
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:46:57 +0000 (UTC)
-X-FDA: 84933227274.16.3D09B7D
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4A1FB8916E
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:46:58 +0000 (UTC)
+X-FDA: 84933227316.14.F1516B3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0BCAE14000C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:46:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOwTuXTP;
+	by imf31.hostedemail.com (Postfix) with ESMTP id B8C142000D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:46:56 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K0/N2BCt";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782744416;
-	b=rx2wsuBKPOr/EXdXrKctGDdrJNYmhaKMmJncZp41fRqZrl3aiZdlTtS5PpQWUq00SRSAQ4
-	5vHg7JbrYbz0uj/6/o/x0rCwSFeaREOnjXJNxYqNdLFSl/SQ5znb6MiQhn5raWgCke1Aez
-	QpnN5/dBouFlZctYn0sm2mi9Xd8fw64=
+	b=Mlw6GtvPIGw3FgvPGr3L65Dl6bNAxOgIvLt9f3dzxONNa9LjKIWuJFMutVb5lLK+v2gGJY
+	M0a8GbExYe3ROTxb1orD/iRv32WesvrbKvJRxPTaX36JHXxl8p497egI/+/LzXvZghRjth
+	Y2E6cZZC8r8ItL70jxeS8JvJKhoIg60=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782744416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SHqxec4PhlDUhWE2hLe0q51Y6lQPE2jO7NI1DXylRHE=;
-	b=pNiNrsT7hpcUcSLYrR+CSc1od5s6fygxEf3G7+f9DMYkdVI6ENktWPkIkrZ1cWNI7Nt7Uf
-	eiTcnvTKX4rON/WTgChbPn9seogNfxqfcuWe36rfm0g5hT472EVC4vzUYmvMPxSM5wuaAg
-	CJ6kVrRbEBUvpqXUgg3lLALwIWu0kIw=
+	bh=Hw2mNTh8gDfPv2FwuER2wc7UZ1afDi5KQ9tStlM/EPA=;
+	b=gpOBYQ6Ct2aoKQ3Zu+YrdWol9efgA3m32RtgG0Pkzu56Ya7OtWRweRyouin+HxPp6ClW0c
+	MTE9z9T7il4ws4CTc9PphN+EZxcQNO0JkHnr7Uvuq91+1P1GUh6t3eqdSDEJjeIc90IpyQ
+	C8bMwjxAJ7gA4cY6lBkXVtByTyuNdN4=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QOwTuXTP;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="K0/N2BCt";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf31.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8FFBB600AB;
+	by tor.source.kernel.org (Postfix) with ESMTP id 59EE2600D8;
+	Mon, 29 Jun 2026 14:46:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5B11F00AC4;
 	Mon, 29 Jun 2026 14:46:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F081F00A3D;
-	Mon, 29 Jun 2026 14:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744415;
-	bh=SHqxec4PhlDUhWE2hLe0q51Y6lQPE2jO7NI1DXylRHE=;
+	s=k20260515; t=1782744416;
+	bh=Hw2mNTh8gDfPv2FwuER2wc7UZ1afDi5KQ9tStlM/EPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QOwTuXTPpTxb5syY7JY+vsfPfzUsyGM86BJofrBwkokGpq5FI+hTC8foLRNfxcwgV
-	 Z9RZH91thQZTFrjaWBQ6t7PnVPhElSuARxW9HQwesSuM7G9y/azD7Iei5hY1OuN+sa
-	 EYH9tYOrP1sr1bHW0eEN6JYiOvtVGjVWaZfq37mvV/5Sef1jDPETtl/k45HscxdD8G
-	 J05gLP/HYHdZ6yqQysboyd2Wm8h601wvyNb9voDuH9pCLnQ0bULvqO9SD3rY5THSiy
-	 jm+XmhGQnT0s481/D1SYFyc824A5UGXnSTv/Agj6MRS0w01adjSdXbPrmXpOcSOlQS
-	 lLIEFdhdIQE6Q==
+	b=K0/N2BCtJxuKOlwnScHc9AqrmS9zWI3nJlq/U53wGVI9c0U76ma54DipeiFzCgWft
+	 HD2OELoLshRkfoSsT1/tPl4Mi3DKsHgRd/SX1sVXS8eegWHKWZHwlkRAZR68wV8r4C
+	 a5aQ/VSIybjk4QjwS8ABkoY1iyRAe1BznHPXhL/TfqNq36o77BUoz+0T7sWUW2kcAC
+	 O1HT/IW8+ui+wOluMXwWCKBkCRydZiNwKbqUjlwQ4+ROpTSp4LAYj5i2sbvUAe+suv
+	 yDHxt3Hs7OFW71FghW3NysrLVLYZe+7IwCtDHkXYq4VnA5qm2DIrS6zdvovGk+khoJ
+	 /yKIVs2Aw2JSA==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Kunwu Chan <chentao@kylinos.cn>,
@@ -73,22 +73,22 @@ Cc: Kunwu Chan <chentao@kylinos.cn>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 2/3] selftests/damon/damos_tried_regions: fix expectation output and join TypeError
-Date: Mon, 29 Jun 2026 07:46:45 -0700
-Message-ID: <20260629144648.134092-3-sj@kernel.org>
+Subject: [PATCH v3 3/3] selftests/damon: fix dead code, skipped checks, and broken lookups
+Date: Mon, 29 Jun 2026 07:46:46 -0700
+Message-ID: <20260629144648.134092-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260629144648.134092-1-sj@kernel.org>
 References: <20260629144648.134092-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 0BCAE14000C
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B8C142000D
 X-Rspam-User: 
-X-Stat-Signature: ton8jhx6ih5wjziyro7o77ajnc3se4zt
-X-HE-Tag: 1782744415-574084
-X-HE-Meta: U2FsdGVkX18RQZDAFvy0eOJZO5i+2rc+t4BbK+Z5WvZsDc8s76XQaeG9rnoaio52ngMaQPrxIOA2YLoywdpho+KFmrNR0WYiWTkvkSaW9idF1bjktVFLeM1a2l3x6t3jXReZT798IndQjcAUnb9u6SacJw89+t+1SG6+L3ska2EkhR7/m0xUw2gQaKWNflg3q9azjfL2bkAuteJ9EPFZTP17ZhQLuNFNAK+NSuwTsz+Vu39+obPj7NQ3Gcie8jRIEU77+GjGWRpdEjyatNFJ6wXA+d+YlzR4pE+UJmJ9U/+vvFVTPvai0I103Sn8y4dXe4SLRWnS+rIY0MQ0pvuM2X7iV2C9rWaCOxSg2ow9AiDLQodCFgBItWaAp9h9mgJq89+S1b0Db2GD6KKGekMjs42YjTtjzohl6LG3vLoOm5qV4Y5w5o6PeYjhZ+PZcVp/haj8gi8cVktme9D6zjrN1E2bC+JoqmLZoxT1YzaoV2o6+Ezu4WnpYfMCV24XDTGM6DpK5LFuEtQGl77t+LcSsx5v9QhOUhZamCZHXKwVOqrDsslmVb7Hf356Yk44ylRZWmK2kd0GtQzBcbmozWpBi9Y6Fi+jYBjB7YmlHthAVt4hqKpSOKZPy9IanNB+V5C5TnMRowy63cVmXJPLbsKs2ZWSRSkGAd3CmoGEGkXPxKsUsxZhqA4r1rm844SJbCEzt0fiqoUDHAza24RD0W6+eW9wx6bND0LVwdesHJNocC1CPkpND29nPoaUSQCgHkVO6Ph0ySKYmFjSQKWVPmqxwlT6KEW/rmfm0zkUX0S/MfnTYoDVi8i1lnzYGVuLTs2XnmjZFDh+0QMtB2pTyta9nszHWg4NnsEKlgrVW5WOZldKtTA1nXUL04vCD0I3+VmVPWOYc8P67+JT43PgECyvDK8BiXjxE+PBqYYWCMHowlPuBHspngP4yqGmGiW4wRiDGK8jG3PXuFPsjXgF5em
- S/bkl7Pr
- hwVdg+VCN6S/GQFC4D9ePlXAwuK/PfN/0UMg86UM+0V3h0DjXMzi8AeuYqxRJpVgCx24ITmYmzGe6qmaPGgmVuvp4E/10v9mlnHfoAoLxiTZ5lLUqW4w4Jwi+UHWdIe+gT4BVmG14iMuw2sY16qWjF35JBL0XHrFk2GgOMJ4J1NbAbmb1YGIju/V+C1JrypFOOV8Pwoh5Cxj0hub8gQ0JvYJjTYvJvtCcOXC6RpvWcszcighL8Tg2S02S4H6w6f6YcvgFiH5rQAh++/Gi14dJHXE1REbFfqn4s7LzuvU5ASuZqVpg0/jJIwHai2DJkL4uopDoigGBf4ntTmuHWqeY7I+Nwx/hqVyT7rip8+IUob7mOSnK58dzoLom8A==
+X-Stat-Signature: wur8mp3gzg35wcz9ziuqyrt499493ky1
+X-HE-Tag: 1782744416-511384
+X-HE-Meta: U2FsdGVkX18BGxRz3R1cDNx84HzrKu/a2Obc8smMm52dOI8m1f9cFBWNnBp0X7P4IYAmqFy0zgZngQeVsOKG/l/A2EFf+molRRKoLBCOX8CJm9PcQeDBQ6TG3WqXXGrqSCB4grYExGDp1sAPLYj2z+R058DU/HgCuemoxrrzeqnzmnV44nfyP8F2rTZrqXEQoQTStTDBl+AO99K5KDoZYlG6/wkYmvIOvGwp9JxpsrvITLqROjvDAE9P6d9f4Nf1F9VnZAAOkxg4v4fwM/fzVTWr3xlK6lo+2rR3oZLK6zjkvEmhQIfJJUknAtToOhCC9ots4MSCY+bxtsPy4gtAOlbMfB+6Sfsdt0q9oedTasg6k+Y2f+aodNkiNRInaxJGCKKFJUCfRoKLsmVLlJUjeX1lmqguuNTBI3EDKEcsbzZMUrwmIxDMDbjyDKZaE3G+X0giQp5YHrg1H0iwPSSagRusex6SgpxmZKvochNeFiejh4gFQ+g9O4RH7TunwqHxjKi7Iz/fVCsSrSxht8E/qoUTA4ccO0jra5MFFfrsRpPK5eHKrD79zHg0X1ZhgTF/HImbtdNWYzFsoplnsv536ZDiGqh2WMfibTjH9e7CplHfu+2UPSh6BN7RByDkr8rurxZVIuXDDX+tE4afozsX8iYICF4moFTLrSO4Xmy0F6tj2yg06sEhaHEQivIPaNpulvR6DSnBPJFtVW00ikjjrA9wXKKhlBcUQgxQOurEh7fXvsd3mNTFxxwHONfoE2W7jFh2Fzf6ZYBqlMQhjMujhkTHLiMgi2M6eh+NAXw+LUKTmYA3rbS8bd3u/KMxXJwXM7otAHQYyAHA+BH2LJwi59ZAQs2B2560N+q6cSNfyTioXODntlRke8ofWB4Jsmyq5JbPWY9Yoz+AfmY+fwxTcG4lw7d1nTEOOjvI7cnT0hdTXDGt28F7MP1bKRM2rv1esH6DNQmbQg+27FU/Vxe
+ M7j3wXS6
+ UFco3HC+3eF8x/LpGcDJPsyGbkhirvdfrpxUHnkQtjalXkKKdmVH4Afoq6Jno82NvbfSSPghU+5s1lX9hDdRKc38VEM/jXi5yvyL5oMRZMvShA/9d8sYhySwgF5e29diTY2aVL+tGMVI8DcyZoZkKbaLuPLw1ixlAuR6+7vKyjqrQEjmdI9lSod/CEbhjyDbqcFRmHbtivWjTKvx3CH80VIxicliyF97clpWAQX92jC/1N7D4XBdF1Wy4j3nmd1HvvOEA40N/TAnMFjLTrAYtKb4ygVSz7RNFpH9GNd9qTE/7I1fNNqI2j3k1qFR5bpz+tCOLmN2zwD2AkjM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,15 +98,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kunwu Chan <chentao@kylinos.cn>
 
-The expectation print has wrong operator precedence: '%' binds
-before the conditional expression, so the else branch prints
-'not met' without the prefix 'expectation (>= 14) is'.  Add
-parentheses to fix it.
+'hugeapge_size' in drgn_dump_damon_status.py was a dead elif branch.
+$fail_reason in sysfs.sh was undefined, silently emptying the error
+message.  'exit' instead of 'exist' in sysfs.sh skipped a file
+existence check.  'nohugeapge' in sysfs.py broke an action dict
+lookup.
 
-Also, '\n'.join() on the list of ints raises TypeError;
-convert to str in the list comprehension.
+Fix other wrong strings in the same files.
 
-Link: https://lore.kernel.org/20260601032314.424013-3-kunwu.chan@linux.dev
+Link: https://lore.kernel.org/20260601032314.424013-4-kunwu.chan@linux.dev
 Co-developed-by: Wang Lian <lianux.mm@gmail.com>
 Signed-off-by: Wang Lian <lianux.mm@gmail.com>
 Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
@@ -115,26 +115,133 @@ Cc: Kunwu Chan <chentao@kylinos.cn>
 Cc: Wang Lian <lianux.mm@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/damos_tried_regions.py | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/damon/_damon_sysfs.py               | 2 +-
+ tools/testing/selftests/damon/damos_apply_interval.py       | 2 +-
+ tools/testing/selftests/damon/damos_quota_goal.py           | 2 +-
+ tools/testing/selftests/damon/drgn_dump_damon_status.py     | 2 +-
+ tools/testing/selftests/damon/sysfs.py                      | 4 ++--
+ tools/testing/selftests/damon/sysfs.sh                      | 6 +++---
+ .../sysfs_update_schemes_tried_regions_wss_estimation.py    | 2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/tools/testing/selftests/damon/damos_tried_regions.py b/tools/testing/selftests/damon/damos_tried_regions.py
-index 3b347eb28bd28..d6472e6a6e082 100755
---- a/tools/testing/selftests/damon/damos_tried_regions.py
-+++ b/tools/testing/selftests/damon/damos_tried_regions.py
-@@ -55,10 +55,10 @@ def main():
-     collected_nr_regions.sort()
-     sample = collected_nr_regions[4]
-     print('50-th percentile nr_regions: %d' % sample)
--    print('expectation (>= 14) is %s' % 'met' if sample >= 14 else 'not met')
-+    print('expectation (>= 14) is %s' % ('met' if sample >= 14 else 'not met'))
-     if collected_nr_regions[4] < 14:
-         print('full nr_regions:')
--        print('\n'.join(collected_nr_regions))
-+        print('\n'.join(['%d' % x for x in collected_nr_regions]))
-         exit(1)
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index 2f6f2699db256..f6127081dfb2e 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -837,7 +837,7 @@ class Kdamond:
+                 for goal in scheme.quota.goals:
+                     err = goal.stage()
+                     if err is not None:
+-                        print('commit_schemes_quota_goals failed stagign: %s'%
++                        print('commit_schemes_quota_goals failed staging: %s'%
+                               err)
+                         exit(1)
+         return write_file(os.path.join(self.sysfs_dir(), 'state'),
+diff --git a/tools/testing/selftests/damon/damos_apply_interval.py b/tools/testing/selftests/damon/damos_apply_interval.py
+index f04d43702481c..0f2f36584e48c 100755
+--- a/tools/testing/selftests/damon/damos_apply_interval.py
++++ b/tools/testing/selftests/damon/damos_apply_interval.py
+@@ -56,7 +56,7 @@ def main():
+     # Because the second scheme was having the apply interval that is ten times
+     # lower than that of the first scheme, the second scheme should be tried
+     # about ten times more frequently than the first scheme.  For possible
+-    # timing errors, check if it was at least nine times more freuqnetly tried.
++    # timing errors, check if it was at least nine times more frequently tried.
+     ratio = nr_tried_stats[1] / nr_tried_stats[0]
+     if ratio < 9:
+         print('%d / %d = %f (< 9)' %
+diff --git a/tools/testing/selftests/damon/damos_quota_goal.py b/tools/testing/selftests/damon/damos_quota_goal.py
+index f76e0412b564c..661e4ba4765ae 100755
+--- a/tools/testing/selftests/damon/damos_quota_goal.py
++++ b/tools/testing/selftests/damon/damos_quota_goal.py
+@@ -66,7 +66,7 @@ def main():
+             # effective quota was already minimum that cannot be more reduced
+             if expect_increase is False and last_effective_bytes == 1:
+                 continue
+-            print('efective bytes not changed: %d' % goal.effective_bytes)
++            print('effective bytes not changed: %d' % goal.effective_bytes)
+             exit(1)
  
- if __name__ == '__main__':
+         increased = last_effective_bytes < goal.effective_bytes
+diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+index 972948e6215f1..26b207e44268d 100755
+--- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
++++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
+@@ -163,7 +163,7 @@ def damos_filter_to_dict(damos_filter):
+                                int(damos_filter.addr_range.end)]
+     elif type_ == 'target':
+         dict_['target_idx'] = int(damos_filter.target_idx)
+-    elif type_ == 'hugeapge_size':
++    elif type_ == 'hugepage_size':
+         dict_['sz_range'] = [int(damos_filter.sz_range.min),
+                              int(damos_filter.sz_range.max)]
+     return dict_
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index aa03a1187489f..99412f0d31f37 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -119,7 +119,7 @@ def assert_access_pattern_committed(pattern, dump):
+                 'max_nr_accesses', dump)
+     assert_true(dump['min_age_region'] == pattern.age[0], 'min_age_region',
+                 dump)
+-    assert_true(dump['max_age_region'] == pattern.age[1], 'miaxage_region',
++    assert_true(dump['max_age_region'] == pattern.age[1], 'max_age_region',
+                 dump)
+ 
+ def assert_scheme_committed(scheme, dump):
+@@ -129,7 +129,7 @@ def assert_scheme_committed(scheme, dump):
+             'cold': 1,
+             'pageout': 2,
+             'hugepage': 3,
+-            'nohugeapge': 4,
++            'nohugepage': 4,
+             'collapse': 5,
+             'lru_prio': 6,
+             'lru_deprio': 7,
+diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
+index 78f4badb5bebb..2eaaa5ae3c5ed 100755
+--- a/tools/testing/selftests/damon/sysfs.sh
++++ b/tools/testing/selftests/damon/sysfs.sh
+@@ -3,7 +3,7 @@
+ 
+ source _common.sh
+ 
+-# Kselftest frmework requirement - SKIP code is 4.
++# Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
+ 
+ ensure_write_succ()
+@@ -28,7 +28,7 @@ ensure_write_fail()
+ 
+ 	if (echo "$content" > "$file") 2> /dev/null
+ 	then
+-		echo "writing $content to $file succeed ($fail_reason)"
++		echo "writing $content to $file succeeded ($reason)"
+ 		echo "expected failure because $reason"
+ 		exit 1
+ 	fi
+@@ -363,7 +363,7 @@ test_context()
+ {
+ 	context_dir=$1
+ 	ensure_dir "$context_dir" "exist"
+-	ensure_file "$context_dir/avail_operations" "exit" 400
++	ensure_file "$context_dir/avail_operations" "exist" 400
+ 	ensure_file "$context_dir/operations" "exist" 600
+ 	ensure_file "$context_dir/addr_unit" "exist" 600
+ 	ensure_file "$context_dir/pause" "exist" 600
+diff --git a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+index 35c724a63f6cf..16fdc6e7fc566 100755
+--- a/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
++++ b/tools/testing/selftests/damon/sysfs_update_schemes_tried_regions_wss_estimation.py
+@@ -7,7 +7,7 @@ import time
+ import _damon_sysfs
+ 
+ def pass_wss_estimation(sz_region):
+-    # access two regions of given size, 2 seocnds per each region
++    # access two regions of given size, 2 seconds per each region
+     proc = subprocess.Popen(
+             ['./access_memory', '2', '%d' % sz_region, '2000', 'repeat'])
+     kdamonds = _damon_sysfs.Kdamonds([_damon_sysfs.Kdamond(
 -- 
 2.47.3
 
