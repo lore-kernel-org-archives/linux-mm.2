@@ -4,119 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17558C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0548BC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 16:37:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1D2C6B0113; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
+	id F1C5B6B0115; Mon, 29 Jun 2026 12:37:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF43E6B0115; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
+	id ECE276B0118; Mon, 29 Jun 2026 12:37:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E31346B0116; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
+	id D20856B011A; Mon, 29 Jun 2026 12:37:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF08E6B0113
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:37:42 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 43FEEC107C
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:42 +0000 (UTC)
-X-FDA: 84933506364.19.FDF66A7
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0ED5E100012
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:39 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026062701 header.b=f3ilMgWj;
-	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A1E06B0115
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:37:54 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 292CE1201EB
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:54 +0000 (UTC)
+X-FDA: 84933506868.06.FC2911B
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7F6011C0004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 16:37:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmCNy8wN;
+	spf=pass (imf21.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782751060;
-	b=i4pBXKRS4dX1tHonKRjoQpIqryREo3bCsbYreJt+73gWraHHArDUOZn7jaQqLvtxufRxuU
-	llkUfcRW5chQaI9pM2aK8xr3WavMGQoZnEXn2fFZ4p9uceu6NwLgXBSpXljtahWQKgE7sy
-	Vq/oPuONIgPbFVdVtQ4ss93dWH5Roco=
+	t=1782751072;
+	b=gjGjhF7SJ2MeJVwmAEHng3+QkRKDhHKlj34XdyY5ye6mmWHYOOvsCPYOxnwRuvwrB4dF/8
+	EYv28qNuZ5evj7MT/dJnRCUHWhNpkPisbAUD7NXABUGJAPDR1/8Dw3zVn5fl0GHE+nmaSb
+	uENWfg+fHqdvD3UfP9OHs5fWuuEBbkg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782751060;
+	s=arc-20220608; t=1782751072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hydOrMOVfJpPy1RK9SdrTaqp0nT1DvgDdBkLQq657fY=;
-	b=wsNOiZtKS//onaKb7tDEcfH/KFQ7qQZRg7z9u6ice2e/zpxHYOW60xHj/g5VxrSWVnkZow
-	H/LBb8C5LVSPVoJpsaNkCvYYWlf4Eu/aQeokqEWz6r1ZZz6DpRVeEs647Ymu89OC3as7kF
-	y10t5EH3LMRd7lt/ubbn+APp1c5k/3U=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rGoS9kJnOsBC1GLvPLCMMJFTI12ls42atzGQpoe5Bdw=;
+	b=Ksij1Lsfh5OwtA5pKPppCw6NA5xW2sXEG5G3RJfALKpl9wETScdPx8O5fMnvY1DgNzmCqM
+	6xO7joLjhXYA6xdGKOEOLM92Fi2K2x+b7TATW+DW2IDhSZJ28yvcQN1laEc2tV7/etxjEY
+	4RlQ1ibSrjNzyujmwnTU9XoL2ansu8Q=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026062701 header.b=f3ilMgWj;
-	spf=pass (imf05.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-Received: from [IPV6:2601:646:8081:7da1:68c9:ba90:b2f5:8138] ([IPv6:2601:646:8081:7da1:68c9:ba90:b2f5:8138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 65TGLFL5618076
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 29 Jun 2026 09:21:15 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 65TGLFL5618076
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026062701; t=1782750077;
-	bh=hydOrMOVfJpPy1RK9SdrTaqp0nT1DvgDdBkLQq657fY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f3ilMgWjXzS9yJM/j5yvFtl534nWjsXQ1K+RYDbfTNVHTUW2tT6ThzU5x+t5hyj49
-	 tkUhwl5iKD1jacrqoLdQSvVrhMqsr3bs6C5ZYLGAJBcXkNsWMOEEf8BQbrgz53GXz3
-	 zJxXdUXaXfuY42K26nze+Hk1qkQRdm+kmEl1bxxRF99jGzZg1kUUCoX5qSH3PvBy5o
-	 fT/6QhfAsFDBG/q92VW15KqG9LhWe55+I+Vfc7LCHhuMpiFUQc/oFaxEX7HxmYul4z
-	 jdAOIKR/2yNwuqhonMQZBx70o4wNCQfdvXJNtIajaTTwWokp+ver5Xu2wrVSKeINq9
-	 WjsGvInCjmeUg==
-Message-ID: <37a630ef-1574-4415-b42c-1d23993c6084@zytor.com>
-Date: Mon, 29 Jun 2026 09:21:10 -0700
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=nmCNy8wN;
+	spf=pass (imf21.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8478a25f268so708768b3a.2
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:37:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782751071; x=1783355871; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rGoS9kJnOsBC1GLvPLCMMJFTI12ls42atzGQpoe5Bdw=;
+        b=nmCNy8wN/y6HNpbQQtp63YX15VO1MGawB/C6lkDaKID6DkjGqiAvqB1xZ5Q+IOVIKf
+         yuGPK8nHxK3C3aX1Z9+bvUOCMPoTm9fMTphYiwVEATkiuAr2xmcQlfC63ALQPhfXANcT
+         2IpLhEWIV2WAOBC2QSZO6KrjXQrKQUO7JCxuVEYOM7z7Oa6r84ZE7x/c6qOVWko2skIf
+         +SXgpDVayGJ4Yk0bNu71WvHEtulhHUmCTC5qW43GM+uJi318HqdboFdHoHLGlkw5iGl7
+         3Qt8Vj8LYdwix01hTO2VVCDOIL/WPyvCxTRW4ou8PwMO8/6oFA19QLiOSjzpfI0zxgMn
+         DUZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782751071; x=1783355871;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rGoS9kJnOsBC1GLvPLCMMJFTI12ls42atzGQpoe5Bdw=;
+        b=SVGS23EvoT25b9RiFBuLaIHV3IQArdQMuGvq1x0W04TfMXpZshP9kRKFVrs/UqQq80
+         jqs86xvzReLqB3i0iDO45oIFqDjMp8KK7pW+e44OPRE1Ke1rNlIO7pc/zdutWfk8x+y1
+         ZKk6u52Ucy2Xt9HTei6rl2fVv1V4SsLSborI8d16Vp9l7DqmTpTvgRbej4+OeugI3Td3
+         fF3kCoQ6O85DKz65S52mO+28EbxgNCoKjV+/BVSjZAtgRSBtgy60NHJzV6E4lsWYtyWP
+         wrsUfrhv6AXA6+SPstfI8YKfV9UaWrZy020dbfJkycBshWiyTPEhJbHN1s7DhppM/5oQ
+         hucw==
+X-Gm-Message-State: AOJu0YxYYJd1bW8AKuARC/gYfc3XTJSY0k1TjfgX3GCpeM5G1XgJugIS
+	m+FZpygb7r3iviGWKfS8VR2Bm1wtyuvViJilD7xL3zMI45lrjsgwoq5/
+X-Gm-Gg: AfdE7ck7pEJfHkQpzjED4FbFHh82UxXdb1pH53sYvvsrWnVC4LXCAuwWIr+TXNQnsG9
+	m4AhvpbX8m2XDeyUCUlSKzum33W+5od/dcFTEhcgYa2tp02eGszuTKZr+zY6p2VZXCtWR91saBp
+	5mpMfDlbmjHZtKOQ4fliOebhqyplkKRliih5hP9v/1Yegi2wtfMUYVcdBfByq3ac+7bowT5Z3p9
+	YKwG1Tcbm+Bj9J3E4JgFrGrl01H1vjcBJ7GjHPL5nEHf31TP8EDAYgtWCq5Fo6FEd3+eg7fVSJg
+	eBNWG2FtjR6QORIwz89gHE84i8lkYesLCoUxp5QHoxXTm6D690FexrzsUb0VpzTdEDW14yJeK0d
+	MzPz7vkizSn2EK2qJXU43+dEpFTYMwjZfK0fxPXa87fYUP1fhvCkzzmSJ/Bxfo19hmVd1IuSv//
+	8rbg2oODQ=
+X-Received: by 2002:a05:6a00:92a5:b0:847:8337:64e4 with SMTP id d2e1a72fcca58-8479f1f553amr205069b3a.30.1782751071179;
+        Mon, 29 Jun 2026 09:37:51 -0700 (PDT)
+Received: from ubuntu.. ([110.9.142.4])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-847a02d41c0sm18474b3a.33.2026.06.29.09.37.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 09:37:50 -0700 (PDT)
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+To: rppt@kernel.org,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Will Deacon <will@kernel.org>
+Cc: linux-mm@kvack.org,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	kasan-dev@googlegroups.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	loongarch@lists.linux.dev,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	WANG Xuerui <kernel@xen0n.name>
+Subject: [PATCH v2 0/8] treewide: remove unnecessary invalid range checks in memblock iteration loops
+Date: Tue, 30 Jun 2026 01:37:28 +0900
+Message-ID: <20260629163736.1606688-1-ekffu200098@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/13] Dynamic Kernel Stacks
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
-        Dave Hansen <dave.hansen@intel.com>, Thomas Gleixner <tglx@kernel.org>,
-        "Zach O'Keefe" <zokeefe@google.com>
-Cc: David Stevens <stevensd@google.com>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Will Deacon
- <willdeacon@google.com>,
-        Quentin Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Mike Rapoport
- <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260424191456.2679717-1-stevensd@google.com>
- <da9321ad-4198-494e-b9fa-30d69bd29be3@intel.com>
- <6369e5ce-74e3-4c68-8053-d7d7d21b6955@zytor.com>
- <dbeeea58-16cb-4383-b8e8-91a8ca84e88a@intel.com>
- <CAAa6QmRw6QLnVJ8+uvMV8ASreLXzSab5Jii3Ju11qCZYio6Few@mail.gmail.com>
- <c070c4d6-a570-4eea-aca0-72eed319a198@intel.com> <87pl1md7h0.ffs@fw13>
- <CAAa6QmSHBDeY0G=_N1P4dAAH917J7jerfZrWDfDd8w=8jH8nVw@mail.gmail.com>
- <87qzm2b39k.ffs@fw13>
- <CAAa6QmTO=hhdJQa-ofSZ6wW0geLaEfWZumF6KmksxZqM3i33OA@mail.gmail.com>
- <87mrwon5uw.ffs@fw13>
- <CAAa6QmSeq8bbckyJk_5HFagsHfS5SXbG4y6Y-Py66eYLgvjcUg@mail.gmail.com>
- <87cxxgly12.ffs@fw13> <5604a47b-9457-4162-bd23-720e29cf1983@intel.com>
- <a1b4b0ba-45c5-4de5-855f-7474918b52ff@kernel.org>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <a1b4b0ba-45c5-4de5-855f-7474918b52ff@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0ED5E100012
-X-Stat-Signature: go1pb8cnbbpajyu3tc1mrokuz5e5c9xz
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782751059-26677
-X-HE-Meta: U2FsdGVkX18fzjikUI64DUb4ut8GFV0EH6w/A5ZIhwha69//sv9cX8pIUawNuKHh1QZFjqbWzsRIr6zfO3KVhA5xMe5w7ISTuw9tYWzyFe03zNs313S+/UoEddZxLOnfCtlFYUxoiEzIvp9F+ZhCjpJESnWSfXI656YuZyWEL3gFWiE4lUzKDWw5zryKn/BEpsupwYjsdNWZvXt5NZfVCThHpphR7rry2lyUaE+phj4QtajrI6qMrhw3UbkawDJKL4SLWx9bIF8SNWizjH0IaIx9pABabO2DZTLqestO/4rNtbap2/1O9HIf8s+2N/d1MYLlp9qfTWuM2U26WAEpfPz2jXzh6IbNZFIL9NXZ4A2uplvzBYL8ipkkf8RRdPEnFmMToUgk+zLbE6ruPbs9L7wpQqSUBkS6rJH+/AombiENqjUVQcGGhZeVI5/939sNNrJkPXJIdYwEO6+WDFQl/cXhhf8b0ujlAkgzUN0a3bv4iQdGKgoCua03XiyjByQ08t+vsYcf2HYJuuKYJe0apO6cK+HKMoHOuP0UDpj/Qh3T6xYdZlz6VQEufDKP9xMVrTzP8EX1V21G978rQSFiOMvzRQVzPsngevB5eDB3wS1mQF2O2YFxn/dJi64mZUGW/T8Tlgzrm3u/46sTdxHtPnYC/Ix9p6r9PwaOxaKxY9KHkOMYxRfBFMgz1P31fpFDvDUsR3jpeBkRahqPw8P9SuRX/wUpq/q+osqUbusCdjaxwwAmITOHZ1hxrd07u6p6zP3OAySDwc/uIu2fFiU3NBIga5C0bAT5E7XCpDGIwiTb64hM+nmlAsZW88n+dSU3G84Pk6eVfrJLRlkBh2bo9Pu7MsSEAm9QOCzVJqY+cJ6xRy+dMEy82i6cEulnO3NOZqDg++VQA8DLPYnXT7i/y0uBUyq05JdxqprF13jjkKdvzrdfc0mf1rerINVDUWITfrfRDJp7iPrEv7idG+9
- ymkEgi9Q
- FMmMunoECTzY2OnPMf+2V5R5Hn4YxaMCt0jp2Mfwxav5FDGWphzQN7vkIlP1tdrSUJezPlFrPKs3fAK98aBokXUFYLuIjal5EIApu4RvgwCiP1tyhFsZqE+xkIPUTikXrRWSuzZwQ4ozAoe4Qc9jzV+0gh9Or+BEGmNgOUAOVtI9YrjhkhRmGK9uZA00Ai/FAgbh8SAGm6rn1zaBVfh7fbsy8lClhdhMXyH1/jjlY6Yx5gH5pYH9a2XHCDJaHV3v+FAZn6dzNy+SrQrv5UBD4UrIu68Nj7jIy0D2jhrz6FVjgsbNKtQE57lJc4LKEANo88EUXdXlxTl3N44HBOaoS9oWPSGRJmCb1FZLbJe2s6XgcwO0=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7F6011C0004
+X-Stat-Signature: hs4fazfz19tjbmurzmkj9y5rhhkiwmya
+X-HE-Tag: 1782751072-477125
+X-HE-Meta: U2FsdGVkX181t4SOAdxCAzL8FVWJpkVL0XbPbFaruK5/QNb8CPLimVClAIK5PpLiJYCWs1ubpydrxs9vlEt1e1CCDn4pzyTpB2aAu60yF3aX+UmqqXsBP/cA3KtGGeXwszAN7SjI9ATZQK6jFL4OipUYWBtKbWpTfShMzr9QVGw6dXTf/1x6FQZ4E8bnq3R7eWtfVhZnhPzBIABUGD0VTne+yO0pch9pRvnj4AyTT9eVAR9j9oyBkBl89fsX7lQpH+UX6dKCSC71qV+5ebzpj3wiYd0t+Dm9pSR+0O9gx7MG50z+GjJj/hd4pJac4q0dcvEViXee1p7U7NYxzb/mGp1TZsUtNb82GkGVP2EOKEVvDpUybTcoPPVrNXcZuXGtB+D7TJKyzYMMP7iBrLM/gtM8k2wSjSN4ttD0WX9pcd9EtuBaK8lmp8hNYhm3m4ZwtDDdRwfCfKP5J2WHVN9JbwaEhWG/6uPRMCkUc97emjta1v2OBSUr/kr8dgPUzhdACifc5ynuCc1HkDa/7Vv8PIXUq/5HkZZLjgRQka5J8UMIaUaeBzRVCZdeH48H4aobyhrb9DljQbnr6M05OQGzmvd+tWMz6FfZRHHCCfW5qSnBueX/vSo7jDUPEsus6q2QhVHQDJnBiXnxR7HjdaJmedq76e90F0JymzZLZZN4Rb66zjvhmQlmOBnwgM7gQOANGCDXxiXf3iU+U57HAKYsounDHM7J+QVWM9P3By8TthLbUlpZR718Uy5jLGay/6bzUzNlqQM8UwXYz3RD8DctEyZUBpHEzEqY+Uk5TUNxIMV3aLkmPtPSxgR/ahI9GQrj+1jWQVlmN5tPMwEvHAgAbN1ydaqf20y5gk/lAFDaRJPMYkwTGlQPpOHlilWNLSWFXwIrXkbXNQXtYAxekWFiPg5l4RkOmlfMhLF7WtTEKOxrbeUHSxjCCAmRvNmFxVztpRF/hGgycrPxf5vJTPS
+ XS+4vuOc
+ Rcvb87sSOdCfheOcgqIYmM3uzqpSXAWv1lhFmRLyqkoIZ+uFXlHClKV5afZ81sgIDO85mEiTj1rgy6O3CqBobkMlp5TcXNDLe1bNF4Dl+4vwehvVXJyPRqoSeLtXScz1ach28XyJD7NL2AWkxQkVccGnvwFP5XLPehu6k/o5aO61QbbelilkpKkBIiM2U1sW74keLMlQP9etggKIpHaPkk9tlEhp0Zi6BLJETsspm7NkGKwMkhP9isUfk5D+ClarMZcCC8ebqXnt8FxsH2LqDZHcxYc0wHyIPgh4MMCMKgBRh7W7Xy+vW6rthl2wf1VeIepWwXJx5kvvKu+0xex78xOg7wdMLxUkQLq9HVkAWLoNKVxqzw10b9dPGh7miqyO7dkYmfEeGF6qQwLtdBtPon8AvCi6UAvZf4PLwuQFt+8ZsCaeCM7H2pRIBuasOht80QNL6Bdobc0xuLZcEoHXCcrFkIUMfcgrXOpSndlpd+Zgj5bsNXIY4LUfGXIw9vu/tywlU
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,17 +141,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-29 09:18, Vlastimil Babka (SUSE) wrote:
-> 
-> But it wouldn't tell you what was the large stack? Or we could try to print
-> it inaccurately, and hope the non-overwritten deep part gives us enough insight?
-> 
->> There are, of course, more games that could be played with stack depth
->> checks on normal interrupts or NMIs. But those would be less deterministic.>
+The memblock API guarantees that for_each_mem_range() and
+for_each_mem_pfn_range() never return an invalid range, meaning start is
+always less than end.
 
-Less deterministic, but probably more informative, since it would be possible
-to actually get a stack trace.
+Several memblock callers still have unnecessary invalid range checks in
+their loop bodies, so remove them.
 
-	-hpa
+Patches 1-6 cover for_each_mem_range() callers. memblock never stores a
+zero-size region, so the range it returns always has start < end. Some
+callers apply __va() or __phys_to_virt() before comparing, but these keep
+start < end too, so the check is unreachable.
+
+Patches 7-8 cover for_each_mem_pfn_range() callers. __next_mem_pfn_range()
+skips any region that contains no whole page, so it only ever returns
+start_pfn < end_pfn and the check is unnecessary.
+
+For reference, commit 36ca7f4be809 ("arm64: mm: Remove bogus stop
+condition from map_mem() loop") did a similar cleanup in arm64 map_mem().
+
+All these checks are in different trees, so I split the change into one
+patch per arch/subsystem. The patches are independent and can be applied
+separately.
+
+---
+Changes from v1 [1]
+- Add review-by, tested-by tags from v1
+- Add missing simliar patches(5,6) to patch series
+- Change base to rppt/for-next
+
+[1] https://lore.kernel.org/all/20260621145919.1453-1-ekffu200098@gmail.com/
+---
+
+Sang-Heon Jeon (8):
+  arm64: mm: remove unreachable invalid range check in
+    kasan_init_shadow()
+  LoongArch: remove unreachable invalid range check in kasan_init()
+  riscv: remove unreachable invalid range check in
+    create_linear_mapping_page_table()
+  riscv: remove unreachable invalid range check in kasan_init()
+  ARM: remove unreachable invalid range check in kasan_init()
+  powerpc64/kasan: Remove unreachable invalid range check in
+    kasan_init_phys_region()
+  mm: remove unnecessary empty range check in
+    early_calculate_totalpages()
+  mm/hugetlb: remove unnecessary empty range check in
+    hugetlb_bootmem_set_nodes()
+
+ arch/arm/mm/kasan_init.c               | 6 ------
+ arch/arm64/mm/kasan_init.c             | 3 ---
+ arch/loongarch/mm/kasan_init.c         | 3 ---
+ arch/powerpc/mm/kasan/init_book3e_64.c | 3 ---
+ arch/powerpc/mm/kasan/init_book3s_64.c | 3 ---
+ arch/riscv/mm/init.c                   | 2 --
+ arch/riscv/mm/kasan_init.c             | 3 ---
+ mm/hugetlb.c                           | 3 +--
+ mm/mm_init.c                           | 3 +--
+ 9 files changed, 2 insertions(+), 27 deletions(-)
+
+-- 
+2.43.0
 
 
