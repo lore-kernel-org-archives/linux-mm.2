@@ -4,90 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7753AC44500
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:56:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D12FC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:57:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFB956B0125; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
+	id 4E25D6B00B2; Mon, 29 Jun 2026 10:57:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB23E6B0127; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
+	id 493216B0112; Mon, 29 Jun 2026 10:57:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 973646B0128; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
+	id 35A736B0128; Mon, 29 Jun 2026 10:57:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F53F6B0125
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:56:45 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF0F240179
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:41 +0000 (UTC)
-X-FDA: 84933251802.05.8BB84BF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 02C6140005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:56:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJRDV1f4;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F16846B00B2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:57:12 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6997A140166
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:57:12 +0000 (UTC)
+X-FDA: 84933253104.24.81DD95D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9F1A020009
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:57:10 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fb4gXdfC;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782745000;
-	b=hZLr3UfjmT+DiZ+VO/S/mzCP7KhnXAhMyterObuEmTZSnNKYu8iRf9XFh2gzFdTKvAvXs8
-	APi9YcD44rOlOGaJmyY/XlpAi7BQ/5NtCcPUDjODfLHo4x6U/FLoPYS6u+vViWYLQk8WVu
-	4svVGx39P9q3kNQurMOPgVXUUWiYbGw=
+	t=1782745030;
+	b=hQwVohThN6Al2LewzlhlweSBGiuvzRf0kF5mR28oUcDhusuicvUkD3pN+LLduSOcxUPxce
+	RlHqekSoFjVwBlkpBbb93W+BBcZurTqZdwy1u16NDnf8UnPVZtCqxCZ9xJCQCX+3ga+ldM
+	5/tl156HL09QdBdj5OFTj9jbLJ7UNzQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782745000;
+	s=arc-20220608; t=1782745030;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NatPVMmr6lCmbwrlx8nymHKQLSth5j//NGxvrJ4IneU=;
-	b=mWC2wBhhn11uhEoxUYbuUEtR+pSnFKT8p4EivdGxI3ADRzugqZ/dtS4ozRQ1G4AV7ptB9u
-	gCl8JdCV7vKFP/ngkcoQpBaUlL6oB5Ghp0VIDC2hyk4Wvtu0eET6j+zN8vlAAUzqLRgVr9
-	CzMAwS7ESNXsLbrfQY4q3O1TTP0VZnM=
+	bh=c8iLIqBeF3LyAyaueUWtK1sqEjRS1M9AqqZ5Dyw7Z58=;
+	b=qYUbB4yyw8jekPtgKnA0BYlBOIiztv4UcZ9F9sLocGKw/KwFchHX446lfYsfAC3OAQGU7G
+	I+kspt7CHRZquJWz8O3AvQNF68UdHD1NHg2epsCKSYvbJvkLZdixD74JZQ+KocsUBOG9pC
+	5Yf/w47GC0kJw7AKsOaiXqHsJ6069Ac=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PJRDV1f4;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fb4gXdfC;
+	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 836F26001D;
-	Mon, 29 Jun 2026 14:56:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75A61F00AC4;
-	Mon, 29 Jun 2026 14:56:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D687841FFD;
+	Mon, 29 Jun 2026 14:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 466751F00A3A;
+	Mon, 29 Jun 2026 14:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744999;
-	bh=NatPVMmr6lCmbwrlx8nymHKQLSth5j//NGxvrJ4IneU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PJRDV1f4my+izevuENYAHKkEumYnZ2U6dtePGJAVwunGLNbZNgrq3imspiQVL6zOw
-	 5iV4NRR8ojJUinocwL/VoKfkP9WaqOsroCXEgq6nCNZdkmq3h9lC8/G/6XebN3SHOx
-	 eieNMwPMJtATCYbQcn1xrSRqCv3nzrkFoqST+lATlEFCi+C6qCDQkxVQxCaoaJL2Fy
-	 03vqCdsqh7tJMDsy79Ee0lWkdBzOQsKgiZ5AtZNq8a9ndiQcE4UxBLpb+4bBAwxiw4
-	 rp9ktpeSBiFbmeK1FpPPZ77C0LpwFk1N0cIq+bUt7fVBNZ+GkAlDC4EmneVtg55ZXR
-	 IALxxuDZEIquA==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	SJ Park <sj@kernel.org>,
-	Shu Anzai <shu17az@gmail.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 1/2] mm/damon/core: split a fraction of regions when nr_regions exceeds max/2
-Date: Mon, 29 Jun 2026 07:56:28 -0700
-Message-ID: <20260629145630.134891-2-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260629145630.134891-1-sj@kernel.org>
-References: <20260629145630.134891-1-sj@kernel.org>
+	s=k20260515; t=1782745029;
+	bh=c8iLIqBeF3LyAyaueUWtK1sqEjRS1M9AqqZ5Dyw7Z58=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=Fb4gXdfCr+2KFrFMF2IByaqjqN6OTvaWqQOC5SC3n+FH76BIVh2JDagVQM04zbj4i
+	 z9UqiAHTat+mRSFXdSoYoJyzmoUlF3p6Jal6xe6vOj0QLi7S2K5h9jaYFUYjI+BSuq
+	 9d7IwNlxDTjp3VQUkRtwL9oT//Ua6zIzQzWpQkWh48TlIzq75ChfxoMs7JMB6YBa+Q
+	 ZxwQy1+SAoBg4NhXVNiEOzrZ3Dhl/wVvyFl01n5vJfnD+QDhnTEyYlWVs30E2o8W8y
+	 wepBBBkvWmHWS2C9RD6SaF8XQCZzAuIK1yFyi3oKvRdndjk8kenHlAuuXYQ9iZ77Xx
+	 OWjGalyUwbbUQ==
+Date: Mon, 29 Jun 2026 15:56:48 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Simon Schuster <schuster.simon@siemens-energy.com>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
+	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Rob Clark <robin.clark@oss.qualcomm.com>, 
+	Dmitry Baryshkov <lumag@kernel.org>, Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, 
+	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
+	Jonathan Hunter <jonathanh@nvidia.com>, Christian Koenig <christian.koenig@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
+	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
+	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
+	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
+	Pedro Falcato <pfalcato@suse.de>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
+Message-ID: <akKHUPxEVCSlifn5@lucifer>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
+ <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 02C6140005
-X-Stat-Signature: 6emyss38tuyg3dfprai1oee7hn3cphqc
+In-Reply-To: <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9F1A020009
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782744999-585009
-X-HE-Meta: U2FsdGVkX1+DZHVBMmnwILqvy9kzmNq5+WzEH9w7r9heOzWGGAxoGkMUJWZclGe60i+KEf5RdAn30wJugm+hpF25jYzSiaEERWQ9Zk7MnTeCyZnHO6nbRqi7TGoSgnVHPAdlQB2OfPMbKW0CPLgwDrIN+qOyvQOuGqzxIY0XJVvxyTgpzQP1i1O5ZKOngglJF5u4toePeSvITMr/kbB/YBuaCtD/i518TtTGfiL1bIgHkhklIZjsrlkjVlRB7F8gP22XAJBL7fhEQjXd8GgsB9ECbF+0mSCvldpRTrUes642hmlACWN/RJssVEyk2j7nJGDdlLwrqDYcA2IDyElYjFjp9sAQUqxULYFZa4Vw+0sGbhfarziZb52UGsAJtnpidUgDtkOENCSHJFA2Z4ofWifTnBBkH+uL50yPT5jagaZCs+r+PlumZM0+36cpSBumrjZi63HdwZUK2h/w3uXWh2tnT2B1w99GKFfGKSyFkO68J2PXIkfMC2LiYwXHBN7Bbv4p9CUMJrDgMKiOw/5rB/sH11x66FLvh/cIJ8i7e31l1gw4jUWIk/2TgQPdUdiGyLe9i/NIr3Vp79Bhw1GtIqrMrEXRGrfLTAc5Shjv6+/Dix2d8e19mkik794LMDtfhh7uDUVzANeVCrDnHYAjuy/2pIyAHsaUlewdjXWc2KLx/qyiWOZbo7U/jsbRnmF+JDai94wT/NW77fnAtYSgNL0ulvqynC6vmrDE/cWznaX4BXvoIJl/wrvxNx9JEOWlfFfyvfKOLFrvqlBPLlVzSpW/wz3KPdBS9yEUP9U1+nbrSIdtnHG8TTxuMUdDrumHaMo56Orki2XM/KT5HRY7Cy05Svn/krQIPnnuOSnRAVt+yjJsP7gRcQZqWsJrZ4PafqBCe/W+bV0VVNTqDSyneeA+bsMGsMmxOq2m7s6al69BHTD5B7J0KGvCHlRvC6+ixhXl1/L5HuiHszWYJKP
- A+ethg5D
- XHPEx85zqTCPov6k8nQddbOQu109ksQZMd6NRnb0nyNJIbiMyZ+esO9+BiS955F/zMJHv0cuFbBQYFlnKB7blq1FrUH56lGDIQIUsNA+WoUCYfCayfbnKbe/vLlrx6N8T5hVXLsfza3AEBc7qz+Iv4QuR/RWIz7/UMnPE0sr5rc6sUMoItyDSsNpvd73WFzhgZrD+1tyxohwbjxs+2ahcwpmPl/NE+xGVCA4vi89XAYPFPFWFzNBdKNobxixxYUAMs++VrbTPZ2RtJ5gX+dBqDGbfWuK02XoVnIaHxfYjVmxNlkkRdX0djQxs80RI/LSw2a8lX5VokHt81y0Dqu7CwpkaQ76c3hTYdQ5wBXaP1OD4a5z3CDb2tmQZwtzqu2AIF5mjLLvBgpnpHflDqH5bekhXDqK2nwnkhr/3Qrwl7sBrQmY=
+X-Stat-Signature: 558omgq4m8c1rux8wzy5515bodyw1e65
+X-HE-Tag: 1782745030-713795
+X-HE-Meta: U2FsdGVkX1/z8+J9oTLKOYDhYz+AU2kXzmf0jhZ7NB8R+1AoYhHAt//yxjOqBAsiw/bjb7dpdi+8BOpZ5A6C+05FFjZC4OYGWkDLzbF+06dphQ0aBVi0fJxy5ENb4BoEj0OvSAHrlFtz/nALhyEZnrTXwN4kSZkoPaAITG53yEmdpr8eor/pDn77W2SWaVC2mTXypBtdGHFRhvWwegmtjt2etRC2ZmWFjMeMN6ZtVwf9AbqLhzFKJiiNM7PbCd5dbthd9DQ5XEI3obZYzbEW4a+cV+/WxzdMBuqWwbY8CPjdhUeA6ifG0okn4Wi2Ba6IDVyvXJo7E3e0fMmcxrigV7S7vgN0FXzrZVUhAPtK8mPNLO+XF4uo/uxIA2eMMThRwjjuQXvHKtE51gQzKPwvvl3nyTqVmgdosUkvuS2H7CavJHb199eZW4WTZqf1lhaF3bHQNtqHN0oJ4gfTcmA8c9MD0XtxmwjY+kN+8xLV5fT7xXKYmG2zGNXsiDVLZGrpQxY0g5QDM4ZaPWcukeci5xk7EmzZUpxAwsOnpVLINMiUwPRehJuVOoLf2RCvsHa5/7lXTQ9WqvttnaLXPczpFRJeQBorAl/a5yMl7bluwCfpvaIwkE332BQ8Ee1TJH5PgCUZvr/CICTcuy4vGmyIAb0aXXDOvuFBS21YekD7TG1HJL1rkuT7doK+lNkEVE1PpCEWhN11UmQc4aIc+IYkLJzpylt1Arh4LLa/IKc2XnMj9tw2u+AIaQOlRpGlxLvJoq3dv8XxPuejrHfsA6sY2H6tCoyzOWsIgaY1NNv9jwvaDfH5vM0t1WIEUrHIvARDtmiBXPnezwvqXPqD5cN8pVg3yFZ8aSMhizH8ySwhEBoWjSM4RBmui6YFjEJpvNRj52/hPN1SlYce+qLz0OiHatR+JvO67rgN0+yWWPXnjuyuH7g0oOsZKB2b7vz2lFJnzojVEpH1TdtKNcUf6Cp
+ O6itk0iE
+ QACaUjYEtHCb2zKIReIvEliMXFIYvHi6mkefxI1cI00Iv7lGHVc+AwgNZKdWTlPYiHRPSd5EAoDjAquu66Q+J5BPyhpM1e4vbORPBh2qY6AicDl5dVNEHfw7KjJ2QCQRorxYefLTZNEBg5VFIxHdBSaec2drEaBm7XciVqkKCxoGJe8Eo6AQsXwjhKQJjjr7sMSUW7NfkUr6SPi7si5gn2xyDhQRH9WCVf0FMCKLnHDx3ICxXlgTgcTKSrYnQuA7IPOquj53iE9q9AecbgcRFy5a7SnoKNfN0hQpXdx+zfKZwidXciBGBmyeD/HEZc4d4Zrm9uf6iQiyA5aDsB32dQRr7zKa6q18hKYGsBkytiYIhDsJJl1J61Ja/tavUi+QFNkmYOwxoSH3Bz03R+SFgljch193wBfeIEWbxbdQSaiLvQw+9PnjeFtscT95IzlcMM9idtbA92i5Aj3C53QOdQbpus8a8aXzbkN3qL6ASt2+50gY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,140 +126,267 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+On Mon, Jun 29, 2026 at 03:56:33PM +0200, Thomas Zimmermann wrote:
+> Hi
+>
+> Am 29.06.26 um 14:23 schrieb Lorenzo Stoakes:
+> > There are a number of places where we open code what linear_page_index()
+> > and linear_page_delta() calculate.
+> >
+> > Replace this code with the appropriate functions for consistency.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+>
+> For the DRM changes:
+>
+> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-kdamond_split_regions() returns early when nr_regions is above
-max_nr_regions / 2, leaving internal access variation inside a large
-region undetected.
+Thanks!
 
-Such a layout is common with damon-paddr on hugepage workloads or
-damon-vaddr on processes with a large anonymous mmap.
+>
+> See below for two additional comments.
+>
+>
+> > ---
+> >   arch/arm/mm/fault-armv.c              | 2 +-
+> >   arch/x86/kernel/cpu/sgx/virt.c        | 3 ++-
+> >   drivers/comedi/comedi_fops.c          | 3 ++-
+> >   drivers/gpu/drm/etnaviv/etnaviv_gem.c | 3 ++-
+> >   drivers/gpu/drm/gma500/gem.c          | 2 +-
+> >   drivers/gpu/drm/msm/msm_gem.c         | 3 ++-
+> >   drivers/gpu/drm/omapdrm/omap_gem.c    | 5 +++--
+> >   drivers/gpu/drm/tegra/gem.c           | 3 ++-
+> >   drivers/gpu/drm/ttm/ttm_bo_vm.c       | 7 ++++---
+> >   drivers/vfio/pci/nvgrace-gpu/main.c   | 3 ++-
+> >   drivers/vfio/pci/vfio_pci_core.c      | 3 ++-
+> >   mm/nommu.c                            | 2 +-
+> >   mm/vma.c                              | 2 +-
+> >   virt/kvm/guest_memfd.c                | 2 +-
+> >   14 files changed, 26 insertions(+), 17 deletions(-)
+> >
+>
+> [...]
+>
+> >   #include <linux/io.h>
+> >   #include <linux/uaccess.h>
+> > @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
+> >   {
+> >   	struct comedi_buf_map *bm = vma->vm_private_data;
+> >   	unsigned long offset =
+> > -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
+> > +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
+>
+> This doesn't seem to belong here.
 
-For example, with max_nr_regions == 1500, a target may end up with
-799 small alternating-temperature regions plus one large region that
-absorbed a uniformly-accessed range during an earlier merge:
+Ah yeah, I'll move that on a respin thanks!
 
-H:hot
-C:cold
+>
+> >   	if (len < 0)
+> >   		return -EINVAL;
+> > diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > index b0436a1e103f..2e4d6d117ee2 100644
+> > --- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > +++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
+> > @@ -6,6 +6,7 @@
+> >   #include <drm/drm_prime.h>
+> >   #include <drm/drm_print.h>
+> >   #include <linux/dma-mapping.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/spinlock.h>
+> >   #include <linux/vmalloc.h>
+> > @@ -188,7 +189,7 @@ static vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
+> >   	}
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	pfn = page_to_pfn(pages[pgoff]);
+> > diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
+> > index 88f1e86c8903..2708e8c68f4c 100644
+> > --- a/drivers/gpu/drm/gma500/gem.c
+> > +++ b/drivers/gpu/drm/gma500/gem.c
+> > @@ -288,7 +288,7 @@ static vm_fault_t psb_gem_fault(struct vm_fault *vmf)
+> >   	/* Page relative to the VMA start - we must calculate this ourselves
+> >   	   because vmf->pgoff is the fake GEM offset */
+> > -	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	page_offset = linear_page_delta(vma, vmf->address);
+> >   	/* CPU view of the page, don't go via the GART for CPU writes */
+> >   	if (pobj->stolen)
+> > diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
+> > index efd3d3c9a449..cbf723a5d86f 100644
+> > --- a/drivers/gpu/drm/msm/msm_gem.c
+> > +++ b/drivers/gpu/drm/msm/msm_gem.c
+> > @@ -9,6 +9,7 @@
+> >   #include <linux/spinlock.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/dma-buf.h>
+> > +#include <linux/pagemap.h>
+> >   #include <drm/drm_dumb_buffers.h>
+> >   #include <drm/drm_prime.h>
+> > @@ -360,7 +361,7 @@ static vm_fault_t msm_gem_fault(struct vm_fault *vmf)
+> >   	}
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	pfn = page_to_pfn(pages[pgoff]);
+> > diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
+> > index 8e013e4f2c6b..00404fb6c29a 100644
+> > --- a/drivers/gpu/drm/omapdrm/omap_gem.c
+> > +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
+> > @@ -5,6 +5,7 @@
+> >    */
+> >   #include <linux/dma-mapping.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/seq_file.h>
+> >   #include <linux/shmem_fs.h>
+> >   #include <linux/spinlock.h>
+> > @@ -359,7 +360,7 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
+> >   	pgoff_t pgoff;
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	if (omap_obj->pages) {
+> >   		omap_gem_cpu_sync_page(obj, pgoff);
+> > @@ -407,7 +408,7 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
+> >   	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
+> >   	/* We don't use vmf->pgoff since that has the fake offset: */
+> > -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	pgoff = linear_page_delta(vma, vmf->address);
+> >   	/*
+> >   	 * Actual address we start mapping at is rounded down to previous slot
+> > diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+> > index 436394e04812..1d8d27a5ea89 100644
+> > --- a/drivers/gpu/drm/tegra/gem.c
+> > +++ b/drivers/gpu/drm/tegra/gem.c
+> > @@ -13,6 +13,7 @@
+> >   #include <linux/dma-buf.h>
+> >   #include <linux/iommu.h>
+> >   #include <linux/module.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/vmalloc.h>
+> >   #include <drm/drm_drv.h>
+> > @@ -564,7 +565,7 @@ static vm_fault_t tegra_bo_fault(struct vm_fault *vmf)
+> >   	if (!bo->pages)
+> >   		return VM_FAULT_SIGBUS;
+> > -	offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
+> > +	offset = linear_page_delta(vma, vmf->address);
+> >   	page = bo->pages[offset];
+> >   	return vmf_insert_page(vma, vmf->address, page);
+> > diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > index a80510489c45..88babf435ac2 100644
+> > --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
+> > @@ -32,6 +32,7 @@
+> >   #define pr_fmt(fmt) "[TTM] " fmt
+> >   #include <linux/export.h>
+> > +#include <linux/pagemap.h>
+> >   #include <drm/ttm/ttm_bo.h>
+> >   #include <drm/ttm/ttm_placement.h>
+> > @@ -208,9 +209,9 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
+> >   	if (unlikely(err != 0))
+> >   		return VM_FAULT_SIGBUS;
+> > -	page_offset = ((address - vma->vm_start) >> PAGE_SHIFT) +
+> > -		vma->vm_pgoff - drm_vma_node_start(&bo->base.vma_node);
+> > -	page_last = vma_pages(vma) + vma->vm_pgoff -
+> > +	page_offset = linear_page_index(vma, address) -
+> > +		drm_vma_node_start(&bo->base.vma_node);
+> > +	page_last = vma_end_pgoff(vma) -
+> >   		drm_vma_node_start(&bo->base.vma_node);
+>
+> Not your fault, but page_last seems misnamed here.
 
-      r1     r2     r3                 r800
-    HHHHHH|CCCCCC|HHHHHH|...|HHHHHH..........................|
+Yeah :)
 
-    nr_regions = 800  >  max_nr_regions / 2 = 750
+>
+> Best regards
+> Thomas
+>
+> >   	if (unlikely(page_offset >= PFN_UP(bo->base.size)))
+> > diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> > index d07dcacb76bd..963fd8ded20d 100644
+> > --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> > +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> > @@ -11,6 +11,7 @@
+> >   #include <linux/jiffies.h>
+> >   #include <linux/sched.h>
+> >   #include <linux/pci-p2pdma.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/pm_runtime.h>
+> >   #include <linux/memory-failure.h>
+> > @@ -385,7 +386,7 @@ static unsigned long addr_to_pgoff(struct vm_area_struct *vma,
+> >   	u64 pgoff = vma->vm_pgoff &
+> >   		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
+> > -	return ((addr - vma->vm_start) >> PAGE_SHIFT) + pgoff;
+> > +	return linear_page_delta(vma, addr) + pgoff;
+> >   }
+> >   static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> > index a28f1e99362c..55d4937d495a 100644
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -19,6 +19,7 @@
+> >   #include <linux/module.h>
+> >   #include <linux/mutex.h>
+> >   #include <linux/notifier.h>
+> > +#include <linux/pagemap.h>
+> >   #include <linux/pci.h>
+> >   #include <linux/pm_runtime.h>
+> >   #include <linux/slab.h>
+> > @@ -1727,7 +1728,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
+> >   	struct vm_area_struct *vma = vmf->vma;
+> >   	struct vfio_pci_core_device *vdev = vma->vm_private_data;
+> >   	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
+> > -	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
+> > +	unsigned long pgoff = linear_page_delta(vma, addr);
+> >   	unsigned long pfn = vma_to_pfn(vma) + pgoff;
+> >   	vm_fault_t ret = VM_FAULT_FALLBACK;
+> > diff --git a/mm/nommu.c b/mm/nommu.c
+> > index 60560b2c457e..7333d855e974 100644
+> > --- a/mm/nommu.c
+> > +++ b/mm/nommu.c
+> > @@ -1332,7 +1332,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >   	*region = *vma->vm_region;
+> >   	new->vm_region = region;
+> > -	npages = (addr - vma->vm_start) >> PAGE_SHIFT;
+> > +	npages = linear_page_delta(vma, addr);
+> >   	if (new_below) {
+> >   		region->vm_top = region->vm_end = new->vm_end = addr;
+> > diff --git a/mm/vma.c b/mm/vma.c
+> > index ee3a8ca13d07..185d07397ca6 100644
+> > --- a/mm/vma.c
+> > +++ b/mm/vma.c
+> > @@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+> >   		new->vm_end = addr;
+> >   	} else {
+> >   		new->vm_start = addr;
+> > -		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +		new->vm_pgoff += linear_page_delta(vma, addr);
+> >   	}
+> >   	err = -ENOMEM;
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index db57c5766ab6..f0e5da490866 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -440,7 +440,7 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
+> >   static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
+> >   					     unsigned long addr, pgoff_t *ilx)
+> >   {
+> > -	pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
+> > +	pgoff_t pgoff = linear_page_index(vma, addr);
+> >   	struct inode *inode = file_inode(vma->vm_file);
+> >   	*ilx = inode->i_ino;
+>
+> --
+> --
+> Thomas Zimmermann
+> Graphics Driver Developer
+> SUSE Software Solutions Germany GmbH
+> Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+> GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+>
+>
 
-If a cold subarea later emerges inside r800:
-
-      r1     r2     r3                 r800
-    HHHHHH|CCCCCC|HHHHHH|...|HHHHHH........CCCCCC.............|
-
-The small regions cannot merge with each other (different access
-counts), so the budget stays full.  r800 cannot be split because
-nr_regions > max_nr_regions / 2 causes an early return.  The cold
-subarea is never discovered.
-
-When nr_regions is above max_nr_regions / 2 but still under the
-maximum, split only a fraction of the regions instead of returning.
-One region in every 'max_nr_regions / budget' regions is split, where
-budget is the remaining room (max_nr_regions - nr_regions), starting
-from a rotating offset so different regions get picked over time.  The
-fraction shrinks as the budget shrinks, so the region count keeps
-refining while approaching max_nr_regions smoothly rather than
-overshooting it.  An unnecessary split is reverted by the next
-kdamond_merge_regions().
-
-Link: https://lore.kernel.org/20260626085851.70754-2-jiayuan.chen@linux.dev
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Cc: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Shu Anzai <shu17az@gmail.com>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/core.c | 49 ++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 44 insertions(+), 5 deletions(-)
-
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index ded76719e8a14..972a19fcee3ec 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -3240,6 +3240,37 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
- 	}
- }
- 
-+/* Split one in every @split_step regions into two, from a rotating offset */
-+static void damon_split_some_regions(struct damon_ctx *ctx,
-+				     unsigned long split_step)
-+{
-+	static unsigned long rotation;
-+	struct damon_target *t;
-+	struct damon_region *r, *next;
-+	unsigned long offset = rotation++ % split_step;
-+	unsigned long idx = 0;
-+
-+	damon_for_each_target(t, ctx) {
-+		damon_for_each_region_safe(r, next, t) {
-+			unsigned long sz_region, sz_sub;
-+
-+			if (idx++ % split_step != offset)
-+				continue;
-+			sz_region = damon_sz_region(r);
-+			if (sz_region < 2 * ctx->min_region_sz)
-+				continue;
-+
-+			sz_sub = ALIGN_DOWN(damon_rand(ctx, 1, 10) *
-+					sz_region / 10, ctx->min_region_sz);
-+			/* Do not allow blank region */
-+			if (sz_sub == 0 || sz_sub >= sz_region)
-+				continue;
-+
-+			damon_split_region_at(t, r, sz_sub);
-+		}
-+	}
-+}
-+
- /*
-  * Split every target region into randomly-sized small regions
-  *
-@@ -3253,25 +3284,33 @@ static void damon_split_regions_of(struct damon_ctx *ctx,
- static void kdamond_split_regions(struct damon_ctx *ctx)
- {
- 	struct damon_target *t;
--	unsigned int nr_regions = 0;
--	static unsigned int last_nr_regions;
-+	unsigned long nr_regions = 0;
-+	unsigned long max_nr_regions = ctx->attrs.max_nr_regions;
-+	static unsigned long last_nr_regions;
- 	int nr_subregions = 2;
- 
- 	damon_for_each_target(t, ctx)
- 		nr_regions += damon_nr_regions(t);
- 
--	if (nr_regions > ctx->attrs.max_nr_regions / 2)
--		return;
-+	if (nr_regions >= max_nr_regions)
-+		goto done;
-+
-+	if (nr_regions > max_nr_regions / 2) {
-+		damon_split_some_regions(ctx,
-+			max_nr_regions / (max_nr_regions - nr_regions));
-+		goto done;
-+	}
- 
- 	/* Maybe the middle of the region has different access frequency */
- 	if (last_nr_regions == nr_regions &&
--			nr_regions < ctx->attrs.max_nr_regions / 3)
-+			nr_regions < max_nr_regions / 3)
- 		nr_subregions = 3;
- 
- 	damon_for_each_target(t, ctx)
- 		damon_split_regions_of(ctx, t, nr_subregions,
- 				       ctx->min_region_sz);
- 
-+done:
- 	last_nr_regions = nr_regions;
- }
- 
--- 
-2.47.3
+Cheers, Lorenzo
 
