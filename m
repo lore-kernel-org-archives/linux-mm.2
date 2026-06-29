@@ -4,81 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7338C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 03:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D70EFC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 03:27:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B65456B0005; Sun, 28 Jun 2026 23:19:34 -0400 (EDT)
+	id BC61C6B0005; Sun, 28 Jun 2026 23:27:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B16F16B0088; Sun, 28 Jun 2026 23:19:34 -0400 (EDT)
+	id B4F016B0088; Sun, 28 Jun 2026 23:27:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A53F16B008A; Sun, 28 Jun 2026 23:19:34 -0400 (EDT)
+	id A3FAB6B008A; Sun, 28 Jun 2026 23:27:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 82C936B0005
-	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:19:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 139271C35A8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:19:34 +0000 (UTC)
-X-FDA: 84931495068.05.340C326
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf20.hostedemail.com (Postfix) with ESMTP id BD5721C0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:19:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w8fL5AlD;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 787EC6B0005
+	for <linux-mm@kvack.org>; Sun, 28 Jun 2026 23:27:55 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EFF77C2865
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:27:54 +0000 (UTC)
+X-FDA: 84931516068.14.005B705
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by imf29.hostedemail.com (Postfix) with ESMTP id CAC00120003
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:27:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RfTJj7YK;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782703172;
-	b=0Hr8vdCCKIcFn//bLfk2rWSWQSWYzvEZ4EjrsEZQ4x3S/s3qgI5onHqnJmErrz2uz+9ppg
-	LLQHiLuDODBaTQNKywkSV7c6I2LYGXI+55zLhf1TO8SR8zrHUvL7vV68SYY6siAZO9Xh48
-	00SXhNVTiu8ErIIKGABFhAoYJdoIBEs=
+	t=1782703673;
+	b=Qj9Fhf6+XIasfoJnkno0N71RaunRRUuFX0CECDQWhrVruNUaxlRRoRzwJZL9sE/MAk98eD
+	x3JLMNHp0fsg80NKUq+q91rlk5Br5l6MzJiyRiRDueBDz6M/8F6FKkJpX7B6pD92yHebtV
+	rrO1SjmqFkKmT7cGgjrvKklCsZyw//8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782703172;
+	s=arc-20220608; t=1782703673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eirV7JvdpiqJpLKq15ukPt6tpYfLjuJTqmiHC+bueg0=;
-	b=HoXH3+jSlRuligBzPEdjvFAI09slDJbP1PpAo/ltp73yfOStlOe1QEhqKl2ACF42bQS6v8
-	sCa7hMSupJ2Xy3608b58JMjDnUzd0OsLVDazBGDBAcjqJSmRT/ZcF7/l9o9pkIE6XcHAJQ
-	S+O0WyCSbvvKnxWQgj58iQI8uKGNrAE=
+	bh=GnuCCBI3ALRCI/rId03CW8nskbsRqSLSxoX75VBaEXk=;
+	b=SOTkqdQNmDDw7i+8lR/Nj85FG7UwHtTp/OhatlExf6WYu7Ekwv2zr8X5SaaYUM2spMMo7j
+	vqxhUImDCVt8see8D5T9Fn/VnTDKceWvBRAxSoe6H7NesLDVuyFnJIofdCL6o5NiNFYPzu
+	5WbJZpnwAhSKF2yn8ohQHE6lotl5g98=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=w8fL5AlD;
-	spf=pass (imf20.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=RfTJj7YK;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1782703167; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=eirV7JvdpiqJpLKq15ukPt6tpYfLjuJTqmiHC+bueg0=;
-	b=w8fL5AlDbptLwot4buyfT2Sjf2fcX7SBsplOMu9kLsY6dgn6SHVVJ65iIbGT8RlyYSxngNBcRznZi3Kdev30iC+yx4I8KYvVsHmeuxXkvBsndnLwEgHHGuTt4wDolz+qOZD0JpKWCCXrL4zBLLQI4AVhA01ociALI42H31Dk99o=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X5luikQ_1782703165;
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5luikQ_1782703165 cluster:ay36)
+	t=1782703669; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=GnuCCBI3ALRCI/rId03CW8nskbsRqSLSxoX75VBaEXk=;
+	b=RfTJj7YKpeDTQ3aJjFkv/WBW1D2fp49pY4xzA8oxgMBBIDKygUX/fclParcqHDhact92MYZuiQTyaMmPhUmmks2nzt5bFL7wxjgJYh5NnIKUbwHoJSl8Ob9g8Cr3Dx6dQtS0Y4+h6Lo2c8EYiJPO22fGn1uCT4mMYysFd6ucuVw=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R651e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0X5luln4_1782703667;
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X5luln4_1782703667 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 29 Jun 2026 11:19:26 +0800
-Message-ID: <828504a2-a1f8-40ff-bf84-ed7d03f02d83@linux.alibaba.com>
-Date: Mon, 29 Jun 2026 11:19:25 +0800
+          Mon, 29 Jun 2026 11:27:48 +0800
+Message-ID: <dde92cd4-c6fe-4339-a892-004ca78ebc30@linux.alibaba.com>
+Date: Mon, 29 Jun 2026 11:27:47 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem: Fix data-race in shmem_fault
-To: yahia <yahia.a.abdrabou@gmail.com>, hughd@google.com
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-References: <20260627223656.181988-1-yahia.a.abdrabou@gmail.com>
+Subject: Re: [PATCH] tmpfs: zero unused folio tail for long symlinks
+To: Yousef Alhouseen <alhouseenyousef@gmail.com>,
+ Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com,
+ Barry Song <baohua@kernel.org>
+References: <20260628004314.27370-1-alhouseenyousef@gmail.com>
 From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260627223656.181988-1-yahia.a.abdrabou@gmail.com>
+In-Reply-To: <20260628004314.27370-1-alhouseenyousef@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qr9ia3t3q7q34mw55kfy4oysueqtzfx5
-X-Rspamd-Queue-Id: BD5721C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782703170-629490
-X-HE-Meta: U2FsdGVkX1/fbI0yWjdf7rvsOEcXS2sSfdNU3CI6QVTWjAnhC6zqe0TBULgUA7l/hKwHFTP30XZ6lEM0Uba2qz5z0OPdHfgVQisUoXBRNKOuTHoGlB7Rv4vy2eTOYG4T2UgCZ3SAJIoyPPGff0N/3luUABkd8Re7QL9FevTkBDIw7w91+mTwNrOPUTQUOZoE4sMOodosFoUapkDDocBBU0zZhh6e8J3hHJPI3Sh9dw9PqFSO1O9NggJp9AncWH6h3/AyJZrd4ou1DS3RGoK5fcMeLMsCYyx/rWJGCyjajhiik0+FSrxICbiwqYbYCz6tloQsoRa4XOmnPPHb5A+xz6nAG/pzsOtgoXgRC/1LrjQ8rppjjfz4EdixcJ1FRbf7eEP435EcjCnQpDFQso9+7EeJUXZXHG12LyGkTPMP7oJLHoJbVYK5lTy9HAGARzdIOGAStUQdQpBHwchvudMaFX3imOlfzSo95fkBUj8opL0YRvLD6fTnnLyzZGMywGS0G6E/jPykBErUL3hL4qlxvTeJCjMagdwaZ8EawRzFFBusWz3hj0tPvZMMxff0LNx+Q9oUsUG2a/o1P/+Ey3hsrJtVuaNgTVasw8Mh8dFvNA5YCFUn37Tq0HIysY7XwaVffdHEBO7dVq4vULmPjD6cSuOfRwpsqmSaNhheijZu9cp/15MhmHrhFa1xlgWUPJ4L5ZiWpx+wVRud0F+XomeiLggcfaS3Qf6mG51fOZezpKYNxWoDgbHA+TQ2Gt1w71M2f1n2NdBNbn43tYMnmXPqNtPs94NMMzCq07SkfMnkPrOMeQYt9WfpKAw6UVMWjv8htF29bkjCiYvDqBHZ7pdMCcoJ0aEPNCenO0BfeqXD2fK/mtsFx/YPTP5QcKPB4yqTBEQNr5fzHCRdTlnvsocSAYbr3jIRjRBgqithD93KCN4TBI26pPd//5nLrdLFKUBiyeyFIphzSm/86gPHYds
- z5Q8IG9D
- kbYy74N8GwIYKczeLs09CiOuRABtZE5DR10bIYlcI771rmbRxbhz8qL5e/rHMYkDAIjA/CIF9XnHuoDlb/N0DrF0jEd+5oadEFiRoTVltWnzvrc6Su+yROwh3r3fkmmyRRRjs43lzRRJq4wNzZwgeG+CvaK0Rqgz1RTY3J/3KDDbpAKRlPx0ITypopsOxJ796jyl0dEm5GaVva63WmK73Crvqs383g3a3eP22SC/K3eBoq8X5BMsBImP4VIHaNVmC2EgHrrXLQ3tF3EpcyYnSJ0+52vtS5plsFx/dzn8w2+eTcgaJMKnV75PnzHODwpU8kScjMTzSp9U7Nnxjv54V5vIFgm+wCZCvOKFRABY6BntdPNfaJbcvDJBLvaguelsiyJfjJ1g04F3JbTsX7z5/XAQjLMXeIy9WglqHo8aMMlhBnHNorEXlLUSSDpC20UIfO4G6zT07/wcNLppkd8KLqZg9hyNIYrl9DrjxvWrCFFmNKJuqqpt71iIYk0SuOZnbaMSwnuGHRemZ7CgbmrklLoiphtLt/YTIltKGd1HGddsOTZ0Ves29PDKG4ix4jCAKTi9RcJGU1zZwLgUZ6ErBgegT9mapciOPzaieBbU0vrgNtvlyfbrsNu1lZrkhKy0gFOIK
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: CAC00120003
+X-Stat-Signature: 8mobbkugo9f96481t56ptw71kmnzdnby
+X-HE-Tag: 1782703671-535616
+X-HE-Meta: U2FsdGVkX18Mf+7cvYZIGGKCs3SuzaMIefhyVQ9/5xBqAD0dfHtwdz3QfO6eM1LdQriWFOAuWSuDNLOdBFGownHkJ/tMneet9ogwFw0B6x3sUQqAsO/BKZId7z9+fdD79oiQoLvCoFLNYidqEJ/O5RC4UFKUVpULZT2rjhV+Itc6rw6PsrF0DoOwxzOZC8iToguBwEc5flgNVIeHvfMxEkeWwWkXJZ7G/SjoRikCI+LOSbrgaA67VHbXDz5r9eSScS8NgPH4YBhcryEFvIfLVeatc06XxJieLAZG4gUG8LB+9fnv/CpRKnN0zQs9gMRghhzyxUc/ls/3RmhSnDmZX1kTwvC5RC4msHor9+lwF5U/g+5YMTH/mbB5Q8SuDFSBZIWXwEB5kRcpcVJdFAtuMbNUDgF0L8u2Ohg6pVqLMsc+p+VyZK7EAxIanoUG143eqW0WoOqwPx1hjVVcD6G5i/Ougkkj3/3Oc9T/CyLP4GGg6bH7mkh1yw/IUUngJg2tKLVUzFxcrS0Q4uqIvR5C9bEP3L/EiGbapb0mb3nlk4gGBl/jW+6ZX1vHIkEh4wH9tE3wHhfiBhvRmeJyidz6X60XUG3uY6luRMDf51ifjd9g+xs0kT4GrBtDEBRtlnwYhzWk6yb/UwLaIPyRgV2uH93H4Bk8EaSWt6c+xoQi5OYbuj7/aTdrfN7zQo0Qu9s0DpyPgAgFWUgdx2QwWILBO/xVOlvCfWaUcDO4GlSLqHdVa03bDAJpBPVP4TAElZwl/5Q0MwBB9aF0eGQJAWyX1axgdsE02giNaLsDbgMh1MBORz3TMPL+w5dOWeT5sIFPyRRnfGsZlQPoyYb55MLa6AG5Schb9zpGJGRyzybxyzIsJxE4CexeYrk3irADcIbnj2SjnJW+fjsI8JsW1AlZcBq6aow5ljdZ7GbOqY15XxNuVUjdmzAKMqziN5nbr5PwaEB5s96sH4Uo6YFdQnH
+ q0PQsRuo
+ CY2ezWy2nUbaLoGGQ7JZmfr3sPtBeZVxvfXJMS1ftygqcc16qoWkR9C2OTLEmxLhBnHrzquB5r5ILDgEuAGpyf+pUY0uQB2XXwkNXC6Pv4j2Ddwkp5u4IJ6fBJR6+lLqxts+wa2y0tcA505UohngbI1912umuahLx7v0B4LK5j7xnw0M0kuip9dGK3j36bxb9Mx93vDZom4KRM3Smqr84VqZKzD4ciYak6sa0+J8wGJWvUCI/GkqJWmPJjyhIECV2TktkCbNabMtuJlm4RWIkL8g8BPDihJczDJGvTaEB7cvrKlq/GvXtvGfVVFW0E1RtdeN3/tKUly1vSAe+zX7ZY+0crbzjIc/Rma7x2vevp+YhReN3JNgJ45Ff3KLSgT2KI/EBQR4LM3LLDARiEjW1NZrI/vl7BzfQ8WRNuAd+U7ICF3spyQZTbZ1rfQg/jV0gQGEnXs6M95zBs1PBcWiq2FSV1HCK82WAwYS5nqX3aUFzq/WxgjutAQ3jWjUXkVwFOPZTMNfrrssjA5SE4XsOWkSUgMHkyc7Hrq2wg8Hypt1YmiGKlZ/1Ywmr7nBODwi3lkn/B07RaYzQO/5ZQDiHrEKGrQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -86,43 +89,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+CC Barry.
 
+On 6/28/26 8:43 AM, Yousef Alhouseen wrote:
+> shmem_symlink() marks the entire folio uptodate after copying only the
+> NUL-terminated link target. The remainder of the freshly allocated folio
+> is left uninitialized.
+> 
+> Reclaim may pass the whole folio to a swap compressor. KMSAN observed
+> sw842_compress() computing a checksum over the uninitialized tail. If
+> the folio is written to a swap device, those bytes can also leave the
+> kernel.
+> 
+> Zero the remainder of the folio before marking it uptodate and dirty.
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=bf5586280a66e9ccdfa9
+> Cc: stable@vger.kernel.org
 
-On 6/28/26 6:36 AM, yahia wrote:
-> From: yahia ahmed <yahia.a.abdrabou@gmail.com>
-> 
-> shmem_fault accesses inode->i_private without
-> holding a lock, while shmem_fallocate is modifying
-> it while holding a lock, thus a data-race is created.
-> 
-> Fix this by using READ_ONCE, which provides an atomic
-> lockless read of inode->i_private which prevents compiler
-> optimizations such as caching registers. which is safe
-> because subsequent call to shmem_falloc_wait revalidates
-> the lock.
-> 
-> Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
-> Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
+Do we need CC stable? Have you observed any actual impact?
+
+> Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
 > ---
->   mm/shmem.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   mm/shmem.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb..97b3913144ad 100644
+> index b51f83c970bb..b06c1ae2f50c 100644
 > --- a/mm/shmem.c
 > +++ b/mm/shmem.c
-> @@ -2693,7 +2693,7 @@ static vm_fault_t shmem_fault(struct vm_fault *vmf)
->   	 * Trinity finds that probing a hole which tmpfs is punching can
->   	 * prevent the hole-punch from ever completing: noted in i_private.
->   	 */
-> -	if (unlikely(inode->i_private)) {
-> +	if (unlikely(READ_ONCE(inode->i_private))) {
->   		ret = shmem_falloc_wait(vmf, inode);
->   		if (ret)
->   			return ret;
+> @@ -4057,6 +4057,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+>   			goto out_remove_offset;
+>   		inode->i_op = &shmem_symlink_inode_operations;
+>   		memcpy(folio_address(folio), symname, len);
+> +		folio_zero_range(folio, len, folio_size(folio) - len);
+>   		folio_mark_uptodate(folio);
+>   		folio_mark_dirty(folio);
+>   		folio_unlock(folio);
 
-Make sense to me. But we only added READ_ONCE() for the reader, which 
-doesn't seem sufficient. Usually we'd also need WRITE_ONCE() for the 
-writer side.
+Thanks. Barry sent the same fix before[1] (though I forgot why it didn't 
+get merged). I think this is a reasonable fix. So:
+
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+
+[1] https://lore.kernel.org/lkml/20251224020424.52976-1-21cnbao@gmail.com/
 
