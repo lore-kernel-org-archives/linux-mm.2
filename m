@@ -4,139 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79CAAC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49383C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 08:00:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 633196B0088; Mon, 29 Jun 2026 03:54:07 -0400 (EDT)
+	id 17F1B6B0088; Mon, 29 Jun 2026 04:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60A866B008A; Mon, 29 Jun 2026 03:54:07 -0400 (EDT)
+	id 12FB46B008A; Mon, 29 Jun 2026 04:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2EE6B0092; Mon, 29 Jun 2026 03:54:07 -0400 (EDT)
+	id 01E526B0092; Mon, 29 Jun 2026 04:00:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 27B516B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:54:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A6AA51A05EA
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:54:06 +0000 (UTC)
-X-FDA: 84932186892.09.FB050C9
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BADE36B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 04:00:45 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 342781405D8
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:00:45 +0000 (UTC)
+X-FDA: 84932203650.02.389F933
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 01A71C0006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:54:04 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fee3FdQ/";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 5CAFF40018
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:00:43 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXKS81pj;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782719645;
-	b=f7l00NH939tLCwoRL69NtFyvxc8V+L4MmmVGtAktSmQUVK93wMl1YKvX2zb/Ef/UVX6Gwc
-	x7NSEYj8YKFDt1iqmKuj2JF4N9r2gnGMvUg1nf01pVQLJ6WIRTEJ9ma+2Np8u9ItJMV+Mk
-	GdjHAmMp/IHutIaXmIjBxeMPzlHhJ8I=
+	t=1782720043;
+	b=zGkFL//fN8ABRoZ3AJ0Ap7npq+uBPz6cQ5TWHUH0TWmyP5ZwV7yFQDREZNR1wOHZH6Escy
+	2c8NH+DlMlh11l5cidfvSrl3LC4LNCv5MlFQSgcNg+jMJvG9eOcaDeiwnqiJVSEbpVE1wV
+	i4nmqErQhS1gRql5jfQPZRK3Ba1PXks=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782719645;
+	s=arc-20220608; t=1782720043;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y473HtDfRO6KJTo16mClWnTubfb5ewfghPUjgHyD1Tg=;
-	b=qoiwKznbfAS8+Uf3bOINjbRIwiOzYgAz8dqVDZsZFK40HDIE1f+hRzqecVfWkDu29b2l2q
-	MJKnAtl8BFZ2SRe7EEjj83j9xaKYzPluvAJxcSHeZNaz+7xa5prCTlN+o97NRE+vHadnYA
-	ract5YvK/dB3EiH9J2B7Ps+uRyMNgYs=
+	bh=W/LgCWWfF/NcaocAuaVXtNR665KgEcQqH4uB4RpU4cw=;
+	b=jabP8tepaz7TAINNHV5U1ZZ8YcF5lECERAP2WgMRntCMqtawiwEj4p0SGb5JMHGigkR569
+	70QBv9barritKSKrShWvXMHhpYYM8e8o4RHlevKDrzvYfr8A/mns0dMifmjvavnHrD2kQg
+	TSdMPNiLwbovA7+n+ddCXm3GY9oz6Vs=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="fee3FdQ/";
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EXKS81pj;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D2916001D;
-	Mon, 29 Jun 2026 07:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1081F000E9;
-	Mon, 29 Jun 2026 07:53:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D805460008;
+	Mon, 29 Jun 2026 08:00:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F691F000E9;
+	Mon, 29 Jun 2026 08:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782719644;
-	bh=y473HtDfRO6KJTo16mClWnTubfb5ewfghPUjgHyD1Tg=;
+	s=k20260515; t=1782720042;
+	bh=W/LgCWWfF/NcaocAuaVXtNR665KgEcQqH4uB4RpU4cw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fee3FdQ/Rq2SmVFgHjYy+6TrSWnCsBBY0w04XpIKPjbGRQEEd22DDahz0FQzi2nPK
-	 lSGyBYXBEkOPxuyprtNAKSAGpMDtQ2tFr7NJs1/srNKdl7/5p2AsMXSo7kR/fzcZmM
-	 jSvjYrxu7ffETiwfbd69xnKuyXQ1/SdRJEKu5kGm4eU1GbUDMscaFHYCr61tZVuSQY
-	 Nhab0qX6t5z143BH5Wtb38f1NtYvo/+L5hYOh1/YZQ1CwCfu3ZbgocEEHsWTiKE1zj
-	 C5Vas3rmFPPsZX2f8GhAQJt4tF3fMDFY9FUdwJeEoIlN0n13RawnJtJcNdIrmRA5lN
-	 uR9pmeHXMNJkg==
-Message-ID: <bedd1c0d-b41c-47a5-b30e-939bcb7854c2@kernel.org>
-Date: Mon, 29 Jun 2026 09:53:58 +0200
+	b=EXKS81pjhnX/T3t20HwM0r+G8lZqOaf7LUBFI4WeNo8HO7Dv9KyGrHaNmXneQ778Z
+	 dREeqYHE7e/A5Q+YYwlBlEMv0GobGewa87N0nTR3ppXR/wdBGeAjiI6pjGNSvoMDN0
+	 eZ6UoSXLBoe4MqtKJ4Sl/waE+QXU1BcmAB2ZLjoDSlVhukD+jGCRfVjgbQLsrg0Q7G
+	 3k8082FO++Ml3PQ2eE9k8jCQ/sgc7mfHWX1HgRPZFp3B6oAdg/kxrJoZ4WXe7GELHG
+	 an6aeydeJMc45Q290ZgCuvu/l80ioKCKwq5n9oHNf2QpIySP7ObpJ94ugAT9Lw7qtT
+	 bvUZsyYFN24uA==
+Message-ID: <fe46197a-3237-470f-869f-014057512412@kernel.org>
+Date: Mon, 29 Jun 2026 10:00:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch mm-hotfixes v4] mm/page_vma_mapped: fix device-private PMD
- handling
-To: Wei Yang <richard.weiyang@gmail.com>, Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- ziy@nvidia.com, sj@kernel.org, balbirs@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260624065353.1622-1-richard.weiyang@gmail.com>
- <d060cadd-34f8-42da-b7f7-c8d295050436@kernel.org>
- <20260627020719.ipzfrlhfbvr6ac35@master>
- <b7cfc04e-7a57-489e-9459-82d7eb818675@linux.dev>
- <20260627114147.d6csxmiha6whfyb2@master>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2 2/6] mm/page_owner: use MIGRATE_REASON_NONE instead of
+ -1 for last_migrate_reason
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260627114147.d6csxmiha6whfyb2@master>
+To: Ye Liu <ye.liu@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260626024550.25677-1-ye.liu@linux.dev>
+ <20260626024550.25677-3-ye.liu@linux.dev>
+ <DJJ7CCWCYI47.3VWWQE2AWP6NC@nvidia.com>
+ <407fa67f-3212-4c5a-ac8c-7c5d41479cc9@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <407fa67f-3212-4c5a-ac8c-7c5d41479cc9@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ipxq1zst9hfytbxog9n33ghb8a4e1hga
-X-Rspamd-Queue-Id: 01A71C0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3da4nixpmtgwjub89tzjaqrkmmx6zz71
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782719644-442123
-X-HE-Meta: U2FsdGVkX18MHaU+wpwoAKboxXpPlxkgDr/rmgav44jomqzVsY8waisuPraUof2No4QheCn2k3j/Zdmk/HLRsApW6WG/xZc88IlSn02Rk1dUIjjYDJU25D1CL3Oo/YkVPl1cNhsxelo8Q1LOfitF+FqiRGhMc0XqZQKIGCd7FFvX4GzJNI6lgQC19QHLXyNEg/smEFQynkhqMj5IPPIkfFwEDVrQCyiYdj6ahoB56SMmSSreR5pwTz7QBFqmSdmct5i6dBZS8G3gixNmtvtZm1m/h96j3+6/9lDn2gj8tNSv7WbO0eNWEZZvoNPoAu9tNOLvBKJMAEeYZuI+mR5/9kyc22yCVt1hWlH3/dXtlt2w71grcrf8tmMAUZTlGewFYZ5fr+mYqUhJwh8e5r/9x/03NUNlF/LNr2jzXDgL2IbBK3l798UwVdcKrlW0QRzZdPUEp0O3x9Cj3fpc8w6U89oICikrc7EGpKvyzvoACYJVgBqx7pqTFbVxlJcRu8MNMcRbUZUoN14JfWTNemoOX8Gsv8F10xynmERn9Con50GBuRsOPClDobfFLbJzPuNAD1R9hSMt+vZyzuFB/r1+ZBMrvXC3E4QlBUl7p6z1PD1RKio4aHKfTlh/cbWNBe5U/G8hZAgxjCb27mUHyCZah6JTx0KbZbvpGVSF9g+0fQ5hTGlkrJqfiJFIvjrQ4VB3JqEbYq9wRsTyxIplVRtYII5fhLPLVOY+fYJ/1cRFOwr08BF7U36F0WybuMGQQEu/RXx5bqu7HLWMGXAcxAtxX2px7JwiZ7yxLbZXVkGEHO11Bvy9eZm6Dlham2PDV3z0p6ClG+Lvjz7RvEarNDc0Du48dbns8ckRMepyVtYtDNb3nW+z1XIlU9qntPZP2WEYa199Dun3+uqUVp+OIpWDNv9790Y7Cc06ymcrOXQzikjG8yWhkDL2CAnpqEiktCox08JoI8usU5UK95YIylr
- xkZsYPa+
- iJ+QfMt2FR+ArDLnJO8c+0NQ8wdzuH12zp88iKxuUhWD4EGQmmaeu35YAMMOMbUHx+MmGBru85/Wldt5FAdz+U6lK+ib7rOE2MYSLPOmZLbX/9r381uNycqbErZophW9abCv4pp9uVSM2uuMiFgMx5DXe5UnzIR7PPgdJYQc5p2PfG8y8mxSFZ1clRAKYgCxjmqz6bSzEMKdyfAqKKOgEcy2b31E2jp0OunE8E2ewquE6hRwxsxgRyfgf/ty7OYdyQ9K7/JdOtfkVBa0GIepAj4toSx06RVyAlTd+xD6Jnwe1vVI9bk2sDwLikOYHBs3lZgQ19yT+45rhdizjoSy1+psXuFy5Luxx6BXKrIJy0oXECy9LNHWV99CU7sShgsDlUqp7
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5CAFF40018
+X-HE-Tag: 1782720043-152371
+X-HE-Meta: U2FsdGVkX19Wdv5cu2L3kKmzkLwqChOmm57CzKBZs/88mo+vELPmyCV5YlrDDtDw0RnrTTCGNvXChVP4fJoUI0ZNPC8HbJNShfwWp5hEIb6NPB+2KVLKdmVXLTLXuuH5DptF6wzhnj65XOV3Y5ljEtN46y7YRyieRUVKBvN+kZn7iSW5Qi4+wbUCXyQkImhJO8HL/NL9lCeJReqqnyw6Iexr5zKiRZOxgjaj9J7pVOQ8a93PjEmeUh1qZ/0Al1v89AbmUkJOThcGBhXjWBMon1y0MAhy2IS2XkL+kCuOHjWhFlEQtKYQXmoIhFjRaM3Ii6SDWPrnxY4uehyqGR+CCvdIvTaYMvTG+6yjCQ+WfizofLoEWmzUnq0Y5aPnksNXQjCu2OMmbzO915GiQaDzyftF3RkANLWHN+iVHxY6UKOngYCMr/D1jSxX086xvo8OqkuRhn3BpdYqxMrObeGzueJ9CMzZGb35+ajGPscPR7w5/cYLSyAigwsZzln2SivoE7VoF9rr9beMZ6UrBJlQmHLg0afbYikvNsoROJhGOpXYkTusDIL7qfNSZvCao7Dms4PtUyupiK2YExo5+QswKhBNbwDVuW89JpyXf7pPQK68lM92MMyl4GD9eVsGnEjp6wze8EyGx9P3i3tSmkCOV6Ws5qpCmNOUdiRpSTw8xNZOkQe0p8eLZCjltn7QEZQ12BS0w+nV5TxXPxKhHamIsH8yVIi6yb4RVv4/wrgrIJkO4xoT5iC3rgTiql22V5GXSkpNdif6B7UVXO+x8ZtgXmDcT6Bvq8Duv4EL0AyvZ+aFIm8y+SeGArFmLxz6LvMlYHBBlbf6YZNFMSnvTKu3ic5oWo4Vjrnhmlo6k5QSVQsIHVDrV0Rd5pfNGkTah3dH5wbhQhOhs3egek61J266kYqvXyDZQApsrgyCr7B+mUK8STVwtPIsUtSm7yNM7CLIMzU+HiuEzkQDvYg1ryr
+ g3lESAar
+ d2Gntw8SbkdP/F8FWeNC/gK/9lquTJLVBDxNb0a37ecYDCGOqfSWePVRAMArsUkobm/ll/xzeW98F1dqzW74XUEnp5zcDXBXMr2x5b17cw+b7eMWuL/TOxtJVr1Mphwt9NSUY9YU9KcMA2jzfdvnWltgB5wiUX/C/tR8sjPAsSuG5gWwd3NLytwSgMaWtwwaLFl5B3kk/MWWMmrBaOKgZQgO7m2/ziwxjgFF0xrxdM3OYLUL8rTbXiRcYj7OAwTC2/QtNyOpfok+V1u9YErt/DjQp66HkBiQikG0f14b3FwIeNQre9ryzjZAth3PpfIQahURRJlMqUBHYI00=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,44 +138,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/27/26 13:41, Wei Yang wrote:
-> On Sat, Jun 27, 2026 at 10:59:16AM +0800, Lance Yang wrote:
->>
->>
->> On 2026/6/27 10:07, Wei Yang wrote:
->> [...]
->>>
->>> Hi David
->>>
->>> I did a little adjustment like below. Want to check with you at first.
->>>
->>>
->>> How about:
->>> 				const softleaf_t entry = softleaf_from_pmd(pmde);
->>>
->>>
->>> could be removed.
->>>
->>>
->>> The same.
->>>
->>>
->>> How about merge this with above? And put at the first case?
->>>
->>> Below is what it looks like:
->>
->> Why add more churn to a fix with a stable tag? Cleanup can come later no?
->>
+On 6/29/26 04:20, Ye Liu wrote:
 > 
-> OK, will leave it for future cleanup.
+> 
+> 在 2026/6/27 02:45, Zi Yan 写道:
+>> On Thu Jun 25, 2026 at 10:45 PM EDT, Ye Liu wrote:
+>>> The last_migrate_reason field uses -1 as a sentinel value to mean "no
+>>> migration has happened".  Replace the four bare -1 occurrences with a
+>>> local MIGRATE_REASON_NONE define so the intent is explicit and the
+>>> magic number is eliminated.
+>>>
+>>> No functional change.
+>>>
+>>> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+>>> ---
+>>>  mm/page_owner.c | 15 +++++++++++----
+>>>  1 file changed, 11 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/page_owner.c b/mm/page_owner.c
+>>> index 342549891a8d..ebafa9d7ff07 100644
+>>> --- a/mm/page_owner.c
+>>> +++ b/mm/page_owner.c
+>>> @@ -21,6 +21,13 @@
+>>>   */
+>>>  #define PAGE_OWNER_STACK_DEPTH (16)
+>>>  
+>>> +/*
+>>> + * Used to indicate that a page has never been migrated, as the valid
+>>> + * migrate_reason values are non-negative enum members (MR_* in
+>>> + * include/linux/migrate_mode.h).
+>> 
+>> Why not change last_migrate_reason to enum migrate_reason and functions
+>> pass migrate reasons? MR_TYPES probably can be used to indicate no
+>> migration has happened if we do not want to add MR_NO_MIGRATION.
+
+Indeed. I'd just add a proper MR_NEVER option with a comment.
+
+>> folio_set_owner_migrate_reason(),
+>> __folio_set_owner_migrate_reason(),
+>> move_hugetlb_state(), and
+>> __update_page_owner_handle() need to update their signatures for this.
+
+They should ideally, but do they "need" as part of this series?
+But I guess it's not a big deal.
+
+> Thanks for the review.                                                        
+>                                                                               
+> Using MR_TYPES as a sentinel is problematic - it's used kernel-wide as an     
+> array-size marker (migrate_reason_names[MR_TYPES]). Overloading it to also    
+> mean "never migrated" conflates two unrelated semantics. It also has a        
+
+Well it's just for tracepoint and dumping page owner. Nothing prevents us
+assigning a value to MR_NEVER that's not -1 (just make MR_NEVER the first or
+last option of the enum) and a give it a name e.g. "never_migrated" in
+include/trace/events/migrate.h
+
+> subtle out-of-bounds risk: if anyone ever uses the field as an array index    
+> without the guard check, MR_TYPES silently points past the end of the array,  
+> while -1 faults immediately.                                                  
+
+That wouldn't be a problem either with a proper value.
+
+> Adding MR_NONE = -1 to the enum is the right long-term fix, but that needs    
+> proper enum definition changes and cascading signature updates across multiple
+> headers — better done as a separate series.                                   
+> The current patch is a minimal improvement: it kills the magic number and     
+> makes intent explicit without touching any header.                            
+
+Minimal fixes are sometimes necessary for actual bugs, for stable backport
+etc. Nothing prevents us doing it properly here.
+
+>> 
+>>> + */
+>>> +#define MIGRATE_REASON_NONE (-1)
+>>> +
+>>>  struct page_owner {
+>>>  	unsigned short order;
+>>>  	short last_migrate_reason;
+>>> @@ -339,7 +346,7 @@ noinline void __set_page_owner(struct page *page, unsigned short order,
+>>>  	depot_stack_handle_t handle;
+>>>  
+>>>  	handle = save_stack(gfp_mask);
+>>> -	__update_page_owner_handle(page, handle, order, gfp_mask, -1,
+>>> +	__update_page_owner_handle(page, handle, order, gfp_mask, MIGRATE_REASON_NONE,
+>>>  				   ts_nsec, current->pid, current->tgid,
+>>>  				   current->comm);
+>>>  	inc_stack_record_count(handle, gfp_mask, 1 << order);
+>>> @@ -596,7 +603,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+>>>  	if (ret >= count)
+>>>  		goto err;
+>>>  
+>>> -	if (page_owner->last_migrate_reason != -1) {
+>>> +	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE) {
+>>>  		ret += scnprintf(kbuf + ret, count - ret,
+>>>  			"Page has been migrated, last migrate reason: %s\n",
+>>>  			migrate_reason_names[page_owner->last_migrate_reason]);
+>>> @@ -667,7 +674,7 @@ void __dump_page_owner(const struct page *page)
+>>>  		stack_depot_print(handle);
+>>>  	}
+>>>  
+>>> -	if (page_owner->last_migrate_reason != -1)
+>>> +	if (page_owner->last_migrate_reason != MIGRATE_REASON_NONE)
+>>>  		pr_alert("page has been migrated, last migrate reason: %s\n",
+>>>  			migrate_reason_names[page_owner->last_migrate_reason]);
+>>>  	page_ext_put(page_ext);
+>>> @@ -826,7 +833,7 @@ static void init_pages_in_zone(struct zone *zone)
+>>>  
+>>>  			/* Found early allocated page */
+>>>  			__update_page_owner_handle(page, early_handle, 0, 0,
+>>> -						   -1, local_clock(), current->pid,
+>>> +						   MIGRATE_REASON_NONE, local_clock(), current->pid,
+>>>  						   current->tgid, current->comm);
+>>>  			count++;
+>>>  ext_put_continue:
+>> 
+>> 
+>> 
+>> 
 > 
 
-Right, I tried to make the diff minimal :)
-
-Please send a v5, thanks.
-
--- 
-Cheers,
-
-David
 
