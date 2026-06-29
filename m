@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86F0FC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:07:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A38C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:07:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 130D86B00B9; Mon, 29 Jun 2026 09:07:03 -0400 (EDT)
+	id 5EBE26B00BB; Mon, 29 Jun 2026 09:07:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1586B00BB; Mon, 29 Jun 2026 09:07:03 -0400 (EDT)
+	id 5C2D26B00BD; Mon, 29 Jun 2026 09:07:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01D816B00BC; Mon, 29 Jun 2026 09:07:02 -0400 (EDT)
+	id 4637B6B00C0; Mon, 29 Jun 2026 09:07:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A166B00B9
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:07:02 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BC63C1C6D2A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:07:01 +0000 (UTC)
-X-FDA: 84932975442.03.3E0D438
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 41B0C140006
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 012656B00BB
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:07:05 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CB613405FC
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:06:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hZ9BR08f;
-	spf=pass (imf09.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+X-FDA: 84932975358.06.342B6D0
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 8892BC0015
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:06:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="obS3f4t/";
+	spf=pass (imf22.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782738420;
-	b=VhVCdI2LBmcZubfFNpxoJ4JmdgXJUUd6wLUfbNZYQSY4IIMXU1xHUrdqxtdz658iObrCw0
-	m0CNawYTY+Q+dveJpgIMKR5qh8CK/To+NhczQSFtSnpDFgQbzrByKd1Tjb7hwOONOyJuWD
-	AdXvlbQW9WOVOKOeUbu6vJABycHCEmc=
+	t=1782738418;
+	b=PLU5LYPrAaTeuaKr6kpi8jxQhmmSC6JqqmwIyNmdBUP6AhZL62niAhpRfoU0cGsypQ8oZV
+	ihcVfy8U3R8ugzjyGyNe7jWNH1iL8NT1Aq3K0H2PaXObcjUOwZaCcEEWXvlmpkc7AdmZT/
+	AuiANS3syXoGoryArUBlwYTS35EI8Lw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782738420;
+	s=arc-20220608; t=1782738418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wr2HPmO7D5/aDiNbP0zE0sHPfXASvKefJL6yzC7Hl3c=;
-	b=D5qGRGYgdEhnlDG97Nffpig9xzANmfJ7xN36h+Rv8Lf3jqiVYLioKiFK6JxTl+e+8Fp46S
-	NERGn+T0xzbblGV5Yc0BPMQSmZ44ZJSPX9S0h7kcuolqxZeTdmZrDjCmuxeFtsC7DHYMmG
-	uAr8jxsqkhjaaMeNzEF78lGmFB3d8ko=
+	bh=2tgd8psQEJ0paMoFyhOqZDvuVvnTBva24LYJw5z0Xdw=;
+	b=u9xXfzwya0WwelXlIA8j/XPe4Iv/V4XJvePpVHEChLHAe9YkAu4QoNwGiCFOPfp4J0jwCd
+	I/OSGmpF2XK/4of2+kWE4QACARkRlN9XopCabjrtaIGlzB8010MEcuwBP8XQL+XrM4DUX1
+	4SVI+lKoIBjBIlDxBo6Qx0hsV7UpgJc=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=hZ9BR08f;
-	spf=pass (imf09.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="obS3f4t/";
+	spf=pass (imf22.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=wr2HPmO7D5/aDiNbP0zE0sHPfXASvKefJL6yzC7Hl3c=;
-	b=hZ9BR08feDZ/G0mAHEtLpZCBmdn7O+fZzgAXw/cZbsF8BmlzWIpfpkw9L9tibOBimcEkfFCQf
-	1wMZpzGWKrogPwhqjZUpc8t+rx8Ll0UutEmNBoioOiLfiAMT4KCn+bLVhYsCPV1f7qy0aWE3fwa
-	xBagtZvIbk6CoZGSnJV5OTU=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gpmXV5XYrzmV8L;
-	Mon, 29 Jun 2026 20:57:46 +0800 (CST)
+	bh=2tgd8psQEJ0paMoFyhOqZDvuVvnTBva24LYJw5z0Xdw=;
+	b=obS3f4t/Ekl9z/a/IDOrh1hP+eobkVYySkiX1b4nRKIGKUjwYNdeXqhPgqRDKjsdtlCpqmeah
+	kFZXl4F2UaNIWX2ZKGvz+WWmGTLHxKiT4eIpFSMjifYhBYWT2dPpgX0Q9k4qXSG3boHoHWrzaD8
+	5I3q5Yw/kqi1eZkFX8mJEv4=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4gpmXq1Rgkz1T4gT;
+	Mon, 29 Jun 2026 20:58:03 +0800 (CST)
 Received: from dggpemf500011.china.huawei.com (unknown [7.185.36.131])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7455240586;
-	Mon, 29 Jun 2026 21:06:55 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 532E62025F;
+	Mon, 29 Jun 2026 21:06:51 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by dggpemf500011.china.huawei.com
  (7.185.36.131) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 29 Jun
- 2026 21:06:51 +0800
+ 2026 21:06:47 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <oleg@redhat.com>, <richard.henderson@linaro.org>, <mattst88@gmail.com>,
 	<linmag7@gmail.com>, <linux@armlinux.org.uk>, <catalin.marinas@arm.com>,
@@ -99,26 +99,26 @@ To: <oleg@redhat.com>, <richard.henderson@linaro.org>, <mattst88@gmail.com>,
 	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
 	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>,
 	<linux-um@lists.infradead.org>
-Subject: [PATCH v16 04/18] arm64: ptrace: Use syscall_get_nr() helper for syscall_trace_enter()
-Date: Mon, 29 Jun 2026 21:06:02 +0800
-Message-ID: <20260629130616.642022-5-ruanjinjie@huawei.com>
+Subject: [PATCH v16 03/18] arm64: ptrace: Pass thread flags to syscall_trace_enter/exit()
+Date: Mon, 29 Jun 2026 21:06:01 +0800
+Message-ID: <20260629130616.642022-4-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260629130616.642022-1-ruanjinjie@huawei.com>
 References: <20260629130616.642022-1-ruanjinjie@huawei.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.90.53.73]
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  dggpemf500011.china.huawei.com (7.185.36.131)
-X-Stat-Signature: bc3wo3mhxcr7sddbon1phkz5x81rrj51
-X-Rspamd-Queue-Id: 41B0C140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782738419-279334
-X-HE-Meta: U2FsdGVkX1+AOVhSOTpvhb6FIBbTEzvrmYzi59xjnfj00N5Jv8m/z6sDEYRbnkBLxObWp+cspNeb1ROlGA92FciyYzYkC8+4gKIR9rt8RFyOo/n/TBQ2vBneLMNv5Qd7OY8zSCoDGgJD6ZULP8aGL5lASn/aaVHFjLa4bRnzDZ9is66lBzy9niXAvMKlJ0YYjdxV8k9JAt+kZGLSyJ7KYQWNzOxVbrqvHULkijbrls7LiKrEH/WWFSgFrfe6z3Eg8sU2cz0hL84YQXAhT62bY+mSkyu7tkzDndgrJpNmVTyK18v55wTNmyrkvP6gQ+Xuf7RcH/jFxYiH1Hy3xvG2gK5AcAA0RqalRKU9mnabxaRhrn7nGvUssOGmcx5FbXDUxFAUAMeZ09YwkowIAzuWER8Y0dsAzxYct1E0thj2xi+fqv4dInVlvYq6DUmO0pomdD5vZkMX+q3XPEvtMyAxVH20EJzhaAYVFLySKAzBcQtON8nYNVmzrD9l7DTXZwH13UZxlpgXE/wn/Z3IUhIGxrRYEwoP5sBvQfLAsea4OXM5AZZfYjdf8YxST8TepAEyAvWJwOul+GqfE4F02xz5Nku/PoJ0BCxYQxziI8bC8Mz8/l7acxYfNGAdkZ+AelsQb9SYomc63WN67xC2DIvEPtYYUYWxkkH4TuwWFswRyod8ahMTGuHcKDsVzGbq7a+M7fOsIh5CANCVuwLMCsHSz0ek9Cm7A7K1Tr2eZCxodjU63hhbPzeH3lOZfdw8epWi64Qn1vDLCScQyjyJ6GOEt6ZycRAv48X4kVa41bf9MCsqeMRCA+XFz/jy9v1pIFxSvUbnCslwcN9Afsiq9CAWxuBJrl1ri6ymT8YskbkPuyyZtra2P1biETI/k4l7ooBlwV8OXDhjmkXWuQjP0DUHgzs20SxxsCFgV/vQo9mEtywPHdfJTaQcYohP9WlUPqszcoaiugVSZYSD63ruTHn
- IRhoGUmz
- 3PaM1Mc9ZVqo37rrm2WwoW+LL9BCGn9DY76nAzoujoAr4wYcAiw+OQcQIEq5l5Zie3ldcI+5Yl+XQBb+SSEDcZ+pb69tMCa2IYDvmRk11HfizFREWJuWasW8zOD3L0D40cDT5ei9xx7qk6tj+OgoVRjsW30NkHalYZ1gqYHrbPjI0Q6ZFb5dxDpFSbZ9YWgU4Mu25xvsvOI9Yesug7oOpQ+LAiPqIsDawNE4R1b6Gc+V/84ME9me/LTSA3guXaXZcA3lHG8JhDObqM8ZfCZMUNJnfiHjjtqBjBUmoVTwwTiJUZWqva2DlGGBadsQyi7Du8Jgsx0Fc6OWuPsiNZy7+vh9OsF0hQt/DcGxjGH5IspeAS99F84GDJDom/bL2zPMMrnH/6nU2m9ecSaMX95FXcbEJIws2eyhEHaWG64yAkMuuDWI=
+X-Stat-Signature: gsapfoy39tyjospn1xbxj8eawfnyisyj
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8892BC0015
+X-HE-Tag: 1782738417-178712
+X-HE-Meta: U2FsdGVkX19hlhZQPVjvjM/w1Y/r9zriYRiEI4udrk5QPm7nG7TMdMYvq+hZA8VkVyv8BvdLDYmpNbnKF2Oyac5Pw+VlgM4lPjvxrRzewwS2fISZSsmNBFEZvucpCgtfIuAjjS0pFr8FaJjQZrSw2+F1a58NE/nK2XaUz8eEekqW4NLsEj3mwfQ/+Byjg1h2Vn3aTGx9MWKFTj7i4ScSI6S6+I5wAsoukduRu40lKzpcUis0FiEE7DxADMxwCkoBjjMb/E237OBAwbpSEbXuYc7V+27A4BgW91j/oq3rrC2R4RxSAEpS13zLGKYWFx/iu3MzLHW81Ok80P05i4XV7mb3fPJfT+d/db+b6S2dXm9EXQhNbN6Mk5965oTZ5+sBuS4/QO9mMTeRscRaaIcTWOvBP2TnZhgsOyFiaVAdioFrPAzqZr9Wl/7AXBcI+xR8bOS0mLbtgz0ja6frKPHVrDDEZ3nIooa8hOE70/LcDwYd2iY/dsB6eijubpSH6GT7vfL7OPZs6m8OVQmndV+MWqCe+6QRB+MUp/kiZbtvX4Q5dNGwhHxpfn1y0ubshpJ4ZHfm4dZzmNYzgxAjW1+9a2rj+2Vfd/zaxDbjvB4dfbFXQyd42P4jAUZIKuGrUYeQkNA1fXWJkUM1UkzYRlMfiaGa651MVtArtqm7xoQAs+9O2VcQneVJc4AmrNIGpdDtqkFGbCTnL8FTic3mJbpUL0An3qMuBwTvQwcbxW4nda/loe+5rfmqY8gDlBP0IIdSQgH+dX6VbwHB5fYGjWRG0cpFZN/alEJica4Dhvdc8OIhQB2sKQn9xzOfE4knffgX67ENFfFrzFNGkWZtG5Kb+kUsZ0QTDr2l+sdFsC99PX9TNNVPqqNbfN4Vu4tWfjL085/nlhsmwRAZSWCFyUL9MQ8uc0jQsPDgnI8bcqcjXvUARUNzI6j28TYNiXub4Jce68XDwwvcOvNiiZkf/2Z
+ SKnF+RXP
+ uXeqcb1y1oAC9jb6ARHO7hUJNCp1svI74STygvHe8ppw9O2C8aMkXX0SuYtSF+s4v68tZSXF+X12aaep2OfcFpEj/ea6FcB6tta77GT7wtbQvu8yLBmhOFjHXmTOmPAgXavV51BpM0RvYQUeKzsmEY3TanjcUXnehzwmxhXPBgd10OX/vHTkKfNTioGZb1wxyNL/ZdG952wCZtl/vyj2TNfDKFW6z2uQ+/QkXmSd2ovzVT1jbpPjeOlCjApZ5eaNe4BuhqKrF30UTqSDAO60V/d3Lj+z2EF2CqGrTjIIJDe4xIivHdMY1k4jwKArBiW7ZYGs5wXRsxUgYOjHPa1qZfk+5DGhUXWl40SSL60ucKCv5O/7UleBTenOPzOt7Ht6rxuTH11vCELC6K6adzOC28P3po3lyvga8zZVQJuAZGsTpjGORd0t/lBS02DDh+JSYM50CC5pl/NHCcX4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,25 +126,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use syscall_get_nr() to get syscall number for syscall_trace_enter().
-This aligns arm64's internal tracing logic with the generic
-entry framework.
+Refactor syscall_trace_enter() and syscall_trace_exit() to move thread
+flag reading to the caller. This aligns arm64's syscall trace enter/exit
+function signature with generic entry framework.
 
 [Changes]
-1. Use syscall_get_nr() helper:
-   - Replace direct regs->syscallno access with
-     syscall_get_nr(current, regs).
-   - This helper is functionally equivalent to direct access on arm64.
+1. Function signature changes:
+   - syscall_trace_enter(regs) → syscall_trace_enter(regs, flags)
+   - syscall_trace_exit(regs) → syscall_trace_exit(regs, flags)
 
-2. Re-read syscall number after tracepoint:
-  - Re-fetch the syscall number after trace_sys_enter() as it may have
-    been modified by BPF or ftrace probes, matching generic entry behavior.
+2. Move flags reading to caller:
+   - Previously: read_thread_flags() called inside each function.
+   - Now: caller (like el0_svc_common) passes flags as parameter.
+
+3. Update syscall.c:
+   - el0_svc_common() now passes flags to tracing functions and
+     re-fetches flags before entry/exit to handle potential TIF
+     updates.
 
 [Why this matters]
 - Aligns arm64 with the generic entry interface.
 - Makes future migration to generic entry framework smoother.
-- Properly handles syscall number modifications by tracers.
-- Uses standard architecture-independent helpers.
 
 No functional changes intended.
 
@@ -157,49 +159,75 @@ Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- arch/arm64/kernel/ptrace.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/syscall.h | 4 ++--
+ arch/arm64/kernel/ptrace.c       | 7 ++-----
+ arch/arm64/kernel/syscall.c      | 5 +++--
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
+diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
+index 5e4c7fc44f73..30b203ef156b 100644
+--- a/arch/arm64/include/asm/syscall.h
++++ b/arch/arm64/include/asm/syscall.h
+@@ -120,7 +120,7 @@ static inline int syscall_get_arch(struct task_struct *task)
+ 	return AUDIT_ARCH_AARCH64;
+ }
+ 
+-int syscall_trace_enter(struct pt_regs *regs);
+-void syscall_trace_exit(struct pt_regs *regs);
++int syscall_trace_enter(struct pt_regs *regs, unsigned long flags);
++void syscall_trace_exit(struct pt_regs *regs, unsigned long flags);
+ 
+ #endif	/* __ASM_SYSCALL_H */
 diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index ac15b81a71b5..863083de37c3 100644
+index 2ca6fab39a37..ac15b81a71b5 100644
 --- a/arch/arm64/kernel/ptrace.c
 +++ b/arch/arm64/kernel/ptrace.c
-@@ -2410,6 +2410,7 @@ static void report_syscall_exit(struct pt_regs *regs)
+@@ -2408,9 +2408,8 @@ static void report_syscall_exit(struct pt_regs *regs)
+ 	}
+ }
  
- int syscall_trace_enter(struct pt_regs *regs, unsigned long flags)
+-int syscall_trace_enter(struct pt_regs *regs)
++int syscall_trace_enter(struct pt_regs *regs, unsigned long flags)
  {
-+	long syscall;
+-	unsigned long flags = read_thread_flags();
  	int ret;
  
  	if (flags & (_TIF_SYSCALL_EMU | _TIF_SYSCALL_TRACE)) {
-@@ -2422,13 +2423,23 @@ int syscall_trace_enter(struct pt_regs *regs, unsigned long flags)
- 	if (!secure_computing())
- 		return NO_SYSCALL;
- 
--	if (test_thread_flag(TIF_SYSCALL_TRACEPOINT))
--		trace_sys_enter(regs, regs->syscallno);
-+	/* Either of the above might have changed the syscall number */
-+	syscall = syscall_get_nr(current, regs);
- 
--	audit_syscall_entry(regs->syscallno, regs->orig_x0, regs->regs[1],
-+	if (test_thread_flag(TIF_SYSCALL_TRACEPOINT)) {
-+		trace_sys_enter(regs, syscall);
-+
-+		/*
-+		 * Probes or BPF hooks in the tracepoint may have changed the
-+		 * system call number as well.
-+		 */
-+		 syscall = syscall_get_nr(current, regs);
-+	}
-+
-+	audit_syscall_entry(syscall, regs->orig_x0, regs->regs[1],
- 			    regs->regs[2], regs->regs[3]);
- 
--	return regs->syscallno;
-+	return syscall;
+@@ -2432,10 +2431,8 @@ int syscall_trace_enter(struct pt_regs *regs)
+ 	return regs->syscallno;
  }
  
- void syscall_trace_exit(struct pt_regs *regs, unsigned long flags)
+-void syscall_trace_exit(struct pt_regs *regs)
++void syscall_trace_exit(struct pt_regs *regs, unsigned long flags)
+ {
+-	unsigned long flags = read_thread_flags();
+-
+ 	audit_syscall_exit(regs);
+ 
+ 	if (flags & _TIF_SYSCALL_TRACEPOINT)
+diff --git a/arch/arm64/kernel/syscall.c b/arch/arm64/kernel/syscall.c
+index 358ddfbf1401..c8e116397cfd 100644
+--- a/arch/arm64/kernel/syscall.c
++++ b/arch/arm64/kernel/syscall.c
+@@ -113,7 +113,7 @@ static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
+ 		 */
+ 		if (scno == NO_SYSCALL)
+ 			syscall_set_return_value(current, regs, -ENOSYS, 0);
+-		scno = syscall_trace_enter(regs);
++		scno = syscall_trace_enter(regs, read_thread_flags());
+ 		if (scno == NO_SYSCALL)
+ 			goto trace_exit;
+ 	}
+@@ -132,7 +132,8 @@ static void el0_svc_common(struct pt_regs *regs, int scno, int sc_nr,
+ 	}
+ 
+ trace_exit:
+-	syscall_trace_exit(regs);
++	flags = read_thread_flags();
++	syscall_trace_exit(regs, flags);
+ }
+ 
+ void do_el0_svc(struct pt_regs *regs)
 -- 
 2.34.1
 
