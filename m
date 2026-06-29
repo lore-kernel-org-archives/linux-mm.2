@@ -4,121 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AF1EC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9D7C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 17:21:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2330F6B011D; Mon, 29 Jun 2026 13:13:14 -0400 (EDT)
+	id D14F76B011A; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DB296B0124; Mon, 29 Jun 2026 13:13:14 -0400 (EDT)
+	id CC5456B011D; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CBC56B0126; Mon, 29 Jun 2026 13:13:14 -0400 (EDT)
+	id BB6A86B011F; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE6256B011D
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:13:13 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4EE2312020A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:13:13 +0000 (UTC)
-X-FDA: 84933595866.27.A65D254
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 55315C0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:13:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="XcDJD/Nm";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782753191;
-	b=l+GFzROVCNi18bN6DBVdSGVTHXuNYMNixFt2YNmbYKtNBsBWKIv+q02b2/7xiHd1VMHnrM
-	c6kHnMVRNbUwkNo4eSnlPh5vSzOC5lSGhlG1Ru/82hlZS5FJsC+CCfbOCWljXCWk+5pbXh
-	AyMgs+Cg7B36BKdEwkzwQ5vpzjwd2rw=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782753191;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 937026B011A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:21:37 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16BE91A01EC
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:21:37 +0000 (UTC)
+X-FDA: 84933617034.15.A192952
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 14FF64000F
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 17:21:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=asu.edu header.s=google header.b=pB0btLtA;
+	spf=pass (imf07.hostedemail.com: domain of xmei5@asu.edu designates 209.85.216.41 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
+	dmarc=pass (policy=none) header.from=asu.edu;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782753695;
+	b=EoX4RY+GmrWpUonFLMbkRSbYTgynNAr1NIYRgBYwO/RMpPfCEQRDfJYPoKMrj98DfIqu+L
+	m1UmwepDGrA9Izwyy6Ar0cBjO98l5nBzXO4fQ0PcEKs97tFW27PKWgZw6NmZm08JefBmzE
+	KZO7/d07qEe07J9MDMWYw4KpVbCa6Ek=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782753695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IjxPOQH9dsYrwnC5fAn29W6IVwdnwj/ha1x1VZNjddo=;
-	b=EUhBjTtmGaox4E0Hm7m7ET2sEXLUWcUa5ztm0e0MxD06gQL+74N6v/P6U4cZ7nnbbXMGMU
-	HZLA2lqidiEuFyLcORH/4dRYGjYishgGyn1lnlKboL0vqHxfM5dOp4UzBBvY65wvkTnSd6
-	LoKbQ2vzob443+K9dZhp0U2zYjiGjAs=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b="XcDJD/Nm";
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mkoutny@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mkoutny@suse.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-471eeac43bfso2076467f8f.3
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:13:11 -0700 (PDT)
+	bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
+	b=rPOnWkRanEY8XmglWTwZOFNIKzYF+oE6jPXAIRpj9Cf+rcRANgq/8lAHmmXa2qnZMOTc+w
+	sut+xkzbFkmaAhmjLYQQet7//DuqkNjK3CnipqIUuUV2V9+23qg63ZyiiMeWg6gvD5QtJm
+	cj4o2U6/lCcXII7WRu2Lb+qAqWnMd0I=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=asu.edu header.s=google header.b=pB0btLtA;
+	spf=pass (imf07.hostedemail.com: domain of xmei5@asu.edu designates 209.85.216.41 as permitted sender) smtp.mailfrom=xmei5@asu.edu;
+	dmarc=pass (policy=none) header.from=asu.edu;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-37ff798fe89so855198a91.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:21:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782753694; cv=none;
+        d=google.com; s=arc-20260327;
+        b=T0iVRTiFIaNOF68EDuYtPxF6iijNf8hSz4OFDr3Ng/M7EwoL/4Osj+c4cQhg37K0uI
+         lEKyGtn7Z1CbZUgq+P+VKB9XgnOesuYdmYiNpmmROidxqYSZVvS2zECq9f7EMhYlxZBv
+         in9BoxzHPtHWnrT2+zV0xtHzcaYTfBpvTmqgXbMrlpdKEfXZrc+gujgel32VjyVvNB0v
+         ckIh+6rQmLvmFGLTiF5Gbp8XI1SJ/AsWFFqFM2OJMWCITEbwC+3dFqT/YUU6e2F0lgve
+         EY3f892k25xaKtcQ3uxuW0gbhfOrYdM5Mqd6HGhiP7tLugTmsJS7BJoEyu5g257s3k99
+         uAeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
+        fh=yc9PYn+b2XWKQOXnKEYW1vS/HkPV0yLna5uEvIqw23A=;
+        b=hS1tEt4lUPPgh9C+UAgZdZNVI621W/sjrHQb57ziJK3EBsk+wEF2e95TS4LBKKSMMD
+         j52cC4AGIMVicg7GEDtft0VYTWFO7lj/0JG2okczeam8bYbgGLpNf0y80ogiTkE0sXtf
+         SRmZTpeK/TVeziSubtZksq9uYpWTymIzkSfG9KprSh0YPZ66/ADCTlV0CAYtS+WOtNIz
+         Siz2mo+LfOQz8BjAd/7G+KHK8us37amoaNEVQN8sh/2gWU2sSS+xL45OHTCRa/3uN9od
+         dqlQTzCdXs4Kuknvtx0+vkP7MlpTtyjYEZ4gqP/ELWY8rYjJH19d/eJaj3oQ8tqgyHRn
+         +tkQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1782753190; x=1783357990; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IjxPOQH9dsYrwnC5fAn29W6IVwdnwj/ha1x1VZNjddo=;
-        b=XcDJD/NmawKSxrpMvs7u5v/KTKWzLhhFH6xWPRws1dd5kAIRfeefb9bZYoLF0RPWYq
-         TuwH1jUoPwgUdUY49lWBbuuOST8y/RA9M311X87i+uvU6bNp5mOd1if6S9Hw7PxhbeMk
-         svqPufYZFDrnwmw1IQxlcq6A2ICZmmzKNfetab4GPb4EEOPGs1+7MxsWb8ZXGpd579PJ
-         TAnUlnmJu1wZcdBr8n+1pJDLz0gqvK5uDSXX3Zzd5/d+kXT7yJ+wSbO+BYfTJj1AiMH6
-         J2T442aO28BqCjYvfKl4bfKvDX1kK/z6YGfDSQePNBviBbk7DynT2muuzyS0F9ioQpou
-         7odQ==
+        d=asu.edu; s=google; t=1782753694; x=1783358494; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
+        b=pB0btLtA2qTbSwXWQxZvWdW+G7gqm7dtxQnDoGGqNpe3CmsDViV2r2lbS8NrTkCuuA
+         GCYZsyBhaDPGGfJzrsOOI68GbET+cwEfzeUaRNOW3skWCLqFU8WleG25SwySIbTpW6iy
+         Egxy5wQg1LebrtYHrvR1IxYpT+w/B5OgsHQ8KhZ0MQwseM3VM9wLh8OaiBE5LSb4zPi1
+         bTLIDEthWakJYeOm3ilrG2i6QJwo3vSGOLMpy/Z7PM0APpr0hy159ALyIUYjB4iY/bBD
+         RsUhfCqsShKhYB4WgBuo/Qw4OKRr8TMFZH+4BULneVRj+bLcRbDXTPo/kXb5JI8957kw
+         TRJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782753190; x=1783357990;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IjxPOQH9dsYrwnC5fAn29W6IVwdnwj/ha1x1VZNjddo=;
-        b=NjTBueS7fgX1v675esXUUTfT7S84EeIuhAFQsmOQGoGLMwmIPYg0zUQD7nDmMTQ10M
-         2ngg0ThJZJ3eGmvHEcCfyp9ckOWKRkjS8potclIJ+yYa2OZF38c11KPRmdR3zVIUw7Bj
-         r8KIK+XZdB73Cee8q7EYQtJSefom9sC2OrdawUEmEYyFiMEnNkFd2SD8Mbl2NC1XRsJB
-         pNGXsuqtk8KT+ySqF0RByjzW+y4QsZdY2/XioDAooAHDTAHY/bfmQqLeQ6oiKn/F50ml
-         Ys1j8smpDJMCKG8q6pil5dThQsmTduaQoDeDViIehFf9SAzDEp0jjmYdl8P5JhyQHGKW
-         OWoA==
-X-Forwarded-Encrypted: i=1; AHgh+Rptx/pFciWoc8HNL6rsfOppOGvkDNL/QgqK+3+Uzmstt6qLewx+LgxwKWnCKEPblwEiTmRx+YD+MQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy2UY6h5vgrHvdyPdWaqnPbb7G83yMV/NvZwLwZ2o1pucTQrXh5
-	wDrziYSf4MrK8QuUfRy4QT+DaljH8cD5mfMXu1HBHvjG/nZX4Kp+Bf0qLrtP/MQkmhU=
-X-Gm-Gg: AfdE7cmIcTShL6EWhNv8Ky0ucVEQA0EQNQIZgYpvMwsFRM9KH/KE6zqMBu+5TkzNMLy
-	xQJh6pbXHA/sxc7CK2R9IfrIWJfs1epLnjtZN3KwXmyZSO0+UCti2vGpFe8kntRkF1v8uN1kCJm
-	jV6O+SK0cVyilkAZLaZMpJ1CryAXCzMY+amfeZTRL6aBdmho258gX+4b/90KbVqksXKF0/11BT1
-	ROmCxdCzxkj5HRV3D2lfeRSxSjN6Jq7X8sFxQ2azLCMkjsPAaj767vk4Y0Xg13As6ZB4fZGn++W
-	5awfiSnf9ijy/WQEWsPETr6Mzn7YmP9tOHhK2XGaNe8c1ZOkXE36eurVU+HoZ0XBPTzLny9EaWK
-	p9W95ZerqkjFgQvspDHbhT4JHqW7rag3PJs9mRnaljCxDqCTcS34shlX9R63sl8bbWhOg9+2rnT
-	tfc+/hGUESNN4fqpv+8g==
-X-Received: by 2002:a05:6000:2dca:b0:474:6a5b:85f4 with SMTP id ffacd0b85a97d-4755021c1e7mr128422f8f.5.1782753189725;
-        Mon, 29 Jun 2026 10:13:09 -0700 (PDT)
-Received: from localhost.localdomain ([62.77.90.70])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-472c7bec9c2sm16484408f8f.12.2026.06.29.10.13.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jun 2026 10:13:09 -0700 (PDT)
-Date: Mon, 29 Jun 2026 19:13:07 +0200
-From: Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, shakeel.butt@linux.dev, 
-	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
- into vmpressure-v1.c
-Message-ID: <akKnaWhg5z7fI5CC@localhost.localdomain>
-References: <20260629130042.2649505-1-usama.arif@linux.dev>
- <20260629130042.2649505-3-usama.arif@linux.dev>
- <akJzXU52XJ9-F2IB@localhost.localdomain>
- <fb000c9a-add2-4c31-afe1-b6ec416c9058@linux.dev>
- <akJ-It8m_xm1WVLY@localhost.localdomain>
- <fb9af391-b991-41fc-a105-7a3008860c07@linux.dev>
+        d=1e100.net; s=20251104; t=1782753694; x=1783358494;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nXmU7N9KWmAg5ZvphtB/jXefjrQWssfZEA+qOsBjMSA=;
+        b=kyYzfspDrbP3Fec3HuaPQnRA/9LiMGbAJEkSK5OrVKn9Yo4IEwA2mYBwV5cYDe9qYW
+         XYOXDZv5Dexm+1DoZIoHVowqeqotoRgVqT8r1VNFrogUu42RtMSHGuBGe2+bGvj4gjam
+         Tc3LsO895HxgUiJksoD7quQqx5eDHSyq9UN86PFT4gcQtPSXglJCR0S/qfa2NB7UB32t
+         JxoVX7JvIJKIUqoLpTqjpcWAjQVLXmmHlfze+DkFmyYTWeDUgnfGrRoRpojRdcZTkXvD
+         ZZJ0rtJCwGBQz5WrtAq3D4OymN7ov8Rk+ZPa8Zp1q6cNjSQ/w0RvZkIBb7QtMrKVRw2k
+         b+/g==
+X-Forwarded-Encrypted: i=1; AHgh+RqvVJisFWILJYvfBwvzLXdmORP7rjfqLVxRQbDFpfKGtwuCql6O61qkWoo+Uvyo33MHP9b71BwEPA==@kvack.org
+X-Gm-Message-State: AOJu0Yz1KnzTo7157I5h8jOBcLIiXU2Y8GEmpH7zhlXJ41lGyCBU2ZCk
+	mlzATE3J+xVuNLABkwC3rNVgzZMgu//EZ02fcjQBBWLhCugafapkN7F8ek7WjCZOCWiOS9EjkhD
+	r6GBgOz26iYXoB7srsZMSAvmE/g/LTXjyy8fSaDWn
+X-Gm-Gg: AfdE7cnRTPiPLP5/P25aOpjXbtmRuq5COiDWfK14sDZjq3pkOLCf1jNMSll2nagC7FO
+	8jEfwUUn30a3fmDj7FY8MSQXSTK0pwEMMiIyoVIOhS2F9EhEPTD1ffhuftOdr1efNQOWImbTrEb
+	jbXH3qPkl94DgCBu/+a07P49YSru5fxsg3bmrorTh3VPBUP33QgZHeCgUgR+5Kh4PXL3eDUazUO
+	YYdDVBiuD48FTga8Vf7UU3j6/Ft1HXmf6zY0NQ7sArEEKw5AKc+pJp/A14F+pRnGAprpCN4cljE
+	qMGeMT4/adI9zH5Vd6ZPtgDdKJZ62J2p5CCtDaY=
+X-Received: by 2002:a17:902:d2d0:b0:2ca:26:195d with SMTP id
+ d9443c01a7336-2ca2d53dd40mr2407385ad.11.1782753694022; Mon, 29 Jun 2026
+ 10:21:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="rrapqpygxnpxs7uy"
-Content-Disposition: inline
-In-Reply-To: <fb9af391-b991-41fc-a105-7a3008860c07@linux.dev>
+References: <20260626173444.2252041-1-xmei5@asu.edu> <aj7UNceukU9zYeGH@pedro-suse.lan>
+ <CAPpSM+RVFDOYJFT2iwgNYdjbwqF-MmrbYizpLYksd1SLb5bT9g@mail.gmail.com>
+ <499a4e15-34a4-421b-946a-c855199fdbf9@zytor.com> <akH34ycu5-q2Yc_D@casper.infradead.org>
+ <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
+In-Reply-To: <3c4094d8-ae5e-4ffd-b28a-0c10db50296c@zytor.com>
+From: Xiang Mei <xmei5@asu.edu>
+Date: Mon, 29 Jun 2026 10:21:20 -0700
+X-Gm-Features: AVVi8CdDH6df1uqA9evZfvzbBY7svtEDKcDmc2IfSbHyvrdoUr7AcMeuMxGI6qE
+Message-ID: <CAPpSM+TA6ECyCO4J3c9CrezbApMO66Fm5u8z6djDaFj5Wtagng@mail.gmail.com>
+Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Matthew Wilcox <willy@infradead.org>, Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	linux-hardening@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>, 
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>, 
+	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, Yan Shoshitaishvili <yans@asu.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 14FF64000F
+X-Stat-Signature: y7pc89t41buxdpjxtse7wfamuohrzmxd
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 55315C0005
-X-Stat-Signature: jpndbkh5jr6x15bhzruud9sj5f4kdxkg
-X-HE-Tag: 1782753191-858996
-X-HE-Meta: U2FsdGVkX19SgTWUXKEspDtHic7Yn0kXTDcW9TOPOFa0cQt2fTz7KMH3mxSknPgsCud8fDs7LRCUWzZCVa3UM1FF5d1Bbuo6gk7iQ1R3tyZnSSTi1SV7QuzqG4VTkJUVMKlYo4M7eyUJXU0wgDsPcESTwDEPNvjC5spxXczgvd9sqEb4IygOwfneagAGvh946CrYQLVsvPGJ/Xrw3+1QE2KVTwiyC6iOR3XzyThbosU6TN7hE7ySEPRRkcKAEIkNwwhvUVkGlgPsTfE/WzpoYrS/4VI6rpRSaBGTERQBrMFHqvgGCT5owr/XM5bVP4GO84Z3svdK8nMfXuxhX75+C8RLsZ14EdlrxP3Z2Md/8hGSjVTYochX3oCJ5h9AtdjkzgRadlSP+MmOfCgjbvCD5mGZODpHxk0JfOGWnXU/4z4ksGYREFCsm2+y4WnlglVY7PYV/1Gw6he0qH4EaLqSDgMo8507jpDoYUBb5h+SciBk8RbWGUXJtsZu3RcbpBqesuEuN6EQcHwtyXOKoF7Yg4DiuhPU0OdwTRPboMZcSKMzCwr/BYKc/Nccphs6QfkI5DBX4irKDVcLm14esF3Br+FYNvNIWOnyjPsJvqKIKsGYYPqR1cSEyOABBV7pAEBq7KLtY8l/wlh8sw/OmwSApTV7XrBB60Ia9Rbor5RHbaOS6cQGBdOoQ83DJq30uE+gEQywSDtmJUyYi1YsvkicM7D2eLastVG41VlEUffWA/MrJnvY96COUs+9MxuVU0UASd5qNUZPP/DMtMrcuD/bxFLlB/6No1YEDRBUI+sEacYUyi1ag0ZRC62fg7UpFadzXZwxYJlhGQQ9u6bjp4nqVmVWW0KzEos8/8gJ2U1wuuLu+ja6wcCRoRwZQ43dp/YVxeOcUK/RiEtWKFmk5LImnEDdg+Zvsl1hI1xzjS+LKGxFY9K7e46rP0i+2ey9bUGMAp1+PFrreHcpZAnuGiN
- /utAPR6a
- l54Va5qmWsWTjNpXyibs2jkeTj1OGEDDmfcdVtwTDSqhYvkUUnmVmEygXiBcLShJUEHIhux8f8ff4iWhov1btLOtk4oaf4UZutG9sFJh3f2XS+UGBoq2UaRFw8Dfcy+Vt76PMQKX/nkqH9H6tgZcdKDKW9aPPsK/P4KPsne0LYEllHObZi0o14qKDBB+ZT4rFk1LalKGZVTRN/LYcf8n3mexIEn4i9gT2xDZa3M4TZYaLnpoLenYAo/uGDKp/3/8GjmXzwUFJGGhZ4W2UnN4m53eU+5KnSQ/7UduH4I6K1MXsGUcY81iOc3wJCmJ3k+l5mBUkyUI+27baWc5K0yNHX0aMNsn5gLhzwHK1JMAiQk/mS0HGduLAQ3QmkiubI/uX8tkEly2xJbhRWZ/1vwW3/CPg2Q==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782753694-954574
+X-HE-Meta: U2FsdGVkX18gzYLZ9HTaahVMDEgERfmxGLwwo9lMnqE90CHXmbk0lMcP9wSIr2aNe348Fr4x91WuUqUaMI/EQnf6xi7C0acUjk6oq67GznG3aUG243a9rypny8vxkgGdp3GSAAjaV6bnVFJvuFXBz3nkCbuNZuaYyjA9NMfLuWvvWFAPFlRtJHD0g+ek1p5J0htYDJZ9CgD8uf+sh9uI4XIX9Oh6KEAoVviaaJNtndl9lcUFvvcBu3DS/JIt2JDY1A3T6H2XoFzDbbJXrfZHCOjpjGMg7Nbn6YKxaarqpca8pgrbMg1pLVL8X3N9j4Aw23XTtiCdyOcddWqxe4RXZx5X/YB+slKu0qbya8UACjXH1T5ISu9RjIZgclbyPBZbQrIiK2hbmNM3dUA0JcD4YwUNtiI/YqyKW76JwOc4Mzlih6p/mTdVe9TIajzYzrBSk3SoV+cQJEzmgRqzWxWu/ZVZBf2QPwx2MwFvlVSSYp91eocpvTpO/GmYVe/fOn6HFmroLbVxDSxAexfS6QzF6iSuLSOEv6w3wtJoydX9unpz/8x9vb4zPFXpFh/btMNik4naAKthgNuHdyDdFbYFBUtd2JEEwE0gdp0rG4wYoHwe/GbOIl3P6p3iLBNqz7oCcJa4wy5rAwcz+LBrzr/MP3R46JDzGFNModAOOXPh+gy5l5P+7te8LFyyQ9pP3uBhm68E9UDbvuXo+5CCEnGCrszERhF/elCdUkcGGaX99IlWMuh/lPMYUtpwh3jWExWfuh6Z723DGYfoG+cDK0MVujdzzz2pSQ+PlnkkQAHFjGGbmIwWqfgNzTH+/X1Uo4L98L17USkff/9PjMuiAEOSRAW6dHJaH44/2LHr7kgE2ckt3skgmSlUBeUDJzw738DWyaZ0h/BtYnXAwxyOi6rpT8DHUX3+y2GY47v4QuQEFC/pw+diJASo37wUlkb3RUzFu04WIb1ng9JGVr34zox
+ hBfihlHd
+ 1qHOSMOqTi7H1yuOxKgu7756N4YDdHS4zVTpDJyvkHLgGKKYSq6PSoKhgog7tBnpP6sH9LuR6+HQzSc5PLEUAyGmDMzsKLUsu5u5jGuLdIUd0pX+8pZb4gOT14XXVnG2VDBBOeBfxY9blIebD/XHx8ER+9Xi/LG1s7hhSgNJIHky1vBK7D63vLKFfF1IM83ksrFIcCMPpdpeDFUYjewNnWUiLaJp4Scm2k9xr2NAN2kYoLFpEhVvU4jIzwascAhsbNghOCY6o1iza0NV6f9Ul2tczuMAMMpn7AX6A3o/Wuj6Ahsn6ieYpHTnqCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,45 +148,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Jun 29, 2026 at 5:50=E2=80=AFAM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> On 2026-06-28 21:43, Matthew Wilcox wrote:
+> > On Sun, Jun 28, 2026 at 07:09:37PM -0700, H. Peter Anvin wrote:
+> >>
+> >>> 2) `enter` is not rare since we can take part in the instruction.
+> >>
+> >> This sentence doesn't parse.
+> >
+> > They mean that we can jump into the middle of an instruction, and it is
+> > not rare to see a 'c8' byte in the instruction stream.
+> >
+>
+> OK, I see the point now. The main difference is that ENTER doesn't requir=
+e a
+> REX prefix, whereas ADD/SUB/LEA do (otherwise it truncates RSP and everyt=
+hing
+> immediately dies as a result of SMAP violations [you are welcome].)
+>
 
---rrapqpygxnpxs7uy
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 2/2] mm/vmpressure: split v1 userspace eventfd code
- into vmpressure-v1.c
-MIME-Version: 1.0
+Yes, Matthew's explanation is correct. (Btw, thanks Matthew!)
 
-On Mon, Jun 29, 2026 at 04:20:10PM +0100, Usama Arif <usama.arif@linux.dev>=
- wrote:
-> So what I mean is that I want to keep the effect of the patch that splits
-> off v1 code as just that and not have the optimization of not running
-> vmpressure for tree =3D true + cgroup v2.
->=20
-> vmpressure_v1_account_tree() compiles to an empty function in the split
-> patch for cgroup v2, so if we make the splitting out v1 code as the first
-> patch, the commit is not just going to split v1 code but also do the
-> optimization of not running tree =3D true cgroup v2.
->=20
-> I hope it makes sense?
+Xiang
 
-All clear now, it's clicked for me what is the optimization and what the
-cleanup.
-
-Thanks,
-Michal
-
---rrapqpygxnpxs7uy
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQRCE24Fn/AcRjnLivR+PQLnlNv4CAUCakKnnxsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMiwyLDIACgkQfj0C55Tb+AiZQQEA5shOMA9XtHVDFhsoKo/B
-JPSMJJHtfx2fo+NMfFAW3tQA/RAOtjmt0xMeCCHJoSUYM3GkkY5Ip9r8qkNYfC8l
-LPkH
-=Sthp
------END PGP SIGNATURE-----
-
---rrapqpygxnpxs7uy--
+> This means that an offending bit combination is far less common.
+>
+>         -hpa
+>
 
