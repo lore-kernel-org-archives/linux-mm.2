@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCC6C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A772EC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:25:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFBEB6B00DB; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
+	id C27566B00DD; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD3D16B00DD; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
+	id BFF346B00DF; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC2916B00DE; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
+	id B165A6B00E0; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A7E5C6B00DB
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:24 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 39319120639
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:24 +0000 (UTC)
-X-FDA: 84932870568.15.E4D7C34
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 93B8D40002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:22 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9kcot1+;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 508166B00DD
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:25:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B7062C32E1
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:26 +0000 (UTC)
+X-FDA: 84932870652.16.1A4A7D8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 30AB940002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:25:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2fdxPuJ;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782735922;
-	b=6xbyZSNC6KD8jPCZzCDOn0g1UrVi+6rs82mR/QZFGRMngN01kPVR+DGVd7tMKR7wqotZmY
-	JtoDcpBP7BUBbF7CZyNXyQpyk3fLpFgAJegPoF77Csas9LeLhinQcNiiq6Y+Wl7uWbewaZ
-	JLi6lQrTYACnRKmL5+v1i0D5ht4OOB8=
+	t=1782735925;
+	b=mHFSoOl9AisF6Ha39dFWPLafrqqGMwOcMXx03Fluegrq1QrmUc0GFrWwr6NjmAEcBEgxW2
+	+GxrpnuPOsvqrPgQV65rvcQOGPk8SXil3bieWbQj2XwMnCe7n3f2XPcjBKt7dCky9Pa+1X
+	TZuQTxf/A1/7LUoIzr4COf+13kWy+IU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782735922;
+	s=arc-20220608; t=1782735925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rHOb9ve3jYcE/W9RyXVRFM5l4Jk2KuXJSM2ur2HmA8o=;
-	b=2H0dFbXFMHgGMLH8kzH59CYyEyuh6mtNUlmVG5Wqj8VxnsaiVIl+ua3F9Tpt3Df17SiHY8
-	+LGN3ImGfein8afv40QgDEi1S2rw6Nk6F/jHQOv0TEjmFFiL9V53HI/kP9VjLL6fiO5IJy
-	OKZGA02HJiaOiPyk18coLI6fULzLD7c=
+	bh=U1jtLkA6UuZsfpQiwXDViZ4TbQirP1iCEgORsJjMVIE=;
+	b=eyYTphaG1bVvecexsA+J+QOoAy62jXRx18NfMLlKJ9BaWtIKQhnIv3rO+Xd0UNUGfLmZdq
+	ekJACyQ+Iq+axRAb3CAT0/cDb6zRSRp59skJVwMd0W4Wj9rqohRDLs+ortvQMQeEwXGR8q
+	+fpuKE4KoqgVYjce0iG2yrmUedfFGuk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N9kcot1+;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=c2fdxPuJ;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D436743BE2;
-	Mon, 29 Jun 2026 12:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66421F00A3A;
-	Mon, 29 Jun 2026 12:25:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF9AC601BE;
+	Mon, 29 Jun 2026 12:25:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F691F00AC4;
+	Mon, 29 Jun 2026 12:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782735921;
-	bh=rHOb9ve3jYcE/W9RyXVRFM5l4Jk2KuXJSM2ur2HmA8o=;
+	s=k20260515; t=1782735924;
+	bh=U1jtLkA6UuZsfpQiwXDViZ4TbQirP1iCEgORsJjMVIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N9kcot1+WY2jypsv4U6kyLKClwmxgtXnpUiiDsh9uB4wjsv/6mJ3uO8Mm+KlvRTpt
-	 x95DOn031RIiOjhD9YBKvRsJ3SWRscOOHqXP5//ffbZRcn2+ZeOGSqWcDJL8lpSdT6
-	 9xiMjnB7g5DmFlroBbERwFk8HFxqwumjaOz9YYOFNe+t1tNkvjM4Dw8POSV8W15821
-	 j0S2qUg2MPsEO6oUCpFNLuavOjl181R825Q1U0o2hykdFp0yv8/ZlyQqKxPThBHA+b
-	 ZaWet0RIDIpDhYPXxPyW/nHY7c+UePobu/bAvV+uoPejolMs3FGhsJpEMMh+z+0i3V
-	 QBTJtGRqk2zcw==
+	b=c2fdxPuJZracea4THiWagUGG3qtjKlYQLO8kI5qBAOAmNyUqU+Cz2tE0LZcZK/+x6
+	 6Xk6iEoGktAUHyeB9cblz74jdddGkwaBjm0aSRvDSQySW3n0Fr3QzWtICG5O83ECq+
+	 CpGzQfZJaEmCid2LM+2XsU2ThNJ23kEbysH1NlUtWxqEIESKzs4x6d5f0OSVrFyJfm
+	 j3TScuQr22512dqslB4Ah+zgS28CuS/F239kYvXoA+o5vDrfUPnKKgS1tQAkh4mNti
+	 ITFv6t9aZ5OoDpmTegOvjzsXL8lUZRPNTyuRby3AAe3GvKu9tkUXabe/jqKUOVL1Ww
+	 sDInYPPHhFcHQ==
 From: Lorenzo Stoakes <ljs@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Russell King <linux@armlinux.org.uk>,
@@ -139,22 +139,22 @@ Cc: Russell King <linux@armlinux.org.uk>,
 	Rik van Riel <riel@surriel.com>,
 	Harry Yoo <harry@kernel.org>,
 	Jann Horn <jannh@google.com>
-Subject: [PATCH 29/30] tools/testing/vma: default VMA flag bits to 64-bit
-Date: Mon, 29 Jun 2026 13:23:40 +0100
-Message-ID: <27cd07f6dd862d92410cf9db03f7c11e5f66854d.1782735110.git.ljs@kernel.org>
+Subject: [PATCH 30/30] tools/testing/vma: output compared expression on ASSERT_[EQ, NE]()
+Date: Mon, 29 Jun 2026 13:23:41 +0100
+Message-ID: <432444fa4c12ae1c4047550e2b205d3e9bab458f.1782735110.git.ljs@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <cover.1782735110.git.ljs@kernel.org>
 References: <cover.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9ytbx3h7ky3najmizx7icj7cb1754hbi
+X-Rspamd-Queue-Id: 30AB940002
 X-Rspam-User: 
-X-Stat-Signature: wgakg3xphj6wu4t7ikkdwcj74nraq64y
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 93B8D40002
-X-HE-Tag: 1782735922-983792
-X-HE-Meta: U2FsdGVkX18Daz9p9lsjwKsEeHjLJ2sGKCrkhaBOBS7cgcic00SzoanKzPxG0YOL/iKEahFN4sGW2SCc6fhCqFl0lU6CfVKOo0Mps7sjIE6oKMjDtj/4kYAlSvskjdO01vW3F1RbgC02fodOvSHgl1lnHPfPIIpr2FHM1Sv8Vke1ZNMMOGi6jNmHL/Gf77AEv0fVY6/ZzfNZB4pDO6X5+APDAdXdwcZ4hpkJPwFIBh5gho8XvydWO42cDOT79t+7Var2R1251iJBUDx6CXqd/Gpdhq71wDe8pm2pHDMaoH4yd3Wp72KtqT8TT8QRqvXnsLr6vRkS+1pvmb4gujncNsK6NK+/3Nc/OlqA4WXeU1dBjpzYL+sRoauNjdvt1yyCU1Ebce6R23endFOZtuKnwndtdamisk2kHgs9qhMoqNeHHfvNNB0c9KT+xN7AL5JXbSRWkUt2wvV5p3AjY0a3v6u+4zVyrp2qsKyUsVZ7KpMxm5NCZG8jLDNW5oWfWkfnS5/C12q/QySKO+DDz/ccx2CJ0hQEUhypTNWA/BAoGsEmGbdRxu5AOHl0hE5Przue0sbO7I1KmIlT01XpWojk5Krrbxa00+/OgZLiQQTkkj/5OdTN1dAg9aM4SNw0hiTY9NoXnjS2EbfOrxm1CQNNSxLQQ5J/2kVoZilrSn7LlbVXplzoRt/TPUCodvJvKSqllpZh8CDIiUKBqmuP6dQN6RJ+rluEkSp+5akguJobdEgaJdSh+X/JMBI+D9P8p4KetmDBtKMQjpogEEVUzdJuCd0zGTxeWPJkz4ToZgQZ/QK0fAFtr4QAfrU8tOcipcxvUMAw7eHgLGQbeNjaCNtR0V1reQm0vxXCKMdcHXVfNxoej0NyOHbuW1RmJs4m/GMTtq7K4gAqZKAUIPeNor8ZBTN8BzECr1WplvKd08sBLPf7rWQIZ+Pm0lXW3YfWO43xyTLNZPw5or9Uu91aeMl
- Rqz6z0CC
- TNIyZJU7vdGSbg9HyculTslovAvuhrUcvq3AfapN3R3jz2K6re/IFOdZLFoP/lzHHPo03YlqZwSGcNe7eyy5pvGuBRObACJzsAF08llnc5WZhKSHzvHjMLCnGLX12iEPEAarXDPlI1mmbydVHnqKdBNAKUNU8qSsda8cF5iXx9fHbT3HsZfTK85oD3jpkLFuA8vq5gsJ/azRwlSE38AMI4L/1BVn1MBZp87yjTY7GHO/dEaxrEzSIazHrsWhN6jJLiR9DbFc3AAsI5tPD2y+dTJFFsseNIfC98NQyEtjP8c66SUckUat8GSR6wg==
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782735925-208670
+X-HE-Meta: U2FsdGVkX1+zXQQo8HPssc8ThDP7W9XCe9Iqb+4oSIFL+PCLlH++lZvMF5LPdUpJref+kvnSmW/9MVnxfvrjZ2+UkThvyGo56AhXuIFIqJLUBSed2vNkSQ5pgLQ/bg3Vi4fCSpTnzIMlLVJYEdkHU8elqWlgGJbhEEF/9mA3NXyaNU5lRPXtdL8Lb85ttFkHkKiaIJzletCiCeAiYUjj7ei9SP/DZaZj/41hWDIaxE2LKs0vyLaWh4ClWlGCFo7d2T6+KMeK7KKzNTnKR4eB2XCXfs+/lmTZ8VbxJ2Ps7cn7UNwLWyDfycCMpmArJV8Z3THK5Lj6tucCJeUJ6s/AIFc7jkFnUSDU0yJdKUSAFSoYHs8hKuyWzId+OkilYQ6ONA/3qtDzuzJe4QAs/p7FMj/0kT7cXZ4Kj15SR3M12fJFvfcmTNmAlsXb3NP2LYkaGl6JWiDQZLGmmxoZ4I0xmLpoc5ojmewwPXcN3p6YzGLfTBhufAdJD4wjsI+G8J4ag/fuRn9Q9Ll3iuVNK7uFKRxjIZXgHEfPiu8dObxOAstd8IlGkYLsFPW77ESDPMfnbIrgokM0i/PBjPZUzZTyFbzc5Knw5gO6gcM0iYKYbxHHppQHBwKimwjUta/XdbrxcHtv9oPVgbZy1eKB81XGacwVez3Ena1ij+bXRCnGiUfV1m1hNAJx60Tdr9wrzF9buZRl4+Sl0JF7O8swy/ZdWpbLsWhIL9d+HO05P1IShbymyv4mVOd0a1X7i7ZVNEi1f8ub3rU43BeqOv27rtT2JvZmo6YBQviH3pejMHgaP04o5frKEYEjRVwBErTbCLL1lb4Kr2W1yct4Ry0V3z0Z1I27yzuHyenyUnsDxDXnHAvDmzdnjaks7fOrMWP9O9hnqcZ+G07KMOHCB8Gq4tmUuAMiRPVKbSs1cIkgdA97IUR3GOKCl601BR/eZ9PG/fgMJj3wYtsKvBYD/g4rHlB
+ sYf2Cm49
+ BXMU+2gokMOFofYpgxmNeoS7e3kx26ylRfdD+tgzBrdcixPstiRLsDzIJcfpEEiaW4lcP8LN36BRlDHPqZS+VsCBcKsxvPJP8oFqmWxfV/5og1YDKD7F3jqHFnrwTEgNnaV28grbklZvOd8IRd0OmZRQkyhDxVrO1QwppAipx5LEkYadMQJh0JlSoKR/1c7DQIuSaJr6lryOVDSYXKipG5dZSCGXP0zWoJfRNzYlqaCDfeO1Zo5DWm0OBNEGwC4wk7j7K8KHJyhrMPHyx5Fey5vZ+zBz2RiE+VS6PLQZEkpHH2PmmlRaDuGHREWnYx8ph4UoV8j8dRGJRlxtei/M+VEwkj9qeaIQ4TSZNgzwqCgV5EXg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,31 +162,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-With all of the sanitisers turned on, setting the VMA flag bits depth to
-128 by default results in overly long build times.
+Update the macros to output the compared values at hex for easier debugging
+when test asserts fail.
 
-Reduce this to 64 - we can always manipulate these later for testing of
-larger bitmaps as needed.
+Also remove unused IS_SET() macro.
 
 Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 ---
- tools/testing/vma/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/vma/shared.h | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/vma/Makefile b/tools/testing/vma/Makefile
-index e72b45dedda5..ef6cc558afe1 100644
---- a/tools/testing/vma/Makefile
-+++ b/tools/testing/vma/Makefile
-@@ -10,7 +10,7 @@ OFILES = $(SHARED_OFILES) main.o shared.o maple-shim.o
- TARGETS = vma
- 
- # These can be varied to test different sizes.
--CFLAGS += -DNUM_VMA_FLAG_BITS=128 -DNUM_MM_FLAG_BITS=128
-+CFLAGS += -DNUM_VMA_FLAG_BITS=64 -DNUM_MM_FLAG_BITS=64
- 
- main.o: main.c shared.c shared.h vma_internal.h tests/merge.c tests/mmap.c tests/vma.c ../../../mm/vma.c ../../../mm/vma_init.c ../../../mm/vma_exec.c ../../../mm/vma.h include/custom.h include/dup.h include/stubs.h
- 
--- 
+diff --git a/tools/testing/vma/shared.h b/tools/testing/vma/shared.h
+index ca4f1238f1c7..216be4cda369 100644
+--- a/tools/testing/vma/shared.h
++++ b/tools/testing/vma/shared.h
+@@ -21,19 +21,28 @@
+ 		}							\
+ 	} while (0)
+
+-#define ASSERT_TRUE(_expr)						\
+-	do {								\
+-		if (!(_expr)) {						\
+-			fprintf(stderr,					\
+-				"Assert FAILED at %s:%d:%s(): %s is FALSE.\n", \
+-				__FILE__, __LINE__, __FUNCTION__, #_expr); \
+-			return false;					\
+-		}							\
++#define __ASSERT_TRUE(_expr, _fmt, ...)					   \
++	do {								   \
++		if (!(_expr)) {						   \
++			fprintf(stderr,					   \
++				"Assert FAILED at %s:%d:%s(): %s is FALSE" \
++				_fmt ".\n",				   \
++				__FILE__, __LINE__, __FUNCTION__, #_expr   \
++				__VA_OPT__(,) __VA_ARGS__);		   \
++			return false;					   \
++		}							   \
+ 	} while (0)
+
++#define __TO_SCALAR(x)	((unsigned long long)(uintptr_t)(x))
++
++#define ASSERT_TRUE(_expr) __ASSERT_TRUE(_expr, "")
+ #define ASSERT_FALSE(_expr) ASSERT_TRUE(!(_expr))
+-#define ASSERT_EQ(_val1, _val2) ASSERT_TRUE((_val1) == (_val2))
+-#define ASSERT_NE(_val1, _val2) ASSERT_TRUE((_val1) != (_val2))
++#define ASSERT_EQ(_val1, _val2)						\
++	__ASSERT_TRUE((_val1) == (_val2), " (0x%llx != 0x%llx)",	\
++		      __TO_SCALAR(_val1), __TO_SCALAR(_val2))
++#define ASSERT_NE(_val1, _val2) \
++	__ASSERT_TRUE((_val1) != (_val2), " (0x%llx == 0x%llx)", \
++		       __TO_SCALAR(_val1), __TO_SCALAR(_val2))
+
+ #define ASSERT_FLAGS_SAME_MASK(_flags, _flags_other) \
+ 	ASSERT_TRUE(vma_flags_same_mask((_flags), (_flags_other)))
+@@ -53,8 +62,6 @@
+ #define ASSERT_FLAGS_NONEMPTY(_flags) \
+ 	ASSERT_FALSE(vma_flags_empty(_flags))
+
+-#define IS_SET(_val, _flags) ((_val & _flags) == _flags)
+-
+ extern bool fail_prealloc;
+
+ /* Override vma_iter_prealloc() so we can choose to fail it. */
+--
 2.54.0
-
 
