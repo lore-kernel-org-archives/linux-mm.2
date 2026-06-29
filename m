@@ -4,116 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8912FC43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 06:59:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A990C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:02:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 805A06B0005; Mon, 29 Jun 2026 02:59:37 -0400 (EDT)
+	id 01AB96B0088; Mon, 29 Jun 2026 03:02:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78FCA6B0088; Mon, 29 Jun 2026 02:59:37 -0400 (EDT)
+	id F0DC16B008A; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6589D6B008A; Mon, 29 Jun 2026 02:59:37 -0400 (EDT)
+	id DFB896B0092; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DEFD6B0005
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 02:59:37 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B30E56B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:02:10 -0400 (EDT)
 Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A6A8C2846
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:59:36 +0000 (UTC)
-X-FDA: 84932049552.30.10CB940
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B843FC0002
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:59:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DDHiMsy5;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3274B1A03E9
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:02:10 +0000 (UTC)
+X-FDA: 84932056020.30.3714602
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 28448120002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:02:07 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TszeRu7g;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782716374;
-	b=rBZixbMlXD/RdztxRYAj53tdKjtwRzWJ1zvj9X2l/1YyoP40tv+bpJ5lpAfVzpDBvom6pG
-	+v11bZk4yM3+0FW4f4Sy8uf8YrLTgLirkbTR1qe9yGAkjBpS3z59RgP+1yl7c/0ZDkOOJl
-	4/b8ellXiLKjfeYJgA1qytLacgTrwh4=
+	t=1782716528;
+	b=YpADYG62nJ/yIMEifhF9t1j6JF82eWR2wD0hG8D2MCRphxvxuoWprdqEcPk1jTAWBa0C+5
+	BWAQbb+DQxbZjDP1K0Rbn49UCbYXpC/EcVj2d805/ihevUqEcGRDSQeTt4y9mEGX2aKgXA
+	faZx2DytEfUNGmxRoE/zLLwa6oohFS4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782716374;
+	s=arc-20220608; t=1782716528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PHRiMqDlFwcJe/A5WBZFbr9/kLEIZnbR25zBaf1Mgu0=;
-	b=quQADXjfpB2pL7HKr0y1yiFtTuRupTii9vF/FS8pKmb4/9d3+bHYEoA+jR4qYJpqzo784I
-	PHk133cNSfrpio86tDpV2Af/RGp0dbt/bfRxaCDHKGJ/LAg/iQNa/+qUJ7+5avD7TQOlUi
-	QboiSHjR8EtYmsh0A4d4597kVtHKnTo=
+	bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
+	b=1Gj50uMGdvs7Ouz6jvYgTfXJZmZ3iFSM531+pNGoS72ShSB3vCAY20hOE2h5VGKSVUzk+l
+	NM2Pxa2Inh5tL+XvFG1EJmk1ogBQXJr/tPUWpRtdAnmQbJlH8vDSdys2OiOtz5jQBklj7G
+	jLai4+f0wGbMtj37nVOh+weaCFE9cCI=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=DDHiMsy5;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782716370;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PHRiMqDlFwcJe/A5WBZFbr9/kLEIZnbR25zBaf1Mgu0=;
-	b=DDHiMsy5WoetwRHmMY/f3MDGJeEIiEiSQlfiqCsqhkXrK0G8y2nHgKhJ+WyQoOzkR1Pj3z
-	1J61aO1SyLsadSXK780OpBUYjd2sESHNxRD5m8AOU9clPbLrFQ50R1UkprCNTQkAsxEVO3
-	Oeum72prWOggU3P3Aw11HExUVqbfbYY=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: lance.yang@linux.dev,
-	dev.jain@arm.com,
-	linmiaohe@huawei.com,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	riel@surriel.com,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	kas@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	rcampbell@nvidia.com,
-	apopple@nvidia.com,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	mel@csn.ul.ie,
-	nao.horiguchi@gmail.com,
-	ak@linux.intel.com,
-	j-nomura@ce.jp.nec.com,
-	pfalcato@suse.de,
-	dave.hansen@intel.com,
-	tglx@kernel.org,
-	jpoimboe@kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-Date: Mon, 29 Jun 2026 14:59:09 +0800
-Message-Id: <20260629065909.88972-1-lance.yang@linux.dev>
-In-Reply-To: <98f3aedd-de11-4a83-81b8-f3e3c9380e49@kernel.org>
-References: <98f3aedd-de11-4a83-81b8-f3e3c9380e49@kernel.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=TszeRu7g;
+	spf=pass (imf29.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51a85b0e2eeso23730851cf.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:02:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1782716527; x=1783321327; darn=kvack.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
+        b=TszeRu7gxVu6RySti6GnfeNI8EijR68HGm2ppTBmBWcaXV1JCnVaCa+NqB7k9xVUgA
+         KrHGx7lWImZ99dJuAGpKFafFbV/0m+TxOFw34+9DXeWD3K6tt7y8qGRCFA0Pi8sTCz6s
+         J/bi5uU3fzTOTERBrG+ASTa2qS9l2XiD4FS+KlMKk3ERhmcCZxSeqkZd3DlER60Oz7Ry
+         rQyDVqvCcneHNgR9KkcUvZ0GM5iZ+8BTfrUixKbg0WsFkWmpj8f9QEn0+Ek7JgYKNin3
+         X/6jyZM2mcfoakHgG2eYihjP4xnulGkpIpTu38qPCmvroVuxGkHEJVgeR005+9t1hoL3
+         JRXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782716527; x=1783321327;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PkmUS+qbA9gCTt148jOaQOCsbv1HL6/U/eK4SzvD/TY=;
+        b=mcg3YBMr35Q6l9NARw1UrhN1B2AvsUpKqVozPSLoOAkXGLxi2T5Su2yUzdZBrC+aN7
+         NfcXwO+2xx5i6PH5Wl5OKYSxzb4VU4Ftof1q7LyWi6Qv3AqW1CLAJKF/tQBdQOUDVtP7
+         70FyXFvQFQ6dBEv7rVybvjJqhTrXWWdu08gffXI0YNryg0+leqJlk5IlYrPyStfIx6k6
+         fStL1n5GJUqtdCEGUZB0ntTncRrl3WyRdDXzj7i2ms1rmUdpYUxlz+2g8vJ9lgGzzeoy
+         BSAMWx55KEf9XgE/TtHbLNFPGSssoPsOh6CS29Ly1Qtqif07aSkDqvly03k+F6nrzRTf
+         /6fg==
+X-Forwarded-Encrypted: i=1; AFNElJ/yNEiDxuRxMvWvSJXx7f0n0jnfl8U2sUr8CVTlIZwr49AyO9syzlM5L+v2WLIQ/H9zERu5ls592Q==@kvack.org
+X-Gm-Message-State: AOJu0YzTUo0t4lPo9+5MRUGmi7xVOdhNDugBUEJFrFu1QUaYFDvtLpI1
+	zDcsg/3gi6JZ6h7MrjzRswL+peB+u1EjQIixY0duaHLZZBt0YBqbJsfHCMOapLXGUpY=
+X-Gm-Gg: AfdE7clUGwoltAQ4+0cwnZC7Oiwz+NBnCBUkRtcQs7HnIBUyK4RLZSPSzrK5o6IX/uw
+	EVoOnpX1ovzKdW+oB6eeGZ35Jo6184e27KvXFjU/6+BGs1sLaqTLpOxAEgcLpyI+hA+r7pugtqy
+	ZaAakrOyb5nG3FZDYbDUgGAXlnMY+dQ1QIfGn9QRmDl8cqkYqqyYvwaVUIaQyzCr9+HcZb/bJvO
+	udMwTK94Obpt0yblI90Ah8wHb9nh7ukjlvbCvBRswNXyzFCNiT2d3bIgiBoz1a9FRLQOGlmiY+8
+	aXb+zcAVeaLOUl5vxHc+eHTi9duLuaAaFwpqXmpCoSlftZM+Y5P+bjrO8l3if1NnZcv0ySI7YAP
+	5eY/9Xktc+TV5FdECHOC8VG4C1p1WpXgoxXpG9+FD/R7QNFUErG4fy9gEYI6uvNXju1naJ19hMD
+	WFPfZ/ZFgU4nHc0Tp/Md31lqv0LTz1D4Pzk2OEU6bPzBKhhoqRUAPU5VkZnrKE
+X-Received: by 2002:a05:622a:608d:b0:516:ca56:a44d with SMTP id d75a77b69052e-51a5178907cmr318181201cf.6.1782716527051;
+        Mon, 29 Jun 2026 00:02:07 -0700 (PDT)
+Received: from [127.0.1.1] ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8df82692bddsm300651096d6.43.2026.06.29.00.02.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 00:02:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ozju8i9o9mnngp3qgtq1pfrr6n14tbyc
-X-Rspamd-Queue-Id: B843FC0002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v6 3/3] luo: Update serialized data to use KHOSER_PTR
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Tarun Sahu <tarunsahu@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+ Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ skhawaja@google.com, kexec@lists.infradead.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260628001114.1869564-4-tarunsahu@google.com>
+References: <20260628001114.1869564-1-tarunsahu@google.com>
+ <20260628001114.1869564-4-tarunsahu@google.com>
+Date: Mon, 29 Jun 2026 07:01:59 +0000
+Message-Id: <178271651966.13502.2620034351625890943.b4-review@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1514;
+ i=pasha.tatashin@soleen.com; h=from:subject:message-id;
+ bh=i8hMeTOD7PlXYKXCkQGIEVry2kHEdap7Vv1D92UaDwg=;
+ b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBqQhhtIYYuZBg6KJbH62WNctwI6mdsZePcCtfwN
+ 44MDknREhqJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCakIYbQAKCRC7dyhM23N6
+ 3h/YD/wNczubLTbms0pFp3A2EyjJjFEM/LlM1mQL5Mhx3WmXPxHlAJnaL72I+6yofWcwBajg5VC
+ ernzYQ9l4uKEJzGRufG4MYpNHUtkTOs3Tz2nl7q7sTrmmWxoWj6EIZKcbDEWMRCns1bD6Vwnt6m
+ a60hANaw9vrEwDmawr5obeIpzd0llmmSE2E3k3O90f8fY58rKkrqyEKeoW3Mi3gOJv9e5PzZGsQ
+ s8ilIjofewCeCXV3WT9wwl4TKhiNLel5hY0yIlSCQhJ9a9Z2/Mq/010UoEuu3LTs6IrV13bXZ0r
+ lDwx70HJVLinpsyqDu8duUaN9Hm8h/m5iRaaoR7zX6Dhxkjv3laM9PzwHNf+YPvslIA33JdnL+K
+ PP0WCurgePElqGDXZdMrbV1lNZgbAhXq1YD0/IrYIoNEqyZh/n4wJKlsA8G2kqUCdAmzqKUSuMf
+ zwO4ok5vooB1vI79jbSk57ltu8iWxuUcWdxcdyy+Kwp5qzR0B3smYZe/VOexN5lUmb9bIW03uyG
+ IQnFXE11wh4D7UDXUp83rP0xZetlhhueDiIY4+x2MIMtChuf2L6K3F6yri2SVXDZOQM7begNd1P
+ dqfg2xV4Oq2UD31U+CAGg7r/NzfOxnBDmcJhrU8QzCfxECfORWkuukH7bl+PlBtU20Mc5dliL7d
+ mMeCz6aR1v1fQNA==
+X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
+ fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+X-Stat-Signature: zd6qmzwkriurhr83rhy8bgzd4zfzti8b
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782716372-261864
-X-HE-Meta: U2FsdGVkX1+NVQfY33OB53g6GkTyc8HLMEQJfYKFMiEU6ictuZ+L5oKqX6ZgVXr4frC8B3puAPBW/GH1QxZoP1F+6/MulK2x7z+maKHti2+BZUIQIS4nECZqIey+GN2RvQhNQbYZsVtZqBrEPnzchqVoV5lU8LhDiG0X/nlcFSqcgea6Cor0lG7gx9MbsWysdJwNZeQa1Svew3kAFBaVVVUCF/YBfnxGKwr/zLtvpM11XgnIoNSCzzn2C4sOyEs3HV1CAyqSfoKoTBsxGWdE9VXfdDT3x/OTJAVSSSgc+UE9BedfX9ZtzssZIcLTjjQ/OiMYwzv2IzMBioM1ooDI68QZA6tn4J3K13GoHotE852SQ+11y03ROsyzBpZ5bOk7PapAUv1q7roO0JpUNGYFcEg0mz289oiGCNAN6rOGktdP8jC1HKlTPcvH4e18vrZEXseykJJwLbwMlHLVutQzUs08I/Qp0ZN2C/wPw9uN77g1nf0DGPNiz19L8QXC5pJhSAbC0Si+OAcDd+NzuBAL0ZSuq80satmp4tsVlSUQDeLz0KE496HKMccS2hqwI9Ukp1XPEVnufTzM1XlBCi3S3BBDgPL3B0xYOAa6+R2h+twC26fpBK0LETPq+YyuujrF139hbvg2wAYdcyrXPuypKxOqabzo6e2V1tpWdYUPHKWjBQoZocrwy9AeEIV4uY1Q2F2I5RPKMR+0spQzrM3V0JbZiC75qoF4/IdfxunfBQpJ3C8W/r2Fe1i86CaIsvVlXoIeEdQ8aUY3Yrzwfk/aDylkoupSJoiw11pZV/3/xVp2ore0jEyXvzoxXMvIPAUm5cZSbn/+Ai39L8zn9iZrVlO9MXyvcX2zb+6uvs7kgRE4OLfzLtNlMXdKhmZDSgrgUfGeLT+K+1StK+d4vvYWOP922d2RATrHE+UUjbMRlz7BlKsCP6rrv/IUcyNotpOn2L3vn+aHs3hmtesfngS
- fof+XgZM
- L6OodGoAIIWYRqf4WwJ1b9qI8QXkwmN4HTDFxEISMCqbd1mjrP8Y2U39k++1gWy9oE8+Xt5ZKj97e9Ti5IJs33q4PnICc5qyuK0+c9rirCpACOr9rcWCX4sEqhmS2WPrriQJAyoBgqY7+vxTB0cwaG7SzyhdAHhyoscnonjgVPG0aClpfiz2poV2v4RzuMBpDaeFmoHy9KTNpPqzNzUHVA8bKMWIab5vfvh/PnhPGJWX7SGMIPocBznS2fzuOULNeOhfvXfcnyfMrtpNGohItjAONtFyj8DoI9AGpGIoGfnb5L59og11ZSSvxnf1BtR+e8i8cZgu1IxkrjS2Mxk2TOoU0BtIvVqMycV6t
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 28448120002
+X-HE-Tag: 1782716527-592075
+X-HE-Meta: U2FsdGVkX1/NDNlNRgIdJdnmE1ZnSupeQZbUMHDx04HQMBdFRIRjUuqw+cylOIxu7fd/6K2JM7/0dPDtqRzKfpwyFfCBgoBbbZNInPeBVg0dTcF2mgv5FNE24dytCGnHCXF5cYSqR/jkPHf6AtHMlb2DtGcV+VUstNAm7knqCmK4Zn5Dcg689XIzCbU261pilARcsVHA2YPyMh3++q4hMKpJU9UwS3SPGgsMWBLkq1XUkU+zwpbkKePA694hx7chXUVPfpTKzvDfdrEwDarwNM6q2zhTxuZ2TxsiZav/qMnhelj0HfLQro1OPdPsXAHwnpqZ3UqOJlbvkr2wCTiBw1Yrdi2HNDIeKyFhYb/1mq9beL0SgTpoC6YQSKKDeOUplaB3cC9WQBLAYvet6aPqEOq+KWSTDKEhhJy3X0nMgA1zJa0MK8EzkMOjCXXF4p6ARZM/vmnQOineZRpypfTBQNqMj4mph3Fo4Asg3ahb6bA5wlMuXKdUYOjeXe36EawRAn6ND6D6qGIVVC3RpDXCsjdXyz96ZXzEdkeFetdf8Y+xd2c47FiVshF+pPWQAf3Y3A9tWA+pOIrR8vtdzgsB1F3SAJsdJGk7zaNHRYwA53zyTc22eum4Nm7VQPwzkCKO1pSGmGQISXNSXTauaSWMI4VfPeg9kuT+0esCMGgfPLoWEJsAVyChFryXs2h0JayRiXNLkU0Pa2UNZnDkok6cx9U3kuPfncuLDMpDfgRqam+6xgsSl4SqZiUckxhdGHDXCq1+ooXDwg5LkQG35dizD2Pz674rIooTRxUi+cUHh+hP9odIZgZ54PaZMsY5Aeek1PkQFZSOxXt7NmXTV1xPHgJJzv2AiCtuI2MNJdPUTz1ROtNF6OS+KAq9ShLx0I7uJ65JYklz8XxfnnL1Xq/pu5VYjoQpC2hAxVI/FnccFKmbPwN5sfs7FR8Jp26WngQ8G6LuXDxoU3/8n3gQGku
+ CP1IhXUS
+ Mn+zWs1jodesb62osP8tzCyChLHS5HvcMrph5uzQIgv+wlUWBppiPDpeLfaSdofb1Ugh6yVy4REA6G7uj0GLEqw+Hggt278tvsbU8CuNduFmkMzSkPshjpxMWnXQr00vyTA70RvTc5YafIzTxgRFRni2Z98SuzV08lJ/OkV/tpHQIy8CnzpThWWGuKeDjBsx3kyQdMEd5VwTT/rmGIeTIGgUiWsVcMCu6RWwYZ+d7okOAXxHKC3621UbcpnkfSzd0BOjs5YrC2PGLBxEtTfOThuI92zu7JOv3YlQyp0Sh2G5aETlNnX/wS9A9BPECbjO0Ig3P6Q7ik1JOLFpSyJEVsy9/glxvX04hrWPrFiPMA8s24F0a2JyjeXQ1NIC6dzKf9W5NYF7fgO8e5ZJD2xHvw50xDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,54 +141,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Sun, 28 Jun 2026 00:11:14 +0000, Tarun Sahu <tarunsahu@google.com> wrote:
+> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
+> index 288076de6d4a..9e78625cfdc1 100644
+> --- a/include/linux/kho/abi/luo.h
+> +++ b/include/linux/kho/abi/luo.h
+> @@ -89,14 +90,14 @@ struct luo_ser {
+>  /**
+>   * struct luo_file_ser - Represents the serialized preserves files.
+>   * @compatible:  File handler compatible string.
+> - * @data:        Private data
+> + * @serialized_data:  The serialized KHO pointer for this file
 
-On Mon, Jun 29, 2026 at 08:39:22AM +0200, David Hildenbrand (Arm) wrote:
->On 6/28/26 07:44, Lance Yang wrote:
->> 
->> On Sat, Jun 27, 2026 at 12:43:31PM +0530, Dev Jain wrote:
->>>
->>>
->>> On 26/06/26 10:16 pm, Lance Yang wrote:
->> [...]
->>>>
->>>> Just thinking out loud: given that huge_ptep_get() already assumes that
->>>> addr matches the huge pte, at least on arm64, would it make sense to
->>>> have a small hugetlb wrapper around it that takes hstate and aligns
->>>> the address before calling the arch helper?
->>>>
->>>> Might make the rule clearer, and a bit harder to get wrong again :)
->>>
->>> Are you suggesting something like:
->> 
->> Yes, that's what I had in mind :) thanks!
->> 
->>> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
->>> index fdb7bdf7645c..xxxxxxxxxxxx 100644
->>> --- a/include/linux/hugetlb.h
->>> +++ b/include/linux/hugetlb.h
->>> @@ -825,6 +825,15 @@ static inline struct folio *filemap_lock_hugetlb_folio(struct hstate *h,
->>>
->>> #include <asm/hugetlb.h>
->> 
->> Maybe worth spelling out the rule as well: 
->> 
->> For arch helpers that use addr, huge_ptep_get() assumes addr is the
->> address for the hugetlb entry ptep points to. arm64 already makes that
->> assumption.
->> 
->> Callers where addr may not be hugepage-aligned should use
->> hugetlb_ptep_get() instead.
->
->Do we have any examples where code would do that? I would think that all code
->must properly align addr ahead of times.
+I am concerned about layring violation here.
 
-I was thinking of the memory-failure case from earlier:
+LUO is designed as  a generic, opaque transport layer that promises to 
+preserve 64 bits of raw data. How those 64 bits are interpreted is 
+entirely up to individual clients.
 
-https://lore.kernel.org/linux-mm/20260626141031.14309-1-lance.yang@linux.dev/
+While some clients like memfd_luo will use those 64 bits as a physical 
+address pointing to KHO-preserved structures, other clients may store a 
+generic token, cookie, index, or non-pointer status. By
+changing u64 data to DECLARE_KHOSER_PTR(serialized_data, void *) in 
+struct luo_file_ser, we force KHO pointer semantics and layout 
+constraints on all generic LUO files.
 
-There, page_mapped_in_vma() can be called with the poisoned tail page,
-so pvmw.address comes from page_pgoff(folio, page) and need not be
-hugepage-aligned.
+Clients that need KHO pointer serialization must cast that opaque 64-bit 
+value to/from a  KHOSER_PTR  within their own callbacks.
 
-Cheers, Lance
+Also, the field descriptions in  struct luo_file_ser  are no longer 
+aligned due to the length of the new variable name, I believe it will 
+cause warning when making docs.
+
+-- 
+Pasha Tatashin <pasha.tatashin@soleen.com>
 
