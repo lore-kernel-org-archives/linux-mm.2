@@ -4,97 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B565C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7146C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:54:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F24516B0114; Mon, 29 Jun 2026 11:51:34 -0400 (EDT)
+	id ABFA86B0112; Mon, 29 Jun 2026 11:54:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED44E6B0115; Mon, 29 Jun 2026 11:51:34 -0400 (EDT)
+	id A70806B0113; Mon, 29 Jun 2026 11:54:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC43A6B0116; Mon, 29 Jun 2026 11:51:34 -0400 (EDT)
+	id 939B36B0118; Mon, 29 Jun 2026 11:54:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B52396B0114
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:51:34 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A1231401A2
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:51:33 +0000 (UTC)
-X-FDA: 84933390066.14.EA7E8D3
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 02235100006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:51:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="mqqMcK/S";
-	spf=pass (imf05.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B5CE6B0112
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:54:56 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id F35BE166FE2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:54:55 +0000 (UTC)
+X-FDA: 84933398550.11.2394ED7
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2C4DFC000B
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:54:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=rhT2bUx9;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782748292;
-	b=7FDDg50TyJUP7vjKMfSC11JEypSbAY8F8pHzPHZw86/SXbgDfwuCkUZfZyPY1IZ6ZSWKGh
-	HCrq4Ii5plQGS8Tp7D3Myu+x556zwkkFmY2es9wOohvb6gW6+0euJm6ux2TMGLcOS0XZvf
-	sqTSrwHxqrpcb3k63bZQrn3LgR0YuNE=
+	t=1782748494;
+	b=5o762PUk5npOAb7grkc9ZQmUkZpQwLo6IXF88QYhi3RjIrmFKS4Dee1qEBFm/vY/ImfDVw
+	ySsaOAfRkv+Wt2Oi8L0GVwEWmWXX67cd0TuNTmEEvngaGUZbQS81sbY6IJ1wz7xRzWLm6u
+	Dk3veca9l6Qvtftc3ti/F4+1GwMuT1w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782748292;
+	s=arc-20220608; t=1782748494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VeejG0MGjUvD4AhkLMN95MQ3Dsdsxp52TnuJQNelYwA=;
-	b=w2IMVYRoGAvfKqxPbKjmiVMgalG4thC5yTTBHFkpBPjCsT4FvoH4u9rhWwtoUq9npfRedN
-	ODRBTPiykkf/cJdHQqXjSiMPL9KnyUuGZa7qKXb/QwI7Xm08T3+7O3qdIi4eaobbju2khu
-	a5VZ9IPceV7IQkqUR4q2C7cuypuwIHI=
+	bh=4r3nyg8MsZ+G0ckW9OOGJtlL6QAvCNLsDtm+wiwuKtE=;
+	b=C7b7h+6Qvoy3Wl1rMcM5qZJIQJxIMyC5I+tR5KGjVRq9zOttcC6eh1v0FYDPesQJ0BgSVj
+	PyOzIbNGv52ivIYc9hg2tmmQVzUrCwrwQS8Ac82P4LAV/11WvnogOHHbnxGkjnq40DXmwb
+	0Pn+FGAc7Vc5yO9vXSOwfOffqV53TOQ=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b="mqqMcK/S";
-	spf=pass (imf05.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=VeejG0MGjUvD4AhkLMN95MQ3Dsdsxp52TnuJQNelYwA=; b=mqqMcK/S0ffTfirKJEMqcC/Ija
-	8MScC4GpriSuke5cvw9W89OocMlePAkwIX6hRqRBAOBICl/Jk24xJEReCepneIo9AsQ6T64BsTEuU
-	KJ7v6x86URFpLL6v0b35ayfP3ksScr/ZCwY+9RFl7FSivLEKwP1HPvd4T3Ky0pLFbp0Emy+LGVbAT
-	pa+V0JFJJnN0R/VjabN8iyidZewJxzgorjpeRhG+v4WZV/eUD+Er5X0mQ+KbBMLPuVhOWukCRRPkg
-	UOfYtf/pIAn+/y4sWQEsSlib+rJMDZxTPoWNtksRVS/9IjviHEnjRXOIgnK+lHrm7PpeaF8mwBgHD
-	xA9VFsaQ==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1weEGA-006Ojz-0e;
-	Mon, 29 Jun 2026 15:50:58 +0000
-Date: Mon, 29 Jun 2026 08:50:51 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v10 6/6] selftests/mm: add hwpoison-panic destructive test
-Message-ID: <akKUDDtww19NVra4@gmail.com>
-References: <20260626-ecc_panic-v10-0-6dacb8ad024d@debian.org>
- <20260626-ecc_panic-v10-6-6dacb8ad024d@debian.org>
- <aj-BShkN6BXex_ku@kernel.org>
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=rhT2bUx9;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8eec5dfdb65so9350676d6.0
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:54:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1782748493; x=1783353293; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4r3nyg8MsZ+G0ckW9OOGJtlL6QAvCNLsDtm+wiwuKtE=;
+        b=rhT2bUx9tLwKen0Uaqb8OqyWiqMpJhhnirimTkeuhCHHufyb6EyxUNVa5Qx43uY35C
+         6wtUmUQ1G4UXQo7RUK5sd8zGodMTzc7E90xW8YRHh3gI+PVQnFgTAGDAcMt23QIi1DmC
+         vvXfkoymaIM8ZHuPBy/Ni0GFFO3N9ugNNGCxgdnR6ZFR334mhHa7+EGjMLt4WzZSWnTP
+         Mc0OIuQiD6NBTCHkuyIM3y+QS+BL5pt+Ios1Ccxr1SNAVeNO1ewCJnRk3o1gGSOHsK84
+         iiXwgTKL+B9DcEjZS9tMVTIxdzlOUnG99nQEp6myF8nCFKnwJDW6ARB3MuqHhrrexKMe
+         gOTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782748493; x=1783353293;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4r3nyg8MsZ+G0ckW9OOGJtlL6QAvCNLsDtm+wiwuKtE=;
+        b=gSn2asXiJc56xfMuSWvcPVR9cwrk57x6tSo7ikSuoi2v2csHCWD10Nq2bxXKdK+wCU
+         Cn3PrfHyRl8XOY62OvrzFIRIxzTyR2n0f+7ennSOXvFfiTiPmrPVVJF34KcUVQ6d+Ok/
+         Ngu0etrfwVUIvtWnVFdalZHIQfdegG8Jr84JlxuTbX3UUxrHS6pxdL1XH2QMNQ3Xj1BD
+         JgiDRoIUqhxvJXiDEVwIbEbVl+y7X5hlwJaCjn/Emf+SXTFPhMH3v0m4cnyZkqByhYAW
+         t68utiOKVloO3dv1rL4MVSOd46cCm+D4PQXrJe+hRT+aaFNDRkniNXn6xYzUXD6W/aR2
+         pNgg==
+X-Forwarded-Encrypted: i=1; AHgh+Roy/uQ+Z3bWAUwv6h/Hela/s21RdPjHlNwUHPwE7WBLRRHHf65KGu6uhaVB4chm24r+gf/Wcmjv1Q==@kvack.org
+X-Gm-Message-State: AOJu0YyHXVR1cJzE9mjCjteDdrAq6wNVeAzNUyCd5ynNKBDqeE2KmN/k
+	nemBPR425lTJiT9tLa7jeslkDlB17VGqzTpqLkTdvfzmW9JfL/2AeQjxFEuOwkTjl9s=
+X-Gm-Gg: AfdE7cnm11V993kS4kO7gXQzTvjgBohtex2SnF+wunhO7TReYkLSAVmA/RVZn1ZKMl4
+	rE59TbcWWT4hWcSmzEKmorc8FYuCzDrXDQpcMoDkxC5A0J7ytPnn/4oX9OP0MFHEmH/Q08nuch8
+	KBo+88wFduXAzJInp7SrqCzBRX88ec+yvSyOCQGnJXewNIWuDb2c3AzDjn0ojCWERUAgqTiN/Ot
+	ib1HCuDdSeUsUUrdZPNpb7EP8QkI/pNzff26nYaXOy0ShYhfeId2+8ZilBJ1yAHJaGVdimvifFg
+	vy21TTr90G/irC8ZXUglus430TN1BYss55jcUm1pkRswJrpg0FVBFVJqYUtKRbewEX5xMYMvW/N
+	mKg8Z5tTrvXJCdVpIK1cKCbBHZNwbvrW8rIPdGLYH04i7BZ+NX2HTq4F1+3/TdgrUBvvP/AIeo2
+	c/xPb+Bus8+wqQmD/Ey3R8vVYIgb8h8yByDonlGKIuuJgu6Zn4uAiAmbjiQGackl29vHcDrHfA8
+	FnXfQ8=
+X-Received: by 2002:a05:6214:c65:b0:8f0:5b55:1f6c with SMTP id 6a1803df08f44-8f05b552223mr58558406d6.43.1782748492988;
+        Mon, 29 Jun 2026 08:54:52 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a26f1b34sm1726396d6.3.2026.06.29.08.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 08:54:52 -0700 (PDT)
+Date: Mon, 29 Jun 2026 11:54:47 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Thierry Reding <thierry.reding@kernel.org>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
+	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
+	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
+	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
+	linux-perf-users@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>
+Subject: Re: [PATCH 04/30] mm: introduce and use vma_end_pgoff()
+Message-ID: <akKVR2wNSjbLDt1-@gourry-fedora-PF4VCD3F>
+References: <cover.1782735110.git.ljs@kernel.org>
+ <e379a1cb6a897126ad96e3a263fdb91d6c11f6cb.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aj-BShkN6BXex_ku@kernel.org>
-X-Debian-User: leitao
-X-Rspamd-Queue-Id: 02235100006
-X-Stat-Signature: fwjmassedbj5dcwns5wzgwd59x8f611j
+In-Reply-To: <e379a1cb6a897126ad96e3a263fdb91d6c11f6cb.1782735110.git.ljs@kernel.org>
+X-Stat-Signature: kkchdaojm3ouwomcd16g6xka65a7phjp
+X-Rspamd-Queue-Id: 2C4DFC000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782748291-178289
-X-HE-Meta: U2FsdGVkX1+u0QeEWuzx1sFqgn51V+lvipb00OVJOmmwILx1Sf2nGLDq5Tw2avhasv5OyZTxlylMXz/179XhDezQ7IyInUQN8QVFCGT21Qyki6SJe8vaYhu1TaQrnWjxTE6ov1fcoOfePfd0eP7mdQjl8X/vMpAQh2ZsIm9g9qivZFomCxNF2WWCKKADDowiT/FYkKrjE5bMGBnGDP0tg+og39ky3m13P4Xl9VdQ9ArMPU8v2MisCgSQ2+UKBoWlahO8P7D32BmOPL1hpo3U+VQgHgOwsyLqGYac5BHYMReyIwRwmE9GTtZfVt8+W/Ku4dm1HFOMv4vFCryiVy3qYB4YaW5C50+y/1KSKdAOmRByp/y4TYLQE8bwAxmDYBnMvqTNh5xbdP8lLGf4W0ou6Ez6bnUPaj3nlig6IjySOjvHSTPpdlJPoPjMCg/uLOzvER3k5VjMpZFRMGwg5XhTOkfkSiP6NJX072mtbibJX9Xt0vx6I0ZeO+6hFGTE8QpMXivVWqOEBQJdTem77CdkAdg6MwjaTYDv93lzgHRZwj0Fjt/vsYEHxfDirc2lGUypb/GO3NwIKeNRaIE+notMuDIQGv59j6mBsVbSp1MWHq8ARFh7EPzSGr/n6wSfO6hr1Zk0ltXnb0lD6Kd8rqFYVlYpopGHcAZuA4HPex2RAKjN30Omv+x30T/9E4Dr0DdEfS7FY6YRcd0Rngpjg8ETPTUjKCrOgC2iMK5buOt6Lyi/l1tbo+EYgjZ5wCST7mqEuthArCZvNSpdeF9CCqRd3Mysx+Mb1Pqz6nsd6pmhardR2d9m3KJrXw09AcBtEOaqxnArK6hjQGiWaIkdRfNzeFlFGoW4zLyYll66ho/MYk1q1gXyFjiMSVm2N+79oY9wDfy+Y1ZjLFyakD+1gpDaJ0bSL56XkMBTdHn0HA1wcMBiTI5noJboxl6pKgFk8f2PdvUxj4OzttH7Wi6uYUd
- QgvM/pTt
- o4IfZK0jXsWbSvIIt01w7XIZ0wW7p5yWX69nKgGpWCqQFxvFFy59g4WzY5GTM1JsixUltGp+WjtsosC6mvpcP1wza/EEkoNZyXiigF5/qoBd1dmCy8FVK2kJdZiUXOcZ47GXfMxO7UDBAslEhR88UZ7zPX6WePjq2e3OyH2mkVljsvJjwiM6JMCuurc3aEYPhM/Cb+/EicZqNEMW6ZZC3efGn7mMKvqaBY5rNPffN1UAy2mSwr54zyngXhELTwfb5hDK06w0F/r2I0qCCV3EocNhkx+JEYGlL7ojeEQnUCbMsUKkAsiFI98o42/NAhDcrUlEK6nCn6wbwtQE=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782748494-137308
+X-HE-Meta: U2FsdGVkX1+eWe12PfTcnQGOTunk8CoExr3YbfEyFGp8TllDhJNeCduQuI7Pee0M23YjukS/ZsD6z2DnXBMGR0f6u5iDFX//zEVN8UmLzf05HP1OkCNYdOd/rVn6qY7qX7NT5WeSQhMQ1WlSQRObV25W872kVa7LLgNasocUro+4vMMww03RHC/cnwA1J6WfmQtrtPAaAmumSSDiQnF83WyKaBszLA0htBAW2LwPPmNbHM5MnToWJMZMG+VTu9pOPqraht6NkZHTGw1bJAkELqFdMl7SX3P1akK7t+f6r91eU9YQtzsDcpUyMMF2L+JnCyDP5M4QRycmRWC01Vz+Xsk2+LDLQRuS2ITdZh4cSRtoJEaHn/syVUZZpzMjUwWSqWGcrbtIV4GXLzh27ksUE0Dv7qXbgEgpgRNjWiLwqpoxhkFLjQFReyQCWfVM+xHwNnJdjFecG9S0n4XD0I0tmcmzBIjuXyRGeGYrkZ60TsTgeESw/3gPvV9hWxKBs7h/nTyTZNf3tGUmOwiiRWv/cttaswjHU5hUOm9gTjP9jTax6zFXcHDwUACRD/5csYVJWCvBOVdJBQGNmHu16i1tk8qKp+xIUaBV5xSssu1FDCMEf7m/lNoIr5kBOKXHRVhzJpFf7AIlk7F8Isn9OWLL73b7iiLDjpDUvzfORTpLP5/9VAZRiilVHFUVlnCxPSY1GeHvpO7YIsYvJ1LsQ3SusnAwxSAERi/JXeEFl8r59TAzsh6euqtC13ZmVDzUZsf+ppHtggEHQOhpi7P/HGc7dfd2ATPplL2eX3gP5BrMd55OFYX/EBF0bofzykfB0KBzQFbSrICmApKzm4zRWjDN1FxmUPlQ2xpgEIddpIrvdYk/qWeI+bgQD1L0sONlLg8B4JPLs9NBFPAdfU70OOJnBT1je6ztSmmhdmoMmmV0l3Ds+Lwrlg7HKt5IVDBHd55M7MR/p1ITC2YMeuXv1/V
+ ACoR3H4w
+ HinvcGunMqGZB2IdDmE3/5RtnCCx0mNo0ymQiTCaIWfZNfXjNAx/red9ckSoDVLPACWMEE7mHjJ0fGQ1xZs9fYqL4Bezda7eQlfxyqXlWwq9IzCSofp7NnJ62c1FjmRLnpFrkXlWM0WTUyJ9TVmfpj4frH0RoelYkYXGr8LTK37ZleFym15SjVWaGgIhPkiBEZs+Wm6Oeq93U/kHuyfZ/5alBYapCkg42D/cSlavyZeWZH+JbT1hcEDjPChEs9zNU7lxfibM1hVoN4Y0+i5JlrRu1Ytz/RP7pcjtFNw3aUFfSvgya4c9m0MyyBknepCkGi12PC/d2HIsD44zBecuOvyCi3g/W4iMs6VXrerBJvW5ZgGFHfJ+0YV0cBPFv2ZMgvtw5yzFzgpr/hH/HgnAplqchvnffawVj0O1KBo3V7bo+dEQGaD+QLW/FojZ3PiRUEW1La+gTYXxuDGBCuDSbxmV48M3iqeQPY5vP6/sfY/VDnhhqso0m9+0gfdf+JTIPqIdWHfa343sfXo7pPYs3WIBsbZ/qsmlq2858
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,30 +171,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 10:52:42AM +0300, Mike Rapoport wrote:
-> Hi Breno,
+On Mon, Jun 29, 2026 at 01:23:15PM +0100, Lorenzo Stoakes wrote:
+> We already have vma_last_pgoff() which retrieves the last page offset
+> within a VMA.
 > 
-> On Fri, Jun 26, 2026 at 08:33:20AM -0700, Breno Leitao wrote:
-> > Add a destructive selftest that verifies
-> > vm.panic_on_unrecoverable_memory_failure actually panics when a
-> > hwpoison error hits a kernel-owned page.
+> However, code often wishes to span a page offset range, which requires the
+> exclusive end of this range.
 > 
-> > +ksft_skip=4
+> So provide this in vma_end_pgoff() and update vma_last_pgoff() to use this
+> function.
 > 
-> ...
+> No functional change intended.
 > 
-> > +ksft_print() { echo "# $*"; }
-> > +ksft_exit_skip() { ksft_print "$*"; exit "$ksft_skip"; }
-> > +ksft_exit_fail() { echo "not ok 1 $*"; exit 1; }
-> 
-> There is tools/testing/selftests/kselftest/ktap_helpers.sh that already
-> implements this :)
+> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
-Ack, let me source that file in my selftest.
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
-	DIR="$(dirname "$(readlink -f "$0")")"
-	source "${DIR}"/../kselftest/ktap_helpers.sh
-
-I will update, thanks for the review,
---breno
 
