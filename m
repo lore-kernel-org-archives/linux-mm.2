@@ -4,99 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7044C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:55:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 299F8C43602
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:55:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0AF36B010F; Mon, 29 Jun 2026 10:55:46 -0400 (EDT)
+	id 74F156B0113; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBB6E6B0113; Mon, 29 Jun 2026 10:55:46 -0400 (EDT)
+	id 6B16A6B0119; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AABDE6B0118; Mon, 29 Jun 2026 10:55:46 -0400 (EDT)
+	id 578CE6B011A; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 844506B010F
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:46 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1297440178
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1CC596B0113
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:55:47 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C2FDC03BC
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:46 +0000 (UTC)
-X-FDA: 84933249492.06.99FD242
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 783224000F
+X-FDA: 84933249492.07.DC21A2E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0DCFB140005
 	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:55:44 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ab23CYWO;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+GrKNZl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782744944;
-	b=ng8CfqDFOid1XJqndBubU+QlA4Qvy8PlPuWQMfxdeYsJkzDC0h4zDMuq5I2q3hWMlMPYgR
-	t18CGIu37DeA+qAc+iJZuTfxnOGg42sffsRrzUOgs6wUWB66vx7PirPPoN1g+cocQQJ5Yx
-	z/YOhfRQCEomW0RNd7kz6VO5HfyzWOs=
+	t=1782744945;
+	b=45snhlORpdtz9SMVYk2ZCsaJTS5HSvqIcKjVsqAQIWeLw+e4ZGQCmlMvbtJf67wkj3X10D
+	Jm02tmFtdAbjsh9PnfEB009RUbeYqdfnqI7keCQHRVMRf3GfM6QO8CMPH0TxhNi94IFw+v
+	PjFw4O6f9ro8+NQIfDi6SIagXAubC6U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782744944;
+	s=arc-20220608; t=1782744945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ttGyzzeHcyljjJxDkR2hOA9v80OHBSDRc7TeCp+VQP8=;
-	b=ww/54Bw6r+F9sFRVq27FMDKGI2N4s6/5Co35d/zeFmIYDO9Qat1vvp28WKzaKxwC81I32+
-	NaFooReyoAiIkSh4FKTCy1BHTTuq+JsOQYV8gRQyph1J4I9iBZ/UP9G3gWGkcfuPOZY//e
-	ri7t1LAyHgXU5IGsBTfPMUJeKT3/Nv0=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=pL/OIFxAfmJMENrJselHOaTQtQ71A4Uv2SXDoGfSIdk=;
+	b=MXoI/1STF8CyT5cSaLpGNULzb5Ru6An5NS4nW8MorCmRENWxOkceTsC2M3TnDxcvHO9Tq4
+	x4Jc7ytjZWP29Yqp9FbjxSDT/BCRq9+r/ADPShTn84/1Y4ucpJuafx5bopQjF2qsGr17a2
+	2t9LaDe5N0OgGAiPLljqWy/dlbcuaI0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ab23CYWO;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=f+GrKNZl;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B083A40512;
+	by tor.source.kernel.org (Postfix) with ESMTP id 947F560121;
+	Mon, 29 Jun 2026 14:55:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC58C1F000E9;
 	Mon, 29 Jun 2026 14:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4208E1F00A3D;
-	Mon, 29 Jun 2026 14:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782744943;
-	bh=ttGyzzeHcyljjJxDkR2hOA9v80OHBSDRc7TeCp+VQP8=;
-	h=From:To:Cc:Subject:Date;
-	b=Ab23CYWOV3R+jpaIPE9R0BH1pPzkKLGN9yekJMEuyHJSGLOiW95ZIKQhVlSXKcc69
-	 jJa0VyN9iR4gaTg+wwjnarmCYMOsJeLQl+kSw+AD2+qpJXKCLLUx8yZnaJGEX10knk
-	 1ET102mc69Sbjd8CcoicFTKmLNpVf8/SgvhlUUT20WrdfXo2BJd3c9XT/ZfIiiq5F1
-	 BPIkWBIcc773ohFNpPn8yhjl8mOtQI7eorbvIgIxIaxj3D4fT4x9EYsvH49pCx1N3P
-	 U55ZUewOXAfMBD/jRdoLuDAKH6mzoHygxc5Mx9/Itt9FVy98qTpKWsZoPtYu/khVmg
-	 bPdasO5kJ4vhA==
+	s=k20260515; t=1782744944;
+	bh=pL/OIFxAfmJMENrJselHOaTQtQ71A4Uv2SXDoGfSIdk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=f+GrKNZl7rNDdeHLjnA2IB+t3bNGbNvt5GRbLNylwd+JKc+cKoP7w8Fz4BYL4Rqqr
+	 gFT6c0KH0T1AalBrpEGas5knLBzNAM3qvYqjZgmVuUOlBw+q9989VvK6+yPzWb2UyW
+	 e0QOaZ+MVQJzwy1ggUIhkmRczkXuvnc7fh8IPD9if0B3NKooMt8jss/76jTUfviBmy
+	 /aoSOQH24JiPeacnNEtiIjHbY0GUe4qWT/w7Q318mehq/RvzxycjrT4l+0+hXqwr8i
+	 6Z611YYQ+KzizEl3blr1WDy8CDzWgtqALDZj2RvKi44PiqoDTMlN4NBVQwzv99uzb2
+	 pfz8FLfsvZcNg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@davidgow.net>,
-	David Hildenbrand <david@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
+Cc: Akinobu Mita <akinobu.mita@gmail.com>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 0/5] mm/damon: five misc fixups
-Date: Mon, 29 Jun 2026 07:55:31 -0700
-Message-ID: <20260629145538.134832-1-sj@kernel.org>
+	linux-mm@kvack.org,
+	SJ Park <sj@kkernel.org>
+Subject: [PATCH 1/5] mm/damon/core: use kvmalloc for target regions array
+Date: Mon, 29 Jun 2026 07:55:32 -0700
+Message-ID: <20260629145538.134832-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260629145538.134832-1-sj@kernel.org>
+References: <20260629145538.134832-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: djyob9h9iwq66ydxyok8rbehxuirz1dr
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0DCFB140005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 783224000F
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782744944-57260
-X-HE-Meta: U2FsdGVkX1+8TEOjUlvnfraPRbEwPxCC0eTrAQ47p8kK7aLOXr8FwefxJ314VNILnc71WYq/nYW5dsJwGuEilTNgcx+Y6YlJjLrbTLTLZs8jNy6egmta8IMkmfHeH8yjVY8zf4CIWLBjYr4MNBPZyihi5MKsLWy8+1TTnKzmXPcfxZmpX/0fQ6d9bfqaUxELL38e+AOS04zUdy0aCy0Wdd+xMNyg9pkzSp2/6LvrrXLf48MSS7xXG+BDRmc9D2QBFT8dX2Yqrrg+IkTf1Uav63IW4PFlDKzLtUMOwg+iCGcTaL8T0sFYzDb4eDJS8qbdcP2UJOtyT3MgYHf0S8qPMHEXFv72H3EE4CMAWtFJdy9qqc25pLJnnkvcgN9d05uQSRUPWYCmlind+f/ddMj89tE0ZFGXI+U0wcdCryImfxk3yvUSf/wOMN4bfgTxWZzzUVy3B5v5rk9icaMwyDPIFy/VLgmZ4XLXR7Yc+0RnUyqxAt0N+8zsSh4FvPbmxUs3NP1H4V4b+Z2Xu+4n7O90ttaPzDX3BFoOKEzFh9MA8qOz/xsjMqCjyETujKg0JqCiMXz76H1xp7eoxCJILFxoEwj63x4GA65Tlu0uoIjLN/L1lcdbT71h+O66Z3RlHJZK0FE8Md4ykRjD2haR3HeG4UTl5ZlqtPbYOfy3OsS8Vs/HsBNn0UoQM/OcxZ0a7YyYCAQaWZF8mn5m/elUnB5PjfHt8efqyRzME/NbqAJRg6QR9wIViqezopHfHF0HYTsGiOwglIVE0OYMvRITcd6Uepnqok2WyMPinWYH3TZ5QT2V5oPKbamKP7sW7fkKNb05vLXMjumIzNXdaZNYzz6vrGv/4zjxJ2HAZi/afSv4Vwds0C5fm0KRRR6Ifo5LzLSVAi7g5vJ7hf0bzEVjfzVR9KEztCMZ+YJNwPKd2SraJq2XC0jHTr7jx9/fFx8s8nz4YyN2yFZ+0VI6vZsrjbm
- F+KGQ4tC
- JHdTpKc7G9ZD0JfRRHWSqoDd9NVd2+AiqDfVgRabnyb9LANEhjNn88eTfX71P1S/6GFO3fov3WIohb0rh/5H1WjukAargBIlDA0x6oDPLUHI/2+2RLQ4Pk4rYToTzmwVKn5nQ7L/eW3ilP4lJeMEb1yTbSmY4din+oxCFuJNRkpE7BJe054a5Ti8kA1p9EP48ZT4kUTI2/BdsPdH4p7/2MJG6ZA==
+X-Stat-Signature: 955tsb6ad1yhhwbhw81coz137nf36eon
+X-HE-Tag: 1782744944-455100
+X-HE-Meta: U2FsdGVkX1985uWHIbPSFNueu56tCQT0KU2cdaqW6Bgv85+ykQLE83EGRBU7LU4BxFlcxCdUlXFMtw4MdyXsaPvGbp+9QspeyWCbshNvL16e2AcdfynI6eJu6EN1PJbqzKC1nrEFuwJFOSrBqohxTw3OPYY0E1Ibv8QOWVIEkQkbbC0oND90YHPOWU+Fd7GMPEyQXd82cizDtsvb/nsB/3PQl4qukVZZ5EroHOOeTePPiGibpvfx2P9XsVjKDnMRaM44p7XEwENtJmOpU1dhzSKlfds60Hi6b18HokCP5vRoGCreBI+Z1kR2HpA4NXTXEo4euBomYEaiSO8bhhUNirs5PNFTNGvHrVBTJuS9v2tYR5PSYybV4dfLyHGh35iPmjYcSufcPOofdufil+hmJBx3jesHkVn9g/LMr8X1l50w4MUFWqAA3KbuAvfjmPh2iSk2kukSEA6qtBdLPoSn06+Sj8QWTB8R9RAYfSNAn8IiItmKTXX+lkEbrki53TXEWpBIgQL8v8z/OOe9bAU9nKjQQKSKtaCbPvCaUNAFql17bWXgiW+vJ2mVWyhi5YewQ7XLHT2G5rQKzjMkM7UE+69B1gmj9QS4vPAWQ+RO4/+UJDIO/vMfKNyxa5jxUAioYwGSIWVipSvf25PCqOl0IQM7uXuZkoau5cJENHL4ygf2/As/ThoWLRCMm33PZdsNjGYpV++EvFcikMe/g/ZS7eUET8OFaP6YTOQKwq4pVRX4NVsIPinFGevoGoEvdzIrgieK3sEC68UyzvxlkcFjTZwFaRMeVpslavo4jSDZy24aqw41v5DeTQ0v75ldY3AWSYLWmIBj88S521r+fN+vwDr3pL+mzSNJDneCa3ff7B/xXVMG+TbWtsOvdc55h9ZKbsNd+newGRhLTq6LlFjGjJtsyk9axJXTi3+X9N8wxePQIQ6KLbBwAME/dq8QMRoxN7oVPPulA/q3dVs0tVx
+ VTeWZrcd
+ YHtSTpakVWrnXLMVEqshxa9YseOMKVTkco74axESHBYw2coJ4SIVbOzktQvuhJ/6fSi6FokH7MEUYJQv1C45lVkuBusgjW2VDfYZSOBoexF8aSDwC7pME616iZrFI9OyU8KLX1kiyXySmELG4aHiAsEIpppFU8bhN79Q5SXVO7hjQakYWr1Hy3kIf8rNGrCWDDsOHQFtj5ArB8yuVzuME53ThAUq0Ar70XtpKEpiwpMJz5tWv86/FZbRQw/uDLFRBHHde4Y4Ic3YxaRT2lxhMhgMeIckFnjGuCOl8RNjg7iA06K96ZKgygVPFfirdxfkHEAxhEkLEmv7A/+jOpyBuhDptdsT+OSPd9ALLwN5QLNZ8/bw+dVw9yux3OPLi0S9V8MzW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,41 +94,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Five patches for miscellaneous DAMON fixups.  Use better fit kernel
-functions, cleanup/fixup documents, and add unit tests.
+From: Akinobu Mita <akinobu.mita@gmail.com>
 
-Below is a note that is better to drop from the final commit message.
-The five patches were initially sent and revisioned by different
-individuals.  Each patch contains changelog on their commentary area.
-The patches are curated into this series by SJ, for the convenience in
-reposting.
+damon_commit_target_regions() temporarily allocates a single contiguous
+memory region using kmalloc to store copies of all damon_regions of the
+damon_target.
+However, if the damon_target has a large number of damon_regions, the
+total size may exceed KMALLOC_MAX_SIZE.
 
-Akinobu Mita (1):
-  mm/damon/core: use kvmalloc for target regions array
+This problem can be avoided by using kvmalloc instead of kmalloc.
 
-Asier Gutierrez (1):
-  samples/damon: Fix typos in Kconfig help text
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+Reviewed-by: SJ Park <sj@kkernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v1
+- v1: https://lore.kernel.org/20260603112306.58490-1-akinobu.mita@gmail.com
+- Collect R-b: from SJ.
+- Rebase to latest mm-new.
 
-Doehyun Baek (1):
-  Docs/{admin-guide,mm}/damon: fix DAMON documentation details
+ mm/damon/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Philippe Laferriere (1):
-  mm/damon/stat: use secs_to_jiffies() instead of msecs_to_jiffies()
-
-Sailesh Nandanavanam (1):
-  mm/damon/tests/core-kunit: add KUnit test for walk_control_obsolete
-    behavior
-
- Documentation/admin-guide/mm/damon/usage.rst |  8 +++---
- Documentation/mm/damon/design.rst            | 12 ++++-----
- mm/damon/core.c                              |  4 +--
- mm/damon/stat.c                              |  2 +-
- mm/damon/tests/core-kunit.h                  | 28 ++++++++++++++++++++
- samples/damon/Kconfig                        |  2 +-
- 6 files changed, 42 insertions(+), 14 deletions(-)
-
-
-base-commit: 58a53a487b7a86995fdfba07723fb8416fccf830
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 3dd2750c2ef20..ded76719e8a14 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1362,14 +1362,14 @@ static int damon_commit_target_regions(struct damon_target *dst,
+ 	if (!i)
+ 		return 0;
+ 
+-	ranges = kmalloc_objs(*ranges, i, GFP_KERNEL | __GFP_NOWARN);
++	ranges = kvmalloc_objs(*ranges, i, GFP_KERNEL | __GFP_NOWARN);
+ 	if (!ranges)
+ 		return -ENOMEM;
+ 	i = 0;
+ 	damon_for_each_region(src_region, src)
+ 		ranges[i++] = src_region->ar;
+ 	err = damon_set_regions(dst, ranges, i, src_min_region_sz);
+-	kfree(ranges);
++	kvfree(ranges);
+ 	return err;
+ }
+ 
 -- 
 2.47.3
 
