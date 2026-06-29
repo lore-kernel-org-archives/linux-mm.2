@@ -4,146 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7163BC43638
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:08:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8F6BC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 12:15:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 268AC6B00A4; Mon, 29 Jun 2026 08:08:23 -0400 (EDT)
+	id BEC4C6B0088; Mon, 29 Jun 2026 08:15:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 240736B00A5; Mon, 29 Jun 2026 08:08:23 -0400 (EDT)
+	id B771D6B0095; Mon, 29 Jun 2026 08:15:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E23E6B00A6; Mon, 29 Jun 2026 08:08:23 -0400 (EDT)
+	id A17A26B00A8; Mon, 29 Jun 2026 08:15:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C9E0E6B00A4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:08:22 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 40D641C3710
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:08:22 +0000 (UTC)
-X-FDA: 84932827644.25.500A37F
-Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 38C21A000E
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:08:20 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=LulCwlLr;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="f 9PGnMk";
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 7726D6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 08:15:27 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11FD51C3782
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:15:27 +0000 (UTC)
+X-FDA: 84932845494.15.AD18507
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 511371C0004
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 12:15:25 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K9dZyRX+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782734900;
-	b=3ttO8WMXxbES+PtuQFexcor/uBAE5HvEtFgN6TgvvN6Q8TIcY0zCpnTm8ECJgykFfwTJcu
-	jm7WBF7xUUMM7j7so84eFwFp7xd2JkfRCL/RRZNpXoL73tiA8o/pLj1eUFtypGRUckHsUI
-	H8ePz6Kqhd2SSIYN5gYz5DVZfvj58SM=
+	t=1782735325;
+	b=XbzF+Mg3kWLGwXTzNO+5k87dr1wH4XXmC5Vzhz9+CHkGrnPz7G0cNvRTzZMIGhJ1ltybqR
+	UHTdx5olHhgqeZApwxRpeBCRcHFNRYixEYzQ1CIVw3qXtuqgAGouL7RqxoVssOC+6yyMr4
+	Qcf3OARoP03PWlhtGoizpSrAjRsBftk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782734900;
+	s=arc-20220608; t=1782735325;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yCFrzMqg51uEweo7qE/Vf7NHVXEc3DaIoqP0PFpFxNI=;
-	b=vxxQSMth6wzAMD13wLRhKRkN1wp/tLZWs3dZTz10Pvdvh0yMTERDnKGovs4tk7xopo+yiG
-	2wrGwUIcGAWkBNuDQXhYRGvHxVvGZkpZ2GYzeYpIa7mZbKm3AXjYahZnycxCJSyRJH9ozv
-	q3xIrrXG33/oLpfHSa6oz6ZkzGaECJg=
+	bh=Ib3bsCrjJ/YTtTkut2lMHiWjoeu6mhtWtwT28YpERNk=;
+	b=Put85eKuXsVCGRFzHPjNPVkGbrtwH0cVTd3/liq8tGusr0X6eTpKkPZek+ggbk7qPtizRz
+	nnYwj+hNqiZmzeN68p7H/fG8iN0qoAVUQOKbvYfjGx562CgsZ5VGIQ76dW8isoa/Ud8Q5t
+	ZPY/DyKovhyKOW6De+nCPVtcOB5Fccc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm3 header.b=LulCwlLr;
-	dkim=pass header.d=messagingengine.com header.s=fm1 header.b="f 9PGnMk";
-	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.158 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id C59B114000AE;
-	Mon, 29 Jun 2026 08:08:19 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Mon, 29 Jun 2026 08:08:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1782734899; x=1782821299; bh=yCFrzMqg51uEweo7qE/Vf7NHVXEc3DaI
-	oqP0PFpFxNI=; b=LulCwlLrp0i5DwUfaVngU3Junj0hbmj/esA8gmgH0s+1f8/T
-	9lTXDfVdm7tivJ8imZI9kGvPYriTbiAuPjM7aQ1uhLvgKslKipwLZNlSGrFGslBP
-	MDVQ7vkGr0fuWuf0klis+EHSiNOXixlq4do8VwyXbDlxyD01pic4t+QIUreow0Km
-	TZ6TZPMjFMosDd/l+980+RBIzdY0OS/9cogXQycYgLCEJrgK7ybvZpDIpNWMNBJt
-	40c3IcgnPLa8q5GL+mZzUiErIw9NOCxiN0JH2GBv2pHGGkZtSgBWxOWpaWXYkrXn
-	T05/z8bE93geG9mKN1Y7Fa0QT4hN3anGOsSJKw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1782734899; x=
-	1782821299; bh=yCFrzMqg51uEweo7qE/Vf7NHVXEc3DaIoqP0PFpFxNI=; b=f
-	9PGnMknecthM/xH6R6zSaUxtJIU+j5fThXYpF5MpL31xSVQXjf4ErE4+q9+O4Ibp
-	KvmzMHtQcUEmnIgKKV8UFPpsoNESYAwtjiu9MsLubXJGI00SWaT3D8hMVCMyU3b8
-	gPLqqmVDilx4g/ocAiMdOYPLEuhpaGHAryqiYDaN/mAo6mWzkjhkAkOIepSpUie1
-	dNbFJgFPkkuB6z7TVvXS/EsEAsY9UZzihmGABEjJ7aJ0LFe0MqsSh/4c8Ve/LauE
-	KHBO8j2S8aUdGFCxNVWSJ6Kgp+gCUYXOBYHxBdR3+StILwRSNSTkw9onTEEbp4T6
-	mMi0IDerW51yROD9rNEwA==
-X-ME-Sender: <xms:M2BCanufdcIm6SoJMGwENmf_6sN6Rs1h2HYi9B6XOpP7bltWjnLfSA>
-    <xme:M2BCasaw6_alwf7HstkH68M3AAIw0wZqhFNLN9FKfV5UX2rlvyNMAnwf-aTdX3A0x
-    pxS7twBbHfSuJwznY7Z7Lu34ZdMH4wM9FZrcysdRYKS28XzeHNqtw4>
-X-ME-Received: <xmr:M2BCajRocdZYZN8KdmgzYRVbpiPydoK1NiS-6FDoCM3WVkC3X8aU4W5DcpmLjw>
-X-ME-Proxy-Cause: dmFkZTEbeJVw6LHQweWhVxV6YsjHAMw/x6M6i2UioCpAmsrJGMnjm7JCfk5Nb4aoCqvKnN
-    91tRPzQkxIdfhn03N0ZpwuVqidXzNPJfeGWLvbpIh0Vb/OxkWky2JSYOHrAYJQLLSAB7AL
-    toy2cpnq5TVKX0zNbh0LHZsT2sTwF0477WE69g5lswYPot14j81Ea+hOFPxysMYC/MWVnR
-    3Dzoy9inuC75prIkon2ncihK+vG72WjpEkuux2GDIB97l3OQISzMRmmuo/8ZARgSjSwpQ+
-    UM6vUvaQCbvfx0vplMOYjWf6ufp0BqVYgaIkGB0rpNNA+DKzK1TUU+7BMGyDUwBoGP6vPR
-    n1rc6DtkgBAvysbSQ3E2eTULm3Fc1KACLScvgdGMFwMuBeAK4pVUlEgldp7c8FURq4EA8c
-    SK7chA+9eNFKioMNs1mFZAU+LE1Mq18j/tBgFyJA3AmEPItCj14yzvuD1FbShZUWh9y1iB
-    OsUGnSTGZjKOKDKtntwuZ7TJLrmKXgCcX2Cw1O4p+sjIknja/yaRjKCB7ZQUOO7FxzU1ca
-    jWFcv6SX+GMXKP9d6B9JxyFiy+9jlP+3t8TS8AJzW+/E9e6QSgZib+68fuez2xXuLdlv7L
-    8Fsce8Ucr63jn6XQVKa+KDc/ojbOkxsSaF9cfIqbAbd72gDrn3kJnAHxYFeg
-X-ME-Proxy: <xmx:M2BCavwmtMv-NKDijDInXlo4FzkJhI0mMDzlSrhZBzSgxYcZVUF7dA>
-    <xmx:M2BCavdT091fJV0iPDO7YCE6qvlTjKW32XDO8IcPpVKJngVjG2TeJQ>
-    <xmx:M2BCagq8Z-kfwDS2zleW3UaK8xTCJTeav7yifIkiorqekWJSrBTrPw>
-    <xmx:M2BCanMyRemIQUWhprOItnyerfOlbRbIUt2DqNmh-irh5B0baxrD-A>
-    <xmx:M2BCaurZiiEAwZVNyc7bWxTWuei9Ry_iZY79DHMFo3DjZCr6LTIlCylF>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 29 Jun 2026 08:08:19 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	sj@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	kas@kernel.org
-Subject: [PATCH v7 15/15] Documentation/userfaultfd: document RWP working set tracking
-Date: Mon, 29 Jun 2026 13:07:46 +0100
-Message-ID: <20260629120749.566063-16-kirill@shutemov.name>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260629120749.566063-1-kirill@shutemov.name>
-References: <20260629120749.566063-1-kirill@shutemov.name>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=K9dZyRX+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9511D600AA;
+	Mon, 29 Jun 2026 12:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAA71F000E9;
+	Mon, 29 Jun 2026 12:15:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782735324;
+	bh=Ib3bsCrjJ/YTtTkut2lMHiWjoeu6mhtWtwT28YpERNk=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=K9dZyRX+d4FAViVDAE3qeR8uiytew7r/wwvdnbw2pLzk34UOwGxvC34eg3qFspG2O
+	 NwZPGN/SV7RcTKIvcggcCjVtiSROmoQnPu4ZbOkBFTh9pqawRYjuiwvnDbkm8pMtU5
+	 TrURwID5TBZSmBvqrggDjQblNwwO1m3IGfP7YPmusz+ySpaF0jVqic11yFaciPmVOw
+	 rXo8mlio2lp+8OYh/oH+YInPXPUG3xDjb5cIfbsRaX4/bea5SUhGcIPK3DBfT2qqH0
+	 XdDJkf67UjDlghNJzE9qy33nswqMlMN5NCiksRqFsZqqYsizdTo93fMIp+m8v0RGZF
+	 5RS7KB77c+Zmg==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] mm: do file ownership checks with the proper mount
+ idmap
+From: Christian Brauner <brauner@kernel.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Pedro Falcato <pfalcato@suse.de>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, 
+ David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
+References: <20260625153853.913949-1-pfalcato@suse.de>
+ <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
+Date: Mon, 29 Jun 2026 14:15:19 +0200
+Message-Id: <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2047; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=T5WovzhCFKz4G/fb6TfdpHfesyp09NS4EQPhTFfMkUc=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5Jd7Y+irtou7+09lprx08z0UfPLfnp+Z0UXejY7x5B
+ j3MVxJ6O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbym4mRoUOgUez4ZoaN60N4
+ 24zvfXXlXOx5q3jt+X9Bzgar7yUn+TP8M4qJv2hy0aUs7NLkaVf8nEPYZ8g63L555Feby6kfSfs
+ 8WAE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 511371C0004
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 38C21A000E
-X-Stat-Signature: q9ora3ikxh3ircxnzzdjnynimsaqt4ix
-X-HE-Tag: 1782734900-655541
-X-HE-Meta: U2FsdGVkX1/oHzp8ZRe/2ZB0qdYjD2+a9pdZdZYTSMbdeLMx+yWPhIpk1lTKjrKZ8FHerj0tcoAFggPHJGdMJiIWupElc0o2G6ikkizC2jciguK8R+B3XXJ+PRreW1hEhROJONSByeWwbeqVWBlpSftBdPQL0uNlHDBEN1W/Yze3Zk65HWDf+VltGHSw9Rxm6V5HU7EfS89Q/h5pqB3U0BvrGaMKWPRzbGOox93sBY0kofpq9mBhbHYPANsMqznkjilVDHu4U3Z5Oqz1pRjbetFISOX6gzOM6M2bG9cgUrbniW233OIMllWX1i4X4iI9ZjVPBJDqVk2KcQbRi8v9VpMp3lC58KF/G9g3a8uWlDdeH02nXA8dWPpdY4GTAB/iB4T/yRl/8yABYKOhZbr0hW6ErAv6ZZSA1nf5XL8UKLpG+pg3VhDnBPuDWIxn6T9x2x/jQfYXflE9o35z+CFSnD6hCq6bvjQ+R6vyGWQNLmwldOhRIHyyzZ7dlgEf5pj0xk8nMjgXMxzHFyJ5mxIqD704BI8MovQUcLh1R6Qtpio7/N8vJNN2K6Pl3m4SAZOTXMhLKn5f2l/MzvJSQH/nZhKlFPzRyb+D+zLYTPtee7fNJK4/IEDyO+SglJQZfWFtxFdrpeIHe9aKrYNKEcxvZL/fRQ4/+B/7b/QbFFTD9zwrtS7IPqrvC0lnisEJttjkJixE5lDV+h97Mvwspb4nC+cTueWng7vkI5lmOcLXPTAfsz/cywm02OmSNNrTzW+ntM8s5TrMMOgxBguQdHR2W4pHHuCoTa213YpVzEuSpKEJViyaJvuWTqfrdzo57FKwe07n42/UsSsrpSZ0ywsitSxFYTw5T7gz/lCswoiLhxXbgUFfo1086i9psAdQ2GuHcXpujnyqQWukpTiwKQ3n4q4TXCoEXnb+PgQHC2/vvRwelCEvce854kIa5ANXFhIQATNAUqjRHyCvLzhGUvH
- bUsWWlnZ
- 6wATWWew+NgBJ52Ev2zvPV/K65F866jt99eXm55MnlqsJc9s7okK2xE8I9d4oJXqISD1kygMs3Ch+QaaLRXUo3qMAW2Ppoz3u3/cFXZ7VX1DU5tfvxGNxzTERC0LqMTIH2r+3WZqZhk7TKJIKtYL2abAu3/Z3f379iJC0i+sFqOrb1ikNeh9Q12VqQs+g23zRTQ2+afiGzWnPjBIu+jAmtHglYo6XifcyB/qZ1+nsUG8+kesk1TqoxI+agQ8Re3DS9bHgytBFlmafLDX0en2HCK2Bv4T2ZMKjZzHaGCxOii7zFbkCmHAYT1Mbx52269SSqVWCkbVJtREMvFG7+ZBrOx0B+pLrH/EbJ9curQnnOd0JwIK9xXdPYX/jZM+a+1HIG7CNph5IT7njtEy/+eli9i0ApnQken+GdAKl+q7mTs+qqQlBZhbnlub9zxaCri8QzQcUznK9L5/R8P6o21XXMvfgD39wPA7r0ulT5sUSyWzRbNA=
+X-Stat-Signature: 1oe1qj5nsamwbq88rofxu8unxawor51z
+X-HE-Tag: 1782735325-405118
+X-HE-Meta: U2FsdGVkX1+KwWhzKw+oxoeBsKX2sSCzHQgZ/ja06JeVRJzbU/dnMjAyMiEq9FB8Id/G7a7TZb/eS98S946kHCgH+O1dV6I/bnUKZYwzlBsY9C07hywmIPKlcmK4MRG24Vdj06vAVaC1AelzOjsbhFRjMbu5tQofMJWGacmZ2P3OZvVf7qyGh6lvzGctNpfRfRi9ezUDhiVqq0GmbNDcjvwVtBMjpg7E4acv+SEhJpnfizVgYrfJ8kKLCqP9p/QonuDrpb/jauyxGWmassI0xbNgNIitcQk9yFSc+8G3X0DK2XAtIPDbDZwTIq6zqL+0BXKMXwE/KmGtQgebAjpsnyOq22AKBxdutzqNSzLrcWzjDJ2iqcNkrGatNSuml+UFMk8vbCiMEQWYttud0Flo6ZmBoaZnJPex43ZOur6U5JcBTxzpgzDB4DXcjKNJMTE73nCTnNAxavFq6fVzdFnY5vRx1GfiFnMRM8umZ8bdfVF9Xj3PdCrz5XPGUhdKky92/ak7e6g3VN7vadvZmxzyo7qMj3fuSh9oeSVrfoWwG1Ong1soEvKrCx7fVEQr3JoUCASlE6LUBjcp/5GVVwlggz3aPytmsxAkv92PoOh3MJP2UoxSIqBvzQA0h6YWNxWra7hPO9Xq9Bh7Mb8k05iMJHWWrA1ARg7H5seqpWsj8nw4gAUqr/DdtRqACMsZvD5cXzLAICJhNYQiHq6/GORgVUsNxqeHKYcDeL8gmT+0yxsSBCUHdl+9Y/60ZZfOeqOEfJhgLMeC3+jYXJn6AR9QJhERRwKiQVnIaP5SPGeWLVhy+cpEFgZdpYsnVr/z720eONB3e8/0gAkViDVDuVFhGbkyBD6PBPy6euNlGpCTglGOiSpJPJhQTFym1CsCNhDTcx4Oq1QgdBJIoqUJzHY0rZgV/GEYlYSDd68qnBj2nIXjJiR1kMdUELnrTBM1mk6Yo5zmdFhlH8q1BwbROM5
+ YKudItm5
+ Yr1zUZpZKlxU0EqF9c+Lk9E5aa0ETHU2UUaF70ydnzrkSryWUodE2gRG8WfRIB8A5uMUoBX8G2/ImJBddhss362brSu7Ib7SGvrKPbVrW1ikSupaEtYYkU08Q5hMnkAb3IgDCbYXTk/QlXxFTgywj5N7Z3LO0NqioIh88hSnsXz8ARJtpu/GWh7qfViLlqHszXRq85w9e4E1Kvef0HAOEvESiRlFXS6dMw+1VYPA1b2OBDbAhwiddn65SNUKhEeai8K+iof0CZjVugVCE7i53l1RmCZVsRm0pqTTc
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,306 +109,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 2026-06-26 16:19:18+02:00, Jan Kara wrote:
+> On Thu 25-06-26 16:38:53, Pedro Falcato wrote:
+> 
+> > Ever since idmapped mounts were introduced, inode ownership checks
+> > (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
+> > done against the nop_mnt_idmap, which completely ignores the file's mount's
+> > idmap. This results in odd edgecases like:
+> > 
+> > 1) mount/bind-mount with an idmap userA:userB:1
+> > 2) userB runs an owner_or_capable() check on file that is owned by userA
+> > on-disk/in-memory, but owned by userB after idmap translation
+> > 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
+> > 
+> > In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
+> > file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
+> > idmap internally, but it does not need to be the case on e.g a 0444 file
+> > where even the owner itself doesn't have permissions to write to it.
+> > 
+> > Since this is clearly not trivial to get right, introduce a
+> > file_owner_or_capable() that can carry the correct semantics, and switch
+> > the various users in mm to it.
+> > 
+> > The issue was found by manual code inspection & an off-list discussion with
+> > Jan Kara.
+> > 
+> > Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+> 
+> This looks good to me. I'm a bit curious why Christian initially (in 2021)
+> used init_user_ns here instead of the file namespace... Anyway feel free to
+> add:
 
-Add an admin-guide section covering UFFDIO_REGISTER_MODE_RWP:
+Back when this was added only the do_mincore() codepath existed and that
+was intentionally left unconverted because it exposes the cache
+residency status. So it was effectively a massive side-channel.
 
-  - sync and async fault models;
-  - UFFDIO_RWPROTECT semantics;
-  - UFFD_FEATURE_RWP_ASYNC;
-  - UFFDIO_SET_MODE runtime mode flips.
+Both fd3b1bc3c86e ("mm/madvise: fix madvise_pageout for private file mappings")
+and specifically cachestat() came way after all that.
 
-It also covers typical VMM working-set-tracking workflow from detection
-loop through sync-mode eviction and back to async.
+I'm otherwise fine with the change.
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Assisted-by: Claude:claude-opus-4-6
----
- Documentation/admin-guide/mm/userfaultfd.rst | 259 ++++++++++++++++++-
- 1 file changed, 253 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation/admin-guide/mm/userfaultfd.rst
-index 1e533639fd50..69836e39aa0b 100644
---- a/Documentation/admin-guide/mm/userfaultfd.rst
-+++ b/Documentation/admin-guide/mm/userfaultfd.rst
-@@ -275,16 +275,16 @@ tracking and it can be different in a few ways:
-   - Dirty information will not get lost if the pte was zapped due to
-     various reasons (e.g. during split of a shmem transparent huge page).
- 
--  - Due to a reverted meaning of soft-dirty (page clean when uffd-wp bit
--    set; dirty when uffd-wp bit cleared), it has different semantics on
--    some of the memory operations.  For example: ``MADV_DONTNEED`` on
-+  - Due to a reverted meaning of soft-dirty (page clean when the uffd bit
-+    is set; dirty when the uffd bit is cleared), it has different semantics
-+    on some of the memory operations.  For example: ``MADV_DONTNEED`` on
-     anonymous (or ``MADV_REMOVE`` on a file mapping) will be treated as
--    dirtying of memory by dropping uffd-wp bit during the procedure.
-+    dirtying of memory by dropping the uffd bit during the procedure.
- 
- The user app can collect the "written/dirty" status by looking up the
--uffd-wp bit for the pages being interested in /proc/pagemap.
-+uffd bit for the pages being interested in /proc/pagemap.
- 
--The page will not be under track of uffd-wp async mode until the page is
-+The page will not be under track of userfaultfd-wp async mode until the page is
- explicitly write-protected by ``ioctl(UFFDIO_WRITEPROTECT)`` with the mode
- flag ``UFFDIO_WRITEPROTECT_MODE_WP`` set.  Trying to resolve a page fault
- that was tracked by async mode userfaultfd-wp is invalid.
-@@ -307,6 +307,253 @@ transparent to the guest, we want that same address range to act as if it was
- still poisoned, even though it's on a new physical host which ostensibly
- doesn't have a memory error in the exact same spot.
- 
-+Read-Write Protection
-+---------------------
-+
-+``UFFDIO_REGISTER_MODE_RWP`` enables read-write protection tracking on a
-+memory range. It is similar to (but faster than) ``mprotect(PROT_NONE)``
-+combined with a signal handler; unlike ``mprotect(PROT_NONE)``, RWP only
-+traps accesses to *present* PTEs, so accesses to unpopulated addresses in a
-+protected range fall through to the normal missing-page path. It uses the
-+PROT_NONE hinting mechanism (same as NUMA balancing) to make pages
-+inaccessible while keeping them resident in memory. Works on anonymous,
-+shmem, and hugetlbfs memory.
-+
-+RWP is designed for VM memory managers that need to track the working set
-+of guest memory for cold page eviction to tiered or remote storage.
-+
-+**Setup:**
-+
-+1. Open a userfaultfd and enable ``UFFD_FEATURE_RWP`` via ``UFFDIO_API``.
-+   Optionally request ``UFFD_FEATURE_RWP_ASYNC`` as well — it requires
-+   ``UFFD_FEATURE_RWP`` to be set in the same ``UFFDIO_API`` call.
-+
-+2. Register the guest memory range with ``UFFDIO_REGISTER_MODE_RWP``
-+   (and ``UFFDIO_REGISTER_MODE_MISSING`` if evicted pages will need to be
-+   fetched back from storage).
-+
-+**Feature availability:**
-+
-+RWP is built on top of two kernel primitives: a spare PTE bit owned by
-+userfaultfd (``CONFIG_HAVE_ARCH_USERFAULTFD_WP``) and architecture support
-+for present-but-inaccessible PTEs (``CONFIG_ARCH_HAS_PTE_PROTNONE``). When both
-+are available on a 64-bit kernel, the build selects
-+``CONFIG_USERFAULTFD_RWP=y`` and the ``VM_UFFD_RWP`` VMA flag becomes
-+available.
-+
-+``UFFD_FEATURE_RWP`` and ``UFFD_FEATURE_RWP_ASYNC`` are unavailable when
-+the running kernel or architecture does not support them — for example
-+32-bit kernels (where ``VM_UFFD_RWP`` is unavailable), kernels built
-+without ``CONFIG_USERFAULTFD_RWP``, and architectures whose ptes cannot
-+carry the uffd bit at runtime (e.g. riscv without the ``SVRSW60T59B``
-+extension). Requesting an unsupported feature in
-+``uffdio_api.features`` makes ``UFFDIO_API`` fail with ``EINVAL`` and
-+leaves the userfaultfd context uninitialized; the bitmask returned in
-+``uffdio_api.features`` then advertises the features the kernel does
-+support. The recommended probe sequence is therefore to open a
-+throwaway userfaultfd, call ``UFFDIO_API`` once with ``features = 0``,
-+inspect the returned bitmask, close that fd, then open the real one
-+and call ``UFFDIO_API`` again with only the supported features set.
-+
-+**Protecting and Unprotecting:**
-+
-+Use ``UFFDIO_RWPROTECT`` to protect or unprotect a range, mirroring the
-+``UFFDIO_WRITEPROTECT`` interface::
-+
-+    struct uffdio_rwprotect rwp = {
-+        .range = { .start = addr, .len = len },
-+        .mode = UFFDIO_RWPROTECT_MODE_RWP,  /* protect */
-+    };
-+    ioctl(uffd, UFFDIO_RWPROTECT, &rwp);
-+
-+Setting ``UFFDIO_RWPROTECT_MODE_RWP`` sets PROT_NONE on present PTEs in the
-+range. Pages stay resident and their physical frames are preserved — only
-+access permissions are removed.
-+
-+Clearing ``UFFDIO_RWPROTECT_MODE_RWP`` restores normal VMA permissions and
-+wakes any faulting threads (unless ``UFFDIO_RWPROTECT_MODE_DONTWAKE`` is set).
-+
-+**Scope of protection:**
-+
-+RWP protection is a property of *present* PTEs. ``UFFDIO_RWPROTECT`` only
-+affects entries that are already populated. Unpopulated addresses within
-+the range remain unpopulated; when first accessed they fault through the
-+normal missing path (``do_anonymous_page()``, ``do_swap_page()``,
-+``finish_fault()``) and the resulting PTE is not RWP-protected. To observe
-+the population itself, co-register the range with
-+``UFFDIO_REGISTER_MODE_MISSING``.
-+
-+Protection is preserved across page reclaim: a page swapped out while
-+RWP-protected carries the marker on its swap entry, and swap-in restores
-+the PROT_NONE state so the first access after swap-in still faults. The
-+same applies to pages temporarily replaced by migration entries.
-+
-+Operations that drop the PTE entirely — ``MADV_DONTNEED`` on anonymous
-+memory, hole-punch on shmem, truncation of a file mapping — also drop the
-+RWP marker: the next access re-populates the range without protection.
-+Unlike WP (which persists via ``PTE_MARKER_UFFD_WP``), there is no
-+persistent RWP marker today. The user needs to re-arm the range with
-+``UFFDIO_RWPROTECT`` after any operation that explicitly frees PTEs.
-+
-+**Fault Handling:**
-+
-+When a protected page is accessed:
-+
-+- **Sync mode** (default): The faulting thread blocks and a
-+  ``UFFD_PAGEFAULT_FLAG_RWP`` message is delivered to the userfaultfd
-+  handler. The handler resolves the fault with ``UFFDIO_RWPROTECT``
-+  (clearing ``MODE_RWP``), which restores the PTE permissions and wakes
-+  the faulting thread.
-+
-+- **Async mode** (``UFFD_FEATURE_RWP_ASYNC``): The kernel automatically
-+  restores PTE permissions and the thread continues without blocking. No
-+  message is delivered to the handler.
-+
-+**Runtime Mode Switching:**
-+
-+``UFFDIO_SET_MODE`` toggles ``UFFD_FEATURE_RWP_ASYNC`` at runtime, allowing
-+the VMM to switch between lightweight async detection and safe sync
-+eviction without re-registering. The toggle takes ``mmap_write_lock()``
-+and calls ``vma_start_write()`` on each UFFD-armed VMA, draining
-+in-flight per-VMA-locked faults before the new mode takes effect.
-+
-+**Working-set detection with PAGEMAP_SCAN:**
-+
-+RWP-protected PTEs carry the uffd PTE bit; an access (and, in async mode, its
-+auto-resolution) clears it. ``PAGEMAP_SCAN`` reports ``PAGE_IS_ACCESSED`` once
-+the bit is clear on a ``VM_UFFD_RWP`` VMA, so a *non-inverted* scan reports the
-+pages that were touched during the interval -- the hot set::
-+
-+    struct pm_scan_arg arg = {
-+        .size = sizeof(arg),
-+        .start = guest_mem_start,
-+        .end = guest_mem_end,
-+        .vec = (uint64_t)regions,
-+        .vec_len = regions_len,
-+        .category_mask = PAGE_IS_ACCESSED,
-+        .return_mask = PAGE_IS_ACCESSED,
-+    };
-+    long n = ioctl(pagemap_fd, PAGEMAP_SCAN, &arg);
-+
-+The returned ``page_region`` array lists the hot ranges. ``PAGE_IS_ACCESSED``
-+is set on an accessed page whether it is still present or has since been
-+swapped out, so the hot scan needs no ``PAGE_IS_PRESENT`` filter -- unpopulated
-+holes carry neither bit and are excluded on their own.
-+
-+Track the hot set and reclaim everything else from the backing file (see the
-+workflow below). Do **not** invert the scan to enumerate "cold" pages
-+directly: an inverted scan reports only the ``VM_UFFD_RWP`` PTEs that are still
-+protected, i.e. the resident portion of *this* VMA. For a file mapping the
-+working set spans the whole file -- pages that live in the page cache but are
-+not mapped into this VMA (a pre-populated tmpfs file, or memory populated
-+through another mapping) are ``pte_none`` here, never appear in the scan, and
-+would never be considered for eviction even though they occupy memory. Driving
-+eviction from "file offsets minus the hot set" avoids that blind spot; a cold
-+PTE scan cannot. To additionally record the *first* access to a cached but
-+unmapped page (e.g. pre-populated content) as hot, co-register the range with
-+``UFFDIO_REGISTER_MODE_MINOR``: such accesses then fault as minor faults
-+instead of mapping the page silently.
-+
-+**Cleanup:**
-+
-+When the userfaultfd is closed or the range is unregistered, all PROT_NONE
-+PTEs are automatically restored to their normal VMA permissions. This
-+prevents pages from becoming permanently inaccessible.
-+
-+**VMM Working Set Tracking Workflow:**
-+
-+A typical VMM lifecycle for cold page eviction to tiered storage. Two
-+mappings of the same shmem (or hugetlbfs) file are used: ``guest_mem`` is
-+the RWP-registered mapping that vCPUs access through, and ``io_mem`` is a
-+private mapping for VMM-side I/O. Reading ``io_mem`` does not go through
-+the RWP-protected PTEs of ``guest_mem``, so the VMM's own ``pwrite()``
-+never traps on its own ::
-+
-+    /* One-time setup */
-+    fd = memfd_create("guest", MFD_CLOEXEC);
-+    ftruncate(fd, guest_size);
-+    guest_mem = mmap(NULL, guest_size, PROT_READ | PROT_WRITE,
-+                     MAP_SHARED, fd, 0);  /* vCPU view, RWP-registered */
-+    io_mem    = mmap(NULL, guest_size, PROT_READ | PROT_WRITE,
-+                     MAP_SHARED, fd, 0);  /* VMM I/O view, unprotected */
-+
-+    uffd = userfaultfd(O_CLOEXEC | O_NONBLOCK);
-+    struct uffdio_api api = {
-+        .api = UFFD_API,
-+        .features = UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-+    };
-+    ioctl(uffd, UFFDIO_API, &api);
-+    if (!(api.features & UFFD_FEATURE_RWP))
-+        /* RWP unavailable on this kernel/arch -- fall back. */
-+    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
-+        .range = { guest_mem, guest_size },
-+        .mode = UFFDIO_REGISTER_MODE_RWP |
-+                UFFDIO_REGISTER_MODE_MISSING,
-+    });
-+
-+    /* Tracking loop */
-+    while (vm_running) {
-+        /* 1. Detection phase (async -- no vCPU stalls) */
-+        ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
-+            .range = full_range,
-+            .mode = UFFDIO_RWPROTECT_MODE_RWP });
-+        sleep(tracking_interval);
-+
-+        /*
-+         * 2. Switch to sync BEFORE scanning. In async mode a vCPU
-+         * access races eviction: it would auto-resolve and mark the
-+         * page hot just as the VMM writes it out and punches it,
-+         * losing the update. Sync mode makes such accesses block and
-+         * be delivered, freezing the hot snapshot for the rest of the
-+         * iteration.
-+         */
-+        ioctl(uffd, UFFDIO_SET_MODE,
-+              &(struct uffdio_set_mode){
-+                  .disable = UFFD_FEATURE_RWP_ASYNC });
-+
-+        /* 3. Read the hot set: pages touched this interval. */
-+        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
-+            .category_mask = PAGE_IS_ACCESSED,
-+            .return_mask = PAGE_IS_ACCESSED,
-+            ...
-+        });
-+
-+        /*
-+         * 4. Reclaim the file offsets that are NOT in the hot set.
-+         * Driving this from the file's offset space (rather than from a
-+         * cold PTE scan) also reclaims pages that are cached but not
-+         * mapped into guest_mem, e.g. pre-populated content.
-+         */
-+        for each non-hot offset range:
-+            /* Read from io_mem -- bypasses RWP, no fault. */
-+            pwrite(storage_fd, (char *)io_mem + off, len, off);
-+            /* Drop the page from the shared file. */
-+            fallocate(fd, FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE,
-+                      off, len);
-+            /*
-+             * Wake any vCPU blocked on the RWP fault for this range:
-+             * fallocate() does not iterate ctx->fault_pending_wqh.
-+             */
-+            ioctl(uffd, UFFDIO_WAKE, &(struct uffdio_range){
-+                .start = (uintptr_t)guest_mem + off, .len = len });
-+
-+        /* 5. Resume async tracking */
-+        ioctl(uffd, UFFDIO_SET_MODE,
-+              &(struct uffdio_set_mode){
-+                  .enable = UFFD_FEATURE_RWP_ASYNC });
-+    }
-+
-+During step 4, a vCPU that accesses a ``guest_mem`` offset being evicted
-+blocks with a ``UFFD_PAGEFAULT_FLAG_RWP`` fault while the eviction is in
-+progress. After ``fallocate()`` punches the page out and ``UFFDIO_WAKE``
-+fires, the vCPU retries the access, faults as ``MISSING``, and the
-+handler resolves it with ``UFFDIO_COPY`` from storage.
-+
-+This workflow targets shmem and hugetlbfs (both support a private
-+``io_mem`` mapping over the same fd). Anonymous-memory backings need a
-+different inner-loop strategy because the VMM has no way to read the
-+page without going through the RWP-protected mapping.
-+
- QEMU/KVM
- ========
- 
--- 
-2.54.0
+Reviewed-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
 
