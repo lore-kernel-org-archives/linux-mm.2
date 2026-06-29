@@ -4,88 +4,221 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 997ECC43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8361CC43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 09:41:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C50F6B0088; Mon, 29 Jun 2026 05:38:43 -0400 (EDT)
+	id 691386B008A; Mon, 29 Jun 2026 05:41:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74E086B008A; Mon, 29 Jun 2026 05:38:43 -0400 (EDT)
+	id 61A2E6B0092; Mon, 29 Jun 2026 05:41:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5EF3A6B0092; Mon, 29 Jun 2026 05:38:43 -0400 (EDT)
+	id 494B66B0093; Mon, 29 Jun 2026 05:41:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 244546B0088
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:38:43 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99C4CA0639
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:38:42 +0000 (UTC)
-X-FDA: 84932450484.13.6406CB3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C812E4000A
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:38:40 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NA++tXDI;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782725921;
-	b=wpX4xb600LRdVj5GuSt19vCcvqIId1mxCdetlN0AoNvvN3UkIPEQu+JaQCNqL8g2TpwM5e
-	TZTtoDxQ4Cg/3soINBa1TknXP4YNC2X1FIS9kXAmBn9XIwmt7yHQ6/om6MkA5IC/QzdEm9
-	JX26noCEZ3RzYKiCd9v/lEkiJ18lk+U=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782725921;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 118096B008A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 05:41:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 898C3140619
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:41:12 +0000 (UTC)
+X-FDA: 84932456784.06.B615A2E
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 520741C000A
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:41:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MNdv7NJw;
+	spf=pass (imf18.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=fail;
+	t=1782726069;
+	b=iJNcTTzB8QtqJTZ4h5Uf5iM3tbgrX3/W1GJTW0uj0ryTgfP0We6fABx29x/+g+Ct/UWeus
+	MdnLFIsXwgPyWngtyxE9jukBBWp1kUd5DjQ7dpK8feaqc2fOR1Pm04Z5svmylsJcBg39qM
+	aPsiIdzmunht6ETy5zTDorB4Jr5SR8Q=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782726069;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=61fjLprZueWIsXhcMAbSXBXy37UAOhISqAn4+iQJhLU=;
-	b=JPkW4qd3lhGaWgmSp3J6OCw0lVYpSxHPUISdAYjUagNATXswHM2LjHvqZbam+SkHj7+XL9
-	PtatNiDWOMrOlIuJ3H3RPNICtaKHXlRNi5gq9WUkjMe2ftXt41asZv8uarvFkFs3NbfvwW
-	fiPrQcq8zZtB61R986ge/Wuer3OZax0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NA++tXDI;
-	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 24DE14046C;
-	Mon, 29 Jun 2026 09:38:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E2D1F00ACF;
-	Mon, 29 Jun 2026 09:38:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782725920;
-	bh=61fjLprZueWIsXhcMAbSXBXy37UAOhISqAn4+iQJhLU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NA++tXDIEbgm2bM1Frp8w4loIuYv2thAwGNRRDLFCUK3qB72uBe2+12JPi87YO1sk
-	 kPec+ceNbVIC1MwxnOUKVcz6FeBMjyYKg+hvv1V5MRTKhdaARyfRm1iEtyrdWb3b3Q
-	 83phxwi2PruZR8yjRRP1Su3P8VeerXcXBm5lvL++JTmnxdI6eus8QEv86XoLYWItE9
-	 PjloKuMxBmi+uM0vSktSYakCuVGCiLoA+UNo9GPHfc0VOJIxyqa/DOHsWQxaXp0tmo
-	 PiI6ULrrimTYVxY8FtbDVU8aa7iT+YUI6G+JH+vVQR93KYE21u2gRlrs7XbavTCYH2
-	 jvjXU0jVnvHuQ==
-Date: Mon, 29 Jun 2026 10:38:31 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, David Hildenbrand <david@kernel.org>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, damon@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH] MAINTAINERS: s/SeongJae/SJ/
-Message-ID: <akI8_W0mnQHhXS20@lucifer>
-References: <20260627195630.24519-1-sj@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=Vch3AhBzIbTU8RgBhzZ1dGBJfVm0NwQ3Na/dRm8OArY=;
+	b=xCBJdWTKLPUsK6UyeOYRva2Y6o0Eqhsfn41U6+YHXlyu/JZPLOg35X0XK3WcbhGBEpOQzh
+	cTLYBfsIR4Lx3EL4u5roAVb63VE5G5xkVqhlQAWq/6HW68fZ7X4uH9E3x/cp2A+x3WwNsQ
+	rHnPjcioJ8D07ZrJ/74XeDAM2kTrdDE=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=MNdv7NJw;
+	spf=pass (imf18.hostedemail.com: domain of yan.y.zhao@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=yan.y.zhao@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782726068; x=1814262068;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=mZiP7RACyxqKPo/363oWCucvy3Jirc5hGCIBfLRJl0g=;
+  b=MNdv7NJwIHAEbVX82kZXzJDGPE3G0DjcIVm5iEpe5xAR4cyF+q/lTK99
+   US/gMo6LF1KjYYTFViSAh+Y1mbwwnNGvIyN63EvU8Z1+C0/jib4NY/ZJs
+   VRaK8M1LoXtp0eDMKjS72tjOhFEvctatsuUWewpFBkqDg0pAtc4Yx636v
+   aoKyJO7JAUkdBBxuuFEYHdjlA1AQUbNHBfoVSWkShI22Mk9t1R3bLSH0G
+   MxRBH0gfAG1ZCa4+UbCdu+akF0oePwtWFjnpG5TPfYwazK+C1Z6kY5r4m
+   JgEqL/LUeCmZOwy8VZxCkIvPgdMCrpWwHX+VBE92qX+WIJnWbj9RTWgBK
+   w==;
+X-CSE-ConnectionGUID: mlOvPMgwQcGt/+rD54u9SQ==
+X-CSE-MsgGUID: 6pz8Mlj5TjeP5t3YxqE0Gw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11831"; a="83414592"
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="83414592"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:41:07 -0700
+X-CSE-ConnectionGUID: 0DK3MJ6vTdOkS7peIT2O3g==
+X-CSE-MsgGUID: zkiDFfjoSgilglgINJ875g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,231,1774335600"; 
+   d="scan'208";a="252048628"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2026 02:41:06 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Mon, 29 Jun 2026 02:41:06 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Mon, 29 Jun 2026 02:41:06 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.34) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 29 Jun 2026 02:41:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KSmMc09wq9M0hokLMcm1hcDHGDaXT03ebqBuCLZB/ZV3DXVFs1do23Roz+F79NR1D0iokZqEOeosGzDC/+0jDQ0cxsrRTpmS6+OMZjxKNzZsQoiH2a5z8/3e8TUj2VWKdR7YS/V6l0Bz7RNb+yFUX3+D8Chk4NpOmMLzbhN0febp0Ttl2z+PYEv3L0gE1mGEZtf/egSmGBqHIisaEVe4KBzjAN2NdqSHzOwiKYoxBHwOwVbBKwkYgVyhb/ccQIkfJQisVpKrATDAQEjTImtBtG3ArDInpG9XjXN40UkIq8Iukk3l5cihx1f9ZnmSCTigGcXJp1druTCr1cA9xiunpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Vch3AhBzIbTU8RgBhzZ1dGBJfVm0NwQ3Na/dRm8OArY=;
+ b=qqGKC/jHYMb475mnJMi47ZksVARI9QffWLcydIM31M7ytSvekAUO9unYNn7kxzCNsIDYz54TfVbXXjoVw9RWYOvWgH2zhRwOMOtdZZDW5se7Bd8n+HG9Wc3PXwOjg0cV845kOz80frUd4t3gzT0NaFbiofeyfc8SpMtHIPituhFD8hi1oPOEV/iNgZ+bDf/EP1T9/VmN24JWl3SwgWJqnUgu0Ltf1QJWd+FLHkeh6ZLXZCw3apAvTZpCASV2nhX2XFqDvNu/Z9bUgLMq4TkYsoLAiq1Dbky5CTFJw4M0V2DKOweMRU+N+lSjTNKaNyOtElDmfSP+ZijB4cETTNk+Yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com (2603:10b6:510:28c::12)
+ by DSSPR11MB9644.namprd11.prod.outlook.com (2603:10b6:8:374::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 09:40:58 +0000
+Received: from PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475]) by PH0PR11MB7472.namprd11.prod.outlook.com
+ ([fe80::1bad:44dd:4e60:6475%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 09:40:58 +0000
+Date: Mon, 29 Jun 2026 17:40:43 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Ackerley Tng <ackerleytng@google.com>
+CC: Sean Christopherson <seanjc@google.com>, <aik@amd.com>,
+	<andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>, <brauner@kernel.org>,
+	<chao.p.peng@linux.intel.com>, <david@kernel.org>, <jmattson@google.com>,
+	<jthoughton@google.com>, <michael.roth@amd.com>, <oupton@kernel.org>,
+	<pankaj.gupta@amd.com>, <qperret@google.com>, <rick.p.edgecombe@intel.com>,
+	<rientjes@google.com>, <shivankg@amd.com>, <steven.price@arm.com>,
+	<tabba@google.com>, <willy@infradead.org>, <wyihan@google.com>,
+	<forkloop@google.com>, <pratyush@kernel.org>, <suzuki.poulose@arm.com>,
+	<aneesh.kumar@kernel.org>, <liam@infradead.org>, Paolo Bonzini
+	<pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+	<mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
+	<mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, Axel Rasmussen
+	<axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu
+	<weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, Qi Zheng
+	<qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau
+	<kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe
+	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
+Subject: Re: [PATCH v8 23/46] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
+Message-ID: <akI9m02jgKAdi4gX@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <ajjc0hw8PjGw69e9@yzhao56-desk.sh.intel.com>
+ <ajnf5Z9nWZxoLS4x@google.com>
+ <ajoWngKaZ+wfIyR+@yzhao56-desk.sh.intel.com>
+ <ajpGxu2uQys+S2F8@yzhao56-desk.sh.intel.com>
+ <ajxasFBzp_9KnQLq@google.com>
+ <CAEvNRgG1nHipzw4=eBgwhvyXi8xYo7FQD_sy9Ax6FDf7YDu3Og@mail.gmail.com>
+ <ajyRg3BwGu5dCfOn@yzhao56-desk.sh.intel.com>
+ <CAEvNRgH5KOHoemnC9QOn_oK97=KeAH1XuX3ps36-pJ0Fn0aBHQ@mail.gmail.com>
+ <aj3TGLGWT1kMFIVH@yzhao56-desk.sh.intel.com>
+ <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260627195630.24519-1-sj@kernel.org>
-X-Rspamd-Queue-Id: C812E4000A
-X-Stat-Signature: trzmm9ctgdrgkee4y6bbb8zetsj3kcab
+In-Reply-To: <CAEvNRgHb6WmOha6Pct_Tn8Ucuov95L=fj5=2R9gcHfx=b2V_+A@mail.gmail.com>
+X-ClientProxiedBy: KL1PR01CA0155.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:149::10) To PH0PR11MB7472.namprd11.prod.outlook.com
+ (2603:10b6:510:28c::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7472:EE_|DSSPR11MB9644:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94ec3230-4391-4d73-4908-08ded5c285ec
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|22082099003|18002099003|4143699003|11063799006|5023799004|6133799003|56012099006;
+X-Microsoft-Antispam-Message-Info: avScEtzIaxtHis+AgtmBcHw0KAbZMBoItvuYeqB/Id3eB4owbeXaGFr2hOLOwUzPdb2TL8heGuh+fsjTWehfCI7RcIMZc34MpZtozw2SZRy7CBeTyFVDYfElEQ4CaGDQCiQgRfl9+S1j/t+bkdv090gGM0klLSvP0U8r/v9MuOXabszgEDWKtPh/fhXlrKMv3AScPnJPvabVZSMMWLT8p2K3DsiGB6X+3Bl81MXkjcvEy5e23ppEwQSy4dp3TtQHpTsVj+bq9Oq/giin18Tft9JD9uD9zRTModWsG91xBRvK4mkRI45rW1kS/PnKnhdNE4y480dBwWtAzJrI5VeIy5moA7t/4U861pOUlqSJsjGj7qpa6+GYvdbocpoELC+A2qumdMnFquQ0cPkg2Gn2ty4c9/OT58qAkje+7ZmIA6xh7AckstQN2VqHeafFLvTdyYL7sZPSUIiUhdeQkKm42JT8dbU3g66pIiMfVC7We1k+OLppQj+Ai3LipTxHZPkV6395jjG+QHR5MeBl7a1MJPqK2NMlLM6UPv7804XjNrkp8o2OTU4dJlvQeFOgRme0ZmTdSwkLDomp/e4a1xY76HsFK6c64F/i69XEo+9Kqp3Oy/8POjnpj30lWEG10+0MPFfrjPNjfzjjtjUJw/Ux6CPqaaz5wvynIbfFU1no11Y=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR11MB7472.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(22082099003)(18002099003)(4143699003)(11063799006)(5023799004)(6133799003)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?eDpftVZal5YwBsETx+F56UEPTzR77Yw7R/6LK8/wGqQrfykaXZxJcTkEWu9C?=
+ =?us-ascii?Q?AFPLO//afKXlOVNh+GoNXHnJcBLm7tLeDHxTKY98hQLc1xLG2N0uHrDpgYe6?=
+ =?us-ascii?Q?OIHwOJTZghsxHyQAYrhhMqi+aLHNnWMJciFunj20cdelRlJUSyoWXTwSee2l?=
+ =?us-ascii?Q?Y+KlyoFfhLqeYF5A4eKabo9z3jpgY9tMHOW2Z+2I30EDFMyXNAJtxXoG0x2K?=
+ =?us-ascii?Q?0P3d/MN5jRST40X6qTmP8voVrr6b1CYGtO9g2DlTaivhdqb3/3liGkXC2bpQ?=
+ =?us-ascii?Q?G7K610uRnf8l13GdSzBOXzCD5p6QCUmo5nJcdv9wbMboG/7jtQ9z3HtJtvCo?=
+ =?us-ascii?Q?wjZJ1mntN39/inqtvaAXfQBKAHNC0F8CjuaCnBQhFd6pPU4qx/9voDUTyeZ/?=
+ =?us-ascii?Q?FVSijqFD/jOsrOu69BDaQVPZVmXHvPrwKQUe+WmewhnQxGop11ebDHO5213d?=
+ =?us-ascii?Q?tzB0pNtGxEBU6Z7qa2rRw8bggulQiYtMGuSTi3c0O9Pk5Mg1zldhWDaGTpWL?=
+ =?us-ascii?Q?YDvXF2XHOLj5HohLzNSZonuOeidmtOqtI9A1B2F/bc9lzY1FUVxCQYrEwULH?=
+ =?us-ascii?Q?Kyk2P2pNqQ8dOlCYuhEatD8v3nfW8ita4F5M/yr5KlZTWet5S+SDeIcBAOjP?=
+ =?us-ascii?Q?rKe5aaMUAnVlo6Xb1oVNsGRW1N26+wKISztI259tW5b2wArukACsZjtYnh/o?=
+ =?us-ascii?Q?KCM3c9BOVdF0RY2B/usJSBSqUe9WB/J/DMs8RJIT6jVVCiPZUgRJr2i5BVHD?=
+ =?us-ascii?Q?ep3rCyn1i+xopyBdPqz0HQNmkG1uW2eHKacrUifLkB5JRzvR20ONHkiLUiq3?=
+ =?us-ascii?Q?XU1RTsPEzBQlYuTlCsO00cdG940SouFotZ8UnejlKlj4orKiV8qFR/7KCZ+r?=
+ =?us-ascii?Q?4yRAcJztD09MtV2HrPYJrKVZqpYwpMHFGxFXm2UuWopAx4hCvQKP9Y7jmNpB?=
+ =?us-ascii?Q?hz9Dx0immSpO0y/To/ofozXddF5G8CYKZtDAPPVJnmv2P3b9JvLNQbA/9UTC?=
+ =?us-ascii?Q?iri7kzf+IcjVt8ENgsHBXbosOCi8zsy3XHShWQwWNDKg/61ai+sthcWDmeYP?=
+ =?us-ascii?Q?tOSMhDN1uuNU1GECU20h34LsIh0T+RmZS3Ms4WvVX7REAs47R+xcEkdg0Z/Q?=
+ =?us-ascii?Q?zYoi6nNszFQ6b2POUN0qYP71UY3vy/wypCD7LVPxS6YESBHxRsJB0SZp9/FE?=
+ =?us-ascii?Q?2adFNrO41A0xWX9lt9HLd21ReX+jkpAxj9tc5MzrlZY8LKGVD+7pkTtGIhNi?=
+ =?us-ascii?Q?5MCS9h10pwlBVQCxn88z/+se2FanyB+XAbzYcJkIbLWYqanz+jGSOF+5dJiO?=
+ =?us-ascii?Q?0tPVyBMOGdzaB/YIfJ2vpQq60FLTRu/H7tVYa7LJKyyEs4lB7nZFFcHG1k+W?=
+ =?us-ascii?Q?Qlw2wTWWnP7ExLRYn0G9qC10jb19EZd6s5bg9VnkbcfXHrL55RzoSfrggd2j?=
+ =?us-ascii?Q?VdI9/rvtQjA9FIRQ2MLLtaY3KHjxAbBcTMDjRDMlz2xNrQpeYso6RlCmuv7b?=
+ =?us-ascii?Q?vbbAJ4vScX1tiIzYsaN23WifzNowavrf/8cS9IqrIO0zC/HTuozBJTCFjTnT?=
+ =?us-ascii?Q?A+SXVJGPoLkW2UWzCjMUtiaBn4CsUhhE7yg8+ne/tiy/KHYl6/KwwdRyPijz?=
+ =?us-ascii?Q?5YyTo8cSwixqdKF4OPl/v0uTdqHq6tYtS7qqfB0hQmC+THIuyH1vIUzecGMR?=
+ =?us-ascii?Q?/uuE3vauK5yFzrSqPqZ3LKHr02E9cSwLpWXUQvV/+YjaH7w03Y7Q8CQWKgnY?=
+ =?us-ascii?Q?N/FGy8+Nxw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: nUm46iTIb7S6NI3xtD0oMlWp97T1n141HP9JEB5qAnzQrc1zQBajbF9APLXzH//hkHiC+vMVuXj1d7S1p6viuID6HmG54fkC/kwYtA8zWsQTp8GOgIy3g6yZ0IZkKdiuEVSU9vQ1TOEXgQ3yrp1N9EsARvImpRgukVoSp+M5dBEfeQ5+IPzbD46HUNFIadPg+5xTtXKTA5wExeQGzM6+yUKzuuSOgaqubi+i/vf9TfxRJV6SDQzZT4umm4Dh1QWwASA0irY6hEwVLg34Zl/8qXaw2RTY22JGqi99jxGZkoVaMHu91Syh6dF1ghm/aiIz30DKkKKLVnk/OxIGE/7ZzA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94ec3230-4391-4d73-4908-08ded5c285ec
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7472.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 09:40:58.3635
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sJYkH8ENloPTRtbJJkoQ33c9R5lcxIs/1ZGru5hoXse6Y75RvbuE9xxGQMRoF+5kBw7Z119gkBFFHFzWpwGP5A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DSSPR11MB9644
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782725920-495202
-X-HE-Meta: U2FsdGVkX18CRLOEoxzmwodhZL9yhI+sX+eN5QTDvaNj62ZoFuwfTN3hTQR6b5tDOqPyzAHPiTaFZVnRVxWhDsDqTO6N4uSsjsThn4jlfDWHwa03MumPy5xIRdQkYf/jPjIbcpBhdFTAyrbmgMGrT6SYnAollaZ802ZY8yIaqLnlK1qKRxGffrnWpgIC/QzAbKDsazLZgldgKBvob+OOdG6qlH3+CcBHnuaKik1Nnq6dtCGrzGwjcwhZ1mVn1/vcVrlxmu4UetIR0O2bc4fjIOW4qnZkpyzbfdFLtg/VGBqFF+7XIWRFaJDeLIFiN2yZZ7HyhacQX0ggo1P8lSPNkt5+RaoJX4WvAJ/GVRy+9KY/+EjtRKusAg5We9hUBD7d7wUdCdaQWXjj6qqcaIQL1BwEM7k3y9ZQNKQQLeh8wCI9p/OD/L0eijK5uF2AcqTzVDldVRjr758yyyW5V5+fjakcKQn6lIurKwPWAgOUaiUOWyCpgt1pFYsMpHZevx4ePSm5W6CfBG74f2dmleNpwr76PD3Ui0ItOeAdSpqi5phm2qF/c8EXI0/Lsb9TsrK7s+idljQsNrtdXGLrQmQsNIJg1vhiXQYPBcTWt83EoQXRMbrhUozVqKlV9m8NQvQpl3BDNExH8qy9FRbVQWYAiZm1aA4IFF3S4Bg8hIo5ZJroWMsVTZ/bfRZxTPYZKkZ7en78XefbehUFw/IKYhZxxEYLUsV/IJI0ZOWltJtH8vjO/ZMreywZfuycLzs6XFLWal1Gwy5Xc6b/AdiCVmIsQtcl1WL2eh6haxnPl5iVBghNM6rhFJash0HK53kraDiOIKBiFLDeLjWrfEOcMVfP5+qbyxkZbmZEE6ip0jCoIt134vZUszBmtcIJ/SEYLcGSOTRov2VJvd6kA8BB3sD8vvbV0pg+AZ3PWsWsBjwvp+PejW6m/WDhB4Qx+EmYW9eMQttPewvWYozS5lLr9o/
- AYcB33R4
- Z/gW8AohH0REKqNr7FkjAr0YJyIG1VD87W+ecNC6O0VfR8ZKDiu7NLZ8CsSGHSQ5AZ1dv1w3E8qd0S4k5bu2UgH6jjjb4gbX1cD0HME1CbHAF1m1ktqSRQsnRBchK76Ots9WiHIKhl33DuPwOUUwLULwehytgNW5SRGOclefe5LSe34vXb9ODCNLON8QMXviGATMXygJ+j/lRbIgA2GXLWR9coqIYL7U6qYmgpfpNXf+3Mdw/iT+mqglOP3096uLwW4pAHxSfI0KXQOA5r7Hq2I74UeqUbq8BxsDfXHS4QukHPJ9kwUyxe6rRSBbH6+dDOGLOa0vracwxojfRogK+LetWC2HeVPFPQgjNzoaHaE8600Sgq2ERoYO0pyvolob0OeCGu+VI/NuriphUWylWNY5N7+v6a/j0j3vD/2rkLDQRDaS707O/07Ch3iyJgBG7t0YOVsIY8w4HjqRsewzHHGZ7aARoINCpw6dhBCJ17kRbv+qo6wwKSPeTeE5vWrQkvh+bELVUBsIFAcVLPdqnwpMj52GGl8rFoF9jOLhBnVKEn+VyxEJ5L8L1r3gLBf9478BlnqR9z6OCVZISbZ677YRtOmoJQFiQllNQBGnbTKr0cTxmHHdzfk54Hn9BQXJ6g6jjbJMdwVEreIdkSs7FDO7oscYy++uG+Eqri5kVzu8Du1WxACdpkZkfmeOqDIKWRlKOADRMaHXPkfC4Eb8f5dRxr2IKO64YQpbewamOvGApk9nEQ9VPJ72GMxZ55BuUsgtnAO+cKygtCA5lfXnfR8Frz0IDkaRQU4ts
+X-Stat-Signature: qdy7z44nttgtaw37efdxugaj4usiwht6
+X-Rspamd-Queue-Id: 520741C000A
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782726068-829337
+X-HE-Meta: U2FsdGVkX1+q41c2ThTLSYYGYVgCIMwCvXemF61ZJWnSQyhp1mtKZeefGG62toXpdFcZgvt11EDA0zHKa4KzWZMAtXtG4cwXc7rXSj3x5U89sZFzInh7y3IMmxNvUgsOSvElgG4spIABM9uxVbzCsYrJRUvi75rvkBEa3yIiJO837M29htJP8P+8LVrlwd1R4ilqSlKb73oK3zSvEzAy1BM/9UYZhmaJ8VI1jeGFYv3a9cog0PZnzCitIGHWqqKYYy4iiFFVKcxWpnQfZIWcrVA2146pHmFVsLRkT5Gg6lEjn9/U4zWHhAFrUh4pcpGEmwowuyX6hIEtHTTtou7wxThC1oZzpdGCDXjmPjCHJnR0BuhzMzfzLpZb5uJSAb3DkptLxbUTEuLLVyEnZGSgp7k7h2lFMmmLmvKhk4OLORv5s6ScxgCvPtNJsmsUP+8RSR7h0SIdGgAuj/WJ8m7Ah3OHl/TC7niCbw95+xeljtjDqeiOM68cVJAvZUxDV9kcRVoDIkqgY1R7WutRv3IydfbNBRvLWEhAPnscwPL5Udv5/EYb0MorTjg9X5LT7JiAiLXqufZUQwNV0MXPZLELY6EPMC2kh6Hax7vwjYBh7M8GfBdC+7JDp21OXjHV1W9teqik0KuQ1lOccdnGXtJ3kVS8ovaTsxCbH4JnwysHTqmEmRELmucFg/ugiddFS1jAyOwfHUCxnY5wQ0PDN6sGKN85xcx5Iswu4XZu7kvHz5MWeV9t0HzyPkL7Ud4g+cavpZ4UjNWNV+r2d3bSR0qcPwHNQSWFFxgEP14a/hGcBTU31mjXpPzsYLqEvqn0ucNPywQL9ysWjnOhWFvW1SfliUay7sYJjfdZZLcTI+mAM/48e3hMMeBXYWjJFy7WDi0pNFpUmuNfErqPLfKdimChF3Bsbv0DsZW4z0WOMV+WGhlVQdJ6pUKOKP0K7nkt5Gcd/I5k2iJ5Q5x0f3yYxKz
+ ngTBK9hV
+ UTUqr5xq1eMprLdHaMgt7K3BOkYwLgGZNwLPGgLW7oLIdcKOLufR7YBtBiKJhhR33cQBjZHorW+fvkfAfZBwTveKyHEJCpzqw3XR7KMYEzzGnCtTi/zzkm9iSUdtO6vxf/wIw/xMiRBlrBwKy1bBWHtrUGJSJgRjrFtldH2ey/5jlZP698vD4tHFWvI9XHyxcGH8/kP1eiYBNzGqtI25v29OSkYs9PcRrnXrkSMJE0XZCMYZbh89J+RPa4U2jeW2eLDR/fVwXYvuu3zf3pmsRwJTJd9BGz24Hz0uBBHqf0XUUYKsusXtEb9x6dg8xHCsP4EYwwmpU6BRxviH3Rbu/6fsP/3qgi4C+G7wgnERsdnlysJrduuT7HnEbcryaxTTh/v/E2APuqglTqKwIqFwo61DF61cNSRae2OkvHzoAYPl32zvb3zcoTGrI54g9Aa9VEN4li2pEHvH5kuf8HvZ9XIwt0UAmn4GZ8Ftmed5dYBlP5ovOLlMcvkSIvki+3SO3RNn5XW4U0sjxzzaT9zXyb23wCv4FR5NuvGx08z7DP0dgZj2RgyOMnAYPEWWSQZQwST86Q4CgRQW0MrDJ75EmJhv364gsmuGo+R0AjkJ2E7EYrmA9CyI8CNMztqXQUiGDhiGnzR2dS3568/T5yrnm0Fq3/6rYfsBjURcXLxy9fRU/8aPczsOU5g73iafq8ZwIzput
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,966 +226,271 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jun 27, 2026 at 12:56:29PM -0700, SJ Park wrote:
-> My legal name and preferred first names are SeongJae and SJ,
-> respectively.  I was using the legal name for commits and tags, while
-> using the preferred name for conversations.  It sometimes confuses
-> people including myself.  Consistently use the preferred name.
->
-> Signed-off-by: SJ Park <sj@kernel.org>
+On Fri, Jun 26, 2026 at 08:28:32AM -0700, Ackerley Tng wrote:
+> Yan Zhao <yan.y.zhao@intel.com> writes:
+> 
+> > On Thu, Jun 25, 2026 at 05:07:23PM -0700, Ackerley Tng wrote:
+> >> Yan Zhao <yan.y.zhao@intel.com> writes:
+> >>
+> >> > On Wed, Jun 24, 2026 at 04:00:32PM -0700, Ackerley Tng wrote:
+> >> >> Sean Christopherson <seanjc@google.com> writes:
+> >> >>
+> >> >> > On Tue, Jun 23, 2026, Yan Zhao wrote:
+> >> >> >> On Tue, Jun 23, 2026 at 01:16:14PM +0800, Yan Zhao wrote:
+> >> >> >> > On Mon, Jun 22, 2026 at 06:22:45PM -0700, Sean Christopherson wrote:
+> >> >> >> > > On Mon, Jun 22, 2026, Yan Zhao wrote:
+> >> >> >> > > > On Thu, Jun 18, 2026 at 05:32:00PM -0700, Ackerley Tng via B4 Relay wrote:
+> >> >> >> > > > > diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > index ffe9d0db58c59..56d10333c61a7 100644
+> >> >> >> > > > > --- a/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > +++ b/arch/x86/kvm/vmx/tdx.c
+> >> >> >> > > > > @@ -3198,8 +3198,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+> >> >> >> > > > >  	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+> >> >> >> > > > >  		return -EIO;
+> >> >> >> > > > >
+> >> >> >> > > > > -	if (!src_page)
+> >> >> >> > > > > -		return -EOPNOTSUPP;
+> >> >> >> > > > > +	if (!src_page) {
+> >> >> >> > > > > +		if (!gmem_in_place_conversion)
+> >> >> >> > > > When userspace turns on gmem_in_place_conversion while creating guest_memfd
+> >> >> >> > > > without the MMAP flag, the absence of src_page should still be treated as an
+> >> >> >> > > > error.
+> >> >> >> > >
+> >> >> >> > > Why MMAP?
+> >> >> >> > Hmm, I was showing a scenario that in-place conversion couldn't occur.
+> >> >> >> > I didn't mean that with the MMAP flag, mmap() and user write must occur.
+> >> >> >> >
+> >> >> >> > > Shouldn't this be a general "if (!src_page && !up-to-date)"?  Just
+> >> >> >> > > because userspace _can_ mmap() the memory doesn't mean userspace _has_ mmap()'d
+> >> >> >> > > and written memory.  And when write() lands, MMAP wouldn't be necessary to
+> >> >> >> > > initialize the memory.
+> >> >> >> > Do you mean using up-to-date flag as below?
+> >> >> >
+> >> >> > Yes?  I didn't actually look at the implementation details.
+> >> >> >
+> >> >> >> > if (!src_page) {
+> >> >> >> > 	src_page = pfn_to_page(pfn);
+> >> >> >> > 	if (!folio_test_uptodate(page_folio(src_page)))
+> >> >> >> > 		return -EOPNOTSUPP;
+> >> >> >> > }
+> >> >>
+> >> >> Yan is right that with the earlier patch "Zero page while getting pfn",
+> >> >> folio_test_uptodate() here will always return true.
+> >> >>
+> >> >> Actually, this is an alternative fix for the issue Sashiko pointed out
+> >> >> on v7 where userspace can do a populate() (either TDX or SNP) without
+> >> >> first allocating the page, with src_address == NULL, and leak
+> >> >> uninitialized memory into the guest.
+> >> >>
+> >> >> Advantage of using the uptodate check in populate: if the host never
+> >> >> allocates the page, populate doesn't incur zeroing before writing the
+> >> >> page anyway in populate().
+> >> >>
+> >> >> Disadvantage: Both TDX and SNP will have to implement this uptodate
+> >> >> check. guest_memfd can't check centrally because for SNP, for a
+> >> >> PAGE_TYPE_ZERO, !src_page should be allowed with a !uptodate page since
+> >> >> firmware will zero and there's no leakage of uninitialized host memory?
+> >> > Another disadvantage: the uptodate flag is per-folio. What if the folio
+> >> > is only partially initialized by the userspace especially after huge page is
+> >> > supported?
+> >> >
+> >>
+> >> Good point on huge pages!
+> >>
+> >> The uptodate flag on the folio in guest_memfd means "this folio has been
+> >> written to". As of now (before patch at [1]), this happens when
+> >>
+> >> + folio is zeroed on first use by userspace
+> >> + folio is zeroed on first use of the guest
+> >> + folio is populated
+> >>
+> >> When huge pages are supported, the folio can't partially be initialized?
+> >>
+> >> On allocation, if any part is shared, we split the page. The parts are
+> >> separate folios that have their own uptodate flags.
+> >>
+> >> On splitting, if the huge page is uptodate, the split pages will also be
+> >> uptodate. If the huge page is not uptodate, the split pages won't be
+> >> uptodate, but that's ok since they will be marked uptodate on first use.
+> >>
+> >> On merging, the non-uptodate parts have to be zeroed and then marked
+> > If that's true, it would be good.
+> >
+> >> uptodate. Any parts that are in use would have been marked uptodate
+> >> already, so there's no overwriting data that is in use. I'll need to
+> >> think more about when it's safe to zero.
+> >>
+> >> I'm still on the fence between the two options
+> >>
+> >> 1. Using uptodate check in populate to reject src_pages that have never
+> >>    been written to or
+> >> 2. Always zero before populate
+> > 2 does not work?
+> > The flow is
+> > 1. mmap gmem_fd, make GFN shared, and write initial content.
+> > 2. convert GFN to private
+> > 3. invoke ioctl to trigger populate.
+> >
+> 
+> This flow is correct, is what users of in-place conversion should do.
+> 
+> "Always" is the wrong word, I should have said "zero if not uptodate
+> before populate", as in, with patch at [1].
+> 
+> By doing the zeroing in __kvm_gmem_get_pfn instead, by the time populate
+> gets the pfn, the page would be zeroed, either because userspace faulted
+> it in, and the zeroing happened in kvm_gmem_fault_user_mapping(), or if
+> userspace never faulted it in, the zeroing would happen because
+> populate() allocated the page.
 
-Same comment as David, but in general LGTM :) so:
+I see.
 
-Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+> >> but whether the uptodate flag is per-folio or not doesn't affect these
+> >> two options in terms of fixing the leak of uninitialized host memory,
+> >> right?
+> > yes, provided "On merging, the non-uptodate parts have to be zeroed and then
+> > marked uptodate".
+> >
+> 
+> Thank you so much for bringing this up, I hadn't considered this
+> before. I'll do that when I get to guest_memfd hugepage restructuring.
+> 
+> >> >
+> >> >> >> Another concern with this fix is that:
+> >> >> >> commit "KVM: guest_memfd: Zero page while getting pfn" [1] always marks the
+> >> >> >> folio uptodate before reaching post_populate().
+> >> >> >>
+> >> >> >> [1] https://lore.kernel.org/all/20260618-gmem-inplace-conversion-v8-21-9d2959357853@google.com/
+> >> >> >>
+> >> >> >> > One concern is that TDX now does not much care about the up-to-date flag since
+> >> >> >> > TDX doesn't rely on the flag to clear pages on conversions.
+> >> >> >> > I'm not sure if the flag can be reliably checked in this case. e.g.,
+> >> >> >> > now the whole folio is marked up-to-date even if only part of it is faulted by
+> >> >> >> > user access.
+> >> >> >> > Ensuring that the up-to-date flag works correctly with huge page support seems
+> >> >> >> > to have more effort than introducing a dedicated flag for TDX.
+> >> >> >> >
+> >> >> >> > > > Additionally, to properly enable in-place copying for the TDX initial memory
+> >> >> >> > > > region, userspace must not only specify source_addr to NULL, but also follow
+> >> >> >> > > > a specific sequence (where steps 1/2/3/7 are required only for in-place copy):
+> >> >> >> > > > 1. create guest_memfd with MMAP flag
+> >> >> >> > > > 2. mmap the guest_memfd.
+> >> >> >> > > > 3. convert the initial memory range to shared.
+> >> >> >> > > > 4. copy initial content to the source page.
+> >> >> >> > > > 5. convert the initial memory range to private
+> >> >> >> > > > 6. invoke ioctl KVM_TDX_INIT_MEM_REGION.
+> >> >> >> > > > 7. do not unmap the source backend.
+> >> >> >> > > >
+> >> >> >> > > > So, would it be reasonable to introduce a dedicated flag that allows userspace
+> >> >> >> > > > to explicitly opt into the in-place copy functionality? e.g.,
+> >> >> >> > >
+> >> >> >> > > Why?  It's userspace's responsibility to get the above right.  If userspace fails
+> >> >> >> > > to provide a src_page when it doesn't want in-place copy, that's a userspace bug.
+> >> >>
+> >> >> Yan, is your concern that userspace forgot to update the code and
+> >> >> forgets to provide a src_page, and if we keep the "Zero page while
+> >> > Yes. Previously, it would be rejected after GUP fails.
+> >> >
+> >>
+> >> I see, didn't realize previously it would be rejected because GUP
+> >> fails. GUP failed because it wasn't faulted into the host?
+> > GUP fails if 0 is not a valid user address.
+> > But GUP would not fail if 0 is a valid address. e.g., in below scenario:
+> >
+> > #include <sys/mman.h>
+> > #include <stdio.h>
+> > int main(void)
+> > {
+> >         void *p=mmap((void*)0,4096,PROT_READ|PROT_WRITE, MAP_FIXED|MAP_PRIVATE|MAP_ANONYMOUS,-1,0);
+> >         if (p==MAP_FAILED) {
+> >                 perror("mmap");
+> >                 return 1;
+> >         }
+> >         *(char*)0='Y';
+> >         printf("addr0=%p val=%c\n",p,*(char*)0);
+> >         return 0;
+> > }
+> >
+> >
+> >> That's kind of orthogonal, I don't think GUP fail leading to rejecting
+> >> populate was meant to help userspace catch these issues. GUP would also
+> >> fail if the user did mmap(), write to it, unmap using
+> >> madvise(MADV_DONTNEED), then forget and pass 0 as src_address.
+> > The original uAPI did not explicitly define 0 as an invalid uaddr. Whether 0 was
+> > rejected depended on whether the user mmap()'d address 0. If 0 was a valid
+> > mapping, populate() could proceed.
+> >
+> > commit 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating
+> > guest memory") changed the behavior though. It would return -EOPNOTSUPP for a 0
+> > uaddr.
+> >
+> 
+> I see, I only looked at this after commit 2a62345b3052.
+> 
+> > But if a user configures 0 uaddr as valid, writes to it, and then passes 0 as
+> > source_addr(not from gmem), I'm not sure if it's good for the kernel to silently
+> > treat 0 uaddr as an identifier for in-place copy from the private PFN in gmem.
+> >
+> 
+> I'd say the original uAPI perhaps just didn't document 0 as an
+> unsupported uaddr. Given that commit 2a62345b3052 already merged, uAPI
+> was perhaps accidentally changed and no customer complained, I think we
+> can move forward with 0 as an invalid src_address? I wouldn't think
+> anyone relies on 0 intentionally being a valid address.
+> 
+> I could document that, if it helps?
+What about just documenting that 0 is an unsupported uaddr which will be
+re-purposed as an indicator to use the target pfn as the source, regardless of
+whether gmem_in_place_conversion is true? i.e.,
 
-> ---
->  .mailmap                                      |   1 +
->  .../ABI/testing/sysfs-kernel-mm-damon         | 174 +++++++++---------
->  MAINTAINERS                                   |   2 +-
->  include/linux/damon.h                         |   2 -
->  mm/damon/core.c                               |   2 -
->  mm/damon/lru_sort.c                           |   2 -
->  mm/damon/modules-common.c                     |   2 -
->  mm/damon/modules-common.h                     |   2 -
->  mm/damon/ops-common.c                         |   2 -
->  mm/damon/ops-common.h                         |   2 -
->  mm/damon/paddr.c                              |   2 -
->  mm/damon/reclaim.c                            |   2 -
->  mm/damon/sysfs-common.c                       |   2 -
->  mm/damon/sysfs-common.h                       |   2 -
->  mm/damon/sysfs-schemes.c                      |   2 -
->  mm/damon/sysfs.c                              |   2 -
->  mm/damon/tests/core-kunit.h                   |   4 -
->  mm/damon/tests/sysfs-kunit.h                  |   2 -
->  mm/damon/tests/vaddr-kunit.h                  |   4 -
->  mm/damon/vaddr.c                              |   2 -
->  20 files changed, 89 insertions(+), 126 deletions(-)
->
-> diff --git a/.mailmap b/.mailmap
-> index 0b9298a55d2de..c43e0585d9fe9 100644
-> --- a/.mailmap
-> +++ b/.mailmap
-> @@ -806,6 +806,7 @@ Simon Wunderlich <sw@simonwunderlich.de> <simon.wunderlich@s2003.tu-chemnitz.de>
->  Simon Wunderlich <sw@simonwunderlich.de> <simon.wunderlich@saxnet.de>
->  Simon Wunderlich <sw@simonwunderlich.de> <simon@open-mesh.com>
->  Simon Wunderlich <sw@simonwunderlich.de> <siwu@hrz.tu-chemnitz.de>
-> +SJ Park <sj@kernel.org>
->  Sricharan Ramabadhran <quic_srichara@quicinc.com> <sricharan@codeaurora.org>
->  Srinivas Kandagatla <srini@kernel.org> <srinivas.kandagatla@st.com>
->  Srinivas Kandagatla <srini@kernel.org> <srinivas.kandagatla@linaro.org>
-> diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> index b73e6bc28ea5f..4fdec63a47d4a 100644
-> --- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> +++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-> @@ -1,26 +1,26 @@
->  what:		/sys/kernel/mm/damon/
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Interface for Data Access MONitoring (DAMON).  Contains files
->  		for controlling DAMON.  For more details on DAMON itself,
->  		please refer to Documentation/admin-guide/mm/damon/index.rst.
->
->  What:		/sys/kernel/mm/damon/admin/
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Interface for privileged users of DAMON.  Contains files for
->  		controlling DAMON that aimed to be used by privileged users.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/nr_kdamonds
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for controlling each DAMON worker thread (kdamond)
->  		named '0' to 'N-1' under the kdamonds/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/state
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
->  		stops, respectively.  Reading the file returns the keywords
->  		based on the current status.  Writing 'commit' to this file
-> @@ -40,33 +40,33 @@ Description:	Writing 'on' or 'off' to this file makes the kdamond starts or
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/pid
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the pid of the kdamond if it is
->  		running.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/refresh_ms
->  Date:		Jul 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the time interval for
->  		automatic DAMON status file contents update.  Writing '0'
->  		disables the update.  Reading this file returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/nr_contexts
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for controlling each DAMON context named '0' to
->  		'N-1' under the contexts/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/avail_operations
->  Date:		Apr 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the available monitoring operations
->  		sets on the currently running kernel.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/operations
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a keyword for a monitoring operations set ('vaddr' for
->  		virtual address spaces monitoring, 'fvaddr' for fixed virtual
->  		address ranges monitoring, and 'paddr' for the physical address
-> @@ -79,42 +79,42 @@ Description:	Writing a keyword for a monitoring operations set ('vaddr' for
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/addr_unit
->  Date:		Aug 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing an integer to this file sets the 'address unit'
->  		parameter of the given operations set of the context.  Reading
->  		the file returns the last-written 'address unit' value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/pause
->  Date:		Mar 2026
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a boolean keyword to this file sets the 'pause' request
->  		parameter for the context.  Reading the file returns the
->  		last-written 'pause' value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/sample_us
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the sampling interval of the
->  		DAMON context in microseconds as the value.  Reading this file
->  		returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/aggr_us
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the aggregation interval of
->  		the DAMON context in microseconds as the value.  Reading this
->  		file returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/update_us
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the update interval of the
->  		DAMON context in microseconds as the value.  Reading this file
->  		returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/intrvals_goal/access_bp
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the monitoring intervals
->  		auto-tuning target DAMON-observed access events ratio within
->  		the given time interval (aggrs in same directory), in bp
-> @@ -122,7 +122,7 @@ Description:	Writing a value to this file sets the monitoring intervals
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/intrvals_goal/aggrs
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the time interval to achieve
->  		the monitoring intervals auto-tuning target DAMON-observed
->  		access events ratio (access_bp in same directory) within.
-> @@ -130,14 +130,14 @@ Description:	Writing a value to this file sets the time interval to achieve
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/intrvals_goal/min_sample_us
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the minimum value of
->  		auto-tuned sampling interval in microseconds.  Reading this
->  		file returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/intervals/intrvals_goal/max_sample_us
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the maximum value of
->  		auto-tuned sampling interval in microseconds.  Reading this
->  		file returns the value.
-> @@ -145,42 +145,42 @@ Description:	Writing a value to this file sets the maximum value of
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/nr_regions/min
->
->  WDate:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the minimum number of
->  		monitoring regions of the DAMON context as the value.  Reading
->  		this file returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/monitoring_attrs/nr_regions/max
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the maximum number of
->  		monitoring regions of the DAMON context as the value.  Reading
->  		this file returns the value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/nr_targets
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for controlling each DAMON target of the context
->  		named '0' to 'N-1' under the contexts/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/pid_target
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the pid of
->  		the target process if the context is for virtual address spaces
->  		monitoring, respectively.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/obsolete_target
->  Date:		Oct 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		obsoleteness of the matching parameters commit destination
->  		target.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/regions/nr_regions
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for setting each DAMON target memory region of the
->  		context named '0' to 'N-1' under the regions/ directory.  In
-> @@ -190,181 +190,181 @@ Description:	Writing a number 'N' to this file creates the number of
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/regions/<R>/start
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the start
->  		address of the monitoring region.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/regions/<R>/end
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the end
->  		address of the monitoring region.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/nr_schemes
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for controlling each DAMON-based operation scheme
->  		of the context named '0' to 'N-1' under the schemes/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/action
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the action
->  		of the scheme.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/target_nid
->  Date:		Jun 2024
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Action's target NUMA node id.  Supported by only relevant
->  		actions.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/apply_interval_us
->  Date:		Sep 2023
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a value to this file sets the action apply interval of
->  		the scheme in microseconds.  Reading this file returns the
->  		value.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/sz/min
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the minimum
->  		size of the scheme's target regions in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/sz/max
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the maximum
->  		size of the scheme's target regions in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/nr_accesses/min
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the manimum
->  		'nr_accesses' of the scheme's target regions.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/nr_accesses/max
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the maximum
->  		'nr_accesses' of the scheme's target regions.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/age/min
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the minimum
->  		'age' of the scheme's target regions.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/access_pattern/age/max
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the maximum
->  		'age' of the scheme's target regions.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/ms
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the time
->  		quota of the scheme in milliseconds.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/bytes
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the size
->  		quota of the scheme in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/effective_bytes
->  Date:		Feb 2024
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading from this file gets the effective size quota of the
->  		scheme in bytes, which adjusted for the time quota and goals.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/reset_interval_ms
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the quotas
->  		charge reset interval of the scheme in milliseconds.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/nr_goals
->  Date:		Nov 2023
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for setting automatic tuning of the scheme's
->  		aggressiveness named '0' to 'N-1' under the goals/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/target_metric
->  Date:		Feb 2024
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the quota
->  		auto-tuning goal metric.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/target_value
->  Date:		Nov 2023
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the target
->  		value of the goal metric.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/current_value
->  Date:		Nov 2023
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the current
->  		value of the goal metric.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/nid
->  Date:		Apr 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the nid
->  		parameter of the goal.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goals/<G>/path
->  Date:		Oct 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the path
->  		parameter of the goal.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/goal_tuner
->  Date:		Mar 2026
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		goal-based effective quota auto-tuning algorithm to use.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/fail_charge_num
->  Date:		Mar 2026
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		action-failed memory quota charging ratio numerator.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/fail_charge_denom
->  Date:		Mar 2026
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		action-failed memory quota charging ratio denominator.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/weights/sz_permil
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		under-quota limit regions prioritization weight for 'size' in
->  		permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/weights/nr_accesses_permil
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		under-quota limit regions prioritization weight for
->  		'nr_accesses' in permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/quotas/weights/age_permil
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the
->  		under-quota limit regions prioritization weight for 'age' in
->  		permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/watermarks/metric
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the metric
->  		of the watermarks for the scheme.  The writable/readable
->  		keywords for this file are 'none' for disabling the watermarks
-> @@ -373,44 +373,44 @@ Description:	Writing to and reading from this file sets and gets the metric
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/watermarks/interval_us
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the metric
->  		check interval of the watermarks for the scheme in
->  		microseconds.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/watermarks/high
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the high
->  		watermark of the scheme in permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/watermarks/mid
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the mid
->  		watermark of the scheme in permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/watermarks/low
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the low
->  		watermark of the scheme in permil.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Directory for DAMON core layer-handled DAMOS filters.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/nr_filters
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for setting filters of the scheme named '0' to
->  		'N-1' under the core_filters/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/type
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the type of
->  		the memory of the interest.  'anon' for anonymous pages,
->  		'memcg' for specific memory cgroup, 'young' for young pages,
-> @@ -419,62 +419,62 @@ Description:	Writing to and reading from this file sets and gets the type of
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/memcg_path
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'memcg' is written to the 'type' file, writing to and
->  		reading from this file sets and gets the path to the memory
->  		cgroup of the interest.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/addr_start
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'addr' is written to the 'type' file, writing to or reading
->  		from this file sets or gets the start address of the address
->  		range for the filter.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/addr_end
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'addr' is written to the 'type' file, writing to or reading
->  		from this file sets or gets the end address of the address
->  		range for the filter.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/min
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'hugepage_size' is written to the 'type' file, writing to
->  		or reading from this file sets or gets the minimum size of the
->  		hugepage for the filter.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/max
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'hugepage_size' is written to the 'type' file, writing to
->  		or reading from this file sets or gets the maximum size of the
->  		hugepage for the filter.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/damon_target_idx
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	If 'target' is written to the 'type' file, writing to or
->  		reading from this file sets or gets the index of the DAMON
->  		monitoring target of the interest.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/matching
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing 'Y' or 'N' to this file sets whether the filter is for
->  		the memory of the 'type', or all except the 'type'.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters/<F>/allow
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing 'Y' or 'N' to this file sets whether to allow or reject
->  		applying the scheme's action to the memory that satisfies the
->  		'type' and the 'matching' of the directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/ops_filters
->  Date:		Feb 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Directory for DAMON operations set layer-handled DAMOS filters.
->  		Files under this directory works same to those of
->  		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/core_filters
-> @@ -482,7 +482,7 @@ Description:	Directory for DAMON operations set layer-handled DAMOS filters.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/filters
->  Date:		Dec 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Directory for DAMOS filters.  Files under this directory works
->  		same to those of
->  		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/{core,ops}_filters
-> @@ -491,14 +491,14 @@ Description:	Directory for DAMOS filters.  Files under this directory works
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/dests/nr_dests
->  Date:		Jul 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number 'N' to this file creates the number of
->  		directories for setting action destinations of the scheme named
->  		'0' to 'N-1' under the dests/ directory.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/dests/<D>/id
->  Date:		Jul 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the id of
->  		the DAMOS action destination.  For DAMOS_MIGRATE_{HOT,COLD}
->  		actions, the destination node's node id can be written and
-> @@ -506,98 +506,98 @@ Description:	Writing to and reading from this file sets and gets the id of
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/dests/<D>/weight
->  Date:		Jul 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing to and reading from this file sets and gets the weight
->  		of the DAMOS action destination to select as the destination of
->  		each action among the destinations.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/nr_tried
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the number of regions that the action
->  		of the scheme has tried to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/sz_tried
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the total size of regions that the
->  		action of the scheme has tried to be applied in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/nr_applied
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the number of regions that the action
->  		of the scheme has successfully applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/sz_applied
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the total size of regions that the
->  		action of the scheme has successfully applied in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/sz_ops_filter_passed
->  Date:		Dec 2024
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the total size of memory that passed
->  		DAMON operations layer-handled filters of the scheme in bytes.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/qt_exceeds
->  Date:		Mar 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the number of the exceed events of
->  		the scheme's quotas.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/nr_snapshots
->  Date:		Dec 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the total number of DAMON snapshots
->  		that the scheme has tried to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/stats/max_nr_snapshots
->  Date:		Dec 2025
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Writing a number to this file sets the upper limit of
->  		nr_snapshots that deactivates the scheme when the limit is
->  		reached or exceeded.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/total_bytes
->  Date:		Jul 2023
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the total amount of memory that
->  		corresponding DAMON-based Operation Scheme's action has tried
->  		to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/<R>/start
->  Date:		Oct 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the start address of a memory region
->  		that corresponding DAMON-based Operation Scheme's action has
->  		tried to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/<R>/end
->  Date:		Oct 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the end address of a memory region
->  		that corresponding DAMON-based Operation Scheme's action has
->  		tried to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/<R>/nr_accesses
->  Date:		Oct 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the 'nr_accesses' of a memory region
->  		that corresponding DAMON-based Operation Scheme's action has
->  		tried to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/<R>/age
->  Date:		Oct 2022
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the 'age' of a memory region that
->  		corresponding DAMON-based Operation Scheme's action has tried
->  		to be applied.
->
->  What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/schemes/<S>/tried_regions/<R>/sz_filter_passed
->  Date:		Dec 2024
-> -Contact:	SeongJae Park <sj@kernel.org>
-> +Contact:	SJ Park <sj@kernel.org>
->  Description:	Reading this file returns the size of the memory in the region
->  		that passed DAMON operations layer-handled filters of the
->  		scheme in bytes.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index dd963b72c6145..8aa263870ed3a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -7038,7 +7038,7 @@ W:	https://docs.dasharo.com/
->  F:	drivers/platform/x86/dasharo-acpi.c
->
->  DAMON
-> -M:	SeongJae Park <sj@kernel.org>
-> +M:	SJ Park <sj@kernel.org>
->  L:	damon@lists.linux.dev
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 888570f55b416..783d921075f25 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -1,8 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * DAMON api
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #ifndef _DAMON_H_
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index 7e4b9affc5b06..d99f7a297fdde 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * Data Access Monitor
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #define pr_fmt(fmt) "damon: " fmt
-> diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
-> index 8298c6001fd09..32f41491b726b 100644
-> --- a/mm/damon/lru_sort.c
-> +++ b/mm/damon/lru_sort.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON-based LRU-lists Sorting
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #define pr_fmt(fmt) "damon-lru-sort: " fmt
-> diff --git a/mm/damon/modules-common.c b/mm/damon/modules-common.c
-> index 86d58f8c4f635..f87fa46a95a08 100644
-> --- a/mm/damon/modules-common.c
-> +++ b/mm/damon/modules-common.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * Common Code for DAMON Modules
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/damon.h>
-> diff --git a/mm/damon/modules-common.h b/mm/damon/modules-common.h
-> index f103ad5563687..6fd45490e45b6 100644
-> --- a/mm/damon/modules-common.h
-> +++ b/mm/damon/modules-common.h
-> @@ -1,8 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Common Code for DAMON Modules
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/moduleparam.h>
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index d1842e2b00ef8..6bdd1cfd3863a 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * Common Code for Data Access Monitoring
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/migrate.h>
-> diff --git a/mm/damon/ops-common.h b/mm/damon/ops-common.h
-> index 5efa5b5970def..38d295488fa18 100644
-> --- a/mm/damon/ops-common.h
-> +++ b/mm/damon/ops-common.h
-> @@ -1,8 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Common Code for Data Access Monitoring
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/damon.h>
-> diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-> index d0598f5f26882..5c2da45f988cf 100644
-> --- a/mm/damon/paddr.c
-> +++ b/mm/damon/paddr.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON Code for The Physical Address Space
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #define pr_fmt(fmt) "damon-pa: " fmt
-> diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-> index ce4499cf4b8b0..11b70d0a9a6f0 100644
-> --- a/mm/damon/reclaim.c
-> +++ b/mm/damon/reclaim.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON-based page reclamation
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #define pr_fmt(fmt) "damon-reclaim: " fmt
-> diff --git a/mm/damon/sysfs-common.c b/mm/damon/sysfs-common.c
-> index bdc6ae2639e4f..c59d7bf7a73ae 100644
-> --- a/mm/damon/sysfs-common.c
-> +++ b/mm/damon/sysfs-common.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * Common Code for DAMON Sysfs Interface
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/slab.h>
-> diff --git a/mm/damon/sysfs-common.h b/mm/damon/sysfs-common.h
-> index 3079306966a91..733764716e8dd 100644
-> --- a/mm/damon/sysfs-common.h
-> +++ b/mm/damon/sysfs-common.h
-> @@ -1,8 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Common Code for DAMON Sysfs Interface
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/damon.h>
-> diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-> index 0134111c3c1ff..3cbeccd436e40 100644
-> --- a/mm/damon/sysfs-schemes.c
-> +++ b/mm/damon/sysfs-schemes.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON sysfs Interface
-> - *
-> - * Copyright (c) 2022 SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/slab.h>
-> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-> index 2e95e3bac774d..a9e187158067d 100644
-> --- a/mm/damon/sysfs.c
-> +++ b/mm/damon/sysfs.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON sysfs Interface
-> - *
-> - * Copyright (c) 2022 SeongJae Park <sj@kernel.org>
->   */
->
->  #include <linux/pid.h>
-> diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-> index 1cfb8c176b873..fcf7c7fadb5fe 100644
-> --- a/mm/damon/tests/core-kunit.h
-> +++ b/mm/damon/tests/core-kunit.h
-> @@ -1,10 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Data Access Monitor Unit Tests
-> - *
-> - * Copyright 2019 Amazon.com, Inc. or its affiliates.  All rights reserved.
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #ifdef CONFIG_DAMON_KUNIT_TEST
-> diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
-> index f9ec5e795b34b..138a4b8d14e73 100644
-> --- a/mm/damon/tests/sysfs-kunit.h
-> +++ b/mm/damon/tests/sysfs-kunit.h
-> @@ -1,8 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Data Access Monitor Unit Tests
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #ifdef CONFIG_DAMON_SYSFS_KUNIT_TEST
-> diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
-> index 563fbc7e3f448..61f844336ffb5 100644
-> --- a/mm/damon/tests/vaddr-kunit.h
-> +++ b/mm/damon/tests/vaddr-kunit.h
-> @@ -1,10 +1,6 @@
->  /* SPDX-License-Identifier: GPL-2.0 */
->  /*
->   * Data Access Monitor Unit Tests
-> - *
-> - * Copyright 2019 Amazon.com, Inc. or its affiliates.  All rights reserved.
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #ifdef CONFIG_DAMON_VADDR_KUNIT_TEST
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index d271476035641..e73ec1ce016e5 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -1,8 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
->   * DAMON Code for Virtual Address Spaces
-> - *
-> - * Author: SeongJae Park <sj@kernel.org>
->   */
->
->  #define pr_fmt(fmt) "damon-va: " fmt
->
-> base-commit: 2696611bb2c81f0229c973f5f42ffded5ad539a4
-> --
-> 2.47.3
+if (!src_page) 
+	src_page = pfn_to_page(pfn);
+
+I don't get why the two scenarios should be treated differently:
+1. gmem_in_place_conversion==true, shared memory is not from gmem 
+2. gmem_in_place_conversion==false, shared memory is not from gmem
+
+In both case, a 0 uaddr could be mapped to a valid page not from gmem.
+So why not update the uAPI to handle both cases consistently? :) 
+
+> >> >> getting pfn" patch, ends up with the guest silently having a zero page?
+> >> >> I think that would be found quite early in userspace VMM testing...
+> >> > I actually encountered this during testing this patch.
+> >> > I update most code path to follow this sequence. However, still some corner ones
+> >> > for TDVF HOB, which are less obvious and harder to update.
+> >> > The TD just booted up and hang silently.
+> >> >
+> >>
+> >> I think this is just the life of a close-to-hardware software engineer
+> >> :P no errors, got stuck somewhere, root cause is some unitialized
+> >> thing.
+> >>
+> >> >> >> > I mean if userspace specifies a NULL source_addr by mistake, it's better for
+> >> >> >> > kernel to detect this mistake, similar to how it validates whether source_addr
+> >> >> >> > is PAGE_ALIGNED.
+> >> >> >
+> >> >> > The alignment case is different.  If userspace provides an unaligned value, KVM
+> >> >> > *can't* do what userspace is asking because hardware and thus KVM only supports
+> >> >> > converting on page boundaries.
+> >> >> >
+> >> >> > For a NULL source, KVM can still do what userspace is asking.  Rejecting userspace's
+> >> >> > request would then be making assumptions about what userspace wants.
+> >> >> >
+> >> >>
+> >> >> Also, +1 on this, what if userspace, knowing that pages are zeroed on
+> >> >> allocation, actually wants to rely on that to get a zero page in the guest?
+> >> > What if 0 uaddr is a valid address? :)
+> >> >
+> >> >> >> > Since userspace already needs to perform additional steps to enable in-place
+> >> >> >> > copy, specifying a dedicated flag to indicate that the NULL source_addr is
+> >> >> >> > intentional seems like a reasonable burden.
+> >> >> >
+> >> >> > I don't see how it adds any value.  I wouldn't be at all surprised if most VMMs
+> >> >> > just wen up with code that does:
+> >> >> >
+> >> >> > 	if (in-place) {
+> >> >> > 		src = NULL;
+> >> >> > 		flags |= KVM_TDX_IN_PLACE_COPY_INITIAL_MEMORY_REGION;
+> >> >> > 	}
+> >> >>
 
