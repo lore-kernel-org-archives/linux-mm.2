@@ -4,108 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65172C43458
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:34:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3818DC43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 07:35:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61E3E6B0093; Mon, 29 Jun 2026 03:34:37 -0400 (EDT)
+	id 1D9566B0096; Mon, 29 Jun 2026 03:35:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CFAF6B0095; Mon, 29 Jun 2026 03:34:37 -0400 (EDT)
+	id 1B0716B0098; Mon, 29 Jun 2026 03:35:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 498936B0096; Mon, 29 Jun 2026 03:34:37 -0400 (EDT)
+	id 07A486B0099; Mon, 29 Jun 2026 03:35:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E14D6B0093
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:34:37 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8896B120590
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:34:36 +0000 (UTC)
-X-FDA: 84932137752.11.8C50A10
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E394420006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:34:34 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C453Z33V;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D34E16B0096
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 03:35:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 37268405D5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:35:33 +0000 (UTC)
+X-FDA: 84932140146.09.542CC33
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A620340002
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 07:35:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NrsYCe4l;
+	spf=pass (imf07.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782718474;
-	b=TuGRzDeA8om8OenXDnVzFnWgKUv8apQlPecY0tzqMHF+rRxkOn9ODPHftxz5PzrSHEshD5
-	msDHsYnP+vnlpXlAS3w1MZLCWWijYZOPkPWxV8V+FdiGTz1mrNJoO1pWGHb18u+PEjeWvB
-	jwvkzSFaDjN4drkIda2HiPbltch7lss=
+	t=1782718531;
+	b=rxKhzOEChr6CoB9KrumTjDayYQ8XT4X1XUogcFcTuuPE/5cEwxsd7YeMGH8T6yWJFW5/Dj
+	1iH+Mkmu0NxbLNpox3yMuq6EpHSs2uyA9gwAbRX4Eyd+or4A3yYUXcB+QZFskumrdYMu0i
+	twxgzkR06NcUu7LF21L/jHlcX+6mvtw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782718474;
+	s=arc-20220608; t=1782718531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HeoF2K+Kz6f/HgMEPg1+iANT1j637vPpQHoopCUQ+q0=;
-	b=n0JjxId7zR+7CP6LSSfuAbwXKS+LdLlvSuZmESYSrMgC0bX1VsQscgNBWpCpeRFs6JpGgL
-	jg2Qzi7ILoq5RnTfk9T6XnYOBksd0QLGBbN2UBiWJ0MJ6ZXx8Hpd2s//KjxYpPDc0a6cAl
-	F0z5ToOdnreDfzdeJXuSio++1ntPQSE=
+	bh=YhwD5e0TAt0qKmZwhk19yeLkiMwZuJytbMfHyxkkjWg=;
+	b=lCU9KHzzzvZci3Ho6bazfeYXXoHpGr7ZQ1s2hXIfHlMPog3N4UUIP2ecX6aIGkMknM6Iz5
+	8pDY7+h90MrokidHBh+/uzVdbiH8PbJuH/e88sNxVsXZJh0pWAYGrQuEwTn6EtCIbmOy7l
+	lFFRc0SjcHRdhI2np6ElanJex+v3x0Y=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C453Z33V;
-	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 73382600AA;
-	Mon, 29 Jun 2026 07:34:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DF21F000E9;
-	Mon, 29 Jun 2026 07:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782718474;
-	bh=HeoF2K+Kz6f/HgMEPg1+iANT1j637vPpQHoopCUQ+q0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C453Z33VpFiMQqfQLryj2TsR8w8h3q8S2KzljnlCANMYrPh2xa5pjxvaGXhIdGng6
-	 0qP2G7k5u+RtkdH3sN2KFAtAUiQHpFNmauUE6YythfPamyTeBMFE6xuq00Ew9z0lO2
-	 EfXHH7b/vvwHjEwb9/hW3PHgnVSIWB91TBxolyVfFha6JB8qNlmNPJyOq4tCYOJNs5
-	 Q0uo6vOb3jiqzaNiuMbVmWNeKJJgXQQsVPxDanztYI1zHuA37RpPRJNeaIbHHlfjR+
-	 NHD1EiEz/u3BtR8HraMX0Y1A74Vh26oK8ytY/WHAwwmyDKPl3VBya/CEveOYKRJAtH
-	 ZAPBHttxuZ55Q==
-Message-ID: <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
-Date: Mon, 29 Jun 2026 16:34:23 +0900
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NrsYCe4l;
+	spf=pass (imf07.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782718530;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YhwD5e0TAt0qKmZwhk19yeLkiMwZuJytbMfHyxkkjWg=;
+	b=NrsYCe4lkbGRXXDxbf8zEDn90dTgOi3w9K2JSEOuNgERgRirHZzOgyG0dcDJLw3RvvFdLa
+	ekdTAOJHzPVsAeUxlGPrspN6BycLtTvrlS5+aMm0G87P4HcKKcGAED0yp7yWatGxRe/JXf
+	UcuVWh5C3qxdfOUVNl6xyoOv3cEydt0=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-407-blsJRQ3KMia5UsSyMj-Sfg-1; Mon, 29 Jun 2026 03:35:26 -0400
+X-MC-Unique: blsJRQ3KMia5UsSyMj-Sfg-1
+X-Mimecast-MFC-AGG-ID: blsJRQ3KMia5UsSyMj-Sfg_1782718526
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c88cfe287e1so1640546a12.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 00:35:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782718525; x=1783323325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YhwD5e0TAt0qKmZwhk19yeLkiMwZuJytbMfHyxkkjWg=;
+        b=Rs8v8r+/GbnDUNSVwg+O18ZcTnNqNErN6GA+UhAejkw539F154YdJm36L9e83OFqwX
+         pJfHoLnghWro1wHHmQkuy5si2R7WVhuZc2iw7S+BKI1kFku9zrLZFVshllSlCutdSPg5
+         IInppUvVCo+Oj4XsEoo9WorTXtGU+XafNOBuXQHjbpWKG31Vf97EENfz7u4IUzhLm9I9
+         gxzZV7IJ8hJeTrhuo/TAmIeicT3toKO5NK9j/RTRAwENsSXXoaMXK6ig84GLMaAGhWqG
+         ry3PTqq7BjTPkoFTyIl5U7ekkHMZLlklylrhgmimkVc0T2fEEZQi6cEYpkAEtHjkCPrD
+         LZnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+qQ1d5CsId9zBt3OswyzC8lAnCIYwimPM/clz55Mfn075Llls9dXh167pmqBh5zCyD8LfdSZ0Hrw==@kvack.org
+X-Gm-Message-State: AOJu0Yx4KH/sMOMOAtccoIkZGcA/U54LOvKFoNP/MhjFXFjAa1ISKsNA
+	6ufSF4u8h6dNBohB7bS/MX/oMth5wusGguTEB5v2kEdXZ+Ai0s6ql7dFpCQ26S04esysaTSaLhv
+	NEvZCa0prVFvbmq3C1rWgkOHKRQnGXwwhJy9Zox4zIQFccg2/VLZ7
+X-Gm-Gg: AfdE7cki5CrUSmWYtVIwrRmG2m4BIhf+C39B/6lengcQgBvI1eCmTpIw0g/MLaSdQ4n
+	w9gwFp0bUMU3/p3Qt6flqK8mE8sW6Qhd9n1fPU7kMoyEKC9g5e5u31C79RlAB+QW+eV7Q3VA56n
+	29MmdNdeUbhCJfygfUbEaTm59TUS2gLeYgNE4DFk37zFfr9s9B3W9P6rVopHow7HWo9hX4If9Sv
+	V+et009h9V/+8w/uIAVk5/sly+HPVO1ssZygj9Lk2mklyKvDhKfdnoUquigbbTLBXduleitU7np
+	EVf9awLtR8gWWhNivJPw7cj4VIiOlKg746peu+EIonrV3pidTFsb5rh2cua6QLXnGX8XWKgyce5
+	0UY3wPlJ2lPVfZMFD9UqLAEZZHML5l/MM
+X-Received: by 2002:a05:6a21:a08:b0:3bf:79d6:f063 with SMTP id adf61e73a8af0-3bf79d740bdmr5424841637.43.1782718525443;
+        Mon, 29 Jun 2026 00:35:25 -0700 (PDT)
+X-Received: by 2002:a05:6a21:a08:b0:3bf:79d6:f063 with SMTP id adf61e73a8af0-3bf79d740bdmr5424801637.43.1782718524686;
+        Mon, 29 Jun 2026 00:35:24 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-85-71.inter.net.il. [80.230.85.71])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c92bd55985asm7323848a12.31.2026.06.29.00.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 00:35:24 -0700 (PDT)
+Date: Mon, 29 Jun 2026 03:34:59 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
+ non-atomic page flag ops
+Message-ID: <20260629030657-mutt-send-email-mst@kernel.org>
+References: <cover.1782676497.git.mst@redhat.com>
+ <0b5f8b4b-d7dc-4b79-9555-a5b36265f3a9@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next v3 2/9] mm/slab, slub_kunit: register kprobe to
- trigger _nolock APIs
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- rcu@vger.kernel.org, bpf@vger.kernel.org
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-2-70a54f3775bb@kernel.org>
- <ajvczSpMOGWFhe30@pedro-suse>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <ajvczSpMOGWFhe30@pedro-suse>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------LonvLfJHVvQ11VwztTHqXi0t"
-X-Stat-Signature: qatodmg1g1grjfuce5pd94mkjcok97eg
+In-Reply-To: <0b5f8b4b-d7dc-4b79-9555-a5b36265f3a9@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: exVfBRWyA6k6s7BSxHqUQaAFLbzM4aG_RQgkvt18v_Q_1782718526
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: g49crqsjwk31d7ksdezxatiqqgwdkox9
 X-Rspam-User: 
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E394420006
-X-HE-Tag: 1782718474-496197
-X-HE-Meta: U2FsdGVkX1/Xb62KQxahmlA+NUP+Xm2wuBqqvswhXhDvwl2HNmFMRzeccUZD/oWhmFkMBA85XJRgNoVdUnHT3xm5xy4Rhx2Gt74DEaCvIH+oqMEsVYVCUF3zwpnkCQkLnSri4V3TogJavp2zFSzyQPDp2YPs6S8jOxTf/m2CokyH0p1Jks3KHeN2EPcQhEO3nuEp564tqPHKIGJQQXEiKA3yRJT96RUY8zptClLg81jNS7nQu4SNvm/WKi9upe7gRUQ+Y6w0V/J1vYnuVNsDjBqmpJpwf4v+HW3g1HKGuwYOMBLxJ2x5ESn1392W29OQg1Cfggjfngm452xuPQAlYOF74xsCPMAukcXLsdpd7KeFIucfcacjYCeIPO/XvypXzWxUJ3wgOrppQbo/KBBCT81rAFKhfDZefCGBHpzz7wRMhFtvrQOM1/2xeqnqOurkY1SpPEv8uozle4Dp/5LFADaZyB0Bc6ew1mdLyEYaUCFUZaTQDjLz/RyR1nOvkIpxo3AUIaArMI7JHrRQLlBpa4lids93RjA1uS5HHO8VL0t/2dEOHihA4nME5ZeIBRmBsiisV9sFsuctSFuR0AeYD2uHU5w0jk+3NXeo8WofVNMo+a3MsNyrMCvb9kxA7+0KIZh95l0bXEIZCkqlR20esQrsW0yW7MYryGjTYwqa9hKH5O6QcAEHZEQqXgbzRGP3WCavVRYqgwaYPqhHhWy8TtP/10CsUgB+h48ZQyPPsFjieE/iKJLO7MRGXhvsqjg0QCeTSHWiGfMrqPO3UTMCDsO/D4SdceM3evFMPEW7EbubPaKxcUycbGhWlLIuKBEgKkj0DWDb6MUGoH4CDO6ZzSYE5RmUiwqJy8Ko+PbVVl+7ilK1xys2Q63s2sIRoPblMqzMPmkvZINlNBGx/lPMBqpBDMploDtjjA0m2W5D548O4f0G6SacRQxXOBunD7rFkONFC6LHHr8djeCHhQr
- Wmnu6eJC
- a17rNkDw0pru/fW+1fN30nITKBYCNNMBLcPlE1ndUl/lDbpIG5rupM9o0W+jm46EEMiwrBWxakQ/FB5urnXhGfjZerGituLvQGz3regzu1hDqws8V+TnKlcSTPZL97C0a3LARbH+3zn/sO7hC6+Sp3rLqE4HMX8LKwyGWpuCiJ55l+cf61NqdWTylDMV7R6areH29IN1nxUIIC91IKRhBs6vEhvlvYCP9MdSGMn+YzrjNbHZW3c/f9/YgtQpkthHCaEUzH3Upb5pUZHbrb4dVp2I4+GO7UJimF5xGbioio584SUee97JKei9lSVDkfJZccO20GqNLZcmXlp/WtgpN2kbjN25nvygRln/f7GeuT8xT4acMOI/pzuwpl6Uw9li7rNWzwDrFLfDGBU1OGVMJNS1O2a5+xHRJdxEUnEr8KGT6a+qHarmSbbeYtE3At48EvXwUMlG8/bHqtEc30oa63gqZnmcD/x6hWQJSVm1CaSeZPdSfHc4JxwE9ooXjjkH5MBdt
+X-Rspamd-Queue-Id: A620340002
+X-HE-Tag: 1782718530-803955
+X-HE-Meta: U2FsdGVkX19eZydgbTkK+fN8dqFAVdD/drksUxTARXdHH51i+iu3c9Xs5ou9XKtCcxRSiLEZNf15Zj9K8QeJcUHb/7pQGSnGYp73zrKdruJWGZrMjJapJcFaC3DROi4xhIVVr+kXAptubUIYVPEFOdj2ur1DOjZ12md0KIQskz5hItQ9KpUabiRjVNBWQ5K1VDm3bUoActOwmHi2L3h8yy7V0eFGQIIotb1K5Q4JhZxUPrmqUMdZ54IDRG6I/mraUMG3X9eAsizhDLWWjxnyKtmupSOZllBAUBnVBZYo0zICWoFsp6Z3WPuw4x7lIEBFXW7aj/9tOsuNKPMdockJCE//FuQV4LDXDBm3vtb3ER1rne0ZTi1YRy3jVWclqZEd/iO/rnZv/M1YP6vThJz6MZCSMU4D5ikeTrBd8FoDEdn/vJIg/rq3rKELlca5Ct+bMHUdch7EWNRgkl/WrbL8fzK4My740FQB3zXFEPoRQf3Qef51Hwv+0It84IKCs3U2jmO15igpYStmXX29nwhjypJVsRP3QjruSB7vDdzar2o1YKUXB9NoB7CcOoI/5B8T8Dlm2yEb5svx39ThIRqKh43NgdbgdBzrlUKd0Fw/uD9AL0dgpl3i49wYuB5bNlynKJv5RFQ8GMwESm80RemGm2ScmYybXQcu5HgMJNqfzgjzoNNDqlWSxh8Kyr3C+wG9iOCCjAMeEyDPx2eh2cw90DUo64LZoOTFweHKR4imBaPvuzqqzr/jDfLiZGFCW+cGAWEZ3EvSoiZnA9lvfb+yEjGZAMeEpIPR6FYd5i6SxzURNq5e18S/HFjfyIlluXR7zAQ0b91V1Rx3Hnzam+mQFqB+SQQ3NRrcCwTqZ9nUEHG+k/OglhPf24Sx7hoRGHHN1U7PQ+CHD8kPoW7QWa3R4BUapPZ6M1iZKbYW79ZcCFDfhXPIQiIaUz5uvmCiXZlzHVb8rFDVyfRgbE66dz6
+ UX1r01AM
+ sEayP7/lOHnIDnFjZ7rcEeqdxqLngvSGLlq2utNdl1AwIUpu8SFRPUTEppTOFqIQbnax1e1wYakYwUxynKPNpKWDoC2z4H1iHnjU9xhQyMriOvFNBCpWqY+JijhiqGLHfR3890HnhjmUk4MMUEw9Jy/ChdirJrrGLxwsaLhRIAM59wDK28ElCjxSvBecVC/+cCA8LP6GPlKI7Cfq27sMnaM8NR1USm/bvCrANgomRuJ7wBj7u9JDbX/dFd9se/Iq6JuJSZh9Ve3EpHS0yUMH7QgH17H63vzLzZU2gK2Vfzm+ZCy4XLsPL+9T73UsUUEJYuoBhdzT3PiIEL80P4zTAg/iQKUIVTqTEDRmZSLeFml4rKG4w8xyVGPcIxPua4UgibT7zYAZ4wVybeLDLpSCMZOMN1+O3tywJOJraiprhrmJU0637hL8kNnVKqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,128 +149,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------LonvLfJHVvQ11VwztTHqXi0t
-Content-Type: multipart/mixed; boundary="------------Rmq7mtq09nxsELJpSUC76Exe";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>,
- Puranjay Mohan <puranjay@kernel.org>, Amery Hung <ameryhung@gmail.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
- Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett
- <josh@joshtriplett.org>, Boqun Feng <boqun@kernel.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>,
- Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- rcu@vger.kernel.org, bpf@vger.kernel.org
-Message-ID: <6edebc2b-5f5a-4b9c-9a4c-564310acee1b@kernel.org>
-Subject: Re: [PATCH for-next v3 2/9] mm/slab, slub_kunit: register kprobe to
- trigger _nolock APIs
-References: <20260615-kfree_rcu_nolock-v3-0-70a54f3775bb@kernel.org>
- <20260615-kfree_rcu_nolock-v3-2-70a54f3775bb@kernel.org>
- <ajvczSpMOGWFhe30@pedro-suse>
-In-Reply-To: <ajvczSpMOGWFhe30@pedro-suse>
+On Mon, Jun 29, 2026 at 08:49:37AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/28/26 23:45, Michael S. Tsirkin wrote:
+> > I don't like it that we are adding overhead to the good path for
+> > the benefit of memory failure, which never triggers on many systems,
+> > but I don't have a better idea. Pls take a look.
+> 
+> As I said on Friday.
+> 
+> "It's also doesn't address the mf_mutex implications and the x86 thingies I
+> mentioned.
 
---------------Rmq7mtq09nxsELJpSUC76Exe
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Well I did attempt addressing this.  These would be these two:
+
+	(a) We don't hold the mf_mutex on all call paths, but we really need it so a
+	page_test_set_hwpoison() cannot race in weird ways with the other primitives I think.
+
+page_test_set_hwpoison was this code you wrote:
+
++static void page_set_hwpoison(struct page *page)
++{
++       lockdep_assert_held(&mf_mutex);
++
++       while (!PageHWPoison(page)) {
++               SetPageHWPoison(page);
++
++               /* Make sure concurrent non-atomic writers completed. */
++               synchronize_rcu();
++       }
++}
+
+and indeed the test+set combination seems racy.  But consider the version I posted, for example:
+
++/*
++ * Drain any in-flight non-atomic page flag operations that could
++ * clobber a concurrently set HWPoison bit.  Retries until the bit sticks.
++ */
++static void set_hwpoison_drain_rcu(struct page *p)
++{
++       do {
++               synchronize_rcu();
++       } while (!TestSetPageHWPoison(p));
++}
++
+
+...
+
++static bool test_and_set_hwpoison_drain_rcu(struct page *p)
++{
++       bool was_set = TestSetPageHWPoison(p);
++
++       set_hwpoison_drain_rcu(p);
++       return was_set;
++}
 
 
 
-On 6/24/26 10:41 PM, Pedro Falcato wrote:
-> On Mon, Jun 15, 2026 at 08:05:56PM +0900, Harry Yoo (Oracle) wrote:
->> Since kmalloc_nolock() always fails in NMI and hardirq contexts on
->> PREEMPT_RT, slub_kunit cannot properly test _nolock() APIs.
->>
->> Register a kprobe pre-handler to invoke kmalloc_nolock() and
->> kfree_nolock() in the middle of the slab allocator. However, do not
->> register the handler on UP kernels [1].
->=20
-> Maybe explain in the commit message why that is?
+does not seem racy without a lock. But maybe I don't get it.
 
-Because it's the case is broken on UP and we decided not bother to fix.
-Thought the cover letter in Link: would give enough context.
 
->> To attach the pre-handler while s->cpu_sheaves->lock or n->list_lock
->> is held, add a wrapper function for lockdep_assert_held() that calls
->> a no-op function slab_attach_kprobe_locked() on debug builds. The
->=20
-> Why lockdep?
 
-I wanted to avoid hard-coding internal slab function names
-in the test module while having a good coverage.
+	(b) There are some leftover SetPageHWPoison etc. instances. The ones in
+	arch/x86/kernel/cpu/mce/core.c likely cannot grab the mutex, but maybe they are
+	corner cases either way and we can document the situation.
 
-> Wouldn't it make more sense to add these triggers after> locking these =
-locks?
+Well, I did try to document the situation - it's in the commit log for
+patch 1:
 
-Good point.
+    Note: the MCE handler in arch/x86/kernel/cpu/mce/core.c also calls
+    SetPageHWPoison() and is subject to the same race.  It cannot use
+    the drain helpers (MCE context cannot call synchronize_rcu()).
+    For recoverable MCE errors, memory_failure() is queued via work
+    items (kill_me_maybe/kill_me_never) and will re-set the bit via
+    test_and_set_hwpoison_drain_rcu() if it was clobbered.  The
+    mce_panic() path sets HWPoison for kdump right before panic() so
+    the race is irrelevant there.  The MCG_STATUS_SEAM_NR path does
+    not queue memory_failure(), but the affected page belongs to a
+    TDX guest whose CPU core has already been marked dead - the page
+    is not subject to concurrent non-atomic flag operations in the
+    buddy allocator, so the race does not apply.
 
-Perhaps it'd make more sense to let _trylock() fail occasionally,
-because that what I actually want to test.
 
->> function is optimized away when neither CONFIG_PROVE_LOCKING nor
->> CONFIG_DEBUG_VM is selected and register_kprobe() fails.
->>
->> The function calls barrier() to prevent the compiler from optimizing
->> away its callsites. Otherwise, the compiler may consider the function
->> does not have any side effect and remove callsites.
->=20
-> My wider comment is the following: this looks very useful but perhaps s=
-hould
-> be lifted to Kunit itself? There's already function redirection (which =
-could
-> be used for this as well).
 
-TIL kunit function redirection, thanks :)
 
-> I don't know if that suits your purposes?
 
-Hmm, but looking at the kunit function redirection,
-apparently the function needs to have a symbol to redirect.
 
-Not sure how feasible it is to make all those lock helpers have symbols
-to use kunit function redirection.
+> ...
+> 
+> I'll either take care of that myself or find someone that can work on this with
+> attention to all details.
+> "
 
-> Choosing to say "I want to hook this random function using kprobe and g=
-ive
-> it custom behavior" sounds lovely for all sorts of testing.
+> 
+> This is nothing to vibe-code. This needs a real expert.
 
-Sounds lovely.
+Well I had this sitting on the disk anyway, so I thought I'd post.
 
-Actually, I was thinking it would be lovely to have fault-injection-like
-feature for memcg because it's hard to trigger that in kunit...
+I wouldn't call this vibe-code - a bunch of manual work went into this,
+llms mostly as a grep/sed replacement.  But hey.  I don't object to
+someone taking over, for sure. Was fun, and maybe these patches will be
+helpful as a starting point.
 
-Thanks!
+In particular, maybe I should have been more explicit about how your
+points from Friday are addressed.
 
---=20
-Cheers,
-Harry / Hyeonggon
+If you want to add a bit more to explain the exact concerns here, for
+whoever works on this next, feel free to do so.
 
---------------Rmq7mtq09nxsELJpSUC76Exe--
 
---------------LonvLfJHVvQ11VwztTHqXi0t
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
------BEGIN PGP SIGNATURE-----
 
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakIf/wAKCRCGXBN6rc5S
-1k2zAP0WFF+pvp88rmpHr5+CTNLJsoe3HtwPQMCjNUTN1Wuj6AD/TWU08aQXbB1M
-c2AKbPtfWlxkJ3yFMUn/T9WJ1h0e9AQ=
-=M28/
------END PGP SIGNATURE-----
+> > 
+> > Non-atomic page flag operations (page->flags.f &= ~mask, __set_bit,
+> > __clear_bit) can race with atomic TestSetPageHWPoison() in
+> > memory_failure().  The non-atomic RMW reads flags, memory_failure()
+> > atomically sets HWPoison, then the RMW writes back the old value
+> > without HWPoison, clobbering the bit.
+> > 
+> > The race was confirmed by injecting a cpu_relax() delay between the
+> > load and store of the non-atomic RMW in __free_pages_prepare, then
+> > running concurrent MADV_HWPOISON injection.  The clobbered HWPoison
+> > bit was observed repeatedly.
+> > 
+> > This series fixes the race by:
+> > 
+> > 1. Having memory_failure() call synchronize_rcu() + retry after
+> >    setting HWPoison, so that any in-flight non-atomic RMW that
+> >    read the old flags value completes before we proceed.
+> > 
+> > 2. Wrapping all non-atomic page flag operations in
+> >    rcu_read_lock/rcu_read_unlock (CONFIG_MEMORY_FAILURE only),
+> >    so that synchronize_rcu() actually drains them.
+> > 
+> > Performance impact (page alloc+free microbenchmark, 200K iterations,
+> > 20 runs, KVM guest, error bars are 3-sigma):
+> > 
+> >   !PREEMPT_RCU (x86):
+> >                          insns/iter      cycles/iter
+> >     base:                12237 +/- 1     17954 +/- 136
+> >     patched:             +22 +/- 1       -124 +/- 122
+> >                          (+0.18%)        (within noise)
+> > 
+> >   PREEMPT_RCU:
+> >                          insns/iter      cycles/iter
+> >     base:                12512 +/- 3     18541 +/- 214
+> >     patched:             +95 +/- 3       -12 +/- 161
+> >                          (+0.76%)        (within noise)
+> > 
+> > When !CONFIG_MEMORY_FAILURE, all wrappers compile away completely.
+> > 
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> 
+> No ;)
+> 
+> -- 
+> Cheers,
+> 
+> David
 
---------------LonvLfJHVvQ11VwztTHqXi0t--
 
