@@ -4,136 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182B9C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8055C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 14:42:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFDEE6B0092; Mon, 29 Jun 2026 10:39:57 -0400 (EDT)
+	id 7F5636B0088; Mon, 29 Jun 2026 10:42:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD6376B0093; Mon, 29 Jun 2026 10:39:57 -0400 (EDT)
+	id 7A5FF6B0093; Mon, 29 Jun 2026 10:42:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EBD56B0096; Mon, 29 Jun 2026 10:39:57 -0400 (EDT)
+	id 6E3B06B00D0; Mon, 29 Jun 2026 10:42:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C7CC6B0092
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:39:57 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EFDD2A0138
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:39:56 +0000 (UTC)
-X-FDA: 84933209592.27.8AE9232
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2C11920006
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:39:55 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TOeIjCfo;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 41AFA6B0088
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 10:42:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AA6D7C04E0
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:35 +0000 (UTC)
+X-FDA: 84933216270.30.F716B2C
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 58710140014
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 14:42:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=S8qxdq8R;
+	spf=pass (imf09.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782743995;
-	b=cc/dw7kF9UXpCfWuQOXV6gVP2/zamWdBdoOPGk+aoScWjvtFmsA0jj5I7gU+jGIP5raeUd
-	hZ4Y2HxR2I4+f7P2+kOmigV+YsJ3C0Uo9wqSJmUOwicAMHas5rAWihdNCv51AgGgrDBpZo
-	ETkRSpRX/JNOgoDoJCHyfVyD1rKr3Bk=
+	t=1782744154;
+	b=C9EeDsHXOSWR/ZykRqqqP/Y/puzNOabBofoAEvvLmeKZ+uNX7pFaBkHoQqBRwFb6SHhmSo
+	taQt/JI1Zj5RpO2VF6JZ3+Y3VLVuJRcPctOg788U5HMMIKdvmb0VXBTmExiWcWvvotSZr5
+	OizaP4nHDZNkcyXyR3a7L6qtlZQ5QbM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782743995;
+	s=arc-20220608; t=1782744154;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DuMKsEYZ05nT54sTSWEYfjRA4P6TcC2zt7zo2qBxmsg=;
-	b=RSH2uCN4i21qBd+k6ppvzSiyvijdOOSFS6B98nnzkVpUYVPTIj2QTXb6T4+F5e2iCgdqMU
-	b2JtrJuJuxLqNiOJHyCHcTt10tUCNu5/nrSdumb1Dg++c5fJj2XP8qTsfrxgESfkRSTxN+
-	dP0Yj0vk3w7GJjHlxl6ui0N+ErNnTsI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XJ7xvo2RfbdBOM9gsfFbrChju/6a9W7DWo0XqxsCnck=;
+	b=1AOwIb3gHpbfj9XeG5SGAAyjQvPvhEOgaf0G4RLrAD7vkg3MHrW7LbZOnwbLb1Qcsvkdh5
+	I64H31si5Q3rAd2YHMibDAVgISH2Cf9H8ALfhihiEmpDfNxpINGQvFFLhv/pre/CnYd4sv
+	xS7yCtdnu3ZupuIfCASJlbWb0xt+BjY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TOeIjCfo;
-	spf=pass (imf31.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 69B6D40DAD;
-	Mon, 29 Jun 2026 14:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0DE1F00A3E;
-	Mon, 29 Jun 2026 14:39:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782743994;
-	bh=DuMKsEYZ05nT54sTSWEYfjRA4P6TcC2zt7zo2qBxmsg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TOeIjCfo7zMwju0FALvWyC88HY2iC6CSLAq1JSqWnQVPM56LbgIOLWw8ZJ0QjD/Aw
-	 ozj4+rV5s0LPKS9cLaVzm4p4LzDe0sF4tCQfs9InvJgTGjzJ0YmxKImfnnhIqZZ8HE
-	 JVfKMA00m3ibwyDTuIffRXNts75e4qXrgb1c5kvObwIIvwfLnZRwS0x+NMMXjTwATy
-	 qYLFxu10DJrCQwvT1ghLjXlFES2/a4LNlLvyTXbfiskkKlr3wPORTGmJfTq1FL4qzJ
-	 7H2t75310lRZtbCuXuYXoQ0l384A/TjR855SDyWmmsLLOkt+wwoCHxIik8SmISMtpL
-	 xcOtdxOD+t7lQ==
-Message-ID: <9fe5173c-4beb-42fe-8f7e-385c609f899f@kernel.org>
-Date: Mon, 29 Jun 2026 16:39:49 +0200
+	imf09.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=S8qxdq8R;
+	spf=pass (imf09.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=XJ7xvo2RfbdBOM9gsfFbrChju/6a9W7DWo0XqxsCnck=; b=S8qxdq8RaMoHIiFpiPVc0r3L3t
+	vfmxxEBL13W8ki1NyW57D52gxf4hlpzSgHMATMuFsZD1120LOyildx6lNt7j49zqFEiKkXvdSv4Dn
+	Hpje3vcvIP+lieHNyNQYR03VKRpdMrEF2XWXx4GgTZ+AZb445gMj1AMXmnH55pf1ZYga49CTBqffv
+	pMP/8j/2OojKVqEPJjz7JWPxNu3wlEwDvAYOD22y/tEnMaLf57Sx3WmkqhFNdWAUnKM31sl2wsiv7
+	eX+b+eLpHhj84vAsWXXirty4Hb48DVpqTtOV7CFG/uFbMI3dHBTLiQB5/JTTgRlBCRRtT6/ONLtDj
+	HNtSEyTQ==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1weDBw-0000000EuWJ-14Kz;
+	Mon, 29 Jun 2026 14:42:32 +0000
+From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	maple-tree@lists.infradead.org,
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>
+Subject: [PATCH 00/18] maple_tree: lock checking and clean ups
+Date: Mon, 29 Jun 2026 10:41:27 -0400
+Message-ID: <20260629144145.1572283-1-liam@infradead.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] mm/huge_memory: add page->private check back in
- __split_folio_to_order()
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com>
- <20260628-keep-subpage-private-zero-at-free-v1-2-f4ce3930d10f@nvidia.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260628-keep-subpage-private-zero-at-free-v1-2-f4ce3930d10f@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 58710140014
+X-Stat-Signature: are9is7rn9hnsmjjzxacmng9t9dyiuwi
 X-Rspam-User: 
-X-Stat-Signature: 8gb9g76yw9nqozpsojttnjag1fr8fe6o
-X-Rspamd-Queue-Id: 2C11920006
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782743995-298700
-X-HE-Meta: U2FsdGVkX195gfTYlgA9hIpmmgkNxY+JLoMmjFi4KTkQNmvEy/gm5octI0fhqW65irQ4iF+sEZJC4kkOgm5Khq0ZEggK7tuE5ZTk3cSdGbbb0MwdwI9CD4PTC4Rav7X1X9Iy8Z0CMCDUFnXJpSYcZGuhD6fGakBwQAO2WcO/U5XJ0ctyop7YAZrCVdHi3gq2FdOPoxF+jp2Yy5TIdrkik+ZNzQAqpp6w8usOh6Mwgn8pGbny4iyaynOHEOFsvroEBegmVEJtMInGu7HV3C6gJ2fhojA64u7tCmW3f6Hd/w1O+04FLShcB1UKi+azCfk5BhG3VEpDruJd9xN2Ao0nYZukh2FjNnEK4UJ/4GEcvJLnN5gZIS3f5zSK0oLlMqbN+26FBJSVqLTzdq6TV+tVoNm7dqGTS4hboiky9EZ/juWLRW8qtWeT0t+RaqsMUICfbc1D0Nkvzqx+e14ahplFa3jnvaqlJMpvhPnH46TP5krdEcWZy1YxrAfgZUbLDeYnXQ7gwUjnrMBd8z9jqSwrs2mBLmEAnB8PhQhPM33Bb4z/BK1T8p8Re6wy5np63swpyOphaIWIoyT85eXD+u4DifccJIoBa1UZC1wxc/4IvZikPE1kHNfE1Jlyjj5HoHn6jl/Ry0wQ06ju3mN8IGRjxutJsD3omIXka0aYyqWr/mhrIEHj2NqSLmljAk4e8+KDLbk0i4C59cAleKz3t/xOIoFsixDs951xhOdGB88YAyNDOiHqb/EMCIpcJzjwhzSfwVw7foHq+gUO8fJVSDoRHoFJErhFpMEcJ08ZkUosiRp8IjKE04WOD/czchPXkwtDLH/pFkYMiRxYn7+uDFrig8T9dfLs+j0tF81qT21/LSmDQlSiM5PcXxFKSN8Q3J41xf1uJWxOfP3neHk0gdvlusdnJbqCA7SfLlfiVgjNmc+La2zJdvT+jyksw0Hcj7Wu3cOtanuys8GnzEHABzU
- Kt9XkAFS
- AXZXZ6FFHqW+ge9b8W04Mdt6+gd8Lp9P9zddxt8gfiERoEadxSsl/xDqOBF77TydKBZLzl7wGvHWBmaBSX9DYvc0SsUAo9cooeI+c3W4xALcJrhLG6ygLNPkKf8sZ86jZT2eQ7rVZ8qK8B41GsQOFDn3SvDAM+hISbOM6MiYYSzS8HTuz3HqHusQY7QSu/P4xiFE/DYDNSl/cksZKaGT6xdC+mGYezRlKJgSmE+maQy8UXGcWJN8nQyfJu8ujWpldjavZ12BUnT7/I2vVGZlQN0DN4wdJrk8LbB+nxq8yVC7G+S1evNQSsIk7pH++EnbIFaFP2JMnKDRQ4DQ=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782744153-817783
+X-HE-Meta: U2FsdGVkX18NLY7wkOTlV0swBcM6SgtcoWATwacEmI6ES5dX2WZ36QZYAA7ECDR+kYZDGIcH0tkAmav7sJW0z1vOk9c/QdFPBfHxpD4IHLGG2Y+0JbFbNzm64UA1yRJwQoIDiUEZwrg4Q076quCH3/42dwpJ3lgeDF3DeCM5yMgla8Ac9idCguvxEAFbQPtxDbJrxfQmUmkwxbYYI2oPbGok/NxJ52ob2xOYtmnsiQoaBqWbNmN7uGXoxKpFX6Y55qVW3ZkAj4nqNXpS0n5++tR8wdo20i1KjfUHIftOV1Gc1hKGElWe4z/gey41FQU3MbMnOYxKr6bLbU4aynP9TKhwAbXRxoUsizyILPuAvZQbRcaYH7r2LHLwr1cC0bKVHi3lZRvfCQjE06n57swj6yTVGDIQ3vuV6JcE1ekGIfeC18JRUxtmvcTP9g+G3wCLplab94Kq/onXG/+MpVssLn/7TJbwcXxIF31I1x+jqyo4D/GjsGhe5X1fOwArE1NjbjNrSe34KX1SKXeGpO5zb3I7xku8QHJrrwe0hw7FFCXVKHwq35FMPJUDOxyn6TMJuxA0JwiIwjWGQ/x5TlEPBwWCMVUiuOHf4c/6M5CxklxT69W+RiiGag9PIvcKWYTOXooO0lP5x3gHQV3pY4HOUj13yYKMT1qGJCHfUUts/d0344m80B/F/7jntb2H4/kW9vn0J9Nb/sUbw2de78g0gy4DOTrHibg6Y12Z92nOJmpxgkKzy/uuQJNCXWrMfMd+y226Uq3IMzAg8XeDvu9J5sQh7pa04D04CE2oleXF0IVbzYV0XPAFciRr6EG49lt12qbpQBk4iPWcTumngXPEgWK1sVLXtJlQFWjuYmf9yQEn7p8aEzSl0QzPWcjutqNjTbq43eJbuVXomtIt/tT/eD8WjGLeScd4iw1WijKrCD27QZP6x9xirZZeO1g2C2MmhARxbTiWg6EuDJSiRzJ
+ nm4SKBAE
+ UUDx7okJWdyF96FNlOqJm9VecFyL0lazdsVMsW6xckMlQNgQpZaBb7E82fuaCxYr45IIeyhSU9x+A9Dx4eQu2hGzamlnwl4usWXXecW74wnkmYbH4/clrrbn4M6uxVQ0sm5WuvP8CUX/QWSO7X1IF7VB9Q6UBTHolVRwOY1cJAFjYglQS1Hu43mh+IHaKgI1RvUPUlYesNd/YRQ11XQGQTQv/XcPVCz3ciQnf8heZP8IGqpvGTJIEN/scBuL9aH0Kocfo8T+R/ywcvZ2dMEJVdaUo4g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,46 +89,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 04:56, Zi Yan wrote:
-> page->private should not be set in tail pages. Commit 4265d67e405a
-> ("mm/migrate_device: add THP splitting during migration") removed it
-> without a proper reason. Add it back.
-> 
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  mm/huge_memory.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2bccb0a53a0a..037d67fbec6e 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3594,6 +3594,16 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->  		new_folio->mapping = folio->mapping;
->  		new_folio->index = folio->index + i;
->  
-> +		/*
-> +		 * page->private should not be set in tail pages. Fix up and warn once
-> +		 * if private is unexpectedly set. Do it before swap.val assignment
-> +		 * since private overlaps with swap.val.
-> +		 */
-> +		if (unlikely(new_folio->private)) {
-> +			VM_WARN_ON_ONCE_PAGE(true, new_head);
-> +			new_folio->private = NULL;
-> +		}
+The goals of this series are:
+1. Lock issue detection
+  A number of syzbot reports are incorrectly pointing to the mm exit as
+  a source of the locking error.  The first three patches attempt to
+  help users detect errors in their locking - but they still have to use
+  LOCKDEP.  I guess it's still down to hope and prayers.
 
-The unconditional warning means this is not expected to happen. In that case
-it's odd to check and fixup always, but only warn with CONFIG_DEBUG_VM.
+2. Documentation fixes
+  The documentation was lacking clarity, there are updates to try and
+  help the users, especially around the erase() cases.
 
-If we are reasonably sure the current code is OK, and only want to catch new
-mistakes in development, we could just VM_WARN_ON_ONCE_PAGE() without fixup.
+3. Two benign issues
+  The cyclic allocator may have a race, although no in-kernel user can
+  hit it.
+  The erase functions may cause allocation issues if used with the
+  incorrect locking type, but none are present in-tree.
 
-If we are paranoid, leave it as it is, but drop the "VM_" ?
+Beyond these goals there are some test fixes, some general speed-up
+patches targeting extra work and cycles, and dropping dead code.
 
-> +
->  		if (folio_test_swapcache(folio))
->  			new_folio->swap.val = folio->swap.val + i;
->  
-> 
+Liam R. Howlett (Oracle) (18):
+  maple_tree: Add rcu locking check when LOCKDEP is enabled
+  locking/lockdep: Add sequence counter to held_lock
+  maple_tree: Add write lock checking with lockdep sequence numbers
+  maple_tree: Documentation fix
+  maple_tree: Drop dead code from mas_extend_spanning_null()
+  maple_tree: Drop MAPLE_ALLOC_SLOTS
+  maple_tree: Clarify comments on mas_nomem()
+  maple_tree: Use prefetched value in mas_wr_store_type()
+  maple_tree: Optimise mas_wr_node_store() when not in rcu mode
+  maple_tree: micro optimisation of mas_wr_store_type()
+  maple_tree: Add bulk parent set helper
+  maple_tree: Catch race in mas_alloc_cyclic()
+  maple_tree: Document that erase may use GFP_KERNEL for allocations
+  maple_tree: WARN_ON_ONCE when allocations fail
+  maple_tree: Document erase and allocations better
+  maple_tree: Change two GFP flags in tests
+  maple_tree: Fix argument name in header
+  maple_tree: Avoid extra gap calculation
+
+ Documentation/core-api/maple_tree.rst |  21 +-
+ include/linux/lockdep.h               |   3 +
+ include/linux/lockdep_types.h         |   3 +-
+ include/linux/maple_tree.h            |  10 +-
+ include/linux/sched.h                 |   1 +
+ kernel/locking/lockdep.c              |  49 ++++-
+ lib/maple_tree.c                      | 280 ++++++++++++++++++++------
+ tools/testing/radix-tree/maple.c      |   4 +-
+ 8 files changed, 295 insertions(+), 76 deletions(-)
+
+-- 
+2.47.3
 
 
