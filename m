@@ -4,118 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68918C43327
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDD43C43458
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 15:05:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 62A616B0131; Mon, 29 Jun 2026 11:04:33 -0400 (EDT)
+	id C6FE66B013D; Mon, 29 Jun 2026 11:05:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 601E86B0132; Mon, 29 Jun 2026 11:04:33 -0400 (EDT)
+	id C46A46B013E; Mon, 29 Jun 2026 11:05:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5188B6B0133; Mon, 29 Jun 2026 11:04:33 -0400 (EDT)
+	id B11566B013F; Mon, 29 Jun 2026 11:05:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A4566B0131
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:04:32 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6AA7AA0198
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:32 +0000 (UTC)
-X-FDA: 84933271584.07.1D1CDF8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C0F7180009
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:04:30 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDdHoGFh;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782745470;
-	b=LOiTfsfjj0KwlC+CdkhzNwe6csIVdfh10Ih/dEHku8n9Dgc+MJy6EAOJ2fqIzIcFgfC9q8
-	EnEELtPdZEvEwNc56Aj0rWS6G1pMDTlHzuBAGoi9JaIi0hT9tztt0mBeUYETNNq60zMWmh
-	GLVKDnnyulqykSsmowo6T5GI7Jn0MKc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782745470;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A51E6B013D
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 11:05:44 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1212F166860
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:05:44 +0000 (UTC)
+X-FDA: 84933274608.11.DDE364A
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011009.outbound.protection.outlook.com [52.101.62.9])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 41AC71C0007
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 15:05:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="qybNC3/0";
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782745541;
+	b=F7O/m5wtPd74n7RKswtR4lfNjxGw/dU58t4yN6bv/Ba5tr3vQb8qC2M/G3edyeHy6t+z0I
+	1nV1/Q8qOuqH1UGpeho6G7GJoN4OEPRdYo47KJogZWhsnVQswg7l0gCwcMvuV7Q+AMic+x
+	FOi6pHc5ZBS2sBg8xLR3f1G5R21VucM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782745541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nA2C3XBTN1q0WcJk6ELo4naB4k1FNURRRYd8Aaer7J4=;
-	b=SmepU80ofIONMsOfUj+2s5VhwD6g+JGgUYCehOWbhqVDYowjN1kbIXuUs6mUtJcaag+AcX
-	Ug6NhzqoSyuXt92RQFIqFpH15cm79NkixFBCHNmMUVJSyKPhFkYHuijBKeMUWzM6Wl+4hU
-	96xGVCav/oMR/JHVPWrhoSgqWy2ORvg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aDdHoGFh;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D779601C3;
-	Mon, 29 Jun 2026 15:04:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447B01F00A3D;
-	Mon, 29 Jun 2026 15:04:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782745470;
-	bh=nA2C3XBTN1q0WcJk6ELo4naB4k1FNURRRYd8Aaer7J4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aDdHoGFhbHBHr9Wo2nZbV+UXVCXPYo+/kr/CvVZZvKtagVRqkoFHd0CJmm1V4rkVj
-	 ABBHKI3OCUZWK8YPsNmTFfaxkGTbnrpQO4HPI5WM9D02JzkwwYwms1yiRb5bW8wTC3
-	 brFIAueYWhP0KB56B7ETbMcWd8XVHuhjcOc/PbV7ol1U8ogSL78VtSlVAAf7arIxux
-	 9wB1+OTFwTiAB0Mri28H7PA2z76FQYL8d4zmGSBrMLF1uYAILp/uvBJWaCtgtkzj3R
-	 aqcA8RiQ4+xzFKXeaHcxvcqPXjc/eW0CvFAyKxsw4SeXf57PlE9v3XbHQHmSWkCDDM
-	 8WfSrSn2Usi3A==
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [RFC PATCH 10/10] tools/testing/vma: expand VMA merge tests to assert virt pgoff
-Date: Mon, 29 Jun 2026 16:03:50 +0100
-Message-ID: <4a9091aed50a851deac9947523ee8a08f4183113.1782745153.git.ljs@kernel.org>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <cover.1782745153.git.ljs@kernel.org>
-References: <cover.1782745153.git.ljs@kernel.org>
+	bh=goruWoZKFx3fwB4VkFUgTY6Q7nwFo3OVqAwt94qcX4Q=;
+	b=yOSC+Thp/7qOuDMXlfUVD4siLAonzn5wp+yRecAhiqLlhED5oS2vQ23NOP8g+z43FB2jAD
+	WsmGSbebuahRvIctNNm3P5YsfX1GSwpqkkF+WqZG/v69DYomDcokVxHj+gHE6pRFOXxfv5
+	TfX5WysQ/5ADSnw9zZIB2N4kqMLIQ4o=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="qybNC3/0";
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.62.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MYRJQ1A5oc/jeW/dFHLAJrH6QwE+DGGugmGIs/Pi0NHROxSTpLlL8uLQ0GhTFhXSN5xNmeJYSvypEiiE9KuAulkjoHU8muB0xR3UYiVL7Yl99AT7biu/gZVhX2L0ETjN4HSboPwU31AHsKMqLDw6M4KG60tu6UHrhAgGNKQvZKa+JGOxy/kbdwUIfWyu0PRljjbYLwHjG/FZKxD9mvnAB5AH+UyQGU4zs8QX3O/zIcJxdhLf1t7NnCMS8/y1zYVt82qoPW70Rltm4Vyo+f3JM6Z1cQG2s4J5am8leb/fpPWnjonwsC+aML4QsBQdvnrZTdjOTn0UgHhH5N8QUdEjmg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=goruWoZKFx3fwB4VkFUgTY6Q7nwFo3OVqAwt94qcX4Q=;
+ b=KY37gp78ew/X7ITp5za1ntrCemkOuaRvmeyOzwKayQf/wqWge7nY/EpZ1eQ89zU3MuCBxXQ7Bd9FjIRxbyDqyz4jdOtnmtql5cEEkgiHjKTS/cJf7DOb4ZS1ld2DZDaFcGlycwES0qMSG7Rtda3PR3tCLhkVzRC3aj/9DNTT5YsL1WXxayjtebnKF0EBJzwCUYcom71EeR/tSFq+00SHwJ5JyGUnYA61tHWR4cbitYYETXuhAhrVYjJXdlg9DH6/n2kj7rX92z/r3WVzCKuGw71uTh9F1Dth4mFNj8ZXt3QvrIyeW9Mz7uf31WMBWeQ4i1a/+eu61vn2I3ZExI963g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=goruWoZKFx3fwB4VkFUgTY6Q7nwFo3OVqAwt94qcX4Q=;
+ b=qybNC3/045TriVezQ2wL7Rh1ow8CubGBYwgmesnWjuivGrWdYQzKlwpGG9tT2iQmN//9/s2c1NQiUmZbK6V9mspLg58ls01GyLr3VM88B4eKPWd7HhfXXg43Up5KjYLBMIyZTr3JtAV/wwY0IyfHVse0UM/E4gQdtttv/zeXxRnLQhMtuDbyODr/HWjpzI5Qha54F/r1B8ZATYyWO1Z+cO7HFxlCQea2xeKwpz8PpsauFOtyvc7c56q3MEe+lMaEqrEZ3reTmtehE2X3kQB2W/jkAqdop9nElNk65zx1vv5AynsyPyZMh8gdYRQn98Ycu9+P1OObozL6wdZmdfxYrQ==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by LV2PR12MB5990.namprd12.prod.outlook.com (2603:10b6:408:170::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Mon, 29 Jun
+ 2026 15:05:35 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0159.018; Mon, 29 Jun 2026
+ 15:05:34 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] mm/huge_memory: add page->private check back in
+ __split_folio_to_order()
+Date: Mon, 29 Jun 2026 11:05:33 -0400
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <F050B6B0-AB3D-444A-AB40-380C7191EDBB@nvidia.com>
+In-Reply-To: <9fe5173c-4beb-42fe-8f7e-385c609f899f@kernel.org>
+References: <20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com>
+ <20260628-keep-subpage-private-zero-at-free-v1-2-f4ce3930d10f@nvidia.com>
+ <9fe5173c-4beb-42fe-8f7e-385c609f899f@kernel.org>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN2PR11CA0025.namprd11.prod.outlook.com
+ (2603:10b6:208:23b::30) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C0F7180009
-X-Stat-Signature: xyyxbn8kd167g9ghw3j7u5cm7qafrkib
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|LV2PR12MB5990:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12e34135-4201-4159-8986-08ded5efdef2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|23010399003|1800799024|366016|18002099003|22082099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	udu8HTQIZBLj7rhqJWpTjLsWp0CMRcb+TcDIOlt8NLNU07LpvseZsKaMI4tfHNj7M/17GPxXauEEV/PlW95xUir6fVwzcjfG4/9hWGhRxXnezCeJvgMYEdyb9lhJ4MxYQwjKeQ1NfFdw8b3OMz7bg2x4OV9ve5PPo7EihUxNoZToQ9HFOKx6h8faZtGn77mCWw1wiUg90Yk+Qf0KI71BdHxn/UuWc9m+fY9aG5QowlSXG89oXPSGm1vYSXrzOkz7GN0V2moyx/U4mXtdB1vXZ79cUXceKizJcFR4N9BsWKRaz9W7G+5oonbglyYmT+ew38n439EAUdko1KhV/HRognE5JDtTxRufArI+2SIqYQZsnXRQQCwghaehL7Ek0ZjIYj3ig6N1PzTx75Ef50vrzEw9ioGZ6mEl98SdjKIbtLkyCJYQ5N8zTJf3tJqZsI9hxdH2jyK8r3RosLa6yjZqEVTVYgbOXs9BSj63MqcVHahj6GlXXPxZqgJ9ky6ooLpKbcqllX1DDJJK44NuUF1dP075DFsp5SUYuUIms2jc5dMFxzt41JARAbSHznA/vW+OY9Dco9yaJwCuPdjHvnSk8UjzQSV2LHuouy/5hGZx5Kps/pEETsSDT7Lqa55zMLc4Z7u2l92TkzhIuV76nDFRYZYPqFbgW1r+UbSCGpBaKfY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(23010399003)(1800799024)(366016)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?IU7MOurdNYm6htQMk9zJRyoGv9sLyMkBpO5kcc58W1TCdiCDlJ1R8J/BUOql?=
+ =?us-ascii?Q?8kC4GdQytUtmyWl2MX8Ui9+QRQ5seqTVrnKFv+Q5SdNORWwQyH1X02W4yNjJ?=
+ =?us-ascii?Q?hxICTBPA+hEP6T4WHyzqQIhYYn1s9vUUZMbG/TYQYOhy+o+YkwMPGwYl00YX?=
+ =?us-ascii?Q?WAfRb461UnF/lReZpHg6ROzbRfyiuXNMBS+yBXlcXQVf1OyXmg6iHnQmLs5p?=
+ =?us-ascii?Q?9s7lEXG8wyJczeMkZUhiSlO540w8vsNRFSJjRfn7Wqqxa51TgJX6pH1a+o+S?=
+ =?us-ascii?Q?pZRHvSrp0KggBuZbE9c+P4DSXIpIAO6lGkN/wWDNXR4Y3J79ATQxy2MY3FWX?=
+ =?us-ascii?Q?zKqXwF8iTCuyPSfSFPLfb5cwmWQMCR4WchvlH2zINfcHpiKT9Z1OExuVh1HA?=
+ =?us-ascii?Q?EZHqssxyWyrzkZqWuzsXCogA0jpxqLGinLb+4iyO4oiEF/qPfQ3XiPB7WgJF?=
+ =?us-ascii?Q?sV1MJsOPLn253wvvS7zQHkjijiG/w7wKklK7IrccCmMIisuxqFhooCrQTb/Q?=
+ =?us-ascii?Q?rfXd1gs6YrJVXCyt479anMV9+t5oxjoSU1U0U8V76aTBV72FUZtftDU99u2s?=
+ =?us-ascii?Q?O3Hr3Pgo7+l2zR65DPsIr1f37lvPl/2hbBNMGUTUbD5UmOGAbIzG35KEVV6g?=
+ =?us-ascii?Q?o9vzpauaNm/XIJcBmRA0VJ4wam6vxlB4Zsiq36VqUC+Fr/jEvYTQMvcf2hTR?=
+ =?us-ascii?Q?LwAA6iIe71WxMcIZQnQ6rfQVl9fkCwt/b2KfUCw6q6nrT1N2Wg9WsEvecep1?=
+ =?us-ascii?Q?+xlIUc3F1R1qzwHUSvyIWj3ruNGygiE2vF/kCUlMTQAUwbqTZswR4EtU7XOi?=
+ =?us-ascii?Q?tYyJBB5TMz61fE5hU9Qum1+JYNAhRGK6DtVG9k04/PSNdXDTO/+B8vFUoSUh?=
+ =?us-ascii?Q?LYxH9Xql/9E1HKatr8SjBvst+AP7yXG2Yfb3I/fc/2WzRAffVYHt30sJVnwc?=
+ =?us-ascii?Q?rfJWwTuVLr+H4DlHfDb239p3kYWpY9Io2HHivAfdjz1ysZcJ5MPqgEjKSVNO?=
+ =?us-ascii?Q?LJxGXuKvMGrLUx6PzExDxRtEr5DyebUeh11o77YFw50cKc+/haur4+qT0104?=
+ =?us-ascii?Q?muc+asNniHwyqutwKrydxbsVzchhFBmLG17RhsY6iNjPRUW9Xnpbh/MPB/eN?=
+ =?us-ascii?Q?VEnrgpCOZzoULbtAT72xK1Loya2503jtkx0XU0HRbokNueLeHAPQWnU9VPmP?=
+ =?us-ascii?Q?7iaTxE0owD7sbNiIMjGW6E9kJfC1C1mq3+6n5G0GKNa/ZDrWZgmJMpPgDJ3F?=
+ =?us-ascii?Q?z0C0PAnFdRlKypjk8F2escS7K5guP81ctgCkK0vmUACg9ZC2wUe76qZWVr0E?=
+ =?us-ascii?Q?Y4KXy3DLTRYPwbuSMS3U7sVUYmGTuN9CyX2A5rRZAXq4u49DjSqVMDO8+5e5?=
+ =?us-ascii?Q?I3dcK9zoi0e/qQsergGGeozjRDezGnTxbxRSDS3shx1702c3yV2Q1/jjh/qd?=
+ =?us-ascii?Q?KT5MWoq2JTzal6IxOSfaCj0UGAfITIr1OYsGRGEJlnnoTfWPFSf5YAF7pnae?=
+ =?us-ascii?Q?xJmwVnmHdHlG2bZSLRZP/p5CGLKU3MAYp1zZ6aHzl4mwTtfvnibusW4lcLIr?=
+ =?us-ascii?Q?UMuh0LpGns+0lqx7ilm184SPgm5Hn8cUZTLzUs+Nbm7S0gSDtMyl7i78KUlx?=
+ =?us-ascii?Q?y2rPGX5BEKY5k9YW9SnB2JduTo4DVkjf9SQ6Sy9HgmpGknCjggS3bM0Me101?=
+ =?us-ascii?Q?VNsJ3W5cMcLnWRXnP/WP+4YB+sG/22rBM6x2UF45LiDc6UpG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12e34135-4201-4159-8986-08ded5efdef2
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jun 2026 15:05:34.8764
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4wz1pN1ff7yPrl5418NlmGaBeDmpPD0TqLUXcQ89FAzipyu5q/AO/VqWjC+1bLJQ
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5990
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782745470-584825
-X-HE-Meta: U2FsdGVkX1+f7BCl1OJDlPRezxjbkbSXtrb9gwdQSDRi8LQMWw5MwFXT/a6UBKrIv+WxnOSRTAUqxqZRRQJjkAxnB0vZoqzGyZXJosISkbhrT/0EoR6HjTmY+Lm+3sWvuOxOxFPJZb6xztbZ4lkj8XJ1GwNSKGM38U2pWvN4Z3JpNzBfBccuTKgEIlm8IWQV0d7UK9bdRZkSzmfk1snh6roY6mMcCuV1gv3OWsm4q5Bf2QXxuEJtGoVOhigwEpScGuL7V066jvGyZBR0+E8GB5WZxXIqvVoXUoil+ibfzlz1nbYu+tRXj+HMM/qJ5CPMElrIzHBJSnovewDYorkiQmEX/TDYjiZ/9bU8bqIV0IeBAmUcJbzkLSRae6NWv4P/59EQ9okZys2ONq2lhgouf9NPMC/rzGL75cR0HuiOseWUQW1/+Drb9jg5PIVoemYS1ayTzGz8vJRJBn2g+Y2frNCClv/MxWm5lQRgprQzAVUIdoqzA30GmdiNBDVX2lxJbaKcQkj2IHpNMO4BlQ3TePIWBl12A6+0ag0Rq/eI+NM25a+qSrFKLcc3lK0hGRMtmb2oSQTbFfIuNqdoMd5Db2IGKSjFsHRJ+XXX+Wi6uY0o+7ELbChNVKgTtMV3KwYr597MRyICYaePv25uHgvDNwxefefeJSo8N/tqRqxrTfdVnCsnzIQpX62iE2HOMH79D49ykAhcUQrh9QqPtdXXnS0PumLtmEnL5x9S9TDh1VcqcS45Pp1wi5Zhw46+3GxpDHD3cE6bZOm84zC9rrlQ1fpDy8zUpa6YSP90lE4fYsPzmO0l8hD+xoxO6Ms1WB/f84tH/rmZN6DQFaOsDOILFv0adR3N8s7OXk5pRezpHlYze2NJDHXB6N9VHcuurQaGmwI8Rqzp0V+98Zs7yXUtHKwMpgUkFVIAC0NqjM+hiY3w94apnPJWhwOGjbDSoUUYAwiuHe4aTGzpuSrPH/+
- ZwLeGCCY
- VzRd6YYwHN7A4putijtC7bhWVSuPxkGGBnl0WisKomF6aFshQ2SEd/oWcNY6wkwZMj+iNpmm8sa0pPm+utgMUmwI9Zt1HkW3L4S0R2lxtealY84exEcMpxx3v8zP4OIB1wxPuaZAvQLFCzi5U2lOOJwoBkTw0k+cU7kbmrwq0HKXbNadu1/CkSqfelySW+Cq2N42QC+EP0cXCu3/CsfgI5OPyhJNtW/C/rWyuknGWo0FjuCxqSxYca4DYKgI5wpkq4r47HXx4U3fUjf1/RhfkqPDav64Zdf+Ukl6ZjPNUqaQM8oir0S6qxdk4wg==
+X-Stat-Signature: 4gwpxe3ab68cxxr4o411jxiyz5hzbo4n
+X-Rspamd-Queue-Id: 41AC71C0007
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782745541-236231
+X-HE-Meta: U2FsdGVkX1+4O/mONlDMzofBpo0KzIFMySTf7gfJIU10forAfh2HjHCCtqZIRghZdixU4jldyOeNOJXtqp1gAhvD22dNDscy5FlGLknJx29Riz8EIE0FTHrTkdFUFAHQxlXmtSjlr0sVzxmCPvem1jkK7ZP/mEAB4TUjk/5hRxoK601eJIBXxp4QNTemzZ9rTPMNFwaKd0cOV59xEUV9mLWRnaMQ0eJSyWZMMmfv4ifyUm77cDMn9Fqt072X+wL9XveGHqBPLLDVb2b+GE0XFk/rY4p3uzxWyG+zFJpfZoSOFQYonpWX3wqCfxjh+AYSVDpJ0QhWFw0B3SqBWdVlLXFZFcUSALFowydC8/purCSXqXCOpvrlAVQZjj1RRvd/yWx+SKY/7wvLjnt1swQmx4smUkE9uxm1uuqO72MllWzM0bAUetJoSSlBrnXWQSmOcXzHu+Hl0UkCTkL1hAZqN+acSCyXEjyZgtzqmngyhiOK5D2sR495rmewz2P2udTTWhS3NEmZn7Kq/OnUIUv9tshApgRer6t0g8iXNPK9I0jkYUHqdOAatLVeiNOsW98KMC44wNOLnErsa8idwcu1dbgdZCpcZqT5glJp02AOkFLdGDKx/z2+cMF9TX3B0YGpVQjwZlIePpbldhzXSQO8gTI38ACy5cFpGPLllvxjCQIYQr4DKiOEQj09qpxcrwjy1s9fDtVE/RZzeJCUN0p/IK8LHxhFvf625zKWOQge4zGF5ci5KQOFL4zcgI3WEBdFQpgWRLkflNHSHXole+hmHPwYe3ZH+uOCTMkqPjP+c5/ePS5SoqbQ5V+OEHtHBxDB1aehkK6nqxbussjMTZjvMR9QhVTmL1cAJEiShtk7AEWyT69+9dK/hj+pdnXKUyKA0muIsY5MHSSxe+thJZTLESuXmMOZMZl3Aln3OFiKux48XGcRPemCi4LCiWGc0v+pD97d1oRACU+SKCHUnSN
+ vEsjG2hX
+ Wa6Qt+930fZtNPnjkWYczkikzHbCtzZTNBwc+4QeOZVyS9Ff6vaJjONs3CeH1ZptLe3JTGD05bA35l7humWNjwk4FrVe9hylPzTzIDkT2zI956B3GzRXTHzbFOY3ygJzjB5nEXkrYE+8nO61ymUZU+gubRTGpULTSxjp1b+n7sgTiXAc+gh0sqN6jCOu/NB3//LntkuJWhdDIyg5cPkWezRGTww+Xt+n201NkcqCpPDw4QK+C50zehNEbp99DdVSqb0NkOG5IFNPeGYBaw7tRUgd2u463EScza6yvkr1DPr1K/vZK86aPGw/bHL1qDxxs3j8mgmIXgPML/gO3FwljZ9k3rvgKSUzwDd/BoWzg/m3S3niZ5urjwRqumZnBlLQ/FkZVgui77ItZG8k5RzUbDZQ33+vnUeXJwIRVlpwMfWQpiskLKGHRyKW88g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,164 +170,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now we have introduced the VMA virtual page offset attribute and update it
-when VMAs are manipulated, update VMA merge tests to assert that the
-virtual page offset is as expected.
+On 29 Jun 2026, at 10:39, Vlastimil Babka (SUSE) wrote:
 
-Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
----
- tools/testing/vma/tests/merge.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+> On 6/29/26 04:56, Zi Yan wrote:
+>> page->private should not be set in tail pages. Commit 4265d67e405a
+>> ("mm/migrate_device: add THP splitting during migration") removed it
+>> without a proper reason. Add it back.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>  mm/huge_memory.c | 10 ++++++++++
+>>  1 file changed, 10 insertions(+)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 2bccb0a53a0a..037d67fbec6e 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3594,6 +3594,16 @@ static void __split_folio_to_order(struct folio=
+ *folio, int old_order,
+>>  		new_folio->mapping =3D folio->mapping;
+>>  		new_folio->index =3D folio->index + i;
+>>
+>> +		/*
+>> +		 * page->private should not be set in tail pages. Fix up and warn o=
+nce
+>> +		 * if private is unexpectedly set. Do it before swap.val assignment=
 
-diff --git a/tools/testing/vma/tests/merge.c b/tools/testing/vma/tests/merge.c
-index ed8fa0d7da97..ca415052fd8c 100644
---- a/tools/testing/vma/tests/merge.c
-+++ b/tools/testing/vma/tests/merge.c
-@@ -121,6 +121,7 @@ static bool test_simple_merge(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_FLAGS_SAME_MASK(&vma->flags, vma_flags);
- 
- 	detach_free_vma(vma);
-@@ -153,6 +154,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 1);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 1);
- 
- 	/*
- 	 * Now walk through the three split VMAs and make sure they are as
-@@ -165,6 +167,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -174,6 +177,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x1000);
- 	ASSERT_EQ(vma->vm_end, 0x2000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 1);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 1);
- 
- 	detach_free_vma(vma);
- 	vma_iter_clear(&vmi);
-@@ -183,6 +187,7 @@ static bool test_simple_modify(void)
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 2);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 2);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -212,6 +217,7 @@ static bool test_simple_expand(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -234,6 +240,7 @@ static bool test_simple_shrink(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x1000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 
- 	detach_free_vma(vma);
- 	mtree_destroy(&mm.mm_mt);
-@@ -346,6 +353,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -367,6 +375,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 6);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 6);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 3);
-@@ -387,6 +396,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -407,6 +417,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0xa000);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0xa);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0xa);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -426,6 +437,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0xc000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
-@@ -446,6 +458,7 @@ static bool __test_merge_new(bool is_sticky, bool a_is_sticky, bool b_is_sticky,
- 		ASSERT_EQ(vma->vm_start, 0);
- 		ASSERT_EQ(vma->vm_end, 0xc000);
- 		ASSERT_EQ(vma_start_pgoff(vma), 0);
-+		ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 		ASSERT_EQ(vma->anon_vma, &dummy_anon_vma);
- 
- 		detach_free_vma(vma);
-@@ -808,6 +821,7 @@ static bool test_vma_merge_new_with_close(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x5000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_EQ(vma->vm_ops, &vm_ops);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -868,6 +882,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma->vm_start, 0x2000);
- 	ASSERT_EQ(vma->vm_end, 0x3000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 2);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 2);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_TRUE(vma_write_started(vma_next));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -934,6 +949,7 @@ static bool __test_merge_existing(bool prev_is_sticky, bool middle_is_sticky, bo
- 	ASSERT_EQ(vma->vm_start, 0x6000);
- 	ASSERT_EQ(vma->vm_end, 0x7000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 6);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 6);
- 	ASSERT_TRUE(vma_write_started(vma_prev));
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 2);
-@@ -1419,6 +1435,7 @@ static bool test_merge_extend(void)
- 	ASSERT_EQ(vma->vm_start, 0);
- 	ASSERT_EQ(vma->vm_end, 0x4000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 0);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 0);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(mm.map_count, 1);
- 
-@@ -1459,6 +1476,7 @@ static bool test_expand_only_mode(void)
- 	ASSERT_EQ(vma->vm_start, 0x3000);
- 	ASSERT_EQ(vma->vm_end, 0x9000);
- 	ASSERT_EQ(vma_start_pgoff(vma), 3);
-+	ASSERT_EQ(vma_start_virt_pgoff(vma), 3);
- 	ASSERT_TRUE(vma_write_started(vma));
- 	ASSERT_EQ(vma_iter_addr(&vmi), 0x3000);
- 	vma_assert_attached(vma);
--- 
-2.54.0
+>> +		 * since private overlaps with swap.val.
+>> +		 */
+>> +		if (unlikely(new_folio->private)) {
+>> +			VM_WARN_ON_ONCE_PAGE(true, new_head);
+>> +			new_folio->private =3D NULL;
+>> +		}
+>
+> The unconditional warning means this is not expected to happen. In that=
+ case
+> it's odd to check and fixup always, but only warn with CONFIG_DEBUG_VM.=
 
+>
+> If we are reasonably sure the current code is OK, and only want to catc=
+h new
+> mistakes in development, we could just VM_WARN_ON_ONCE_PAGE() without f=
+ixup.
+>
+> If we are paranoid, leave it as it is, but drop the "VM_" ?
+
+OK, let me drop the fixup unless others have a different thought.
+
+>
+>> +
+>>  		if (folio_test_swapcache(folio))
+>>  			new_folio->swap.val =3D folio->swap.val + i;
+>>
+>>
+
+
+Best Regards,
+Yan, Zi
 
