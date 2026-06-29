@@ -4,201 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F461C43602
-	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CDE3C43327
+	for <linux-mm@archiver.kernel.org>; Mon, 29 Jun 2026 13:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03D566B00E3; Mon, 29 Jun 2026 09:56:43 -0400 (EDT)
+	id 324856B00E9; Mon, 29 Jun 2026 09:57:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F302A6B00E9; Mon, 29 Jun 2026 09:56:42 -0400 (EDT)
+	id 2D43B6B00ED; Mon, 29 Jun 2026 09:57:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DF84D6B00EB; Mon, 29 Jun 2026 09:56:42 -0400 (EDT)
+	id 1F3B26B00EE; Mon, 29 Jun 2026 09:57:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B37116B00E3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:56:42 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 462801C01C4
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:56:42 +0000 (UTC)
-X-FDA: 84933100644.20.0708EB7
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E2F911C0004
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:56:39 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F20D66B00E9
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 09:57:05 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7D4B216330C
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:57:05 +0000 (UTC)
+X-FDA: 84933101610.27.FA1C283
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8252D1C0005
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 13:57:03 +0000 (UTC)
 Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iTLJp6dT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OQmkdJX6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=c8FwD76f;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0oUBUqEI;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782741400;
-	b=XBClh1hWi77aLrlt77fVfAhBI4O0DBfM2zmS/bExWcn+85/tAlL2qsheIvFZ/YBTEgB8Yp
-	Pgw52LtELhQr3PVrMklmquma54dXex+OxUAMeFGf9ApZ3BayOoDHGY+Hn/H3rdiSzxZYej
-	5S8d/jhhJma0PVJ8LMdJHKm8E8QHKZE=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782741400;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RUu9Xm6Z;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf21.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782741423;
+	b=JZ7hJS7Aui9gFtcDoENm0rBZ75QIKaBB9krfDSHNOcN/hZexREKAoTNKgJLrRB6rgpLTrN
+	LRkNf44oLdzQmPjDtncBCNsMRISopkQsAO8u2lSxcFLL3sbV0V3HiQkx/bQosZ4DUs49h4
+	CCV8GVuhsS8rvMyfsNKkuYarr6TX8EM=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782741423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
-	b=vbMQ/wPe/W/twwXyHqg4+IPIXAwzGwWvt/3bNNlor741n9jsIKRjsqssOVhhjxlNYlsJPQ
-	LcMlo7KV57dsL00hCkL5RVKHD1ROiNzGMxhZuLWOh6VbiO8YxF0o0urC4/c5fjb/OBEXft
-	yJebmAD0QK3+2+Iz/L3XrwecHtXllK4=
-ARC-Authentication-Results: i=1;
+	bh=jdFo5cH/XscFmXKFc2L0Oc/loLftDgeJhJslg7IrnE8=;
+	b=dHI6lx2rUDew3oJx+Wx+6gB9SoW6OqPMmpYah6rd4hc8SKuLLfvvkfWGJSKDW4sQ4MYuUZ
+	6nuBqRn+5MIXNOly8VWBzoMFX4nUjI1T5v+bL5HbvdvD59B6s/DrNWA154SkLFpjsdkx9F
+	rm3BmlhCsyEPTGTRxE/q2q3cB5vmwnA=
+ARC-Authentication-Results: i=2;
 	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=iTLJp6dT;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=OQmkdJX6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=c8FwD76f;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=0oUBUqEI;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf21.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id DEB08759F1;
-	Mon, 29 Jun 2026 13:56:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782741398; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
-	b=iTLJp6dTtPrWQYOFyPqFVjgKvk21ha7IRKet+2dRtaNfbz8s93LWr177MlCDv93Lw+QRgD
-	7o1KqI/bt1LmxMLueusI/725nXlN/PgmszTfVyozUBHb6Qi8yVL//+sb4YJ/wG4ME16N53
-	RIAPJVnA6x+MsLvQe0ziepnssaApP5Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782741398;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
-	b=OQmkdJX6vvxzSc5XuWuW7iqNsLRnbCxEqoEScPBsy0F3tBM4YLHsmsqy0SrlxzhAOGwRGX
-	xhKvHI8OwBFGKHBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782741397; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
-	b=c8FwD76f1Uwd6aWDKF6SNUoBEdd2a4NDbp8I0kHWLVFS513I7noTYBT1CKVGVbZLiFVsHG
-	pD06GBDt/jyh5PfkHZ/Jefe0wtV6rATtUyZvbZuabE43i6zJ0mEIuDaNLER8BdqsrSK6J8
-	06M8bH3/rTealQHdY4kKQ1MBnzVyIOg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782741397;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=wif5TkOjpA/toqZALFTtcoHHCFCpNXj/ZtBXBdU8ofc=;
-	b=0oUBUqEIguzuujB7xM2VRDIjsqG4lJtIX0A2z5+9RGQsCFq29svGSk6y0ZdWklp8T5lnNO
-	tljnfWx5rpptL/BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D4D6E779A8;
-	Mon, 29 Jun 2026 13:56:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id rfu3MpJ5Qmo6bAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 29 Jun 2026 13:56:34 +0000
-Message-ID: <21c4d96a-cd1b-4c65-8a66-2223df3b6109@suse.de>
-Date: Mon, 29 Jun 2026 15:56:33 +0200
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=RUu9Xm6Z;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf21.hostedemail.com: domain of alhouseenyousef@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=alhouseenyousef@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-80e46c00f3bso8039057b3.2
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 06:57:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1782741422; cv=none;
+        d=google.com; s=arc-20260327;
+        b=R+RlXJ/xNy01NrlkREkYViyIKyEp26QIB4FrVs6XycxIgRbsugrSssyfAlLWp2byzC
+         XsCF4+XVIQgftP4Rrn5D52/QgqPNy5Vk0lpijw+5v7ji1giowT62NWs7oxKecLw2OhqR
+         k2csDP5hDl4wvmHh97AYuhdgVR27MlgR4u/5lvobOPXxlBoM0g2hKhThDX0AcvGSz4hR
+         bPztr1/+mQknm7YAfZ1seZFzJGRObWPfZOZYknsaOMMR+ZaF2a5GaTDLN77kG1nczI6y
+         xHD9ygbiqKNrZMDDbZy9dStBrimuoM4NKgJZoYO5yD7ISyyNZVJqNKhp8gnGa5PLVj0M
+         zVmQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:dkim-signature;
+        bh=jdFo5cH/XscFmXKFc2L0Oc/loLftDgeJhJslg7IrnE8=;
+        fh=CCgchuCRTcTROkBoqrW5f3RaDE5cmgZDMbcQkRYS+l4=;
+        b=KnvIneLM+fGUv2Bn/EdCiSzOYyKVoPW02w3JEM/6HCpq7MG91SJHjg1wcpV18IWW8a
+         /8WkNOp3v5/+mUzhjJ+Khlyw/O5nOEA/EUCfYHZmEBa6CHCXlmzQ94UuYRPOx2YOFIy/
+         hOyxq5DawVSOE6W/65K6vzx4wk/nxO5ClCEYbqP2NAHjaL87MM49CCAdUW3RKEfarvID
+         thYfDGJk+Wm+gZ5W+ir2Z+lcpTYCWzT7aJ4O3s+avRQDGyKQzoZcmJQW6rknCVjdTKLP
+         gqGj3i4baOcsXAxACCaN7j8sjgHiehaeaSGs4AiRYwcPlWr8OEpmroQlzRPWIz3+5CZ+
+         rKQA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782741422; x=1783346222; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=jdFo5cH/XscFmXKFc2L0Oc/loLftDgeJhJslg7IrnE8=;
+        b=RUu9Xm6ZNpzcLbHetaX1Z5s2SN/RgEOnmBCUnSDzP31umyKIBAIPEUkCFsL6K0g7DL
+         3Wh9tCODB3zHUNgB55pIfn9rNajpU9tmhPJ4wab06FcOAhaXIBiJcU1EMkLhrbUR5WFG
+         hKcgmDNhU/HhFh2sjaRr8KeVu9NT0/dj3tVqIk8GM6QQyE65VHbT12kIZDNSBZELPTci
+         KMVenWkmFid1fYEJbuz5pWJkt11m8wW6fTIknv033BlY45zV59YoPmriRYgO95GrsgIP
+         1yuksBDs8fpUE+610hEw/Sa8p98arIr0B/QDb6oB3n09TtEsFG8g0ir8jxbGwM/bH1Ag
+         O6bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782741422; x=1783346222;
+        h=cc:to:subject:message-id:date:from:mime-version:references
+         :in-reply-to:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jdFo5cH/XscFmXKFc2L0Oc/loLftDgeJhJslg7IrnE8=;
+        b=cLwznlPncf964yFZ1lyz9lJqtSFmerFWE0V4CuA/VPRvLhlda1RlFNfnqM/x93O28o
+         hIXbHJ8WTXg/ZimXlXt6OD8Z4yeXAL4ehEjbBhnvAyJ7JQ+KMczi6PJshuYkR5OZVURD
+         aKog3HOZwg2Kdt7KvT4B79uX4pDbBeDS3bcTDhfHqCOmUe8q8I/YLBeyXHtgJKX/l63F
+         Hcr8FwSThtTBQNrDxRbvGHMXovfcLQB4BsNzDfyIv0aT7sszYuxoPZrHYe5w2/EHWOaa
+         e3F9IeaPEVb3EL9xDnNG67Xk6H4/cYM7J0TYksFVyMfwNYnW5JcvchOTFRsWr5UqyJLV
+         3CuA==
+X-Forwarded-Encrypted: i=1; AHgh+RoGm7Mg5d57DkXd3HqosGtJK77VZ7SNkQrXRJwTqqa1eslSIAn3h0ZjPl8Xg7kTdpe4NqYVURxLLw==@kvack.org
+X-Gm-Message-State: AOJu0Yw3PDQ4IJoDte/xXDbkzJFRuHfYOz3xgFPy9DopVzzKEjCPTeZb
+	DKGyL4INYZ+MKOpeDyHc9BQDGS9zx7SGokW2uTWB32qIQvLATy9qn7IdGBlbsIO0LK7jWzWWH21
+	4w1YKZl9kx78BR0bN0iTl3kfMiW7by+4=
+X-Gm-Gg: AfdE7cmf2qamCh9jfujYx8+aD5ta1q6g+8o1G6zGgUh1CO18sEhkw9Ds2m4DRE3LOAs
+	k0keZJ6EJvCMGzQMgVwWylB7rVFpo5ams+zoKY7egBpBYtHaTZ8d9nnqk4id/GXjwj3ZbME+RcU
+	20Y4d7+Xqu1eUIGUMKuDhN3ImZjzu6eupCuvqVMWZMmIsn3MQr/2mvDeW+vp8tlQnpJ+CkhtSCR
+	r2+CJI/t7Z4L6xhIBkPZbKoS04mNwRhJU8Wh6v25eYk/BRjGvS2Yg/v3s7NoeHQo7ws+HPr
+X-Received: by 2002:a05:690c:6c08:b0:808:f9bb:3832 with SMTP id
+ 00721157ae682-80c7281f47cmr91490817b3.22.1782741422304; Mon, 29 Jun 2026
+ 06:57:02 -0700 (PDT)
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Mon, 29 Jun 2026 08:57:01 -0500
+Received: from 77377267392 named unknown by gmailapi.google.com with HTTPREST;
+ Mon, 29 Jun 2026 08:57:01 -0500
+In-Reply-To: <dde92cd4-c6fe-4339-a892-004ca78ebc30@linux.alibaba.com>
+References: <20260628004314.27370-1-alhouseenyousef@gmail.com> <dde92cd4-c6fe-4339-a892-004ca78ebc30@linux.alibaba.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 19/30] mm: use linear_page_[index, delta]() consistently
-To: Lorenzo Stoakes <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>,
- Simon Schuster <schuster.simon@siemens-energy.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Lucas Stach <l.stach@pengutronix.de>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>,
- Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>,
- Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
- Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>,
- Jonathan Hunter <jonathanh@nvidia.com>,
- Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>,
- Ankit Agrawal <ankita@nvidia.com>, Alex Williamson <alex@shazbot.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, "Liam R . Howlett" <liam@infradead.org>,
- Matthew Wilcox <willy@infradead.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
- SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
- Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>,
- Kees Cook <kees@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org,
- etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
- linux-tegra@vger.kernel.org, kvm@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org,
- iommu@lists.linux.dev, linux-perf-users@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
- damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>
-References: <cover.1782735110.git.ljs@kernel.org>
- <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <bf56e2e98b512962a2fb88900d535a0e9e6769d8.1782735110.git.ljs@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
+From: Yousef Alhouseen <alhouseenyousef@gmail.com>
+Date: Mon, 29 Jun 2026 08:57:01 -0500
+X-Gm-Features: AVVi8Cf117p4oIGfG8WMvH8mjl3V9I8oAyu9H_TLtIAqQHBS5gnrowmyLrhOSto
+Message-ID: <CAMuQ4bWRePpX_R0BcGgvFYuACGPL2e8pVqf=dh54EBteTx-Bxg@mail.gmail.com>
+Subject: Re: [PATCH] tmpfs: zero unused folio tail for long symlinks
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com, 
+	Barry Song <baohua@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: jwyfps1n5bpmdizxy7iogy3skef8k7cq
+X-Rspamd-Queue-Id: 8252D1C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: E2F911C0004
-X-Stat-Signature: zs99yyzyotpdsr4r94k4rcdbz9bkwhpp
-X-HE-Tag: 1782741399-280412
-X-HE-Meta: U2FsdGVkX1+QkZFNMDsnmAtXE3PhlosWfQVNQnAG87ulxxSfU0TYx2HNzLChMM5yr/S/0MyX1L408DffhY9U0EwXMaJRh47SlQ/bbzHCpr6MfSUzFB5SVDWvJF/AozZBEK0h4aYg4mn8Qkcs2fAwFBoLbo154ntWbDPqQO9DUCU/EZyzvz9qnHzQY8roeLlM2trD/fzmrqFfj+GOrsU9CiN5zIEVg5IZc6KP0ocXhJCeYGZ+jtR4Yks0r99R5a23/jzo+EctcPef+d7A4/GxbHmtWMhaZO4sJs/6yUd67yb9B4GXQpp9XQxxmgqOPDbraZGB4A8bygf9tAAMRQv1s5n+JBXapSWEzik8DIgXjOkRwC/C+f7SUf4QxT0Aehd0vOEnEVxGXUPoV+sD+025IQuD50HezyLupeemjSfr10DLewXDH0z4HGdePIMIkYtX8npD8RKUhnpOan52wvHkOvuhSYF7fN5uJbhyIX7TqN0xoxrLFVEGPK9YJmyCxnzzJYJqHCKqnMlVNYRT9qGC9c/u0ILGltcOiF4Rbi5dckmfiJ7NFq7wxh/6fVd64R3BzGRIpX9UqIxSMrz4TikAFb6SVT3Mlxxxov97E60kjEbZ0je2SRO+fV4ILrk93sybXG9YFt9IvImtEZwxt4dyVFH6V4K/5blbztbLl5IR7Gwgj+C6Vr7wFwfh5QsgTIeckcJUzRz2cJiomVWnN7hLIK/0RxUfA9COAI3VpWEJ18c8OsMoMaw6MGeMTftXvt48D9XvmO+s7E7LLYTCCR9rhF6NZb96+yUt8Ls/AEcUP2HZ8VKjVeZBPr0QABECFxYcVKOU/NaFTFDpx2sOip5kc84IzBQ9AUWLa47xgATrQ4ypmpxjvKjrX+m+8ssQmtsAHmWa2zXXeQSGEFId79ITE9M3DM0Zv5n5kxjRXWJYzl2Hw13pyKtCyhUJcfcPi0AqYxzoYavP7Ilo/SQFl0e
- Rjb6AGEc
- Z4ZJB2gjJrExsAQXCyxWGF2h3tjoixS4ku+5Apl1hj16nolgWaxxsjfukYPcTP4UsJxWZmjDQ78/zmRQzU1OgyQKI0mNyOcd+C+GY/TG39A6B+4esIOt4mCl5RkR9hTZm0D9gjE7NiB85vxdjg7lc5ggNxQrovL5KM0ipPez8ujpierdCnj2dYUD4NJ3AtvU6LySnKKqEB93itNWgWh9KwiKT6qGS++IMdPSqrAfOTorC/uHKOc6efHZCWD3A0lpfxGZIKlEml5saPnh5pL+VF29RxBBtg4guEUfNLzy+FoD1hIe3RWkDWt788P9C2SSWyNLsyzxlBQLfB16d67V/TBKpwdfV3gb2DNM6+s5ZXUrB1FnAOhyACOAkVAoIZw0Iz0k4nJkB1/Ffy0wSfXg+wcxNTTGoWHeDr4OfEePko08jkRb+hX/ByamAB7iZrKcv9o7ObZXtN6Fpw2VuX4fs4czLPwaEaMWUiNFFnpMs7GOQf+opAybrL7p0ILk9jMK/QBSXVhFeX7OgI2hAaeHvfoOiisLqpiZulBXX
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782741423-77879
+X-HE-Meta: U2FsdGVkX1/ityqt6FJ+5UaB5iijiTnGLflhweWftC2/S4dLsYWzJlE8KQ4WcM7z2A+wdD5kAFF3s3Do9JrBuXK4L+lv/hwdDlQqvfJ+H2q574wqoBgDTj3yEXLxgHApdUt/8YBeBYDn8nNmDUDdzvz134jLU5lGGvk2ywZOIClASYTDi9Oj0WJhuDpyXpzEFq7PxA7I2M+R7hB22066hacQ/mLCdeGHaJmEbB4XOpXgecTT91NlATBu8J+YjfJe477WOjvMrdh7J45kSkS0BGgoii0+IDXtXKsD+ElniXkjSTLyWWQ291kgmy1S0gkjJoiQhyzM5FMCFLHWN8ZwoWSthlaPL1lE9sB8dJmCcciux597li8kDHnF5llzkajf7IbGkfACbgawA05r2ymKm0haiackvmCclSijB4pMDLNpzDKUc2bs4mnmnfCJpJPG8YYms7VlstiDchiP5KdIh3t99hX2yB2tmV6VwbgCqrIx7GuBLBHVe+3WHrLlAfF/1zSnBRPzovU+RkWzAKxnFEfCVo8t2aogZAG81F7bTadPMD0M6vu8X3yEvuOVMaStWJUv/Gnhg13kJ7w+pyTWVmLnFXBmXmWt9iTU0tYMv3mqTHvd5q8gi7HzYYTPigTcHtjr7m3mWU3lEvWecIaGNyUYZgqeGEjidMJsThFnvlFQEBmYeg25D05GkzqUcWdLmAJ+shv478CLZ4LjOJSjaHixnIqLK5hPEkwYib7vEf9oqDXyWuSXn4hVGRzQZL3T+d2IdYN0AJbPUClH4/qKC/jpSB5sEKGQoJ6WiVynRdSMwgayBM+9A2gMcsmkWY8RJPyeOBEQrjJ/y2q3p8xiv4KchS6MUUX14Nrpp66h1Hk4O009xBv5a/aXOR8Z+L0fv1K3RF74mZjwgzlQ34UWRXaXI9FPJYfBxThvoOhmfORKGLtOZfzOeDma93A5ZN1nqPWtcj7+8GlYRoeV/8x
+ KzbpFoEH
+ Crhy6Jg3D5tZKy2KS9i+Ja9G3JDlssy06DwtxvbcZpK3Lf34SfGVpozVWiVcoCfgVFlrgtmbF1vPuyuBkrqd3B1KHjLKhDHxoI9BTffMsFtfieTzjZa0UDzHZ+cZXi0BnEgDi+LRVkv+y9cnKAKqtummBwFan4ibFm1SA1wUoF4xFDExxsgtJMzlENvsRqTxE7wXcIi/SqB1FsANp+77N9ww2AwYxk1NNOR4NoW6NWiH8i7SC1zQvSbcGLyqTI0w4T0SUjZup1vlhW67aCzKvls+SqHJZfgi/x4XbBDp6zjP3TPr4iy0Oe7Mb+iiN13x09nDI44ufZ1y1Sxi0I4RGuwnmFCZlTL8wOBDLu4PHhCVgMsFTCjOpcS5w6IpkkDS440+xLgGG4eKJk16Om/CFznQzXsl30ufYpN4LaekyE5nLP5AG3+2tUjD6AE1tY626/M+vWAq30FC4DApyc7RhohxRnl398ltROuJe2sJeiO/LAfaL8iveSZmCrxWa7tuqikt042gL8rqn5abIYAnb/zaLZt4keLYiEzaPrItOy4cLk0DauyaTFLEO6m8O0aCYl0PTX7prCM9sXA6F2rww6WAQRopPJoQpHiKQd91488VkOd4ngOwRCzH4h5YsOYX9vEszQuSkpw8riVxbQIwYcr4y+Ur0yRIP9JQW7ln7tes854Ccer9JgqF9G4B7WbSn63rJ2CfRVl1sXn4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -206,286 +140,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi
+I only observed the KMSAN uninitialized-read report and did not
+establish user-visible corruption or disclosure. I agree that does not
+justify stable backporting by itself.
 
-Am 29.06.26 um 14:23 schrieb Lorenzo Stoakes:
-> There are a number of places where we open code what linear_page_index()
-> and linear_page_delta() calculate.
+Andrew, please drop the Cc: stable tag if the patch is carried.
+
+Thank you for the review and for the pointer to Barry's earlier patch.
+
+Thanks,
+Yousef
+
+On Mon, 29 Jun 2026 11:27:47 +0800, Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+> CC Barry.
 >
-> Replace this code with the appropriate functions for consistency.
+> On 6/28/26 8:43 AM, Yousef Alhouseen wrote:
+> > shmem_symlink() marks the entire folio uptodate after copying only the
+> > NUL-terminated link target. The remainder of the freshly allocated folio
+> > is left uninitialized.
+> >
+> > Reclaim may pass the whole folio to a swap compressor. KMSAN observed
+> > sw842_compress() computing a checksum over the uninitialized tail. If
+> > the folio is written to a swap device, those bytes can also leave the
+> > kernel.
+> >
+> > Zero the remainder of the folio before marking it uptodate and dirty.
+> >
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Reported-by: syzbot+bf5586280a66e9ccdfa9@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=bf5586280a66e9ccdfa9
+> > Cc: stable@vger.kernel.org
 >
-> No functional change intended.
+> Do we need CC stable? Have you observed any actual impact?
 >
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-
-For the DRM changes:
-
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-
-See below for two additional comments.
-
-
-> ---
->   arch/arm/mm/fault-armv.c              | 2 +-
->   arch/x86/kernel/cpu/sgx/virt.c        | 3 ++-
->   drivers/comedi/comedi_fops.c          | 3 ++-
->   drivers/gpu/drm/etnaviv/etnaviv_gem.c | 3 ++-
->   drivers/gpu/drm/gma500/gem.c          | 2 +-
->   drivers/gpu/drm/msm/msm_gem.c         | 3 ++-
->   drivers/gpu/drm/omapdrm/omap_gem.c    | 5 +++--
->   drivers/gpu/drm/tegra/gem.c           | 3 ++-
->   drivers/gpu/drm/ttm/ttm_bo_vm.c       | 7 ++++---
->   drivers/vfio/pci/nvgrace-gpu/main.c   | 3 ++-
->   drivers/vfio/pci/vfio_pci_core.c      | 3 ++-
->   mm/nommu.c                            | 2 +-
->   mm/vma.c                              | 2 +-
->   virt/kvm/guest_memfd.c                | 2 +-
->   14 files changed, 26 insertions(+), 17 deletions(-)
+> > Signed-off-by: Yousef Alhouseen <alhouseenyousef@gmail.com>
+> > ---
+> > mm/shmem.c | 1 +
+> > 1 file changed, 1 insertion(+)
+> >
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index b51f83c970bb..b06c1ae2f50c 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -4057,6 +4057,7 @@ static int shmem_symlink(struct mnt_idmap *idmap, struct inode *dir,
+> > goto out_remove_offset;
+> > inode->i_op = &shmem_symlink_inode_operations;
+> > memcpy(folio_address(folio), symname, len);
+> > + folio_zero_range(folio, len, folio_size(folio) - len);
+> > folio_mark_uptodate(folio);
+> > folio_mark_dirty(folio);
+> > folio_unlock(folio);
 >
-
-[...]
-
->   
->   #include <linux/io.h>
->   #include <linux/uaccess.h>
-> @@ -2462,7 +2463,7 @@ static int comedi_vm_access(struct vm_area_struct *vma, unsigned long addr,
->   {
->   	struct comedi_buf_map *bm = vma->vm_private_data;
->   	unsigned long offset =
-> -	    addr - vma->vm_start + (vma->vm_pgoff << PAGE_SHIFT);
-> +	    addr - vma->vm_start + (vma_start_pgoff(vma) << PAGE_SHIFT);
-
-This doesn't seem to belong here.
-
->   
->   	if (len < 0)
->   		return -EINVAL;
-> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_gem.c b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-> index b0436a1e103f..2e4d6d117ee2 100644
-> --- a/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-> +++ b/drivers/gpu/drm/etnaviv/etnaviv_gem.c
-> @@ -6,6 +6,7 @@
->   #include <drm/drm_prime.h>
->   #include <drm/drm_print.h>
->   #include <linux/dma-mapping.h>
-> +#include <linux/pagemap.h>
->   #include <linux/shmem_fs.h>
->   #include <linux/spinlock.h>
->   #include <linux/vmalloc.h>
-> @@ -188,7 +189,7 @@ static vm_fault_t etnaviv_gem_fault(struct vm_fault *vmf)
->   	}
->   
->   	/* We don't use vmf->pgoff since that has the fake offset: */
-> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	pgoff = linear_page_delta(vma, vmf->address);
->   
->   	pfn = page_to_pfn(pages[pgoff]);
->   
-> diff --git a/drivers/gpu/drm/gma500/gem.c b/drivers/gpu/drm/gma500/gem.c
-> index 88f1e86c8903..2708e8c68f4c 100644
-> --- a/drivers/gpu/drm/gma500/gem.c
-> +++ b/drivers/gpu/drm/gma500/gem.c
-> @@ -288,7 +288,7 @@ static vm_fault_t psb_gem_fault(struct vm_fault *vmf)
->   
->   	/* Page relative to the VMA start - we must calculate this ourselves
->   	   because vmf->pgoff is the fake GEM offset */
-> -	page_offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	page_offset = linear_page_delta(vma, vmf->address);
->   
->   	/* CPU view of the page, don't go via the GART for CPU writes */
->   	if (pobj->stolen)
-> diff --git a/drivers/gpu/drm/msm/msm_gem.c b/drivers/gpu/drm/msm/msm_gem.c
-> index efd3d3c9a449..cbf723a5d86f 100644
-> --- a/drivers/gpu/drm/msm/msm_gem.c
-> +++ b/drivers/gpu/drm/msm/msm_gem.c
-> @@ -9,6 +9,7 @@
->   #include <linux/spinlock.h>
->   #include <linux/shmem_fs.h>
->   #include <linux/dma-buf.h>
-> +#include <linux/pagemap.h>
->   
->   #include <drm/drm_dumb_buffers.h>
->   #include <drm/drm_prime.h>
-> @@ -360,7 +361,7 @@ static vm_fault_t msm_gem_fault(struct vm_fault *vmf)
->   	}
->   
->   	/* We don't use vmf->pgoff since that has the fake offset: */
-> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	pgoff = linear_page_delta(vma, vmf->address);
->   
->   	pfn = page_to_pfn(pages[pgoff]);
->   
-> diff --git a/drivers/gpu/drm/omapdrm/omap_gem.c b/drivers/gpu/drm/omapdrm/omap_gem.c
-> index 8e013e4f2c6b..00404fb6c29a 100644
-> --- a/drivers/gpu/drm/omapdrm/omap_gem.c
-> +++ b/drivers/gpu/drm/omapdrm/omap_gem.c
-> @@ -5,6 +5,7 @@
->    */
->   
->   #include <linux/dma-mapping.h>
-> +#include <linux/pagemap.h>
->   #include <linux/seq_file.h>
->   #include <linux/shmem_fs.h>
->   #include <linux/spinlock.h>
-> @@ -359,7 +360,7 @@ static vm_fault_t omap_gem_fault_1d(struct drm_gem_object *obj,
->   	pgoff_t pgoff;
->   
->   	/* We don't use vmf->pgoff since that has the fake offset: */
-> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	pgoff = linear_page_delta(vma, vmf->address);
->   
->   	if (omap_obj->pages) {
->   		omap_gem_cpu_sync_page(obj, pgoff);
-> @@ -407,7 +408,7 @@ static vm_fault_t omap_gem_fault_2d(struct drm_gem_object *obj,
->   	const int m = DIV_ROUND_UP(omap_obj->width << fmt, PAGE_SIZE);
->   
->   	/* We don't use vmf->pgoff since that has the fake offset: */
-> -	pgoff = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	pgoff = linear_page_delta(vma, vmf->address);
->   
->   	/*
->   	 * Actual address we start mapping at is rounded down to previous slot
-> diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
-> index 436394e04812..1d8d27a5ea89 100644
-> --- a/drivers/gpu/drm/tegra/gem.c
-> +++ b/drivers/gpu/drm/tegra/gem.c
-> @@ -13,6 +13,7 @@
->   #include <linux/dma-buf.h>
->   #include <linux/iommu.h>
->   #include <linux/module.h>
-> +#include <linux/pagemap.h>
->   #include <linux/vmalloc.h>
->   
->   #include <drm/drm_drv.h>
-> @@ -564,7 +565,7 @@ static vm_fault_t tegra_bo_fault(struct vm_fault *vmf)
->   	if (!bo->pages)
->   		return VM_FAULT_SIGBUS;
->   
-> -	offset = (vmf->address - vma->vm_start) >> PAGE_SHIFT;
-> +	offset = linear_page_delta(vma, vmf->address);
->   	page = bo->pages[offset];
->   
->   	return vmf_insert_page(vma, vmf->address, page);
-> diff --git a/drivers/gpu/drm/ttm/ttm_bo_vm.c b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> index a80510489c45..88babf435ac2 100644
-> --- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> +++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-> @@ -32,6 +32,7 @@
->   #define pr_fmt(fmt) "[TTM] " fmt
->   
->   #include <linux/export.h>
-> +#include <linux/pagemap.h>
->   
->   #include <drm/ttm/ttm_bo.h>
->   #include <drm/ttm/ttm_placement.h>
-> @@ -208,9 +209,9 @@ vm_fault_t ttm_bo_vm_fault_reserved(struct vm_fault *vmf,
->   	if (unlikely(err != 0))
->   		return VM_FAULT_SIGBUS;
->   
-> -	page_offset = ((address - vma->vm_start) >> PAGE_SHIFT) +
-> -		vma->vm_pgoff - drm_vma_node_start(&bo->base.vma_node);
-> -	page_last = vma_pages(vma) + vma->vm_pgoff -
-> +	page_offset = linear_page_index(vma, address) -
-> +		drm_vma_node_start(&bo->base.vma_node);
-> +	page_last = vma_end_pgoff(vma) -
->   		drm_vma_node_start(&bo->base.vma_node);
-
-Not your fault, but page_last seems misnamed here.
-
-Best regards
-Thomas
-
->   
->   	if (unlikely(page_offset >= PFN_UP(bo->base.size)))
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index d07dcacb76bd..963fd8ded20d 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -11,6 +11,7 @@
->   #include <linux/jiffies.h>
->   #include <linux/sched.h>
->   #include <linux/pci-p2pdma.h>
-> +#include <linux/pagemap.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/memory-failure.h>
->   
-> @@ -385,7 +386,7 @@ static unsigned long addr_to_pgoff(struct vm_area_struct *vma,
->   	u64 pgoff = vma->vm_pgoff &
->   		((1U << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
->   
-> -	return ((addr - vma->vm_start) >> PAGE_SHIFT) + pgoff;
-> +	return linear_page_delta(vma, addr) + pgoff;
->   }
->   
->   static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(struct vm_fault *vmf,
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index a28f1e99362c..55d4937d495a 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -19,6 +19,7 @@
->   #include <linux/module.h>
->   #include <linux/mutex.h>
->   #include <linux/notifier.h>
-> +#include <linux/pagemap.h>
->   #include <linux/pci.h>
->   #include <linux/pm_runtime.h>
->   #include <linux/slab.h>
-> @@ -1727,7 +1728,7 @@ static vm_fault_t vfio_pci_mmap_huge_fault(struct vm_fault *vmf,
->   	struct vm_area_struct *vma = vmf->vma;
->   	struct vfio_pci_core_device *vdev = vma->vm_private_data;
->   	unsigned long addr = vmf->address & ~((PAGE_SIZE << order) - 1);
-> -	unsigned long pgoff = (addr - vma->vm_start) >> PAGE_SHIFT;
-> +	unsigned long pgoff = linear_page_delta(vma, addr);
->   	unsigned long pfn = vma_to_pfn(vma) + pgoff;
->   	vm_fault_t ret = VM_FAULT_FALLBACK;
->   
-> diff --git a/mm/nommu.c b/mm/nommu.c
-> index 60560b2c457e..7333d855e974 100644
-> --- a/mm/nommu.c
-> +++ b/mm/nommu.c
-> @@ -1332,7 +1332,7 @@ static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->   	*region = *vma->vm_region;
->   	new->vm_region = region;
->   
-> -	npages = (addr - vma->vm_start) >> PAGE_SHIFT;
-> +	npages = linear_page_delta(vma, addr);
->   
->   	if (new_below) {
->   		region->vm_top = region->vm_end = new->vm_end = addr;
-> diff --git a/mm/vma.c b/mm/vma.c
-> index ee3a8ca13d07..185d07397ca6 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -517,7 +517,7 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
->   		new->vm_end = addr;
->   	} else {
->   		new->vm_start = addr;
-> -		new->vm_pgoff += ((addr - vma->vm_start) >> PAGE_SHIFT);
-> +		new->vm_pgoff += linear_page_delta(vma, addr);
->   	}
->   
->   	err = -ENOMEM;
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index db57c5766ab6..f0e5da490866 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -440,7 +440,7 @@ static int kvm_gmem_set_policy(struct vm_area_struct *vma, struct mempolicy *mpo
->   static struct mempolicy *kvm_gmem_get_policy(struct vm_area_struct *vma,
->   					     unsigned long addr, pgoff_t *ilx)
->   {
-> -	pgoff_t pgoff = vma->vm_pgoff + ((addr - vma->vm_start) >> PAGE_SHIFT);
-> +	pgoff_t pgoff = linear_page_index(vma, addr);
->   	struct inode *inode = file_inode(vma->vm_file);
->   
->   	*ilx = inode->i_ino;
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
-
-
+> Thanks. Barry sent the same fix before[1] (though I forgot why it didn't
+> get merged). I think this is a reasonable fix. So:
+>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>
+> [1] https://lore.kernel.org/lkml/20251224020424.52976-1-21cnbao@gmail.com/
 
