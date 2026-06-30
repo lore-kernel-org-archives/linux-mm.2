@@ -4,85 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86857C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 03:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB00C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 04:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 484286B00AD; Mon, 29 Jun 2026 23:58:59 -0400 (EDT)
+	id B74F36B00A3; Tue, 30 Jun 2026 00:08:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45BD06B00AF; Mon, 29 Jun 2026 23:58:59 -0400 (EDT)
+	id AFF5A6B00A4; Tue, 30 Jun 2026 00:08:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39B1D6B00B0; Mon, 29 Jun 2026 23:58:59 -0400 (EDT)
+	id 9F04A6B00A6; Tue, 30 Jun 2026 00:08:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B0B86B00AD
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:58:58 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id 715FC6B00A3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:08:26 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 717D21A0339
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:58:58 +0000 (UTC)
-X-FDA: 84935223156.06.EDA9F52
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A753240004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:58:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyAxgN98;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E976D1A0254
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:08:25 +0000 (UTC)
+X-FDA: 84935246970.06.8FB12A1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7D93040003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:08:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQXXX8vo;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782791936;
-	b=QP73rUE3tEy56VNebYpK5tq1/Tg7PBeF7JRgPHIP1rW8xJAlds+f16vXWpEf2TN5AIzuiK
-	th0FpBDhrYdS8NNqNE/JH5mgCdyzMzRyIPalYMTY8S6pJ6uRxi87sv7fE47rf9V06KHO0L
-	a5xmB6T8TCWIqSIMJPV3QWIRG+Zd4Tw=
+	t=1782792504;
+	b=5ozHmvTV1b6gM5zfI4oPPqc1DvEMhsGMR3e0aBfXh71gIwS/u8ghNS4Mf2d1WhVIvsPaTP
+	IVZ5NJEs7mdxcyTips3/WDUn0SPF+oSHXVYNTB/jXsOTI2OM05DNLXKYfpjmy6sITuSuYA
+	7LOIAM50jI5LCWhLbB5HZB57lFnE/m0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782791936;
+	s=arc-20220608; t=1782792504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N89Up5BXPY/yDZUMYrHxzavh21D3+xcyvzN4VyJg2o0=;
-	b=p9GcDEfg+azfQeRAwrAKZUoobrpAq1IqdQCgTzAjj4tT+pOAfyciDQZ7SIWVUPR7nZUuWc
-	I0igtG6zUjP8nSRbjkHtIr7QQKO2eOz4C6ePMMVcEomvBmTOfcdU1IFm1TLKY/ohdkCTy5
-	juoSEMbZIfJX0stwS/NpnE6Rd/snWOw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xbDQiekMgO/KFya5RKRP9Live6IJ6QFxvQeuI2/y3bM=;
+	b=19bX0ZN9F2qnwsCtFEepkA+lQOZ4PoPpPujuZm3/nI2FtFo0pN1xOrmYkixo8TrccP89AU
+	MG2fHUJHTAm/32DaJRNAMeS/yPZ8xGxVbaLztD3ys13hi0I5KPR8VzH7iIgJdlE6yh2NYq
+	fKEUutoV35tdU62u0gty9vIcjp56Deg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=LyAxgN98;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WQXXX8vo;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8EAAE4078E;
-	Tue, 30 Jun 2026 03:58:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A33F1F000E9;
-	Tue, 30 Jun 2026 03:58:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782791935;
-	bh=N89Up5BXPY/yDZUMYrHxzavh21D3+xcyvzN4VyJg2o0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LyAxgN98kQZcX32CCab64mlHrDaYfRHMLVPQd4Z3hPWx4F/VUBubQdNILCdOwsGEz
-	 mMkVWTgJnIG4KM7WGRIk9b16omEFl/XRAuOcUibLZDZTm+C5kTqi4OITXyCThUEuYJ
-	 qiYxFdaLVl362tIBMrV+jB2QyOGfOoQHUBe+6fUg=
-Date: Mon, 29 Jun 2026 20:58:54 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Daniel Palmer <daniel@thingy.jp>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, Christian
- Brauner <brauner@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>
-Subject: Re: [PATCH] tmpfs/ramfs: Let memfd_create() work on nommu
-Message-Id: <20260629205854.0062b1fc9588ba9928bb1707@linux-foundation.org>
-In-Reply-To: <20260523130445.1101818-1-daniel@thingy.jp>
-References: <20260523130445.1101818-1-daniel@thingy.jp>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1dacfr8ywdjdpzrbgqmxkejbicrkmctn
+	by tor.source.kernel.org (Postfix) with ESMTP id D388860008;
+	Tue, 30 Jun 2026 04:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 119801F000E9;
+	Tue, 30 Jun 2026 04:08:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782792503;
+	bh=xbDQiekMgO/KFya5RKRP9Live6IJ6QFxvQeuI2/y3bM=;
+	h=From:To:Cc:Subject:Date;
+	b=WQXXX8voRMwhZsrn4r0dr2n/sgzaxhek7sKjB+Fz8GP1KKjI+oMS0gt5wvz9fMWH1
+	 d0eirhGW0NqVn6ThgyCXuoxtW2xpfsaOZkwM6W77a8nvfr5WOJaM8vvPu4ITECnbgp
+	 id1FK7KTwEE5hMEBDXcb9xShQQws2IJOZAXcJ1g42fiVLe+SHJl3DHNlmNOspguKpS
+	 RGEgnTfNtEfL2Uag26TZv4b/nwuv+93MGHDkDsCvWsNrlVK5fsQlJqtTpUeMo2oaZD
+	 CCKssA3H46Jib9CQdPnIcc+AJhhJDsqWaqbNSZt4DpZY8ogU0SVt43se8wfBFywhVr
+	 QOha/uAvsBmjQ==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SJ Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH 00/18] mm/damon: optimize out nr_accesses_bp
+Date: Mon, 29 Jun 2026 21:07:53 -0700
+Message-ID: <20260630040812.149729-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A753240004
-X-HE-Tag: 1782791936-995771
-X-HE-Meta: U2FsdGVkX1+oQyMdz+w7/RnyV6u2f5/pd2kijTdgX7/AwRv9rMbCa7qe5Vu0FOGgH4ucvofF3axrsZGTZQMYNT3fvdMOAEIhheQzMflUNhLpWnAUpqjxcFrm/0jtXlmXS3/hf18KgwRSXgdobhu+GuHHi2hjiTBFRlmQyhcCx+47LblWzXTvJg6dQ4XzjzxMqJnduhtsIBfK7n9sSOPiPYTPtH8HFwE74AC2aOENXifbYxttoincUXe3StSno3Iq1fbLHVMXBwB5dUWeEPO3cnGrwc0X/rUzcuu7AUuP348eFgVSWe71uk1PxcpqN/2Jni6NAiECqg61Rkhs47Eops7N3ywmt1Emb4SjZ9taUgRVzkNSZ1+lLzXNrxiOm3X5udpTFILR6zKKwuY2YnhuqYwLaaG5uZIE8UjpAr0Or9srbtaasceLvNZk7IOlCPUCmLEbH/00KVLGTDlwMt8b3iA7X7JbgqI1dm3yFLic1D9mYb0AeFjZOH/q4aTpw+HIzGlFgcHoBJik+7lpMsS+lJ6Q+1TH6Ux8SBKOYafK6PLTeCuDzyE7LQazkSCxIyGufW60p792TzAD4wOqooylAQw9BdC1sP9p9aZq0RO6geks2YdAbcjxHfz8SWihtuM403JvnEcLavQeZ9LdIetj1me8UM+rwKoYjSYCt96Cnh/iDpNveH9pMUr0bVtRgzRswtj5ZVbbsI2fNeFt/m2rAr7Gu0Zj/QhMjXwF13UMfH8v4hiQe++4RuDCjZbv3v8H1V8yw+19rbzaG4p/A+OWGs25LEYszVzGLS491D4wPTyyFBHKdV58uOGehDpcolZzJb/vu/X8EnudCO4/woyBjq/wmX0vtYjjNnBrq/nhBqYzGLyPdKL5lbrxKHR2i/JM1xiy4KNHaqOrEXNs7TODbY4L3zsSwGZHFh2wL+azcoUr92ukxklBNbLW9Xlffir4gZfnLhGjsg4jVBugrVA
- hP8sTiwk
- xqJFNo3O5tCzKJ10AXH5L4dh1mv9u1V3EqpUpCQuvIaqlhCtR8ueb+qvr2vx6Fq/MgAgR7u0wArPimc9iQ3si+OHHmon6j5sl75faGVAn2Ku0QEKxbXsfL4HCHRjUkIuuDfiEDnc7zmQsmxoWWzem8FUqP99jfC9wwMdqh5l3aLzZvjR8HJkQxPoT8VmXk5VtrO0yCYVtFWYFx5HAGMqJtHlxb8rB2GhBVbD19w/qbwO2WqbJTun9L4Yb9OJjM6cfI0qXECyYmmynrM81IH9b92PbW+yhpiNb0IGRK2yFN5i/x0/cWHxK4R4/ZGASpygbh3lMx5tUQBU/95i61iH3bzJ6tz6Pd9uCZiDr
+X-Stat-Signature: 9g7zenz4map4x4kfbk6a5hq7gxe6ipym
+X-Rspamd-Queue-Id: 7D93040003
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782792504-782397
+X-HE-Meta: U2FsdGVkX18w8fm+IesFK9CGRKOIbmB6AKyDMYzFdZZV7EGMOOLjduyX/985jKjLzeu+VlqRnBwoTTP5gFyjue4VOUkdoHkuaQ1S27+BtMY0lZ7tOREw7seXIq9nY5eArh5nzlDf+9dtfcnsTXbNGw8QZSumN+qw2jzI9o34uIhjXZUPa7wa4QKeh+0kDvhRiYyDafdHyKL0HDXgKZK+ACVTm5YfUCEdye6zomBWjEkSHZ3Tju4c0AbYZsCyhmB8p198iafFugmvqzGhjdGbAK9JO9uXoPDryvk6Bv//ZbVkMLUOYzpTGGDpTKdl4VRa41KBGi+oTGZGjcwf/R7cjVKYL/JisTwMEGcrQCUvfjmfAyPwUPgep9eAv98+SfjvU+H3Kp2sidXeXfAsrs+CdugjEgNGBlC3E4lYhsGhor+IVFeGB7LvMEn9FeHhnOcWHKdrI+z9FlT25FTRlk1eyze8Aco0BtMs9uqVhBKlJbAuFzop6ZJjSN8D2d+vbOyWVb5PCoJqXiLELt+lPKD4cQZsMhCU5Bqa6sfgxtE99HjZESaHOf8LqOXsV2DAriQN0cRq6mGHdO0UyIU9Jw9bj7NPINW06mfc25KRjWSTraqSPl2XAeTluWnKkSUa4YvprorxTe2qssFUc1tth/IlKdXdLs6M3y/6DgBZ78JgsGU/GU41rTYll6De+cw/G0Uru7186YyLUxxzPhKf8vpADuUTKKWPBpRPvEUNeOXiMXg95QFExtOxwZOzFFpOECZOqgDETtR7DU4FGYerW4jAIMsMSNI+SVtVtaz1FZNUB5IEFcGKpAdxG5lDtoXzPowYPIXGSSxZzHA0ZtXhYdtdF1T3VQoQE/vGRasCzJ+cNiZD++2UxOBw1f+0DdQ0RwuJQOIuXmQIt8WxNEKXi5hWkfuOlbOHsrzhfLDuBRGX9mX0IvUniJDOm5nW6khZDgRjaW/qVRdD+WbBPHFKjTR
+ +eG+gTBs
+ Lkiuo407q8+sKqvtYMzrSIbtlIQ33ZGnnmqoCD3rYQfSaFPCXAI9duJQ5rjhDt9WlPh2i3+MPY/YEFD6SKcnIMqewuDYDE9latiVACKmTuCExtb7tuUOlS6kwGZwvoBZJBaABcJFDtp7rva05NhJoZzyBOBBnd9uDxlmdJgU+1cRgwx8K/gziY3CMW9nmTYsFg3D7SxP5BaxdAEmLlJRBpGrvxsTqps0aBhF8RzJDf3pDi2NUIwabeHYaglhoMYczF6CNjCT/4i0VWkMdbZ6msbCNm79iUQfyinDD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -90,63 +99,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 23 May 2026 22:04:45 +0900 Daniel Palmer <daniel@thingy.jp> wrote:
+TLDR: Replace damon_region->nr_accesses_bp, which is easy to be wrong,
+with a simpler on-demand moving sum function, damon_nr_accesses_mvsum().
 
-> Currently trying to use memfd_create() on nommu returns
-> an error with errno set to EFBIG. The manpage memfd_create()
-> doesn't have EFBIG as a possible error value.
-> 
-> Doing some digging this is coming from 0 getting passed as
-> newsize to ramfs_nommu_expand_for_mapping() and that getting
-> into get_order() and there "The result is undefined if the size is 0".
-> 
-> Whatever comes out of get_order() is then used in the following
-> logic and that results in the EFBIG that causes the syscall
-> to fail and the errno in userspace.
-> 
-> If newsize is 0 there is nothing to do so just return.
-> 
-> Roughly tested on m68k nommu by creating a process, creating
-> an memfd, forking another process, mmap()ing the memfd in the
-> child, writing into the mapping, then mmap()ing in the parent
-> and checking that the right data is there.
-> 
+Background
+==========
 
-Old patch, older code.   Thanks.
+DAMON's monitoring output (access pattern snapshot, or more technically
+speaking, damon_region->nr_accesses) is completed once per aggregation
+interval, which is 100 ms by default.  Users can arbitrarily increase
+the interval for demand.  Under the suggested intervals auto-tuning
+setup, it can span up to 200 seconds.  If the aggregation interval is
+too long, the snapshot users cannot use it in reasonable time.  To
+mitigate this, we introduced a new field of damon_region, namely
+nr_accesses_bp.  It contains a pseudo moving sum of nr_accesses in bp
+units and is updated for each sampling interval.
 
-> Really not sure if this is correct. It works for me but on
-> nommu a lot of things just work because there is no MMU to
-> shout about badness.
-> 
-> Maybe shashiko will say this is a dumb patch and explain
-> the proper fix. :)
+It turned out keeping it correctly updated every sampling interval is
+not that easy.  From online parameter update feature development and
+more experimental hacks, we found it is easy to be corrupted.  Once it
+is corrupted, DAMON's monitoring outputs become quite insane.  Hence we
+added a few validation checks.  It is easy  to be corrupted because it
+requires every update per sampling interval to be correct.
 
-Sashiko had no complaints but it seems to have found some unrelated
-bugs:
+Solution
+========
 
-	https://sashiko.dev/#/patchset/20260523130445.1101818-1-daniel@thingy.jp
+There is no real reason to keep it updated every sampling interval.  Due
+to the simple pseudo-moving sum mechanism and existing helper field
+(last_nr_accesses), we can also calculate the pseudo moving sum on
+demand in a much simpler way.
 
-(tmpfs calls "ramfs_nommu" code.  Who knew?)
+Implement a function for getting the pseudo moving sum on demand, and
+replace nr_accessses_bp uses with the new function.  Also remove no more
+needed tests for nr_accesses_bp and the per-sampling interval update
+functions.  Finally, remove the nr_accesses_bp.  The new function is
+quite simple.
 
-> Also I had almost no idea who to send this to from the output
-> of get_maintainer.pl.
+Discussion
+==========
 
-I suspect most would prefer it's someone else, but this is viro/brauner
-stuff, if anyone)
+Depending on the use case, multiple nr_accesses readers could be
+executed in the same kdamond_fn() main loop iteration, which is executed
+once per sampling interval.  Such readers include DAMON region exporting
+tracepoints (damon_[region_]aggregated and damos_before_apply), DAMOS,
+and DAMON sysfs interface logic for update_schemes_tried_regions
+command.  In this case, the new function will be called multiple times
+and this could be overhead compared to the old logic, which simply reads
+the field without any additional work.  Nonetheless, the new function is
+quite simple.  And the new approach does nothing while there is no need
+to read.  The old approach had to execute its update function for each
+region for every sampling interval.  Hence the new approach is believed
+to be even more lightweight in common case, and the overhead is anyway
+negligible.
 
-> --- a/fs/ramfs/file-nommu.c
-> +++ b/fs/ramfs/file-nommu.c
-> @@ -69,6 +69,9 @@ int ramfs_nommu_expand_for_mapping(struct inode *inode, size_t newsize)
->  	gfp_t gfp = mapping_gfp_mask(inode->i_mapping);
->  
->  	/* make various checks */
-> +	if (!newsize)
-> +		return 0;
-> +
->  	order = get_order(newsize);
->  	if (unlikely(order > MAX_PAGE_ORDER))
->  		return -EFBIG;
+One more advantage of this change is that one field from the
+damon_region struct is removed.  On setups that uses a high number of
+DAMON regions, this could be a potential memory space benefit.
 
-Oh well, thanks, I'll toss it onto the pile and see what happens.
+Patches Sequence
+================
 
+Patch 1 introduces the new function for getting the pseudo moving sum of
+nr_accesses on demands.  Patch 2 implements a unit test for the new
+function's internal logic.  Patch 3 and 4 update monitoring logic and
+the new function to ready for safe use on the existing logic.  Patches
+5-7 replace uses of nr_accesses_bp in DAMOS, tracepoints and DAMON sysfs
+interface with the new function, respectively.  Patches 8-10 removes
+nr_accesses_bp validation functions in DAMON core, one by one.  Patches
+11 and 12 further remove tests and test helper for nr_accesses_bp,
+respectively.  Patches 13 removes the setups and updates or
+nr_accesses_bp field.  Patches 14-16 cleans up function parameters that
+are no more being used due to the previous patch.  Patch 17 removes the
+function that was used for updating nr_accesses_bp field with its unit
+test, which is the single remaining caller of the function.  Finally,
+patch 18 removes damon_region->nr_accesses_bp field.
+
+Changes from RFC v1.3
+- RFC v1.3: https://lore.kernel.org/20260622142139.30269-1-sj@kernel.org
+- Wordsmith and fixup commit subjects.
+- Drop RFC tag.
+- Rebase to latest mm-new.
+Changes from RFC v1.2
+- RFC v1.2: https://lore.kernel.org/20260621155715.87932-1-sj@kernel.org
+- Explicitly ignore nr_accesses from mvsum at the beginning of
+  aggregation.
+- Fix a typo in a commit message.
+Changes from RFC v1.1
+- RFC v1.1: https://lore.kernel.org/20260620172244.90953-1-sj@kernel.org
+- Handle next_aggregation_sis < passed_sample_intervals in
+  nr_accesses_mvsum().
+- Always rescale ->last_nr_accesss for parameter changes.
+- Remove unused attrs params from damon_update_region_access_rate() and
+  its callers.
+Changes from RFC v1
+- RFC v1: https://lore.kernel.org/20260619193415.73833-1-sj@kernel.org
+- Avoid divide-by-zero from zero aggregation interval.
+- Call damon_nr_accesses_mvsum() for damos tracing only when it is enabled.
+- Remove obsolete mentions of nr_accesses_bp in comments.
+
+SJ Park (18):
+  mm/damon/core: introduce damon_nr_accesses_mvsum()
+  mm/damon/tests/core-kunit: test damon_mvsum()
+  mm/damon/core: always update ->last_nr_accesses for intervals change
+  mm/damon/core: handle unreset nr_accesses in damon_nr_accesses_mvsum()
+  mm/damon/core: use damon_nr_accesses_mvsum() in __damos_valid_target()
+  mm/damon/core: use damon_nr_accesses_mvsum() for damos region tracing
+  mm/damon/sysfs-schemes: use damon_nr_accesses_mvsum() for damo regions
+  mm/damon/core: remove damon_warn_fix_nr_accesses_corruption()
+  mm/damon/core: remove damon_verify_reset_aggregated()
+  mm/damon/core: remove damon_verify_merge_regions_of()
+  mm/damon/tests/core-kunit: remove nr_accesses_bp setup and tests
+  selftests/damon/drgn_dump_damon_status: do not dump nr_accesses_bp
+  mm/damon/core: remove nr_accesses_bp setups and updates
+  mm/damon/core: remove attrs param from
+    damon_update_region_access_rate()
+  mm/damon/paddr: remove attrs param from __damon_pa_check_access()
+  mm/damon/vaddr: remove attrs param from __damon_va_check_access()
+  mm/damon/core: remove damon_moving_sum() and its unit test
+  mm/damon/core: remove damon_region->nr_accesses_bp
+
+ include/linux/damon.h                         |  15 +-
+ include/trace/events/damon.h                  |   8 +-
+ mm/damon/core.c                               | 201 +++++++-----------
+ mm/damon/paddr.c                              |   9 +-
+ mm/damon/sysfs-schemes.c                      |   6 +-
+ mm/damon/tests/core-kunit.h                   |  37 ++--
+ mm/damon/vaddr.c                              |  12 +-
+ .../selftests/damon/drgn_dump_damon_status.py |   1 -
+ 8 files changed, 119 insertions(+), 170 deletions(-)
+
+
+base-commit: d74f4c01f930b32580e172a786efbcb352c312f1
+-- 
+2.47.3
 
