@@ -4,126 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B4DCC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:06:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 548F8C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:08:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E593A6B00A5; Tue, 30 Jun 2026 09:06:49 -0400 (EDT)
+	id 24E376B0095; Tue, 30 Jun 2026 09:08:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E30966B00B1; Tue, 30 Jun 2026 09:06:49 -0400 (EDT)
+	id 225A26B00A8; Tue, 30 Jun 2026 09:08:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9296B00B4; Tue, 30 Jun 2026 09:06:49 -0400 (EDT)
+	id 116C86B00A9; Tue, 30 Jun 2026 09:08:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1886B00A5
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:06:49 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 15A531204DF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:06:49 +0000 (UTC)
-X-FDA: 84936603738.25.D71F2F5
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 5F0771C0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:06:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vmsu547p;
-	spf=pass (imf20.hostedemail.com: domain of 3Zb9DagYKCEw6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3Zb9DagYKCEw6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E07D26B0095
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:08:07 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC0F4037D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:08:07 +0000 (UTC)
+X-FDA: 84936607014.20.34FB385
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9EB94180012
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:08:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ltm9Ufqa;
+	spf=pass (imf24.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782824807;
-	b=GjmSs63iW2I6i3fQDjDgMbo8AjwwniHaaFm/flZuPu59kWCQNu17052NaVtQMbGXm4vqkF
-	0qTpFSj6R+xoSRhtcWL/s/ssnItMk/JjETRmJn/81nO5GFucJa7XESoCHE7BwFqtXXo4CG
-	wlZ8aqPkzPPriOinLXFgJBB2mnA/jWY=
+	t=1782824885;
+	b=B7cu8lBcEg3mIk4HaKpR0sV2MTL6HF2hwlcBWjpS4YxZ2t28O9naI9YIIOQnZFmMMU3M49
+	a6CK9MVxiaYrQpaLlExCl+4EX8rng05Y1AOPIZWFACDyytoyVDdEWYRsA37uVTCHKF9BOO
+	qdE+4gVqf4TyksB+q3v30SjG3nK9P84=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782824807;
+	s=arc-20220608; t=1782824885;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
-	b=g6VnanoJfwFQUdjouFgZbgJDDRA/2m7BL1wEmIUneQblcpofOLZuluQdHNAQAAizzG1GZQ
-	/rEyVVoEvcB+Zp3KFVuboaKpVJ4E7H20ZBLMswIu0K/hhK5XtVOoxHhZxO5P9402RlbSmS
-	cv9cRSEB8BVFyx6X6Wdv/U9r7OLd900=
+	bh=KY372+MQDnRqZEpTjqFttYs0FH8xWsPm7tex4XKhkec=;
+	b=1xF1RAgwfca5km33V7nv7EKeKOeZrlPE36Zaws/YcKUUR+4tTeFJIIvJ3f2+7KBGn78XtX
+	wGlZ8kMjqW67grZcLa2suwnh3Q13u77LBpryqa3RI3/xqpuJrLcCkoEgUjXhQ2XrYIwDLy
+	793b5LYyNprfYsK9uJnKMJFtkg29Owc=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=Vmsu547p;
-	spf=pass (imf20.hostedemail.com: domain of 3Zb9DagYKCEw6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com designates 209.85.216.73 as permitted sender) smtp.mailfrom=3Zb9DagYKCEw6so1xqu22uzs.q20zw18B-00y9oqy.25u@flex--seanjc.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-37fee8a7813so1769744a91.1
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:06:47 -0700 (PDT)
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=ltm9Ufqa;
+	spf=pass (imf24.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-39b293079d1so1442691fa.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782824806; x=1783429606; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
-        b=Vmsu547pYqZ4zgGXD4Je3YdPKFQLVygr5n/dRwLrsrdkJqmnOudfmRcj+1pkkpUFtX
-         QcA13y8ehRx3V0mSGnxvWii3OpYuL0LswFyZOwlLtvhPXmGFsHZ5m30aVioRGjOuuOuL
-         c00/o4cTUqMeUpD2AJnapy+0F4VBZXyO/YKK4vMODQemSPFGFY0mNcMupcYkbK/16O5W
-         Z68zCW4Fmf+enXG0vTB6BvTMFEM6iVLir8FV3oY/5krW2fNgtwSi2kzj7G33f6Utq+B1
-         Ys9LqYk2ivWATTdXhuXcaH8NB2sKjB1tECzHFS7D2NCN3WmJlOWo7BZJQ2TELPi8b2ip
-         VoeA==
+        d=gmail.com; s=20251104; t=1782824884; x=1783429684; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KY372+MQDnRqZEpTjqFttYs0FH8xWsPm7tex4XKhkec=;
+        b=ltm9UfqaDh+15gIloCr/ChXxD0+u/TzL2YsCuYF06kpvlrDQJEr5k9Troy2QRDDaJW
+         fgYjB0x8O0WDdu5YsOUz6z229VAq8TWdTosofeIEGWMjTCW9EbQU2T96CeekxHDaecmP
+         GNVXk3Wxb3r6+fznC07Jghrzgs7uO5GqFNWhSo1ixnUzBkXDjNidCpS1sSvOwgguIVzW
+         tRal3P4hIA7qKyTbRdanbdz+sAALijPAmkGT2XrcF0wknquVtukX1siA0cq/K12h6kBn
+         m9+D74xlqlDBc61rC9Xb1XWPBJOrPNbjTLP7OP4tffHNNTfRnGOFogWMoliuCg2ngLCo
+         FxTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782824806; x=1783429606;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GKmnhEmEL5Q9+VdT5YV6KYZqx0ZeftgvFW7GNXKQRJU=;
-        b=agx4P3kO/oqshccNB2Jy4K9RS3VskQblKvn08DDfWI3SwGTkLp3rYM44dS21FOsA/4
-         heBRWD/GWo+64sRxUPqboUHxxXTy8Fq7eWCCMLO7f/prHzktOpLBUOvRJ5L8Tvg61amg
-         AmnJljHAJaXoYVcterD/qtHsTMyjFOdewg65PCoPNAY39UMpgSlA/XfpgX/1auDouq3I
-         wyk+eXbBqZ4QWN3r9G/Xb8JMqMRtiVq4P3t2b9uJlbHzD+eRu6E/4A6ZBens6+DBfyEq
-         +XYqvMib5kBCqSL+CrC9Qa7H8PeBKeKMB6K1tcVU/YMafRP0uUPjVXdfSNMSY4u/xZGL
-         i14w==
-X-Forwarded-Encrypted: i=1; AHgh+Rpjb/PqrtPCptRGvHXTcSKD+KupVpG9PkkKySejVM6yk9F+zNEaAPnXQdWZYplduR8IH7qFw/ydZQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx31APi2ncBuapqkwgBXGPD3IUwN7Eq/ApuE/tmbwHh2Rnhc+iS
-	xAK+8Vc3BJkWkKF+KCPS8OY1e4xzjzdXpFvUN+OpGFWRu96PY8rrE7dy37CuwbyKbWfoar7kFBv
-	ePSjboA==
-X-Received: from pjboo8.prod.google.com ([2002:a17:90b:1c88:b0:37d:8595:7a08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:390b:b0:380:540:d49a
- with SMTP id 98e67ed59e1d1-3808bd2ffe9mr347677a91.7.1782824805381; Tue, 30
- Jun 2026 06:06:45 -0700 (PDT)
-Date: Tue, 30 Jun 2026 06:06:43 -0700
-In-Reply-To: <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
-Mime-Version: 1.0
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-4-9d2959357853@google.com> <6b1f0c77-f059-4f8d-8f46-443b944c59a0@intel.com>
-Message-ID: <akO_Y0-ERgBoCqoQ@google.com>
-Subject: Re: [PATCH v8 04/46] KVM: Decouple kvm_has_arch_private_mem from CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+        d=1e100.net; s=20251104; t=1782824884; x=1783429684;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KY372+MQDnRqZEpTjqFttYs0FH8xWsPm7tex4XKhkec=;
+        b=L/89NVwIheXN7oJoUc2TaEtOMlZlEC/C48udblAoep+W0sbHaWNsZ208d1E193Qte6
+         3XQprHLKRTwLDhbugxFvh2qHqqrI3enKYyrzhZ8xc6AkYC067lqX6pK+MiPmVCDOCefR
+         a8G/rOBF1jPngvoK4EwOsXb6B1sDDPwncJWhnb9f1FvUC6D0BhtudR1JNvngfvqw+q46
+         Q9F+jRHHexAHLsa9R2R5Txyz+qvggSZhh5L2RV7dNbGk0Y4GFi40kTBJcWWBQ+UUyA+J
+         eJ7EMVgBL+IVl3LSDxBDiIg+NTeUy58hWck3ENa/PcVjMzbT5NHmCDaFMZe2gKOihiDV
+         wB9w==
+X-Forwarded-Encrypted: i=1; AHgh+Rolt0hTW5Uo4Pd4BUktVpFj/6sWP97L9GK5XIoObhvYu1x9Anafg+IJfJ/5OiZeGUTKCyoGEmj9eg==@kvack.org
+X-Gm-Message-State: AOJu0YxfmBfPHW2qwnN5srbKmzHJp6vsyzlJ+AnnHHLGxlWXILn7npDI
+	qHlsEeBvTAARfTbmjnup/GNiCl24hy3Tv2COXRquM18/o4DLzSzjADN/
+X-Gm-Gg: AfdE7ck/F9PUgjQr9Z+9o3tYaNHgEXP+kq65xgsdm+FNPx0S+Bhu+CQsqET+84K38qh
+	OrmBY07l19YQG3dVdmWXqNj7aOhEVqLztwZRLvlb2iMFFwuQPcvxcNkwoiUe1GSJ7FuoUcFWGPN
+	NNAAVbB1VKp940x1vn1teBB+3ljA2BEpUAbYQtgZj92W8rT0EjjfTf73y1OGY4G0nbe7efWdDm+
+	v6CU/cRkFd8pc3lbYS71VnsXMETF7FyLmro5IAJKNEwGXHS/ISxJYROX0pLH6y2jb7VRhj0bmW1
+	Iwqsw0VpQtF2TFVe+my9q4r+WJx0X+Cux/1nPyq7BCn/9p19JkaQSJ2DxSXpvXDTaPyMB9ifC8v
+	k5Sd678nIU8moDjguztrTDhvLdsAmQ4VIBGcKFednA7E2IqYt4NZU24DpLM2DljpqXPPCAqkSFS
+	WNgvmaWWRqJj7QeZRzySXlNSeM5CdwqKeFSX/ONx74vMhm1cpcLp7/8yjEE4DoWdio/Gxq9wHiH
+	8h8h2Nt66oi/jZ5bg==
+X-Received: by 2002:a05:6512:3a8d:b0:5ae:bd66:553b with SMTP id 2adb3069b0e04-5aebdbca242mr916807e87.38.1782824883845;
+        Tue, 30 Jun 2026 06:08:03 -0700 (PDT)
+Received: from debian.localdomain (95-25-158-125.broadband.corbina.ru. [95.25.158.125])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39b1da4d298sm5022501fa.30.2026.06.30.06.08.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 06:08:03 -0700 (PDT)
+From: Igor Putko <igorpetindev@gmail.com>
+To: 
+Cc: damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Igor Putko <igorpetindev@gmail.com>
+Subject: Re: [PATCH] mm/damon/vaddr: remove redundant RCU lock
+Date: Tue, 30 Jun 2026 16:07:43 +0300
+Message-ID: <20260630130748.3908-1-igorpetindev@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260629165349.4260-1-igorpetindev@gmail.com>
+References: <20260629165349.4260-1-igorpetindev@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: qy1u1azb86xdaji6eii4g1enxzyhfeqz
-X-Rspamd-Queue-Id: 5F0771C0003
+X-Stat-Signature: qy5awu5xws3io4paebsftnygsix6qw5e
+X-Rspamd-Queue-Id: 9EB94180012
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782824807-673506
-X-HE-Meta: U2FsdGVkX1/Lai076YLE3Rzk2Q95MYoSiEMp/K9amothW151184Tpn7w9rUklvkr1+S3OgUiOTHQjURRUvquFnrf0uoFiOW70l4Zt76l7BpaSG8Bi1G/5iWiEHNiQvZ9BsrkrDVgf9U75bZFxVOwsoTiwDx4/c0+xeg9cZqp9JoQbmZxo0SKxXYPbMffbAVXdHzkPOR6FcziCXCDlgQBUJxYWwRIU8vuiKXj7vVeXbWUci39cdWJW7Rtm9H2cdVlc+npVuxpbwaVclLJqEtekOrr52xd5QBulRoem4cnHJ7pn2WBuiJENKJ1VYSMQlFAKOrwFX8e8jDVBOm9mJT1N5fhJyICdPz69CZPTnjt1UHbDqeuyg7pnrG4IorDE5Jo4JCDyar5dpM5sUhPaBTuLreuTKAHw71F4oFEYAEeKPUkZPD1CJYzpZ0MHvKSGqFhZI+ee+4ev50rEnKEPj0Y+aU6Rb2CmUdqEahlxjQY4vFZuBSCn8kCIaZ4tLSl59+kxHhkCNTaOemgAk4G9gb0v63w880irHKCBS5vpl8UKeULy+uS6bHjrzBosCksZFidpTbg1LpSVmgMMItM86n3txlD1x4ufbos6HbLIZyJCK+ldjPjRZD3gs19QN5d3vOzxIMxxsW90HXHHskC9G4l/TalXNU7NAyJdFG0L/oM15x+6PLQGx0gm7Z3O/EE0DRge1AF1gCYpGUvxPJ5f2Z/MMC0EY2HSIQ0VkBw1PupiOQfhVyhwh6Wfdkzfuq0o9jFattr0/R8Nd8NBmxczHd8+CV0kij0AZsFKUsjWOpuVYvbFiqAUHGkkGjqIzNkuNCcg3lisfgMzA/qafitzoeYy98o2q88ghgwPTv90laudzXt9A6I9n6B4Ga6ZvUyibZM/5PNgoxls8u8/ogHnDBrLcWrGT46BWLmhsiSRjFXaDVrUkpSjFGbNavpZzowiQObisyZ/5lEAOEggN0+xv/
- PnBYexDi
- U6HcySiU5MSg3XjSv6Lke72Tg1+z+Qb9urFUjjnst+2uYarH9p09AB8KU3wDKpigVt8nfkvtSGD7FUDL8+qdlYSnp/VTG3BCCE/hyp7sCOAq7lzFPYKzyKERApRMkuQTRX+NetG/f1buNMXrpXGj9+Dhp/IMaaJ3fBjVH2ii1tCeP/AbF6tGhVkfo0xulN2FQVltIL9ZLnnGLaudhAZFa5KGaPKhnvivV/PPK2vgu23cAPSnWa54sVZ8CgTDPrKi8F36umnizjQXJ1RNiBV094CJKqtqxV4IUTdpSLUBuRvtY+4YKCp4js/Rsv555d5+HtJV5bvEAQtJbznduVsUH7UWobXJIV3yrLj2AvD+8++tDUVnXibWqL2tLokKtKnr7zjCA0O8kciFxDXTXKutlEvzBJkyo/1U58/8jlxsxwoqfS2/TcBo/cGMnNcq+849TLvQf3BBfgAzpYFXp0gbHytb5rYkAlX12IV47EDbiB/VHcORBnaqlkVQ7LsqgkpI+2cKwE/ZRvS+KvSeyV2iONTRfEKSGJfwQi3S14tWdJxjjNn30aPd9kN/C3qi9EJoQKoHxH6BTvfgaa/T3WBMaOH/5wgCqrIhQ/31eKTYKofO4QohLlCS2d32dpetWt2qdYt7tn92UwPmf2Sc=
+X-HE-Tag: 1782824885-866536
+X-HE-Meta: U2FsdGVkX199CTREekjPmallS9Z5dof0v5OxRZg7Fw4kiBzLHQlQaGwKhRESC98YPWcym3vYONm38yY5tLmopCbgEq6s6hSr0lsIkpyU8IsCZWJqgTQBk54+ex+suCbg9hBHQrOJpq+FO8XQhMqUVCdFwEUVS8h804OjbuC8k4bvOfGV3+UzaE0Ifric4NqoJW2lwfQUsnSD19r+Ue7Oi6zpKCTcGbG8ieEHOpge/06+hlVA2DtwsnRdekDVQiW8CHLs5YIYLICVxDUJlwIGOR/c7n3/Xr+/qgmHZ6/zU9RjMMnaYID6UxJ7bU+K5qHxs/ibOzUAqT4xB/bBevg8/v8ZmksoiSHHidXvbU3jfCIqcf3LK4DX4JLZtwwkqSMdgGA1gl3lE3c7oLSqN5vS/Vlx7QNWlGf3N7+bsGk628tXLASKhqK3Gz6LRI6mSUDi/42wyiy0hx63fooFhTOAI+h0BBu4U6xwZw57gQdoM1oFm1mwkuTho4Kn8oY3Y2LeeUWc+ONaxCFS4YzPzYLsDygJ8LibGk62fRAe5aaOZEzTIrkFDxArUTY2fPmjMwQcVXHB058yLt1MM9pmXF2g4V3IPxWLtrgV5L0guj3DhRiqmVS3v71h53v6eoQQvEq6p6nngftJuJYQ2q+RVKRd/SZGg4po5XFFVQn61YuZPQQw4BgjHTkdLBB/i/FxRB3p7bdSs4FDaCEbD5dRiDi3qrNQAVKYC1740wGZ82cD8N53kJf7KUYUdnOVOP5T3aiBNlJdeSvEXxb9LX1dHZtKg/bPJMgqBZWa9QWkHs3jEhLRgWQsisj+0JgLnV0ZbgcuFzVopSIasX3RspY2kvzESRf+zFXIKWyyl3KN/VXoy9lCAb+y/jtyEEz/OENMdx7f/DSnGxyFD8sL8pKe6cKq3hfgcNDQcyxbAsfJBW0Vtnb+wYwlHXwe8WyX5fYlpQOOpNYwQfyjnEt4ziYWo48
+ W78wPuNu
+ xFsH5JgRjlO25hSBanKZpNDAWFzK1z4cwKf9M1VNBrl3WrSgcnl0tTtz+/LV9X39nhUYS66G2bhSbL5KLFrQ8xn01Hteg7xCs9C/gWRHxMMep7Mqhmj+rmyyO1bp73cnRNUA60mFV9uHYMA2S6gDEfBTisKo9dWvX2i5BWpCYITV/T12/5AOFWCUTdHaRAgjqoT8gN6O2oGx7/053HQcmevC/t9WP8jfplvyjw1jT+tMfqIlsqOPxXLIqg4EqIzWu0UA78t9OOzebP3hVBxWf0RfMueb6ISSfTwO1ZvcmAOAWpiIOHKIkAIVv3gFSVhNYXRNivW6YZMnA5B2gpR8wnXrZpC/bdvhIJXUijiU1ab0CJI1ZSzTtetP5F/swIDXOglfy4AzsgAP5vY6hA0993FQl59EE6faT0YJPvgkf636+Xcl+IVW2Sn0+wn5xUUJpJ6HbWi4uAJnS7FQDV9hweyeyWRXi5wFvgeF6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,46 +120,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026, Xiaoyao Li wrote:
-> On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> >   arch/x86/include/asm/kvm_host.h | 4 +++-
-> >   include/linux/kvm_host.h        | 2 +-
-> >   2 files changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-> > index 8e8eb8a5e8a6b..1bde67cf6eb0e 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -2394,7 +2394,9 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
-> >   		       int tdp_max_root_level, int tdp_huge_page_level);
-> > -#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
-> > +#if defined(CONFIG_KVM_SW_PROTECTED_VM) ||	\
-> > +	defined(CONFIG_KVM_INTEL_TDX) ||	\
-> > +	defined(CONFIG_KVM_AMD_SEV)
+Hi SJ,
+
+On Mon, 29 Jun 2026, SJ Park wrote:
+> We prefer using a real name. I show you used 'Igor Putko' as your name before.
+> Any reason to change the name?
+
+Apologies for the confusion. I recently reinstalled my OS and misconfigured
+my git setup. I will revert back to 'Igor Putko' for the v2 submission.
+
+> As Sashiko also commented, this may cause lockdep warning. Actually this was
+> added to fix it. Refer to the previous discussions [1] for more details.
 > 
-> Maybe we can just remove the #ifdef and make it always avaiable?
+> How about moving rcu_read_[un]lock() to the caller test code?
 
-No, because common KVM keys off the macro to determine whether or not PRIVATE is
-a supported attribute:
+That makes total sense. I will move the rcu_read_lock() and rcu_read_unlock()
+calls directly into the KUnit test code in mm/damon/tests/vaddr-kunit.h to
+prevent the lockdep splat.
 
-  #ifdef kvm_arch_has_private_mem
-  static u64 kvm_supports_private_mem(struct kvm *kvm)
-  {
-	return !kvm || kvm_arch_has_private_mem(kvm);
-  }
-  #else
-  #define kvm_supports_private_mem(kvm) false
-  #endif
+Regarding the pre-existing high-severity issue reported by Sashiko AI about
+missing check_stable_address_space(), I believe it is out of scope for this
+particular cleanup and should be addressed in a separate, dedicated patch.
 
-And also whether or not to provide the in-place conversion param (without PRIVATE,
-conversions aren't supported in general):
+I have just sent the v2 patch out.
 
-  #ifdef kvm_arch_has_private_mem
-  bool __ro_after_init gmem_in_place_conversion = !IS_ENABLED(CONFIG_KVM_VM_MEMORY_ATTRIBUTES);
-  module_param(gmem_in_place_conversion, bool, 0444);
-  EXPORT_SYMBOL_FOR_KVM_INTERNAL(gmem_in_place_conversion);
-  #endif
-
-I agree the #ifdeffery is ugly, but kvm_supports_private_mem() in particular
-needs to evaluate to false if PRIVATE memory isn't supported.
+Thanks,
+Igor
 
