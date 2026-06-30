@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D6D9C43638
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:59:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EF88C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:59:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 269656B00CD; Tue, 30 Jun 2026 06:59:41 -0400 (EDT)
+	id 2903B6B00D0; Tue, 30 Jun 2026 06:59:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F2F76B00D0; Tue, 30 Jun 2026 06:59:41 -0400 (EDT)
+	id 267426B00D2; Tue, 30 Jun 2026 06:59:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E11D6B00D1; Tue, 30 Jun 2026 06:59:41 -0400 (EDT)
+	id 1A5656B00D3; Tue, 30 Jun 2026 06:59:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DC7B36B00CD
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:59:40 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6203E4046B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:59:40 +0000 (UTC)
-X-FDA: 84936283320.06.DFBFFAB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D5CD26B00D0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:59:45 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 51D1D14044F
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:59:45 +0000 (UTC)
+X-FDA: 84936283530.22.994BE89
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A530E40008
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:59:38 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXQEF3aH;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 9F98F1C000B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:59:43 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DgtHvom+;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782817178;
-	b=eDWGSoOCSxlUEjzxYrz7ZkKOCPwb8TSOQSpgYTlsvFXx+NU8c+DZ1ASjEQ76M24Ur7FmXD
-	fzOCFBoBWAiFUGcrWX6zvPUCUWpA1nnDHYyDA4o1dy1zcxj6y6t0GV9REnrJcPjOUwxcDE
-	1GsT7ErUdtsKnOGLh05coLcW1mKs2pM=
+	t=1782817183;
+	b=J3q5OFT8w3bSbRVobXGH4Kf/Uy76hPwYVDKr96ro62VXk2KVNlPMKZ4vUof0oZZJCW19Mh
+	Eod6edIS/cXvMnUAQdeqQYZtX+ot5Dg1swZRt4M5haJin2/RT6l4TyN/9GamfsHjbc+nhm
+	oGAADcpXmE+I+5kP063lRyR1PjeQOC0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782817178;
+	s=arc-20220608; t=1782817183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KN3v4O8jkhd6Mt2HpgZaziumJD8qk36FkI+IylasYd4=;
-	b=wHWcTKDxy3Y3czTTKz2+seJEr6dfPx3wX6j8A71X2Cr+DtIv2gPDBmaE4NAoECqJ2eWI73
-	bdMOS1893DalTGzQWdJtQVQbEO8L6ZqYlb5CkcKBJefwior+qswK5Z1P6QIuuobd/8YPyj
-	4s4eQATO/k2V4erzio9tH6oYOm2APjQ=
+	bh=Iyk9farFukAIvKGcWCVjubpPNe4OtJIT0B3fPfHAcek=;
+	b=Ssb6/3xZEdo7F+GNa2FYNzCaE20KUf7miTuUzZFVg4seOGuiL7IYQehPFPndzdhsvCFwJC
+	/v2QFOQ+Ywprd78qFbvUkiVd7qmdeyrhapPa4eA6GuDwp0Ghuu5O9sqU6TAVmTwpCzUlC3
+	cragp4plYoKOfoTzfS+8unJDT1jfRi8=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MXQEF3aH;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DgtHvom+;
+	spf=pass (imf20.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DD18941711;
-	Tue, 30 Jun 2026 10:59:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403D61F00A3D;
-	Tue, 30 Jun 2026 10:59:33 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E531341711;
+	Tue, 30 Jun 2026 10:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483751F000E9;
+	Tue, 30 Jun 2026 10:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782817177;
-	bh=KN3v4O8jkhd6Mt2HpgZaziumJD8qk36FkI+IylasYd4=;
+	s=k20260515; t=1782817182;
+	bh=Iyk9farFukAIvKGcWCVjubpPNe4OtJIT0B3fPfHAcek=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MXQEF3aHWSiWNFSvYXHU4R7tW6cLU800PWaoSIs368VJxA7phfv+Es8c+cLkEeAW6
-	 N+cXvy7GWxnDbC1bFm9jgfCrZuJ7NcmOzPRxV0f8rFe0NonrUKVi/oDpm1r0R9GiMH
-	 cFOmtV0Vf+osCftv3+z9BekM2fYxe3pkef2/XzhRaonSJCjH2k1BUQb+abz3ksERB5
-	 ID+PK5GmcE2FHvH8VaVrrDkXHHS9PnbWWtmKluZc/es6TuUdTPfONxggTOYT41WBK/
-	 yoD9s2qt4xuVYdBtBHU1XDZGLStlv3wqrZawLDg0DkelNXb1Y5TLnaXGaGmtkKIZNf
-	 utF9NJfRkg01A==
+	b=DgtHvom+XpxZXXgnBz9yJtGhfbx53DMTm3ffkikikYQtwt3tKs2l3gb0W9BGYsxFr
+	 HBMmkEkqHjLTrCQSdfgOPCoqG8pLs59vVpY0RhShTSDjPiccqeO5eLAh2KzloZldjB
+	 9aQB/cqqC5E01rOsg5+4e1GjyJr/Mqxg3CsHsbce9L7s1baDkgwVpzWQjdt8McI+gi
+	 tIoYZb5Gxfgsm1yHnCPN1NEXfJ+zehRfkmNSrkeBDoxPX/B2fvjXhFo93wYmNxhjYM
+	 HB5IPDc4Vq1cQdfMn2rOXAQ8BWdAmEUSqtfEwRWxSf5CT9AAGH1bqQISufWjD7MsMw
+	 Z5dTleKHYc+8A==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 30 Jun 2026 13:59:21 +0300
-Subject: [PATCH net-next 2/8] bnx2x: use kzalloc() to allocate mac
- filtering list
+Date: Tue, 30 Jun 2026 13:59:22 +0300
+Subject: [PATCH net-next 3/8] ice: use kzalloc() to allocate staging buffer
+ for reading from GNSS
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-b4-drivers-net-v1-2-672162a91f37@kernel.org>
+Message-Id: <20260630-b4-drivers-net-v1-3-672162a91f37@kernel.org>
 References: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
 In-Reply-To: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -89,13 +89,13 @@ Cc: Brian Norris <briannorris@chromium.org>,
  linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Stat-Signature: gmprde7sbinw1wbphm6ktf38heskgmcu
-X-Rspamd-Queue-Id: A530E40008
+X-Stat-Signature: yg54uo6zfyd6yqtfn47qn8ywtj17dqj8
+X-Rspamd-Queue-Id: 9F98F1C000B
 X-Rspamd-Server: rspam06
-X-HE-Tag: 1782817178-303893
-X-HE-Meta: U2FsdGVkX1/qd7qu/fgz1zccXiCyK3wNjB9Ix/0KP5H9K2+j+UbgHKty5/+VM9FStjPJffcYrZebUPBdenWWtQCzb0iNGJZdIwUjsQyVc3WZRQGXwBHpDsDAdCyEygM+bfZxsyNhbp0MPMtUx1+/qWzViE1t4Zo/VhzCNIrfPiVpn+NiaV4DwTF9m3UvwQs9NbtnyNppN/75BxQxmQtduzEVkiXzXLFObkdgup/THu4BrGPIIETBheVLFFLFZePGA3RP+piW3sfLpJYIrmazCFzf9bdVdqqPW0wjGVE/zbT7RB66AuvWD7EPTirsRCqmKLGtDkAMTRnD0iaK3oUMtIIqC5BHm/q3TaDoM58Z5rTgx1acAjmh+4E5Xr6IMhhtIvItiPSeMKOitiWyPVNHeDbvkeeFOvCljTkOEmcTwBhC9dnNNuEDG36uAcpuA4Gw9VvtdF7fekt4jdQqL6XdkAsw+lUx8ozRvHOOO8icxykcIJbApKk9YMEsAYZjyBGN7ZRnVNQfMMjrlQyAHWfmvk4oYZj044leYmGMrlt10pBCV9RxBxCn1LGwzhgEZ538FXdVhr2h7I8FJ+vb6dGxR6Jc856Tt9/lf7YXLbOE2huRafREnR6MCjriHKOYORf06vCpy9CNXn57sPuKfK8rDMoija+ZlY5JhsIvq3OugzRWzd2Ry0QMRPWFKroz5zrFpY+PoB8ksglZmjaPYsFPj2JxewVPOGDr6lUJddkLZ6VCqp3QU9NedrkAUeWjt0MKvTQzpMWjdv9IbuaHiC+A/t4NBmv0f7d5OFupwbL60aeUfbjJiS6LDC0vW9pM+oOB/OTI0/DrF2XG1gxQ6Gf5CHXmJ3ny2f9V8xaiQoGJbo7deVY2EAI5kjVSduC3AtXgFwBAsrafsIWNOIP7YNwzBhGSgwsjmgWsNug0MMQUSM/ZYDV8v3HojeB6LQq83w5ByaX5R+81eSIgJw32dUk
- 4KnINo5+
- r9IsKEM3NT1yeDndesgy9sf+ym4QgJtfrX07C14u8xCSXJnekuDpA1X2o6r2JoWGwDM8gAYbDuXIpi744BViJ8nJVfkjxG7OSZOJNduxvvqGZEQscSiMkVQgLdbX637JlC3sbsar4upUu8egCCjaWPALVcV4vDyGRkBYEp3GEpEVTU3KlAL2RlSPM8IBzI5tLD7TeJQFkJpnk6SzDFCHftT9XYii5OkjT71MjYH4urGUh/oMZrWWhQ5JzTtOsaVCRusjcaEV3LAh/tDvUY/mcRMZRVXKhuvaLAamjU36LRuTxv6U6fl8jaSySRRELT6RGk82sd2AAp/Erjd3MlmBex9m4e+85arB7AHsrKYrwO7VVKVlKpekrYS6aKx8TgTANkABr
+X-HE-Tag: 1782817183-735013
+X-HE-Meta: U2FsdGVkX1/j7uYOdMtPHNPPI0XLJKgE0R8vVA9kJD2gt4qAS2wqkDpyRW2YenvgsYZLh1O06BygupybNBooxnV42WJaHvciG0V/ui8OpMc96HrdfIFFtfYHgUwIDkdbbsKxQPlXHkWb5ZCei+e1HkQrTnTHDtJ4mb3DPWE0TrCDzJiq/vt9AW49zEeAEnO67sznotMFyiPGYUwe4cBln9tnEe+l6G9rH3Z7IPThEJRSrVcoLFwX3uJpxpWHKPuiOrwiEsT9X/EHoMOufV5J8zu6KiLFadsbL/P+XccfazgQ+Dgg8EasmrtNWsKciXLE3oEpirmZ50oOJaBtDRsitXTYo2dJNBD4OIy5mBEY9o7oZo2p9EJGXjrwOgO+YAE0rGftloSu+pvtVAekUKOfbki1KwnSexIKJPVLzUS9xJhOmjUn+dFEZG/oVwSasDCqvlPLO9htZRbCYflt6O/BZyPNOnYeKi4kLXttlq+/riJOjK4tg9NKkT2pzMp8gO/VK19CWUGJbZKtQDiVT12Nlnq20a/Bnva/XmtPc368pQfulJtvy20Dbyd9mNtmJtxWp1XMIw49Mp4Jm+/7Y1aEF2gL5fqoZrxz3PH3M5yDdwNmaWWxZWXgeI3th4qhghxUXc+fiLOrA7mGsRkcbSz9z630PYJLuFxqAYguOLSVTVx5otctTUNd7EMXWhEgqapcIsge5TZwQddrikSEK/sBEzw33/UP4Y8SAR5fHuz33Icdj1Vaq39QHM/4io/NkfaidDa2O+rgugGGOS5fd9ygbymky7bFSkEG5P+XYy5FrymJ5jA5Jf5Vl4zqlMGEofVt5S0+2RoyKOAwNgEKrtaWYg1L56kX9heEN/KOBoZ4G5+HCH2CsEPfZFeOoBf62QnKkBDA9Em1Eh/AcPhDTjucXZN1xCkbw54dT7jHA3jNcRDEWBAUaS877mMiS4iM7AN1qR1aYxg3r244MD1BTgZ
+ EvS6Ov+y
+ OnBTt9QHavSkM4ZN6qZLNe++fafY8/ZWYs++OAbxxyi9uB9GDem8lIJ31EZS/D2B4O381Dcxkmtx+VL1qIF5fVfZUwOD8rs/2Wuw+cjuEvJM7RRJYx9yG1vxPv6mi3JNRO5TC0v7MExt5QqBH0RjsXJlkxeya51lbbovmJVIvM3FgxplFc90IYpxRqzwNEXC3ecAXOlhbiq2VmNa8M2wDKUeMTbj4FqvFtRbVTuTo3M+8iH1o0KTK127fcWmboNYfACoygryf0IZ531DquNtO47uwuryTECC8o+2vVOZOwmrGXofOitINLiT8bVK/x6plF8nxiRUk67r9AIYz0ydrKZVclCoJQg5+mE/ozolPQFrAAN9KLJcDIcvQPLYNb/CLPqhE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,10 +103,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-bnx2x_mcast_enqueue_cmd() allocates memory for mac filtering list using
-__get_free_pages().
+ice_gnss_read() uses get_zeroed_page() to  allocate a staging buffer for
+reading GNSS module data via I2C bus.
 
-This memory can be allocated with kzalloc() as there's nothing special
+This buffer can be allocated with kmalloc() as there's nothing special
 about it to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
@@ -119,46 +119,45 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-Replace use of __get_free_page() with kzalloc() and free_page() with
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
 kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_gnss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
-index 07a908a2c72f..d560524d317d 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c
-@@ -26,6 +26,7 @@
- #include <linux/netdevice.h>
- #include <linux/etherdevice.h>
- #include <linux/crc32c.h>
-+#include <linux/slab.h>
- #include "bnx2x.h"
- #include "bnx2x_cmn.h"
- #include "bnx2x_sp.h"
-@@ -2664,7 +2665,7 @@ static void bnx2x_free_groups(struct list_head *mcast_group_list)
- 				      struct bnx2x_mcast_elem_group,
- 				      mcast_group_link);
- 		list_del(&current_mcast_group->mcast_group_link);
--		free_page((unsigned long)current_mcast_group);
-+		kfree(current_mcast_group);
- 	}
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.c b/drivers/net/ethernet/intel/ice/ice_gnss.c
+index 8fd954f1ebd6..7d21c3417b0b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_gnss.c
++++ b/drivers/net/ethernet/intel/ice/ice_gnss.c
+@@ -2,6 +2,7 @@
+ /* Copyright (C) 2021-2022, Intel Corporation. */
  
-@@ -2713,8 +2714,7 @@ static int bnx2x_mcast_enqueue_cmd(struct bnx2x *bp,
- 				total_elems = BNX2X_MCAST_BINS_NUM;
- 		}
- 		while (total_elems > 0) {
--			elem_group = (struct bnx2x_mcast_elem_group *)
--				     __get_free_page(GFP_ATOMIC | __GFP_ZERO);
-+			elem_group = kzalloc(PAGE_SIZE, GFP_ATOMIC);
- 			if (!elem_group) {
- 				bnx2x_free_groups(&new_cmd->group_head);
- 				kfree(new_cmd);
+ #include "ice.h"
++#include <linux/slab.h>
+ #include "ice_lib.h"
+ 
+ /**
+@@ -124,7 +125,7 @@ static void ice_gnss_read(struct kthread_work *work)
+ 
+ 	data_len = min_t(typeof(data_len), data_len, PAGE_SIZE);
+ 
+-	buf = (char *)get_zeroed_page(GFP_KERNEL);
++	buf = kzalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!buf) {
+ 		err = -ENOMEM;
+ 		goto requeue;
+@@ -151,7 +152,7 @@ static void ice_gnss_read(struct kthread_work *work)
+ 			 count, i);
+ 	delay = ICE_GNSS_TIMER_DELAY_TIME;
+ free_buf:
+-	free_page((unsigned long)buf);
++	kfree(buf);
+ requeue:
+ 	kthread_queue_delayed_work(gnss->kworker, &gnss->read_work, delay);
+ 	if (err)
 
 -- 
 2.53.0
