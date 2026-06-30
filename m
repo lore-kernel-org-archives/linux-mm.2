@@ -4,158 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63EC8C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:33:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 052DCC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3B986B00D2; Tue, 30 Jun 2026 12:33:19 -0400 (EDT)
+	id B2E3C6B00AB; Tue, 30 Jun 2026 12:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEBA86B00D4; Tue, 30 Jun 2026 12:33:19 -0400 (EDT)
+	id ADE1C6B00AC; Tue, 30 Jun 2026 12:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8F1C6B00D6; Tue, 30 Jun 2026 12:33:19 -0400 (EDT)
+	id 9F47D6B00AD; Tue, 30 Jun 2026 12:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DAE46B00D2
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:33:19 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCC101C70A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:33:11 +0000 (UTC)
-X-FDA: 84937123782.01.702602B
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D8AB31C0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:33:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G0jqsM3U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jbwOLCaT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G0jqsM3U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jbwOLCaT;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 712006B00AB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:34:53 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 010BE1C70A3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:34:52 +0000 (UTC)
+X-FDA: 84937128066.13.C79A7B2
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E290B180015
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:34:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tr65YEDr;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837190;
-	b=3jMgYngoBzDyZs+geKZAmo+1aIx5iDak1uNy55xKyW5vViX27rl+15IvlGENteLs2Mfy/X
-	Fw/e/K8ofVewLqmC7irB1SKmQ6lRQptCxMenJLV8LgW/ek5lYfCTX625gNItE2860S3EjO
-	wSOmd7OKnz8XD2e0geLDALxog5405Ko=
+	t=1782837291;
+	b=T3fY9bV8sVvawFbSyAFtDNn6EWg7F1b7frsuUq/XpfxW4ExzvxDGrZK3OuG9XIK52XzdHL
+	nbW/f9UOinuYU3XjjknZaGgwhQ+cy/sKYrlRituXxcER5WtIQyax2oZSYwtoYdPq07TVJJ
+	fAmx493ZkBsUmAGngBAyRBU0qQPX2ok=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837190;
+	s=arc-20220608; t=1782837291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDyW4G4KkvnJFpm6kj2YxbwswbWtSr2YVelIEZ0RQoM=;
-	b=XgCF4aqUNgsB6BRlAUoWIVGzfqEiX0uTqr3o/1fSSJNFW30ch7sM4ovG/yLOUFfyruByuC
-	xAxkbkgb0Fz70l6BRgrZMX6qKdhYlI6bIE86OqHTXHMpslCDgeIbpVVfRed+UtAQ48eOo4
-	EwyWw0ZW027EcOotzwK7FuBehJ9J8wg=
+	bh=F3vzLp53JrizIZ8vRPTNfFVJq97fTRHFgjl0sdoikIw=;
+	b=iD6WP5u/uO8met2Xn8tCBG0aZf647ZZ8g40O06z/XOEai6qs9BxigFNkNMshiY/XtrHFLJ
+	dul0AzkpsDjk+wgtpcTrffgCmsW5KXklIOnYSjHJDjTxVWFVq26SMOnYw15ykZJJzoKrN9
+	A2cJoUclUIzJ/lc+uyZWA31VI2bN3N4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G0jqsM3U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jbwOLCaT;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=G0jqsM3U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jbwOLCaT;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6B692736FC;
-	Tue, 30 Jun 2026 16:33:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDyW4G4KkvnJFpm6kj2YxbwswbWtSr2YVelIEZ0RQoM=;
-	b=G0jqsM3Uw2U5dFyI7kb6trETpxzY/vWY7kXvixJZsX7PXzXQnLelS/Vp5ENAdV93UwSbQM
-	199SvPFl2WaWcPH2PDOdASpJk3YYKhE5hGvFp/BlquzLMCtsYMftLkQfF1/eUqfca5EOaa
-	VcAipHUHAZkRKUb/6RSVcpWDErjavJA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837188;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDyW4G4KkvnJFpm6kj2YxbwswbWtSr2YVelIEZ0RQoM=;
-	b=jbwOLCaT4C6AQNLnPnFokwOIq6AFMXfhKY/DiHavJEMe6z6FAeEYqGwfr6V6n0m/0e7Bz3
-	wQ4as9XxXhjCnIAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837188; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDyW4G4KkvnJFpm6kj2YxbwswbWtSr2YVelIEZ0RQoM=;
-	b=G0jqsM3Uw2U5dFyI7kb6trETpxzY/vWY7kXvixJZsX7PXzXQnLelS/Vp5ENAdV93UwSbQM
-	199SvPFl2WaWcPH2PDOdASpJk3YYKhE5hGvFp/BlquzLMCtsYMftLkQfF1/eUqfca5EOaa
-	VcAipHUHAZkRKUb/6RSVcpWDErjavJA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837188;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lDyW4G4KkvnJFpm6kj2YxbwswbWtSr2YVelIEZ0RQoM=;
-	b=jbwOLCaT4C6AQNLnPnFokwOIq6AFMXfhKY/DiHavJEMe6z6FAeEYqGwfr6V6n0m/0e7Bz3
-	wQ4as9XxXhjCnIAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 378E2779A8;
-	Tue, 30 Jun 2026 16:33:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IOBJCr/vQ2q/ewAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:33:03 +0000
-Date: Tue, 30 Jun 2026 17:33:01 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 10/30] MAINTAINERS: Move mm/interval_tree.c to rmap
- section
-Message-ID: <akPvrXtEOZS8LWxX@pedro-suse.lan>
-References: <cover.1782735110.git.ljs@kernel.org>
- <91dde21e9084bd04b626a1f073c3b9b3a23cb663.1782735110.git.ljs@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=tr65YEDr;
+	spf=pass (imf16.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.170 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-92e53230b82so194275885a.2
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:34:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1782837290; x=1783442090; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=F3vzLp53JrizIZ8vRPTNfFVJq97fTRHFgjl0sdoikIw=;
+        b=tr65YEDrzDQjzXAHBwfF4HpoP2jr4EDBKbYmGD+oTJ82v65YXOiylKBmUYMewcLgX3
+         68f6pO6n4A4WIxeoxqhdudKBoCjIrtw6WD7TyC6L/E8k3fY/MDD21hgTG+uzgSAVkbbo
+         f3fa3GsVQq7pVHi1OaHdF8rKvOUVQm/H4MHVfDzBflp7eDoDL2DGhEG7gHWJr2J/4BR4
+         KjimLCDM4Q0MT8wyvwzy1eDHHTYHWsA3pihD9BThiZwJcDOxaqycBD5G06twqsGmwGXF
+         hY0Ayk7IbUNd0RYWDA/agFnj+BBepOzIgszYK7FRtSPd2ESjz8qdv/xfXBm0ceNkuCjn
+         bL5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782837290; x=1783442090;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F3vzLp53JrizIZ8vRPTNfFVJq97fTRHFgjl0sdoikIw=;
+        b=HYTE6LaGAS9xwl8AMLOzkn8ijpH9tuykED+HaurRGJXWBDWRslg0rFFRGMNZ2L5gsc
+         HeBIJ6Hi/MA7EZxgHn0dl+IS3DMFjLEthuz4zsE38NW6J+BAWAmXOGQny4jP+NuLEjhV
+         wHXVJ9P4JqwCiQIIR1KzhkJp900o0KeSDYnAdm0AuwHU0s1Wvggna953TK0h0uAMQS0e
+         9YB51xS8gVbGDEXhUSHYr7ux6VJlk0S1LH/RtP2rHeftZraczyT4y/Bhx1UND5lOQwJq
+         JRl1z17V239UBDODF7Hrz2LFw9+pIqR2qSHJBBwWbuOUZw5LKdA+dXbIYW+sww6PHQHg
+         8jxA==
+X-Forwarded-Encrypted: i=1; AFNElJ/7pfSfXHG+pIhyV0IEwviGXrTGy96qkg8TiEbb8W52rA7L09p91d0tj3ZYdyIdQpneYUZ/4W2w+g==@kvack.org
+X-Gm-Message-State: AOJu0YxEB969uuh2gjaT/HDDYU3eScvmg7JiAeFFoQ6F3GdUalaoca2o
+	mlPRzfDW5os8XW6B+VD6RPSbSCrEN6+i4pxqWPCsc+qsMXpzSdZbqYO3CMSfdjha3k0=
+X-Gm-Gg: AfdE7ckcuHUkBST3tOD9/fO4AEdpR0uzz7B3P4/+ciN9XaoQvXxQmeMsrGwGFCaecGD
+	CiYdhQ2swiihFPfXMO5pCKB2OvNMD1ERAHn9ociXEW467y3n5hOQHoMNiLB4t4EdglWVXhotZ46
+	RaG6PZgIaW279cQ36b6p4Aw4YGUFx0ZM76uWod5vI9FbYf0VL+lqHFGFQj9H6mSpqbcKyZvVrao
+	aB2ej7D5p/iejL4V1DXKecUQScUz124micFTsyi39ba+01KShrTsvW5Q6VZD+onZRDBLzMOL53X
+	JH0/elcQApen0BSl2X9d7wqZzYHJ7xlkPAEr3TVXDRAFwWkXHEw96UCMCG/fi7cJzOLKpQ3MO7+
+	rJ3OyTuAH5K8VdJS3nvILUfybWZ7KCm3Xr+yAPGogAXYQT/iaCAoA4nABm+QfS6AP3hAgnopKy3
+	ang4guxVOXQJQ=
+X-Received: by 2002:a05:620a:2b9b:b0:925:4655:a89b with SMTP id af79cd13be357-92e625f7147mr682887885a.27.1782837289779;
+        Tue, 30 Jun 2026 09:34:49 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e6213bc41sm273914985a.6.2026.06.30.09.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 09:34:49 -0700 (PDT)
+Date: Tue, 30 Jun 2026 12:34:48 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Jianyue Wu <wujianyue000@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+	Youngjun Park <youngjun.park@lge.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 1/3] mm/swap: colocate page-cluster sysctl with swap
+ readahead
+Message-ID: <akPwKK22ahROxDqL@cmpxchg.org>
+References: <20260701-ch-swap-series-plus-folio-lru-cleanup-v6-0-d4f648963382@gmail.com>
+ <20260701-ch-swap-series-plus-folio-lru-cleanup-v6-1-d4f648963382@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <91dde21e9084bd04b626a1f073c3b9b3a23cb663.1782735110.git.ljs@kernel.org>
-X-Rspamd-Action: no action
+In-Reply-To: <20260701-ch-swap-series-plus-folio-lru-cleanup-v6-1-d4f648963382@gmail.com>
+X-Rspamd-Queue-Id: E290B180015
+X-Stat-Signature: rzh9zem7uaw8kesd5xynn5pq6jjqy8fp
 X-Rspam-User: 
-X-Stat-Signature: uxb5xojh8wso64ugwea1y6unq9dt519d
-X-Rspamd-Queue-Id: D8AB31C0003
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782837189-947023
-X-HE-Meta: U2FsdGVkX1+wAYF7AaG8SnH4vffWDE+VfBBzWfQer9V/qvRI33jvPUDR7MYCjEMutGcKvrtCCBQGGdI55PBjtiy2WfSXUtsy7L85jEtuaJWNSUZ2G41QCkLmZ5+iPFfSb6rfPrTS2IaIEAsMUEuQ6Qqtpt+M3peLsZ2yM+dfLEjv3/iE7E5lDuQbsu3oRChj7YLZol9ePyd6gi70d9Vv87IZcF/F5duwtPBIfUKM3dSzClpxSHCHy5QMjrLFOz52VtGVmK+aikJtcompvyX8WAc/4ziqPGlxAF5SjaOUpXVCDvWRk4u+gmkCuitLIQOBQlOMYRVWn5lkmgR/x1K+EqqvzfqTf9P7zPP3/pSnWqqN1jAByEU7BnGiRdeDaBOjIlAQ1sIetNXoGncc6KSf48UN0bpJr5DvSykoSIaDsix47mxXX0yq4oZSE9ImABZiqcRnkFho6Ljq31h4jdex5zyucsp56dCOLrKhY526Nq/VhkWAdLA0JuYlHCLKYRnQfOJ8RtREEq1Gdryy+UUjokg1ckfry7efZIEXQo4ykeyrETPn0Khe+hP6RUUGj0lPtGElaxycNCgSxxscSxnHaWdn0r7jNzGJFS/oyrtM3pqPmVZJZUKWLcOcge/k0vQeJAWqXdta6zWYyzXXuQrAXMeUZnGaqmZ14wpP31SNBzPdMW9fo8P3Bd3UmcPMRPMiodLHRJFzr4H3p8jOIGjisdUYIC7iMLjoy1LUcQ+D9EbDk8wUfaYsPZD1BB0Ypg6fCjysiRAt38CnB49lvw2Xuw2dPxzmU4MWb/kDe94xFaHSwBDobJ8GcpVSEfdoVsvHZGodw4RlmuI9qKDgEyKqBRVfBCxz24ESvZj0YD3fOIzn5cJ75maTlTf81y3AGFchJy+ZVR+wJGTYYllDJ8du27PdRGS1cgRXPjsFS2oXaTTbldGj6BnXTLKpObjLsg2lYePG+Ytd826t4rOp867
- e6Dcs9iv
- Bf9wibIoRm+RaAs8dZbMlLnVVWdz7mIQPrN/t2uie51xjsXttHbSq5biuX624Vzo6PPe58NYgfWHWgzN+45suBFmwAVKtzjlpRgih0tPuh28iw/D6MZbJCRSvm/uH3T6N710F2VZdMzFOsyVLwx0sq4lgI9EirHCsg5+vTk5jEfy+t+TGx5+HpcjiTKFU8brT/Pptde2x5OCqZalp3pmD2fzhTyEWWvxKmtyDr9dKYFk5p894/JIVe6tEL+AUNJQFUwvftYAtfficxNJdLwsRzGlbPCa0lJqY/Glwy5tENph59zWiNCsbLVDIl5djvhCCOp7mnAPljGbGPokp+PKkcj40iUNYk4LgQoIcNsF6rkyAYamG06elmgU0C37TGF1aJabr4i1ereco+O+cjM9lL48m0MAJ/Mm3saAN9MEsc+n5PJPRhuhrwylRmdUfOZPkLLL5
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782837290-213966
+X-HE-Meta: U2FsdGVkX18EdaCuNkf7F3XS1wEsTON4AtWNlmzCh9V5yL30ZoK7bCsBywaBNKKqnHbN4MG9TL4d0DjKLEhT/w2PtRoy4QRq4vwaYJ09IS8lWexMwyqytkIeYCggR/ljJbyTlYhbguLSO1/EpSV6Ayo28ZVMG1rQ9ecu243zYodo8LHgwFTiVKtdNmCNkLjifb/GNDXzvdGPI9fta+YqtzRAPObC9TDlLX7knkAid8B7hCLqDuJqiL6Q5Z0nNB5ihNs9Wao/lgfxj+XDTGLDmDp3cFK80cKL0fof3OGjGUFLDDr9CZZs8rTFk2OhXdWrjT63xmYlT9h+7L9Z55GFUbtts6JvHfYBcoNmk4SkQdV9dtkwcrMcIgAuNz0EYbqVbWk3mdLD6EvSlQqfhtXDUFs6D9KWTOLQUqmNSHFozkq05sVEIGc3KbuYNWSijTVB+BXLcY+o8pbs99rXYD9su6vFvNo+6hxoSY6uucQrSQ9ev5/doGMS5kpNIsfy4cPGTLe2p4XlsbanKfSKxPOsciVHQ9invHv2cbwRPpSVs/ZoG4jxAYTozohdeBW0bZubcXNfOZ1m42Iin1Li1DaAZgfoaKXHWAVUdPqNxDHWDi9LGQM28e4VNOuOJEttaMropTzTPa5UiU6Dd4jqKjw1E+qvmB08WsvfXiTk6pRRe557CV7wpEtODN37uf2bks+CJxqr3v7f47aggXBAsaPXY/MAiDY4JhH0PHFQTsj0sZDkjKtMrDRSsZuku9O4qq9Vo1b1uPSspfw+4hzem6QzTEcFk67Y0B7+2ePc6e+ufhDI4DdMS/cfP8MAZ77Q2mmoyQmAvXQpd8ikalzZI4SuRAO6YMNO1UkPashLQ4WKLIfUhCOOFpNo+SDVQYq+Ch7RdoEEpq5lJMkyUhbyBRq15nrLFW9vSSsUz2EbfNJ5EzlJ3Skcp2ZZ3KmfsUShKRG+EdzhE6orMRGpUWWm4GR
+ P7/mm6ur
+ IRqwXP1abtWbNMjQwZMV6QpsHstlmRGd/SE0rvHIWQ9aGHzhV1K1U3QZ9naERRSaHRqWYYdo0TBS0L6AQ0vmDPYmxXRWUzbTCN3mt3W6bxM+NYfAf0LMQkZkSRHOTV49H6F+4fIjZYh9BED0wRnN2/Wy+AOnoL3Kjx41+dLDW2eSwvp6QMSMbROl8mJNswxiCwp2CC6LsxBxEv72hnbtenquoKW8J4eMh0lHtjwqPkZdidKxz11Cp+fEN700c1qTxH2x/QiLnl68oz4bra/9outhTiL/BDhHuckiQAUEr2+LVcMU+QenRa6gVlWtyv73TmGts8/yTeZGPO1CyqTbIPtJ/vIDrxAZ5FXirDrkVFT5d9ZNHs3oeA16UlWjI8zB0L+3PtuaqFhtGCjfs9psLo+pyUhZqQA6PKb6HWv2Ilp7NU7UvAQnlrP87y0zifpYqeT7h0gL7k5MHMPcHIqCcNfzXGboOc3+CCJlt30v37EHeDlD2JtDsAdWpFg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,14 +137,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:21PM +0100, Lorenzo Stoakes wrote:
-> This file implements code for the interval trees used by the file and anon
-> rmap implementation, so belongs in the rmap section.
+On Wed, Jul 01, 2026 at 12:27:32AM +0800, Jianyue Wu wrote:
+> page_cluster and the vm.page-cluster sysctl are only used by swap-in
+> readahead in swap_state.c. Move them out of swap.c together with
+> swap_readahead_setup(), and make page_cluster static to that file.
 > 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> Rename swap_setup() while moving it as well. The helper is internal to
+> MM and now only sets up swap readahead defaults and its sysctl hook, so
+> the more specific name matches its reduced scope.
+> 
+> swap_setup() previously lived in mm/swap.c, which is built
+> unconditionally, so the vm.page-cluster sysctl was registered also on
+> CONFIG_SWAP=n kernels. swap_readahead_setup() is now a no-op stub when
+> CONFIG_SWAP is disabled, so vm.page-cluster is no longer registered
+> there. The knob only tunes swap-in readahead and had no effect without
+> swap.
+> 
+> Suggested-by: Baoquan He <bhe@redhat.com>
+> Suggested-by: Barry Song <baohua@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Jianyue Wu <wujianyue000@gmail.com>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
--- 
-Pedro
+Btw, I suggested this:
+
+https://lore.kernel.org/all/adUTC-7iyOAUlhR7@cmpxchg.org/
 
