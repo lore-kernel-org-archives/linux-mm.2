@@ -4,97 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705DCC43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 11:35:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7EE2C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 11:39:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 575426B0095; Tue, 30 Jun 2026 07:35:00 -0400 (EDT)
+	id D49076B00EC; Tue, 30 Jun 2026 07:39:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54D206B009F; Tue, 30 Jun 2026 07:35:00 -0400 (EDT)
+	id CF89E6B00ED; Tue, 30 Jun 2026 07:39:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48AC36B00AE; Tue, 30 Jun 2026 07:35:00 -0400 (EDT)
+	id BC12E6B00EE; Tue, 30 Jun 2026 07:39:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 28C3C6B0095
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:35:00 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9F04C8E0D7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:34:59 +0000 (UTC)
-X-FDA: 84936372318.01.DD12BA2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 614D54000F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:34:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c638sO79;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 904276B00EC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:39:40 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 283E414046E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:39:40 +0000 (UTC)
+X-FDA: 84936384120.23.8BE4006
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6377820003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:39:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZJtc4DY3;
+	spf=pass (imf13.hostedemail.com: domain of guanwentao@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782819297;
-	b=I/doCNPjCXJS2EK5FmHGXNQXmPOgKdWPNcnOdN0cp17cBBJu+Kg0kqD4Nj2GZRC+nXziUJ
-	LDY13QW3VAv+C8JvZE3aPDCwIISxLKx2ZPy/ks4ZXZcJtEAisLjtK5/efZQgQAgZUttLdK
-	L5eWunyyEOpOlp6V4MXflbTHaZVt7/4=
+	t=1782819578;
+	b=g5UrfGiDWZHR7cVO43nf6Np8wvLwjD/xxbwZwgabblIgOOmmW4936rexHXPXlxjMc88L/g
+	JGNRA93ymN6FpU1hB2nBppcCMN8WMZ+LkcLIjaSYkcPpxNKZhIlPVpKb5vb+qQZqeb/IcK
+	aT5hOnB9pWz83X+OLNvS7e4/ETCF+T8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782819297;
+	s=arc-20220608; t=1782819578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BpA3xni91Plk3YQ2lcE0OfAFTwmeOKPp038yIxg0jMY=;
-	b=5emX8pwaxJx+xAes4q4I4nqlriaKQnc8tkR9k9HhkhsuMclxwbsIv6qjCaterKs9XsOXAq
-	1geggrAlkir30+fmyPwuji0iHwsAaZ0lOBHILGeJwfeZUr0EWI2KcyVR2YAMf58NrpihkS
-	WyXPdMX/DENo/Z8PN+9woc72FvzKy5Q=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2DTZxiReDZe/UfzDYH4J6ofd3XwFaAtenmT6j/RacmQ=;
+	b=l2m1eOcOqd/nrpOAr9glg4gGyDkKa0DE5qX4/jDqmgJQ+YWU7mR8ah5io3HtjoXh4sISQP
+	6y752h5dihBV4JcUrNa5lATJ8acKlJMP1outM8hjm2GoHAAvxCc9TeG9nX+GyrAA4LezDX
+	2NIWL9ZpF7ZpVXD1tNqXOr4hUCL3DAA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=c638sO79;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf07.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D61AE2C1C;
-	Tue, 30 Jun 2026 04:34:51 -0700 (PDT)
-Received: from [10.164.19.15] (unknown [10.164.19.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A140F3F673;
-	Tue, 30 Jun 2026 04:34:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782819296; bh=36e7WO1Yf+y2VcPGOuHpBYDw36f17/2PgIYLivcK1GA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=c638sO79AScfINz5lZY6NrPZdHX2ctsv9So73SM3zl35Hsiy/29ZmsbJxrZ30q+le
-	 e8zRVT9LylhWv0Ori+TlPSrHZw89TwAHrD9JM74Wu6c/1CyEbgAzceXuUBzpPnNzSf
-	 MJzWFP/AotQfgT6G7BDiLWvW1fbUjAPzzb7V+pCE=
-Message-ID: <6fdc0cbd-0880-4594-bf33-a2993ac2fe60@arm.com>
-Date: Tue, 30 Jun 2026 17:04:44 +0530
+	imf13.hostedemail.com;
+	dkim=pass header.d=uniontech.com header.s=onoh2408 header.b=ZJtc4DY3;
+	spf=pass (imf13.hostedemail.com: domain of guanwentao@uniontech.com designates 54.206.16.166 as permitted sender) smtp.mailfrom=guanwentao@uniontech.com;
+	dmarc=pass (policy=none) header.from=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1782819563;
+	bh=2DTZxiReDZe/UfzDYH4J6ofd3XwFaAtenmT6j/RacmQ=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=ZJtc4DY3a7wgi2wgFqKfTvjeaxxq1BzRLbeGN+Er6kgz+jjbpKe53uAp0K2pAnowY
+	 jBFyX75pEyYe5CQ/Bv3f4ogINxmMRWfpQHTgxwbwPU4LkK8Nx4A33Y+XRAoLy1HAI3
+	 jO3fR836Kxbu2mceVZAQeAlvOKc0G/wgL1z42GL4=
+X-QQ-mid: zesmtpsz2t1782819544t49749188
+X-QQ-Originating-IP: sxEsh/LsGlrcKq7rsdcnntKfWGdMDa9vi9AN+mgPoWc=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 30 Jun 2026 19:39:02 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11253890837269106346
+EX-QQ-RecipientCnt: 8
+From: Wentao Guan <guanwentao@uniontech.com>
+To: mike.kravetz@oracle.com,
+	muchun.song@linux.dev
+Cc: osalvador@suse.de,
+	david@kernel.org,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: [PATCH] mm/hugetlb: avoid unnecessary TLB flush for empty folio list in vmemmap optimize
+Date: Tue, 30 Jun 2026 19:38:57 +0800
+Message-Id: <20260630113857.3319612-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Lance Yang <lance.yang@linux.dev>
-Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
- j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
- tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
- <20260629074802.42727-1-lance.yang@linux.dev>
- <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: McoPngcDBvM5GcdEB5V2fCXSnObxkMXgCYM59VrVax8XvAxYVvLw06wN
+	ah2MJ2fEzvJRImKtnt8v4lkiAzoQTNjTBdVAvqSi66uEdJwX1ipZot2VGVLIZPANu38NBJl
+	wXjd9ghA+x12BdMXzzL9okS2RIId+ElxS9pQaHKx9gtuto+QO6OhQ4TMnl/LDfLskOCwxvm
+	clYPgria/HFn43s3+2xtlSCoxncfHjEuAnkyUR8P+jF57AyZsUgahyjRqhFjA8HATb1CVFX
+	5dupi4y1t0BCpDb7jYHYUTN7tG8VEOE5MUq/TwWqgagx0oKRCrKf72AC3JKY7KG29P+vnFt
+	WSLpKnSUuQ1Z7ENXSXFuz6YDWEwoZPmx7eiNi7PnaUfFZMRDqQajnVMETn1oIcSRIUqmouk
+	GUuGfutonL/4aMazCn5XVBySceGC19iMO2DDYrNEX7WfX6VH/bqJjg5D1p3rM5YLYP/28Dy
+	sO7Qyv23W0ihnOlWEXjC54IoUNLecsUdYYCFy2FrP+M9sDy6QuikTEppVjAr/fJ+WzHS9Zh
+	QGgtxreXuMCgjhHFb/5IOL0rT0uhyeq+SgjUWJQp6Vrix3aKxlyRyZ8CZTCNu7qDc+5a6sg
+	sOt+9PQhz+hjrJdgOsX1J7RV0T3mZMIm7pt3QpsD4VFA8KZu+r3jXiG8NBniNcowYEf1Soi
+	rpA2lrrpp3aehO8vwNGsfEbA/glDGMOugHoEdlgLlSPzyV0mbw3CHgmToYzfsmNTdpTupnb
+	PE6JRZcadtB1vcggpikuH4VZL7bdFgERdyzyrM7CLY6VV23AJhqFK8MoJtoFPsscwcZc6sR
+	9C/QFfxgUEV54rVTumdxEN8ZWoDGEdGHS2tNePRtLKRTFHjqi6uZc1eR3kfWed3KAwuCBsy
+	Xi5edwfkJc66iOcENSJPPv+1D+mKncL1zuIynDdqjY4lIn8RzrqL69gb7Jk8YaNTuxScKXf
+	GQKKd9YRjTzr2PeAuzUHTs7mVip0Ur+EZ0YSA/cCsqaNP0LWuifTV3SAF27DlPrh5MRlz+U
+	52vTkl6aojfsN46LVfrLMygDVGg2UjVBcaMr7f0ifTtlOgxXfhRFp9UrY/OC9f26uWG9r39
+	Q==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 6377820003
+X-Stat-Signature: drc6dfbwckqyh6gmcmgcmanrfsyrh9m9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 614D54000F
-X-Stat-Signature: pzzchwehjp5ksuruw4eubz86exnatqy3
-X-HE-Tag: 1782819297-78475
-X-HE-Meta: U2FsdGVkX1/4PgFH4DZeV3CduudSSCmwEeGzLyIQDnQ/bVL+uf6EVV0VXKXme80Z6p6ULkwEw7zjVEMyG02Fpmu4m/6Hh7krN1+eAFl0SCV/QHZGXC9Im0NMlQweiP1DwxBnWTGEVHxkzHaJaJnXP8Xe3Lk/D+bO8egbHIZz/yH+imj0EpZ+uL1AGPmjGND9nMeA9DQ0wvmtiFIMXBGF5YNiR3i9nLMMr2g1++7OXda8gJPmmaea3UiVKXG/uEu5Is5iJr1+yjPGD2TsATl9TrB66Xcz3TdBlrWU+MOwD0mpqzJcb1FKhApzYRndWBtzpGUHbRmupGQNcTGwDNHCgXLldMQlYI3O8C0csRtAa0yxDIaaql0CAHF5AQYpSHB8BKHjCij3fmSoA/ZRT994Ae69ivOhYRmU3XpIcPGulDkbXPXYrSMSy7TCGD6vLMUON+vEjsX41gY6VF0q864bFZ5MqnsGSy+oN7qP85hqAXiALnOQSBkS3aOx3nfqpT5PhbuVMz6xnZYvpMr/xbmwP1YuJTkkhFIhYxaky4MfIwVhMpgWHcAgMQaeLqCxVShMwdxTKFX5VhmC1wRMxQtNHzj2EI7pWpxYvfcqMiWAbAY6TkByM8BAyR7Z4BnwMBFiteKzP6qPm+O7VarzECa6QW6YBbXXFP9mOGzE1FMHFFJmbIekNTaASufgF14PK+O3ymz8Byt41psfCpJPZbEqKNpatK2lDle//L+UB4+3zrBXr0Y8hLwEIL5UTjvyAuoZUJkBjqaJcxusCWokUH19wMWJreAduxvBTJtR51Gkm0Jhxg1SImczCZslojueOMMcZdeUqC5w0Icd49NdqKrrNGn3JEcGCfObMw64K36D/URfIeumdZWxDXu7W5RGRggXh1GdjZtXaK3D2jjRQBjdieEVYSnvlkF6wUTrZLJwvIRYIadWznpB7o04dzOciiAYo5vIqznq7X1a8rovRdU
- nEYxeZJH
- a2FB1uzAJWV85aJmk+AXudDEBN4XisiDQQnGVE7szxRW3FFBT3XTsZiliNXe6Q0FV+GhCRpMqJxhlmfIQLlEwK/K8ECeDxTmMoAjQLZdLrHCVj2U6Xqq9XkwFSRtvjlS8hdQ+K8rf5TA4LHMFOpwmAkyY/z4V5TZwGX+pHOGKAwBqq9G3nret6tC0phlS0YRkekx1CInirSD2Bwl7QOk+QmjE5l8gz1VZu7/bqnljLCo4R4m7+dwfr7a1vjORuYnRN7oiP1qfCfKfkwrmIC8FCV89HFMoQSVyq6bOGXV/k9f/wpAQ02rTCwelNMc2IgXxcWeZ+1qzUN54GudoF766VCsbyjvR7pSRnriGuQZzlZwlXSJD4a3L8qh0TIcNE+aPlPI3GwRLhU4r9EcRoEYLwYRnbZc2AMQIawcpdBHc5/8g3E05PUqg+gNIQDjgWOAgw3MT/gyTG63D/y+Ws+39Iq15PnvdIjFuZbu/
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782819575-442478
+X-HE-Meta: U2FsdGVkX1/Oh1tQVDIHMNSYwZ8Rcl6O52WX5XI2almJJZeSXA811AR1sEISpJ13gx6y4MoIYiL21SpyeMA0NKCcgOgj9f/M+BGrBPAUsuAu5ECVtqWyGY1vFsk4puJqf4FxQipzMzEDYXP3J7AhyNAsEc2d1Wbh/tmDwcptWxeAOK/PB+E7RYj/DivBZHVmI4VWw1t8cWxsKPFpXn62dOe/B88ErG9k3ywPavJ3MeDzE5gHfjLmWlmudtaWYocFCaDSQJ0Lml+tNE4GFbQZEKxfTIoclYidY/KnbPFO02J8iQIfZ+GGWe2OD/NBdKn03oQnS/Abaed5gnDH4z7Yr/IVxZAscLWOdgVlVV85wPV0G4HAbW8h7naDCSn/nfXq9hItlLrproHiVHVzper75XPtjBT2+k+OeVyrBaRI2GR0kmJxbDi4XNrItaNIA1lYQdIBagUSohLYLKSJ9Cv4wIDIfVN+JXfgjE08fBaZUpQfUusZGdpj3gPExT+pVRHcWe1j4HJhi86MiTn0jT/pUUkQrSbWgPILOJVJbQNDCSD5LV6IbvQbSyzXIUy3alpV5dExXs3GaGgKYmvcWcpKJVKAm2makL2UC6/aoweQPKJoNtbLFR+BPQgVxNhiJmpeaXza1/ZPes9zkBv2F0eTXudTDQshT8mxOt6JnPP0y34oQFu3OXBusj/k2xLgnZ/HlQQlxpkEFewJupOf5RHU/jKyyqj0tHpdtLztTBL0WOXPFwY81b4+l6se0biyZHPXU5xXAalrQObhmuRi5YZ7jqn4utcNvBTSGqb17gMAmFel694jKQXc4PrcYQfQX3KHVjfNkITC3k9OXmmYMpfZYeL7vuDM/fd54hgQWBDa0bDnK0HTYgfxJsK6bghDG9NYBKT3+jTNYKL48zptDiYaU1uFYxyfcKiJvHTsUsX8fyMFy93aG7Zokzjz7KeULTFljIkkb2u0MF7Hcn6WJjE
+ RMty6SDz
+ L4ekSS0s/z7lsYPIBehKzLthKol9RXDB6QNfibojpLnj2hNUcKNjzQa4WKrETOvb7tlujHlUUFBz2S8bRPCyqztOQnE5vvg+qzktpqDDoIKE8OfA+WwlMQMQoJX85MpSvmtoNqAUYtYEtFoUVFOGjSevxshpM9d1l+rpC5nNkDvif+GaVhhHA7ZfIFzjSY/W9+vPay4QnA7SgCordSdBk+1CNQOKdkxe6oK5Wf7Fwl4Pzf+sL+0ZmHMtp5xduAT14gc+Vr0aG/tF0zbJOVp5dGfryW6bLajF0vP1CZCQvslAY/Wd/ud+dUL3v/+Ray2BmwaG3zbeOvCV8GhNwgxmkZOcBCBtxNs4OdZkV
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,118 +115,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+__hugetlb_vmemmap_optimize_folios() unconditionally issues a final
+flush_tlb_all() in its out path.  However, a TLB flush must be paired
+with an actual page table modification.
 
+When the input folio list is empty, neither PMD splitting nor PTE
+remapping takes place, so no page tables are modified and the flush is
+pure overhead.  An empty list is reached in common paths such as
+gather_bootmem_prealloc_node() on nodes without bootmem gigantic pages,
+hugetlb_pages_alloc_boot_node() when no pages were allocated, and
+runtime allocation failure paths in set_max_huge_pages().
 
-On 29/06/26 1:35 pm, David Hildenbrand (Arm) wrote:
-> On 6/29/26 09:48, Lance Yang wrote:
->>
->> On Mon, Jun 29, 2026 at 09:25:48AM +0200, David Hildenbrand (Arm) wrote:
->>> On 6/29/26 08:48, Dev Jain wrote:
->>>>
->>>>
->>>>
->>>> Sashiko notes other places:
->>>>
->>>> https://sashiko.dev/#/patchset/20260625112955.3254283-1-dev.jain%40arm.com
->>>
->>> Yeah, that looks shaky. We do seem to have a bunch of these cases, primarily
->> >from pagewalk code (where some users like pagemap need the actual address).
->>
->> Indeed ...
->>
->>> I think we have two options
->>>
->>> 1) To prevent any (further) issues, make huge_ptep_get() always consume the
->>> hstate, and let the arch code deal with aligning it. Invasive.
->>
->> Kinda lean toward option 1, even if it's more invasive. If we pass the
->> hstate down, each arch can figure out the right addr from there.
->>
->>> 2) Make the arch code handle aligning without the hstate.
->>>
->>> diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
->>> index 30772a909aea3..303a1b74796c9 100644
->>> --- a/arch/arm64/mm/hugetlbpage.c
->>> +++ b/arch/arm64/mm/hugetlbpage.c
->>> @@ -126,6 +126,9 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->>>                return orig_pte;
->>>
->>>        ncontig = find_num_contig(mm, addr, ptep, &pgsize);
->>> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) * ncontig);
->>> +       orig_pte = __ptep_get(ptep);
->>> +
->>>        for (i = 0; i < ncontig; i++, ptep++) {
->>>                pte_t pte = __ptep_get(ptep);
->>>
->>> (nshift/order instead of ncontig might avoid a multiplication, but not sure if that matters in practice)
->>>
->>> IIUC, that's similar to what huge_ptep_get() does on ppc.
->>>
->>>
->>> static inline pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->>> {
->>> 	if (ptep_is_8m_pmdp(mm, addr, ptep))
->>> 		ptep = pte_offset_kernel((pmd_t *)ptep, ALIGN_DOWN(addr, SZ_8M));
->>> 	return ptep_get(ptep);
->>> }
->>>
->>> I'd assume we could do the same on riscv. Besides that, I don't think any arch has cont
->>> entries.
->>
->> AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
->> doesn't really care about addr there. Looks mostly arm64-specific ... 
-> powerpc handles it correctly in the weird "span two PMD entries" case by
-> aligning the PMD down.
-> 
-> Risc-v copied from arm64, but can simply derive the #entries from the PTE value.
-> it doesn't have to re-walk the table using the address.
-> 
-> But I think the following is required to fix, no?
+Add an early return for empty lists.  This restores the basic invariant
+that TLB flushes are only issued when page tables have been modified,
+and it also makes the NULL hstate passed by gather_bootmem_prealloc_node()
+on an empty list harmless.
 
-We don't receive an unaligned ptep in huge_ptep_get, and riscv derives the
-number of cont ptes from the pte itself, so why is the below required?
+Assisted-by: kimi-cli:kimi-k2.7 code
+Assisted-by: Github Copilot:gpt-5.2 #Reported-by
 
+Fixes: 79359d6d24df ("hugetlb: perform vmemmap optimization on a list of pages")
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+---
+ mm/hugetlb_vmemmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> 
-> diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-> index a6d217112cf46..7e25cc13b3dba 100644
-> --- a/arch/riscv/mm/hugetlbpage.c
-> +++ b/arch/riscv/mm/hugetlbpage.c
-> @@ -5,6 +5,7 @@
->  #ifdef CONFIG_RISCV_ISA_SVNAPOT
->  pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
->  {
-> -       unsigned long pte_num;
-> +       unsigned long pte_num, pte_order;
->         int i;
->         pte_t orig_pte = ptep_get(ptep);
-> @@ -12,7 +13,11 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr,
-> pte_t *ptep)
->         if (!pte_present(orig_pte) || !pte_napot(orig_pte))
->                 return orig_pte;
-> 
-> -       pte_num = napot_pte_num(napot_cont_order(orig_pte));
-> +       pte_order = napot_cont_order(orig_pte);
-> +       pte_num = napot_pte_num(pte_order);
-> +
-> +       ptep = PTR_ALIGN_DOWN(ptep, sizeof(*ptep) << pte_order);
-> +       orig_pte = ptep_get(ptep);
-> 
->         for (i = 0; i < pte_num; i++, ptep++) {
->                 pte_t pte = ptep_get(ptep);
-> 
-> 
-> 
-> I'd prefer (2) as a simple stable fix first.
-> 
-> If we do (1) on top, huge_ptep_get() on arm64 could stop walking the page table
-> another time.
-> 
-> If we pass the hstate (or vma) to set_huge_pte_at(), huge_pte_clear(),
-> huge_ptep_get_and_clear(), we could likely get rid of the re-walk in
-> num_contig_ptes() entirely and possibly just remove it.
-> 
-> That would probably be cleanest.
-> 
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 133b46dfb09f5..d45d5355d1af1 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -624,6 +624,9 @@ static void __hugetlb_vmemmap_optimize_folios(struct hstate *h,
+ 	LIST_HEAD(vmemmap_pages);
+ 	unsigned long flags = VMEMMAP_REMAP_NO_TLB_FLUSH;
+ 
++	if (list_empty(folio_list))
++		return;
++
+ 	nr_to_optimize = 0;
+ 	list_for_each_entry(folio, folio_list, lru) {
+ 		int ret;
+-- 
+2.30.2
 
 
