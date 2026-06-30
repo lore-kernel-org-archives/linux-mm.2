@@ -4,104 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 878EBC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:12:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BD77C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:18:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 16B186B00BD; Mon, 29 Jun 2026 21:12:46 -0400 (EDT)
+	id 6F7FD6B00A1; Mon, 29 Jun 2026 21:18:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C886B00BF; Mon, 29 Jun 2026 21:12:46 -0400 (EDT)
+	id 6CF8C6B00A4; Mon, 29 Jun 2026 21:18:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00B6A6B00C0; Mon, 29 Jun 2026 21:12:45 -0400 (EDT)
+	id 5BF8B6B00A5; Mon, 29 Jun 2026 21:18:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C76006B00BD
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:12:45 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3794FA0334
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:12:45 +0000 (UTC)
-X-FDA: 84934804290.13.7A38924
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2D191C0009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:12:43 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JyaUNIkL;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 36CC26B00A1
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:18:29 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ADBE91A02FB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:18:28 +0000 (UTC)
+X-FDA: 84934818696.19.527120E
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf08.hostedemail.com (Postfix) with ESMTP id D0B0216000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:18:26 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EQYJHyoB;
+	spf=pass (imf08.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782781963;
-	b=YiFB8dyXmIG95O1f4MZ/8PyEJrv6W7Q7oeYS+/boHv4Ziiy8wL1cPLHeDIrM22/Gollmup
-	luHyZWR43ewDRlPM1/Is429xHC7GYC7XKAfw+8tiDct4xplLqMw7jymu9JVKiyJGxOzAUy
-	NJu7qCuNBEuEGYHgOviYKWokKrzca5k=
+	t=1782782306;
+	b=yrJH6UfhLLFvWWCmlCjDpwsWfwK5UiD2QMEcjV5SLlSFx+LNua+TSpR2fyZjKTHzKInXXA
+	taOBhuzZ51O2DnVs8/3HO3HY18zIeQ+2+nfAYF9SoAEGj/KM9n8QK9SrA6rdPa+G9xw2Tf
+	A5Q40pkcWxr9pApodMWevB6q0YyFfTA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782781963;
+	s=arc-20220608; t=1782782306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=inHqJ400rPcs/rHocBQUUyc71tWcLt7G6vrd2M4T2zQ=;
-	b=2T/kCE9h0WowmCGULCpnZOYu10rZW4hjMHRH9O3LPE7m0sQ/1/nOmJKQCtTb2SKN/AKEDi
-	y64OM4mOmm5tDT0a44oimjhGlam+7plSR2UcY7v5cCdPOYvjU/BlSsxBj0pND2j/SY0xNW
-	TPGC0ZMArU5iGUjf5/gnUh8Ivra5Q0I=
+	bh=VjccltFszzoLCJ/RxIOjcBIRQ6g0sQYI1eSvIvcwjP8=;
+	b=ByK5lG7mh2ex8j0gVt8CWC92NUx/+Jf624BtTBTgTnKgeGDFV1p/eyFgt5ajN7TJzkRpQi
+	EgfidDVOsaoc8+cm+i+ZwA3kZjYB7JnlAY//B6WApYIDwYiMcMUHVisj+13ZCcHj31q9dl
+	qjFXpuV+HV8rCbjhQZCFxqRjrBQutws=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=JyaUNIkL;
-	spf=pass (imf22.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=inHqJ400rPcs/rHocBQUUyc71tWcLt7G6vrd2M4T2zQ=; b=JyaUNIkLY57rBH8S+mg/T3Sbgj
-	JDSh7P0QK0847LxoRYy34jt8lO2+YgI2mCiW9hZbuwhqhzJ/YdgJyyV9YbFfYWMzvZis8V0tBKT58
-	4vI3NaaZz29zTfu/V5JMnFlf4nDSQh5FgXSoa8QQjOCupPb6gJ4Kn7of6hwkfPwgWiS8WBCe/5p1n
-	Ykv3+Ri1UyBdByCbWnMOArG2uPnT7IvRpUWkG+76UYzqFRU+OsWnk6wfDNHctZyoay/bP28DPnXpe
-	aEvQvSYD+GDo1w499vc2DrXCFrTpgPnTejm5Kurk1d2OVZlfmx15Lxu6ILocFhYlb0+oY/yrDsV2X
-	DheBXclg==;
-Received: from willy by casper.infradead.org with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weN1S-0000000452m-3j2W;
-	Tue, 30 Jun 2026 01:12:23 +0000
-Date: Tue, 30 Jun 2026 02:12:22 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Jianyue Wu <wujianyue000@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
-	Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] mm: rename swap.c to folio_lru.c
-Message-ID: <akMX9hoSgBmulBzv@casper.infradead.org>
-References: <20260630-ch-swap-series-plus-folio-lru-cleanup-v5-0-4627aba8ed1e@gmail.com>
- <20260630-ch-swap-series-plus-folio-lru-cleanup-v5-2-4627aba8ed1e@gmail.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=EQYJHyoB;
+	spf=pass (imf08.hostedemail.com: domain of jiahao.kernel@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=jiahao.kernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-37ff436a048so926531a91.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:18:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782782306; x=1783387106; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VjccltFszzoLCJ/RxIOjcBIRQ6g0sQYI1eSvIvcwjP8=;
+        b=EQYJHyoB1t3O6YPSz6u09KPo2wjAppDsuqZ0ZJ9Pwt+pduDQHmaPkODfyOfpJVJ/FW
+         9/Sk4x/TbXuztniZXNY8hfhLGGuUv5OFjxJoALMTRPFXYz85TRpgDz7FwTf0nh4CF0GI
+         tXb9ri9M9lt2hHdqK3TYFlSFZwz5BB48xtH2iQze3KgItV2pA+RLgLJpj7vhOWDme0sc
+         35iWhA5MC9RyMlBpCTsu+3QV0M6aQUKMpQCrUuOK3YsQtvzTxYOZkOXrNGd+lQv5k6h7
+         VC3f1ztI0tLrieobRkcx29pCB2k36dYaL2xEcK2MCPWV9iIsKePv+F+GPQJB+imd2uvc
+         XwDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782782306; x=1783387106;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VjccltFszzoLCJ/RxIOjcBIRQ6g0sQYI1eSvIvcwjP8=;
+        b=K4LqTWdkTWC//kbH8gRGR/yx/L39giVTvwByqshejgPufz0T0E/AXQmscPiNOPmlW/
+         5tOhEQKqFB0aVHDlSiKg8hMgDq9jvUOTfDN+90kxL8oN9tnCfFPbYgqfgBj0Qwx8ZNXU
+         FIWcY/SvpVammnJuy3382EJw76SRvXaMxGCRA20DHFuFrr/unA1M4hzJyvFuRYLqL4xh
+         Bt+6UjiELzJnutqMTQgureaFXh3zJ6SWx4Uh97mLDCSUY6uXOjVYVKnrgdz1q8ZThKrn
+         y9ebllwXsK30sc/Vzlba+yUAPBmr9S33q8EJdKwY1/urtNRWrBAmJEF1aU7xYjfb1VpX
+         SMuw==
+X-Forwarded-Encrypted: i=1; AHgh+RqERg2muS1oxZE4JhcjcAVcgOGCMPgk53SpvyFfRZDyMI3DES5wzXqtDrHoMA/wSbUGn9rkpmaIbQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx4ei1kG20ov2aOA1NABes+BOxP8h2VBijTMYGBr+fM6QLQOhJw
+	KPecYvMmIOaTzCAJ98dROwXARhgDX9Y0sccXK/3LQ1xWElhTUVSWDVyj
+X-Gm-Gg: AfdE7clUZlv/+LCKv+dpWY9WFirYSnnhknKMcSxs3Puwm5XSOdZGGBsnPX0yd1E5hni
+	FmIcPmSUaC19e23G8pqYt1rYnu8lwuDNG1ozmWuykkGYLJiCn2rW+xMYAiySUKgw9dJf6GLXAmq
+	86Y6qIk9OdbewJxpNPfFxxrHZ+bSEshEV60CUtxilb26MgkT0wbtVWmVsLHFIdcLbWfO14pZuzH
+	dTiUjsBe6UeHsJl+DAFQeP+fUrWDrTnDmmUVva+XsuPcEAKQ6c1Zlk1Oy+ypIelygBFdZvr7yyW
+	WzNucXuigsEnqkubYVf61WUhJYW4TqEBGCU1V67AVi4PCqnOMO+s/RoS1YY7ZNjXzmO/ZaZrfu6
+	8hPJ/lqvW1jIS4JVs8FRYjwt+T+p8/mDbWAseDQGsG/I5h64d0PWSPK25RFw7j0bRwBbbXgxo6p
+	4sW/brgnmSMUgnH+g8N3qj2vU2vCM9VlqkPhwbLYz5ElQ=
+X-Received: by 2002:a17:90b:2cce:b0:37f:9ce1:7367 with SMTP id 98e67ed59e1d1-3805277ed34mr1245013a91.29.1782782305643;
+        Mon, 29 Jun 2026 18:18:25 -0700 (PDT)
+Received: from [10.125.192.77] ([210.184.73.204])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-380529ab9f4sm603942a91.7.2026.06.29.18.18.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jun 2026 18:18:25 -0700 (PDT)
+Message-ID: <a152be7a-b36b-3b54-0cf8-20f453905bef@gmail.com>
+Date: Tue, 30 Jun 2026 09:18:06 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630-ch-swap-series-plus-folio-lru-cleanup-v5-2-4627aba8ed1e@gmail.com>
-X-Rspamd-Queue-Id: 2D191C0009
-X-Stat-Signature: ege6xmc3hbmxaytnatggzd3hk9q9ud9u
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [PATCH v5 2/6] mm/zswap: Support batch writeback in
+ shrink_memcg()
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org,
+ shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com,
+ nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-3-jiahao.kernel@gmail.com>
+ <akMK9z_GOarOZWHz@google.com>
+From: Hao Jia <jiahao.kernel@gmail.com>
+In-Reply-To: <akMK9z_GOarOZWHz@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D0B0216000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782781963-818352
-X-HE-Meta: U2FsdGVkX18wb0c+OE4zd5oy+z4G425lduonIueIYwEgr8dw5rNdqbi22gPCxTFyuAYHf3mjQg8OfS/9ML/sszFhBDqrsquOI7EwrJNymbcx8GtQNvo2T6Q2LSoCK/8E1woxMCARgscRCLf8UjfRsUWmMo/KTjxwvzKCRwmnoma4Rcjz92c9DtI3N/rVmPa2cQZCX37DZYCpPnSbrU1/8s6ztrYxC3IgIv3kf75/VTAe6GAvcfBXKjQblz1PVD7CcH1jIMi2eHLV2qjQSP09PpmO4Opvygf7hy8e9CMxHl5SbX5vlh3MFMqCZzarhiPoppx6Ji4TT7jNPpy6VrH6BmBvdN9j+BsrHgS38MZdB1zPT4kEdTt3KRPZ/6OPSMX7sXnIgSuLSpLXUNHtWbpbTfJccv2gPaQz+FW9ENVv6UXmn66DNu3s4xnQSSVIfLuSxo/YenyZ93wvpRwtLeQ5VvfRHZM0FFTWafx3Xzzje6VtYSkssuu+jw4FHk8HOmTC3x1x+N0NYOHh/buRP1LxMQhxw/1n856+nyI5bXreutmv5x/ncaw0msL4xPannSENtKRMDVUjjwtkRA8vPzDnNZOeCTwzrInmv6BA6XCyibxL5SXbo8wQTHN4nos2K070W3tenyH9sdQUD+71VJtdIXOWVnMA4pSMl19MKH2SFZg2WuNtE069fffKydqllyzL/R5kSSRDUT9yV4F+NWolMqGojTxuPtoscXf/f1bOwe5ayWMioHBrnJz16bS7uXV7kksXOvtYWeaPKk3sJ+C7DJ0TH2trFSWPtMjGgEr9vIhslAd0Lqs7PZa5fBrkls3e8htOQ/IjUP/HrQML4dj0JVbmKZozE8/TcN3DCXZ1MP8q3YCmhbRFwfkfEEsTIRL/FViaWveF1+RC1PecbajxClJdbO4sTxJT0pMDC0c1N2er909R2yU4gaBFwrMS+eJvrHeuaCsZZd+db3NOZi6
- oyo8xNVa
- mYju+JjQg+QD+lVsfKLzUcbwuUTwhgsxdVlIXRI8QeiEsrY/FkWygRBEBtN1uQJ5WFhfxfbk+1OMgwLiS85ZfRMdCU9GoiI1s84LDX79rqrT14wl+4PA6hKF2nDubm39JfpcjOd5NA+n85A2+Vlzm0jyVgBmDAD8FuySnstJ2vS4KjLr3HHdkuIdNiJftHdC5Y0NGX2AUcocg7LDHqjfaN3y3x7IWscSvxuWwmfSPUfrLV8rTeAi8z8RPW6gNWtXFyKWS2HnJrdDVs522Db7JRmZHqssZuhCAY5i5060b4tGTbbo=
+X-Stat-Signature: 8pm1rrhpqhkh4wcha13m9kobmaheeozu
+X-HE-Tag: 1782782306-281813
+X-HE-Meta: U2FsdGVkX1/injcgKRr/dzYC5F1x4mtD6w7bIQdkPVAgh1jVDPar1mm6/u/M266I5cl/y5afb5CDQOZ3Mjl0bpkY1c8ZEALcHvQGHBDiFZFlKVHTD+5bPrpzSjRaZIfXOgn9kIzD0HWY8LCkY7VrdDL9c47zFQSKcUsTfQThpqpaKc20/OoTw++OH73YJ5zfV6VJkGECJB85SnYePykClJ9Opc2sWDCl5vcKYUeX++ajYEpLwIe5t0RETJ1pMe9GvefFdXLryh3MjSpLshBDnJki5HlNhnv4g8WCw0C3P3I/0LyLXRvgDpA2kmtzX+zr4A4GUkJmGSs3OM/kkGoTytVDON9UXHOXEOhR0/wq1az0SEmUaIJxpS8aXt4ETyMNhkCpvi5E7Kgu01i+k08zYLjKbr/H7SHzVC7bUAUwqZlOeGK+JRsC15kEG1ItuJf48C270bq+TsQG26WuQtZyII9OTp9TWfLCTrO17780zUL7m1oV+ov4UjHZiC9BS5GdXg+QHHJKPA20iiWmZ7ftcQlqJIwAj6dgEp7DE+aMoK9yU/nZuK60nBgHd5QXv2kBIYsgviXSOFKAZ2n0upgbcuPsDQE435v/3NxLWPTO17+qTYJod4PiSzYIX9Daow+mYrUtVRZenKaaHcui2XXAgSeS4pbuZDpreU6y+/u2z6flp+yVloqPQDVFVsJndqtA//2OIzUpx3UkT+ZF896AxRFz4ILrEfoCmMILtew4fezvfaI/wyMgL9sgaQzfOo4Zy32VLSijf0FoRic8nKCMi2+9/ekzZOMHwXmVSM2VA5KD4swoWTAyWNM0IF7oPzYU2uc78LXYWl/fmoI9frK6H7xlNsnW4GUKRchCHzeqiK+Ew5OOSXfP5EQ+Rlnl/UdybNXd0NIxoEm8odkowx3e4n6kjpsc1o/V4YrByMrIBBcqXlQo/dMqZx/waki+7JScGrFb0GIDoNuZHZlXlnw
+ XI3gmpQ8
+ XMl4tVdFBKVvAJx8SiITPYkB/5oKrArZS95iE/mbmI0Fq891+t7BWF7WJdAu6LOaE8X6b9h3CoBCQ3WkvCI/4LARs8nNXAyk8fN0X3j1+pFvGZl2WFaRHnX55yIagr/R2l++tNLP9v+w+ffAvrBNBUjjB4wDBQDt0Oe40DDBSAeUu6ZfAm/HaILJi3J1WRTN9u9LpRqVpI4+X0akAbCbG/sJCQ92ORgc0Y6/5fjMchABki6KWnqn8YV1Je26HPn7sWA03pUoTIKIJFjsrrk6tYhTCC7cg7piB3M1mC77n8esRfkbXU0tu8iA5u2TlT2lYVu2nuKKfGn4jSntV7rhkOwvkePDhKlBZFrmYViB7SF3jXDknpaitIIVJElzoL0r3qiKNqZ9wn3YzGgkaQs8gQmWKvHN9iGNNndjQ8qgAUfzsIK6sJIQllu38MkFXV5MOKVpdEUtGohCquGSzDEPdwr5hHhDlAg8SgPV7N4ikdFNAB0A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,10 +126,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 09:08:18AM +0800, Jianyue Wu wrote:
-> Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> the code's main responsibility.
 
-I said I didn't want this.  Rename it to folio.c instead, and then we
-can move some other things there too.
+
+On 2026/6/30 08:21, Yosry Ahmed wrote:
+> On Mon, Jun 29, 2026 at 07:20:28PM +0800, Hao Jia wrote:
+
+>>   
+>>   static void shrink_worker(struct work_struct *w)
+>>   {
+>>   	struct mem_cgroup *memcg;
+>> -	int ret, failures = 0, attempts = 0;
+>> +	int failures = 0, attempts = 0;
+>>   	unsigned long thr;
+>> +	long ret;
+>>   
+>>   	/* Reclaim down to the accept threshold */
+>>   	thr = zswap_accept_thr_pages();
+>> @@ -1373,7 +1422,7 @@ static void shrink_worker(struct work_struct *w)
+>>   			goto resched;
+>>   		}
+>>   
+>> -		ret = shrink_memcg(memcg);
+>> +		ret = shrink_memcg(memcg, NR_ZSWAP_WB_BATCH);
+>>   		/* drop the extra reference */
+>>   		mem_cgroup_put(memcg);
+>>   
+>> @@ -1394,7 +1443,7 @@ static void shrink_worker(struct work_struct *w)
+>>   		}
+>>   		++attempts;
+>>   
+>> -		if (ret && ++failures == MAX_RECLAIM_RETRIES)
+>> +		if (ret <= 0 && ++failures == MAX_RECLAIM_RETRIES)
+>>   			break;
+>>   resched:
+>>   		cond_resched();
+>> @@ -1504,7 +1553,7 @@ bool zswap_store(struct folio *folio)
+>>   	objcg = get_obj_cgroup_from_folio(folio);
+>>   	if (objcg && !obj_cgroup_may_zswap(objcg)) {
+>>   		memcg = get_mem_cgroup_from_objcg(objcg);
+>> -		if (shrink_memcg(memcg)) {
+>> +		if (shrink_memcg(memcg, num_node_state(N_NORMAL_MEMORY)) <= 0) {
+> 
+> Why not just 1?
+> 
+> I guess the current behavior will try each node. But this doesn't really
+> match it, as we may reclaim everything from the first node. Right?
+> 
+
+Yes, it just keeps the number the same as before, but the behavior is 
+not exactly the same.
+
+> I think it's probably fine to just do 1 here, fairness is not the main
+> concern in this code path, we're really just trying to free up some
+> space to free up some space for the incoming page. I doubt these limits
+> are actually being used extensively anyway, so we can revisit this later
+> if needed.
+
+Okay, I'll do this in the next version.
+
+Thanks,
+Hao
+> 
+>>   			mem_cgroup_put(memcg);
+>>   			goto put_objcg;
+>>   		}
+>> -- 
+>> 2.34.1
+>>
 
