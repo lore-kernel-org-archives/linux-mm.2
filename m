@@ -4,122 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F2ACC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:39:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79C99C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:44:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FDB36B00D8; Tue, 30 Jun 2026 03:39:20 -0400 (EDT)
+	id 566986B00D9; Tue, 30 Jun 2026 03:44:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3ADA56B00D5; Tue, 30 Jun 2026 03:39:20 -0400 (EDT)
+	id 53F3D6B00DA; Tue, 30 Jun 2026 03:44:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 275366B00D9; Tue, 30 Jun 2026 03:39:20 -0400 (EDT)
+	id 408A46B00DC; Tue, 30 Jun 2026 03:44:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DFE526B00D7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:39:19 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 723BB1C6769
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:39:19 +0000 (UTC)
-X-FDA: 84935778438.26.1B4E79F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 16EEB6B00D9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:44:17 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89D71167C20
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:44:16 +0000 (UTC)
+X-FDA: 84935790912.27.69FA369
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3588318000A;
-	Tue, 30 Jun 2026 07:39:17 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fDaf4ZqW;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id B2C02140002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:44:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CkRZKX/b";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782805157;
-	b=y3KCuCJTl5sFWgzMefp9vfneckYNp90JkwGPcvWvwtOby3w59YzSDf0Ap3l+cA9fboy0ht
-	gJn2Q+rnTKrbZQqx9WtU+asuBwOBK3bMbf7ZXRm0HceeoToSb6F2Gqo8Kjrx+M6RelUZe0
-	sRzVBrHADb4ZmS1yLaBkgxJkpjvwwGg=
+	t=1782805454;
+	b=bMCSXpW60CmyWHQKsvmyriKpQYPNGQIiFcMpzgN6aSwCLkeS//ZP0RHShe5xfFoI6+rBci
+	iYWg3MVTFy7ZUebcGtfMOFPu5SdkOxAV9u7jTRd/UNF2KSljm6IWAYlG2xiCbgspjwd6fU
+	Ty+7i/WzJT8WIVAoFd4iu2vrCcmJNn4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782805157;
+	s=arc-20220608; t=1782805454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QFTirDmiRXM2E2UxDPivyHpH5WU8vmAPSC3LpjlrT8o=;
-	b=3x7V4pBSRQdQUgZs97GS0inWby+Wh4SGCRu+QukMuxIghC16aSDoErrQWVJX3ryESKJQtf
-	wFc1HZC7UFDVs2goXFatPE5XCR+RIstAmlb0wN1vMaSbMjn9sKXWpqzdbyCvl/ndUaPBTW
-	dxXGs/fhj7sZqvybC2jcGNPrE3H9QVU=
+	bh=E0KgZjmuVYnhggcedT+cDC7Ty8G96rX4EfII0AXlJBc=;
+	b=BlSysT6IkkzbQ1ljRWNbvU29+MxKlJNYf1a0pNsFZioBUCCE4ceYzzLhl9g3gxdtv2oRKT
+	4NO5AWVhPnRiiYnw2m2Rp/xOZsPHvyotWIondSGcDuzvVKeLYTomHper09zn6xOVxKmrhb
+	+jXHrk7bT6SXPG0kH8cJkmHTgoIyVVQ=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fDaf4ZqW;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CkRZKX/b";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3547140B7E;
-	Tue, 30 Jun 2026 07:39:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F3C1F00A3D;
-	Tue, 30 Jun 2026 07:38:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A8D594138E;
+	Tue, 30 Jun 2026 07:44:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED68B1F00A3A;
+	Tue, 30 Jun 2026 07:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782805156;
-	bh=QFTirDmiRXM2E2UxDPivyHpH5WU8vmAPSC3LpjlrT8o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fDaf4ZqW3PD9fY8acsrJCsXc7pOEzc4lLsW2jgJhfYGl7NXG5KcVo4Pxek2Uz+Nla
-	 tOcu2NuZHwmic0JpBPUEEgMmuaTGNKExmRCbT0ES7+8QhHL9YqeimbRUf62O0HtMfs
-	 LYny1udM2eWLdF0sRgHD+bBsvogcyV+srg+CrLasOfuUZDDcJr8dZlygrFZBfDoggP
-	 p2mllhEamdnPs77YGrH3WGaXXIkqv4Xgyt7g+R7YVqHEf/NFyfi55aJUF3SRsQX/b0
-	 NUbVhpaMaUvlKWWtDdlDlkLmrVKracrOVgHvCwNbE5g49j/+vG6Xvy5Wxh+acQ6BjY
-	 MYjz8K0OvlQ3A==
-Date: Tue, 30 Jun 2026 08:38:51 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Lucas Stach <l.stach@pengutronix.de>, Inki Dae <inki.dae@samsung.com>, 
-	Seung-Woo Kim <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>, 
-	Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin <peter.griffin@linaro.org>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Lyude Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Sandy Huang <hjc@rock-chips.com>, 
-	Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>, Andy Yan <andy.yan@rock-chips.com>, 
-	Thierry Reding <thierry.reding@kernel.org>, Mikko Perttunen <mperttunen@nvidia.com>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>, 
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>, Zack Rusin <zack.rusin@broadcom.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, 
-	Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>, Helge Deller <deller@gmx.de>, Benjamin LaHaise <bcrl@kvack.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Kees Cook <kees@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
-	Takashi Iwai <tiwai@suse.com>, linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org, 
-	intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org, 
-	virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org, xen-devel@lists.xenproject.org, 
-	linux-fbdev@vger.kernel.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 01/13] mm: introduce vma_flags_can_grow() and
- vma_can_grow()
-Message-ID: <akNucoP3eaDN2_Vz@lucifer>
-References: <cover.1782760670.git.ljs@kernel.org>
- <f2e8c32515d328db62279cc8bab8398ea278d74f.1782760670.git.ljs@kernel.org>
- <DJLTDCPWMXDL.4ICZ77A1LPZZ@nvidia.com>
+	s=k20260515; t=1782805453;
+	bh=E0KgZjmuVYnhggcedT+cDC7Ty8G96rX4EfII0AXlJBc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CkRZKX/bA42/uEJ5XxOREyoadqjTygMIt74dA2qVxbuawMc1GSM0yzs633B3Tz2Mp
+	 beFyyifGnnR5RMB9iDUdGHwTYb7nThu3cByxooWGzkC9q5L0DgNlp4RGKOF0mb2gYw
+	 Tk+3eY1YbRGGBk5/z7rDeqxVdHEoll1eEUlccMfvQDJs6EgAJi2iB7gOrgZVXfld0Z
+	 sL7A/q9rmCpWOrvANDV7DVruik0tM2zCCbGGtmzNJIhjfP8Tuo91RuvXdzBCEEWFJt
+	 mCO/ihVsbG9zr37T8zLuH+OVGAlb/m4Afew6Hs3XrUsKe0UnlwMSF+ITUKsOl1HXNS
+	 4C8x5cWcUc55Q==
+Message-ID: <4549ad0e-abb1-4156-95c6-5e3c1319dffe@kernel.org>
+Date: Tue, 30 Jun 2026 09:44:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DJLTDCPWMXDL.4ICZ77A1LPZZ@nvidia.com>
-X-Stat-Signature: fpft5xxczpsy3kgyhj8wszo71i3oxthz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_alloc: free allocated PFNs if the range does not
+ match
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Yu Zhao <yuzhao@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B2C02140002
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3588318000A
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782805157-106637
-X-HE-Meta: U2FsdGVkX18ie4JvL+xKNzs97oAejynQPHrq3hRnlif0R1gFnFCwvOd0nHIiYLBmIIu4QRx0SyVgtrB/2L5dbK58AdZ0FuzfAX6WhJEtCydiT3lxZi4JOxd6lEqAonKOeR4YLy9oBghORZ741sRd0a0D0f8LtgjyVHcyB+VcLc+uCgFRLNEzHg54KhIuSJ1D/hsmlW+rMw/oz1T4jY/Tj1d2fUtDaTyZ0jGK5jqmYS71VQxWrFB0h10CQ9wSlmmDPp+eswKiHW7jHm3mG5c8KsPF7G0EjUgbB5jHm7MobdQbPWV6wdQIhKL3Ifw0XCOtvYNcl3KjRHbaFx/uCMeysAPpQSoH/SMBlq85GsDPI1xwPjnOWMLuo/3w4B/MzB2xr9eonze9UamvNw3l+5un7g5MOcaZBmBAAasXMnfjgAXmBg0yls9DDplbBe9LK7PiUkDBOmquIsxBt9rJzLxxYldD+lHVHFnV1/gS1OSyZUpJSX8ez1xnxKYnwRJykQ1quCDVQFhcEZqaRMwVHHzz5Kkd8puKp/Iv0AQxWBwEhfnLC161Y/jVkfulVYNXURjCF7Qy8o6Bti7hg3QxnwPm/HXsHzro+zELhgq4mTavTTsuwLNksV14+nOoniqC1R3xFyt8esxtkngzT6f/LgCuVsStaS9Y5/XNEqvXHSbp4RJf8g3DTttEEuu25H3gv5eICezjejQqlsL5bmvH5cKs3cZhwps7lS/Nr6A+jv56HL+5AqPZP+ZIBYeDz1GZTChxoEPXEOf0qJIt36WEkb7RuiTf/QmfvJMIUtVaYO9QPRmgRXyzg/vsbbRa3urY24gGYbgeCNbTvtszCJz+KIeEZIOGCYcm6KKTHs2yHVrl9DRdNhh/QXP6eghpzM2wzRTpSTWZKibuA7CLafoMH+mXhgaZuSZFSYT+MSBNjhAum1oOAolNQp+GmlUM0qbBBRUHhBDZhtkkb3JwAqUnUFx
- kDyf6n0n
- j9BcilQsxTuup0hg4E937UM/r37ZK/iDLFO5z9Dbwywl7KKb0zCUG8tKUJGnNHT/cYybWRIc3Hng1Bq1vKZrV+a2QVoGW8tXo20Z/W/Pla3frjnrqCpsRb3JAJoBV2XX6ky300HwITVJXnifMgs1Pw4QQjrLi0xrxb8xbDWUhpA22dlDwHxSPFdbj4G+6q9dBRmZBu3MJW5KY9tYeuOybqhJIzg+RNN76AxnxV5dOPMnKxFp72eqpsJOzGKSj6PI2g2Del4638P48n+NTK/H//mFxsSRZ1zXYrAjOLOF6SyPY/28TZChVmzVkukfEhB5oCJqu
+X-Stat-Signature: txsypwtydbs9ho1nznm7icqja6yka56q
+X-HE-Tag: 1782805454-92945
+X-HE-Meta: U2FsdGVkX19fMhGSQYPSyJNVgXMlHPYbDdPH8dYlSrZHjRCWO4IYOQXtxIsLo5X2uQkfPZD+t99SWTG2YB0xShELDnuF6DYbHHqCZvl//6O3xE3piCDTWj0XxIS8gfUivLkfFycmoLppjwTYmRE3itnAA+HnCe/uO0tLz1Bl0G1QlbQCUrya1O8ypFMaix/6a2B6p/+5qwhHF4/XcBfDnK8CIQ5xG5LFbxFk4K/9kfiqM/FZ6o54VXsqr99OxWch3k3aEJXrQLMyETVRWag7No0LFn92fuC8EU1rWC3w2hvDJbGITyVUWZrfK26WRJDRftmPJrq/5RrDPvV7a9w+ocODm0HOa8pcjuTmmUOtX2740cXgYKM+tPBORM5S3l5pCUeKe/dOqNkOB87W4w7auA4zGVo2Zu00xWaSBtieKpvUA1BxWZpHalEm9GwcISj2LRG2tYu6DLHXDL+TNX5KSyh40ap41noKDJ7fatI8hBM5b6PCD1N+w7txnwon5D50376z75pxmxBY0aitNT/B1XERTfdJ/+loQaonAtan36LTHzg4ZU1q7QVSsAeV4nK7NcMG005uAeAbg2ppFe1w4R52XVVS732NxmJIjjAcVs0QS4JIBFOfow21BkIYYjgqK7FEk3KnjIoYT+TgmjmU0nSqYVslhx7Bga9C7vc3+KcQMTy0jJUflBz/nhFDojCDjy7ljLT1zN8qPDGWiBe5jCGTo9uf4PCqGDp+3gq7Dve+csUKlgfViWKd7UcPMJkdeC5aXjZRX+rN03q2A5JcY/x9MFM+5bRDm4Ea4SdSqDeAuHI0mICfogx4BYwCOF20W5UgPlZpkpUMY9R7Y2HO6/p6EjdDCl2daExjXG+/dqpFy0U6/aParBP85eYv5A9nHmv94aRXweGr8wVX4VYgsBKt36tlQxZoSSaFMGxukVZ900K+Jf6BloTUvXmJpHwUs5SGyAp1ryVoqr+9Ltb
+ XQjm2E+S
+ bkgpXaGq6UddPYTZIDFs3cu9jyd4Y2RIoQM7OM9uDbnpTkH8f19457qOepWm8jfgHWB1CtUSZi1fbOWaSAws+U62Rlzsq5x9U/8HnCvfjgEiQ/azd95W4lyJLgkYcAU1rpmC9U3eupO3CEWKRzyXPgeK+N3HUpTOu/WqA0Zzs1NyVmwMcWxu7HK+K0sa+05fDOVTmmRsLK2rfDb+gwqMgu5mngZVizIf9GoLbuFggwPWeuaZqe6razHZnRNFITQp6V/CZ//4nD4KDfgz/C7Kbf7Tc1z7GJ0ErmyD9ngq41bu3H+5rpRfQoEQEiDA7Q8Zw0CwkV/Ttj+RjjvhS1vAmZFxhElhukE9Z/KCH/mS0QM7SLmUTVdZfr1OXD3A8xw6eqcHZFGN9+QA/YFUMAo74qrgy6AsbKWy3TJrP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,122 +137,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 04:26:18PM -0400, Zi Yan wrote:
-> On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
-> > These test whether the VMA has stack sematics, i.e. is able to grow upwards
-> > or downwards depending on the architecture.
-> >
-> > In order to account for arches which do not support upward-growing stacks,
-> > introduce VMA_GROWSUP whose definition depends on the architecture
-> > supporting it, and use vma_flags_test_single_mask() in vma_flags_can_grow()
-> > to account for this.
-> >
-> > Update the VMA userland tests to reflect the changes
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
-> > ---
-> >  include/linux/mm.h              | 21 ++++++++++++++++++---
-> >  tools/testing/vma/include/dup.h |  4 ++++
-> >  2 files changed, 22 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > index 868b2334bff3..cf7df1569052 100644
-> > --- a/include/linux/mm.h
-> > +++ b/include/linux/mm.h
-> > @@ -472,6 +472,7 @@ enum {
-> >  #define VM_SAO		INIT_VM_FLAG(SAO)
-> >  #elif defined(CONFIG_PARISC)
-> >  #define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
-> > +#define VMA_GROWSUP	mk_vma_flags(VMA_GROWSUP_BIT)
-> >  #elif defined(CONFIG_SPARC64)
-> >  #define VM_SPARC_ADI	INIT_VM_FLAG(SPARC_ADI)
-> >  #define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
-> > @@ -483,6 +484,7 @@ enum {
-> >  #endif
-> >  #ifndef VM_GROWSUP
-> >  #define VM_GROWSUP	VM_NONE
-> > +#define VMA_GROWSUP	EMPTY_VMA_FLAGS
-> >  #endif
-> >  #ifdef CONFIG_ARM64_MTE
-> >  #define VM_MTE		INIT_VM_FLAG(MTE)
-> > @@ -1563,11 +1565,24 @@ static inline bool vma_is_initial_stack(const struct vm_area_struct *vma)
-> >  		vma->vm_end >= vma->vm_mm->start_stack;
-> >  }
-> >
-> > -static inline bool vma_is_temporary_stack(const struct vm_area_struct *vma)
-> > +static inline bool vma_flags_can_grow(const vma_flags_t *flags)
-> >  {
-> > -	int maybe_stack = vma->vm_flags & (VM_GROWSDOWN | VM_GROWSUP);
-> > +	if (vma_flags_test_single_mask(flags, VMA_GROWSUP))
-> > +		return true;
-> > +	if (vma_flags_test(flags, VMA_GROWSDOWN_BIT))
-> > +		return true;
-> > +
-> > +	return false;
-> > +}
-> >
-> > -	if (!maybe_stack)
-> > +static inline bool vma_can_grow(const struct vm_area_struct *vma)
-> > +{
-> > +	return vma_flags_can_grow(&vma->flags);
->
-> Would it save vma_flags_can_grow() if we do below?
->
-> return vma_test(vma, VMA_GROWSDOWN_BIT) || vma_test_single_mask(vma, VMA_GROWSUP);
->
-> I find these two functions when I am reading mm.h.
+On 6/30/26 03:35, Zi Yan wrote:
+> When using __GFP_COMP in alloc_contig_frozen_range(), if the allocated
+> range does not match the requested one, the code errors out with EINVAL
+> without freeing the allocated PFNs and causes free page leaks. Fix it by
+> calling release_free_list() in the error path.
+> 
+> The issue is reported by Sashiko[1].
 
-Yeah but we require vma_flags_can_grow() for code in mmap.c, the majority of
-checks of this have only vma_flags_t to work with not a VMA :)
+So this?
+Reported-by: Sashiko <sashiko-bot@kernel.org>
 
->
-> > +}
-> > +
-> > +static inline bool vma_is_temporary_stack(const struct vm_area_struct *vma)
-> > +{
-> > +	if (!vma_can_grow(vma))
-> >  		return false;
-> >
-> >  	if ((vma->vm_flags & VM_STACK_INCOMPLETE_SETUP) ==
-> > diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/include/dup.h
-> > index 5d7d0afd7765..6f5bcd7fbcd8 100644
-> > --- a/tools/testing/vma/include/dup.h
-> > +++ b/tools/testing/vma/include/dup.h
-> > @@ -245,8 +245,10 @@ enum {
-> >  #define VM_STACK	INIT_VM_FLAG(STACK)
-> >  #ifdef CONFIG_STACK_GROWS_UP
-> >  #define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
-> > +#define VMA_STACK_EARLY mk_vma_flags(VMA_STACK_EARLY_BIT)
-> >  #else
-> >  #define VM_STACK_EARLY	VM_NONE
-> > +#define VMA_STACK_EARLY EMPTY_VMA_FLAGS
-> >  #endif
-> >  #ifdef CONFIG_ARCH_HAS_PKEYS
-> >  #define VM_PKEY_SHIFT ((__force int)VMA_HIGH_ARCH_0_BIT)
-> > @@ -315,6 +317,8 @@ enum {
-> >
-> >  /* Bits set in the VMA until the stack is in its final location */
-> >  #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_STACK_EARLY)
-> > +#define VMA_STACK_INCOMPLETE_SETUP append_vma_flags(		\
-> > +	VMA_STACK_EARLY, VMA_RAND_READ_BIT, VMA_SEQ_READ_BIT)
-> >
-> >  #define TASK_EXEC_BIT ((current->personality & READ_IMPLIES_EXEC) ? \
-> >  		       VM_EXEC_BIT : VM_READ_BIT)
->
-> Why are VMA_STACK_EARLY and VMA_STACK_INCOMPLETE_SETUP added here but
-> not in mm.h?
+> Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+> Link: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com [1]
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Cc: stable@vger.kernel.org
 
-Yeah urgh oops my bad. It doesn't really break anything but I'll fix it if a
-respin is needed...
+Hm well, it's a path that warns, can only happen due to a development error?
+Not sure we care about stable then. Anyway.
 
->
->
-> --
-> Best Regards,
-> Yan, Zi
->
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-Thanks, Lorenzo
+> ---
+> Sashiko reports that if alloc_contig_range() with __GFP_COMP cannot
+> allocate PFNs with the given range, it returns EINVAL without freeing the
+> allocated PFNs and causes free memory leaks. Fix it by properly freeing the
+> isolated free pages and adjusting WARN message for clarification.
+> ---
+>  mm/compaction.c | 2 +-
+>  mm/internal.h   | 1 +
+>  mm/page_alloc.c | 6 ++++--
+>  3 files changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index b776f35ad020..4e3f06ff9304 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -88,7 +88,7 @@ static struct page *mark_allocated_noprof(struct page *page, unsigned int order,
+>  }
+>  #define mark_allocated(...)	alloc_hooks(mark_allocated_noprof(__VA_ARGS__))
+>  
+> -static unsigned long release_free_list(struct list_head *freepages)
+> +unsigned long release_free_list(struct list_head *freepages)
+>  {
+>  	int order;
+>  	unsigned long high_pfn = 0;
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 181e79f1d6a2..6f9e5c2a6065 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -821,6 +821,7 @@ static inline void clear_zone_contiguous(struct zone *zone)
+>  }
+>  
+>  extern int __isolate_free_page(struct page *page, unsigned int order);
+> +extern unsigned long release_free_list(struct list_head *freepages);
+>  extern void __putback_isolated_page(struct page *page, unsigned int order,
+>  				    int mt);
+>  extern void memblock_free_pages(unsigned long pfn, unsigned int order);
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index ee902a468c2f..c1a35adb40f1 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -7235,9 +7235,11 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
+>  		check_new_pages(head, order);
+>  		prep_new_page(head, order, gfp_mask, 0);
+>  	} else {
+> +		release_free_list(cc.freepages);
+>  		ret = -EINVAL;
+> -		WARN(true, "PFN range: requested [%lu, %lu), allocated [%lu, %lu)\n",
+> -		     start, end, outer_start, outer_end);
+> +		WARN(true,
+> +		     "PFN range: allocated [%lu, %lu) does not match requested [%lu, %lu), freeing allocated PFNs\n",
+> +		     outer_start, outer_end, start, end);
+>  	}
+>  done:
+>  	undo_isolate_page_range(start, end);
+> 
+> ---
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> change-id: 20260629-free-pfn-on-alloc-contig-range-error-path-acc001232468
+> 
+> Best regards,
+
 
