@@ -4,99 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF371C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 03:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AA64C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 03:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C23CC6B00A2; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
+	id 184FD6B00A5; Mon, 29 Jun 2026 23:13:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFC3B6B00A3; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
+	id 136556B00A6; Mon, 29 Jun 2026 23:13:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B12CD6B00A4; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
+	id F41376B00A7; Mon, 29 Jun 2026 23:13:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D0476B00A2
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CA3D8D205
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:25 +0000 (UTC)
-X-FDA: 84935090730.14.413A7DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 185551C0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:22 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4G1wMfp;
-	spf=pass (imf20.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C94E86B00A5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:13:13 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 582281C6982
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:13:13 +0000 (UTC)
+X-FDA: 84935107866.11.DA867A6
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BE29EA0008
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:13:10 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="n7i/2IHW";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf25.hostedemail.com: domain of yanzhen20011121@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yanzhen20011121@163.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782788783;
-	b=x6TcxAC+zMSBceBwqnH749X5AsxgpYQj6uzoQQXxeihT4LL/o/D8M4+5fvx2sZ6Pj3IPWQ
-	kGYUJlc7ro2k2CfpIzjwN7SV6zDHHoD38BZY1M6F46qGfI/H8RAeHgfFC+pbELjWuIflST
-	3yGLObvkNsRDb+VNfvY68ryuqSqYEmU=
+	t=1782789191;
+	b=QxOcyKerjRE7DGtWdv95GKH2Rnz2BXbjiV5YvHPNQj86SWz8kL4wfXZEQn2zAuyUY2gzBE
+	+UIBd56+4rp8lJqgFdtZJ+HMUyrZTO9NDx8mKKL3Y4QA9zBtK/4ZUiFQneWq5kkxEeWll8
+	mwtN73HIOkE1kraXTleSKXhZPsGVMf4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782788783;
+	s=arc-20220608; t=1782789191;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fzAepXvhPnU3RVO1srqzjPmRiEpd6yJalacgOF/VkH0=;
-	b=dtSgSsc24HWuHqPgkhFiJcj/c9z1UqKitX1zNvktDWCeqVz/s9B3Rfz7uqp/a9inyuEzp+
-	dVtOKtTv1pzSnptE9Xd/tYEyxTCguTnVgLld0yy8hFTVS4xGXd5EerOdJ57TTGOsJZRZ82
-	UTJ3n0bY+D3i3KwHEzPNxcxJvcuCFVg=
+	bh=ceoCjYNNF3U4NL9LaVK+JffB9FyD9tajby88BFAZU1w=;
+	b=Hy6iPh8RyreGCkH4ULu/OMWe/ojcCq93OF6Dftix18N8oRet3q9QsVIXl+hLz4AyPW4KA6
+	Zr3byLRKvPB0Ox1MxEqE+S9D5BIn9dhD5s14QxA37oWDs1kDI5ngzOUOlHBvBK7g7U3Sfj
+	JxFtsPu5SKnn2S74gAJuiTielvk1PZM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4G1wMfp;
-	spf=pass (imf20.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14CC242AD2
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBAB1F00AC4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782788782;
-	bh=fzAepXvhPnU3RVO1srqzjPmRiEpd6yJalacgOF/VkH0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=V4G1wMfpqdrFTlqf/mZx519oKTZ/iLrU5sQVvxLgzRVooqRBV2OpUEs2CMcQLGXG8
-	 0E3QAwT5brwXlhsrLl+/tcISCSjNRlIosA5w1C2796Kb/vqCd4ZvMO/gb7xsO3iEgY
-	 cFhLc32ujpT7Ao96pr5bjIOxCZjC62NSzM7E6svWzhPqfEVh9JHnsO1dwCPGFdTk8F
-	 WlCv8hdVZTrkGhWDR1+y/5Tju0/AzpkkKbRov0T051lSuG7N6TiUf3EzHRROV4HXwl
-	 C55HBAOdmd9FwmTmabP4maTaKc85Gy112Ea+NsojFpqSW4LhVis7+fgjraqVCnlAAn
-	 R1Yveb3sZ1JyQ==
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4624a44e152so3652014f8f.2
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 20:06:21 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Rq3f6uMdZTyoVfYYLaTShq/yFuBfGdotB3Kg2c6bNJSNdbRsqzfMiVrTuPq77gH/G13JjD1OObp/A==@kvack.org
-X-Gm-Message-State: AOJu0Yzv7bAMA2T5v9XFkPC/Y61OFd5Ysr9N7O3QZXOEnw+BIWJVY+8M
-	j+jKcxzlU8sleKByeTv30PCfv5d0XvvTj/tdupadlZ2kMJ1hDVu7MYfjnvWhFApRyZDgboITYtE
-	TM8QKx4Af8cGE8bNGrrrbIBONzbGWgUY=
-X-Received: by 2002:a05:6000:3110:b0:475:806:c5e8 with SMTP id
- ffacd0b85a97d-475506e972cmr2367506f8f.9.1782788780671; Mon, 29 Jun 2026
- 20:06:20 -0700 (PDT)
-MIME-Version: 1.0
-References: <202606291606.9h8aGniQ-lkp@intel.com> <20260629171909.1d6e96dd15a80b8f463bb68a@linux-foundation.org>
-In-Reply-To: <20260629171909.1d6e96dd15a80b8f463bb68a@linux-foundation.org>
-From: Guo Ren <guoren@kernel.org>
-Date: Tue, 30 Jun 2026 11:06:08 +0800
-X-Gmail-Original-Message-ID: <CAJF2gTT+Pz51u2ckYQGye_TNbfbvHHiEHb0Ned-k0MFCe4vgEg@mail.gmail.com>
-X-Gm-Features: AVVi8CfpjiHAZxpIu9w2olplIGKjchfQBEYO-NTXILWsnMIEoAgT2ud8VKG7C3U
-Message-ID: <CAJF2gTT+Pz51u2ckYQGye_TNbfbvHHiEHb0Ned-k0MFCe4vgEg@mail.gmail.com>
-Subject: Re: [akpm-mm:mm-new 59/142] mm/vmalloc.c:3590:23: warning: unused
- variable 'start'
+	imf25.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="n7i/2IHW";
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf25.hostedemail.com: domain of yanzhen20011121@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yanzhen20011121@163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=ce
+	oCjYNNF3U4NL9LaVK+JffB9FyD9tajby88BFAZU1w=; b=n7i/2IHW94F0tg4FQA
+	I8y7pyv+r4AJNY2qeZZPvuVMDowRZsPrAEY57SQsnUUdZfIKP/OvXXgX0OPmHYMv
+	nVOF2A4jdwBX+u8UQKPz2gmRKw+wZxnH1zSS3DQpiJV+tROcrGAQsgYXVXkzooVl
+	UwDTiQUWmtgWWvoKxpcLSCvNo=
+Received: from yanzhen.lan (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCHQ_oaNENqtzXBEQ--.32894S2;
+	Tue, 30 Jun 2026 11:12:27 +0800 (CST)
+From: Zhen Yan <yanzhen20011121@163.com>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: kernel test robot <lkp@intel.com>, "Barry Song (Xiaomi)" <baohua@kernel.org>, oe-kbuild-all@lists.linux.dev, 
-	David Hildenbrand <david@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org, 
-	Dev Jain <dev.jain@arm.com>, Wen Jiang <jiangwen6@xiaomi.com>, linux-csky@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: yyk36s6815mjhehy1zngdn96dnm1dgfi
+Cc: linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH] mm: fix mapping_seek_hole_data() overflow on last page
+Date: Tue, 30 Jun 2026 11:12:26 +0800
+Message-Id: <20260630031226.3141360-1-yanzhen20011121@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260629164932.b91930b0497e8446a2a549d2@linux-foundation.org>
+References: <20260629164932.b91930b0497e8446a2a549d2@linux-foundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCHQ_oaNENqtzXBEQ--.32894S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF1UXF1DAFWDZr1fXF1kKrg_yoW8AF4kpr
+	98Gr1IkrZ7Xw1ayrZ7G3ZrArWrC34vyF4UtFW3WryUZFn8Gr18Ka9093WY9FyxJryUCF4j
+	vF4jvay2qr4UJ3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jOjjDUUUUU=
+X-Originating-IP: [114.215.250.79]
+X-CM-SenderInfo: h1dq6xdhqsiiqrrrjii6rwjhhfrp/xtbC9Rx-g2pDNBw0qQAA3J
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 185551C0003
-X-HE-Tag: 1782788782-312887
-X-HE-Meta: U2FsdGVkX1/vCdLMaVIwsUIlgB/1yzc3nnk3rpmtJM4vjQLQmHZZCPMlUwKxECO2TCYhPvL6eP/4a9o/JDFBUYOJ0/Y4LV0UNBTeAJ8XuaRr691nM6zmvGKLgv140yopxgqjzgKRdUADJ7v6ckcR0ULxZHri7ljHNiy/7Yla8Yx9ZFgUeaI73N7X+KJPL71NtD9AfVkjsaXlYQ7ZVxsVGZuy0qjFrHclDP8GI3CpSvXESQlUOF1rM2QlHhe3JJVQ32ND5IVLue9Qke6QRjR8I1J45c80GhVd2s4lmOow4cutF2ka+8Kzyx10cdeNP0ljFCJBPVdE8LH+Azchp+PC9t4aTrG31HQksQgy7ZKfNLLi3W2KfODS1F4ccS81HbOiAlspwnFfxkaddhkfBX0cN0c323tmoffkPlsMuthtROPvknJ5kilteYxdDGgprLJwsTPsWWxXqBr1CKv7b8iylb1MoHwEAwdZNOmkMdnXUolAYINeWF0yCAZDGEntjpZoZKKZ0DAKB6nOvzlIlXKHv3esx9TRsF3wdyYSuFnJc/OA0gxoQ5nwOJMpTTJLxzdlMKZ0bgqsqLtJeWG6DOus68EpWdAbrAEUegP30r9gWVjYCHDu8onWjfq2K6sbeRrL4cEcDe2IcsmvyUxd277H+KMZ4QIBM1AtKi6tcs4ssQTXFaytS4qdbz/UAU3W1GwqX6TW3AAR4IwVGpwfsyzHh/iIjvVQ5ceb78P71NjHtoS4FzklX9ny7J9tCSueYbVFbjMkBAfSQj029bbx8fLXv6BC/qXkp5sCg+49u57YDq/loUKkf47l/p2O5QXR0lCbjUqg9O3x1c4FjkWNcsfkEK0+8BjUfAFukB/saq3Qquu0nU0v+9QEw2WGQ0cU9y0TtV2+sb869s0oamHXLE6WXhzKsZuU56M+q7gq5lq1tKwy+0zu98PrNeCutkggXnQnA/0BstEII6WpyMIHGoQ
- 51MILhlu
- BD5kbQdcnjP8HXo3orpag2vq4F1xmKeYo1Bp4GPyrFCXxBgfLbqJCzLFd75BlONUyJFx02nqBvXLScVqBst+ueyuiG7aYfKBL2Z52eaq3KJf0r6lTSf8L63X/MGOw9J6A9WnMhTE/Ss1xfYVrTlJZDCdASxsaW2CFDEx3b/pjVN27oPU+P3Bh8oK2A28Qv7cvGhJmizZ0uCtMbbG5lmw0Rc/Y4RA20POl5oGUu9yuXFVii0k1SE/+8Y/e4PfiXbVinbOi4LyEznS98fgqMDbvH+eBidLbBUA24kBKeK7RU6FRlMDvCLEzMFR7ILxXB9ZE8Ku7KfsRnBbVT8dtRRtKnkavfZDf6stFwyINV2rArDnps5+LN1Bdn3Ka2T2tOdRcPrhyEscqqUTRS9MmlywV5EK/NWAugcPpMSz3Kf0M3m3z54zekey2jJTA35VpYU8BDBok7hrae3604/5Diqfzk4aXicRUtXr/wEGvSxqrydc1xjHY0Jv7z0gFeGuIc5cjbSMcG/kz67nZm3hiAXUjySsl4ynJY305VauiqLR0jSyw2PWHE8tZYpfeK2lREnJInhp7TjpAF5+o8yE=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BE29EA0008
+X-Stat-Signature: xepj68xec64mw5hc8ytw9xi5jbph85wx
+X-HE-Tag: 1782789190-797191
+X-HE-Meta: U2FsdGVkX1+h1wHNyinQTK8IxeRKVJjswFjdSZjXKggQUSkac9o1dVZzIvLiehAoWJ+ljebH85aExwj6QPm8h1LIojbKGwEGOpfkbFBKpR4uS03FVAymzMpQw5MJJhkKmRIKpkjzEdDA87k4q5Wbyzjipy3pGXl+0vFDw7vxmbWjMyPXg3Vwc2ZoU9BrMx8JGTlG/sh0WVkOLUOXGsCuNIBo6MmXF3IU+FBKYrbq3oe0wFUW0mQIF2l9dsBe6K6zSXPWLSRUnp4V+4E/QBml9UP4uPdfQuo5811KKE0NWteZNgYxpG8pGruxVDmOBfV3zcE1ZTer5E5+Z+S2cvsesaBdsfF8ggqQbgTJAmr9KpV4miwEXSgt64i4MKTrK9VzMDe6F+HEanaBjn39E9p0peKCJ5DarDwYZw117TMNQDN3o6SBCxfSPi/rE9uUx349NIE5iAdGQTer6pVzDEroiQct3n0gNe3qIge4bswsevez1eUf32aAbVQZg1M/qsuJ9rcVM/iQPpm9daLhE7K0L4jtRSNPQNondVW77DGY0NMx3F8MPogx2HUhIfsUh58BaDuPLfXwBvMF6o9pi0wnyoljGw8oc/U/K16Pdpfg1/gsLxbP7Y/lu700ib9b+p3Q2fUw++uzBzWLynIRDbYMWJIT0Sb6/06s8zDqVOVkwa9dMUShojYrCP5wOO4tuP2TfYhonLaxFCDhneckCa6iWWoDEbRfaPsUTgyu3KdAIRiYpR92Cp/4gdqAsWJcBt813lRCfFX/RorjwU4motKHWSGnzJo0lgFKkZoqcFCBJrdgd940ON4w79jQtofXA3LZODopPSZ4TYL9+xBU1GS1/Q8B7wsRn2lv6v+BuBWkLCH8foRzLDCg4t7HjwQjb8965KHkg0ay5urRLQi5igV2ICTnJCuQpLuK8xmauCFKr4HjBLZJf3opHnTz+3Egql3UucNsGBvzuBM8Ev0tZip
+ Z19C0xnp
+ vVfh50CkKY8D2/Z+5Y6mF7yKu2JIQE5lA5drKZfxfUCeRxP3fe/gNOXOOe2jDUhpXHrYF3yiYut9BdMkNOG5v0LZTFvnl64K9yxBjvqs9Gs/L462yMwyW94uEe0B+qMyZ+aPU5+MsV2O6LkouJuxbFJRD9Q9crtn7iqAHKw2xDaFcPzy4S9r3UhJnMuAi5z5YEtYciaMy5sko+j/UZapg0VkVNoMIOMrovsoOrwhjm97XbARGRyoZu7BuTVCXqX0dksfhrnG4HGbkX3wedYBAsRKFXHzsj3MQXPRiY/POGGZlWdedtiPoOSK419xbAMDAfY82xjOwh/qamUGNUVpdpr1C3P+VhvLcEDLjV44i21kVFm4e82cEPEpxvpVXNKEo4NibCV3zcGQbaa+fIwoIFtsnTMZdkMkbsn8k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,104 +96,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 8:19=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Mon, 29 Jun 2026 16:58:34 +0800 kernel test robot <lkp@intel.com> wrot=
-e:
->
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-=
-new
-> > head:   88cefc306c43b58d9bb65c9e96e284306710d961
-> > commit: 80c453511b6ee1af0e4db83c3db0020215c4eaf0 [59/142] mm/vmalloc: m=
-ap contiguous pages in batches for vmap() if possible
-> > config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20260=
-629/202606291606.9h8aGniQ-lkp@intel.com/config)
-> > compiler: csky-linux-gcc (GCC) 16.1.0
-> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
-hive/20260629/202606291606.9h8aGniQ-lkp@intel.com/reproduce)
-> >
-> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
-rsion of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202606291606.9h8aGniQ-l=
-kp@intel.com/
-> >
-> > All warnings (new ones prefixed by >>):
-> >
-> >    mm/vmalloc.c: In function 'vmap_batched':
-> > >> mm/vmalloc.c:3590:23: warning: unused variable 'start' [-Wunused-var=
-iable]
-> >     3590 |         unsigned long start =3D addr, map_addr =3D addr;
-> >          |                       ^~~~~
->
-> Sigh.
->
->         unsigned long start =3D addr, map_addr =3D addr;
->         ...
->         flush_cache_vmap(start, end);
->
-> See, this is our punishment for writing kernel code in CPP rather than
-> in C.
->
-> I'll queue (and test) the below.  It should be OK -
-> arch/csky/abiv1/inc/abi/cacheflush.h directly includes asm/cache.h
-> which declares cache_wbinv_all().
->
->
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: csky: implement flush_cache_vmap() in C
-> Date: Mon Jun 29 05:07:51 PM PDT 2026
->
-> To avoid getting an unused-var warning from
->
->         unsigned long start =3D something;
->         ...
->         flush_cache_vmap(start, ...);
->
-> Cc: Guo Ren <guoren@kernel.org>
-> Cc: Andrew Donnellan <ajd@linux.ibm.com>
-> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-> Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Dev Jain <dev.jain@arm.com>
-> Cc: Leo Yan <leo.yan@arm.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: Ryan Roberts <ryan.roberts@arm.com>
-> Cc: Uladzislau Rezki <urezki@gmail.com>
-> Cc: Wen Jiang <jiangwen6@xiaomi.com>
-> Cc: Wen Jiang <jiangwenxiaomi@gmail.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> ---
->
->  arch/csky/abiv1/inc/abi/cacheflush.h |    7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
->
-> --- a/arch/csky/abiv1/inc/abi/cacheflush.h~csky-implement-flush_cache_vma=
-p-in-c
-> +++ a/arch/csky/abiv1/inc/abi/cacheflush.h
-> @@ -42,7 +42,12 @@ static inline void flush_anon_page(struc
->   * Use cache_wbinv_all() here and need to be improved in future.
->   */
->  extern void flush_cache_range(struct vm_area_struct *vma, unsigned long =
-start, unsigned long end);
-> -#define flush_cache_vmap(start, end)           cache_wbinv_all()
-> +
-> +static inline void flush_cache_vmap(unsigned long start, unsigned long e=
-nd)
-> +{
-> +       cache_wbinv_all();
-> +}
-> +
-Thx for the fixup.
+A local unprivileged process can create a shmem/tmpfs file with
+i_size == LLONG_MAX using memfd_create() and fallocate().  If the last
+page is present in the page cache, lseek(SEEK_HOLE) on that page
+returns 0x8000000000000000 as a successful offset, which is LLONG_MIN
+when stored in loff_t.
 
-Reviewed-by: Guo Ren <guoren@kernel.org>
+The same file has readable data at the last byte, but SEEK_DATA from
+that offset returns ENXIO.
 
---=20
-Best Regards
- Guo Ren
+The overflow is in mapping_seek_hole_data():
+
+  pos = round_up((u64)pos + 1, seek_size);
+
+For the final page below LLONG_MAX, the next page boundary is
+0x8000000000000000, which is then used as a signed file offset.
+
+This violates the lseek() ABI for shmem/tmpfs: a successful seek
+returns a negative offset, and SEEK_DATA can miss readable data at EOF.
+Hole-aware copy, backup, and sparse-file scanners may skip the last
+cached byte range.
+
+Keep mapping_seek_hole_data() inside its documented [start, end)
+search range by clamping the rounded-up position to end before passing
+it to folio_seek_hole_data().
+
+Signed-off-by: Zhen Yan <yanzhen20011121@163.com>
+---
+ mm/filemap.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 5af62e6abca5..22a1534ec8b3 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3234,6 +3234,8 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+
+ 		seek_size = seek_folio_size(&xas, folio);
+ 		pos = round_up((u64)pos + 1, seek_size);
++		if (pos > end)
++			pos = end;
+ 		start = folio_seek_hole_data(&xas, mapping, folio, start, pos,
+ 				seek_data);
+ 		if (start < pos)
+--
+2.25.1
+
+Sorry, my previous email may have been lost due to network
+filtering issues.  Resending the revised patch with the
+requested changes (tabs preserved, CCs added, signoff added).
+
 
