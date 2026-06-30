@@ -4,88 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 136A2C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:52:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B5EC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 455386B00B6; Tue, 30 Jun 2026 06:52:48 -0400 (EDT)
+	id A25876B00A8; Tue, 30 Jun 2026 06:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3DF1A6B00B8; Tue, 30 Jun 2026 06:52:48 -0400 (EDT)
+	id 9FCBE6B00B8; Tue, 30 Jun 2026 06:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A6BE6B00B9; Tue, 30 Jun 2026 06:52:48 -0400 (EDT)
+	id 93A316B00BA; Tue, 30 Jun 2026 06:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EA2DE6B00B6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:52:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6CE2F1403A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:52:47 +0000 (UTC)
-X-FDA: 84936265974.21.CC8A771
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EE546B00A8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:54:26 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 01BD5120464
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:54:25 +0000 (UTC)
+X-FDA: 84936270132.01.9326338
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8F465180009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:52:45 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGNFYGn4;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 44347C0007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:54:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fJgceCav;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782816765;
-	b=MB7AwyQlJ9uqbJzz5j6OgAfcS4rRjMndBWPWcCa1mTgxt0eCrZ+Pb8QvHZpTyBThB84HQk
-	cB3mfhDx5WBeYpzr47g4tShNsNcTc4RJ7lR5mwvSqmJXNmszpyxzF+25hPFLCGD7x2kwfb
-	RYRUX9BPEMeEoZhjCGMdY6st8vKMcgc=
+	t=1782816864;
+	b=LuSNCuJ1k73qB2aCeGxbh6LEUYczmTCq5z9p2I/PuIL4QcZlsKH4An8JMWrc3gCy6CktUK
+	l4Wv8WsmB0O/Ajux+RpHY8N4F13EW1/pCCSZCX4FsLLrwRF10GA7viYU2YtvGrwpDNwm61
+	KC0tMkwdaLcANX5AYgTZIfAwVqhIgBc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782816765;
+	s=arc-20220608; t=1782816864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hwd078SfSbWqZ8yo3wjpm66Fjg9WDFy+fTRvcAm+UkM=;
-	b=AeHzbD4jRZhWxU/VOsjtNhSSREAywiz0PwEhZoRJXPVWYmYMFmd7QEx+IVVuVjJZ+H9GMm
-	v1UZTLpdtIUQiDXqyP1flMszxt9E1c+jvN13RefXCTmDYQHcVQsEUejr9S/YH3xhpWAath
-	R7Pv+zA8HjsLA9AfKGwIzuWjS3dLdlc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=FnV8WNv2U/2NeCf/652mdSlf9RYHKUxm9hACRNRtpLQ=;
+	b=ZhgJemR2rCcO4D4aanN7b3aj1VoSal5HdMI4tuysfm9eObCsAxnqethwYjRd5eWR0wng7r
+	+zYIIgq/UwxdZh37a4rkTCQ6J3nknAWjY8BvZlJuNUD7ehYF6F3i+PPkoV4cu72ZyoTzAL
+	NBIH7nvsnuSUVsuDL3KAMGgNbTO0vFE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RGNFYGn4;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fJgceCav;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D4ADB43F0C;
-	Tue, 30 Jun 2026 10:52:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254991F000E9;
-	Tue, 30 Jun 2026 10:52:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5C3B84043C;
+	Tue, 30 Jun 2026 10:54:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2563F1F000E9;
+	Tue, 30 Jun 2026 10:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782816764;
-	bh=Hwd078SfSbWqZ8yo3wjpm66Fjg9WDFy+fTRvcAm+UkM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RGNFYGn4CtkTg1zqvbtwpm2QX2akkhLXZUldJcQh/wY6BJIcZyWcOuEOJYmNcq5Lj
-	 Uj6Bh+yCkzkhs31qbnmwB/PtXdrbvnMqxlvi6wknmB/78qy1R/PukrrJGqmOB69yGp
-	 Iedr10mzuTFMWuNNp+qNCDQiG7xROGfltWMA1ONZfMbFYa0qXUFzGxqjRCfwFEP6z7
-	 vh4O3pxi/BJb0+UedVdyG6n1f4hyrZzKDVL+WNrdwRrlRNF0r6evBD/7tKTdhNwzMF
-	 RJ8vOKlRXWraalDy2C6grQ5T2M1hKnbvVmrkDw6wWipuGgJ8dcKGY7we8g6o5YZhgo
-	 Kudt8R1xEuw7w==
+	s=k20260515; t=1782816863;
+	bh=FnV8WNv2U/2NeCf/652mdSlf9RYHKUxm9hACRNRtpLQ=;
+	h=From:Subject:Date:To:Cc;
+	b=fJgceCavbNPcF66SdZ9l13sifefI0sGJa2R/z+GKzBrF6OvGDYZL9bxpDhALEYZfg
+	 B+OQ9FyUviVgK11A9a03ctqjcK1DF0Zkcw8ZPHNR++4Gn83wGnDEYjJVjgMwN0K0jm
+	 krV3K2OueN3a6Hvez+zmYWyAPzsRP9jxD+m9prbSRIIbyghVlpOmvsJ6uq+JpWTa8T
+	 KdvIxZ1KHQRxye+1mO5tSoXGtsqWbl7ZVCJVHsbyyCPLsSUY3eCYmeNEUH60ZADbNU
+	 VhftXGA08ItqiRlKnf37DEIAlMF+a4DKeh5D+AFXfXhJO6Cp79/Y0qO4UarPwEcDJq
+	 ZffD7riVNrXkQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 30 Jun 2026 13:52:33 +0300
-Subject: [PATCH 5/5] IB/rdmavt: use kzalloc() to allocate QPN-map pages
+Subject: [PATCH 0/4] scsi: replace __get_free_pages() with kmalloc()
+Date: Tue, 30 Jun 2026 13:54:17 +0300
+Message-Id: <20260630-b4-scsi-v1-0-494fb37ebe7b@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-b4-rdma-v1-5-ab42bcf0de92@kernel.org>
-References: <20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org>
-In-Reply-To: <20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
-Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>, 
- Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, linux-rdma@vger.kernel.org
+X-B4-Tracking: v=1; b=H4sIAFmgQ2oC/yWM0QrCMAxFf2Xk2WA76lB/RXxo2sxFsEqiMhj79
+ 7X6eC7n3AWMVdjg3C2g/BWTZ6ngdx2kKZYbo+TK0Lt+cIP3SAEtmWB25JjC8XQYA1T7pTzK/Hu
+ 6XP9sH7pzere8GRSNkTSWNLWJwl7zI8K6bqAOpNyFAAAA
+X-Change-ID: 20260611-b4-scsi-d0b0eb4895f4
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Brian King <brking@us.ibm.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Matthew Wilcox <willy@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-scsi@vger.kernel.org, target-devel@vger.kernel.org
 X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 44347C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8F465180009
-X-Stat-Signature: puqade4thumgujeprkpdryin9xp7azst
-X-HE-Tag: 1782816765-683610
-X-HE-Meta: U2FsdGVkX1/a4LAFBx0ckNCr7qHaA/v1wPLoPwC2Y8IZ/Ps9oezL5jkSsxkIKO8UI1jdnAp/HT7wSKI4Nhlt+URreXsD5eh8h0U1FvSk/UgcnkbZc3JrO96wIwkCUOiudTCfAlTQQBn5IT+pdhy0wAq2qFgQgzk15QdcAJ90+ryTo57UbFFGsXn7CsM50ED0af6Pwq2TVYMa2+iBR4xhrNI2xwHHdd65OiCEGwDloghvy0PKvU7vu0tWXqZQMlAjsxjjxk5ycoBlaBPEwtGqayEH4hsGhptocCeeYX9nHFd4i4cyUD8VBhMOJnrtGct+HbHbsymWsp7mUUhHsT+/6RFez3Are09e2AjfeziB+Xez5cuKuy44znmhFvzFW382Q6wswxHMnMd8bBDJgkJcmO1h38h1FuAO1DkKIr9CGm+n8uVJeMFTlP8Yw1FxG5Rkegm9ZamTewjz45Hz0cCig7Cl6PSfDsaxLgbxlB4JveMRL/P5qWt5XKYwwopU82ZR1qP8Ew7hMMkxTphj+0MrX4YvczyZBtQ5/X/NXIGDDT8sDN7JCutJDdwT6Cb/LKy3ipfsAigb15NBmEbGimUYrkXZJGr8uFhfULS/9JRhTOAZadTO1y5V5WhHt3gBd1FyuGig26JDEL6QzBPNNRl7ELgmgp4kk5aSy/nsGYNv/B83mv9HY4WljZDTZulR5DRj4Wtvr004n4s4B63tIX/2BfIgYmKiPQIiT5XuV8vvzI32Nbu41Pjp1MnOt+ceq2pQ8zZdz4MZZG4WAWB7bmIxniSGW5Bbpnr2mfQm+pQ9UzUCB2M+q2LyARBes8FKx7f8bnTzpdNsooXHJRhdJgKrxFVb8Su8Cc9c8jm0VnIp74mCO4HDYZOT6wMOdgYoU6ZN2IaRe+weMN1iERBOwKfhqqp6T0iDn/y0aVZAWH7VkcgmkFPicDUuhGq7iPhZzwWybb0FCQdoso9oM0xWDgu
- owTQfuv7
- 8I7UNMwXO/YUANCzOUjXKw0wtCa3D5oIB8T3BQoUJuqewpGBKcsl2qVP95oXnDh7h9hT8hz/tGMlEpitR3XWlV96jKysE3qIfLNLIJS1K46PNHVhbsFA9YTDVa0kYGZJ/jYwnjxPF1DP3Zb+CSUtsLnqe0J7vw6wOFjqQIu+1jSSHCB4o7ZG3BHoEljLz/H2RLUyBsCFVjOVb+8vUE2Z4YhEQ2jKlGxlceN+iRZu/JCICf6OnpN0+arOdvfi4hbhPELDfLsZadqAsTJs=
+X-Stat-Signature: hst1w3f8ysy4xcizrim6kgtnjdyrcha3
+X-HE-Tag: 1782816864-472692
+X-HE-Meta: U2FsdGVkX19iEgEb+r456WeMKRa+5HGK3xUFcljyxre0UEYqNrhL/Yuc+S80UEZTLWbfTMEuRhsj9vfAmx8fPwD3hrdTbr74O+iw/hlGNarP0GphnAvr8FU4IpdAUCeTWQvNNieXVVF6/Gjj6UySZO3CWwzNhXuOBV+jzwHfgueGdCSjk+WIJ7gMZ0nT7C380mxVBchquFbODNUrThW3RE682EFn3EvdxerXSnfNdEJyYDYJdsXsOpG7rbV3RO5BfRlZJfEELFYAmBmICs8zPFGDIWz7ViRFUf7WuAfLTxTcaawrRada51jljnd9TTvycPEdoQ9nXTRDkGF2h1Z9VokzzDSMS6SCSomXkofQ6sCMq0UzNXruhlAb2fOzCwPWJ26qIpf94tQSK5IT/WvuHAMy3NuJRev2Zon9QN1A2AjLz1ftvipbK8B5nLThfZKMnwoTonu/zJGZQo1L77lLUtPTYorDFoYWjrYx5F1mozetPp22NDI6t2mpeSLcf81PlEPk6sqOVxhSHWGDD4RKFPEZ8STYM5bZLEDo3ZfQcV10PTrBxhjofbVpKOLZtk4aGCVcfB8n3ItT3Mhy1lkqy0yYgpjAxbgBFSFcT5+MwsWR6Rm9635uChq0cPb1eRd/peiPa5HVEomB/Dk0bNWl90SHSQOgdGQ3wdVkGg8O6JH91s4zZuYzMq/cyR34maNzIEZ+sqWmcYyi2ySMtBGsOZY0gipeNhtdNDsZzx2JQP1wl4CeBqpheVYendTJJLexutjmr9V/LYyLLcvf3Wir5LclX4kves6dnOQPBJUArEfxM36oGfqO+t/UIOdrcBpbbmufcLh/Lw6G1QsXOjZDminDrzHL4SaFI5kVerHplKvfMgXe+Esd1F4ohPmIFprASNOot9mwfDlsQLBPrfNN2dGpuXsiHfU3zloI7EiFJ1lMl9UmO6gJC9x+wWZ8/AWrVPDeNu2nHiNhmfir42i
+ IhrIpcEF
+ CJxZOY//1cQ0F1shu3Re6yc8FCQYUGbKbvQWy1dDnZqAXSzmJgT8m0Zg7bqfzqDoQcY75Pbm5oRuQ0ahB4CDu7/kwNKjMq1bbuzQWCDUzkcJLLBjTO26A+teizp8uPKOFsxsK0U7S4a8ZMkMLwG3hAcQLwiyL6QJ+YlZaEKeakmZEuz0ZFkuccJyDSDMdozC6eqtsu2csnRW+3sSpj2SkRh5XXNOIop4blbNPL1g0ilLM387e0WT0rCfKbtr06PY9qSXuZELo3+ok5k6oNVyrsY9FymTvlnyn30Gc2ebfTsuMk9enhvxXLw2C20Vz7DoDRs3a
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,66 +96,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-get_map_page() allocates bitmap pages using get_zeroed_page().
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-The bitmaps can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
 
-kmalloc() provides a better API that does not require ugly casts and
-kfree() does not need to know the size of the freed object.
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
 
-Performance difference between kmalloc() and __get_free_pages() is not
-measurable as both allocators take an object/page from a per-CPU list for
-fast path allocations.
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
 
-For the slow path the performance is anyway determined by the amount of
-reclaim involved rather than by what allocator is used.
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
 
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
-kfree().
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
 
-Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/scsi
+
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/ 
+
 ---
- drivers/infiniband/sw/rdmavt/qp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Mike Rapoport (Microsoft) (4):
+      scsi: target: file: use kmalloc() to allocate temporary protection buffer
+      scsi: proc: use kmalloc() in proc writers
+      scsi: ipr: use kmalloc() to allocate IPR dump buffer memory
+      scsi: sym53c8xx_2: replace __get_free_pages() with kmalloc()
 
-diff --git a/drivers/infiniband/sw/rdmavt/qp.c b/drivers/infiniband/sw/rdmavt/qp.c
-index 70e7d08fdce6..c40cce69e945 100644
---- a/drivers/infiniband/sw/rdmavt/qp.c
-+++ b/drivers/infiniband/sw/rdmavt/qp.c
-@@ -263,7 +263,7 @@ static inline bool wss_exceeds_threshold(struct rvt_wss *wss)
- static void get_map_page(struct rvt_qpn_table *qpt,
- 			 struct rvt_qpn_map *map)
- {
--	unsigned long page = get_zeroed_page(GFP_KERNEL);
-+	void *page = kzalloc(PAGE_SIZE, GFP_KERNEL);
- 
- 	/*
- 	 * Free the page if someone raced with us installing it.
-@@ -271,9 +271,9 @@ static void get_map_page(struct rvt_qpn_table *qpt,
- 
- 	spin_lock(&qpt->lock);
- 	if (map->page)
--		free_page(page);
-+		kfree(page);
- 	else
--		map->page = (void *)page;
-+		map->page = page;
- 	spin_unlock(&qpt->lock);
- }
- 
-@@ -343,7 +343,7 @@ static void free_qpn_table(struct rvt_qpn_table *qpt)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(qpt->map); i++)
--		free_page((unsigned long)qpt->map[i].page);
-+		kfree(qpt->map[i].page);
- }
- 
- /**
+ drivers/scsi/ipr.c                  | 4 ++--
+ drivers/scsi/scsi_devinfo.c         | 4 ++--
+ drivers/scsi/scsi_proc.c            | 9 +++++----
+ drivers/scsi/sym53c8xx_2/sym_hipd.h | 4 ++--
+ drivers/target/target_core_file.c   | 4 ++--
+ 5 files changed, 13 insertions(+), 12 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260611-b4-scsi-d0b0eb4895f4
 
--- 
-2.53.0
+Best regards,
+--  
+Sincerely yours,
+Mike.
 
 
