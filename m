@@ -4,137 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2FAC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D615C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:00:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D8126B010A; Tue, 30 Jun 2026 10:58:48 -0400 (EDT)
+	id 659E76B00B1; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 995616B010C; Tue, 30 Jun 2026 10:58:48 -0400 (EDT)
+	id 6325C6B00B2; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 878426B010D; Tue, 30 Jun 2026 10:58:48 -0400 (EDT)
+	id 548D46B00B4; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6134A6B010A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:58:48 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA3D68EDE6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:58:47 +0000 (UTC)
-X-FDA: 84936885894.01.6760B1A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B1688A0009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:58:45 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 318C56B00B1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:00:27 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A7B948EF60
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:00:26 +0000 (UTC)
+X-FDA: 84936890052.28.1AA55F1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D760EA000E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:00:24 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i1vYbsIY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MfBd6CxZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i1vYbsIY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MfBd6CxZ;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5QS6KFh;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782831526;
-	b=BX2/+UQP+kIx5Grd2LGMrick3JLzCB9I49BoUPZeCKv8WmRtXiXGakS5ITOjOgoa6ELYKB
-	AgZztAHqPYQ8Ikz1jUJQveqYjhCmhMxWE0FqNmN0GPQhHdqdVSOImm2/9fQPtM3Gzd3RLp
-	TQJ3O97UR5E4A8XLUx25VcFlljZkqhg=
+	t=1782831624;
+	b=vnhn1F13i9jvVAIAvBiNpGpGiYeLQgMvgzWZnas24h996iHF/nl78VgV879XTAVd2S1USg
+	DdmrfN9CDlfLAAhCymtauuqhHX9BgoiHoaFES3Ye4gVKFNQ+mmTGoVo3jqccyJQO/lC/Pt
+	0UvM0Fwgdu4zGO15DpOWt3zIAnrP+Dw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782831525;
+	s=arc-20220608; t=1782831624;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Fp1dLT9aMiZvLKrxaip+Sq91NThQkBLHSya57MdqiZ0=;
-	b=2ZUFNguzrQXZBzd7zJgRdvSzgx/MHMbx+UVlG42mzzmvlm1dI29S4I0xLDIYcOBX+t5sYA
-	1wjeGHLBwKJ88jA/6041z5q7axTjMGE80tVNNRE/rltuLXXZuaUxe7r0C9AYbR4zThAn0c
-	xwbn+DegcdGyVb8UydDXSAUF+Brtsgo=
+	bh=lEjljAT8oCBe6H0+DZxoSp7D0aXaqVksk3/Y1JCjZd0=;
+	b=cqQ+X3W8j91I7de1SWNjDf+aAeZ1KWyUgOgW4fElvCvJClCdrJTXrDj1VibLyar6oVZRTN
+	ePzCIGnAb1Bc3npB/WzVE8FHZEFzsGvEWqPS5z5lj8S2A35ryCdK6RlOmtLkxMxcBobQs0
+	W1WpjwPgf1+/ngKYs75Hr9629LSgBEE=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i1vYbsIY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MfBd6CxZ;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=i1vYbsIY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MfBd6CxZ;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf25.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 48B8B75DE7;
-	Tue, 30 Jun 2026 14:58:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782831524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fp1dLT9aMiZvLKrxaip+Sq91NThQkBLHSya57MdqiZ0=;
-	b=i1vYbsIYl7TLTaXt3i7RVi+UEP7OqLfLPJ4SmLGlE6UpLVLLcIwfPh4bNaMsVwl54h4AyR
-	ta2NHYbLeEgNfWi+HoVNxtnpvbtl4Sr+Ba0JZy4w/8G61xAjQIFAZku66kaRguzDlw8o11
-	Ul1e8EM+JGI4aSkeacw8qblnYPgWa8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782831524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fp1dLT9aMiZvLKrxaip+Sq91NThQkBLHSya57MdqiZ0=;
-	b=MfBd6CxZdG/kZci2Lo7SLl/9MFFvNSPaqGCze0WwU7PIpbjukyOQVhLelOdImvCIeryCQ0
-	6AlOkmF+94KZZuDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782831524; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fp1dLT9aMiZvLKrxaip+Sq91NThQkBLHSya57MdqiZ0=;
-	b=i1vYbsIYl7TLTaXt3i7RVi+UEP7OqLfLPJ4SmLGlE6UpLVLLcIwfPh4bNaMsVwl54h4AyR
-	ta2NHYbLeEgNfWi+HoVNxtnpvbtl4Sr+Ba0JZy4w/8G61xAjQIFAZku66kaRguzDlw8o11
-	Ul1e8EM+JGI4aSkeacw8qblnYPgWa8o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782831524;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fp1dLT9aMiZvLKrxaip+Sq91NThQkBLHSya57MdqiZ0=;
-	b=MfBd6CxZdG/kZci2Lo7SLl/9MFFvNSPaqGCze0WwU7PIpbjukyOQVhLelOdImvCIeryCQ0
-	6AlOkmF+94KZZuDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E554D779A8;
-	Tue, 30 Jun 2026 14:58:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id k/+RNKLZQ2poHgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 14:58:42 +0000
-Date: Tue, 30 Jun 2026 15:58:41 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Dave Hansen <dave.hansen@intel.com>, Xiang Mei <xmei5@asu.edu>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-hardening@vger.kernel.org, 
-	Uladzislau Rezki <urezki@gmail.com>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	"H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>, 
-	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, 
-	Yan Shoshitaishvili <yans@asu.edu>
-Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-Message-ID: <akPYNv37BCJXUg8-@pedro-suse.lan>
-References: <20260629214712.1198680-1-xmei5@asu.edu>
- <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
- <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
- <4e96acf4-25e7-4f30-8455-f9b3f49062be@intel.com>
- <CAPpSM+RhcW=xciX50W3G+2mUVNkmLfL1-BScPN_2TekMbzYVcg@mail.gmail.com>
- <c7c5d2c7-db83-404f-b40f-ee01ae8b9299@intel.com>
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D5QS6KFh;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A59760018;
+	Tue, 30 Jun 2026 15:00:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB01F1F000E9;
+	Tue, 30 Jun 2026 15:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782831624;
+	bh=lEjljAT8oCBe6H0+DZxoSp7D0aXaqVksk3/Y1JCjZd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=D5QS6KFhU/5DOxHs4TOWy0bffEu1vpyOjarro1YAFzBSMYJ0jmUqd8LXAXR5OSaYX
+	 lT+ZeDgjVMLyeTBPni32H7bS6yD3N1YatU8vQZ3m4XXPIvFBZ3bClUETpdYbq6NLN0
+	 D525b55NxYXe3NhT9lr1DvZDoZmx3XKZXU9PtqtAN+uGBEEWkUx4jDIMjFq5ywIOYB
+	 0k2hic87Cigrr0lRB35EPiUya7c9cB7pohffQfgPmFBS9sx4Q0i+DDDGdU7K9/pwAh
+	 gSQmlmDsiNreWpKLyF9SfSGdt/GUWU4i07X6MW5tXoGFu0D9jvOBINDUNGr6sQp+rf
+	 9Ql8aWYKvA5/g==
+Date: Tue, 30 Jun 2026 18:00:18 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-rdma@vger.kernel.org
+Subject: Re: [PATCH 1/5] RDMA/umem: ib_umem_get(): use kmalloc() to allocate
+ page array
+Message-ID: <akPaAp-0Zul8uVga@kernel.org>
+References: <20260630-b4-rdma-v1-0-ab42bcf0de92@kernel.org>
+ <20260630-b4-rdma-v1-1-ab42bcf0de92@kernel.org>
+ <20260630123150.GB7525@ziepe.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c7c5d2c7-db83-404f-b40f-ee01ae8b9299@intel.com>
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B1688A0009
+In-Reply-To: <20260630123150.GB7525@ziepe.ca>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D760EA000E
 X-Rspam-User: 
-X-Stat-Signature: xwfb4ec3anaqyjuybibofkt1mwb75dz6
-X-HE-Tag: 1782831525-869141
-X-HE-Meta: U2FsdGVkX1+z39pKOUso2mfKdWxFN5HXwrxYqJ7XNAuly0vuLIcMGOQ1DoHUuw7K+Wb86uPuZDlnegxnLb9P+pBE1KnK0fbtp19RmS5/z6f1kInr7EEgKlfRKlfUQTJoOIwz8JLY/P0rtOsctV56ocyCWJyzi1q7a56GltUAgy4BTQ3/qTRwcn6s84FOwVx4Fp9V1lShKjrfQDTx/p5v5aTTAJaiP0H+gk+Q9qp9z1FWMXITGI7w6kedfOWTX7gfm2DPNxIntj+ubYWdJH0LJxUBnIJRZWNHl2Ir3WUZKof9ifYqgiHZGhIXAFxN6jKPkGUjabVrUDGsOASEqrIlws/Ih+OLw3CGGYE+AVNysA6LlyEMjERJv1vvZLeNzVJb/ansWvYk5UelxWiAFvIAZfUg3O/sJvdPEhdy+tjfqAjnuC8mYevEvPm6fwIK5ws3aEmRzqdRtesDDSFjDuaRdK1ZTuzNq1UOLv39k7Btu85X5syThR03dPYAOpAT5/1aEV+GM1xv1opqm28FHko+XTQARLqJWR+dR5TSj4XVSUWORmEO1DNxGlA+hY3nVFBLl1fGwueiR+ZtsNYvxB7NuckJhGf8Gh+jPS+eZpmVpznunWGvsvkTx9qA9gJ9lqnxAecb+iyFDFwTeW8ciLqTmZrS+llI0jzsdAglachPfJoU3lUixh6Sltpizvq5UUSTC1L3TOrJpCYsYP7C+GDU/SBbrZW7fe69hVFjmrnHbonNjYPCpcSq+WXyyV4UPRqsuPhpCtzboWusxm/2oXVMuKAKFbCqa1RWWDzuXW4+e8Q1kj2p8075coE7ofpf8cxRN+8t7IqrqxsRn4WXBoeBR2fNJ7C2O7+VnJUIYpuRF4YuKKjsoWi8GeS6W0zVpp+HGaRZmdwqZ/eymt/fR0k2eb82/uRUUNHpNEe4yGSOO021cNJ69WeN6G+Z/92T7MH8JWkS0mBOXM7I7ZoAixt
- IScF0YnX
- pJtUuTNhGqyWmKZFCysoOhj0LvfCFsnmryaIDhQTW9WunTxIrFequrHDW9mMGH75DMTumcpYtlOcAPl4mKbdQJ3up7or/ZojsteGECWQVu57xjPL06zqPwRd+2/VlWZ+nC43P+u3KVvyV8bfZsSLZ5nXzg2qtcVh77mcukEyPXn6XioryBzakqN+bDc9u29F9sfYnBGgvt1+qy/UyUdd20p2g4kJZmEtO8srChATY1wPfAI+GdnEHKvl9Arxx4Pd0gdMTQb0x10UvTg0MZFx5fXT1AXiAxtt+S8F1
+X-Stat-Signature: p31qcjre3i1ze3rjiijiii8mex81mw15
+X-HE-Tag: 1782831624-322395
+X-HE-Meta: U2FsdGVkX1/Qao58vKOfV/53zzLKH6kPr5OC8/dV/6TPZryudd4YgDdsUNaLV+FXON/7dCiXmF6A+AI1Jd/Q41eFvtvQGIfddZFwunkeKG6MRVFwrXwhnCdKY7oC6bKtAG/TB7wrZ/0KeOw7ttEcSgi7iLgHf+C5iSISnGsQ11+qYUx65cUAnD0YMWt6DKtoziRICdBK9c4qMS3lei4cCVI5xvlsd6peuMG58DzENXMrCcvURjdbH4IHNHj5BRXnNDpzFk+XEJmqgDKasiXz6ZOH7j0ZbaQnDGE/L220kqhDakVQwWvbU/GPBBdExWTykDit6zeldA/apuwA25et3YKI66GBIKaobvpK9osj/31yCeU6v+frXwUyl2P9fSu2W6/zxYAms4zDJST9gNTr8cIFhZnFKAIjw/UgQSBmautWWS/M+myLDbkFjbfSgNmrfVMvwHxj0gG2YSPBA4oFQ6T3fbm//W9M/9sknjelx5wq30DUQTSB41SDorYVZ17pE1D126wa71Dw3QENF5ln9bWvxNhwZJpiv8TwmPxRE0CsJtS7mKO4S1D9QhOXtEKT3+mgWxSNoWzM65JfY0SSRdfT2LnBwke6bcaotSapU9lXF9oXXU1xZwq+LR6sXS/GPGMz6HeYxgYJbukE+4C4PUbelGVmLg4AT2zPVioW0GR8fbnFqk3TZiPYANM3onJgkfc+aCdnglSZhsPNBGgflNwkjGFe4VR0upF2/9qkG98cW0Azvk2Qnbw8qRhN7XQsC1vb5niwlItDsJaWmhRYGzZ3nFl1xJafqYkCK1PWCSQ8OvIMuvcS+XEYmvb2bLcuV3e6hzj1fX4Q95ZsyCjGSZ6b+WLmB9OXNPo8fmhLFcoc08fJNwInG1QFK5+G4GY691h7h9FsE3qzpNPthvjGoKMK7APCzZCj+tkNuTSD2pZ9FcCQSKwOHomfYruaLZwSfKKKxxzCIU++7xy26uq
+ oJIskc0T
+ BDputxHHJFYPYZzPRWgLPDAAthd3lyK40YXp7J9z4RKU5rVX/PDCuAsdfXK1ENcHHZnBuCrrmeTZF/hKAcb5FUC/ds/1bEt2orngsNuMi5nCpBoIec+6LPXLmrd3r79ZHx6JGlyymUxtcMKYq1rUAJLWJgSdWahf2ofNYFKHgzVkO1TojCo5LW+IruryCH9pfjMIebHomYxseKTf8YEf6vEGdm4arVY6rzrwhUHMBVaycQh5TafQhVOAY4SaR03rcOhyPCPa9Dv7bNsVRH9FrME+A7ybUX3j683wpPJyDC2BVj5E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,35 +95,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 07:01:48AM -0700, Dave Hansen wrote:
-> On 6/29/26 18:22, Xiang Mei wrote:
-> >> Please don't even try to send a v3 without addressing this.
-> > This is a demo exploiting CVE-2026-31419 with this technique:
-> > https://github.com/google/security-research/pull/397
-> 
-> Thanks for sharing that. That's really good info.
-> 
-> But what I want to hear a bit more about is why this new guard region is
-> a good, generic mitigation. Does it help mitigate a whole class of
-> vulnerabilities?
+(adding Vlastimil)
 
-I guess, to add to the questions (to Xiang and/or x86 people):
-1) Aren't initiatives like kCFI/CET/shadow stack supposed to mitigate these
-issues? Is this mitigation supposed to be applied in spite of these features?
-2) Aren't you screwed by the time the attacker gets kernel remote code
-execution anyway?
-
+On Tue, Jun 30, 2026 at 09:31:50AM -0300, Jason Gunthorpe wrote:
+> On Tue, Jun 30, 2026 at 01:52:29PM +0300, Mike Rapoport (Microsoft) wrote:
+> > ib_umem_get() allocates an array of pointers to struct page for
+> > pin_user_pages_fast() calls during memory registration.
 > 
-> I think you're making the claim that this ENTER technique takes what
-> would normally just be a DoS and makes it fully exploitable. Does this
-> happen for a lot of DoS bugs? Or is CVE-2026-31419 very unusual and this
-> stack guard gunk won't ever be useful again?
+> A whole bunch of these use cases in rdma are really "give me some
+> temporary memory, I want it fast and as large as possible. In a
+> syscall context I will free it before returning back to userspace"
 
-I suspect it's just the typical UAF with a function pointer table, that leads
-into remote code execution. I know that for our (SUSE) CVE scoring, we tend
-to treat these kinds of UAFs a lot more seriously than others. But I didn't
-look closely.
+Not sure I follow where "as large as possible" comes from. Here it's
+explicitly a page.
+
+And does "fast" mean that vmalloc() is not an option?
+ 
+> eg we'd be really happy to get any kind of high order page here.
+> 
+> So, how would you feel about a new API?
+> 
+>  void *kmalloc_temporary(size_t min_size, size_t max_size, size_t *actual_size, gfp);
+> 
+> I know of a few other cases like this in the kernel at least.
+> 
+> The implementation could try to find an available high order page and
+> immediately return it, otherwise do a small reclaim allocation?
+
+How do you suggest to decide how much of reclaim should happen? With the
+usual semantics of gfp?
+
+> Jason
 
 -- 
-Pedro
+Sincerely yours,
+Mike.
 
