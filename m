@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41FE8C43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8749CC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:19:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5FDF6B00BF; Tue, 30 Jun 2026 12:17:01 -0400 (EDT)
+	id 1459B6B00B0; Tue, 30 Jun 2026 12:19:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E36B86B00C1; Tue, 30 Jun 2026 12:17:01 -0400 (EDT)
+	id 11DF26B00B2; Tue, 30 Jun 2026 12:19:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4F416B00C5; Tue, 30 Jun 2026 12:17:01 -0400 (EDT)
+	id 035AE6B00B9; Tue, 30 Jun 2026 12:19:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 953DF6B00BF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:17:01 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0E783167976
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:17:01 +0000 (UTC)
-X-FDA: 84937083042.05.7914A1B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CDD42180017
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:16:58 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sJ3ZcnD0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ez7nu8R1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sJ3ZcnD0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ez7nu8R1;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C4A486B00B0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:27 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55AC5A05AC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:19:27 +0000 (UTC)
+X-FDA: 84937089174.13.FB0D4AC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3D3EE20007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:19:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bp88J+lh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jBVZJHTz;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ypAxO1gK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tO9woAdD;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782836219;
-	b=GQMNSLlq3tqRNmFLqiMBYDcXgB67YXiAmSr+MMZVEE2+HgDMmbN1GLsSn9/QFZnZbM01r9
-	+6g9zo6Cp1HKsgmZuYP9qjzJpRBpKq6N0c9xzyVBJnjLgggtYvcnYkt0BJTfS0slvhqtTF
-	7DwPbIn3ci4ai3yMc7+xiBUa1pW4xdk=
+	t=1782836365;
+	b=aEpLaCJ0EgHiRoCsUdo+PsZwrsTxbFyowbM0Xe5J/CZ0MC7t40EXKxrCoq50V+hozz9pFi
+	/YWmWUHTAzHgy8n9S8ideuE8G62iYIBjS1/dIazNsc8Fkq8Ly3bLs+TDvqixwMmd2AKPVR
+	H6UGsSbUqRFpQZgib3E17FJSKLoBH/g=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782836219;
+	s=arc-20220608; t=1782836365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tJoAvYhq93KYCzjaxFWoitVi4doOxRa03N6I4a85wxg=;
-	b=i9EUjInbtg2oWjFBHKUA10glW8vQK6JPy9vJtRNxw/+g3xKrwysjGWK+ml3hc6bEQfkEPj
-	TLvisrWGPKRZzhGOmchyeynwnkAPofTUI7vWof9hyQDb6+ZYPLxG2aajMBuKSrqXdYxcwv
-	NRLr+nBXwrFDC1XHGqKLc3zNI17wkY0=
+	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
+	b=BKiKeAL/z/kMrsVnCJE/+eDPbFDhKNNJOJFJ1cOjFltPcJUuE4BvynYJg1aZXCzavWsGXh
+	ho0KtDMsEX8MYb9ZX6ng5my2+AGNycIURc/CZrPdwghzEsHhd/cDNstOeWW8zdVULmS90J
+	bD0EEfXPERebaVSnDd5AmyJJur1qeYk=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sJ3ZcnD0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ez7nu8R1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=sJ3ZcnD0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Ez7nu8R1;
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf16.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bp88J+lh;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jBVZJHTz;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ypAxO1gK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tO9woAdD;
+	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 75AC3759EE;
-	Tue, 30 Jun 2026 16:16:57 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DE1BB73684;
+	Tue, 30 Jun 2026 16:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782836217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782836363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tJoAvYhq93KYCzjaxFWoitVi4doOxRa03N6I4a85wxg=;
-	b=sJ3ZcnD04vfuWg15fYumkN4Z5BLAEG5OnvVU6Bka7MAyaat5LqwR9IVSPmnXInsXtwqN51
-	b89OFcITXKZzIiyvIGZWoIgArrvUYfzlcEon6pgA6x1Dw72IWcn2X4CKeyscQC3mVuG/VG
-	uH288u/SS5kzDZxzCA+LJ7BF9msmT1k=
+	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
+	b=bp88J+lh4Ld94QLb/FgxSc78EMcIhQAsR8PDfC2OkzpEPkYI12ZSgnttOpJkZGY73S0x/Y
+	+7bgS2BZHogPBH5J1FJpmwzYjtavfVf6uelEie7YrbKOXGK3LSeBHpJY5h07tuDudJDiWu
+	jh98BikBWca7bsCsXuf3A7wH5JsyjM0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782836217;
+	s=susede2_ed25519; t=1782836363;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tJoAvYhq93KYCzjaxFWoitVi4doOxRa03N6I4a85wxg=;
-	b=Ez7nu8R11lxDQwLyZgdyYikD5oOap9w7bVhI6cDXjd5zwHEzIYIEVh0Txv2+5yqC2aktsj
-	tJS7DQ6Lv6+a+tAw==
+	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
+	b=jBVZJHTzVzoE0M2g+PcL1BZzDdNmv+XSGT2v6Wu9el0LCF815lqezYdA5vJfGmUyjSnQid
+	W06sQywmqiDF22Dw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782836217; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782836362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tJoAvYhq93KYCzjaxFWoitVi4doOxRa03N6I4a85wxg=;
-	b=sJ3ZcnD04vfuWg15fYumkN4Z5BLAEG5OnvVU6Bka7MAyaat5LqwR9IVSPmnXInsXtwqN51
-	b89OFcITXKZzIiyvIGZWoIgArrvUYfzlcEon6pgA6x1Dw72IWcn2X4CKeyscQC3mVuG/VG
-	uH288u/SS5kzDZxzCA+LJ7BF9msmT1k=
+	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
+	b=ypAxO1gKMdIHQ8+ywHHuDwYNcjoy9rSDILpeGDU1FomJu6ky3ZQGryK4UvLVW1g9pfP1Au
+	L/5zy9jUtBQg1Dfz9gtdqXOt+qSlZgJ3kOyrpuB2VvuSo+Vcxb8rewchUhOO4ShufwgYYo
+	7+BE+yEMVAdC5umL8fl/GyJn6nE+y48=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782836217;
+	s=susede2_ed25519; t=1782836362;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tJoAvYhq93KYCzjaxFWoitVi4doOxRa03N6I4a85wxg=;
-	b=Ez7nu8R11lxDQwLyZgdyYikD5oOap9w7bVhI6cDXjd5zwHEzIYIEVh0Txv2+5yqC2aktsj
-	tJS7DQ6Lv6+a+tAw==
+	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
+	b=tO9woAdDVgqM8KEyW+ULw4DreASg4B0YhphL0oz7tBKd3s5SUtC4zeWGlkFFQsRsvp058J
+	YqK5R1Lt3StFr7Bg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F01F6779A8;
-	Tue, 30 Jun 2026 16:16:52 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 539FA779A8;
+	Tue, 30 Jun 2026 16:19:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KG5RN/TrQ2rNawAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:16:52 +0000
-Date: Tue, 30 Jun 2026 17:16:51 +0100
+	id pVf+EIbsQ2rzbQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:19:18 +0000
+Date: Tue, 30 Jun 2026 17:19:16 +0100
 From: Pedro Falcato <pfalcato@suse.de>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -138,23 +138,24 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 05/30] mm/rmap: update mm/interval_tree.c comments
-Message-ID: <akPrTU96BwQJoygw@pedro-suse.lan>
+Subject: Re: [PATCH 06/30] mm/rmap: parameterise vma_interval_tree_*() by
+ address_space
+Message-ID: <akPsGrmaOd3JMlC2@pedro-suse.lan>
 References: <cover.1782735110.git.ljs@kernel.org>
- <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+ <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <80d482a927b2e9862487b812e0ab48ebc1289a70.1782735110.git.ljs@kernel.org>
+In-Reply-To: <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
 X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CDD42180017
 X-Rspam-User: 
-X-Stat-Signature: uh3uwduoxibg7y1d17t5h8t67ykydu4x
-X-HE-Tag: 1782836218-429135
-X-HE-Meta: U2FsdGVkX18hzasswzdcdehpBKLJJQaFBGDS5KMz6XyR+ygIO7PWzgkGa5mZ61DpCN0XJY54nLsirWSu//ke8lffXUs8+8OE9EYEvSTAm56AfDrCSOm1isTFNqUaUm823xOv+PDEjf3NUtBu6s85/SHM7nvCBCr/LgUMxoCr2AnbhueGdQSSYxSHtz4avOivIkgvBApkdGb/sEAv6enk+yl51Lr90kDD5Qo22wTnWD3xWJDOREjOrzm1bIsL0pEFkkM7tcdCv0Elo9AGIwaUHDjKqoBGjjJ666c3sjJvqYWDvNKyqitNqG/b40z2LRLjTd8eEf4rUP3DgPCd/fZqgq5YBQ0gd7C0Ew+wmXzmcf2ErVZAP/n3G3CDj3iPS0JT8zfZrZSdVVTE8OnwM/uYTHCdUq8igI28hb0NGKjvo12GGf1o9iunWPY7ljPaT7hJVs7VR4NLyKilFOw4oVTH6133/8dFrUco/DC4fYSbDernT0VaOHWI0y8PZcR/ljidun5w85WV/Cmsnnm7XCr8JuABKi6yK+959B3EotOVxzz7lnlUn+GUErX5Bdpj+dG47+A2lu2cLrGUdT1WmhmW/VAvEdwZ1+7BUWUn0+0/uf2/n2tYoe3CCc758Jo6K/9bNDoY8o0ZwUSmtf+lkBRNJQFFZx2U2uRzA+VAce9aA2Cdqk93/0qPiKEpAEqxn95ZekkmvALQipW6au4a7hJzyHO/b+48gTJQMRnAQ/rl4GSMq1k5kUTUdCKqxbGXpR++JyGISS4t98dnJq6+PSA7mxEAQKS/ZmtHm8B4LfP2eyueTDL6pA65AdcW8TvtvAVEvj0vvcKDOYWIwnLH8A09A/iO7dow/rUjBUHnzp0yi/cr4p2SmoeSGeC83xj/H64fmw5zyrAnhGbdKjaBXBwrEWQ36sW6i3KVw602aTcJVA+C4jFjJFvrP9rd4h/eQWRT4E15hgGsRZ/mju+zPe7
- thoDd8Wj
- GOS24xfac5DqeHjCFQOZakIy5Onp5lESzHG3yy07IjzTPNlUuzWVJ/zRm8pwq4sazo2aheM7SQMn3csBfO++rYcqfdYkwGlrVDRJjoDqq66XFdpVQGz9WVgtfFyaLkRvKiazaA+u+9SrCOYLSmZxrH6Ty0yPaIOQRLckxY6BuxLZZbsto2S6Vf8leC4Bjg9JQCPZf13OcIgdIotShFcUZalYlF7wPK4UZPmXOf9oRSoBywITxsbQLIePAfjB3+HebUNq+t0Ua0OjhoeSpzFbXJeOjgSbgxAb6CcoyteAiNwhuHCu8xjxbkCEPs4paY8XdWpL65Q6MpMPFuPI3m8LeR95W8Dd3dOkqK27hrGkxoX9JiJKUzegGQeZJWOGNiqqPeSy4zt47Rf50SZFBJwqANUgR9hhNHsVmYtSD
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3D3EE20007
+X-Stat-Signature: 3gdjpg8ostegh4h6xrqbjr7fbwkzy4ag
+X-HE-Tag: 1782836365-46904
+X-HE-Meta: U2FsdGVkX1+jz/lQrjC1TvxhB25+PN5D68aLmFmCvj6rkgELAYgVIlx/goq1ytCBPqnMUd1DB+CzjykFaMsFrJcB0PYfiOoJ2T8wJVAAz2GeL48YTB2AOQ0yxwNcsZ8en56n3MHVNQqtWMtrnT5vr1DPNx0CWVOuh1RQHpgxr6mYWMb+bKG/fWa4ZAuWgNRMjcvuD4BEZJ2t5ViwnscHBpISSEvYM//IZTwchjSHMTYhSMvS+aGJoh89yG0qVgFWl14+WzwUN3eJNpAv6wV+6lRSS8m1ppKn/SoMmC5vR/FSbZjLHlW2WzNc0vcHU8ntywWd1Zvb8nel3v5LblM2A3aCfwOqS9BFLT3bBkHDCvmUH+pE3+tFz6JXhAthm6XMl3KlyJ9bplCxBE5bXUyQv97cBmX5/k+pgvb0jurhd6f8QSNTrTQri23Si1vbV6Oi9G4SH9xFv2B9UHAlfVCjCIVq/5P0F8CNgzlojA1e94Kdfiq68oKm2Gl9QYV2P52rX79YdUn5mXWcq+nwpXpoZC4g/113TxZOt23kA7fsbGtMoC16jLriDmyLHErhOFJWdF2BEMv4sZd1vDZlHl3QLdA/6Z9WWpYB875qycxSVxAkaWEK9+4I9+ZnKCOAKknIlEVt1373xJ7sjdU5gBBt1aEThsniETU83ASFoXymbqyTfqHbGMhCFDiHQGvVy2CtKGQtGrjYqJmye8gHMGjaJEs6UqwxnnE1b3Uo3T/LPiMQVUrcQ2qaHpHxD1s2fuEhLIIOgrYiz+ELrqsSTdmKvd/VIEEPdNJDKEepyKe0FOLkV3LQQRMLBa+vibHZWqvow9FAQCNcbvdBLbwibCM0K8ZVZXkiu2iQ2YzSMn9tq/T3ut1d2HrXM1IS/gQpMBgWZ5CsdnppTrzRxJOgtez60D+baSaVZmi+hQzGrDCLzm8T50guSoQLeJJ5DX88wS38HAnIcdET2zCL1FxRJ3Z
+ s4rT5IlC
+ whvAfu6mCdrytvI1Ov6swAv1KuhQahEbumRBAbLySYBrx38BZOa7Ra1QHQ4/pXlwFgqzhIgCVI3mFgEb+KF9YL1/vADAphyAZQPxGngyluUpf3xGkfgKn/zMh+EY+rmrL+HMmwyXVJHwznYDVRXT8/yqRjCDLwx3B/RpLo4Qb34ITF6vPKO/RjOqCuL/XKcSOTbaxHLd4IBYNaRjt91W7VOrjQgLVXGmOM6tE2/SKL4cLQWhTd0sNPU9kvrlG4ETJqzKdsdRA81tYsn2ibOEQRtRTxB70mB18NgDoEwUK7W656yIGfx3ZW4z3Mbwiws4lM1KUjDTmfb0ujIqgOjdqbre5dIwhQ/PXPnLwOlcziIXyO4VFyEm3+oAsRrtWyf0d7Y91gFGr90y0MnwQeYkupU/zYobxubbFUBdx
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,31 +163,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:16PM +0100, Lorenzo Stoakes wrote:
-> Update the file comment to clarify that both file-backed and anonymous
-> interval trees are provided, referencing the relevant data types for
-> clarity.
+On Mon, Jun 29, 2026 at 01:23:17PM +0100, Lorenzo Stoakes wrote:
+> The file-backed mapping interval tree functions vma_interval_tree_*()
+> accept a raw rb_root_cached pointer to determine the tree in which they are
+> operating.
 > 
-> Also add comments to indicate which parts of the file apply to each.
+> However, in each case, this is always associated with an address_space data
+> type.
 > 
-> While we're here, convert the VM_BUG_ON_VMA() to VM_WARN_ON_ONCE_VMA().
+> So simply pass a pointer to that instead to simplify the code, and more
+> clearly differentiate between these operations and those concerning
+> anonymous mappings.
+> 
+> While we're here, make the generated interval tree functions static as they
+> do not need to be used externally (any previously existing external users
+> have now been removed).
+> 
+> We also rename VMA parameters from 'node' to 'vma' as calling this a node
+> is simply confusing, update the input index types to pgoff_t since they
+> reference page offsets and rename the parameters to pgoff_start and
+> pgoff_last.
+> 
+> No functional change intended.
 > 
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
 
+1) This is fantastic
+2) I need to rebase my local work :)
+
 Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-This is fine for now, but I'm wondering if it doesn't make sense to, in the
-long term, have:
-
-mm/rmap.c - common rmap mechanisms
-mm/anon_rmap.c - anon rmap gunk
-mm/file_rmap.c - file rmap gunk
-
-or even something like mm/rmap/{core,anon,file,ksm??}.c
-
-While working on my file rmap patches I noticed there's so much stuff just
-splurged all over rmap.c - interval_tree.c - fs.h - fs/inode.c.
-It's a little silly.
 
 -- 
 Pedro
