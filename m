@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B47D7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77B53C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:18:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F3D56B00D8; Tue, 30 Jun 2026 10:17:44 -0400 (EDT)
+	id 052346B00DB; Tue, 30 Jun 2026 10:17:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72D8F6B00D9; Tue, 30 Jun 2026 10:17:44 -0400 (EDT)
+	id ECE556B00DC; Tue, 30 Jun 2026 10:17:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 642FB6B00DA; Tue, 30 Jun 2026 10:17:44 -0400 (EDT)
+	id D6F8C6B00DD; Tue, 30 Jun 2026 10:17:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D92C6B00D8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:44 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 92B761679A4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:43 +0000 (UTC)
-X-FDA: 84936782406.16.B0F1692
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E8F9140003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:41 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E7r7tMI0;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 992F96B00DB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05425120523
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:46 +0000 (UTC)
+X-FDA: 84936782574.24.AE02C88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 5CB79180003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ATUnj+kT;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782829062;
-	b=WANWeyYh48wCQNSDX5KqTbTU468CUB/8TWjBLPFPpREqmHIt55QCckRAnDdj+08B9JgGrA
-	anRJu3CoZwnfMrLgrkzPm7zGCqss/xLpQzbnoCvXr8WL6Qvm1N/wx+dsCsMiradwY36MXf
-	dztQVH8DEL523a+JRY79o2r0/NNCO48=
+	t=1782829065;
+	b=a0M+MD59aaYYKie145LnIh3i/LQk+ILiR6y4QM4au8CEPJVN+lcrzVl9rwKnIQxE4HmDtI
+	DZTAbfH0lSU9adqxH1ONQKbQABadFzeLeTgriRK180VHuEn/ngfJ8UMhXk06lT1PtZ71aF
+	3P8Vokx0Jsbzo1+pyhpJCcu36K2b2u0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782829062;
+	s=arc-20220608; t=1782829065;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL1zPOd9UwMDzVKB7bhTFiDOr3xTMkEdXRFwvMlUiCY=;
-	b=e3jgl4DJwvY1iYUdfjMyYsS25kXK0y+f9ljWI4y2M3tUWhsU1S3jQtA6kGXMclHHRMg5lP
-	PqgxedfCcCJlHuhjf0GeSWee54CpU3McV3FKyNIwVnSGNKOrbjUd+JvHk/7bJWj1QlTfyZ
-	eYuw70YUMkx1SRLlE1eqTSdrBQJOeuE=
+	bh=WEUf8F4RbIBWLyJQ2G3eW0zg3VzyVrhvSny1dfTtixY=;
+	b=u7klps7M36AHgcPT20lXT94TnFErh9jxJJ/IqTp7/C5+aGxXzG2NJSKJ/VLtnSiGZXTYuw
+	fPNeOM/TWrZnW6oT010pkNu9/D52tFSrxSX4rGMj+rX9wdib4eiIkVsNlgO5pPNemigBTx
+	HQpJ1BXo0jITViBs3/7is5ILCH+TD64=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E7r7tMI0;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ATUnj+kT;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E0A444011;
-	Tue, 30 Jun 2026 14:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ECF1F00A3D;
-	Tue, 30 Jun 2026 14:17:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F243E601F4;
+	Tue, 30 Jun 2026 14:17:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5661F00A3E;
+	Tue, 30 Jun 2026 14:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782829061;
-	bh=UL1zPOd9UwMDzVKB7bhTFiDOr3xTMkEdXRFwvMlUiCY=;
+	s=k20260515; t=1782829064;
+	bh=WEUf8F4RbIBWLyJQ2G3eW0zg3VzyVrhvSny1dfTtixY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=E7r7tMI0wjFr1faZzbmUrzQCujOA26oYurN3d5aTw0SGW2guJSrCq21g0YRWbomPR
-	 HhQeXpD4yYE8q6UII7rTOKtH1AgkbXHVAt3pVzk3gsxrZs70eGsLrKyuCfh3yYS6NP
-	 z9BHPGJt/xKf6aiDAxfpovahhT2XFbc2cj0iNQXds0LSf/24ENmj8aVK7YqAtZh1Im
-	 u2Z7oWV8DJYlBfcRJpt9wIlgY+0enYDYnMI936h2EF53cYQF1QG8Wrq983ib8SemIq
-	 1V8Zfn2XAdhhogv0rk+GbIuhkNQv025BXZ7MVXyzhiNbUA4uSLB83liU35JUkpaBiE
-	 nT9xyz8hnM9Yw==
+	b=ATUnj+kTdpVkQ41lxS5ZrlHQGxJMnNnG+8ghrWnxxRmbKnJ6R9n5SFAGEEclO2/Bi
+	 Uhw7Q8f0ad3pFRRZL0qCN3X6v0NwDTdEpsbbVI2mP3R5USOpjt+2vzDUexqLgC+7U0
+	 rrd1X5jndbIXs3cywSOrn98mRQsuZq/p+nGyW3bPwol6kk9KItXz5YiibNXT8bhLtm
+	 70Uq1cAZRao9kA/n4hDfaP26XX0Fd5J0tfFcqaKJcMOUSC8HPOnSua9GnWfFpX0d2S
+	 AII4ktWw9oybqVav30+mDS1sq/Ikt1Ob/ZWgR6CY0rHgNHPBCFihaOGN2tbG+AnRNp
+	 f4UI/8qM8RdzQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -71,22 +71,22 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 04/11] selftests/damon/sysfs.sh: test multiple probe dirs creation
-Date: Tue, 30 Jun 2026 07:17:18 -0700
-Message-ID: <20260630141726.92246-5-sj@kernel.org>
+Subject: [PATCH 06/11] selftests/damon/sysfs.sh: test dests dir
+Date: Tue, 30 Jun 2026 07:17:20 -0700
+Message-ID: <20260630141726.92246-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630141726.92246-1-sj@kernel.org>
 References: <20260630141726.92246-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3wedbyxcxbzrtmpejishb9wisrzazzdb
 X-Rspam-User: 
-X-Stat-Signature: gwujxm7w6qj6empogw89tokpr9tmmrcr
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E8F9140003
-X-HE-Tag: 1782829061-568872
-X-HE-Meta: U2FsdGVkX1+MstfwyAV9kO+I4C63S8cxv3Cot61PnnR9BHU2e9UapNYMYpNiqsE17NnrVaBZjaicUG9NbZYTDDknGpDzzYvCNM4jyeqNKDytHX/r3VMmULNzwOca0ectH6wdoYBybD9ypW65erx9sKaRoJmuv+qvTkqp4gl0JUdq+bQTgwo63MCAQ4GqO7/MfvE6vzbv3qmffYCygmjKIcofhMfmfPpO8Kl8HhICrBNnvd7wDUlvbX1fMPvoDkM3mvf+ji2D14XUqbJcbySOlHvMYyAjMhBdyLRfW0/q4AtfuRSu0OgbLlidegQe13iI2AB78wgILXNKFCrUhcXm9k0b1iGFVNO4DbhgdZnyW+M2l3HlSxo11l9q9H5fZk6NYAUF5CAu6XL4t+1xpl1HFWewDK9oZRemutQ+2JouhLpdkv5wzrrHNkX062qarZA86bweWp/Soa9B6S20+KNJd9rKYb0B63Km6bu07HTgjwgE55IicRoizrFaGzgCl2pibPitE/BILWG8gZQLZn+Fbkg35o64WxWN9R2Vxz05qV8cp0RR669vCWTUwv7idiv9xxqG6DL5IYFHn/hPz1MfT4Pi7xIyy2Su+daJCmtfJVPfap0HgRMntO9TxVBkeNuwqjkBe8uBKbjU4H0sel5gCq8ieFmPYLTLyLJ3gKx/FfBt1fCb8JMZi1ItUDHQOm7XcsUrKsKwNQpiM2jmw6VneU/0q17H+HtjjoFE+q4UyAzHoafhlWy1DNpM7aA0BMWllMagwjmWHqThBZj3FhbMG3Hx2snGuPoveuUJL3aoP1aFEmzHX5iJHHzqf7OGrw2dfHZMvL43B5j2cTt9yicXyp1v8r37VYB7wQWD5eCCLs2BAy3zh0Ip37ZYjhsC8HdUIXK0wDQfRA0PZ3AXmrSMaqA/njurBRgX+C2zvVIzRXYYwccZYMwpxaSq4d4AAloSEkn0UjEOZoCddNrjWVS
- Y1YTjuSi
- 4pXAQgyIOTAM1ouUm8aU4fT4+3c6ZUdC5y4ui5r7JYXNvIaXCZHez1ARmihzkfoz1w0QD8RNxNottNpUo1Y7vq19tuNcVc/bjckYHHIYxj3zoETYNmXX01DRpCodF1bVw7Rud4xRGNI91hqle7VEKQdntvRdeaEnduonUbRc66Oa+GpSZ+bvVRVWgdrclk3l6P/538ygKAiSQqVJ19METEI5baHd8zdmZeXxpDBtoWoV/QBE=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5CB79180003
+X-HE-Tag: 1782829065-42588
+X-HE-Meta: U2FsdGVkX19ynY9Kgq8XijDWM2jwHoij+eZJry7x+SrplQW/GFLaTYyhnlA3b1tm1gqA8WU+fvSJQCeXljpAY81QzmzgACAXiqjJFgUwyDZb1M+KyD+KT3fro9jmKmu/idIOdwcVaN/DswnCviF8tFM3xnO5V8ttaxAb+tbQqgg8A63qQzAwcdB760txNPO959uUOm6ILrgucD38U/CCoMrhs0b87WVVs162Az+6bE4GRPf3qQ0K/9NXeZSEdfyDj9hbjZTsgSteBNqHBNvqnX8l/ruqILInPgf7ZIi/FkU9s8iYnGXFH1BVy16s7k2comPHetHDGzcqCjZY/T7RB6uHBJsf8y2mqENIC7T56nrRhp8mYK+Aj0ZE+l9C6LuG356d0/i9J9A6qYf8Q2MmFFEyaA8Dd29X2lETbDIL3NBka9zjNd2MqpukQ8fmEFgvYJrNcF8AXnwYUKDU8yQIdIWLJHnNP6vbpJUCUxNLbN3XToBC2WXUSoIbsm2R+8VdbQ3S0pmM8tF1MgA6RxTVJprdTX6kuY9T0DsU1lnD8Tk+tmwfLixS4AMx7XQtob6SyMGqTNM9olR0ixyrHMiNmSJeaYvugTNtOkB+X5H63vfSZuY+/OJr/CE3asuo9L1gIIJCe3qzKy76sVXpyzOCJNo+1xiLVzeqVlFX2ubYyAnGk//jKtwci2tYbqqiKvW55yMgPjTQy1VTqwxSi791rvRSKLpZkMfAE9CjJ7mI2mYJAvoXKzUU5AUUnf7kpSiFpVKjL8YA8GNmPTRiM0c7BSsr1lcbWWBvjv+zboRLRXZrxqeUlnUiBmH/GEMKW48tfcBTaF4q5tL5hJjv2aXK07FV0WCZFraHxCrvhgPlMl4UbRzy2a+R0sbIzUl3F7XtqHOvI8H6U1QVP91K4IehoeSmDIA6eVZOs2mIxsnDPJ3KBPtGOKNQikhtpSd2xm6EvocxFA9tbT0W7em5UVh
+ zqEu6DTi
+ RzKr3hOXBcJgKl145/kJ6SGbfa0I85Ur2EXiX5uVWTDF7rviNH37vdxehX1wX+NJuy+gE/Koryi/4EKzqVHnwwoIvIVVgjRpnJ1TmaVWg181UNOeX7HvIFSuWGCfJqLQVWfsSFqJCpDYV+O/qpEv65xowivNMDgeVIrW4d55gSVhvaMNQkAbtxTV6t350nL85wIZo4h1807WM4/vFTbcMwYggLEjgPEaBlZCzYzBQrzU59yg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,35 +94,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON sysfs essential file operations test (sysfs.sh) was extended to
-test DAMON probes sysfs directory, by commit 14885da09b0f
-("selftests/damon/sysfs.sh: test probes dir").  Unlike other DAMON sysfs
-files, it is testing only a single directory case.  Extend it for
-multiple directories.
+DAMON selftest interface essential file operations test (sysfs.sh) is
+not testing DAMOS dests/ directory.  Add the test.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/sysfs.sh | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/damon/sysfs.sh | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
 diff --git a/tools/testing/selftests/damon/sysfs.sh b/tools/testing/selftests/damon/sysfs.sh
-index 2eaaa5ae3c5ed..d528dfea44c3b 100755
+index 78eea0d13c271..f8d2092be004d 100755
 --- a/tools/testing/selftests/damon/sysfs.sh
 +++ b/tools/testing/selftests/damon/sysfs.sh
-@@ -346,8 +346,13 @@ test_probes()
- 	ensure_write_succ "$probes_dir/nr_probes" "1" "valid input"
- 	test_probe "$probes_dir/0"
- 
-+	ensure_write_succ "$probes_dir/nr_probes" "2" "valid input"
-+	test_probe "$probes_dir/0"
-+	test_probe "$probes_dir/1"
-+
- 	ensure_write_succ "$probes_dir/nr_probes" "0" "valid input"
- 	ensure_dir "$probes_dir/0" "not_exist"
-+	ensure_dir "$probes_dir/1" "not_exist"
+@@ -99,6 +99,29 @@ test_stats()
+ 	done
  }
  
- test_monitoring_attrs()
++test_dest()
++{
++	dest_dir=$1
++	ensure_file "$dest_dir/id" "exist" "600"
++	ensure_file "$dest_dir/weight" "exist" "600"
++}
++
++test_dests()
++{
++	dests_dir=$1
++	ensure_file "$dests_dir/nr_dests" "exist" "600"
++	ensure_write_succ "$dests_dir/nr_dests" "1" "valid input"
++	test_dest "$dests_dir/0"
++
++	ensure_write_succ "$dests_dir/nr_dests" "2" "valid input"
++	test_dest "$dests_dir/0"
++	test_dest "$dests_dir/1"
++
++	ensure_write_succ "$dests_dir/nr_dests" "0" "valid input"
++	ensure_dir "$dests_dir/0" "not_exist"
++	ensure_dir "$dests_dir/1" "not_exist"
++}
++
+ test_filter()
+ {
+ 	filter_dir=$1
+@@ -225,6 +248,7 @@ test_scheme()
+ 	ensure_file "$scheme_dir/apply_interval_us" "exist" "600"
+ 	test_quotas "$scheme_dir/quotas"
+ 	test_watermarks "$scheme_dir/watermarks"
++	test_dests "$scheme_dir/dests"
+ 	test_filters "$scheme_dir/filters"
+ 	test_filters "$scheme_dir/core_filters"
+ 	test_filters "$scheme_dir/ops_filters"
 -- 
 2.47.3
 
