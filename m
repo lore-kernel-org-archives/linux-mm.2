@@ -4,107 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7A62C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5483C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:37:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91CA06B00B9; Tue, 30 Jun 2026 09:36:53 -0400 (EDT)
+	id 7480D6B00BB; Tue, 30 Jun 2026 09:37:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F5806B00BB; Tue, 30 Jun 2026 09:36:53 -0400 (EDT)
+	id 720446B00BD; Tue, 30 Jun 2026 09:37:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E35A6B00BC; Tue, 30 Jun 2026 09:36:53 -0400 (EDT)
+	id 60F8C6B00BE; Tue, 30 Jun 2026 09:37:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CDE86B00B9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:36:53 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D00351404BF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:36:52 +0000 (UTC)
-X-FDA: 84936679464.17.B6B7E4F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 19E9F6B00BB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:37:06 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 739E61204B9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:37:05 +0000 (UTC)
+X-FDA: 84936680010.09.922FD92
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 137B44000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:36:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WsbIJ98J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	by imf20.hostedemail.com (Postfix) with ESMTP id 96A291C0005
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:37:03 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXPllIcK;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782826611;
-	b=itUo0G6g4GeJIML6lJ4gqDr0HY/hworcsJL6ayDXPBgyFrrtZfyXgfKkgoW+qHwOTjGHWi
-	dIix5L+RTk8+86rHY9J31YyGVcQpSAqvz3FjKjl9fWQNl5QfoOny/6nMtXPu6izVwa7Ovd
-	C05HE/Ka3q9zEfGqHgq15PO7gbXmqto=
+	t=1782826623;
+	b=p9RCBUDG39hsKKIF3f+aD9r14CworgqbXUxsY5v7ZWQ/nj1toP/FIVemJ7TsqeQWaqhUxC
+	1raiz60ave85rRiEDMMVs3ReJSAasF5Hkl4TSQjC8ib7QbO0gwC+b7tjhHTE9PFJiQ8PJl
+	xgf5XDYGSgS3qigZVpmTQaESO8vLEUA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782826611;
+	s=arc-20220608; t=1782826623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rZflGQJS3FWpjYu4dYWAWBhwPCYPbtF0UmvWSAM0HV8=;
-	b=ugBOHcIR+YoDby4DWmPTLyhWfWPvY2SqCNJ+UGaOmZYENJLuEn4tN130PWAXpiDug55qjD
-	dJReRnelMSJ8kGvBI0ueVmDliSt0TA4PwVuXNu4mz3Rxe4Wwi/+VJtg3AZZ5mxYniMARwA
-	RKN2bKE6sSPIZF3RYq0gwftLPiecyl4=
+	bh=380p0rp0UfhHz5IK1FPs/y6KNtuFKr5BHcxENu/Uulg=;
+	b=ZS5s17mTPZUQpWhPY8mzigmJfVJ+TLX17vS/eUYOT1sjz1MixnS3j8IAXdbiTZYA+xV/c5
+	2hot1dkpzw/RWHoe5JJMGazNleYlbjax8LHLYcVLaxklH54nR3hASf+3U91cJXvixrQlap
+	7WvsF479F/MoRkar4CY3duOxkJpDS7E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WsbIJ98J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dXPllIcK;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EB88E415F3;
-	Tue, 30 Jun 2026 13:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847991F00A3A;
-	Tue, 30 Jun 2026 13:36:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E9C5C40B65;
+	Tue, 30 Jun 2026 13:37:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9A11F000E9;
+	Tue, 30 Jun 2026 13:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782826609;
-	bh=rZflGQJS3FWpjYu4dYWAWBhwPCYPbtF0UmvWSAM0HV8=;
+	s=k20260515; t=1782826622;
+	bh=380p0rp0UfhHz5IK1FPs/y6KNtuFKr5BHcxENu/Uulg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=WsbIJ98JyveatiVMgaG89aeUfDpM5QH9T5IfgCTdbeBZWWjJLcqjmGQTpnSZuNBt6
-	 98gvqjJXSHoA7Z0PHIQBt75wTs5WxfQwjL/deZMVY0Ndz8Li4IdqHVDbqDb/K51fHw
-	 3ygxGtLWwwHLqpwBSEEKx+m8rKGdPLbZjpha6+Rhi6octO85ACSBx54qRKZq+bpXrJ
-	 ee5o3nZS4G30BbSUtg1FZtmufOC9wnvMzwxfd4+fAPjTz+q2qfMmtXzKF3J/qC4jSI
-	 GxtNV+esj9QUKKYStEl5geJnitBkLqjPnp29qjtc1tXEJTUiIKqW/sE8/LxVwfv2Yl
-	 9fltdC5Udp1xw==
-Message-ID: <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
-Date: Tue, 30 Jun 2026 22:36:37 +0900
+	b=dXPllIcKlMxuwKrHPIViRviAqoPy3aP7nGBNIeRVjDV2KFDot1oosC89ohiLZxrbi
+	 kvQvUlSZ3eKqH10A/xMTVO8H5fKQiPrGR/UTOsH5Pe5VpJG2Nob3U5Nlt3N7tcMIu1
+	 8rb0VTap+noiGpEz8a1Fj7t3WVR+jvYO8ouM6pQpcO35Qkon+pqZgR9px9YJ40Rco8
+	 MKy2FuQLhW1auMHOgZYspFZnMoZ6ycEqIe3UCRKbJ7CRbZNFDaOzB9Q/V8Dg9KRrWf
+	 V3Ul+0Idm293H2hTr9ujYCZx10zqwemeBXEDVIhotPR1zBbk6nYF6+Qwu08xJhFzOQ
+	 lDLYCa2t4Ml8A==
+Message-ID: <90b5cd31-87ed-4ef7-86cc-458b9e06b02d@kernel.org>
+Date: Tue, 30 Jun 2026 15:36:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/16] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
+Subject: Re: [RFC V2 3/3] mm: Replace pgtable entry prints with new format
+To: Hugh Dickins <hughd@google.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>, Petr Mladek
+ <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Jonathan Corbet <corbet@lwn.net>, Andrew Morton <akpm@linux-foundation.org>,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ Lorenzo Stoakes <ljs@kernel.org>
+References: <20260610043545.3725735-1-anshuman.khandual@arm.com>
+ <20260610043545.3725735-4-anshuman.khandual@arm.com>
+ <fc57bb9a-4564-489e-8da4-65068b5283ae@kernel.org>
+ <4a416383-62f5-1716-8e04-a2ee1f89a864@google.com>
+ <dabfd73b-d872-4267-9a40-45463fe146ac@kernel.org>
+ <3afa822d-3cc9-1068-9a10-94a5f2e4d29a@google.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------DAJrgx3byH7JZ1FULOuCCYr3"
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3afa822d-3cc9-1068-9a10-94a5f2e4d29a@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 96A291C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 137B44000D
-X-Stat-Signature: rs6ax5cb8onkig8dqe1bk46aiy8rk6ih
-X-HE-Tag: 1782826610-895200
-X-HE-Meta: U2FsdGVkX1+SinrrDYtF/TjnP1Gki/VaWQdAZ/NS001cmO9hf4ws3I2gArHAaWMwGYCPT1ws72S5P+w3xo5krz5tkpFSXA+Z7UThg4qJubx5JUEltLTXc0rG2SmDsxgHbucKMtoWwJ31EH2Sik5kTcS8Xhxuq/osyXIqEmPb/6Fbja9P9mqPc5IGZ24MrH+Qw3kjIUZ7o9Qi4Su00//ypaXpEW3sCmlDnE8Mcs4A9EP0JRliJRITjFdi9gyM5g+h/r4xJOOtWUhsFqUTWStmVadW/t5HXy8z4HCDr377OlLQFnf/0QIL6KIDTvnZbcUwjQQ9Sz0qAZgZzL+3De8lhxhupOlEIywxQ0LDHTsbjZlNsJma/Y46qNY5JHSVPSTbqwZE9h4BGudzyf5NHriZW6xEWZ1DkqI5G8TsxT14oIarJOdqdwvSuEZP/sLkOyJtY+1H9uCGnSYL05dJOXE50Dni3jYfIntEFfHZkIXvj8yQV488ulKnsQLApoPZBV/GGJB5s6kqIP428p9/e/peG4OJRs5nYvXP5fIkdlux72u6UBj3Lc9yGMdZhwmF307H+n+7XWghkNMXU0vhkSinECKMIiNRTfNwjQfXG9GKD4gBWn5ffMI1KQzI7p/0Grp8Ds/LZuyL7l8RcVJcdrylIb5rz4E89A6iJJXlUbSwmUecVv9+iFITLBt+lAXzzK1Y9/P5q6MEaU+ymUCJ2VYKweq4BT6nD3QM3lTXNPRwFCrRxOEekTpap7j8zHaejZWwuIDCjslKHJDo+BXZqxxA+/ckyWCxE0w/Wiv7/kbeslgJHV09fFYe/sqXvhRgr2slbEsaxEA2nuAAXkA2A6gdzL4fay1PEWPnKY+s1EBV89gnozw2V/q/kMK3wT6NUeTERLOrPQhyT1Xm8/HKpzbFuMJJx/WMTEQOOzOfHMbnkfkRFsOcNju1nxySptKKGufrSDZFCaeRLzR0kdb6Hca
- Wp3ICGuS
- uM2ifLTmXWjw5/fuVz3KXg6lVdea0MgvIR8L4skJAaa9Pxwyk/PmGmM4gNlyGjv7bbI79u3Hr2T5dLOF0pvd8YzWK8mxWX+52nsS7h/QvJTS0WB+EY5f73KJbyon5XMdR16iFvv8h0viXM13z+t8B4ZEPMoolkBC3lLGeijpcouKx6NYvzsDbNm3UfGmMw84mKK4dSNWFOb+SAhufJ1Yl1F0az0BogUjQ6R1UCDDGlgOjnR68R6JFKKKSeffrToEajlIYj1xy0QbtJWXWa8CefMIZF6b/tKve2BrrD38lfoy9oIT6u8wQCheoV7zne80nZVtppc3Od9MbuyBz9I+beehP3hkwDo3tNwQDQe/y2gMKR6GFZK63qFabJSD2sjLel9EagPITs8DFCUSrMVm+VlM/DYVjdkiaPqTQrjR58U7c4FgeC5OjJ7Bv8YWZwxQMMUbu/k6Q3wx1Ltbd2o0PYS2sDLpwiHCiwFZxoGElJbW4sXIxh4CUsgJSwaXKSD8LXpCBCUrrN88kdCaxthXHY/a5IQe8vnP0AEt6E/Olm60ADKk/RVXTiHDkHH/Edv6+c6YxUfl2zUtSADwQ8rl36SS4B9IfBVTfhRxh
+X-Stat-Signature: dpjqggzojpjmdrz5syu3bbc4xwdudpcb
+X-HE-Tag: 1782826623-424647
+X-HE-Meta: U2FsdGVkX19F0IUSlhQL/gfqzvuqJ2ajVecV5VMp66ZGac79/4UcOlJSElNzBnmCZFs1DupXwZW2e8/VktmNJzMraBjepiwBIa4kNCzy4OIwX8E4AGoMgIPaQb56ZNyHxoXsfra1q2ksJP6x+rGzAJmtGoJqhUGQF4s+2m9glujcLY/LyWsLh6MxNOibLbqRpdogfZs0MeRe3nsYQrkiDqwc53SpdbqqAoullfY7vbYmPXfSPP9VaAwy59bhnmqgZLNJB4eTzoZOEKIJkBfU68RWhnaze3rTO9Ipl/ACXsnxFGDCq4O9G4Kijjagw2oT/i4i2iH5wt3l3arRMmYzMt8UMuoeA2LKA5p0/rkBRH9OtFeQdBcPxFdvVFt9zcBCShlau+2FhXJb27uN1Ns50Hcx5DfJHoGKR17PcKQzqShdITz5oq1/Gfd0YHNjH5JSE26s9LF2bfThagyscCLsfEB+BkS0jNH2TzvP1dtqn3Bb5bBH7wZ/rgNGKLhzYucybqAz+rC7PlPRAbTbjjfd9gt1VKZPKOgfrCiihFRKKQY86nHYF+fsi4U72/tpPo0cZF+Q2byr+MIfhdDJ4MIyP9nJ8jw7xEdC7rE4iNUuTp+xzxCqDepLi22GZ/9K2/Sn2z+63/7z9gxlEjsI484f8X9olsKqBQ3k8qUrB8QWsLbvznc8GzqpFuEBqA7A3H1eGAE4VLWvHZxXDEQaozaEIPNz7tsX8nZ2bbXA/ZaII9+gCxt3zDGBmJsiEi7VExRhvYviY1zF6oCSRcWVUfGIHBJcf1l0CY77r14HZmY45NzwNCnk3VysmvIL1aEzCmiHyuC7DL0IKMUuoIkVsmqeICQrseT1sLgqExWcv5pUkhM/DmgDV3EIVJMyE8x/fzJ3dYu5fhMOrJocMswOiGENyIkQ3TEt1ahxaN2aqKqabkK3rVTMZtJrhfMr0KxW52K8BwtlZEzIut6Qoc6J9eZ
+ fMAVSFw2
+ Q73Jie0+994Z2UEaa7xU+EzLeCJMea4ecFCWvhKsv4MmG59dx5DQXgKaDS7P0dc3poP6PaaHM4SNmNTNyLzE2mQP/rweuvmLg3fU5SzwjplXiHZhN8JvGz3tp+7CI6lADrdj0xpOWyXUNLOh73QiAlEFE8QpePQeuVv02pOcoJtO0OmF4vzHnAxOUynQvcIOIkxjdXnVTb+YcGqLpXEkEj0FbIvYhmexDttukeMK8O6C0kiw2tRgkRDeXGQ9Xmjb54FeMGpQQnE6gsEc1Y2gWpL7lmOS373j57hv+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,192 +148,291 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------DAJrgx3byH7JZ1FULOuCCYr3
-Content-Type: multipart/mixed; boundary="------------m7KBxX00h08SRQw398FDtdbb";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-Message-ID: <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
-Subject: Re: [PATCH v3 05/16] mm/page_alloc: unify
- __alloc_frozen_pages[_nolock]_noprof()
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
-In-Reply-To: <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
+On 6/16/26 08:19, Hugh Dickins wrote:
+> On Mon, 15 Jun 2026, David Hildenbrand (Arm) wrote:
+>> On 6/12/26 23:26, Hugh Dickins wrote:
+>>> ...
+>>>
+>>> The page table entry is BUGgily Bad: we want to see what it looks like
+>>> (sometimes, a sequence of bad page map entries may even show up as ASCII).
+>>
+>> But is printing raw page table entries really what we want? I guess to detect
+>> "random corruption" it might help sometimes.
+> 
+> Yes, that's what it's for. What we really want is to understand what went
+> wrong: that's too much to ask of a printk, but it can give us a good clue.
+> 
+>>
+>> And do we really need information about the full page table walk, or is the last
+>> level good enough?
+> 
+> Page table entry and pmd entry are good enough: higher levels got
+> added at some stage, but they are unlikely to be useful here.
 
---------------m7KBxX00h08SRQw398FDtdbb
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Yes, I added them when we're processing PUD entries we'd also want
+P4D entry + PUD entry.
+
+This is one approach of having the printing be done mostly
+manually, supporting 32, 64 and 128bit pte_val(). As raised by Ryan,
+using local bufs to store the data to not involve printk.
 
 
+I played with printing the byte stream manually, but didn't really like it.
 
-On 6/29/26 10:11 PM, Brendan Jackman wrote:
-> Currently the core allocator code is controlled by ALLOC_NOLOCK, but th=
-e
-> main entry point function is significantly different from the normal
-> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
->=20
-> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
-> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only=
-
-> exposed to mm/) and then turn the nolock variant into a thin wrapper
-> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
-> how some of the wrappers in gfp.h do).
->=20
-> Rationale that this doesn't change anything:
->
-> 1. Simple bits: A bunch of the nolock-specific handling is just moved t=
-o
->    the new alloc_order_allowed(), alloc_trylock_allowed() and
->    gfp_trylock.
-
-Right.
-
-> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
->    previously in the nolock variant:
->=20
->    a. Application of gfp_allowed_mask; this only affects early boot, an=
-d
->       only flags that affect the slowpath get changed here.
-
-gfp_allowed_mask clears __GFP_RECLAIM, and that means now allocations
-with GFP_KERNEL during early boot would see
-gfpflags_allow_spinning() =3D false.
-
-The helper is not used in in the page allocator, but used in
-memcg/stackdepot/page_owner.
-
->    b. Application of current_gfp_context() - also only affects the
->       slowpath
-
-PF_MEMALLOC_PIN affects the fast path, but ALLOC_NOLOCK users
-won't be affected.
-
-What about alloc_flags_nofragment/nonblocking()?
-
-> 3. The slowpath itself: this is now just explicitly skipped under
->    !ALLOC_TRYLOCK.
-
-Right.
-
-> Ulterior motive: adding an alloc_flags arg to the allocator's
-> mm-internal entrypoint can later be used to do more allocation
-> customisation without needing to create new GFP flags.
->=20
-> While adding this flag to a bunch of places, create ALLOC_DEFAULT to
-> avoid a mysterious literal 0 in most places.
->
-> alloc_frozen_pages_noprof() is defined above the alloc flags
-
-The function is defined below the alloc flags, no?
-
-> so just leave that as a slightly messy
-> exception instead of trying to fully reorder mm/internal.h for that one=
-
-> case.
->=20
-> No functional change intended.
->=20
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> ---
->  mm/hugetlb.c    |   3 +-
->  mm/mempolicy.c  |  10 ++--
->  mm/page_alloc.c | 178 +++++++++++++++++++++++++++++-------------------=
---------
->  mm/page_alloc.h |   6 +-
->  mm/slub.c       |   6 +-
->  5 files changed, 108 insertions(+), 95 deletions(-)
->=20
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index a3ba63c7f9199..8d409d075e3e9 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -5271,24 +5271,98 @@ void free_pages_bulk(struct page **page_array, =
-unsigned long nr_pages)
->  	}
->  }
-> =20
-> +static inline bool alloc_trylock_allowed(void)
-> +{
-> +	/*
-> +	 * In PREEMPT_RT spin_trylock() will call raw_spin_lock() which is
-> +	 * unsafe in NMI. If spin_trylock() is called from hard IRQ the curre=
-nt
-> +	 * task may be waiting for one rt_spin_lock, but rt_spin_trylock() wi=
-ll
-> +	 * mark the task as the owner of another rt_spin_lock which will
-> +	 * confuse PI logic, so return immediately if called from hard IRQ or=
-
-> +	 * NMI.
-> +	 *
-> +	 * Note, irqs_disabled() case is ok. This function can be called
-> +	 * from raw_spin_lock_irqsave region.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && (in_nmi() || in_hardirq()))
-> +		return false;
-> +
-> +	/* On UP, spin_trylock() always succeeds even when it is locked */
-> +	if (!IS_ENABLED(CONFIG_SMP) && in_nmi())
-> +		return false;
-
-Except for deferred_pages_enabled(), it's not specific to the page
-allocator. SLUB has
-
-	/*
-	 * See the comment for the same check in
-	 * alloc_frozen_pages_nolock_noprof()
-	 */
-
-=2E.. and repeats the same thing as above.
-
-Perhaps let's factor it out into a helper
-rather than trying not to forget to update the other place?
-
-> +	/* Bailout, since _deferred_grow_zone() needs to take a lock */
-> +	if (deferred_pages_enabled())
-> +		return false;
-> +
-> +	return true;
-> +}
+Gave it a quick test and it seems to do its trick. I have the feeling that
+this can be beautified a bit more.
 
 
---=20
+From 05af7317b126991a61b0a3d01c2863ce5a578d1b Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Tue, 30 Jun 2026 15:23:02 +0200
+Subject: [PATCH] tmp
+
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/memory.c | 110 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 87 insertions(+), 23 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe923..ad39cafe110f9 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -519,9 +519,57 @@ static bool is_bad_page_map_ratelimited(void)
+ 	return false;
+ }
+ 
++#define PTVAL_STR_MAX	(sizeof(u64) * 4 + 1)
++
++static void ptval_bytes_to_str(char *buf, size_t buf_size,
++		const void *entry, size_t entry_size)
++{
++	if (WARN_ON_ONCE(buf_size < entry_size * 2 + 1)) {
++		snprintf(buf, buf_size, "overflow");
++		return;
++	}
++
++	switch (entry_size) {
++	case sizeof(u32):
++		snprintf(buf, buf_size, "%08x", *(const u32 *)entry);
++		break;
++	case sizeof(u64):
++		snprintf(buf, buf_size, "%016llx",
++			 (unsigned long long)*(const u64 *)entry);
++		break;
++	case sizeof(u64) * 2: {
++		const u64 *val = entry;
++
++		if (IS_ENABLED(CONFIG_CPU_BIG_ENDIAN))
++			snprintf(buf, buf_size, "%016llx%016llx",
++				 (unsigned long long)val[0],
++				 (unsigned long long)val[1]);
++		else
++			snprintf(buf, buf_size, "%016llx%016llx",
++				 (unsigned long long)val[1],
++				 (unsigned long long)val[0]);
++		break;
++	}
++	default:
++		snprintf(buf, buf_size, "unsupported");
++		break;
++	}
++}
++
++#define ptval_to_str(buf, val)						\
++	do {								\
++		typeof(val) __val = (val);				\
++									\
++		ptval_bytes_to_str((buf), sizeof(buf), &__val,		\
++				   sizeof(__val));			\
++	} while (0)
++
+ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long addr)
+ {
+-	unsigned long long pgdv, p4dv, pudv, pmdv;
++	char pgd_str[PTVAL_STR_MAX];
++	char p4d_str[PTVAL_STR_MAX];
++	char pud_str[PTVAL_STR_MAX];
++	char pmd_str[PTVAL_STR_MAX];
+ 	p4d_t p4d, *p4dp;
+ 	pud_t pud, *pudp;
+ 	pmd_t pmd, *pmdp;
+@@ -532,34 +580,34 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	 * see locking requirements for print_bad_page_map().
+ 	 */
+ 	pgdp = pgd_offset(mm, addr);
+-	pgdv = pgd_val(*pgdp);
++	ptval_to_str(pgd_str, pgd_val(*pgdp));
+ 
+ 	if (!pgd_present(*pgdp) || pgd_leaf(*pgdp)) {
+-		pr_alert("pgd:%08llx\n", pgdv);
++		pr_alert("pgd: %s\n", pgd_str);
+ 		return;
+ 	}
+ 
+ 	p4dp = p4d_offset(pgdp, addr);
+ 	p4d = p4dp_get(p4dp);
+-	p4dv = p4d_val(p4d);
++	ptval_to_str(p4d_str, p4d_val(p4d));
+ 
+ 	if (!p4d_present(p4d) || p4d_leaf(p4d)) {
+-		pr_alert("pgd:%08llx p4d:%08llx\n", pgdv, p4dv);
++		pr_alert("pgd: %s p4d: %s\n", pgd_str, p4d_str);
+ 		return;
+ 	}
+ 
+ 	pudp = pud_offset(p4dp, addr);
+ 	pud = pudp_get(pudp);
+-	pudv = pud_val(pud);
++	ptval_to_str(pud_str, pud_val(pud));
+ 
+ 	if (!pud_present(pud) || pud_leaf(pud)) {
+-		pr_alert("pgd:%08llx p4d:%08llx pud:%08llx\n", pgdv, p4dv, pudv);
++		pr_alert("pgd: %s p4d: %s pud: %s\n", pgd_str, p4d_str, pud_str);
+ 		return;
+ 	}
+ 
+ 	pmdp = pmd_offset(pudp, addr);
+ 	pmd = pmdp_get(pmdp);
+-	pmdv = pmd_val(pmd);
++	ptval_to_str(pmd_str, pmd_val(pmd));
+ 
+ 	/*
+ 	 * Dumping the PTE would be nice, but it's tricky with CONFIG_HIGHPTE,
+@@ -567,8 +615,8 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+ 	 * doing another map would be bad. print_bad_page_map() should
+ 	 * already take care of printing the PTE.
+ 	 */
+-	pr_alert("pgd:%08llx p4d:%08llx pud:%08llx pmd:%08llx\n", pgdv,
+-		 p4dv, pudv, pmdv);
++	pr_alert("pgd: %s p4d: %s pud: %s pmd: %s\n", pgd_str, p4d_str, pud_str,
++		 pmd_str);
+ }
+ 
+ /*
+@@ -584,10 +632,11 @@ static void __print_bad_page_map_pgtable(struct mm_struct *mm, unsigned long add
+  * page table lock.
+  */
+ static void print_bad_page_map(struct vm_area_struct *vma,
+-		unsigned long addr, unsigned long long entry, struct page *page,
+-		enum pgtable_level level)
++		unsigned long addr, const void *entry, size_t entry_size,
++		struct page *page, enum pgtable_level level)
+ {
+ 	struct address_space *mapping;
++	char entry_str[PTVAL_STR_MAX];
+ 	pgoff_t index;
+ 
+ 	if (is_bad_page_map_ratelimited())
+@@ -596,8 +645,9 @@ static void print_bad_page_map(struct vm_area_struct *vma,
+ 	mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 	index = linear_page_index(vma, addr);
+ 
+-	pr_alert("BUG: Bad page map in process %s  %s:%08llx", current->comm,
+-		 pgtable_level_to_str(level), entry);
++	ptval_bytes_to_str(entry_str, sizeof(entry_str), entry, entry_size);
++	pr_alert("BUG: Bad page map in process %s  %s: %s", current->comm,
++		 pgtable_level_to_str(level), entry_str);
+ 	__print_bad_page_map_pgtable(vma->vm_mm, addr);
+ 	if (page)
+ 		dump_page(page, "bad page map");
+@@ -627,8 +677,14 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+ 	}
+ }
+ 
+-#define print_bad_pte(vma, addr, pte, page) \
+-	print_bad_page_map(vma, addr, pte_val(pte), page, PGTABLE_LEVEL_PTE)
++static void print_bad_pte(struct vm_area_struct *vma, unsigned long addr,
++			  pte_t pte, struct page *page)
++{
++	typeof(pte_val(pte)) entry = pte_val(pte);
++
++	print_bad_page_map(vma, addr, &entry, sizeof(entry), page,
++			   PGTABLE_LEVEL_PTE);
++}
+ 
+ /**
+  * __vm_normal_page() - Get the "struct page" associated with a page table entry.
+@@ -636,8 +692,9 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+  * @addr: The address where the page table entry is mapped.
+  * @pfn: The PFN stored in the page table entry.
+  * @special: Whether the page table entry is marked "special".
+- * @level: The page table level for error reporting purposes only.
+  * @entry: The page table entry value for error reporting purposes only.
++ * @entry_size: The size of @entry.
++ * @level: The page table level for error reporting purposes only.
+  *
+  * "Special" mappings do not wish to be associated with a "struct page" (either
+  * it doesn't exist, or it exists but they don't want to touch it). In this
+@@ -697,7 +754,7 @@ static inline bool pgtable_level_has_pxx_special(enum pgtable_level level)
+  */
+ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 		unsigned long addr, unsigned long pfn, bool special,
+-		unsigned long long entry, enum pgtable_level level)
++		const void *entry, size_t entry_size, enum pgtable_level level)
+ {
+ 	if (pgtable_level_has_pxx_special(level)) {
+ 		if (unlikely(special)) {
+@@ -710,7 +767,8 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 			if (is_zero_pfn(pfn) || is_huge_zero_pfn(pfn))
+ 				return NULL;
+ 
+-			print_bad_page_map(vma, addr, entry, NULL, level);
++			print_bad_page_map(vma, addr, entry, entry_size, NULL,
++					   level);
+ 			return NULL;
+ 		}
+ 		/*
+@@ -741,7 +799,7 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ 
+ 	if (unlikely(pfn > highest_memmap_pfn)) {
+ 		/* Corrupted page table entry. */
+-		print_bad_page_map(vma, addr, entry, NULL, level);
++		print_bad_page_map(vma, addr, entry, entry_size, NULL, level);
+ 		return NULL;
+ 	}
+ 	/*
+@@ -767,8 +825,10 @@ static inline struct page *__vm_normal_page(struct vm_area_struct *vma,
+ struct page *vm_normal_page(struct vm_area_struct *vma, unsigned long addr,
+ 			    pte_t pte)
+ {
++	typeof(pte_val(pte)) entry = pte_val(pte);
++
+ 	return __vm_normal_page(vma, addr, pte_pfn(pte), pte_special(pte),
+-				pte_val(pte), PGTABLE_LEVEL_PTE);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PTE);
+ }
+ 
+ /**
+@@ -809,8 +869,10 @@ struct folio *vm_normal_folio(struct vm_area_struct *vma, unsigned long addr,
+ struct page *vm_normal_page_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 				pmd_t pmd)
+ {
++	typeof(pmd_val(pmd)) entry = pmd_val(pmd);
++
+ 	return __vm_normal_page(vma, addr, pmd_pfn(pmd), pmd_special(pmd),
+-				pmd_val(pmd), PGTABLE_LEVEL_PMD);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PMD);
+ }
+ 
+ /**
+@@ -850,8 +912,10 @@ struct folio *vm_normal_folio_pmd(struct vm_area_struct *vma,
+ struct page *vm_normal_page_pud(struct vm_area_struct *vma,
+ 		unsigned long addr, pud_t pud)
+ {
++	typeof(pud_val(pud)) entry = pud_val(pud);
++
+ 	return __vm_normal_page(vma, addr, pud_pfn(pud), pud_special(pud),
+-				pud_val(pud), PGTABLE_LEVEL_PUD);
++				&entry, sizeof(entry), PGTABLE_LEVEL_PUD);
+ }
+ #endif
+ 
+-- 
+2.43.0
+
+
+-- 
 Cheers,
-Harry / Hyeonggon
 
---------------m7KBxX00h08SRQw398FDtdbb--
-
---------------DAJrgx3byH7JZ1FULOuCCYr3
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakPGZQAKCRCGXBN6rc5S
-1uM9AP0b8nxpK1UPhYD74o0aXVmWCANPMI2Kt4IVvWBfqhL29QEAsz2kewM/Jeko
-rpsZ1Z3pZrepKYfV19kO4xwfYc2Q/wU=
-=fiVY
------END PGP SIGNATURE-----
-
---------------DAJrgx3byH7JZ1FULOuCCYr3--
+David
 
