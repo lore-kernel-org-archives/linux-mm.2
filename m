@@ -4,114 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AD5C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA23CC43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:07:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5409C6B00B8; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
+	id 792786B00B7; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C9D26B00B9; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
+	id 769D76B00B9; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392B96B00BA; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
+	id 681BA6B00BC; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 08BD76B00B8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:03:54 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 88B651A056D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:03:54 +0000 (UTC)
-X-FDA: 84937049988.25.B4F9873
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F2976B00B7
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C5E8B8E13E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:07:28 +0000 (UTC)
+X-FDA: 84937058976.29.B7B2EBE
 Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6B8EB1C000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:03:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=KWO3EDai;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
-	spf=pass (imf21.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.222.180 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
+	by imf31.hostedemail.com (Postfix) with ESMTP id 98FB320003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:07:26 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QzPwZyA/";
+	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782835432;
-	b=Npob8o55eiWYiasZKD8bWFr+W7Qm8ve86a/SsbPRchgprYuEMrBkk1+HqsLaSjiKTZxJcz
-	evr5DIay05z8+i0hXhMJmMwsDICBAzYsz6mAnMHib+cJbAewTKdt2VMpO+db1FHpSzbVen
-	8PEQyI7VnkbT8EfUmSZEz9RLA6+eMB4=
+	t=1782835647;
+	b=iTDeHE7Mn76yOeR1Z9tgSk0gaIx9qVFWQCFXblGfkhtkRLR9Ln1EQT6HRj3A+vcDYblARI
+	yodD6uBomU8ZF3WOI2oSAoGBja4gz/Hy/xmeyrly0d7949Bg+0yKvCra/tdXCEWAj12Ure
+	EBV36vOzqz7+fOSTTlSgsF+nP4M5Dis=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782835432;
+	s=arc-20220608; t=1782835646;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
-	b=YDRohSj1s0Sfz+OaT6YaeM2BAnl6wDYw3vIiQTwa/9uJI5D0EXlo0NjMQb6j+KzUxYzZIj
-	tSTtl94MCYYJA0F/CGLZ1sLXYd5tgzmUvMTivh74XADd3v3XT2nKSZlCcQhi8a+jJWuCz/
-	6K7u/QAV2L4EFgiqXeHpWyEAfw3dCxk=
+	bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
+	b=Mo5szzAWkj+/n5u6w0/9vNpr/mlgu0zowQTEMm/yFz5TlgyGAn38ePey/VpDBprUkAzHWM
+	d6HMRCV5fpfMDu2kleg/o9dTfReGwX8LuWKo9vGuT7DR2T/DrcCYzQgoQVBTBp5v8eC/0x
+	kPB6S6RgzPes40hVrA1pz+liQnChxJ4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=KWO3EDai;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
-	spf=pass (imf21.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.222.180 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e6a434cabso51898285a.1
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:03:52 -0700 (PDT)
+	imf31.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b="QzPwZyA/";
+	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9217d13c276so340479985a.1
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1782835431; x=1783440231; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1782835645; x=1783440445; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
-        b=KWO3EDaiOjJQEYkY2Z6/CffTP15QMfF4MEgtp6u6Hm6B6s+b+WDV/8eHGJXpLSAP4D
-         pXknoEx1R1nfxDEP59HgNAX0IUbCkjWGICtzWMqCJdDmxVADLZtBcDS26GUWqrebmtKv
-         JTlFiFK8FTvlktAlv/lmvVsUHxaWik+fIZrm4YCAEmwsQiaMKddKlLJpE40C/cZcvOy3
-         gSzMUii0rXwccA7dhyICw/hHNNoBjFmFMjBLbZ8ExvU2zVrzaNp21rYi8DncO2wugMoT
-         IrUwCTOc5UhhT/JrsvuYdGo+MCqpVY3/Dp6eZs5il6A3qKq9HQ8o+5ofciDcW4w03stM
-         N66Q==
+        bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
+        b=QzPwZyA/WBBov0dpatbyTNGwYJUUVSireDs642tFUoSgSvRLNhIG3ZQ8NZVeSVlarb
+         VpKBJ3gR+J1qvTh3zhWEpqXpqLfT8kBJq5ApcH3j2Kw7EgvZD6wEBAejh9W5YHK5fxYY
+         wV6QkLjkz56YtrTIGbWSOYa+6DAyS4B9iTDroI835RZW2MLPomKByy8/8CgiTnhDPLME
+         i1XkOpPPUso6WKW7skvePqUVnTaRhHUsH5SDEYDBiQ4cnJIbEi9q6w70rs5CjPvrsiVQ
+         f9LnA7GqXy0oXVEDZbirMsXAvTPgkB7bpzkGza/An1qe18BAI3fv4TfgY6K6Q3xmozuT
+         2Myg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782835431; x=1783440231;
+        d=1e100.net; s=20251104; t=1782835645; x=1783440445;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
-        b=gyh2qcmB+j3k7VpRtXh0uOjzCf5K1wmLZ9wTyL3/CU4Ggf48PXA4IquDFsFgsspFeY
-         ZUsyzkX6EzwkbI1AU/p0JHGx5gDoCMGEqfkXaWvsMtdL7ifmS6eJuX/6IoEumNDQP9I1
-         PXsj+z1gZpvm2KWIpj/qbq+T0jtuKcUWJqpilevd5glZ76FYQZo/jiWB7gwDn+gzLPbU
-         J2ATEWemFyRSckg2Ck7+Gk91yhIvuViGLhK9OzQL/K5SGVtrk9WnILyeKPsmW6NxX+wE
-         W6mGk5PMBKf/oCuxhcqCOKYrjyO1ZabvjMneNu/PRerI8VBHEu2qgJ3/wbniEel1gGUt
-         sX9A==
-X-Forwarded-Encrypted: i=1; AFNElJ/FMu7ZCpsK9ZsaGz5GEYjjb3dLu0pWLBYGdYNHCLPZ9s54g04S3S/23slMvXf0Knat8lZrHIQ63w==@kvack.org
-X-Gm-Message-State: AOJu0Yx1QT5Y/oeZEACaBLoJyVnHGouXsqV5md8ZWXsSNCD/jLKnaRbl
-	Kh+mMuIVRZCMgDCRmhVIQHTfZMHPmL5zTr0gOu2dk+i4+WWQrQPiliSiEsHHF2IzJA==
-X-Gm-Gg: AfdE7ckcPFLBV1s2m1IDwedXVhroUJH/JJkt1xWS7klWwuuoL9MHCLbVjx+6i2lWss0
-	cy+xwv2sPssEEEv9CLHvejxrWGe5CumXNJ3BFZIYntxyiw9wYaXvjZLOE5l6LQm2SdFVr+G3CNm
-	h84Q72bxAvzkYjiyN1i1xpVt/TdrKsKTxVpXh7jaCugqL+GRRqzcYdY8rW+f/KgRO+881Fdrmd9
-	XHGTP6cnD1F3xJH7cr0SMPr4sfJ7Lv2aHNE3cEhEkC64ttyGws02hg+a4Xs+OFwADnSGcmvRMBQ
-	JrhN+2JNCIJ+Z8taKtQzBZ9i67l8PXXJqmyBglaiFse4tTjTgFwcve3QUxK/er5fxRvPTYyhW1r
-	gGs74ZTfqTjlkCoYz6sGcfPbXuMAjrQA9C3eqCuQsfQ5iJ1d5YxOpnTLo9kjrW6vk+k0CwNAkJs
-	7bQuYwyRb+GWVZo2OuSSw21f/X
-X-Received: by 2002:a05:620a:c55:b0:92d:6961:9519 with SMTP id af79cd13be357-92e6249fe27mr694745885a.8.1782835431154;
-        Tue, 30 Jun 2026 09:03:51 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e622e87a7sm281331385a.28.2026.06.30.09.03.49
+        bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
+        b=j4op6TKYEr40dDjv8qqVEDSV/RtH6ouPV9TnP80CAuRg/co/GsQNBDxRz+iaqcVpSU
+         bDomHng4xU9ZYFKM2IV3a/qdgwAWvmI/Fr24O6ihaZCBx3KAy3lIHaZx1c1yJQi5cJsY
+         Ycm8y2MXDzOj46eWhaLdVaC/sEAsGfmAlh0Cytcf5jSSijdXvkLsVTPEXC6M38DP2OX7
+         0QKhN4/7g+wmvOTKLIv6mupN1cYn6GGAD61D9bOYpOpHQm6buZhRpSrZfgQ783TUrgDe
+         3NFdp1MMoUxRSp6i6orpbg6aEWWWGtleMIJ2Ywt3jMd5UX0nNzmguyJh4r9Uj7MwsnUx
+         wbSQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/1pD53NdckeIcsXQpcyOEwH5pRfWQjF8Hz+tYHXORRlyrmglHsL6sY1LQ46HSChzfX66wPD7jY5w==@kvack.org
+X-Gm-Message-State: AOJu0Yx5fZ3hNyz6Bp7yrznSNmcMjq9JhsYprHjxESZhOFaRsl+6I/cX
+	MsHNavCHXc7WwopAu52e4MrewKArZh76nMlrHTtbgibMWwoJyU2pNRtxBNhX8UcahfQ=
+X-Gm-Gg: AfdE7clrgfwG6k2drMAKswyfcmjl7HIr3DaYw6EsMehkDmaovdOTFmamKZtsZj2m6+A
+	y4ryn5I3Alu3BDIlpbhK7te/ZRhCN62PQqNGjcU4PHrv9WqN4GiPLZjpJe942850+8/LFXAewry
+	VTRT8tNg/KYqBNuQyIQy40c7b0cSWpZdUJ9NV+65V+VqYb9W2EP5vw8ORWDkW3sM/mt/r0aJY+F
+	1PupjcexZ+nYo8ad4b8WnRthkfDhgnAleJM7S/tOQ4Hz7RzOuD8pYjuhSJaMfdnow1pr2IzoDul
+	1ixG/eRUxoIUuPRTQhCA5+NjI1hYuTUUNDvqeVTB0EGgrGW2xQjhyXz9A2PAF0XJJK6qLa9PVUQ
+	JUkbyS242FZuRU/UQSLWgXoQhMKaoOnc9bvSZdSd+R/jFT4IRw1TL7VF7Hi/lDy96CApoTlZzWw
+	KtYOBT6TCp5Nc=
+X-Received: by 2002:a05:620a:4493:b0:92b:6805:91a9 with SMTP id af79cd13be357-92e62ab75e6mr685496985a.65.1782835639247;
+        Tue, 30 Jun 2026 09:07:19 -0700 (PDT)
+Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e6213b953sm269848585a.2.2026.06.30.09.07.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 09:03:50 -0700 (PDT)
-Date: Tue, 30 Jun 2026 12:03:48 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-usb@vger.kernel.org
-Subject: Re: [PATCH 2/2] usb: core: devices: use kmalloc() to allocate dump
- buffer
-Message-ID: <fb38dac8-7832-49df-a4d7-5488f210f83d@rowland.harvard.edu>
-References: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
- <20260630-b4-usb-v1-2-8d547235c374@kernel.org>
+        Tue, 30 Jun 2026 09:07:18 -0700 (PDT)
+Date: Tue, 30 Jun 2026 12:07:17 -0400
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
+	linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com,
+	shakeel.butt@linux.dev, roman.gushchin@linux.dev,
+	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
+	mhocko@suse.com, rppt@kernel.org, surenb@google.com,
+	vbabka@kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v3 1/2] mm/vmpressure: skip tree=true accounting on
+ cgroup v2
+Message-ID: <akPptQjnQEmvCXhD@cmpxchg.org>
+References: <20260630112617.1198623-1-usama.arif@linux.dev>
+ <20260630112617.1198623-2-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260630-b4-usb-v1-2-8d547235c374@kernel.org>
+In-Reply-To: <20260630112617.1198623-2-usama.arif@linux.dev>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 98FB320003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6B8EB1C000D
-X-Stat-Signature: obekfps5zxit4mz1p63r4xyfpmej8i9m
-X-HE-Tag: 1782835432-508255
-X-HE-Meta: U2FsdGVkX18ZiUjYCRvKc82t9ZMSOcwjDSTSac+syE/BDQLXq80A39o5x3SjzQ9p90wlfxQSpHsXJx7oqtP1h1Wt5UcJlQndi6OdUSqMpVDavflz8Jys0WGP7OBEEzxVsHSmsRMeICyfUgVYZh/+lwbE/b+WWJT193V6TRQ/ioAjkqrvJ0jkJxbk+hrrk2QcxvYgcFq9MeBiPtfsljnTlq57ge0sxtG7NfvgI8feHyGo9t1NOP+hjHARkhK0gVAec2RPFy9Rvxp0J5GkUXP1ccBUnoCvVmnTGi5P1mbClKsazeGu5Mr5emrEt7MQf+dRspbL4FFS3zCZmlVwtrfMXyu7aInWmOk88+NkXc1gE9g3hw1nMk/PDtItySEW2pYbIxz1L21bvMzsn1MVWajoGxor1Z7jfRdHaCGbbB7hLUBfPvibwPOCnr7JrErYcbwWsyxDJYz7PxYiCMs0s3RzZnT6BmkNhgCJKJVWDrvum+ETVzatW7qbjSQIbQil4lCGmDMWhA5trRYvj2DIn2NxEb0f4JTnQYDW/DXmFejoS/I+5nntjHxz27ynAePOG9CYj+z/4lRuLp9Wym8WRn7mRAb5ZCkh1Vf8RWKqnqx32ZIGH6HGs1fFs6yGSUJPCNpUtDWDA8sAs8Rk7XFT/5+s49BUDQxeTWZvtuvzCKrgo0/Q+9s2L/zw1qBb4+Ysi3Bo2qrcUHp8ZJ4ZyQ3APU7Ndq61jIgH0gxLtzx4IcRXDK8c+QWqPvJ6l4mGv7MTW5JD6ZkbQ+Y6PhvKhVcWZSBA+tqt1YPqr2R/Pnw9M1eOslGHpddo58pHuhWYLZeFoA0mQisbkoS2yZw5tmh1PoHHBkCYzKRo+Qd2PxMvqQz32+8Ua0UVs/FAZbOYE5O0PaE5nIIs4Jh2L2NNYigxhazUiz909XkGM+s0uAk57C+MonHtDljaFuA0Ydl1BeTQP0tFpYFAzJBczOCLN3FfkHn
- Rz0+ptAu
- j7O+kfNxymY3GUsV1Wl8lMFZz1n+7g7y4Kth/pI4k8Cp39x/fVi1XhWVt8tY88le1WN8h5p9m6cacPhuiqn0FM0/hjqAJJSMxB3NuIqoAYAIhMos4V8bzU8Ic1NFi4TWx0VNFcecriZltQz/86K81P4aRoxmBH+ySvxxW0oW2UANOaSSh36MdlPrshFvTh9Iw90RQ0Juf5VrkAIu0Be9idvA3UdOyKlSu627Og9JfgHfZEaS0neTLQF5wRFs5aItvkQa1PbbkeDl6wHnQZYmIIBXsnLrxo8ksKID0n+LB4trTlmSP9EYMD2OmA6X2mq4n9IhIjKqK0unq3GL198oIVWm9hrJJ0cBvdDBqvqFlwvVK6HR0GtXRid3V2EKjusVUBEYTGdNxNS0x7UNlFjDU/h1X0ahRbIXb6iE7aHMIRP4LJMYOHms7LCROfjE6QuwepsU2WukTF/rxDDPu1xslGrB7H9iH5xoH1N3XRm9Pmdbgb09oesXuxCwMckPaFPU+6U5NuOYrYOt3leH5qCuAx0hH0czs8Swq8eWnNpn4hcQnaAIeAeRg14PVbgt+/YfxCzVK4DU2aJMkQOXkNalMOGS/aQ==
+X-Stat-Signature: p3s9e1647xa3dzp19kcd458oodf6wak7
+X-HE-Tag: 1782835646-302074
+X-HE-Meta: U2FsdGVkX1/aCb+CKqVhkcl3t4eTHQ79bCtJl3oglfnlPerAnRWX+QH9b/vv8jrFYtOLDd76ChWeGwp+HuzRmh9ChFy0rcrD8h6X51McVeuheH6MNVuXYC4f5/KdHgu0qz/XDYmsG/qoDDysxf+Rr6vU5JZzp9oIk+dF8h5WVnjyAlQ5lvLN5XNfQrGzHcdRSHJrB7gNh6bUBgIds4+Unsn84Y4rdmyvEVAcV8yEG63Z5XP773G/A0BUmKIwGlX6FFsmIQqqJTbwHo3JZk94TxW0SlX2I9BKd2z1YIwTMqAuNH9JRICEb4Uhbb9uH2+5RSuUM9cXiRG3NtviM2gSKI9RWON73JUg31CPPv0d2x3vhVNeBZgCPz+gxDLoZE4TEOVepaCkgE7pzpiuy0hYY1rWsKCOkAMFsdS/vCpBqfZt618N7aG6pNwuKUBi+VrwV/Qg0LcPTDcjqf9R7SMFxIjiTMZrM1VtD9r2aF59sijD7/6EL8b5C1EfYRkU4R6gBff93PfgV52s+JIb0BskAISYFLcNt81ApyXT27ogUpWArL/+UHpdILb/e3Mg209u83Ilp83O5DX5FoxKTGRCiI9m0gKkb8WmgLRWVPbCUB7CIdckUS1YW2D6uZONC4HKL/037T+PNDG5x5OfbcrP+pKjWQG0JJHBu1FP0Rn8mlcn5TEwgnmcgasCPexHYq7e7du/01Zujs64uVOfYWOLTDhCWS+fe0p5o6PMVq49fW98kJxn6aE5OTwvjMgU2Au3jQnYO63MTtAJzdChy6OrdnGgrL9+bmw8v+YWV+/CoBRVsMKZl7logVc57dGm0mqI1I/S4/J0zNzA72Af9Xjqvhtxsu5deZFUyzjSwtjmmFM36AxdOLpi8B6xzwcA8l0NQOlSYxWlOUJ1WD2EV5c3ComeF+Q4RMH4KpDOzBwk25dZ+eNoUgQlQLgLgWeFH8cnfi5UVxUVPAmiBsz56FR
+ 3uGr1wlJ
+ 3Cg+WmDjMMEwY0gDkefGp0qfWUCaiCNf4SbqMcd/0UwsZrsh84zQZf58kx3aHF+ioLeRF1q6aWLg4vUz3ahs33xiutrlrQj0ZqkIkuBjTHKeIcTvxC7UYB5YcK96tueeseAXtA67H/yfifHUo3QQ5cGnV29EfX5ICvFDd/wxochkM6rATEk00gy5ox+cyI+/97JAKSsjNjVM+XggrMplwHO94UJa7qeiyh9+lUpV5r9DL56+TwnCGO80qykQH8oERSvoS6IINDUFryzDVBltcS0byBxGwsU6Cqt7WR9nac0cW864fSbWHtb9fp2F0a7F5SmSJ4DgvCEUJRHM3hMFrLpBzONk48lv7ApAKqqlfTvY1fHOTzWUZ/Kk3dw6lE+pXifsrNkWVLj2YkT8yt26r3XQSsYmHsL+8vFjDV1XxpI/bfUUmU9ua5+aRug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,83 +122,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 01:27:09PM +0300, Mike Rapoport (Microsoft) wrote:
-> usb_device_dump() allocates a buffer for formatting
-> /proc/bus/usb/devices output text.
-
-You mean /sys/kernel/debug/usb/devices.  There is no /proc/bus/usb/ 
-directory.
-
-Aside from that mistake:
-
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-
-Alan Stern
-
+On Tue, Jun 30, 2026 at 04:23:32AM -0700, Usama Arif wrote:
+> vmpressure() has two outputs gated by the @tree argument:
 > 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
+>   @tree=false drives in-kernel socket pressure (mem_cgroup_set_
+>               socket_pressure), consumed by TCP/SCTP. This only
+>               applies on cgroup v2; on v1 socket memory is charged
+>               separately via tcpmem and the consumer reads
+>               memcg->tcpmem_pressure instead.
 > 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
+>   @tree=true  drives userspace eventfd notifications via the v1
+>               memory.pressure_level / cgroup.event_control interface.
+>               v2 has no equivalent: userspace gets reclaim signals
+>               through memory.pressure (PSI), which does not touch
+>               vmpressure.
 > 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
+> The existing early return covered v1 + @tree=false. The symmetric
+> v2 + @tree=true case was falling through and doing the full lock /
+> accumulate / schedule_work / parent-walk dance for an events list
+> that can never be populated. bpftrace on a 176-core production host
+> (cgroup v2, CONFIG_MEMCG_V1=n, 285 memcgs, sustained reclaim) showed
+> ~16,200 @tree=true vmpressure() calls per minute. Add an early return
+> that skips cgroup v2 + tree = true which avoids us doing all this work.
+> On a v2-only host this also eliminates a lock contention path that can
+> serialise reclaimers on a single global sr_lock.
 > 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of __get_free_pages() with kmalloc() and free_pages() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  drivers/usb/core/devices.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
+>  mm/vmpressure.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 > 
-> diff --git a/drivers/usb/core/devices.c b/drivers/usb/core/devices.c
-> index a247da73f34d..6f0354aba38b 100644
-> --- a/drivers/usb/core/devices.c
-> +++ b/drivers/usb/core/devices.c
-> @@ -37,6 +37,7 @@
->   */
+> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+> index f053554e5826..c82cee1ab43b 100644
+> --- a/mm/vmpressure.c
+> +++ b/mm/vmpressure.c
+> @@ -246,11 +246,13 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
+>  		return;
 >  
->  #include <linux/fs.h>
-> +#include <linux/slab.h>
->  #include <linux/mm.h>
->  #include <linux/gfp.h>
->  #include <linux/usb.h>
-> @@ -408,7 +409,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
->  		return 0;
->  	/* allocate 2^1 pages = 8K (on i386);
->  	 * should be more than enough for one device */
-> -	pages_start = (char *)__get_free_pages(GFP_NOIO, 1);
-> +	pages_start = kmalloc(PAGE_SIZE << 1, GFP_NOIO);
->  	if (!pages_start)
->  		return -ENOMEM;
->  
-> @@ -479,7 +480,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
->  		if (length > *nbytes)
->  			length = *nbytes;
->  		if (copy_to_user(*buffer, pages_start + *skip_bytes, length)) {
-> -			free_pages((unsigned long)pages_start, 1);
-> +			kfree(pages_start);
->  			return -EFAULT;
->  		}
->  		*nbytes -= length;
-> @@ -490,7 +491,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
->  	} else
->  		*skip_bytes -= length;
->  
-> -	free_pages((unsigned long)pages_start, 1);
-> +	kfree(pages_start);
->  
->  	/* Now look at all of this device's children. */
->  	usb_hub_for_each_child(usbdev, chix, childdev) {
-> 
-> -- 
-> 2.53.0
-> 
+>  	/*
+> -	 * The in-kernel users only care about the reclaim efficiency
+> -	 * for this @memcg rather than the whole subtree, and there
+> -	 * isn't and won't be any in-kernel user in a legacy cgroup.
+> +	 * Only two combinations have a consumer:
+> +	 *   cgroup v2 + tree=false -> in-kernel socket pressure
+> +	 *   cgroup v1 + tree=true  -> userspace eventfds (memory.pressure_level)
+> +	 * Skip the other two: nothing consumes the result.
+>  	 */
+> -	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
+> +	if ((!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree) ||
+> +	    (cgroup_subsys_on_dfl(memory_cgrp_subsys) && tree))
+>  		return;
+
+I had already acked this one, with a half serious suggestion to make
+this
+
+	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) == tree)
+		return;
+
+Anyway, no strong feelings. If nobody agrees,
+
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
