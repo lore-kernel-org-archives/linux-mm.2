@@ -4,91 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4AA3C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 06:17:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E74BC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 06:27:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83D416B00B0; Tue, 30 Jun 2026 02:17:53 -0400 (EDT)
+	id 36DEB6B00A2; Tue, 30 Jun 2026 02:27:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 814466B00B1; Tue, 30 Jun 2026 02:17:53 -0400 (EDT)
+	id 347B86B00A3; Tue, 30 Jun 2026 02:27:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 729CD6B00B2; Tue, 30 Jun 2026 02:17:53 -0400 (EDT)
+	id 235D36B00A4; Tue, 30 Jun 2026 02:27:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 486C36B00B0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 02:17:53 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BDFE61A02D9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:17:52 +0000 (UTC)
-X-FDA: 84935573184.21.A66A4E2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id F29FB1C0002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:17:50 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTSJiOpY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E00596B00A2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 02:27:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 454658D7C4
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:27:32 +0000 (UTC)
+X-FDA: 84935597544.24.500E3A8
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D8ADB20002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:27:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O2ab3cAT;
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782800271;
-	b=f3wooXGqVbBmss1nmCtvF7w+ILl+MacT6bx4gdooxYqnzc4Dk6dA89aewFfIobbYKzkhEc
-	SibhhBeSImf4qZKO7XXYgaaWjQA6AUdo0UPswvS1MKp0/4wNshqf85VgQvhCDdrEzarBhB
-	9HOs8Ona4SMs52Ody/A9egJJzyWOGZI=
+	t=1782800850;
+	b=8VpQQCXhjh5OCu90mO6oQ0Q89Df55+w9T5av9plfyIwqQ1EMaXSWe5N1LrY4A1gHxMUMae
+	cJ/LL0qXaDpyi9b9J84OtaSUL1RUlQt2dQTnn8A4kEOEAivuPvVnn9ixGFdaGJYkWr+1zG
+	XL1OL4NQsMwEKVFnL1CO+5+I3s1sDVk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782800271;
+	s=arc-20220608; t=1782800850;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F/zuaToZgsUAAf92e9UcfIYMTDUyYKGDMg/03yABotE=;
-	b=eL8bmTxn88w06/4hcRAoGgdfTzqvr3WhizHy26IVe03AD4MxpQpNdjEu76jHmG5uw+FF6/
-	YWA+TTpGxfrKLz7xWOMSOVeM9Rr8+Luo/LBM7WJUTN7W9Q+Z1rjQf6FCVD95rYQ1nzE/dq
-	YODfwD4wUMaJo1rUqO+6oAlm7D3uYCQ=
+	bh=g85B6h0E6wmvIawCj3aK3oknIgQ+/nlCgtdjk9sHnt4=;
+	b=WeGCvw8zzERm3SPQPpXBKxxR5qGB95XrVyYorqxvVY+xm3yt1u2F+TQft88AO+DtpzOu66
+	omjUnDRlEnUkgDF/LivVtb3/4MVsxylnxOH40iW6B33QnseHrr/8CkfRuiwtFM3K1+0aYi
+	MqHo8U5hdEPd+7v3VamZLB5d6BZVv0Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NTSJiOpY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01A0D42A61;
-	Tue, 30 Jun 2026 06:17:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED701F000E9;
-	Tue, 30 Jun 2026 06:17:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782800269;
-	bh=F/zuaToZgsUAAf92e9UcfIYMTDUyYKGDMg/03yABotE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NTSJiOpY8OZf/2rbPcXkoa2mJoqTdGaqiQiv84Y1gbuMh46I9vnDK61ISSo1wLdBk
-	 xLX9mGhoeiLya5LC9Lu5SLqtCn1x0ir3AFnknxSGo+NYJKpw73LemWZ0le6X6Dbp+V
-	 eVZjRT85EpQrZlHDk/75OsCJ0lx0BmhLEjo3zgcu8Xj3O2PNi7KuSE5sjOlxSeLWMN
-	 JQNqc01ALvmpWFKSViX+XJwmUdgEVApBApgttP+uA4l0JTF42QIpAnZuH4WWngj2qy
-	 crmaOlyXYwj2Wxb72ExEPn9YsHw220PcBpMuyHnE+J1nybVa9lOlKrazUpOswEw8hv
-	 oa9HejB/972OA==
-Message-ID: <5c8ca96b-381a-4fd3-a218-6aaa87a9a3b7@kernel.org>
-Date: Tue, 30 Jun 2026 08:17:42 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=O2ab3cAT;
+	spf=pass (imf03.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1782800849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g85B6h0E6wmvIawCj3aK3oknIgQ+/nlCgtdjk9sHnt4=;
+	b=O2ab3cAT8rPVgYh6trCvQBG1PdHB/GORqABT8unyUkt3+0OGHqRn7pX8FVVtMbDFaryuqc
+	G2o1KvdsmVALnlCugR+3gmU8MFC+mQFApqP3JU1pgz8lPuZrlphRceruxVjt9iQEMwYNFU
+	sROKWaVO2FAZNOJqO5QlaoLjmp8GIRc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-175-UL9Qru6CN2e_wqr_j4uD5w-1; Tue, 30 Jun 2026 02:27:27 -0400
+X-MC-Unique: UL9Qru6CN2e_wqr_j4uD5w-1
+X-Mimecast-MFC-AGG-ID: UL9Qru6CN2e_wqr_j4uD5w_1782800846
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-493b0fe95b6so12431425e9.1
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:27:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782800846; x=1783405646;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g85B6h0E6wmvIawCj3aK3oknIgQ+/nlCgtdjk9sHnt4=;
+        b=Cqvl+5F+wJW8+Xy9EXaqLS3JGl9Fbs1+tcJY+CGpMNqwL0Wjepwpft5NqJ/CMqO3uF
+         8CJKHvYtGlY+ms3LIwQK65pb7oXGxgeTYuZKAw61sNIrXGeaxyXiaZG+KTLv5i+K86vI
+         H5+uqQxqQ1v4VFC2Qr9eonZTO4lmnkwkUa/2sntq+GXGJT8dMJhQxrBFJQ/nFaXpyc4L
+         uZklSJ4NyUTfzQTdyhkzl6uJml5Q/cuWRsE77siVE8tOnvWkfv8CE9eKdYbsoi3ZLJC/
+         t78++xECGFZvHnKevpjDGVMn8D1hhLdKVq0H4t9kuPBA9hQQaCKaJQ3wTz3PiLxC7Sjc
+         KYlg==
+X-Forwarded-Encrypted: i=1; AFNElJ+lKaulH8UE8CvRS+D8zs/q7KH7akbhWcOkzKlPHOnrXgNCFy01JQZtQTDCnM1mz2dYoEiygHkQHA==@kvack.org
+X-Gm-Message-State: AOJu0YwZzzyhshc+uYchqVu5egc+7aoPSaQz+l/2XWXvDRFuxthgTDNx
+	FSmYxSk2C5B/1KYHKGoiERL1scbuOj7A4/VK61yrLwnkQOPJH8Rdp1xDS1hBzQ/o9+UspR/a9mC
+	yDoSgFkdK3S8myxwnt6x7EPELKmD3ONFP6NNOAVefrPW6NYxRy1pM
+X-Gm-Gg: AfdE7clh0neRZ1SIyFy+DV3kiVaPnpjG8+7Dn/gPlh/BVtlhCbUoKA9jkjwucFk0q9n
+	lPyRPcnvFnHrHqCTjiqqS4E32aHplJJgpcUju9sJilo1P7/MCyb8+UzkhfZTI90Ip8XaufQTqTM
+	kXcuchNRIlN5VwUu5KGaN0XMWDHVzKfwOflqs0z5CTjvDSuI1VBsMFnp+QUEtAhsML0j9l1b5Mt
+	shGr3EcEZZ3ZvNyrEeBPmTPTufnjDTWmzCrVExgJhCot/+1KTBXLQTzqGkCq9c14R+P33Mz83SS
+	Wjti63yutdTAajdehZxYfib+E7t9n0PKTn5rKTjWfEyEvhIlQ5UM16ttXiC1HHpoD9gek57tyyo
+	c2w==
+X-Received: by 2002:a05:600c:a408:b0:492:5bc8:5e77 with SMTP id 5b1f17b1804b1-493b82b8b49mr23585545e9.29.1782800846094;
+        Mon, 29 Jun 2026 23:27:26 -0700 (PDT)
+X-Received: by 2002:a05:600c:a408:b0:492:5bc8:5e77 with SMTP id 5b1f17b1804b1-493b82b8b49mr23585075e9.29.1782800845541;
+        Mon, 29 Jun 2026 23:27:25 -0700 (PDT)
+Received: from redhat.com ([31.187.78.205])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-493bb4f174esm13896245e9.2.2026.06.29.23.27.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jun 2026 23:27:24 -0700 (PDT)
+Date: Tue, 30 Jun 2026 02:27:20 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andi Kleen <andi@firstfloor.org>,
+	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
+	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
+	linux-mm@kvack.org, linux-cxl@vger.kernel.org
 Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
  non-atomic page flag ops
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Andi Kleen <andi@firstfloor.org>,
- Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
- Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry@kernel.org>,
- Hao Li <hao.li@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org
+Message-ID: <20260630022129-mutt-send-email-mst@kernel.org>
 References: <cover.1782676497.git.mst@redhat.com>
  <0b5f8b4b-d7dc-4b79-9555-a5b36265f3a9@kernel.org>
  <20260629030657-mutt-send-email-mst@kernel.org>
@@ -97,63 +133,22 @@ References: <cover.1782676497.git.mst@redhat.com>
  <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
  <0a309ed3-378e-4d88-95a0-65bf47c5496d@kernel.org>
  <20260629193347-mutt-send-email-mst@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260629193347-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: F29FB1C0002
+ <5c8ca96b-381a-4fd3-a218-6aaa87a9a3b7@kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <5c8ca96b-381a-4fd3-a218-6aaa87a9a3b7@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: gbDRp3OL8AHdbr65PolL_ZyQA6R5YHr642T_ncvOlwo_1782800846
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Stat-Signature: 8oo3afnbrg617x3791cd6nwatd13amhf
-X-HE-Tag: 1782800270-616360
-X-HE-Meta: U2FsdGVkX1+J7qEePXySzRU/mlTCMTrFrHg66jjy1/JF1b9BxKp3fBCfU0TSJzzZrb20DX/vVzOkiL1fvBqzGnG1M1DxLL4LuLls0ZXg2SCaSttrWN3eswnJCrCHpMj5aJvjjPLET56FiD27QAma+rpSODQv2T+UWm+K0zSVdxPbtQYkw53wg2LVd4LhFSqSUdqxvvjzyUP6yxhY/AJr9M8bgrXxbdLxp/FtyAkKFEY051n9sUe2PW+W3Wnywq8Xg8Y3DI0JXPcXDce6h6/orIs/G3By5ZYgeyhGyG/0xoIKXq63BOrrnuEp6QORJW2Ronqxr5m2cDFNuOFLR2pITKh2rWPmPpiIe1C6yqN6DXxQfR2xlAO2+abVmy4jN3AMpTx9rNW4VuIftD5OHBeq0gKiHykOmn9JsKtdywd9piHQT6+csKKW00um0b+jpgiZq7uUVW4vXgcprKFA8RDUBuHAzjETb19U/Mj5ud0HOIvQVCTzQAhi6IUEr91jrnYiE7e7GG1txePnJctq3oigg67KCdAyv0o96yT8BUDel5hn+2qaaNXSLKWsHtItL0rAY7Tvc+4xcwZoUFrbL6j3ClnbwIRrdkvgV5ixIQobMkn3drKYP1R8eUtC7+IVeLogD7adnP3RA+Vi7Q1rXlcmCMS+hPQhAvAqiEbfY61OP9V47F+GCs0M7reaI/+xQnwAqTFuggCXJxIJt500QSd0sDiRZN7PxQr1qT10IJlRgV0zus9WttA3amSoZEGrQei4eXNTiNAnEmJk8KuW3HlkzuDhJFmggnA+f0HPXWC8exMXMVBi2XUOiLCIdrRFNorGMCG9ESx2StCEE/i9ZuRIdG2U0OhO9yMcz9lKukH2nERvsR/4/Thf73H0mtSswU3s6G8AsLGA5eGv00GYl0rMEiNNnrKCVEb4GyT66U8OC12xadXLCx4S1e1+vEBtZoqG+QShm52A8/eDGuSdace
- V1kKw6vD
- n7Q/+QxX9303akuxKR3Nf2CIYRWi1xQXUF9AW2xQU/f/0WWBQa2pVwnJgPcW/ToPP/GmhC1Md6MH5nrDGLkqzb0qu9+XcIZmfSctcgSSXQhm7AJDO6W7bmRyl/bNyxRE6iQE0UxGwJf4dYzLRAl0CxRRc5YYAVFgri35gasR9TZS16Jp1/fhug7jM/iKueq98eL9gmIS46v7/t1sPN64XYqXDAaP6OYQPQ12JyjnS3PXMS+IvFPHQziVNAx/2/xCm+VzgtBLq7J7+EDGYRdbuQ33NFyVcT89AEGJbiGDDtt2goUNnl386fWOfGWJpTliX7NpZqpahVsf8zxZ2FZ2SonXCpAPQCrcVbcxZD/0UF5BqLsw=
+X-Stat-Signature: hygauyq5jfz3rhmsucyi97miiunupzwz
+X-Rspamd-Queue-Id: D8ADB20002
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782800849-31671
+X-HE-Meta: U2FsdGVkX187h0F/Gw46nrB2TQwPZKOc1muBHFA0+CCoUkdbwB8QvdOKI9Zh24yoMNIbeANGg1h9arYqB+5238ZcKhmWBFzQnvE33EhSButfuLnqUXlwNvexgw434HiknKTLxMZ5o5u7h5Qv43t9eoDAV1CzLD+ilBs4HTlBugRjonWxW+n+Yo2/SbbjAVAvPa047pmccELBAKnCJwzZIt0jzp9agW4om9XTdTV3Gc77tSE9u2z48wac1Zgy602m9TSany83/xMAGfYWYqJa4uV2BiwYHxbLfiRr1q1pzxR+ZIOyVCgOYF5GX5UawyHGjWl46TaeTbxIUUSZv2xJXcYJwaG5IDbr86R2JtnzkunXiYU4XVrmu9aOhwRQY0xfSfi4Ty9Auz5tfa1xnDfjU5p0tcvmkWIBXBjSSs73zYkYWPIuqakqxZq/R2d/OhVkDOCZdFHAu1i/uCLehf6N+zPgdrujz10K4DV8vuFfq/iNZzrZ2NRJuSO/LfqcGdawB1zYxDhfT90Etk1W8wnm9HvAeeeioG/TsRwqy+mtba1/uIdxezwlJ+AWjUXjEAA4YJaEQ8asS1vow2YIUwyitlLERwGwc6vpHqQb/WijIP84eYJTd9SKdZpKF34VlF+Is8iyXS+N35W8Ie3kBLAlNMYKgmu/eq9KW+65Ho0tnqDjJbeoymefRTj9got+I43aQ59Wfb8fBo+39G1MmeBCe/pFaxj23FhY1asUnJ8WzFq7Y+Ubit6ENnM0JdY3ysT2xNDsnGIbAzmBfPIw88VsG4rXYwakywI4eHcFYnZixvRNUYci2a7/ynGh2oEnXDYrvyILm/7nfMoPTlMqdUpeaNdc9R7zjLOtFiHGl33SJUaXQcFgoIxazhEpmA8S8Ovz7cK2B0z6pqIyBLAUHi+RbAyd2zuzFqgJhr9CKw8cIbO6ULIL17N4ynbymVKvIipu6LAoE4HLOkHcRtsKXAb
+ zGgwPf+K
+ gPRO4J8uIoB5PFqcWIpr/gJTDqn27mzEZP2NZE9O3XTiDrkx3HCvB3KIhbE9qDVtiLDEnYAue5Q66fWuQmweEtvQYjRuzLgAJF8DVGcnrF0xyqwxgb0+7NrLrFpPJ721WfLqMlq1Zi3wskwmJak4kpzP15eDpufBBZtDp4N4kUvjjjRCZkkbxMZJoHUeF6YWHrj95h+HRy9LOoqydQDPzCLameZtv0j/QW529qCM37iCBjjcNxXYxdGqJZVwnFvwC+1NXRHlcCGy2HaH4U1yhXzyh5WSEGbB5nHitwdW9KBVDpNKWKXgM7Z6WGqHefkUUcjMU5Os+h1Oewh7uyZyFUXp/x84wfVUfnnJTlMrHNLqgt7+V6MjqOXxTsqLiFwf9qevc77A4p8j+FW5T4Qapc29uatvkQxjGZoTWwJGy/IJSVaIMFxrYTfc0GA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,90 +156,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 01:34, Michael S. Tsirkin wrote:
-> On Mon, Jun 29, 2026 at 11:43:32PM +0200, David Hildenbrand (Arm) wrote:
->> On 6/29/26 23:22, David Hildenbrand (Arm) wrote:
->>> [...]
->>>
->>>
->>> Fully agreed. I was hoping RCU was cheaper (I mean, we were once told that RCU
->>> read side locking is essentially for free ... well in some configs :) )
->>>
->>> The question if we could optimize it reasonably enough ...
->>>
->>>
->>> ... for example, by doing the rcu read lock + unlock around the
->>>
->>> 	for (i = 1; i < (1 << order); i++) {
->>>
->>> loop on the alloc path. But I suspect it's not going to make that much of a
->>> difference.
->>>
->>> I concluded, similar to Andi, that stop_machine() is too big of a hammer.
->>>
->>> I wonder if something could be built out of preempt_disable() and sync SMP
->>> calls. hmm :(
->>
->> Scrap that, shouldn't work I think ...
->>
+On Tue, Jun 30, 2026 at 08:17:42AM +0200, David Hildenbrand (Arm) wrote:
+> On 6/30/26 01:34, Michael S. Tsirkin wrote:
+> > On Mon, Jun 29, 2026 at 11:43:32PM +0200, David Hildenbrand (Arm) wrote:
+> >> On 6/29/26 23:22, David Hildenbrand (Arm) wrote:
+> >>> [...]
+> >>>
+> >>>
+> >>> Fully agreed. I was hoping RCU was cheaper (I mean, we were once told that RCU
+> >>> read side locking is essentially for free ... well in some configs :) )
+> >>>
+> >>> The question if we could optimize it reasonably enough ...
+> >>>
+> >>>
+> >>> ... for example, by doing the rcu read lock + unlock around the
+> >>>
+> >>> 	for (i = 1; i < (1 << order); i++) {
+> >>>
+> >>> loop on the alloc path. But I suspect it's not going to make that much of a
+> >>> difference.
+> >>>
+> >>> I concluded, similar to Andi, that stop_machine() is too big of a hammer.
+> >>>
+> >>> I wonder if something could be built out of preempt_disable() and sync SMP
+> >>> calls. hmm :(
+> >>
+> >> Scrap that, shouldn't work I think ...
+> >>
+> > 
+> > Wait a sec, what about call_rcu_tasks? Use that and re-check the bit is
+> > still set?
 > 
-> Wait a sec, what about call_rcu_tasks? Use that and re-check the bit is
-> still set?
+> So, in essence the idea I had yestarday when it was late was the following:
+> 
+> Assume we
+> 
+> 1) Can have a way to guarantee that a function on a CPU cannot execute within
+> our critical section (while updating the flags)
+> 
+> 2) We can request to execute a function on each CPU and wait for completion
+> 
+> I think we could just let each CPU execute our desired action (e.g., try setting
+> the bit).
+> 
+> E.g.,
+> 
+> 	local_irq_save(flags);
+> 	page->flags &= whatever;
+> 	local_irq_restore(flags);
+> 
+> And assume we want to set the bit, do a
+> 
+> 	SetPageHWPoison(page);
+> 	smp_call_function(set_hwpoison_smp_sync, page, 1);
+> 
+> whereby
+> 
+> 	static void set_hwpoison_smp_sync(void *info)
+> 	{
+> 		SetPageHWPoison(page);
+> 	}
+> 
+> 
+> The idea is (that needs double checking) that a CPU will execute the
+> SetPageHWPoison() either before the local_irq_save() or after the
+> local_irq_restore(). So it's own non-atomic update cannot get interrupted.
+> 
+> Now, IIUC when it comes to "how expensive is this" I think we have (cheap to
+> expensive):
+> 
+> 1) preempt_disable()
+> 2) rcu_read_lock()
+> 3) local_irq_save()
+> 
+> 
+> So the above wouldn't be better than an rcu-based approach we have right now.
+> We'd need something that relies on disabled preemption only.
+> 
+> Huh, but I read that "anything that disables preemption also marks an RCU-sched
+> read-side critical section including preempt_disable() and preempt_enable()".
+> 
+> So for our use case we should be able to use preempt_disable() instead of
+> local_irq_save(). That should already work for your existing implementation.
+> 
+> -- 
+> Cheers,
+> 
+> David
 
-So, in essence the idea I had yestarday when it was late was the following:
+We have:
 
-Assume we
-
-1) Can have a way to guarantee that a function on a CPU cannot execute within
-our critical section (while updating the flags)
-
-2) We can request to execute a function on each CPU and wait for completion
-
-I think we could just let each CPU execute our desired action (e.g., try setting
-the bit).
-
-E.g.,
-
-	local_irq_save(flags);
-	page->flags &= whatever;
-	local_irq_restore(flags);
-
-And assume we want to set the bit, do a
-
-	SetPageHWPoison(page);
-	smp_call_function(set_hwpoison_smp_sync, page, 1);
-
-whereby
-
-	static void set_hwpoison_smp_sync(void *info)
-	{
-		SetPageHWPoison(page);
-	}
+#else /* #ifdef CONFIG_PREEMPT_RCU */
 
 
-The idea is (that needs double checking) that a CPU will execute the
-SetPageHWPoison() either before the local_irq_save() or after the
-local_irq_restore(). So it's own non-atomic update cannot get interrupted.
+static inline void __rcu_read_lock(void)
+{
+        preempt_disable();
+}
 
-Now, IIUC when it comes to "how expensive is this" I think we have (cheap to
-expensive):
-
-1) preempt_disable()
-2) rcu_read_lock()
-3) local_irq_save()
+...
 
 
-So the above wouldn't be better than an rcu-based approach we have right now.
-We'd need something that relies on disabled preemption only.
+static __always_inline void rcu_read_lock(void)
+        __acquires_shared(RCU)
+{
+        __rcu_read_lock();
+        __acquire_shared(RCU);
+        rcu_lock_acquire(&rcu_lock_map);
+        RCU_LOCKDEP_WARN(!rcu_is_watching(),
+                         "rcu_read_lock() used illegally while idle");
+}
 
-Huh, but I read that "anything that disables preemption also marks an RCU-sched
-read-side critical section including preempt_disable() and preempt_enable()".
 
-So for our use case we should be able to use preempt_disable() instead of
-local_irq_save(). That should already work for your existing implementation.
+
+So on non-debug build witout CONFIG_PREEMPT_RCU (what I tested), rcu_lock
+is exactly same as preempt_disable.  It's relatively cheap but not free.
+
+
+preempt_disable is not going to be cheaper.
+
+I can test if you want but it seems clear.
+
+
+But IIUC task rcu might be cheaper - IIUC it does not need rcu
+lock/unlock at all, it relies on readers to invoke the scheduler
+instead.
+No?
 
 -- 
-Cheers,
+MST
 
-David
 
