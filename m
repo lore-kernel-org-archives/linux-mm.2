@@ -4,137 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76E3C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:47:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB6FEC43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:53:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1FCE6B00C0; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
+	id A7AFD6B00C2; Tue, 30 Jun 2026 09:52:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F6B46B00C1; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
+	id A29E16B00C3; Tue, 30 Jun 2026 09:52:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BE846B00C2; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
+	id 91AE86B00C4; Tue, 30 Jun 2026 09:52:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B4D46B00C0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0DEFA04E9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:47:24 +0000 (UTC)
-X-FDA: 84936706008.09.A4BC53F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 675756B00C2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:52:59 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E418A404F0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:52:58 +0000 (UTC)
+X-FDA: 84936720036.04.A881CFE
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4A71D140004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:47:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=btsTHTYY;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 39F8080012
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:52:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltadpJyY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782827243;
-	b=FM35EHT7Rq0867leEZkLVZddz5VyhlBt+u7t4YmEcKEnXCoSLE9FQaatrlNDrajEnUB1xd
-	jYTvm04qfWGFN9V8HByj0jjss/igZ1opllozbcD52eN3YdUcToe8mhbdmBiZHPdg/0SM/K
-	H3BX2zEoEIeil9gStqV0amN1wRiVXjA=
+	t=1782827577;
+	b=DI2PwitVNYDieqnfzsh4ZGWV4ZvFyQS6XV7skEcwyhlJwxpU4LLgZgWK47igF5IewYW7MP
+	rL1QltmG7VWSH3zepHHbO+bGyugoEsb1sf4myI5eWwcZOXvdnzPoDhS8yz87IvtMgP4eAN
+	DrFXnKmBXdI9C589b9wdrxnaijjuwcw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782827243;
+	s=arc-20220608; t=1782827577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3CT6D/enjC4EcttXInl6Uqt/u4bJlnsz/duKbsPoyYE=;
-	b=KjXJKBd+s6j69ShtNsR2zOYkKtCubEMiYuequcXEyXYlQmFveiZbVWzqqVNeU63+Ox7J4j
-	Z7CWHvg1aWvIoYzlcKXAGRhwCwDM6qdLktXllozkAm0EFSoX29FeTZt8WvlGp8ADiBmnvz
-	a5Ijpb1K8bn1KmfKYvocXFRGfhU2tQs=
+	bh=rJ9Rjx2oxCe13upyd34kkQk5EfFLNjaZEIfhLMJe8gA=;
+	b=MTd1LVVG2JksR13Dde965tW/yBNCAnLV7SLFsnp7S626j2vktvKLfPIgSQKbHep5sFFlVv
+	I4RxeW2NvYGf6cCjAFGpxaNTl0WXQX4Ot91QAKomZKel1uC5FQyYYuTretLyZkqIi3fqCe
+	ZXEz2KXZe9QJzP1xdE+51oZ5eC1Z5OE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=btsTHTYY;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ltadpJyY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA436601C1;
-	Tue, 30 Jun 2026 13:47:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692F31F000E9;
-	Tue, 30 Jun 2026 13:47:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AF858601C1;
+	Tue, 30 Jun 2026 13:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEFD1F000E9;
+	Tue, 30 Jun 2026 13:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782827242;
-	bh=3CT6D/enjC4EcttXInl6Uqt/u4bJlnsz/duKbsPoyYE=;
+	s=k20260515; t=1782827576;
+	bh=rJ9Rjx2oxCe13upyd34kkQk5EfFLNjaZEIfhLMJe8gA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=btsTHTYYLbO9csWjGLyMsR8fzZEh7vSINLdPBn5NqN3yJWIdLHYiiC1X2jEhPH3LS
-	 BQnBsSzn1rGECaC1T1I6PE3Wx4T9oBuEY/NloKxvTBq4nl9KB/fCEibYc7kU1nWObY
-	 +QiUVw97+4rWoHw+paiYDiqBJ8LgEnkRRTEiETWvJ5H69pGQYNWo9C2j3FBEeWzh+3
-	 MA5bL3xbSTc7wKbHcuNVrVK+Uxr/kEIhpB15lhPknQwBEGXeGwPTQoZngolS1jTr4f
-	 FsYjwsz1f9O0btoAuwzWOJxq6CEn/8ROtVhWtkeZSfI1PJi6R+L5/djI0Yp7ALJwWQ
-	 DyKBwNkkoeL5Q==
-Message-ID: <1c59fcc4-5fae-4032-8af3-99b2ca2ebfd0@kernel.org>
-Date: Tue, 30 Jun 2026 15:47:18 +0200
+	b=ltadpJyYu3rwXi5ugStfrcSEp69FAPdq2VEPHGQLdp+7ipYYrNM64wgZZk/nP7E/v
+	 E3zu/crrDTc+8seyxMUwHPiBvZBVuEPNL0/UgjaCS6j5EuEtKJi+OEoH/WVZWKEkSm
+	 vHqW4uwZirUe2XYDp+UMVQWhyQGS1A/kLpwIK9/SxAsZ92QqPha8wgsTsW9B/dAwqr
+	 w4Ta0nxQ5QAvYUNnCizawK4dhMaMs5vbcepg2cSuySREG11W33O+2DAXAZs2R2eEnV
+	 st9V2Wbs7ALSqouXeWerL6U9NzKDM9DxyFhHRTGGmD4+G9gdXxqZBRLOdLvmRD7uHc
+	 1XbpqjMtKJFaw==
+Message-ID: <06739dfc-8a30-4361-a8f6-6e81c99f2ea0@kernel.org>
+Date: Tue, 30 Jun 2026 22:52:46 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: cleanup clear_not_present_full_ptes() and
- rename to clear_non_present_ptes()
-To: Lance Yang <lance.yang@linux.dev>
-Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, mhocko@suse.com, jannh@google.com, peterz@infradead.org,
- osalvador@kernel.org, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20260629-clear_not_present_full_ptes-v2-3-96089871a1e7@kernel.org>
- <20260630130513.28882-1-lance.yang@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v3 06/16] mm/page_alloc: relax GFP WARN in nolock allocs
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-6-57bef0eadbc2@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260630130513.28882-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Harry Yoo <harry@kernel.org>
+In-Reply-To: <20260629-alloc-trylock-v3-6-57bef0eadbc2@google.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------65nHck7GCYTvNegZbzJ7HuGa"
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 39F8080012
 X-Rspam-User: 
-X-Stat-Signature: 7ryte7s1oi4t4rpqjbadoqu8ja598zna
-X-Rspamd-Queue-Id: 4A71D140004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782827243-734776
-X-HE-Meta: U2FsdGVkX18NnwWY+I8fz6ysITPJRttGc+gwOWZFmk9shZHX3C7v9rmpH9VpaMW0+wxIUH6n3OfhhDjjPTiSrhOCEm8fADaWR0uQ6pr01P5UFoK6UKFmBdT5hLm1d2Y57fDifgbOuO/MpYQTvN2bzzsr+2LdPVIMczRtTObJLnC721RiDdhYBeFppS5ZWyoV5qO65rSlAIyE0CLh3auvxPcp0l3uIBZTo6Cq97ycy5gDxuGzu2eEF0krUJ0Kk5hWr3Dk5PgVLaINBUhVkRklUFhO8tt3GAupWiCb8Q2PPqsLne4xWqQRfWo5Kj/tDhT2565Fdm1xi4fo2/Fks4d1MO4RO5MaKklBHfNUfI3uqQsObv0HsrUPV5zBji7EWM0TMbdx7GhksDC4qHJ5SLvf7U+Z2jVwzpJxLhk+B06m/ZFTDaEqzNpf9UR/HDa+hc6grPTZ4YVD/CyUwBa1Oj88DwKmhB3my+4HzijdOa2kYLzm+gSx66QwnfoMN8XOJaxMO0NBNCgQNwhuVbn43QsUaR91iS3kD1ELHPOw2TKAq1sRhGirOBulAaEtvQwOj6yKZKxRqC6rcCihkzLCWFtBcroPDq1NvwpM5PBjH9pF20izoEmhflD68+UMWEop7ZRnXo0vbLHKWpZ7u5Mg3e8no9k8GLHfUekyhavKYR7HyeuJP0Dyn6GJQ5LhQpDQUzPkzkkVCljCsToByN0D8VoSH4gqU5NVNC9PVPpdeqPOCWJZmSH5PmRq2aN6bm1n4ytUeGgezUb5k51nZvGgCVKYAFLdqltLrcAEkf9JQkLIT2y3rm77ZB6HlMLcH+KDQXZGumDujMIwObAQcFPxTa3vopktWGomMPW6ho0K8Gc/gl1PXuFaH90M1qSv27a5Fth8bUZu4xWgea9hHrdN8PvE6erosbYcZP6XkcC88IVDhGJAnxPdtPr/DJio37r/UM5vEfk0E0W8heubEczsiVT
- yiE5TQJM
- HyjDw3KK9VrWrINWEtOu8qcL/hlmobEiKNnQmkUm8DsbjgKGrR/H3Vet9riEpv7FMbFQLoyVomvt7SyN6QynJtdmw7Tb13QTWsYEibBjT4ERYg0E3NTH4rwK6vPijHpkUJ5QXnbrBhrGJnEc6NCQrkEPEyfY/IkK5bJZtSemoBgIoptqwvWeJSIoZkmNl4fIcPsF5cpf5aElfbtbXZMY36ENJQhUb73SRfF/z6IdEtarIni2TzPEzRM+tqu/baJq3SFtYaDh08w1OjgthVLprUZ7EIry5FfL0pnH3ROnjR0VcVmiKSP+MIjU28w==
+X-Stat-Signature: 6pnxhog16b89sg6qrhs5u7rba5orjcmr
+X-HE-Tag: 1782827577-429599
+X-HE-Meta: U2FsdGVkX19zOmQVV18U/gv2bFSYd/zLkCo1JC+jA3kjBVKISSX/xXpRrA5u1aZAGNhsx/V04GgKRE87SRMhxtXqYMTjyMrx9OwIHJ8P0woLW8lDPyv5VwaqpAdeeqPKEYFXJHMNIcim3vVrLiVdw9cnELj/EcuLFotN4r88bOnx4GYt5Rv0/WK81JH/gLtcs7JSbqvpmcaFwRPi3a99frNBtBzx1Xw4HfLHiOBeLDZ4PN60RvYcJ/5eyh8TGUNwa8JlhF7AX8wbhopkvWj4zPwRLh/btiDIfZRuXQSPUrbKsnsRXc22YcndITIB6sGvR12Aozn4hhs5IgGTHNObGt+l9phQQX4NaebDkt5mQsqku/brbDzEGpJ+F1pkBpvsw58qI3VkaBP9PrR/bHoxTzXc1/YuUoqIyOLt0SNVx5fDGUolTZYzOGRtHcsvvkgrXY/F5eJgacv8SdPM3Zvtyx/WRg6oWO/jbM2Oh7useHqwd1twRdrAi24AOuBUzxNPE0ahA0sH+LfXwKnUxgOzSI/FbmsHBuSUwFfiFM75bwpoNqC1Js0n5lL3Lufm7QrjqBJ8X2aBPCvRpPZp9q4gXU6ZQ+JO+eAQqwqeAeOqJCZnRepy7lH6ZBLCyBJYmWslN5Kj63TELtBVNMM2xKWoH4jxX+two/TtQpe7wbuTLumkKPaD/FHfZJcTbIjIF6HOuezrpFmWVGBms+mveWK3tcdTKuFODXBbfajaWYnJmo58TFj2offQo/IYjqkFQs9m7HCqpOQy1lVZ2d82m+CcqePPc5SC96LhjyZgGMRflyRFVZJRIqaN2KMFTpL/NANIQlB9xo+xpvMJ4V4Nuyd7rMKq/SBHerhmXaonknB8GvzMxjsJgpz+GVx0s/QbwP99+v2jw6rtb6gztWWGQfn1v7ZOfU0i8GJlCfu6SrhpYkS/5nphY2NTciZZAev/twn7r6+ohqJ/JvSQwY3XmT8
+ LWzM3zHz
+ fReqiV/Y19Y8IkQScZ+wORKH/WzU9esA9+8FYPZSb7OwioYe0IzeZEa3ZK+xzRIG+9CVWUKMQ6aa0HElMWBAZ07FBfrwYYCkEV3a7FOrsXhZVh4Dw9uY0PA2EsrXtuuic6B08UdMQIkN7s7N1Kx14rmi0vLNuG7AFYRcpBDvpbbgYDn76gsLd5Zj5+7gRm1qJ1l3Kixy8RbieEcIjubLZRFRu8jK9VJTcA9HURySNMKQildOVq3GdGNEzPqF+e2brSn2HpFl8cUb75ysACCV1hBxc8umZ0IfTouAbJ50SH3so+u+b6N+9UDWXyYoaL2TVOzg178brfC0+yq1yexHPUBy55Kn/Hs4xUS/ENs9ock00/hIP7q93JORTfobdkGc3F21uJtGJ8fdKzAi5XmW/oKsnVdF7efzlNpkehh2Few8Ndn9hKzxInFXlzVjyZnO/9Vc8Zt2Wp1dk0czf3zx4UlfwRn+Y3d60EqkKrOfQMbRq7ElArFLyKIj4/3lZU8B1FNHd9jSn8TQ4ZWgts1KSLApDdfws51p0U8uDH20V7Tyr/kC++vxvL4vZmUDdIUO17qQMHE/1LR91yVm+4kJIibJetjVn0RBg0nAMUZv33ni2maAdrE4j7a1VD3Oevz2uFhPCUopmIIIVEPi+ok+acygZQgJ8euxPvilaVnI8fg0LwuTKRGUtjXBRWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,22 +111,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 15:05, Lance Yang wrote:
-> 
-> On Mon, Jun 29, 2026 at 03:49:49PM +0200, David Hildenbrand (Arm) wrote:
->> Let's clean it up a bit:
->>
->> (1) There is no need to pass "full" anymore.
->>
->> (2) No architecture overwrites it, and there isn't really a good reason
->>    to do so when dealing with non-resent PTEs.
-> 
-> Nit: "non-resent PTEs" -> "non-present PTEs".
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------65nHck7GCYTvNegZbzJ7HuGa
+Content-Type: multipart/mixed; boundary="------------DCICTPcniII3mGZVq7GuAR9T";
+ protected-headers="v1"
+From: Harry Yoo <harry@kernel.org>
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Message-ID: <06739dfc-8a30-4361-a8f6-6e81c99f2ea0@kernel.org>
+Subject: Re: [PATCH v3 06/16] mm/page_alloc: relax GFP WARN in nolock allocs
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-6-57bef0eadbc2@google.com>
+In-Reply-To: <20260629-alloc-trylock-v3-6-57bef0eadbc2@google.com>
 
-Thanks, maybe Andrew can clean that up? Thanks!
+--------------DCICTPcniII3mGZVq7GuAR9T
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
--- 
+
+
+On 6/29/26 10:11 PM, Brendan Jackman wrote:
+> This WARN forbids setting other flags than __GFP_ACCOUNT but we
+> unconditionally set the ones in gfp_nolock so they are certainly fine
+> for the caller to set.
+>=20
+> There are other GFP flags that are almost certainly fine to set here;
+> Willy noted GFP_HIGHMEM, GFP_DMA, GFP_MOVABLE and GFP_HARDWALL. But,
+> nolock allocation is rather special, so be conservative to try and
+> ensure we have a chance to think carefully before nontrivial new
+> usecases arise.
+>=20
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Link: https://lore.kernel.org/linux-mm/ajS96fWbG4dzP3u3@casper.infradea=
+d.org/
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+
+Acked-by: Harry Yoo (Oracle) <harry@kernel.org>
+
+--=20
 Cheers,
+Harry / Hyeonggon
 
-David
+--------------DCICTPcniII3mGZVq7GuAR9T--
+
+--------------65nHck7GCYTvNegZbzJ7HuGa
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakPKLgAKCRCGXBN6rc5S
+1sd2AP99B6lM/xRZNKq6HnXzak/9iQUkPa0fEXXgFpsu4yrecQD/XhpasXq5hRP3
+/+MYghKl+3c5wsQObsmWJNub2XvDtQM=
+=+zJI
+-----END PGP SIGNATURE-----
+
+--------------65nHck7GCYTvNegZbzJ7HuGa--
 
