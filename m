@@ -4,158 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8749CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:19:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BA67C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1459B6B00B0; Tue, 30 Jun 2026 12:19:28 -0400 (EDT)
+	id 4F5936B00A6; Tue, 30 Jun 2026 12:22:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11DF26B00B2; Tue, 30 Jun 2026 12:19:28 -0400 (EDT)
+	id 4CCC06B00C1; Tue, 30 Jun 2026 12:22:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 035AE6B00B9; Tue, 30 Jun 2026 12:19:27 -0400 (EDT)
+	id 3BD3B6B00C4; Tue, 30 Jun 2026 12:22:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C4A486B00B0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:27 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55AC5A05AC
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:19:27 +0000 (UTC)
-X-FDA: 84937089174.13.FB0D4AC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3D3EE20007
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:19:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 166B96B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:22:14 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A4161405B1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:22:13 +0000 (UTC)
+X-FDA: 84937096146.01.681234A
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D31A120011
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:22:11 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bp88J+lh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jBVZJHTz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ypAxO1gK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tO9woAdD;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CEl4rS3z;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782836365;
-	b=aEpLaCJ0EgHiRoCsUdo+PsZwrsTxbFyowbM0Xe5J/CZ0MC7t40EXKxrCoq50V+hozz9pFi
-	/YWmWUHTAzHgy8n9S8ideuE8G62iYIBjS1/dIazNsc8Fkq8Ly3bLs+TDvqixwMmd2AKPVR
-	H6UGsSbUqRFpQZgib3E17FJSKLoBH/g=
+	t=1782836531;
+	b=vg5mRcp+qdlluOD0Iwj4+eacyytRzEEv9+Y/0oJAlZp+VT3ABVFFkvSP5lGDucCxKWI2/J
+	uaCCuFzgUrBs4Kj4RbTN2hQ4ZHpLxJcvuFTe+9+9eERRMMdtoSywUSwsN1WXDWFR2AuRUU
+	+9SUIHvti85y2xcBz6LcdQQbZg70IvM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782836365;
+	s=arc-20220608; t=1782836531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
-	b=BKiKeAL/z/kMrsVnCJE/+eDPbFDhKNNJOJFJ1cOjFltPcJUuE4BvynYJg1aZXCzavWsGXh
-	ho0KtDMsEX8MYb9ZX6ng5my2+AGNycIURc/CZrPdwghzEsHhd/cDNstOeWW8zdVULmS90J
-	bD0EEfXPERebaVSnDd5AmyJJur1qeYk=
+	bh=acv2p4BFA8gRpGMf2Eyfsq9WFKOfOwtHU816xigiBjE=;
+	b=oyRgrLqXmOBhfR8lXGCV6rRs7hEFgXx+mlhZrJ43CuJPF7LugODVQ9t82fU6xAI2lQFWYr
+	dQDVIQaVjrxVI+OkWqdU0IyRuJc+CaGXyTvKcsZaLoJTTeInxZOaAkAsf+qhUNomk6G23m
+	zwedqqNVwCf/6DW+/dfTuLk45vSJdrI=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bp88J+lh;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jBVZJHTz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ypAxO1gK;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tO9woAdD;
-	spf=pass (imf13.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DE1BB73684;
-	Tue, 30 Jun 2026 16:19:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782836363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
-	b=bp88J+lh4Ld94QLb/FgxSc78EMcIhQAsR8PDfC2OkzpEPkYI12ZSgnttOpJkZGY73S0x/Y
-	+7bgS2BZHogPBH5J1FJpmwzYjtavfVf6uelEie7YrbKOXGK3LSeBHpJY5h07tuDudJDiWu
-	jh98BikBWca7bsCsXuf3A7wH5JsyjM0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782836363;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
-	b=jBVZJHTzVzoE0M2g+PcL1BZzDdNmv+XSGT2v6Wu9el0LCF815lqezYdA5vJfGmUyjSnQid
-	W06sQywmqiDF22Dw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782836362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
-	b=ypAxO1gKMdIHQ8+ywHHuDwYNcjoy9rSDILpeGDU1FomJu6ky3ZQGryK4UvLVW1g9pfP1Au
-	L/5zy9jUtBQg1Dfz9gtdqXOt+qSlZgJ3kOyrpuB2VvuSo+Vcxb8rewchUhOO4ShufwgYYo
-	7+BE+yEMVAdC5umL8fl/GyJn6nE+y48=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782836362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IwxxOysWKobPD5UlF8mjIU0+j6+KU4KiqW7uzYDC/ek=;
-	b=tO9woAdDVgqM8KEyW+ULw4DreASg4B0YhphL0oz7tBKd3s5SUtC4zeWGlkFFQsRsvp058J
-	YqK5R1Lt3StFr7Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 539FA779A8;
-	Tue, 30 Jun 2026 16:19:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pVf+EIbsQ2rzbQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:19:18 +0000
-Date: Tue, 30 Jun 2026 17:19:16 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 06/30] mm/rmap: parameterise vma_interval_tree_*() by
- address_space
-Message-ID: <akPsGrmaOd3JMlC2@pedro-suse.lan>
-References: <cover.1782735110.git.ljs@kernel.org>
- <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=CEl4rS3z;
+	spf=pass (imf13.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-6a168dc590cso1487856eaf.0
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:22:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1782836531; x=1783441331; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=acv2p4BFA8gRpGMf2Eyfsq9WFKOfOwtHU816xigiBjE=;
+        b=CEl4rS3zHqnub+LDXfOeWu9PU1FihDOAVkpGQ0hAvsxoAPX6N+tzVMYF5xqYecRMVl
+         uG1LHPXgxz+HNn2mzKBwzcDr7Xhz4bIkXyXEWE1n0DAiOIusc/KI4ht6P1aOYohZnMCS
+         NZ0ym0Omyfue5jywqZZE6yJXKsIGphv1W1GercPv4runI6Ewq+j4X+PuBUi4TWnS7DFV
+         ThgboTfQRX8sSr3LHVMJ/udR2Nf2BmFZDwoHkUSVQzrEbmrdWoup5vYBfek3I22f/Kub
+         EbU9c/Lcv5MCzaGKQRCkxiCg1c5Nn6bN44YB27PDdJWeRBwcTFZXGJCPslQtJ9l3v7Wh
+         /fqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782836531; x=1783441331;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=acv2p4BFA8gRpGMf2Eyfsq9WFKOfOwtHU816xigiBjE=;
+        b=ZZnVBZdglFDm6eqrFipnf6uIjwmqvKB4agUjG9Fkr/hTw2LimYp4PZMvuzto9yR6bn
+         NvjxzNMbPZWgOmOwU5WsLtnS7Z4E2lum+hgIsXTVzyo0XyUFPGiAy6DCx2n/5hlePOiy
+         LLmQDnQkHC9peOGr1ALqzQehg2xOzjjY3J83tWGr6NnAmyXzrDESd8S5mUvlgU0/K1c2
+         XSal76rdFJdR9Ju7nCACWyrQ/4mDw7qapMUBw5pLA3xn0QxKK+DOQTiy1SZ2jHxfmdk2
+         /+SgjFRl+RuQe5liApUb04NRZFABofmcTscsbmgiJgznOp/3kRJUnSTsxDW528GNXVUN
+         sGsw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Sr8PZbjsCv+K9BlzdMlKyrUbAytICF1oi6kdIWhKcrfUAt7z0LuEtPamEseSMuRvGOkinkoz6dQ==@kvack.org
+X-Gm-Message-State: AOJu0YyethTl0xOnyFjCHxhDFZU9yAlxwtDKzO+E6ePlm0RRdUqP6qaY
+	WU7hN03DF6wZm3jtxXIxhME+16e/j70hgrgoM9G8XEBekHNWft01ltVB
+X-Gm-Gg: AfdE7cnIjtah/0KTHeLA4vRLXYhj3+XqGooSoKVd35CEMKm5rn3FtzniyEoYXL4vqLd
+	HjdmOIHPgAJHtQ3VaBkYyCBPx7T1hC1so/qTQ9HCLbXvZogYKkP4wgymXXvj2EMoJyAnYpCusSF
+	68ABXn4xKLSPc7fSpSl1dByVty3lW1fbu5BFyrPzKrwjBD+XUwCj6uD6gAkBMHXlsvkFC3Z36fN
+	KcmO7TsTAWlzdYTPUXFv5aCgrB56jTTqSQnHSDVsa/9SdGh2hL+TXA5Vg+QZjN9HNfqNuECcRrY
+	i5Yol8Z69zefVckNAkhhwnFntYWJwF/wMJDF8X4wEwBPGT7w2lCn/5NRFf/adg9iFo/+hvLTYkm
+	TThmota1b1k75X+0j+i9jDEriCVOyLvvWC2pA/d6quH9FeX9wNq9zQBIjxSZrduVH3eqrxYXvH3
+	9Z655E6joo2tfDssW0qaDxTXrUbol6tGtnBPRO2/mHBfE=
+X-Received: by 2002:a4a:d2e1:0:b0:6a1:154c:8199 with SMTP id 006d021491bc7-6a1891d3bdemr2567738eaf.40.1782836530787;
+        Tue, 30 Jun 2026 09:22:10 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:13::])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6a189493f93sm2155547eaf.14.2026.06.30.09.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 09:22:10 -0700 (PDT)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [RESEND PATCH v2] mm/memcontrol: Avoid stuck FLUSHING_CACHED_CHARGE on isolated CPU
+Date: Tue, 30 Jun 2026 09:22:07 -0700
+Message-ID: <20260630162208.1159952-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260630070004.470181-1-hui.zhu@linux.dev>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <43050b10b53cdfc3627440e6b14ae2a9730b2a5c.1782735110.git.ljs@kernel.org>
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: nwco77n9cq3mw4sbmout1uinyg4otszj
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3D3EE20007
-X-Stat-Signature: 3gdjpg8ostegh4h6xrqbjr7fbwkzy4ag
-X-HE-Tag: 1782836365-46904
-X-HE-Meta: U2FsdGVkX1+jz/lQrjC1TvxhB25+PN5D68aLmFmCvj6rkgELAYgVIlx/goq1ytCBPqnMUd1DB+CzjykFaMsFrJcB0PYfiOoJ2T8wJVAAz2GeL48YTB2AOQ0yxwNcsZ8en56n3MHVNQqtWMtrnT5vr1DPNx0CWVOuh1RQHpgxr6mYWMb+bKG/fWa4ZAuWgNRMjcvuD4BEZJ2t5ViwnscHBpISSEvYM//IZTwchjSHMTYhSMvS+aGJoh89yG0qVgFWl14+WzwUN3eJNpAv6wV+6lRSS8m1ppKn/SoMmC5vR/FSbZjLHlW2WzNc0vcHU8ntywWd1Zvb8nel3v5LblM2A3aCfwOqS9BFLT3bBkHDCvmUH+pE3+tFz6JXhAthm6XMl3KlyJ9bplCxBE5bXUyQv97cBmX5/k+pgvb0jurhd6f8QSNTrTQri23Si1vbV6Oi9G4SH9xFv2B9UHAlfVCjCIVq/5P0F8CNgzlojA1e94Kdfiq68oKm2Gl9QYV2P52rX79YdUn5mXWcq+nwpXpoZC4g/113TxZOt23kA7fsbGtMoC16jLriDmyLHErhOFJWdF2BEMv4sZd1vDZlHl3QLdA/6Z9WWpYB875qycxSVxAkaWEK9+4I9+ZnKCOAKknIlEVt1373xJ7sjdU5gBBt1aEThsniETU83ASFoXymbqyTfqHbGMhCFDiHQGvVy2CtKGQtGrjYqJmye8gHMGjaJEs6UqwxnnE1b3Uo3T/LPiMQVUrcQ2qaHpHxD1s2fuEhLIIOgrYiz+ELrqsSTdmKvd/VIEEPdNJDKEepyKe0FOLkV3LQQRMLBa+vibHZWqvow9FAQCNcbvdBLbwibCM0K8ZVZXkiu2iQ2YzSMn9tq/T3ut1d2HrXM1IS/gQpMBgWZ5CsdnppTrzRxJOgtez60D+baSaVZmi+hQzGrDCLzm8T50guSoQLeJJ5DX88wS38HAnIcdET2zCL1FxRJ3Z
- s4rT5IlC
- whvAfu6mCdrytvI1Ov6swAv1KuhQahEbumRBAbLySYBrx38BZOa7Ra1QHQ4/pXlwFgqzhIgCVI3mFgEb+KF9YL1/vADAphyAZQPxGngyluUpf3xGkfgKn/zMh+EY+rmrL+HMmwyXVJHwznYDVRXT8/yqRjCDLwx3B/RpLo4Qb34ITF6vPKO/RjOqCuL/XKcSOTbaxHLd4IBYNaRjt91W7VOrjQgLVXGmOM6tE2/SKL4cLQWhTd0sNPU9kvrlG4ETJqzKdsdRA81tYsn2ibOEQRtRTxB70mB18NgDoEwUK7W656yIGfx3ZW4z3Mbwiws4lM1KUjDTmfb0ujIqgOjdqbre5dIwhQ/PXPnLwOlcziIXyO4VFyEm3+oAsRrtWyf0d7Y91gFGr90y0MnwQeYkupU/zYobxubbFUBdx
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D31A120011
+X-HE-Tag: 1782836531-987017
+X-HE-Meta: U2FsdGVkX1/QPOy1U4sudss7bnG0heZDN4MbEUq1jpc5mwzyN/7RB0Lfs0Qk64kEZsvPVd/uW5KB8FxN3bpgB7JyTHgsHTYa9U9FmkIcJUI8iLkCk3V+x7zwJQdKP+mGB9KwFW8wb2ApHRiUwwRmCOLn/43gjG34kzPeBdWqBfel/xl2DO8hC9BBWVBcNcc1yi31s4Ek70bCib+RpGsRVnvkUBRXvGF1nNOv4L4wIPqfHwlLkCVxRH/EWvJW5WYi6PR3AJBC+9YRbzxN5N89nwWxUh5Fl+fdsONyzFZNVZf05YAi/LWylAAZfzqWlrJFOcqDq1/BPGqy2VdjA3UAvHeevzvUB/syXLqj33tbGzHJ3G3tAS0luuzxPfrVQp5Xy3GvKmJT6kgplDo6sbdgdQMctbUsZhURNLTxUCmx7R65tLfbSnIWWhvkh3UnNrQBYPdlpccAxDe2AGwT8gkBmBIdUD4TNceyRU2VxrfTAvkczg53BZNF6lrB2OgiBj0rL+Tf9oV4+lva6B+ZUoXLlDAQPOMG9r2JViwllF7fStSkt/YjxSJm6VG9O9PpSu08RuMtdxBXyOEMZznk+fdR8RHZ6W8IUQEn71YBgaM33VrBHBOrxUJb3mdBPSshW/275dJJ7+illCWTmLAKOfx3CUvLnnTCEpzEPIaczJsYZWj1EhuP/on2NZFZQAsz1EWQNaRc50C4h/f0lqdvbszNvvwJEHQAGXWUhlQ2aW2ry64oFkJn+lkEGmyVtP/+sbjvflTeKDd/XZHS44o0dVKQR0q6iyIvwMw6oFKpdYnyU/SZSnPLfLosS7FnvWz1s3kY3ASCbaIetrcZ6+YEV+GZAyJsK9ggZE3Q5IKCqzKSzIHE5HoHH2WJTe0IiKpctGI0sj3e/VeBulzBlwr6xSfKRhae6aoKMcwT3hI/0hv0IjrzibiO9G0FUb2Y4X7wE0uEJnmVqMBxObpVSSOyBBM
+ Sd4t6NBU
+ cw6mR05IdYhCdFE0aN+0V8dhpVBCswMxS8fFibRt3qGF16blGCwxgDZXNPKUESB455rLvSJNbhxjFEGEeg0d07yw0JyBqCjLVEYg1GLdMCbViiAt8KRSR89cxyi7Aw3Vdh8/BINbONwhkewErMebsPAdil81wugnkw6ehZ2Q77y2dscJ3ijPjrOZ/xbzkYPdGKrSVIDjvytSkzzCKUYIZe92qdOKVD7cIwyFvBhyqGDo2eyDWBlRdQLnIOHEdHS2Idg8pWeEa9IpxXWG6HEHWAp968l1WzpM7ti+8fjQHI/gBTWDnE144KNwrGFjgvL74kXBidcPXncTzzXiwEqByXSR37MXytK+0H1h0/TVahWjWFTZuCDjEwgU6eE1b/va85s4vs8u3pddWRRfEPVDZ+0+ZZMBq/ihoN4+K1xZ8wt/GP+vs7EHt9QZ7geIXemTAIZe71VDgZGTRxZ0MgnRjc16aNBclgY3TnruIO2B08PbI/dA0lfu/1AQ3m4se3H0NyCYbDlEhnak3depGielXbEHsgobp6DgeDYecNzL7PmmtB1dg+s+bL64xBg9E15WQpKqUw+/hqpTuhzM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,36 +129,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:17PM +0100, Lorenzo Stoakes wrote:
-> The file-backed mapping interval tree functions vma_interval_tree_*()
-> accept a raw rb_root_cached pointer to determine the tree in which they are
-> operating.
-> 
-> However, in each case, this is always associated with an address_space data
-> type.
-> 
-> So simply pass a pointer to that instead to simplify the code, and more
-> clearly differentiate between these operations and those concerning
-> anonymous mappings.
-> 
-> While we're here, make the generated interval tree functions static as they
-> do not need to be used externally (any previously existing external users
-> have now been removed).
-> 
-> We also rename VMA parameters from 'node' to 'vma' as calling this a node
-> is simply confusing, update the input index types to pgoff_t since they
-> reference page offsets and rename the parameters to pgoff_start and
-> pgoff_last.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+On Tue, 30 Jun 2026 15:00:04 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-1) This is fantastic
-2) I need to rebase my local work :)
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> drain_all_stock() sets FLUSHING_CACHED_CHARGE before calling
+> schedule_drain_work() to queue per-CPU drain work.  When the target
+> CPU is isolated (cpu_is_isolated() == true), the work is silently
+> not queued, but FLUSHING_CACHED_CHARGE stays set.  Every subsequent
+> drain_all_stock() then sees the bit and skips this stock entirely,
+> so the entry is effectively pinned until something else on that CPU
+> runs drain_local_*_stock() and clears the bit -- which on a long-
+> isolated CPU may never happen.
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Hello Hui,
 
--- 
-Pedro
+I hope you're doing well! Thank you for the patch. I've also been
+thinking about memcg stock and specifically on how the flushing happens.
+
+I haven't been thinking about the issue of isolated work taking a long
+time, but I have been reworking memcg stock by getting rid of it and
+pushing it down to the page_counter level [1].
+
+I think that this patch is still important because of the obj_stock
+portion, which my series doens't touch. I just wanted to bring this
+to your attention! I don't think there should be any other problems.
+
+Thank you again, have a great day!
+Joshua
+
+[1] https://lore.kernel.org/all/20260623180124.868655-1-joshua.hahnjy@gmail.com/
+
+> The original idea was to actually perform the drain from the calling
+> CPU on behalf of the isolated one, by adding a lock around the
+> per-CPU stock so that a remote drainer could safely touch it.  In
+> practice this turned out to be intrusive: the stock data structures
+> and their fast paths (consume_stock(), refill_stock(), the obj_stock
+> helpers) are deliberately designed around current-CPU-only access,
+> and retrofitting cross-CPU serialisation onto them adds non-trivial
+> locking and PREEMPT_RT concerns for very little gain.
+> 
+> Looking at the actual amount of charge that can accumulate in a
+> single per-CPU stock, it is bounded and small, so leaving an
+> isolated CPU's stock undrained for a while is not a real problem.
+> The only real bug is that the stuck FLUSHING_CACHED_CHARGE bit
+> prevents future drain_all_stock() callers from re-attempting once
+> the CPU is no longer isolated.
+> 
+> Fix this minimally by clearing FLUSHING_CACHED_CHARGE when the work
+> could not be queued because the target CPU is isolated.  The cached
+> charge itself is left in place; it will be released the next time
+> the CPU runs drain_local_*_stock() (e.g. after leaving isolation,
+> or if the isolated CPU itself calls drain_all_stock() -- in that
+> case cpu == curcpu causes drain_local_memcg_stock() to be invoked
+> directly), and the next drain_all_stock() call is free to retry
+> instead of skipping the stock forever.
+> 
+> Fixes: 6a792697a53a ("memcg: do not drain charge pcp caches on remote isolated cpus")
+> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+> ---
+> Changelog:
+> v2:
+> According to the comments of Waiman Long, updated fixes.
+> 
+>  mm/memcontrol.c | 28 ++++++++++++++++++++++------
+>  1 file changed, 22 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 6dc4888a90f3..2e66b4a2c25d 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2256,7 +2256,8 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+>  	return flush;
+>  }
+>  
+> -static void schedule_drain_work(int cpu, struct work_struct *work)
+> +static void
+> +schedule_drain_work(int cpu, struct work_struct *work, unsigned long *flags)
+>  {
+>  	/*
+>  	 * Protect housekeeping cpumask read and work enqueue together
+> @@ -2264,9 +2265,22 @@ static void schedule_drain_work(int cpu, struct work_struct *work)
+>  	 * partition update only need to wait for an RCU GP and flush the
+>  	 * pending work on newly isolated CPUs.
+>  	 */
+> -	guard(rcu)();
+> -	if (!cpu_is_isolated(cpu))
+> -		queue_work_on(cpu, memcg_wq, work);
+> +	scoped_guard(rcu) {
+> +		if (!cpu_is_isolated(cpu)) {
+> +			queue_work_on(cpu, memcg_wq, work);
+> +			return;
+> +		}
+> +	}
+> +
+> +	/*
+> +	 * The target CPU is isolated: the drain work was not queued.
+> +	 * Clear FLUSHING_CACHED_CHARGE so that future drain_all_stock()
+> +	 * callers can re-attempt instead of skipping this stock forever.
+> +	 * The cached charge is left in place; it will be released the
+> +	 * next time the CPU itself runs drain_local_*_stock() (e.g.
+> +	 * after leaving isolation), or by a follow-up mechanism.
+> +	 */
+> +	clear_bit(FLUSHING_CACHED_CHARGE, flags);
+>  }
+>  
+>  /*
+> @@ -2299,7 +2313,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  			if (cpu == curcpu)
+>  				drain_local_memcg_stock(&memcg_st->work);
+>  			else
+> -				schedule_drain_work(cpu, &memcg_st->work);
+> +				schedule_drain_work(cpu, &memcg_st->work,
+> +						    &memcg_st->flags);
+>  		}
+>  
+>  		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
+> @@ -2309,7 +2324,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
+>  			if (cpu == curcpu)
+>  				drain_local_obj_stock(&obj_st->work);
+>  			else
+> -				schedule_drain_work(cpu, &obj_st->work);
+> +				schedule_drain_work(cpu, &obj_st->work,
+> +						    &obj_st->flags);
+>  		}
+>  	}
+>  	migrate_enable();
+> -- 
+> 2.43.0
 
