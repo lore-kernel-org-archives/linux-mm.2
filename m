@@ -4,152 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAD75C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:25:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34FADC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:29:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5796B00A9; Tue, 30 Jun 2026 03:25:16 -0400 (EDT)
+	id E70CB6B00AB; Tue, 30 Jun 2026 03:28:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9ACCE6B00AA; Tue, 30 Jun 2026 03:25:16 -0400 (EDT)
+	id E48E96B00AC; Tue, 30 Jun 2026 03:28:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8765F6B00AB; Tue, 30 Jun 2026 03:25:16 -0400 (EDT)
+	id D36676B00AD; Tue, 30 Jun 2026 03:28:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5BB136B00A9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:25:16 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D988F1C326B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:25:15 +0000 (UTC)
-X-FDA: 84935742990.19.8B9E45E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8075C180006
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:25:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JvFgJ3kP;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A7D916B00AB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:28:59 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 23FFF1C6D80
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:28:59 +0000 (UTC)
+X-FDA: 84935752398.04.53134EB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6A1FBC0004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:28:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFn1H9jl;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782804313;
-	b=EUho2sl/tzj9TvLh95bKfkOMOA5feT76a3by4vmsP3GrmwfHi8awrUVj/RLmlU8xlDnU1r
-	ms+qpkJVPfMK0yloJqKj0wBUSOUXMzeGQpD9cThgRC3O7UEOAJDCj4zYmhIShOZqbjnaDw
-	cq4W3O5fg+hcShpxVrQUMOB42ujc+6Y=
+	t=1782804537;
+	b=idc5/+rFll1QDr9Kjyi8pzxnXzB6cs9p+oNF/J9Z7Qyxr6+Kbb60OXg/JluHdoHcv4zC0X
+	5mDHsz1D552JJluzMFOKU64GJnpLtckk1jVdbRXm9qumv4rOYjfcFm2nJWtzLkZjNx0ZEj
+	6mIXxYpfEEz7rGDhheofrXOVyj/Cu5I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782804313;
+	s=arc-20220608; t=1782804537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T8IRfAFAOswM/FHwO19+KBl7CbCbKiUJMFkwpdewsoE=;
-	b=OFfPIIqCwPvmO4utuAWfIzkdBleUNeLbjropgoQBXWafFI1iNGJvwuxfBF/tv66JpB9s6c
-	EVe66Z7PjPplzqvRl/r1AeTqr7ZeKzA0n166d9HUhMgbzrHZPRknDN7kdnYPP6IiiYV4L+
-	sBAFfDURbPeK9Ar5NVC751XzT5YZypE=
+	bh=e98YwUYuEo+jW47qdB3B72qgzQCPcBwfH7OsRH/ROPs=;
+	b=fKg1RFnxqJ6OD+7dxOjMcp5Ip28ZDKMBA3Lf+aRCrVkhA5iqjD9FQqNLuhwtoXf7Gw83eA
+	cWR0WiGUYuDOyE7ZNnaEzq3z+X+q1Rpg5CBRjZJcWJ7iGXc8Y7tZbIixFI09CXj9wJE/x7
+	01tVEHWohsUKcH2qXEDaosBiDF+Xnts=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JvFgJ3kP;
-	spf=pass (imf06.hostedemail.com: domain of mst@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mst@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1782804312;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T8IRfAFAOswM/FHwO19+KBl7CbCbKiUJMFkwpdewsoE=;
-	b=JvFgJ3kP0t9L9rGb9nNmMR1/83pWXy93TKXzK3TvAJr9ItSBgG/Dm/LJjuDNWfsxRizchZ
-	yD//lrjf3r6HJ8jo9Bcnths5sMVL0mxwY1APLwiOL2FpMIMTl8fpisIbkRu5ME/bd3+m+4
-	N63qk1oizhqDReUqFx4Bcf24Xd8edUc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-577-WTsOREyuNVuLvMEXENhCLw-1; Tue, 30 Jun 2026 03:25:11 -0400
-X-MC-Unique: WTsOREyuNVuLvMEXENhCLw-1
-X-Mimecast-MFC-AGG-ID: WTsOREyuNVuLvMEXENhCLw_1782804310
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-47407691804so826253f8f.1
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:25:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782804310; x=1783409110;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T8IRfAFAOswM/FHwO19+KBl7CbCbKiUJMFkwpdewsoE=;
-        b=n6Or/AZdhIUWDtYshxVk1I6sPR5gQ64vPP2Nn6yVmIlpuiWeu1O3/nUiHrsBHSHT/u
-         Tf9Q3ydpBNwfhW6TnK8/9hSf/NSYekJJKb7WFMlft4Y5aENQc9gt1PkjDUAi1Qo3pkKX
-         57sgkLp4RG5agFirahqf14trZTsR43Qk3psA6uXoLlLk9mERQJhuM5JHqnInjn4k72T4
-         vqqz63P8mf4qXUSEwJUqXmpOWQk4Cuvsg8AqaT23NsAnhNjtpJVoQzjkCjbNyFS1uf94
-         CXMJ+GFg0KfH6CR5SZrnKfjI9f19pkBE4tIKxUIC/WIeEH1zAp5qHbvzKs5QVff3aAIo
-         f1FQ==
-X-Forwarded-Encrypted: i=1; AHgh+RpPJt7fX+/1epm1uQX2oijwpr2h6WA9FBLV0joaMG7hH9C2T/SvuFNbQsaYcEiBVhqSZSX4IgEiLg==@kvack.org
-X-Gm-Message-State: AOJu0YwHXJT6M2gMm2E836UyNblaHKcJUtkIqSuNY8SnofrCS9OOTVpK
-	1aTgy3oHYKed8HzwGhRmmsydWx3dZYFtNRsk4viMQrIP87/DaLXRs60MYp3Rc9peZUkPDwPVC7g
-	oKDeh5Ckm/+oKoV4j/5RzSx5rXVCv0tSuZfEaFFOA9hq+bNwS6rvi
-X-Gm-Gg: AfdE7cm6Af8daPPb0iWByqpjQlDYh0Sivxff6g/xAia5jX04hXSwBvHMlKqqVDhCtXf
-	aJ4vfY9DFyCFRJZvlytxTGUrzMGVC+c5+BGQTIptdKDBpSDIxM6IDS/1nBpHvXh3Vrnhi+DgcmJ
-	bWXODSKs9McI1fLxj+qYGE8nfr1FqmhKxdxmnm6BEEBH3snzSzSjfOcjC+9LepQBjsw1LU6aRX4
-	HtyilJwvomEHXdtixsGyeBHlLRLKgQYwdzLfanI0d3PAsX3iuHYg1xjvEKYDIQc/8ugSD0ROIMQ
-	oV19OuCLGM4ZR64x0vOEViH3jaxT8JHTTAOxyi4fIjqJupGtG2dIV5bssgAYL7IM8RoLhxDy6Rf
-	LSQ==
-X-Received: by 2002:a05:6000:27db:10b0:460:2ee5:67b8 with SMTP id ffacd0b85a97d-47552a67f7bmr2268089f8f.36.1782804309970;
-        Tue, 30 Jun 2026 00:25:09 -0700 (PDT)
-X-Received: by 2002:a05:6000:27db:10b0:460:2ee5:67b8 with SMTP id ffacd0b85a97d-47552a67f7bmr2268047f8f.36.1782804309448;
-        Tue, 30 Jun 2026 00:25:09 -0700 (PDT)
-Received: from redhat.com ([31.187.78.205])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-47563e0eee5sm5074622f8f.5.2026.06.30.00.25.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 00:25:07 -0700 (PDT)
-Date: Tue, 30 Jun 2026 03:25:02 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andi Kleen <andi@firstfloor.org>,
-	Hidehiro Kawai <hidehiro.kawai.ez@hitachi.com>,
-	Rik van Riel <riel@redhat.com>, Vlastimil Babka <vbabka@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>, Byungchul Park <byungchul@sk.com>,
-	linux-mm@kvack.org, linux-cxl@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm: memory-failure: fix HWPoison flag race with
- non-atomic page flag ops
-Message-ID: <20260630032001-mutt-send-email-mst@kernel.org>
-References: <0b5f8b4b-d7dc-4b79-9555-a5b36265f3a9@kernel.org>
- <20260629030657-mutt-send-email-mst@kernel.org>
- <4f5ba5d6-246c-4430-9737-e8dd8e4c5142@kernel.org>
- <20260629092856-mutt-send-email-mst@kernel.org>
- <54c8cbee-9b26-458c-93ba-5aa594f5d1e8@kernel.org>
- <0a309ed3-378e-4d88-95a0-65bf47c5496d@kernel.org>
- <20260629193347-mutt-send-email-mst@kernel.org>
- <5c8ca96b-381a-4fd3-a218-6aaa87a9a3b7@kernel.org>
- <20260630022129-mutt-send-email-mst@kernel.org>
- <0fb36931-9097-43db-98bb-d087b7b0fa12@kernel.org>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZFn1H9jl;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D5F02600C3;
+	Tue, 30 Jun 2026 07:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7FD1F00A3A;
+	Tue, 30 Jun 2026 07:28:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782804536;
+	bh=e98YwUYuEo+jW47qdB3B72qgzQCPcBwfH7OsRH/ROPs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZFn1H9jlfNmlH1zT6vtcHSnaiSbi+w7BvliNM5mVDFp+wwRol6gWi8l9XJFmyVO4V
+	 ZC1OzZrcylNAncXXABpRL0ALxO4K0qJwrvq4T8JaZ0mF0FJDHf/t1F0M0aTTptdnGV
+	 DekqlyscJV/ndvE/m1VWbF5ajxosTl6fQCgEMhkhHvYEtCbwwGiPwS22eCKS3vFCNn
+	 ds5NL/4mLjXeCEHrOH8GvdmXJ7DOAxUDaCZRo4Otx6TJe/MQV3VzXtdtDd58ZYvjV7
+	 peUS7KnRBrPkttuQkrZbMkvM+YX+uFCx6hhhtWH4ZAt9u8l6FTINtva91gsMByKy6v
+	 YiKx4MywKrGtw==
+Message-ID: <ee317968-4aae-49e5-80f4-0c31587344e5@kernel.org>
+Date: Tue, 30 Jun 2026 09:28:50 +0200
 MIME-Version: 1.0
-In-Reply-To: <0fb36931-9097-43db-98bb-d087b7b0fa12@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: B7hBD0HpZuXOgaFg9DnlY3KmIySV5-RgrMBhrrpdX1E_1782804310
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8075C180006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/7] mm/page_owner: add MR_NEVER to enum migrate_reason
+ and use it for last_migrate_reason
+Content-Language: en-US
+To: Ye Liu <ye.liu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
+ Ying Huang <ying.huang@linux.alibaba.com>,
+ Alistair Popple <apopple@nvidia.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+References: <20260630015331.147174-1-ye.liu@linux.dev>
+ <20260630015331.147174-3-ye.liu@linux.dev>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260630015331.147174-3-ye.liu@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: cstfpgdye11zbknr3bzc61oben7gpc8c
 X-Rspam-User: 
-X-Stat-Signature: ehtdct8mxqssc6w7oq3p554bxirb5rs5
-X-HE-Tag: 1782804313-741827
-X-HE-Meta: U2FsdGVkX19OJFqme8EaWulWRQ2dlpvdWeOu+7OXqYeqHjXWKPLVLr5azu01gjL8JHG8BjI5NJWvbAtKhYUtw1MWlkWW0sELRwfGU02qGHizQyGpFUHk34Liy1nT6RcvDYxS1kDzt5BLqRUPuI3Hr9axgMY6jnoMuzSPkKuO42/jAK1ZTlzhutO+Lauh/NC3DvwcsdHYHNKfoRO4626pzjox+4FNJyElqqhMDu1YOaUQCF79DnWT9+QmL4xzwRaCX5KTszKP2yGba2AMMPzfUDtWI2E1RjJHPVFWxI6uhsNT+JtA2LFAk2NZbVXid5VtwOKJeauV+Z2iO4b5s4HEp/xtUg1HdhzsrNu325ohMxyKTW9NMX7nG119yz6zPEDBbABqxgHFZPflU2Zl1iPgs0KzmFGKy2yWtLJ7fPofvbJI7aotdY5FFDPN427rV26GF3CdG1P5QjMqS/neca1R/SUNgCFFz1+NlQCU4rl0zysWccSl0j6/9BLxeh3IwjyK/Ibnc1HBBWtwF/LooGngJq7n+1JqCwsLzgolYzI5vFYqf1CSRMe+Z5A9Lp6qmWjEqlbWjaoK7nlbxa1XoSf39aVBv0M26YTmpy4HV0BfLEqMih2v6ECiuJfnEsoVi3Ozp1thfLgood/F5VWWVvx+XjVYjsJpnbd5RRC7y13jPqnH2rvnN5TVXIc6mvIR605uSEHgAqaA64UDV6t0TmEoKsJ9/HrR/MRNx1/uHfoPai7RykDm978OXri779iJSLZFa+xjYXZxgtXN0JFPYZHYrzRuO77dx7CqVfcqebE7jxRAq5CjYWacunOl/1C7hjjR7H/iUPrrwHsPpl1dCU88IGX0N6WSrAMX9HbPFrLWW+D6UfPqzHtxTOKu2gqOj+XyQve+yPy66Qo1n5H97LmkgJv2/ESKYHl8I4go2KmrmJsuE8FuluMQetYrohx8xxqvvX9ltHGF9XG51LR56Us
- nATq53oI
- +InlV3GDc3rKtUy/AWFrJg6nN4FiP8QOy9yPY7WwqdIFx3DgnAe3JXYtc3jGBJ8bb6eZwokB88akwv0JEaNgn+4cnMbpUIq1q2jWsVGESip2N7M5W9M0Xq1ZuIDBWdq+z66OQhLUwJFx2bLH1TvFcj/fLHIW3ji9CZTz/nuReODTq95YnPZam52GBlrArAdIeYT2ZKpoTIsHcoZ9A/E96W/g6XokccnCkDJiAk8glNKWi0LakFuxOSJ3ZhAtdMrR1XNpGfktxU7l3G3bmAMBSYe0J9Ejgyqqr1bMO2SbZqTKlxd13aVtxCZr+RLCKsK5DAfJESuR/JJv6nkAG6M0Blk4o3Ang1iuusAK4H0l/PyNsxRIFhMZa9N+rEHaDY4rTy3jAruUWO2o1r7HEqpNrA9zEKsm8K1Atdup5G1kKO1rdj5ij2MxGiLUoXw==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6A1FBC0004
+X-HE-Tag: 1782804537-213870
+X-HE-Meta: U2FsdGVkX1/qA1fKceanyO6mgQxy0GUe98/rp4zVcDDZkwLCkKCc3Nd8MUhkftpmrrCsTjBCZpJqSrlBXda0a+G+g30vJ2Hrno8PpMnDH/NpdCn50+OCYb0axOLWn0yhlkT1ITvung8ohBQjQIrVMhDKuAD8i2YuEBgOVVz9/xlitPGyMkP/q8yhrdBSf536JHZ4K1e46YZxRH23SLm7IAJ9GOCNrvolcCqf4tOQZkE8ZusHJ+1fFAs8O69wSJKkLNwuoZg6Pf1dFILgosugiPmqzKLHvsQ9Qw8+wyKZAeh9XejP1CU7k6GwqKtjDLMH1YsSY6Qm8ddB6MmIbWbRH5DSR4WoJ/dHwpj5moCqz0rLRfoB8ee8SpZk4J7ZEqqlbD3irtLi0cCvTHFDiI55FE0sqb/jiYGSLbaTVurqe77lwXuSIjR8NMiDQWtXerhYZkcs59o0AgY7CAF30Qdb3Lfk8lZnUjpNte7VRIu01G6ww3uyb06aICYHcEg/V4ORU6mGweSAv4/2H86BUairuI7D0eYtk+hMR/O58uphijlv/kRAVu6YaocbCBIqXkQtnJrVFlEjeOy8v6pOQ83gjXEDEbd02r0zf6te7HBq35jLWMUnuKhMcA5UTHlqpYKRfDZXpE/FLK2VWTN2clNHSP5LYFRqMghbDQw0cbnwgFusOSIaDF7y/zsXf27WtPjC5SIhSIq2vB7O57bcse5UDfGKnHLJzuB2ZrHipSJXyVtjX2t54DdYhewuNoFIn0qzhZ7yrpd/W+NocUAa1n5nQSb7fv70L6ZCmZN5glnd7WpG+qt4YQAfd0agfhYs3PmoiqHWCUkde3VAq3DoRgOk0kNmIpb9qvto9t2ZJpXP8mby2N+FOwJQR5wAaKZqWSM5bZENLnfApLIyTA+PwTHqoDu2brc2LFWYy0Szb+ToYKPcp2FD1H2K6ljuNzINvN6RyPvQCNkjEePJrIkCAnW
+ YTh4rFWm
+ vtvZlavgvMcM6QbgqiMCuDj7Xgm7dkmIeusePwe9W0ayEUGCo17iL2eiooHjQSs6XnGSY2JZUaLy690F9QSWdoJCQFOrSbYeXC458ya42C1pKapc2c6Eu4GDoNd5v+mOMOcEsW2cDStqcE4nvcvrp44ivtmzAgimpKjQ2HvPmpt6uNFiqkh0V4+XbKH2XQnNa1r2h0TKynU72TYFx4B2XJV4BIGyWSLA2INHDAlfXMdzxxqodzLxZI3OL81QfDZWD5jTsaNuNomPHLDq40HLdeQk4OObaQmNAYeQ0Nph3ijTiTfcRZVmgr4PPUN/vOV5RyT1RmmzSml5AODIf7/bkuyQV+jAFLYD9frv92m0QyiU03kR/jtQy37xeenKTm+mL3AAcNl5xOspIaLzbNyQbDBNtaQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,136 +144,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 08:34:44AM +0200, David Hildenbrand (Arm) wrote:
-> On 6/30/26 08:27, Michael S. Tsirkin wrote:
-> > On Tue, Jun 30, 2026 at 08:17:42AM +0200, David Hildenbrand (Arm) wrote:
-> >> On 6/30/26 01:34, Michael S. Tsirkin wrote:
-> >>>
-> >>> Wait a sec, what about call_rcu_tasks? Use that and re-check the bit is
-> >>> still set?
-> >>
-> >> So, in essence the idea I had yestarday when it was late was the following:
-> >>
-> >> Assume we
-> >>
-> >> 1) Can have a way to guarantee that a function on a CPU cannot execute within
-> >> our critical section (while updating the flags)
-> >>
-> >> 2) We can request to execute a function on each CPU and wait for completion
-> >>
-> >> I think we could just let each CPU execute our desired action (e.g., try setting
-> >> the bit).
-> >>
-> >> E.g.,
-> >>
-> >> 	local_irq_save(flags);
-> >> 	page->flags &= whatever;
-> >> 	local_irq_restore(flags);
-> >>
-> >> And assume we want to set the bit, do a
-> >>
-> >> 	SetPageHWPoison(page);
-> >> 	smp_call_function(set_hwpoison_smp_sync, page, 1);
-> >>
-> >> whereby
-> >>
-> >> 	static void set_hwpoison_smp_sync(void *info)
-> >> 	{
-> >> 		SetPageHWPoison(page);
-> >> 	}
-> >>
-> >>
-> >> The idea is (that needs double checking) that a CPU will execute the
-> >> SetPageHWPoison() either before the local_irq_save() or after the
-> >> local_irq_restore(). So it's own non-atomic update cannot get interrupted.
-> >>
-> >> Now, IIUC when it comes to "how expensive is this" I think we have (cheap to
-> >> expensive):
-> >>
-> >> 1) preempt_disable()
-> >> 2) rcu_read_lock()
-> >> 3) local_irq_save()
-> >>
-> >>
-> >> So the above wouldn't be better than an rcu-based approach we have right now.
-> >> We'd need something that relies on disabled preemption only.
-> >>
-> >> Huh, but I read that "anything that disables preemption also marks an RCU-sched
-> >> read-side critical section including preempt_disable() and preempt_enable()".
-> >>
-> >> So for our use case we should be able to use preempt_disable() instead of
-> >> local_irq_save(). That should already work for your existing implementation.
-> >>
-> >> -- 
-> >> Cheers,
-> >>
-> >> David
-> > 
-> > We have:
-> > 
-> > #else /* #ifdef CONFIG_PREEMPT_RCU */
-> > 
-> > 
-> > static inline void __rcu_read_lock(void)
-> > {
-> >         preempt_disable();
-> > }
-> > 
-> > ...
-> > 
-> > 
-> > static __always_inline void rcu_read_lock(void)
-> >         __acquires_shared(RCU)
-> > {
-> >         __rcu_read_lock();
-> >         __acquire_shared(RCU);
-> >         rcu_lock_acquire(&rcu_lock_map);
-> >         RCU_LOCKDEP_WARN(!rcu_is_watching(),
-> >                          "rcu_read_lock() used illegally while idle");
-> > }
-> > 
-> > 
-> > 
-> > So on non-debug build witout CONFIG_PREEMPT_RCU (what I tested), rcu_lock
-> > is exactly same as preempt_disable.  It's relatively cheap but not free.
-> > 
-> > 
-> > preempt_disable is not going to be cheaper.
+On 6/30/26 03:53, Ye Liu wrote:
+> The last_migrate_reason field uses -1 as a sentinel value to mean "no
+> migration has happened".  Replace the four bare -1 occurrences by
+> adding a proper MR_NEVER member to enum migrate_reason, defining a
+> corresponding "never_migrated" string in the MIGRATE_REASON trace
+> macro, and removing the local MIGRATE_REASON_NONE define.
 > 
-> Well, it will be cheaper in the general case (CONFIG_PREEMPT_RCU) :)
+> No functional change.
 > 
-> But yes, not for this case.
+> Signed-off-by: Ye Liu <ye.liu@linux.dev>
+
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+
+> ---
+>  include/linux/migrate_mode.h   | 1 +
+>  include/trace/events/migrate.h | 3 ++-
+>  mm/page_owner.c                | 8 ++++----
+>  3 files changed, 7 insertions(+), 5 deletions(-)
 > 
-> > 
-> > I can test if you want but it seems clear.
-> > 
-> 
-> If you measured only !CONFIG_PREEMPT_RCU, then yes, it won't change a thing for
-> that scenario.
-> 
-> > 
-> > But IIUC task rcu might be cheaper - IIUC it does not need rcu
-> > lock/unlock at all, it relies on readers to invoke the scheduler
-> > instead.
-> > No?
-> 
-> I thought that still requires protection of sorts (preempt_disable /
-> rcu_read_lock), because it might fire whenever the task is preempted?
-
-Why do you think so?
-
-From Documentation/RCU/Design/Requirements/Requirements.rst
-
-
-Note well that involuntary context switches are *not* Tasks-RCU quiescent
-states.  After all, in preemptible kernels, a task executing code in a
-trampoline might be preempted.  In this case, the Tasks-RCU grace period
-clearly cannot end until that task resumes and its execution leaves that
-trampoline. 
-
-
-
--- 
-MST
+> diff --git a/include/linux/migrate_mode.h b/include/linux/migrate_mode.h
+> index 265c4328b36a..05102d4d2490 100644
+> --- a/include/linux/migrate_mode.h
+> +++ b/include/linux/migrate_mode.h
+> @@ -25,6 +25,7 @@ enum migrate_reason {
+>  	MR_LONGTERM_PIN,
+>  	MR_DEMOTION,
+>  	MR_DAMON,
+> +	MR_NEVER,		/* page has never been migrated */
+>  	MR_TYPES
+>  };
+>  
+> diff --git a/include/trace/events/migrate.h b/include/trace/events/migrate.h
+> index cd01dd7b3640..11bc0aa14c7e 100644
+> --- a/include/trace/events/migrate.h
+> +++ b/include/trace/events/migrate.h
+> @@ -23,7 +23,8 @@
+>  	EM( MR_CONTIG_RANGE,	"contig_range")			\
+>  	EM( MR_LONGTERM_PIN,	"longterm_pin")			\
+>  	EM( MR_DEMOTION,	"demotion")			\
+> -	EMe(MR_DAMON,		"damon")
+> +	EM( MR_DAMON,		"damon")			\
+> +	EMe(MR_NEVER,		"never_migrated")
+>  
+>  /*
+>   * First define the enums in the above macros to be exported to userspace
+> diff --git a/mm/page_owner.c b/mm/page_owner.c
+> index 342549891a8d..c2f43ab860eb 100644
+> --- a/mm/page_owner.c
+> +++ b/mm/page_owner.c
+> @@ -339,7 +339,7 @@ noinline void __set_page_owner(struct page *page, unsigned short order,
+>  	depot_stack_handle_t handle;
+>  
+>  	handle = save_stack(gfp_mask);
+> -	__update_page_owner_handle(page, handle, order, gfp_mask, -1,
+> +	__update_page_owner_handle(page, handle, order, gfp_mask, MR_NEVER,
+>  				   ts_nsec, current->pid, current->tgid,
+>  				   current->comm);
+>  	inc_stack_record_count(handle, gfp_mask, 1 << order);
+> @@ -596,7 +596,7 @@ print_page_owner(char __user *buf, size_t count, unsigned long pfn,
+>  	if (ret >= count)
+>  		goto err;
+>  
+> -	if (page_owner->last_migrate_reason != -1) {
+> +	if (page_owner->last_migrate_reason != MR_NEVER) {
+>  		ret += scnprintf(kbuf + ret, count - ret,
+>  			"Page has been migrated, last migrate reason: %s\n",
+>  			migrate_reason_names[page_owner->last_migrate_reason]);
+> @@ -667,7 +667,7 @@ void __dump_page_owner(const struct page *page)
+>  		stack_depot_print(handle);
+>  	}
+>  
+> -	if (page_owner->last_migrate_reason != -1)
+> +	if (page_owner->last_migrate_reason != MR_NEVER)
+>  		pr_alert("page has been migrated, last migrate reason: %s\n",
+>  			migrate_reason_names[page_owner->last_migrate_reason]);
+>  	page_ext_put(page_ext);
+> @@ -826,7 +826,7 @@ static void init_pages_in_zone(struct zone *zone)
+>  
+>  			/* Found early allocated page */
+>  			__update_page_owner_handle(page, early_handle, 0, 0,
+> -						   -1, local_clock(), current->pid,
+> +						   MR_NEVER, local_clock(), current->pid,
+>  						   current->tgid, current->comm);
+>  			count++;
+>  ext_put_continue:
 
 
