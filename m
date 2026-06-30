@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 408A7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:40:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76E3C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 13:47:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC9716B00A7; Tue, 30 Jun 2026 09:40:03 -0400 (EDT)
+	id A1FCE6B00C0; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA0DF6B00BD; Tue, 30 Jun 2026 09:40:03 -0400 (EDT)
+	id 9F6B46B00C1; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D91906B00BF; Tue, 30 Jun 2026 09:40:03 -0400 (EDT)
+	id 8BE846B00C2; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AEA0B6B00A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:40:03 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38175A04E5
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:40:03 +0000 (UTC)
-X-FDA: 84936687486.14.A5CF42C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5BFDA180002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:40:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b9jJnG7W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 6B4D46B00C0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:47:25 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0DEFA04E9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:47:24 +0000 (UTC)
+X-FDA: 84936706008.09.A4BC53F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4A71D140004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 13:47:23 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=btsTHTYY;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782826801;
-	b=RVU8uyQrDe9PaajAcsz+s/BHFBaftVCoQs4p2Tp5LMpYWUP/OPEZXqx4K9SyzUIDl1DlmJ
-	PrhRjkHnoc79GOGUFte610rJeIvRauBxT6QMF9fmm8sONfV6Z/+QUl7b7dCvkDX86hgAjL
-	EC/YTpqQ3ZMZ/UcPuNxCWddANbUms/U=
+	t=1782827243;
+	b=FM35EHT7Rq0867leEZkLVZddz5VyhlBt+u7t4YmEcKEnXCoSLE9FQaatrlNDrajEnUB1xd
+	jYTvm04qfWGFN9V8HByj0jjss/igZ1opllozbcD52eN3YdUcToe8mhbdmBiZHPdg/0SM/K
+	H3BX2zEoEIeil9gStqV0amN1wRiVXjA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782826801;
+	s=arc-20220608; t=1782827243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0phyMnWezcU9MmzmfXfHgx0JGNa4GUrTZOFULyjll9k=;
-	b=Q40+5laoSqZ4dLkrM7UzHhKteM+BJpWA1k83Oam0qkuO2+S+I2khx5YejQY8A82uv1l/OY
-	fEo22X7TafQfb566wd7bR64mz7GDRhbPg2NAMj8fnj05qL6pfjZDTNn5HGJhjW89Mbb1yb
-	9UYIN+2a+Blu46BDsvS4tZwuvX5eegQ=
+	bh=3CT6D/enjC4EcttXInl6Uqt/u4bJlnsz/duKbsPoyYE=;
+	b=KjXJKBd+s6j69ShtNsR2zOYkKtCubEMiYuequcXEyXYlQmFveiZbVWzqqVNeU63+Ox7J4j
+	Z7CWHvg1aWvIoYzlcKXAGRhwCwDM6qdLktXllozkAm0EFSoX29FeTZt8WvlGp8ADiBmnvz
+	a5Ijpb1K8bn1KmfKYvocXFRGfhU2tQs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b9jJnG7W;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=btsTHTYY;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8840E40532;
-	Tue, 30 Jun 2026 13:40:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F257D1F000E9;
-	Tue, 30 Jun 2026 13:39:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AA436601C1;
+	Tue, 30 Jun 2026 13:47:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692F31F000E9;
+	Tue, 30 Jun 2026 13:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782826800;
-	bh=0phyMnWezcU9MmzmfXfHgx0JGNa4GUrTZOFULyjll9k=;
+	s=k20260515; t=1782827242;
+	bh=3CT6D/enjC4EcttXInl6Uqt/u4bJlnsz/duKbsPoyYE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=b9jJnG7WMRwu79rfljohbeuTGvO5gBcBCsIiYnzlmdPCmXjjz2TEpcbb9LC8DEprh
-	 7t57CU12zwfUBmE52Jqfkt6UsU476jgnsQp0pA77CBplLbXyo67Dlmc30rVO47Eum+
-	 RZjO7q6+vZMfPQo2VkXN/RUofdktKXDemTkXBN1R0UcrfYJar49LqetmmXJJJS0IKf
-	 HkeTTDbrcB9Z7/vwy3wq4DZU/66l9+A+nea6HMeng2pt612w6s81Px9MCb18K4+Gc9
-	 NTSI7jn9wDTK6MsHBmHFGj9OM/9Mx0sFjRu2dlFBlD0HDkYeYJ+RdBtVDM2cmbeVQX
-	 4QD0xtTiHtJSA==
-Message-ID: <d44ae8a5-ec70-456b-92a0-ce7ccabf6917@kernel.org>
-Date: Tue, 30 Jun 2026 15:39:56 +0200
+	b=btsTHTYYLbO9csWjGLyMsR8fzZEh7vSINLdPBn5NqN3yJWIdLHYiiC1X2jEhPH3LS
+	 BQnBsSzn1rGECaC1T1I6PE3Wx4T9oBuEY/NloKxvTBq4nl9KB/fCEibYc7kU1nWObY
+	 +QiUVw97+4rWoHw+paiYDiqBJ8LgEnkRRTEiETWvJ5H69pGQYNWo9C2j3FBEeWzh+3
+	 MA5bL3xbSTc7wKbHcuNVrVK+Uxr/kEIhpB15lhPknQwBEGXeGwPTQoZngolS1jTr4f
+	 FsYjwsz1f9O0btoAuwzWOJxq6CEn/8ROtVhWtkeZSfI1PJi6R+L5/djI0Yp7ALJwWQ
+	 DyKBwNkkoeL5Q==
+Message-ID: <1c59fcc4-5fae-4032-8af3-99b2ca2ebfd0@kernel.org>
+Date: Tue, 30 Jun 2026 15:47:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/page_alloc: free allocated PFNs if the range does not
- match
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Yu Zhao <yuzhao@google.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260629-free-pfn-on-alloc-contig-range-error-path-v1-1-496ff9ca22db@nvidia.com>
- <4549ad0e-abb1-4156-95c6-5e3c1319dffe@kernel.org>
+Subject: Re: [PATCH v2 3/3] mm: cleanup clear_not_present_full_ptes() and
+ rename to clear_non_present_ptes()
+To: Lance Yang <lance.yang@linux.dev>
+Cc: davem@davemloft.net, andreas@gaisler.com, akpm@linux-foundation.org,
+ ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
+ surenb@google.com, mhocko@suse.com, jannh@google.com, peterz@infradead.org,
+ osalvador@kernel.org, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260629-clear_not_present_full_ptes-v2-3-96089871a1e7@kernel.org>
+ <20260630130513.28882-1-lance.yang@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4549ad0e-abb1-4156-95c6-5e3c1319dffe@kernel.org>
+In-Reply-To: <20260630130513.28882-1-lance.yang@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 5BFDA180002
 X-Rspam-User: 
-X-Stat-Signature: rkgdy194pjjyq48gdtkffc4hj8jicfbg
-X-HE-Tag: 1782826801-957575
-X-HE-Meta: U2FsdGVkX1+vnLz9ZOVeXK09sItUhQc4wcb1Z/w4QGWslrRUxKw2saroyZJPP58qelzE9Ssc6dDnCkS01O8olu31OyoHSlXFgVc7d9T32DT7gbivRlkS5tH3Jcdt0cah5OUGKLLChRE04kasukiPmrSTdarwsDn4557vtq+SzgsKWmFNSAfIcmeFgRoVzJlCleMasRB2QGHPqu1II+Le7KGX5QE827vL9L9xdt85/hLQx7v0XFkeZwHbNV1ecdR4oNYUSolK+bxiI8Jf3M4E3uKIMWvW55LKuII4z3JES5vqHeyUvYOFOJeSd+VqbdjQ5jDm7uIYP8NXt7o6j26X/cJdNOcY38gbGZQgu2ij9IVnqLeRtQq0CrcC5FkxDfxKfhosLKqT1wfb5ORWmt7goTfuO75ZSbL53E7E2Q6kIoi6RSdkfUHcYNxhQehlDnbI1wqc6fnC/Y40tMn2olbF0icP9HvB+UGSCqCp7TQb2SnaheHXZcoM545V/zpMajQp9dBsjNtstL4k42bNCKCygw5OepXvQtK01zwm3frnb7U5UCinwRmpxGixaxYsuzaNPum9MCkIS+R9YwboJuUgkwE29tUph3jmUf+h+J0Hr/3+V96zQTZpYjG4NzC0OXeoeRPsWHVlQEgUG5txYYWSdyfgXyhGAyvcdUt15ZIsKNFhreWmINJ8oaK3NwdvXrmEGZXVVQMm8SJEPDJDgKw+UfJdvpoI7DhcnKvrVOeRoJHrM9MgBO4OPQYvUaitf3/vudI5m/3GhoqBlfT9eI//Y3f/4zhzAHGYBGduvMqfOmkjG//WY8nuPkaqMC8h25l/2DZqBJS6LlT66xLWRL7tMYcW9OWe6HqFcQxLtDx22Ug+2bNn3uD4tbJPcS+Ju9Acmt6k61iHtZk9ZA0CWmVsU5zasHDcnMu2SKniqm70Txs/4pgZFJkaQCOa8iLddSjrvhzX+P8bc3SDTaesbVW
- haQ0h1jJ
- UtwtQ9cXCAAHasRagI0SVdSwZGsEXy34WyxcIBsTwSXASnD0qwl15h2Rsz0vnhq51s0AzU6qdvtGV+iozWPUpmKtQTTNGLSiuGtuXacyZfKEJJ/daMHH+qcGjAPmNzmnH0H05U+2viaJx1KBR/WpMC65qd9iighsB+4gW0FlMl6PGqzmrzPwhOUt93eNck88TSdYHp02/fMwWKRS/ewrO6YeYdNWgAIRCxLZpYUJtJGWSSW+9UgINkGlcpzK7+gt5l4T4A3pddg0v0JoqLCP+O/dO0IJbkPdIbR61IZLOuc2anNVfq84kSnPOE1rMkMG0gumO1PQep+OQfPI/V7gFmq5TEPkxNcx7LE7CMTVEaUZvZhGZebXu+a40EExFW7PVF7Pv0LkLaaiQ1zasQ1bN524JUfCZbRqHZm8I
+X-Stat-Signature: 7ryte7s1oi4t4rpqjbadoqu8ja598zna
+X-Rspamd-Queue-Id: 4A71D140004
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782827243-734776
+X-HE-Meta: U2FsdGVkX18NnwWY+I8fz6ysITPJRttGc+gwOWZFmk9shZHX3C7v9rmpH9VpaMW0+wxIUH6n3OfhhDjjPTiSrhOCEm8fADaWR0uQ6pr01P5UFoK6UKFmBdT5hLm1d2Y57fDifgbOuO/MpYQTvN2bzzsr+2LdPVIMczRtTObJLnC721RiDdhYBeFppS5ZWyoV5qO65rSlAIyE0CLh3auvxPcp0l3uIBZTo6Cq97ycy5gDxuGzu2eEF0krUJ0Kk5hWr3Dk5PgVLaINBUhVkRklUFhO8tt3GAupWiCb8Q2PPqsLne4xWqQRfWo5Kj/tDhT2565Fdm1xi4fo2/Fks4d1MO4RO5MaKklBHfNUfI3uqQsObv0HsrUPV5zBji7EWM0TMbdx7GhksDC4qHJ5SLvf7U+Z2jVwzpJxLhk+B06m/ZFTDaEqzNpf9UR/HDa+hc6grPTZ4YVD/CyUwBa1Oj88DwKmhB3my+4HzijdOa2kYLzm+gSx66QwnfoMN8XOJaxMO0NBNCgQNwhuVbn43QsUaR91iS3kD1ELHPOw2TKAq1sRhGirOBulAaEtvQwOj6yKZKxRqC6rcCihkzLCWFtBcroPDq1NvwpM5PBjH9pF20izoEmhflD68+UMWEop7ZRnXo0vbLHKWpZ7u5Mg3e8no9k8GLHfUekyhavKYR7HyeuJP0Dyn6GJQ5LhQpDQUzPkzkkVCljCsToByN0D8VoSH4gqU5NVNC9PVPpdeqPOCWJZmSH5PmRq2aN6bm1n4ytUeGgezUb5k51nZvGgCVKYAFLdqltLrcAEkf9JQkLIT2y3rm77ZB6HlMLcH+KDQXZGumDujMIwObAQcFPxTa3vopktWGomMPW6ho0K8Gc/gl1PXuFaH90M1qSv27a5Fth8bUZu4xWgea9hHrdN8PvE6erosbYcZP6XkcC88IVDhGJAnxPdtPr/DJio37r/UM5vEfk0E0W8heubEczsiVT
+ yiE5TQJM
+ HyjDw3KK9VrWrINWEtOu8qcL/hlmobEiKNnQmkUm8DsbjgKGrR/H3Vet9riEpv7FMbFQLoyVomvt7SyN6QynJtdmw7Tb13QTWsYEibBjT4ERYg0E3NTH4rwK6vPijHpkUJ5QXnbrBhrGJnEc6NCQrkEPEyfY/IkK5bJZtSemoBgIoptqwvWeJSIoZkmNl4fIcPsF5cpf5aElfbtbXZMY36ENJQhUb73SRfF/z6IdEtarIni2TzPEzRM+tqu/baJq3SFtYaDh08w1OjgthVLprUZ7EIry5FfL0pnH3ROnjR0VcVmiKSP+MIjU28w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,35 +142,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 09:44, Vlastimil Babka (SUSE) wrote:
-> On 6/30/26 03:35, Zi Yan wrote:
->> When using __GFP_COMP in alloc_contig_frozen_range(), if the allocated
->> range does not match the requested one, the code errors out with EINVAL
->> without freeing the allocated PFNs and causes free page leaks. Fix it by
->> calling release_free_list() in the error path.
+On 6/30/26 15:05, Lance Yang wrote:
+> 
+> On Mon, Jun 29, 2026 at 03:49:49PM +0200, David Hildenbrand (Arm) wrote:
+>> Let's clean it up a bit:
 >>
->> The issue is reported by Sashiko[1].
+>> (1) There is no need to pass "full" anymore.
+>>
+>> (2) No architecture overwrites it, and there isn't really a good reason
+>>    to do so when dealing with non-resent PTEs.
 > 
-> So this?
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> 
->> Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
->> Link: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com [1]
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> Cc: stable@vger.kernel.org
-> 
-> Hm well, it's a path that warns, can only happen due to a development error?
-> Not sure we care about stable then. Anyway.
-> 
+> Nit: "non-resent PTEs" -> "non-present PTEs".
 
-If someone would run into the WARN we would already be in Fixes: territory.
-
-it's a path that should never be executed. If it does, the real issue must be fixed.
-
-So (a) I don't think this is stable material (b) I am skeptical that this is
-even a Fixes and (c) I am wondering whether we should touch this *at all*.
-
-:)
+Thanks, maybe Andrew can clean that up? Thanks!
 
 -- 
 Cheers,
