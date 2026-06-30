@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F0FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 04:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FEDEC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 04:08:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BF0D46B00A8; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
+	id 201156B00AA; Tue, 30 Jun 2026 00:08:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99156B00B1; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
+	id 161F76B00B0; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EB756B00AA; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
+	id E338F6B00AF; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54C556B00AA
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 98AD46B00B0
 	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 00:08:28 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9203D8D0C0
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DFE16C1B7F
 	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:08:27 +0000 (UTC)
-X-FDA: 84935247054.05.E33251D
+X-FDA: 84935247054.20.2DC158C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0D648100004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:08:25 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kcr+VZa0;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 5EE15A0009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:08:26 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bn96ilo7;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782792506;
-	b=tCRmOEmeboefgiDIG/1J7FGZ9OmNs+Gwfonhz2yar/TGRUjvlgJAvILOdEkBmdeTXfNdc6
-	xiwtY836RwwsydDS9nTaF129x3udvtf0L/QXPQZaZU3J54WLeWSjEMeW0MvmHNC1zLB+0v
-	T6L5GkQivUeEIZj3/22BfBrN5EV9nK4=
+	b=WJyG/cv4mmvT4X52Ph3jesu3q78ofwTG9NGFfONwOmCh2XI81q53eEoNXi/c8iJ4UQq0B4
+	YKDz09fBY+KAYmYKloB5g5u/OXzuEBOTaIWYTMyNz1krFZvRgn3d6Lonapu453wxodcfE3
+	CAd46SimopVOTlcxwyOS0+LF2NQRAig=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782792506;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CUnTNnIb74vuucSNXoGi9/IfHGsNCXgoVOsKdS+73Y8=;
-	b=SX/aEMUQ8saP4d9BnT/hSzLHOm5noosQTZp3NCngCwFSN22LSqo8xSvlp5nRk16DooAqCB
-	h60joHWkXg76mKu3/QQriBgFL/f+DLa13E6A2TJE9JG7YD0oPnhZ5FMKUEhG6rbyDy2H0y
-	y30toozGTe4aPtMLu2iqV0H+ILCHhOc=
+	bh=1Ke0BSVs6s8s77whU08OQcfHx1Y/NV39ljz5Tc9+fVs=;
+	b=ED+dIMSVfQDJ3pwLeV0o0y/M3IC+wxupoZd4b2FSUkGiUETXEkavyT1SS8IXk1G8TisQaL
+	MvAt+KCXbP+fikWGT0qj9nt7Vp3XkLc6owM3xdWbLtozLhQwmG6YQgaSylncqEAo+Ox/gH
+	66su3cqJ2nqCtws9Bdi7ImfEEtLsAmc=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kcr+VZa0;
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bn96ilo7;
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9D4B6600FC;
-	Tue, 30 Jun 2026 04:08:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBD01F00A3F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 0BE0E600C3;
+	Tue, 30 Jun 2026 04:08:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8791F000E9;
 	Tue, 30 Jun 2026 04:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1782792505;
-	bh=CUnTNnIb74vuucSNXoGi9/IfHGsNCXgoVOsKdS+73Y8=;
+	bh=1Ke0BSVs6s8s77whU08OQcfHx1Y/NV39ljz5Tc9+fVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kcr+VZa0lHJCaMhWhwVq1oHyKcy9hfbk8LDqi33TOlC7ZG/49SthhgupQ/aWbwJI9
-	 1JoCtIyPIKsI3h4jnDtkTdGR9TtgdXO2ZFAXihqPfJu75Dxe5P9bt1AzCbwOkaMFOE
-	 +pBeiqptnxIVQzVQ6j+DG8XHick0tG3zxnnBM3y3Fp3QDh8VHhX5Iu7StqPehXjAYk
-	 2Czwr2DXjqtyZzjhwjMXzEBsWX7TCiFIlGbt0VjhtPMM+pwWiSlf9yeQP18cYnH+1O
-	 V4AA5sjm7WUj+GXN3WfzGId6JDH14FszaalCO3Ii0rn94IKHlELAHeF/+swn5/DAJF
-	 1L7VuSprHtTog==
+	b=Bn96ilo7xCkVl4QWUbwCr4S+UCNx6NUT5nOwaauTVtWzh2Fg8izzYvLrkSS5Ewf1Y
+	 PtqepMWWVoxyt4L1VZChljBgfMwJDzyCG37uwCzZxrZC7kjTsD9JpQYxGsMemFTzy0
+	 vIVCXBu1ThspUf0mOfug04432v2/wyXpSNi+o5AqhfINQAGmipbk8OSeSNSTGJYrwE
+	 zM7X4n3hAN1Fh71grKWNi0MIwechL8fd5bKDsv+ERzR09JJtHgpH9kDCJ0XppTxmbP
+	 vzwEK2mw8Gtg5gsiz7L5NE9XWD/U+DyMqgKhih/gDV6HOMYJiKPi9FyjqEdtG8FGRJ
+	 UBUIBhsik7Eqw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 04/18] mm/damon/core: handle unreset nr_accesses in damon_nr_accesses_mvsum()
-Date: Mon, 29 Jun 2026 21:07:57 -0700
-Message-ID: <20260630040812.149729-5-sj@kernel.org>
+Subject: [PATCH 05/18] mm/damon/core: use damon_nr_accesses_mvsum() in __damos_valid_target()
+Date: Mon, 29 Jun 2026 21:07:58 -0700
+Message-ID: <20260630040812.149729-6-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630040812.149729-1-sj@kernel.org>
 References: <20260630040812.149729-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 5EE15A0009
+X-Stat-Signature: qekxpum3n83wa9gdc91f6pi4x6qq49e7
 X-Rspam-User: 
-X-Stat-Signature: ksfn5f9gamt7sr8me7k9hk34qpk46se7
-X-Rspamd-Queue-Id: 0D648100004
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782792505-779958
-X-HE-Meta: U2FsdGVkX1/MxPVX57NriBPKRJ8pQ/6dogyHvtuyhI2C3pmtKH1gFs9faxxIoc8fwigAAXxs8diMMt6zo1TFn1MsRfAQU9GiZ0x7hHq5bBE9z2PS8Mc+qSZUovtQfR0REPDnD8DPE2Xyk6HHB3Fb219KLz8piokNbVcw14FNez+AtNwxBXxC+3CjVqnrPyRrDFXHFTzMgqDsfmi/eMTgph+m7yTiBFOyWJsGhVkxKzw9blMU0VxqqZqSGBP/VY168JrFZBjYtUIU3/aVGfqiFPuKCZPnqpIx3mK1EUwzTc2vqcN87IGxPqaOFNL5LiHTwn/bnbNhKb3LvBvqv6zSfxmc4ZnmRxozpniEh/3RmOOAiAbLhujultXjc9VPWTuEswA1jD0j0t9lFmGSxW0Phqm1nSrPf/uw9KL544Aoph7MZRUIxvODiQNC5uMXtrQzI1GAtA7Rjc4F7G0YJORrmWxIMj6BkD9kcdeAATj5bfsOqDnOvHBZO3jNoFkBke28oUqf1IBmkwdnb6poDNKVW7w8K9CJcHWWIsbN6n7y8wl3drwhkKmotcK2ZNzET4N/xL92X94liuGHpsXzO9iw4Fl7zKKm5FzhsYP5CcCEo/NtEjX9CoNMl5VQV+Yd356a2lqpyVOAQwSiJOCaRB5xp1ZqgVIFi8VrtjfQHCD7dhhAyn+qUjK5SVIrEowkwLNZetcrR9/hfGoHs70omh8jOp6GA6GGpfX3eFf3LphETE5s+zyyrNocOF4UpUXw/exc4IZyJK+eH+A7toO+3ZsMKYfbJSCpLUsjlcHeX5hEukWkdijErBAsYdIIVX1aYLvRAMI8IfAnbs8OcgqdQoSs+z+lp+euu/CaaViV+m1d3uRwoEtSLkJxlMmnZ5Us+WZ/tM9Zmh4b/KmHeFZmBV0OkBOYuCsKmERlOzA8VWUBEQ7Rb+xQD84NE8RkCMBNuM4tOsM9U4P+kmfqpL7Pgz8
- 0tLo+EdH
- kTI4DegAehm/XDsvUe1vI0wMHwXAmdRywKby+P9OA7LpNzB8JXK7iWe5zx4sNtgHhj1BgOzhEbqrr3zSS5FkPxN23cmGGVHU0g0qhIPsiWoyVDXT/KnbZJ1M3ylm3BCMDkvXPA/7ooFuEYn0Y/exe631ntDMLXmnvK7TKx3WInsUhTKTntyrjuROuC+kS5jRwu5JZ2eIv07XKnI1Md4drDQiPMidYkU+gqnrQPW+eAa6dAOtumUZYBkf26glwez/fyOeUt/VACg1ZoqT+xQQif3CgAg==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782792506-241287
+X-HE-Meta: U2FsdGVkX1/B78JHqf9sGDSGrUluyrnXF1G5KVOJ20InSqK8RbBMIzT3jgxSVDmWoAQeAn71CXE/L2+5Ep52IxXHQCH2FzZCWaOCl18b4y/7kUihqLZCKf5m42mJwtglXGPyFlue3X2eiUiSToC6VyRFBNZ2Riee2vAfH/iPf2GCTV6FBQSSyQCQm6ma0DUQo4fF93DV7P91HxhjTOMGhluYnz6WwUKzXkP00ksRFxso4+JJnXdris+bY5MdpGvptAeM/ToU4vJBz1dH7OiPlWWysk8gjqgd7/Cj8mLCvMP/gunHZBV4gZwWn1cnj4FnHCIaXIiQelnvSwFyVSN63x+fjJUPfvyhPVMvtFROHVOsY+ubmKGUt398uCWsHGxk/VMuFZH6utoIgbk2thoZ0mOLcbmH5E8j2OJ/cx+fQ658VpTOEmPCfsEskjdDfJFdEd9MOLnOgOkWbfhDxsS9xobiUCBiFwz97JfIjXDlVmM+tJnJgbS92SWewexCzTuh1o2s9xDGjwYuHHw8zwUD4jChgIPNjbvABL4tqmIN/KNCDfwicWtAmt9Oh0a72FnETh77LMyQ73O37/+BC5SZuBWFFU3SQeQcv7kJi3V9BrRYdv9sJaTRkIDt2BvNEV2z6oejMaRfX1L4PPefasWPh4IuuFud5LFdHZnjNfvYvY58xV8u2jCdivOx5vYhOuReq2NYEa29xNz4Gnuddxgxwgu9Gm+X+47oKdVcu6XkRuCw8hi6j67Lw5g5bKlfLVe5YQPCq4gup/VV4dIZs8qXFn2v0T31ycV9qp0ga6qNSeUf3DpNFk3ljMC3tu+3pSyzDgSef20fuH8gQK/jtOk9+kYw2MDGlDKKRSdjJnyLj9G8jb+55fLSCdSP4jg7sCQTheH4+kDeTd7vH8nHrwJXpCOsbMw1E77Eb575qtriMM3d4G/m07VX2WISWOkEde3lloN6sVXgvm9XKnJkutw
+ dDEpgK/h
+ fmsddwlB/IaTJ93pMK9lujkRtRqCaYXyVPkFfSl4jlg61Mk+V9kF0dgfcYTtVgcf1SJzpO6+pkpTP2N40nV6hakOVAxCXBqJtGyACRmUkpsRDMHCjoVmob1jayMNcmc8eC6rsit3HEz8m4+9UwcPrCJlN1ObNs8Z+jj30vgSDeEizLCp6yqqCS4uwtecnzqq6WokLPjUTD/P6AlypUhDjEvYjCdlgtutUevotYQOZAE3Q7lnq5e4ke3t9G+HSajpuYUPGoSWRSc1qQAFp7HJrYCfegA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,42 +92,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_set_attrs() works like reverting aggregations that were made so
-far for this aggregation window.  If this is the end of the aggregation,
-however, kdamond_fn() will do the operations at the end of the
-aggregation interval, using cached timestamps.  For such operations that
-rely on damon_region->nr_accesses, damon_update_monitoring_results()
-doesn't reset the nr_accesses if it is called at the end of the
-aggregation window.
-
-damon_nr_accesses_mvsum() works with fresh timestamps, though.  The
-nr_accesses that are not reset in this case can make the logic to
-unnecessarily count nr_accesses, resulting in returning
-higher-than-expected pseudo moving sum nr_accesses.  No code is using
-damon_nr_accesses_mvsum() yet, so this is not causing a real problem.
-Following commits will add usage of the function, though.  For safe
-usages, calculate the pseudo moving sum without nr_accesses if the
-remaining window is full.
+damon_nr_accesses_mvsum() returns a value same to nr_accesses_bp.  Also
+the function is more simple and therefore more tolerant to errors.
+Execution of the function would be more expensive than the simple read
+of the field, but because the function is quite simple, the overhead
+should be negligible.  Use it in __damos_valid_target() instead of the
+nr_accesses_bp.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 669b701e50a7d..70cbc382bec04 100644
+index 70cbc382bec04..612762490e866 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -266,6 +266,9 @@ unsigned int damon_nr_accesses_mvsum(struct damon_region *r,
- 			ctx->passed_sample_intervals;
- 	left_window_bp = mult_frac(left_window, 10000, window_len);
- 
-+	if (left_window_bp == 10000)
-+		return r->last_nr_accesses;
-+
- 	return damon_mvsum(r->nr_accesses, r->last_nr_accesses,
- 			left_window_bp);
+@@ -2132,10 +2132,11 @@ static noinline_for_stack void kdamond_tune_intervals(struct damon_ctx *c)
+ 	damon_set_attrs(c, &new_attrs);
  }
+ 
+-static bool __damos_valid_target(struct damon_region *r, struct damos *s)
++static bool __damos_valid_target(struct damon_region *r, struct damos *s,
++		struct damon_ctx *c)
+ {
+ 	unsigned long sz;
+-	unsigned int nr_accesses = r->nr_accesses_bp / 10000;
++	unsigned int nr_accesses = damon_nr_accesses_mvsum(r, c);
+ 
+ 	sz = damon_sz_region(r);
+ 	return s->pattern.min_sz_region <= sz &&
+@@ -2161,7 +2162,7 @@ static bool damos_quota_is_set(struct damos_quota *quota)
+ static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
+ 		struct damos *s)
+ {
+-	bool ret = __damos_valid_target(r, s);
++	bool ret = __damos_valid_target(r, s, c);
+ 
+ 	if (!ret || !damos_quota_is_set(&s->quota) || !c->ops.get_scheme_score)
+ 		return ret;
+@@ -2747,7 +2748,7 @@ static phys_addr_t damos_calc_eligible_bytes(struct damon_ctx *c,
+ 		damon_for_each_region(r, t) {
+ 			phys_addr_t addr, end_addr;
+ 
+-			if (!__damos_valid_target(r, s))
++			if (!__damos_valid_target(r, s, c))
+ 				continue;
+ 
+ 			/* Convert from core address units to physical bytes */
+@@ -3036,7 +3037,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 			(DAMOS_MAX_SCORE + 1));
+ 	damon_for_each_target(t, c) {
+ 		damon_for_each_region(r, t) {
+-			if (!__damos_valid_target(r, s))
++			if (!__damos_valid_target(r, s, c))
+ 				continue;
+ 			if (damos_core_filter_out(c, t, r, s))
+ 				continue;
 -- 
 2.47.3
 
