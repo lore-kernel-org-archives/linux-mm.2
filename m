@@ -4,117 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA23CC43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:07:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE5FDC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:10:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 792786B00B7; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
+	id 9E2E56B00BD; Tue, 30 Jun 2026 12:10:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 769D76B00B9; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
+	id 9BA916B00BE; Tue, 30 Jun 2026 12:10:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 681BA6B00BC; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
+	id 8D1CD6B00BF; Tue, 30 Jun 2026 12:10:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F2976B00B7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:07:29 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C5E8B8E13E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:07:28 +0000 (UTC)
-X-FDA: 84937058976.29.B7B2EBE
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 98FB320003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:07:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="QzPwZyA/";
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
+	by kanga.kvack.org (Postfix) with ESMTP id 5B9C76B00BD
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:10:21 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D06C98F56E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:10:20 +0000 (UTC)
+X-FDA: 84937066200.13.66F5EF7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E6C91100014
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:10:18 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaP2Jv7c;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782835647;
-	b=iTDeHE7Mn76yOeR1Z9tgSk0gaIx9qVFWQCFXblGfkhtkRLR9Ln1EQT6HRj3A+vcDYblARI
-	yodD6uBomU8ZF3WOI2oSAoGBja4gz/Hy/xmeyrly0d7949Bg+0yKvCra/tdXCEWAj12Ure
-	EBV36vOzqz7+fOSTTlSgsF+nP4M5Dis=
+	t=1782835819;
+	b=sk7ryEh5E8aF5wvsTBzIq75m9P44jOwKNjpdsU2vPKwIry3NjOnwI4bYEVbF2eD7QrRv+e
+	l+UZmxZEW2fRn2VzSpKR9MhVKjY82EonCHVMyTMqfnFRjtAm19r3SSMr1q6RpW+JrmcOLW
+	oK+qhNrPxR4n14KpgsyFAbWChPPEvGE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782835646;
+	s=arc-20220608; t=1782835819;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
-	b=Mo5szzAWkj+/n5u6w0/9vNpr/mlgu0zowQTEMm/yFz5TlgyGAn38ePey/VpDBprUkAzHWM
-	d6HMRCV5fpfMDu2kleg/o9dTfReGwX8LuWKo9vGuT7DR2T/DrcCYzQgoQVBTBp5v8eC/0x
-	kPB6S6RgzPes40hVrA1pz+liQnChxJ4=
+	bh=k7zChJl8MwHEyfkHkyO60Kplml0v/iOPphL5IgITDh8=;
+	b=g582gI1VqoTsOA/QkhNUtEJXhFyRjTipn8FbmT9+TgvXxm5R+jim9BXHj46xXv52T1Ivmb
+	eL7boWyQ6A4i1Uh47ZuItC4iK67htwM0b/gTxZNQVwIek268Dj6/Gs5kkvlFdsqoPTujnP
+	onVUiik2061aXL57gfld7/uT7PyoN5o=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="QzPwZyA/";
-	spf=pass (imf31.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.180 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
-	dmarc=pass (policy=none) header.from=cmpxchg.org
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-9217d13c276so340479985a.1
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:07:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1782835645; x=1783440445; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
-        b=QzPwZyA/WBBov0dpatbyTNGwYJUUVSireDs642tFUoSgSvRLNhIG3ZQ8NZVeSVlarb
-         VpKBJ3gR+J1qvTh3zhWEpqXpqLfT8kBJq5ApcH3j2Kw7EgvZD6wEBAejh9W5YHK5fxYY
-         wV6QkLjkz56YtrTIGbWSOYa+6DAyS4B9iTDroI835RZW2MLPomKByy8/8CgiTnhDPLME
-         i1XkOpPPUso6WKW7skvePqUVnTaRhHUsH5SDEYDBiQ4cnJIbEi9q6w70rs5CjPvrsiVQ
-         f9LnA7GqXy0oXVEDZbirMsXAvTPgkB7bpzkGza/An1qe18BAI3fv4TfgY6K6Q3xmozuT
-         2Myg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782835645; x=1783440445;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NGWPvsKd5xy7dR4RHMj1I0r7F9MdH0Syh6+XpRuoCxQ=;
-        b=j4op6TKYEr40dDjv8qqVEDSV/RtH6ouPV9TnP80CAuRg/co/GsQNBDxRz+iaqcVpSU
-         bDomHng4xU9ZYFKM2IV3a/qdgwAWvmI/Fr24O6ihaZCBx3KAy3lIHaZx1c1yJQi5cJsY
-         Ycm8y2MXDzOj46eWhaLdVaC/sEAsGfmAlh0Cytcf5jSSijdXvkLsVTPEXC6M38DP2OX7
-         0QKhN4/7g+wmvOTKLIv6mupN1cYn6GGAD61D9bOYpOpHQm6buZhRpSrZfgQ783TUrgDe
-         3NFdp1MMoUxRSp6i6orpbg6aEWWWGtleMIJ2Ywt3jMd5UX0nNzmguyJh4r9Uj7MwsnUx
-         wbSQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/1pD53NdckeIcsXQpcyOEwH5pRfWQjF8Hz+tYHXORRlyrmglHsL6sY1LQ46HSChzfX66wPD7jY5w==@kvack.org
-X-Gm-Message-State: AOJu0Yx5fZ3hNyz6Bp7yrznSNmcMjq9JhsYprHjxESZhOFaRsl+6I/cX
-	MsHNavCHXc7WwopAu52e4MrewKArZh76nMlrHTtbgibMWwoJyU2pNRtxBNhX8UcahfQ=
-X-Gm-Gg: AfdE7clrgfwG6k2drMAKswyfcmjl7HIr3DaYw6EsMehkDmaovdOTFmamKZtsZj2m6+A
-	y4ryn5I3Alu3BDIlpbhK7te/ZRhCN62PQqNGjcU4PHrv9WqN4GiPLZjpJe942850+8/LFXAewry
-	VTRT8tNg/KYqBNuQyIQy40c7b0cSWpZdUJ9NV+65V+VqYb9W2EP5vw8ORWDkW3sM/mt/r0aJY+F
-	1PupjcexZ+nYo8ad4b8WnRthkfDhgnAleJM7S/tOQ4Hz7RzOuD8pYjuhSJaMfdnow1pr2IzoDul
-	1ixG/eRUxoIUuPRTQhCA5+NjI1hYuTUUNDvqeVTB0EGgrGW2xQjhyXz9A2PAF0XJJK6qLa9PVUQ
-	JUkbyS242FZuRU/UQSLWgXoQhMKaoOnc9bvSZdSd+R/jFT4IRw1TL7VF7Hi/lDy96CApoTlZzWw
-	KtYOBT6TCp5Nc=
-X-Received: by 2002:a05:620a:4493:b0:92b:6805:91a9 with SMTP id af79cd13be357-92e62ab75e6mr685496985a.65.1782835639247;
-        Tue, 30 Jun 2026 09:07:19 -0700 (PDT)
-Received: from localhost ([2603:7001:f100:500:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e6213b953sm269848585a.2.2026.06.30.09.07.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 09:07:18 -0700 (PDT)
-Date: Tue, 30 Jun 2026 12:07:17 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
-	linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com,
-	shakeel.butt@linux.dev, roman.gushchin@linux.dev,
-	liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org,
-	mhocko@suse.com, rppt@kernel.org, surenb@google.com,
-	vbabka@kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH v3 1/2] mm/vmpressure: skip tree=true accounting on
- cgroup v2
-Message-ID: <akPptQjnQEmvCXhD@cmpxchg.org>
-References: <20260630112617.1198623-1-usama.arif@linux.dev>
- <20260630112617.1198623-2-usama.arif@linux.dev>
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RaP2Jv7c;
+	spf=pass (imf14.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C63E43B15
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:10:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014DE1F00A3E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782835818;
+	bh=k7zChJl8MwHEyfkHkyO60Kplml0v/iOPphL5IgITDh8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RaP2Jv7cYX1bNGREFeq7tshSNm/SWgYSS88YwrjEXc8F4U0mUzFD4557v+Z/5LeND
+	 V1nuZejIU+u+MIRn7O9cB3RnHz2Edc23OMyorbL67IChaAH3TZs+pnpyGoyO63SwlW
+	 QtoGzj6Im4O8FAakxrB8rSSzAGHYZ81UfVHDTHxvHLbKk+SKS5gDGEtRMXkjnDM+aL
+	 TEoXzHIgiIgTYGjDe6Loz97mgHvn5aOeagJKjTJHsgFuwsoFsY1MnC5Ot5jHdGJftk
+	 GSS6BaVRIFj5pjezXTnYaI9suwSIUgs/Xn463XnjJVOa9gSs9LxwGllHAKhp/1xpuR
+	 rgoPWLbK+E+Qg==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c1269e4721aso324686366b.0
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:10:17 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+RrQg6hwzB3pL28DT08c7l4xh0oYyK8ywIQag15LwJwW5+lMDl2gEj+BvOzVWeV5L4Hrr5KehF2waQ==@kvack.org
+X-Gm-Message-State: AOJu0YwJTbOOvYysJLWYwkxGKehpBKY0Awzdu20VGkVOQdhizdUuc7vo
+	sKpTiS42TS5ymLmc5SHo+IBd4jvrqWfzX0RSKPLbjAUpx5kFCBZ7xbd4+aaoE9jlPrLf0XYbzSM
+	+eIce1RqKOmgP/tExHWdDyenl5IU0tXQ=
+X-Received: by 2002:a17:907:e155:b0:c11:f6cd:e120 with SMTP id
+ a640c23a62f3a-c1297c09d89mr49816466b.25.1782835816933; Tue, 30 Jun 2026
+ 09:10:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630112617.1198623-2-usama.arif@linux.dev>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 98FB320003
+References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
+ <20260629112032.20423-5-jiahao.kernel@gmail.com> <akMJ8UfeZXrVe5LN@google.com>
+ <cbbdf506-b67d-193c-2c94-bacf828d559f@gmail.com>
+In-Reply-To: <cbbdf506-b67d-193c-2c94-bacf828d559f@gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 30 Jun 2026 09:10:04 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNCEis2QHROEsM5QZsb_H4ofNjA_sE-pM7SVxtgHg_rqg@mail.gmail.com>
+X-Gm-Features: AVVi8Cdt9VAUjUs2EYnk1zT9l08rcztQNfD1M7IbhQzMhnu027BpAaMiWC_e3cE
+Message-ID: <CAO9r8zNCEis2QHROEsM5QZsb_H4ofNjA_sE-pM7SVxtgHg_rqg@mail.gmail.com>
+Subject: Re: [PATCH v5 4/6] mm/zswap: Implement proactive writeback
+To: Hao Jia <jiahao.kernel@gmail.com>
+Cc: akpm@linux-foundation.org, tj@kernel.org, hannes@cmpxchg.org, 
+	shakeel.butt@linux.dev, mhocko@kernel.org, mkoutny@suse.com, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: p3s9e1647xa3dzp19kcd458oodf6wak7
-X-HE-Tag: 1782835646-302074
-X-HE-Meta: U2FsdGVkX1/aCb+CKqVhkcl3t4eTHQ79bCtJl3oglfnlPerAnRWX+QH9b/vv8jrFYtOLDd76ChWeGwp+HuzRmh9ChFy0rcrD8h6X51McVeuheH6MNVuXYC4f5/KdHgu0qz/XDYmsG/qoDDysxf+Rr6vU5JZzp9oIk+dF8h5WVnjyAlQ5lvLN5XNfQrGzHcdRSHJrB7gNh6bUBgIds4+Unsn84Y4rdmyvEVAcV8yEG63Z5XP773G/A0BUmKIwGlX6FFsmIQqqJTbwHo3JZk94TxW0SlX2I9BKd2z1YIwTMqAuNH9JRICEb4Uhbb9uH2+5RSuUM9cXiRG3NtviM2gSKI9RWON73JUg31CPPv0d2x3vhVNeBZgCPz+gxDLoZE4TEOVepaCkgE7pzpiuy0hYY1rWsKCOkAMFsdS/vCpBqfZt618N7aG6pNwuKUBi+VrwV/Qg0LcPTDcjqf9R7SMFxIjiTMZrM1VtD9r2aF59sijD7/6EL8b5C1EfYRkU4R6gBff93PfgV52s+JIb0BskAISYFLcNt81ApyXT27ogUpWArL/+UHpdILb/e3Mg209u83Ilp83O5DX5FoxKTGRCiI9m0gKkb8WmgLRWVPbCUB7CIdckUS1YW2D6uZONC4HKL/037T+PNDG5x5OfbcrP+pKjWQG0JJHBu1FP0Rn8mlcn5TEwgnmcgasCPexHYq7e7du/01Zujs64uVOfYWOLTDhCWS+fe0p5o6PMVq49fW98kJxn6aE5OTwvjMgU2Au3jQnYO63MTtAJzdChy6OrdnGgrL9+bmw8v+YWV+/CoBRVsMKZl7logVc57dGm0mqI1I/S4/J0zNzA72Af9Xjqvhtxsu5deZFUyzjSwtjmmFM36AxdOLpi8B6xzwcA8l0NQOlSYxWlOUJ1WD2EV5c3ComeF+Q4RMH4KpDOzBwk25dZ+eNoUgQlQLgLgWeFH8cnfi5UVxUVPAmiBsz56FR
- 3uGr1wlJ
- 3Cg+WmDjMMEwY0gDkefGp0qfWUCaiCNf4SbqMcd/0UwsZrsh84zQZf58kx3aHF+ioLeRF1q6aWLg4vUz3ahs33xiutrlrQj0ZqkIkuBjTHKeIcTvxC7UYB5YcK96tueeseAXtA67H/yfifHUo3QQ5cGnV29EfX5ICvFDd/wxochkM6rATEk00gy5ox+cyI+/97JAKSsjNjVM+XggrMplwHO94UJa7qeiyh9+lUpV5r9DL56+TwnCGO80qykQH8oERSvoS6IINDUFryzDVBltcS0byBxGwsU6Cqt7WR9nac0cW864fSbWHtb9fp2F0a7F5SmSJ4DgvCEUJRHM3hMFrLpBzONk48lv7ApAKqqlfTvY1fHOTzWUZ/Kk3dw6lE+pXifsrNkWVLj2YkT8yt26r3XQSsYmHsL+8vFjDV1XxpI/bfUUmU9ua5+aRug==
+X-Stat-Signature: pgswcttok17g99keeqrittggfh3pf6bm
+X-Rspamd-Queue-Id: E6C91100014
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782835818-513623
+X-HE-Meta: U2FsdGVkX1/+uyEvaHYNs+BTYeA9OaTOUVlN6cBbMvvUjKzCn89IQr31JTqGig5Pz+HBSWIZRBdbbqMdvaRBuJQVuuZ7IUMjUc1kBS0OvurgCpxdeQslr32aWy6s3O+icO6H9t9QEPF38mCaG/xAZvUf3XFmLZaGIy3ttNncBhXINvRkQMmnSwOQ0BeruaXNrSwn14vR8ZhFfz5fJnwT1I9SV278T7YK+hczutd53Aqghc/5Q9vLq7dZVSa2qsbfgN+9C8u1m1+7zCGPW48U5PPOfOWRNai9ja7yJ6IyfSkZRB4AIovAwGbI9QeqK0HIEY9HCjsZlsU+O1E9Ug4XudC+/NxlrM53KmtnFVbv1ACmivOe/ZcS/DFoDMydYpGPVkz0NMK7vyw2T5Gn0GUgQ28vH1F7xdJhE5YhxWu+65XTVixyJSKp53ZyWSaz89TryIW/azZ/MCe+yWqUj7ePtS6UnZ3rpdKkN2EhvI2fjiqZBRkV8nR++wobdNyLGPbw5f60bywuuIoly00JvBQ3hOeKGzUbMQxL+Z4yhRDmjz75untAFrhylmPneo+VOENFGbKy4SQ7OuP1IU3aYKf5Oe+E+s/qa5Za/h5/KpnEszVRJjrDGmbaF7tSvM/i1u8ZAICGh/1qqtNlZH/tPS3U67NFvH0Zl9LSnGLt4PEld6aKDk1ARXiLF2EV74hREFP3wqXlPexKwZZkuO7TYUkPrJ+s7XcJJJbVgvUiVxrVBeAp7FGvgzxAxu0gb8OBK9o7irXb1+LPyozUczKGa97DD4+xIN6yMMW8Pe1eEzfpxMqti5VFpaH43OiaOBQ3VMzpLHdC1H0feDjvPh8dj7HPdVeOnMeutFW1fVGfAoEheWIVJbcTuFzhSgdJxcnropKiNy24AicbAHZgLynfslUOPHseWfYjeBWWi32UWjAztXWkF+3pxLwRnAk5ISuLRPmMOkvrixpVMZ89L6Pr/xh
+ 8rKVDiVx
+ Mm+3iLhQkSpSZwjlITrjNEXHse1dqmJmgVF9wPXE9QjUhfQJb3JZ70G5q66D7LU9gMwVYc4Rq/e6W2rawqLh4EL7xGmpGdL4szUF69IdrWgAc5vulx7ymH1N2ub2PfpeL3kni7ILXRZy1Wkt4gwCnVJU+Wx2uyBKEdZUJeVsYek4UK6ExSKi2DokpaHJoPpn8fJTEXnaVBf6EH4eo4T6h1OkkeNn3uhE42rtzoGFpP209Ddyip7UnTAjK4VGZefDzA0vgiXxTkdIOvnMOmMgttaQfwBDiBv8j/REU5QztY8ECcl31g2VrVNgvfw87TzWEO5DqO+BmCrlwYtLjbefY9Gd0mBqDtsK3IYqUdhftr16Cxbc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,65 +107,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 04:23:32AM -0700, Usama Arif wrote:
-> vmpressure() has two outputs gated by the @tree argument:
-> 
->   @tree=false drives in-kernel socket pressure (mem_cgroup_set_
->               socket_pressure), consumed by TCP/SCTP. This only
->               applies on cgroup v2; on v1 socket memory is charged
->               separately via tcpmem and the consumer reads
->               memcg->tcpmem_pressure instead.
-> 
->   @tree=true  drives userspace eventfd notifications via the v1
->               memory.pressure_level / cgroup.event_control interface.
->               v2 has no equivalent: userspace gets reclaim signals
->               through memory.pressure (PSI), which does not touch
->               vmpressure.
-> 
-> The existing early return covered v1 + @tree=false. The symmetric
-> v2 + @tree=true case was falling through and doing the full lock /
-> accumulate / schedule_work / parent-walk dance for an events list
-> that can never be populated. bpftrace on a 176-core production host
-> (cgroup v2, CONFIG_MEMCG_V1=n, 285 memcgs, sustained reclaim) showed
-> ~16,200 @tree=true vmpressure() calls per minute. Add an early return
-> that skips cgroup v2 + tree = true which avoids us doing all this work.
-> On a v2-only host this also eliminates a lock contention path that can
-> serialise reclaimers on a single global sr_lock.
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
->  mm/vmpressure.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-> index f053554e5826..c82cee1ab43b 100644
-> --- a/mm/vmpressure.c
-> +++ b/mm/vmpressure.c
-> @@ -246,11 +246,13 @@ void vmpressure(gfp_t gfp, int order, struct mem_cgroup *memcg, bool tree,
->  		return;
->  
->  	/*
-> -	 * The in-kernel users only care about the reclaim efficiency
-> -	 * for this @memcg rather than the whole subtree, and there
-> -	 * isn't and won't be any in-kernel user in a legacy cgroup.
-> +	 * Only two combinations have a consumer:
-> +	 *   cgroup v2 + tree=false -> in-kernel socket pressure
-> +	 *   cgroup v1 + tree=true  -> userspace eventfds (memory.pressure_level)
-> +	 * Skip the other two: nothing consumes the result.
->  	 */
-> -	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
-> +	if ((!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree) ||
-> +	    (cgroup_subsys_on_dfl(memory_cgrp_subsys) && tree))
->  		return;
+> > Before going through more versions we need to figure out if this will
+> > pivot to be a proactive demotion interfcae for swap tiering.
+> >
+>
+> Yes. Should I drop patches 4-6 in the next version and wait for swap
+> tiering to be finalized?
+> We can try to get the non-memcg parts (patches 1-3) merged upstream
+> first. This would also give them plenty of time to bake and catch any
+> potential regressions. Thoughts?
 
-I had already acked this one, with a half serious suggestion to make
+Patches 1-2 can be sent and merged separately, yes. For patch 2,
+please include some numbers for the writeback performance before and
+after batching.
+
+Patch 3 does refactoring in preparation for patch 4, so I don't think
+it makes sense on its own.
+
+> >> +int zswap_proactive_writeback(struct mem_cgroup *memcg, u64 bytes_to_=
+writeback)
+> >> +{
+> >> +    struct zswap_shrink_state s =3D {};
+> >> +    struct mem_cgroup *iter =3D NULL;
+> >> +    u64 bytes_written =3D 0;
+> >> +    int ret =3D 0;
+> >> +
+> >> +    if (!memcg)
+> >> +            return -EINVAL;
+> >
+> > Can this ever happen? It would be a bug in the caller.
+>
+> IIRC=EF=BC=8CWriting the following to the NUMA node sysfs entry triggers =
 this
+> check:
+> echo "10M source=3Dzswap" > /sys/devices/system/node/nodeN/reclaim
 
-	if (cgroup_subsys_on_dfl(memory_cgrp_subsys) == tree)
-		return;
+Oh yeah, I forgot about that one :)
 
-Anyway, no strong feelings. If nobody agrees,
+If we keep this, probably combine the !memcg and writeback check below.
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>
+> >
+> >> +    if (!mem_cgroup_zswap_writeback_enabled(memcg))
+> >> +            return -EINVAL;
+> >> +    if (!bytes_to_writeback)
+> >> +            return 0;
+> >
+> > Do we need this? I think the loop will just never enter and
+> > mem_cgroup_iter_break() will do nothing.
+>
+> Will do.
+> >
+> >> +
+> >> +    while (bytes_written < bytes_to_writeback) {
+> >> +            long shrunk;
+> >> +
+> >> +            cond_resched();
+> >> +
+> >> +            if (signal_pending(current)) {
+> >> +                    ret =3D -EINTR;
+> >> +                    break;
+> >> +            }
+> >> +
+> >> +            /*
+> >> +             * Use a local iterator to walk the memcg and its online =
+descendants
+> >> +             * in a round-robin manner. Upon exiting the loop, mem_cg=
+roup_iter_break()
+> >> +             * must be called to drop the iterator reference.
+> >> +             */
+> >> +            do {
+> >> +                    iter =3D mem_cgroup_iter(memcg, iter, NULL);
+> >> +            } while (iter && !mem_cgroup_tryget_online(iter));
+> >> +
+> >> +            shrunk =3D zswap_shrink_one_memcg(iter, &s);
+> >> +            if (shrunk > 0)
+> >> +                    bytes_written +=3D shrunk;
+> >> +
+> >> +            /* drop the extra reference taken by mem_cgroup_tryget_on=
+line() */
+> >> +            mem_cgroup_put(iter);
+> >
+> >
+> > Can we just use mem_cgroup_online() instead since mem_cgroup_iter()
+> > already graps a ref?
+> >
+> Will do.
+
+If you're looking for another cleanup to do, shrink_worker() should
+probably also use mem_cgroup_online() and avoid taking/dropping an
+extra ref :)
 
