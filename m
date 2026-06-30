@@ -4,145 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A394CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:23:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E982FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:29:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7529E6B00C3; Mon, 29 Jun 2026 21:23:37 -0400 (EDT)
+	id E189E6B00C6; Mon, 29 Jun 2026 21:29:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 702D56B00C5; Mon, 29 Jun 2026 21:23:37 -0400 (EDT)
+	id DA2156B00C7; Mon, 29 Jun 2026 21:29:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5CBB56B00C6; Mon, 29 Jun 2026 21:23:37 -0400 (EDT)
+	id C69B36B00C8; Mon, 29 Jun 2026 21:29:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 396136B00C3
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:23:37 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1A931A0306
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:23:36 +0000 (UTC)
-X-FDA: 84934831632.01.D5955EE
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf11.hostedemail.com (Postfix) with ESMTP id CC87C4000A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:23:34 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=avZk2JwR;
-	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782782614;
-	b=8obmLRpUDvTYe5qwroYJNI9cvUmbuZ452/cW/gBsq/1SiZS22cOs4ec2h31BnGWbgL43Rd
-	04WIzzlGKm4JRqf0UFb6xAZvQg2J+UXqmz3I9OqpmTWVvrLCkryFPkYn/SMol/TLA0rru7
-	pnanIYzDbP+UKVb/8yglAb3oatJX1eA=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782782614;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D7C86B00C6
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:29:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 197BB1C1EC3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:32 +0000 (UTC)
+X-FDA: 84934846584.05.CC4F205
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 0E9FE20002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=C20zHS3o;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782782970;
+	b=P+B1pKjjZVCrc/ohaAAB/Is0adxmbcv393UvEMxjhh4PIrOnbmiQtUwrhSuyAp7NFMPik/
+	bl35XkmmUBX/U20hf9GZCtm/FVMXsie3GufPH2BWj2OMe7XPMDVYPpRWQqgXPnzsK3w+Ue
+	VTApV4oEhOPwyZcP1IzFchfJ5FtqwAQ=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782782970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=46A0ohYojyMmQy0oBsGSx+Y/V4MLJFoEQLBGXRE8WBM=;
-	b=uFi7EtiUVKykme4Dn6U3gkVfDbQ4oCSGw4eIioZr3oBNQefpE3IlXN9jj2irVbp9/P5KyC
-	MlW9QIRFEniurVj4ckpc+HjmDHPv5GMK1a4oo8V2dXzzmQrF3Vjx+tDXJSAR6mOoGI/59Q
-	eSvnogwlQGDmYBc9PTZJgrp7n7BHxVc=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=avZk2JwR;
-	spf=pass (imf11.hostedemail.com: domain of wujianyue000@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=wujianyue000@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5aeb78090edso1599700e87.0
-        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 18:23:34 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782782613; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fRTc1JWfTkDBAuGj7u1RocNzXi4gLn1qsPhGGnq5JrwioocBY6lKv/yTqhr4+fmsSo
-         0aMv0UGKvbFsohWBiHqux/L4j73YE9iFBQepPVBUDJpiAutH9yJ7AihE6aoV5Gst1wmW
-         FmfBkIELs5RqvW/GFvWbPwP6BCvZNeGnEKk/g4ITTt9k/OfEYBL3XbLHE+aKF6BaT41h
-         Flxo6HeueiPJsIRuLpUt1fCn/AuvuasJ6xy2VQRL6MgYVcFLWf9+eEH8nPqsd9JbmShM
-         6rGVfaCjWG5gXmgVR4QLBSnLmSeFS423RCpK8DcnODKIgMq2K/qFeUCOMflASP9b15fF
-         Giug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=46A0ohYojyMmQy0oBsGSx+Y/V4MLJFoEQLBGXRE8WBM=;
-        fh=k16j8Q9iY6P7TOXACbGzi39nMnKbJy4E/asMKAOC0wY=;
-        b=ZpGFni979xOTIuk1LDb0TGdgyC1jcNy1XDhhTIhp+PvnJY/ClW7GAkaszQAkU7e3XJ
-         o7cWOAuZT7SepPvEZVGRwEYzrfp9OMHj2CIrAe8q+UNgc50L/5jgf/4aI4K8jsd+p0os
-         FpNJP+cYMshnVcbNHdDNKrasO3hAYxOwHgX76jUjyFbz/XqtsuqMuKtZEETDr56pG+fj
-         U6eOkvKwedniSCmzZ36KtP0YjccYHkriobzr4UG6yYSHk8DU/k9Uo1ac+QHuvuunNs0o
-         OypS2Uqa4nu6YMkgnHEW3lpsR+pp/z8j57V/O3ZHWbbJzVcBKqOfLFwaZrkbDLABH71z
-         rD4g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782782613; x=1783387413; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=46A0ohYojyMmQy0oBsGSx+Y/V4MLJFoEQLBGXRE8WBM=;
-        b=avZk2JwRnvKpkQzu3ENiqsL3PtX3Llg3DegLRonPVps91TnHFZmUi/LJ+T617j6XIx
-         qwa1+SxA5wPzzwFGdCQ3gGnmOJ84UVIq0xGHNJXH1QINlzkwnJo6B2DKPRjU3ikP5x0Q
-         KkIc/ZBzfVuLjsxmirJCiPMTvSKXjou/ReFfUWBaI6d2jpgAxkSyP+fPK+mh6UCiy1Mb
-         Cgh+V34OpafLudViB4/kQ35M0ltbjmYja46AgVvP8876pQrf+w4Q058Ve+W6c9HPluST
-         J11/VVRVrADPXVYQgCR8GcYwzD2JD7P7gLy+/lA7K7l209SpVMi1qREF6WFC1dt6Q1zV
-         gvlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782782613; x=1783387413;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=46A0ohYojyMmQy0oBsGSx+Y/V4MLJFoEQLBGXRE8WBM=;
-        b=I5MzwiIiNf4vxra4sDiR4/nYb9kdwtC3EniPym3j+cwilyxIghqrbzzmYtdIbPcD4P
-         BruSaGEayiihbApAnQMdHXPCYdr69p5mlnaXyHIziKat1m8/grIyYxfUCXZ/gaVKFC2A
-         kvOkYJcJW4cCZIWXruO0UDU7ThDwBLSZmUHklVQ729iblNYFEann7uJ2NLfsDYW5DsM3
-         mSrfhkq867H6RSbrjeegoN/UIkMKmpdFrmJoepYvuoyTW3j1v8LOsvWYlCjQg8koWPbG
-         CoW4asX0ZKORkCFqGmbW9XYzLMpjqFuHQsh8scjxocg6cadfHHBZ5r5NuOcW+FVXlP1J
-         K91g==
-X-Forwarded-Encrypted: i=1; AHgh+RpWNaw8tSeXZDC0f71Lc/lvGnNcvWJRYVtDq4ON39sJMM/pZb+qUBXudFYy47SRggz9A3F/PCZ7jw==@kvack.org
-X-Gm-Message-State: AOJu0YwyZlldjjlzzGkSYA6iDjAADJlPjd9afeNNrpxgjNwDGrJ3FOFr
-	6SaW6ntHrTt1upEVD+n3juCusj1MLSxEzze329v8h0WrYPT4iD89gremuLa5hOeIAhKtw7iSo8O
-	IBA+ZWmppO+qU846e+zoOIltrGqdNiYY=
-X-Gm-Gg: AfdE7cmOPEkOvFKUwMBIh8PsG5IhV58lKBHSRweF2S9xEJon/FP+iWSkbpmdC1/DYK1
-	KGDNXDN+BVxteBWIDbxhSIwpdjnf9anBiQHavyfELYB2vsdg6/mn697e8i4iqnB0JI4G9g2NBlS
-	4kJBPmMuk8qzkVWlrDb8IF76c9/a26Z/BGTQurwZdFQRUvaFR3yPfTOxR6kPEuzufQnJCbX7aXi
-	hiXIWuXlKeNlggF1dDVX1l9byJJOnag9yQ9F4qDaHHvTduUPDltKjyKXYPXpoc9p08DJR0YEP1t
-	eIHQ7Oc+kMZM26Kh0HlF+7jagQ==
-X-Received: by 2002:a19:f00d:0:b0:5ae:ba28:a56e with SMTP id
- 2adb3069b0e04-5aebdbc9aeemr208126e87.35.1782782612898; Mon, 29 Jun 2026
- 18:23:32 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZTtenTdtqeMl8/RBjWbQbC1t0UZUIUeSy0y7m2XWyto=;
+	b=qr+HvxRhymkxozK6ZdOvzIADUwdrMfbmhhEw/68oVO8Z4rsIqOq0kzn7cJY1FKEXdGCzJL
+	bZzt1cg9RRWTSWd1lnO6p3f7hwK7fRVQHA/fY+YdmhEaptZNEglO1SjigkOQmg2iH2uXBD
+	lKS5YUoeilk7KpGvaUV0c2t4Huokp9I=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=C20zHS3o;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782782967;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ZTtenTdtqeMl8/RBjWbQbC1t0UZUIUeSy0y7m2XWyto=;
+	b=C20zHS3ofClI+RO9BptHadFBGWaiyExfg4Xzr/Nv0lG0SG4BPjlT7e/mGg1ZSsjKpbSOmY
+	V0zb2ABpN/7otH11xxDOxAjPbDcsJvQO9SZaenkeJTXYxGUgPhvXvu4FvFYbsw6z5xfqB8
+	oQT/I80r/WzV8i2xfFPLcDFsTKFW2/Y=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: linux-mm@kvack.org
+Cc: jiayuan.chen@shopee.com,
+	yingfu.zhou@shopee.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/4] memcg: bail out reclaim when memcg is dying
+Date: Tue, 30 Jun 2026 09:29:00 +0800
+Message-ID: <20260630012909.144372-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-References: <20260630-ch-swap-series-plus-folio-lru-cleanup-v5-0-4627aba8ed1e@gmail.com>
- <20260630-ch-swap-series-plus-folio-lru-cleanup-v5-2-4627aba8ed1e@gmail.com> <akMX9hoSgBmulBzv@casper.infradead.org>
-In-Reply-To: <akMX9hoSgBmulBzv@casper.infradead.org>
-From: Jianyue Wu <wujianyue000@gmail.com>
-Date: Tue, 30 Jun 2026 09:23:20 +0800
-X-Gm-Features: AVVi8Cedsz-VebzwdsD-jm8opqU7__wn8vihfYFrkRMOKiwHn1ix3nY7PfwlmWE
-Message-ID: <CAJxJ_ji9i-Mi0tAwiM9hwpSr4Y=hwZg69P-RHo2y1H3YgQLYkg@mail.gmail.com>
-Subject: Re: [PATCH v5 2/3] mm: rename swap.c to folio_lru.c
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>, 
-	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 0E9FE20002
 X-Rspam-User: 
-X-Stat-Signature: ekc6t6eru4cbk8ktdbsznz9y9a1qx6zy
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: CC87C4000A
-X-HE-Tag: 1782782614-580918
-X-HE-Meta: U2FsdGVkX1+c87JqD3as+XNOXquTfYUZDdvw5qP0CkYzkHNacb61OFM/c0obBTdrJFQ8EYNHb5pauNa1vAAs7bxjDC+kpH2mSftzeJeHzrJNchnZ68jfl6FPNLVbxBilySE3W6XtFz+yDHGNgdUYyoSxyVxAEIIw+snk6TtZs4xFyyXCF7yZMBYpIzFV7uNl1pFAzqobw/rZtUShCu0Z3bk/GFkrN1YjLtVvpEzyiPEPDzwfhiN6SGhNAZ9AbUXxtBonfdYYoZ4/AQfpv3AHwL1jvKVCZJKqfWAewwgMjVQqs51hglVqtj0S7fS8+ZhDsVvVjsmJ2KpRsL7U5n2k4HoyeRgnqyZzFiSMHPTkBBh/WlGTj1Ox3HsBTEB8r5iv2NltbzZk7q65CyvBaOCf8cGqNDfkwEPeQujhVQUQMJ5qZM99yU8nsL0VILMHpXcspKtxkiSzNVQf/FHf77AM5Que6lhn2NbQmul7Vz8GDHBu+bbNSMGpr1tFgLGGhym/vVi6Naa9YpzyDnzy3cCARgnF8JC5UmzNdiGtS+FpAo4VbvNI1bXYbY1nB0IzJhutbuMurGqkIp5xyp21MJpoqkR4Uyj1jyOr/VT82HkGH4zUHTDVq2d3/+KlGqQ5amMPNTSuuWfB602lspc0dXg1z1FRHWCZ8S1ESpppp+luHDCEXc+taOJhLP1pGxE7x0PErIB5RRo3m0jGtpRHhEd/YACjnYEQGUv/+4qvHPHZZiwq7GUJkxsbMCphCgRVfK8GFqa6aGi5RM08sBLpgwpyTVMg7W5ejOVZ5ve5TPMnsK839rrp9anYWs+988wXM0Blpxg2XRR/CV4LeCa/8mp2BEb33C9Kb517Vu4AsK8XB9Fi38hwkaN9dpWn3ByJknqhYVy5HeNN8in2c5YxzRjs0WuasRFxTGRuSLFUu7UWDP7K9O3tkQWJCB9sE7kCFWWx/meCsTr2ziYvKQOweWY
- TVm5A4Hs
- KltPuTZgsv7A12bgj3rYk1CXMPT9qdhj/sL/c62CLXKg0J8dUOXkeP+QyfVSuhCGeEhuinZfTGEpO+CWmrqdVf8J3DuPWsi2X+jIRLfyBTV/p3SQjwp94ltEZB50jEgQ7kQMPaoEFBWXhJQ7LL66nGIpoD+AelnPvD2iMeqK6BrdT7yAnpy4BiY1smmRsjZkkUh03JiztGeEK62QKCKKOJI8SduM138s6eYkW/ULeQQXuHELRy/C4H0dRCBhDHjSUXsq1ytkFyddylyTVjbYmV5TvpRleYh0IknJYEdWsSJpONEr/pbkrjVIOZPHWVMwfjuoHROOCoxeBNOPwAnkbZRWc0Vp+OJcweogCwPEyff4+MdcfcDo2Si/iYlG7iadcCNi3GhilKpr3X+9J+VtMBjoCzeCmOX6KpVjxbkaPxGe471vbPThZkY6uIMdSyCSBbKRAg0/83i2MsoC1A77bb2d99uMswn7kZNaZDw15tHxVieETFXBd6lxFFj0wvr+QqeFAddJMNaeJLH5JfqwwEf95zg==
+X-Stat-Signature: 7p7w7yxuehapryc1t93ho5ta5fwott7e
+X-HE-Tag: 1782782969-545923
+X-HE-Meta: U2FsdGVkX1+7jgH9lpGN16GFhAUQ1WyTa+QL7VOYUDR801yGqq4MU0Ren5gf5Mga3CKGEYvSg9MjoOSqCHbRyLu4OMWm8NH6T3wNHqylg5BQjhcwstVCxdQXlZi00t9MapgG/d+rZv61vtLq+eIRmr10wkzEVan50ec0DfgSCrQuGdd5Ma2eKYT/8aIUyc2TNWjJiQBJdG3WSsgmm3lXnt6poKLHU4OoHR8xF5ZC+nXQFhZJglSzaMhzAj8kQMVL1UjTo1M5ZO/q1HAmpcXX2bHPYNrGgzWLXxz3S31DDAPTGgOnVHmgoJfbwWcn4IJwgi59uqY1loMs76VDMlzF0J+Hu8HPL45ByuSU4ppyeccPxz5eYe0DeViU152PICx7YiBYfs82hPSAzlvhli9CpuwDNY1KtebIc4Te+u/7+cdUE0s+Mb8022ayb41qFkLvXhk2CSta6f0Jo9sGxAzkVzdqGfDg2DOpELO+a3SXHQLn9fstIBR0LRMg6BQtyMU/meTBSLDlOaYugEfNJLv1nlLBLdzIuV4Ekyv4eMUCSIY82lmE8mzvKntS5BcC1BVd+gVRwMIlUA7cfGgy7Ujp9NlTsSNnvuxDH7R4/NarWtr3lCphFre4UYAqFNvMsxBNwO5OfXzIyWX48pdGNM9olFYjjoQyX5T5BPUe8t9y4aplYJDZdO53b7OQrsNOcIZUWV9TgyJZh3TjPPjeEw9ciRfQNm0V4GtnMpkUJfuf+7gsdJ985SIF5QE9owjAFpL8fXqFdPe9kE3yyjtCvonZQ6hOvyX6+WiUw1QXnZR9X9oo+3Pv2jWDaqvzlOXnyz4xe+oiTdsD5phePUsuchBQQOdVL1BE3vg78A5WgFiOSTEqI2cvrbwXR4jng5NmGnS+D/tjd2zzZpcb1Peqgi/f2fsF6TOWNdzkVmrwNGGjxvpu9NTbfjjg0MhCCeVjcyYm0t4p09TwWZwsMg6OrEK
+ iTHaH5h/
+ m7/hdcjJEhgkc/NMYq6DjuPdNGrxtuG5E//hQGlWKX08R2vAr77T+A0UMwEdKX3Dxet8P9/Yb+q1ELY5Mxm/pOU6v6l4t84DgKEXBlCxPMyZFlCAos7My7/NLW2qZXezsfpCWyejwkcViOZ1JjLOW+itfYFUyd/cjiIVQ+X0tRxLwhJWIJf58FdAf/zDQw3shWAudjQint7a7XfeCMYNSKRj9fpbtd43IJnjJ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,18 +100,145 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 9:12=E2=80=AFAM Matthew Wilcox <willy@infradead.org=
-> wrote:
->
-> On Tue, Jun 30, 2026 at 09:08:18AM +0800, Jianyue Wu wrote:
-> > Rename mm/swap.c to mm/folio_lru.c so the filename better matches
-> > the code's main responsibility.
->
-> I said I didn't want this.  Rename it to folio.c instead, and then we
-> can move some other things there too.
+Hi,
 
-Thanks Matthew. Will rename it to mm/folio.c in v6.
+This series mitigates a system-wide stall we hit when a cgroup is
+removed while one of its memory control files is doing synchronous
+reclaim.
 
-Best regards,
-Jianyue Wu
+Problem Description
+===================
+
+Writing to memory.high, memory.max or memory.reclaim runs reclaim
+synchronously in the writer's context, looping until the usage drops
+below the target (or, for memory.reclaim, until the requested amount has
+been reclaimed). On a large cgroup this can take a long time. The
+latency is especially bad when reclaim has to perform swap I/O, where it
+is bound by the swap device write bandwidth, and under thrashing it is
+effectively unbounded - each round reclaims a few pages that the
+workload immediately faults back in, so the loop keeps making "progress"
+and never converges.
+
+The legacy (v1) reclaim loops in memory.limit_in_bytes,
+memory.memsw.limit_in_bytes and memory.force_empty share the same
+pattern.
+
+These writes go through cgroup_file_write(), which does not take
+cgroup_mutex and does not pin the css. Instead, kernfs guarantees the
+node (and thus the css) stays alive for the duration of the operation by
+holding an active reference. So while the reclaim loop runs, the active
+reference on the file is held.
+
+If another task removes the same cgroup in parallel, cgroup_rmdir()
+takes cgroup_mutex and then blocks in kernfs_drain() waiting for that
+active reference to drain. Because cgroup_mutex is held throughout the
+wait, every other task that needs it piles up behind the remover - in
+our case the whole machine ground to a halt, with hung_task reports for
+the remover and for unrelated tasks merely reading /proc/<pid>/cgroup:
+
+INFO: task cgdelete:366634 blocked for more than 159 seconds.
+      Not tainted 6.6.102+ #1
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Call Trace:
+ <TASK>
+ __schedule+0x3da/0x1650
+ schedule+0x58/0x100
+ kernfs_drain+0xe6/0x150
+ __kernfs_remove.part.0+0xd0/0x200
+ kernfs_remove_by_name_ns+0x75/0xd0
+ cgroup_addrm_files+0x325/0x410
+ css_clear_dir+0x50/0xf0
+ cgroup_destroy_locked+0xdf/0x1e0
+ cgroup_rmdir+0x2d/0xd0
+ kernfs_iop_rmdir+0x53/0x90
+ vfs_rmdir+0x98/0x240
+ do_rmdir+0x172/0x1b0
+ __x64_sys_rmdir+0x42/0x70
+ x64_sys_call+0xeb0/0x2210
+ do_syscall_64+0x56/0x90
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+
+INFO: task systemd-journal:2352 blocked for more than 182 seconds.
+      Not tainted 6.6.102+ #1
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Call Trace:
+ <TASK>
+ __schedule+0x3da/0x1650
+ schedule+0x58/0x100
+ schedule_preempt_disabled+0xe/0x20
+ __mutex_lock.constprop.0+0x3bb/0x640
+ __mutex_lock_slowpath+0x13/0x20
+ mutex_lock+0x3c/0x50
+ proc_cgroup_show+0x4d/0x380
+ proc_single_show+0x53/0xe0
+ seq_read_iter+0x12f/0x4b0
+ seq_read+0xcd/0x110
+ vfs_read+0xb1/0x360
+ ? __seccomp_filter+0x368/0x590
+ ksys_read+0x73/0x100
+ __x64_sys_read+0x19/0x30
+ x64_sys_call+0x18d3/0x2210
+ do_syscall_64+0x56/0x90
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+The system recovers only once the reclaim finally finishes and releases
+the active reference. The reclaim itself is pointless here: the cgroup
+is being torn down and its remaining pages will be reparented to the
+parent anyway.
+
+Even though we check signal_pending(current) in the reclaim loop, the
+typical symptom is that cat /proc/<pid>/cgroup gets stuck.
+By the time someone looks for which task is actually stuck in reclaim,
+the hung task timeout has already been hit. This makes the problem
+particularly nasty to debug from a hung-task report alone, because the
+blocked tasks shown are often the victims, not the reclaim writer itself.
+
+Our Mitigation
+==============
+
+cgroup destruction sets CSS_DYING in kill_css_sync() *before*
+css_clear_dir() triggers the kernfs_drain() that blocks the remover. The
+in-flight reclaim loop is therefore guaranteed to observe it before
+starting another reclaim iteration. This series checks memcg_is_dying()
+in the v2 reclaim loops (memory.high, memory.max and proactive reclaim)
+and the v1 reclaim loops (memory.limit_in_bytes,
+memory.memsw.limit_in_bytes and memory.force_empty), and bails out early,
+so the writer drops the active reference promptly and the remover can
+make progress.
+
+Unlike the no-progress guard (MAX_RECLAIM_RETRIES), which only fires when
+reclaim makes zero progress, the dying check also covers the slow swap
+I/O and thrashing cases, where reclaim keeps succeeding a little and the
+loop would otherwise never converge.
+
+For memory.reclaim, bailing out because the memcg is dying means the
+requested reclaim amount was not satisfied, so the write returns -EAGAIN.
+
+This is orthogonal to commit c8e6002bd611 ("memcg: introduce
+non-blocking limit setting option"): O_NONBLOCK lets a caller avoid the
+synchronous reclaim up front, while this series handles the case where
+reclaim is already running when the cgroup starts being removed.
+
+Changes since v1:
+  - Return -EAGAIN from memory.reclaim when the memcg is dying.
+  - Add the same bailout to the legacy v1 reclaim loops.
+
+v1:
+  https://lore.kernel.org/linux-mm/20260623062800.298514-1-jiayuan.chen@linux.dev/
+
+Jiayuan Chen (4):
+  memcg: bail out memory.high when memcg is dying
+  memcg: bail out memory.max when memcg is dying
+  memcg: bail out proactive reclaim when memcg is dying
+  memcg-v1: bail out reclaim when memcg is dying
+
+ mm/memcontrol-v1.c | 6 ++++++
+ mm/memcontrol.c    | 6 ++++++
+ mm/vmscan.c        | 3 +++
+ 3 files changed, 15 insertions(+)
+
+-- 
+2.43.0
+
 
