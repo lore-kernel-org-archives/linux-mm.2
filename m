@@ -4,91 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0396C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 08:25:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7447C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 08:29:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC08F6B00EE; Tue, 30 Jun 2026 04:25:35 -0400 (EDT)
+	id 5BE646B00F1; Tue, 30 Jun 2026 04:29:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A98826B00EF; Tue, 30 Jun 2026 04:25:35 -0400 (EDT)
+	id 56F446B00F2; Tue, 30 Jun 2026 04:29:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D5D06B00F1; Tue, 30 Jun 2026 04:25:35 -0400 (EDT)
+	id 486146B00F3; Tue, 30 Jun 2026 04:29:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7BCB86B00EE
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:25:35 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ECD44403B7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:25:34 +0000 (UTC)
-X-FDA: 84935894988.13.EB07E3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 462DB120002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:25:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrRzEu1W;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 248106B00F1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:29:04 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 924461A01B6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:29:03 +0000 (UTC)
+X-FDA: 84935903766.01.F9DF18D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1B3D9140009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:29:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjJEArWc;
+	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782807933;
-	b=PS+BeNQKLQnHeqcYREvPSOjPUmYNziGEG6hMLh6sPSbIfBUIL7yyj/JaFmxiQjEt53Swcl
-	aqrElK1ldNbwqRwHOLbEVSCMPNTSc3V1Qx8l2Tcebrwdn+I2Q5Gc4NqLeKvFK4Y7Ra/82W
-	dmnf93jhpYMJWcfSEj3Dnw71Nad1o4o=
+	t=1782808142;
+	b=v+ZewWhu9qoqsQLFo9tZqej4+F7EM5En6k81FXN1wWjdLZ6OcXZR1u2wn1HNPrAu80tJfQ
+	21uF+oTPnBhKWo7SzgPxBVzna9zU0lHQ7nTfoFYn0yFpXkJROOFaQXP0vf5GwbrWdoq1h7
+	6x6TGr3qCu8l69PzsmjkgIvFUBTr84I=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782807933;
+	s=arc-20220608; t=1782808142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Tiv5sKfRU7cDw1nDu0n1efMC2uJ4FhpSJnzoMpQ3YZA=;
-	b=2koAmcjcvZ5luLkMH8cJraiBHexYB6ll2JO9Uy4w0FzVSNY4JCN26rv9EGlFgYG37Rv093
-	RhkXcyGJNCcKPKLln+B18R3JKCkihGbOgoyqyW2Y/E9NcCKIUFhX3uaZ3kGAPT9Vv+aPcq
-	4hUBn1DoG253b+3SCAftPeEuvFzEJuo=
+	bh=NBSQrrcP22vcidqBU5gs9JP9ZNJkO8H4LBPIYaG3eqM=;
+	b=eda40MSwpIMw59JC1mji9Vfy0+rLfantN8vYRMzAUdJTLkhaZ8FEk0IbYgNKQlWe1QLTe2
+	tRgAAy30Gs900h46qxQN17VVCa/FL5jR305wk1R9MXQXATa8hVxEddY6T0k+nHE2ECh7Sf
+	h6owCduNLCFipctPcX+NPLYA+Iw2Hy4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nrRzEu1W;
-	spf=pass (imf29.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QjJEArWc;
+	spf=pass (imf23.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7159D40341;
-	Tue, 30 Jun 2026 08:25:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FC01F000E9;
-	Tue, 30 Jun 2026 08:25:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 80EC2600C3;
+	Tue, 30 Jun 2026 08:29:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA941F000E9;
+	Tue, 30 Jun 2026 08:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782807932;
-	bh=Tiv5sKfRU7cDw1nDu0n1efMC2uJ4FhpSJnzoMpQ3YZA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=nrRzEu1WoXW4u/A28LMDLk6N4XxCgWA6O4IrrfWXawfj2Vzocz9WXjT/QxIEwe/fj
-	 lMhDZ20QnHFdt76YZ7YUe/vlfrf4ADa5WnNaDWuNSDvCizIbgf2P8CO/EE6a9DRsxW
-	 z3hfVKaoostuc9nsbvNx1FgH1OC/Nr4GXMztsPBzJ354foe+sDEgks6O0LM3Sbbm3q
-	 aU4XHM434bFR2QAy2LmlZ03ChykyK3AkxHqxgbn2Uw+D3pvqwtb3ZaAi3/EwTjHa0c
-	 vWRmoqooOBgbhQrUL1q5Bz90Abo3geyKmzBh3J355r8GKkj+8x7rDx7Wla38JUEPVI
-	 yW607NT3WfQMg==
+	s=k20260515; t=1782808141;
+	bh=NBSQrrcP22vcidqBU5gs9JP9ZNJkO8H4LBPIYaG3eqM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=QjJEArWc6o2bKMiByFHlpaEcIa/OX3OXGcxzE2bMrmH44w+PQBkqKu3l4ekfgXLuY
+	 fPZdoJAMcOfsGY0obVkd16FxAqon+yo5X+5azLEYSpuZOzaM0QYMEZSEB7lowm+P5s
+	 lbc3XDU2CfCGTctts8WmoPZKYYQzuVUH4jU8eDBlfa/eDFwk6dvKs6j8WdMN357NoY
+	 SU098KQy0kcFPk2EHdgkZDoeB0xk/XDWtE4PCinelV/YWa6WVt8goSGqORVnON+PJ8
+	 4tyWSNueK3GgBBt2ZbeVJCeVtTHkxYf7oM8gxZiyGQWzPlX4y75gJecrwlnIu9x7A/
+	 Qu2ZG+YjWsioQ==
+From: Thomas Gleixner <tglx@kernel.org>
+To: "H. Peter Anvin" <hpa@zytor.com>, David Stevens <stevensd@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Will Deacon <willdeacon@google.com>, Quentin
+ Perret <qperret@google.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, Andy Lutomirski <luto@kernel.org>, Xin Li <xin@zytor.com>,
+ Peter Zijlstra <peterz@infradead.org>, Andrew Morton
+ <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, Lorenzo
+ Stoakes <ljs@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/13] x86: Add support for dynamic kernel stacks via
+ FRED
+In-Reply-To: <7D930EA3-54D1-41CD-B547-8A2A69F89142@zytor.com>
+References: <20260424191456.2679717-1-stevensd@google.com>
+ <20260424191456.2679717-13-stevensd@google.com> <87zf0hgc3r.ffs@fw13>
+ <CAOiLmNGD08mLKAJvRZdaS7b+3BeR8Ln2G0sEqNCmbD6cRFzAxA@mail.gmail.com>
+ <87ldbyhatz.ffs@fw13> <888C322E-BF59-4C72-BFD2-2E71FD8605C0@zytor.com>
+ <878q7xspqu.ffs@fw13> <7D930EA3-54D1-41CD-B547-8A2A69F89142@zytor.com>
+Date: Tue, 30 Jun 2026 10:28:57 +0200
+Message-ID: <87v7b0qvna.ffs@fw13>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 8/8] mm/hugetlb: remove unnecessary empty range
- check in hugetlb_bootmem_set_nodes()
-From: Mike Rapoport <rppt@kernel.org>
-To: Sang-Heon Jeon <ekffu200098@gmail.com>
-Cc: rppt@kernel.org, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, 
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
- David Hildenbrand <david@kernel.org>, linux-kernel@vger.kernel.org
-In-Reply-To: <20260629163736.1606688-9-ekffu200098@gmail.com>
-References: <20260629163736.1606688-1-ekffu200098@gmail.com>
- <20260629163736.1606688-9-ekffu200098@gmail.com>
-Date: Tue, 30 Jun 2026 11:25:26 +0300
-Message-Id: <178280792630.625070.17772458635324199462.b4-review@b4>
-X-Mailer: b4 0.15.2
-X-Stat-Signature: tbbph1sahm1z6g7b49s76e7toxp58j93
-X-Rspamd-Queue-Id: 462DB120002
+Content-Type: text/plain
+X-Stat-Signature: xsebmes1jxx1of5tf1du865186n6as8w
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782807933-136065
-X-HE-Meta: U2FsdGVkX19K53K8GuI3QyXS4K98TGZtVWaI6gdMcYd2iIE/Ivcy7j6Y832/4tFC4rqVfv787uoEKe+Op+uh+t+oIcgG/dyCfhW+Eb/oolmPy+ZX81vYMfVOa6bG80sRdlweJdbsvt/DLzf1dTl9KfPVxCJ/3yXI6jMhHiWMXKgEaTyl9Ojp/BG8cqvlqyvZhm6fYLxq8nHguAYLc/WmH/wSk9XvmPAfpwR+v4YjnDtvurK1rxLVTM1G1gNKpsG0paMhZFK2C0gA3J4hBUiR3IDhYeOGGssp4nxtOcJ10uQ9V8Pywj0iYTfGmsr65KhN14PgyoM+8IOL8uXD3basQ3tUpffIWG0xifzIxwJDt68sLLXIUPO5AoR424Fte5mCquoEjsLpTmNi9OEfvIdGklFYsoczuuI4KUwJTBnsmC1L8yvV6+/tF3bo4U+hgpHYi5VvXDIa9rB1N/h6TQfwWBK5pBZrHkomb23h5JA45sbzpcYwe/xKzBH/jQjwNQlZ4TZdfOw23x+9Gep+GGER50PhfWfjWHznEu1a3u47YQYe/6nN7AcNaGJx1NMinXzh0gQgV3jN9GVuq5p/8zm6lAr3P2K12fjO5IfeXkoIMxpL5HCvaz0nafq89P77XlbvG4CKs2rj6SeIxU628t5w5MZBkNCAfVbiE+UYD1UwYm1wmJerv28YxFMW+u75WsAN1QEr3X5lYqdQzLQ6stU0QuPjvHYbTl8k++rEAqW49/JeTTap/gRMJggs8UQY/j2NL1hwMm+H93NJ0wSpNTkLnN1DF4RoHe/73KWDOInf45W1SPOCfzS9N37gYe0xdevyjzTxNwDfOK1oNDSQVWk56dcQyQM2J7Xcsyv5r6ReKzMWt3Wec0TD9QNEEChAY6vTtYcm2zAZAvXVWCNA8RhGiRmVrCmYXV6whK6aIV0lbpnTc4hTvRGJTX6/22VCRe0UqHi+4CV3J253WRDnsZv
- 0Mrtb0r0
- yAf2wb2YwsSS1EifzFcNpg86ADoIZawIUm6hAytDUUQvrNl2NzsuRF2jgUDSk6Yaph9GFrWVzmix4kDyO0/hIGkW61Yodsh+/Uq5AXPy6S7lj81rnel/mZjYlqGNbXvep4a4UCzSi1s02E+9EguNqgweI/2/x0uJHcG+RUP9jTs5/3t2eZ22G9HAXE4nZ+I2PNR4lrU40C6uVzoLgMuV0DOj5br6Gxx6hLfmffou7j034bKafnn0boq57m9hDICEqaaWwP6BJknDCmYh2kJcdwbafoq3WiQAj9VW/
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 1B3D9140009
+X-HE-Tag: 1782808141-439697
+X-HE-Meta: U2FsdGVkX1+mIniqauwSkW025v4K4RW1vzsHY1gcSulorxxccAMbBG4lcMh6RmQsMlE9oxL+jpFzadnHbcjWp9ik7Ie/2hUs8Jj0uxam6ymojUDb5Bo4X//7NPak9e/XlkVhOFXiVpyZmY3eWDnq0E2ai8PdXGAc1MWdPhuakccAQ0hDsRgiewh/0muy70qoaOHM1cqsr4wLRWebYOmvNd1MD79hV0DXkpXcmFBb0qXX2Fq2mGfH+LumcGI/NB+Zp2oeKhY1Wm2qmceHWN7kWDSq1Yh0yNiH4+itH0jKQKjvf2cn3ItRZ9G2ikR7otuzS3jVylQStGak7X0vsoNtZ92aHV3chWkUXPveHbc5FVyLcT5uSLih5wzq5papVTWZWeCtTYOa1ENHpdZl0yFwpf8+2RLEfr+joCFBLhIy2/fy2ryFVujcNp42K0V5MoAflZBLlC0sgKgS3SLTHRulVIv4PGZxr2HrXcIeXzqIOAb55ruXvTRMw3gPOyNtwivQhJ6MT4K4PxAHk971U0qq5NQngArCO0Ecry7rn3hstxPC4/Vfg035DgWzXkeUYbamFhq17wUbjmoPvtGFeFWQ72T8Fc2D09dczJceU3gxZfL1llNMWSItj4wGVKI31++7u0nH59O53X9abFVfEKzITsJN5FMg1XRGF5r71n3X8veQD6vHEh95ZorVN+jPxqW8a3uATrOHEt34+78otOVR10/z7fMXJAx2NrWQi91oz7G54GK2EBKfQb+QG6I0WRvSp4kHw6RSkmTWMN6HGjUWTT6bm7nYPZkt90nwKOD3xjF043MJghdAyCVFmA1+GB8m/4S0yvOlfHVoaAZDVE8u8jeqAFNDna0vkcbUtvTPGS8bIQaQrELcV8TxIDCHYzSmjyWHxhAuKpZziiqiL47IoAV+sVoXQ/0CwRTP0d08+dckKGdk4dei/5WmVblI0WIcidRQEWTv6Neb47+Bg6j
+ qqLHAjpK
+ rC8opzmEQQuIdHPbVz2sctCHiOAobv4iTFU8KE2hD46iRRNeK3LFit0v0p07H/q+iVWGNx6HlFZBu01YfbNFRAiozgJXiFimK1H+QXlmhyhMVLWaevKY/ST0SEuQZlchKxhhdZbLUhBOo/ZYHivRVjGcArMQlPb2QvOouOJglNuVN5fRfXZhUPXXknZne3mSNFYW3WU6JjyfEKVbqui84tCLG+cdkhvRsT3Xpc5mrF0FYwlnickxEu3qKeDpS23xRzVHgfpaQUsxxCmM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,40 +104,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Jun 2026 01:37:36 +0900, Sang-Heon Jeon <ekffu200098@gmail.com> wrote:
-
-Hi,
-
+On Mon, Jun 29 2026 at 07:52, H. Peter Anvin wrote:
+> On June 29, 2026 1:41:13 AM PDT, Thomas Gleixner <tglx@kernel.org> wrote:
+>>On Sun, Jun 28 2026 at 13:33, H. Peter Anvin wrote:
+>>>
+>>> To be fair, for this *specific* case, memmove() does exist for a reason :)
+>>
+>> It does, but why bother doing actual work, if you know upfront that it's
+>> not required :)
 >
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 571212b80835..d4d4c9df5f51 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -4450,8 +4450,7 @@ void __init hugetlb_bootmem_set_nodes(void)
->  		return;
->  
->  	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
-> -		if (end_pfn > start_pfn)
-> -			node_set(nid, hugetlb_bootmem_nodes);
-> +		node_set(nid, hugetlb_bootmem_nodes);
+> Of course. 
+>
+> Then there is the very open question if this thing has legs at
+> all.
 
-Sashiko says:
+The jury is still out on that :)
 
-  Since the check was removed, are start_pfn and end_pfn now unused dead
-  stores?
+> I'm still interested in using SL1 for the interrupt stack as I think
+> that could be a performance boost.
 
-  Looking at hugetlb_bootmem_set_nodes(), it appears these variables are
-  populated by reference in the macro but never read in the loop body
-  anymore. The underlying iterator function __next_mem_pfn_range()
-  supports passing NULL for out_start_pfn and out_end_pfn.
+I'm not convinced that it will give you a measurable boost.
 
-  Would it be better to remove the local variables entirely and pass
-  NULL to the iterator instead?
+It spares the trivial stack switch to/from the interrupt stack in
+call_on_stack() and the hardirq_stack_inuse logic around it. With an
+interrupt rate of 50KHz and 10 instructions spared, that gives you
+0.025% performance win on a 2GHz machine.
 
-and I agree :)
+But if need_resched() is set the return path has to do the full stack
+pivot to the SL0 stack. That's a memcpy() of sizeof(fred_frame) + the
+extra stack consumption including common_interrupt(), which accumulates
+to ~256 bytes, i.e. four cache lines. Plus the FRED_CONFIG MSR write.
 
--- 
-Sincerely yours,
-Mike.
+IOW, if need_resched() is set, it's a guaranteed loss and latency
+sensitive scenarios including RT will notice.
+
+Thanks,
+
+        tglx
 
 
