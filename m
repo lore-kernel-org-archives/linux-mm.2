@@ -4,93 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08BF3C43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:52:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42202C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:56:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E27E56B00DD; Tue, 30 Jun 2026 03:52:20 -0400 (EDT)
+	id 35A0A6B00E0; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD87B6B00DE; Tue, 30 Jun 2026 03:52:20 -0400 (EDT)
+	id 3315C6B00E1; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CEF396B00DF; Tue, 30 Jun 2026 03:52:20 -0400 (EDT)
+	id 26FA96B00E2; Tue, 30 Jun 2026 03:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 988196B00DD
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:52:20 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 11795167C5D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:52:20 +0000 (UTC)
-X-FDA: 84935811240.21.80B98B2
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0F5E7100004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:52:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=co63CCcd;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E7D676B00E0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:55:59 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CC4040402
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:55:59 +0000 (UTC)
+X-FDA: 84935820438.18.5ED4CD8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 96344C0002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:55:57 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4CwXk6Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782805938;
-	b=hJtH6pnwEmJYzTD21xjtx0xlfSIPXUBdu0ayygqPzv/bzmfpGdbIYKhVerB1jUkeabZLCZ
-	FvPCBr2hZEEOiBwp9niydqs5mhciS+7/VEWvFWei9u5FMZWtIQDf1FPb3C4XrBv0cZqQNv
-	eilW75iYEpkkp9PSHoncPbcxmQ8M28A=
+	t=1782806157;
+	b=uLkOkrNtlvOd9sJdPMX7n12kvF2ad3NzsWMuMksrRQqIfvxtBMToeVMoNibwz6I5afG2vq
+	xJ2wV9qIe6EwTg3fqk3ci78zYdU75TUlag9KnmicxIYSsqhuMt9NZOAozpOmtkLBxnxwkU
+	UH/EH+sPiPc8KUCjCYHu1IWvZ+cGa88=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782805938;
+	s=arc-20220608; t=1782806157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xjV7MUM0fTW0l2bLsP56lxGOgmMniewaSqOOi/jChAI=;
-	b=wasNrGbxKYOG9QxnrcnTp8cnhovtb7ydPtWFERp9R5KzQf1aNCBuDo3fXBlp8/nWMjFzEf
-	h1VBMTCQg7ldLB80XjhDsOJiKLSYh6AAgPkue6j+fGSj3xOweL3bso3G0Urj7Sx1KoGS4h
-	UGVD0+przKzx+ZETCQsZmfTtQwMymTc=
+	bh=w2dS4VqRw/Em0OvDV2StfeJ9DlNgRzJR6JUzBHHof/0=;
+	b=FFnYxyxmPYJytl8tdjPL1aWm6stlDHSSI400nDtnVNJKCDgHfF6ork0XVKUeWPnQGfuwP8
+	1hDqYK+ab6WuT35y+v75ST/mJBiv8uE+TWVmC/3paLODWrM+DVYSwhKqpJhBZEhbpylP1W
+	gVE2vptCqb4XdSvEK+LiA69Sc+Mhd3Y=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=co63CCcd;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782805935;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xjV7MUM0fTW0l2bLsP56lxGOgmMniewaSqOOi/jChAI=;
-	b=co63CCcdteWmQ39aIJfmwuv/Vfh6Ko3VzwQKXa/xqAC/FI35TrMiiQtsmbS1RdHREqEjuH
-	1EikgbTwEQ8Jkmv1Zbu1YKJ8BlHzM5S3eWL841cha6+Yo1QtuS1SU7qYZVB2c8Suq8cdha
-	PwX/onpf3ZAtPtkuLmPRZ0Z/AHBh3Mc=
-From: Lance Yang <lance.yang@linux.dev>
-To: sarthak.sharma@arm.com
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	dev.jain@arm.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] mm/memory: refactor finish_fault
-Date: Tue, 30 Jun 2026 15:51:53 +0800
-Message-Id: <20260630075153.78201-1-lance.yang@linux.dev>
-In-Reply-To: <20260624102047.144543-1-sarthak.sharma@arm.com>
-References: <20260624102047.144543-1-sarthak.sharma@arm.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4CwXk6Y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C0A4F41E68;
+	Tue, 30 Jun 2026 07:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52031F000E9;
+	Tue, 30 Jun 2026 07:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782806156;
+	bh=w2dS4VqRw/Em0OvDV2StfeJ9DlNgRzJR6JUzBHHof/0=;
+	h=Subject:From:To:Cc:In-Reply-To:References:Date;
+	b=V4CwXk6YKnkYyH5J826DwWWvxDBFMYJsBkeZ0jSkUuMCi7MRUOwPXrQIs0ZHNDKTe
+	 2ephx8Dr1Na5hqDsI++k6XEZ7iCni7ECvJYyTPYqj3g2lXsipul+IGD/QTusb1vOTm
+	 OAqqQxxkgt0xfx9VoWOeskdhoVrsyyJ450FyZnKwxmnnIWvfbkDizSNP3kFvy9Ob+W
+	 sLw0QaG9BhNasKCuFOOhQclfgqewrbO1QbkwMCqFsPukzl/hosk5V6ICSYZFcwKbFH
+	 5z5sjJV2t/O1coQ0RxG+9M7fpfWNHyh8S9q8n8Sv8Yc5JFX2ToBAYBkY3yLAQsYxUr
+	 kntxXfArnl0VA==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 0F5E7100004
-X-Stat-Signature: ocj1xfu67tf8gdkdmk1e3tyk1rd4gwt3
+Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
+From: Christian Brauner <brauner@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
+Cc: Christian Brauner <brauner@kernel.org>, 
+ Pavel Tikhomirov <ptikhomirov@virtuozzo.com>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
+ Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+In-Reply-To: <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
+References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+ <20260623111533.2285005-2-ptikhomirov@virtuozzo.com>
+ <ajqOyIA8tPQsxfz6@cmpxchg.org>
+ <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com>
+ <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
+ <20260625-lehrbuch-gehalt-wichen-1b2f3533efbe@brauner>
+ <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
+Date: Tue, 30 Jun 2026 09:55:50 +0200
+Message-Id: <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
+X-Mailer: b4 0.16-dev-4217c
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3948; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=akQT6JRfJ1Zkbm0d13uEQPaH8NlEtNJnfMROgJGxvXM=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5l3WEHDrovNv1wMy7DPHbGI4bei2/3jc3L9d3/brdP
+ qJvp1nYd5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwk34GR4Ybbp8jPbOuYjn14
+ 0nyR4VK4ZUDq6amfGTtvldl4p3+yKWH4763BU/ipx7TfP8TdQ8Wx8fuNS5bxvaenzZovVnl2+oo
+ gFgA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 96344C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782805937-672234
-X-HE-Meta: U2FsdGVkX1+ZcBM/o9OBlkBeYq16wDyHRWUV9c46JmWU7PjQee86sQQDL0BPi3Sp6CzLV+h89cfYzjTdrJdkXA2ju5v/ksmPAEjKCY933yNIEuB1ux/yY6QIeq9Qus6+rn2bvnpfI9TWsi0fTuirdsntEQniWmD9LX6aSTBvSHr2AlZ4NQvWnmb6fkx4LlTtDmMaqo5O3i8Z0kJpO8VVd+9R1JN8Qiew5A523APNV7YzcFrhipHoFWXqsj4JMluIElXevsOtD+kO3pDmal7t3lNw2WmlwwPn/dZnvfhQDoXjTR6zO0ezXS11p8VDm4ysDSzt93tYQXWTUAyOPWcZwjfCDNc7ikqIfkfisdQeE3HTW7dSd+zibfsdXoFmSUfCfecMhtP5A7KT+s2vn7+d53zQkcGa5UlIwq6CUdgTfjrkhLXiRonQqvEQdlXvM5ofcO93Z5e2m/vXlIKJTwngfLXbTum3AodK1bBelWh2X55SSWosCzCZCOfoHxQaiXDZib/Jq9FO9gThe0wJEsO0FSKK6VehySxD3JWmGxZXVFtua6iDiUGHtDy6AfnyHZ/QpW8peHjCiZiiMuam6C6C9SVoApaWmwjbKAMAEe4EjUUaMsYsbLMr+RFui8NsDiLGpjXQZnRqsvQge6/JuSySNTwMaCF7y5x4NmU9uZ/91Hnsc0BmEE5dInsEuMn4MKTb1GD/qU/Bks2dIAd3GSBcRfKNjpdbOr67xP9Sv0Xt02cnjm4KwQgWxv9ZbR+6SUw9FdooGMAlKGnxIjLl82BnDwGb77KrSGnjpHA3tIwlBVhWJpHPGGz9K9tZKs8dtRJgCciyGt8XSL2XbMXPZRr3weOd/13/OkeD3EOtYighrl9wwJfpcZTz8qLKv9sNmA63ufjDhkap6yR/Gab2Dja7gcf+vtFWsycsxwNJK7fSde6Uh+8uohTmnk+bi3rTlEuGbOPhwEiPXxNohvJk7IC
- cT4IqF8L
- 1ul2mc1KEfwLJgtNCf6GtgfFpT2A1xcenyTyx3uyPwODKKx2J46tIIRARc1bgCaqeXyW82Kit94sCrXH2AtKqyOzdBT+IjfoeTUIhwKwZ18AoqN74axE5QSmOm9bFqZb9X5BDK5KMrMsPlCmr4cHUsxoV62cGuqCdwyoSJz+oKkYiIHjEMeqDp0jwgGClDn8SCM/tJ6uIpHqR/kUptMdEBKWsJ836j+AB6jPfrxR69Hx4cOVefpCdHzKUGlTMa09FiUe+wKprAO4evKROJg3ey8pP4183OlISmP5YYX/iPJoFdqqFyf8s58qkR7Wfq8KBF99rbf6OWOcJ8ZXan4XohT326Q==
+X-Stat-Signature: 8xbz4ice1kswwcmk34ucd8z3j6eg9gs9
+X-HE-Tag: 1782806157-207500
+X-HE-Meta: U2FsdGVkX19PFk9KVVfsOOk5AWxviGIgUNVTINH6ZbVjM4JDrFofb0RmaKz8c5/rJ/S2gzKSWRVYnLqIEgXN2MSke5FCbtzaUvmJyC2MGw+FsXdkI4MbK+R9usIOkpSMHmqsuEP8hAuU9b1wDPC7hDqqMiNLjvV2Av4CypYdmPXZskXfmBxYCirBpJVtVZBzghbrVqKlvG78rqm6zyxnQbyRPPmzkA4ofWEuY1FWDEU+/BKfpjkV9bPxVv/2ktJqUYCTWEfqsgdef8DXlFm/rLJM+Tm9/ACbSJFI+jSjBh9Opq7AOsmG5S9mWiCK8HbRAXidc4MG0BMD0WXuX05tFYh0/tCipA2DKbgDgge7IvxiiN84O1bSNDzJNdF+b1uA67tTZc/dNtK5g28MfDsKpbj5IMTarOYwNk8q41FDRxmRbN/ysdVVn4C102+vjDPmximagONrkME9pS9bVaVlc1CSwyoSOCdq2YsfpyVomlGOjzbGwbnsnfiXoqmvkXLrHLSxvhys9osnXcRjZb3IYOYe4vR+8obtOHd/4ICgrV62ihD4AgLunLvj7lA69+1posq5GfZqtanvi//y09DeIw1EijkMd9k/SIxUl994XXZSbOWSp5Ou4Cs6+nqZL2Gt+Sq+LQ/mOOiGSNN+4zHozBsmKan+QmdUP+qZSfGWmAYpKATUMd5kecaHdIf1+jZCoT6+9Np2YVZCAsMqqg9ynMDjPNMUm8zW8jamr6ldXzhT9l/BlpVmnDx4dsTKsO9boBA+qePh4FrJPjL3NMcnZjjyQ8kNWLzYWl8CN/VFVoGrI2GsfGQMlUn4dFVYuR7HZ1C2A48If9Ulhz1DoHkc5mkfy8Yp/Oa3Do8vXIPHCO0UTkVdCdz33ecx0R7zZsX6fE7WC/L/oPRcnzc0itG099QHykS30xE2r373wbqx58wHdBcN3A0bu3oiye6eMvspsT0vZDgG5ASiFmouQC4
+ jH+3BBMy
+ GrqcEsnhPAmD4na6eZiSvWkeZXQ54uVypKcgxqnH/HmJuk1vnJrpcNMHbGb17WVo6tLV6SaWka7x9BHeOU5+TVP8VfaEd68eDJ2SfkEd8ezLc075+Dk/YsC9WZwLrechttK0SdAV1Ym+pDBfikcRqZgnqYnZHF24lpiBELB7sPu9Al+Ai4U2UEXntbaellI0sWA31AsNItAktioQqn05F3xmQhJIl2dXMSGhn34OArmJX3b8AP7+75bxkrVJLKlpvag4uIBl6oJMzgT5Cl4nHcg3eFO0IuSaZwEs+dW+pZITzaoPGs97s2/8Z32SEkHhek3I4E02+PDTtJjQU2r7FaYOwHIn0XRdTOQlJxE5bue9U/pgFThc1aTXNJawFIljhJoP1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,141 +113,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-On Wed, Jun 24, 2026 at 03:50:47PM +0530, Sarthak Sharma wrote:
->finish_fault() currently has a goto fallback implementation
->where we try to map a large folio with PTEs. If that cannot be
->installed, we goto fallback and go through the fallback mapping
->path again. This looks weird and is tough to comprehend.
->
->Remove the goto fallback implementation and try to map the
->whole folio if allowed. If the whole folio cannot be mapped,
->fall back to single page mapping without repeating the whole
->function.
->
->The cleanup of finish_fault() was suggested by David in [1].
->
->[1] https://lore.kernel.org/all/3684c55a-6581-4731-b94a-19526f455a1e@kernel.org/
->
->Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->Signed-off-by: Sarthak Sharma <sarthak.sharma@arm.com>
->---
->Tested this patch by running mm selftests on baseline and patched 7.1
->kernels. No regressions were observed.
->
-> mm/memory.c | 78 ++++++++++++++++++++++++++++-------------------------
-> 1 file changed, 41 insertions(+), 37 deletions(-)
->
->diff --git a/mm/memory.c b/mm/memory.c
->index 86a973119bd4..f883b3f3850e 100644
->--- a/mm/memory.c
->+++ b/mm/memory.c
->@@ -5666,18 +5666,16 @@ static bool vmf_pte_changed(struct vm_fault *vmf)
-> vm_fault_t finish_fault(struct vm_fault *vmf)
-> {
-> 	struct vm_area_struct *vma = vmf->vma;
->-	struct page *page;
->+	struct page *page, *map_page;
-> 	struct folio *folio;
-> 	vm_fault_t ret;
-> 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
-> 		      !(vma->vm_flags & VM_SHARED);
->-	int type, nr_pages;
->-	unsigned long addr;
->+	pte_t *fault_pte, *start_pte;
->+	int type, nr_pages, nr_ptes;
->+	unsigned long start_addr;
-> 	bool needs_fallback = false;
+On 2026-06-26 17:18 +0200, Amir Goldstein wrote:
+> On Thu, Jun 25, 2026 at 12:36 PM Christian Brauner <brauner@kernel.org> wrote:
+> >
+> > On 2026-06-23 17:34:47+02:00, Amir Goldstein wrote:
+> > > On Tue, Jun 23, 2026 at 4:55 PM Pavel Tikhomirov
+> > > <ptikhomirov@virtuozzo.com> wrote:
+> > >
+> > > > On 6/23/26 15:48, Johannes Weiner wrote:
+> > > >
+> > > > Yes, AFAIU in overlay when we use realfile we should always use it
+> > > > with_ovl_creds(), even though I don't think there is anything cred related
+> > > > in filemap_cachestat(), I still think we should follow the common pattern
+> > > > other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
+> > > >
+> > > > note: Actually some places get ovl_real_file() and use it without
+> > > > with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read,
+> > > > ovl_splice_write. But those look more of an exception than the general
+> > > > rule. All other instances use with_ovl_creds().
+> > >
+> > > Use with_ovl_creds() is a good practice to keep the mental security model,
+> > > but it is useless if the security check (can_do_cachestat) is not in the
+> > > vfs helper (vfs_cachestat), so please move it there.
+> > >
+> > > Also it kind of makes more sense to check (flags != 0) in sys_cachestats
+> > > before checking permissions.
+> > >
+> > > > Also there are simingly no other file_operations which return "realfile"
+> > > > for further processing, mostly the operation from fsops simply replaces
+> > > > general operation with its own logic completely.
+> > > >
+> > > > Thanks for your review!
+> > > >
+> > > > ps: Hope overlay maintainers will correctly if I'm getting this wrong.
+> > >
+> > > I don't think this is wrong per-se, except for can_do_cachestat().
+> > >
+> > > Just be aware that the real file could change from one cachestat
+> > > call to the next (i.e. due to copy up).
+> >
+> > I'm really grump about adding a new file operation just for a
+> > special-sauce system call which is under a CONFIG_* option even. We're
+> > not going to set the precedent of piling on custom file operations for a
+> > single filesystem everytime someone adds a new system call unless
+> > absolutely necessary.
 > 
->-fallback:
->-	addr = vmf->address;
->-
-> 	/* Did we COW the page? */
-> 	if (is_cow)
-> 		page = vmf->cow_page;
->@@ -5695,7 +5693,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
-> 			return ret;
-> 	}
+> I had a similar reaction.
 > 
->-	if (!needs_fallback && vma->vm_file) {
->+	if (vma->vm_file) {
-> 		struct address_space *mapping = vma->vm_file->f_mapping;
-> 		pgoff_t file_end;
+> > This looks like it could just use a new helper in
+> > fs/backing_file.c that the cachestat thing can call to use the correct
+> > file.
+> >
 > 
->@@ -5727,56 +5725,62 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+> I was considering suggesting this as well.
+> Having f_real_file() complement
 > 
-> 	nr_pages = folio_nr_pages(folio);
+> but technically, can_do_cachestat() should be checked against
+> the overlayfs file/inode AND also against the real file/inode with
+> ovl_creds.
 > 
->+	/* Initialize for single page mapping */
->+	map_page = page;
->+	start_addr = vmf->address;
->+	nr_ptes = 1;
->+
-> 	/* Using per-page fault to maintain the uffd semantics */
->-	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
->-		nr_pages = 1;
->-	} else if (nr_pages > 1) {
->-		pgoff_t idx = folio_page_idx(folio, page);
->-		/* The page offset of vmf->address within the VMA. */
->-		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
->+	if (nr_pages > 1 && likely(!needs_fallback) && likely(!userfaultfd_armed(vma))) {
->+		unsigned long fault_page_idx = folio_page_idx(folio, page);
->+		unsigned long pages_to_folio_end = nr_pages - fault_page_idx;
->+
->+		bool fits_vma = folio_within_vma(folio, vma);
->+
-> 		/* The index of the entry in the pagetable for fault page. */
-> 		pgoff_t pte_off = pte_index(vmf->address);
-> 
->-		/*
->-		 * Fallback to per-page fault in case the folio size in page
->-		 * cache beyond the VMA limits and PMD pagetable limits.
->-		 */
->-		if (unlikely(vma_off < idx ||
->-			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
->-			    pte_off < idx ||
->-			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
->-			nr_pages = 1;
+> I'd love to be able to provide a backing_file "template" for
+> operations, but I don't have a good idea how to do that.
+> Do you?
 
-TL;DR: nothing looks broken to me here. Just wanted to spelling out what
-this relies on :)
+diff --git a/fs/file_table.c b/fs/file_table.c
+index c68b8c0a4097..d93059d53e88 100644
+--- a/fs/file_table.c
++++ b/fs/file_table.c
+@@ -57,6 +57,8 @@ struct backing_file {
+ #ifdef CONFIG_SECURITY
+        void *security;
+ #endif
++       unsigned int flags;
++       struct cred *backing_cred;
+ };
 
-Old code above had four range checks before installing multiple PTEs:
+ diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 27cc07738f33..64e07ebc43b0 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -50,6 +50,12 @@ static struct file *ovl_open_realfile(const struct file *file,
 
-  1) vma_off < idx
-  2) vma_off + (nr_pages - idx) > vma_pages(vma)
-  3) pte_off < idx
-  4) pte_off + (nr_pages - idx) > PTRS_PER_PTE
+                        realfile = backing_file_open(file,
+                                                     flags, realpath, current_cred());
++
++                       // Raises ->flags |= BACKING_FILE_CREDS and sets ->creds to ->backing_cred.
++                       backing_file_set_creds(file, ovl_creds(file_inode(file)->i_sb));
++                       // Now add a helper that performs permission checks on
++                       // both creds for that cachestat() thing and returns
++                       // the actual file to operate on.
+                }
+        }
 
-PTE-table part looks equivalent after refactor. 3) and 4) become:
+something like that?
 
-  3) pte_off >= fault_page_idx
-  4) pte_off + pages_to_folio_end <= PTRS_PER_PTE
-
-where fault_page_idx is old idx, and pages_to_folio_end is old
-nr_pages - idx.
-
-Only VMA part looks different to me. Old code checked same range, based
-on fault address, that it later installed:
-
-  [vma_off - idx, vma_off + (nr_pages - idx))
-
-After refactor, folio_within_vma() checks folio range:
-
-  [folio->index, folio->index + folio_nr_pages(folio))
-
-while installed range is still based on fault address:
-
-  [vmf->pgoff - fault_page_idx, vmf->pgoff - fault_page_idx + nr_pages)
-
-So these line up when:
-
-  vmf->pgoff == folio->index + fault_page_idx
-
-Looks fine for page-cache users, since vmf->page comes from
-folio_file_page(folio, vmf->pgoff).
-
-[...]
-
-Cheers, Lance
 
