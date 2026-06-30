@@ -4,131 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5714C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 18:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 006B5C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:05:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67D9A6B00A9; Tue, 30 Jun 2026 14:49:17 -0400 (EDT)
+	id D31636B00A6; Tue, 30 Jun 2026 15:05:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 654746B00AB; Tue, 30 Jun 2026 14:49:17 -0400 (EDT)
+	id CE23F6B00A8; Tue, 30 Jun 2026 15:05:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56CFC6B00AC; Tue, 30 Jun 2026 14:49:17 -0400 (EDT)
+	id B83B66B00A9; Tue, 30 Jun 2026 15:05:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 202096B00A9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:49:17 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7F219C2BE6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:49:16 +0000 (UTC)
-X-FDA: 84937466712.13.46E614A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4D4ADC0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:49:14 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=u18grtz3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sGHaEjKp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Z3C3/oGO";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jiGaKDSG;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E9496B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:14 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 182CA1C6260
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:05:14 +0000 (UTC)
+X-FDA: 84937506948.21.556FE5E
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DF2BE40002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:05:11 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rgsrwj1Y;
+	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782845354;
-	b=a0azJdT3aXMRyqxc7UIL8Lu75DO11ddzgnJvzsopA7VY9O5w0gp/53OhL5YAO8fGWTQjEJ
-	60G9qM7FuEFE7vKj1qdPw4jcRlgxQd6bLskgpYzIofShYZs0mGw1F6otBDHefV3a58BG2v
-	5fsp8nJ6eMKwUgom0ZFFpiNk1S/H9bg=
+	t=1782846312;
+	b=3xdN5CTSZb3HgncbeVk6QVjGhpjKUU4rOflsRTYNWqAJjrJPkKxiKgT5KMv6GbDLw2Jg5d
+	TicLB2NDN19rcq2IPi24TSY4i5VmzF8PQlXpT7j/q5xTvvdyBaNIwSEm1VigiHg6yVT8NL
+	ALTQMxk4CZUuT7cHu92panRjlbmEr34=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782845354;
+	s=arc-20220608; t=1782846312;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tsCa3RNAA7O69TzyzAjIqux3S4SG5DUxACORIUg1Tps=;
-	b=XVo50F1U7FnrUD2vjYJ4SoQD7Ta9FvAZ4hld7LO/4xmKFGxuasHtKPdIhR8I7y3kSqlRVH
-	vykaME8Fu1qJut1S7z83Npf//fiK75kdW3/gH0FjjPBKGeTXnuWAirDb0Q1rXsodGTDRTA
-	Qbm7Xz4r1m+n9BVXK5u7kduG0Tn/jns=
+	bh=FW5G+1KBuZlzub8QMEKYBoDh26PDijuF5zKaWYshN0I=;
+	b=IBi/GcHfymE79HQxSJTfXfjUi4mtLKK09+7PQ+EUyT2JcFU7IlRdsBqpy8Pp7SRysldv2W
+	vTzbATFGeSIOeZGfmwXFUi1uO2O0gCPMe/h7md+SRnpRm7wOfl3umzMFFjzEHMw5HnO9TE
+	DCIdCOXt0qIn1rG1GMWa3zsETNmd8MM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=u18grtz3;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sGHaEjKp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Z3C3/oGO";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=jiGaKDSG;
-	spf=pass (imf28.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F2D875A5E;
-	Tue, 30 Jun 2026 18:49:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782845353; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tsCa3RNAA7O69TzyzAjIqux3S4SG5DUxACORIUg1Tps=;
-	b=u18grtz3pS8lgC+oV44hYee4ph60d0uHjj8YpHsmry6VgI+x0kq3T2fuZP4bRfE/9+moId
-	2yM3tRbHCeY7S+yOh/QFqU9frwiaBCAF+BbHZa+Mjm60/DumVICsGH1Snt9dmT4Yrjpxpa
-	dgGbVerXbZtEde9ERY+7qThv2CQ/SaM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782845353;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tsCa3RNAA7O69TzyzAjIqux3S4SG5DUxACORIUg1Tps=;
-	b=sGHaEjKpAswitz0sN6p0SX8lABGDefKe7XkhW/8GofXp5HC/6bH8ou82rY8xbs9HQ/80BN
-	cuiy28kOX0wwQHCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782845352; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tsCa3RNAA7O69TzyzAjIqux3S4SG5DUxACORIUg1Tps=;
-	b=Z3C3/oGOkFrXPDFhBeNvjU+XahGABVHmMwB7O6+3VdWpwdTFJeFGNXGdpYQ2MS/8AiRmEu
-	q9tQXxvhaPkRuTDqdeHQwq/5clXIrXNpVZksVsBbRawBZQeCd3/wZoF0cfH4GdyJkORW9v
-	hJAbqXL/Vy7rQF7gBOdlo0jAXlFYbm4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782845352;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tsCa3RNAA7O69TzyzAjIqux3S4SG5DUxACORIUg1Tps=;
-	b=jiGaKDSGbHvY3ULrhwKR6U6k8KcrcXtV8IB5jf6I5QCDp273jpCjKtdEk6ZkHROCGRxe8z
-	D+KaRiZZ7jMC1VBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A418C779A8;
-	Tue, 30 Jun 2026 18:49:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 598rJKcPRGpBAwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 18:49:11 +0000
-Date: Tue, 30 Jun 2026 19:49:09 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Gregg Leventhal <gleventhal@janestreet.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Eric Hagberg <ehagberg@janestreet.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>
-Subject: Re: Subject: [BUG/RFC] write-open file THP cache purge can discard
- dirty page cache
-Message-ID: <akQO8JtTxmp89GS8@pedro-suse.lan>
-References: <CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com>
- <akQIIav_zaK6RmIC@pedro-suse.lan>
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=rgsrwj1Y;
+	spf=pass (imf11.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FW5G+1KBuZlzub8QMEKYBoDh26PDijuF5zKaWYshN0I=; b=rgsrwj1Y/lwGotezM1ZsF5BsSl
+	QO8VRqUzKcF0+oCYOnXp22uli69/gpurqKMHTLnLxl5a+XGt5oVdNnSTjtkx3o4tP69no0q6DHRzN
+	ZnRtdGdhtVWMV+pGo1WXPg1AnadO9iLPB/DLSQXmnkCs9fCBsqs4kG4EiYCX+oafj50b6sQWpXiNm
+	Ntai2fc+MGJjx3t/kV3oX2IB+/l6soT6I7G+dYl4KZLhm7v9/hXT8vBGXbdBuXDnCeMJESotnL0Fh
+	R0c4HVpV9ztKxT3DsaeoAqoT90Kj6pl2TNBbixA9/I4YoIkHQCzNJJwiSaFnio6d3sA+Qo+0uHv8E
+	fX+u8jLQ==;
+Received: from [38.23.173.23] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wedlb-000000005PS-4ASi;
+	Tue, 30 Jun 2026 19:05:08 +0000
+Date: Tue, 30 Jun 2026 15:05:05 -0400
+From: "Liam R. Howlett" <liam@infradead.org>
+To: Hongfu Li <lihongfu@kylinos.cn>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	shuah@kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, keith.lucas@oracle.com, kevin.brodsky@arm.com, 
+	maddy@linux.ibm.com, usama.anjum@collabora.com, yury.khrustalev@arm.com, 
+	jhubbard@nvidia.com, joey.gouly@arm.com, zwisler@google.com, hongfu.li@linux.dev
+Subject: Re: [PATCH v8 0/5] selftests/mm: refactor pkey helpers and fix mmap
+ error handling
+Message-ID: <aydheissr7yviudm6s3y57usfyx2kh4p6bdnd6mjdcnvvonga5@ydj327gtjo2m>
+References: <20260630073235.3802271-1-lihongfu@kylinos.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <akQIIav_zaK6RmIC@pedro-suse.lan>
-X-Rspamd-Action: no action
+In-Reply-To: <20260630073235.3802271-1-lihongfu@kylinos.cn>
+X-Stat-Signature: da149tpo198qr9bzjfeqag3tpi9ao6u1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4D4ADC0003
-X-Stat-Signature: 4p3ah7r939arhx9kg9cfjwznxowupqbf
-X-HE-Tag: 1782845354-422870
-X-HE-Meta: U2FsdGVkX19OkEdqutQXs5SCnAO2M/4Q4YCoJxQCPswjxl+TjTRSV/QEWrSpHH9z53J4FDmvA5AZ9y2F+mxTOOs+Go5C+cfwgclfLzpl0ChM+1nHPA9AUuegaZO/XJV38G9k1xH4iUoIimosJPZNCCW6kMnKd1dkU0ZIgDeqgxOlV31pACKgYy5HQHDIcnQRRXrl0gKeMvkKaJAlayu4qNINS1UxZklny29VcXMjmQxqWmSWqQcNhFqvbOGlzKGJ1jOZhMtaqJ/GJQC9OMQWEzzTNCd6cmmOb8iAJ5oxNGe9N43J3rQacbwZSEg0sSrhwyQWwVJsakG+cvoRz2uB7TdGVGFaMguoTC7865ReU3yqFClpJCSLpbIX3LfUhSylW2jCvpReMTWEv4z6nMEdttAyASXgnxyXyM/SZeu0GoTnKQ+wS/pe3KPi1t31gmrtfMvHBYsW7bjf/QdTUcJTj3kuXCpBB3p7YKWgSrSA7tob8a2aH11wKarTd3+J1fuqtvD1cdfUoNwUIdvNHWGlUL5mHDcxO/qD5y4m1KtK05UemGblv81pVCW2oR7npTpVtez7bzzBviiZM9ZnzxEBwQQLc6wKKGtOtURrGaWbFChu1Sxv8cc2e6TVh9XCh8s9yPBEjkhatzbN3o0v/X5b9vKo0kXRMk8Cnzd5fYBF7lbXJTfg1lx6GuB2WwFpoavLExyRLzGYTnayK6BB/O56qTz6lkAFy3FgWM99dIvTbbmv4h4j/r/B7nI0WsNRDULAXJsokmcHXSpGMzVrLu5kEjZFfCbQaDjjgwY+taCsGm9LFB/2kxGCnXSfHGTsBze6rTg5bFFpfqbbZeo05woTEfY4EE2QMze8f7fyK25pV147YT8ZAmx61vhcNiZm5SRUSdVEiqXselozkdPlsTXDjDUf01RdT8RUEUvSmEqoDGuWCYAh3xK9bmPSeAuoI2cZTowOsDXT8iANYLN4/XJ
- TQ5wYf+X
- mhYedA6qqBjEZf7regKSWA/PmGZ9mVfxLNrEl9Larc7B7mrkPyijNxSnmllviSMWr3rdr+fllVHpzYV9X0aL4Jy/+1tj/eNxp1U4l+XZgBMJquy+6dPVlxaoXOFPa3CcK6D93oJoim0HNWHl+RTTVyD69v47gsw5Lbo2sbXBsdCECjQAkcHnPTLHNwJo0o+CKkjGio1P3+PsjO+EVGctw732kt/Spzz8u6rG5l+pVXpJpKB1as2C+GOIeHAe53RAdVTbgGzsLaqBbroyHcEm9ZJC5zOpfkZEiakMizf7r4qtglUiu/btu+ZxNReRaoy3ewymPPASnZI/9R2I=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DF2BE40002
+X-HE-Tag: 1782846311-213486
+X-HE-Meta: U2FsdGVkX1+LsDiNAF15DQeuvPZU1vs3ZO1ZKrsb8NeWjfsurBzzEtcHRx8lEX0T16YI7ulBr+ZptFTuR0mpPlAFrWaIUOBaLoJeEc0h9dLS4PTo2cecKxGF8t7WpMp1BYNqRglewpRx/FAeloK9SIeJCZFvok88AqQEsJOggLWwnhcCJBBFApWz0kp53BzOZwzvD9//32HMlzBmGWxNbPuLWGZmQ79uLQCuAs85VMBjwcEyKh1RSIMnHnIapjQ95dEZheDKQG5wtlRsobSlZP2ibR9DFT+y43Yt0KurjEbPyK5iE/uy72EGXZBzpqqCahgBrHZYbY/uaXNbSfvNijrHEP+uBydi2RbcobftnownX7vhc+dnBF83zGVd1sMTjoFNpPodteAXkTz6NvXomkwlvGbr40UNhqkyc4L0FdcyAqI+HPhxi71SMwN53zXTcA1JcPhtXbRvkqH3M6teH+YmPt/62ATtdoezR/HJcKR/FvemZGhEGT36wCfm3InuaMfsVOVpvtdjECFCMBvuwIn8ijITtvis5ycrrtpX+M+xBeAS/qi6FyMO9RqNeymknKI8DyyHGFPx8i1co8JJm2MdG1LhOe/ZRf7wqR8vOxSnBTpfr8KIVmqI0KywDOXHBoGNj79S+u1uhRXUN/7QYZq/iCNIh4TplzkDcbvbRGIJp6aU/oEEWVy8NSJR243Cz9agrwDAPcIVLFpu2ICL1yTPkNI091OaYxPKgMuPDDE50bqb+gq3x2gHmPZoztCsgL4+rfCVCaPI+99obazmiOBBhyq4nyG03R5CadOZM6gRdY4XLGy9XlO7NOwN0XmRFE0fRkqx7jD4fYeBHfhjE4SUFC2D6D35JowWSVL4JF4IdZin9/c+AQ+kTwCXyYh9D+42FLOIGfRqxP2qg+BMmQO52PqOQMXFZO7LXnzSSbMGVMUZ6A2V6WoxxFe4PmDmrH8d91dWvLdXaSHEvp/
+ Ax5sbZnl
+ zEKDqdu4pwgdarbVYomKbvoIdheTlcbuUy6fdwJ/n9HqVZDFdqn8SlUaciM0x8bMUXDmvrTkrt5mLDkFRgjpXUvJT5Htj92czvgm6H4FKmkq+ghofdCAkBIxzZ16oBWor5T81DJk4hL7sldkEstgaTiwp8a2/I7Je0kteRN6Y0vruxX8g2WKfzsbZSZDyReAnRHRIpqu8tCZpUids8FzHSyX/dtqJ8TdJzobsNMT9opW8Dklb8xPBw6SWtbWPEm7NaaWtJ2KOMpbTTa8WL9Vk3iDc0yF+JRVo+0XT0CdxbXZ98CNwfSz329wR0XEYtXTpCRwBhMfl+Rk8iYiYuxXtms9VAHngUQC5J6Q1LqrQtTZfX0c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,101 +94,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 07:31:07PM +0100, Pedro Falcato wrote:
-> +CC some relevant THP folks
-> Quick note, your email client's spacing seems to be all over the place, making
-> this extremely hard to read.
+On 26/06/30 03:32PM, Hongfu Li wrote:
+> The main changes in this series are to refactor shared tracing and assertion
+> helpers into a common file, unify both pkey selftests on pkey_assert() and 
+> per-test tracing for consistent diagnostics, and add missing mmap() return 
+> checks with MAP_FAILED used throughout for readability and consistency.
 > 
-> On Tue, Jun 30, 2026 at 01:01:53PM -0400, Gregg Leventhal wrote:
-> > Hello,
-> > 
-> > We (Gregg Leventhal <gleventhal@janestreet.com> and Eric Hagberg
-> > 
-> > <ehagberg@janestreet.com>) have a reproducible data-loss issue involving file
-> > 
-> > THPs and write-open, impacting filesystems that do not support
-> > writable large folios.
-> > 
-> > 
-> > Attached are:
-> > 
-> > 
-> >   - thp_write_open_cancel_dirty_repro.c
-> > 
-> >   - thp-open-writeback-before-purge.patch
-> > 
-> > 
-> > 
-> > Summary
-> > 
-> > =======
-> > 
-> > 
-> > On an affected 6.12 kernel with CONFIG_READ_ONLY_THP_FOR_FS=y, a file can
-> > 
-> > contain read-only file THPs installed by khugepaged / MADV_COLLAPSE. When that
-> > 
-> > same file is later opened for write, do_dentry_open() notices
-> > 
-> > filemap_nr_thps() and drops the page cache:
-> > 
-> > 
-> >         /*
-> > 
-> >          * XXX: Huge page cache doesn't support writing yet. Drop all page
-> > 
-> >          * cache for this file before processing writes.
-> > 
-> >          */
-> > 
-> >         if (f->f_mode & FMODE_WRITE) {
-> > 
-> >                 if (filemap_nr_thps(inode->i_mapping)) {
-> > 
-> >                         struct address_space *mapping = inode->i_mapping;
-> > 
-> > 
-> >                         filemap_invalidate_lock(inode->i_mapping);
-> > 
-> >                         unmap_mapping_range(mapping, 0, 0, 0);
-> > 
-> >                         truncate_inode_pages(mapping, 0);
-> > 
-> >                         filemap_invalidate_unlock(inode->i_mapping);
-> > 
-> >                 }
-> > 
-> >         }
+> Hongfu Li (5):
+>   selftests/mm: move pkey selftest helpers to pkey_util.c
+>   selftests/mm: unify pkey sighandler selftest assertions and tracing
+>   selftests/mm: use pkey_assert on clone_raw failure in pkey test
+>   selftests/mm: add missing mmap() return checks in pkey tests
+>   selftests/mm: add missing pthread_create() return checks in pkey tests
 > 
-> Ugh, this is embarassing. So, good news: this code doesn't exist anymore
-> in mainline! Bad news: it exists on every other upstream-stable-maintained
-> release :|
-> 
-> FWIW I don't think your fix works, there's still a race there (what if
-> you write and wait, then someone dirties a folio, then you truncate the
-> pagecache? you lost data again.). I'm attaching a very quick WIP patch
-> that I wrote against 6.12 LTS (again, this does not exist in mainline).
-> I _think_ we want to go roughly in that direction, either here or in
-> collapse file paths. There are still problems which are invasive and
-> I haven't dealt with (GUP and other "temporary" folio releases being
-> the main one). Some of these problems may simply make it so opening
-> these files writable may fail (there is certainly, AFAIK, no way of
-> waiting for GUP and other temporary folio holders).
-> 
-> We would probably be served with a custom loop that forcibly yanks
-> only THPs out the pagecache, though. But that requires a bit more
-> code for a stable-only issue...
-> 
-> Anyway, the patch is obviously ungood and uncromulent and is only
-> here for a rough conversation starter. I don't think it works and
-> it will probably never work. mapping invalidation is simply too
-> best-effort for something that Just Needs(tm) to work.
+>  tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
+>  tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+>  .../selftests/mm/pkey_sighandler_tests.c      | 81 ++++++++--------
+>  tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
+>  tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
+>  5 files changed, 141 insertions(+), 127 deletions(-)
 
-Other idea: perhaps doing filemap_write_and_wait() after the nr_thps
-increment in collapse_file() will Just Work and result in a _much_
-simpler fix. And it avoids any weird forward-progress issues as no one can
-write to folios at that point.
+Acked-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 
--- 
-Pedro
+> 
+> ---
+> v8:
+> - No code changes (relative to v7).
+> - Updated Cc list: added developers identified via `git blame` and
+>   `git log` on tools/testing/selftests/mm/pkey*
+> v7:
+> - As previously suggested, wait for v7.2-rc1 and rebased the whole series
+>   on top of it. No functional code changes.
+> v6:
+> - Add missing pthread_create() return checks (new patch 5/5).
+> - In patch 2/5, call tracing_off() at the start of test_pkru_sigreturn
+>   before the SIGSEGV handler is reset to SIG_DFL, to avoid leaving ftrace
+>   enabled on crash.
+> v5:
+> - Use ret instead of child_pid to hold the return value of clone_raw().
+> - Make tracing_on(), tracing_off() non-static.
+>   Remove cat_into_file() declaration from pkey-helpers.h.
+> v4:
+> - Base changes on top of the latest mm-unstable branch.
+> - Split the first patch into three:
+>   patch 1: move pkey selftest helpers to shared code;
+>   patch 2: unify sighandler selftest assertions and per-test tracing;
+>   patch 3: use pkey_assert() on clone_raw() failure.
+> - Use ksft_exit_fail_perror() in main() for mmap() failure.
+> v3:
+> - Use pkey_assert() for remaining sigaction() and clone_raw() error
+>   checks for consistency.
+> v2:
+> - Update commit message
+> - Move shared tracing and assertion helpers to a common file,
+>   replace assert() with pkey_assert() in sighandler tests
+> - Drop assert() from main() in protection_keys.c and add a proper error
+>   message instead.
+> - Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
+> -- 
+> 2.25.1
+> 
 
