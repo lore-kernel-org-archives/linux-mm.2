@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63035C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:05:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E61E0C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:05:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C57F46B00BF; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
+	id 098606B00C3; Tue, 30 Jun 2026 11:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C087D6B00C3; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
+	id F3E5E6B00C6; Tue, 30 Jun 2026 11:05:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B45766B00C6; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
+	id E2BAC6B00C8; Tue, 30 Jun 2026 11:05:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 850AD6B00BF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E227E167BD0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:04 +0000 (UTC)
-X-FDA: 84936901728.11.5AE3FF2
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 03CB816000A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L06JZ85q;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BCB386B00C3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:05:09 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BB95140407
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:09 +0000 (UTC)
+X-FDA: 84936901938.03.7B76BA4
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 92640C0002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:07 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dZAcTlU9;
+	spf=pass (imf22.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782831903;
-	b=62IjaZipr/P6J1wHklWEGHQwbI+FUiNdVCO8LbG+uv8fQSHwCeFHHQq0C78rQUMJrehgVb
-	FI5pw/y5a66L8OhWZsD4SmTZDLy+RTf01Rf5h47I/2lF8ChhijW0hylsfcMSJx45Nk5IJI
-	l739RwYGsDXFVURwqPAd6UEo8P3l3CU=
+	t=1782831907;
+	b=PvxpBfrKRm56FS9wnp19o9rPaC2k2x9SyKqfW2XZF6jQZL844+p0Pw6Jj7UCsaSEBBcyz9
+	m/Zb0CWUwJdtdcjpzzAZVDJqdylcwoGSvha1+ike+hLDEBH+GSN4jWz+w9sZQhr7Udg46Q
+	xRWQLMy+3XcaK693YjemMBQI7KOHGnc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782831903;
+	s=arc-20220608; t=1782831907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
-	b=5xu/MXbJ+mgo/+P2ygWvix2KHj2iPn9TLlbAu5YCL3Zg744SsQdu1ULJj0kv2SKGQBlwVN
-	YaTP67ZLoe8OY37WO1VwCyC1ip0/UbcPbD83f4SHGBtv2E9WQVpDiSQjtVYAky59JRgzhU
-	ILKF+yScm78WrJFp41HNQA2S748Y7WE=
+	bh=4HJOlaOlPql4L/ybBsn3qlq0tdJ5CIZPrHo11scoNzQ=;
+	b=zBogWaZLgSutdiFNL89Fa1NXEPYGANAT9Mtsyc4XJecVJnuMXY7S5DzDGwvd46q2ar4Kzp
+	+Yf/bbDf/YsEJlPcNw6yNLSzEe+WF+toh0x4b6V/rncQieT8MRsmf9n/Fq9hKJSdE+2pi/
+	5lVw6jWF+ERWQd92ab4Sw6uG3gRcCcE=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=L06JZ85q;
-	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=dZAcTlU9;
+	spf=pass (imf22.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c7ebfb63c6so29592495ad.3
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:05:02 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2c9d87b1f9eso17337175ad.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782831902; x=1783436702; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782831906; x=1783436706; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
-        b=L06JZ85qwAF/Ujd4ai0fs/pWXu1U3U1h9kCd1hcMDogtth02iG/2UoRUUSlxnAhn/h
-         2B+qUEnjMIKq/TTZXHEoVFBGU2XOneah21wPMp0YvbRPC5cI0+c/8Hnh0+elnGKHrTKi
-         LwvthgMdkW1GZn2PuZW1EbX2WtoMVmWFi5X2qIXf2qCBDxIocKarqFZjBrVaPNex2g+m
-         OQ5rEhCzKKI4F1pHRO4GMG7IiiBAFXj0HI5is29v2gHUuaVeis2OndIoH+AeHYI72Lr7
-         TS3OhbFokJkGyUPRTMIcuNuuqdjiT4ldWhPU0aSuPUTHhtDOBlWLZKoCrszaFiXJAbo6
-         E3qw==
+        bh=4HJOlaOlPql4L/ybBsn3qlq0tdJ5CIZPrHo11scoNzQ=;
+        b=dZAcTlU9L7kDnKRKtTP0tmJw9anRrJaizG+bbl7/5jGIkMo7ZTnsxs7qJN9cheRRhY
+         qxMr7mNkKWf3YsvQeIFidc3Cdz4c980Ok2Fdi6hdG01JrhPOgHC/3dFFDdS6DHH3wVql
+         TKqzeEaIl5VuI9E1CetlFRdAARj1LZzJJEhaRpTpr7lCfjr6+hYxwSULlHYh14bRRcyb
+         Rv6zjVdYJoA77b9Zo89lGznUgxUTcXyI1L8C/oxutEhATNF1kxLnMDbmyOFtYEolKA42
+         1loc0j6XXzT5nVGimHXVrf73Y+om4Spu2btRZyLh7TqrbGE6j+WXWm0EkqohMeetlOTF
+         srhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782831902; x=1783436702;
+        d=1e100.net; s=20251104; t=1782831906; x=1783436706;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
-        b=kMnlf0s2mxZG+UjQ2zVQdKLeV0ABo/dK+MBRrpoGPdFRaIaK9MXTrTsOd4jVvAe0Eu
-         wZdTXC4UDmairSMCZfORO3qL/xDzO1VIdLXWyvtGVnurY9j6ckO0+3Lvkj7hZZPQADgI
-         dZEvtOxitCoBSnv0VEqq82dPlmQGeGhuJBlbZD6ipBYE62HgswueAyyGtHFUOGfAFbB8
-         WwGqw66J/lAqobELh0jr8OS7D4Cfo3eKQFxgo+Evtk9/ygJTJCvgSrEB4vDmnG/z9UbX
-         7a7ar8fNDQbp/+fAWMx8Q8Gxt6W0yRJpneaDpcYZEU0pa9I6yL9RC7Uq+32Kj6coURTD
-         XnVQ==
-X-Gm-Message-State: AOJu0Yxj+GuTdbM2uklSJUPcF559j1NufQBpnkjSj7WT3xWMZBRE++EA
-	/etJ1gB+txImHli3h09JUlFKk91AyfZnD4JA3eSIR/SGJnhjQ+jtWNkQJBKDTA==
-X-Gm-Gg: AfdE7ckldkHdmja5nSs3SNv4W/z9BUGLnrJ1ZdY8F0ViifS9hVf04LKgjCqLSupBr8N
-	WMh4zTx2QJqY0wYCaO20FMz53l517rFWDdqhND322fNw4M3ttwXBF0DEooYj33fb7cPIgfi0v8c
-	ju4LaAbmC+UFrDT07kcNkLl7E9oJHT7c01hyHoyADZq9zEktB3FzDiO9Ykpbftt2ud0nbVmKZRi
-	/xd052e74tXEK7YAbvzw1JjnkrqF/p57W6yYvFMIZmoZTC0dmm9vxyWd0z6HQaEiajqxDbxDVav
-	OwbCLP5GNL45m+/6CKJJhIYBpN3vc26vdjV9GYebA06Dz5OcV/GVX9qjUiAtLZg3IiaE/icxSS6
-	WqPjEa4JO5WOO1+awsPMVtsPtJbS3HVMXmxYneVfzUH0eJdlxEQiVVWjrxz5p8+sC8JfStXq6ht
-	CDtE5wLt0=
-X-Received: by 2002:a17:902:e5c8:b0:2c9:ed16:8d8d with SMTP id d9443c01a7336-2ca2ea2276dmr34277865ad.38.1782831901637;
-        Tue, 30 Jun 2026 08:05:01 -0700 (PDT)
+        bh=4HJOlaOlPql4L/ybBsn3qlq0tdJ5CIZPrHo11scoNzQ=;
+        b=ZWRF14iP1qhTCH9QIaBJ7nVSPhxGQRQk51aPNgYoVKjgS86pVytqcL+zWqV5XBB5u/
+         SFkMJU3TCY7m8Tt3klmJv9LoFQEkH3ZHbNs5TIvhCg7EqTjmFSA3HMbj62eMThGVLyRU
+         01Tg0jymG4SByiCLgEJB71yOjsCrlFANIhxYPr7+0lqJbuq1GMlEJol2Kax3p5xR+Axs
+         Yad5wqaC+ylDqRToQs80KPNcDsYi1t1cNQ1ihD4Mvg6fnx9f3j4ZFjPsium0KR0bDTRO
+         6YAIEDjjucK1pL7CxEJQhirLt6IhYc6uJCBrY7yNUKLvCVWqCNe6IdY0PDqCYEknkXu3
+         OtrQ==
+X-Gm-Message-State: AOJu0YyvCu5c3n6Dkd8mQlSCRCNtq3nxZZurIEqcmCqLv388RVTLy0Om
+	VVRCA996Dz2Q3My5XmkZVICU3dODCMZs1fJfUE7igPwMlIWRSNGITQMB
+X-Gm-Gg: AfdE7cnd3Iap3n5KbwxxW2+0mVwtwyXhJxQyXf2v/zoAaMOcPqDigqPFFDBMB/D4RTR
+	WOI9iINTl4qlmP+Fhm+CEkOxm+k6NaNP8E5aA+kzWN14xTq7HQcJfZx9M44XNvEHroQkRkpsTIS
+	pgvJj1si7Xju9zLCcBtwbXuBFBTdH6I5KAlhuLNkbkXB0lfnipZYpth5OGOI+rpz2dXoX7vkaP8
+	mga1JroHD+jq3loLFOAcBkHpKHuJNh1+i3EeW4R88LN8ibolSotzviT8VKvER4ugc2CVV+Ub+nP
+	AdWKMu3AQUTov1l+fAwCn3PfckMALghUAsqUp0pjKvMVlriLHVOS1xdJ65O2xnGC69OzjCaxodz
+	/RpxYfArjNUVf+S25hb3SjamDAOkMZ+KAMeeN0XhtFLA/2Phl1ltGol91mwIlIe1HdfCp4B0tcK
+	l3qRi2xsM=
+X-Received: by 2002:a17:902:fd8d:b0:2c2:7baf:139f with SMTP id d9443c01a7336-2ca2ed345e8mr28805105ad.30.1782831906340;
+        Tue, 30 Jun 2026 08:05:06 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70bc0sm16250465ad.10.2026.06.30.08.04.59
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70bc0sm16250465ad.10.2026.06.30.08.05.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:05:01 -0700 (PDT)
+        Tue, 30 Jun 2026 08:05:05 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 7/8] mm: remove unnecessary empty range check in early_calculate_totalpages()
-Date: Wed,  1 Jul 2026 00:04:12 +0900
-Message-ID: <20260630150413.1718632-8-ekffu200098@gmail.com>
+Subject: [PATCH v3 8/8] mm/hugetlb: remove unnecessary empty range check in hugetlb_bootmem_set_nodes()
+Date: Wed,  1 Jul 2026 00:04:13 +0900
+Message-ID: <20260630150413.1718632-9-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260630150413.1718632-1-ekffu200098@gmail.com>
 References: <20260630150413.1718632-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03CB816000A
-X-Stat-Signature: w47j7o7pocqx8j6833a6ze4ptqqagrag
+X-Stat-Signature: nxoij7or3zf4pzc6zs3y61eais3nn7my
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782831902-551466
-X-HE-Meta: U2FsdGVkX1+0uQxcYdoZtFt3nUwwtwgGlNy5Op9hCPz8tX0k1edmiWKQb7WqFKPMEKSczrJbNCNLeftOWOkXoPnzTVqjebET9qlqL11ywNh1OuNAg02lqAJUu33YwX69kR9zYmDM3uCqfVNr7L7+0fcjTW2vK4QgwU2aJK2OTtaF7VsUQv2n4XfhQRD/jt39z+wUwELo/kgFMywA/AhBtjXF5Hs6vjf0jSRdC8ZpaQiUt4IxCBuvWL8FeIAyJTpenBqjl+eC+udv4k2Meh8V5f0t8PAa7iGgNtzwMyj8FLajbUocte6VRkRd62XnkJcsjOfVvxTNTK6yzwaTEh+hcU7ULRjwdaee83+5xaaCk31luO4+Bd+9JxYHM1CqF9rgodvHn+BWDabNDgpVDdM87bL3bWVj1X/JTxKHg8mN9ucly4CYOMBgxFQQVe7J8BFbAQo5938Wh21ticEcbKCAaaufizukLdJdy805GtwR2nlwRB7ImD+QdBI/VQ4FePfIecVmvakuWZi9kVhrnApJXlIOxisgj81rGJy5jX3savm4aI1nyChdaYv3t5Vptu2iu+J7YCR355yvxqjpILf4KkFCL+8thTv0tbYZ1NYbV+3dBS+qhIIMJKj/mstGyPXD0x5Fqz9bWYlKmdMHi73gXE//dAvj1xTr2GreGl5ibRFErsmc7a2swr8AI3LxjhfWKjpmpJ6/c6bR0z4APMHeRtGEwLjPyQE6pi01MW45FQzmocI0fllK+gcr1bCCGQ9YoqM8FdgPo0BWCRXx1PRL7cKtbFR+bQ1KmEtSzYkCHcue7oHSy3XkiFpjbkOMKwpezZ9SLpnRz9dXzi3eruqgikfmFjQViQIWjzp8ML9XBV7bellv++6zswpXXrG71Tcct1QyPmRoQ9cVeSS5TFr/NhvX1LMz3MmxfWHBA9msiAgsWXf0mX9LQvdLRMs6Nd/W3LufJfcMyT9E407Iyol
- piIOX6IY
- rp4mYavtUnq7izmYJLzhGxLHf8iqEKC5OficSITNiV71nOERqkHhoEP1cP0QSP8MQNgX20og5STqng+ba5xkGi5qGealajBcK+sj+DPQqn2p8FvKJwjzqAc7+rWnwayWo80t0RqWnsghb2vJSUPwvY2hRqRib3tTmojbjheTRPJZVKa+VJn3bQPl/X+ZFyoSWYWPRewC8vBS8sCmW/FBmHw9/C4mM/xeNFLzp1Map+zB2cgi9PpAKRGOV2b6Ur9MfHfnloJF9+KLH3uXHGCLfKYEnFiNprBB6MGdm5RZ7X8boxxoI5EPlvIJVmAJKAdLUELXE0UjPxTnrQeMOc52yIsKfeUyA5kpw1F+d76NW0HwPhWpmnOgnifXoNcTrevsjOlyg6ksu9xIzbVdRqYayAjOOQZ+6w5np/pA2eH3PlvYlQmR6EBB3Fw0qMf9UF6cfVzuxFNIEKZ+Lea+9zVXe97dWVcislSjAxNPn
+X-Rspamd-Queue-Id: 92640C0002
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782831907-114130
+X-HE-Meta: U2FsdGVkX1/SxhoHrGSy4Jq6AFDN1OjqedJlP1YlhvDcGdyC9Xx7QJ1fopMWg+XS6AXwQIvNTLWDL8Z6E+tNi1zJBuXGZb9pFFUgIFq+V5vK3/hCZ1qEk4A+ikqhSF+CULqr+63xQZOLg0/dZslR3Bi2IvwNusOLm/PWMssqbEUNFQRfo+8cbda26MHTHru8/EbmVbxc7DPhOL4XXChPz0yCIRXmRD+ZOpvKEDTM2YUcGR+o1fiyf+shCxwLdMRyYjFeCNP21WbHIelmJcvioDMvv4PGirpA10NP+GIaNzMRjlq4PlhmlIBhul/gI3aCBa4i7yKPHbhjDZmUBz0kS8KJeikkEDxS6g/RkXrWyxbQhkfgVG7dwIMrwAeYtrsbZ2LPuGm8FLwGcFFrdgaKU9A/XckMZ4uVr5Nnj3KT1+kh6t0sGXhXIlNIqnreQc1F34tL+gVhdXrH20RlTdQ6O/gqr7jCsel7NSRt4bw+E+tMV0CWq+ltMTqeukhJVquhigbDu9+HNMlo0erkP4faHX3tqVPGkiSYCSo+xqjRAlxonwFrZFuD/0HORnFsY0wB0gd2Tg2DgI4YD00xWcrrhr4Rq2e5eS34IoiSw4if1ZDNMWGPRir/kuaeuYt13HCHj0xZ0KYceBpeC6I17Zzq8E9y5TOEaXpMejWfPnvXHCco1zD4C/qXkN5TOsa9QrYj56rtlxaIMOdU8c2s/9Jn2QhhOoNtttIEouKijJf3dF6fFKX3tgbNmulK6CkS3xm6LeisjrZIj4WJ+2wg+bmZpjloyDbixNQPky4GBTYGZrbWOMGhyG/z0GFyw0vhEUz2cMcfXHvnxkcqEgkAttdI3MIS8p1tbKej9ylZ8tyJgSdy889Kq0waByLiy6kdhuah4N/KVh5cACCZst1G3VJSM3+0pkX2z7E6oi/6G/9fRWVkyEj83TjyLGn7iOyaP0KbriaDstgj0Nx0DGQYUwH
+ hZfg5fZd
+ /bwUmPSjynv5wYBE9KzrgQJKtHz/mgDooiwpBiHfbEqtPKf1JEfIDkmjSNxwon5x90GqujKQV1Fgpca6G4tqdHQBTW8160vkBPg1AADdeNFbEjmVXnH8HFEygJlMrE201Jil2yw1zxrS9BdT1JRyqy+UNwi3tLt7Cnpx4GOfDFgcVkMoU2tqz7slL57pT5DYbK28VDvAFWwCvOybsIGur/bZGMpRbv5fgeEEHcIhmBV0B7vRRvgo0jxctgNJa1B6+aOpnW1vljwbnfekIoCxKh7OM7dr3NJx+HoSR3yPhhJD9UD7qr/NrIXtLPph+BjqtBuTT1XZ2T8w61RtIzQBI3zS3fBBzWfkK7JDpCP9TDl+5YZ82puKDhQTS2iHq9SWEq7eAOc+mnWKdmkzVqk6Y7Wg3PufkNxt8jgfF0wF08/bWWgy6jPT5n51pjZpZi5HF8p+gGPCbdG6wnj4AKw9Z/aFeluzii3hhZId3F3/qJgeZTqQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,35 +121,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-early_calculate_totalpages() iterates the memory ranges with
-for_each_mem_pfn_range() and calls node_set_state(nid, N_MEMORY) only when
-end_pfn - start_pfn is non-zero. for_each_mem_pfn_range() never returns an
+hugetlb_bootmem_set_nodes() iterates the memory ranges with
+for_each_mem_pfn_range() and calls node_set(nid, hugetlb_bootmem_nodes)
+only when end_pfn > start_pfn. for_each_mem_pfn_range() never returns an
 empty range, so start_pfn < end_pfn always.
 
-Therefore the check is unnecessary, so remove it.
+Therefore the check is unnecessary, so remove it. start_pfn and end_pfn
+are no longer used, so remove the local variables.
 
 No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- mm/mm_init.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ mm/hugetlb.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 0f64909e8d20..17498a13eb99 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -332,8 +332,7 @@ static unsigned long __init early_calculate_totalpages(void)
- 		unsigned long pages = end_pfn - start_pfn;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 571212b80835..4f7020962486 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4444,15 +4444,12 @@ hugetlb_early_param("default_hugepagesz", default_hugepagesz_setup);
+ void __init hugetlb_bootmem_set_nodes(void)
+ {
+ 	int i, nid;
+-	unsigned long start_pfn, end_pfn;
  
- 		totalpages += pages;
--		if (pages)
--			node_set_state(nid, N_MEMORY);
-+		node_set_state(nid, N_MEMORY);
- 	}
- 	return totalpages;
+ 	if (!nodes_empty(hugetlb_bootmem_nodes))
+ 		return;
+ 
+-	for_each_mem_pfn_range(i, MAX_NUMNODES, &start_pfn, &end_pfn, &nid) {
+-		if (end_pfn > start_pfn)
+-			node_set(nid, hugetlb_bootmem_nodes);
+-	}
++	for_each_mem_pfn_range(i, MAX_NUMNODES, NULL, NULL, &nid)
++		node_set(nid, hugetlb_bootmem_nodes);
  }
+ 
+ void __init hugetlb_bootmem_alloc(void)
 -- 
 2.43.0
 
