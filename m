@@ -4,141 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40113C43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:45:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD1ECC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:46:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E31696B00CF; Tue, 30 Jun 2026 06:45:50 -0400 (EDT)
+	id 99E8F6B00D1; Tue, 30 Jun 2026 06:46:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE1A06B00D1; Tue, 30 Jun 2026 06:45:50 -0400 (EDT)
+	id 94E926B00D3; Tue, 30 Jun 2026 06:46:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C82686B00D2; Tue, 30 Jun 2026 06:45:50 -0400 (EDT)
+	id 818CA6B00D4; Tue, 30 Jun 2026 06:46:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 819496B00CF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:45:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D0D5E168009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:45:49 +0000 (UTC)
-X-FDA: 84936248418.12.34922D3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E7EB540004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:45:47 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bBs7FIc1;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 52A6B6B00D1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:46:22 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA18F4043F
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:46:21 +0000 (UTC)
+X-FDA: 84936249762.07.CBFF0FD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0AFAB120003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:46:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jrNKMY1F;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf29.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782816348;
-	b=TMHgq99bUH67Zim9Y5D6bidersnXJu8hGda9Tc/yM6B6FEO0pc0z0OK1ylJwXXIhsdOSW0
-	zqJj90piO61QN5jAPZHVnQrQ4Z27qUIocq9yFnUFBUmoo14NbPgLPGRtxx2JI2rLOydzdz
-	XcGVId1Mc0RGaiWDVqrK+AVMN4Jb6/8=
+	t=1782816379;
+	b=Lxu0iwbhzPP9gw8KlrQRiycvobcxgOBve0CLAMIlzZPdjcdkMIgOUQosFManAp84HSAl6/
+	1WHHShf+VHUZl8OFIH4idxa/oZ8sZPoV+Gh9LudFmLjkiswcm1HqJMNYqcAud6NMk/S1yD
+	C9gFU9phtEMuCQXOCrF8iBfRHEV/Dqc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782816348;
+	s=arc-20220608; t=1782816379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=81g9nQCWE+mnZNEbv5idLZmIKGtoPWn06b20cZHWlKg=;
-	b=JG8y+5skecRR9Ox6MwJCCvyeOmXkq8l2MIh0D2lzyUIzNV8mMwVHXQFUrNRg1Nr3C8uaDD
-	4R+J4is/rRlTF6he6BZzDOFwDk6g9b2LuvBnEfzFAT3/nRi22CsETGM5sgJu7utAnXgKX2
-	KAXv9ykg4NMs7fMys7XdvEBYlVFiesA=
+	bh=VG44B22eDfkj3NXxuoUkmFfFDQEh4PhEztP7cpXs2N4=;
+	b=XihpKNvmxPQAF2cOJm/whYmkg3lpl9KzrLYZDXUmD15o/US/VITB/S1kT5CmZx2b1RkOd0
+	31/vc8pIBcUA1b0Dm65RXRJfy3YgLInepqhe9D1vIlIGb+V8EVnyLAPcojiYbX2NaiIJDQ
+	dVu32JEYd4QCAAFGnkXs8IYvwUH8XZc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bBs7FIc1;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 14554435C8;
-	Tue, 30 Jun 2026 10:45:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96671F000E9;
-	Tue, 30 Jun 2026 10:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782816347;
-	bh=81g9nQCWE+mnZNEbv5idLZmIKGtoPWn06b20cZHWlKg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bBs7FIc1czEHhj/ZjXSRYfnmdenzMd0iZwQBLMVNsCj2HRNguS3J9h/O2PxR+1LLi
-	 /+mJZ5MfYWh7xdlxCo2M8/zXi6rT5+HpZ7rwMZq0V8BLGGLFygjfEghsKlziDn3q1k
-	 RdYbfdyaOeHo6CRgDeDx6eN9H+50Bk/B32to6oA/aZjpcOwSoBWTuYzWaco/gUHJ/S
-	 QyXMxFU7TCYEBlUX+nCDCPbSVE58Fq2FLgtS0MIs8Jv5CNR6j/7h3iqsBSbZ/7+6Jh
-	 iLKFEQq7QuMUiAtoYdwOwB8pEKrbFjoO25CREqNbaGODe2k4FRqxzeEvqOqXki5Aw7
-	 3WVuJz8mLXjIA==
-Message-ID: <ccba342f-1ed0-43fe-ac59-9b8bbfb168d4@kernel.org>
-Date: Tue, 30 Jun 2026 12:45:42 +0200
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=jrNKMY1F;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf29.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782816380; x=1814352380;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ydIclReBsYd1/Q40BSDyaWtNirB1lFLBEoV1UQ/28ZM=;
+  b=jrNKMY1Fnfw1CWjC7z+c/DXZJ5hP8Ou6XZ5Y/fXw8RwzNLvMwtEjfXkD
+   pWe/PFFoHiZKDxufBCa4b2PCUn56tXgc+w/NQK7f6p5kDWybJKytWxWqQ
+   fp/VFX8fiiCd254dBi42c5P3jHVoH1kwwtHQFX0lV5oLyotfl1Lq7Tlwp
+   4nP07TTT7wLqmkecxFVAPYMRIAJ+S2ttxxxUR5BLvYWhjOlW3bmpIHXC4
+   7A1TMEOIxMlRjaJTxLKy/gEzhuGTM/y50iWpfHNZlw9Q2UJ0ANvFQtr/y
+   qYaM88kCEWBaXvX0B6DlkRDbeoqoQN8CaN70ZDTYX4LUbAtCCaPizrjwb
+   g==;
+X-CSE-ConnectionGUID: 4/1oeTyTTXqLw4m1L7ZMFQ==
+X-CSE-MsgGUID: YRwWCsuGTf+Sh86ZBrQcZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94676855"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="94676855"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:46:13 -0700
+X-CSE-ConnectionGUID: kIS6WMq4Rfum65TODXoe7A==
+X-CSE-MsgGUID: q2IEDfAAQJKrOxUnJNZT+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="251179296"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:45:57 -0700
+Message-ID: <a22b7696-9923-470a-9696-4db40f80861c@intel.com>
+Date: Tue, 30 Jun 2026 18:45:54 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] selftests/mm: handle EINVAL when configuring
- gigantic hugepages
-To: Sayali Patil <sayalip@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@kernel.org>,
- Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Dev Jain <dev.jain@arm.com>,
- Liam.Howlett@oracle.com, linuxppc-dev@lists.ozlabs.org,
- Miaohe Lin <linmiaohe@huawei.com>,
- Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <cover.1782811071.git.sayalip@linux.ibm.com>
- <3d394c8cd59fe380d4e2d13b051544f241918f07.1782811071.git.sayalip@linux.ibm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v8 03/46] KVM: Move KVM_VM_MEMORY_ATTRIBUTES config
+ definition to x86
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-3-9d2959357853@google.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3d394c8cd59fe380d4e2d13b051544f241918f07.1782811071.git.sayalip@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-3-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: nrcc5iudhsm7f4xdt19tjor4iw6pmsd5
-X-Rspamd-Queue-Id: E7EB540004
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0AFAB120003
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782816347-744248
-X-HE-Meta: U2FsdGVkX19jvUeTprh2e4QQyMuQT/FU6NhPERlbxhZDOXLs0TaJrlIALevTR9HGJHKp+fxeqn21RWaQZYh5gSEhNtnzFQ2A5M8ZpYiAxz7VwPJIX2RI+FKJYfrQXiJ0RNQEYh/iwiAd49rR0eT8iyGrZvqjFtpMeylfHPvm5C9gQwlQFboUVAfNy2xMslU4dSbqB4JfHUg6A9qX2PES8RAWdNjCHW0Y0QiUigHNY4qf8jApHKSVxW3m6h8SHcWtBNTsu6WbYFjOYtjzyy0rQIMWYbCu+gPA6KznAXjw0+Ss9pSbe9MglbhkDG6aw7UQN2LMK68AHWoxh872DNzx/Zc5xQXnRGlqAJ8AD2qgXFvd7ttyFVh8f1hzND6nLRTxXxBXzz3IloQecgyD8Vn0kHV1pTbbDnQXl4que6KtTuaUOe5GnfkLIxpSdF5rKYYUEVzR2TWrn9rhIlM7u408zmu3hNO0A/udh9UcEtr6kTtil/2r+M00RUPzhycbzWnPoj+OY4Ck7S6wGiQFyessYfUg2sFQ4uyRwqPoyV4iNxXx66x5inKXl1IE7gEp4Vm1ZOt++RwrIoEPhx5HPOv+tsFqg/SWwoe0de1sY01Ln5ikuJON3UUyohdVh5gO3aaWHcVG+ZrVrAIJbrBMeZc0E2wtUq6fBoJEhPtFKwtLHxzWgjDsLh3L+iBCE6wI/vC9Wvc/k47THZxvH3vIu4rzVKBnZf1OJ/eLcBNebhFUb9G3vEMG0BjD4UpC6SRUsYnfyAMMlHPXKLoLmQ5JPW16mUCKtoY/t31wOQvd1//GQtjg2ukbb6AWPJDxfuTnx0tk/3LPwfZ9u+MpjnqbLPZgyk4xSKXG5eupDkD+pjB/tLGzUYQWcxnEVgG1g+r1Alf1wDQeS3L9gKcyUi+WwzroDdPj2ruSV30YhvtTYpLVzsF1GdrHb25HOafbQNLTz1YFNrX+L5bpWto74gYSBW4
- 6CMYYRmK
- yLgS93TU4zyPrChY1WkCS062DoiNmlOTMLeBraNaKJmvALtQ8mmFdhH3gqDphK04iANdimrWqrvOCIUifRMCAXYmlwpZJbtNn9OJs0LibnS31HMjMuyGjW6t9T9y1t+TzHP39ftyjZfFls+JLgAPXEQsmdsIonUYkiF8/vD0knh++nyGzfiU3zxQaMe3vLObRas5TcoDVI52J+GL1rCieGRfIL1f01lM4LRo4WpUA415ENjkS50rPpMCPUDlC+D7/U2rIxUUwpOrgA4SjdsmeSNM346r0lIZDax3TdQKWOFwWwSILhPdakhYIoWoGSdtRXqEj1OGwSKfUkGRhuipR0FK/CmN8n6+a4l3Cc9w/384Pg1s=
+X-Stat-Signature: ehh1pq56yd79tpaosu4arf8pcwzhoag3
+X-HE-Tag: 1782816378-780307
+X-HE-Meta: U2FsdGVkX1+9bkWjJQu0hzuZlf+zJzGTCccvkcSgzINW9DM5VvPFcm+vrKL8MxZPpIO2jAly2MXq5njz3ILZwSYPTtfPdU/rpEjwl41AUSOPa7oKmksmOu8swW4ULaRvK7mUBp4mqw11APOdXHYg/6zT+xVNEdJr+1MGFkFtPbUPPGhWCPvwkrmHzwRQRWxI3VJomieFaSwadZDfYfSQgeQY9Oh4zqIRXQiODdlFNHN51bl94jfe9px8VRxZtZI2JgfA33zJAjRqtNpW73vCkm3nb7LUVhbPjBxpCM4a8QZntrO48uUmH/5vzB81Ub8/6hyO5IxEPpwiCG/ZUbEkk9WxLy+asMKktJKUZ4Ew3sZdLfjjBlIO0QrydeJEFjIBZGO7xx43vvbbox+y6o9l6m00Z9CbswRHSZ42xzUqfFgAC9XmFcPyeUMSjK8JT2DARKlkrlbIdCufYEw/Ww4K8PYqH+ONn2SXf22NnzAEeOubgTR3BwIS/wKgD9YULrEvJkwgjJPU9fu98VHc8lB4bi+VY+gP5K1D/dT7+IAbRZPscyljC2M+186V1tokqtXLE2cEdZyhMJ8zCTTfGpzpS5uLeDPQF/4XQmNe8iqmRezS1tf5naAO4aI2dMQUC9VaHxr5Y8AjcZKsUX21r4eK/nx+d/T/lmqFg7x7oO096tb022viHtiAQHV/3TEpz+scEZyv8a7TGhpf0SBBm60ef0MsL/Jdgv/IUCHNBFx9QtQIXpycrJQ4WkYxMMmD2lF+mIGDeJl1Re0HPJAlihJ4Zb0VfBXwknjsaQMJITdT1XvNXhN/TI0CJvtDPcinEbAQXeU+FnxspQAEb8qDUOgP2iLvvlHBhWdRNc0Ok6OHEOq3CVuV5YwNeN4tsNnyKVqocKpfCHJelGeChm/D7nj8PhweG3vclTdcpEIAU4lUW+ZCX6PkflHRtlRqBf0m2/aznSHUgNVZFyXzFSUn6qY
+ KsqSLXJL
+ iEbuN/TVAo8oJuJ3pgLAcajLuu2TUyxVGUBzqvuniXjN0yAN/hFGcHXjo3ayMHWcF23+E3jEVekvkEX5GuU6eYHGZrmHLdmPula0tQA4pH4PypZ2u07I5s49hImdtwCfUYvT6dZiB9ZkomWNfJDKNh6jMsrgN32HOWDJkyffZbSpyIskDl61cBUgGZfLL0xcBRUz7y9uajWl6xdYJCOqCDjOxZ4j++Armbgoe0VKxa9e5z+KgQxEBR3/oX9/eDYuN7r5dZjybL1NLD5HFh/AbGWnsZZMUOv4/REokmonGF5CDRMU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,97 +134,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 11:32, Sayali Patil wrote:
-> Some MM selftests attempt to configure the amount of
-> HugeTLB pages of different sizes by writing to nr_hugepages.
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson<seanjc@google.com>
 > 
-> PowerPC hash MMU pSeries systems advertise gigantic hugepage sizes
-> but do not support runtime allocation of such pages, writes
-> to the corresponding nr_hugepages file fail with -EINVAL.
-> This causes the test to bail out even though the failure is due
-> to a platform limitation rather than the
-> functionality being tested.
+> Bury KVM_VM_MEMORY_ATTRIBUTES in x86 to discourage other architectures
+> from adding support for per-VM memory attributes, because tracking private
+> vs. shared memory on a per-VM basis is now deprecated in favor of tracking
+> on a per-guest_memfd basis, and while RWX memory attributes are on the
+> horizon, they too are expected to be x86-only.
 > 
-> Treat -EINVAL from the sysfs write as a skipped configuration request
-> and continue running the test instead of failing.
+> This will also allow modifying KVM_VM_MEMORY_ATTRIBUTES to be
+> user-selectable (in x86) without creating weirdness in KVM's Kconfigs.
+> Now that guest_memfd supports in-place conversions, it's entirely possible
+> to run x86 CoCo VMs without support for KVM_VM_MEMORY_ATTRIBUTES.
 > 
-> Before patch:
->    -------------------------
->    running ./hugetlb-madvise
->    -------------------------
->    TAP version 13
->    1..1
->      [INFO] detected hugetlb page size: 16777216 KiB
->      [INFO] detected hugetlb page size: 16384 KiB
->     ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
->     Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->     Bail out! /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
->     write(0) failed: Invalid argument
->     Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
->     [FAIL]
+> Leave the code itself in common KVM so that it's trivial to undo this
+> change if new per-VM attributes do come along.
 > 
-> After patch:
->    -------------------------
->    running ./hugetlb-madvise
->    -------------------------
->    TAP version 13
->    1..1
->     [INFO] detected hugetlb page size: 16777216 KiB
->     [INFO] detected hugetlb page size: 16384 KiB
->    ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
->    Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->    /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
->    write(0) failed: Invalid argument
->    [PASS]
-> 
-> Fixes: 27477b28b74f ("selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages")
-> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
-> ---
->  .../testing/selftests/mm/hugepage_settings.c  | 32 ++++++++++++++++++-
->  .../testing/selftests/mm/hugepage_settings.h  |  1 +
->  2 files changed, 32 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/mm/hugepage_settings.c b/tools/testing/selftests/mm/hugepage_settings.c
-> index 2eab2110ac6a..ce38ae3da01a 100644
-> --- a/tools/testing/selftests/mm/hugepage_settings.c
-> +++ b/tools/testing/selftests/mm/hugepage_settings.c
-> @@ -422,6 +422,36 @@ static void hugetlb_sysfs_path(char *buf, size_t buflen,
->  		 size / 1024, attr);
->  }
->  
-> +void hugetlb_write_num(const char *path, unsigned long num)
-> +{
-> +	int fd, saved_errno;
-> +	ssize_t numwritten;
-> +	char buf[21];
-> +
-> +	sprintf(buf, "%lu", num);
-> +
-> +	fd = open(path, O_WRONLY);
-> +	if (fd == -1)
-> +		ksft_exit_fail_msg("%s open failed: %s\n", path, strerror(errno));
-> +
-> +	numwritten = write(fd, buf, strlen(buf));
-> +	saved_errno = errno;
-> +	close(fd);
-> +	errno = saved_errno;
-> +
-> +	/* Treat EINVAL as a skipped configuration (e.g., unsupported gigantic pages) */
-> +	if (numwritten < 0 && errno == EINVAL) {
-> +		ksft_print_msg("%s write(%s) failed: %s\n", path, buf, strerror(errno));
+> Signed-off-by: Sean Christopherson<seanjc@google.com>
+> Reviewed-by: Fuad Tabba<tabba@google.com>
+> Signed-off-by: Ackerley Tng<ackerleytng@google.com>
 
-Should we even print anything here? Rather confusing. It's just like we cannot
-allocate anything (no memory).
-
-In general, you are copy-pasting a lot of write_num()+write_file() content,
-which is really suboptimal.
-
-All you want is an option for write_num -> write_file to skip on -EINVAL, correct?
-
-There are not that many write_num / write_file users ...
-
--- 
-Cheers,
-
-David
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
