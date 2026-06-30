@@ -4,140 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEA9CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:40:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC34CC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:40:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 632F06B00F5; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
+	id 9D5206B00F8; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 602826B00F8; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
+	id 9AD576B00FB; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A3AC6B00F9; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
+	id 876066B00FC; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AB06B00F5
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D0A5C2444
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:16 +0000 (UTC)
-X-FDA: 84936839232.04.158FB19
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 60D84C0011
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0k0FXMnR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="m/+HI1/7";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GWNUlwry;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ik9xhJZm;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C4A26B00F8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D68E74046C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:43 +0000 (UTC)
+X-FDA: 84936840366.12.E8CB0ED
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4F1D72000E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaRdoyQZ;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782830414;
-	b=A3VvSl4UruJ7Mu7QkjL8QGz9GzrDp7yAVPMLo/tDgznyDfpuMbxOrELYC4f1oQvx/D+LJB
-	UYkWmOK5DgTC7MaJbB0gOHX4Z2yHqh5YrjiphFfNFMN9Vw02B2A5rbhmMc2J+AOccThIo2
-	EuTVKOBT3RVaqnceBmnx8DKBX+qMQtA=
+	t=1782830442;
+	b=r+SC17Q1V4/NWc7FnYbxdOW0OdN4OS3LspIRAbtQmu7On5Lo5gyyyzcdgw9CKBQg1qux6m
+	ocZUGj/m1cyknz6CEnl7UobzYRrVQLvm0dv7pDv1UygilSN8QJi2749w/6TVWkjyvwR+Nf
+	QWD4Pt12cJ1D0tSgx/VJWGOHFU3oO3s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782830414;
+	s=arc-20220608; t=1782830442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
-	b=qa6peabWvEy4rJOZhrPLi+Y4BgaUmbN+CtcLecB5TmqqjR6oarIS9MGESw2FkMEc3lTNfl
-	ThM8OiGAwJKG12hveJKmrRihGT5u/UYBZwexdO6ypFMvE3Wfonm2ftBluWJ2S0NU8uLOPN
-	Qprq97yYrOBzSphJtx4uZ7YZPZF+WSY=
+	bh=dvgyW8X4QaOk9VN18ZFlTY30npYMh5LShKDCXGOsMxM=;
+	b=NYqegZANQdDjnDKFuzIfw4wqAps4CM/2/lXsLC2Mv7TSD1uDNF6hiTMVrtBwJAPMuirtoV
+	o4prnlIlc/9kHkkKgGZv5A4Ks5gIhSNH2wB24GCgByL/ZJ2nuKVNB410wCC+nXDmSudbmS
+	k1C7yNiql2tk/TLOdA5PSU8TYDJfg4Y=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0k0FXMnR;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="m/+HI1/7";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GWNUlwry;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ik9xhJZm;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D85CE710AC;
-	Tue, 30 Jun 2026 14:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782830413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
-	b=0k0FXMnRZuZQKPf8AlzFtsH1LCXRXdhx/OEktTiFuW1O+D7tP115J0RNzL7lOcRkP0RVzd
-	Th+sca2po7IYFsHggCLVTDoJX2PDfgb2LKCOtNyCi7ZZkzK0zLGmzNkVoAcV59LvbOMCgp
-	Dx+gO5T2zGr/fZ1hliA9T60qUxFGlQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782830413;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
-	b=m/+HI1/7GMGCNdrhmmTlPQ1hDyyj6yxI/B0skh4iW+rUiFKZt+w+sD7DJ5NWT8cAkbWBps
-	KI1Yso3Ab0s4jMDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782830412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
-	b=GWNUlwryy/hcdx2rbHUHS/5UkdYtUkVc6/+ZKTlpL06/73FknUEdl2d5TbOufRvFbg5n7E
-	ZwAh1mrRsokFVN0hlAarcdCrK1T649DaG7zUUTcTQNwl/P6EjQy/dSZJlf0vBNUEkR1LJM
-	nJDFBvclmEIrp+j5RTJ9mk65GWGwTo8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782830412;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
-	b=ik9xhJZmxShdFkFpjOeBjcBFyhpTrF39dswSYhtIu+pp8Gw/LsDhvS2GUNI8ds2uMqbrgf
-	JztpxbaXoOFHGZDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 793BF779A8;
-	Tue, 30 Jun 2026 14:40:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id T4qXGUvVQ2o6DAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 14:40:11 +0000
-Date: Tue, 30 Jun 2026 15:40:09 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Xiang Mei <xmei5@asu.edu>
-Cc: Dave Hansen <dave.hansen@intel.com>, Kees Cook <kees@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-hardening@vger.kernel.org, 
-	Uladzislau Rezki <urezki@gmail.com>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
-	"H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>, 
-	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, 
-	Yan Shoshitaishvili <yans@asu.edu>
-Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
- stack pivot
-Message-ID: <akPT82jDvPwlaNuo@pedro-suse.lan>
-References: <20260629214712.1198680-1-xmei5@asu.edu>
- <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
- <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaRdoyQZ;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D8F40601C1;
+	Tue, 30 Jun 2026 14:40:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097601F000E9;
+	Tue, 30 Jun 2026 14:40:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782830441;
+	bh=dvgyW8X4QaOk9VN18ZFlTY30npYMh5LShKDCXGOsMxM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UaRdoyQZ1fTRKLAcvtRM8pCPos/hNLQhMFDTOXBDrPIVVOLNJRA7cU6ka14RHMRFR
+	 qWpfgLvKeAkf3XDjCuN2u6VoExWRrn+k9PHdw1xwsfaFYRW6apiRDH/bzW3S/vPXox
+	 NDxnR8QhAiI/zPphXPkt1KolvI83eq3Oxp7pH6P8fycRjVpGLO0mOiNQvzLLw+uZ8w
+	 WRnUBYhp2jcwsX+8wxOOiEB4mT754vZ1T4aD/zr4L6UdrtAvPeJdD/EC+QwUvwBkRC
+	 yr2g0tFvuReybfsvjS3lYxCtUKPjJPqHyXPEmCx9cYMHhnzg+aQfCesR1JnXw5Gekk
+	 GQ0tpKu3Pqrmg==
+Date: Tue, 30 Jun 2026 17:40:34 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Manish Chopra <manishc@marvell.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	b43-dev@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
+	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-net-drivers@amd.com,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 0/8] drivers/net: replace __get_free_pages()
+ with kmalloc()
+Message-ID: <akPVYpzxwP8CIQxu@kernel.org>
+References: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
+ <20260630072344.159b5d99@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 60D84C0011
+In-Reply-To: <20260630072344.159b5d99@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 3doy63tjr5cugqhdff71quwfj81f8yoh
-X-HE-Tag: 1782830414-139145
-X-HE-Meta: U2FsdGVkX1/IFTngadCujeSDIMbpL8Zt9sVK/IIT+cwzlQ7+bRzqvd5I3uxOZOseht1lvlnymarRmH3ynEUAM0l5sKILG9mJh+iTk9OloZ0KRJP8JqPQp39o98swNO+aAWeCcxsQ8En1uz0/5p3hpmLEfGIfqPlclaSBnQ6JSoschMc4DUJb9jY7ku0Rcp972d3MW05j3ZAeuW5J+WCYAcfqDSa3pDaFyyJnfeBeuoTNCusGj3xgiSOB9GqawUhNGWuqvEaVbdt72ClJNnKHJDbGREON9HV64nkZcRn+ZrpQ/Oni1z9W7ihuvZ28CLsHOMhNnPy56nlt8GKCLRDbSf7zPAJFgMkxuWWPUAx3Vw/p8aFFwIjWdiMv+DufyI9SH1HqIjz4BoJ6g80R9IX2g/Q9NyCNDANcQRAGs9sZJEosORjLGjHuwgveG2iWVpqCcLVZe9lxlMKRb+ZKBkCXfxWlnPS2uN/RLg69xJNdEiGvU+xEfs1PP7aDc/Xr0Z5nORuQkrkVhsAuES4nRaC3bMu0hf346MkuEpkO/cFFcTDG/5Jhl3pSN+RC2wLh6lbhi1fQjKXMpRuFCpEtOrbso9LdWvqnYs9bl2CTRl9GTeQKy7M8fOYw2g7hf8svQT6D8hXyhZ8DMkw+bu/sDCzkwgcNI8Y1PIvI0N2ZAQxPXdsgG4zlTJnfpIMo4SeLYGnqjxU5vu5E10OkZJ2X5GFukGyuJ1sdRtpiMx4D+TKae8d5EcfIGB2b88AUFj8BOZ8Env2FdmfRP709mvSF0B8A6rNxcGhi0YLG5muRDX1rT+ninIWalO308orFJSv1Qeu8CU0WzvYsDMj3UoMwC0d0NlzwuLy8sdBDkCogvez3kf1vl5rnEuVVswG//2W8AAs8cIMPVDIAsXfoShbWS/6jC9b0R4WtnZFwV14GbFkkaKGWO0MYlm1ZklngFLRmcYxkDLpnhL1vIxeE+I+YpV7
- +3yUrZrX
- zCnfhdNoHlw093qYG5O3KtQIjl1+FB/uO5teoY9WejsMiRL7U0e0UyQs/mJ1NP6CkNPqgaOgwCaKcATcxwPYkvPdhvUwwbwfW2d8WPWX0AmftQ/DnNkoYL+lxLZ5SdC+8e3NRSSTFOfgHRz4l+D6+xxnxtBd7OwGUValy0zti0NrOfiEwhNK5uV/AkSZZsxLzTlzHzUrkIkIe1zcZ0Zk1weolMZpmq/iEDiGJiI7Q6RINFaXdzQhoy34L37JFAGddW5OIjBE07DsjY1KB1slU186qTQonQZAylo3tzcSPI2EToS0F4cfaw0yX6CgJDfRg5B+m
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 4F1D72000E
+X-Stat-Signature: 7tkpfj6m5ki9mgm8nzt1mdwbgs9sp7pn
+X-HE-Tag: 1782830442-314451
+X-HE-Meta: U2FsdGVkX1+5U6Snf70nzTL7AOzEdSx75gll+XJK4qHiQHfP4ni0YhPwBd8LIetR4N6zgoZGr3dHM2nOfBe1MWcaRYmqQUrkBwIuHnqz/L1gf15z8893UyWH1Q0WwPfZLfEmJ+T1+saq1pnvM0EtWM0YdbElUdwHpNQ9UK6hLhb8hcKH9ICGcoaoX6E+bVNvq4TqmNTuZsNIX3jla94leDPVgLrd/Yjbvcoz7Md3d3Eel3vhgObtqMnSoFdb3aLbiQgFyzbQ1DK5WsdRpJhju43gBzxsBemO9Lz9YaZl45pgVr/O/6wYgFpki++Gx2ZAQG8PiwduSOBRspSYve0jPf64CcDV3t9NpU4l/dMZN2d/hnsphaHhewLvVa9rtfp3lYaY9Bp3l80TdnP/uJPKNRyf4HdcvW1UZ6/dYn6dyFC7l60CqQs45WdeZuMj3OPq2wep8P7v8nueEMtfweApeGKMf5SUrgeQOpy+PDatNzARPhIHyybf5n4fkntHj4C2ypp4xO1RIG3cUpEaxNp8Yn5Atteo02zLgqvwyfZIsVKoqQPSjyba4aokqQhs0deCwnbpEIn50/K/yFrO6ZJHfiH7GoXVSIh74CAkKj2xNXsHd837UcfuZHoF4MYTB/e5oKb8klO3/YTkTrLuVIWoBpeLs5/Ew1XQrpN6ruJpIxZZqnv/fleIUUD8i6b82dBgTVrgpGxj35VK9zQbz9Qht+wXoSKi56FOpNNZUoIAwM8WWVtSUalbjNEmwr/z5IkWJRr3rV1uKAv0EzXTTrEBwUwu48x/u2OaIxaowtkPjXiWEJEI/LhtouNjHXUs9PkKlRlsBN+oE1AcXm+VlkCw7TPNy6Xajd9TQDqvth0avoPANPZEuznfvH/eG/50FsXaHkZG4r7fvkU6l4cftNuTd4wB/sh0d9y5LHGENh4i5WsMQuyBEOJqTNjN5aLS+rRZlhcjUnwwDtAolbCCns4
+ PhYV4QEz
+ hTCk5DHERnZ+4zXtRWbmnPgRCCMsq0+IzMk7s4wgeBocRhQ2GszhnW/SLdcQP3nED1Jz6bQojE6rZFn/m8v0zwTumSxC0zPhdOQ82SWCaWO94V1a5xfElnVpw49elljMFOju57xY8GBXAGAdhxdQZZHTJsThIIINr82KqvgFK5JM3h90p3CQvC8D2O/jDMLc7pIBOOTk52Qo9qUHnpOEc8c8lTOcsmp+v65d+dLZj6NC4B+yoPhz7reino+wAL6+93idgsdBthRQXG8Fer1CFvfZIT4a1SRlq7B1TXEy84l4xA+a3QxEPbY8p9FaTVLc2MJ0LmrU8N6pMsPw/21iosoW9k6bE5orFfkma+DkxxCPlRj+T+Fgs+BwsYgx1gWxRMdgNFMtYmAnPwWCvsgFoIlLLTgSwvQseQLrX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,33 +104,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Just as a quick FYI, it's good LKML ettiquette to keep people who engaged with
-the previous threads on CC for new versions :)
-
-On Mon, Jun 29, 2026 at 04:28:19PM -0700, Xiang Mei wrote:
-> On Mon, Jun 29, 2026 at 3:29 PM Dave Hansen <dave.hansen@intel.com> wrote:
-> >
-> > On 6/29/26 14:47, Xiang Mei wrote:
-> > > With CONFIG_VMAP_STACK, kernel stacks are allocated in the vmalloc area,
-> > > which an unprivileged user can surround with attacker-controlled data by
-> > > spraying vmap allocations adjacent to a target stack (for example via
-> > > XDP_UMEM_REG, though other vmalloc spray paths work too). Today each
-> > > guarded vmalloc allocation is followed by a single unmapped guard page.
-...snip...
-> > To even be considered, this series needs to be refactored properly.
-> > Making this VMAP_GUARD_PAGES a separate patch is the bare minimum.
-> >
-> Good suggestion, I will do it in v3:
+On Tue, Jun 30, 2026 at 07:23:44AM -0700, Jakub Kicinski wrote:
+> On Tue, 30 Jun 2026 13:59:19 +0300 Mike Rapoport (Microsoft) wrote:
+> >  drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c    |  6 +--
+> >  drivers/net/ethernet/intel/ice/ice_gnss.c         |  5 +-
+> >  drivers/net/ethernet/sfc/mcdi.c                   |  7 +--
+> >  drivers/net/ethernet/sfc/siena/mcdi.c             |  7 +--
+> >  drivers/net/wireless/broadcom/b43/debugfs.c       | 12 ++---
+> >  drivers/net/wireless/broadcom/b43legacy/debugfs.c | 11 ++--
+> >  drivers/net/wireless/marvell/libertas/debugfs.c   | 39 ++++++--------
+> >  drivers/net/wireless/marvell/mwifiex/debugfs.c    | 62 ++++++++++-------------
+> >  drivers/net/wireless/ti/wlcore/main.c             | 14 +++--
 > 
->     1/3 - introduce VMAP_GUARD_PAGES
->     2/3 - mark percpu vmap areas VM_NO_GUARD
+> You gotta split this, wireless and ethernet go via separate trees.
 
-I would suggest you create a VMAP_STACK flag and condition these guard regions
-bsaed on that. Otherwise it's a bit arbitrary as to what callers get 0x11 guard
-pages, and which don't.
+Sure.
 
-(you can find the concrete stack allocation functions in kernel/fork.c)
+> BTW cocci also suggests folding in a memset, IDK if it's worth it.
+
+Same churn, less lines :)
+ 
+> drivers/net/wireless/broadcom/b43legacy/debugfs.c:217:8-15: WARNING: kzalloc should be used for buf, instead of kmalloc/memset
+> -- 
+> pw-bot: cr
 
 -- 
-Pedro
+Sincerely yours,
+Mike.
 
