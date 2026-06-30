@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCB0C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:35:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B320C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:36:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AC7E6B00CC; Tue, 30 Jun 2026 12:35:12 -0400 (EDT)
+	id DF2306B00D8; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75CD46B00CE; Tue, 30 Jun 2026 12:35:12 -0400 (EDT)
+	id DA2BD6B00D9; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D8D66B00D4; Tue, 30 Jun 2026 12:35:12 -0400 (EDT)
+	id C43396B00DA; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D94466B00CC
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:35:11 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 591D58F3CA
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:35:11 +0000 (UTC)
-X-FDA: 84937128822.03.0A71BFB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 926496B00D8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FA224053C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:36:28 +0000 (UTC)
+X-FDA: 84937132056.28.6DFD0DB
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2F3168000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:35:09 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DDehMC0y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5nuM8j4g;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DDehMC0y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5nuM8j4g;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	by imf24.hostedemail.com (Postfix) with ESMTP id DFF75180014
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:36:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837309;
-	b=wXU4txQgrcF23orzq2X27TUa/ES2faC2rfnEZ7D4zb3ZS7uHueJFelKkvCtEnXuLypqXDd
-	xq2K1D7c+AgmZdzvd0B/f7vNFT7PcpvcZxY6F783WKK54huB3pO81Mncnmm6LwapO2/4D7
-	7I5PZh2YjMxQXWZWrKsgwrK1fZhqhNw=
+	t=1782837386;
+	b=tDwYDyDzKK/FIdpHPKVfzs904YjChktEEvhyXZHIXQCSqjEXdL8cPBXD/UVVI2qt0dbzuS
+	FdTts+AS3vuIOWUUD2tiQ+vnUCBBSKigQ2ITvWaZdDB6tiSfDZzPnVrQ3PqAv71gl3C66s
+	EJ1EZYKreKHNj9ULwMbGupWnBPldzyY=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837309;
+	s=arc-20220608; t=1782837386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vL7z05Z2Yz25EK5Nk+C2zAQnWxd+0KF9x6pG+as9VEc=;
-	b=WTdTopHlHZ6h30POmsrzCu5nn2M5qiVPlf2RMNTIClUaEmlly00pcLSi2ySyy+ZgBDs3Kx
-	5udgvBDAnGE0QToImMgsUvyJ8oD/Ngh2QQ/3YjgsbO53XjUgb+MDJYgEHuE6y149ZsLcqD
-	ceLT91LJRP2hieix3FNjqPaMzV3qA64=
+	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
+	b=35bAxlUI7JIjoH/X+Sx/w1vyq2MYhQ8pWWOixulff4ocR77E7evibZFu70ZNU0LMQ1y2sK
+	MuQ+mYIoiIfqdJuUOLlBvC/ewAk+aatNJgvj5U69sr7xYDkoerjii5/jMTKUrPxKuDBxSS
+	3fKA6fOxHKll/csge8BxBldYzpDJxtM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DDehMC0y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5nuM8j4g;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DDehMC0y;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5nuM8j4g;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0B531736C5;
-	Tue, 30 Jun 2026 16:35:08 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9459571654;
+	Tue, 30 Jun 2026 16:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vL7z05Z2Yz25EK5Nk+C2zAQnWxd+0KF9x6pG+as9VEc=;
-	b=DDehMC0yFbKo8KmShmLbqXXCwtYXcRKOPXxAJVSlKEBs4Td0N3G5Z5W6bY3uZLpH84ERD/
-	S0mfc82DUBmZdopdshc3KCA6FwWcHVTjvLeQWe229oIuQ5akdpEcCReOMMSbWbBFHYHdmr
-	4AsfIhtWjE0Wvm+/AQXwJAnAz3AnjLQ=
+	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
+	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
+	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
+	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837308;
+	s=susede2_ed25519; t=1782837384;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vL7z05Z2Yz25EK5Nk+C2zAQnWxd+0KF9x6pG+as9VEc=;
-	b=5nuM8j4g9z+4mG1ka4DMjT/WLRKrQIvs/FsA1pcl9NznsCo9eOelHyxK4lbKxBfZnVsyzD
-	aqMQFd4+Di63MjBQ==
+	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
+	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
+	1ruN1lCKBfY39zDg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837308; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vL7z05Z2Yz25EK5Nk+C2zAQnWxd+0KF9x6pG+as9VEc=;
-	b=DDehMC0yFbKo8KmShmLbqXXCwtYXcRKOPXxAJVSlKEBs4Td0N3G5Z5W6bY3uZLpH84ERD/
-	S0mfc82DUBmZdopdshc3KCA6FwWcHVTjvLeQWe229oIuQ5akdpEcCReOMMSbWbBFHYHdmr
-	4AsfIhtWjE0Wvm+/AQXwJAnAz3AnjLQ=
+	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
+	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
+	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
+	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837308;
+	s=susede2_ed25519; t=1782837384;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vL7z05Z2Yz25EK5Nk+C2zAQnWxd+0KF9x6pG+as9VEc=;
-	b=5nuM8j4g9z+4mG1ka4DMjT/WLRKrQIvs/FsA1pcl9NznsCo9eOelHyxK4lbKxBfZnVsyzD
-	aqMQFd4+Di63MjBQ==
+	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
+	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
+	1ruN1lCKBfY39zDg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D297779A8;
-	Tue, 30 Jun 2026 16:35:03 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E748F779A8;
+	Tue, 30 Jun 2026 16:36:19 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dXYkBzfwQ2rFfQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:35:03 +0000
-Date: Tue, 30 Jun 2026 17:35:01 +0100
+	id GZUpNYPwQ2qifgAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:36:19 +0000
+Date: Tue, 30 Jun 2026 17:36:18 +0100
 From: Pedro Falcato <pfalcato@suse.de>
 To: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
@@ -138,23 +138,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
 	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
 	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 11/30] mm/vma: introduce and use vmg_pages(), vmg_[start,
- end]_pgoff()
-Message-ID: <akPwGnOXgrx77hxj@pedro-suse.lan>
+Subject: Re: [PATCH 12/30] mm/vma: clean up anon_vma_compatible()
+Message-ID: <akPwbHbGiF1FxL6m@pedro-suse.lan>
 References: <cover.1782735110.git.ljs@kernel.org>
- <f7b4f8a611ab4d36eb3cf2e394610a3744a93895.1782735110.git.ljs@kernel.org>
+ <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f7b4f8a611ab4d36eb3cf2e394610a3744a93895.1782735110.git.ljs@kernel.org>
-X-Stat-Signature: 8yupagp5c6yngmo4jh9awo5f85cy4upk
+In-Reply-To: <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2F3168000D
-X-HE-Tag: 1782837309-958419
-X-HE-Meta: U2FsdGVkX1/uRpbbVJuPcD87CBHSOfP9rLXiRUmN67Vww02YmOkJHBExH5UAU6wptfs8E0GfH5y6kWJqlOpwIO0Ta6JhENz4DJMPdz3bXZ5lA8rEF8DEDDWbMJRLLGV/NFjvhCzN4UIdHeZnAWx32xE67jNZN2e9wEBcPLwBoPyoR3/DuLamojw1gpuihQIslDsv351BiKvSque8VjTQjsgfVolWiRx0PsDVYEnmQVgbiZguMrQ5JiZXbq/405tddjhw0KYbpxtOXrSlBPH0GbxkmRCNozuWfiLaN5oL8EaMNf2fylN4xNE1rFEbrTo8dJqCDCYFI17sETJOv586H6Eoa421YdmY9PAdfU22iXxHs1p1QrNUMY+ZhbJ6RxdrxdyR3Ji2vqEo99KhyKwLX0Hm7M32wIjza4PiD7ZxY/Pz4fIf4gUBFr8QuT+DeBafU2TvHdG0UXAUFeB9DCAwpD8xTsKZRDB8Z1b5YjqpeyuIC/jPgWSsTFTLJ0/VQIvv2neR/SB9TCOPdDb8+mbrFHQNqYsQbDk/216y4S23cFW2cWPOe/pkUyf1y2+qbDHovAKC3iUdPqwDQ6d9hz8Y6I4bhpm9JJzeGrWOEaXV1OJYggFqQh4BI6fnZLX29elCpQ9kv8Gz2/yVwHFxqSnPzm0VTg+8td8gxLkerLhEqwgb+6zkDAd0z8KFvkg8yhMbBZ3RyvD4YLevU48G6rlGlezNNxprVlxlqYTDco2r9x9G8RfEZ+o+Tzj9ehBkwPUCRmkMSqlUw8UqnQKfcx63RvsRMe97DA+nqoI4xP3j9NBjlySF9Yat4FCRms7IM2ENdp5rosCd+pUTJgnGLMsf4mKI0ojj6cJQjL6EQkvliCAzIzGA9sDoU3LU21Wru4ISy9vvUpR2mXXhso7oI1fTjLMkuw4s9WRHkcBtdzUm4UMsJ7Ym3crW1GKhQKpAuCJYr2hd1WdRLnuUrcCL7XP
- kjloOyww
- BiEAIomVi2b7JEuakejMyMXRLiZlnZ5YS7E8vccUKTedv8U2YwVa4wv+sMEvRkP4zyeUedbeirwFq9WeR4s22iMQvYJEnq9vasR/jzHc2UlpXBeCMJhf/wCZF4d8WvQbsaWA2JF322ckJBVkUbZDETr4mvfBD8piE+KgNtM40N3legxr+5mc3RwkyghUK7mkm12/BQ7XKg4IH0SSq4UtHl6jVo9eNU7v9BsqOM7z2pAbQv+/FBIqWNnmFvCpwDfjvVa5nbahCyt1xKoTjjyH45YDzHr11hxOSla1/kLzlfmGugbB1s5LM6QEC1ygfox9YXEvs9W6F4Kd0jDFNqwSm7bs6aF4qMCoUE5Gfu5cIu9L1L/l/LEl6BnREV9LSJmRN1K3EgpqS/2PYaZsxr9cY/VWSJ+SPs8RApqmr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DFF75180014
+X-Stat-Signature: 7ubjf3kqord5dzaus4q8u93p5ni5gggt
+X-HE-Tag: 1782837385-632273
+X-HE-Meta: U2FsdGVkX18ySIo+GS9Dh9aXwNiNT6bouv5MeCx5udVYWUYLnzJFghQCSRj53Irnf79qRYH/+np/rWY0ZG4VT8f3S3Cpv8B9k6oRTDQNU9iCzvHLxu17dJgxjx6VB0NPvjiSJTnS4VEm9yoE2WZa7fWbB48fV/pfZxzaDwy62D50De2nqfOB5FvqyIaxUS68OINduoMgyNGUr4+bzhPUIU8+9W390tVXRz6PPE8IrYm1dDPKh7ZCTALuY6rXrSMbfO6nQVYmOyKzfVlS5GRkVwzJZhkId9n1J9DALDzz311PBLwUPOdwR/g4uMD4nL1MXSW1RF+vVlEFXACvlcJImDI4i4BtTaEHVRcwM2YJHfIQMr2GDqNMS2jxMMzxFaln98Yy3ZBUNOcuyZEtsMOqd1Sghahrf4uSY5jEkZli+zaiVxyDetmb49qTMQO9Ton+bfVOwMCPZvDjgdGxrF2JtSCGKhIHe0HNZemDe2UCKgoPnUBMhXWhco9LdEPu7B76HYqtNZfmwkfyW7LrgdYKD0DhHAyT+UsGD2hGa2Ld/+HMIfQ/B4R5zCmmoYBAyLnzz3OrZaPniTCU/P8e7ovGytiEkS/7yf7CjdoZThtEzGbINlC5m/8wlAKiC1NXTY3m1sHR1i/mPugpfsy+nkhfWO6VmdYtn6VsdtrS8nKfDCPiY2A6RCUgsU80gYxIfnQJ92VwIQjIXAai44udr9CRNi95495IyDWENOBg1M/TeAMHjYMAur2gdafkcdGZf9KZfFXwuG6Z4dccmcvCn7D1lL0aQDqNdr6Ihjs9FSEcfLqWOzmANHZMBUVaPD+WG5zdBMqrSqP42NDT2eHZ8B0uBhzkhT/UTHO85VA0XgT9qQwjiUrJZ3ywZ2dZICyPjymrOvuHn867kSz2Qcy8mHPx8wdUTizvai/m1HMwa/Jr++q4edHkluX9LtTuxOcVkjUS6n053B1ZqoVchB6Mzyu
+ nsbUZJR0
+ B07cnPe3QDkcYvpoCA36pjSFxqXrfLSy8mJo5xjy1Pq9MYSpo4ht9VZQlclTQlpHYJMCkV4uX8iIFzKnvBYq6DDOKz/08509U0mAG18PzypDbfsJTwGbNY6k9nPwPCXjZxW+nk+tPqWXWHo50g+iSFDHd8zZUivxF5dNw2THKU0on3CBGqDEknkdmsQ2NUO2RPV5zuXucs2XQQTipRWkfRywLnrVQn1DgjpM07sdVgsllV25Q3MkppShUWu5Nr/h2GzDTJIhPe0LQOuFzF5UIJsR9y/6TmDz1NiFjIOPwrZpgjz+nJLgEn75DhP7DoGoynfi1W+Fh94Nowk7jMxVfUdFf3TlsQ3+myH78cwH6sDhsdcHqnSi1z1qK8XzphTfnzEoFj8XwZRVpeGKNDTF+JSpqOu7RwilNDnM2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,18 +162,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:22PM +0100, Lorenzo Stoakes wrote:
-> In the VMA logic we often need to determine the number of pages in the
-> specified merge range, as well as the start and end page offsets of that
-> range.
-> 
-> Introduce and use helpers for these purposes.
+On Mon, Jun 29, 2026 at 01:23:23PM +0100, Lorenzo Stoakes wrote:
+> Break up the existing very large conditional, add comments and use
+> vma_[start/end]_pgoff() to make clearer what we're doing here.
 > 
 > No functional change intended.
 > 
 > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> ---
+>  mm/vma.c | 21 ++++++++++++++++-----
+>  1 file changed, 16 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/vma.c b/mm/vma.c
+> index b60375c6c5c3..6296acecf3b7 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -1967,14 +1967,25 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
+>  {
+>  	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
+>  
+> +	/* Ignore flags that mprotect() can change. */
+>  	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
+> +	/* Ignore flags that do not impact merging. */
+>  	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
+>  
+> -	return a->vm_end == b->vm_start &&
+> -		mpol_equal(vma_policy(a), vma_policy(b)) &&
+> -		a->vm_file == b->vm_file &&
+> -		vma_flags_empty(&diff) &&
+> -		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
+> +	/* Must be adjacent. */
+> +	if (a->vm_end != b->vm_start)
+> +		return false;
+> +	/* Must have matching policy. */
+> +	if (!mpol_equal(vma_policy(a), vma_policy(b)))
+> +		return false;
+> +	/* Must both be anon or map the same file (MAP_PRIVATE case). */
+> +	if (a->vm_file != b->vm_file)
+> +		return false;
+> +	/* Flags must be equivalent modulo mprotect(). */
+> +	if (!vma_flags_empty(&diff))
+> +		return false;
+> +	/* Page offset must align. */
+> +	return vma_end_pgoff(a) == vma_start_pgoff(b);
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de> 
+Very nice.
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
 Pedro
