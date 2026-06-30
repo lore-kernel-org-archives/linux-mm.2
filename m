@@ -4,144 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7D10C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:46:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590C9C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:46:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A84D86B010F; Tue, 30 Jun 2026 08:46:38 -0400 (EDT)
+	id 443286B0111; Tue, 30 Jun 2026 08:46:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A5C826B0111; Tue, 30 Jun 2026 08:46:38 -0400 (EDT)
+	id 41B5E6B0115; Tue, 30 Jun 2026 08:46:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9718E6B0114; Tue, 30 Jun 2026 08:46:38 -0400 (EDT)
+	id 30B066B0116; Tue, 30 Jun 2026 08:46:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AFA56B010F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:46:38 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BE94A1204CF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:37 +0000 (UTC)
-X-FDA: 84936552834.05.F6B7D82
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id F2F22140006
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l9fHtvOQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 096D56B0111
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:46:51 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C2EA1204C5
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:51 +0000 (UTC)
+X-FDA: 84936553422.28.0642988
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AC71220009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BWQLB8jU;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782823596;
-	b=iSgMScgT+GVrMIKvNSfDSUAsHOSNlRvDYfMed0Zgr5kfZWChp9j0NSPLVlFJvlS7oUGMMY
-	gLCjGFMkyWtYdk54t/OwNw1bTU5fd2zeiKB7ywb34Gmixd7icdFck7ncjt1gMzDmYavFiv
-	zqqRecG8i/oWHkMsfIV44KVuHkS1/6g=
+	t=1782823609;
+	b=NSSkAW05TH7G6O89oLYYqqSnBi7QBAdZRy6Z1zUetXvhyDETsceQg5Dm6j4mx83T9IsbDH
+	qqnLD6xVriYkCRqXBbXOFC8LF3lR3cQrwJoEWXNhizMOPm+odNDFFMJrJz4pFD+Uhw0pib
+	qH2Q56nsqkvvE2J8qPWdWRniYBNHvYI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782823596;
+	s=arc-20220608; t=1782823609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zVRDifu1QOyyXsAGZkUm6ew4XqjId6qSZyoyYBdxCL4=;
-	b=JBodD7ly8LjBqojvrQ5KYqwtctuLcMdYZ2/Gcik+6otSI74JDr3skU77mVzzrXKuzSrnK7
-	EAlgn2JCUwuj57jTkC4icqDeBXUWbp40sl3NZFoXD0sAGSeTasZ+5Rb27+YM1dEUNOCy3Z
-	q33Wm/L4laLMpwLMRdDJgRRBmt0hjkY=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Qh4NiYPbRruC4mvjxUzpupWki3z36d7XvZrwd3TdvC4=;
+	b=l2Q8kC2Wk6CvSb1dIq4WHUWuQkFezPibJKqNtcKQr4FUkNAnKykftoa4ucxe8dClEmn9AL
+	0QmhyZo+gxQtLLg90NL1xdfOmSWEu4LsosPkDtX4qqeb2wxPvYFVd3pHA3XmnEas5vHUI9
+	d9fNCrEuHpG+9FjxHdihh7T5nyQGlRk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l9fHtvOQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 698BF601D9;
-	Tue, 30 Jun 2026 12:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172481F000E9;
-	Tue, 30 Jun 2026 12:46:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782823595;
-	bh=zVRDifu1QOyyXsAGZkUm6ew4XqjId6qSZyoyYBdxCL4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=l9fHtvOQOP1Ai0VpWvZKiub+ksLWhWziADe3pLNfPxthadvVrmehxH6q/40yTMPH1
-	 VKlXtQcRFJUncsgox7z1MmPK+41arWoWSKb15luQrC+c7RZwPSRh6YaHuQHVDlr2zP
-	 gE8n346B54Meo0ciXzFd11xIDgLQSmDXCrxIp2W8SKL2lQh5UiOZ7YltjkSkgnWpY4
-	 EK8BYZHlvO7zQkCqxwftcbSy93CqfKyBZyqQhAuzUVHKqA45XL81fXEVvoJ4dwFkfn
-	 DFgd9gCeYXOIecVHrqwaum6X/8FjP9lDctXz4DYecsPkUmIuLDbc5l7elbP5B9KEUA
-	 WAar42Kf9ZP1Q==
-Message-ID: <1fb04774-1ac6-472a-bbc8-52fceb69b018@kernel.org>
-Date: Tue, 30 Jun 2026 14:46:27 +0200
+	imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=BWQLB8jU;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=Qh4NiYPbRruC4mvjxUzpupWki3z36d7XvZrwd3TdvC4=; b=BWQLB8jU6mcNh1heXB/lqQklx4
+	s+07onfRthNaz50wY8ifyU7opExoLJIdyGoRUAqFDdoEJOib/cdAGDcy8AlDp9fmsS1xKFx3KK8Zb
+	9ZynezgLH+gNqaO65ayOBcQo1XtJvc5puL2PS5V9fcZHYLXbHb3+9B7MZXQxRpk/WATuJjF4bT1IM
+	bYY+8+bEfpMvDnybVPlTpMbsEDdZ7W7DCyh4OKby8yFpER+cVl/pOQxaNLbXBqD933nhNenr33aPk
+	iXaPMpCWij3qkJgq9LxOj1uQ1+NkJSf8pOlXHiet0wb2THbBea1nty9g/jz4Suy7XWy+vTmaElIwz
+	Kt0EGmYw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1weXrA-0074bC-0V;
+	Tue, 30 Jun 2026 12:46:29 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH v10 0/6] mm/memory-failure: add panic option for
+ unrecoverable pages
+Date: Tue, 30 Jun 2026 05:46:03 -0700
+Message-Id: <20260630-ecc_panic-v10-0-c6ed5b62eea2@debian.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm/page_vma_mapped: use huge_ptep_get() for hugetlb
-To: Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linmiaohe@huawei.com, muchun.song@linux.dev, osalvador@suse.de,
- akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- riel@surriel.com, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- kas@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rcampbell@nvidia.com, apopple@nvidia.com, ziy@nvidia.com,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
- byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
- mel@csn.ul.ie, nao.horiguchi@gmail.com, ak@linux.intel.com,
- j-nomura@ce.jp.nec.com, pfalcato@suse.de, dave.hansen@intel.com,
- tglx@kernel.org, jpoimboe@kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, stable@vger.kernel.org
-References: <0fabee2a-edb7-41c8-91ec-8cf0646c9e83@kernel.org>
- <20260629074802.42727-1-lance.yang@linux.dev>
- <a1c6c3dd-8db1-4db6-b032-e350bacc4577@kernel.org>
- <6fdc0cbd-0880-4594-bf33-a2993ac2fe60@arm.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6fdc0cbd-0880-4594-bf33-a2993ac2fe60@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIu6Q2oC/23SS2oDMQwG4KsMXkdFkp+TVe9RSvEzcRdJmEmHl
+ pC7l0kX8eAuDfp+WUI3Meep5lnsh5uY8lLnej6J/UC4G0Q8+tMhQ01iPwhGNihZQo7x4+JPNYL
+ KysrgJDobxW4QlymX+v0Ie3v/e89f4TPH6xqwVhzrfD1PP49uC611/+UuBAiWPY1Mlk3UrymH6
+ k8v5+kg1uCFGyqppQwIY1aYsBhVrO+ofFJFm64SECjFELgQh6g6qlqqW6oAgROytcUVg9RR3VB
+ WLdWA4KUuKmhUrGNHzZNq2sxq1g87icTB26RCR21LN7NaQAiZs7YuG0r9mlxD2bbUPTbsMRZPJ
+ gTs6PikBseWjoCgJHurEDnbfsOEjWWzuQkEBJN8DM4nZJU2+H6//wKFSZUnywIAAA==
+X-Change-ID: 20260323-ecc_panic-4e473b83087c
+To: Miaohe Lin <linmiaohe@huawei.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, lance.yang@linux.dev, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ "Liam R. Howlett" <liam@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>, linux-trace-kernel@vger.kernel.org, 
+ kernel-team@meta.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9452; i=leitao@debian.org;
+ h=from:subject:message-id; bh=rzlmeFMvKoMLceiaLrM0kWBbYhUIPGoUIe6rGm5ZwiQ=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqQ7qcJMsLrQMFVu0gEasMRTudO2rYviwaZ2bCj
+ DAp2LspyJeJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCakO6nAAKCRA1o5Of/Hh3
+ bdg2D/9vJwL8x5oEhRZMdlefW2IZJ6ulKZudvqfPju4Qy6uTsXeMJzGvqoK2NyLbohCn/5IEhzP
+ ah0yHQVZCjhFX4qtdU8MQ9SbvCDUP3PMYYXb+zH1G2NdtGDF4F5q2gOmiTV3taQMF17y8hjMJqv
+ hZ/2QC1wk3YFIo3OWhK0RbyIzpf8Kz8nuhBuAph6qJMqmakta85mmHLjmqttDde0MbSEoSxX0eF
+ 64VLj3lcUaZBa8OI7Qv+73Os0X0JuPgO9F5zv0/1xN3JCMjaXa5FHdFMdsnosVoSA7vmeDi0zZ5
+ Mu1dkoPU+WVWI07SOt3IrcAmlGJ17ItESrsgaTEiPSfhP4v44kZ4yViiDPs9QReLbXwZXGL0xT0
+ LRlq+s5py+UR/hne/rehx1o+lW43hITmKuE90OS7rd5G+Z0Pao6F/94xZHddgOPTP/OPmSZfGoT
+ KuN9ebW4McP/lVSKp5n0tQTviVtMRUsv5jV6DHbZaI+OjIfu7SZKM1X2SRPK3Umkl4tLLIyp3Mc
+ xiXpMw8Dl0wcUbwQw3pnhkdhGO3D0R8SDOOmWzYBIEBASrFw0ZLf9MfWQSv3ffamA6Cn4N+cb3W
+ ENU42rWwbRP4v8DF0AcUm3fBEfc99LmCPIjg/2/f9+ynwuffVEtb8Kaw/3mTT+MRaWJSiKpSxM3
+ OfdOCKNvSV9YOVA==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: F2F22140006
+X-Rspamd-Queue-Id: AC71220009
 X-Rspam-User: 
-X-Stat-Signature: op4gznchqh1ocrni5z4bu8yphjqk7gmy
-X-HE-Tag: 1782823595-221869
-X-HE-Meta: U2FsdGVkX18QYHdN22qgDbL0WGNOXzvS2OOrhNpqnd4bRa6dBrDTtrR37OReWpDFWehWaG1WnxObOlqUflUeLdJo4ydlCBqd4MPE5Ulw3hCncEcdB66sKHbapilYo5f/z4V01mfM81OYPFHkQNd55AROZp/XeejqKzzP2kFvBb6JhYl6W7KbQ2EKrAWaOkzc9IYEf/7S/Y3kdg0cDN5qwdydzSmLBKQ0mha2of2YuZniTBpmkClAV9TQXWUdbeR/v3dfjfDpRGL/Yy4hJdDMdxsKLQ1hSZv2Y1cvv4rZ7Ka4hIEVsyYawhlwiwiLM4oVdmtzEi6wp1ngUeYgCVdX2BuUCQUR+LgTOhUKHn86Kq4U/JL0k9qk04IETAMIF/wQJBzKzXF9Au4RCaVdoJ3i14OXfvZcyzwx5HHQxgh7QzTPbPitT9zMSpuGdJvYrVJt7G66LRxxQ0k7g7ST+XvciBEfoV72u0+gC2IiN/IViJQEU7aIWu/hBWRQkrtuStiSZajfY4Y2gl4b0eq3YHW+OMMi0CyBoqhnfTIrMy3tP8sRQhtVLYsZupSyG2Q3JZN8H88ZyuFWYeF3DKvi6nItDoFtxQJAZogHFDIgc+HrSPj8BACj53rXD1611bcoj4/yy0U/8znj1+2e+QrA3R4cftgvDudnMI5Fxk66qQidOfPvioEY1vR4NtY6Yc13WsOIzVfKEa7WYWacBvRqgMHYw3wAkbM0DqLGbmDmsbBWqxwKrYbL4KrfdD+M9NngnhFhdG7IYX6LuGEf2L56sDN7tnILGs6SeH0RAvMe0MsN+s//vw04Es6V2L2P+AMSDYkcrQ53hCu2l+361FN8LFOIEawSwACfeiRe3j/axa7O745Z6QlpWSVm7VDgrfc7XiFiCwRko4IMJ8jd7x9EamCPryEephUxMdcG9TjWv1hpgHaPgCRzsogsq3xGBgkzUyPFe4fPsHRuK8ceBUvjsUa
- 2OwBUTlH
- igXfCdUH/xFv1olqn1s595c8o+XrhIRGNhfMsUeu8v8EKKcaxebaYzEt43kohHjnStUSDJsflkhuJwWBCz3c6Mpvw4L8xMOKTkar48v8kbkiY72H+7hW4JmvQj/Qv3IHAk1WbsF8ZTw4Bm+oAIiQ1Z0GuTfQeD3KXY9cp7fk6wFAvwrqEP2ufxoTMcYNf1mTmhKhlZwNTh4LwqSOm5Igr8yXJEWJninsFLgMqdZrR+VCoTOKbhaLNLcdS60j27RJy2g8osDIIIyc+wJD25ON1fvl4FYoeX3UJjGyDavgfwdccVQANv3X/WPQvy8WvPTbKILuEofKrJSBRawkiXUpEXL5TogzeF+/zzLH8E4y0UipEfm7H7fZl5UuFtCg72fwU5jV8
+X-Stat-Signature: 1cxjg7c1jo33bn9en54y8az9k9apxowp
+X-HE-Tag: 1782823609-608973
+X-HE-Meta: U2FsdGVkX191Jlxe8iazKBhiPxwreyflRQH6X/v9HKE+69g+iRE4uNOsme2gZcBm45JrLFoItQOurnA0i63+ROCvx4Mh/KY3Fn5gRisfO6I+V4cIkR3I+GJI/mtIBtO7Im+f7TPPmkuCOSDlBECidy6ZyTTWpggdo6RlOwcNvR1/NTOvTT3jmCeKZYkTHoGuhZJYbTDXV1S9hToMD2nZpa8xLrTVfpS9sqnu3GEZchamXR/SBGAkTuTxeNL3KfiF2DwlqFy12OjbrjMAdW48c80KhgDk40dnSYkNHBZu4o0BHZEoCb3uGgdv7E1t3leeRDv+A3ZJ+JZ9CBw7n/3I41g3laFcEJCXGpnASq4VhLxuQig8v3QMdHjRN5EDTc/4Ln0ku1QeuMXVCvcj99IT61fjvVK6qwA4fWNsBINqbsMrjGt/MHbMDKO/VneT5lSXi/dT94gODXpG57GPthHi/YX3tHbcMujpV7/im9VTMi9DgFczy5F/EeRgHDshTMVASgmj/AJLlGsP8f7ExhNn+O5asuK+ddfOEegSg+BJ728+ExOQ+E/52lyWFheIJKBXL7Q03hTsgHr1ENla+mLnIvz1ed/f1EnhCeEujZkfOu9k344U17YNDXumtY0Y3M9JUEKpAdCvOCMxM9dIOeFwPn/BpciaFGWwKT4umOKk0KUpoKbm/YzS2ZSNiH1Hc2iZct6+YWILFw0mpSex0L6o5O2aZJtHRQUOTspBeAilFWPRK7gvcpJEluNh8+1yCYqrEqdUWSmjFQW0qsNRAB4p6mAa7xWPEIomewiG6leWXw1SmtO1DqpTfCVZQ+Co4oXAbnplt0xFrdo7TDieqUVnuSgdTYbfi0O/uGo0HOR+ewhEsBXHKTiMjjNEIRtuiYr/0ynHyCmQJ5pz9Cm8jR4czK9Qj9SMLMFo9HoQ+s3H4/mL7RyGMtaYF/7xI40/sBLWxwLQg2IlP1OoQzgDAlF
+ AWuHoQ3s
+ CPc2gFdfLR55AlJ3izpYJ/R8/wVYK/frwt5jKVg5RnC67vuRhFAf+/AKwyhpY6LskfeY/1m2QgdGwmYZvMCysY+CxdZekmpciSTVkzOClEaVqKZ43T94W/WPoNYPbjHiXQsburpiqAZK/+3ljfWn3dFFW7YK6bdD2ih3sgStSV3DRgb0q7/ccq2jNHX9XX6sHLDYWyVieUwziKOJ1OqyPunj+gBvKeHnXfoHFeUyHDXNE4o7UXDcxhDlSg3VHnUflZ9z5PhU06gkt63hIUMPqXHjpIECnMhYnD6ml23B3hwCSVwZMmqEulxVAKQO6OlgfIa+sAuKP4VzSZJQVAsVgfNZ4IVovGZk7ZsHhTFLjvXoSnVVmkogVuucfgNpgVdkAQt7nBnwqqoM+s+IitwFRc7XiUdbx3WM9RTIsIY0i5hngC/5/SaWbHVWARmCbRZC7AK8KNneWSHhNMfEPL0cHXE/2OyHhVCnjvV/eSWsOXLhdxMjQL2T4ZmQBcj83a+ynilfYPq0tdeoCkKHn+GzcQ+XF4+vLsBtGx2QWygutwuz0kg7Ass8PKI+FFcs57dOGMLx69smLJFh4S2+sMw9Jk3ybN+ztNBoUXKrdSmTOcxWaBiQjnJCLzH1pc08uT+czDFscJUJBfMprBOCQhWXPkjhJEtBkP177Es7ckHsxtV1fOr9kSkMPBp0w3QId/nSxYf90rvzFa9jK94Gw1aV+StQpmbPXQahRcV6yTJrgksSz2fUrMq0orxIX+sCnGe+MdjxMk17eonTOfJRxMSVPyb+Wb/mlLvCx3xNRbZIiJaQIkrGEsemwKu/QEJCYBswg0v1nx8gkcTmINlOyVpybgaAnL0GfODdJSq2C9HZXKyiYdLKK61cqXZd56vFkWMYCmpZvxLTJjcBckpGYas/dvHGr1Bh0JeKMFwG/ZKQ27nCK2UELNzZnB+GaXH9//qAFcFFnIaY5MEVUcQdEBbtm07teReY1
+ jHPmLbKl
+ kDIlMn3BHRP9F+uaqANbxBROKWc9CWfbvOWd19ptK3M6h7n8OJ/DGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,95 +130,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 13:34, Dev Jain wrote:
-> 
-> 
-> On 29/06/26 1:35 pm, David Hildenbrand (Arm) wrote:
->> On 6/29/26 09:48, Lance Yang wrote:
->>>
->>> >from pagewalk code (where some users like pagemap need the actual address).
->>>
->>> Indeed ...
->>>
->>>
->>> Kinda lean toward option 1, even if it's more invasive. If we pass the
->>> hstate down, each arch can figure out the right addr from there.
->>>
->>>
->>> AFAICT, for huge_ptep_get() the addr users are arm64 and powerpc, riscv
->>> doesn't really care about addr there. Looks mostly arm64-specific ... 
->> powerpc handles it correctly in the weird "span two PMD entries" case by
->> aligning the PMD down.
->>
->> Risc-v copied from arm64, but can simply derive the #entries from the PTE value.
->> it doesn't have to re-walk the table using the address.
->>
->> But I think the following is required to fix, no?
-> 
-> We don't receive an unaligned ptep in huge_ptep_get, and riscv derives the
-> number of cont ptes from the pte itself, so why is the below required?
+A multi-bit ECC error on a kernel-owned page that the memory failure
+handler cannot recover is currently swallowed: PG_hwpoison is set, the
+event is logged, and the kernel keeps running.  The corrupted memory
+remains accessible to the kernel and either drives silent data
+corruption or surfaces seconds-to-minutes later as an apparently
+unrelated crash.  In a large fleet that delayed, unattributable crash
+turns into significant engineering effort to root-cause; in a kdump
+configuration, by the time the crash happens the original error
+context (faulting PFN, MCE/GHES record, page state) is long gone.
 
-Let me look at the actual report once more ...
+This series adds an opt-in sysctl,
+vm.panic_on_unrecoverable_memory_failure, that converts an
+unrecoverable kernel-page hwpoison event into an immediate panic with
+a clean dmesg/vmcore that still contains the original failure
+context.  The default is disabled so existing workloads see no
+change.
 
-I thought for a second that the problem would be having the ptep not point at the
-start of the hugetlb page mapping. But that should always be the case.
-So yes, riscv does not have any problems.
+There is a selftest that test different cases, and I tested it using
+the following variants:
 
-And IIUC, arm64 only has a problem when CONT_PTES != CONT_PMDS (16 kernel?).
+  ┌─────────┬──────────┬───────────────────────────────────────────────────────────┐
+  │ Variant │   PFN    │                          Result                           │
+  ├─────────┼──────────┼───────────────────────────────────────────────────────────┤
+  │ rodata  │ 0x2600   │ Panic with "Memory failure: 0x2600: unrecoverable page"   │
+  ├─────────┼──────────┼───────────────────────────────────────────────────────────┤
+  │ slab    │ 0x100032 │ Panic with "Memory failure: 0x100032: unrecoverable page" │
+  ├─────────┼──────────┼───────────────────────────────────────────────────────────┤
+  │ pgtable │ 0x100000 │ Panic with "Memory failure: 0x100000: unrecoverable page" │
+  └─────────┴──────────┴───────────────────────────────────────────────────────────┘
 
-Yeah, aligning the ptep down doesn't solve anything, it's already properly aligned.
+Each one shows the same call trace, exactly the path the series builds:
 
-To fix it inside arm64 code, we'd have to teach find_num_contig() to
-ignore the ptep and instead look for the cont bit, maybe?
+  hard_offline_page_store
+    → memory_failure
+      → action_result
+        → panic("Memory failure: %#lx: unrecoverable page")
 
-But I'm sure I messed this up as I am working on 10 things at the same time :D
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+Changes in v10:
+- Reuse kselftest declarations
+- Residual race harmless documentation
+- Link to v9: https://lore.kernel.org/r/20260609-ecc_panic-v9-0-432a74002e74@debian.org
 
+Changes in v9:
+- HWPoisonKernelOwned(): wrap the head-page checks in a
+  compound_head() recheck loop so a concurrent split or compound free
+  cannot leave us trusting a stale view (Miaohe, Lance, David).
+- selftest: drop the gawk-only strtonum() in hwpoison-panic.sh; do the
+  hex parsing with a small index()-based helper so the test no longer
+  spuriously skips itself on mawk-based distros (Sashiko).
+- selftest: move hwpoison-panic.sh from TEST_FILES to
+  TEST_PROGS_EXTENDED so the script is installed executable rather
+  than as a non-executable data file (Sashiko).
+- Link to v8: https://patch.msgid.link/20260527-ecc_panic-v8-0-9ea0cfa16bb0@debian.org
 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index d477a9dd1b472..d1d03795c135e 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -76,7 +76,7 @@ bool arch_hugetlb_migration_supported(struct hstate *h)
- #endif
- 
- static int find_num_contig(struct mm_struct *mm, unsigned long addr,
--                          pte_t *ptep, size_t *pgsize)
-+                          size_t *pgsize)
- {
-        pgd_t *pgdp = pgd_offset(mm, addr);
-        p4d_t *p4dp;
-@@ -87,7 +87,7 @@ static int find_num_contig(struct mm_struct *mm, unsigned long addr,
-        p4dp = p4d_offset(pgdp, addr);
-        pudp = pud_offset(p4dp, addr);
-        pmdp = pmd_offset(pudp, addr);
--       if ((pte_t *)pmdp == ptep) {
-+       if (pmd_cont(*pmdp)) {
-                *pgsize = PMD_SIZE;
-                return CONT_PMDS;
-        }
-@@ -131,7 +131,7 @@ pte_t huge_ptep_get(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-        if (!pte_present(orig_pte) || !pte_cont(orig_pte))
-                return orig_pte;
- 
--       ncontig = find_num_contig(mm, addr, ptep, &pgsize);
-+       ncontig = find_num_contig(mm, addr, &pgsize);
-        for (i = 0; i < ncontig; i++, ptep++) {
-                pte_t pte = __ptep_get(ptep);
- 
-@@ -475,7 +475,7 @@ void huge_ptep_set_wrprotect(struct mm_struct *mm,
-                return;
-        }
- 
--       ncontig = find_num_contig(mm, addr, ptep, &pgsize);
-+       ncontig = find_num_contig(mm, addr, &pgsize);
- 
-        pte = get_clear_contig_flush(mm, addr, ptep, pgsize, ncontig);
-        pte = pte_wrprotect(pte);
-diff --git a/mm/memory.c b/mm/memory.c
+Changes in v8:
+- Commit message rewording (David)
+- Add HWPoisonKernelOwned() helper (Lance)
+- Removed patch "mm/memory-failure: short-circuit PG_reserved before get_hwpoison_page()"
+- Broaden the selftest (Lance)
+- Link to v7: https://patch.msgid.link/20260513-ecc_panic-v7-0-be2e578e61da@debian.org
 
+Changes in v7:
+- Move the PG_reserved / unhandlable-kernel-page classification into
+  get_any_page() and surface it via -ENOTRECOVERABLE, per David
+  Hildenbrand's and Lance Yang's review of v6.  This drops the
+  is_reserved snapshot in memory_failure() and the mf_get_page_status
+  enum / out-parameter introduced in v6.
+- Restructure the post-call branch in memory_failure() as a switch
+  over the get_hwpoison_page() return code (David).
+- Drop the "reserved" qualifier from the MF_MSG_KERNEL label and the
+  matching tracepoint string; the enum now covers both PG_reserved
+  pages and other unhandlable kernel pages.
+- Squash the former patches 1/4 ("MF_MSG_KERNEL for reserved pages")
+  and 2/4 ("classify get_any_page() failures by reason") into a
+  single classification patch; the series is now 3 patches.
+- Simplify panic_on_unrecoverable_mf() to a single return statement
+  (David).
+- Link to v6: https://patch.msgid.link/20260511-ecc_panic-v6-0-183012ba7d4b@debian.org
 
+Changes in v6:
+- Dropped the selftest given the value was not clear
+- Get the status of the failure from get_any_page()
+- Small nits from different people/AIs.
+- Link to v5: https://patch.msgid.link/20260424-ecc_panic-v5-0-a35f4b50425c@debian.org
+
+Changes in v5:
+- Add vm.panic_on_unrecoverable_memory_failure sysctl to panic on
+  unrecoverable kernel page hwpoison events (reserved pages, refcount-0
+  non-buddy pages, unknown state), with a recheck to avoid racing with
+  concurrent buddy allocations. (Miaohe)
+- Distinguish reserved pages as MF_MSG_KERNEL in memory_failure(),
+  document the new sysctl in Documentation/admin-guide/sysctl/vm.rst,
+  and add a selftest verifying SIGBUS recovery on userspace pages still
+  works when the sysctl is enabled. (Miaohe)
+- Added a selftest
+- Link to v4:
+  https://patch.msgid.link/20260415-ecc_panic-v4-0-2d0277f8f601@debian.org
+
+Changes in v4:
+- Drop CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option.
+- Split the reserved page classification (MF_MSG_KERNEL) into its own
+  patch, separate from the panic mechanism.
+- Document why the buddy allocator TOCTOU race (between
+  get_hwpoison_page() and is_free_buddy_page()) cannot cause false
+  positives: PG_hwpoison is set beforehand and check_new_page() in the
+  page allocator rejects hwpoisoned pages.
+- Document the narrow LRU isolation race window for MF_MSG_UNKNOWN and
+  its mitigation via identify_page_state()'s two-pass design.
+- Explicitly document why MF_MSG_GET_HWPOISON is excluded from the
+  panic conditions (shared path with transient races and non-reserved
+  kernel memory).
+- Link to v3: https://patch.msgid.link/20260413-ecc_panic-v3-0-1dcbb2f12bc4@debian.org
+
+Changes in v3:
+- Rename is_unrecoverable_memory_failure() to panic_on_unrecoverable_mf()
+  as suggested by maintainer.
+- Add CONFIG_BOOTPARAM_MEMORY_FAILURE_PANIC kernel configuration option,
+  similar to CONFIG_BOOTPARAM_HARDLOCKUP_PANIC.
+- Add documentation for the sysctl and CONFIG option.
+- Add code comments documenting the panic condition design rationale and
+  how the retry mechanism mitigates false positives from buddy allocator
+  races.
+- Link to v2: https://patch.msgid.link/20260331-ecc_panic-v2-0-9e40d0f64f7a@debian.org
+
+Changes in v2:
+- Panic on MF_MSG_KERNEL, MF_MSG_KERNEL_HIGH_ORDER and MF_MSG_UNKNOWN
+  instead of MF_MSG_GET_HWPOISON.
+- Report MF_MSG_KERNEL for reserved pages when get_hwpoison_page() fails
+  instead of MF_MSG_GET_HWPOISON.
+- Link to v1: https://patch.msgid.link/20260323-ecc_panic-v1-0-72a1921726c5@debian.org
+
+To: Miaohe Lin <linmiaohe@huawei.com>
+To: Naoya Horiguchi <nao.horiguchi@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Steven Rostedt <rostedt@goodmis.org>
+To: Masami Hiramatsu <mhiramat@kernel.org>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Jonathan Corbet <corbet@lwn.net>
+To: Shuah Khan <skhan@linuxfoundation.org>
+To: David Hildenbrand <david@kernel.org>
+To: Lorenzo Stoakes <ljs@kernel.org>
+To: "Liam R. Howlett" <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Michal Hocko <mhocko@suse.com>
+To: Shuah Khan <shuah@kernel.org>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+
+---
+Breno Leitao (6):
+      mm/memory-failure: drop dead error_states[] entry for reserved pages
+      mm/memory-failure: surface unhandlable kernel pages as -ENOTRECOVERABLE
+      mm/memory-failure: report MF_MSG_KERNEL for unrecoverable kernel pages
+      mm/memory-failure: add panic option for unrecoverable pages
+      Documentation: document panic_on_unrecoverable_memory_failure sysctl
+      selftests/mm: add hwpoison-panic destructive test
+
+ Documentation/admin-guide/sysctl/vm.rst      |  80 +++++++++
+ mm/memory-failure.c                          | 106 +++++++++--
+ tools/testing/selftests/mm/Makefile          |   4 +
+ tools/testing/selftests/mm/hwpoison-panic.sh | 255 +++++++++++++++++++++++++++
+ 4 files changed, 427 insertions(+), 18 deletions(-)
+---
+base-commit: 30ffa8de54e5cc80d93fd211ca134d1764a7011f
+change-id: 20260323-ecc_panic-4e473b83087c
+
+Best regards,
 -- 
-Cheers,
+Breno Leitao <leitao@debian.org>
 
-David
 
