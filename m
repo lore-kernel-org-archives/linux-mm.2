@@ -4,97 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF04CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 18:30:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ACB3C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 18:31:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4066E6B00A6; Tue, 30 Jun 2026 14:30:48 -0400 (EDT)
+	id 148516B00A9; Tue, 30 Jun 2026 14:31:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B8576B00A8; Tue, 30 Jun 2026 14:30:48 -0400 (EDT)
+	id 0F8796B00AB; Tue, 30 Jun 2026 14:31:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CD506B00A9; Tue, 30 Jun 2026 14:30:48 -0400 (EDT)
+	id F2A616B00AC; Tue, 30 Jun 2026 14:31:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F170F6B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:30:47 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 73A4B4059F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:30:47 +0000 (UTC)
-X-FDA: 84937420134.02.C9E96CC
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CBC738001B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:30:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ie79YEYD;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C415B6B00A9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:31:11 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 416A21205F8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:31:11 +0000 (UTC)
+X-FDA: 84937421142.14.8BA53EF
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1F5481C000E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:31:08 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=g3UoGDoz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ta6n1aUP;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=g3UoGDoz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ta6n1aUP;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782844245;
-	b=tQCqR0rW4wjIq6UmkvNk4tuqKXF86cxX1MIFK9IMIABANMMGUoK46kX9VN7vfhmif0zaCa
-	VVXIU55yYrzWhIFkXw2MpuTe/UlJo05pcN24tgWGZuZdTa13082MnlnTvbAvANlE3jB1tG
-	lWPTNlnJay7tHYY1CgaXKtAa85OJm8o=
+	t=1782844269;
+	b=HTowZyLqZ+CK7DudhKJZywWAkGy2c8+o1uZ4rDprl1XJdwwkanDdlSbvc8ghRoiPInEHwY
+	xqsS86VH8E/VkTlICH9IMdItVaNYA8RQquG3+APnCHFHAmtLQhL8gbH1vjn5N5Mm+yPXpZ
+	4eRJXT+ws/Hwd3NB7j7JQvnJIc/OYX4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782844245;
+	s=arc-20220608; t=1782844269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=vIaC+LL2gcG/NtVWzE9SIvyhNn816b8BLuQfR31svhM=;
-	b=PC9xsROJmn635zgbvfeKGt/yoY3vFuxUb/W4Qo3eYs3K4w9wJYWJHZsWuY3LVC/qS213Pf
-	VOLNg/pXe2R0VE1Fb1bUXl76BMDVZnRxL3AtasF171B2nn16wCnT46MvrMezyfJmKHcXnN
-	LMo1X/MeD84bYeT65jLOoGksGPFzXtQ=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mU8FzwXctUR/PxXeIEd6XhA5si5vC1kRVBGbfPOCGCo=;
+	b=J9XhaKYTsBnvtbP1Vn5tjTonTqP0PcYe+S62NcTnBbb0kJeZuRRjLii5WM4QCAD199gtfK
+	qLVsC6/qSQUKbpFBlCGl5ZZIvrcVJAlQe1kZgkxtGNZSYo/5U7flWyi+wbBrfmpDYY6c8b
+	WlkgEIkc5XboXm/p36l4naAC3+6C7L4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ie79YEYD;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782844245; x=1814380245;
-  h=date:from:to:cc:subject:message-id;
-  bh=NX7S8Br6+AJyw7Jeox3iPoLm79TW6KhFQ6bnXuRg1es=;
-  b=ie79YEYDO0tiWkRF1pEiEcXys43KQFSvpSPGgpyts3IdYqoPkYn6jfVO
-   LfAy7TX02z1NLXlScbsvo+av6VUOacPO5iaoCG+D448Vfh5Ku2U0n9nJQ
-   xGuSA4LsT8ID+um6JH3+dUlzv4ak3wF4/XD11pwrTG0U7vP86MUSPalgs
-   Ck8L/W+TSQG5bzGgw8LmI5TM9m5ibLl5ZSgQw1EC62+bDIoF3AZ2r3VqJ
-   yK6ejPPin09PTUNN2hda+Ph7/rDj0jKoEJdieNkwqFf3Pk537hP+4HRgF
-   QwcWgJrV84uNSX647PX5IZ4nL9+z2ygx7pn/hvKLpteFW04OtaoyN9rT5
-   g==;
-X-CSE-ConnectionGUID: Vhjdw08eSL+2w3i7s87i/g==
-X-CSE-MsgGUID: i1B0vdvNQ5eGUbnnYYyxoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11833"; a="83438353"
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="83438353"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 11:30:43 -0700
-X-CSE-ConnectionGUID: 0Th9mMKwTGCMs9d2skpgXg==
-X-CSE-MsgGUID: t0T8Iy7/STqIzGcRaY+Qvw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
-   d="scan'208";a="276635443"
-Received: from lkp-server02.sh.intel.com (HELO ea128546eb3d) ([10.239.97.151])
-  by fmviesa001.fm.intel.com with ESMTP; 30 Jun 2026 11:30:41 -0700
-Received: from kbuild by ea128546eb3d with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wedEE-000000008Zr-1FYb;
-	Tue, 30 Jun 2026 18:30:38 +0000
-Date: Wed, 01 Jul 2026 02:30:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Hildenbrand <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org
-Subject: [akpm-mm:mm-new] BUILD SUCCESS WITH WARNING
- 15654b0268cd65b4e673510c0377774e61b86397
-Message-ID: <202607010249.92RC46mZ-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=g3UoGDoz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ta6n1aUP;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=g3UoGDoz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ta6n1aUP;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 993C8736A6;
+	Tue, 30 Jun 2026 18:31:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782844267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mU8FzwXctUR/PxXeIEd6XhA5si5vC1kRVBGbfPOCGCo=;
+	b=g3UoGDozpKNrTrpCTewdzW6hDWOnKcvFzikZ5WTozmwcmfdels4BSJu0Jb/laTXa3hRlBN
+	EacZPomiwlX52XRjWF+Bj5fVhsd0gwei0wcKiKTCECQSegvS0P4smGKAYXgC/DY843bL6o
+	gNliXQ/M3kjDpqyfANik1Zi6CKBHDlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782844267;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mU8FzwXctUR/PxXeIEd6XhA5si5vC1kRVBGbfPOCGCo=;
+	b=ta6n1aUPYiqSF+UBgmUWCEcge4k4qQdy+01PvEuiyB+oV3Ot/SKuMx3VuB0cMDbK4FZ7dL
+	dDpUKLV2O07KWgAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782844267; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mU8FzwXctUR/PxXeIEd6XhA5si5vC1kRVBGbfPOCGCo=;
+	b=g3UoGDozpKNrTrpCTewdzW6hDWOnKcvFzikZ5WTozmwcmfdels4BSJu0Jb/laTXa3hRlBN
+	EacZPomiwlX52XRjWF+Bj5fVhsd0gwei0wcKiKTCECQSegvS0P4smGKAYXgC/DY843bL6o
+	gNliXQ/M3kjDpqyfANik1Zi6CKBHDlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782844267;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mU8FzwXctUR/PxXeIEd6XhA5si5vC1kRVBGbfPOCGCo=;
+	b=ta6n1aUPYiqSF+UBgmUWCEcge4k4qQdy+01PvEuiyB+oV3Ot/SKuMx3VuB0cMDbK4FZ7dL
+	dDpUKLV2O07KWgAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A0972779A8;
+	Tue, 30 Jun 2026 18:31:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dnq8I2oLRGpTcAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 18:31:06 +0000
+Date: Tue, 30 Jun 2026 19:31:04 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Gregg Leventhal <gleventhal@janestreet.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Song Liu <song@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Eric Hagberg <ehagberg@janestreet.com>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>
+Subject: Re: Subject: [BUG/RFC] write-open file THP cache purge can discard
+ dirty page cache
+Message-ID: <akQIIav_zaK6RmIC@pedro-suse.lan>
+References: <CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="sgcbtvevrg4dwu7g"
+Content-Disposition: inline
+In-Reply-To: <CAFN_u7H_0ECF3jixP=T=U7AH5=Q3wQNvJMo8an3VqUDMerQfUw@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: wwtgf9hqzaefnirsz54aawaaadp5rnja
-X-Rspamd-Queue-Id: CBC738001B
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782844244-898398
-X-HE-Meta: U2FsdGVkX19TPikBVtntNcfus/HzupH84VACFqj/iYX4BXLP0zPAB2kp+wGONG+ZkUyQMeyif7NqFZH/ys6TYx0FMd9paF4NwbM6n+GPywh4GCMg1uQU8xkG3e3B1cCB0ty5s7UaQ4rIu+O2QjaKgs2Yilsu0/By5/oMiZxst07FSDDYGyjoEsN6O8G9wMg3evPUtJAc+P0YbP0qJePIfWzIalejdqLUCOdEN5Kt1ffNaVzfpWTi63yrJ5HE9x+JvAxzqmhVpZ27t4Bu0zISR9lSWXBBxaKGM8Gu9cvARYBnJDD4187W6pGszwWb0+t3uINe4YL3GJcyT1yF0Sb32AlhqV0Jk3tRUJAbXxHa200dkh0UKXRReQZ+w/AomWzgq5tBc0/MLoLs6efWzHBdUsbnvKlSVnu22aTZPTKUvnd8EuEpT5VuVwEtXuxKvTL2/VNPshFK0Fx3XvE3nCfiI49xiPnq8K5pnTDvgBiub+/7FN5TmyX39W71Zms71GgX6BfyhLgjI59ZOPwzh5DAS4Q4rOYPm4p2oHGf6O5+2Op2ljGwurWSD9qIrvQvUvb/xqPQCJeeET6S74DoBM1XeCNGD+/s2gKloHMENAvPjQGjbTlXu/DqaU7YOmhUGRa+i6u73TxTV6wibJR9Qi4YZIw2LD/Y5tFEeV89DodYRJSt/m7g3MzeofcbhRae4++N52OCE5YGDRXB7zBVTz57nt77X1jMaccK/qOh+Fkz69W/vhtmu+brAYG38e2AjAqkYhF3CGOq+ysed6DA4JhJgYCPqdrA26X4ZiVAEor3FW0O0EG+7Ok4dxVpx9DHx7SbX5VotX8tpgZmepheaVV+wusBYFTO9Dmb+7576Q9bA//t/zHg/31uEe7tUuqWrBIAsQza7PU225yAetsK+ABGyeLdeDFZZg6toRmZFi1JgWGU4j5jtGs1yaumpDJL3DzyyXV+QBATKfNrxF0mcKl
- dh3yWVYt
- 83/smtx+eRifc2rih2v3wvYjLvsedptdpbVeTPZmFhNKCcQRLfIWh/CAVHeI/ShD37VWUdt3ZXn4dWcUt33Xu54S3o8jpgozX49pKBzS9e08fQi6sXzH8eSxyd5LMkzmSN2Dj/Vdc+H/tINm9WquSlMdTm05PHmMvsoIub7HQgPHsnQbJs10gkKMGycvv4qD0ljb+bTah8bkPeldZbffplekVzOeFSirKi4mR
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1F5481C000E
+X-Stat-Signature: 9uact5id9xigs5dfhgnt7h1p867r3eit
+X-HE-Tag: 1782844268-19121
+X-HE-Meta: U2FsdGVkX1/XrGOzquS3YTnEkgY56jHOJz0mv9Q0sjXZInBsnzWGI2S/0Zb8HAGIcSJ/yHzdQlWeyu88DwjgxlczMChf3/mRGFJsMxvvHKUP4qRGqYGidt8zSx4lAwr3srwI9hUt9pFO3z261vP7vLBCMCSDe87cboNg99BHmwZcjgYUvHqd4765MYjwV4tWEu3G2voR/Kc0hwIrcMX8fNlHLr+p3+s5SgYmvkfNn6TthXxzEQyyA0msulHOhANy0xd9pqtEPI3cfO0rmUqcs/X6Neq/WQofrLwTKlw+ZLWawrMUlo29LkuPgxvDDhkbNr7XBVbX1xDmDTj7i4/4yzL7LtfXYELNf6ghs+cUSdrisCGw8C+pbKZfcl6HiWkzSfT5pXxjqZJLHkpYWEy8umq08FozUrLe2+ooRZtgc4pmXS1UCv3RP8HZ4bC7WmSsi6RCWZzNEDh5Y21SGSBF1xcr2frXmUJxXtOsvu/B17rc8tJfo+Ttk99R3bOfH6snWlw8IbqbdakLGjkpraF6g/teOYpNMG7CmwUmQy8h9bse8Qa2qcRA/QrUSqCqIazUmj7LAlfgpli+cWyAfKwj4BdoZJAFmtzi8TcQJdwBFoufWLDl9W8mX+NYCb3qBgXRVhOgG83de681q3sEDSFLqiRpxN5tGX635ak2oTuwC5Xv76btAEWxKlsKn2PMy7eQijIAqgQsSRC+lPot6wHejPF/MbMlCQasxpXeDKfS380VaqtsbNeqx/Y6IQLkmAUp8QWHNutUb3qXIRqaKPy97jBLCpNFbo8Lyz2NulRCHtWUT1t4C4BKcYUnJxXuSaGSs17iTkWtUr7KLlHp/sb2hETXC2kRsoNvdwc90jJ4DMAyjLt2IqA9F1DKbfeTnd/ifR+/w5rEGC3yOjCiAYcqBH6EXM3OWpozDTAU848KNWpbGb4F+E4u6ANnASyvnZ15sssldqhXgGTL6DMNc65
+ CtP2V040
+ gBWlDqHJFLF+Zl0ZLM27Tgo8J+zjJ1WP5AE5jxJvzJCZSNVakRXyKuDpVuajBXtd9YXOzKDWuLiot4jx4qBylhl7BsAG+XXhK0ROSHqCRC7Xd/pblrBc83UTW0ipQ2Vi94zUfgskmBtFNAKRUdusJ9R1ldM6Z1DJIH6LF0lHiK2h7ZoE7D6WlqUknNOql9nwVA8pkEz7tj/1tHoSX6Ctd/Sgq4PQATnsSp9A25d/mT1INRkc46HM4R0/evStY7h0P7TeFGENPpX0lMHHrUOMN37RvPHdVgNpTFP7nqVmtCEb7uajDFWlNdT3xuWuUU+yj2tTZ5fzHOhmMoiE56T+Hx9YJ4zTXvonYTTzXWsr8WIMLkDbURFhSzbkyZVvxcIs8e69M4fKjX1hDIE72GnfpbaFyl7SR0w8ki3H22mxNqF9jjq8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,429 +134,293 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-branch HEAD: 15654b0268cd65b4e673510c0377774e61b86397  mm/swap, PM: hibernate: atomically replace hibernation pin
 
-Warning (recently discovered and may have been fixed):
+--sgcbtvevrg4dwu7g
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-    https://lore.kernel.org/oe-kbuild-all/202606291606.9h8aGniQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202606291933.Cw5TBs54-lkp@intel.com
++CC some relevant THP folks
+Quick note, your email client's spacing seems to be all over the place, making
+this extremely hard to read.
 
-    mm/vmalloc.c:3590:16: warning: unused variable 'start' [-Wunused-variable]
-    mm/vmalloc.c:3590:23: warning: unused variable 'start' [-Wunused-variable]
-    mm/zsmalloc.c:1480:21: warning: 'obj_to_class_idx' defined but not used [-Wunused-function]
+On Tue, Jun 30, 2026 at 01:01:53PM -0400, Gregg Leventhal wrote:
+> Hello,
+> 
+> We (Gregg Leventhal <gleventhal@janestreet.com> and Eric Hagberg
+> 
+> <ehagberg@janestreet.com>) have a reproducible data-loss issue involving file
+> 
+> THPs and write-open, impacting filesystems that do not support
+> writable large folios.
+> 
+> 
+> Attached are:
+> 
+> 
+>   - thp_write_open_cancel_dirty_repro.c
+> 
+>   - thp-open-writeback-before-purge.patch
+> 
+> 
+> 
+> Summary
+> 
+> =======
+> 
+> 
+> On an affected 6.12 kernel with CONFIG_READ_ONLY_THP_FOR_FS=y, a file can
+> 
+> contain read-only file THPs installed by khugepaged / MADV_COLLAPSE. When that
+> 
+> same file is later opened for write, do_dentry_open() notices
+> 
+> filemap_nr_thps() and drops the page cache:
+> 
+> 
+>         /*
+> 
+>          * XXX: Huge page cache doesn't support writing yet. Drop all page
+> 
+>          * cache for this file before processing writes.
+> 
+>          */
+> 
+>         if (f->f_mode & FMODE_WRITE) {
+> 
+>                 if (filemap_nr_thps(inode->i_mapping)) {
+> 
+>                         struct address_space *mapping = inode->i_mapping;
+> 
+> 
+>                         filemap_invalidate_lock(inode->i_mapping);
+> 
+>                         unmap_mapping_range(mapping, 0, 0, 0);
+> 
+>                         truncate_inode_pages(mapping, 0);
+> 
+>                         filemap_invalidate_unlock(inode->i_mapping);
+> 
+>                 }
+> 
+>         }
 
-Warning ids grouped by kconfigs:
+Ugh, this is embarassing. So, good news: this code doesn't exist anymore
+in mainline! Bad news: it exists on every other upstream-stable-maintained
+release :|
 
-recent_errors
-|-- arc-allmodconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-allnoconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-allyesconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-randconfig-002-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- arc-randconfig-r121-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-allmodconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-allnoconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-randconfig-002-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- csky-randconfig-r072-20260630
-|   |-- mm-vmalloc.c:warning:unused-variable-start
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- i386-buildonly-randconfig-001
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- i386-randconfig-051-20260630
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- i386-randconfig-141
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- loongarch-allmodconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- loongarch-allnoconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- loongarch-allyesconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- loongarch-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- loongarch-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- loongarch-randconfig-r063-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- m68k-allmodconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- m68k-allyesconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- m68k-defconfig
-|   |-- mm-vmalloc.c:warning:unused-variable-start
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- openrisc-randconfig-r134-20260630
-|   `-- mm-zsmalloc.c:warning:obj_to_class_idx-defined-but-not-used
-|-- sh-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sh-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-allnoconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-randconfig-002-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-randconfig-r053-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc-randconfig-r071-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc64-allmodconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc64-defconfig
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc64-randconfig-001-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-|-- sparc64-randconfig-002-20260630
-|   `-- mm-vmalloc.c:warning:unused-variable-start
-`-- sparc64-randconfig-r111-20260630
-    `-- mm-vmalloc.c:warning:unused-variable-start
+FWIW I don't think your fix works, there's still a race there (what if
+you write and wait, then someone dirties a folio, then you truncate the
+pagecache? you lost data again.). I'm attaching a very quick WIP patch
+that I wrote against 6.12 LTS (again, this does not exist in mainline).
+I _think_ we want to go roughly in that direction, either here or in
+collapse file paths. There are still problems which are invasive and
+I haven't dealt with (GUP and other "temporary" folio releases being
+the main one). Some of these problems may simply make it so opening
+these files writable may fail (there is certainly, AFAIK, no way of
+waiting for GUP and other temporary folio holders).
 
-elapsed time: 776m
+We would probably be served with a custom loop that forcibly yanks
+only THPs out the pagecache, though. But that requires a bit more
+code for a stable-only issue...
 
-configs tested: 319
-configs skipped: 17
+Anyway, the patch is obviously ungood and uncromulent and is only
+here for a rough conversation starter. I don't think it works and
+it will probably never work. mapping invalidation is simply too
+best-effort for something that Just Needs(tm) to work.
 
-tested configs:
-alpha                             allnoconfig    gcc-16.1.0
-alpha                            allyesconfig    gcc-16.1.0
-alpha                               defconfig    gcc-16.1.0
-arc                              allmodconfig    clang-23
-arc                              allmodconfig    gcc-16.1.0
-arc                               allnoconfig    gcc-16.1.0
-arc                              allyesconfig    clang-23
-arc                              allyesconfig    gcc-16.1.0
-arc                                 defconfig    gcc-16.1.0
-arc                   randconfig-001-20260630    clang-23
-arc                   randconfig-001-20260630    gcc-12.5.0
-arc                   randconfig-001-20260701    gcc-12.5.0
-arc                   randconfig-002-20260630    clang-23
-arc                   randconfig-002-20260630    gcc-10.5.0
-arc                   randconfig-002-20260701    gcc-12.5.0
-arm                               allnoconfig    clang-17
-arm                               allnoconfig    gcc-16.1.0
-arm                              allyesconfig    clang-23
-arm                              allyesconfig    gcc-16.1.0
-arm                                 defconfig    clang-23
-arm                                 defconfig    gcc-16.1.0
-arm                   randconfig-001-20260630    clang-23
-arm                   randconfig-001-20260701    gcc-12.5.0
-arm                   randconfig-002-20260630    clang-23
-arm                   randconfig-002-20260701    gcc-12.5.0
-arm                   randconfig-003-20260630    clang-23
-arm                   randconfig-003-20260630    gcc-8.5.0
-arm                   randconfig-003-20260701    gcc-12.5.0
-arm                   randconfig-004-20260630    clang-23
-arm                   randconfig-004-20260630    gcc-8.5.0
-arm                   randconfig-004-20260701    gcc-12.5.0
-arm64                            allmodconfig    clang-23
-arm64                             allnoconfig    gcc-16.1.0
-arm64                               defconfig    gcc-16.1.0
-arm64                 randconfig-001-20260630    clang-17
-arm64                 randconfig-001-20260630    clang-23
-arm64                 randconfig-002-20260630    clang-23
-arm64                 randconfig-003-20260630    clang-23
-arm64                 randconfig-004-20260630    clang-23
-arm64                 randconfig-004-20260630    gcc-10.5.0
-csky                             allmodconfig    gcc-16.1.0
-csky                              allnoconfig    gcc-16.1.0
-csky                                defconfig    gcc-16.1.0
-csky                  randconfig-001-20260630    clang-23
-csky                  randconfig-001-20260630    gcc-14.3.0
-csky                  randconfig-002-20260630    clang-23
-csky                  randconfig-002-20260630    gcc-16.1.0
-hexagon                          allmodconfig    gcc-16.1.0
-hexagon                           allnoconfig    clang-23
-hexagon                           allnoconfig    gcc-16.1.0
-hexagon                             defconfig    clang-23
-hexagon                             defconfig    gcc-16.1.0
-hexagon               randconfig-001-20260630    clang-18
-hexagon               randconfig-002-20260630    clang-18
-hexagon               randconfig-002-20260630    clang-23
-i386                             allmodconfig    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                              allnoconfig    gcc-16.1.0
-i386                             allyesconfig    clang-22
-i386                 buildonly-randconfig-001    clang-22
-i386                 buildonly-randconfig-001    gcc-14
-i386        buildonly-randconfig-001-20260630    clang-22
-i386                 buildonly-randconfig-002    clang-22
-i386        buildonly-randconfig-002-20260630    clang-22
-i386                 buildonly-randconfig-003    clang-22
-i386        buildonly-randconfig-003-20260630    clang-22
-i386        buildonly-randconfig-003-20260630    gcc-13
-i386                 buildonly-randconfig-004    clang-22
-i386                 buildonly-randconfig-004    gcc-14
-i386        buildonly-randconfig-004-20260630    clang-22
-i386                 buildonly-randconfig-005    clang-22
-i386                 buildonly-randconfig-005    gcc-14
-i386        buildonly-randconfig-005-20260630    clang-22
-i386                 buildonly-randconfig-006    clang-22
-i386                 buildonly-randconfig-006    gcc-14
-i386        buildonly-randconfig-006-20260630    clang-22
-i386        buildonly-randconfig-006-20260630    gcc-14
-i386                                defconfig    clang-22
-i386                                defconfig    gcc-16.1.0
-i386                  randconfig-001-20260630    clang-22
-i386                  randconfig-002-20260630    clang-22
-i386                  randconfig-003-20260630    clang-22
-i386                  randconfig-003-20260630    gcc-14
-i386                  randconfig-004-20260630    clang-22
-i386                  randconfig-005-20260630    clang-22
-i386                  randconfig-006-20260630    clang-22
-i386                  randconfig-007-20260630    clang-22
-i386                           randconfig-011    gcc-12
-i386                  randconfig-011-20260630    gcc-12
-i386                  randconfig-011-20260630    gcc-14
-i386                           randconfig-012    gcc-12
-i386                  randconfig-012-20260630    clang-22
-i386                  randconfig-012-20260630    gcc-12
-i386                           randconfig-013    gcc-12
-i386                  randconfig-013-20260630    gcc-12
-i386                           randconfig-014    gcc-12
-i386                  randconfig-014-20260630    clang-22
-i386                  randconfig-014-20260630    gcc-12
-i386                           randconfig-015    gcc-12
-i386                  randconfig-015-20260630    gcc-12
-i386                  randconfig-015-20260630    gcc-14
-i386                           randconfig-016    gcc-12
-i386                  randconfig-016-20260630    gcc-12
-i386                           randconfig-017    gcc-12
-i386                  randconfig-017-20260630    clang-22
-i386                  randconfig-017-20260630    gcc-12
-loongarch                        allmodconfig    clang-19
-loongarch                        allmodconfig    clang-23
-loongarch                         allnoconfig    clang-20
-loongarch                         allnoconfig    gcc-16.1.0
-loongarch                           defconfig    clang-23
-loongarch             randconfig-001-20260630    clang-18
-loongarch             randconfig-001-20260630    clang-23
-loongarch             randconfig-002-20260630    clang-18
-m68k                             alldefconfig    gcc-16.1.0
-m68k                             allmodconfig    gcc-16.1.0
-m68k                              allnoconfig    gcc-16.1.0
-m68k                             allyesconfig    clang-23
-m68k                             allyesconfig    gcc-16.1.0
-m68k                                defconfig    clang-23
-m68k                                defconfig    gcc-16.1.0
-microblaze                        allnoconfig    gcc-16.1.0
-microblaze                       allyesconfig    gcc-16.1.0
-microblaze                          defconfig    clang-23
-microblaze                          defconfig    gcc-16.1.0
-mips                             allmodconfig    gcc-16.1.0
-mips                              allnoconfig    gcc-16.1.0
-mips                             allyesconfig    gcc-16.1.0
-mips                      malta_kvm_defconfig    gcc-16.1.0
-nios2                            allmodconfig    clang-20
-nios2                            allmodconfig    gcc-11.5.0
-nios2                             allnoconfig    clang-23
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    clang-23
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20260630    clang-18
-nios2                 randconfig-001-20260630    gcc-11.5.0
-nios2                 randconfig-002-20260630    clang-18
-nios2                 randconfig-002-20260630    gcc-11.5.0
-openrisc                         allmodconfig    clang-20
-openrisc                         allmodconfig    gcc-16.1.0
-openrisc                          allnoconfig    clang-23
-openrisc                          allnoconfig    gcc-16.1.0
-openrisc                            defconfig    gcc-16.1.0
-parisc                           allmodconfig    gcc-16.1.0
-parisc                            allnoconfig    clang-23
-parisc                            allnoconfig    gcc-16.1.0
-parisc                           allyesconfig    clang-17
-parisc                           allyesconfig    gcc-16.1.0
-parisc                              defconfig    gcc-16.1.0
-parisc                randconfig-001-20260630    clang-22
-parisc                randconfig-001-20260630    gcc-13.4.0
-parisc                randconfig-002-20260630    clang-22
-parisc                randconfig-002-20260630    gcc-15.2.0
-parisc64                            defconfig    clang-23
-parisc64                            defconfig    gcc-16.1.0
-powerpc                          allmodconfig    gcc-16.1.0
-powerpc                           allnoconfig    clang-23
-powerpc                           allnoconfig    gcc-16.1.0
-powerpc               randconfig-001-20260630    clang-17
-powerpc               randconfig-001-20260630    clang-22
-powerpc               randconfig-002-20260630    clang-22
-powerpc64             randconfig-001-20260630    clang-22
-powerpc64             randconfig-001-20260630    clang-23
-powerpc64             randconfig-002-20260630    clang-22
-powerpc64             randconfig-002-20260630    gcc-14.3.0
-riscv                            allmodconfig    clang-23
-riscv                             allnoconfig    clang-23
-riscv                             allnoconfig    gcc-16.1.0
-riscv                            allyesconfig    clang-23
-riscv                               defconfig    clang-23
-riscv                               defconfig    gcc-16.1.0
-riscv                          randconfig-001    gcc-9.5.0
-riscv                 randconfig-001-20260630    clang-23
-riscv                 randconfig-001-20260630    gcc-9.5.0
-riscv                          randconfig-002    gcc-9.5.0
-riscv                 randconfig-002-20260630    clang-23
-riscv                 randconfig-002-20260630    gcc-9.5.0
-s390                             allmodconfig    clang-17
-s390                             allmodconfig    clang-23
-s390                              allnoconfig    clang-23
-s390                             allyesconfig    gcc-16.1.0
-s390                                defconfig    clang-18
-s390                                defconfig    gcc-16.1.0
-s390                           randconfig-001    gcc-9.5.0
-s390                  randconfig-001-20260630    gcc-9.5.0
-s390                           randconfig-002    gcc-9.5.0
-s390                  randconfig-002-20260630    clang-23
-s390                  randconfig-002-20260630    gcc-9.5.0
-sh                               allmodconfig    gcc-16.1.0
-sh                                allnoconfig    clang-23
-sh                                allnoconfig    gcc-16.1.0
-sh                               allyesconfig    clang-17
-sh                               allyesconfig    gcc-16.1.0
-sh                                  defconfig    gcc-14
-sh                                  defconfig    gcc-16.1.0
-sh                             randconfig-001    gcc-9.5.0
-sh                    randconfig-001-20260630    gcc-16.1.0
-sh                    randconfig-001-20260630    gcc-9.5.0
-sh                             randconfig-002    gcc-9.5.0
-sh                    randconfig-002-20260630    gcc-16.1.0
-sh                    randconfig-002-20260630    gcc-9.5.0
-sparc                             allnoconfig    clang-23
-sparc                             allnoconfig    gcc-16.1.0
-sparc                               defconfig    gcc-16.1.0
-sparc                          randconfig-001    clang-17
-sparc                 randconfig-001-20260630    clang-17
-sparc                 randconfig-001-20260630    gcc-8.5.0
-sparc                          randconfig-002    clang-17
-sparc                 randconfig-002-20260630    clang-17
-sparc                 randconfig-002-20260630    gcc-13.4.0
-sparc64                          allmodconfig    clang-20
-sparc64                             defconfig    clang-23
-sparc64                             defconfig    gcc-14
-sparc64                        randconfig-001    clang-17
-sparc64               randconfig-001-20260630    clang-17
-sparc64               randconfig-001-20260630    gcc-11.5.0
-sparc64                        randconfig-002    clang-17
-sparc64               randconfig-002-20260630    clang-17
-sparc64               randconfig-002-20260630    gcc-8.5.0
-um                               allmodconfig    clang-17
-um                                allnoconfig    clang-17
-um                                allnoconfig    clang-23
-um                               allyesconfig    gcc-14
-um                               allyesconfig    gcc-16.1.0
-um                                  defconfig    clang-23
-um                                  defconfig    gcc-14
-um                             i386_defconfig    gcc-14
-um                             randconfig-001    clang-17
-um                    randconfig-001-20260630    clang-17
-um                             randconfig-002    clang-17
-um                    randconfig-002-20260630    clang-17
-um                           x86_64_defconfig    clang-23
-um                           x86_64_defconfig    gcc-14
-x86_64                           allmodconfig    clang-22
-x86_64                            allnoconfig    clang-22
-x86_64                            allnoconfig    clang-23
-x86_64                           allyesconfig    clang-22
-x86_64               buildonly-randconfig-001    clang-22
-x86_64      buildonly-randconfig-001-20260630    clang-22
-x86_64               buildonly-randconfig-002    clang-22
-x86_64      buildonly-randconfig-002-20260630    clang-22
-x86_64      buildonly-randconfig-002-20260630    gcc-14
-x86_64               buildonly-randconfig-003    clang-22
-x86_64      buildonly-randconfig-003-20260630    clang-22
-x86_64               buildonly-randconfig-004    clang-22
-x86_64      buildonly-randconfig-004-20260630    clang-22
-x86_64               buildonly-randconfig-005    clang-22
-x86_64      buildonly-randconfig-005-20260630    clang-22
-x86_64               buildonly-randconfig-006    clang-22
-x86_64      buildonly-randconfig-006-20260630    clang-22
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-22
-x86_64                         randconfig-001    gcc-14
-x86_64                randconfig-001-20260630    clang-22
-x86_64                randconfig-001-20260630    gcc-14
-x86_64                         randconfig-002    gcc-14
-x86_64                randconfig-002-20260630    clang-22
-x86_64                randconfig-002-20260630    gcc-14
-x86_64                         randconfig-003    gcc-14
-x86_64                randconfig-003-20260630    clang-22
-x86_64                randconfig-003-20260630    gcc-14
-x86_64                         randconfig-004    gcc-14
-x86_64                randconfig-004-20260630    clang-22
-x86_64                randconfig-004-20260630    gcc-14
-x86_64                         randconfig-005    gcc-14
-x86_64                randconfig-005-20260630    clang-22
-x86_64                randconfig-005-20260630    gcc-14
-x86_64                         randconfig-006    gcc-14
-x86_64                randconfig-006-20260630    gcc-14
-x86_64                randconfig-011-20260630    clang-22
-x86_64                randconfig-011-20260630    gcc-14
-x86_64                randconfig-012-20260630    gcc-14
-x86_64                randconfig-013-20260630    gcc-14
-x86_64                randconfig-014-20260630    clang-22
-x86_64                randconfig-014-20260630    gcc-14
-x86_64                randconfig-015-20260630    clang-22
-x86_64                randconfig-015-20260630    gcc-14
-x86_64                randconfig-016-20260630    gcc-14
-x86_64                         randconfig-071    gcc-13
-x86_64                randconfig-071-20260630    clang-22
-x86_64                randconfig-071-20260630    gcc-13
-x86_64                randconfig-071-20260630    gcc-14
-x86_64                         randconfig-072    gcc-13
-x86_64                randconfig-072-20260630    clang-22
-x86_64                randconfig-072-20260630    gcc-13
-x86_64                randconfig-072-20260630    gcc-14
-x86_64                         randconfig-073    gcc-13
-x86_64                randconfig-073-20260630    clang-22
-x86_64                randconfig-073-20260630    gcc-13
-x86_64                         randconfig-074    gcc-13
-x86_64                randconfig-074-20260630    clang-22
-x86_64                randconfig-074-20260630    gcc-13
-x86_64                         randconfig-075    gcc-13
-x86_64                randconfig-075-20260630    clang-22
-x86_64                randconfig-075-20260630    gcc-13
-x86_64                randconfig-075-20260630    gcc-14
-x86_64                         randconfig-076    gcc-13
-x86_64                randconfig-076-20260630    clang-22
-x86_64                randconfig-076-20260630    gcc-13
-x86_64                               rhel-9.4    clang-22
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    clang-22
-x86_64                    rhel-9.4-kselftests    clang-22
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-22
-xtensa                            allnoconfig    clang-23
-xtensa                            allnoconfig    gcc-16.1.0
-xtensa                           allyesconfig    clang-20
-xtensa                           allyesconfig    gcc-16.1.0
-xtensa                         randconfig-001    clang-17
-xtensa                randconfig-001-20260630    clang-17
-xtensa                randconfig-001-20260630    gcc-15.2.0
-xtensa                         randconfig-002    clang-17
-xtensa                randconfig-002-20260630    clang-17
-xtensa                randconfig-002-20260630    gcc-13.4.0
-xtensa                    smp_lx200_defconfig    gcc-16.1.0
+-- 
+Pedro
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--sgcbtvevrg4dwu7g
+Content-Type: text/x-patch; charset=us-ascii
+Content-Disposition: attachment; filename="0001-foo.patch"
+
+From 22c7255577e1efbca5186fa3a3afadf714743647 Mon Sep 17 00:00:00 2001
+From: Pedro Falcato <pfalcato@suse.de>
+Date: Tue, 30 Jun 2026 19:13:20 +0100
+Subject: [PATCH] foo
+
+Not-Signed-off-by: Pedro Falcato <pfalcato@suse.de>
+---
+ fs/open.c               | 15 ++--------
+ include/linux/pagemap.h |  1 +
+ mm/fadvise.c            |  2 +-
+ mm/internal.h           |  3 +-
+ mm/truncate.c           | 63 +++++++++++++++++++++++++++++++++++++++--
+ 5 files changed, 68 insertions(+), 16 deletions(-)
+
+diff --git a/fs/open.c b/fs/open.c
+index be7b55260a75..8feaf87c06b8 100644
+--- a/fs/open.c
++++ b/fs/open.c
+@@ -985,18 +985,9 @@ static int do_dentry_open(struct file *f,
+ 		 * cache will fail.
+ 		 */
+ 		if (filemap_nr_thps(inode->i_mapping)) {
+-			struct address_space *mapping = inode->i_mapping;
+-
+-			filemap_invalidate_lock(inode->i_mapping);
+-			/*
+-			 * unmap_mapping_range just need to be called once
+-			 * here, because the private pages is not need to be
+-			 * unmapped mapping (e.g. data segment of dynamic
+-			 * shared libraries here).
+-			 */
+-			unmap_mapping_range(mapping, 0, 0, 0);
+-			truncate_inode_pages(mapping, 0);
+-			filemap_invalidate_unlock(inode->i_mapping);
++			error = filemap_truncate_thps(inode);
++			if (error)
++				goto cleanup_all;
+ 		}
+ 	}
+ 
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 68a5f1ff3301..401b03970f68 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -67,6 +67,7 @@ static inline int filemap_write_and_wait(struct address_space *mapping)
+ {
+ 	return filemap_write_and_wait_range(mapping, 0, LLONG_MAX);
+ }
++int filemap_truncate_thps(struct inode *inode);
+ 
+ /**
+  * filemap_set_wb_err - set a writeback error on an address_space
+diff --git a/mm/fadvise.c b/mm/fadvise.c
+index 588fe76c5a14..c44a7a11eee2 100644
+--- a/mm/fadvise.c
++++ b/mm/fadvise.c
+@@ -156,7 +156,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
+ 			lru_add_drain();
+ 
+ 			mapping_try_invalidate(mapping, start_index, end_index,
+-					&nr_failed);
++					&nr_failed, NULL);
+ 
+ 			/*
+ 			 * The failures may be due to the folio being
+diff --git a/mm/internal.h b/mm/internal.h
+index 3bfc1dc2d7ea..83e3bbbe18a6 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -407,7 +407,8 @@ bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
+ 		loff_t end);
+ long mapping_evict_folio(struct address_space *mapping, struct folio *folio);
+ unsigned long mapping_try_invalidate(struct address_space *mapping,
+-		pgoff_t start, pgoff_t end, unsigned long *nr_failed);
++		pgoff_t start, pgoff_t end, unsigned long *nr_failed,
++		pgoff_t *first_fail);
+ 
+ /**
+  * folio_evictable - Test whether a folio is evictable.
+diff --git a/mm/truncate.c b/mm/truncate.c
+index fb5c20b57bd4..3efcadd2be4f 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -490,12 +490,14 @@ EXPORT_SYMBOL(truncate_inode_pages_final);
+  * @start: the offset 'from' which to invalidate
+  * @end: the offset 'to' which to invalidate (inclusive)
+  * @nr_failed: How many folio invalidations failed
++ * @first_fail: What was the first offset to fail invalidation?
+  *
+  * This function is similar to invalidate_mapping_pages(), except that it
+  * returns the number of folios which could not be evicted in @nr_failed.
+  */
+ unsigned long mapping_try_invalidate(struct address_space *mapping,
+-		pgoff_t start, pgoff_t end, unsigned long *nr_failed)
++		pgoff_t start, pgoff_t end, unsigned long *nr_failed,
++		pgoff_t *first_fail)
+ {
+ 	pgoff_t indices[PAGEVEC_SIZE];
+ 	struct folio_batch fbatch;
+@@ -504,6 +506,7 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ 	unsigned long count = 0;
+ 	int i;
+ 	bool xa_has_values = false;
++	bool has_failed = false;
+ 
+ 	folio_batch_init(&fbatch);
+ 	while (find_lock_entries(mapping, &index, end, &fbatch, indices)) {
+@@ -529,6 +532,9 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ 				/* Likely in the lru cache of a remote CPU */
+ 				if (nr_failed)
+ 					(*nr_failed)++;
++				if (!has_failed && first_fail)
++					*first_fail = folio_pgoff(folio);
++				has_failed = true;
+ 			}
+ 			count += ret;
+ 		}
+@@ -560,7 +566,7 @@ unsigned long mapping_try_invalidate(struct address_space *mapping,
+ unsigned long invalidate_mapping_pages(struct address_space *mapping,
+ 		pgoff_t start, pgoff_t end)
+ {
+-	return mapping_try_invalidate(mapping, start, end, NULL);
++	return mapping_try_invalidate(mapping, start, end, NULL, NULL);
+ }
+ EXPORT_SYMBOL(invalidate_mapping_pages);
+ 
+@@ -864,3 +870,56 @@ void truncate_pagecache_range(struct inode *inode, loff_t lstart, loff_t lend)
+ 	truncate_inode_pages_range(mapping, lstart, lend);
+ }
+ EXPORT_SYMBOL(truncate_pagecache_range);
++
++int filemap_truncate_thps(struct inode *inode)
++{
++	struct address_space *mapping = inode->i_mapping;
++	pgoff_t start_index = 0, first_fail;
++	unsigned long nr_failed = 0;
++	int err;
++
++	while (filemap_nr_thps(mapping)) {
++		nr_failed = 0;
++		first_fail = 0;
++		filemap_invalidate_lock(mapping);
++		/*
++		 * unmap_mapping_range just need to be called once
++		 * here, because the private pages is not need to be
++		 * unmapped mapping (e.g. data segment of dynamic
++		 * shared libraries here).
++		 */
++		unmap_mapping_range(mapping, 0, 0, 0);
++		lru_add_drain();
++		mapping_try_invalidate(mapping, start_index, LLONG_MAX,
++				       &nr_failed, &first_fail);
++		filemap_invalidate_unlock(mapping);
++		if (!nr_failed)
++			break;
++		/*
++		 * The failures may be due to the folio being
++		 * in the LRU cache of a remote CPU. Drain all
++		 * caches, do writeback and try again.
++		 */
++		lru_add_drain_all();
++		/*
++		 * We now know that up to first_fail, there are no THPs. Start
++		 * from there to ensure forward progress.
++		 */
++		start_index = first_fail;
++
++		/*
++		 * Attempt to writeback. If it fails, it's ok to fail the open. There's not
++		 * much we can do in that case.
++		 */
++		err = filemap_write_and_wait_range(mapping, start_index, LLONG_MAX);
++		if (err)
++			return err;
++	}
++
++	/*
++	 * It should not be possible to hit this case after the above loop
++	 * completes.
++	 */
++	WARN_ON_ONCE(filemap_nr_thps(mapping));
++	return 0;
++}
+-- 
+2.55.0
+
+
+--sgcbtvevrg4dwu7g--
 
