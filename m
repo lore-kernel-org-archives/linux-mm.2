@@ -4,101 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70B62C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:02:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AD5C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:03:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 390A86B00B6; Tue, 30 Jun 2026 12:02:56 -0400 (EDT)
+	id 5409C6B00B8; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 346D26B00B8; Tue, 30 Jun 2026 12:02:56 -0400 (EDT)
+	id 4C9D26B00B9; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 209AA6B00B9; Tue, 30 Jun 2026 12:02:56 -0400 (EDT)
+	id 392B96B00BA; Tue, 30 Jun 2026 12:03:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 983B76B00B6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:02:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 219CA8F36C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:02:55 +0000 (UTC)
-X-FDA: 84937047510.15.4612785
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 34146C0011
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:02:53 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OhbEsiEe;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 08BD76B00B8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:03:54 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 88B651A056D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:03:54 +0000 (UTC)
+X-FDA: 84937049988.25.B4F9873
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6B8EB1C000D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:03:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=KWO3EDai;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
+	spf=pass (imf21.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.222.180 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782835373;
-	b=a610Ia4yjZ7Tb07NRkSVujF4S614dRiJfUm9HIuhl1pahHeDWULRduWU4VhsMaYh+R0OO3
-	hx619y/jvLkmopciQAkm5o/v4DmBBTSDGJnlrKOamgTZAtxmHDry+dPrPsuabmMX9DRgXr
-	3zI3i24vOqbKEGBA7ZytQq+Zpv34H4g=
+	t=1782835432;
+	b=Npob8o55eiWYiasZKD8bWFr+W7Qm8ve86a/SsbPRchgprYuEMrBkk1+HqsLaSjiKTZxJcz
+	evr5DIay05z8+i0hXhMJmMwsDICBAzYsz6mAnMHib+cJbAewTKdt2VMpO+db1FHpSzbVen
+	8PEQyI7VnkbT8EfUmSZEz9RLA6+eMB4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782835373;
+	s=arc-20220608; t=1782835432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=umGH+O+Vn9L4EN4GsKIUG29QvvcbPRfahOmTYYjIzwc=;
-	b=PfqQSOBP5h4nCCs+aPJXvrQC11A7Xf6+huf6r9E3cAxW6LrN0BcQ/cNYSqBpxQXK2KUn3D
-	9MWRBbrmJPjg/lqBt2Kz8/kvIMpzxXrZ+NNITqeka4SQPcytPWb4NhNjsjWlSkQG0x+5iM
-	NJVJiBc8M6EcqhlXsQ+mOwYM0cId6yw=
+	bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
+	b=YDRohSj1s0Sfz+OaT6YaeM2BAnl6wDYw3vIiQTwa/9uJI5D0EXlo0NjMQb6j+KzUxYzZIj
+	tSTtl94MCYYJA0F/CGLZ1sLXYd5tgzmUvMTivh74XADd3v3XT2nKSZlCcQhi8a+jJWuCz/
+	6K7u/QAV2L4EFgiqXeHpWyEAfw3dCxk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OhbEsiEe;
-	spf=pass (imf22.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3FECB43F54
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2879F1F00A3F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:02:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782835372;
-	bh=umGH+O+Vn9L4EN4GsKIUG29QvvcbPRfahOmTYYjIzwc=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OhbEsiEeN8zjEmTCpp2wr7xdM+J5lgwbrEncfmNgXxY1Je5TPXo53a1aFjLJJijej
-	 Qrk/8zkwVvp82/tCG7kHBv/BWMxGM0xczm4csCBQ9j/wx5jMeUphjNbpkXh42vR4RR
-	 Jx03jBDaeOPjhxZp8bzwoUFgmuYI8+Nq0rO7YBQh0CingbU/Mn/wwVAnaCif5yH/iC
-	 DmqimBSR5dcE6rvKsQNcNF5oL4YmpRaaoZ7zDXLqZZ9jd4lXtQL633G3p0e6paFv+s
-	 qtC5fwm8kFYzgprbRNgtBv47qZTSlcuCEAybwkNqeSYxCYSF4gqvbixs3LKc6t8+wr
-	 lu94+tMdgl8TQ==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c1269e4721aso323779866b.0
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:02:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AHgh+Roldqqx5psCYlED+fo5NsDsX3QB8Qb7ckNrKUCRU5aenf2OLwLP57mH/mqGqvkTUzYXoi5++s2o+Q==@kvack.org
-X-Gm-Message-State: AOJu0YwzkSV9OdiVeKHsSTKRlkTaplM6Cj/1xe7OFyAqm9FKlF+IVXoO
-	IjcENjx8EwrX2mHUqZO7+wgViMNuCjBl1jwoQJOyM7QfEXrhBC700UxnT0NR5Ut3DFG5xPkR8V9
-	rw8bkPZcQSJSSF2QeTUBiQUt/mBc/ppM=
-X-Received: by 2002:a17:906:70c8:b0:c12:350b:7c6c with SMTP id
- a640c23a62f3a-c1297c30894mr52377366b.28.1782835370961; Tue, 30 Jun 2026
- 09:02:50 -0700 (PDT)
+	imf21.hostedemail.com;
+	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=KWO3EDai;
+	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
+	spf=pass (imf21.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.222.180 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-92e6a434cabso51898285a.1
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:03:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1782835431; x=1783440231; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
+        b=KWO3EDaiOjJQEYkY2Z6/CffTP15QMfF4MEgtp6u6Hm6B6s+b+WDV/8eHGJXpLSAP4D
+         pXknoEx1R1nfxDEP59HgNAX0IUbCkjWGICtzWMqCJdDmxVADLZtBcDS26GUWqrebmtKv
+         JTlFiFK8FTvlktAlv/lmvVsUHxaWik+fIZrm4YCAEmwsQiaMKddKlLJpE40C/cZcvOy3
+         gSzMUii0rXwccA7dhyICw/hHNNoBjFmFMjBLbZ8ExvU2zVrzaNp21rYi8DncO2wugMoT
+         IrUwCTOc5UhhT/JrsvuYdGo+MCqpVY3/Dp6eZs5il6A3qKq9HQ8o+5ofciDcW4w03stM
+         N66Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782835431; x=1783440231;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7epFnLjvPec3b1jHkzlheknH4OwwUcUE0lsvvL6dYlY=;
+        b=gyh2qcmB+j3k7VpRtXh0uOjzCf5K1wmLZ9wTyL3/CU4Ggf48PXA4IquDFsFgsspFeY
+         ZUsyzkX6EzwkbI1AU/p0JHGx5gDoCMGEqfkXaWvsMtdL7ifmS6eJuX/6IoEumNDQP9I1
+         PXsj+z1gZpvm2KWIpj/qbq+T0jtuKcUWJqpilevd5glZ76FYQZo/jiWB7gwDn+gzLPbU
+         J2ATEWemFyRSckg2Ck7+Gk91yhIvuViGLhK9OzQL/K5SGVtrk9WnILyeKPsmW6NxX+wE
+         W6mGk5PMBKf/oCuxhcqCOKYrjyO1ZabvjMneNu/PRerI8VBHEu2qgJ3/wbniEel1gGUt
+         sX9A==
+X-Forwarded-Encrypted: i=1; AFNElJ/FMu7ZCpsK9ZsaGz5GEYjjb3dLu0pWLBYGdYNHCLPZ9s54g04S3S/23slMvXf0Knat8lZrHIQ63w==@kvack.org
+X-Gm-Message-State: AOJu0Yx1QT5Y/oeZEACaBLoJyVnHGouXsqV5md8ZWXsSNCD/jLKnaRbl
+	Kh+mMuIVRZCMgDCRmhVIQHTfZMHPmL5zTr0gOu2dk+i4+WWQrQPiliSiEsHHF2IzJA==
+X-Gm-Gg: AfdE7ckcPFLBV1s2m1IDwedXVhroUJH/JJkt1xWS7klWwuuoL9MHCLbVjx+6i2lWss0
+	cy+xwv2sPssEEEv9CLHvejxrWGe5CumXNJ3BFZIYntxyiw9wYaXvjZLOE5l6LQm2SdFVr+G3CNm
+	h84Q72bxAvzkYjiyN1i1xpVt/TdrKsKTxVpXh7jaCugqL+GRRqzcYdY8rW+f/KgRO+881Fdrmd9
+	XHGTP6cnD1F3xJH7cr0SMPr4sfJ7Lv2aHNE3cEhEkC64ttyGws02hg+a4Xs+OFwADnSGcmvRMBQ
+	JrhN+2JNCIJ+Z8taKtQzBZ9i67l8PXXJqmyBglaiFse4tTjTgFwcve3QUxK/er5fxRvPTYyhW1r
+	gGs74ZTfqTjlkCoYz6sGcfPbXuMAjrQA9C3eqCuQsfQ5iJ1d5YxOpnTLo9kjrW6vk+k0CwNAkJs
+	7bQuYwyRb+GWVZo2OuSSw21f/X
+X-Received: by 2002:a05:620a:c55:b0:92d:6961:9519 with SMTP id af79cd13be357-92e6249fe27mr694745885a.8.1782835431154;
+        Tue, 30 Jun 2026 09:03:51 -0700 (PDT)
+Received: from rowland.harvard.edu ([2601:19b:d01:d210::883a])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e622e87a7sm281331385a.28.2026.06.30.09.03.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 09:03:50 -0700 (PDT)
+Date: Tue, 30 Jun 2026 12:03:48 -0400
+From: Alan Stern <stern@rowland.harvard.edu>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-usb@vger.kernel.org
+Subject: Re: [PATCH 2/2] usb: core: devices: use kmalloc() to allocate dump
+ buffer
+Message-ID: <fb38dac8-7832-49df-a4d7-5488f210f83d@rowland.harvard.edu>
+References: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
+ <20260630-b4-usb-v1-2-8d547235c374@kernel.org>
 MIME-Version: 1.0
-References: <20260629112032.20423-1-jiahao.kernel@gmail.com>
- <20260629112032.20423-2-jiahao.kernel@gmail.com> <CAKEwX=MniM-4-aV17aH3UiDd_Xd2RH743fFZaxEnYX9qvnokeA@mail.gmail.com>
- <fe15eb9f-0b6c-dcaa-d0a7-5f08c3f92bfb@gmail.com>
-In-Reply-To: <fe15eb9f-0b6c-dcaa-d0a7-5f08c3f92bfb@gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 30 Jun 2026 09:02:39 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPBe9BPwP8NXz7pdH7T+8HLNsRAckL2Vfcnz0c23TH=iw@mail.gmail.com>
-X-Gm-Features: AVVi8CcCxY3djerzT5lNld_VLCKVnmzQBQkQgjO1_FN5S20hdx2Xm_guHNHu7_I
-Message-ID: <CAO9r8zPBe9BPwP8NXz7pdH7T+8HLNsRAckL2Vfcnz0c23TH=iw@mail.gmail.com>
-Subject: Re: [PATCH v5 1/6] mm/zswap: Fix global shrinker when memory cgroup
- is disabled
-To: Hao Jia <jiahao.kernel@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, akpm@linux-foundation.org, tj@kernel.org, 
-	hannes@cmpxchg.org, shakeel.butt@linux.dev, mhocko@kernel.org, 
-	mkoutny@suse.com, chengming.zhou@linux.dev, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, Hao Jia <jiahao1@lixiang.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630-b4-usb-v1-2-8d547235c374@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: mys34igeopm8p3g3xr8eqoixs3u6csd6
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 34146C0011
-X-HE-Tag: 1782835373-982804
-X-HE-Meta: U2FsdGVkX19vNCXgLTrGfkkPF961xyUqRkcNxWWg8xEdhtIc6RK5X2Z383GAVz6Zsto7b5RuMmz/1QKoQ1ADKbI6T6gB1JtyJE4cSIgtBhkAhyjkvs2HNd0PH5FSTW+kaD1BEn7Xnd/MOxoehlmoemIBGodZGOT5VRY0h7cBNuJjorATEnvgnd86PR8K5EwQyJe3ETjZezHxLQ81DNgqowCcpKpTyAqM8UTgvv4HWRTZawIMKmBTzBGUdH9gaBfJ0k9YX9PbtIqkpLzh04nQYvgKV94bWA07B/oIZgBpFnWSizjGF59FBGnh4Ie7SCOSKAT1TQx235OYia+/9gDUQm2ajv8gVHkV2fkpybLE/FOW9pKvieTVjsfrHSLEbwsZ01+YZCKgOU+jotMj4i7OQ5Lp4CAveI3aVOWWO9NvK/5pwX+nk1yYtPHWPsplsI72ZVvIMPuwk8B1hp/wvSroSy3It0w8q4pfjoDnxDu2eMIcT0Ial19t/qSLmIBU/PwejLKhyOO+O9F9BntshZLynBhUkRmhJXj0xB+hC4Lik683Ay0wiFTbY4GSXOW9hFkt3vtKee9XweziBPobSweeBOodSv1i+YMEDdLF/eMOV57um/hpvawqRUpOqWXRgZ/xS/+ppRsKgubatOgLnnupss6VuIq6ATUQ0Y8rrE7mP5di+HMwqDYTCyFWv0SkE6OmFYAhU2eiyCwM6HjBfzFcrRvd8U9QaEmTK48Prod+QnPcuDRLtS/t8N2/U4pl0zg91dWxCxGl9Q9OwgUUNDv3jV2NXBv90VLPQKkMkYNni1OPdAqv81tRDASxvBVcJEW1dnqwA83REC4C7F75AmPTjJR1UxWYg67ZkeOBf93ubsHoHpl5hAOF++cm+OpLQ3dNE01cuv0h3bRPNkwgPU8NWf5vSujVg+uaCFl2CUmVvZNCW4vFm7vRcv+nQR7+wvRqGNdSOmEBhDhsNg5AwQi
- CroI+Mdt
- XoLu9KS7sv/2r223McyBA15QzF4eNEwIBwS6lx0W+obY/34a8uMycM17srr4/y1HMAvd+wJdoDTeg93yy4gOF/pNbLkod/ChI1Sth/SYuRKbAUcYbJA72QnOqNa6A2r9646fQGiLcMBfS+Men3cWuscxBMTLdkNsZ48bexaQrQDR+2iDz99FVcUcsRuWx5/ITR94Nb0lRv4UpDxq9Y+Q7rPOhfa4euUkRnMbRIhItz7Ps2i+QJ1Wp71UKyS6my2+Ap/plyY8zZJSXbB/RM1fdkheld5mCZlJr5HTcLYTv8aWWEbC09gYuPRiIdYjzi5HI1ZcZglGJeor8qpIBfPr51dJNuL2O1x57BgkXgGMuQit2m1p0Q+AJYGi0WNqfLho5k6F+eigdVY4tq0xgqVUsDtJji73iskSECx0zgo3pslh8546/2KZ62qI5BEyXEqRYj17ghen6oMJBI8Gf8dHQFNclZg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6B8EB1C000D
+X-Stat-Signature: obekfps5zxit4mz1p63r4xyfpmej8i9m
+X-HE-Tag: 1782835432-508255
+X-HE-Meta: U2FsdGVkX18ZiUjYCRvKc82t9ZMSOcwjDSTSac+syE/BDQLXq80A39o5x3SjzQ9p90wlfxQSpHsXJx7oqtP1h1Wt5UcJlQndi6OdUSqMpVDavflz8Jys0WGP7OBEEzxVsHSmsRMeICyfUgVYZh/+lwbE/b+WWJT193V6TRQ/ioAjkqrvJ0jkJxbk+hrrk2QcxvYgcFq9MeBiPtfsljnTlq57ge0sxtG7NfvgI8feHyGo9t1NOP+hjHARkhK0gVAec2RPFy9Rvxp0J5GkUXP1ccBUnoCvVmnTGi5P1mbClKsazeGu5Mr5emrEt7MQf+dRspbL4FFS3zCZmlVwtrfMXyu7aInWmOk88+NkXc1gE9g3hw1nMk/PDtItySEW2pYbIxz1L21bvMzsn1MVWajoGxor1Z7jfRdHaCGbbB7hLUBfPvibwPOCnr7JrErYcbwWsyxDJYz7PxYiCMs0s3RzZnT6BmkNhgCJKJVWDrvum+ETVzatW7qbjSQIbQil4lCGmDMWhA5trRYvj2DIn2NxEb0f4JTnQYDW/DXmFejoS/I+5nntjHxz27ynAePOG9CYj+z/4lRuLp9Wym8WRn7mRAb5ZCkh1Vf8RWKqnqx32ZIGH6HGs1fFs6yGSUJPCNpUtDWDA8sAs8Rk7XFT/5+s49BUDQxeTWZvtuvzCKrgo0/Q+9s2L/zw1qBb4+Ysi3Bo2qrcUHp8ZJ4ZyQ3APU7Ndq61jIgH0gxLtzx4IcRXDK8c+QWqPvJ6l4mGv7MTW5JD6ZkbQ+Y6PhvKhVcWZSBA+tqt1YPqr2R/Pnw9M1eOslGHpddo58pHuhWYLZeFoA0mQisbkoS2yZw5tmh1PoHHBkCYzKRo+Qd2PxMvqQz32+8Ua0UVs/FAZbOYE5O0PaE5nIIs4Jh2L2NNYigxhazUiz909XkGM+s0uAk57C+MonHtDljaFuA0Ydl1BeTQP0tFpYFAzJBczOCLN3FfkHn
+ Rz0+ptAu
+ j7O+kfNxymY3GUsV1Wl8lMFZz1n+7g7y4Kth/pI4k8Cp39x/fVi1XhWVt8tY88le1WN8h5p9m6cacPhuiqn0FM0/hjqAJJSMxB3NuIqoAYAIhMos4V8bzU8Ic1NFi4TWx0VNFcecriZltQz/86K81P4aRoxmBH+ySvxxW0oW2UANOaSSh36MdlPrshFvTh9Iw90RQ0Juf5VrkAIu0Be9idvA3UdOyKlSu627Og9JfgHfZEaS0neTLQF5wRFs5aItvkQa1PbbkeDl6wHnQZYmIIBXsnLrxo8ksKID0n+LB4trTlmSP9EYMD2OmA6X2mq4n9IhIjKqK0unq3GL198oIVWm9hrJJ0cBvdDBqvqFlwvVK6HR0GtXRid3V2EKjusVUBEYTGdNxNS0x7UNlFjDU/h1X0ahRbIXb6iE7aHMIRP4LJMYOHms7LCROfjE6QuwepsU2WukTF/rxDDPu1xslGrB7H9iH5xoH1N3XRm9Pmdbgb09oesXuxCwMckPaFPU+6U5NuOYrYOt3leH5qCuAx0hH0czs8Swq8eWnNpn4hcQnaAIeAeRg14PVbgt+/YfxCzVK4DU2aJMkQOXkNalMOGS/aQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,70 +119,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> How about something like this? If there are no objections, I'll fold
-> this into the next version.
->
->      mm/zswap: Fix global shrinker when memory cgroup is disabled
->
->      When memory cgroup is disabled, mem_cgroup_iter() always returns NULL.
->      Therefore, the global shrinker shrink_worker() always takes the !memcg
->      branch. After MAX_RECLAIM_RETRIES empty walks, the worker simply
-> gives up,
->      so it fails to write back anything.
->
->      Therefore, when memory cgroup is disabled, fall through with the !memcg
->      branch and shrink the root memcg directly.
->
->      With memcg disabled, shrink_memcg() only returns -ENOENT when the root
->      LRU is empty, which means the total pages are already below thr.
-> The loop
->      then safely bails out via the zswap_total_pages() <= thr check. For any
->      other return value from shrink_memcg(), the loop is guaranteed to
-> terminate,
->      either after MAX_RECLAIM_RETRIES failures or once the threshold is met.
->
->      Fixes: a65b0e7607cc ("zswap: make shrinking memcg-aware")
->      Cc: stable@vger.kernel.org
->      Reported-by: Yosry Ahmed <yosry@kernel.org>
->      Closes:
-> https://lore.kernel.org/all/CAO9r8zPVzMKFbCixxD-qgtRrkFxWVrHiZZeLc=eyTPKPVQgX4g@mail.gmail.com
->      Signed-off-by: Hao Jia <jiahao1@lixiang.com>
+On Tue, Jun 30, 2026 at 01:27:09PM +0300, Mike Rapoport (Microsoft) wrote:
+> usb_device_dump() allocates a buffer for formatting
+> /proc/bus/usb/devices output text.
 
-Feel free to add:
+You mean /sys/kernel/debug/usb/devices.  There is no /proc/bus/usb/ 
+directory.
 
-Acked-by: Yosry Ahmed <yosry@kernel.org>
+Aside from that mistake:
 
-A small nit below.
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index 4b5149173b0e..9d4f19fc440e 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1361,11 +1361,12 @@ static void shrink_worker(struct work_struct *w)
->                  } while (memcg && !mem_cgroup_tryget_online(memcg));
->                  spin_unlock(&zswap_shrink_lock);
->
-> -               if (!memcg) {
-> -                       /*
-> -                        * Continue shrinking without incrementing
-> failures if
-> -                        * we found candidate memcgs in the last tree walk.
-> -                        */
-> +               /*
-> +                * A NULL memcg ends a full hierarchy pass (except when
-> memcg is
-> +                * disabled, where it is always NULL: fall through to
-> the root LRU).
-> +                * Count a failure only if the pass found no candidates.
+Alan Stern
 
-I think "last pass" is clearer than just "pass" here?
-
-> +                */
-> +               if (!memcg && !mem_cgroup_disabled()) {
->                          if (!attempts && ++failures == MAX_RECLAIM_RETRIES)
->                                  break;
->
-> Thanks,
-> Hao
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> Replace use of __get_free_pages() with kmalloc() and free_pages() with
+> kfree().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  drivers/usb/core/devices.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/core/devices.c b/drivers/usb/core/devices.c
+> index a247da73f34d..6f0354aba38b 100644
+> --- a/drivers/usb/core/devices.c
+> +++ b/drivers/usb/core/devices.c
+> @@ -37,6 +37,7 @@
+>   */
+>  
+>  #include <linux/fs.h>
+> +#include <linux/slab.h>
+>  #include <linux/mm.h>
+>  #include <linux/gfp.h>
+>  #include <linux/usb.h>
+> @@ -408,7 +409,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
+>  		return 0;
+>  	/* allocate 2^1 pages = 8K (on i386);
+>  	 * should be more than enough for one device */
+> -	pages_start = (char *)__get_free_pages(GFP_NOIO, 1);
+> +	pages_start = kmalloc(PAGE_SIZE << 1, GFP_NOIO);
+>  	if (!pages_start)
+>  		return -ENOMEM;
+>  
+> @@ -479,7 +480,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
+>  		if (length > *nbytes)
+>  			length = *nbytes;
+>  		if (copy_to_user(*buffer, pages_start + *skip_bytes, length)) {
+> -			free_pages((unsigned long)pages_start, 1);
+> +			kfree(pages_start);
+>  			return -EFAULT;
+>  		}
+>  		*nbytes -= length;
+> @@ -490,7 +491,7 @@ static ssize_t usb_device_dump(char __user **buffer, size_t *nbytes,
+>  	} else
+>  		*skip_bytes -= length;
+>  
+> -	free_pages((unsigned long)pages_start, 1);
+> +	kfree(pages_start);
+>  
+>  	/* Now look at all of this device's children. */
+>  	usb_hub_for_each_child(usbdev, chix, childdev) {
+> 
+> -- 
+> 2.53.0
+> 
 
