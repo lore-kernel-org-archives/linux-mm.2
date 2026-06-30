@@ -4,117 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A723BC43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:05:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63035C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:05:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 971DA6B00BE; Tue, 30 Jun 2026 11:05:02 -0400 (EDT)
+	id C57F46B00BF; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 922A16B00BF; Tue, 30 Jun 2026 11:05:02 -0400 (EDT)
+	id C087D6B00C3; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB666B00C3; Tue, 30 Jun 2026 11:05:02 -0400 (EDT)
+	id B45766B00C6; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D0F56B00BE
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:05:02 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D3E5A1C35E2
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:01 +0000 (UTC)
-X-FDA: 84936901602.12.6E3EC8F
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1D6E0140008
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:04:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DJJJvDjA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 850AD6B00BF
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:05:05 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E227E167BD0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:04 +0000 (UTC)
+X-FDA: 84936901728.11.5AE3FF2
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 03CB816000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:05:02 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L06JZ85q;
+	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782831900;
-	b=cb70cvIpInPjV63ZTbBLIZOJ5frL4QZ6xMbeiccfY/e8zFOOuUgBO5ibppYAjDax8rhubw
-	ZM+NPmKf3M5Ds5ZSby/42LR5m0eU4Nixt88q3fmiL6q5pvpkRq9MpObWhXA4/+SmA9fEBp
-	EZQjjVDEDNJtLwNc3YE9TNacCXEXfTo=
+	t=1782831903;
+	b=62IjaZipr/P6J1wHklWEGHQwbI+FUiNdVCO8LbG+uv8fQSHwCeFHHQq0C78rQUMJrehgVb
+	FI5pw/y5a66L8OhWZsD4SmTZDLy+RTf01Rf5h47I/2lF8ChhijW0hylsfcMSJx45Nk5IJI
+	l739RwYGsDXFVURwqPAd6UEo8P3l3CU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782831900;
+	s=arc-20220608; t=1782831903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PPX10qsMY++ER8afXSJu3F27jyGSgCeFMlyZg3pCc1s=;
-	b=xeONwrO7WxVOFuUJGyrb6AqvVok+gtStgpmlyPXLUrml2m1UMrT4wfXiZrnlnye5QvtLSS
-	4s8WbUYLwXR70LDZehaaAQFSkJAVLfAIJq2wvaPvKZ+0OFuWIavlwg4L9bxacW3F+vhXk+
-	XAE813QjnkApKJfEW9qvkIHz9AxU71o=
+	bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
+	b=5xu/MXbJ+mgo/+P2ygWvix2KHj2iPn9TLlbAu5YCL3Zg744SsQdu1ULJj0kv2SKGQBlwVN
+	YaTP67ZLoe8OY37WO1VwCyC1ip0/UbcPbD83f4SHGBtv2E9WQVpDiSQjtVYAky59JRgzhU
+	ILKF+yScm78WrJFp41HNQA2S748Y7WE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=DJJJvDjA;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2c9d87b1f9eso17335285ad.3
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:04:59 -0700 (PDT)
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=L06JZ85q;
+	spf=pass (imf08.hostedemail.com: domain of ekffu200098@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=ekffu200098@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2c7ebfb63c6so29592495ad.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782831899; x=1783436699; darn=kvack.org;
+        d=gmail.com; s=20251104; t=1782831902; x=1783436702; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PPX10qsMY++ER8afXSJu3F27jyGSgCeFMlyZg3pCc1s=;
-        b=DJJJvDjAzh3Ihom1iV6IHKcntI2N9IWrqkavlnrroyvc4W3zspXUjK7L475phpnloW
-         LULa3z7OZV33FKGrJfFYG3XhQlxGR0WB/D0GP+mwNxuiXOfncTmk/QX1lgK0M7FvA6fc
-         i3eJTS6Z21n0iNWuRW2MpfgxGeHT57tHcyeOm5EzOc6j8OufD476L7z6ZZ2X3v8fTmi/
-         235p6qC5AGoQdu+GB9GphaE7Tw5SM+G5Y+bfK6DsOLrusUOgcpBHrA0XCfLWCs4OO2lJ
-         ULF1UYLyv2wxSseiFFvteInPAF3+Qa5NrvE+SIwwPPnGA7cvoCcARVGN3zjQFQPI1fxt
-         +uSQ==
+        bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
+        b=L06JZ85qwAF/Ujd4ai0fs/pWXu1U3U1h9kCd1hcMDogtth02iG/2UoRUUSlxnAhn/h
+         2B+qUEnjMIKq/TTZXHEoVFBGU2XOneah21wPMp0YvbRPC5cI0+c/8Hnh0+elnGKHrTKi
+         LwvthgMdkW1GZn2PuZW1EbX2WtoMVmWFi5X2qIXf2qCBDxIocKarqFZjBrVaPNex2g+m
+         OQ5rEhCzKKI4F1pHRO4GMG7IiiBAFXj0HI5is29v2gHUuaVeis2OndIoH+AeHYI72Lr7
+         TS3OhbFokJkGyUPRTMIcuNuuqdjiT4ldWhPU0aSuPUTHhtDOBlWLZKoCrszaFiXJAbo6
+         E3qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782831899; x=1783436699;
+        d=1e100.net; s=20251104; t=1782831902; x=1783436702;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PPX10qsMY++ER8afXSJu3F27jyGSgCeFMlyZg3pCc1s=;
-        b=OFVmf7wc73gJ/RkM28RO9sjDmREDtVXegaZB41jVTAcPlbvaXuyKb1cvQT3otqYacP
-         HLf3b/KxlQm4Eo8bJR4g/EVT9B4cpat2/MH7ZnPyzWVwfhQ2VXFA3iRKE1H+oHmgWO7e
-         Sh6yMOi9wka3of2mdF86STMdq453WXjTH+6VG+Xw6uKMDWu7Lu4VclJGAHMNOir1sCay
-         a900wN6GHibZx0nfTDwhfjGy/scLgYRuWrYr9OrCx0hqVY/XW8CQ5/rNXmo9bJQ6MROD
-         n/dp2VqkVORD/IizQhPZ8eqjMr/T6QJXq7q+PaeHUNCS5rMjQZBLk0NDjiPyo5plRGu2
-         ZMDA==
-X-Gm-Message-State: AOJu0YysMYNmKYBl9niWEpoFMo9LvxYsLHdS/oOxLRtfc4nhbyjfAtlf
-	zFN0w7eUcOtVaV+1EHkzyBRttaEqSg6wCJMwdLyIAztt/Ln6xLXkeKdt
-X-Gm-Gg: AfdE7ckp9WwD3Vr0oFX88BePouItBs9qxOA9P1KsmYrgoWW7Dj4Ltwk21QBhW8R5HXC
-	nT3AN8IdrO11zBIbWpzcWjW9kbpqsmu4qbhnlZKRZhVz+r4valo6bitfJtWjO2VAG4WXsY2VR9S
-	4aG2oEuksSSwJkvdnM2gwrverjCXcOHCBUv5SLtW4qHeTh2TZSF3HlzQPe1vlmRB6Yqeif+IqHe
-	h/I+YArLpWkl7iRp2KjGtM4XTaBWwLhH2ASy03f3tKnx58mNJGhpC47HULVlEKi1dsMTqYSDfP6
-	RLrmkUHo+9wGJfhVjqPa6B4zxqmuCVx96aSkpHykP3BR1ThC/kuUM2oIj8nJZEEk8Qbr6j1MXJp
-	h3G4yd4GrfcGLV2t01yVrflih56BpTN+OasDWrETVnEdVr7CcWD7xGkzW42EqkXI35uqVCy4IgQ
-	7PLUeZLHk=
-X-Received: by 2002:a17:903:b4e:b0:2ca:5d24:720b with SMTP id d9443c01a7336-2ca5d247390mr6710495ad.39.1782831898986;
-        Tue, 30 Jun 2026 08:04:58 -0700 (PDT)
+        bh=rOFTBMMTbyd+uFN7Y0FcTh5M4MANHeKRdkzp7z4esAc=;
+        b=kMnlf0s2mxZG+UjQ2zVQdKLeV0ABo/dK+MBRrpoGPdFRaIaK9MXTrTsOd4jVvAe0Eu
+         wZdTXC4UDmairSMCZfORO3qL/xDzO1VIdLXWyvtGVnurY9j6ckO0+3Lvkj7hZZPQADgI
+         dZEvtOxitCoBSnv0VEqq82dPlmQGeGhuJBlbZD6ipBYE62HgswueAyyGtHFUOGfAFbB8
+         WwGqw66J/lAqobELh0jr8OS7D4Cfo3eKQFxgo+Evtk9/ygJTJCvgSrEB4vDmnG/z9UbX
+         7a7ar8fNDQbp/+fAWMx8Q8Gxt6W0yRJpneaDpcYZEU0pa9I6yL9RC7Uq+32Kj6coURTD
+         XnVQ==
+X-Gm-Message-State: AOJu0Yxj+GuTdbM2uklSJUPcF559j1NufQBpnkjSj7WT3xWMZBRE++EA
+	/etJ1gB+txImHli3h09JUlFKk91AyfZnD4JA3eSIR/SGJnhjQ+jtWNkQJBKDTA==
+X-Gm-Gg: AfdE7ckldkHdmja5nSs3SNv4W/z9BUGLnrJ1ZdY8F0ViifS9hVf04LKgjCqLSupBr8N
+	WMh4zTx2QJqY0wYCaO20FMz53l517rFWDdqhND322fNw4M3ttwXBF0DEooYj33fb7cPIgfi0v8c
+	ju4LaAbmC+UFrDT07kcNkLl7E9oJHT7c01hyHoyADZq9zEktB3FzDiO9Ykpbftt2ud0nbVmKZRi
+	/xd052e74tXEK7YAbvzw1JjnkrqF/p57W6yYvFMIZmoZTC0dmm9vxyWd0z6HQaEiajqxDbxDVav
+	OwbCLP5GNL45m+/6CKJJhIYBpN3vc26vdjV9GYebA06Dz5OcV/GVX9qjUiAtLZg3IiaE/icxSS6
+	WqPjEa4JO5WOO1+awsPMVtsPtJbS3HVMXmxYneVfzUH0eJdlxEQiVVWjrxz5p8+sC8JfStXq6ht
+	CDtE5wLt0=
+X-Received: by 2002:a17:902:e5c8:b0:2c9:ed16:8d8d with SMTP id d9443c01a7336-2ca2ea2276dmr34277865ad.38.1782831901637;
+        Tue, 30 Jun 2026 08:05:01 -0700 (PDT)
 Received: from ubuntu.. ([110.9.142.4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70bc0sm16250465ad.10.2026.06.30.08.04.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ca37a70bc0sm16250465ad.10.2026.06.30.08.04.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:04:58 -0700 (PDT)
+        Tue, 30 Jun 2026 08:05:01 -0700 (PDT)
 From: Sang-Heon Jeon <ekffu200098@gmail.com>
 To: rppt@kernel.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
+	Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	Sang-Heon Jeon <ekffu200098@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH v3 6/8] powerpc64/kasan: Remove unreachable invalid range check in kasan_init_phys_region()
-Date: Wed,  1 Jul 2026 00:04:11 +0900
-Message-ID: <20260630150413.1718632-7-ekffu200098@gmail.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 7/8] mm: remove unnecessary empty range check in early_calculate_totalpages()
+Date: Wed,  1 Jul 2026 00:04:12 +0900
+Message-ID: <20260630150413.1718632-8-ekffu200098@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260630150413.1718632-1-ekffu200098@gmail.com>
 References: <20260630150413.1718632-1-ekffu200098@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 1D6E0140008
+X-Rspamd-Queue-Id: 03CB816000A
+X-Stat-Signature: w47j7o7pocqx8j6833a6ze4ptqqagrag
 X-Rspam-User: 
-X-Stat-Signature: i5twzdnjdi5os9tf5xbnjoi8ku88nit6
-X-HE-Tag: 1782831899-880134
-X-HE-Meta: U2FsdGVkX18E3Iecpg9wq16dizuGkWshl0djt/9HpgKKw7igvDSHOqtsaFGrLnHUDobdxwEoHSwlBb206mB5iZCtXz3mnGRjvheFO+vLT3+cN7EChJFuVH0zcKlZ844Zie/y0Xt01U/QInXkr4wQJ/urvG4jIZPA0LsO3HBlDucV6QWKWxbHjFIkae3hkZZhz/Z8xnhHiHroT6By7iogljXiDO1af7FOfSXmr00D+B6tvvqTMMa2+U2iW1W1vPPqz/+NTsfxKrJdUeT7gBsDLZ5qxoT/CpCEfurS9P7Y0Y2OFGO7I0LhgaTlQ8o0Zjjlyr7xKoE43TUuqYiVYT9rsvJtYiWfxDFNQosLlH37+M5/Iq6b+Lzk5H5CvSlWhjrFOJdIRjao+Uj77qa1SRkSoTWymRlH7j7xruVKqRYtg0Pfww/48raS6XDLF3mJKZ1fMqp96UdyO5gveS9MkhKZ/YKM163+PHNum9Pb05vYH4ADyl6Oqk+SRBAFeTBHq6vkpSqwp7QyKxZ0WyaWL74RootORZRjJHqrpogRE3H2M0mUzxEt7emqbAFugtRsaERFt1BKDqRUa7fop4g9qoHdy8wc00P/735gjHL2J5xJQ5R0WemMF/jSFpr8K/4U6M1XITu4U2D3W8aclxTZV9fXQO0lyJYLZN0Q+wSEQH2Nu47soCZVHCiHSh/kcqmhr9umZ58Yyjqsy3VMjywaGf5ye47gG/AwoCuXgOURa7cOt9ZsT9xsanOnyCUc5UmtaL+3SoP5hbrGoJkD0Sv1pfxu0gF+UOE4nZdq+eEmaNxjBlXo3Z5QhE93hJUFY6J75adg2jCBwE5oDD8uDwI7by9xlzrVHovDUDXJYHoNvVMfoOZqt+Fik+3qVQEPjrzOJijH5VIv0ual8obXL+kGuwXZy+O/l9EN+A3+mkVDgiYEmZic9OGHb7YG4HzcKCWkDvXiKokBX7dNf6Sd09TdKA7
- ZoBfUVWF
- 0G3Ep2UD3jJ6jZ9o/VGWD1KTtRz95z+dGstzWKa2KWBFazxFqQub3hCVrK+kcYgKi+HyNVHzNM2eI1S7mTXIhNgpa6yt/ECdMi33NYZpbiYQffjrVpgI1uguqcopsI5S0x/YXTU8R6g71R9Xe6TsRCBKjPQW8kgIh3UsUo8Wxlz1IAYwrBBmBctzUPq0sGqJNpReHJfGBh2P007EXNB+lZ2QhgBMy8v4bIVN5dZ6Xj9OrDWtqFHyXoLVDa52tM2HrDS70uNBcy3mVWPe3i0P4FSw4tLrgANsi0NILbspSK54bRpjumbwtJSEeB8G+ne4MTjhQCDUwDwZ/FqrZxcWsduYFAP+u+2tyNXQrMmWk21CtIZkPpuInMbFPNwwbuQHP3MI182C0VKaOWHJgsialvDbBogMxwvXzV5JgMVb1lP7Ai6nEU82gaWF58gqx5TBpEiBd8tdKfAbW7b8=
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782831902-551466
+X-HE-Meta: U2FsdGVkX1+0uQxcYdoZtFt3nUwwtwgGlNy5Op9hCPz8tX0k1edmiWKQb7WqFKPMEKSczrJbNCNLeftOWOkXoPnzTVqjebET9qlqL11ywNh1OuNAg02lqAJUu33YwX69kR9zYmDM3uCqfVNr7L7+0fcjTW2vK4QgwU2aJK2OTtaF7VsUQv2n4XfhQRD/jt39z+wUwELo/kgFMywA/AhBtjXF5Hs6vjf0jSRdC8ZpaQiUt4IxCBuvWL8FeIAyJTpenBqjl+eC+udv4k2Meh8V5f0t8PAa7iGgNtzwMyj8FLajbUocte6VRkRd62XnkJcsjOfVvxTNTK6yzwaTEh+hcU7ULRjwdaee83+5xaaCk31luO4+Bd+9JxYHM1CqF9rgodvHn+BWDabNDgpVDdM87bL3bWVj1X/JTxKHg8mN9ucly4CYOMBgxFQQVe7J8BFbAQo5938Wh21ticEcbKCAaaufizukLdJdy805GtwR2nlwRB7ImD+QdBI/VQ4FePfIecVmvakuWZi9kVhrnApJXlIOxisgj81rGJy5jX3savm4aI1nyChdaYv3t5Vptu2iu+J7YCR355yvxqjpILf4KkFCL+8thTv0tbYZ1NYbV+3dBS+qhIIMJKj/mstGyPXD0x5Fqz9bWYlKmdMHi73gXE//dAvj1xTr2GreGl5ibRFErsmc7a2swr8AI3LxjhfWKjpmpJ6/c6bR0z4APMHeRtGEwLjPyQE6pi01MW45FQzmocI0fllK+gcr1bCCGQ9YoqM8FdgPo0BWCRXx1PRL7cKtbFR+bQ1KmEtSzYkCHcue7oHSy3XkiFpjbkOMKwpezZ9SLpnRz9dXzi3eruqgikfmFjQViQIWjzp8ML9XBV7bellv++6zswpXXrG71Tcct1QyPmRoQ9cVeSS5TFr/NhvX1LMz3MmxfWHBA9msiAgsWXf0mX9LQvdLRMs6Nd/W3LufJfcMyT9E407Iyol
+ piIOX6IY
+ rp4mYavtUnq7izmYJLzhGxLHf8iqEKC5OficSITNiV71nOERqkHhoEP1cP0QSP8MQNgX20og5STqng+ba5xkGi5qGealajBcK+sj+DPQqn2p8FvKJwjzqAc7+rWnwayWo80t0RqWnsghb2vJSUPwvY2hRqRib3tTmojbjheTRPJZVKa+VJn3bQPl/X+ZFyoSWYWPRewC8vBS8sCmW/FBmHw9/C4mM/xeNFLzp1Map+zB2cgi9PpAKRGOV2b6Ur9MfHfnloJF9+KLH3uXHGCLfKYEnFiNprBB6MGdm5RZ7X8boxxoI5EPlvIJVmAJKAdLUELXE0UjPxTnrQeMOc52yIsKfeUyA5kpw1F+d76NW0HwPhWpmnOgnifXoNcTrevsjOlyg6ksu9xIzbVdRqYayAjOOQZ+6w5np/pA2eH3PlvYlQmR6EBB3Fw0qMf9UF6cfVzuxFNIEKZ+Lea+9zVXe97dWVcislSjAxNPn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -122,48 +118,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kasan_init() maps each memblock region with for_each_mem_range() and passes
-it to kasan_init_phys_region(), which does nothing when start >= end.
-for_each_mem_range() never returns an invalid range, so start < end always.
+early_calculate_totalpages() iterates the memory ranges with
+for_each_mem_pfn_range() and calls node_set_state(nid, N_MEMORY) only when
+end_pfn - start_pfn is non-zero. for_each_mem_pfn_range() never returns an
+empty range, so start_pfn < end_pfn always.
 
-Therefore the start >= end check is unreachable, so remove it.
+Therefore the check is unnecessary, so remove it.
 
 No functional change.
 
 Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/powerpc/mm/kasan/init_book3e_64.c | 3 ---
- arch/powerpc/mm/kasan/init_book3s_64.c | 3 ---
- 2 files changed, 6 deletions(-)
+ mm/mm_init.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/kasan/init_book3e_64.c b/arch/powerpc/mm/kasan/init_book3e_64.c
-index 0d3a73d6d4b0..0ed372fb8b09 100644
---- a/arch/powerpc/mm/kasan/init_book3e_64.c
-+++ b/arch/powerpc/mm/kasan/init_book3e_64.c
-@@ -68,9 +68,6 @@ static void __init kasan_init_phys_region(void *start, void *end)
- 	unsigned long k_start, k_end, k_cur;
- 	void *va;
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 0f64909e8d20..17498a13eb99 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -332,8 +332,7 @@ static unsigned long __init early_calculate_totalpages(void)
+ 		unsigned long pages = end_pfn - start_pfn;
  
--	if (start >= end)
--		return;
--
- 	k_start = ALIGN_DOWN((unsigned long)kasan_mem_to_shadow(start), PAGE_SIZE);
- 	k_end = ALIGN((unsigned long)kasan_mem_to_shadow(end), PAGE_SIZE);
- 
-diff --git a/arch/powerpc/mm/kasan/init_book3s_64.c b/arch/powerpc/mm/kasan/init_book3s_64.c
-index dcafa641804c..ccfbfb894637 100644
---- a/arch/powerpc/mm/kasan/init_book3s_64.c
-+++ b/arch/powerpc/mm/kasan/init_book3s_64.c
-@@ -24,9 +24,6 @@ static void __init kasan_init_phys_region(void *start, void *end)
- 	unsigned long k_start, k_end, k_cur;
- 	void *va;
- 
--	if (start >= end)
--		return;
--
- 	k_start = ALIGN_DOWN((unsigned long)kasan_mem_to_shadow(start), PAGE_SIZE);
- 	k_end = ALIGN((unsigned long)kasan_mem_to_shadow(end), PAGE_SIZE);
- 
+ 		totalpages += pages;
+-		if (pages)
+-			node_set_state(nid, N_MEMORY);
++		node_set_state(nid, N_MEMORY);
+ 	}
+ 	return totalpages;
+ }
 -- 
 2.43.0
 
