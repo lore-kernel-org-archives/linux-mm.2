@@ -4,88 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9944C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 02:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF371C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 03:06:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9DB3D6B00AB; Mon, 29 Jun 2026 22:50:29 -0400 (EDT)
+	id C23CC6B00A2; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 98B6C6B00CB; Mon, 29 Jun 2026 22:50:29 -0400 (EDT)
+	id BFC3B6B00A3; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 853BC6B00CC; Mon, 29 Jun 2026 22:50:29 -0400 (EDT)
+	id B12CD6B00A4; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B4F16B00AB
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 22:50:29 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C210A402F8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 02:50:28 +0000 (UTC)
-X-FDA: 84935050536.10.0B8289E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2455BC0004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 02:50:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NCFL8Snk;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0476B00A2
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 23:06:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CA3D8D205
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:25 +0000 (UTC)
+X-FDA: 84935090730.14.413A7DD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 185551C0003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4G1wMfp;
+	spf=pass (imf20.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782787827;
-	b=4AQG3fiI1GCmIE5t/WO0l0H/5435ZtZ4W1os/VP72Atw7TQz6MLnhCRzS6+MNL97csCWkd
-	UqcY3fAAXIZ7aKK1h2bp5L5/lwPPCtocGf6kdvBOfUnsfWNAXuN+sdCCc3JRLyu5aySTV5
-	2fwLfgARO+tPREle2kqgIly1Rekpcu4=
+	t=1782788783;
+	b=x6TcxAC+zMSBceBwqnH749X5AsxgpYQj6uzoQQXxeihT4LL/o/D8M4+5fvx2sZ6Pj3IPWQ
+	kGYUJlc7ro2k2CfpIzjwN7SV6zDHHoD38BZY1M6F46qGfI/H8RAeHgfFC+pbELjWuIflST
+	3yGLObvkNsRDb+VNfvY68ryuqSqYEmU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782787827;
+	s=arc-20220608; t=1782788783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yRQY4R85CQV6CHcgnQiXFWcOY+A+FDGHfy/QBTilh3U=;
-	b=338f8wbZoh3ismFtf3gcSH1WheksXJp5/izKIQXvQv1jdV9Vh8W8zLgCwBu2XUVQBcpEhC
-	SXtLlTstlzhWJMFofRqm2JEzlsybvMiqI2I9945d7mhZqBCKugU2nWN/KEeVtUR3Frg2gt
-	2YzLejnYgcOrth75m6dLxTKClQEjEGQ=
+	bh=fzAepXvhPnU3RVO1srqzjPmRiEpd6yJalacgOF/VkH0=;
+	b=dtSgSsc24HWuHqPgkhFiJcj/c9z1UqKitX1zNvktDWCeqVz/s9B3Rfz7uqp/a9inyuEzp+
+	dVtOKtTv1pzSnptE9Xd/tYEyxTCguTnVgLld0yy8hFTVS4xGXd5EerOdJ57TTGOsJZRZ82
+	UTJ3n0bY+D3i3KwHEzPNxcxJvcuCFVg=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=NCFL8Snk;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V4G1wMfp;
+	spf=pass (imf20.hostedemail.com: domain of guoren@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=guoren@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7FC57600BB;
-	Tue, 30 Jun 2026 02:50:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03FE1F000E9;
-	Tue, 30 Jun 2026 02:50:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782787826;
-	bh=yRQY4R85CQV6CHcgnQiXFWcOY+A+FDGHfy/QBTilh3U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=NCFL8SnkgYr3rOPqNRDdqRsDtJs0HVXR4V2GiDaujiPLLtRT+vNs3SWWM8uReE8En
-	 ZR5ZVLEm+hpN6LDO1aYRB08a2NikV5WsdHzU4E0xEcYtQ1l3zs8pnEHcearvMjcFU+
-	 AkSftbk8nSaAguEWAoTZGolT1bZDn1jb3QANc1OU=
-Date: Mon, 29 Jun 2026 19:50:25 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wenchao Hao <haowenchao22@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, Minchan Kim
- <minchan@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, Nhat
- Pham <nphamcs@gmail.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Barry Song
- <baohua@kernel.org>, Wenchao Hao <haowenchao@xiaomi.com>
-Subject: Re: [PATCH v6 2/4] mm/zsmalloc: drop pool->lock from zs_free on
- 64-bit systems
-Message-Id: <20260629195025.0bbad03ddb714f72615cab53@linux-foundation.org>
-In-Reply-To: <20260626015003.2965881-3-haowenchao22@gmail.com>
-References: <20260626015003.2965881-1-haowenchao22@gmail.com>
-	<20260626015003.2965881-3-haowenchao22@gmail.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xgqc3rjbgedymc6xfxyuka837di4geix
-X-Rspamd-Queue-Id: 2455BC0004
+	by sea.source.kernel.org (Postfix) with ESMTP id 14CC242AD2
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBAB1F00AC4
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:06:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782788782;
+	bh=fzAepXvhPnU3RVO1srqzjPmRiEpd6yJalacgOF/VkH0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=V4G1wMfpqdrFTlqf/mZx519oKTZ/iLrU5sQVvxLgzRVooqRBV2OpUEs2CMcQLGXG8
+	 0E3QAwT5brwXlhsrLl+/tcISCSjNRlIosA5w1C2796Kb/vqCd4ZvMO/gb7xsO3iEgY
+	 cFhLc32ujpT7Ao96pr5bjIOxCZjC62NSzM7E6svWzhPqfEVh9JHnsO1dwCPGFdTk8F
+	 WlCv8hdVZTrkGhWDR1+y/5Tju0/AzpkkKbRov0T051lSuG7N6TiUf3EzHRROV4HXwl
+	 C55HBAOdmd9FwmTmabP4maTaKc85Gy112Ea+NsojFpqSW4LhVis7+fgjraqVCnlAAn
+	 R1Yveb3sZ1JyQ==
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-4624a44e152so3652014f8f.2
+        for <linux-mm@kvack.org>; Mon, 29 Jun 2026 20:06:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AHgh+Rq3f6uMdZTyoVfYYLaTShq/yFuBfGdotB3Kg2c6bNJSNdbRsqzfMiVrTuPq77gH/G13JjD1OObp/A==@kvack.org
+X-Gm-Message-State: AOJu0Yzv7bAMA2T5v9XFkPC/Y61OFd5Ysr9N7O3QZXOEnw+BIWJVY+8M
+	j+jKcxzlU8sleKByeTv30PCfv5d0XvvTj/tdupadlZ2kMJ1hDVu7MYfjnvWhFApRyZDgboITYtE
+	TM8QKx4Af8cGE8bNGrrrbIBONzbGWgUY=
+X-Received: by 2002:a05:6000:3110:b0:475:806:c5e8 with SMTP id
+ ffacd0b85a97d-475506e972cmr2367506f8f.9.1782788780671; Mon, 29 Jun 2026
+ 20:06:20 -0700 (PDT)
+MIME-Version: 1.0
+References: <202606291606.9h8aGniQ-lkp@intel.com> <20260629171909.1d6e96dd15a80b8f463bb68a@linux-foundation.org>
+In-Reply-To: <20260629171909.1d6e96dd15a80b8f463bb68a@linux-foundation.org>
+From: Guo Ren <guoren@kernel.org>
+Date: Tue, 30 Jun 2026 11:06:08 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTT+Pz51u2ckYQGye_TNbfbvHHiEHb0Ned-k0MFCe4vgEg@mail.gmail.com>
+X-Gm-Features: AVVi8CfpjiHAZxpIu9w2olplIGKjchfQBEYO-NTXILWsnMIEoAgT2ud8VKG7C3U
+Message-ID: <CAJF2gTT+Pz51u2ckYQGye_TNbfbvHHiEHb0Ned-k0MFCe4vgEg@mail.gmail.com>
+Subject: Re: [akpm-mm:mm-new 59/142] mm/vmalloc.c:3590:23: warning: unused
+ variable 'start'
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: kernel test robot <lkp@intel.com>, "Barry Song (Xiaomi)" <baohua@kernel.org>, oe-kbuild-all@lists.linux.dev, 
+	David Hildenbrand <david@kernel.org>, Linux Memory Management List <linux-mm@kvack.org>, mm-commits@vger.kernel.org, 
+	Dev Jain <dev.jain@arm.com>, Wen Jiang <jiangwen6@xiaomi.com>, linux-csky@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: yyk36s6815mjhehy1zngdn96dnm1dgfi
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782787827-659590
-X-HE-Meta: U2FsdGVkX1/mdUIvb6aLtQ5IL2fPP4KQLpUc7e1nSs8cHcv1hMSC1/6+KfNjQo+Yfqb6oQwJUOYgZcZC6Bw7Q+g7O4Yh3OzzaG5wIKYrw8RLD6bdOiLXvztY3I3zOAh9ryGBowwZ/Z21S2KnCyykrfExUo8gwlGRqC3lf/CC21upBYBuxcEWgaTMaX08ALYZZw89+qf5L2CUcIewVwt05gCe/sK0cdmMRz8YLbXj8aLW9LUc7Sbg+3MJE1vs+1GWmqJTFuldSFGK+otbEHimrAfenK1xN+oKUTUBe7WVej9J4UmFstfo+EpRojFuy5uD2y3i2FHxV1Z9hnxzJLdQ37SqajceyM28dIxHB6ax7/w91TvqXdGz7G5hpX8CFCS4cpBpn5O9EL83TiNjrpp+8ZFpwImMOMt7KDFPcumM0gSXAkbcnblxWbhkJSDdzWF3oqCPdugOAUtf3chcDRNQnSDecZ3SZdJAaqiv+zKHtBEpPu1kSgD31QglLNLHSXpxhQVhhlwZpt7hMb4Gt/QXhmGKAU1/Z3yjH23g8Ur8Vlg10LunwBugf0bNWxKHfVpNJak+3myjQDNYoRgc513nL2/42Oc7Pta5HgTa7J/jVYt6vwgkDIvWCdlCfgadY9S8Ey4ab/GP4eDs16tk3wrey0CTOLV01hs7lLukwIqsFK8Ds6EEC/Y3qDBeX1sEoRxgS5CtZoBIyPn09NqBXqp2pr2csAGHurSnOH77+58DpCBNIOqnD7zDYJYWvG9gAX4qqsLh960j8WvbhkZPObqU1f5eMcROJtoZHHkLtlM9RGa1DABWTjT5K1iHSwQQ9vMdF5FYTrZsJAUtuq+WY6Li84SbYxmtdS+7IvL57oVWvjQEBG9cD/efTRPzeR8J2upVtxI9Q2sernxbnZiNJh3VDfgutiJp+BpGcPRuTg1xSZr7COI+BOOAwYgL1Hmty8HI0D+OdMA3xd7QJ9H5k74
- Rw90UZvX
- xC69riGdfBQXDbfEhRwy8qi498sOwPCULTZvpYTjIL5IrXEdwkkxzvVIE1ERO2TMVCNob3nt9WKgDOeIJ6uedVVwbyo3xDK70jGkE73o7spl2VONXYgp3cmvkkXEQV/dfJUe5i1hkI5gH0QLzgcAo1CLR5rxyo4qJa8fsPlPpr7WLssDUwQWixF+wnKwGfyC24WOBbYt2F9kx/YWRvl0BGYRehHEeFX370P4hu0Oye17Pi558ZriSzJ8SyKwkfRF9VzVa+G6AbaCF0KLNSbpVnji7dj/xZER2LG82Unm8XN4FBfoZapc5ZMX1ngu4e9D6UAMvZgZj5CU1Sjsf3P9l+14qw0Cs0Pwzgapop2Uh4d++hh35np0eT0hPPr/KIcjeIeqYHV99kJ4hkJA0ORmGoZMClBe2VXy+ln8jRirI2uEYB6V4EhATTwaZYIcTrcOC1Fp9e6N2xLJuO27ftN0TeyKRXriIX0rMu2Vi/+zJlzs/BhIpAanHWVtdYYCNwYF5Y1mluHfpwLycpsM=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 185551C0003
+X-HE-Tag: 1782788782-312887
+X-HE-Meta: U2FsdGVkX1/vCdLMaVIwsUIlgB/1yzc3nnk3rpmtJM4vjQLQmHZZCPMlUwKxECO2TCYhPvL6eP/4a9o/JDFBUYOJ0/Y4LV0UNBTeAJ8XuaRr691nM6zmvGKLgv140yopxgqjzgKRdUADJ7v6ckcR0ULxZHri7ljHNiy/7Yla8Yx9ZFgUeaI73N7X+KJPL71NtD9AfVkjsaXlYQ7ZVxsVGZuy0qjFrHclDP8GI3CpSvXESQlUOF1rM2QlHhe3JJVQ32ND5IVLue9Qke6QRjR8I1J45c80GhVd2s4lmOow4cutF2ka+8Kzyx10cdeNP0ljFCJBPVdE8LH+Azchp+PC9t4aTrG31HQksQgy7ZKfNLLi3W2KfODS1F4ccS81HbOiAlspwnFfxkaddhkfBX0cN0c323tmoffkPlsMuthtROPvknJ5kilteYxdDGgprLJwsTPsWWxXqBr1CKv7b8iylb1MoHwEAwdZNOmkMdnXUolAYINeWF0yCAZDGEntjpZoZKKZ0DAKB6nOvzlIlXKHv3esx9TRsF3wdyYSuFnJc/OA0gxoQ5nwOJMpTTJLxzdlMKZ0bgqsqLtJeWG6DOus68EpWdAbrAEUegP30r9gWVjYCHDu8onWjfq2K6sbeRrL4cEcDe2IcsmvyUxd277H+KMZ4QIBM1AtKi6tcs4ssQTXFaytS4qdbz/UAU3W1GwqX6TW3AAR4IwVGpwfsyzHh/iIjvVQ5ceb78P71NjHtoS4FzklX9ny7J9tCSueYbVFbjMkBAfSQj029bbx8fLXv6BC/qXkp5sCg+49u57YDq/loUKkf47l/p2O5QXR0lCbjUqg9O3x1c4FjkWNcsfkEK0+8BjUfAFukB/saq3Qquu0nU0v+9QEw2WGQ0cU9y0TtV2+sb869s0oamHXLE6WXhzKsZuU56M+q7gq5lq1tKwy+0zu98PrNeCutkggXnQnA/0BstEII6WpyMIHGoQ
+ 51MILhlu
+ BD5kbQdcnjP8HXo3orpag2vq4F1xmKeYo1Bp4GPyrFCXxBgfLbqJCzLFd75BlONUyJFx02nqBvXLScVqBst+ueyuiG7aYfKBL2Z52eaq3KJf0r6lTSf8L63X/MGOw9J6A9WnMhTE/Ss1xfYVrTlJZDCdASxsaW2CFDEx3b/pjVN27oPU+P3Bh8oK2A28Qv7cvGhJmizZ0uCtMbbG5lmw0Rc/Y4RA20POl5oGUu9yuXFVii0k1SE/+8Y/e4PfiXbVinbOi4LyEznS98fgqMDbvH+eBidLbBUA24kBKeK7RU6FRlMDvCLEzMFR7ILxXB9ZE8Ku7KfsRnBbVT8dtRRtKnkavfZDf6stFwyINV2rArDnps5+LN1Bdn3Ka2T2tOdRcPrhyEscqqUTRS9MmlywV5EK/NWAugcPpMSz3Kf0M3m3z54zekey2jJTA35VpYU8BDBok7hrae3604/5Diqfzk4aXicRUtXr/wEGvSxqrydc1xjHY0Jv7z0gFeGuIc5cjbSMcG/kz67nZm3hiAXUjySsl4ynJY305VauiqLR0jSyw2PWHE8tZYpfeK2lREnJInhp7TjpAF5+o8yE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,80 +104,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 26 Jun 2026 09:50:01 +0800 Wenchao Hao <haowenchao22@gmail.com> wrote:
+On Tue, Jun 30, 2026 at 8:19=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>
+> On Mon, 29 Jun 2026 16:58:34 +0800 kernel test robot <lkp@intel.com> wrot=
+e:
+>
+> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-=
+new
+> > head:   88cefc306c43b58d9bb65c9e96e284306710d961
+> > commit: 80c453511b6ee1af0e4db83c3db0020215c4eaf0 [59/142] mm/vmalloc: m=
+ap contiguous pages in batches for vmap() if possible
+> > config: csky-allnoconfig (https://download.01.org/0day-ci/archive/20260=
+629/202606291606.9h8aGniQ-lkp@intel.com/config)
+> > compiler: csky-linux-gcc (GCC) 16.1.0
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/arc=
+hive/20260629/202606291606.9h8aGniQ-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202606291606.9h8aGniQ-l=
+kp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>):
+> >
+> >    mm/vmalloc.c: In function 'vmap_batched':
+> > >> mm/vmalloc.c:3590:23: warning: unused variable 'start' [-Wunused-var=
+iable]
+> >     3590 |         unsigned long start =3D addr, map_addr =3D addr;
+> >          |                       ^~~~~
+>
+> Sigh.
+>
+>         unsigned long start =3D addr, map_addr =3D addr;
+>         ...
+>         flush_cache_vmap(start, end);
+>
+> See, this is our punishment for writing kernel code in CPP rather than
+> in C.
+>
+> I'll queue (and test) the below.  It should be OK -
+> arch/csky/abiv1/inc/abi/cacheflush.h directly includes asm/cache.h
+> which declares cache_wbinv_all().
+>
+>
+> From: Andrew Morton <akpm@linux-foundation.org>
+> Subject: csky: implement flush_cache_vmap() in C
+> Date: Mon Jun 29 05:07:51 PM PDT 2026
+>
+> To avoid getting an unused-var warning from
+>
+>         unsigned long start =3D something;
+>         ...
+>         flush_cache_vmap(start, ...);
+>
+> Cc: Guo Ren <guoren@kernel.org>
+> Cc: Andrew Donnellan <ajd@linux.ibm.com>
+> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+> Cc: "Barry Song (Xiaomi)" <baohua@kernel.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Dev Jain <dev.jain@arm.com>
+> Cc: Leo Yan <leo.yan@arm.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Ryan Roberts <ryan.roberts@arm.com>
+> Cc: Uladzislau Rezki <urezki@gmail.com>
+> Cc: Wen Jiang <jiangwen6@xiaomi.com>
+> Cc: Wen Jiang <jiangwenxiaomi@gmail.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>  arch/csky/abiv1/inc/abi/cacheflush.h |    7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> --- a/arch/csky/abiv1/inc/abi/cacheflush.h~csky-implement-flush_cache_vma=
+p-in-c
+> +++ a/arch/csky/abiv1/inc/abi/cacheflush.h
+> @@ -42,7 +42,12 @@ static inline void flush_anon_page(struc
+>   * Use cache_wbinv_all() here and need to be improved in future.
+>   */
+>  extern void flush_cache_range(struct vm_area_struct *vma, unsigned long =
+start, unsigned long end);
+> -#define flush_cache_vmap(start, end)           cache_wbinv_all()
+> +
+> +static inline void flush_cache_vmap(unsigned long start, unsigned long e=
+nd)
+> +{
+> +       cache_wbinv_all();
+> +}
+> +
+Thx for the fixup.
 
-> With class_idx encoded in obj, zs_free() can locate the size_class
-> without holding pool->lock on 64-bit systems.  Page migration also
-> takes class->lock and only rewrites the PFN field of obj, so:
-> 
->   1. read obj locklessly,
->   2. lock the size_class derived from obj's class_idx,
->   3. re-read obj under class->lock to get a stable PFN.
-> 
-> This eliminates the rwlock read-side cacheline bouncing between
-> zs_free() and migration/compaction on multi-core systems.
-> 
-> Annotate handle_to_obj()/record_obj() with READ_ONCE()/WRITE_ONCE() to
-> prevent load/store tearing on the lockless read path and silence KCSAN
-> data race reports.
-> 
-> When ZS_OBJ_CLASS_BITS == 0 (32-bit, or 64-bit with obj too narrow to
-> hold class_idx), zs_free() keeps pool->lock.
+Reviewed-by: Guo Ren <guoren@kernel.org>
 
-This thing is still causing problems.  How about this?
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: mm-zsmalloc-drop-pool-lock-from-zs_free-on-64-bit-systems-fix
-Date: Mon Jun 29 07:48:04 PM PDT 2026
-
-build fix
-
-mm/zsmalloc.c: In function 'obj_class_get_and_lock':
-mm/zsmalloc.c:1481:36: error: implicit declaration of function 'obj_to_class_idx' [-Wimplicit-function-declaration]
- 1481 |         *classp = pool->size_class[obj_to_class_idx(obj)];
-      |                                    ^~~~~~~~~~~~~~~~
-
-Cc: Barry Song <baohua@kernel.org>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Wenchao Hao <haowenchao@xiaomi.com>
-Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/zsmalloc.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
---- a/mm/zsmalloc.c~mm-zsmalloc-drop-pool-lock-from-zs_free-on-64-bit-systems-fix
-+++ a/mm/zsmalloc.c
-@@ -1457,6 +1457,12 @@ static void obj_free(int class_size, uns
- 	mod_zspage_inuse(zspage, -1);
- }
- 
-+/* Folds to 0 when ZS_OBJ_CLASS_BITS == 0; no ifdef needed at callers. */
-+static unsigned int obj_to_class_idx(unsigned long obj)
-+{
-+	return (obj >> ZS_OBJ_IDX_BITS) & ZS_OBJ_CLASS_MASK;
-+}
-+
- /*
-  * Resolve @handle to its zspage / size_class and acquire class->lock.
-  *
-@@ -1759,12 +1765,6 @@ static void lock_zspage(struct zspage *z
- 	zspage_read_unlock(zspage);
- }
- 
--/* Folds to 0 when ZS_OBJ_CLASS_BITS == 0; no ifdef needed at callers. */
--static unsigned int obj_to_class_idx(unsigned long obj)
--{
--	return (obj >> ZS_OBJ_IDX_BITS) & ZS_OBJ_CLASS_MASK;
--}
--
- static void replace_sub_page(struct size_class *class, struct zspage *zspage,
- 				struct zpdesc *newzpdesc, struct zpdesc *oldzpdesc)
- {
-_
-
+--=20
+Best Regards
+ Guo Ren
 
