@@ -4,87 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 049B7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 20:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D95A1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 20:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B0A086B00B2; Tue, 30 Jun 2026 16:10:15 -0400 (EDT)
+	id 85FD76B00AD; Tue, 30 Jun 2026 16:19:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABA806B00B5; Tue, 30 Jun 2026 16:10:15 -0400 (EDT)
+	id 811B16B00AF; Tue, 30 Jun 2026 16:19:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2496B00B6; Tue, 30 Jun 2026 16:10:15 -0400 (EDT)
+	id 727A16B00B0; Tue, 30 Jun 2026 16:19:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 737E56B00B2
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:10:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E84771683AE
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:10:14 +0000 (UTC)
-X-FDA: 84937670748.26.D520396
+	by kanga.kvack.org (Postfix) with ESMTP id 4EF176B00AD
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:19:20 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE0621C007C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:19:19 +0000 (UTC)
+X-FDA: 84937693638.18.E9B785B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3DFA010000B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:10:13 +0000 (UTC)
+	by imf14.hostedemail.com (Postfix) with ESMTP id EEEA110000B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 20:19:17 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dZ+o9t6D;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w4MuhO2i;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782850213;
-	b=Xn/qlwXGFDzszZXSS9o1fJxACHp8FQaIomv4z01owk1cHxOABSKiyRBVm9A41YmaqRpS7y
-	CRjfaIwJrF+A/V8iyj6SO0ag+dnNmNXCBmdqNWIaF/QSighNytd0pyPZbIAoe7VNnwohIM
-	pgVzxfaxpXb20NWSIwncxjdDXMM58Rg=
+	t=1782850758;
+	b=rCN++yZTCt/FWnvn3c06e5FQou+VP/5ZZimmJQ9GZGGDzcUEqDV0VkQ7zEhToWNpyCw0uR
+	7YSSL7xdMODEz/7qBzHG4aQ/bMR5ZRsvImf9kdPXfSr3JMpx9A5lC4ASgzeMpQuZkOOido
+	E93xfvVDSg89bS6N4Fdx4myHJGS8HQc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782850213;
+	s=arc-20220608; t=1782850758;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D52+2NrsvcEJci+uMqHVsVt4ZToE+I4dK91ZEILJB6k=;
-	b=inkZfwvO/OSDn702ZesP82S5l0ORSsUMyFWDKYbxJPt9X8K5xGIrphWjhElbAOBC+3VrCK
-	nqzJTtZulYbMOAaL4TG1Cv/bgT3re55nV858X4Jonqdk2iqWK+88ZFYNDmqmyN4FBdw1cI
-	yckawLjzKCCupIErGEdJAA96BmS8iqY=
+	bh=xR+cURGiHZxqoJ7+yfUVxfoUewWAkloviweDWsdCuZ0=;
+	b=it0MERb3VoUfv5/FQpVdP8J9rPYQUQj1P27y7ZNMQTqf0qZe6xKF7ZpxkS8sUIEkIkU3ZS
+	CkgX0w4N3hoeC6oSwGbjfrXnMNjoiKRu8sqI+vXqBQHgRNwGyaOCqWpUzBpDRj+evAYMQo
+	si+DBU+K0XYPiKqojXQsz+Wje0gWTyA=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dZ+o9t6D;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=w4MuhO2i;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0CFAD43A9E;
-	Tue, 30 Jun 2026 20:10:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB6E1F000E9;
-	Tue, 30 Jun 2026 20:10:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E271F43E1D;
+	Tue, 30 Jun 2026 20:19:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DE81F000E9;
+	Tue, 30 Jun 2026 20:19:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782850211;
-	bh=D52+2NrsvcEJci+uMqHVsVt4ZToE+I4dK91ZEILJB6k=;
+	d=linux-foundation.org; s=korg; t=1782850756;
+	bh=xR+cURGiHZxqoJ7+yfUVxfoUewWAkloviweDWsdCuZ0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=dZ+o9t6DDJKHyIRX2WaoXi4NNe9xsX7vYCLoKB4uLp11XUj4Ldgfs/WKRMmjWeKw7
-	 Up2wOcLIqvM5xiRkw6Y5gpwvEqZULBU33VRAdKq1tzn2ILyjHl/c6uiDNZ6nK0HTs5
-	 NZ2EzJwXVm5RPpn7XyXYfqSVP4VAhwul5J/QdR9E=
-Date: Tue, 30 Jun 2026 13:10:11 -0700
+	b=w4MuhO2iOCaOocWpVxUmI8FaSMXluXZ0p5jAAmsPH+pKjLCjTS8U6D2Zk48wmarIG
+	 SMxVOeOraTWWq22L9/BZVYjMcqyySzEvQRko+1KrqvhYdk42pZw45Kk17tf5KO7Lwl
+	 vgcwTbk/tyNvqy/70gP+BdsvCmoCfAMzcxTgIo5s=
+Date: Tue, 30 Jun 2026 13:19:15 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Longxing Li <coregee2000@gmail.com>
-Cc: syzkaller@googlegroups.com, willy@infradead.org,
- linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [Kernel Bug] KASAN: slab-use-after-free Read in
- filemap_free_folio
-Message-Id: <20260630131011.67546c6e472150e22c3e7c7c@linux-foundation.org>
-In-Reply-To: <CAHPqNmzacLWxDM4CSyEorgyh1tEyBfeOVr2gwUvUrtjZRCuh7A@mail.gmail.com>
-References: <CAHPqNmyHRaGj0fn+2FvvaJYi4WYOVmai6XX3bRCwbAZoj_GwWg@mail.gmail.com>
-	<CAHPqNmzacLWxDM4CSyEorgyh1tEyBfeOVr2gwUvUrtjZRCuh7A@mail.gmail.com>
+To: Stanislav Kinsburskii <skinsburskii@gmail.com>
+Cc: Liam.Howlett@oracle.com, david@kernel.org, jgg@ziepe.ca, corbet@lwn.net,
+ leon@kernel.org, ljs@kernel.org, mhocko@suse.com, rppt@kernel.org,
+ shuah@kernel.org, skhan@linuxfoundation.org, surenb@google.com,
+ vbabka@kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/3] mm/hmm: Add mmap lock-drop support for
+ userfaultfd-backed mappings
+Message-Id: <20260630131915.a7a479fc92ad0b86bfc68173@linux-foundation.org>
+In-Reply-To: <178283277041.183052.6873574850714079228.stgit@skinsburskii>
+References: <178283277041.183052.6873574850714079228.stgit@skinsburskii>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ostqpsir59wdsr7pdqq5cs7uzgoockuh
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EEEA110000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3DFA010000B
-X-HE-Tag: 1782850213-257141
-X-HE-Meta: U2FsdGVkX18HANQSDXMrAHrjdWQ/ngdw4cNZfC52/ckqkmIdSA58c53oo6rQElzwcFR6y6YM2FN5k8de9td4/ruVnazbCLQpvcQGf9DS8yzkaUkRvlYxKcN7Xpb+8O0TZ0khR+r3CtP9Ao9AXLo5eWjYuyWqCw/UbxtDSJQITjhfqyphWu1mO2x+roz3CRjxZjWSK7TcY2bzyoCwfuIG+WQJynwpThT1XR/Api1uy2qBSjnLGcvaZkbEuUKhojf876rpNmMQ0RuPkJSgKXQUK8GGgX5RPRAobymOZNkkmqaa3oEXRNIAuVbFxWyUVcEsMKJjXbqddXI9A3jO4Al2y6gXcwntDQKuz8MilER9yRmOPmr7ybFn1zVw/jejFivB9M8R59TWGDNpzzF+fYPDlAkTVOraYBt4NeLw/RkMUQIQWJFUQ2DUUMLQmc6X2wZUs8hENiFGw1pDki0Q2UL1RwEoHLGHCZ9GyNMk3k70htXr+7juMmZhWTItWzGfxNyvivAYePNaCA2Qlg3KkaiXXlTFW3sq366+y8FEiWRPmtjYbbsKglcaJXjYpsRMj58esEB1Vwp3CkBUAdA4RTTDk0ZKlGo88r8iTdELwXvum9XhQozX2ErpGSfHiEyybau5p2n0h2HsybAwDLpRFtYWke1+OPQ3/H2Hlw85dQS/9P7rZLBHHYTKszkKvcAdVhJKBVK/n+xNfY5wOjo2MV57MBfm8A2slO8w4U73CveueC/nQ0nEJ7QlHOQrWITeJFuhCZKC7lT5OjPPNwNriGX5aGraeo5pkBHfuRgW+UDawORY92zGB8yzG4+t4mjrQk5t61CkmWemmRgX8CKWO+SsEcFvcK8powX3EZeGZ5DIGyqM4Uk0HJ4Ki7a0wmjEL0rpGTjBWvy5VbGu/R72j545C6i/lzKPXp3WnB9N+OnclA0sqnzCvcHV6kcTH2PMzwb9T6fRI8Tq9w+Dc+lL2vK
- iqNR8zGD
- woqRk+E3IT4iZZieFLfaTQEf8VBqtdmOe9WG2f17TZt4l9IO2xP5NtKRjvKNfK7FSM41n9a2uOC0xT/r3MlhL2xtN/4zI2bz685cM5qFCK3iT8VDR8rKuUGu4x4vCdNIiiJWQzanZqRrfVL9cCi1g2mbFCfwdPkruJuwza9zbOHmRZS8f9hJArJ/7N0dd3kJvNy0rgXl/huJPNZ3VT+WJRKTXKZG+fCgSnU3lQL147pyzprxjIdApDXD2+m6DC9an/G74uR7XWY2zealy1i0J8+fHV/CA1/o251DeJKckxqbUHNEKJQ4NSl0nxnam5KISF4P6hw3+5y8nRVik8tuVrDH4Pw==
+X-Stat-Signature: ois7iwg6e3qs11w6r58juutwdqdfu3y3
+X-HE-Tag: 1782850757-18350
+X-HE-Meta: U2FsdGVkX1+npEzEYBgHOP5EAwA4HW+koMJ6HnNz0hZiau7qVw+PzoHr8cYhlT6y4iY7lt6gyLByz40EgykreIvfK4TAKl4W751bm6/sK8wsOTHjhzaoDsaQEtN7ohYk1DJ5xXNsj4uKT7hD09Oz4c7rMXfhdgPgYCXAAs5g9QFRh/IBEsrYBes/FLC/FSsXZhsUstxVLi4smHnbxQqR9NHtFCc4b4qx5ALJtyT7lmxT1POl/eDDcHWD/JsijdMrzlfYCbpat9DKQ+vBsZaM+9myUMN5VeLbYEfi1DpuCIf8EKK24BuPBnxw8+V6auPg2UwjSyQTPQjaqFTD+zqYL01seHmchJBuWLh4n87K0HSUGLZRpsfWb6t5pnMWmlP3fYuG4uA4Hder7TpkPBh1NtyyTwu1ERfnnkzELr/XJsDghY6YfG7EiWVczYDfv1qfygasgTkXJfGGo9KYtYh3YJiZ6EFSVVnCw4oyRvzQwoq5COcVBEnALB8SenUdeAB8N9hLMh6QJ7VuQcRdqUn+bqVLlRFEYpr9Nula8qbsrXVNf450DXLahPrJeKw/hSG02ufpjJGI5/OvOTfgdROkMMTlS3z2O5eB479KvZ1xKWmXkL4AA7lqdrDY7vS4yAnhIWYnJxRwop4LlNRX2KMfstJGoCocfghPrL0XcKykZ0XqES6WXEGb+Ad5l+oybUWUajlQF9QTAXH2lu/tUZYDBizqBEB9REr7hymaCHhZseMXlSX1m2tIItAhCTkrNzqFjJPQFwi7PFrQce0AyJ3dR0vlZEQ4fvPypfFJ9OBgWVkV2dwvABoM3/9OCMVuouCmZkhCZ+IQu5sYuEbdWFUPDfxM9NnNX8yM+YIxzgCVPhMkafRJ6uEq2UmaSGSkuW3KVr+WbU7rKCa/pcRv5mBpnGBwKckNPJPpyc6IiQxPz/Ypr9WNm6Ynz06+ACITW1smk3MGLrJbrXk4wVbUWeR
+ 9T5APY6w
+ fQ55Zi1V9xXDuq32JULm4p2ADLydlp+dqMFGctpbhuo2Ii8FPoaEOauXLEC/1yH3bfY0/BHOq8HX7ge7byEh9lIFL2oL+mEDajDrA5tZXmg+sUi0dHec4xCuYMNsRC8Dy/PrzxiaTArmc5zxaRStRSZ4Joi4rVWqT1fjxBt7N22F2YzNpfBonwal4JqS0sY5VblOiY9hk1wVA92p+gtcmaDec2HjNgF4TAaLWpieOcIaru329/7jlb8Ql9xiG46czasqSPNVoMyGwoKBW5Q0oeHAXAiBVdCb48IbSGSthLS/hWccrXWxcimcp81TwY8kiu56mCyr27Kyyeo13qrfTMxf64w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,31 +93,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Jun 2026 23:24:58 +0800 Longxing Li <coregee2000@gmail.com> wrote:
+On Tue, 30 Jun 2026 08:21:21 -0700 Stanislav Kinsburskii <skinsburskii@gmail.com> wrote:
 
-> Dear maintainers,
-> 
-> I'm trying to fix this issue.
+> This series extends the HMM framework to support userfaultfd-backed memory
+> by allowing the mmap read lock to be dropped during hmm_range_fault().
 
-Great, thanks.
+Cool.
 
-> The bug analysis and patch fix are as follows.
-> ========================================================
-> Bug Summary
-> 
-> ext4_add_complete_io() queues i_rsv_conversion_work without holding an
-> extra inode reference. If the inode is unlinked & evicted before the
-> delayed work runs, ext4_do_flush_completed_IO() accesses a freed inode —
-> use-after-free.
+AI review might have found some issues:
 
-You omitted the ext4 developers!
+	https://sashiko.dev/#/patchset/178283277041.183052.6873574850714079228.stgit@skinsburskii
 
-	scripts/get_maintainer.pl -f --no-rolestats fs/ext4
+One of these is pre-existing so please take a look, see if there's
+something you feel should be done about it.
 
-is a good way to find them.
+As the series is presently unreviewed, I'll await that review feedback
+and/or v5, thanks.
 
-Also, your email client is converting tabs to spaces.
-
-
-So please fix those things up and resend?
 
