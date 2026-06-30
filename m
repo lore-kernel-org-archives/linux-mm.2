@@ -4,157 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B320C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:36:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1E0C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:37:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF2306B00D8; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
+	id 5DDEF6B00D9; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA2BD6B00D9; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
+	id 5B5476B00DB; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C43396B00DA; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
+	id 47FD86B00DD; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 926496B00D8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:36:28 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0FA224053C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:36:28 +0000 (UTC)
-X-FDA: 84937132056.28.6DFD0DB
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DFF75180014
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:36:25 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6F56B00D9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:37:56 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67F9614055B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:37:55 +0000 (UTC)
+X-FDA: 84937135710.12.B19DC11
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 43DE718000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:37:53 +0000 (UTC)
 Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	dkim=pass header.d=arm.com header.s=foss header.b=IGK2WudX;
+	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837386;
-	b=tDwYDyDzKK/FIdpHPKVfzs904YjChktEEvhyXZHIXQCSqjEXdL8cPBXD/UVVI2qt0dbzuS
-	FdTts+AS3vuIOWUUD2tiQ+vnUCBBSKigQ2ITvWaZdDB6tiSfDZzPnVrQ3PqAv71gl3C66s
-	EJ1EZYKreKHNj9ULwMbGupWnBPldzyY=
+	t=1782837473;
+	b=GOwjmfzGagqdEu4tvRv/O1JAkJpesiyvF7zLXcKNDw2X4draEwuSKQS7eolpf3uorzeSeD
+	Y4vYiOHcTnrNPYW+fI28vRw57l5d3z25XcuXfcr7D1Y7ZkK7suUiAuaXHaqasCGG+eX+vF
+	7ORCuziZFzdyLCpwkXqptaFatxTJ7Nw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837386;
+	s=arc-20220608; t=1782837473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=35bAxlUI7JIjoH/X+Sx/w1vyq2MYhQ8pWWOixulff4ocR77E7evibZFu70ZNU0LMQ1y2sK
-	MuQ+mYIoiIfqdJuUOLlBvC/ewAk+aatNJgvj5U69sr7xYDkoerjii5/jMTKUrPxKuDBxSS
-	3fKA6fOxHKll/csge8BxBldYzpDJxtM=
+	bh=Kz+SuXE9j9za15YLoAB+zy98OKmA/lb7I/FlxnUtLag=;
+	b=Qudi0JIc8xHnp7k9FuKXHbWSFw57zWRblm834YtlnJwVpYtJxNfeD8otDSAGZAl5sY9CuG
+	IbB4LiaaqC83934exY9SaATttkxfbYUIZmqv9VhfhXfOIIUZsdEtNBo3Qu8/6+RftypdfO
+	EBiXdre6boOWKTeI8hYTeBcu0grbZUM=
 ARC-Authentication-Results: i=1;
 	imf24.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Csm/0TAQ";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=SuTooq+C;
-	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9459571654;
-	Tue, 30 Jun 2026 16:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
-	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
-	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837384;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
-	1ruN1lCKBfY39zDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1782837384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=Csm/0TAQDKcAqPahjvJm4t6wIygBvouh4o3HLWaKsgyk698bUArVP/FODSuGjNHcARgLTj
-	CJc2gPmeHEfliGZdWDOcmZZZ0vZ9z95eXBkXNuiEMJpmpW8Tp01B9gZwKHKhDLyJoN2tn+
-	chGgPP4YUFkHsmNHRAZUF9xPb+SnjMo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1782837384;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwtvYcpEu3U9PLHqG7OTydVnRKJe82b04p0UFeAYHjA=;
-	b=SuTooq+CQho1YfxuTrEUMCh69pnVtR5UtZwMeH7IAZfA6dmdObdMjx1/u2fLm2dXcH2Fos
-	1ruN1lCKBfY39zDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E748F779A8;
-	Tue, 30 Jun 2026 16:36:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GZUpNYPwQ2qifgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 16:36:19 +0000
-Date: Tue, 30 Jun 2026 17:36:18 +0100
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Russell King <linux@armlinux.org.uk>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Simon Schuster <schuster.simon@siemens-energy.com>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, Ian Abbott <abbotti@mev.co.uk>, 
-	H Hartley Sweeten <hsweeten@visionengravers.com>, Lucas Stach <l.stach@pengutronix.de>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Rob Clark <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>, Thierry Reding <thierry.reding@kernel.org>, 
-	Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
-	Christian Koenig <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>, 
-	Alex Williamson <alex@shazbot.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Dan Williams <djbw@kernel.org>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	"Liam R . Howlett" <liam@infradead.org>, Matthew Wilcox <willy@infradead.org>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>, 
-	Hugh Dickins <hughd@google.com>, Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org, linux-sgx@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org, 
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, nvdimm@lists.linux.dev, linux-mm@kvack.org, 
-	iommu@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com, damon@lists.linux.dev, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 12/30] mm/vma: clean up anon_vma_compatible()
-Message-ID: <akPwbHbGiF1FxL6m@pedro-suse.lan>
-References: <cover.1782735110.git.ljs@kernel.org>
- <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
+	dkim=pass header.d=arm.com header.s=foss header.b=IGK2WudX;
+	spf=pass (imf24.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8C287302A;
+	Tue, 30 Jun 2026 09:37:47 -0700 (PDT)
+Received: from [10.2.213.21] (e137867.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B88B3F85F;
+	Tue, 30 Jun 2026 09:37:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782837471; bh=g58E1RgBOT17YggIpVtjm4i/yrYpROSWqIGglQToKUc=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=IGK2WudX+PJaEpGGXXw64zx0sjng8/eaN/Rh3Y+MvJrSMyCQKQtzGmNp6HkLRKA59
+	 UH+tXBYKY5mFl0tT6enV58lfXSTXvmDvSwWLrhGO+5GYcT+gQbhYP07y57q7fZhefg
+	 NWM6IkC2lsMLKtWLWUb174guV8D8FtaPJLeizbpQ=
+Message-ID: <b8f3b5cd-8d8a-4396-ba0c-011a83234dd9@arm.com>
+Date: Tue, 30 Jun 2026 17:37:39 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5a7a07bd2a774989849b0fea84f758059ed914df.1782735110.git.ljs@kernel.org>
-X-Rspamd-Action: no action
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 01/18] seccomp: Convert __secure_computing() to return
+ boolean
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-2-ruanjinjie@huawei.com>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>, oleg@redhat.com,
+ richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
+ linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+ kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
+ kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+ glaubitz@physik.fu-berlin.de, richard@nod.at,
+ anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, luto@kernel.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
+ thuth@redhat.com, mark.rutland@arm.com, kevin.brodsky@arm.com,
+ linusw@kernel.org, yeoreum.yun@arm.com, song@kernel.org,
+ james.morse@arm.com, anshuman.khandual@arm.com, broonie@kernel.org,
+ liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com,
+ yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com,
+ austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de,
+ thomas.weissschuh@linutronix.de, sohil.mehta@intel.com,
+ andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+ linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+Content-Language: en-US, en-GB, fr
+Organization: Arm Ltd.
+In-Reply-To: <20260629130616.642022-2-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 43DE718000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DFF75180014
-X-Stat-Signature: 7ubjf3kqord5dzaus4q8u93p5ni5gggt
-X-HE-Tag: 1782837385-632273
-X-HE-Meta: U2FsdGVkX18ySIo+GS9Dh9aXwNiNT6bouv5MeCx5udVYWUYLnzJFghQCSRj53Irnf79qRYH/+np/rWY0ZG4VT8f3S3Cpv8B9k6oRTDQNU9iCzvHLxu17dJgxjx6VB0NPvjiSJTnS4VEm9yoE2WZa7fWbB48fV/pfZxzaDwy62D50De2nqfOB5FvqyIaxUS68OINduoMgyNGUr4+bzhPUIU8+9W390tVXRz6PPE8IrYm1dDPKh7ZCTALuY6rXrSMbfO6nQVYmOyKzfVlS5GRkVwzJZhkId9n1J9DALDzz311PBLwUPOdwR/g4uMD4nL1MXSW1RF+vVlEFXACvlcJImDI4i4BtTaEHVRcwM2YJHfIQMr2GDqNMS2jxMMzxFaln98Yy3ZBUNOcuyZEtsMOqd1Sghahrf4uSY5jEkZli+zaiVxyDetmb49qTMQO9Ton+bfVOwMCPZvDjgdGxrF2JtSCGKhIHe0HNZemDe2UCKgoPnUBMhXWhco9LdEPu7B76HYqtNZfmwkfyW7LrgdYKD0DhHAyT+UsGD2hGa2Ld/+HMIfQ/B4R5zCmmoYBAyLnzz3OrZaPniTCU/P8e7ovGytiEkS/7yf7CjdoZThtEzGbINlC5m/8wlAKiC1NXTY3m1sHR1i/mPugpfsy+nkhfWO6VmdYtn6VsdtrS8nKfDCPiY2A6RCUgsU80gYxIfnQJ92VwIQjIXAai44udr9CRNi95495IyDWENOBg1M/TeAMHjYMAur2gdafkcdGZf9KZfFXwuG6Z4dccmcvCn7D1lL0aQDqNdr6Ihjs9FSEcfLqWOzmANHZMBUVaPD+WG5zdBMqrSqP42NDT2eHZ8B0uBhzkhT/UTHO85VA0XgT9qQwjiUrJZ3ywZ2dZICyPjymrOvuHn867kSz2Qcy8mHPx8wdUTizvai/m1HMwa/Jr++q4edHkluX9LtTuxOcVkjUS6n053B1ZqoVchB6Mzyu
- nsbUZJR0
- B07cnPe3QDkcYvpoCA36pjSFxqXrfLSy8mJo5xjy1Pq9MYSpo4ht9VZQlclTQlpHYJMCkV4uX8iIFzKnvBYq6DDOKz/08509U0mAG18PzypDbfsJTwGbNY6k9nPwPCXjZxW+nk+tPqWXWHo50g+iSFDHd8zZUivxF5dNw2THKU0on3CBGqDEknkdmsQ2NUO2RPV5zuXucs2XQQTipRWkfRywLnrVQn1DgjpM07sdVgsllV25Q3MkppShUWu5Nr/h2GzDTJIhPe0LQOuFzF5UIJsR9y/6TmDz1NiFjIOPwrZpgjz+nJLgEn75DhP7DoGoynfi1W+Fh94Nowk7jMxVfUdFf3TlsQ3+myH78cwH6sDhsdcHqnSi1z1qK8XzphTfnzEoFj8XwZRVpeGKNDTF+JSpqOu7RwilNDnM2
+X-Stat-Signature: qazebbxrjjyytboqpy6k7sdps6zikdca
+X-HE-Tag: 1782837473-693673
+X-HE-Meta: U2FsdGVkX1/VnKw2Fuws+BGUBN/ZwIa2V9jvIiDWLVlW+jC7w8diY+zVlhCGQUq3tG2wlM6FIJ9G6AaTBSYeT/ewDYh0envFeJ/M5BUm76yuB7ayY5DxmZ17RcTh7EP4U0KuwBlulHni7UJZzPgd4ACIBUyXOLXr5FPUpPZqLWMzx/Mrd3PiRtUGariEDn86vxq+VK/0/uGFlfGf6ZzwlVPGLr58Thf70+Cdte+IeFG/2uMD2R6ipKs2h/nef5rgsxL4Y1BoRHdb3bU0aDRUf94715SweY3iWz1bBmGe1QPDxd3709bYx1PTyWWyhasfIEQK5bzq32wuyrbyjN4kL1RgCaxIWgRv7qQRy+XFFzkDY6RQhxcQAI3LJ+hF1RFKWbU/3w/qcYq/UC/4I80HXiOp450tPQrBx6ZcDLX+YFVcuBOkz42j1QVV3hj/BOY8duBCEeYv+u9Wm4KEZI6drK6HijTxgnQ3wT1Y1CmS/Q166OXtUAuyPU8x6y1NXbKefOXk7pOflhwmjg9AydJMFkWR1o9pdDV/lnGiSrU/01uPCkeLRTsGjHiUPhFClRDVMrfTjRm/Bbyn24Bpo+dnr+kr/mcB3iOtAMAoskyJzntLnT+oHSnG2tUZgKnjH4DiugYB0a4tWKQF/IvTM3vCoz2EIDTuJfWZNhntFniLG/Eodr0vg/FA9qhpr2j/LhUI0AqOygPS450a/WYMkxmi/ngHjaLTC+2QzfLLWoltM9QrQfgZFarxhMs+zQPwPBQ1a7tTil/wBYODWsRLT12M9dydCB4bnvJxr2eZdUy3Oo066XHYObPu8Wt5uFMD3Du/BzJejCXWu42ip6CbRF6rjDGBS3gSUHOMofap98/IQhpjJ8NdbdcPxi8nwHzFpEfnKdRheZvp07zk7/JW7XJBKtMh9FDhRUrk6batKRBIFcPZzeeiN39EnJzSSlL3frAxZmYTF+YhkmVjDF80vCd
+ gWSw3GKI
+ MZMtyS/eeM4L4sH0sp2W57c8iWWuOtFvns09+008r+sJ59TR/UVCFtP0fUS27seInfWcDuQ0WCxvKorAh/28Ga1y2UF/qsZfuWyTaVtv0n5rOTHXg5Gb9VKhBxloUQYAskPEOTSjynzH4MirLruHaz20NCuGUS5Y5Bo4s6hJWilD0VQM55dmmI0doqam67PPSS6jAYRPMpw57JgVs6npClAfc5LyyTRQ7uq380TjHLCC5oaE1POqnlDFIRXxnlZgmaMMpTUm2nN0v5uz1yrr5zIPGZvjjbj4w5egDOWtj9CzWx4J4WuU+7auP6BCjgWUUS6GQBDPvxOE62Hg4tYCUd3QjK3sHhuNEkKGpD0NP1R4L5lBWXg8EMa3oSpqSCcrbMNEPxH2IGWgUn7puNJOkJZZn8Jf02KbW/edxNIJ2fyW9/88=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -162,54 +121,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:23PM +0100, Lorenzo Stoakes wrote:
-> Break up the existing very large conditional, add comments and use
-> vma_[start/end]_pgoff() to make clearer what we're doing here.
-> 
-> No functional change intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Hi Jinjie,
+
+On 29/06/2026 14:05, Jinjie Ruan wrote:
+> The return value of __secure_computing() currently uses 0 to indicate
+> that a system call should be allowed, and -1 to indicate that it should
+> be blocked/killed. This 0/-1 pattern is non-intuitive for a security
+> check function and makes the control flow at the call sites less readable.
+>
+> Furthermore, any potential future changes to these return values would
+> require a high-risk, error-prone audit of all its users across different
+> architectures.
+>
+> Sanitize this logic by converting the return type of __secure_computing()
+> to a proper boolean, where 'true' explicitly means 'allow' and 'false'
+> means 'fail/deny'.
+>
+> Update all the two dozen or so call sites across the tree to align with
+> this new boolean semantic. No functional changes are intended, as the
+> callers still return -1 to the lower-level assembly entry code upon
+> seccomp denial.
+Would it be relevant to mention that this fixes the unsound return value of
+`syscall_trace_enter()` in generic entry, which motivated the patch 
+initially[0] ?
+> Suggested-by: Thomas Gleixner <tglx@kernel.org>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > ---
->  mm/vma.c | 21 ++++++++++++++++-----
->  1 file changed, 16 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/vma.c b/mm/vma.c
-> index b60375c6c5c3..6296acecf3b7 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -1967,14 +1967,25 @@ static int anon_vma_compatible(struct vm_area_struct *a, struct vm_area_struct *
->  {
->  	vma_flags_t diff = vma_flags_diff_pair(&a->flags, &b->flags);
->  
-> +	/* Ignore flags that mprotect() can change. */
->  	vma_flags_clear_mask(&diff, VMA_ACCESS_FLAGS);
-> +	/* Ignore flags that do not impact merging. */
->  	vma_flags_clear_mask(&diff, VMA_IGNORE_MERGE_FLAGS);
->  
-> -	return a->vm_end == b->vm_start &&
-> -		mpol_equal(vma_policy(a), vma_policy(b)) &&
-> -		a->vm_file == b->vm_file &&
-> -		vma_flags_empty(&diff) &&
-> -		b->vm_pgoff == a->vm_pgoff + ((b->vm_start - a->vm_start) >> PAGE_SHIFT);
-> +	/* Must be adjacent. */
-> +	if (a->vm_end != b->vm_start)
-> +		return false;
-> +	/* Must have matching policy. */
-> +	if (!mpol_equal(vma_policy(a), vma_policy(b)))
-> +		return false;
-> +	/* Must both be anon or map the same file (MAP_PRIVATE case). */
-> +	if (a->vm_file != b->vm_file)
-> +		return false;
-> +	/* Flags must be equivalent modulo mprotect(). */
-> +	if (!vma_flags_empty(&diff))
-> +		return false;
-> +	/* Page offset must align. */
-> +	return vma_end_pgoff(a) == vma_start_pgoff(b);
+>   arch/alpha/kernel/ptrace.c            |  2 +-
+>   arch/arm/kernel/ptrace.c              |  2 +-
+>   arch/arm64/kernel/ptrace.c            |  2 +-
+>   arch/csky/kernel/ptrace.c             |  2 +-
+>   arch/m68k/kernel/ptrace.c             |  2 +-
+>   arch/mips/kernel/ptrace.c             |  2 +-
+>   arch/parisc/kernel/ptrace.c           |  2 +-
+>   arch/sh/kernel/ptrace_32.c            |  2 +-
+>   arch/um/kernel/skas/syscall.c         |  2 +-
+>   arch/x86/entry/vsyscall/vsyscall_64.c |  2 +-
+>   arch/xtensa/kernel/ptrace.c           |  3 +--
+>   include/linux/entry-common.h          |  7 +++---
+>   include/linux/seccomp.h               | 10 ++++----
+>   kernel/seccomp.c                      | 34 +++++++++++++--------------
+>   14 files changed, 36 insertions(+), 38 deletions(-)
 
-Very nice.
+This is missing an update to the Kconfig documentation, a possible
+suggestion :
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+diff --git a/arch/Kconfig b/arch/Kconfig
+index fa7507ac8e13..9e3d40088afb 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -637,7 +637,7 @@ config HAVE_ARCH_SECCOMP_FILTER
+           - syscall_set_return_value()
+           - SIGSYS siginfo_t support
+           - secure_computing is called from a ptrace_event()-safe context
+-         - secure_computing return value is checked and a return value of -1
++         - secure_computing return value is checked and if false
+             results in the system call being skipped immediately.
+           - seccomp syscall wired up
+           - if !HAVE_SPARSE_SYSCALL_NR, have SECCOMP_ARCH_NATIVE,
 
--- 
-Pedro
+> [...]
+> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+> index 416a3352261f..3f66320e46d3 100644
+> --- a/include/linux/entry-common.h
+> +++ b/include/linux/entry-common.h
+> @@ -100,9 +100,8 @@ static __always_inline long syscall_trace_enter(struct pt_regs *regs, unsigned l
+>   
+>   	/* Do seccomp after ptrace, to catch any tracer changes. */
+>   	if (work & SYSCALL_WORK_SECCOMP) {
+> -		ret = __secure_computing();
+> -		if (ret == -1L)
+> -			return ret;
+> +		if (!__secure_computing())
+> +			return -1L;
+>   	}
+>   
+>   	/* Either of the above might have changed the syscall number */
+> @@ -113,7 +112,7 @@ static __always_inline long syscall_trace_enter(struct pt_regs *regs, unsigned l
+>   
+>   	syscall_enter_audit(regs, syscall);
+>   
+> -	return ret ? : syscall;
+> +	return syscall;
+>   }
+> [...]
+
+Otherwise this feels like a more appropriate change with regards to
+"safeguarding against new `secure_computing()` return value" !
+
+With the updated Kconfig :
+Reviewed-by: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+
+Thanks,
+Ada
+
+[0]: 
+https://lore.kernel.org/r/20260511092103.1974980-2-ruanjinjie@huawei.com
+
 
