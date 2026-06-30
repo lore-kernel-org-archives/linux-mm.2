@@ -4,105 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE4E7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB514C43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:08:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBE6A6B00B1; Tue, 30 Jun 2026 03:07:17 -0400 (EDT)
+	id C99216B00B3; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C95496B00B3; Tue, 30 Jun 2026 03:07:17 -0400 (EDT)
+	id C497B6B00B5; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD3686B00B4; Tue, 30 Jun 2026 03:07:17 -0400 (EDT)
+	id B87466B00B6; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 967EF6B00B1
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:07:17 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 115981C2BA7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:07:17 +0000 (UTC)
-X-FDA: 84935697714.23.ACEA78D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 412B0C000C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:07:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8VSrwGd;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EAAF6B00B3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 034E1C0DA4
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:08:32 +0000 (UTC)
+X-FDA: 84935700906.26.4C77D4C
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 2FF6C180009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:08:31 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hViBR5Uv;
+	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782803235;
-	b=WZmAyIrjKtTdgYtwqeMKmsrERfMLr+/C0keqy9KSqxv5o6aJ+Utv0rp65HHTquaOLn/4u1
-	oVcAQmPi3EhTnc0gbh6n10VRZGqwyOCH6u7JLRbOoK2/x4UZEa8nfrm5Ady0spS/ZSbG/U
-	uiosxmqiXlP9XDTnfylcSd39lkJgK5E=
+	t=1782803311;
+	b=0DiwdbNFBK/3b7ckOCQKQp28E2ivxRkw+ul6XBAZY+g6TQ9qhi9mwJ+T+1ujgjyFZzQ1fv
+	2bAuy1jEMaYk/nLVZxDzzFFfeoStp1ezQtSSk2G2XeQJEvyKVE/ncfGL/9Vm0+r0f68XKg
+	zb+h7rVO2DWrG+cyOzTKmQNKWpSsQFI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782803235;
+	s=arc-20220608; t=1782803311;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDsCz5y+7w1jNDwo+8D2q4p3sHLHroeeuG4x4G+LvAA=;
-	b=ps7qTWBluDG1SdAbxYYP49Wqp09r+HWT8z7vOdkpD4a3Hj52vymOh1Tpstgfga+E69GKzM
-	TVQeLxJ3aW4kyA4aP+cAoOhLVFpwi1krjvDBSdLS0XDo32JsTt/5n0mdjHXS5fXeuZ3Qsl
-	RVGbC1PV34HqYqMLu0vXdYraWIIUqbQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=hXdPeX2+7qN5ub3mcG+kJHEMmnJwkrYDh/ryOV+/3Yg=;
+	b=jMT4uHP+UjK/mPO0dK5KGBrUQv9x2gVb9pH5XbKfn4IhH8nTINgCPodCI8bqKH0PiZ4qWe
+	oggX4HmifQjTyoKaV5NHtnoDAxpLm6ZQLzlzr0pjJKWKqQMBDx0IDGsKJ99KLSOPeh1+2d
+	jvVI5NRK50+Yd0D0B96lG7EtO0ZFHk4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j8VSrwGd;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6C7BF40666;
-	Tue, 30 Jun 2026 07:07:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BB21F000E9;
-	Tue, 30 Jun 2026 07:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782803234;
-	bh=LDsCz5y+7w1jNDwo+8D2q4p3sHLHroeeuG4x4G+LvAA=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=j8VSrwGd0XX4/ITZJrTQG/z6cNW+/m2rNHXtEcXl77LvDTHlAwZLAPuErSz+p0Ui8
-	 1bPrPROAZCvJFuT6lbPrjL22u6DcAJHFTsFIj0LbrERE7XtnnMueRb2DkFPWgR9INv
-	 HyfRhkPO0Kqr/jTcGvwtXoj0w/UXWTyLCg396LLo/zrC/Re72cdS82PR35mHRrzvCh
-	 uft/Il7/F8Zs4vCzpzRvFNMhyBxRLRy34mIkSjKjSqERiT3kc9x5JNEPCRD9i8h6s9
-	 VEmgPH/Uc2NbnrSuw7uhb1k9HLHv9PF6jvPLTUCFsT3FqY5Pelesy83lL4cCwFhQcM
-	 xo25TJFN6myoA==
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hViBR5Uv;
+	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782803309;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hXdPeX2+7qN5ub3mcG+kJHEMmnJwkrYDh/ryOV+/3Yg=;
+	b=hViBR5UvUdT7nGsXrBxPl03yAEZMoubM5R9RrdfLXs68t3+p8flYdpVUN7nKMYiG2TkOwM
+	LV6nY1SJCLzVhq2K7O2w4fvmOxyM8esaP4/HbP8pxibi6iuwn4nls/b7509vvm1f3kOufC
+	2gnny18rvWu5EBrdvfi204f+xUWqgKw=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v9] mm: fix ASSERT_EXCLUSIVE_BITS by passing memdesc_flags_t by pointer
+Date: Tue, 30 Jun 2026 15:08:10 +0800
+Message-ID: <20260630070810.470763-1-hui.zhu@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] mm: do file ownership checks with the proper mount
- idmap
-From: Christian Brauner <brauner@kernel.org>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- "Liam R. Howlett" <liam@infradead.org>, 
- David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <akK4CRgiv9G29UiM@pedro-suse.lan>
-References: <20260625153853.913949-1-pfalcato@suse.de>
- <s6mr3j7gew2cgerzrvqzenjctctrtnhvlynmcccxb24uszcauz@5iapd6wnbfxg>
- <20260629-sektor-gaben-gepokert-58db0a3528a3@brauner>
- <akK4CRgiv9G29UiM@pedro-suse.lan>
-Date: Tue, 30 Jun 2026 09:07:08 +0200
-Message-Id: <20260630-zerzausen-galaxie-gelackmeiert-faf65e3defc2@brauner>
-X-Mailer: b4 0.16-dev-4217c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2435; i=brauner@kernel.org;
- h=from:subject:message-id; bh=jqOZxiKqWFL4dZin6A17Mr4lhTs3cQNmTdplb+0bYN0=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQ5Z8vt6lsgIrN1xQ2N2heOq5fPebDp8y6JM3Z7k1/O/
- 7G955FVeUcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE2M8y/C/JiNmzgWfF8v3t
- oal79uU23xStuXxHMmVN8cuoFgPR9a8Y/jszvdqm6GAscPTOxyjr2ydNU40KqozF/qY5GNvEPnD
- YwQYA
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2FF6C180009
 X-Rspam-User: 
-X-Stat-Signature: imrcntuqt47pwuqkho3gen6n6zfs7gyk
-X-Rspamd-Queue-Id: 412B0C000C
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782803235-200000
-X-HE-Meta: U2FsdGVkX19CxslEBQx1EKgyUhGLjrByojHllS8w+SaiKmkFecAd8SEWE7fE4jYdEtORwAwjm/qa40wvM3627sL404+K2zgDZHFGnjEXrNu0YaiDkw/ar+4Qx/P4T/paPaf3UcY9wQL2Y/UfC603Vd6uQ/XRekF/3UYrZkCluuFc40fcIuH7LMWwPgAxFdRCFUm2JRFeyF2TzFGc9ADzG0nX02dHVqjPuCVARmDCBm9l9VSztTtSFCh/5Bbns4oa3ZaseqJY1wT4uE3wMHGQ51HWOd5Re0Oo+mVmHh7Iv5x+SPSMAq48JbskCU7nMK3mUiKYGJFNFOSCM8GBxasuZNlA5bxZOWVC/4VYF8hs2n3fP6yLlo4E5LzRn8iasBcCnvGWfwwkf0pmxYYT0P0GpWWClqnPu3/qtDLNQYXR7MAuZk13ZatjwAj+nQOK4rVVdYIrkn1qI2lOWHRu2PBe/CDRDyuosW6I1kJ/InRy0yW02QYXsQjNsQjIsFdDj8cvR5euyRpdEKNBPJWmKM8q4k8bZ+0HkGGFpYvBECW88zKnunIbEGp4z70hh7CBCQpfCtEerfGEwBZ6WOwxhoC06dXsIZ30iQIkAijCa+Veu9hBp3CZ9C3ugtJOnDPgl7QRC2pUQKhp4UDnu5KV4PCB7fYFLuSX2wviI04gZRMU8zKmpu7U8MVf2/dqe/ldrZJdYsOlFDWp8QdIoHqIt9qzKuvhwt9W/Nn2OWjoxJX2H/wbHYKy63hyriSnCjOvzm59T375jscv4fcefrtYyLeH+2bWw090/DHhGX8d+3m8sU5i7C7pFncoOAuNgVWeIZbIl3H2OusBDN+SeX9GtQXxLqnFOcB1iApN3bVRl+qHvgoTDsnY/p0xEl08YFc52CktxE0vkOPsZrmOl6JLmjo2nQSkqB1mX4kW23rEdBottJl39rveAFaLZD58CpiBorMMIPbNOtAuQYN64nx3Sm2
- UvNSXBwO
- cCjb+64JHCJ/FwvkrceojqgcQHGwFg+p+G/rVKPZ5ZMf17QM6RJCKUJDwbxdVgGManclNMlffZs1ZemOqBymQYy9bXVOCRc0Qc/ZWhgwxUV+Zg19PeIXsjK74GrhqNjkNzJeqEZnQWtdOhPw8+/L9qdjP1F99Y1y1WYblrakpYA7vlfvurmIvHti6hz2FVYnlsnb+//ApukuYeqDa9h/oW2dtvRIJMMhYlQB9tR1VxXssKrXzh3wXjYaMiroPsirYaBZ9egvvKFXCWetntNAR7CxTA+gxiQpJ1OQNr+6a7qmQ9/c=
+X-Stat-Signature: jdk3t6acpfzag34e8pyfann3rq1hdo84
+X-HE-Tag: 1782803311-793594
+X-HE-Meta: U2FsdGVkX1/xy89RgQsvO8PxtoyBJQUu9XYCVwCDVrbSd8zrb3FFVMzpPEP5RGz5nzT1ZcYeOKvc5na7NDnYfZ7+58ppqXIhentAMlBGRibWgzjCKQ8rYwvOaRi9b7Cy1cEo+12p6dGEhI4EOAgiL9EXMUh3EnoPEbZqlK4i6CMwQ18QqSf5VzvQ4FqwNK7OU4S3MD2zV86oxacOO7X1cYcSWZWoU+aG3sPm3wOpmK4SO6F2ojsgpyaY/OZTOgzXxanRS08fnXISY7zX9CtjoxkozwnKHMqq0vxii54hSMyXb0fK8WoatHIHdU/PlksOVMvMqvVk6R6L4tIS1Omy90O53nVWYkk/7fc2yowxoJCDjiOmaLsLFFZfCbETcEbxvnWbnSW8kH79jqxq/pGt3NEy8il4N9moRxUV4WPRyPWFo5S2UISkaoqBb0A8jrm+rStNB86eiEd/p0VipMeXkm1IlfQ1Y5jGw1ofZ/c0EZfjDWeemAnabzxVJnXDwEAohhxf+zXZhg8NMv4vyJH44kTnVcFi5SJCEVJHktYQrOyPPMdCqTuB/sPkmeyeihyio4Cq7XnjF1y+S9SiesnngD/TnqC1DOft12xNqrj9TSSM7Ock2qlm9TupnWxdOXwesminBSE9SEkUcrhYIhfsm1KXEIolwfPZczzCT7UPa+Y2x8Rnwvu8NLSsbC7yE+6fOVErB7JdimpuPmaBbBEh3U/NRh14YVzCjMfMek/dKFlKj8ENgs+jyDJepabSpU0b4PSY141q6Cy9T4lKQQOcxHGjyk5wUtylds7tV6FBDTVk5Hf4RX3jXYI5s9G7m1RyQJec8mRzAWNSGs0DirG1ycSNJSIiK3byBykGhL3bObARiLak+yiTuRpGb3Yu5eq7gXIQKIRv8+cPdcoMR9pi+YkRaHr/QT7k3dCPlFqidvIQVX+fKUCwbk0Y/13Uo/gcQ3oFg40oHttHFpynVK5
+ Xx23rUa7
+ tHJnzxx9aY0QVO7rCkbgGXgd4lati4lztC8QOwcjn/wOLl/a9UGKQMsxcuhTmc/CTtd2FzOFOurz7SpWtu3tY2hEvO7nMrrqKqaxNYPulZEME6LJWRqya3/seD/Yzh2b+BOZFT33yzdCzX3fjxzzyHE6089zULxyTUgaFDMOhi+fMF6//AK2m9fNaGoSOCoumH5bs6+0BojRU+Y1fGluSq5j3WG/X8gu0wseqeDdZSyBP1sEF/JPSW0g/CVIwZzfAEg+TmVh8JpLRvURv8SJBp3fu9Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,51 +98,336 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-06-29 19:30 +0100, Pedro Falcato wrote:
-> On Mon, Jun 29, 2026 at 02:15:19PM +0200, Christian Brauner wrote:
-> > On 2026-06-26 16:19:18+02:00, Jan Kara wrote:
-> > > On Thu 25-06-26 16:38:53, Pedro Falcato wrote:
-> > > 
-> > > > Ever since idmapped mounts were introduced, inode ownership checks
-> > > > (for side-channel protection) in mincore() and madvise(MADV_PAGEOUT) were
-> > > > done against the nop_mnt_idmap, which completely ignores the file's mount's
-> > > > idmap. This results in odd edgecases like:
-> > > > 
-> > > > 1) mount/bind-mount with an idmap userA:userB:1
-> > > > 2) userB runs an owner_or_capable() check on file that is owned by userA
-> > > > on-disk/in-memory, but owned by userB after idmap translation
-> > > > 3) owner_or_capable() mysteriously fails as the correct idmap wasn't supplied
-> > > > 
-> > > > In the case of mincore/madvise MADV_PAGEOUT, this is usually benign, because
-> > > > file_permission(file, MAY_WRITE) will probably succeed, as it uses the proper
-> > > > idmap internally, but it does not need to be the case on e.g a 0444 file
-> > > > where even the owner itself doesn't have permissions to write to it.
-> > > > 
-> > > > Since this is clearly not trivial to get right, introduce a
-> > > > file_owner_or_capable() that can carry the correct semantics, and switch
-> > > > the various users in mm to it.
-> > > > 
-> > > > The issue was found by manual code inspection & an off-list discussion with
-> > > > Jan Kara.
-> > > > 
-> > > > Fixes: 9caccd41541a ("fs: introduce MOUNT_ATTR_IDMAP")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Pedro Falcato <pfalcato@suse.de>
-> > > 
-> > > This looks good to me. I'm a bit curious why Christian initially (in 2021)
-> > > used init_user_ns here instead of the file namespace... Anyway feel free to
-> > > add:
-> > 
-> > Back when this was added only the do_mincore() codepath existed and that
-> > was intentionally left unconverted because it exposes the cache
-> > residency status. So it was effectively a massive side-channel.
-> 
-> Hmm. I'm not sure what you mean by this. Wouldn't it be more correct to respect
-> the mount idmap (given that a mount-ns-capable user mounted it with an idmap for
-> someone else, or itself) for mincore? Am I missing something? Or maybe I'm
-> misunderstanding that paragraph.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-TL;DR: It is unclear to me why mincore() would actually be used in
-containers.
+KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
+page->flags and folio_trylock()/folio_lock() concurrently doing
+test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
+
+  BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+
+The race is benign: nid/zone bits are set once at page init and never
+overlap with PG_locked.  However, ASSERT_EXCLUSIVE_BITS() inside
+memdesc_nid/zonenum() was checking a by-value copy of the flags word,
+not the live page->flags, so it failed to annotate the real access.
+
+Change memdesc_nid(), memdesc_zonenum(), memdesc_section(), and
+memdesc_is_zone_device() to take a const memdesc_flags_t * and update
+all callers to pass &page->flags / &folio->flags, so
+ASSERT_EXCLUSIVE_BITS() operates on the actual shared word.
+
+Guard the ASSERT_EXCLUSIVE_BITS() calls in memdesc_zonenum() and
+memdesc_section() under ZONES_WIDTH != 0 / SECTIONS_WIDTH != 0 to avoid
+a zero-mask check on configs where the corresponding field is absent.
+Under CONFIG_NUMA=n, stub out page_to_nid() and folio_nid() as plain
+"return 0" instead of reading page->flags when NODES_MASK is 0 and the
+check can never fire.
+
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+Changelog:
+v9:
+Add the SECTIONS_WIDTH check to memdesc_section.
+v8:
+According to the comments of Andrew, include kcsan-checks.h in mm.h.
+Incorporate David's patch that switch memdesc_nid(), memdesc_zonenum(),
+memdesc_section() and memdesc_is_zone_device() to take a const
+memdesc_flags_t * instead of using a per-accessor macro/call-site hack.
+Update all callers accordingly and extend the same exclusive-bits check
+to memdesc_section() and memdesc_is_zone_device(), guarded by
+SECTIONS_WIDTH != 0 / reusing ZONES_WIDTH != 0 to avoid zero-mask checks
+on configs without the corresponding field.
+v7:
+According to the comments of Sashiko, restrict the memdesc_nid() macro
+to CONFIG_NUMA, keeping a plain "return 0" static inline stub otherwise,
+and re-add a local page pointer in page_to_nid() to avoid evaluating
+PF_POISONED_CHECK(page) twice.
+v6:
+According to the comments of David, turn memdesc_nid() from a static
+inline function into a macro so ASSERT_EXCLUSIVE_BITS() can check the
+caller's page->flags/folio->flags directly.
+v5:
+According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
+calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
+ZONES_WIDTH != 0 (for zonenum).
+According to the comments of David, avoid calling
+PF_POISONED_CHECK(page) twice in page_to_nid().
+According to the warning of lkp, switch the CONFIG_NUMA=n
+page_to_nid()/folio_nid() stubs from macros to static inline functions.
+v4:
+According to the comments of Andrew and Sashiko, set
+page_to_nid()/folio_nid() as static inline stubs returning 0
+under CONFIG_NUMA=n.
+v3:
+According to the comments of Andrew and Sashiko, move
+ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
+into the page/folio call sites.
+v2:
+According to the comments of David, remove useless comments and use
+ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
+page_to_nid().
+
+ include/asm-generic/memory_model.h |  2 +-
+ include/linux/mm.h                 | 42 ++++++++++++++++++++++++------
+ include/linux/mm_inline.h          |  4 +--
+ include/linux/mmzone.h             | 26 +++++++++---------
+ mm/page_alloc.c                    |  6 ++---
+ mm/slab.h                          |  2 +-
+ mm/sparse.c                        |  2 +-
+ 7 files changed, 56 insertions(+), 28 deletions(-)
+
+diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
+index efa6610acbc7..f8404bc7773c 100644
+--- a/include/asm-generic/memory_model.h
++++ b/include/asm-generic/memory_model.h
+@@ -53,7 +53,7 @@ static inline int pfn_valid(unsigned long pfn)
+  */
+ #define __page_to_pfn(pg)					\
+ ({	const struct page *__pg = (pg);				\
+-	int __sec = memdesc_section(__pg->flags);		\
++	int __sec = memdesc_section(&__pg->flags);		\
+ 	(unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec)));	\
+ })
+ 
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 485df9c2dbdd..60722c42a622 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -37,6 +37,7 @@
+ #include <linux/bitmap.h>
+ #include <linux/bitops.h>
+ #include <linux/iommu-debug-pagealloc.h>
++#include <linux/kcsan-checks.h>
+ 
+ struct mempolicy;
+ struct anon_vma;
+@@ -2286,23 +2287,45 @@ static inline int page_zone_id(struct page *page)
+ }
+ 
+ #ifdef NODE_NOT_IN_PAGE_FLAGS
+-int memdesc_nid(memdesc_flags_t mdf);
++int memdesc_nid(const memdesc_flags_t *mdf);
+ #else
+-static inline int memdesc_nid(memdesc_flags_t mdf)
++#ifdef CONFIG_NUMA
++static inline int memdesc_nid(const memdesc_flags_t *mdf)
+ {
+-	return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
++	ASSERT_EXCLUSIVE_BITS(mdf->f, NODES_MASK << NODES_PGSHIFT);
++	return (mdf->f >> NODES_PGSHIFT) & NODES_MASK;
++}
++#else
++static inline int memdesc_nid(const memdesc_flags_t *mdf)
++{
++	return 0;
+ }
+ #endif
++#endif
++
++#ifdef CONFIG_NUMA
++static inline int page_to_nid(const struct page *page)
++{
++	const struct page *p = PF_POISONED_CHECK(page);
+ 
++	return memdesc_nid(&p->flags);
++}
++
++static inline int folio_nid(const struct folio *folio)
++{
++	return memdesc_nid(&folio->flags);
++}
++#else
+ static inline int page_to_nid(const struct page *page)
+ {
+-	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
++	return 0;
+ }
+ 
+ static inline int folio_nid(const struct folio *folio)
+ {
+-	return memdesc_nid(folio->flags);
++	return 0;
+ }
++#endif
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+ /* page access time bits needs to hold at least 4 seconds */
+@@ -2541,12 +2564,15 @@ static inline void set_page_section(struct page *page, unsigned long section)
+ 	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
+ }
+ 
+-static inline unsigned long memdesc_section(memdesc_flags_t mdf)
++static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
+ {
+-	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
++#if SECTIONS_WIDTH != 0
++	ASSERT_EXCLUSIVE_BITS(mdf->f, SECTIONS_MASK << SECTIONS_PGSHIFT);
++#endif
++	return (mdf->f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
+ }
+ #else /* !SECTION_IN_PAGE_FLAGS */
+-static inline unsigned long memdesc_section(memdesc_flags_t mdf)
++static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
+ {
+ 	return 0;
+ }
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index a8430a7ae054..efcddb9925ad 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -650,7 +650,7 @@ static inline bool vma_has_recency(const struct vm_area_struct *vma)
+ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
+ {
+ 	struct page *cur_page = pages[0];
+-	unsigned long section = memdesc_section(cur_page->flags);
++	unsigned long section = memdesc_section(&cur_page->flags);
+ 	size_t i;
+ 
+ 	for (i = 1; i < nr_pages; i++) {
+@@ -660,7 +660,7 @@ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
+ 		 * In unproblematic kernel configs, page_to_section() == 0 and
+ 		 * the whole check will get optimized out.
+ 		 */
+-		if (memdesc_section(cur_page->flags) != section)
++		if (memdesc_section(&cur_page->flags) != section)
+ 			break;
+ 	}
+ 
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index ca2712187147..e60dad546ca6 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -1272,31 +1272,33 @@ static inline bool zone_is_empty(const struct zone *zone)
+ #define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
+ #define ZONEID_MASK		((1UL << ZONEID_SHIFT) - 1)
+ 
+-static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
++static inline enum zone_type memdesc_zonenum(const memdesc_flags_t *flags)
+ {
+-	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
+-	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
++#if ZONES_WIDTH != 0
++	ASSERT_EXCLUSIVE_BITS(flags->f, ZONES_MASK << ZONES_PGSHIFT);
++#endif
++	return (flags->f >> ZONES_PGSHIFT) & ZONES_MASK;
+ }
+ 
+ static inline enum zone_type page_zonenum(const struct page *page)
+ {
+-	return memdesc_zonenum(page->flags);
++	return memdesc_zonenum(&page->flags);
+ }
+ 
+ static inline enum zone_type folio_zonenum(const struct folio *folio)
+ {
+-	return memdesc_zonenum(folio->flags);
++	return memdesc_zonenum(&folio->flags);
+ }
+ 
+ #ifdef CONFIG_ZONE_DEVICE
+-static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
++static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
+ {
+ 	return memdesc_zonenum(mdf) == ZONE_DEVICE;
+ }
+ 
+ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ {
+-	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(page->flags), page);
++	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(&page->flags), page);
+ 	return page_folio(page)->pgmap;
+ }
+ 
+@@ -1311,9 +1313,9 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
+ 						     const struct page *b)
+ {
+-	if (memdesc_is_zone_device(a->flags) != memdesc_is_zone_device(b->flags))
++	if (memdesc_is_zone_device(&a->flags) != memdesc_is_zone_device(&b->flags))
+ 		return false;
+-	if (!memdesc_is_zone_device(a->flags))
++	if (!memdesc_is_zone_device(&a->flags))
+ 		return true;
+ 	return page_pgmap(a) == page_pgmap(b);
+ }
+@@ -1321,7 +1323,7 @@ static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
+ extern void memmap_init_zone_device(struct zone *, unsigned long,
+ 				    unsigned long, struct dev_pagemap *);
+ #else
+-static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
++static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
+ {
+ 	return false;
+ }
+@@ -1338,12 +1340,12 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
+ 
+ static inline bool is_zone_device_page(const struct page *page)
+ {
+-	return memdesc_is_zone_device(page->flags);
++	return memdesc_is_zone_device(&page->flags);
+ }
+ 
+ static inline bool folio_is_zone_device(const struct folio *folio)
+ {
+-	return memdesc_is_zone_device(folio->flags);
++	return memdesc_is_zone_device(&folio->flags);
+ }
+ 
+ static inline bool is_zone_movable_page(const struct page *page)
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index ee902a468c2f..020a97ca018e 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6904,15 +6904,15 @@ static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages
+ 			continue;
+ 		}
+ 
+-		if (start && memdesc_section(page->flags) != start_sec) {
++		if (start && memdesc_section(&page->flags) != start_sec) {
+ 			free_prepared_contig_range(start, i - nr_start);
+ 			start = page;
+ 			nr_start = i;
+-			start_sec = memdesc_section(page->flags);
++			start_sec = memdesc_section(&page->flags);
+ 		} else if (!start) {
+ 			start = page;
+ 			nr_start = i;
+-			start_sec = memdesc_section(page->flags);
++			start_sec = memdesc_section(&page->flags);
+ 		}
+ 	}
+ 
+diff --git a/mm/slab.h b/mm/slab.h
+index 281a65233795..9ded319495a0 100644
+--- a/mm/slab.h
++++ b/mm/slab.h
+@@ -179,7 +179,7 @@ static inline void *slab_address(const struct slab *slab)
+ 
+ static inline int slab_nid(const struct slab *slab)
+ {
+-	return memdesc_nid(slab->flags);
++	return memdesc_nid(&slab->flags);
+ }
+ 
+ static inline pg_data_t *slab_pgdat(const struct slab *slab)
+diff --git a/mm/sparse.c b/mm/sparse.c
+index 16ac6df3c89f..8e3847764513 100644
+--- a/mm/sparse.c
++++ b/mm/sparse.c
+@@ -43,7 +43,7 @@ static u8 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
+ static u16 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
+ #endif
+ 
+-int memdesc_nid(memdesc_flags_t mdf)
++int memdesc_nid(const memdesc_flags_t *mdf)
+ {
+ 	return section_to_node_table[memdesc_section(mdf)];
+ }
+-- 
+2.43.0
 
 
