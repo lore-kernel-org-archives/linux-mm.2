@@ -4,146 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A9A1C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:44:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7496EC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:46:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDA846B010B; Tue, 30 Jun 2026 08:44:09 -0400 (EDT)
+	id 5CB7D6B010D; Tue, 30 Jun 2026 08:46:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB1706B010D; Tue, 30 Jun 2026 08:44:09 -0400 (EDT)
+	id 5A3626B010F; Tue, 30 Jun 2026 08:46:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9E26B010E; Tue, 30 Jun 2026 08:44:09 -0400 (EDT)
+	id 492A96B0110; Tue, 30 Jun 2026 08:46:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A08876B010B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:44:09 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01283C23F3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:44:08 +0000 (UTC)
-X-FDA: 84936546618.16.12AD457
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 295F2C0002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:44:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lD3BZvWa;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 21E366B010D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:46:34 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9171FC260E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:33 +0000 (UTC)
+X-FDA: 84936552666.27.F1B7672
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AA92F40004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:46:31 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=OcbgsPKN;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782823447;
-	b=B5lTgY/3k5NipwqhDRCL/83JgrFSDmLnOKzWOpVr0qD/v/fJOM/pphq1BcPjzgtALFpM0h
-	7wBtjavgtb7VvOtkQivM1poaVTopf0dylQbfTjNrcTFv1eMlRvEcPFwKKRg7Y9Tv6Wj+I6
-	SQRJundC9w/FCHS6wlC2rusEvKFVdig=
+	t=1782823591;
+	b=oi8hjyoxS0aJ0VFzlE0wht4frpYhI+akCsMAER8lOpqGHuJDoPkIZVnvLNq1bA/TZrrojp
+	SRFDQjN81lVNdpYUQvfX3kgs/5da+0v20sQdfIkmpKBSOK35hw6Rk/+mwyyKW+CLFvc1/r
+	4MHOvcbxd+EDpYB0Jg6tRp1K1rFod+8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782823447;
+	s=arc-20220608; t=1782823591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P0adnldm8TK6ipv/lOGCfmnuD8juohd0zUTPMiBbPi8=;
-	b=QPdhF30gW2hm352zFP+ovFmtr/a2OE/2fB6mbwzMcQcw3nK92D1gmaYmJvSn+1l2SfuCgB
-	WKQnl2+qXJcJ/gi4bHoHvpbA5mKOA12wdruun8IAYwTSAz0/O+eLxqeF5GHyf6pUtlP4Mg
-	4PmlaXFb2UdX+TfeRZGu7nBRZBROln4=
+	bh=IMWcMWjKS0wqXvKb/A7eCIYAkyOK+4MAXhS1U8rn/KI=;
+	b=XB1egkWkWkl40Ipl74ak/H2XofBf9r/ilSC+Ywsi/lCiN3uANP3Nq+Bg6btXeZBw1My1Ye
+	LYDx3sD45RJqE/WZOmsMHizwGNxXpEjgRJe+ggmSfJ4lQnjaedJhdvYZBD3bJvywhxOQb1
+	4fnFlSpAfLJsPgBC/Eg/W/jCgY6z2fo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lD3BZvWa;
-	spf=pass (imf22.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0A770437FB;
-	Tue, 30 Jun 2026 12:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC101F000E9;
-	Tue, 30 Jun 2026 12:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782823445;
-	bh=P0adnldm8TK6ipv/lOGCfmnuD8juohd0zUTPMiBbPi8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lD3BZvWaX1EwmVrvf1qwnpfvnmdk6yRnka8Da93gojUcYJhWk3EmYzo2xwntJW5yJ
-	 j8PDe1WukQ8KwnyMWky4BE5yG4hIRY3m40deLp3IwW/ExkZpEgOBQekTmEtKiTNT+X
-	 50rY8xr28kw/N0jtGaG1vDSLf8NswY5kL1TX+KcnS5Ud7RXzEwn1bAsCnH6isghV5k
-	 bVNDXbEsSz0grLee/GUMQ2m8ddY+A1MXIIf1y5s5OwMkV8tHIXuGcBqzxXCY0Bx6ly
-	 XVp/qJ7kNO6ovYpSOiMabmhpMQzV3LYnEK7denzXQteOo03uq8R5relIO3OnTGM4Ti
-	 GeBiigFn5OlkA==
-Message-ID: <c8c538e2-11d2-4484-bea3-49955d1a9b10@kernel.org>
-Date: Tue, 30 Jun 2026 14:43:57 +0200
+	imf17.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=OcbgsPKN;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-92e4fd65b2bso171527685a.0
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1782823591; x=1783428391; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IMWcMWjKS0wqXvKb/A7eCIYAkyOK+4MAXhS1U8rn/KI=;
+        b=OcbgsPKN8OmwJq28+JkxAFMYG34JLSp8ArSpaMw8YRihmCjHRcdn1uaqcsRSDQE/3y
+         hYAjKS6A20cnRquP2a66jCS+Erx4XlKVJZJ+8oxzzRhe2+qYuocJO2OtdCvBsEAgKwj0
+         H0n8h7/0ttBXCbVZvF2CbB4e0ta4b5npLjhTElEGp8C3hZcKCXRm1zFF+UCmQSmxJAVR
+         TWGvYDTFJuAQfw8oh34yMt/2F6XLAHBwQvOHp18G3g/wCTOkzxY/olNA7gaoi6grxQXG
+         C7NG+NQYokXVS7pHDMlfQmaRwSAcpMejVTVtzoSdoh8VXIfgD7iYQS955LR3kwwZOu4o
+         klXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782823591; x=1783428391;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IMWcMWjKS0wqXvKb/A7eCIYAkyOK+4MAXhS1U8rn/KI=;
+        b=XFFvMR75avRj6kZNlB4X3NtM0JYeM0pUNz7n73rJ634NKRVVEcabDVzVNUztgLZcRM
+         7u5OzPzlaq23LItlNDhmxUZV0bRvw0ZtPtL4BNF/iKCnLFzuZIHxVNVBC1BjwDExBOeM
+         /Kb4/oj1FSUrE+DvOH8kZU6N6RFPgigBNvBJJdkkcRhWSo4L35aTqJbmaxUHebfWmV/v
+         rkFp5QNHNr0tFnb8dKdwkKSLBYs8GUI7eigA5Q2MhG2Aoz54LgiBEt4TjlaFQ1/hogfv
+         sNGqQ0gBRxeVVz/NI4mJ1T3sqMTlYjFqO5SQQDYk9YO9QMZuUhbNeVq4b4NwAWoDGvIK
+         3vTw==
+X-Forwarded-Encrypted: i=1; AFNElJ+0JbqOZuTNVcRfSQI/JbIZ2U2xRcsOeX7Ipm9T4QXHCi6t9pHLSWAHj52eIfYKBa+7m+Va8ALKpg==@kvack.org
+X-Gm-Message-State: AOJu0Yx1+TTDx7O6l9tpz+Jb7WjWzli87TFNtLcgU2Elgj5Ml0MTL70w
+	We7sHxwkpCEQbVhKzdKE895InDNgWfYOG41Rx3+V17hCj7cV/ZETaowE+V+B9yt3FDs=
+X-Gm-Gg: AfdE7cnHb39IU4PgWQCOnbl07Y2FTdTUufhQ//nLKQQSDSoLJADbwe2JvI7Go4fN3F+
+	oWcD63Ld8nVsjrMOSDQXbiqbou8Z/Useo8TNUzWUAlhoK4eDlZNgg57ZxVi4S2kWSC/ggI+Qg1y
+	zNNtFXmAkvhQtskQxmtNEaFRHkafFotX1RegOu/aNOxgj8RCfDFxSb+IDDbHaKsfM44H65d6QMo
+	O0SOmhUS/T6ct0l0pGU3HY+y+ZeAX+XgSl8o9Wl6mlsYJodphsiyypDSMgeAQRCHrpSEWOAh6nX
+	L4w341b+O2nQItyPPIOvMUdGFDiLDbwnDqkWau+P2k/5c4L1toFV3AiVXoQGBXVZBNvKYNJVDvX
+	mFjCezqDMcg8YHHUllQ7LBWssA3HRgzyHczQ3KWvDPIsz5dcifOAKE34yRwesJmIKXzyYhozGRh
+	Hkwq/CeHkHvutEGIHJRNxDjDBXJ6FtOZPRzS9acTekWnItCaIVYV0H7hWgLKzyq7BGN/E=
+X-Received: by 2002:a05:620a:3198:b0:92b:6805:919d with SMTP id af79cd13be357-92e6280f798mr528748785a.69.1782823590757;
+        Tue, 30 Jun 2026 05:46:30 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e622eb9d2sm233423485a.29.2026.06.30.05.46.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 05:46:30 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1weXrB-00000001r2J-2EhA;
+	Tue, 30 Jun 2026 09:46:29 -0300
+Date: Tue, 30 Jun 2026 09:46:29 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Lorenzo Stoakes <ljs@kernel.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Peter Xu <peterx@redhat.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Anthony Pighin <anthony.pighin@nokia.com>,
+	linux-kernel@vger.kernel.org,
+	Kefeng Wang <wangkefeng.wang@huawei.com>, kvm@vger.kernel.org,
+	linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>
+Subject: Re: [PATCH] vfio: Request THP-aligned mmap for device fds
+Message-ID: <20260630124629.GE7525@ziepe.ca>
+References: <20260616163054.77fdb61a@shazbot.org>
+ <ajKtdCN0AlbmBnAj@x1.local>
+ <ajLontmFa1oRXeoK@casper.infradead.org>
+ <20260617192928.GB231643@ziepe.ca>
+ <ajQDVAu9b-LX8gUQ@lucifer>
+ <ajQI5jMJpxyNZCLN@casper.infradead.org>
+ <20260618153049.GG231643@ziepe.ca>
+ <ajQRY7tHShCEz8vg@lucifer>
+ <20260619131658.GA1068655@ziepe.ca>
+ <ajlnTdkbmEzy_uhe@lucifer>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/16] mm: name some args in a function declaration
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-3-57bef0eadbc2@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260629-alloc-trylock-v3-3-57bef0eadbc2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 295F2C0002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajlnTdkbmEzy_uhe@lucifer>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AA92F40004
 X-Rspam-User: 
-X-Stat-Signature: dw91a3hygytsymgfq4ugi1pb4pk3ahsn
-X-HE-Tag: 1782823447-692013
-X-HE-Meta: U2FsdGVkX1/FIbs9YejsP/Qz45WtdxucQ/InCcrvNrbRCQALN+TGCMDoHegxQHfg7IBsWxy2///1zmgwOwf47pF5ue2Tp9ZZmuhpp/A359oj0dR5Ar8xT1jMipLQHUomydhbKBbKy2dR/E9nzw3xvK6HhvX7wGMrdVyOvF+8SIbh8OvMBhQG10j/JWr5cj8tnflFWdX/wKP0lTNDLG2gddpsg9spUiWsXDVUrFaToupluBlL3zCuICAhwVhxyoHdhAbtuiWwke6tgS1l5scNeScycuKV0q8VBH/DTbZMLvcazdhIc5VcSfgnghad+IE6WZ4euPXUcfqD+H1nIux2H1Nddmti4zDQHfMLsmIi/f7Evqr7HBUV4Tbu1V2Z3TB0LSydsS6wOycFypVig7fhy6gKmt0Rq6ZMZwnl1hG4CmB8yGLd8hBcx970HPJTeztKS4fIOgA7fj3GkPzDCRx5uvFV4rdITi0vPCn5wB0VYfMlJz48PG2FxnmOaNNPgG9xMec6CiqgBllWaADo7WY4NANglCavRTYGc3FdG4OTCbsfq3arHa6rYIcYr+KhxirpUe1ISAxbFYEX89754zZWsYJBFE0omMCEbTVh6M+skYR0uvZYwtMTgTuyJWT4dH6MHygbpc2BIWo0ilSnlDxpLXMPTMDlR2jPNYcLaxX1bf5oQ0WNlpFSMJSN0DvYpTwYzXD2zzJov35R/+Tre75wuZqZS/XeQrVdsU1yCncLpLVZRWfZQ4IfT/xZnKIz6o9eq11D7fkcDwakb9QH7wERtIoeJ/Auqi919m7KLR1csOCU+DFCEEb5MN2Sbabkebp+QwFpXBiPgqR9ydMD1UgwRUJxgj3/0lcojYPJO3P09QvhxVSwnMg5l7m5p66VL9JimeYbvXW2p2btsmBU6BYQhF8vQgaod0oLAssLU5kltgcMPpRyEMxZfdXfAuU6UfJCQAFM3oqskIuOMUgDd53
- t7VVv7u5
- SzN4+PU4aXCGuJWxEOHeJJ6JGZYG+wjV4WH2YfTNDokfOHA6fPFcl4LPq0JtYr0cC7LQmB2wZhiUo3A6IQL0PAmDHGjxLi9UHF74uRVjFlU7bpRgn3D7FKjSS+UTAwihfE6tAx1EHyAcyTzqB8+z4LIrWwjXmLV13ToXLNDNGurZd6+3vFO1EshSypxV/4Sk8501YDdGC52FJN/KOYZ1j62Ww5U7wz3X6tnn13s8ODJ5XWfQ2MBP5nux5uUcqjmjYruQ2yw9POLyS3DMA9hKiQd2FB1enms5llzVrgqk8fX+evhVFv/tTKgZyVdxrEd0d2ow96eJx0aL64mh/xb+yW0VmOuqu0+mm9kb3i20qUv3xFCqy3W4nwI3TsZBsDg6rpuGt
+X-Stat-Signature: koxs9ed5zztf4ti8if4fhz1451jm7f59
+X-HE-Tag: 1782823591-886447
+X-HE-Meta: U2FsdGVkX18v6GH+ZsOThM3SvEYs4fwq9oBYAcy1rDCtPYW0pI4LjUAGJMJCcq3B2ESZkWGe7LViRemzoOgNCH93BCXe5ukQ2OfXt8z37BIgdnlLuZ4TK0lDqts5W1L/yT4crzb8tzZRdt6DiT9VnryrqLmLyBsTVZMXTWt/rSHjEhfsMcT3bI4jB6FcK6n50voEDm7f2al29LuS+3C2DT0e+njls3hY8ZhP6rJx3WUn325rQ4E4M48hqn9Cj2VTz/KM9ICWC4y65yz2741iknrFWNi/rMxetvaXIWRYDE/r+shE9wMyrgIqSiZwPql+lfvLV7YCB/j6RGkCqrhKs8e970SqlTfD7P175qWv40b11E3MzT5kXrvppPp7XNPZPsuBI5/vSft2jvCTHwh16e6XELIBdk5L/eixH8RRKL6lSmJh1fDPa1AeT0EXxu2aDfO+Z0g3E41uXZ6ncW7x39ofzUT/DB4aDOEUX9AABnoI2KiPXl+Pmpi2rD2GSy9iqUVE8Om5HqiLmpF+RXy6yE/w+kmosByz28ULsxp/1JUJbPt3yTtWcgGXfEuHlpQ7HtloXOG7C6DKFm4bthhoIpsTvRcAP3Hy7/Dbzka6Fzho7HbP3YAJ1OHzeanvEd/aAzFiTF7qrer7UluIAmUy1g8Kn57tAYfENcHLc/sYzAXaZDriObCOTIVYVeVsDuMhsjnru98WbWkniAkaKSnd2VPeFNJz50NsAyO/QEjOc7GWpdfGVyMCA3RmWbgkNR4U/+hKtPFYkW4HwctAWoMBe171rQDSWVTdzZyzkczOtcH700ywIAUPhgQGH+jQsX/3eWmqQa6vGcJ2Xq3VZSSUx0vrL1EQORZIUUxjHzXxS+U7qZkoyTxzbFkvEi0Wh32hFic17BzrurO8RaMwCMr8chCvBJETKo2IFfL9XA5xEutb/x3ZYm7d/7KcQ+nhpan4dcNlTbA/zd++XhjJXzV
+ 0J5mnCl7
+ zSKClgPx0Cc8r2p4XsTQRZxPm+2jqeFWwrvyC0bMS62zYqZVcFpejA/zbNLwzQlmEwHQtO4QwJBjTD8j9S24WgPn8j4ttYGocwMKcqRV6DoIPzzmBr4RL2o1WcmAYc4CV5X1lrilV+4PvVHhPHi8MzgwRxenITICfBeveFb2QgGgn5E5iua17DLzI8GCz5tB1ZnAhMv1CE3zsNlxL4e41FSzhoGzvIO0c7Ly0NQb0wJHw3/Am1hpcaVpGDK2xfKqZ8fpBAOdepmbqmINyFrd13nCUYsQ95SyH0CBrUZ113qPvoaDGoi+yf3hN6ACJo8xP6uadueybThCgYCZ23bYWRlXK6kcLg7cD9SjPRqPUU8NaZPxUqOeX+T1PTg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,35 +134,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 15:11, Brendan Jackman wrote:
-> Checkpatch complains about this, a later patch will move the code, fix
-> it so that checkpatch doesn't complain about that patch. Do it in a
-> separate patch so the "move the code" patch is trivial to review using
-> Git's diff colouring.
+On Mon, Jun 22, 2026 at 05:54:10PM +0100, Lorenzo Stoakes wrote:
+> On Fri, Jun 19, 2026 at 10:16:58AM -0300, Jason Gunthorpe wrote:
+> > On Thu, Jun 18, 2026 at 04:56:06PM +0100, Lorenzo Stoakes wrote:
+> > > > > What you're saying is that offset 0 of the opened file might correspond
+> > > > > to a PFN that is not aligned in any way?  I had assumed that when trying
+> > > > > to do the mapping of (2MB+4KiB to 64MB), that the offset specified to
+> > > > > mmap was 2MB+4KiB.  But you seem to be saying that the offset in that
+> > > > > case would be 0 and someone needs to know that it corresponds to a PFN
+> > > > > that is misaligned?
+> > > >
+> > > > I do expect that the pgoff space is usually aligned to the pfn space,
+> > > > most drivers do that or could be improved to do that. There will be
+> > > > some off cases, but maybe we don't care, and VFIO should be fine.
+> > >
+> > > Some stuff has weird assumptions about pfn=0 at start of the range (DMA for
+> > > instance).
+> >
+> > Do you have a pointer? I'm drawing a blank what "dma" is?
 > 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
-
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-
-> ---
->  mm/internal.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> (I am obliged to link https://xkcd.com/138/... :)
 > 
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 2237eee030cba..8ce59c5664497 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -919,8 +919,8 @@ extern bool free_pages_prepare(struct page *page, unsigned int order);
->  
->  extern int user_min_free_kbytes;
->  
-> -struct page *__alloc_frozen_pages_noprof(gfp_t, unsigned int order, int nid,
-> -		nodemask_t *);
-> +struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order, int nid,
-> +		nodemask_t *nodemask);
->  #define __alloc_frozen_pages(...) \
->  	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
->  void free_frozen_pages(struct page *page, unsigned int order);
+> dmabuf as in [0], where vma->vm_pgoff must be the page offset
+> into the DMA buffer.
 > 
+> [0]:https://elixir.bootlin.com/linux/v7.1/source/kernel/dma/direct.c#L550
 
+That's not "dmabuf" that is the DMA API's dma_mmap() interface, very
+different thing. This could probably be reworked if it is some issue..
+
+Jason
 
