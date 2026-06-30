@@ -4,147 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F06A4C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:35:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECEAC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:45:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3BB16B0118; Tue, 30 Jun 2026 05:35:56 -0400 (EDT)
+	id E4B416B00A6; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEBB46B011B; Tue, 30 Jun 2026 05:35:56 -0400 (EDT)
+	id DFC3B6B00A7; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02AD6B011C; Tue, 30 Jun 2026 05:35:56 -0400 (EDT)
+	id C9DA26B00A8; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8CDE16B0118
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:35:56 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1C870140404
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:35:56 +0000 (UTC)
-X-FDA: 84936072312.22.0EC5068
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B1A5C1C0005
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:35:53 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fqL0qCCh;
-	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782812153;
-	b=kSbuIF45yXF6ykcAGGoWL6pmvdv3hjTqitQHb28oCtpykjRSReJKNTKlSOSrl/gCQGmolu
-	GT+7tzciEChm499rcd+SB/cXHFW3NjyF+jeLb/NgiKjNNi5BSLuJfBd4J25QCr+nTihu4D
-	dYs+fa9yS50EZNxhJ3f/6wkCaaWsKWg=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782812153;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 956FD6B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 158454040D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:45:47 +0000 (UTC)
+X-FDA: 84936097134.24.900F927
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022098.outbound.protection.outlook.com [52.101.66.98])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EA46A160003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:45:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=F0++cj7O;
+	spf=pass (imf08.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1782812744;
+	b=y8iiPPVXoOPGWekMoR1wiysOH5//n28kh3WP3uk5cGyxFO/vAha06xar0/JabH/P5xWRIc
+	VhUPQNWazeMYtx1ZeFWYi4JU0/ppiVK4xhLevRTw5bbbGZWmAq+90QFa6r+sfipe0POkNt
+	lG9HHmpfD9AD5xXgOqEEix5Y9hfDhOc=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782812744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ynIHlG9XKyd50EeZ1Oh9hk1QBbklthyVMi9jY71J0TM=;
-	b=fXTc2TQpqwiaRH1HW9iPsa5NKD6LO0hxgYo5fp8EFJz4M4hZn/IbYLsX57l7ZdiViPWYv2
-	lai/INxU0CMILkGK7+HDpWJQ23HZa6X6ozf8kv6pPx+t3e3DKuKNvw9P20H7+0OxTZUgLn
-	/nyhitYhyFNILtK23ZYSsxNKJXZOyiY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=fqL0qCCh;
-	spf=pass (imf18.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U5mMkS1069686;
-	Tue, 30 Jun 2026 09:35:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ynIHlG
-	9XKyd50EeZ1Oh9hk1QBbklthyVMi9jY71J0TM=; b=fqL0qCCh3ANo1+l4UOOMn8
-	pgyoEGMugURk/QbqJDyrahBPdTjVqfAaA6OdwJsA/uny+msEq6tj50P2aHXSS1Yy
-	6clqb1eFKWJQmKJJ9Q02bKjCW3TW2Ef48SAXtIgQEjOflAa5UQFqiMa6fNDvc/vc
-	vVrkuiIWOX9dCFOQY02dlCwgylhmExZb7KjrhxJVQf7ilTmSie9rUhXtp0KVv9vb
-	qEemq1gNo42vvRhikSSzIQhOT+3+HRA5dj4n83Yy59wcB78XGKXZVQS9mu/Uiggc
-	MSp/nx5jcm35ud4VBEpZklFQzQ14fBE9vsEUjtW/+TVh84CbK0At0uhv6JTfgrzA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26rewm56-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 09:35:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65U9Yhcl005799;
-	Tue, 30 Jun 2026 09:35:40 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2uhy97vh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 30 Jun 2026 09:35:40 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65U9ZeJK26804944
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 30 Jun 2026 09:35:40 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 109055805F;
-	Tue, 30 Jun 2026 09:35:40 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7C4A85805A;
-	Tue, 30 Jun 2026 09:35:33 +0000 (GMT)
-Received: from [9.39.22.200] (unknown [9.39.22.200])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 30 Jun 2026 09:35:33 +0000 (GMT)
-Message-ID: <8483ce18-070c-4d14-add6-bf65e3f71ddb@linux.ibm.com>
-Date: Tue, 30 Jun 2026 15:05:31 +0530
-MIME-Version: 1.0
+	bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
+	b=Pbd+HzxOiL3H5fkygxXQ0jMfGwp5xHE1QfS8JVmp8f+bhUXhRzBiWWMU3+SkTkUcacoNsC
+	vpvCgRDVUwTHREUli170UHLm5q55ogynPhRAyQlLKgHtAFNSPmL2MAWtfFqPE9c0w0moHP
+	8AKcVdYqztnWbBg3+2qzvfuqVCoX3LQ=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=F0++cj7O;
+	spf=pass (imf08.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HAy0bwSyfwjLkQABUI9WQ6+UVyQ2Sx6BI9qvC3md7pi9gLQnFb7eYXMN29R70A9+7oI0daHDo3szxRykqY0Fl2lyGv8Ns4v9JvMP5gFW68zRI6vc8/e65koV1ZXDdvIv1icqn1a3WleIEaFsHX60U8xZIt4Li4jjFdEsaOL5sYK/KodHayuQKekUC/+haZFGjY7gY/hoL2WjMLMOjcni1jRrfejxOz1kJUBBYmbNRLihIMRVFZGZEw2L6+HvBGZ/rQsQdi323K6xpp/4bBpQI6lTJle9MN/HhgbZxXqwPn3YlyyZ9bPq4Y6LGLcFAUe02txwFwkxaaUX62S7VPtKVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
+ b=Fm4DpILIFio3taPaotTr+AoyZddEuYn4/eZuU7ve89MPLb3JEhd8gUwSpE8mUN7zUHCmVAVso9arZ+fEKTLVq/Iz0WOQTGf2GSzMwja7hrDSX919U9R0isaAdL6C0tCESKg9Bzucjs3ua4JoNB2QhingGRMRJCxGw71xcT0QAgkjURV9ZbS4ueVEWD5AqeIRxOxnNWBQDMcspiQLhezPVwhO2l/1XIZDy4CAti04MRrNqOKcLrneJpAN8tx9zDmokzbmgzCoH5EDIXTuui+wAtNyD4CQLj7Z3CQBAt8TVvSRZ4HdilSHvkaslbcwLBn/r9odoKS1BuIi4ZHulkffqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
+ b=F0++cj7OXQyOJ7vo1duApE36GB4op22PnvYVEcliIqzbqqvZf6ylsn43vVQt/iExo1orf6fQRmqH8sZVFEITedFYQonMnKrtT4JSrnPSNhXLIrjlfAZxxr7lqf8JOBfcVRSi8VAvvUSuLXdD3X5I0uKQ3Kkv4a/wHUCNibWIc2cNlohSjg4gVHeXi+8BS/05LkuelXngPitNuMYr/vbEUW8I8s70u7+glN4Ubw1hlrn5YUuQYh9UvbpmSEYiuVeVpPYpelKRFTBqs56kFdMPP93HME+EFqMdtcMt92VpRJYeEshkJRvoiPlrsvNHGAsaBf9iW2ECBUB20JeFodMpHQ==
+Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
+ (2603:10a6:20b:747::14) by AMBPR08MB11885.eurprd08.prod.outlook.com
+ (2603:10a6:20b:75e::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Tue, 30 Jun
+ 2026 09:45:38 +0000
+Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
+ ([fe80::bf46:f137:f6d2:5b3a]) by AM0PR08MB11804.eurprd08.prod.outlook.com
+ ([fe80::bf46:f137:f6d2:5b3a%6]) with mapi id 15.21.0181.008; Tue, 30 Jun 2026
+ 09:45:38 +0000
+Message-ID: <6e7c1429-9f3f-47d2-8aa8-272ed0a8d305@virtuozzo.com>
+Date: Tue, 30 Jun 2026 11:45:36 +0200
 User-Agent: Mozilla Thunderbird
-From: Sayali Patil <sayalip@linux.ibm.com>
-Subject: Re: [PATCH 1/2] selftests/mm: handle EINVAL when configuring gigantic
- hugepages
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org,
-        Ritesh Harjani <ritesh.list@gmail.com>,
-        David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
-        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-References: <20260626144835.3759976-1-usama.arif@linux.dev>
-Content-Language: en-IN
-In-Reply-To: <20260626144835.3759976-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=a4kAM0SF c=1 sm=1 tr=0 ts=6a438dee cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=sZw2k_FkU4g0e2GbGXMA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: O05riK16JTu0mCcfDhGEvhNGcRsFq20J
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDA4MyBTYWx0ZWRfX1F5LFHMQC1Uy
- WDGF1qlwgVeVVpKLWd/3RF65rRLw6rKLKDnh/vIEVXJdipdEBhOYTo8lhS36RYnHhKFiuyIkk6N
- hGi0XsDEbkzQa7dvK19AujSLmOme8rW58QMbjwN/wIuivV5BwQ4zT6cJpWpyt5YiGuqmW7RJ+/F
- q6XQ/X25XzF2qRSxguyM5MTJcZOxbxa6XG6nxzA4Q41QcX81iWFHYrrYAu+slncthSPieQd4iRj
- KA3PWR14/wlhsm4YQZLFqlnSsbnYjA0ILrbpkOdSMeC6jie2FC0Xno/y00c8lOB2bAy3zAqwaGv
- 91bDgvi0aHfAKrY6iYEigb220QtI7VIFD1Oe8c1z29tSfX5zJXnH0va/GeA8Z2SblXzTMW1lPLv
- luAeoS9O85EyuaPPZ56c4CWKTpqCymU3L/U00XCyGBVBybKL5VTPexHibs0gAJSfQOBRyOBdBKD
- DYdaUmuoHSYPu2g5xkQ==
-X-Proofpoint-GUID: phyyY_qkonHDLKEyL1C2LMBimzIXQU-q
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDA4MyBTYWx0ZWRfX1cnShknkJ/ee
- 0x/UssF7tYiW7UFuGNZKW3uZv1DbylP9INZp0eU0fQliRUXc4rQKc9lKzPF5CA1iuTDuBoagdsC
- 9r+B7v4hQFFFcPZyKJeNgQbd8H+OwzI=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-06-30_02,2026-06-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1011 bulkscore=0 suspectscore=0 lowpriorityscore=0 impostorscore=0
- spamscore=0 priorityscore=1501 adultscore=0 malwarescore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300083
-X-Stat-Signature: sek3cco5nypumw7aaanktmabmo5rx56h
+Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
+To: Christian Brauner <brauner@kernel.org>,
+ Amir Goldstein <amir73il@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>,
+ Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
+ <20260623111533.2285005-2-ptikhomirov@virtuozzo.com>
+ <ajqOyIA8tPQsxfz6@cmpxchg.org>
+ <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com>
+ <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
+ <20260625-lehrbuch-gehalt-wichen-1b2f3533efbe@brauner>
+ <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
+ <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
+Content-Language: en-US
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+In-Reply-To: <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BE1P281CA0445.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:81::14) To AM0PR08MB11804.eurprd08.prod.outlook.com
+ (2603:10a6:20b:747::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR08MB11804:EE_|AMBPR08MB11885:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd00aeec-414e-42ae-d8e2-08ded68c5726
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|376014|23010399003|366016|7416014|4143699003|56012099006|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	l4yeWcGq6Kwb8g4AoMRdsBRpUxlXiCpLdmVG3hBGf31lOKx8uT7oOOjcudDja0ugGPMM1NJqYGV6MUGk3g11ITNc1teftbisjH6CwjlJKvYAVBH1yXRryiAXzYi0tmoUOn+ITLov+szPQBLzeXOxtblbE5gSJPfLLzpQ0DGLw5/QzUA6WWezBduU5prcaC5MMWDQnEhAZ5s+k9T27ln4f2r/T4gV1B6GhECgQXlzfmfl2ata9wJv9JmqWoZ4vWQqA5/2qu8J26ZNx5qyXcCf+U4R/3FYHzk4jk09sRFRHLdstBOY71rB1Ah9p9n4Q2eN9BBD7ZpW2tDi2gUdthgtGbDtpqWqeFF/TrmPLE1nRv5YXAKQbfCMUAEXyQphZMJMLF1xUaLYFq0FZR17bJT4mGtNSNLw+upu47nO3VzIULbnKijJ3JuZdybKEJpdEj+Yd9v02V846akL1gz9E3Y+qOxLxi4Wu+3W+J8D7dfTWaKn+6JI5BZ1YPnhf+M2aSypxD+s+1dUS3fm6IRhxv33M+TLMnRYbFzzuFvjICtVm+YUys2yBjip8A9CUxryuLgvMT4lbHNft7N4pman+IMVIPEXE+8G3uz9cXqwiAensmrzUCl7fwaKXBJPB+RAJuu6K2qjXPZH7xdPCbxA47b7bNTADa94vBzb24nTR11yM14=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11804.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(23010399003)(366016)(7416014)(4143699003)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bkx5djIwb0FOYlpTbU5XSlVST1JDc1NBcjRNaTBrNTBFK0dNTHp6WTNUYXRn?=
+ =?utf-8?B?c0RaVVh2TkZKb0JaaXhxcVROM3BEQW95Z1dacTlIOGIyS1hCOWZOZloydTc2?=
+ =?utf-8?B?WW5HRGNhL0Rmc09jeGtmVXhYdmdpMXRHYjBJaHYxazBHYy9kK09id0lER1Jp?=
+ =?utf-8?B?RUNINVVMdlZ0ZGF5MjBsNlFiZzZzRDZxS1g2WWFXT2xUU0VPeHFiWGtOdXUy?=
+ =?utf-8?B?amxaZmtLN1A4OC9TRFc2RmZrYVhLTkNyRTlBbkI4T2liM1VlRHVCOVh0UStm?=
+ =?utf-8?B?QlErem5iOGcxRk5mVU1lQnhJNUlkLzlwbnNnWDQ2S0dmamw5YlZjYUpmMDBI?=
+ =?utf-8?B?VVRnc3JGdUhKWmZjQm5xbVgxL2FTSERGT1dMSnVCRGtiM3pVVUk2YlFRNUg1?=
+ =?utf-8?B?a2pESDZzRnVBeW5lcHdBME5QUGovckc4VFJiTm1jNm9KRWJSVUU1OXhKcDFz?=
+ =?utf-8?B?amlFVVl5eEd6djc3VEZZdXV1bmdSM21lcG5lQXIzNktwOWdmbmRSTHMyWkVQ?=
+ =?utf-8?B?dDR3QUN3clNxL0hLS0FqWmFIYWQ2MDRaZC91T24vNnYrMG80T1kxb0hLUml0?=
+ =?utf-8?B?UXc3U1BvdVZBZkpxVTZqdS9JQ3hKSmNwMzh4NFlOSFZndHpYZmNwMUo4bUMz?=
+ =?utf-8?B?MHdFR1FCNWVnTjZDUHZ2MXl3RW9OSUVvU0dmUDd4RnFRRFRPdlFRSjNCK0tj?=
+ =?utf-8?B?NlhGOVBWckhDakkrTnpSdzJtOWNFSkxPUDdCMFNrQllObWxPTERmU0RHdmpW?=
+ =?utf-8?B?YW40TlBKYnVZaFVpL1pJdWJEYlZ6VWN1ZlVLMXdFZTZQZElQQ1E0Q0hhKy91?=
+ =?utf-8?B?MitxZTdUWFd4WW5uUXd5ZHcrV3JkRDNpWWd4TjhmSDdFb1hXSVVGYUFmSlBj?=
+ =?utf-8?B?bDJMdHV3TjhlQ2RSc25JcDlYZi9Ia2NGaEdTbUxqVzJ2VjVDa3dSdHFWSnlO?=
+ =?utf-8?B?TlU1QWdNL3FyZENJT2hwTjZiTkRpZXo2bE5CNWg5UHM1eXFhUHExS2pWc3Vz?=
+ =?utf-8?B?UlJZSHVtdS94UnhjaDRCNGVVdjZFcUVIOUVyWExKWGNWcXB4TzRWdGNHUkRF?=
+ =?utf-8?B?M0lFcllGQms0ZHRjdXBJem05U3NKSG9UVnJ5RU4ycTV0cVZTOEMrR1l1L0Ry?=
+ =?utf-8?B?Njgzc1piNmJZQU56ZG9ybEZKOHlpbGxkWlFIdlBCeTh6UThEa2VXUzlWWHVv?=
+ =?utf-8?B?N3I4YjQ4S3Z0NkQ2TDI1d3N4L2RFQitiMXZKOFh4WEtBWWZybmJMaTVERUFv?=
+ =?utf-8?B?Q2NybTExMGVUWDlXcWFWWVRvTWxXQ0c2dllOd0tmSUp4M09lNTE5b3Y2Zmxz?=
+ =?utf-8?B?QkFqRzhvODhGNTVWRTJEY3JNVWtzSVJYUTVHeVhXZit6SDVJOTNvYlRSbEJz?=
+ =?utf-8?B?cDhNK2tLM0tvMEZUbVlIOUMxZjdKOEpCUjFTeUw1UDZBeE8vTnNBc3daNDR5?=
+ =?utf-8?B?VitUeDVlMSt4UXRSbHA1V2lSZWdoM3kvN2Q4V2huakxIbUxXR09PYm43OW1z?=
+ =?utf-8?B?Zkg5Z3psSXhjWjVOejhqalFWcXRvOE16bW02Z3pJdVRabkpQRVhlVGgvN2lB?=
+ =?utf-8?B?a0lDK1FFU3lyQ0oyREZiUEtHUWQ1Uy9oVm1BWm5VL3hJR3AvMFpkTUpPWmln?=
+ =?utf-8?B?TkwwbU4zcU1ENG5jZFVzZmtFbDJYWDRualRGYy9CM3dOeGdVb0RwYWswaWxs?=
+ =?utf-8?B?cUQ3eVR0UURFZGF3MEVXOFpiZnBhaXRCc1JNV2ZHTk5GVW11aS9maktXOU5V?=
+ =?utf-8?B?bEhhNzZ1ZFFjZGhHd1lxYVpGd2E5Qkx0dGRJWm1Bd1VOU3ozb2R4ems3SG5H?=
+ =?utf-8?B?UjdrUXl3RlUzWTNDQk5ERHRaQitnZ1FMZHQyYVhPOStHSjJqWDJTK0s2eERJ?=
+ =?utf-8?B?YnFkZ08xbEE2MGtkSC9hM0tILzEwUjRsenh3ZmZLMG5DQ1ZISUI1MEV2SVlp?=
+ =?utf-8?B?NE91Y3QzRUVnU3IxT0E2cXZiWHdHdTVHS2JNNDRGRnd3dW5JUnZnM0h0UkZC?=
+ =?utf-8?B?anlMaG9UQWFUUkMrUFZDa2dWVEVka1V0TDB4V3hNQnlCUjk0NmVXQytaQlNY?=
+ =?utf-8?B?WTJ2blB6YXJMdGl5ZlpnSDBxb0F5NE1ybjQrR1JDOUwrSG1TaHYybDhrdExi?=
+ =?utf-8?B?eUwyRVFYS2p3Ym8xOVlQbW1kRzJ5MXFFMkRNT0RSRHQvL3MwN1Jtdk5pOE5v?=
+ =?utf-8?B?amQ3cExyRDRYaWFtNmhrK0x5L0svNFVDakNHNXB4c1ZVTmdXS2dwNGpjQVJu?=
+ =?utf-8?B?Y0VBNzJoZE5JUW1PQWs1UDZDSlFWU3I1VGFrb2NRY1pFcUtmL2E1Vk1aSHRZ?=
+ =?utf-8?B?SWZEOXZKL0VqV044TkpMaElGdDJQUis1WXZYSTEvVXAxSHdqMkhRZ2pyeCtC?=
+ =?utf-8?Q?/39NDHggtoHfHerFxiRS62afioF7EOiBt+UPMu+QT855j?=
+X-MS-Exchange-AntiSpam-MessageData-1: a2U2DLBH0gXl/ibRNZ/gE0YTv/ecEbQWygU=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd00aeec-414e-42ae-d8e2-08ded68c5726
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR08MB11804.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 09:45:38.0346
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fjKf6QfRZIyq5J+HsepIomRV6KPoEJyqAXJ9l8buxzmX7ejX/GudD5bPk7/62rR5tHzhbxQIBvYFjI11fnjjsR0rPgWu59zNTFuy85TQPzE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR08MB11885
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B1A5C1C0005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782812153-987521
-X-HE-Meta: U2FsdGVkX18hJ0EsxM4Ue6is0LnWmuPywCYn7mDH/KYBJax+UxiVt0Yvm20u5j9p5MHb60oNCpl6zWEby2G5ptJMxcq8NCEIfdYUAQQyI8WZ9gxx+DFH5lyFxJoB1Wszk6XzWVgGbY3R1H/7nYS+JA7YeTHSbgk16yYEnUothjKzqNVX0PX1eXmluDRL0Obkcjm4aJpgU0Mm800EWuFjgUBtOCTSxmRBzh4UDI540TpIfkSA1eRXq+o9bu25DraJ/Oc3KWSyPNZJPBHwR+1lhvN8Rv/2XTITQY/Fw1dGFKYQnp8KCvHJQp/1xZbSrqZCEoANk2U0Qe3+v5Zft0T+YaQF4hvLHBp5YGkcygIi6zrCuxhk1SXCYj2TKxID/GaLA9uAWr6Ve4bTqlOQozUgPVVKj9mX2gwNP4bnzajpBZVQhrja0xYEF0zOPYlVVjMWZFzfdPPwL/oDDo60OOJz4iR+1397+DiaUNsMXHzLCys8HilEC67p81dJPOEE3sXKO9kVLxDrMLJWaZn2Y4LYGksaIC20kihBzy2vaF6vDeQ0rQPAGrmRsI0qu4QfBFEKVfxNB6RS2mP1y31WwIdK5Okvi0+oLIv2e1IxW7DuoTBtiA1qJCgQ/Snv2eJEcNg2hHjsG0KlSVfvnHJnOS4yQW8aLxA5Utm/cdlsFo8K+ysuoIdKAY/e0vGlta5TNiiFrp2eq665RNv4t6Rqa9rPijiefzLys+ocL0mCP/fJtEp8KDVLwyMcmO//PFjmaBd5djP3wuzU0uKJQdZ969uQZpgLiKcOqSot7TUnkuLjCuPTuPi9yp5Am1PTAi6eMzZVjkvEI4lWgj9TaeGayrUb8+IxYnJCoAO6Yw8TErEQyXXEVk/uGp0okiH/WotBJPAbGJjRaAdRW7cHEcEDkmmV2WVxgtVAXClELqg+SoGDEDX7FVAfZLK0FE0JT6PFg6kKDeel+6f/H6CTueKKCUy
- /cMEGyMD
- ZgsuXkOaB83GFO02YWvbIvGGhb/RtRb61ZrZdcuSCWOH9kfkN0vIp9am/4ICpm7VuWilM/sjFCy5d2q45zPYl8mTnR2lX4CkUEyj36GUCBeoV1QhaTBrYvP1TZp24NvRW4V14i2MUlVPsJLOWFJomEPIsEIEX/bEa6PAwVGqq/XEkKHYLKbJXsf2AgpS+vaBjW326LiaLnNPxY9/puiGk23t2O1n12ZKoz5gHJ174xPZIQO4FAu5ULlyu4xN7PiFWe3sCye9fk6oUzo88kdzQYmN5xJIX4DJh+mueHyAMN/xIyREoDMzz7ZlRxkN7kpvl8yoGkWjKGMIBe05cCWw+2+ozaq4zT1LPKF99e9NTBsycCXl/M/MKU0Gqg/OCHSisiDWtQlSHLcVqMRy5cJGz29M5Dd6OSt3iLFPLOXDaNapC719HG0/5E1sY54/SnY4+qnM5
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: EA46A160003
+X-Stat-Signature: ngpg51m68uut6kc6a9zoea38cuzook1j
+X-HE-Tag: 1782812743-312367
+X-HE-Meta: U2FsdGVkX1/TGxGLj/wqv5nBuTkHsKn1nQcyoSzmpHged2ZwfutjLparpO6s9mCEYn1kTfcnKeLRn7xC2ZUKojO6oJ5KnkZXQkUURabL5Ai5xH3Y9dtOj4swG9Ir1MCFW0EIG3z1GaKn858RJkCCs5CNPm3IGuSuLqQPWWfzFp96uZVaczSYTOjvBvSjcHZfqILgDIlntTjCarBrq7yTXnZ07g2nJQ20AqFmhnRwzFWXg84xNtU9gfisPHpcB420hv27qcwgSWQwtEIarHhQc2GN99Ej9ThUxDOCsAzkkjyuisZpEHISSx6WM3bsE+fqer6hDoEw/SC/54dXcnKPuz5ooF6KuwZGu9OVjYo3h5vnXoOx2QQ/aVIfclLr/LdTCkdRQ+Dn7lRnCxCL+3WDXjyu9BgZjqRWx+ULMvAw+o6F2MT+sIt4ezEJijtvwbL81zEaNH7XrFkB7VbRr9F36CVySTKzF4k2a0ATsnkAdA5puSCQ3YBO9suhiil6KHMfqzlsfMWUpCO4qoKISNTtIieyebVHxyYy83uA5Jp56zlNaD//Zl5TW931isSIC0BABm4dNhFSFve5hC5IwIL3O42kTxXMgDCmG1lZqhVwoU2EyhsLbbvusfMx1JAR1hw2p2jlErdnobq+CnQkrUhSjmPGWLi61rXZr1jRbC/TI0Vvi+ctKLukyjYPuw8xIo2kF2uuRT/5l8HKR3DecOhF+RQkUI2ND+IQrX5UJqqeXlujGhYdNeziAL9r8GRAvFQOq5VwA3W5I2hr3ekEzlztqnsPr249W8I/hVf8rx6jIDJkS7prjEGfPQdPwKyPr7mBunw6P/+9qdBKiC1Dk0Y+6kCxOIjWblf8yCNs0JBM9dHLR8iKBjNRCoucTM+J5KQdqBZh2a9S2MmhasweW+KqBtSUj8NiImRbsUPlQcyv50IDEjmlvWuLt8ZqfTKuq2zO70jFpY6r3bQPWMi6/gn
+ Pqo9Sa+n
+ LFcY30bbLoAnalk33+Dx74Auij+8emdaqZlcXbPzaWQRb4gDC2ocxQcDDDMGS5JP8hY4r07ani38E4EMhD9LcYfuBADBcGqyIMsettE2MWKtlMpBaMdLph5jIIOAsnM2AHqWiD4MX6YnPvGO0J85w0s0ufqu5FYdB3Nj4HJBFk5pEP3PW7xFkq9rdfppQK4vIkAI9WmIg8OPBnmRe+9hXEa1ISrPsqFLixkRo6QnRZNoS6DGMZK1xAhTwqqthcDd1o7nOypH3EYP+fNIOi+4Xz/1kAWBLHn5YysHRwL8DJ4o9l3SUd/ykL6qn0OxyPhNtiuNnJXTWdMkcSykqIZRuCVx0M8HuUC2Sa9JIa9Q49x+6xS/DeIJYuFMihhsQg8f1dHLebjYOnQlLdEJhAL0eUB7ozWan4hOLYS/ghH53C4jrH3Kil0vkiaWEnY/pZ5S09gGJuTzXAOMJzkm06wekleCWL3QcZYEP86Dhh2W1oZTh/CD7Bneqe0+LAnOL7Upi7ieAbRptku+nSXl9VGxS0G21AElwJ2jVkkHQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,100 +187,111 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 26/06/26 20:18, Usama Arif wrote:
-> On Thu, 25 Jun 2026 18:10:16 +0530 Sayali Patil <sayalip@linux.ibm.com> wrote:
+On 6/30/26 09:55, Christian Brauner wrote:
+> On 2026-06-26 17:18 +0200, Amir Goldstein wrote:
+>> On Thu, Jun 25, 2026 at 12:36 PM Christian Brauner <brauner@kernel.org> wrote:
+>>>
+>>> On 2026-06-23 17:34:47+02:00, Amir Goldstein wrote:
+>>>> On Tue, Jun 23, 2026 at 4:55 PM Pavel Tikhomirov
+>>>> <ptikhomirov@virtuozzo.com> wrote:
+>>>>
+>>>>> On 6/23/26 15:48, Johannes Weiner wrote:
+>>>>>
+>>>>> Yes, AFAIU in overlay when we use realfile we should always use it
+>>>>> with_ovl_creds(), even though I don't think there is anything cred related
+>>>>> in filemap_cachestat(), I still think we should follow the common pattern
+>>>>> other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
+>>>>>
+>>>>> note: Actually some places get ovl_real_file() and use it without
+>>>>> with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read,
+>>>>> ovl_splice_write. But those look more of an exception than the general
+>>>>> rule. All other instances use with_ovl_creds().
+>>>>
+>>>> Use with_ovl_creds() is a good practice to keep the mental security model,
+>>>> but it is useless if the security check (can_do_cachestat) is not in the
+>>>> vfs helper (vfs_cachestat), so please move it there.
+>>>>
+>>>> Also it kind of makes more sense to check (flags != 0) in sys_cachestats
+>>>> before checking permissions.
+>>>>
+>>>>> Also there are simingly no other file_operations which return "realfile"
+>>>>> for further processing, mostly the operation from fsops simply replaces
+>>>>> general operation with its own logic completely.
+>>>>>
+>>>>> Thanks for your review!
+>>>>>
+>>>>> ps: Hope overlay maintainers will correctly if I'm getting this wrong.
+>>>>
+>>>> I don't think this is wrong per-se, except for can_do_cachestat().
+>>>>
+>>>> Just be aware that the real file could change from one cachestat
+>>>> call to the next (i.e. due to copy up).
+>>>
+>>> I'm really grump about adding a new file operation just for a
+>>> special-sauce system call which is under a CONFIG_* option even. We're
+>>> not going to set the precedent of piling on custom file operations for a
+>>> single filesystem everytime someone adds a new system call unless
+>>> absolutely necessary.
+>>
+>> I had a similar reaction.
+>>
+>>> This looks like it could just use a new helper in
+>>> fs/backing_file.c that the cachestat thing can call to use the correct
+>>> file.
+>>>
+>>
+>> I was considering suggesting this as well.
+>> Having f_real_file() complement
+>>
+>> but technically, can_do_cachestat() should be checked against
+>> the overlayfs file/inode AND also against the real file/inode with
+>> ovl_creds.
+>>
+>> I'd love to be able to provide a backing_file "template" for
+>> operations, but I don't have a good idea how to do that.
+>> Do you?
 > 
->> Some MM selftests attempt to configure the amount of
->> HugeTLB pages of different sizes by writing to nr_hugepages.
->>
->> PowerPC hash MMU pSeries systems advertise gigantic hugepage sizes
->> but do not support runtime allocation of such pages, writes
->> to the corresponding nr_hugepages file fail with -EINVAL.
->> This causes the test to bail out even though the failure is due
->> to a platform limitation rather than the
->> functionality being tested.
->>
->> Treat -EINVAL from the sysfs write as a skipped configuration request
->> and continue running the test instead of failing.
->>
->> Before patch:
->>     -------------------------
->>     running ./hugetlb-madvise
->>     -------------------------
->>     TAP version 13
->>     1..1
->>       [INFO] detected hugetlb page size: 16777216 KiB
->>       [INFO] detected hugetlb page size: 16384 KiB
->>      ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
->>      Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->>      Bail out! /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
->>      write(0) failed: Invalid argument
->>      Totals: pass:0 fail:0 xfail:0 xpass:0 skip:0 error:0
->>      [FAIL]
->>
->> After patch:
->>     -------------------------
->>     running ./hugetlb-madvise
->>     -------------------------
->>     TAP version 13
->>     1..1
->>      [INFO] detected hugetlb page size: 16777216 KiB
->>      [INFO] detected hugetlb page size: 16384 KiB
->>     ok 1 MADV_DONTNEED and MADV_REMOVE on hugetlb
->>     Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
->>     /sys/kernel/mm/hugepages/hugepages-16777216kB/nr_hugepages
->>     write(0) failed: Invalid argument
->>     [PASS]
->>
->> Fixes: 9d07250ea1eb ("selftests/mm: hugepage_settings: add APIs to get and set nr_hugepages")
->> Signed-off-by: Sayali Patil <sayalip@linux.ibm.com>
->> ---
->>   tools/testing/selftests/mm/vm_util.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
->> index 311fc5b4513e..a8f16eef5c7c 100644
->> --- a/tools/testing/selftests/mm/vm_util.c
->> +++ b/tools/testing/selftests/mm/vm_util.c
->> @@ -735,6 +735,13 @@ void write_file(const char *path, const char *buf, size_t buflen)
->>   	saved_errno = errno;
->>   	close(fd);
->>   	errno = saved_errno;
->> +
->> +	if (numwritten < 0 && errno == EINVAL) {
->> +		ksft_print_msg("%s write(%.*s) failed: %s\n", path,
->> +			       (int)(buflen - 1), buf, strerror(errno));
->> +		return;
->> +	}
->> +
-> This makes write_file() silently succeed for every EINVAL, not just the
-> gigantic-hugetlb setup case. Several callers use this helper for writes where
-> EINVAL is a real test failure, for example drop_caches or split huge page
-> setup. Those tests can now continue after a failed setup and report misleading
-> results.
+> diff --git a/fs/file_table.c b/fs/file_table.c
+> index c68b8c0a4097..d93059d53e88 100644
+> --- a/fs/file_table.c
+> +++ b/fs/file_table.c
+> @@ -57,6 +57,8 @@ struct backing_file {
+>  #ifdef CONFIG_SECURITY
+>         void *security;
+>  #endif
+> +       unsigned int flags;
+> +       struct cred *backing_cred;
+>  };
 > 
-> Please keep the common helper strict and ignore EINVAL only in the hugetlb
-> path that is probing unsupported gigantic page runtime allocation.
+>  diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+> index 27cc07738f33..64e07ebc43b0 100644
+> --- a/fs/overlayfs/file.c
+> +++ b/fs/overlayfs/file.c
+> @@ -50,6 +50,12 @@ static struct file *ovl_open_realfile(const struct file *file,
+> 
+>                         realfile = backing_file_open(file,
+>                                                      flags, realpath, current_cred());
+> +
+> +                       // Raises ->flags |= BACKING_FILE_CREDS and sets ->creds to ->backing_cred.
+> +                       backing_file_set_creds(file, ovl_creds(file_inode(file)->i_sb));
+> +                       // Now add a helper that performs permission checks on
+> +                       // both creds for that cachestat() thing and returns
+> +                       // the actual file to operate on.
 
-Thanks for review!
-In v2, I kept the generic write_file() helper unchanged and
-added a dedicated hugetlb_write_num() helper to handle the expected
--EINVAL returned when configuring gigantic hugepages. This limits the
-special handling to the hugepage setup path and avoids masking genuine
-EINVAL failures from other write_file() callers.
+I'm not sure I fully understand it, sorry.
 
-V2: 
-https://lore.kernel.org/all/3d394c8cd59fe380d4e2d13b051544f241918f07.1782811071.git.sayalip@linux.ibm.com/
+The idea seems to be to replace file operation customization helper ->cachestat() with some way for cachestat syscall to access a backing file directly. At the same time providing the credentials from overlay with which to check permissions on this backing file.
 
+I think the inherent recursiveness of overlay (e.g. one can mount overlayfs where lower fs is again an overlay) is effectively making us check permissions recursively for each level of backing file, so it would be hard to have just one backing file. But maybe I miss something.
+
+>                 }
+>         }
 > 
+> something like that?
 > 
->>   	if (numwritten < 0)
->>   		ksft_exit_fail_msg("%s write(%.*s) failed: %s\n", path, (int)(buflen - 1),
->>   				buf, strerror(errno));
->> -- 
->> 2.52.0
->>
->>
-> 
+
+-- 
+Best regards, Pavel Tikhomirov
+Senior Software Developer, Virtuozzo.
 
 
