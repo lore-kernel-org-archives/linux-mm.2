@@ -4,138 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E204C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 21:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EA15C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 21:40:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BF856B00B5; Tue, 30 Jun 2026 17:19:11 -0400 (EDT)
+	id 68C956B00AD; Tue, 30 Jun 2026 17:40:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3218B6B00B6; Tue, 30 Jun 2026 17:19:11 -0400 (EDT)
+	id 63CF06B00AE; Tue, 30 Jun 2026 17:40:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C2FE6B00B7; Tue, 30 Jun 2026 17:19:11 -0400 (EDT)
+	id 52CA56B00AF; Tue, 30 Jun 2026 17:40:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CBCB76B00B5
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 17:19:10 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3884840135
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:19:10 +0000 (UTC)
-X-FDA: 84937844460.30.43BFDCB
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 729DCA0004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:19:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ZT9ANGyc;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 295BF6B00AD
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 17:40:57 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 96147A0147
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:40:56 +0000 (UTC)
+X-FDA: 84937899312.09.369CEFE
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id EF2BAC0003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 21:40:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uISF+VpU;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782854348;
-	b=Ah13hVildK2zJL0iuYAV4H47pl7Y6ZJbkuTqXA0U9JkQbKO1cwJsp0BUPAIoWp7xnbRMB6
-	/Zf5KX6SXXSmodhttOpMtYezTQjtIepAPpfUn9a6DBGYasLuaQaM24wDL9H/wLpZPWuTD7
-	vNPKyv+Sx1KCJCMtlgCSgoO3qAnSPk0=
+	t=1782855655;
+	b=Jjo2BfT+XySFu3P4nBNbn3o75NcT58XTIG+hJyW7qpusHf1n0vbdSSYVpwBISU3Be7VvXX
+	sYMHDVs5sOimlLfIz+WVlgQe7XJIapyVy6bHUOU9nngEmY/42GaDAokLb3/9uezugzAA5s
+	s3dYUuLbHdH6y2y67cWLlfUv9b7nyoI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782854348;
+	s=arc-20220608; t=1782855655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dr7k1s5kclXSnhlA0wjw73kcYoyYlKmbVekQHgXAunw=;
-	b=gjsf8cZVcvYP3blL7tmUmlRvqM1N/4GdOyOXCiSMkppt2S0kSRvkkkLrA9nS9j92SiHNHb
-	b7PG/k6q5K0Jrkay0T/fXEqqPsLvj922oeg20ly7F3eQKQ5WZu77xZCZ22lyibYM1OP3s3
-	sv2sEupt8ozQYX5txP2m3kvsBqQXXoU=
+	 in-reply-to:references:dkim-signature;
+	bh=mHInMxAaQ2bUuLOe5OFmxM2p3fvBID4+2UNGvlrGK4E=;
+	b=CM9MEfTPPvgkjC1qFQXnRfWoA+ZmzyPL4qrv5rTWw7wSux7KqQFTvFGZbm7CgD1LZE1AvZ
+	Zvs47WJ3pHTkfX+6U3PZP99Qkj9H/GENAxVcbxpJPyy7nJg7OzO0eFl8VH8De9j4FnjmpW
+	265DOChgPnhqEfQ1mo5nOgEiOjE/BT4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ZT9ANGyc;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.51 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=uISF+VpU;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8eaa7b5e31eso9646976d6.0
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:19:08 -0700 (PDT)
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-516d0db9372so40372321cf.2
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782854347; x=1783459147; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Dr7k1s5kclXSnhlA0wjw73kcYoyYlKmbVekQHgXAunw=;
-        b=ZT9ANGycXT3Da8SlOupIky7qwbR5see0KP698viuGvgw4z7KtfhCFZc4VGPGtbE9Mt
-         blG7LV5HeNPvFl1MxnGe2HL5m1OrdXIMxlxwz4XjnjIxpM1fLQ7hD1grPljZoDMgHOvj
-         KEeQX1bu95s2LzyKTeAJtNlTVmhO9WdlM4KlFKIEdCMySpFxZdSGBMtPlYgo3z/o8vHm
-         T32CBxEeziN68YNWSqzEiTVRwOHkzf+qsMDEZn0IM4PlbTyLbNouLVm0Pt7aWcK9bCrk
-         06pwOr+yVgsRo/za1rxf9HZxk5ZtKjSZpYbycJVGVxIwnboOTO56J6HVgJP0KSLjwGDS
-         XBgg==
+        d=gourry.net; s=google; t=1782855654; x=1783460454; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=mHInMxAaQ2bUuLOe5OFmxM2p3fvBID4+2UNGvlrGK4E=;
+        b=uISF+VpU9upYUBjYeFhlXeU4C8v5j3TYuKM8/kiYAkG6kVvR+dwivZoPG6j03zhvis
+         HxPEgVde96CzjiMKLKttL7k3ilbzEOYDjDcXZjvGcFiKDJOYtCQa8aaBVSS+DfbOy8u3
+         +q5xa+hsaIbTdm7OVwlFYxLBurDQ39IVXbiNYiuyncP+K5GlkOaO7UoIz9UC+fPyXOpC
+         OoOYoMSpB9b8LIMTqeS83TTZqvQfb6ous6fGtKsTDLfvGZf08LX/EzBJXV31s7QYMSd6
+         JogNjuy3upKI2J51FejdMyF6n+KKb9oaoD3fNW1LEeADA8YLlt1jNJZZudHSp+sJ/Mb1
+         B6GA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782854347; x=1783459147;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Dr7k1s5kclXSnhlA0wjw73kcYoyYlKmbVekQHgXAunw=;
-        b=FSrhpe9DhETezJecE2R6b+XFsMNppXbVIOm13NS5rhOYw+ggamcXhbr4kL9n4vcG2P
-         VjSkA5gJfy7yQQaHIBjYlfovsk84ShBM2xbN/apkqQfXQeUtgqcU2K2LT6CWwbRRhjvL
-         rH1BG80ocOJXzKLerAmTCVhHb8KpiqqLKseD7SCKLa1o45iYg8gNDnhaVFFk3wU3F3ci
-         WUm8oG4+qh0t+oFf9TuN1ePtOtrLCQaXmpwPzpbDmdrfEa1bbJnu/0Yva2NRcfd5CiK0
-         KY8zpQCbA2Z+/CMnTgygWFswqkr1gxU1r+F7t8FO7cmc53vPjuLcmduDbl228N0XLSFd
-         DixQ==
-X-Gm-Message-State: AOJu0YwP1hx0AYPvGcvXONkuTlGc0gtwcsq4qAsgusxcTiz1Z8epOhOT
-	SWq5IRIGidrtNlucTIorUTcagsh8pZLLvzq//nVTJYl0qm2O6+R448+AS0lTSF6dgbsYQ8nHD1a
-	MHyyj
-X-Gm-Gg: AfdE7cn2ENWUzr6eC98oivkclSUsI1gwF/BHam/Y50Rgk3F2X02UUWDDEJQ8TMc5DRm
-	2NoMi3kwXfLBjkfzmBx3kMNlZ8QCWQhbTD16cXVo/d4qV1rI/7IbWP8AhQ7REF5WNQB66fkqfqS
-	Ca1HIRSrDax+5WSZD5ux493snkDMzvI22JnbjrseFKvykrMUnFjehJuN4QESLw2Beu6XEDueUOZ
-	QYWs2WB+lISAzFHLMXuWUy+h9f11MZkpMYzW99fphgTUIkmTP1O2dgecRTm1vpW/6MTCQ2Dho7s
-	QRi9Bj6wjduPappexz5rDOzCvdlmc/sbTouz4k+PswUSA2fEEfPQlgrHZ75ozAMzGhMc5Bw8iaE
-	/no2cDBIEgGEN0fDvtshDirNoG2e2sag+kswo/D/6xYVEVXSxrHF2kr/mKCh9UgHwt3RK6t7D+X
-	L41QKtKCcDjiHMM3WJPRat0y46ALrNNkNuA827YLK61cMoytRSpPaGZfbTK6kqfziL9s4NCFN2Z
-	K7quJ7Pu1Da
-X-Received: by 2002:a05:620a:4008:b0:92e:5232:91f8 with SMTP id af79cd13be357-92e698667f9mr485377585a.43.1782854347322;
-        Tue, 30 Jun 2026 14:19:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1782855654; x=1783460454;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mHInMxAaQ2bUuLOe5OFmxM2p3fvBID4+2UNGvlrGK4E=;
+        b=Msx1Qz5KewzgZ4VD/G5s9Z0YD2mdFrEgZxbtu0P3DbgSfzSfWUY5p+cHfJommtkjdF
+         vCowHb4P3k7zUlgI/ULQR135XWlmHmtRaBJW7P00JElLuPnZ+KQjetJCCQyXXO3dbpg4
+         uFyaCDImR6hGRCs7NA6+WASNnPJooMAoDuZAzHcO4wCEdP3Mg9d5zq92MHGk4VOVuLb9
+         7+qbkscQ9avuFDeGm0mDqGAYSnAL9bFaDFhH1/nNmNRVHw82jYzpu/9Cop88Zg8xiLnF
+         HygDRUwjWNtEEgejSXa1wA7utLGMTMXJ5CJco8WzRpBGcEEWqjREkvGnRfHEoHcP7wgO
+         KK3w==
+X-Gm-Message-State: AOJu0Ywax5x6niHxVVV0zasRq1Sw4zYqSEvxkyNxAapG27L+rHtorkEe
+	WpyvJvSZBPuMeiyhXkYLAX5Pa4syEcCRNnb2f2LgHweqcuArJDb82YBtckgHoXpQOrcKNSfdxYG
+	fpb3z
+X-Gm-Gg: AfdE7ckz+gE3HJMZifUMcsRhdGl7INkuqQiNlkroVJoUSskyTYyal4rKQg9LAF07+b9
+	2qVfP07s0RBI8E9V6q//35d0MxKWnJwKYDYgRCKxbNBFl+oxTVjdWurH2M044F3kprOICkoZkYY
+	n48h2PuWnzXgOi0u02j5SYQXU6cYQ8TpJF7UIsBejSehP/DqTLfh8BDKV5UNifQNFygtV2WPrFB
+	6R7Nb8KUWjIwsFA8LkhrkHHfN/24ALHXrt4o7GS4tMKtR8eTzKOwRYn7z3ADezsc93sNbpfPiBb
+	vDHtzGYU2tV8XNmc7UUqurwqpYL5egUs9XmpHUft3hbrMkVOb6Q8Kpopm/vhQkRXmNM5mCnMCr7
+	2FPqk2fGqo+15ht+733pejr9MXF85+50UvZvGoS1W2NPUVM6u/zlI1Ft6/VwWcI70VXNsJNqL8+
+	mJ0gqgWMmQUelDChKJx+icks8jH4pIT4D4EgYXls6MTN8j3SGuhd6L34udukxCxbvi2bJ284X3H
+	jbqu+F750KL
+X-Received: by 2002:a05:622a:1f0f:b0:51a:8c97:fb93 with SMTP id d75a77b69052e-51c1090a30amr70785981cf.60.1782855654010;
+        Tue, 30 Jun 2026 14:40:54 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-92e62366303sm335924285a.40.2026.06.30.14.19.06
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c10a0eb16sm27011331cf.25.2026.06.30.14.40.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 14:19:06 -0700 (PDT)
+        Tue, 30 Jun 2026 14:40:53 -0700 (PDT)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
-Cc: nvdimm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+Cc: linux-kernel@vger.kernel.org,
 	linux-cxl@vger.kernel.org,
-	driver-core@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
 	kernel-team@meta.com,
 	david@kernel.org,
 	osalvador@suse.de,
-	gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	dakr@kernel.org,
-	djbw@kernel.org,
-	vishal.l.verma@intel.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
 	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
 	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	shuah@kernel.org,
-	gourry@gourry.net,
-	iweiny@kernel.org,
-	Smita.KoralahalliChannabasappa@amd.com,
-	apopple@nvidia.com
-Subject: [PATCH v6 10/10] selftests/dax: add dax/kmem hotplug sysfs regression test
-Date: Tue, 30 Jun 2026 17:18:42 -0400
-Message-ID: <20260630211842.2252800-11-gourry@gourry.net>
+	mgorman@techsingularity.net,
+	hannes@cmpxchg.org,
+	vbabka@kernel.org
+Subject: [PATCH] mm/mm_init: handle alloc_percpu failure in free_area_init_core_hotplug
+Date: Tue, 30 Jun 2026 17:40:39 -0400
+Message-ID: <20260630214039.2263562-1-gourry@gourry.net>
 X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260630211842.2252800-1-gourry@gourry.net>
-References: <20260630211842.2252800-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 729DCA0004
-X-Stat-Signature: me79dg1x85wmgeqpua4y3h88cy8fdysy
+X-Stat-Signature: mudpfyf1iky19389sm9sit9s3udwrxpf
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782854348-516198
-X-HE-Meta: U2FsdGVkX1+C1PEO0vElM/vDVVXlLNP1JH6/x4y3HMEwlG342b+nsoZdvmXbRTQTf8D0TjgImhai+4k+ryXFlDfyKnNtnnHa/KxXg1EcdF72HbX/U7Q48S331305j49x/miU3YKAm610L0OTXeoyj2ZDPDxa9XHRHxDpfI+OlnXy40ANQD+nHUqDzVZqn9/pRUCVM+KzALHewHxY9ulVIhjlW2+krIgUKfj8Yy54MOUXUBiJCFhmcmgVUbVZOFjwynNBeNGlVbRgeDZl3RapGdboRh8wRhlQqO7t3CwjRbsoHIRxRnbranMuVyhSYWquoLaZfsK+NseRmf80tF1ZTi8vwE0oVwyhCSE9EemnobA4X+6hzqtcbDiKVYCztO+kj938ObDDt7dSjPLfzm1Zy6sXn7IayYmLM3rMlAPhJ2J3oYR27juwyhdyAELcpkrmrLFqyi+yTNGPHnScxdgE4fIjtbkqsvfExLyH3b45SBuh1ORcxsKCMlHmyhxNX9jf0dSxZqo8tQUhv47DBs9+MjPbRsw2MSMU/mCjSMcTxNP/KvyKo2dqJzPwWOMP3icXtQK4AU1ofbCzDZSsfa28/d+7gTWrr38WzLeytNmGiCii+5TQWeVUR7XZcRPsT5kGOzHYemWQ/2h/fVuFHg+2ToXR5X18WC4wvBBW6hvNE9pJLHicFK/xsvM+oiJztq/xPvP86oUmQzMOqxK5fZoajC3MQEcDc72QWLpI6sDJ51+krWHqgvS7VcIIjxaYEqu8wl159d3TJcQGvZgqYQohyZUowJbZRfvaFZSiLo2cminX/DKsFyq3U3ZFC3wwNJk+XzkNrmrrmP3i6fbYo/QFPqPTTR6Z9r5IiTahZ1URAdV3kHNTD7Ab92IfZZgL8Ieb/2oYpHtjqVu9rtBJhX4PeYeGcxg0qEBXLXOpFO7icG6TbEov2SVCnk7BOg0xrH/+doIautXzLBjA9JSi3Il
- UhaJhBgC
- jf5zmNMSp0X0lFUXB+GTiAC7vr+HmqRRPIjSlBxtYfp01+np2AAZrY37KSNecBjhV2cICQw0vWOn9QIrsGb1v2ArJyh09n4k14qFb7LrYcxIj70G6Nv7lL8bP62+hlo4o3DdxLqCW+CPNiFfPENIot8ra1aeIpYUMB7JbHZlMzunQfZsx745PEkSWsU+o+x0dW5LnXXqGpSJhBGEwDdAKWBwkRsF+Zxj/js1a3rY6JA9q/u5HInZiNr5AEi+uhNuGa+9+lYdrti/N03fBPRZJTdvMtN8M+l6K9fm8j1LcVfUJCNgNYHZBb+takw==
+X-Rspamd-Queue-Id: EF2BAC0003
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782855654-858424
+X-HE-Meta: U2FsdGVkX1/0QaKrxf+FNXokJsoWQBafJFz8oGsxlIHKowC+9F29pULOKH34tmAO83eNeaU9Iczbd24GPWQJdPpA2ouKubaIcbMC6Li43eaSSD8iAjl0/9zavAGW9tBhJkIszx/FVMs24ONDWYgyBhV0X6NqlF3TWcDVTXTWGIlGtvkqmU1PLSfa2eq0MrNy39E3xUNx90W49uDlU+YAcicYIjIe4cJQJfIEG+p1OpvdAaiwdggaiI6IX5NGj2H3S6LQG0Gn6DljA7lS1wmoda1ri2T4SPSYCyc58UX3ZixQmJ3olQ6pnwmiHdkFymsSnNyz723OwrHgmSe/SES5SmA0Dwgnu5JG2a5YV0626LIjMavXGbi4AKL6Kswh141X5yHxhDU7u+KOE5MYI6JyLVHUb/mWvZQelE8nXb/fzW0lFqb4SH1NmLXODIjKzkKmD3po/DWm8l07xfw1bT3RBMlitFiyc5fV+YSY0G4+aLvfl8HWup7HjHH3xDRXZPyEpgl0xCchZJrBVYjMW8SpdmffRCjAw3I43x3OIOp9/8XDTq8pus+idYlFBKDcirSg86dYaGm298k2y+1AO/PhPI0GXi8Twx6UgmcXVcSmpKxcjCd9jpbTLczKLHzNr6p8uG5JMEJHkQmgOVZjQ8fUMrcNjlMzBSZngiFHNifFvUM5wtHk0mcqkYejftjsRWa+Ug8Ojg6MNoYjv+rZFvJ9YZaHDWTeKLNwNwjvmLhSRXv9WCmvEoY29BN5CWdFHVV1njY7eyVCXPN3Aq0Fm39jeddEpkWro+JiRkflSOTILMwNFHhUvVjr7rU+u3h4GGC8gH2XU+Umy4JLnNw9B6hLSx6Vd7nj3dj4yAy3TvDOjJWn4L1R+ANEkFcdv7CLZQwGkh6YXPyzoBvqKHBW3gI6hGUslJBR5f6fCBj7C6jahAehh5Kj7iuKgpEd+fYdDYU7Z9Vp82T7KWA5Q0DJGnO
+ NtjWCRwT
+ C0sXyfVRG7HiWKP/3qOXLH2hRIObuDSa+PGHkSlGBrksAW0dnchFhJIEqZIZi0VoYajkrvZCIJ519wj0bjNW9biG1Hu8JsXDgvWr0Ou4KFR9okwRSk6UEcq6ImFTTOegZxnZPd93C/yUQvFWw2PFT1TkBfthKuQ4U32SVdP61ho58xaqXulhIUchYXD7YdfV3JRaqmRHU0rctarCC8F7XFl1RHWi+0BHhOe6+VVsNLMiqFJiYaAdOfod1J8p0xDqLu5eukDbB95+qYtMIjq2/54Mt5O7lT6CPDPBnsZhqGgn/ZRdnxLY1ttp1TojNmnajwC5eM+pmXcdF/mzeLt69B0YRkBoJlrXWvfB3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,283 +123,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a kselftest for the dax/kmem whole-device "state" sysfs attribute
-(/sys/bus/dax/devices/daxX.Y/state), which transitions a kmem-backed
-dax device between "unplugged", "online" and "online_movable".
+We miss a failed allocation check for pgdat->per_cpu_nodestats, which
+results in a NULL deref when we offset into the per-cpu area.
 
-The kselftest also includes a test to demonstrate the force-unbind
-does not deadlock - but this is a destructive test.  The dax device
-can never be rebound after doing this.
+Propagate -ENOMEM up the stack and leave per_cpu_nodestats pointing
+at boot_nodestats so a later online can retry the allocation.
 
-Provisioning a devdax device and binding it to kmem needs daxctl/ndctl
-out of scope for an in-tree selftest, so the test discovers an already
-kmem-bound dax device and SKIPs when none are present or the memory
-cannot be freed to reach a known baseline.
+hotadd_init_pgdat() returns NULL on failure, which __try_online_node()
+already maps to -ENOMEM.
 
-When a device is available it validates the interface contract:
-  - online / online_movable actually add memory (MemTotal grows),
-  - online is idempotent,
-  - switching between online types without unplug is rejected,
-  - unplug removes memory and the reported state is "unplugged"
-  - invalid input is rejected.
-
-One specific regression test:
-    online -> unplug -> online_movable -> unplug
-
-Re-online must re-reserve per-range resources so subsequent unplug
-actually offlines and removes instead of silently reporting success
-while the memory stays online.
-
+Assisted-by: Sashiko:unknown-model
+Fixes: 75ef71840539 ("mm, vmstat: add infrastructure for per-node vmstats")
 Signed-off-by: Gregory Price <gourry@gourry.net>
 ---
- tools/testing/selftests/Makefile              |   1 +
- tools/testing/selftests/dax/Makefile          |   6 +
- tools/testing/selftests/dax/config            |   4 +
- .../testing/selftests/dax/dax-kmem-hotplug.sh | 190 ++++++++++++++++++
- tools/testing/selftests/dax/settings          |   1 +
- 5 files changed, 202 insertions(+)
- create mode 100644 tools/testing/selftests/dax/Makefile
- create mode 100644 tools/testing/selftests/dax/config
- create mode 100755 tools/testing/selftests/dax/dax-kmem-hotplug.sh
- create mode 100644 tools/testing/selftests/dax/settings
+ include/linux/memory_hotplug.h |  2 +-
+ mm/memory_hotplug.c            |  3 ++-
+ mm/mm_init.c                   | 14 +++++++++++---
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/Makefile b/tools/testing/selftests/Makefile
-index 6e59b8f63e41..8c2b4f97619c 100644
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -14,6 +14,7 @@ TARGETS += core
- TARGETS += cpufreq
- TARGETS += cpu-hotplug
- TARGETS += damon
-+TARGETS += dax
- TARGETS += devices/error_logs
- TARGETS += devices/probe
- TARGETS += dmabuf-heaps
-diff --git a/tools/testing/selftests/dax/Makefile b/tools/testing/selftests/dax/Makefile
-new file mode 100644
-index 000000000000..25a4f3d73a5b
---- /dev/null
-+++ b/tools/testing/selftests/dax/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+all:
+diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+index 7c9d66729c60..f04b915678db 100644
+--- a/include/linux/memory_hotplug.h
++++ b/include/linux/memory_hotplug.h
+@@ -289,7 +289,7 @@ static inline void __remove_memory(u64 start, u64 size) {}
+ /* Default online_type (MMOP_*) when new memory blocks are added. */
+ extern enum mmop mhp_get_default_online_type(void);
+ extern void mhp_set_default_online_type(enum mmop online_type);
+-extern void __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
++extern int __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
+ extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+ extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+ extern int add_memory_resource(int nid, struct resource *resource,
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 7ac19fab2263..8b137328dcf0 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1263,7 +1263,8 @@ static pg_data_t *hotadd_init_pgdat(int nid)
+ 	pgdat = NODE_DATA(nid);
+ 
+ 	/* init node's zones as empty zones, we don't have any present pages.*/
+-	free_area_init_core_hotplug(pgdat);
++	if (free_area_init_core_hotplug(pgdat))
++		return NULL;
+ 
+ 	/*
+ 	 * The node we allocated has no zone fallback lists. For avoiding
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 306ea5c13f54..37fd64ce144d 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1536,7 +1536,7 @@ void __init set_pageblock_order(void)
+  * NOTE: this function is only called during memory hotplug
+  */
+ #ifdef CONFIG_MEMORY_HOTPLUG
+-void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
++int __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+ {
+ 	int nid = pgdat->node_id;
+ 	enum zone_type z;
+@@ -1544,8 +1544,14 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+ 
+ 	pgdat_init_internals(pgdat);
+ 
+-	if (pgdat->per_cpu_nodestats == &boot_nodestats)
+-		pgdat->per_cpu_nodestats = alloc_percpu(struct per_cpu_nodestat);
++	if (pgdat->per_cpu_nodestats == &boot_nodestats) {
++		struct per_cpu_nodestat __percpu *p;
 +
-+TEST_PROGS := dax-kmem-hotplug.sh
++		p = alloc_percpu(struct per_cpu_nodestat);
++		if (!p)
++			return -ENOMEM;
++		pgdat->per_cpu_nodestats = p;
++	}
+ 
+ 	/*
+ 	 * Reset the nr_zones, order and highest_zoneidx before reuse.
+@@ -1583,6 +1589,8 @@ void __ref free_area_init_core_hotplug(struct pglist_data *pgdat)
+ 		zone->present_pages = 0;
+ 		zone_init_internals(zone, z, nid, 0);
+ 	}
 +
-+include ../lib.mk
-diff --git a/tools/testing/selftests/dax/config b/tools/testing/selftests/dax/config
-new file mode 100644
-index 000000000000..4c9aaeb6ceb4
---- /dev/null
-+++ b/tools/testing/selftests/dax/config
-@@ -0,0 +1,4 @@
-+CONFIG_DEV_DAX=m
-+CONFIG_DEV_DAX_KMEM=m
-+CONFIG_MEMORY_HOTPLUG=y
-+CONFIG_MEMORY_HOTREMOVE=y
-diff --git a/tools/testing/selftests/dax/dax-kmem-hotplug.sh b/tools/testing/selftests/dax/dax-kmem-hotplug.sh
-new file mode 100755
-index 000000000000..c8bbaf6178ed
---- /dev/null
-+++ b/tools/testing/selftests/dax/dax-kmem-hotplug.sh
-@@ -0,0 +1,190 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Exercise the dax/kmem "state" sysfs attribute:
-+#   /sys/bus/dax/devices/daxX.Y/state  ->  unplugged | online | online_kernel | online_movable
-+#
-+# The test needs a dax device already bound to the kmem driver.
-+# If no suitable device is found the tests SKIP.
-+#
-+# A dax device can be provisioned with the memmap= boot param, e.g.:
-+#   memmap=2G!4G
-+#
-+# then, in the booted system:
-+#
-+#   ndctl create-namespace -m devdax -e namespace0.0 -f
-+#   daxctl reconfigure-device -N -m system-ram dax0.0   # bind kmem
-+#   ./dax-kmem-hotplug.sh
-+
-+# shellcheck disable=SC1091
-+DIR="$(dirname "$(readlink -f "$0")")"
-+. "$DIR"/../kselftest/ktap_helpers.sh
-+
-+DAX_BASE=/sys/bus/dax/devices
-+
-+memtotal_kb() { awk '/^MemTotal:/ {print $2}' /proc/meminfo; }
-+get_state() { cat "$HP" 2>/dev/null; }
-+# set_state STATE -- write a state to the state attribute; returns the
-+# write's exit status (0 = accepted by the kernel)
-+set_state() { echo "$1" > "$HP" 2>/dev/null; }
-+
-+find_kmem_dax() {
-+	local d drv
-+	for d in "$DAX_BASE"/dax*; do
-+		[ -e "$d/state" ] || continue
-+		drv=$(readlink "$d/driver" 2>/dev/null)
-+		[ "$(basename "${drv:-}")" = kmem ] || continue
-+		basename "$d"
-+		return 0
-+	done
-+	return 1
-+}
-+
-+ktap_print_header
-+
-+if [ "$UID" != 0 ]; then
-+	ktap_skip_all "must be run as root"
-+	exit "$KSFT_SKIP"
-+fi
-+
-+DAX=$(find_kmem_dax)
-+if [ -z "$DAX" ]; then
-+	ktap_skip_all "no kmem-bound dax device with a state attribute"
-+	exit "$KSFT_SKIP"
-+fi
-+HP=$DAX_BASE/$DAX/state
-+ORIG=$(get_state)
-+
-+# A failure to reach the baseline is environmental (memory in use), not an
-+# interface failure, so skip rather than fail.
-+set_state unplugged; rc=$?
-+if [ "$rc" != 0 ] || [ "$(get_state)" != unplugged ]; then
-+	ktap_skip_all "$DAX: cannot reach 'unplugged' baseline (memory in use?)"
-+	[ -n "$ORIG" ] && set_state "$ORIG"
-+	exit "$KSFT_SKIP"
-+fi
-+mt_unplugged=$(memtotal_kb)
-+
-+DRV=/sys/bus/dax/drivers/kmem
-+AOB=/sys/devices/system/memory/auto_online_blocks
-+
-+ktap_print_msg "using $DAX (initial state was: $ORIG)"
-+ktap_set_plan 8
-+
-+# A public (N_MEMORY) kmem node onlined into a kernel zone (online/online_kernel)
-+# collects unmovable allocations and can then never be offlined, which would
-+# wedge the device for the rest of this test.  So this test only ever
-+# successfully onlines online_movable, the one mode that is reliably unpluggable.
-+
-+set_state online_movable; rc=$?
-+mt_online=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online_movable ] && [ "$mt_online" -gt "$mt_unplugged" ]; then
-+	ktap_test_pass "online_movable: state=online_movable, MemTotal $mt_unplugged -> $mt_online kB"
-+else
-+	ktap_test_fail "online_movable: rc=$rc state=$(get_state) MemTotal $mt_unplugged -> $mt_online"
-+fi
-+
-+set_state online_movable; rc=$?
-+if [ "$rc" = 0 ] && [ "$(get_state)" = online_movable ]; then
-+	ktap_test_pass "online_movable idempotent"
-+else
-+	ktap_test_fail "online_movable idempotent: rc=$rc state=$(get_state)"
-+fi
-+
-+# A different online type is rejected without an intervening unplug.  The write
-+# is refused before any hotplug, so this never actually onlines a kernel zone.
-+set_state online_kernel; rc=$?
-+if [ "$rc" != 0 ] && [ "$(get_state)" = online_movable ]; then
-+	ktap_test_pass "reject online_kernel without intervening unplug (no kernel-zone online)"
-+else
-+	ktap_test_fail "online_movable->online_kernel not rejected: rc=$rc state=$(get_state)"
-+fi
-+
-+set_state unplugged; rc=$?
-+mt=$(memtotal_kb)
-+if [ "$rc" = 0 ] && [ "$(get_state)" = unplugged ] && [ "$mt" -lt "$mt_online" ]; then
-+	ktap_test_pass "unplug from online_movable: MemTotal $mt_online -> $mt kB"
-+else
-+	ktap_test_fail "unplug from online_movable: rc=$rc state=$(get_state) MemTotal $mt_online -> $mt"
-+fi
-+
-+before=$(get_state)
-+set_state bogus_state; rc=$?
-+if [ "$rc" != 0 ] && [ "$(get_state)" = "$before" ]; then
-+	ktap_test_pass "reject invalid state string"
-+else
-+	ktap_test_fail "invalid state not rejected: rc=$rc state=$(get_state)"
-+fi
-+
-+# The online_movable -> unplug cycle once regressed: a re-online failed to
-+# re-reserve the per-range resources, so a later unplug reported success while
-+# leaving the memory online.  Assert each iteration really adds and frees memory.
-+set_state unplugged
-+cycle_ok=1; fail_i=0; on=0; off=0
-+for i in 1 2 3; do
-+	if ! set_state online_movable; then cycle_ok=0; fail_i=$i; break; fi
-+	on=$(memtotal_kb)
-+	if ! set_state unplugged; then cycle_ok=0; fail_i=$i; break; fi
-+	off=$(memtotal_kb)
-+	if [ "$on" -le "$mt_unplugged" ] || [ "$off" -ge "$on" ]; then
-+		cycle_ok=0; fail_i=$i; break
-+	fi
-+done
-+if [ "$cycle_ok" = 1 ]; then
-+	ktap_test_pass "online_movable/unplug cycle re-acquires resources (3x: added and freed each time)"
-+else
-+	ktap_test_fail "online_movable/unplug cycle regressed at iteration $fail_i (on=$on off=$off baseline=$mt_unplugged)"
-+fi
-+
-+# change system default online policy while the device is unbound, and show
-+# the new system default policy is utilized across bindings.
-+set_state unplugged
-+if [ -w "$AOB" ] && [ -w "$DRV/unbind" ] && [ -w "$DRV/bind" ]; then
-+	orig_aob=$(cat "$AOB")
-+	echo "$DAX" > "$DRV/unbind" 2>/dev/null
-+	echo offline > "$AOB" 2>/dev/null
-+	echo "$DAX" > "$DRV/bind" 2>/dev/null
-+	sleep 1
-+	st=$(get_state)
-+	echo "$orig_aob" > "$AOB" 2>/dev/null		# restore system policy
-+	if [ "$st" = offline ]; then
-+		ktap_test_pass "online policy resolved at bind: auto_online_blocks=offline -> state=offline"
-+	else
-+		ktap_test_fail "bind-time policy not honored: state=$st (expected offline)"
-+	fi
-+	set_state unplugged 2>/dev/null
-+else
-+	ktap_test_skip "auto_online_blocks or driver bind/unbind not writable"
-+fi
-+
-+[ -n "$ORIG" ] && set_state "$ORIG"
-+
-+# DESTRUCTIVE: unbinding the driver while memory is online causes the resources
-+# to leak - but the unbind should not deadlock.  Instead the driver leaks it
-+# with a single "stuck online" warning. This leaves the memory online and the
-+# device unbound until reboot, so it runs last - and only if we can run it,
-+# leaving the restored state above untouched otherwise.  online_movable only:
-+# this test never onlines a public node into a kernel zone.
-+if [ -w "$DRV/unbind" ]; then
-+	set_state unplugged; set_state online_movable
-+fi
-+if [ "$(get_state)" = online_movable ] && [ -w "$DRV/unbind" ]; then
-+	mt_on=$(memtotal_kb)
-+	dmesg -C 2>/dev/null
-+	echo "$DAX" > "$DRV/unbind" 2>/dev/null
-+	mt_after=$(memtotal_kb)
-+	# The leaked "System RAM (kmem)" regions stay in the iomem tree; reading
-+	# their names dereferences res_name, which a buggy unbind already freed.
-+	# Walk /proc/iomem to provoke that use-after-free (caught by KASAN).
-+	cat /proc/iomem > /dev/null 2>&1
-+	splat=$(dmesg 2>/dev/null | grep -ciE "KASAN|BUG:|use-after-free|general protection|Oops|refcount_t")
-+	if [ "$splat" = 0 ] && [ "$mt_after" -ge "$mt_on" ]; then
-+		ktap_test_pass "unbind while online: memory left online, no UAF/oops (MemTotal $mt_on -> $mt_after kB)"
-+	else
-+		ktap_test_fail "unbind while online regressed: splat=$splat MemTotal $mt_on -> $mt_after kB"
-+	fi
-+else
-+	ktap_test_skip "could not online device for unbind-while-online test"
-+fi
-+
-+ktap_finished
-diff --git a/tools/testing/selftests/dax/settings b/tools/testing/selftests/dax/settings
-new file mode 100644
-index 000000000000..ba4d85f74cd6
---- /dev/null
-+++ b/tools/testing/selftests/dax/settings
-@@ -0,0 +1 @@
-+timeout=90
++	return 0;
+ }
+ #endif
+ 
 -- 
 2.53.0-Meta
 
