@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81B74C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:54:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16488C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:54:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 313376B00AF; Tue, 30 Jun 2026 05:54:16 -0400 (EDT)
+	id 86A566B00B1; Tue, 30 Jun 2026 05:54:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276106B00B1; Tue, 30 Jun 2026 05:54:16 -0400 (EDT)
+	id 842156B00B2; Tue, 30 Jun 2026 05:54:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F0116B00B2; Tue, 30 Jun 2026 05:54:16 -0400 (EDT)
+	id 731F46B00B3; Tue, 30 Jun 2026 05:54:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D7BC16B00AF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:54:15 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 72F0C8B7A1
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:15 +0000 (UTC)
-X-FDA: 84936118470.10.F2B285A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id BDF1D4000B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoUHnc8k;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 427AB6B00B1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:54:17 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCA1C1A01D3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:16 +0000 (UTC)
+X-FDA: 84936118512.09.B249FEC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 22DBB160006
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:14 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BaW0UbMH;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782813253;
-	b=E+TDDGspFGL5TFeP48/04zb6u25ZAWQWQsbisIZGREo9ge60cHSHsYpVzeTM7GIj+11pFq
-	UuvlUpTjeRNnqWSAX5AHyjWVfC9B/8sMEHVrKefz2wL0mSrwAdzZuUhRtDenIbpl0cz/Y5
-	1bnlZhbb7In4SJkoxLIezdMEajWjUOw=
+	t=1782813255;
+	b=5y6CfME9IVi57q8icl19Q/MqMSHfJ3RDLj8LJBl8SvNR1BO9Y1VNcRjoikjLZLICoAThcM
+	kF6y2NM0QB+pb63BKdIzfG36Tg4da4fbZ8waUq8lQag7DteMnj9BjPtsXQ3q3ME0H2OVMy
+	L3ONp1X/58eRDe7Tv/6I+Bg9GfsBRio=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782813253;
+	s=arc-20220608; t=1782813255;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hba6xOKzIlLJw5sTi2ZReL79jUmA452phwmu2dxW8ao=;
-	b=5DjeI+p4dLgYutOM98k2mLz4fmHSznFEYNB3iXceD7NHjWPP7LAFLqZNcLox417/2XDHL5
-	9sqb9eL0/i9k00e+p2zT6L803r0JIYzLOG33/8U1VHDK7scJWh+wkHlfdg61lLdANwkl/L
-	w+Dggg9JmriZG4HwnCDX9FEOXLB0tCA=
+	bh=YfIYXFpeOLT8zVHUHzuYoeYdkWWHFupYpwpzBCCce9Q=;
+	b=t4zzZz1WrdnlP8AwVz4CiOKBA8OvYndeAtuW+WvtpcFn6hIIoYhFmwoizuKPxfb8jf6iyh
+	sHEAFippDmGxieMtqndIo9cYpxqk12J7WBEMemaMkhWkfplxHTiE2B6KvKqH9CmsNeJNiZ
+	lTaZYawF4zu7zKzTnV4VH7EDwUfBtNc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoUHnc8k;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BaW0UbMH;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F1BC43E0C;
+	by tor.source.kernel.org (Postfix) with ESMTP id B4068601C7;
+	Tue, 30 Jun 2026 09:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CBD1F000E9;
 	Tue, 30 Jun 2026 09:54:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2005E1F00A3D;
-	Tue, 30 Jun 2026 09:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782813252;
-	bh=Hba6xOKzIlLJw5sTi2ZReL79jUmA452phwmu2dxW8ao=;
+	s=k20260515; t=1782813254;
+	bh=YfIYXFpeOLT8zVHUHzuYoeYdkWWHFupYpwpzBCCce9Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=RoUHnc8kB23/wkE4Cut/GBnnRbhwHSyZ93yJaQb92LNQVdq9/JU9EtI+GF2oytakX
-	 oSRafzwA4auG6WU4plLi0lDiJxusEmNU3gAwV6/qor7YGf6sH0dqg+Wz4k0o/fpUin
-	 XDe/sVM6Pp21UyN/JYwXEVoliGspk1m6DMISvKXIcAK+/HLVp0TPZPVU2BbJzfPbil
-	 Q29gfH2iXSvAJ+TbMpBo4vZEPoLwb5Jdsi9q7DXnO6i0nxfkyjBICaP/jEy3Cfri8r
-	 XZAMLTUfaCkCSCo+JQMOWXv2FlzbC51WKLORHDF7wH2yHvFC7F9FBovv8IZK6jnhyK
-	 10d4tX9HWH7GQ==
+	b=BaW0UbMH5ejYzIoTXvdKCCac/cJXwivlxwD2WF50m0UODbxHm2Ugi7mndIwi6kQUX
+	 je+g1gYxh+zn8I6Mb4ko47+W0T2uMqflja/KQXhZHxA49+U+GrqTub62av836hjW0W
+	 V8l+cveoTHJzG9nEACP7f9Syee2ZRR5UYDN1jaic1nlJvwcmsO69bA2ejzK2YU/7TJ
+	 9XjQyJR27+HxfsnlNGqbo22Eu75g7N4u4TYQ2F/D5Mvu0j+B5lWgdw1c2nhaFGoeRv
+	 FJQvlTLAY/YtISEExuTZgrf8qmy38oTuoTo8qPB44JGRGSfnjCMX/l44vljCPXdKQ9
+	 g/NjNb+MaYiDQ==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 30 Jun 2026 12:54:04 +0300
-Subject: [PATCH v3 2/4] tty: amiserial: replace get_zeroed_page() with
- kzalloc()
+Date: Tue, 30 Jun 2026 12:54:05 +0300
+Subject: [PATCH v3 3/4] tty: serial: men_z135_uart: replace
+ __get_free_page() with kmalloc()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-b4-tty-v3-2-a8476c66c582@kernel.org>
+Message-Id: <20260630-b4-tty-v3-3-a8476c66c582@kernel.org>
 References: <20260630-b4-tty-v3-0-a8476c66c582@kernel.org>
 In-Reply-To: <20260630-b4-tty-v3-0-a8476c66c582@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
@@ -79,14 +79,14 @@ To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 Cc: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org, linux-serial@vger.kernel.org
 X-Mailer: b4 0.15.2
-X-Stat-Signature: fh4mcr5hmdd89sfdboawtmcdtukxug1b
-X-Rspamd-Queue-Id: BDF1D4000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1782813253-496499
-X-HE-Meta: U2FsdGVkX1/UFbo1D8PuQuU9a4o9KSy0MBEd+OfKToI+OBlryikU+bsX5NHIx6VYSnbx54QH4HIyylAeuxGBc28H8PkxjDodJJmdG9EEAbm3jyDKKCEcmHcVk4KGFJrlt17uKJDopAlcXGd1nIgyc7717xJ5mlMs6XXDQuXqG1N7I1jHo0U01wI78px5hlfuaCm5fEcfLwJKQK2QkFGwTUX04CGJy2vCV6d+mGpiam62N2QZ5gtAn0IdurDDzKrdMYeRLn+eAnqhUfEoO+71axerKEBOFqyqpUgYP8yjh3X+h/VP2rTk1tc2oJKtWa99BviMseB9vrOeIQnfOFST8Es/4XXZ/H/pHi2ML2SH1+UlzNwE85XBRd3S6jWLu81psYVnI8kIfh8s5knJwmyY6L0XcOfFn5nYrV5ezniDf77lgI0o803jcVKTXqbtQi7XSAQN3Gqj3KUP8m7/yczPa0DbaaxLvGGzYfchnugYUOTwpeW1JKhGvA6tOog0a7q9Ju57KpozayiGGAa4iESgLb0/AC6/9XryFBssexnRCT7tteZoyNuD4s3RoKBRU7cBWt+Oeog+ocjYcCWRQhvhyCwPp+fT0iKgr9nJMiHjKtT+4Qgc1ILqeY2ctxThP0VuGP0nspDSSymxhb1XOsJSKSlkXLvc1uqZ/MQ4cvRQ00HCu7wZmNeIxkArkK+2hmTtp3f3UCS7bN4t77YlcfM4AdoOF35BaYHakIuqi7fhYiM+cyZBqSOJALR8S7yPlbaomBzyWU8kp7u4RWqvKX2IL4m44IjztEYQVOWXRpW4HGTb6pP5sS8antivHO8HcdGAnUpcPwfwIdroVjeWCAl7m9MlySKbzgO4IXj8vkPQrUWd6M3xQ6DaQsTRs8DGFTqna0tFKWhnqhej+pvXCOYLqfvP3v8n386r1hnu74YNYTORLBBQUMTx4OTejYCYlheV58JPlRrnZe/63mrJGgJ
- hj7wJhL+
- krr7N6PHrP/D98xNOmMqpBLjTVVEeqJxg6HlHf3GL/2mTUyNhwpKD6lYlxkO6TT39v3ZVXfvlDqF9LkyjcJNyO5nIstOVNqiJvOv7IHYl0MV6OXNkfQZo1na/ani9Pn8u/XnptNcPp/c0ZWS5QTWNc0bUporSc/rxmZs8IW17/lIJ0UYN6Xh8aGpgxJ+hOEtA9gRsaqKia2ED21PwrhbjBrjBVRL7oU1IgfIZ44L3xpYzQzfzG4q1LN4tG6bwdKdvPdC3EFMJOA1DnGmFq17lglrJ6LQUW0AixFE+3lo49auhst/P8VpI3kpAopH8vgnQt5B/
+X-Stat-Signature: a7e15dtfaqncibmt91y18rwhuhztbecy
+X-Rspamd-Queue-Id: 22DBB160006
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782813254-730044
+X-HE-Meta: U2FsdGVkX182QQRp6sTPF0zcaJjbOUBN3MiLdqeGsy1E7SYXx7MqLoGHaH64FpcH/kzJM30WMAdHf3RM9zntYtHFf4DdHZxYez37cYqLEa9dyfdLAALO82CVufkL1aeUP9JuBwc83YjsM1vnGIMTi+2+vhrgiFos6/uRIjHnQG8S3rVvhCY39ousZ3I7AjMLsxySpC5HmDH0+EWDNb08bsUKPigpHhi+vMs9OU4XFKMdPzFhn21yigpcsQC/MUW87yNXXVeep7jS8hEU2Fz4Mv8nQ8DrF96G5rkwwsKeAHnO3kTfso8cWO1mCj4EGFzuq4nyGJu61MihmR6Joi6gyQW26z5A6q+EiFBmy77kasVVWWCtMu2ithhGA9ulbCe2KxuHBJVtQCIfyuyWtKVCF9HOg3aBlQ7Yj1mulgSHIFzJM5ZZDWM2YFbMGqhpLYJ0LNx+G/9nFFZbnQ9XoEQkCRgg15FSC38RrRLhgJdWjYpUZA15lB2MHAeUtWoy18ZnhJTsPIWfDWhQsZ2qYl+b189XnLVGgnNtIFiR5M1yk1/ggnYj+4tqQsZ/YTSi4gKtNLtIyt5bjNaf6V3Si2EKGqaMuP8dg+ipI0nxJIDUkJf6wEdCSpGiZpAD1xi3JC1SCBr/UbP6l+xnua3y/cKu/nt2awjSyodV+NpqgCM1O68YVM/fP/2s9FqIbKobpph6qJJKumPFVBb75GmklSxds1h0f0CjhT78dhB8yVlSQZ5sjra2bMa2G0Fv04kBsk25i3tP3JZ2bfWnP3y8QvakS593s0nELTNEiEHORWoG60ua16fq2w6E/q+9YLUitgrWgyA8TlliCGAD8pJHF9T2BV80KS/4Gcfn+SYisnCzX7NSLfaTBUdH+X/uRr9QpINad3V3S3X4N40jHJvwzycRsN9bdZgo2TEG4eTPUCUV/15ZY+W5JIYj1/fB8abEFHsGckr+F/RVXQcJV//CaIf
+ p9kqRwYK
+ Rflqj3nVnG0ewVaLQYbN/soy3u765neQAlnMLmxsmg7HXUlX0gudavQwoDeMhX+z38oQ5BISqdb3SukHBVWmxahI4nQx6v0XQnc+FLM2+uZMvs3bpsUqtf8sdV3LeD4NjvQr0KAZ2c97RYnmHrORlujy08G81GqgUMLMk20gEIGLszd1APpMzK+9d+GkAM9mWOu6xNcjiRp5RWgohDb/s5ILCq0yWMYA+XsL16UzCy5G42a99HRbDBSQYbm/b3LVgxtPY7KG1cpGVZ3qvSD17suUJig+p0xT/S9VbxmB6MZ4on9AU7U8cYTDGNA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,8 +94,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-rs_startup() allocates a transmit ring buffer that is used to buffer reads
-and writes from/to serial data register.
+men_z135_probe() allocates a receive staging buffer filled by the
+CPU via memcpy_fromio() from the device MMIO region.
 
 This buffer can be allocated with kmalloc() as there's nothing special
 about it to go directly to the page allocator.
@@ -103,58 +103,54 @@ about it to go directly to the page allocator.
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
 
-Replace use of get_zeroed_page() with kzalloc() and free_page() with
+Replace use of __get_free_page() with kmalloc() and free_page() with
 kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/tty/amiserial.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/tty/serial/men_z135_uart.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/amiserial.c b/drivers/tty/amiserial.c
-index 81eaca751541..28af0fd98181 100644
---- a/drivers/tty/amiserial.c
-+++ b/drivers/tty/amiserial.c
-@@ -443,23 +443,23 @@ static int rs_startup(struct tty_struct *tty, struct serial_state *info)
- 	struct tty_port *port = &info->tport;
- 	unsigned long flags;
- 	int	retval=0;
--	unsigned long page;
-+	void *buffer;
+diff --git a/drivers/tty/serial/men_z135_uart.c b/drivers/tty/serial/men_z135_uart.c
+index 6fad57fee912..9138fa29d301 100644
+--- a/drivers/tty/serial/men_z135_uart.c
++++ b/drivers/tty/serial/men_z135_uart.c
+@@ -16,6 +16,7 @@
+ #include <linux/tty_flip.h>
+ #include <linux/bitops.h>
+ #include <linux/mcb.h>
++#include <linux/slab.h>
  
--	page = get_zeroed_page(GFP_KERNEL);
--	if (!page)
-+	buffer = kzalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!buffer)
+ #define MEN_Z135_MAX_PORTS		12
+ #define MEN_Z135_BASECLK		29491200
+@@ -811,7 +812,7 @@ static int men_z135_probe(struct mcb_device *mdev,
+ 	if (!uart)
  		return -ENOMEM;
  
- 	local_irq_save(flags);
+-	uart->rxbuf = (unsigned char *)__get_free_page(GFP_KERNEL);
++	uart->rxbuf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+ 	if (!uart->rxbuf)
+ 		return -ENOMEM;
  
- 	if (tty_port_initialized(port)) {
--		free_page(page);
-+		kfree(buffer);
- 		goto errout;
- 	}
+@@ -841,7 +842,7 @@ static int men_z135_probe(struct mcb_device *mdev,
+ 	return 0;
  
- 	if (info->xmit.buf)
--		free_page(page);
-+		kfree(buffer);
- 	else
--		info->xmit.buf = (unsigned char *) page;
-+		info->xmit.buf = buffer;
+ err:
+-	free_page((unsigned long) uart->rxbuf);
++	kfree(uart->rxbuf);
+ 	dev_err(dev, "Failed to add UART: %d\n", err);
  
- #ifdef SERIAL_DEBUG_OPEN
- 	printk("starting up ttys%d ...", info->line);
-@@ -537,7 +537,7 @@ static void rs_shutdown(struct tty_struct *tty, struct serial_state *info)
- 	 */
- 	free_irq(IRQ_AMIGA_VERTB, info);
+ 	return err;
+@@ -858,7 +859,7 @@ static void men_z135_remove(struct mcb_device *mdev)
  
--	free_page((unsigned long)info->xmit.buf);
-+	kfree(info->xmit.buf);
- 	info->xmit.buf = NULL;
+ 	line--;
+ 	uart_remove_one_port(&men_z135_driver, &uart->port);
+-	free_page((unsigned long) uart->rxbuf);
++	kfree(uart->rxbuf);
+ }
  
- 	info->IER = 0;
+ static const struct mcb_device_id men_z135_ids[] = {
 
 -- 
 2.53.0
