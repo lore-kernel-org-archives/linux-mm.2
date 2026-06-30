@@ -4,113 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4062DC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9FE4C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:34:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2A636B00C7; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id D8F666B00C8; Tue, 30 Jun 2026 03:34:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8B2C6B00C8; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id D40BC6B00CA; Tue, 30 Jun 2026 03:34:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C52F46B00CA; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id C2F5F6B00CC; Tue, 30 Jun 2026 03:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 957506B00C7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A5321203D7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:32:09 +0000 (UTC)
-X-FDA: 84935760378.14.3C96AD7
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7877B4000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:32:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=pkiZd5RE;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=BuXKYez3;
-	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A20AB6B00C8
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:34:13 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1B9C7A040D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:34:13 +0000 (UTC)
+X-FDA: 84935765586.06.1697C4F
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf31.hostedemail.com (Postfix) with ESMTP id D349020003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:34:09 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	spf=pass (imf31.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782804727;
-	b=dtDPttm5lfr2Aee95BmfBvBt8Roh7Ec2Kboo/5mlUA4hUpzmcV/HzBFDCInzy6YcN7pJjd
-	Wfd3EKwdRUXl4/KaM7x8okmYEmXOx4sZLudA4+CQkTDhAtbiceCIGSVCm6kZYWyIHXBQhU
-	0LZoi3C7UwP7gB8OmtEY+BN9TE5ImB0=
+	t=1782804851;
+	b=kiRaNRdeE7NZFLqHreU3HZHE3d5lBVxmxdTpGtP2NG4JJuexA9zl5MfRF+7g784bSePh2h
+	0UzchieI5hjV7v7lBWYhzNKPafYblWfS6J6gvQbrWy4+t9QdO5p6VNAV52DIFp1mqLObcK
+	zYn5ZLozpJeVhomrAzCOtOPWw6VB8vc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782804727;
+	s=arc-20220608; t=1782804851;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
-	b=OnpZTpJ/K3pInaYUNFpjIB4ZPAbTKsgzBSMrUGt1M3YQTViSNyu2bzGgw6b2JXplMwVIii
-	J10MbbG6uYh1zWf9eUlE37bMr9wD3OVVHEvOZjvv1gEsRtXicpG0skXqNURJyOraWBBV16
-	hry5F4nZ1b/2k5QbY7eSqDMp1MD38ts=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=VP6G4dX+KNtMTY22tRVZ3Wp37rZDJw9LeBXmGUcIvw8=;
+	b=srlIw+GCtIQK4DqkRAZHJhaFDeVm7MlBAIe+Z4nW4kFbyn4zE4oIg+LYZ0C/fB0raiSkg/
+	P42+y9rIfIoniCcNSL+UNpRebZKT0DxMMqgqlFfskBzXQES0WBzM17eFtorwZ8L2r34rL0
+	+4Lh5zGTdbxEZoY0qWWTM6YGA+IaU0U=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=pkiZd5RE;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=BuXKYez3;
-	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
-	dmarc=pass (policy=none) header.from=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1782804725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
-	b=pkiZd5RE3R16RLIHgJSrNZojyXivPIjLOENwgHZEw//KpsY5f7MZn/JtKFuYl+KH/Avdo2
-	J6ccKqWWMpZgQfHjORmegmRaHO+LPzlem3xQCauGpIGmdUXijcxggHgooQ5WaoDRQKOieG
-	MSobUx+QDUPlw6Z8bDVGF5uw29vkQhXqUuT+mWvLUIf+eN0L+Z0yydsroCArBKkFckHIhO
-	rX05qYl0VCmVLihAeqq1sklGDCPLMtrTWJ3PNtog2x2/PbD7erUgTwh6OWn3nWupPEGQVT
-	SXMieBMYMoM1hpugyJ0jgIzK7C1k+Ae/YvHKMOkzsyirVtmJOBHFxY7OFb+i3Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1782804725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
-	b=BuXKYez3e12iaVkuRRIoAUGjK94QgjbpbzL8Ej6/bbYPj4+Syb6h9CC/F/7bMWhHyT0BOZ
-	pTGQSC994lU4C0AA==
-Date: Tue, 30 Jun 2026 09:32:00 +0200
-Subject: [PATCH v4 6/6] vdso/datastore: Simplify the mapping logic for
- VDSO_TIME_PAGE_OFFSET
+	imf31.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of lihongfu@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=lihongfu@kylinos.cn
+X-UUID: 1237ed92745611f1aa26b74ffac11d73-20260630
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:7cc4df48-54d6-40eb-a1ef-372245fde000,IP:10,
+	URL:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,AC
+	TION:release,TS:-35
+X-CID-INFO: VERSION:1.3.12,REQID:7cc4df48-54d6-40eb-a1ef-372245fde000,IP:10,UR
+	L:0,TC:0,Content:-25,EDM:-20,RT:0,SF:0,FILE:0,BULK:0,RULE:NOTI_GNA5D1EA,AC
+	TION:release,TS:-35
+X-CID-META: VersionHash:e7bac3a,CLOUDID:579fe322386de05c17de66cccb557374,BulkI
+	D:2606301534044XVORWWH,BulkQuantity:0,Recheck:0,SF:10|38|66|78|102|127|136
+	|850|865|898,TC:nil,Content:0|15|50,EDM:-19|2,IP:-2,URL:99|1,File:nil,RT:n
+	il,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0
+	,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 1237ed92745611f1aa26b74ffac11d73-20260630
+X-User: lihongfu@kylinos.cn
+Received: from localhost.localdomain [(223.70.159.239)] by mailgw.kylinos.cn
+	(envelope-from <lihongfu@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 677204135; Tue, 30 Jun 2026 15:34:04 +0800
+From: Hongfu Li <lihongfu@kylinos.cn>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	keith.lucas@oracle.com,
+	kevin.brodsky@arm.com,
+	maddy@linux.ibm.com,
+	usama.anjum@collabora.com,
+	yury.khrustalev@arm.com,
+	jhubbard@nvidia.com,
+	joey.gouly@arm.com,
+	zwisler@google.com,
+	hongfu.li@linux.dev,
+	Hongfu Li <lihongfu@kylinos.cn>
+Subject: [PATCH v8 0/5] selftests/mm: refactor pkey helpers and fix mmap error handling
+Date: Tue, 30 Jun 2026 15:32:30 +0800
+Message-Id: <20260630073235.3802271-1-lihongfu@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260630-vdso-mlockall-v4-6-6c93708ce723@linutronix.de>
-References: <20260630-vdso-mlockall-v4-0-6c93708ce723@linutronix.de>
-In-Reply-To: <20260630-vdso-mlockall-v4-0-6c93708ce723@linutronix.de>
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
- Frederic Weisbecker <frederic@kernel.org>, 
- Thomas Gleixner <tglx@kernel.org>, Andy Lutomirski <luto@kernel.org>, 
- Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: Nam Cao <namcao@linutronix.de>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- linux-kernel@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- linux-mm@kvack.org, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
- "Liam R. Howlett" <liam@infradead.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782804721; l=1523;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=tMYyr+0MUZgqXxRCaSudj+eF7RhqsNYP604whSkkFls=;
- b=aO9l5/rIajahyFgMu+6t9DtyWFk+0YDSWX/pe0+uidn7k1GXsGHpy5RYFEUzu8nic9h5gnb55
- SPE2zsS3mD3AN85vpJUkQJS6yG0pCKySQ1YDi6WfsCFLCmSHIupjvp9
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D349020003
 X-Rspam-User: 
-X-Stat-Signature: hij9akhobz8sw9wnoakmhaymecye9n41
-X-Rspamd-Queue-Id: 7877B4000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782804727-911332
-X-HE-Meta: U2FsdGVkX1/onfEAhVzvr2JXgS+L/ovnJh5d/oJhuakQqsTOLuOcfVvuLfC9BGlF50KI7kT4OVe/uoF4MDNRa/In9eIUkaXZjeRpQhwzpGPZV6aND5FxpCiLM6SDXSbW/IrcrDZwYIG2NcAZYrFqZ9x4ORjbUV728ETan1o0RYq9yktWKvk7L9fnd2y0jmvJBUcGx0oFdz8wkI4jZqOqMwWPTPvmmmHzfc1pTiYC1QRUPCd4qgbk7jdrJujpbGcgwDEcp7NtId/MTvAIIMhWnvaVSqLF5VthE/5JJ6TqC/l0DWcmEJ+A7Q1+dRRqJUgQH5LbOk3DywU5cMtTLmvQXRQ0yI979XSEAAgWnh9Ro3QN+3/gMWawIJY95zNOKnxKxNttnYEpeXmtabho+yi/EFG1W1OguekRh3faUX7A0vFz0pXvjnI4wBz5bmWVWgU8NcjXg7OOl9Y/VKR8HSHy5JsiYKl59RowZ+qna8UpdVp+ZBA2QTMYElirTTXM6ozq7Sjs8uKw838bcg3Om1YLPk3kMhtNBkn1N5cjugS/VvGZBCTfVq4gdjYkWAcZxUw8b1Y8J+CansHxx4K0X16+JtMYk2CBK+gqFIOxUGfIwtoLoMI226xnMVQxSclmbyFINrGBKaCwYpEgDVBwSPgevN7KsWKjYNWCRnA0klo0Mu+G/2VFcjSyYGTGqQ7Mj8870f/PDKsOADi1x7aM2ATOV80BWQA6xPYnuOr932EdhAM7Gl0hnljblF+QmeCKVoMiB6ngEcAexWbV/QOpP3dxxj8kSWHC3yQaKo+8WKHvvpDxRsJ2i8gemEFb5CddGbP/KpeIseF9YKgG/0nCLMtNS4cJsiPP7DRQ3WaKvB2zzq8h5aoQHgEW1ImmV+O53fSwJrpOI9BVvnexUItVGXPpNseo5TdXxxQ05e+QnkFRovznf/xk7V0Y4L/UbY/LFyp5kQK1+hiHAeiu+Mb0vs4
- qyEFqhAt
- 4Fehr5wAYMSEBcA2+TjGDvEpMkT2jgosT+sTL1lcBm9T5BGBEi+aIgJqWP7WZ89PEVO7AP8SyAulmLntTq1dW/g5FFtjsGrK5RVGxHksnggzs/R3N3ToKa0+JC0lTPAJX1waoWnwaSwuvEOQ5QTdStpWe7T6LkpRhfwNQYBWr/O6njps84wmaw5rJhUkMCVy+HE2r4ls3f8ttWveBWlBPGJ1ldBq6q6fTdejEgAjUtkn+gCXpuaVa0QnRJH2yPJ2LBcCfUFIj/aTSeSCkaiPGtCteC3CTq/AhvMwDzPwhKKlaEXrRKOkqGIdsWfO2sY4mUeHQ5gxYyC3Y1hTDTsxBoooYIigKIBX6AVR8EZ20JHsndhTVjNqCOp0UOZtTVGnPH71LymAiVxD+KItmZm8JuwazpDvQQCrjjv4UMhUg8ERy4T7wNmBidrFvtnZAXxsvZl3A2+hrqX6UNKTKflYsrUGm9RM/pffaLsqw0Mw/fJtgLUg=
+X-Stat-Signature: tya5mxuodhhoc1s53k796prkkpu4gigf
+X-HE-Tag: 1782804849-48755
+X-HE-Meta: U2FsdGVkX187nu+hcPEKkBzngWGQOyIE9g9ZmXpl8sjhvEoqc1DutGp7wGL1r+GLMLtQj+TwUFbyijjR7mxY11d6YO0JSPqWvy8+cWZQQ1vWRT/9lRPHA0GYgarvLglE78d4nNHTVjf96B/cWh/CkFtO3C1ldOhzzSnxlk7byZGcfWsI4RzmeNZr7B2INeiKZN2Ay8rN0D5hvtnWaWKKsRFvZn1BmMJd5WyP62CZ0ViY+ldR22TXgMrGHBVb3A0LbmJti3vLMdY9R2uUrJR6q2J6l9UbjztdUj/u5hVP8rHn6eKM5pbNIbmBZghaFEQ8Eg+J6zQyd9VtC24tjetXuCIhjjq3qgfVgBTWoHb56VGKgdRn+sXAC2IRwCaolW9Csnmg1kACxG5G5oCbcOK0Lx71APEpuBuk877cTw2T14aAFkPWD+N+9NdzRYQf0VxchHKpGlY1fADuSPTSkz7jT6MfUGRI9O3PKckO+0uQTzvN+DdzviAMh9v+tNeAQy5n0TdzVBseaKWwWvAAoriniJA4p+6HGomdAtgnqj4bk51+zehOKmauAdaTOF/a65UoqTu8jVy+qSXXCXOKLXaFDlSmtnw3/h54JHTi2aqzHHX2UMe3xf0hOQuXqH81pDIIWr7zEdhh1T5HVfajm+aTQ0XL8abC63Jfst+Y3puC/KB0owHhugEezRijnylfizCm/cLS88Dlxyq5hj1MBgiskJ4+36Hueht38u1QAj4RcWp7ZGtlQ8fSdD67/iB/6zQPOahaJaiOkSISIRChEG4wy8VKtdFF+l3ndUfTFm64RXmdd4e3pBfbKZQy7gEZQjmoxWILCM5XcNlDvgnFiRlS+YLFolBOsqJvENUZycrzL55dMi8iiC4rQwP79M9DZkZVFK7OJWT8U1Jgq8yE3QAGkxkuz3mBNFLgFBuNaf8aQKs8SP41mx6t5261VdxJ7z6tKL7jANAI1KzONgd7lb6
+ 6GxSH5YU
+ bm528auEs/SIMzA7uS09PjKqOnw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,58 +121,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The logic for CONFIG_GENERIC_GETTIMEOFDAY=n and !timens_page is
-identical now.
+The main changes in this series are to refactor shared tracing and assertion
+helpers into a common file, unify both pkey selftests on pkey_assert() and 
+per-test tracing for consistent diagnostics, and add missing mmap() return 
+checks with MAP_FAILED used throughout for readability and consistency.
 
-Use this to simplify the logic a bit.
+Hongfu Li (5):
+  selftests/mm: move pkey selftest helpers to pkey_util.c
+  selftests/mm: unify pkey sighandler selftest assertions and tracing
+  selftests/mm: use pkey_assert on clone_raw failure in pkey test
+  selftests/mm: add missing mmap() return checks in pkey tests
+  selftests/mm: add missing pthread_create() return checks in pkey tests
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+ tools/testing/selftests/mm/pkey-helpers.h     |  4 +-
+ tools/testing/selftests/mm/pkey-powerpc.h     |  2 +-
+ .../selftests/mm/pkey_sighandler_tests.c      | 81 ++++++++--------
+ tools/testing/selftests/mm/pkey_util.c        | 86 +++++++++++++++++
+ tools/testing/selftests/mm/protection_keys.c  | 95 ++-----------------
+ 5 files changed, 141 insertions(+), 127 deletions(-)
+
 ---
- lib/vdso/datastore.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
-
-diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index d7ab077cd604..1426bf4e0c12 100644
---- a/lib/vdso/datastore.c
-+++ b/lib/vdso/datastore.c
-@@ -76,22 +76,20 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
- 
- 	switch (vmf->pgoff) {
- 	case VDSO_TIME_PAGE_OFFSET:
--		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
-+		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY) || !timens_page)
- 			break;
--		if (timens_page) {
--			/*
--			 * Fault in VVAR page too, since it will be accessed
--			 * to get clock data anyway.
--			 */
--			unsigned long addr;
--			vm_fault_t err;
--
--			addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
--			err = vmf_insert_page(vma, addr, page);
--			if (unlikely(err & VM_FAULT_ERROR))
--				return err;
--			page = timens_page;
--		}
-+		/*
-+		 * Fault in VVAR page too, since it will be accessed
-+		 * to get clock data anyway.
-+		 */
-+		unsigned long addr;
-+		vm_fault_t err;
-+
-+		addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
-+		err = vmf_insert_page(vma, addr, page);
-+		if (unlikely(err & VM_FAULT_ERROR))
-+			return err;
-+		page = timens_page;
- 		break;
- 	case VDSO_TIMENS_PAGE_OFFSET:
- 		/*
-
+v8:
+- No code changes (relative to v7).
+- Updated Cc list: added developers identified via `git blame` and
+  `git log` on tools/testing/selftests/mm/pkey*
+v7:
+- As previously suggested, wait for v7.2-rc1 and rebased the whole series
+  on top of it. No functional code changes.
+v6:
+- Add missing pthread_create() return checks (new patch 5/5).
+- In patch 2/5, call tracing_off() at the start of test_pkru_sigreturn
+  before the SIGSEGV handler is reset to SIG_DFL, to avoid leaving ftrace
+  enabled on crash.
+v5:
+- Use ret instead of child_pid to hold the return value of clone_raw().
+- Make tracing_on(), tracing_off() non-static.
+  Remove cat_into_file() declaration from pkey-helpers.h.
+v4:
+- Base changes on top of the latest mm-unstable branch.
+- Split the first patch into three:
+  patch 1: move pkey selftest helpers to shared code;
+  patch 2: unify sighandler selftest assertions and per-test tracing;
+  patch 3: use pkey_assert() on clone_raw() failure.
+- Use ksft_exit_fail_perror() in main() for mmap() failure.
+v3:
+- Use pkey_assert() for remaining sigaction() and clone_raw() error
+  checks for consistency.
+v2:
+- Update commit message
+- Move shared tracing and assertion helpers to a common file,
+  replace assert() with pkey_assert() in sighandler tests
+- Drop assert() from main() in protection_keys.c and add a proper error
+  message instead.
+- Link to v1: https://lore.kernel.org/all/20260518082120.3890552-1-lihongfu@kylinos.cn/
 -- 
-2.55.0
+2.25.1
 
 
