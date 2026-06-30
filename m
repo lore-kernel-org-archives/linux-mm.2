@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45482C43602
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E469DC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:18:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9C84E6B00E0; Tue, 30 Jun 2026 10:17:52 -0400 (EDT)
+	id 868336B00E1; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 951BE6B00E1; Tue, 30 Jun 2026 10:17:52 -0400 (EDT)
+	id 7F16C6B00E2; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83FFE6B00E2; Tue, 30 Jun 2026 10:17:52 -0400 (EDT)
+	id 6E15F6B00E3; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 493316B00E0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:52 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B28C41C6FD0
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:51 +0000 (UTC)
-X-FDA: 84936782742.04.6283B14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id EC83340010
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:49 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T4m9KOaZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3C73E6B00E1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99BA48EB4C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:55 +0000 (UTC)
+X-FDA: 84936782910.28.8A3A76F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id F173C100016
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fz/LToBM";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782829070;
-	b=Cjw1brRuikrvo8UGJWVNHy0OJXetjB+8ud8cxNoZX3U4LUhMwKNNEiFOGRLu/JDu7NJVGp
-	0Omr8Pj+/SdEn7VHKTM2l50cpr4IC0G6Z4+NOMqdHhGf/xPfNklAKFQKGqx3qjGphELxKV
-	Ddt+5S0405Fca7RIIiEQHi9g74e4+ek=
+	t=1782829074;
+	b=vzhj7hXFxhiQ7yRbJb9oIYww5FXi8w3rckafx9oH3E8pDVRvz+V3FKOsrZDfoEjeUU/r40
+	gbfx/vyMg3/s3rfZQETiKIMe80YcoJzEdxbw7lYTJPUta3bvbz4y3mzl5gVhmeVlaRCYIt
+	V6oDlHwjABppB5mKMyWbW9oZaHvI2Lc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782829070;
+	s=arc-20220608; t=1782829074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DpQXH4eWAzKUpyJ3N4PMjq4KjSfFjbZwL0TXiysKWH8=;
-	b=BSzDHyITqUI5GSJmn9ZlOioa103LAYLS5fQBjrCjGWgwTgbAKcjjuBKjwnCRKaqAhiT6+N
-	nhPq/gJpOao9Bk5ZG4dZ1DsAxZJlMNLzOkXMBl9joOWrgybaTGRIgsy9tmkPYb2G9Kgazb
-	3kkvwopUH7hhfzoh+zk3Gc3hNskQq4c=
+	bh=1jHOfEbKPidZLAY+bFapF4i2vITVSQIXVAPEhh+0hhg=;
+	b=U8fN3bLMj3LTB8XjgIZ1WU8yQQtWaLFmU6OV3YKmgi7mT/w3xcvCBATvTiRW2qgHKXDf5l
+	2R1QdC1tSkvJ2WQLWJJkxLFDryajaJjOGUA1L7294rSjIdqr9mmmyzJLqyb9snrJUy2j6c
+	l8yRt5Y1BkE2Gw1mkgfa+J/jEdJxWwU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T4m9KOaZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fz/LToBM";
+	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48C32434CE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 94D86601ED;
+	Tue, 30 Jun 2026 14:17:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536D31F00A3A;
 	Tue, 30 Jun 2026 14:17:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BF21F00A3E;
-	Tue, 30 Jun 2026 14:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782829069;
-	bh=DpQXH4eWAzKUpyJ3N4PMjq4KjSfFjbZwL0TXiysKWH8=;
+	s=k20260515; t=1782829073;
+	bh=1jHOfEbKPidZLAY+bFapF4i2vITVSQIXVAPEhh+0hhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=T4m9KOaZc9PBbmhx+I6uZFVtxtofgHXWxNr83EHH42rQLsumNAEoxIDnOUO4MCd7C
-	 ps4DN2kllZscItINWvABpMlr1xkg2pmlAo5N7j9R6umadpPI3EPzm4m+iuRCuwlIY2
-	 PBkvBEXHo0REDXfTekNgzOTiypE2u4mct1DniolrXpnYSq8cwytTceYilnKXiRM1Ot
-	 M02SFoT/GE6VTOqhsx4kJq1UPnaIX1H9I1dyvcUAhjF9SpjxzpuK6o+c5PjeAQxPYL
-	 GAJHSyhIx9R8/zzh34+W3vaIEHfkx5dcirS8H9KfP4B+5HjfIf+il/utnkNp1y/lR0
-	 ZcDB/xBDrnrwA==
+	b=Fz/LToBMBiIU0dTtYMuOu1omoRZUmMba6sk3xwiWQ+2FlTbc4NT/i6KAp+qJezenZ
+	 KzCA11SA1VTDR8nwaETWW88mX9V86UuvFnbIXHY6vt+FPrNntkTRkPU7xbG5caEFNI
+	 mgrdtFJf96a0cWhPaZrhVUtCUEKpiFMh0VMX7Fv8EgoVZmb0fVY1s12b72lDc7SNFF
+	 7jsrxtiunnjIscevZfDMmqrhom7j1ceHahl8gf4aYGrKAsCaIDbAvbejzza7P/ESBI
+	 N2iCEPXfoVbplhTSfbUHX8L65L1w5CgCleHGC20NE+NWC3GaF0ZMdqQr9R6oJgTZg4
+	 FE9dt4tMtLgKg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 10/11] mm/damon/sysfs: split out filters setup function
-Date: Tue, 30 Jun 2026 07:17:24 -0700
-Message-ID: <20260630141726.92246-11-sj@kernel.org>
+Subject: [PATCH 11/11] mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
+Date: Tue, 30 Jun 2026 07:17:25 -0700
+Message-ID: <20260630141726.92246-12-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630141726.92246-1-sj@kernel.org>
 References: <20260630141726.92246-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: EC83340010
 X-Rspam-User: 
-X-Stat-Signature: wkkcnaheh4mgbrcfkjw9wud9qyj6643o
-X-HE-Tag: 1782829069-618421
-X-HE-Meta: U2FsdGVkX1/TR3RNiXlD8OxLV29Ef/L3joxMKgwrofzcAa9ZxRQ7ZYqsK34CX2t158Bi4DkkruiZ2ELOvEPnHkLZI/4T7zRLYu7hOK33zsVUqXbRhq3XxsWQNvllAtqIDRQNfrB0NBI/hqJiUF/6fEXkbAUNidkTFqDToGFpLuS+k0fky+/VkOEKbhUovhjsWqkRy6hpdBj7XVunBCwZFqF/32lRPmFFE40jeZN2logRFIZFSWcXeIztGAOjvTZ00xMS1mNoDffvqkfUxdUB6hJwq9yCv0tUpUr+3Y7V8+eYfrURzRwq28zy3jq2dJ5MicEptVND1oLG80W9aXTxQWtw2GXv8xyiWnd++9YilLVGoEl7PGxBJjoHDkUzwyBs+y/wPIIJ0adgTRI4UOlFzEufc5fqGXuRvfU8HAEk57e3Ki62W0+M4eULgbZ4Ub1v3i5gj9NROUKxXXNo9SoZ2Hp1OCNljHgQwTVApyXHPNkBbjbWMMbZs4mML7q8wM4B4/j/EtwEjPDzTcMRFJBgaa3vWDLk9yHNmPKZrDjfj1yNpSM3YOBA2WN80jvAITTdHtB+IoLLl35QmP6vKW/FA7tp2p8+eO67G1wU1lxCD16cL5rsO9JTOkfu7OHkdTorkZzsNDhSt2nHPfKfNl4QZrPie6wY6Vx80zr8D6BBsW2mCLbpk2KezS6KjwE9F1rkt8BG0brbh8+8OPp2jd7Ad5Qmgy0R2la/ykrUoXN8JdgFmdLzNG22FQMKOZNbSmwyCBqbrVHNf5dWxJrnd5ovKdep8N8UZDHxkOlFFEasWAYPFneQxceBE6kK2hiGM/SyrpnJUC7N6pVUQ/TBF04pPoAoCVVQNzbHX32CV8x9HyU1YSrL1zg8/c5dPcCt7MVWuyBzY+rlqE9X2PojzTtqW9Fh1TYKDrsLp6+wxdP6dMX6hIANqbwzaWmwVa5SbsARSw+yhLjgHi0cUJHCaVG
- XfxB+wvI
- BWqwM2ZXSPouZLDPc2fPeynkv+j0jLkohaHz7Y2UIVCTb1i2zmuUlu6lPqerxTuzxkOGscKurEQhcAlpdCeZX5fyUetMdjiKQ+SldTEyXfUNF2lGalxFisvn45/MUuJloYOVPBHl3fkhQIXGk9nDb5OMizUnvHl0M8IzMEiICRXPPXXeW3hKRexMwqe5V/eSWbkNNr/1uEYryfC2oF97ZTla5p9fBMCjV4fFGdYvsP20BEyw=
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F173C100016
+X-Stat-Signature: pogjjdy8yjtt9fswxqwhq496whccthmj
+X-HE-Tag: 1782829073-796871
+X-HE-Meta: U2FsdGVkX1/jLwdjb2pJ76txC0JTnajeA4qGgIV4YIek7jmdkceLQXvm8VsgTv+QPqD6DWaOtKfQWnCdOweSuNeOuclHOA4ZeyIxZl9A04WC45X3Oobfw4l9jlLfrSh5zZSvBSaztceRgsmb+2J+dhb5eBCuS2YElV/gy+wRE8RYlmGctPn6aoYTWW1Ttqc+bJoBGOTLZ32bPwfOQuCi8VDPengF08bxqm65snm1tFwhIlcGJIfyih+TjdDrHoFLZyHMC/pyY+T1NERM9ROYYjCk00HeFE2S9q/pYesMNMfsD6uhaySADN0UgwaGnBTk/5XcB1o8XKLawWgyXQIWXZsT86tXhUP6XSorE+v9+kVX9Fjs5VWujaOQmg82ziOUzU1LoTouWgCJDxPW1K19kdn+vzkqsK2Qo2RCb/T3ZGGvBK37VjLffoLtqdnUnwwlVZCY8VAlvLeuZ4j832xBDtOI4JAc0jTHLVZiYbNZa5NxWCy6nGu7qKXa7KQ7xTJxcD2rlmhRtL4kqNNBU3XVkliP2TiAnLItC/JTmJ5bvUp/b5f9pql2H0gGlc26QR+O4xqrcwk8law87UFQCptXM6ehNMubTvbqHk2xZzP5TyHMVLB1PCszZ/1LFWVjDPtEkPa1vxl1slQ1GOe1cX4LYMnOw22OiU51+SNpZ67SHv5svuxizY/aGEi8xXuMpFij4x4vZi35FAEqkwg2mrKrf1gDaeq1qDpdoPMvWFIMZp1/ACpxNR2gI6fz/4oY8LoW748IFxQl2OXtuy28XaUAUvgr0Ni0AupY1/diVkQtmJLIKGVTpksy6ikrRY10I/xnW6jAsGUZHPSUlk4Ty6RZGZ5Wmdt658FvfoF1OiLzu3AokslwKNx/zhXjYPL1uKvmv+1n67jb7pU52ZLxUc7SO62fOoWha0vzhnJ0AXqM96CavJfMd4C7P14bGK6JYPrvBrp32ykYXmi6CoJmg1k
+ 5aiSj//h
+ vud5cLzjA/62ihzAosrMvNb3UtqWW0za/rJrVt4ZB+Wa8Xr4TawBbjxP8CEKa8a/ruWIYnVKs/vr6PvKPKPiXRew2QV2txIwfQjTzceiuBAlcixWkP99VqmZb1QY/e92PEV+2LccAkwrLv81UcBZh9HhOgBFr0fRzr5zzko5j1QRxHPAyUTbnu0CW/TXv1kPeHaanu+tyhWGccVW3BUfSLIH0CqQVX7TMbmEv7t66P1MAx/RK5Qk7P7sX6AjcskDkcA1nyzGPWrtapagwDXx/a/4HwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,55 +92,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_set_probe() is doing not only probe setup but also filters
-setup.  Split out filters setup for readability.
+damon_sysfs_probe_{add,rm}_dirs names a variable for damon_sysf_probe
+as 'attr'.  Probably a trivial copy-pasta error, but it makes the code
+not pleasant to read.  Fix those.
 
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ mm/damon/sysfs.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 02afd37b04df4..5b2ae2fe948fa 100644
+index 5b2ae2fe948fa..6710b6d019bf5 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1909,16 +1909,11 @@ static int damon_sysfs_set_attrs(struct damon_ctx *ctx,
- 	return damon_set_attrs(ctx, &attrs);
+@@ -1073,7 +1073,7 @@ static struct damon_sysfs_probe *damon_sysfs_probe_alloc(void)
+ 	return kzalloc_obj(struct damon_sysfs_probe);
  }
  
--static int damon_sysfs_set_probe(struct damon_probe *probe,
--		struct damon_sysfs_probe *sys_probe)
-+static int damon_sysfs_set_filters(struct damon_probe *probe,
-+		struct damon_sysfs_filters *sys_filters)
+-static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
++static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *probe)
  {
--	struct damon_sysfs_filters *sys_filters;
- 	int i;
+ 	struct damon_sysfs_filters *filters;
+ 	int err;
+@@ -1081,22 +1081,22 @@ static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
+ 	filters = damon_sysfs_filters_alloc();
+ 	if (!filters)
+ 		return -ENOMEM;
+-	attr->filters = filters;
++	probe->filters = filters;
  
--	sys_filters = sys_probe->filters;
--	if (!sys_filters)
--		return 0;
--
- 	for (i = 0; i < sys_filters->nr; i++) {
- 		struct damon_sysfs_filter *sys_filter =
- 			sys_filters->filters_arr[i];
-@@ -1945,6 +1940,17 @@ static int damon_sysfs_set_probe(struct damon_probe *probe,
- 	return 0;
+ 	err = kobject_init_and_add(&filters->kobj, &damon_sysfs_filters_ktype,
+-			&attr->kobj, "filters");
++			&probe->kobj, "filters");
+ 	if (err) {
+ 		kobject_put(&filters->kobj);
+-		attr->filters = NULL;
++		probe->filters = NULL;
+ 	}
+ 	return err;
  }
  
-+static int damon_sysfs_set_probe(struct damon_probe *probe,
-+		struct damon_sysfs_probe *sys_probe)
-+{
-+	struct damon_sysfs_filters *sys_filters;
-+
-+	sys_filters = sys_probe->filters;
-+	if (!sys_filters)
-+		return 0;
-+	return damon_sysfs_set_filters(probe, sys_filters);
-+}
-+
- static int damon_sysfs_set_probes(struct damon_ctx *ctx,
- 		struct damon_sysfs_probes *sys_probes)
+-static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *attr)
++static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *probe)
  {
+-	if (attr->filters) {
+-		damon_sysfs_filters_rm_dirs(attr->filters);
+-		kobject_put(&attr->filters->kobj);
++	if (probe->filters) {
++		damon_sysfs_filters_rm_dirs(probe->filters);
++		kobject_put(&probe->filters->kobj);
+ 	}
+ }
+ 
 -- 
 2.47.3
 
