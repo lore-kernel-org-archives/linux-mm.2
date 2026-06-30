@@ -4,129 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFE1C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D858C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:28:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6E1C6B00FD; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
+	id 26ACD6B0100; Tue, 30 Jun 2026 08:28:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A46FA6B00FE; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
+	id 21BCE6B0101; Tue, 30 Jun 2026 08:28:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95D6A6B0100; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
+	id 10AE36B0102; Tue, 30 Jun 2026 08:28:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B78B6B00FD
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D44C61C34B9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:48 +0000 (UTC)
-X-FDA: 84936485256.09.D737B8A
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 7B5044000E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:45 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SQt+qN5Y;
-	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id DDE1D6B0100
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:28:05 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 49AE08DF0F
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:28:05 +0000 (UTC)
+X-FDA: 84936506130.22.43019A0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 807AE180007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:28:03 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNwV8HFm;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782821986;
-	b=W4gVmccIMZEmAAW+AYqftjrvkgmUN7SZkoACnWeiuTZA9Nm15P3PYnOyEnAK1ib8C7KKLJ
-	7XiJjboLU7288eY84gJVpiaMBfgMjJgY+Rij22kN6sCaHUUUFkHxNMX8zkwDwqdP2XeUPJ
-	Kkts8SYSDcxmqFFrw2Polf7xZhR92EM=
+	t=1782822483;
+	b=JaLFRqJDReHDGigCyRBrLxCz0uREzuLoTIcS41ElnddATqEv3vNp7/tyK4dny5hoL+R0Ex
+	dSbHC+YuSCh08AQfK63iTRKTK92O3guj7YyU+UN3xHAqeRnwi4vZ5ypthg5wXxAhrgNki8
+	0PZ9oI+2RBjGvAvQaFYLikYEGa5YAEc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782821986;
+	s=arc-20220608; t=1782822483;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DDGTaeRRb3D8M5qicYQpFLUVvv74PX4dJAEV76CGQQM=;
-	b=o7GmipKgDiGNA2FGPvHsqG9BXvU3AiPmDDqMvoGjAbLOIQnIyGep1P7yG2mUrFaohDRQ1c
-	GeWh2AxPPs+RVDubBF69gihAgLjS+k8zDmz4Cm2nnY3oQorWvhqIo0MEPCWYPGvs2TyIWZ
-	z5lC3VNpXdfRzNXx7UGkgDPDYghYxc4=
+	bh=NIGB1rJOCZO/oJ70bNZ8JWihrkKz/XdZhvsbS/SGNYk=;
+	b=03GxQ3o8GuHnENDZgYQFmjBt3JsjJjqpUXT4rBXQDnNqkCvEBN9+F9O8/Lt95dpMvJ6nxI
+	OFHhfrDUKFeCGqFLxMwm8Wan5BxGhZh5NxnKiYbuQ6ZYCIj2PVGNobFHG5J5hXy3IljhXu
+	hckMSvJ9s3b/Qv6cXKG4x6bvwL/C/Xk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=SQt+qN5Y;
-	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782821985; x=1814357985;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=eazOhytQrFMvUq1ReP67qLKPgCSBV6aajIEIlT27i24=;
-  b=SQt+qN5YI5wEPY1Gg31FZfJ3I43eP6NShvGnrq4rE6MoNf30We6MlApG
-   +F1mOX6Xu3FubiPDlSYLFqZAtLpP6LBEy3o5j9wISir5pQR8W2J4WzSVz
-   4a5ZamzDZGuHsjc2C/w3nteeXrs6+yUqIjtEBGMEmCxm+zpRO/nl1YqZE
-   Oyl9R4rRwOUhmgPNbfBLgchJx7N+zToN+y+5yLmRM8ghF7sj+L+ou4CvP
-   XgS0j+k52SD6lVxKmmeteg9ZfIRI3OrGll00STsZiUOE32xwSZfUC3u8S
-   jsWZK5pH6QM35nVFzunD4VZ7GnwtVzMNzpV3Ko+ZTDO5aOwiFbt+m0Cn5
-   w==;
-X-CSE-ConnectionGUID: 9U7z0699T06InBqMMlM4vw==
-X-CSE-MsgGUID: Gdwhu485R8y+czbUGg6ziw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94683315"
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="94683315"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:44 -0700
-X-CSE-ConnectionGUID: B7OjnqsRQEixcvKJEwnbxg==
-X-CSE-MsgGUID: dfLIyfHYTAKDobdyePXMlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="254160487"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:30 -0700
-Message-ID: <a8b4641f-ae3b-4b19-81e5-84e3c05b9760@intel.com>
-Date: Tue, 30 Jun 2026 20:19:27 +0800
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BNwV8HFm;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id AF05D600C3;
+	Tue, 30 Jun 2026 12:28:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B8A81F000E9;
+	Tue, 30 Jun 2026 12:27:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782822482;
+	bh=NIGB1rJOCZO/oJ70bNZ8JWihrkKz/XdZhvsbS/SGNYk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=BNwV8HFmVbRpnN67ZOGxIRi3Wk0MqvEDbhpwZzG+RqZPg1J9NWypCBYpTnx3uIkgB
+	 jdXVZSTXX6J2SX4ajP6WufCk5WOshSUjKNeVt2RJvavHy5/nRpaoRzdfPH2BtQgCsX
+	 faTrDO/fOQSpCxh/vCw6/mXoLLI24VNuMvOODskEH5acusTG/h8HkPHoueWFyIdye5
+	 4FBvu8q2wyHpbEzfKfjyE9J6T2MlJb6VoWfiTa91yEZjlbIYUiNd2tm4CU2xBZm71n
+	 vKwnieSiu+IVBTfYEd7QSJPjDkuApTTEm5IGQlEUCGeJ7QIQ2WM3LZAbQ4ek4bxT7U
+	 IYR3GetozsN7Q==
+Message-ID: <2ace7cea-ebe3-46bf-822e-ec30c15066d5@kernel.org>
+Date: Tue, 30 Jun 2026 14:27:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
- GFN private/shared status
-To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
- binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
- david@kernel.org, jmattson@google.com, jthoughton@google.com,
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
- shivankg@amd.com, steven.price@arm.com, tabba@google.com,
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
- aneesh.kumar@kernel.org, liam@infradead.org,
- Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
- Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-coco@lists.linux.dev
-References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
- <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Subject: Re: [PATCH v3 01/16] mm/page_alloc: rename ALLOC_TRYLOCK ->
+ ALLOC_NOLOCK
 Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
+ <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-1-57bef0eadbc2@google.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <20260629-alloc-trylock-v3-1-57bef0eadbc2@google.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9h94c8kk7xk69opcwpitgytw8fuaz58w
-X-Rspamd-Queue-Id: 7B5044000E
+X-Stat-Signature: b6swypoeg4qjcun7b65n196onxqqx46m
+X-Rspamd-Queue-Id: 807AE180007
 X-Rspam-User: 
 X-Rspamd-Server: rspam01
-X-HE-Tag: 1782821985-398984
-X-HE-Meta: U2FsdGVkX19uQCro52vpYnuTkCEd9V7AnH8/WZLhrHr3Puwr2ip5pfw9K4855LVnnhiUcfJy0B/NNd71d4V3PNpKBk+AmDxDP0z1vi0JerIVZw1aQ0ij784pFYUD8Il1c/2GANApAm16wevAG53VKjGp9hR4VaQZWS1DchXKumrDflk6WjW9mvKsRX3LVvOU7meTTxFo/v2+4pdWkt+5VLDDu5axWr51D1O6cGtX6kP6pd1KYmVZhLAFnl9sc/A3Rr0vHmHoLZfP0I4sNAuRwL/hBDZ4gSpamgTTpTsnNJ4oX6bJ4Qc+u2gSQ+r3Pd+zGn0UdX+PcMlcnU1x60SZeoIiYUdgOUi/G+OijZBX6my4MfX3rOKBEHDzn+qUKMiYfteJ9JeKPSUy2vzPf4V5hbomd0ddhJnPLxlyJNLDv+SxttnIoQof2p8o9BhN/HzwebAhiy2qY1diZ2VebpWubvYc/cSAm1Ha7u9wGitwL485WccWmLuxIp/1jn65eucBWssISOaAn7yXYRnb4ph78mMoBC5ERxLuKuu+pT3IPWS7DdQZVQgBiRFSsZsqa+XtsPujAen1kRE/fdRqLB7CPiFrZAEsB6hCOohfx41lUCGVeRUJRw0NhK2nxj7FYOpAA9RlewDITZ7CDftVO7vbE6n0LyNrZxALMpfU3JLXyQT1q2pNAzAEb2FC2DP2TJ0MPr3HrsPUc4GbwlfnFbggM4H4D74an13tZrUvoCJykJ1v7HuVVUzY1JBatOpPahr6Sw/TMX2oRE7rLN97VepiTmyMsEIuFPwv61Ra+P0sWqejE4dOL1QynMjoGZ4eaumaYzEJKfigd7u3bruhQQHf9Pty6tPJUl3kbDTuXXRqBptuJoKYlD5gLmcLp3D82c9Jpo0/fBvdv+WJS0DhckfCCKs/DwIo9d0OP89Cq7RtshVYKkvZTZbYh0XwUxdyiHvu/zKKIZKRa9nVeDRaJQH
- MORwNNPE
- gyygyccBIO4hpq84zXvItbpHSgzM9zoeze578DuKLFraI5+hnQavhLiD7+KZPt7DqFLB+OMkazJu797FfzQCGp6FY3VWMd9dHAKXuytxrwzS4gaLwE8gNJ9m9d1MzBqL1UCu8EGNcaVlzU03+WLL8iN7Y5ZFbXftUniU0zWiB7+XGGukIYn7OTP+fVOgG1u7wxTjpVvOdcpS/Sd6TjJbfrPyWefLBk7ZkLGWPlvQJy+X2FhvKkPZY4gFTDsT/7WUvqI3S+89ZHi/n0quVLibwEOm9iqcuXcd4RCWn85TpAsMO180=
+X-HE-Tag: 1782822483-348061
+X-HE-Meta: U2FsdGVkX1/AmLO46ACAHJBOG2Q4DCvrAFmJ3G63Z9vWlzjrIjydAAdbkXWTv8/biOHEdTxIR5AHIqNFOJNbJ2DSf6H/3x/v/4vQNGhGJjZIsZwOrlwW3s8SepafPusxW8paORSCZKKnvDhFPjaqoMLeXDwXCKtQj1FZvoq9jkmc2EY5WeP7LFk9DPluWCXSau7iBr71LDYTwuBHuz4e+r76xBfOBlWmgeqYQOKklR+Q81ulCVtM7HzpL7z2r6q3/d7lHH2FY2+ITqCRHfES75VywRwSQr7fKHaI9cWaN9HfEG4BTRkBxRRJ1/DijBQR/s/RmuJVU/KjopEFTKfGlpOs12LrGyN/XswidJFFnley5IEDMBGHxzQ5fsJisyPuwUlyrz8VBHGRBVGmESATqUyAQ4tAotQj1bhNmZX5XVtCJBVl39cvfL8eE5h0Qk3j2nKVaFs9suMxmxoklY1/Ot+0Hxc88i1pdqpWPqjeMGyYgN5AKSPoBEiN0jd8/7Zjvo0o9Cl8KOAQiCIRcCdBjFQqXRFc3dUs3zW92nVOLW4CPOYVuHbBj0WHyevx9tLaw1Tik+OwImueREvsdD2p5sQF2LkaSjmtd8tLRZ6w0/h8qrYMy/CSlfD7HKSC4GMq2PI8soADSR/9sqOCSLdS3PRXjVYQBLlKduAvp+BYzkp/gz6+PkOSI6O41BWE7Eicjh9LnNEInqmHLB3NZ9cmvpNejJ19vm957p2nDGmAyxWAgtPLyG1+sBFRNN0owwWaW79gLekVJ9cBvMMdqRMyBmkJAw1vJpf1wqDXVzk4y6xmAP/XHpPoC621ZsM9c7WjsB1xUEgX6Umj2Ot8jjg2VCE+mHORaFuZtjHrA1Yy5gHd4+n9SWjlR+hPXSBYsPlTYOcvL7+7niIcI9jhG1c9rukWOyU5tNHh23+7gHyf0mb1G2MOLqaOFMIOrhIrQRgkWNdNM5qtGPGMUUBktC1
+ FPMq0n3o
+ dOER7Podx0NlLDkNs6RR7WkQPXwzmM7h0cnTuYZlgPqaJkzyPKU51qY8FIxJ1LPGmoaRSZt2TGSgK0je2ID5KnQt6wC8G1qcbjfvRPuMBZhL+1klBPP9Qxq0FgXkvI5cOo/WLleRN/Go1BgU5YuHWO2HfavW/u0a2xAWCjXHISnEjo2/APHsWwqEi6/EjLl9ItRVVIAsNJIE9G5yo2xNkMnD+aSenUtadGwx02x0cZ5Spv3aaSIvyyvkBbUmpRZynFcS2+/w49d1C3VtrVi9LNJwzi98C1AerEY8sG6HLxPSrKEE4B2yukGuL1wXBKryVBnyPK7eUTk0F60S1H9CttkB8cMfZHnC4q4nLgCNGvivrfkwY+kdRYyqjEN5WIQiDJ1drHlHULgbz1oWBs3XSxlpziXv352/Yz8q/73V2zwKwsic=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,84 +152,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+On 6/29/26 15:11, Brendan Jackman wrote:
+> It's confusing that the function is called "nolock" but the flag is
+> called "trylock", align them.
 > 
-> Introduce function for KVM to check the private/shared status of guest
-> memory at a given GFN.
+> The function's terminology is more visible and has more mindshare so use that.
 > 
-> This will be used in a later patch.
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Suggested-by: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+> Link: https://lore.kernel.org/linux-mm/2399b3ad-4eac-4a14-94c3-27e9f07972a1@kernel.org/
+> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+> Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 
-With binbin's comment resolved,
-
-Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
-
-BTW, it looks better to move the patch 01 just behind this one.
-
-> ---
->   include/linux/kvm_host.h |  2 ++
->   virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
->   2 files changed, 33 insertions(+)
-> 
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 3915da2a61778..27687fb9d5201 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -2575,6 +2575,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
->   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
->   
->   #ifdef CONFIG_KVM_GUEST_MEMFD
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
-> +
->   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->   		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
->   		     int *max_order);
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 8101f64e0366f..bca912db5be6e 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
->   	return 0;
->   }
->   
-> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
-> +{
-> +	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-> +	struct inode *inode;
-> +
-> +	/*
-> +	 * If this gfn has no associated memslot, there's no chance of the gfn
-> +	 * being backed by private memory, since guest_memfd must be used for
-> +	 * private memory, and guest_memfd must be associated with some memslot.
-> +	 */
-> +	if (!slot)
-> +		return 0;
-> +
-> +	CLASS(gmem_get_file, file)(slot);
-> +	if (!file)
-> +		return 0;
-> +
-> +	inode = file_inode(file);
-> +
-> +	/*
-> +	 * Rely on the maple tree's internal RCU lock to ensure a
-> +	 * stable result. This result can become stale as soon as the
-> +	 * lock is dropped, so the caller _must_ still protect
-> +	 * consumption of private vs. shared by checking
-> +	 * mmu_invalidate_retry_gfn() under mmu_lock to serialize
-> +	 * against ongoing attribute updates.
-> +	 */
-> +	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
-> +}
-> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
-> +
->   static struct file_operations kvm_gmem_fops = {
->   	.mmap		= kvm_gmem_mmap,
->   	.open		= generic_file_open,
-> 
+Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
 
