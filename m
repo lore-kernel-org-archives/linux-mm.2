@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB514C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F39C5C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:13:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C99216B00B3; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
+	id EC4EE6B00B6; Tue, 30 Jun 2026 03:13:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C497B6B00B5; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
+	id E50636B00B7; Tue, 30 Jun 2026 03:13:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B87466B00B6; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
+	id D16D96B00B8; Tue, 30 Jun 2026 03:13:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EAAF6B00B3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:08:33 -0400 (EDT)
+	by kanga.kvack.org (Postfix) with ESMTP id A20756B00B6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:13:06 -0400 (EDT)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 034E1C0DA4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:08:32 +0000 (UTC)
-X-FDA: 84935700906.26.4C77D4C
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2FF6C180009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:08:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hViBR5Uv;
-	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1C291C1E45
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:13:06 +0000 (UTC)
+X-FDA: 84935712372.26.DE538B8
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 3A69A1C0007
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:13:03 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=U7jSTV9Y;
+	spf=pass (imf18.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782803311;
-	b=0DiwdbNFBK/3b7ckOCQKQp28E2ivxRkw+ul6XBAZY+g6TQ9qhi9mwJ+T+1ujgjyFZzQ1fv
-	2bAuy1jEMaYk/nLVZxDzzFFfeoStp1ezQtSSk2G2XeQJEvyKVE/ncfGL/9Vm0+r0f68XKg
-	zb+h7rVO2DWrG+cyOzTKmQNKWpSsQFI=
+	t=1782803584;
+	b=H411jhmywR3OR6bFtK5mWl2jBOyql8mtn84lDa9DSYfYvwxOpHiJW7n/Rxh7R/lxcutkbW
+	BhZ9u+LY4+frHYCA+LuzfDyhdJxGERiZ3rSrp2eERSD/flDAxdaXXQZBSoqgLwjLpkmcIN
+	javwzLb0Z84mM/7u2JyTJsQCiNwPVbs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782803311;
+	s=arc-20220608; t=1782803584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hXdPeX2+7qN5ub3mcG+kJHEMmnJwkrYDh/ryOV+/3Yg=;
-	b=jMT4uHP+UjK/mPO0dK5KGBrUQv9x2gVb9pH5XbKfn4IhH8nTINgCPodCI8bqKH0PiZ4qWe
-	oggX4HmifQjTyoKaV5NHtnoDAxpLm6ZQLzlzr0pjJKWKqQMBDx0IDGsKJ99KLSOPeh1+2d
-	jvVI5NRK50+Yd0D0B96lG7EtO0ZFHk4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ltn8huQzDTLXUab9Q5n+aJGIzC9O84HSVZQu7VwWF48=;
+	b=LE680+uEB1dHSbxGS6gfiNu50rWjaElrVYUN0Ah9nGFPCbSa13HaSfBBvhsc3YACyzvAnX
+	1wwaIOLgKiagABhRZKJFTuqBSlKL9DpvbK4KijlrzoDwOK5cf7JXvdOWYh1YuxSKUGFy2M
+	cwcNVtflZdR02zc5O2cIjH3e55BIWZk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hViBR5Uv;
-	spf=pass (imf06.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782803309;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hXdPeX2+7qN5ub3mcG+kJHEMmnJwkrYDh/ryOV+/3Yg=;
-	b=hViBR5UvUdT7nGsXrBxPl03yAEZMoubM5R9RrdfLXs68t3+p8flYdpVUN7nKMYiG2TkOwM
-	LV6nY1SJCLzVhq2K7O2w4fvmOxyM8esaP4/HbP8pxibi6iuwn4nls/b7509vvm1f3kOufC
-	2gnny18rvWu5EBrdvfi204f+xUWqgKw=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v9] mm: fix ASSERT_EXCLUSIVE_BITS by passing memdesc_flags_t by pointer
-Date: Tue, 30 Jun 2026 15:08:10 +0800
-Message-ID: <20260630070810.470763-1-hui.zhu@linux.dev>
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=U7jSTV9Y;
+	spf=pass (imf18.hostedemail.com: domain of peterz@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ltn8huQzDTLXUab9Q5n+aJGIzC9O84HSVZQu7VwWF48=; b=U7jSTV9Y9V8TPzGDfgpk+Nc3iQ
+	N51s2r0UBvtoa5D5Cwqa1wU/zyBEV0nJDoaH72pn7R1vMzMTjOWVMOTWdvAVrPaym0wUfyk3K3vOv
+	WK+VzKtrfRhtgOQwEJRceav6gmuPgAkhSYFsr6krFi6gcL1rs37IS/Y3EyYt/Lytc3kofSJs9gQED
+	dmeJ11zvvjXpkOjC0SYKqqpBJx3ZFBPdXknV4qClRrJjfPfHUlK7kLPOGg582MnAk8mUe/w67uhnI
+	C3/NqqVIf/cgWaXb+EILlhOs0+BrNKwZAR/CWqVYH62uROyL+X6uc/wEaFmmip8y6IpU0b4dtd85C
+	pNaW6ZcA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1weSeR-00000004TzX-0PFH;
+	Tue, 30 Jun 2026 07:12:59 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id EC4A930036F; Tue, 30 Jun 2026 09:12:57 +0200 (CEST)
+Date: Tue, 30 Jun 2026 09:12:57 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	linux-hardening@vger.kernel.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
+	Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
+	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
+	Yan Shoshitaishvili <yans@asu.edu>
+Subject: Re: [PATCH] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+Message-ID: <20260630071257.GQ1181229@noisy.programming.kicks-ass.net>
+References: <20260626173444.2252041-1-xmei5@asu.edu>
+ <yu6l7zo4dmqcnho7thkf7sk42lt6xkz6uxxwxmg73x23vihlnp@pe7vdut4o2jc>
+ <CAPpSM+Qwmv_wsNFnEjtk3GbLdZB_JtH5vW0v-Cj-CyiE8M_UEw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2FF6C180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPpSM+Qwmv_wsNFnEjtk3GbLdZB_JtH5vW0v-Cj-CyiE8M_UEw@mail.gmail.com>
 X-Rspam-User: 
-X-Stat-Signature: jdk3t6acpfzag34e8pyfann3rq1hdo84
-X-HE-Tag: 1782803311-793594
-X-HE-Meta: U2FsdGVkX1/xy89RgQsvO8PxtoyBJQUu9XYCVwCDVrbSd8zrb3FFVMzpPEP5RGz5nzT1ZcYeOKvc5na7NDnYfZ7+58ppqXIhentAMlBGRibWgzjCKQ8rYwvOaRi9b7Cy1cEo+12p6dGEhI4EOAgiL9EXMUh3EnoPEbZqlK4i6CMwQ18QqSf5VzvQ4FqwNK7OU4S3MD2zV86oxacOO7X1cYcSWZWoU+aG3sPm3wOpmK4SO6F2ojsgpyaY/OZTOgzXxanRS08fnXISY7zX9CtjoxkozwnKHMqq0vxii54hSMyXb0fK8WoatHIHdU/PlksOVMvMqvVk6R6L4tIS1Omy90O53nVWYkk/7fc2yowxoJCDjiOmaLsLFFZfCbETcEbxvnWbnSW8kH79jqxq/pGt3NEy8il4N9moRxUV4WPRyPWFo5S2UISkaoqBb0A8jrm+rStNB86eiEd/p0VipMeXkm1IlfQ1Y5jGw1ofZ/c0EZfjDWeemAnabzxVJnXDwEAohhxf+zXZhg8NMv4vyJH44kTnVcFi5SJCEVJHktYQrOyPPMdCqTuB/sPkmeyeihyio4Cq7XnjF1y+S9SiesnngD/TnqC1DOft12xNqrj9TSSM7Ock2qlm9TupnWxdOXwesminBSE9SEkUcrhYIhfsm1KXEIolwfPZczzCT7UPa+Y2x8Rnwvu8NLSsbC7yE+6fOVErB7JdimpuPmaBbBEh3U/NRh14YVzCjMfMek/dKFlKj8ENgs+jyDJepabSpU0b4PSY141q6Cy9T4lKQQOcxHGjyk5wUtylds7tV6FBDTVk5Hf4RX3jXYI5s9G7m1RyQJec8mRzAWNSGs0DirG1ycSNJSIiK3byBykGhL3bObARiLak+yiTuRpGb3Yu5eq7gXIQKIRv8+cPdcoMR9pi+YkRaHr/QT7k3dCPlFqidvIQVX+fKUCwbk0Y/13Uo/gcQ3oFg40oHttHFpynVK5
- Xx23rUa7
- tHJnzxx9aY0QVO7rCkbgGXgd4lati4lztC8QOwcjn/wOLl/a9UGKQMsxcuhTmc/CTtd2FzOFOurz7SpWtu3tY2hEvO7nMrrqKqaxNYPulZEME6LJWRqya3/seD/Yzh2b+BOZFT33yzdCzX3fjxzzyHE6089zULxyTUgaFDMOhi+fMF6//AK2m9fNaGoSOCoumH5bs6+0BojRU+Y1fGluSq5j3WG/X8gu0wseqeDdZSyBP1sEF/JPSW0g/CVIwZzfAEg+TmVh8JpLRvURv8SJBp3fu9Q==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3A69A1C0007
+X-Stat-Signature: hb87tondog5ud9so5ggpcxqtug6y6ue8
+X-HE-Tag: 1782803583-668938
+X-HE-Meta: U2FsdGVkX1/YhA0E28Ewyo85Rlr7O3TkkwGQoPztgUF/+LBxHsgfHQbOiRIFG/r3WgufDxYmnCoilflW88ZPV/zL9u2qyizyNlpMKiu0KUuVy5wHuW8kJqtAcPPTZyotNyi9ZNYr0YZHWxp0xyA5l4foMewSn71sNJx4JIKkEY2nOZeBPS+KLd50sHXKEVDifOVP1eI7XSmUA/5HoDgG25YJJYvuGAmNpqsKLIX+qq/ALfzQjP+FOu8rsx4Zvh7gNTwsR/bz1QJotxBqQTIzlj9ZYpR8So+Wf5TkIM2bscUvHAyYU9EsSBt884f5gdqeUj+scwBUfGF17OSeHJ/jVADvMtNfcgI4i+xwRV4vLUiCKRjen4y2QQ7wUlg4HocA6kp/8sVbS+S6e1VxVbK/mn7uj4z+OOxGzbkn15FbsF+jpRDMzF5s8+r0nmMbT2YY1QegNFAXBcMxEvLqwXn1LEs/G8j3XYMdQp36phmnNAYBv4QOgwZ7n6Nf/BIAx5+mkZF8oINS4lrg9/KMd2Xrl+bPgVE0LOiz78O3IrJV5AbbmZVa/afARJP5G1tgdMpG1FxxhWO82PZFNpLjFtkRUpy+zlHgQuR3t4+9Cn9PCRk1PAkHq2qUg1hZfTMxEcC3DfXWZ6tXuWoI5EAQyL5/Blja86p4ao0HRte3VRPrj4+9EQmc4xnsPgP/6n2P4jPOhK3pXXde3z9KiEebt2VVacw4XDaU8HKSbgjX4ZL8UYKwsTQTacVBs/t1FJdBuyYwS+ErTMNKyuVA16uTWQT+mmqbYcb54gS3skt+e659fTCsBDvegS+nyZxUAivLEbHeoZEwf+TT7bEhzmcIlZ4Ky1Qp3glC+FbCh9PMdQ8KH5LeP6gwF97iEVCQIygfP6/0qofDmjziKPqKhx4lDfYkEgw4pVPZnW7zbu7p8O8Dl/WvLPKa0k2VZr11mwnvxN5hgNvAaGhwLX9KXj176b0
+ coe11a4M
+ dPt40NipVI+WvUjEcy0qK/OkJknQakPf2ORQNkRcTXrf88q+8pK01svS2o9TxyR7dbL/FsNpn5abIkCIOxmptEpKPsauwedpxW1gls9A1iSWsEHS6thUCmXXKG+DPdwaJ8wALrcCDRXgMU+zS28nMm9SKGAs2pbMTZmW0e9UhzF8/v+PGEMkQMjTFmX/Wyuq7Pwkx4MTpBq6mmlDITAqzyFGtqaSqlTKkPjHUpsvzaaFfv48=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,336 +104,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+On Fri, Jun 26, 2026 at 10:48:46AM -0700, Xiang Mei wrote:
 
-KCSAN reports a data race between page_to_nid()/folio_pgdat() reading
-page->flags and folio_trylock()/folio_lock() concurrently doing
-test_and_set_bit_lock(PG_locked, ...) on the same word, e.g.:
+> >   - The displacement is attacker-chosen (via the immediates) up to 0x100ff,
+> >     so the pivot can clear any guard narrower than that in one step.
+> >   - ENTER is reachable as a gadget, so a pivot of this size is available
+> >     without depending on register state at the hijack site.
+> >   - The pivot happens after the control transfer, so it is not constrained
+> >     by forward-edge CFI (kCFI / FineIBT).
 
-  BUG: KCSAN: data-race in __lruvec_stat_mod_folio / shmem_get_folio_gfp
+> Please ignore this line; it is not related since we assume we already
+> have a CFH primitive. Sorry for the confusion.
 
-The race is benign: nid/zone bits are set once at page init and never
-overlap with PG_locked.  However, ASSERT_EXCLUSIVE_BITS() inside
-memdesc_nid/zonenum() was checking a by-value copy of the flags word,
-not the live page->flags, so it failed to annotate the real access.
+So I am still confused by all this. CFI does remove a ton of CFH
+primitives. Until we have Shadow Stacks sorted, ROP will obviously be
+the main alternative, but I'm really struggling to justify adding 16
+guard pages rather than going after any actual control flow hijacking
+primitives.
 
-Change memdesc_nid(), memdesc_zonenum(), memdesc_section(), and
-memdesc_is_zone_device() to take a const memdesc_flags_t * and update
-all callers to pass &page->flags / &folio->flags, so
-ASSERT_EXCLUSIVE_BITS() operates on the actual shared word.
+I mean, if you have a reliable CFH, we should be fixing that. But
+somehow I'm thinking that if you do have one, ENTER isn't going to be
+the worst of it.
 
-Guard the ASSERT_EXCLUSIVE_BITS() calls in memdesc_zonenum() and
-memdesc_section() under ZONES_WIDTH != 0 / SECTIONS_WIDTH != 0 to avoid
-a zero-mask check on configs where the corresponding field is absent.
-Under CONFIG_NUMA=n, stub out page_to_nid() and folio_nid() as plain
-"return 0" instead of reading page->flags when NODES_MASK is 0 and the
-check can never fire.
-
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
-Changelog:
-v9:
-Add the SECTIONS_WIDTH check to memdesc_section.
-v8:
-According to the comments of Andrew, include kcsan-checks.h in mm.h.
-Incorporate David's patch that switch memdesc_nid(), memdesc_zonenum(),
-memdesc_section() and memdesc_is_zone_device() to take a const
-memdesc_flags_t * instead of using a per-accessor macro/call-site hack.
-Update all callers accordingly and extend the same exclusive-bits check
-to memdesc_section() and memdesc_is_zone_device(), guarded by
-SECTIONS_WIDTH != 0 / reusing ZONES_WIDTH != 0 to avoid zero-mask checks
-on configs without the corresponding field.
-v7:
-According to the comments of Sashiko, restrict the memdesc_nid() macro
-to CONFIG_NUMA, keeping a plain "return 0" static inline stub otherwise,
-and re-add a local page pointer in page_to_nid() to avoid evaluating
-PF_POISONED_CHECK(page) twice.
-v6:
-According to the comments of David, turn memdesc_nid() from a static
-inline function into a macro so ASSERT_EXCLUSIVE_BITS() can check the
-caller's page->flags/folio->flags directly.
-v5:
-According to the comments of Sashiko, guard the ASSERT_EXCLUSIVE_BITS()
-calls with #ifndef NODE_NOT_IN_PAGE_FLAGS (for nid) and #if
-ZONES_WIDTH != 0 (for zonenum).
-According to the comments of David, avoid calling
-PF_POISONED_CHECK(page) twice in page_to_nid().
-According to the warning of lkp, switch the CONFIG_NUMA=n
-page_to_nid()/folio_nid() stubs from macros to static inline functions.
-v4:
-According to the comments of Andrew and Sashiko, set
-page_to_nid()/folio_nid() as static inline stubs returning 0
-under CONFIG_NUMA=n.
-v3:
-According to the comments of Andrew and Sashiko, move
-ASSERT_EXCLUSIVE_BITS out of memdesc_nid()/memdesc_zonenum()
-into the page/folio call sites.
-v2:
-According to the comments of David, remove useless comments and use
-ASSERT_EXCLUSIVE_BITS() in memdesc_nid() instead of data_race() in
-page_to_nid().
-
- include/asm-generic/memory_model.h |  2 +-
- include/linux/mm.h                 | 42 ++++++++++++++++++++++++------
- include/linux/mm_inline.h          |  4 +--
- include/linux/mmzone.h             | 26 +++++++++---------
- mm/page_alloc.c                    |  6 ++---
- mm/slab.h                          |  2 +-
- mm/sparse.c                        |  2 +-
- 7 files changed, 56 insertions(+), 28 deletions(-)
-
-diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-index efa6610acbc7..f8404bc7773c 100644
---- a/include/asm-generic/memory_model.h
-+++ b/include/asm-generic/memory_model.h
-@@ -53,7 +53,7 @@ static inline int pfn_valid(unsigned long pfn)
-  */
- #define __page_to_pfn(pg)					\
- ({	const struct page *__pg = (pg);				\
--	int __sec = memdesc_section(__pg->flags);		\
-+	int __sec = memdesc_section(&__pg->flags);		\
- 	(unsigned long)(__pg - __section_mem_map_addr(__nr_to_section(__sec)));	\
- })
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 485df9c2dbdd..60722c42a622 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -37,6 +37,7 @@
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
- #include <linux/iommu-debug-pagealloc.h>
-+#include <linux/kcsan-checks.h>
- 
- struct mempolicy;
- struct anon_vma;
-@@ -2286,23 +2287,45 @@ static inline int page_zone_id(struct page *page)
- }
- 
- #ifdef NODE_NOT_IN_PAGE_FLAGS
--int memdesc_nid(memdesc_flags_t mdf);
-+int memdesc_nid(const memdesc_flags_t *mdf);
- #else
--static inline int memdesc_nid(memdesc_flags_t mdf)
-+#ifdef CONFIG_NUMA
-+static inline int memdesc_nid(const memdesc_flags_t *mdf)
- {
--	return (mdf.f >> NODES_PGSHIFT) & NODES_MASK;
-+	ASSERT_EXCLUSIVE_BITS(mdf->f, NODES_MASK << NODES_PGSHIFT);
-+	return (mdf->f >> NODES_PGSHIFT) & NODES_MASK;
-+}
-+#else
-+static inline int memdesc_nid(const memdesc_flags_t *mdf)
-+{
-+	return 0;
- }
- #endif
-+#endif
-+
-+#ifdef CONFIG_NUMA
-+static inline int page_to_nid(const struct page *page)
-+{
-+	const struct page *p = PF_POISONED_CHECK(page);
- 
-+	return memdesc_nid(&p->flags);
-+}
-+
-+static inline int folio_nid(const struct folio *folio)
-+{
-+	return memdesc_nid(&folio->flags);
-+}
-+#else
- static inline int page_to_nid(const struct page *page)
- {
--	return memdesc_nid(PF_POISONED_CHECK(page)->flags);
-+	return 0;
- }
- 
- static inline int folio_nid(const struct folio *folio)
- {
--	return memdesc_nid(folio->flags);
-+	return 0;
- }
-+#endif
- 
- #ifdef CONFIG_NUMA_BALANCING
- /* page access time bits needs to hold at least 4 seconds */
-@@ -2541,12 +2564,15 @@ static inline void set_page_section(struct page *page, unsigned long section)
- 	page->flags.f |= (section & SECTIONS_MASK) << SECTIONS_PGSHIFT;
- }
- 
--static inline unsigned long memdesc_section(memdesc_flags_t mdf)
-+static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
- {
--	return (mdf.f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
-+#if SECTIONS_WIDTH != 0
-+	ASSERT_EXCLUSIVE_BITS(mdf->f, SECTIONS_MASK << SECTIONS_PGSHIFT);
-+#endif
-+	return (mdf->f >> SECTIONS_PGSHIFT) & SECTIONS_MASK;
- }
- #else /* !SECTION_IN_PAGE_FLAGS */
--static inline unsigned long memdesc_section(memdesc_flags_t mdf)
-+static inline unsigned long memdesc_section(const memdesc_flags_t *mdf)
- {
- 	return 0;
- }
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index a8430a7ae054..efcddb9925ad 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -650,7 +650,7 @@ static inline bool vma_has_recency(const struct vm_area_struct *vma)
- static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
- {
- 	struct page *cur_page = pages[0];
--	unsigned long section = memdesc_section(cur_page->flags);
-+	unsigned long section = memdesc_section(&cur_page->flags);
- 	size_t i;
- 
- 	for (i = 1; i < nr_pages; i++) {
-@@ -660,7 +660,7 @@ static inline size_t num_pages_contiguous(struct page **pages, size_t nr_pages)
- 		 * In unproblematic kernel configs, page_to_section() == 0 and
- 		 * the whole check will get optimized out.
- 		 */
--		if (memdesc_section(cur_page->flags) != section)
-+		if (memdesc_section(&cur_page->flags) != section)
- 			break;
- 	}
- 
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index ca2712187147..e60dad546ca6 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1272,31 +1272,33 @@ static inline bool zone_is_empty(const struct zone *zone)
- #define KASAN_TAG_MASK		((1UL << KASAN_TAG_WIDTH) - 1)
- #define ZONEID_MASK		((1UL << ZONEID_SHIFT) - 1)
- 
--static inline enum zone_type memdesc_zonenum(memdesc_flags_t flags)
-+static inline enum zone_type memdesc_zonenum(const memdesc_flags_t *flags)
- {
--	ASSERT_EXCLUSIVE_BITS(flags.f, ZONES_MASK << ZONES_PGSHIFT);
--	return (flags.f >> ZONES_PGSHIFT) & ZONES_MASK;
-+#if ZONES_WIDTH != 0
-+	ASSERT_EXCLUSIVE_BITS(flags->f, ZONES_MASK << ZONES_PGSHIFT);
-+#endif
-+	return (flags->f >> ZONES_PGSHIFT) & ZONES_MASK;
- }
- 
- static inline enum zone_type page_zonenum(const struct page *page)
- {
--	return memdesc_zonenum(page->flags);
-+	return memdesc_zonenum(&page->flags);
- }
- 
- static inline enum zone_type folio_zonenum(const struct folio *folio)
- {
--	return memdesc_zonenum(folio->flags);
-+	return memdesc_zonenum(&folio->flags);
- }
- 
- #ifdef CONFIG_ZONE_DEVICE
--static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
-+static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
- {
- 	return memdesc_zonenum(mdf) == ZONE_DEVICE;
- }
- 
- static inline struct dev_pagemap *page_pgmap(const struct page *page)
- {
--	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(page->flags), page);
-+	VM_WARN_ON_ONCE_PAGE(!memdesc_is_zone_device(&page->flags), page);
- 	return page_folio(page)->pgmap;
- }
- 
-@@ -1311,9 +1313,9 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
- static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
- 						     const struct page *b)
- {
--	if (memdesc_is_zone_device(a->flags) != memdesc_is_zone_device(b->flags))
-+	if (memdesc_is_zone_device(&a->flags) != memdesc_is_zone_device(&b->flags))
- 		return false;
--	if (!memdesc_is_zone_device(a->flags))
-+	if (!memdesc_is_zone_device(&a->flags))
- 		return true;
- 	return page_pgmap(a) == page_pgmap(b);
- }
-@@ -1321,7 +1323,7 @@ static inline bool zone_device_pages_have_same_pgmap(const struct page *a,
- extern void memmap_init_zone_device(struct zone *, unsigned long,
- 				    unsigned long, struct dev_pagemap *);
- #else
--static inline bool memdesc_is_zone_device(memdesc_flags_t mdf)
-+static inline bool memdesc_is_zone_device(const memdesc_flags_t *mdf)
- {
- 	return false;
- }
-@@ -1338,12 +1340,12 @@ static inline struct dev_pagemap *page_pgmap(const struct page *page)
- 
- static inline bool is_zone_device_page(const struct page *page)
- {
--	return memdesc_is_zone_device(page->flags);
-+	return memdesc_is_zone_device(&page->flags);
- }
- 
- static inline bool folio_is_zone_device(const struct folio *folio)
- {
--	return memdesc_is_zone_device(folio->flags);
-+	return memdesc_is_zone_device(&folio->flags);
- }
- 
- static inline bool is_zone_movable_page(const struct page *page)
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index ee902a468c2f..020a97ca018e 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6904,15 +6904,15 @@ static void __free_contig_range_common(unsigned long pfn, unsigned long nr_pages
- 			continue;
- 		}
- 
--		if (start && memdesc_section(page->flags) != start_sec) {
-+		if (start && memdesc_section(&page->flags) != start_sec) {
- 			free_prepared_contig_range(start, i - nr_start);
- 			start = page;
- 			nr_start = i;
--			start_sec = memdesc_section(page->flags);
-+			start_sec = memdesc_section(&page->flags);
- 		} else if (!start) {
- 			start = page;
- 			nr_start = i;
--			start_sec = memdesc_section(page->flags);
-+			start_sec = memdesc_section(&page->flags);
- 		}
- 	}
- 
-diff --git a/mm/slab.h b/mm/slab.h
-index 281a65233795..9ded319495a0 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -179,7 +179,7 @@ static inline void *slab_address(const struct slab *slab)
- 
- static inline int slab_nid(const struct slab *slab)
- {
--	return memdesc_nid(slab->flags);
-+	return memdesc_nid(&slab->flags);
- }
- 
- static inline pg_data_t *slab_pgdat(const struct slab *slab)
-diff --git a/mm/sparse.c b/mm/sparse.c
-index 16ac6df3c89f..8e3847764513 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -43,7 +43,7 @@ static u8 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
- static u16 section_to_node_table[NR_MEM_SECTIONS] __cacheline_aligned;
- #endif
- 
--int memdesc_nid(memdesc_flags_t mdf)
-+int memdesc_nid(const memdesc_flags_t *mdf)
- {
- 	return section_to_node_table[memdesc_section(mdf)];
- }
--- 
-2.43.0
-
+Or am I missing something here?
 
