@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E4EC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:08:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 526DFC43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 19:08:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 375EA6B00A9; Tue, 30 Jun 2026 15:08:54 -0400 (EDT)
+	id 0DDFD6B00AB; Tue, 30 Jun 2026 15:08:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B1346B00AB; Tue, 30 Jun 2026 15:08:54 -0400 (EDT)
+	id 067316B00AC; Tue, 30 Jun 2026 15:08:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00DBA6B00AC; Tue, 30 Jun 2026 15:08:53 -0400 (EDT)
+	id E23046B00AD; Tue, 30 Jun 2026 15:08:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CAF166B00A9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:08:53 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5A905C31DF
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:08:53 +0000 (UTC)
-X-FDA: 84937516146.26.DC86444
+	by kanga.kvack.org (Postfix) with ESMTP id BF4B86B00AB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:08:54 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44796C259A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:08:54 +0000 (UTC)
+X-FDA: 84937516188.04.53905C0
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 0EE1AA000A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:08:50 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WGwIqLFl;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id B90D8C000D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:08:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1WM+4YXQ;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782846531;
-	b=bymFQsrDw2VZfmf9tPq4VDz8/Cn5vnfxlesZuBFGJ8zPYsbji2Q+3bF9hoD4o8HpOG7RAU
-	HmdnygkK4rajm4MZzaptk2i5zEUyshNbcvjcZRkuqVuNsG3oHun8Poh1UQikiNFPzY+6K0
-	j42+oxiNIFUzeOLaYI/WDX2netM0Ppo=
+	t=1782846532;
+	b=VyyggmYDeG6/cZJ4r7b6pbiV0Q2w/4gxGwTzfrWE0+bBm7lF0LwCx5leziYrPjFkLa0siW
+	ZbSd3SzZF23iM/hYDgD0uhfX451h0irJjDCntSXutV/V9buvQhFaP1kKe2n/gA4c9Gp6yR
+	q4m0frexAg80FgY8o9B2Mp5prUiIXSw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782846531;
+	s=arc-20220608; t=1782846532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O4S/rOt0mQDvJh08Ktp/PKJyybrhsHg85P0NQ476Smw=;
-	b=GZWaKyFHZ6UyzvKsFeYGKsg56mhlwyIpeR5VlwpdQCIwQQCYg7ZpmLbVGp4PxKXFLkSGU7
-	62wqHgRsjlp4RaVjXpfpnRJlzzveC6CjWXb/JE9N0yAUDlYMrmV70hHHsHgERnbhDMzKVp
-	TpkdtdbP9hNY4wLJd4WRhXbY8lh6kuQ=
+	bh=aXIlw04Se2hX/aKthZw8BiKv6Mt5ehHJi6aH4pkx9RI=;
+	b=1+J99nJey+RXsVBt2EFNRP5tDt6Ax7DzBfqiRE8FSBc+RjhBxTpwshsN+kWbttZPZD8kYq
+	lQx+CjE9UQosvAawl38PWPxNJUJwFVk4H7VrpmX8TserYGdhlECkLuhmdKmrMwqZvK4T/8
+	wcVoDV0onn9ZXjDQ/Na1f1u95RqktQo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=WGwIqLFl;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=pass (imf15.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=1WM+4YXQ;
+	spf=pass (imf10.hostedemail.com: domain of liam@infradead.org designates 198.137.202.133 as permitted sender) smtp.mailfrom=liam@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=O4S/rOt0mQDvJh08Ktp/PKJyybrhsHg85P0NQ476Smw=; b=WGwIqLFlDwZ5JZPv0BhXDurfle
-	08py/jYDLaG8gINguhfsz8aTa297dgVKY/LNvLkIXdVVtpxHQqmywBayfb43JCPiFsoJihisu1LYd
-	2fHI+GODn5v1ZoBf/lRwfG+zVLW3dg2+GK7n1r4kwFDVp43uJbCHpaKdYFv/6YQM6NiBySOabTmIy
-	jIqbHHJbkfMdcHpPNhcWvbFc/1RX/1hOLfDVWnlvUlLOnbKwGRusFrhk6nZWvnDFn6v/2FFWBBJPQ
-	U+9HSjt37GGoem449lQ+gkQr8O9fZ0fFilM2BAuprWsXHV9GqT93EEfd3ioYqRuVLDI/LeFEj0Bfd
-	JdoEqRrw==;
+	bh=aXIlw04Se2hX/aKthZw8BiKv6Mt5ehHJi6aH4pkx9RI=; b=1WM+4YXQPJPDbRIjTk0M/7bztQ
+	8Rlm2vWDXi20vNo0Aq7WtexVEwkrv27reISMuwEo1JMw4YhJitzGe1H6XaHDlEC2WQdZ0lJ85nbxx
+	okvNe/+NkHquTN+2niWGnBXRFSixWYa4ziGT4m3S6Z+FMx+QfjP1ci+jV9kYxD0R4QJW5hKEBQUOV
+	9xZRyz1337Y4+QHdx3NKYM2h8ueA0DrMwkMJVjEt/4xXl/ub3t/KS/rqmG++ShtT4xiY8cdO9fQTJ
+	js52qWWgvWR0L251ZtPzmVfo0phdSOCDLM9km8AxMPc4Ysen0+A/Cj32tb/NHQZx6Df13jn7R0+VO
+	mvUTwosQ==;
 Received: from [38.23.173.23] (helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wedpC-000000005oV-0DGl;
-	Tue, 30 Jun 2026 19:08:50 +0000
+	id 1wedpD-000000005pU-2sLJ;
+	Tue, 30 Jun 2026 19:08:51 +0000
 From: "Liam R. Howlett (Oracle)" <liam@infradead.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	maple-tree@lists.infradead.org,
-	"Liam R. Howlett (Oracle)" <liam@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH v2 02/19] locking/lockdep: Add sequence counter to held_lock
-Date: Tue, 30 Jun 2026 15:08:26 -0400
-Message-ID: <20260630190843.3563858-3-liam@infradead.org>
+	"Liam R. Howlett (Oracle)" <liam@infradead.org>
+Subject: [PATCH v2 03/19] maple_tree: Add write lock checking with lockdep sequence numbers
+Date: Tue, 30 Jun 2026 15:08:27 -0400
+Message-ID: <20260630190843.3563858-4-liam@infradead.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260630190843.3563858-1-liam@infradead.org>
 References: <20260630190843.3563858-1-liam@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 9uyfmwm139hyyz3pe73dzbq517zth7d6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0EE1AA000A
-X-Stat-Signature: riqouypaznmunar88exwokkdmgxjmnos
-X-HE-Tag: 1782846530-438923
-X-HE-Meta: U2FsdGVkX1+2tSq8KrxbrL3GAoVyQjScnIeZUh2xM5zNzG/LSWmyePTtte6EwpUnNe2oR3t8FvFrJO/dRWMOctU6gRWGhqRAqlgbXsOkWWQ0W4czS60H0E+LupQKetwqMurfbr2UlLK26mqbT2l4CY+mm0y28XvIBaWyTw1dvI7C53vOSNbR3SEA3kTH14m4y0YHFyRynmCsUn4M808tLEMbWTjEGkWjQwwSqS55udSuI33kUIcdQK65cBIvRFzdvx3XUOyb1PzQogryjNcI5waLXGxaXz4s7X0rdo1EuLrKiZKdSPzFP27olO2O01bLzqW1tFcHJdMvP5E0xv2CFYYl9YrHQ6L3CHRxfo39Liv2iiP48Nd5mQaph0cqi60zIXh8SHZO3ww48bYbO9ld5G2+rjl97wm7mjOPwg35C+IURlgHl7bgmgfVRA3B8hEX5LqqYv4C3AK66w3E311gTa1zHIfOCuJjGorh3yAWTC1YTEBuV3kumYLhL1N1btmd+Pgxu8QV1XBkvRytYP/k0pBXKkIP9uIwkIReLZdyOgQbkoavmEBmN0Qo07JAUfz8KJyIczf3JiILfOuXPbSy6uUq9qtdzTBj2CW5VBRLigXF4iI4l9ehMnLFV49+xiPjH12dXctDKMvC2vpn5OeUBQZmZV1bTEn0kWo+RpR/1pWVOCos3qxp7/ImuATgDWfXi+yKFJGPof/q+Fb/NSjl2d0Ta2oYsly37v8umxUv5glkY2Sy92Jr+uXMulK8a07PD76FimCZQS5SLd296ZuOLKrYeLMb5vzO6h9QOcQYWlyMlZ7xD/UIZkxWlCprR+xkJqp3t7YibxvFygS0t6T7qDEoJ0P14GXEJzA6eRxGYOfBcY5JR7+FaXnGBpf4teDm+1njmxeVjpmxupm9aT+PZ0H9N9c2I5QGoJJ8EDkuc9a92UJaLvhPoXctEWjKI7SNcpgtCEQhu0WCwXUmdz8
- LGS4my6y
- CzrkpcEp4ULV7Chupn3J8GDUNBDrHsZM5Ciipibqqwmakd8VQdXS38ox0dLdV3cUu9ab/CWpawAUj5iBIYLpVVqA9ZLQ+ywEWpZVqUiDaYKESIEzSmWKBa43kLSZ4jNlEPDg6kwYTWT8Sb5B3U8XOZkirqEEvQjlPlWyPxbsU6OhOqOFNgwLdFoxvUbkX/wlQgL1NRa+IpKzz/jYDdp+LfrWY9QrXvMbm9/8UDfmlz7qa2OLHN9nEZc24OZrI0qhzvwBh9TMFMWFSP8ICwB1pHQ//l26u1SFjZwSp4IKTO+OgJYWSUiD9uWKvHyJAqnhwR2Mo6GIesGKR+GzXTLdeaU4JAaq1Kq64waDD5Brovw0Vpp2R2IbhIPlQUaVP7bBiHuF5eciTNj47dgiRW8UdkmBwqFK5L7FgxLzddKc0jqiG4ho5KLp/BHIBzQgG6Db77MnGHUJCyFW5kNq1A+D0ai+yngVkn5EW1+QUi2WOw3odty4=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B90D8C000D
+X-HE-Tag: 1782846532-315224
+X-HE-Meta: U2FsdGVkX182NfZ4q5SbliQIqaw4pICVJnemWrKuKHg6LlnN+E3wmrVRJUr4HwEWlxmz5F5XFdY5a5PU6H4/wM5D/4dyjCB6rLEIZeZZ9SzqYYa+wU99tE8DibBoNkAoQQcqO9aYuUzg2MKk9R1ztGyXz05UEHJScLRoa3xUlai5uwHcjVtuAtFHZRX+7tiw/SlB670dt439205xcCqMS3AhXZh2lQ7Z4WYmvJxjo34TEB++qeh94cVuy2RueBrL3xdpg9xXMUyzo2mpkN1BhdKUdytmJ1HeroAjLcGVbQkheMUWGwIqpHqhPLbnF4aUGV6tg2N36uNnWwn4ytcuBBW2uNtaOsFRuu01ysYLWUMUFV+qIwKaHCUoaHjgw1Bz2a8j+9Oikmz/Y2FUvVJtddV5XgDqEPqWGEfcEjPXXskj0f5+awaaYD7MTjBnXDQAAWC8iwIV+shLv2dpGecz25eTaM+Gy1QLKvxNS6VRL3FzPLU67COE3Rlokcy7pT531SYhKTfMF1cBPNIUcc/Z2g4W5IBM1NgZcskVvRi0hj7McFabSf0O7hiK2a60KzvDrKFlc0jVFfHGi3Z8M9j1m19woE4M6KsH/kc0uF3ZXhE4ToMIcpYRjqqhM+jVyD/6rbPvJlk7sWilGYtGFzzAKIo68H9DpoxnkDxYj4TwHfn8UAx4ySWMeWM6LacTWfStzYHJaFyj3hLPt0OFAIxwZNVnmt4jKgQftUFZyntyZ9LGmgfUf38zo+3r0Fep176cghUSxk5fPdlq5JHJU5KDGZDoLwywAJ4r9ND7WqFGGIFmZVJFqYZuV1BHyg02iCKmxLyeZMG1NBiEztaqG4kcW8ypvlkwW1dwzyHEswMnSkKcPpPSiRsAOKsw3PBoAzXcXlI4IJx+bzHaZAsCOyko+DSfXKmfWnTwXhophZxJtEzOni3MAUa0F13ycPjWs/ErMHjh6SX/4++Rr16tLJG
+ OHRk4Aor
+ wSpSzZnBilGtdxtTJ84TVevRBgRJ/KcKhNBAWeD6zh98PzOpucKVtTNE876u44399j6PTxlL6O/W1Zc6QxTJW3Y1mXzjtZ8sUGqbMjdk4z0mSwQXi39XzF5WLlQj1bA42paruLLrtg1vmrapUAikRchq/L4nWa2GyqawXOs3SHm6/MaiOZc8/WlMO3aP8JzGVcXIfJVijSY0E99L1Y8aJW11I/7LUbYlxXtYKVFB9v/8om1/JfuzrqJvRy1/VtNvxuOSAozaaVn4rFvT/jDbD1V44Aq6TfALwmzjsZPHjoXguVrSfqT2qQ5acWomY4viy5mp2JIHOj8S8jK+S7AKfXCT/wA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,192 +91,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an 8 bit small sequence counter to the held_lock struct to detect if
-the lock as been dropped and reacquired.  This is useful when a data
-structure depends on a constant locking context, but is not able to
-detect locking and unlocking of the lock through its own API.
+Use the lockdep sequence numbers to ensure the write lock is not dropped
+between write operations.  The lockdep sequence is recorded on any walk
+that starts from the top of the tree and re-checked prior to any
+operation using an active node.
 
-Since the __lock_unpin_lock() will no longer detect underflow by casting
-the unsigned int to a signed int, update the casting code to use a temp
-variable for calculations using a signed int.
-
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Waiman Long <longman@redhat.com>
-Link: https://lore.kernel.org/all/h3tpnj5kzcrxms5picmimtkpg4aypcpip5wbd6bt2rpdj5k7eb@nhtzs3lefrkq/
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
 Signed-off-by: Liam R. Howlett (Oracle) <liam@infradead.org>
 ---
- include/linux/lockdep.h       |  3 ++
- include/linux/lockdep_types.h |  3 +-
- include/linux/sched.h         |  1 +
- kernel/locking/lockdep.c      | 58 ++++++++++++++++++++++++++++++-----
- 4 files changed, 57 insertions(+), 8 deletions(-)
+ include/linux/maple_tree.h |  7 +++--
+ lib/maple_tree.c           | 58 ++++++++++++++++++++++++++++++--------
+ 2 files changed, 51 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 621566345406d..a6451ecbbe9a0 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -273,6 +273,9 @@ extern struct pin_cookie lock_pin_lock(struct lockdep_map *lock);
- extern void lock_repin_lock(struct lockdep_map *lock, struct pin_cookie);
- extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
- 
-+extern u32 lock_sequence(struct lockdep_map *lock);
-+#define lockdep_sequence(lock)	lock_sequence(&(lock)->dep_map)
-+
- #define lockdep_depth(tsk)	(debug_locks ? (tsk)->lockdep_depth : 0)
- 
- #define lockdep_assert(cond)		\
-diff --git a/include/linux/lockdep_types.h b/include/linux/lockdep_types.h
-index eae115a264885..55c4b152fedf7 100644
---- a/include/linux/lockdep_types.h
-+++ b/include/linux/lockdep_types.h
-@@ -253,7 +253,8 @@ struct held_lock {
- 	unsigned int hardirqs_off:1;
- 	unsigned int sync:1;
- 	unsigned int references:11;					/* 32 bits */
--	unsigned int pin_count;
-+	unsigned int pin_count:24;
-+	unsigned int seq_count:8;
+diff --git a/include/linux/maple_tree.h b/include/linux/maple_tree.h
+index 11a16c3508dc0..220b380cdd491 100644
+--- a/include/linux/maple_tree.h
++++ b/include/linux/maple_tree.h
+@@ -485,9 +485,12 @@ struct ma_state {
+ 	unsigned char mas_flags;
+ 	unsigned char end;		/* The end of the node */
+ 	enum store_type store_type;	/* The type of store needed for this operation */
+-#if IS_ENABLED(CONFIG_LOCKDEP) && IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD)
++#ifdef CONFIG_LOCKDEP
++	u32 ld_seq;
++#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+ 	unsigned long rcu_gp;
+-#endif
++#endif /* CONFIG_RCU_STRICT_GRACE_PERIOD */
++#endif /* CONFIG_LOCKDEP */
  };
  
- #else /* !CONFIG_LOCKDEP */
-diff --git a/include/linux/sched.h b/include/linux/sched.h
-index 373bcc0598d10..14d5ce8dd6136 100644
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1288,6 +1288,7 @@ struct task_struct {
- 	u64				curr_chain_key;
- 	int				lockdep_depth;
- 	unsigned int			lockdep_recursion;
-+	unsigned int			lockdep_seq;
- 	struct held_lock		held_locks[MAX_LOCK_DEPTH];
- #endif
+ struct ma_wr_state {
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 3dff0435c13a7..e2f7474572319 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -1153,40 +1153,71 @@ static inline void mas_free(struct ma_state *mas, struct maple_enode *used)
+ 	ma_free_rcu(mte_to_node(used));
+ }
  
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 2d4c5bab5af88..a69567bdd7912 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -5077,7 +5077,7 @@ static int __lock_is_held(const struct lockdep_map *lock, int read);
- static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
- 			  int trylock, int read, int check, int hardirqs_off,
- 			  struct lockdep_map *nest_lock, unsigned long ip,
--			  int references, int pin_count, int sync)
-+			  int references, int pin_count, int sync, int seq)
+-void mas_lock_check(struct ma_state *mas)
++
++#ifdef CONFIG_LOCKDEP
++static struct lockdep_map *mas_lockdep_map(struct ma_state *mas)
  {
- 	struct task_struct *curr = current;
- 	struct lock_class *class = NULL;
-@@ -5183,6 +5183,7 @@ static int __lock_acquire(struct lockdep_map *lock, unsigned int subclass,
- 	hlock->holdtime_stamp = lockstat_clock();
- #endif
- 	hlock->pin_count = pin_count;
-+	hlock->seq_count = seq;
- 
- 	if (check_wait_context(curr, hlock))
- 		return 0;
-@@ -5388,7 +5389,7 @@ static int reacquire_held_locks(struct task_struct *curr, unsigned int depth,
- 				    hlock->read, hlock->check,
- 				    hlock->hardirqs_off,
- 				    hlock->nest_lock, hlock->acquire_ip,
--				    hlock->references, hlock->pin_count, 0)) {
-+				    hlock->references, hlock->pin_count, 0, hlock->seq_count)) {
- 		case 0:
- 			return 1;
- 		case 1:
-@@ -5669,14 +5670,17 @@ static void __lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie cookie
- 		struct held_lock *hlock = curr->held_locks + i;
- 
- 		if (match_held_lock(hlock, lock)) {
-+			int pin_count;
++	struct maple_tree *mt = mas->tree;
 +
- 			if (WARN(!hlock->pin_count, "unpinning an unpinned lock\n"))
- 				return;
++	if (mt_external_lock(mt))
++		return mt->ma_external_lock;
++
++	return &(mt->ma_lock).dep_map;
++}
++
++#endif
  
--			hlock->pin_count -= cookie.val;
-+			pin_count = hlock->pin_count - cookie.val;
+-#if IS_ENABLED(CONFIG_LOCKDEP) && IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD)
++static void mas_lock_check(struct ma_state *mas)
++{
++#ifdef CONFIG_LOCKDEP
++	struct lockdep_map *map;
+ 	if (!mas_is_active(mas))
+ 		return;
  
--			if (WARN((int)hlock->pin_count < 0, "pin count corrupted\n"))
--				hlock->pin_count = 0;
-+			if (WARN(pin_count < 0, "pin count corrupted\n"))
-+				pin_count = 0;
- 
-+			hlock->pin_count = pin_count;
- 			return;
- 		}
++#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+ 	if (!mt_locked(mas->tree)) {
+ 		if (mt_in_rcu(mas->tree))
+ 			WARN_ON_ONCE(poll_state_synchronize_rcu(mas->rcu_gp));
  	}
-@@ -5684,6 +5688,24 @@ static void __lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie cookie
- 	WARN(1, "unpinning an unheld lock\n");
+-#endif
++#endif /* CONFIG_RCU_STRICT_GRACE_PERIOD */
++
++	map = mas_lockdep_map(mas);
++	if (map && lock_is_held(map))
++		WARN_ON_ONCE(mas->ld_seq != lock_sequence(map));
++#endif /* CONFIG_LOCKDEP */
+ 
  }
  
-+static u32 __lock_sequence(struct lockdep_map *lock)
-+{
-+	struct task_struct *curr = current;
-+	int i;
+-void mas_init_lock_check(struct ma_state *mas)
++static void mas_init_lock_check(struct ma_state *mas)
+ {
+-#if IS_ENABLED(CONFIG_LOCKDEP) && IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD)
++#ifdef CONFIG_LOCKDEP
++	struct lockdep_map *map;
++#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
+ 	if (!mt_locked(mas->tree)) {
+ 		if (mt_in_rcu(mas->tree))
+ 			mas->rcu_gp = get_state_synchronize_rcu();
++		return;
+ 	}
+-#endif
++#endif /* CONFIG_RCU_STRICT_GRACE_PERIOD */
 +
-+	if (unlikely(!debug_locks))
-+		return ~0;
-+
-+	for (i = 0; i < curr->lockdep_depth; i++) {
-+		struct held_lock *hlock = curr->held_locks + i;
-+
-+		if (match_held_lock(hlock, lock))
-+			return hlock->seq_count;
++	map = mas_lockdep_map(mas);
++	if (map && lock_is_held(map))
++		mas->ld_seq = lock_sequence(mas_lockdep_map(mas));
++#endif /* CONFIG_LOCKDEP */
+ 
+ }
+ 
+ static void mas_may_init_lock_check(struct ma_state *mas)
+ {
+-#if IS_ENABLED(CONFIG_LOCKDEP) && IS_ENABLED(CONFIG_RCU_STRICT_GRACE_PERIOD)
+-	if (mas_is_start(mas) || mas_is_paused(mas))
++#ifdef CONFIG_LOCKDEP
++#ifdef CONFIG_RCU_STRICT_GRACE_PERIOD
++	if (mas_is_start(mas) || mas_is_paused(mas)) {
+ 		mas_init_lock_check(mas);
+-	else
+-		mas_lock_check(mas);
+-#endif
++		return;
 +	}
-+
-+	return ~0;
-+}
-+
++#endif /* CONFIG_RCU_STRICT_GRACE_PERIOD */
++	mas_lock_check(mas);
++#endif /* CONFIG_LOCKDEP */
+ }
+ 
  /*
-  * Check whether we follow the irq-flags state precisely:
-  */
-@@ -5866,7 +5888,8 @@ void lock_acquire(struct lockdep_map *lock, unsigned int subclass,
+@@ -4869,6 +4900,7 @@ void *mas_store(struct ma_state *mas, void *entry)
+ {
+ 	MA_WR_STATE(wr_mas, mas, entry);
  
- 	lockdep_recursion_inc();
- 	__lock_acquire(lock, subclass, trylock, read, check,
--		       irqs_disabled_flags(flags), nest_lock, ip, 0, 0, 0);
-+		       irqs_disabled_flags(flags), nest_lock, ip, 0, 0, 0,
-+		       ++current->lockdep_seq);
- 	lockdep_recursion_finish();
- 	raw_local_irq_restore(flags);
- }
-@@ -5914,7 +5937,8 @@ void lock_sync(struct lockdep_map *lock, unsigned subclass, int read,
++	mas_may_init_lock_check(mas);
+ 	trace_ma_write(TP_FCT, mas, 0, entry);
+ #ifdef CONFIG_DEBUG_MAPLE_TREE
+ 	if (MAS_WARN_ON(mas, mas->index > mas->last))
+@@ -4927,6 +4959,7 @@ int mas_store_gfp(struct ma_state *mas, void *entry, gfp_t gfp)
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 	int ret = 0;
  
- 	lockdep_recursion_inc();
- 	__lock_acquire(lock, subclass, 0, read, check,
--		       irqs_disabled_flags(flags), nest_lock, ip, 0, 0, 1);
-+		       irqs_disabled_flags(flags), nest_lock, ip, 0, 0, 1,
-+		       ++current->lockdep_seq);
- 	check_chain_key(current);
- 	lockdep_recursion_finish();
- 	raw_local_irq_restore(flags);
-@@ -6000,6 +6024,26 @@ void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie cookie)
- }
- EXPORT_SYMBOL_GPL(lock_unpin_lock);
++	mas_may_init_lock_check(mas);
+ retry:
+ 	mas_wr_preallocate(&wr_mas, entry);
+ 	if (unlikely(mas_nomem(mas, gfp))) {
+@@ -4957,6 +4990,7 @@ void mas_store_prealloc(struct ma_state *mas, void *entry)
+ {
+ 	MA_WR_STATE(wr_mas, mas, entry);
  
-+u32 lock_sequence(struct lockdep_map *lock)
-+{
-+	unsigned long flags;
-+	u32 seq = ~0;
-+
-+	if (unlikely(!lockdep_enabled()))
-+		return seq;
-+
-+	raw_local_irq_save(flags);
-+	check_flags(flags);
-+
-+	lockdep_recursion_inc();
-+	seq = __lock_sequence(lock);
-+	lockdep_recursion_finish();
-+	raw_local_irq_restore(flags);
-+
-+	return seq;
-+}
-+EXPORT_SYMBOL_GPL(lock_sequence);
-+
- #ifdef CONFIG_LOCK_STAT
- static void print_lock_contention_bug(struct task_struct *curr,
- 				      struct lockdep_map *lock,
++	mas_lock_check(mas);
+ 	if (mas->store_type == wr_store_root) {
+ 		mas_wr_prealloc_setup(&wr_mas);
+ 		goto store;
+@@ -4989,6 +5023,7 @@ int mas_preallocate(struct ma_state *mas, void *entry, gfp_t gfp)
+ {
+ 	MA_WR_STATE(wr_mas, mas, entry);
+ 
++	mas_may_init_lock_check(mas);
+ 	mas_wr_prealloc_setup(&wr_mas);
+ 	mas->store_type = mas_wr_store_type(&wr_mas);
+ 	mas_prealloc_calc(&wr_mas, entry);
+@@ -5474,7 +5509,6 @@ EXPORT_SYMBOL_GPL(mas_find_range);
+ static bool mas_find_rev_setup(struct ma_state *mas, unsigned long min,
+ 		void **entry)
+ {
+-
+ 	switch (mas->status) {
+ 	case ma_active:
+ 		goto active;
 -- 
 2.47.3
 
