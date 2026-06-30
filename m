@@ -4,143 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8398C43638
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:24:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBAD4C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:27:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B2406B00AE; Tue, 30 Jun 2026 06:24:10 -0400 (EDT)
+	id 9758C6B00AB; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 610EF6B00A9; Tue, 30 Jun 2026 06:24:10 -0400 (EDT)
+	id 926C16B00C4; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4643E6B00B0; Tue, 30 Jun 2026 06:24:10 -0400 (EDT)
+	id 83D816B00C5; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 17FDD6B00AB
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:24:10 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ECE2C2209
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:24:09 +0000 (UTC)
-X-FDA: 84936193818.27.3E8D806
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 67FCF1C000B;
-	Tue, 30 Jun 2026 10:24:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="F6AsC/aT";
-	spf=pass (imf20.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B55A6B00AB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:27:20 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7C8C1A03D0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:19 +0000 (UTC)
+X-FDA: 84936201798.23.357BD4C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 26DB78000C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:27:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ij0/X3OB";
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782815047;
-	b=EEGlAQd760oM4Sz47z8Q76zuXBsC1TPk8n5zaP35ZaRood21W+tsTpQju1ZUKrwYNV617P
-	ssDhyIENP5qDO1YfH96DwdrYttu0tUba6LqwNljEyGB+X+TRaLh7tCrWQSrZxhp7MdTiVu
-	KD6JKl1//tHos9a6xU87nWrupiriIdQ=
+	t=1782815238;
+	b=zHHxZyh0J/VHYz9RFePKzihwwV2ehIgN0GbYEtCVtQF15f6jpNUZsGEpR1FYyLIjk5EDKS
+	qJD/b5R6Ha90YgSis8/BNK+0/TAyHfWeZtLSeYG3/x0LDcoNPaRZQD4E+WijsFkLFm7/S1
+	cxegvjEDG9X0O04lqE6hm12NFJtZeqU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782815047;
+	s=arc-20220608; t=1782815238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yYZN8QcmTZB0XuTqOpasOlloDru9xfoOYzlyz+jRrVI=;
-	b=H/McqgCzQ7J4sTChOOuaPqwBzswHdS+ht+8v5TVvDxrcNtbBs2OYkPRMRoR0UFAJ9Zjrco
-	DPvaNBfedCmMdmtCFXUbgjBtzj5g6X0wWnJojKM4KW2ZzDPOVQdOXpYV05cdmFRINTSWZi
-	ZiaOJlWgDexut5i91Tz66GujnyvTRaA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=+nYWrX07JlaFQzXJIQgj7pMrZxgun/XWbsUf+czLcVM=;
+	b=HlcCvf6wJWnugb8kirhYD9p8+7WVHlSBPN0ELjlBvQFVFgyEogXuYOJXA+lGbrQ+9lW11h
+	BP4o2kdn8O4Wm5lXHdXHmXL02TSj3+NezKj6Sr+Z4lKV6d9IavHl3/PLkhGGZCCKcZNHC3
+	9WaBkh24yUL+LVadtwySlR00g0vsXWY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="F6AsC/aT";
-	spf=pass (imf20.hostedemail.com: domain of jani.nikula@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=jani.nikula@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1782815047; x=1814351047;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=ktunQaDDS5EVOVO47fVPmptPD5p+avnAGjEgEXLkbp0=;
-  b=F6AsC/aT90NURy+nIBMPDQ9d0+/chwhGF8cLyA69gB2+vHBgThgQS5du
-   MwRBomZ51VBPfWj1CxiGTHW18hBmuypZ3BLzMmM26hr2eYoXtWdzH2vp9
-   9zp93Fl+V0HKnr4X4xhBX3Do8oxDL+p/jvap4t7FwWAiZVyvG9mwDrY1K
-   IonbJKHpRX7ltJuM2U9GR2bRsjSQ88+pzQwCllfbu0/VSTwOgvNFBI2H7
-   UTmuL54fZswHci0/P3xqEPXp5XuVwMrqDvtiagKyRUmm08juW+ThebUV6
-   sLm7OgAbVyzwtQjQc9BfBG6oBfARZzzXDlQqPNIf4Oq4OnR3r3pSOnBRg
-   A==;
-X-CSE-ConnectionGUID: xNVt2M09Tj6yRoQ0OC2Uig==
-X-CSE-MsgGUID: KGG4tawdR0O/MbIYQWPJWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="83581407"
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="83581407"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:24:04 -0700
-X-CSE-ConnectionGUID: jgq2xSQuTZCC6QLcUYS3Dw==
-X-CSE-MsgGUID: Tgh3e1tLRQ2N4h0xSzOsDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
-   d="scan'208";a="245877673"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.148])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 03:23:47 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Lorenzo Stoakes <ljs@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Lucas Stach
- <l.stach@pengutronix.de>, Inki Dae <inki.dae@samsung.com>, Seung-Woo Kim
- <sw0312.kim@samsung.com>, Kyungmin Park <kyungmin.park@samsung.com>,
- Krzysztof Kozlowski <krzk@kernel.org>, Peter Griffin
- <peter.griffin@linaro.org>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, Rob Clark
- <robin.clark@oss.qualcomm.com>, Dmitry Baryshkov <lumag@kernel.org>, Lyude
- Paul <lyude@redhat.com>, Danilo Krummrich <dakr@kernel.org>, Tomi
- Valkeinen <tomi.valkeinen@ideasonboard.com>, Sandy Huang
- <hjc@rock-chips.com>, Heiko =?utf-8?Q?St=C3=BCbner?= <heiko@sntech.de>,
- Andy Yan
- <andy.yan@rock-chips.com>, Thierry Reding <thierry.reding@kernel.org>,
- Mikko Perttunen <mperttunen@nvidia.com>, Jonathan Hunter
- <jonathanh@nvidia.com>, Gerd Hoffmann <kraxel@redhat.com>, Dmitry Osipenko
- <dmitry.osipenko@collabora.com>, Zack Rusin <zack.rusin@broadcom.com>,
- Matthew Brost <matthew.brost@intel.com>, Thomas Hellstrom
- <thomas.hellstrom@linux.intel.com>, Oleksandr Andrushchenko
- <oleksandr_andrushchenko@epam.com>, Helge Deller <deller@gmx.de>, Benjamin
- LaHaise <bcrl@kvack.org>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev
- Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang
- <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, Kees Cook
- <kees@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- dri-devel@lists.freedesktop.org, etnaviv@lists.freedesktop.org,
- linux-arm-kernel@lists.infradead.org, linux-samsung-soc@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
- freedreno@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- linux-rockchip@lists.infradead.org, linux-tegra@vger.kernel.org,
- virtualization@lists.linux.dev, intel-xe@lists.freedesktop.org,
- xen-devel@lists.xenproject.org, linux-fbdev@vger.kernel.org,
- linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- linux-sound@vger.kernel.org
-Subject: Re: [PATCH 08/13] mm: introduce vma_get_page_prot() and use it
-In-Reply-To: <3bb8bdc4788230c33102166d56cbc5abfad9d4cb.1782760670.git.ljs@kernel.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1782760670.git.ljs@kernel.org>
- <3bb8bdc4788230c33102166d56cbc5abfad9d4cb.1782760670.git.ljs@kernel.org>
-Date: Tue, 30 Jun 2026 13:23:44 +0300
-Message-ID: <d6d75626287ddd46d7da136cf013f7b21b1afc06@intel.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Ij0/X3OB";
+	spf=pass (imf30.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4CC6A4164E;
+	Tue, 30 Jun 2026 10:27:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8490A1F000E9;
+	Tue, 30 Jun 2026 10:27:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782815237;
+	bh=+nYWrX07JlaFQzXJIQgj7pMrZxgun/XWbsUf+czLcVM=;
+	h=From:Subject:Date:To:Cc;
+	b=Ij0/X3OBsv649sZ8kUBK6iRv04bfxCQxZGiGivCgRzUNKGeChGY+I0CCIa9sghyEc
+	 jMrnPZauWJQqdYAqzmbKDLhMyM5mbK6fpZ4X6y/y2GfnT3G10Oxd20S9b9SR3iyQzL
+	 ll9EepMUa5oiFSwf2gryT8CzTFwIRnhbsCg7oMx7oagY3kgPlXp/cEYKGURy+Sdgdk
+	 wEjsO4KcsAMqCY9XTmrHwRKA5n/2jq1vT7paXv5V+pZK8rY999MXTwj1vFeiZCi5nK
+	 kgdApegIUZh7szoho2xgHudVWOR7H6HvaWCOEP/soHPG5jGWEviVA1xqpZoyzR+d2N
+	 Rz3nEbH++LePQ==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 0/2] USB: replace __get_free_pages() with kmalloc()
+Date: Tue, 30 Jun 2026 13:27:07 +0300
+Message-Id: <20260630-b4-usb-v1-0-8d547235c374@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 67FCF1C000B
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPuZQ2oC/yXMsQ6DMAwE0F9BnmvJpFEGfqViiIMp7hCqGKpKi
+ H9vUsZ3ursDTIqKwdAdUOSjpmuu6G8dpCXmp6BO1eDIBQp9QPa4GyPfyaUonshPUMvvIrN+/0e
+ P8bLt/JK0tXVrcDRBLjGnpUWNcJ4/kEcGLYEAAAA=
+X-Change-ID: 20260616-b4-usb-b302cae4004d
+To: Alan Stern <stern@rowland.harvard.edu>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mike Rapoport <rpppt@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-usb@vger.kernel.org, 
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+X-Mailer: b4 0.15.2
 X-Rspam-User: 
-X-Stat-Signature: yhi7s7pue3iqkshrh651tq3k3wxopthw
-X-HE-Tag: 1782815046-807022
-X-HE-Meta: U2FsdGVkX1+oudVAdzF+VnYlZ6SD4hZ8diQogwfnsIDLbzR4kDUcc5QHc7q2W8wKOLCuhGzLEHUmZBNIkDgf16GKvO36jd5yntRA6MDEKSnEw8kzlIzgUWbGsLoJCKDWDXz6IVreEh/w83NKXJpVM+oVKduFg0r4mGZGdyUfxpEHfx12pz8avWh4bblRujfjfG7nIUFif+58RTMUh6AaKEl6w4uGf0LJ40GHTWDxzH0gH79dYYEHOXLKbT0OhW0QlxARmarMmkJnvnp6ETvxe51T12bqf6vibFCCB7/jmnrbWHuIT7rcNUULUbM6nTfRnirCaBv3AD8wFwbzTumKmM10BRYFb8R2NcJtwzVfi3dOEOYLzqCK2NMQI5JMfjeWHbkQ46PcVj6OYZTLTi4TsPyaHWw2P6c1ob/60MX9F/m/a/+k3fiLyWHOQGRN7nUa/cKePUjGP8PtkMrA2EimUXwZ5d6lILoTt5gGExjU9ArcjwQhDN/yYAQBMr45BkGz7504isRhoMkMzviUqBdGQmOcK8sHWg8lzISrmugvdxVGWOgywB33emYZyK/35yLMJSisAWqgi8C7DAFDECrS7vTmThqY6TR0gkgA97O4b85qZiF9CuDcnUDHc9KWcg+oCtIOlkZY5mc0cEC6yltCKhQ+vH6YDIPx+87+OTawzWIDg/JiejV90o3i7ceQYUX9+0IKGouN90COY4KfNEZTiV8rn8UhzAyn57IkX6shoS4EtEr0siO3dzh9tdZ7g2yAvfYp0LukzFbLsScNhNm6YeTi3/kwdunWaFILzBZDRciO80HNFTOwXUDoGklKaMV9Vsc3ZDlA0J+i/IVJs4fw7i4+HikNL7EV8n/wzwxvEJG/JYaGxyQtnCwjEJ721swtakuw41YQLOckokGzUjDCy5Mtwt5P8525L36mtgZW0ruQUMVA6Shs7kpzITjfQU4YuqY8uUkaS7p2U8I4TQB
- O5cF5A+N
- Pb4etOjurK9ZcVZwhi0kos97pEGiy95xuKlnDN0T2RUGPCiWPbX+jf8KjpUOAJaD1BY9RRLqelE3Q2xd0eEGmNMTYI4F346B1XsHWXAre5LmS0bqpITqkbWBav3Oz2iBLAbRboJjKLDRchUAP+aLwTFAzpOvwOQGCY5uXzZLW3OLf2l6IQNqmltEMSsYVGmb0EQwxlEycODXrHqzoCw7RXLHEx4gVPUspH02aeCbOVzGMg782BG0tlFr862uXZzo/cZW8F30Gyxxjq6vYb3n4R4dB/XyM2ISUknJt/NthUMtKIWK0sbduxIzaNYHDHv+F2UDAofUEtmxyEvxgFnx0lIeGfZm8bfbbqoGPyEF1mD/gM0zj8MQnQ12C2dFhCjjERnJ/pCcIgEwRXFfFksMsxxZhKyr3ysl9LzYnhMQSfwNKHmVu+vFs+7HYkSJ1WuJhJAA08LanrJan1rwfYEHopQj4dCN3J2DoWzCRNRhq2aiUosrapGVQ8pO8I2PuXHSRDbbt
+X-Stat-Signature: rxfa5wyi8wuy6ygiu8nhy1e95yoew8fn
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 26DB78000C
+X-HE-Tag: 1782815238-837180
+X-HE-Meta: U2FsdGVkX19nDqd6r9VlZOvKBlvQOv285L3hG90oqTVLU/URNDKySWdw++LypkfBMz1tBr118p4h67IdmUhDHZaFFppwGXy+NWlDcqhTw6EgpEiA3PdLg3zJlOa0ZmNNhgq2VMW9TImC4bgMaFOsCbJSmUH38lX+7uxrsFkxAA7cPsjeq79cwPBqbe8JeFVhLGZHjpFYpt5djNymeW6u1f9tQdGa+RoGHw350upAhtdxl49T0eMlV7d36KTdk9WgNd5cwF2qcgaEQ+n9TPvvOZsM2gobnQqqmV8RfuvEEhyXIQQC+rT6GmD37+rtrplG5KlH7RtCGtv13G/ua88HA/yWulyrmUMc9mpQpCVkw7Em1fO0cjMrPd8X6+Vus5phE3/4XSOEbEfKp9ScIorbj0BC04B3tHGJ9GfVjd/t2Ma2/1D/x+u4RDauF/O1btwDQLqV/gEdnB36Pvaghwd7TL6W/BjfV0rQhbFVGtzUGjCIPVhs26cuog5ROoKgMUmH12pcG/Szx+wPN3s9D+ozV9NNnejj1WGc4k2r++C08gicgxMxzbCUZG/EFBYXLlTIPvGprPi368hqMCKw3bTmV0nJQFfoLHgBLN/3F0xe3mT5AZnGtz86TQqn798laVjpA1uDVva1FPqElQMLCi7zYDoFSEU1J+zlxqgdTrrxVz++4xm3brFu5q0dLMNScMqsEeFyYr2BZdNrS1/p/9KCOUnhlpe096qKUUEKV/aAEznBK6k8rTQrMjRWpvHQItKnLxyPIm4v9BH7tsFo1UfsrKxuhbkqvuqmmKmmAYO3bq/6Z9FRcnpfxIDNN/t4w3/PDDRlF97X3x6bbNEeUsIgJ3GlBQdCp1FRAzF/YQ21zpfrtxxBBw8Z9BDELqr2ubE4YOLnA29nvVriHOl50M4gUgQKPTYdFuoRYyFNJAQxDpqH3ySWPlEInPbXSrF/gctTv6PN1wztXOf3ymbIE/p
+ jYKRYoFf
+ k/QftfJXvHCVa2ZtpxrEEoWvSCTUnV/soaEcyPNr2hbaaNBN7G+TumDSKP9in9dXZWfKYyPuEg4iMWETZ3JDYikgO/4H9aZowI7eDefHUBDBnSoei/fejroK1jtpV/a52mPbqEIxKH6pOteuTGVj9fDNsrwvgrEV+T+3WFLJx60SrML2abVdjqlHGLOmZaIMf2X30gGnMIHEcwDU6ZlVxsBRnipQdp+8AdG8FiiJpkCt1Vx+tswoxMIUbCPl3XcecYvRqBYvXTb1z5XxDlO/Z7wk3NQMBTZhNvu6OymDfyxwzzLjeo1yrjY3ZQg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,15 +95,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 29 Jun 2026, Lorenzo Stoakes <ljs@kernel.org> wrote:
->  drivers/gpu/drm/i915/gem/i915_gem_mman.c    | 12 ++++++------
+This is a (small) part of larger work of replacing page allocator calls
+with kmalloc.
 
-For i915,
+My initial intention a few month ago was to remove ugly casts [1], but then
+willy pointed out that Linus objected to something like this [2] and it
+looks like more than a decade old technical debt.
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+Largely, anything that doesn't need struct page (or a memdesc in the
+future) should just use kmalloc() or kvmalloc() to allocate memory.
+kmalloc() guarantees alignment, physical contiguity and working
+virt_to_phys() and beside nicer API that returns void * on alloc and
+doesn't require to know the allocation size on free, kmalloc() provides
+better debugging capabilities than page allocator.
 
+Another thing is that touching these allocation sites gives the reviewers
+opportunity to see if a PAGE_SIZE buffer is actually needed or maybe
+another size is appropriate.
 
+For larger allocations that don't need physically contiguous memory
+kvmalloc() can be a better option that __get_free_pages() because under
+memory pressure it's is easier to allocate several order-0 pages than a
+physically contiguous chunk with the same number of pages.
 
--- 
-Jani Nikula, Intel
+And last, but not least, removing needless calls to page allocator should
+help with memdesc (aka project folio) conversion. There will be way less
+places to audit to see if the user was actually using struct page.
+
+Also in git:
+https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/usb
+
+[1] https://lore.kernel.org/all/20251018093002.3660549-1-rppt@kernel.org/
+[2] https://lore.kernel.org/all/CA+55aFwp4iy4rtX2gE2WjBGFL=NxMVnoFeHqYa2j1dYOMMGqxg@mail.gmail.com/
+
+---
+Mike Rapoport (Microsoft) (2):
+      usb: host: ohci-dbg: use kmalloc() for print buffer
+      usb: core: devices: use kmalloc() to allocate dump buffer
+
+ drivers/usb/core/devices.c  |  7 ++++---
+ drivers/usb/host/ohci-dbg.c | 11 ++++-------
+ 2 files changed, 8 insertions(+), 10 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260616-b4-usb-b302cae4004d
+
+Best regards,
+--  
+Sincerely yours,
+Mike.
+
 
