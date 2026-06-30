@@ -4,106 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B6FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:27:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60E53C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8952E6B00E4; Tue, 30 Jun 2026 11:27:30 -0400 (EDT)
+	id 518836B0100; Tue, 30 Jun 2026 11:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86CC26B00FB; Tue, 30 Jun 2026 11:27:30 -0400 (EDT)
+	id 4C95E6B0101; Tue, 30 Jun 2026 11:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AABC6B00FD; Tue, 30 Jun 2026 11:27:30 -0400 (EDT)
+	id 3DEBA6B0102; Tue, 30 Jun 2026 11:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 413D76B00E4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:27:30 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B46B8140507
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:27:29 +0000 (UTC)
-X-FDA: 84936958218.07.1998507
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0802B180003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:27:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7aOivSE;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 194ED6B0100
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:29:44 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9465E1A0517
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:29:43 +0000 (UTC)
+X-FDA: 84936963846.19.237D432
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BE66CC0005
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:29:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iuou+nPY;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782833248;
-	b=UXJn9Zmy5QTI0v6SO2LMJ0pDPuXbc9lGY4XYgUbazoK8jigIVABxI/1g7YIX+9FRPcI2MH
-	+gv9BLHr2k17ziZwYG+7JurO9M2KIF3/tvWHX5j7KgimFei00htRf8szehxs5n38KHAnlD
-	I0Se7g0+0KaG3bqH+zNo3OcamU4BSRY=
+	t=1782833381;
+	b=0g4yDnGxrNVPUT0Bg/Z8EJkC+6XYoZhSYl/KNNqM6QWZ42QEN206W48buVKmHefrOtzcyZ
+	0r0vtpGmnhXpIk/LLsWMHWTdhXWAN1jsJ1zzT2v/5JpiYB4DbI/Y2lc9Ac5F76S3QKYFo/
+	sJYZm71kVTNvpXgmRY22xzBRWvLA4b4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782833248;
+	s=arc-20220608; t=1782833381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bqY9/FD+SFdpA+iZEIeadSnbTIK2eXJ5fOqFXcgJf4U=;
-	b=Sw4d577F84FT660QasaR2p7o9gkkl9dUyEuIYUgrEYXxXhbExHEz/utokxiw87cXKKlzW7
-	OwfW38L3bbrCYs8GB2cVmogeqHHVfF5VUaC1EjvFIIzZtAEIA4LtfVf5ncGiES0e7VVs4/
-	U3VTIsy4WBTuQRdEzWIS4bbEaUOEl2g=
+	bh=wIm8RvojPbtJ3wCuhZZrx3ZQaiWkrOs55RwJFuM72dY=;
+	b=ftaVUz7IAjqbB6YvpGUwrlmzmgnp3FQSAkZpaOMSg+MXlj/98Pep6UUN8i/gTyNP2xoh2W
+	nU5SBmZjEdzaib/25YlxMc9lwVzeoEMW4x7WEXLr+WBhnKe0c/eIIIITryWB38KE/EQ4yZ
+	08q2Qwg+Eomwwmc18Un5mVxHjUf+NHA=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k7aOivSE;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 760DB60018;
-	Tue, 30 Jun 2026 15:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E5B1F000E9;
-	Tue, 30 Jun 2026 15:27:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782833247;
-	bh=bqY9/FD+SFdpA+iZEIeadSnbTIK2eXJ5fOqFXcgJf4U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=k7aOivSEBgq6tZRBRw3RtgeEr4RL4zSfJrCMvk4KTmvsrf+2CelqCFSaNkXHys8Sf
-	 r5KS3Vk4hMBeK4+q5c1IuFesi+wmICd2Yo7Hir3L6/B+WfrUl4TIeJWSLvP1jSu2/7
-	 PRu9hNtJBgUTJIykXG8Vse/XPcyw/rEuSdNzlXFfgIkYy7CsSZ5x+6Eg9yfFzJYLdS
-	 mTeXv48HxhCmPeaP3O7BYszLn6knqxn3x51AioyVsZYLuTQpcPn3pDLNbDZOXnTwp8
-	 TX+FaGD54QnMdnT4t2pn9wpQv7CiMVvDq4pAgIoIaonOQI9HuiIAXpW1QUaj5RlQd4
-	 u5X/LnufgG7Aw==
-Message-ID: <c4eab53b-c54d-4f1e-a4ff-8d86b8d32503@kernel.org>
-Date: Wed, 1 Jul 2026 00:27:17 +0900
+	imf10.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=iuou+nPY;
+	spf=pass (imf10.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-51a0188b92fso48274781cf.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1782833381; x=1783438181; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=wIm8RvojPbtJ3wCuhZZrx3ZQaiWkrOs55RwJFuM72dY=;
+        b=iuou+nPYQbX1jAOnXj0DohsrnMM+OA4uwzEuSJuLL70g+TMj0ueoBAS/rVeHDg0b0M
+         2TMpbXlUuZHnsnrEWc0LWj7LHpFOlh+qBCfr9FHh/oiYBYFSkXHTMomc5T8dxsq+8Mo7
+         3bUkpzPChexTsDYpRSBLVSkaZmPiegUtgIFti4U9DaO9RAP3sCQ+LcsPkE7pID32eudI
+         lHxlHqDT9k0uPo8apq+lx5PmT91KJC4llR3fH8ItRNWmr+Xujdn6TCCsmHqUNeUwfz86
+         liz+YnP1x5v/VbG0IjZoX7ABhiiA5EO8joKwyhj8WZUwt+uvzq6yi/ygV+7TDYjmlSkf
+         9zLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782833381; x=1783438181;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wIm8RvojPbtJ3wCuhZZrx3ZQaiWkrOs55RwJFuM72dY=;
+        b=Cwa4bZT0/s0Ic9HKgQqPm6PwR8nxTOTo1ZSWJ0nKL4CCvkqQ45rvQAIhN9pDXeCjBr
+         NaEr0nMgBi8bLDPS+H03t7xwfFqWUuRBycsSXWh2cmEf2Axu/YF/XWFz5r65hG4FMjXr
+         T998o/m0Rtde6pFNmkSLqodaTV39zMej/R3EoB3XD1CXwDOrYyl1mvvIBGuv8xwnJPFi
+         9Io9teAS3l0s+l5MxR1yjmo0ef4aZ37TqxrPUN2GXDGyfXFmUddutYcAUIk0J9TQf/be
+         bCSZxB2F4uphMSEyJWUiHaxhfHhueo+k1n+e+mECKrE9va28Oy1Z5XWnLY/IGWrZddMt
+         KrnA==
+X-Forwarded-Encrypted: i=1; AFNElJ/NQt49aj9tUSK7YKMwKbBrtgKVSK/0KAZfZY/NlXKoUvJvUxmGjlWdALaFAT9SmDjAxe3AIxNjcA==@kvack.org
+X-Gm-Message-State: AOJu0YzhiKhyS2G6Km+BfdnkX6w0ByV8AXYkB8A29T0NEPViW08goTf2
+	mfQ9gK/p4Fw7WWBm06xwPkrdstc0Yfy6OhguG4pIBAhvVxQWXEyQxK7h2YA/n1Y16HM=
+X-Gm-Gg: AfdE7cm6IZ4YvFeCYHUtE85P/KiwT2+c1+XAw+rnEbLhWivcZNY2z1WV9MpIwZm3YCj
+	B0GSehrnpLFZVFQGbAS+xb4bPqaDqBOczgm1z1ncGx41soRIindOK67f5O29fw6V+Fo9AJXA3bV
+	YG8vH0mpl6ID9SUcEeKRACuzlPllsp+MzhnunqwzVfUbZB2aUI9Z5BoAyK3UW0XNkRg6e04ygHt
+	aJZwGNk4OAolsGkJkiTd1jgdDpUHRl6L8RARp8wkR/8SyR6RrYzJpW24D12cEP06QN4I7jQDqrw
+	rFYTdGJJo+hhuuseJjfg9aZ5YqQoUzErLYPDYmsQYyk8EY7Ec6wLQgLDCiwZSgivPdDfor/69vn
+	Wpaxj/OIKYPuZ76iPanYNtyYX2n7duB4t9kLczXdX8alqFSx8Ykd5h0PgXOAG1fNCx1b2L5hvds
+	iNrAJqdOOWHA33o5D3FmWgpCxiFGIX5e8gA159yHoTz0S9cdxaYELTzd+Ll1duo90E6v2I
+X-Received: by 2002:a05:622a:5508:b0:517:5bc1:e1f5 with SMTP id d75a77b69052e-51c10521f11mr50550161cf.0.1782833380767;
+        Tue, 30 Jun 2026 08:29:40 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51c109d374fsm20272631cf.21.2026.06.30.08.29.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 08:29:40 -0700 (PDT)
+Date: Tue, 30 Jun 2026 11:29:36 -0400
+From: Gregory Price <gourry@gourry.net>
+To: "Huang, Ying" <ying.huang@linux.alibaba.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Alistair Popple <apopple@nvidia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, Neha Gholkar <nehagholkar@gmail.com>
+Subject: Re: [PATCH] mm: mempolicy: fix automatic numa balancing for shmem
+Message-ID: <akPg4ANRetbjSP_b@gourry-fedora-PF4VCD3F>
+References: <20260629163337.1264881-1-hannes@cmpxchg.org>
+ <akKyjUbFg6ETqUao@gourry-fedora-PF4VCD3F>
+ <87h5mkz33h.fsf@DESKTOP-5N7EMDA>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-To: Suren Baghdasaryan <surenb@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Danielle Costantino <dcostantino@meta.com>, Kees Cook <kees@kernel.org>
-References: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
- <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org>
- <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
- <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
- <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
- <CAJuCfpFX_sMrcTad-QGJsCV=fNyMWF=Bi6XmoHRqEAzMbWNfdg@mail.gmail.com>
- <39a79576-dcae-4b66-9478-c81dfe676699@kernel.org>
- <CAJuCfpGRC7NPxcODUsb3YS5nV=qG+-SbSYj1Fwm-QPqgKSVWAA@mail.gmail.com>
- <c5c4208d-a6f0-413e-bad9-49be12f12d55@kernel.org>
- <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
- <akPSjsbjl-UAcdI8@linux.dev>
- <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
-Content-Language: en-US
-From: Harry Yoo <harry@kernel.org>
-In-Reply-To: <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------skVAWTxerAh0fKLUMQDzBRaE"
-X-Stat-Signature: f4amcn9udkznpqe7rmuwrb463mqdzdqq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87h5mkz33h.fsf@DESKTOP-5N7EMDA>
+X-Stat-Signature: 98zdj5o9ziyyjzobepn6365txp3znfab
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0802B180003
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782833247-374191
-X-HE-Meta: U2FsdGVkX1/4Ae65yWcZ79XNKRNt9Hrh6+PLQVZKvDe8ZeoIdc8qV2GfGk5AyEde+toT/a/lTSnl8GRy/bp+wJW+2WLje2Wy6U8254QONs/2Fk25j4S530uRlXqyBW6tjvyhS8O1LRmoeckDZw3LubGqpkB9xASCZ4P7n9h4h0Qj/sclRDj74p2zgRUZnYVQDdAwVvqi8IKAxRmm+dJV2nwRslhPPNgHvR1CguSq7tvSXhNhe8NBzOgLEJJkyv+Zr9YALBXXgYScaefLGO5S9m5kx8TtoATKfABOenl1BlYExsYJBGiA82bpydlyXvenM/9+l5OIkhxZFHx9WlRqsWv7v1vEndAf56IBpswjVrp9bw1Ijdqom/q7TSBipfbZegu8/E7xUrqaxxxhLHLbPkLiXa0KDdoIuwWDn+LPcGHtOPjmp+QODNOw6ROD0nEcqxKWVPNEmBGi9qOi1uy4xtnAHYjzlpspgjX8LTy9Ugl+Rc9kLOF57Kz72jcDKHihyeQgPfMmK+Zy9BXrPfBXELd1ZAPHGKBbDk4xc/u0T22TEFixm58Kkz9BD/V8GU3MRKmKkBM/qu6NcRqHszGMVei7PmUhy6n243XBicINQQv4OUE+QmJqT+n5O90ddewfHOKljo+ixAKn1RUAb8JlfCnIXsnJ7jOhEwdiCgXnhhw34smH9EPuLEhuuM3HoceOFHoL79RuCAFFf2yrOQOlSa/d9/+dDOuK4m7gKSyCAzeaYY1W3k9CtklXejiM/1QcnPejs7kAIc4LRIvNanKhMBo/AqRIiBqZNrgprQseds4gEDbqIjvLgrREHpNqTQ/kbOwF2w+up4nPlQWYoiPE7z6jy+ljbKBC/naPrkyNMHn8oX7j1z/UVShLaRx2C0dc25ayzMouA2yHVCIObNOSYGHoyt4QEmRsMWsGARmY8tWI7vwM76sl80m+W7/j9mCliEF4DAB6xqcUCEglKoJ
- Ryb0GC1e
- iIfABdVJ9YELscufjaAQFdYuiVyQAsGZy6s5cs1Nim+vfqVPj9iieGlYPRDp1EVsP2ggKZ6seRyTdaT5Zn4XFiD0PPcLPFwym0wpmoWjkjxNKPdkZl4lCS2WqNQPvo/sgaIUdZnQbRfeG0bIJoLdJv2mWN7Ee+WNTtGFT6pUGLyHDWw6LR9y7tpKSr8AWlFOdYgNdh+x0ZJmaytEwzFgZ01v9jbvmxT3HC+C9MB2xFfCAOfCGpOvp1Yw4cLwvfm0UcjWTvz5mQvg74pCHHLEl50GH75EqCyIOcVYySBLH7D+0v6Gvym2jtKCKSyj4peJNuIzb0SriYjElXaieL8Djez1MyHEImgU8fg/0rk2X37AETaWpq17zNKqPOfEaNpQWdlKDWg9FrPQ286au49NQKa6yyXn7MMDKTZx/JJTBSNQYQdwiBxSmpaR3XR5usaZyCtAkSp3JFRxQbIkwXewm+qd7pF0wsRpudWpggTkjmK15H/qI5COnJ5z3aHMSjDtaDpm9V89vU5+b31mNH+gGOVV3y6ccLhigW8Wh/hfH/Ax+0XI=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BE66CC0005
+X-HE-Tag: 1782833381-721926
+X-HE-Meta: U2FsdGVkX192NGgHnUn0qn8k75S2LHGhps13i1Dqs+A42pG30qTYG4Lstev1LAvlSlbrgKWnwO7VkjvY5UyDsAXSvAkRsfyKnNmqzb7P2tX5WOEMFQOcIJcVGFjJYLE0+HJv/iWQ+2UzpFIhq0WI6Ydt64qS/3PTgrd3O+HsBAx7S24/0DGlPOkvSiLEqUrn2bs0e2FGDWbs+0+XoMfwLh8l8/T3msP908dKzZ1+dvxn5XwMAZFGOC65a2EcWQcvbDg6gZi/VBra92WDcYynfuSw/j9373RPbwpIuzS623oTRLOIUt4FNVKn6BN07g6NcTZRflZHJ5i55NbpQsT7vGGWPNzyH4ql9dLEcXl3PqkGFjypMl9ZxPsNGD4+1lbSZdOAaWljFCuriScu9TszwOvdBQiHTI1GACa5OwPMhg39hbRDJgBw6wAyL0wX4UhTRUgw4+0jQzgNt3ob6JpLmE4hb8wJvJoWmKtQGOS9cAQVd+SAb4CxOLY+uza/iwsB4V0HKVTW4BOc1t37DcK6LYe/vI5DZ8pmJ8DJ4/aXjwpfDgQQNV1Z/eJqGnDj44NXGImEWTZVwPOEHhJqsCVcs48Rz4cdrvyOc0MYI3S6f47imcBXphroMAtpCYHWWgJR9mVWyW/+KwcIbhW9bpQ+tVHycgmsuc2YWw7xUB9i6OKELJ2xYBoGJcsYNKdKDyGxANUED4j0PEDQCJbmb6MQwNmO/1rdMcZG/ZB6Ynu/oczPM+M9rZGVZJVh0Uym6jXoMGTr+lJ/u69mtLWrzTSsYtWAx2EP4eCVxnnT5+iSjdGrFGKBI9+es819ZI24E30sIJcung00S+UXWqhAiHB0GBCccrPY1IwPuTbsb8xK+tQD+/kkHKDRHUCHroP/jTz2gVitQXVcl01bh1KS17kQwSiNO2l/1ZNqB6lJIAbDW5zmQQmZRRUHAhOnO2XvXhgx1Cgi9WbZMPLE8z0NUzW
+ J5tYnzGt
+ NETcB3SBqlHTGMxgDdu0bOBKwVr5/S8RVj1bh4PLT2Im/zvSkUGICjiRlIa/30vvhWgmGQqRWWXbCXDeq2V6eKDUD8FTC3aW8t4/I0VaIX2+kJVhv5lvn2J5Vljw3bqcC3cph7jgaLTagrcWGKW0j++RT+idboc6A5wVLfij0QfXbfNV+jF1oYFnu4/l49L7IA7YtT4+FPFSezasx/QWBbt81j+2IpL7u+waHv3AkE3keIx5mU8UCIuPBUPNZ+Oe0W58/xqN3APMsGc8BeYMgd3lf98X8Z9WtsuJqMT8YJaGdVyGKMIbDSI5REEqTWepY+eDy9R4AsyzsLUPrNaiQi2oINuhQMuea8t0WJYN/WsolJpBlykt8qOXw35XmXinJwmrKg/AvrsYETbrZ5Rcoc/igmlvCfAOSHR9kRbfs+8ph++MF7SSjxNQd8f2rKEZDxx2U+7h5c5C9dNGQZ3OFsw6UQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,157 +126,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------skVAWTxerAh0fKLUMQDzBRaE
-Content-Type: multipart/mixed; boundary="------------Sm6xLvjEBt7qrU3afTmO0DHi";
- protected-headers="v1"
-From: Harry Yoo <harry@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>,
- Shakeel Butt <shakeel.butt@linux.dev>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Usama Arif <usama.arif@linux.dev>, Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Danielle Costantino <dcostantino@meta.com>, Kees Cook <kees@kernel.org>
-Message-ID: <c4eab53b-c54d-4f1e-a4ff-8d86b8d32503@kernel.org>
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-References: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
- <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org>
- <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
- <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
- <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
- <CAJuCfpFX_sMrcTad-QGJsCV=fNyMWF=Bi6XmoHRqEAzMbWNfdg@mail.gmail.com>
- <39a79576-dcae-4b66-9478-c81dfe676699@kernel.org>
- <CAJuCfpGRC7NPxcODUsb3YS5nV=qG+-SbSYj1Fwm-QPqgKSVWAA@mail.gmail.com>
- <c5c4208d-a6f0-413e-bad9-49be12f12d55@kernel.org>
- <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
- <akPSjsbjl-UAcdI8@linux.dev>
- <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
-In-Reply-To: <CAJuCfpE4BwDpt08iXtdh_nqRR5TGzGTdHzGZWYayC7t6V1O49w@mail.gmail.com>
+On Tue, Jun 30, 2026 at 07:20:50PM +0800, Huang, Ying wrote:
+> Gregory Price <gourry@gourry.net> writes:
+> 
+> [snip]
+> 
+> > Demotions don't care about mempolicy, so opting shmem out of NUMA
+> > balancing and mbind'ing on a tiered system is just full sadness.
+> >
+> > This is all just more evidence that demotion needs to be completely
+> > redone, it's creating a mess of undefined behavior for memory placement.
+> 
+> It's hard to respect mempolicy during demotion in the current
+> implementation.  Do you have any ideas on how to improve this?
+> 
 
---------------Sm6xLvjEBt7qrU3afTmO0DHi
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+I think it's feasible we could respect per-vma mempolicies, but not
+per-task.  That would at least make this particular interaction less
+painful and mbind() would do what you'd expect.  It is a bit racy,
+but with MPOL_MF_MOVE_ALL the user can get what they actually want.
 
+I think task-wide mempolicy is problematic and generally a bad idea
+on tiered systems, maybe it's ok if we simply document task policies
+are not respected on tiered systems?
 
-
-On 6/30/26 11:52 PM, Suren Baghdasaryan wrote:
-> On Tue, Jun 30, 2026 at 7:36=E2=80=AFAM Shakeel Butt <shakeel.butt@linu=
-x.dev> wrote:
->>
->> On Tue, Jun 30, 2026 at 04:03:30PM +0900, Harry Yoo wrote:
->>>
->>>
->>> On 6/30/26 3:12 PM, Vlastimil Babka (SUSE) wrote:
->>>> On 6/30/26 07:29, Suren Baghdasaryan wrote:
->>>>> On Mon, Jun 29, 2026 at 9:42=E2=80=AFPM Harry Yoo <harry@kernel.org=
-> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> On 6/30/26 1:39 PM, Suren Baghdasaryan wrote:
->>>>>>> On Mon, Jun 29, 2026 at 9:38=E2=80=AFPM Suren Baghdasaryan <suren=
-b@google.com> wrote:
->>>>>>>>
->>>>>>
->>>>>> Ah, here I meant backporting either the kmalloc_flags()+KMALLOC_TY=
-PE or
->>>>>> SLAB_BUCKETS approach.
->>>>>>
->>>>>>>> Yes, it's worth backporting, so we can merge Shakeel's change as=
- is
->>>>>>
->>>>>> Right.
->>>>>>
->>>>>>>> and then once Vlastimil's patch is merged we can implement the n=
-ew
->>>>>>
->>>>>> Vlastimil's patch has already landed mainline, by the way :)
->>>>>
->>>>> Nice! I suggest posting Shakeel's patch CC'ing stable for backports=
-
->>>>> and then following up with the fix using KMALLOC_TYPE. Vlastimil,
->>>>> WDYT?
->>>>
->>>> Sounded like a plan, but then I realized I misunderstood the amount =
-of the
->>>> wastage. E.g. on my system kmalloc-8k with 4 objects per slab would =
-have
->>>> obj_ext size of 64, but now it's 16k? That's ridiculous.
->>>
->>> Right.
->>
->> Yeah I should have given more thought on wastage.
->=20
-> Ugh! I didn't realize the wastage was that high.
-
-Ouch!
-
->>> ...which is why I was assuming either the KMALLOC_TYPE or SLAB_BUCKET=
-S
->>> approach would be backported as a follow-up. Err, should have
->>> communicated clearly, apologies.
->>
->> Harry, do you want to take a stab at prototyping these? If these look =
-simple
->> enough, we can request backports of this.
-
-Ack, let's see what would be the minimal changes to resolve this.
-
-> I'll also give it some thought to see if there is maybe a different
-> way to fix this that would be easy to backport.
-
-Thanks, let's discuss!
-
->>>> We could say it's for a debugging feature, but also it's running in
->>>> production fleets (and Android?), so probably not that easy to dismi=
-ss.
->>>
->>> I think a key factor is when it's enabled in production.
->>>
->>> kconfigs says Android selects MEM_ALLOC_PROFILING, but not
->>> MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
->>>
->>> I assumed that turning it on by default in the entire fleet
->>> would be bit hard to justify... (please correct me,
->>> if it's not the case)
->>
->> Actually we have memory profiling enabled by default across Meta fleet=
-=2E So, the
->> issue is very real.
-
-I see, thanks for clarifying.
-
->> At the moment, we are seeing this issue on a specific
->> type of machine and we have disabled memory profiling for those machin=
-es.
->> Internally we did discuss to simply disable memory allocation profilin=
-g for
->> kmalloc-normal caches but to me that was a big hammer and thus suggest=
-ed the
->> current approach.
-
---=20
-Cheers,
-Harry / Hyeonggon
-
---------------Sm6xLvjEBt7qrU3afTmO0DHi--
-
---------------skVAWTxerAh0fKLUMQDzBRaE
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQQQ1ub6gR5ogjaKRmOGXBN6rc5S1gUCakPgVQAKCRCGXBN6rc5S
-1kRkAP0cCyz+MOuScd4bBw4i+wwekcvOlfmYceS8T/EMfZsBGAEA2SuKBS6mNz/o
-Zk4R3X5gR8S1OGqYJJs8lIT4me06jgQ=
-=3A81
------END PGP SIGNATURE-----
-
---------------skVAWTxerAh0fKLUMQDzBRaE--
+~Gregory
 
