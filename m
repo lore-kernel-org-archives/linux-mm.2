@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A360AC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:41:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A05C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:42:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 859386B00AC; Tue, 30 Jun 2026 12:41:54 -0400 (EDT)
+	id 2B2B36B00AD; Tue, 30 Jun 2026 12:41:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8306C6B00AD; Tue, 30 Jun 2026 12:41:54 -0400 (EDT)
+	id 28AC36B00B2; Tue, 30 Jun 2026 12:41:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76FA86B00AE; Tue, 30 Jun 2026 12:41:54 -0400 (EDT)
+	id 1A0B66B00B4; Tue, 30 Jun 2026 12:41:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 335AF6B00AC
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:41:54 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A89AF12059E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:41:53 +0000 (UTC)
-X-FDA: 84937145706.22.AC65AEA
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B753B1C0012
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:41:51 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XGNC9xkK;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id DC1686B00AD
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:41:58 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B31A120197
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:41:58 +0000 (UTC)
+X-FDA: 84937145916.17.E182BDB
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 913DAC0009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:41:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="e+MM/bKC";
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837712;
-	b=vtDUs45tNNHUAk83jlekwkU+3x6P1VeHlZMoRPaV3H5ULizc5YwXLtIbGBT/R1I0DXDP/H
-	KuDhd0dOCPl7RBGViswWfxI7HYcEuxJ/XkjMj3CFBHlpEwep7yyYC5AD5uPQBzr3rVhl5e
-	24WediR4tV9FLGro5ZEPIKQ4OU3/xqw=
+	t=1782837716;
+	b=rQ0vseuBkKNrKbJp7ywhcFxDp8YasATbzfukxRodT3oT0il/vfd/8pzdx0x3uhQ4YT6Hsj
+	GYvBLbhanySikr0xdSeHBar1eJF1GCxdXPaxpiasiZ17QynkRtSOrY1D/4cI5OL6gPEHnQ
+	PosJlLKC0nxvW2HFVQLzUjQezrZnxK4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837712;
+	s=arc-20220608; t=1782837716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=KTPjRh7UZtQb2sdzHCtoDKVi+rSL6aZD6W2dn40Xe2s=;
-	b=7L50aONxtaPS/lcc4QlQcV02znUVevPFTbMQTbt9ovHXDydpPM+RGC/8M6Y1W4+Zlflbi+
-	1Ud0ZM1H2iXWdOJWTads+9xFmZGZP45+7onhl96DHDlQrG3UFcR8QPEMvjVjmnIMi1wd3X
-	ImylLQKGlV9NcT7oreg6HrWKJ6KHNZQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=27QE2OzMdozbB1MBhDEzH9Eaa+A92o4e52l9BnnLq8Y=;
+	b=2vQTaFAAPz9NYAZXAPS0OEArBA2EU9CpgAmEb/op2U80f5yuk0ADVUOt+ysT7YVOZg06+2
+	0FcgxmNX+HyQY7Mk0jhkzFGuH149lY2W+o+FtL7Tx0npDHtHp+zZi/bjhIcAq9LtN4D1kP
+	Jn0eOEMzEQQhjz4kcV7pBwGhRugGTBU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XGNC9xkK;
-	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="e+MM/bKC";
+	spf=pass (imf22.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782837709;
+	t=1782837714;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=KTPjRh7UZtQb2sdzHCtoDKVi+rSL6aZD6W2dn40Xe2s=;
-	b=XGNC9xkKehCDk04ip+vz2mGdyzo6HPlfi+ojTjQKNCNTfA4rQEnNNNd2wKYakUcZ+jNYgM
-	pRJzgyuzBDctosrGeYpHbe2Ig4YbBEb5XunlbaXJ3KhQOGTZInmBnKD30rsBkLC/iEo09B
-	+kXRA8KWS96f4GJNw92s9iOqQs6LaAo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=27QE2OzMdozbB1MBhDEzH9Eaa+A92o4e52l9BnnLq8Y=;
+	b=e+MM/bKCBJ6H6nmzPJ/SgRNZmUfYV8S1/lWDYDXFub0p/EAjOP+uI2dY1BvGd30xb4E0+y
+	OC4+qNjiYLXiSvDTT134QzBkzo8HG1hRh72iAebU6GlZcIoX2EbfRseL4KM2W1LiDR9bOJ
+	OMYLj67anwbW6FrQ9taYSFta5G0jxlg=
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	david@kernel.org,
@@ -88,20 +89,22 @@ Cc: ying.huang@linux.alibaba.com,
 	shikemeng@huaweicloud.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH 0/6] mm: preparatory patches for PMD level swap entries
-Date: Tue, 30 Jun 2026 09:34:37 -0700
-Message-ID: <20260630164143.1595669-1-usama.arif@linux.dev>
+Subject: [PATCH 1/6] mm: add softleaf_to_pmd() and convert existing callers
+Date: Tue, 30 Jun 2026 09:34:38 -0700
+Message-ID: <20260630164143.1595669-2-usama.arif@linux.dev>
+In-Reply-To: <20260630164143.1595669-1-usama.arif@linux.dev>
+References: <20260630164143.1595669-1-usama.arif@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: g5uoa38ii9f1ppt7e7ynwi5b3hta5x6s
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B753B1C0012
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782837711-589445
-X-HE-Meta: U2FsdGVkX182Gm/xNX7xabp+T3+h9MHkSLUfuVRBCGkd9OY3bLINBqJiF8L3y3BBj1TZZ2vw1WbzHpVLwRW7++umqkk30ZTERHwO4QkH8u/0gilbUyFlMWvu4Cl0eC2gLhh+cmgYWcbliyYY01khK3FwktkLYfaE6kZKNly7UTFUkTCKNsQleKs7aGDO6jmhwVDDnsjlswN2zBXP4CTxpur4a157Ojj6QS9nIu7xASU9V/VGwTqlv/79EizJgq2BiQ00PcF2+cbNRZy0Zgk+gzzxSb9r+Y4+vZ8ptrLNCxP478+6otVQM2HUXrUGgrmGcvHRaVAjikG1JiMxzVIz7qFFrQ8fR+kFuycmU+3NuXD2Ype5t+H2H8jB0rhXPBfmuJBsPOFGeVyKhHHMoZl+qL1TeWioV6DyVrtcR34r6It7et4T8+OLpC9tLStna8hg8pAA+GTFzP3Z4ThmQSoNETNDRDkJvhzPScYInPdd0Db0wCRY9u89FCTrTwCkrhMF/J4SjNDL070MgluaAeJKAnVK0Q8yGvNhuyV5aHt3aH0aYVumAjuprW1U1v3g0de+Jp3LZ5wNvKQSiriqz2g0FOofAiOI4Gow4E4ioGt+2AGai7mmMDqJqUzF2232uBsiOvJa64d9hrqAYmuFme7CP3rLZh8xWDzXp9gyvurV3hvz0PNyS2i1XWBCY93dP27pin9RJhEKD6zrXhglzDN5zSjOaaOwtz2eE3ARfbjpsdvJVGn2kVBB+uw4xCwBay3XSECJTK57LPBEKLAk4mihWO754X5zMxEhtgHkh6AyGJccDnhrjF2fQHyY7HMu5n0Qiq7kixzzISkpjJzaNVbStspHW9QpdwMEbEczlk9vdV2YJIrYJ29yYX/AfKniJ9cE0ruZFEZtuZnX1dGBuuFzJvxUNT9PZ5lu+vCVVjiwJSfTsPNbSNHD+NFlztrsVrvO1fmGzknxo0kuhXpmZQC
- ebm1N8fX
- 66hcwQ7EDPgcmXnpaK3q5/8hYE/+XIB8Vdy4wiXz/Cp8sUBh0JGyuzG644dLj/iOqE6zeXayPEUDkUr1A8aXw8RspZ0cdsAn+PRnxSvcZaJYWxr+sVE7Nn2RIUQwouoJUWxxfAwCpIPE5FfFHeR2sWaIbftZFFwE5ufQ/48f0ukWAvprVfzUeHusqdqSVOrimQM5o8xy0U+g9BIKZFze7cXtv0oj26onwn0z+5A4RxJ9aR49pevCrJF10iQ==
+X-Stat-Signature: 9fax8hmo96b13jucnoz5du98w3h5t5bm
+X-Rspamd-Queue-Id: 913DAC0009
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782837716-229300
+X-HE-Meta: U2FsdGVkX19LUwviQpuYpbtHCEIEIXNiqXw9utoC+Gbg7kR6Gahv4SmvEotorPyIVZ86GKIsokgFBkca81Z9xh/hWiZtbwV+d/Iw7Zq09sushDmOMs/UCiQ/6iMVCP54ggN2sR/xwb24+KPJUq6defrmVyfBV5m6zBcP1Oq7jelLjVt9UEwTJWv/vk/nTjGXyP7L7q0xSstpUEaC3F8wLv/3u2vTUD9kWOXBKzKXR4qsgqmOU9M6bTi40buFDHIUFj96pjX4fGOrZnnUyzvWuSf1yp1kn+oqBfnD2kOJ0mqByg83vihF7ETWIuvFgN0wQQEh7nUP+44o3EgXOZF+hODZUNcw42LX21okx6OC1nV1RbXYTUcvIwAhgGSqWD6BZS21SS65EAH2OBNqWwd2IAtCjIKjjyJRHYgE/3Z2L3xF9CT20I1WI0J1dlL0e1Y9wUMaKtapOrFT3H1bollYipZl3GYyFqEjD+jPnZTkgGQsNJfEjEogAYliOPPM9pHKne0ffT35UjE/0hPQB3mAt2sT1Nc66liPK8Yma5SdUiYC1ZmcL/uvMKtudQ/Ql0s+HfJv8kKnb1ayUvtFy3EMlkltFXob/U5tH2qhdsoAUuM9oB+i56ucyV19XE0nBGqjxz2NSXAoZLbcO34SbaFtb34F9k6aKb1G7NfWRVX+RB7Law8t+V1ZsdsS4FKSmeKYHTMF2+G1nshUdxLfoE1P1A4O/2HGVEEOOq6m8c+ATcyL/noyI8GGVl/OWQXvf3D8m3Hil/Afq/Sm60br9WxpXdumVKYh5fMoAOdF5ZhxP8qt+zec+6mukERiGuYIT1CnPTQOb2lAS7/ZcqfzbA6wycUhmvltmMAw7E6bKr8/M8niecFFElGWaLbmDr1MwUNJBcoLFbNIsJUPIC2vIgElMmJ3FZFoSHTx5eDJP75NruWgDWgLU7J1lO2FZ3RTyrqYZ3EaAd047aLOrBl6jTj
+ oWAwQkGY
+ vtNLzalzQ637xp7lm8H3BaUKgYLvO3bG6MDuf6InYDWTu9ot1INUNVzrhxlAImva0fRZplyPL1DWM6tsfnS7zE2an8aMFRDWdzY5WfJqfoV7tvXvYGLqob3mHIPta9vNNvvXgEUYJl/1hetsmY5jzRIK9oY0Z8fsVqg80gj1pEuaFepXMU+2v6j11tRk6DPMxj0ltqJ9HwIGkDt/5jjZNlkhvmbXpXLPvwlZTD7gj98UNbuh3hkzBFkW6Cc/8FntLhYfZSIEhuXR6mVLFD+g0CiScKjma7ucMn1yeyGb30FNfb4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,102 +112,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is the preparatory part of the PMD page table swapin work.  The
-full PMD swap entry series has been split into two parts:
+Add softleaf_to_pmd() as the PMD counterpart to softleaf_to_pte(),
+completing the symmetry of the softleaf abstraction for page table
+leaf entries.
 
-  1. this preparatory series, which contains the first 6 patches. Zi [1]
-     and Lance [2] suggested to separate this out from the core series.
-  2. the PMD swap entry core series, which depends on this one. I will
-     send this once the preparatory series is merged in mm-new as v3
-     as the combined is currently at v2 [1].
-     I have not marked this prep series as v3, as its not really adding
-     support for PMD swap entries.
+The upcoming PMD swap entry support needs to construct PMD entries
+from swap entries. Converting existing swp_entry_to_pmd() callers
+to softleaf_to_pmd() in a prep patch keeps the feature patches
+focused on new functionality rather than mixing refactoring with
+new code.
 
-This series does not introduce PMD swap entries and does not install any
-new page-table entry type.  It only cleans up existing PMD softleaf
-helpers and call sites so the follow-up PMD swap entry series can be
-smaller and easier to review.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Usama Arif <usama.arif@linux.dev>
+---
+ include/linux/leafops.h | 20 ++++++++++++++++++++
+ mm/debug_vm_pgtable.c   |  4 ++--
+ mm/huge_memory.c        | 12 ++++++------
+ mm/migrate_device.c     |  2 +-
+ 4 files changed, 29 insertions(+), 9 deletions(-)
 
-It should be safe to merge independently.  The patches are either helper
-additions, refactors of existing open-coded logic, defensive checks that
-preserve current migration/device-private behavior, or a mechanical
-rename of the PMD softleaf Kconfig gate.  The follow-up series depends
-on these helpers, but this series does not depend on the follow-up
-series.
-
-Patch breakdown:
-
-  1. mm: add softleaf_to_pmd() and convert existing callers
-     Add the PMD counterpart to softleaf_to_pte() and convert existing
-     swp_entry_to_pmd() users that are constructing PMD softleaf
-     entries.
-
-  2. mm: extract mm_prepare_for_swap_entries() helper
-     Hoist the "register mm with swapoff" double-checked-locking
-     pattern out of try_to_unmap_one() and copy_nonpresent_pte() so
-     future PMD-level users do not need another open-coded copy.
-
-  3. fs/proc: use softleaf_has_pfn() in pagemap PMD walker
-     Avoid assuming every non-present PMD softleaf entry encodes a PFN.
-     Existing migration/device-private behavior is preserved.
-
-  4. mm/huge_memory: move softleaf_to_folio() inside migration branch
-     Keep the folio lookup in change_non_present_huge_pmd() scoped to
-     the migration-entry branch that actually needs it.
-
-  5. mm/migrate_device: move softleaf_to_folio() inside device-private
-     branch
-     Apply the same ordering cleanup to migrate_vma_collect_pmd(): only
-     derive a folio after confirming the PMD entry is device-private.
-
-  6. mm: rename ARCH_ENABLE_THP_MIGRATION to ARCH_SUPPORTS_PMD_SOFTLEAF
-     Rename the architecture gate to describe what it actually enables:
-     PMD softleaf entries.  Migration remains the only current user in
-     this series; the follow-up series adds PMD swap entries.
-
-The patches are based on akpm/mm-new as of 29 June
-(git hash: 15654b0268cd65b4e673510c0377774e61b86397)
-
-[1] https://lore.kernel.org/all/6E99CC4E-A026-4DE3-8A5A-34216771F521@nvidia.com/
-[2] https://lore.kernel.org/all/b08cafbb-a4b7-4609-84ae-dbb2cfcfc8be@linux.dev/#t 
-[3] https://lore.kernel.org/all/20260602142537.198755-1-usama.arif@linux.dev/
-
-Usama Arif (6):
-  mm: add softleaf_to_pmd() and convert existing callers
-  mm: extract mm_prepare_for_swap_entries() helper
-  fs/proc: use softleaf_has_pfn() in pagemap PMD walker
-  mm/huge_memory: move softleaf_to_folio() inside migration branch
-  mm/migrate_device: move softleaf_to_folio() inside device-private
-    branch
-  mm: rename ARCH_ENABLE_THP_MIGRATION to ARCH_SUPPORTS_PMD_SOFTLEAF
-
- arch/arm64/Kconfig                           |  2 +-
- arch/arm64/include/asm/pgtable.h             |  4 +--
- arch/loongarch/Kconfig                       |  2 +-
- arch/powerpc/include/asm/book3s/64/pgtable.h |  2 +-
- arch/powerpc/platforms/Kconfig.cputype       |  2 +-
- arch/riscv/Kconfig                           |  2 +-
- arch/riscv/include/asm/pgtable.h             |  8 +++---
- arch/s390/Kconfig                            |  2 +-
- arch/s390/include/asm/pgtable.h              |  2 +-
- arch/x86/Kconfig                             |  2 +-
- arch/x86/include/asm/pgtable.h               |  2 +-
- fs/proc/task_mmu.c                           |  3 ++-
- include/linux/huge_mm.h                      |  2 +-
- include/linux/leafops.h                      | 28 +++++++++++++++++---
- include/linux/pgtable.h                      |  2 +-
- include/linux/swapops.h                      |  6 ++---
- mm/Kconfig                                   |  2 +-
- mm/debug_vm_pgtable.c                        | 12 ++++-----
- mm/hmm.c                                     |  4 +--
- mm/huge_memory.c                             | 17 ++++++------
- mm/internal.h                                | 13 +++++++++
- mm/memory.c                                  |  9 +------
- mm/migrate.c                                 |  4 +--
- mm/migrate_device.c                          | 19 +++++++------
- mm/rmap.c                                    |  9 ++-----
- 25 files changed, 93 insertions(+), 67 deletions(-)
-
+diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+index 992cd8bd8ed0..803d312437df 100644
+--- a/include/linux/leafops.h
++++ b/include/linux/leafops.h
+@@ -108,6 +108,21 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+ 	return swp_entry(__swp_type(arch_entry), __swp_offset(arch_entry));
+ }
+ 
++/**
++ * softleaf_to_pmd() - Obtain a PMD entry from a leaf entry.
++ * @entry: Leaf entry.
++ *
++ * This generates an architecture-specific PMD entry that can be utilised to
++ * encode the metadata the leaf entry encodes.
++ *
++ * Returns: Architecture-specific PMD entry encoding leaf entry.
++ */
++static inline pmd_t softleaf_to_pmd(softleaf_t entry)
++{
++	/* Temporary until swp_entry_t eliminated. */
++	return swp_entry_to_pmd(entry);
++}
++
+ #else
+ 
+ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+@@ -115,6 +130,11 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+ 	return softleaf_mk_none();
+ }
+ 
++static inline pmd_t softleaf_to_pmd(softleaf_t entry)
++{
++	return __pmd(0);
++}
++
+ #endif
+ 
+ /**
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 23dc3ee09561..18411fb09aab 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -758,7 +758,7 @@ static void __init pmd_leaf_soft_dirty_tests(struct pgtable_debug_args *args)
+ 		return;
+ 
+ 	pr_debug("Validating PMD swap soft dirty\n");
+-	pmd = swp_entry_to_pmd(args->leaf_entry);
++	pmd = softleaf_to_pmd(args->leaf_entry);
+ 	WARN_ON(!pmd_is_huge(pmd));
+ 	WARN_ON(!pmd_is_valid_softleaf(pmd));
+ 
+@@ -829,7 +829,7 @@ static void __init pmd_softleaf_tests(struct pgtable_debug_args *args)
+ 		return;
+ 
+ 	pr_debug("Validating PMD swap\n");
+-	pmd1 = swp_entry_to_pmd(args->leaf_entry);
++	pmd1 = softleaf_to_pmd(args->leaf_entry);
+ 	WARN_ON(!pmd_is_huge(pmd1));
+ 	WARN_ON(!pmd_is_valid_softleaf(pmd1));
+ 
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2bccb0a53a0a..d51f53cfbe4f 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1819,7 +1819,7 @@ static void copy_huge_non_present_pmd(
+ 	if (softleaf_is_migration_write(entry) ||
+ 	    softleaf_is_migration_read_exclusive(entry)) {
+ 		entry = make_readable_migration_entry(swp_offset(entry));
+-		pmd = swp_entry_to_pmd(entry);
++		pmd = softleaf_to_pmd(entry);
+ 		if (pmd_swp_soft_dirty(*src_pmd))
+ 			pmd = pmd_swp_mksoft_dirty(pmd);
+ 		if (pmd_swp_uffd_wp(*src_pmd))
+@@ -1832,7 +1832,7 @@ static void copy_huge_non_present_pmd(
+ 		 */
+ 		if (softleaf_is_device_private_write(entry)) {
+ 			entry = make_readable_device_private_entry(swp_offset(entry));
+-			pmd = swp_entry_to_pmd(entry);
++			pmd = softleaf_to_pmd(entry);
+ 
+ 			if (pmd_swp_soft_dirty(*src_pmd))
+ 				pmd = pmd_swp_mksoft_dirty(pmd);
+@@ -2570,12 +2570,12 @@ static void change_non_present_huge_pmd(struct mm_struct *mm,
+ 			entry = make_readable_exclusive_migration_entry(swp_offset(entry));
+ 		else
+ 			entry = make_readable_migration_entry(swp_offset(entry));
+-		newpmd = swp_entry_to_pmd(entry);
++		newpmd = softleaf_to_pmd(entry);
+ 		if (pmd_swp_soft_dirty(*pmd))
+ 			newpmd = pmd_swp_mksoft_dirty(newpmd);
+ 	} else if (softleaf_is_device_private_write(entry)) {
+ 		entry = make_readable_device_private_entry(swp_offset(entry));
+-		newpmd = swp_entry_to_pmd(entry);
++		newpmd = softleaf_to_pmd(entry);
+ 		if (pmd_swp_uffd_wp(*pmd))
+ 			newpmd = pmd_swp_mkuffd_wp(newpmd);
+ 	} else {
+@@ -4923,7 +4923,7 @@ int set_pmd_migration_entry(struct page_vma_mapped_walk *pvmw,
+ 	}
+ 
+ 	/* Set PMD. */
+-	pmdswp = swp_entry_to_pmd(entry);
++	pmdswp = softleaf_to_pmd(entry);
+ 	if (softdirty)
+ 		pmdswp = pmd_swp_mksoft_dirty(pmdswp);
+ 	if (uffd_wp)
+@@ -4976,7 +4976,7 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct page *new)
+ 		else
+ 			entry = make_readable_device_private_entry(
+ 							page_to_pfn(new));
+-		pmde = swp_entry_to_pmd(entry);
++		pmde = softleaf_to_pmd(entry);
+ 
+ 		if (pmd_swp_soft_dirty(*pvmw->pmd))
+ 			pmde = pmd_swp_mksoft_dirty(pmde);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index ae39173d6a0e..aa948db49501 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -835,7 +835,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 		else
+ 			swp_entry = make_readable_device_private_entry(
+ 						page_to_pfn(page));
+-		entry = swp_entry_to_pmd(swp_entry);
++		entry = softleaf_to_pmd(swp_entry);
+ 	} else {
+ 		if (folio_is_zone_device(folio) &&
+ 		    !folio_is_device_coherent(folio)) {
 -- 
 2.53.0-Meta
 
