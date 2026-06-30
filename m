@@ -4,213 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C8EBC43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:10:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2227C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 279406B00AD; Tue, 30 Jun 2026 11:10:15 -0400 (EDT)
+	id 93B0B6B00AE; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2036D6B00A7; Tue, 30 Jun 2026 11:10:15 -0400 (EDT)
+	id 8EB776B00B6; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A95E6B00AB; Tue, 30 Jun 2026 11:10:15 -0400 (EDT)
+	id 7B4A86B00B9; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C09DB6B00A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:10:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 40BCC14051F
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:10:14 +0000 (UTC)
-X-FDA: 84936914748.28.503C612
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013030.outbound.protection.outlook.com [40.93.201.30])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DAE8B1C0007;
-	Tue, 30 Jun 2026 15:10:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sYufEBUR;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782832211;
-	b=KaZv62u5he+Dw5V8xtPx/7ApSiHhd8oOwAkrh1TN1xniQK0uamRltoGRO1UPqgLTdKRIeS
-	RGfAXBLn+VTpe8ND47E/XGslJ6JjNYy5nVeUE/WGpGmxCSKf1dLeRilMMZxjBTq/J8csat
-	HcidjqP0ki8bbNBlqt0/JAYjKXNTbKA=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782832211;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 54ADF6B00AE
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D27B4168143
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:14:30 +0000 (UTC)
+X-FDA: 84936925500.16.74DB82F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 932E140005
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:14:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rBelcefg;
+	spf=pass (imf11.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782832469;
+	b=z4413JMHBjNL96EUEMrftW5lVxOBzXso7TcI9Rzew0Zw+p1/XJasCUL4dgi7k8Sw7ITTOP
+	Ht9goaPD9QiQgCMGQQ39G3KHFVgwm0iDqD0O+zjI9fsBey2YkMok6ENcWZEX/chteW6I50
+	zVnwEvnyJMK8Xwg4p/bAm5CIM+mIh5o=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782832469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eoxaXJsILjU7jh80C1WkESw+OFwhH8/Tpv2coL+xT8E=;
-	b=kAXZm0ljPxP1jxZOVo93rOaa58TUUDrh77IsSUg/qzgZHOZ0IzB/Lwc/7YuaqvjwBYaVBF
-	Jt0cApeRnfF8/uB82yckOXiWIa0i/kCGBjB8UFKTBnx+pIiXBrGQKwlfh4BU20B9kChUKU
-	5Tq7YYKL+IEm8MBliNDACOg4/2U+oSc=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=sYufEBUR;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iP9bh3XjRxU1vdlXRbKMD9i06YGwBrYWhLC8ZCTV/WkM3VAhnzc5VXTsgcVfa59tzuEyXufQfLBrlJKiRzgF/yOjW8QSyap1KYTsv6X/9jTpqkDcs+x1a3tOYy0ZIStDKMshqlM1vJi029XJbUiKc48uE/m5662u3UilBE7+J2RyDcy4srddMjI8noIEHc05g6nN/2ASZD39txL68ct12mvqc7+TpCwu2MDDO/yoJvjN8nMmnZowIWxSn1aoj0khN9xEn6GoTyemMyA16ZgVJPLeOFrJmH79DlbOapFbeb09g4wDan7Waxz0gM8+UBQp04G7S3uB9PIRmvzmoXXymw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eoxaXJsILjU7jh80C1WkESw+OFwhH8/Tpv2coL+xT8E=;
- b=YB/F4pZtNrmkPxw/tRPV1REk1I6y0wRs718Griep8Kyxe585eDh6kesp8bgDAgYNBGMIfGcqISmU/xE5JxZ5R5KwxDaZKCU2L0qmWvamXAtOvW0GklCY8XWsQhWlJuKUjthre+gkP0Wsmt1l5YYOB6KOtu4z6DWSi7S2X9XOjEWxmcRaOL4TZLC4yPN3sp9WhD+p4djOfBYAlYezBAnFdx1rPDEzdTGlXgAteodFOzB+qtY4XMbZfFj22I//R+N2lXr4NypSA8TnnMx8EStIjUnIepSzJLmZsjKmEqo3+D0ol6hKCPMHtKj4rDvElyDko4hKvCYKvu+MlVjhhn7Qpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eoxaXJsILjU7jh80C1WkESw+OFwhH8/Tpv2coL+xT8E=;
- b=sYufEBURKFZymRK3+8C4mnt8zdWAPa4JwHgBQzD6jaNAGXgnqmy9elZ8lxdkAc6nQUok6vtduK+y0ZVX+QIwCqS4wvRlA+u54bK9NterRLTqMgfweHu+1++dfN22QgUW+X1LwdBD/QjdfV4H0tNh2MvtDBKFVWzk7OY+zAkLheua3ZMRtG4uIlhz79dY6S92UEplqahT9ysOrmyeQUi6uporvMJo+4DiWFp8sQt1fAHXbhzC6oIA+AabSfcBIuCtFNSrNlHkLjksnu4FtXtqJAEgAwC2P0hEBB8CtYvrYsLLo4G+uPkRI8x47I2MJiO05NAT31IoiTgT4085ko4srg==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by SN7PR12MB7202.namprd12.prod.outlook.com (2603:10b6:806:2a9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.159.19; Tue, 30 Jun
- 2026 15:09:59 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%5]) with mapi id 15.21.0181.008; Tue, 30 Jun 2026
- 15:09:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jun 2026 11:09:56 -0400
-Message-Id: <DJMH9O7CWAWX.5E207D1UQL27@nvidia.com>
-Subject: Re: [PATCH 01/13] mm: introduce vma_flags_can_grow() and
- vma_can_grow()
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Thomas Bogendoerfer"
- <tsbogend@alpha.franken.de>, "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Lucas Stach"
- <l.stach@pengutronix.de>, "Inki Dae" <inki.dae@samsung.com>, "Seung-Woo
- Kim" <sw0312.kim@samsung.com>, "Kyungmin Park" <kyungmin.park@samsung.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>, "Peter Griffin"
- <peter.griffin@linaro.org>, "Jani Nikula" <jani.nikula@linux.intel.com>,
- "Joonas Lahtinen" <joonas.lahtinen@linux.intel.com>, "Rodrigo Vivi"
- <rodrigo.vivi@intel.com>, "Tvrtko Ursulin" <tursulin@ursulin.net>, "Rob
- Clark" <robin.clark@oss.qualcomm.com>, "Dmitry Baryshkov"
- <lumag@kernel.org>, "Lyude Paul" <lyude@redhat.com>, "Danilo Krummrich"
- <dakr@kernel.org>, "Tomi Valkeinen" <tomi.valkeinen@ideasonboard.com>,
- "Sandy Huang" <hjc@rock-chips.com>, =?utf-8?q?Heiko_St=C3=BCbner?=
- <heiko@sntech.de>, "Andy Yan" <andy.yan@rock-chips.com>, "Thierry Reding"
- <thierry.reding@kernel.org>, "Mikko Perttunen" <mperttunen@nvidia.com>,
- "Jonathan Hunter" <jonathanh@nvidia.com>, "Gerd Hoffmann"
- <kraxel@redhat.com>, "Dmitry Osipenko" <dmitry.osipenko@collabora.com>,
- "Zack Rusin" <zack.rusin@broadcom.com>, "Matthew Brost"
- <matthew.brost@intel.com>, "Thomas Hellstrom"
- <thomas.hellstrom@linux.intel.com>, "Oleksandr Andrushchenko"
- <oleksandr_andrushchenko@epam.com>, "Helge Deller" <deller@gmx.de>,
- "Benjamin LaHaise" <bcrl@kvack.org>, "Alexander Viro"
- <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
- "Muchun Song" <muchun.song@linux.dev>, "Oscar Salvador"
- <osalvador@suse.de>, "David Hildenbrand" <david@kernel.org>, "Baolin Wang"
- <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <liam@infradead.org>,
- "Nico Pache" <npache@redhat.com>, "Ryan Roberts" <ryan.roberts@arm.com>,
- "Dev Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance
- Yang" <lance.yang@linux.dev>, "Hugh Dickins" <hughd@google.com>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Jann
- Horn" <jannh@google.com>, "Pedro Falcato" <pfalcato@suse.de>, "Kees Cook"
- <kees@kernel.org>, "Jaroslav Kysela" <perex@perex.cz>, "Takashi Iwai"
- <tiwai@suse.com>, <linux-mips@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
- <dri-devel@lists.freedesktop.org>, <etnaviv@lists.freedesktop.org>,
- <linux-arm-kernel@lists.infradead.org>,
- <linux-samsung-soc@vger.kernel.org>, <intel-gfx@lists.freedesktop.org>,
- <linux-arm-msm@vger.kernel.org>, <freedreno@lists.freedesktop.org>,
- <nouveau@lists.freedesktop.org>, <linux-rockchip@lists.infradead.org>,
- <linux-tegra@vger.kernel.org>, <virtualization@lists.linux.dev>,
- <intel-xe@lists.freedesktop.org>, <xen-devel@lists.xenproject.org>,
- <linux-fbdev@vger.kernel.org>, <linux-aio@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-sound@vger.kernel.org>
-To: "Lorenzo Stoakes" <ljs@kernel.org>
-From: "Zi Yan" <ziy@nvidia.com>
-X-Mailer: aerc 0.21.0
-References: <cover.1782760670.git.ljs@kernel.org>
- <f2e8c32515d328db62279cc8bab8398ea278d74f.1782760670.git.ljs@kernel.org>
- <DJLTDCPWMXDL.4ICZ77A1LPZZ@nvidia.com> <akNucoP3eaDN2_Vz@lucifer>
-In-Reply-To: <akNucoP3eaDN2_Vz@lucifer>
-X-ClientProxiedBy: BL1PR13CA0239.namprd13.prod.outlook.com
- (2603:10b6:208:2bf::34) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=ucS4ebDI2j4bO1fUALMmV7MUhoPr2jiJW6R/TQevAbA=;
+	b=bxrz3//p55WLX4Ueo2BJTcxv4rUVq2upDEop6TUylSPMXc0/fdJW1FC1xKxNzBVl8EwD4t
+	+4f9AUjTTK1tjmLAIdn3w5avSENYXRoijOeXJh50weSy9v5hZ6+bJhZp97L3N2pmBZGNQD
+	WtWM2JnBJzAEGP+faveNRXWASwiMRNQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=rBelcefg;
+	spf=pass (imf11.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 083E02ED2;
+	Tue, 30 Jun 2026 08:14:23 -0700 (PDT)
+Received: from [10.2.213.21] (e137867.arm.com [10.2.213.21])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1E603F66F;
+	Tue, 30 Jun 2026 08:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1782832467; bh=9xr72TE+igvLVlNPFv4xah9LNvL/PNLDVngoXViM8xA=;
+	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
+	b=rBelcefghtcBpRKZUtImOBOvZpcpzuS66Tdd9PtWjH1lndhmKvXc5oRUJnVvzYSLi
+	 kUWFuS08wtKxVHnqnfcNbzXSNYrA86n3SBraqSsgsolS2NfrxBB54e2Pq+31suSTHG
+	 4RM5sxZ9cWKEA9YxYOaYTctt7dUPMUTWUkQK+Mec=
+Message-ID: <7dedbe2c-09d9-4d5b-8b70-1977cf526675@arm.com>
+Date: Tue, 30 Jun 2026 16:14:13 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SN7PR12MB7202:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25ba0c9a-ab30-4465-4f4d-08ded6b9a6a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|23010399003|6133799003|22082099003|18002099003|4143699003|11063799006|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	oJiFFAY1O1XOi+MaYZztPsDKyPeuL2ihjhq2EovLixzr8+9G5MQL5kZqvqPRN0HTISwWv2Cb+KyDnchA0tkycwebBRXF4SBNmXVvHZ0jXLk4OiWdJaf9/EqEmhs6gpXEIS0LAjp2GsPd3fEeUi812PL+ggQIntyQyokgEO/5TFpebHEIqHyJMyk39tanhjyagdmoPex1u6MXuTRvfNESuBPqeVRarXswd2hEnFVKPk2SiYf5NsKV1k1aBPfNPMFiyPZxnXM5D8M92yWYQph8JN+iaX6jXvbv1a52zIJpAM5qz4672oNMMSqBwWVTbND1wEALjZXUQLF1wANHnR4DsZOnhY+9VnBKtbBmFlUrMNiEjfDic8NnBYkHrurUSZd9/s12NOqF/YhxdqW/n6kwFaMcujtq66Ucdc7vVPhAOwU6v5HDNHIpq5pcL0HrFpzpr3aCjRsAg9FB7YcawGOKaPoADuEjuQjBuo1tPTNpJra02DlFZ1hIUwdufJGFb8SDisVWGl+5RWvRh+HNKjp3A3ewX7wY+NtpJWhWkZ1z+dv8T+26iwmI1XvmgtAXB1hvcxeENaiy4E5QEHtZC9z1p6IwK3kWI2OCK409mSJNVN+uhth7xocnZ5yRCNqgV/aJ25ot3ruVYXNujVj8nPPzb61lwV+1fEzmNDLto35Db+Q=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(23010399003)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aXM0WCtReWtGUVBJTWR6TmdrK1BDRTE0Q0UxbVQrN0YxTWJVV0JtRjJQVENl?=
- =?utf-8?B?dGZja3VaWW1OWkZmMEgwZkFDWGJ4L1BvRkQyWVl2MWtaWkI3aU5PYUIzcjZt?=
- =?utf-8?B?L2RGaGlkWW1uTVVLVVJtM0tMUGdPUHpEU3V4TWc3N2xEeUp5d3hNOHdmSng1?=
- =?utf-8?B?VGt3UEFSU2ZVY1M3ODRvS2ZvT2hxUjMwVmNiejI2SW5UZzQ3UnQraTJRalVP?=
- =?utf-8?B?OWc0NHVmOXlLdmlwUWlMTGlhUHliVkpPSFY0T3dtUElyMWgzdE5zSVhrKzNu?=
- =?utf-8?B?OEViV0FUQ2JWTmZQcG1IV0xROWpUOVg3ZU1RVnJYMVNBd2xjMG9kTTlwWWg2?=
- =?utf-8?B?M2FxcjFjU3pILytIUk05NnBhYXdtU1AyWFBvY0tGR3NHWDF5MkZGNHVRNzhz?=
- =?utf-8?B?VW5GSnlxeDF2SUxCNTVxeEdYOUxVTXNVZEdqYjd5MHlUV1ljNDlwYU91Z0gw?=
- =?utf-8?B?OHhjMFI2a2ZhYlZ5Y0IzK0RoS1BTQ0hITUVVbThwK1duaTNMSWdOdkFSVm9L?=
- =?utf-8?B?MWZSbmxQQ0FoSlZsSVhXZGsyNFBpTU9YUDhQWWk4TCtTL0s3ZDdWWXR1emN5?=
- =?utf-8?B?V2lnNml3dFdTaENOZjV6SjRxSjZobEpkVE9nNktPWEFjL0d0UURhaGpOVERM?=
- =?utf-8?B?V3hRWm9jZ2xvNDUyZlhFSUh6V2RaODhZTVdUeXBhL1gxdGJqT215UXFpZWdn?=
- =?utf-8?B?VFlGdzhkTG9Td2xsbjdBTnRPTnhXWC90TVNHZzM4L29QRitRUFhQNkZVYStN?=
- =?utf-8?B?d3hkMjQwMnU4NXZvSDkwRUZwa01ueVZsNGxrL3NwTkdWR2hhL1lXdVZmcmhC?=
- =?utf-8?B?TkUxYklISzFmRTcxNzZ3VjkwcEJWQjlpblplazdNSzdRVXE5RnZCN013OUJy?=
- =?utf-8?B?UnF1V1o2SE1mZzBmaHhyc3VYWDF1aE1NaGM5WjJjNENreXRPTUxLM1VEV01N?=
- =?utf-8?B?V3NpdVl4VTkzU05wRWdGdkRldnhqcDV4WFUyNFNPZ2NOdVV6NnpZd09sSWh5?=
- =?utf-8?B?UTdySHp1OStGQjZwNG9MVm03VklkRi9IMWVOR1NONjRTSWhySUdldm93WjFT?=
- =?utf-8?B?d1RqT2lQQWlkaDRHQmxxOS9Ob3MrUU5wL0pRdVlGYzV2RGJQK0tvV1RMQWl6?=
- =?utf-8?B?dW8rM0RjUGg2MHZablA3aklscm9kMnhudlVKK3BTSmU2QlR2NzFFL0xUd054?=
- =?utf-8?B?NXNuVmhISXdxeFM3OU8yaGhtaUtjVkVTZTd1OWtvSWV3OG83d2VQdXplL0dF?=
- =?utf-8?B?OHg1bm90UlpIWVd4WkNFN3FtNEJmRTlvbUIza3FiaEE5UU9NNTFYZjNGcE9r?=
- =?utf-8?B?bzQ3L1RUSnNocTZCNDU4NDVXdFJ5UVU0NzhPWEZpY2xQWm9HcXlFeFNyb1d0?=
- =?utf-8?B?UTYxMFQ2dms0cWtTRkp2bWVqQnZqWkIwOHdHSStlL0dNNEpRRzJWd2RVSzNn?=
- =?utf-8?B?WGg0TWVaS2FBUHp3QmtYZFlLSUtRQkVBRUl5SThoSXhtUEpaSThqNUl5ZVZz?=
- =?utf-8?B?YW5PUjNpR2dkbjZSTHFtN3JEU1FPa2pqRi9xRWRuYUVGUXBzNmpvREx6VDdJ?=
- =?utf-8?B?WDFqdU1GSUVTN0pYUU1GOG14TjhEQ2xLMXdLaHl5VG42bmZ1eEIyQk5hN0Ra?=
- =?utf-8?B?Z1BsTWRxYkVsTG96V3BXb3lTblRoZUJFOEkxV1lmQzhWVDBpZGxNeTBTM1Fi?=
- =?utf-8?B?L1J5R2k0elllRzBaU3I4T1F0UGFqQ1lrbUsrMG9naEtXNStqeHp2UnEvSEV5?=
- =?utf-8?B?Q2J3dkp1ZjJiUWhBWHdZSnloT2E5Z0RkYWg2V0c2Q0FHVzZXaENkMkIxWXZn?=
- =?utf-8?B?RTd2R1ZxaVNrRUZ1dGhNVUU0anpkM0tGbDI2ZFFaUDNScHY0WXFUOCs4L1Uz?=
- =?utf-8?B?K2NqeFdZdTc1QTBFQkNseCsvbWtGd1dtdWo3QXZBcWVMVEcxNmcyUnh5N1lB?=
- =?utf-8?B?Z2h6ampNeU1adXNsYjVNYUV2VVpHTnV0RG9OSzA2ZDJEQ0JDelJ6dWlZdmt0?=
- =?utf-8?B?WS93OERIYXdibnErL1NuRFF5MTcwVHVGRDg3bklLbitxUnVYNkxRaklkdGpi?=
- =?utf-8?B?SzdockgxNGZPYmtHMEttblVTblVzY3l1Q3lZRmYwTHFXTjhRZDVzMzl6cXl5?=
- =?utf-8?B?Ukk4RzNYZ1lXZW04VC9JV1pDTWNUT2Z5WVpCOCtDeDRHdlJWaFhaQTlDZHpH?=
- =?utf-8?B?ZWxJck5FQVJOTUZhdnJhNldMVnk3UVlkYUdnaTZteXd1Ri8vZjNodExPZkcz?=
- =?utf-8?B?VEx0T0FMNGxpWGRoVmxJRnF6N1QrY2xKRWU5Y0FuRGJ2NjVrQW5wUTJicTg1?=
- =?utf-8?Q?VXmBPftHdX8EVsIops?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25ba0c9a-ab30-4465-4f4d-08ded6b9a6a4
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 15:09:58.7994
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JnAYTkFnPevWfBepW6Rd8YtqtMSRQbCTBTdlMJEJeNmkdtpxg3jlpUgR9RhMt7p8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7202
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
+To: Jinjie Ruan <ruanjinjie@huawei.com>, kevin.brodsky@arm.com
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-19-ruanjinjie@huawei.com>
+From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
+Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>, oleg@redhat.com,
+ richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
+ linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+ kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
+ kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
+ James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+ glaubitz@physik.fu-berlin.de, richard@nod.at,
+ anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, luto@kernel.org,
+ tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
+ jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
+ thuth@redhat.com, mark.rutland@arm.com, linusw@kernel.org,
+ yeoreum.yun@arm.com, song@kernel.org, james.morse@arm.com,
+ anshuman.khandual@arm.com, broonie@kernel.org, liqiang01@kylinos.cn,
+ pengcan@kylinos.cn, ryan.roberts@arm.com, yangtiezhu@loongson.cn,
+ sshegde@linux.ibm.com, mchauras@linux.ibm.com, austin.kim@lge.com,
+ jchrist@linux.ibm.com, arnd@arndb.de, thomas.weissschuh@linutronix.de,
+ sohil.mehta@intel.com, andrew.cooper3@citrix.com, jgross@suse.com,
+ kas@kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Content-Language: en-US, en-GB, fr
+Organization: Arm Ltd.
+In-Reply-To: <20260629130616.642022-19-ruanjinjie@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6jqwrb3n5n8tjd9g5qdppbei1b3b5eca
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DAE8B1C0007
-X-Stat-Signature: 3k9mqrdyi8rdg6n7hjwdmomhyu55nz43
-X-HE-Tag: 1782832208-30072
-X-HE-Meta: U2FsdGVkX1+Eo1R4Ff35cpq8cO7P39TlvBjUp1qlWaSiDA/YX4KTnXKZ9/NW7qEq5s5uLsIfNNOm6ZW18ZyZZs1LC1UcZmS9Gdphc8ntRxa9mf1gGp01CzLmwDHUaEe9El2+JzyZVXk4dWLJ/KBmqqRZeOV5EafsFnjs0tw6IhnTdkbu/nXuOp3/RnFA8hQPl38JT8H2oAA3nTprHEdaxo2Nxzr+SAk9Rx+Ll0VbuSuGq/mq7gxDiNMienyLwwHeAnOPUDHUeN6scd1wuZ+a+q5LioDVkyY//JULKHEWs/a4Oz8pnBkRvh6fBdT/Jbybd1FegKVlKkyxTLLvZLbMR54TtbJ+SVyj1vQVpy1bGSJKh2LorMjkh9CRRWQJaCieviCzXjmeimTbRNSw/lIVcsaeOetIcPIvEQEuelVKHM2L7sN3mCa186wL8PvQEn7EFwp0LNvN6kPkbTY59odLkewrA+rxMqHO+/bMT2nlC9pxK64MkMqrhPFqB9w57vXp/5OZaidCi4PrKR+xVZWUaej43UpDItP+eSZX/7RxnXPA0wV0LWXYRDMVT1VhBOQVcZHVTGFEC50cXPE8ZSn37Vr+zlJ5/UIh1cXxe4f73rI65nOeFv9ny56fNrJ9Bf4GpLcWmFRk0dqTWlMRshNNCPDQbtQuc6fN+A0OZTBkTVZhbUBl5pT+dl6s+hHh4KITSH5XZkzDJv64yg8hVx/s4M6aKKqKp78bSt1yDc83qGSIVM0tCgZJQiqs4uFXNjPh62iyYA8zKqDaMHVG/pstQDud3VrMgjWe4txjbAVxtuhpq5Osqvw3WnOcVAbU8u8/FhTv9yZdpYWhSs1Cj4Wpe5S/Eyuy42TQktSMDALo1SFxq1E5/1h/66QJG7HxCuVxRedyR5wRQGbG4cc/2ptE+6kUTaMQnS9y8hWuaqMWBEHoJ6NwO6JzljrwVaSvJeTnECppyJL2yd5oxov8tZd
- Di/xpNZS
- mT/Dpm3LJAc9/Me4bHWvJmH81Q8SvglSS6sT5JQd4MEHHLjAu25fY8lJAfLEAzTmDBpeNqcWXTJgSj3HTy+LMN66QIRTNJfc5vyxfYietzdu3F/nouARp3ZhdN8NBL+c15sMXBsAO5JQtt9kQI0fmzuYArK0ysWx99fUo2Ms5KYu0EV3cQDztMzoL3xKhwUo7dogcAjrjf5dx8q7DqZxwkVrCY2Z6+BcRyxVXGzU0RjKBJmjdPHMexByxgaaOGkMyNHF5+pseOJE30n7aoYnD+03Hux1iQFiAzHr0CNXg3HOHo73v6TUuxf+gyugWTJZhdiiL0k0epLl/lm9D6Pe6wKt51Wyl+5RkPSZIfM8JxwXhLNCFe+ePuw7dhPJc+++OogTq/Q/Nky0z8HjICwxC3+rddqAst5i6KMWnznp26My5WVgYQHa9xaDDXOvyrlKdeOrO
+X-Rspamd-Queue-Id: 932E140005
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1782832468-379458
+X-HE-Meta: U2FsdGVkX1/tV5K4dqRJDqjIn0k6GLSPpJXmOLWOCr/Wi+ryMLEhCASgjIN8eK0HY6yyp47NOE/tZXMv/XxbskRZ0Z8M4nGZvPnaPhrAmOPkBY+G38kRRTAvcziH31btETTQ8gVUpGz70/TKEqmW/6nJYB9zwmLE5wcIYM5xLCP2mlOvebvAG8y/8ykA+PV/UZdsz0hfbebyKJL8iqgsnGscjAElLkpnw+ZwxCXeTbFc5wuTBQjEaJWhFE+udDkv+aJj2PNaUVdCywIddQ6xhsW9WXqLdOVC2kfoEu08vSosJdOthDHvjcfOdhCs9ht1oEWcxUHi12nruudCnoc+voRaW3q3nMEuw+Rt+cu0gH6WhNK94MdMAGnN+oPs4NP+8vdddeGvBRRv7TuvtmO3nrHm2QAjFHRt7KycudYPWL8ldIkiD8D1qODqAHs3WAONOMpyHmXSmTcTlzUhRWLxN0BXTNkunaI2Qw3MVE6jxiU4nXAC4mI180ZGYBOWOkV4fgPhdYeH+68T360dcYdNheMfRxI/Pe+vbL8i7Z1Z8HalTTuit59Ip3XO8n5C6npkFqGSGcG/j4HxVzJTHRHPNqC/cowo+cyVGHcdl3ABrHtBe8EeElbd4Why4Pc0ldnuZPe059z+JYt5I3/SdMsXM/NwtfidxSv0aM3KXYJfshCSMEErqDPRbvFdJ71a/IREnpO5lttEr+m0ki/ODdqRIzkM4qj264Tn19qVvFOjjajBfyHslhGCRyIMRBz4DSCyGeEhlfiWSW5khnZ8sy8RrfOCxH+K3BgFrXuPz2unq5Xdw3ge4cf4AF78N5FqdC7iewFf69jAOSW5UVAcYPR4ev+UDoNXYVyG86Jq6BJErEZHln49gYp1kDUu6DqwKAOwQmqZuYedld3nB5q9dBiHEWCJ0BrGq8TaCI3idYFWtsxh+T3iIuDe7kzy3sz/4cQ4ZIcs+6xNDnSQEoh5Yoa
+ Rb7VdbrV
+ Vtkwo0OT+p38z0pzibdl9PDItcTRtdKy5H6HeCQm6favWyY0vEf7eFVmPhLXvFJFoBqZl4RF6POnJtYX8fezjgsYKgtGNO4N3loQSuhwu1fzdWwl0fu/Q/DSM/9cSSqCVPsYP1ap9Gkq1+u0VmRqGGu5C8TwAs2nxDN0EtHre3vfpm8oGEItuqyAnrMcQTU4dvLoeaUE/KjilHPBSobzXmUvsIXu3fs4QEBaFEJu2xjSFZBEc3lH0Roq8PNU/mkjE3YdgRWnao0amEhx6ymZVSFtPna6Immc3P6HWmwOQ5OiofdtBQO0PAxVSS/oiAM0idrzDpXFhUrMhmOBPiZGGliClZIxwVJySLcrnMkcbWN/Ac2vjxKDpstfUa61nWsXPkzAX
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -218,135 +115,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue Jun 30, 2026 at 3:38 AM EDT, Lorenzo Stoakes wrote:
-> On Mon, Jun 29, 2026 at 04:26:18PM -0400, Zi Yan wrote:
->> On Mon Jun 29, 2026 at 3:25 PM EDT, Lorenzo Stoakes wrote:
->> > These test whether the VMA has stack sematics, i.e. is able to grow up=
-wards
->> > or downwards depending on the architecture.
->> >
->> > In order to account for arches which do not support upward-growing sta=
-cks,
->> > introduce VMA_GROWSUP whose definition depends on the architecture
->> > supporting it, and use vma_flags_test_single_mask() in vma_flags_can_g=
-row()
->> > to account for this.
->> >
->> > Update the VMA userland tests to reflect the changes
->> >
->> > No functional change intended.
->> >
->> > Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
->> > ---
->> >  include/linux/mm.h              | 21 ++++++++++++++++++---
->> >  tools/testing/vma/include/dup.h |  4 ++++
->> >  2 files changed, 22 insertions(+), 3 deletions(-)
->> >
->> > diff --git a/include/linux/mm.h b/include/linux/mm.h
->> > index 868b2334bff3..cf7df1569052 100644
->> > --- a/include/linux/mm.h
->> > +++ b/include/linux/mm.h
->> > @@ -472,6 +472,7 @@ enum {
->> >  #define VM_SAO		INIT_VM_FLAG(SAO)
->> >  #elif defined(CONFIG_PARISC)
->> >  #define VM_GROWSUP	INIT_VM_FLAG(GROWSUP)
->> > +#define VMA_GROWSUP	mk_vma_flags(VMA_GROWSUP_BIT)
->> >  #elif defined(CONFIG_SPARC64)
->> >  #define VM_SPARC_ADI	INIT_VM_FLAG(SPARC_ADI)
->> >  #define VM_ARCH_CLEAR	INIT_VM_FLAG(ARCH_CLEAR)
->> > @@ -483,6 +484,7 @@ enum {
->> >  #endif
->> >  #ifndef VM_GROWSUP
->> >  #define VM_GROWSUP	VM_NONE
->> > +#define VMA_GROWSUP	EMPTY_VMA_FLAGS
->> >  #endif
->> >  #ifdef CONFIG_ARM64_MTE
->> >  #define VM_MTE		INIT_VM_FLAG(MTE)
->> > @@ -1563,11 +1565,24 @@ static inline bool vma_is_initial_stack(const =
-struct vm_area_struct *vma)
->> >  		vma->vm_end >=3D vma->vm_mm->start_stack;
->> >  }
->> >
->> > -static inline bool vma_is_temporary_stack(const struct vm_area_struct=
- *vma)
->> > +static inline bool vma_flags_can_grow(const vma_flags_t *flags)
->> >  {
->> > -	int maybe_stack =3D vma->vm_flags & (VM_GROWSDOWN | VM_GROWSUP);
->> > +	if (vma_flags_test_single_mask(flags, VMA_GROWSUP))
->> > +		return true;
->> > +	if (vma_flags_test(flags, VMA_GROWSDOWN_BIT))
->> > +		return true;
->> > +
->> > +	return false;
->> > +}
->> >
->> > -	if (!maybe_stack)
->> > +static inline bool vma_can_grow(const struct vm_area_struct *vma)
->> > +{
->> > +	return vma_flags_can_grow(&vma->flags);
->>
->> Would it save vma_flags_can_grow() if we do below?
->>
->> return vma_test(vma, VMA_GROWSDOWN_BIT) || vma_test_single_mask(vma, VMA=
-_GROWSUP);
->>
->> I find these two functions when I am reading mm.h.
+Hi Jinjie,
+
+On 29/06/2026 14:06, Jinjie Ruan wrote:
+
+> Syscall User Dispatch (SUD) requires the signal trampoline code to not be
+> intercepted. This is necessary to support returning with a locked selector
+> while avoiding infinite recursion back into the signal handler.
+
+Thanks for splitting this out, I find it is much clearer that way !
+
+However, this should definitely be earlier in the series
+As I mentioned in my comment in v15, Syscall User Dispatch only depends
+on `CONFIG_GENERIC_ENTRY`, so enabling generic entry for arm64 in patch 16
+also enables Syscall User Dispatch.
+
+Given that this series adds a weak default function returning false for
+`arch_syscall_is_vdso_sigreturn()` before enabling generic entry for arm64
+in patch 16,  patch 16 and 17 have a potentially broken SUD enabled,
+as we do not check for those sigreturns yet.
+
+I think shuffling this patch back just before converting to generic entry
+should be OK !
+
 >
-> Yeah but we require vma_flags_can_grow() for code in mmap.c, the majority=
- of
-> checks of this have only vma_flags_t to work with not a VMA :)
+> Implement arch_syscall_is_vdso_sigreturn() for arm64 to support this
+> exclusion mechanism. For native 64-bit tasks, it checks whether the current
+> PC matches the 'svc #0' instruction inside the vDSO sigreturn trampoline.
 >
-
-Got it. I think I need to finish this series. :)
-
->>
->> > +}
->> > +
->> > +static inline bool vma_is_temporary_stack(const struct vm_area_struct=
- *vma)
->> > +{
->> > +	if (!vma_can_grow(vma))
->> >  		return false;
->> >
->> >  	if ((vma->vm_flags & VM_STACK_INCOMPLETE_SETUP) =3D=3D
->> > diff --git a/tools/testing/vma/include/dup.h b/tools/testing/vma/inclu=
-de/dup.h
->> > index 5d7d0afd7765..6f5bcd7fbcd8 100644
->> > --- a/tools/testing/vma/include/dup.h
->> > +++ b/tools/testing/vma/include/dup.h
->> > @@ -245,8 +245,10 @@ enum {
->> >  #define VM_STACK	INIT_VM_FLAG(STACK)
->> >  #ifdef CONFIG_STACK_GROWS_UP
->> >  #define VM_STACK_EARLY	INIT_VM_FLAG(STACK_EARLY)
->> > +#define VMA_STACK_EARLY mk_vma_flags(VMA_STACK_EARLY_BIT)
->> >  #else
->> >  #define VM_STACK_EARLY	VM_NONE
->> > +#define VMA_STACK_EARLY EMPTY_VMA_FLAGS
->> >  #endif
->> >  #ifdef CONFIG_ARCH_HAS_PKEYS
->> >  #define VM_PKEY_SHIFT ((__force int)VMA_HIGH_ARCH_0_BIT)
->> > @@ -315,6 +317,8 @@ enum {
->> >
->> >  /* Bits set in the VMA until the stack is in its final location */
->> >  #define VM_STACK_INCOMPLETE_SETUP (VM_RAND_READ | VM_SEQ_READ | VM_ST=
-ACK_EARLY)
->> > +#define VMA_STACK_INCOMPLETE_SETUP append_vma_flags(		\
->> > +	VMA_STACK_EARLY, VMA_RAND_READ_BIT, VMA_SEQ_READ_BIT)
->> >
->> >  #define TASK_EXEC_BIT ((current->personality & READ_IMPLIES_EXEC) ? \
->> >  		       VM_EXEC_BIT : VM_READ_BIT)
->>
->> Why are VMA_STACK_EARLY and VMA_STACK_INCOMPLETE_SETUP added here but
->> not in mm.h?
+> 	SYM_CODE_START(__kernel_rt_sigreturn)
+> 	        mov     x8, #__NR_rt_sigreturn
+> 	        svc     #0
+> 	SYM_CODE_END(__kernel_rt_sigreturn)
+Maybe add `arch/arm64/kernel/vdso/sigreturn.S` to mention where
+this snippet comes from ?
 >
-> Yeah urgh oops my bad. It doesn't really break anything but I'll fix it i=
-f a
-> respin is needed...
+> For COMPAT tasks, it verifies if the instruction falls within
+> the architecture's 'sigpage' range, allowing the kernel to safely bypass
+> dispatching syscalls originating from these areas back to userspace.
+I think this might benefit from a bit more details or clarity on the "why"
+of the COMPAT handling : there is a vDSO page for COMPAT tasks, but
+COMPAT signal handlers have their own dedicated page, `sigpage`,
+which serves the same purpose and is handled similarly, so it needs
+to be checked as well.
 
-Sure.
+Hopefully that is correct... Would you find that relevant information to 
+add ?
+Pinging @Kevin Brodsky on that as well.
 
---=20
-Best Regards,
-Yan, Zi
+> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Suggested-by: kemal <kmal@cock.li>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   arch/arm64/include/asm/elf.h |  1 +
+>   arch/arm64/kernel/vdso.c     | 16 ++++++++++++++++
+>   2 files changed, 17 insertions(+)
+
+Otherwise this looks good to me, great to have more context with the 
+change !
+
+Thanks,
+Ada
 
 
