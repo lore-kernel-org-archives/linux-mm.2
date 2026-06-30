@@ -4,84 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37622C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 23:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD19FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 23:27:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13F3A6B00A9; Tue, 30 Jun 2026 19:05:52 -0400 (EDT)
+	id 67DC16B00A6; Tue, 30 Jun 2026 19:27:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C99D6B00AB; Tue, 30 Jun 2026 19:05:52 -0400 (EDT)
+	id 655D36B00A8; Tue, 30 Jun 2026 19:27:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFB826B00AC; Tue, 30 Jun 2026 19:05:51 -0400 (EDT)
+	id 5931F6B00A9; Tue, 30 Jun 2026 19:27:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC9C6B00A9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:05:51 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 290AB1C4E19
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 23:05:51 +0000 (UTC)
-X-FDA: 84938113302.02.9D2E48F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F348E40008
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 23:05:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bHw3MuNC;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 327C66B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 19:27:57 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A029D120162
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 23:27:56 +0000 (UTC)
+X-FDA: 84938168952.12.FE4663B
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DE688C0009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 23:27:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=eX7+jKaF;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782860749;
-	b=C+t7FZGQQSEdTBrih4NWMxk42ffcN+/JjCMtV3xvgwe0QtV+jJU1VzW5wPqh5iQr4UzZsU
-	Dz8bmXJAbWfIVSnTflpvAmLiXuUZKd0lzYDTuhx9aV1lk1gzpH44r1Mb+/OwdgybUtiCJu
-	nFwn2wvEMNqW+LH1VaxTYgwNodk5wEw=
+	t=1782862074;
+	b=8qYd5H97/WI9I5G6VKRRnGU2j3Bw9BP3UviXK1W1/ZGyjnKC+n8YGJZ1AbnPHEbedLrx/7
+	D3S37FEyxsbxe/BeI9R8tVYWtZIW8RHByKD5r/NAhZlE3C9/a8DRWai/g0v3AAoDaDNjbw
+	f7XKsn+MyxnVfjE5QnxaUWD5t1+5/vs=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782860749;
+	s=arc-20220608; t=1782862074;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yF7mDtx2AH+vn8tJJ+WL09Iu/3QgFhfiY0Vo7XWhG24=;
-	b=zNqTODB0+FQ2bsHMp7Y3q3O5FEFBD3YsOjzF8liyZn7p/oesmfVAWTYT/cGRYjfjH+8BVC
-	CwFybHQhx2QrbPED2zdeRqCmP3U6YgZirAiqBEXkTRcuYoVJ56759+9JUgZh22rP0Nl0WN
-	QYZb89OM/GVbFZfpdQMPDLuffR6jqx0=
+	bh=z8VxY8AgSRitjH8l91RmH5GEBz/bwewUsAZtM00QZ6k=;
+	b=gA35CVpSbdp/6qcNyyKCDn6njS0BId0Z5tUmHmI3ed115xClr+ig4Xo1sNta3pbIJWAZ9+
+	TyuRTbuKsVO9vAZCsYTmwsfEJfUL6CX14e8Xxh1GXRmFjMxb/g9ZzhZDAMrPd3xhGkhhFN
+	IW0ZGCKVriMU0znoZ+zKBH9L20Sffbk=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bHw3MuNC;
-	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=eX7+jKaF;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.176 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1390742B8F;
-	Tue, 30 Jun 2026 23:05:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8231F000E9;
-	Tue, 30 Jun 2026 23:05:47 +0000 (UTC)
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-51c0c68aa31so59651cf.3
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1782860748;
-	bh=yF7mDtx2AH+vn8tJJ+WL09Iu/3QgFhfiY0Vo7XWhG24=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=bHw3MuNCIP/NOUtn+SAEa2v8rpButWUubbrHpqTfRURs0wCe02+NENOdJi5BpE/pV
-	 8lgVHaC9fMGshiNN0Tq9IN1LZaOnl8mdaoePXDduNVDQA9EPnvlyFbwsL46ZYU9Ho0
-	 jOekYB5+cuw/Z8/KyxDypDgSIIdvmcnCV87kAp7Q=
-Date: Tue, 30 Jun 2026 16:05:47 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Liam R. Howlett (Oracle)" <liam@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- maple-tree@lists.infradead.org
-Subject: Re: [PATCH v2 00/19] maple_tree: lock checking and clean ups
-Message-Id: <20260630160547.9a7c131660665f3757599720@linux-foundation.org>
-In-Reply-To: <20260630190843.3563858-1-liam@infradead.org>
-References: <20260630190843.3563858-1-liam@infradead.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F348E40008
-X-Stat-Signature: 85u7iswz3try39gi4qnafmz9sk95esit
+        d=gourry.net; s=google; t=1782862074; x=1783466874; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=z8VxY8AgSRitjH8l91RmH5GEBz/bwewUsAZtM00QZ6k=;
+        b=eX7+jKaFUDHoZZr5WgELmeEitKSbl7ig/4QZhRO0r3ItGM5VLuVl4BL5raVY6szoZc
+         F1Q0L67cEoHMHdLGNXarBLr8OL8w4d5IMFEaOSt2dGywwPIn5312Ysxxncd1FArp8VcU
+         91A6kG3HROs13MCqKWnRYZHrk6shzkN+oresV5DpnBNSMIjF3H5WG3gkCNDSTnYpiw/n
+         R/JBRJfoyZPaLqA9LlF6HZnr86OXxdeTRBOymevOfS6lgIPHEfgMB8AUMa73xkqrV9mD
+         01wcYXX7VYDZf6FSkzvyQbz2ATCKay5ZtrCPHp1EAIbPfml+4b70BXxzMD/3aneOFUFg
+         m0+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1782862074; x=1783466874;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z8VxY8AgSRitjH8l91RmH5GEBz/bwewUsAZtM00QZ6k=;
+        b=KzgIuGYyCcJr6NLUxu031YwQBV3WwlSinGopOp9x43tdQuBdsgWSETlwSv9IRyTKp7
+         /IYAFWvFE/P41tjJUSPx2gMFi6zKqv8TUVfv2UjPa1pQBwI4O8Q0Ps4Kxv4U1aHqXcvO
+         XVXYWfoD4WTqjumFeivXGhehYgq/NkIGnkZjv/ht2C9JKchTvxniGjpYz5qXbU+UrjPv
+         mEr21Aekw0kFzb3pyu+czl7RfURWlymCcmN81idBoicLnCL/yE04iXkp6rKlpWlGubsz
+         obHtnfcPTeUZrfTRsKNGkeIh7EG7gVQ0L4X+J5zzmAjf9GHXihNxa1Wo13RinFZ+HJOU
+         EKuw==
+X-Gm-Message-State: AOJu0YzccgThcaznuFWwZPZ9YFGypp2CbEGsPsSoBNCN5HM8y+Uca3yg
+	9IfXovA1QetNXMIq/PFC59sPXk0AedB/je6AZEUdWCEW4Qoos76gts8S4Gicuul0qoI=
+X-Gm-Gg: AfdE7ckCkMyEJ/1N9HT7Bdrxdp9ioeN+nRLp0DO77kfmrjXHfE+Zso3ZqpFaXosCKT2
+	8xGbfu5Dz7g1awdjQ607egdYUJb2y5FJnFsgQkvkTz5OEeCeHvisLZKIhRNoleen+QupTCm+ntd
+	P3i01rzQfMQs/7gAgFmWNOC3SPPbKCd1r99J61jCCUCbYl8+hwkubBNrZFr3LSCnAlF/j9Syc3i
+	ArtS6We2neApmnMLfm+wiWuARHM91PdVhIxnVz/yxsTZacSpPS5wDhebf9JDWlXe9lQXJfEK+r6
+	3KEQsqCAA/eq1wl+c8GjV5gXfDA0wFE6I9b1NVCFqX2m1aYy03EeV1/HYCDJsUzVvAD9rOrYXZ9
+	1XmmJCzLwplJw/fV+pQcLaTV5F+MBMpvR+Q4Sy3GFPjyPAjc86+P/2mNSRzc3fTxtZEbnnBsBY/
+	YvnQC1LiL0+Z6nHVB0jZ7rUBR4fauaB5aUlC9Wxjwarrw8Vl4Q9G2DmAHpIr4GZeaGJx+E
+X-Received: by 2002:a05:622a:349:b0:51a:84b8:df75 with SMTP id d75a77b69052e-51c108a0f92mr82576621cf.50.1782862073978;
+        Tue, 30 Jun 2026 16:27:53 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f3618b6b13sm2985436d6.34.2026.06.30.16.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jun 2026 16:27:53 -0700 (PDT)
+Date: Tue, 30 Jun 2026 19:27:48 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+	rppt@kernel.org, vbabka@kernel.org, mgorman@techsingularity.net,
+	hannes@cmpxchg.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/vmstat: fold stranded per-cpu node stats when a
+ node comes online
+Message-ID: <akRQ9KB6-HzLwqwC@gourry-fedora-PF4VCD3F>
+References: <20260627202243.758289-1-gourry@gourry.net>
+ <20260627161007.81e4533ce561c2951a69f927@linux-foundation.org>
+ <akQtx7zhP7pxNCiy@gourry-fedora-PF4VCD3F>
+ <20260630155517.38a99de9f32d20abcbf9440b@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630155517.38a99de9f32d20abcbf9440b@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782860748-574780
-X-HE-Meta: U2FsdGVkX19hpW7RX5TnyuuSD8vkM62YMzFjS9JdvFEL+SuZuYmU50bsFSiZ9bRvlbQx4YSq8uYmqCL50GsEp1zirWSHwGjeRRkEHpq47QFH0UzMnqeyU8aEmRj0xqRA3ygEwN0JtbEQgewMaxQQZOHn8hkyI7D9Mju0ttaY4C0koJ3jXssWFYDqKAkYvWfkmA3ZaR3AI/zXH0UAHu7RD5QcccZiX9cD3WUT8FwJxOV7EbU5BNvmiiudxQZ2B82LbbsXAnAmwE8vKIKj94i3PZZ+dLtsCEZr4mX7J4Ql1NaF7Lbg67VurlbGR2LKqAkF6hmAa4hDs2mS1eTvypXyui6ZuxPLzAIOzf1oozL9fLtKg7qXWsS+Qiu9fBtvzh2Q8eNiepWCFLQiG/fj1oIRNYcKbNJDrityuqeY/rBXeaPBivDa9CDnKCscF5E/KaOC253SETJptiAxPEYdXWcEB70WSqNspxKqsS7OCq4T299/YVwQauRidyCaZP+dBFi1/bOwHTzHtrUKnAUu0xZ87qiN6SSml4+mSgftqbyMw6Uxl0H43skRP8HYaGEpsbALAn9G6HMa7FxgHHANDtJDfzxmEwSssdzZQsGx4hwR1BogybhqYXtrJuV7OZZOMw3xnuCOtlFLZ5LpnUPXMv1ub3GI2fihcfMN1IvWTACromh8VohmC0N62mniYcGVFBsmaL3Nj7z9p3vOc6ncdADNQRIHsh+eRR2tdcONkcxtZ6B/LkLUS5cdi3o9rNeAETa1m7h3nEXw9M2yR1pTiltBDI6bs6ou0JGbQh2RLUTGCEyZNoBtqUK5x29gWi9uOY7C/c1PojX+uStkAtNx3SK4iKtfCE8aJ9bm9LIRQ3wwYa+pYlhvMvlnmaaMOVVZxIUiyxjQAsyYvYTEOY1yG2iOHuQ1QPvWVH83LzskhsUKdQJYsHccwl2sBi13J3/HDwOhuXIDsC2vjWXDtkkyB0j
- j6fO7d+i
- DJO+srDM3GegwP/p8fWN8GghSNmuYg+UqzZJ5mNWC19VgsgBgmH/SwRH1KPNr1lS6490QrNMlwzy3YEp+gamGALD/c6L8XA83O8UYziFB5JoaIAx2SkIUrBMK6mXtZZ3gzR/KB6TWDtPBHsDlyLvWtZf5x4+8MZoO693cfnAjeSv9uC/1+SyCN6SA7CPkLYmZbMEFF3xTXqRiMJrz75bdPK1RRgNcqsJkIkZoV+oWsTPx6hAsstlfgTvKtAhBarOB7uHECKVjoveK/eMbXfejqJ61cNrX74EjAXaagqThKB977J3i57Giunps7ntdCipXWcbZy8bbqdi4xIc713FOZy5Ms+gvWh2bOCHh
+X-Stat-Signature: j36jysfsgyb7bzggcai1a591e6gxqaew
+X-Rspamd-Queue-Id: DE688C0009
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782862074-496798
+X-HE-Meta: U2FsdGVkX1/n6nCMKuniL4EqNG9fmJ7flXRNON0N8e7r6fQAFsxKqf1sIxsXXkiPIaiuHYhKPc0TfhH+Pe4MvQZxLNVbbKhB/EaEuSZu8IIEAkRBp/cIdhKoRmqWUe8qL3iri8G9H1j0o46AAwYuTckk4MFQp/aYFfpq1S8Xx/ZTT3sHKc66hRZBWWGn9EnCHRxqtJMTZpzjDs++FhFVZl5UXFdmJs1iJ07Drwyj4APTHvVriiwpPwdGMIXBiRWcSoPbjB2rOqDpnouz2JtTKEOJ4gNDD38Ir8ODCjeHEa33UdXXyW2mBxDsOJg9DZmVZQoZGifOqfcIqF3c4LT+8Bi6iVW+OcRLkT6gCGT8vm1w9FtK0EeiHpfHpgYRwinQ69fERhDhqwEF0HDTPPfRXPca3NsdQ+Wm2khGeTLieOqO6CAoywkX/3mRuKJkgIbY/3swBx56N5MtycG8usmrREUdZ12WtuI3RsO7kgRENRKZwg5YnA7OKgskneERDOdl8m8BHsNyEmjsPQP1t8e6yH9I3B8uv4/Bj29er8N2AFCooCRL6u70+mZHncKwy8rHdn8SbuxzUTnWS5BC63EKSsUrboJya2a1gph9j6F6u7wCYjr3Uys1lqgysO0qt6VU7H4rPJjMxtUgC+/d9PMNgp82rcA54Jus30uN3TqGxcAlcMiN5SU4YupZlIf+8oH1LQ/DeL9/CI+MXuvf9eTH/zjunHAfgmV4yT6+0hilo2llxYnKHewxtvqZPbHpWcxWs5WLIwY6w2FurljQOcRtnbFqOPt0yOkxcrL6pxiV8jrPVLHNs9XHsV8f2Rr1EublzXpSGpuIkDKVMwvgBU6ZRz+3bXHpZjwN9oAHRrF/jmi+c0W62s+SyzfA+1P6wgInIT6Num6YzuRU/xFhCWH2tc9xWbyfy8AvruaditGwzaB82s4my9Qf3hCRLOBNchYblVe2sFC6ZEa3y11x2cT
+ wEy3DJ1F
+ LOL7I/rfp1Bfj/1fOJpMUvPbIC9s38f5cP40zX7FTVAV5u6BwlaB7G61w7dIg0DvmvBOwh39J5Dlq7Eonjf0nJqmq0/TwZgEoIqpabX+slgroW89T4P8BERIXGiMaPAlQTUerMmUeoNBuGIIITKMc408Ag6S8nXfwAMB+GYALxk00NOcHNOhdatEIGnVZQIspVaRm6U8NFFYtfW4TlQg38nlqYWyImdpwLdjVIYkic7mzt0q8RpncSNpbtygvhJt0/VqikzEI4shjZFZ9Uv3Wd51iqQHqx9reFAd/oiK5QeWALaQYl3xm5dpGAG0Ou59KnUb/aLzXw+jdOqNZYquko4kKBE03F4b3paHzMtvaB82o1yK5W31jQ7GAG8cgiEsDOZmkt+6hOCPr+tWosjJZ3fk9MlWKF9SuoVQtV0CcJaFHJNxFfrZ3gbmo/ECjqS585lb1LahaX3dBxJXXjpVC2XOQFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,28 +120,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 30 Jun 2026 15:08:24 -0400 "Liam R. Howlett (Oracle)" <liam@infradead.org> wrote:
-
-> The goals of this series are:
-> 1. Lock issue detection
->   A number of syzbot reports are incorrectly pointing to the mm exit as
->   a source of the locking error.  The first three patches attempt to
->   help users detect errors in their locking - but they still have to use
->   LOCKDEP.  I guess it's still down to hope and prayers.
+On Tue, Jun 30, 2026 at 03:55:17PM -0700, Andrew Morton wrote:
+> On Tue, 30 Jun 2026 16:57:43 -0400 Gregory Price <gourry@gourry.net> wrote:
 > 
-> 2. Documentation fixes
->   The documentation was lacking clarity, there are updates to try and
->   help the users, especially around the erase() cases.
+> > On Sat, Jun 27, 2026 at 04:10:07PM -0700, Andrew Morton wrote:
+> > > On Sat, 27 Jun 2026 16:22:43 -0400 Gregory Price <gourry@gourry.net> wrote:
+> > > 
+> > > > +		struct per_cpu_nodestat *p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+> > > >  
+> > > > -		p = per_cpu_ptr(pgdat->per_cpu_nodestats, cpu);
+> > > > +		for (i = 0; i < NR_VM_NODE_STAT_ITEMS; i++)
+> > > 
+> > > and that's a lot of items.
+> > > 
+> > > I guess the overall loop count won't be large enough to cause issues,
+> > > but it's large!
+> > > 
+> > > Perhaps there's some simple test we can do on the per_cpu_nodestat to
+> > > avoid the inner loop?  Perhaps might need to add a field for this?
+> > >
+> > 
+> > I took a look, but that would involve adding another per-cpu field and
+> > then making sure all the races on that field are respected as well.
+> > 
+> > Not sure it's worth it for such an extremely rare event.
+> > 
+> > I can try to get clever on the folding logic if you'd like, let me know.
+> > 
+> > > btw, "for(int i..." is allowed nowadays.  It'll make this code nicer, IMO.
+> > > 
+> > 
+> > Otherwise i can send you a respin for this.
 > 
-> 3. Two benign issues
->   The cyclic allocator may have a race, although no in-kernel user can
->   hit it.
->   The erase functions may cause allocation issues if used with the
->   incorrect locking type, but none are present in-tree.
+> Is OK, we could make this change in a million other places.
 > 
-> Beyond these goals there are some test fixes, some general speed-up
-> patches targeting extra work and cycles, and dropping dead code.
+> > > And... Sashiko seems to have found a pre-existing issue:
+> > > 	https://sashiko.dev/#/patchset/20260627202243.758289-1-gourry@gourry.net
+> > > 
+> > 
+> > Incoming patch for this shortly.  Pretty trivial.
+> 
+> Cool, what was the Subject?
+>
 
-Great, thanks, I'll add this to mm-new for some testing.
+[PATCH] mm/mm_init: handle alloc_percpu failure in free_area_init_core_hotplug
 
+https://lore.kernel.org/linux-mm/20260630214039.2263562-1-gourry@gourry.net/T/#u
+
+I didn't bother with Cc:stable because it's also 10 years old and
+doesn't seem likely to actually get hit, but if you think it should be
+stable let me know.
+
+> 
+> I'll queue this patch in mm-hotfixes for some testing while we await
+> further review (please).
+>
+
+Thank you!
+
+~Gregory
 
