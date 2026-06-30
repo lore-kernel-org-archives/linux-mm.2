@@ -4,89 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 640A1C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 05:38:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0BCDC43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 05:48:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21F5C6B00A3; Tue, 30 Jun 2026 01:38:52 -0400 (EDT)
+	id 8C3656B00A6; Tue, 30 Jun 2026 01:48:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F6EA6B00A4; Tue, 30 Jun 2026 01:38:52 -0400 (EDT)
+	id 8744D6B00A7; Tue, 30 Jun 2026 01:48:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115B56B00A6; Tue, 30 Jun 2026 01:38:52 -0400 (EDT)
+	id 78AA36B00AA; Tue, 30 Jun 2026 01:48:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C25586B00A3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:38:51 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 244C21C6BE9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:38:51 +0000 (UTC)
-X-FDA: 84935474862.28.B7453FD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 65DFF40006
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:38:49 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R86JUREA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 526AE6B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:48:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C5E201A0390
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:48:40 +0000 (UTC)
+X-FDA: 84935499600.13.092877A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 03BCF10000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:48:38 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIRh9tiq;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782797929;
-	b=kzGGbpi3CXpuIlz4SVDChNSpZeEvi9snN+wKaKO8wTOfZQkc9I0UkPrAfsXh9ca/k2N8lO
-	VnsNqIGJS1+19t8QTyn0tCk8w5YPhMoeWmTfke1f4GQImIcCSUWPK7h/P5T3qL6aNmABhW
-	bASYHcbkXn7YP6bzwgFzoI1VrAx0I6Y=
+	t=1782798519;
+	b=GY0xn7DGEwJWHI6/VNa0LEB1hyy8vLuJ/HBTdJduDw9hwTdWnW/PNcUpT1ALMmTsQJb9Ar
+	sbtVkxqEN7PN7XMdtuw9vUHc4LX8gJjVRtcY2M5+fYOvNiu6JsEMZp0gm759SoUXec47yX
+	n+pFOsAsgvbOSHtd/m/gyuB+dvJb9ZM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782797929;
+	s=arc-20220608; t=1782798519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7wPcm/Xetdm2u1ZsAsdit/mG1QKFMGsSy/lP1k1Fymo=;
-	b=MT89gbulWDwC1GE0zPuOvswRk3u8jgt2y4BUnIna5K3drboum+6auwnO4MbnWntc94hskn
-	MaKc8WYFS/fsJBas/T6Rx/sePVAhsjIcK+M1BAZ0wtNltRtr4s+q23SGD1uIQXoNiGDrig
-	a8q8Z6wsiEak6lQgTjNfP6jdkZttIxA=
+	bh=jupNvdmFnR/Px+8NpmjXUojkBHAB6uqajDM8/BZw794=;
+	b=06PciDCbuSxle+E9aw3ZziJ2IC68a4r5J0mo2PFYwQxf32Wmk8jZY4/n8CI0aKfwmf2E94
+	jnxrB2mNvdFS1RNBpcBxDNi3Fa+knzb2RaMm/Lg8y4w+qK9lAR/cu3smcLujhfXHthOT7T
+	wuOTlFQgmU2pjB5ZYbpd8yYjOcpVYa8=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R86JUREA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kIRh9tiq;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BEFB4600BB;
-	Tue, 30 Jun 2026 05:38:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2506F1F000E9;
-	Tue, 30 Jun 2026 05:38:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2F22F408B3;
+	Tue, 30 Jun 2026 05:48:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F4A1F000E9;
+	Tue, 30 Jun 2026 05:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782797928;
-	bh=7wPcm/Xetdm2u1ZsAsdit/mG1QKFMGsSy/lP1k1Fymo=;
+	s=k20260515; t=1782798518;
+	bh=jupNvdmFnR/Px+8NpmjXUojkBHAB6uqajDM8/BZw794=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R86JUREAVLX4ULzfoTYjiYDdOZfMIayeZs90it0vFa8kQ64Ls1ie0TAwLP5123vs5
-	 g5KD2E6E0wFmYPJtTnTOyxnxHreqJ27IsO+hMszlJeDAub0hlgwa+XlwwpZdhSmt53
-	 b7x28y/AtxeJcNKfWqeNaANQEuaPFV6o4UcdLxzENTDDklldkr17moKQlRn3dChK2L
-	 F9oIJ/pg1wmOxRdmoDuajZiM/ZobAH01ip04NmGhPqS8A/47CCBKyRGhYamu4hbLV1
-	 Dffj+dDIJCjY0SqHA8fllTtPrfen7PiIkCqW/+WEZmPzykGGPKdTYWCIGcOahHhWJm
-	 ym3B6eh7F3GxA==
-Message-ID: <0c386af6-353c-4f76-9f28-bd1a77dababe@kernel.org>
-Date: Tue, 30 Jun 2026 07:38:43 +0200
+	b=kIRh9tiqXn8no/E4hXCG4xXv7n5WlJFXAoWv/Yjzf2+lGRElBKyyydjumSSmjdhzV
+	 6YaZZHr5VBWeaVZVU6ofy9SCnaUrVabh/MiB9it3pplV8JZ2x3kx/VNBNOGErrEt+L
+	 EpWEMnO+X13LV5/0xIGUlZP9BFP4g34Ur7B7x6wODFtqLmXNw/X5uMuMlIg3r+bWVy
+	 zTDHJU20r7mPHPCEnVjNCOJeiE17x5hjblndbBZ1xz3GHLg6ZU5a8wlulEkK2ypZbu
+	 YHx6sXvLpLw808UB+1N9Hju/JEcWrXRSoI65d4KZFWz/QyiEla1R2pbSnbqXNHnCZy
+	 0LbRQAmHlHHyw==
+Message-ID: <1e7a712b-33f4-44c2-85ed-6333ddca421c@kernel.org>
+Date: Tue, 30 Jun 2026 07:48:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] mm: avoid unnecessary lru drain for
- wp_can_reuse_anon_folio()
+Subject: Re: [PATCH v2 4/4] mm: try to free swapcache for non-LRU folios
 To: Barry Song <baohua@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org,
+Cc: Kairui Song <ryncsn@gmail.com>, akpm@linux-foundation.org,
  linux-mm@kvack.org, baoquan.he@linux.dev, chrisl@kernel.org,
  jp.kobryn@linux.dev, kasong@tencent.com, liam@infradead.org,
  linux-kernel@vger.kernel.org, ljs@kernel.org, mhocko@suse.com,
- nphamcs@gmail.com, rppt@kernel.org, shikemeng@huaweicloud.com,
- surenb@google.com, usama.arif@linux.dev, vbabka@kernel.org,
- youngjun.park@lge.com
+ nphamcs@gmail.com, rppt@kernel.org, shakeel.butt@linux.dev,
+ shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev,
+ vbabka@kernel.org, youngjun.park@lge.com
 References: <20260623231635.43086-1-baohua@kernel.org>
- <20260623231635.43086-2-baohua@kernel.org>
- <bf2bbffa-dc68-4a3e-a8e6-1ad57c10255b@kernel.org>
- <CAGsJ_4wJ-2JFY4+ADf-Bn2PrbpvOnWeVwZY3unKnB=TZ71-hzQ@mail.gmail.com>
- <c4718e32-2baa-4dee-873c-7ab99f21ca4e@kernel.org>
- <aj83c5ix_YCFMU-M@linux.dev>
- <CAGsJ_4xbYOVvonZg6d8eeuKcY9SUic3zXLbWUvxJrbf=U9sQnw@mail.gmail.com>
- <3903def5-e823-4fe3-9784-b6bd63470516@kernel.org>
- <CAGsJ_4yRKAhRqtC=ieGV=gQ0-x2aYPDV6QW8_akkGiJsmxkbfg@mail.gmail.com>
+ <20260623231635.43086-5-baohua@kernel.org>
+ <e56c4d73-ed4a-48bb-8d0a-97b1200d4a35@kernel.org>
+ <CAGsJ_4y3yC1DCsHfCn5FP6vK3jqNRbqU5pbBqHnb5LB7GgtWOA@mail.gmail.com>
+ <ajzm3pHq-wQlLNmm@KASONG-MC4>
+ <c16bd777-6dfa-48f9-8dc5-2b56bebe67ad@kernel.org>
+ <CAGsJ_4xh1P1yw3JogQxTS=Vu8kLEiMMh8si2YnCc9qnoKWLwjA@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4yRKAhRqtC=ieGV=gQ0-x2aYPDV6QW8_akkGiJsmxkbfg@mail.gmail.com>
+In-Reply-To: <CAGsJ_4xh1P1yw3JogQxTS=Vu8kLEiMMh8si2YnCc9qnoKWLwjA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 65DFF40006
+X-Stat-Signature: e4mazjedrofykfic7dw88hy8yef9i7up
 X-Rspam-User: 
-X-Stat-Signature: dxgp1txwpifdbj5bfyo88ncr45m3jco8
-X-HE-Tag: 1782797929-413639
-X-HE-Meta: U2FsdGVkX1+XWutglrK/ETCWWT1PZj7o7m4KPvAKW8vzpxgHNMajRnXV9QcZkAPOhBzB8qlVCr/oIvV6cqkz1ChYz6Ksfg1OE744ZN8NqDF3wXGC6vMtOHOnW0TSbiC770iA/Y7okNcSjmQY8BCkgkOF2XhMuZL1DFwbLGBbDA01eh+3zRHh+2GYs1OJil07Pt9W8j45Uu5n+q/Xz7/IoQflZ+3bc4eS6QUUZOEYR5SXMtFAzA2A7KTR4CEHrOW452q2c+AHgnVkVTfEsoZgFb1wk0bwvWe8Lp+8OHx30YDjOgcwJtTuz3xVufHIWHrBQBMkb1rAVqW/uCCpzODVecFKrOVlh4C3p+juSD6QEi//41//uYS92Ehb0xpFaxwm1kkSbmdkNfEv7jhwqFUGXMk2uSbVneMYY4u0+k0fcAK/55eNHsaxE7pBArIN5GGD8vOh9VCav9Kpdf3RWc/8SQR/0P29HEVlAL+oGz3hYX+PzuXA+WopJmBYkpTvAaQvNrTDJqwJ31sg2KX+9nG4xsG4eUXLCl6XmSnR/kZywWYbhTv0rID511vbcm8x84FYE8BDkH2zaE6zrEnpu+vuJcAYyVVVVtd/NGMFQmc2FwE5rcAE+kvkd4j9BJ7Y5Y4QrOD59860vhhtY5vzs8zGBVuDLmO4MKS4xA44eplfyE3pABsknzpbGRFTAeZ4P4dFDfNvt0reFVn70JkUwKAlv9JCGLZAD8RXAzPntrP5yMpZchGpfxgv3RBx3Q9y8VCMp8+WR9aENU/RTlF/iMIuO9V0OZrb2+8xUpwCuupsg58KQlOXhdpT6RNc7u9HSLUS2KM8emiZjErSCH1FfFH4veoBgxcr15uSrEmJvmbxp7StUHHPAP0Ycr1IN3j24SSKVwXDgZweCMHhF4V0RxQ261/h+n1X3gFyPIrTS9q1cfoYUuJdGpdG7UAE72Z8SVGC1DG0J6ySvka2o8Jus9y
- 6tbbPkoo
- xW0yQf+Na8fBmudnzpgRddeqNQRdxEy8Y8NVO/JDOsxPlGZ1/l5sILMgIFNvF1CsWj3veNJdT/owcA/XP8hAykvCmgBcRpqj5WOBqIb6kvpBqr3I+CmQPhOp/ryM0R0W22lYNUQWH9TIk2NFYFRFfrsUah0/x+DMh8KwuVQ99w4ode7hzN83I5iwuz2AWXJv6py5xONjnyWcZnCzOAaZ/KDPHvMHfprJcdoFRF7rBXWN4gSGGo8Ns67lwrgNKA49J0yqweQ5x2JOxv3nn4+89ai8aMXDH4quns+jMoWfooSc2PkIqRUxemYr9SG0pXbNepLdPgBd03kEpqg6VM0aSh6gQR3tmfx6N5uwglFBdS5QCnRIf8JPu6/9Myk2FDc/QeLA8zyYaM/ZMCLQ=
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 03BCF10000A
+X-HE-Tag: 1782798518-781944
+X-HE-Meta: U2FsdGVkX19HSvhNTsv9xjYHA0DVdxpSohQD4QVDpiMnTZsVKpYMzhXNLoRmoQAz0L40YyQSFzFrRkTFwkIwkgRpW5/cC3Ul4cQSZJkbE9ryrUqVVD7aGso/HJByAAe+tvX4pCAOYfmou+T7zkYjiwB1Ph18qs/kWrDVKtaE3GmYhK3+hIq6xomRUg5Oil0dbqSh8k4/QunMyyXsU+A6D4QxzzXG6STnZd2S7JkOlsce7XBiZxqv3H2Uzq30AMsAvA0SqMIqjL9gDZuyA4yQ7LQ8ZjWRh9UyIeFhM9iZtKyrtd6xAq2U1TktXZV1fjXdAIkzhWGt6b4xVsEQdHEuCPARHS/hNk+LUz5pV6Fyl7ZAsDi65nBAtBtePWVW78unM3eDcVltJl/UWz9MROv9RBMI5GM3NrJpVDEAnOxtMRTM2k0JqvZSPPbds3Mqy8UOTLOIwQoAbdVFPm5QHwpSOhL6vx+GMpKV93bDIhaldR4s5ni+ufkoqGQsu3EGXx+oioA/qmRvdlfBRSehPin8WRWom5B4ftTtLeTijgxCnwYVbUT2xiyjMslwEae30bC4WOMlaKItKktWaM0GxENynz/Mqh4zkG27Y6z8d/4us9J3doqsxsYr2ckMr6MA7fD0ryZkDW8M00RUL5nEM/BBzhKRYKw2ooYkNifkEpFYuc2m/WJ5ORYNdxzyjWPI981miWUbaTSz2mAtrubZLnRLB0eppA/j4P6gAPjNw5m3A+y9alfim500vp+d0y8iR0Wxbf+seaEhW/4hsTZ06vdS+EDM0XkiP+EnZmcGAaGTcZl7SDoN9J2vaRAtUoT5Yq8MGekxOgyQZMC+4CqG1/8BiUN0yr4yoBrlYfi54NaC/PrqGfhDRYrGqsFoTjQioeJl1gsQxirj0pCFpHQLva8HLlF/tJfgh3K14y2ndWYJs5yAKM8IAp5bpvSjynPjZFA1G94+tBN2bCZ3mRr0hHm
+ y+dATmF+
+ FWgtOD0oolHkHiKU+B14qmiM4mqg+sPoZZhFq0P+qlO5Rgtmj3tM+Qp42s2wAZennMZOkpjQm8kn3eq1jOh9zi2aCu2OZZ5CFvPBWQEIKl/MrIPH95w7agnXGMdSVrd+gmn81LGYvGI3e2i45J8QmFIbCcigNQO6dbUA66yrJSDZ3GeJF60qQIsW4bqBvV8QkMBXplDD1C6gyoIZvsErR52Z4KCqvsq5Ak5H5yLAy+Kj0N05rgGAey9c/EnBJ2T2ECm/k1OOmx40KIJeX10yl6DC+6+20UK3xCkPzhzpFVsGS8Z9Kpum3WXT0voUPakGbkvSkpDFG4otWTr8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,46 +148,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/30/26 01:16, Barry Song wrote:
-> On Mon, Jun 29, 2026 at 3:52 PM David Hildenbrand (Arm)
+On 6/30/26 01:59, Barry Song wrote:
+> On Sat, Jun 27, 2026 at 12:36 AM David Hildenbrand (Arm)
 > <david@kernel.org> wrote:
-> [...]
 >>
->> So yeah, if Nadav's reproducer works even without the drain (which I assume), we
->> could indeed think about just removing this optimization here.
+>>>
+>>> That's awkward, my bad, terribly sorry about this :(
+>>>
+>>> I sincerely apologize for the oversight and the trouble this has caused.
+>>>
+>>
+>> All good, I was just surprised to see a previous optimization partially
+>> reverted without a clear reasoning :)
+>>
+>> Because it should have removed the handling in should_try_to_free_swap() as well.
+>>
+>> It's good that we are discussing it now!
+>>
+>>> I haven't seen any performance regression in any workload recently
+>>> though, or any correctness issue, perhaps the round trip of
+>>> do_wp_page wasn't that bad. It should still catch the reuse folios,
+>>> just more costly than doing things in-place.
+>>
+>> Right, do_wp_page() handles it, after the page was mapped. It adds some overhead,
+>> but fortunately no TLB flush if we're just upgrading write permissions.
+>>
+>> The optimization dates back to pre PageAnonExclusive handling.
+>>
+>>>
+>>> I think we should restore the original check first. We might also want to
+>>> avoid dropping the swap cache if the folio will not be reused, which
+>>> was discussed here:
+>>>
+>>> https://lore.kernel.org/linux-mm/CAMgjq7BDfvNXdWH0cqarsujjUn3i3tDDhDkmSg01TR4h-tDorQ@mail.gmail.com/
+>>>
+>>> Maybe extracting some common part into a helper can help make this
+>>> cleaner.
+>>>
+>>>
+>>> Hi Barry,
+>>>
+>>> The problem is more than that, the `exclusive || folio_ref_count(folio) == 1`
+>>> in do_swap_page is also ineffective now.
+>>
+>> Exactly.
+>>
+>> If the roundtrip through do_wp_page() is good enough today, we can just do
+>>
+>> @@ -4512,7 +4516,6 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
+>>  static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+>>                                            struct folio *folio,
+>>                                            struct vm_area_struct *vma,
+>> -                                          unsigned int extra_refs,
+>>                                            unsigned int fault_flags)
+>>  {
+>>         if (!folio_test_swapcache(folio))
+>> @@ -4528,14 +4531,7 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+>>         if (mem_cgroup_swap_full(folio) || (vma->vm_flags & VM_LOCKED) ||
+>>             folio_test_mlocked(folio))
+>>                 return true;
+>> -       /*
+>> -        * If we want to map a page that's in the swapcache writable, we
+>> -        * have to detect via the refcount if we're really the exclusive
+>> -        * user. Try freeing the swapcache to get rid of the swapcache
+>> -        * reference only in case it's likely that we'll be the exclusive user.
+>> -        */
+>> -       return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+>> -               folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
+>> +       return false;
+>>  }
+>>
+>>  static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+>> @@ -5095,7 +5091,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>>          * Do it after mapping, so raced page faults will likely see the folio
+>>          * in swap cache and wait on the folio lock.
+>>          */
+>> -       if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
+>> +       if (should_try_to_free_swap(si, folio, vma, vmf->flags))
+>>                 folio_free_swap(folio);
+>>
+>>         folio_unlock(folio);
+>>
+>> But then, one question is whether we'd actually want to try removing the swapcache when
+>> we mapped the page writable (iow: exclusive)?
 > 
-> Yet I think the problem is resolved with the exclusive flag.
-> Right now, we can still have cases where "exclusive" cannot
-> address it, such as:
+> I guess this question comes from my earlier commit c18160dba5ff
+> ("mm: swap: reuse exclusive folio directly instead of wp page faults"),
+> where the folio is reused even for READ faults. In that case, we
+> would miss do_wp_page(), which could later drop the swapcache?
+> Also, again, nobody has reported any regression for this.
 > 
-> #include <sys/mman.h>
-> 
-> int main(int argc, char *argv[])
-> {
->     int i;
->     #define SIZE 30*1024*1024
->     while(1) {
->         volatile int *p = mmap(0, SIZE, PROT_READ | PROT_WRITE,
->              MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->         volatile int q;
-> 
->         for (int i = 0; i < SIZE/sizeof(int); i++)
->               p[i] =  i;
->         madvise((void *)p, SIZE, MADV_PAGEOUT);
->         if (!fork())
->              _exit(0);
->         for (int i = 0; i < SIZE/sizeof(int); i++)
->               q = p[i];
->         for (int i = 0; i < SIZE/sizeof(int); i++)
->               p[i] =  i;
->         munmap(p, SIZE);
->     }
->     return 0;
-> }
-> 
-> I assume this is less frequent and less of a concern?
+> Holding swapcache for a clean folio for non-sync swap I/O has the
+> benefit of avoiding a potential pageout(). Now, reuse even for read
+> faults and always dropping swapcache seems to somewhat defeat that
+> benefit. On the other hand, we always drop swapcache for sync I/O
+> to avoid the copy in zRAM or elsewhere consuming memory, so it seems
+> safe enough to always enable reuse in do_swap_page() for sync I/O.
 
-It's unlikely to matter in practice I guess.
+Right, I meant during write faults, when a write is expected. See below.
+
+> 
+>>
+>>
+>> @@ -4512,7 +4516,7 @@ static vm_fault_t remove_device_exclusive_entry(struct vm_fault *vmf)
+>>  static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+>>                                            struct folio *folio,
+>>                                            struct vm_area_struct *vma,
+>> -                                          unsigned int extra_refs,
+>> +                                          bool exclusive,
+>>                                            unsigned int fault_flags)
+>>  {
+>>         if (!folio_test_swapcache(folio))
+>> @@ -4529,13 +4533,11 @@ static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+>>             folio_test_mlocked(folio))
+>>                 return true;
+>>         /*
+>> -        * If we want to map a page that's in the swapcache writable, we
+>> -        * have to detect via the refcount if we're really the exclusive
+>> -        * user. Try freeing the swapcache to get rid of the swapcache
+>> -        * reference only in case it's likely that we'll be the exclusive user.
+>> +        * We have an exclusive page that was mapped writable or will soon
+>> +        * be mapped writable (as we are in a write fault). Let's just try
+>> +        * to reclaim swap immediately.
+>>          */
+>> -       return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(folio) &&
+>> -               folio_ref_count(folio) == (extra_refs + folio_nr_pages(folio));
+>> +       return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
+> 
+> I assume you mean (fault_flags & FAULT_FLAG_WRITE) || exclusive, or
+
+No, I meant "we are serving a write fault (write is definitely going to happen)
+and we are definitely reusing the page (exclusive).
+
+> we can just remove (fault_flags & FAULT_FLAG_WRITE) and use
+> "exclusive" instead since we are always using do_wp_page() now,
+
+If you drop the "FAULT_FLAG_WRITE", you'd remove clean pages (that will likely
+stay clean as no write fault) from the swapcache, As you correctly say above,
+can avoid a pageout(), so I think we should keep that.
+
+> and FAULT_FLAG_WRITE in fault_flags could have been cleared
+> by the reuse of do_swap_page().
+
+Ah, yes, that existing handling is nasty. We should look into not messing with
+fault flags. Something like the following
+
+diff --git a/mm/memory.c b/mm/memory.c
+index ff338c2abe923..b0d8f3674525b 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5052,10 +5052,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+                if ((vma->vm_flags & VM_WRITE) && !userfaultfd_pte_wp(vma, pte) &&
+                    !pte_needs_soft_dirty_wp(vma, pte)) {
+                        pte = pte_mkwrite(pte, vma);
+-                       if (vmf->flags & FAULT_FLAG_WRITE) {
++                       if (vmf->flags & FAULT_FLAG_WRITE)
+                                pte = pte_mkdirty(pte);
+-                               vmf->flags &= ~FAULT_FLAG_WRITE;
+-                       }
+                }
+                rmap_flags |= RMAP_EXCLUSIVE;
+        }
+@@ -5112,7 +5110,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+                folio_put(swapcache);
+        }
+
+-       if (vmf->flags & FAULT_FLAG_WRITE) {
++       if ((vmf->flags & FAULT_FLAG_WRITE) && !pte_write(pte)) {
+                ret |= do_wp_page(vmf);
+                if (ret & VM_FAULT_ERROR)
+                        ret &= VM_FAULT_ERROR;
+
 
 -- 
 Cheers,
