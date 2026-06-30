@@ -4,114 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59503C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D4E0C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F2F716B0106; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
+	id 0DE366B00A6; Tue, 30 Jun 2026 11:34:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F06FA6B0109; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
+	id 08DD36B0109; Tue, 30 Jun 2026 11:34:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E43E56B010B; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
+	id E9AB26B010C; Tue, 30 Jun 2026 11:34:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B85866B0106
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F1CEC2AE7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:32:11 +0000 (UTC)
-X-FDA: 84936970062.09.4D653C9
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3AC0B1C000C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:32:09 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="qu/1s0nH";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=vVSU3b5g;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ACC166B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:34:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1C5891C3626
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:34:36 +0000 (UTC)
+X-FDA: 84936976152.18.606E33E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 42F94A0004
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:34:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TZNEjJGA;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782833529;
-	b=yS7O7exrzFwNFUs+ojkUaAaKDESlYxrjXm/orz87V+2eiJP63hFuvaHUJHnOzAtrQOeJmY
-	OzV7KqIREG6FBfMLIQ/syhNWjUD7vu2gbZekmt7ik/kgfyR7EnYqiMeIpTIJ7lPGPguIgu
-	Gnp0pkT1y2SBhS0od6bq9P5USGa178E=
+	t=1782833674;
+	b=CSrmpvuhp1P1h58pnaUHUaEQEgSR9fU07y4rDj2NR6J8LBdfO/pEF8AYbi9fuwS+ycs0np
+	mRdcCo2V6FA1jOpDTS7mtAol24jdAvXDeAyPNzmBdqYJ2nMNWTkFTn1G/UtHcs/K4gSr77
+	arA3M1rCEjUbnJgNUut/fCfimq1cMdg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782833529;
+	s=arc-20220608; t=1782833674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
-	b=yvPdvlv6KCimHUFctD1HyfEVxvF1Z2R+IUq9lMbdjiJy1D3iKmRxlf8HEVGmxIep8V5m6S
-	aTZ+Y4oZT0PJM3KbYV7VMSN7qIkV7Ni+csJRyQ+fYUUGFTBgv9gt5/R+EB5WXJo7c4R5Qy
-	JJxkAzOcDXpkX5gjVXtg+yeQzqZMA0U=
+	bh=OwS9P56nhbGkdFBYuAOEJp8Fgyu1if7n6nRSIyXvyMQ=;
+	b=QfgngMnFyDBMIVcTL9R5xMLdGwbiZ+Dnw4txGOw2EeK9YD4gDXNnVuLTt1AGT6fCkNMkZ4
+	rx1UPz7Edm7Quwy/9Y/nAAHagTrIQADr0nh1i+HseuJ6/HT757foED0eJCvOUIzUnRe6Uk
+	uQC/311/DvH4G5R9Wm/l7zd9X4Y3sp8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b="qu/1s0nH";
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=vVSU3b5g;
-	dmarc=pass (policy=none) header.from=linutronix.de;
-	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
-Date: Tue, 30 Jun 2026 17:32:04 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1782833526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
-	b=qu/1s0nHQC6KFpDGuKrxXJLqBTdl1FoH/4yCYl34ohT2guoTuARwKQEULMNqdYWydigyrj
-	UQsxj+D6QvmsMUbHcM7u3rM86IjWKPJT39xqCzzGIvsLgqe2Hz4HBOvbz7iysNXKPy5W/u
-	R/GUuEzOAf1ZZdsDdNL4Jr6q/bCrdt9+3kstOwvKETmQg7hIqCfC8XESzPiKTthZJ9Oc09
-	xpBcumA8KxG/PCdAqz4l1iGj82SI/tB9ALWL8NP8tofOtWsr179TrHBkKBYCmCED0scKGL
-	24UnriDqIvgBJ16vM4xBQFbAgoL54zsV+WuM26JgtD+5w8qeomuxalv2Kqf/NA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1782833526;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
-	b=vVSU3b5gGX9pyXfPgfu3YTbbfDnrmDCkQKRUwm+vxUCIXLFG0mbsTHQglZDx4c5OUPi7Tu
-	n00gEBCaZoE4kFBg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com, 
-	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
-	kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
-	geert@linux-m68k.org, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
-	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org, 
-	glaubitz@physik.fu-berlin.de, richard@nod.at, anton.ivanov@cambridgegreys.com, 
-	johannes@sipsolutions.net, luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
-	peterz@infradead.org, wad@chromium.org, thuth@redhat.com, mark.rutland@arm.com, 
-	ada.coupriediaz@arm.com, kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com, 
-	song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com, 
-	broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com, 
-	yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
-	austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de, sohil.mehta@intel.com, 
-	andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org
-Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-Message-ID: <20260630172619-6c78c2e2-c2d3-44be-88e6-6c82de12baf4@linutronix.de>
-References: <20260629130616.642022-1-ruanjinjie@huawei.com>
- <20260629130616.642022-19-ruanjinjie@huawei.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TZNEjJGA;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id BF138601EB;
+	Tue, 30 Jun 2026 15:34:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02ED11F000E9;
+	Tue, 30 Jun 2026 15:34:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782833673;
+	bh=OwS9P56nhbGkdFBYuAOEJp8Fgyu1if7n6nRSIyXvyMQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TZNEjJGAsPcpJLEFlebROpZU+apG4a30zL8j62i9jmYlYeJaAl3aWQlvpiB3/57iO
+	 ETxjxR7Asn7ctiYJmN7/Od2ZN8KbQuJV65iFF706CP4OPQwPKwsepz718dXhwRucp0
+	 2NBc8GhrByQt6Pp3eWpYyTBSMXTehwOXuHfeWNrgmTbu9Rz6AIdFpqW2SJ8y3Zdeq2
+	 Tfms2tNuA836plyw/CpaFm58mHdf37Ng875h5vszKnGzd6risB6Js6BElWOrHHd2nf
+	 mniys/F0WnJZdP04Pt0WHwDSkiFnC++6NSa4dgJ12c0+2aGaO8VxNqXoFYDh2RiaRM
+	 D+RSM8fsIYWSg==
+Message-ID: <11a6d404-dc87-442a-9f2c-9cf34cae4869@kernel.org>
+Date: Tue, 30 Jun 2026 17:34:25 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260629130616.642022-19-ruanjinjie@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 05/16] mm/page_alloc: unify
+ __alloc_frozen_pages[_nolock]_noprof()
+Content-Language: en-US
+To: Harry Yoo <harry@kernel.org>, Brendan Jackman <jackmanb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+ Byungchul Park <byungchul@sk.com>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: Gregory Price <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
+ <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 42F94A0004
+X-Stat-Signature: yndasi93byhzciaf3hb71kndephafc8k
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 3AC0B1C000C
-X-Stat-Signature: fwgasr1tq5hjtrrkpof3f47niepr8a9x
-X-HE-Tag: 1782833529-746302
-X-HE-Meta: U2FsdGVkX1+zXWT11GRgjHqVCk9GqEhljFukjo4nTmb3MIIaumM6fJnCCvo+LnW8XnNNsG9sFqw6KB5RSVBrTyH5l1030iJOVyBreOy7tAMh4447kBwM6Xo1DEp0cYSvPT+bfSQ3SNKNFbIdxUcB9Zzu1SkMsJ2aUVwkscXe6VZrRRRZEzDjwngtJPTmS5D+g5cRwTMqfwIMuH0D+Pz6L5PZHjgB32Sy/zATK1MqqZMh0qOboKj8TD1V2quzPpbtYwxIzQuVDRJMZyLQLiBI5HzlVw8K0su0QQIjlXsi0xUA+TABD4akFEgadkle7BHwsS0dIqwLuUcadObk1pmIiiQB/VWCCFyAoMEDd9U+ZHum3zacj1S4DqrBKYP9+bNgmPlJcto3AhSmEDukbldgUR5D/yKYe2+DIjAd31yNNHzOrrwytE9FYDkdNiIjxkoz1GI06sBnTockEoFBK3495HNF5Nwhnyp42wDOqmYuorXCmP9xJli5kzwh2sQwGidgLIlMRYNYwyCCHfSsURma0F97+mceGQ1TufPjQBLIgvThAJXrHSmSZLJLOluZNw6YmB9LjiXRDHou0hXah0M4/Oi5DzDW5tRRTTNNXEtY4foLVbm4K598p+4nDptjmGughIaHgmuG2TKiam48O6Fgm4Sn9IcyZ+dnV9pN+CjEq1dZ+rvjDpxu/SX1OAZHuxPOgmLEoq2OCtz5GzjTepAt8oEs8NFULaWdiHlRCcOT7Kl1VvIig7FS1tioaUr6lnStTwamh4nv7TEwvO0oi+NKzH76YdmMPMu0vjRCq8aAD6MKW8M4fV17r4uS1dqzBk6sQwZ0AwFGB+GVXcCGC2oEn/II9neN+RyMIpghQlTn5VVELbFLwH5iKkPimqru+4piNVcjjZWVCFCIYak+e1+bIEz9TtwLcb7tiX+pL0K6+zAakwLmB9M6YEcW62SRGSKyI/3pcPknHHvGrKbCds0
- UoFqrd/x
- n8VLZ7efu2NvnI1GeCY5LPDpKufR83MyaFhF/dl7cF0XD8to8brsTds/WVL0spFsnJhWtg7vhP5cW1j+olQHHfABKt0SA4M3psDCrpvoPCXK1B0oM0OGblYhWT3Yflg+qf7QD2DyDjWPwCdMISMBWTSenBUoSxU9/FqQO+ZukTIHU38gRnsjywek7ZZ4RB9K4Y7nz6xXOJCKMZHp5Hmqcb3oePGh84laJPDCz+oF2CHHQrG/eN/W5lGa67lpqFAYknkkcqkN5D2vR2b+rRhGltTdFLYbOPkV6vUAEdN/81bHVlZ2vjnjTgdBawFeu1+UoJ+ck5INoPYwLz4FefMSnX9EoRaQ8qUKT9SkwHT7tJGTmg3wnGIUCe/Jca6Sl4Fd+M3+unesZzavK4Mt6z/SBeN8llQFmZ7+U0iFWXhRJuz/rhaGa5Na5fA5mwdVBAlbHfyWMMX/KAhdz4FN1ULspgTk12N9RI3BzU6sKyxIic04KQey/fV3mEXN7Ww==
+X-Rspamd-Server: rspam03
+X-HE-Tag: 1782833674-106905
+X-HE-Meta: U2FsdGVkX1+yvquLVkbdBwWDA+wOTXJ8tHqzK5JBsn1NccjqIL7xOAUSBcYA5jU1m53eLWeb6QJM/yihyCxLBQOuCPO9sX/xv0EGtpBBUrRRmD1068+IeNhH5Z6X7LjT8aiOopkTL0SUSdHDFukO1Vh1vtWNqtm665omD1aNYtQWxCIdW7W2rW+4gDe12BFpFH3fTeYrd1OGxLytHCSEK8gPKWMMgXek49tl0d3cm7NfVV6cq5OLHzKYVrjYqxQMMgxHHD9z+7noDChJRtGpe71ByM5fngJtwoCDWnisfyVW8lzuTpgErzVr0INSxdhQKYqxuqPNs7ahvumCB3WYPsMNTukqSofPdBxTOyBu+/CBoEnRBsIKwCwC8S2DMQBU3fJmg6PBh6LCCHkg9cjBZK9eCBjZjyZv9bQvyaMbB0sME7ygV36aKkQXzcghVpY5kJJiyi2iQ8hwfkxa8Zg0sAdlvFV+f6EBg3ASX+UGrKRIETHsW6i+dIrpALcDHafWGiH9MN4h//I69uGoo8K/Hg5WYvG4tVeyli9Ects03SstU6OHK/2p8pcOVlmvTkEzPaa9bCPqwsppPI/hGhcwJ8NbGdTlC/z/9vYEGytc6w1EWPhQlymsL65FpKbKRwUBMaRUFkyflD23MIcQtrKQKj7ISMIWtWvIqDKQjpE+JbdafveYArfRmUYBoL6lPkD0O1hkcqTrhs2s5yq5qqlbgv8Hqn5CeKk7DZ9+vB2fWyMsiQ+T0MC0BCBJuDnB0TBubCsoxLHpCZQR0iq9onmZFZlhQF7W0xi3TqcbYDq+xwskSH+4lZRN30JaiHDggYwDTHA/wxcTz9pMsa7PB2jAwE7TsqvlUS0Qb1+1lD9tpwOAEVdxNu3y7HjT1GNF3yEJ4hAO17Mho9uIteoNtWn0+JNu9MUv0h0j1t8YSaUwzwzkVNuuBgUJfOVgSAXherspY7v+rWwlaFb9dTlEW4D
+ 6tkBkdo7
+ g4RvGxWX/r2XkZJYemmzxvf9QxVu8qEK1KMYK746arwhMNatvkgcfesvL/c9qQbTV8Ydfayl5zFRCr3wzEiYLKqMm6bIUjFmgbfkMlJ2w+fuUSCK5kJX/0sZO643l2ehy2PFMmuGKS/6ZZJln8K6MsdjulKqwutcoGarwUwfk/JBVlKXbr1ZJQQQCJuwhMx94c033J7olpvr0QTMm4yNZCrRx0+smd5iLEW9ifzkejH0Anp5beLkD/CAeqB/Wb6cwHlAHFr0XN1XLfZc7kw2trXBfwiq7BVa1n2GAsbJyp4ab8nRfUjHjmPm1WfYI0N0wZ61JNxlJAxcIUigAhF6PQy6C/urmyUv+IR0AZrsTJ1Pb5JcbQ/hnnPYmdaoDKl6tvmCr
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,73 +152,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 09:06:16PM +0800, Jinjie Ruan wrote:
-> Syscall User Dispatch (SUD) requires the signal trampoline code to not be
-> intercepted. This is necessary to support returning with a locked selector
-> while avoiding infinite recursion back into the signal handler.
+On 6/30/26 15:36, Harry Yoo wrote:
 > 
-> Implement arch_syscall_is_vdso_sigreturn() for arm64 to support this
-> exclusion mechanism. For native 64-bit tasks, it checks whether the current
-> PC matches the 'svc #0' instruction inside the vDSO sigreturn trampoline.
 > 
-> 	SYM_CODE_START(__kernel_rt_sigreturn)
-> 	        mov     x8, #__NR_rt_sigreturn
-> 	        svc     #0
-> 	SYM_CODE_END(__kernel_rt_sigreturn)
+> On 6/29/26 10:11 PM, Brendan Jackman wrote:
+>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but the
+>> main entry point function is significantly different from the normal
+>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
+>> 
+>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+>> exposed to mm/) and then turn the nolock variant into a thin wrapper
+>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+>> how some of the wrappers in gfp.h do).
+>> 
+>> Rationale that this doesn't change anything:
+>>
+>> 1. Simple bits: A bunch of the nolock-specific handling is just moved to
+>>    the new alloc_order_allowed(), alloc_trylock_allowed() and
+>>    gfp_trylock.
 > 
-> For COMPAT tasks, it verifies if the instruction falls within
-> the architecture's 'sigpage' range, allowing the kernel to safely bypass
-> dispatching syscalls originating from these areas back to userspace.
+> Right.
 > 
-> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Suggested-by: kemal <kmal@cock.li>
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->  arch/arm64/include/asm/elf.h |  1 +
->  arch/arm64/kernel/vdso.c     | 16 ++++++++++++++++
->  2 files changed, 17 insertions(+)
+>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+>>    previously in the nolock variant:
+>> 
+>>    a. Application of gfp_allowed_mask; this only affects early boot, and
+>>       only flags that affect the slowpath get changed here.
 > 
-> diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
-> index d2779d604c7b..f43d4dea916a 100644
-> --- a/arch/arm64/include/asm/elf.h
-> +++ b/arch/arm64/include/asm/elf.h
-> @@ -185,6 +185,7 @@ do {									\
->  struct linux_binprm;
->  extern int arch_setup_additional_pages(struct linux_binprm *bprm,
->  				       int uses_interp);
-> +extern bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs);
+> gfp_allowed_mask clears __GFP_RECLAIM, and that means now allocations
+> with GFP_KERNEL during early boot would see
+> gfpflags_allow_spinning() = false.
 
-A header for that?
+Is it a problem though? non-nolock allocations were affected before (the
+masking existed for those already) and will be affected now the same, and
+_nolock() allocations don't pass __GFP_RECLAIM in the first place, so the
+masking can't affect them?
 
->  /* 1GB of VA */
->  #ifdef CONFIG_COMPAT
-> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
-> index 592dd8668de4..5a0314a3c26e 100644
-> --- a/arch/arm64/kernel/vdso.c
-> +++ b/arch/arm64/kernel/vdso.c
-> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
->  
->  	return ret;
->  }
-> +
-> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
-> +{
-> +	unsigned long sigtramp;
-> +
-> +#ifdef CONFIG_COMPAT
-> +	if (is_compat_task()) {
-> +		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
-> +
-> +		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
-> +	}
-> +#endif
-> +	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
-> +
-> +	return regs->pc == (sigtramp + 8);
+> The helper is not used in in the page allocator, but used in
+> memcg/stackdepot/page_owner.
+> 
+>>    b. Application of current_gfp_context() - also only affects the
+>>       slowpath
+> 
+> PF_MEMALLOC_PIN affects the fast path, but ALLOC_NOLOCK users
+> won't be affected.
 
-Instead of hardcoding 'sigtramp + 8' you could add a new label to the 'svc #0'
-instruction and use that with VDSO_SYMBOL().
+And it wouldn't be wrong if they were? It only clears __GFP_MOVABLE?
 
+> What about alloc_flags_nofragment/nonblocking()?
 
-Thomas
+ALLOC_NOFRAGMENT due to e.g. defrag_mode could be a problem indeed, if
+there's no slowpath. Make ALLOC_NOLOCK override it?
+
+nonblocking() is probably fine?
+
+> 
 
