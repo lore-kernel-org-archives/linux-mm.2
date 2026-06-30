@@ -4,98 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E81C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEA9CC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:40:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 85DD26B00F4; Tue, 30 Jun 2026 10:36:26 -0400 (EDT)
+	id 632F06B00F5; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F6086B00F5; Tue, 30 Jun 2026 10:36:26 -0400 (EDT)
+	id 602826B00F8; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 733666B00F7; Tue, 30 Jun 2026 10:36:26 -0400 (EDT)
+	id 4A3AC6B00F9; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B1F36B00F4
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:36:26 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE6F74050E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:36:25 +0000 (UTC)
-X-FDA: 84936829530.16.030FDE3
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4174A180007
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:36:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZzwbwkFp;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 15AB06B00F5
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:40:17 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D0A5C2444
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:16 +0000 (UTC)
+X-FDA: 84936839232.04.158FB19
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 60D84C0011
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0k0FXMnR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="m/+HI1/7";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GWNUlwry;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ik9xhJZm;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782830184;
-	b=jPozAx8l8IxG+LF97fVI2B1+OkTrn/vDatHHXFR4HC4yHktEjlTLIjyW3MExEWGHd3kk6P
-	pYWcS0nSLUoSE2OBjcthctgpzTii26TxF+BEEfOGX4rjJVafixlZhcHrW/gxOvx1aA8ts+
-	BhMDsW5PN+9eW6cG2XKGGhqumm7x0mc=
+	t=1782830414;
+	b=A3VvSl4UruJ7Mu7QkjL8QGz9GzrDp7yAVPMLo/tDgznyDfpuMbxOrELYC4f1oQvx/D+LJB
+	UYkWmOK5DgTC7MaJbB0gOHX4Z2yHqh5YrjiphFfNFMN9Vw02B2A5rbhmMc2J+AOccThIo2
+	EuTVKOBT3RVaqnceBmnx8DKBX+qMQtA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782830184;
+	s=arc-20220608; t=1782830414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Gu1YYGiqIdROtQye1IY072sGhuVqKZsHDPchTxbwsQ=;
-	b=ZcVI58wORxA7OVmyxNF/vFnCvUFLh2qO4c+m0fJ9hfFQjdNqQouwyZB9aypyTzptKA4dXB
-	TWdlXchfxFwCY+KmtMdvMQMbDByfjXgl7ts0oS4EQZXZRKd7b7WwBqYKidRv8fe6BgV6pr
-	Sn4TVPXZb3mEtRb7e8IjydEPH+3vcw0=
+	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
+	b=qa6peabWvEy4rJOZhrPLi+Y4BgaUmbN+CtcLecB5TmqqjR6oarIS9MGESw2FkMEc3lTNfl
+	ThM8OiGAwJKG12hveJKmrRihGT5u/UYBZwexdO6ypFMvE3Wfonm2ftBluWJ2S0NU8uLOPN
+	Qprq97yYrOBzSphJtx4uZ7YZPZF+WSY=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZzwbwkFp;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Tue, 30 Jun 2026 07:35:58 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782830181;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0k0FXMnR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="m/+HI1/7";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=GWNUlwry;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ik9xhJZm;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D85CE710AC;
+	Tue, 30 Jun 2026 14:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782830413; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Gu1YYGiqIdROtQye1IY072sGhuVqKZsHDPchTxbwsQ=;
-	b=ZzwbwkFpv1U7oHJEHHDRMYM4sjirdts8KnG/JMXdeONgqiJveFwY6ZbC/hAY/YswG7KpC+
-	1hpbiXyY6TLm9qeSviAeXy2QqR9hy5VcNvrXKfY+QEfUpmlSJDb74jij7d3TdzH2SQBWVw
-	NOcHWx9uHPCCOYe7YTjYrOvNVvUViXs=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Usama Arif <usama.arif@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Danielle Costantino <dcostantino@meta.com>, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH] mm/slub: serve slabobj_ext array from a strictly larger
- kmalloc cache
-Message-ID: <akPSjsbjl-UAcdI8@linux.dev>
-References: <CAJuCfpFanDcpqq5B7eNZbw2HnWOXD-xzcnrdbz-e2gnSM2EYHA@mail.gmail.com>
- <eac2ed38-432a-4d95-8968-2663540d73d7@kernel.org>
- <CAJuCfpF78_5CjLsbJLte+B4MzfaSiAmyeH57VLhgLtj8AXD2NA@mail.gmail.com>
- <62969830-4b1f-483d-8fa9-9ce487568570@kernel.org>
- <CAJuCfpH8ZjBMaOmso=9gZNz=DK2ja5yMS+04OjTGHh5Uc7r0GQ@mail.gmail.com>
- <CAJuCfpFX_sMrcTad-QGJsCV=fNyMWF=Bi6XmoHRqEAzMbWNfdg@mail.gmail.com>
- <39a79576-dcae-4b66-9478-c81dfe676699@kernel.org>
- <CAJuCfpGRC7NPxcODUsb3YS5nV=qG+-SbSYj1Fwm-QPqgKSVWAA@mail.gmail.com>
- <c5c4208d-a6f0-413e-bad9-49be12f12d55@kernel.org>
- <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
+	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
+	b=0k0FXMnRZuZQKPf8AlzFtsH1LCXRXdhx/OEktTiFuW1O+D7tP115J0RNzL7lOcRkP0RVzd
+	Th+sca2po7IYFsHggCLVTDoJX2PDfgb2LKCOtNyCi7ZZkzK0zLGmzNkVoAcV59LvbOMCgp
+	Dx+gO5T2zGr/fZ1hliA9T60qUxFGlQE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782830413;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
+	b=m/+HI1/7GMGCNdrhmmTlPQ1hDyyj6yxI/B0skh4iW+rUiFKZt+w+sD7DJ5NWT8cAkbWBps
+	KI1Yso3Ab0s4jMDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1782830412; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
+	b=GWNUlwryy/hcdx2rbHUHS/5UkdYtUkVc6/+ZKTlpL06/73FknUEdl2d5TbOufRvFbg5n7E
+	ZwAh1mrRsokFVN0hlAarcdCrK1T649DaG7zUUTcTQNwl/P6EjQy/dSZJlf0vBNUEkR1LJM
+	nJDFBvclmEIrp+j5RTJ9mk65GWGwTo8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1782830412;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RnFr60XaYcmQD9ST85I7XAqhA4M5wK5bIo4FXi9x5zk=;
+	b=ik9xhJZmxShdFkFpjOeBjcBFyhpTrF39dswSYhtIu+pp8Gw/LsDhvS2GUNI8ds2uMqbrgf
+	JztpxbaXoOFHGZDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 793BF779A8;
+	Tue, 30 Jun 2026 14:40:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T4qXGUvVQ2o6DAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 30 Jun 2026 14:40:11 +0000
+Date: Tue, 30 Jun 2026 15:40:09 +0100
+From: Pedro Falcato <pfalcato@suse.de>
+To: Xiang Mei <xmei5@asu.edu>
+Cc: Dave Hansen <dave.hansen@intel.com>, Kees Cook <kees@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, linux-hardening@vger.kernel.org, 
+	Uladzislau Rezki <urezki@gmail.com>, "Gustavo A . R . Silva" <gustavoars@kernel.org>, 
+	"H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Jennifer Miller <jmill@asu.edu>, Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>, 
+	Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>, 
+	Yan Shoshitaishvili <yans@asu.edu>
+Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+Message-ID: <akPT82jDvPwlaNuo@pedro-suse.lan>
+References: <20260629214712.1198680-1-xmei5@asu.edu>
+ <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
+ <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5ebd3c4a-5c06-43b4-ab0a-7a8f0396c84c@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 60D84C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 4174A180007
-X-Stat-Signature: cerzitx3f48xq7c7qq3cka7foa58nize
-X-HE-Tag: 1782830183-619150
-X-HE-Meta: U2FsdGVkX1+ndCr7U0MifyHsglHdDOyN1v9k2D+17Zd0GXgN07M8LvxG5TK/4WOMPtsOhEnqyYAfBOImQ7bfaCorSI70++MrBrBekZu/a0facN25BB3uzfYlCn4dFsWHfaIo4CaiCk/uxcHZZtMp88shNjDiUHTguoU1C+P2Ixwr+S7Oh4hRiH8zg+LVIKH3RfemjdjNkGLItWS/t/Ebn4UoFoVEUOv/n13HlOS4iJBcBkhwyh8d11vRPgvjJdydV1w5Dw5HGjGjsytnU4yOhuBmUwXqrf902gCEDdjOBg5Ww7rmCMwzfO2YK2SZOPC0LH5sRen+34YkXDxzl6ECC5Vr4i8aGjCv4VBuEXDVhyM06WPRrLNCKyg3IDYocL1M3Mry6ovhlyMQFzUP3PHDCYwZPRfQNhJQUtTDRIICFeIgy1uYIcX9pMZzhh24lD95mQCwjeFehoYRhvCsFL6mSd9gICb6EC72Kn5nC+SKC0IbT6V5t+JFcQRo4bUSg4v2yUhQfdP3x3N9lRvR2F8V8DCJ/U8wpVxsIXFM6DLx9RcvEEOFQ0zjNjvXIWdbi/c54QCS/kLcbJOphnv1h1nq/2wL9PhOeDjN3YVhIVa9p6izWE2EdYc2KeQv+CQigwgoJ9uKJ82q6I99TGePULZOIXOgJNSvhpea+DiWt72WFTPVEtSPWLwk7laq6r047orNBLXSJ7cvQZWdWWb+0S6jBNaIHdRdLWJIBIfhmsiNJ/UWwftgPmpXJZyF/uMPe9wx4aDVTmivaAYqcVTaLkx6GMdVtbazeVDxjQk2Qrh2zOtLfbr5nMeMeHEJp7ZYBlDXae8RrYwsGRCh70hThAnzBUC/wJnhu5NEN/DR8wkn7IoPUXnwbG5uK2TzznVQ60pIP0BnbaUxv5g7Z6MozhUwxx2ebI4s1Ph8Wu2PYK+T8+KYxTjeKdO+QEQljEQnx+UkE25mXlrW6hLgQkWNaaR
- kOvq59xx
- Pl0yYzXKHNMooci4VcVH9FH7eZ7G9K8hWHEFZpG0HgrVJzHvL8naMUt0m5+giqFqUhES5esTmJ5ik01gtIWmFG9hcpDvH3Cc4VBArlF8YqNsUr1BUqOUTEyaknxfAv5JdMwhCaOB05UV/EpGzvXPrli9jKohnQN6WMZ5iSTzbNzf8Tvt4uDjJX9EZWNTcstJVkYs1s3VzWYtfAgZ1xXWvD0JjLwN1OOsSpLjfe7rwLgckusU6EujwX8vYNT9fbkclLjwlDBBzT8r7cUftUMBer0umbf//sv9WLWaebazRJcMf5sGWvgctfLLno23HsHPH7m+uVDhwxQCsRmQ=
+X-Stat-Signature: 3doy63tjr5cugqhdff71quwfj81f8yoh
+X-HE-Tag: 1782830414-139145
+X-HE-Meta: U2FsdGVkX1/IFTngadCujeSDIMbpL8Zt9sVK/IIT+cwzlQ7+bRzqvd5I3uxOZOseht1lvlnymarRmH3ynEUAM0l5sKILG9mJh+iTk9OloZ0KRJP8JqPQp39o98swNO+aAWeCcxsQ8En1uz0/5p3hpmLEfGIfqPlclaSBnQ6JSoschMc4DUJb9jY7ku0Rcp972d3MW05j3ZAeuW5J+WCYAcfqDSa3pDaFyyJnfeBeuoTNCusGj3xgiSOB9GqawUhNGWuqvEaVbdt72ClJNnKHJDbGREON9HV64nkZcRn+ZrpQ/Oni1z9W7ihuvZ28CLsHOMhNnPy56nlt8GKCLRDbSf7zPAJFgMkxuWWPUAx3Vw/p8aFFwIjWdiMv+DufyI9SH1HqIjz4BoJ6g80R9IX2g/Q9NyCNDANcQRAGs9sZJEosORjLGjHuwgveG2iWVpqCcLVZe9lxlMKRb+ZKBkCXfxWlnPS2uN/RLg69xJNdEiGvU+xEfs1PP7aDc/Xr0Z5nORuQkrkVhsAuES4nRaC3bMu0hf346MkuEpkO/cFFcTDG/5Jhl3pSN+RC2wLh6lbhi1fQjKXMpRuFCpEtOrbso9LdWvqnYs9bl2CTRl9GTeQKy7M8fOYw2g7hf8svQT6D8hXyhZ8DMkw+bu/sDCzkwgcNI8Y1PIvI0N2ZAQxPXdsgG4zlTJnfpIMo4SeLYGnqjxU5vu5E10OkZJ2X5GFukGyuJ1sdRtpiMx4D+TKae8d5EcfIGB2b88AUFj8BOZ8Env2FdmfRP709mvSF0B8A6rNxcGhi0YLG5muRDX1rT+ninIWalO308orFJSv1Qeu8CU0WzvYsDMj3UoMwC0d0NlzwuLy8sdBDkCogvez3kf1vl5rnEuVVswG//2W8AAs8cIMPVDIAsXfoShbWS/6jC9b0R4WtnZFwV14GbFkkaKGWO0MYlm1ZklngFLRmcYxkDLpnhL1vIxeE+I+YpV7
+ +3yUrZrX
+ zCnfhdNoHlw093qYG5O3KtQIjl1+FB/uO5teoY9WejsMiRL7U0e0UyQs/mJ1NP6CkNPqgaOgwCaKcATcxwPYkvPdhvUwwbwfW2d8WPWX0AmftQ/DnNkoYL+lxLZ5SdC+8e3NRSSTFOfgHRz4l+D6+xxnxtBd7OwGUValy0zti0NrOfiEwhNK5uV/AkSZZsxLzTlzHzUrkIkIe1zcZ0Zk1weolMZpmq/iEDiGJiI7Q6RINFaXdzQhoy34L37JFAGddW5OIjBE07DsjY1KB1slU186qTQonQZAylo3tzcSPI2EToS0F4cfaw0yX6CgJDfRg5B+m
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,81 +145,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 04:03:30PM +0900, Harry Yoo wrote:
-> 
-> 
-> On 6/30/26 3:12 PM, Vlastimil Babka (SUSE) wrote:
-> > On 6/30/26 07:29, Suren Baghdasaryan wrote:
-> >> On Mon, Jun 29, 2026 at 9:42 PM Harry Yoo <harry@kernel.org> wrote:
-> >>>
-> >>>
-> >>>
-> >>> On 6/30/26 1:39 PM, Suren Baghdasaryan wrote:
-> >>>> On Mon, Jun 29, 2026 at 9:38 PM Suren Baghdasaryan <surenb@google.com> wrote:
-> >>>>>
-> >>>
-> >>> Ah, here I meant backporting either the kmalloc_flags()+KMALLOC_TYPE or
-> >>> SLAB_BUCKETS approach.
-> >>>
-> >>>>> Yes, it's worth backporting, so we can merge Shakeel's change as is
-> >>>
-> >>> Right.
-> >>>
-> >>>>> and then once Vlastimil's patch is merged we can implement the new
-> >>>
-> >>> Vlastimil's patch has already landed mainline, by the way :)
-> >>
-> >> Nice! I suggest posting Shakeel's patch CC'ing stable for backports
-> >> and then following up with the fix using KMALLOC_TYPE. Vlastimil,
-> >> WDYT?
-> > 
-> > Sounded like a plan, but then I realized I misunderstood the amount of the
-> > wastage. E.g. on my system kmalloc-8k with 4 objects per slab would have
-> > obj_ext size of 64, but now it's 16k? That's ridiculous.
-> 
-> Right.
+Just as a quick FYI, it's good LKML ettiquette to keep people who engaged with
+the previous threads on CC for new versions :)
 
-Yeah I should have given more thought on wastage.
-
+On Mon, Jun 29, 2026 at 04:28:19PM -0700, Xiang Mei wrote:
+> On Mon, Jun 29, 2026 at 3:29 PM Dave Hansen <dave.hansen@intel.com> wrote:
+> >
+> > On 6/29/26 14:47, Xiang Mei wrote:
+> > > With CONFIG_VMAP_STACK, kernel stacks are allocated in the vmalloc area,
+> > > which an unprivileged user can surround with attacker-controlled data by
+> > > spraying vmap allocations adjacent to a target stack (for example via
+> > > XDP_UMEM_REG, though other vmalloc spray paths work too). Today each
+> > > guarded vmalloc allocation is followed by a single unmapped guard page.
+...snip...
+> > To even be considered, this series needs to be refactored properly.
+> > Making this VMAP_GUARD_PAGES a separate patch is the bare minimum.
+> >
+> Good suggestion, I will do it in v3:
 > 
-> ...which is why I was assuming either the KMALLOC_TYPE or SLAB_BUCKETS
-> approach would be backported as a follow-up. Err, should have
-> communicated clearly, apologies.
+>     1/3 - introduce VMAP_GUARD_PAGES
+>     2/3 - mark percpu vmap areas VM_NO_GUARD
 
-Harry, do you want to take a stab at prototyping these? If these look simple
-enough, we can request backports of this.
+I would suggest you create a VMAP_STACK flag and condition these guard regions
+bsaed on that. Otherwise it's a bit arbitrary as to what callers get 0x11 guard
+pages, and which don't.
 
-> 
-> > I think it will> even self-amplify to some extent? kmalloc-8 would
-> have 512 objects per slab,
-> > so its obj_ext is 8k. It will not recursively create an obj_ext for the> obj_ext, but other 8k allocation in the same kmalloc-8k slab could then
-> > trigger it, right?
-> 
-> True, assuming that by 'self-amplifying' you meant this patch creates
-> more kmalloc-8k objects, and also now kmalloc-8k wastes memory memory.
-> 
+(you can find the concrete stack allocation functions in kernel/fork.c)
 
-I am not sure I understand what self-amplifying means here. Shouldn't 8k
-allocations served by the same kmalloc-8k slab will share the obj_exts array?
-
-> > We could say it's for a debugging feature, but also it's running in
-> > production fleets (and Android?), so probably not that easy to dismiss.
-> 
-> I think a key factor is when it's enabled in production.
-> 
-> kconfigs says Android selects MEM_ALLOC_PROFILING, but not
-> MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
-> 
-> I assumed that turning it on by default in the entire fleet
-> would be bit hard to justify... (please correct me,
-> if it's not the case)
-
-Actually we have memory profiling enabled by default across Meta fleet. So, the
-issue is very real. At the moment, we are seeing this issue on a specific
-type of machine and we have disabled memory profiling for those machines.
-
-Internally we did discuss to simply disable memory allocation profiling for
-kmalloc-normal caches but to me that was a big hammer and thus suggested the
-current approach.
-
+-- 
+Pedro
 
