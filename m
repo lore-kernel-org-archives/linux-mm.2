@@ -4,130 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB980C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:51:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 932B7C43602
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:51:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4D286B0123; Tue, 30 Jun 2026 08:51:09 -0400 (EDT)
+	id 892C26B0125; Tue, 30 Jun 2026 08:51:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFDB86B0125; Tue, 30 Jun 2026 08:51:09 -0400 (EDT)
+	id 843EF6B0127; Tue, 30 Jun 2026 08:51:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEC986B0126; Tue, 30 Jun 2026 08:51:09 -0400 (EDT)
+	id 781CE6B0129; Tue, 30 Jun 2026 08:51:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A1DE6B0123
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:51:09 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 31AD7140492
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:51:09 +0000 (UTC)
-X-FDA: 84936564258.06.EBC83AE
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 389754000A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:51:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmFjIc62;
-	spf=pass (imf11.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782823867;
-	b=u/kXnr4oc2rT+Fy1QO/xzOUAxrcJAT4dLrJC2ubONsmN/CKS+pW2rvAokXxEO9In4TzZtN
-	2QSypODAyELpBa/FOS9J7gsxqI+2/c5wZNDy8diGbt+cHwniy+k63pz9HQY6xEGLIB7oSL
-	RGd8Q2e5yaZdxC4nbN5P2k9G7vnsBXw=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782823867;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 59C416B0125
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:51:38 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA664C264D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:51:37 +0000 (UTC)
+X-FDA: 84936565434.27.0D61E62
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 36A1E4000C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:51:34 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=SlOukZyT;
+	spf=pass (imf04.hostedemail.com: domain of yanzhen20011121@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yanzhen20011121@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782823896;
+	b=xpas3XCXNVSCeKNFfcZXfEwSDSPQMjMVSquQtV93GJrjESlYR5+gvTbXZEdXGFM4+r0+XW
+	U3461GH/jWabvbGT4kDAxQlWLrsCaENqpYzXFmHXhyi1SSXmXfR8XB4B1z5B1ybW1rzmyF
+	F2Ahu1n093isZtadOjn9ugLa2eejUQw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782823896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mh7PVs54/IGL66hAXUYgzEKfE9b1/hD48362A18g4Ng=;
-	b=3akCcJs5H+2AdcaxUfSeW+Ksb04EQH4yBTqmO8awuzdUIDWVXNWxXfhzvpkIEaXPnSAr8E
-	uKqsS+CK8hpvhNmJKBms9RVJVoSmi1NcSQIeZN8n13LfOrwzHKuBgMAbJhiObH9iMMkarI
-	c7Rbg4imv263RNSbUUYsKYFtOplm1eE=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=pmFjIc62;
-	spf=pass (imf11.hostedemail.com: domain of igorpetindev@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=igorpetindev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5aeb36ed873so2240729e87.0
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:51:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782823865; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Lu12KZa7XVisAyG3L0wk3T+Qq5HrQdbXr3JrGtShXpuXiozcjvJGaYUk+pOLZuAzx2
-         ldYhyn18Eisx7AmbzfrtIhM+sELdpTVJF18aFzRdl+XNQ0CqXatWYjU03vN4jfFLEJkR
-         XEPZWjwmAOpbR/EHfP/5tpImfDpWgkvOtbkeofvA59NBlR9CB2WvdL+gWWw1q7iGMi9f
-         uoX7tiIzFfJFeVYwI2GzrGkudiJ3BTGuvg+B58TbOwgj0aq5RJZDyQHSDqtyD/u54Sof
-         NwVt56jqtimkEC1TA4iqlcaC1pwX5ZLo4RaeEGS2Ac5vicC6qrLLDtfvdJQEJbVa8S6J
-         Kxzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=mh7PVs54/IGL66hAXUYgzEKfE9b1/hD48362A18g4Ng=;
-        fh=9tOe94w8QCWTVRLJBBhirm/J+ZHzmwphkeoYSmrI31I=;
-        b=sNpUsDPDwtmnH1qqtgzug0KB9B9FdzYy73KTQKbA+SXFeufWYOpzjZDDBrqf1ZQY0b
-         X1yjv7PnqR1aD1ZTPCsBvhSkm6v66VUWw5/cFSD2kYXEBlRQZFct8eHojoHsow2F9IhC
-         zmfX71mVyRW4j9T+2pDVAtzZVaEGJ/EmAzgKnf/AMxaJzut2ZNMIsskX8x95LgQew6oX
-         QzGmcObAWlA9dHxFOT0ApyG80heOrRd2Io8aBLsjKaK5ewLuCf+D+0lJiOEF3xY/94lo
-         0+fEvPaSt3xn6vHa2owKodTQx46KKUPE42oO1kOHZQKD6OkUSIusFS64E7J+6pFx4U1M
-         lu+A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1782823865; x=1783428665; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mh7PVs54/IGL66hAXUYgzEKfE9b1/hD48362A18g4Ng=;
-        b=pmFjIc62TOCGwFIMUXcjD/bQtGod5igNh+ZXYQpvdQtYKCq/+fOaC7ivV3Hf56m7sj
-         etnO1Ng1YmpkOrpk++q0dvuBhZT7zOM24FXGm9Db1MtnKi738HpoAH3ou9cbe6Ydir6S
-         q/Kw5nG7imF0aMusIaumLidO5S6/8kdi4AkKsS/9adFib93DS3L4sE38fdF3+UYskBMZ
-         O9EBtRjR1dQYmU+gAgDcyxywsd59ifAH5UD0oErAcR3WF9VTbzRt3UPclozcfrV/Lxk/
-         ujgTEuGv960STFx6CFYbd8OvZyvvZiFQT+f9L1raN56yyRj4whmjGddFkf/S6/X0tcle
-         8zow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782823865; x=1783428665;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mh7PVs54/IGL66hAXUYgzEKfE9b1/hD48362A18g4Ng=;
-        b=sXa3XuL0e0rwxQ5AgiaHXqcoLoHjzFC9jJv1fBMFzdfchOk3r468zhik5JhUi2Okaw
-         Mca52S2Uc96vcg/ydVVDXRUiFzjuC4Lpvtmh+t2XnqOGbEQgECx1M69gd6ml9zMmHB9g
-         FovjjSUwnY4d4OjnxeaveKRl78kIY7poxFgspyWLRJ1tCX4EP1EGIu3O5iOFHKbEaTlY
-         bceETFEEUuiTaZ+AgM80p/jS2sw9UUxOaCZlnb7K485ViHNCCTGmHRci/6zyzuJkPYpb
-         uET/cin9ko4X+mV5PrkLCyPDsPVQDM/EQYObxCvR+1NjUzHZq3iy9kEf573KgT7r+ARI
-         hRoQ==
-X-Forwarded-Encrypted: i=1; AHgh+RrLN43h3QbdxR9An3bc5nFRwXcZeOG0Zsx4jrynSDRlYRMFRSkwF00N/OoHJkB+W5/xcmdJ5VCclg==@kvack.org
-X-Gm-Message-State: AOJu0YwpRX6ns05SlAZfbazy9eBt6/EAbdXS1XfPgfs4Xro+z0HHHngh
-	C4MAS86UfSdMZQMLyHZGsnQ+g+3DwZfYbPu8+iaRw2jeM54epz+IAqDIMb7AglQCLAxi3gMfSCZ
-	R8gy2ee/8+canFhaMC4gsHAATWB0dKg4=
-X-Gm-Gg: AfdE7cn1cyBX8xLFa49xwFQgVThbQHcLw2WPdFzdRDO1xR0Q5Nxf6ggvV7GsmIGEgZO
-	URRBiMBBgaCZtwIGl8sr7AvFmkbvU653whwpxwuSC0SfIwjX0OjmCfFxwTLznZgBv1CAY4TaglM
-	pTv9f1hR/KisCk0cOnLDsEFMr2VihiqvevEDUnqM+Ej3lYhszfJNJ6x76vr9V96jSEv4uqzYybO
-	XGXG9p8RvntoWfWGylfUmNrmaeljLi+6+sTscBXETju4b/GwTLqzwLbVUZvrbODW6aCBltbakc8
-	m3W+JC5ukYPrrChdmRT2j3EyRs+0
-X-Received: by 2002:a05:6512:1557:b0:5ad:4c10:e990 with SMTP id
- 2adb3069b0e04-5aebdbaf156mr585149e87.43.1782823865086; Tue, 30 Jun 2026
- 05:51:05 -0700 (PDT)
+	bh=y0vPmYUBULcu9w6m1I2L1iLW9ulxs3q8zoEGbABUjQo=;
+	b=WXR+yhnE3LDeIlaC2lN9TLsTIrwcDpFzib7BKwJdCLevBlL6wsVYB541tZK6/MuYL9eJ/G
+	pmBLceuQFol6L4sP1FZIwDu6bosfw/2xmOIQhBtWU1cHXxC/6FV6+fNGN0Irl6B9mSAx6J
+	kbOUjM94SfwIWU0rCsJGfKI5X3TWJEw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=SlOukZyT;
+	spf=pass (imf04.hostedemail.com: domain of yanzhen20011121@163.com designates 220.197.31.3 as permitted sender) smtp.mailfrom=yanzhen20011121@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=y0
+	vPmYUBULcu9w6m1I2L1iLW9ulxs3q8zoEGbABUjQo=; b=SlOukZyTkNunO2MBis
+	N4mfiIHbCYanHitBhIBONgTnsQUjUHPnbTP/zZvO3hxAmd+yC70Vb2nmqacpoj8f
+	MtwUNUZUnnFQ8qnjKkukjUrs0M3o+jrTmtN90pXELyj4LWt1P8qqPtgjuwMet+YR
+	GbJEUYxOedzVLeuZnbYtqH5ZE=
+Received: from yanzhen.lan (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wD3VyOnu0NqxxByGg--.14700S2;
+	Tue, 30 Jun 2026 20:50:48 +0800 (CST)
+From: Zhen Yan <yanzhen20011121@163.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Matthew Wilcox <willy@infradead.org>,
+	Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Hugh Dickins <hughd@google.com>
+Subject: [PATCH v2] mm: fix mapping_seek_hole_data() overflow on last page
+Date: Tue, 30 Jun 2026 20:50:47 +0800
+Message-Id: <20260630125047.703170-1-yanzhen20011121@163.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <tikbuxxazkmz5obcf6llp342vn7bi5tlgbbnuliw4jlwndj63e@jkp5g5oj6ug7>
+References: <tikbuxxazkmz5obcf6llp342vn7bi5tlgbbnuliw4jlwndj63e@jkp5g5oj6ug7>
 MIME-Version: 1.0
-References: <20260629165349.4260-1-igorpetindev@gmail.com> <20260630010032.141941-1-sj@kernel.org>
-In-Reply-To: <20260630010032.141941-1-sj@kernel.org>
-From: IgorpetinDev <igorpetindev@gmail.com>
-Date: Tue, 30 Jun 2026 15:50:53 +0300
-X-Gm-Features: AVVi8CchYJgpWPXFRkA0mT0Q8LJor-HbhmtHWl7MJsNtGowl2Od5TWeWUPZfohg
-Message-ID: <CAG21Q82oyQLR4fqTh3kZUMwGC2EyFpHZ=WLGwTCdvkoENbM0Ug@mail.gmail.com>
-Subject: Re: [PATCH] mm/damon/vaddr: remove redundant RCU lock
-To: SJ Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, damon@lists.linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="0000000000002cf8b606557807b3"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3VyOnu0NqxxByGg--.14700S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7AF1UXF1DAFWDZr1fXF1kKrg_yoW8trWrpr
+	95Cr1S9rWxXw13Ar93JwnrJa15Cw4vyF4FvFy7Gr4UZFn8GF12gF90ka45uF9rXryrGF1j
+	vr1qvFWjgr47XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jYKZXUUUUU=
+X-Originating-IP: [114.215.250.79]
+X-CM-SenderInfo: h1dq6xdhqsiiqrrrjii6rwjhhfrp/xtbC0wiEiGpDu6gWvwAA3E
 X-Rspam-User: 
-X-Stat-Signature: 39tqw1336x86kxkospg1rmqyk5ewdz1p
-X-Rspamd-Queue-Id: 389754000A
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782823867-95750
-X-HE-Meta: U2FsdGVkX18IBgziclhBDdQjBgBLpqhl49E2IsOnKM1mmNYSrlPZlUEnPeojPTNAGNUS6qewENgbnDE/8793POklyt+Szn7o38kmqQXQ2X+P3lCggcj4pwKY6Ylz2A3lPKSU0Rq2FP5uQuUctbg/w05dVHSBnnxMZxY/4Xhcj1bOiqv8W/JYNv7TpcfUvkBv3is2tezBSqh14P+452UgF3pZcEmXZcOnhnSlpdCQEEQJnvvbEVXhyaWqQKeq0zDDWoTxJXLDBwcLncsBS0kTw/PqqNNZgx5AyNrkOJ3mvdgxsJN7h7U76YSozShwHTaK5+nDkB1rf08EdtEBcSYx30iH//m+mqzgej2B6tu1UJkRHTwMRiBBctQJsuLQgmJrSETPwzSLzxYopFi0U6SqFVJ3t9xhJB+qnli1ims028Vi3PLvIeEjF4WsT+STCsUIjT7iJEqrlad1E9jISNw9hieR9hqYVf40mhSiMeSnrkXPy1vDcrqoC1Z0aGfSWfoodAzd6p9EdjegJLyrEbfDZGhZy0h6I3qHRckIY87Ec13Y0ZnI5Cv4sTPRvAd1sne81YQjuR8Lh/T3byRDEc7pIZg9A1NqOXHOQKfHGMlbmnwcpAeWYC0z3MQA9lzAxGt+GXeYyhdb7InEzV2K2kAzH0ApIXowWBVsP4L2g9Zi6X+fIfSl7dZQd32jETV/WWSdT+i7xPfpc9c0fhdjf9bPD0gNebfpp91aUSqPfHvmTZihAHqGtmyeZ0kV42LbaqYSeDwYlygx9fAQJczn4zJqVqelIQh4w2uZ2/C8VxEle/lmyGv/9ttN0CGwCRMbSWvdB0NLSMNTtCD3ISBz8zd8/up2hVXppco8PBpsMnRut6GL8SQLzQZU1HF5EC6cqis/eIXnu63bEU2yTr1Sv73X5QFWtI/vJikXoaC7orQMqeyRbeNcGJIxRUz6w/Dzq/zxTU0b2ByOKExhgmZmas3
- nFPAeHIw
- KXJfa4A5BJ0isfmI4T6dZjbyZ10nQ+rhgnUxwRYj6fTZyKuSoS8emfllRbFyR1Q6KzcxlAExqwekvmvn6Szab1r0gc2yLQIPfK2En6004sdXAXmgxPDP6iTZW3+8cJT9bUH0fxV6mgoI0Fv8zX5toQmrqoXmaPlczDgM8702PnvHx7OtNNp/9Bo3Atii/al0eZTmvkrHcE9ZC+HeRPceCF0bb8TYC2bEXdut5sy0HevIj6j5CAUIlCEDmFbec1DHDodDmTeLhsKLL4uA/G/D0cfkcTjvziNtFtKT0B9x3ML3llzZ66xEcKRd3qmobKT2mvqZWmUTTiotPZogS0s/2drY+IubijfFWbHo1aM1EhCu2j/vFQvq1McbVBidNJLXUtz2hb6xdGsP5GG7kPXf/Ounb9xjcWsYIYupfWVDHk0e+g9AazpKKHdoFCGqHxxwwSqT13YbckOlKPQVXOOJT3TLTZTaN6/FwsVUfgnXCdbM3in3Xf8n2pdaZTbKirFz7whDp+TZGhY3Siww=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 36A1E4000C
+X-Stat-Signature: s4h5zsafoji3ty34wwezt85ko5kw7tc9
+X-HE-Tag: 1782823894-882392
+X-HE-Meta: U2FsdGVkX19RHMQEL+Wb3zn6E10lF0KgsUZOJY7jsNTp3vj4MIIo2g38/PwPuYTPf41eWefKUjNHHwMg+s8G1bJ1sWXL8hkBd0SQZgAYs82OECDuxZKh8ARRaykmj5UTdre3qpTFrXZoge9CDmmPBJpQMWbCJgYC12QbZQjE68zgeMqg0uVwlnrkucptmE1BLKCIF1NkGW/GTwT6JsVjPEESFjlsNYrwEYoj/aNP9sPFxTkLwH5uNcO96/yjeUBq0bhzZFw3MYNeykoJIiBjUtptpD2MBFN8R01+KtNtMLRZqAMQZJp+BhZrJKtPE9+ij/u7fefGw2yTysuk2vO3cfvnwCohn2NziNBeJW1xFh01d21ccqbndiRJGFO2Z45YHugm9IByVvxfNun1q6Z0L6DbMP0zNErzY0R/Itp2TqQR/1k2ntGzn1NNucZ/i6r+v7B/gs0etMN52Jj3U1HMfNWIfcmdz2QqbD4ii5iBoevy+k7ffXl5wyDAgBmk4oOVYzXIWeitGQipAWWvXT7MtilzvTgspuj7vjbwhNWUZZ87sLlfrBsNLtV64kOqNw6eTT3ete2oYEDrF2pmTeBlUS8Yd8PA1UnYb7zNkKyG0t1vhBqkxuT+oJJtRccobuusC04kXy1svjxbXwTAhjvPGLqOIc2emU8K8nd08lWSPLde+SBbnMQNlsxOl+PCfDjZoyZtpQnXEyVVMGrkYWaPUrEW5rl0C8PfOPe2PCpktnVpVsTkxb69wfU4W97TrSGa8qLpQ9iXVpOmk54vsuymQVPl1W4JYzg9cCbjDUnDXUFFwSjRY6IP1pct3aHTk9qLiphe5yVadvlG+cRSfZ7G+hyOZNMnshggDYpGY5jPyPT8xtUiVRVMRf+Pn1yQ29N6XO4cM+B6NXO8XTAd3wipX0HN9cutNIzhcXZD1fshHtWQbJHKFUQGK+d7W/ZyTZcIp0/4s5W/5qreED2vdXb
+ rmiUX7ZQ
+ HM+2F8JXQYBarD7fQ14MuBcWGF3HPGdsjN3/+GO9i2MhnMuX0pZFfpC1JAdh03dJ9ez4uU+nynBCAwBlCn1nRy4uheEc0Pc/kPjnot29HgxmIplscx3Sdji06yGyVREiKcjp5dEvxnEMB1Whj66TpNSM61LxbarLyyv4/WJil/PgKXFlcz+kLzhR+yn/v5c8EEY6Po8VIyVuh2yzhmWfKM/6DPYT8sxjinykB2z1Dk5QUwzhM+juV2wF5Vf4zm4FcPaBWttTGMEYrRyF7prJRPvl9eWmZabHI7lsQ/vFtMyKNNmUS8B7PWPEh98fXz9+0v5EWj/9sTo5AzsMDYM6qEGrYuLSnvBJZ2AUYxd4yaSHa7YSohPrD/Al4EsBNDNk5XQ3Hu7a8tITZpe7l0QPukjpdrEJsxR1V+wVt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,182 +96,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000002cf8b606557807b3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+A local unprivileged process can create a shmem/tmpfs file with
+i_size == LLONG_MAX using memfd_create() and fallocate().  If the last
+page is present in the page cache, lseek(SEEK_HOLE) on that page
+returns 0x8000000000000000 as a successful offset, which is LLONG_MIN
+when stored in loff_t.
 
-Hi SJ,
+The same file has readable data at the last byte, but SEEK_DATA from
+that offset returns ENXIO.
 
-On Mon, 29 Jun 2026, SJ Park wrote:
-> We prefer using a real name. I show you used 'Igor Putko' as your name
-before.
-> Any reason to change the name?
+The overflow is in mapping_seek_hole_data():
 
-Apologies for the confusion. I recently reinstalled my OS and misconfigured
-my git setup. I will revert back to 'Igor Putko' for the v2 submission.
+  pos = round_up((u64)pos + 1, seek_size);
 
-> As Sashiko also commented, this may cause lockdep warning. Actually this
-was
-> added to fix it. Refer to the previous discussions [1] for more details.
->
-> How about moving rcu_read_[un]lock() to the caller test code?
+For the final page below LLONG_MAX, the next page boundary is
+0x8000000000000000, which is then used as a signed file offset.
+When assigned to the loff_t pos, this overflows to LLONG_MIN, so
+a subsequent "pos > end" comparison does not catch it.
 
-That makes total sense. I will move the rcu_read_lock() and
-rcu_read_unlock()
-calls directly into the KUnit test code in mm/damon/tests/vaddr-kunit.h to
-prevent the lockdep splat.
+Keep mapping_seek_hole_data() inside its documented [start, end)
+search range: compute round_up() into a u64 variable and compare
+against (u64)end so the overflow is detected, then clamp pos to
+end when the rounded-up value goes past the search limit.
 
-Regarding the pre-existing high-severity issue reported by Sashiko AI about
-missing check_stable_address_space(), I believe it is out of scope for this
-particular cleanup and should be addressed in a separate, dedicated patch.
+Signed-off-by: Zhen Yan <yanzhen20011121@163.com>
+---
+ mm/filemap.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-I will send the v2 shortly.
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 5af62e6abca5..b78fd88f2638 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3225,6 +3225,7 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+ 	while ((folio = find_get_entry(&xas, max, XA_PRESENT))) {
+ 		loff_t pos = (u64)xas.xa_index << PAGE_SHIFT;
+ 		size_t seek_size;
++		u64 next;
 
-Thanks,
-Igor
+ 		if (start < pos) {
+ 			if (!seek_data)
+@@ -3233,7 +3234,11 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+ 		}
 
-On Tue, Jun 30, 2026 at 4:00=E2=80=AFAM SJ Park <sj@kernel.org> wrote:
+ 		seek_size = seek_folio_size(&xas, folio);
+-		pos = round_up((u64)pos + 1, seek_size);
++		next = round_up((u64)pos + 1, seek_size);
++		if (next > (u64)end)
++			pos = end;
++		else
++			pos = next;
+ 		start = folio_seek_hole_data(&xas, mapping, folio, start, pos,
+ 				seek_data);
+ 		if (start < pos)
+--
+2.25.1
 
-> On Mon, 29 Jun 2026 19:53:49 +0300 IgorpetinDev <igorpetindev@gmail.com>
-> wrote:
->
-> > __damon_va_three_regions() is called only by damon_va_three_regions(),
-> > which already holds mmap_read_lock(). Since mmap_read_lock() is held,
-> > the maple tree and VMA list are protected from concurrent changes.
-> > Remove the unnecessary rcu_read_lock() and rcu_read_unlock() calls.
-> >
-> > Signed-off-by: IgorpetinDev <igorpetindev@gmail.com>
->
-> We prefer using a real name.  I show you used 'Igor Putko' as your name
-> before.
-> Any reason to change the name?
->
-> > ---
-> >  mm/damon/vaddr.c | 2 --
-> >  1 file changed, 2 deletions(-)
-> >
-> > diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> > index d27147603..345b89b5d 100644
-> > --- a/mm/damon/vaddr.c
-> > +++ b/mm/damon/vaddr.c
-> > @@ -84,7 +84,6 @@ static int __damon_va_three_regions(struct mm_struct
-> *mm,
-> >        * If this is too slow, it can be optimised to examine the maple
-> >        * tree gaps.
-> >        */
-> > -     rcu_read_lock();
-> >       for_each_vma(vmi, vma) {
-> >               unsigned long gap;
-> >
-> > @@ -105,7 +104,6 @@ static int __damon_va_three_regions(struct mm_struc=
-t
-> *mm,
-> >  next:
-> >               prev =3D vma;
-> >       }
-> > -     rcu_read_unlock();
->
-> As Sashiko also commented, this may cause lockdep warning.  Actually this
-> was
-> added to fix it.  Refer to the previous discussions [1] for more details.
->
-> How about moving rcu_read_[un]lock() to the caller test code?
->
-> [1] https://lore.kernel.org/20240904004534.1189-1-sj@kernel.org
->
->
-> Thanks,
-> SJ
->
-> [...]
->
+Sorry about the previous patch -- the `pos > end` check was wrong
+because round_up() overflows loff_t to LLONG_MIN, making the
+signed comparison ineffective.  Thanks to Jan Kara for pointing
+this out.  This v2 uses a u64 intermediate variable so the
+overflow is correctly detected.
 
---0000000000002cf8b606557807b3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi SJ,<br><br>On Mon, 29 Jun 2026, SJ Park wrote:<br>&gt; =
-We prefer using a real name. I show you used &#39;Igor Putko&#39; as your n=
-ame before.<br>&gt; Any reason to change the name?<br><br>Apologies for the=
- confusion. I recently reinstalled my OS and misconfigured<br>my git setup.=
- I will revert back to &#39;Igor Putko&#39; for the v2 submission.<br><br>&=
-gt; As Sashiko also commented, this may cause lockdep warning. Actually thi=
-s was<br>&gt; added to fix it. Refer to the previous discussions [1] for mo=
-re details.<br>&gt; <br>&gt; How about moving rcu_read_[un]lock() to the ca=
-ller test code?<br><br>That makes total sense. I will move the rcu_read_loc=
-k() and rcu_read_unlock()<br>calls directly into the KUnit test code in mm/=
-damon/tests/vaddr-kunit.h to<br>prevent the lockdep splat.<br><br>Regarding=
- the pre-existing high-severity issue reported by Sashiko AI about<br>missi=
-ng check_stable_address_space(), I believe it is out of scope for this<br>p=
-articular cleanup and should be addressed in a separate, dedicated patch.<b=
-r><br>I will send the v2 shortly.<br><br>Thanks,<br>Igor</div><br><div clas=
-s=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_att=
-r">On Tue, Jun 30, 2026 at 4:00=E2=80=AFAM SJ Park &lt;<a href=3D"mailto:sj=
-@kernel.org">sj@kernel.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
-il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
-04,204);padding-left:1ex">On Mon, 29 Jun 2026 19:53:49 +0300 IgorpetinDev &=
-lt;<a href=3D"mailto:igorpetindev@gmail.com" target=3D"_blank">igorpetindev=
-@gmail.com</a>&gt; wrote:<br>
-<br>
-&gt; __damon_va_three_regions() is called only by damon_va_three_regions(),=
-<br>
-&gt; which already holds mmap_read_lock(). Since mmap_read_lock() is held,<=
-br>
-&gt; the maple tree and VMA list are protected from concurrent changes.<br>
-&gt; Remove the unnecessary rcu_read_lock() and rcu_read_unlock() calls.<br=
->
-&gt; <br>
-&gt; Signed-off-by: IgorpetinDev &lt;<a href=3D"mailto:igorpetindev@gmail.c=
-om" target=3D"_blank">igorpetindev@gmail.com</a>&gt;<br>
-<br>
-We prefer using a real name.=C2=A0 I show you used &#39;Igor Putko&#39; as =
-your name before.<br>
-Any reason to change the name?<br>
-<br>
-&gt; ---<br>
-&gt;=C2=A0 mm/damon/vaddr.c | 2 --<br>
-&gt;=C2=A0 1 file changed, 2 deletions(-)<br>
-&gt; <br>
-&gt; diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c<br>
-&gt; index d27147603..345b89b5d 100644<br>
-&gt; --- a/mm/damon/vaddr.c<br>
-&gt; +++ b/mm/damon/vaddr.c<br>
-&gt; @@ -84,7 +84,6 @@ static int __damon_va_three_regions(struct mm_struct=
- *mm,<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 * If this is too slow, it can be optimised =
-to examine the maple<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 * tree gaps.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 */<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0rcu_read_lock();<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0for_each_vma(vmi, vma) {<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0unsigned long ga=
-p;<br>
-&gt;=C2=A0 <br>
-&gt; @@ -105,7 +104,6 @@ static int __damon_va_three_regions(struct mm_stru=
-ct *mm,<br>
-&gt;=C2=A0 next:<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0prev =3D vma;<br=
->
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0}<br>
-&gt; -=C2=A0 =C2=A0 =C2=A0rcu_read_unlock();<br>
-<br>
-As Sashiko also commented, this may cause lockdep warning.=C2=A0 Actually t=
-his was<br>
-added to fix it.=C2=A0 Refer to the previous discussions [1] for more detai=
-ls.<br>
-<br>
-How about moving rcu_read_[un]lock() to the caller test code?<br>
-<br>
-[1] <a href=3D"https://lore.kernel.org/20240904004534.1189-1-sj@kernel.org"=
- rel=3D"noreferrer" target=3D"_blank">https://lore.kernel.org/2024090400453=
-4.1189-1-sj@kernel.org</a><br>
-<br>
-<br>
-Thanks,<br>
-SJ<br>
-<br>
-[...]<br>
-</blockquote></div>
-
---0000000000002cf8b606557807b3--
 
