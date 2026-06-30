@@ -4,166 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87A96C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:31:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59503C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:32:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67A556B0101; Tue, 30 Jun 2026 11:31:04 -0400 (EDT)
+	id F2F716B0106; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6587E6B0106; Tue, 30 Jun 2026 11:31:04 -0400 (EDT)
+	id F06FA6B0109; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5195C6B0106; Tue, 30 Jun 2026 11:31:04 -0400 (EDT)
+	id E43E56B010B; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 243E26B0101
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:31:04 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86053168213
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:31:03 +0000 (UTC)
-X-FDA: 84936967206.18.6EF2CFC
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9494E20003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:31:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ImyD4fDt;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B85866B0106
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:32:11 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F1CEC2AE7
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:32:11 +0000 (UTC)
+X-FDA: 84936970062.09.4D653C9
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 3AC0B1C000C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:32:09 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="qu/1s0nH";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=vVSU3b5g;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782833461;
-	b=dLD2ACE2o0O4SA/NTp+Z9Z8hRSpGBN4MDS8LrPgSSJc8p9N5DLf8ogjhcfvb5zly7Ky0QD
-	3v07ouIhbFNEDcxJatR+/ow7cSGOjPsghUNXv1Ov8PhRzgqZsPleC/6rSU6GtcPwaEXsM5
-	os0q0fcWrwLu1Q5SBIvblXIK+FHPTr8=
+	t=1782833529;
+	b=yS7O7exrzFwNFUs+ojkUaAaKDESlYxrjXm/orz87V+2eiJP63hFuvaHUJHnOzAtrQOeJmY
+	OzV7KqIREG6FBfMLIQ/syhNWjUD7vu2gbZekmt7ik/kgfyR7EnYqiMeIpTIJ7lPGPguIgu
+	Gnp0pkT1y2SBhS0od6bq9P5USGa178E=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782833461;
+	s=arc-20220608; t=1782833529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vvVAmqyImW7TQjYTHR7q/vQBEUZYJ1tMtKhaki/MPes=;
-	b=3IGUjg2CrsDWtLcrW/hAHL3SxLIQk5O4/klG0jdWXHA3yGRVA5JEm996oD1hJOn9MO+bAd
-	nM24UL9HL2Gur84H43n5c3a5RkZjCfNXmKDFFOQIxxPjxvB7qN/IIyGRr6R9aezh3WQ/33
-	zLC9YRYK6XLoWRg5WHEzL4Lu2+sdtGQ=
+	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
+	b=yvPdvlv6KCimHUFctD1HyfEVxvF1Z2R+IUq9lMbdjiJy1D3iKmRxlf8HEVGmxIep8V5m6S
+	aTZ+Y4oZT0PJM3KbYV7VMSN7qIkV7Ni+csJRyQ+fYUUGFTBgv9gt5/R+EB5WXJo7c4R5Qy
+	JJxkAzOcDXpkX5gjVXtg+yeQzqZMA0U=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=ImyD4fDt;
-	spf=pass (imf13.hostedemail.com: domain of gourry@gourry.net designates 209.85.128.182 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-8051ad12d23so38112507b3.3
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:31:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1782833460; x=1783438260; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vvVAmqyImW7TQjYTHR7q/vQBEUZYJ1tMtKhaki/MPes=;
-        b=ImyD4fDtOkyvXnuVNLH1zQ2dQu2HTYCEil2gIKEKxPBLEquS/rveBGaKOdwYaxAa9O
-         BNbdxu/6inHjcx5OaW1nBbdlFdhFMVJznsnlWSj0cyxRD3remI2Ny7OOv7/69nSaSlAS
-         rlhK6hNbnIB26kFP3tZiog5nr3maPZ3iQ+ptRjlkgYX+QzTr29QZTWGwJoFv4pgOxch9
-         cIxlqMwOqu81WRfCxAqSDIIokQsXQ8qcopefvA6HNeEMkOn30RfOs5nC83Bu+8PCkxsD
-         mmL2XApMpTrwY8DNlbtXxy/6+gCaWw4L8KZXCRnJFSh4wHKFLFvECEhU47K3s2YEaW1b
-         +b7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782833460; x=1783438260;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vvVAmqyImW7TQjYTHR7q/vQBEUZYJ1tMtKhaki/MPes=;
-        b=TTwpm9fnXEPcqneM1ZY5cYhkr4a0ZQRZMAcedLoxz72mb0gn/m9O/tUTzN6aRLtAGW
-         SYnztl6CVJtwgaTPuCHq0FQk8WBdZbfjZ7K8hZO2IIfm+2JxdElLYi+zbP+gmyDu6GCi
-         Sn8bJLHiQlS6WFw5IDu6hHRL5ON+qt31T9NrcMjSa7YWQVU1X/zCyLjxz+yauO/ksSqV
-         TEwpTpLBDI33ryA1nSLkPgX/lT0eyZ1AOzre6ZpKc3gLhgNl30LCExTw8eiMqpq2tJ4I
-         v8FfR4hRloWY2ErwtiIUcip1lg5AIPnBNQpwPIuXqdoZkkxGRpXJmPbsN90Fy5mcgM4s
-         09QA==
-X-Forwarded-Encrypted: i=1; AHgh+RpIR4s6IVBLhrVUhs+emCGgcKGupA11pa2ExOJOs4RVYFWxgstvFtnfDQUK02yWh4uCW7Aw0f9vZQ==@kvack.org
-X-Gm-Message-State: AOJu0YwNhsbsVeQLNc3+8UM1HOjjpJD0zDe2mo0LYa2+Shu2ixfKFy4F
-	MgTRItEZy7jYPjg1Rn79ox+5CN1T/CI77mrtJFPRjf5s6DUnN2K72YR5yH1ua0JXooA=
-X-Gm-Gg: AfdE7ckxlQTWVsf/RdGM8PjbSfSrcCZNa46p+ctImLSF6pe9WWkpgc4u+aUAUy+RpCo
-	wLqEr98d84CN45iHE4ruTiRIvXUwt8PoV9LtRGXyt33ldZL/0B/gV4nP9VCU1zQ2xJxe/X5XS5I
-	MNjdTpDQWv8CPrrQw6ezsEXvY9R3OfRmxPa+kkUZyWZzXz+dqCXMuE4KjDn8VDP+v0QnwAyA4Wn
-	SL4rVM0mXa/7CHdgavGrW98GAm3wyO8e/B3QpGjLbRFN6cQdhKKBXDMSlQrk0theJISOSCBBCaN
-	rZYhdoeoneKWPofCGYEY7kEE+ouQkmoDZe0D9xK/Z5rE4q6xt95gpDiOzBTw/pR23ahclaU5UaA
-	LHgtblUZBUGYC3VJLPi1Z5EwN5QipmTbfSnYtuCSg9x6r0xRoiuXEuofVUuyov+vxO9MC3fCyzT
-	yxoIkjtWbY4WvPJvn7gc9Cly5pRi/ikXbRx6OM8XQq7f7TTkgBxJZxa1sAm6QiRSJarqAf
-X-Received: by 2002:a05:690c:6112:b0:80e:bd63:1780 with SMTP id 00721157ae682-810d7eb0bd6mr46000317b3.2.1782833460437;
-        Tue, 30 Jun 2026 08:31:00 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-173-79-60-52.washdc.fios.verizon.net. [173.79.60.52])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8f1a783d9d7sm25574106d6.41.2026.06.30.08.30.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jun 2026 08:30:59 -0700 (PDT)
-Date: Tue, 30 Jun 2026 11:30:54 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Jarkko Sakkinen <jarkko@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Thierry Reding <thierry.reding@kernel.org>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>, Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Dan Williams <djbw@kernel.org>, Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Steven Rostedt <rostedt@goodmis.org>, SeongJae Park <sj@kernel.org>,
-	Miaohe Lin <linmiaohe@huawei.com>, Hugh Dickins <hughd@google.com>,
-	Mike Rapoport <rppt@kernel.org>, Kees Cook <kees@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org,
-	linux-sgx@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org, linux-arm-msm@vger.kernel.org,
-	freedreno@lists.freedesktop.org, linux-tegra@vger.kernel.org,
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	nvdimm@lists.linux.dev, linux-mm@kvack.org, iommu@lists.linux.dev,
-	linux-perf-users@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	damon@lists.linux.dev, Pedro Falcato <pfalcato@suse.de>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH 07/30] mm/rmap: elide unnecessary static inline's in
- interval_tree.c
-Message-ID: <akPhLlv66ZqQ-jrw@gourry-fedora-PF4VCD3F>
-References: <cover.1782735110.git.ljs@kernel.org>
- <ed5fd5358382217a92f0a6afddcfaa030c933055.1782735110.git.ljs@kernel.org>
+	imf20.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b="qu/1s0nH";
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=vVSU3b5g;
+	dmarc=pass (policy=none) header.from=linutronix.de;
+	spf=pass (imf20.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de
+Date: Tue, 30 Jun 2026 17:32:04 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1782833526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
+	b=qu/1s0nHQC6KFpDGuKrxXJLqBTdl1FoH/4yCYl34ohT2guoTuARwKQEULMNqdYWydigyrj
+	UQsxj+D6QvmsMUbHcM7u3rM86IjWKPJT39xqCzzGIvsLgqe2Hz4HBOvbz7iysNXKPy5W/u
+	R/GUuEzOAf1ZZdsDdNL4Jr6q/bCrdt9+3kstOwvKETmQg7hIqCfC8XESzPiKTthZJ9Oc09
+	xpBcumA8KxG/PCdAqz4l1iGj82SI/tB9ALWL8NP8tofOtWsr179TrHBkKBYCmCED0scKGL
+	24UnriDqIvgBJ16vM4xBQFbAgoL54zsV+WuM26JgtD+5w8qeomuxalv2Kqf/NA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1782833526;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RdsRgNbVkI3Xb/bXMSfj+yw5lewzrynD2xqGGnGzV8Y=;
+	b=vVSU3b5gGX9pyXfPgfu3YTbbfDnrmDCkQKRUwm+vxUCIXLFG0mbsTHQglZDx4c5OUPi7Tu
+	n00gEBCaZoE4kFBg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: oleg@redhat.com, richard.henderson@linaro.org, mattst88@gmail.com, 
+	linmag7@gmail.com, linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
+	kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name, 
+	geert@linux-m68k.org, tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
+	deller@gmx.de, maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com, 
+	chleroy@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
+	borntraeger@linux.ibm.com, svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org, 
+	glaubitz@physik.fu-berlin.de, richard@nod.at, anton.ivanov@cambridgegreys.com, 
+	johannes@sipsolutions.net, luto@kernel.org, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com, 
+	peterz@infradead.org, wad@chromium.org, thuth@redhat.com, mark.rutland@arm.com, 
+	ada.coupriediaz@arm.com, kevin.brodsky@arm.com, linusw@kernel.org, yeoreum.yun@arm.com, 
+	song@kernel.org, james.morse@arm.com, anshuman.khandual@arm.com, 
+	broonie@kernel.org, liqiang01@kylinos.cn, pengcan@kylinos.cn, ryan.roberts@arm.com, 
+	yangtiezhu@loongson.cn, sshegde@linux.ibm.com, mchauras@linux.ibm.com, 
+	austin.kim@lge.com, jchrist@linux.ibm.com, arnd@arndb.de, sohil.mehta@intel.com, 
+	andrew.cooper3@citrix.com, jgross@suse.com, kas@kernel.org, x86@kernel.org, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org, linux-csky@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
+ to the kernel
+Message-ID: <20260630172619-6c78c2e2-c2d3-44be-88e6-6c82de12baf4@linutronix.de>
+References: <20260629130616.642022-1-ruanjinjie@huawei.com>
+ <20260629130616.642022-19-ruanjinjie@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ed5fd5358382217a92f0a6afddcfaa030c933055.1782735110.git.ljs@kernel.org>
+In-Reply-To: <20260629130616.642022-19-ruanjinjie@huawei.com>
 X-Rspam-User: 
-X-Stat-Signature: 3yihi4d4jopjsygyuooiwssq654iakz5
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9494E20003
-X-HE-Tag: 1782833461-50915
-X-HE-Meta: U2FsdGVkX18rRh+HlmO33pPtQKPT85PQo4Ns0eZCzZd4czdVI6KnWj7qHLjxGYXbQyb6ARSks5MlPHbP2WU+N8EG/oRKYUTCp8/C8n+1Pxi+2big5lLZL9m3eA4FdoPrtNkzSsgKoK0BmIGOD8Ijp3viFzpJZMBtsvr9GxkotYH91dvk1nNoyhEDD2ERZfZjJfBPl7YavWPS0g2qEgbpz+nFvWo8ALx7gYtytD2ZYRxepZWLZdJu5hVbFYN3WhmpCfgWPM53J4E6HGRrKFyw1K7bmOklUreWckJRxlywSDmXPhmd7+mndDfv/0hoHM6yBZqVTZvfD65FJVDocXq1oLJ8NqoFnDplhnGVsTkVY/KV31odZurgCuTdU1khtyWVUGnYZex0/Ep8KEeRmjge+Vmh2N3rlVlZVQJ/iaD1Kcv0m6otaGrG2uAfZX5jSlJGpxOsyHrtd1gmIJod4B1KdJxEjlfvW6eW9UfUVZLAq9cMd2SerocaPxSz7H8irZ+lS112G1e/tKgrCgKUOZFZ2rPUrPuIfARUzsqlVKvpRguDPQVTd0ylucecwBXLwImAsipDtfMvOau0YGO2hgrYh9ek6o+ZGQ3dcMLjX7YO/RNKts0LoCGbyNH+QICsonMEvGpHwWNicrjEa9bnr8FSfcG5C9of/A8DKjMhViiem9gZ3NdN4/nPrSvK+bozBMmErO2uL0AWx7ThDTJV+fVXmRTN1mHYF4XfhQWA82tUnbm5WbCQ+gOhNQqxpc/+WQehP7nbkiDhkeMg6sq+j5Ymu2g+2V1eitNGa58Uxa7XKrRWQjik22OMjfcW2vVZ/k3ZRAz5rN/7YhqXdQDHXPdc9DNAi3GtYI5I79eZV7ZJupW4h98ScQJhwDhTegENtQdGzWOdEiBpXJknPA28ivrV6YDO88/D1U9zDyVtX83XM3POtA65nyIv9x9EVgalAPJGUdOUAXOtKWM4EjaphMx
- qmIE/YhI
- z4ZEnDxdrYzIh7hFrQSOHS342AGuocxg+42xVUJgyCWAeiKxTnWbwU89Zsw353QoELjw5XpT3AEnKp30NgcTTgA8F+whVywRvaH44ggJmlUT21h26/NLUANxbcNVf9k+8+P7DHHsWNcB7sQYSWDflvplRt2hJYWZjkSykgAjX51KpP4xsTBMblbDHE2ZJmlZMNlmzp3FOy5lg1ixPHhhAaM8pfl4Ncq9o4L2dkCTrGxaX30mtal8NgI3VP8umPCePehWg0vjxne9kVzHaTWfpc+vACqj65jKY6jDNUKOKWN5iDmjq6cpJhvjttzBaZy/AMbulwnBmiZA15BQ2HScBMm3+cwTqRTzyY7dtVPA6dV7WMFb1xMnpFl3mxKDp169DB22+7/xZtVd+9y6sDL5HRENfT4txySuUQa1eLnxTHbskCxJeERAs/nF82z7Azy1bZsMWRd4K07rVrbf0N6C+W596JgMkytUAN1LmHrZXFnvSotEAHNfjyBtT5jcYfHmN9q28Jld7rRpiY7N9GPMDvsir1Fo3ZhIBrJBX
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3AC0B1C000C
+X-Stat-Signature: fwgasr1tq5hjtrrkpof3f47niepr8a9x
+X-HE-Tag: 1782833529-746302
+X-HE-Meta: U2FsdGVkX1+zXWT11GRgjHqVCk9GqEhljFukjo4nTmb3MIIaumM6fJnCCvo+LnW8XnNNsG9sFqw6KB5RSVBrTyH5l1030iJOVyBreOy7tAMh4447kBwM6Xo1DEp0cYSvPT+bfSQ3SNKNFbIdxUcB9Zzu1SkMsJ2aUVwkscXe6VZrRRRZEzDjwngtJPTmS5D+g5cRwTMqfwIMuH0D+Pz6L5PZHjgB32Sy/zATK1MqqZMh0qOboKj8TD1V2quzPpbtYwxIzQuVDRJMZyLQLiBI5HzlVw8K0su0QQIjlXsi0xUA+TABD4akFEgadkle7BHwsS0dIqwLuUcadObk1pmIiiQB/VWCCFyAoMEDd9U+ZHum3zacj1S4DqrBKYP9+bNgmPlJcto3AhSmEDukbldgUR5D/yKYe2+DIjAd31yNNHzOrrwytE9FYDkdNiIjxkoz1GI06sBnTockEoFBK3495HNF5Nwhnyp42wDOqmYuorXCmP9xJli5kzwh2sQwGidgLIlMRYNYwyCCHfSsURma0F97+mceGQ1TufPjQBLIgvThAJXrHSmSZLJLOluZNw6YmB9LjiXRDHou0hXah0M4/Oi5DzDW5tRRTTNNXEtY4foLVbm4K598p+4nDptjmGughIaHgmuG2TKiam48O6Fgm4Sn9IcyZ+dnV9pN+CjEq1dZ+rvjDpxu/SX1OAZHuxPOgmLEoq2OCtz5GzjTepAt8oEs8NFULaWdiHlRCcOT7Kl1VvIig7FS1tioaUr6lnStTwamh4nv7TEwvO0oi+NKzH76YdmMPMu0vjRCq8aAD6MKW8M4fV17r4uS1dqzBk6sQwZ0AwFGB+GVXcCGC2oEn/II9neN+RyMIpghQlTn5VVELbFLwH5iKkPimqru+4piNVcjjZWVCFCIYak+e1+bIEz9TtwLcb7tiX+pL0K6+zAakwLmB9M6YEcW62SRGSKyI/3pcPknHHvGrKbCds0
+ UoFqrd/x
+ n8VLZ7efu2NvnI1GeCY5LPDpKufR83MyaFhF/dl7cF0XD8to8brsTds/WVL0spFsnJhWtg7vhP5cW1j+olQHHfABKt0SA4M3psDCrpvoPCXK1B0oM0OGblYhWT3Yflg+qf7QD2DyDjWPwCdMISMBWTSenBUoSxU9/FqQO+ZukTIHU38gRnsjywek7ZZ4RB9K4Y7nz6xXOJCKMZHp5Hmqcb3oePGh84laJPDCz+oF2CHHQrG/eN/W5lGa67lpqFAYknkkcqkN5D2vR2b+rRhGltTdFLYbOPkV6vUAEdN/81bHVlZ2vjnjTgdBawFeu1+UoJ+ck5INoPYwLz4FefMSnX9EoRaQ8qUKT9SkwHT7tJGTmg3wnGIUCe/Jca6Sl4Fd+M3+unesZzavK4Mt6z/SBeN8llQFmZ7+U0iFWXhRJuz/rhaGa5Na5fA5mwdVBAlbHfyWMMX/KAhdz4FN1ULspgTk12N9RI3BzU6sKyxIic04KQey/fV3mEXN7Ww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -171,17 +119,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 01:23:18PM +0100, Lorenzo Stoakes wrote:
-> It's not necessary to declare these functions static inline as they are
-> contained within a single compilation unit.
+On Mon, Jun 29, 2026 at 09:06:16PM +0800, Jinjie Ruan wrote:
+> Syscall User Dispatch (SUD) requires the signal trampoline code to not be
+> intercepted. This is necessary to support returning with a locked selector
+> while avoiding infinite recursion back into the signal handler.
 > 
-> This makes the anonymous interval tree code consistent with the newly
-> updated file-backed interval tree code.
+> Implement arch_syscall_is_vdso_sigreturn() for arm64 to support this
+> exclusion mechanism. For native 64-bit tasks, it checks whether the current
+> PC matches the 'svc #0' instruction inside the vDSO sigreturn trampoline.
 > 
-> No functional change intended.
+> 	SYM_CODE_START(__kernel_rt_sigreturn)
+> 	        mov     x8, #__NR_rt_sigreturn
+> 	        svc     #0
+> 	SYM_CODE_END(__kernel_rt_sigreturn)
 > 
-> Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+> For COMPAT tasks, it verifies if the instruction falls within
+> the architecture's 'sigpage' range, allowing the kernel to safely bypass
+> dispatching syscalls originating from these areas back to userspace.
+> 
+> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Suggested-by: kemal <kmal@cock.li>
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>  arch/arm64/include/asm/elf.h |  1 +
+>  arch/arm64/kernel/vdso.c     | 16 ++++++++++++++++
+>  2 files changed, 17 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/elf.h b/arch/arm64/include/asm/elf.h
+> index d2779d604c7b..f43d4dea916a 100644
+> --- a/arch/arm64/include/asm/elf.h
+> +++ b/arch/arm64/include/asm/elf.h
+> @@ -185,6 +185,7 @@ do {									\
+>  struct linux_binprm;
+>  extern int arch_setup_additional_pages(struct linux_binprm *bprm,
+>  				       int uses_interp);
+> +extern bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs);
 
-Reviewed-by: Gregory Price <gourry@gourry.net>
+A header for that?
 
+>  /* 1GB of VA */
+>  #ifdef CONFIG_COMPAT
+> diff --git a/arch/arm64/kernel/vdso.c b/arch/arm64/kernel/vdso.c
+> index 592dd8668de4..5a0314a3c26e 100644
+> --- a/arch/arm64/kernel/vdso.c
+> +++ b/arch/arm64/kernel/vdso.c
+> @@ -343,3 +343,19 @@ int arch_setup_additional_pages(struct linux_binprm *bprm, int uses_interp)
+>  
+>  	return ret;
+>  }
+> +
+> +bool arch_syscall_is_vdso_sigreturn(struct pt_regs *regs)
+> +{
+> +	unsigned long sigtramp;
+> +
+> +#ifdef CONFIG_COMPAT
+> +	if (is_compat_task()) {
+> +		unsigned long sigpage = (unsigned long)current->mm->context.sigpage;
+> +
+> +		return regs->pc >= sigpage && regs->pc < (sigpage + PAGE_SIZE);
+> +	}
+> +#endif
+> +	sigtramp = (unsigned long)VDSO_SYMBOL(current->mm->context.vdso, sigtramp);
+> +
+> +	return regs->pc == (sigtramp + 8);
+
+Instead of hardcoding 'sigtramp + 8' you could add a new label to the 'svc #0'
+instruction and use that with VDSO_SYMBOL().
+
+
+Thomas
 
