@@ -4,104 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D27B7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:16:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98A19C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:23:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4A8C6B00B7; Tue, 30 Jun 2026 05:16:44 -0400 (EDT)
+	id 827C96B0106; Tue, 30 Jun 2026 05:23:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D22A36B00B8; Tue, 30 Jun 2026 05:16:44 -0400 (EDT)
+	id 7FF846B0107; Tue, 30 Jun 2026 05:23:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C39226B00B9; Tue, 30 Jun 2026 05:16:44 -0400 (EDT)
+	id 73D816B0108; Tue, 30 Jun 2026 05:23:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A1C0E6B00B7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:16:44 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 218538DCF3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:16:44 +0000 (UTC)
-X-FDA: 84936023928.29.E80398B
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id DB48EC0003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:16:41 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OhlBURWG;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 481BE6B0106
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:23:05 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CBBB61C332A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:23:04 +0000 (UTC)
+X-FDA: 84936039888.01.8D98FC0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 29AC4160003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:23:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b6h/m4OY";
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782811002;
-	b=TcXeYEGQ4AV6DubfohmF2nIrAdAxSobydZ+odqitZA6N5JJfd1uZvRX0Dy4kbkgTT4G3Xo
-	2xW68KLBGJJmd/GCqkoiq8CyPnXAGvIs0RaiMC9OLh/IiDaKI030RaGPnBJw3rFQoaO+jd
-	eO6iHBgy2RYFcWpyJPA8X/OWeNLNILg=
+	t=1782811383;
+	b=cG+2Jvo6sRZqO5G00sYFPo7KnU8gMXxcmDHRtYFWTfoRlAzvBmV7fdvy5Gep0MiGDh5TA8
+	ylLzciY9QPZCNkz/nVyHpSBJyaKE4LqB57wmXZE78YZiDYdX6+xR+0QV9aUpIpG6WUWsR0
+	zs1R7TQIYU1fGLJJ2oJKPePIxfa/0aE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782811002;
+	s=arc-20220608; t=1782811383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aBg35UbhV6mbQWeCQ9pQpDL4bAnyZsscC2WQYIptGg4=;
-	b=NVbdNg35i1XR81F63PtfkDtJ3V/WTjuw5lW79KDCi3S31ANGTwegMAeGDzI/JM8Hpyyde+
-	baDeCkPzA7PoYih9AsfmwE9COKuO0Hmp0HuxFP7g+ChuCWfR6KPzokkPUwps8FFesHGFWt
-	gK2crLc8MPM13woXq0oOR90JKta/Yqc=
+	bh=wdwm8I3YE+DnFwwl5cUNzE7lZIxBJZQXCTSM5z82LZs=;
+	b=ueSoKjr5UvO8jWomnmDSr/7QIzWtLy+7edt+ywQ1m9L4IXVI7me/x+BdXmBP3pzd85GPQK
+	HEYE8ex5OWfxbtf7JmKICWCaZvdW6P4ixIkPt/n5UJDmuJvLGrHHz9ceijICFuE9u0sldk
+	b83O3Id7NTwHEKC+NpjTRbngNQDrIC8=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=OhlBURWG;
-	spf=pass (imf10.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 68EE12C1C;
-	Tue, 30 Jun 2026 02:16:36 -0700 (PDT)
-Received: from [10.57.81.132] (unknown [10.57.81.132])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F30143FAFB;
-	Tue, 30 Jun 2026 02:16:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782811000; bh=pOGqr+6YjRRrGfqyTm37l0BuFHy9XPuCtkGh7B9Kr+0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OhlBURWGxQqcbV6J2ZjbPLWqe0+OO9mHDyY8RjjqBPKuIiYpX91UGBHlnRLA2voBR
-	 ZGfe8UhEF+CVHnpiOUhkK+Si+HmROlqhNQzZWseJfpnlDEHoIShP9UCusiuqoiShd4
-	 QVu9mycDBfqeZmeTAPiDcXgKfSZGryWFP031nXt4=
-Message-ID: <e4f98e9d-9f02-46d3-90ff-22ec711ba85b@arm.com>
-Date: Tue, 30 Jun 2026 11:16:27 +0200
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="b6h/m4OY";
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 115E740E41;
+	Tue, 30 Jun 2026 09:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B37301F00A3A;
+	Tue, 30 Jun 2026 09:23:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782811382;
+	bh=wdwm8I3YE+DnFwwl5cUNzE7lZIxBJZQXCTSM5z82LZs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=b6h/m4OY6/t6gJjmh5PQSwzpR85KKZT+54iJ6Tdc7YHQk8EscQT9xVMoFKPeKNN4c
+	 uGpWfQEkOfdqMj4IWlDv2mu6EyWwCwTxyMjnZi/iRst0rVXkpsoI7CdsUVgM8j9mm7
+	 EOoRnO9Pip9KvRuuFZW1eK5Hw5bDDnNcCMtGhAaKO6ehmjM5v89fck6WcqkgvFJ210
+	 yBApH1nY+nr5J8rlfn+wcYKMCx4GSZQcGdSTM+AI21O3G3wPSXuL7uVOerSfRSCjps
+	 MRmInCiQWYX0OoIg+8KHwdNJk5yN0yzwZbStW1KICn2RpYQlASHVCAI4kWAJkKc5oj
+	 9gtAVyULcZoNw==
+From: Mike Rapoport <rppt@kernel.org>
+To: akpm@linux-foundation.org, izumi.taku@jp.fujitsu.com, 
+ Wei Yang <richard.weiyang@gmail.com>
+Cc: linux-mm@kvack.org, Yuan Liu <yuan1.liu@intel.com>
+In-Reply-To: <20260622022403.16375-1-richard.weiyang@gmail.com>
+References: <20260622022403.16375-1-richard.weiyang@gmail.com>
+Subject: Re: [PATCH] mm/mm_init: fix incorrect node_spanned_pages
+Message-Id: <178281136320.625070.11348447938097081355.b4-ty@b4>
+Date: Tue, 30 Jun 2026 12:22:43 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v8 05/24] arm64: Implement asm/kpkeys.h using POE
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- linux-hardening@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Andy Lutomirski <luto@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ira Weiny <ira.weiny@intel.com>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>
-References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
- <20260526-kpkeys-v8-5-eaaacdacc67c@arm.com>
- <f8507ad6-761c-4073-85ae-bddb2a07d660@kernel.org>
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-Content-Language: en-GB
-In-Reply-To: <f8507ad6-761c-4073-85ae-bddb2a07d660@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15.2
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 29AC4160003
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: DB48EC0003
-X-Stat-Signature: t8x9wioedpquh8c9xm9s1qwsqx9rtw79
-X-HE-Tag: 1782811001-748916
-X-HE-Meta: U2FsdGVkX18uEeQfGFLaTc7fO2eRJFsHwVzCblXFlYwXI2pp6VnIVkUACgUxM0s0zF2H3JDaY3s4Bo1FNW8YCFuLoXKDGIVXGKcecuu9U6g+Qe6ZmwhADyZEOnLtWWSGIzgwvu7gCVfK/FRxuUaZg53W+CgRHfdXUYE/j55it+zxR992s0n6JXl7InzyD4cmsnh8d8S/zZkNgq7hm7EuefjcR2lI30fxWzLB5/KT2q6KDGRojYOsEJZX3E1PrInyw632fGrox0CYLvII6Ga6Yjv+OXdtf+jBPJUUNIYN3bskLu11Pq91SR+mExRQO8/yqhhQwcz6RC7mtWyZ3OkKgS0xhpyOzifHnIWCSEMCVuhMm8Y30FR11tUnwo3hbLAyXUkB+bIiWnWN0SGIiARD4BMiMg9pUuTe7ssAr6I4Hg4eUSLcvzy1qxDMrBoZgiN42P3KP98RMK6k2fysrluqSsMCJ1FHrEWNbH1qMEv1XKCRdnZbVaVKxrWDq64f+LSqbjA7Xi7VuLNHh8BmGUc4fZwfCz4Ehr5FQR0E4NoDUgEJh0psBZeVB20/KJN4G599BAjWT+49hwDpmN5ExAZhe+b9hjHEv14BGThSBlhP0ycch8MPeyejfM0SyZS+EIfYChdfiZOB4Cpzz8WrfQmqCkhn6B0Vg7vjCbcpU77yptP9GtTM5ZKBxITJ3VsoUxBQ7wJhtSoqArqr9nzv0W2mITYIXxJtIWA8kvZIw3WbHH14YkIJ7j9BfqQd9UdS0WczMKh4a992VxOvBT07/x8bgF9vR2v3W6litlMH1fm53uV/OfglZktozI8NuP53Qkagd64Utsqw/CtTKWfBv245qoVDm+hy7wSLoP+0feWE3PqJVjgajLIQnhOiiX/YU0srU5zIm8R4K0oFpjPY5iK5p4NGbhqL3qs9P8TiVoUVRh0Z2Zjzdup2iWAHT2EFhimro27gyF1m/Z6WxYpmwsm
- OA5thoeR
- rrGE5dzMaB5jUSXCq27PguNLfDB3DVA70n2QLW4CWGt/3u6FAPMDWxygjZNkNS3hBIDEkYpooNggGQu1ZF0+rjXElgxLU796qsPGFRXDMP0YAdZ9YsGqQgW7bicF/+0FWax+efLYpWZU+xBLKbsRqZaEr6/x6vg9Aje8bSy0tVea40Pbqe/rkl7kpSDREVxPopOvzhmfbY0Cb9kjoi1ySq9Hqc0FBxjqm1z3wBoaNPbV9Kq3xnUukT8wBKFTzncJ9R/4WcN4ykm/Ezs/14iFk5DFlMKjmmvBt2GNGpKYjGRx9RJyqvW/e0KI9lr46skBEQNDyem2H/NVnmy0=
+X-Stat-Signature: m5dhezqhyfwpaixq93mqpuj5au464rd7
+X-HE-Tag: 1782811383-222559
+X-HE-Meta: U2FsdGVkX18GxZb1sU16+H7hAGzztThXW7GcsHhmjNW1as6Td4ZgWJHrBx5Huj/Rr1fHpbm5ihI1wGLZEKH1gZTWU8zNQqw1zyTZb+yC6pRxwKBf+qZGa6cNF/bCmgOGVRu9wFqLQKPhTxpqb36sf4XSSv8D+Dcc9xdynByWyuOmjNW4BqJRcLsFGXFJjFuID6ahvxxxMsPPW8Je35ghnnLK+X8ilR9VxDjoaQx3uMacBfNqAVNd7zwWO57i1v5e30KcmU60ef/DxDWh2GmIP9ou1I1SMFzRmyI0YPqrmw0QftDuodnGCkU4M5HuLT4Zti+LZ6luSq1jizfaPDoVdyfo0YVM1+r8wAZTYB/8F2Ga5iHcLYD15TTnPR3SjBz4y06cy9yh+Bm0AGgC4h6yMumFKbBigLT++k8RQ3uSRH49hiMWoU1a+JMg6B9O4npKwZe/c606QifBsDTOedUyaftr2JubdPbdHFsgziBfO4pfQljOW8cpUpbENNhukIIyluh8Q7nbjB3CZgaA9vU++vw3QpBrzf0N8r75mWIp+vRAQa8RHJVeJfr3LR0TFCjPHpsW0QuSPd26az8cebIMxDJkaOeq+IBcVIt65w/ToeT34uyVz4yTuFCFlgEtrl3l3ghXDHt5CmBAckFYKExbLVxQTmaPiIEWva1p+n5GD3Ca+QmSTsCgpQ9I5Vr/6BOt4Qi01jncKBJjTwTwSxj9TIS7Xerb1V96Wk2CW+jdPJoRx1ZqrpoVRWWXA7klKx3IA5mFuaukfz3JQStZPnHj1NfE7h7QEls7RXRkL1i44dmAQ0cYbR/b5g5oRsg9w3u1MUiRACZv952mPMRnmIFxS8IjsP7LK3IBcTjYqdzqwQY2sex/3J0kRs3GPCYn6jpGVeWu9f/lrNk5Ej3mZbpSwi935aIvTnN0pFac8h6WphsybZCvZutZIJmwQebV6ktLwakAm64OZfE1kWMBmdD
+ uZwJYh3q
+ NDZItOQGSsfosgGN+SQA+0ZBaCmc9s1Tk/x9Yk9SdUBTvnxoiyAojviF4O4WQ3hosU1grSYbHiRy9pprRROPc1xsDyzn7DGrQzeMuKllt1daEUmhjCofnRZdz7PjMlf0glwfIfXpuGr9GG8k1+Fp1Pgg7FvFMcneFZGOadH0SYL1+VS84r7A5w6SdDhgQM0v/gCyM+k1KSIl9siQSqXjkllOqt4chaEEz7JwfCvKwVrXCa/6jiYtNzOSgalmkQ+sdwva1ip2r8OoBq0UJtry3fSPG3ueNmGpbxdwSgsEyuHt6V8T13DHgWEWkIxaAhEh1E1tK308f+30UFLtQ/zjbDutMYLkIluVtk33V3AC7nBmABs4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,130 +92,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 22/06/2026 15:35, David Hildenbrand (Arm) wrote:
-> On 5/26/26 13:15, Kevin Brodsky wrote:
->> Implement the kpkeys interface if CONFIG_ARM64_POE is enabled.
->> The permissions for KPKEYS_PKEY_DEFAULT (pkey 0) are set to RWX as
->> this pkey is also used for code mappings.
->>
->> To allow <asm/kpkeys.h> to be included from assembly, also add
->> appropriate #ifdef's to <asm/por.h>.
->>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/include/asm/kpkeys.h | 59 +++++++++++++++++++++++++++++++++++++++++
->>  arch/arm64/include/asm/por.h    |  4 +++
->>  2 files changed, 63 insertions(+)
->>
->> diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpkeys.h
->> new file mode 100644
->> index 000000000000..4dbfeb3dfcfe
->> --- /dev/null
->> +++ b/arch/arm64/include/asm/kpkeys.h
->> @@ -0,0 +1,59 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +#ifndef __ASM_KPKEYS_H
->> +#define __ASM_KPKEYS_H
->> +
->> +#include <asm/barrier.h>
->> +#include <asm/cpufeature.h>
->> +#include <asm/por.h>
->> +
->> +#include <asm-generic/kpkeys.h>
->> +
->> +/*
->> + * Equivalent to por_set_kpkeys_context(0, KPKEYS_CTX_DEFAULT), but can also be
->> + * used in assembly.
->> + */
->> +#define POR_EL1_INIT	POR_ELx_PERM_PREP(KPKEYS_PKEY_DEFAULT, POE_RWX)
-> Okay, this matches
->
-> #define POR_EL0_INIT		POR_ELx_PERM_PREP(0, POE_RWX)
->
-> Is there a good reason we need KPKEYS_PKEY_DEFAULT at all (and not similarly
-> just hardcode it to 0)?
+On Mon, 22 Jun 2026 02:24:03 +0000, Wei Yang wrote:
+> mm/mm_init: fix incorrect node_spanned_pages
 
-I did wonder about that. As per the discussion on patch 1 I don't see
-that value ever changing, so I'm fine with hardcoding 0 if that feels
-more consistent/intuitive.
+Applied to kernelcore-mirror branch of memblock.git tree, thanks!
 
-> Just wondering, because apparently we didn't care about adding an indicator for
-> user space pkey 0.
+[1/1] mm/mm_init: fix incorrect node_spanned_pages
+      commit: 7783dcd79ae9c4aa48bc47bd4275772445dc4b2a
 
-It's never too late to add a constant for userspace as well, but of
-course since it's been ABI for so long the value isn't going to change.
+tree: https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock
+branch: kernelcore-mirror
 
->> +
->> +#ifndef __ASSEMBLY__
->> +
->> +static inline bool arch_supports_kpkeys(void)
->> +{
->> +	return system_supports_poe();
->> +}
->> +
->> +#ifdef CONFIG_ARM64_POE
->> +
->> +static inline u64 por_set_kpkeys_context(u64 por, int ctx)
->> +{
->> +	por = por_elx_set_pkey_perms(por, KPKEYS_PKEY_DEFAULT, POE_RWX);
->> +
->> +	return por;
-> Why not
->
-> return por_elx_set_pkey_perms(por, KPKEYS_PKEY_DEFAULT, POE_RWX);
->
-> ?
+--
+Sincerely yours,
+Mike.
 
-Because of patch 17, I wanted to minimise the diff. Happy to change it
-if that feels less surprising.
 
-> In light of API discussions, it would be nicer if arch_kpkeys_set_context()
-> would just return the old context. But that would mean that restoring the
-> context would require another read_sysreg_s(SYS_POR_EL1);
-
-Correct, that's what I wanted to avoid.
-
-> So instead of returning magic register values, that should be wrapped in some
-> arch state struct as mentioned as reply to a previous patch.
-
-Agreed.
-
->> +}
->> +
->> +static __always_inline void __kpkeys_set_pkey_reg_nosync(u64 pkey_reg)
->> +{
->> +	write_sysreg_s(pkey_reg, SYS_POR_EL1);
->> +}
->> +
->> +static __always_inline u64 arch_kpkeys_set_context(int ctx)
->> +{
->> +	u64 prev_por = read_sysreg_s(SYS_POR_EL1);
->> +	u64 new_por = por_set_kpkeys_context(prev_por, ctx);
-> Both can be const.
-
-Sure.
-
-> But maybe you just use a single "por" variable.
-
-Not sure how? prev_por is returned and new_por is based on its value.
-
->> +
->> +	__kpkeys_set_pkey_reg_nosync(new_por);
->> +	isb();
->> +
->> +	return prev_por;
->> +}
->> +
->> +static __always_inline void arch_kpkeys_restore_pkey_reg(u64 pkey_reg)
->> +{
->> +	__kpkeys_set_pkey_reg_nosync(pkey_reg);
->> +	isb();
-> Why is that isb() for both callers outside of the function? Do you expect
-> another user that doesn't need the isb?
-
-Outside of __kpkeys_set_pkey_reg_nosync() that is? That function is also
-used by patch 22, which doesn't want the ISB because we already have an
-ISB somewhere else. The naming follows that of __set_pte_nosync().
-
-- Kevin
 
