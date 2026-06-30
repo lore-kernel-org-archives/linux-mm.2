@@ -4,136 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA6C7C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 22:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B9A9C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 22:59:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A00456B00A9; Tue, 30 Jun 2026 18:55:42 -0400 (EDT)
+	id 464CC6B00A6; Tue, 30 Jun 2026 18:59:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D74F6B00AB; Tue, 30 Jun 2026 18:55:42 -0400 (EDT)
+	id 43C476B00A8; Tue, 30 Jun 2026 18:59:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EF016B00AC; Tue, 30 Jun 2026 18:55:42 -0400 (EDT)
+	id 353126B00A9; Tue, 30 Jun 2026 18:59:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F2E66B00A9
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:55:42 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF2A0A011C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:55:41 +0000 (UTC)
-X-FDA: 84938087682.23.A26F424
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 07FFC40007
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:55:39 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TDmZAnb6;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782860140;
-	b=ueP9JG6i+TiWMT0DAZrcPLVr66oSRvbHqwL8SjtVDvJYQwERBmkFePIEXYsrZt4mLI2e8Y
-	M5BMF8qCD2DoIrHFG4YRs/GXlmLOosfC/BDCYuNCWU36STs6LAiCQi1fiPcqM1nC/Q0PTf
-	7253wZLO1TKbKL43vxOWyDCxpoJSnrY=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782860140;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 102086B00A6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 18:59:55 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7F4AD1A0168
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:59:54 +0000 (UTC)
+X-FDA: 84938098308.27.EF9B77B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 906488000B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:59:52 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cisf+Gl7;
+	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782860392;
+	b=q2hVQu8+DnFPw0ywLm4BfYbJ/tjoNaVcRWdFyenM0ZLQUvXzvSejGhZ4+PEffDy1O4s3vN
+	BTJzfjZ+qsre/zHXCouK5x3y2Z2SzxXUdmEVk5MnJ0Wq6mhGQKDqG2tYjvWTLNF1+5LV2u
+	AT12lGO1lbiU2V1o0ky2TOWhD07BDRA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782860392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0ufRs7jbz+7zNErx/AfaA1flmtddekdRBnIktmT56h4=;
-	b=EwN3D2Kvh8QXQvRGdpTiy3FvDNdLX68ckejhBJmWxrcpE/DjQRsNagghIKzVq01OXpRBLn
-	lNuxH6bmn0UWgmb4KnnraAmwaVIMvuxMBueOjVaruERbmoLaeWk8Yz0GlFlAYJZC5k65im
-	w2ZTEPcVWvfPr43neLfesy3RlNtvCUo=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20251104 header.b=TDmZAnb6;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-13b2d7dc8d1so6394c88.1
-        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:55:39 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1782860139; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mSANbnWpoPvRLlS1v9/mfq6fd188XBc691Ljf2uYAJSscSmzQWvtvqoIW6k1cr4405
-         FgbWcu0w+fZrN+VyvK0HKaCx+1GXrS+T5qdqeeEZbzc9ulNE1rJGO4PXW+gkeopNYj1V
-         yTn3Iy5OF5G3vU+19CADclvtdu3mrKh64nbai+zeuB5aEQM3h8wgnmNtkzsDH3/+Qpj5
-         zqL1iGWBTUkBdylt1w+vKKgOV7gamQtzEufzAZHYacFyn6R+2VchVgJ92K7+myseWZLo
-         BW8g8qFL8cMIpSg5N/YbIvHKkX8Ywu9nJ/rwbR84SW6prIg1CdHb0uujd/U1bNu9fmYY
-         MCvQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=0ufRs7jbz+7zNErx/AfaA1flmtddekdRBnIktmT56h4=;
-        fh=XVU2F5Ayyl7jula6E6E0GpL/+ytbD5PyZvthvcUROZU=;
-        b=LmqvuU+UVhRNtUXQadAFTlXarUFyoYDzig/Z6FeLuPQotgxKygjC0X4EO9hG3CKKrA
-         D0VjXEHS/nkD4PpNmlX4lll6OKuO4sodKBwKyDT+cg6yZlirBboQsh8j0idHI6NURaeY
-         Snx892h0/npphNbKcyZLJeJzKgjhb9MohV9IPSuu3ugl5r7m2RCdkbUWYwJVTkqrSiPq
-         7tOLpXNIpCdAVRrUbiqvzdwil/171U7DrqqYfPYd67tOfcFAUNNc+0cxDciIOCo1DlYO
-         PyCEmmT4xitHUar22G92JP1ACso3OBZkfmVlje5TQblLKkNWojzFRvY8tWw60xY/ptfe
-         0a/A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1782860139; x=1783464939; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0ufRs7jbz+7zNErx/AfaA1flmtddekdRBnIktmT56h4=;
-        b=TDmZAnb6Tl5EgjRIMXKcoijNpdHeBKecZlg2oDG++5vTPDv+AJ9iB45HBPedwysUf8
-         OR9D7uE410OdqA8MQJ01aj56Yw/48YRu/jmVrLMCsRpXeZtrblWMIw88Hny5RJStz1Xt
-         qK0Gbtcpco0BpTLc67P6nJcAzZJg8B3r1qCCGVzbW2BwIXIeCDYJwlzoaIFe4xCsf26Q
-         +BR79CueWgQVWoMsHIUaUX9X8fG71RoRASc84h3cSQ9HYiXw7fmnRsc94+cV0bs+QfDj
-         IBUecTu5IVuS/782KB1RqznLbi+YWssS8TmDdXf1FWVlwHstoz/Dle5xJws9aMOl6FUl
-         KzlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1782860139; x=1783464939;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0ufRs7jbz+7zNErx/AfaA1flmtddekdRBnIktmT56h4=;
-        b=ZeVtf2TSmlNTbO95D1TnE0yIsxCX9nD2BPUr97CvIwBbLxwITh2VPYIrNNVADXIOh6
-         di5UjftEV3bxvUAJe3IS0quFX47PYMRuqgYAGCePXO/UcIJ62PuidB/SmMwV7ertvzWa
-         Aw0rXXc3ZSIiXu0xU2msey6wEZCx/itH/Irg1Sbsh5dhv17JdKHpHHE2w+6GHjk0mfk2
-         Mxg0ifmBbDkEix22VNiYfD9c1+UMaFCFzks2G6Bp+Qf3Kadd+tCdF6uSOx65LHUWVuuL
-         r9RiJht7BW3KHPl5rxBTFHZn0ScCONapAsf4joLUgr3aeNE8B02BmwmFQedrqIK24skq
-         WkMw==
-X-Forwarded-Encrypted: i=1; AFNElJ89NdZRaTYb/UDAwyRUA6LOPQk/YbIbV90HI+8b1JBSU+LI+8EinvBv8pV6Imt4GK/cGpyqqnp1kQ==@kvack.org
-X-Gm-Message-State: AOJu0YwgjWWaT/skwJPKFjcYBY+/kHVAgfpFHczLx9rZEObqjmX8jU/H
-	AzajMhDLanvAoG4Yp3Mq1JDQfWIhnZPGeGUUfktBiLhgZdof5qqqugFDo9BStDUTtDSoGxQ+BRS
-	sJxt/xHJ+l/G3zC8CukCxdQyroFaUFOLs06cR1759
-X-Gm-Gg: AfdE7clskzGckjVpjp80UEnCLwnENcq/SJhD1jPwEWL4LISud/NOQulU7gVycmM9PFq
-	VKKHt+ysZSPcaxyDNDvNz3zHv9RkBpTm/Jk4/FUq19VK0ypstp5R0zOBOw5wit8HfmvJZom1Wzw
-	vrcu5T4FzbXYrc5R+iLGlcO+GZku2WsC7+2e21jrdgEPetTixHvzEDS/As5RVlKZbeag+ZaqymX
-	lR7Kfb+8CYFgy7YrM3ZpHfXApTzwCWt82ctexc1ueW3pCIL+Eo/mmujwZm2o2dM205cSbXy
-X-Received: by 2002:a05:7022:60a:b0:139:ed5d:1b5a with SMTP id
- a92af1059eb24-13b2a1c0f41mr3645093c88.40.1782860138109; Tue, 30 Jun 2026
- 15:55:38 -0700 (PDT)
+	bh=kOVmM4/AosQCiLN3ovF3qcI1V/16wuqJThXPx/aR+ag=;
+	b=IkqT7hSwZEqPTks92BepTZayPkHiYaXc2c6xUofn2Vo0c/p6hm97ddXr7xzuzJOt3fEiet
+	JZPMjS/HNWPJEq2qP2LrmPZrvRHteScgv5+aLbwKEqhaEPlWCal8Fucacj9GPXMc9YCnoh
+	sI4ml56L6RuLpgpyqnF2Fthm4dZp1Jo=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cisf+Gl7;
+	spf=pass (imf30.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C5F434402C
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D6D1F00ADE
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 22:59:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782860391;
+	bh=kOVmM4/AosQCiLN3ovF3qcI1V/16wuqJThXPx/aR+ag=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=cisf+Gl7E1MxtQBHSM2rD6/nc7+X6Y9favg46tG9cN9e1X52oPXNcJBUfbnlay80E
+	 mK/rCmEfYfKdr6ujtBh9RBMJqroZQt1Kdl5s7lXMKC349bkPwfGb2vMW6O/rJnlAnI
+	 nW4gHMuUpUcn7GYjNUQAbxydG3bGmNgzYTiOy02BJWRGjo3J6tLl5859iOOqYkd3HX
+	 rSfDKw2gLpJeXGWnGRX28aJL1heqcmrQe/Y1IuTuap9iWduJATi+gPvre7aFeywFBu
+	 1TMF+HpRO8WuzITYBp0tYIUF22iNyl8sc2Z7xTFD/e0KglREnYZQWWFJfgTccTlXfH
+	 DZNl656aDAMSA==
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-519e7faecf1so19961cf.0
+        for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:59:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+Kwqvl39C6mwDEfWVzOlUPXAn6FhdUmRP9hPTuvdEp3Xt2ZkwcBQ4ME6iURiioN6nEZKWyKovSSg==@kvack.org
+X-Gm-Message-State: AOJu0YyrNKYr2w9VWI/6v7Lp8ygcxmG/DvWsTp5H09BCxOjVu3F5gg67
+	eiGThpGCTAkxlHPvqJ5MMhljIqk+wLWjc87A5HZbUYrFaw41E1vVwNuViArVki6iUWR2XhlSH9d
+	bvtOoPmn+/6dHk05UaF03VyQXhkCz8lk=
+X-Received: by 2002:a05:622a:153:b0:51c:61a:50fa with SMTP id
+ d75a77b69052e-51c1cb70380mr38375681cf.39.1782860391043; Tue, 30 Jun 2026
+ 15:59:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260625054946.73445-1-duanchenghao@kylinos.cn>
- <20260625054946.73445-2-duanchenghao@kylinos.cn> <2vxzfr2bkn0j.fsf@kernel.org>
- <20260629100621.GA215869@chenghao-pc>
-In-Reply-To: <20260629100621.GA215869@chenghao-pc>
-From: David Matlack <dmatlack@google.com>
-Date: Tue, 30 Jun 2026 15:55:11 -0700
-X-Gm-Features: AVVi8CdC-YicerQYwyKKogj1zQs5YRNCTCvCtXWkU5DiVwwhFHMSMIyXZ1dV4nA
-Message-ID: <CALzav=c+RzWpJTrpsdwnHUT=EZCGv=FGtmDq9ipDE7jNuWNX0g@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] eventfd: luo: luo support for preserving eventfd
-To: Chenghao Duan <duanchenghao@kylinos.cn>
-Cc: Pratyush Yadav <pratyush@kernel.org>, viro@zeniv.linux.org.uk, brauner@kernel.org, 
-	jack@suse.cz, linux-fsdevel@vger.kernel.org, pasha.tatashin@soleen.com, 
-	linux-kernel@vger.kernel.org, rppt@kernel.org, kexec@lists.infradead.org, 
-	linux-mm@kvack.org, jianghaoran@kylinos.cn
+References: <cover.1782538002.git.zhengqi.arch@bytedance.com> <e2bd33d5-4de5-49cd-970f-9e80eec91a3b@kernel.org>
+In-Reply-To: <e2bd33d5-4de5-49cd-970f-9e80eec91a3b@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 1 Jul 2026 06:59:39 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zuxaqXQgrg_SiGY4gV4t3FQHdeM91dH4Y3-RknE7mg-g@mail.gmail.com>
+X-Gm-Features: AVVi8Cei-wYubj1t5SAceANtsYmDrIvjgeVTr0RqjNKD9Er8kCEVvz7bYg_kPPA
+Message-ID: <CAGsJ_4zuxaqXQgrg_SiGY4gV4t3FQHdeM91dH4Y3-RknE7mg-g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/8] Introducte Reserved THP
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>, akpm@linux-foundation.org, ljs@kernel.org, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	lance.yang@linux.dev, muchun.song@linux.dev, osalvador@suse.de, 
+	chrisl@kernel.org, kasong@tencent.com, shikemeng@huaweicloud.com, 
+	nphamcs@gmail.com, baoquan.he@linux.dev, youngjun.park@lge.com, 
+	peterx@redhat.com, usama.arif@linux.dev, willy@infradead.org, 
+	vbabka@kernel.org, surenb@google.com, mhocko@suse.com, jackmanb@google.com, 
+	hannes@cmpxchg.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Qi Zheng <zhengqi.arch@bytedance.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 07FFC40007
-X-Stat-Signature: hbeqd5f1es4nrsqu3bq63n8mnxze456d
-X-HE-Tag: 1782860139-456853
-X-HE-Meta: U2FsdGVkX1+tO/D6/rA03i+WTM+kuDG7b3KU5fsDDKybAEF+C1Whezy4ikOUywPpy7Wbzm/SBE/SOX0PHlDbXd0VcOf2FqOLfaKvGyalBkilYRm9M2jKre9Q3FDTOgoLZSLGPPpnnln01t4kyaySsDrYVMNUl6aqe8Lzv02GGsYrX3gbjrUeK7rMlzxbCUiLBbQpT13NHfseAcOZ5AR0V6iGFt4bE158vUfZGyeWyEoW622OXCpbccr32k/RmJ3QaSXACN58yPUq7YKDlSgsk0XFVF5vP+XvjV0icwmeD7Tef5bxjHOM/d5nOX8JIsq1fanVoZcDtbIKGNkNxrl2Bd7CvaHx3QgraQYtm1wHcJyaNC3ZQuutIzggfZQ8agk2Jryy6H5ShDtWC+L4Po1fGeXJ6uOo8m6P2tn5OnoSFT1GAAxP8sb6/DJiHxwZ36vemK0ECeVwWYa12FOutI4TtBvaryQuHokk25n7s+S1MQInHHAZoOg1uUaPN0uR/u7EOcs2DPOfaZjUkYDustwJ+4eABquSN7UYNZkQiPDBB/Bnfm9jwP2Z5dNXyLhr/4VBWLpOnOkB9zA3OdDn9Spdz0e4LemT9JoUWgdfWTXvLZ8kVkFzCpM4PvSoR35kpD8n8jeDSMKo7LcYOkCKRj6HpZA63i+TzGG7MSsUSiw7LeEmRmzS6uq96b1mTU3Qvg6FqbUAYMsrMD1055vJZwN73VMjqCLB/AVVeyADQqj9xbjBXq3hBeWKWGyYphSjG1d5bkdpqlr7qmU+UB4FUqh2KL2eP0kiMo0rGmLt6XhX5zB21+Bt6DoTzGNEa9RweN31fX4Hw+g8h4AL52RFR0YCjDVCK92s2HFq5iyV6bJ6MbfgQX0qN6Zc3E81t/JZVT72uz7w4yO1AeFDpRC4cyRaGEMv8iYh3tJZOLkWc0MYMEG/RB5lx6M3GPjRmPL3R9UsxD6hfnu47Wa5hm2f0VD
- SOLzxNrS
- 8dM86VIHi4lzlbb+blCT0tA2JRqEAoEnKJPDqFDihIPotLcN39X+5z4/V7eQ1dLsGWukQ8JgGgQlZM42oUslx1EEcBUSbQBF9uX1IVLagyMhmj3ac3CRWKWB9pZUMLAVAL57DdWixcI3aSKjqPsO392nNKGOe8DO2C7b0M6lRrL5S2dRaJvymboPNM0zcpSgg1FIilx1QpT3fwDw1lrjBRaJnSbQ1RV0GXPq8hfcd7ic9ySL7ZOllWo5R1MJaNR72LZYvtq1s5DSVjsA4bp2BVpcmXGq8VttMnu/H
+X-Rspamd-Queue-Id: 906488000B
+X-Stat-Signature: 4ch7jbbuo5f16jwor4w3pq859tnfgs1q
+X-HE-Tag: 1782860392-91435
+X-HE-Meta: U2FsdGVkX1+6GZIBIaUcqhevd7znzDJZxy57/Za2lbRfx5IGdgSuXfew1MwlgMdMQd9qaXO/7TJo3MfgNGLgGBNAV6ioMh6/4FPTPvOostps441C+L9iKEhkNbbst3jkTrzxJzPX1LJmfyl+fmBzhYxhgRJknjYTNLWcSqpKOHFncfoJPip0FgfIPsPS06n2wimHs0IzKJbZhgZCIpzUElM0Xkaa31Jh3jyBuJWxZfTA2RXNv4Gw/QmgVCQDXVEWN9WuNN2xmVuPvnb8rYNWytJWOGR9h6isnfkRhAZWtx/N+WOOI1nHHfwkCMsuDRxDCQx2mm3lxXXbp0gWGxd6ESLMrsft8k0H3rfUefE71bcmWYE30hWkhR5DIauVK/zRo+IO5q/AT68Dp59DFKkNPLNfJtqiS3xZH8bvNpHGqKLZr0U4nAv+JBAUx+M0Mnc3Abv7sW5B8dNojwoXt9TMB3rsyzE7P76zhtG8dPr3nTShNbprf0DlYGTl/IyaHysd+lN0XElzWwWFmiPp+RSi6zEUxlQRN132L/i2nxiM7to0yplN8bRWWIa7Cn44y7uHnGsGUKgardxHQ0MO1ubbW3/6uGa8m2lLzow9XLM2jp27CvskQ5xknAcj0xw+fOYxMGZvDC8CKtrLbGfBgmz/OckQgr+d8+hzVyHQZyWIrcv0LLp7aRBp1F/qgyhPncswneEKiquUQ5KCO7cYqbyLdtOpMkfW31iO6tWXr6Xc43rFN7n8YAiL1kdm6eeMd+LWFDOncCukiMIWTDof+sP16AnRBcY/IB0t+xrox4Y1Fpx/sFioQ5NT41eOFiNvKNt+8UV3xaF6wjP+D71Jk2+qd942fZMSgYj3wB2SG8o+hd+lR++WcrClktn/ZEKQRV44zDHp8jjtJz2eycIkNzKI3nu8Ip5Hqk2Ly3J9T17vI0Wex9PNpdHF1y7bY74oZjJuoIy3j1X1lgbW6CVYmwC
+ V79afGw+
+ 8mz3SJ5pXaiqKIFrWC540XeW56Ir2xUFLc5IjhEHm6Eag1mSjJ/g7+9FOAUM0215Lg0s8XhlyS81ItIOzApyZqidu+HN0LdINDkl3V5Xnt3JIL12XnJ/j4iwarOP/7aUUtO/o44xjWzUDdoD9EJQS9skQTW5F8WM6voNOsoFQEvnwf3lmaq/ysJIBRdPvN3mRFqR5lSHlJhhjvm8U23sNcmQd5NthbnAkm+7IHBfSHfZh0lR6q64UPvnT4GM29XPtwEo1RF/W86JdKsj4VqJ75eHQqX8xQbO2aCph356GN52RVqhvUeIDDgtl9MGN83KVNEG+tlBjADapXM0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,99 +110,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jun 29, 2026 at 3:06=E2=80=AFAM Chenghao Duan <duanchenghao@kylinos=
-.cn> wrote:
->
-> On Thu, Jun 25, 2026 at 11:06:04AM +0200, Pratyush Yadav wrote:
-> > On Thu, Jun 25 2026, Chenghao Duan wrote:
+On Mon, Jun 29, 2026 at 8:20=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+[...]
 > >
-> > > This patch adds support for preserving eventfd file descriptors acros=
-s
-> > > kexec live updates using the Live Update Orchestrator (LUO) framework=
-.
-> > > Userspace applications using eventfd for event notification can now
-> > > maintain their state across kernel updates.
-> > >
-> > > Preserved State:
-> > > The following properties of the eventfd are preserved across kexec:
-> > > - Counter Value: The current 64-bit counter value, including any pend=
-ing
-> > >   events that have been signaled but not yet consumed by readers.
-> > > - File Flags: The creation flags (EFD_SEMAPHORE, EFD_CLOEXEC, EFD_NON=
-BLOCK)
-> > >   are preserved.
-> > >
-> > > Non-Preserved State:
-> > > - File Descriptor Number: The eventfd will be assigned a new fd numbe=
-r
-> > >   in the target process after restore.
-> > > - Wait Queue State: Any processes blocked on read() operations will b=
-e
-> > >   woken up and need to re-establish their blocking state.
-> > > - All other internal state is reset to default.
-> > >
-> > > Changes:
-> > > - fs/eventfd.c: Add eventfd_luo_get_state() to safely read eventfd st=
-ate
-> > >   (count and flags), and eventfd_create() helper function.
-> > > - fs/eventfd_luo.c: New file implementing LUO file operations:
-> > >   preserve, freeze, unpreserve, retrieve, and finish callbacks.
-> > > - include/linux/eventfd.h: Export new functions.
-> > > - include/linux/kho/abi/eventfd.h: Define the ABI contract with
-> > >   eventfd_luo_ser structure for serialization.
+> > 2. Implementation
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 > >
-> > Why do you need to preserve this? Why don't you create a fresh one afte=
-r
-> > kexec? You just preserve the counter, which looks pretty much useless.
-> > You can just as well open a new eventfd after kexec and set the counter
-> > value if you care about it.
+> > In 2024, Yu Zhao proposed a similar idea:
+> >
+> > Link: https://lore.kernel.org/all/20240229183436.4110845-2-yuzhao@googl=
+e.com/
+> >
+> > The idea was to introduce two virt zones: ZONE_NOSPLIT and ZONE_NOMERGE=
+ to
+> > guarantee the allocation success rate of THP, achieving an effect simil=
+ar to
+> > reservation. However, it seems there was no further progress, perhaps b=
+ecause of
+> > reluctance to introduce more virt zones like ZONE_MOVABLE.
+> >
+> > This RFC wants to discuss another implementation:
+> >
+> > 1. Introduce a new migratetype: MIGRATE_RESERVED_THP.
+> > 2. Introduce two new hugetlb-like kernel boot parameters: `thp_reserved=
+_size`
+> >    and `thp_reserved_nr`. When set, the required memory is marked as
+> >    MIGRATE_RESERVED_THP and put back into the buddy allocator.
 >
-> Thank you very much for your review and suggestions.
+> I'm all for some mechanism to make runtime allocation of large chunks of =
+memory
+> easier, by adding a pool from where multiple consumers (THP, guest_memfd,
+> hugetlb, whatever) can allocate memory.
 >
-> My original plan was to integrate KVM with eventfd. Eventfd serves as a
-> critical notification mechanism between guest and host, and it is widely
-> adopted in various scenarios such as networking, file systems, and
-> interrupt handling.
->
-> At present, however, I have only implemented the preserve and retrieve
-> logic for eventfd, and the integration with KVM has not yet been
-> completed.
->
-> I have a question and would greatly appreciate your help with it.
-> I have been closely following upstream developments for the liveupdate
-> feature. As I understand it, liveupdate is primarily targeted at cloud
-> virtual machine scenarios. The upstream community has completed the
-> core framework for liveupdate and memfd, and ongoing discussions are
-> focused on state preservation and restoration for VFIO and IOMMU.
+> Call me very skeptical of getting the page allocator involved like this. =
+(I hate it)
 
-Yes that's correct, but that work is to solve some very specific
-problems for virtual machine scenarios:
+One thing we've been thinking about for a while is whether we can
+introduce something at the pageblock level to let memory "remember"
+which allocation order is preferred within that pageblock.
 
- 1. memfd preservation allows preserving guest memory and userspace
-(e.g. VMM) state in-place across Live Update.
- 2. VFIO/IOMMU preservation allows PCIe devices assigned to virtual
-machines to keep running uninterrupted across Live Update.
+For example, if we ever allocate an order-0 page from pageblock 100,
+that pageblock would later prefer order-0 allocations. Similarly, if
+we allocate a large folio from pageblock 200, we would avoid using
+pageblock 200 for order-0 allocations as long as there is still
+memory available in pageblock 100 for order-0.
 
-I think this series is missing a description of the problem solved by
-preserving eventfds. We don't want to preserve all types of fds just
-for the sake of it. That will bloat the ABI (which will make
-maintaining version compaitibility harder) without any gain.
+Since order-0 allocations are often the main source of fragmentation,
+if we already have both pagecache and anonymous large folios, we may
+care more about containing or quarantining order-0 allocations in
+certain areas, rather than trying to maintain a large-folio pool or
+similar strategy.
 
->
-> I would like to clarify the following points regarding upstream=E2=80=99s
-> overall roadmap for the liveupdate feature:
-> 1. What is the complete upstream plan for liveupdate?
-> 2. What will the final deliverables look like once fully implemented?
-> 3. Will any new kernel internal interfaces or dedicated userspace tools
-> be introduced?
-> 4.  Does the upstream community maintain an official TODO list tracking
-> outstanding work items for liveupdate?
+Chris=E2=80=99s de-fragmentation of swap slots[1] seems to be a big success
+based on my observations, where he provides a similar memory-order
+preference for swap clusters. There is no reservation mechanism, no
+sysfs knob, and no need to split swap into two areas=E2=80=94everything
+just works automatically.
 
-I don't think we have anything comprehensive but there is a ton of
-work to be done if you are looking to help.
+I wonder if you would be interested in something similar at the
+pageblock level. If so, I=E2=80=99d be happy to work on a prototype in
+August. I=E2=80=99m completely booked in July.
 
-A good first step would be to attend the bi-weekly Hypervisor Live
-Update meeting. See
-https://lore.kernel.org/kexec/aiWW6ZwwalqQmVcB@google.com/. The next
-one is on July 13th.
+[1] https://lore.kernel.org/all/20240730-swap-allocator-v5-0-cb9c148b9297@k=
+ernel.org/
+
+Best Regards
+Barry
 
