@@ -4,110 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2227C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEC3BC43327
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 15:15:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93B0B6B00AE; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
+	id 9635B6B00BB; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EB776B00B6; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
+	id 914716B00C0; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B4A86B00B9; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
+	id 802FC6B00C1; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 54ADF6B00AE
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:14:31 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D27B4168143
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:14:30 +0000 (UTC)
-X-FDA: 84936925500.16.74DB82F
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 932E140005
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:14:28 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rBelcefg;
-	spf=pass (imf11.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 56EE76B00BB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 11:15:26 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DDA80140500
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:15:25 +0000 (UTC)
+X-FDA: 84936927810.18.FBADFF3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 64FC14000F
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 15:15:22 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DbCvN2a+;
+	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782832469;
-	b=z4413JMHBjNL96EUEMrftW5lVxOBzXso7TcI9Rzew0Zw+p1/XJasCUL4dgi7k8Sw7ITTOP
-	Ht9goaPD9QiQgCMGQQ39G3KHFVgwm0iDqD0O+zjI9fsBey2YkMok6ENcWZEX/chteW6I50
-	zVnwEvnyJMK8Xwg4p/bAm5CIM+mIh5o=
+	t=1782832523;
+	b=zUDYXyTmX7a+0v9AlU1MoQOrL/sUCsSS6KagSKojZ0P9A6H5XLZIB+aPXhfBP5XakUQQDb
+	KtY+z7gFEN2JNY8D4xNJAP7thd8HiQI2OkrpdGyiniarRuuQhlF39YAcgnvGeNUr6NqmDt
+	CnbwtMUR6Ovr4JP0J146jvj0uaDxWB4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782832469;
+	s=arc-20220608; t=1782832523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ucS4ebDI2j4bO1fUALMmV7MUhoPr2jiJW6R/TQevAbA=;
-	b=bxrz3//p55WLX4Ueo2BJTcxv4rUVq2upDEop6TUylSPMXc0/fdJW1FC1xKxNzBVl8EwD4t
-	+4f9AUjTTK1tjmLAIdn3w5avSENYXRoijOeXJh50weSy9v5hZ6+bJhZp97L3N2pmBZGNQD
-	WtWM2JnBJzAEGP+faveNRXWASwiMRNQ=
+	bh=NJtdwo7CYpqk5QMqp6wZod8zu4LWb5ufSk76ZdNMOmw=;
+	b=wxpOImwqw+W7ooILEXlMmvWMHuCwfio7R9wcT1LiPh/zvvBAZPzNKGmlAWuDBzYm8gk6DO
+	y2wIrUD7f+wQxVu5O3O81eihMzZrHuyXS4XwvyszGdawAv5vM/2KYhFI6OVNrQDh5Lbvzw
+	uBycA+ryL1bHXW6vcozqx3LV57uXLg4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=rBelcefg;
-	spf=pass (imf11.hostedemail.com: domain of ada.coupriediaz@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ada.coupriediaz@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 083E02ED2;
-	Tue, 30 Jun 2026 08:14:23 -0700 (PDT)
-Received: from [10.2.213.21] (e137867.arm.com [10.2.213.21])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1E603F66F;
-	Tue, 30 Jun 2026 08:14:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782832467; bh=9xr72TE+igvLVlNPFv4xah9LNvL/PNLDVngoXViM8xA=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To:From;
-	b=rBelcefghtcBpRKZUtImOBOvZpcpzuS66Tdd9PtWjH1lndhmKvXc5oRUJnVvzYSLi
-	 kUWFuS08wtKxVHnqnfcNbzXSNYrA86n3SBraqSsgsolS2NfrxBB54e2Pq+31suSTHG
-	 4RM5sxZ9cWKEA9YxYOaYTctt7dUPMUTWUkQK+Mec=
-Message-ID: <7dedbe2c-09d9-4d5b-8b70-1977cf526675@arm.com>
-Date: Tue, 30 Jun 2026 16:14:13 +0100
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=DbCvN2a+;
+	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782832522; x=1814368522;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=f1c4FlMC3olZxC3giH+6deLBbehRifubsyfC7HTpIQs=;
+  b=DbCvN2a+J8mGCDLk4N6ONy9URA/seKhBvnAZGuMnX5AtxXzpdbeTbBIm
+   yBKEBCW1Ll85lvjwdMsGYkZj0ikBOb8A/qRiv/+53vV1Tr/UAyvsEuHwi
+   iFgA/uPTFloCwDlQpuQ5b/lLCiSHlW3dF+EBn7Ew4ymPZz0bcuounr2lj
+   JrbXA0agnSmAbd/ctHyt3bmMlzmPSoh4syiFUOApd8EbiSg/ICbIY4QEv
+   Zh3SefjnVmp8iRT3P2AkXp6HNzmH4kec0CGOQ7NEmY4c/TuucsIv7RfwO
+   OhSrfC/GdVglSgHmcGSMdUlqjVDPu3B8zV0cAz953H2joZC3gC7OhmVsd
+   w==;
+X-CSE-ConnectionGUID: cIowe3LwR4eaPIHTn3kZAQ==
+X-CSE-MsgGUID: lAxjjsMyQlWUvQNh3YhUmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="87386285"
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="87386285"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:15:20 -0700
+X-CSE-ConnectionGUID: lstz0gkFSimhaXBdx8wchQ==
+X-CSE-MsgGUID: NMO51T81Tk+iW/xUz5199g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,234,1774335600"; 
+   d="scan'208";a="247820700"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.240]) ([10.125.109.240])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 08:15:18 -0700
+Message-ID: <bddb2695-1b64-469d-be6d-e668fae18d84@intel.com>
+Date: Tue, 30 Jun 2026 08:15:18 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v16 18/18] arm64: vdso: Expose sigreturn address on vdso
- to the kernel
-To: Jinjie Ruan <ruanjinjie@huawei.com>, kevin.brodsky@arm.com
-References: <20260629130616.642022-1-ruanjinjie@huawei.com>
- <20260629130616.642022-19-ruanjinjie@huawei.com>
-From: Ada Couprie Diaz <ada.coupriediaz@arm.com>
-Cc: Ada Couprie Diaz <ada.coupriediaz@arm.com>, oleg@redhat.com,
- richard.henderson@linaro.org, mattst88@gmail.com, linmag7@gmail.com,
- linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- kees@kernel.org, guoren@kernel.org, chenhuacai@kernel.org,
- kernel@xen0n.name, geert@linux-m68k.org, tsbogend@alpha.franken.de,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, pjw@kernel.org,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
- svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
- glaubitz@physik.fu-berlin.de, richard@nod.at,
- anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, luto@kernel.org,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, chris@zankel.net,
- jcmvbkbc@gmail.com, peterz@infradead.org, wad@chromium.org,
- thuth@redhat.com, mark.rutland@arm.com, linusw@kernel.org,
- yeoreum.yun@arm.com, song@kernel.org, james.morse@arm.com,
- anshuman.khandual@arm.com, broonie@kernel.org, liqiang01@kylinos.cn,
- pengcan@kylinos.cn, ryan.roberts@arm.com, yangtiezhu@loongson.cn,
- sshegde@linux.ibm.com, mchauras@linux.ibm.com, austin.kim@lge.com,
- jchrist@linux.ibm.com, arnd@arndb.de, thomas.weissschuh@linutronix.de,
- sohil.mehta@intel.com, andrew.cooper3@citrix.com, jgross@suse.com,
- kas@kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
-Content-Language: en-US, en-GB, fr
-Organization: Arm Ltd.
-In-Reply-To: <20260629130616.642022-19-ruanjinjie@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6jqwrb3n5n8tjd9g5qdppbei1b3b5eca
+Subject: Re: [PATCH v2] mm/vmalloc: widen guard region to defeat ENTER-based
+ stack pivot
+To: Pedro Falcato <pfalcato@suse.de>, Xiang Mei <xmei5@asu.edu>
+Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, linux-hardening@vger.kernel.org,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+ "H . Peter Anvin" <hpa@zytor.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jennifer Miller <jmill@asu.edu>,
+ Tiffany Bao <tbao@asu.edu>, Ruoyu Wang <fishw@asu.edu>,
+ Adam Doupe <doupe@asu.edu>, Kyle Zeng <zengyhkyle@asu.edu>,
+ Yan Shoshitaishvili <yans@asu.edu>
+References: <20260629214712.1198680-1-xmei5@asu.edu>
+ <d9775951-fe04-4d1f-b205-bd4626590f5e@intel.com>
+ <CAPpSM+QTiwgPk3KNmWbjSk_SS8LLL5XDfikWC1A98vetom3yeg@mail.gmail.com>
+ <akPT82jDvPwlaNuo@pedro-suse.lan>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <akPT82jDvPwlaNuo@pedro-suse.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64FC14000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 932E140005
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782832468-379458
-X-HE-Meta: U2FsdGVkX1/tV5K4dqRJDqjIn0k6GLSPpJXmOLWOCr/Wi+ryMLEhCASgjIN8eK0HY6yyp47NOE/tZXMv/XxbskRZ0Z8M4nGZvPnaPhrAmOPkBY+G38kRRTAvcziH31btETTQ8gVUpGz70/TKEqmW/6nJYB9zwmLE5wcIYM5xLCP2mlOvebvAG8y/8ykA+PV/UZdsz0hfbebyKJL8iqgsnGscjAElLkpnw+ZwxCXeTbFc5wuTBQjEaJWhFE+udDkv+aJj2PNaUVdCywIddQ6xhsW9WXqLdOVC2kfoEu08vSosJdOthDHvjcfOdhCs9ht1oEWcxUHi12nruudCnoc+voRaW3q3nMEuw+Rt+cu0gH6WhNK94MdMAGnN+oPs4NP+8vdddeGvBRRv7TuvtmO3nrHm2QAjFHRt7KycudYPWL8ldIkiD8D1qODqAHs3WAONOMpyHmXSmTcTlzUhRWLxN0BXTNkunaI2Qw3MVE6jxiU4nXAC4mI180ZGYBOWOkV4fgPhdYeH+68T360dcYdNheMfRxI/Pe+vbL8i7Z1Z8HalTTuit59Ip3XO8n5C6npkFqGSGcG/j4HxVzJTHRHPNqC/cowo+cyVGHcdl3ABrHtBe8EeElbd4Why4Pc0ldnuZPe059z+JYt5I3/SdMsXM/NwtfidxSv0aM3KXYJfshCSMEErqDPRbvFdJ71a/IREnpO5lttEr+m0ki/ODdqRIzkM4qj264Tn19qVvFOjjajBfyHslhGCRyIMRBz4DSCyGeEhlfiWSW5khnZ8sy8RrfOCxH+K3BgFrXuPz2unq5Xdw3ge4cf4AF78N5FqdC7iewFf69jAOSW5UVAcYPR4ev+UDoNXYVyG86Jq6BJErEZHln49gYp1kDUu6DqwKAOwQmqZuYedld3nB5q9dBiHEWCJ0BrGq8TaCI3idYFWtsxh+T3iIuDe7kzy3sz/4cQ4ZIcs+6xNDnSQEoh5Yoa
- Rb7VdbrV
- Vtkwo0OT+p38z0pzibdl9PDItcTRtdKy5H6HeCQm6favWyY0vEf7eFVmPhLXvFJFoBqZl4RF6POnJtYX8fezjgsYKgtGNO4N3loQSuhwu1fzdWwl0fu/Q/DSM/9cSSqCVPsYP1ap9Gkq1+u0VmRqGGu5C8TwAs2nxDN0EtHre3vfpm8oGEItuqyAnrMcQTU4dvLoeaUE/KjilHPBSobzXmUvsIXu3fs4QEBaFEJu2xjSFZBEc3lH0Roq8PNU/mkjE3YdgRWnao0amEhx6ymZVSFtPna6Immc3P6HWmwOQ5OiofdtBQO0PAxVSS/oiAM0idrzDpXFhUrMhmOBPiZGGliClZIxwVJySLcrnMkcbWN/Ac2vjxKDpstfUa61nWsXPkzAX
+X-Stat-Signature: c84ttxrureuqwjw1eades4751w7yc5d8
+X-HE-Tag: 1782832522-909903
+X-HE-Meta: U2FsdGVkX1/0OMsBreWM9qDdXKmFUiiRKb4vnx6f4+sO6GYilk3qADAsDmyXNv8V9pmqiVsmjP3YyCS84+enrtzUQCJtPnfJoWbPSkRM8G7Dd8Ar7JrJ/bPm/LaxAEablJzrIS1PC2pj/S46b3c+FWIrqaIAaXS88zCI80OIfXlHTg9WTx1JTc3YRc/C4cZXOZlZ/6wJ7NqUqCKPBkCjGVqjvZpa5kLWAzjmxxSyAmEzAfv1CDxJHyHPcyiC08P8BvGQn3F4UhrxzzAB0FSedjghA6kD72QlSN/6NVTCKCIf3Du78Mi84xRqOylK5NnFTjpng/ZjYczZ27eo+sAInTC52I3hU2rF7COl2sh2sz4NlCEWkv+GlqIf5TWzphYXxOMyBmFU7gZ9u9UXDg1HtFjoFlf/SEsqhnslcTAp+2mvLcRyhOoAqcZR/OISo4dNfmoWsHUWiBFY44nHbyXI4Zjinbu/V9CDdVPYlOsYfu0rr8kL3rbf6e3umZ0IMGEX5DgpXFdBno1jcmMuCuFXdyv7TtqIZjqIt6N781iWre1OZKJwVPVLtpPvZwEMfH4lIQ4TBuM3Elo1A3YatSAqbkZ9NVejjCmrq8WBtHyS5H4vPlA4rzS3oBMw3eETYqrjzAAAppe6mmjKN3a8Eu/1DhqKkcJbA9G9uSObu0Yp2CU3YJ6x95XrILOYWerrzUPvAqZcx3QRc8trVdJEUB3W4MNKJ+vrRL3N57814h0LS5cCT9rt9YJSYQJNYiEpwHUaj0Y2YInpuEopNJa+vb9/SNGK9gJF2eVygaifGdRNbNFgaCcjzc+GLufFGynQVeKnYDchl8IYUF4hM5/SRO0ABQngn7HPIrAnMMmHAeRDJCLA1/10YhPLiOh4ExjXuMgGN/ncO+F8Es885xDtyirBqJ19KM3QkeWCoIEDiiSnHKUm65vgyB13WCCJeTCe1aORVDfffj0umbWpxYXkhY0
+ izZ27/hb
+ kJflJPmnPWcV+dMyKjKXC5W6C72lTysOVVPhnsGRXeyK+tGzjiHGgfqumw2Q2KEkZejgJEqcH/XN2P+5SomJ26h4s370Bts93DCDEa2SCjuEpVrpRTN6h/G5TwUdnaAA/E5qdo2R+hhpQbq7af4E+WEP/t/nzOnl9nzIKx1rEzWGR4DiWVrcdaYgXAVsE1D+uZa+f4hyo/ToHCts=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,66 +161,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jinjie,
+On 6/30/26 07:40, Pedro Falcato wrote:
+>>> To even be considered, this series needs to be refactored properly.
+>>> Making this VMAP_GUARD_PAGES a separate patch is the bare minimum.
+>>>
+>> Good suggestion, I will do it in v3:
+>>
+>>     1/3 - introduce VMAP_GUARD_PAGES
+>>     2/3 - mark percpu vmap areas VM_NO_GUARD
+> I would suggest you create a VMAP_STACK flag and condition these guard regions
+> bsaed on that. Otherwise it's a bit arbitrary as to what callers get 0x11 guard
+> pages, and which don't.
+> 
+> (you can find the concrete stack allocation functions in kernel/fork.c)
 
-On 29/06/2026 14:06, Jinjie Ruan wrote:
+The real question here is whether VMAP_STACK is a good idea or whether
+__get_vm_area_node() should grow functionality to manipulate guard gaps
+and then just have the stack allocation code use it directly.
 
-> Syscall User Dispatch (SUD) requires the signal trampoline code to not be
-> intercepted. This is necessary to support returning with a locked selector
-> while avoiding infinite recursion back into the signal handler.
+I, personally, despise code like this:
 
-Thanks for splitting this out, I find it is much clearer that way !
+static inline size_t get_vm_area_size(const struct vm_struct *area)
+{
+        if (!(area->flags & VM_NO_GUARD))
+                /* return actual size without guard page */
+                return area->size - PAGE_SIZE;
+        else
+                return area->size;
 
-However, this should definitely be earlier in the series
-As I mentioned in my comment in v15, Syscall User Dispatch only depends
-on `CONFIG_GENERIC_ENTRY`, so enabling generic entry for arm64 in patch 16
-also enables Syscall User Dispatch.
+}
 
-Given that this series adds a weak default function returning false for
-`arch_syscall_is_vdso_sigreturn()` before enabling generic entry for arm64
-in patch 16,  patch 16 and 17 have a potentially broken SUD enabled,
-as we do not check for those sigreturns yet.
+I'd *much* rather it be something more like:
 
-I think shuffling this patch back just before converting to generic entry
-should be OK !
+static inline size_t get_vm_area_size(const struct vm_struct *area)
+{
+	return area->size - area->gap;
+}
 
->
-> Implement arch_syscall_is_vdso_sigreturn() for arm64 to support this
-> exclusion mechanism. For native 64-bit tasks, it checks whether the current
-> PC matches the 'svc #0' instruction inside the vDSO sigreturn trampoline.
->
-> 	SYM_CODE_START(__kernel_rt_sigreturn)
-> 	        mov     x8, #__NR_rt_sigreturn
-> 	        svc     #0
-> 	SYM_CODE_END(__kernel_rt_sigreturn)
-Maybe add `arch/arm64/kernel/vdso/sigreturn.S` to mention where
-this snippet comes from ?
->
-> For COMPAT tasks, it verifies if the instruction falls within
-> the architecture's 'sigpage' range, allowing the kernel to safely bypass
-> dispatching syscalls originating from these areas back to userspace.
-I think this might benefit from a bit more details or clarity on the "why"
-of the COMPAT handling : there is a vDSO page for COMPAT tasks, but
-COMPAT signal handlers have their own dedicated page, `sigpage`,
-which serves the same purpose and is handled similarly, so it needs
-to be checked as well.
+for example.
 
-Hopefully that is correct... Would you find that relevant information to 
-add ?
-Pinging @Kevin Brodsky on that as well.
+Looking at every use of VM_NO_GUARD, I think the kernel just gets
+simpler if it goes away. It's only referenced in 6 sites:
 
-> Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> Suggested-by: kemal <kmal@cock.li>
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-> ---
->   arch/arm64/include/asm/elf.h |  1 +
->   arch/arm64/kernel/vdso.c     | 16 ++++++++++++++++
->   2 files changed, 17 insertions(+)
-
-Otherwise this looks good to me, great to have more context with the 
-change !
-
-Thanks,
-Ada
+ 1. __get_vm_area_node() - Munge gap argument into 'area'
+ 2. get_vm_area_size() can be replaced as I showed above
+ 3. kasan_mem_notifier() - just pass a gap=0 to __get_vm_area_node()
+ 4. kasan_alloc_module_shadow() - just pass a gap=0
+ 5. check_sparse_vm_area() - check area->gap instead
+ 6. Just remove VM_NO_GUARD checks. No flag means no munging the flag.
 
 
