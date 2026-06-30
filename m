@@ -4,99 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC34CC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:40:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0FD5C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:47:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D5206B00F8; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
+	id B442F6B00AB; Tue, 30 Jun 2026 10:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD576B00FB; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
+	id B1C3A6B00B1; Tue, 30 Jun 2026 10:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 876066B00FC; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
+	id A0BA56B00B2; Tue, 30 Jun 2026 10:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C4A26B00F8
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:40:44 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D68E74046C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:43 +0000 (UTC)
-X-FDA: 84936840366.12.E8CB0ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4F1D72000E
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:40:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaRdoyQZ;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 78C5F6B00AB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:47:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E457BA0525
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:47:38 +0000 (UTC)
+X-FDA: 84936857796.13.78A8B65
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0DE8F120010
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:47:36 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FmJRX50X;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782830442;
-	b=r+SC17Q1V4/NWc7FnYbxdOW0OdN4OS3LspIRAbtQmu7On5Lo5gyyyzcdgw9CKBQg1qux6m
-	ocZUGj/m1cyknz6CEnl7UobzYRrVQLvm0dv7pDv1UygilSN8QJi2749w/6TVWkjyvwR+Nf
-	QWD4Pt12cJ1D0tSgx/VJWGOHFU3oO3s=
+	t=1782830857;
+	b=etHVZRl56O6c8Y2Xb2GV430HjyUQSXLlVfqKwgK8O6jnKfPdIbg8IiPZu2xB9SuXDA/a7o
+	0MzJozY2F/yNbLsVTKnW7AbzxyLTpv9bc2VulW1GL6gl8UsBipq66H6iP6YUporevb7Up1
+	kzZeVIyUf1x278LG6VGBStIFUdBpS3A=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782830442;
+	s=arc-20220608; t=1782830857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dvgyW8X4QaOk9VN18ZFlTY30npYMh5LShKDCXGOsMxM=;
-	b=NYqegZANQdDjnDKFuzIfw4wqAps4CM/2/lXsLC2Mv7TSD1uDNF6hiTMVrtBwJAPMuirtoV
-	o4prnlIlc/9kHkkKgGZv5A4Ks5gIhSNH2wB24GCgByL/ZJ2nuKVNB410wCC+nXDmSudbmS
-	k1C7yNiql2tk/TLOdA5PSU8TYDJfg4Y=
+	bh=Ec4y5CC9osX1Fg3YZN+Ow/rvBlJD1nIcT1j8LM/GIAs=;
+	b=OaOS+l4cdGyqDErC68nuwgKSXYeDxJ4hYWS8jIVeU8WTmpOUE5CS5t0UY9D06w8nI32DtU
+	OGD02qAK859mqOiGNhIZvbLeSmwEszyQjc7moLcexmaC/E/IELxVaydLmrplpUd5NjQFeD
+	j2Tz7h30WXCbuV/vAxjWrdVsECgbjuo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UaRdoyQZ;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D8F40601C1;
-	Tue, 30 Jun 2026 14:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097601F000E9;
-	Tue, 30 Jun 2026 14:40:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782830441;
-	bh=dvgyW8X4QaOk9VN18ZFlTY30npYMh5LShKDCXGOsMxM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=UaRdoyQZ1fTRKLAcvtRM8pCPos/hNLQhMFDTOXBDrPIVVOLNJRA7cU6ka14RHMRFR
-	 qWpfgLvKeAkf3XDjCuN2u6VoExWRrn+k9PHdw1xwsfaFYRW6apiRDH/bzW3S/vPXox
-	 NDxnR8QhAiI/zPphXPkt1KolvI83eq3Oxp7pH6P8fycRjVpGLO0mOiNQvzLLw+uZ8w
-	 WRnUBYhp2jcwsX+8wxOOiEB4mT754vZ1T4aD/zr4L6UdrtAvPeJdD/EC+QwUvwBkRC
-	 yr2g0tFvuReybfsvjS3lYxCtUKPjJPqHyXPEmCx9cYMHhnzg+aQfCesR1JnXw5Gekk
-	 GQ0tpKu3Pqrmg==
-Date: Tue, 30 Jun 2026 17:40:34 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Manish Chopra <manishc@marvell.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	b43-dev@lists.infradead.org, intel-wired-lan@lists.osuosl.org,
-	libertas-dev@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-net-drivers@amd.com,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next 0/8] drivers/net: replace __get_free_pages()
- with kmalloc()
-Message-ID: <akPVYpzxwP8CIQxu@kernel.org>
-References: <20260630-b4-drivers-net-v1-0-672162a91f37@kernel.org>
- <20260630072344.159b5d99@kernel.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=FmJRX50X;
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782830854;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ec4y5CC9osX1Fg3YZN+Ow/rvBlJD1nIcT1j8LM/GIAs=;
+	b=FmJRX50XWFqK5QpU/Lvd2417iY8koi8gFcrrlCJZ0ywgG9BIYPSxM1kBham4gcZRtHT+3C
+	HssL7y8kdeHl0btKk6Tdd1envqSoEJNhkTWliRUtxC/hZY0yn+CRBrH+UO+Tjmy9mlxfPr
+	bBh65Em9nvNfgtDhFGZPfLqWE4cVp4w=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: vbabka@kernel.org,
+	ziy@nvidia.com,
+	akpm@linux-foundation.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	rppt@kernel.org,
+	yuzhao@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [PATCH] mm/page_alloc: free allocated PFNs if the range does not match
+Date: Tue, 30 Jun 2026 22:47:14 +0800
+Message-Id: <20260630144714.66550-1-lance.yang@linux.dev>
+In-Reply-To: <d44ae8a5-ec70-456b-92a0-ce7ccabf6917@kernel.org>
+References: <d44ae8a5-ec70-456b-92a0-ce7ccabf6917@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630072344.159b5d99@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4F1D72000E
-X-Stat-Signature: 7tkpfj6m5ki9mgm8nzt1mdwbgs9sp7pn
-X-HE-Tag: 1782830442-314451
-X-HE-Meta: U2FsdGVkX1+5U6Snf70nzTL7AOzEdSx75gll+XJK4qHiQHfP4ni0YhPwBd8LIetR4N6zgoZGr3dHM2nOfBe1MWcaRYmqQUrkBwIuHnqz/L1gf15z8893UyWH1Q0WwPfZLfEmJ+T1+saq1pnvM0EtWM0YdbElUdwHpNQ9UK6hLhb8hcKH9ICGcoaoX6E+bVNvq4TqmNTuZsNIX3jla94leDPVgLrd/Yjbvcoz7Md3d3Eel3vhgObtqMnSoFdb3aLbiQgFyzbQ1DK5WsdRpJhju43gBzxsBemO9Lz9YaZl45pgVr/O/6wYgFpki++Gx2ZAQG8PiwduSOBRspSYve0jPf64CcDV3t9NpU4l/dMZN2d/hnsphaHhewLvVa9rtfp3lYaY9Bp3l80TdnP/uJPKNRyf4HdcvW1UZ6/dYn6dyFC7l60CqQs45WdeZuMj3OPq2wep8P7v8nueEMtfweApeGKMf5SUrgeQOpy+PDatNzARPhIHyybf5n4fkntHj4C2ypp4xO1RIG3cUpEaxNp8Yn5Atteo02zLgqvwyfZIsVKoqQPSjyba4aokqQhs0deCwnbpEIn50/K/yFrO6ZJHfiH7GoXVSIh74CAkKj2xNXsHd837UcfuZHoF4MYTB/e5oKb8klO3/YTkTrLuVIWoBpeLs5/Ew1XQrpN6ruJpIxZZqnv/fleIUUD8i6b82dBgTVrgpGxj35VK9zQbz9Qht+wXoSKi56FOpNNZUoIAwM8WWVtSUalbjNEmwr/z5IkWJRr3rV1uKAv0EzXTTrEBwUwu48x/u2OaIxaowtkPjXiWEJEI/LhtouNjHXUs9PkKlRlsBN+oE1AcXm+VlkCw7TPNy6Xajd9TQDqvth0avoPANPZEuznfvH/eG/50FsXaHkZG4r7fvkU6l4cftNuTd4wB/sh0d9y5LHGENh4i5WsMQuyBEOJqTNjN5aLS+rRZlhcjUnwwDtAolbCCns4
- PhYV4QEz
- hTCk5DHERnZ+4zXtRWbmnPgRCCMsq0+IzMk7s4wgeBocRhQ2GszhnW/SLdcQP3nED1Jz6bQojE6rZFn/m8v0zwTumSxC0zPhdOQ82SWCaWO94V1a5xfElnVpw49elljMFOju57xY8GBXAGAdhxdQZZHTJsThIIINr82KqvgFK5JM3h90p3CQvC8D2O/jDMLc7pIBOOTk52Qo9qUHnpOEc8c8lTOcsmp+v65d+dLZj6NC4B+yoPhz7reino+wAL6+93idgsdBthRQXG8Fer1CFvfZIT4a1SRlq7B1TXEy84l4xA+a3QxEPbY8p9FaTVLc2MJ0LmrU8N6pMsPw/21iosoW9k6bE5orFfkma+DkxxCPlRj+T+Fgs+BwsYgx1gWxRMdgNFMtYmAnPwWCvsgFoIlLLTgSwvQseQLrX
+X-Stat-Signature: 5dkes8ucpn9pw4kho4ttsz58cr5n4h78
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0DE8F120010
+X-HE-Tag: 1782830856-998125
+X-HE-Meta: U2FsdGVkX18Yy2RVoaBoW35gIUzKzmJ/7JsZqoLJPv5MjpbWpx7C14surPIkuG7xLygAQ9EpasSUzFVSXsU2Lpm6W3B7oHrZWRvuP/ODugGM52pcGjKT0re3xEvz4a9CS6yy2m7vnj0du+HgSnKTWHbTIahRJnzH16YB1YxFunr2jXzwggCowPZE92g08wR6kGRrzQznYlig3ZLS5G4Q41OMOE9d1kiiSsNttZWTg9cOttqZ6TF1og1bJeo9YrV4NQyCMpdF/lohBvBN7MH0vANraSlUC2TDGkwlgICGjDfVmlDU2moP+JzkdqQhyDXinWc47bANGzDDN0KGWdhNsQxPF/FijbkJgcUnifmTJ0TpcDUI4NCM68oK7Z+htOOEpvS7GQ1x5QXzWwCHmioLTtVNx6ozSZJAQNPz0AlE9BZuPI36HDecGpgEvk2U8LdiPWdzPSJvopFwsWy8qc2ESXXHtHGfyaktUB4bWz+m/liHS7Q1xgKBh4HDg9jPiuB7Hq4SvqKNbIGkXasu6Huzr5ZrtrxTlhSCQ5svi6848dVCLq9fHHdt2K+F6cF8C1jMfdrrsN8qKHdpwMmRBu/FexlTaIG1xnSu1UBt+GBIbCVsHbu7OyzBfGnIxsDBcgDBNAPeNY0zr9SfKCpkguj0vFdpJnizVDeTCDNydRtIV2ThgvdMGnAM4sBq1fL2fwNBOk5fmWDl4vt9//dwc1k5Hyk/ixueIuWdWuZOK8w2l3jKSSwxJ06c59ngaCsUsSPotOmtc5D9EE5TktTZ6NQf3TisepWEp/2zdfMZ7Hz/r26jCgapcOnxw19fq2HQ39Dy+SYnFNYtBXdBxJKUElhgYuF4tM/bhWlRjNlxEoyCyfGfr6KK//jGxtCreExvp3Z5FGUZSV8+W3JQ5ma/LrSJJQeqoRKk82jyKGqmrHhso4otmcf4QUz92ThOxhqb0mqqnwxbycoYQxsrJKSd/QN
+ SrHPSLsd
+ 6d9E/nF10AVlmAkwRbz3zzRdk/FzoyFaNbpn5Z/u4ibc+e7+VrQLjMxr7cxvwcQWJL4D4p/vTefYNcNJ9emZWQO/tR1fvyPNmb7pjOVKy/XGVAq/J3HvhXs0zxzupdarGuwQs4BRt2HBlfLxZGjd/HMVLgnZqzzt3pLYCe58Szg2ynVKvkHKbFy8oby2UXmGdC9AOZu0g7SWSOFPVTISZMDwsP6N+F33BFopDkdlhBN5asBXm+I2fva4AE/zpQNxT3AyHEUH6VKXraEZ/ohClZnjLSOu2ntKOvzIueC2yvmsWZgtEppgyzMblHEab9d/YEUvyY4k9HJ4D7V9eqZZYAZRFdYXXf70ZKJm7m1haVCKLzPg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,31 +101,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jun 30, 2026 at 07:23:44AM -0700, Jakub Kicinski wrote:
-> On Tue, 30 Jun 2026 13:59:19 +0300 Mike Rapoport (Microsoft) wrote:
-> >  drivers/net/ethernet/broadcom/bnx2x/bnx2x_sp.c    |  6 +--
-> >  drivers/net/ethernet/intel/ice/ice_gnss.c         |  5 +-
-> >  drivers/net/ethernet/sfc/mcdi.c                   |  7 +--
-> >  drivers/net/ethernet/sfc/siena/mcdi.c             |  7 +--
-> >  drivers/net/wireless/broadcom/b43/debugfs.c       | 12 ++---
-> >  drivers/net/wireless/broadcom/b43legacy/debugfs.c | 11 ++--
-> >  drivers/net/wireless/marvell/libertas/debugfs.c   | 39 ++++++--------
-> >  drivers/net/wireless/marvell/mwifiex/debugfs.c    | 62 ++++++++++-------------
-> >  drivers/net/wireless/ti/wlcore/main.c             | 14 +++--
-> 
-> You gotta split this, wireless and ethernet go via separate trees.
 
-Sure.
+On Tue, Jun 30, 2026 at 03:39:56PM +0200, David Hildenbrand (Arm) wrote:
+>On 6/30/26 09:44, Vlastimil Babka (SUSE) wrote:
+>> On 6/30/26 03:35, Zi Yan wrote:
+>>> When using __GFP_COMP in alloc_contig_frozen_range(), if the allocated
+>>> range does not match the requested one, the code errors out with EINVAL
+>>> without freeing the allocated PFNs and causes free page leaks. Fix it by
+>>> calling release_free_list() in the error path.
+>>>
+>>> The issue is reported by Sashiko[1].
+>> 
+>> So this?
+>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+>> 
+>>> Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+>>> Link: https://sashiko.dev/#/patchset/20260628-keep-subpage-private-zero-at-free-v1-0-f4ce3930d10f@nvidia.com [1]
+>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>> Cc: stable@vger.kernel.org
+>> 
+>> Hm well, it's a path that warns, can only happen due to a development error?
+>> Not sure we care about stable then. Anyway.
+>> 
+>
+>If someone would run into the WARN we would already be in Fixes: territory.
+>
+>it's a path that should never be executed. If it does, the real issue must be fixed.
+>
+>So (a) I don't think this is stable material (b) I am skeptical that this is
+>even a Fixes and (c) I am wondering whether we should touch this *at all*.
 
-> BTW cocci also suggests folding in a memset, IDK if it's worth it.
+FWIW, this patch looks fine defensively, but probably not a stable
+material unless we know a real caller can hit it :)
 
-Same churn, less lines :)
- 
-> drivers/net/wireless/broadcom/b43legacy/debugfs.c:217:8-15: WARNING: kzalloc should be used for buf, instead of kmalloc/memset
-> -- 
-> pw-bot: cr
-
--- 
-Sincerely yours,
-Mike.
+Cheers, Lance
 
