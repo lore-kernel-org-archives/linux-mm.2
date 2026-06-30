@@ -4,87 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E469DC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:18:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC1D4C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 14:21:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 868336B00E1; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
+	id DC8EB6B00ED; Tue, 30 Jun 2026 10:21:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F16C6B00E2; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
+	id D7F0B6B00EE; Tue, 30 Jun 2026 10:21:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E15F6B00E3; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
+	id CB5E66B00EF; Tue, 30 Jun 2026 10:21:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C73E6B00E1
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:17:56 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 99BA48EB4C
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:55 +0000 (UTC)
-X-FDA: 84936782910.28.8A3A76F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id F173C100016
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:17:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fz/LToBM";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A10D16B00ED
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:21:45 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2547FC28B0
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:21:45 +0000 (UTC)
+X-FDA: 84936792570.20.080EF2F
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B317340002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 14:21:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X2t4P2pl;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782829074;
-	b=vzhj7hXFxhiQ7yRbJb9oIYww5FXi8w3rckafx9oH3E8pDVRvz+V3FKOsrZDfoEjeUU/r40
-	gbfx/vyMg3/s3rfZQETiKIMe80YcoJzEdxbw7lYTJPUta3bvbz4y3mzl5gVhmeVlaRCYIt
-	V6oDlHwjABppB5mKMyWbW9oZaHvI2Lc=
+	t=1782829303;
+	b=PY2hHv8zoL/+nWxdYPCbN7yLajiYmE5hBzEMqdn/CSJ4bC2f2yRjOkxNf84cF8+5RrndSB
+	/EsVx+gjnbheQb8xPsH5xHsDAXGw54wblAQF4gRMC+kNs9obQS+ghlyYJ+6bsm6LpxwnOY
+	ujmOAYl6IwLSY1E+9eEt0pt/y9Cn86k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782829074;
+	s=arc-20220608; t=1782829303;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1jHOfEbKPidZLAY+bFapF4i2vITVSQIXVAPEhh+0hhg=;
-	b=U8fN3bLMj3LTB8XjgIZ1WU8yQQtWaLFmU6OV3YKmgi7mT/w3xcvCBATvTiRW2qgHKXDf5l
-	2R1QdC1tSkvJ2WQLWJJkxLFDryajaJjOGUA1L7294rSjIdqr9mmmyzJLqyb9snrJUy2j6c
-	l8yRt5Y1BkE2Gw1mkgfa+J/jEdJxWwU=
+	bh=W7ma1fkLP7myuZ97dWxsnvojHSaSFp6xHyBh8qniR+0=;
+	b=St5ALgeIk5QihTwAyF8fmGmZXhoTf5Au+jJpGbQ0MTja/zOMnaM97++VOGbV8jHhG77Wxd
+	jtWN069CXmCX/R8WL9uOEEjRmOI6h1QtrMbsw0TDley51yyKMU5cLPJfXUrPaCB69qMVlj
+	XWmJGUiGNPEZjCxUSd2+eJFVtPlG1XU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Fz/LToBM";
-	spf=pass (imf05.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 94D86601ED;
-	Tue, 30 Jun 2026 14:17:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536D31F00A3A;
-	Tue, 30 Jun 2026 14:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782829073;
-	bh=1jHOfEbKPidZLAY+bFapF4i2vITVSQIXVAPEhh+0hhg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fz/LToBMBiIU0dTtYMuOu1omoRZUmMba6sk3xwiWQ+2FlTbc4NT/i6KAp+qJezenZ
-	 KzCA11SA1VTDR8nwaETWW88mX9V86UuvFnbIXHY6vt+FPrNntkTRkPU7xbG5caEFNI
-	 mgrdtFJf96a0cWhPaZrhVUtCUEKpiFMh0VMX7Fv8EgoVZmb0fVY1s12b72lDc7SNFF
-	 7jsrxtiunnjIscevZfDMmqrhom7j1ceHahl8gf4aYGrKAsCaIDbAvbejzza7P/ESBI
-	 N2iCEPXfoVbplhTSfbUHX8L65L1w5CgCleHGC20NE+NWC3GaF0ZMdqQr9R6oJgTZg4
-	 FE9dt4tMtLgKg==
-From: SJ Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 11/11] mm/damon/sysfs: fix typos in probe_{add,rm}_dirs: s/attr/probe/
-Date: Tue, 30 Jun 2026 07:17:25 -0700
-Message-ID: <20260630141726.92246-12-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260630141726.92246-1-sj@kernel.org>
-References: <20260630141726.92246-1-sj@kernel.org>
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=X2t4P2pl;
+	spf=pass (imf07.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Tue, 30 Jun 2026 07:21:22 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782829298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W7ma1fkLP7myuZ97dWxsnvojHSaSFp6xHyBh8qniR+0=;
+	b=X2t4P2plIlVRpq2hmcYnF0HiysTJE1BMvMoRfPBp/NqQJx7P8EJDQRdcUQSGexyGxfpU1d
+	54f6MC4rBY3LY6E3hHlCNHOKgkPkh7U4RsCl8bOtTsoOFu/JZaA2bHLl+HZdD22n6Q08eM
+	FYgExvdmeyZvlHZUadnJ4bcDdSD8rek=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
+	linux-mm@kvack.org, hannes@cmpxchg.org, tj@kernel.org, mkoutny@suse.com, 
+	roman.gushchin@linux.dev, liam@infradead.org, linux-kernel@vger.kernel.org, ljs@kernel.org, 
+	mhocko@suse.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v3 2/2] mm/vmpressure: move v1 userspace eventfd code
+ into memcontrol-v1.c
+Message-ID: <akPQrBZBQZGLO_DU@linux.dev>
+References: <20260630112617.1198623-1-usama.arif@linux.dev>
+ <20260630112617.1198623-3-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630112617.1198623-3-usama.arif@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: 7gek3z9wmbwhrorifno9ypowpf8enx4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: F173C100016
-X-Stat-Signature: pogjjdy8yjtt9fswxqwhq496whccthmj
-X-HE-Tag: 1782829073-796871
-X-HE-Meta: U2FsdGVkX1/jLwdjb2pJ76txC0JTnajeA4qGgIV4YIek7jmdkceLQXvm8VsgTv+QPqD6DWaOtKfQWnCdOweSuNeOuclHOA4ZeyIxZl9A04WC45X3Oobfw4l9jlLfrSh5zZSvBSaztceRgsmb+2J+dhb5eBCuS2YElV/gy+wRE8RYlmGctPn6aoYTWW1Ttqc+bJoBGOTLZ32bPwfOQuCi8VDPengF08bxqm65snm1tFwhIlcGJIfyih+TjdDrHoFLZyHMC/pyY+T1NERM9ROYYjCk00HeFE2S9q/pYesMNMfsD6uhaySADN0UgwaGnBTk/5XcB1o8XKLawWgyXQIWXZsT86tXhUP6XSorE+v9+kVX9Fjs5VWujaOQmg82ziOUzU1LoTouWgCJDxPW1K19kdn+vzkqsK2Qo2RCb/T3ZGGvBK37VjLffoLtqdnUnwwlVZCY8VAlvLeuZ4j832xBDtOI4JAc0jTHLVZiYbNZa5NxWCy6nGu7qKXa7KQ7xTJxcD2rlmhRtL4kqNNBU3XVkliP2TiAnLItC/JTmJ5bvUp/b5f9pql2H0gGlc26QR+O4xqrcwk8law87UFQCptXM6ehNMubTvbqHk2xZzP5TyHMVLB1PCszZ/1LFWVjDPtEkPa1vxl1slQ1GOe1cX4LYMnOw22OiU51+SNpZ67SHv5svuxizY/aGEi8xXuMpFij4x4vZi35FAEqkwg2mrKrf1gDaeq1qDpdoPMvWFIMZp1/ACpxNR2gI6fz/4oY8LoW748IFxQl2OXtuy28XaUAUvgr0Ni0AupY1/diVkQtmJLIKGVTpksy6ikrRY10I/xnW6jAsGUZHPSUlk4Ty6RZGZ5Wmdt658FvfoF1OiLzu3AokslwKNx/zhXjYPL1uKvmv+1n67jb7pU52ZLxUc7SO62fOoWha0vzhnJ0AXqM96CavJfMd4C7P14bGK6JYPrvBrp32ykYXmi6CoJmg1k
- 5aiSj//h
- vud5cLzjA/62ihzAosrMvNb3UtqWW0za/rJrVt4ZB+Wa8Xr4TawBbjxP8CEKa8a/ruWIYnVKs/vr6PvKPKPiXRew2QV2txIwfQjTzceiuBAlcixWkP99VqmZb1QY/e92PEV+2LccAkwrLv81UcBZh9HhOgBFr0fRzr5zzko5j1QRxHPAyUTbnu0CW/TXv1kPeHaanu+tyhWGccVW3BUfSLIH0CqQVX7TMbmEv7t66P1MAx/RK5Qk7P7sX6AjcskDkcA1nyzGPWrtapagwDXx/a/4HwQ==
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B317340002
+X-HE-Tag: 1782829301-594900
+X-HE-Meta: U2FsdGVkX190PfYJAK/4DmFRtPPnchKCQPZwbXEL7Eq7u5+LC4p2nkKklxUUGIw8yeZr+6+zrZJu/+7Wp+0u3ea7VAB2UhW92Mb2nIyD9VmsdTnfnv/fwKlqWAWFG69qfQcBzvmy7iFkELnlV/PIqmMquxGgLS20z7IbfewA6Ow44pzxySbPUlGTXV5w28OAjDvBNRnKTu6oQhssQTHgdUkJcIOSXu9x7N65GOb9DLNCT/WcYo1g6I0YFqvluaIvxH3s3N2cRQt0aNXujIvcRuzOxKS/AidG0ZDSbiuOcKElr+qKuXR7pw2r/Lt46o/8rM7mZycNTgBfsNN5N5+RbtJLDlmhrOfPzXaP62hDThgr0b6R8U21OjkvD5YMAYlfBATI5AHx9uz4A75T5CLXgSls0Q+jM2f7odcOGPwAujSddFyAn+0z1Uwld9s/hEQ0mWBNOql0jYicwJV9uxyUzhWh5veP2K8XsSxzaBUjO4ofU6P/3Y3YiR2VTR6hk3VJfpcKEt6IiElxIQEs+wpi3L5z+T3ARyv846S+3gmSdnsBArMn8otI+rZJERUGmhCatB7V8ORJOvPaNW39lc2D4+xCpbyvB4PgRRN0xUQV36wXN4Q5zBdCPc8OpcLS/h2xk/OWSSyD+7yUHY/ZirQ1JwfQfqTfizL7af7jQKwzH2f6DGJWWHrn84tDcDCTfiQLh1E/bb/jpfLV/E341S4c+wEeKSp4rI+KesvIG8DOiDWapEw4J2iKcYBIN3mbP2qPk4VhoZ2QGfcKx3yP6R5fjg7qjpsGfxh/cDa5tksf0LYsbkcXaIgeNJaeipNY7C5YW/1sWOq+hO1BvJYMR4lolCBs4DlO7TCZBiuoBmrNJeplNRJI2Mn0S44I55jqv6tkZ4RfCj3hw4u5rBSV+A/SqV4WW+I6WF3+dvkhfdzTujORyCmYkjxsKU8fHlE86PwxDvuN3+89GAF2AaMXwsF
+ ic/pomME
+ ATl5++A7Z7gm0dKe3g6fZhCREB/Hx9dZGwuZVtZum6nZzpfok03waAJrsvh47qriKkW17rwEZ4tVlHeNa2SL+nj5r6+Sm93RXB7RpLyfafDhg+JVfIRFJo/EYIGmF1I/nGkJeaMRI8fXfUfP431oFLVp9pb8grnbnc6PjkAqgJEz4A/pMCNR8/ylLViAQTIPV4IRWDZ+r3PThQVnx3oROpWsU5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,58 +91,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_probe_{add,rm}_dirs names a variable for damon_sysf_probe
-as 'attr'.  Probably a trivial copy-pasta error, but it makes the code
-not pleasant to read.  Fix those.
+On Tue, Jun 30, 2026 at 04:23:33AM -0700, Usama Arif wrote:
+> Clean up mm/vmpressure.c by separating the cgroup v1 userspace eventfd
+> interface from the shared and v2 in-kernel code.
+> 
+> Currently, almost half of mm/vmpressure.c exists to serve tree=true:
+> struct vmpressure_event, the events list and its mutex, the work_struct
+> and vmpressure_work_fn that drains tree_scanned/tree_reclaimed, the
+> parent walk, vmpressure_event(), vmpressure_register_event(),
+> vmpressure_unregister_event(), and vmpressure_prio() (which always
+> calls vmpressure() with tree=true).
+> 
+> Move it all into mm/memcontrol-v1.c (built only when CONFIG_MEMCG_V1=y)
+> as a single contiguous block, following the per-component layout already
+> used by that file. Keeping the v1 vmpressure code with the rest of the
+> deprecated cgroup v1 memory controller makes the full footprint of the
+> CONFIG_MEMCG_V1 option easy to see in one place, which matters more
+> than component-level file separation for code that has no active
+> development.
+> 
+> vmpressure.c keeps the shared bits (constants, vmpressure_calc_level,
+> the runtime hierarchy check, the tree=false body, init/cleanup
+> plumbing) and calls into three small v1 hooks for the tree=true
+> accumulator and the v1 portions of init/cleanup. The hooks have
+> static-inline no-op stubs in include/linux/vmpressure.h for the
+> !MEMCG_V1 case, so callers don't need ifdefs. vmpressure_prio() gets
+> the same treatment, which means vmscan.c's call site disappears at
+> compile time on v2-only kernels.
+> 
+> The only #ifdef CONFIG_MEMCG_V1 in source remains around the v1-only
+> fields inside struct vmpressure itself.
+> 
+> Memory savings on CONFIG_MEMCG_V1=n (measured with pahole):
+> 
+>   struct vmpressure :  112B ->   24B
+>   struct mem_cgroup : 1664B -> 1536B
+> 
+> This split is the first step toward eventually making vmpressure
+> CONFIG_MEMCG_V1 only. The v2 in-kernel socket pressure path
+> (tree=false) cannot be removed today immediately: PSI is not an
+> exact replacement for vmpressure, and switching networking socket-buffer
+> back-off to PSI may regress networking performance or increase memory
+> pressure in workloads that today rely on vmpressure's hysteresis. The
+> medium-term plan is to introduce a PSI-based socket-pressure path, keep
+> vmpressure available for v2 behind a defconfig as an opt-out for several
+> releases, and only then drop the tree=false path entirely, at which point
+> everything that remains of the vmpressure block in mm/memcontrol-v1.c is
+> the whole subsystem.
+> 
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 5b2ae2fe948fa..6710b6d019bf5 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1073,7 +1073,7 @@ static struct damon_sysfs_probe *damon_sysfs_probe_alloc(void)
- 	return kzalloc_obj(struct damon_sysfs_probe);
- }
- 
--static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
-+static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *probe)
- {
- 	struct damon_sysfs_filters *filters;
- 	int err;
-@@ -1081,22 +1081,22 @@ static int damon_sysfs_probe_add_dirs(struct damon_sysfs_probe *attr)
- 	filters = damon_sysfs_filters_alloc();
- 	if (!filters)
- 		return -ENOMEM;
--	attr->filters = filters;
-+	probe->filters = filters;
- 
- 	err = kobject_init_and_add(&filters->kobj, &damon_sysfs_filters_ktype,
--			&attr->kobj, "filters");
-+			&probe->kobj, "filters");
- 	if (err) {
- 		kobject_put(&filters->kobj);
--		attr->filters = NULL;
-+		probe->filters = NULL;
- 	}
- 	return err;
- }
- 
--static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *attr)
-+static void damon_sysfs_probe_rm_dirs(struct damon_sysfs_probe *probe)
- {
--	if (attr->filters) {
--		damon_sysfs_filters_rm_dirs(attr->filters);
--		kobject_put(&attr->filters->kobj);
-+	if (probe->filters) {
-+		damon_sysfs_filters_rm_dirs(probe->filters);
-+		kobject_put(&probe->filters->kobj);
- 	}
- }
- 
--- 
-2.47.3
 
