@@ -4,180 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ECEAC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29FAEC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:54:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E4B416B00A6; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
+	id ED28D6B00AC; Tue, 30 Jun 2026 05:54:11 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFC3B6B00A7; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
+	id E844D6B00AD; Tue, 30 Jun 2026 05:54:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9DA26B00A8; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
+	id D4D7D6B00AE; Tue, 30 Jun 2026 05:54:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 956FD6B00A6
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:45:47 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 158454040D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:45:47 +0000 (UTC)
-X-FDA: 84936097134.24.900F927
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022098.outbound.protection.outlook.com [52.101.66.98])
-	by imf08.hostedemail.com (Postfix) with ESMTP id EA46A160003
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:45:43 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=F0++cj7O;
-	spf=pass (imf08.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1782812744;
-	b=y8iiPPVXoOPGWekMoR1wiysOH5//n28kh3WP3uk5cGyxFO/vAha06xar0/JabH/P5xWRIc
-	VhUPQNWazeMYtx1ZeFWYi4JU0/ppiVK4xhLevRTw5bbbGZWmAq+90QFa6r+sfipe0POkNt
-	lG9HHmpfD9AD5xXgOqEEix5Y9hfDhOc=
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782812744;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A60C36B00AC
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:54:11 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 290968DDBB
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:11 +0000 (UTC)
+X-FDA: 84936118302.02.64C8203
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 95F1BA0009
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:54:09 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CKVSHJxA;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1782813249;
+	b=yDgHeZRAjoWPF6GcqdnmFeUBLId32vFAhInckcy9WP+8HL31Q0tiwSFFP4XXSC+sbdJEI6
+	jEq/8H4HGfTAjQHjn6GHc/UuKLVkyPbVA0PyrZ1/4gl90dO5Hxq76b3j+hasKWwmmuwqFO
+	eEo0SHlG8OGN0Mq2KMbzB8MbiAwzpM0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1782813249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
-	b=Pbd+HzxOiL3H5fkygxXQ0jMfGwp5xHE1QfS8JVmp8f+bhUXhRzBiWWMU3+SkTkUcacoNsC
-	vpvCgRDVUwTHREUli170UHLm5q55ogynPhRAyQlLKgHtAFNSPmL2MAWtfFqPE9c0w0moHP
-	8AKcVdYqztnWbBg3+2qzvfuqVCoX3LQ=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=F0++cj7O;
-	spf=pass (imf08.hostedemail.com: domain of ptikhomirov@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=ptikhomirov@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HAy0bwSyfwjLkQABUI9WQ6+UVyQ2Sx6BI9qvC3md7pi9gLQnFb7eYXMN29R70A9+7oI0daHDo3szxRykqY0Fl2lyGv8Ns4v9JvMP5gFW68zRI6vc8/e65koV1ZXDdvIv1icqn1a3WleIEaFsHX60U8xZIt4Li4jjFdEsaOL5sYK/KodHayuQKekUC/+haZFGjY7gY/hoL2WjMLMOjcni1jRrfejxOz1kJUBBYmbNRLihIMRVFZGZEw2L6+HvBGZ/rQsQdi323K6xpp/4bBpQI6lTJle9MN/HhgbZxXqwPn3YlyyZ9bPq4Y6LGLcFAUe02txwFwkxaaUX62S7VPtKVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
- b=Fm4DpILIFio3taPaotTr+AoyZddEuYn4/eZuU7ve89MPLb3JEhd8gUwSpE8mUN7zUHCmVAVso9arZ+fEKTLVq/Iz0WOQTGf2GSzMwja7hrDSX919U9R0isaAdL6C0tCESKg9Bzucjs3ua4JoNB2QhingGRMRJCxGw71xcT0QAgkjURV9ZbS4ueVEWD5AqeIRxOxnNWBQDMcspiQLhezPVwhO2l/1XIZDy4CAti04MRrNqOKcLrneJpAN8tx9zDmokzbmgzCoH5EDIXTuui+wAtNyD4CQLj7Z3CQBAt8TVvSRZ4HdilSHvkaslbcwLBn/r9odoKS1BuIi4ZHulkffqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9sp0A27jwgTu8QMIj5sEhN1ih4nrHHOv5GXd4HIXUyI=;
- b=F0++cj7OXQyOJ7vo1duApE36GB4op22PnvYVEcliIqzbqqvZf6ylsn43vVQt/iExo1orf6fQRmqH8sZVFEITedFYQonMnKrtT4JSrnPSNhXLIrjlfAZxxr7lqf8JOBfcVRSi8VAvvUSuLXdD3X5I0uKQ3Kkv4a/wHUCNibWIc2cNlohSjg4gVHeXi+8BS/05LkuelXngPitNuMYr/vbEUW8I8s70u7+glN4Ubw1hlrn5YUuQYh9UvbpmSEYiuVeVpPYpelKRFTBqs56kFdMPP93HME+EFqMdtcMt92VpRJYeEshkJRvoiPlrsvNHGAsaBf9iW2ECBUB20JeFodMpHQ==
-Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
- (2603:10a6:20b:747::14) by AMBPR08MB11885.eurprd08.prod.outlook.com
- (2603:10a6:20b:75e::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.139.18; Tue, 30 Jun
- 2026 09:45:38 +0000
-Received: from AM0PR08MB11804.eurprd08.prod.outlook.com
- ([fe80::bf46:f137:f6d2:5b3a]) by AM0PR08MB11804.eurprd08.prod.outlook.com
- ([fe80::bf46:f137:f6d2:5b3a%6]) with mapi id 15.21.0181.008; Tue, 30 Jun 2026
- 09:45:38 +0000
-Message-ID: <6e7c1429-9f3f-47d2-8aa8-272ed0a8d305@virtuozzo.com>
-Date: Tue, 30 Jun 2026 11:45:36 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] fs, mm: add ->cachestat() file operation
-To: Christian Brauner <brauner@kernel.org>,
- Amir Goldstein <amir73il@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Miklos Szeredi <miklos@szeredi.hu>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>,
- Shuah Khan <shuah@kernel.org>, linux-unionfs@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20260623111533.2285005-1-ptikhomirov@virtuozzo.com>
- <20260623111533.2285005-2-ptikhomirov@virtuozzo.com>
- <ajqOyIA8tPQsxfz6@cmpxchg.org>
- <3f6392aa-c1f6-4263-8892-978dacbbd8ca@virtuozzo.com>
- <CAOQ4uxhras5YAr8_HBpuHSDwvfiEF8vAr0NDB0R_PXtGDhnqjQ@mail.gmail.com>
- <20260625-lehrbuch-gehalt-wichen-1b2f3533efbe@brauner>
- <CAOQ4uxiNrEZ8rsRc11mdjkMWe3dfThE0DJ2vXuO0yiNemnpR6A@mail.gmail.com>
- <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
-Content-Language: en-US
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-In-Reply-To: <20260630-tierisch-ehrbaren-errichten-bed402a0a26c@brauner>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BE1P281CA0445.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:81::14) To AM0PR08MB11804.eurprd08.prod.outlook.com
- (2603:10a6:20b:747::14)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=qHdjGsIhJ+8ibgAZAo0aWXS4qbeGOWvcwxs3o6/Dxk0=;
+	b=nfF9DuU5plG/hVjA5OexDMjeNJ21nT4lpRXI47iZ0+ayYiw+f0ppfTXa4TO7DNy73g8peS
+	Eifrbuu4pJq8rYb6Ae9ofImzYHtBuVu8T+lDVKmEJn+HealZ20BvzQQddqtgKXtQvsaL71
+	IM4kvDZ+N7Y7d7Uf72wt5g5J3yKo0PI=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CKVSHJxA;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 03169600C3;
+	Tue, 30 Jun 2026 09:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB081F000E9;
+	Tue, 30 Jun 2026 09:54:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1782813248;
+	bh=qHdjGsIhJ+8ibgAZAo0aWXS4qbeGOWvcwxs3o6/Dxk0=;
+	h=From:Subject:Date:To:Cc;
+	b=CKVSHJxAPE1lT77XrFx/EwdRsgolR0yEMv004ju9lIT4uEOOACXWfYPZoFmCM8Stf
+	 8FkIpUqHwkwx0e7Py9kYxoxTqzZL9ERzIERYlMd8chFj6oy/XFcqU6Mz9yELOhaf7T
+	 pi0Am0mRaQlno0WuP8yJ3sY5OsIV2qCg+biTKNKRNJiqVLv7bdeNprnQC4R6s7xOjx
+	 adzDFTnh4cZV1j1ljrPwaM5EZUNklF4Li42JvcpJgpHzBkOCCNhla8Frxg8C2odkJ1
+	 HW10EsDbk4hfa2Srt0AGj0UgVEM2sFKdbQMekTSOHBoBlEyDTBRDOcW32SNDqa2rhG
+	 2+gb0M95WvImA==
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH v3 0/4] tty: replace __get_free_pages() with kmalloc()
+Date: Tue, 30 Jun 2026 12:54:02 +0300
+Message-Id: <20260630-b4-tty-v3-0-a8476c66c582@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR08MB11804:EE_|AMBPR08MB11885:EE_
-X-MS-Office365-Filtering-Correlation-Id: dd00aeec-414e-42ae-d8e2-08ded68c5726
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|23010399003|366016|7416014|4143699003|56012099006|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	l4yeWcGq6Kwb8g4AoMRdsBRpUxlXiCpLdmVG3hBGf31lOKx8uT7oOOjcudDja0ugGPMM1NJqYGV6MUGk3g11ITNc1teftbisjH6CwjlJKvYAVBH1yXRryiAXzYi0tmoUOn+ITLov+szPQBLzeXOxtblbE5gSJPfLLzpQ0DGLw5/QzUA6WWezBduU5prcaC5MMWDQnEhAZ5s+k9T27ln4f2r/T4gV1B6GhECgQXlzfmfl2ata9wJv9JmqWoZ4vWQqA5/2qu8J26ZNx5qyXcCf+U4R/3FYHzk4jk09sRFRHLdstBOY71rB1Ah9p9n4Q2eN9BBD7ZpW2tDi2gUdthgtGbDtpqWqeFF/TrmPLE1nRv5YXAKQbfCMUAEXyQphZMJMLF1xUaLYFq0FZR17bJT4mGtNSNLw+upu47nO3VzIULbnKijJ3JuZdybKEJpdEj+Yd9v02V846akL1gz9E3Y+qOxLxi4Wu+3W+J8D7dfTWaKn+6JI5BZ1YPnhf+M2aSypxD+s+1dUS3fm6IRhxv33M+TLMnRYbFzzuFvjICtVm+YUys2yBjip8A9CUxryuLgvMT4lbHNft7N4pman+IMVIPEXE+8G3uz9cXqwiAensmrzUCl7fwaKXBJPB+RAJuu6K2qjXPZH7xdPCbxA47b7bNTADa94vBzb24nTR11yM14=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR08MB11804.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(23010399003)(366016)(7416014)(4143699003)(56012099006)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?bkx5djIwb0FOYlpTbU5XSlVST1JDc1NBcjRNaTBrNTBFK0dNTHp6WTNUYXRn?=
- =?utf-8?B?c0RaVVh2TkZKb0JaaXhxcVROM3BEQW95Z1dacTlIOGIyS1hCOWZOZloydTc2?=
- =?utf-8?B?WW5HRGNhL0Rmc09jeGtmVXhYdmdpMXRHYjBJaHYxazBHYy9kK09id0lER1Jp?=
- =?utf-8?B?RUNINVVMdlZ0ZGF5MjBsNlFiZzZzRDZxS1g2WWFXT2xUU0VPeHFiWGtOdXUy?=
- =?utf-8?B?amxaZmtLN1A4OC9TRFc2RmZrYVhLTkNyRTlBbkI4T2liM1VlRHVCOVh0UStm?=
- =?utf-8?B?QlErem5iOGcxRk5mVU1lQnhJNUlkLzlwbnNnWDQ2S0dmamw5YlZjYUpmMDBI?=
- =?utf-8?B?VVRnc3JGdUhKWmZjQm5xbVgxL2FTSERGT1dMSnVCRGtiM3pVVUk2YlFRNUg1?=
- =?utf-8?B?a2pESDZzRnVBeW5lcHdBME5QUGovckc4VFJiTm1jNm9KRWJSVUU1OXhKcDFz?=
- =?utf-8?B?amlFVVl5eEd6djc3VEZZdXV1bmdSM21lcG5lQXIzNktwOWdmbmRSTHMyWkVQ?=
- =?utf-8?B?dDR3QUN3clNxL0hLS0FqWmFIYWQ2MDRaZC91T24vNnYrMG80T1kxb0hLUml0?=
- =?utf-8?B?UXc3U1BvdVZBZkpxVTZqdS9JQ3hKSmNwMzh4NFlOSFZndHpYZmNwMUo4bUMz?=
- =?utf-8?B?MHdFR1FCNWVnTjZDUHZ2MXl3RW9OSUVvU0dmUDd4RnFRRFRPdlFRSjNCK0tj?=
- =?utf-8?B?NlhGOVBWckhDakkrTnpSdzJtOWNFSkxPUDdCMFNrQllObWxPTERmU0RHdmpW?=
- =?utf-8?B?YW40TlBKYnVZaFVpL1pJdWJEYlZ6VWN1ZlVLMXdFZTZQZElQQ1E0Q0hhKy91?=
- =?utf-8?B?MitxZTdUWFd4WW5uUXd5ZHcrV3JkRDNpWWd4TjhmSDdFb1hXSVVGYUFmSlBj?=
- =?utf-8?B?bDJMdHV3TjhlQ2RSc25JcDlYZi9Ia2NGaEdTbUxqVzJ2VjVDa3dSdHFWSnlO?=
- =?utf-8?B?TlU1QWdNL3FyZENJT2hwTjZiTkRpZXo2bE5CNWg5UHM1eXFhUHExS2pWc3Vz?=
- =?utf-8?B?UlJZSHVtdS94UnhjaDRCNGVVdjZFcUVIOUVyWExKWGNWcXB4TzRWdGNHUkRF?=
- =?utf-8?B?M0lFcllGQms0ZHRjdXBJem05U3NKSG9UVnJ5RU4ycTV0cVZTOEMrR1l1L0Ry?=
- =?utf-8?B?Njgzc1piNmJZQU56ZG9ybEZKOHlpbGxkWlFIdlBCeTh6UThEa2VXUzlWWHVv?=
- =?utf-8?B?N3I4YjQ4S3Z0NkQ2TDI1d3N4L2RFQitiMXZKOFh4WEtBWWZybmJMaTVERUFv?=
- =?utf-8?B?Q2NybTExMGVUWDlXcWFWWVRvTWxXQ0c2dllOd0tmSUp4M09lNTE5b3Y2Zmxz?=
- =?utf-8?B?QkFqRzhvODhGNTVWRTJEY3JNVWtzSVJYUTVHeVhXZit6SDVJOTNvYlRSbEJz?=
- =?utf-8?B?cDhNK2tLM0tvMEZUbVlIOUMxZjdKOEpCUjFTeUw1UDZBeE8vTnNBc3daNDR5?=
- =?utf-8?B?VitUeDVlMSt4UXRSbHA1V2lSZWdoM3kvN2Q4V2huakxIbUxXR09PYm43OW1z?=
- =?utf-8?B?Zkg5Z3psSXhjWjVOejhqalFWcXRvOE16bW02Z3pJdVRabkpQRVhlVGgvN2lB?=
- =?utf-8?B?a0lDK1FFU3lyQ0oyREZiUEtHUWQ1Uy9oVm1BWm5VL3hJR3AvMFpkTUpPWmln?=
- =?utf-8?B?TkwwbU4zcU1ENG5jZFVzZmtFbDJYWDRualRGYy9CM3dOeGdVb0RwYWswaWxs?=
- =?utf-8?B?cUQ3eVR0UURFZGF3MEVXOFpiZnBhaXRCc1JNV2ZHTk5GVW11aS9maktXOU5V?=
- =?utf-8?B?bEhhNzZ1ZFFjZGhHd1lxYVpGd2E5Qkx0dGRJWm1Bd1VOU3ozb2R4ems3SG5H?=
- =?utf-8?B?UjdrUXl3RlUzWTNDQk5ERHRaQitnZ1FMZHQyYVhPOStHSjJqWDJTK0s2eERJ?=
- =?utf-8?B?YnFkZ08xbEE2MGtkSC9hM0tILzEwUjRsenh3ZmZLMG5DQ1ZISUI1MEV2SVlp?=
- =?utf-8?B?NE91Y3QzRUVnU3IxT0E2cXZiWHdHdTVHS2JNNDRGRnd3dW5JUnZnM0h0UkZC?=
- =?utf-8?B?anlMaG9UQWFUUkMrUFZDa2dWVEVka1V0TDB4V3hNQnlCUjk0NmVXQytaQlNY?=
- =?utf-8?B?WTJ2blB6YXJMdGl5ZlpnSDBxb0F5NE1ybjQrR1JDOUwrSG1TaHYybDhrdExi?=
- =?utf-8?B?eUwyRVFYS2p3Ym8xOVlQbW1kRzJ5MXFFMkRNT0RSRHQvL3MwN1Jtdk5pOE5v?=
- =?utf-8?B?amQ3cExyRDRYaWFtNmhrK0x5L0svNFVDakNHNXB4c1ZVTmdXS2dwNGpjQVJu?=
- =?utf-8?B?Y0VBNzJoZE5JUW1PQWs1UDZDSlFWU3I1VGFrb2NRY1pFcUtmL2E1Vk1aSHRZ?=
- =?utf-8?B?SWZEOXZKL0VqV044TkpMaElGdDJQUis1WXZYSTEvVXAxSHdqMkhRZ2pyeCtC?=
- =?utf-8?Q?/39NDHggtoHfHerFxiRS62afioF7EOiBt+UPMu+QT855j?=
-X-MS-Exchange-AntiSpam-MessageData-1: a2U2DLBH0gXl/ibRNZ/gE0YTv/ecEbQWygU=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd00aeec-414e-42ae-d8e2-08ded68c5726
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR08MB11804.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jun 2026 09:45:38.0346
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fjKf6QfRZIyq5J+HsepIomRV6KPoEJyqAXJ9l8buxzmX7ejX/GudD5bPk7/62rR5tHzhbxQIBvYFjI11fnjjsR0rPgWu59zNTFuy85TQPzE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AMBPR08MB11885
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADqSQ2oC/2WOyw6CMBBFf4V0bQkthVpX/odx0ccUqqaYFhsJ4
+ d+lmBiNyzNzz52ZUYTgIKJDMaMAyUU3+BXqXYF0L30H2JmVEa1oWzV0jxXD4zhhrlsQlWXEkBq
+ t4XsA655b0en85vhQF9BjtnNCyQhYBel1n0cb8pLmVe/iOIRpeyKRXPF3LxFcYWGksFyCbiw9X
+ iF4uJVD6FA+mOiXV5OPR1fPcsKEYNwwsD/esiwvxF31sQIBAAA=
+X-Change-ID: 20260528-b4-tty-7c6e90f41d13
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-serial@vger.kernel.org
+X-Mailer: b4 0.15.2
+X-Stat-Signature: 5ntrs5imrg8jge3i1sp9bennfmbneqa9
+X-Rspamd-Queue-Id: 95F1BA0009
 X-Rspam-User: 
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: EA46A160003
-X-Stat-Signature: ngpg51m68uut6kc6a9zoea38cuzook1j
-X-HE-Tag: 1782812743-312367
-X-HE-Meta: U2FsdGVkX1/TGxGLj/wqv5nBuTkHsKn1nQcyoSzmpHged2ZwfutjLparpO6s9mCEYn1kTfcnKeLRn7xC2ZUKojO6oJ5KnkZXQkUURabL5Ai5xH3Y9dtOj4swG9Ir1MCFW0EIG3z1GaKn858RJkCCs5CNPm3IGuSuLqQPWWfzFp96uZVaczSYTOjvBvSjcHZfqILgDIlntTjCarBrq7yTXnZ07g2nJQ20AqFmhnRwzFWXg84xNtU9gfisPHpcB420hv27qcwgSWQwtEIarHhQc2GN99Ej9ThUxDOCsAzkkjyuisZpEHISSx6WM3bsE+fqer6hDoEw/SC/54dXcnKPuz5ooF6KuwZGu9OVjYo3h5vnXoOx2QQ/aVIfclLr/LdTCkdRQ+Dn7lRnCxCL+3WDXjyu9BgZjqRWx+ULMvAw+o6F2MT+sIt4ezEJijtvwbL81zEaNH7XrFkB7VbRr9F36CVySTKzF4k2a0ATsnkAdA5puSCQ3YBO9suhiil6KHMfqzlsfMWUpCO4qoKISNTtIieyebVHxyYy83uA5Jp56zlNaD//Zl5TW931isSIC0BABm4dNhFSFve5hC5IwIL3O42kTxXMgDCmG1lZqhVwoU2EyhsLbbvusfMx1JAR1hw2p2jlErdnobq+CnQkrUhSjmPGWLi61rXZr1jRbC/TI0Vvi+ctKLukyjYPuw8xIo2kF2uuRT/5l8HKR3DecOhF+RQkUI2ND+IQrX5UJqqeXlujGhYdNeziAL9r8GRAvFQOq5VwA3W5I2hr3ekEzlztqnsPr249W8I/hVf8rx6jIDJkS7prjEGfPQdPwKyPr7mBunw6P/+9qdBKiC1Dk0Y+6kCxOIjWblf8yCNs0JBM9dHLR8iKBjNRCoucTM+J5KQdqBZh2a9S2MmhasweW+KqBtSUj8NiImRbsUPlQcyv50IDEjmlvWuLt8ZqfTKuq2zO70jFpY6r3bQPWMi6/gn
- Pqo9Sa+n
- LFcY30bbLoAnalk33+Dx74Auij+8emdaqZlcXbPzaWQRb4gDC2ocxQcDDDMGS5JP8hY4r07ani38E4EMhD9LcYfuBADBcGqyIMsettE2MWKtlMpBaMdLph5jIIOAsnM2AHqWiD4MX6YnPvGO0J85w0s0ufqu5FYdB3Nj4HJBFk5pEP3PW7xFkq9rdfppQK4vIkAI9WmIg8OPBnmRe+9hXEa1ISrPsqFLixkRo6QnRZNoS6DGMZK1xAhTwqqthcDd1o7nOypH3EYP+fNIOi+4Xz/1kAWBLHn5YysHRwL8DJ4o9l3SUd/ykL6qn0OxyPhNtiuNnJXTWdMkcSykqIZRuCVx0M8HuUC2Sa9JIa9Q49x+6xS/DeIJYuFMihhsQg8f1dHLebjYOnQlLdEJhAL0eUB7ozWan4hOLYS/ghH53C4jrH3Kil0vkiaWEnY/pZ5S09gGJuTzXAOMJzkm06wekleCWL3QcZYEP86Dhh2W1oZTh/CD7Bneqe0+LAnOL7Upi7ieAbRptku+nSXl9VGxS0G21AElwJ2jVkkHQ
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782813249-757872
+X-HE-Meta: U2FsdGVkX18/CfwMGZ338J1CsAvBfglr1gTQK4QZF9nAjlHG7Lo0+ppN1EgzlbOEx3FQONaMm+AM/HGmma2WvVBM3Yf5txBTuC8XyFz4QJdnPHluahythqlUvgslP08cdCy73YeDLcgY/LDdOqWcTrC5KJ+TNGPKsBzJjXfJB5GfROzZ63r3b5igmJdmu56qhri2UwFEE4rgk1LrCQBgkCbx+dJX/P2cgC/two1t8ce6ael1OuAlMSb5v/ppy5o53YBx8XKVwyDX0WPHuocFdY578SVv49xsknS5AWQ46LVMCjOBWmLMWTJc28hr7jBt75zQmGbUVGPtc1eeWx1WDbgGQCLwGYsHS2STHsTTyKeYPdPl4B2goyqwxflbbMTqAQg57DvSu4lQrciXWrKEnX4phHvxFzSmQRnzOBh9DCwKxUohVmdVhvrfdco36l5mauTplL+WxLrah1eChz2Dzn1TqtqDIqk58eIcwe+qZf33/whaxTTAauf3PYR0Q91G5GTUuKAToS4bGk2heGUgzbmssuCHs926kWof5a3qNrJAeQgzBacoFIqFBS1PwP3VuxU3N3Bu8A3XoVMC7XrPuBBLzdrMh2GUD/0YC5nK8HETA8ycYF+X8nROeEXfzSDoy9+luueLClrxPio8ZlkIpTRTEtc+Hb81jGKOQb2UcRjrQhaU9yrFBjeAeiFV8sciePkcM3yuN6xn5NDnWQc9dbl1GtpIvjjbkQotVlLCVUFCjAH+rnNGqRvFfoBcMZb5cvFiRepHR5MwXVZxbLyoLcL+l3inQ8fXPy36KNmE+2ay8Q51VJ37j7KuOXBila4HD9XBMDF1RLaU1YojDju4NYYJIJ3f4YscyS2Z91Msstd9yUyNLzSfJBs7G17TSjzQ6dqG7uceFn8LOk0IqDhDPFtw4M6jqBLifnkYbwRjhOffsUag1vV6Ob6x9rGNL8qTLz1daYaW4SuI77e7aja
+ T6JqrNry
+ 6+DaO86B4sq91Ni+79utHyHkUPfPWQoOvxZr1Lxa2wVjFwr/iJ810N7mV0Mb6VlXytM+XVMDepig6sP/VfqZnZfXWf84Id6tr1dS0aYhYabKtscmRVvEu7O8wW3coiiyNnoLPuuQTBiwnTmq2MnpZiK+J6wr56CLxGV2N1mXFn83cMUS7d8m3TEYNigBGQ6h6jYYTwmoxPl1gckIYdKGMj86WnP+x2+WMaSri18OQv8ufvA1YGXaB1cy++iS/4MMnhWOpqYjvLqAt0fBDjCOjtYkCzkLtNTxlw5eyxYLadyWimqbyLF8QhgHD4FYL9C5AN6nfXhdO/phZK3F0SD0JucIoHXR4T8N2JliKa+ecaWF6YYeplzRyKOeKcVye0r4Xvmabpn5i3EAIsRRyKaXhLQWZ2MxV2qHGL6DcEAdlXvBrsCG7r8CjdfGpuA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -185,113 +95,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+This is a (tiny) part of larger work of replacing page allocator calls
+with kmalloc.
 
+Nowadays the right way to say "I need a buffer" is kmalloc() rather than
+ancient and ugly __get_free_pages().
 
-On 6/30/26 09:55, Christian Brauner wrote:
-> On 2026-06-26 17:18 +0200, Amir Goldstein wrote:
->> On Thu, Jun 25, 2026 at 12:36 PM Christian Brauner <brauner@kernel.org> wrote:
->>>
->>> On 2026-06-23 17:34:47+02:00, Amir Goldstein wrote:
->>>> On Tue, Jun 23, 2026 at 4:55 PM Pavel Tikhomirov
->>>> <ptikhomirov@virtuozzo.com> wrote:
->>>>
->>>>> On 6/23/26 15:48, Johannes Weiner wrote:
->>>>>
->>>>> Yes, AFAIU in overlay when we use realfile we should always use it
->>>>> with_ovl_creds(), even though I don't think there is anything cred related
->>>>> in filemap_cachestat(), I still think we should follow the common pattern
->>>>> other overlay helpers use (similar to ovl_fadvise() and ovl_flush()).
->>>>>
->>>>> note: Actually some places get ovl_real_file() and use it without
->>>>> with_ovl_creds(), e.g.: ovl_read_iter, ovl_write_iter, ovl_splice_read,
->>>>> ovl_splice_write. But those look more of an exception than the general
->>>>> rule. All other instances use with_ovl_creds().
->>>>
->>>> Use with_ovl_creds() is a good practice to keep the mental security model,
->>>> but it is useless if the security check (can_do_cachestat) is not in the
->>>> vfs helper (vfs_cachestat), so please move it there.
->>>>
->>>> Also it kind of makes more sense to check (flags != 0) in sys_cachestats
->>>> before checking permissions.
->>>>
->>>>> Also there are simingly no other file_operations which return "realfile"
->>>>> for further processing, mostly the operation from fsops simply replaces
->>>>> general operation with its own logic completely.
->>>>>
->>>>> Thanks for your review!
->>>>>
->>>>> ps: Hope overlay maintainers will correctly if I'm getting this wrong.
->>>>
->>>> I don't think this is wrong per-se, except for can_do_cachestat().
->>>>
->>>> Just be aware that the real file could change from one cachestat
->>>> call to the next (i.e. due to copy up).
->>>
->>> I'm really grump about adding a new file operation just for a
->>> special-sauce system call which is under a CONFIG_* option even. We're
->>> not going to set the precedent of piling on custom file operations for a
->>> single filesystem everytime someone adds a new system call unless
->>> absolutely necessary.
->>
->> I had a similar reaction.
->>
->>> This looks like it could just use a new helper in
->>> fs/backing_file.c that the cachestat thing can call to use the correct
->>> file.
->>>
->>
->> I was considering suggesting this as well.
->> Having f_real_file() complement
->>
->> but technically, can_do_cachestat() should be checked against
->> the overlayfs file/inode AND also against the real file/inode with
->> ovl_creds.
->>
->> I'd love to be able to provide a backing_file "template" for
->> operations, but I don't have a good idea how to do that.
->> Do you?
-> 
-> diff --git a/fs/file_table.c b/fs/file_table.c
-> index c68b8c0a4097..d93059d53e88 100644
-> --- a/fs/file_table.c
-> +++ b/fs/file_table.c
-> @@ -57,6 +57,8 @@ struct backing_file {
->  #ifdef CONFIG_SECURITY
->         void *security;
->  #endif
-> +       unsigned int flags;
-> +       struct cred *backing_cred;
->  };
-> 
->  diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-> index 27cc07738f33..64e07ebc43b0 100644
-> --- a/fs/overlayfs/file.c
-> +++ b/fs/overlayfs/file.c
-> @@ -50,6 +50,12 @@ static struct file *ovl_open_realfile(const struct file *file,
-> 
->                         realfile = backing_file_open(file,
->                                                      flags, realpath, current_cred());
-> +
-> +                       // Raises ->flags |= BACKING_FILE_CREDS and sets ->creds to ->backing_cred.
-> +                       backing_file_set_creds(file, ovl_creds(file_inode(file)->i_sb));
-> +                       // Now add a helper that performs permission checks on
-> +                       // both creds for that cachestat() thing and returns
-> +                       // the actual file to operate on.
+---
+v3 changes:
+* rebased on v7.2-rc1
 
-I'm not sure I fully understand it, sorry.
+v2: https://patch.msgid.link/20260531-b4-tty-v2-0-f7149947d4ef@kernel.org
+* fix placement of include <linux/slab.h> in men_z135_uart
 
-The idea seems to be to replace file operation customization helper ->cachestat() with some way for cachestat syscall to access a backing file directly. At the same time providing the credentials from overlay with which to check permissions on this backing file.
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-serial@vger.kernel.org
+v1: https://patch.msgid.link/20260528-b4-tty-v1-0-9da9f7aec5f2@kernel.org
 
-I think the inherent recursiveness of overlay (e.g. one can mount overlayfs where lower fs is again an overlay) is effectively making us check permissions recursively for each level of backing file, so it would be hard to have just one backing file. But maybe I miss something.
+---
+Mike Rapoport (Microsoft) (4):
+      serial: pch: replace __get_free_page() with kmalloc()
+      tty: amiserial: replace get_zeroed_page() with kzalloc()
+      tty: serial: men_z135_uart: replace __get_free_page() with kmalloc()
+      vc_screen: replace __get_free_pages() with kmalloc()
 
->                 }
->         }
-> 
-> something like that?
-> 
+ drivers/tty/amiserial.c            | 14 +++++++-------
+ drivers/tty/serial/men_z135_uart.c |  7 ++++---
+ drivers/tty/serial/pch_uart.c      |  6 +++---
+ drivers/tty/vt/vc_screen.c         |  6 ++----
+ 4 files changed, 16 insertions(+), 17 deletions(-)
+---
+base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+change-id: 20260528-b4-tty-7c6e90f41d13
 
--- 
-Best regards, Pavel Tikhomirov
-Senior Software Developer, Virtuozzo.
+Best regards,
+--  
+Sincerely yours,
+Mike.
 
 
