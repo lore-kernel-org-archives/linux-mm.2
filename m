@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD656C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD54C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 01:29:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B328E6B00C8; Mon, 29 Jun 2026 21:29:45 -0400 (EDT)
+	id CBA236B00C5; Mon, 29 Jun 2026 21:29:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABBE16B00C9; Mon, 29 Jun 2026 21:29:45 -0400 (EDT)
+	id C43406B00C9; Mon, 29 Jun 2026 21:29:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB076B00CA; Mon, 29 Jun 2026 21:29:45 -0400 (EDT)
+	id B32476B00CA; Mon, 29 Jun 2026 21:29:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9436B00C8
-	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:29:45 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BC566B00C5
+	for <linux-mm@kvack.org>; Mon, 29 Jun 2026 21:29:53 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0109D1A02EC
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:44 +0000 (UTC)
-X-FDA: 84934847130.06.4C5A42A
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 0B2F880004
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:42 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lfvbKi0x;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02E41A0348
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:52 +0000 (UTC)
+X-FDA: 84934847466.06.EA0C2ED
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf27.hostedemail.com (Postfix) with ESMTP id DA83940003
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 01:29:50 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LJ8Tyy/N";
+	spf=pass (imf27.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782782983;
-	b=RWkOkejDKCwBEVmXIs177fX0L9YuWZt3ke0uJl49TU+Da2bGOjDgEriB4qpdfUmVHFhR6b
-	7W9uQ9bqaTKJnsEwBEoAWVVGUF3oapOlqhSIpGDQq7rJbDcakrkFakH5dfEPOCZKknUA2s
-	p/fgFB8ez/WdBUl4k+r4ieMhLJk+lpA=
+	t=1782782991;
+	b=cii4U+0u5kFoIwgpfWlVzWMn3/lQVOzsPqxszFB8TCXkSBy50RDbS3HPfHg0rIocZMfVOw
+	v1lfF9MM6EneAnpypud3QGwTwexerV2ZC9hYBsh8K3WwbQWtosgNhRcV1euRsr5E5teTzX
+	hOT1LEuzQHOV7WeuSGk8p/VYb7qPNOg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782782983;
+	s=arc-20220608; t=1782782991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iNY5ofzw/V67suDlBB0hHUXne2mwxKxzsLsbqE3X2rg=;
-	b=5N3RcIcECgYrdtwgN36K0F4Dcyvaf+GP+RyMhClXJkvYhtzQyGuqWXhrQGjjLlcm1nfdzC
-	8DwawqkrmQgpou4a3X505ALS32CbPoW3hMzgsMs0sYo8sco1+TCCSO3EXeSMfNTa5rZYMx
-	/4UvRb78PhfBJy6+hcP18OdsQT11Uxw=
+	bh=v+SjXDyaIUskmylTeULQ7YpsBG7g1B+2e1JWTTH/oMw=;
+	b=Zk2v/Pp5+/gEF8Zd7pN/UVKuMirAwiZtS6Z/W/6xp77Q+V/xPkPB0G/MqxklaEJeZPkC4p
+	2/+p9qJPOsNSBwYlrVFzCQfQvU0Q3+dltyUtRUwcqgG0z7ucsWgu3Y5lJ2ODtsYfD/3joP
+	WWybk+duGii7yAd4Lg7q7rokVNnEfWA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lfvbKi0x;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="LJ8Tyy/N";
+	spf=pass (imf27.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1782782981;
+	t=1782782989;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iNY5ofzw/V67suDlBB0hHUXne2mwxKxzsLsbqE3X2rg=;
-	b=lfvbKi0x9TPzaRiCQdbbDTLdsj3y5GMKV56KE8V9zh9j+D9H3HMMuUEt1zVj419JR97Ee0
-	GLELR45E4eIae4yQkoxM2xCnbbUMaAhSBTBmdm28fhrg/Nd14p9w4tvanBcqU1Q2ug4Tu/
-	s13lNao0JM2afRLWiVJ+PLFYhpmL9vQ=
+	bh=v+SjXDyaIUskmylTeULQ7YpsBG7g1B+2e1JWTTH/oMw=;
+	b=LJ8Tyy/NprEhJ1xWl5tZRepKEJ7Bf0iHIWyvd/DvQB/j8JXueF6A951huLjm2u2D+cVJRC
+	q+dns6nOTW2bNzOJnTxthMxSXn4oLUUr7N1+ZD/bPOdGaufs0lY8JnEs6PwF54z8GiuLxQ
+	J1zBx6IR2GIfBmmIcQp4B6FfUlWqpDE=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: linux-mm@kvack.org
 Cc: jiayuan.chen@shopee.com,
@@ -70,32 +70,32 @@ Cc: jiayuan.chen@shopee.com,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
+	David Hildenbrand <david@kernel.org>,
 	Qi Zheng <qi.zheng@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Kairui Song <kasong@tencent.com>,
 	Barry Song <baohua@kernel.org>,
 	Axel Rasmussen <axelrasmussen@google.com>,
 	Yuanchu Xie <yuanchu@google.com>,
 	Wei Xu <weixugc@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 2/4] memcg: bail out memory.max when memcg is dying
-Date: Tue, 30 Jun 2026 09:29:02 +0800
-Message-ID: <20260630012909.144372-3-jiayuan.chen@linux.dev>
+Subject: [PATCH v2 3/4] memcg: bail out proactive reclaim when memcg is dying
+Date: Tue, 30 Jun 2026 09:29:03 +0800
+Message-ID: <20260630012909.144372-4-jiayuan.chen@linux.dev>
 In-Reply-To: <20260630012909.144372-1-jiayuan.chen@linux.dev>
 References: <20260630012909.144372-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: pbi7agokercize3rkfxuubgpuiesyy57
+X-Rspamd-Queue-Id: DA83940003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0B2F880004
-X-Stat-Signature: kqz35exng49nxynhru9q1w45ghunisi9
-X-HE-Tag: 1782782982-9880
-X-HE-Meta: U2FsdGVkX18uVsRa+zDgbW51Tg8iV9a93Zl+1yJk7Yo3rVj0CYb2RAs4osrOuhcyMLShlKH8SsdqD6CPPyRjha83bJJQE6DqzXEYOk5+5TPkHO7neN+9p3tvfm7V9NjFciPnIZokHY1hiYSXKTFJ6zdy2+aSM1mOkSVxlj7/Vi1xc9TCuAEhFm6i69R1eF/tQ02tnLXoM9H5P27aIhiMbRHpSJVKrwkbxa8l8w04rLQ++wJphNZ66xQwoQ7Slb+xUpau33Nx21E6lG38iigPguo/XkZR4Gwdd1GL2/u7QgObU6hDpGbrdDzIO/CyqBdCa3fP5Iq2pfTHHtHkMpWg04aMchzZozE20F4ZqeLGrsItZy4S3n6Rxow7by98h71b2353sopxTJtPn3JqC/jFmrSMwkaLSGz6zSGvpNENgiRvsAbUlwpEmzuvB/wzL68eKu5lrG3BAInhl7jg2qAaPT3VKY2t6tQ7HU9AAPpHUoepwuI4vKzsxgwTp7icv9Txn6D+cCNlHntoykUUy42uQQ4047ldKJ5yJSONNAT20GVj7V1/FcY+VWF0fw5VeezSNPr0cov6eQMYkc5hhFQ6q0HBpfIX2g5xaI/pVMzuuuSsIirxDVO0xT66vdD3Oe9Fxc/ct0xiehrMG6EXMrAAFpcLkj9ykgKUNqFSpNyTXRIE/H/+9FeaqfzWFpityKBMXNfXrR8iWE/SDYd4UNZgkL2UTxEya7mFJfsNEiWMmpPEZ1l3gjg2H1ykwfEbYNar0PINFc5iDedRmcJ0uy9VjtEZLcINjvHytswh9c2qR1AAPZArnk895vVECioQI/RL7YtAEFyqsiut9v/P4ETeFLyVCTDqRKdXR3CQnd3S5yR7tr+F89x8Mp4xtcTS+6JHV7RypsekiHF9+E0BNKHeajh1tNblHhu0pwfP1zVBdMF6nrlTZfd3J5TjyqMDLFH1n6EufdAbyUGN98rxrCt
- rHlCydJd
- ocLIkd3MKLJt1F77l4xnGCrtlXZKYI7Av54yEWvjFYhIjVUFgKA2AHF//sNVxN0iNxn4GkQ5QgiTBUvjyjoqPZXyaiITsZL7d8dmqEU1I1BG2zVekdgPlBZB68IY3EUZb3kbMkkFl7IbqiJzC5SDd4CYUqJ8KPLVTxoISuOCy+tdDFn+h1JcL8r6vUo+nna8eWXL7UQ/c6SjYulvG94Bix/lTO4VFDmKWB8TcubwbV+P6Gbo1mm/0F5qX9FbSr3QG7w7NtRwdyXl99hSGxwUp324q2DZ3bD8ZSLp+dV02J2oPzl8=
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782782990-31547
+X-HE-Meta: U2FsdGVkX18NSBm9s3FnIO2kOpEHQm+NuX/e3eySWeklwPBbvo5tD4AR0p4ba4FDnCKn8XTNUHyl8LXUO4WwagEdsDLuqJxB7vHlcc23c7RyKmt7TI07HvmOYyFaw3wHP+CP/uEE3BjGl9Q1U+zOocjV36F6f98lU6vJcaFERyEWecl7FQUK5D+baItAQVXdRa8b5/kWCYK87pq7JnS5Pw3UuZomCviR22kjAw7HwioADB7TK0692jZlR4iU83ISkv5If6XV8qI2f6N1AnNEhfxFg7/TO/xh8BdAdMreEEsWSJAs59+yVfEIbPTs4xz/J9Ra4+Ay83rTS0gjOryiUlmlx8LQVZcPOq0swzZZzHzuCMBo+VZUhETye3MxXw77q2P35cRGa0907Tm+bBvP+Z6DOgVrsm1roGl9gOIt9Qvr4DHLU6Q8uvxp9AVG/5DXBhvslKKN8KtCiI+6w4Ov7SNJUZUYFe2DCx9xuMTbxs6NEtI4mlNobS7jn4F5w7RmkCnpP/SZnu+YFjvpt4Z6d/8MyPxrC4LarOjLNJ6/ibQ3rmR6xuSTz9VaKJxW2s0Z4Q3+uuCHfRJnG1Rf+BExTWtDobv3eDF5yKUZTxttME8mGTBPcf4Ovl0UOuGsKZ6VIq74KkpF1wYyvkd8bSJwmTEbW4Og3BRCDB+Y1+XfFFWQ1ePxuBothp6ia0Zhs58+DfEShUeFrGDVXdL5OdcG8s4WspKNFWPYJXvyJu0v9cA0xar3hqnhc1drRkI9E8KX/TCBPu2eTOPQjxrpNHqGJJD86jFMPgWP2/x0qxQ4oUTGqHfvGH0AhcBTxwF3FRo6Uy3xBLG0eKepLeCaucHpqVBaPoS7x/6V5h+Z9wcSXHp8luq6GSyOU8b/updvnbsHyfIXO5lqwtW7BqXnjOaxb38UhjqVZ9bmYdDPQGLWZftaLoBvgSG4HiLrwORa5fV3BZiuup5ksFSZjxASO43
+ ZcILRPh7
+ Xv6Gtfmxn+3oay/MsrDbkhhTioNvOplmfT6aer66I7Wo8m1SX9nk9I6TSIS0Ie8YjO4QTH+3WeaREdRHMz2krtXRu9jDJgszE4SCVnm0oohX5iMLPpjXwFAkWJgpJy3M1fTqtdtcdcHB9xqkt1uPuUp6Y45P+AD5YIRAvQw7tIMWaUbSFZ4hLJ/cJWtnekk8QOdun9Sc9lEkMIjr2fyGp2RCFnPq08iZ/JGSH02j6vGGA3RunC6lHNBP8+2dnsBpBv8hjdVjTy36XcpsqByhgULVVvbytTmbbbT/xyJ0cc4Uf5/WifeLdaVmMgMBv6VTtbVrf3p5wZoghRrm7nQCCRLiQUn531C9uQN7x
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,33 +105,33 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-memory.max has the same high-latency reclaim loop as memory.high, and
-may additionally invoke the OOM killer on a cgroup that is already going
-away, further delaying its removal.
+Proactive reclaim via memory.reclaim can run for a long time - swap I/O
+or thrashing again dominating the latency - and delays cgroup removal in
+the same way.
 
-Mitigate this by bailing out of the loop once memcg_is_dying().
+Mitigate this by stopping the reclaim once memcg_is_dying().
 
 Reported-by: Zhou Yingfu <yingfu.zhou@shopee.com>
 Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- mm/memcontrol.c | 3 +++
+ mm/vmscan.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index eca9f6091980..ad5f6dfdc021 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -4848,6 +4848,9 @@ static ssize_t memory_max_write(struct kernfs_open_file *of,
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 754c5f5d716a..091b609cf1b1 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7912,6 +7912,9 @@ int user_proactive_reclaim(char *buf,
  		if (signal_pending(current))
- 			break;
+ 			return -EINTR;
  
-+		if (memcg_is_dying(memcg))
-+			break;
++		if (memcg && memcg_is_dying(memcg))
++			return -EAGAIN;
 +
- 		if (!drained) {
- 			drain_all_stock(memcg);
- 			drained = true;
+ 		/*
+ 		 * This is the final attempt, drain percpu lru caches in the
+ 		 * hope of introducing more evictable pages.
 -- 
 2.43.0
 
