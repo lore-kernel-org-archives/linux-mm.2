@@ -4,88 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ECC9C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 08:59:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30C57C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:11:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 561D66B00B5; Tue, 30 Jun 2026 04:59:57 -0400 (EDT)
+	id 0BDA96B00B6; Tue, 30 Jun 2026 05:11:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EB506B00F5; Tue, 30 Jun 2026 04:59:57 -0400 (EDT)
+	id 096926B00F8; Tue, 30 Jun 2026 05:11:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B4136B00F7; Tue, 30 Jun 2026 04:59:57 -0400 (EDT)
+	id F16116B00F9; Tue, 30 Jun 2026 05:11:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AF2E6B00B5
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 04:59:56 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8CC91120404
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:59:56 +0000 (UTC)
-X-FDA: 84935981592.12.83188E3
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CDF606B00B6
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:11:41 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4E40BA042A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:11:41 +0000 (UTC)
+X-FDA: 84936011202.13.9382B0F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6099A140009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:59:54 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=efH2a60X;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 734FE1C000B
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:11:39 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="hAZ/XGAW";
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782809994;
-	b=DCDLKn9wiQuZSvLlWAGtq9dGn0wf/CuVVx9krGDRK9ipF5U/Zrg5Yh2URLwXaIQiCljZrM
-	nXAT0HQgSXCeJmj60xHtgIHP6q3ePwhDQjga6dxrSH444ZRRqNe3mrtJ9Vs7LP3N0U8yfN
-	KwshyH8qeexx2cLDiamdRWIdZbqUOCc=
+	t=1782810699;
+	b=L4otET9tEE76rjZGMgeVJmh1JLPye0km8Ql2ZzIWJY77QKXWHNrVgT9heb8Nx4aMzF6NnV
+	rl7fG6cqi6ykqRaAIZZCP94BHju+kOKUvrED+PiazvRNeiadPJsRASIdTtXOsO1TuCKfj2
+	yGEvK0u0Z5Gyf18n10pbU/FAjOZN4H4=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782809994;
+	s=arc-20220608; t=1782810699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BQWLiAj5Np0iB+3CJvrayjt8jX/TQGhX10D46KwJ8ns=;
-	b=3sZ3kvKmnN8xf5OohXgfnfJrUj9INvI877R8JRF7vUPTP6iCPuTuozhDRhA4VWz6nfm3SZ
-	9g+xBOEHNwag9KoffG4MNIhlbpTLVEY0g8u+DdKEuw2XpknJ/UGbmTJRY2Yq5KEMGYrMa3
-	dGqs6gQ9HjA356kww8CVet4bhjUWaD8=
+	bh=b3mOfrJH916cwXqr+ZvwGijVGpltGH97Y0po0aXz5kQ=;
+	b=UVA/DMT+tJ9BcWhzaPwEpo2rbVsDrXAi//VhjT6EiEgH3YibTnahIuiquSQ3RW19JSnHYY
+	05RNJZaZoRyyNNMN71elJVjTkrmQxndrIjOkqT4RgzNz6cVIlYQlH1jSC7sm1goWuGuBwQ
+	5yFvJ6yjwkgPCp7RD2z65eXARFGYUTA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=efH2a60X;
-	spf=pass (imf26.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b="hAZ/XGAW";
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E31FD2C1C;
-	Tue, 30 Jun 2026 01:59:48 -0700 (PDT)
-Received: from [10.164.19.15] (unknown [10.164.19.15])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8055D3F905;
-	Tue, 30 Jun 2026 01:59:49 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CDF6F2C1C;
+	Tue, 30 Jun 2026 02:11:33 -0700 (PDT)
+Received: from [10.57.81.132] (unknown [10.57.81.132])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B07BD3FAFB;
+	Tue, 30 Jun 2026 02:11:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1782809993; bh=3AqJp5i7XIK+jRB+gWzzbQTkxN1da8ybVT+nch5RbIk=;
+	t=1782810698; bh=Fp0iKtIQ8WSu99tEd8oJ9ZJXm1jtTIlwqw7RjhGDc+g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=efH2a60XTMLqXCin030aJfgiBIrLDjzaEAGTvIuHMIxezgFdlj/vhszDkAoTvyvr9
-	 SuuU8ohtWyZDhewEGi60YBBMw8nakSWsmsr+eNWPayC7fveSjZuZlobeLjNTC8V/Ig
-	 pA/O46kRhBqwq5NjpKC99EwbVh5wWlc+np71zIeo=
-Message-ID: <5d72fce2-5acf-44ce-bf5e-3ee74611c6e5@arm.com>
-Date: Tue, 30 Jun 2026 14:29:46 +0530
+	b=hAZ/XGAW6u+JKDyTjbV6aaMnWKHnBmN3C6nhJhtMaxQUv8mY4WutOy1CIUH1h5PaP
+	 P/y6MGDQDKu+Z19IQ0YpQlt8bdC9TQbsdY9hXxRS0fUKaQ9OtMPJ/oObIJO74x36xf
+	 UBWKMVwAmj18UEiY9Kpxmydd0hlAYSLfzTocchLg=
+Message-ID: <94cadab5-41c9-4127-aef3-14cb25415363@arm.com>
+Date: Tue, 30 Jun 2026 11:11:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: hmm-tests: include linux/mman.h to access
- MADV_COLLAPSE
-To: Zenghui Yu <zenghui.yu@linux.dev>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: jgg@ziepe.ca, leon@kernel.org, akpm@linux-foundation.org,
- david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, shuah@kernel.org
-References: <20260628143111.36863-1-zenghui.yu@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20260628143111.36863-1-zenghui.yu@linux.dev>
+Subject: Re: [PATCH RFC v8 01/24] mm: Introduce kpkeys
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Linus Walleij <linusw@kernel.org>
+Cc: linux-hardening@vger.kernel.org, Andrew Morton
+ <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+ Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Pierre Langlois <pierre.langlois@arm.com>,
+ Quentin Perret <qperret@google.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org, Lorenzo Stoakes <ljs@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>
+References: <20260526-kpkeys-v8-0-eaaacdacc67c@arm.com>
+ <20260526-kpkeys-v8-1-eaaacdacc67c@arm.com>
+ <70f4dcdf-c45f-47d3-91df-a7897bd86ff4@kernel.org>
+ <CAD++jL=km9hqTuTMFUhyx_QPuMEwWqmnUVQtPtMXnp8paHH1_A@mail.gmail.com>
+ <9b11b0c0-dfc7-45ba-934e-19cd053e5635@kernel.org>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <9b11b0c0-dfc7-45ba-934e-19cd053e5635@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pu349o95p85hxrf1rg3gnix1p4mk68zp
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6099A140009
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782809994-82715
-X-HE-Meta: U2FsdGVkX19j05yNCrGZDHJQ3R6Oz3AfyKE9APZw0NN8w0lOjPvL2RpOsLOEGxYvKfcHvlPRVizAXz+GUz9Kc3cYUDWl3T7AqhX0nS8UA9m8/CeJipSsMbW8Gvwk2FoZ4PE79xCZDz7komVVKM6Mb7UUTJ3dilmte/jT9izPXRZPm2efDzBz+NkixxXjkw2GBC8cuoo+IWwv4u/F21/qwJcnkje+/jgiWd6AdQGwQJXNGG6l5M86VSLI+M2vfe4IMURHMU8B7Ao27tPH1KhdoLJFPo46z8dCJs6YmD2CTnbf0YvuDbtTq9ZlzHWQJrvtkwHevLvfAyTW0oUCTXIjzrJqAHupiPG6uJfd6vTA/9bgAWnUNaM/X9WyS6IhMAxGxYlcMl7CBBSB53vEG+f6jvzzkCKu3+TAe8GMd/whCF6ksjFDGSfuahfHxfhCn7u8r/GFVwQgUtxCBtJg+BDUQMxIw67qdXNgcvI+XncTLdJUBm/OS+5gRnXX7jOLqC07PWBA3FRxkGXjE4bdyTpkvjTmfcG/Or2HBD5dTweq7bRZreKQzzy4KQxvnbJQ9JWL7/4CCazPtjv0BIInbwt1H6lilvlibbJXd7dvYQrPMLTdaBZrZGoegsBghCiY8vEWofKjCS6sbWbOeUSQi2DK7H352Ys9zNR0y2e0FdgHBu0vcBDpUN0ToJb3NCmn8/2uSrSVF60Z+aiV+HJDPrxcBUHp2Pow97VV5usbNS4xPxDBo2uy77nNgcUXji+yVxUp0DYJhbOU8VTfAiuzeaEZJOhrymilmRfqIock42B5yd51M53vqbOD7IPxELNMa+hYxBy5x234FOqnxjk4jL0eooyvYmz8ivdayyB0Plu3iE7aQIAdqXOpEyzhA+WYOC1G7KIHKx+fsacIeUiGV9ew6TKW6HI6mmtgxorrnjw/epB/p0DhKOraiWuCO8+sIwqk2YYTeocZiTUiRiyczmm
- NBar8M47
- FW3BK8ei9BaEsrPhIj2yBIBuGlRZqqAZgPwkXv/R7+CqmzcJQ/vswuelD6O2r8TIdEzm12PKpnmPhQl4zuBVDHqF1HaX9t035hhyOKuLMHbxj3O6tkfZAAzX3J2tmHldUGVapFd1zg/81VwY8yNz0R9TfdQ/OeSNL3KOaOqfbPx7iOiQLTYHnKFHQvz2OqSWjzRnthGnTmBiMgNjNEhXV8tu7wUpMe1WXdyDGenpmiXj9iPbqOhLed4waOf0f0S9zVbk/JH8oSbHVui1LOK1zNaWQG8JFvLDpb4w8jhgG4VJD5sljvNTKra8sKkM5MvuP0Go8cedCjOcGL1tOEN4n26SHDEwdNZvu+CsEyXkhqyRQwSXS6bWD/iweIXi3v93urJz5
+X-Stat-Signature: c7shhjbb44gtoosyr3dj9j47gr1mxnap
+X-Rspamd-Queue-Id: 734FE1C000B
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782810699-464740
+X-HE-Meta: U2FsdGVkX18b8Ra6D+DOhUdawL4x31VMJ/wBFgoLHswgSn9GTBlNOOPVZ9B4unyiU6vjqOjErNQs6TN1kXt3P0tPhUFRuUHPiFc/cP6ZI+aNXL/Ck5IkRQBqy70R3KKmnMI1OM4C/yxC7aXy1SDsdJntTbhEaEZsqZyQJ+v0te1coHCyuJXyqiF9UtCpbkuN7QPCczRowqEjjqlmNv2/8yM/nzwUgc4iS9lHAd0o7AgWf9+29gj97VHU8RtOXao+lVF6UKgc0roYchYlB7XNscQ0Pe+Vs3BWW7GW4ulh5qjrBnmZXCqmQZCA89m/yuK5FlopPRCi+8WewJ4FqtvT3EzMON2PYleaEt8J5tZ4MSJWRa/uLEhue4yVUbc0EASh5+YmJJ8SU0PfXhVoWkeusrvdD+LXcqnVPZ7i8S0q08V5vqhVoVovqh1Y6mwa4Oav8Po9QE5VctOIh9A7wMe+ykc9r7zEVkgHbPoHl1VR9/gfVfBvtlLo1tHuLk2N+xlNQhNdBkdFQJVTisrXE6ityumbYJigAGoZpnpn5GgYlskQMbaKeNrNB2EhNyul2HQi8psqDIrGQxBF9vQwk3kcxjrMPNu3/c4ShaaxhFWfw3z14T5JL7NBpztdhsXlgdhRRczrDH4JzMwzVSWJVXlchc2iO2Khw9H+2jyB/EsYWHXsseZ/hkC0qqEAsrC7Gn3ryENrAxFgD2VyYEqqNZtjWYcb7msGwLs8R9hJhS4NU/rGVD1kY+iaGHu3jc+M2wd6J8a5w/6ZRCGwAsHiUElnphlm1+PEpEG81c5Ef0Ouemvwi/LwGGGpLJLIDbD2Wd2HD1u5XzsojPGENzXePktPxAQ/kSJJvAEwCZVx+3WPZIVORIyS3i7JiDwVB1xvhfBQOF+BRhIuxsTXNPg1pRC+Cu/RZPxpgySRVS5yX3l3qlcfxSggoYBRhGFaZRQyrrPxAFRjYeVTThv/PLetHDo
+ a11aeqHD
+ ymcLF8qRPGS2WX0iA9YQ3neO/i6bW6cUhsgSP3BohloGaxvW6GS8RHdOiycQV0pn2+VzueARC9tS7cT6CYkC4F9OLndDeLnum1erWoAgYGdhb0nn6yjThkdSDxYCTac0BvQ2bYD5mrrJWDaY2C0ig1qlok9Hf21UkZJyVW2gbDByM8txnRFvtB+Izc6kC1Ujr9tRcEACZrJHlHC6H2kq1IkT+4+eta3IM5iTWy0QOZYEF67042qQdUfPaNOAnT6VoTH8wyS5PNGDagsk9khllsi3cjWtK9EDn5mpj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,47 +111,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 22/06/2026 20:38, David Hildenbrand (Arm) wrote:
+> On 6/18/26 15:22, Linus Walleij wrote:
+>> On Tue, Jun 16, 2026 at 5:19 PM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>
+>>> Looking at this, and wondering about "why do we get registers involved in this
+>>> API" I would probably have an interface like:
+>>>
+>>>         arch_kpkeys_enter_context()
+>>>         arch_kpkeys_leave_context()
+>>>
+>>> Whereby you return a "struct kpkeys_state" or sth like that.
+>> This is close to what I was looking for as well.
+> Cool :)
 
+That's probably what I was looking for too, without knowing it!
 
-On 28/06/26 8:01 pm, Zenghui Yu wrote:
-> The following compilation error occurs with an old version of glibc due to
-> a recent commit adding MADV_COLLAPSE testing:
-> 
->  [root@localhost mm]# getconf GNU_LIBC_VERSION
->  glibc 2.34
->  [root@localhost mm]# make
->    CC       hmm-tests
->  hmm-tests.c: In function 'hmm_migrate_anon_huge_fault':
->  hmm-tests.c:2355:27: error: 'MADV_COLLAPSE' undeclared (first use in this function); did you mean 'MADV_COLD'?
->   2355 |  ret = madvise(map, size, MADV_COLLAPSE);
->        |                           ^~~~~~~~~~~~~
->        |                           MADV_COLD
->  hmm-tests.c:2355:27: note: each undeclared identifier is reported only once for each function it appears in
->  make: *** [../lib.mk:225: /root/code/linux/tools/testing/selftests/mm/hmm-tests] Error 1
-> 
-> Include linux/mman.h (which provides the definition of MADV_COLLAPSE) to
-> fix the build error.
-> 
-> Fixes: e3d8707358ea ("selftests/mm/hmm-tests: test pagemap reads of PMD device-private entries")
-> Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
-> ---
+>> enter/leave makes the code look more like generic entry.
+>>
+>> Passing some kind of state cookie around is inevitable in
+>> this design and IIUC Kevin argued that it would be inefficient
+>> (another level of abstraction) as opposed to just hammering
+>> in the context we want, where we want it.
 
-Reviewed-by: Dev Jain <dev.jain@arm.com>
+I must have misunderstood what you meant in your previous comments, I
+don't have a concern with performance here.
 
->  tools/testing/selftests/mm/hmm-tests.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-> index e4c49699f3f7..2f2b9879d100 100644
-> --- a/tools/testing/selftests/mm/hmm-tests.c
-> +++ b/tools/testing/selftests/mm/hmm-tests.c
-> @@ -23,6 +23,7 @@
->  #include <time.h>
->  #include <pthread.h>
->  #include <limits.h>
-> +#include <linux/mman.h>
->  #include <sys/types.h>
->  #include <sys/stat.h>
->  #include <sys/mman.h>
+>>
+>> But I think the compiler will optimize that out by constant
+>> propagation if the backing architecture implementation is
+>> simple.
+> Yes, it should be wrapped somehow. I don't think this will be a problem
+> performance-wise that cannot be solved differently.
+>
+> Returning an u64 ("register") here is really arm64-sepcific and should be
+> abstracted.
 
+Agreed. All this looks very much like the new lazy MMU API, and doing
+something along the same lines seems perfectly reasonable.
+
+- Kevin
 
