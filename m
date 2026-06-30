@@ -4,129 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5118C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:05:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCFE1C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 12:19:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 963956B00FB; Tue, 30 Jun 2026 08:05:43 -0400 (EDT)
+	id A6E1C6B00FD; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 914366B00FC; Tue, 30 Jun 2026 08:05:43 -0400 (EDT)
+	id A46FA6B00FE; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 804AC6B00FD; Tue, 30 Jun 2026 08:05:43 -0400 (EDT)
+	id 95D6A6B0100; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 442166B00FB
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:05:43 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CBA321A0481
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:05:42 +0000 (UTC)
-X-FDA: 84936449724.15.0310AA4
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 721A8A0009
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:05:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ssb8Laqy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CXix7dh7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iC+oWmZD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vhif/LMX";
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B78B6B00FD
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 08:19:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D44C61C34B9
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:48 +0000 (UTC)
+X-FDA: 84936485256.09.D737B8A
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7B5044000E
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:19:45 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SQt+qN5Y;
+	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782821140;
-	b=XONYpZ+a3sBTw4HYlGlFIv5rYYsESLD1bstdxPBGKrMb8LKaorGlthxfLgn91hxHr0DizQ
-	smUnuuPjHHZISRMMTlsYfef1Fz5S6xtaDr/2JMsxQqt7X+qVckC2TQSDXea7bs9Z3Hoi7/
-	nSyXdjog5usPSe5y6hAYMOT0u82p7rg=
+	t=1782821986;
+	b=W4gVmccIMZEmAAW+AYqftjrvkgmUN7SZkoACnWeiuTZA9Nm15P3PYnOyEnAK1ib8C7KKLJ
+	7XiJjboLU7288eY84gJVpiaMBfgMjJgY+Rij22kN6sCaHUUUFkHxNMX8zkwDwqdP2XeUPJ
+	Kkts8SYSDcxmqFFrw2Polf7xZhR92EM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782821140;
+	s=arc-20220608; t=1782821986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r6qeYl5QdWsqI+hopgAOLmohwbxl23aNjL7MQDQYJm8=;
-	b=2PxCCCuakBagEWGHXi69gcr57urTjgBfY82j34xCED0R48d5HiQY4dACdNqjNAVpFfYoz2
-	o+Rd5uMQeIFuQliObZdUjIB17PNT0zutsQx92RyS4Ij4O/7INmPx0jVY9Sey6130IjDzIt
-	WdGDPwTUXZme6a+qx+GLx99ODsiV2f4=
+	bh=DDGTaeRRb3D8M5qicYQpFLUVvv74PX4dJAEV76CGQQM=;
+	b=o7GmipKgDiGNA2FGPvHsqG9BXvU3AiPmDDqMvoGjAbLOIQnIyGep1P7yG2mUrFaohDRQ1c
+	GeWh2AxPPs+RVDubBF69gihAgLjS+k8zDmz4Cm2nnY3oQorWvhqIo0MEPCWYPGvs2TyIWZ
+	z5lC3VNpXdfRzNXx7UGkgDPDYghYxc4=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ssb8Laqy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=CXix7dh7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iC+oWmZD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vhif/LMX";
-	spf=pass (imf25.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id D1CA571A01;
-	Tue, 30 Jun 2026 12:05:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782821138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6qeYl5QdWsqI+hopgAOLmohwbxl23aNjL7MQDQYJm8=;
-	b=Ssb8Laqy/DH8yJevDGsofF+FkMfbKxppLq3zzL75AnwBUMgmCassqeJSC1bur4Fx+9Cxc0
-	vXBHz9v0ZQjnk7JYEyBLTeaOLPQzSs91ArHwCimaJnoPWpwb6GJ1VX1UhkCKrNjo18HdBD
-	vzT8fg8Y4fkT6/jDoI3dJQv6hREKqrU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782821138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6qeYl5QdWsqI+hopgAOLmohwbxl23aNjL7MQDQYJm8=;
-	b=CXix7dh7ivvnopTgFv7snhSI+17JyWsMEa/40afS4xKzqU8JjKa0E3QlYlZUbCk4R2Lbv9
-	ajtbXLcaLohjaeDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1782821136; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6qeYl5QdWsqI+hopgAOLmohwbxl23aNjL7MQDQYJm8=;
-	b=iC+oWmZDdRvrKhlZfLlXoMQm++41AY+51Zp5mProfKqDC4jq+3rxYTBmngb6VdF2obC2uc
-	t16k/ixaIAi414I3UZcm/9Cd2gEwxfTtpQ+eyq7HKkw9sNfYRWZeUiTGNn/uX5RWn7MVzZ
-	n/np9tq5k02gUBIz9QSJG9xf/yVC1K0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1782821136;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6qeYl5QdWsqI+hopgAOLmohwbxl23aNjL7MQDQYJm8=;
-	b=vhif/LMXhIUzPz8RC4A6mfbNxF3PA9ZSv1E7t6ibGANjjwoebxfAdYAb0dblMSkCE/ENsk
-	rtv2iEbDZFHDwuCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BED06779A8;
-	Tue, 30 Jun 2026 12:05:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fzGMLhCxQ2qkbgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 30 Jun 2026 12:05:36 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A1B67A10B7; Tue, 30 Jun 2026 14:05:33 +0200 (CEST)
-Date: Tue, 30 Jun 2026 14:05:33 +0200
-From: Jan Kara <jack@suse.cz>
-To: Zhen Yan <yanzhen20011121@163.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	Hugh Dickins <hughd@google.com>
-Subject: Re: [PATCH] mm: fix mapping_seek_hole_data() overflow on last page
-Message-ID: <tikbuxxazkmz5obcf6llp342vn7bi5tlgbbnuliw4jlwndj63e@jkp5g5oj6ug7>
-References: <20260629164932.b91930b0497e8446a2a549d2@linux-foundation.org>
- <20260630031226.3141360-1-yanzhen20011121@163.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SQt+qN5Y;
+	spf=pass (imf11.hostedemail.com: domain of xiaoyao.li@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=xiaoyao.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1782821985; x=1814357985;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=eazOhytQrFMvUq1ReP67qLKPgCSBV6aajIEIlT27i24=;
+  b=SQt+qN5YI5wEPY1Gg31FZfJ3I43eP6NShvGnrq4rE6MoNf30We6MlApG
+   +F1mOX6Xu3FubiPDlSYLFqZAtLpP6LBEy3o5j9wISir5pQR8W2J4WzSVz
+   4a5ZamzDZGuHsjc2C/w3nteeXrs6+yUqIjtEBGMEmCxm+zpRO/nl1YqZE
+   Oyl9R4rRwOUhmgPNbfBLgchJx7N+zToN+y+5yLmRM8ghF7sj+L+ou4CvP
+   XgS0j+k52SD6lVxKmmeteg9ZfIRI3OrGll00STsZiUOE32xwSZfUC3u8S
+   jsWZK5pH6QM35nVFzunD4VZ7GnwtVzMNzpV3Ko+ZTDO5aOwiFbt+m0Cn5
+   w==;
+X-CSE-ConnectionGUID: 9U7z0699T06InBqMMlM4vw==
+X-CSE-MsgGUID: Gdwhu485R8y+czbUGg6ziw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11832"; a="94683315"
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="94683315"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:44 -0700
+X-CSE-ConnectionGUID: B7OjnqsRQEixcvKJEwnbxg==
+X-CSE-MsgGUID: dfLIyfHYTAKDobdyePXMlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,233,1774335600"; 
+   d="scan'208";a="254160487"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.70]) ([10.239.158.70])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jun 2026 05:19:30 -0700
+Message-ID: <a8b4641f-ae3b-4b19-81e5-84e3c05b9760@intel.com>
+Date: Tue, 30 Jun 2026 20:19:27 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260630031226.3141360-1-yanzhen20011121@163.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 09/46] KVM: guest_memfd: Introduce function to check
+ GFN private/shared status
+To: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev,
+ binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com,
+ david@kernel.org, jmattson@google.com, jthoughton@google.com,
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com,
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com,
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com,
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com,
+ aneesh.kumar@kernel.org, liam@infradead.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>,
+ Nhat Pham <nphamcs@gmail.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Baoquan He <baoquan.he@linux.dev>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev
+References: <20260618-gmem-inplace-conversion-v8-0-9d2959357853@google.com>
+ <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260618-gmem-inplace-conversion-v8-9-9d2959357853@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9h94c8kk7xk69opcwpitgytw8fuaz58w
+X-Rspamd-Queue-Id: 7B5044000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 721A8A0009
-X-Stat-Signature: x8zgfyy9zy4ttm9x1cc3ppsad9oiknzb
-X-HE-Tag: 1782821140-962582
-X-HE-Meta: U2FsdGVkX1/67TV51csQa7rW4j/UU8r48d3knaaDA/119RC6qGMSCe2Ap2hBR2hc047o0T8xhS11FpDCpoDclIvzIu4F5J7clmRPHwvv9c2qb4AnH4hj+hOTzCf9KnHK+zZDlhL3qhvPWA2Jjc4WiQavXixtqlNZZglB22szGIooylLo/jjfmi9qJ78kzdqAwGWxg8ltl+xm5nn1MEoaZpWgHW2b4x7w0EIyPV/33ORAK03wNR00+xy73n97wD6CpS5aA4pmZPcKy+CqgjbrkX6elw+Sw/oNiBaL1VOsNCjiWVL567KvByA1yieTaAsMUkdsTu36Ld5d7s4hrOEl1yp0XTx4oHGI/l9+zRn8InTsPmsaqI03A2KxQh24aRjqFPz2UuZcPQjJiGfyXUoCBLUxwxuCi6UKLfkg6aCt7S8ECrZYmQ/E58R/GTwNGJnfyO3cb6GXaO2ario9552prznStoQvbjjrmmkY8Te0vnu0JvYF5JWJb0cpdwul2fZy5I5GioNNaHoxuvurEJ28T6a0r558nUaz41MwFeDNdt+ADOWEuJT9OlUGnRYmaok7lAgJoCCRlis8rVhpiyLFYZZ2irJinMlXkjo5p7T8dhBh6/iCsnV88Ed0EmifeqTsaktP9Xmb98/t8CVyTcRPROGWVfJ2ipeRjUZgIJu6V+EFtNF4RXPl2VW5JbM933q6aVan1AEJlRTzDBKS641cXjRJ+dLhEE41KVxIW8qHlJMamgbFxuLBq5mzEQy/iegDXyY48Xww2+7TY6rPh8Inuzf2OCmzy1gg8I9+1NmqKjVygOqTY9ezqFe1iOcEHoTCkq/AhAiwUMuAJIpd7Q0CHfH6rqIivU3Qlk/t+uBpQ3qrcSYHA/5gZh2pBAim3I4DYTTRAU1r0CBdtU6b4xsmdLI/QsubfZ9pdtnWaSQ3RL1iIy6R16uzhovAUbjoQBXWeqnQRhpVAXqQ9cLrtsi
- Fr7S07t8
- 0e3F98DQYuLkOZp9zuQJAwVENX22EBCU8XwdWw1ar5PfsnC834H8yMZ2l7jhBt1oruMnjTWa/ZeVby/vWIrDq9uwITta3sVJDQRpxigOtvH5YaCRm0hrO5z8t8isv1v4Opw3ayKhDX7S1hZSNgi5qfYXOa02KUCsd7XV6/IPyjWxJRSkLV6OfZx+xmpe4W7NmgiDx299uc3vc0ecoIc2cqjJUHnzjzZJYwZ/IWGamLxoh33h52DBP3Cnz7UZw5QxK5hlZmEedcqAP3e0dddv+3D6wPYkweG4Ga2rv9t48hdMvco4vnFcWU7I57JG4Fi/0KiE9SRPMaS7EEz9HF1xe0dfExnc0Qxg2c/ADpsASCvxXyd1B35FfW46+oUO2/ujynpS8RfcC0QSj7uhbyBCDUVx4Qi/wb5AhbvwH
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1782821985-398984
+X-HE-Meta: U2FsdGVkX19uQCro52vpYnuTkCEd9V7AnH8/WZLhrHr3Puwr2ip5pfw9K4855LVnnhiUcfJy0B/NNd71d4V3PNpKBk+AmDxDP0z1vi0JerIVZw1aQ0ij784pFYUD8Il1c/2GANApAm16wevAG53VKjGp9hR4VaQZWS1DchXKumrDflk6WjW9mvKsRX3LVvOU7meTTxFo/v2+4pdWkt+5VLDDu5axWr51D1O6cGtX6kP6pd1KYmVZhLAFnl9sc/A3Rr0vHmHoLZfP0I4sNAuRwL/hBDZ4gSpamgTTpTsnNJ4oX6bJ4Qc+u2gSQ+r3Pd+zGn0UdX+PcMlcnU1x60SZeoIiYUdgOUi/G+OijZBX6my4MfX3rOKBEHDzn+qUKMiYfteJ9JeKPSUy2vzPf4V5hbomd0ddhJnPLxlyJNLDv+SxttnIoQof2p8o9BhN/HzwebAhiy2qY1diZ2VebpWubvYc/cSAm1Ha7u9wGitwL485WccWmLuxIp/1jn65eucBWssISOaAn7yXYRnb4ph78mMoBC5ERxLuKuu+pT3IPWS7DdQZVQgBiRFSsZsqa+XtsPujAen1kRE/fdRqLB7CPiFrZAEsB6hCOohfx41lUCGVeRUJRw0NhK2nxj7FYOpAA9RlewDITZ7CDftVO7vbE6n0LyNrZxALMpfU3JLXyQT1q2pNAzAEb2FC2DP2TJ0MPr3HrsPUc4GbwlfnFbggM4H4D74an13tZrUvoCJykJ1v7HuVVUzY1JBatOpPahr6Sw/TMX2oRE7rLN97VepiTmyMsEIuFPwv61Ra+P0sWqejE4dOL1QynMjoGZ4eaumaYzEJKfigd7u3bruhQQHf9Pty6tPJUl3kbDTuXXRqBptuJoKYlD5gLmcLp3D82c9Jpo0/fBvdv+WJS0DhckfCCKs/DwIo9d0OP89Cq7RtshVYKkvZTZbYh0XwUxdyiHvu/zKKIZKRa9nVeDRaJQH
+ MORwNNPE
+ gyygyccBIO4hpq84zXvItbpHSgzM9zoeze578DuKLFraI5+hnQavhLiD7+KZPt7DqFLB+OMkazJu797FfzQCGp6FY3VWMd9dHAKXuytxrwzS4gaLwE8gNJ9m9d1MzBqL1UCu8EGNcaVlzU03+WLL8iN7Y5ZFbXftUniU0zWiB7+XGGukIYn7OTP+fVOgG1u7wxTjpVvOdcpS/Sd6TjJbfrPyWefLBk7ZkLGWPlvQJy+X2FhvKkPZY4gFTDsT/7WUvqI3S+89ZHi/n0quVLibwEOm9iqcuXcd4RCWn85TpAsMO180=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,70 +134,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 30-06-26 11:12:26, Zhen Yan wrote:
-> A local unprivileged process can create a shmem/tmpfs file with
-> i_size == LLONG_MAX using memfd_create() and fallocate().  If the last
-> page is present in the page cache, lseek(SEEK_HOLE) on that page
-> returns 0x8000000000000000 as a successful offset, which is LLONG_MIN
-> when stored in loff_t.
+On 6/19/2026 8:31 AM, Ackerley Tng via B4 Relay wrote:
+> From: Ackerley Tng <ackerleytng@google.com>
 > 
-> The same file has readable data at the last byte, but SEEK_DATA from
-> that offset returns ENXIO.
+> Introduce function for KVM to check the private/shared status of guest
+> memory at a given GFN.
 > 
-> The overflow is in mapping_seek_hole_data():
+> This will be used in a later patch.
 > 
->   pos = round_up((u64)pos + 1, seek_size);
-> 
-> For the final page below LLONG_MAX, the next page boundary is
-> 0x8000000000000000, which is then used as a signed file offset.
-> 
-> This violates the lseek() ABI for shmem/tmpfs: a successful seek
-> returns a negative offset, and SEEK_DATA can miss readable data at EOF.
-> Hole-aware copy, backup, and sparse-file scanners may skip the last
-> cached byte range.
-> 
-> Keep mapping_seek_hole_data() inside its documented [start, end)
-> search range by clamping the rounded-up position to end before passing
-> it to folio_seek_hole_data().
-> 
-> Signed-off-by: Zhen Yan <yanzhen20011121@163.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Co-developed-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+With binbin's comment resolved,
+
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+BTW, it looks better to move the patch 01 just behind this one.
+
 > ---
->  mm/filemap.c | 2 ++
->  1 file changed, 2 insertions(+)
+>   include/linux/kvm_host.h |  2 ++
+>   virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
+>   2 files changed, 33 insertions(+)
 > 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 5af62e6abca5..22a1534ec8b3 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3234,6 +3234,8 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
+> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+> index 3915da2a61778..27687fb9d5201 100644
+> --- a/include/linux/kvm_host.h
+> +++ b/include/linux/kvm_host.h
+> @@ -2575,6 +2575,8 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+>   #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+>   
+>   #ifdef CONFIG_KVM_GUEST_MEMFD
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn);
+> +
+>   int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>   		     gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
+>   		     int *max_order);
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 8101f64e0366f..bca912db5be6e 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -510,6 +510,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+>   	return 0;
+>   }
+>   
+> +bool kvm_gmem_is_private(struct kvm *kvm, gfn_t gfn)
+> +{
+> +	struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> +	struct inode *inode;
+> +
+> +	/*
+> +	 * If this gfn has no associated memslot, there's no chance of the gfn
+> +	 * being backed by private memory, since guest_memfd must be used for
+> +	 * private memory, and guest_memfd must be associated with some memslot.
+> +	 */
+> +	if (!slot)
+> +		return 0;
+> +
+> +	CLASS(gmem_get_file, file)(slot);
+> +	if (!file)
+> +		return 0;
+> +
+> +	inode = file_inode(file);
+> +
+> +	/*
+> +	 * Rely on the maple tree's internal RCU lock to ensure a
+> +	 * stable result. This result can become stale as soon as the
+> +	 * lock is dropped, so the caller _must_ still protect
+> +	 * consumption of private vs. shared by checking
+> +	 * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> +	 * against ongoing attribute updates.
+> +	 */
+> +	return kvm_gmem_is_private_mem(inode, kvm_gmem_get_index(slot, gfn));
+> +}
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_is_private);
+> +
+>   static struct file_operations kvm_gmem_fops = {
+>   	.mmap		= kvm_gmem_mmap,
+>   	.open		= generic_file_open,
 > 
->  		seek_size = seek_folio_size(&xas, folio);
->  		pos = round_up((u64)pos + 1, seek_size);
-> +		if (pos > end)
-> +			pos = end;
 
-So I agree with your analysis of the problem but I'm not sure how this is
-supposed to fix it. If pos was offset of the last folio - that is
-LLONG_MAX - PAGE_SIZE + 1, then round_up() ends at LLONG_MAX + 1, which
-readily overflows to LLONG_MIN (pos is loff_t). So pos > end will not be
-true and nothing changes. Am I missing something? So I think you rather
-need the condition to check for something like pos < 0. Or maybe use
-check_add_overflow() to make the overflow checking more explicit.
-
-								Honza
-
-
->  		start = folio_seek_hole_data(&xas, mapping, folio, start, pos,
->  				seek_data);
->  		if (start < pos)
-> --
-> 2.25.1
-> 
-> Sorry, my previous email may have been lost due to network
-> filtering issues.  Resending the revised patch with the
-> requested changes (tabs preserved, CCs added, signoff added).
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
 
