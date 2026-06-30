@@ -4,91 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E98FC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:15:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 485B9C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 10:23:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6004D6B00A7; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
+	id CC8506B00A5; Tue, 30 Jun 2026 06:23:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B0CB6B00A8; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
+	id C79976B00A9; Tue, 30 Jun 2026 06:23:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49F5A6B00A9; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
+	id B8EC26B00AB; Tue, 30 Jun 2026 06:23:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2579F6B00A7
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:15:33 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9E77D120440
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:15:32 +0000 (UTC)
-X-FDA: 84936172104.05.B3CBAC4
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FAA96B00A5
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 06:23:22 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 211721C325A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:23:22 +0000 (UTC)
+X-FDA: 84936191844.25.43BE623
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id EFF9440002
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:15:30 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/XVErlH";
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 8BD1A2000D
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 10:23:20 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haSJO5sD;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782814531;
-	b=6tID+9IFRBWJGmNy269j+L4BboIlyqpRQAwsWTOyzF0yACtENlWMZEGR4wCbyk9q+Ei8lQ
-	adETb0AW6PQLHElTV6hpr8LdAHoO+zSET5jSM0heBMXFVkNUJ1R6X1sH5eCVdfVOTto7rB
-	9KtZ5gY4ny2IKdDcqVLdbJOgsQcmCsg=
+	t=1782815000;
+	b=VtVx9URwOWM+708pGhoddWFuvkS7QOGkaRXr25GLRh1BESx1lrGx0fxtMGuf1cMgGlm7Ag
+	8dNbB1eLQsfJd/kIYEq5MbOmL3WFYhitfOKpTdL34PESBR4UHxIjoqNZ73wo0SD97buBMM
+	U7sMKIc/qnIfiHVILZJPwHVBCxvE28k=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782814531;
+	s=arc-20220608; t=1782815000;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=lI3NPkDDbaOtWN0AagWeM0hopceUDy8AbC/aW08cank=;
-	b=6tiN34k+VF0ewDnWOWby4DwAoSBOhlMu/g5JldMmaMQWdG8+9pE0iTs314dXUDls5u2WGb
-	/NNPBJ7nYWxS9jwu/YnXzmKT6EXeEOJulRwu6gGx1V0AnudARX/zmZURdYrSzAy/XrTesX
-	GvQcVbnwiCPJbpGILNbbnhK+rr/edFI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=49ts4IqbNlyVo/a5KI5Cw42L0znHHzETSbQQLPw8WoQ=;
+	b=D62hyWOHTYk6RrftgjLQn9XAM/XfwVsBdgh//hlO5sgOv0wH8LwyZRWP7t2t2LBGPffvnv
+	P+lAKl00ZsFDft1esOExOQMMAeNN+cy7gV1+s/IhNynWtIQslzqJUOqfrtbXGTYUE5MpZM
+	6fBxof5Yfbvw53eVqaac5Ej8nGySCr0=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="l/XVErlH";
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=haSJO5sD;
+	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4F04560008;
-	Tue, 30 Jun 2026 10:15:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F3631F000E9;
-	Tue, 30 Jun 2026 10:15:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EF6B260008;
+	Tue, 30 Jun 2026 10:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6BE1F00A3A;
+	Tue, 30 Jun 2026 10:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782814530;
-	bh=lI3NPkDDbaOtWN0AagWeM0hopceUDy8AbC/aW08cank=;
-	h=From:Date:Subject:To:Cc;
-	b=l/XVErlH88YHdtfHcc78riCZQuDZj2CApRlflyee2XodqHkXoiIDMdoQUkS1S5eGl
-	 uyj36gRnqTtrjcrTP4N8lCyFa85YB8QuzW8p5/Rj4CK9W0huMjYOUm9Gri25tzTGh1
-	 dZjTDb3Ou/C0xjPDleCfCOu1p2H/0qkUhfA1xrf2ywR1qYHlpo2U24iH3FhfpOOTlF
-	 HNxjgrrrJYiiJE/+TfPzUwrmP3FEEnsb9SHe+0oaeHcXN93RxE5TAJh6i87/LT4LuO
-	 6sTmXS3Tk9pLS0q8oCzxkUZDSzJRHkPD9ppMUds33nUS27ofwQauVj9d1kNZ3eZbnD
-	 JkpwyjiADTnLg==
-From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Tue, 30 Jun 2026 13:15:24 +0300
-Subject: [PATCH v2] selinux: hooks: use kmalloc() to allocate path buffer
+	s=k20260515; t=1782814999;
+	bh=49ts4IqbNlyVo/a5KI5Cw42L0znHHzETSbQQLPw8WoQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=haSJO5sDiavz86iFpzFpaa7YVPpl2dTpam7dInbs9VGCwx57I70qG4SLcnhW+ndaZ
+	 nC+sv9qUoOa32w3WgtoERbV5cJHLon31ieoK/kH1mxuNKyqQxhGcUHW3fPoFXarifJ
+	 KHdfcqrl2eHPx37dTjFK+/9/hrIfM4s8wE9Mn+tEEKeVrmUHhiWcp+syIyx8Us3Oqw
+	 42Kf7gmrr2zz2CHI9GL4kGNQC4e6Q0ynbFL/KVh0kZ8Zzzw6ZitjMeewJKbDFweOiW
+	 xYqpZEleMMbqP+o+0+XTnWOlZ3dXA1OQa6leTFnQj7QSDKWCxLicPSuOVjpmhpP7BV
+	 9+jl/idViOlrA==
+Date: Tue, 30 Jun 2026 13:23:13 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc: David Laight <david.laight.linux@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, selinux@vger.kernel.org
+Subject: Re: [PATCH v2] selinux: hooks: use kmalloc() to allocate path buffer
+Message-ID: <akOZERjhp302jhut@kernel.org>
+References: <20260630-security-v2-1-560d33c13ee6@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260630-security-v2-1-560d33c13ee6@kernel.org>
-X-B4-Tracking: v=1; b=H4sIADuXQ2oC/22OTQ6CMBCFr0JmbU1bI6Ir72FYtJ0RqqaYGSASw
- t2luHX5vby/GYQ4ksClmIFpjBK7tILdFRBalxpSEVcGq22pj1YroTBw7CdVBsRSozsZe4bV/ma
- 6x89Wdat/LIN/UOhzPju8E1KeXQptljJmuY3SdzxtF0aT43/WRqO0qg7GY0XWIOrrkzjRa99xA
- /WyLF/3zrrWygAAAA==
-X-Change-ID: 20260520-security-6cdd60da7129
-To: Paul Moore <paul@paul-moore.com>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: David Laight <david.laight.linux@gmail.com>, 
- Mike Rapoport <rppt@kernel.org>, Ondrej Mosnacek <omosnace@redhat.com>, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, selinux@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Stat-Signature: 7h4n643wu6podh1kg9zoum19gs1z4mi6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260630-security-v2-1-560d33c13ee6@kernel.org>
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EFF9440002
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1782814530-981011
-X-HE-Meta: U2FsdGVkX1+0oxOJf5MIkmzuZv+RyiVsbTItHfFoWiCkDQSE5ZKyjs2TeKUbTRztUXNZ2MJ6kVudu+3M5oM1AQ1l8+A5H8XhvM2eAcO8o3p3+Cv9NZ4B/S3XJWesFrFQ95/MnCLgDm06IAch2wWSskHAcYEps5zgHdMwY2Wwg4zcUraiFYin+NDcIAXRIJHiJIgDbjhBy8RbJ0DFPyHtYSua/WyxqAA/A1gGm/iu0YR1Q9ECRmKzmhFq9GXTh26cBh02W2IT11yBLz6z3xJLdRTku6zR4ivTQEHTqKbYXCMZaa0DbuYy+yJonI7pgv3jnMmLXQ/k4NtLmrryYNSm5bzVuWqz9zOl02/HJhJxGJiFoyxErBlFA/F61Fc0oQyeq2cF2jnj2wGXjaPbHAuVJwrhaQx1Rpg3vUhKHD3RZIGgKk+QQvv0EyO4JlHTnSBr/9w+fhZBRUevDseQw4/vNNAnsaDXsJpZmbmUVLNNtOT8Ogq08LVfSZCaTUQckRTKpkSjl/FXPdBhfOEcmEh3T0S8r4i9aex5miPFPsJffzhzj9EaIDz89wQuYfMt9ASiYlvrXpqaM5C1EXyGMp8fWmQiztAQSyS4X/hD7uRm/FPQnk0YLUebcNE1WEyhbWhYFe7UzfIIMvAoS6jNWfA9Vou0qGfuW8ufCwCHIA4VcZtXX+gfUKUoHxCsJf2I/q3BUkKxQEIZ9dqxe7/sQllWsYzXzLaoAVz/BSloPGPk/tMWEqe6iVCFvNs0uLpXb99Vitnz+UE4acwR9H7jOo5l4xa6rbwIDgBY52J4WtP7z26Wqcp3CSIUBwq7NQOnn5i6izmXbeLn/JWcI/NRh/lF6bMLbZ7pslx4QqUl2i/J/x9TZEMpVDotzYQMEiGkhKzwgHiORWG3L+zqA3NV6KW2aKRjuewaFV+ZzIjldWQWTR+i3QR4Abka6zjmXLkOGCLq937WzYtaW0g4YrXWjPk
- +UTwTSwc
- RvGWXCYno786sPI8pNNpT+fSflil5xW1fc/9/cURogFU0L26arKV1HGyt0C9QEjB45EN3gMHoFgiu01W+1t5SZp/O2+BqKIm/i7veMNsQ6ac8reqFEhErbSv7W6SlsbGCRfCN1N1vuNZ4Rzt283Fyb/NK2Ryo7SG6suGTmHeaJTChePz7BafUed/mQj8+YtybqNEXC9Sw5wTrcC0UYGAT3dLqz0888SpfbG7d3n/YecLfPJfGmOrzCMU3Y3jk/Au2ubFdhNMs6sL2Jf3s6sVeuCGetTsSPl8qchpB1iRHAqECZ1Xcw+D6wUeC8VRV2lwH3a5DNKx2WoZpgwqwnMfqXLMbAQ==
+X-Stat-Signature: p1k8a7ph8qqi6ntfhwtocqy78p5gajwi
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8BD1A2000D
+X-HE-Tag: 1782815000-989865
+X-HE-Meta: U2FsdGVkX1+Kn3rSKvWc6m2UwesaxRjLgZAq0UtjOMoVRCXf90CJWD36FmErop+DBFc1nAxqniRuvVDp41zrsCgw4GpqHaMa4FnfE0QDZXQMczUNnxv+f0gtUXy1uIMNQYTMR+lp7aS67X1MXHvMaQRh+V3piFKsqfMAOQs4fzhLnDrL1sjVpSjrzxi9OcxSbTxYWsgYAwiFOHzWl2dZkaRmMdIor71ZLYDaI1Wi6mjSJtF4sEOQ5P+uz5uZLsniyZ9MEO+vOoA3CQ9tY2JdOBd87FhpHQA3sLQc7+DaGwRJoxh7BwQvLwdlu3tCfgrTAAZOSw4J2t13IzuR9SAOBZuNHV+WaQZUrK/VNaKhYowxetESFVBhd3N5GZ9WGs05P8WbRLbJeMq13QOqF1dLacQXpKj/Bb0MHxGwdRAnFYiwpBbwx72lygUu0pAeQAkokgcitVX0KGhAlRAPizPqwGI2oQWhXoubtJJDtgwkIXPne+wthHu0/CNRwYmRUKlxLFfsT0SL6GRV3dBMHzCeEz0zr96TECEKQ6DK2bpbL2gsU/CNwnbs6WPx2JKlUTjjli7lQZx+kd6VE1usu0DBQ1sQk09wM9JbW39rKn3oVMo0ZbC+bTsxzGUMPTspTXYa77AYfZmnRAbc9VJ5RHJuQzRRqZy/atPoc/yZu3GsjaQRk6leSpP+vgId3ccUAL/RlMa2R6EEhB2Di6gPiuP7U3LGlsQGrtuaKL7+6xDr+3MPrWYPcCMY2R/ETbnvCrxHyctd5dWQP0ivDEHJw5iFRbsZJGUsWfogId5SZZft3ArtSTmAG1catrQ5ZdAiP+acyN3ErtyHPjmA1vAMcBjIKwpIHStScNAh4rFBpNvT4KofDKd4UBj1p6790TMxJC3CWMzGjXVscj7BfUp2sQRTHNRVvnvdCjZAImVI8oKUkJciEJNxvFOIzt3atGqmEqw6nVDiL42x619KP6wLO7s
+ llWgtaD1
+ UT7Ku1DhyXAeY48dm+kTA5wRFGZ2jSvn/Jc6oJTpBhNs0e6MBco+TmAA9aMIP3pEtl7KdsB1ggLoku6K6J4E62oS4jbH0oxt/SG7HUUHarQF47M43QQiXmIkG3g4aA185b+hrafp4ei0yf8v6y+lKco0DCgb/U/3UJu/Ebnt+9YcuKIqKYEu/RgEyw40VGYUTSASRhOyrxU8fcwKe2UA5FBodgcURH+diDoUzRLuxvNgxw2nJVyKzQNWfGtHX8lMp0FloojKTsg33HtP7XLsZC1+6v2eJ8DPNHu/TJFOtHnYNlZbaAONUzuGc9WXfZzzK3vLIrVQSCGiUf4HYLk49NW3Ke/uNyBTfeGu2Fw78jMY7zBJuKJT6KhRIjQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,71 +92,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-selinux_genfs_get_sid() allocates memory for a path with __get_free_page().
+Should have been:
 
-Such usage does not require a "page" and the size of the buffer should
-actually be PATH_MAX which may be less than PAGE_SIZE on some
-architectures.
+Subject: [PATCH v4] selinux: hooks: use kmalloc() to allocate path buffer
 
-Replace __get_free_page() for allocation of a path buffer with kmalloc()
-and make it explicit that the buffer size is PATH_MAX.
+On Tue, Jun 30, 2026 at 01:15:24PM +0300, Mike Rapoport (Microsoft) wrote:
+> selinux_genfs_get_sid() allocates memory for a path with __get_free_page().
+> 
+> Such usage does not require a "page" and the size of the buffer should
+> actually be PATH_MAX which may be less than PAGE_SIZE on some
+> architectures.
+> 
+> Replace __get_free_page() for allocation of a path buffer with kmalloc()
+> and make it explicit that the buffer size is PATH_MAX.
+> 
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> This is a (tiny) part of larger work of replacing page allocator calls
+> with kmalloc:
+> 
+> Also in git:
+> https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/security
+> ---
+> v4 changes:
+> * rebase on v7.2-rc1
+> 
+> v3: https://lore.kernel.org/all/20260531165852.1478916-1-rppt@kernel.org
+> * get the args in the right order
+> 
+> v2: https://lore.kernel.org/all/20260531151502.1467515-1-rppt@kernel.org
+> * explicitly use kmalloc() with PATH_MAX
+> ---
+>  security/selinux/hooks.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 1a713d96206f..d1f089917a82 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -1336,11 +1336,11 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
+>  	struct super_block *sb = dentry->d_sb;
+>  	char *buffer, *path;
+>  
+> -	buffer = (char *)__get_free_page(GFP_KERNEL);
+> +	buffer = kmalloc(PATH_MAX, GFP_KERNEL);
+>  	if (!buffer)
+>  		return -ENOMEM;
+>  
+> -	path = dentry_path_raw(dentry, buffer, PAGE_SIZE);
+> +	path = dentry_path_raw(dentry, buffer, PATH_MAX);
+>  	if (IS_ERR(path))
+>  		rc = PTR_ERR(path);
+>  	else {
+> @@ -1361,7 +1361,7 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
+>  			rc = 0;
+>  		}
+>  	}
+> -	free_page((unsigned long)buffer);
+> +	kfree(buffer);
+>  	return rc;
+>  }
+>  
+> 
+> ---
+> base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
+> change-id: 20260520-security-6cdd60da7129
+> 
+> Best regards,
+> --  
+> Sincerely yours,
+> Mike.
+> 
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-This is a (tiny) part of larger work of replacing page allocator calls
-with kmalloc:
-
-Also in git:
-https://git.kernel.org/pub/scm/linux/kernel/git/rppt/linux.git gfp-to-kmalloc/security
----
-v4 changes:
-* rebase on v7.2-rc1
-
-v3: https://lore.kernel.org/all/20260531165852.1478916-1-rppt@kernel.org
-* get the args in the right order
-
-v2: https://lore.kernel.org/all/20260531151502.1467515-1-rppt@kernel.org
-* explicitly use kmalloc() with PATH_MAX
----
- security/selinux/hooks.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 1a713d96206f..d1f089917a82 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -1336,11 +1336,11 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
- 	struct super_block *sb = dentry->d_sb;
- 	char *buffer, *path;
- 
--	buffer = (char *)__get_free_page(GFP_KERNEL);
-+	buffer = kmalloc(PATH_MAX, GFP_KERNEL);
- 	if (!buffer)
- 		return -ENOMEM;
- 
--	path = dentry_path_raw(dentry, buffer, PAGE_SIZE);
-+	path = dentry_path_raw(dentry, buffer, PATH_MAX);
- 	if (IS_ERR(path))
- 		rc = PTR_ERR(path);
- 	else {
-@@ -1361,7 +1361,7 @@ static int selinux_genfs_get_sid(struct dentry *dentry,
- 			rc = 0;
- 		}
- 	}
--	free_page((unsigned long)buffer);
-+	kfree(buffer);
- 	return rc;
- }
- 
-
----
-base-commit: dc59e4fea9d83f03bad6bddf3fa2e52491777482
-change-id: 20260520-security-6cdd60da7129
-
-Best regards,
---  
+-- 
 Sincerely yours,
 Mike.
-
 
