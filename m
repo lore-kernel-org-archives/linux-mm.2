@@ -4,146 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC706C43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A867FC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 16:56:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 109016B00D3; Tue, 30 Jun 2026 12:43:05 -0400 (EDT)
+	id 5E6846B00EA; Tue, 30 Jun 2026 12:56:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E13F6B00F2; Tue, 30 Jun 2026 12:43:05 -0400 (EDT)
+	id 596EB6B00EC; Tue, 30 Jun 2026 12:56:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3A7D6B00F3; Tue, 30 Jun 2026 12:43:04 -0400 (EDT)
+	id 486FE6B00ED; Tue, 30 Jun 2026 12:56:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A94F86B00D3
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:43:04 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B81BC1C7040
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:43:03 +0000 (UTC)
-X-FDA: 84937148646.07.C030F9F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E8789A000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:43:01 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYu4WJqJ;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B34E6B00EA
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 12:56:32 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 84583167F43
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:56:31 +0000 (UTC)
+X-FDA: 84937182582.05.6D85E1D
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 4405CC0002
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 16:56:28 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="JLlmfsF/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782837782;
-	b=ORRV6ftD3BEI4sIcCAyIrUwJJLiEUZWnqVPsmOe9ojdlTrHicbBJBDB30D9DwsslR7MXwS
-	maWb53N5DqMddgPbE8wlptR1ZrcXH0F/seKQR0741sT9YZM4Z1o4ilBLlg0WK1VvB0IyUE
-	4D9r+aZXJMUpoH81B4F3xYEoUVbuNMc=
+	t=1782838589;
+	b=co6Q18P6DfBV9S2NFLpgWahesTixR8QndcM5sVFmgKYHXjFGIrUc3Aed3Yj5u5VeEjv3C/
+	ilMC8MooHj9LbUvkSej32G39iL0w74cJNulnRI7tQJs2QfRxRl57z59sl8QFTN9efRfSbR
+	Gx1mHwnhoDfQoLOCqAXOLXz/pGCUfPk=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782837782;
+	s=arc-20220608; t=1782838589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4no/T3y+pOIxv64XMBmnIaHRZyQSycdHiWcySde2mDY=;
-	b=002uy9OlWkHCLSYjd+nkyNlMJLeY4In0bWA61I476aWPbsbxTp8aoxOvbAGmLuhN4VAgj5
-	5KrQqYPJ0is55BN6eg7iiP9R948LVROorezJFLjqBrSXK1Qmr65m4a5dh6AkyJNHE9Aig4
-	gOvrGklQiW5NZ0TuvV5zgDdoMln/AeA=
+	bh=uqHYqouwZFakB3/yAJGkeIhefpYHS6QsTSYK57j0e1I=;
+	b=yPcrJhoqEU3GMTBOodeUFi+Z0Bkqbgoho30aJr66ZEJq3SOau51015lTw3VG3jT20mpe/x
+	7duA31XJVqKT1W531LNKTVX8773kXaLrEzlr77KVrnCSGxxYVNnEXMVulRMbSdzZTzfWIZ
+	+ZR0UxX+NcZTeec3IxZt5+N9OzIv82M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AYu4WJqJ;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3F0A14145C;
-	Tue, 30 Jun 2026 16:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354F61F000E9;
-	Tue, 30 Jun 2026 16:42:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1782837781;
-	bh=4no/T3y+pOIxv64XMBmnIaHRZyQSycdHiWcySde2mDY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=AYu4WJqJH5ZaCUKN/g3Ikke2XoyXdOD9sdSonINoyNrGo2gm+D9cVHXR3l4tR5zML
-	 wUFSuaISxTyRYf8Q93ynJmwBtTatth8JxeMnWTZULXOj53PRIzxIHKmnNQA88dK9Fc
-	 uDDMZoKzRmBR7odAxP4lC8d3R3/mg2bQ0Qq/13oYG8UOp+BQ1Zw8cUc2df29DlaML/
-	 rAX2d1TLfeATWPf6aqYP+lc1FhgjU/mPyAHCTCekKXhfFVdjI/oynLjki5p3EjxJe2
-	 4KiFLyjUNw05o9fyt8vRviStV+Pcyths4QRtv7nCScvrzAnyBqVYkI3uNbPU73HzPA
-	 Trz1F8mciiXJQ==
-Message-ID: <c88f957a-e2a3-45f4-80ea-f48dbf6f4b7e@kernel.org>
-Date: Tue, 30 Jun 2026 18:42:53 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 07/16] mm: move some stuff to mm/page_alloc.h
-Content-Language: en-US
-To: Brendan Jackman <jackmanb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: "Harry Yoo (Oracle)" <harry@kernel.org>, Gregory Price
- <gourry@gourry.net>, Alexei Starovoitov <ast@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Hao Ge <hao.ge@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
- <20260629-alloc-trylock-v3-7-57bef0eadbc2@google.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20260629-alloc-trylock-v3-7-57bef0eadbc2@google.com>
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="JLlmfsF/";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of brendan.jackman@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=brendan.jackman@linux.dev
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1782838585;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uqHYqouwZFakB3/yAJGkeIhefpYHS6QsTSYK57j0e1I=;
+	b=JLlmfsF/x2Mo/N7b1BVsCr77TnV1ido8SLAzQcSgAuPuPr+zdQxni7oTzhcxDij9WivpZN
+	cCajOF9WUHJxJh+yx/7t5DN4ljl7Ga8y/38TczYWWjmOqVddw3G0X9yGUH88It0Vt0ra/Q
+	gmscYMCcvBjMBMK+tCeXJJe2KhbGPU4=
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Tue, 30 Jun 2026 16:56:08 +0000
+Message-Id: <DJMJIZGFZHEQ.3IIRFIZYFGB6O@linux.dev>
+Cc: "Gregory Price" <gourry@gourry.net>, "Alexei Starovoitov"
+ <ast@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Hao Ge"
+ <hao.ge@linux.dev>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-rt-devel@lists.linux.dev>
+Subject: Re: [PATCH v3 05/16] mm/page_alloc: unify
+ __alloc_frozen_pages[_nolock]_noprof()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Brendan Jackman" <brendan.jackman@linux.dev>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, "Harry Yoo"
+ <harry@kernel.org>, "Brendan Jackman" <jackmanb@google.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Suren Baghdasaryan"
+ <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Zi Yan" <ziy@nvidia.com>, "Muchun Song"
+ <muchun.song@linux.dev>, "Oscar Salvador" <osalvador@suse.de>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>,
+ "Matthew Brost" <matthew.brost@intel.com>, "Joshua Hahn"
+ <joshua.hahnjy@gmail.com>, "Rakie Kim" <rakie.kim@sk.com>, "Byungchul Park"
+ <byungchul@sk.com>, "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair
+ Popple" <apopple@nvidia.com>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>, "Sebastian Andrzej Siewior"
+ <bigeasy@linutronix.de>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
+ Rostedt" <rostedt@goodmis.org>
+References: <20260629-alloc-trylock-v3-0-57bef0eadbc2@google.com>
+ <20260629-alloc-trylock-v3-5-57bef0eadbc2@google.com>
+ <397859cb-b127-4cc6-9c71-044afc99bf0c@kernel.org>
+ <11a6d404-dc87-442a-9f2c-9cf34cae4869@kernel.org>
+In-Reply-To: <11a6d404-dc87-442a-9f2c-9cf34cae4869@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 4405CC0002
 X-Rspam-User: 
-X-Stat-Signature: 4nkwqm9d6zneffg47yh5dgdtj7i1ypq4
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E8789A000D
-X-HE-Tag: 1782837781-796946
-X-HE-Meta: U2FsdGVkX18ICPQHv/rQi6JC+Isz2PVLHc22gjoSuA7FYWZNuU2NDI+FFTUXeXX7V6PV85x0jgTd8+L1UAlS+BATTVUlk+UUanAjxzUQVb9/MWP1rn/KlDmYLGQUXfN3ZJXHf/xEhZTiuD07I5Ustpje2yXZtpsC2zXAM+32v62QwGZUhueXMUOt/whvaOy2CPKH4TC4c0SOlYE28faIno3htwX2KgOL9CIN+6o6vn9+55FRnv0XiXbnxZ1+iCv5V/kQ38TPcfWVmRdTB8TSSF9QsyFVBktpuJ9+Zih1PGsw8lCX38foNEWK3di7stzDNyVrqTEHi6i10hMecPx3AhLUhLl7RpgG/SHnC0I9+GpNWhNMWs3CdqA4n7DKLgtiajrK8kl1iB5mLM8Rmc/Mml385YpAzJHJadGKxOJUu55lClQKbSVWkOVtBmNx0C5yND6mokLwmLp1XPCaIw+wv1awVgk5XpDS/IIerw9ojzqw7bOIFTGzVM6sjJEUpWAcTixi9L5Q4iQOoCObXq+lV60vwffQ+E7bedJe/a/FKy5J0uEGJzMcNcwUI1s1lbrufQECoyL56T9r9q4zdSp/E3GdwbuwPycaOO1hu4IHvSb8OJszBlwFwWZ64tpQ2fioUzh6kuZo8Fy/vyKerZjCo8LKb0xlRSk/2wfpySTjgOz27vqmcsdI96fyD6YRDoE09vJjYJbAy76akKqCLfawYV0EAmdmUBG3RgN64miPRBWS0Jlrh+kiACPrlW4Iynfw9HyqJk7zAL6j9SReI9yjVbMUz1HSzzBBO4etL8OjH8NFDZObxYbWmpi27JH3ducQieAb9Jey/8tcK6yPV4mbmopvmRxaBaAECIbQkDnh7eevcQppY2c7npugxJMKu6YADSEV7Hs8z8N8cJa1krl0nAOMziQ9yJ4zegqCuX59JoOURgCPTP9H4MpJTzcfMJYnUu37QRxrE4CDmBnMCfc
- d/Uoi55A
- F2ELC3e2OiV+nF6pmq+XEmanSJYsOUQz/MYBNU3euXlBXmo6qkYAbGIw2y09E1tpBPYnWbPc9K8fDY+gltk+Is0PeWS4WYfa0GVbimVJk6lpIo3NX6y9rsVFDPC7jDx8jY5awVMhMK/QvVm1tOB6xuzfckpSmTEoMg0CCDHj8jqflqjsRwbPFe5MoMsz3zimTnGceDxMmxCAhYCoXWvcLRnwqN/SgbA96qAPRuvNknh45uiBjAvSK+cWSpAtiwGnrgTGT1gyiL336Dbajr03n3GTXGUTWsy7/CBUxvUUbZgGOfU1gC1DNwjyrD2WsnucnDjodHEwOmJPpgOOhqoJCGaVVKXH/NUN9k+lZswacFFt+3ywvHyX2pQ52pcHgMQ1y3pYsGBiIcwKz/5U9VFHqKXB4vjPSx3lj1xtWMSObRa6VKtE=
+X-Stat-Signature: o4w5bemzebz1n94wkqb9mcir78h8s4zd
+X-HE-Tag: 1782838588-940388
+X-HE-Meta: U2FsdGVkX1/CKpbdS+KKoTfm2W1U9g33z61JjGIEChlUXgA8CJCu1QSz3XrWCcvXFSzgjzP2d6fsoZdz5mwaoBkHVzLqIDHAfov5N55p+W1YfAywWzIIVdgm4NZ+me6EomFIpoijSKJczvKXULSgJW9YFxuvhi+cxkqL2LXhSLikHOlV8ryodeesutQ22Qd1wLpEvvq06OL0GgBUFmOLKXBcX8JSra1Xs6y3ZuKqWxH+r/PwM3a0KxMzL4NzqelKZ3EG0KJO+F1erBQalk1MQQkknyFTVcjDi4rStu3eXCUX7DT7bg5WUR3xeFaoNUTIYQb/buT4xJ8cikdVgm6ohNWbQ69SCM1P5pQ64rxZM56Q7V6XfN/CXUvnI6ob3ib4XqqDJxd4r3gGlAdVr6lOSlLsR65B269G3A0XH5aE7z5+f9r/IaaNs/NxS2RDPRYmL5DnXQjZ7K0DLwOz7QS4SBpOT0nNWrAve3bOKi1PtyI8IvwvQG2kvSp8wqmjEPehMVyBEzYBpYDrtuDX8nvAXUkXQXJ0nyogszQAHNlY/dvpwfhuSFocMxK2Zj7J7riSTvRS0F2tozpPyX9a4SB2MbilAPxgXitVKew9XgJwF+HXyd5ipSiAXlXRTYWGmbkI6gTKvRPOX4zq52z8+VzmUq0E7AVMVukm1U9+y85T81RHmUIYro1sqMK4LPdC/53TDHaylcKlbVfc6Qjs6DTS9Y+e9dSRj7GVqSCMgAi0BbbHKYOBdeRxtzKSgy9EDHDbGTuhnUMkOg/a0/v3yKeqzSSTCdco41DlO4I/sxb2njNcVyLyczNoUWRoPFjKQKkzHYaCssDJfCMOV913CitGJWJTiqgRXYQTO+RLDYVIWbtwhKYrhAZ0V8RUINi7YnhP95+69854EtwcJeR0grrd+P7p0eKk9FiS215EohAkGohSd+gph5CLfl7XbMAubucMldwjZP/l18ZzdRnqzEF
+ bjZiCLpY
+ C0GyycHLpiP8BoRr7u3PZxaTjF4ztAD2BpyPxVgzmWy7zWLro22YYvdLGffl+KUfpaBU/Sk7xTXjVFCwPjow5dXS8/A736K7FUrRNUXC69n9j2NAhJyWdd+zKNPGYwy2iA7cTWWqGbo4Ns8CQVbAkOvE3Np5UfVXM2UwHDOwVh5OVeA63Cmi5r//1fM0Kfo/T8v7E6DBUJcVZ6NWKZHJZhTS3Lk81qHFYNw0czP1gz2q9D4P4sR6XzF1af9v87/6Zi//+23Lq+3mCNq6qP+HhbHuZPvA+/SNC4x0FEx/HdEAZHqCy9MqxDJArzBZwVISwWhMrGMV+q94Q2IF9VEj4MsPt+lLAaqOc5ld0DJ/sY2zITjaE6bru+JjpwwnxViJzPaRQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,118 +109,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 6/29/26 15:11, Brendan Jackman wrote:
-> Some of this stuff in the public header is only used internally so
-> shrink the scope to avoid silently growing new users.
-> 
-> drain_local_pages() is still used from kernel/power/snapshot.c so that
-> needs to stay behind.
-> 
-> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+On Tue Jun 30, 2026 at 3:34 PM UTC, Vlastimil Babka (SUSE) wrote:
+> On 6/30/26 15:36, Harry Yoo wrote:
+>>=20
+>>=20
+>> On 6/29/26 10:11 PM, Brendan Jackman wrote:
+>>> Currently the core allocator code is controlled by ALLOC_NOLOCK, but th=
+e
+>>> main entry point function is significantly different from the normal
+>>> __alloc_frozen_pages_nolock(), this is tiring when reading the code.
+>>>=20
+>>> Plumb the ALLOC_NOLOCK control one layer up in the call stack: create
+>>> an alloc_flags argument to __alloc_frozen_pages_nolock() (which is only
+>>> exposed to mm/) and then turn the nolock variant into a thin wrapper
+>>> that just sets that flag (as well as handling NUMA_NO_NODE, similar to
+>>> how some of the wrappers in gfp.h do).
+>>>=20
+>>> Rationale that this doesn't change anything:
+>>>
+>>> 1. Simple bits: A bunch of the nolock-specific handling is just moved t=
+o
+>>>    the new alloc_order_allowed(), alloc_trylock_allowed() and
+>>>    gfp_trylock.
+>>=20
+>> Right.
+>>=20
+>>> 2. __alloc_frozen_pages_noprof() has some extra logic that wasn't
+>>>    previously in the nolock variant:
+>>>=20
+>>>    a. Application of gfp_allowed_mask; this only affects early boot, an=
+d
+>>>       only flags that affect the slowpath get changed here.
+>>=20
+>> gfp_allowed_mask clears __GFP_RECLAIM, and that means now allocations
+>> with GFP_KERNEL during early boot would see
+>> gfpflags_allow_spinning() =3D false.
+>
+> Is it a problem though? non-nolock allocations were affected before (the
+> masking existed for those already) and will be affected now the same, and
+> _nolock() allocations don't pass __GFP_RECLAIM in the first place, so the
+> masking can't affect them?
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+This was my thinking too.
 
-> ---
->  include/linux/gfp.h | 26 --------------------------
->  mm/page_alloc.h     | 28 ++++++++++++++++++++++++++++
->  mm/vmstat.c         |  1 +
->  3 files changed, 29 insertions(+), 26 deletions(-)
-> 
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index cdf95a9f0b87c..01d6d2591f49e 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -17,28 +17,6 @@ struct mempolicy;
->  #define __default_gfp(a,b,...) b
->  #define default_gfp(...) __default_gfp(,##__VA_ARGS__,GFP_KERNEL)
->  
-> -/* Convert GFP flags to their corresponding migrate type */
-> -#define GFP_MOVABLE_MASK (__GFP_RECLAIMABLE|__GFP_MOVABLE)
-> -#define GFP_MOVABLE_SHIFT 3
-> -
-> -static inline int gfp_migratetype(const gfp_t gfp_flags)
-> -{
-> -	VM_WARN_ON((gfp_flags & GFP_MOVABLE_MASK) == GFP_MOVABLE_MASK);
-> -	BUILD_BUG_ON((1UL << GFP_MOVABLE_SHIFT) != ___GFP_MOVABLE);
-> -	BUILD_BUG_ON((___GFP_MOVABLE >> GFP_MOVABLE_SHIFT) != MIGRATE_MOVABLE);
-> -	BUILD_BUG_ON((___GFP_RECLAIMABLE >> GFP_MOVABLE_SHIFT) != MIGRATE_RECLAIMABLE);
-> -	BUILD_BUG_ON(((___GFP_MOVABLE | ___GFP_RECLAIMABLE) >>
-> -		      GFP_MOVABLE_SHIFT) != MIGRATE_HIGHATOMIC);
-> -
-> -	if (unlikely(page_group_by_mobility_disabled))
-> -		return MIGRATE_UNMOVABLE;
-> -
-> -	/* Group based on mobility */
-> -	return (__force unsigned long)(gfp_flags & GFP_MOVABLE_MASK) >> GFP_MOVABLE_SHIFT;
-> -}
-> -#undef GFP_MOVABLE_MASK
-> -#undef GFP_MOVABLE_SHIFT
-> -
->  static inline bool gfpflags_allow_blocking(const gfp_t gfp_flags)
->  {
->  	return !!(gfp_flags & __GFP_DIRECT_RECLAIM);
-> @@ -395,10 +373,6 @@ extern void free_pages(unsigned long addr, unsigned int order);
->  #define __free_page(page) __free_pages((page), 0)
->  #define free_page(addr) free_pages((addr), 0)
->  
-> -void page_alloc_init_cpuhp(void);
-> -bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
-> -void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
-> -void drain_all_pages(struct zone *zone);
->  void drain_local_pages(struct zone *zone);
->  
->  void page_alloc_init_late(void);
-> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-> index e16f905f859a7..af83764788b96 100644
-> --- a/mm/page_alloc.h
-> +++ b/mm/page_alloc.h
-> @@ -266,6 +266,34 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
->  	return list_empty(&area->free_list[migratetype]);
->  }
->  
-> +/* Convert GFP flags to their corresponding migrate type */
-> +#define GFP_MOVABLE_MASK (__GFP_RECLAIMABLE|__GFP_MOVABLE)
-> +#define GFP_MOVABLE_SHIFT 3
-> +
-> +static inline int gfp_migratetype(const gfp_t gfp_flags)
-> +{
-> +	VM_WARN_ON((gfp_flags & GFP_MOVABLE_MASK) == GFP_MOVABLE_MASK);
-> +	BUILD_BUG_ON((1UL << GFP_MOVABLE_SHIFT) != ___GFP_MOVABLE);
-> +	BUILD_BUG_ON((___GFP_MOVABLE >> GFP_MOVABLE_SHIFT) != MIGRATE_MOVABLE);
-> +	BUILD_BUG_ON((___GFP_RECLAIMABLE >> GFP_MOVABLE_SHIFT) != MIGRATE_RECLAIMABLE);
-> +	BUILD_BUG_ON(((___GFP_MOVABLE | ___GFP_RECLAIMABLE) >>
-> +		      GFP_MOVABLE_SHIFT) != MIGRATE_HIGHATOMIC);
-> +
-> +	if (unlikely(page_group_by_mobility_disabled))
-> +		return MIGRATE_UNMOVABLE;
-> +
-> +	/* Group based on mobility */
-> +	return (__force unsigned long)(gfp_flags & GFP_MOVABLE_MASK) >> GFP_MOVABLE_SHIFT;
-> +}
-> +#undef GFP_MOVABLE_MASK
-> +#undef GFP_MOVABLE_SHIFT
-> +
-> +bool decay_pcp_high(struct zone *zone, struct per_cpu_pages *pcp);
-> +void drain_zone_pages(struct zone *zone, struct per_cpu_pages *pcp);
-> +void drain_all_pages(struct zone *zone);
-> +void drain_local_pages(struct zone *zone);
-> +
-> +void page_alloc_init_cpuhp(void);
->  void page_alloc_sysctl_init(void);
->  
->  #endif /* __MM_PAGE_ALLOC_H */
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 7b93fbf9af092..3b5cb1031f720 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -30,6 +30,7 @@
->  #include <linux/sched/isolation.h>
->  
->  #include "internal.h"
-> +#include "page_alloc.h"
->  
->  #ifdef CONFIG_PROC_FS
->  #ifdef CONFIG_NUMA
-> 
+>> The helper is not used in in the page allocator, but used in
+>> memcg/stackdepot/page_owner.
+>>=20
+>>>    b. Application of current_gfp_context() - also only affects the
+>>>       slowpath
+>>=20
+>> PF_MEMALLOC_PIN affects the fast path, but ALLOC_NOLOCK users
+>> won't be affected.
+>
+> And it wouldn't be wrong if they were? It only clears __GFP_MOVABLE?
+>
+>> What about alloc_flags_nofragment/nonblocking()?
+>
+> ALLOC_NOFRAGMENT due to e.g. defrag_mode could be a problem indeed, if
+> there's no slowpath. Make ALLOC_NOLOCK override it?
 
+Yeah calling alloc_flags_nofragment() here is a bug in the patch,
+and Sashiko also complained:=20
+
+https://lore.kernel.org/all/20260629142921.9A05A1F000E9@smtp.kernel.org/
+
+Like I said in the reply to that thread I think maybe we _do_ want to
+set ALLOC_NOFRAGMENT for nolock allocations? But, that is a functional
+change, it doesn't belong in this series.
+
+> nonblocking() is probably fine?
+
+Yeah, I believe this is fine.
 
