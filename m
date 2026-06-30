@@ -4,36 +4,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B46AC43458
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4062DC43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 07:32:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6A796B00C5; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id E2A636B00C7; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ACB6E6B00C8; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id D8B2C6B00C8; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BA1E6B00C9; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
+	id C52F46B00CA; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 705586B00C5
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 957506B00C7
 	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 03:32:09 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2A1BA0411
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:32:08 +0000 (UTC)
-X-FDA: 84935760336.17.69D95ED
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2A5321203D7
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:32:09 +0000 (UTC)
+X-FDA: 84935760378.14.3C96AD7
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 39DAA140007
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7877B4000D
 	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 07:32:07 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=t5MxdkAr;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=cJxkjAUR;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=pkiZd5RE;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=BuXKYez3;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1782804727;
-	b=NMODzKQYoqDTp687xLjGcjdIx9hhK1kQ78KqSjJkvUqu2KnCnkHLgO3sheICzI0Lu1l9v/
-	au+pQRdlVg8WfTBXLPCfm3jpkkmiD3lVhBdpFSHiTuAbQhRIAL5c3QqRfuplAC8tgH/Ybw
-	ZHV4RGHmSjoKfK1/y69C4T7ph+c6bck=
+	b=dtDPttm5lfr2Aee95BmfBvBt8Roh7Ec2Kboo/5mlUA4hUpzmcV/HzBFDCInzy6YcN7pJjd
+	Wfd3EKwdRUXl4/KaM7x8okmYEmXOx4sZLudA4+CQkTDhAtbiceCIGSVCm6kZYWyIHXBQhU
+	0LZoi3C7UwP7gB8OmtEY+BN9TE5ImB0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1782804727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
@@ -41,15 +41,15 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AMHxE7YkKk7GdhOrMJdhPTL65ejZljPAmsiF73QwsOk=;
-	b=VZVXA/8v8WY2IlMPNg979GCZAUCSYONAduq7cHq9pAseMLJwqMFZEztBry2XYRZSi9Wcjp
-	NWY5VxTNg56DeIVPjMwqbKn+sYVrP0Ae298bilOjD44TfnE4s7Svt0SNDGm5DiMfSzRPiY
-	8T/LjMKHAxEpk3SPNMZweLypm/H1od0=
+	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
+	b=OnpZTpJ/K3pInaYUNFpjIB4ZPAbTKsgzBSMrUGt1M3YQTViSNyu2bzGgw6b2JXplMwVIii
+	J10MbbG6uYh1zWf9eUlE37bMr9wD3OVVHEvOZjvv1gEsRtXicpG0skXqNURJyOraWBBV16
+	hry5F4nZ1b/2k5QbY7eSqDMp1MD38ts=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linutronix.de header.s=2020 header.b=t5MxdkAr;
-	dkim=pass header.d=linutronix.de header.s=2020e header.b=cJxkjAUR;
-	spf=pass (imf26.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=pkiZd5RE;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=BuXKYez3;
+	spf=pass (imf27.hostedemail.com: domain of t-8ch@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=t-8ch@linutronix.de;
 	dmarc=pass (policy=none) header.from=linutronix.de
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
@@ -58,27 +58,28 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AMHxE7YkKk7GdhOrMJdhPTL65ejZljPAmsiF73QwsOk=;
-	b=t5MxdkAr0qR6zKEVOW4zSokyQYaKmTfFK76Q7VF31rw4YnQNoBzCddK+TIHd6xikymBWBz
-	fnsokDjdJtr65wMCXQJO7nIiqEzwc+09zFHcTXOPCMu7Bs2fpLTQaZxqVLgDV3BedOW+SB
-	1s3NkMLxf8QA8VK/sQRVDYvo3FUoRLMXAMRS4kTrG8UeKX9AB4HFnzDei1+7S8ytPPvTeI
-	ptZOcQ8tcg4iAUiyHBrrYZEK3xjmEkFNRNK/KjmYntLo+9x+bEJgtCKsZgykwnfjiMTso4
-	YHrDQ9HUHLRXBIy8g+4tfs1A78PPaNiTc7LFrz91dS6YPnPV5WNjIj9o80plLA==
+	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
+	b=pkiZd5RE3R16RLIHgJSrNZojyXivPIjLOENwgHZEw//KpsY5f7MZn/JtKFuYl+KH/Avdo2
+	J6ccKqWWMpZgQfHjORmegmRaHO+LPzlem3xQCauGpIGmdUXijcxggHgooQ5WaoDRQKOieG
+	MSobUx+QDUPlw6Z8bDVGF5uw29vkQhXqUuT+mWvLUIf+eN0L+Z0yydsroCArBKkFckHIhO
+	rX05qYl0VCmVLihAeqq1sklGDCPLMtrTWJ3PNtog2x2/PbD7erUgTwh6OWn3nWupPEGQVT
+	SXMieBMYMoM1hpugyJ0jgIzK7C1k+Ae/YvHKMOkzsyirVtmJOBHFxY7OFb+i3Q==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1782804725;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AMHxE7YkKk7GdhOrMJdhPTL65ejZljPAmsiF73QwsOk=;
-	b=cJxkjAURqQzAw9/KFAhRPazr008ra2/RpOy/gqph2VcvkD6kYcBH5LDaY5PyHwpAQbxM42
-	Uy6ojJM7l/ysxzAg==
-Date: Tue, 30 Jun 2026 09:31:59 +0200
-Subject: [PATCH v4 5/6] vdso/datastore: Allow prefaulting by mlockall()
+	bh=b9woAwxTCd5iqMf0h6O2yZttpHnUjaQxSjRP4D9f09Y=;
+	b=BuXKYez3e12iaVkuRRIoAUGjK94QgjbpbzL8Ej6/bbYPj4+Syb6h9CC/F/7bMWhHyT0BOZ
+	pTGQSC994lU4C0AA==
+Date: Tue, 30 Jun 2026 09:32:00 +0200
+Subject: [PATCH v4 6/6] vdso/datastore: Simplify the mapping logic for
+ VDSO_TIME_PAGE_OFFSET
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260630-vdso-mlockall-v4-5-6c93708ce723@linutronix.de>
+Message-Id: <20260630-vdso-mlockall-v4-6-6c93708ce723@linutronix.de>
 References: <20260630-vdso-mlockall-v4-0-6c93708ce723@linutronix.de>
 In-Reply-To: <20260630-vdso-mlockall-v4-0-6c93708ce723@linutronix.de>
 To: Anna-Maria Behnsen <anna-maria@linutronix.de>, 
@@ -95,21 +96,21 @@ Cc: Nam Cao <namcao@linutronix.de>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
  "Liam R. Howlett" <liam@infradead.org>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1782804721; l=2120;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1782804721; l=1523;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=p/0sBe0dK25prXvIP+rbuqZbauXCumjZnpFS8hQDCB4=;
- b=CK5rWQRlKZ50ZmCUDDA/6Le1n5kStzrypTXGtA45AiD/ONdyXh43UG2jKgGSKR0V6Y4qotKMg
- 96woUFtDXCBAQaV2zvIxOYjQBfNlt313F+iDKrWnLgpPYWkpzKm3nSp
+ bh=tMYyr+0MUZgqXxRCaSudj+eF7RhqsNYP604whSkkFls=;
+ b=aO9l5/rIajahyFgMu+6t9DtyWFk+0YDSWX/pe0+uidn7k1GXsGHpy5RYFEUzu8nic9h5gnb55
+ SPE2zsS3mD3AN85vpJUkQJS6yG0pCKySQ1YDi6WfsCFLCmSHIupjvp9
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Rspamd-Queue-Id: 39DAA140007
-X-Stat-Signature: ykte5b1cggsegnkd3shj4iiq868gf5ce
 X-Rspam-User: 
-X-Rspamd-Server: rspam03
-X-HE-Tag: 1782804727-113057
-X-HE-Meta: U2FsdGVkX19FmNVqlagYy4TiZd4+mec6ih6LyTaFF2mFVOsLisDvkt9WAVaDs3WNi2LD/wncrSoUck0/5UacFzrKpCU4PNWkoLKlZCM3XgWBPwc8vm59XBguozQWaBixgO+u+k5GuTLoAHhZ2aiAtOAz3HOkCNmyiXUtycQ4rqxkv8dfE+xU/zxG1T79YIIWuvmthlaccYu/U7YKx2ueDnOUfgqeTIzv8WenBqZ5h5O1y9I2S/+5KNIUk2tZKvGIURSHNOLpfKIKadaxuv0mszXtckAQBettfAA9vwtt6EJKqWWiueTlAwCyPUYqPQNzmCrxaBNzMHjCIR6n12wCyKSg62/uDOswl5nF1TJdsA9zl91RxktzcC1k5DAjBmXj4f5pYI5UVfSqzxvmkgqjRJJEX9m4kVsrxIkLGiZxZZ3JsIDZrO09rqf2C8YG/du6Cav2VFiaqAMD05rRaMSVCaYBo7tmz2oajpd24+OeB2ru+xjLIbFJ4YBtMgrLgroLyZ811he3ihJq97KDv2rabZCIJvqmkrA5KR+7xpR1dbMwbQBa/AGgkZ4ehyHQ5AUlFxGQI7iRAxEW2kKuMxD28lTwqqbX3rE7ilN6wnhlrP8621fwgm72sANvRxfRP7m8J6lvpCVILaEyaL5bJTL1q4jyTc15KjxC5rahRBlqc1NDUFznIKu0zJJgUg7/oy+l+2wN1Cy7SyT9XacbMEW9VJ3KpPpLN7Fg1xLT1aek0wCCYS0rohf04YDdSaQdFLodrAV5Eie5w6jtbqMKfeARSR3gzWfEDKDTqODjxV8Jrn84jyT/MI8wvAinw8FUtg8c66UJXTJAZ2ZofWbKn/N7V8PsZ12ksh8oLgG9AiBCBdY4X5B5nC2N+/FQX+hamwNHJsSbjGkkTdpBcCPyxWUFYJlWtrko2LCqiKLqmuKia9g4FJY93MqW6bP98Emq2i6RcRSXu88qjl99sdonMuK
- 3PtL/NRZ
- BSm8+7MeQODJUr0GQigVEDE1C3QPK4yfQGfp8M0ES+2ZJEQUMGXXe8JFu0/GYQC0AFpBwrr4mpnLNCgPrMGarBMZEMrFuQe3zptoypDaiOVZwKWqDkLMzX7s0RQWPq1YD+cBVkp4edCW0tcf1MNkrewPbY/3GpwUZjqiP0u8czoEkOv5LLYYzFE/UoWcx00bOctR69S8hU5z/MshQCF2+SCH2jXYf6/kSHd7UHrGstpb2tXAL2ccOyRIF5RK/qDaPoGlMiFHElWp4awFAbSjwJWifrcprmHKgqzvKDsX0GwYENa2wJUVwtVPVaijo1FwkNV7yWbloqiCw/z+BOvzdrWmmAsHgEeC/8LPiXj2kE6R/6+LjHiDc7hWAyVUUCRMO47bX/l078/0w5QkhKc0GlmpIW8aon9xksXfyMXVFFtsLTPXcpYt8Q1MD3A==
+X-Stat-Signature: hij9akhobz8sw9wnoakmhaymecye9n41
+X-Rspamd-Queue-Id: 7877B4000D
+X-Rspamd-Server: rspam06
+X-HE-Tag: 1782804727-911332
+X-HE-Meta: U2FsdGVkX1/onfEAhVzvr2JXgS+L/ovnJh5d/oJhuakQqsTOLuOcfVvuLfC9BGlF50KI7kT4OVe/uoF4MDNRa/In9eIUkaXZjeRpQhwzpGPZV6aND5FxpCiLM6SDXSbW/IrcrDZwYIG2NcAZYrFqZ9x4ORjbUV728ETan1o0RYq9yktWKvk7L9fnd2y0jmvJBUcGx0oFdz8wkI4jZqOqMwWPTPvmmmHzfc1pTiYC1QRUPCd4qgbk7jdrJujpbGcgwDEcp7NtId/MTvAIIMhWnvaVSqLF5VthE/5JJ6TqC/l0DWcmEJ+A7Q1+dRRqJUgQH5LbOk3DywU5cMtTLmvQXRQ0yI979XSEAAgWnh9Ro3QN+3/gMWawIJY95zNOKnxKxNttnYEpeXmtabho+yi/EFG1W1OguekRh3faUX7A0vFz0pXvjnI4wBz5bmWVWgU8NcjXg7OOl9Y/VKR8HSHy5JsiYKl59RowZ+qna8UpdVp+ZBA2QTMYElirTTXM6ozq7Sjs8uKw838bcg3Om1YLPk3kMhtNBkn1N5cjugS/VvGZBCTfVq4gdjYkWAcZxUw8b1Y8J+CansHxx4K0X16+JtMYk2CBK+gqFIOxUGfIwtoLoMI226xnMVQxSclmbyFINrGBKaCwYpEgDVBwSPgevN7KsWKjYNWCRnA0klo0Mu+G/2VFcjSyYGTGqQ7Mj8870f/PDKsOADi1x7aM2ATOV80BWQA6xPYnuOr932EdhAM7Gl0hnljblF+QmeCKVoMiB6ngEcAexWbV/QOpP3dxxj8kSWHC3yQaKo+8WKHvvpDxRsJ2i8gemEFb5CddGbP/KpeIseF9YKgG/0nCLMtNS4cJsiPP7DRQ3WaKvB2zzq8h5aoQHgEW1ImmV+O53fSwJrpOI9BVvnexUItVGXPpNseo5TdXxxQ05e+QnkFRovznf/xk7V0Y4L/UbY/LFyp5kQK1+hiHAeiu+Mb0vs4
+ qyEFqhAt
+ 4Fehr5wAYMSEBcA2+TjGDvEpMkT2jgosT+sTL1lcBm9T5BGBEi+aIgJqWP7WZ89PEVO7AP8SyAulmLntTq1dW/g5FFtjsGrK5RVGxHksnggzs/R3N3ToKa0+JC0lTPAJX1waoWnwaSwuvEOQ5QTdStpWe7T6LkpRhfwNQYBWr/O6njps84wmaw5rJhUkMCVy+HE2r4ls3f8ttWveBWlBPGJ1ldBq6q6fTdejEgAjUtkn+gCXpuaVa0QnRJH2yPJ2LBcCfUFIj/aTSeSCkaiPGtCteC3CTq/AhvMwDzPwhKKlaEXrRKOkqGIdsWfO2sY4mUeHQ5gxYyC3Y1hTDTsxBoooYIigKIBX6AVR8EZ20JHsndhTVjNqCOp0UOZtTVGnPH71LymAiVxD+KItmZm8JuwazpDvQQCrjjv4UMhUg8ERy4T7wNmBidrFvtnZAXxsvZl3A2+hrqX6UNKTKflYsrUGm9RM/pffaLsqw0Mw/fJtgLUg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,52 +118,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While mlockall() is meant to lock page *memory*, effectively it will
-also create and lock the corresponding page table entries.
-Latency-sensitive applications expect not to experience any pagefaults
-after calling mlockall(). However mlockall() ignores VM_IO mappings,
-which is used by the generic vDSO datastore.
-While the fault handler itself is very fast, going through the full
-pagefault exception handling is much slower, on the order of 20us in a
-test machine.
+The logic for CONFIG_GENERIC_GETTIMEOFDAY=n and !timens_page is
+identical now.
 
-Since the memory behind the datastore mappings is always present and
-accessible it is not necessary to use VM_IO for them.
+Use this to simplify the logic a bit.
 
-The data page mapping is now also aligned with the architecture-specific
-code pages. Some architecture-specific data pages, like the x86 VCLOCK
-pages, continue to use VM_IO as they are not always mappable. They will
-require their own special handling later when the general approach has
-been agreed upon.
-
-As a side-effect this will allow GUP on these pages and allow more ways
-to access the data in them. This is fine, as all data in this mapping
-is globally visible anyways. Either because it is mapped into all tasks,
-or in the case of the time namespace pages, can be read from procfs.
-
-Regular mlock() would also work, but userspace does not know the boundaries
-of the vDSO.
-
-Reported-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Tested-by: Nam Cao <namcao@linutronix.de>
 ---
- lib/vdso/datastore.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/vdso/datastore.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
 diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
-index 0ca43965a8a9..d7ab077cd604 100644
+index d7ab077cd604..1426bf4e0c12 100644
 --- a/lib/vdso/datastore.c
 +++ b/lib/vdso/datastore.c
-@@ -125,7 +125,7 @@ const struct vm_special_mapping vdso_vvar_mapping = {
- struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned long addr)
- {
- 	return _install_special_mapping(mm, addr, VDSO_NR_PAGES * PAGE_SIZE,
--					VM_READ | VM_MAYREAD | VM_IO | VM_DONTDUMP |
-+					VM_READ | VM_MAYREAD | VM_DONTDUMP |
- 					VM_MIXEDMAP | VM_SEALED_SYSMAP,
- 					&vdso_vvar_mapping);
- }
+@@ -76,22 +76,20 @@ static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+ 
+ 	switch (vmf->pgoff) {
+ 	case VDSO_TIME_PAGE_OFFSET:
+-		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY))
++		if (!IS_ENABLED(CONFIG_GENERIC_GETTIMEOFDAY) || !timens_page)
+ 			break;
+-		if (timens_page) {
+-			/*
+-			 * Fault in VVAR page too, since it will be accessed
+-			 * to get clock data anyway.
+-			 */
+-			unsigned long addr;
+-			vm_fault_t err;
+-
+-			addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
+-			err = vmf_insert_page(vma, addr, page);
+-			if (unlikely(err & VM_FAULT_ERROR))
+-				return err;
+-			page = timens_page;
+-		}
++		/*
++		 * Fault in VVAR page too, since it will be accessed
++		 * to get clock data anyway.
++		 */
++		unsigned long addr;
++		vm_fault_t err;
++
++		addr = vmf->address + VDSO_TIMENS_PAGE_OFFSET * PAGE_SIZE;
++		err = vmf_insert_page(vma, addr, page);
++		if (unlikely(err & VM_FAULT_ERROR))
++			return err;
++		page = timens_page;
+ 		break;
+ 	case VDSO_TIMENS_PAGE_OFFSET:
+ 		/*
 
 -- 
 2.55.0
