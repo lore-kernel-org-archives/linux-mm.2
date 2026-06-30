@@ -4,82 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB628C43327
-	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:30:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76099C43458
+	for <linux-mm@archiver.kernel.org>; Tue, 30 Jun 2026 09:33:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74CFB6B010A; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
+	id 494446B00A1; Tue, 30 Jun 2026 05:33:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FDFD6B010B; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
+	id 46BE76B00B8; Tue, 30 Jun 2026 05:33:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 615E96B010C; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
+	id 383F26B00BC; Tue, 30 Jun 2026 05:33:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3850C6B010A
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:30:36 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4200167B6B
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:30:35 +0000 (UTC)
-X-FDA: 84936058830.17.0742048
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C0E3E8000D
-	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:30:31 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KHnKuuA2;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B6F16B00A1
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 05:33:05 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7C9C91C5FB3
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:33:04 +0000 (UTC)
+X-FDA: 84936065088.12.A0E8FB3
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2438012000A
+	for <linux-mm@kvack.org>; Tue, 30 Jun 2026 09:33:01 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=lfXw4+sK;
+	spf=pass (imf29.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1782811833;
-	b=nszPR0LMRTc69ivJKRQPOkWkTybUUZg+tdxSt8K7L+DWG5C2msd0a4DeKPLSOcMnkNt+HF
-	hK/DHdwYWQ8j4xGzKvEkHmDEON5F3JuN0KqPlBZOG5jzy6fsa3qDIi2lzRsQRkWvFCE4HN
-	Kh1LMEzMKGDC0Z0b9tn3/IrAQ+cmycQ=
+	t=1782811982;
+	b=R1piIHBw47UZ+4OQ7xhQVleqU6ecGuT6xe4MXNRN6cg5RQ934VbZOqNye2IZnOtKwM2Cl9
+	R11/Bnk6sOcvFbY4iHUF71JhMzRkrcypn5vWWL1PiW5ofZXqmN1iCkoWIVuAcTeNCs4lHd
+	+XqGI1zQHwuwvAB0O3Z6L7REEMy9fvo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1782811833;
+	s=arc-20220608; t=1782811982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8nbrEw8HxPIVYOk3lCiNdzXrvv3ZUctNh/Crii5aUdc=;
-	b=WtfFLhaYW27ZLY1qcL2ygxOPdozZ72yTVTwebHTVVTa85PcNSroV+bJYL1h9ZQg0j5naNC
-	a9q7ru7N1RYXYAGwj9uQf0WfheMAG2OD4b/esfNAkG3fymWsEoaufPJuWqacL+Os/Aju08
-	wB5413nYVpBuywylrbXWimBQCyuVlZY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=D8Xum+/XKl8zuM90nMa1ZrI3HjGlq/7zbVgI4GO/dys=;
+	b=r9vV6J8ZUqhGLnnY4CYtv7qxlYazy1oyB+Hui+rruInvCYutcWT8EQxDuim8NsnDtoM758
+	8GnfQ2+2mKocUuWVKW5ajFI1NHdrMRwCwiwGTejwjbbsY0IbvmdgIXL2OCIpYFuQ0s6n1y
+	MiLk3eHTC1xnDPJeJhIDMWxeTNTtD9c=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=KHnKuuA2;
-	spf=pass (imf30.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1782811828; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=8nbrEw8HxPIVYOk3lCiNdzXrvv3ZUctNh/Crii5aUdc=;
-	b=KHnKuuA2xz1wd3FwzcThUBUkZfzuKXYK8M0dVp3IhEbpfuotZdJapv1BAFGnGF9s5GszmO4YDiab0Oo0wDlwRa5ni8U+RLXU6w7BQ4bcNEVPPju7VK7cpBz9e44XZS3H+Sy66uxSZSZTziGWz6r9Agjxbg0QMpeZsKWGvyXYDJY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R331e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0X6-zr.q_1782811825;
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0X6-zr.q_1782811825 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 30 Jun 2026 17:30:26 +0800
-Message-ID: <1d27c781-0adc-474d-9c75-899e63bf7490@linux.alibaba.com>
-Date: Tue, 30 Jun 2026 17:30:25 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=lfXw4+sK;
+	spf=pass (imf29.hostedemail.com: domain of sayalip@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=sayalip@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 65U5mD451137062;
+	Tue, 30 Jun 2026 09:32:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=D8Xum+/XKl8zuM90nMa1ZrI3HjGlq/7zbVgI4GO/d
+	ys=; b=lfXw4+sKDRkVo+yZf75uJXb6Yx6FSRAoMkVzN+fSqX5sSjqD1dqcYpxzb
+	FH82lEG6x3wfot5KAhHvVIlaTTCBFlqk4LuLzG5EjK2kJ7kBBm4MZEawlXYpAcnd
+	Lc3lQ86eqfViEDL81KlepwRp5LIN9gUS9xf0i1s80Qtd6Z3kE1fT99QdsxFuifvP
+	cqWHq0icMrGIhKn0Z7mgqAE9HmcMxot6zTWQW1vX58OrsZljFG0E5EvZb1FFa0p1
+	7DP3/JXy1OB48AIIFSbllHmVikeBvYAi2qNXEZr8Eu3BdQE/QL8UNDPgAyoReYMv
+	ySeOw/B9yha9KAQDe738DAnhW5Lng==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4f26n5nxmc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jun 2026 09:32:52 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 65U9Jg64008817;
+	Tue, 30 Jun 2026 09:32:51 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4f2ruq9nsu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 30 Jun 2026 09:32:51 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 65U9Wm4E59703592
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 30 Jun 2026 09:32:48 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29F5D20043;
+	Tue, 30 Jun 2026 09:32:48 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EAE4920040;
+	Tue, 30 Jun 2026 09:32:43 +0000 (GMT)
+Received: from li-3f69264c-2ce6-11b2-a85c-c3f414d24014.ibm.com.com (unknown [9.39.22.200])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 30 Jun 2026 09:32:43 +0000 (GMT)
+From: Sayali Patil <sayalip@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Ritesh Harjani <ritesh.list@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+        Michal Hocko <mhocko@kernel.org>, Oscar Salvador <osalvador@suse.de>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Dev Jain <dev.jain@arm.com>, Liam.Howlett@oracle.com,
+        linuxppc-dev@lists.ozlabs.org, Miaohe Lin <linmiaohe@huawei.com>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Sayali Patil <sayalip@linux.ibm.com>
+Subject: [PATCH v2 0/3] selftests/mm: avoid false failures in hugetlb and KSM tests
+Date: Tue, 30 Jun 2026 15:02:32 +0530
+Message-ID: <cover.1782811071.git.sayalip@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shmem: Fix data-race in shmem_fault
-To: yahia <yahia.a.abdrabou@gmail.com>, hughd@google.com
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org,
- syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-References: <8b6aecca-c4fe-441b-b0f9-fff10f7b43af@linux.alibaba.com>
- <20260629040345.13138-1-yahia.a.abdrabou@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260629040345.13138-1-yahia.a.abdrabou@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNjMwMDA4MyBTYWx0ZWRfXy+goAH0TvE1k
+ dfbVd+MWgW4+3teakz3eH/cFcTfeDvfr339/fZD0qX4NglDCWZKNFd50QHSkjJPbVA4mKIGKiQh
+ SL7hnOnqoc8c16NT1araFZMDufPWiQ09sF+1xmXL8wyqfPaJaN4WU8sneXJJmKi2go4y6CbyUpk
+ OAxfDAIocMBzGvNT7LbqXT2w1o4jjoKB+9OQn7kCkiA5EAg6FguedYBjv7upZ78lzVp02AJBQYb
+ pa8zZByKgf2R5tc4WcaOnPYrmHTGXgn8AoltbnVPSO4m68uDMy3JnLFBp8CIaAyA2xpanQiSkcd
+ B8fkiSshTwwl7k3CKCEN7hGT1cEVyGrotdTrPUVCS+thCWliUpPfgzFpd6VN4G5C37DZjdaiocM
+ vZkYaIjpWH31IZ0o1MFauXWc1Cy4JyHfgmqwWl6AeacOVZACAtbwnSEh7dCpMz4SIkkUzX3dwwW
+ dhaCYaXTTCzAWRMHMAA==
+X-Authority-Analysis: v=2.4 cv=V45NF+ni c=1 sm=1 tr=0 ts=6a438d45 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=FelO9ux0wxsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=_V4-DM0ed6H3iwi1ae8A:9
+X-Proofpoint-ORIG-GUID: sWru1B2hQQYViISMjebu6H-eIuuJ2fJd
+X-Proofpoint-GUID: ggRZ1wWx35-VpUVVZk4dSDPgik26JuYV
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNjMwMDA4MyBTYWx0ZWRfXzVAooNWIk4RR
+ 15AfbStBvgsQaDxH97Z1TZ0BXl7i4mUJTyzDu5OGb7tXHyHNExLTeIO+17rwTTRu40wTNPsYy6L
+ Ewiw+hr6ijfQOYzwGuTI26aXttKkv9w=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-06-30_02,2026-06-26_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ adultscore=0 clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2606300083
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2438012000A
 X-Rspam-User: 
-X-Stat-Signature: dbp33hiegdw9u1jo3nw7m9nen7frxpxi
-X-Rspamd-Queue-Id: C0E3E8000D
-X-Rspamd-Server: rspam06
-X-HE-Tag: 1782811831-164616
-X-HE-Meta: U2FsdGVkX18wrN4E5ug9BsEijnt0bwb6KL43YZouLP0fZaCoMuPVfeIomOCAd9eACsCNHuLAiDgxKCfeCH1SKFaiSK2TMOv23gNfw4i4Yi1z6IM680pSrYldjEVMyfCZjKOgNFKcu+3JWot0qInT3rjRnbJ9To29S3wJ00ewT4qPXV02H6YBVJqWpcdRG/4b67WDk13DcVU5ysC8jQFJRleSOfH3AA4XdvTjXZT7oEhS6Ef5mCfXp2HhNp9e29h3/0d9Vdm9TcpzLdlIOsUlfkn/LXCgFPs+M0GjhVziEViSvUoWnlv82eV5+HD7eFkeeWkp/JQV5HLdPqBPWIP96tTpwRm2eeuQD2onBo18cdyq9+AkK0AQvCG1p7wWfYpmj6OEEMq1piX2O+pgLE+cP0okMF2soRHnRTK7GeijSjkS9T6lct21WaXcvyDuGNFJoJ/pDmBfFvGAlpwEm462BgBYFB+gQ2A05gBSgptUlqKG+TMYoH91wis+OadwfYZXSbfc6RtIoklq/yURss3PKnCp1W/VffVlQS84UlNQ+s9ShSPXB92mdWzKLGEkXujrNgpgjJi0oKdphl3Mhio7+aMF7Mf20iK1QJygejyvYt7C4vke0Ua/fLDHOHEP32DwsB+595mLqiau5nOi9nkNaH7hxFA7Lzyh/zo0yN5/IcRSEbyndtkk4GtfVa9n5PJoFUEEB93gRLBHM8NMIQsfZf4AImN3+OWhcNqEEIeI7rgrd5U9C6NV9JHqAX2OPAoHgxf+dAsI1VGyFbRWOdCton/BATsAicmMadlG6MoZwItsp1dmG53ATW/9ZIF6oNmQl+M6MS74pt+ofdYTEmKcIg6YlADloOd9TWMDxq0r8LdwjonCM5EfCZoll5ktuxkR8V/WFkRMqV9rGL+l+2jQxlUwxgealf0pQNqsamLlNFRg91K1wsdGAJYabFh1uypLEFluq6Dl2YOpltHZQ8v
- rCynDM1x
- QftfLCbAs+t2HzlnhbZaqyjfvXmcRCBQv/2hxaxQzf2pcqK/w8diEjFQxpPX+yB3ooZq+R14it6SAx7FUmHSnL6PG5lFj20GSPbQaTQ2k+oraVBltfVvOe/JDAc1AnyI3tiC6KlVYQiGXxBY374ne9Mn/9+KzLuUSXj0F3XSc96zXd3CPvF5RsAq9b4wjzKNvnme7Oh5RnNK6Mz7zrFieuX4sHRJ6jzILHPEfXNm0c4f8LJAnVRcnAYjfE9jPuZLE4tPIc763vuOpdZtHzXa81da0dA8y0OV7S2/Ocs9pArInXhqb7bQQXHf09IGe6mr+7JuNCmeLnGms/v+W09ft+WTDMdv/HHLeQcqKS7GcVYSen8PImvdsWa79/CyzOHeQZeS4gy7yKoFIicPuTJk5sxwn7cl/ueDh798r3aJ1Bkz94s5t1foPgsU21W71cr8uYvXMq76yRPuFfB1JgVgyB1tH3zGMTg/a8Z3iSxUXlcxVv/ssP2U4DBF8M7VZ43n0pkZBt9ZroHKwC+XftByBtDNEwQbW6MusDnjDkYY1mtldFFOl7bHcgRCsQyXZbQ94GxE+A4L0/fd1BWJnHX5kjgo56xDZMlggTQ4K7H2d2nj7uP9kB2RraB5jzg9h177UXxAl
+X-Stat-Signature: ndeszcygd46btf84e173fqdiz45wy8fz
+X-HE-Tag: 1782811981-688803
+X-HE-Meta: U2FsdGVkX1//nNqroWdPME5hKoZjZN5MGSDdubumsHH72pDe8x3TDRhJG7JxMVs3TBWsxm7vxsfikyxv3R+cIq/rFA+EGG+ZAM9ihA068F1KMnucyYE9d1dVbQCIDWKeNabDjFgG9SJemKPNaXvtHRbrXGM+KHd7ISAG8WIwWFjvgO6S5LJe63NLbDbCyAwQPhOjx5jYG55o1UAhGgcXCkllpXUQWAs0qKZaIn21fR4tEuG0k5cHXOCyng2cB2hJFamRUfqm2GrSAi6AmWTU8aFjTXjSgZ2ZeN0iWWbsSr1cUc5f5Uwp3/6uVHZKFrLj+N/TruL3ee5jMFDoDay3iq4ncZYX3pOcWYB1qG3N/3FUgqOR3JRjwExlNC9K2i3YH+OEDt8Ea692QfeHY9RdzVehc4EdFGv7Q3z5ihv74VuadWastY4znjAEybVzMLHYtHkb1K45SN6+du70JQxPL5crzEKVnaOukccc85kHAc8D8tjerATPsILGDM8Vu4Vl1hMMuA6g9ZPNrvxg7kYipowWM4TY50LEqGhCgLrDeRtO1JUZ1e8ceK156bmrJDgKoPWwMZG5bdJ8EXxvldGelHbtD9Cp6wWgd7xxgCs3fhofCZXN7HJwL8+ixMCYxKqoz67LGXLx3EthJ17+rsBUffDC1ERetx5xvYI+DB/oNtEwd2Wcdk4ToOlwX/5K7gas5mDZ5yVrAc9n7I27Xuj2IU8kxvErZ+nzwDy3LUhXamttRpLCgMwhrQST9nZ0DfGEaC6wWf+Td/UrYu5d1/oVHDK/8oYqFrLa0YsLuy1JhaolPUBcNglSl7y/RJ0FzliyB5kODFqbCdV1s02eDfS32rdBcFJMePpyP6I1O9fwg4uRLEcXS8Z9xs8ys9Qa0NAxaeBssTQTx3QFA9k5BLpZ87LMbgUZRr+2LF/Ysx3GTywpolAsCRjKsI8hTUncJMvNMIon5ZBRCXgbGuLZjTh
+ /ylthLTO
+ fCoyetcYsvmPLdMusNnAitHImPj12T/xi0Qe/DGxSx0Oy3p0LPEOvpIA0JZXM7RM1bkHlmHDhhVxt+n28mg5EJRynL/UsQ/7D5GLMfxWPr8tkjbZBkVyXYMGvDGats6lT4clelPxdQg79QoQiit785OgSiBkeakFHTYvzpaBw4wgrHk/2T0DJ8agq+3uUYnMuLHJ4nlxwU/7/AJY1uxfteTg0vvAq3CRi07fruVKqT9vxDlySpVq4Syo75jH8PjwSb2yCY9A366DY+weDE+C2aV2H4heoq345hLgQkz3wnK0j9BMsFJ97r4oI3BfgONVo2BLXR1n5n9DRRlRDwRW2hOlJ47GH/EfWHZLxOJT7KjHtrR9k7mrimWD4Hic8OaGwBK8byqpaP1Haq1I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,62 +145,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi all,
 
+This series fixes issues in the hugetlb and KSM MM selftest categories
+that can report failures when the prerequisites for the tests are not
+satisfied.
 
-On 6/29/26 12:03 PM, yahia wrote:
-> From: yahia ahmed <yahia.a.abdrabou@gmail.com>
-> 
-> shmem_fault and shmem_writeout access inode->i_private
-> without holding a lock, while shmem_fallocate is modifying
-> it while holding a lock, thus a data-race is created.
-> 
-> Fix this by using READ_ONCE and WRITE_ONCE, which provides
-> an atomic, lockless read of inode->i_private which prevents
-> compiler optimizations such as caching in registers and add
-> writing to inode->i_private with WRITE_ONCE to prevent the
-> compiler from writing in registers.
-> 
-> Reported-by: syzbot+76cc716982cf0254f302@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=76cc716982cf0254f302
-> Signed-off-by: yahia ahmed <yahia.a.abdrabou@gmail.com>
-> ---
-> v3:
-> - Fix lockless read in shmem_writeout
-> - Apply WRITE_ONCE and READ_ONCE across all
->    locked instances of inode->i_private
-> v2:
-> - Add WRITE_ONCE to shmem_fallocate()
-> ---
->   mm/shmem.c | 16 ++++++++--------
->   1 file changed, 8 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b51f83c970bb..1c39e9dfc524 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1657,10 +1657,10 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
->   	 * reactivate the folio, and let shmem_fallocate() quit when too many.
->   	 */
->   	if (!folio_test_uptodate(folio)) {
-> -		if (inode->i_private) {
-> +		if (READ_ONCE(inode->i_private)) {
->   			struct shmem_falloc *shmem_falloc;
->   			spin_lock(&inode->i_lock);
-> -			shmem_falloc = inode->i_private;
-> +			shmem_falloc = READ_ONCE(inode->i_private);
+Patch 1 updates the hugetlb selftest helpers to handle -EINVAL when
+attempting to configure gigantic HugeTLB pages via nr_hugepages. 
+PowerPC hash MMU pSeries systems expose gigantic hugepage sizes 
+but do not allow runtime allocation of such pages,
+causing the sysfs write to fail. Handle this case gracefully and
+continue running the test instead of aborting.
 
-The locked read cannot race with the write side, so READ_ONCE() is 
-unnecessary here.
+Patch 2 fixes the KSM NUMA merge test on systems with memoryless NUMA
+nodes. The test currently relies on the number of configured NUMA nodes
+and may attempt allocations on nodes that have no memory, resulting in
+spurious failures. Use the existing helpers to identify
+NUMA nodes that contain memory and skip the test when fewer than two
+such nodes are available.
 
->   			if (shmem_falloc &&
->   			    !shmem_falloc->waitq &&
->   			    index >= shmem_falloc->start &&
-> @@ -2647,7 +2647,7 @@ static vm_fault_t shmem_falloc_wait(struct vm_fault *vmf, struct inode *inode)
->   	vm_fault_t ret = 0;
->   
->   	spin_lock(&inode->i_lock);
-> -	shmem_falloc = inode->i_private;
-> +	shmem_falloc = READ_ONCE(inode->i_private);
+Patch 3 fixes a pre-existing operator precedence issue in ksm_tests,
+where a ternary expression combined with logical OR operators could be
+evaluated differently than intended. Added parentheses to ensure the
+correct evaluation order.
 
-Ditto.
+These changes improve handling of unsupported test configurations and
+unmet test prerequisites, avoiding spurious failures.
+
+Thanks,
+Sayali
+---
+
+V1 -> V2:
+- For "selftests/mm: handle EINVAL when configuring gigantic hugepages":
+  Added a dedicated hugetlb_write_num() helper to handle the expected EINVAL
+  returned by gigantic hugepage configuration, in the 
+  hugepage setup code rather than modifying the generic write_file() helper.
+- For "selftests/mm: fix ksm NUMA merge test for systems with memoryless NUMA nodes":
+  Updated implementation as per David's review comment to build upon 
+  existing helpers get_next_mem_node().
+- Added new patch "selftests/mm: fix ternary operator precedence in ksm_tests"
+  to address a pre-existing issue identified during Sahiko's review.
+
+V1: https://lore.kernel.org/all/cover.1782365671.git.sayalip@linux.ibm.com/
+
+---
+
+Sayali Patil (3):
+  selftests/mm: handle EINVAL when configuring gigantic hugepages
+  selftests/mm: fix ksm NUMA merge test for systems with memoryless NUMA
+    nodes
+  selftests/mm: fix ternary operator precedence in ksm_tests
+
+ .../testing/selftests/mm/hugepage_settings.c  | 32 ++++++++++++++++++-
+ .../testing/selftests/mm/hugepage_settings.h  |  1 +
+ tools/testing/selftests/mm/ksm_tests.c        | 28 ++++++++--------
+ 3 files changed, 47 insertions(+), 14 deletions(-)
+
+-- 
+2.52.0
+
 
